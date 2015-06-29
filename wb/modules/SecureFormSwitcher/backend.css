@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+td.content form.secure_switch .left-content { width :49%; float :left; }
+td.content form.secure_switch .right-content { width :49%; float :right; }
+
+form.secure_switch { border :0px #484 solid; margin :1em 0; width :100%; }
+
+table.switch-ftan-info,
+table.switch-ftan-form { width :100%; background-color :transparent; }
+table.switch-ftan-info tbody,
+table.switch-ftan-form tbody { margin :10px 0; }
+table.switch-ftan-form tbody td label { font-weight :bold; font-size :1.0em; color :#000000; }
+table.switch-ftan-info thead tr th { margin :20px 0; font-weight :bold; font-size :1.4em; background-color :transparent; color :#000000; text-align :left; }
+
+table.switch-ftan-info thead tr th span.norm { color : #003300; }
+table.switch-ftan-info thead tr th span.grey { color : #666666; }
+
+table.switch-ftan-form tbody td { height :30px; vertical-align :middle; }
+table.switch-ftan-form tbody td input[type="submit"] { font-size :1.0em; width : 40%; }
+table.switch-ftan-form tbody td input[type="text"] { font-size :1.0em; width : 100%; }
+table.switch-ftan-form tbody td select { font-size :1.0em; width : 101.5%; }
+
+.ok, .error { font-weight:bold; }
+.ok { color:green; }
+.error { color:red; }
+.check { color:#555; }
+
+.module-info { padding :10px; margin :0px auto; background :transparent; color :#000000; font-size :1.0em; }
+.module-info p { margin :0.2em auto; }
+.warning { border-radius :10px; -khtml-border-radius :10px; -webkit-border-radius :10px; -moz-border-radius :10px; background :#fee; border :0.2em #844 solid; color :#990000; margin :0.2em auto; padding :0.63em; width :60%; text-align :center; }
+.warning strong { font-size :1.2em; }
+.warning span { font-size :1.2em; line-height :1.5em; color :#333333; }
+
+/* Tooltip CSS */
+.tooltip {
+	border-bottom: 1px dotted #000000;
+	color: #000000;
+	outline: none;
+	cursor: help;
+	text-decoration: none;
+	position: relative;
+}
+.tooltip span { margin-left: -999em; position: absolute; }
+.tooltip:hover em {
+	font-family: Candara, Tahoma, Geneva, sans-serif;
+	font-size: 1.2em;
+	font-weight: bold;
+	display: block;
+	padding: 0.2em 0 0.6em 0;
+}
+.tooltip:hover span {
+	border-radius: 5px 5px;
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+	font-family: Calibri, Tahoma, Geneva, sans-serif;
+	position: absolute;
+	left: -15em;
+	top: 2em;
+	z-index: 99;
+	margin-left: 1em;
+	padding: 10px 10px 10px 50px;
+	width: 250px;
+}
+.help {
+	border: 1px solid #2bb0d7;
+	background: #9fdaee url(htt/help.png) no-repeat left;
+}

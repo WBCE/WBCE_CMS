@@ -1,0 +1,26 @@
+WebsiteBaker 2.8.3SP2 Installation Instructions
+=================================================
+
+Step 1 - Preparing your webspace
+- Login to your webspace account and create a database.
+
+Step 2 - Download WebsiteBaker
+- Download "WebsiteBaker 2.8.3" from http://www.websitebaker2.org/en/download/latest-version.php
+- Unzip the package to your local machine
+
+Step 3 - Preparing the Installation-Package
+- Rename "config.php.new" to "config.php"
+- Delete File "upgrade-script.php"
+
+Step 4 - Uploading
+- Upload all files to your Webspace
+
+Step 5 - Installation
+- Call in your Browser www.yourdomainname.com
+- Follow the Installation Instructions
+
+Step 6 - Cleaning
+- Delete folder "/install"
+
+Have fun with WB 2.8.3SP2
+

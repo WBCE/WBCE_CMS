@@ -1,0 +1,109 @@
+/*~ install.txt
+.---------------------------------------------------------------------------.
+|  Software: QuickSkin                                                      |
+|   Version: 5.0                                                            |
+|   Contact: andy.prevost@worxteam.com                                      |
+|      Info: http://sourceforge.net/projects/quickskin                      |
+|   Support: http://sourceforge.net/projects/quickskin                      |
+| ------------------------------------------------------------------------- |
+|    Author: Andy Prevost andy.prevost@worxteam.com (admin)                 |
+|    Author: Manuel 'EndelWar' Dalla Lana endelwar@aregar.it (former admin) |
+|    Author: Philipp v. Criegern philipp@criegern.com (original founder)    |
+| Copyright (c) 2002-2009, Andy Prevost. All Rights Reserved.               |
+|    * NOTE: QuickSkin is the SmartTemplate project renamed. SmartTemplate  |
+|            information and downloads can still be accessed at the         |
+|            smarttemplate.sourceforge.net site                             |
+| ------------------------------------------------------------------------- |
+|   License: Distributed under the Lesser General Public License (LGPL)     |
+|            http://www.gnu.org/copyleft/lesser.html                        |
+| This program is distributed in the hope that it will be useful - WITHOUT  |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or     |
+| FITNESS FOR A PARTICULAR PURPOSE.                                         |
+| ------------------------------------------------------------------------- |
+| We offer a number of paid services:                                       |
+| - Web Hosting on highly optimized fast and secure servers                 |
+| - Technology Consulting                                                   |
+| - Oursourcing (highly qualified programmers and graphic designers)        |
+'---------------------------------------------------------------------------'
+Last modified: January 01 2009 ~*/
+
+To install and use QuickSkin:
+
+1. Uncompress the ZIP file to your local computer
+
+-- FULL INSTALLATION
+
+   Copy the files to your webserver. We recommend that you put those in a 
+   directory structure that resembles:
+   
+   /_lib/class.quickskin.php
+   /_lib/class.quickskindebugger.php
+   /_lib/qx/{all files that start with qx_}
+   
+-- MINIMAL INSTALLATION
+   
+   If you want to install the absolutely bare-bones installation, copy only
+   the base class file to your webserver. We recommend that you put that file in
+   the following directory structure:
+   
+   /_lib/class.quickskin.php
+   
+2. Create a directory for your compiled/cached files. We recommend:
+
+   /_skins_tmp/
+   
+3. If you are using QuickSkin as part of a framework or plan to reuse your
+   code often, we recommend that you create a template structure such as:
+   
+   /_skins/
+   /_skins/default/         (to store your template HTML files)
+   /_skins/default/tplimgs/ (to store your template images and CSS files)
+   /_skins/default/tpljs/   (to store your template Javascript files)
+   /_skins_tmp/             (to store all compiled and cached files)
+   
+   With this kind of structure, you are able to create/edit your HTML 
+   files with any HTML editor (MS FrontPage, MS Expression Web, Macromedia
+   Dreamweaver, etc.). All of your references to locations of Javascript
+   files, images, and CSS files will reference the directory under the
+   HTML template file (ie. <img src="tplimgs/yourimage.jpg>). This 
+   is simple and convenient for both you and your users. Continue reading
+   for examples on how to take advantage of this directory structure.
+   
+4. All you need to use QuickSkin, is to instantiate it inside of your
+   script. If you used the directory structure we recommended, that looks like:
+   
+   include_once('/_lib/class.quickskin.php');
+   
+   $page = new QuickSkin( "default/yourtemplate.htm" );
+   
+   $page->assign( 'title',  'TemplateDemo' );
+   $page->assign( 'welcome', 'My Welcome' );
+   
+   $page->assign('welcome', 'My Welcome');
+   
+   $page->set('template_dir', '_skins/');
+   $page->set('temp_dir', '_skins_tmp/');
+   $page->set('cache_dir', '_skins_tmp/');
+   
+   // do substitute of template image directory
+   $page->assign('tpl_img', 'tplimgs/');
+   $page->assign('url_img', 'http://www.yourdomain.com/_skins/default/tplimgs/');
+   
+   // do substitute of template javascript directory
+   $page->assign('tpl_js', 'tpljs/');
+   $page->assign('url_js', 'http://www.yourdomain.com/_skins/default/tpljs/');
+   
+   $page->addtpl('sponsors', '_skins/default/sponsors.htm');
+   
+   //$page->debug();
+
+   $page->output();
+   
+Experiment. It is pretty simple to work the system and the scripts are
+well documented.
+
+If you are a previous user of SmartTemplate, the new version is completely code
+compatible with version 1.2.1 - with ONE EXCEPTION. The default for 'reuse_code'
+is now FALSE. There's quite a few enhancements that you will want to explore.
+
+Andy Prevost.

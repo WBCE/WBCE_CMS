@@ -1,0 +1,21 @@
+<!-- BEGIN footer_block -->
+
+</td>
+</tr>
+</table>
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" style="padding: 10px 0;">
+  <tr>
+    <td style="font-size:12px;text-align:center;">
+      <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+      <a href="http://www.websitebaker2.org/" title="external">WebsiteBaker</a> is released under the
+      <a href="http://www.gnu.org/licenses/gpl.html" title="WebsiteBaker is released under the GNU General Public License">GNU General Public License</a>
+      <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+    </td>
+  </tr>
+</table>
+</div>
+{BACKEND_BODY_MODULE_JS}
+</body>
+</html>
+<!-- END footer_block -->

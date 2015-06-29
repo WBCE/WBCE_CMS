@@ -1,0 +1,136 @@
+<!-- BEGIN main_block -->
+<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="100%" style="margin-bottom:10px;">
+	<tr style="background:#f0f0f0;">
+		<td align="right">
+			{URL_TEMPLATES}
+			-
+			{URL_LANGUAGES}
+			-
+			{URL_ADVANCED}
+		</td>
+     </tr>
+</table>
+
+<form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL}">
+{FTAN}
+  <h2>{HEADING_INSTALL_MODULE}</h2>
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+    <tr>
+      <td valign="middle">
+        <input type="file" name="userfile" size="97" />
+        <script type="text/javascript">
+		document.install.userfile.focus();
+		</script><br />
+        <input type="checkbox" name="overwrite" value="false"  />
+		<span>{OVERWRITE_NEWER_FILES}</span>
+      </td>
+      <td width="110" align="left">
+        <input type="submit" name="submit" value="{TEXT_INSTALL}" style="width: 100px;" />
+      </td>
+    </tr>
+  </table>
+  <br />
+</form>
+<form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL}">
+{FTAN}
+  <h2>{HEADING_UNINSTALL_MODULE}</h2>
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+    <tr>
+      <td>
+        <select name="file" style="width: 77%;">
+		<option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+		<!-- BEGIN module_list_block -->
+			<option value="{VALUE}">{NAME}</option>
+          <!-- END module_list_block -->
+        </select>
+      </td>
+      <td width="110">
+        <input type="submit" name="submit" value="{TEXT_UNINSTALL}" style="width: 100px;" />
+      </td>
+    </tr>
+  </table>
+  <br />
+</form>
+<form name="details" action="details.php" method="post" class="{DISPLAY_LIST}">
+{FTAN}
+  <h2>{HEADING_MODULE_DETAILS}</h2>
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+    <tr>
+      <td>
+        <select name="file" style="width: 77%;">
+		<option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+		<!-- BEGIN module_list_block -->
+			<option value="{VALUE}">{NAME}</option>
+          <!-- END module_list_block -->
+        </select>
+      </td>
+      <td width="110">
+        <input type="submit" name="submit" value="{TEXT_VIEW_DETAILS}" style="width: 100px;" />
+      </td>
+    </tr>
+  </table>
+  <br />
+</form>
+<div class="{DISPLAY_MANUAL_INSTALL}">
+  <h2>{HEADING_INVOKE_MODULE_FILES}</h2>
+  <p>{TEXT_MANUAL_INSTALLATION}</p>
+  <form name="manual_install" action="manual_install.php" method="post" class="{INSTALL_VISIBLE}">
+{FTAN}
+  <table summary="" cellpadding="0" cellspacing="2" border="0" width="80%">
+	  <tr>
+		<td width="150" valign="middle" nowrap="nowrap">{TEXT_FILE}: "install.php"</td>
+		<td valign="middle">
+			<input type="hidden" name="action" value="install" />
+			<select name="file" style="width: 250px;">
+	        <option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+			<!-- BEGIN install_list_block -->
+			<option value="{VALUE}">{NAME}</option>
+			<!-- END install_list_block -->
+			</select>
+			<input type="submit" name="submit" value="{TEXT_EXECUTE}" style="width:100px;" />
+		</td>
+	  </tr>
+  </table>
+  </form>
+  
+  <form name="manual_upgrade" action="manual_install.php" method="post" class="{UPGRADE_VISIBLE}">
+{FTAN}
+  <table summary="" cellpadding="0" cellspacing="2" border="0" width="80%">
+	  <tr>
+		<td width="150" valign="middle" nowrap="nowrap">{TEXT_FILE}: "upgrade.php"</td>
+		<td valign="middle" >
+			<input type="hidden" name="action" value="upgrade" />
+			<select name="file" style="width: 250px;">
+	        <option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+			<!-- BEGIN install_list_block -->
+			<option value="{VALUE}">{NAME}</option>
+			<!-- END install_list_block -->
+			</select>
+			<input type="submit" name="submit" value="{TEXT_EXECUTE}" style="width:100px;" />
+		</td>
+	  </tr>
+  </table>
+  </form>
+
+  <form name="manual_uninstall" action="manual_install.php" method="post" class="{UNINSTALL_VISIBLE}">
+{FTAN}
+  <table summary="" cellpadding="0" cellspacing="2" border="0" width="80%">
+	  <tr>
+		<td width="150" valign="middle" nowrap="nowrap">{TEXT_FILE}: "uninstall.php"</td>
+		<td valign="middle">
+			<input type="hidden" name="action" value="uninstall" />
+			<select name="file" style="width: 250px;">
+	        <option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+			<!-- BEGIN install_list_block -->
+			<option value="{VALUE}">{NAME}</option>
+			<!-- END install_list_block -->
+			</select>
+			<input type="submit" name="submit" value="{TEXT_EXECUTE}" style="width:100px;" />
+			</td>
+	  </tr>
+  </table>
+  </form>
+
+  <p style="color:red;">{TEXT_MANUAL_INSTALLATION_WARNING}</p>
+</div>
+<!-- END main_block -->

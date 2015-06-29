@@ -1,0 +1,122 @@
+QuickSkin Control Structures (Used within templates)
+
+Control Structure - IF
+
+  The if ... endif construct facilitates the conditional presentation of template fragments.
+
+  The syntax can be one of the following:
+
+  <!-- IF var --> var is not empty! <!-- ENDIF var -->
+  <!-- IF name=='John Doe' --> Your name is John Doe! <!-- ENDIF name -->
+  <!-- IF name!='John Doe' --> Your name is not John Doe! <!-- ENDIF name -->
+
+  A variable can be used as right part of the IF clause using the folloging syntax:
+
+  <!-- IF name=variablename --> Your name match with {variablename} <!-- ENDIF name -->
+  <!-- IF name!=top.variablename --> Your name doesn't match with {top.variablename} <!-- ENDIF name -->
+
+  * (var after ENDIF is optional)
+  * the 'var' comes from your PHP code
+  * IF/ELSE/ELSEIF control structures can be nested in other IF or LOOP control structures
+
+Control Structure - ELSE
+
+  The else construct extends an if construct to display a template fragment in case the
+  expression in the if statement evaluates to FALSE.
+
+  <!-- IF usergroup="ADMIN" -->
+  <a href="admin.php"> ADMIN Login </a><br />
+  <!-- ELSE -->
+  You are in guest mode!<br />
+  <!-- ENDIF usergroup -->
+
+  * (var after ENDIF is optional)
+  * the 'var' comes from your PHP code
+  * IF/ELSE/ELSEIF control structures can be nested in other IF or LOOP control structures
+
+Control Structure - ELSEIF
+
+  The elseif construct is a combination of an else and if construct.
+
+  <!-- IF usergroup="ADMIN" -->
+  <a href="admin.php"> Admin Staff Login </a><br />
+  <!-- ELSEIF usergroup="SUPPORT" -->
+  <a href="support.php"> Support Staff Login </a><br />
+  <!-- ELSEIF usergroup -->
+  <a href="other.php"> Standard Login </a><br />
+  <!-- ELSE -->
+  You don't even have a usergroup!
+  <!-- ENDIF -->
+
+  * (var after ENDIF is optional)
+  * the 'var' comes from your PHP code
+  * IF/ELSE/ELSEIF control structures can be nested in other IF or LOOP control structures
+
+Control Structure - LOOP ... ENDLOOP
+
+  The loop ... endloop construct facilitates a way to iterate through numeric arrays.
+  Each element of the numeric array is expected to be an associative array and is used
+  to parse the template fragment that is embedded between the
+  <!-- LOOP --> and <!-- ENDLOOP -->
+  tags like it was a small template itself.
+  
+  Each associative array is expanded by the following two additional elements:
+  
+  ROWCNT : The actual position of this element within the parent array. (0,1,2,3,...n)
+  ROWBIT : The least significant bit of ROWCNT. (0,1,0,1,0,1,...)
+  
+  loop ... endloop blocks can easily be nested and parsed recursivly.
+  
+  Example, assuming this code precedes in your PHP:
+  
+  $users = array(
+             array( 'NAME' => 'John Doe',   'GROUP' => 'ADMIN' ),
+             array( 'NAME' => 'Jack Doe',   'GROUP' => 'SUPPORT' ),
+             array( 'NAME' => 'James Doe',  'GROUP' => 'GUEST' ),
+             array( 'NAME' => 'Jane Doe',   'GROUP' => 'GUEST' ),
+           );
+  $page->assign( 'users',  $users );
+  
+  The template, then, would contain:
+
+  <style type="text/css">
+    .col0 { background-color: #D0D0D0; }
+    .col1 { background-color: #F0F0F0; }
+  </style>
+  <table border="1" cellpadding="2" cellspacing="0">
+    <tr>
+      <th>No.</th>
+      <th>Username</th>
+      <th>Usergroup</th>
+    </tr>
+    <!-- LOOP users -->
+    <tr class="col{ROWBIT}">
+      <td>{ROWCNT}</td>
+      <td>{NAME}</td>
+      <td>{GROUP}</td>
+    </tr>
+    <!-- ENDLOOP users -->
+  </table>
+
+  * (var after ENDLOOP is optional)
+  * the 'var' comes from your PHP code
+  * IF/ELSE/ELSEIF control structures can be nested in other IF or LOOP control structures
+  * LOOP/ENDLOOP control structures can be nested in other IF or LOOP control structures
+
+Control Structure - INCLUDE
+
+  While not a true Control Structure, the INCLUDE directive loads external data, in place, in your template.
+
+  Templates can be included in other templates by using the INCLUDE statement.
+  All functionality available to the main template is also available to the sub template
+  (variable substitution, etc.). This permit the use of subtemplating.
+
+  The syntax is:
+
+  <!-- INCLUDE templatename.html --> 
+  
+  * file to include is in the template directory (default '_skins/')
+  * similar to the method $page->addtpl() ... difference is that 'addtpl' stores the data 
+    in a variable that then gets assigned ('$page->assign()') within the main template
+
+  

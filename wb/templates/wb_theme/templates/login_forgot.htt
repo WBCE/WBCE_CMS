@@ -1,0 +1,83 @@
+<!-- BEGIN main_block -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Retrieve Login Details</title>
+<meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
+<meta http-equiv="content-language" content="{LANGUAGE}" />
+<meta name="description" content="Retrieve Login Details" />
+<meta name="keywords" content="Retrieve Login Details" />
+<link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
+</head>
+<body onload="document.forgot_pass.email.focus();">
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="770" align="center">
+<tr>
+	<td width="60" valign="top">
+		<img src="{THEME_URL}/images/logo.png" alt="Logo" />
+	</td>
+	<td width="5">&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td colspan="3">&nbsp;</td>
+</tr>
+<tr>
+	<td colspan="3" style="font-size: 20px; text-align: center;">
+		<span style="color: #003366;">{SECTION_FORGOT}</span>
+	</td>
+</tr>
+</table>
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="770" align="center" style="margin-top: 30px;" class="container">
+<tr>
+	<td class="content">
+	
+	<form name="forgot_pass" action="{ACTION_URL}" method="post">
+	<input type="hidden" name="url" value="{URL}" />
+		<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="500">
+		<tr>
+			<td height="40" align="center" style="color: #{MESSAGE_COLOR}" colspan="2">{MESSAGE}</td>
+		</tr>
+		<tr style="{DISPLAY_FORM}">
+			<td height="10" colspan="2"></td>
+		</tr>
+		<tr style="{DISPLAY_FORM}">
+			<td width="165" height="30" align="right">{TEXT_EMAIL}:</td>
+			<td><input type="text" maxlength="255" name="email" value="{EMAIL}" style="width: 180px;" /></td>
+		</tr>
+		<tr style="{DISPLAY_FORM}" height="30">
+			<td>&nbsp;</td>
+			<td><input type="submit" name="submit" value="{TEXT_SEND_DETAILS}" style="width: 180px; font-size: 10px; text-transform: uppercase; color: #003366; border: 1px solid #336699; background-color: #DDDDDD; padding: 3px;"></td>
+		</tr>
+		<tr style="{DISPLAY_FORM}">
+			<td height="10" colspan="2"></td>
+		</tr>
+		</table>
+	</form>
+	
+	<center>
+		<a href="{LOGIN_URL}">{TEXT_NEED_TO_LOGIN}</a>
+		<br />
+		<br />
+		<a href="{WB_URL}/">{TEXT_HOME}</a>
+	</center>
+
+	</td>
+</tr>
+</table>
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" style="padding: 10px 0px 10px 0px;">
+<tr>
+	<td style="font-size:12px;text-align:center;">
+      <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+      <a href="http://www.websitebaker2.org/" title="external">WebsiteBaker</a> is released under the
+      <a href="http://www.gnu.org/licenses/gpl.html" title="WebsiteBaker is released under the GNU General Public License">GNU General Public License</a>
+      <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+	</td>
+</tr>
+</table>
+
+</body>
+</html>
+<!-- END main_block -->

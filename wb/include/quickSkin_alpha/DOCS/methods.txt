@@ -1,0 +1,49 @@
+QuickSkin Methods:
+
+QuickSkin::set( $property, $value )
+  Assigns content to a template property. Can be strings, no arrays.
+  (Please read the properties.txt document for examples).
+
+QuickSkin::addtpl()
+  Loads a supplementary template to the main template. Primarily used for
+  advertising banners, right columns, login boxes or member menus, etc. All
+  functionality available to the main template is also available to the sub
+  template (variable substitution, etc.). 
+
+QuickSkin::assign()
+  Assigns content to a template placeholder or a list. Can be used on associative
+  arrays and scalars.
+
+QuickSkin::append()
+  Appends content to a template placeholder. Can be used on associative arrays and
+  scalars.
+
+QuickSkin::use_cache()
+  Activates the built in output cache. Checks if the executed script
+  (ref. $_SERVER[REQUEST URI]) has produced any output whithin a certain period of
+  time. If so, use_cache sends the cached page to the standard output (Browser) and
+  terminates any further script execution.  
+  If no valid output is available, use_cache activates the PHP output buffer and returns
+  to the script form which it was called. During the following script execution, use_cache
+  captures all output that is send to the browser and stores it in a temporary cache file.
+  The filename of this cach file is a unique key that is created by modulating the current
+  script filename, its GET-parameters (REQUEST_URI) and the optional key parameter.  
+  If any important logging is done by this script, this has to be done before use_cache
+  is called. 
+
+QuickSkin::result()
+  Parses template and returns result page (usually to a variable).
+
+QuickSkin::output()
+  Parses template and sends to standard output (Browser). 
+
+QuickSkin::debug()
+  Activates the built in template debugger. Debug can be called instead of or in addition
+  to output. It prints a detailed list of all assigned variables and their content, the
+  compiled template and a the structured source template.
+  Debug can be very helpful for locating and removing errors in your template. 
+
+$contents = QuickSkin::getContents($param)
+  $param can be either a variable containing the contents, or a filename with full path.
+  Does some basic substitutions in advance of the class parsing the template and contents.
+  

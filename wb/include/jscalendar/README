@@ -1,0 +1,84 @@
+The DHTML Calendar
+-------------------
+
+  Author: Mihai Bazon, <mihai_bazon@yahoo.com>
+          http://dynarch.com/mishoo/
+
+  This program is free software published under the
+  terms of the GNU Lesser General Public License.
+
+  For the entire license text please refer to
+  http://www.gnu.org/licenses/lgpl.html
+
+Contents
+---------
+
+  calendar.js     -- the main program file
+  lang/*.js       -- internalization files
+  *.css           -- color themes
+  cal.html        -- example usage file
+  doc/            -- documentation, in PDF and HTML
+  simple-1.html   -- quick setup examples [popup calendars]
+  simple-2.html   -- quick setup example for flat calendar
+  calendar.php    -- PHP wrapper
+  test.php        -- test file for the PHP wrapper
+
+Homepage
+---------
+
+  For details and latest versions please refer to calendar
+  homepage, located on my website:
+
+    http://dynarch.com/mishoo/calendar.epl
+
+
+How to use
+-----------
+
+1. enter this code somewhere _above_ the form
+	you can overwrite some vars as descripted below
+--cut-PHP----------------------------------------------------
+	// include jscalendar-setup
+	$jscal_use_time = false; // whether to use a clock, too
+	require_once(WB_PATH."/include/jscalendar/wb-setup.php");
+	// override some vars: (normally, there is no need to change this)
+	//$jscal_lang = "en"; //- calendar-language (default: wb-backend-language)
+	//$jscal_today = ""; // - date the calendar offers if the text-field is empty (default: today)
+	//$jscal_firstday = "0"; // - first-day-of-week (0-sunday, 1-monday, ...) (default: 0(EN) or 1(everything else))
+	//$jscal_format = "Y-m-d"; // - initial-format used for the text-field (default: from wb-backend-date-format)
+	//$jscal_ifformat = "%Y-%m-%d"; // - format for jscalendar (default: from wb-backend-date-format)
+----------------------------------------------------------
+
+
+2. enter this code within your form
+	$date holds the entered date as timestamp
+	the field is called "my_date_field"
+	the calender-trigger is called "my_date_trigger"
+--cut-HTML---------------------------------------------------
+	<input type="text" id="my_date_field" name="my_date_field" value="<?php if($date==0) print ""; else print date($jscal_format, $date)?>" style="width: 120px;" />
+	<img src="<?php echo WB_URL ?>/include/jscalendar/img.gif" id="my_date_trigger" style="cursor: pointer; border: 1px solid red;" title="Calendar" onmouseover="this.style.background='red';" onmouseout="this.style.background=''" />
+----------------------------------------------------------
+
+
+3. enter this code _below_ the form
+	to store the result as timestamp, you have to use  range : [1970, 2037],
+--cut-HTML---------------------------------------------------
+	<script type="text/javascript">
+		Calendar.setup(
+			{
+				inputField  : "my_date_field",
+				ifFormat    : "<?php echo $jscal_ifformat ?>",
+				button      : "my_date_trigger",
+				firstDay    : <?php echo $jscal_firstday ?>,
+				<?php if(isset($jscal_use_time) && $jscal_use_time==TRUE) { ?>
+					showsTime   : "true",
+					timeFormat  : "24",
+				<?php } ?>
+				date        : "<?php echo $jscal_today ?>",
+				range       : [1970, 2037],
+				step        : 1
+			}
+		);
+	</script>
+----------------------------------------------------------
+

@@ -1,0 +1,90 @@
+<!-- BEGIN main_block -->
+<div class="{DISPLAY_ADD}">
+<h2>{HEADING_ADD_PAGE}</h2>
+<form name="add" action="add.php" method="post">
+{FTAN}
+<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" align="center">
+  <tr>
+	<td width="70" height="20">{TEXT_TITLE}:</td>
+	<td width="240" height="20"><input type="text" name="title" style="width: 232px;" /></td>
+	<td rowspan="6" valign="top" style="padding-left: 20px; padding-top: 8px;">{TEXT_ADMINISTRATORS}:
+		<ul style="list-style-type: none; margin: 0; padding: 0;">
+			<!-- BEGIN group_list_block -->
+			<li>
+			<input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}"{CHECKED}{DISABLED} />
+			<label for="admin_group_{TOGGLE}">{NAME}</label>
+			</li>
+			<!-- END group_list_block -->
+		</ul>
+	</td>
+	<td rowspan="6" valign="top" style="padding-left: 20px; padding-top: 8px;">
+		<div id="viewers" style="display: none;">{TEXT_REGISTERED_VIEWERS}:
+			<ul style="list-style-type: none; margin: 0; padding: 0;">
+				<!-- BEGIN group_list_block2 -->
+				<li>
+				<input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}"{CHECKED}{DISABLED} />
+				<label for="viewing_group_{TOGGLE}">{NAME}</label>
+				</li>
+				<!-- END group_list_block2 -->
+			</ul>
+		</div>
+	</td>
+  </tr>
+  <tr>
+	<td width="70">{TEXT_TYPE}:</td>
+	<td width="240">
+		<select name="type" style="width: 240px;">
+			<!-- BEGIN module_list_block -->
+				<option value="{VALUE}"{SELECTED}>{NAME}</option>
+			<!-- END module_list_block -->
+		</select>
+	</td>
+  </tr>
+  <tr>
+	<td width="70">{TEXT_PARENT}:</td>
+	<td width="240">
+		<select  name="parent" style="width: 240px;" onchange="return disabled_hack_for_ie(this);">
+			<!-- BEGIN page_list_block2 -->
+			<option value="{ID}"{DISABLED} style="background: {FLAG_ROOT_ICON} no-repeat center left; padding-left: 20px;">{TITLE}</option>
+			<!-- END page_list_block2 -->
+		</select>
+	</td>
+  </tr>
+  <tr>
+	<td width="70">{TEXT_VISIBILITY}:</td>
+	<td width="240">
+		<select name="visibility" onchange="javascript: toggle_viewers();" style="width: 240px;">
+			<option value="public"{SELECTED}>{TEXT_PUBLIC}</option>
+			<option value="private">{TEXT_PRIVATE}</option>
+			<option value="registered">{TEXT_REGISTERED}</option>
+			<option value="hidden">{TEXT_HIDDEN}</option>
+			<option value="none">{TEXT_NONE}</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+	<td width="70">&nbsp;</td>
+	<td colspan="4">
+		<input type="submit" name="submit" value="{TEXT_ADD}" style="width: 117px;" />
+		<input type="reset" name="reset" value="{TEXT_RESET}" style="width: 117px;" />
+	</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+</table>
+</form>
+</div>
+<div class="{DISPLAY_INTRO}" style="padding-top: 10px;">
+<br />
+<h2>{HEADING_MODIFY_INTRO_PAGE}</h2>
+<a href="intro.php">{INTRO_LINK}</a>
+</div>
+<!-- Addition for remembering expanded state of pages -->
+<script type="text/javascript">
+var THEME_URL = '{THEME_URL}';
+var WB_URL = '{WB_URL}';
+</script>
+<script src="{ADMIN_URL}/pages/page_index.js" type="text/javascript"></script>
+<!-- END main_block -->

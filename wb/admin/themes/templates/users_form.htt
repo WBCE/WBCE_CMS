@@ -1,0 +1,95 @@
+<!-- BEGIN main_block -->
+
+<script type="text/javascript">
+function toggle_radio(radio_on, radio_off) {
+	document.getElementById(radio_on).checked = true;
+	document.getElementById(radio_off).checked = true;
+}
+</script>
+
+<h2 style="{DISPLAY_EXTRA}">{HEADING_MODIFY_USER}</h2>
+
+<form name="user" action="{ACTION_URL}" method="post" class="{DISPLAY_ADD}">
+<input type="hidden" name="user_id" value="{USER_ID}" />
+<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
+{FTAN}
+<table summary="" cellpadding="5" cellspacing="0" border="0" width="100%">
+<tr>
+	<td width="150">{TEXT_USERNAME}:</td>
+	<td class="value_input">
+		<input type="text" name="{USERNAME_FIELDNAME}" maxlength="30" value="{USERNAME}" />
+	</td>
+</tr>
+<tr>
+	<td>{TEXT_PASSWORD}:</td>
+	<td class="value_input">
+		<input type="password" name="password" maxlength="30" />
+	</td>
+</tr>
+<tr>
+	<td>{TEXT_RETYPE_PASSWORD}:</td>
+	<td class="value_input">
+		<input type="password" name="password2" maxlength="30" />
+	</td>
+</tr>
+<tr style="{DISPLAY_EXTRA}">
+	<td>&nbsp;</td>
+	<td style="font-size: 10px;">
+		{CHANGING_PASSWORD}
+	</td>
+</tr>
+<tr>
+	<td>{TEXT_DISPLAY_NAME}:</td>
+	<td class="value_input">
+		<input type="text" name="display_name" maxlength="255" value="{DISPLAY_NAME}" />
+	</td>
+</tr>
+<tr>
+	<td>{TEXT_EMAIL}:</td>
+	<td class="value_input">
+		<input type="text" name="email" maxlength="255" value="{EMAIL}" />
+	</td>
+</tr>
+<tr style="{DISPLAY_HOME_FOLDERS}">
+	<td>{TEXT_HOME_FOLDER}:</td>
+	<td class="value_input">
+		<select name="home_folder">
+			<option value="">{TEXT_NONE}</option>
+			<!-- BEGIN folder_list_block -->
+			<option value="{FOLDER}"{SELECTED}>{NAME}</option>
+			<!-- END folder_list_block -->
+		</select>
+	</td>
+</tr>
+<tr>
+	<td>{TEXT_GROUP}:</td>
+	<td class="value_input">
+		<select name="groups[]" multiple="multiple" size="5">
+		<!-- BEGIN group_list_block -->
+			<option value="{ID}" {SELECTED}>{NAME}</option>
+		<!-- END group_list_block -->
+		</select>
+	</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>
+		<input type="radio" name="active[]" id="active" value="1" {ACTIVE_CHECKED} />
+		<label for="active">{TEXT_ACTIVE}</label>
+		<input type="radio" name="active[]" id="disabled" value="0" {DISABLED_CHECKED} />
+		<label for="disabled">{TEXT_DISABLED}</label>
+	</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>
+		<input type="submit" name="submit" value="{SUBMIT_TITLE}" />
+		<input type="reset" name="reset" value="{TEXT_RESET}" />
+		<input type="button" style="width: 100px; margin-top: 5px;" onclick="javascript: window.location = 'index.php';" value="{TEXT_CANCEL}">
+	</td>
+</tr>
+</table>
+
+</form>
+
+<!-- END main_block -->

@@ -1,0 +1,2745 @@
+﻿Change Log
+===============================================================================
+Please note: This change log may not be accurate
+
+$Id: CHANGELOG 1638 2012-03-13 23:01:47Z darkviper $
+
+Legend:
++ = Added
+- = Removed
+# = Bugfix
+! = Update/Change
+===============================================================================
+
+
+14 Mar-2012 Build 1638 Werner v.d.Decken(DarkViper)
++ config.php added define to set admin-directory
+13 Mar-2012 Build 1637 Werner v.d.Decken(DarkViper)
+! made handling of config.php a little bit more easy
+09 Mar-2012 Build 1636 Dietmar Woellbrink (Luisehahne)
++ add missing language variables for the theme handling
+09 Mar-2012 Build 1635 Dietmar Woellbrink (Luisehahne)
+! fallback signuo2.php revision 1633
+09 Mar-2012 Build 1634 Dietmar Woellbrink (Luisehahne)
+! update language files and rework some core files (read DEVINFOS)
+! compress mdcr.js
++ add DEVINFOS Instructions/Informations for modulecoder
+08 Mar-2012 Build 1633 Werner v.d.Decken(DarkViper)
+# fixed class::methode print_error(...) overwrite in /install/save.php
+02 Mar-2012 Build 1632 Dietmar Woellbrink (Luisehahne)
+! small design update for wb theme, login und login_forgot
+02 Mar-2012 Build 1631 Dietmar Woellbrink (Luisehahne)
+! FCKeditor Fallback not working with IE9
+01 Mar-2012 Build 1630 Dietmar Woellbrink (Luisehahne)
+# fixed fckeditorcode_ie.js in IE9 ( not the end of fixing )
+01 Mar-2012 Build 1629 Dietmar Woellbrink (Luisehahne)
+# fixed wrong file format, fckeditor and outputfilter
+01 Mar-2012 Build 1628 Dietmar Woellbrink (Luisehahne)
+! forgot changelog and version in Revision 1627
+01 Mar-2012 Build 1627 Dietmar Woellbrink (Luisehahne)
+# Fixed FCKeditor to work with IE9 (Tks to marmot for the source)
+29 Feb-2012 Build 1626 Werner v.d.Decken(DarkViper)
+! started rebuild and reorganize the OutputFilter-System
+29 Feb-2012 Build 1625 Dietmar Woellbrink (Luisehahne)
+! update correct_theme_source and fixed the call in all files
+29 Feb-2012 Build 1624 Dietmar Woellbrink (Luisehahne)
+# fixed index warning in form modul (Tks to DBS)
+29 Feb-2012 Build 1623 Dietmar Woellbrink (Luisehahne)
+# fixed FCKeditor to work in IE7/8, IE9 not tested
+! redesign filemanager FCKeditor
+! set Moduleversion to 2.9.7.1
+25 Feb-2012 Build 1622 Werner v.d.Decken(DarkViper)
+# typofix in Droplet [ShowRandomWysiwyg]
+24 Feb-2012 Build 1621 Werner v.d.Decken(DarkViper)
+# Droplet [SectionPiocker] fixed
++ Added new droplets [ShowWysiwyg] and [ShowRandomWysiwyg]
+24 Feb-2012 Build 1620 Dietmar Woellbrink (Luisehahne)
+# fixed FCKeditor lang files to utf-8 (Tks to Ruebenwurzel
+24 Feb-2012 Build 1619 Dietmar Woellbrink (Luisehahne)
+! forgot info.php
+24 Feb-2012 Build 1618 Dietmar Woellbrink (Luisehahne)
+# fixed FCKeditor to work in IE9 (Tks to marmot)
+! update module version to 2.9.7
+22 Feb-2012 Build 1617 Werner v.d.Decken(DarkViper)
+# fixed function SanitizeHttpReferer() in consideration of subdirectories
+18 Feb-2012 Build 1616 Dietmar Woellbrink (Luisehahne)
+! update INSTALL and UPGRADE instruction to 2.8.3 (Tks to Ruebenwurzel)
+18 Feb-2012 Build 1615 Dietmar Woellbrink (Luisehahne)
++ Validationfix, add qx_rawlang.php in quickSkin_alpha to solve
+  <a> escaping malformed URI reference messages in javascript
+! fixed magic_quotes_gpc=on, magic_quotes going to be removed in PHP6.
+  and some hoster do not set it to off  
+18 Feb-2012 Build 1614 Dietmar Woellbrink (Luisehahne)
+# fixed tabindex in installer (Tks to Easyuser)
+# fixed installer call in /admin/index.php
+16 Feb-2012 Build 1613 Werner v.d.Decken(DarkViper)
+# little fixes in classs database and add new readonly property DbName
+11 Feb-2012 Build 1612 Werner v.d.Decken(DarkViper)
+! Number of version and revision updated in branch.
+11 Feb-2012 Build 1611 Werner v.d.Decken(DarkViper)
+! Number of version and revision updated.
+11 Feb-2012 Build 1610 Werner v.d.Decken(DarkViper)
+! Version 2.8.3 tagged
+----------------------------------- 2.8.3 --------------------------------
+09 Feb-2012 Build 1609 Dietmar Woellbrink (Luisehahne)
+! change Website Baker to WebsiteBaker in installer
+09 Feb-2012 Build 1608 Dietmar Woellbrink (Luisehahne)
+! A small optical correction of the installer.
+09 Feb-2012 Build 1607 Dietmar Woellbrink (Luisehahne)
+# typofix in /modules/form/view.php (Tks to jacobi22)
+08 Feb-2012 Build 1606 Dietmar Woellbrink (Luisehahne)
+# some little changes and fixes in template allcss and round
++ add // register_frontend_modfiles('jquery'); to activate comment out
+! Set version to 2.71
+08 Feb-2012 Build 1605 Dietmar Woellbrink (Luisehahne)
+! login.php fallback to revision 1602
+08 Feb-2012 Build 1604 Dietmar Woellbrink (Luisehahne)
+# fixed parse error in login.php
+08 Feb-2012 Build 1603 Dietmar Woellbrink (Luisehahne)
+! fix local module reload and module manuell install
+! forgot to upload login.php
+08 Feb-2012 Build 1602 Dietmar Woellbrink (Luisehahne)
+! a quick simple stylesheet fix in wb_theme, 
+07 Feb-2012 Build 1601 Dietmar Woellbrink (Luisehahne)
+! little designfix in forgot_form.php
+! fix media if uploading zip files with folder, than create FolderProtectFiles
+07 Feb-2012 Build 1600 Dietmar Woellbrink (Luisehahne)
+# more fixed issues with get_magic_quotes_gpc and FCKeditor
+! remove create and upload in FCKeditor Filemanager
+06 Feb-2012 Build 1599 Dietmar Woellbrink (Luisehahne)
+! update all used files with redirect_url to $_SESSION['HTTP_REFERER']
+06 Feb-2012 Build 1598 Dietmar Woellbrink (Luisehahne)
+# fixed undefined fragment index in initialize.php 
+! add $_SESSION['HTTP_REFERER'] storing active pagelink if page_id != 0
+05 Feb-2012 Build 1597 Dietmar Woellbrink (Luisehahne)
+# fixed issues with get_magic_quotes_gpc and FCKeditor
+04 Feb-2012 Build 1596 Dietmar Woellbrink (Luisehahne)
+# highly critical security-fix
+# announced on http://www.darksecurity.de/advisories/2012/SSCHADV2012-003.txt
+04 Feb-2012 Build 1595 Dietmar Woellbrink (Luisehahne)
+# fix form language vars for better understanding (Tks to Maverik)
+! change request if HTTP_REFERER is not empty in logout.php 
+03 Feb-2012 Build 1594 Dietmar Woellbrink (Luisehahne)
+# fixed use of undefined constant fri in /form/view.php
+01 Feb-2012 Build 1593 Dietmar Woellbrink (Luisehahne)
+# rebuild protectfile in pages/posts
+31 Jan-2012 Build 1592 Werner v.d.Decken(DarkViper)
+# little Typo-fix in database::SqlImport(). (grummel)
+31 Jan-2012 Build 1591 Werner v.d.Decken(DarkViper)
+# little Regex-fix in database::SqlImport().
+25 Jan-2012 Build 1590 Werner v.d.Decken(DarkViper)
+! mod form: added request var to submit a request identifier.
+! argument ?fri=12345 on GET-view will submit 'FormRequestId: 12345' by email
+25 Jan-2012 Build 1589 Dietmar Woellbrink (Luisehahne)
+# fixed starting upgrade-script if missing revision in settings
+25 Jan-2012 Build 1588 Werner v.d.Decken(DarkViper)
+# all module depending code removed, some little fixes, better integration for module-upgrade
+25 Jan-2012 Build 1587 Werner v.d.Decken(DarkViper)
++ module news: added sql-dump to create database tables
+# module news: some little fixes in install/upgrade
+24 Jan-2012 Build 1586 Werner v.d.Decken(DarkViper)
++ added new method SqlImport() to class database
+19 Jan-2012 Build 1585 Dietmar Woellbrink (Luisehahne)
+# fixed double table width in modify.php form module ((Tks to Ruebenwurzel)
+19 Jan-2012 Build 1584 Dietmar Woellbrink (Luisehahne)
+! form module, shows email-adress from body tag
+- remove scrollable table in overview form module 
+19 Jan-2012 Build 1583 Dietmar Woellbrink (Luisehahne)
+! forgot upload save.php in wysiwyg module
+19 Jan-2012 Build 1582 Dietmar Woellbrink (Luisehahne)
+# wysiwyg module, fix issues with magic_quote_gpc if on
+# form module, fix regex for radio and checkbox (Tks to Ruud)
+! form module, make show submission table scrollable
+17 Jan-2012 Build 1581 Werner v.d.Decken(DarkViper)
+# wysiwyg module some little typo fixes a.s.o.
+17 Jan-2012 Build 1580 Dietmar Woellbrink (Luisehahne)
+! dropdown list to choose recipient for email confirmation
+16 Jan-2012 Build 1579 Dietmar Woellbrink (Luisehahne)
+- remove unneeded input fields in form settings
+16 Jan-2012 Build 1578 Dietmar Woellbrink (Luisehahne)
+# fixed warning in domain independend image links
+16 Jan-2012 Build 1577 Dietmar Woellbrink (Luisehahne)
+# fixed save dirmode and filmode to 0 if not superadmin
+16 Jan-2012 Build 1576 Werner v.d.Decken(DarkViper)
+# wysiwyg module changed to domain independend image links
+16 Jan-2012 Build 1575 Dietmar Woellbrink (Luisehahne)
+# fixed captcha error message in form module
+! set form module to version 2.8.4
+16 Jan-2012 Build 1574 Dietmar Woellbrink (Luisehahne)
++ add instruction README.de.txt in form module
+! update jquery to jQuery 1.7.1 and jQuery UI 1.8.17
+16 Jan-2012 Build 1573 Dietmar Woellbrink (Luisehahne)
++ add automatically generated e-mail language form variable
+! send confirmation mail with details to superadmin from SERVER_EMAIL
+! send confirmation mail without details to sender from SERVER_EMAIL
+14 Jan-2012 Build 1572 Dietmar Woellbrink (Luisehahne)
+! security fix, force SMTP Authentifikation
+! server and email settings only for superadmin
+12 Jan-2012 Build 1571 Dietmar Woellbrink (Luisehahne)
+# remove session_start() in /account/logout.php
+10 Jan-2012 Build 1570 Dietmar Woellbrink (Luisehahne)
+!  added $module_directory to make quickskin directory changes dynamically
+10 Jan-2012 Build 1569 Werner v.d.Decken(DarkViper)
+# possible errors on 'save password' fixed. Minimum length of password set to 6 chars
+10 Jan-2012 Build 1568 Dietmar Woellbrink (Luisehahne)
+! fix show_menu2 2th parameter for template round and allcss (Tks to Ruebenwurzel)
+! set fingerprint_with_ip_octets default to 2 in a new installation
+07 Jan-2012 Build 1567 Dietmar Woellbrink (Luisehahne)
+# fix wbmailer_smtp_auth, could not be disabled after enabled 
+07 Jan-2012 Build 1566 Dietmar Woellbrink (Luisehahne)
+# fix class.login, when name and pass are both empty no longer call increase_attemps
+! some redirect updates in frontend account files
+06 Jan-2012 Build 1565 Dietmar Woellbrink (Luisehahne)
+! fixed:: detection of serverdefined charsets more different
+06 Jan-2012 Build 1564 Dietmar Woellbrink (Luisehahne)
+# entities fixes in FI and TR languages files (Tks to Ruebenwurzel)
+06 Jan-2012 Build 1563 Dietmar Woellbrink (Luisehahne)
+! add linebreak in backend message for 'delete install folder...' 
+05 Jan-2012 Build 1562 Dietmar Woellbrink (Luisehahne)
+! only superadmin can start the upgrade-script from backend
+05 Jan-2012 Build 1561 Dietmar Woellbrink (Luisehahne)
+# secureForm Fix for hosting with load balancing
+04 Jan-2012 Build 1560 Dietmar Woellbrink (Luisehahne)
+! upgrade script start automatically after uploading a new version and login to the backend
+04 Jan-2012 Build 1559 Dietmar Woellbrink (Luisehahne)
+! change quickSkin to alpha status, ATTENTION rename folder to quickSkin_alpha 
+02 Jan-2012 Build 1558 Dietmar Woellbrink (Luisehahne)
+# remove backslash in $_CONFIG['extensions_dir']
+! update editor.css for allcssand round  (Tks to Ruebenwurzel)
+# bugfix in forgot_form.php
+02 Jan-2012 Build 1556 Dietmar Woellbrink (Luisehahne)
+# typofix in function make_dir
+02 Jan-2012 Build 1555 Dietmar Woellbrink (Luisehahne)
+! wb_quickSkin_28.php create _skin folders with folder protect file 
+! add a 3th parameter to function make_dir to allows the creation of nested directories specified in the pathname. Defaults to TRUE
+01 Jan-2012 Build 1554 Dietmar Woellbrink (Luisehahne)
+# typofixes in DE languages files (Tks to Ruebenwurzel)
+31 Dez-2011 Build 1553 Dietmar Woellbrink (Luisehahne)
+! recoded  formmodul, add dropdown email_fromname_field
+31 Dez-2011 Build 1552 Dietmar Woellbrink (Luisehahne)
+# fix mdcr.js $scriptLink to absolute url
+! change separator breadcrumb admintools
+27 Dez-2011 Build 1551 Dietmar Woellbrink (Luisehahne)
++ add languages vars in languages files
++ add upload error mesages moduleinstall
++ add index.php if not exists in function createFolderProtectFile
+! corrected changed coding between login_form and forgot_form
+21 Dez-2011 Build 1550 Dietmar Woellbrink (Luisehahne)
+! update php mailer to version 5.2
+19 Dez-2011 Build 1549 Dietmar Woellbrink (Luisehahne)
+! christmas time corrected wrong files
+19 Dez-2011 Build 1548 Dietmar Woellbrink (Luisehahne)
+- remove quickSkin /temp/folder/ for a later solution
+18 Dez-2011 Build 1547 Dietmar Woellbrink (Luisehahne)
++ forgot a file in quickSkin Folder
+18 Dez-2011 Build 1546 Dietmar Woellbrink (Luisehahne)
+! recoded /account/forgot_form.php
+! update quickSkin 
+! update languages files 
++ add /temp/quickSkin/ folder
+! begin fixing sec_anchor in urls
+15 Dez-2011 Build 1545 Dietmar Woellbrink (Luisehahne)
+! update admin/pages/modify.php now you can send page_id with GET and POST
+15 Dez-2011 Build 1544 Dietmar Woellbrink (Luisehahne)
+# fix droplet import after new wb installtion
+14 Dez-2011 Build 1543 Dietmar Woellbrink (Luisehahne)
+# fix droplet sectionPicker
+# fix install config.php not writeable 
+# check table droplet if empty import examples
+12 Dez-2011 Build 1542 Dietmar Woellbrink (Luisehahne)
+# fix wrong background url in "Website Under Construction"
+12 Dez-2011 Build 1541 Dietmar Woellbrink (Luisehahne)
+! change block BEGIN to LOOP in quickskin (Tks to Stefek)
+11 Dez-2011 Build 1540 Dietmar Woellbrink (Luisehahne)
+! did some changes and fixes found by testers
+10 Dez-2011 Build 1539 Dietmar Woellbrink (Luisehahne)
+! update phpmailer to version 5.1
+10 Dez-2011 Build 1538 Dietmar Woellbrink (Luisehahne)
+! add table db engine in module install scripts
+! some small updates in modules
+10 Dez-2011 Build 1537 Dietmar Woellbrink (Luisehahne)
+! continue updating headerinfos, adding upgrade scripts to module
+10 Dez-2011 Build 1536 Dietmar Woellbrink (Luisehahne)
++ add upgrade.php to captcha_control and small changes
++ add FolderProtectFile to quickskin
+10 Dez-2011 Build 1535 Dietmar Woellbrink (Luisehahne)
+! changes in code modul
++ add function getTableEngine to class.database 
++ add Quickskin to include folder
++ add reworkes Droplet SectionPicker to load modules frontend.css
+08 Dez-2011 Build 1534 Werner v.d.Decken(DarkViper)
+# /output_filter/filter-routines.php rel-URL Filter fixed for mailto-links
+08 Dez-2011 Build 1533 Dietmar Woellbrink (Luisehahne)
++ new backend theme handling (Tks to Stefek)
+# some fixes in install
+28 Nov-2011 Build 1532 Dietmar Woellbrink (Luisehahne)
+! small changes in INSTALL and UPGRADE (Tks to unawave2)
+! update upgrade-script showing from Version to Version (Tks to unawave2)
++ add Servicepack version to header.htt
+28 Nov-2011 Build 1531 Dietmar Woellbrink (Luisehahne)
+! add Instructions for droplets
+27 Nov-2011 Build 1530 Dietmar Woellbrink (Luisehahne)
+! update templates allcss and round (Tks to Rübenwurzel)
++ Add UPGRADE Instructions
+! Update INSTALL Instructions
+! Optimize config.php handling for installation
+25 Nov-2011 Build 1529 Dietmar Woellbrink (Luisehahne)
++ add new backend theme handling (Tks to Stefek)
+----------------------------------- Fixes 2.8.2 --------------------------------
+23 Nov-2011 Build 1528 Dietmar Woellbrink (Luisehahne)
+! rework login and show_menu in templates allcss and round 
+22 Nov-2011 Build 1527 Dietmar Woellbrink (Luisehahne)
+# fix redirect login
+20 Nov-2011 Build 1526 Dietmar Woellbrink (Luisehahne)
+# typofix in BG and RU
+15 Nov-2011 Build 1525 Dietmar Woellbrink (Luisehahne)
+# fix versions compare upgrade from WB version 2.7
+13 Nov-2011 Build 1524 Dietmar Woellbrink (Luisehahne)
+! fix secureform was not uploaded
+13 Nov-2011 Build 1523 Dietmar Woellbrink (Luisehahne)
+# fix fingerprint in secureform 
+! update jquery to version 1.7
+12 Nov-2011 Build 1522 Werner v.d.Decken(DarkViper)
+# /modules/output_filter/filter-routines.php little fix to inserting mdcr.js
+# /modules/form/view.php little fix depending from recoded output filter
+09 Nov-2011 Build 1521 Dietmar Woellbrink (Luisehahne)
+! update jquery to version 1.6.4
+09 Nov-2011 Build 1520 Werner v.d.Decken(DarkViper)
+! /modules/output_filter completely recoded
++ new filter for relative-URL added
++ some small fixes
+! /admin/admintools/tool.php completely recoded
+! /wb/index.php output_filter request changed to adopt new output_filter
+08 Nov-2011 Build 1519 Dietmar Woellbrink (Luisehahne)
+! corrected properties
+26 Okt-2011 Build 1518 Dietmar Woellbrink (Luisehahne)
+# fix anchor jump in sections (not work correctly with CKEditor)
+24 Okt-2011 Build 1517 Dietmar Woellbrink (Luisehahne)
+# fix SERVER_EMAIL in language files
+# fix encoded text in sections.php
++ add missing image in argos_theme
+05 Okt-2011 Build 1516 Dietmar Woellbrink (Luisehahne)
++ add forgotten language variable
+05 Okt-2011 Build 1515 Dietmar Woellbrink (Luisehahne)
+# typofix and changes in languages
+04 Okt-2011 Build 1514 Dietmar Woellbrink (Luisehahne)
+# account/signup.php, check if user is already logged
+# fix non object message in framework/functions.php
+04 Okt-2011 Build 1513 Dietmar Woellbrink (Luisehahne)
+! outputfilter now check and add missing slash in empty href if relative urls are enabled
+24 Sep-2011 Build 1512 Werner v.d.Decken(DarkViper)
+! settings for pwgen updated
+14 Sep-2011 Build 1511 Dietmar Woellbrink (Luisehahne)
+# fixed strict notice warning in class.wb
+! change editor for intropage to editarea
+! add missing slash in themes
+14 Sep-2011 Build 1510 Werner v.d.Decken(DarkViper)
++ new constant 'DO_NOT_TRACK' set to true if a client sends the DNT-Header
+07 Sep-2011 Build 1509 Dietmar Woellbrink (Luisehahne)
+# continue fixing frontend account
+07 Sep-2011 Build 1508 Dietmar Woellbrink (Luisehahne)
+# fixed print_error exit in frontend account
+06 Sep-2011 Build 1507 Dietmar Woellbrink (Luisehahne)
+# fixed field_remove
+26 Aug-2011 Build 1506 Werner v.d.Decken(DarkViper)
++ new class PasswordHash
++ new Password-/Hash-generator
+19 Aug-2011 Build 1505 Dietmar Woellbrink (Luisehahne)
+# syntaxfix order::clean()
+19 Aug-2011 Build 1504 Werner v.d.Decken(DarkViper)
+# fixed order::clean()
+18 Aug-2011 Build 1503 Dietmar Woellbrink (Luisehahne)
+! change sql statements to strict in module droplets
+! fix vars in compatibility mode for versions before 2.8.1 in frontend.functions.php
+11 Aug-2011 Build 1502 Werner v.d.Decken(DarkViper)
+# fixed c&p mistake
+11 Aug-2011 Build 1501 Werner v.d.Decken(DarkViper)
+- removed stoneaged code from 2.4
+11 Aug-2011 Build 1500 Werner v.d.Decken(DarkViper)
+# sync working copy
+11 Aug-2011 Build 1499 Werner v.d.Decken(DarkViper)
+# little fix in calling globalExceptionHandler from inner core files
+11 Aug-2011 Build 1498 Werner v.d.Decken(DarkViper)
+# fixed secureform
+11 Aug-2011 Build 1497 Werner v.d.Decken(DarkViper)
+! sync changelog
+11 Aug-2011 Build 1496 Werner v.d.Decken(DarkViper)
+! activate globalExceptionHandler in inner core files
+11 Aug-2011 Build 1495 Werner v.d.Decken(DarkViper)
+# fix SQL-statements to SQL-strict
+11 Aug-2011 Build 1494 Dietmar Woellbrink (Luisehahne)
+# Fixed save wrong template directory in database 
+11 Aug-2011 Build 1493 Dietmar Woellbrink (Luisehahne)
+# Ticket #1106 FatalError in groups module
+11 Aug-2011 Build 1492 Dietmar Woellbrink (Luisehahne)
+# Ticket #1107 Deleting users not possible
+  Change handling, first user will be set to inactive
+  secound inactive user will be show in an extra dropdown
+  and can now deleted from user table or reactivated
+11 Aug-2011 Build 1491 Dietmar Woellbrink (Luisehahne)
+! comment out $email_body .= "\n\nIP: ".$_SERVER['REMOTE_ADDR'];
+11 Aug-2011 Build 1490 Dietmar Woellbrink (Luisehahne)
+! set default  FCKConfig.FillEmptyBlocks to true
+11 Aug-2011 Build 1489 Werner v.d.Decken(DarkViper)
++ little fix in globalExceptionHandler
+11 Aug-2011 Build 1488 Werner v.d.Decken(DarkViper)
++ globalExceptionHandler activated
+10 Aug-2011 Build 1487 Werner v.d.Decken(DarkViper)
+# class.order completely recoded to reduce SQL requests
+# all other files: fix SQL-statements to SQL-strict
+08 Aug-2011 Build 1486 Werner v.d.Decken(DarkViper)
+# database::field_modify() there was a bug to fix
+# all other files: fix SQL-statements to SQL-strict
+01 Aug-2011 Build 1485 Dietmar Woellbrink (Luisehahne)
+! rename config.php.bak to config.php.new
+# fixed rss.php SERVER_EMAIL
+31 Jul-2011 Build 1484 Dietmar Woellbrink (Luisehahne)
+! move fixes 2.8.2 to 2.8.3
+! fixes will be shown in an extra readme
+! an package with the fixed files will be created
+! for all users who downloaded the 2.8.2 before 29 Jul-2011
+------------------------------------- 2.8.2 ------------------------------------
+25 Jul-2011 Build 1480 Dietmar Woellbrink (Luisehahne)
+! Changed version to 2.8.2
+25 Jul-2011 Build 1479 Dietmar Woellbrink (Luisehahne)
+! preparing backend for the new installer
++ add SecureFormSwitcher (Admintool)
+22 Jul-2011 Build 1478 Dietmar Woellbrink (Luisehahne)
+# fix mssing filename in intro.php
+! inactive user in dropwonlist are show with line-through
+21 Jul-2011 Build 1477 Dietmar Woellbrink (Luisehahne)
+! update DA language (Tks to Achrist)
+! update some languages variables (Tks to Rübenwurzel, Testör)
+! move function url_encode from admin/pages to framework/functions.php 
+! add missing svn properties in some headerinfos
+! font-size correction in wb_theme (Tks to Rübenwurzel)
+13 Jul-2011 Build 1476 Dietmar Woellbrink (Luisehahne)
+! optimize blacklist handling, add more separator ",#|;"
+  set of a wildcard ".*?" e.g. ph.*? proof ext like php, php3, php4 etc.
+# fix strict warnings in media if default theme ist not Argos Theme
++ add new settings value in install, upgrade-script and core module
+13 Jul-2011 Build 1476 Dietmar Woellbrink (Luisehahne)
+! optimize blacklist handling, add more separator ",#|;"
+  set of a wildcard ".*?" e.g. ph.*? proof ext like php, php3, php4 etc.
+# fix strict warnings in media if default theme ist not Argos Theme
++ add new settings value in install, upgrade-script and core module
+13 Jul-2011 Build 1475 Dietmar Woellbrink (Luisehahne)
++ add SecureForm.mtab.php under maintenance by WebsiteBaker Community
+! security fixes media, groups, users, sections
+# change lang variable to remove upgrade-script
+! reworked add sections in pages
+! fix set empty href in show_menu2
+! set show_menu2 version to 4.9.6 
+! reworked Droplet LoginBox, add redirect query
+- remove unneeded folder js
+! set Droplet to version 1.1.0
++ add checkboxes to change frontend absolute url to relative urls
+! set output_filter version to 0.2
+12 Jul-2011 Build 1474 Werner v.d.Decken(DarkViper)
+#  for security reasons the 'remember me' functionality is deaktivated in
+   class login
+!  'Get configuration values' is optimized
+09 Jul-2011 Build 1473 Dietmar Woellbrink (Luisehahne)
+# found more backlinks to fix
+- remove not working ftan in frontend
+# fixed redirect in login procedure (Tks to mr-fan)
+! update droplet LoginBox, additional parameter $redirect
+# remove double config call in media (Tks to Testör)
+07 Jul-2011 Build 1472 Dietmar Woellbrink (Luisehahne)
+# fixed version.php
+07 Jul-2011 Build 1471 Dietmar Woellbrink (Luisehahne)
+! change to Release Candiate 7 
+07 Jul-2011 Build 1470 Dietmar Woellbrink (Luisehahne)
+# languages Typo fix (Tks to pcwacht)
+! update intro, fixed saving
+# fixed install/save.php (Tks to pcwacht)
+07 Jul-2011 Build 1469 Dietmar Woellbrink (Luisehahne)
+! Forgotten upload changelog and version.php
+07 Jul-2011 Build 1468 Dietmar Woellbrink (Luisehahne)
+! update jquery-min to version 1.6.2
+! update jquery-ui-min to version 1.8.14
+# fix index error in media upload (Tks to DBS)
++ add missing nopreview.jpg
+! update media browser not to show forbidden files
+- remove unused jquery archiv folder
+02 Jul-2011 Build 1467 Dietmar Woellbrink (Luisehahne)
+! update some headerinfos
+# fix missing header for some error messages
+01 Jul-2011 Build 1466 Dietmar Woellbrink (Luisehahne)
+# fix form modul (tks to our Tester)
+01 Jul-2011 Build 1465 Dietmar Woellbrink (Luisehahne)
+# bugfix in initialize including SecureForm
+! update admintools FTAN handling 
+01 Jul-2011 Build 1464 Werner v.d.Decken(DarkViper)
+#  Ticket 1102 fixed little bug in moveCssToHead() (Tks to Crnogorac081)
+01 Jul-2011 Build 1463 Dietmar Woellbrink (Luisehahne)
+# fixed Ticket 1050 Bug in include/phpmailer/class.phpmailer.php with Lotus Notes
+# fixed Ticket 573, 939 Bad formatting of e-mail received from form submissions
+# fixed Ticket 1009 cannot change user password without changing Email in preference
+30 Jun-2011 Build 1462 Werner v.d.Decken(DarkViper)
++ class-switcher for SecureForm added
+30 Jun-2011 Build 1461 Dietmar Woellbrink (Luisehahne)
+! correct all misspellings on finnish language file (Tks to invisigoth)
+29 Jun-2011 Build 1460 Dietmar Woellbrink (Luisehahne)
+# Ticket 1101, phtml|php5|php4|php|cgi|pl|exe|com|bat|src| will be hardcoded
+  additional you can set more extension in settings extended in field rename_file_types
+  rename_file_types now is a blacklist and will no longer be renamed to .txt
+! update admintools modules to work with SecureForm Patch from NorHei
+26 Jun-2011 Build 1459 Dietmar Woellbrink (Luisehahne)
+# Ticket 1099: change title for add_child_page in page tree
+26 Jun-2011 Build 1458 Dietmar Woellbrink (Luisehahne)
+# Ticket 833 fixed markup for table cells in view.php
+! change themes.css to make style more flexible in success.htt and error.htt
++ backend themes: add js function redirect_to_page(url, timer) to redirect without message
+25 Jun-2011 Build 1457 Dietmar Woellbrink (Luisehahne)
+! Preparing 2.8.2 stable, last tests
+10 Jun-2011 Build 1456 Dietmar Woellbrink (Luisehahne)
++ add PL languages to news and captcha_control (tks to vixrealitum)
+! update PL language for WebsiteBaker (tks to vixrealitum)
+06 Jun-2011 Build 1455 Werner v.d.Decken(DarkViper)
+# fixed Bug-Ticket #1096: editing of files via modules/edit_module_files.php
+06 Jun-2011 Build 1454 Werner v.d.Decken(DarkViper)
+# in /framework/functions.php::media_filename - replace whitespaces by _
+# /upgrade-script.php - some small fixes
+02 Jun-2011 Build 1453 Dietmar Woellbrink (Luisehahne)
+# fix target in admin/media/browse.php 
+# http://www.websitebaker2.org/forum/index.php/topic,21688.msg145812.html#msg145812
+# Tks to the community
+02 Jun-2011 Build 1452 Dietmar Woellbrink (Luisehahne)
+! change status to RC6
+29 May-2011 Build 1451 Dietmar Woellbrink (Luisehahne)
+# replace eregi with pregmatch in search_modext (Tks to Thorn)
+22 May-2011 Build 1450 Werner v.d.Decken(DarkViper)
+# small fix at calling of moveCssToHead() in /index.php
+07 May-2011 Build 1449 Werner v.d.Decken(DarkViper)
+! cleanup some code in edit_module_files.php
+07 May-2011 Build 1448 Dietmar Woellbrink (Luisehahne)
+# secure fix edit_module_files.php
+# fix wb_wrapper_edit_area.php
+03 May-2011 Build 1447 Werner v.d.Decken(DarkViper)
+! syncronice version (no data changes)
+03 May-2011 Build 1446 Werner v.d.Decken(DarkViper)
+# fixed validation of username in users and signup
+27 Apr-2011 Build 1445 Dietmar Woellbrink (Luisehahne)
+# small validation fixes in backend themes
+22 Apr-2011 Build 1444 Dietmar Woellbrink (Luisehahne)
+# fix wrong url in captacha 
+19 Apr-2011 Build 1443 Dietmar Woellbrink (Luisehahne)
+! remove auto including YUI Framework in backend for modules, enable with ->print_footer(true)
+! ->print_error and ->print_success too accept a message as array
+! auto validate in frontend if style block inside body tag
+! captcha now XHTML valide
+15 Apr-2011 Build 1442 Dietmar Woellbrink (Luisehahne)
+# bug fixed in class.database.php methode field_add in call field_exists
+! update search, pls test, (Tks to Thorn)
+10 Apr-2011 Build 1441 Dietmar Woellbrink (Luisehahne)
+# recoded /modules/admin.php info_banner, now compare with modify in pages
+# security fixes remove defined WB_PATH for backend templates
+# fixed class.admin.php missing $TEXT declaration, add get_section_details
+26 Mar-2011 Build 1440 Dietmar Woellbrink (Luisehahne)
+# add missing methode is_group_match in class.wb.php 
+17 Mar-2011 Build 1439 Werner v.d.Decken(DarkViper)
+! syncronice version (no data changes)
+17 Mar-2011 Build 1438 Werner v.d.Decken(DarkViper)
+# little fixes for xhtml-validity in '/include/captcha/captcha.php'
+17 Mar-2011 Build 1437 Werner v.d.Decken(DarkViper)
+# little fixes for xhtml-validity module 'form'
+17 Mar-2011 Build 1436 Dietmar Woellbrink (Luisehahne)
+! update jquery to Version 1.5.1 and jQuery UI to Version 1.8.10
+17 Mar-2011 Build 1435 Dietmar Woellbrink (Luisehahne)
+# fix entities converting in select languages (Tks to the community)
+# see http://www.websitebaker2.org/forum/index.php/topic,20547.msg140512.html#msg140512
+13 Mar-2011 Build 1433 Dietmar Woellbrink (Luisehahne)
+# fixed bug : Call to undefined method wb::preprocess() 
+14 Feb-2011 Build 1432 Dietmar Woellbrink (Luisehahne)
+# update NL language file (Tks to Argos)
+11 Feb-2011 Build 1431 Dietmar Woellbrink (Luisehahne)
++ add page position in get_page_details 
+11 Feb-2011 Build 1430 Dietmar Woellbrink (Luisehahne)
+# fix save settings dir and file mode (Tks to the community)
+09 Feb-2011 Build 1429 Dietmar Woellbrink (Luisehahne)
+# add forgotten javascript variable
+07 Feb-2011 Build 1428 Dietmar Woellbrink (Luisehahne)
+! update Argostheme to version 1.5 (Tks to Argos)
+! validation fixes
+! call edit_full_area on the fly
+04 Feb-2011 Build 1427 Dietmar Woellbrink (Luisehahne)
+! validation fixes in wb_theme
+04 Feb-2011 Build 1426 Dietmar Woellbrink (Luisehahne)
+! validation fixes
+04 Feb-2011 Build 1425 Dietmar Woellbrink (Luisehahne)
+! redefined wrong admin backlinks
+31 Jan-2011 Build 1424 Werner v.d.Decken(DarkViper)
+# typo fix and simplify used_octets calculation
+30 Jan-2011 Build 1423 Werner v.d.Decken(DarkViper)
+! add FINGERPRINT_WITH_IP_OCTETS to table settings
+30 Jan-2011 Build 1422 Dietmar Woellbrink (Luisehahne)
+! update SecureForm.php to work behind Proxies
+27 Jan-2011 Build 1421 Dietmar Woellbrink (Luisehahne)
+# fix Undefined index: WARN_PAGE_LEAVE
+26 Jan-2011 Build 1420 Dietmar Woellbrink (Luisehahne)
+# YGN Ethical Hacker Group (2.8.2 / 2.9.0)
+26 Jan-2011 Build 1419 Dietmar Woellbrink (Luisehahne)
+! update rel handling FCKeditor for urls
+25 Jan-2011 Build 1418 Dietmar Woellbrink (Luisehahne)
+# remove new function see http://www.websitebaker2.org/forum/index.php/topic,20268.msg139557.html#msg139557
+24 Jan-2011 Build 1417 Dietmar Woellbrink (Luisehahne)
+! add redirect timer description in settings.php
+24 Jan-2011 Build 1416 Dietmar Woellbrink (Luisehahne)
+# fixed unsafe sql queries
+24 Jan-2011 Build 1415 Werner v.d.Decken(DarkViper)
+# fixed unsafe sql queries
+23 Jan-2011 Build 1414 Dietmar Woellbrink (Luisehahne)
+# fix wrong error message in media
+! backend start warning if upgrade-script exists
+23 Jan-2011 Build 1413 Frank Heyne (FrankH)
+# Bugfix for Ticket 900
+23 Jan-2011 Build 1412 Werner v.d.Decken(DarkViper)
+# fixed wb::password_chars 
+23 Jan-2011 Build 1411 Frank Heyne (FrankH)
+# Bugfix for Tickets 965, 966 and 910
+23 Jan-2011 Build 1410 Frank Heyne (FrankH)
+# Bugfix for build 1409
+23 Jan-2011 Build 1409 Frank Heyne (FrankH)
++ Ticket 1058 added warn_page_leave (currently only in wysiwyg) 
+23 Jan-2011 Build 1408 Werner v.d.Decken(DarkViper)
+# small changes in sm2menu() [SM2_NO_TITLE + SM2_XHTML_STRICT]
+22 Jan-2011 Build 1407 Frank Heyne (FrankH)
+# various Security fixes, thanks to secunia and others 
+22 Jan-2011 Build 1406 Frank Heyne (FrankH)
+# Security fix to stop users from changing module contents without permission, thanks to Michael Schwarz 
+22 Jan-2011 Build 1405 Frank Heyne (FrankH)
+# Security fix (XSS) in form module, thanks to Michael Schwarz 
+22 Jan-2011 Build 1404 Dietmar Woellbrink (Luisehahne)
+# Security fix in pages 
+22 Jan-2011 Build 1403 Dietmar Woellbrink (Luisehahne)
+! small fix
+22 Jan-2011 Build 1402 Dietmar Woellbrink (Luisehahne)
+! secure peparing and beginning fix admin/pages
+21 Jan-2011 Build 1401 Frank Heyne (FrankH)
+! fixed changelog
+21 Jan-2011 Build 1400 Frank Heyne (FrankH)
+# Security fix in account 
+# Security fix in admin/media, thanks to hal 9000
+21 Jan-2011 Build 1399 Dietmar Woellbrink (Luisehahne)
+# Ticket 1090 fix wrong translation
+20 Jan-2011 Build 1398 Frank Heyne (FrankH)
+# Security fix in admin/admintools and admin/groups
+20 Jan-2011 Build 1397 Dietmar Woellbrink (Luisehahne)
+! recoded rediect timer in print_success (tks to Chio)
+19 Jan-2011 Build 1396 Werner von den Decken (DarkViper)
+! remove header redirect and add a die message 
+17 Jan-2011 Build 1395 Frank Heyne (FrankH)
+# Security fix in admin/addons
+16 Jan-2011 Build 1394 Dietmar Woellbrink (Luisehahne)
+! set construct to FRONTEND class.wb
+! set 2.8.2 to RC5
+16 Jan-2011 Build 1393 Frank Heyne (FrankH)
+# Bugfix in Security fix
+16 Jan-2011 Build 1392 Dietmar Woellbrink (Luisehahne)
+! update headerinfos, change secure messages
+16 Jan-2011 Build 1389-1391 Frank Heyne (FrankH)
+# Security fixes for modules captcha_control, code and droplets
+16 Jan-2011 Build 1388 Dietmar Woellbrink (Luisehahne)
+# more Security fix for admin/pages
+16 Jan-2011 Build 1387 Dietmar Woellbrink (Luisehahne)
+# fix class.wb
+16 Jan-2011 Build 1386 Dietmar Woellbrink (Luisehahne)
+! update headerinfos
+16 Jan-2011 Build 1385 Frank Heyne (FrankH)
+# Security fix to filter out droplets from user input in news and form modules
+16 Jan-2011 Build 1384 Dietmar Woellbrink (Luisehahne)
+! Security fix in admin/pages
+15 Jan-2011 Build 1383 Frank Heyne (FrankH)
+# Security fix for news module
+# Some more Security fixes, thanks to Gerben van Veenendaal
+14 Jan-2011 Build 1382 Dietmar Woellbrink (Luisehahne)
+# fix known error in drag and drop
+14 Jan-2011 Build 1381 Dietmar Woellbrink (Luisehahne)
+! update admin/modules unpack handling, overwrite newer files
+13 Jan-2011 Build 1380 Dietmar Woellbrink (Luisehahne)
++ output fixings, known error in jsadmin will be fix later
+13 Jan-2011 Build 1379 Werner von den Decken (DarkViper)
+# fix class.admin 
+13 Jan-2011 Build 1378 Werner von den Decken (DarkViper)
+! fixed inclusion of SecureForm
++ added IDNA/Punycode to  wb::validate_email()
+11 Jan-2011 Build 1377 Frank Heyne (FrankH)
+# Security fix for modules jsadmin, menu_link and output_filter
+11 Jan-2011 Build 1376 Frank Heyne (FrankH)
+# Security fix for WYSIWYG module 
+# Security fix for Wrapper module 
+10 Jan-2011 Build 1375 Frank Heyne (FrankH)
+# Security fix for Form module (new version is 2.8)
+# bugfix for delete_field in Form module
+10 Jan-2011 Build 1374 Dietmar Woellbrink (Luisehahne)
+# fixed headerinfos
+10 Jan-2011 Build 1373 Dietmar Woellbrink (Luisehahne)
+! update headerinfos
+10 Jan-2011 Build 1372 Dietmar Woellbrink (Luisehahne)
+# fixed class.wb.php to add class SecureForm
+09 Jan-2011 Build 1371 Dietmar Woellbrink (Luisehahne)
+# captcha patch (Tks to FrankH)
+! set status to 2.8.2 RC4
+09 Jan-2011 Build 1370 Dietmar Woellbrink (Luisehahne)
+! update install, changed some default settings to enabled
+06 Jan-2011 Build 1369 Dietmar Woellbrink (Luisehahne)
++ add jquery-include.js (Tks to Stefek)
+! update bind jquery in frontend, jquery-include.js and jquery-insert.js are included
+31 Dec-2010 Build 1368 Dietmar Woellbrink (Luisehahne)
+- delete class.secureform.php
++ add newest SecureForm 
+# fixed Call to a member function read() on a non-object in function register_frontend_modfiles
+29 Dec-2010 Build 1367 Dietmar Woellbrink (Luisehahne)
+# securtiy fix in class.login
+# see http://www.websitebaker2.org/forum/index.php/topic,20347.msg137554.html#msg137554
+29 Dec-2010 Build 1366 Dietmar Woellbrink (Luisehahne)
+# fixed showing system_default for search_template 
+29 Dec-2010 Build 1365 Dietmar Woellbrink (Luisehahne)
+! added some functions 
+! set status to 2.8.2 RC3
+29 Dec-2010 Build 1364 Dietmar Woellbrink (Luisehahne)
+! added function 'db_update_key_value()'
+29 Dec-2010 Build 1363 Dietmar Woellbrink (Luisehahne)
+# Ticket #1053, Ticket #941 show_breadcrumb
+29 Dec-2010 Build 1362 Dietmar Woellbrink (Luisehahne)
+! additional functions added in class.database
+28 Dec-2010 Build 1361 Dietmar Woellbrink (Luisehahne)
+! sync languages files with 2.9.0.dev
+! unzip addons now overwrite newer files
+28 Dec-2010 Build 1360 Dietmar Woellbrink (Luisehahne)
+! show_menu2 display Title-attribute fixed
+! tooltip added, change modul version to 4.9.5
+28 Dec-2010 Build 1359 Dietmar Woellbrink (Luisehahne)
+! upgrade FCKeditor to Version 2.6.6
+28 Dec-2010 Build 1358 Dietmar Woellbrink (Luisehahne)
+! validation fixes in pages backend theme
+27 Dec-2010 Build 1357 Frank Heyne (FrankH)
+# security fix: in path admin/pages/ - added FTAN check
+! had to enhance parameter for getFTAN() in framework/class.secureform.php 
+27 Dec-2010 Build 1356 Dietmar Woellbrink (Luisehahne)
+# more little fixes in settings
+! change to RC2
+27 Dec-2010 Build 1355 Frank Heyne (FrankH)
+# security fix: remaining vulnerabilities mentioned in http://secunia.com/secunia_research/2010-90/
+# security fix: in path admin/templates/ - added FTAN check
+# security fix: in path admin/settings/ - added FTAN check
+26 Dec-2010 Dietmar Woellbrink (Luisehahne)
++ added admin/images
+# fixed save handling settings entries
+! local sync
+26 Dec-2010 Build 1353 Frank Heyne (FrankH)
+# security fix: in modules/admin.php - check whether section belongs to page
+! security fix: changed $section_required into $no_section_required (apparently used by no module at all)
+# security fix: in path admin/users/ - added FTAN check
+# security fix: remaining vulnerabilities mentioned in http://secunia.com/secunia_research/2010-91/
+# security fix:           vulnerabilities mentioned in http://secunia.com/secunia_research/2010-92/
+# security fix: remaining vulnerabilities mentioned in http://secunia.com/secunia_research/2010-93/
+21 Dec-2010 Dietmar Woellbrink (Luisehahne)
+# fix if upgrade module can now overwrite existing newer files in modules folder
+# same for upgrade templates
+21 Dec-2010 Dietmar Woellbrink (Luisehahne)
+# XHTML output fixed in show_menu2
+20 Dec-2010 Dietmar Woellbrink (Luisehahne)
+# syntaxfix in initialize.php
+19 Dec-2010 Dietmar Woellbrink (Luisehahne)
++ add ini_set('display_errors', 1) (Tks to Thorn)
+! update headerinfos
+17 Dec-2010 Dietmar Woellbrink (Luisehahne)
+# fix save access rights in settings
+23 Nov-2010 Dietmar Woellbrink (Luisehahne)
+# fix Droplet LoginBox fronend_signup (tks to Maverik)
+# fix save user e-mail,
+12-May-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #999 wrong sql statement in admin/pages/index.php (Tks to Lucutus)
+12-May-2010 Dietmar Woellbrink (Luisehahne)
+-	remove unneeded flags in backend themes
+-	remove admin/images
+11-May-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #1004 Small typofixes needed in FR lang file (Tks to quinto)
++	Ticket #1005 add FR Language for the admin templates (Tks to quinto)
+06-May-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #998 fix German language file from mixture of du and Sie (Tks to Erpe)
+02-May-2010 Dietmar Woellbrink (Luisehahne)
+!	remove some unneeded code in backend themes templates
+!	see forum: JQuery und Backend-Theme
+02-May-2010 Dietmar Woellbrink (Luisehahne)
+!	add lang variable for new userform
+02-May-2010 Dietmar Woellbrink (Luisehahne)
+!	added IdKey to class secureForm
+30-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	changes Backend javascripts from body to head
+28-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	insert modulename in sections, even for missing module, you can style it with class selector: module_disabled
+27-Apr-2010 Dietmar Woellbrink (Luisehahne)
++	add an extra class class.secureform.php and extends it to class.wb.php
+!	check for installed modules before loading in content 
+27-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	remove forgotten debug line
+27-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Fixed update search settings
+#	Fixed bug in /modules/admin.php 
+22-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Fixed bug in /modules/admin.php 
+22-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	start recoding without style display:none	
+21-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	Ticket #995 update jquery-ui.css and images (Tks to Ruebenwurzel)
++	add languages files for jquery datepicker (tks to Ralf)	
+!	Ticket #994 WYSIWYG editors sorted by name (tks to Aldus)
+20-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	update class.login.php (tks to Ruud)
+19-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	update class.login.php
+18-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	Validation fix in preference
+18-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	fixed directory_list
+17-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	litte fix to show GMT value in default view
+!	fixed file_list
+15-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	Update headerinfos admin/interface
+14-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	changed e-mail notification for backend login
+!	styling in preference.htt in themes
+14-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Typo fixes with german umlaute
+14-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #985 With #1318 no login in backend possible
+#	Ticket #986 Typo inside the german language file 
+#	Ticket #982 Unnessesary heredoc causes on errors while installation!
+#	Ticket #926/Ticket #928 Mail Notification on new user registration
+14-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #984 Removing outdated comment-block in class.login.php
+#	Ticket #983 Sorting order of modules and templates inside groups.php
+14-Apr-2010 Dietrich Roland Pehlke (Aldus)
+#	Ticket #982 - Wrong use of heredoc-syntax in some language-files (BG, CS and HR) breaks the installation-process.
+14-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #974 Usability bug in /preferences
+14-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #976 Using md5 also for the username inside class.login.php
+14-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #977 Templates sorted in alphabetical order
+14-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #978 Add additional PHP 5.2 check to installation
+#	Ticket #979 False PHP 4 requirements in install
+#	Ticket #980 Usebility - Bug in the settings-interface
+#	Ticket #981 typos in backend-theme "argos" in file groups.htt
+11-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	fix ticket #975 some weird /pages/ header infos
+11-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	little fixes for backwards compatible PHP4, pls test
+11-Apr-2010 Dietmar Woellbrink (Luisehahne)
+!	show_menu2 remove unneeded code for WB < 2.7
+!	class.wb.php, recoding backend preference
++	add a language variable $MESSAGE['PREFERENCES']['INVALID_CHARS']
+!	update theme.css for preference.htt in argos_theme & wb_theme
+-	remove classic_theme
+07-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #971 Using $_POST in Admin - account - login.php (tks to Aldus)
+!	update class.wb.php added tokens function
+07-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #967 Typo in the mysql-query results in "not" upgrading the modul info ( tks to Aldus)
+01-Apr-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket 963 Minor XSS issue in admin login
+!	update jquery-ui-min.js from 1.7.2 to 1.8.0
+#	Fixed typo in the english language file
+26-Mar-2010 Dietmar Woellbrink (Luisehahne)
+!	update changelog
+26-Mar-2010 Dietmar Woellbrink (Luisehahne)
+-	remove deprecated backup modul
+19-Mar-2010 Dietmar Woellbrink (Luisehahne)
+!	rework admin/pages/save.php so that modules can use it
+!	fixed missing global install variable to work in modules
+17-Mar-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #957 Wrong status returned for visibility
+17-Mar-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #956 Useraccounts, now e-mail is required
+09-Mar-2010 Dietmar Woellbrink (Luisehahne)
+#	Fixed e-mail preg pattern, because issues with some php versions
+07-Mar-2010 Dietmar Woellbrink (Luisehahne)
+#	fixed search_modext.php ( Tks to Thorn )
+#	Ticket #953 is already fixed 
+#	Ticket #954 styles issues in theme.css ( Tks to Ruebenwurzel )
+07-Mar-2010 Dietmar Woellbrink (Luisehahne)
+#	Tickets #932 change deprecated eregi functions 
+#	Tickets #948 fixed Multiple use of same parametrised droplet - parameter handling
+!	Upgrade Droplets to Version 1.0.3
+!	update some headerinfos
+!	non existing pages will be created if clicking save in page settings
+07-Mar-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #950 missing classes in theme.css ( Tks to Ruebenwurzel )
+!	update jquery-min.js to version 1.4.2
+20-Feb-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #944 fixed double sections, with registered User
+20-Feb-2010 Dietmar Woellbrink (Luisehahne)
+#	fix corrupted changelog
+20-Feb-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #945 fixed reloads function 
+19-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	update headerinfo in module droplets
+19-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	Beginning with Ticket #901 
++	add siteadd.png to backend themes
+!	change icon add child page
+19-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	update headerinfo
+!	change $search_pattern for check if Javascript mailto encryption is enabled
+!	module output_filter set to version 0.12
+19-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	change show_menu2 to correct modul version 4.9
+19-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	insert $wb->preprocess($output), preprocess no longer needed in modules
+!	little modifaction in upgrade-script.php in function check_wb_tables
+!	updated module wysiwyg, set to module version 2.8
+19-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	recoded function extract_permission in /framework/functions.php
+!	change URL_HELP to http://www.websitebaker2.org/  in /framework/class.admin.php
+!	recoded function preprocess in /framework/class.frontend.php
+!	optimize function getVersion in /framework/addon.precheck.inc.php
+19-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	change constant EDIT_ONE_SECTION to default false	
+------------------------------------- 2.8.1 -------------------------------------
+08-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	missunderstanding back to old logo
+08-Feb-2010 Dietmar Woellbrink (Luisehahne)
+#	Droplet emailfilter fixed search mdcr.js
+!	some little fixes in upgrade-script
++	new WebsiteBaker Logo in themes
+05-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	Fixed wrong themes path in jquery_theme.js, that plugins works correctly
++	images icons to run base theme
+01-Feb-2010 Dietmar Woellbrink (Luisehahne)
+!	to hold content, install don't drop existing tables (code, form, menu_link, news, wrapper, wysiwyg) 
+!	otherwise do it with uninstall
+30-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #931 bug in admin/access/index.php
+30-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	continue update headertext
+!	fixed tpyo Website Baker to WebsiteBaker in main language files
+30-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	continue update headertext
+#	Ticket #930 disabled SyntaxHighlighter from default WB Installation
+!	change help url to www.websitebaker2.org
+29-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	continue update headertext
+28-Jan-2010 Dietmar Woellbrink (Luisehahne)
++	Ticket #927 news module language file in swedish
+!	update headertext
+28-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #925 Slovak Lang Missing in allowed install languages!
+28-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	update headertext
+28-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	update jquery 1.4.0 to 1.4.1, 
+-	removed include/jquery/plugins
+!	update backend themes
+#24-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #923 argos_theme: Always Allowed Viewers in page_settings
+#	fixed css for pagetree to show in IE7
+24-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #921 fix issues in IE by using EditArea framework
+23-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	Ticket #921 Update EditArea framework
+!	fix stylings wb_them
+!	fix upgradescript
+23-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	update jquery to version 1.4, rename old one to jquery-min132.js
+#	fixed argos theme  
+22-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	continue update header info
+22-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	set svn keywords
+22-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #869 Droplet-Engine does'nt work in some case
+!	continue update header info
+22-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	update header info
+22-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	update fckeditor, forgotten to upload a file
+22-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #917 Update backend themes 
+22-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	Ticket #909 WYSIWYG Editor width destroyes backend layout
+!	Set EDITOR_WIDTH to 0, This way backend theme developper 
+!	can style the WYSIWYG Editor according to their themes.  
+22-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	Ticket #916 Update backend theme footer
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	updated YUI 2.4.1 to 2.8.0r4
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	Beginning header information update
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	fix login_form.php sometimes produce javascript errors in IE
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	fix more small css-errors in WB Backend (thanks to Ruebenwurzel)
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	update header info
+!	change unknown user to guest in all languages
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	update info.php fckeditor
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	fix wrong settings in image browser dialog
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #912 fix Search Template bug
+21-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #915 fix bug in search (utf-8 characters corrupted)(thanks to Thorn)
+19-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	fix some more small css-errors in WB Backend (thanks to Ruebenwurzel)
+19-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	removed wb_path as javascript var (thanks to Bianca)
+19-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	fix some more small css-errors in WB Backend (thanks to Ruebenwurzel)
+14-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	fixed snippets including frontend.css and frontend.js 
+#	without register_frontend_modfiles
+14-Jan-2010 Dietmar Woellbrink (Luisehahne)
++	Ticket #877 add slovak lang in Captcha and Advanced-Spam-Protection
+14-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	update header
+14-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #911 5. continue to fix CSS-errors in WB backend
+14-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #911 4. continue to fix CSS-errors in WB backend
+14-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #911 3. continue to fix CSS-errors in WB backend
+14-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #911 2. continue to fix CSS-errors in WB backend
+14-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #911 1. continue to fix CSS-errors in WB backend
+13-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #911 Beginning to fix More CSS-errors in WB backend
++	add SVN- Revision to backend theme
+12-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #906 Search Template bug
+!	update editor min width, dragableresize table
+12-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	Ticket #907 js files in backend themes are stored at wrong places
++	add include/jquery/plugins/toggle_zip.js
+-	removed toggle_zip.js in backend themes
+12-Jan-2010 Dietmar Woellbrink (Luisehahne)
+#	fix open_basedir restriction in effect in save_post.php
+11-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	fix load_module, load_language (tks to Webbird)
+11-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	Ticket #904 fix if templatename is equal language
+11-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	Ticket #905 fix search.php 'registered' hardcoded
+10-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	Ticket #903 fix CSS-errors in WB backend
+!	add title class in show_breadcrumbs, now full css styling
+05-Jan-2010 Dietmar Woellbrink (Luisehahne)
+!	recoded function show_breadcrumbs
+30-Dec-2009 Dietmar Woellbrink (Luisehahne)
+#	fix Warning: stristr() [function.stristr]
+29-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	set revision constant to release version
+29-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	update release version
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+#	fix show date if only short content
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	check if load only one wysiwyg instance
+!	check update svn revision
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+#	fix syntax error
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	update header, check that all tables in WB package are installed 
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	update header, change variable
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	update header
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	update header
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	validate code
+28-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	change page_title to menu_title in dropdown list
+!	validate code
+23-Dec-2009 Dietmar Woellbrink (Luisehahne)
+!	check if revision $id will be updated
+21-Dec-2009 Moritz Stapelfeldt
+#	Ticket #896: Bugfix in framework/functions.php > added test is_dir to function rm_full_dir
+16-Dec-2009 Ruud Eisinga
+#	Ticket #894: Bugfixes in newsmodule > rss.php
+16-DEC-2009 Manuel Lang (MaGnaL)
+#	Minor bugfixes: Use localized messages in preference forms on frontend and backend,
+	correct html/php syntax in upgrade-script.php and NL localization of show_menu2 snippet  
+14-DEC-2009 Manuel lang (MaGnaL)
+#	Ticket #832: Fix wrong configuration of timezone-handling when saving
+	preferences-form on backend and frontend 
+12-DEC-2009 Manuel Lang (MaGnaL)
+#	Ticket #827: Fix false form-parameter when javascript is deactivated
+	on users and groups temps (admintool).
+12-DEC-2009 Manuel Lang	(MaGnaL)
+#	Bugfix of rev. 1211 search_modext.php (ticket #863): Use isset and
+	given unknown-user instead of counting all users. 
+12-Dez-2009 Dietrich Roland Pehlke (Aldus)
+#	Bugfix inside "search_modext.php" to avoid warings if the search found
+	a page last modified by a user witch has been deleted. (ticket #863)
+03-Dez-2009 Dietmar Woellbrink (Luisehahne)
+!	Ticket #890 fixed visability proprty uses non valid value 'none' 
+03-Dez-2009 Dietmar Woellbrink (Luisehahne)
+!	change searchstring mdcr.js, workout crypt emails in output_filter/filter-routines.php
+!	comment out ob_end_flush line 259 in form/view.php
+02-Dez-2009 Dietmar Woellbrink (Luisehahne)
+!	next step to validate backend themes
+01-Dez-2009 Dietmar Woellbrink (Luisehahne)
+!	add Revision IDs to added files - Thanks to Ruebenwurzel
+01-Dez-2009 Dietmar Woellbrink (Luisehahne)
+!	updated pclzip class
+29-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	update module info.php (thanks to Waldschwein)
+29-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	added missing swobject plugin in FCKeditor
+!	bug fixed in flvplayer
+29-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	stop working plugin flvplayer in FCKeditor until fixed
+29-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	fixed an undefined index in settings.php
+28-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	Update FCKeditor Version 2.6.5 to Modulversion 2.9.3
+28-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	updated theme.css in wb_theme
+28-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	Ticket #886 fix validation email, check tld between 2-4 letters
+28-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	Ticket #874 add slovak lang in install
+    and validate output
+28-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	Ticket #880 fixes language file SK.php
+28-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	Ticket #828 fix deprecated eregi
+27-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	fixes language file SK.php
+27-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	fixed parse error ticket #878 
+26-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	found and fix some deprecated functions
+26-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	validate some output files
+26-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	fix some PHP 5.3 deprecated functions 
+25-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	Fix to load edit_full_area only if needed
+25-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	change page_title to menu_title for parent dropdown list in index.php and sections.php
+25-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	more bug fixes language file SK.php
+25-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	Many hosts disable error_log() in various and sundry ways. 
+	In WB we do something like this to avoid triggering warnings and errors. 
+	Even this is sometimes not sufficient to avoid problems with some hosts, but accommodates most.
+25-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	fix show_menu2 include.php, page crashes, if php error_log is disabled
+25-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	fixes language files HU.php and SK.php
+24-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	fixed php 5.3 depricated function in show_menu2
+24-Nov-2009 Dietmar Woellbrink (Luisehahne)
++ 	add two constants in /framework/initialize.php for later feature in database settings
++	define('EDIT_ONE_SECTION', true) to edit only one section with editor in manage sections
+	modify page will be loading all sections with editor
++	define('EDITOR_WIDTH', 900) set min width for editor
++	adding more information in editor header 1) block 2) module 3) section_id
+24-Nov-2009 Dietmar Woellbrink (Luisehahne)
++	add register_frontend_modfiles('jquery'); adds jquery basis scripts in head
++	add register_frontend_modfiles_body('jquery'); adds jquery basis scripts before body end
++	add jquery_theme.js to choose a ui theme, basis is loaded, can be change 
+24-Nov-2009 Dietmar Woellbrink (Luisehahne)
++	add a child page is cumbersome when the parent dropdown list gets to be too large. (Ticket #821)
+24-Nov-2009 Dietmar Woellbrink (Luisehahne)
+!	validate captcha control
+13-Oct-2009 Ruud Eisinga
+#	fixed breaking droplets by highlighting search-words in search result pages.
+13-Oct-2009 Dietmar Woellbrink (Luisehahne)
++	added forgotten jquery-fancybox.js Version 1.0
+13-Oct-2009 Dietrich Roland Pehlke (Aldus)
+#	Fixed typo in the finnish language file (ticket #814).
+12-Oct-2009 Dietmar Woellbrink
+!	security update FCKeditor (tks to Ruebenwurzel)
+12-Oct-2009 Dietmar Woellbrink
++	added old version of fancybox.js
+!	rename new version fancybox 
++	added missing language variables in newsmodul
+12-Oct-2009 Dietmar Woellbrink
+#	fixes Bugs headersend errors in some core files
+12-Oct-2009 Dietmar Woellbrink
+!	update function show_bread_crumb in framework/frontend.functions.php
+!	replace separator with entities char, add title for multilingual
+!	set breakcrumb in div container class="breadcrumb"
+!	set separator in span tag class="separator"
+12-Oct-2009 Dietmar Woellbrink
+!	update jquery fancybox from 1.0 to 1.2.1 
++	fancybox imagefolder incl. fancybox.css
+12-Oct-2009 Dietmar Woellbrink
+!	shows more details in wysiwyg editor
+10-Oct-2009 Dietmar Woellbrink
+!	small update upgrade.php to reset newsfiles to created dates
+10-Oct-2009 Dietmar Woellbrink
+!	Update FCKeditor to Version 2.6.5 Modulversion 2.9.1
+09-Oct-2009 Dietmar Woellbrink
+!	Update FCKeditor to Version 2.6.5 Modulversion 2.9.1
+09-Oct-2009 Dietmar Woellbrink
++	upgrade.php to reset newsfiles to created dates
+09-Oct-2009 Dietmar Woellbrink
+#	Ticket #770, #785, #792, #807, #809, 
+#	fixes and recoded news module
+09-Oct-2009 Dietmar Woellbrink
+#	Ticket #815 Fix Warning: open_basedir restriction in effect. File is in wrong directory in load_module
+#	same fix to load_template
+07-Oct-2009 Dietrich Roland Pehlke
+#	Missing contiue inside search.php to avoid access to an non-object if the query fails. (ticket #793). Thanks to Thorn.
+06-Oct-2009 Dietmar Woellbrink
+#	Security fix - wrong placed "exit()" inside class.wb.
+22-Sep-2009 Dietmar Woellbrink
+#   Fixed: Pagetree changed menu titles instead of page titles (ticket #805) thanks to Ralf (Berlin)
+21-Sep-2009 Dietrrich Roland Pehlke
+!	Dutch tranlation(-s) for the captcha-control. [Ticket: #777] (Thanks to Argos)
+#	Missing code inside "framework/addon.precheck.php" (ticket #798).
+#	Changes inside "upgrade-script" to avoid "mysql_list_tables is deprecated" warnings (ticket #800).
+#	Add "global $admin" to the install.php of the droplets-module to avoid (variable isn't declared) warnings. (ticket #800).
+18-Sep-2009 Dietmar Woellbrink
+#   french translation updated for WB 2.8 (tks to Ploc)
+16-Sep-2009 Dietmar Woellbrink
+#	Fixed bug changed URL_HELP in class.admin.php to http://help.websitebaker.org/ (ticket #801).
+#	Fixed bug: inside the FCK-Editor wbmodul: missing 'OK' button when inserting WB link with Safari/Chrome (ticket #795).
+#	Fixed bug changed png fix and path to jquery-pngFix.js inside footer.htt for backend themes (ticket #786).
+#	Fixed bug: inside the FCK-Editor include.php: add $oFCKeditor->Width  = $width; (ticket #799).
+15-Sep-2009 Dietrich Roland Pehlke
+#	Fixed bug: group-restrictions and sections (ticket #791).
+#	Fixed bug inside the FCK-Editor wbmodul: displaying the correct page-tree by
+	adding "order by position"
+25-Aug-2009 Dietrich Roland Pehlke
+#	Fixed bug in upgrate-script. Constant 'DEFAULT_THEME' doesn't exists (ticket #784).
+25-Aug-2009 Ruud Eisinga
+#	Fixed bug in droplets. Multiple droplets with the same parameter did not extract the new parameter.
+	(problem introduced by code optimisations for WB2.8) 
+#	Fixed usage of the depriciated (PHP 5.3.0) split() function in class.wb. (ticket #772)
+#	Fixed notice ob_end_clean..failed to delete buffer. (ticket #779)
+22-Aug-2009 Ruud Eisinga
+# 	Changed the default searchform name in the installer. (ticket #775)
+#	Fixed the recursive redirect problem when a page is called with a wrong language parm (ticket #780)
+------------------------------------- 2.8.0 -------------------------------------
+14-Aug-2009 Matthias Gallas
+#	Fixed typo in dutch language file (Thanks to Argos)
+#	Changed FCKEditor to not show index.php files in browse media window (ticket #774)
+	(Thanks to BerndJM)
+12-Aug-2009 Matthias Gallas
+#	Fixed some display issues in all backend themes
+!	Again updated dutch language file (Thanks to Argos)
+#	Fixed missing language variable in form modul (Thanks to Argos)
++	Added missing images to argos_theme (forgotten in changeset [1117])
+11-Aug-2009 Matthias Gallas
+!	commentet out the droplets logo for a more similar backend design with
+	other admin tools
+!	Updated icons in argos_theme (Thanks to Argos)
+!	Updated Dutch language file (Thanks to Argos)
+!	Updated show_menu2 to version 4.9
+9-Aug-2009 Matthias Gallas
+#	Replaced function mime_content_type as the old one causes shell_exec warnings
+	on some servers (Thanks to Aldus)
+!	updated argos_theme to version 1.4 (Thanks to Argos)
+!	some code cleaning of admin/pages/sections.php
+#	Fixed possible xss injection in login/forgot/index.php
+#	Fixed bug in news modul introduced in changeset [1057]
+#	Added missing variables also to preferences.php. Forgot in Changeset [1112]
+8-Aug-2009 Matthias Gallas
+#	Added some missing variables to backend_themes (Thanks to Stefek)
+6-Aug-2009 Matthias Gallas
+!	Set Version to 2.8
+!	Updated upgrade_script to make use of the changed news settings
++	Added to show_menu2 the aOption 'SM2_HIDEPAGES'. If set all hidden pages are
+	hidden again (Thanks to DarkViper)
+#	Fixed again some bugs in news modul (ticket #756) (Thanks to Aldus and Luisehahne)
+#	Fixed bug that frontend.js, frontend.css and frontend_body.js are not used
+	from snippets (ticket #764) (Thanks to Luisehahne)
++	Added new function 'register_frontend_modfiles_body' to default templates
++	Added option to use a frontend_body.js in modules to include javascript from modules
+	in the body of the frontend (Thanks to Luisehahne)
+!	Updated Danish language Files (Thanks to Achrist)
+#	Fixed some display issues in argos_theme (Thanks to Argos)
+30-July-2009 Ruud Eisinga (Ruud)
+#	Fixed a bug in the /admin/media resizer parameters for dirs with whitespaces (thnx to tiesy)
+#	Fixed a bug in FCKeditor include.php. Now the editor can be used from other 
+	subdirectories than WB_PATH/modules/mymodule
+29-July 2009 Dietrich Roland Pehlke (Aldus)
+#	changes in framework/class.wb.php to avoid the "print->footer()" bug in the frontend,
+	as this function/method doesn't exists for the frontend.
+#	Changes inside index.php and save.php in settings to get rid of the situation
+	that a SMTP-Password could not contain an "<" char (right chars are craped),
+	and also "<" is not transformed into an entitie "&lt;". (Thanks to FrankH)
+#	Modify of "addon.precheck.inc.php" to get rid of the problematic that version_compare
+	could faild if words like "alpha", "beta" are inside a version-string. (missing in changelog 1100)
+28-July 2009 Matthias Gallas
+#	fixed some smaller issues in rss.php (Thanks to Kibmcz)
+27-July 2009 Matthias Gallas
++	Added German language file to droplets
++	Added modul_description to language files of droplets
++	Added Danish language files to modules (Thanks to Achrist)
+!	Updated Danish language file (Thanks to Achrist)
+#	Fixed improper spelling in language files (#754)
+#	Fixed bug introduced in changeset [1092]
+25-July 2009 Matthias Gallas
+#	fixed some language bugs in search.php (Thanks to Thorn)
+23-July 2009 Matthias Gallas
+#	fixed bug with missing filetype icon in media section of classic_theme (ticket #752)
+#	fixed bug with page not showing if 2 sections active (ticket #751) (Thanks to Pumpi)
+#	readded to phplib/template.inc $clear: whether to delete undefined vars or not
+	was already added in WB 2.7 but was deleted for unknown reasons (Thanks to FrankH)
+22-July 2009 Matthias Gallas
+!	set Version to RC2
+!	small modification on german language file (ticket #746)
+#	Fixed E_ALL&E_STRICT warning on PHP5 servers (Thanks to Aldus) 
+#	Fixed bug with home folders are viewable and writable from other users
+	(ticket #605 and #748) (Thanks to Aldus)
+20-July 2009 Matthias Gallas
+!	Moved backend.js back from <body> to <head>
++	Added possibility to add a backend_body.js to modules wich is then called in <body>
++	Readded admin/images folder to keep backward compatibility to old modules
+19-July 2009 Matthias Gallas
+#	Fixed display issue of jsadmin in backend themes (Thanks to Argos)
+18-July 2009 Matthias Gallas
+!	Updated german laguage file in argos_theme
++	Added multilnaguage support to media section of argos_theme (Thanks to Argos)
+#	Fixed smaller display issue in argos_theme (Thanks to Argos)
++	Added more meta tags to backend themes
+!	Updated Argos_theme (Thanks to Argos and Luisehahne)
+#	Again added some &amp; to news and form to get more valid output (Thanks to Luisehahne)
+#	Fixed wrong set </form> tag to get valid output (Thanks to Luisehahne)
+!	Replaced in some alt tags hardcoded signs with language variables (Thanks to argos)
+!	Updated Dutch language File (Thanks to argos)
+!	Updated French language File (Thanks to mylesk42)
+16-July 2009 Matthias Gallas
+#	Fixed E_ALL notice in news/view.php
+!	replaced in form and news delimiter "&amp;" with "&"
+	was introduced with changeset [1069] but didn't work on all servers
+#	Removed double </form> tags in pages/intro.php and wysiwyg/modify.php
+!	replaced all remaining mktime() with time(), except from third party scripts
+15-July 2009 Matthias Gallas
+!	changed in modules/admin.php and admin/pages/add.php mktime() to time()
+!	changed in wrapper modul modify.html to modify.htt
+#	Fixed some validiation bugs in core and different modules (Thanks to luisehahne)
+#	fixed display issue of jscalendar in news modul (Thanks to Aldus)
+!	changed modules/admin.php to also make use of backend theme templates
+!	changed in class_login.php mktime() to time()
+14-July 2009 Matthias Gallas
+#	Fixed bug with sections are only editable in new backend-themes if blocks are enabled
+	(Thanks to Luisehahne)
+#	Fixed some validiation bugs in news modul (ticket #742) (Thanks to Luisehahne)
+14-July 2009 Dietrich Roland Pehlke
+!	changes in frontend.functions.php, line 323: 'date' to 'gmdate' to avoid E_STRICT warnings.
+!	changes in wb-setup.php, line 50: 'date' to 'gmdate' to avoid E_STRICT warnings. See also #741.
+13-July 2009 Matthias Gallas
++	added changes from news/add.php to the upgrade-script.php
+13-July-2009 Ruud Eisinga
+#	admin / media / browse reported an error in E_STRICT mode.
+13-July 2009 Dietrich Roland Pehlke
+!	Change inside "date_formats.php" and "time_formats.php" mktime() within time()
+	to avoid warnings and strict messages. See #741. Minor cosmetic changes.
+#	News-Modul: add the unlink-routine for the ".news" folder inside uninstall.php
+	so the groupe-images are also unlink.
+!	News-Modul: add <tr><td> and </td></tr>-tags to the "none found" part in the view.php to 
+	get valid output inside a table.
+!	Change the setting of $display_image and $display_groupe to avoid the 
+	empty display roule problematic (<tr style="display: ">) for valid output.
+!	Add &gt;&gt; in "add.php" instead of >> to avoid invalid output.
+11-July-2009 Ruud Eisinga
+!	The news module post_title link made unclickable when there is no full post.
+11-July-2009 Matthias Gallas
++	Added changed news settings to upgrade-script
+09-July-2009 Ruud Eisinga
+!	Added a better option to hide the READ_MORE link in the news module. (ticket #739)
+09-July-2009 Matthias Gallas
+#	Fixed bug that backend.js is not loaded in backend themes (ticket #740)
+#	Fixed wrong path to unitpngfix.js and added missing script
+#	Fixed invalid output of page_sections Page in Backend (Thanks to Luisehahne)
+08-July-2009 Matthias Gallas
++	Added PageID and SectionID to all backend themes (Thanks to Luiseshahne)
+#	Fixed some display issues in all backend themes (Thanks to Luisehahne)
+!	Replaced wbmodules.gif in FCKEditor Plugins (Thanks to Stefek)
+08-July-2009 Dietrich Roland Pehlke
+!	Removed unused marker {USERS} inside the "groups.htt" of the wb-theme.
+!	admin -> users -> index.php
+!	admin -> groups -> index.php
+	Codechanges using blocks to avoid to generate the "switch"-link right-top,
+	if the user has no permission to edit the other one.
+!	wb_theme|classic_theme|argos_theme -> templates -> users.htt
+!	wb_theme|classic_theme|argos_theme -> templates -> groups.htt
+ 	Add block-comments
+!	admin -> addons -> index.php	codechanges
+!	admin -> access -> index.php	codechanges
+	Codechanges to get rid of the empty display(style) declaration "style='display: ;'",
+	and to avoid to generate (hidden) elements if the user isn't alowed to edit one.
+!	wb_theme|classic_theme|argos_theme -> templates -> addons.htt
+!	wb_theme|classic_theme|argos_theme -> templates -> access.htt
+	add block-comments
+#	Bugfix inside wb/admin/groups/get_permissions.php - replacing wrong "AND" within "OR" in line 64
+	if one checkbox of "user" or "group" is selected (like in line 178; advanced settings).
+07-July-2009 Matthias Gallas
+#	Fixed some minor bugs in argos_theme (Thanks to Argos)
+#	Fixed bugs in admin additons for argos_theme (Thanks to Argos)
+!	Updated Version Number in upgrade_script to 2.8RC1
+!	Updated FCKEditor Modul Version Number to 2.89
++	added in FCKEditor Advisory Relation to Links (thanks to Luisehahne)
+06-July-2009 Matthias Gallas
+!	Updated FCKEditor to Version 2.6.4.1 (ticket #738) (Thanks to doc)
+#	Fixed Backend-Themes to get more valide output (Thanks to Luisehahne)
++	Added argos_theme
++	Added new functions to admin dir (Thanks Argos and Ruud)
+!	Updated install and upgrade-script
+!	Adapted wb_theme and classic_theme to changed admin dir files
+04-July-2009 Dietrich Roland Pehlke
+!	FCK-Editor Modul: Droplet Select: change "page_list_block" to "droplets_list_block",
+	also "cmbPages" to "cmbDroplets" as we are listen droplets not pages.
+!	Remove unneeded empty lines and spaces/blanks;
+	minor cosmetic changes in the source to keep the string more readable.
+04-July-2009 Matthias Gallas
+!	Replaced droplet icon for FCKEditor Toolbar (thanks to Stefek)
+#	Fixed two bugs in droplets-plugin for FCKEditor (thanks to Aldus)
+!	Changed Template from FCKEditor plugin WBModules to .htt
++	Added Droplets plugin to FCKEditor (ticket #737) (Big Thanks to vizmotion)
+03-July-2009 Matthias Gallas
++	Fixed IE Bug in Wrapper modul (ticket #736)
+03-July-2009 Ruud Eisinga
+#	Fixed the wrong handling of htmlentities in Droplet parameter parsing
+02-July-2009 Matthias Gallas
++	Added missing fancy_progress.png
+01-July-2009 Matthias Gallas
+#	Fixed backend display issues in IE6 and IE7
+!	Set Version to WB2.8RC1
+!	Minor tweaks in pages_sections.htt
++	Added posibility to upload and unzip .zip packages to media section
+	(Thanks to BerndJM)
+!	Updated Browse Media Window in wb_theme now supports file icons, more file
+	informations and a new preview function (Thanks to BerndJM)
+29-June-2009 Matthias Gallas
+#	Replaced in FCKEdiotor folder all index.html with index.php (ticket #691)
+!	Update PHPMailer to version 2.0.4 (ticket #733)
+!	Update Editarea to version 0.8.1.1 (ticket #732)
+!	Update JQuery UI to version 1.7.2 (ticket #731)
+27-June-2009 Ruud Eisinga
+#	Fixed email encryption bug in output filter. Introduced by adding droplets.
+	(Thanks to Luisehahne)
+25-June-2009 Matthias Gallas
++	Added missing admin/settings/setting.js
+!	Changed name of classic theme from "classic" to "classic_theme"
++	Added output-filter warning to all language files
+#	Fixed admintool jsadmin to get XHTML valid output (Thanks to Luisehahne)
+#	Major fixes on backend to get XHTML valid output (Thanks to Luisehahne)
++	Added option to use also MYSQL_ASSOC and MYSQL_NUM with mysql_fetch_array
+	(Thanks to Luisehahne)
+#	Bugfix for Error-Level settings (Thanks to Luisehahne)
+23-June-2009 Matthias Gallas
+#	Moved styles from admin/pages/sections.php to sections.htt in backend themes
+	(Thanks to Luisehahne)
+!	Moved javascript files from admin/pages/index.php to external js files
+	(Thanks to Luisehahne)
+#	Major improovements and changes to all backend files to get more valide Code
+	output (Thanks to Luisehahne)
+22-June-2009 Matthias Gallas
+#	fixed wrong position id when adding a new page
+-	removed obsolete code/modify.html
+22-June-2009 Dietrich Roland Pehlke
+#	Changes on module "code": add the section_id to the name of the textarea,
+	to keep the functionality if you are using more than one code-section on a page.
+!	Moving the html-template inside a "htt" folder and rename the suffix to ".htt" to
+	keep it consitant to other modules. Minor cosmetic changes inside the code.
+22-June-2009 Ruud Eisinga
+#	Fixed a bug in Menu_link module that made childpages of the menu_link page 
+	not selectable. (thnx to Luisehahne)
+21-June-2009 Matthias Gallas
+#	Fixed small bug introduced in changeset [999]
+19-June-2009 Matthias Gallas
+#	Fixed bug that parent pages didn't inherit language settings to kind pages
+17-June-2009 Ruud Eisinga
+#	Bugfix in "droplets/upgrade.php" - wrong parameter order for adding fields.
+	also the query for "normal" upgrades had a typo.
+!	Added warning in output_filter that the function will be removed in 2.9
+17-June-2009 Dietrich Roland Pehlke
+#	Bugfix in "droplets/upgrade.php" - wrong tablename change to the correct one
++	Add upgrade-script to droplets
+!	Changes on upgrade-script to avoid droping droplet-modul-tables if the exists.
+!	calling "upgrate.php" or "install.php" instead of hard-coded lines to avoid
+	future conflicts by upgrading the modul
+15-June-2009 Matthias Gallas
++	Added install routine for droplets to the upgrade script
+#	Fixed bug in menu_link modul with wrong displayed pages tree (Thanks to thorn)
+#	Fixed small bug introduced in changeset [989]
++	Added missing id tags and copyright notices to droplets modul
+15-June-2009 Dietrich Roland Pehlke (aldus)
+#	Bugfix for ticket #725
++	Add "$wb->strip_slashes" again for backslashes are displayed in the output (view.php).
++	Add Droplets (Ruud)
++	modifications inside frontend.functions.php for backwart compatiblity (Ruud)
++	modifications inside the search to get the droplets seachable (Ruud)
+14-June-2009 Dietrich Roland Pehlke (aldus)
+#	Bugfixes for (ticket #728)
++	Add additional constant to "install/save.php" to avoid conflikts during
+	installation inside "/framework/initialize.php".
++	Add condition inside "/framework/initialize.php" to avoid conflikts
+	during installation; table "mod_captcha_control" doesn't exsits at runtime.
++	Add test for tables inside "install/save.php" if the user uncheck "install table" option.
++	Additional Errormessage if nessesary tables are not found (english).
+13-June-2009 Matthias Gallas
++	Added jQuery-insert.js and jQuery plugins (Thanks to Luisehahne)
+!	Moved images in lQuery plugins folder (Thanks to Luisehahne)
+#	fixed small german language issue in jscalendar (Thanks to Luisehahne)
+26-May-2009 Matthias Gallas
++	Added jQuery(1.3.2) and jQueryUI(1.7.1) to WB core (ticket #708)
+21-May-2009 Matthias Gallas
+#	Fixed some strange backend layout issues (ticket #722)
+09-May-2009 Matthias Gallas
++	Added index.php to all WB-Theme folders to prevent directory spoofing
+06-May-2009 Matthias Gallas
+!	Updated Norsk language File (Thanks to oeh)
+#	Fixed bug with not always included stylesheets in backend (ticket #717)
+27-Apr-2009 Matthias Gallas
+#	Fixed bug with missing option for admin-tools in advanced view of access
+	settings (ticket #714)
+#	Fixed bug with backup fails if a user has only permissions to admin-tools (ticket #715)
+#	Fixed bug with missing template object in groups and user settings(ticket #716)
+25-Apr-2009 Matthias Gallas
+!	Updated Dutch language files for modules (Thanks to LuckyLuke)
+23-Apr-2009 Matthias Gallas
+#	Fixed bug with dropdownlist in pages settings (ticket #713)
+20-Apr-2009 Matthias Gallas
+!	Update show_menu2 to version 4.8 (ticket #712)
+#	Fixed small error in Spain language file (ticket #711)
+18-Apr-2009 Matthias Gallas
+!	Updated Dutch language file (Thanks to Luckyluke)
+17-Apr-2009 Matthias Gallas
+#	Fixed MenuLink timeout with many large wysiwyg-pages (ticket #710)
+!	Updated again Norsk language File (Thanks to oeh)
+!	Updated Dutch language file (Thanks to Luckyluke)
+13-Apr-2009 Matthias Gallas
+#	Fixed minor dispay issue in upgrade script
+!	Updated Norsk language File (Thanks to oeh)
+!	Updated French language files (Thanks to Quinto and VotreEspace)
+!	Updated Danish language file (Thanks to Achrist)
+12-Apr-2009 Matthias Gallas
+#	Fixed not defined language variable in account/email.php (Thanks to BlackTiger)
+#	Fixed Typo in group_form.htt (ticket #705)
+01-Mar-2009 Christian Sommer
+!	Added disclaimer to upgrade-script.php	
+28-Feb-2009 Christian Sommer
+#	Removed hardcoded admin path from JSAdmin module (jsadmin/js/dragdrop.js)
+25-Feb-2009 Matthias Gallas
++	Added language support for template_description (affects templates and themes)
+#	fixed wrong path to images in news and form modul
+#	fixed manage section is showed twice (ticket #694)
+-	removed unneeded icons from wb_theme
+-	removed unneeded stylesheet.css from account dir
+#	renamed warning.htt to warning.html to fix display of sourcecode after invalid logins
++	added fixed error.htt also to classic theme
++	corrected info.php of news-modul
+24-Feb-2009 Dietrich Roland Pehlke
+!	Changes in warning.htt templates to get valid XHTL1.1 output - replace the center-tag with div
+#	add "AND section_id='$section_id'" to the delete-query to avoid conflicts if there are more
+	than one Form on one single page.
+#	Modify error.htt template in wb_theme for valid XHTML1.1 output - replace the center-tag with a div
+	and replace the br-tag with valid p-tags.
+22-Feb-2009 Matthias Gallas
++	added skinable Admin Interface
+21-Feb-2009 Christian Sommer
++	added update of search table missing in Changeset 941
+#	fixed wrong index in language array
+!	removed some comment lines (changes are tracked by SVN)
+20-Feb-2009 Dietrich Roland Pehlke (aldus)
+!	add additional tr and td tags to the text_no_results message to get valid XHMTL output
+19-Feb-2009 Christian Sommer
+!	addon overview to show advanced options after redirect from reload.php
+#	fixed bug if language folder contains none language files (XX.php) or sub folders
++	added option to invoke module upgrade.php/uninstall.php files from backend (for modules uploaded via FTP)
+18-Feb-2009 Dietrich Roland Pehlke (aldus)
+#	fixed: typos in the section_id inside the action-link 
+!	Remove test_trash and unused variables in query, added suggetions from #588
+#	Bugfix for form bug (ticket #688)
+17-Feb-2009 Christian Sommer
++	added option to invoke module install.php from backend (for modules uploaded via FTP)
+!	admin Add-on settings no hidden by default (can be set visible via advanced link)
+16-Feb-2009 Christian Sommer
+!	moved reload option of Add-ons to main Add-on section
+!	reworked logout to reset possible remember key in database when logging out
+15-Feb-2009 Christian Sommer
+#	fixed bug with smart login option (remember me) (ticket #689)
+#	special chars like &nbsp; are shown when editing Add-on CSS files (ticket #678)
+!	redirect time for function print_success can now be defined in Settings (ticket #603)
+-	removed reload admin tool
++	added possibility to reload Add-ons via the Add-on section
+14-Feb-2009 Christian Sommer
+!	added option to display current user name in backend template
+#	fixed wrong redirect path and added SVN Id
+13-Feb-2009 Christian Sommer
++	added option to perform pre-installation checks to test requirements of Add-Ons
+#	added error messages to installation process for Add-Ons with wrong file type
+08-Feb-2009 Christian Sommer
+#	fixed warning if database connection failed during installation process
+06-Feb-2009 Christian Sommer
+!	fixed some typos in German language file (thanks to freeSbee)
+!	added new captcha fonts and replaced old background images with the ones created by thorn
+05-Feb-2009 Christian Sommer
+!	mail text for register, signup and forgot mail now taken from WB language file (ticket #684)
+02-Feb-2009 Christian Sommer
+#	removed PHPMailer fix introduced with 2.0.3 to get SMTP working again (line 1041 in class.smtp.php)
+02-Feb-2009 Matthias Gallas
+#	Fixed bug wich causes that install of captcha-control may fail (ticket #682 thanks to thorn)
+01-Feb-2009 Matthias Gallas
+!	Update FCKEditor to version 2.6.4
+22-Jan-2009 Christian Sommer
+!	Added default target attribut to backend menu links
+21-Jan-2009 Matthias Gallas
+!	Copyright notices now includes 2009
+20-Jan-2009 Matthias Gallas
+#	fixed form-module select (multiple) doesn't work (ticket #681 Thanks to thorn)
+17-Jan-2009 Matthias Gallas
++	added French languages to modules
+!	changed handling of post_date in news modul (thanks to susigross)
++	added hour and minute support to default published_when field in news modul
+13-Jan-2009 Christian Sommer
+-	removed the obsolete Codepress framework from the include folder
++	added Javascript syntax highlighting framework EditArea as replacement for Codepress
+!	updated external PHPMailer class to latest version (v2.0.3)
+08-Jan-2009 Christian Sommer
+#	fixed error message in admin class if type array not defined
+05-Jan-2009 Dietrich Roland Pehlke
+#	Code-Snippets are no longer shown as type: unknown. 
++	Additional key in the languagefiles "$TEXT['CODE_SNIPPET']";
+#	fixed bug for the rss of news, see ticket #609
+04-Jan-2009 Matthias Gallas
+#	made news Modul multilingual, see ticket #676 (some additional translations are needed)
+03-Jan-2009 Matthias Gallas
+#	fixed bug in view.php of news module (ticket #676 Thanks to susigross)
+#	fixed another bug in view.php of news modul introduced in changeset [892]
+30-Dec-2008 Matthias Gallas
++	added default new language variables to all language files
+-	modul_uninstall: Removed undefined and unused constants (DB_FETCHMODE_ASSOC)
+!	modul_uninstall: added language variable $TEXT['FILE'] instead of "Datei"
+29-Dec-2008 Dietrich Roland Pehlke
++	add language support for the errormessages inside the uninstall.php files for modules
+	and templates.
+!	add new keys inside the german de.php language-file.
+-	removed my own debugging-code (was in 893 by mistake)
+!	Correct the last date in the changelog
+29-Dec-2008 Matthias Gallas
+!	set version to 2.8 BETA
+#	replaced in news modul special chars with entities to get valid output
+!	changed SESSION ID Separator from '&' to '&amp;' to get valid output 
+-	Removed the <p> tag around the news as it is added from the editor  
+28-Dec-2008 Dietrich Roland Pehlke (aldus)
++	ticket 610: add ip-address to the email-body in the form-modul.
++	ticket 607: include the frontend.css in the comment_page.php file of the news-module.
+#	File: admin/admintools/index.php - add "order by name" to the query to display the admintools in alphabetic order.
+#	File: admin/modules/uninstall.php - remove a db-query to a db-field that doesn't exists in wb 2.7 anymore 
+26-Dec-2008 Thomas Hornik
+#	fixed two issues with searchresult-highlighting: do not highlight in <pre>/<code>-tags, do not convert &lt; to &amp;lt; anymore. 
+13-Dec-2008 Christian Sommer
+!	changed mailer to not extract line break of alternative body text (thanks to freeSbee)
+28-Oct-2008 Christian Sommer
+!	updated output filter regex to exclude mail addresses contained in input fields
+27-Nov-2008 Thomas Hornik
+!	added redirect-type (301/302) to menu_link
+24-Nov-2008 Matthias Gallas
+!	updated upgrade-script.php to add sec_anchor field to settings table
+22-Nov-2008 Thomas Hornik
+!	search: replaced most of $string_ul_umlauts (from search_convert.php) through use of preg's u-switch.
+!	search: replaced strtr() by str_replace() (it's just faster). Changed &#39; to &#039;
+06-Nov-2008 Thomas Hornik
+#	Module code: curly backets get deleted by pparse() from phplib --> old fix in #569 wasn't that smart. Fixed.
+#	fixed some typos in DE language-file, added missing tab in search.php
+02-Nov-2008 Thomas Hornik
+!	news: added PAGE_SPACER to $page_title (creates e.g. title-32.php instead of title32.php)
+01-Nov-2008 Thomas Hornik
+!	improved ext_charset to work with latin1,cp1252,cp1251,latin2,hebrew,greek,latin5,latin7,utf8
++	added config for section anchor. ATTN: add "INSERT INTO TABLE_PREFIX.'settings' (name,value,extra) VALUES ('sec_anchor', 'wb_', '')" to upgrade-script.
+!	updated menulink and search to use configureable section-anchor
+29-Oct-2008 Thomas Hornik
+# News: total number of news wasn't calculated correctly
+!	Captcha: removed IFRAME for Calculation-as-text captcha
+-	removed useless init_utf8funcs()-function
++	search: added search_lang for use in search-form. Using DE, the search will search ä=ae,... (alternate spelling of german umlauts)
+-	search: removed undocumented word-boundary search
+!	search: search_path is now anchored to the beginning of link ("link LIKE '$path%'" instead of "link LIKE '%$path%'")
++	search: added key 'ext_charset' to search-extension to query external databases
+25-Oct-2008 Christian Sommer
+!	updated basic templates according the template guidelines
+24-Oct-2008 Dietrich Roland Pehlke
+#	applied bugfix for ticket #608 (redeclaration of news module)
+23-Oct-2008 Dietrich Roland Pehlke
+!	modified module delete function to provide additional information when module is in use when trying to delete
+!	modified template delete function to provide additional information when template is in when trying to delete
+21-Oct-2008 Matthias Gallas
+#	fixed display issue in news modul
+!	updated show_menu2 to version 4.7
+18-Sep-2008 Thomas Hornik
++	Added captcha-reload
+16-Sep-2008 Thomas Hornik
+#	search: fixed windows-related regex issue
+19-Aug-2008 Matthias Gallas
+!	updated to latest FCKEditor version 2.6.3
+02-Aug-2008 Thomas Hornik
+#	fixed sorting order of search-results
+25-Jul-2008 Thomas Hornik
+#	fixed an issues related to search, changed one SQL inner join (to use USING instead of WHERE)
+!	added $database = new Database(); in front of output-filter
+05-Jul-2008 Thomas Hornik
+#	fixed MODI_DATE/PUBLISHED_DATE issue in news-module. Added PUBLISHED_TIME, removed PUBL_DATE,PUBL_TIME. Thanks to forum-member timorotha
+02-Jul-2008 Christian Sommer
+!	updated to latest FCKEditor version 2.6.2
+01-Jul-2008 Thomas Hornik
+#	page-names with doubled (or more) points can not be handled if php runs as cgi. Thanks to forum member hgi2001.
+29-June-2008 Christian Sommer
+!	applied additional mail check to forgot login form
+28-June-2008 Christian Sommer
+!	class and id attributes in mailto links are no longer ignored by the output filter
+22-Jun-2008 Thomas Hornik
+#	fixed issue with captcha (mt_rand() instead of rand())
+#	fixed bug in search (link to http://.../search/index.php performs a search with string 'unset')
+22-June-2008 Christian Sommer
+!	added output of block number to section admin if no block name is specified
+21-June-2008 Christian Sommer
++	added output of block names to modify pages dialogue if blocks are enabled
+!	updated show_menu2 to version 4.60 (to avoid disappearing menus)
+08-Jun-2008 Thomas Hornik
+#	hebrew-table in charsets-table.php was faultily imported - fixed. Thanks to forum-member iti.
+24-May-2008 Christian Sommer
+!	modified output filter routine to prevent errors if database entries do not exist
+04-May-2008 Thomas Hornik
+!	changed register_backend_modfile() to work with wysiwyg-module, too
+01-May-2008 Thomas Hornik
+#	fixed file-naming issue when old page-names (from before 2.7) contains "&"
+26-Apr-2008 Thomas Hornik
+#	class.admin.php deletes actual query-string while redirection. fixed.
+25-Apr-2008 Matthias Gallas
+#	fixed validiation bug in option fields of form modul
+------------------------------------- 2.7.0 -------------------------------------
+21-Apr-2008 Christian Sommer
+!	set version to 2.7
+#	fixed bug in the PL language file of the JS calendar
++	added some basic functions for module developers
+20-Apr-2008 Thomas Hornik
+#	fix: allow external urls for search-results
+17-Apr-2008 Thomas Hornik
+#	fixed jscalendar's language-files
+16-Apr-2008 Christian Sommer
+#	fixed possible clashes with intro page feature and WB core file /pages/index.php
+15-Apr-2008 Thomas Hornik
+!	revert back to pagename-creation from $page_menu, instead of $page_title
+15-Apr-2008 Christian Sommer
+#	fixed bug introduced with Changeset 826
+14-Apr-2008 Christian Sommer
++	added show_menu2() to pre-installed WB modules (many thanks to Brodie Thiesfield for this great menu function replacment)
+!	allowed tags for multi-lingual module descriptions
+14-Apr-2008 Thomas Hornik
+#	fixed issue with multigroups (level 0 page-creation)
+13-Apr-2008 Thomas Hornik
+!	ASP: off per default. CAPTCHA: removed unneeded $admin. Filename: just convert chars like quote, doublequote, < > & to empty string.
+#	fixed language-files
+10-Apr-2008 Christian Sommer
+!	fixed WB-Link Plugin to work with WB versions below 2.7 ($admin->page_is_visible() only available in WB 2.7)
+09-Apr-2008 Christian Sommer
+!	modified FCKEditor WB-Link Plugin to work also with WB versions below 2.7
+07-Apr-2008 Matthias Gallas
+#	fixed error in german laguage file
+07-Apr-2008 Christian Sommer
++	added the latest FCKEditor v2.60
+-	removed the outdated FCKEditor v2.51
+!	set version from 2.7 (RC3) to 2.7 (RC3a)
+07-Apr-2008 Thomas Hornik
+!	added missing group_id in INSERT-query
+!	removed PHP5 function stripos from installation script
+06-Apr-2008 Christian Sommer
+!	removed some obsolete language variables from news and form module (now defined in global WB language files)
+!	enlarged admin tool icon to match size 50x50px of the other icons
+05-Apr-2008 Matthias Gallas
+!	Moved language variables for edit module CSS from modules language files to core language files
++	Added norwegian translation (Thanks OEH)
+05-Apr-2008 Thomas Hornik
+!	some small fixes: group_id/groups_id-handling, safe_mode-query in install, better work-around for issue with phplib and code-module (removed {})
+#	fixed viewing_groups-handling in /admin/pages/add.php
+!	imported new russian translation from User shlack. Many Thanks
+05-Apr-2008 Christian Sommer
+!	added workaround for template parser class
+!	moved functions to edit module CSS files into the WB core to avoid duplication of code
+!	minor layout change
+!	allowed the character "-" to be used in database names
+04-Apr-2008 Thomas Hornik
+#	fixed: Language-redirect removed query-string from URL
+04-Apr-2008 Christian Sommer
+!	set WB version to 2.7 (RC3) for the next upcoming release candidate
+03-Apr-2008 Christian Sommer
+!	some code clean up in news/form module
+!	small adaption of the edit CSS function file css.functions.php
+!	updated edit module CSS functions to include backend.css into head if possible
+#	fixed bug in Javascript decryption routines of the Output-Filter module
+02-Apr-2008 Matthias Gallas
+#	fixed bug with registration of users are not added to signup group
+02-Apr-2008 Christian Sommer
+#	added handling of missing characters to mailto encryption routines
+!	some code clean-up in News module
+!	fixed some layout issues with Form module (combination with Output-filter)
+!	fixed layout issue with optional subject/body text of encrypted mailto links
+#	fixed bug in the mailto Javascript encryption code of the Output-Filter module
+01-Apr-2008 Christian Sommer
+!	removed typo in English language file
+!	added updated edit CSS functions to the News module
+!	added updated edit CSS functions to the Form module
+31-Mar-2008 Christian Sommer
+#	fixed bug in output filter (mailto links with HTML entities in optional part)
+29-Mar-2008 Christian Sommer
+!	added missing translation to Dutch language file (thanks Bramus)
+28-Mar-2008 Thomas Hornik
+!	Some cleanup in search.php
+!	WYSIWYG: changed field text to LONGTEXT, too.
+25-Mar-2008 Matthias Gallas
+!	Updated Dutch language file (Thanks to Bramus)
+26-Mar-2008 Tomas Hornik
+#	fixed E_NOTICE-message in admin/modules/details.php
+25-Mar-2008 Thomas Hornik
++	search: added search_time_limit in settings (mainly for sites with PHP < 4.3.3 and slow search)
++	search: added missing code to allow query of external data and to process the search data itself
+25-Mar-2008 Matthias Gallas
+#	Fixed missing <body> tag in Admin Interface (ticket #572)
+24-Mar-2008 Matthias Gallas
+!	Updated Danish Language file (Thanks to Achrist)
+! 	Added class nixhier to frontend.css from form and news Modul (required for ASP)
+24-Mar-2008 Thomas Hornik
++	Added RU-language-files, provided by user shlack; converted to entities.
+#	search: great speed-up with large pages - requires PHP >= 4.3.3; small speed-up for PHP < 4.3.3
+#	FCK-Editor: loads large pages faster
+-	removed include/captcha/asp.php. css have to be added to module's css-files.
+23-Mar-2008 Matthias Gallas
+! 	Updated form modul for valid output, removed all javascript (Big thanks to BerndJM)
+17-Mar-2008 Thomas Hornik
+#	fixed an issue with utf8_check() (too slow with many ~100KB pages)
+15-Mar-2008 Thomas Hornik
+#	menulink: link can be menulink or subpage of menulink, too
+#	call_captcha: added parameter 'style', fixed some issue with parameter 'image' and text-style captchas
+13-Mar-2008 Christian Sommer
+! 	adjusted error/warning templates to the updated backend layout
+13-Mar-2008 Matthias Gallas
+! 	replaced one icon in admin interface
+12-Mar-2008 Matthias Gallas
+# 	fixed loading time and some display issues in IE6 of the new admin interface
+!	tweaked the new admin interface a little bit
+12-Mar-2008 Christian Sommer
+! 	adjusted background color of installation and upgrade script
+! 	set version number to 2.7 (RC2) for the upcoming second release candidate
+! 	removed hardcoded /admin folder strings from WB core files where possible
+! 	added WB home folder fix proposed by the forum member spawnferkel (thanks)
+! 	defined <strong> and <em> instead of <b> and <i> as default tags
+12-Mar-2008 Thomas Hornik
++	CAPTCHA: added parameter to call_captcha (can be one of: 'image', 'input' or 'text')
+11-Mar-2008 Christian Sommer
+#	fixed issue with output filter (all .@ in descriptive mailto part: >xxxxx</a> were replaced; now restricted to emails)
+#	fixed issue with WYSIWYG pages (appears if backend language and page frontend language differs)
+08-Mar-2008 Thomas Hornik
+#	fixed issue with news and end-date
+04-Mar-2008 Christian Sommer
+#	fixed issue with smart view URL link
+03-Mar-2008 Thomas Hornik
+#	fixed an issue with text-captcha (default text got saved). Changes default text.
+#	fixed an issue with highlighting
+02-Mar-2008 Thomas Hornik
+#	added missing text in language-files
++	added missing sorting to language dropdown in admin/pages/settings.php
+01-Mar-2008 Thomas Hornik
+#	fixed ticket #562, applied changes from user tavitar with some own additions
++	added check for AddDefaultCharset to install
+29-Feb-2008 Thomas Hornik
+#	fixed issue in pagename generation if AddDefaultCharset is set (as work-around).
+28-Feb-2008 Thomas Hornik
+#	fixed hebrew transliteration-table. Thanks to forum-member iti.
+28-Feb-2008	Christian Sommer
+#	added bugfix from the forum member tavitar to fix an issue with multiple groups (module permission do not add up properly)
+25-Feb-2008	Matthias Gallas
++	added missing Dutch language files for core modules
+24-Feb-2008 Thomas Hornik
+#	issue with menulink in upgrade-script. Fixed.
+23-Feb-2008 Christian Sommer
+!	suppressed warnings in initialize.php if constant already defined; modified upgrade script to make FCK the new default editor
+#	fixed bug in upgrade script (WBMailer setting)
+22-Feb-2008 Christian Sommer
+#	some layout changes on the upgrade-script, fixed error in precheck
+#	restricted database name and table prefix to "a-zA-Z0-9_" (avoid problems with non quoted table/field names)
+20-Feb-2008 Thomas Hornik
+!	added workaround for language sorting-problem
+20-Feb-2008	Christian Sommer
+!	added WYSIWYG DB update and missing WBMAILER settings to upgrade script (added some status messages)
+!	modified upgrade script and suppressed headers already send message (avoid issues with error reporting E_ALL)
+#	added the FCKEditor module PHP connector fix found by the forum member Luisehahne (thanks man)
+!	Updated upgrade script (added WB2.7 basic styles, pre-checks and disclaimer)
+19-Feb-2008	Matthias Gallas
+!	Updated upgrade script
+!	Changed language sorting from directory to name (needs additional to be escaped!)
++	added new languages to install script
+#	fixed some issues and typos in languagefiles
+18-Feb-2008 Thomas Hornik
++	Converted and added some old language-files (BG, CS, PL, RU)
+18-Feb-2008	Christian Sommer
+#	Fixed two broken links
+!	Modified news module to create a default index.php during installation (directory spoofing)
+17-Feb-2008	Matthias Gallas
+-	Removed colloquially german language files as the filename causes issues
+17-Feb-2008	Christian Sommer
+!	removed German Umlauts in some language file (PHP comments)
+#	fixed language bug (backend language switched to the pages language viewed in frontend)
+16-Feb-2008	Thomas Hornik
+!	updated upgrade-script (menulink)
+13-Feb-2008 Thomas Hornik
++	allow externl links in menulink-module
+#	fixed an highlighting-issue: highlighting a page with more than one sections mangled umlauts in the second to last section.
+10-Feb-2008 Matthias Gallas
+#	fixed some errors in standard german language file
++	added new colloquially german language file
+10-Feb-2008 Thomas Hornik
+#	CAPTCHA: Wrong text for calc_ttf-captcha. 
+10-Feb-2008 Christian Sommer
+#	fixed E_NOTICE warning with already defined module frontend constants
+-	removed all stuff other than page_content from the blank template
+!	adapted color for onmouseover effect
+!	added disclaimer to the upgrade-script as the script is not sufficiently tested yet
+!	made Website Header field in Settings visible per default
+!	modified all templates (display Website Header, use show_menu instead of page_menu)
+!	added highlighting of active input elements to all WB backend areas; changed some colors
+!	removed hover highlighting of input fields to avoid possible confusion
+!	added visualization of wrong/empty input fields
+#	fixed a bug with re-enter admin password
+09-Feb-2008 Christian Sommer
+!	modified some colors and CSS definitions of pages, media and section interface
+#	output_filter: fixed bug in regular expression (eats up characters in mailto links)
+#	output_filter: removed word boundary from mailto regex part
+#	fixed bug in menu_link module (IE 7 did not show the select boxes at all)
+#	fixed bug in user signup
+!	output_filter: added word boundary for the mailto regex part
+09-Feb-2008 Thomas Hornwik
+!	jsadmin: added latest changes from swen, fixes most (or all?) issues.
+08-Feb-2008 Matthias Gallas
++	added kewyword id to all new files
+08-Feb-2008 Christian Sommer
+-	Removed admin module mail_filter
++	Added revised version of the output filter module
+08-Feb-2008 Thomas Hornik
+!	module news: set focus on captcha-field if user have to re-enter captcha
+!	Changed maxlength of captcha-fields - don't tell the bots how many chars we want to have.
+-	Removed unused function is_access_denied() from search
+04-Feb-2008 Thomas Hornik
+!	email-addresses are excluded from search-results page.
+#	Fixed possible XSS in account/login.php and forgot-form.php
+04-Feb-2008 Christian Sommer
+#	allowed usage of tags in settings fields: website_header, website_footer
+03-Feb-2008 Thomas Hornik
+#	out-of-date default page isn't shown anymore, instead shows next public page.
+#	fck_wbmodules.php: foreign privates pages in dropdown, fixed.
+03-Feb-2008 Matthias Gallas
++	added kewyword id to all new files
+02-Feb-2008 Christian Sommer
+#	fixed wrong redirect in /admin/images
+02-Feb-2008 Thomas Hornik
+!	search shows email-addresses, even if email-filter is activated (on page with highlighting). Fixed.
++	Added missing text in languages files for jscalendar
+!	settings: pages-directory '/' will be converted to '' (empty string) on save.
+!	changed last remaining call to my_htmlspecialchars() to htmlspecialchars()
+#	fixed path in jscalendar-css
+01-Feb-2008 Christian Sommer
+#	Added default index.php to all folders (directory spoofing)
+01-Feb-2008 Thomas Hornik
+#	Added some missing add_slashes(), get_post_escaped(), and strip_tags() for $_POST, $_GET and $_REQUEST-data. Also for $_SERVER['PHP_SELF'].
+#	Fixed possible XSS-vulnerability in wb/search/search.php
+31-Jan-2008 Thomas Hornik
+!	Adjusted clock-red icon to match wb colors
+#	admin/pages: the parent dropdown-list in index.php and settings.php showed foreign private pages, too. Fixed.
++	Added multi-group to upgrade-script
+30-Jan-2008 Christian Sommer
+#	fixed bug with text Captcha (input was restricted to 10 chars.) and a small layout issue
+30-Jan-2008 Thomas Hornik
+#	registered pages didn't appear in menu. fixed.
+!	Updated upgrade-script. (Some upgrades still missing)
+29-Jan-2008 Thomas Hornik
+#	strtotime()'s behavior differ in PHP4 and PHP5.
+	Had to fix some issues in admin/pages/sections and module news.
+#	Security bugfix: Text file for text-captcha was world-readable. Moved to database.
+#	Text-captcha: empty line in text file, following a question, was accepted as answer. Fixed.
+28-Jan-2008 Matthias Gallas
+#	Replaced all special chars in language files with htmlentities or unicode
++	Added some missing lines in language files
++	Added missing keyword Id
+28-Jan-2008 Christian Sommer
+#	fixed issue with top bar icon alt tag
+!	added some more backend layout modifications
+!	corrected bug in NL.php language file
+!	added missing session cookie forgotten in Changeset 593
+!	added possibility to select the default backend language during installation process
+!	Re-introduced Changeset 593 (filename in pages/ from page_title instead of menu_title)
+#	Fixed some bugs in the Javascript Admin modul
+28-Jan-2008 Thomas Hornik
++	Allow a user-supplied From-Name in form-settings for email und success-email.
+!	changeset 627: menu_link and search/search.php needs some minor changes, too.
++	Added Text-CAPTCHA on request. The captcha-text will be stored in temp/.captcha_text.txt
+27-Jan-2008 Christian Sommer
+!	fixed CSS background color of the installer CSS
+!	replaced static text with variable text from language file
+!	introduced the WB 2.7 backend style developed by Michael Brinsteiner (escpro), thanks man
+!	added missing ID tags
+27-Jan-2008 Christian Sommer
+!	added missing ID tags
+!	added default language for users to avoid empty language fields
+27-Jan-2008 Matthias Gallas
++	added kewyword id to new file
+#	Fixed some spelling errors in german language file
+27-Jan-2008 Thomas Hornik
+!	Module form: user supplied input isn't lost on captcha-failure anymore.
+#	fixed 100%-cpu-load-event in CAPTCHA admin-tool.
++	Added Calc_ttf_image CAPTCHA.
+!	Changed captcha/captcha.php to use table-layout for CAPTCHA.
+!	Some minor changes in CAPTCHA-code.
+!	Added some text to CAPTCHA admin-tool.
+#	Module form: dropdown "success page" listed foreign private pages, too. Fixed.
++	Added preview-images for CAPTCHA.
+!	Improved security: CAPTCHAS can't be loaded from outside WB
+!	CAPTCHA ttf_image: added variant. Adjusted character-pool and one background for better readability.
+26-Jan-2008 Christian Sommer
+!	changed WYSIWYG content field from text to longtext (allows more than 65'534 characters) 
++	Added Javascript Admin module (developed by Stepan Riha, adapted for WB2.7 by Swen Uth)
+26-Jan-2008 Matthias Gallas
+#	fixed bug in Javascript Admin module
++	Added new language files
++	Added keywords to files where they are missing
+26-Jan-2008 Thomas Hornik
+!	fixed some issues with CAPTCHA and ASP. Adjusted baseline of '*' in supplyed fonts to meet
+	baseline of numbers. Added counter to ttf_image generation-loop. Removed now unneeded GD-lib verification.
+	Improved ASP in news-module.
++	module news: added publish_until field to control the visibility of a news-posting by date and time
+!	added strongly "condensed" fonts with many intersections for ttf-CAPTCHA as default fonts.
+	It should be very difficult for spam-bots to recognize intersected characters.
+25-Jan-2008 Christian Sommer
+!	removed changes introduced with changeset 593 (we need to think off if we want to implement that feature)
+25-Jan-2008 Thomas Hornik
++	Added new CAPTCHA. Adapted core: signup and modules: news and form.
++	Added Advanced Spam Protection (ASP) to core: signup and modules news and form.
+#	module news: it was possible to post comments to postings with commenting disabled
+	or to inactive postings. Fixed
+24-Jan-2008 Thomas Hornik
+!	Generate filename in pages/ from page_title instead of menu_title.
+24-Jan-2008 Christian Sommer
+#	fixed bug in Codepress integration (if codepress framework not installed)
++	added language support to all integrated modules (except for news and form module)
+#	fixed another E_NOTICE warning
+24-Jan-2008 Matthias Gallas
++	Added keywords to files where they are missing
+23-Jan-2008 Christian Sommer
++	Added German language file for WB 2.7
+22-Jan-2008 Christian Sommer
++	Added language support for the Admin tools (backup, reload, mail_filter)
+-	Removed all admin tool text outputs from global language file to module language files
+!	Introduced language support for the overview page of the Admin tools
++	Added function get_variable_content to allow extraction of variable content without including files
+!	Changed language support for Addons -> Moduls -> Details
+22-Jan-2008 Matthias Gallas
++	Added keywords to new mail filter files
+22-Jan-2008 Thomas Hornik
++	manage-sections: changed calendar-icon to clock-icon, added second icon to empty date-field.
+21-Jan-2008 Christian Sommer
+!	Removed the manage section icon from the page admin (sections managed by publish by date function) 
+#	Fixed bug with the edit module CSS file implementation (IE7, Opera)
+21-Jan-2008 Thomas Hornik
++	Unique session-identifier for each website baker installation. fixes #354
+20-Jan-2008 Christian Sommer
+#	fixed E_NOTICE-warning in save.php when input data was wrong
++	added the new admin tool email output filter which allows to transform
+	emails before displaying them on the frontend
+20-Jan-2008 Thomas Hornik
+!	upgrade-script.php: fixed mysql_error() handling
+!	upgrade-script.php: added code to update menu_links
+#	fixed a typo in upgrade-script.php
+!	updated admin/pages/sections.php to changed jscalendar-api from changeset 571
+!	module menu_link: after adding a menu_link, the anchor dropdown shows "#"; fixed 
+#	fixed E_NOTICE-warning in news-module (about SECTION_ID in comment.php)
+19-Jan-2008 Christian Sommer
+!	Reduced the success time out and set WYSIWSY background to white
+#	Fixed some errors in form module (only in conjunction with E_ALL)
+!	Added support to configure the mailer settings via the backend
+19-Jan-2008 Matthias Gallas
+#	Fixed bug in news modul with missing variable PAGE_DIRECTORY
++	Added keywords to new files
+19-Jan-2008 Thomas Hornik
+-	Module news: removed old calendar
++	Module news: adapted news to use the new include/jscalendar
++	added installation-instructions to include/jscalendar
+#	Module code: curly backets get deleted by pparse() from phplib. fixed
++	Module menu_link: added dropdown-listbox to select anchor
+!	upgrade-script: added code to convert old menu_links to new ones (partly)
+18-Jan-2008 Matthias Gallas
+!	Updated news modul with features from the advanced news modul
+!	Updated form modul with features from the advanced form modul
+#	Fixed hardcoded /pages issue in intro page feature
++	Added example .htaccess to parse .html files, fixed bug in changeset 555
+!	Revoked parts of changeset 547 and again introduced changeset 540
++	Added keywords to modules/fckeditor and all other new files
+18-Jan-2008 Thomas Hornik
+#	fixed two E_NOTICE-warnings in admin/pages/index.php
++	added new module-based search-function
++	added new publish-by-date code
+17-Jan-2008 Christian Sommer
+#	fixed bug in frontend login and multiple groups (only in conjunction with E_ALL)
+!	removed the PAGE_EXTENSION from frontend login
+17-Jan-2008 Matthias Gallas
+#	Reintroduced changes from changeset 520 and 540 wich where overwritten 
+	by changeset 546
+#	Revoked changeset 541 end removed all PAGE_EXTENSION variables and the related
+	option in WB settings as this function only works on Apache Servers
+	together with .htaccess and mod_rewrite
++	Added keywords to file menu_link/uninstall.php and new admintools files
+17-Jan-2008 Christian Sommer
+!	added the "users in multiple groups" feature (closes parts of ticket #546)
+16-Jan-2008 Thomas Hornik
+!	changed admin/pages/save.php to allow hidden config-elements in table search.
+!	changed module menu_link: added table mod_menu_link, fixed page-deleting-bug,
+	fixed odd behavior in case of menu_link as default-page.
+#	changing PHP-error-level within website baker does not work - fixed (fixed ticket 532)
+14-Jan-2008 Matthias Gallas
+#	Replaced hardcoded .php with the variable PAGE_EXTENSION for the use in pagenames.
+	(!!Attention!! To get extenions other than .php working additional fixes are necessary!)
+#	Replaced the variable PAGE_EXTENSION with hardcoded .php on all places where the
+	pathes points to WB Corefiles with the page extension .php
+#	Replaced hardcoded text in login.php with language variables (fixes ticket 386)
+14-Jan-2008 Christian Sommer
+!	added a missing </tr> tag
+#	re-introduced bugfix of Changeset 472 (fixes ticket 402) accidentally 
+	removed by Changeset 529 (enhanced pages admin)
+13-Jan-2008 Christian Sommer
+#	moved administration tools from Settings to the new section Admin-Tools
+#	this bugfix closes the ticket 529 (WB upgrades modules with identical version)	
+!	increased redirection time after success message, corrected HOME link of the login panel
+!	updated PHPMailer framework to version 2.0.0 (/include/phpmailer)
+#	this bugfix closes ticket 412 (direct call of admin/settings/save.php clears database)
+#	fixed error with redirection to admin panel after installation
+12-Jan-2008 Christian Sommer
+!	introduced smart URL detection for the 'View' menu in the WB backend
+	(if page_id is set, redirect to this page instead of the root)
+!	introduced the enhanced pages admin dialogue (thanks to icouto)
+11-Jan-2008 Christian Sommer
++	added the FCKEditor module files missing in Changeset 527 (/modules/fckeditor)
+-	removed the hmtlarea files in /modules/htmlarea
+!	set the fckeditor as the new default editor /install/save.php
+!	Updated function: register_frontend_modfiles in /framework/frontend.functions.php
+	(added constants MOD_FRONTEND_CSS_REGISTERED, MOD_FRONTEND_JAVASCRIPT_REGISTERED)
+11-Jan-2008 Matthias Gallas
+!	Update codepress to Version 0.9.6
+!	Update phplib to Version 7.4a
+09-Jan-2008 Matthias Gallas
+!	Upgrade pclzip to the newer more php5 complaint version 2.6, see ticket #526
+#	Fixed ticket #542 (Thanks to Thorn)
+23-Dec-2007 Matthias Gallas
+!	Changed all copyright notices to include now 2008
+21-Sep-2007 Matthias Gallas
+#	Fixed a typo in /framework/frontend.functions.php cause that websites using
+	the new register_frontend_modifles() functions do not validate
+24-Jan-2007 Christian Sommer
+!	Replaced some core files to allow configuration of wbmailer via admin settings panel
+------------------------------------- 2.6.7 -------------------------------------
+02-Jan-2007 Christian Sommer
++	Added missing converting file for changeset [504]
+------------------------------------- 2.6.6 -------------------------------------
+01-Jul-2007 Matthias Gallas
+#	Fixed converting issue with some ISO-charsets and speeded up converting on large pages (thanks to Thorn)
+01-Jul-2007 Ryan Djurovich
+#	Fixed bug where error message not displayed when script fails to create a page
+#	Fixed bugs introduced in [484]
+14-May-2007 Matthias Gallas
++	Added support for ISO-8859-6.(Thanks to thorn)
+12-May-2007 Christian Sommer
++	Replaced functions page_css and page_javascript by register_frontend_modfiles
++	Added function register_backend_modfiles to allow backend modules to use optional CSS and JS files
++	Added the JS framework codepress to allow syntax highlighting for JS, HTML, PHP code (textarea)
++	Added the new function register_frontend_modfiles to the built in templates
+08-May-2007 Matthias Gallas
++	Added wrapper to functions.php if mb_string is not available (Thanks to thorn)
++	Added new functions page_css and page_javascript to the built in templates
++	Added search highlight class to css files of the built in templates
+30-Apr-2007 Matthias Gallas
+#	Fixed ticket #392; root_parent not being set correctly (Thanks to eggsurplus)
+10-Apr-2007 Matthias Gallas
++	Optimized search and highlighting funktions (Thanks to thorn)
+03-Apr-2007 Matthias Gallas
+#	Fixed a bug in menulink; if you deleted a menulink page the linked page was also deleted
+	in the pages directory (Special thanks to "Funky_MF" for the fix)
+01-Apr-2007 Matthias Gallas
+#	Fixed issues with some languages when UTF8 is used. Removed all htmlentites
+	from the code (revoked changeset 396) and added new functions instead. Adapted the
+	search and the highlighting to use the new functions. With this changes WB can now
+	be used with charset UTF8 for all languages. Very special thanks to Thorn who wrote
+	and tested this changes.
+12-Mar-2007 Matthias Gallas
++	Added multilingual support to search
+03-Mar-2007 Matthias Gallas
++	Added new function for highlighting search results in the content area
+	(Special thanks to "thorn" and "Funky_MF")
+#	Fixed some issues in search with special chars
+	(Special thanks to "thorn" and "Funky_MF")
+22-Feb-2007 Christian Sommer
+#	Fixed bug in changeset 428 (page files were not deleted in /pages folder due to a typo in wb/framework/function.php)
+16-Feb-2007 Christian Sommer
+!	Suppressed PHP warnings and errors when reading empty intro.php
+16-Feb-2007 Christian Sommer
+#	Applied fix to enable parsing of PHP code in the intro.php 
+12-Feb-2007 Christian Sommer
+!	Added functions page_css and page_javascript which allow to include optional
+	module files module.css and module.js into the <head> section. This allows to 
+	create valid (X)HTML, as CSS definitions of modules are included in the head section
+12-Feb-2007 Christian Sommer
+!	Security enhancement (reduced number of login trials from 50 to 3)
+02-Feb-2007 Matthias Gallas
+#	Applied fix for ticket #380 (Thanks to pcwacht)
+30-Jan-2007 Ryan Djurovich
+#	Applied fix for ticket #376
+29-Jan-2007 Matthias Gallas
++	Added new variable $MODULE_DESCRIPTION wich allows to have optional a language
+	specific description of the modules in the language files of the modules.
+21-Jan-2007 Matthias Gallas
+#	Fixed issue in the search table entries of form modul
+13-Jan-2007 Matthias Gallas
+#	Fixed some bugs in rss.php
+07-Jan-2007 Matthias Gallas
+#	Fixed error when uninstalling the news modul
+02-Jan-2007 Matthias Gallas
++   Added id keywords to all missing files
+#	Fixed issue with Permissions for pages sections
+27-Dec-2006 Matthias Gallas
+#	Fixed form modul stores empty records
+------------------------------------- 2.6.5 -------------------------------------
+25-Dec-2006 Ryan Djurovich
+!	Changed links to WB help website
+24-Dec-2006 Matthias Gallas
+#	Fixed some minor javascript errors in admin (thanks to pcwacht)
+#	Fixed root_parent doesn't get updated when moving item in menu (#305)
+!	Changed all copyright notices to include now 2007
+23-Dec-2006 Matthias Gallas
+#	Fixed IE allows to set a page as parent of itself (#320)
+#	Fixed problem with Page Title has to be escaped (#287)
+#	Fixed the possibility to call the index.php of the templates directly in the browser (#291)
+21-Dec-2006 Matthias Gallas
+#	Fixed missing message when adding a site without page title (#300)
+21-Dec-2006 Ryan Djurovich
+#	Fixed bug with captcha script (#346)
+20-Dec-2006 Matthias Gallas
+#	Fixed Return to Search Results Page (#365)
+!	Set Version to 2.6.5
+-	Removed Changeset 365 because this will be a part of WB 2.7.x
+#	Fixed a little typo error in class.admin.php (#364)
+26-Nov-2006 Ryan Djurovich
++	Added new script that could possibly be apart of 2.7.x as a replacement
+	for having the pages directory 
+17-Nov-2006 Matthias Gallas
+#	Fixed fatal error in line 46 news/comment.php (thanks to eki)(#358)
+15-Nov-2006 Matthias Gallas
+#	Fixed again intropage doesn't work (#71)
+20-Oct-2006 Matthias Gallas
++	Added phpmailer class (thanks to doc)
++	Added Remember-expanded-pages-in-admin (thanks to ephraimt)
++	Added List sorting in admin area (thanks to rsmith)
+#	Fixed table width 100% are wrong displayed in container templates
+	when IE is used (#350)
+#	Fixed large space between menupoints in IE (#349)
+#	Fixed Website description is not displayed when no page description
+	available (#348)
+#	Fixed group images in news modul cannot be stored (#342)
+#	Fixed Typo in form/save_field.php (#341)
+#	Fixed files in /pages/posts folder are not deleted (#340)
+#	Fixed specialchars problem in the news modul (#339)
+#	Fixed news modul stores empty records (#338)
+#	Fixed Captcha didn't work in news comments (#337)
+#	Fixed various php notices (#334)
++	Added new upgrade_function (thanks to kozmoz)
+#	Fixed addons table isn't updated when a modul is updated (#332)
+#	Fixed spelling errors in the signup2.php (#330)
+#	Fixed MySQL 5.x missing default values for INT fields in all system
+	and modules tables (#329)
+#	Fixed installer does not insert admin user (#328)
++	Added support for getting page ID of page that referred search
+	request (#327) (thanks to brofield)
+#	Fixed search results generate invalid XHTML and notify warnings (#326)
+Stefan Braunewell
+#	Fixed Field 'last_reset' doesn't have a default value (#313)
++	Added get_post_escaped to wb class which automatically calls add_slashes
+	on get_post output and used it in form/save_field.php
+------------------------------------- 2.6.4 -------------------------------------
+20-May-2006 Ryan Djurovich
+#	Fixed security issues related to #237
+#	Fixed typo in news save comment page (#282)
+#	Fixed typo in news delete post page (#283)
+!	Added multi-submission protection to form module (#119)
+#	Added notice for when PHP Session Support appears to be disabled in installer,
+	even if it is enabled and the problem actually lies in the users browser (#154)
+19-May-2006 Ryan Djurovich
+#	Fixed problem in forgotten login form where email field is too short (#207)
+#	Fixed typo in forgotten login details email (#190)
+15-May-2006 Stefan Braunewell
+#	Fixed security issues (#237)
+03-May-2006 Stefan Braunewell
+#	Fixed problems with pre-2.6.0 modules in section list
+#	Fixed e-mail bug caused by From: headers in internal mail function calls
+	(#189)
+#	E-mail validation in install script now accepts new top-level domains
+	(#162)
+#	Error status is now overwritten by next database query (#182)
+#	Fixed obscure problem in htmlarea install script
+------------------------------------- 2.6.3 -------------------------------------
+19-Mar-2006 Stefan Braunewell
+#	Fixed ticket #146: problems removing groups from viewers list of a page
+16-Mar-2006 Stefan Braunewell
+!	Changed link target selection. Now self, top and new. (Ticket #145)
+#	Fixed ticket #143. Charset setting is now used in admin login and forgot
+	password pages.
+#	Some changes to the SQL code in the install script for improved 
+	compatibility with new MySQL versions
+#	Fixed ticket #134 - error on browsing media.
++	Improved backup module: new choice between full database or WB-related
+	backup.
+#	Fixed ticket #141 - admin now sees all folders in media
+#	Fixed e-mail sending problems due to additional parameter in mail call.
+#	Applied fix regarding ticket #138: new users now get deleted if
+	sending e-mail fails.
+#	Fixed ticket #137: Last Reset timer not reset in frontend forgotten 
+	password process
+#	Removed duplicate expression from modules/news/install.php which caused
+	problems in installation
+
+01-Mar-2006 Stefan Braunewell
+#	Fixed ticket #68 - Safari problem with displaying all parents.
+#	Fixed ticket #136 - mailing forgotten password in admin login screen leads 
+	to fatal error.
+!	Renamed tag [PROCESSTIME] to [PROCESS_TIME]
+------------------------------------- 2.6.2 -------------------------------------
+03-Feb-2006 Stefan Braunewell (very big special thanks to John and Alex)
+#	Fixed ticket #104 - commas in form field descriptions not allowed.
+#	Cookie REMEMBER_KEY wasn't cleared in account/logout 
+	and expiration date is now set to time in the past.
+#	Smart login not working.
+!	Changed mail calls to new function $wb->mail.
+#	Form: ticket 124 added captcha settings check 
+#	Ticket 118 added formfield type to check for email/text 
+#	Ticket 115 changed comparision /modules/form/view.php 
+#	Added correct timecheck in form submissions
+!	Changed captcha.php call to include timestamp
+!	Changed the e-mail validation code and added a mail function to class wb.
+!	Forgotten password: if sending of e-mail fails, restore old password.
+	Ticket #110
+!	Added more charset options. Ticket #102 - thanks to ruebenwurzel!
+!	Character encoding setting also affects admin backend.
+	Mentioned in ticket #102.
+!	Reintroduced page languages setting. If switched to off, page
+	languages are only used to determine the language file for the
+	universal texts. If on, displayed page and menu are affected by
+	the language session variable.
+#	Fixed bugs in show_breadcrumbs code and added parameter "depth"
+	to set the number of levels to be show.
+#	Fixed a bug where access settings of registered and private pages
+	were displayed incorrectly.
+#	Fixed captcha being cached.
+#	Added an exit call after every heading("Location:...")
+	redirector to prevent unwanted execution of code.
+#	Bug #122. Replaced empty field check by check that setting name is
+	not "wb_version".
+#	Replaced all remaining occurrences of '/media' by MEDIA_DIRECTORY - bug #108.
+#	Fixed bug #99 and two additional instances of typo 
+	catpcha instead of captcha.
+#	Fixed some typos
+#	Fixed some notices and warnings.
+#	Fixed bug #105 - back buttons in addon detail pages not editable.
+!	Replace 'admin' by 'wb' in all account pages. 
+!/#	Moved print_success and print_error code to class.wb.php.
+	Added correct parameters to these functions in account pages. 
+------------------------------------- 2.6.1 -------------------------------------
+12-Dec-2005 Ryan Djurovich
+#	Fixed security vulnerability in class.login.php
+#	Fixed typo in EN language file
+#	Fixed captcha problems (when feature is disabled) in form module and sign-up
+!	Added charset encoding to admin templates
+!	Added extra code to check for selection of addon upon uninstalling
+#	Fixed bugs in RSS news feeder
+#	Fixed bug with PAGE_DESCRIPTION not being set on any page
+------------------------------------- 2.6.0 -------------------------------------
+28-Nov-2005 Ryan Djurovich
++	Added default charset option to (advanced) settings
+#	Form module email fields now have email address validation
+#	Fixed spacing in form submissions
+27-Nov-2005 Ryan Djurovich
++	Added captcha verification to sign-up form
++	Added Captcha to News module
+24-Nov-2005 Stefan Braunewell
+!	Applied aportale's patch to use label instead of javascript toggle code
+20-Nov-2005 Ryan Djurovich
+!	News mod now hides read more link if no need for it (see ticket #56)
++	Added support for mailto: links in the menu link mod
+#	Added direct-access redirection on some files (see ticket #37)
++	Added extra characters to convert.php (see ticket #64)
+#	Fixed ticket #65 (last_reset check in account/forgot_form.php)
+29-Sep-2005 Ryan Djurovich
+!	Cleaned up form buttons in Settings
+!	Moved some options into Advanced Settings
+#	Semi-disabled "separate" page trash option
++	Created a backup module/tool for backing-up the database
+	(thanks to John (pcwacht) for the original code)
++	Created new "blank template", which can be used in case where you don't
+	want anything wrapping page-content.
+19-Sep-2005 Ryan Djurovich
++	Added _license field for all add-ons to specify a license
+!	Renamed _designed_for variables (for all addons) to _platform
++	Created addons table for faster internal referencing of installed addons
+!	Fixed some links, including the "Help" button in Admin
+#	Used nl2br to display body correctly when viewing form-submissions
+15-Sep-2005 Stefan Braunewell
++	Added table module with columns 'name','type' and 'directory' as an
+	index.
++	Added entry to settings table 'wb_version' which holds the version
+	number and can be utilized in future upgrade scripts.
+!	Added upgrade functionality also for templates and languages.
+#/!	Template/modules installation now respects paths.
+!	Moved updates from config.php to database.
+	Created initialize.php (required by config.php) to read settings.
+11-Sep-2005 Stefan Braunewell
+!	HTMLArea is now a module instead of a core component. Files moved
+	from "include" to "modules".
++	Implemented Installation of modules on top of an older version. This is 
+	done via checking $module_version. Instead of install.php, upgrade.php
+	is then called if it exists in the module package. 
+	For module developers: $module_version and $new_module_version are 
+	accessible in upgrade.php to find out what upgrade steps need to be taken.
+!	Changed column names in mod_news_posts from short,long to content_short,
+	content_long.
+09-Sep-2005 Stefan Braunewell
++	Added new advanced setting "Rename Files On Upload". File extensions can be
+	given so that respective files will have a ".txt" appended on media upload.
+#	Fixed "None found" message bug when user has no top level page edit
+	rights.
+#	Fixed missing parent option 'none' - ticket #12 - and a minor scope bug.
++	Added breadcrumbs code. Call using $wb->breadcrumbs().
++	Added utf-8 character encoding meta tag into all stock templates.
+#	Fixed bug when changing a page's parent
+!	Changed the way blocks are treated. Added new frontend class attribute
+	default_block_content that controls what is shown on pages such as
+	search, login, etc. (Ticket #16)
++	Added support for WYSIWYG editor modules (wysiwygmod)
++	When trying to access a registered page, user is automatically redirected
+	there on successful login.
+#	Fixed various issues with system search (mainly related to stripslashes()
+#	Removed stripslashes() in many places in the code. Added check for
+	magic_quotes_gpc to new wb class method add_slashes(). Now database contest
+	is independent of magic_quotes setting..
+05-Sep-2005 Stefan Braunewell
+#	Fixed bug concerning direct access of preferences page.
+#	Reworked page visibility and menu item visibility code (frontend login
+	problem).
+#	Pages in link list in htmlarea popup are now correctly ordered.
+#	Fixed bug where group with existing name can be added.
+04-Sep-2005 Ryan Djurovich
++	Added and RSS newsfeed script to the News module
+04-Sep-2005 Stefan Braunewell
+!	Rewrote menu function. Parameters are now given as attributes to frontend class.
+#	Fixed some occurrences of potential direct access path disclosure
+#	Added directory check to browse.php to prevent xss exploit by trusted users.
+!	Updated code to reflect move to Subversion repository system.
+27-Aug-2005 Stefan Braunewell
+#	Fixed bugs 4,5,6,8,9 in bug tracker
+!	Removed 'USER_LANGUAGE' and 'GET_LANGUAGE' constants.
+	A GET['lang'] now sets the session language variable.
+26-Aug-2005 Stefan Braunewell
+!	Moved redundant code into the new class functions. Created 
+	'compatibility.php' for backward compatibility with
+	modules and templates. Variables and functions can still be accessed
+	in the old way.
+!/+	Reorganized core frontend files, added new base class 'wb' from
+	which 'admin' and the new 'frontend' class inherit. Moved all frontend
+	function into new class. Completely rewrote core index.php.
+	Now all variables and functions that are available to templates and
+	modules are attributes and methods of the frontend and the wb classes
+------------------------------------- 2.5.2 -------------------------------------
+23-Jun-2005 Ryan Djurovich
+!	create_access_file now creates all parent directories if needed
+#	Fixed bug when moving page with subpages to another level
+#	Fixed bug when saving "Settings" (in Admin) on Windows/IIS
+#	Fixed bug where query was not setting error correctly in class.database.php
+22-Jun-2005 Ryan Djurovich
+#	Fixed bug where template permissions were not saved when a adding group
+21-Jun-2005 Ryan Djurovich
+#	Added htmlspecialchars for modifying WYSIWYG, news, etc. modules (Bug #78)
+#	Fixed language problems in some area's of Admin. (Bug #70)
+#	Added a space in website/page keywords (Bug #69)
+#	Fixed bugs on settings2.php (Bug #52)
+!	Links inserted with HTMLArea now use [wblink--PAGE_ID--] instead of raw URL
+13-Jun-2005 Ryan Djurovich
+#	Fixed bug (#88) with news module
+!	Title of Administration login page now taken from language file (Bug #72)
+#	Fixed redirection admin/home to admin/start on admin/index.php
+#	Fixed bug with forgotten password page in admin (Bug #81)
+25-Apr-2005 Ryan Djurovich
+#	Fixed numerous bugs with module uninstallation
+#	Fixed bug when uploading files in Administration -> Media
+!	Installer no-longer requires you to accept the GNU GPL
+------------------------------------- 2.5.1 -------------------------------------
+16-Apr-2005 Ryan Djurovich
+#	Fixed two bugs with account login/logout
+------------------------------------- 2.5.1 -------------------------------------
+15-Apr-2005 Ryan Djurovich
+#	Fixed bug where non-english characters can get used in page filenames. Many
+	measuers have been added (including a new file: wb/framework/convert.php),
+	to prevent any possible errors that can occur in page filenames.
+#	Fixed invalid meta tags in stock templates (meta tags were not closed)
+#	Removed lines 401, 402, and 425 of wb/index.php - not needed
+#	Fixed bug where search and account pages are shown in every block
+	that is in a template
+#	Fixed numerous bugs with media home directories feature
+10-Apr-2005 Ryan Djurovich
+#	Fixed bugs in account/login.php and logout.php where users
+	gets redirected to /pages
+------------------------------------- 2.5.0 -------------------------------------
+08-Apr-2005 Ryan Djurovich
+-	Removed section language feature
++	Added page language feature (replaces need for sections language feature)
+#	Fixed bug where pages using menu_link module can have the URL changed
+-	Page directory no longer stored in link field in pages table, it is now added
+	when the page_link function is called - this makes changing the pages
+	directory much easier and quicker
+!	Pages with visibility of "none" are now no longer directly accessable
++	Added new visibility setting "hidden", acts exactly like none did previously
+!	Template info file can now specify number of menu's available and relative names
+!	Template info file can now specify number of blocks's available and relative names
+------------------------------------- 2.4.3 -------------------------------------
+07-Apr-2005 Ryan Djurovich
+#	page_filename function has been rewritten using str_replace
+	function, which should be faster and will allow characters
+	from other languages into filenames
+!	Created new media_filename function, which is now used
+	by all media functions (create,upload,rename) to determine
+	which characters should be removed from a desired filename
++	New button in Administration page list to view specific page
+#	Updated the page_link function to now be compatible with menu link
+	module when setting pages directory to root
+#	Fixed bugs in search when using "Any Words" option
+#	Fixed bug with news module when pages directory set to root
+!	Changed URL of documentation website on Administration Start page
+------------------------------------- 2.4.2 -------------------------------------
+05-Apr-2005 Ryan Djurovich
+#	Fixed bug where file could be renamed to nothing in Media
+!	Optimised Media create folder, upload file, and rename functions
+#	Fixed bug where stripslashes not run on news post titles in admin
+05-Apr-2005 Stefan Braunewell
+#	Fixed bug concerning usage of the private_sql variable
+#	Fixed bug conerning sub-pages being displayed in menus incorrectly
+------------------------------------- 2.4.1 -------------------------------------
+04-Apr-2005 Ryan Djurovich
+!	Pages with visibility of "none" are again directly accessable
+#	Fixed bugs regarding renaming files and directories in Media section
+!	When home folders disabled, all folders now visible in Media section
+------------------------------------- 2.4.0 -------------------------------------
+03-Apr-2005 Ryan Djurovich
+-	Removed recently added visibility setting of "heading", and relative config vars
++	Added new "menu" field to pages table, and new setting "multiple menus"
+	which replaces the need for the menu headings feature
++	Added links to top of groups and users sections, linking to each other
+!	Change menu width in "Round" template to 170px (was 150px)
+#	Change page "are you sure" deletion message to mention that it will delete
+	all sub-pages as well
+#	Fixed many bugs with news module when viewing posts by group
+!	Pages with visibility of "none" are now no longer directly accessable
+02-Apr-2005 Ryan Djurovich
+-	Removed need to specify DB_URL when calling database class
+#	Stopped fields without a type specified from being shown in form mod
+#	Changed '/media' to MEDIA_DIRECTORY on HTMLArea popup windows
+	for insert link and insert image
++	Added setting which allows you to specify the default WYSIWYG style
++	Added "Server Email" option, to specify what is used in "From" field when
+	sending emails using the PHP mail function. Default is admins email address.
+#	Search now excludes pages which have a visibility of none or heading
+!	Pages are now given modified_when and modified_by when added
+01-Apr-2005 Ryan Djurovich
++	Added option to News module to specify how many posts should be listed
+	per page (by default it is set to unlimited, which functions like previous version)
+#	Added stripslashes when display page titles in search
++	Page descriptions and last updated date now shown in search by default
+30-Mar-2005 Ryan Djurovich
++	Added new feature for Media home folders, where a folder can be specified
+	for a specific user or group of users only
+!	Changed URL of Help button to http://www.websitebaker.org/docs/
++	Added new feature for "Page Trash" - two modes available: inline and separate
+!	When pages are deleted, all sub-pages are now deleted (instead of being moved
+	up a level)
+29-Mar-2005 Ryan Djurovich
+-	Removed Database Settings from Administration Settings (options will not be
+	available in 3.x, so trying to match interface with WB 3.x plans
+!	Changed the name of Path Settings to Filesystem Settings in Administration
+	Settings, and removed ability to change path/url options - matching interface
+	plans for WB 3.x
++	Added same options for OS and file permissions as installer to Settings
+!	Sessions now named with APP_NAME.'_session_id' (e.g. default is wb_session_id)
+28-Mar-2005 Ryan Djurovich
++	New functions available to templates to simplify creation of them. This aims
+	to "future-proof" templates for WB 3.x plans.
+!	Default templates updated to support some of the new functions
++	Added field to pages table "page_trail" which stores a list of the pages
+	parents. This field was needed by the new page_menu function
++	Added option for page visibility "heading" to enabled support for multiple
+	menu's. Also, this helps to "future-proof" templates for WB 3.x plans
++	Added option for page visibility "registered", which acts a little like
+	private, but is still shown in the menu (although users need to log in to view
+	the pages content)
++	Form module submissions now saved to database, and feature now added to
+	limit number of submissions per hour to prevent spamming
++	New field for Form module: email. Allows you to specify their email in
+	"from" field on module settings.
+#	Fixed bug when displaying comments in News module (WB Bug #14)
++	New "under contruction" message if no pages exist
+!	Cleaned-up wb/index.php
+27-Mar-2005 Ryan Djurovich
++	Created advanced mkdir and chmod functions
+#	Fixed bug in media where wrong file/folder is deleted
++	Complete overhall of installer - now only one step! It has been greatly
+	simplified in many ways, has much better validation, reports error much more
+	nicely, and automatically logs the user into the Administrations
++	Must now specify OS type - allows for customizable file permission settings
++	Sections can now have a language code assigned to them
++	Sections can now have a block name/id assigned to them
+!	Home section of Administration renamed to Start, to save confusion with saying
+	Homepage (because this term could either mean the main website or Home section
+	in	Administration). Also, this aims to unify the interface with WB 3.x plans
+!	Moved Users and Groups sections under Access section. This aims to unify the
+	interface with WB 3.x plans, which help to unclutter the menu
+!	Interface for Settings section has been imporved for usability purposes
+#	Fixed HTMLArea where no scrollbar for "insert link" and "insert image" dialogs
+	by placing media list inside an iframe
+#	Fixed stripslashes problem for viewing news comments
+!	Added code from Formesque module (an advanced version of the original Form
+	module, modified by Rudolph Lartey from www.carbonect.com), and made further
+	interface improvements for select box/checkbox group/radio group options.
+#	Possibly fixed bugs where an S appears before file and dir modes
+#	Fixed bug where users can be added with same emails (in Administration)
+-	Removed support for PEAR, as it was deemed an unnecessary addition which only
+	makes code more bulky, and removing it will decrease package size a lot
++	New "homepage redirect" option so first page is included and not redirected to
+#	Fixed text not being shown when module uninstalled
+!	Imporved interface for basic group permissions
+26-Mar-2005 Stefan Braunewell
+#	Fixed bug with front-end logins
+#	Fixed bug when saving intro page 
++	Added check on sign-up if e-mail exists (thanks to P. Melief)
+#	Fixed bugs concerning moving/deleting pages
+#	Fixed list of parents in page settings
+#	Fixed mkdir without mode parameter
+#	Added a check on install to ensure PHP 4.1.x compatibility (thanks to Wanderer)
++	Added support for PAGES_DIRECTORY set to root
++	Search form now supports quotes (thanks to Manafta)
+#	Fixed page section ordering
+#	News items are displayed with name of poster instead of "Unknown"
+#	Deletion confirmation popup window in media section now shows correct file name
+------------------------------------- 2.3.1 -------------------------------------
+03-Fed-2005 Ryan Djurovich
++	Now there is two types of "filesystem modes", one for directories and one
+	for files. Having different settings is very common for most servers, so
+	this addition should fix many problems people had with 2.3.0.
+-	Removed filesystem mode options from installation
+!	Removed duplicate text on installation step 3 for timezone
+!	All "access files" for the news module now stored in pages/posts instead
+	of a sub-dir relative to the page (this fixes many bugs)
+#	Fixed major bugs when deleting pages with sub-pages
+!	Removed the restrictions that prevent a user for changing a pages level
+#	Fixed bug with "toggle" plus/minus in IE for pages list
+#	Fixed some bugs where /pages was not replaced with PAGES_DIRECTORY constant
+------------------------------------- 2.3.0 -------------------------------------
+26-Jan-2005 Ryan Djurovich
+#	Fixed bug in framework/functions.php that made root parent always equal 8
+#	Added missing braces in lines 182 and 208 of admin/pages/settings2.php
+#	Fixed SQL-query on line 172, placing a / after $old_link
+#	Added eregi checks for PAGES_DIRECTORY on lines 140 and 150 of
+	admin/pages/settings2.php
+#	Added ordering cleaning to delete_post.php on line 53 for news module
+!	GMT option is selected for "Default Timezone" in the installer, instead
+	of the old "Please select" message (which had the same value as GMT)
+28-Jan-2005 Ryan Djurovich
+!	Ability to specify the chmod number when WB uploads files, etc.
+!	Modified file headers (copyright/license notice) so they now look almost the
+	same, independant of font. Also, it now covers copyright for 2005.
+30-Jan-2005 Ryan Djurovich
+#	Added code on wb/admin/pages/delete.php to remove sections from the sections
+	table when a page is deleted.
++	New 'Smart Login' prevents users from using external password managers,
+	and can be set to remember the users password using cookies.
+!	SourceForge CVS module now called websitebaker2 (instead of just
+	websitebaker). Also, all file versions have been reset.
+01-Fed-2005 Ryan Djurovich
+!	Added code to prevent from changing a pages level (it simply disables
+	the select box), to prevent many possible bugs.
+------------------------------------- 2.2.4 -------------------------------------
+23-Dec-2004 Ryan Djurovich
+!	Change 'EXACT_PHRASE' to 'EXACT_MATCH' on line 261 of wb/languages/EN.php
+#	Fixed multi-language support in search
++	Added more detailed options to list of PHP error reporting level's
+-	Removed ability to change language and PHP error reporting level
+	on installation to make things easier for newbie's
++	Ability to select custom spacer for page filename's
+!	Changed the way a language code is found on language installation
++	Added template permissions to groups
+#	Fixed bug when trying to change email from Preferences (admin and frontend)
+#	Fixed bug with auto-selection of "System Default" for Preferences
+!	News module now use's WYSIWYG for modifying news posts
++	Ability to specify both the pages and media target directories
+------------------------------------ 2.2.3-c ------------------------------------
+22-Dec-2004 Ryan Djurovich
+#	Fixed problem with DB password being reset if Settings saved in basic mode
+------------------------------------ 2.2.3-b ------------------------------------
+21-Dec-2004 Ryan Djurovich
+#	Fixed minor bug on admin templates section
+#	Fixed bug on rename.php and rename2.php in admin media section
+------------------------------------- 2.2.3 -------------------------------------
+20-Dec-2004 Ryan Djurovich
++	Added WB release version in Administration (top right corner)
+!	New option to prevent users from adding level 0 pages
+#	Fixed bug when deleting post's in News module
++	Added new field in pages table for "root" parent (level 0 parent), for
+	extra flexability in creating templates
+!	Round template now supports unlimited page levels
+------------------------------------- 2.2.2 -------------------------------------
+18-Dec-2004 Ryan Djurovich
++	New option under Search Settings for selecting custom template for search
++	New option when changing page settings to set the target
+#	Fixed error when saving a user after editing
+!	Users can now modify sub-page if they dont have permissions on the parent
+------------------------------------- 2.2.1 -------------------------------------
+15-Dec-2004 Ryan Djurovich
+#	Fixed bug when changing password on preferences form (front-end)
+#	Fixed bug when retrieving user details (administration)
+#	Added check to see if module, template, or language is in use when deleting
+#	Fixed up email that is sent to user from a submitted form
+#	Fixed major problem with module permissions which stopped it from working
+------------------------------------- 2.2.0 -------------------------------------
+14-Dec-2004 (Correct date[s] unkown) Ryan Djurovich
++	Multiple-level page support
++	Multiple section's for pages (including interface)
+!	Removed text created using two words on all areas
+	(e.g. {Intro} {PAGE} is now {INTRO_PAGE})
+	this is for better language support
++	Added Languages section
+!	Moved Templates and Modules under Add-ons section
+!	Changed name of "Default" template to "Round"
++	Added "All CSS" template
++	Added "Jump"
++	Added 
+!	Modified "Box" template to support multiple page levels
++	Added "Menu Link" module
++	Added "News" module
++	Added "Code" module
++	Added "Form" module
++	Added "Wrapper" module
+!	Changed name of "Normal Page" module to "WYSIWYG"
++	Created new admin wrapper script to ease module develpment
++	Media now automatically creates index.php file for every
+	sub-folder made (for security purposes)
+!	Change "Help" link in Administration menu so it now directs
+	to the the new Website Baker documentation website found at:
+	http://www.websitebaker.org/documentation
+!	Password is now required to change email in preferences
++	User can now select custom Language and Date & Time Formats
++	Added search functionality, with three different "methods":
+	1. Using all words  2. Using any words  3. Exact match
++	Added native MySQL database support

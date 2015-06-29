@@ -1,0 +1,41 @@
+<!-- BEGIN main_block -->
+
+<form action="{WB_URL}/modules/wrapper/save.php" method="post">
+
+<input type="hidden" name="page_id" value="{PAGE_ID}" />
+<input type="hidden" name="section_id" value="{SECTION_ID}" />
+{FTAN}
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+	<td align="left" width="50">
+		{TEXT_URL}:
+	</td>
+	<td>
+		<input type="text" name="url" value="{URL}" style="width: 100%;" />
+	</td>
+</tr>
+<tr>
+	<td align="left" width="50">
+		{TEXT_HEIGHT}:
+	</td>
+	<td>
+		<input type="text" name="height" value="{HEIGHT}" maxlength="4" style="width: 100%;" />
+	</td>
+</tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+	<td align="left">
+		<input type="submit" value="{TEXT_SAVE}" style="width: 200px; margin-top: 5px;" />
+	</td>
+	<td align="right">
+		</form>
+		<input type="button" value="{TEXT_CANCEL}" onclick="javascript: window.location = 'index.php';" style="width: 100px; margin-top: 5px;" />
+	</td>
+</tr>
+</table>
+
+</form>
+
+<!-- END main_block -->

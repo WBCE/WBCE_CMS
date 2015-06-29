@@ -1,0 +1,115 @@
+<!-- BEGIN main_block -->
+<div class="jsadmin jcalendar hide"></div>
+<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="100%" style="margin-bottom:10px;">
+	<tr style="background:#f0f0f0;">
+		<td valign="middle" align="left"><h2>{HEADING_MANAGE_SECTIONS}</h2></td>
+		<td align="left" width="20%">ID: {PAGE_ID}</td>
+		<td align="right">{TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b>
+			-
+			<a href="{ADMIN_URL}/pages/modify.php?page_id={PAGE_IDKEY}">{HEADING_MODIFY_PAGE}</a>
+			-
+			<a href="{ADMIN_URL}/pages/settings.php?page_id={PAGE_IDKEY}">{TEXT_CHANGE_SETTINGS}</a>
+		</td>
+     </tr>
+</table>
+
+        <form name="section_properties" action="{ADMIN_URL}/pages/sections_save.php?page_id={PAGE_IDKEY}" method="post">
+		{FTAN}
+		
+        <table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" class="img_noborder">
+			<tr class="sections_list">
+				<td class="header_list_type">{TEXT_TYPE}</td>
+				<td class="header_list_block"><span {STYLE_DISPLAY_SECTION_BLOCK}>{TEXT_BLOCK}&nbsp;</span></td>
+				<td class="header_list_pubdate_start">{TEXT_PUBL_START_DATE}</td>
+				<td class="header_list_pubdate_end">{TEXT_PUBL_END_DATE}</td>
+				<td class="header_list_sections_actions" colspan="3">{TEXT_ACTIONS}</td>
+				<td class="header_list_section_id">ID</td>
+				<td {DISPLAY_DEBUG}>{TEXT_PID}</td>
+			</tr>
+<!-- BEGIN section_block -->
+            	<tr class="sectionrow">
+    				<td align="right" style="display:none;">
+                      <input type="hidden" name="page_id" value="{PAGE_IDKEY}"  />
+                      <input type="hidden" name="section_id" value="{VAR_SECTION_ID}"  />
+                      {VAR_SECTION_ID}
+                    </td>
+					
+                    <td>{LINK_MODIFY_URL_VAR_MODUL_NAME}</td>
+					
+                    <td class="{INPUT_ATTRIBUTE}"><span {STYLE_DISPLAY_SECTION_BLOCK}>
+                    	<select name="block{VAR_SECTION_ID}" class="input_normal">
+                        {SET_NONE_DISPLAY_OPTION}
+                    	<!-- BEGIN block_block -->
+                    		<option value="{VALUE}"{SELECTED}>{NAME}</option>
+                    	<!-- END block_block -->
+                    	</select></span>&nbsp;
+                    </td>
+					
+                    <td class="list_pubdate_start"><input type="text" id="start_date{VAR_SECTION_ID}" name="start_date{VAR_SECTION_ID}" value="{VALUE_PUBL_START}" class="input_normal" />
+                        <img src="{THEME_URL}/images/calendar_16.png" id="trigger_start{VAR_SECTION_ID}" style="cursor:pointer;" title="{TEXT_CALENDAR}" alt="{TEXT_CALENDAR}"  />
+                        <img src="{THEME_URL}/images/{CLOCK_DEL_16_PNG}" style="cursor:pointer;" alt="{TEXT_DELETE_DATE}" title="{TEXT_DELETE_DATE}" onclick="document.section_properties.start_date{VAR_SECTION_ID}.value=''" />
+                    </td>
+					
+                    <td class="list_pubdate_end"><input type="text" id="end_date{VAR_SECTION_ID}" name="end_date{VAR_SECTION_ID}" value="{VALUE_PUBL_END}" class="input_normal" />
+                        <img src="{THEME_URL}/images/calendar_16.png" id="trigger_stop{VAR_SECTION_ID}" alt="{TEXT_CALENDAR}" style="cursor: pointer;" title="{TEXT_CALENDAR}"  />
+                        <img src="{THEME_URL}/images/{CLOCK_DEL_16_PNG}" style="cursor:pointer;" alt="{TEXT_DELETE_DATE}" title="{TEXT_DELETE_DATE}" onclick="document.section_properties.end_date{VAR_SECTION_ID}.value=''" />
+                    </td>
+
+					<td>{VAR_MOVE_UP_URL}</td>
+					
+                    <td>{VAR_MOVE_DOWN_URL}</td>
+
+                    <td>
+                        <a href="#" onclick="javascript: confirm_link('{TEXT_ARE_YOU_SURE}', '{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}&amp;section_id={VAR_SECTION_IDKEY}');">
+                        <img src="{THEME_URL}/images/{DELETE_16_PNG}" alt="{TEXT_DELETE}" border="0" />
+                        </a>
+                    </td>
+
+                    <td class="list_section_id">{VAR_SECTION_ID}</td>
+
+                    <td {DISPLAY_DEBUG}>{POSITION}</td>
+                </tr>
+<!-- END section_block -->
+                <tr>
+                    <td align="left" colspan="{DEBUG_COLSPAN_SIZE}">
+					<br />
+					<input type="submit" name="save" value="{TEXT_SAVE}" class="input_medium" />
+					</td>
+    	        </tr>
+	    </table>
+    </form>
+<br />
+	<h2>{TEXT_ADD_SECTION}</h2>
+	<form name="add" action="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" method="post">
+        <input type="hidden" name="page_id" value="{PAGE_IDKEY}"  />
+		{FTAN}
+    	<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="100%">
+    	<tr>
+    		<td width="50%" valign="middle">
+    			<select name="module" class="input_large">
+                <!-- BEGIN module_block -->
+    			 <option value="{VALUE}"{SELECTED}>{NAME}</option>
+                 <!-- END module_block -->
+    			</select>
+				&nbsp;&nbsp;
+				<input type="submit" name="submit" value="{TEXT_ADD}" class="input_medium" />
+   		  </td>
+    	</tr>
+   	  </table>
+	</form>
+    <!-- BEGIN calendar_block -->
+    <script type="text/javascript" >
+         var section_id = '{VAR_SECTION_ID}';
+         var start_date = '{start_date}';
+         var end_date = '{end_date}';
+         var trigger_start = '{trigger_start}';
+         var trigger_end = '{trigger_end}';
+         var jscal_today = '{jscal_today}';
+         var jscal_ifformat = '{jscal_ifformat}';
+         var jscal_firstday = {jscal_firstday};
+         var showsTime = {showsTime};
+         var timeFormat = {timeFormat};
+    </script>
+    <script type="text/javascript" src="{ADMIN_URL}/pages/page_calendar.js" ></script>
+    <!-- END calendar_block -->
+<!-- END main_block -->

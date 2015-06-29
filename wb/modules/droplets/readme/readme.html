@@ -1,0 +1,55 @@
+<html>
+
+	<head>
+	<title>Droplets</title>
+	<link href="readme.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+
+	<body>
+		<small><font color="#7f7f7f">Droplets Help</font></small><br />
+		<h2> <img src="../img/droplets_logo.png" alt="" width="297" height="81" border="0"></h2> <br />
+		Droplets are small chunks of php code (just like the code module) that can be included in your template or any other content section. <br />
+		Including a droplet is done by encapsulating the droplet name in double brackets. <br />
+		If you want to use the droplet &quot;ModifiedWhen&quot; (to show the last modified date and time of the current page) you only need to add <b>[[ModifiedWhen]]</b> to your template or WYSIWYG contentpage. <br />
+		<br />
+		You are encouraged to create your own droplets and share them with the community. <br />
+		<br />
+		<h3>Installation</h3>
+		<br />
+		Droplets are installed as a admin tool. The installation is done using the normal &quot;Add module&quot; page in the WB backend. <br />
+		When the installation is successfull, there is a new tool added to the Admin-Tools menu. <br />
+		Clicking the tool will display the current installed droplets, and a button to create your own. <br />
+		<br />
+		<h3>Getting Droplets</h3>
+		<br />
+		A fast growing number of Droplets are available for use, you can use the <a href="http://www.websitebakers.com/pages/droplets/official-library.php" target="_new">Official Droplets Library</a> in the AMASP project website, or you can search the WB Forum. <br />
+		<br />
+		<h3>Coding Droplets</h3>
+		<br />
+		Droplets run in PHP mode, no <font color="#ff0000">&lt;?php</font> or <font color="#ff0000">?&gt;</font> is allowed in the code! If any of these tags are found in the code they will be removed. Your code will not run as expected. <br />
+		The droplet code can NOT echo or print data to the output stream directly. The Droplet name is replaced by the return value of the PHP code.<br />
+		Example: [[HelloWorld]] <br />
+		<br />
+		<font color="#ff0000">Wrong code:</font> echo &quot;Hello World&quot;; <br />
+		<font color="#339966">Correct code:</font> return &quot;Hello World&quot;; <br />
+		<br />
+		Since version 0.3 Droplets can modify the complete page content. <br />
+		When the Droplet is called, an extra variable ($wb_page_data) is made available. 
+		This variable holds all the content of your current generated webpage.
+		You can modify any part of this content simply by replacing it in the variable. There is no need to return this variable, the Droplet code will process changed content automatically.<br /><br />
+		
+		Since version 0.3 Droplets will check the PHP code you have saved for validity. <br />
+		When the code will not execute correctly a red flashing icon will apear in the backend Droplets list. <br />
+		The standard blue icon is no guarantee that the Droplets does what you would expect it to do, it will just tell you if the code is valid PHP code.<br /><br />
+		
+		Since version 0.3 Droplets you do not need to return any data. When you end your code with <pre>return true;</pre> there will not be an errormessage. The processed Droplet tag will be removed.<br />
+
+		<br />
+		<h3>PHP color coding</h3>
+		<br />
+		The Droplets edit page is ready to use the EditArea module. This module creates a color coded editor for PHP code. <br />
+		<br />
+		<br />
+	</body>
+
+</html>

@@ -1,0 +1,61 @@
+/**
+ * $Id: editor.css 1557 2012-01-02 15:49:08Z Luisehahne $
+ * Website Baker template: allcss
+ * This template is one of four basis templates distributed with Website Baker.
+ * Feel free to modify or build up on this template.
+ *
+ * This file contains all CSS definitions required to display the template
+ * in the Website Baker frontend. 
+ *
+ * LICENSE: GNU General Public License
+ * 
+ * @author     Ryan Djurovich, C. Sommer
+ * @copyright  GNU General Public License
+ * @license    http://www.gnu.org/licenses/gpl.html
+ * @version    2.70
+ * @platform   Website Baker 2.7
+ *
+ * Website Baker is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * Website Baker is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+*/
+
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: justify;
+	color: #000;
+	background-color: #FFF;
+	width: 580px;
+}
+a:link, a:visited, a:active {
+	color: #603;
+	text-decoration: none;
+}
+a:hover {
+	color: #936;
+	text-decoration: none;
+}
+hr {
+	margin: 5px 0px 5px 0px;
+	color: #603;
+	border: 0;
+	border-top: 1px solid #603;
+	height: 1px;
+	width: 580px;
+}
+h1 {
+	font-size: 16px;
+	color: #993366;
+	text-align: left;
+	margin: 8px 2px 8px 2px;
+}
+form {
+	margin: 0;
+}

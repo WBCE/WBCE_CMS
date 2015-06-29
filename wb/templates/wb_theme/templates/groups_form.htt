@@ -1,0 +1,279 @@
+<!-- BEGIN main_block -->
+<h2 style="{DISPLAY_EXTRA}">{HEADING_MODIFY_GROUP}</h2>
+
+<form name="group" action="{ACTION_URL}" method="post" class="{DISPLAY_ADD}">
+<input type="hidden" name="advanced" value="{ADVANCED}" />
+<input type="hidden" name="group_id" value="{GROUP_ID}" />
+{FTAN}
+<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+<tr>
+	<td width="150">{TEXT_NAME}:</td>
+	<td>
+		<input type="text" name="group_name" maxlength="255" value="{GROUP_NAME}" style="width:98%" />
+	</td>
+</tr>
+</table>
+<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" style="{DISPLAY_BASIC}">
+<tr>
+	<td width="150" valign="top">{TEXT_SYSTEM_PERMISSIONS}:</td>
+	<td>
+		<table summary="" cellpadding="0" cellspacing="0" width="100%" border="0">
+		<tr>
+			<td>
+				<input type="checkbox" name="pages" id="pages" value="1" {pages_checked} />
+				<label for="pages">{SECTION_PAGES}</label>
+			</td>
+			<td>
+				<input type="checkbox" name="media" id="media" value="1" {media_checked} />
+				<label for="media">{SECTION_MEDIA}</label>
+			</td>
+			<td>
+				<input type="checkbox" name="modules" id="modules" value="1" {modules_checked} />
+				<label for="modules">{SECTION_MODULES}</label>
+			</td>
+			<td>
+				<input type="checkbox" name="templates" id="templates" value="1" {templates_checked} />
+				<label for="templates">{SECTION_TEMPLATES}</label>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="checkbox" name="languages" id="languages" value="1" {languages_checked} />
+				<label for="languages">{SECTION_LANGUAGES}</label>
+			</td>
+			<td>		
+				<input type="checkbox" name="settings" id="settings" value="1" {settings_checked} />
+				<label for="settings">{SECTION_SETTINGS}</label>
+			</td>
+			<td>
+				<input type="checkbox" name="users" id="users" value="1" {users_checked} />
+				<label for="users">{SECTION_USERS}</label>
+			</td>
+			<td>
+				<input type="checkbox" name="groups" id="groups" value="1" {groups_checked} />
+				<label for="groups">{SECTION_GROUPS}</label>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="checkbox" name="admintools" id="admintools" value="1" {admintools_checked} />
+				<label for="admintools">{SECTION_ADMINTOOLS}</label>
+			</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" style="{DISPLAY_ADVANCED}">
+<tr>
+	<td width="150" valign="top">{TEXT_SYSTEM_PERMISSIONS}:</td>
+	<td align="left">
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="330">
+<tr>
+	<td colspan="4"><h3>{SECTION_PAGES}</h3></td>
+</tr>
+<tr>
+	<td><input name="pages_view" id="pages_view" type="checkbox" value="1" {pages_view_checked} /></td>
+	<td><label for="pages_view">{TEXT_VIEW}</label></td>
+	<td><input name="pages_add" id="pages_add" type="checkbox" value="1" {pages_add_checked} /></td>
+	<td>
+		<label for="pages_add">{TEXT_ADD}</label>
+		&nbsp;
+		(<input name="pages_add_l0" id="pages_add_l0" type="checkbox" value="1" {pages_add_l0_checked} />
+		<label for="pages_add_l0">{TEXT_LEVEL} 0</label>)
+	</td>
+</tr>
+<tr>
+	<td><input name="pages_settings" id="pages_settings" type="checkbox" value="1" {pages_settings_checked} /></td>
+	<td><label for="pages_settings">{TEXT_MODIFY_SETTINGS}</label></td>
+	<td><input name="pages_modify" id="pages_modify" type="checkbox" value="1" {pages_modify_checked} /></td>
+	<td><label for="pages_modify">{TEXT_MODIFY_CONTENT}</label></td>
+</tr>
+<tr>
+	<td><input name="pages_intro" id="pages_intro" type="checkbox" value="1" {pages_intro_checked} /></td>
+	<td><label for="pages_intro">{HEADING_MODIFY_INTRO_PAGE}</label></td>
+	<td><input name="pages_delete" id="pages_delete" type="checkbox" value="1" {pages_delete_checked} /></td>
+	<td><label for="pages_delete">{TEXT_DELETE}</label></td>
+</tr>
+<tr>
+	<td colspan="4"><h3>{SECTION_MEDIA}</h3></td>
+</tr>
+<tr>
+	<td><input name="media_view" id="media_view" type="checkbox" value="1" {media_view_checked} /></td>
+	<td><label for="media_view">{TEXT_VIEW}</label></td>
+	<td><input name="media_upload" id="media_upload" type="checkbox" value="1" {media_upload_checked} /></td>
+	<td><label for="media_upload">{TEXT_UPLOAD_FILES}</label></td>
+</tr>
+<tr>
+	<td><input name="media_rename" id="media_rename" type="checkbox" value="1" {media_rename_checked} /></td>
+	<td><label for="media_rename">{TEXT_RENAME}</label></td>
+	<td><input name="media_delete" id="media_delete" type="checkbox" value="1" {media_delete_checked} /></td>
+	<td><label for="media_delete">{TEXT_DELETE}</label></td>
+</tr>
+<tr>
+	<td><input name="media_create" id="media_create" type="checkbox" value="1" {media_create_checked} /></td>
+	<td><label for="media_create">{TEXT_CREATE_FOLDER}</label></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td colspan="4"><h3>{SECTION_MODULES}</h3></td>
+</tr>
+<tr>
+	<td><input name="modules_view" id="modules_view" type="checkbox" value="1" {modules_view_checked} /></td>
+	<td><label for="modules_view">{TEXT_VIEW}</label></td>
+	<td><input name="modules_install" id="modules_install" type="checkbox" value="1" {modules_install_checked} /></td>
+	<td><label for="modules_install">{TEXT_ADD}</label></td>
+</tr>
+<tr>
+	<td><input name="modules_uninstall" id="modules_uninstall" type="checkbox" value="1" {modules_uninstall_checked} /></td>
+	<td><label for="modules_uninstall">{TEXT_DELETE}</label></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td colspan="4"><h3>{SECTION_TEMPLATES}</h3></td>
+</tr>
+<tr>
+	<td><input name="templates_view" id="templates_view" type="checkbox" value="1" {templates_view_checked} /></td>
+	<td><label for="templates_view">{TEXT_VIEW}</label></td>
+	<td><input name="templates_install" id="templates_install" type="checkbox" value="1" {templates_install_checked} /></td>
+	<td><label for="templates_install">{TEXT_ADD}</label></td>
+</tr>
+<tr>
+	<td><input name="templates_uninstall" id="templates_uninstall" type="checkbox" value="1" {templates_uninstall_checked} /></td>
+	<td><label for="templates_uninstall">{TEXT_DELETE}</label></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td colspan="4"><h3>{SECTION_LANGUAGES}</h3></td>
+</tr>
+<tr>
+	<td><input name="languages_view" id="languages_view" type="checkbox" value="1" {languages_view_checked} /></td>
+	<td><label for="languages_view">{TEXT_VIEW}</label></td>
+	<td><input name="languages_install" id="languages_install" type="checkbox" value="1" {languages_install_checked} /></td>
+	<td><label for="languages_install">{TEXT_ADD}</label></td>
+</tr>
+<tr>
+	<td><input name="languages_uninstall" id="languages_uninstall" type="checkbox" value="1" {languages_uninstall_checked} /></td>
+	<td><label for="languages_uninstall">{TEXT_DELETE}</label></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td colspan="4"><h3>{SECTION_SETTINGS}</h3></td>
+</tr>
+<tr>
+	<td><input name="settings_basic" id="settings_basic" type="checkbox" value="1" {settings_basic_checked} /></td>
+	<td><label for="settings_basic">{TEXT_BASIC}</label></td>
+	<td><input name="settings_advanced" id="settings_advanced" type="checkbox" value="1" {settings_advanced_checked} /></td>
+	<td><label for="settings_advanced">{TEXT_ADVANCED}</label></td>
+</tr>
+<tr>
+	<td colspan="4"><h3>{SECTION_USERS}</h3></td>
+</tr>
+<tr>
+	<td><input name="users_view" id="users_view" type="checkbox" value="1" {users_view_checked} /></td>
+	<td><label for="users_view">{TEXT_VIEW}</label></td>
+	<td><input name="users_add" id="users_add" type="checkbox" value="1" {users_add_checked} /></td>
+	<td><label for="users_add">{TEXT_ADD}</label></td>
+</tr>
+<tr>
+	<td><input name="users_modify" id="users_modify" type="checkbox" value="1" {users_modify_checked} /></td>
+	<td><label for="users_modify">{TEXT_MODIFY}</label></td>
+	<td><input name="users_delete" id="users_delete" type="checkbox" value="1" {users_delete_checked} /></td>
+	<td><label for="users_delete">{TEXT_DELETE}</label></td>
+</tr>
+<tr>
+	<td colspan="4"><h3>{SECTION_GROUPS}</h3></td>
+
+</tr>
+<tr>
+	<td><input name="groups_view" id="groups_view" type="checkbox" value="1" {groups_view_checked} /></td>
+	<td><label for="groups_view">{TEXT_VIEW}</label></td>
+	<td><input name="groups_add" id="groups_add" type="checkbox" value="1" {groups_add_checked} /></td>
+	<td><label for="groups_add">{TEXT_ADD}</label></td>
+</tr>
+<tr>
+	<td><input name="groups_modify" id="groups_modify" type="checkbox" value="1" {groups_modify_checked} /></td>
+	<td><label for="groups_modify">{TEXT_MODIFY}</label></td>
+	<td><input name="groups_delete" id="groups_delete" type="checkbox" value="1" {groups_delete_checked} /></td>
+	<td><label for="groups_delete">{TEXT_DELETE}</label></td>
+</tr>
+<tr>
+	<td colspan="4">
+		<h3>{SECTION_ADMINTOOLS}</h3>
+	</td>
+</tr>
+<tr>
+	<td><input name="admintools_settings" id="admintools_settings" type="checkbox" value="1" {admintools_settings_checked} /></td>
+	<td><label for="admintools_settings">{TEXT_MODIFY_SETTINGS}</label></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+</table>
+
+
+	</td>
+</tr>
+</table>
+
+<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" style="padding-top: 5px; padding-bottom: 5px;">
+<tr>
+	<td valign="top" align="left" width="150">{TEXT_MODULE_PERMISSIONS}:</td>
+	<td valign="top" align="left">
+		<ul style="margin: 0; padding: 0; list-style: none;">
+			<!-- BEGIN module_list_block -->
+			<li>
+				<input type="checkbox" name="module_permissions[]" id="m_{VALUE}" value="{VALUE}" {CHECKED} />
+				<label for="m_{VALUE}">{NAME}</label>
+			</li>
+			<!-- END module_list_block -->
+		</ul>
+	</td>
+	<td valign="top" align="left" width="150">{TEXT_TEMPLATE_PERMISSIONS}:</td>
+	<td valign="top" align="left">
+		<ul style="margin: 0; padding: 0; list-style: none;">
+			<!-- BEGIN template_list_block -->
+			<li>
+				<input type="checkbox" name="template_permissions[]" id="t_{VALUE}" value="{VALUE}" {CHECKED} />
+				<label for="t_{VALUE}">{NAME}</label>
+			</li>
+			<!-- END template_list_block -->
+		</ul>
+	</td>
+</tr>
+<tr style="text-align:center;width:100%">
+    <td>&nbsp;</td>
+	<td style="text-align:right;">
+		<input type="submit" name="save" value="{SUBMIT_TITLE}" />
+	</td>
+	<td style="text-align:left;">
+		<input type="reset" name="reset" value="{TEXT_RESET}" />
+	</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+</form>
+
+
+<form name="advanced" action="{ADVANCED_LINK}" method="post">
+<input type="hidden" name="group_id" value="{GROUP_ID}" />
+<input type="hidden" name="action" value="modify" />
+{FTAN}
+<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+<tr>
+    <td>&nbsp;</td>
+	<td style="text-align:center;">
+		<input type="submit" name="advanced" onclick="window.location = '{ADVANCED_LINK}';" value="{ADVANCED_BUTTON}" />
+	</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+</form>
+<!-- END main_block -->

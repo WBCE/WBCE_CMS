@@ -1,0 +1,110 @@
+WebsiteBaker 2.8.3SP2 UPGRADE Instructions
+=================================================
+
+This file describes the upgrade from all Versions
+since WB 2.7 directly to WB 2.8.3SP2.
+
+Step 1 is different, depending from the WB-Version
+you start.
+
+Step 2 - Step 9 are the same, no matter from which
+WB-Version you upgrade.
+
+
+*******************************************
+* Upgrade from WB 2.8.2SP2 to WB 2.8.3SP2 *
+* Upgrade from WB 2.8.2SP1 to WB 2.8.3SP2 *
+* Upgrade from WB 2.8.2    to WB 2.8.3SP2 *
+*******************************************
+
+Step 1 - Preparing your existing system
+- Backup your changed Files in modules and templates folder like .css, .js and .htt
+- Backup your Droplets
+- Delete Folder "/templates/argos_theme"
+- Delete Folder "/templates/wb_theme"
+
+
+*******************************************
+* Upgrade from WB 2.8.1    to WB 2.8.3SP2 *
+* Upgrade from WB 2.8.0    to WB 2.8.3SP2 *
+*******************************************
+
+Step 1 - Preparing your existing system
+- Backup your changed Files in modules and templates folder like .css, .js and .htt
+- Backup your Droplets
+- Delete File "/admin/preferences/details.php"
+- Delete File "/admin/preferences/email.php"
+- Delete File "/admin/preferences/password.php"
+- Delete Folder "/modules/backup"
+- Delete Folder "/modules/droplets/js"
+- Delete Folder "/templates/argos_theme"
+- Delete Folder "/templates/classic_theme"
+- Delete Folder "/templates/wb_theme"
+
+
+*******************************************
+* Upgrade from WB 2.7      to WB 2.8.3SP2 *
+*******************************************
+
+Step 1 - Preparing your existing system
+- Backup your changed Files in modules and templates folder like .css, .js and .htt
+- Backup your Droplets
+- Delete File "/account/stylesheet.css"
+- Delete Folder "/admin"
+- Delete Folder "/include/captcha"
+- Delete Folder "/include/codepress"
+- Delete Folder "/modules/code"
+- Delete Folder "/modules/fckeditor"
+- Delete Folder "/modules/reload"
+- Delete Folder "/modules/show_menu2"
+- Delete Folder "/modules/wrapper"
+- Delete Folder "/templates/allcss"
+- Delete Folder "/templates/round"
+- Delete Folder "/templates/simple"
+
+
+*******************************************
+* Upgrade from WB 2.8.2SP2 to WB 2.8.3SP2 *
+* Upgrade from WB 2.8.2SP1 to WB 2.8.3SP2 *
+* Upgrade from WB 2.8.2    to WB 2.8.3SP2 *
+* Upgrade from WB 2.8.1    to WB 2.8.3SP2 *
+* Upgrade from WB 2.8.0    to WB 2.8.3SP2 *
+* Upgrade from WB 2.7      to WB 2.8.3SP2 *
+*******************************************
+
+Step 2 - Download WebsiteBaker 
+- Download "WebsiteBaker 2.8.3" from http://www.websitebaker2.org/en/download/latest-version.php
+- Unzip the package to your local machine
+
+Step 3 - Preparing the Upgrade-Package
+- Delete File "config.php.new"
+- Delete Folder "/install"
+- Change favicon to your own
+
+Step 4 - Upgrade the Files
+- Upload all files to your Webspace
+- Be shure that existing files are overwritten
+
+Step 5 - Upgrade the Database
+- if you upgrade from WB 2.8.x:
+   Login as superadmin to your backend, upgrade-script starts automatically
+- if the script not starts automatically and if you upgrade from WB 2.7:
+   Call in your Browser www.yourdomainname.com/upgrade-script.php
+- Follow the Upgrade-Instructions  
+
+Step 6 - Cleaning
+- Delete File upgrade-script.php
+
+Step 7 - Actualize Addons Table (just to be shure)
+- Go to "Add-ons" - "Advanced"
+- Reload "Modules", "Templates" and "Languages"
+
+Step 8 - Activate changed Droplets
+- Go to "Add-ons" - "Modules" - "Advanced"
+- Execute "install.php" from Modul "Droplets"
+
+Step 9 - Upgrade all WYSIWYG-sections to new URL-Handling
+- Go to "Add-ons" - "Modules" - "Advanced"
+- Execute "upgrade.php" from Modul "WYSIWYG"
+
+Have fun with WB 2.8.3

@@ -1,0 +1,56 @@
+/**
+ * $Id: print.css 865 2008-10-25 08:29:52Z doc $
+ * Website Baker template: simple
+ * This template is one of four basis templates distributed with Website Baker.
+ * Feel free to modify or build up on this template.
+ *
+ * This file defines the CSS styles used for print devices.
+ *
+ * LICENSE: GNU General Public License
+ * 
+ * @author     Ryan Djurovich, C. Sommer
+ * @copyright  GNU General Public License
+ * @license    http://www.gnu.org/licenses/gpl.html
+ * @version    2.70
+ * @platform   Website Baker 2.7
+ *
+ * Website Baker is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * Website Baker is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+*/
+
+body,td,th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
+}
+body {
+	background-color: #FFFFFF;
+	margin: 0px;
+}
+a:link, a:visited, a:active {
+	color: #003366;
+	text-decoration: none;
+}
+a:hover {
+	color: #336699;
+	text-decoration: none;
+}
+.header {
+	display: none;
+}
+.menu {
+	display: none;
+}
+.content {
+	vertical-align: top;
+}
+.footer {
+	display: none;
+}

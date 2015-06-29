@@ -1,0 +1,75 @@
+<!-- BEGIN main_block -->
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="99%" align="center">
+  <tr>
+    <td colspan="3">{WELCOME_MESSAGE}. {CURRENT_USER} {DISPLAY_NAME}. </td>
+  </tr>
+  <tr style="{DISPLAY_WARNING};">
+    <td colspan="3" align="center" style="color: #FF0000; font-weight: bold;">{WARNING}</td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="49%">
+      <table summary="" cellpadding="0" cellspacing="0" border="0" class="section" style="{DISPLAY_PAGES};">
+        <tr>
+          <td class="graphic" align="center" valign="middle" rowspan="2"> <a href="{ADMIN_URL}/pages/index.php"> <img src="{THEME_URL}/icons/pages.png" border="0" alt="{PAGES}" /> </a> </td>
+          <td class="description" valign="top"> <a href="{ADMIN_URL}/pages/index.php"><span class="title">{PAGES}</span></a>
+		  {PAGES_OVERVIEW}
+		  </td>
+        </tr>
+
+      </table>
+      <table summary="" cellpadding="0" cellspacing="0" border="0" class="section" style="{DISPLAY_ADDONS};">
+        <tr>
+          <td class="graphic" align="center" valign="middle" rowspan="2"> <a href="{ADMIN_URL}/addons/index.php"> <img src="{THEME_URL}/icons/addons.png" border="0" alt="{ADDONS}" /> </a> </td>
+          <td class="description" valign="top"> <a href="{ADMIN_URL}/addons/index.php"><span class="title">{ADDONS}</span></a>
+		  {ADDONS_OVERVIEW}
+		  </td>
+        </tr>
+      </table>
+      <table summary="" cellpadding="0" cellspacing="0" border="0" class="section" style="{DISPLAY_SETTINGS};">
+        <tr>
+          <td class="graphic" align="center" valign="middle" rowspan="2"> <a href="{ADMIN_URL}/settings/index.php"> <img src="{THEME_URL}/icons/settings.png" border="0" alt="{SETTINGS}" /> </a> </td>
+          <td class="description" valign="top"> <a href="{ADMIN_URL}/settings/index.php"><span class="title">{SETTINGS}</span></a>
+		  {SETTINGS_OVERVIEW}
+		  </td>
+        </tr>
+      </table>
+      <table summary="" cellpadding="0" cellspacing="0" border="0" class="section" style="{DISPLAY_ACCESS};">
+        <tr>
+          <td class="graphic" align="center" valign="middle" rowspan="2"> <a href="{ADMIN_URL}/access/index.php"> <img src="{THEME_URL}/icons/access.png" border="0" alt="{ACCESS}" /> </a> </td>
+          <td class="description" valign="top"> <a href="{ADMIN_URL}/access/index.php"><span class="title">{ACCESS}</span></a>
+		  {ACCESS_OVERVIEW}
+		  </td>
+        </tr>
+      </table>
+    </td>
+    <td width="10">&nbsp; </td>
+    <td align="center" valign="top">
+	  <table summary="" cellpadding="0" cellspacing="0" border="0" class="section" style="{DISPLAY_MEDIA};">
+        <tr>
+          <td class="graphic" align="center" valign="middle" rowspan="2"> <a href="{ADMIN_URL}/media/index.php"> <img src="{THEME_URL}/icons/media.png" border="0" alt="{MEDIA}" /> </a> </td>
+          <td class="description" valign="top"> <a href="{ADMIN_URL}/media/index.php"><span class="title">{MEDIA}</span></a>
+		  {MEDIA_OVERVIEW}
+		  </td>
+        </tr>
+      </table>	  
+      <table summary="" cellpadding="0" cellspacing="0" border="0" class="section">
+        <tr>
+          <td class="graphic" align="center" valign="middle" rowspan="2"> <a href="{ADMIN_URL}/preferences/index.php"> <img src="{THEME_URL}/icons/preferences.png" border="0" alt="{PREFERENCES}" /> </a> </td>
+          <td class="description" valign="top"> <a href="{ADMIN_URL}/preferences/index.php"><span class="title">{PREFERENCES}</span></a>
+		  {PREFERENCES_OVERVIEW}
+		  </td>
+        </tr>
+      </table>
+      <table summary="" cellpadding="0" cellspacing="0" border="0" class="section" style="{DISPLAY_ADMINTOOLS};">
+        <tr>
+          <td class="graphic" align="center" valign="middle" rowspan="2"> <a href="{ADMIN_URL}/admintools/index.php"> <img src="{THEME_URL}/icons/admintools.png" border="0" alt="{ADMINTOOLS}" /> </a> </td>
+          <td class="description" valign="top"> <a href="{ADMIN_URL}/admintools/index.php"><span class="title">{ADMINTOOLS}</span></a>
+		  {ADMINTOOLS_OVERVIEW}
+		  </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- END main_block -->

@@ -1,0 +1,141 @@
+<!-- BEGIN main_block -->
+<script language="JavaScript" type="text/javascript">
+/*<![CDATA[*/
+if('{BACKLINK}'!=false) {
+	redirect_to_page ('{BACKLINK}', 0);
+}
+/*]]>*/
+</script>
+   <table class="switch-ftan-info" summary="" cellpadding="4" cellspacing="0" border="0">
+	<thead>
+		<tr>
+			<th colspan="3">Status: <span class="{FTAN_COLOR}">{TXT_HEADING}</span></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="2" class="module-info"><p>{TEXT_INFO}</p></td>
+		</tr>
+		<tr>
+			<td colspan="2"><p {FILE_FORMTAB_WARNING}>{FILE_FORMTAB_NOT_GOUND}</p></td>
+		</tr>
+	</tbody>
+   </table>
+
+   <form class="secure_switch" name="store_settings" action="{SERVER_REQUEST_URI}" method="post" >
+	{FTAN}
+	<input type="hidden" name="{SUBMIT_TYPE}" value="true" />
+	<div class="left-content">
+	   <table class="switch-ftan-form" summary="" cellpadding="4" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td width="20"><input type="radio" name="ftan_switch" id="ftan_switch" value=""{SELECTED}/></td>
+				<td><label for="ftan_switch">{TXT_SUBMIT_FORM}</label></td>
+			</tr>
+			<tr>
+				<td width="20"><input type="radio" name="ftan_switch" id="ftan_switch_tab" value="mtab"{SELECTED_TAB}/></td>
+				<td><label for="ftan_switch_tab">{TXT_SUBMIT_FORMTAB}</label></td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+<!-- BEGIN show_mtab_block -->
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+<!-- END show_mtab_block -->
+			<tr>
+				<td colspan="2">
+					<input type="submit" name="save_settings" value="{TEXT_SUBMIT}" />
+					<input type="submit" name="cancel" value="{TEXT_CANCEL}" />
+				</td>
+			</tr>
+		</tbody>
+	   </table>
+	</div>
+	<div class="right-content">
+	   <table class="switch-ftan-form" summary="" cellpadding="4" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td colspan="2">
+					<select name="fingerprint_with_ip_octets">
+						<option value="{USEIP_DEFAULT}"{USEIP_DEFAULT_SELECTED}>{TEXT_DEFAULT_SETTINGS}</option>
+	<!-- BEGIN useip_mtab_loop -->
+						<option value="{USEIP_VALUE}"{USEIP_SELECTED}>{USEIP_VALUE}</option>
+	<!-- END useip_mtab_loop -->
+					</select>
+				</td>
+				<td><label for="fingerprint_with_ip_octets">{TXT_SECFORM_USEIP}
+						<a class="tooltip" href="#">? {TXT_SECFORM_USEIP_TOOLTIP}</a>
+				</label></td>
+			</tr>
+	<!-- BEGIN mtab_block -->
+			<tr>
+				<td colspan="2"><input type="text" name="wb_secform_tokenname" id="wb_secform_tokenname" value="{WB_SECFORM_TOKENNAME}"/></td>
+				<td><label for="wb_secform_tokenname">{TXT_SECFORM_TOKENNAME}
+					<a class="tooltip" href="#">? {TXT_SECFORM_TOKENNAME_TOOLTIP}</a>
+				</label></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="text" name="wb_secform_secret" id="wb_secform_secret" value="{WB_SECFORM_SECRET}"/></td>
+				<td><label for="wb_secform_secret">{TXT_SECFORM_SECRET}
+					<a class="tooltip" href="#">? {TXT_SECFORM_SECRET_TOOLTIP}</a>
+				</label></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="text" name="wb_secform_secrettime" id="wb_secform_secrettime" value="{WB_SECFORM_SECRETTIME}"/></td>
+				<td><label for="wb_secform_secrettime">{TXT_SECFORM_SECRETTIME}
+					<a class="tooltip" href="#">? {TXT_SECFORM_SECRETTIME_TOOLTIP}</a>
+				</label></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="text" name="wb_secform_timeout" id="wb_secform_timeout" value="{WB_SECFORM_TIMEOUT}"/></td>
+				<td><label for="wb_secform_timeout">{TXT_SECFORM_TIMEOUT}
+					<a class="tooltip" href="#">? {TXT_SECFORM_TIMEOUT_TOOLTIP}</a>
+				</label></td>
+			</tr>
+			<tr>
+				<td>
+					<label for="wb_secform_usefp_true">{TEXT_ENABLED}</label>
+				</td>
+				<td width="50">
+					<input type="radio" value="true" id="wb_secform_usefp_true" name="wb_secform_usefp"{USEFP_CHECKED_TRUE} />
+					<input type="radio" value="false" id="wb_secform_usefp_false" name="wb_secform_usefp"{USEFP_CHECKED_FALSE} />
+				</td>
+				<td><label for="wb_secform_usefp">{TXT_SECFORM_USEFP}
+					<a class="tooltip" href="#">? {TXT_SECFORM_USEFP_TOOLTIP}</a>
+				</label></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+
+			<tr>
+				<td colspan="4">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<input type="submit" name="save_settings_default" value="{TEXT_MSUBMIT}" />
+				</td>
+			</tr>
+<!-- END mtab_block -->
+		</tbody>
+	   </table>
+	</div>
+
+   </form>
+<!-- END main_block -->

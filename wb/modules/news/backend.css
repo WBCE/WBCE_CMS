@@ -1,0 +1,19 @@
+						.setting_name {
+	vertical-align: top;
+	width: 20%;
+}
+.setting_value {
+	vertical-align: top;
+	width: 80%;
+}
+
+/* 
+  The definitions below provide the style for the edit CSS button 
+  Required CSS class name: input.mod_moduledirectory_edit_css
+*/
+input.mod_news_edit_css {
+  color: #000;
+  padding: 2px;
+  margin: -20px auto;
+  float: right;
+}								

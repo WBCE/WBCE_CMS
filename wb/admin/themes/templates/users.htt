@@ -1,0 +1,32 @@
+<!-- BEGIN main_block -->
+
+<form name="users" action="users.php" method="post">
+<input type="hidden" name="userstatus" value="{USER_STATUS}" />
+{FTAN}
+
+<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="100%" style="margin-bottom:10px;">
+	<tr style="background:#f0f0f0;">
+		<td align="left"><h2>{HEADING_MODIFY_DELETE_USER}</h2></td>
+		<td align="right">
+		<!-- BEGIN manage_groups_block -->
+		<a href="{ADMIN_URL}/groups/index.php">{TEXT_MANAGE_GROUPS}</a>
+		<!-- END manage_groups_block -->
+		</td>
+     </tr>
+</table>
+<button type="button" name="status" title="{TEXT_USERS}" style="width: 30px; background: {STATUS_ICON} no-repeat center" value="{USER_STATUS}" onclick="javascript: window.location = 'index.php?status={USER_STATUS}';" class="status {DISPLAY_MODIFY}" >&nbsp;</button>
+<select name="user_id" style="width: 500px;">
+<!-- BEGIN list_block -->
+	<option value="{VALUE}" {STATUS}>{NAME}</option>
+<!-- END list_block -->
+</select>
+
+<input type="submit" name="modify" style="width: 100px;" value="{TEXT_MODIFY}" class="{DISPLAY_MODIFY}" />
+<input type="submit" name="delete" style="width: 100px;" value="{TEXT_DELETE}" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE}" />
+
+</form>
+
+<br />
+<h2 style="margin-top: 20px;" class="{DISPLAY_ADD}">{HEADING_ADD_USER}</h2>
+
+<!-- END main_block -->

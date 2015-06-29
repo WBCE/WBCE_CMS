@@ -1,0 +1,99 @@
+		.captcha-table,
+.captcha_table,
+.news-table {
+	border: 0px;
+}
+
+.post_title, .post_date,
+.post-title, .post-date {
+	border-bottom: 1px solid #DDDDDD;
+   font-size :1.0em;
+}
+.post_title,
+.post-title {
+	font-weight: bold;
+	color: #000000;
+}
+.post_date,
+.post-date {
+	text-align: right;
+	font-weight: bold;
+}
+.post_short,
+.post-short {
+	text-align: justify;
+	padding-bottom: 5px;
+}
+.comment_title,
+.comment-title {
+	font-weight: bold;
+}
+.comment_text,
+.comment-text {
+	font-weight: normal;
+	background-color: #FDFDFD;
+	border-bottom: 1px solid #DDDDDD;
+	padding-bottom: 15px;
+}
+.comment_title, .comment_text,
+.comment-title, .comment-text {
+	border-left: 1px solid #DDDDDD;
+}
+.comment_info,
+.comment-info {
+	text-align: right;
+	border-right: 1px solid #DDDDDD;
+}
+.comment_title, .comment_info,
+.comment-title, .comment-info {
+	border-top: 1px solid #DDDDDD;
+	background-color: #EEEEEE;
+}
+.selected_group_title,
+.selected-group-title { 
+	font-size: 14px;
+	text-align: center;
+}
+/*** Don't remove the class nixhier, this is required for ASP ***/
+.nixhier {
+	display:none;
+}
+.loop_header,
+.loop-header {
+	width: 100%;
+}
+.page_header,
+.page-header {
+	width: 100%;	
+}
+.post_header,
+.post-header {
+	width: 100%;	
+}
+.page_left,
+.page-left {
+	text-align: left;	
+}
+.page_center,
+.page-center {
+	text-align: center;
+}
+.page_right,
+.page-right {
+	text-align: right;	
+}
+.comment_header,
+.comment-header {
+	width: 100%;
+}
+.public_info,
+.public-info {
+	text-align: right;
+}
+.group_page,
+.group-page {
+	text-align: center;
+}
+
+.post_loop { font-size :1.0em; margin :0px 0px 10px; }
+.post_loop div {  line-height :1.6em; margin :0px 0px 2px; }		

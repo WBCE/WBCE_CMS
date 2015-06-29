@@ -1,0 +1,28 @@
+/* <![CDATA[ */
+/*
+  CSS definition for Website Baker module: WB-Preferences
+  Copyright (C) 2008, Werner von der Decken
+  Contact me: wkl(at)isteam.de, http://isteam.de
+
+  This CSS file is free software. You can redistribute it and/or modify it
+  under the terms of the GNU General Public License  - version 2 or later,
+  as published by the Free Software Foundation: http://www.gnu.org/licenses/gpl.html.
+
+  This CSS file is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+*/
+	.mod_preferences_error {
+		background-color:#ffb0b0;
+		padding:5px;
+		border:dotted 1px #ff0000;
+		color:#ff0000;
+	}
+	.mod_preferences_success {
+		background-color:#b0ffb0;
+		padding:5px;
+		border:dotted 1px #303030;
+		color:#303030;
+	}
+/* ]]> */

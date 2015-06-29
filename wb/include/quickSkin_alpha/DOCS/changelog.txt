@@ -1,0 +1,67 @@
+Version 5.0.1 - November 01 2010
+- fixed last ereg-deprecatements
+- rename block command ( BEGIN - END  into LOOP - ENDLOOP)
+
+Version 5.0 - January 01 2009
+- First version designed specifically for PHP5
+- Changed default for 'reuse_code' to false
+- Added LPGL script dp.SyntaxHighlighter 
+- Added Extension 'codesnippetstart'
+- Added Extension 'codesnippetend'
+- changed behavior of all extensions - they no longer set the $_CONFIG array variales
+- added new default template
+- added code for Syntax Highlighter
+
+using Syntax Highlighter:
+In your HTML code, add:
+{codesnippetstart:}
+... your php code
+{codesnippetend:}
+Everything else is done for you.
+Please note that if you want to include the PHP start tag (ie. <?php ) and the PHP end tag (ie. ?> )
+in the code snippeg, you must use them like this:
+&lt;?php
+and
+?&gt;
+... the reason for this is that using the PHP start tag and end tag would process the code as a
+php script prior to the code snippet display and would mess up the page.
+
+---------------------------------------------------------------------------------------
+Version 2.2 - July 20 2008 (for PHP4)
+- renamed extensions directory to 'qx'
+- renamed all extension prefixes to 'qx_'
+- fixed auto-loading of extensions
+- added sample application
+- added ability to read file and strip all unnecessary header and footer HTML code
+- added ability to process QuickSkin Extensions in dynamic data
+
+Version 2.1.0rc1 - October 31 2007
+- Fixed INCLUDE issue where template files in subdirectories were not being called properly
+- Tested and works with PHP4 and PHP5 (5.2.4) ... will not work with E_STRICT
+
+Version 2.0.0rc1 - October 2007
+- Changed project name from SmartTemplate to QuickCache
+  - modified all file names and function names to conform to new product name
+- Added class property for template directory and modified logic in code to support this new property
+- Added class method "set" to set class properties (can be explicitly set vs, use of assumptive $_CONFIG variable)
+- Added class method "addtpl" to add a supplmentary template (banner ad, etc) that loads at same time as main template
+- Added properties to both the parser and debugger to facilitate passing of variables between classes
+- Changed all " (double quotes) to ' (single quotes) where possible to enhance performance
+- Modified compiled and cached files names to a maximum of 35 characters, plus extension
+- Added support for QUERY STRING - particularly important to large scale projects where the query string is widely used
+- Merged class.quickskin.php and class.quickskinparser.php into one single file (both are dependent on each other)
+- QuickSkin now compatible with CodeIgniter with a simple file name change
+  - change filename from class.quickskin.php to Quickskin.php and add to your /system/application/libraries directory
+*Note: next version will focus on compatibility with PHP4 and PHP5
+
+Version 1.2.1 - codename Betelgeuse
+- A variable can be used as right part of an IF clause
+- Added space recognition in IF clauses
+
+Version 1.2.0 - codename Orion
+- added subtemplate system
+- better error reporting
+- some bugfixing
+
+
+Version 1.0.2 - original developed by Philipp v. Criegern

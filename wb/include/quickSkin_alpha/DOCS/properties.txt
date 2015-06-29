@@ -1,0 +1,34 @@
+QuickSkin Properties:
+
+Please note: if you do not want to modify the default, the respective property code is not required.
+
+$page->set('reuse_code', false);
+  defines whether or not to use the compiled PHP code or not, default is false
+  * note: if you have dynamic data (ie. from a database), set to false
+
+$page->set('template_dir', '_skins/');
+  defines the directory where the skins are stored, default is '_skins/'
+  (can also be set using the $_CONFIG['template_dir'] variable)
+
+$page->set('temp_dir', '_skins_tmp/');
+  defines the directory where the compiled code is stored, default is '_skins_tmp/'
+  (can also be set using the $_CONFIG['quickskin_compiled'] variable)
+
+$page->set('cache_dir', '_skins_tmp/');
+  defines the directory where the temporary compiled code is stored, default is '_skins_tmp/'
+  (can also be set using the $_CONFIG['quickskin_cache'] variable)
+
+$page->set('cache_lifetime', 600);
+  defines the Output Cache Lifetime in seconds, default is 600 seconds (10 minutes)
+  (can also be set using the $_CONFIG['cache_lifetime'] variable)
+
+$page->set('extensions_dir', '_lib/qx');
+  defines the directory where the QuickSkin Extensions are stored, default is '_lib/qx'
+  (QuickSkin Extensions are code that can be used in your templates - but not in dynamic data)
+  
+$page->set('extension_prefix', 'qx_');
+  defines the prefix used on all QuickSkin Extensions, default is 'qx_' (not usually changed)
+
+$page->set('extensions_dir', '_skins/');
+  defines the directory where the skins are stored, default is '_skins/'
+

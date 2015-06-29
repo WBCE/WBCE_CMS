@@ -1,0 +1,64 @@
+<!-- BEGIN main_block -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Set Upload Parameters</title>
+
+
+<style type="text/css">
+body,td,th,input,textarea {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+body {
+	background-color: #FFF;
+	margin: 0px;
+}
+hr {
+	margin: 0px;
+	color: #003366;
+	height: 1px;
+}
+.hide {
+	display: none;
+}
+a:link, a:visited, a:active {
+	color: #003366;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+	color: #336699;
+}
+</style>
+</head>
+<body>
+
+<table summary="" cellpadding="4" cellspacing="0" border="0" width="100%" style="border-bottom: 1px solid #666; width: 100%;">
+<tr style="background-color: #DDD;">
+	<td align="center">{TEXT_HEADER}</td>
+</tr>
+</table>
+<form method="post" action="{ADMIN_URL}/media/setparameter.php">
+	{FTAN}
+<table summary="" cellpadding="4" cellspacing="0" border="0" width="100%" class="{DISPLAY_LIST_TABLE}">
+	<tr><td>{SETTINGS}</td><td><input type="checkbox" name="show_thumbs" {NO_SHOW_THUMBS_SELECTED}> {NO_SHOW_THUMBS}</td></tr>
+	<tr class="{DISPLAY_ADMIN}"><td></td>&nbsp;<td><input type="checkbox" name="admin_only" {ADMIN_ONLY_SELECTED}> {ADMIN_ONLY}</td></tr>
+	<tr><td colspan="2" style="border-bottom: 1px solid #666; line-height: 1px;">&nbsp;</td></tr>
+<!-- BEGIN list_block -->
+	<tr style="background-color: #{ROW_BG_COLOR};">
+		<td>{PATH_NAME}</td>
+		<td>{WIDTH} <input size="5" type="text" name="{FIELD_NAME_W}" value="{CUR_WIDTH}"> {HEIGHT} <input size="5" type="text" name="{FIELD_NAME_H}" value="{CUR_HEIGHT}"></td>
+	</tr>
+<!-- END list_block -->
+	<tr>
+		<td><input type="button" onclick="javascript: window.location = 'browse.php'" value="{BACK}"></td>
+		<td><input type="submit" name="save" value="{SAVE_TEXT}"></td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+
+
+<!-- END main_block -->

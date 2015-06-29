@@ -1,0 +1,61 @@
+<!-- BEGIN main_block -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Rename Media</title>
+<link href="{THEME_URL}/media.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<!-- BEGIN main_block -->
+
+<style>
+.hide {display:none;}
+</style>
+
+<form name="rename" action="rename2.php" method="post">
+<input type="hidden" name="dir" value="{DIR}" />
+<input type="hidden" name="old_name" value="{FILENAME}" />
+<input type="hidden" name="id" value="{FILE_ID}" />
+{FTAN}
+<table summary="" cellpadding="5" cellspacing="0" border="0" width="400" align="center">
+<tr>
+	<td align="center" colspan="2">{TEXT_RENAME} '{FILENAME}' {TEXT_TO}:</td>
+</tr>
+<tr>
+	<td>
+		<input type="text" name="name" style="width: 100%;" />
+		<script type="text/javascript">
+		document.rename.name.focus();
+		</script>
+	</td>
+	<td width="50" class="{DISPlAY_EXTENSION}">
+		<input type="text" name="extension" style="width: 50px;" value="{EXTENSION}" />
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+		<input type="checkbox" name="overwrite" id="overwrite" value="yes" />
+		<label for="overwrite">
+		{TEXT_OVERWRITE_EXISTING} {TYPE}
+		</label>
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+		<input type="submit" name="submit" value="{TEXT_RENAME}" style="width: 49%;" />
+		<input type="button" name="cancel" value="{TEXT_CANCEL}" style="width: 49%;" onclick="javascript: window.location = 'browse.php';" />
+	</td>
+</tr>
+</table>
+
+</form>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+
+<!-- END main_block -->

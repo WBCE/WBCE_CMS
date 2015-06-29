@@ -1,0 +1,22 @@
+<!-- BEGIN main_block -->
+<h2>{HEADING_ADMINISTRATION_TOOLS} </h2>
+<div id="admintools">
+	<ul>
+	<!-- BEGIN tool_list_block -->
+	<li>
+		<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" width="100%">
+		<tr>
+			<td class="graphic" align="center" valign="middle" rowspan="2">
+				<a class= "title" href="{ADMIN_URL}/admintools/tool.php?tool={TOOL_DIR}"><img src="{THEME_URL}/icons/admintools.png" border="0" alt="{TOOL_NAME}" align="left" /></a>
+			</td>
+			<td class="description" valign="top">
+				<a href="{ADMIN_URL}/admintools/tool.php?tool={TOOL_DIR}"><span class="title">{TOOL_NAME}</span></a>{TOOL_DESCRIPTION}
+			</td>
+		</tr>
+		</table>
+	</li>
+	<!-- END tool_list_block -->
+	</ul>
+	{TOOL_LIST}
+</div>
+<!-- END main_block -->

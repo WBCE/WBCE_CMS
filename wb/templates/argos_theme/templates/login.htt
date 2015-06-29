@@ -1,0 +1,83 @@
+<!-- BEGIN mainBlock -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>{TEXT_LOGIN}</title>
+<meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
+<meta http-equiv="content-language" content="{LANGUAGE}" />
+<meta name="description" content="{TEXT_LOGIN}" />
+<meta name="keywords" content="{TEXT_LOGIN}" />
+<link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
+</head>
+<body onload="document.login.{USERNAME_FIELDNAME}.focus();">
+<div style="text-align:left;font-size:20px;color:#fff;padding:15px 0 0 50px;height:100px;">
+	<!-- <img src="{THEME_URL}/images/logo.png" alt="Logo" /> -->
+	{TEXT_LOGIN}
+</div> 
+<table class="container" summary="" cellpadding="0" cellspacing="0" border="0" width="770" align="center" style="margin-top: 30px;">
+  <tr>
+    <td class="content">
+      <form name="login" class="login" action="{ACTION_URL}" method="post">
+        <input type="hidden" name="url" value="{URL}" />
+        <input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
+        <input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" />
+        <table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="500">
+          <tr>
+            <td height="40" align="center" colspan="2">{MESSAGE}</td>
+          </tr>
+          <tr>
+            <td height="10" colspan="2"></td>
+          </tr>
+          <tr>
+            <td width="170" height="30" align="right">{TEXT_USERNAME}:</td>
+            <td>
+              <input type="text" maxlength="{MAX_USERNAME_LEN}" name="{USERNAME_FIELDNAME}" value="{USERNAME}" style="width: 180px;" />
+            </td>
+          </tr>
+          <tr>
+            <td width="170" height="30" align="right">{TEXT_PASSWORD}:</td>
+            <td>
+              <input type="password" maxlength="{MAX_PASSWORD_LEN}" name="{PASSWORD_FIELDNAME}" style="width: 180px;" />
+            </td>
+          </tr>
+          <tr style="{DISPLAY_REMEMBER_ME}">
+            <td>&nbsp;</td>
+            <td>
+              <input type="checkbox" name="remember" id="remember" value="true" />
+              <label for="remember">{TEXT_REMEMBER_ME}</label>
+            </td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>
+              <input type="submit" name="submit" value="{TEXT_LOGIN}" style="width: 180px; font-size: 10px; text-transform: uppercase; color: #003366; border: 1px solid #336699; background-color: #DDDDDD; padding: 3px;" />
+            </td>
+          </tr>
+          <tr>
+            <td height="10" colspan="2"></td>
+          </tr>
+        </table>
+      </form>
+      <center>
+        <a href="{FORGOTTEN_DETAILS_APP}">{TEXT_FORGOTTEN_DETAILS}</a> 
+		<br />
+        <br />
+        <br />
+        <a href="{WB_URL}/">{TEXT_HOME}</a>
+      </center>
+    </td>
+  </tr>
+</table>
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" style="padding:10px 0;">
+  <tr>
+    <td style="font-size:10px;text-align:center;">
+      <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+      <a href="http://www.websitebaker2.org/" title="external">WebsiteBaker</a> is released under the
+      <a href="http://www.gnu.org/licenses/gpl.html" title="WebsiteBaker is released under the GNU General Public License">GNU General Public License</a>
+      <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+<!-- END mainBlock -->
