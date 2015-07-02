@@ -22,29 +22,18 @@ require('../../config.php');
 require_once(WB_PATH.'/framework/class.admin.php');
 
 $admin = new admin('Pages', 'pages_modify');
-/*
+
 // Get page id
-if(!isset($_GET['page_id']) || !is_numeric($_GET['page_id'])) {
+if(!isset($_REQUEST['page_id']) || !is_numeric($_REQUEST['page_id'])) {
     header("Location: index.php");
     exit(0);
 } else {
-    $page_id = (int)$_GET['page_id'];
-}
-*/
-// Get page id
-    $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
-    $page_id = intval(isset(${$requestMethod}['page_id']) ? ${$requestMethod}['page_id'] : 0);
-    if(    ($page_id == 0)) {
-        header("Location: index.php");
-        exit(0);
+    $page_id = (int)$_REQUEST['page_id'];
     }
 
-/*
-if( (!($page_id = $admin->checkIDKEY('page_id', $page_id, $_SERVER['REQUEST_METHOD']))) )
-{
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
+if(!$page_id || !is_numeric($page_id)) { // double check doesn't hurt ;D
+	$admin->print_error('Invalid arguments passed - script stopped.');
 }
-*/
 
 // Get perms
 if(!$admin->get_page_permission($page_id,'admin')) {
