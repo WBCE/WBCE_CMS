@@ -4,11 +4,11 @@
  * @category        frontend
  * @package         account
  * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Website Baker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: forgot_form.php 1601 2012-02-07 22:48:27Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/account/forgot_form.php $
  * @lastmodified    $Date: 2012-02-07 23:48:27 +0100 (Di, 07. Feb 2012) $
@@ -18,6 +18,8 @@
 // Must include code to stop this file being access directly
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 // Check if the user has already submitted the form, otherwise show it
+$sCallingScript = $_SERVER['SCRIPT_NAME'];
+$_SESSION['HTTP_REFERER'] =  isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $sCallingScript;
 $message = $MESSAGE['FORGOT_PASS_NO_DATA'];
 $errMsg ='';
 if(isset($_POST['email']) && $_POST['email'] != "" )

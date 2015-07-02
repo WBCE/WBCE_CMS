@@ -4,20 +4,17 @@
  * @category        module
  * @package         show_menu2
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.7.0 | 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: include.php 1475 2011-07-12 23:07:10Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/show_menu2/include.php $
  * @lastmodified    $Date: 2011-07-13 01:07:10 +0200 (Mi, 13. Jul 2011) $
  *
  */
-
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
 define('SM2_ROOT',          -1000);
 define('SM2_CURR',          -2000);
@@ -141,8 +138,10 @@ class SM2_Formatter
         if (($this->flags & SM2_NUMCLASS) == SM2_NUMCLASS) {
             $currClass .= ' menu-'.$aPage['level'];
         }
-        if (array_key_exists('sm2_has_child', $aPage)) {
-            // not set if false, so existence = true
+        if (array_key_exists('sm2_has_child', $aPage) &&
+            !array_key_exists('sm2_is_max_level', $aPage)
+        ) {
+        // if item has child(ren) and is not topmost level
             $currClass .= ' menu-expand';
         }
         if (array_key_exists('sm2_is_curr', $aPage)) { 
@@ -221,19 +220,19 @@ class SM2_Formatter
     function replace($aMatches) {
         $aMatch = $aMatches[1];
         $retval = '['.$aMatch.'=UNKNOWN]';
+        $retval_1 = '';
         switch ($aMatch) {
         case 'a':
-            $retval = '<a href="'.$this->url.'"';
-			// break; // ignore 'break' to add the rest of <a>-tag
+            $retval_1 = '<a href="'.$this->url.'"';
 		case 'ac':
-			if( substr($retval, 0, 2) != '<a'){
 				$retval = '<a href="'.$this->url.'" class="'.$this->currClass.'"';
+            $retval = ($retval_1 == '') ? $retval : $retval_1;
+            if(($this->flags & SM2_XHTML_STRICT)) {
+                $retval .= ' title="'.(($this->flags & SM2_NO_TITLE) ? '&nbsp;' : $this->page['tooltip']).'"';
 			}
-			if(($this->flags & SM2_NO_TITLE)) {
-				$retval .= ' title="'.$this->page['tooltip'].'"';
-			}
-			if(!($this->flags & SM2_XHTML_STRICT)) {
+            else {
 				$retval .= ' target="'.$this->page['target'].'"';
+                $retval .= ($this->flags & SM2_NO_TITLE) ? '' : ' title="'.$this->page['tooltip'].'"';
 			}
 			$retval .= '>';
 			break;
@@ -508,6 +507,27 @@ function show_menu2(
         $aStart = 0;
     }
 
+    // adjust $aMaxLevel to the level number of the final level that 
+    // will be displayed. That is, we display all levels <= aMaxLevel.
+    if ($aMaxLevel == SM2_ALL) {
+        $aMaxLevel = 1000;
+    }
+    elseif ($aMaxLevel < 0) {   // SM2_CURR+N
+        $aMaxLevel += $pageLevel - SM2_CURR;
+    }
+    elseif ($aMaxLevel >= SM2_MAX) { // SM2_MAX+N
+        $aMaxLevel += $aStartLevel - SM2_MAX;
+        if ($aMaxLevel > $pageLevel) {
+            $aMaxLevel = $pageLevel;
+        }
+    }
+    else {  // SM2_START+N
+        $aMaxLevel += $aStartLevel - SM2_START;
+    }
+
+
+
+
     // we get the menu data once and store it in a global variable. This allows 
     // multiple calls to show_menu2 in a single page with only a single call to 
     // the database. If this variable exists, then we have already retrieved all
@@ -595,6 +615,10 @@ function show_menu2(
                         unset($page['sm2_hide']); 
                     }
                 }
+                // mark our current page as being on the maximum level to show
+                if ($page['level'] == $aMaxLevel) {
+                    $page['sm2_is_max_level'] = true;
+                }
 
                 // mark parents of the current page as such
                 if (in_array($page['page_id'], $rgCurrParents)) {
@@ -658,7 +682,7 @@ function show_menu2(
         $GLOBALS['show_menu2_data'][$aMenu] =& $rgParent;
         unset($rgParent);
     }
-
+/*
     // adjust $aMaxLevel to the level number of the final level that 
     // will be displayed. That is, we display all levels <= aMaxLevel.
     if ($aMaxLevel == SM2_ALL) {
@@ -676,7 +700,7 @@ function show_menu2(
     else {  // SM2_START+N
         $aMaxLevel += $aStartLevel - SM2_START;
     }
-
+*/
     // generate the menu
     $retval = false;
     if (array_key_exists($aStart, $GLOBALS['show_menu2_data'][$aMenu])) {
@@ -755,7 +779,7 @@ function sm2_recurse(
     }
     
     $currSib = 0;
-    foreach ($rgParent[$aStart] as $page) {
+    foreach ($rgParent[$aStart] as $mKey => $page) {
         // skip all hidden pages 
         if (array_key_exists('sm2_hide', $page)) { // not set if false, so existence = true
             continue;
@@ -765,6 +789,7 @@ function sm2_recurse(
 
         // skip any elements that are lower than the maximum level
         $pageLevel = $page['level'];
+        
         if ($pageLevel > $aMaxLevel) {
             continue;
         }
@@ -809,7 +834,7 @@ function sm2_recurse(
         if ($pageLevel >= $aStartLevel) {
             // massage the link into the correct form
             if(!INTRO_PAGE && $page['link'] == $wb->default_link) {
-                $url = WB_URL.'/';
+                $url = WB_URL;
             }
             else {
                 $url = $wb->page_link($page['link']);

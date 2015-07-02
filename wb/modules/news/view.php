@@ -4,11 +4,11 @@
  * @category        modules
  * @package         modules_news
  * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: view.php 1538 2011-12-10 15:06:15Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/news/view.php $
  * @lastmodified    $Date: 2011-12-10 16:06:15 +0100 (Sa, 10. Dez 2011) $
@@ -53,8 +53,8 @@ if (($query_users = $database->query($sql))) {
     while (($group = $query_users->fetchRow())) {
         // Insert user info into users array
         $groups[$group['group_id']] = $group;
-        $sImageUrl = WB_PATH.MEDIA_DIRECTORY.'/.news/image'.$group['group_id'].'.jpg';
-        $groups[$group['group_id']]['image'] = (is_readable($sImageUrl) ? $sImageUrl : '');
+        $sImageUrl = MEDIA_DIRECTORY.'/.news/image'.$group['group_id'].'.jpg';
+        $groups[$group['group_id']]['image'] = (is_readable(WB_PATH.$sImageUrl) ? WB_URL.$sImageUrl : '');
     }
 }
 // Check if we should show the main page or a post itself
@@ -411,7 +411,7 @@ if (!isset($post_id) || !is_numeric($post_id)) {
                 $aPlaceHolders = makePhExp(
                     'PAGE_TITLE',
                     'GROUP_ID',
-                    'GROUP_TITL',
+                    'GROUP_TITLE',
                     'GROUP_IMAGE',
                     'DISPLAY_GROUP',
                     'DISPLAY_IMAGE',

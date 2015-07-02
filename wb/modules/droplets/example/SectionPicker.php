@@ -1,9 +1,10 @@
 //:Load the view.php from any other section-module
 //:Use [[SectionPicker?sid=123]]
-global $database, $wb, $TEXT, $DGTEXT;
+global $database, $wb, $TEXT, $DGTEXT,$section_id,$page_id;
 $content = '';
 $sid = isset($sid) ? intval($sid) : 0;
 if( $sid ) {
+    $oldSid = $section_id; // save old sectionID
 	$sql  = 'SELECT `module` FROM `'.TABLE_PREFIX.'sections` ';
 	$sql .= 'WHERE `section_id`='.$sid;
 	if (($module = $database->get_one($sql))) {
@@ -17,9 +18,8 @@ if( $sid ) {
 					$_sFrontendCss = '<link href="'.WB_URL.$_sFrontendCss.'" rel="stylesheet" type="text/css" media="screen" />';
 				}
 			} else { $_sFrontendCss = ''; }
+            $section_id = $sid;
 			ob_start();
-			$oldSid = $section_id; // save old sectionID
-			$section_id = $sid;
 			require(WB_PATH.'/modules/'.$module.'/view.php');
 			$content = $_sFrontendCss.ob_get_clean();
 			$section_id = $oldSid; // restore old sectionID

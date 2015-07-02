@@ -3,15 +3,16 @@
  *
  * @category        admin
  * @package         groups
- * @author          Ryan Djurovich, WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @author          WebsiteBaker Project
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: get_permissions.php 1529 2011-11-25 05:03:32Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/groups/get_permissions.php $
- * @lastmodified    $Date: 2011-11-25 06:03:32 +0100 (Fr, 25. Nov 2011) $
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
+ * @version         $Id: get_permissions.php 5 2015-04-27 08:02:19Z luisehahne $
+ * @filesource      $HeadURL: https://localhost:8443/svn/wb283Sp4/SP4/branches/wb/admin/groups/get_permissions.php $
+ * @lastmodified    $Date: 2015-04-27 10:02:19 +0200 (Mo, 27. Apr 2015) $
  *
  */
 
@@ -244,5 +245,3 @@ if($handle = opendir(WB_PATH.'/templates/')) {
 		}
 	}
 }
-
-?>

@@ -4,14 +4,14 @@
  * @category        backend
  * @package         install
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version          $Id: save.php 1638 2012-03-13 23:01:47Z darkviper $
- * @filesource        $HeadURL:  $
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
+ * @version         $Id: save.php 1638 2012-03-13 23:01:47Z darkviper $
+ * @filesource      $HeadURL:  $
  * @lastmodified    $Date: $
  *
  */
@@ -24,7 +24,7 @@ if (true === $debug) {
 }
 // Start a session
 if (!defined('SESSION_STARTED')) {
-    session_name('wb_session_id');
+    session_name('wb-installer');
     session_start();
     define('SESSION_STARTED', true);
 }
@@ -85,9 +85,7 @@ function set_error($message, $field_name = '') {
 
 // Function to workout what the default permissions are for files created by the webserver
 function default_file_mode($temp_dir) {
-    $v = explode(".",PHP_VERSION);
-    $v = $v[0].$v[1];
-    if ($v > 41 AND is_writable($temp_dir)) {
+    if (version_compare(PHP_VERSION, '5.3.6', '>=') && is_writable($temp_dir)) {
         $filename = $temp_dir.'/test_permissions.txt';
         $handle = fopen($filename, 'w');
         fwrite($handle, 'This file is to get the default file permissions');
@@ -102,9 +100,7 @@ function default_file_mode($temp_dir) {
 
 // Function to workout what the default permissions are for directories created by the webserver
 function default_dir_mode($temp_dir) {
-    $v = explode(".",PHP_VERSION);
-    $v = $v[0].$v[1];
-    if ($v > 41 AND is_writable($temp_dir)) {
+    if (version_compare(PHP_VERSION, '5.3.6', '>=') && is_writable($temp_dir)) {
         $dirname = $temp_dir.'/test_permissions/';
         mkdir($dirname);
         $default_dir_mode = '0'.substr(sprintf('%o', fileperms($dirname)), -3);
@@ -272,6 +268,8 @@ if (!isset($_POST['admin_repassword']) OR $_POST['admin_repassword'] == '') {
 if ($admin_password != $admin_repassword) {
     set_error('Sorry, the two Administrator account passwords you entered do not match','admin_repassword');
 }
+
+$database_charset = 'utf8';
 // End admin user details code
 
 // build name and content of the config file
@@ -285,6 +283,7 @@ $config_content
     . 'define(\'DB_NAME\', \''.$database_name.'\');'.PHP_EOL
     . 'define(\'DB_USERNAME\', \''.$database_username.'\');'.PHP_EOL
     . 'define(\'DB_PASSWORD\', \''.$database_password.'\');'.PHP_EOL
+    . 'define(\'DB_CHARSET\', \''.$database_charset.'\');'.PHP_EOL
     . 'define(\'TABLE_PREFIX\', \''.$table_prefix.'\');'.PHP_EOL
     . PHP_EOL
     . 'define(\'WB_URL\', \''.$wb_url.'\');'.PHP_EOL
@@ -360,7 +359,7 @@ $sql = // add settings from install input
     .'(\'wb_sp\', \''.SP.'\'),'
     .'(\'website_title\', \''.$website_title.'\'),'
     .'(\'default_language\', \''.$default_language.'\'),'
-    .'(\'app_name\', \'wb_'.$session_rand.'\'),'
+    .'(\'app_name\', \'wb-'.$session_rand.'\'),'
     .'(\'default_timezone\', \''.$default_timezone.'\'),'
     .'(\'operating_system\', \''.$operating_system.'\'),'
     .'(\'string_file_mode\', \''.$file_mode.'\'),'
@@ -376,7 +375,7 @@ $sql = // add the Admin user
     .    '`groups_id`=\'1\', '
     .    '`active`=\'1\', '
     .    '`username`=\''.$admin_username.'\', '
-	.    '`language`=\''.$default_language.'\', '
+    .    '`language`=\''.$default_language.'\', '
     .    '`password`=\''.md5($admin_password).'\', '
     .    '`email`=\''.$admin_email.'\', '
     .    '`timezone`=\''.$default_timezone.'\', '

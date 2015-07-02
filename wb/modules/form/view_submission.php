@@ -4,12 +4,12 @@
  * @category        module
  * @package         Form
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       Website Baker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: view_submission.php 1582 2012-01-19 03:07:05Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/form/view_submission.php $
  * @lastmodified    $Date: 2012-01-19 04:07:05 +0100 (Do, 19. Jan 2012) $
@@ -45,7 +45,6 @@ if($get_user = $database->query($sql)) {
 		$user['username'] = 'unknown';
 	}
 }
-$sec_anchor = (defined( 'SEC_ANCHOR' ) && ( SEC_ANCHOR != '' )  ? '#'.SEC_ANCHOR.$section['section_id'] : '' );
 ?>
 <table class="frm-submission" summary="" cellpadding="0" cellspacing="0" border="0">
 <tr>

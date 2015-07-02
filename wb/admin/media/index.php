@@ -3,15 +3,16 @@
  *
  * @category        admin
  * @package         admintools
- * @author          Ryan Djurovich, WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @author          WebsiteBaker Project
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: index.php 1625 2012-02-29 00:50:57Z Luisehahne $
- * @filesource		$HeadURL:  $
- * @lastmodified    $Date:  $
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
+ * @version         $Id: index.php 5 2015-04-27 08:02:19Z luisehahne $
+ * @filesource      $HeadURL: https://localhost:8443/svn/wb283Sp4/SP4/branches/wb/admin/media/index.php $
+ * @lastmodified    $Date: 2015-04-27 10:02:19 +0200 (Mo, 27. Apr 2015) $
  *
  */
 
@@ -112,17 +113,4 @@ $template->set_var(array(
 // Parse template object
 $template->parse('main', 'main_block', false);
 $template->pparse('output', 'page');
-/*
-$endtime=explode(" ", microtime());
-$endtime=$endtime[0]+$endtime[1];
-$debugVMsg = '';
-if($admin->ami_group_member('1') ) {
-	$debugVMsg  = "<p>Mask loaded in ".round($endtime - $starttime,6)." Sec,&nbsp;&nbsp;";
-	$debugVMsg .= "Memory in use ".number_format(memory_get_usage(true), 0, ',', '.')."&nbsp;Byte,&nbsp;&nbsp;";
-	$debugVMsg .= sizeof(get_included_files())."&nbsp;included files</p>";
-	// $debugVMsg = print_message($debugVMsg,'#','debug',-1,false);
-	print $debugVMsg.'<br />';
- }
-*/
-// Print admin
 $admin->print_footer();

@@ -6,6 +6,7 @@
 
 $PHPMAILER_LANG = array();
 
+
 $PHPMAILER_LANG['provide_address']      = 'You must provide at least one recipient email address.';
 $PHPMAILER_LANG['mailer_not_supported'] = ' mailer is not supported.';
 $PHPMAILER_LANG['execute']              = 'Could not execute: ';
@@ -20,4 +21,7 @@ $PHPMAILER_LANG['file_open']            = 'File Error: Could not open file: ';
 $PHPMAILER_LANG['encoding']             = 'Unknown encoding: ';
 $PHPMAILER_LANG['signing']              = 'Signing Error: ';
 $PHPMAILER_LANG['smtp_error']           = 'SMTP server error: ';
-?>
+$PHPMAILER_LANG['empty_message']        = 'email content is empty.';
+$PHPMAILER_LANG['invalid_email']        = 'email can not be send of invalid address.';
+$PHPMAILER_LANG['smtp_connect_failed']  = 'connection to SMTP server failed.';
+$PHPMAILER_LANG['variable_set']         = 'can not set or reset variable: ';

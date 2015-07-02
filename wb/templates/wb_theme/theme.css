@@ -22,7 +22,7 @@ input:focus, input:active, select:focus, textarea:focus { background :#f1f8fd; }
 iframe { border :1px solid #35373a; }
 div.box { width :100%; margin :-10px 0 0 0; font-size :small; text-align :right; }
 .header { width :900px; margin :0 auto; }
-.container { width :85%; margin :0 auto; background :url(images/bgtitle.png) #ffffff; background-repeat :repeat-x; }
+.container { width :89em; margin :0 auto; background :url(images/bgtitle.png) #ffffff; background-repeat :repeat-x; }
 .content { padding :1.6em; margin :0 auto; min-height :300px; vertical-align :top; width :900px; }
 #content_container { text-align :center; width :900px; clear :both; margin :0 auto; }
 #admintools ul { padding :0; margin :0 auto; width :100%; }

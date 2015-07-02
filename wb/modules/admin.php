@@ -4,22 +4,22 @@
  * @category        backend
  * @package         modules
  * @author          WebsiteBaker Project
- * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: admin.php 1625 2012-02-29 00:50:57Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/modules/admin.php $
  * @lastmodified    $Date: 2012-02-29 01:50:57 +0100 (Mi, 29. Feb 2012) $
  *
 */
 
-// Stop this file being access directly
-if(defined('WB_PATH') == false)
-{
-	die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
+/* -------------------------------------------------------- */
+// Must include code to stop this file being accessed directly
+if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
+/* -------------------------------------------------------- */
 
 // Get page id
 	$requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
@@ -182,9 +182,10 @@ if(isset($print_info_banner) && $print_info_banner == true) {
 		}
 
 		$sec_anchor = (defined( 'SEC_ANCHOR' ) && ( SEC_ANCHOR != '' )  ? 'id="'.SEC_ANCHOR.$section['section_id'].'"' : '');
-		print '<div class="section-info" '.$sec_anchor.' ><b>' . $TEXT['BLOCK'] . ': </b>' . $block_name;
-		print '<b>  Modul: </b>' . $section['module']." ";
-		print '<b>  ID: </b>' . $section_id."</div>\n";
+        $sSectionInfoLine = '<div class="section-info" '.$sec_anchor.' ><b>'.$TEXT['BLOCK']
+                          . ': </b>'.$block_name.' ('.$section['block'].') <b> Modul: </b>'
+                          . $section['module'].'<b>  ID: </b>'.$section_id.'</div>'.PHP_EOL;
+        echo $sSectionInfoLine;
 	}
 
 } //

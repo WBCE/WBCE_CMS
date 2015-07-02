@@ -4,12 +4,12 @@
  * @category        frontend
  * @package         account
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       Website Baker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: login_form.php 1599 2012-02-06 15:59:24Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/account/login_form.php $
  * @lastmodified    $Date: 2012-02-06 16:59:24 +0100 (Mo, 06. Feb 2012) $
@@ -41,7 +41,11 @@ $thisApp->redirect_url = (isset($thisApp->redirect_url) && ($thisApp->redirect_u
 	<button type="button" value="cancel" onClick="javascript: window.location = '<?php print $_SESSION['HTTP_REFERER'] ?>';"><?php print $TEXT['CANCEL'] ?></button>
 </div>
 <h1>&nbsp;Login</h1>
-&nbsp;<?php echo $thisApp->message; ?>
+&nbsp;<?php 
+  if(isset($thisApp->message)) {
+    echo $thisApp->message; 
+  }
+?>
 <br />
 <br />
 

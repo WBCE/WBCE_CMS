@@ -3,15 +3,16 @@
  *
  * @category        admin
  * @package         admintools
- * @author          WB-Project, Werner v.d. Decken
- * @copyright       2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @author          Ryan Djurovich, WebsiteBaker Project
+ * @author          Werner v.d. Decken
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: index.php 1625 2012-02-29 00:50:57Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/admin/admintools/index.php $
- * @lastmodified    $Date: 2012-02-29 01:50:57 +0100 (Mi, 29. Feb 2012) $
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
+ * @version         $Id: index.php 5 2015-04-27 08:02:19Z luisehahne $
+ * @filesource      $HeadURL: https://localhost:8443/svn/wb283Sp4/SP4/branches/wb/admin/admintools/index.php $
+ * @lastmodified    $Date: 2015-04-27 10:02:19 +0200 (Mo, 27. Apr 2015) $
  *
  */
 

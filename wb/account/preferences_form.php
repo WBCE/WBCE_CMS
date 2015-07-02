@@ -4,12 +4,12 @@
  * @category        frontend
  * @package         account
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: preferences_form.php 1599 2012-02-06 15:59:24Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/account/preferences_form.php $
  * @lastmodified    $Date: 2012-02-06 16:59:24 +0100 (Mo, 06. Feb 2012) $
@@ -18,7 +18,8 @@
 
 // prevent this file from being accesses directly
 if(defined('WB_PATH') == false) {	exit("Cannot access this file directly"); }
-
+$sCallingScript = $_SERVER['SCRIPT_NAME'];
+$_SESSION['HTTP_REFERER'] =  isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $sCallingScript;
 	if($wb->is_authenticated() === false) {
 // User needs to login first
 		header("Location: ".WB_URL."/account/login.php?redirect=".$wb->link);

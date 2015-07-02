@@ -32,11 +32,11 @@
  * @category     	admin
  * @package      	interface
  * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @revision     	$Revision: 1638 $
  * @version      	$Id: version.php 1638 2012-03-13 23:01:47Z darkviper $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/admin/interface/version.php $
@@ -51,8 +51,5 @@ if(!defined('WB_URL')) {
 
 // check if defined to avoid errors during installation (redirect to admin panel fails if PHP error/warnings are enabled)
 if(!defined('VERSION')) define('VERSION', '2.8.3');
-if(!defined('REVISION')) define('REVISION', '1640');
-if(!defined('SP')) define('SP', 'SP3');
-
-
-
+if(!defined('REVISION')) define('REVISION', '1641');
+if(!defined('SP')) define('SP', 'SP4');

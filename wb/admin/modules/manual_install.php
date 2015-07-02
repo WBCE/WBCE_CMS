@@ -4,13 +4,14 @@
  * @category        admin
  * @package         modules
  * @author          Ryan Djurovich, Christian Sommer, WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: manual_install.php 1603 2012-02-08 03:08:19Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/modules/manual_install.php $
+ * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/modules/manual_install.php $
  * @lastmodified    $Date: 2012-02-08 04:08:19 +0100 (Mi, 08. Feb 2012) $
  *
  */
@@ -35,15 +36,15 @@ if (!(isset($_POST['file']) && $_POST['file'] != '' && (strpos($_POST['file'], '
 $js_back = ADMIN_URL . '/modules/index.php?advanced';
 if( !$admin->checkFTAN() )
 {
-	$admin->print_header();
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$js_back);
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$js_back);
 }
 
 if ($admin->get_permission('admintools') == false) { die(header('Location: ../../index.php')); }
 
 // check if the referer URL if available
 $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] :
-	(isset($HTTP_SERVER_VARS['HTTP_REFERER']) ? $HTTP_SERVER_VARS['HTTP_REFERER'] : '');
+    (isset($HTTP_SERVER_VARS['HTTP_REFERER']) ? $HTTP_SERVER_VARS['HTTP_REFERER'] : '');
 $referer = '';
 // if referer is set, check if script was invoked from "admin/modules/index.php"
 $required_url = ADMIN_URL . '/modules/index.php';
@@ -69,7 +70,7 @@ $mod_path = WB_PATH . '/modules/' . basename(WB_PATH . '/' . $_POST['file']);
 $module_dir = $mod_path;
 if (!file_exists($mod_path . '/' . $_POST['action'] . '.php'))
 {
-	$admin->print_header();
+    $admin->print_header();
     $admin->print_error($TEXT['NOT_FOUND'].': <tt>"'.htmlentities(basename($mod_path)).'/'.$_POST['action'].'.php"</tt> ', $js_back);
 }
 
@@ -82,20 +83,19 @@ $msg = $TEXT['EXECUTE'] . ': <tt>"' . htmlentities(basename($mod_path)) . '/' . 
 
 switch ($_POST['action'])
 {
-	case 'install':
-		// $admin->print_header();
-		$admin->print_success($msg, $js_back);
-		break;
+    case 'install':
+        // $admin->print_header();
+        $admin->print_success($msg, $js_back);
+        break;
 
-	case 'upgrade':
-		upgrade_module(basename($mod_path), false);
-		// $admin->print_header();
-		$admin->print_success($msg, $js_back);
-		break;
-	
-	case 'uninstall':
-		// $admin->print_header();
-		$admin->print_success($msg, $js_back);
-		break;
+    case 'upgrade':
+        upgrade_module(basename($mod_path), false);
+        // $admin->print_header();
+        $admin->print_success($msg, $js_back);
+        break;
+    
+    case 'uninstall':
+        // $admin->print_header();
+        $admin->print_success($msg, $js_back);
+        break;
 }
-

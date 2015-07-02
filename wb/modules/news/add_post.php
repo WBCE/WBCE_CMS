@@ -4,11 +4,12 @@
  * @category        modules
  * @package         news
  * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: add_post.php 1538 2011-12-10 15:06:15Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/news/add_post.php $
  * @lastmodified    $Date: 2011-12-10 16:06:15 +0100 (Sa, 10. Dez 2011) $
@@ -60,17 +61,3 @@ if (($database->query($sql))) {
     $admin->print_error($database->get_error(), $sUrl.$post_id);
 }
 $admin->print_footer();
-/*
-$database->query("INSERT INTO ".TABLE_PREFIX."mod_news_posts (section_id,page_id,position,commenting,active,title,link,content_short,content_long,created_when,created_by) VALUES ('$section_id','$page_id','$position','$commenting','1','','','','',$created_when,$created_by)");
-// Get the id
-$post_id = $admin->getIDKEY($database->getLastInsertId());
-//$post_id = $database->get_one("SELECT LAST_INSERT_ID()");
-// Say that a new record has been added, then redirect to modify page
-if($database->is_error()) {
-	$admin->print_error($database->get_error(), WB_URL.'/modules/news/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id);
-} else {
-	$admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id);
-}
-// Print admin footer
-$admin->print_footer();
-*/

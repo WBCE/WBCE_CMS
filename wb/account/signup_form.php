@@ -4,12 +4,12 @@
  * @category        frontend
  * @package         account
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: signup_form.php 1599 2012-02-06 15:59:24Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/account/signup_form.php $
  * @lastmodified    $Date: 2012-02-06 16:59:24 +0100 (Mo, 06. Feb 2012) $
@@ -18,7 +18,8 @@
 
 // Must include code to stop this file being access directly
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
-
+$sCallingScript = $_SERVER['SCRIPT_NAME'];
+$_SESSION['HTTP_REFERER'] =  isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $sCallingScript;
 require_once(WB_PATH.'/include/captcha/captcha.php');
 
 ?>
@@ -47,7 +48,7 @@ require_once(WB_PATH.'/include/captcha/captcha.php');
 	<?php }
 	?>
     </div>
-<table summary="" cellpadding="5" cellspacing="0" border="0" width="90%">
+<table>
 <tr>
 	<td width="180"><?php echo $TEXT['USERNAME']; ?>:</td>
 	<td class="value_input">

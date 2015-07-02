@@ -3,15 +3,16 @@
  *
  * @category        admin
  * @package         admintools
- * @author          WB-Project, Werner v.d. Decken
- * @copyright       2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @author          Ryan Djurovich, WebsiteBaker Project
+ * @author          Werner v.d. Decken
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.2
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: tool.php 1552 2011-12-31 14:57:31Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/admintools/tool.php $
- * @lastmodified    $Date: 2011-12-31 15:57:31 +0100 (Sa, 31. Dez 2011) $
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
+ * @version         $Id: tool.php 5 2015-04-27 08:02:19Z luisehahne $
+ * @filesource      $HeadURL: https://localhost:8443/svn/wb283Sp4/SP4/branches/wb/admin/admintools/tool.php $
+ * @lastmodified    $Date: 2015-04-27 10:02:19 +0200 (Mo, 27. Apr 2015) $
  *
  */
 require('../../config.php');
@@ -25,7 +26,7 @@ require_once(WB_PATH.'/framework/functions.php');
 	// Check if tool is installed
 		$sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
 		       'WHERE `type`=\'module\' AND `function`=\'tool\' '.
-		              'AND `directory`=\''.$toolDir.'\'';
+                      'AND `directory`=\''.$database->escapeString($toolDir).'\'';
 		if(($toolName = $database->get_one($sql))) {
 		// create admin-object and print header if FTAN is NOT supported AND function 'save' is requested
 			$admin_header = !(is_file(WB_PATH.'/modules/'.$toolDir.'/FTAN_SUPPORTED') && $doSave);

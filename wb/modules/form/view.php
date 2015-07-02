@@ -4,11 +4,11 @@
  * @category        module
  * @package         Form
  * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: view.php 1607 2012-02-09 19:29:58Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/form/view.php $
  * @lastmodified    $Date: 2012-02-09 20:29:58 +0100 (Do, 09. Feb 2012) $
@@ -17,11 +17,8 @@
 
 // Must include code to stop this file being access directly
 /* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-	// Stop this file being access directly
-		die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
+// Must include code to stop this file being accessed directly
+if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 /* -------------------------------------------------------- */
 
 // load module language file
@@ -140,9 +137,6 @@ if($_POST == array()) {
 			$use_xhtml_strict = false;
 		}
 	}
-
-// do not use sec_anchor, can destroy some layouts
-$sec_anchor = (defined( 'SEC_ANCHOR' ) && ( SEC_ANCHOR != '' )  ? '#'.SEC_ANCHOR.$section['section_id'] : '' );
 
 	// Get list of fields
 	$sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_form_fields` ';

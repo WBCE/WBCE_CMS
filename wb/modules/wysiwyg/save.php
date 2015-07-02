@@ -4,11 +4,11 @@
  * @category        backend
  * @package         wysiwyg
  * @author          WebsiteBaker Project
- * @copyright       2009-2012, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://www.websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: save.php 1615 2012-02-18 02:14:31Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/modules/wysiwyg/save.php $
  * @lastmodified    $Date: 2012-02-18 03:14:31 +0100 (Sa, 18. Feb 2012) $
@@ -35,6 +35,7 @@ $admin->print_header();
 require_once(WB_PATH.'/framework/functions.php');
 
 $sMediaUrl = WB_URL.MEDIA_DIRECTORY;
+$bBackLink = isset($_POST['pagetree']);
 // Update the mod_wysiwygs table with the contents
 if(isset($_POST['content'.$section_id])) {
     $content = $_POST['content'.$section_id];
@@ -44,19 +45,19 @@ if(isset($_POST['content'.$section_id])) {
 	}
 	$searchfor = '@(<[^>]*=\s*")('.preg_quote($sMediaUrl).')([^">]*".*>)@siU';
     $content = preg_replace($searchfor, '$1{SYSVAR:MEDIA_REL}$3', $content);
-	// searching in $text will be much easier this way
-    $content = $database->escapeString($content);
-	$text = umlauts_to_entities($content, strtoupper(DEFAULT_CHARSET), 0);
+    $text = strip_tags($content);
 	$sql = 'UPDATE `'.TABLE_PREFIX.'mod_wysiwyg` '
-	     . 'SET `content`=\''.$content.'\', '
-	     .     '`text`=\''.$text.'\' '
+         . 'SET `content`=\''.$database->escapeString($content).'\', '
+         .     '`text`=\''.$database->escapeString($text).'\' '
 	     . 'WHERE `section_id`='.(int)$section_id;
 	$database->query($sql);
 }
 
 $sec_anchor = (defined( 'SEC_ANCHOR' ) && ( SEC_ANCHOR != '' )  ? '#'.SEC_ANCHOR.$section['section_id'] : '' );
-if(defined('EDIT_ONE_SECTION') and EDIT_ONE_SECTION){
+if(defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION){
     $edit_page = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&wysiwyg='.$section_id;
+} elseif ( $bBackLink ) {
+  $edit_page = ADMIN_URL.'/pages/index.php';
 } else {
     $edit_page = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.$sec_anchor;
 }

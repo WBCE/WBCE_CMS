@@ -4,11 +4,11 @@
  * @category        module
  * @package         Form
  * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: modify.php 1624 2012-02-29 00:42:03Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/modules/form/modify.php $
  * @lastmodified    $Date: 2012-02-29 01:42:03 +0100 (Mi, 29. Feb 2012) $
@@ -17,11 +17,8 @@
 
 // Must include code to stop this file being access directly
 /* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-	// Stop this file being access directly
-		die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
+// Must include code to stop this file being accessed directly
+if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 /* -------------------------------------------------------- */
 
 //overwrite php.ini on Apache servers for valid SESSION ID Separator
@@ -42,9 +39,7 @@ $sql  = 'DELETE FROM `'.TABLE_PREFIX.'mod_form_fields` ';
 $sql .= 'WHERE page_id = '.(int)$page_id.' ';
 $sql .=   'AND section_id = '.(int)$section_id.' ';
 $sql .=   'AND title=\'\' ';
-if( !$database->query($sql) ) {
-// error msg
-}
+//if( !$database->query($sql) ) { // error msg }
 
 ?>
 <table summary="" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -230,7 +225,7 @@ if($query_submissions = $database->query($sql)) {
 		while($submission = $query_submissions->fetchRow(MYSQL_ASSOC)) {
 	        $submission['display_name'] = (($submission['display_name']!=null) ? $submission['display_name'] : '');
 			$sBody = $submission['body'];
-			$regex = "/[a-z0-9\-_]?[a-z0-9.\-_]+[a-z0-9\-_]?@[a-z0-9.-]+\.[a-z]{2,}/iU";
+            $regex = "/[a-z0-9\-_]?[a-z0-9.\-_]+[a-z0-9\-_]?@[a-z0-9.-]+\.[a-z]{2,}/i";
 			preg_match ($regex, $sBody, $output);
 // workout if output is empty
 			$submission['email'] = (isset($output['0']) ? $output['0'] : '');

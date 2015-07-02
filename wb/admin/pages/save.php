@@ -4,14 +4,14 @@
  * @category        admin
  * @package         pages
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: save.php 1457 2011-06-25 17:18:50Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/pages/save.php $
+ * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/pages/save.php $
  * @lastmodified    $Date: 2011-06-25 19:18:50 +0200 (Sa, 25. Jun 2011) $
  *
  */
@@ -26,17 +26,17 @@ $admin = new admin('Pages', 'pages_modify', false);
 
 // Get page & section id
 if(!isset($_POST['page_id']) || !is_numeric($_POST['page_id'])) {
-	header("Location: index.php");
-	exit(0);
+    header("Location: index.php");
+    exit(0);
 } else {
-	$page_id = intval($_POST['page_id']);
+    $page_id = intval($_POST['page_id']);
 }
 
 if(!isset($_POST['section_id']) || !is_numeric($_POST['section_id'])) {
-	header("Location: index.php");
-	exit(0);
+    header("Location: index.php");
+    exit(0);
 } else {
-	$section_id = intval($_POST['section_id']);
+    $section_id = intval($_POST['section_id']);
 }
 
 // $js_back = "javascript: history.go(-1);";
@@ -44,8 +44,8 @@ $js_back = ADMIN_URL.'/pages/modify.php?page_id='.$page_id;
 
 if (!$admin->checkFTAN())
 {
-	$admin->print_header();
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$js_back );
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$js_back );
 }
 // After check print the header
 $admin->print_header();
@@ -59,7 +59,7 @@ $results_array = $results->fetchRow();
 if(!$admin->ami_group_member($results_array['admin_users']) &&
    !$admin->is_group_match($admin->get_groups_id(), $results_array['admin_groups']))
 {
-	$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 // Get page module
 $sql = 'SELECT `module` FROM `'.TABLE_PREFIX.'sections` '
@@ -67,7 +67,7 @@ $sql = 'SELECT `module` FROM `'.TABLE_PREFIX.'sections` '
 $module = $database->get_one($sql);
 if(!$module)
 {
-	$admin->print_error( $database->is_error() ? $database->get_error() : $MESSAGE['PAGES_NOT_FOUND']);
+    $admin->print_error( $database->is_error() ? $database->get_error() : $MESSAGE['PAGES_NOT_FOUND']);
 }
 
 // Update the pages table
@@ -81,17 +81,15 @@ $database->query($sql);
 // Include the modules saving script if it exists
 if(file_exists(WB_PATH.'/modules/'.$module.'/save.php'))
 {
-	include_once(WB_PATH.'/modules/'.$module.'/save.php');
+    include_once(WB_PATH.'/modules/'.$module.'/save.php');
 }
 // Check if there is a db error, otherwise say successful
 if($database->is_error())
 {
-	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id );
+    $admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id );
 } else {
-	$admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id );
+    $admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id );
 }
 
 // Print admin footer
 $admin->print_footer();
-
-

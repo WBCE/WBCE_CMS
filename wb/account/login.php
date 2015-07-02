@@ -4,12 +4,12 @@
  * @category        frontend
  * @package         account
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: login.php 1605 2012-02-08 07:11:36Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/account/login.php $
  * @lastmodified    $Date: 2012-02-08 08:11:36 +0100 (Mi, 08. Feb 2012) $
@@ -64,7 +64,7 @@ $ThemeUrl  = WB_URL.$wb->correct_theme_source('warning.html');
 // Setup template object, parse vars to it, then parse it
 $ThemePath = realpath(WB_PATH.$wb->correct_theme_source('login.htt'));
 
-$thisApp = new Login(
+$thisApp = new login(
 				array(
 						"MAX_ATTEMPS" => "3",
 						"WARNING_URL" => $ThemeUrl."/warning.html",

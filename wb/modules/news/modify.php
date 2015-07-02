@@ -4,24 +4,20 @@
  * @category        modules
  * @package         news
  * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://www.websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: modify.php 1538 2011-12-10 15:06:15Z Luisehahne $
  * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/news/modify.php $
  * @lastmodified    $Date: 2011-12-10 16:06:15 +0100 (Sa, 10. Dez 2011) $
  *
  */
 
-// Must include code to stop this file being access directly
 /* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-	// Stop this file being access directly
-		die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
+// Must include code to stop this file being accessed directly
+if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 /* -------------------------------------------------------- */
 
 $database->query("DELETE FROM ".TABLE_PREFIX."mod_news_posts  WHERE page_id = '$page_id' and section_id = '$section_id' and title=''"); 
@@ -33,7 +29,7 @@ if(function_exists('ini_set')) {
 }
 
 ?>
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<table >
 <tr>
 	<td align="left" width="33%">
 		<input type="button" value="<?php echo $TEXT['ADD'].' '.$TEXT['POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>';" style="width: 100%;" />
@@ -59,7 +55,7 @@ if($query_posts->numRows() > 0) {
 	$num_posts = $query_posts->numRows();
 	$row = 'a';
 	?>
-	<table cellpadding="2" cellspacing="0" border="0" width="100%">
+    <table >
 	<?php
 	while($post = $query_posts->fetchRow()) {
 		$pid = $admin->getIDKEY($post['post_id']);
@@ -161,7 +157,7 @@ if($query_groups->numRows() > 0) {
 	$num_groups = $query_groups->numRows();
 	$row = 'a';
 	?>
-	<table cellpadding="2" cellspacing="0" border="0" width="100%">
+    <table >
 	<?php
 	while($group = $query_groups->fetchRow()) {
 		$gid = $admin->getIDKEY($group['group_id']);
@@ -174,7 +170,7 @@ if($query_groups->numRows() > 0) {
 			</td>		
 			<td>
 				<a href="<?php echo WB_URL; ?>/modules/news/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $gid; ?>">
-					<?php echo $group['title']; ?>
+                    <?php echo $group['title'].' ('.$group['group_id'].')'; ?>
 				</a>
 			</td>
 			<td width="80">

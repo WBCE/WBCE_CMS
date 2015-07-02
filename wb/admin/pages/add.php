@@ -4,14 +4,14 @@
  * @category        admin
  * @package         pages
  * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @copyright       Ryan Djurovich
+ * @copyright       WebsiteBaker Org. e.V.
+ * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
  * @version         $Id: add.php 1494 2011-08-11 14:59:01Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/pages/add.php $
+ * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/pages/add.php $
  * @lastmodified    $Date: 2011-08-11 16:59:01 +0200 (Do, 11. Aug 2011) $
  *
  */
@@ -23,8 +23,8 @@ require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_add', false);
 if (!$admin->checkFTAN())
 {
-	$admin->print_header();
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 
 // Include the WB functions file
@@ -51,55 +51,55 @@ $viewing_groups[] = 1;
 $admin->print_header();
 // check parent page permissions:
 if ($parent!=0) {
-	if (!$admin->get_page_permission($parent,'admin'))
+    if (!$admin->get_page_permission($parent,'admin'))
     {
         $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
     }
 
 } elseif (!$admin->get_permission('pages_add_l0','system'))
 {
-	$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
-}	
+    $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+}    
 
 // check module permissions:
 if (!$admin->get_permission($module, 'module'))
 {
-	$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
-}	
+    $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+}    
 
 // Validate data
 if($title == '' || substr($title,0,1)=='.')
 {
-	$admin->print_error($MESSAGE['PAGES']['BLANK_PAGE_TITLE']);
+    $admin->print_error($MESSAGE['PAGES']['BLANK_PAGE_TITLE']);
 }
 
 // Check to see if page created has needed permissions
 if(!in_array(1, $admin->get_groups_id()))
 {
-	$admin_perm_ok = false;
-	foreach ($admin_groups as $adm_group)
+    $admin_perm_ok = false;
+    foreach ($admin_groups as $adm_group)
     {
-		if (in_array($adm_group, $admin->get_groups_id()))
+        if (in_array($adm_group, $admin->get_groups_id()))
         {
-			$admin_perm_ok = true;
-		} 
-	}
-	if ($admin_perm_ok == false)
+            $admin_perm_ok = true;
+        } 
+    }
+    if ($admin_perm_ok == false)
     {
-		$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
-	}
-	$admin_perm_ok = false;
-	foreach ($viewing_groups as $view_group)
+        $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+    }
+    $admin_perm_ok = false;
+    foreach ($viewing_groups as $view_group)
     {
-		if (in_array($view_group, $admin->get_groups_id()))
+        if (in_array($view_group, $admin->get_groups_id()))
         {
-			$admin_perm_ok = true;
-		}
-	}
-	if ($admin_perm_ok == false)
+            $admin_perm_ok = true;
+        }
+    }
+    if ($admin_perm_ok == false)
     {
-		$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
-	}
+        $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+    }
 }
 
 $admin_groups = implode(',', $admin_groups);
@@ -108,26 +108,26 @@ $viewing_groups = implode(',', $viewing_groups);
 // Work-out what the link and page filename should be
 if($parent == '0')
 {
-	$link = '/'.page_filename($title);
-	// rename menu titles: index && intro to prevent clashes with intro page feature and WB core file /pages/index.php
-	if($link == '/index' || $link == '/intro')
+    $link = '/'.page_filename($title);
+    // rename menu titles: index && intro to prevent clashes with intro page feature and WB core file /pages/index.php
+    if($link == '/index' || $link == '/intro')
     {
-		$link .= '_0';
-		$filename = WB_PATH .PAGES_DIRECTORY .'/' .page_filename($title) .'_0' .PAGE_EXTENSION;
-	} else {
-		$filename = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($title).PAGE_EXTENSION;
-	}
+        $link .= '_0';
+        $filename = WB_PATH .PAGES_DIRECTORY .'/' .page_filename($title) .'_0' .PAGE_EXTENSION;
+    } else {
+        $filename = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($title).PAGE_EXTENSION;
+    }
 } else {
-	$parent_section = '';
-	$parent_titles = array_reverse(get_parent_titles($parent));
-	foreach($parent_titles AS $parent_title)
+    $parent_section = '';
+    $parent_titles = array_reverse(get_parent_titles($parent));
+    foreach($parent_titles AS $parent_title)
     {
-		$parent_section .= page_filename($parent_title).'/';
-	}
-	if($parent_section == '/') { $parent_section = ''; }
-	$link = '/'.$parent_section.page_filename($title);
-	$filename = WB_PATH.PAGES_DIRECTORY.'/'.$parent_section.page_filename($title).PAGE_EXTENSION;
-	make_dir(WB_PATH.PAGES_DIRECTORY.'/'.$parent_section);
+        $parent_section .= page_filename($parent_title).'/';
+    }
+    if($parent_section == '/') { $parent_section = ''; }
+    $link = '/'.$parent_section.page_filename($title);
+    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$parent_section.page_filename($title).PAGE_EXTENSION;
+    make_dir(WB_PATH.PAGES_DIRECTORY.'/'.$parent_section);
 }
 
 // Check if a page with same page filename exists
@@ -231,7 +231,7 @@ if (!($section_id = $database->getLastInsertId())) {
 }
 // Include the selected modules add file if it exists
 if(file_exists(WB_PATH.'/modules/'.$module.'/add.php')) {
-	require(WB_PATH.'/modules/'.$module.'/add.php');
+    require(WB_PATH.'/modules/'.$module.'/add.php');
 }
 $admin->print_success($MESSAGE['PAGES']['ADDED'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 // Print admin footer

@@ -8,11 +8,11 @@
  * @copyright       2009-2011, Website Baker Org. e.V.
  * @link			http://www.websitebaker2.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: signup2.php 1635 2012-03-09 13:47:42Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/account/signup2.php $
- * @lastmodified    $Date: 2012-03-09 14:47:42 +0100 (Fr, 09. Mrz 2012) $
+ * @platform        WebsiteBaker 2.8.3
+ * @requirements    PHP 5.3.6 and higher
+ * @version         $Id: signup2.php 5 2015-04-27 08:02:19Z luisehahne $
+ * @filesource      $HeadURL: https://localhost:8443/svn/wb283Sp4/SP4/branches/wb/account/signup2.php $
+ * @lastmodified    $Date: 2015-04-27 10:02:19 +0200 (Mo, 27. Apr 2015) $
  *
  */
 
@@ -85,13 +85,15 @@ while ($i <= 7) {
 $md5_password = md5($new_pass);
 
 // Check if username already exists
-$results = $database->query("SELECT user_id FROM ".TABLE_PREFIX."users WHERE username = '$username'");
+$sql = 'SELECT `user_id` FROM `'.TABLE_PREFIX.'users` WHERE `username` = \''.$username.'\'';
+$results = $database->query($sql);
 if($results->numRows() > 0) {
 	$wb->print_error($MESSAGE['USERS_USERNAME_TAKEN'], $js_back, false);
 }
 
 // Check if the email already exists
-$results = $database->query("SELECT user_id FROM ".TABLE_PREFIX."users WHERE email = '".$wb->add_slashes($email)."'");
+$sql = 'SELECT `user_id` FROM `'.TABLE_PREFIX.'users` WHERE `email` = \''.$wb->add_slashes($email).'\'';
+$results = $database->query($sql);
 if($results->numRows() > 0) {
 	if(isset($MESSAGE['USERS_EMAIL_TAKEN'])) {
 		$wb->print_error($MESSAGE['USERS_EMAIL_TAKEN'], $js_back, false);
@@ -104,6 +106,7 @@ if($results->numRows() > 0) {
 $md5_password = md5($new_pass);
 
 // Inser the user into the database
+$sql = '';
 $query = "INSERT INTO ".TABLE_PREFIX."users (group_id,groups_id,active,username,password,display_name,email) VALUES ('$groups_id', '$groups_id', '$active', '$username','$md5_password','$display_name','$email')";
 $database->query($query);
 
