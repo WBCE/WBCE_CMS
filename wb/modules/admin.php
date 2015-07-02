@@ -36,11 +36,9 @@ if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 		header("Location: $section_required");
 		exit(0);
 	}
-/*
 // be sure is is numeric
 $page_id = intval($page_id);
 $section_id = intval($section_id);
-*/
 // Create js back link
 // $js_back = 'javascript: history.go(-1);';
 $js_back = ADMIN_URL.'/pages/sections.php?page_id='.$page_id;
@@ -50,6 +48,10 @@ $js_back = ADMIN_URL.'/pages/sections.php?page_id='.$page_id;
 $admin_header = (!isset($admin_header)) ? true : $admin_header;
 require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify',(bool)$admin_header);
+// this catches XSS in these params, too
+if(!$page_id || !$section_id) {
+	$admin->print_error('Invalid arguments passed - script stopped.');
+}
 // Get perms
 // unset($admin_header);
 
