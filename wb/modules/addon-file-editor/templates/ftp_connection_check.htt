@@ -1,0 +1,78 @@
+{#
+/**
+ * Admin tool: cwsoft-addon-file-editor
+ *
+ * This tool allows you to "edit", "delete", "create", "upload" or "backup" files of installed 
+ * Add-ons such as modules, templates and languages via the WebsiteBaker backend. This enables
+ * you to perform small modifications on installed Add-ons without downloading the files first.
+ *
+ * This file contains the HTML output for the FTP installation wizard.
+ * 
+ * LICENSE: GNU General Public License 3.0
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     cwsoft-addon-file-editor
+ * @author      cwsoft (http://cwsoft.de)
+ * @copyright   cwsoft
+ * @license     http://www.gnu.org/licenses/gpl-3.0.html
+*/
+#}
+
+<div id="mod_addon_file_editor">
+	<h4 class="admintools">
+		<a href="{{ afe.URL_WB_ADMIN_TOOLS }}">{{ lang.TXT_HEADING_ADMINTOOLS }}</a> -> {{ afe.NAME_FILE_EDITOR }}
+	</h4>
+
+	<div class="help_file">
+		<a href="{{ afe.URL_HELP_FILE }}" target="_blank">[ {{ lang.TXT_HELP }} ]</a>
+	</div>
+
+	<h2><a href="{{ afe.URL_FILEMANAGER }}">{{ lang.TXT_FTP_HEADING }}</a></h2>
+	<p>{{ lang.TXT_FTP_DESCRIPTION }}</p>
+	<a class="backlink" href="{{ afe.URL_FILEMANAGER }}">{{ lang.TXT_BACK }}</a>
+
+	<form class="formbox" action="{{ afe.URL_FORM_SUBMIT }}" method="post">
+		<h3 class="normal">{{ lang.TXT_FTP_SETTINGS }}:</h3>
+
+		<label for="ftp_enabled">{{ lang.TXT_FTP_SUPPORT }}:</label>
+		<input id="ftp_enabled" value="1" type="radio" {{ afe.ENABLED_CHECKED }} name="ftp_enabled" />{{ lang.TXT_ENABLE }}
+		<input type="radio" value="0" name="ftp_enabled" {{ afe.DISABLED_CHECKED }} />{{ lang.TXT_DISABLE }}
+		<br /><br />
+
+		<label for="ftp_server">{{ lang.TXT_FTP_SERVER }}:</label>
+		<input id="ftp_server" type="text" value="{{ afe.FTP_SERVER }}" name="ftp_server" class="file" />
+		<br /><br />
+
+		<label for="ftp_user">{{ lang.TXT_FTP_USER }}:</label>
+		<input id="ftp_user" type="text" value="{{ afe.FTP_USER }}" name="ftp_user" class="file" />
+		<br /><br />
+
+		<label for="ftp_password">{{ lang.TXT_FTP_PASSWORD }}:</label>
+		<input id="ftp_password" type="password" value="{{ afe.FTP_PASSWORD }}" name="ftp_password" class="file" />
+		<br /><br />
+
+		<label for="ftp_port">{{ lang.TXT_FTP_PORT }}:</label>
+		<input id="ftp_port" type="text" value="{{ afe.FTP_PORT }}" name="ftp_port" class="file" />
+		<br /><br />
+
+		<label for="ftp_start_dir">{{ lang.TXT_FTP_START_DIR }}:</label>
+		<input id="ftp_start_dir" type="text" value="{{ afe.FTP_START_DIR }}" name="ftp_start_dir" class="file" />
+		<br /><br />
+
+		<input class="submit" type="submit" name="ftp_save_settings" value="{{ lang.TXT_SAVE }}" />
+		<br style="clear: both;" />
+	</form>
+	
+	<br />
+	<div class="{{ afe.CLASS_HIDDEN }}">
+		<form class="formbox" action="{{ afe.URL_FORM_SUBMIT }}" method="post">
+			<h3 class="normal">{{ lang.TXT_FTP_CONNECTION_TEST }}:</h3>
+			<p>{{ lang.TXT_CHECK_FTP_CONNECTION }}</p>
+			<p>{{ lang.TXT_FTP_CHECK_NOTE }}</p>
+			<input class="submit" type="submit" name="ftp_connection_check" value="{{ lang.TXT_SUBMIT_CHECK }}" />
+			<br style="clear: both;" />
+		</form>
+		{{ afe.STATUS_MESSAGE }}
+	</div>
+	
+</div>

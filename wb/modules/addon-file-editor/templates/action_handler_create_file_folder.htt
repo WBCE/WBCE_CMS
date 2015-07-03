@@ -1,0 +1,78 @@
+{#
+/**
+ * Admin tool: cwsoft-addon-file-editor
+ *
+ * This tool allows you to "edit", "delete", "create", "upload" or "backup" files of installed 
+ * Add-ons such as modules, templates and languages via the WebsiteBaker backend. This enables
+ * you to perform small modifications on installed Add-ons without downloading the files first.
+ *
+ * This file contains the HTML output for the create file/folder action handler.
+ * 
+ * LICENSE: GNU General Public License 3.0
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     cwsoft-addon-file-editor
+ * @author      cwsoft (http://cwsoft.de)
+ * @copyright   cwsoft
+ * @license     http://www.gnu.org/licenses/gpl-3.0.html
+*/
+#}
+
+<script language="javascript" type="text/javascript">
+	function toogle(file_type) 
+	{
+		if(file_type == 'file') {
+			document.getElementById('file_extensions').disabled = false;
+		} else if(file_type == 'folder') {
+			document.getElementById('file_extensions').disabled = true;
+		}
+	}
+</script>
+
+<div id="mod_addon_file_editor">
+	<h4 class="admintools">
+		<a href="{{ afe.URL_WB_ADMIN_TOOLS }}">{{ lang.TXT_HEADING_ADMINTOOLS }}</a> -> {{ afe.NAME_FILE_EDITOR }}
+	</h4>
+
+	<div class="help_file">
+		<a href="{{ afe.URL_HELP_FILE }}" target="_blank">[ {{ lang.TXT_HELP }} ]</a>
+	</div>
+
+	<h2><a href="{{ afe.URL_FILEMANAGER }}">{{ afe.ADDON_TYPE }}: {{ afe.ADDON_NAME }}</a></h2>
+	<a class="backlink" href="{{ afe.URL_FILEMANAGER }}">{{ lang.TXT_BACK }}</a>
+
+	<form class="formbox" action="{{ afe.URL_FORM_SUBMIT }}" method="post">
+		<h3>{{ lang.TXT_ACTION }}: {{ lang.TXT_ACTION_CREATE_FILE }}</h3>
+
+		<div class="{{ afe.CLASS_HIDDEN }}">
+		<label for="file_folder">{{ lang.TXT_CREATE }}:</label>
+		<input id="file_folder" type="radio" value="file" name="file_folder" checked="checked" onclick="javascript: toogle('file')" />
+		{{ lang.TXT_FILE }}
+		<input type="radio" value="folder" name="file_folder" onclick="javascript: toogle('folder')" />{{ lang.TXT_FOLDER }}
+		<br /><br />
+	
+		<label for="file_folder_name">{{ lang.TXT_FILE_NAME }}:</label>
+		<input id="file_folder_name" type="text" value="" name="file_name" class="file" />
+		<strong>.</strong>
+		<select id="file_extensions" size="1" name="file_extensions">
+			{{ afe.SEL_ENTRIES_FILE_EXTENSIONS }}
+		</select>
+		{{ lang.TXT_ALLOWED_FILE_CHARS }}
+		<br /><br />
+	
+		<label for="target_folder">{{ lang.TXT_TARGET_FOLDER }}:</label>
+		<select id="target_folder" size="1" name="target_folder" class="file">
+			{{ afe.SEL_ENTRIES_TARGET_FOLDER }}
+		</select>
+
+		<br /><br />
+		<input class="submit" type="submit" name="create_file_folder" value="{{ lang.TXT_SUBMIT_CREATE }}" />
+		<a class="submit" href="{{ afe.URL_FORM_CANCEL }}">{{ lang.TXT_SUBMIT_CANCEL }}</a>
+		</div>
+
+		<br style="clear: both;" />
+	</form>
+
+	{{ afe.STATUS_MESSAGE }}
+
+</div>

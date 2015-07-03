@@ -1,0 +1,217 @@
+/**
+ * Admin tool: cwsoft-addon-file-editor
+ *
+ * This tool allows you to "edit", "delete", "create", "upload" or "backup" files of installed 
+ * Add-ons such as modules, templates and languages via the WebsiteBaker backend. This enables
+ * you to perform small modifications on installed Add-ons without downloading the files first.
+ *
+ * This file contains the CSS styles used in the backend.
+ * 
+ * LICENSE: GNU General Public License 3.0
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     cwsoft-addon-file-editor
+ * @author      cwsoft (http://cwsoft.de)
+ * @copyright   cwsoft
+ * @license     http://www.gnu.org/licenses/gpl-3.0.html
+*/
+
+#mod_addon_file_editor thead, #mod_addon_file_editor thead tr:hover { background-color: #DFE1E5;}
+#mod_addon_file_editor td, { font-size: 95%; color:#666; line-height: 0.4em; align: text-align: left;}
+#mod_addon_file_editor thead td { color: #666; }
+#mod_addon_file_editor th {text-align: left;}
+#mod_addon_file_editor table.filemanager td { font-size: 95%; line-height: 1em;}
+#mod_addon_file_editor tr.odd { background-color: #eee; }
+#mod_addon_file_editor tr.permission td a { color: red; }
+#mod_addon_file_editor tr:hover { background-color: #FFFFE0}
+#mod_addon_file_editor tr.folder td { color: green; border-top: 1px solid #DDD; }
+#mod_addon_file_editor td.right, #mod_addon_file_editor th.right { text-align: right; }
+#mod_addon_file_editor td.center, #mod_addon_file_editor th.center { text-align: center; }
+
+#mod_addon_file_editor img { border: 0; }
+
+#mod_addon_file_editor a {
+color: #036;
+font-weight: normal;
+text-decoration: none;
+}
+
+#mod_addon_file_editor a:hover { 
+color: #369;
+}
+
+#mod_addon_file_editor a.backlink { 
+display: block;
+margin: 1em 0;
+padding-left: 20px;
+background: url(../images/back.png) left center no-repeat;
+}
+
+#mod_addon_file_editor p {
+line-height: 1.5em;
+}
+
+#mod_addon_file_editor div.box {
+font-size: x-small;
+width: 97.4%;
+text-align: right;
+margin: 0.5em 0;
+border: 1px solid #AAA;
+padding: 0.2em;
+background-color: #F7F7F7;
+}
+
+#mod_addon_file_editor div.help_file {
+font-size: x-small;
+width: 97.4%;
+text-align: right;
+margin: -1.6em 0 1em 0;
+}
+
+#mod_addon_file_editor form {
+color: #555;
+padding: 0.5em;
+background-color: #F9F9F9;
+border: 1px solid #D7D7D7;
+}
+
+#mod_addon_file_editor input.submit, 
+#mod_addon_file_editor a.submit {
+margin: 0.5em;
+width: auto;
+min-width: 120px;
+float: left;
+line-height: 1.2em;
+font-size: small;
+color: #000;
+border: 1px solid #AAA;
+background-color: #E2E2E2;
+display: block;
+text-decoration: none;
+}
+
+#mod_addon_file_editor a.submit, 
+#mod_addon_file_editor a.submit:hover {}
+
+#mod_addon_file_editor input.file, 
+#mod_addon_file_editor select.file {
+width: 300px;
+}
+
+#mod_addon_file_editor input.readonly {
+background-color: #E9E9E9;
+}
+
+#mod_addon_file_editor a.submit {
+display: block;
+padding: 0.1em;
+text-align: center;
+margin-left: 1.0em;
+cursor: default;
+}
+
+#mod_addon_file_editor label {
+font-weight: bold;
+margin-left: 0.5em;
+width: 150px;
+float: left;
+}
+
+#mod_addon_file_editor h2 a  {
+font-family: arial,sans-serif;
+font-weight: bold;
+letter-spacing: -0.5px; 
+}
+
+#mod_addon_file_editor h2.head_editform { margin-top: 1em; }
+
+#mod_addon_file_editor h3 {
+margin-top: 0.2em;
+margin-left: 0.5em;
+color: red;
+font-weight: bold;
+}
+
+#mod_addon_file_editor h3.normal {
+color: #000;
+margin-left: 0;
+margin-top: 0.5em;
+}
+
+#mod_addon_file_editor h4.admintools, h4 {
+margin: 0; 
+border-bottom: 1px solid #DDD; 
+padding-bottom: 5px;
+}
+
+#mod_addon_file_editor .hidden { display: none; }
+#mod_addon_file_editor .visible { display: block; }
+
+#mod_addon_file_editor .warning {
+color: red;
+line-height: 1.2em;
+}
+
+#mod_addon_file_editor div.error { 
+width: 90%;
+margin: 1em 0em;
+padding: 1.0em;
+padding-left: 4em;
+border: 1.5px solid #FF0000;
+background: #FFF0F0 url(../images/warning.png) 0.5em center no-repeat;
+line-height: 1.2em;
+}
+
+#mod_addon_file_editor div.success { 
+width: 90%;
+margin: 1em 0em;
+padding: 1.0em;
+padding-left: 4em;
+border: 1.5px solid #2D9D3B;
+background: #F0F6EA url(../images/success.gif) 0.5em center no-repeat;
+line-height: 1.2em;
+}
+
+#mod_addon_file_editor div.info { 
+width: 90%;
+margin: 1em 0em;
+padding: 1.0em;
+padding-left: 4em;
+border: 1.5px solid #6B90DA;
+background: #F0F7F9 url(../images/info.png) 0.5em center no-repeat;
+line-height: 1.2em;
+}
+
+#mod_addon_file_editor .highlight {
+margin-left: 0.5em;
+color: #444;
+}
+
+#mod_addon_file_editor a.right {
+text-align: right;
+}
+
+#mod_addon_file_editor a.link {
+color: #00D;
+text-decoration: underline;
+}
+
+#mod_addon_file_editor th.expanded {
+padding-left: 2em;
+background: #DFE1E5 url(../images/expand.png) 0.2em center no-repeat;
+cursor:pointer;
+}
+
+#mod_addon_file_editor th.collapsed {
+padding-left: 2em;
+background: #DFE1E5 url(../images/collapse.png) 0.2em center no-repeat;
+cursor:pointer;
+}
+
+#mod_addon_file_editor .hidden {
+	display: none;
+}
+
+#mod_addon_file_editor .code_area {
+	width: 98%;
+}

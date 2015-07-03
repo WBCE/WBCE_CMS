@@ -1,0 +1,4 @@
+<Files *.htt>
+Order deny,allow
+Deny from all
+</Files>

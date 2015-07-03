@@ -1,0 +1,25 @@
+/**
+ * The /thirdparty folder contains code from the PEAR project: http://pear.php.net/package/
+ * The download link and information about the license of the packages used is provided below:
+ *
+ * @package:	PEAR
+ * @link:		http://pear.php.net/package/PEAR
+ * @license:	New BSD license (http://www.opensource.org/licenses/bsd-license.php)
+ * @version:	1.9.4 (stable)
+ *
+ * @package:	HTTP
+ * @link:		http://pear.php.net/package/HTTP
+ * @license:	New BSD license (http://www.opensource.org/licenses/bsd-license.php)
+ * @version:	1.4.1 (stable)
+ *
+ * @package:	HTTP_Download
+ * @link:		http://pear.php.net/package/HTTP_Download
+ * @license:	BSD, revised (see file: LICENSE_Download)
+ * @version:	1.1.4 (stable)
+ *
+ * @package:	HTTP_Header
+ * @link:		http://pear.php.net/package/HTTP_Header/
+ * @license:	BSD, revised (see file: LICENSE_Header)
+ * @version:	1.2.1 (stable)
+ *
+ /

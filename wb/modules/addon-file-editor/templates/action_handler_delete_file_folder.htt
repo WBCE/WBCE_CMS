@@ -1,0 +1,48 @@
+{#
+/**
+ * Admin tool: cwsoft-addon-file-editor
+ *
+ * This tool allows you to "edit", "delete", "create", "upload" or "backup" files of installed 
+ * Add-ons such as modules, templates and languages via the WebsiteBaker backend. This enables
+ * you to perform small modifications on installed Add-ons without downloading the files first.
+ *
+ * This file contains the HTML output for the delete file/folder action handler.
+ * 
+ * LICENSE: GNU General Public License 3.0
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     cwsoft-addon-file-editor
+ * @author      cwsoft (http://cwsoft.de)
+ * @copyright   cwsoft
+ * @license     http://www.gnu.org/licenses/gpl-3.0.html
+*/
+#}
+
+<div id="mod_addon_file_editor">
+	<h4 class="admintools">
+		<a href="{{ afe.URL_WB_ADMIN_TOOLS }}">{{ lang.TXT_HEADING_ADMINTOOLS }}</a> -> {{ afe.NAME_FILE_EDITOR }}
+	</h4>
+	
+	<div class="help_file">
+		<a href="{{ afe.URL_HELP_FILE }}" target="_blank">[ {{ lang.TXT_HELP }} ]</a>
+	</div>
+
+	<h2><a href="{{ afe.URL_FILEMANAGER }}">{{ afe.ADDON_TYPE }}: {{ afe.ADDON_NAME }}</a></h2>
+	<a class="backlink" href="{{ afe.URL_FILEMANAGER }}">{{ lang.TXT_BACK }}</a>
+	
+	<form class="formbox" action="{{ afe.URL_FORM_SUBMIT }}" method="post">
+		<h3>{{ lang.TXT_ACTION }}: {{ lang.TXT_ACTION_DELETE_FILE }}</h3>
+		<p class="highlight"><strong>{{ lang.TXT_ACTUAL_FILE }}: </strong>"{{ afe.ADDON_FILE }}"</p>
+
+		<div class="{{ afe.CLASS_HIDDEN }}">
+			<input class="submit" type="submit" name="delete_file_folder" value="{{ lang.TXT_SUBMIT_DELETE }}" />
+			<a class="submit" href="{{ afe.URL_FORM_CANCEL }}">{{ lang.TXT_SUBMIT_CANCEL }}</a>
+		</div>
+		<br style="clear: both;" />
+	</form>
+	
+	<div class="error {{ afe.CLASS_HIDDEN }}">{{ lang.TXT_DELETE_WARNING }}</div>
+
+	{{ afe.STATUS_MESSAGE }}
+
+</div>

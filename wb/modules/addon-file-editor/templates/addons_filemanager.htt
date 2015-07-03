@@ -1,0 +1,86 @@
+{#
+/**
+ * Admin tool: cwsoft-addon-file-editor
+ *
+ * This tool allows you to "edit", "delete", "create", "upload" or "backup" files of installed 
+ * Add-ons such as modules, templates and languages via the WebsiteBaker backend. This enables
+ * you to perform small modifications on installed Add-ons without downloading the files first.
+ *
+ * This file contains the HTML output for the file manager.
+ * 
+ * LICENSE: GNU General Public License 3.0
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     cwsoft-addon-file-editor
+ * @author      cwsoft (http://cwsoft.de)
+ * @copyright   cwsoft
+ * @license     http://www.gnu.org/licenses/gpl-3.0.html
+*/
+#}
+
+<div id="mod_addon_file_editor">
+
+	<div class="help_file">
+		<a href="{{ afe.URL_HELP_FILE }}" target="_blank">[ {{ lang.TXT_HELP }} ]</a>
+	</div>
+
+	<h2><a href="{{ afe.URL_EDIT_ADDON }}">{{ afe.TXT_ADDON_TYPE }}: {{ afe.ADDON_NAME }}</a></h2>
+	<p>{{ lang.TXT_EDIT_DESCRIPTION }}</p>
+
+	{% if afe.SHOW_FTP_INFO %}
+		<div class="info">
+			{{ lang.TXT_FTP_NOTICE }}
+		</div>
+	{% endif %}
+
+	<a class="backlink" href="{{ afe.URL_EDIT_ADDON }}">{{ lang.TXT_BACK_TO_OVERVIEW }}</a>
+
+	<div class="box">
+		<a href="{{ afe.URL_RELOAD }}">[ {{ lang.TXT_RELOAD }} ]&nbsp;</a>
+		<a class="{{ afe.CLASS_HIDDEN }}" href="{{ afe.URL_CREATE_FILE_FOLDER }}">[ {{ lang.TXT_CREATE_FILE_FOLDER }} ]&nbsp;</a>
+		<a class="{{ afe.CLASS_HIDDEN }}" href="{{ afe.URL_UPLOAD_FILE }}">[ {{ lang.TXT_UPLOAD_FILE }} ]&nbsp;</a>
+	</div>
+
+	<table class="filemanager" width="98%" border="0" cellspacing="0" cellpadding="5">
+		<thead>
+			<tr>
+				<th width="65%">{{ afe.ADDON_PATH }}</th>
+				<th class="center" colspan="2" width="25%">{{ lang.TXT_FILE_INFOS }}</th>
+				<th class="right" width="8%">{{ lang.TXT_FILE_ACTIONS }}</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for file in afe.FILES %}
+			<tr class="{{ file.CLASS_ODD_EVEN }}{{ file.CLASS_FOLDER }}{{ file.CLASS_PERMISSION }}">
+				<td>
+					<img src="{{ file.URL_ICON_FOLDER }}/{{ file.FILE_ICON }}.gif" title="{{ file.TXT_FILE_TYPE }}" alt="{{ file.TXT_FILE_TYPE }}" />&nbsp;
+					{{ file.FILE_NAME }}
+				</td>
+				<td class="right">{{ file.FILE_SIZE }}</td>
+				<td class="right">{{ file.FILE_MAKE_TIME }}</td>
+				<td class="right">
+					<a class="{{ file.HIDE_EDIT_ICON }}" href="{{ file.URL_EDIT_FILE }}" {{ file.TARGET_BLANK }}>
+						<img src="{{ file.URL_ICON_FOLDER }}/edit.gif" alt="{{ file.TXT_EDIT }}" title="{{ file.TXT_EDIT }}"/>
+					</a>
+
+					<a class="{{ file.HIDE_UNZIP_ICON }}" href="{{ file.URL_UNZIP_FILE }}">
+						<img src="{{ file.URL_ICON_FOLDER }}/archive.gif" alt="{{ lang.TXT_UNZIP }}" title="{{ lang.TXT_UNZIP }}"/>
+					</a>
+
+					<a class="{{ afe.CLASS_HIDDEN }}" href="{{ file.URL_RENAME_FILE }}">
+						<img src="{{ file.URL_ICON_FOLDER }}/rename.gif" alt="{{ lang.TXT_RENAME }}" title="{{ lang.TXT_RENAME }}"/>
+					</a>
+					
+					<a class="{{ afe.CLASS_HIDDEN }}" href="{{ file.URL_DELETE_FILE }}">
+						<img src="{{ file.URL_ICON_FOLDER }}/delete.gif" alt="{{ lang.TXT_DELETE }}" title="{{ lang.TXT_DELETE }}"/>
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a class="backlink" href="{{ afe.URL_EDIT_ADDON }}">{{ lang.TXT_BACK_TO_OVERVIEW }}</a>
+
+</div>
