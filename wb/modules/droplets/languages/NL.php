@@ -1,6 +1,6 @@
 <?php
 
-// $Id: EN.php 1098 2009-07-27 07:37:22Z Ruebenwurzel $
+// $Id$
 
 /*
 
@@ -32,20 +32,20 @@ $DR_TEXT['BACKUP']		= 'Backup Droplets (Zip)';
 $DR_TEXT['RESTORE']		= 'Restore Droplets (Zipped)';
 $DR_TEXT['HELP']		= 'Help / Readme';
 $DR_TEXT['README']		= 'readme.html';
-$DR_TEXT['INVALIDCODE']	= 'This Droplet has invalid PHP code';
-$DR_TEXT['NOTUNIQUE']	= 'This Dropletname is used more than once!';
+$DR_TEXT['INVALIDCODE']	= 'Deze Droplet heeft ongeldige PHP code';
+$DR_TEXT['NOTUNIQUE']	= 'De Dropletnaam is al in gebruik!';
 $DR_TEXT['ADMIN_EDIT']	= 'Edit-Only';
 $DR_TEXT['ADMIN_VIEW']	= 'View-Only';
-$DR_TEXT['WYSIWYG']		= 'Wysiwyg';
+$DR_TEXT['WYSIWYG']	= 'Wysiwyg';
 $DR_TEXT['HELP']		= 'Help / Readme';
-$DR_TEXT['USED']		= 'This droplet is used on the following page(-s):<br />';
+$DR_TEXT['USED']		= 'Deze droplet wordt op de volgende pagina(s) gebruikt:<br />';
 $DR_TEXT['UPLOAD'] = 'Upload';
-$DR_TEXT['IMPORT_ERRORS'] = 'Import errors';
-$DR_TEXT['MARKED'] = 'Marked';
-$DR_TEXT['EXPORT'] = 'Export';
-$DR_TEXT['MANAGE_BACKUPS'] = 'Manage Backups';
-$DR_TEXT['IMPORTED'] = 'Droplet(s) imported';
-$DR_TEXT['DELETE_ALL'] = 'Delete all';
+$DR_TEXT['IMPORT_ERRORS'] = 'Fouten tijdens import';
+$DR_TEXT['MARKED'] = 'GemMarkeerd';
+$DR_TEXT['EXPORT'] = 'Exporteer';
+$DR_TEXT['MANAGE_BACKUPS'] = 'Beheer Backups';
+$DR_TEXT['IMPORTED'] = 'Droplet(s) geïmporteerd';
+$DR_TEXT['DELETE_ALL'] = 'Verwijder alles';
 $DR_TEXT['DUPLICATE'] = 'Duplicate droplet';
 
 ?>

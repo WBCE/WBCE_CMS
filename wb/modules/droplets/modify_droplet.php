@@ -27,18 +27,31 @@ $module_edit_link = ADMIN_URL .'/admintools/tool.php?tool=droplets';
 $admin = new admin('admintools', 'admintools');
 
 // Get id
-$droplet_id = intval($admin->checkIDKEY('droplet_id', false, 'GET'));
-if (!$droplet_id) {
-	$admin->print_error('IDKEY::'.$MESSAGE['GENERIC_SECURITY_ACCESS'], $module_edit_link);
+if ( version_compare(WB_VERSION, '2.8.2', '>=')  && WB_VERSION<>"2.8.x") {
+  $droplet_id = intval($admin->checkIDKEY('droplet_id', false, 'GET'));
+  if (!$droplet_id) {
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $module_edit_link);
+    exit();
+  }
+  $edit_id = $admin->getIDKEY($droplet_id);
 }
-/*
+else {
+  if( isset($_GET['droplet_id']) && is_numeric($_GET['droplet_id']) ) {
+	  $droplet_id = $_GET['droplet_id'];
+	  $edit_id    = $droplet_id;
+  }
+  else {
+    header("Location: ".ADMIN_URL."/pages/index.php");
+  }
+}
+
 // check if backend.css file needs to be included into the <body></body> of modify.php
 if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."/modules/droplets/backend.css")) {
 	echo '<style type="text/css">';
 	include(WB_PATH .'/modules/droplets/backend.css');
 	echo "n</style>n";
 }
-*/
+
 // Load Language file
 if(LANGUAGE_LOADED) {
 	if(!file_exists(WB_PATH.'/modules/droplets/languages/'.LANGUAGE.'.php')) {
@@ -55,26 +68,23 @@ $modified_by = ($admin->ami_group_member('1') ? 1 : $admin->user_id());
 $sOverviewDroplets = $TEXT['LIST_OPTIONS'].' '.$DR_TEXT['DROPLETS'];
 
 // Get header and footer
-$sql = 'SELECT * FROM `'.TABLE_PREFIX.'mod_droplets` ';
-$sql .= 'WHERE id = '.$droplet_id;
-$sql .= '';
-
-$query_content = $database->query($sql);
-
+$query_content = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_droplets WHERE id = '$droplet_id'");
 $fetch_content = $query_content->fetchRow();
 $content = (htmlspecialchars($fetch_content['code']));
 ?>
 <h4 style="margin: 0; border-bottom: 1px solid #DDD; padding-bottom: 5px;">
 	<a href="<?php echo $admintool_link;?>" title="<?php echo $HEADING['ADMINISTRATION_TOOLS']; ?>"><?php echo $HEADING['ADMINISTRATION_TOOLS']; ?></a>
-	->
+	-&gt;
 	<a href="<?php echo $module_edit_link;?>" title="<?php echo $sOverviewDroplets ?>" alt="<?php echo $sOverviewDroplets ?>">Droplet Edit</a>
 </h4>
 <br />
 <form name="modify" action="<?php echo WB_URL; ?>/modules/droplets/save_droplet.php" method="post" style="margin: 0;">
+<?php
+    if ( method_exists( $admin, 'getFTAN' ) ) { echo $admin->getFTAN(); }
+?>
 <input type="hidden" name="data_codepress" value="" />
-<input type="hidden" name="droplet_id" value="<?php echo $admin->getIDKEY($droplet_id); ?>" />
+<input type="hidden" name="droplet_id" value="<?php echo $edit_id; ?>" />
 <input type="hidden" name="show_wysiwyg" value="<?php echo $fetch_content['show_wysiwyg']; ?>" />
-<?php echo $admin->getFTAN(); ?>
 
 <table class="row_a" cellpadding="4" cellspacing="0" border="0" width="100%">
 		<tr>
@@ -171,6 +181,7 @@ if ($modified_by == 1 OR $fetch_content['admin_edit'] == 0 ) {
 	<?php
 }
 ?>
+
 		</td>
 		<td align="right">
 			<button class="cancel" type="button" onclick="javascript: window.location = '<?php echo $module_edit_link; ?>';"><?php echo $TEXT['CANCEL']; ?></button>
@@ -178,7 +189,11 @@ if ($modified_by == 1 OR $fetch_content['admin_edit'] == 0 ) {
 	</tr>
 </table>
 </form>
+
+<br /><br />[ <a href="<?php echo ADMIN_URL; ?>/admintools/tool.php?tool=droplets">&laquo; <?php echo $TEXT['BACK'];?></a> ]<br /><br />
 <?php
 
 // Print admin footer
 $admin->print_footer();
+
+?>

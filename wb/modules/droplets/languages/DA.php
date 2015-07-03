@@ -39,5 +39,13 @@ $DR_TEXT['ADMIN_VIEW'] = 'Kun se';
 $DR_TEXT['WYSIWYG'] = 'Wysiwyg';
 $DR_TEXT['HELP'] = 'Hj&aelig;lp';
 $DR_TEXT['USED'] = 'Denne droplet bruges p&Atilde;&yen; f&oslash;lgende side(r):<br />';
+$DR_TEXT['UPLOAD'] = 'Upload';
+$DR_TEXT['IMPORT_ERRORS'] = 'Import errors';
+$DR_TEXT['MARKED'] = 'Marked';
+$DR_TEXT['EXPORT'] = 'Export';
+$DR_TEXT['MANAGE_BACKUPS'] = 'Manage Backups';
+$DR_TEXT['IMPORTED'] = 'Droplet(s) imported';
+$DR_TEXT['DELETE_ALL'] = 'Delete all';
+$DR_TEXT['DUPLICATE'] = 'Duplicate droplet';
 
 ?>

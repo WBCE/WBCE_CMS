@@ -17,39 +17,52 @@
  *
  */
 
-require('../../config.php');
+require( '../../config.php' );
 
-require_once(WB_PATH.'/framework/class.admin.php');
-require_once(WB_PATH.'/framework/functions.php');
-$admin = new admin('admintools','admintools',true,false);
-if($admin->get_permission('admintools') == true) {
+require_once( WB_PATH . '/framework/class.admin.php' );
+require_once( WB_PATH . '/framework/functions.php' );
+$admin = new admin( 'admintools', 'admintools', true, false );
+if ( $admin->get_permission( 'admintools' ) == true )
+{
+    $admintool_link   = ADMIN_URL . '/admintools/index.php';
+    $module_edit_link = ADMIN_URL . '/admintools/tool.php?tool=droplets';
+    // $admin = new admin('admintools', 'admintools');
 
-	$admintool_link = ADMIN_URL .'/admintools/index.php';
-	$module_edit_link = ADMIN_URL .'/admintools/tool.php?tool=droplets';
-	// $admin = new admin('admintools', 'admintools');
+    $modified_when = time();
+    $modified_by   = intval( $admin->get_user_id() );
 
-	$modified_when = time();
-	$modified_by = intval($admin->get_user_id());
+    // Insert new row into database
+    $sql = 'INSERT INTO `' . TABLE_PREFIX . 'mod_droplets` SET ';
+    $sql .= '`active` = 1, ';
+    $sql .= '`modified_when` = ' . $modified_when . ', ';
+    $sql .= '`modified_by` = ' . $modified_by . ' ';
+    $database->query( $sql );
 
-	// Insert new row into database
-	$sql = 'INSERT INTO `'.TABLE_PREFIX.'mod_droplets` SET ';
-	$sql .= '`active` = 1, ';
-	$sql .= '`modified_when` = '.$modified_when.', ';
-	$sql .= '`modified_by` = '.$modified_by.' ';
-	$database->query($sql);
+    // Get the id
+    $droplet_id = intval( $database->get_one( "SELECT LAST_INSERT_ID()" ) );
 
-	// Get the id
-	$droplet_id = intval($database->get_one("SELECT LAST_INSERT_ID()"));
-
-	// Say that a new record has been added, then redirect to modify page
-	if($database->is_error()) {
-		$admin->print_error($database->get_error(), $module_edit_link);
-	} else {
-		$admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/droplets/modify_droplet.php?droplet_id='. $admin->getIDKEY($droplet_id));
-	}
-
-} else {
-		$admin->print_error($database->get_error(), $module_edit_link);
+    // Say that a new record has been added, then redirect to modify page
+    if ( $database->is_error() )
+    {
+        $admin->print_error( $database->get_error(), $module_edit_link );
+    }
+    else
+    {
+		// --- changed by webbird/pcwacht: backward compatibility ---
+        if ( version_compare(WB_VERSION, '2.8.2', '>=') && WB_VERSION <> "2.8.x" )
+        {
+            $id = $admin->getIDKEY( $droplet_id );
+        }
+        else
+        {
+            $id = ( is_numeric( $droplet_id ) ? $droplet_id : NULL );
+        }
+        $admin->print_success( $TEXT[ 'SUCCESS' ], WB_URL . '/modules/droplets/modify_droplet.php?droplet_id=' . $id );
+    }
+}
+else
+{
+    $admin->print_error( $database->get_error(), $module_edit_link );
 }
 
 // Print admin footer

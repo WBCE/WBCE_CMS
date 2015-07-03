@@ -39,5 +39,13 @@ $DR_TEXT['ADMIN_VIEW']	= 'ansehen';
 $DR_TEXT['WYSIWYG']		= 'Wysiwyg';
 $DR_TEXT['HELP']		= 'Hilfe';
 $DR_TEXT['USED']		= 'Dieses Droplet wird auf folgenden Seiten benutzt (-s):<br />';
+$DR_TEXT['UPLOAD'] = 'Import';
+$DR_TEXT['IMPORT_ERRORS'] = 'Fehler beim Import';
+$DR_TEXT['MARKED'] = 'Markierte';
+$DR_TEXT['EXPORT'] = 'Exportieren';
+$DR_TEXT['MANAGE_BACKUPS'] = 'Backups';
+$DR_TEXT['IMPORTED'] = 'Droplet(s) importiert';
+$DR_TEXT['DELETE_ALL'] = 'Alle l&ouml;schen';
+$DR_TEXT['DUPLICATE'] = 'Droplet duplizieren';
 
 ?>
