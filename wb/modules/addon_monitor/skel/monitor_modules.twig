@@ -1,0 +1,129 @@
+{#
+/**
+ * WebsiteBaker CMS AdminTool: addonMonitor
+ *
+ * Template for the display of modules 
+ * 
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     addonMonitor
+ * @author      Christian M. Stefan (Stefek)
+ * @copyright   Christian M. Stefan
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ */
+#}
+<table style="width:100%;" cellpadding="3" cellspacing="0"  class="select_types">
+	
+	<tr>
+		<td colspan="2">
+			<div>
+				<label class="page_module" for="include_pages"><input id="include_pages" type="checkbox" checked="checked" /><span>Page/Section Modules</span><sup>({{ count_pagemodules }})</sup></label>
+				<label class="snippet_module" for="include_snippets"><input id="include_snippets" type="checkbox" checked="checked" /><span>Snippets</span><sup>({{ count_snippets }})</sup></label>
+				<label class="tool_module" for="include_tools"><input id="include_tools" type="checkbox" checked="checked" /><span>Admin-Tools</span><sup>({{ count_tools }})</sup></label>
+				<label class="wysiwyg_module" for="include_wysiwygs"><input id="include_wysiwygs" type="checkbox" checked="checked" /><span>WYSYWIG-Editors</span><sup>({{ count_wysiwygeditors }})</sup></label>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<fieldset>
+				<legend>Filter by Addon Name</legend>
+				<input class="filterinput" name="filter" id="filter_titles" value="" maxlength="30" size="30" type="text">
+				<input class="clearbtn" id="clear_titles" type="submit" value="clear"/>
+			</fieldset>
+		</td>		
+		<td>
+			<fieldset>
+				<legend>Filter by Author</legend>
+				<input class="filterinput" name="filter" id="filter_authors" value="" maxlength="30" size="30" type="text">
+				<input class="clearbtn" id="clear_authors" type="submit" value="clear"/>
+			</fieldset>
+		</td>
+	</tr>
+</table>
+<table style="width:100%;" border="0" cellpadding="3" cellspacing="0" id="htmlgrid" class="amDashboard">	
+	<thead>	
+		<tr>
+			<th title="AddonType" class="sort"><span>Type</span></th>
+			<th class="sort"><span>Addon Name</span></th>
+			<th>Version</th>
+			<th>Description</th>
+			<th>Author</th>
+			<th class="sort"><span>active</span></th>
+		</tr>
+	</thead>
+	<tbody>
+	{%for addon in addons %}
+		{# in the next line we set a TWIG variable for "status" #}
+		{% set status = (addon.active == 'Y' or addon.function == 'snippet' or addon.function == 'tool') ? 'active_1' : 'active_0' %}
+		{% set function = (addon.function == 'tool') ? 'Admin-Tool' : (addon.function == 'page' ? 'Page-Module' : 'snippet') %}
+		
+		<tr id="addons_{{ addon.addon_id }}" class="row_{{ addon.function }} {{ status }}" rel="{{ addon.function }}">
+			<td class="addon_icon">
+				<div>
+					{% if addon.icon %}
+						<img src="{{ addon.icon }}" alt="{{ function }}" title="{{ function }}" width="48" />
+					{% endif %}
+					<br />
+					{% if addon.function == 'snippet' %}Snippet
+					{% elseif addon.function == 'tool' %}Admin-Tool
+					{% elseif addon.function == 'page' %}Page-Module
+					{% else %}WYSIWYG
+					{% endif %}
+				</div>
+			</td>
+			<td class="addon_name">{{ addon.name }}<br/><small><i>{{ addon.directory }}</i></small></td>
+			<td class="addon_version">{{ addon.version }}</td>
+			<td class="addon_description"><div class="collapser">{{ addon.description }}</div></td>
+			<td class="addon_author">
+				<ul class="authors">
+				{% for author in addon.author|split(', ') %}
+					<li>{{ author }}</li>
+				{% endfor %}
+				</ul>
+			</td>
+			<td class="addon_activeNo">{% if (status == 'active_1') and (addon.function == 'page') %}1{% elseif (status == 'active_0') and (addon.function == 'page') %}3{% else %}2{% endif %}</td>
+			<td class="addon_active">
+				
+				{% if addon.function == 'page' %}		
+					{% if addon.active_sections|length > 0 %}						
+						<ul class="using_sections">
+						<li title="this Page-Module is in use in {{ addon.active_sections|length }} Sections">{{ addon.active_sections|length }}x</li>
+						{% for sID, pID in addon.active_sections|sort %}					
+							<li title="PageID: {{ pID }} / SectionID: {{ sID }}"><a href="{{ constant('WB_URL') }}/{{ constant('ADMIN_DIRECTORY') }}/pages/sections.php?page_id={{ pID }}#sid{{ sID }}" target="_blank">{{ pID }}&nbsp;<small>/{{ sID }}</small></a></li>
+						{% endfor %}
+						</ul>
+					{% else %}
+						<ul class="using_sections_null">
+							<li title="this Page-Module is not used in any Section yet">0x</li>
+						</ul>
+					{% endif %}
+				{% elseif addon.function == 'wysiwyg' %}
+					{% if (addon.directory == default_wysiwyg) %}
+						<ul class="using_sections">								
+							<li>Default WYSIWYG EDITOR</li>
+						</ul>
+					{% else %}
+						<ul class="using_sections_null">
+							<li title="this WYSIWYG EDITOR is not in use">not in use</li>
+						</ul>
+					{% endif %}
+				{% else %}
+					<img title="Modules of type '{{addon.function}}' are always active" src="{{ICONS_DIR}}/{% if (status == 'active_1') %}active{% else %}inactive{% endif %}.png" alt="icon" />
+				{% endif %}
+			</td>		
+		</tr>
+	{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="6">
+				<b>Installed Modules:</b> {{ addons|length }}  <br/>
+				<span class="page_module">{{ count_pagemodules }} x <b>Page/Section Modules</b></span>  <br/>
+				<span class="tool_module">{{ count_tools }} x <b>TOOLS</b></span>  <br/>
+				<span class="snippet_module">{{ count_snippets }} x <b>SNIPPETS</b></span>  <br/>
+				<span class="wysiwyg_module">{{ count_wysiwygeditors }} x <b>WYSIWYG EDITORS</b></span>  
+			</td>
+		</tr>
+	</tfoot>
+</table>
