@@ -1,0 +1,42 @@
+------------------------------------------------------------------------------------------------------------------------ 	
+CHANGELOG
+------------------------------------------------------------------------------------------------------------------------ 
+
+
+
+0.5.0 STABLE (Christian M. Stefan (Stefek): 25-AUG-2014)
+[change] changed directory name twigTemplates/ to skel/		
+[+]     added CHANGELOG.txt	
+
+After extensive testing from the community, ready to set the status to STABLE
+
+
+------------------------------------------------------------------------------------------------------------------------  
+------------------------------------------------------------------------------------------------------------------------ 
+
+0.4.2 BETA (Christian M. Stefan (Stefek): 29-JUL-2013)
+[fixed] Typo in "uninstall.php" resulted in DB crash in WB Version 2.8.1. fixed thanks to users byteworker, dbs and jacobi22 
+[fixed] WB versions below 2.8.3. had problems with Method getIDKEY() (introduced with WB 2.8.3.). 
+[-]     removed obsolete code in "pageTree.twig", thanks to dbs for reporting	
+
+
+------------------------------------------------------------------------------------------------------------------------  
+------------------------------------------------------------------------------------------------------------------------ 
+
+0.4.1 BETA (Christian M. Stefan (Stefek): 29-JUL-2013)
+[fixed] Bug reported by jacobi22 where custom-field for RewriteURL wasn't handled properly while saving
+[improve] readability, adjusted font-size
+[+]       title attributes for page-settings, manage-sections, edit-page and frontend-view
+[+]       NEW SETTING for language flags in the "modify_config.php"
+
+------------------------------------------------------------------------------------------------------------------------  
+------------------------------------------------------------------------------------------------------------------------ 
+
+0.3.0 BETA (Christian M. Stefan (Stefek): 28-JUL-2013)
+initial version for the community
+
+[upgrade] jquery.cluetip plugin to v 1.2.5 and apply new extend to let the plugin work better along with WB
+[improve] ajax plugin ajaxDeleteRecord.js to improve fallback in cases JS is turned off in browser 
+[+]       while adding a new field, jquery disables save/copy/add buttons as long as title and type ain't selected
+[+]       new language file for ALL the Javascript language strings
+

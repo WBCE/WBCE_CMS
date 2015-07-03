@@ -1,0 +1,48 @@
+{#
+/**
+ * WebsiteBaker CMS AdminTool: wbSeoTool
+ *
+ * pageTree.twig
+ * This file provides the general Template for the module
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     wbSeoTool
+ * @author      Christian M. Stefan (Stefek)
+ * @copyright   Christian M. Stefan
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ */
+#}
+{#{ dump() }#}
+<div class="page" id="dndPages">	
+	<h2>WB SEO Tool</h2>
+        
+        
+	<ol id="pageTree" class="sortable">
+		<li>
+			<dl style="background-image:none; background-color:#E1E9F5;height:26px;"><dt>
+			<div id="checkboxes">			
+				<input name="display_title" value="1" type="checkbox" id="display_title" /> 
+				<label for="display_title">&lt;meta:title&gt;</label>
+
+				{% if REWRITE_URL %}				
+						<input name="display_url" value="1" type="checkbox" id="display_url" />
+						<label for="display_url">&lt;{{ REWRITE_URL }}&gt;</label>
+				{% endif %}
+				<input name="display_description" value="1" type="checkbox" id="display_description" /> 
+				<label for="display_description">&lt;description&gt;</label>
+
+				{% if KEYWORDS_CONFIG != '' %}				
+						<input name="display_keywords" value="1" type="checkbox" id="display_keywords" />  
+						<label for="display_keywords">&lt;{{ KEYWORDS_CONFIG }}&gt;</label>
+				{% endif %}
+				<span style="float:right;margin-right:8px;"><img src="{{ ICONS }}/advanced_settings.png" alt="" /> <a href="{{ TOOL_URL }}&pos=config">{{ lang.ADVANCED_SETTINGS }}</a></span>
+			</div>
+			</dt></dl><br>
+		</li>
+		{% if pages %}		
+		{% include 'pageTreeSingle.twig' with {'pages': pages, 'level': 0} %}					
+		{% else %}
+		<li>no pages found!</li>
+		{% endif %}
+	</ol>		
+</div>

@@ -1,0 +1,130 @@
+{#
+/**
+ * WebsiteBaker CMS AdminTool: wbSeoTool
+ *
+ * pageTreeSingle.twig
+ * This file provides Template for single page-rows
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     wbSeoTool
+ * @author      Christian M. Stefan (Stefek)
+ * @copyright   Christian M. Stefan
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ */
+#}
+
+{% for page in pages %}
+<li id="pID_{{ page.page_id }}" rel="{{ page.page_id }}" class="p{{ page.parent }} page{% if page.children %} pt_expanded{% endif %}{% if page.children == "deleted"  %} deleted{% endif %}">
+	<dl class="{% if page.page_movable %}moveable{% endif %}{% if page.canModifyPage == "0" %} pt_notEditable{% else %} pt_editable{% endif %} page_{{ page.visibility|lower }}">
+		
+		<dt><a href="#" class="pt_expander"></a>
+			<img src="{{ ICONS }}/{{ page.visibility }}_16.png" alt="[{{ page.status_icon }}]" title='{{ lang.VISIBILITY }} = {{ lang[page.visibility|upper] }}' />
+			
+			{% if USE_FLAGS %}
+			<img src="{{ constant("THEME_URL") }}/images/flags/{{ page.language|lower }}.png" alt="[{{ page.language }}]" />
+			{% endif %}			
+			
+			{% if page.canModifyPage %}
+				<a class="pt_title" href="{{ page.modify_page_url }}">{{ page.menu_title }}</a>
+			{% else %}
+				{{ page.menu_title }}
+			{% endif %}			
+		</dt> 
+		<dd style="display:none;">pos. {{ page.position }} ~ siblings {{page.siblings}}</dd> 
+		<dd class="pt_actions">		
+			&nbsp;&nbsp;&nbsp;<i>META-{{ lang.TITLE }}: {{ page.page_title }}</i>
+			{# {{ lang.PAGE }}-ID: {{ page.page_id }} |  | URL: {frontend_link} #}
+		</dd> 		
+		<dd class="pt_status">
+			<div class="pt_last">
+				<div class="pt_actions">					
+					<span class="pt3">
+						{% if page.canModifyPage %}
+						<a href="{{ page.modify_page_url }}" title="{{ lang.MODIFY_PAGE }}">
+							<img src="{{ ICONS }}/modify_16.png" alt="[modify_page]" />
+						</a>
+						{% else %}
+						<img src="{{ ICONS }}/empty.gif" alt="" />
+						{% endif %}						
+						{% if page.canManageSections %}							
+							{% if page.sectionICON == "menu_link_16.png" %}
+							<img src="{{ ICONS }}/{{ page.sectionICON }}" alt="[sections]" />
+							{% else %}
+							<a href="{{ page.sectionsURL }}" title="{{ lang.MANAGE_SECTIONS }}">
+								<img src="{{ ICONS }}/{{ page.sectionICON }}" alt="[sections]" />
+							</a>
+							{% endif %}
+						{% else %}
+						<img src="{{ ICONS }}/empty.gif" alt="" />
+						{% endif %}						
+						
+						{% if page.canModifySettings %}
+							{% if page.visibility == "deleted" %}
+							<a href="{{ page.restoreURL }}"><img src="{{ ICONS }}/empty.gif" alt="" /></a>
+							{% else %}
+							<a href="{{ page.modifySettingsURL }}" title="{{ lang.MODIFY_SETTINGS }}">
+							<img src="{{ ICONS }}/settings_16.png" alt="[settings]" /></a>							
+							{% endif %}	
+						{% else %}
+						<img src="{{ ICONS }}/empty.gif" alt="" />
+						{% endif %}						
+					</span>				
+					<span class="pid" title='{{ lang.PAGE }}-ID: {{ page.page_id }}'>{{ page.page_id }}</span>									
+					<a href="{{ WB_URL }}{{ page.frontend_link }}" class="external" target="_blank" title="{{ lang.FRONTEND }}">
+						<img src="{{ ICONS }}/view_16.png" alt="[frontend_view]" />
+					</a>						
+				</div>
+			</div>
+			
+		</dd> 
+		<dd  style="clear:left;">
+			<dt>
+			<table class="editStrings" cellpading="0" cellspacing="0">
+                        {# TITLE #}
+			<tr class="display_title" id="title{{ page.page_id }}">
+				<th>&lt;meta:title&gt;</th>
+				<td colspan="2" rel="title{{ page.page_id }}" id="page_title-{{ page.page_id }}" class="edit_title edit_area">{{ page.page_title }}</td>
+				<td class="showCounter"></td>
+			</tr>
+			{% if REWRITE_URL %}
+			{# CUSTOM URL (if enabled) #}
+                        {#{ dump(page) }#}
+			<tr class="display_url">
+				<th>&lt;{{ REWRITE_URL }}&gt;</th>
+				<td colspan="2" rel="{{ REWRITE_URL }}{{ page.page_id }}" id="{{ REWRITE_URL }}-{{ page.page_id }}" class="edit_url edit_area">{{ page[constant('REWRITE_URL')] }}</td>
+				<td class="showCounter"></td>
+			</tr>
+                        {% endif %}
+			
+			{# DESCRIPTION #}
+			<tr class="display_description" id="descr{{ page.page_id }}">				
+				<th>&lt;description&gt;</th>
+				<td colspan="2" rel="descr{{ page.page_id }}" id="description-{{ page.page_id }}" class="edit_descr edit_area">{{ page.description }}</td>
+				<td class="showCounter"></td>
+			</tr>
+			{% if KEYWORDS_CONFIG != '' %}
+				{# KEYWORDS #}
+				
+				<tr class="display_keywords">
+					<th>&lt;{{ KEYWORDS_CONFIG }}&gt;</th>
+					<td colspan="2" rel="{{ page.page_id }}" id="keywords-{{ page.page_id }}" class="edit_area">{{ page.keywords }}</td>
+					<td class="showCounter"></td>
+				</tr>			
+			{% endif %}
+			</table>
+			</dt>
+		</dd>
+		<dd  style="clear:both;"></dd>
+	</dl>
+	
+	{# 
+		Recursivley include the file itselt for nested rendering
+		TUTORIAL: http://stackoverflow.com/questions/12583177/symfony2-twig-unlimited-child-depth?rq=1
+	#}
+	{% if page.children %}
+		<ol id="level_{{ page.level }}">
+		{% include 'pageTreeSingle.twig' with {'pages': page.children, 'level': page.level + 1} %}
+		</ol>
+	{% endif %}
+	</li>
+{% endfor %}

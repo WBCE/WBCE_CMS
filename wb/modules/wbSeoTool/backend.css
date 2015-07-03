@@ -1,0 +1,107 @@
+/**
+ * WebsiteBaker CMS AdminTool: wbSeoTool
+ *
+ * This file imports necessary CSS files
+ * 
+ * 
+ * @platform    CMS WebsiteBaker 2.8.x
+ * @package     wbSeoTool
+ * @author      Christian M. Stefan (Stefek)
+ * @copyright   Christian M. Stefan
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ */
+@import url("css/pageTree.css");
+
+blockquote.infobox {
+	color: #444444;
+    font-size: 90%;
+    background-color: #EBF7D7;
+    margin-top: 8px;
+    margin-right: 2px;
+    padding: 5px;
+    width: 38%;
+    border: solid 1px #BFDB92;
+	width:90%;
+	text-align: right;
+}
+
+/*
+--------------| settings Table
+*/
+
+table.settings_table    {
+	width: 99%;
+    margin-bottom: 8px;
+	border-spacing: 0;
+    padding: 0;
+    border: solid 1px #A9B6C9;
+	box-shadow: 0 0 3px rgba(0,0,0,.55);
+}
+.settings_table caption	   { 
+    background-color: #A9B6C9;
+    background-image: url("css/box_bg.png");
+	background-position: 0 -8px;
+    background-repeat: repeat-x;
+    border: 1px none #A9B6C9;
+    color: #FFFFFF !important;
+    font-size: 14px;
+    font-weight: bold;
+    height: 26px;
+    line-height: 151%;
+    margin-top: 2px;
+    padding-left: 10px;
+    padding-top: 3px;
+    text-align: left;
+}
+.settings_table tr td, .settings_table tr th        { 
+	background-attachment: scroll;
+    background-image: url("css/box_bg.png");
+    background-position: 0 -40px;
+    background-repeat: repeat-x;
+    border-bottom: 1px solid #BECADB;
+    line-height: 200%;
+    margin: 0;
+    padding: 4px;
+}
+.settings_table tr.row_a td, .settings_table tr.row_a th     { 
+	background-color: #e0eef8; 
+	background-image: none; 
+	background-position: 0 -36px; 
+	border-top: 1px solid #e0e0e0; 
+	border-bottom: 1px solid #999 
+}
+.settings_table tr.row_b td, .settings_table tr.row_b th     { 
+	background-color: #f6faff; 
+	background-image: none; 
+	background-position: 0 -36px; 
+	border-top: 1px solid #e0e0e0; 
+	border-bottom: 1px solid #999 
+}
+.settings_table th {
+    color: #515d76;
+    font-weight: bold;
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    background-position: 0 0;
+    text-align: right;
+    width: 180px !important;
+    vertical-align: top;
+}
+/*table foot*/
+.settings_table tfoot td,
+.settings_table tfoot th,
+.tfoot td { 
+	background-color: #e0eef8; 
+	background-image: none; 
+	background-position: 0 -50px; 
+	padding: 5px; 
+	border-top: 2px solid #fff; 
+	border-bottom: 2px solid #fff 
+}
+/*Child Tables*/
+.settings_table table td,
+.settings_table table th
+  { 
+	background-image: none 
+}
+
