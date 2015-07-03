@@ -49,7 +49,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (11, 'home_folders', 'true'),
 (12, 'warn_page_leave', '1'),
 (13, 'default_template', 'round'),
-(14, 'default_theme', 'wb_theme'),
+(14, 'default_theme', 'advancedThemeWbFlat'),
 (15, 'default_charset', 'utf-8'),
 (16, 'multiple_menus', 'true'),
 (17, 'page_level_limit', '4'),
@@ -57,7 +57,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (19, 'page_trash', 'inline'),
 (20, 'homepage_redirection', 'false'),
 (21, 'page_languages', 'true'),
-(22, 'wysiwyg_editor', 'fckeditor'),
+(22, 'wysiwyg_editor', 'ckeditor'),
 (23, 'manage_sections', 'true'),
 (24, 'section_blocks', 'true'),
 (25, 'smart_login', 'true'),
@@ -75,8 +75,8 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (37, 'wbmailer_smtp_auth', ''),
 (38, 'wbmailer_smtp_username', ''),
 (39, 'wbmailer_smtp_password', ''),
-(40, 'fingerprint_with_ip_octets', '2'),
-(41, 'secure_form_module', ''),
+(40, 'fingerprint_with_ip_octets', '0'),
+(41, 'secure_form_module', 'mtab'),
 (42, 'mediasettings', '');
 
 
