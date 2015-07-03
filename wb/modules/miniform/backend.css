@@ -1,0 +1,44 @@
+.settable, .msgtable {
+	width: 100%;
+}
+
+.msgtable tr{
+
+}
+
+.msgtable tr{
+	background: #F0F0F0;
+}
+
+.msgtable td{
+	vertical-align: top;
+}
+
+.settable .small {
+	width: 120px;
+}
+.settable a.recved {
+	display: bock;
+	background: #999;
+	color: #fff;
+	padding: 5px 10px;
+	border: 1px solid #666;
+	text-decoration: none;
+}
+.settable a.recved:hover {
+	text-decoration: none;
+	background: #777;
+}
+
+.msgtable .small {
+	width: 100px;
+}
+
+.msgtable .msg {
+	display: block;
+	padding: 10px;
+	background: #fff;
+	border: 1px solid #333;
+	max-height: 270px;
+	overflow: auto;
+}

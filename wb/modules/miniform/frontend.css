@@ -1,0 +1,172 @@
+.miniform * {
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-font-smoothing:antialiased;
+	-moz-font-smoothing:antialiased;
+	-o-font-smoothing:antialiased;
+	font-smoothing:antialiased;
+	text-rendering:optimizeLegibility;
+}
+.miniform input[type="text"],
+.miniform input[type="email"],
+.miniform input[type="tel"],
+.miniform input[type="url"],
+.miniform textarea,
+.miniform button[type="submit"] {
+	font-family: inherit;
+	font-size: inherit;
+}
+
+.miniform input[type="radio"],
+.miniform input[type="checkbox"] {
+    margin: 0 10px 0 5px;
+    vertical-align: middle;
+}
+
+.miniform {
+}
+
+.miniform .grouping { 
+	padding:5px 0;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    margin: 0 0 5px;
+    width: 100%;
+}
+.miniform .full { clear: both;}
+.miniform .half { width: 49.5%; margin-right:0.5%; float: left;}
+.miniform .onethird { width: 32.833%; margin-right:0.5%; float: left;}
+.miniform .twothird { width: 66.167%; margin-right:0.5%; float: left;}
+
+.miniform .pullright { margin-right:0; float: right;}
+.miniform .half.pullright { width: 50%;}
+.miniform .onethird.pullright { width: 33.333%;}
+.miniform .twothird.pullright { width: 66.667%;}
+
+.miniform label { display: inline; }
+.miniform label label { vertical-align: middle;	cursor:pointer;}
+.miniform .hidden { display:none; }
+.miniform .error { 
+	color: #ff4136; 
+	font-weight: bold;
+	border:1px solid #ff4136;
+	border-radius: 5px; 
+	padding:5px; 
+	margin-bottom: 10px; 
+}
+
+@media screen and (max-width: 468px) {
+	.miniform .half { width: 100%; margin-right:0; float: none;}
+	.miniform .onethird { width: 100%; margin-right:0; float: none;}
+	.miniform .twothird { width: 100%; margin-right:0; float: none;}
+	.miniform .half.pullright { width: 100%;}
+	.miniform .onethird.pullright { width: 100%;}
+	.miniform .twothird.pullright { width: 100%;}
+	.miniform .error { width: 100%; }
+}
+
+
+.miniform label span {
+	cursor:pointer;
+	display:inline-block;
+	margin:0 5px;
+	font-weight:900;
+}
+.miniform span span {
+	cursor:default;
+	color:#ff4136;
+	display:inline-block;
+	margin:0px;
+	font-weight:900;
+	vertical-align: baseline;
+}
+
+.miniform input[type="text"],
+.miniform input[type="email"],
+.miniform input[type="tel"],
+.miniform input[type="url"],
+.miniform select,
+.miniform textarea {
+	width:100%;
+	height: auto;
+
+	border:1px solid #CCC;
+	margin:0 0 5px;
+	padding:5px;
+	border-radius:5px;
+	outline: 0 none;
+
+}
+.miniform input[type="text"]:hover,
+.miniform input[type="email"]:hover,
+.miniform input[type="tel"]:hover,
+.miniform input[type="url"]:hover,
+.miniform select:hover,
+.miniform textarea:hover {
+	-webkit-transition:border-color 0.3s ease-in-out;
+	-moz-transition:border-color 0.3s ease-in-out;
+	transition:border-color 0.3s ease-in-out;
+	border:1px solid #666;
+}
+.miniform input[type="text"]:focus,
+.miniform input[type="email"]:focus,
+.miniform input[type="tel"]:focus,
+.miniform input[type="url"]:focus,
+.miniform select:focus,
+.miniform textarea:focus {
+	-webkit-transition:border-color 0.3s ease-in-out;
+	-moz-transition:border-color 0.3s ease-in-out;
+	transition:border-color 0.3s ease-in-out;
+    border-color: #66AFE9 !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 4px rgba(102, 175, 233, 0.6);
+    outline: 0 none;
+}
+.form-control:focus {
+}
+.miniform textarea {
+	height:100px;
+	max-width:100%;
+}
+.miniform button[type="submit"] {
+	cursor:pointer;
+	width: 100%;
+	border:none;
+	background: #828c95;
+	color:#FFF;
+	margin:0 0 5px;
+	padding:5px;
+	border-radius:5px;
+}
+.miniform button[type="submit"]:hover {
+	background: #b5bdc8;
+	-webkit-transition:background 0.3s ease-in-out;
+	-moz-transition:background 0.3s ease-in-out;
+	transition:background-color 0.3s ease-in-out;
+}
+.miniform button[type="submit"]:active {
+	box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.miniform .missing {
+	border: 1px solid #ff4136 !important;
+}
+::-webkit-input-placeholder {
+    color:#888;
+}
+:-moz-placeholder {
+    color:#888;
+}
+::-moz-placeholder {
+    color:#888;
+}
+:-ms-input-placeholder {
+    color:#888;
+}
+
+.captcha_table input[type="text"] {
+	width: 50px !important;
+}
