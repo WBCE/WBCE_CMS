@@ -1,0 +1,236 @@
+<!-- BEGIN main_block -->
+
+
+
+<div id="page_start">
+
+
+
+	<h2 class="page_titel">Home</h2>
+
+	
+	<div class="alertbox" style="{DISPLAY_WARNING};">
+		{WARNING}
+	</div>
+
+
+	<div class="columnGrid-outer">
+		<div class="columnGridRow">
+
+	
+	
+			<div class="col_6">
+			
+				<div id="module_pages" class="themebox dashboard" style="{DISPLAY_PAGES};">
+				
+					<div class="tb_header">			
+						<a href="{ADMIN_URL}/pages/index.php"></a>
+					</div>
+					
+					<div class="tb_content_outer">
+						<div class="tb_content">
+					
+							<a class="tb_titel" href="{ADMIN_URL}/pages/index.php">{PAGES}</a>
+							
+							{PAGES_OVERVIEW}
+							
+							<div class="dashboard_information">					
+							</div><!-- ENDE dashboard -->
+
+							<script> 
+								$(function(){
+									$(".dashboard_information").load("{THEME_URL}/contentinclude/dashboard/websiteinformations.php", function(){
+										$(this).css({ opacity: 0, 'background-image': 'none' }).animate({opacity: 1}, 'slow');
+									}); 
+								});
+							</script> 
+
+							
+						</div><!-- ENDE tb_content -->
+					</div><!-- ENDE tb_content_outer -->
+					
+					<div class="tb_footer">
+						<a href="{ADMIN_URL}/pages/index.php"></a>
+					</div><!-- ENDE tb_footer -->
+						
+				</div><!-- ENDE themebox -->
+				
+			</div><!-- ENDE col -->
+
+
+			
+			<div class="col_6">
+			
+				<div id="module_media" class="themebox" style="{DISPLAY_MEDIA};">
+				
+					<div class="tb_header">			
+						<a href="{ADMIN_URL}/media/index.php"></a>
+					</div>
+					
+					<div class="tb_content_outer">
+						<div class="tb_content">
+					
+							<a class="tb_titel" href="{ADMIN_URL}/media/index.php">{MEDIA}</a>
+							{MEDIA_OVERVIEW}
+					
+						</div><!-- ENDE tb_content -->
+					</div><!-- ENDE tb_content_outer -->
+					
+					<div class="tb_footer">
+						<a href="{ADMIN_URL}/media/index.php"></a>
+					</div><!-- ENDE tb_footer -->
+						
+				</div><!-- ENDE themebox -->
+			
+			</div><!-- ENDE col -->
+
+			
+
+			<div class="col_6">
+			
+				<div id="module_addons" class="themebox" style="{DISPLAY_ADDONS};">
+				
+					<div class="tb_header">			
+						<a href="{ADMIN_URL}/addons/index.php"></a>
+					</div>
+					
+					<div class="tb_content_outer">
+						<div class="tb_content">
+					
+							<a class="tb_titel" href="{ADMIN_URL}/addons/index.php">{ADDONS}</a>
+							{ADDONS_OVERVIEW}
+					
+						</div><!-- ENDE tb_content -->
+					</div><!-- ENDE tb_content_outer -->
+					
+					<div class="tb_footer">
+						<a href="{ADMIN_URL}/addons/index.php"></a>
+					</div><!-- ENDE tb_footer -->
+						
+				</div><!-- ENDE themebox -->
+				
+			</div><!-- ENDE col -->
+
+			
+		  
+		  
+			<div class="col_6">
+			
+				<div id="module_preferences" class="themebox">
+				
+					<div class="tb_header">			
+						<a href="{ADMIN_URL}/preferences/index.php"></a>
+					</div>
+					
+					<div class="tb_content_outer">
+						<div class="tb_content">
+					
+							<a class="tb_titel" href="{ADMIN_URL}/preferences/index.php">{PREFERENCES}</a>
+							{PREFERENCES_OVERVIEW}
+										
+						</div><!-- ENDE tb_content -->
+					</div><!-- ENDE tb_content_outer -->
+					
+					<div class="tb_footer">
+						<a href="{ADMIN_URL}/preferences/index.php"></a>
+					</div><!-- ENDE tb_footer -->
+						
+				</div><!-- ENDE themebox -->
+				
+			</div><!-- ENDE col -->
+
+
+			
+
+			<div class="col_6">
+			
+				<div id="module_settings" class="themebox" style="{DISPLAY_SETTINGS};">
+				
+					<div class="tb_header">			
+						<a href="{ADMIN_URL}/settings/index.php"></a>
+					</div>
+					
+					<div class="tb_content_outer">
+						<div class="tb_content">
+					
+							<a class="tb_titel" href="{ADMIN_URL}/settings/index.php">{SETTINGS}</a>
+							{SETTINGS_OVERVIEW}
+						
+					
+						</div><!-- ENDE tb_content -->
+					</div><!-- ENDE tb_content_outer -->
+
+					<div class="tb_footer">
+						<a href="{ADMIN_URL}/settings/index.php"></a>			
+					</div><!-- ENDE tb_footer -->
+						
+				</div><!-- ENDE themebox -->
+				
+			</div><!-- ENDE col -->
+
+
+			
+			
+			<div class="col_6">
+			
+				<div id="module_admintools" class="themebox" style="{DISPLAY_ADMINTOOLS};">
+				
+					<div class="tb_header">			
+						<a href="{ADMIN_URL}/admintools/index.php"></a>
+					</div>
+					
+					<div class="tb_content_outer">
+						<div class="tb_content">
+					
+							<a class="tb_titel" href="{ADMIN_URL}/admintools/index.php">{ADMINTOOLS}</a>
+							{ADMINTOOLS_OVERVIEW}
+					
+						</div><!-- ENDE tb_content -->
+					</div><!-- ENDE tb_content_outer -->
+					
+					<div class="tb_footer">
+						<a href="{ADMIN_URL}/admintools/index.php"></a>
+					</div><!-- ENDE tb_footer -->
+						
+				</div><!-- ENDE themebox -->
+				
+			</div><!-- ENDE col -->
+
+
+			
+
+			<div class="col_6">
+			
+				<div id="module_access" class="themebox" style="{DISPLAY_ACCESS};">
+				
+					<div class="tb_header">			
+						<a href="{ADMIN_URL}/access/index.php"></a>
+					</div>
+					
+					<div class="tb_content_outer">
+						<div class="tb_content">
+					
+							<a class="tb_titel" href="{ADMIN_URL}/access/index.php">{ACCESS}</a>
+							{ACCESS_OVERVIEW}
+					
+						</div><!-- ENDE tb_content -->
+					</div><!-- ENDE tb_content_outer -->
+					
+					<div class="tb_footer">
+						<a href="{ADMIN_URL}/access/index.php"></a>
+					</div><!-- ENDE tb_footer -->
+						
+				</div><!-- ENDE themebox -->
+				
+			</div><!-- ENDE col -->
+		
+
+		
+		</div><!-- ENDE columnGridRow -->
+	</div><!-- ENDE columnGrid-outer -->	
+
+
+</div><!-- ENDE page_start -->
+
+
+<!-- END main_block -->

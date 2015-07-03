@@ -1,0 +1,33 @@
+/* CSS for upload-page: box with directories to browse mediafolders */
+body, td, th, input, textarea {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+body {
+  background-color: #fff;
+  margin: 0;
+}
+
+hr {
+  margin: 0;
+  color: #003366;
+  height: 1px;
+}
+
+.hide {
+  display: none;
+}
+
+a:link,
+a:visited,
+a:active {
+  color: #28609B;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #517aa5;
+  text-decoration: none;
+}

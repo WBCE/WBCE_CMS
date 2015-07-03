@@ -1,0 +1,127 @@
+@charset "UTF-8";
+/* 
+ * css for wb informationcenter 
+ * --> general outer structure for iframe-file
+ * --> general resets from theme.css to the iframe file
+ * --> design for content of information center
+ *
+ * Adapt the css to your own content
+*/
+/* ***************************	
+ * general settings 
+ * for information center 
+ * *************************** */
+body {
+  background-color: transparent;
+  width: 436px;
+  height: 394px;
+}
+
+.scroll-behaviour {
+  overflow: hidden
+  /* 	If you wish to have a vertical scrollbar in information-center 
+  	ad following css to this class (just uncomment): 
+  	overflow-y: scroll;
+  	padding-right: 40px;
+  */
+}
+
+.togglebox-content {
+  position: relative;
+}
+
+/* ***************************	
+ * typography 
+ * of information center 
+ * *************************** */
+.togglebox-content,
+.togglebox-content h2,
+.togglebox-content h3,
+.togglebox-content h4,
+.togglebox-content h5,
+.togglebox-content h2 {
+  color: #cbcfd8;
+}
+
+.togglebox-content h2 span {
+  color: #4DB34E;
+}
+
+.togglebox-content a {
+  color: #517aa5;
+}
+
+.togglebox-content a:hover {
+  color: #9fa8b8;
+}
+
+/* ***************************	
+ * elements 
+ * of information center 
+ * *************************** */
+/* scrollbox */
+#togglebox_scrollbox {
+  height: 150px;
+  margin-top: 24px;
+  padding: 0 7px 7px 0;
+  font-size: 11px;
+  line-height: 14px;
+  overflow: auto;
+}
+
+#togglebox_scrollbox h2,
+#togglebox_scrollbox p {
+  margin-bottom: 14px;
+}
+
+/* linkboxes */
+.togglebox-content .linkbox {
+  height: 131px;
+  margin-bottom: 21px;
+  font-size: 20px;
+  color: #303641;
+  background-color: #cbcfd8;
+}
+
+.togglebox-content a.linkbox:after {
+  font-family: FontAwesome;
+  display: inline-block;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  font-size: 48px;
+  line-height: 46px;
+}
+
+.togglebox-content #linkbox_community {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+
+.togglebox-content #linkbox_manuals:after {
+  content: "";
+  color: #3d903e;
+  font-size: 55px;
+}
+
+.togglebox-content #linkbox_community:after {
+  content: "";
+  color: #28609B;
+}
+
+.togglebox-content #linkbox_addons:after {
+  content: "";
+  color: #EE4E26;
+}
+
+/* wb newsfeed in togglebox */
+.wb_newsfeed {
+  padding: 6px;
+  background: #cbcfd8;
+  color: #303641;
+}
+
+.wb_newsfeed h4 span {
+  color: #505b6d;
+}

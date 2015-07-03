@@ -1,0 +1,94 @@
+Websitebaker Backend Theme: 
+Advanced Theme WB Flat
+=================================================================
+
+For: 		Websitebaker V2.8.3
+License: 	GNU General Public License (GPLv3)
+
+
+
+
+(1) Use
+---------------------------------------------
+
+Just install and use.
+
+
+
+
+
+(2) Possible customizations 
+---------------------------------------------
+
+
+
+(a) Dashboard
+----------------
+
+The Dashboard is the box on the starting page with 
+the link to the pagelist (to edit them)
+and with information to your project
+
+You can customize the Content up from the Linkbox
+which is highlighted by hover effect.
+
+
+Customize the dashboard content in following file:
+
+path.to.themefolder/contentinclude/dashboard/websiteinformations.php
+
+The content off this file is added to dashboard.
+To create your own content you can use wb framework and wb variables.
+
+
+
+
+(b) WB Information Center
+-----------------------------
+
+The WB Information Center is the togglebox top right 
+on the page.
+
+Use the Center to give Information about the WB Project
+or information which helps the editors to work on their project
+i.e. in form of classes they can use on the special webpage
+or what information you else want to place there.
+
+Customize the content of the informationcenter in following file:
+path.to.themefolder/contentinclude/informationcenter/informationcenter.content.php
+Write the content in direct html code or do it in php (with a php-block <?php ... ?>.
+If you use php you can use wb framework and wb variables.
+
+You can add/change the css.
+Please use following file:
+path.to.themefolder/contentinclude/informationcenter/informationcenter.css
+
+
+Templates for the WB Information Center
+
+On default the WB Information Center show WB News in the languages: 
+English, German, Netherlands.
+
+To easy change the content there are some prepared templates in the subfolder
+path.to.themefolder/contentinclude/informationcenter/content-templates/
+To use them have a look to the readme.txt in that folder.
+(Here you will find a template with english newsfeed only too.)
+
+
+
+
+
+(c) Use and design of special Modules
+----------------------------------------
+
+Given modules are designed to the traditional and official layout of websitebaker. 
+The new flat design adapts the design of most modules to the new look and feel. 
+
+Sometimes modules needs individual adaption to the new design. If you use a module
+which needs such an adaption you can write your css on your own 
+
+You can add the CSS to the file: 
+extern-modules-correction.css
+
+
+

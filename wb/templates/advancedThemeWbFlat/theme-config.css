@@ -1,0 +1,15 @@
+/* 
+ * css to doe some settings for theme 
+ * Have a look to the comments
+*/
+/* ****************************************************	
+ * show/hide WB Information Center
+ * Standard: WB Information Center is shown
+ * To hide WB Information Center just uncomment
+ * following CSS class:
+ * **************************************************** */
+/*
+#toggleboxarea {
+	display: none;
+}
+*/
