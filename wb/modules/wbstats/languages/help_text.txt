@@ -1,0 +1,45 @@
+Installation and Configuration
+To include the counter to your website add the following line to your template(s), somewhere in the first <?php ... ?> block;
+
+include (WB_PATH.'/modules/wbstats/count.php');
+
+############################# german ###################
+Installation und Einrichtung
+Um den Z&auml;hler in deine Webseite einzubinden, f&uuml;ge nachfolgene Codezeile in dein(e) Template(s) irgendwo in den ersten PHP-abschnitt zwischen <?php ... ?> ein
+
+include (WB_PATH.'/modules/wbstats/count.php');
+
+***************************** End **********************
+
+
+
+Enabling referer information in WB2.8.3 and later
+To enable referer and searchkey detection in WebsiteBaker version 2.8.3 and later, add the following line to the config.php in the root of your website, just before the line: require_once(WB_PATH.'/framework/initialize.php');
+
+$referer = $_SERVER['HTTP_REFERER'];
+
+############################# german ###################
+
+Referer-Informationen in WB 2.8.3 und neuer
+F&uuml;r die WebsiteBaker Versionen 2.8.3 und neuer ist es notwendig, unten stehene Codezeile in die Datei config.php im WB-Hauptverzeichnis unmittelbar vor dieser Zeile hier einzuf&uuml;gen: require_once(WB_PATH.'/framework/initialize.php');
+
+$referer = $_SERVER['HTTP_REFERER'];
+****************************** End **********************
+
+
+
+jQuery problems
+In older WebsiteBaker Admin themes (version 2.8.1 and 2.7) jQuery is not loaded correctly in the head section of the theme.
+You must change this by moving the lines starting with <script> in the bottom of of the footer.htt file to the section of the file header.htt.
+You can find these files in the directory /templates/{your_theme}/templates/
+
+Note: This tool wil not show any statistics if jQuery is not initialized correctly!
+
+############################# german ###################
+
+JQuery-Probleme
+In &auml;lteren WebsiteBaker-Admin-Themes (Version 2.8.1 und 2.7) wird JQuery nicht korrekt im Head-Bereich der Datei eingebunden. Dies kann durch das Verschieben der Code-Zeilen, die mit <script> beginnen von der Datei footer.htt zur Datei header.htt korrigiert werden.
+Beide Dateien findest du in im Ordner /templates/{dein_theme}/templates.
+
+Hinweis: Das Modul kann keine Statistiken zeigen, wenn JQuery nicht korrekt initialisiert wird.
+****************************** End **********************

@@ -1,0 +1,173 @@
+@import url("js/tip-twitter.css"); 
+
+.sysmenu {
+    clear: both;
+	margin:10px 1%;
+	width:98%;
+    padding: 0;
+}
+.sysmenu a {
+	background-color: #28609B;
+	padding: 10px !important; 
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 12px;
+	display:inline-block;
+}
+.sysmenu a#current,.sysmenu a:hover {
+	background-color: #D25E59;
+	text-decoration: none;
+	color: #fff;
+}
+
+#container * {
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-font-smoothing:antialiased;
+	-moz-font-smoothing:antialiased;
+	-o-font-smoothing:antialiased;
+	font-smoothing:antialiased;
+	text-rendering:optimizeLegibility;
+}
+
+
+#container {
+	position:relative;
+	margin: 10px auto;
+	color:#222;
+	width: 100%;
+}
+#container h3 {
+	background-color:#28609B;
+	color:#FFFFFF;
+	padding:5px;
+	margin:0px;
+	margin-bottom:10px;
+	font-size:1.4em;
+}
+
+#container h3 span{
+	position:absolute;
+	right:20px;
+}
+#container h3 span a{
+	text-decoration:none;
+	color:#FFFFFF;
+	font-size:1em;
+}
+
+#container td h4 {
+	background-color:#6699cc;
+	color:#fff;
+	padding:1px 5px;
+	margin:0px;
+	font-size:14px;
+	font-weight: bold;
+}
+
+#container td, #container th {
+	font-size:11px;
+	color: #111;
+}
+#container pre {
+	background: #eee;
+	border: 1px solid #333;
+	padding: 5px;
+	display:inline-block;
+}
+
+.h250 {
+	min-height: 295px;
+}
+.h265{
+	min-height: 305px;
+}
+.h600{
+	min-height: 610px;
+}
+.right {
+	float: right !important;
+}
+.left {
+	float: left;
+}
+.middle {
+	height: 265px;
+	position:relative;
+	margin:10px 1%;
+	width:48%;
+	float:left;
+	z-index:1;
+	background-color:#e7e7e7;
+	border: 0px solid #28609B;
+	padding: 15px;
+}
+
+.full {
+	position:relative;
+	margin:10px 1%;
+	width:98%;
+	z-index:1;
+	background-color:#e7e7e7;
+	border: 0px solid #28609B;
+	padding: 15px;
+	height: 295px;
+}
+
+.bar {
+	margin-right:1px;
+	margin-left:1px;
+	z-index:1;
+	background-color:#28609B;
+	font-size:0.8em;
+	overflow:hidden;
+	cursor: pointer;
+}
+.vbar {
+	height:15px;
+	background-color:#6699cc;
+	cursor: pointer;
+}
+.bar:hover, .vbar:hover {
+	margin-right:1px;
+	z-index:1;
+	background-color:#6699cc;
+
+}
+.expand,.expandunder {
+	cursor: pointer;
+}
+.timeline {
+	border-left:1px #DDDDDD solid;
+	font-size:0.8em !important;
+	color:#333333;
+}
+.underline {
+	border-bottom:1px dotted #999;
+}
+.popup th {
+font-size: 12px;
+	font-weight: bold;
+	color: #fff;
+	border-bottom: 1px solid #fff;
+}
+.popup td {
+	color: #fff;
+}
+#loading {
+	font-size: 16px;
+ 	background: #6699cc; 
+	color: #FFF;
+	width:300px;
+	text-align: center; 
+	vertical-align: center; 
+	padding: 20px 0;
+    position:absolute;
+    top:240px;
+    left:50%;
+    margin:0px 0 0 -150px; 
+    display:none;
+	z-index: 99;
+}
