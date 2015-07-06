@@ -63,12 +63,12 @@ if ($bLoggedIn) {
 
 	<div class="togglebox-content">
 
-		<h2>WB Information Center</h2>
+		<h2>WBCE Information Center</h2>
 
 		<div class="dynamicGrid-outer">
-			<a id="linkbox_manuals" class="linkbox dynamicGrid_3" href="http://www.websitebaker.org/en/help/help-project.php" title="Manuals" target="_blank"><?php echo $TEXT['MANUALS']; ?></a>
-			<a id="linkbox_community" class="linkbox dynamicGrid_3" href="http://forum.websitebaker.org/" title="Community" target="_blank"><?php echo $TEXT['COMMUNITY']; ?></a>
-			<a id="linkbox_addons" class="linkbox dynamicGrid_3" href="http://addon.websitebaker.org/" title="AddOns" target="_blank"><?php echo $TEXT['ADDONS']; ?></a>
+			<a id="linkbox_manuals" class="linkbox dynamicGrid_3" href="http://wbce.org/" title="About WBCE" target="_blank"><?php echo $TEXT['MANUALS']; ?></a>
+			<a id="linkbox_community" class="linkbox dynamicGrid_3" href="http://wbce.org/forum/" title="Community" target="_blank"><?php echo $TEXT['COMMUNITY']; ?></a>
+			<a id="linkbox_addons" class="linkbox dynamicGrid_3" href="http://wbce.org/downloads/" title="Downloads for WBCE" target="_blank"><?php echo $TEXT['ADDONS']; ?></a>
 		</div>
 
 
@@ -77,6 +77,7 @@ if ($bLoggedIn) {
 			<div class="wb_newsfeed">
 
 			<?php
+				/*
 				// get newsfeed-url based on language
 				$url = "http://websitebaker.org/index.php?rss=131&lang=EN";
 				if($_SESSION['LANGUAGE']=="DE") $url = "http://websitebaker.org/index.php?rss=275&lang=DE";
@@ -101,6 +102,7 @@ if ($bLoggedIn) {
 					echo '<a class="wb_button" style="margin:0 0 12px 0;color:#fff;" href="'.(string)$item->link.'" target="_blank">Read more</a>';
 					echo '<br/>';
 				}
+				*/
 			?>		
 
 		

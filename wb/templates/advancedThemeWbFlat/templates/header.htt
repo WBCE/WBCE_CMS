@@ -109,7 +109,7 @@ function confirm_link(message, url) {
 	<div id="headerarea" class="clearfix">
 	
 		<div id="branding">
-			<div id="branding-text">WebsiteBaker</div>
+			<div id="branding-text">WebsiteBaker CE</div>
 			<div id="branding-logo"></div>
 		</div>
 		
@@ -163,7 +163,9 @@ function confirm_link(message, url) {
 		<div id="systeminfo" class="stickySidebarElement">
 			<span class="version">CMS Version {VERSION} {SP}</span><br/>
 			<span class="version">Revision {REVISION}</span><br/>
-			<span class="version">Admin version 1.6</span>
+			<span id="admincheck" class="version" "><a href="#">Admin</a><span class="theme-version-number"></span></span>
+
+			
 		</div>
 		
 		<div id="sidebararea_togglebutton"></div>

@@ -545,10 +545,6 @@ body {
   background-color: #F1F1F1;
 }
 
-.container {
-  z-index: 1;
-}
-
 #headerarea {
   position: fixed;
   width: 100%;
@@ -560,7 +556,6 @@ body {
   background-color: #303641;
   color: #ffffff;
   border-bottom: 1px solid #777777;
-  z-index: 9000;
 }
 
 a#frontendtitel {
@@ -583,7 +578,6 @@ a#frontendtitel:hover {
   width: 300px;
   height: 55px;
   padding-right: 120px;
-  z-index: 9010;
 }
 
 #branding-text {
@@ -601,7 +595,6 @@ a#frontendtitel:hover {
   width: 105px;
   height: 120px;
   background: url("images/wblogo.png") no-repeat right top;
-  z-index: 9020;
 }
 
 #pagetopmenu {
@@ -614,7 +607,6 @@ a#frontendtitel:hover {
   background-color: #cbcfd8;
   overflow: hidden;
   border-bottom: 1px solid #464e5e;
-  z-index: 8000;
 }
 
 #sidebararea {
@@ -629,7 +621,6 @@ a#frontendtitel:hover {
   padding-right: 16px;
   color: #ffffff;
   background-color: #464e5e;
-  z-index: 8010;
 }
 
 #systeminfo {
@@ -637,6 +628,15 @@ a#frontendtitel:hover {
   font-size: 11px;
   line-height: 24px;
   text-align: right;
+}
+#systeminfo a {
+  color: #ebebeb;
+  font-weight: normal;
+  text-decoration: underline;
+  font-style: italic;
+}
+#systeminfo a:hover {
+  color: #e0e0e0;
 }
 
 #sidebararea_togglebutton {
@@ -649,7 +649,6 @@ a#frontendtitel:hover {
   background-color: #464e5e;
   cursor: pointer;
   border-left: 1px solid #888888;
-  z-index: 100000;
 }
 
 #sidebararea_togglebutton:before {
@@ -671,7 +670,6 @@ a#frontendtitel:hover {
   padding-right: 64px;
   padding-top: 196px;
   padding-bottom: 73px;
-  z-index: 10;
 }
 
 #contentarea {
@@ -699,6 +697,65 @@ td.content {
 #contentarea *:after {
   -moz-box-sizing: content-box;
   box-sizing: content-box;
+}
+
+/* ::structure-z-indexes:: layer-structure and setting of z-indexes */
+/* Contentarea and childs */
+.container {
+  z-index: 1;
+}
+
+#mainarea {
+  z-index: auto;
+}
+
+div.calendar {
+  z-index: 50;
+}
+
+/* fixed header element on top */
+#headerarea {
+  z-index: 7000;
+}
+
+#branding {
+  z-index: 7040;
+}
+
+#branding-logo {
+  z-index: 7060;
+}
+
+/* fixed sidebar on left */
+#sidebararea {
+  z-index: 5000;
+}
+
+#sidebararea_togglebutton {
+  z-index: 5010;
+}
+
+/* fixed topemun on top below headerarea */
+#pagetopmenu {
+  z-index: 3000;
+}
+
+/* togglebox with infocenter top right of page */
+#toggleboxarea {
+  z-index: 500;
+}
+
+#toggelboxarea_togglebutton {
+  z-index: 560;
+}
+
+#toggelboxarea_togglebutton:before {
+  z-index: 540;
+}
+
+/* alertbox shown with ok- attention- or failure-message */
+.alertbox {
+  z-index: 9050;
 }
 
 /* ::typography:: general css for text elements */
@@ -1643,7 +1700,6 @@ div.button_advanced_settings a:hover {
   width: 150px;
   height: 15px;
   background-color: #28609B;
-  z-index: 9020;
   cursor: pointer;
 }
 
@@ -1657,7 +1713,6 @@ div.button_advanced_settings a:hover {
   text-align: center;
   color: #cbcfd8;
   cursor: pointer;
-  z-index: 7001;
 }
 
 /* class to animate action */
@@ -1679,7 +1734,6 @@ div.button_advanced_settings a:hover {
   padding-left: 32px;
   background-color: #505b6d;
   border-bottom: 30px solid #464e5e;
-  z-index: 7000;
 }
 
 .togglebox-header {
@@ -1702,7 +1756,6 @@ iframe#wb_informationcenter {
 .alertbox {
   position: absolute;
   width: 100%;
-  z-index: 9999999999;
   margin-bottom: 48px;
   padding-left: 32px;
   padding-right: 32px;
@@ -2094,10 +2147,6 @@ div.themebox#admin_groups .tb_header a:before {
 }
 
 /* ::action-calendar:: action and functions for calendar widget --> additional css */
-div.calendar {
-  z-index: 7000;
-}
-
 div.calendar,
 div.calendar * {
   -moz-box-sizing: content-box;

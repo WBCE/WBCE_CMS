@@ -118,10 +118,23 @@ body {
 /* wb newsfeed in togglebox */
 .wb_newsfeed {
   padding: 6px;
+  line-height: 16px;
   background: #cbcfd8;
   color: #303641;
 }
 
+.wb_newsfeed h4 {
+	line-height: 20px;
+	margin-bottom: 4px;
+}
+
 .wb_newsfeed h4 span {
-  color: #505b6d;
+	float: none !important;
+	margin-left: 10px;
+	color: #505b6d;
+}
+
+.wb_newsfeed a.wb_button {
+	margin-left: 2px !important;
+	padding: 0 4px;
 }

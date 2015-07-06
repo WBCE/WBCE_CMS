@@ -37,7 +37,7 @@ $TEXT['LAST_UPDATE'] = 'last update';
 
 
 // Texts for Informationcenter (if needed)
-$TEXT['MANUALS'] = 'Hanb&uuml;cher';
+$TEXT['MANUALS'] = 'Manuals';
 $TEXT['COMMUNITY'] = 'Community';
-$TEXT['ADDONS'] = 'Manuals';
+$TEXT['ADDONS'] = 'Add Ons';
 

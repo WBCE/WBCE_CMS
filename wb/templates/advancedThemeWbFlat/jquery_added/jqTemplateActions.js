@@ -1,6 +1,5 @@
 // added code for jQuery
 
-
 $(document).ready( function() {
 
 
@@ -88,7 +87,7 @@ $(document).ready( function() {
 
 	
 	
-	// Specials for separate modul-pages admintools --> remove » from text
+	// Specials for separate module-pages admintools --> remove » from text
 	$('td.content > h4').each(function(){
 	  
 		var tb_replacestring = $(this).html();
@@ -98,7 +97,7 @@ $(document).ready( function() {
 	}); // ENDE special remove » from text
 	
 	
-	// Specials for separate modul-pages admintools --> deactivate link in head
+	// Specials for separate module-pages admintools --> deactivate link in head
 	// just unbind click-handler for the link (Note: do not remove link, cause css designs link-tag)
 	$('td.content > h4 a').click(function () {return false;});
 	// ENDE special deactivate link
@@ -130,7 +129,7 @@ $(document).ready( function() {
 
 
 	
-	// focus efect for file-input-fields
+	// focus effect for file-input-fields
 	// NOTE: based on jQuery NiceFileInput to style this fields
 	// ad style to button on focus
 	$('input.NFI-current').focus(function(){
@@ -140,7 +139,27 @@ $(document).ready( function() {
 	$('input.NFI-current').blur(function(){
 		$(this).parent().css('color', '');
 	});
+
+
 	
+	
+	// show admin version (= version of backend theme)
+	// call information from separate php-file and show version number
+	$('#admincheck a').click(function(e){
+		
+		e.preventDefault();   // deactivate link
+		
+		// url to load file with admin version to show
+		var loadUrl = THEME_URL + '/jquery_added/plugins/phpSystemVars/themeVersion.php';
+		
+		// replace admincheck-link with information from file (admin version)
+		$(this).css({ opacity: 1 }).animate({opacity: 0}, 'slow');
+		$("#admincheck").load(loadUrl, function(){
+			$(this).css({ opacity: 0 }).animate({opacity: 1}, 'slow');
+		}); 
+	});
+	
+		
 	
 	
 }); // ENDE document.ready
