@@ -18,6 +18,8 @@
 
 require('../../config.php');
 
+$admin_header = false;
+
 if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND is_numeric(@$_GET['position'])) {
 	$position = (int)$_GET['position'];
 
@@ -58,13 +60,13 @@ if( isset($_GET['file_id']) || (isset($_GET['group_id'])) ) {
 	$sql = <<<EOT
 SELECT $common_field, position FROM $table WHERE $id_field = $id
 EOT;
-	echo "$sql<br>";
+	//echo "$sql<br>";
 	$rs = $database->query($sql);
 	if($row = $rs->fetchRow()) {
 		$common_id = $row[$common_field];
 		$old_position = $row['position'];
 	}
-	echo "$old_position<br>";
+	//echo "$old_position<br>";
 	if($old_position == $position)
 		return;
 	
@@ -81,7 +83,7 @@ UPDATE $table SET position = position + 1
 	WHERE position >= $position AND position < $old_position
 		AND $common_field = $common_id
 EOT;
-	echo "<pre>$sql</pre>";
+	//echo "<pre>$sql</pre>";
 	$database->query($sql);
 
 	// Build query to update specified row
@@ -89,7 +91,7 @@ EOT;
 UPDATE $table SET position = $position
 	WHERE $id_field = $id
 EOT;
-	echo "<pre>$sql</pre>";
+	//echo "<pre>$sql</pre>";
 	$database->query($sql);
 } else {
 	die("Missing parameters");

@@ -49,7 +49,7 @@ $admin_header = (!isset($admin_header)) ? true : $admin_header;
 require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify',(bool)$admin_header);
 // this catches XSS in these params, too
-if(!$page_id || !$section_id) {
+if(!$page_id && !$section_id) {
 	$admin->print_error('Invalid arguments passed - script stopped.');
 }
 // Get perms
