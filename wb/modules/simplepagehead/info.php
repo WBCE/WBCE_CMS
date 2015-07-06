@@ -23,9 +23,9 @@
 $module_directory     = 'simplepagehead';
 $module_name          = 'SimplePageHead';
 $module_function      = 'snippet';
-$module_version       = '0.50';
-$module_platform      = '2.6.x';
-$module_author        = 'Chio, with a litte help from thorn. Extended for use with other modules by Christoph Marti.';
+$module_version       = '0.51';
+$module_platform      = '2.8.3';
+$module_author        = 'Chio, with a litte help from thorn. Extended for use with other modules by Christoph Marti. Updated by Florian Meerwinck for WBCE';
 $module_license       = 'GNU General Public License';
 $module_description   = 'Snippet to generate head tags (title, keywords.. ) better, simpler and also on newspages, bakery and other modules. Function can be invoked from the template. Simplest call: simplepagehead();';
 ?>

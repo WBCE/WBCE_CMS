@@ -139,9 +139,20 @@ if (!function_exists('simplepagehead')) {
 			echo $indexstring; 
 		}
 		
-		if ($generator == 1) {echo '<meta name="generator" content="CMS: Website Baker; www.websitebaker.org"'."$endtag>\n";}
+		if ($generator == 1) {echo '<meta name="generator" content="CMS: Website Baker Community Edition; www.wbce.org"'."$endtag>\n";}
 		if ($notoolbartag == 1) {echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n"; }		
-		if ($favicon == 1) {echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n"; }
+		if ($favicon == 1) {
+			  echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n"; 
+			  echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n"; 
+			  echo '<link rel="apple-touch-icon" href="'.TEMPLATE_DIR.'/apple-touch-icon.png'."\"$endtag>\n"; 
+			  echo '<link rel="apple-touch-icon" sizes="57x57" href="'.TEMPLATE_DIR.'/apple-touch-icon-57x57.png'."\"$endtag>\n"; 
+			  echo '<link rel="apple-touch-icon" sizes="72x72" href="'.TEMPLATE_DIR.'/apple-touch-icon-72x72.png'."\"$endtag>\n"; 
+			  echo '<link rel="apple-touch-icon" sizes="76x76" href="'.TEMPLATE_DIR.'/apple-touch-icon-76x76.png'."\"$endtag>\n"; 
+			  echo '<link rel="apple-touch-icon" sizes="114x114" href="'.TEMPLATE_DIR.'/apple-touch-icon-114x114.png'."\"$endtag>\n"; 
+			  echo '<link rel="apple-touch-icon" sizes="120x120" href="'.TEMPLATE_DIR.'/apple-touch-icon-120x120.png'."\"$endtag>\n"; 
+			  echo '<link rel="apple-touch-icon" sizes="144x144" href="'.TEMPLATE_DIR.'/apple-touch-icon-144x144.png'."\"$endtag>\n"; 
+			  echo '<link rel="apple-touch-icon" sizes="152x152" href="'.TEMPLATE_DIR.'/apple-touch-icon-152x152.png'."\"$endtag>\n"; 
+		}
 		
 	}
 }
