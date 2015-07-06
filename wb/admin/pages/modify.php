@@ -141,7 +141,7 @@ if (SECTION_BLOCKS)
 $module_permissions = $_SESSION['MODULE_PERMISSIONS'];
 // workout for edit only one section for faster pageloading
 // Constant later set in wb_settings, in meantime defined in framework/initialize.php
-$sql = 'SELECT `section_id`, `module`, `block` FROM `'.TABLE_PREFIX.'sections` ';
+$sql = 'SELECT * FROM `'.TABLE_PREFIX.'sections` ';
 $sql .= (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION && is_numeric($sectionId))
         ? 'WHERE `section_id` = '.$sectionId
         : 'WHERE `page_id` = '.intval($page_id);
@@ -178,7 +178,7 @@ if($query_sections->numRows() > 0)
                     $sec_anchor = (defined( 'SEC_ANCHOR' ) && ( SEC_ANCHOR != '' )  ? 'id="'.SEC_ANCHOR.$section['section_id'].'"' : '');
                     $sSectionInfoLine = '<div class="section-info" '.$sec_anchor.' ><b>'.$TEXT['BLOCK']
                                       . ': </b>'.$block_name.' ('.$section['block'].') <b> Modul: </b>'
-                                      . $section['module'].'<b>  ID: </b>'.$section_id.'</div>'.PHP_EOL;
+                                      . $section['module'].'<b>  ID: </b>'.$section_id.'<b>  Name: </b>' . $section['namesection'].'</div>'.PHP_EOL;
                     echo $sSectionInfoLine;
 
 

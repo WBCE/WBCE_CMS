@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}sections` (
   `block` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `publ_start` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '0',
   `publ_end` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '0',
+  `namesection` VARCHAR( 255 ) NULL,
   PRIMARY KEY (`section_id`)
 ){TABLE_ENGINE};
 -- --------------------------------------------------------

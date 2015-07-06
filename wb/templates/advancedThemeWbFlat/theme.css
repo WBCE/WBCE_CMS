@@ -1072,7 +1072,8 @@ div.pages_list ul li {
   width: 80%;
 }
 #page_sections table td.list_pubdate_start > input,
-#page_sections table td.list_pubdate_end > input {
+#page_sections table td.list_pubdate_end > input,
+#page_sections table td.list_namesection > input {
   width: 60% !important;
   padding-top: 10px;
   padding-bottom: 11px;

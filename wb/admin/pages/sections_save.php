@@ -100,6 +100,10 @@ if($query_sections->numRows() > 0) {
 			if(isset($_POST['block'.$section_id]) && $_POST['block'.$section_id] != '') {
 				$sql = "block = '".$admin->add_slashes($_POST['block'.$section_id])."'";
 			}
+            // named sections patch
+            if (isset($_POST['namesection'.$section_id])) {
+                $sql .= ", namesection = '".$admin->add_slashes($_POST['namesection'.$section_id])."'";
+            }
 			// update publ_start and publ_end, trying to make use of the strtotime()-features like "next week", "+1 month", ...
 			if(isset($_POST['start_date'.$section_id]) && isset($_POST['end_date'.$section_id])) {
 				if(trim($_POST['start_date'.$section_id]) == '0' || trim($_POST['start_date'.$section_id]) == '') {

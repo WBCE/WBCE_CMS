@@ -225,6 +225,7 @@ switch ($action):
                         'TEXT_ID' => 'ID',
                         'TEXT_TYPE' => $TEXT['TYPE'],
                         'TEXT_BLOCK' => $TEXT['BLOCK'],
+                        'TEXT_NAMESECTION' => $TEXT['SECTION'].' '.$TEXT['NAME'],
                         'TEXT_PUBL_START_DATE' => $TEXT{'PUBL_START_DATE'},
                         'TEXT_PUBL_END_DATE' => $TEXT['PUBL_END_DATE'],
                         'TEXT_ACTIONS' => $TEXT['ACTIONS'],
@@ -245,7 +246,7 @@ switch ($action):
                         )
                     );
 
-        $sql  = 'SELECT `section_id`,`module`,`position`,`block`,`publ_start`,`publ_end` ';
+        $sql  = 'SELECT * ';
         $sql .= 'FROM `'.TABLE_PREFIX.'sections` ';
         $sql .= 'WHERE `page_id` = '.$page_id.' ';
         $sql .= 'ORDER BY `position` ASC';
@@ -333,6 +334,8 @@ switch ($action):
                                 )
                             );
                     }
+                    // named sections patch
+                    $tpl->set_var('NAMESECTION', $section['namesection']);
                     // Insert icon and images
                     $tpl->set_var(array(
                                 'CLOCK_16_PNG' => 'clock_16.png',

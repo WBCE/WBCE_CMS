@@ -43,6 +43,7 @@
 			<tr class="sections_list">
 				<td class="header_list_type">{TEXT_TYPE}</td>
 				<td class="header_list_block"><span {STYLE_DISPLAY_SECTION_BLOCK}>{TEXT_BLOCK}&nbsp;</span></td>
+                <td class="header_list_namesection">{TEXT_NAMESECTION}</td>
 				<td class="header_list_pubdate_start">{TEXT_PUBL_START_DATE}</td>
 				<td class="header_list_pubdate_end">{TEXT_PUBL_END_DATE}</td>
 				<td class="header_list_sections_actions" colspan="3">{TEXT_ACTIONS}</td>
@@ -67,6 +68,10 @@
 					<!-- END block_block -->
 					</select></span>&nbsp;
 				</td>
+
+                <td class="list_namesection">
+                    <input type="text" class="input_normal" style="width: auto !important;" id="namesection{VAR_SECTION_ID}" name="namesection{VAR_SECTION_ID}" value="{NAMESECTION}" />
+                </td>
 				
 				<td class="list_pubdate_start"><input type="text" id="start_date{VAR_SECTION_ID}" name="start_date{VAR_SECTION_ID}" value="{VALUE_PUBL_START}" class="input_normal" />
 					<img src="{THEME_URL}/images/calendar_16.png" id="trigger_start{VAR_SECTION_ID}" style="cursor:pointer;" title="{TEXT_CALENDAR}" alt="{TEXT_CALENDAR}"  />
