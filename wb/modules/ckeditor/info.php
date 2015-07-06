@@ -15,6 +15,9 @@
  *
  * Changelog
  * 
+ *  version 4.4.8 150706
+ *  ! update to CKE 4.4.8
+ *
  *  version 4.4.3 140727
  *  + function "show_wysiwyg_editor" accepts parameter "$toolbar" now to allow modules to use inidividual toolbars, thanks to dbs for suggesting
  *  ! using cke 4.4.3 full
@@ -124,10 +127,10 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 $module_directory	= 'ckeditor';
-$module_name			= 'CKEditor';
+$module_name		= 'CKEditor';
 $module_function	= 'WYSIWYG';
-$module_version		= '4.4.3';
+$module_version		= '4.4.8';
 $module_platform	= '2.8.3';
-$module_author		= 'Michael Tenschert, Dietrich Roland Pehlke, erpe, Luisehahne.';
+$module_author		= 'Michael Tenschert, Dietrich Roland Pehlke, erpe, Luisehahne, WebBird';
 $module_license		= '<a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>';
-$module_description = 'includes CKEditor 4.4.3, CKE allows editing content and can be integrated in frontend and backend modules.';
+$module_description = 'includes CKEditor 4.4.8, CKE allows editing content and can be integrated in frontend and backend modules.';
