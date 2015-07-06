@@ -1,0 +1,43 @@
+body, html {margin:0; padding:0; background:transparent; }
+
+
+body, p {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 100%;
+	margin:3px;
+	color:#666;
+}
+
+#wraptable, .topicsc_the_f {width:100%;}
+
+/*Add Comment Frame*/
+/*** Don't remove the class nixhier, this is required for ASP ***/
+.nixhier {
+	display:none;
+}
+
+.topicsc_the_f {
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.topicsc_the_f p {
+	margin:4px 0;
+}
+
+.topicsc_the_f input , .topicsc_the_f textarea {
+	border: 1px solid #222222; width:90%;}
+.topicsc_the_f textarea { height: 120px; font-size: 11px;}
+
+
+
+#wraptable .submitbutton {
+	float:right; margin-right:15%; width:150px ! important;
+}
+
+.topicsc_the_f td {
+	font-size: 12px;
+	font-weight: bold;
+	XXcolor: #000066;
+}

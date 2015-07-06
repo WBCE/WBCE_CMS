@@ -1,0 +1,16 @@
+Crop Fehler:
+Tritt auf wenn view oder thumb: width = 0
+
+Ursache wahrscheinlich:
+/picupload/modifiy_thumb.php
+
+ca Zeile 114:
+if ($previewWidth == 0 OR $previewHeight == 0) {
+..
+else
+..
+
+Hier wird die Höhe oder Breite falsch berechnet
+
+$h_thumb = 0; //$h_view;
+auskommentieren funktioniert nicht wirklich.

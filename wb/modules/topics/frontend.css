@@ -1,0 +1,140 @@
+/* Page Entries*/
+.mod_topic_loop {
+	margin-bottom:30px;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #999999;
+}
+.mod_topic_loop td {vertical-align:top;}
+
+.mod_topic_loop .tp_title {margin:4px 0 0 0}
+.mod_topic_loop .tp_thumb {float:left; margin:4px 10px 20px 0}
+.mod_topic_loop .tp_author {color:#aaaaaa; font-size: 11px;}
+.mod_topic_loop .tp_date {float:right; color:#aaaaaa; font-size: 11px;}
+.mod_topic_loop .tp_short {} /*[Short]*/
+.mod_topic_loop .tp_readmore {margin:0 0 10px 0; font-weight: bold;}
+.mod_topic_loop .tp_prevnext {}
+
+.mod_topic_active5 {font-weight: bold;}
+.topics_calendar_day {
+	padding:12px 0 0 0;
+	background: url(img/calendar.png) no-repeat center 4px;
+}
+
+
+
+/* Topic Page*/
+.mod_topic_page {}
+.mod_topic_page .tp_headline {margin-bottom:0;}
+.mod_topic_page .tp_picture {float:left; margin:4px 10px 20px 0}
+.mod_topic_page .tp_author {color:#aaaaaa; font-size: 11px; margin-top:0;}
+.mod_topic_page .tp_date {float:right; color:#aaaaaa; font-size: 11px;}
+.mod_topic_page .tp_teaser {} /*[Short]*/
+.mod_topic_page .tp_teaser img {float:left; margin:0 10px 5px 0}
+
+.mod_topic_back {font-size: 14px; margin: 20px 0 0 0;	font-weight: bold;}
+.mod_topic_edit {font-size: 14px; margin: 20px 0 0 0;	font-weight: bold;}
+
+
+
+.mod_topic_seealso { padding:10px 0;}
+.mod_topic_seealso h4, .mod_topic_seealso p {margin:5px 0 0 0; font-size:1.0em;}
+.mod_topic_seealso .pnsa_desc {display:block; width:70%; margin:1px 0; font-size:0.8em; line-height:120%}
+
+.mod_topic_prevnext { padding:4px 0;}
+.mod_topic_prevnext h4, .mod_topic_prevnext p {margin:5px 0 0 0; font-size:0.9em;}
+.mod_topic_prevnext .pnsa_desc  {display:block; width:70%; margin:1px 0; font-size:0.8em;  line-height:120%}
+
+.pnsaclear {clear:both;}
+
+/*Topic Comments*/
+.mod_topic_nocomments {
+	font-size: 11px;
+	color: #666666;
+}
+.mod_topic_commentbox {
+	border: 0;
+	border-bottom: 1px solid #666666;
+	width:90%;
+	max-width: 400px;
+	margin: 10px 0 10px 0;
+	padding:10px;
+	background-color: #ffffff;
+} 
+
+.mod_topic_commentbox .comment_name {
+	margin:0;
+	font-weight: bold;
+}
+
+.mod_topic_commentbox .comment_date {float:right;  width:100px; text-align:right;
+	font-size: 10px;
+	color: #666666;
+	margin:0;
+}
+
+.mod_topic_commentbox .comment_text {margin:3px 0; padding-top:5px; border-top: 1px dotted #cccccc;}
+
+
+/*New AJAX-Comments */
+.topicsc_ajax {max-width:400px;}
+.topicsc_ajax input, .topicsc_ajax textarea {border: 1px solid #222222; width:90%;}
+.topicsc_ajax textarea { height: 120px; font-size: 11px;}
+
+
+
+/*Add Comments iFrame*/
+.mod_topic_comment_iframe {width:90%; max-width: 400px; height: 450px;}
+	
+.mod_topic_add_comment {
+	/*font-family:"Century Gothic", "Trebuchet MS", "Arial Narrow", Arial, sans-serif;
+	color: #2872A6;*/
+	font-size: 16px;
+	margin: 20px 0 0 5px;
+	font-weight: bold;
+}
+
+/*Add Comment Frame*/
+/*** Don't remove the class nixhier, this is required for ASP ***/
+.nixhier {
+	display:none;
+}
+
+.topicsc_the_f {
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.topicsc_the_f p {
+	margin:4px 0;
+}
+
+.topicsc_the_f input , .topicsc_the_f textarea {
+	border: 1px solid #222222; width:90%;}
+.topicsc_the_f textarea { height: 120px; font-size: 11px;}
+
+
+
+
+
+.topicsc_the_f td {
+	font-size: 12px;
+	font-weight: bold;
+	color: #000066;
+}
+
+
+/*--------------LastComments------------------*/
+.comment {margin: 3px 0 0 0; }
+.commentlink {margin-top: 0;}
+
+
+/*Extras:
+{FULL_TOPICS_LIST} 
+*/
+ul.topic_menu, ul.topic_menu li {list-style-type: none;list-style-image: none; line-height:110%;}
+ul.topic_menu {width:100%; margin: 0; padding:0;}
+ul.topic_menu li {float:left; width:32%; height:40px; margin: 0;}
+ul.topic_menu li div {margin: 0; margin: 0 5px;}
+ul.topic_menu a {text-decoration: none;}
+ul.topic_menu .tp_listactive {font-weight: bold; color:#000000;}

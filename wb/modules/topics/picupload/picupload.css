@@ -1,0 +1,19 @@
+body { 
+	font-family:Arial, Helvetica, sans-serif;
+  	font-size: 12px;
+  	color: #000;
+	background: #ddd;
+	margin:0;
+	padding:0;
+}
+
+.modifyheader {width: 100%; background-color: #58b656; color:#fff; text-align:right;}
+.modifyheader img {	vertical-align: middle;}
+.modifyheader a {color:#fff; display:block;text-decoration:none; }
+
+.modifyheader .deletepic {width: 5%; background-color: #b81e1e; color:#fff; text-align:center;}
+.modifyheader .deletepic a {display:block;}
+
+.showpics {width:100px; float:left; margin: 10px 10px 0 0;}
+.showpics td {vertical-align:top;}
+.showpics  .showpicspic {width:100px; }
