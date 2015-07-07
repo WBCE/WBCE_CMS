@@ -1,0 +1,58 @@
+/**
+ *
+ *	@module       code2
+ *	@version		  2.1.11
+ *	@authors		  Ryan Djurovich, Chio Maisriml, Thorsten Hornik, Dietrich Roland Pehlke, Martin Hecht 
+ *	@copyright		Ryan Djurovich, Chio Maisriml, Thorsten Hornik, Dietrich Roland Pehlke, Martin Hecht
+ *  @license	    GNU General Public License
+ *	@platform		  WebsiteBaker 2.8.x
+ *	@requirements	PHP 5.2.x and higher
+ *
+ */
+
+#infotext_output {}
+
+.info_not {
+	color: #999999;
+}
+
+.content_0 {
+	width:100%;
+	height:380px;
+	background-color: #E8F1F9;
+}
+.content_1 {
+	width:100%;
+	height:380px;
+	background-color: #E8F9E8;
+}
+.content_2 {
+	width:100%;
+	height:220px;
+	background-color: #F9E8EF;
+}
+.content_3 {
+	width:100%;
+	height:100px;
+	background-color: #FFFFD2;
+}
+
+.content_4 {
+	width:100%;
+	height:200px;
+	background-color: #FFCC33;
+}
+
+.code2_admin {
+	margin: 20px 0 10px 0;
+	padding: 10px;	
+	background-color: #FFCC33;
+	border: 1px double #FF9900;
+
+}
+
+.code2_admin h1 {text-align:left ! important;}
+
+select[name='whatis'] {
+	width: 150px;
+}

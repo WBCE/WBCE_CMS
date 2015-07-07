@@ -1,0 +1,50 @@
+<!-- BEGIN main_block -->
+
+<form name="codeform{SECTION_ID}" class="whatis_{WHATIS}_{SECTION_ID}" action="{WB_URL}/modules/code2/save.php" method="post">
+
+<input type="hidden" name="page_id" value="{PAGE_ID}" />
+<input type="hidden" name="section_id" value="{SECTION_ID}" />
+<input type="hidden" name="code2_hash" value="{CODE2_HASH}" />
+{FTAN}
+<select name="whatis" onchange="javascript:changecode{SECTION_ID}()">{WHATISSELECT}</select><span style="margin-left:20px">{MODES}: <select name='mode' style="margin-left:5px;width:100px;" onchange="change_mode{SECTION_ID}(this);">{MODE}</select></span><span id="infotext_output{SECTION_ID}" style="margin-left:20px;"></span>
+<textarea id="content{SECTION_ID}" name="content" class="content_{WHATIS}" style="margin-top:5px;width:100%;" rows="0" cols="0">{CONTENT}</textarea>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+	<td align="left">
+		<input type="submit" value="{TEXT_SAVE}" style="width: 150px; margin-top: 5px;" />
+	</td>
+	<td align="right">
+		
+		<input type="button" value="{TEXT_CANCEL}" onclick="javascript: window.location = 'index.php';" style="width: 150px; margin-top: 5px;" />
+	</td>
+</tr>
+</table>
+</form>
+<script language="JavaScript" type="text/javascript">
+<!--
+function changecode{SECTION_ID}() {
+		
+	var whatis = document.codeform{SECTION_ID}.whatis.options[document.codeform{SECTION_ID}.whatis.selectedIndex].value;
+	var t = gethinttext(whatis, '{LANGUAGE}');	
+	document.getElementById("infotext_output{SECTION_ID}").innerHTML  = t;
+	document.getElementById("content{SECTION_ID}").className = "content_"+whatis;
+} 
+changecode{SECTION_ID}();
+
+function change_mode{SECTION_ID} (aRef) {
+	var ref = document.getElementById("content{SECTION_ID}");
+	if (ref) {
+		var new_height = (aRef.selectedIndex == 1) ? "400px" : "40px";
+		ref.style.height=new_height;
+	}
+}
+
+var ref = document.getElementById("content{SECTION_ID}");
+if (ref) {
+	ref.style.height= ({MODE_} == 1) ? "400px" : "40px";
+}
+//-->
+</script>
+<p>&nbsp;</p>
+<hr size='1' />
+<!-- END main_block -->
