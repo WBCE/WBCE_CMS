@@ -1,0 +1,167 @@
+body {
+  font-family: 'Dosis', sans-serif;
+  margin:0;
+  padding:0;
+  height:100%;
+  color:#303030;
+}
+
+html {
+  overflow-y:scroll;
+  height:100%;
+}
+
+a:link, a:visited {
+  color:#000;
+}
+
+a:hover, a:visited:hover {
+  background-color:#000;
+  color:#fff;
+}
+
+.contents h1 {
+  text-transform:uppercase;
+  margin-top:0;
+}
+
+.contents p {
+  margin:0 0 0.5em 0;
+}
+
+img {
+  max-width:100%;
+  height:auto;
+}
+
+.ifl {
+  float:left;
+  margin:0 1em 1em 0;
+}
+
+.ifr {
+  float:right;
+  margin:0 0 1em 1em;
+}
+
+.hero {
+  background-image:url(hero_brezel.jpg);
+  background-repeat:no-repeat;
+  background-size:cover;
+  margin-bottom:2em;
+  padding-bottom:2em;
+}
+
+
+.navbg {
+  background-image:url(navbg.png);
+}
+
+.nav ul { 
+  float:right;
+  margin:0;
+  padding:0;
+}
+
+
+
+.top {
+  text-align:center;
+}
+
+
+.topbuttons {
+  text-align:center;
+}
+
+
+.topbuttons a.button {
+  font-size:150%;
+  display:block;
+}
+
+.top h1 {
+  color:#fff;
+  text-transform:uppercase;
+  font-size:3em;
+  margin-top:2em;
+}
+
+.top a.button {
+  margin:2em;
+  font-size:150%;
+  white-space:nowrap;
+}
+
+a.button:link, a.button:visited {
+  padding:0.5em;
+  text-decoration:none;
+  font-weight:700;
+  color:#fff;
+  border-radius:5px;
+}
+
+a.button:link, a.button:visited {
+  background-color:#2a3fff;
+}
+
+a.button:hover, a.button:visited:hover {
+  background-color:#009fe3;
+}
+
+a.purple:link, a.purple:visited {
+  background-color:#951b81;
+}
+
+a.purple:hover, a.purple:visited:hover {
+  background-color:#e119c0;
+}
+
+
+a.green:link, a.green:visited {
+  background-color:#166837;
+}
+
+a.green:hover, a.green:visited:hover {
+  background-color:#19e169;
+}
+
+.contents .button {
+  display:inline-block;
+  margin:0.5em 0;
+}
+
+h2.featureheadline {
+  text-align:center;
+}
+
+img.featureimage  {
+  max-width:100%;
+}
+
+p.featureteaser  {
+  text-align:justify;
+  min-height:8em;
+}
+
+.btnlnk {
+  margin:1em;
+}
+
+.footer {
+  margin-top:3em;
+  text-align:center;
+}
+
+@media screen and (max-width:800px) {
+  img.featureimage  {
+    max-width:33%;
+  }
+  .nav li, .top h1 {
+    font-size:1.2em;
+  }
+  
+    .nav ul {
+     float:none;
+   }
+}
