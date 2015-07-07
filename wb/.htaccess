@@ -1,0 +1,12 @@
+RewriteEngine On
+# If called directly - redirect to short url version
+RewriteCond %{REQUEST_URI} !/pages/intro.php
+RewriteCond %{REQUEST_URI} /pages
+RewriteRule ^pages/(.*).php$ /$1/ [R=301,L]
+
+# Send the request to the short.php for processing
+RewriteCond %{REQUEST_URI} !^/(pages|admin|framework|include|languages|media|account|search|temp|templates/.*)$
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([\/\sa-zA-Z0-9._-]+)$ /short.php?_wb=$1 [QSA,L]
+
