@@ -1,104 +1,23 @@
-ul, li   { 
-	list-style: none;
-	margin: 0;
-	padding: 0 
-}
-
-.setting_name {
-	vertical-align: top;
-}
-
-.newsection {
-	border-top: 1px dashed #fff;
-}
-
-thead	{ 
-	font-weight: bold; 
-	background-color: #c7d1db !important;
-	height: 25px }
-
-.row_om_out   { 
-	background: #ecf4f5 inherit; 
-	border: outset 1px #a5b3b4 
-}
-
-.row_om_over   { background: #ffffe0; border: outset 1px #679b38 }
-a.tooltip span {display:none; margin-left:14px; width:430px;}
-a.tooltip:hover span{display:inline; position:absolute; padding:5px; border:1px solid #000000; background:#ffffff; color:#000000;}
-
-.button {
-  border: outset 1px #315e8d;
-  padding: 5px;
-  background-color: #e6eeee;
-  width: 15em;
-}
-
-div.drok,
-div.drfail {
-  border: solid 1px #006600;
-  color: #006600;
-  font-weight: bold;
-  padding: 5px;
-}
-div.drfail {
-  border: solid 1px #f00;
-  color: #f00;
-}
-
-table.droplets {
-  width: 100%;
-}
-
-table.droplets th {
-	background-color: #e6EEEE;
-	border: 1px solid #FFF;
-	font-size: 8pt;
-	padding: 4px;
-}
-
-table.droplets .newdroplet {
-  background-color: #e6eeee !important;
-}
-
-/* This is for the tableSorter jQuery Plugin */
-table.droplets tr.row_b td {
-	 background-color: #fff !important;
-}
-table.droplets tr.row_b td {
-	 background-color: #e6eeee !important;
-}
-table.tablesorter {
-	font-family:arial;
-	background-color: #CDCDCD;
-	margin:10px 0pt 15px;
-	font-size: 8pt;
-	width: 100%;
-	text-align: left;
-}
-table.tablesorter thead tr th, table.tablesorter tfoot tr th {
-	background-color: #e6EEEE;
-	border: 1px solid #FFF;
-	font-size: 8pt;
-	padding: 4px;
-}
-table.tablesorter thead tr th.header {
-	background-image: url(img/bg.gif);
-	background-repeat: no-repeat;
-	background-position: center right;
-	cursor: pointer;
-}
-table.tablesorter tbody td {
-	color: #3D3D3D;
-	padding: 4px;
-	background-color: #FFF;
-	vertical-align: top;
-}
-table.tablesorter thead tr th.header.headerSortUp {
-	background: transparent url(img/asc.gif) center right no-repeat;
-}
-table.tablesorter thead tr th.header.headerSortDown {
-	background: transparent url(img/desc.gif) center right no-repeat;
-}
-table.tablesorter thead tr th.header.headerSortDown {
-	background-color: #8dbdd8;
-}
+ul,li{list-style:none;margin:0;padding:0}
+.setting_name{vertical-align:top}
+.newsection{border-top:1px dashed #fff}
+thead{font-weight:bold;background-color:#c7d1db !important;height:25px}
+.row_om_out{background:#ecf4f5 inherit;border:outset 1px #a5b3b4}
+.row_om_over{background:#ffffe0;border:outset 1px #679b38}
+a.tooltip span{display:none;margin-left:14px;width:430px}
+a.tooltip:hover span{display:inline;position:absolute;padding:5px;border:1px solid #000000;background:#ffffff;color:#000000}
+.button{border:outset 1px #315e8d;padding:5px;width:15em}
+div.drok,div.drfail{border:solid 1px #006600;color:#006600;font-weight:bold;padding:5px}
+div.drfail{border:solid 1px #f00;color:#f00}
+table.droplets{width:100%}
+table.droplets th{background-color:#e6EEEE;border:1px solid #FFF;font-size:8pt;padding:4px}
+table.droplets .newdroplet{background-color:#e6eeee !important}
+table.droplets tr.row_b td{background-color:#fff !important}
+table.droplets tr.row_b td{background-color:#e6eeee !important}
+table.tablesorter{font-family:arial;background-color:#CDCDCD;margin:10px 0pt 15px;font-size:8pt;width:100%;text-align:left}
+table.tablesorter thead tr th,table.tablesorter tfoot tr th{background-color:#e6EEEE;border:1px solid #FFF;font-size:8pt;padding:4px}
+table.tablesorter thead tr th.header{background-image:url(img/bg.gif);background-repeat:no-repeat;background-position:center right;cursor:pointer}
+table.tablesorter tbody td{color:#3D3D3D;padding:4px;background-color:#FFF;vertical-align:top}
+table.tablesorter thead tr th.header.headerSortUp{background:transparent url(img/asc.gif) center right no-repeat}
+table.tablesorter thead tr th.header.headerSortDown{background:transparent url(img/desc.gif) center right no-repeat}
+table.tablesorter thead tr th.header.headerSortDown{background-color:#8dbdd8}
