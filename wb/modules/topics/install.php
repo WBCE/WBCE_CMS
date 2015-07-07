@@ -112,7 +112,7 @@ $mod_topics = 'CREATE TABLE `'.TABLE_PREFIX.'mod_'.$tablename.'_settings` ( '
       . '`various_values` VARCHAR(255) NOT NULL DEFAULT \'150,450,0,0,2,0,0,0,0,0\','
 
       . '`picture_dir` VARCHAR(255) NOT NULL DEFAULT \'\','
-      . '`picture_values` VARCHAR(255) NOT NULL DEFAULT \'0,0,300,0,70,70,fbx\','
+      . '`picture_values` VARCHAR(255) NOT NULL DEFAULT \'0,0,300,0,70,70,colorbox\','
 
       . '`header` TEXT NOT NULL ,'
       . '`topics_loop` TEXT NOT NULL ,'

@@ -17,13 +17,13 @@ INSERT INTO `{TABLE_PREFIX}groups` (`group_id`, `name`, `system_permissions`, `m
 -- Daten für Tabelle `search`
 --
 INSERT INTO `{TABLE_PREFIX}search` (`search_id`, `name`, `value`, `extra`) VALUES
-(1, 'header', '\n<h1>[TEXT_SEARCH]</h1>\n\n<form name="searchpage" action="[WB_URL]/search/index.php" method="get">\n<table cellpadding="3" cellspacing="0" border="0" width="500">\n<tr>\n<td>\n<input type="hidden" name="search_path" value="[SEARCH_PATH]" />\n<input type="text" name="string" value="[SEARCH_STRING]" style="width: 100%;" />\n</td>\n<td width="150">\n<input type="submit" value="[TEXT_SEARCH]" style="width: 100%;" />\n</td>\n</tr>\n<tr>\n<td colspan="2">\n<input type="radio" name="match" id="match_all" value="all"[ALL_CHECKED] />\n<label for="match_all">[TEXT_ALL_WORDS]</label>\n<input type="radio" name="match" id="match_any" value="any"[ANY_CHECKED] />\n<label for="match_any">[TEXT_ANY_WORDS]</label>\n<input type="radio" name="match" id="match_exact" value="exact"[EXACT_CHECKED] />\n<label for="match_exact">[TEXT_EXACT_MATCH]</label>\n</td>\n</tr>\n</table>\n\n</form>\n\n<hr />\n    ', ''),
+(1, 'header', '<form name="search" action="[WB_URL]/search/index.php" method="get">\n<input type="hidden" name="referrer" value="[REFERRER_ID]" />\n<input type="hidden" name="search_path" value="[SEARCH_PATH]" />\n<input type="text" name="string" value="[SEARCH_STRING]" style="width: 200px;" />&nbsp;&nbsp;<input type="submit" value="[TEXT_SEARCH]" style="width: 100px;" /><br />\n<input type="radio" name="match" id="match_all" value="all"[ALL_CHECKED] /><label for="match_all">[TEXT_ALL_WORDS]</label>&nbsp;&nbsp;\n<input type="radio" name="match" id="match_any" value="any"[ANY_CHECKED] /><label for="match_any">[TEXT_ANY_WORDS]</label>&nbsp;&nbsp;\n<input type="radio" name="match" id="match_exact" value="exact"[EXACT_CHECKED] /><label for="match_exact">[TEXT_EXACT_MATCH]</label>\n\n</form>\n\n<hr />    ', ''),
 (2, 'footer', '', ''),
-(3, 'results_header', '[TEXT_RESULTS_FOR] ''<b>[SEARCH_STRING]</b>'':\n<table cellpadding="2" cellspacing="0" border="0" width="100%" style="padding-top: 10px;">', ''),
-(4, 'results_loop', '<tr style="background-color: #F0F0F0;">\n<td><a href="[LINK]">[TITLE]</a></td>\n<td align="right">[TEXT_LAST_UPDATED_BY] [DISPLAY_NAME] ([USERNAME]) [TEXT_ON] [DATE]</td>\n</tr>\n<tr><td colspan="2" style="text-align: justify; padding-bottom: 5px;">[DESCRIPTION]</td></tr>\n<tr><td colspan="2" style="text-align: justify; padding-bottom: 10px;">[EXCERPT]</td></tr>', ''),
-(5, 'results_footer', '</table>', ''),
-(6, 'no_results', '<tr><td><p>[TEXT_NO_RESULTS]</p></td></tr>', ''),
-(7, 'module_order', 'faqbaker,manual,wysiwyg', ''),
+(3, 'results_header', '[TEXT_RESULTS_FOR] ''<b>[SEARCH_STRING]</b>'':\n<dl>', ''),
+(4, 'results_loop', '<dt><a href="[LINK]">[TITLE]</a></dt>\n<dd style="margin-bottom:1em"><div>[DESCRIPTION]</div>\n[EXCERPT]</dd>', ''),
+(5, 'results_footer', '</dl>', ''),
+(6, 'no_results', '<p>[TEXT_NO_RESULTS]</p>', ''),
+(7, 'module_order', 'wysiwyg,topics', ''),
 (8, 'max_excerpt', '15', ''),
 (9, 'time_limit', '0', ''),
 (10, 'cfg_enable_old_search', 'true', ''),

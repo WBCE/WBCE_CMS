@@ -73,7 +73,7 @@ if(strpos($sapi, 'apache')!==FALSE || strpos($sapi, 'nsapi')!==FALSE) {
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<title>WebsiteBaker Installation Wizard</title>
+<title>WebsiteBaker CE Installation Wizard</title>
 <link href="stylesheet.css" rel="stylesheet" type="text/css" />
 <script>
 
@@ -98,8 +98,8 @@ function change_os(type) {
 <table>
 <tbody>
 <tr style="background: #a9c9ea;">
-    <td valign="top">
-        <img src="../templates/wb_theme/images/logo.png" alt="Logo" />
+    <td>
+        <img style="margin-top:.7em" src="logo.jpg" alt="Logo" />
     </td>
     <td>
         <h1 style="border:none; margin-top:1em;font-size:150%;">Installation Wizard</h1>
@@ -115,7 +115,7 @@ function change_os(type) {
     <input type="hidden" name="remember" id="remember" value="true" />
 
         <div class="welcome">
-            Welcome to the WebsiteBaker Installation Wizard.
+            Welcome to the WebsiteBaker CE Installation Wizard.
         </div>
         <?php
         if(isset($_SESSION['message']) AND $_SESSION['message'] != '') {
@@ -536,7 +536,7 @@ But this solution does not guarranty a correct displaying of the content from al
 
 <div style="margin: 0 0 3em; padding: 0; text-align:center;">
     <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    <a href="http://www.websitebaker.org/" style="color: #000000;" target="_blank">WebsiteBaker</a>
+    <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WebsiteBaker CE</a>
     is    released under the
     <a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a>
     <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
