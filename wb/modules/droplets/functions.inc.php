@@ -17,20 +17,20 @@ function wb_handle_copy($droplet_id) {
     global $database, $admin;
     $tags          = array('<?php', '?>' , '<?');
     // get droplet code
-    $query_content = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_droplets WHERE id = '$droplet_id'");
+    $query_content = $database->query("SELECT * FROM `".TABLE_PREFIX."mod_droplets` WHERE `id` = '$droplet_id'");
     $fetch_content = $query_content->fetchRow();
     $code          = addslashes(str_replace($tags, '', $fetch_content['code']));
     $new_name      = $fetch_content['name'] . "_copy";
     $i             = 1;
     // look for doubles
-    $found = $database->query( 'SELECT * FROM '.TABLE_PREFIX."mod_droplets WHERE name='$new_name'" );
+    $found = $database->query( 'SELECT * FROM `'.TABLE_PREFIX."mod_droplets` WHERE `name`='$new_name'" );
     while( $found->numRows() > 0 ) {
         $new_name  = $fetch_content['name'] . "_copy" . $i;
-        $found     = $database->query( 'SELECT * FROM '.TABLE_PREFIX."mod_droplets WHERE name='$new_name'" );
+        $found     = $database->query( 'SELECT * FROM `'.TABLE_PREFIX."mod_droplets` WHERE `name`='$new_name'" );
         $i++;
     }
     // generate query
-    $query         = "INSERT INTO ".TABLE_PREFIX."mod_droplets VALUES('',"
+    $query         = "INSERT INTO `".TABLE_PREFIX."mod_droplets` VALUES('',"
                    . "'$new_name','$code','"
                    . $fetch_content['description']. "','".time()."','"
                    . $admin->get_user_id()."',1,0,0,0,'"
@@ -196,13 +196,13 @@ function wb_unpack_and_import( $temp_file, $temp_unzip ) {
                     // Already in the DB?
                     $stmt  = 'INSERT';
                     $id    = NULL;
-                    $found = $database->get_one("SELECT * FROM ".TABLE_PREFIX."mod_droplets WHERE name='$name'");
+                    $found = $database->get_one("SELECT * FROM `".TABLE_PREFIX."mod_droplets` WHERE name='$name'");
                     if ( $found && $found > 0 ) {
                         $stmt = 'REPLACE';
                         $id   = $found;
                     }
                     // execute
-                    $result = $database->query("$stmt INTO ".TABLE_PREFIX."mod_droplets VALUES('$id','$name','$code','$description','".time()."','".$admin->get_user_id()."',1,0,0,0,'$usage')");
+                    $result = $database->query("$stmt INTO `".TABLE_PREFIX."mod_droplets` VALUES('$id','$name','$code','$description','".time()."','".$admin->get_user_id()."',1,0,0,0,'$usage')");
                     if( ! $database->is_error() ) {
                         $count++;
                         $imports[$name] = 1;
@@ -336,7 +336,7 @@ function wb_handle_delete() {
 		wb_handle_export( $filename = 'delete_export',$export_id = $id );
 
 	    // End add
-        $result = $database->query("DELETE FROM ".TABLE_PREFIX."mod_droplets WHERE id='$id'");
+        $result = $database->query("DELETE FROM `".TABLE_PREFIX."mod_droplet`s WHERE `id`='$id'");
     }
 }   // end function wb_handle_delete()
 

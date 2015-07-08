@@ -122,10 +122,12 @@ $msg .= (file_exists(WB_PATH.'/install/')) ?  $MESSAGE['START']['INSTALL_DIR_EXI
 
 // Check if installation directory still exists
 //
+// *****************************************************************************
 // Changed this for Websitebaker Community Edition: Just delete the files
 // We ignore the user rights as they don't matter; it's more dangerous to
 // keep the installer there!
 if(file_exists(WB_PATH.'/install/') || file_exists(WB_PATH.'/upgrade-script.php') ) {
+    if(!function_exists('rm_full_dir')) @require_once(WB_PATH.'/framework/functions.php');
     if(file_exists(WB_PATH.'/upgrade-script.php')) unlink(WB_PATH.'/upgrade-script.php');
     if(file_exists(WB_PATH.'/install/'))           rm_full_dir(WB_PATH.'/install/');
 /*
@@ -140,6 +142,10 @@ if(file_exists(WB_PATH.'/install/') || file_exists(WB_PATH.'/upgrade-script.php'
     $template->set_var('DISPLAY_WARNING', 'display:none;');
 */
 }
+$template->set_var('DISPLAY_WARNING', 'display:none;');
+//
+// end changes
+// *****************************************************************************
 
 // Insert "Add-ons" section overview (pretty complex compared to normal)
 $addons_overview = $TEXT['MANAGE'].' ';
