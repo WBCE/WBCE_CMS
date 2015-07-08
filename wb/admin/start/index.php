@@ -121,7 +121,14 @@ if($admin->get_permission('admintools') != true)
 $msg .= (file_exists(WB_PATH.'/install/')) ?  $MESSAGE['START']['INSTALL_DIR_EXISTS'] : '';
 
 // Check if installation directory still exists
+//
+// Changed this for Websitebaker Community Edition: Just delete the files
+// We ignore the user rights as they don't matter; it's more dangerous to
+// keep the installer there!
 if(file_exists(WB_PATH.'/install/') || file_exists(WB_PATH.'/upgrade-script.php') ) {
+    if(file_exists(WB_PATH.'/upgrade-script.php')) unlink(WB_PATH.'/upgrade-script.php');
+    if(file_exists(WB_PATH.'/install/'))           rm_full_dir(WB_PATH.'/install/');
+/*
     // Check if user is part of Adminstrators group
     if(in_array(1, $admin->get_groups_id()))
     {
@@ -131,6 +138,7 @@ if(file_exists(WB_PATH.'/install/') || file_exists(WB_PATH.'/upgrade-script.php'
     }
 } else {
     $template->set_var('DISPLAY_WARNING', 'display:none;');
+*/
 }
 
 // Insert "Add-ons" section overview (pretty complex compared to normal)

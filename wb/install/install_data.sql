@@ -39,7 +39,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (1, 'website_description', ''),
 (2, 'website_keywords', ''),
 (3, 'website_header', ''),
-(4, 'website_footer', '[[Shorturl]]'),
+(4, 'website_footer', ''),
 (5, 'wysiwyg_style', 'font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;'),
 (6, 'er_level', ''),
 (7, 'sec_anchor', 'wb_'),
