@@ -438,8 +438,8 @@ foreach($cfg as $key=>$value) {
  */
 echo "<br />Adding fingerprint_with_ip_octets to settings table<br />";
 $cfg = array(
-	'fingerprint_with_ip_octets' => '2',
-	'secure_form_module' => ''
+	'fingerprint_with_ip_octets' => '0',
+	'secure_form_module' => 'mtab'
 );
 foreach($cfg as $key=>$value) {
 	db_add_key_value($key, $value);

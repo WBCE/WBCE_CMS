@@ -31,7 +31,7 @@ $mod_path = (dirname(__FILE__));
 require_once( $mod_path.'/language_load.php' );
 
 $aDefault = array(
-	'secure_form_module' => '',
+	'secure_form_module' => 'mtab',
 	'wb_secform_secret' => '5609bnefg93jmgi99igjefg',
 	'wb_secform_secrettime' => '86400',
 	'wb_secform_timeout' => '7200',
