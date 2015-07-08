@@ -100,7 +100,12 @@ class database {
     // Gets the first column of the first row
     function get_one( $statement )
     {
-        $fetch_row = mysqli_fetch_array(mysqli_query($this->db_handle, $statement) );
+        $q         = mysqli_query($this->db_handle, $statement);
+        if($q === false) {
+            $this->set_error(mysqli_error($this->db_handle));
+            return null;
+        }
+        $fetch_row = mysqli_fetch_array($q);
         $result = $fetch_row[0];
         $this->set_error(null);
         if(mysqli_error($this->db_handle)) {
