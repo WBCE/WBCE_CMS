@@ -163,6 +163,7 @@ function wb_unpack_and_import( $temp_file, $temp_unzip ) {
     require_once(WB_PATH.'/include/pclzip/pclzip.lib.php');
     
     $errors  = array();
+    $imports = array();
     $count   = 0;
     $archive = new PclZip($temp_file);
     $list    = $archive->extract(PCLZIP_OPT_PATH, $temp_unzip);
@@ -215,7 +216,7 @@ function wb_unpack_and_import( $temp_file, $temp_unzip ) {
         closedir($dh);
     }
     
-    return array( 'count' => $count, 'errors' => $errors, 'imported'=> $imports );
+    return array( 'count' => $count, 'errors' => $errors, 'imported' => $imports );
     
 }   // end function wb_unpack_and_import()
 

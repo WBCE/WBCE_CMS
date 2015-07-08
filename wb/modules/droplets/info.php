@@ -20,7 +20,7 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '1.74';
+$module_version = '1.75';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
 $module_author = 'Ruud, pcwacht, WebBird';
@@ -32,6 +32,14 @@ $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 
 /**
  * Version history
+ *
+ * v1.75 - Bianka Martinovic ("WebBird")
+ *       - fixed "Undefined variable: imports" issue
+ *       - fixed "Undefined offset: 0 in ./modules/droplets/install.php" issue
+ *
+ * v1.74 - Bianka Martinovic ("WebBird")
+ *       - added shorturl droplet to installation
+ *       - fixed little layout issue with Flat Theme
  *
  * v1.73 - Bianka Martinovic ("WebBird")
  *       - added 'false' to all occurances of "new admin()"; thnx to "Martin Hecht"

@@ -72,11 +72,11 @@ if(!defined('WB_PATH')) {
 			$description = "Example Droplet";
 			$comments = "Example Droplet";
 			$cArray = explode("\n",$droplet);
-			if (substr($cArray[0],0,3) == "//:") {
+			if (isset($cArray[0]) && substr($cArray[0],0,3) == "//:") {
 				$description = trim(substr($cArray[0],3));
 				array_shift ( $cArray );
 			}
-			if (substr($cArray[0],0,3) == "//:") {
+			if (isset($cArray[0]) && substr($cArray[0],0,3) == "//:") {
 				$comments = trim(substr($cArray[0],3));
 				array_shift ( $cArray );
 			}
