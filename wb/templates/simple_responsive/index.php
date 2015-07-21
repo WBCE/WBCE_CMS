@@ -109,5 +109,8 @@
 <script defer src="<?php echo TEMPLATE_DIR; ?>/js/flexslider/jquery.flexslider-min.js"></script>
 <!-- fire ups - read this file!  -->
 <script src="<?php echo TEMPLATE_DIR; ?>/js/main.js"></script>
+<?php if (file_exists(WB_PATH.'/.htaccess')) {?>
+	[[ShortURL]]
+<?php } ?>
 </body>
 </html>
