@@ -16,7 +16,7 @@
  */
 
 // Start a session
-if (version_compare(PHP_VERSION, '5.3.6', '<')) { die('Sorry, at last PHP-5.3.6 required !!'); }
+if (version_compare(PHP_VERSION, '5.3.6', '<')) { die('Sorry, you need to have PHP Version > 5.3.6'); }
 if(!defined('SESSION_STARTED')) {
     session_name('wb-installer');
     session_start();
@@ -210,7 +210,10 @@ But this solution does not guarranty a correct displaying of the content from al
     $configFile = '/config.php';
     if(!isset($_SESSION['config_rename']) )
     {
-// cnfig.php or config.php.new
+        if((file_exists($wb_path.'/config.php.new')==true) && !(file_exists($wb_path.$configFile)==true))
+        {
+            rename($wb_path.'/config.php.new', $wb_path.$configFile);
+        }
         if( (file_exists($wb_path.$configFile)==true))
         {
 // next operation only if file is writeable
@@ -241,12 +244,6 @@ But this solution does not guarranty a correct displaying of the content from al
                 $installFlag = false;
                 $config = '<span class="bad">Not Writeable</span>';
             }
-// it's config.php.new
-        } elseif((file_exists($wb_path.'/config.php.new')==true))
-        {
-            $configFile = '/config.php.new';
-            $installFlag = false;
-            $config = '<span class="bad">Please rename to config.php</span>';
         } else
         {
             $installFlag = false;
