@@ -181,5 +181,8 @@ $(function() {
   }).click();
 });
 </script>
+<?php if (file_exists(WB_PATH.'/.htaccess')) {?>
+	[[ShortURL]]
+<?php } ?>
 </body>
 </html>
