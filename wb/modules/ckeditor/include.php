@@ -75,8 +75,8 @@ function show_wysiwyg_editor($name, $id, $content, $width = '100%', $height = '2
 	 *
 	 */
 	require ( $modAbsPath.'/info.php' );
-	require_once ( $ckeAbsPath.'/ckeditor.php' );
-	require_once ( $ckeAbsPath.'/CKEditorPlus.php' );
+	require_once ( $ckeAbsPath.'ckeditor.php' ); // $ckeAbsPath ends with /
+	require_once ( $ckeAbsPath.'CKEditorPlus.php' );
 	$ckeditor = new CKEditorPlus( $ckeRelPath );
 	
 	$ckeditor->config['ModulVersion'] = isset($module_version) ? $module_version :  'none';
@@ -209,7 +209,7 @@ function show_wysiwyg_editor($name, $id, $content, $width = '100%', $height = '2
 	 *	Define all extra CKEditor plugins in _yourwb_/modules/ckeditor067/ckeditor/plugins here
 	 *
 	 */
-	$ckeditor->config['extraPlugins'] = 'syntaxhighlight,codemirror,wblink,wbdroplets,shybutton,youtube,oembed,backup,wbsave';
+	$ckeditor->config['extraPlugins'] = 'justify,preview,find,flash,colorbutton,colordialog,dialogadvtab,div,font,forms,iframe,indentblock,language,bidi,liststyle,newpage,pagebreak,print,save,selectall,showblocks,smiley,templates,syntaxhighlight,codemirror,wblink,wbdroplets,shybutton,youtube,oembed,backup,wbsave';
 	$ckeditor->config['removePlugins'] = 'wsc,link,save';
 	if ($toolbar) $ckeditor->config['toolbar'] = $toolbar;
 

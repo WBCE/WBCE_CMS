@@ -1,4 +1,4 @@
-﻿/**
+/**
  *  @module         ckeditor
  *  @version        see info.php of this module
  *  @authors        Michael Tenschert, Dietrich Roland Pehlke
@@ -81,7 +81,7 @@ CKEDITOR.editorConfig = function( config )
  		{ name: 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton','HiddenField' ] },
 		'/',
 		{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
-		{ name: 'links', items : [ 'Wbdroplets','Wblink','Unlink','Anchor' ] },
+		{ name: 'links', items : [ 'Link','Unlink','Anchor','Wbdroplets','Wblink' ] },
 		{ name: 'insert', items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ] }
 
 	];

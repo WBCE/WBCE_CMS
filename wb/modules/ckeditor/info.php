@@ -127,7 +127,7 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 $module_directory	= 'ckeditor';
-$module_name		= 'CKEditor';
+$module_name			= 'CKEditor';
 $module_function	= 'WYSIWYG';
 $module_version		= '4.4.8';
 $module_platform	= '2.8.3';
