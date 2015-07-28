@@ -10,7 +10,7 @@
  * 
  * LICENSE: GNU General Public License 3.0
  * 
- * @platform    CMS WebsiteBaker Community Edition (WBCE)
+ * @platform    CMS WebsiteBaker Community Edition (http://wbce.org)
  * @package     cwsoft-addon-file-editor
  * @author      cwsoft (http://cwsoft.de)
  * @copyright   cwsoft
@@ -42,11 +42,7 @@ $admin = myAdminHandler('cwsoft-addon-file-editor', 'Admintools', 'admintools', 
 /**
  * Create Twig template object and configure it
  */
-// register Twig shipped with AFE if not already done by the WB core (included since WB 2.8.3 #1688)  
-if (! class_exists('Twig_Autoloader')) {
-	require_once ('../thirdparty/Twig/Twig/Autoloader.php');
-	Twig_Autoloader::register();
-}
+// Twig is part of WBCE since commit 79aa15e
 $loader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/../templates');
 $twig = new Twig_Environment($loader, array(
 	'autoescape'       => false,

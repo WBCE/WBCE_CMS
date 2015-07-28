@@ -11,7 +11,7 @@
  * 
  * LICENSE: GNU General Public License 3.0
  * 
- * @platform    CMS WebsiteBaker Community Edition (WBCE)
+ * @platform    CMS WebsiteBaker Community Edition (http://wbce.org)
  * @package     cwsoft-addon-file-editor
  * @author      cwsoft (http://cwsoft.de)
  * @copyright   cwsoft
