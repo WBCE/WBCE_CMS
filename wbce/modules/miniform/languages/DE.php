@@ -36,3 +36,5 @@ $MF['MSGID'] = 'ID';
 $MF['TIMESTAMP'] = 'Zeitstempel (Timestamp)';
 $MF['REMOVE'] = 'L&ouml;schen';
 $MF['SAVEAS'] = 'Vorlage speichern als';
+$MF['HELP'] = 'Hilfe';
+$MF['TPL_GEN'] = 'Template Generator';

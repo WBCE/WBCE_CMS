@@ -36,3 +36,5 @@ $MF['MSGID'] = 'ID';
 $MF['TIMESTAMP'] = 'Datum / Tijd';
 $MF['REMOVE'] = 'Verwijderen';
 $MF['SAVEAS'] = 'Sla template op als';
+$MF['HELP'] = 'Help';
+$MF['TPL_GEN'] = 'Template Generator';

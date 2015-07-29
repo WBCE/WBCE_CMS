@@ -39,3 +39,5 @@ $MF['MSGID'] = 'ID';
 $MF['TIMESTAMP'] = 'Horodatage';
 $MF['REMOVE'] = 'Supprimmer';
 $MF['SAVEAS'] = 'Enregistrer le template sous';
+$MF['HELP'] = 'Help';
+$MF['TPL_GEN'] = 'Template Generator';

@@ -37,3 +37,5 @@ $MF['MSGID'] = 'ID';
 $MF['TIMESTAMP'] = 'Timestamp';
 $MF['REMOVE'] = 'Delete';
 $MF['SAVEAS'] = 'Save template as';
+$MF['HELP'] = 'Help';
+$MF['TPL_GEN'] = 'Template Generator';
