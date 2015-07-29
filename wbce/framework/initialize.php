@@ -189,9 +189,9 @@ if (file_exists(WB_PATH.'/framework/class.database.php')) {
 	}
 
 	/* include old languages format  only for compatibility need to check code for old vars*/
-	if(file_exists(WB_PATH.'/languages/old.format.inc.php')) {
+	/*if(file_exists(WB_PATH.'/languages/old.format.inc.php')) {
 		include(WB_PATH.'/languages/old.format.inc.php');
-	}
+	}*/
 
 
 
