@@ -26,8 +26,8 @@ $SFS_TEXT['SECURE_FORM'] = 'SingleTab SecureForm';
 $SFS_TEXT['SECURE_FORMMTAB'] = 'Multitab SecureForm';
 $SFS_TEXT['FILE_FORMTAB_NOT_GOUND'] = '<strong>Multitab nicht ausführbar!<br />Benötigte Datei \'/framework/SecureForm.mtab.php\' nicht gefunden!</strong><br />
 <span>Sie müssen die Datei manuell über FTP hochspielen</span>';
-$SFS_TEXT['SUBMIT_FORM'] = 'SingleTab (empfohlen)';
-$SFS_TEXT['SUBMIT_FORMTAB'] = 'Multi Tab';
+$SFS_TEXT['SUBMIT_FORM'] = 'SingleTab';
+$SFS_TEXT['SUBMIT_FORMTAB'] = 'Multi Tab (empfohlen)';
 $SFS_TEXT['SUBMIT'] = 'Übernehmen';
 $SFS_TEXT['INFO'] = 'Hier können Sie auswählen, ob die Standard-Sicherheitseinstellung oder die Sicherheitseinstellung zur Verwendung von mehreren WebsiteBaker-Instanzen in parallelen Browser-Tabs aktiviert werden soll.';
 $SFS_TEXT['RESET_SETTINGS'] = 'Standardeinstellung';
