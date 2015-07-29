@@ -45,12 +45,13 @@ $template->set_var('TEXT_USERS', $sUserTitle.' '.$TEXT['SHOW'] );
 $template->set_var('STATUS_ICON', ( ($iUserStatus==0) ? $UserStatusActive : $UserStatusInactive) );
 
 // Get existing value from database
-$sql  = 'SELECT `user_id`, `username`, `display_name`, `active` FROM `'.TABLE_PREFIX.'users` ' ;
-$sql .= 'WHERE user_id != 1 ';
+$sql  = 'SELECT * FROM `'.TABLE_PREFIX.'users` ' ;
+$sql .= 'WHERE 1 ';
+$sql .= 'AND user_id != 1 ';
 $sql .=     'AND active = '.$iUserStatus.' ';
 $sql .= 'ORDER BY `display_name`,`username`';
+//echo $sql;
 
-$query = "SELECT user_id, username, display_name, active FROM ".TABLE_PREFIX."users WHERE user_id != '1' ORDER BY display_name,username";
 $results = $database->query($sql);
 if($database->is_error()) {
     $admin->print_error($database->get_error(), 'index.php');
@@ -69,9 +70,20 @@ if($results->numRows() > 0) {
     //$template->parse('list', 'list_block', true);
     // Loop through users
     while($user = $results->fetchRow()) {
+		//print_r($user);
+		if ($user['login_when'] == 0) {
+			$lastlogin = '-';
+		} else {
+			$lastlogin = gmdate(DATE_FORMAT." ".TIME_FORMAT, $user['login_when'] + TIMEZONE);
+		}
+		if ($user['login_ip'] == 0) {
+			$lastip="0.0.0.0";
+		} else { 
+			$lastip=$user['login_ip'];
+		}
         $template->set_var('VALUE',$admin->getIDKEY($user['user_id']));
         $template->set_var('STATUS', ($user['active']==false ? 'class="user-inactive"' : 'class="user-active"') );
-        $template->set_var('NAME', $user['display_name'].' ('.$user['username'].')');
+        $template->set_var('NAME', $user['display_name'].' ('.$user['username'].')&nbsp;&nbsp;&nbsp;'.$lastlogin.'&nbsp;&nbsp;&nbsp;'.$lastip);
         $template->parse('list', 'list_block', true);
     }
 } else {
