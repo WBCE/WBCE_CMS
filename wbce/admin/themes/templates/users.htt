@@ -14,15 +14,16 @@
 		</td>
      </tr>
 </table>
-<button type="button" name="status" title="{TEXT_USERS}" style="width: 30px; background: {STATUS_ICON} no-repeat center" value="{USER_STATUS}" onclick="javascript: window.location = 'index.php?status={USER_STATUS}';" class="status {DISPLAY_MODIFY}" >&nbsp;</button>
-<select name="user_id" style="width: 500px;">
+<button type="button" name="status" title="{TEXT_USERS}" style="width: 30px; background: {STATUS_ICON} no-repeat center" value="{USER_STATUS}" onclick="javascript: window.location = 'index.php?status={USER_STATUS}';" class="status {DISPLAY_MODIFY}" >&nbsp;</button>&nbsp;&nbsp;&nbsp;{USERTYPE}
+
+<div style="width: 600px; height:90px; overflow:scroll; border: 1px solid gray; overflow-x:hidden;">
 <!-- BEGIN list_block -->
-	<option value="{VALUE}" {STATUS}>{NAME}</option>
+	<input type="radio" name="user_id" value="{VALUE}" {STATUS}><label>{NAME}</label><br>
 <!-- END list_block -->
-</select>
+</div>
 
 <input type="submit" name="modify" style="width: 100px;" value="{TEXT_MODIFY}" class="{DISPLAY_MODIFY}" />
-<input type="submit" name="delete" style="width: 100px;" value="{TEXT_DELETE}" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE}" />
+<input type="submit" name="delete" style="width: 100px;" value="{TEXT_DELETE}" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE}" />&nbsp;&nbsp;&nbsp;Press <b>Strg + f</b> for Quick search or use <a href="{ADMIN_URL}/admintools/tool.php?tool=user_search" title="Advanced Search"> Advanced Search</a> 
 
 </form>
 

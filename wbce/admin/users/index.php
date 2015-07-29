@@ -60,12 +60,13 @@ $sUserList  = $TEXT['LIST_OPTIONS'].' ';
 $sUserList .= ($iUserStatus == 1) ? $MENU['USERS'].' '.strtolower($TEXT['ACTIVE']) : $MENU['USERS'].' '.strtolower($TEXT['DELETED']) ;
 // Insert values into the modify/remove menu
 $template->set_block('main_block', 'list_block', 'list');
+$template->set_var('USERTYPE', $sUserList);
 if($results->numRows() > 0) {
     // Insert first value to say please select
-    $template->set_var('VALUE', '');
-    $template->set_var('NAME', $sUserList);
-    $template->set_var('STATUS', 'class="user-active"' );
-    $template->parse('list', 'list_block', true);
+    //$template->set_var('VALUE', '');
+    //$template->set_var('NAME', $sUserList);
+    //$template->set_var('STATUS', 'class="user-active"' );
+    //$template->parse('list', 'list_block', true);
     // Loop through users
     while($user = $results->fetchRow()) {
         $template->set_var('VALUE',$admin->getIDKEY($user['user_id']));
