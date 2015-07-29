@@ -172,14 +172,29 @@ if (file_exists(WB_PATH.'/framework/class.database.php')) {
             define('LANGUAGE', DEFAULT_LANGUAGE);
         }
     }
-    // Load Language file
-    if (!defined('LANGUAGE_LOADED')) {
-        if (!file_exists(WB_PATH.'/languages/'.LANGUAGE.'.php')) {
-            throw new RuntimeException('Error loading language file '.LANGUAGE.', please check configuration');
-        } else {
-            require_once(WB_PATH.'/languages/'.LANGUAGE.'.php');
-        }
-    }
+
+    // Load default language file so even incomplete languagefiles display at least the english text
+	if(!file_exists(WB_PATH.'/languages/EN.php')) {
+		exit('Error loading default language file (EN), please check configuration');
+	} else {
+		require_once(WB_PATH.'/languages/EN.php');
+	}
+
+	// Load Language file
+	if(!file_exists(WB_PATH.'/languages/'.LANGUAGE.'.php')) {
+		exit('Error loading language file '.LANGUAGE.', please check configuration');
+	} else {
+		require_once(WB_PATH.'/languages/'.LANGUAGE.'.php');
+		define("LANGUAGE_LOADED", TRUE);
+	}
+
+	/* include old languages format  only for compatibility need to check code for old vars*/
+	if(file_exists(WB_PATH.'/languages/old.format.inc.php')) {
+		include(WB_PATH.'/languages/old.format.inc.php');
+	}
+
+
+
     // Get users timezone
     if (isset($_SESSION['TIMEZONE'])) {
         define('TIMEZONE', $_SESSION['TIMEZONE']);
