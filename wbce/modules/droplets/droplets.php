@@ -95,7 +95,8 @@ if(!defined('WB_PATH')) {
 						}
 						if ($newvalue === true) { $newvalue = ""; }
 // remove any defined CSS section from code. For valid XHTML a CSS-section is allowed inside <head>...</head> only!
-						$newvalue = preg_replace('/<style.*>.*<\/style>/siU', '', $newvalue);
+// deactivated this filter as we have an output filter that moves all CSS up to head . so no need for struggle
+//						$newvalue = preg_replace('/<style.*>.*<\/style>/siU', '', $newvalue);
 // push droplet-tag and it's replacement into Search/Replace array after executing only
 						$droplet_tags[]         = '[['.$droplet.']]';
 						$droplet_replacements[] = $newvalue;
