@@ -67,7 +67,7 @@ $template->set_var(array(
 	'TEMPLATES_OVERVIEW' => $OVERVIEW['TEMPLATES'],
 	'LANGUAGES_OVERVIEW' => $OVERVIEW['LANGUAGES'],
 	'TXT_ADMIN_SETTINGS' => $TEXT['ADMIN'] . ' ' . $TEXT['SETTINGS'],
-	'MESSAGE_RELOAD_ADDONS' => $MESSAGE['ADDON']['RELOAD'],
+	'MESSAGE_RELOAD_ADDONS' => $MESSAGE['ADDON_RELOAD'],
 	'TEXT_RELOAD' => $TEXT['RELOAD'],
 	'RELOAD_URL' => ADMIN_URL . '/addons/reload.php',
 	'URL_ADVANCED' => $admin->get_permission('admintools')

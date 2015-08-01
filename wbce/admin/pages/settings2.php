@@ -75,11 +75,11 @@ $menu = intval($admin->get_post('menu')); // fix secunia 2010-91-3
 // Validate data
 if($page_title == '' || substr($page_title,0,1)=='.')
 {
-	$admin->print_error($MESSAGE['PAGES']['BLANK_PAGE_TITLE']);
+	$admin->print_error($MESSAGE['PAGES_BLANK_PAGE_TITLE']);
 }
 if($menu_title == '' || substr($menu_title,0,1)=='.')
 {
-	$admin->print_error($MESSAGE['PAGES']['BLANK_MENU_TITLE']);
+	$admin->print_error($MESSAGE['PAGES_BLANK_MENU_TITLE']);
 }
 
 // Get existing perms
@@ -108,7 +108,7 @@ foreach($admin->get_groups_id() as $cur_gid)
 }
 if((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users)))
 {
-	$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+	$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
 // Setup admin groups
@@ -183,7 +183,7 @@ $get_same_page = $database->query($sql);
 
 if($get_same_page->numRows() > 0)
 {
-	$admin->print_error($MESSAGE['PAGES']['PAGE_EXISTS']);
+	$admin->print_error($MESSAGE['PAGES_PAGE_EXISTS']);
 }
 
 // Update page with new order
@@ -234,7 +234,7 @@ if($parent != $old_parent)
 // Create a new file in the /pages dir if title changed
 if(!is_writable(WB_PATH.PAGES_DIRECTORY.'/'))
 {
-	$admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
+	$admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
 } else {
     $old_filename = WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION;
 	// First check if we need to create a new file
@@ -321,7 +321,7 @@ if($database->is_error())
 {
 	$admin->print_error($database->get_error(), $target_url );
 } else {
-	$admin->print_success($MESSAGE['PAGES']['SAVED_SETTINGS'], $target_url );
+	$admin->print_success($MESSAGE['PAGES_SAVED_SETTINGS'], $target_url );
 }
 
 // Print admin footer

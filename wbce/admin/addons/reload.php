@@ -84,11 +84,11 @@ foreach ($post_check as $key) {
 				}
 				closedir($handle);
 				// add success message
-				$msg[] = $MESSAGE['ADDON']['MODULES_RELOADED'];
+				$msg[] = $MESSAGE['ADDON_MODULES_RELOADED'];
 
 			} else {
 				// provide error message and stop
-				$admin->print_error($MESSAGE['ADDON']['ERROR_RELOAD'], $js_back);
+				$admin->print_error($MESSAGE['ADDON_ERROR_RELOAD'], $js_back);
 			}
 			break;
 			
@@ -106,12 +106,12 @@ foreach ($post_check as $key) {
 				}
 				closedir($handle);
 				// add success message
-				$msg[] = $MESSAGE['ADDON']['TEMPLATES_RELOADED'];
+				$msg[] = $MESSAGE['ADDON_TEMPLATES_RELOADED'];
 
 			} else {
 				// provide error message and stop
 				$admin->print_header();
-				$admin->print_error($MESSAGE['ADDON']['ERROR_RELOAD'], $js_back);
+				$admin->print_error($MESSAGE['ADDON_ERROR_RELOAD'], $js_back);
 			}
 			break;
 
@@ -129,12 +129,12 @@ foreach ($post_check as $key) {
 				}
 				closedir($handle);
 				// add success message
-				$msg[] = $MESSAGE['ADDON']['LANGUAGES_RELOADED'];
+				$msg[] = $MESSAGE['ADDON_LANGUAGES_RELOADED'];
 				
 			} else {
 				// provide error message and stop
 				$admin->print_header();
-				$admin->print_error($MESSAGE['ADDON']['ERROR_RELOAD'], $js_back);
+				$admin->print_error($MESSAGE['ADDON_ERROR_RELOAD'], $js_back);
 			}
 			break;
 	}
