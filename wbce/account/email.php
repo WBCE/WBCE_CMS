@@ -28,7 +28,7 @@ if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 	$rowset = $database->query($sql);
 // Validate values
 	if($rowset->numRows() == 0) {
-		$error[] = $MESSAGE['PREFERENCES']['CURRENT_PASSWORD_INCORRECT'];
+		$error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
 	}else {
 		if(!$wb->validate_email($email)) {
 			$error[] = $MESSAGE['USERS']['INVALID_EMAIL'];
@@ -40,7 +40,7 @@ if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 			if($database->is_error()) {
 				$error[] = $database->get_error();
 			} else {
-				$success[] = $MESSAGE['PREFERENCES']['EMAIL_UPDATED'];
+				$success[] = $MESSAGE['PREFERENCES_EMAIL_UPDATED'];
 				$_SESSION['EMAIL'] = $email;
 			}
 		}

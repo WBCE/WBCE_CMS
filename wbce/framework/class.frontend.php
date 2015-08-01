@@ -438,12 +438,13 @@ class frontend extends wb {
 		global $MESSAGE;
 		require_once(WB_PATH.'/languages/'.DEFAULT_LANGUAGE.'.php');
 		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		<head><title>'.$MESSAGE['GENERIC']['WEBSITE_UNDER_CONSTRUCTION'].'</title>
+		<head><title>'.$MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'].'</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<style type="text/css"><!-- body{ font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 12px; background-image: url("'.THEME_URL.'/images/background.png");background-repeat: repeat-x; background-color: #A8BCCB; text-align: center; }
 		h1 { margin: 0; padding: 0; font-size: 18px; color: #000; text-transform: uppercase;
 }--></style></head><body>
-		<br /><h1>'.$MESSAGE['GENERIC']['WEBSITE_UNDER_CONSTRUCTION'].'</h1><br />
-		'.$MESSAGE['GENERIC']['PLEASE_CHECK_BACK_SOON'].'</body></html>';
+		<br /><h1>'.$MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'].'</h1><br />
++		'.$MESSAGE['GENERIC_PLEASE_CHECK_BACK_SOON'].'</body></html>';
 	}
 }
 

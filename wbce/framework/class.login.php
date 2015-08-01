@@ -88,29 +88,29 @@ class login extends admin {
                 header("Location: ".$this->url);
                 exit(0);
             } else {
-                $this->message = $MESSAGE['LOGIN']['AUTHENTICATION_FAILED'];
+                $this->message = $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
                 $this->increase_attemps();
             }
         } elseif($this->username == '' AND $this->password == '') {
-            $this->message = $MESSAGE['LOGIN']['BOTH_BLANK'];
+            $this->message = $MESSAGE['LOGIN_BOTH_BLANK'];
             $this->display_login();
         } elseif($this->username == '') {
-            $this->message = $MESSAGE['LOGIN']['USERNAME_BLANK'];
+            $this->message = $MESSAGE['LOGIN_USERNAME_BLANK'];
             $this->increase_attemps();
         } elseif($this->password == '') {
-            $this->message = $MESSAGE['LOGIN']['PASSWORD_BLANK'];
+            $this->message = $MESSAGE['LOGIN_PASSWORD_BLANK'];
             $this->increase_attemps();
         } elseif($this->username_len < $config_array['MIN_USERNAME_LEN']) {
-            $this->message = $MESSAGE['LOGIN']['USERNAME_TOO_SHORT'];
+            $this->message = $MESSAGE['LOGIN_USERNAME_TOO_SHORT'];
             $this->increase_attemps();
         } elseif($this->password_len < $config_array['MIN_PASSWORD_LEN']) {
-            $this->message = $MESSAGE['LOGIN']['PASSWORD_TOO_SHORT'];
+            $this->message = $MESSAGE['LOGIN_PASSWORD_TOO_SHORT'];
             $this->increase_attemps();
         } elseif($this->username_len > $config_array['MAX_USERNAME_LEN']) {
-            $this->message = $MESSAGE['LOGIN']['USERNAME_TOO_LONG'];
+            $this->message = $MESSAGE['LOGIN_USERNAME_TOO_LONG'];
             $this->increase_attemps();
         } elseif($this->password_len > $config_array['MAX_PASSWORD_LEN']) {
-            $this->message = $MESSAGE['LOGIN']['PASSWORD_TOO_LONG'];
+            $this->message = $MESSAGE['LOGIN_PASSWORD_TOO_LONG'];
             $this->increase_attemps();
         } else {
             // Check if the user exists (authenticate them)
@@ -121,7 +121,7 @@ class login extends admin {
                 header("Location: ".$this->url);
                 exit(0);
             } else {
-                $this->message = $MESSAGE['LOGIN']['AUTHENTICATION_FAILED'];
+                $this->message = $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
                 $this->increase_attemps();
             }
         }

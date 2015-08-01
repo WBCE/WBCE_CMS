@@ -67,7 +67,7 @@ if($email != '')
         $admin->print_error($MESSAGE['USERS']['INVALID_EMAIL'], $js_back);
     }
 } else { // e-mail must be present
-    $admin->print_error($MESSAGE['SIGNUP']['NO_EMAIL'], $js_back);
+    $admin->print_error($MESSAGE['SIGNUP_NO_EMAIL'], $js_back);
 }
 
 // choose group_id from groups_id - workaround for still remaining calls to group_id (to be cleaned-up)

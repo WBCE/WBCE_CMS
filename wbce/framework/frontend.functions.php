@@ -248,11 +248,11 @@ if (!function_exists('page_content')) {
         global $wb;
         $admin = $wb;
         if ($wb->page_access_denied==true) {
-            echo $MESSAGE['FRONTEND']['SORRY_NO_VIEWING_PERMISSIONS'];
+            echo $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'];
             return;
         }
         if ($wb->page_no_active_sections==true) {
-            echo $MESSAGE['FRONTEND']['SORRY_NO_ACTIVE_SECTIONS'];
+            echo $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'];
             return;
         }
         if(isset($globals) AND is_array($globals)) {
