@@ -82,8 +82,8 @@ $template->set_block('page', 'main_block', 'main');
 
 // Insert values into the template object
 $template->set_var(array(
-                    'WELCOME_MESSAGE' => $MESSAGE['START']['WELCOME_MESSAGE'],
-                    'CURRENT_USER' => $MESSAGE['START']['CURRENT_USER'],
+                    'WELCOME_MESSAGE' => $MESSAGE['START_WELCOME_MESSAGE'],
+                    'CURRENT_USER' => $MESSAGE['START_CURRENT_USER'],
                     'DISPLAY_NAME' => $admin->get_display_name(),
                     'ADMIN_URL' => ADMIN_URL,
                     'WB_URL' => WB_URL,
@@ -118,7 +118,7 @@ if($admin->get_permission('admintools') != true)
     $template->set_var('DISPLAY_ADMINTOOLS', 'display:none;');
 }
 
-$msg .= (file_exists(WB_PATH.'/install/')) ?  $MESSAGE['START']['INSTALL_DIR_EXISTS'] : '';
+$msg .= (file_exists(WB_PATH.'/install/')) ?  $MESSAGE['START_INSTALL_DIR_EXISTS'] : '';
 
 // Check if installation directory still exists
 //

@@ -48,7 +48,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 		if($time_diff < 2) {
 			
 			// Tell the user that their password cannot be reset more than once per hour
-			$message = $MESSAGE['FORGOT_PASS']['ALREADY_RESET'];
+			$message = $MESSAGE['FORGOT_PASS_ALREADY_RESET'];
 			
 		} else {
 			
@@ -83,11 +83,11 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 
 				// Try sending the email
 				if($admin->mail(SERVER_EMAIL,$mail_to,$mail_subject,$mail_message)) { 
-					$message = $MESSAGE['FORGOT_PASS']['PASSWORD_RESET'];
+					$message = $MESSAGE['FORGOT_PASS_PASSWORD_RESET'];
 					$display_form = false;
 				} else {
 					$database->query("UPDATE ".TABLE_PREFIX."users SET password = '".$old_pass."' WHERE user_id = '".$results_array['user_id']."'");
-					$message = $MESSAGE['FORGOT_PASS']['CANNOT_EMAIL'];
+					$message = $MESSAGE['FORGOT_PASS_CANNOT_EMAIL'];
 				}
 			}
 		
@@ -95,7 +95,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 		
 	} else {
 		// Email doesn't exist, so tell the user
-		$message = $MESSAGE['FORGOT_PASS']['EMAIL_NOT_FOUND'];
+		$message = $MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND'];
 		// and delete the wrong Email
 		$email = '';
 	}
@@ -105,7 +105,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 }
 
 if(!isset($message)) {
-	$message = $MESSAGE['FORGOT_PASS']['NO_DATA'];
+	$message = $MESSAGE['FORGOT_PASS_NO_DATA'];
 	$message_color = '000000';
 } else {
 	$message_color = 'FF0000';
