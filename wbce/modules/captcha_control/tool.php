@@ -69,7 +69,7 @@ if(isset($_POST['save_settings'])) {
 	if($database->is_error()) {
 		$admin->print_error($database->get_error(), $js_back);
 	} else {
-		$admin->print_success($MESSAGE['PAGES']['SAVED'], $js_back);
+		$admin->print_success($MESSAGE['PAGES_SAVED'], $js_back);
 	}
 
 } else {

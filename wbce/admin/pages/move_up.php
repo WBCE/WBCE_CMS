@@ -48,9 +48,9 @@ require(WB_PATH.'/framework/class.order.php');
 $order = new order($table, 'position', $id_field, $common_field);
 if($id_field == 'page_id') {
 	if($order->move_up($id)) {
-		$admin->print_success($MESSAGE['PAGES']['REORDERED']);
+		$admin->print_success($MESSAGE['PAGES_REORDERED']);
 	} else {
-		$admin->print_error($MESSAGE['PAGES']['CANNOT_REORDER']);
+		$admin->print_error($MESSAGE['PAGES_CANNOT_REORDER']);
 	}
 } else {
 	if($order->move_up($id)) {

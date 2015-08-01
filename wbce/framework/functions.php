@@ -732,7 +732,7 @@ function create_access_file($filename,$page_id,$level)
             // can only be dirs
             if(!file_exists($acces_file)) {
                 if(!make_dir($acces_file)) {
-                    $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE_FOLDER']);
+                    $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE_FOLDER']);
                 }
             }
         }
@@ -762,7 +762,7 @@ function create_access_file($filename,$page_id,$level)
         // Chmod the file
         change_mode($filename);
     } else {
-        $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
+        $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
     }
     return;
  }
@@ -941,7 +941,7 @@ function extract_permission($octal_value, $who, $action)
         $sql .= 'FROM `'.TABLE_PREFIX.'pages` WHERE `page_id`='.$page_id;
         $results = $database->query($sql);
         if($database->is_error())    { $admin->print_error($database->get_error()); }
-        if($results->numRows() == 0) { $admin->print_error($MESSAGE['PAGES']['NOT_FOUND']); }
+        if($results->numRows() == 0) { $admin->print_error($MESSAGE['PAGES_NOT_FOUND']); }
         $results_array = $results->fetchRow();
         $parent     = $results_array['parent'];
         $level      = $results_array['level'];
@@ -986,7 +986,7 @@ function extract_permission($octal_value, $who, $action)
         if(file_exists($filename))
         {
             if(!is_writable(WB_PATH.PAGES_DIRECTORY.'/')) {
-                $admin->print_error($MESSAGE['PAGES']['CANNOT_DELETE_ACCESS_FILE']);
+                $admin->print_error($MESSAGE['PAGES_CANNOT_DELETE_ACCESS_FILE']);
             }else {
                 unlink($filename);
                 if( file_exists($directory) &&

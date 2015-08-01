@@ -48,7 +48,7 @@ require_once(WB_PATH.'/framework/functions.php');
 
 // Check if the template exists
 if(!is_dir(WB_PATH.'/templates/'.$file)) {
-    $admin->print_error($MESSAGE['GENERIC']['NOT_INSTALLED']);
+    $admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
 
 if (!function_exists("replace_all")) {
@@ -61,19 +61,18 @@ if (!function_exists("replace_all")) {
 /**
 *    Check if the template is the standard-template or still in use
 */
-if (!array_key_exists('CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE', $MESSAGE['GENERIC'] ) )
-    $MESSAGE['GENERIC']['CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'] = "Can't uninstall this template <b>{{name}}</b> because it's the standardtemplate!";
+
 
 // check whether the template is used as default wb theme
 if($file == DEFAULT_THEME) {
     $temp = array ('name' => $file );
-    $msg = replace_all( $MESSAGE['GENERIC']['CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'], $temp );
+    $msg = replace_all( $MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'], $temp );
     $admin->print_error( $msg );
 }
 
 if ($file == DEFAULT_TEMPLATE) {
     $temp = array ('name' => $file );
-    $msg = replace_all( $MESSAGE['GENERIC']['CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'], $temp );
+    $msg = replace_all( $MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'], $temp );
     $admin->print_error( $msg );
 
 } else {
@@ -91,15 +90,11 @@ if ($file == DEFAULT_TEMPLATE) {
         /**
         *    The base-message template-string for the top of the message
         */
-        if (!array_key_exists("CANNOT_UNINSTALL_IN_USE_TMPL", $MESSAGE['GENERIC'])) {
-            $add = $info->numRows() == 1 ? "this page" : "these pages";
-            $msg_template_str  = "<br /><br />{{type}} <b>{{type_name}}</b> could not be uninstalled because it is still in use by {{pages}}";
-            $msg_template_str .= ":<br /><i>click for editing.</i><br /><br />";
-        } else {
-            $msg_template_str = $MESSAGE['GENERIC']['CANNOT_UNINSTALL_IN_USE_TMPL'];
-            $temp = explode(";",$MESSAGE['GENERIC']['CANNOT_UNINSTALL_IN_USE_TMPL_PAGES']);
-            $add = $info->numRows() == 1 ? $temp[0] : $temp[1];
-        }
+      
+        $msg_template_str = $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'];
+        $temp = explode(";",$MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES']);
+        $add = $info->numRows() == 1 ? $temp[0] : $temp[1];
+        
         /**
         *    The template-string for displaying the Page-Titles ... in this case as a link
         */
@@ -123,18 +118,18 @@ if ($file == DEFAULT_TEMPLATE) {
         /**
         *    Printing out the error-message and die().
         */
-        $admin->print_error($MESSAGE['GENERIC']['CANNOT_UNINSTALL_IN_USE'].$msg.$page_names);
+        $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE'].$msg.$page_names);
     }
 }
 
 // Check if we have permissions on the directory
 if(!is_writable(WB_PATH.'/templates/'.$file)) {
-    $admin->print_error($MESSAGE['GENERIC']['CANNOT_UNINSTALL'].WB_PATH.'/templates/'.$file);
+    $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL'].WB_PATH.'/templates/'.$file);
 }
 
 // Try to delete the template dir
 if(!rm_full_dir(WB_PATH.'/templates/'.$file)) {
-    $admin->print_error($MESSAGE['GENERIC']['CANNOT_UNINSTALL']);
+    $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL']);
 } else {
     // Remove entry from DB
     $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = '".$file."' AND type = 'template'");
@@ -145,7 +140,7 @@ if(!rm_full_dir(WB_PATH.'/templates/'.$file)) {
 $database->query("UPDATE ".TABLE_PREFIX."pages SET template = '".DEFAULT_TEMPLATE."' WHERE template = '$file'");
 
 // Print success message
-$admin->print_success($MESSAGE['GENERIC']['UNINSTALLED']);
+$admin->print_success($MESSAGE['GENERIC_UNINSTALLED']);
 
 // Print admin footer
 $admin->print_footer();

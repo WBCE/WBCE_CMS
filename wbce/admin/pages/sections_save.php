@@ -67,7 +67,7 @@ foreach($admin->get_groups_id() as $cur_gid){
     }
 }
 if((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users))) {
-	$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+	$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
 // Get page details
@@ -80,7 +80,7 @@ if($database->is_error()) {
 }
 if($results->numRows() == 0) {
 	$admin->print_header();
-	$admin->print_error($MESSAGE['PAGES']['NOT_FOUND']);
+	$admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }
 $results_array = $results->fetchRow();
 
@@ -132,7 +132,7 @@ if($query_sections->numRows() > 0) {
 if($database->is_error()) {
 	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/sections.php?page_id='.$page_id );
 } else {
-	$admin->print_success($MESSAGE['PAGES']['SECTIONS_PROPERTIES_SAVED'], ADMIN_URL.'/pages/sections.php?page_id='.$page_id );
+	$admin->print_success($MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'], ADMIN_URL.'/pages/sections.php?page_id='.$page_id );
 }
 
 // Print admin footer

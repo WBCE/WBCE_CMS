@@ -60,7 +60,7 @@ else {
 $admin->print_header();
 // Validate all fields
 if($admin->get_post('title') == '') {
-	$admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/droplets/modify_droplet.php?droplet_id='.$droplet_id);
+	$admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], WB_URL.'/modules/droplets/modify_droplet.php?droplet_id='.$droplet_id);
 } else {
 	$title         = $admin->add_slashes($admin->get_post('title'));
 	$active        = (int) $admin->get_post('active');

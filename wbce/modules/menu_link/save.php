@@ -51,7 +51,7 @@ if(isset($_POST['menu_link'])) {
 if($database->is_error()) {
 	$admin->print_error($database->get_error(), $js_back);
 } else {
-	$admin->print_success($MESSAGE['PAGES']['SAVED'],$backlink );
+	$admin->print_success($MESSAGE['PAGES_SAVED'],$backlink );
 }
 
 // Print admin footer

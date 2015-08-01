@@ -70,7 +70,7 @@ foreach($admin->get_groups_id() as $cur_gid){
 if((!$in_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users))) {
 	print $admin->get_group_id().$admin->get_user_id();
 	// print_r ($old_admin_groups);
-	$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+	$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
 // some additional security checks:
@@ -79,7 +79,7 @@ if ($section_id != 0) {
 	$section = $admin->get_section_details($section_id,ADMIN_URL.'/pages/index.php');
 	if (!$admin->get_permission($section['module'], 'module'))
 	{
-		$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+		$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 	}
 }
 
@@ -120,7 +120,7 @@ if(isset($print_info_banner) && $print_info_banner == true) {
 				'MODIFIED_BY' => $user['display_name'],
 				'MODIFIED_BY_USERNAME' => $user['username'],
 				'MODIFIED_WHEN' => $modified_ts,
-				'LAST_MODIFIED' => $MESSAGE['PAGES']['LAST_MODIFIED'],
+				'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
 				));
 
 	$template->set_block('main_block', 'show_modify_block', 'show_modify');

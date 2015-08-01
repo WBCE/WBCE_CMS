@@ -185,7 +185,7 @@ function make_list($parent, $editable_pages) {
 				</td>
 				<td width="20">
 					<?php if($admin->get_permission('pages_delete') == true AND $can_modify == true) { ?>
-					<a href="javascript: confirm_link('<?php echo $MESSAGE['PAGES']['DELETE_CONFIRM']; ?>?', '<?php echo ADMIN_URL; ?>/pages/delete.php?page_id=<?php echo $page['page_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
+					<a href="javascript: confirm_link('<?php echo $MESSAGE['PAGES_DELETE_CONFIRM']; ?>?', '<?php echo ADMIN_URL; ?>/pages/delete.php?page_id=<?php echo $page['page_id']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
 						<img src="<?php echo THEME_URL; ?>/images/delete_16.png" border="0" alt="X" />
 					</a>
 					<?php } ?>
@@ -273,7 +273,7 @@ if($editable_pages == 0) {
 }
 
 ?>
-<br />< <a href="<?php echo ADMIN_URL; ?>/pages/index.php"><?php echo $MESSAGE['PAGES']['RETURN_TO_PAGES']; ?></a>
+<br />< <a href="<?php echo ADMIN_URL; ?>/pages/index.php"><?php echo $MESSAGE['PAGES_RETURN_TO_PAGES']; ?></a>
 <?php
 
 // Print admin 

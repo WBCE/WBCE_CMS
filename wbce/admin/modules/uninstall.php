@@ -47,7 +47,7 @@ require_once(WB_PATH.'/framework/functions.php');
 
 // Check if the module exists
 if(!is_dir(WB_PATH.'/modules/'.$file)) {
-    $admin->print_error($MESSAGE['GENERIC']['NOT_INSTALLED']);
+    $admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
 
 if (!function_exists("replace_all")) {
@@ -64,15 +64,11 @@ if ( $info->numRows() > 0) {
     /**
     *    Modul is in use, so we have to warn the user
     */
-    if (!array_key_exists("CANNOT_UNINSTALL_IN_USE_TMPL", $MESSAGE['GENERIC'])) {
-        $add = $info->numRows() == 1 ? "this page" : "these pages";
-        $msg_template_str  = "<br /><br />{{type}} <b>{{type_name}}</b> could not be uninstalled because it is still in use on {{pages}}";
-        $msg_template_str .= ":<br /><i>click for editing.</i><br /><br />";
-    } else {
-        $msg_template_str = $MESSAGE['GENERIC']['CANNOT_UNINSTALL_IN_USE_TMPL'];
-        $temp = explode(";",$MESSAGE['GENERIC']['CANNOT_UNINSTALL_IN_USE_TMPL_PAGES']);
+    
+        $msg_template_str = $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'];
+        $temp = explode(";",$MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES']);
         $add = $info->numRows() == 1 ? $temp[0] : $temp[1];
-    }
+    
     /**
     *    The template-string for displaying the Page-Titles ... in this case as a link
     */
@@ -99,12 +95,12 @@ if ( $info->numRows() > 0) {
     /**
     *    Printing out the error-message and die().
     */
-    $admin->print_error(str_replace ($TEXT['FILE'], "Modul", $MESSAGE['GENERIC']['CANNOT_UNINSTALL_IN_USE']).$msg.$page_names);
+    $admin->print_error(str_replace ($TEXT['FILE'], "Modul", $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE']).$msg.$page_names);
 }
 
 // Check if we have permissions on the directory
 if(!is_writable(WB_PATH.'/modules/'.$file)) {
-    $admin->print_error($MESSAGE['GENERIC']['CANNOT_UNINSTALL']);
+    $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL']);
 }
 
 // Run the modules uninstall script if there is one
@@ -114,14 +110,14 @@ if(file_exists(WB_PATH.'/modules/'.$file.'/uninstall.php')) {
 
 // Try to delete the module dir
 if(!rm_full_dir(WB_PATH.'/modules/'.$file)) {
-    $admin->print_error($MESSAGE['GENERIC']['CANNOT_UNINSTALL']);
+    $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL']);
 } else {
     // Remove entry from DB
     $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = '".$file."' AND type = 'module'");
 }
 
 // Print success message
-$admin->print_success($MESSAGE['GENERIC']['UNINSTALLED']);
+$admin->print_success($MESSAGE['GENERIC_UNINSTALLED']);
 
 // Print admin footer
 $admin->print_footer();

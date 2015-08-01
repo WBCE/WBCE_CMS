@@ -46,29 +46,29 @@ require_once(WB_PATH.'/framework/functions.php');
 
 // Check if the language exists
 if(!file_exists(WB_PATH.'/languages/'.$_POST['code'].'.php')) {
-	$admin->print_error($MESSAGE['GENERIC']['NOT_INSTALLED']);
+	$admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
 
 // Check if the language is in use
 if($_POST['code'] == DEFAULT_LANGUAGE OR $_POST['code'] == LANGUAGE) {
-	$admin->print_error($MESSAGE['GENERIC']['CANNOT_UNINSTALL_IN_USE']);
+	$admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE']);
 } else {
 	$query_users = $database->query("SELECT user_id FROM ".TABLE_PREFIX."users WHERE language = '".$admin->add_slashes($_POST['code'])."' LIMIT 1");
 	if($query_users->numRows() > 0) {
-		$admin->print_error($MESSAGE['GENERIC']['CANNOT_UNINSTALL_IN_USE']);
+		$admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE']);
 	}
 }
 
 // Try to delete the language code
 if(!unlink(WB_PATH.'/languages/'.$_POST['code'].'.php')) {
-	$admin->print_error($MESSAGE['GENERIC']['CANNOT_UNINSTALL']);
+	$admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL']);
 } else {
 	// Remove entry from DB
 	$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = '".$_POST['code']."' AND type = 'language'");
 }
 
 // Print success message
-$admin->print_success($MESSAGE['GENERIC']['UNINSTALLED']);
+$admin->print_success($MESSAGE['GENERIC_UNINSTALLED']);
 
 // Print admin footer
 $admin->print_footer();

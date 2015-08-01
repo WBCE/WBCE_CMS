@@ -37,7 +37,7 @@ if(!$page_id || !is_numeric($page_id)) { // double check doesn't hurt ;D
 
 // Get perms
 if(!$admin->get_page_permission($page_id,'admin')) {
-    $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
 $sectionId = isset($_GET['wysiwyg']) ? htmlspecialchars($admin->get_get('wysiwyg')) : NULL;
@@ -77,7 +77,7 @@ $template->set_var(array(
             'MODIFIED_BY' => $user['display_name'],
             'MODIFIED_BY_USERNAME' => $user['username'],
             'MODIFIED_WHEN' => $modified_ts,
-            'LAST_MODIFIED' => $MESSAGE['PAGES']['LAST_MODIFIED'],
+            'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
             ));
 
 $template->set_block('main_block', 'show_modify_block', 'show_modify');

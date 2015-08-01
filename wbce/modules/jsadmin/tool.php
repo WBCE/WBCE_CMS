@@ -63,7 +63,7 @@ if(isset($_POST['save_settings']))  {
 		$admin->print_error($database->get_error(), $js_back);
 	} else {
 
-		$admin->print_success($MESSAGE['PAGES']['SAVED'], ADMIN_URL.'/admintools/tool.php?tool=jsadmin');
+		$admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/admintools/tool.php?tool=jsadmin');
 	}
 
 } else {

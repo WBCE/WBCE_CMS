@@ -149,7 +149,7 @@ switch ($action):
         if((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users)))
         {
             $admin->print_header();
-            $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+            $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
         }
 
         // Get page details
@@ -165,7 +165,7 @@ switch ($action):
         if($results->numRows() == 0)
         {
             // $admin->print_header();
-            $admin->print_error($MESSAGE['PAGES']['NOT_FOUND']);
+            $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
         }
         $results_array = $results->fetchRow();
 

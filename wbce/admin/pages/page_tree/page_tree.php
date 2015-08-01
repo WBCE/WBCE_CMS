@@ -228,7 +228,7 @@ ob_start();
 				</td>
 				<td class="list_actions">
 					<?php if($canDeleteAndModify) : ?>
-					<a href="javascript:confirm_link('{MENU_TITLE}\n\n\t<?php echo $MESSAGE['PAGES']['DELETE_CONFIRM']; ?>?','../pages/delete.php?page_id={pageIDKEY}');" title="<?php echo $TEXT['DELETE']; ?>"><img src="../pages/page_tree/icons/delete_16.png" border="0" alt="[x]" /></a>
+					<a href="javascript:confirm_link('{MENU_TITLE}\n\n\t<?php echo $MESSAGE['PAGES_DELETE_CONFIRM']; ?>?','../pages/delete.php?page_id={pageIDKEY}');" title="<?php echo $TEXT['DELETE']; ?>"><img src="../pages/page_tree/icons/delete_16.png" border="0" alt="[x]" /></a>
 					<?php else: ?>
 					<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />
 					<?php endif; //canDeleteAndModify?>

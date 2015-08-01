@@ -61,7 +61,7 @@ foreach($admin->get_groups_id() as $cur_gid)
 }
 if((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users)))
 {
-    $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
 // Get page details
@@ -74,7 +74,7 @@ if($database->is_error()) {
 }
 if($results->numRows() == 0) {
     $admin->print_header();
-    $admin->print_error($MESSAGE['PAGES']['NOT_FOUND']);
+    $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }
 $results_array = $results->fetchRow();
 
@@ -586,7 +586,7 @@ $template->set_var(array(
                 'TEXT_CURRENT_PAGE' => $TEXT['CURRENT_PAGE'],
                 'TEXT_MODIFY' => $TEXT['MODIFY'],
                 'TEXT_MODIFY_PAGE' => $HEADING['MODIFY_PAGE'],
-                'LAST_MODIFIED' => $MESSAGE['PAGES']['LAST_MODIFIED'],
+                'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
                 'TEXT_PAGE_TITLE' => $TEXT['PAGE_TITLE'],
                 'TEXT_MENU_TITLE' => $TEXT['MENU_TITLE'],
                 'TEXT_TYPE' => $TEXT['TYPE'],
@@ -615,7 +615,7 @@ $template->set_var(array(
                 'TEXT_DISABLED' => $TEXT['DISABLED'],
                 'TEXT_SAVE' => $TEXT['SAVE'],
                 'TEXT_RESET' => $TEXT['RESET'],
-                'LAST_MODIFIED' => $MESSAGE['PAGES']['LAST_MODIFIED'],
+                'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
                 'HEADING_MODIFY_PAGE' => $HEADING['MODIFY_PAGE']
             ) );
 

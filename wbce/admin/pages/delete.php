@@ -43,7 +43,7 @@ if(!isset($_GET['page_id']) || !is_numeric($_GET['page_id'])) {
 */
 // Get perms
 if (!$admin->get_page_permission($page_id,'admin')) {
-    $admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
 // Find out more about the page
@@ -53,7 +53,7 @@ if($database->is_error()) {
     $admin->print_error($database->get_error());
 }
 if($results->numRows() == 0) {
-    $admin->print_error($MESSAGE['PAGES']['NOT_FOUND']);
+    $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }
 
 $results_array = $results->fetchRow();
@@ -100,7 +100,7 @@ if(PAGE_TRASH != 'disabled' AND $visibility != 'deleted') {
 if($database->is_error()) {
     $admin->print_error($database->get_error());
 } else {
-    $admin->print_success($MESSAGE['PAGES']['DELETED']);
+    $admin->print_success($MESSAGE['PAGES_DELETED']);
 }
 
 // Print admin footer

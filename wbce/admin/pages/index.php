@@ -255,7 +255,7 @@ $template->set_var(array(
                                 'TEXT_ADMINISTRATORS' => $TEXT['ADMINISTRATORS'],
                                 'TEXT_PRIVATE_VIEWERS' => $TEXT['PRIVATE_VIEWERS'],
                                 'TEXT_REGISTERED_VIEWERS' => $TEXT['REGISTERED_VIEWERS'],
-                                'INTRO_LINK' => $MESSAGE['PAGES']['INTRO_LINK'],
+                                'INTRO_LINK' => $MESSAGE['PAGES_INTRO_LINK'],
                                 )
                         );
 

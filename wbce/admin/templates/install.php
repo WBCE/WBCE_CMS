@@ -48,7 +48,7 @@ $temp_unzip = WB_PATH.'/temp/unzip/';
 
 // Try to upload the file to the temp dir
 if(!move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
-    $admin->print_error($MESSAGE['GENERIC']['CANNOT_UPLOAD']);
+    $admin->print_error($MESSAGE['GENERIC_CANNOT_UPLOAD']);
 }
 
 // Include the PclZip class file (thanks to 
@@ -64,7 +64,7 @@ $archive = new PclZip($temp_file);
 $list = $archive->extract(PCLZIP_OPT_PATH, $temp_unzip);
 
 // Check if uploaded file is a valid Add-On zip file
-if (!($list && file_exists($temp_unzip . 'index.php'))) $admin->print_error($MESSAGE['GENERIC']['INVALID_ADDON_FILE']);
+if (!($list && file_exists($temp_unzip . 'index.php'))) $admin->print_error($MESSAGE['GENERIC_INVALID_ADDON_FILE']);
 
 // Include the templates info file
 require($temp_unzip.'info.php');
@@ -79,7 +79,7 @@ rm_full_dir($temp_unzip);
 // Check if the file is valid
 if(!isset($template_directory)) {
     if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
-    $admin->print_error($MESSAGE['GENERIC']['INVALID']);
+    $admin->print_error($MESSAGE['GENERIC_INVALID']);
 }
 
 // Check if this module is already installed
@@ -91,12 +91,12 @@ if(is_dir(WB_PATH.'/templates/'.$template_directory)) {
         // Version to be installed is older than currently installed version
         if (versionCompare($template_version, $new_template_version, '>=')) {
             if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
-            $admin->print_error($MESSAGE['GENERIC']['ALREADY_INSTALLED']);
+            $admin->print_error($MESSAGE['GENERIC_ALREADY_INSTALLED']);
         }
     } 
-    $success_message=$MESSAGE['GENERIC']['UPGRADED'];
+    $success_message=$MESSAGE['GENERIC_UPGRADED'];
 } else {
-    $success_message=$MESSAGE['GENERIC']['INSTALLED'];
+    $success_message=$MESSAGE['GENERIC_INSTALLED'];
 }
 
 // Check if template dir is writable
@@ -118,7 +118,7 @@ if(!file_exists($template_dir)) {
 // Unzip template to the template dir
 $list = $archive->extract(PCLZIP_OPT_PATH, $template_dir, PCLZIP_OPT_REPLACE_NEWER);
 if(!$list) {
-    $admin->print_error($MESSAGE['GENERIC']['CANNOT_UNZIP']);
+    $admin->print_error($MESSAGE['GENERIC_CANNOT_UNZIP']);
 }
 
 // Delete the temp zip file

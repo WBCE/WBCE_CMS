@@ -46,10 +46,10 @@ if(file_put_contents($filename, utf8_encode($content))===false){
 	$admin->print_error($MESSAGE['PAGES_NOT_SAVED']);
 } else {
 	change_mode($filename);
-	$admin->print_success($MESSAGE['PAGES']['INTRO_SAVED']);
+	$admin->print_success($MESSAGE['PAGES_INTRO_SAVED']);
 }
 if(!is_writable($filename)) {
-	$admin->print_error($MESSAGE['PAGES']['INTRO_NOT_WRITABLE']);
+	$admin->print_error($MESSAGE['PAGES_INTRO_NOT_WRITABLE']);
 }
 
 // Print admin footer

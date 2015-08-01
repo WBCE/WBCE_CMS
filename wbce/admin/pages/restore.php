@@ -43,7 +43,7 @@ if($database->is_error()) {
 	$admin->print_error($database->get_error());
 }
 if($results->numRows() == 0) {
-	$admin->print_error($MESSAGE['PAGES']['NOT_FOUND']);
+	$admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }
 $results_array = $results->fetchRow();
 $old_admin_groups = explode(',', str_replace('_', '', $results_array['admin_groups']));
@@ -56,7 +56,7 @@ foreach($admin->get_groups_id() as $cur_gid){
     }
 }
 if((!$in_old_group) AND !is_numeric(array_search($admin->get_user_id(), $old_admin_users))) {
-	$admin->print_error($MESSAGE['PAGES']['INSUFFICIENT_PERMISSIONS']);
+	$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
 $visibility = $results_array['visibility'];
@@ -93,7 +93,7 @@ if(PAGE_TRASH) {
 if($database->is_error()) {
 	$admin->print_error($database->get_error());
 } else {
-	$admin->print_success($MESSAGE['PAGES']['RESTORED']);
+	$admin->print_success($MESSAGE['PAGES_RESTORED']);
 }
 
 // Print admin footer
