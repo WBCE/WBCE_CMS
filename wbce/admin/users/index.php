@@ -122,7 +122,7 @@ $template->set_var(array(
         'TEXT_MODIFY' => $TEXT['MODIFY'],
         'TEXT_DELETE' => $TEXT['DELETE'],
         'TEXT_MANAGE_GROUPS' => ( $admin->get_permission('groups') == true ) ? $TEXT['MANAGE_GROUPS'] : "**",
-        'CONFIRM_DELETE' => (($iUserStatus == 1) ? $TEXT['ARE_YOU_SURE'] : $MESSAGE['USERS']['CONFIRM_DELETE'])
+        'CONFIRM_DELETE' => (($iUserStatus == 1) ? $TEXT['ARE_YOU_SURE'] : $MESSAGE['USERS_CONFIRM_DELETE'])
         )
 );
 if ( $admin->get_permission('groups') == true ) $template->parse("groups", "manage_groups_block", true);
@@ -229,7 +229,7 @@ $template->set_var(array(
             'TEXT_NONE' => $TEXT['NONE'],
             'TEXT_HOME_FOLDER' => $TEXT['HOME_FOLDER'],
             'USERNAME_FIELDNAME' => $username_fieldname,
-            'CHANGING_PASSWORD' => $MESSAGE['USERS']['CHANGING_PASSWORD']
+            'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD']
             )
     );
 

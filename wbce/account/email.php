@@ -31,7 +31,7 @@ if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 		$error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
 	}else {
 		if(!$wb->validate_email($email)) {
-			$error[] = $MESSAGE['USERS']['INVALID_EMAIL'];
+			$error[] = $MESSAGE['USERS_INVALID_EMAIL'];
 		}else {
 			$email = $wb->add_slashes($email);
 // Update the database

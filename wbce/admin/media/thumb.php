@@ -25,7 +25,7 @@ if (isset($_GET['img']) && isset($_GET['t'])) {
 
 	// Check to see if it contains ..
 	if (!check_media_path($image)) {
-		$admin->print_error($MESSAGE['MEDIA']['DIR_DOT_DOT_SLASH'], WB_URL, false);
+		$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'], WB_URL, false);
 	}
 
 	$type = addslashes($_GET['t']);

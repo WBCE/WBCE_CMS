@@ -87,7 +87,7 @@ $template->set_var(array(
 	'TEXT_MODIFY' => $TEXT['MODIFY'],
 	'TEXT_DELETE' => $TEXT['DELETE'],
 	'TEXT_MANAGE_USERS' => ( $admin->get_permission('users') == true ) ? $TEXT['MANAGE_USERS']: "",
-	'CONFIRM_DELETE' => $MESSAGE['GROUPS']['CONFIRM_DELETE']
+	'CONFIRM_DELETE' => $MESSAGE['GROUPS_CONFIRM_DELETE']
 	)
 );
 if ( $admin->get_permission('users') == true ) $template->parse("users", "manage_users_block", true);
@@ -184,7 +184,7 @@ $template->set_var(array(
 								'TEXT_UPLOAD_FILES' => $TEXT['UPLOAD_FILES'],
 								'TEXT_BASIC' => $TEXT['BASIC'],
 								'TEXT_ADVANCED' => $TEXT['ADVANCED'],
-								'CHANGING_PASSWORD' => $MESSAGE['USERS']['CHANGING_PASSWORD'],
+								'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD'],
 								'CHECKED' => ' checked="checked"',
 								'ADMIN_URL' => ADMIN_URL,
 								'WB_URL' => WB_URL,

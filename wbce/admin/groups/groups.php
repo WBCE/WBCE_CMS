@@ -154,7 +154,7 @@ switch ($action):
 						'TEXT_UPLOAD_FILES' => $TEXT['UPLOAD_FILES'],
 						'TEXT_BASIC' => $TEXT['BASIC'],
 						'TEXT_ADVANCED' => $TEXT['ADVANCED'],
-						'CHANGING_PASSWORD' => $MESSAGE['USERS']['CHANGING_PASSWORD'],
+						'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD'],
 						'HEADING_MODIFY_GROUP' => $HEADING['MODIFY_GROUP'],
 					));
 
@@ -188,7 +188,7 @@ switch ($action):
 				if($database->is_error()) {
 					$admin->print_error($database->get_error());
 				} else {
-					$admin->print_success($MESSAGE['GROUPS']['DELETED']);
+					$admin->print_success($MESSAGE['GROUPS_DELETED']);
 				}
 			}
 			// Print admin footer

@@ -241,6 +241,6 @@ while($search_setting = $res_search->fetchRow()) :
     }
 endwhile;
 
-$admin->print_success($MESSAGE['SETTINGS']['SAVED'], $js_back );
+$admin->print_success($MESSAGE['SETTINGS_SAVED'], $js_back );
 $admin->print_footer();
 

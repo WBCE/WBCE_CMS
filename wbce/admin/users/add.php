@@ -48,23 +48,23 @@ $default_language = DEFAULT_LANGUAGE;
 
 // Check values
 if($groups_id == '') {
-    $admin->print_error($MESSAGE['USERS']['NO_GROUP'], $js_back);
+    $admin->print_error($MESSAGE['USERS_NO_GROUP'], $js_back);
 }
 if(!preg_match('/^[a-z]{1}[a-z0-9_-]{2,}$/i', $username)) {
     $admin->print_error( $MESSAGE['USERS_NAME_INVALID_CHARS'].' / '.
                       $MESSAGE['USERS_USERNAME_TOO_SHORT'], $js_back);
 }
 if(strlen($password) < 2) {
-    $admin->print_error($MESSAGE['USERS']['PASSWORD_TOO_SHORT'], $js_back);
+    $admin->print_error($MESSAGE['USERS_PASSWORD_TOO_SHORT'], $js_back);
 }
 if($password != $password2) {
-    $admin->print_error($MESSAGE['USERS']['PASSWORD_MISMATCH'], $js_back);
+    $admin->print_error($MESSAGE['USERS_PASSWORD_MISMATCH'], $js_back);
 }
 if($email != '')
 {
     if($admin->validate_email($email) == false)
     {
-        $admin->print_error($MESSAGE['USERS']['INVALID_EMAIL'], $js_back);
+        $admin->print_error($MESSAGE['USERS_INVALID_EMAIL'], $js_back);
     }
 } else { // e-mail must be present
     $admin->print_error($MESSAGE['SIGNUP_NO_EMAIL'], $js_back);
@@ -79,18 +79,18 @@ unset($gid_tmp);
 // Check if username already exists
 $results = $database->query("SELECT user_id FROM ".TABLE_PREFIX."users WHERE username = '$username'");
 if($results->numRows() > 0) {
-    $admin->print_error($MESSAGE['USERS']['USERNAME_TAKEN'], $js_back);
+    $admin->print_error($MESSAGE['USERS_USERNAME_TAKEN'], $js_back);
 }
 
 // Check if the email already exists
 $results = $database->query("SELECT user_id FROM ".TABLE_PREFIX."users WHERE email = '".$admin->add_slashes($_POST['email'])."'");
 if($results->numRows() > 0)
 {
-    if(isset($MESSAGE['USERS']['EMAIL_TAKEN']))
+    if(isset($MESSAGE['USERS_EMAIL_TAKEN']))
     {
-        $admin->print_error($MESSAGE['USERS']['EMAIL_TAKEN'], $js_back);
+        $admin->print_error($MESSAGE['USERS_EMAIL_TAKEN'], $js_back);
     } else {
-        $admin->print_error($MESSAGE['USERS']['INVALID_EMAIL'], $js_back);
+        $admin->print_error($MESSAGE['USERS_INVALID_EMAIL'], $js_back);
     }
 }
 
@@ -103,7 +103,7 @@ $database->query($query);
 if($database->is_error()) {
     $admin->print_error($database->get_error());
 } else {
-    $admin->print_success($MESSAGE['USERS']['ADDED']);
+    $admin->print_success($MESSAGE['USERS_ADDED']);
 }
 
 // Print admin footer

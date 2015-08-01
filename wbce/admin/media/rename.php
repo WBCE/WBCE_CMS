@@ -34,7 +34,7 @@ $rootlink = 'browse.php?dir=';
 
 // first Check to see if it contains ..
 if (!check_media_path($directory)) {
-	$admin->print_error($MESSAGE['MEDIA']['DIR_DOT_DOT_SLASH'],$rootlink, false);
+	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'],$rootlink, false);
 }
 
 // Get the temp id
@@ -92,7 +92,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 }
 
 if(!isset($rename_file)) {
-	$admin->print_error($MESSAGE['MEDIA']['FILE_NOT_FOUND'], $dirlink, false);
+	$admin->print_error($MESSAGE['MEDIA_FILE_NOT_FOUND'], $dirlink, false);
 }
 
 // Setup template object, parse vars to it, then parse it

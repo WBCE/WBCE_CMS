@@ -609,7 +609,7 @@ if($is_advanced)
         }
     } else {
         $template->set_var('ID', 'disabled');
-        $template->set_var('NAME', $MESSAGE['GROUPS']['NO_GROUPS_FOUND']);
+        $template->set_var('NAME', $MESSAGE['GROUPS_NO_GROUPS_FOUND']);
         $template->parse('group_list', 'group_list_block', true);
     }
 
@@ -707,8 +707,8 @@ if($is_advanced)
                     'TEXT_HOME_FOLDERS' => $TEXT['HOME_FOLDERS'],
                     'TEXT_WYSIWYG_STYLE' => $TEXT['WYSIWYG_STYLE'],
                     'TEXT_WORLD_WRITEABLE_FILE_PERMISSIONS' => $TEXT['WORLD_WRITEABLE_FILE_PERMISSIONS'],
-                    'MODE_SWITCH_WARNING' => $MESSAGE['SETTINGS']['MODE_SWITCH_WARNING'],
-                    'WORLD_WRITEABLE_WARNING' => $MESSAGE['SETTINGS']['WORLD_WRITEABLE_WARNING'],
+                    'MODE_SWITCH_WARNING' => $MESSAGE['SETTINGS_MODE_SWITCH_WARNING'],
+                    'WORLD_WRITEABLE_WARNING' => $MESSAGE['SETTINGS_WORLD_WRITEABLE_WARNING'],
                     'TEXT_MODULE_ORDER' => $TEXT['MODULE_ORDER'],
                     'TEXT_MAX_EXCERPT' => $TEXT['MAX_EXCERPT'],
                     'TEXT_TIME_LIMIT' => $TEXT['TIME_LIMIT']

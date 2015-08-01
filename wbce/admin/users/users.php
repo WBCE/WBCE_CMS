@@ -167,7 +167,7 @@ switch ($action):
                                 'TEXT_NONE' => $TEXT['NONE'],
                                 'TEXT_HOME_FOLDER' => $TEXT['HOME_FOLDER'],
                                 'USERNAME_FIELDNAME' => $username_fieldname,
-                                'CHANGING_PASSWORD' => $MESSAGE['USERS']['CHANGING_PASSWORD'],
+                                'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD'],
                                 'HEADING_MODIFY_USER' => $HEADING['MODIFY_USER']
                                 )
                         );

@@ -34,7 +34,7 @@ $rootlink = 'browse.php?dir=';
 // Check to see if it contains ..
 if (!check_media_path($directory)) {
 	// $admin->print_header();
-	$admin->print_error($MESSAGE['MEDIA']['DIR_DOT_DOT_SLASH'],$rootlink,false );
+	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'],$rootlink,false );
 }
 
 // Get the file id
@@ -93,27 +93,27 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 
 // Check to see if we could find an id to match
 if(!isset($delete_file)) {
-	$admin->print_error($MESSAGE['MEDIA']['FILE_NOT_FOUND'], $dirlink, false);
+	$admin->print_error($MESSAGE['MEDIA_FILE_NOT_FOUND'], $dirlink, false);
 }
 $relative_path = WB_PATH.MEDIA_DIRECTORY.'/'.$directory.'/'.$delete_file;
 // Check if the file/folder exists
 if(!file_exists($relative_path)) {
-	$admin->print_error($MESSAGE['MEDIA']['FILE_NOT_FOUND'], $dirlink, false);
+	$admin->print_error($MESSAGE['MEDIA_FILE_NOT_FOUND'], $dirlink, false);
 }
 
 // Find out whether its a file or folder
 if($type == 'folder') {
 	// Try and delete the directory
 	if(rm_full_dir($relative_path)) {
-		$admin->print_success($MESSAGE['MEDIA']['DELETED_DIR'], $dirlink);
+		$admin->print_success($MESSAGE['MEDIA_DELETED_DIR'], $dirlink);
 	} else {
-		$admin->print_error($MESSAGE['MEDIA']['CANNOT_DELETE_DIR'], $dirlink, false);
+		$admin->print_error($MESSAGE['MEDIA_CANNOT_DELETE_DIR'], $dirlink, false);
 	}
 } else {
 	// Try and delete the file
 	if(unlink($relative_path)) {
-		$admin->print_success($MESSAGE['MEDIA']['DELETED_FILE'], $dirlink);
+		$admin->print_success($MESSAGE['MEDIA_DELETED_FILE'], $dirlink);
 	} else {
-		$admin->print_error($MESSAGE['MEDIA']['CANNOT_DELETE_FILE'], $dirlink, false);
+		$admin->print_error($MESSAGE['MEDIA_CANNOT_DELETE_FILE'], $dirlink, false);
 	}
 }

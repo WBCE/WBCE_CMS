@@ -105,12 +105,12 @@ $dir_backlink = 'browse.php?dir='.$directory;
 // Check to see if it contains ../
 if (!check_media_path($directory)) {
 	// $admin->print_header();
-	$admin->print_error($MESSAGE['MEDIA']['DIR_DOT_DOT_SLASH']);
+	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH']);
 }
 
 if(!file_exists(WB_PATH.MEDIA_DIRECTORY.$directory)) {
 	// $admin->print_header();
-	$admin->print_error($MESSAGE['MEDIA']['DIR_DOES_NOT_EXIST']);
+	$admin->print_error($MESSAGE['MEDIA_DIR_DOES_NOT_EXIST']);
 }
 
 // Check to see if the user wanted to go up a directory into the parent folder
@@ -303,9 +303,9 @@ $template->set_var(array(
 					'TEXT_NAME' => $TEXT['NAME'],
 					'TEXT_TYPE' => $TEXT['TYPE'],
 					'TEXT_UP' => $TEXT['UP'],
-					'NONE_FOUND' => $MESSAGE['MEDIA']['NONE_FOUND'],
+					'NONE_FOUND' => $MESSAGE['MEDIA_NONE_FOUND'],
 					'CHANGE_SETTINGS' => $TEXT['MODIFY_SETTINGS'],
-					'CONFIRM_DELETE' => $MESSAGE['MEDIA']['CONFIRM_DELETE']
+					'CONFIRM_DELETE' => $MESSAGE['MEDIA_CONFIRM_DELETE']
 				)
 			);
 

@@ -48,7 +48,7 @@ $rootlink = 'index.php?dir=';
 // Check to see if target contains ../
 if (!check_media_path($target, false))
 {
-	$admin->print_error($MESSAGE['MEDIA']['TARGET_DOT_DOT_SLASH'] );
+	$admin->print_error($MESSAGE['MEDIA_TARGET_DOT_DOT_SLASH'] );
 }
 
 // Create relative path of the target location for the file
@@ -170,9 +170,9 @@ if (isset($_POST['unzip']) && isset($filename1) && file_exists($filename1) ) {
 unset($list);
 
 if($sum_files == 1) {
-	$admin->print_success($sum_files.' '.$MESSAGE['MEDIA']['SINGLE_UPLOADED'] );
+	$admin->print_success($sum_files.' '.$MESSAGE['MEDIA_SINGLE_UPLOADED'] );
 } elseif($sum_files > 1) {
-	$admin->print_success($sum_files.' '.$MESSAGE['MEDIA']['UPLOADED'] );
+	$admin->print_success($sum_files.' '.$MESSAGE['MEDIA_UPLOADED'] );
 } else {
 	$admin->print_error($MESSAGE['MEDIA_NO_FILE_UPLOADED'] );
 }

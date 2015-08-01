@@ -56,7 +56,7 @@ if(isset($_POST['save_settings']))  {
 	save_setting('mod_jsadmin_persist_order', isset($_POST['persist_order']));
 	save_setting('mod_jsadmin_ajax_order_pages', isset($_POST['ajax_order_pages']));
 	save_setting('mod_jsadmin_ajax_order_sections', isset($_POST['ajax_order_sections']));
-   // 	echo '<div style="border: solid 2px #9c9; background: #ffd; padding: 0.5em; margin-top: 1em">'.$MESSAGE['SETTINGS']['SAVED'].'</div>';
+   // 	echo '<div style="border: solid 2px #9c9; background: #ffd; padding: 0.5em; margin-top: 1em">'.$MESSAGE['SETTINGS_SAVED'].'</div>';
 	// check if there is a database error, otherwise say successful
 	if(!$admin_header) { $admin->print_header(); }
 	if($database->is_error()) {

@@ -44,7 +44,7 @@ $group_name = $admin->get_post_escaped('group_name');
 
 // Check values
 if($group_name == "") {
-	$admin->print_error($MESSAGE['GROUPS']['GROUP_NAME_BLANK'], $js_back);
+	$admin->print_error($MESSAGE['GROUPS_GROUP_NAME_BLANK'], $js_back);
 }
 // After check print the header
 $admin->print_header();
@@ -59,7 +59,7 @@ $database->query($query);
 if($database->is_error()) {
 	$admin->print_error($database->get_error());
 } else {
-	$admin->print_success($MESSAGE['GROUPS']['SAVED'], ADMIN_URL.'/groups/index.php');
+	$admin->print_success($MESSAGE['GROUPS_SAVED'], ADMIN_URL.'/groups/index.php');
 }
 
 // Print admin footer
