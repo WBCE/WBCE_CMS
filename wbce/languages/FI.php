@@ -16,13 +16,8 @@
  *
  */
 
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
-
-// Define that this file is loaded
-if(!defined('LANGUAGE_LOADED')) {
-define('LANGUAGE_LOADED', true);
-}
+//no direct file access
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
 
 // Set the language information
 $language_code = 'FI';
@@ -677,8 +672,4 @@ $OVERVIEW['TEMPLATES'] = 'Muuta sivupohjaa...';
 $OVERVIEW['USERS'] = 'K&auml;ytt&auml;j&auml;hallinta...';
 $OVERVIEW['VIEW'] = 'Tarkastele sivuja...';
 
-/* include old languages format */
-if(file_exists(WB_PATH.'/languages/old.format.inc.php'))
-{
-	include(WB_PATH.'/languages/old.format.inc.php');
-}
+

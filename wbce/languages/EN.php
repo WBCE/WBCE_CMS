@@ -16,13 +16,9 @@
  *
  */
 
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
+//no direct file access
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
 
-// Define that this file is loaded
-if(!defined('LANGUAGE_LOADED')) {
-define('LANGUAGE_LOADED', true);
-}
 
 // Set the language information
 $language_code = 'EN';
@@ -690,8 +686,4 @@ $MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new t
 $MESSAGE['THEME_DESTINATION_READONLY']       = 'No rights to create new theme directory!';
 $MESSAGE['THEME_IMPORT_HTT']                 = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
-/* include old languages format */
-if(file_exists(WB_PATH.'/languages/old.format.inc.php'))
-{
-	include(WB_PATH.'/languages/old.format.inc.php');
-}
+

@@ -16,13 +16,8 @@
  *
  */
 
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
-
-// Define that this file is loaded
-if(!defined('LANGUAGE_LOADED')) {
-define('LANGUAGE_LOADED', true);
-}
+//no direct file access
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
 
 // Set the language information
 $language_code = 'ES';
@@ -677,8 +672,4 @@ $OVERVIEW['TEMPLATES'] = 'Administrar plantillas de apariencia...';
 $OVERVIEW['USERS'] = 'Administrar acceso de usuarios a WebsiteBaker...';
 $OVERVIEW['VIEW'] = 'Ver y explorar tu sitio en una nueva ventana...';
 
-/* include old languages format */
-if(file_exists(WB_PATH.'/languages/old.format.inc.php'))
-{
-	include(WB_PATH.'/languages/old.format.inc.php');
-}
+

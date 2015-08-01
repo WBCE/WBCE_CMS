@@ -16,13 +16,8 @@
  *
  */
 
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
-
-// Define that this file is loaded
-if(!defined('LANGUAGE_LOADED')) {
-define('LANGUAGE_LOADED', true);
-}
+//no direct file access
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
 
 // Set the language information
 $language_code = 'BG';
@@ -677,8 +672,4 @@ $OVERVIEW['TEMPLATES'] = '&#1055;&#1088;&#1086;&#1084;&#1077;&#1085;&#1080; &#10
 $OVERVIEW['USERS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1087;&#1086;&#1090;&#1088;&#1077;&#1073;&#1080;&#1090;&#1077;&#1083;&#1080;&#1090;&#1077; &#1084;&#1086;&#1078;&#1077;&#1097;&#1080; &#1076;&#1072; &#1074;&#1083;&#1103;&#1079;&#1072;&#1090; &#1074; WebsiteBaker...';
 $OVERVIEW['VIEW'] = '&#1042;&#1080;&#1078; &#1089;&#1074;&#1086;&#1103; &#1089;&#1072;&#1081;&#1090; &#1074; &#1085;&#1086;&#1074; &#1087;&#1088;&#1086;&#1079;&#1086;&#1088;&#1077;&#1094;...';
 
-/* include old languages format */
-if(file_exists(WB_PATH.'/languages/old.format.inc.php'))
-{
-	include(WB_PATH.'/languages/old.format.inc.php');
-}
+

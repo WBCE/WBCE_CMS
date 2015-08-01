@@ -16,13 +16,9 @@
  *
  */
 
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
+//no direct file access
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
 
-// Define that this file is loaded
-if(!defined('LANGUAGE_LOADED')) {
-define('LANGUAGE_LOADED', true);
-}
 
 // Set the language information
 $language_code = 'FR';
@@ -677,8 +673,4 @@ $OVERVIEW['TEMPLATES'] = 'Gestion des th&egrave;mes et modification de l&apos;ap
 $OVERVIEW['USERS'] = 'Gestion des acc&egrave;s au site';
 $OVERVIEW['VIEW'] = 'Aper&ccedil;u du site dans une nouvelle fen&ecirc;tre';
 
-/* include old languages format */
-if(file_exists(WB_PATH.'/languages/old.format.inc.php'))
-{
-	include(WB_PATH.'/languages/old.format.inc.php');
-}
+
