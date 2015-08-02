@@ -102,16 +102,20 @@ class SecureForm {
 			$this->_tokenname=WB_SECFORM_TOKENNAME;
 		}
 
-        # how many bloks of the IP should be used 0=no ipcheck 
+        // how many bloks of the IP should be used 0=no ipcheck 
 		if (defined ('FINGERPRINT_WITH_IP_OCTETS') AND !$this->_is04(FINGERPRINT_WITH_IP_OCTETS)){
 			$this->_useipblocks=FINGERPRINT_WITH_IP_OCTETS;
 		}
+
+		// create a unique pageid for per page management of idkeys , especially 
+		// to identify and delete unused ones from same page call.
+		$this->_page_uid = uniqid (rand(), true);
+
 
         // GLOBAL CONFIGURATION END 
 
 
 		// CONFIGURE VARS
-
 		$this->_browser_fingerprint       = $this->_browser_fingerprint(true);
 		$this->_fingerprint               = $this->_generate_fingerprint();
 		$this->_serverdata                = $this->_generate_serverdata();
@@ -138,11 +142,11 @@ class SecureForm {
 		$secrettime    = $this->_secrettime;
 
 		// create a different secret every day
-		$TimeSeed= floor(time()/$secrettime)*$secrettime;  #round(floor) time() to whole days
-		$DomainSeed =  $_SERVER['SERVER_NAME'];  # generate a numerical from server name.
+		$TimeSeed= floor(time()/$secrettime)*$secrettime;  //round(floor) time() to whole days
+		$DomainSeed =  $_SERVER['SERVER_NAME'];  // generate a numerical from server name.
 
 		$Seed = $TimeSeed+$DomainSeed;
-		$secret .=md5($Seed);  #
+		$secret .=md5($Seed);  //
 
 		$secret .= $this->_secret.$this->_serverdata.session_id();
 		if ($this->_usefingerprint){$secret.= $this->_browser_fingerprint;}
@@ -283,26 +287,24 @@ class SecureForm {
     */
     public function getIDKEY($value) {
 
-		if( is_array($value) == true ) { // serialize value, if it's an array
-			$value = serialize($value);
+		// serialize value, if it's an array
+		if( is_array($value) == true ) $value = serialize($value);
+		
+		// cryptsome random stuff with salt into md5-hash
+		$key = md5($this->_salt.rand().uniqid('', true));
+
+		//shorten hash a bit
+		$key = str_replace(array("=","$","+"),array("-","_",""),base64_encode(pack('H*',$key)));
+
+		// the key is unique, so store it in list
+		if( !array_key_exists($key,  $_SESSION[$this->_idkey_name])) {
+			$_SESSION[$this->_idkey_name][$key]['value'] = $value;
+			$_SESSION[$this->_idkey_name][$key]['time'] = time();
+			$_SESSION[$this->_idkey_name][$key]['page'] = $this->_page_uid;
 		}
 
-		// crypt value with salt into md5-hash
-		// and return a 16-digit block from random start position
-		$key = substr( md5($this->_salt.(string)$value), rand(0,15), 16);
-
-		do { // loop while key/value isn't added
-			if ( !array_key_exists($key, $this->_IDKEYs)) { // the key is unique, so store it in list
-				$this->_IDKEYs[$key] = $value;
-				break;
-			} else {
-				// if key already exist, increment the last five digits until the key is unique
-				$key = substr($key, 0, -5).dechex(('0x'.substr($key, -5)) + 1);
-			}
-		} while(0);
-
-		// store key/value-pairs into session
-		$_SESSION[$this->_idkey_name] = $this->_IDKEYs;
+		// if key already exist, try again, dont store as it already been stored
+		else $key = $this->getIDKEY($value); 
 
 		return $key;
     }
@@ -319,12 +321,15 @@ class SecureForm {
     * @description: each IDKEY can be checked only once. Unused Keys stay in list until the
     *               session is destroyed.
     */
-    public function checkIDKEY( $fieldname, $default = 0, $request = 'POST' ) {
+    public function checkIDKEY( $fieldname, $default = 0, $request = 'POST' , $ajax=false) {
  
-		$return_value = $default; // set returnvalue to default
+		//Remove timed out idkeys
+		//echo"<pre>";print_r($_SESSION[$this->_idkey_name]);echo"<pre>";
+		$_SESSION[$this->_idkey_name]= array_filter( $_SESSION[$this->_idkey_name],array($this, "_timedout"));
 
-		switch( strtoupper($request) )
-		{
+		// set returnvalue to default
+		$return_value = $default; 
+		switch (strtoupper($request) ) {
 			case 'POST':
 				$key = isset($_POST[$fieldname]) ? $_POST[$fieldname] : $fieldname;
 				break;
@@ -334,26 +339,47 @@ class SecureForm {
 			default:
 				$key = $fieldname;
 		}
+		
+		// key always must match the generated ones
+		if( preg_match('/[0-9a-zA-Z\-\_]{1,32}$/', $key) ) {
+			// check if key is stored in IDKEYs-list
+			if( array_key_exists($key, $_SESSION[$this->_idkey_name])) { 
+				// fetch stored value
+				$return_value = $_SESSION[$this->_idkey_name][$key]['value']; 
+				// fetch page identifier used to remove all keys generated on the former pagecall
+				$this->_page_id = $_SESSION[$this->_idkey_name][$key]['page'];
+				
+				if ($ajax === false) {
+					//Remove all keys from this page to prevent multiuse and session mem usage
+					$_SESSION[$this->_idkey_name]= array_filter( $_SESSION[$this->_idkey_name],array($this, "_fpages"));
+					//unset($_SESSION[$this->_idkey_name][$key]);   // remove from list to prevent multiuse
+				}
 
-		if( preg_match('/[0-9a-f]{16}$/', $key) ) { // key must be a 16-digit hexvalue
-			if( array_key_exists($key, $this->_IDKEYs)) { // check if key is stored in IDKEYs-list
-				// get stored value
-				$return_value = $this->_IDKEYs[$key]; 
-
-				// remove from list to prevent multiuse
-				unset($this->_IDKEYs[$key]);  
-
-				// save modified list into session again
-				$_SESSION[$this->_idkey_name] = $this->_IDKEYs; 
-
-				if( preg_match('/.*(?<!\{).*(\d:\{.*;\}).*(?!\}).*/', $return_value) )	{ 
-					// if value is a serialized array, then deserialize it
-				    $return_value = unserialize($return_value);
+				if( preg_match('/.*(?<!\{).*(\d:\{.*;\}).*(?!\}).*/', $return_value) )
+				{ // if value is a serialized array, then deserialize it
+					$return_value = unserialize($return_value);
 				}
 			}
 		}
+		
 		return $return_value;
     }
+
+	//helper function
+	private function _timedout( $var ) {
+		//First element after a logout is 0 not sure why???
+		if ($var==0) return false;
+		//echo "timedoutcall:<br>";print_r($var);
+		if ($var['time'] < time()-$this->_timeout) return false;
+		return true;
+	}
+
+	//helper function
+ 	private function _fpages( $var ) {
+		if ($var['page'] == $this->_page_id) return false;
+		return true;
+	}
+
 
     /* @access public
     * @return void
@@ -390,7 +416,7 @@ class SecureForm {
 		# integer value between 0-4
 		if (preg_match('/^[0-4]$/', $input)) {return false;}
 
-		return "The given input is not an alphanumeric string.";
+		return "The given input is not an integer between 0-4.";
 	} 
 
 	/*
