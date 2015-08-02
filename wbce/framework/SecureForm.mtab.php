@@ -367,7 +367,8 @@ class SecureForm {
 
 	//helper function
 	private function _timedout( $var ) {
-		//First element after a logout is 0 not sure why???
+		// First element after a logout is 0 not sure why???.... 
+		// ah got It clearIDKEY() does that. So there is always an array to run on i guess.
 		if ($var==0) return false;
 		//echo "timedoutcall:<br>";print_r($var);
 		if ($var['time'] < time()-$this->_timeout) return false;
