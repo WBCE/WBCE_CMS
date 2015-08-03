@@ -1,19 +1,12 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more or to join the community.
  *
- * @category        module
- * @package         precheck
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: addon.precheck.inc.php 1499 2011-08-12 11:21:25Z DarkViper $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/framework/addon.precheck.inc.php $
- * @lastmodified    $Date: 2011-08-12 13:21:25 +0200 (Fr, 12. Aug 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @license GNU GPL2
  */
 
 /* -------------------------------------------------------- */
@@ -114,7 +107,7 @@ function sortPreCheckArray($precheck_array)
 	 * This funtion sorts the precheck array to a common format
 	 */
 	// define desired precheck order
-	$key_order = array('WB_VERSION', 'WB_ADDONS', 'PHP_VERSION', 'PHP_EXTENSIONS', 'PHP_SETTINGS', 'CUSTOM_CHECKS');
+	$key_order = array('WBCE_VERSION', 'WB_VERSION', 'WB_ADDONS', 'PHP_VERSION', 'PHP_EXTENSIONS', 'PHP_SETTINGS', 'CUSTOM_CHECKS');
 
 	$temp_array = array();
 	foreach($key_order as $key) {
@@ -156,7 +149,7 @@ function preCheckAddon($temp_addon_file)
 	// check if specified addon requirements are fullfilled
 	foreach ($PRECHECK as $key => $value) {
 		switch ($key) {
-			case 'WB_VERSION':
+			case 'WBCE_VERSION':
 				if (isset($value['VERSION'])) {
 					// obtain operator for string comparison if exist
 					$operator = (isset($value['OPERATOR']) &&  trim($value['OPERATOR']) != '') ? $value['OPERATOR'] : '>=';
@@ -164,9 +157,29 @@ function preCheckAddon($temp_addon_file)
 					// compare versions and extract actual status
 					$status = versionCompare(WB_VERSION, $value['VERSION'], $operator);
 					$msg[] = array(
-						'check'		=> 'WB-' . $TEXT['VERSION'] .': ',
+						'check'		=> 'WBCE-' . $TEXT['VERSION'] .': ',
 						'required'	=> htmlentities($operator) . $value['VERSION'],
 						'actual'	=> WB_VERSION,
+						'status'	=> $status
+					);
+
+					// increase counter if required
+					if (!$status) $failed_checks++;
+				}
+				break;
+
+			case 'WB_VERSION':
+				if (isset($value['VERSION'])) {
+					// Legacy: WB-classic (WBCE 1.0.0 was forked from WB 2.8.3)
+					// Ensure WB-Classic Addon supports WB 2.8.3 (exclude 2.8.4 and higher for now)
+					$wb_classic = '2.8.3';
+					$operator = '==';
+
+					$status = versionCompare($wb_classic, $value['VERSION'], $operator);
+					$msg[] = array(
+						'check'		=> 'WB-' . $TEXT['VERSION'] .': ',
+						'required'	=> htmlentities($operator) . $value['VERSION'],
+						'actual'	=> $wb_classic,
 						'status'	=> $status
 					);
 
@@ -197,7 +210,7 @@ function preCheckAddon($temp_addon_file)
 						if ($results && $row = $results->fetchRow()) {
 							$status = true; 
 							$addon_status = $TEXT['INSTALLED'];
-						
+
 							// compare version if required
 							if ($version != '') {
 								$status = versionCompare($row['version'], $version, $operator);

@@ -1,47 +1,12 @@
 <?php
-/*
- * 						About WebsiteBaker
- *
- * Website Baker is a PHP-based Content Management System (CMS)
- * designed with one goal in mind: to enable its users to produce websites
- * with ease.
- *
- * 						LICENSE INFORMATION
- *
- * WebsiteBaker is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * WebsiteBaker is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * 				WebsiteBaker Extra Information
- *
- * This file is where the WB release version is stored.
- *
- */
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more or to join the community.
  *
- * @category     	admin
- * @package      	interface
- * @author          WebsiteBaker Project
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @revision     	$Revision: 1638 $
- * @version      	$Id: version.php 1638 2012-03-13 23:01:47Z darkviper $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/admin/interface/version.php $
- * @lastmodified    $Date: 2012-03-14 00:01:47 +0100 (Mi, 14. Mrz 2012) $
- * 
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @license GNU GPL2
  */
 
 if(!defined('WB_URL')) {
@@ -50,6 +15,11 @@ if(!defined('WB_URL')) {
 }
 
 // check if defined to avoid errors during installation (redirect to admin panel fails if PHP error/warnings are enabled)
-if(!defined('VERSION')) define('VERSION', '2.8.3');
-if(!defined('REVISION')) define('REVISION', '1641');
-if(!defined('SP')) define('SP', 'SP4 CE 1');
+if(!defined('VERSION')) define('VERSION', '1.0.0');
+if(!defined('TAG')) define('TAG', 'WBCE1Beta2');
+
+// Legacy: WB-classic
+if(!defined('REVISION')) define('REVISION', '');
+if(!defined('SP')) define('SP', '');
+
+

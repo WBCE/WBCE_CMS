@@ -1,20 +1,14 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more or to join the community.
  *
- * @category        framewotk
- * @package         backend admin
- * @author          Ryan Djurovich, WebsiteBaker Project
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: class.admin.php 1625 2012-02-29 00:50:57Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/framework/class.admin.php $
- * @lastmodified    $Date: 2012-02-29 01:50:57 +0100 (Mi, 29. Feb 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @license GNU GPL2
  */
-/* -------------------------------------------------------- */
+
 // Must include code to stop this file being accessed directly
 if(!defined('WB_PATH')) {
     require_once(dirname(__FILE__).'/globalExceptionHandler.php');
@@ -126,8 +120,12 @@ class admin extends wb {
                             'CHARSET'             => $charset,
                             'LANGUAGE'            => strtolower(LANGUAGE),
                             'VERSION'             => VERSION,
-                            'SP'                  => (defined('SP') ? SP : ''),
-                            'REVISION'            => REVISION,
+                            'TAG'                 => (in_array(TAG, array('', '-'))
+                                                       ? '-'
+                                                       : '<a href="https://github.com/WBCE/WebsiteBaker_CommunityEdition/releases/tag/'.TAG.'" target="_blank">'.TAG.'</a>'
+                                                     ),
+                            'SP'                  => (defined('SP') ? SP : ''),         // Legacy: WB-classic
+                            'REVISION'            => REVISION,                          // Legacy: WB-classic
                             'SERVER_ADDR'         => ($this->get_user_id() == 1
                                                        ? (!isset($_SERVER['SERVER_ADDR']) 
                                                           ? '129.0.0.1' 
@@ -143,7 +141,7 @@ class admin extends wb {
                             'URL_VIEW'            => $view_url,
                             'URL_HELP'            => 'http://websitebaker.org/en/help.php',
                             'BACKEND_MODULE_CSS'  => $this->register_backend_modfiles('css'),    // adds backend.css
-                            'BACKEND_MODULE_JS'   => $this->register_backend_modfiles('js')        // adds backend.js
+                            'BACKEND_MODULE_JS'   => $this->register_backend_modfiles('js')      // adds backend.js
                         )
                     );
 

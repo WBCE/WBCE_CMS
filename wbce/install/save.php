@@ -1,19 +1,12 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more or to join the community.
  *
- * @category        backend
- * @package         install
- * @author          WebsiteBaker Project
- * @copyright       Ryan Djurovich
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: save.php 1638 2012-03-13 23:01:47Z darkviper $
- * @filesource      $HeadURL:  $
- * @lastmodified    $Date: $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @license GNU GPL2
  */
 
 $debug = true;
@@ -355,8 +348,9 @@ if (is_readable($sInstallDir.'/install_data.sql')) {
 $sql = // add settings from install input
 'INSERT INTO `'.TABLE_PREFIX.'settings` (`name`, `value`) VALUES '
     .'(\'wb_version\', \''.VERSION.'\'),'
-    .'(\'wb_revision\', \''.REVISION.'\'),'
-    .'(\'wb_sp\', \''.SP.'\'),'
+    .'(\'wb_tag\', \''.TAG.'\'),'
+    .'(\'wb_revision\', \''.REVISION.'\'),'     // Legacy: WB-Classic
+    .'(\'wb_sp\', \''.SP.'\'),'                 // Legacy: WB-Classic
     .'(\'website_title\', \''.$website_title.'\'),'
     .'(\'default_language\', \''.$default_language.'\'),'
     .'(\'app_name\', \'wb-'.$session_rand.'\'),'

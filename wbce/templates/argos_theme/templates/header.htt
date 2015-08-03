@@ -35,9 +35,9 @@ function confirm_link(message, url) {
     <div id="topmenu"> <a href="{ADMIN_URL}" title="{TITLE_START}">Home</a>| <a href="{URL_VIEW}" target="_blank" title="{TITLE_VIEW}">{TITLE_VIEW}</a>| <a href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a>
 	  <br />
       <br />
-      <span class="version">CMS Version {VERSION} {SP}</span><br/>
-      <span class="version">Revision {REVISION}</span><br/>
-      <span class="version">Admin version 1.6</span>
+      <span class="version">CMS Version: {VERSION}</span><br/>
+      <span class="version">Tag: {TAG}</span><br/>
+      <span class="version">Admin version 1.7.2</span>
 	 </div>
     <a href="{ADMIN_URL}" title="{TITLE_START}" id="website_title">
     {WEBSITE_TITLE} - {TEXT_ADMINISTRATION}

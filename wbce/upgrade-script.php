@@ -1,18 +1,12 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more or to join the community.
  *
- * @category        backend
- * @package         installation
- * @author          WebsiteBaker Project
- * @copyright       Website Baker Org. e.V.
- * @link            http://wwebsitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: upgrade-script.php 1625 2012-02-29 00:50:57Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/upgrade-script.php $
- * @lastmodified    $Date: 2012-02-29 01:50:57 +0100 (Mi, 29. Feb 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @license GNU GPL2
  */
 
 @require_once('config.php');
@@ -48,9 +42,9 @@ $table_list = array (
 );
 */
 
-$OK            = ' <span class="ok">OK</span> ';
-$FAIL          = ' <span class="error">FAILED</span> ';
-$DEFAULT_THEME = 'wb_theme';
+$OK = ' <span class="ok">OK</span> ';
+$FAIL = ' <span class="error">FAILED</span> ';
+$DEFAULT_THEME = 'advancedThemeWbFlat';
 $stepID = 1;
 $dirRemove = array(
 /*
@@ -105,12 +99,10 @@ function mysqlCheckTables( $dbName )
     global $database, $table_list;
     $table_prefix = TABLE_PREFIX;
     $sql = "SHOW TABLES FROM " . $dbName;
-//    $result = @mysqli_query( $sql );
 	$result = $database->query($sql);
     $data = array();
     $x = 0;
 
-//    while( ( $row = @mysqli_fetch_array( $result, MYSQLI_NUM ) ) == true )
     while (( $row = $result->fetchRow(MYSQLI_NUM)) == true)
     {
         $tmp = str_replace($table_prefix, '', $row[0]);
@@ -118,18 +110,14 @@ function mysqlCheckTables( $dbName )
         if( stristr( $row[0], $table_prefix )&& in_array($tmp,$table_list) )
         {
             $sql = "CHECK TABLE " . $dbName . '.' . $row[0];
-//            $analyze = @mysqli_query( $sql );
-//            $rowFetch = @mysqli_fetch_array( $analyze, MYSQLI_ASSOC );
             $analyze = $database->query($sql);
             $rowFetch = $analyze->fetchRow(MYSQLI_ASSOC);
             $data[$x]['Op'] = $rowFetch["Op"];
             $data[$x]['Msg_type'] = $rowFetch["Msg_type"];
             $msgColor = '<span class="error">';
             $data[$x]['Table'] = $row[0];
-           // print  " ";
             $msgColor = ($rowFetch["Msg_text"] == 'OK') ? '<span class="ok">' : '<span class="error">';
             $data[$x]['Msg_text'] = $msgColor.$rowFetch["Msg_text"].'</span>';
-           // print  "<br />";
             $x++;
         }
     }
@@ -245,7 +233,7 @@ h3 { font-size: 120%; }
 <img src="templates/wb_theme/images/logo.png" alt="WebsiteBaker Project" />
 <h1>WebsiteBaker Upgrade</h1>
 <?php
-	if( version_compare( WB_VERSION, '2.7', '<' )) {
+	if(!defined('WB_TAG') && version_compare( WB_VERSION, '2.7', '<' )) {
 		status_msg('<strong>Warning:</strong><br />It is not possible to upgrade from WebsiteBaker Versions before 2.7.<br />For upgrading to version '.VERSION.' you must upgrade first to v.2.7 at least!!!', 'warning', 'div');
 		echo '<br /><br />';
 		echo "</div>
@@ -256,17 +244,15 @@ h3 { font-size: 120%; }
 	}
 
 $oldVersion  = 'Version '.WB_VERSION;
-$oldVersion .= (defined('WB_SP') ? ' '.WB_SP : '');
-$oldVersion .= (defined('WB_REVISION') ? ' Revision ['.WB_REVISION.'] ' : '') ;
-$newVersion  = 'Version '.VERSION;
-$newVersion .= (defined('SP') ? ' '.SP : '');
-$newVersion .= (defined('REVISION') ? ' Revision ['.REVISION.'] ' : '');
+$oldVersion .= ((defined('WB_SP') && !in_array(WB_SP, array('', '-'))) ? ' '.WB_SP : '');
+$oldVersion .= ((defined('WB_REVISION') && !in_array(WB_REVISION, array('', '-'))) ? ' Revision ['.WB_REVISION.'] ' : '');
+$newVersion  = 'WBCE '.VERSION. ' (Tag ' .TAG. ')';
 // set addition settings if not exists, otherwise upgrade will be breaks
 if(!defined('WB_SP')) { define('WB_SP',''); }
 if(!defined('WB_REVISION')) { define('WB_REVISION',''); }
 
 ?>
-<p>This script upgrades an existing WebsiteBaker <strong> <?php echo $oldVersion; ?></strong> installation to the <strong> <?php echo $newVersion ?> </strong>.<br />The upgrade script alters the existing WB database to reflect the changes introduced with WB 2.8.x</p>
+<p>This script upgrades an existing WebsiteBaker <strong> <?php echo $oldVersion; ?></strong> installation to <strong> <?php echo $newVersion ?> </strong>.<br />The upgrade script alters the existing WB database to reflect the changes introduced with WB 2.8.x</p>
 
 <?php
 /**
@@ -657,11 +643,11 @@ if (version_compare(WB_VERSION, '2.8', '<'))
 /**********************************************************
  *  - Set Version to new Version
  */
-	echo '<br />Update database version number to '.VERSION.' '.SP.' '.' Revision ['.REVISION.'] : ';
-	// echo ($database->query("UPDATE `".TABLE_PREFIX."settings` SET `value`='".VERSION."' WHERE `name` = 'wb_version'")) ? " $OK<br />" : " $FAIL<br />";
+	echo '<br />Update database version number to '.VERSION.' (Tag: ' .TAG. ')';
 	db_update_key_value('settings', 'wb_version', VERSION);
-	db_update_key_value('settings', 'wb_revision', REVISION);
-	db_update_key_value('settings', 'wb_sp', SP);
+	db_update_key_value('settings', 'wb_tag', TAG);
+	db_update_key_value('settings', 'wb_revision', REVISION);       // Legacy: WB-classic
+	db_update_key_value('settings', 'wb_sp', SP);                   // Legacy: WB-classic
 
 	echo '<p style="font-size:120%;"><strong>Congratulations: The upgrade script is finished ...</strong></p>';
 	status_msg('<strong>Warning:</strong><br />Please delete the file <strong>upgrade-script.php</strong> via FTP before proceeding.', 'warning', 'div');
