@@ -7,7 +7,7 @@
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later)
+ * @license GNU GPL2 (or any later version)
  */
 
 // Must include code to stop this file being accessed directly
