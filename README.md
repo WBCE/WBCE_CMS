@@ -22,6 +22,7 @@ Furthermore `WBCE` is shipped with the most useful modules and modifications for
 ## License
 [WebsiteBaker CE](http://wbce.org) is released under the **GNU General Public License v2** or any later version.
 Please refer to the [LICENSE](LICENSE.md) file for a copy of the license.
+Any modification or updates of `WBCE` can be tracked via the [GitHub commit history](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master).
 
     /**
     * WebsiteBaker Community Edition (WBCE)
