@@ -1,20 +1,49 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more or to join the community.
  *
- * @category        admin
- * @package         templates
- * @author          WebsiteBaker Project
- * @copyright       Ryan Djurovich
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: install.php 1467 2011-07-02 00:06:53Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/templates/install.php $
- * @lastmodified    $Date: 2011-07-02 02:06:53 +0200 (Sa, 02. Jul 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @license GNU GPL2
  */
+
+/**
+ * pclzip_extraction_filter
+ * PclZip filter to extract only files inside Add-on root path
+ */
+function pclzip_extraction_filter($p_event, &$p_header) {
+    global $addon_root_path;
+    // don't apply filter for regular zipped WBCE Add-on archives w/o subfolders
+    if ($addon_root_path == '/.') return 1;
+
+    // exclude all files not stored inside the $addon_root_path (subfolders)
+    if (strpos($p_header['filename'], $addon_root_path) == false) return 0;
+
+    // remove $addon_root_path from absolute path of the file to extract
+    $p_header['filename'] = str_replace($addon_root_path, '', $p_header['filename']);
+    return 1;
+}
+
+/**
+ * find_addon_root_path
+ * Returns WBCE Add-on root path inside a given zip archive
+ * Supports nested archives (e.g. incl. Add-on folder or GitHub archives)
+ * @return string
+ */
+function find_addon_root_path($zip) {
+    // get list of files contained in the zip object
+    if (($zip_files = $zip->listContent()) == 0) return '';
+
+    // find first folder containing an info.php file
+    foreach($zip_files as $zip_file => $info) {
+        if (substr($info['filename'], -8) == 'info.php') {
+            return '/' . dirname($info['filename']);
+        }
+    }
+    return '';
+}
 
 // do not display notices and warnings during installation
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
@@ -22,18 +51,23 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 // Setup admin object
 require('../../config.php');
 require_once(WB_PATH.'/framework/class.admin.php');
+
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Addons', 'templates_install', false);
-if( !$admin->checkFTAN() )
-{
+if(! $admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
-// After check print the header
 $admin->print_header();
 
+// Check if template dir is writable
+if(! is_writable(WB_PATH.'/templates/')) {
+    if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
+    $admin->print_error($MESSAGE['TEMPLATES']['BAD_PERMISSIONS']);
+}
+
 // Check if user uploaded a file
-if(!isset($_FILES['userfile'])) {
+if(! isset($_FILES['userfile'])) {
     header("Location: index.php");
     exit(0);
 }
@@ -46,27 +80,55 @@ $temp_dir = WB_PATH.'/temp/';
 $temp_file = $temp_dir . $_FILES['userfile']['name'];
 $temp_unzip = WB_PATH.'/temp/unzip/';
 
-// Try to upload the file to the temp dir
-if(!move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
-    $admin->print_error($MESSAGE['GENERIC_CANNOT_UPLOAD']);
+if(! $_FILES['userfile']['error']) {
+    // Try to upload the file to the temp dir
+    if( !move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
+        $admin->print_error($MESSAGE['GENERIC_BAD_PERMISSIONS']);
+    }
+} else {
+    // index for language files
+    $key = 'UNKNOW_UPLOAD_ERROR';
+    switch ($error_code) {
+        case UPLOAD_ERR_INI_SIZE:
+            $key = 'UPLOAD_ERR_INI_SIZE';
+        case UPLOAD_ERR_FORM_SIZE:
+            $key = 'UPLOAD_ERR_FORM_SIZE';
+        case UPLOAD_ERR_PARTIAL:
+            $key = 'UPLOAD_ERR_PARTIAL';
+        case UPLOAD_ERR_NO_FILE:
+            $key = 'UPLOAD_ERR_NO_FILE';
+        case UPLOAD_ERR_NO_TMP_DIR:
+            $key = 'UPLOAD_ERR_NO_TMP_DIR';
+        case UPLOAD_ERR_CANT_WRITE:
+            $key = 'UPLOAD_ERR_CANT_WRITE';
+        case UPLOAD_ERR_EXTENSION:
+            $key = 'UPLOAD_ERR_EXTENSION';
+        default:
+            $key = 'UNKNOW_UPLOAD_ERROR';
+    }
+    $admin->print_error($MESSAGE[$key].'<br />'.$MESSAGE['GENERIC_CANNOT_UPLOAD']);
 }
 
-// Include the PclZip class file (thanks to 
-require_once(WB_PATH.'/include/pclzip/pclzip.lib.php');
-
-// Remove any vars with name "template_directory" and "theme_directory"
-unset($template_directory);
-unset($theme_directory);
-
-// Setup the PclZip object
+// include PclZip and create object from Add-on zip archive
+require_once(WB_PATH . '/include/pclzip/pclzip.lib.php');
 $archive = new PclZip($temp_file);
-// Unzip the files to the temp unzip folder
-$list = $archive->extract(PCLZIP_OPT_PATH, $temp_unzip);
+
+// extract Add-on files into WBCE temp folder
+$addon_root_path = find_addon_root_path($archive);
+$list = $archive->extract(
+    PCLZIP_OPT_PATH, $temp_unzip,
+    PCLZIP_CB_PRE_EXTRACT, 'pclzip_extraction_filter',
+    PCLZIP_OPT_REPLACE_NEWER
+);
 
 // Check if uploaded file is a valid Add-On zip file
-if (!($list && file_exists($temp_unzip . 'index.php'))) $admin->print_error($MESSAGE['GENERIC_INVALID_ADDON_FILE']);
+if (! ($list && file_exists($temp_unzip . 'info.php'))) {
+  $admin->print_error($MESSAGE['GENERIC_INVALID_ADDON_FILE']);
+}
 
 // Include the templates info file
+unset($template_directory);
+unset($theme_directory);
 require($temp_unzip.'info.php');
 
 // Perform Add-on requirement checks before proceeding
@@ -77,7 +139,7 @@ preCheckAddon($temp_file);
 rm_full_dir($temp_unzip);
 
 // Check if the file is valid
-if(!isset($template_directory)) {
+if(! isset($template_directory)) {
     if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
     $admin->print_error($MESSAGE['GENERIC_INVALID']);
 }
@@ -99,12 +161,6 @@ if(is_dir(WB_PATH.'/templates/'.$template_directory)) {
     $success_message=$MESSAGE['GENERIC_INSTALLED'];
 }
 
-// Check if template dir is writable
-if(!is_writable(WB_PATH.'/templates/')) {
-    if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
-    $admin->print_error($MESSAGE['TEMPLATES']['BAD_PERMISSIONS']);
-}
-
 // Set template dir
 $template_dir = WB_PATH.'/templates/'.$template_directory;
 
@@ -116,10 +172,11 @@ if(!file_exists($template_dir)) {
 }
 
 // Unzip template to the template dir
-$list = $archive->extract(PCLZIP_OPT_PATH, $template_dir, PCLZIP_OPT_REPLACE_NEWER);
-if(!$list) {
-    $admin->print_error($MESSAGE['GENERIC_CANNOT_UNZIP']);
-}
+$list = $archive->extract(
+    PCLZIP_OPT_PATH, $template_dir,
+    PCLZIP_CB_PRE_EXTRACT, 'pclzip_extraction_filter',
+    PCLZIP_OPT_REPLACE_NEWER
+);
 
 // Delete the temp zip file
 if(file_exists($temp_file)) { unlink($temp_file); }
