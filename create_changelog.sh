@@ -21,11 +21,12 @@ This CHANGELOG was automatically created from a local WBCE Git repository.
 The changelog may therefore not be correct or up-to date.
 Please visit the [WBCE Github]($WBCE_URL/commits) repository for the most up to-date version.
 
--------------------- AUTO GENERATED GIT COMMIT HISTORY --------------------"
+## Auto generated Git commit history
+
 EOT
 
 # Output Git commit history using pretty-format
-git log --oneline --pretty=format:"%ad [%h]($WBCE_URL/commit/%H): %an%n%s%n%w(0,3,3)%b" --date=short >> $OUTPUT_FILE
+git log --oneline --pretty=format:" * %ad [%h]($WBCE_URL/commit/%H): %an%n%w(0,3,3)> %s%n%w(0,5,5)%b" --date=short >> $OUTPUT_FILE
 
 echo
 echo ">> Created $OUTPUT_FILE in actual working folder"
