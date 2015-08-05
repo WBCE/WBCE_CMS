@@ -39,7 +39,7 @@ function find_addon_root_path($zip) {
 
     // find first folder containing an info.php file
     foreach($zip_files as $zip_file => $info) {
-        if (substr($info['filename'], -8) == 'info.php') {
+        if (basename($info['filename']) == 'info.php') {
             return '/' . dirname($info['filename']);
         }
     }
