@@ -151,42 +151,34 @@ function preCheckAddon($temp_addon_file)
 	foreach ($PRECHECK as $key => $value) {
 		switch ($key) {
 			case 'WBCE_VERSION':
-				if (isset($value['VERSION'])) {
+            case 'WB_VERSION':
+            case 'LEPTON_VERSION':
+            case 'VERSION':
+                $check_version = $value['VERSION'];
+                switch ( $key )
+                {
+                    case 'WB_VERSION': // we support WB 2.8.3
+                        $this_version = '2.8.3';
+                        break;
+                    case 'LEPTON_VERSION': // we support LEPTON 1.x
+                        $this_version = '1.2';
+                        break;
+                    default:
+                        $this_version = WBCE_VERSION;
+                        break;
+                }
 					// obtain operator for string comparison if exist
 					$operator = (isset($value['OPERATOR']) &&  trim($value['OPERATOR']) != '') ? $value['OPERATOR'] : '>=';
-				
 					// compare versions and extract actual status
-					$status = versionCompare(WB_VERSION, $value['VERSION'], $operator);
-					$msg[] = array(
-						'check'		=> 'WBCE-' . $TEXT['VERSION'] .': ',
-						'required'	=> htmlentities($operator) . $value['VERSION'],
-						'actual'	=> WB_VERSION,
+                $status   = versionCompare( $this_version, $value['VERSION'], $operator );
+                $msg      = array(
+                    'check'    => 'CMS-Version: ',
+                    'required' => sprintf( '%s %s', htmlentities( $operator ), $value['VERSION'] ),
+                    'actual'   => $this_version,
 						'status'	=> $status
 					);
-
-					// increase counter if required
-					if (!$status) $failed_checks++;
-				}
-				break;
-
-			case 'WB_VERSION':
-				if (isset($value['VERSION'])) {
-					// Legacy: WB-classic (WBCE 1.0.0 was forked from WB 2.8.3)
-					// Ensure WB-Classic Addon supports WB 2.8.3 (exclude 2.8.4 and higher for now)
-					$wb_classic = '2.8.3';
-					$operator = '==';
-
-					$status = versionCompare($wb_classic, $value['VERSION'], $operator);
-					$msg[] = array(
-						'check'		=> 'WB-' . $TEXT['VERSION'] .': ',
-						'required'	=> htmlentities($operator) . $value['VERSION'],
-						'actual'	=> $wb_classic,
-						'status'	=> $status
-					);
-
-					// increase counter if required
-					if (!$status) $failed_checks++;
-				}
+	            // increase counter if required
+				if (!$status) $failed_checks++;
 				break;
 
 			case 'WB_ADDONS':
