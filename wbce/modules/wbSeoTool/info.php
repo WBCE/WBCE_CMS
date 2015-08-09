@@ -15,7 +15,7 @@
 $module_directory   = 'wbSeoTool';
 $module_name        = 'SEO Tool for WebsiteBaker CMS';
 $module_function    = 'tool';
-$module_version     = '0.5.0';
+$module_version     = '0.6.0';
 $module_status      = 'Stable';
 $module_platform    = '2.8.3';
 $module_author      = 'Christian M. Stefan <stefek@designthings.de>';

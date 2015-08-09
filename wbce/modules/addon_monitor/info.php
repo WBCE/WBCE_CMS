@@ -15,7 +15,7 @@
 $module_directory 		= 'addon_monitor';
 $module_name 			= 'AddonMonitor';
 $module_function 		= 'tool';
-$module_version 		= '0.5.2'; // stable Version
+$module_version 		= '0.6.0';
 $module_status          = 'stable';
 $module_platform 		= '2.8.x'; 
 $module_author 			= 'Christian M. Stefan (Stefek)';
