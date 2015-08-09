@@ -5,6 +5,16 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-09:** cwsoft [[dc1d3ee](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dc1d3eef94abf2a4ad3c30462fc5886a25e14a23)]
+   > Some more branding for WBCE
+     - introduced WBCE_VERSION, WBCE_TAG to avoid side effects with WB-classic
+     - some cosmetic changes in the installer script
+     - adapted standard themes to show WBCE_VERSION and WBCE_TAG
+     - started to rework the upgrade script (some more cleanup needed)
+
+ * **2015-08-06:** cwsoft [[916eddb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/916eddbbc0fc781417d72458b6b36afff2f528ee)]
+   > Swapped position of author and SHA1 hash in CHANGELOG
+
  * **2015-08-06:** cwsoft [[407330f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/407330f5422495aade17d35629aa38c8e4593214)]
    > Updated format of CHANGELOG.md
 
