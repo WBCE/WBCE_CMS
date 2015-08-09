@@ -1,18 +1,13 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        backend
- * @package         install
- * @author          WebsiteBaker Project
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: index.php 1614 2012-02-18 01:51:59Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/install/index.php $
- * @lastmodified    $Date: 2012-02-18 02:51:59 +0100 (Sa, 18. Feb 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 // Start a session
@@ -99,10 +94,10 @@ function change_os(type) {
 <tbody>
 <tr style="background: #a9c9ea;">
     <td>
-        <img style="margin-top:.7em" src="logo.jpg" alt="Logo" />
+        <img style="margin-top:.7em" src="logo.png" alt="WBCE Logo" />
     </td>
     <td>
-        <h1 style="border:none; margin-top:1em;font-size:150%;">Installation Wizard</h1>
+        <h1 style="border:none; margin-top:1em;font-size:150%;">WBCE Installation Wizard</h1>
     </td>
 </tr>
 </tbody>
@@ -216,15 +211,15 @@ But this solution does not guarranty a correct displaying of the content from al
         }
         if( (file_exists($wb_path.$configFile)==true))
         {
-// next operation only if file is writeable
+            // next operation only if file is writeable
             if(is_writeable($wb_path.$configFile))
             {
-// already installed? it's not empty
+                // already installed? it's not empty
                 if ( filesize($wb_path.$configFile) > 128)
                 {
                     $installFlag = false;
                     $config = '<span class="bad">Not empty! WebsiteBaker already installed?</span>';
-// try to open and to write
+                // try to open and to write
                 } elseif( !$handle = fopen($wb_path.$configFile, 'w') )
                 {
                     $installFlag = false;
@@ -420,7 +415,7 @@ But this solution does not guarranty a correct displaying of the content from al
         <tr>
             <td class="name">Table Prefix: </td>
             <td class="value" style="white-space: nowrap;">
-                <input <?php echo field_error('table_prefix')?> type="text" tabindex="9" name="table_prefix" value="<?php if(isset($_SESSION['table_prefix'])) { echo $_SESSION['table_prefix']; } else { echo 'wb_'; } ?>" />
+                <input <?php echo field_error('table_prefix')?> type="text" tabindex="9" name="table_prefix" value="<?php if(isset($_SESSION['table_prefix'])) { echo $_SESSION['table_prefix']; } else { echo 'wbce_'; } ?>" />
                 <span style="display: inline;">&nbsp;([a-zA-Z0-9_])</span>
             </td>
         </tr>
@@ -518,7 +513,7 @@ But this solution does not guarranty a correct displaying of the content from al
             <td>
             <p class="center">
                 <?php if($installFlag == true) { ?>
-                <input type="submit" tabindex="20" name="install" value="Install WebsiteBaker" />
+                <input type="submit" tabindex="20" name="install" value="Install WebsiteBaker CE" />
                 <?php } else { ?>
                 <input type="button" tabindex="20" name="restart" value="Check your Settings in Step1 or Step2" class="submit" onclick="javascript: window.location = '<?php print $_SERVER['SCRIPT_NAME'] ?>';" />
                 <?php } ?>
@@ -533,8 +528,7 @@ But this solution does not guarranty a correct displaying of the content from al
 
 <div style="margin: 0 0 3em; padding: 0; text-align:center;">
     <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WebsiteBaker CE</a>
-    is    released under the
+    <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WebsiteBaker CE</a> is released under the
     <a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a>
     <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
 </div >

@@ -21,10 +21,6 @@ require_once(WB_PATH.'/framework/class.wb.php');
 // Get WB version
 require_once(ADMIN_PATH.'/interface/version.php');
 
-// Include EditArea wrapper functions
-// require_once(WB_PATH . '/include/editarea/wb_wrapper_edit_area.php');
-//require_once(WB_PATH . '/framework/SecureForm.php');
-
 
 class admin extends wb {
     // Authenticate user then auto print the header
@@ -120,13 +116,14 @@ class admin extends wb {
                             'DISPLAY_NAME'        => $this->get_display_name(),
                             'CHARSET'             => $charset,
                             'LANGUAGE'            => strtolower(LANGUAGE),
-                            'VERSION'             => VERSION,
-                            'TAG'                 => (in_array(TAG, array('', '-'))
+                            'WBCE_VERSION'        => WBCE_VERSION,
+                            'WBCE_TAG'            => (in_array(WBCE_TAG, array('', '-'))
                                                        ? '-'
-                                                       : '<a href="https://github.com/WBCE/WebsiteBaker_CommunityEdition/releases/tag/'.TAG.'" target="_blank">'.TAG.'</a>'
+                                                       : '<a href="https://github.com/WBCE/WebsiteBaker_CommunityEdition/releases/tag/'.WBCE_TAG.'" target="_blank">'.WBCE_TAG.'</a>'
                                                      ),
-                            'SP'                  => (defined('SP') ? SP : ''),         // Legacy: WB-classic
-                            'REVISION'            => REVISION,                          // Legacy: WB-classic
+                            'VERSION'             => VERSION,                      // Legacy: WB-classic
+                            'SP'                  => SP,                           // Legacy: WB-classic
+                            'REVISION'            => REVISION,                     // Legacy: WB-classic
                             'SERVER_ADDR'         => ($this->get_user_id() == 1
                                                        ? (!isset($_SERVER['SERVER_ADDR']) 
                                                           ? '129.0.0.1' 
@@ -138,7 +135,7 @@ class admin extends wb {
                             'TITLE_START'         => $MENU['START'],
                             'TITLE_VIEW'          => $MENU['VIEW'],
                             'TITLE_HELP'          => $MENU['HELP'],
-                            'TITLE_LOGOUT'        =>  $MENU['LOGOUT'],
+                            'TITLE_LOGOUT'        => $MENU['LOGOUT'],
                             'URL_VIEW'            => $view_url,
                             'URL_HELP'            => 'http://websitebaker.org/en/help.php',
                             'BACKEND_MODULE_CSS'  => $this->register_backend_modfiles('css'),    // adds backend.css

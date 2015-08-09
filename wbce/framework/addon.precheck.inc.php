@@ -151,34 +151,42 @@ function preCheckAddon($temp_addon_file)
 	foreach ($PRECHECK as $key => $value) {
 		switch ($key) {
 			case 'WBCE_VERSION':
-            case 'WB_VERSION':
-            case 'LEPTON_VERSION':
-            case 'VERSION':
-                $check_version = $value['VERSION'];
-                switch ( $key )
-                {
-                    case 'WB_VERSION': // we support WB 2.8.3
-                        $this_version = '2.8.3';
-                        break;
-                    case 'LEPTON_VERSION': // we support LEPTON 1.x
-                        $this_version = '1.2';
-                        break;
-                    default:
-                        $this_version = WBCE_VERSION;
-                        break;
-                }
+                if (isset($value['VERSION'])) {
 					// obtain operator for string comparison if exist
 					$operator = (isset($value['OPERATOR']) &&  trim($value['OPERATOR']) != '') ? $value['OPERATOR'] : '>=';
 					// compare versions and extract actual status
-                $status   = versionCompare( $this_version, $value['VERSION'], $operator );
-                $msg      = array(
-                    'check'    => 'CMS-Version: ',
-                    'required' => sprintf( '%s %s', htmlentities( $operator ), $value['VERSION'] ),
-                    'actual'   => $this_version,
+					$status = versionCompare(WBCE_VERSION, $value['VERSION'], $operator);
+					$msg[] = array(
+						'check'		=> 'WBCE-' . $TEXT['VERSION'] .': ',
+						'required'	=> htmlentities($operator) . $value['VERSION'],
+						'actual'	=> WBCE_VERSION,
 						'status'	=> $status
 					);
-	            // increase counter if required
-				if (!$status) $failed_checks++;
+
+					// increase counter if required
+					if (!$status) $failed_checks++;
+				}
+				break;
+
+			case 'WB_VERSION':
+				if (isset($value['VERSION'])) {
+                    // Legacy: WB-classic (WBCE was forked from WB 2.8.3)
+					// Upgrade script sets WB VERSION:=2.8.3, REV:=1641, SP:=SP4
+					if (! defined('WB_VERSION')) break;
+
+                    // obtain operator for string comparison if exist
+					$operator = (isset($value['OPERATOR']) &&  trim($value['OPERATOR']) != '') ? $value['OPERATOR'] : '>=';
+					// compare versions and extract actual status
+					$status = versionCompare(WB_VERSION, $value['VERSION'], $operator);
+					$msg[] = array(
+						'check'		=> 'WB-' . $TEXT['VERSION'] .': ',
+						'required'	=> htmlentities($operator) . $value['VERSION'],
+						'actual'	=> WB_VERSION,
+						'status'	=> $status
+					);
+					// increase counter if required
+					if (!$status) $failed_checks++;
+				}
 				break;
 
 			case 'WB_ADDONS':
@@ -210,7 +218,6 @@ function preCheckAddon($temp_addon_file)
 								$addon_status = $row['version'];
 							}
 						}
-					
 						// provide addon status
 						$msg[] = array(
 							'check'		=> '&nbsp; ' . $TEXT['ADDON'] . ': ' . htmlentities($addon),
@@ -218,7 +225,6 @@ function preCheckAddon($temp_addon_file)
 							'actual'	=> $addon_status,
 							'status'	=> $status
 						);
-						
 						// increase counter if required
 						if (!$status) $failed_checks++;
 					}
@@ -229,7 +235,6 @@ function preCheckAddon($temp_addon_file)
 				if (isset($value['VERSION'])) {
 					// obtain operator for string comparison if exist
 					$operator = (isset($value['OPERATOR']) &&  trim($value['OPERATOR']) != '') ? $value['OPERATOR'] : '>=';
-				
 					// compare versions and extract actual status
 					$status = versionCompare(PHP_VERSION, $value['VERSION'], $operator);
 					$msg[] = array(
@@ -238,10 +243,8 @@ function preCheckAddon($temp_addon_file)
 						'actual'	=> PHP_VERSION,
 						'status'	=> $status
 					);
-
 					// increase counter if required
 					if (!$status) $failed_checks++;
-
 				}
 				break;
 
@@ -255,7 +258,6 @@ function preCheckAddon($temp_addon_file)
 							'actual'	=> ($status) ? $TEXT['INSTALLED'] : $TEXT['NOT_INSTALLED'],
 							'status'	=> $status
 						);
-
 						// increase counter if required
 						if (!$status) $failed_checks++;
 					}
@@ -267,14 +269,12 @@ function preCheckAddon($temp_addon_file)
 					foreach($PRECHECK['PHP_SETTINGS'] as $setting => $value) {
 						$actual_setting = ($temp = ini_get($setting)) ? $temp : 0;
 						$status = ($actual_setting == $value);
-					
 						$msg[] = array(
 							'check'		=> '&nbsp; '. ($setting),
 							'required'	=> $value,
 							'actual'	=> $actual_setting,
 							'status'	=> $status
 						);
-
 						// increase counter if required
 						if (!$status) $failed_checks++;
 					}
@@ -292,7 +292,6 @@ function preCheckAddon($temp_addon_file)
 							'status'	=> $status
 						);
 					}
-
 					// increase counter if required
 					if (!$status) $failed_checks++;
 				}
@@ -308,11 +307,11 @@ function preCheckAddon($temp_addon_file)
 	<h2>{$HEADING['ADDON_PRECHECK_FAILED']}</h2>
 	<p>{$MESSAGE['ADDON_PRECHECK_FAILED']}</p> 
 
-	<table width="700px" cellpadding="4" border="0" style="margin: 0.5em; border-collapse: collapse; border: 1px solid silver;">
+	<table style="width:80%; margin:0.5em; padding:0.5em; border:1px solid silver;">
 	<tr>
-		<th>{$TEXT['REQUIREMENT']}:</th>
-		<th>{$TEXT['REQUIRED']}:</th>
-		<th>{$TEXT['CURRENT']}:</th>
+		<th style="text-align: left; font-weight: bold;">{$TEXT['REQUIREMENT']}:</th>
+		<th style="text-align: left; font-weight: bold;">{$TEXT['REQUIRED']}:</th>
+		<th style="text-align: left; font-weight: bold;">{$TEXT['CURRENT']}:</th>
 	</tr>
 EOT;
 
@@ -337,5 +336,3 @@ EOT;
 	// output status message and die
 	$admin->print_error('');
 }
-
-?>

@@ -10,13 +10,109 @@
  * @license GNU GPL2 (or any later version)
  */
 
-@require_once('config.php');
+ // function to extract var/value-pair from DB
+function db_get_key_value($table, $key) {
+	global $database;
+	$table = TABLE_PREFIX.$table;
+	$sql = "SELECT value FROM $table WHERE name = '$key' LIMIT 1";
+    return $database->get_one($sql);
+}
+ 
+// function to add a var/value-pair into settings-table
+function db_add_key_value($key, $value) {
+	global $database; global $OK; global $FAIL;
+	$table = TABLE_PREFIX.'settings';
+	$query = $database->query("SELECT value FROM $table WHERE name = '$key' LIMIT 1");
+	if($query->numRows() > 0) {
+		echo "$key: already exists. $OK.<br />";
+		return true;
+	} else {
+		$database->query("INSERT INTO $table (name,value) VALUES ('$key', '$value')");
+		echo ($database->is_error() ? $database->get_error().'<br />' : '');
+		$query = $database->query("SELECT value FROM $table WHERE name = '$key' LIMIT 1");
+		if($query->numRows() > 0) {
+			echo "$key: $OK.<br />";
+			return true;
+		} else {
+			echo "$key: $FAIL!<br />";
+			return false;
+		}
+	}
+}
 
-require_once(WB_PATH.'/framework/functions.php');
-require_once(WB_PATH.'/framework/class.admin.php');
-$admin = new admin('Addons', 'modules', false, false);
+// function to add a new field into a table
+function db_add_field($field, $table, $desc) {
+	global $database; global $OK; global $FAIL;
+	$table = TABLE_PREFIX.$table;
+	$query = $database->query("DESCRIBE $table '$field'");
+	if($query->numRows() == 0) { // add field
+		$query = $database->query("ALTER TABLE $table ADD $field $desc");
+		echo ($database->is_error() ? $database->get_error().'<br />' : '');
+		$query = $database->query("DESCRIBE $table '$field'");
+		echo ($database->is_error() ? $database->get_error().'<br />' : '');
+		if($query->numRows() > 0) {
+			echo "'$field' added. $OK.<br />";
+		} else {
+			echo "adding '$field' $FAIL!<br />";
+		}
+	} else {
+		echo "'$field' already exists. $OK.<br />";
+	}
+}
 
-/* display a status message on the screen **************************************
+// analyze/check database tables
+function mysqlCheckTables( $dbName )
+{
+    global $database, $table_list;
+    $table_prefix = TABLE_PREFIX;
+    $sql = "SHOW TABLES FROM " . $dbName;
+	$result = $database->query($sql);
+    $data = array();
+    $x = 0;
+
+    while (( $row = $result->fetchRow(MYSQLI_NUM)) == true)
+    {
+        $tmp = str_replace($table_prefix, '', $row[0]);
+
+        if( stristr( $row[0], $table_prefix )&& in_array($tmp,$table_list) )
+        {
+            $sql = "CHECK TABLE " . $dbName . '.' . $row[0];
+            $analyze = $database->query($sql);
+            $rowFetch = $analyze->fetchRow(MYSQLI_ASSOC);
+            $data[$x]['Op'] = $rowFetch["Op"];
+            $data[$x]['Msg_type'] = $rowFetch["Msg_type"];
+            $msgColor = '<span class="error">';
+            $data[$x]['Table'] = $row[0];
+            $msgColor = ($rowFetch["Msg_text"] == 'OK') ? '<span class="ok">' : '<span class="error">';
+            $data[$x]['Msg_text'] = $msgColor.$rowFetch["Msg_text"].'</span>';
+            $x++;
+        }
+    }
+    return $data;
+}
+
+// check existings tables for upgrade or install
+function check_wb_tables() {
+    global $database,$table_list;
+
+    // if prefix inludes '_' or '%'
+    $search_for = addcslashes ( TABLE_PREFIX, '%_' );
+    $get_result = $database->query( 'SHOW TABLES LIKE "'.$search_for.'%"');
+
+    // $get_result = $database->query( "SHOW TABLES FROM ".DB_NAME);
+    $all_tables = array();
+    if($get_result->numRows() > 0) {
+        while ($data = $get_result->fetchRow()) {
+            $tmp = str_replace(TABLE_PREFIX, '', $data[0]);
+            if(in_array($tmp,$table_list)) {
+                $all_tables[] = $tmp;
+            }
+        }
+    }
+    return $all_tables;
+}
+
+/* display a status message on the screen
  * @param string $message: the message to show
  * @param string $class:   kind of message as a css-class
  * @param string $element: witch HTML-tag use to cover the message
@@ -26,10 +122,16 @@ function status_msg($message, $class='check', $element='span')
 {
 	// returns a status message
 	$msg  = '<'.$element.' class="'.$class.'">';
-	$msg .= '<strong>'.strtoupper(strtok($class, ' ')).'</strong>';
+	$msg .= '<strong>'.strtoupper(strtok($class, ' ')).'</strong>: ';
 	$msg .= $message.'</'.$element.'>';
 	echo $msg;
 }
+ 
+// include required scripts and setup admin object 
+@require_once('config.php');
+require_once(WB_PATH.'/framework/functions.php');
+require_once(WB_PATH.'/framework/class.admin.php');
+$admin = new admin('Addons', 'modules', false, false);
 
 // database tables including in WB package
 $table_list = array ('settings','groups','addons','pages','sections','search','users');
@@ -93,62 +195,6 @@ $filesRemove['1'] = array(
 			'[TEMPLATE]/argos_theme/templates/users.htt',
 			'[TEMPLATE]/argos_theme/templates/users_form.htt',
 		 );
-
-// analyze/check database tables
-function mysqlCheckTables( $dbName )
-{
-    global $database, $table_list;
-    $table_prefix = TABLE_PREFIX;
-    $sql = "SHOW TABLES FROM " . $dbName;
-	$result = $database->query($sql);
-    $data = array();
-    $x = 0;
-
-    while (( $row = $result->fetchRow(MYSQLI_NUM)) == true)
-    {
-        $tmp = str_replace($table_prefix, '', $row[0]);
-
-        if( stristr( $row[0], $table_prefix )&& in_array($tmp,$table_list) )
-        {
-            $sql = "CHECK TABLE " . $dbName . '.' . $row[0];
-            $analyze = $database->query($sql);
-            $rowFetch = $analyze->fetchRow(MYSQLI_ASSOC);
-            $data[$x]['Op'] = $rowFetch["Op"];
-            $data[$x]['Msg_type'] = $rowFetch["Msg_type"];
-            $msgColor = '<span class="error">';
-            $data[$x]['Table'] = $row[0];
-            $msgColor = ($rowFetch["Msg_text"] == 'OK') ? '<span class="ok">' : '<span class="error">';
-            $data[$x]['Msg_text'] = $msgColor.$rowFetch["Msg_text"].'</span>';
-            $x++;
-        }
-    }
-    return $data;
-}
-
-// check existings tables for upgrade or install
-function check_wb_tables()
-{
-    global $database,$table_list;
-
- // if prefix inludes '_' or '%'
- $search_for = addcslashes ( TABLE_PREFIX, '%_' );
- $get_result = $database->query( 'SHOW TABLES LIKE "'.$search_for.'%"');
-
-        // $get_result = $database->query( "SHOW TABLES FROM ".DB_NAME);
-        $all_tables = array();
-        if($get_result->numRows() > 0)
-        {
-            while ($data = $get_result->fetchRow())
-            {
-                $tmp = str_replace(TABLE_PREFIX, '', $data[0]);
-                if(in_array($tmp,$table_list))
-                {
-                    $all_tables[] = $tmp;
-                }
-            }
-        }
-     return $all_tables;
-}
 
 // check existing tables
 $all_tables = check_wb_tables();
@@ -231,29 +277,44 @@ h3 { font-size: 120%; }
 </head>
 <body>
 <div id="container">
-<img src="templates/wb_theme/images/logo.png" alt="WebsiteBaker Project" />
-<h1>WebsiteBaker Upgrade</h1>
+<h1>WebsiteBaker Community Edition - Upgrade Script</h1>
 <?php
-	if(!defined('WB_TAG') && version_compare( WB_VERSION, '2.7', '<' )) {
-		status_msg('<strong>Warning:</strong><br />It is not possible to upgrade from WebsiteBaker Versions before 2.7.<br />For upgrading to version '.VERSION.' you must upgrade first to v.2.7 at least!!!', 'warning', 'div');
-		echo '<br /><br />';
-		echo "</div>
-		</body>
-		</html>
-		";
-		exit();
-	}
+// extract previous WBCE version from DB (if exists)
+$old_wbce_version = array(
+    'VERSION' => db_get_key_value('settings', 'wbce_version'),
+    'TAG' => db_get_key_value('settings', 'wbce_tag')
+);    
 
-$oldVersion  = 'Version '.WB_VERSION;
-$oldVersion .= ((defined('WB_SP') && !in_array(WB_SP, array('', '-'))) ? ' '.WB_SP : '');
-$oldVersion .= ((defined('WB_REVISION') && !in_array(WB_REVISION, array('', '-'))) ? ' Revision ['.WB_REVISION.'] ' : '');
-$newVersion  = 'WBCE '.VERSION. ' (Tag ' .TAG. ')';
+// extract previous WB-classic version from DB or admin/interface/info.php
+$old_wb_version = array(
+    'VERSION' => defined('WB_VERSION') ? WB_VERSION : VERSION,
+    'REV' => defined('WB_REVISION') ? WB_REVISION : REVISION,
+    'SP' => defined('WB_SP') ? WB_SP : SP,
+);    
+
+// check if we upgrade from WBCE or WB-classic
+if (! is_null($old_wbce_version['VERSION'])) {
+    // we upgrade from an older WBCE version
+    $oldVersion = 'WBCE v' . $old_wbce_version['VERSION'] . ' (' . $old_wbce_version['TAG'] . ')';
+} else {
+    // we upgrade from WB-classic, make sure that WB-classic is 2.7 or higher
+    if(version_compare($old_wb_version['VERSION'], '2.7', '<')) {
+        status_msg('<br />WebsiteBaker version below 2.7 can´t be upgraded to WBCE.<br />Please upgrade your WB version to 2.7 before upgrading to WBCE in a second step!', 'warning', 'div');
+        echo '<br /><br /></div></body></html>';
+        exit();
+    }
+    $oldVersion = 'WB-Classic v' . $old_wb_version['VERSION'] . ' (REV: ' . $old_wb_version['REV'] . ', SP: ' . $old_wb_version['SP'] . ')';
+}
+
+// string for new version
+$newVersion  = 'WBCE v' . WBCE_VERSION . ' (' . WBCE_TAG . ')';
+
 // set addition settings if not exists, otherwise upgrade will be breaks
 if(!defined('WB_SP')) { define('WB_SP',''); }
 if(!defined('WB_REVISION')) { define('WB_REVISION',''); }
 
 ?>
-<p>This script upgrades an existing WebsiteBaker <strong> <?php echo $oldVersion; ?></strong> installation to <strong> <?php echo $newVersion ?> </strong>.<br />The upgrade script alters the existing WB database to reflect the changes introduced with WB 2.8.x</p>
+<p>This script upgrades <strong> <?php echo $oldVersion; ?></strong> to <strong> <?php echo $newVersion ?> </strong>.<br />The upgrade script modifies the existing database to reflect the changes introduced with the new version.</p>
 
 <?php
 /**
@@ -264,65 +325,19 @@ if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confir
 <p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.<br /><strong class="error">Note: </strong>The upgrade script alters some settings of your existing database!!! You need to confirm the disclaimer before proceeding.</p>
 
 <form name="send" action="<?php echo $_SERVER['SCRIPT_NAME'];?>" method="post">
-<textarea cols="80" rows="5">DISCLAIMER: The WebsiteBaker upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WebsiteBaker MySQL database was created before you can proceed.</textarea>
+<textarea cols="80" rows="5">DISCLAIMER: The WebsiteBaker CE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WebsiteBaker CE database was created before you can proceed.</textarea>
 <br /><br /><input name="backup_confirmed" type="checkbox" value="confirmed" />&nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created.
 <br /><br /><input name="send" type="submit" value="Start upgrade script" />
 </form>
 <br />
 
 <?php
-	status_msg('<strong>Notice:</strong><br />You need to confirm that you have created a manual backup of the /pages directory and the MySQL database before you can proceed.', 'warning', 'div');
-	echo '<br /><br />';
-    echo "</div>
-    </body>
-    </html>
-    ";
-	exit();
+	status_msg('<br />You need to confirm that you have created a manual backup of the /pages directory and the MySQL database before you can proceed.', 'warning', 'div');
+	echo '<br /><br /></div></body></html>';
+    exit();
 }
 
 echo '<h2>Step '.(++$stepID).' : Updating database entries</h2>';
-
-// function to add a var/value-pair into settings-table
-function db_add_key_value($key, $value) {
-	global $database; global $OK; global $FAIL;
-	$table = TABLE_PREFIX.'settings';
-	$query = $database->query("SELECT value FROM $table WHERE name = '$key' LIMIT 1");
-	if($query->numRows() > 0) {
-		echo "$key: already exists. $OK.<br />";
-		return true;
-	} else {
-		$database->query("INSERT INTO $table (name,value) VALUES ('$key', '$value')");
-		echo ($database->is_error() ? $database->get_error().'<br />' : '');
-		$query = $database->query("SELECT value FROM $table WHERE name = '$key' LIMIT 1");
-		if($query->numRows() > 0) {
-			echo "$key: $OK.<br />";
-			return true;
-		} else {
-			echo "$key: $FAIL!<br />";
-			return false;
-		}
-	}
-}
-
-// function to add a new field into a table
-function db_add_field($field, $table, $desc) {
-	global $database; global $OK; global $FAIL;
-	$table = TABLE_PREFIX.$table;
-	$query = $database->query("DESCRIBE $table '$field'");
-	if($query->numRows() == 0) { // add field
-		$query = $database->query("ALTER TABLE $table ADD $field $desc");
-		echo ($database->is_error() ? $database->get_error().'<br />' : '');
-		$query = $database->query("DESCRIBE $table '$field'");
-		echo ($database->is_error() ? $database->get_error().'<br />' : '');
-		if($query->numRows() > 0) {
-			echo "'$field' added. $OK.<br />";
-		} else {
-			echo "adding '$field' $FAIL!<br />";
-		}
-	} else {
-		echo "'$field' already exists. $OK.<br />";
-	}
-}
 
 /**********************************************************
  *  - Adding field default_theme to settings table
@@ -352,7 +367,7 @@ db_update_key_value('settings', 'default_theme', $DEFAULT_THEME);
     }
     else
     {
-        status_msg('<strong>WARNING:</strong><br />can\'t run Upgrade, missing tables', 'warning', 'div');
+        status_msg('<br />Can\'t run Upgrade, missing tables', 'warning', 'div');
     	echo '<h4>Missing required tables. You can install them in backend->addons->modules->advanced. Then again run upgrade-script.php</h4>';
         $result = array_diff ( $table_list, $all_tables );
         echo '<h4 class="warning"><br />';
@@ -644,14 +659,15 @@ if (version_compare(WB_VERSION, '2.8', '<'))
 /**********************************************************
  *  - Set Version to new Version
  */
-	echo '<br />Update database version number to '.VERSION.' (Tag: ' .TAG. ')';
-	db_update_key_value('settings', 'wb_version', VERSION);
-	db_update_key_value('settings', 'wb_tag', TAG);
+	echo '<br />Update database version number to '.WBCE_VERSION.' (Tag: ' .WBCE_TAG. ')';
+	db_update_key_value('settings', 'wbce_version', WBCE_VERSION);
+	db_update_key_value('settings', 'wbce_tag', WBCE_TAG);
+	db_update_key_value('settings', 'wb_version', VERSION);         // Legacy: WB-classic
 	db_update_key_value('settings', 'wb_revision', REVISION);       // Legacy: WB-classic
 	db_update_key_value('settings', 'wb_sp', SP);                   // Legacy: WB-classic
 
 	echo '<p style="font-size:120%;"><strong>Congratulations: The upgrade script is finished ...</strong></p>';
-	status_msg('<strong>Warning:</strong><br />Please delete the file <strong>upgrade-script.php</strong> via FTP before proceeding.', 'warning', 'div');
+	status_msg('<br />Please delete the file <strong>upgrade-script.php</strong> via FTP before proceeding.', 'warning', 'div');
 	// show buttons to go to the backend or frontend
 	echo '<br />';
 

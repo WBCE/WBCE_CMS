@@ -15,12 +15,13 @@ if(!defined('WB_URL')) {
 	exit(0);
 }
 
-// check if defined to avoid errors during installation (redirect to admin panel fails if PHP error/warnings are enabled)
-if(!defined('VERSION')) define('VERSION', '1.0.0');
-if(!defined('TAG')) define('TAG', 'WBCE1Beta2');
+// set WBCE version and release tag
+if(!defined('WBCE_VERSION')) define('WBCE_VERSION', '1.0.0');
+if(!defined('WBCE_TAG')) define('WBCE_TAG', 'WBCE1Beta2');
 
 // Legacy: WB-classic
-if(!defined('REVISION')) define('REVISION', '');
-if(!defined('SP')) define('SP', '');
+if(!defined('VERSION')) define('VERSION', '2.8.3');
+if(!defined('REVISION')) define('REVISION', '1641');
+if(!defined('SP')) define('SP', 'SP4');
 
 

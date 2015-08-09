@@ -19,7 +19,7 @@
 $template_directory			= 'advancedThemeWbFlat';
 $template_name				= 'Advanced Theme WB Flat';
 $template_function			= 'theme';
-$template_version			= '0.3.7';
+$template_version			= '0.3.8';
 $template_platform			= '2.8.3';
 $template_author			= 'Yetiie';
 $template_license			= '<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License (GPLv3)</a>';

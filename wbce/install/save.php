@@ -75,7 +75,6 @@ function set_error($message, $field_name = '') {
         exit();
     }
 }
-/* */
 
 // Function to workout what the default permissions are for files created by the webserver
 function default_file_mode($temp_dir) {
@@ -139,8 +138,6 @@ if (!isset($_POST['default_timezone']) OR !is_numeric($_POST['default_timezone']
 // End path and timezone details code
 
 // Get the default language
-
-
 
 $sLangDir = str_replace('\\', '/', dirname(dirname(__FILE__)).'/languages/');
 $allowed_languages = preg_replace('/^.*\/([A-Z]{2})\.php$/iU', '\1', glob($sLangDir.'??.php'));
@@ -348,8 +345,9 @@ if (is_readable($sInstallDir.'/install_data.sql')) {
 }
 $sql = // add settings from install input
 'INSERT INTO `'.TABLE_PREFIX.'settings` (`name`, `value`) VALUES '
-    .'(\'wb_version\', \''.VERSION.'\'),'
-    .'(\'wb_tag\', \''.TAG.'\'),'
+    .'(\'wbce_version\', \''.WBCE_VERSION.'\'),'
+    .'(\'wbce_tag\', \''.WBCE_TAG.'\'),'
+    .'(\'wb_version\', \''.VERSION.'\'),'       // Legacy: WB-Classic
     .'(\'wb_revision\', \''.REVISION.'\'),'     // Legacy: WB-Classic
     .'(\'wb_sp\', \''.SP.'\'),'                 // Legacy: WB-Classic
     .'(\'website_title\', \''.$website_title.'\'),'
