@@ -4,8 +4,8 @@
 # More Baking. Less Struggling.
 # Visit http://wbce.org to learn more and to join the community.
 #
-# Usage: Call script inside your local WBCE Git root folder to dump
-# the commit messages of the WBCE master branch to CHANGELOG.md.
+# Usage: Call script from a local WBCE Git root folder to dump the
+# commit messages of the WBCE master branch into a CHANGELOG.md file.
 #
 # @copyright WBCE Project (2015-)
 # @license GNU GPL2 (or any later version)

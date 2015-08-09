@@ -182,7 +182,7 @@ function change_os(type) {
 <p class="warning">
 <b>Please note:</b> Yor webserver is configured to deliver <b><?php echo $e_adc;?></b> charset only.<br />
 To display national special characters (e.g.: &auml; &aacute;) in clear manner, switch off this preset please(or let it do by your hosting provider).<br />
-In any case you can choose <b><?php echo $e_adc;?></b> in the settings of WebsiteBaker.<br />
+In any case you can choose <b><?php echo $e_adc;?></b> in the settings of WebsiteBaker CE.<br />
 But this solution does not guarranty a correct displaying of the content from all modules!
 </p>
 </td>
@@ -218,7 +218,7 @@ But this solution does not guarranty a correct displaying of the content from al
                 if ( filesize($wb_path.$configFile) > 128)
                 {
                     $installFlag = false;
-                    $config = '<span class="bad">Not empty! WebsiteBaker already installed?</span>';
+                    $config = '<span class="bad">Not empty! WebsiteBaker CE already installed?</span>';
                 // try to open and to write
                 } elseif( !$handle = fopen($wb_path.$configFile, 'w') )
                 {
@@ -502,8 +502,8 @@ But this solution does not guarranty a correct displaying of the content from al
                 <tr valign="top">
                     <td>
                         <p class="warning">
-                        WebsiteBaker is released under the
-                        <a href="http://www.gnu.org/licenses/gpl.html" target="_blank" tabindex="19">GNU General Public License</a>
+                        WebsiteBaker CE is released under the
+                        <a href="http://www.gnu.org/licenses/gpl.html" target="_blank" tabindex="19">GNU General Public License</a>.
                         <br />
                         By clicking install, you are accepting the license.
                         </p>

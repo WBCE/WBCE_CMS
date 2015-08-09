@@ -5,6 +5,14 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-09:** cwsoft [[19c98ca](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/19c98cac276be5ad1a35c307182b2be5ba97e12b)]
+   > Removed Twig from modules addon_monitor and wbSeoTool
+     - Twig is part of the WBCE core so no need to include Twig in module folders
+     - this commit closes Issue [#21]
+
+ * **2015-08-09:** cwsoft [[b62258f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b62258fbefc5e5cd11e2fc043d7890a8b93d8b74)]
+   > Updated CHANGELOG.md
+
  * **2015-08-09:** cwsoft [[dc1d3ee](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dc1d3eef94abf2a4ad3c30462fc5886a25e14a23)]
    > Some more branding for WBCE
      - introduced WBCE_VERSION, WBCE_TAG to avoid side effects with WB-classic
