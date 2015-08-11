@@ -5,6 +5,21 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-11:** NorHei [[bf08e46](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/bf08e46ec394fb726815cfe8616f829587a1b537)]
+   > Updated IDNA class, and removed example file to avoid any security issues.
+
+ * **2015-08-11:** NorHei [[af83427](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/af834277816667e4a9a2fdca9ca4853d31cc49c8)]
+   > just added a few empty lines and a comment in Initialize
+
+ * **2015-08-09:** cwsoft [[8592302](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/859230271a7f57cba7672b0a71547fae01da5c0b)]
+   > Unified MIN_PASSWORD_LEN throughout scripts
+     - defined in install/save.php, account/login.php, admin/login/index.php
+
+ * **2015-08-09:** cwsoft [[54790c2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/54790c2900cd163880666d7e6215569dae796a20)]
+   > Some more branding in installer
+     - updated CHANGELOG
+     - moved create_changelog.sh script into tools folder
+
  * **2015-08-09:** cwsoft [[19c98ca](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/19c98cac276be5ad1a35c307182b2be5ba97e12b)]
    > Removed Twig from modules addon_monitor and wbSeoTool
      - Twig is part of the WBCE core so no need to include Twig in module folders
