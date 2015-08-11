@@ -291,7 +291,7 @@ function media_dirs_ro( &$wb )
     global $database;
     // if user is admin or home-folders not activated then there are no restrictions
     $allow_list = array();
-    if( $wb->get_user_id() == 1 || !HOME_FOLDERS ) {
+    if( $wb->get_group_id() == 1 || !HOME_FOLDERS ) {
         return array();
     }
     // at first read any dir and subdir from /media

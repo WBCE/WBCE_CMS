@@ -124,7 +124,7 @@ class admin extends wb {
                             'VERSION'             => VERSION,                      // Legacy: WB-classic
                             'SP'                  => SP,                           // Legacy: WB-classic
                             'REVISION'            => REVISION,                     // Legacy: WB-classic
-                            'SERVER_ADDR'         => ($this->get_user_id() == 1
+                            'SERVER_ADDR'         => ($this->get_group_id() == 1
                                                        ? (!isset($_SERVER['SERVER_ADDR']) 
                                                           ? '129.0.0.1' 
                                                           : $_SERVER['SERVER_ADDR'])

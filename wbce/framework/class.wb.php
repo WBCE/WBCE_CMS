@@ -72,7 +72,7 @@ class wb extends SecureForm
  */
     function ami_group_member( $groups_list = '' )
     {
-        if( $this->get_user_id() == 1 ) { return true; }
+        if( $this->get_group_id() == 1 ) { return true; }
         return $this->is_group_match( $groups_list, $this->get_groups_id() );
     }
 

@@ -55,7 +55,7 @@ if(defined('FINALIZE_SETUP')) {
 // ---------------------------------------
 $msg = '<br />';
 // check if it is neccessary to start the uograde-script
-if(($admin->get_user_id()==1) && file_exists(WB_PATH.'/upgrade-script.php')) {
+if(($admin->get_group_id()==1) && file_exists(WB_PATH.'/upgrade-script.php')) {
     // check if it is neccessary to start the uograde-script
     $sql = 'SELECT `value` FROM `'.TABLE_PREFIX.'settings` WHERE `name`=\'wb_revision\'';
     if($wb_revision=$database->get_one($sql)) {
