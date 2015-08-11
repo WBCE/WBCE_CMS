@@ -4,7 +4,7 @@ The [WebsiteBaker Community Edition](http://wbce.org) (`WBCE` or `WebsiteBaker C
 Experienced developers, designers und users will work together to give `WebsiteBaker` a future - without personal struggles, without hopeless outdated modules and without templates from internet stone age. [WBCE](http://wbce.org) aims to show that `WebsiteBaker` is not yet dead - and there's a community, where the idea of reaching a common goal is more important than sandbox quarrels. Welcome to [WBCE](http://wbce.org)!
 
 ## Features
-`WebsiteBaker Community Edition` is a content management system which aims to combine security, a user friedly interface, search enginge optimization and performance in the best way. As a further development of the approved, but a bit aged `WebsiteBaker` CMS, `WBCE` has broke free from burdens, but is as compatible as possible to all modules which are at least a little bit maintained.
+`WebsiteBaker Community Edition` is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. As a further development of the approved, but a bit aged `WebsiteBaker` CMS, `WBCE` has broke free from burdens, but is as compatible as possible to all modules which are at least a little bit maintained.
 
 Furthermore `WBCE` is shipped with the most useful modules and modifications for `WebsiteBaker` recently developed by the community. So you have the full power of a tweaked `WebsiteBaker` without patching core files and installing modules by yourself. `WBCE` shows what WebsiteBaker could be. 
 
@@ -12,15 +12,16 @@ Furthermore `WBCE` is shipped with the most useful modules and modifications for
   - about 10 MB webspace
   - PHP 5.3.6 or newer
   - mySQL 5.0 or newer
-  - mode_rewrite for `even nicer` URLs
+  - mode_rewrite for `even nicer` URLs (optional)
 
-## Links
+## WBCE Links
   - [WBCE Project](http://wbce.org)
-  - [WBCE User Forum](http://forum.wbce.org)
-  - [WBCE GitHub Repository](https://github.com/WBCE/WebsiteBaker_CommunityEdition)
-  - [WBCE Bugtracker](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master)
-  - [WBCE Commit History](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master)
-  - [WBCE Changelog](CHANGELOG.md)
+  - [User Forum](http://forum.wbce.org)
+  - [GitHub Repository](https://github.com/WBCE/WebsiteBaker_CommunityEdition)
+  - [Bugtracker](https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues)
+  - [Commit History](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master)
+  - [Changelog](CHANGELOG.md)
+  - [Installation](INSTALL.md)
 
 ## License
 [WebsiteBaker CE](http://wbce.org) is released under the **GNU General Public License v2** or any later version.

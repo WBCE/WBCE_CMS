@@ -5,6 +5,11 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-11:** cwsoft [[3419069](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/341906916e54051f36f5f81e806aa7c1063fdb35)]
+   > Updated markdown files in root folder
+     - added more information to README and INSTALL
+     - updated CHANGELOG
+
  * **2015-08-11:** NorHei [[bf08e46](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/bf08e46ec394fb726815cfe8616f829587a1b537)]
    > Updated IDNA class, and removed example file to avoid any security issues.
 
