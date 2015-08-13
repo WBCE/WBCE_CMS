@@ -496,6 +496,7 @@ $MESSAGE['GENERIC_VERSION_GT'] = 'Upgrade necessary!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Downgrade';
 $MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Nettstedet er under konstruksjon';
+$MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Lykkes &aring; legge til gruppe';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Slette valgte gruppe (og dermed ogs&aring; alle tilh&oslash;rende brukere)?';
 $MESSAGE['GROUPS_DELETED'] = 'Lykkes &aring; slette gruppe';

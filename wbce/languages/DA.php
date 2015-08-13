@@ -495,6 +495,7 @@ $MESSAGE['GENERIC_VERSION_GT'] = 'Opgraderng n&oslash;dvending!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Nedgraderng';
 $MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'Dette websted er midlertidigt lukket p&aring; grund af vedligeholdelse';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Websted under konstruktion';
+$MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Gruppen er tilf&oslash;jet';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Er du helt sikker p&aring; du vil slette denne gruppe (og alle brugere som tilh&oslash;rer den)?';
 $MESSAGE['GROUPS_DELETED'] = 'Gruppen er slettet';

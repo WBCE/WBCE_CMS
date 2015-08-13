@@ -496,6 +496,7 @@ $MESSAGE['GENERIC_VERSION_GT'] = 'Upgrade necessary!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Downgrade';
 $MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Str&aacute;nky sa moment&aacute;lne pripravuj&uacute;';
+$MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Skupina bola &uacute;spe&#353;ne pridan&aacute;';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Ste si isti, &#382;e chcete zmaza&#357; t&uacute;to skupimu (a v&#353;etk&yacute;ch jej u&#382;ivatelov)?';
 $MESSAGE['GROUPS_DELETED'] = 'Skupina bola &uacute;spe&#353;ne zmazan&aacute;';

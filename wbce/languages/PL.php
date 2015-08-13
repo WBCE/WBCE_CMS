@@ -495,6 +495,7 @@ $MESSAGE['GENERIC_VERSION_GT'] = 'Wymagana aktualizacja!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Aktualizacja do nizszej wersji';
 $MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'Ta strona jest chwilowo niedostepna';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Witryna w trakcie tworzenia';
+$MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Grupa zostala dodana';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Czy aby na pewno usunac wybrana grupe (i wszystkich uzytkowników, którzy do niej naleza)?';
 $MESSAGE['GROUPS_DELETED'] = 'Grupa zostala usunieta';

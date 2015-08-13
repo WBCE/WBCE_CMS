@@ -496,6 +496,7 @@ $MESSAGE['GENERIC_VERSION_GT'] = 'Upgrade necessary!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Downgrade';
 $MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Lloc Web en Construcci&oacute;';
+$MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Grup afegit amb &egrave;xit';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Esteu segur de voler esborrar el grup seleccionat (i qualsevol usuari que pertanyi a aquest)?';
 $MESSAGE['GROUPS_DELETED'] = 'Grup esborrat amb &egrave;xit';

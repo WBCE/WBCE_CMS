@@ -495,6 +495,7 @@ $MESSAGE['GENERIC_VERSION_GT'] = 'Upgrade necessary!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Downgrade';
 $MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Verkkosivusto on ty&ouml;n alla';
+$MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Ryhm&auml;n lis&auml;ys onnistui';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Haluatko poistaa ryhm&auml;n ja kakki sen k&auml;ytt&auml;j&auml;t?';
 $MESSAGE['GROUPS_DELETED'] = 'Ryhm&auml; poistettu';
