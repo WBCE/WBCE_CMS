@@ -176,20 +176,20 @@ switch ($action):
 				// if($admin_header) { $admin->print_header(); }
 				$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'] );
 			}
+            // count group members
+            $count = $database->get_one('SELECT COUNT(*) FROM `'.TABLE_PREFIX.'users` WHERE group_id="'.$group_id.'"');
+            if($count>0) {
+                $admin->print_error($MESSAGE['GROUP_HAS_MEMBERS'] );
+            }
 			// Print header
 			$admin->print_header();
 			// Delete the group
 			$database->query("DELETE FROM `".TABLE_PREFIX."groups` WHERE `group_id` = '".$group_id."' LIMIT 1");
 			if($database->is_error()) {
 				$admin->print_error($database->get_error());
-			} else {
-				// Delete users in the group
-				$database->query("DELETE FROM `".TABLE_PREFIX."users` WHERE `group_id` = '".$group_id."'");
-				if($database->is_error()) {
-					$admin->print_error($database->get_error());
-				} else {
-					$admin->print_success($MESSAGE['GROUPS_DELETED']);
-				}
+            }
+            else {
+				$admin->print_success($MESSAGE['GROUPS_DELETED']);
 			}
 			// Print admin footer
 			$admin->print_footer();

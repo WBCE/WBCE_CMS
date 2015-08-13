@@ -495,6 +495,7 @@ $MESSAGE['GENERIC_VERSION_GT'] = 'Upgrade erforderlich!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Downgrade';
 $MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'Diese Seite ist f&uuml;r Wartungsarbeiten vor&uuml;bergehend geschlossen';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Momentan in Bearbeitung';
+$MESSAGE['GROUP_HAS_MEMBERS'] = 'Die Gruppe hat noch Mitglieder';
 $MESSAGE['GROUPS_ADDED'] = 'Die Gruppe wurde erfolgreich hinzugef&uuml;gt';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Sind Sie sicher, dass Sie die ausgew&auml;hlte Gruppe l&ouml;schen m&ouml;chten (und alle Benutzer, die dazugeh&ouml;ren)?';
 $MESSAGE['GROUPS_DELETED'] = 'Die Gruppe wurde erfolgreich gel&ouml;scht';
