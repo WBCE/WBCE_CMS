@@ -47,7 +47,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH .'
 }
 
 // Get userid for showing admin only droplets or not
-$loggedin_user = ($admin->ami_group_member('1') ? 1 : $admin->user_id());
+$loggedin_user = ($admin->ami_group_member('1') ? 1 : $admin->get_user_id());
 $loggedin_group = $admin->get_groups_id();
 if ( version_compare(WB_VERSION, '2.8.2', '>=') && WB_VERSION<> "2.8.x" ) {
       $admin_user     = ( ($admin->get_home_folder() == '') && ($admin->ami_group_member('1') ) || ($loggedin_user == '1'));
