@@ -5,10 +5,35 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-14:** NorHei [[67bbe0e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/67bbe0e8a058e1557de575245865499c9c8b7c1a)]
+   > When editing a user group_id was not changed, but groups_is was. I simply applid a few lines of code taken from add.php
+
+ * **2015-08-14:** NorHei [[41a95a9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/41a95a9c6ac42d9241bedb9dbbc6f4e2c6f5e413)]
+   > Fix for #25 error message when editing droplets whithout being group_id 1
+
+ * **2015-08-13:** Bianka Martinovic [[150240f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/150240f8f3fb762b992b62910e773cd338ea3e15)]
+   > issue #26: added english lang string for 'GROUP_HAS_MEMBERS' to all languages but DE
+
+ * **2015-08-13:** Bianka Martinovic [[3d131b4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3d131b4cac88089f1b466073d157e92dc2684750)]
+   > fix for issue #26; language strings for EN and DE only!
+
+ * **2015-08-13:** Bianka Martinovic [[a15303c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a15303c3fc942ce53ae8dc70a12db14692dedbcd)]
+   > fix for issue #24
+
+ * **2015-08-13:** NorHei [[872b9b6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/872b9b61adc43eda1bbadd3038dd3a56c0def775)]
+   > accidentally some Pushes to master did nor  show up on git
+     Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2015-08-11:** cwsoft [[2d775ec](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2d775ec83a10d502a2fd13822e110adeb4b8a967)]
+   > Fixed typos in README
+
  * **2015-08-11:** cwsoft [[3419069](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/341906916e54051f36f5f81e806aa7c1063fdb35)]
    > Updated markdown files in root folder
      - added more information to README and INSTALL
      - updated CHANGELOG
+
+ * **2015-08-11:** NorHei [[2f8c32a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2f8c32a1afe9100055e5bc8ad09e0b28286dd6f2)]
+   > Issue #13 Superuser concept Tried to grep all places where they introduced the userid "1" only idea. Replaced it whith group "1" only for now. I am not so sure if this concept makes sense at all but we will see.
 
  * **2015-08-11:** NorHei [[bf08e46](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/bf08e46ec394fb726815cfe8616f829587a1b537)]
    > Updated IDNA class, and removed example file to avoid any security issues.

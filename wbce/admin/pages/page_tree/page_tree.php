@@ -1,4 +1,14 @@
 <?php
+/**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more and to join the community.
+ *
+ * @copyright Christian M. Stefan (Stefek)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
+ */
+
 $use_dragdrop_switch = FALSE; //set 'TRUE' if you'd like to enable drag/drop activation below the pagetree
 
 // prevent this file from being accessed directly
