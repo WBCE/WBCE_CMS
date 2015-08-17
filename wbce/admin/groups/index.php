@@ -10,225 +10,196 @@
  * @license GNU GPL2 (or any later version)
  */
 
+// Print admin header
 require('../../config.php');
 require_once(WB_PATH.'/framework/class.admin.php');
-$admin = new admin('Access', 'users');
-
-$iUserStatus = 1;
-$iUserStatus = ( ( $admin->get_get('status')==1 ) ? 0 : $iUserStatus );
-unset($_GET);
+$admin = new admin('Access', 'groups');
+$ftan = $admin->getFTAN();
 
 // Setup template object, parse vars to it, then parse it
 // Create new template object
-$template = new Template(dirname($admin->correct_theme_source('users.htt')));
+$template = new Template(dirname($admin->correct_theme_source('groups.htt')));
 // $template->debug = true;
-
-$template->set_file('page', 'users.htt');
+$template->set_file('page', 'groups.htt');
 $template->set_block('page', 'main_block', 'main');
-$template->set_block("main_block", "manage_groups_block", "groups");
-$template->set_var('ADMIN_URL', ADMIN_URL);
-$template->set_var('FTAN', $admin->getFTAN());
-$template->set_var('USER_STATUS', $iUserStatus );
+$template->set_block('main_block', 'manage_users_block', 'users');
+// insert urls
+$template->set_var(array(
+	'ADMIN_URL' => ADMIN_URL,
+	'WB_URL' => WB_URL,
+	'THEME_URL' => THEME_URL,
+	'FTAN' => $ftan
+	)
+);
 
-$UserStatusActive = 'url('.THEME_URL.'/images/user.png)';
-$UserStatusInactive = 'url('.THEME_URL.'/images/user_red.png)';
+// Get existing groups from database (and get users in that group)
+// the check for group_id field is only for old broken entries
+$subquery='SELECT COUNT(*) FROM `'.TABLE_PREFIX.'users` WHERE groups_id LIKE '.TABLE_PREFIX.'groups.group_id
+										OR group_id = '.TABLE_PREFIX.'groups.group_id	
+    									OR groups_id LIKE CONCAT('.TABLE_PREFIX.'groups.group_id,",%")
+    									OR groups_id LIKE CONCAT("%,",'.TABLE_PREFIX.'groups.group_id)
+    									OR groups_id LIKE CONCAT("%,",'.TABLE_PREFIX.'groups.group_id,",%")';
+			
+//echo $subquery;//'.TABLE_PREFIX.'
+$query = "SELECT group_id, CONCAT(name, ' (',($subquery),')') AS name FROM ".TABLE_PREFIX."groups WHERE group_id != '1'";
 
-$sUserTitle = ($iUserStatus == 0) ? $MENU['USERS'].' '.strtolower($TEXT['ACTIVE']) : $MENU['USERS'].' '.strtolower($TEXT['DELETED']) ;
 
-$template->set_var('TEXT_USERS', $sUserTitle.' '.$TEXT['SHOW'] );
-$template->set_var('STATUS_ICON', ( ($iUserStatus==0) ? $UserStatusActive : $UserStatusInactive) );
 
-// Get existing value from database
-$sql  = 'SELECT * FROM `'.TABLE_PREFIX.'users` ' ;
-$sql .= 'WHERE 1 ';
-$sql .= 'AND user_id != 1 ';
-$sql .=     'AND active = '.$iUserStatus.' ';
-$sql .= 'ORDER BY `display_name`,`username`';
-//echo $sql;
-
-$results = $database->query($sql);
+$results = $database->query($query);
 if($database->is_error()) {
-    $admin->print_error($database->get_error(), 'index.php');
+	$admin->print_error($database->get_error(), 'index.php');
 }
 
-$sUserList  = $TEXT['LIST_OPTIONS'].' ';
-$sUserList .= ($iUserStatus == 1) ? $MENU['USERS'].' '.strtolower($TEXT['ACTIVE']) : $MENU['USERS'].' '.strtolower($TEXT['DELETED']) ;
 // Insert values into the modify/remove menu
 $template->set_block('main_block', 'list_block', 'list');
-$template->set_var('USERTYPE', $sUserList);
 if($results->numRows() > 0) {
-    // Insert first value to say please select
-    //$template->set_var('VALUE', '');
-    //$template->set_var('NAME', $sUserList);
-    //$template->set_var('STATUS', 'class="user-active"' );
-    //$template->parse('list', 'list_block', true);
-    // Loop through users
-    while($user = $results->fetchRow()) {
-		//print_r($user);
-		if ($user['login_when'] == 0) {
-			$lastlogin = '-';
-		} else {
-			$lastlogin = gmdate(DATE_FORMAT." ".TIME_FORMAT, $user['login_when'] + TIMEZONE);
-		}
-		if ($user['login_ip'] == 0) {
-			$lastip="0.0.0.0";
-		} else { 
-			$lastip=$user['login_ip'];
-		}
-        $template->set_var('VALUE',$admin->getIDKEY($user['user_id']));
-        $template->set_var('STATUS', ($user['active']==false ? 'class="user-inactive"' : 'class="user-active"') );
-        $template->set_var('NAME', $user['display_name'].' ('.$user['username'].')&nbsp;&nbsp;&nbsp;'.$lastlogin.'&nbsp;&nbsp;&nbsp;'.$lastip);
-        $template->parse('list', 'list_block', true);
-    }
+	// Insert first value to say please select
+	$template->set_var('VALUE', '');
+	$template->set_var('NAME', $TEXT['PLEASE_SELECT'].'...');
+	$template->parse('list', 'list_block', true);
+	// Loop through groups
+	while($group = $results->fetchRow()) {
+		$template->set_var('VALUE',$admin->getIDKEY($group['group_id']));
+		$template->set_var('NAME', $group['name']);
+		$template->parse('list', 'list_block', true);
+	}
 } else {
-    // Insert single value to say no users were found
-    $template->set_var('NAME', $TEXT['NONE_FOUND']);
-    $template->parse('list', 'list_block', true);
+	// Insert single value to say no groups were found
+	$template->set_var('NAME', $TEXT['NONE_FOUND']);
+	$template->parse('list', 'list_block', true);
 }
 
 // Insert permissions values
-if($admin->get_permission('users_add') != true) {
-    $template->set_var('DISPLAY_ADD', 'hide');
+if($admin->get_permission('groups_add') != true) {
+	$template->set_var('DISPLAY_ADD', 'hide');
 }
-if($admin->get_permission('users_modify') != true) {
-    $template->set_var('DISPLAY_MODIFY', 'hide');
+if($admin->get_permission('groups_modify') != true) {
+	$template->set_var('DISPLAY_MODIFY', 'hide');
 }
-if($admin->get_permission('users_delete') != true) {
-    $template->set_var('DISPLAY_DELETE', 'hide');
+if($admin->get_permission('groups_delete') != true) {
+	$template->set_var('DISPLAY_DELETE', 'hide');
 }
-$HeaderTitle = $HEADING['MODIFY_DELETE_USER'].' ';
-$HeaderTitle .= (($iUserStatus == 1) ? strtolower($TEXT['ACTIVE']) : strtolower($TEXT['DELETED']));
+
 // Insert language headings
 $template->set_var(array(
-        'HEADING_MODIFY_DELETE_USER' => $HeaderTitle,
-        'HEADING_ADD_USER' => $HEADING['ADD_USER']
-        )
-);
-// insert urls
-$template->set_var(array(
-        'ADMIN_URL' => ADMIN_URL,
-        'WB_URL' => WB_URL,
-        'THEME_URL' => THEME_URL
-        )
+	'HEADING_MODIFY_DELETE_GROUP' => $HEADING['MODIFY_DELETE_GROUP'],
+	'HEADING_ADD_GROUP' => $HEADING['ADD_GROUP']
+	)
 );
 // Insert language text and messages
 $template->set_var(array(
-        'TEXT_MODIFY' => $TEXT['MODIFY'],
-        'TEXT_DELETE' => $TEXT['DELETE'],
-        'TEXT_MANAGE_GROUPS' => ( $admin->get_permission('groups') == true ) ? $TEXT['MANAGE_GROUPS'] : "**",
-        'CONFIRM_DELETE' => (($iUserStatus == 1) ? $TEXT['ARE_YOU_SURE'] : $MESSAGE['USERS_CONFIRM_DELETE'])
-        )
+	'TEXT_MODIFY' => $TEXT['MODIFY'],
+	'TEXT_DELETE' => $TEXT['DELETE'],
+	'TEXT_MANAGE_USERS' => ( $admin->get_permission('users') == true ) ? $TEXT['MANAGE_USERS']: "",
+	'CONFIRM_DELETE' => $MESSAGE['GROUPS_CONFIRM_DELETE']
+	)
 );
-if ( $admin->get_permission('groups') == true ) $template->parse("groups", "manage_groups_block", true);
+if ( $admin->get_permission('users') == true ) $template->parse("users", "manage_users_block", true);
 // Parse template object
 $template->parse('main', 'main_block', false);
 $template->pparse('output', 'page');
 
 // Setup template object, parse vars to it, then parse it
 // Create new template object
-$template = new Template(dirname($admin->correct_theme_source('users_form.htt')));
+$template = new Template(dirname($admin->correct_theme_source('groups_form.htt')));
 // $template->debug = true;
-$template->set_file('page', 'users_form.htt');
+$template->set_file('page', 'groups_form.htt');
 $template->set_block('page', 'main_block', 'main');
 $template->set_var('DISPLAY_EXTRA', 'display:none;');
-$template->set_var('ACTIVE_CHECKED', ' checked="checked"');
-$template->set_var('ACTION_URL', ADMIN_URL.'/users/add.php');
+$template->set_var('ACTION_URL', ADMIN_URL.'/groups/add.php');
 $template->set_var('SUBMIT_TITLE', $TEXT['ADD']);
-$template->set_var('FTAN', $admin->getFTAN());
-// insert urls
-$template->set_var(array(
-        'ADMIN_URL' => ADMIN_URL,
-        'WB_URL' => WB_URL,
-        'THEME_URL' => THEME_URL
-        )
-);
+$template->set_var('ADVANCED_LINK', 'index.php');
 
-// Add groups to list
-$template->set_block('main_block', 'group_list_block', 'group_list');
-$results = $database->query("SELECT group_id, name FROM ".TABLE_PREFIX."groups WHERE group_id != '1'");
-if($results->numRows() > 0) {
-    $template->set_var('ID', '');
-    $template->set_var('NAME', $TEXT['PLEASE_SELECT'].'...');
-    $template->set_var('SELECTED', ' selected="selected"');
-    $template->parse('group_list', 'group_list_block', true);
-    while($group = $results->fetchRow()) {
-        $template->set_var('ID', $group['group_id']);
-        $template->set_var('NAME', $group['name']);
-        $template->set_var('SELECTED', '');
-        $template->parse('group_list', 'group_list_block', true);
-    }
-}
-// Only allow the user to add a user to the Administrators group if they belong to it
-if(in_array(1, $admin->get_groups_id())) {
-    $users_groups = $admin->get_groups_name();
-    $template->set_var('ID', '1');
-    $template->set_var('NAME', $users_groups[1]);
-    $template->set_var('SELECTED', '');
-    $template->parse('group_list', 'group_list_block', true);
+// Tell the browser whether or not to show advanced options
+if ( true == (isset( $_POST['advanced']) AND ( strpos( $_POST['advanced'], ">>") > 0 ) ) ) {
+	$template->set_var('DISPLAY_ADVANCED', '');
+	$template->set_var('DISPLAY_BASIC', 'display:none;');
+	$template->set_var('ADVANCED', 'yes');
+	$template->set_var('ADVANCED_BUTTON', '<< '.$TEXT['HIDE_ADVANCED']);
 } else {
-    if($results->numRows() == 0) {
-        $template->set_var('ID', '');
-        $template->set_var('NAME', $TEXT['NONE_FOUND']);
-        $template->parse('group_list', 'group_list_block', true);
-    }
+	$template->set_var('DISPLAY_ADVANCED', 'display:none;');
+	$template->set_var('DISPLAY_BASIC', '');
+	$template->set_var('ADVANCED', 'no');
+	$template->set_var('ADVANCED_BUTTON', $TEXT['SHOW_ADVANCED'].' >>');
 }
 
 // Insert permissions values
-if($admin->get_permission('users_add') != true) {
-    $template->set_var('DISPLAY_ADD', 'hide');
+if($admin->get_permission('groups_add') != true) {
+	$template->set_var('DISPLAY_ADD', 'hide');
 }
 
-// Generate username field name
-$username_fieldname = 'username_';
-$salt = "abchefghjkmnpqrstuvwxyz0123456789";
-srand((double)microtime()*1000000);
-$i = 0;
-while ($i <= 7) {
-    $num = rand() % 33;
-    $tmp = substr($salt, $num, 1);
-    $username_fieldname = $username_fieldname . $tmp;
-    $i++;
+// Insert values into module list
+$template->set_block('main_block', 'module_list_block', 'module_list');
+$result = $database->query('SELECT * FROM `'.TABLE_PREFIX.'addons` WHERE `type` = "module" AND `function` = "page" ORDER BY `name`');
+if($result->numRows() > 0) {
+	while($addon = $result->fetchRow()) {
+		$template->set_var('VALUE', $addon['directory']);
+		$template->set_var('NAME', $addon['name']);
+		$template->parse('module_list', 'module_list_block', true);
+	}
 }
 
-// Work-out if home folder should be shown
-if(!HOME_FOLDERS) {
-    $template->set_var('DISPLAY_HOME_FOLDERS', 'display:none;');
-}
-
-// Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
-
-// Add media folders to home folder list
-$template->set_block('main_block', 'folder_list_block', 'folder_list');
-foreach(directory_list(WB_PATH.MEDIA_DIRECTORY) AS $name) {
-    $template->set_var('NAME', str_replace(WB_PATH, '', $name));
-    $template->set_var('FOLDER', str_replace(WB_PATH.MEDIA_DIRECTORY, '', $name));
-    $template->set_var('SELECTED', ' ');
-    $template->parse('folder_list', 'folder_list_block', true);
+// Insert values into template list
+$template->set_block('main_block', 'template_list_block', 'template_list');
+$result = $database->query('SELECT * FROM `'.TABLE_PREFIX.'addons` WHERE `type` = "template" ORDER BY `name`');
+if($result->numRows() > 0) {
+	while($addon = $result->fetchRow()) {
+		$template->set_var('VALUE', $addon['directory']);
+		$template->set_var('NAME', $addon['name']);
+		$template->parse('template_list', 'template_list_block', true);
+	}
 }
 
 // Insert language text and messages
 $template->set_var(array(
-            'TEXT_CANCEL' => $TEXT['CANCEL'],
-            'TEXT_RESET' => $TEXT['RESET'],
-            'TEXT_ACTIVE' => $TEXT['ACTIVE'],
-            'TEXT_DISABLED' => $TEXT['DISABLED'],
-            'TEXT_PLEASE_SELECT' => $TEXT['PLEASE_SELECT'],
-            'TEXT_USERNAME' => $TEXT['USERNAME'],
-            'TEXT_PASSWORD' => $TEXT['PASSWORD'],
-            'TEXT_RETYPE_PASSWORD' => $TEXT['RETYPE_PASSWORD'],
-            'TEXT_DISPLAY_NAME' => $TEXT['DISPLAY_NAME'],
-            'TEXT_EMAIL' => $TEXT['EMAIL'],
-            'TEXT_GROUP' => $TEXT['GROUP'],
-            'TEXT_NONE' => $TEXT['NONE'],
-            'TEXT_HOME_FOLDER' => $TEXT['HOME_FOLDER'],
-            'USERNAME_FIELDNAME' => $username_fieldname,
-            'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD']
-            )
-    );
+								'TEXT_RESET' => $TEXT['RESET'],
+								'TEXT_ACTIVE' => $TEXT['ACTIVE'],
+								'TEXT_DISABLED' => $TEXT['DISABLED'],
+								'TEXT_PLEASE_SELECT' => $TEXT['PLEASE_SELECT'],
+								'TEXT_USERNAME' => $TEXT['USERNAME'],
+								'TEXT_PASSWORD' => $TEXT['PASSWORD'],
+								'TEXT_RETYPE_PASSWORD' => $TEXT['RETYPE_PASSWORD'],
+								'TEXT_DISPLAY_NAME' => $TEXT['DISPLAY_NAME'],
+								'TEXT_EMAIL' => $TEXT['EMAIL'],
+								'TEXT_GROUP' => $TEXT['GROUP'],
+								'TEXT_SYSTEM_PERMISSIONS' => $TEXT['SYSTEM_PERMISSIONS'],
+								'TEXT_MODULE_PERMISSIONS' => $TEXT['MODULE_PERMISSIONS'],
+								'TEXT_TEMPLATE_PERMISSIONS' => $TEXT['TEMPLATE_PERMISSIONS'],
+								'TEXT_NAME' => $TEXT['NAME'],
+								'SECTION_PAGES' => $MENU['PAGES'],
+								'SECTION_MEDIA' => $MENU['MEDIA'],
+								'SECTION_MODULES' => $MENU['MODULES'],
+								'SECTION_TEMPLATES' => $MENU['TEMPLATES'],
+								'SECTION_SETTINGS' => $MENU['SETTINGS'],
+								'SECTION_LANGUAGES' => $MENU['LANGUAGES'],
+								'SECTION_USERS' => $MENU['USERS'],
+								'SECTION_GROUPS' => $MENU['GROUPS'],
+								'SECTION_ADMINTOOLS' => $MENU['ADMINTOOLS'],
+								'TEXT_VIEW' => $TEXT['VIEW'],
+								'TEXT_ADD' => $TEXT['ADD'],
+								'TEXT_LEVEL' => $TEXT['LEVEL'],
+								'TEXT_MODIFY' => $TEXT['MODIFY'],
+								'TEXT_DELETE' => $TEXT['DELETE'],
+								'TEXT_MODIFY_CONTENT' => $TEXT['MODIFY_CONTENT'],
+								'TEXT_MODIFY_SETTINGS' => $TEXT['MODIFY_SETTINGS'],
+								'HEADING_MODIFY_INTRO_PAGE' => $HEADING['MODIFY_INTRO_PAGE'],
+								'TEXT_CREATE_FOLDER' => $TEXT['CREATE_FOLDER'],
+								'TEXT_RENAME' => $TEXT['RENAME'],
+								'TEXT_UPLOAD_FILES' => $TEXT['UPLOAD_FILES'],
+								'TEXT_BASIC' => $TEXT['BASIC'],
+								'TEXT_ADVANCED' => $TEXT['ADVANCED'],
+								'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD'],
+								'CHECKED' => ' checked="checked"',
+								'ADMIN_URL' => ADMIN_URL,
+								'WB_URL' => WB_URL,
+								'THEME_URL' => THEME_URL,
+								'FTAN' => $ftan
+								)
+						);
 
-// Parse template for add user form
+// Parse template for add group form
 $template->parse('main', 'main_block', false);
 $template->pparse('output', 'page');
 
+// Print the admin footer
 $admin->print_footer();
