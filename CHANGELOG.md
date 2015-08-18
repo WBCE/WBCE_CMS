@@ -5,6 +5,14 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-18:** cwsoft [[3ecce07](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3ecce072ffe9f5f192f03b4211f670f3b1bcb0c2)]
+   > Removed WBCE tools to [separate repository](https://github.com/WBCE/wbce_tools)
+     - purpose is to keep WBCE small
+     - keep away potentially dangerous tools (PHP Filemanager) from less experienced users
+
+ * **2015-08-18:** cwsoft [[4007d1f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4007d1f2330b5c3a967c07c16f5d505328d29964)]
+   > Updated CHANGELOG.md
+
  * **2015-08-18:** cwsoft [[5b18685](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5b18685d84cd78219c43be4dc11a57514bd62864)]
    > Converted switch endswitch blocks into PSR-2 coding style
 
