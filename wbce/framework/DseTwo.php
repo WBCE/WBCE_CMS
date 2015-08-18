@@ -83,43 +83,47 @@ class DseTwo
      */
     public function __set($name, $value)
     {
-
-        switch (strtolower($name)):
-    case 'db_handle':
-        if ($value) {$this->_db = $value;}
-        break;
-    case 'db_name':
-        if ($value != '') {$this->_db_name = $value;}
-        break;
-    case 'table_prefix':
-        if ($value != '') {$this->_TablePrefix = $value;}
-        break;
-    case 'base_dir':
-        if ($value != '') {
-            $this->_BasePath = rtrim(str_replace('\\', '/', $value), '/');
-        }
-        break;
-    case 'cache_dir':
-        $value = rtrim(str_replace('\\', '/', $value), '/');
-        if (!is_dir($value)) {
-            if (!mkdir($value, 0777, true)) {
-                $this->_CachePath = '';
-                $this->_bUseCache = false;
+        switch (strtolower($name)) {
+            case 'db_handle':
+                if ($value) {$this->_db = $value;}
                 break;
-            }
+
+            case 'db_name':
+                if ($value != '') {$this->_db_name = $value;}
+                break;
+
+            case 'table_prefix':
+                if ($value != '') {$this->_TablePrefix = $value;}
+                break;
+
+            case 'base_dir':
+                if ($value != '') {
+                    $this->_BasePath = rtrim(str_replace('\\', '/', $value), '/');
+                }
+                break;
+
+            case 'cache_dir':
+                $value = rtrim(str_replace('\\', '/', $value), '/');
+                if (!is_dir($value)) {
+                    if (!mkdir($value, 0777, true)) {
+                        $this->_CachePath = '';
+                        $this->_bUseCache = false;
+                        break;
+                    }
+                }
+                if (is_writable($value)) {
+                    $this->_CachePath = $value;
+                    $this->_bUseCache = true;
+                } else {
+                    $this->_CachePath = '';
+                    $this->_bUseCache = false;
+                }
+                break;
+
+            default:
+                throw new InvalidArgumentException(__CLASS__ . '::' . $name);
+                break;
         }
-        if (is_writable($value)) {
-            $this->_CachePath = $value;
-            $this->_bUseCache = true;
-        } else {
-            $this->_CachePath = '';
-            $this->_bUseCache = false;
-        }
-        break;
-    default:
-        throw new InvalidArgumentException(__CLASS__ . '::' . $name);
-        break;
-        endswitch;
     }
 
     /**
@@ -272,26 +276,28 @@ class DseTwo
             while ($rec = $res->fetchRow(MYSQL_ASSOC)) {
                 // loop through all found tables/fields
                 $sTableColumn = $rec['table'] . '.' . $rec['column'];
-                switch ($this->_ControllListTyp):
-            // test against controll list
-            case self::USE_BLACKLIST:
-                $needRecord = true;
-                if (in_array($rec['table'], $this->_ControllList) ||
-                    in_array($sTableColumn, $this->_ControllList)) {
-                    $needRecord = false;
+                switch ($this->_ControllListTyp) {
+                    // test against controll list
+                    case self::USE_BLACKLIST:
+                        $needRecord = true;
+                        if (in_array($rec['table'], $this->_ControllList) ||
+                            in_array($sTableColumn, $this->_ControllList)) {
+                            $needRecord = false;
+                        }
+                        break;
+
+                    case self::USE_WHITELIST:
+                        $needRecord = false;
+                        if (in_array($rec['table'], $this->_ControllList) ||
+                            in_array($sTableColumn, $this->_ControllList)) {
+                            $needRecord = true;
+                        }
+                        break;
+
+                    default: // self::USE_ALL
+                        $needRecord = true;
+                        break;
                 }
-                break;
-            case self::USE_WHITELIST:
-                $needRecord = false;
-                if (in_array($rec['table'], $this->_ControllList) ||
-                    in_array($sTableColumn, $this->_ControllList)) {
-                    $needRecord = true;
-                }
-                break;
-            default: // self::USE_ALL
-                $needRecord = true;
-                break;
-                endswitch;
                 if ($needRecord) {
                     if ($lastTable != $rec['table']) {
                         if (sizeof($aOrStatements) != 0) {

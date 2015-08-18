@@ -49,13 +49,13 @@ class LogFile
  */
     public function __get($property)
     {
-        switch (strtolower($property)):
-    case 'error':
-        return $this->_error;
-        break;
-    default:
-        return null;
-        endswitch;
+        switch (strtolower($property)) {
+            case 'error':
+                return $this->_error;
+                break;
+            default:
+                return null;
+        }
     }
 /*
  * flush and close logfile

@@ -145,19 +145,19 @@ class database
  */
     public function __get($sPropertyName)
     {
-        switch ($sPropertyName):
-    case 'db_handle':
-    case 'DbHandle':
-        $retval = $this->db_handle;
-        break;
-    case 'db_name':
-    case 'DbName':
-        $retval = $this->db_name;
-        break;
-    default:
-        $retval = null;
-        break;
-        endswitch;
+        switch ($sPropertyName) {
+            case 'db_handle':
+            case 'DbHandle':
+                $retval = $this->db_handle;
+                break;
+            case 'db_name':
+            case 'DbName':
+                $retval = $this->db_name;
+                break;
+            default:
+                $retval = null;
+                break;
+        }
         return $retval;
     } // __get()
     /**
