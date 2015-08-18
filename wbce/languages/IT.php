@@ -11,8 +11,9 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-
+if (count(get_included_files()) == 1) {
+    $z = "HTTP/1.0 404 Not Found";
+    header($z);die($z);}
 
 // Set the language information
 $language_code = 'IT';
@@ -667,5 +668,3 @@ $OVERVIEW['START'] = 'Funzioni di amministrazione';
 $OVERVIEW['TEMPLATES'] = 'Cambia la grafica del sito con i templates...';
 $OVERVIEW['USERS'] = 'Gestisci gli utenti che possono collegarsi a WebsiteBaker...';
 $OVERVIEW['VIEW'] = 'Visualizza il sito in una nuova finestra...';
-
-

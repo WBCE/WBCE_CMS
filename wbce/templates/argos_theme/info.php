@@ -8,7 +8,7 @@
  * This file defines the template variables required by Website Baker.
  *
  * LICENSE: GNU General Public License
- * 
+ *
  * @author     Jurgen Nijhuis (Argos Media) & Ruud Eisinga
  * @copyright  GNU General Public License
  * @license    http://www.gnu.org/licenses/gpl.html
@@ -24,15 +24,15 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-*/
+ */
 
 // OBLIGATORY WEBSITE BAKER VARIABLES
-$template_directory			= 'argos_theme';
-$template_name				= 'Argos Theme';
-$template_function			= 'theme';
-$template_version			= '1.7.3';
-$template_platform			= '2.8.3';
-$template_author			= 'Jurgen Nijhuis (Argos Media) & Ruud Eisinga';
-$template_license			= '<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>';
-$template_license_terms		= '-';
-$template_description		= 'Enhanced backend theme for Website Baker 2.8.';
+$template_directory = 'argos_theme';
+$template_name = 'Argos Theme';
+$template_function = 'theme';
+$template_version = '1.7.3';
+$template_platform = '2.8.3';
+$template_author = 'Jurgen Nijhuis (Argos Media) & Ruud Eisinga';
+$template_license = '<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>';
+$template_license_terms = '-';
+$template_description = 'Enhanced backend theme for Website Baker 2.8.';

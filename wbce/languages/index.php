@@ -10,6 +10,6 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require('../config.php');
-header('Location: '.WB_URL.'/');
+require '../config.php';
+header('Location: ' . WB_URL . '/');
 exit;

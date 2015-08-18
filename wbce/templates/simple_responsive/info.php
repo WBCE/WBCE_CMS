@@ -11,6 +11,4 @@ $template_description = 'Simple is a responsive starter template. It is intended
 $block[1] = 'Main';
 $block[2] = 'Right';
 
-$menu[1]='Mainmenu';  
-
-?>
+$menu[1] = 'Mainmenu';

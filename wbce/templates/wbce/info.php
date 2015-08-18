@@ -15,7 +15,5 @@ $block[4] = 'Right';
 $block[5] = 'Full bottom';
 $block[6] = 'Hero area';
 
-$menu[1]='Mainmenu';  
-$menu[99]='none'; 
-
-?>
+$menu[1] = 'Mainmenu';
+$menu[99] = 'none';

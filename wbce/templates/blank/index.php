@@ -3,13 +3,13 @@
  * $Id: index.php 865 2008-10-25 08:29:52Z doc $
  * Website Baker template: blank
  * This template is one of four basis templates distributed with Website Baker.
- * Use this template for pages where you do not want anything wrapping the 
+ * Use this template for pages where you do not want anything wrapping the
  * content e.g. a page for a global block.
  *
  * This file contains the Website Baker template function to output the content.
  *
  * LICENSE: GNU General Public License
- * 
+ *
  * @author     Ryan Djurovich, C. Sommer
  * @copyright  GNU General Public License
  * @license    http://www.gnu.org/licenses/gpl.html
@@ -25,14 +25,14 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-*/
+ */
 
 // prevent this file from being accessed directly
-if (!defined('WB_PATH')) die(header('Location: ../../index.php'));
+if (!defined('WB_PATH')) {
+    die(header('Location: ../../index.php'));
+}
 
 // TEMPLATE CODE STARTS BELOW
 
 // output only the page content, nothing else
 page_content();
-
-?>

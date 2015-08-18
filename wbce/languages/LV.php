@@ -11,8 +11,9 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-
+if (count(get_included_files()) == 1) {
+    $z = "HTTP/1.0 404 Not Found";
+    header($z);die($z);}
 
 // Set the language information
 $language_code = 'LV';
@@ -667,5 +668,3 @@ $OVERVIEW['START'] = 'Administracijas parskats';
 $OVERVIEW['TEMPLATES'] = 'Mened&#382;et &scaron;ablonus...';
 $OVERVIEW['USERS'] = 'Mened&#382;et lietotajus, kas var ielogties WebsiteBaker sistema...';
 $OVERVIEW['VIEW'] = 'Apskatit majas lapu jauna loga...';
-
-

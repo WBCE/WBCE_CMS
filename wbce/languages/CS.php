@@ -11,8 +11,9 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-
+if (count(get_included_files()) == 1) {
+    $z = "HTTP/1.0 404 Not Found";
+    header($z);die($z);}
 
 // Set the language information
 $language_code = 'CS';
@@ -667,5 +668,3 @@ $OVERVIEW['START'] = 'Administra&#269;n&iacute; p&#345;ehled';
 $OVERVIEW['TEMPLATES'] = 'Zm&#283;nit vzhled a chov&aacute;n&iacute; webu pomoc&iacute; &scaron;ablon...';
 $OVERVIEW['USERS'] = 'Spravovat u&#382;ivate WebsiteBakeru...';
 $OVERVIEW['VIEW'] = 'Rychle prohl&eacute;dhout str&aacute;nky v nov&eacute;m okn&#283;...';
-
-

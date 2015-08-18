@@ -11,8 +11,9 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-
+if (count(get_included_files()) == 1) {
+    $z = "HTTP/1.0 404 Not Found";
+    header($z);die($z);}
 
 // Set the language information
 $language_code = 'EN';
@@ -524,7 +525,7 @@ $MESSAGE['MEDIA_FILE_EXISTS'] = 'A file matching the name you entered already ex
 $MESSAGE['MEDIA_FILE_NOT_FOUND'] = 'File not found';
 $MESSAGE['MEDIA_NAME_DOT_DOT_SLASH'] = 'Cannot include ../ in the name';
 $MESSAGE['MEDIA_NAME_INDEX_PHP'] = 'Cannot use index.php as the name';
-$MESSAGE['MEDIA_NO_FILE_UPLOADED']='No file was recieved';
+$MESSAGE['MEDIA_NO_FILE_UPLOADED'] = 'No file was recieved';
 $MESSAGE['MEDIA_NONE_FOUND'] = 'No media found in the current folder';
 $MESSAGE['MEDIA_RENAMED'] = 'Rename successful';
 $MESSAGE['MEDIA_SINGLE_UPLOADED'] = ' file was successfully uploaded';
@@ -667,18 +668,16 @@ $OVERVIEW['TEMPLATES'] = 'Change the look and feel of your website with template
 $OVERVIEW['USERS'] = 'Manage users who can log-in to WebsiteBaker...';
 $OVERVIEW['VIEW'] = 'Quickly view and browse your website in a new window...';
 
-$TEXT['THEME_COPY_CURRENT']  = 'Copy backend theme.';
-$TEXT['THEME_NEW_NAME']      = 'Name of the new Theme';
-$TEXT['THEME_CURRENT']       = 'current active theme';
-$TEXT['THEME_START_COPY']    = 'copy';
-$TEXT['THEME_IMPORT_HTT']    = 'Import additional templates';
-$TEXT['THEME_SELECT_HTT']    = 'select templates';
-$TEXT['THEME_NOMORE_HTT']    = 'no more available';
-$TEXT['THEME_START_IMPORT']  = 'import';
-$MESSAGE['THEME_COPY_CURRENT']               = 'Copy the current active theme and save it with a new name.';
-$MESSAGE['THEME_ALREADY_EXISTS']             = 'This new theme descriptor already exists.';
+$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
+$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
+$TEXT['THEME_CURRENT'] = 'current active theme';
+$TEXT['THEME_START_COPY'] = 'copy';
+$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
+$TEXT['THEME_SELECT_HTT'] = 'select templates';
+$TEXT['THEME_NOMORE_HTT'] = 'no more available';
+$TEXT['THEME_START_IMPORT'] = 'import';
+$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
+$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
 $MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
-$MESSAGE['THEME_DESTINATION_READONLY']       = 'No rights to create new theme directory!';
-$MESSAGE['THEME_IMPORT_HTT']                 = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
-
-
+$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
+$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';

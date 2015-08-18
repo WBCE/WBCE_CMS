@@ -8,7 +8,7 @@
  * This file defines the template variables required by Website Baker.
  *
  * LICENSE: GNU General Public License
- * 
+ *
  * @author     Jurgen Nijhuis (Argos Media) & Ruud Eisinga
  * @copyright  GNU General Public License
  * @license    http://www.gnu.org/licenses/gpl.html
@@ -24,9 +24,9 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-*/
+ */
 
 // prevent this file from being accessed directly
-if (!defined('WB_PATH')) die(header('Location: ../../index.php'));
-
-?>
+if (!defined('WB_PATH')) {
+    die(header('Location: ../../index.php'));
+}
