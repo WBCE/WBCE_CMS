@@ -5,6 +5,59 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-18:** cwsoft [[5b18685](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5b18685d84cd78219c43be4dc11a57514bd62864)]
+   > Converted switch endswitch blocks into PSR-2 coding style
+
+ * **2015-08-18:** cwsoft [[aa4e12f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/aa4e12f30a5f23bbb749178bffdda146af14f7c5)]
+   > Formatted PHP files following PSR-2 coding styles
+     - no refactoring, just re-intend code, fix spaces, parentheses etc.
+
+ * **2015-08-17:** NorHei [[16f1053](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/16f1053b7915ebbe0656012721b4d09c68aeed38)]
+   > Accidentally uploaded wrong file to my local repo
+
+ * **2015-08-16:** NorHei [[8277c5d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8277c5d9344e05dbb9e750d4b92bccbb9d885641)]
+   > groups view now shows how many menbers are actually in that group
+
+ * **2015-08-16:** NorHei [[f6c8ede](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f6c8ede9cd55ab52ed4edd9fd67a9e49688fe124)]
+   > Again issue #26 Check is now based on group_id and groups_id
+     Before check was only on group_id now it also checks groups_id.
+     Check for group_id is only kept for old buggy entries to db.
+     These entries my possibly still be in db, maybe this is something we should
+     cleanup whith the upgrade script.
+
+ * **2015-08-16:** NorHei [[a36cfa9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a36cfa9aad479d1fd0991489e383f13eed7bd7aa)]
+   > Webadmin Filemnager
+     Download from: https://gist.github.com/nic-o/1219610 as the original
+     page (http://cker.name/webadmin/)had a disfunctional .zip file
+     
+     I added this opensource filemanager to remove files from the webspace
+     that have been added by websitebaker whith invalid file and directory
+     permissions on a Server that uses PHP as Apache module.
+     
+     On such a server it may happen that if you try to remove such files via
+     FTP you may get a "insufficient permissions error". Thats because the
+     files are created by the webserver under a user different from FTP user.
+     
+     Just copy this filemanager into the webroot of your page and call:
+     
+     www.yourdomain.com/webadmin.php
+     
+     !!! ATTENTION !!!
+     Please keep in mind that this admintool also can be abused as a hacking
+     tool (indeed its a pretty good one, almost a hackershell)
+     So please remove it after use or install it into a password protected
+     directory (Its not necessary to install it into webroot).
+     Please be really carefull!
+
+ * **2015-08-16:** NorHei [[983590b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/983590b2243b59feb026eb2c8878339de59161dc)]
+   > Added this tool to reset admin theme if something goes wrong while experimenting
+
+ * **2015-08-15:** cwsoft [[e90d58d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e90d58dde7c3c45490c6acd67c4da41e69de36f0)]
+   > Fixed wrong file header
+
+ * **2015-08-15:** cwsoft [[48e109a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/48e109a13b4c2cbff89224180cce8e2493aa7609)]
+   > Replaced file headers of files we already worked on
+
  * **2015-08-14:** NorHei [[67bbe0e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/67bbe0e8a058e1557de575245865499c9c8b7c1a)]
    > When editing a user group_id was not changed, but groups_is was. I simply applid a few lines of code taken from add.php
 
