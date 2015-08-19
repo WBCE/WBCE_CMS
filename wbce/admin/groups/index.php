@@ -33,17 +33,12 @@ $template->set_var(array(
 );
 
 // Get existing groups from database (and get users in that group)
-// the check for group_id field is only for old broken entries
-$subquery='SELECT COUNT(*) FROM `'.TABLE_PREFIX.'users` WHERE groups_id LIKE '.TABLE_PREFIX.'groups.group_id
-										OR group_id = '.TABLE_PREFIX.'groups.group_id	
-    									OR groups_id LIKE CONCAT('.TABLE_PREFIX.'groups.group_id,",%")
-    									OR groups_id LIKE CONCAT("%,",'.TABLE_PREFIX.'groups.group_id)
-    									OR groups_id LIKE CONCAT("%,",'.TABLE_PREFIX.'groups.group_id,",%")';
-			
-//echo $subquery;//'.TABLE_PREFIX.'
-$query = "SELECT group_id, CONCAT(name, ' (',($subquery),')') AS name FROM ".TABLE_PREFIX."groups WHERE group_id != '1'";
-
-
+$query = "SELECT g.group_id, CONCAT(name,CAST(u.groups_id AS SIGNED), ' (',COUNT(*),')') AS name
+						FROM ".TABLE_PREFIX."groups AS g, ".TABLE_PREFIX."users AS u
+						WHERE g.group_id != '1'
+						AND	(g.group_id = u.group_id
+    						 OR FIND_IN_SET(g.group_id, u.groups_id) > '0')
+    				GROUP BY g.group_id";
 
 $results = $database->query($query);
 if($database->is_error()) {

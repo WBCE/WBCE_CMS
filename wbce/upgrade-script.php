@@ -453,6 +453,27 @@ echo "<br />Adding field redirect_type to mod_menu_link table<br />";
 db_add_field('redirect_type', 'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER `target_page_id`");
 
 /**********************************************************
+ *  - Add field "namesection" to table "sections"
+ */
+echo "<br />Adding field namesection to sections table<br />";
+db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
+
+/**********************************************************
+ *  - making sure group_id is set 
+ */
+$table = TABLE_PREFIX."users";
+
+// set group_id to first group of groups_id
+$sql = "UPDATE $table SET `group_id` = CAST(groups_id AS SIGNED)";
+$query = $database->query($sql); 
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+
+// if admin, set group_id to 1
+$sql = "UPDATE $table SET `group_id` = 1 WHERE FIND_IN_SET('1', groups_id) > '0'";
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+$query = $database->query($sql); 
+
+/**********************************************************
  *  - Update search no results database filed to create
  *  valid XHTML if search is empty
  */
