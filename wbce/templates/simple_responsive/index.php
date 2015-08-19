@@ -47,7 +47,7 @@ if (function_exists('register_frontend_modfiles')) {
     <header class="wrapper clearfix">
 
         <div id="banner">
-        	<div id="logo"><a href=""><img src="<?php echo TEMPLATE_DIR;?>/images/basic-logo.svg" alt="logo"></a></div>
+        	<div id="logo"><a href=""><img src="<?php echo TEMPLATE_DIR;?>/images/basic-logo.png" alt="logo"></a></div>
         </div>
 
         <!-- main navigation -->

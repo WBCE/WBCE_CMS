@@ -33,7 +33,7 @@ $template->set_var(array(
 );
 
 // Get existing groups from database (and get users in that group)
-$query = "SELECT g.group_id, CONCAT(name,CAST(u.groups_id AS SIGNED), ' (',COUNT(*),')') AS name
+$query = "SELECT g.group_id, CONCAT(name,' (',COUNT(*),')') AS name
 						FROM ".TABLE_PREFIX."groups AS g, ".TABLE_PREFIX."users AS u
 						WHERE g.group_id != '1'
 						AND	(g.group_id = u.group_id
