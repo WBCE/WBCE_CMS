@@ -76,6 +76,7 @@ if (file_exists(WB_PATH . '/framework/class.database.php')) {
     $sTmp = dirname(dirname(__FILE__)) . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
     if (!class_exists('Twig_Autoloader') && is_readable($sTmp)) {
         include $sTmp;
+        Twig_Autoloader::register();
     }
 
     // register PHPMailer autoloader ---
