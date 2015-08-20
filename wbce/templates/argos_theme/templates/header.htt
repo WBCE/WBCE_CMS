@@ -37,7 +37,7 @@ function confirm_link(message, url) {
       <br />
       <span class="version">WBCE Version: {VERSION}</span><br/>
       <span class="version">Tag: {WBCE_TAG}</span><br/>
-      <span class="version">Admin theme v1.7.3</span>
+      <span class="version">Admin theme v1.7.4</span>
 	 </div>
     <a href="{ADMIN_URL}" title="{TITLE_START}" id="website_title">
     {WEBSITE_TITLE} - {TEXT_ADMINISTRATION}
