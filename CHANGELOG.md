@@ -5,6 +5,18 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-21:** cwsoft [[965622b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/965622bd8c856ba5f5a636808a778d85de8af9b0)]
+   > Replaced CKEditor image preview text with lorem ipsum text
+     - Fixes Issue #31
+
+ * **2015-08-21:** marmotwb [[02d872f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/02d872f12849577fe3370663117b7dd9afd8bdf8)]
+   > Fixes for topics module
+     ! create accessfile for welcome topic Issue #3
+     ! prevent notice on deleting a topics page
+
+ * **2015-08-21:** cwsoft [[e58a432](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e58a432685c053c07fd18b87b113e89b213cae08)]
+   > Updated Twig to v1.20.0
+
  * **2015-08-20:** cwsoft [[83ce179](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/83ce1793fff3f55a52d2d6a0dd74233e956e1296)]
    > Adapted help links in advanced WB flat theme:
      - updated links to WBCE help, forum and addons

@@ -128,14 +128,7 @@ CKEDITOR.editorConfig = function( config )
 
   config.docType          = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 
-	config.image_previewText = 'WebsiteBaker helps you to create the website you want. ' +
-                               'A free, easy and secure, flexible and extensible open source content management system (CMS) ' +
-                               'Create new templates within minutes - powered by (X)HTML, CSS and jQuery. ' +
-							   'With WebsiteBaker it\'s quite natural your site is W3C-valid, SEO-friendly and accessible ' +
-							   '- there are no limitations at all. Use droplets - the new and revolutionary way of inserting PHP code ' +
-							   '- everywhere you want. In addition to that, WebsiteBaker and the community are offering lots of extensions: ' +
-							   '' +
-							   '';
+	config.image_previewText = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
 
     /* The skin to load. It may be the name of the skin folder inside the editor installation path,
     * or the name and the path separated by a comma. 
