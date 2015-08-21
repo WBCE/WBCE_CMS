@@ -82,10 +82,9 @@ function users_lowest_groupid() {
 	return 0;
 }
 
-function topics_archive_file ($filename, $t_id, $s_id, $p_id) {
-
+function topics_archive_file ($filename, $t_id, $s_id, $p_id, $create_topics_accessfiles = 0)
+{
 	if ($create_topics_accessfiles != 1) {return 0;}
-	
 	
 	//global $topics_directory;
 	//global $topics_directory_depth;
