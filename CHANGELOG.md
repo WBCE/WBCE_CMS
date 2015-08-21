@@ -5,6 +5,41 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2015-08-20:** cwsoft [[83ce179](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/83ce1793fff3f55a52d2d6a0dd74233e956e1296)]
+   > Adapted help links in advanced WB flat theme:
+     - updated links to WBCE help, forum and addons
+     - set theme version to 0.3.9
+     - Closes Issue #32
+
+ * **2015-08-20:** cwsoft [[0069d37](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0069d3746e55208679607828d19d93950908ffe7)]
+   > Updated WBCE Argos Theme to v1.7.4:
+     - changed link in footer to point to WBCE website
+     - increased version to 1.7.4
+     - fixes Issue #33
+
+ * **2015-08-20:** cwsoft [[db59e7c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/db59e7c2ae559a5c77974db0b79235bb177d0319)]
+   > Fixed broken Twig autoloader
+
+ * **2015-08-19:** marmotwb [[672a8a8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/672a8a8c5fadc3cc02f16d0582aa5114b593bfd8)]
+   > correct group mangement and simple responsive template
+     ! delete confusing info in group management, set unintentionally in last
+     commit
+     ! show logo in template "simple responsive" Issue #22
+
+ * **2015-08-19:** marmotwb [[6b309fe](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6b309fedf39f4d2724c6deb4c143b1152ff5fb5a)]
+   > update grup_id handling an insert section name on upgrade
+     ! group_id is set new on upgrade issue #29
+     ! some formal code changes as discussed in the forum:
+     http://forum.wbce.org/viewtopic.php?id=84   / issue #26
+     ! insert field "namesection" into sections table on upgrade to enable
+     named section support
+
+ * **2015-08-19:** cwsoft [[51936d9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/51936d940ea8c804d085eafe7a76758e1a6aeae0)]
+   > Set version to v1.0.0-Beta3
+
+ * **2015-08-18:** cwsoft [[1d0c739](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1d0c73966f778596b8f268289d1654458ebd45c6)]
+   > Updated CHANGELOG
+
  * **2015-08-18:** cwsoft [[3ecce07](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3ecce072ffe9f5f192f03b4211f670f3b1bcb0c2)]
    > Removed WBCE tools to [separate repository](https://github.com/WBCE/wbce_tools)
      - purpose is to keep WBCE small
