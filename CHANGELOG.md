@@ -5,7 +5,11 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
- * **2015-08-21:** cwsoft [[965622b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/965622bd8c856ba5f5a636808a778d85de8af9b0)]
+ * **2015-08-21:** cwsoft [[dcbd9ed](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dcbd9ed7aba60803a24b0525a573c0c43d636ba9)]
+   > Cleaned up HTML skeleton used for initial intro page
+     - Fixes Issue #30
+
+ * **2015-08-21:** cwsoft [[f261ac0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f261ac0751e063aa5811b5a50a01c54faa15728e)]
    > Replaced CKEditor image preview text with lorem ipsum text
      - Fixes Issue #31
 
