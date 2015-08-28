@@ -310,7 +310,7 @@ if (!is_null($old_wbce_version['VERSION'])) {
 }
 
 // string for new version
-$newVersion = 'WBCE v' . WBCE_VERSION . ' (' . WBCE_TAG . ')';
+$newVersion = 'WBCE v' . NEW_WBCE_VERSION . ' (' . NEW_WBCE_TAG . ')';
 
 // set addition settings if not exists, otherwise upgrade will be breaks
 if (!defined('WB_SP')) {define('WB_SP', '');}
@@ -325,7 +325,7 @@ if (!defined('WB_REVISION')) {define('WB_REVISION', '');}
  */
 if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confirmed')) {
     ?>
-<h2>Step 1: Backup your files</h2>
+<h2>Backup your files !!</h2>
 <p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.<br /><strong class="error">Note: </strong>The upgrade script alters some settings of your existing database!!! You need to confirm the disclaimer before proceeding.</p>
 
 <form name="send" action="<?php echo $_SERVER['SCRIPT_NAME'];?>" method="post">
@@ -341,7 +341,7 @@ status_msg('<br />You need to confirm that you have created a manual backup of t
     exit();
 }
 
-echo '<h2>Step ' . (++$stepID) . ' : Updating database entries</h2>';
+echo '<h2>Step ' . ($stepID++) . ' : Updating database entries</h2>';
 
 /**********************************************************
  *  - Adding field default_theme to settings table
@@ -513,7 +513,7 @@ if (sizeof($array)) {
  * - check for deprecated / never needed files
  */
 if (sizeof($filesRemove)) {
-    echo '<h2>Step ' . (++$stepID) . ': Remove deprecated and old files</h2>';
+    echo '<h2>Step ' . ($stepID++) . ': Remove deprecated and old files</h2>';
 }
 $searches = array(
     '[ADMIN]',
@@ -565,7 +565,7 @@ foreach ($filesRemove as $filesId) {
  * - check for deprecated / never needed files
  */
 if (sizeof($dirRemove)) {
-    echo '<h2>Step  ' . (++$stepID) . ': Remove deprecated and old folders</h2>';
+    echo '<h2>Step  ' . ($stepID++) . ': Remove deprecated and old folders</h2>';
     $searches = array(
         '[ADMIN]',
         '[MEDIA]',
@@ -613,7 +613,7 @@ foreach ($aModuleList as $sModul) {
         $currModulVersion = get_modul_version($sModul, false);
         $newModulVersion = get_modul_version($sModul, true);
         if ((version_compare($currModulVersion, $newModulVersion) <= 0)) {
-            echo '<h2>Step ' . (++$stepID) . ' : Upgrade module \'' . $sModul . '\' to version ' . $newModulVersion . '</h2>';
+            echo '<h2>Step ' . ($stepID++) . ' : Upgrade module \'' . $sModul . '\' to version ' . $newModulVersion . '</h2>';
             require_once WB_PATH . '/modules/' . $sModul . '/upgrade.php';
         }
     }
@@ -622,7 +622,7 @@ foreach ($aModuleList as $sModul) {
  *  - Reload all addons
  */
 
-echo '<h2>Step ' . (++$stepID) . ' : Reload all addons database entry (no upgrade)</h2>';
+echo '<h2>Step ' . ($stepID++) . ' : Reload all addons database entry (no upgrade)</h2>';
 ////delete modules
 //$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'module'");
 // Load all modules
@@ -674,9 +674,9 @@ if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFA
 /**********************************************************
  *  - Set Version to new Version
  */
-echo '<br />Update database version number to ' . WBCE_VERSION . ' (Tag: ' . WBCE_TAG . ')';
-db_update_key_value('settings', 'wbce_version', WBCE_VERSION);
-db_update_key_value('settings', 'wbce_tag', WBCE_TAG);
+echo '<br />Update database version number to ' . NEW_WBCE_VERSION . ' (Tag: ' . NEW_WBCE_TAG . ')';
+db_update_key_value('settings', 'wbce_version', NEW_WBCE_VERSION);
+db_update_key_value('settings', 'wbce_tag', NEW_WBCE_TAG);
 db_update_key_value('settings', 'wb_version', VERSION);   // Legacy: WB-classic
 db_update_key_value('settings', 'wb_revision', REVISION); // Legacy: WB-classic
 db_update_key_value('settings', 'wb_sp', SP);             // Legacy: WB-classic
