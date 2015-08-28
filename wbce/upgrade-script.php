@@ -137,7 +137,7 @@ require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
 
 // database tables including in WB package
-$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users');
+$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets');
 /*
 $table_list = array (
 'settings','groups','addons','pages','sections','search','users',
