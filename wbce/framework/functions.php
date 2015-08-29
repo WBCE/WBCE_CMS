@@ -383,7 +383,9 @@ function make_dir($dir_name, $dir_mode = OCTAL_DIR_MODE, $recursive = true)
 {
     $retVal = false;
     if (!is_dir($dir_name)) {
+        $umask = umask(0);
         $retVal = mkdir($dir_name, $dir_mode, $recursive);
+        umask($umask);
     }
     return $retVal;
 }
