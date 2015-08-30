@@ -92,7 +92,7 @@ CKEDITOR.plugins.add( 'wblink', {
 
 			if ( !element.isReadOnly() ) {
 				if ( element.is( 'a' ) ) {
-					evt.data.dialog = ( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) ? 'anchor' : 'link';
+					evt.data.dialog = ( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) ? 'anchor' : 'wblink';
 
 					// Pass the link to be selected along with event data.
 					evt.data.link = element;
