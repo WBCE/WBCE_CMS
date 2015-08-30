@@ -128,7 +128,7 @@ function confirm_link(message, url) {
 
 		<ul id="pagetopmenu_menu">
 			<li><a id="link_home" href="{ADMIN_URL}/start/index.php" title="{TITLE_START}"></a></li>
-			<li><a id="link_back" href="javascript:history.back()" target="_self" title="Back"></a></li>
+			<li><a id="link_back" href="javascript:history.back()" target="_self" title="{TITLE_BACK}"></a></li>
 			<li><a id="link_frontend" href="{URL_VIEW}" target="_blank" title="{TITLE_VIEW}"></a></li>
 			<li><a id="link_logout" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}"></a></li>
 		</ul>
@@ -155,7 +155,7 @@ function confirm_link(message, url) {
 		<div id="mainmenu" class="clearfix stickySidebarElement">
 			<ul class="clearfix stickySidebarElement">
 			<!-- BEGIN linkBlock -->
-			<li class="{CLASS}"><a href="{LINK}" target="{TARGET}"><span>{TITLE}</span></a></li>
+			<li class="{CLASS}"><a href="{LINK}" target="{TARGET}" title="{TITLE}"><span>{TITLE}</span></a></li>
 			<!-- END linkBlock -->
 			</ul>
 		</div>

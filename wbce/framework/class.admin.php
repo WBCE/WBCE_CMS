@@ -135,6 +135,7 @@ class admin extends wb
             'ADMIN_URL' => ADMIN_URL,
             'THEME_URL' => THEME_URL,
             'TITLE_START' => $MENU['START'],
+            'TITLE_BACK' => $TEXT['BACK'],
             'TITLE_VIEW' => $MENU['VIEW'],
             'TITLE_HELP' => $MENU['HELP'],
             'TITLE_LOGOUT' => $MENU['LOGOUT'],
