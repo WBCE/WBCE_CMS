@@ -8,20 +8,24 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
+ * 
+ * Made whith help of Automated Language File tool Copyright heimsath.org 
  */
-
+	
 //no direct file access
-if (count(get_included_files()) == 1) {
-    $z = "HTTP/1.0 404 Not Found";
-    header($z);die($z);}
-
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+	
 // Set the language information
 $language_code = 'IT';
-$language_name = 'Italiano';
+$language_name = 'Italy';
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Roberto Rossi';
 $language_license = 'GNU General Public License';
+
+	
+
+
 $MENU['ACCESS'] = 'Accesso';
 $MENU['ADDON'] = 'Add-on';
 $MENU['ADDONS'] = 'Add-ons';
@@ -43,6 +47,9 @@ $MENU['START'] = 'Avvio';
 $MENU['TEMPLATES'] = 'Templates';
 $MENU['USERS'] = 'Utenti';
 $MENU['VIEW'] = 'Visualizza';
+
+
+
 $TEXT['ACCOUNT_SIGNUP'] = 'Iscrizione Account';
 $TEXT['ACTIONS'] = 'Azioni';
 $TEXT['ACTIVE'] = 'Attivo';
@@ -109,7 +116,7 @@ $TEXT['DELETE_ZIP'] = 'Delete zip archive after unpacking';
 $TEXT['DESCRIPTION'] = 'Descrizione';
 $TEXT['DESIGNED_FOR'] = 'Progettato per';
 $TEXT['DIRECTORIES'] = 'Directories';
-$TEXT['DIRECTORY_MODE'] = 'Modalit&agrave; Directory';
+$TEXT['DIRECTORY_MODE'] = 'Modalit&#224; Directory';
 $TEXT['DISABLED'] = 'Disabilitato';
 $TEXT['DISPLAY_NAME'] = 'Mostra il nome';
 $TEXT['EMAIL'] = 'Email';
@@ -126,11 +133,11 @@ $TEXT['FIELD'] = 'Campo';
 $TEXT['FILE'] = 'File';
 $TEXT['FILES'] = 'Files';
 $TEXT['FILESYSTEM_PERMISSIONS'] = 'Permessi del Filesystem';
-$TEXT['FILE_MODE'] = 'Modalit&agrave; File';
+$TEXT['FILE_MODE'] = 'Modalit&#224; File';
 $TEXT['FINISH_PUBLISHING'] = 'Fine publicazione';
 $TEXT['FOLDER'] = 'Cartella';
 $TEXT['FOLDERS'] = 'Folders';
-$TEXT['FOOTER'] = 'Pi&egrave; di pagina';
+$TEXT['FOOTER'] = 'Pi&#232; di pagina';
 $TEXT['FORGOTTEN_DETAILS'] = 'Dimenticati i dati?';
 $TEXT['FORGOT_DETAILS'] = 'Dimenticato i dati?';
 $TEXT['FROM'] = 'Da';
@@ -175,8 +182,8 @@ $TEXT['LONG'] = 'Estesa';
 $TEXT['LONG_TEXT'] = 'Testo lungo';
 $TEXT['LOOP'] = 'Loop';
 $TEXT['MAIN'] = 'Principale';
-$TEXT['MAINTENANCE_OFF'] = 'Maintenance off';
 $TEXT['MAINTENANCE_ON'] = 'Maintenance on';
+$TEXT['MAINTENANCE_OFF'] = 'Maintenance off';
 $TEXT['MANAGE'] = 'Gestisci';
 $TEXT['MANAGE_GROUPS'] = 'Gestisci i Gruppi';
 $TEXT['MANAGE_USERS'] = 'Gestisci gli Utenti';
@@ -196,7 +203,7 @@ $TEXT['MODIFY_SETTINGS'] = 'Modifica Impostazioni';
 $TEXT['MODULE_ORDER'] = 'Module-order for searching';
 $TEXT['MODULE_PERMISSIONS'] = 'Permessi del Modulo';
 $TEXT['MORE'] = 'Continua';
-$TEXT['MOVE_DOWN'] = 'Muovi gi&Atilde;&sup1;';
+$TEXT['MOVE_DOWN'] = 'Muovi gi&#195;&#185;';
 $TEXT['MOVE_UP'] = 'Muovi su';
 $TEXT['MULTIPLE_MENUS'] = 'Menu multipli';
 $TEXT['MULTISELECT'] = 'Multi-selezione';
@@ -241,7 +248,7 @@ $TEXT['PLEASE_LOGIN'] = 'Please login';
 $TEXT['PLEASE_SELECT'] = 'Prego seleziona';
 $TEXT['POST'] = 'Post';
 $TEXT['POSTS_PER_PAGE'] = 'Post Per Pagina';
-$TEXT['POST_FOOTER'] = 'Post Pi&egrave; di pagina';
+$TEXT['POST_FOOTER'] = 'Post Pi&#232; di pagina';
 $TEXT['POST_HEADER'] = 'Post Intestazione';
 $TEXT['PREVIOUS'] = 'Precedente';
 $TEXT['PREVIOUS_PAGE'] = 'Pagina precedente';
@@ -270,7 +277,7 @@ $TEXT['RESTORE'] = 'Restore';
 $TEXT['RESTORE_DATABASE'] = 'Restore del Database';
 $TEXT['RESTORE_MEDIA'] = 'Restore Media';
 $TEXT['RESULTS'] = 'Risultati';
-$TEXT['RESULTS_FOOTER'] = 'Risultati Pi&egrave; di pagina';
+$TEXT['RESULTS_FOOTER'] = 'Risultati Pi&#232; di pagina';
 $TEXT['RESULTS_FOR'] = 'Risultati per';
 $TEXT['RESULTS_HEADER'] = 'Risultati Intestazione';
 $TEXT['RESULTS_LOOP'] = 'Risultati Loop';
@@ -317,14 +324,6 @@ $TEXT['TEXT'] = 'Testo';
 $TEXT['TEXTAREA'] = 'Area di testo';
 $TEXT['TEXTFIELD'] = 'Campo di testo';
 $TEXT['THEME'] = 'Backend-Theme';
-$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
-$TEXT['THEME_CURRENT'] = 'current active theme';
-$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
-$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
-$TEXT['THEME_NOMORE_HTT'] = 'no more available';
-$TEXT['THEME_SELECT_HTT'] = 'select templates';
-$TEXT['THEME_START_COPY'] = 'copy';
-$TEXT['THEME_START_IMPORT'] = 'import';
 $TEXT['TIME'] = 'Ora';
 $TEXT['TIMEZONE'] = 'Fuso orario';
 $TEXT['TIME_FORMAT'] = 'Formato ora';
@@ -357,7 +356,7 @@ $TEXT['VERSION'] = 'Versione';
 $TEXT['VIEW'] = 'Vedi';
 $TEXT['VIEW_DELETED_PAGES'] = 'Vedi Pagine Eliminate';
 $TEXT['VIEW_DETAILS'] = 'Vedi dettagli';
-$TEXT['VISIBILITY'] = 'Visibilit&agrave;';
+$TEXT['VISIBILITY'] = 'Visibilit&#224;';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
 $TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
@@ -372,7 +371,7 @@ $TEXT['WBMAILER_SMTP_PASSWORD'] = 'SMTP Password';
 $TEXT['WBMAILER_SMTP_USERNAME'] = 'SMTP Loginname';
 $TEXT['WEBSITE'] = 'Website';
 $TEXT['WEBSITE_DESCRIPTION'] = 'Website Descrizione';
-$TEXT['WEBSITE_FOOTER'] = 'Website Pi&egrave; di pagina';
+$TEXT['WEBSITE_FOOTER'] = 'Website Pi&#232; di pagina';
 $TEXT['WEBSITE_HEADER'] = 'Website Intestazione';
 $TEXT['WEBSITE_KEYWORDS'] = 'Website Parole chiave';
 $TEXT['WEBSITE_TITLE'] = 'Website Titolo';
@@ -384,7 +383,20 @@ $TEXT['WORLD_WRITEABLE_FILE_PERMISSIONS'] = 'Permesso di scrittura file a chiunq
 $TEXT['WRITE'] = 'Scrittura';
 $TEXT['WYSIWYG_EDITOR'] = 'WYSIWYG Editor';
 $TEXT['WYSIWYG_STYLE'] = 'WYSIWYG Style';
-$TEXT['YES'] = 'S&igrave;';
+$TEXT['YES'] = 'S&#236;';
+$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
+$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
+$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
+$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
+$TEXT['THEME_CURRENT'] = 'current active theme';
+$TEXT['THEME_START_COPY'] = 'copy';
+$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
+$TEXT['THEME_SELECT_HTT'] = 'select templates';
+$TEXT['THEME_NOMORE_HTT'] = 'no more available';
+$TEXT['THEME_START_IMPORT'] = 'import';
+
+
+
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On requirements not met';
 $HEADING['ADD_CHILD_PAGE'] = 'Add child page';
 $HEADING['ADD_GROUP'] = 'Aggiungi Gruppo';
@@ -430,6 +442,9 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Disinstalla il Template';
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = 'Carica i File';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer Settings';
+
+
+
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Languages reloaded successfully';
 $MESSAGE['ADDON_MANUAL_FTP_LANGUAGE'] = '<strong>ATTENTION!</strong> For safety reasons uploading languages files in the folder/languages/ only by FTP and use the Upgrade function for registering or updating.';
@@ -443,14 +458,14 @@ $MESSAGE['ADDON_PRECHECK_FAILED'] = 'Add-on installation failed. Your system doe
 $MESSAGE['ADDON_RELOAD'] = 'Update database with information from Add-on files (e.g. after FTP upload).';
 $MESSAGE['ADDON_TEMPLATES_RELOADED'] = 'Templates reloaded successfully';
 $MESSAGE['ADMIN_INSUFFICIENT_PRIVELLIGES'] = 'Privilegi insufficienti per essere qui';
-$MESSAGE['FORGOT_PASS_ALREADY_RESET'] = 'La Password non pu&Atilde;&sup2; essere modificata pi&Atilde;&sup1; di una volta all\'ora';
+$MESSAGE['FORGOT_PASS_ALREADY_RESET'] = 'La Password non pu&#195;&#178; essere modificata pi&#195;&#185; di una volta all\'ora';
 $MESSAGE['FORGOT_PASS_CANNOT_EMAIL'] = 'Impossibile inviare l\'email. Contattare l\'ammnistratore';
-$MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND'] = 'L\'Email inserita non &egrave; stata trovata nel database';
+$MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND'] = 'L\'Email inserita non &#232; stata trovata nel database';
 $MESSAGE['FORGOT_PASS_NO_DATA'] = 'Prego inserire email';
 $MESSAGE['FORGOT_PASS_PASSWORD_RESET'] = 'Your loginname and password have been sent to your email address';
 $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'] = 'Sorry, no active content to display';
 $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'] = 'Spaicente, non ha i permessi per vedere la pagina';
-$MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'Gi&agrave; installato';
+$MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'Gi&#224; installato';
 $MESSAGE['GENERIC_BAD_PERMISSIONS'] = 'Impossibile scrivere sulla directory';
 $MESSAGE['GENERIC_BE_PATIENT'] = 'Please be patient.';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Impossibile disinstallare';
@@ -469,7 +484,7 @@ $MESSAGE['GENERIC_FILE_TYPES'] = 'Nota che i file caricati devono essere dei seg
 $MESSAGE['GENERIC_FILL_IN_ALL'] = 'Prego torna indietro e compila tutti i campi';
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Installato con successo';
-$MESSAGE['GENERIC_INVALID'] = 'Il file caricato &egrave; non valido';
+$MESSAGE['GENERIC_INVALID'] = 'Il file caricato &#232; non valido';
 $MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
 $MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
 $MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
@@ -489,13 +504,13 @@ $MESSAGE['GENERIC_UPGRADED'] = 'Aggiornato con successo';
 $MESSAGE['GENERIC_VERSION_COMPARE'] = 'Version comparison';
 $MESSAGE['GENERIC_VERSION_GT'] = 'Upgrade necessary!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Downgrade';
-$MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Website Under Construction';
+$MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Gruppo aggiunto';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Sei sicuro di voler eliminare il gruppo selezionato e tutti i suoi utenti?';
 $MESSAGE['GROUPS_DELETED'] = 'Gruppo eliminato';
-$MESSAGE['GROUPS_GROUP_NAME_BLANK'] = 'Il nome del Gruppo &egrave; vuoto';
+$MESSAGE['GROUPS_GROUP_NAME_BLANK'] = 'Il nome del Gruppo &#232; vuoto';
 $MESSAGE['GROUPS_GROUP_NAME_EXISTS'] = 'Nome di Gruppo gia Esistente';
 $MESSAGE['GROUPS_NO_GROUPS_FOUND'] = 'Nessun gruppo trovato';
 $MESSAGE['GROUPS_SAVED'] = 'Gruppo salvato';
@@ -518,21 +533,21 @@ $MESSAGE['MEDIA_DELETED_FILE'] = 'File eliminato';
 $MESSAGE['MEDIA_DIR_ACCESS_DENIED'] = 'Specified directory does not exist or is not allowed.';
 $MESSAGE['MEDIA_DIR_DOES_NOT_EXIST'] = 'La Cartella non esiste';
 $MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'] = 'Impossibile includere ../ nel nome della cartella';
-$MESSAGE['MEDIA_DIR_EXISTS'] = 'Esiste gi&agrave; una cartella con lo stesso nome';
+$MESSAGE['MEDIA_DIR_EXISTS'] = 'Esiste gi&#224; una cartella con lo stesso nome';
 $MESSAGE['MEDIA_DIR_MADE'] = 'Cartella creata';
 $MESSAGE['MEDIA_DIR_NOT_MADE'] = 'Impossibile creare la cartella';
-$MESSAGE['MEDIA_FILE_EXISTS'] = 'Esiste gi&agrave; un file con lo stesso nome';
+$MESSAGE['MEDIA_FILE_EXISTS'] = 'Esiste gi&#224; un file con lo stesso nome';
 $MESSAGE['MEDIA_FILE_NOT_FOUND'] = 'File non trovato';
 $MESSAGE['MEDIA_NAME_DOT_DOT_SLASH'] = 'Impossibile includere ../ nel nome';
 $MESSAGE['MEDIA_NAME_INDEX_PHP'] = 'Impossibile usare index.php come nome';
-$MESSAGE['MEDIA_NONE_FOUND'] = 'Nessun Media trovato nella cartella corrente';
 $MESSAGE['MEDIA_NO_FILE_UPLOADED'] = 'No file was recieved';
+$MESSAGE['MEDIA_NONE_FOUND'] = 'Nessun Media trovato nella cartella corrente';
 $MESSAGE['MEDIA_RENAMED'] = 'Rinominato con successo';
 $MESSAGE['MEDIA_SINGLE_UPLOADED'] = ' file caricato con successo';
 $MESSAGE['MEDIA_TARGET_DOT_DOT_SLASH'] = 'Impossibile avere ../ nella cartella di destinazione';
 $MESSAGE['MEDIA_UPLOADED'] = ' file sono stati caricati con successo';
 $MESSAGE['MOD_FORM_EXCESS_SUBMISSIONS'] = 'Spiacente: hai compilato questa form troppe volte nell\'ultima ora.';
-$MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'] = 'Il numero di controllo (chiama Captcha) che hai inserito non &egrave; valido. Se hai problemi con la lettura del Captcha, invia un email email: <a href="mailto:{SERVER_EMAIL}">{SERVER_EMAIL}</a>';
+$MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'] = 'Il numero di controllo (chiama Captcha) che hai inserito non &#232; valido. Se hai problemi con la lettura del Captcha, invia un email email: <a href="mailto:{SERVER_EMAIL}">{SERVER_EMAIL}</a>';
 $MESSAGE['MOD_FORM_REQUIRED_FIELDS'] = 'Devi inserire tutti i dati nei seguenti campi';
 $MESSAGE['PAGES_ADDED'] = 'Pagina aggiunta';
 $MESSAGE['PAGES_ADDED_HEADING'] = 'Pagina intestazione aggiunta';
@@ -550,14 +565,14 @@ $MESSAGE['PAGES_INTRO_SAVED'] = 'Pagina di introduzione salvata';
 $MESSAGE['PAGES_LAST_MODIFIED'] = 'Ultima modifica di';
 $MESSAGE['PAGES_NOT_FOUND'] = 'Pagina non trovata';
 $MESSAGE['PAGES_NOT_SAVED'] = 'Errore nel salvare la pagina';
-$MESSAGE['PAGES_PAGE_EXISTS'] = 'Esiste gi&agrave; una pagina con lo stesso nome';
+$MESSAGE['PAGES_PAGE_EXISTS'] = 'Esiste gi&#224; una pagina con lo stesso nome';
 $MESSAGE['PAGES_REORDERED'] = 'Pagina riordinata';
 $MESSAGE['PAGES_RESTORED'] = 'Pagina recuperata';
 $MESSAGE['PAGES_RETURN_TO_PAGES'] = 'Ritorna alle pagine';
 $MESSAGE['PAGES_SAVED'] = 'Pagina salvata';
 $MESSAGE['PAGES_SAVED_SETTINGS'] = 'Impostazioni della pagina salvate';
-$MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'] = 'Propriet&agrave; di sezione salvate';
-$MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'] = 'La password corrente inserita &egrave; errata';
+$MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'] = 'Propriet&#224; di sezione salvate';
+$MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'] = 'La password corrente inserita &#232; errata';
 $MESSAGE['PREFERENCES_DETAILS_SAVED'] = 'Dettagli salvati';
 $MESSAGE['PREFERENCES_EMAIL_UPDATED'] = 'Email aggiornata';
 $MESSAGE['PREFERENCES_INVALID_CHARS'] = 'Invalid password chars used';
@@ -580,9 +595,7 @@ E-Mail: {LOGIN_EMAIL}
 IP-Adress: {LOGIN_IP}
 Registration date: {SIGNUP_DATE}
 ----------------------------------------
-This message was automatic generated!
-
-';
+This message was automatic generated!&#10;&#10;';
 $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
@@ -601,9 +614,7 @@ Please remember to clean you browser-cache before using the new one to avoid une
 
 Regards
 ------------------------------------
-This message was automatic generated
-
-';
+This message was automatic generated&#10;&#10;';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
@@ -618,35 +629,29 @@ Regards
 Please:
 if you have received this message by an error, please delete it immediately!
 -------------------------------------
-This message was automatic generated!
-';
+This message was automatic generated&#33;&#10;';
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Your login details...';
 $MESSAGE['SIGNUP_NO_EMAIL'] = 'Deve inserire un indirizzo di email';
 $MESSAGE['START_CURRENT_USER'] = 'Sei registrato come:';
-$MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Attenzione, la directory di installazione esiste gi&agrave;!';
+$MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Attenzione, la directory di installazione esiste gi&#224;!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
 $MESSAGE['START_WELCOME_MESSAGE'] = 'Benvenuto alla pagina di Amministrazione di WebsiteBaker';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Per cambiare il Template andare alla sezione Impostazioni';
-$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
-$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
-$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
-$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
-$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
-$MESSAGE['UNKNOW_UPLOAD_ERROR'] = 'Unknown upload error';
-$MESSAGE['UPLOAD_ERR_CANT_WRITE'] = 'Failed to write file to disk';
-$MESSAGE['UPLOAD_ERR_EXTENSION'] = 'File upload stopped by extension';
-$MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+$MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
+$MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+$MESSAGE['UPLOAD_ERR_PARTIAL'] = 'The uploaded file was only partially uploaded';
 $MESSAGE['UPLOAD_ERR_NO_FILE'] = 'No file was uploaded';
 $MESSAGE['UPLOAD_ERR_NO_TMP_DIR'] = 'Missing a temporary folder';
-$MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
-$MESSAGE['UPLOAD_ERR_PARTIAL'] = 'The uploaded file was only partially uploaded';
+$MESSAGE['UPLOAD_ERR_CANT_WRITE'] = 'Failed to write file to disk';
+$MESSAGE['UPLOAD_ERR_EXTENSION'] = 'File upload stopped by extension';
+$MESSAGE['UNKNOW_UPLOAD_ERROR'] = 'Unknown upload error';
 $MESSAGE['USERS_ADDED'] = 'Utente aggiunto';
 $MESSAGE['USERS_CANT_SELFDELETE'] = 'Function rejected, You can not delete yourself!';
 $MESSAGE['USERS_CHANGING_PASSWORD'] = 'Attenzione: devi inserire solo valori validi se vuoi cambiare la password utente';
 $MESSAGE['USERS_CONFIRM_DELETE'] = 'Sei sicuro di voler eliminare gli utenti selezionati?';
 $MESSAGE['USERS_DELETED'] = 'Utente eliminato';
-$MESSAGE['USERS_EMAIL_TAKEN'] = 'Email gi&agrave; in uso';
+$MESSAGE['USERS_EMAIL_TAKEN'] = 'Email gi&#224; in uso';
 $MESSAGE['USERS_INVALID_EMAIL'] = 'Email non valida';
 $MESSAGE['USERS_NAME_INVALID_CHARS'] = 'Invalid chars for Loginname found';
 $MESSAGE['USERS_NO_GROUP'] = 'Nessun gruppo selezionato';
@@ -655,6 +660,14 @@ $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'Password troppo corta';
 $MESSAGE['USERS_SAVED'] = 'Utente salvato';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';
+$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
+$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
+$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
+$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
+$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
+
+
+
 $OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
 $OVERVIEW['GROUPS'] = 'Gestisci gruppi utenti e permessi...';
 $OVERVIEW['HELP'] = 'Trova risposte alle tue domande...';
@@ -668,3 +681,6 @@ $OVERVIEW['START'] = 'Funzioni di amministrazione';
 $OVERVIEW['TEMPLATES'] = 'Cambia la grafica del sito con i templates...';
 $OVERVIEW['USERS'] = 'Gestisci gli utenti che possono collegarsi a WebsiteBaker...';
 $OVERVIEW['VIEW'] = 'Visualizza il sito in una nuova finestra...';
+
+
+

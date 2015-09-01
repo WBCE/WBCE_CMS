@@ -8,23 +8,27 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
+ * 
+ * Made whith help of Automated Language File tool Copyright heimsath.org 
  */
-
+	
 //no direct file access
-if (count(get_included_files()) == 1) {
-    $z = "HTTP/1.0 404 Not Found";
-    header($z);die($z);}
-
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+	
 // Set the language information
 $language_code = 'NL';
-$language_name = 'Nederlands';
+$language_name = 'Netherlands';
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Bramus, CodeALot, Luckyluke, Argos';
 $language_license = 'GNU General Public License';
+
+	
+
+
 $MENU['ACCESS'] = 'Toegang';
 $MENU['ADDON'] = 'Add-on';
-$MENU['ADDONS'] = 'Extra&rsquo;s';
+$MENU['ADDONS'] = 'Extra&#8217;s';
 $MENU['ADMINTOOLS'] = 'Beheerfuncties';
 $MENU['BREADCRUMB'] = 'U bent hier: ';
 $MENU['FORGOT'] = 'Inloggegevens opnieuw aanvragen';
@@ -36,13 +40,16 @@ $MENU['LOGIN'] = 'Inloggen';
 $MENU['LOGOUT'] = 'Uitloggen';
 $MENU['MEDIA'] = 'Media';
 $MENU['MODULES'] = 'Modules';
-$MENU['PAGES'] = 'Pagina&rsquo;s';
+$MENU['PAGES'] = 'Pagina&#8217;s';
 $MENU['PREFERENCES'] = 'Profiel';
 $MENU['SETTINGS'] = 'Instellingen';
 $MENU['START'] = 'Naar het hoofdmenu';
 $MENU['TEMPLATES'] = 'Templates';
 $MENU['USERS'] = 'Gebruikers';
 $MENU['VIEW'] = 'Website';
+
+
+
 $TEXT['ACCOUNT_SIGNUP'] = 'Aanmelden als gebruiker';
 $TEXT['ACTIONS'] = 'Acties';
 $TEXT['ACTIVE'] = 'Actief';
@@ -61,7 +68,7 @@ $TEXT['ALLOW_MULTIPLE_SELECTIONS'] = 'Meerdere selecties toestaan';
 $TEXT['ALL_WORDS'] = 'Term of deel van term';
 $TEXT['ANCHOR'] = 'Anker';
 $TEXT['ANONYMOUS'] = 'Anoniem';
-$TEXT['ANY_WORDS'] = 'E&eacute;n van de termen';
+$TEXT['ANY_WORDS'] = 'E&#233;n van de termen';
 $TEXT['APP_NAME'] = 'Applicatienaam';
 $TEXT['ARE_YOU_SURE'] = 'Weet u het zeker?';
 $TEXT['AUTHOR'] = 'Auteur';
@@ -90,7 +97,7 @@ $TEXT['COLLAPSE'] = 'Inklappen';
 $TEXT['COMMENT'] = 'Reageren';
 $TEXT['COMMENTING'] = 'Reactie-opties';
 $TEXT['COMMENTS'] = 'Reacties';
-$TEXT['CREATE_FOLDER'] = 'Cre&euml;er map';
+$TEXT['CREATE_FOLDER'] = 'Cre&#235;er map';
 $TEXT['CURRENT'] = 'Huidig(e)';
 $TEXT['CURRENT_FOLDER'] = 'Huidige map';
 $TEXT['CURRENT_PAGE'] = 'Huidige pagina';
@@ -157,7 +164,7 @@ $TEXT['INSTALL'] = 'Installeren';
 $TEXT['INSTALLATION'] = 'Installatie';
 $TEXT['INSTALLATION_PATH'] = 'Installatiepad';
 $TEXT['INSTALLATION_URL'] = 'Installatie-URL';
-$TEXT['INSTALLED'] = 'ge&iuml;nstalleerd';
+$TEXT['INSTALLED'] = 'ge&#239;nstalleerd';
 $TEXT['INTRO'] = 'Introductie';
 $TEXT['INTRO_PAGE'] = 'Introductiepagina';
 $TEXT['INVALID_SIGNS'] = 'moet met een letter beginnen, of heeft een ongeldig teken';
@@ -175,8 +182,8 @@ $TEXT['LONG'] = 'Lang';
 $TEXT['LONG_TEXT'] = 'Lange tekst';
 $TEXT['LOOP'] = '"Loop"';
 $TEXT['MAIN'] = 'Primair(e)';
-$TEXT['MAINTENANCE_OFF'] = 'Onderhoud uit';
 $TEXT['MAINTENANCE_ON'] = 'Onderhoud aan';
+$TEXT['MAINTENANCE_OFF'] = 'Onderhoud uit';
 $TEXT['MANAGE'] = 'Beheren';
 $TEXT['MANAGE_GROUPS'] = 'Groepenbeheer';
 $TEXT['MANAGE_USERS'] = 'Gebruikersbeheer';
@@ -198,7 +205,7 @@ $TEXT['MODULE_PERMISSIONS'] = 'Modulebevoegdheden';
 $TEXT['MORE'] = 'Meer';
 $TEXT['MOVE_DOWN'] = 'Naar beneden';
 $TEXT['MOVE_UP'] = 'Naar boven';
-$TEXT['MULTIPLE_MENUS'] = 'Meerdere menu&rsquo;s';
+$TEXT['MULTIPLE_MENUS'] = 'Meerdere menu&#8217;s';
 $TEXT['MULTISELECT'] = 'Meervoudige selectie';
 $TEXT['NAME'] = 'Naam';
 $TEXT['NEED_CURRENT_PASSWORD'] = 'Huidig wachtwoord';
@@ -211,7 +218,7 @@ $TEXT['NO'] = 'Nee';
 $TEXT['NONE'] = 'Geen';
 $TEXT['NONE_FOUND'] = 'Niet gevonden';
 $TEXT['NOT_FOUND'] = 'Niet gevonden';
-$TEXT['NOT_INSTALLED'] = 'niet ge&iuml;nstalleerd';
+$TEXT['NOT_INSTALLED'] = 'niet ge&#239;nstalleerd';
 $TEXT['NO_IMAGE_SELECTED'] = 'geen afbeelding geselecteerd';
 $TEXT['NO_RESULTS'] = 'Geen resultaten';
 $TEXT['OF'] = 'van de';
@@ -222,7 +229,7 @@ $TEXT['OTHERS'] = 'Anderen';
 $TEXT['OUT_OF'] = 'Buiten';
 $TEXT['OVERWRITE_EXISTING'] = 'Overschrijf bestaand(e)';
 $TEXT['PAGE'] = 'Pagina';
-$TEXT['PAGES_DIRECTORY'] = 'Pagina&rsquo;s-map';
+$TEXT['PAGES_DIRECTORY'] = 'Pagina&#8217;s-map';
 $TEXT['PAGES_PERMISSION'] = 'Paginapermissie';
 $TEXT['PAGES_PERMISSIONS'] = 'Paginapermissies';
 $TEXT['PAGE_EXTENSION'] = 'Pagina-extensie';
@@ -317,14 +324,6 @@ $TEXT['TEXT'] = 'Tekst';
 $TEXT['TEXTAREA'] = 'Tekstveld';
 $TEXT['TEXTFIELD'] = 'Tekstregel';
 $TEXT['THEME'] = 'Thema Website-beheer';
-$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
-$TEXT['THEME_CURRENT'] = 'current active theme';
-$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
-$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
-$TEXT['THEME_NOMORE_HTT'] = 'no more available';
-$TEXT['THEME_SELECT_HTT'] = 'select templates';
-$TEXT['THEME_START_COPY'] = 'copy';
-$TEXT['THEME_START_IMPORT'] = 'import';
 $TEXT['TIME'] = 'Tijd';
 $TEXT['TIMEZONE'] = 'Tijdzone';
 $TEXT['TIME_FORMAT'] = 'Tijdweergave';
@@ -355,7 +354,7 @@ $TEXT['USERS_PROFILE_ALLOWED'] = 'Gebruiker kan uitgebreid profiel aanmaken';
 $TEXT['VERIFICATION'] = 'Verificatie';
 $TEXT['VERSION'] = 'Versie';
 $TEXT['VIEW'] = 'Bekijken';
-$TEXT['VIEW_DELETED_PAGES'] = 'Bekijk verwijderde pagina&rsquo;s';
+$TEXT['VIEW_DELETED_PAGES'] = 'Bekijk verwijderde pagina&#8217;s';
 $TEXT['VIEW_DETAILS'] = 'Gegevens bekijken';
 $TEXT['VISIBILITY'] = 'Zichtbaarheid';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Standaard afzendermailadres';
@@ -385,6 +384,19 @@ $TEXT['WRITE'] = 'Schrijf';
 $TEXT['WYSIWYG_EDITOR'] = 'WYSIWYG-editor';
 $TEXT['WYSIWYG_STYLE'] = 'WYSIWYG-stijl';
 $TEXT['YES'] = 'Ja';
+$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
+$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
+$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
+$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
+$TEXT['THEME_CURRENT'] = 'current active theme';
+$TEXT['THEME_START_COPY'] = 'copy';
+$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
+$TEXT['THEME_SELECT_HTT'] = 'select templates';
+$TEXT['THEME_NOMORE_HTT'] = 'no more available';
+$TEXT['THEME_START_IMPORT'] = 'import';
+
+
+
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Module voldoet niet aan de eisen';
 $HEADING['ADD_CHILD_PAGE'] = 'Toevoegen subpagina';
 $HEADING['ADD_GROUP'] = 'Toevoegen groep';
@@ -396,7 +408,7 @@ $HEADING['ADMINISTRATION_TOOLS'] = 'Beheerfuncties';
 $HEADING['BROWSE_MEDIA'] = 'Bladeren door Media-map';
 $HEADING['CREATE_FOLDER'] = 'Toevoegen nieuwe map';
 $HEADING['DEFAULT_SETTINGS'] = 'Standaardinstellingen';
-$HEADING['DELETED_PAGES'] = 'Verwijderde pagina&rsquo;s';
+$HEADING['DELETED_PAGES'] = 'Verwijderde pagina&#8217;s';
 $HEADING['FILESYSTEM_SETTINGS'] = 'Bestandssysteeminstellingen';
 $HEADING['GENERAL_SETTINGS'] = 'Algemene instellingen';
 $HEADING['INSTALL_LANGUAGE'] = 'Toevoegen taalbestand';
@@ -409,7 +421,7 @@ $HEADING['LANGUAGE_DETAILS'] = 'Taalbestandgegevens';
 $HEADING['MANAGE_SECTIONS'] = 'Sectiebeheer';
 $HEADING['MODIFY_ADVANCED_PAGE_SETTINGS'] = 'Geavanceerde pagina-instellingen';
 $HEADING['MODIFY_DELETE_GROUP'] = 'Beheren groep';
-$HEADING['MODIFY_DELETE_PAGE'] = 'Beheren bestaande pagina&rsquo;s';
+$HEADING['MODIFY_DELETE_PAGE'] = 'Beheren bestaande pagina&#8217;s';
 $HEADING['MODIFY_DELETE_USER'] = 'Beheren gebruikers';
 $HEADING['MODIFY_GROUP'] = 'Groepsgegevens';
 $HEADING['MODIFY_GROUPS'] = 'Modify Groups';
@@ -430,6 +442,9 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Verwijderen template';
 $HEADING['UPGRADE_LANGUAGE'] = 'Upgraden/inschakelen taalbestand';
 $HEADING['UPLOAD_FILES'] = 'Uploaden bestanden';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer-instellingen';
+
+
+
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Fout tijdens het updaten van de add-onbestanden.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Taalbestanden succesvol herladen';
 $MESSAGE['ADDON_MANUAL_FTP_LANGUAGE'] = '<strong>ATTENTIE!</strong> Om veiligheidsredenen dient u de taalbestanden in de folder /languages/ via FTP te uploaden en vervolgens de Upgrade-functie te gebruiken om ze aan het systeem toe te voegen.';
@@ -450,11 +465,11 @@ $MESSAGE['FORGOT_PASS_NO_DATA'] = 'Vult u alstublieft uw e-mailadres hieronder i
 $MESSAGE['FORGOT_PASS_PASSWORD_RESET'] = 'Your loginname and password have been sent to your email address';
 $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'] = 'Sorry, er is niets om af te beelden';
 $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'] = 'Sorry, u heeft geen bevoegdheden om deze pagina te bekijken';
-$MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'Is al ge&iuml;nstalleerd';
+$MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'Is al ge&#239;nstalleerd';
 $MESSAGE['GENERIC_BAD_PERMISSIONS'] = 'Kan niet schrijven naar doelmap';
 $MESSAGE['GENERIC_BE_PATIENT'] = 'Please be patient.';
-$MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Kan niet de&iuml;nstalleren';
-$MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE'] = 'Kan niet de&iuml;nstalleren: het geselecteerde bestand is in gebruik';
+$MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Kan niet de&#239;nstalleren';
+$MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE'] = 'Kan niet de&#239;nstalleren: het geselecteerde bestand is in gebruik';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'] = '<br /><br />De {{type}} <b>{{type_name}}</b> kan niet verwijderd worden omdat het in gebruik is op {{pages}}:<br /><br />';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES'] = 'volgende pagina;volgende pagina\'s';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'] = 'De template <b>{{name}}</b> kan niet verwijderd worden omdat het de standaard-template is.';
@@ -476,21 +491,21 @@ $MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Ongeldig WebsiteBaker modulebestand. 
 $MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Ongeldig WebsiteBaker template-bestand. Controleer het tekstbestand';
 $MESSAGE['GENERIC_IN_USE'] = ' gebruikt in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Ontbrekend archiefbestand!';
-$MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'De module is niet juist ge&iuml;nstalleerd!';
+$MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'De module is niet juist ge&#239;nstalleerd!';
 $MESSAGE['GENERIC_NOT_COMPARE'] = ' niet mogelijk';
-$MESSAGE['GENERIC_NOT_INSTALLED'] = 'Niet ge&iuml;nstalleerd';
+$MESSAGE['GENERIC_NOT_INSTALLED'] = 'Niet ge&#239;nstalleerd';
 $MESSAGE['GENERIC_NOT_UPGRADED'] = 'Actualisatie niet mogelijk';
 $MESSAGE['GENERIC_PLEASE_BE_PATIENT'] = 'Even geduld aub, dit kan even duren.';
 $MESSAGE['GENERIC_PLEASE_CHECK_BACK_SOON'] = 'Probeert u het a.u.b. binnenkort nog eens.';
 $MESSAGE['GENERIC_SECURITY_ACCESS'] = 'Veiligheidsrisico! Toegang geweigerd!';
 $MESSAGE['GENERIC_SECURITY_OFFENSE'] = 'Veiligheidsrisico! Data-opslag geweigerd!';
-$MESSAGE['GENERIC_UNINSTALLED'] = 'De&iuml;nstallatie voltooid';
+$MESSAGE['GENERIC_UNINSTALLED'] = 'De&#239;nstallatie voltooid';
 $MESSAGE['GENERIC_UPGRADED'] = 'Upgrade voltooid';
 $MESSAGE['GENERIC_VERSION_COMPARE'] = 'Versievergelijking';
 $MESSAGE['GENERIC_VERSION_GT'] = 'Upgrade noodzakelijk!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Downgrade';
-$MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'Deze site is tijdelijk offline wegens onderhoud.';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Website in bewerking';
+$MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'Deze site is tijdelijk offline wegens onderhoud.';
 $MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Groep toegevoegd';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Weet u zeker dat u de geselecteerde groep wilt verwijderen (en alle daarbij behorende gebruikers)?';
@@ -525,8 +540,8 @@ $MESSAGE['MEDIA_FILE_EXISTS'] = 'Opgegeven bestandsnaam bestaat al';
 $MESSAGE['MEDIA_FILE_NOT_FOUND'] = 'Bestand niet gevonden';
 $MESSAGE['MEDIA_NAME_DOT_DOT_SLASH'] = 'Gebruik van ../ in de naam is niet toegestaan';
 $MESSAGE['MEDIA_NAME_INDEX_PHP'] = 'index.php als naam is niet toegestaan';
-$MESSAGE['MEDIA_NONE_FOUND'] = 'Geen mediabestanden gevonden in de huidige map';
 $MESSAGE['MEDIA_NO_FILE_UPLOADED'] = 'geen bestand(en) ontvangen';
+$MESSAGE['MEDIA_NONE_FOUND'] = 'Geen mediabestanden gevonden in de huidige map';
 $MESSAGE['MEDIA_RENAMED'] = 'Hernoemen geslaagd';
 $MESSAGE['MEDIA_SINGLE_UPLOADED'] = ' geupload';
 $MESSAGE['MEDIA_TARGET_DOT_DOT_SLASH'] = 'Gebruik van ../ in de map is niet toegestaan';
@@ -542,7 +557,7 @@ $MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE'] = 'Kan geen bestanden opslaan in de 
 $MESSAGE['PAGES_CANNOT_DELETE_ACCESS_FILE'] = 'Kan geen bestanden verwijderen uit de /pages-map (onvoldoende rechten)';
 $MESSAGE['PAGES_CANNOT_REORDER'] = 'Fout bij herordenen pagina';
 $MESSAGE['PAGES_DELETED'] = 'Pagina verwijderd';
-$MESSAGE['PAGES_DELETE_CONFIRM'] = 'Weet u zeker dat u deze pagina wilt verwijderen (en al zijn subpagina&rsquo;s)';
+$MESSAGE['PAGES_DELETE_CONFIRM'] = 'Weet u zeker dat u deze pagina wilt verwijderen (en al zijn subpagina&#8217;s)';
 $MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'] = 'U heeft niet de rechten om deze pagina aan te passen';
 $MESSAGE['PAGES_INTRO_LINK'] = 'Klik hier om de introductiepagina aan te passen';
 $MESSAGE['PAGES_INTRO_NOT_WRITABLE'] = 'Kan instellingen niet opslaan in het bestand /pages/intro.php (onvoldoende rechten)';
@@ -553,7 +568,7 @@ $MESSAGE['PAGES_NOT_SAVED'] = 'Fout tijdens opslaan pagina';
 $MESSAGE['PAGES_PAGE_EXISTS'] = 'Een pagina met dezelfde naam bestaat al';
 $MESSAGE['PAGES_REORDERED'] = 'Pagina herordend';
 $MESSAGE['PAGES_RESTORED'] = 'Pagina teruggehaald';
-$MESSAGE['PAGES_RETURN_TO_PAGES'] = 'Keer terug naar pagina&rsquo;s';
+$MESSAGE['PAGES_RETURN_TO_PAGES'] = 'Keer terug naar pagina&#8217;s';
 $MESSAGE['PAGES_SAVED'] = 'Pagina opgeslagen';
 $MESSAGE['PAGES_SAVED_SETTINGS'] = 'Pagina-instellingen opgeslagen';
 $MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'] = 'Sectie-instellingen opgeslagen';
@@ -580,9 +595,7 @@ E-mail: {LOGIN_EMAIL}
 IP-adres: {LOGIN_IP}
 Registratiedatum: {SIGNUP_DATE}
 ----------------------------------------
-Dit bericht is automatisch aangemaakt!
-
-';
+Dit bericht is automatisch aangemaakt!&#10;&#10;';
 $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Beste {LOGIN_DISPLAY_NAME},
 
@@ -601,9 +614,7 @@ Het is aan te raden om uw browser-cache te legen voordat u het nieuwe wachtwoord
 Vriendelijke groet
 
 ------------------------------------
-Dit bericht is automatisch aangemaakt!
-
-';
+Dit bericht is automatisch aangemaakt!&#10;&#10;';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Beste {LOGIN_DISPLAY_NAME},
 
@@ -616,29 +627,23 @@ Wachtwoord: {LOGIN_PASSWORD}
 Vriendelijke groet
 
 -------------------------------------
-Dit bericht is automatisch aangemaakt!
-';
+Dit bericht is automatisch aangemaakt&#33;&#10;';
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Uw inloggegevens...';
 $MESSAGE['SIGNUP_NO_EMAIL'] = 'U moet een e-mailadres invullen';
 $MESSAGE['START_CURRENT_USER'] = 'U bent ingelogd als';
-$MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Waarschuwing, de installatiemap bestaat nog steeds. U dient deze te verwijderen om veiligheidsrisico&rsquo;s te vermijden!';
+$MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Waarschuwing, de installatiemap bestaat nog steeds. U dient deze te verwijderen om veiligheidsrisico&#8217;s te vermijden!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
 $MESSAGE['START_WELCOME_MESSAGE'] = 'Welkom bij het websitebeheer';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Attentie: om de template aan te passen moet u naar de instellingensectie';
-$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
-$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
-$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
-$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
-$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
-$MESSAGE['UNKNOW_UPLOAD_ERROR'] = 'Unknown upload error';
-$MESSAGE['UPLOAD_ERR_CANT_WRITE'] = 'Failed to write file to disk';
-$MESSAGE['UPLOAD_ERR_EXTENSION'] = 'File upload stopped by extension';
-$MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+$MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
+$MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+$MESSAGE['UPLOAD_ERR_PARTIAL'] = 'The uploaded file was only partially uploaded';
 $MESSAGE['UPLOAD_ERR_NO_FILE'] = 'No file was uploaded';
 $MESSAGE['UPLOAD_ERR_NO_TMP_DIR'] = 'Missing a temporary folder';
-$MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
-$MESSAGE['UPLOAD_ERR_PARTIAL'] = 'The uploaded file was only partially uploaded';
+$MESSAGE['UPLOAD_ERR_CANT_WRITE'] = 'Failed to write file to disk';
+$MESSAGE['UPLOAD_ERR_EXTENSION'] = 'File upload stopped by extension';
+$MESSAGE['UNKNOW_UPLOAD_ERROR'] = 'Unknown upload error';
 $MESSAGE['USERS_ADDED'] = 'Gebruiker toegevoegd';
 $MESSAGE['USERS_CANT_SELFDELETE'] = 'Functie geweigerd. U kunt zichzelf niet verwijderen!';
 $MESSAGE['USERS_CHANGING_PASSWORD'] = 'Attentie: vul alleen de bovenstaande velden in wanneer u het wachtwoord van de gebruiker wilt veranderen';
@@ -653,16 +658,27 @@ $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'Het ingevoerde wachtwoord is te kort';
 $MESSAGE['USERS_SAVED'] = 'Gebruiker opgeslagen';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';
+$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
+$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
+$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
+$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
+$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
+
+
+
 $OVERVIEW['ADMINTOOLS'] = 'Diverse extra beheerinstellingen.';
 $OVERVIEW['GROUPS'] = 'Beheren van de gebruikersgroepen en hun rechten.';
 $OVERVIEW['HELP'] = 'Uitgebreide hulp voor het gebruik van dit systeem.';
 $OVERVIEW['LANGUAGES'] = 'Beheren van de aanwezige taalbestanden.';
 $OVERVIEW['MEDIA'] = 'Beheren van bestanden in de Media-map.';
 $OVERVIEW['MODULES'] = 'Beheren van modules die extra functies toevoegen aan uw site.';
-$OVERVIEW['PAGES'] = 'Aanmaken en beheren van de sitestructuur en pagina&rsquo;s.';
+$OVERVIEW['PAGES'] = 'Aanmaken en beheren van de sitestructuur en pagina&#8217;s.';
 $OVERVIEW['PREFERENCES'] = 'Beheren van uw persoonlijk profiel.';
 $OVERVIEW['SETTINGS'] = 'Beheren van de technische website-instellingen.';
 $OVERVIEW['START'] = 'Websitebeheer';
 $OVERVIEW['TEMPLATES'] = 'Beheren van de templates die u kunt toepassen.';
 $OVERVIEW['USERS'] = 'Beheren van de gebruikers van uw website.';
 $OVERVIEW['VIEW'] = 'Bekijk uw website zoals deze voor bezoekers te zien is (in een afzonderlijk venster).';
+
+
+

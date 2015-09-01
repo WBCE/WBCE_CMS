@@ -8,20 +8,24 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
+ * 
+ * Made whith help of Automated Language File tool Copyright heimsath.org 
  */
-
+	
 //no direct file access
-if (count(get_included_files()) == 1) {
-    $z = "HTTP/1.0 404 Not Found";
-    header($z);die($z);}
-
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+	
 // Set the language information
 $language_code = 'RU';
-$language_name = 'Russian';
+$language_name = 'Russia';
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Kirill Karakulko (kirill@nadosoft.com)';
 $language_license = 'GNU General Public License';
+
+	
+
+
 $MENU['ACCESS'] = '&#1044;&#1086;&#1089;&#1090;&#1091;&#1087;';
 $MENU['ADDON'] = 'Add-on';
 $MENU['ADDONS'] = '&#1044;&#1086;&#1087;&#1086;&#1083;&#1085;&#1080;&#1090;&#1077;&#1083;&#1100;&#1085;&#1099;&#1077; &#1092;&#1091;&#1085;&#1082;&#1094;&#1080;&#1080;';
@@ -43,6 +47,9 @@ $MENU['START'] = '&#1057;&#1090;&#1072;&#1088;&#1090;';
 $MENU['TEMPLATES'] = '&#1064;&#1072;&#1073;&#1083;&#1086;&#1085;&#1099;';
 $MENU['USERS'] = '&#1055;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1077;&#1083;&#1080;';
 $MENU['VIEW'] = '&#1055;&#1088;&#1086;&#1089;&#1084;&#1086;&#1090;&#1088;&#1077;&#1090;&#1100;';
+
+
+
 $TEXT['ACCOUNT_SIGNUP'] = 'Account Sign-Up';
 $TEXT['ACTIONS'] = '&#1044;&#1077;&#1081;&#1089;&#1090;&#1074;&#1080;&#1103;';
 $TEXT['ACTIVE'] = '&#1040;&#1082;&#1090;&#1080;&#1074;&#1085;&#1072;&#1103;';
@@ -175,8 +182,8 @@ $TEXT['LONG'] = '&#1055;&#1086;&#1083;&#1085;&#1086;&#1089;&#1090;&#1100;&#1102;
 $TEXT['LONG_TEXT'] = '&#1058;&#1077;&#1082;&#1089;&#1090; &#1087;&#1086;&#1083;&#1085;&#1086;&#1089;&#1090;&#1100;&#1102;';
 $TEXT['LOOP'] = '&#1086;&#1089;&#1085;&#1086;&#1074;&#1085;&#1072;&#1103; &#1095;&#1072;&#1089;&#1090;&#1100;';
 $TEXT['MAIN'] = '&#1043;&#1083;&#1072;&#1074;&#1085;&#1072;&#1103;';
-$TEXT['MAINTENANCE_OFF'] = 'Maintenance off';
 $TEXT['MAINTENANCE_ON'] = 'Maintenance on';
+$TEXT['MAINTENANCE_OFF'] = 'Maintenance off';
 $TEXT['MANAGE'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077;:';
 $TEXT['MANAGE_GROUPS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1075;&#1088;&#1091;&#1087;&#1087;&#1072;&#1084;&#1080;';
 $TEXT['MANAGE_USERS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1077;&#1083;&#1103;&#1084;&#1080;';
@@ -317,14 +324,6 @@ $TEXT['TEXT'] = '&#1058;&#1077;&#1082;&#1089;&#1090;';
 $TEXT['TEXTAREA'] = 'Textarea';
 $TEXT['TEXTFIELD'] = 'Textfield';
 $TEXT['THEME'] = 'Backend-Theme';
-$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
-$TEXT['THEME_CURRENT'] = 'current active theme';
-$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
-$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
-$TEXT['THEME_NOMORE_HTT'] = 'no more available';
-$TEXT['THEME_SELECT_HTT'] = 'select templates';
-$TEXT['THEME_START_COPY'] = 'copy';
-$TEXT['THEME_START_IMPORT'] = 'import';
 $TEXT['TIME'] = '&#1042;&#1088;&#1077;&#1084;&#1103;';
 $TEXT['TIMEZONE'] = '&#1042;&#1088;&#1077;&#1084;&#1077;&#1085;&#1085;&#1072;&#1103; &#1079;&#1086;&#1085;&#1072;';
 $TEXT['TIME_FORMAT'] = '&#1060;&#1086;&#1088;&#1084;&#1072;&#1090; &#1074;&#1088;&#1077;&#1084;&#1077;&#1085;&#1080;';
@@ -385,6 +384,19 @@ $TEXT['WRITE'] = '&#1047;&#1072;&#1087;&#1080;&#1089;&#1100;';
 $TEXT['WYSIWYG_EDITOR'] = 'WYSIWYG &#1088;&#1077;&#1076;&#1072;&#1082;&#1090;&#1086;&#1088;';
 $TEXT['WYSIWYG_STYLE'] = 'WYSIWYG &#1089;&#1090;&#1080;&#1083;&#1100;';
 $TEXT['YES'] = '&#1044;&#1072;';
+$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
+$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
+$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
+$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
+$TEXT['THEME_CURRENT'] = 'current active theme';
+$TEXT['THEME_START_COPY'] = 'copy';
+$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
+$TEXT['THEME_SELECT_HTT'] = 'select templates';
+$TEXT['THEME_NOMORE_HTT'] = 'no more available';
+$TEXT['THEME_START_IMPORT'] = 'import';
+
+
+
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On requirements not met';
 $HEADING['ADD_CHILD_PAGE'] = 'Add child page';
 $HEADING['ADD_GROUP'] = '&#1044;&#1086;&#1073;&#1072;&#1074;&#1080;&#1090;&#1100; &#1075;&#1088;&#1091;&#1087;&#1087;&#1091;';
@@ -430,6 +442,9 @@ $HEADING['UNINSTALL_TEMPLATE'] = '&#1059;&#1076;&#1072;&#1083;&#1080;&#1090;&#11
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = '&#1047;&#1072;&#1082;&#1072;&#1095;&#1072;&#1090;&#1100; &#1092;&#1072;&#1081;&#1083;(&#1099;)';
 $HEADING['WBMAILER_SETTINGS'] = '&#1053;&#1072;&#1089;&#1090;&#1088;&#1086;&#1081;&#1082;&#1080; &#1087;&#1086;&#1095;&#1090;&#1086;&#1074;&#1086;&#1081; &#1087;&#1088;&#1086;&#1075;&#1088;&#1072;&#1084;&#1084;&#1099;';
+
+
+
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Languages reloaded successfully';
 $MESSAGE['ADDON_MANUAL_FTP_LANGUAGE'] = '<strong>ATTENTION!</strong> For safety reasons uploading languages files in the folder/languages/ only by FTP and use the Upgrade function for registering or updating.';
@@ -489,8 +504,8 @@ $MESSAGE['GENERIC_UPGRADED'] = '&#1054;&#1073;&#1085;&#1086;&#1074;&#1083;&#1077
 $MESSAGE['GENERIC_VERSION_COMPARE'] = 'Version comparison';
 $MESSAGE['GENERIC_VERSION_GT'] = 'Upgrade necessary!';
 $MESSAGE['GENERIC_VERSION_LT'] = 'Downgrade';
-$MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = '&#1042;&#1077;&#1073;&#1089;&#1072;&#1081;&#1090; &#1074; &#1088;&#1072;&#1079;&#1088;&#1072;&#1073;&#1086;&#1090;&#1082;&#1077;';
+$MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = '&#1043;&#1088;&#1091;&#1087;&#1087;&#1072; &#1076;&#1086;&#1073;&#1072;&#1074;&#1083;&#1077;&#1085;&#1072; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086;';
 $MESSAGE['GROUPS_CONFIRM_DELETE'] = '&#1042;&#1099; &#1091;&#1074;&#1077;&#1088;&#1077;&#1085;&#1099;, &#1095;&#1090;&#1086; &#1074;&#1099; &#1093;&#1086;&#1090;&#1080;&#1090;&#1077; &#1091;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100; &#1074;&#1099;&#1073;&#1088;&#1072;&#1085;&#1085;&#1091;&#1102; &#1075;&#1088;&#1091;&#1087;&#1087;&#1091; (&#1080; &#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1077;&#1083;&#1077;&#1081; &#1074; &#1085;&#1077;&#1081;)?';
@@ -525,8 +540,8 @@ $MESSAGE['MEDIA_FILE_EXISTS'] = '&#1060;&#1072;&#1081;&#1083; &#1089; &#1090;&#1
 $MESSAGE['MEDIA_FILE_NOT_FOUND'] = '&#1060;&#1072;&#1081;&#1083; &#1085;&#1077; &#1085;&#1072;&#1081;&#1076;&#1077;&#1085;';
 $MESSAGE['MEDIA_NAME_DOT_DOT_SLASH'] = '&#1053;&#1077;&#1083;&#1100;&#1079;&#1103; &#1080;&#1089;&#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1100; ../ &#1074; &#1080;&#1084;&#1077;&#1085;&#1080;';
 $MESSAGE['MEDIA_NAME_INDEX_PHP'] = '&#1053;&#1077;&#1083;&#1100;&#1079;&#1103; &#1080;&#1089;&#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1100; index.php &#1074; &#1082;&#1072;&#1095;&#1077;&#1089;&#1090;&#1074;&#1077; &#1080;&#1084;&#1077;&#1085;&#1080;';
-$MESSAGE['MEDIA_NONE_FOUND'] = '&#1042; &#1076;&#1072;&#1085;&#1085;&#1086;&#1081; &#1087;&#1072;&#1087;&#1082;&#1077; &#1085;&#1077;&#1090; &#1092;&#1072;&#1081;&#1083;&#1086;&#1074;';
 $MESSAGE['MEDIA_NO_FILE_UPLOADED'] = 'No file was recieved';
+$MESSAGE['MEDIA_NONE_FOUND'] = '&#1042; &#1076;&#1072;&#1085;&#1085;&#1086;&#1081; &#1087;&#1072;&#1087;&#1082;&#1077; &#1085;&#1077;&#1090; &#1092;&#1072;&#1081;&#1083;&#1086;&#1074;';
 $MESSAGE['MEDIA_RENAMED'] = '&#1059;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086; &#1087;&#1077;&#1088;&#1077;&#1080;&#1084;&#1077;&#1085;&#1086;&#1074;&#1072;&#1085;&#1086;';
 $MESSAGE['MEDIA_SINGLE_UPLOADED'] = ' &#1092;&#1072;&#1081;&#1083; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086; &#1079;&#1072;&#1082;&#1072;&#1095;&#1072;&#1085;';
 $MESSAGE['MEDIA_TARGET_DOT_DOT_SLASH'] = '&#1053;&#1077;&#1083;&#1100;&#1079;&#1103; &#1080;&#1089;&#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1100; ../ &#1074; &#1080;&#1084;&#1077;&#1085;&#1080;';
@@ -580,9 +595,7 @@ E-Mail: {LOGIN_EMAIL}
 IP-Adress: {LOGIN_IP}
 Registration date: {SIGNUP_DATE}
 ----------------------------------------
-This message was automatic generated!
-
-';
+This message was automatic generated!&#10;&#10;';
 $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
@@ -601,9 +614,7 @@ Please remember to clean you browser-cache before using the new one to avoid une
 
 Regards
 ------------------------------------
-This message was automatic generated
-
-';
+This message was automatic generated&#10;&#10;';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
@@ -618,8 +629,7 @@ Regards
 Please:
 if you have received this message by an error, please delete it immediately!
 -------------------------------------
-This message was automatic generated!
-';
+This message was automatic generated&#33;&#10;';
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Your login details...';
 $MESSAGE['SIGNUP_NO_EMAIL'] = '&#1042;&#1099; &#1076;&#1086;&#1083;&#1078;&#1085;&#1099; &#1074;&#1074;&#1077;&#1089;&#1090;&#1080; email &#1072;&#1076;&#1088;&#1077;&#1089;';
 $MESSAGE['START_CURRENT_USER'] = '&#1042;&#1099; &#1074;&#1086;&#1096;&#1083;&#1080; &#1082;&#1072;&#1082;:';
@@ -627,20 +637,15 @@ $MESSAGE['START_INSTALL_DIR_EXISTS'] = '&#1042;&#1085;&#1080;&#1084;&#1072;&#108
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
 $MESSAGE['START_WELCOME_MESSAGE'] = '&#1044;&#1086;&#1073;&#1088;&#1086; &#1087;&#1086;&#1078;&#1072;&#1083;&#1086;&#1074;&#1072;&#1090;&#1100; &#1074; &#1052;&#1077;&#1085;&#1102; &#1040;&#1076;&#1084;&#1080;&#1085;&#1080;&#1089;&#1090;&#1088;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103; &#1057;&#1072;&#1081;&#1090;&#1072;';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = '&#1042;&#1085;&#1080;&#1084;&#1072;&#1085;&#1080;&#1077;! &#1063;&#1090;&#1086;&#1073;&#1099; &#1095;&#1090;&#1086;&#1073;&#1099; &#1089;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100; &#1096;&#1072;&#1073;&#1083;&#1086;&#1085; &#1087;&#1077;&#1088;&#1077;&#1081;&#1076;&#1080;&#1090;&#1077; &#1074; &#1088;&#1072;&#1079;&#1076;&#1077;&#1083; "&#1059;&#1089;&#1090;&#1072;&#1085;&#1086;&#1074;&#1082;&#1080;"';
-$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
-$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
-$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
-$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
-$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
-$MESSAGE['UNKNOW_UPLOAD_ERROR'] = 'Unknown upload error';
-$MESSAGE['UPLOAD_ERR_CANT_WRITE'] = 'Failed to write file to disk';
-$MESSAGE['UPLOAD_ERR_EXTENSION'] = 'File upload stopped by extension';
-$MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+$MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
+$MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+$MESSAGE['UPLOAD_ERR_PARTIAL'] = 'The uploaded file was only partially uploaded';
 $MESSAGE['UPLOAD_ERR_NO_FILE'] = 'No file was uploaded';
 $MESSAGE['UPLOAD_ERR_NO_TMP_DIR'] = 'Missing a temporary folder';
-$MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
-$MESSAGE['UPLOAD_ERR_PARTIAL'] = 'The uploaded file was only partially uploaded';
+$MESSAGE['UPLOAD_ERR_CANT_WRITE'] = 'Failed to write file to disk';
+$MESSAGE['UPLOAD_ERR_EXTENSION'] = 'File upload stopped by extension';
+$MESSAGE['UNKNOW_UPLOAD_ERROR'] = 'Unknown upload error';
 $MESSAGE['USERS_ADDED'] = '&#1055;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1077;&#1083;&#1100; &#1076;&#1086;&#1073;&#1072;&#1074;&#1083;&#1077;&#1085; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086;';
 $MESSAGE['USERS_CANT_SELFDELETE'] = 'Function rejected, You can not delete yourself!';
 $MESSAGE['USERS_CHANGING_PASSWORD'] = '&#1048;&#1084;&#1077;&#1081;&#1090;&#1077; &#1074;&#1074;&#1080;&#1076;&#1091;, &#1095;&#1090;&#1086; &#1074;&#1072;&#1084; &#1089;&#1083;&#1077;&#1076;&#1091;&#1077;&#1090; &#1074;&#1074;&#1077;&#1089;&#1090;&#1080; &#1079;&#1085;&#1072;&#1095;&#1077;&#1085;&#1080;&#1103; &#1090;&#1086;&#1083;&#1100;&#1082;&#1086; &#1074; &#1074;&#1077;&#1088;&#1093;&#1085;&#1080;&#1093; &#1087;&#1086;&#1083;&#1103;&#1093; &#1077;&#1089;&#1083;&#1080; &#1074;&#1099; &#1093;&#1086;&#1090;&#1080;&#1090;&#1077; &#1080;&#1079;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100; &#1087;&#1072;&#1088;&#1086;&#1083;&#1100;';
@@ -655,6 +660,14 @@ $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = '&#1055;&#1072;&#1088;&#1086;&#1083;&#110
 $MESSAGE['USERS_SAVED'] = '&#1044;&#1072;&#1085;&#1085;&#1099;&#1077; &#1086; &#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1077;&#1083;&#1077; &#1089;&#1086;&#1093;&#1088;&#1072;&#1085;&#1077;&#1085;&#1099; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086;';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';
+$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
+$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
+$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
+$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
+$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
+
+
+
 $OVERVIEW['ADMINTOOLS'] = '&#1044;&#1086;&#1089;&#1090;&#1091;&#1087; &#1082; &#1089;&#1088;&#1077;&#1076;&#1089;&#1090;&#1074;&#1072;&#1084; &#1072;&#1076;&#1084;&#1080;&#1085;&#1080;&#1089;&#1090;&#1088;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1103;';
 $OVERVIEW['GROUPS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1075;&#1088;&#1091;&#1087;&#1087;&#1072;&#1084;&#1080; &#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1077;&#1083;&#1077;&#1081; &#1080; &#1087;&#1088;&#1072;&#1074;&#1072; &#1076;&#1086;&#1089;&#1090;&#1091;&#1087;&#1072;';
 $OVERVIEW['HELP'] = '&#1054;&#1090;&#1074;&#1077;&#1090;&#1099; &#1085;&#1072; &#1074;&#1086;&#1087;&#1088;&#1086;&#1089;&#1099;';
@@ -668,3 +681,6 @@ $OVERVIEW['START'] = '&#1040;&#1076;&#1084;&#1080;&#1085;&#1080;&#1089;&#1090;&#
 $OVERVIEW['TEMPLATES'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1096;&#1072;&#1073;&#1083;&#1086;&#1085;&#1072;&#1084;&#1080;';
 $OVERVIEW['USERS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1077;&#1083;&#1103;&#1084;&#1080;';
 $OVERVIEW['VIEW'] = '&#1055;&#1088;&#1086;&#1089;&#1084;&#1086;&#1090;&#1088;&#1077;&#1090;&#1100; &#1080;&#1079;&#1084;&#1077;&#1085;&#1077;&#1085;&#1080;&#1103; &#1085;&#1072; &#1089;&#1072;&#1081;&#1090;&#1077; &#1074; &#1085;&#1086;&#1074;&#1086;&#1084; &#1086;&#1082;&#1085;&#1077;';
+
+
+
