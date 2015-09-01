@@ -23,7 +23,7 @@
 </div>
 
 <input type="submit" name="modify" style="width: 100px;" value="{TEXT_MODIFY}" class="{DISPLAY_MODIFY}" />
-<input type="submit" name="delete" style="width: 100px;" value="{TEXT_DELETE}" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE}" />&nbsp;&nbsp;&nbsp;Press <b>Strg + f</b> for Quick search or use <a href="{ADMIN_URL}/admintools/tool.php?tool=user_search" title="Advanced Search"> Advanced Search</a> 
+<input type="submit" name="delete" style="width: 100px;" value="{TEXT_DELETE}" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE}" />&nbsp;&nbsp;&nbsp;{QUICK_SEARCH_STRG_F} <a href="{ADMIN_URL}/admintools/tool.php?tool=user_search" title="{ADVANCED_SEARCH}">{ADVANCED_SEARCH}</a> 
 
 </form>
 

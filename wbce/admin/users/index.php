@@ -38,6 +38,9 @@ $sUserTitle = ($iUserStatus == 0) ? $MENU['USERS'].' '.strtolower($TEXT['ACTIVE'
 $template->set_var('TEXT_USERS', $sUserTitle.' '.$TEXT['SHOW'] );
 $template->set_var('STATUS_ICON', ( ($iUserStatus==0) ? $UserStatusActive : $UserStatusInactive) );
 
+$template->set_var('ADVANCED_SEARCH', $TEXT['ADVANCED_SEARCH'] );
+$template->set_var('QUICK_SEARCH_STRG_F', $TEXT['QUICK_SEARCH_STRG_F'] );
+
 // Get existing value from database
 $sql  = 'SELECT * FROM `'.TABLE_PREFIX.'users` ' ;
 $sql .= 'WHERE 1 ';
