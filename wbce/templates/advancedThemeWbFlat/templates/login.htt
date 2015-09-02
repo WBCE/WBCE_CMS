@@ -7,9 +7,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <!--<![endif]-->
 
-
-
-
 <head>
 <title>{TEXT_LOGIN}</title>
 <meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
@@ -17,48 +14,29 @@
 <meta name="description" content="{TEXT_LOGIN}" />
 <meta name="keywords" content="{TEXT_LOGIN}" />
 
-
-
 <!-- Load Google Fonts -->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 
 <!-- Load FontAwesome(Script with Fallback-Solution at End off Page) -->
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 
-
 <!-- include styles -->
 <link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
-<link href="{THEME_URL}/theme_new.css" rel="stylesheet" type="text/css" />
-
 
 <!-- jQuery-Scripte from original theme -->
 <script src="{WB_URL}/include/jquery/jquery-min.js" type="text/javascript"></script>
 
-
-
 </head>
 <body id="page_login" onload="document.login.{USERNAME_FIELDNAME}.focus();">
 
-
-
-
-
 <div id="page_login_header">
-
-
-
 	<div id="page_login_logo">
 		WebsiteBaker CE
 	</div>
-
 	<div id="page_login_slogan">
 		More Baking. Less Struggling.
 	</div>
-	
 </div><!-- ENDE page_login_header -->
-
-
-
 
 <div id="page_login_form">
 
@@ -69,8 +47,6 @@
 		<input type="hidden" name="url" value="{URL}" />
 		<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
 		<input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" />
-
-		
 		<div id="page_login-fields">
 		
 			<span class="page_login_fieldname">{TEXT_USERNAME}:</span>
@@ -87,12 +63,7 @@
 		</div>
 
 	</form>
-
-
 </div><!-- ENDE loginform -->
-
-
-
 
 <div id="login_license">
 	  <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
@@ -100,7 +71,6 @@
 	  <a href="http://www.gnu.org/licenses/gpl.html" title="WebsiteBaker CE is released under the GNU General Public License">GNU General Public License</a>
 	  <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
 </div>
-
 
 <script>
 	// fallback fontAwesome -- > load from own server if contact to maxcdn.bootstrapcdn.com fails
@@ -115,8 +85,6 @@
     })(jQuery);
 </script>
 
-	
-	
 </body>
 </html>
 <!-- END mainBlock -->
