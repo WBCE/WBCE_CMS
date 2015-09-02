@@ -98,18 +98,6 @@ class login extends admin
         } elseif ($this->password == '') {
             $this->message = $MESSAGE['LOGIN_PASSWORD_BLANK'];
             $this->increase_attemps();
-        } elseif ($this->username_len < $config_array['MIN_USERNAME_LEN']) {
-            $this->message = $MESSAGE['LOGIN_USERNAME_TOO_SHORT'];
-            $this->increase_attemps();
-        } elseif ($this->password_len < $config_array['MIN_PASSWORD_LEN']) {
-            $this->message = $MESSAGE['LOGIN_PASSWORD_TOO_SHORT'];
-            $this->increase_attemps();
-        } elseif ($this->username_len > $config_array['MAX_USERNAME_LEN']) {
-            $this->message = $MESSAGE['LOGIN_USERNAME_TOO_LONG'];
-            $this->increase_attemps();
-        } elseif ($this->password_len > $config_array['MAX_PASSWORD_LEN']) {
-            $this->message = $MESSAGE['LOGIN_PASSWORD_TOO_LONG'];
-            $this->increase_attemps();
         } else {
             // Check if the user exists (authenticate them)
             $this->password = md5($this->password);

@@ -62,6 +62,8 @@
 
 <div id="page_login_form">
 
+{MESSAGE}
+
 	<form name="login" class="login" action="{ACTION_URL}" method="post">
 
 		<input type="hidden" name="url" value="{URL}" />
@@ -72,17 +74,15 @@
 		<div id="page_login-fields">
 		
 			<span class="page_login_fieldname">{TEXT_USERNAME}:</span>
-			<span class="page_login_fieldelement"><input type="text" maxlength="{MAX_USERNAME_LEN}" name="{USERNAME_FIELDNAME}" value="{USERNAME}" /></span>
+			<span class="page_login_fieldelement"><input type="text" name="{USERNAME_FIELDNAME}" value="{USERNAME}" /></span>
 			<br/>
 			<span class="page_login_fieldname">{TEXT_PASSWORD}:</span>
-			<span class="page_login_fieldelement"><input type="password" maxlength="{MAX_PASSWORD_LEN}" name="{PASSWORD_FIELDNAME}" /></span>
+			<span class="page_login_fieldelement"><input type="password" name="{PASSWORD_FIELDNAME}" /></span>
 			<br/>
 			<input type="submit" name="submit" value="{TEXT_LOGIN}"  /> 
 			<a id="page_login_homelink" href="{WB_URL}/"></a>
 			<br/>
-			<input type="checkbox" name="remember" id="remember" value="true" />
-			<label for="remember">{TEXT_REMEMBER_ME}</label>
-			<br />
+			
 			<a id="page_login_forgottenlink" href="{FORGOTTEN_DETAILS_APP}">{TEXT_FORGOTTEN_DETAILS}</a> 
 		</div>
 

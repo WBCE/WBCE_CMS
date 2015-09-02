@@ -444,10 +444,20 @@ $content = preg_replace($pattern,$link,$content);
         echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<head><title>' . $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] . '</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<style type="text/css"><!-- body{ font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 12px; background-image: url("' . THEME_URL . '/images/background.png");background-repeat: repeat-x; background-color: #A8BCCB; text-align: center; }
-		h1 { margin: 0; padding: 0; font-size: 18px; color: #000; text-transform: uppercase;
-}--></style></head><body>
-		<br /><h1>' . $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] . '</h1><br />
-+		' . $MESSAGE['GENERIC_PLEASE_CHECK_BACK_SOON'] . '</body></html>';
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+		<style type="text/css">
+			body {
+					font-family:"Open Sans",sans-serif;
+			}
+			#message {
+					text-align:center;
+					margin-top:2em;
+					color:#647087;
+			}
+		</style>
+		</head><body>
+		<div id="message">
+		<h1>' . $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] . '</h1>
+		' . $MESSAGE['GENERIC_PLEASE_CHECK_BACK_SOON'] . '</div></body></html>';
     }
 }
