@@ -345,7 +345,7 @@ if (!isset($_SESSION['config_rename'])) {
      */
     $sLangDir = str_replace('\\', '/', dirname(dirname(__FILE__)) . '/languages/');
     $aAllowedLanguages = preg_replace('/^.*\/([A-Z]{2})\.php$/iU', '\1', glob($sLangDir . '??.php'));
-    sort($aAllowedLanguages, SORT_NATURAL);
+    sort($aAllowedLanguages);
     $sOutput = PHP_EOL;
     foreach ($aAllowedLanguages as $sLangCode) {
         if (is_readable($sLangDir . $sLangCode . '.php')) {
