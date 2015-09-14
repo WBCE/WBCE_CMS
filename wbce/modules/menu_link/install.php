@@ -33,7 +33,7 @@ $database->query("
 		`section_id` INT(11) NOT NULL DEFAULT '0',
 		`page_id` INT(11) NOT NULL DEFAULT '0',
 		`target_page_id` INT(11) NOT NULL DEFAULT '0',
-		`redirect_type` INT NOT NULL DEFAULT '302',
+		`redirect_type` INT NOT NULL DEFAULT '301',
 		`anchor` VARCHAR(255) NOT NULL DEFAULT '0' ,
 		`extern` VARCHAR(255) NOT NULL DEFAULT '' ,
 		PRIMARY KEY (`section_id`)
