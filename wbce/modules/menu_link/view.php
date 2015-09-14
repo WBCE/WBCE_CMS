@@ -21,7 +21,6 @@ if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
 
 $this_page_id = PAGE_ID;
-$php43 = version_compare(phpversion(), '4.3', '>=');
 
 // get target_page_id
 $sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_menu_link` WHERE `page_id` = '.(int)$this_page_id;
@@ -36,14 +35,7 @@ if($query_tpid->numRows() == 1)
 	// set redirect-type
 	if($redirect_type == 301)
 	{
-		if($php43)
-		{
-			@header('HTTP/1.1 301 Moved Permanently', TRUE, 301);
-		}
- 	 else
-		{
-			@header('HTTP/1.1 301 Moved Permanently');
-		}
+		@header('HTTP/1.1 301 Moved Permanently');
 	}
 	if($target_page_id == -1)
 	{
