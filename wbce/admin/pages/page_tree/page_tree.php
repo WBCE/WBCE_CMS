@@ -183,7 +183,7 @@ ob_start();
 				<?php endif; //$use_working_copy ?>
 				
 				<td style="width:64px; text-align:center; padding-right:15px;">
-				<div style="background-color:#FDFEFF; border:1px solid #869F6D;margin:1px;padding-bottom:2px;text-align:center;">
+				<div style="background-color:#FDFEFF; border:1px solid #869F6D;margin:1px;padding-bottom:2px;text-align:center; white-space:nowrap;">
 					<small>
 				<?php if($canModifyPage) : ?>				
 					<a href="{modifyPageURL}" title="<?php echo $HEADING['MODIFY_PAGE']; ?>"><img src="../pages/page_tree/icons/modify_16.png" border="0" alt="[<?php echo $TEXT['MODIFY']; ?>]" /></a>

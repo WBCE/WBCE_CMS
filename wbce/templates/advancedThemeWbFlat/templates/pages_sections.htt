@@ -73,12 +73,12 @@
                     <input type="text" class="input_normal" style="width: auto !important;" id="namesection{VAR_SECTION_ID}" name="namesection{VAR_SECTION_ID}" value="{NAMESECTION}" />
                 </td>
 				
-				<td class="list_pubdate_start"><input type="text" id="start_date{VAR_SECTION_ID}" name="start_date{VAR_SECTION_ID}" value="{VALUE_PUBL_START}" class="input_normal" />
+				<td class="list_pubdate_start" nowrap="nowrap"><input type="text" id="start_date{VAR_SECTION_ID}" name="start_date{VAR_SECTION_ID}" value="{VALUE_PUBL_START}" class="input_normal" />
 					<img src="{THEME_URL}/images/calendar_16.png" id="trigger_start{VAR_SECTION_ID}" style="cursor:pointer;" title="{TEXT_CALENDAR}" alt="{TEXT_CALENDAR}"  />
 					<img src="{THEME_URL}/images/{CLOCK_DEL_16_PNG}" style="cursor:pointer;" alt="{TEXT_DELETE_DATE}" title="{TEXT_DELETE_DATE}" onclick="document.section_properties.start_date{VAR_SECTION_ID}.value=''" />
 				</td>
 				
-				<td class="list_pubdate_end"><input type="text" id="end_date{VAR_SECTION_ID}" name="end_date{VAR_SECTION_ID}" value="{VALUE_PUBL_END}" class="input_normal" />
+				<td class="list_pubdate_end" nowrap="nowrap"><input type="text" id="end_date{VAR_SECTION_ID}" name="end_date{VAR_SECTION_ID}" value="{VALUE_PUBL_END}" class="input_normal" />
 					<img src="{THEME_URL}/images/calendar_16.png" id="trigger_stop{VAR_SECTION_ID}" alt="{TEXT_CALENDAR}" style="cursor: pointer;" title="{TEXT_CALENDAR}"  />
 					<img src="{THEME_URL}/images/{CLOCK_DEL_16_PNG}" style="cursor:pointer;" alt="{TEXT_DELETE_DATE}" title="{TEXT_DELETE_DATE}" onclick="document.section_properties.end_date{VAR_SECTION_ID}.value=''" />
 				</td>
