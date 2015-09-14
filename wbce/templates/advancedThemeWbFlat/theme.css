@@ -1043,10 +1043,10 @@ div.pages_list ul li {
   width: 260px;
 }
 #page_sections table tr.sections_list td.header_list_sections_actions {
-  width: 30px;
+  width: 30px;padding:7px;
 }
 #page_sections table tr.sections_list td.header_list_section_id {
-  width: 30px;
+  width: 30px;padding:7px;
 }
 #page_sections table tr {
   border-bottom: 3px solid transparent;
@@ -1078,6 +1078,8 @@ div.pages_list ul li {
   padding-top: 10px;
   padding-bottom: 11px;
 }
+#page_sections table tr td{padding:7px;white-space: nowrap;}
+
 
 /* ::forms:: different form elements */
 /* Buttons */
