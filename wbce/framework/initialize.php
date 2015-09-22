@@ -54,7 +54,8 @@ function SanitizeHttpReferer($sWbUrl = WB_URL)
 function makePhExp($sList)
 {
     $aList = func_get_args();
-    return preg_replace('/^(.*)$/', '/\[$1\]/s', $aList);
+    //return preg_replace('/^(.*)$/', '/\[$1\]/s', $aList);
+    return preg_replace('/^(.*)$/', '[$1]', $aList);
 }
 
 if (!defined('ADMIN_DIRECTORY')) {define('ADMIN_DIRECTORY', 'admin');}
