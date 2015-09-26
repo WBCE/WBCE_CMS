@@ -21,7 +21,7 @@ if (!defined('WBCE_VERSION')) {
     define('WBCE_VERSION', NEW_WBCE_VERSION);
 }
 
-define('NEW_WBCE_TAG', 'v1.0.0-RC1');
+define('NEW_WBCE_TAG', 'v1.0.0-Stable');
 if (!defined('WBCE_TAG')) {
     define('WBCE_TAG', NEW_WBCE_TAG);
 }
