@@ -98,28 +98,13 @@ if (file_exists(WB_PATH . '/framework/class.database.php')) {
         @ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
     }
 
-    // Get website settings (title, keywords, description, header, and footer)
-    $sql = 'SELECT `name`, `value` FROM `' . TABLE_PREFIX . 'settings`';
-    if (($get_settings = $database->query($sql))) {
-        $x = 0;
-        while ($setting = $get_settings->fetchRow(MYSQL_ASSOC)) {
-            $setting_name = strtoupper($setting['name']);
-            $setting_value = $setting['value'];
-            if ($setting_value == 'false') {
-                $setting_value = false;
-            }
-            if ($setting_value == 'true') {
-                $setting_value = true;
-            }
-            @define($setting_name, $setting_value);
-            $x++;
-        }
-    } else {
-        die($database->get_error());
-    }
-    if (!$x) {
-        throw new RuntimeException('no settings found');
-    }
+    // load settings class
+    require_once WB_PATH . '/framework/class.settings.php';
+
+    // get all settings
+    Settings::Setup ();
+
+
     @define('DO_NOT_TRACK', (isset($_SERVER['HTTP_DNT'])));
     $string_file_mode = STRING_FILE_MODE;
     @define('OCTAL_FILE_MODE', (int) octdec($string_file_mode));
