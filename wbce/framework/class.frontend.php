@@ -53,6 +53,12 @@ class frontend extends wb
     {
         global $page_id, $no_intro;
         global $database;
+        
+         // We have a Maintainance situation print under construction if not in group admin
+        if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE==true and !$this->ami_group_member('1'))
+            $this->print_under_construction();             
+        
+        
         // We have no page id and are supposed to show the intro page
         if ((INTRO_PAGE and !isset($no_intro)) and (!isset($page_id) or !is_numeric($page_id))) {
             // Since we have no page id check if we should go to intro page or default page
@@ -440,24 +446,23 @@ $content = preg_replace($pattern,$link,$content);
     public function print_under_construction()
     {
         global $MESSAGE;
-        require_once WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php';
-        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		<head><title>' . $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] . '</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel="stylesheet" type="text/css">
-		<style type="text/css">
-			body {
-					font-family:"Open Sans",sans-serif;
-			}
-			#message {
-					text-align:center;
-					margin-top:2em;
-					color:#647087;
-			}
-		</style>
-		</head><body>
-		<div id="message">
-		<h1>' . $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] . '</h1>
-		' . $MESSAGE['GENERIC_PLEASE_CHECK_BACK_SOON'] . '</div></body></html>';
+        
+        //Header https://yoast.com/http-503-site-maintenance-seo/
+        $protocol = "HTTP/1.0";
+        if ( "HTTP/1.1" == $_SERVER["SERVER_PROTOCOL"] ) $protocol = "HTTP/1.1";
+
+        header( "$protocol 503 Service Unavailable", true, 503 );
+        header( "Retry-After: 7200" ); //Searchengine revisits after 2 Hours 
+        
+        $Template=DEFAULT_TEMPLATE;
+        if (defined('TEMPLATE')) $Template=TEMPLATE;
+        
+        $TemplatePath = WB_PATH.'/templates/'.$Template."/system/maintainance.tpl.php";
+        $DefaultPath  = WB_PATH."/templates/system/maintainance.tpl.php";
+        
+        if (is_file($TemplatePath))  include_once ($TemplatePath); 
+        else                         include_once ($DefaultPath);
+        
+        exit;
     }
 }
