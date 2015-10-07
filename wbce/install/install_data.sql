@@ -76,8 +76,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (38, 'wbmailer_smtp_username', ''),
 (39, 'wbmailer_smtp_password', ''),
 (40, 'fingerprint_with_ip_octets', '0'),
-(41, 'secure_form_module', 'mtab'),
-(42, 'mediasettings', '');
+(41, 'mediasettings', '');
 
 
 
