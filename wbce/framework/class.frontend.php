@@ -457,8 +457,8 @@ $content = preg_replace($pattern,$link,$content);
         $Template=DEFAULT_TEMPLATE;
         if (defined('TEMPLATE')) $Template=TEMPLATE;
         
-        $TemplatePath = WB_PATH.'/templates/'.$Template."/system/maintainance.tpl.php";
-        $DefaultPath  = WB_PATH."/templates/system/maintainance.tpl.php";
+        $TemplatePath = WB_PATH.'/templates/'.$Template."/systemplates/maintainance.tpl.php";
+        $DefaultPath  = WB_PATH."/templates/systemplates/maintainance.tpl.php";
         
         if (is_file($TemplatePath))  include_once ($TemplatePath); 
         else                         include_once ($DefaultPath);
