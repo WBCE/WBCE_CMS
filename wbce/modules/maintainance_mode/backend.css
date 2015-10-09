@@ -1,0 +1,28 @@
+/* Fix for funky spacing on page listing */
+.pages_list li {
+	margin-bottom: -2px;
+}
+
+body.jsadmin_busy td.content {
+	background: url(images/busy.gif) 4px 4px no-repeat;
+}
+
+body.jsadmin_success td.content {
+	background: url(images/success.gif) 4px 4px no-repeat;
+}
+
+body.jsadmin_failure td.content {
+	background: url(images/failure.gif) 4px 4px no-repeat;
+}
+
+.jsadmin_drag {
+	cursor: move;
+}
+
+.jsadmin_drag a, .jsadmin_drag input, .jsadmin_drag select {
+	cursor: pointer;
+}
+
+ul.jsadmin_drag_area {
+	border: solid 1px #99f;
+}
