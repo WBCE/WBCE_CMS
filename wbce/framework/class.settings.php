@@ -1,4 +1,4 @@
-  <?php 
+<?php 
 /*
 Simple static Class for handling settings in Core and Modules
 All setting names may only contain a-z 0-9 and "_" 
