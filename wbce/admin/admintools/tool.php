@@ -1,53 +1,74 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        admin
- * @package         admintools
- * @author          Ryan Djurovich, WebsiteBaker Project
- * @author          Werner v.d. Decken
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: tool.php 5 2015-04-27 08:02:19Z luisehahne $
- * @filesource      $HeadURL: https://localhost:8443/svn/wb283Sp4/SP4/branches/wb/admin/admintools/tool.php $
- * @lastmodified    $Date: 2015-04-27 10:02:19 +0200 (Mo, 27. Apr 2015) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
+
 require('../../config.php');
 require_once(WB_PATH.'/framework/class.admin.php');
 require_once(WB_PATH.'/framework/functions.php');
 
-	$toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['tool']) : '');
-	$doSave = (isset($_POST['save_settings']) || (isset($_POST['action']) && strtolower($_POST['action']) == 'save'));
+//Fetch toolname
+$toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['tool']) : '');
+  
+// figure out if the form of the tool was send
+// the form needs to have exactly the right field names for this to function.
+// 'save_settings' set or 'action'set and == 'save'
+$doSave = (isset($_POST['save_settings']) || (isset($_POST['action']) && strtolower($_POST['action']) == 'save'));
+
+// Defining some path for use in the actual admin tool
+$modulePath=WB_PATH.'/modules/maintainance_mode/'; // we need this one later on too 
+$languagePath=$modulePath.'languages/';
+$returnToTools = ADMIN_URL.'/admintools/index.php';
+$returnUrl= ADMIN_URL.'/admintools/tool.php?tool=maintainance_mode';
+
+$toolCheck = true;
+
 // test for valid tool name
-	if(preg_match('/^[a-z][a-z_\-0-9]{2,}$/i', $toolDir)) {
-	// Check if tool is installed
-		$sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
-		       'WHERE `type`=\'module\' AND `function`=\'tool\' '.
-                      'AND `directory`=\''.$database->escapeString($toolDir).'\'';
-		if(($toolName = $database->get_one($sql))) {
-		// create admin-object and print header if FTAN is NOT supported AND function 'save' is requested
-			$admin_header = !(is_file(WB_PATH.'/modules/'.$toolDir.'/FTAN_SUPPORTED') && $doSave);
-			$admin = new admin('admintools', 'admintools', $admin_header );
-			if(!$doSave) {
-			// show title if not function 'save' is requested
-				print '<h4><a href="'.ADMIN_URL.'/admintools/index.php" '.
-				      'title="'.$HEADING['ADMINISTRATION_TOOLS'].'">'.
-				      $HEADING['ADMINISTRATION_TOOLS'].'</a>'.
-					  '&nbsp;&raquo;&nbsp;'.$toolName.'</h4>'."\n";
-			}
-			// include modules tool.php
-			require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
-			$admin->print_footer();
-		}else {
-		// no installed module found, jump to index.php of admintools
-			header('location: '.ADMIN_URL.'/admintools/index.php');
-			exit(0);
-		}
-	}else {
-	// invalid module name requested, jump to index.php of admintools
-		header('location: '.ADMIN_URL.'/admintools/index.php');
-		exit(0);
+if(!preg_match('/^[a-z][a-z_\-0-9]{2,}$/i', $toolDir)) $toolCheck=false;
+
+// Check if tool is installed
+$sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
+	   'WHERE `type`=\'module\' AND `function`=\'tool\' '.
+       'AND `directory`=\''.$database->escapeString($toolDir).'\'';
+if(!($toolName = $database->get_one($sql)))  $toolCheck=false;
+
+// back button triggered, so go back.
+if (isset ($_POST['admin_tools'])) {$toolCheck=false;}
+
+// all ok go for display
+if ($toolCheck) {
+    // create admin-object 
+    $admin = new admin('admintools', 'admintools');
+
+    // show title if not function 'save' is requested
+    if(!$doSave) {
+		print '<h4><a href="'.ADMIN_URL.'/admintools/index.php" '.
+			  'title="'.$HEADING['ADMINISTRATION_TOOLS'].'">'.
+			   $HEADING['ADMINISTRATION_TOOLS'].'</a>'.
+			  '&nbsp;&raquo;&nbsp;'.$toolName.'</h4>'."\n";
 	}
+
+    // Loading language files we start whith default EN
+    if(is_file($languagePath.'EN.php'))        require_once($languagePath.'EN.php');        
+    // Get actual language if exists
+    if(is_file($languagePath.LANGUAGE.'.php')) require_once($languagePath.LANGUAGE.'.php'); 
+
+    //Load actual tool
+    require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
+
+    // output footer
+	$admin->print_footer();  
+} else {
+    // invalid module name requested, jump to index.php of admintools
+	header('location: '.$returnToTools);
+	exit(0);
+}
+
+
