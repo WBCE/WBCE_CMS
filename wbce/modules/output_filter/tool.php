@@ -65,8 +65,7 @@ if(!defined('WB_PATH')) { throw new IllegalFileException(); }
         require_once($modPath.'filter-routines.php');
         $data = getOutputFilterSettings();
     }
-    // write out header if needed
-    if(!$admin_header) { $admin->print_header(); }
+
     if( $msgTxt != '') {
     // write message box if needed
         echo '<div class="'.$msgCls.'">'.$msgTxt.'</div>';
