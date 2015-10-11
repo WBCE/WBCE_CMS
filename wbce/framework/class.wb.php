@@ -393,8 +393,9 @@ class wb extends SecureForm
             if (method_exists($this, "print_footer")) {
                 $this->print_footer();
             }
+            exit();
         }
-        exit();
+        
     }
 
     // Validate send email
