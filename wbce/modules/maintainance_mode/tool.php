@@ -56,8 +56,6 @@ if($doSave) {
     else                               $setError=Settings::Set ("wb_maintainance_mode", false);
     // END ACTION!! 
 
-    $setError="Dumm gelaufen";
-
     // Check if there is error, otherwise say successful
     if($setError) {
         //3rd param = false =>no auto footer, no exit
