@@ -7,66 +7,74 @@
  * @license			WTFPL
  */
 
+/*
+Info for module(tool) builders.
+Already included here :
+config.php
+framework/initialize.php
+framework/class.wb.php
+framework/class.admin.php
+framework/functions.php
+
+Admin class is initialized($admin) and header printed.
+
+Additional vars for this tool: 
+$modulePath     Path to this module directory
+$languagePath   Path to language files of this module
+$returnToTools  Url to return to generic tools page
+$returnUrl      Url for return link after saving AND for sending the form!
+$doSave         Set true if form is send
+$toolDir        Plain tool directory name like "maintainance_mode"
+$toolName       The name of the tool eg "Maintainance Mode"
+
+For language vars please take a look in the language files.
+Language files no longer need manual loading.
+
+All other vars usually abailable in Admin pages schould be available here too.
+Maybe you need to import them via global.
+
+backend.js and backend.css are automatically loaded, 
+manual loading is no longer required.
+*/
+
 //no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
-// modules need to load languages on their own ??? What a piece of shit !!!
-// loading it this way we avoid partial translation errors.
-$mpath=WB_PATH.'/modules/maintainance_mode/'; // we need this one later on too 
-$lpath=$mpath.'languages/';
-// basic EN
-require_once($lpath.'EN.php');
-// get other language if exists
-if(is_file($lpath.LANGUAGE.'.php')) 
-   require_once($lpath.LANGUAGE.'.php'); 
-
-// hopefully we dont need this ...
-/*
-// check if backend.css file needs to be included into the <body></body>
-if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH .'/modules/jsadmin/backend.css')) {
-	echo '<style type="text/css">';
-	include(WB_PATH .'/modules/jsadmin/backend.css');
-	echo "\n</style>\n";
-}
-*/
-
 // Form send , ok lets see what to do
-if(isset($_POST['save_settings']))  {
+if($doSave) {
 
-    // check if this is is no attack
-	if (!$admin->checkFTAN()) {
-		if(!$admin_header) { $admin->print_header(); }
-		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$_SERVER['REQUEST_URI']); //ends page here
-	}
+    // Check if this is is no CSRF attack or timeout.
+    if (!$admin->checkFTAN()) {
+        //3rd param = false =>no auto footer, no exit.
+	    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$returnUrl, false); 
+    }
 
-	// Include functions file
-    // not sure we need this?? We test this later.
-	require_once(WB_PATH.'/framework/functions.php');
+    // HERE THE ACTUAL ACTION IS GOING ON!!    
+    // We set the setting
+   
+    if ($admin->get_post("maintMode")) $setError=Settings::Set ("wb_maintainance_mode", true);
+    else                               $setError=Settings::Set ("wb_maintainance_mode", false);
+    // END ACTION!! 
 
+    $setError="Dumm gelaufen";
 
-    // here the actual action is going on, we set the setting
-    if ($admin->get_post("mmode")) Settings::Set ("wb_maintainance_mode", true);
-    else                           Settings::Set ("wb_maintainance_mode", false);
+    // Check if there is error, otherwise say successful
+    if($setError) {
+        //3rd param = false =>no auto footer, no exit
+	    $admin->print_error($setError, $returnUrl,false); 
+    } else {
+	    $admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl); 
+    }
 
+} else { 
 
-	// check if there is a database error, otherwise say successful
-    // this should be refined , as the functions are capable of reporting errors.
-	if(!$admin_header) { $admin->print_header(); }
-	if($database->is_error()) {
-		$admin->print_error($database->get_error(), $js_back); // ends page here
-	} else {
-		$admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/admintools/tool.php?tool=maintainance_mode'); // ends page here
-	}
-
-} 
-
-
-// Display form
+    // Display form
     // get setting from DB , as constant may not be set yet.
-	$mmode=(string)Settings::Get ("wb_maintainance_mode");
-    if ($mmode=="true") $mmode=' checked="checked" ';
-    else                $mmode='';  
+	$maintMode=(string)Settings::Get ("wb_maintainance_mode");
+    if ($maintMode=="true") $maintMode=' checked="checked" ';
+    else                $maintMode='';  
 
-    include($mpath."templates/maintainance.tpl.php");
-
+    include($modulePath."templates/maintainance.tpl.php");
+    
+}
  
