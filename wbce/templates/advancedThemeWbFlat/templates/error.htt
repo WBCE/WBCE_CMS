@@ -1,6 +1,6 @@
 <!-- BEGIN main_block -->
 <div class="alertbox">
 	<p>{MESSAGE}</p>
-<input type="button" name="submit" value="{BACK}" onclick="javascript: window.location = '{LINK}';" />
+<a href="{LINK}" ><input type="button" name="submit" id="submit" value="{BACK}" /></a>
 </div>
 <!-- END main_block -->
