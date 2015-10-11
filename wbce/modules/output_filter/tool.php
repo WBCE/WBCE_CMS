@@ -23,12 +23,7 @@ if(!defined('WB_PATH')) { throw new IllegalFileException(); }
     $modPath = str_replace('\\', '/', dirname(__FILE__)).'/';
     $msgTxt = '';
     $msgCls = 'msg-box';
-// include the modules language definitions
-    if(!is_readable($modPath.'languages/'.LANGUAGE .'.php')) {
-        require_once($modPath.'languages/EN.php');
-    } else {
-        require_once($modPath.'languages/'.LANGUAGE .'.php');
-    }
+
 // check if data was submitted
     if($doSave) {
     // take over post - arguments

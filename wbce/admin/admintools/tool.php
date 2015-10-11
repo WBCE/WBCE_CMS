@@ -22,11 +22,9 @@ $toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['to
 // 'save_settings' set or 'action'set and == 'save'
 $doSave = (isset($_POST['save_settings']) || (isset($_POST['action']) && strtolower($_POST['action']) == 'save'));
 
-// Defining some path for use in the actual admin tool
-$modulePath=WB_PATH.'/modules/maintainance_mode/'; // we need this one later on too 
-$languagePath=$modulePath.'languages/';
+// return url if something goes wrong , or back button is used
 $returnToTools = ADMIN_URL.'/admintools/index.php';
-$returnUrl= ADMIN_URL.'/admintools/tool.php?tool=maintainance_mode';
+
 
 $toolCheck = true;
 
@@ -44,6 +42,12 @@ if (isset ($_POST['admin_tools'])) {$toolCheck=false;}
 
 // all ok go for display
 if ($toolCheck) {
+
+    // Defining some path for use in the actual admin tool
+    $modulePath=WB_PATH."/modules/$toolDir/"; // we need this one later on too 
+    $languagePath=$modulePath.'languages/';    
+    $returnUrl= ADMIN_URL."/admintools/tool.php?tool=$toolDir";
+
     // create admin-object 
     $admin = new admin('admintools', 'admintools');
 
@@ -56,9 +60,13 @@ if ($toolCheck) {
 	}
 
     // Loading language files we start whith default EN
-    if(is_file($languagePath.'EN.php'))        require_once($languagePath.'EN.php');        
+    if(is_file($languagePath.'EN.php')) {
+        require_once($languagePath.'EN.php'); 
+    }        
     // Get actual language if exists
-    if(is_file($languagePath.LANGUAGE.'.php')) require_once($languagePath.LANGUAGE.'.php'); 
+    if(is_file($languagePath.LANGUAGE.'.php')) {
+        require_once($languagePath.LANGUAGE.'.php'); 
+    } 
 
     //Load actual tool
     require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
