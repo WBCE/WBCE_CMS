@@ -20,12 +20,12 @@ $toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['to
 // figure out if the form of the tool was send
 // the form needs to have exactly the right field names for this to function.
 // 'save_settings' set or 'action'set and == 'save'
-$doSave = (isset($_POST['save_settings']) || (isset($_POST['action']) && strtolower($_POST['action']) == 'save'));
+$doSave = (isset($_POST['save_settings'])|| isset($_POST['save_default']) || (isset($_POST['action']) && strtolower($_POST['action']  ) == 'save'));
 
 // return url if something goes wrong , or back button is used
 $returnToTools = ADMIN_URL.'/admintools/index.php';
 
-
+$toolError= false;
 $toolCheck = true;
 
 // test for valid tool name
@@ -47,6 +47,11 @@ if ($toolCheck) {
     $modulePath=WB_PATH."/modules/$toolDir/"; // we need this one later on too 
     $languagePath=$modulePath.'languages/';    
     $returnUrl= ADMIN_URL."/admintools/tool.php?tool=$toolDir";
+
+    // a few more helper vars (save values or reset to default settings)
+    $saveSettings= (isset($_POST['save_settings'])|| (isset($_POST['action']) && strtolower($_POST['action']  ) == 'save'));
+    $saveDefault = (isset($_POST['save_default']));
+ 
 
     // create admin-object 
     $admin = new admin('admintools', 'admintools');
@@ -79,4 +84,16 @@ if ($toolCheck) {
 	exit(0);
 }
 
+// helper Function
+function toolMsg ($setError=false, $returnUrl=ADMIN_URL.'/admintools/index.php' ){
+    global $admin;
+    global $MESSAGE;    
 
+    // Check if there is error, otherwise say successful
+    if($setError) {
+        //3rd param = false =>no auto footer, no exit
+	    $admin->print_error($setError, $returnUrl,false); 
+    } else {
+	    $admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl); 
+    }
+} 
