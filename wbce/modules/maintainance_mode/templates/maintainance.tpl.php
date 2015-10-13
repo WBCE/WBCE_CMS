@@ -1,9 +1,16 @@
 <?/*
-For automated detection of sent form the submit button needs to have 
+For automated detection if form has benn sent the submit button needs to have 
 name+id ="save_settings". (Optional ($_POST['action']) == 'save')
-For return to admintools the responsible butten mus have name+id="admin_tools".
+For return to admintools the responsible button must have name+id="admin_tools".
+And to activate default setting it heed to have name+id="save_default".
 
-$returnUrl      is used as form Action it sends the form to itself(apeform)
+$returnUrl      Is used as form Action it sends the form to itself(apeform)
+
+Language vars whit preceding MOD_ can be found in the launguage file of this module
+Other language vars are from the default WB (e.g. $TEXT or $HEADING are from the 
+WBCE language files)
+
+The default button uses a simple Javascript return confirm()for a simple "Are you sure?"
 */?>
 
     <div class="maintMode">
@@ -21,9 +28,10 @@ $returnUrl      is used as form Action it sends the form to itself(apeform)
                 <tr>
                     <td>
                         <input type="submit" name="save_settings" id="save_settings" value="<?php echo $TEXT['SAVE']; ?>" />
-                    </td>
+                     </td>
                     <td class="tdright">
-                       <input type="submit" name="admin_tools" id="admin_tools" value="<?php echo $HEADING['ADMINISTRATION_TOOLS']; ?>" />
+                        <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" id="save_default" value="<?php echo $HEADING['DEFAULT_SETTINGS']; ?>" />
+                        <input type="submit" name="admin_tools" id="admin_tools" value="<?php echo $HEADING['ADMINISTRATION_TOOLS']; ?>" />
                     </td>
                 </tr>
             </table>
