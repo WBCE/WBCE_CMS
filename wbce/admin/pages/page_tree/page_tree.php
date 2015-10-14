@@ -228,12 +228,12 @@ ob_start();
 				</td>
 				<td class="list_actions">&nbsp;
 					<?php if($canMoveUP) : ?>
-					<a href="../pages/move_up.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_UP']; ?>"><img src="{THEME_ICONS}/up_16.png" border="0" alt="/\" /></a>			
+					<a href="../pages/move_up.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_UP']; ?>"><img src="../pages/page_tree/icons/up_16.png" border="0" alt="/\" /></a>			
 					<?php endif; //$canMoveUP?>	
 				</td>
 				<td class="list_actions">
 					<?php if($canMoveDOWN) : ?>
-					<a href="../pages/move_down.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_DOWN']; ?>"><img src="{THEME_ICONS}/down_16.png" border="0" alt="\/" /></a>
+					<a href="../pages/move_down.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_DOWN']; ?>"><img src="../pages/page_tree/icons/down_16.png" border="0" alt="\/" /></a>
 					<?php endif; //$canMoveDOWN ?>
 				</td>
 				<td class="list_actions">
