@@ -1,7 +1,7 @@
 <?php
 /**
  * @category        modules
- * @package         maintainance_mode
+ * @package         Secure Form Switcher
  * @author          WBCE Project
  * @copyright       Norbert Heimsath
  * @license			WTFPL
@@ -10,6 +10,15 @@
 //no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
-Settings::Del ("wb_maintainance_mode");
-$msg = 'Mainatinance mode setting deleted, now you need to use config.php again ';
+
+$setError=Settings::Del ("wb_maintainance_mode");
+$setError=Settings::Del ("wb_secform_secret");
+$setError=Settings::Del ("wb_secform_secrettime");
+$setError=Settings::Del ("wb_secform_timeout");
+$setError=Settings::Del ("wb_secform_tokenname");
+$setError=Settings::Del ("wb_secform_usefp");
+$setError=Settings::Del ("fingerprint_with_ip_octets");
+
+
+$msg = 'Secureform switcher setting deleted, now you need to use config.php again ';
 

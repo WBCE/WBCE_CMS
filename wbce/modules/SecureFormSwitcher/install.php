@@ -1,7 +1,7 @@
 <?php
 /**
  * @category        modules
- * @package         maintainance_mode
+ * @package         Secure Form Switcher
  * @author          WBCE Project
  * @copyright       Norbert Heimsath
  * @license			WTFPL
@@ -10,6 +10,12 @@
 //no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
-Settings::Set ("wb_maintainance_mode", false);
-$msg = 'Mainatinance mode setting activated, please delete setting in your config.php';
+$setError=Settings::Set ("wb_maintainance_mode", false);
+$setError=Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg");
+$setError=Settings::Set ("wb_secform_secrettime", '86400');
+$setError=Settings::Set ("wb_secform_timeout", '7200');
+$setError=Settings::Set ("wb_secform_tokenname", 'formtoken');
+$setError=Settings::Set ("wb_secform_usefp", false);
+$setError=Settings::Set ("fingerprint_with_ip_octets", "2");
+$msg = '';
 
