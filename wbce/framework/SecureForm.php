@@ -60,7 +60,7 @@ class SecureForm
     private $_tokenname = 'formtoken';
     private $_timeout = 7200;
     private $_useipblocks = 2;
-    private $_usefingerprint = true;
+    private $_usefingerprint = false;
     private $_page_uid = "";
     private $_page_id = "";
 
