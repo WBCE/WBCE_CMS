@@ -1,7 +1,7 @@
 <?php
 /**
  * @category        modules
- * @package         Secure Form Switcher
+ * @package         Maintainance Mode
  * @author          WBCE Project
  * @copyright       Norbert Heimsath
  * @license         WTFPL

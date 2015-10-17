@@ -1,12 +1,4 @@
-<?
-/**
- * @category        modules
- * @package         Secure Form Switcher
- * @author          WBCE Project
- * @copyright       Norbert Heimsath
- * @license         WTFPL
- */
-/*
+<?/*
 For automated detection if form has benn sent the submit button needs to have 
 name+id ="save_settings". (Optional ($_POST['action']) == 'save')
 For return to admintools the responsible button must have name+id="admin_tools".
