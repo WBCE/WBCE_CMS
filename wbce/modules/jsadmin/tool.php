@@ -10,31 +10,11 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// prevent this file from being accessed directly
-/* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-	// Stop this file being access directly
-	die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
-/* -------------------------------------------------------- */
+// no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
-// check if module language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(WB_PATH .'/modules/jsadmin/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(WB_PATH .'/modules/jsadmin/languages/EN.php');
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once(WB_PATH .'/modules/jsadmin/languages/'.LANGUAGE .'.php');
-}
-/*
-// check if backend.css file needs to be included into the <body></body>
-if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH .'/modules/jsadmin/backend.css')) {
-	echo '<style type="text/css">';
-	include(WB_PATH .'/modules/jsadmin/backend.css');
-	echo "\n</style>\n";
-}
-*/
+
+
 require_once(WB_PATH.'/modules/jsadmin/jsadmin.php');
 
 // Check if user selected what add-ons to reload
@@ -42,7 +22,6 @@ if(isset($_POST['save_settings']))  {
 
 	if (!$admin->checkFTAN())
 	{
-		if(!$admin_header) { $admin->print_header(); }
 		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$_SERVER['REQUEST_URI']);
 	}
 
@@ -53,17 +32,16 @@ if(isset($_POST['save_settings']))  {
 	save_setting('mod_jsadmin_ajax_order_sections', isset($_POST['ajax_order_sections']));
    // 	echo '<div style="border: solid 2px #9c9; background: #ffd; padding: 0.5em; margin-top: 1em">'.$MESSAGE['SETTINGS_SAVED'].'</div>';
 	// check if there is a database error, otherwise say successful
-	if(!$admin_header) { $admin->print_header(); }
+	
 	if($database->is_error()) {
 		$admin->print_error($database->get_error(), $js_back);
 	} else {
-
 		$admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/admintools/tool.php?tool=jsadmin');
 	}
 
 } else {
-	// $admin->print_header();
-}
+	
+
 
 // Display form
 	$persist_order = get_setting('mod_jsadmin_persist_order', true) ? 'checked="checked"' : '';
@@ -120,4 +98,6 @@ if(isset($_POST['save_settings']))  {
    </table>
    </form>
  <?php
+ }
+ 
  }
