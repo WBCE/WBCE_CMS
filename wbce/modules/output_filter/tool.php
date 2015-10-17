@@ -24,7 +24,6 @@ if(!defined('WB_PATH')) { throw new IllegalFileException(); }
     $msgTxt = '';
     $msgCls = 'msg-box';
 
-// check if data was submitted
     if($doSave) {
     // take over post - arguments
         $data = array();
@@ -60,7 +59,7 @@ if(!defined('WB_PATH')) { throw new IllegalFileException(); }
         require_once($modPath.'filter-routines.php');
         $data = getOutputFilterSettings();
     }
-
+    // write out header if needed
     if( $msgTxt != '') {
     // write message box if needed
         echo '<div class="'.$msgCls.'">'.$msgTxt.'</div>';
