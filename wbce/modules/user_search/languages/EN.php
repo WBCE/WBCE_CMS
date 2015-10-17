@@ -69,4 +69,4 @@ $MOD_USER_SEARCH['CALENDAR']			= 'Calendar';
 $MOD_USER_SEARCH['ERASE_DATE']			= 'Erase Date';
 $MOD_USER_SEARCH['ADMIN_DISABLED']			= 'administrator edition disabled for security reasons';
 
-?>
+

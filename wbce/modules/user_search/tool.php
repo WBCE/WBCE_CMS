@@ -23,32 +23,14 @@
 
 */
 
-// this is used only indebuging mode
-$debug = false;
 
-if (true === $debug) {
-	ini_set('display_errors', 1);
-	error_reporting(E_ALL);
-}
 
 // prevent this file from being accessed directly
 defined('WB_PATH') OR die(header('Location: ../../index.php'));
 
-//	Load Language file
-$lang = (dirname(__FILE__))."/languages/". LANGUAGE .".php";
-require_once ( !file_exists($lang) ? (dirname(__FILE__))."/languages/EN.php" : $lang );
 
-// include Website Baker module functions introduced with WB 2.7
-if (!file_exists(WB_PATH . '/framework/module.functions.php')) {
-	echo '<div class="' .strtolower(basename(dirname(__FILE__))) . ' warning">';
-	echo $LANG[1]['TXT_REQUIRES_WB27'] . '</div>';
-	return;
-};
 require_once(WB_PATH . '/framework/module.functions.php');
 
-
-// Include config
-require_once('../../config.php');
 
 // include jscalendar-setup
 $jscal_use_time = true; // whether to use a clock, too
@@ -350,4 +332,4 @@ else {
 // ouput the final template
 
 $tpl->pparse('output', 'page');
-?>
+

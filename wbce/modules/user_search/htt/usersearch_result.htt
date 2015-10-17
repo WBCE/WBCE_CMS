@@ -30,8 +30,7 @@
 	<tr>
 		<td colspan="2"><br /><strong>{SHOW_RESULT}:</strong></td>
 	</tr>
-	<tr>
-		<td colspan="2">
+	
 <!-- BEGIN no_result_block -->
 {NO_RESULT}	
 <!-- END no_result_block -->
@@ -80,4 +79,4 @@
 </tr>
 </table>
 <!-- END result_table_block -->
-<form><input style="margin-top:10px; width:140px;" type="button" value="{NEW_SEARCH}" onClick="javascript:history.back();"></form>
+

@@ -72,4 +72,4 @@ $module_license = 'GNU General Public License';
 $module_description = 'This module provides a search function for the user management.';
 $module_guid = 'EE87F4AD-F675-4E44-81EE-91B8D491977B';
 
-?>
+
