@@ -88,7 +88,7 @@ if ($toolCheck) {
 function toolMsg ($setError=false, $returnUrl="" ){
     global $admin;
     global $MESSAGE;  
-    if ($returnUrl=="" ) $returnUrl=ADMIN_URL.'/admintools/index.php';
+    if ($returnUrl=="" )   $returnUrl=ADMIN_URL.'/admintools/index.php';
 
     // Check if there is error, otherwise say successful
     if($setError) {
