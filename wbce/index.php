@@ -120,8 +120,7 @@ if($query_this_module->numRows() == 1)  // This is a menu_link. Get link of targ
 //Get pagecontent in buffer for Droplets and/or Filter operations
 ob_start();
 require(WB_PATH.'/templates/'.TEMPLATE.'/index.php');
-$output = ob_get_contents();
-if(ob_get_length() > 0) { ob_end_clean(); }
+$output = ob_get_clean();
 // execute frontend output filters
 	if(file_exists(WB_PATH .'/modules/output_filter/index.php')) {
 		include_once(WB_PATH .'/modules/output_filter/index.php');
