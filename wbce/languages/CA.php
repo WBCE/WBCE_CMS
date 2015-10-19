@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Max lines of excerpt';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Trameses M&#224;x. Per Hora';
 $TEXT['MEDIA_DIRECTORY'] = 'Directori de Fitxers';
 $TEXT['MENU'] = 'Men&#250;';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'T&#237;tol del Men&#250;';

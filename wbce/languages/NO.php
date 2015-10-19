@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Maksimalt antall linjer for utdrag';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Maks Avgivelser Per Time';
 $TEXT['MEDIA_DIRECTORY'] = 'Media Katalog';
 $TEXT['MENU'] = 'Meny';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Meny Tittel';

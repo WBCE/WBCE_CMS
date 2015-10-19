@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Maximaal aantal gelijktijdige zoekacties';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Maximaal aantal inzendingen per uur';
 $TEXT['MEDIA_DIRECTORY'] = 'Media-map';
 $TEXT['MENU'] = 'Menu';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-icoon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-icoon hover';
 $TEXT['MENU_TITLE'] = 'Menutitel';

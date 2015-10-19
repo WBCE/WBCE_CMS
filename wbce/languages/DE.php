@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Max. Anzahl Zitate';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. Eintragungen pro Stunde';
 $TEXT['MEDIA_DIRECTORY'] = 'Medienverzeichnis';
 $TEXT['MENU'] = 'Men&#252;';
+$TEXT['FILENAME'] = 'Dateiname';
 $TEXT['MENU_ICON_0'] = 'Men&#252;-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Men&#252;-Icon mouseover';
 $TEXT['MENU_TITLE'] = 'Men&#252;titel';

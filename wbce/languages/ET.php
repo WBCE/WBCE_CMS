@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Max lines of excerpt';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. Kaast&#246;id Tunnis';
 $TEXT['MEDIA_DIRECTORY'] = 'Meedia Kataloog';
 $TEXT['MENU'] = 'Men&#252;&#252;';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Men&#252;&#252; Pealkiri';

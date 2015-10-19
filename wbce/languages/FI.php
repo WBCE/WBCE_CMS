@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Max lines of excerpt';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Salasana l&#228;hetet&#228;&#228;n vain kerran tunnissa';
 $TEXT['MEDIA_DIRECTORY'] = 'Tiedostokansio';
 $TEXT['MENU'] = 'Valikko';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Valikkoteksti';

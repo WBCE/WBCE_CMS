@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Nombre maximum de ligne &#224; retourner';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Maximum de soumissions par heure';
 $TEXT['MEDIA_DIRECTORY'] = 'R&#233;pertoire des fichiers media';
 $TEXT['MENU'] = 'Menu';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Titre du menu';

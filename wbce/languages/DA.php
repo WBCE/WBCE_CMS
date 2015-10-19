@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Max linier i udsnit';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. indsendte bidrag pr. time';
 $TEXT['MEDIA_DIRECTORY'] = 'Mediebibliotek (mappe)';
 $TEXT['MENU'] = 'Menu';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-ikon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-ikon sv&#230;rende';
 $TEXT['MENU_TITLE'] = 'Menutitel';

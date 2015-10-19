@@ -193,6 +193,7 @@ $TEXT['MAX_EXCERPT'] = 'Maximum tal&#225;lat';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. bek&#252;ld&#233;s &#243;r&#225;nk&#233;nt';
 $TEXT['MEDIA_DIRECTORY'] = 'M&#233;dia k&#246;nyvt&#225;r';
 $TEXT['MENU'] = 'Men&#252;';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Menu C&#237;m';
