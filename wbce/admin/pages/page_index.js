@@ -22,9 +22,9 @@ function toggle_visibility(id){
 	}
 }
 var plus = new Image;
-plus.src = "page_tree/icons/expand.png";
+plus.src = THEME_URL+"/images/expand.png";
 var minus = new Image;
-minus.src = "page_tree/icons/collapse.png";
+minus.src = THEME_URL+"/images/collapse.png";
 function toggle_plus_minus(id) {
 	var img_src = document.images['plus_minus_' + id].src;
 	if(img_src == plus.src) {
@@ -39,8 +39,8 @@ if(typeof jQuery != 'undefined') {
         // fix for Flat Theme
         $('div.pages_list table td').css('padding-top',0).css('padding-bottom',0);
         $('table.pages_view tbody tr td').css('line-height','12px');
-        $('table.pages_view tbody tr td.list_menu_title').css('width','310px');
-        $('table.pages_view tbody tr td.list_page_id').css('width','68px');
-        $('td.header_list_page_id').css('width','60px').next('td').css('width','78px');
+        //$('table.pages_view tbody tr td.list_menu_title').css('width','300px');
+        //$('table.pages_view tbody tr td.list_page_id').css('width','68px');
+        //$('td.header_list_page_id').css('width','60px').next('td').css('width','78px');
     });
 }

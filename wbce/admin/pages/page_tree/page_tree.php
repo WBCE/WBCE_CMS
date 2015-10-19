@@ -121,7 +121,7 @@ function draw_pagetree($pages_list) {
 			'{PAGE_ID}'			=> $p['page_id'],
 			'{pageIDKEY}'		=> $admin->getIDKEY($p['page_id']),
 			'{PARENT}'			=> $p['parent'],
-			'{status_icon}' 	=> '../pages/page_tree/icons/'.$p['visibility'].'_16.png',
+			'{status_icon}' 	=> '{THEME_ICONS}/'.$p['visibility'].'_16.png',
 			'{status_hint}' 	=> $TEXT['VISIBILITY'].': '.$TEXT[strtoupper($p['visibility'])],
 			'{section_icon}' 	=> isset($sectionICON) ? $sectionICON : '',
 			'{modifyPageURL}' 	=> '../pages/modify.php?page_id='.$p['page_id'],
@@ -129,7 +129,8 @@ function draw_pagetree($pages_list) {
 			'{modifySettingsURL}' => '../pages/settings.php?page_id='.$p['page_id'],
 			'{restoreURL}' 		=> '../pages/restore.php?page_id='.$p['page_id'],
 			'{THEME_ICONS}'		=> THEME_URL.'/images', // move_up/_down
-			'{padding_left}'	=> 'padding-left: '.(($p['level'] > 0) ? $p['level']*20 :'5').'px;'			
+			'{padding_left}'	=> 'padding-left: '.(($p['level'] > 0) ? $p['level']*28 :'5').'px;',			
+			'{padpix}'          => 400-(($p['level'] > 0) ? $p['level']*28 :'5')
 		);			
 		
 /**
@@ -141,22 +142,22 @@ ob_start();
 	<li class="p{PARENT}">
 		<table class="pages_view" cellspacing="0" cellpadding="0" border="0">
 			<tr>				
-				<td style="width:26px;{padding_left}">
+				<td style="width:26px; {padding_left}">
 					<?php if($expandable == true): ?>
-					<a href="javascript: toggle_visibility('p{PAGE_ID}');" title="<?php echo $plus_minusTitle; ?>"><img src="../pages/page_tree/icons/<?php echo $plus_minusIcon; ?>.png" onclick="toggle_plus_minus('{PAGE_ID}');" name="plus_minus_{PAGE_ID}" border="0" alt="<?php echo $plus_minusAlt; ?>" /></a>
+					<a href="javascript: toggle_visibility('p{PAGE_ID}');" title="<?php echo $plus_minusTitle; ?>"><img src="{THEME_ICONS}/<?php echo $plus_minusIcon; ?>.png" onclick="toggle_plus_minus('{PAGE_ID}');" name="plus_minus_{PAGE_ID}" border="0" alt="<?php echo $plus_minusAlt; ?>" /></a>
 					<?php else: ?>
-					<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />	
+					<img src="{THEME_ICONS}/empty.png" border="0" alt="" />	
 					<?php endif; ?>
 					&nbsp;
 				</td>
-				<td class="list_menu_title" >
+				<td class="list_menu_title1" style="width:{padpix}px; overflow:hidden;" >					
+					<div style="padding-left:25px; background-image:url({status_icon}); background-repeat:no-repeat; background-position:top left; line-height:20px;">
 					
-					<a<?php if($canModifyPage) : ?> href="{modifyPageURL}" title="{status_hint}"<?php endif; ?>>
-					<img src="{status_icon}" alt="[{status_hint}]" /></a>&nbsp;
 					<a<?php if($canModifyPage) : ?> href="{modifyPageURL}" title="<?php echo $HEADING['MODIFY_PAGE']; ?>"<?php endif; ?>>					
-					<b>{MENU_TITLE}</b></a>										
+					<b>{MENU_TITLE}</b></a>								
+					</div>	
 				</td>		
-				<td class="list_page_title">
+				<td class="list_page_title" >
 					<?php if(!$menu_link): ?>
 					<small>{PAGE_TITLE}</small>
 					<?php endif; ?>
@@ -172,12 +173,12 @@ ob_start();
 					if($len = $database->get_one("SELECT MAX(LENGTH(working_content)) FROM `".TABLE_PREFIX."mod_wysiwyg` WHERE `page_id` = '{$p['page_id']}' ")):
 						if($len !=NULL && $len !=0): ?>
 						<a href="../pages/modify.php?page_id={PAGE_ID}&status=workingcopy" title="<?php echo "Working-Copy"; ?>">
-							<small><img src="../pages/page_tree/icons/wysiwyg_copy_16.png" border="0" alt="[<?php echo "Working-Copy"; ?>]" /></small>	
+							<small><img src="{THEME_ICONS}/wysiwyg_copy_16.png" border="0" alt="[<?php echo "Working-Copy"; ?>]" /></small>	
 						</a>						
 						<?php endif; 
 					endif; 
 				else: ?>
-					<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />
+					<img src="{THEME_ICONS}/empty.png" border="0" alt="" />
 				<?php endif; // $canModifyPage ?>	
 				</td>
 				<?php endif; //$use_working_copy ?>
@@ -186,32 +187,32 @@ ob_start();
 				<div style="background-color:#FDFEFF; border:1px solid #869F6D;margin:1px;padding-bottom:2px;text-align:center; white-space:nowrap;">
 					<small>
 				<?php if($canModifyPage) : ?>				
-					<a href="{modifyPageURL}" title="<?php echo $HEADING['MODIFY_PAGE']; ?>"><img src="../pages/page_tree/icons/modify_16.png" border="0" alt="[<?php echo $TEXT['MODIFY']; ?>]" /></a>
+					<a href="{modifyPageURL}" title="<?php echo $HEADING['MODIFY_PAGE']; ?>"><img src="{THEME_ICONS}/modify_16.png" border="0" alt="[<?php echo $TEXT['MODIFY']; ?>]" /></a>
 				<?php else: ?>
-					<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />						
+					<img src="{THEME_ICONS}/empty.png" border="0" alt="" />						
 				<?php endif; //$canModifyPage
 				
 				if($p['visibility'] != 'deleted') : ?>
 					<?php if($canModifySettings) : ?>
-					<a href="{modifySettingsURL}" title="<?php echo $HEADING['MODIFY_PAGE_SETTINGS']; ?>"><img src="../pages/page_tree/icons/options_16.png" border="0" alt="[<?php echo $TEXT['SETTINGS']; ?>]" /></a>				 			
+					<a href="{modifySettingsURL}" title="<?php echo $HEADING['MODIFY_PAGE_SETTINGS']; ?>"><img src="{THEME_ICONS}/options_16.png" border="0" alt="[<?php echo $TEXT['SETTINGS']; ?>]" /></a>				 			
 					<?php else: ?>
-					<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />	
+					<img src="{THEME_ICONS}/empty.png" border="0" alt="" />	
 					<?php endif; //$canModifySettings?
 					elseif($p['visibility'] == 'deleted') :?>			
-					<a href="{restoreURL}" title="<?php echo $TEXT['RESTORE']; ?>"><img src="../pages/page_tree/icons/restore_16.png" border="0" alt="[<?php echo $TEXT['RESTORE']; ?>]" /></a>
+					<a href="{restoreURL}" title="<?php echo $TEXT['RESTORE']; ?>"><img src="{THEME_ICONS}/restore_16.png" border="0" alt="[<?php echo $TEXT['RESTORE']; ?>]" /></a>
 				<?php else: ?>
-					<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />	
+					<img src="{THEME_ICONS}/empty.png" border="0" alt="" />	
 				<?php endif; //$p['visibility'] != 'deleted'
 					
 					// only show manageSections Link if we have to!
 					//menu-link?
 					if(isset($menu_link) && $menu_link == true):?>
-					<img src="../pages/page_tree/icons/menu_link.png" border="0" alt="[menu-link]" title="Menu Link" style="cursor:default;" />
+					<img src="{THEME_ICONS}/menu_link.png" border="0" alt="[menu-link]" title="Menu Link" style="cursor:default;" />
 					<?php 					
 					elseif ($canManageSections): ?>
-					<a href="<?php echo $sectionsURL; ?>" title="<?php echo $HEADING['MANAGE_SECTIONS']; ?>"><img src="../pages/page_tree/icons/{section_icon}" border="0" alt="[<?php echo $HEADING['MANAGE_SECTIONS']; ?>]" /></a>				
+					<a href="<?php echo $sectionsURL; ?>" title="<?php echo $HEADING['MANAGE_SECTIONS']; ?>"><img src="{THEME_ICONS}/{section_icon}" border="0" alt="[<?php echo $HEADING['MANAGE_SECTIONS']; ?>]" /></a>				
 				<?php else: ?>
-					<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />	
+					<img src="{THEME_ICONS}/empty.png" border="0" alt="" />	
 				<?php endif; ?>
 					</small>
 				</div>
@@ -219,33 +220,33 @@ ob_start();
 				<td class="list_actions">
 					<small><nobr>&nbsp;
 						<?php if($p['visibility'] != 'deleted' && $p['visibility'] != 'none') : ?>
-						<a href="{frontendViewURL}" target="_blank" title="<?php echo $TEXT['VIEW']; ?> (Frontend)"><img src="../pages/page_tree/icons/view_16.png" border="0" alt="[<?php echo $TEXT['VIEW']; ?>]" /></a>
+						<a href="{frontendViewURL}" target="_blank" title="<?php echo $TEXT['VIEW']; ?> (Frontend)"><img src="{THEME_ICONS}/view_16.png" border="0" alt="[<?php echo $TEXT['VIEW']; ?>]" /></a>
 						<?php else: ?>
-						<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />	
+						<img src="{THEME_ICONS}/empty.png" border="0" alt="" />	
 						<?php endif; //$p['visibility'] != 'deleted' && $p['visibility'] != 'none' ?>
 						&nbsp;&nbsp;</nobr>						
 					</small>
 				</td>
 				<td class="list_actions">&nbsp;
 					<?php if($canMoveUP) : ?>
-					<a href="../pages/move_up.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_UP']; ?>"><img src="../pages/page_tree/icons/up_16.png" border="0" alt="/\" /></a>			
+					<a href="../pages/move_up.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_UP']; ?>"><img src="{THEME_ICONS}/up_16.png" border="0" alt="/\" /></a>			
 					<?php endif; //$canMoveUP?>	
 				</td>
 				<td class="list_actions">
 					<?php if($canMoveDOWN) : ?>
-					<a href="../pages/move_down.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_DOWN']; ?>"><img src="../pages/page_tree/icons/down_16.png" border="0" alt="\/" /></a>
+					<a href="../pages/move_down.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_DOWN']; ?>"><img src="{THEME_ICONS}/down_16.png" border="0" alt="\/" /></a>
 					<?php endif; //$canMoveDOWN ?>
 				</td>
 				<td class="list_actions">
 					<?php if($canDeleteAndModify) : ?>
-					<a href="javascript:confirm_link('{MENU_TITLE}\n\n\t<?php echo $MESSAGE['PAGES_DELETE_CONFIRM']; ?>?','../pages/delete.php?page_id={pageIDKEY}');" title="<?php echo $TEXT['DELETE']; ?>"><img src="../pages/page_tree/icons/delete_16.png" border="0" alt="[x]" /></a>
+					<a href="javascript:confirm_link('{MENU_TITLE}\n\n\t<?php echo $MESSAGE['PAGES_DELETE_CONFIRM']; ?>?','../pages/delete.php?page_id={pageIDKEY}');" title="<?php echo $TEXT['DELETE']; ?>"><img src="{THEME_ICONS}/delete_16.png" border="0" alt="[x]" /></a>
 					<?php else: ?>
-					<img src="../pages/page_tree/icons/empty.gif" border="0" alt="" />
+					<img src="{THEME_ICONS}/empty.png" border="0" alt="" />
 					<?php endif; //canDeleteAndModify?>
 				</td><td></td>
 				<td class="list_actions">
 				<?php if($canAddChild) : ?>
-					<a href="javascript:add_child_page('{PAGE_ID}');" title="<?php echo $HEADING['ADD_CHILD_PAGE']; ?>"><img src="../pages/page_tree/icons/add_child.png" name="addpage_{PAGE_ID}" border="0" alt="[+]" /></a>					
+					<a href="javascript:add_child_page('{PAGE_ID}');" title="<?php echo $HEADING['ADD_CHILD_PAGE']; ?>"><img src="{THEME_ICONS}/add_child.png" name="addpage_{PAGE_ID}" border="0" alt="[+]" /></a>					
 				<?php endif; //$canAddChild ?>
 				</td>	
 			</tr>
@@ -294,15 +295,14 @@ else
 	echo '<div style="background-color:#E6F4D9; border:1px solid;margin:4px;padding:4px;text-align:center;">('.$TEXT['NONE_FOUND'].')</div>';
 ?>
 <span style="float:right;"><?php echo $MENU['PAGES'];?>: <?php echo $number_all_pages; ?>&nbsp;</span>
-<?php $visibility_legend = array('public' => '428837',	'hidden'=> '9B0808',	'registered'=> 'A96807',	'private'=> '086A97',	'none'=> 'AB3334');
-	if (PAGE_TRASH == 'inline')
-	$visibility_legend['deleted'] = '2A3540';	
+<?php $visibility_legend = array('public','hidden','registered','private','none','deleted');
+	
 ?>
 <div style="border-top: solid 2px #D5DDE7;margin-top:20px;padding:4px;" class="pages_legend">
 <strong><?php echo $TEXT['VISIBILITY'] ?> (<?php echo $MENU['PAGES'];?>): </strong>
 <?php 
-	foreach ($visibility_legend as $icon=>$color)
-		echo '&nbsp;<span style="font-weight:normal;color:#'.$color.'"><img src="../pages/page_tree/icons/'.$icon.'_16.png" alt=""/>&nbsp;'.ucfirst($TEXT[strtoupper($icon)]).'</span>&nbsp;'; 
+	foreach ($visibility_legend as $icon)
+		echo '&nbsp;<img src="'.THEME_URL.'/images/'.$icon.'_16.png" alt=""/>&nbsp;'.ucfirst($TEXT[strtoupper($icon)]).'&nbsp;'; 
 
 if(isset($use_dragdrop_switch) && $use_dragdrop_switch == TRUE){
 	$query_order_pages = "SELECT `value` FROM `".TABLE_PREFIX."mod_jsadmin` WHERE `name` = 'mod_jsadmin_ajax_order_pages'";
@@ -315,9 +315,10 @@ if(isset($use_dragdrop_switch) && $use_dragdrop_switch == TRUE){
 		$TXT_ENABLE = $TEXT['ACTIVE'];
 	}
 ?> 	
+
 <span style="float:right;">
 	<button style="width:140px;" title="Drag&amp;Drop" onclick="javascript:window.location='<?php echo(ADMIN_URL); ?>/pages/page_tree/activate_dragdrop.php?<?php echo '&dd='.$set_dd; ?>';">
-		<img src="../pages/page_tree/icons/drag.gif" alt="" border="0" /> <?php echo $TXT_ENABLE; ?>
+		<img src="{THEME_ICONS}/drag.gif" alt="" border="0" /> <?php echo $TXT_ENABLE; ?>
 	</button>
 </span>
 <?php 
