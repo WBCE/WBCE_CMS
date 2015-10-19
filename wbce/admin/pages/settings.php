@@ -89,11 +89,20 @@ $template->set_file('page', 'pages_settings.htt');
 $template->set_block('page', 'main_block', 'main');
 $template->set_var('FTAN', $admin->getFTAN());
 
+// just get the last part of the link , everything behind last /
+$pos = strrpos($results_array['link'],"/");
+$len = strlen($results_array['link']);
+$cut = $pos - $len +1 ;
+$restlink =substr($results_array['link'], $cut);
+
+
 $template->set_var(array(
                 'PAGE_ID' => $results_array['page_id'],
                 // 'PAGE_IDKEY' => $admin->getIDKEY($results_array['page_id']),
                 'PAGE_IDKEY' => $results_array['page_id'],
                 'PAGE_TITLE' => ($results_array['page_title']),
+                'LINK_VALUE' => ($restlink),              
+                'PAGE_EXTENSION' => (PAGE_EXTENSION),               
                 'MENU_TITLE' => ($results_array['menu_title']),
                 'DESCRIPTION' => ($results_array['description']),
                 'KEYWORDS' => ($results_array['keywords']),
@@ -581,6 +590,7 @@ $template->set_var(array(
                 'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
                 'TEXT_PAGE_TITLE' => $TEXT['PAGE_TITLE'],
                 'TEXT_MENU_TITLE' => $TEXT['MENU_TITLE'],
+                'TEXT_FILENAME' => $TEXT['FILENAME'],
                 'TEXT_TYPE' => $TEXT['TYPE'],
                 'TEXT_MENU' => $TEXT['MENU'],
                 'TEXT_PARENT' => $TEXT['PARENT'],

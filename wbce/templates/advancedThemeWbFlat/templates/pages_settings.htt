@@ -87,6 +87,12 @@
 			<input type="text" name="menu_title" value="{MENU_TITLE}" style="width: 232px;" />
 		</td>
 	</tr>
+    <tr>
+	    <td width="100" height="20">{TEXT_FILENAME}</td>
+	    <td width="240" height="20">
+		    <input type="text" name="link" value="{LINK_VALUE}" style="width:400px !IMPORTANT;" />{PAGE_EXTENSION}
+	    </td>
+    </tr>
 	<tr>
 		<td width="100">{TEXT_PARENT}:</td>
 		<td width="240">

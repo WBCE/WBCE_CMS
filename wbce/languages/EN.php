@@ -190,6 +190,7 @@ $TEXT['MAX_EXCERPT'] = 'Max lines of excerpt';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. Submissions Per Hour';
 $TEXT['MEDIA_DIRECTORY'] = 'Media Directory';
 $TEXT['MENU'] = 'Menu';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Menu Title';
