@@ -975,10 +975,11 @@ div.pages_list table td {
 }
 div.pages_list table td.list_actions {
   width: 30px;
+  height:20px;
   text-align: left;
 }
 div.pages_list table td.list_actions img {
-  display: block;
+
 }
 div.pages_list table tr {
   border-bottom: 3px solid transparent;
@@ -1832,12 +1833,10 @@ iframe#wb_informationcenter {
 }
 .themebox .tb_content {
   position: relative;
-  /*min-height: 120px;*/
+  min-height: 120px;
   margin-left: 120px;
   padding: 24px 32px 36px 16px;
   color: #ffffff;
-  height:220px; 
-  overflow:hidden;
 }
 .themebox .tb_content h1, .themebox .tb_content h2, .themebox .tb_content h3, .themebox .tb_content h4, .themebox .tb_content h5, .themebox .tb_content h6 {
   font-weight: normal;
