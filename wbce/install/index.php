@@ -284,6 +284,18 @@ if (!isset($_SESSION['config_rename'])) {
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
 ?></td>
         </tr>
+        <tr>
+            <td style="color: #666666;"><?php print $wb_root?>/config/</td>
+            <td><?php if (is_writable('../config/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../config/')) {
+    $installFlag = false;
+    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
+?></td>
+            <td style="color: #666666;"><?php print $wb_root?>/var/</td>
+            <td><?php if (is_writable('../var/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../var/')) {
+    $installFlag = false;
+    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
+?></td>
+        </tr>
         </tbody>
         </table>
 <?php if ($installFlag == true) {
