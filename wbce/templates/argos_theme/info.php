@@ -30,9 +30,9 @@
 $template_directory = 'argos_theme';
 $template_name = 'Argos Theme';
 $template_function = 'theme';
-$template_version = '1.7.4';
+$template_version = '1.7.5';
 $template_platform = '2.8.3';
-$template_author = 'Jurgen Nijhuis (Argos Media) & Ruud Eisinga';
-$template_license = '<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>';
+$template_author = 'Jurgen Nijhuis (Argos Media) & Ruud Eisinga, Florian Meerwinck';
+$template_license = '<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>. Icons by <a href="http://www.fatcow.com/free-icons">Fat Cow</a> CC-BY-3.0';
 $template_license_terms = '-';
-$template_description = 'Enhanced backend theme for Website Baker 2.8.';
+$template_description = 'Enhanced backend theme for WBCE 1.1';
