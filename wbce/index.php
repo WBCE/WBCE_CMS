@@ -65,6 +65,21 @@ ob_start();
 require WB_PATH . '/templates/' . TEMPLATE . '/index.php';
 $output = ob_get_contents();
 if (ob_get_length() > 0) {ob_end_clean();}
+
+
+// OPF hook ,Load OutputFilter functions
+if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
+    require_once(WB_PATH .'/modules/outputfilter_dashboard/functions.php');
+    // use 'cache' instead of 'nocache' to enable page-cache.
+    // Do not use 'cache' in case you use dynamic contents (e.g. snippets)!
+    opf_controller('init', 'nocache');
+} 
+// apply outputfilter
+if(function_exists('opf_apply_filters')) {
+    $output = opf_controller('page', $output);
+}
+
+
 // execute frontend output filters
 if (file_exists(WB_PATH . '/modules/output_filter/index.php')) {
     include_once WB_PATH . '/modules/output_filter/index.php';

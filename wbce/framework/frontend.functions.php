@@ -334,6 +334,12 @@ if (!function_exists('page_content')) {
                     ob_start(); // fetch original content
                     require WB_PATH . '/modules/' . $module . '/view.php';
                     $content = ob_get_clean();
+
+                    //OPF hook
+                    if(function_exists('opf_apply_filters')) {
+                        $content = opf_controller('section', $content, $module, $page_id, $section_id);
+                    }
+
                 } else {
                     continue;
                 }
@@ -346,8 +352,14 @@ if (!function_exists('page_content')) {
                     }
                     echo search_highlight($content, $arr_string);
                 } else {
+
+                    // OPF Hook ,Apply Filters
+                    if(function_exists('opf_apply_filters')) {
+                       $content = opf_controller('special', $content);
+                    }
+
                     echo PHP_EOL . $sec_anchor . PHP_EOL . $content;
-                }
+                }                                  
             }
         } else {
             require PAGE_CONTENT;
