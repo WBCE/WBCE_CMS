@@ -40,7 +40,6 @@
               <input type="password" maxlength="{MAX_PASSWORD_LEN}" name="{PASSWORD_FIELDNAME}" style="width: 180px;" />
             </td>
           </tr>
-         
           <tr>
             <td>&nbsp;</td>
             <td>

@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
+@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro);
 html { overflow :-moz-scrollbars-vertical; /* Force firefox to always show room for a vertical scrollbar */ }
 body,td,th,input,textarea { font-family :'Source Sans Pro',verdana,arial,helvetica,sans-serif; font-size :13px; color :#333333; }
 body { background :url(images/background.jpg) #f9f9f9 0 0 repeat-x; margin :0;  }
