@@ -12,8 +12,161 @@
 
 // Stop execution if PHP version is too old
 if (version_compare(PHP_VERSION, '5.3.6', '<')) {
-    throw new Exception('PHP-' . PHP_VERSION . ' found, but at last PHP-5.3.6 required !!');
+    die ('PHP-' . PHP_VERSION . ' found, but at last PHP-5.3.6 required !!');
 }
+
+// disable MAgic quotes if php version is below 5.4.0.
+// Since  5.4.0 magic quotes is removed entirely
+if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+    @ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
+}
+
+if (!defined('ADMIN_DIRECTORY')) {define('ADMIN_DIRECTORY', 'admin');}
+if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
+    die('Invalid admin-directory: ' . ADMIN_DIRECTORY);
+}
+
+if (!defined('ADMIN_URL')) {define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);}
+if (!defined('WB_PATH')) {define('WB_PATH', dirname(dirname(__FILE__)));}
+if (!defined('ADMIN_PATH')) {define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);}
+
+// sanitize $_SERVER['HTTP_REFERER']
+SanitizeHttpReferer(WB_URL);
+date_default_timezone_set('UTC');
+
+// register WB Autoloader 
+require WB_PATH . '/framework/class.autoload.php';
+WbAuto::AddDir("/framework/");
+WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
+WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
+
+
+// register TWIG autoloader ---
+require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
+// register PHPMailer autoloader ---
+require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
+
+// Create database class
+$database = new database();
+
+// get all settings
+Settings::Setup ();
+
+// some resulting constants need to be set manually 
+@define('DO_NOT_TRACK', (isset($_SERVER['HTTP_DNT'])));
+$string_file_mode = STRING_FILE_MODE;
+@define('OCTAL_FILE_MODE', (int) octdec($string_file_mode));
+$string_dir_mode = STRING_DIR_MODE;
+@define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
+
+
+// this neet to be removed and moved to normal Settings::
+if (!defined("WB_INSTALL_PROCESS")) {
+    // get CAPTCHA and ASP settings
+    $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'mod_captcha_control`';
+    if (($get_settings = $database->query($sql)) &&
+        ($setting = $get_settings->fetchRow(MYSQLI_ASSOC))
+    ) {
+        @define('ENABLED_CAPTCHA', (($setting['enabled_captcha'] == '1') ? true : false));
+        @define('ENABLED_ASP', (($setting['enabled_asp'] == '1') ? true : false));
+        @define('CAPTCHA_TYPE', $setting['captcha_type']);
+        @define('ASP_SESSION_MIN_AGE', (int) $setting['asp_session_min_age']);
+        @define('ASP_VIEW_MIN_AGE', (int) $setting['asp_view_min_age']);
+        @define('ASP_INPUT_MIN_AGE', (int) $setting['asp_input_min_age']);
+    } else {
+        throw new RuntimeException('CAPTCHA-Settings not found');
+    }
+}
+
+// set error-reporting
+if (intval(ER_LEVEL) > 0) {
+    error_reporting(ER_LEVEL);
+    ini_set('display_errors', 1);   
+}
+
+// Start a session
+if (!defined('SESSION_STARTED')) {
+    session_name(APP_NAME . '-sid');
+    @session_start();
+    define('SESSION_STARTED', true);
+}
+
+if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
+    $_SESSION['session_started'] = time();
+}
+
+// Get users language
+if (
+    isset($_GET['lang']) and
+    $_GET['lang'] != '' and
+    !is_numeric($_GET['lang']) and
+    strlen($_GET['lang']) == 2
+) {
+    define('LANGUAGE', strtoupper($_GET['lang']));
+    $_SESSION['LANGUAGE'] = LANGUAGE;
+} else {
+    if (isset($_SESSION['LANGUAGE']) and $_SESSION['LANGUAGE'] != '') {
+        define('LANGUAGE', $_SESSION['LANGUAGE']);
+    } else {
+        define('LANGUAGE', DEFAULT_LANGUAGE);
+    }
+}
+
+// Load default language file so even incomplete languagefiles display at least the english text
+if (!file_exists(WB_PATH . '/languages/EN.php')) {
+    exit('Error loading default language file (EN), please check configuration and file');
+} else {
+    require_once WB_PATH . '/languages/EN.php';
+}
+
+// Load Language file
+if (!file_exists(WB_PATH . '/languages/' . LANGUAGE . '.php')) {
+    exit('Error loading language file ' . LANGUAGE . ', please check configuration and file');
+} else {
+    require_once WB_PATH . '/languages/' . LANGUAGE . '.php';
+    define("LANGUAGE_LOADED", true);
+}
+
+//include old languages format  only for compatibility need to check code for old vars
+if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
+    include WB_PATH . '/languages/old.format.inc.php';
+}
+
+// Get users timezone
+if (isset($_SESSION['TIMEZONE'])) {
+    define('TIMEZONE', $_SESSION['TIMEZONE']);
+} else {
+    define('TIMEZONE', DEFAULT_TIMEZONE);
+}
+
+// Get users date format
+if (isset($_SESSION['DATE_FORMAT'])) {
+    define('DATE_FORMAT', $_SESSION['DATE_FORMAT']);
+} else {
+    define('DATE_FORMAT', DEFAULT_DATE_FORMAT);
+}
+
+// Get users time format
+if (isset($_SESSION['TIME_FORMAT'])) {
+    define('TIME_FORMAT', $_SESSION['TIME_FORMAT']);
+} else {
+    define('TIME_FORMAT', DEFAULT_TIME_FORMAT);
+}
+
+// Set Theme dir
+define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
+define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
+
+// extended wb_settings
+define('EDIT_ONE_SECTION', false);
+define('EDITOR_WIDTH', 0);
+
+
+/////////////////////////////////////////////////////////////////
+// Helper Functions
+/////////////////////////////////////////////////////////////////
 
 /**
  * sanitize $_SERVER['HTTP_REFERER']
@@ -56,173 +209,4 @@ function makePhExp($sList)
     $aList = func_get_args();
     //return preg_replace('/^(.*)$/', '/\[$1\]/s', $aList);
     return preg_replace('/^(.*)$/', '[$1]', $aList);
-}
-
-if (!defined('ADMIN_DIRECTORY')) {define('ADMIN_DIRECTORY', 'admin');}
-if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
-    throw new RuntimeException('Invalid admin-directory: ' . ADMIN_DIRECTORY);
-}
-
-if (!defined('ADMIN_URL')) {define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);}
-if (!defined('WB_PATH')) {define('WB_PATH', dirname(dirname(__FILE__)));}
-if (!defined('ADMIN_PATH')) {define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);}
-
-if (file_exists(WB_PATH . '/framework/class.database.php')) {
-
-    // sanitize $_SERVER['HTTP_REFERER']
-    SanitizeHttpReferer(WB_URL);
-    date_default_timezone_set('UTC');
-
-    // register TWIG autoloader ---
-    $sTmp = dirname(dirname(__FILE__)) . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
-    if (!class_exists('Twig_Autoloader') && is_readable($sTmp)) {
-        include $sTmp;
-        Twig_Autoloader::register();
-    }
-
-    // register PHPMailer autoloader ---
-    $sTmp = dirname(dirname(__FILE__)) . '/include/phpmailer/PHPMailerAutoload.php';
-    if (!function_exists('PHPMailerAutoload') && is_readable($sTmp)) {
-        require $sTmp;
-    }
-
-    // load database class
-    require_once WB_PATH . '/framework/class.database.php';
-
-    // Create database class
-    $database = new database();
-
-    // disable MAgic quotes if php version is below 5.4.0.
-    // Since  5.4.0 magic quotes is removed entirely
-    if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-        @ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
-    }
-
-    // load settings class
-    require_once WB_PATH . '/framework/class.settings.php';
-
-    // get all settings
-    Settings::Setup ();
-
-    // some resulting constants need to be set manually 
-    @define('DO_NOT_TRACK', (isset($_SERVER['HTTP_DNT'])));
-    $string_file_mode = STRING_FILE_MODE;
-    @define('OCTAL_FILE_MODE', (int) octdec($string_file_mode));
-    $string_dir_mode = STRING_DIR_MODE;
-    @define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
-
-    // Singletab is removed now as it never worked flawlessly
-    require_once (WB_PATH . '/framework/SecureForm.php');
-
-    if (!defined("WB_INSTALL_PROCESS")) {
-        // get CAPTCHA and ASP settings
-        $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'mod_captcha_control`';
-        if (($get_settings = $database->query($sql)) &&
-            ($setting = $get_settings->fetchRow(MYSQLI_ASSOC))
-        ) {
-            @define('ENABLED_CAPTCHA', (($setting['enabled_captcha'] == '1') ? true : false));
-            @define('ENABLED_ASP', (($setting['enabled_asp'] == '1') ? true : false));
-            @define('CAPTCHA_TYPE', $setting['captcha_type']);
-            @define('ASP_SESSION_MIN_AGE', (int) $setting['asp_session_min_age']);
-            @define('ASP_VIEW_MIN_AGE', (int) $setting['asp_view_min_age']);
-            @define('ASP_INPUT_MIN_AGE', (int) $setting['asp_input_min_age']);
-        } else {
-            throw new RuntimeException('CAPTCHA-Settings not found');
-        }
-    }
-
-    // set error-reporting
-    if (intval(ER_LEVEL) > 0) {
-        error_reporting(ER_LEVEL);
-        if (intval(ini_get('display_errors')) == 0) {
-            ini_set('display_errors', 1);
-        }
-    }
-
-    // Start a session
-    if (!defined('SESSION_STARTED')) {
-        session_name(APP_NAME . '-sid');
-        @session_start();
-        define('SESSION_STARTED', true);
-    }
-    if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
-        $_SESSION['session_started'] = time();
-    }
-
-    // Get users language
-    if (
-        isset($_GET['lang']) and
-        $_GET['lang'] != '' and
-        !is_numeric($_GET['lang']) and
-        strlen($_GET['lang']) == 2
-    ) {
-        define('LANGUAGE', strtoupper($_GET['lang']));
-        $_SESSION['LANGUAGE'] = LANGUAGE;
-    } else {
-        if (isset($_SESSION['LANGUAGE']) and $_SESSION['LANGUAGE'] != '') {
-            define('LANGUAGE', $_SESSION['LANGUAGE']);
-        } else {
-            define('LANGUAGE', DEFAULT_LANGUAGE);
-        }
-    }
-
-/*
-// Load Language file
-if(!defined('LANGUAGE_LOADED')) {
-if(!file_exists(WB_PATH.'/languages/'.LANGUAGE.'.php')) {
-exit('Error loading language file '.LANGUAGE.', please check configuration');
-} else {
-require_once(WB_PATH.'/languages/'.LANGUAGE.'.php');
-}
-}
- */
-
-    // Load default language file so even incomplete languagefiles display at least the english text
-    if (!file_exists(WB_PATH . '/languages/EN.php')) {
-        exit('Error loading default language file (EN), please check configuration');
-    } else {
-        require_once WB_PATH . '/languages/EN.php';
-    }
-
-    // Load Language file
-    if (!file_exists(WB_PATH . '/languages/' . LANGUAGE . '.php')) {
-        exit('Error loading language file ' . LANGUAGE . ', please check configuration');
-    } else {
-        require_once WB_PATH . '/languages/' . LANGUAGE . '.php';
-        define("LANGUAGE_LOADED", true);
-    }
-
-    //include old languages format  only for compatibility need to check code for old vars
-    if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
-        include WB_PATH . '/languages/old.format.inc.php';
-    }
-
-    // Get users timezone
-    if (isset($_SESSION['TIMEZONE'])) {
-        define('TIMEZONE', $_SESSION['TIMEZONE']);
-    } else {
-        define('TIMEZONE', DEFAULT_TIMEZONE);
-    }
-
-    // Get users date format
-    if (isset($_SESSION['DATE_FORMAT'])) {
-        define('DATE_FORMAT', $_SESSION['DATE_FORMAT']);
-    } else {
-        define('DATE_FORMAT', DEFAULT_DATE_FORMAT);
-    }
-
-    // Get users time format
-    if (isset($_SESSION['TIME_FORMAT'])) {
-        define('TIME_FORMAT', $_SESSION['TIME_FORMAT']);
-    } else {
-        define('TIME_FORMAT', DEFAULT_TIME_FORMAT);
-    }
-
-    // Set Theme dir
-    define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
-    define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
-
-    // extended wb_settings
-    define('EDIT_ONE_SECTION', false);
-    define('EDITOR_WIDTH', 0);
 }
