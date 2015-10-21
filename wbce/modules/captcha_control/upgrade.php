@@ -3,35 +3,34 @@
  *
  * @category        modules
  * @package         captcha_control
- * @author          WebsiteBaker Project
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: upgrade.php 1536 2011-12-10 04:22:29Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/captcha_control/upgrade.php $
- * @lastmodified    $Date: 2011-12-10 05:22:29 +0100 (Sa, 10. Dez 2011) $
- *
+ * @author          WBCE Project
+ * @copyright       Thorn, Luise Hahne, Norbert Heimsath
+ * @license         GPLv2 or any later
  */
 
-// prevent this file from being accessed directly
-/* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-	// Stop this file being access directly
-		die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
-/* -------------------------------------------------------- */
-$msg = '';
-$sTable = TABLE_PREFIX.'mod_captcha_control';
-if(($sOldType = $database->getTableEngine($sTable))) {
-	if(('myisam' != strtolower($sOldType))) {
-		if(!$database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ')) {
-			$msg = $database->get_error();
-		}
-	}
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
+
+// get CAPTCHA and ASP settings from old table
+$sql = 'SELECT * FROM `' . TABLE_PREFIX . 'mod_captcha_control`';
+if (($get_settings = $database->query($sql)) && ($setting = $get_settings->fetchRow(MYSQLI_ASSOC))) {
+    Settings::Set ("enabled_captcha", (($setting['enabled_captcha'] == '1') ? true : false));
+    Settings::Set ("enabled_asp", (($setting['enabled_asp'] == '1') ? true : false));
+    Settings::Set ("captcha_type", $setting['captcha_type']);
+    Settings::Set ("asp_session_min_age", $setting['asp_session_min_age']);
+    Settings::Set ("asp_view_min_age", $setting['asp_view_min_age']);
+    Settings::Set ("asp_input_min_age", $setting['asp_input_min_age']);
+    Settings::Set ("ct_text", $setting['ct_text']);
 } else {
-	$msg = $database->get_error();
+    die('CAPTCHA-Settings not found');
 }
-// ------------------------------------
+
+
+// Delete old tabe construct
+$table = TABLE_PREFIX .'mod_captcha_control';
+if(!$database->query("DROP TABLE `$table`")) {
+    $msg = $database->get_error();
+}
+
+

@@ -3,7 +3,7 @@
  * @category        modules
  * @package         Captcha Control
  * @author          WBCE Project
- * @copyright       Luise Hahne, Norbert Heimsath
+ * @copyright       Thorn, Luise Hahne, Norbert Heimsath
  * @license         GPLv2 or any later
  */
 
@@ -11,69 +11,57 @@
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 
-$table = TABLE_PREFIX.'mod_captcha_control';
-$js_back = ADMIN_URL.'/admintools/tool.php?tool=captcha_control';
 
 // check if data was submitted
 if(isset($_POST['save_settings'])) {
-	if (!$admin->checkFTAN())
-	{
-		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back );
+	if (!$admin->checkFTAN()){
+		//3rd param = false =>no auto footer, no exit.
+	    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$returnUrl, false); 
 	}
 	
 	// get configuration settings
-	$enabled_captcha = ($_POST['enabled_captcha'] == '1') ? '1' : '0';
-	$enabled_asp = ($_POST['enabled_asp'] == '1') ? '1' : '0';
+	$enabled_captcha = ($_POST['enabled_captcha'] == '1') ? 'true' : 'false';
+	$enabled_asp = ($_POST['enabled_asp'] == '1') ? 'true' : 'false';
 	$captcha_type = $admin->add_slashes($_POST['captcha_type']);
 	
-	// update database settings
-	$database->query("UPDATE $table SET
-		enabled_captcha = '$enabled_captcha',
-		enabled_asp = '$enabled_asp',
-		captcha_type = '$captcha_type'
-	");
+	// update settings
+    Settings::Set ("enabled_captcha", $enabled_captcha);
+    Settings::Set ("enabled_asp", $enabled_asp);
+    Settings::Set ("captcha_type", $captcha_type);
 
-	// save text-captchas
-	if($captcha_type == 'text') { // ct_text
+	// save text-captchas if they are set , so we dont forget em
+	if(isset ($_POST['text_qa'])) { 
+        // text question/answer 
 		$text_qa=$admin->add_slashes($_POST['text_qa']);
+        //check for valid phrases 
 		if(!preg_match('/### .*? ###/', $text_qa)) {
-			$database->query("UPDATE $table SET ct_text = '$text_qa'");
+            //set value
+            Settings::Set ("ct_text", $text_qa);
 		}
 	}
 	
 	// check if there is a database error, otherwise say successful
 	if($database->is_error()) {
-		$admin->print_error($database->get_error(), $js_back);
+		$admin->print_error($database->get_error(),$returnUrl, false);
 	} else {
-		$admin->print_success($MESSAGE['PAGES_SAVED'], $js_back);
+		$admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl);
 	}
 
 } else {
 	
-	// include captcha-file
+	// include captcha-file from here we get the "$useable_captchas" var
 	require_once(WB_PATH .'/include/captcha/captcha.php');
 
 	// load text-captchas
-	$text_qa='';
-	if($query = $database->query("SELECT ct_text FROM $table")) {
-		$data = $query->fetchRow();
-		$text_qa = $data['ct_text'];
-	}
-	if($text_qa == '')
+	$text_qa=CT_TEXT;
+	if($text_qa == '') {
 		$text_qa = $MOD_CAPTCHA_CONTROL['CAPTCHA_TEXT_DESC'];
+    }
 
-	// connect to database and read out captcha settings
-	if($query = $database->query("SELECT * FROM $table")) {
-		$data = $query->fetchRow();
-		$enabled_captcha = $data['enabled_captcha'];
-		$enabled_asp = $data['enabled_asp'];
-		$captcha_type = $data['captcha_type'];
-	} else {
-		// something went wrong, use dummy value
-		$enabled_captcha = '1';
-		$enabled_asp = '1';
-		$captcha_type = 'calc_text';
-	}
+	// fetch captcha settings for template
+	$enabled_captcha = ENABLED_CAPTCHA;
+	$enabled_asp = ENABLED_ASP;
+	$captcha_type = CAPTCHA_TYPE;
 	
 	//Display form
     include($modulePath."templates/captcha_control.tpl.php");

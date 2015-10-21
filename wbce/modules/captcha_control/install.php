@@ -3,24 +3,22 @@
  *
  * @category        modules
  * @package         captcha_control
- * @author          WebsiteBaker Project
- * @copyright       Ryan Djurovich
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: install.php 1536 2011-12-10 04:22:29Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/captcha_control/install.php $
- * @lastmodified    $Date: 2011-12-10 05:22:29 +0100 (Sa, 10. Dez 2011) $
- *
+ * @author          WBCE Project
+ * @copyright       Thorn, Luise Hahne, Norbert Heimsath
+ * @license         GPLv2 or any later
  */
 
-// prevent this file from being accessed directly
-/* -------------------------------------------------------- */
-if (!defined('WB_PATH')) { die('Cannot access this file directly'); }
-/* -------------------------------------------------------- */
-// create tables from sql dump file
-if (is_readable(dirname(__FILE__).'/install_struct.sql')) {
-    $database->SqlImport(dirname(__FILE__).'/install_struct.sql', TABLE_PREFIX, false);
-}
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
+// Default settings
+Settings::Set ("enabled_captcha", true);
+Settings::Set ("enabled_asp", true);
+Settings::Set ("captcha_type", "calc_text");
+Settings::Set ("asp_session_min_age", "20");
+Settings::Set ("asp_view_min_age", "10");
+Settings::Set ("asp_input_min_age", "5");
+Settings::Set ("ct_text", "");
+
+
+

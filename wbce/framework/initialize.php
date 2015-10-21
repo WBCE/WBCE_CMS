@@ -62,24 +62,6 @@ $string_dir_mode = STRING_DIR_MODE;
 @define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
 
 
-// this neet to be removed and moved to normal Settings::
-if (!defined("WB_INSTALL_PROCESS")) {
-    // get CAPTCHA and ASP settings
-    $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'mod_captcha_control`';
-    if (($get_settings = $database->query($sql)) &&
-        ($setting = $get_settings->fetchRow(MYSQLI_ASSOC))
-    ) {
-        @define('ENABLED_CAPTCHA', (($setting['enabled_captcha'] == '1') ? true : false));
-        @define('ENABLED_ASP', (($setting['enabled_asp'] == '1') ? true : false));
-        @define('CAPTCHA_TYPE', $setting['captcha_type']);
-        @define('ASP_SESSION_MIN_AGE', (int) $setting['asp_session_min_age']);
-        @define('ASP_VIEW_MIN_AGE', (int) $setting['asp_view_min_age']);
-        @define('ASP_INPUT_MIN_AGE', (int) $setting['asp_input_min_age']);
-    } else {
-        throw new RuntimeException('CAPTCHA-Settings not found');
-    }
-}
-
 // set error-reporting
 if (intval(ER_LEVEL) > 0) {
     error_reporting(ER_LEVEL);
