@@ -40,7 +40,6 @@ WbAuto::AddDir("/framework/");
 WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
 WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
 
-
 // register TWIG autoloader ---
 require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
@@ -51,7 +50,7 @@ require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
 // Create database class
 $database = new database();
 
-// get all settings
+// get all settings as constants
 Settings::Setup ();
 
 // some resulting constants need to be set manually 
@@ -60,7 +59,6 @@ $string_file_mode = STRING_FILE_MODE;
 @define('OCTAL_FILE_MODE', (int) octdec($string_file_mode));
 $string_dir_mode = STRING_DIR_MODE;
 @define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
-
 
 // set error-reporting
 if (intval(ER_LEVEL) > 0) {
@@ -111,7 +109,7 @@ if (!file_exists(WB_PATH . '/languages/' . LANGUAGE . '.php')) {
     define("LANGUAGE_LOADED", true);
 }
 
-//include old languages format  only for compatibility need to check code for old vars
+//include old languages format  only for compatibility only needed for some old modules
 if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
     include WB_PATH . '/languages/old.format.inc.php';
 }
@@ -141,7 +139,7 @@ if (isset($_SESSION['TIME_FORMAT'])) {
 define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
 define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
 
-// extended wb_settings
+// extended wb_settings this part really needs some loving as both aren't implemented fully functional
 define('EDIT_ONE_SECTION', false);
 define('EDITOR_WIDTH', 0);
 
@@ -149,6 +147,7 @@ define('EDITOR_WIDTH', 0);
 /////////////////////////////////////////////////////////////////
 // Helper Functions
 /////////////////////////////////////////////////////////////////
+// needs some loving too !!!!
 
 /**
  * sanitize $_SERVER['HTTP_REFERER']
