@@ -10,6 +10,9 @@
 //Module description
 $module_description = 'This Moduel offers a few additional security settings to refine your CSRF and form protection.';
 
+$SFS['HEADER'] =      'Security settings for CSRF protection and forms.';
+$SFS['DESCRIPTION'] = 'You can increase your security settings for your forms (CSRF protection)';
+
 // Backend variables
 $SFS['SUBMIT'] = 'Accept';
 $SFS['RESET_SETTINGS'] = 'Default setting';
