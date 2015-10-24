@@ -18,7 +18,7 @@ if (version_compare(PHP_VERSION, '5.3.6', '<')) {
 // disable MAgic quotes if php version is below 5.4.0.
 // Since  5.4.0 magic quotes is removed entirely
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-    @ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
+    ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
 }
 
 if (!defined('ADMIN_DIRECTORY')) {define('ADMIN_DIRECTORY', 'admin');}
@@ -54,11 +54,11 @@ $database = new database();
 Settings::Setup ();
 
 // some resulting constants need to be set manually 
-@define('DO_NOT_TRACK', (isset($_SERVER['HTTP_DNT'])));
+define('DO_NOT_TRACK', (isset($_SERVER['HTTP_DNT'])));
 $string_file_mode = STRING_FILE_MODE;
-@define('OCTAL_FILE_MODE', (int) octdec($string_file_mode));
+define('OCTAL_FILE_MODE', (int) octdec($string_file_mode));
 $string_dir_mode = STRING_DIR_MODE;
-@define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
+define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
 
 // set error-reporting
 if (intval(ER_LEVEL) > 0) {
@@ -69,7 +69,7 @@ if (intval(ER_LEVEL) > 0) {
 // Start a session
 if (!defined('SESSION_STARTED')) {
     session_name(APP_NAME . '-sid');
-    @session_start();
+    session_start();
     define('SESSION_STARTED', true);
 }
 
@@ -153,7 +153,7 @@ define('EDITOR_WIDTH', 0);
  * sanitize $_SERVER['HTTP_REFERER']
  * @param string $sWbUrl qualified startup URL of current application
  */
-function SanitizeHttpReferer($sWbUrl = WB_URL)
+function SanitizeHttpReferer()
 {
     $sTmpReferer = '';
     if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != '') {
