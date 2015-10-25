@@ -61,10 +61,13 @@ $string_dir_mode = STRING_DIR_MODE;
 define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
 
 // set error-reporting
-if (intval(ER_LEVEL) > 0) {
+if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
     error_reporting(ER_LEVEL);
     ini_set('display_errors', 1);   
+} else {
+    ini_set('display_errors', 0); 
 }
+
 
 // Start a session
 if (!defined('SESSION_STARTED')) {
