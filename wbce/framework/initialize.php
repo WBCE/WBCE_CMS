@@ -68,13 +68,32 @@ if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
     ini_set('display_errors', 0); 
 }
 
+// WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
+// Later we should get a nice session class instead of this improvised stuff.
+ini_set('session.gc_maxlifetime', WB_SECFORM_TIMEOUT);
+session_name(APP_NAME . '-sid');
+session_set_cookie_params(WB_SECFORM_TIMEOUT);
 
 // Start a session
 if (!defined('SESSION_STARTED')) {
-    session_name(APP_NAME . '-sid');
     session_start();
+    
+    // this is used by only by installer in index.php and save.php we will remove this later
     define('SESSION_STARTED', true);
+    
+    // New way for check if session exists
+    $_SESSION['WB'][SessionStarted]=true;
 }
+
+// make sure session never exeeds lifetime
+$now=time();
+if (isset($_SESSION['WB']['discard_after']) && $now > $_SESSION['WB']['discard_after']) {
+    // this session has worn out its welcome; kill it and start a brand new one
+    session_unset();
+    session_destroy();
+    session_start();
+}
+$_SESSION['WB']['discard_after'] = $now + WB_SECFORM_TIMEOUT;
 
 if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
     $_SESSION['session_started'] = time();
