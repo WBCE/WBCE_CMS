@@ -19,7 +19,6 @@ This class will be used to interface between the database
 and the Website Baker code
  */
 
-define('DATABASE_CLASS_LOADED', true);
 // define the old mysql consts for Backward compatibility
 if (!defined('MYSQL_ASSOC')) {
     define('MYSQL_ASSOC', 1);

@@ -22,9 +22,7 @@ if (!defined('WB_PATH')) {
     throw new IllegalFileException();
 }
 /* -------------------------------------------------------- */
-define('ORDERING_CLASS_LOADED', true);
-// Load the other required class files if they are not already loaded
-require_once WB_PATH . "/framework/class.database.php";
+
 
 class order
 {
