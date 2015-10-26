@@ -250,17 +250,6 @@ function get_home_folders()
     return $home_folders;
 }
 
-/*
- * @param object &$wb: $wb from frontend or $admin from backend
- * @return array: list of new entries
- * @description: callback remove path in files/dirs stored in array
- * @example: array_walk($array,'remove_path',PATH);
- */
-//
-function remove_path(&$path, $key, $vars = '')
-{
-    $path = str_replace($vars, '', $path);
-}
 
 /*
  * @param object &$wb: $wb from frontend or $admin from backend
