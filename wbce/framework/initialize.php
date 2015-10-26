@@ -31,7 +31,7 @@ if (!defined('WB_PATH')) {define('WB_PATH', dirname(dirname(__FILE__)));}
 if (!defined('ADMIN_PATH')) {define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);}
 
 // sanitize $_SERVER['HTTP_REFERER']
-SanitizeHttpReferer(WB_URL);
+SanitizeHttpReferer();
 date_default_timezone_set('UTC');
 
 // register WB Autoloader 
@@ -173,7 +173,6 @@ define('EDITOR_WIDTH', 0);
 
 /**
  * sanitize $_SERVER['HTTP_REFERER']
- * @param string $sWbUrl qualified startup URL of current application
  */
 function SanitizeHttpReferer()
 {
