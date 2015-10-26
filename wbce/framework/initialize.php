@@ -82,7 +82,7 @@ if (!defined('SESSION_STARTED')) {
     define('SESSION_STARTED', true);
     
     // New way for check if session exists
-    $_SESSION['WB'][SessionStarted]=true;
+    $_SESSION['WB']['SessionStarted']=true;
 }
 
 // make sure session never exeeds lifetime
