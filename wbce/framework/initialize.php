@@ -71,8 +71,9 @@ if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
 // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
 // Later we should get a nice session class instead of this improvised stuff.
 ini_set('session.gc_maxlifetime', WB_SECFORM_TIMEOUT);
+ini_set( 'session.cookie_httponly', 1 );
 session_name(APP_NAME . '-sid');
-session_set_cookie_params(WB_SECFORM_TIMEOUT);
+session_set_cookie_params(WB_SECFORM_TIMEOUT,);
 
 // Start a session
 if (!defined('SESSION_STARTED')) {
