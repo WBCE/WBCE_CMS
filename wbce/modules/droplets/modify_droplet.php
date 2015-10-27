@@ -64,7 +64,7 @@ require_once(WB_PATH . '/include/editarea/wb_wrapper_edit_area.php');
 echo registerEditArea ('contentedit','php',true,'both',true,true,600,450,'search, fullscreen, |, undo, redo, |, select_font,|, highlight, reset_highlight, |, help');
 
 $modified_when = time();
-$modified_by = ($admin->ami_group_member('1') ? 1 : $admin->get_user_id());
+$modified_by = $admin->get_user_id(); 
 $sOverviewDroplets = $TEXT['LIST_OPTIONS'].' '.$DR_TEXT['DROPLETS'];
 
 // Get header and footer
