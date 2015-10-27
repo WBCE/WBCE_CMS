@@ -30,10 +30,10 @@ $_SERVER['PHP_SELF'] = $scriptName;
             chdir(dirname($fullpag));
             include $fullpag;
         } else {
-            header('Location: ' . ERROR_PAGE);
+            header('Location: ' . ERROR_PAGE); exit;
         }
     }
 } else {
-    header('Location: ' . ERROR_PAGE);
+    header('Location: ' . ERROR_PAGE); exit;
 }
 
