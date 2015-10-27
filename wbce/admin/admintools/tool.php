@@ -80,8 +80,7 @@ if ($toolCheck) {
 	$admin->print_footer();  
 } else {
     // invalid module name requested, jump to index.php of admintools
-	header('location: '.$returnToTools);
-	exit(0);
+	header('location: '.$returnToTools); exit;
 }
 
 // helper Function

@@ -42,8 +42,7 @@ if (!isset($_GET['sessions_checked']) or $_GET['sessions_checked'] != 'true') {
     // Set session variable
     $_SESSION['session_support'] = '<span class="good">Enabled</span>';
     // Reload page
-    header('Location: index.php?sessions_checked=true');
-    exit(0);
+    header('Location: index.php?sessions_checked=true'); exit;
 } else {
     // Check if session variable has been saved after reload
     if (isset($_SESSION['session_support'])) {

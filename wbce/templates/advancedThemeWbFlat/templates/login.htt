@@ -42,11 +42,11 @@
 
 {MESSAGE}
 
-	<form name="login" class="login" action="{ACTION_URL}" method="post">
+	<form name="login" class="login" action="{ACTION_URL}" method="post" autocomplete="off">
 
 		<input type="hidden" name="url" value="{URL}" />
 		<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
-		<input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" />
+		<input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" autocomplete="off" />
 		<div id="page_login-fields">
 		
 			<span class="page_login_fieldname">{TEXT_USERNAME}:</span>

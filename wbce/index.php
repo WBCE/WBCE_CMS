@@ -37,8 +37,7 @@ if (!defined('TABLE_PREFIX')) {
     $target_url = 'http://' . $host . $uri . '/' . $file;
     $sResponse = $_SERVER['SERVER_PROTOCOL'] . ' 307 Temporary Redirect';
     header($sResponse);
-    header('Location: ' . $target_url);
-    exit; // make sure that subsequent code will not be executed
+    header('Location: ' . $target_url); exit; 
 }
 
 require_once WB_PATH . '/framework/class.frontend.php';
