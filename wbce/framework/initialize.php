@@ -73,7 +73,7 @@ if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
 ini_set('session.gc_maxlifetime', WB_SECFORM_TIMEOUT);
 ini_set( 'session.cookie_httponly', 1 );
 session_name(APP_NAME . '-sid');
-session_set_cookie_params(WB_SECFORM_TIMEOUT,);
+session_set_cookie_params(WB_SECFORM_TIMEOUT);
 
 // Start a session
 if (!defined('SESSION_STARTED')) {
