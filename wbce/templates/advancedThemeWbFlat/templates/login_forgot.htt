@@ -14,11 +14,7 @@
 	<meta name="description" content="Retrieve Login Details" />
 	<meta name="keywords" content="Retrieve Login Details" />
 
-	<!-- Load Google Fonts -->
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
-
-	<!-- Load FontAwesome(Script with Fallback-Solution at End off Page) -->
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+	<link href="<?php echo THEME_URL; ?>/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
 
 	<!-- include styles -->
 	<link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />

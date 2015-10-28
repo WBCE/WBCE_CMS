@@ -19,8 +19,8 @@
 $template_directory = 'advancedThemeWbFlat';
 $template_name = 'Advanced Theme WBCE Flat';
 $template_function = 'theme';
-$template_version = '0.4.0';
-$template_platform = '2.8.3';
+$template_version = '0.5';
+$template_platform = '1.0.0';
 $template_author = 'Yetiie';
 $template_license = '<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License (GPLv3)</a>';
 $template_license_terms = '-';

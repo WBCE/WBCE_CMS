@@ -27,8 +27,8 @@
  */
 
 // OBLIGATORY WEBSITE BAKER VARIABLES
-$template_directory = 'argos_theme';
-$template_name = 'Argos Theme';
+$template_directory = 'argos_theme_localfonts';
+$template_name = 'Enhanced Argos Theme';
 $template_function = 'theme';
 $template_version = '1.7.5';
 $template_platform = '2.8.3';

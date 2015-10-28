@@ -42,12 +42,10 @@ if ($bLoggedIn) {
 
 			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : 'utf-8';?>" />
 
-			<!-- Load Google Fonts -->
-			<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
-
+			
 
 			<!-- Load FontAwesome -->
-			<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+			<link href="<?php echo THEME_URL; ?>/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
 
 			<!-- prepare backend-css to include html -->
 			<link href="<?php echo THEME_URL;?>/theme.css" rel="stylesheet" type="text/css" media="screen" />
