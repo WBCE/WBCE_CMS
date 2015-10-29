@@ -57,7 +57,7 @@ $parent = intval($admin->get_post('parent')); // fix secunia 2010-91-3
 $visibility = $admin->get_post_escaped('visibility');
 if (!in_array($visibility, array('public', 'private', 'registered', 'hidden', 'none'))) {$visibility = 'public';} // fix secunia 2010-93-3
 $template = preg_replace('/[^a-z0-9_-]/i', "", $admin->get_post('template')); // fix secunia 2010-93-3
-$template = (($template == DEFAULT_TEMPLATE ) ? '' : $template);
+//$template = (($template == DEFAULT_TEMPLATE ) ? '' : $template);
 $target = preg_replace("/\W/", "", $admin->get_post('target'));
 $admin_groups = $admin->get_post_escaped('admin_groups');
 $viewing_groups = $admin->get_post_escaped('viewing_groups');
