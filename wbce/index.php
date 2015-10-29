@@ -1,18 +1,13 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * More Baking. Less Struggling.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        frontend
- * @package         page
- * @author          WebsiteBaker Project
- * @copyright       2009-, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: index.php 1626 2012-02-29 22:45:20Z darkviper $
- * @filesource        $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/index.php $
- * @lastmodified    $Date: 2012-02-29 23:45:20 +0100 (Mi, 29. Feb 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 $starttime = array_sum(explode(" ", microtime()));
@@ -62,9 +57,7 @@ require WB_PATH . '/framework/frontend.functions.php';
 //Get pagecontent in buffer for Droplets and/or Filter operations
 ob_start();
 require WB_PATH . '/templates/' . TEMPLATE . '/index.php';
-$output = ob_get_contents();
-if (ob_get_length() > 0) {ob_end_clean();}
-
+$output = ob_get_clean();
 
 // OPF hook ,Load OutputFilter functions
 if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
@@ -72,12 +65,12 @@ if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
     // use 'cache' instead of 'nocache' to enable page-cache.
     // Do not use 'cache' in case you use dynamic contents (e.g. snippets)!
     opf_controller('init', 'nocache');
-} 
+}
+ 
 // apply outputfilter
 if(function_exists('opf_apply_filters')) {
     $output = opf_controller('page', $output);
 }
-
 
 // execute frontend output filters
 if (file_exists(WB_PATH . '/modules/output_filter/index.php')) {
