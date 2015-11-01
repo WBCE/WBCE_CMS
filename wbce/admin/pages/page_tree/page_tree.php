@@ -116,8 +116,8 @@ function draw_pagetree($pages_list) {
 		}	
 		
 		$placeholders = array(
-			'{MENU_TITLE}'	 	=> $p['menu_title'],
-			'{PAGE_TITLE}' 		=> $p['page_title'],
+			'{MENU_TITLE}'	 	=> str_replace("%", "&#037;", $p['menu_title']),
+			'{PAGE_TITLE}' 		=> str_replace("%", "&#037;", $p['page_title']),
 			'{PAGE_ID}'			=> $p['page_id'],
 			'{pageIDKEY}'		=> $admin->getIDKEY($p['page_id']),
 			'{PARENT}'			=> $p['parent'],
@@ -270,7 +270,7 @@ ob_start();
 	$ULpage_listClass =	($p['parent'] != 0) ? ' class="page_list"' : ''; 
 	// display:block depending on cookie (JS Admin Toggle)
 	$ULblockStyle 	= 	(isset($_COOKIE['p'.$p['parent']]) && $_COOKIE['p'.$p['parent']]) ? ' style="display: block; "' : ''; 	
-	
+
 	return @sprintf($html, $p['parent'],$ULpage_listClass.$ULblockStyle);
 }
 ?>
