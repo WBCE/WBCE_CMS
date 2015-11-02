@@ -116,7 +116,7 @@ if ($hero) {
 	<div class="center">
 		<div class="row">
 			<div class="fg12 nav">
-			<a id="menu-button"><img src="<?php echo TEMPLATE_DIR;?>/menu.png" alt="" width="32" height="32" border="0" /></a>
+			<a id="menu-button"><img src="<?php echo TEMPLATE_DIR;?>/menu.png" alt="" width="32" height="32" /></a>
 			<?php
 show_menu2(
     $aMenu = 1,
@@ -192,7 +192,7 @@ if ($fullbottom) {?>
 <div class="row">
 <div class="fg12 footer"><?php echo WEBSITE_FOOTER;?></div>
 </div>
-
+</div>
 
 <script type="text/javascript">
 $(function() {
