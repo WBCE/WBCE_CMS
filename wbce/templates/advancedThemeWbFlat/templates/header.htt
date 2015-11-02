@@ -28,7 +28,7 @@
 
 
 <!-- Load FontAwesome(Script with Fallback-Solution at End off Page) -->
-<link href="<?php echo THEME_URL; ?>/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
+<link href="{THEME_URL}/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
 
 
 <!-- include styles -->

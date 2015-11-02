@@ -23,8 +23,7 @@ if (function_exists('register_frontend_modfiles')) {
     register_frontend_modfiles('jquery');
     register_frontend_modfiles('js');
 }
-?>
-	<link href='http://fonts.googleapis.com/css?family=Dosis:400,300,700' rel='stylesheet' type='text/css'>
+?>	
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link href="<?php echo TEMPLATE_DIR;?>/fitgrid.css" rel="stylesheet" type="text/css"/>
 	<link href="<?php echo TEMPLATE_DIR;?>/sm-core-css.css" rel="stylesheet" type="text/css" />

@@ -14,7 +14,7 @@
 <meta name="description" content="{TEXT_LOGIN}" />
 <meta name="keywords" content="{TEXT_LOGIN}" />
 
-<link href="<?php echo THEME_URL; ?>/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
+<link href="{THEME_URL}/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
 
 <!-- include styles -->
 <link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
