@@ -7,16 +7,27 @@ Developer - Ruud Eisinga / www.dev4me.nl
 
  */
 
+// Pages Directory
 $_pages = "/pages";
+
+// file ending
 $_ext = ".php";
-define('ERROR_PAGE', '/'); //Change this to point to your existing 404 page.
+
+//Change this to point to your existing 404 page.
+define('ERROR_PAGE', '/'); 
 
 if (isset($_GET['_wb'])) {
+    
+    // Dir up and such things are completely unwanted
+    if (preg_match ("/(\.\.\/|\.\/)/", $_GET['_wb'])) {
+        header('Location: ' . ERROR_PAGE); exit;    
+    }
+
     $parsed=parse_url($_SERVER['REQUEST_URI']);
     $pathed=pathinfo($parsed["path"]);
-    $scriptName=preg_replace("/(.php|.html|.htm).+$/u","$1",$parsed["path"]);
+    $scriptName=preg_replace("/(".$_ext.").+$/u","$1",$parsed["path"]);
     
-$_SERVER['PHP_SELF'] = $scriptName;
+    $_SERVER['PHP_SELF'] = $scriptName;
     $_SERVER['SCRIPT_NAME'] = $scriptName;
     $page = trim($_GET['_wb'], '/');
     $fullpag = dirname(__FILE__) . $_pages . '/' . $page . $_ext;
