@@ -72,11 +72,14 @@ if(function_exists('opf_apply_filters')) {
     $output = opf_controller('page', $output);
 }
 
-// execute frontend output filters
-if (file_exists(WB_PATH . '/modules/output_filter/index.php')) {
-    include_once WB_PATH . '/modules/output_filter/index.php';
-    if (function_exists('executeFrontendOutputFilter')) {
-        $output = executeFrontendOutputFilter($output);
+// execute old frontend output filters or not
+if (!defined("WB_SUPPRESS_OLD_OPF") or  WB_SUPPRESS_OLD_OPF===false){
+    // Module is installed?
+    if (file_exists(WB_PATH . '/modules/output_filter/index.php')) {
+        include_once WB_PATH . '/modules/output_filter/index.php';
+        if (function_exists('executeFrontendOutputFilter')) {
+            $output = executeFrontendOutputFilter($output);
+        }
     }
 }
 
