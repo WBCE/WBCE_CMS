@@ -2,7 +2,6 @@
 <head>
 <title><?php echo  $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] ?> </title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" rel="stylesheet" type="text/css">
 <style type="text/css">
 	body {
 			font-family:"Open Sans",sans-serif;
@@ -16,7 +15,7 @@
 </head>
 <body>
     <div id="message">
-    <h1><?php echo $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] ?>!!!</h1>
+    <h1><?php echo $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] ?></h1>
     <?php echo $MESSAGE['GENERIC_PLEASE_CHECK_BACK_SOON'] ?></div>
 </body>
 </html>
