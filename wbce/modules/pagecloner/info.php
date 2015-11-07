@@ -24,6 +24,12 @@
 	Module allows to clone existing pages
   Licensed under GNU, written by John Maats
 ------------------------------------------------------------------------------------------------------
+    v1.0.1  (05.11.2015)
+         !  fix page_id column detection (thx to florian: http://forum.wbce.org/viewtopic.php?pid=2137#p2137)
+         +  copy pics for minigallery (thx to florian: http://forum.wbce.org/viewtopic.php?pid=2137#p2137)
+
+    v1.0.0  (03.11.2015)
+         +  try to copy modules in a generic way 
 
     v0.60   (WebBird; 06.07.2015)
         +   fixed problem with mysql_real_escape_string() (deprecated)
@@ -78,8 +84,8 @@
 $module_directory 		= 'pagecloner';
 $module_name 			= 'Page Cloner';
 $module_function 		= 'tool';
-$module_version 		= '0.60';
-$module_platform 		= '2.6.x';
+$module_version 		= '1.0.1';
+$module_platform 		= '2.8.x';
 $module_author 			= 'John Maats - PCWacht - Dietrich Roland Pehlke - Stephan Kuehn - vBoedefeld - WebBird';
 $module_license 		= 'GNU General Public License';
 $module_description 	= 'This addon allows you to clone a page or a complete tree with all page and sections. Copying of complete datasets from pagesections to their clones is limited to following modules: wywsiwyg, form, mpform, code, code2. Only the sections (with their default) settings are cloned for not supported modules.';
