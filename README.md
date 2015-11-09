@@ -29,7 +29,7 @@ Please refer to the [LICENSE](LICENSE.md) file for a copy of the license.
 
     /**
      * WebsiteBaker Community Edition (WBCE)
-     * More Baking. Less Struggling.
+     * Way Better Content Editing.
      * Visit http://wbce.org to learn more and to join the community.
      *
      * @copyright Ryan Djurovich (2004-2009)

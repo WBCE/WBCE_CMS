@@ -1,7 +1,7 @@
 <?php
 /**
  * WebsiteBaker Community Edition (WBCE)
- * More Baking. Less Struggling.
+ * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
  * @copyright Christian M. Stefan (Stefek)
