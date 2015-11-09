@@ -14,7 +14,7 @@ License GPLv2 or any later
 class Settings {
 
     // sets or overwrites a config setting
-    public static function Set($name, $value) {
+    public static function Set($name, $value, $overwrite=true) {
 	    global $database;
         
         //Make sure we only  got 'a-zA-Z0-9_'
@@ -46,6 +46,9 @@ class Settings {
             $sql="INSERT INTO ".TABLE_PREFIX."settings (name,value) VALUES ('$name','$value')";
 		    $database->query($sql);
 	    } else {
+            // stop here if overwrite is false
+            if ($overwrite===false) return "Setting already exists, overwrite forbidden";
+
             $sql="UPDATE ".TABLE_PREFIX."settings SET value = '$value' WHERE name = '$name'";
             //echo htmlentities( $sql);
 		    $database->query($sql);
