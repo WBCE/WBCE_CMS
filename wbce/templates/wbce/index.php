@@ -24,8 +24,8 @@ if (function_exists('register_frontend_modfiles')) {
     register_frontend_modfiles('js');
 }
 ?>	
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<link href="<?php echo TEMPLATE_DIR;?>/fitgrid.css" rel="stylesheet" type="text/css"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<link href="<?php echo TEMPLATE_DIR;?>/fitgrid.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo TEMPLATE_DIR;?>/sm-core-css.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo TEMPLATE_DIR;?>/sm-clean.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo TEMPLATE_DIR;?>/wbce.css" rel="stylesheet" type="text/css" />
@@ -160,7 +160,7 @@ show_menu2(
 
 <div class="row contents">
 <?php if ($left && $main && $right) {?>
-    <div class="fg4"><?php echo $left?></div>
+    <div class="fg4"><?php echo $left; ?></div>
     <div class="fg4"><?php echo $main?></div>
     <div class="fg4"><?php echo $right?></div>
 <?php } elseif ($right && $main) {?>
@@ -180,8 +180,9 @@ show_menu2(
 	<?php echo $contentheadline;?>
 	<?php echo $main?>
 	</div>
+<?php } ?>
 </div>
-<?php }
+<?php
 if ($fullbottom) {?>
 <div class="row">
 <div class="fg12"><?php echo $fullbottom?></div>
@@ -192,6 +193,7 @@ if ($fullbottom) {?>
 <div class="fg12 footer"><?php echo WEBSITE_FOOTER;?></div>
 </div>
 </div>
+
 
 <script type="text/javascript">
 $(function() {
