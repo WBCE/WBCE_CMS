@@ -38,7 +38,7 @@
 
 {MESSAGE}
 
-	<form name="login" class="login" action="{ACTION_URL}" method="post">
+	<form name="login" class="login" action="{ACTION_URL}" method="post" autocomplete="off">
 
 		<input type="hidden" name="url" value="{URL}" />
 		<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
@@ -49,7 +49,7 @@
 			<span class="page_login_fieldelement"><input type="text" name="{USERNAME_FIELDNAME}" value="{USERNAME}" /></span>
 			<br/>
 			<span class="page_login_fieldname">{TEXT_PASSWORD}:</span>
-			<span class="page_login_fieldelement"><input type="password" name="{PASSWORD_FIELDNAME}" /></span>
+			<span class="page_login_fieldelement"><input type="password" name="{PASSWORD_FIELDNAME}" autocomplete="off" /></span>
 			<br/>
 			<input type="submit" name="submit" value="{TEXT_LOGIN}"  /> 
 			<a id="page_login_homelink" href="{WB_URL}/"></a>

@@ -1,7 +1,7 @@
 <?php
 /**
  * WebsiteBaker Community Edition (WBCE)
- * Way Better Content Editing.
+ * More Baking. Less Struggling.
  * Visit http://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
@@ -137,7 +137,7 @@ require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
 
 // database tables including in WB package
-$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets');
+$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_topics', 'mod_miniform','mod_wbstats_day');
 /*
 $table_list = array (
 'settings','groups','addons','pages','sections','search','users',
@@ -197,6 +197,20 @@ $filesRemove['1'] = array(
     '[TEMPLATE]/argos_theme/templates/templates_details.htt',
     '[TEMPLATE]/argos_theme/templates/users.htt',
     '[TEMPLATE]/argos_theme/templates/users_form.htt',
+);
+
+// hopefully we add the removed files here these files are for 1.1.0 
+// as a result of adding class Settings and rework of the admin tool system
+$filesRemove['2'] = array(
+
+    '[FRAMEWORK]/SecureForm.mtab.php',
+    '[MODULES]/SecureFormSwitcher/FTAN_SUPPORTED',
+    '[MODULES]/SecureFormSwitcher/files/SecureForm.mtab.php',
+    '[MODULES]/SecureFormSwitcher/htt/help.png',
+    '[MODULES]/SecureFormSwitcher/htt/switchform.htt',
+    '[MODULES]/SecureFormSwitcher/language_load.php',
+    '[MODULES]/captcha_control/FTAN_SUPPORTED',
+    '[MODULES]/captcha_control/install_struct.sql'
 );
 
 // check existing tables
@@ -343,14 +357,19 @@ status_msg('<br />You need to confirm that you have created a manual backup of t
 
 echo '<h2>Step ' . ($stepID++) . ' : Updating database entries</h2>';
 
+
 /**********************************************************
  *  - Adding field default_theme to settings table
  */
 echo "<br />Adding default_theme to settings table<br />";
-db_update_key_value('settings', 'default_theme', $DEFAULT_THEME);
+Settings::Set('default_theme', $DEFAULT_THEME);
+
+
 /**********************************************************
- *  - install droplets
+ *  - Checking Core modules for installation status and install if necessary
  */
+
+// Droplets
 $drops = (!in_array("mod_droplets", $all_tables)) ? "<br />Install droplets<br />" : "<br />Upgrade droplets<br />";
 echo $drops;
 
@@ -359,6 +378,43 @@ require_once WB_PATH . "/modules/droplets/" . $file_name;
 
 // check again all tables, to get a new array
 if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
+
+
+// Topics
+$drops = (!in_array("mod_topics", $all_tables)) ? "<br />Install Topics<br />" : "<br />Upgrade Topics<br />";
+echo $drops;
+
+$file_name = (!in_array("mod_topics", $all_tables) ? "install.php" : "upgrade.php");
+require_once WB_PATH . "/modules/topics/" . $file_name;
+
+// check again all tables, to get a new array
+if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
+
+
+// Miniform
+$drops = (!in_array("mod_miniform", $all_tables)) ? "<br />Install Miniform<br />" : "<br />Upgrade Miniform<br />";
+echo $drops;
+
+$file_name = (!in_array("mod_miniform", $all_tables) ? "install.php" : "upgrade.php");
+require_once WB_PATH . "/modules/miniform/" . $file_name;
+
+// check again all tables, to get a new array
+if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
+
+
+// Wb Stats //
+$drops = (!in_array("mod_wbstats_day", $all_tables)) ? "<br />Install WB Stats<br />" : "<br />Upgrade WB Stats<br />";
+echo $drops;
+
+$file_name = (!in_array("mod_wbstats_day", $all_tables) ? "install.php" : "upgrade.php");
+require_once WB_PATH . "/modules/wbstats/" . $file_name;
+
+// check again all tables, to get a new array
+if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
+
+
+
+
 /**********************************************************
  *  - check tables comin with WebsiteBaker
  */
@@ -391,76 +447,46 @@ if (sizeof($all_tables) == sizeof($table_list)) {
     exit();
 }
 
+
 /**********************************************************
- *  - Adding field sec_anchor to settings table
+ *  Adding or removing Settings
  */
+
 echo "<br />Adding sec_anchor to settings table<br />";
-$cfg = array(
-    'sec_anchor' => 'wb_',
-);
-foreach ($cfg as $key => $value) {
-    db_add_key_value($key, $value);
-}
+Settings::Set('sec_anchor','wb_', false);
 
-/**********************************************************
- *  - Adding redirect timer to settings table
- */
 echo "<br />Adding redirect timer to settings table<br />";
-$cfg = array(
-    'redirect_timer' => '1500',
-);
-foreach ($cfg as $key => $value) {
-    db_add_key_value($key, $value);
-}
+Settings::Set('redirect_timer','1500', false);
 
-/**********************************************************
- *  - Adding rename_files_on_upload to settings table
- */
 echo "<br />Updating rename_files_on_upload to settings table<br />";
-$cfg = array(
-    'rename_files_on_upload' => 'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js',
-);
-db_update_key_value('settings', 'rename_files_on_upload', $cfg['rename_files_on_upload']);
+Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js', false);
 
-/**********************************************************
- *  - Adding mediasettings to settings table
- */
 echo "<br />Adding mediasettings to settings table<br />";
-$cfg = array(
-    'mediasettings' => '',
-);
+Settings::Set('mediasettings','', false);
 
-foreach ($cfg as $key => $value) {
-    db_add_key_value($key, $value);
-}
-
-/**********************************************************
- *  - Adding fingerprint_with_ip_octets to settings table
- */
 echo "<br />Adding fingerprint_with_ip_octets to settings table<br />";
-$cfg = array(
-    'fingerprint_with_ip_octets' => '0',
-    'secure_form_module' => 'mtab',
-);
-foreach ($cfg as $key => $value) {
-    db_add_key_value($key, $value);
-}
+Settings::Set('fingerprint_with_ip_octets', '0', false); 
+Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
+
 
 /**********************************************************
- *  - Add field "redirect_type" to table "mod_menu_link"
+ *  Adding DB Fields
  */
+
+// Add field "redirect_type" to table "mod_menu_link"
 echo "<br />Adding field redirect_type to mod_menu_link table<br />";
 db_add_field('redirect_type', 'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER `target_page_id`");
 
-/**********************************************************
- *  - Add field "namesection" to table "sections"
- */
+// Add field "namesection" to table "sections"
 echo "<br />Adding field namesection to sections table<br />";
 db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
 
+
 /**********************************************************
- *  - making sure group_id is set 
+ *  - making sure group_id is set correct there was a big bug in original WB 
+ *  WBCE 1.0.0
  */
+
 $table = TABLE_PREFIX."users";
 
 // set group_id to first group of groups_id
@@ -473,10 +499,12 @@ $sql = "UPDATE $table SET `group_id` = 1 WHERE FIND_IN_SET('1', groups_id) > '0'
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 $query = $database->query($sql); 
 
+
 /**********************************************************
  *  - Update search no results database filed to create
  *  valid XHTML if search is empty
  */
+
 if (version_compare(WB_VERSION, '2.8', '<')) {
     echo "<br />Updating database field `no_results` of search table: ";
     $search_no_results = addslashes('<tr><td><p>[TEXT_NO_RESULTS]</p></td></tr>');
@@ -485,9 +513,12 @@ if (version_compare(WB_VERSION, '2.8', '<')) {
     $sql .= 'WHERE `name`=\'no_results\'';
     echo ($database->query($sql)) ? ' $OK<br />' : ' $FAIL<br />';
 }
+
+
 /**********************************************************
  * upgrade media folder index protect files
  */
+
 $dir = (WB_PATH . MEDIA_DIRECTORY);
 echo '<h4>Upgrade ' . MEDIA_DIRECTORY . '/ index.php protect files</h4><br />';
 $array = rebuildFolderProtectFile($dir);
@@ -497,9 +528,12 @@ if (sizeof($array)) {
     print '<br /><strong>Upgrade ' . MEDIA_DIRECTORY . '/ protect files</strong>' . " $FAIL!<br />";
     print implode('<br />', $array);
 }
+
+
 /**********************************************************
  * upgrade posts folder index protect files
  */
+
 $sPostsPath = WB_PATH . PAGES_DIRECTORY . '/posts';
 echo '<h4>Upgrade /posts/ index.php protect files</h4><br />';
 $array = rebuildFolderProtectFile($sPostsPath);
@@ -509,9 +543,12 @@ if (sizeof($array)) {
     print '<br /><strong>Upgrade /posts/ protect files</strong>' . " $FAIL!<br />";
     print implode('<br />', $array);
 }
+
+
 /* *****************************************************************************
  * - check for deprecated / never needed files
  */
+
 if (sizeof($filesRemove)) {
     echo '<h2>Step ' . ($stepID++) . ': Remove deprecated and old files</h2>';
 }
@@ -561,9 +598,11 @@ foreach ($filesRemove as $filesId) {
     }
 }
 
+
 /**********************************************************
- * - check for deprecated / never needed files
+ * - check for deprecated / never needed directories
  */
+
 if (sizeof($dirRemove)) {
     echo '<h2>Step  ' . ($stepID++) . ': Remove deprecated and old folders</h2>';
     $searches = array(
@@ -604,9 +643,11 @@ if (sizeof($dirRemove)) {
     }
 }
 
+
 /**********************************************************
  * upgrade modules if newer version is available
  */
+
 $aModuleList = array('news');
 foreach ($aModuleList as $sModul) {
     if (file_exists(WB_PATH . '/modules/' . $sModul . '/upgrade.php')) {
@@ -618,6 +659,8 @@ foreach ($aModuleList as $sModul) {
         }
     }
 }
+
+
 /**********************************************************
  *  - Reload all addons
  */
@@ -637,6 +680,7 @@ if (($handle = opendir(WB_PATH . '/modules/'))) {
 }
 echo '<br />Modules reloaded<br />';
 
+
 ////delete templates
 //$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'template'");
 // Load all templates
@@ -649,6 +693,7 @@ if (($handle = opendir(WB_PATH . '/templates/'))) {
     closedir($handle);
 }
 echo '<br />Templates reloaded<br />';
+
 
 ////delete languages
 //$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'language'");
@@ -663,23 +708,25 @@ if (($handle = opendir(WB_PATH . '/languages/'))) {
 }
 echo '<br />Languages reloaded<br />';
 
-/**********************************************************
- *  - End of upgrade script
- */
 
-// require(WB_PATH.'/framework/initialize.php');
-
-if (!defined('DEFAULT_THEME')) {define('DEFAULT_THEME', $DEFAULT_THEME);}
-if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);}
 /**********************************************************
  *  - Set Version to new Version
  */
+
 echo '<br />Update database version number to ' . NEW_WBCE_VERSION . ' (Tag: ' . NEW_WBCE_TAG . ')';
-db_update_key_value('settings', 'wbce_version', NEW_WBCE_VERSION);
-db_update_key_value('settings', 'wbce_tag', NEW_WBCE_TAG);
-db_update_key_value('settings', 'wb_version', VERSION);   // Legacy: WB-classic
-db_update_key_value('settings', 'wb_revision', REVISION); // Legacy: WB-classic
-db_update_key_value('settings', 'wb_sp', SP);             // Legacy: WB-classic
+Settings::Set('wbce_version',NEW_WBCE_VERSION);
+Settings::Set('wbce_tag',NEW_WBCE_TAG);
+Settings::Set('wb_version',VERSION);    // Legacy: WB-classic
+Settings::Set('wb_revision',REVISION);  // Legacy: WB-classic
+Settings::Set('wb_sp',SP);              // Legacy: WB-classic
+
+
+/**********************************************************
+ *  - End of upgrade script only some output stuff down here
+ */
+
+if (!defined('DEFAULT_THEME')) {define('DEFAULT_THEME', $DEFAULT_THEME);}
+if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);}
 
 echo '<p style="font-size:120%;"><strong>Congratulations: The upgrade script is finished ...</strong></p>';
 status_msg('<br />Please delete the file <strong>upgrade-script.php</strong> via FTP before proceeding.', 'warning', 'div');

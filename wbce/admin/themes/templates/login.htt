@@ -35,7 +35,7 @@
 	<form name="login" action="{ACTION_URL}" method="post" autocomplete="off">
 	<input type="hidden" name="url" value="{URL}" />
 	<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
-	<input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" />
+	<input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" autocomplete="off" />
 		<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="500">
 		<tr>
 			<td height="40" align="center" colspan="2">{MESSAGE}</td>
