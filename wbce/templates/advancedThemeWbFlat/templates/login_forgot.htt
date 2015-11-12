@@ -25,10 +25,10 @@
 <body id="page_login" onload="document.forgot_pass.email.focus();">
 <div id="page_login_header">
 	<div id="page_login_logo">
-		WebsiteBaker
+		WBCE
 	</div>
 	<div id="page_login_slogan">
-		The easiest way to manage webpages.
+		Way Better Content Editing.
 	</div>
 </div><!-- ENDE page_login_header -->
 
