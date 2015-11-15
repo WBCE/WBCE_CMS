@@ -413,6 +413,10 @@ require_once WB_PATH . "/modules/wbstats/" . $file_name;
 if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
 
 
+// Captcha Controll //
+echo "<br />Upgrade Captcha Controll<br />";
+$ccontroll= WB_PATH . "/modules/captcha_control/upgrade.php" ;
+if (is_file($ccontroll)) require_once $ccontroll;
 
 
 /**********************************************************
@@ -464,8 +468,16 @@ Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,
 echo "<br />Adding mediasettings to settings table<br />";
 Settings::Set('mediasettings','', false);
 
-echo "<br />Adding fingerprint_with_ip_octets to settings table<br />";
+echo "<br />Adding Secureform Settings if not exits.<br />";
+// Settings::Set ("wb_maintainance_mode", false, fals);
+Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg", false);
+Settings::Set ("wb_secform_secrettime", '86400', false);
+Settings::Set ("wb_secform_timeout", '7200', false);
+Settings::Set ("wb_secform_tokenname", 'formtoken', false);
+Settings::Set ("wb_secform_usefp", false, false);
 Settings::Set('fingerprint_with_ip_octets', '0', false); 
+
+echo "<br />Removing Secureform selector, no longer needed.<br />";
 Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
 
 
@@ -745,3 +757,4 @@ if (defined('ADMIN_URL')) {
 }
 
 echo '<br /><br /></div></body></html>';
+
