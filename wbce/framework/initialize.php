@@ -72,6 +72,9 @@ if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
 // Later we should get a nice session class instead of this improvised stuff.
 ini_set('session.gc_maxlifetime', WB_SECFORM_TIMEOUT);
 ini_set( 'session.cookie_httponly', 1 );
+if($_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){ 
+    ini_set( 'session.cookie_secure', 1 );
+}
 session_name(APP_NAME . '-sid');
 session_set_cookie_params(WB_SECFORM_TIMEOUT);
 
