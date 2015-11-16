@@ -38,7 +38,7 @@
 			{SECTION_FORGOT}
 		</div> 
 		<div >
-			{MESSAGE}:	
+			{MESSAGE}	
 		</div> 
 		
 		<div id="page_login-fields" style="{DISPLAY_FORM}">
@@ -49,9 +49,9 @@
 			
 			<input type="submit" name="submit" value="{TEXT_SEND_DETAILS}" >			
 			<a id="page_login_homelink" href="{WB_URL}/"></a>
-			<br/>
-			<a id="page_login_forgottenlink" href="{LOGIN_URL}">{TEXT_NEED_TO_LOGIN}</a>
+			<br/>			
 		</div>
+		<a id="page_login_forgottenlink" href="{LOGIN_URL}">{TEXT_NEED_TO_LOGIN}</a>
 	</form>
 </div><!-- ENDE forgot_pass -->
 
