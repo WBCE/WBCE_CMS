@@ -17,7 +17,7 @@ define('DEBUG', false);
 $config_file = dirname(__FILE__) . '/config.php';
 if (file_exists($config_file)) {
     require_once $config_file;
-}
+} 
 
 // Check if the config file has been set-up
 if (!defined('TABLE_PREFIX')) {
@@ -50,6 +50,14 @@ $wb->get_page_details();
 // Collect general website settings
 $wb->get_website_settings();
 
+// OPF hook ,Load OutputFilter functions
+if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
+    include(WB_PATH .'/modules/outputfilter_dashboard/functions.php');
+    // use 'cache' instead of 'nocache' to enable page-cache.
+    // Do not use 'cache' in case you use dynamic contents (e.g. snippets)!
+    opf_controller('init', 'nocache');
+}
+
 // Load functions available to templates, modules and code sections
 // also, set some aliases for backward compatibility
 require WB_PATH . '/framework/frontend.functions.php';
@@ -58,16 +66,8 @@ require WB_PATH . '/framework/frontend.functions.php';
 ob_start();
 require WB_PATH . '/templates/' . TEMPLATE . '/index.php';
 $output = ob_get_clean();
-
-// OPF hook ,Load OutputFilter functions
-if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
-    require_once(WB_PATH .'/modules/outputfilter_dashboard/functions.php');
-    // use 'cache' instead of 'nocache' to enable page-cache.
-    // Do not use 'cache' in case you use dynamic contents (e.g. snippets)!
-    opf_controller('init', 'nocache');
-}
  
-// apply outputfilter
+// OPF hook, apply outputfilter
 if(function_exists('opf_apply_filters')) {
     $output = opf_controller('page', $output);
 }
