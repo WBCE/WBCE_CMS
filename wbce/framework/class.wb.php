@@ -17,8 +17,6 @@ if (defined('WB_PATH') == false) {die("Cannot access this file directly");}
 // Include PHPLIB template class
 require_once WB_PATH . "/include/phplib/template.inc";
 
-require_once WB_PATH . '/framework/class.database.php';
-
 // Include new wbmailer class (subclass of PHPmailer)
 require_once WB_PATH . "/framework/class.wbmailer.php";
 
