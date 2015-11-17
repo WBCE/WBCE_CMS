@@ -236,7 +236,7 @@ class SecureForm
 
         if ($as_tag == true) {
             // by default return a complete, hidden <input>-tag
-            return '<input type="hidden" name="' . $this->_tokenname . '" value="' . htmlspecialchars($signed) . '" title="" alt="" />';
+            return '<input type="hidden" name="' . $this->_tokenname . '" value="' . htmlspecialchars($signed) . '" />';
         }
 
         return $this->_tokenname . '=' . $signed;
