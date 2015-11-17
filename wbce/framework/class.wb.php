@@ -20,8 +20,6 @@ require_once WB_PATH . "/include/phplib/template.inc";
 // Include new wbmailer class (subclass of PHPmailer)
 require_once WB_PATH . "/framework/class.wbmailer.php";
 
-//require_once(WB_PATH."/framework/SecureForm.php");
-
 class wb extends SecureForm
 {
 
