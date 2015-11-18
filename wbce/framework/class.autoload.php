@@ -11,18 +11,18 @@ class WbAuto{
     public static $Files=array();   // Class filename combinations for loader 
     
     //Search templates to search for files in the directories
-    public static $Types=array('%s.class.php',
+    public static $Types=array('class.%s.php',
+                               '%s.class.php',
                                '%s.class.inc', 
                                '%s.php', 
                                '%s.inc', 
-                               '%s.inc.php', 
-                               'class.%s.php', 
+                               '%s.inc.php',  
                                'class.%s.inc'); 
     
     // The function actually registered to PHP autoloading
     static function Loader($ClassName){
         //already loaded, never mind
-        //echo $ClassName;
+        //echo $ClassName."<br />";
         if (class_exists($ClassName, FALSE)) return FALSE; 
         
         //if there is an fileentry for this class
@@ -35,11 +35,10 @@ class WbAuto{
         //Search dirs for matching class files
         foreach (WbAuto::$Dirs as $sDirVal) {
             foreach (WbAuto::$Types as $sTypeVal) {
-                $sTestFile= $sDirVal. sprintf($sTypeVal, $ClassName);
-                $sTestFile= strtolower($sTestFile);
+                $sTestFile= $sDirVal. strtolower(sprintf($sTypeVal, $ClassName));
                 //echo $sTestFile."</br>";
                 if (is_file($sTestFile)) {
-                    include_once($sTestFile);
+                    include($sTestFile);
                     return FALSE;
                 }
             }
@@ -57,7 +56,7 @@ class WbAuto{
         
         // More Checks
         $LoadFile = WB_PATH.$ClassFile;
-        if (!is_file($LoadFile)) return ("Not a file: $LoadFile");
+        if (!is_file($LoadFile)) return ("File does not exist or not a file: $LoadFile");
         if (!is_readable($LoadFile)) return ("File not readable: $LoadFile");  
          
         // if all is ok set new Classfile 
