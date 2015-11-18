@@ -638,7 +638,7 @@ function createFolderProtectFile($sAbsDir = '', $make_dir = true)
         '// *** WBCE will rebuild this file from time to time!!' . "\n" .
         '// *************************************************' . "\n" .
         "\t" . 'header(\'' . $sResponse . '\');' . "\n" .
-        "\t" . 'header(\'Location: ' . WB_URL . '/index.php\');' . "\n" .
+        "\t" . 'header(\'Location: '.$step_back.'index.php\');'."\n".
         '// *************************************************' . "\n";
         $filename = $sAbsDir . '/index.php';
 
