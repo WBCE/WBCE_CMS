@@ -16,8 +16,8 @@
  *
  */
 
-// Must include code to stop this file being access directly
-if (defined('WB_PATH') == false) {die("Cannot access this file directly");}
+// no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 // Check if search is enabled
 if (SHOW_SEARCH != true) {
@@ -139,8 +139,8 @@ if (isset($_REQUEST['search_lang'])) {
 // use "%/en/" (or "%/en/, %/info", ...) to get the old behavior
 $search_path_SQL = '';
 $search_path = '';
-if (isset($_REQUEST['search_path'])) {
-    $search_path = addslashes(htmlspecialchars(strip_tags($wb->strip_slashes((string)$_REQUEST['search_path'])), ENT_QUOTES));
+if (isset($_REQUEST['search_path']) and !is_array($_REQUEST['search_path'])) {
+    $search_path = addslashes(htmlspecialchars(strip_tags($wb->strip_slashes(($_REQUEST['search_path'])), ENT_QUOTES));
     if (!preg_match('~^%?[-a-zA-Z0-9_,/ ]+$~', $search_path)) {
         $search_path = '';
     }
