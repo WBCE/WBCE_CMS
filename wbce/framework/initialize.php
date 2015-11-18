@@ -10,6 +10,9 @@
  * @license GNU GPL2 (or any later version)
  */
 
+// no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
 // Stop execution if PHP version is too old
 if (version_compare(PHP_VERSION, '5.3.6', '<')) {
     die ('PHP-' . PHP_VERSION . ' found, but at last PHP-5.3.6 required !!');
