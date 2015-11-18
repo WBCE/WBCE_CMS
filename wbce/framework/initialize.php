@@ -33,6 +33,20 @@ if (!defined('ADMIN_URL')) {define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 if (!defined('WB_PATH')) {define('WB_PATH', dirname(dirname(__FILE__)));}
 if (!defined('ADMIN_PATH')) {define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);}
 
+$protocoll="http";
+// $_SERVER['HTTPS'] is not reliable ... :-(
+//https://github.com/dmikusa-pivotal/cf-php-apache-buildpack/issues/6
+if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
+    $protocoll="https"; 
+}
+if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == 443) {
+    $protocoll="https";
+}
+if(isset($_SERVER['SERVER_PORT']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){ 
+    $protocoll="https";    
+}
+define ("WB_PROTOCOLL", $protocoll);
+
 // sanitize $_SERVER['HTTP_REFERER']
 SanitizeHttpReferer();
 date_default_timezone_set('UTC');
@@ -75,7 +89,7 @@ if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
 // Later we should get a nice session class instead of this improvised stuff.
 ini_set('session.gc_maxlifetime', WB_SECFORM_TIMEOUT);
 ini_set( 'session.cookie_httponly', 1 );
-if($_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){ 
+if(WB_PROTOCOLL=="https"){ 
     ini_set( 'session.cookie_secure', 1 );
 }
 session_name(APP_NAME . '-sid');
