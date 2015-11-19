@@ -1271,7 +1271,9 @@ form table td {
 td > select,
 td > textarea,
 td > input[type='text'] {
-  width: 98% !important;
+/* deactivated due to this leads to display errors at some modules - florian, 2015/11/19 */
+/*  width: 98% !important;*/
+
   margin-right: 4px;
 }
 
