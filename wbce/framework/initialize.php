@@ -42,7 +42,7 @@ if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO
 if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == 443) {
     $protocoll="https";
 }
-if(isset($_SERVER['SERVER_PORT']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){ 
+if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){ 
     $protocoll="https";    
 }
 define ("WB_PROTOCOLL", $protocoll);
