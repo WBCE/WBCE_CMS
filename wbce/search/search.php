@@ -140,7 +140,7 @@ if (isset($_REQUEST['search_lang'])) {
 $search_path_SQL = '';
 $search_path = '';
 if (isset($_REQUEST['search_path']) and !is_array($_REQUEST['search_path'])) {
-    $search_path = addslashes(htmlspecialchars(strip_tags($wb->strip_slashes($_REQUEST['search_path'])), ENT_QUOTES));
+    $search_path = addslashes(htmlspecialchars(strip_tags($wb->strip_slashes(($_REQUEST['search_path'])), ENT_QUOTES)));
     if (!preg_match('~^%?[-a-zA-Z0-9_,/ ]+$~', $search_path)) {
         $search_path = '';
     }
