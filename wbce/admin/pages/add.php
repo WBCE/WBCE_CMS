@@ -115,7 +115,7 @@ if($parent == '0')
     $parent_section = '';
     $hSql = 'SELECT `link` FROM `'.TABLE_PREFIX.'pages` WHERE `page_id` = '.$parent;
     $parent_section = $database->get_one($hSql);
-
+    
     //echo "parentsection ".$parent_section."<br />";
     $filename = WB_PATH.PAGES_DIRECTORY.$parent_section.'/'.page_filename($title).PAGE_EXTENSION;
     make_dir(WB_PATH.PAGES_DIRECTORY.$parent_section);
