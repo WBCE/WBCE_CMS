@@ -295,12 +295,12 @@ function preCheckAddon($temp_addon_file)
 
         case 'PHP_SETTINGS':
             if (is_array($PRECHECK['PHP_SETTINGS'])) {
-                foreach ($PRECHECK['PHP_SETTINGS'] as $setting => $value) {
+                foreach ($PRECHECK['PHP_SETTINGS'] as $setting => $svalue) {
                     $actual_setting = ($temp = ini_get($setting)) ? $temp : 0;
-                    $status = ($actual_setting == $value);
+                    $status = ($actual_setting == $svalue);
                     $msg[] = array(
                         'check' => '&nbsp; ' . ($setting),
-                        'required' => $value,
+                        'required' => $svalue,
                         'actual' => $actual_setting,
                         'status' => $status,
                     );
@@ -315,12 +315,12 @@ function preCheckAddon($temp_addon_file)
 
         case 'CUSTOM_CHECKS':
             if (is_array($PRECHECK['CUSTOM_CHECKS'])) {
-                foreach ($PRECHECK['CUSTOM_CHECKS'] as $key => $values) {
-                    $status = (true === array_key_exists('STATUS', $values)) ? $values['STATUS'] : false;
+                foreach ($PRECHECK['CUSTOM_CHECKS'] as $ckey => $cvalues) {
+                    $status = (true === array_key_exists('STATUS', $cvalues)) ? $cvalues['STATUS'] : false;
                     $msg[] = array(
-                        'check' => $key,
-                        'required' => $values['REQUIRED'],
-                        'actual' => $values['ACTUAL'],
+                        'check' => $ckey,
+                        'required' => $cvalues['REQUIRED'],
+                        'actual' => $cvalues['ACTUAL'],
                         'status' => $status,
                     );
                 }
