@@ -234,7 +234,7 @@ if($is_advanced)
         while($addon = $result->fetchRow()) {
             $template->set_var('FILE', $addon['directory']);
             $template->set_var('NAME', $addon['name']);
-            $selected = ($addon['directory'] == DEFAULT_TEMPLATE) ? ' selected="selected"' : '';
+            if(($addon['directory'] == DEFAULT_TEMPLATE) ? $selected = ' selected="selected"' : $selected = '');
             $template->set_var('SELECTED', $selected);
             $template->parse('template_list', 'template_list_block', true);
         }
@@ -246,7 +246,7 @@ if($is_advanced)
         while($addon = $result->fetchRow()) {
             $template->set_var('FILE', $addon['directory']);
             $template->set_var('NAME', $addon['name']);
-            $selected = ($addon['directory'] == DEFAULT_TEMPLATE) ? ' selected="selected"' : '';
+            if(($addon['directory'] == DEFAULT_THEME) ? $selected = ' selected="selected"' : $selected = '');
             $template->set_var('SELECTED', $selected);
             $template->parse('theme_list', 'theme_list_block', true);
         }
