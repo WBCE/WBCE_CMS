@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.7
- * @lastmodified    april 7, 2014
+ * @version         0.8
+ * @lastmodified    november 26, 2015
  *
  */
 
@@ -34,6 +34,8 @@ if(!file_exists(WB_PATH.'/modules/miniform/languages/'.LANGUAGE.'.php')) {
 }
 
 require_once (dirname(__FILE__).'/functions.php');
+
+mb_internal_encoding(DEFAULT_CHARSET);
 
 $mf = new mform($section_id);
 
@@ -131,7 +133,7 @@ if($mf->myPost) {
 			$mf->error = '';
 		}
 		$required = false;
-		$emailmessage = $mf->add_template($emailmessage, '{'.strtoupper($key).'}', $post);
+		$emailmessage = $mf->add_template($emailmessage, '{'.mb_strtoupper($key).'}', $post);
 		if(substr($key,0,3)=="mf_") {
 			$key =  substr($key,3);
 			if (substr($key,0,2)=="r_") {
@@ -139,22 +141,22 @@ if($mf->myPost) {
 				$key =  substr($key,2);
 			}
 			$label_post = str_replace(" ","_",$post);
-			$var[] = "{".strtoupper($key)."}"; $value[] = $post;
-			$var[] = "{".strtoupper($key.'_'.$label_post)."}"; $value[] = " checked='checked' ";
-			$var[] = "{".strtoupper($key.'_CHECKED_'.$label_post)."}"; $value[] = " checked='checked' ";
-			$var[] = "{".strtoupper($key.'_SELECTED_'.$label_post)."}"; $value[] = " selected='selected' ";
+			$var[] = "{".mb_strtoupper($key)."}"; $value[] = $post;
+			$var[] = "{".mb_strtoupper($key.'_'.$label_post)."}"; $value[] = " checked='checked' ";
+			$var[] = "{".mb_strtoupper($key.'_CHECKED_'.$label_post)."}"; $value[] = " checked='checked' ";
+			$var[] = "{".mb_strtoupper($key.'_SELECTED_'.$label_post)."}"; $value[] = " selected='selected' ";
 			if($mf->isArray || strpos($post," | ")!==false) {
 				$tmppost = explode(' | ',$post);
 				foreach($tmppost as $tmpdata) {
 					$label_post = str_replace(" ","_",$tmpdata);
-					$var[] = "{".strtoupper($key.'_'.$label_post)."}"; $value[] = " checked='checked' ";
-					$var[] = "{".strtoupper($key.'_CHECKED_'.$label_post)."}"; $value[] = " checked='checked' ";
-					$var[] = "{".strtoupper($key.'_SELECTED_'.$label_post)."}"; $value[] = " selected='selected' ";
+					$var[] = "{".mb_strtoupper($key.'_'.$label_post)."}"; $value[] = " checked='checked' ";
+					$var[] = "{".mb_strtoupper($key.'_CHECKED_'.$label_post)."}"; $value[] = " checked='checked' ";
+					$var[] = "{".mb_strtoupper($key.'_SELECTED_'.$label_post)."}"; $value[] = " selected='selected' ";
 				}
 			}
 			if($required && $mf->dataPosted && trim($post) == '') {
 				if( $type != '-' && $type != '!') {
-					$var[] = "{".strtoupper($key)."_ERROR}"; $value[] = " missing";
+					$var[] = "{".mb_strtoupper($key)."_ERROR}"; $value[] = " missing";
 					$all_required = false;
 				} else {
 					$next_required = false;
@@ -243,7 +245,7 @@ $var[] = "{DATE}";$value[] = date( DATE_FORMAT , time()+TIMEZONE );
 $var[] = "{TIME}";$value[] = date( TIME_FORMAT , time()+TIMEZONE );
 $template = $mf->add_template($template, $var, $value);
 //clean unused fields in the template
-$template = preg_replace('#\{[A-Za-z_][A-Za-z_0-9., ]*?\}#s', '', $template); 
+$template = preg_replace('#\{[A-Za-z_][A-Za-z_0-9.,-\/\\ ]*?\}#s', '', $template); 
 unset($var);
 unset($value);
 echo $template;

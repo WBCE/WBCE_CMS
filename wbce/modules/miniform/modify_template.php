@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.7
- * @lastmodified    april 7, 2014
+ * @version         0.8
+ * @lastmodified    november 26, 2015
  *
  */
 
@@ -32,10 +32,10 @@ require_once(WB_PATH.'/include/editarea/wb_wrapper_edit_area.php');
 $backlink = ADMIN_URL.'/pages/modify.php?page_id='.(int)$page_id;
 
 
-$_action = (isset($_POST['action']) ? strtolower($_POST['action']) : '');
+$_action = (isset($_POST['action']) ? $_POST['action'] : '');
 $_action = ($_action != 'save' ? 'edit' : 'save');
 if ($_action == 'save') {
-	$template = strtolower($admin->add_slashes($_POST['name']));
+	$template = $admin->add_slashes($_POST['name']);
 	if (get_magic_quotes_gpc()) {
 		$data = stripslashes($_POST['template_data']);
 	}
@@ -43,7 +43,7 @@ if ($_action == 'save') {
 		$data = $_POST['template_data'];
 	}
 	$filename = dirname(__FILE__).'/templates/form_'.$template.'.htt';
-	if (!false == file_put_contents($filename,$data)) {
+	if (false !== file_put_contents($filename,$data)) {
 		$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
 	} else { 
 		$admin->print_error($TEXT['ERROR'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
@@ -61,7 +61,6 @@ if ($_action == 'save') {
 			<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
 			<input type="hidden" name="action" value="save" />
 			<span><?php echo $MF['SAVEAS']; ?>: </span><input type="text" name="name" value="<?php echo $template; ?>" />
-			
 			<span style="float:right"><a href="http://miniform.dev4me.nl/template-help/basic-structure/" target="blank"><?php echo $MF['HELP']; ?></a></span>
 			<span style="float:right"><a href="http://miniform.dev4me.nl/form-creator/" target="blank"><?php echo $MF['TPL_GEN']; ?>&nbsp;&nbsp;&nbsp;</a></span>
 			<textarea id="code_area" name="template_data" cols="100" rows="25" wrap="VIRTUAL" style="margin:2px;width:100%;"><?php echo htmlspecialchars($data); ?></textarea>

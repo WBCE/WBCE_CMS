@@ -1,0 +1,78 @@
+<div class="miniform">
+	<div class="{MESSAGE_CLASS}">{STATUSMESSAGE}</div>
+	<div class="{FORM_CLASS}">
+		<h2>Contactform</h2>
+		<small>Items marked with <span><span>*</span></span> are required</small>
+		<form name="form_{SECTION_ID}" id="form_{SECTION_ID}" method="post" action="{URL}">
+			<input name="miniform" type="hidden" value="{SECTION_ID}"/>
+			<input name="header" type="hidden" value="Contact form"/>
+			<input name="mf_timestamp" type="hidden" value="{DATE} {TIME}"/>
+			{ASPFIELDS}
+			
+			<div class="onethird">
+				<label for="firstname"><span>Firstname <span>*</span></span>
+					<input required="required" class="{FIRSTNAME_ERROR}" type="text" id="firstname" name="mf_r_firstname" value="{FIRSTNAME}" />
+				</label>
+			</div>
+			<div class="twothird pullright">
+				<label for="lastname"><span>Lastname <span>*</span></span>
+					<input required="required" class="{LASTNAME_ERROR}" type="text" id="lastname" name="mf_r_lastname" value="{LASTNAME}" />
+				</label>
+			</div>
+
+			<div class="full">
+				<label for="address"><span>Address <span>*</span></span>
+					<input required="required" class=" {ADDRESS_ERROR}" type="text" id="address" name="mf_r_address" value="{ADDRESS}" />
+				</label>
+			</div>
+
+			<div class="onethird">
+				<label for="zipcode"><span>Zipcode <span>*</span></span>
+					<input required="required" class="{ZIPCODE_ERROR}" type="text" id="zipcode" name="mf_r_zipcode" value="{ZIPCODE}" />
+				</label>
+			</div>
+
+			<div class="twothird pullright ">
+				<label for="city"><span>City <span>*</span></span>
+					<input required="required" class="{CITY_ERROR}" type="text" id="city" name="mf_r_city" value="{CITY}" />
+				</label>
+			</div>
+
+			<div class="half">
+				<label for="phone"><span>Phone <span>*</span></span>
+					<input required="required" type="tel" class="{PHONE_ERROR}" id="phone" name="mf_r_phone" value="{PHONE}" />
+				</label>
+			</div>
+
+			<div class="half pullright">
+				<label for="mobile"><span>Mobile</span>
+				<input type="tel" class="{MOBILE_ERROR}" id="mobile" name="mf_mobile" value="{MOBILE}" />
+				</label>
+			</div>
+			
+			<div class="full">
+				<label for="email"><span>E-mail <span>*</span></span>
+					<input required="required" class="{EMAIL_ERROR}" type="email" id="email" name="mf_r_email" value="{EMAIL}" />
+				</label>
+			</div>
+
+			<div class="full">
+				<label style="width:100%" for="message"><span>Your Message <span>*</span></span>
+					<textarea required="required" class="{MESSAGE_ERROR}" cols="80" rows="10" id="message" name="mf_r_message">{MESSAGE}</textarea>
+				</label>
+			</div>
+
+			<div class="{CAPTCHA_CLASS} full">
+				<label for="captcha"><span>Please show us you are human</span>
+					<div class="grouping {CAPTCHA_ERROR}">
+						{CAPTCHA}
+					</div>
+				</label>
+			</div>
+
+			<div class="full">
+				<button class="submit" name="Submit" type="submit">Send</button>
+			</div> 
+		</form>
+	</div>
+</div>

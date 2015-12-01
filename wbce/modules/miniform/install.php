@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.7
- * @lastmodified    april 7, 2014
+ * @version         0.8
+ * @lastmodified    november 26, 2015
  *
  */
 
@@ -37,11 +37,27 @@ $mod_miniformdata = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_miniform_da
 	. ' PRIMARY KEY ( `message_id` ) '
 	. ' )';
 $database->query($mod_miniformdata);
+
+
 $path = WB_PATH.'/modules/miniform/';
 if(file_exists($path.'new_frontend.css')) {
 	if(!rename($path.'new_frontend.css',$path.'frontend.css')) {
 		echo "<h2>Error renaming frontend.css. Please rename new_frontend.css manually to frontend.css</h2>";
 	}
 }
+
+
+$files = scandir ( $path.'/defaults/');
+foreach ( $files as $file ) {
+	if ($file != "." && $file != "..") {
+		if(!rename ( $path.'/defaults/'.$file, $path.'/templates/'.$file )) {
+			echo "<h2>Error copying file: ".$file." to the templates folder. Please move the files from the defaults folder manually to the templates folder!</h2>";
+		}
+	}
+}
+					
+					
+
+
 
 ?>
