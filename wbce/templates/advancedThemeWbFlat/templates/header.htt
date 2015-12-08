@@ -27,7 +27,7 @@
 
 
 
-<!-- Load FontAwesome(Script with Fallback-Solution at End off Page) -->
+
 <link href="{THEME_URL}/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
 
 
@@ -161,7 +161,7 @@ function confirm_link(message, url) {
 		<div id="systeminfo" class="stickySidebarElement">
 			<span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
 			<span class="version">Tag: {WBCE_TAG}</span><br/>
-			<span id="admincheck" class="version" "><a href="#">Admin</a><span class="theme-version-number"></span></span>
+			<span id="admincheck" class="version"><a href="#">Admin</a><span class="theme-version-number"></span></span>
 		</div>
 		
 		<div id="sidebararea_togglebutton"></div>
