@@ -13,9 +13,6 @@
 //no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
-// Define that this file has been loaded
-define('FUNCTIONS_FILE_LOADED', true);
-
 /**
  * @description: recursively delete a non empty directory
  * @param string $directory :
