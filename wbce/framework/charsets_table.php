@@ -22,13 +22,9 @@ along with Website Baker; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
  */
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
 global $iso_8859_2_to_utf8;
 $iso_8859_2_to_utf8 = array(
     "\x80" => "\xc2\x80", "\x81" => "\xc2\x81", "\x82" => "\xc2\x82", "\x83" => "\xc2\x83", "\x84" => "\xc2\x84", "\x85" => "\xc2\x85", "\x86" => "\xc2\x86", "\x87" => "\xc2\x87",

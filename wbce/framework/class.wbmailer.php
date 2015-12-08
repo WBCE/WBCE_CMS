@@ -1,7 +1,4 @@
 <?php
-
-// $Id: class.wbmailer.php 1499 2011-08-12 11:21:25Z DarkViper $
-
 /*
 
 Website Baker Project <http://www.websitebaker.org/>
@@ -22,15 +19,9 @@ along with Website Baker; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
  */
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
-// Include PHPMailer class
-require_once WB_PATH . "/include/phpmailer/class.phpmailer.php";
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
 
 class wbmailer extends PHPMailer
 {

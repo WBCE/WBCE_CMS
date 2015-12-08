@@ -31,13 +31,8 @@ Then simply call the function edit_css('your_module_directory') - that's it
 NOTE: Some functions were added for module developers to make the creation of own module easier
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 /*
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

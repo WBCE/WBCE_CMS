@@ -10,13 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
-require_once WB_PATH . '/framework/class.wb.php';
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 // Get WB version
 require_once ADMIN_PATH . '/interface/version.php';

@@ -13,13 +13,8 @@
  *                  this is a authorisised GPL-lizensed derivate from the original
  *                  ISTeasy class DseOne which is available under a cc-by-sa-3.0 license
  */
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 class DseTwo
 {

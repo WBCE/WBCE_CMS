@@ -41,13 +41,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //   entities_to_7bit()
 //   entities_to_umlauts2()
 //   umlauts_to_entities2()
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
+
 /*
  * check for mb_string support
  */

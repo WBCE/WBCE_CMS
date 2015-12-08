@@ -10,15 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (defined('WB_PATH') == false) {die("Cannot access this file directly");}
-/* -------------------------------------------------------- */
-// Include PHPLIB template class
-require_once WB_PATH . "/include/phplib/template.inc";
-
-// Include new wbmailer class (subclass of PHPmailer)
-require_once WB_PATH . "/framework/class.wbmailer.php";
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 class wb extends SecureForm
 {

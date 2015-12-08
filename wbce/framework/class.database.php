@@ -13,12 +13,17 @@
  * @lastmodified    $Date: 2012-02-16 13:12:17 +0100 (Do, 16. Feb 2012) $
  *
  */
+ 
 /*
 Database class
 This class will be used to interface between the database
 and the Website Baker code
  */
-
+ 
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+ 
+ 
 // define the old mysql consts for Backward compatibility
 if (!defined('MYSQL_ASSOC')) {
     define('MYSQL_ASSOC', 1);
@@ -71,9 +76,6 @@ class database
             }
             $this->db_name = DB_NAME;
             $this->connected = true;
-            //added cause of problems whith mysql strict mode
-            mysqli_query($this->db_handle,"SET @@sql_mode=''");
-        
         }
         return $this->connected;
     }

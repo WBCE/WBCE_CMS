@@ -56,6 +56,9 @@ require WB_PATH . "/framework/class.autoload.php";
 WbAuto::AddDir("/framework/");
 WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
 WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
+WbAuto::AddFile("PclZip","/include/pclzip/pclzip.lib.php");
+WbAuto::AddFile("Template","/include/phplib/template.inc");
+
 
 // register TWIG autoloader ---
 require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
