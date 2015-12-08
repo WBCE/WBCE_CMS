@@ -29,14 +29,27 @@ $include_head_link_css = '';
 $include_body_links = '';
 $include_head_links = '';
 
+// Extra run for include.php now available to ALL modules. 
+// Yess all modules are now allowed to have a include.php. 
+$sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
+$sql .= 'WHERE `type`=\'module\' ';
+if (($resSnippets = $database->query($sql))) {
+    while ($recSnippet = $resSnippets->fetchRow()) {
+        $module_dir = $recSnippet['directory'];
+        if (file_exists(WB_PATH . '/modules/' . $module_dir . '/include.php')) {
+            include WB_PATH . '/modules/' . $module_dir . '/include.php';
+        }
+    }
+}
+
 // workout to included frontend.css, fronten.js and frontend_body.js in snippets
+// this old thing continues to load the old 
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
 $sql .= 'WHERE `type`=\'module\' AND `function`=\'snippet\'';
 if (($resSnippets = $database->query($sql))) {
     while ($recSnippet = $resSnippets->fetchRow()) {
         $module_dir = $recSnippet['directory'];
         if (file_exists(WB_PATH . '/modules/' . $module_dir . '/include.php')) {
-            include WB_PATH . '/modules/' . $module_dir . '/include.php';
             // check if frontend.css file needs to be included into the <head></head> of index.php
             if (file_exists(WB_PATH . '/modules/' . $module_dir . '/frontend.css')) {
                 $include_head_link_css .= '<link href="' . WB_URL . '/modules/' . $module_dir . '/frontend.css"';
