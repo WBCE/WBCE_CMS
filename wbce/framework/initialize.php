@@ -10,6 +10,9 @@
  * @license GNU GPL2 (or any later version)
  */
 
+// DEFAULT SYSTEM SETTINGS
+// remove all unwanted php fancy stuff
+ 
 // no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
@@ -23,6 +26,39 @@ if (version_compare(PHP_VERSION, '5.3.6', '<')) {
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
 }
+
+
+
+// DATABASE
+// Load database class
+require_once(dirname(__FILE__)."/class.database.php");
+
+// Create database class
+$database = new database();
+
+
+
+// PRE INIT
+
+// Pre init, modules may change everyting as almost nothing is already set here
+// Module may hook here to change Page_id Language or whatever. Even System Constants.
+$sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
+$sql .= 'WHERE `type`=\'module\' ';
+if (($resSnippets = $database->query($sql))) {
+    while ($recSnippet = $resSnippets->fetchRow()) {
+        $module_dir = $recSnippet['directory'];
+        //echo  dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/pre_init.php';
+        if (file_exists(dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/pre_init.php')) {
+            include dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/pre_init.php';
+            
+        }
+    }
+}
+
+
+
+// SYSTEM CONSTANTS
+// Now we start definig System constants if not already set
 
 if (!defined('ADMIN_DIRECTORY')) {define('ADMIN_DIRECTORY', 'admin');}
 if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
@@ -47,10 +83,9 @@ if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){
 }
 define ("WB_PROTOCOLL", $protocoll);
 
-// sanitize $_SERVER['HTTP_REFERER']
-SanitizeHttpReferer();
-date_default_timezone_set('UTC');
 
+
+// AUTOLOADERS
 // register WB Autoloader 
 require WB_PATH . "/framework/class.autoload.php"; 
 WbAuto::AddDir("/framework/");
@@ -59,7 +94,6 @@ WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
 WbAuto::AddFile("PclZip","/include/pclzip/pclzip.lib.php");
 WbAuto::AddFile("Template","/include/phplib/template.inc");
 
-
 // register TWIG autoloader ---
 require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
@@ -67,10 +101,10 @@ Twig_Autoloader::register();
 // register PHPMailer autoloader ---
 require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
 
-// Create database class
-$database = new database();
 
-// get all settings as constants
+
+// GLOBAL SETTINGS
+// Get all global settings as constants from DB Settings
 Settings::Setup ();
 
 // some resulting constants need to be set manually 
@@ -88,6 +122,18 @@ if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
     ini_set('display_errors', 0); 
 }
 
+//Default Timezone.... 
+date_default_timezone_set('UTC');
+
+
+
+// sanitize $_SERVER['HTTP_REFERER']
+// NeeDS TO BE REMOVES ASAP
+SanitizeHttpReferer();
+
+
+
+// SESSION 
 // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
 // Later we should get a nice session class instead of this improvised stuff.
 ini_set('session.gc_maxlifetime', WB_SECFORM_TIMEOUT);
@@ -123,20 +169,45 @@ if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started']
     $_SESSION['session_started'] = time();
 }
 
-// Get users language
-if (
-    isset($_GET['lang']) and
-    $_GET['lang'] != '' and
-    !is_numeric($_GET['lang']) and
-    strlen($_GET['lang']) == 2
-) {
-    define('LANGUAGE', strtoupper($_GET['lang']));
-    $_SESSION['LANGUAGE'] = LANGUAGE;
-} else {
-    if (isset($_SESSION['LANGUAGE']) and $_SESSION['LANGUAGE'] != '') {
-        define('LANGUAGE', $_SESSION['LANGUAGE']);
+
+
+// INITIALIZE.PHP
+// For now we put modules initialize.php here
+// Yess all modules are now allowed to have a initialize.php. 
+// From now on Twig may be a module :-)
+// you can even change the $Page_id, or maybe the Language .
+// You can log users in or out and do what you like
+$sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
+$sql .= 'WHERE `type`=\'module\' ';
+if (($resSnippets = $database->query($sql))) {
+    while ($recSnippet = $resSnippets->fetchRow()) {
+        $module_dir = $recSnippet['directory'];
+        if (file_exists(WB_PATH . '/modules/' . $module_dir . '/initialize.php')) {
+            include WB_PATH . '/modules/' . $module_dir . '/initialize.php';
+        }
+    }
+}
+
+
+
+// LANGUAGES
+// Only if no module already did this
+if (!defined("LANGUAGE")) {
+    // Get users language
+    if (
+        isset($_GET['lang']) and
+        $_GET['lang'] != '' and
+        !is_numeric($_GET['lang']) and
+        strlen($_GET['lang']) == 2
+    ) {
+        define('LANGUAGE', strtoupper($_GET['lang']));
+        $_SESSION['LANGUAGE'] = LANGUAGE;
     } else {
-        define('LANGUAGE', DEFAULT_LANGUAGE);
+        if (isset($_SESSION['LANGUAGE']) and $_SESSION['LANGUAGE'] != '') {
+            define('LANGUAGE', $_SESSION['LANGUAGE']);
+        } else {
+            define('LANGUAGE', DEFAULT_LANGUAGE);
+        }
     }
 }
 
@@ -160,6 +231,10 @@ if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
     include WB_PATH . '/languages/old.format.inc.php';
 }
 
+
+
+
+// TIMEZONE, DATE, USERTIME
 // Get users timezone
 if (isset($_SESSION['TIMEZONE'])) {
     define('TIMEZONE', $_SESSION['TIMEZONE']);
@@ -181,6 +256,8 @@ if (isset($_SESSION['TIME_FORMAT'])) {
     define('TIME_FORMAT', DEFAULT_TIME_FORMAT);
 }
 
+
+
 // Set Theme dir
 define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
 define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
@@ -188,6 +265,9 @@ define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
 // extended wb_settings this part really needs some loving as both aren't implemented fully functional
 define('EDIT_ONE_SECTION', false);
 define('EDITOR_WIDTH', 0);
+
+
+
 
 
 /////////////////////////////////////////////////////////////////
