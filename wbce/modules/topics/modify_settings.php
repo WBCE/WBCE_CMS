@@ -99,7 +99,7 @@ if ($use_presets) {
 	$presets_dir = opendir($presets_files);				
 	while ($file=readdir($presets_dir)) {
 		if ($file != "." && $file != "..") {						
-			if (ereg('.js',$file)) {
+			if (preg_match('.js',$file)) {
 			$filename = substr($file, 0, -3);
 			if ($filename == "default") continue;
 			echo '<option value="'.$filename.'">'.$filename.'</option>'; 
