@@ -99,7 +99,7 @@ for($count = 1; $count <= 10; $count++)
 				}
 			}
 
-			if(file_exists($relative.$filename)) {
+			if(file_exists($relative.$filename) && isset($pathsettings[$resizepath])) {
 				if ($pathsettings[$resizepath]['width'] || $pathsettings[$resizepath]['height'] ) {
 					$rimg=new RESIZEIMAGE($relative.$filename);
 					$rimg->resize_limitwh($pathsettings[$resizepath]['width'],$pathsettings[$resizepath]['height'],$relative.$filename);
