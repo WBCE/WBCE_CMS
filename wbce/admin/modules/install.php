@@ -13,12 +13,10 @@
 
 // Setup admin object
 require('../../config.php');
-$admin = new admin('Addons', 'modules_install', false);
+$admin = new admin('Addons', 'modules_install');
 if(! $admin->checkFTAN()) {
-	$admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
-$admin->print_header();
 
 // Check if module folder is writable
 if(! is_writable(WB_PATH.'/modules/')) {
