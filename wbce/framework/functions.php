@@ -10,8 +10,15 @@
  * @license GNU GPL2 (or any later version)
  */
 
-//no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+/* -------------------------------------------------------- */
+// Must include code to stop this file being accessed directly
+if (!defined('WB_PATH')) {
+    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
+    throw new IllegalFileException();
+}
+/* -------------------------------------------------------- */
+// Define that this file has been loaded
+define('FUNCTIONS_FILE_LOADED', true);
 
 /**
  * @description: recursively delete a non empty directory
@@ -1000,7 +1007,8 @@ function load_module($directory, $install = false)
             if (!isset($module_license)) {$module_license = 'GNU General Public License';}
             if (!isset($module_platform) && isset($module_designed_for)) {$module_platform = $module_designed_for;}
             if (!isset($module_function) && isset($module_type)) {$module_function = $module_type;}
-            $module_function = strtolower($module_function);
+            // trim, remove spaces and lowecase (most usual mistakes ;-)
+            $module_function = str_replace(' ', '',trim(strtolower($module_function)));
             // Check that it doesn't already exist
             $sqlwhere = 'WHERE `type` = \'module\' AND `directory` = \'' . $module_directory . '\'';
             $sql = 'SELECT COUNT(*) FROM `' . TABLE_PREFIX . 'addons` ' . $sqlwhere;
