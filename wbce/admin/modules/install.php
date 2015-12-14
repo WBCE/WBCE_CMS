@@ -10,44 +10,6 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/**
- * pclzip_extraction_filter
- * PclZip filter to extract only files inside Add-on root path
- */
-function pclzip_extraction_filter($p_event, &$p_header) {
-    global $addon_root_path;
-    // don't apply filter for regular zipped WBCE Add-on archives w/o subfolders
-    if ($addon_root_path == '/.') return 1;
-
-    // exclude all files not stored inside the $addon_root_path (subfolders)
-    if (strpos($p_header['filename'], $addon_root_path) == false) return 0;
-
-    // remove $addon_root_path from absolute path of the file to extract
-    $p_header['filename'] = str_replace($addon_root_path, '', $p_header['filename']);
-    return 1;
-}
-
-/**
- * find_addon_root_path
- * Returns WBCE Add-on root path inside a given zip archive
- * Supports nested archives (e.g. incl. Add-on folder or GitHub archives)
- * @return string
- */
-function find_addon_root_path($zip) {
-    // get list of files contained in the zip object
-    if (($zip_files = $zip->listContent()) == 0) return '';
-
-    // find first folder containing an info.php file
-    foreach($zip_files as $zip_file => $info) {
-        if (basename($info['filename']) == 'info.php') {
-            return '/' . dirname($info['filename']);
-        }
-    }
-    return '';
-}
-
-// do not display notices and warnings during installation
-error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
 // Setup admin object
 require('../../config.php');
@@ -212,3 +174,42 @@ if ($action=="install") {
 
 // Print admin footer
 $admin->print_footer();
+
+
+
+// Helper  Functions
+/**
+ * pclzip_extraction_filter
+ * PclZip filter to extract only files inside Add-on root path
+ */
+function pclzip_extraction_filter($p_event, &$p_header) {
+    global $addon_root_path;
+    // don't apply filter for regular zipped WBCE Add-on archives w/o subfolders
+    if ($addon_root_path == '/.') return 1;
+
+    // exclude all files not stored inside the $addon_root_path (subfolders)
+    if (strpos($p_header['filename'], $addon_root_path) == false) return 0;
+
+    // remove $addon_root_path from absolute path of the file to extract
+    $p_header['filename'] = str_replace($addon_root_path, '', $p_header['filename']);
+    return 1;
+}
+
+/**
+ * find_addon_root_path
+ * Returns WBCE Add-on root path inside a given zip archive
+ * Supports nested archives (e.g. incl. Add-on folder or GitHub archives)
+ * @return string
+ */
+function find_addon_root_path($zip) {
+    // get list of files contained in the zip object
+    if (($zip_files = $zip->listContent()) == 0) return '';
+
+    // find first folder containing an info.php file
+    foreach($zip_files as $zip_file => $info) {
+        if (basename($info['filename']) == 'info.php') {
+            return '/' . dirname($info['filename']);
+        }
+    }
+    return '';
+}
