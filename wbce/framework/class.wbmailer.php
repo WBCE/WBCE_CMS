@@ -28,7 +28,7 @@ class wbmailer extends PHPMailer
     // new websitebaker mailer class (subset of PHPMailer class)
     // setting default values
 
-    public function wbmailer()
+    public function __construct()
     {
         global $database;
         // set mailer defaults (PHP mail function)
