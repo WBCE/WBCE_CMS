@@ -14,6 +14,8 @@
 // Setup admin object
 require('../../config.php');
 $admin = new admin('Addons', 'modules_install');
+
+// check if a valid form is send
 if(! $admin->checkFTAN()) {
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
@@ -68,7 +70,6 @@ if(! $_FILES['userfile']['error']) {
 }
 
 // include PclZip and create object from Add-on zip archive
-require_once(WB_PATH . '/include/pclzip/pclzip.lib.php');
 $archive = new PclZip($temp_file);
 
 // extract Add-on files into WBCE temp folder
@@ -159,9 +160,8 @@ if(file_exists($module_dir.'/'.$action.'.php')) {
     require($module_dir.'/'.$action.'.php');
 }
 
-// Print success message
+// Load/update module info in DB and print success message
 if ($action=="install") {
-    // Load module info into DB
     load_module(WB_PATH.'/modules/'.$module_directory, false);
     $admin->print_success($MESSAGE['GENERIC_INSTALLED']);
 } elseif ($action=="upgrade") {
