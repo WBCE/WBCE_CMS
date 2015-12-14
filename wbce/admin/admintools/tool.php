@@ -11,7 +11,6 @@
  */
 
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
 require_once(WB_PATH.'/framework/functions.php');
 
 //Fetch toolname
@@ -33,7 +32,7 @@ if(!preg_match('/^[a-z][a-z_\-0-9]{2,}$/i', $toolDir)) $toolCheck=false;
 
 // Check if tool is installed
 $sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
-	   'WHERE `type`=\'module\' AND `function`=\'tool\' '.
+	   'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' '.
        'AND `directory`=\''.$database->escapeString($toolDir).'\'';
 if(!($toolName = $database->get_one($sql)))  $toolCheck=false;
 
