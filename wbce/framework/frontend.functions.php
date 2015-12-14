@@ -28,8 +28,9 @@ $include_head_links = '';
 
 // Extra run for include.php now available to ALL modules. 
 // Yess all modules are now allowed to have a include.php. 
+
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
-$sql .= 'WHERE `type`=\'module\' ';
+$sql .= 'WHERE function LIKE \'%snippet%\' ';
 if (($resSnippets = $database->query($sql))) {
     while ($recSnippet = $resSnippets->fetchRow()) {
         $module_dir = $recSnippet['directory'];
@@ -40,9 +41,11 @@ if (($resSnippets = $database->query($sql))) {
 }
 
 // workout to included frontend.css, fronten.js and frontend_body.js in snippets
-// this old thing continues to load the old 
+// this old thing continues to load the old Frontend CSS/JS
+// This possibly moves to a module thats why i seperated it !
+// still this needs to call the new Library to store the  JS!
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
-$sql .= 'WHERE `type`=\'module\' AND `function`=\'snippet\'';
+$sql .= 'WHERE  function LIKE \'%snippet%\'';
 if (($resSnippets = $database->query($sql))) {
     while ($recSnippet = $resSnippets->fetchRow()) {
         $module_dir = $recSnippet['directory'];

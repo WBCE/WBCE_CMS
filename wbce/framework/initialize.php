@@ -40,16 +40,20 @@ $database = new database();
 
 // PRE INIT
 
+//// BESSER MYSQL FIND_IN_SET()?
+http://forum.wbce.org/viewtopic.php?id=84
+
+
 // Pre init, modules may change everyting as almost nothing is already set here
 // Module may hook here to change Page_id Language or whatever. Even System Constants.
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
-$sql .= 'WHERE `type`=\'module\' ';
+$sql .= 'WHERE function LIKE \'%preinit%\' ';
 if (($resSnippets = $database->query($sql))) {
     while ($recSnippet = $resSnippets->fetchRow()) {
         $module_dir = $recSnippet['directory'];
         //echo  dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/pre_init.php';
-        if (file_exists(dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/pre_init.php')) {
-            include dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/pre_init.php';
+        if (file_exists(dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/preinit.php')) {
+            include dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/preinit.php';
             
         }
     }
@@ -173,12 +177,12 @@ if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started']
 
 // INITIALIZE.PHP
 // For now we put modules initialize.php here
-// Yess all modules are now allowed to have a initialize.php. 
+// Yess all modules are now allowed to have a initialize.php. `function`=\'snippet\'
 // From now on Twig may be a module :-)
 // you can even change the $Page_id, or maybe the Language .
 // You can log users in or out and do what you like
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
-$sql .= 'WHERE `type`=\'module\' ';
+$sql .= 'WHERE  function LIKE \'%initialize%\' ';
 if (($resSnippets = $database->query($sql))) {
     while ($recSnippet = $resSnippets->fetchRow()) {
         $module_dir = $recSnippet['directory'];
