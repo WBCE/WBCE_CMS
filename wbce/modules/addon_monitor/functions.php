@@ -30,13 +30,17 @@ if(!function_exists('getModulesArray')){
 			FROM ".TABLE_PREFIX."addons a 
 				LEFT JOIN ".TABLE_PREFIX."sections s 
 				ON a.directory = s.module 
-			WHERE function = 'page' OR function = 'snippet' OR function = 'tool' OR function = 'wysiwyg'"
+			WHERE function LIKE '%page%' OR function LIKE '%snippet%' OR function LIKE '%tool%' OR function LIKE '%wysiwyg%'"
 		);
 
 		if($oAddons = $database->query($sQueryAddons)){			
 			$sLanguageFileLocation = WB_PATH."/modules/%s/languages/".LANGUAGE.".php";
 			// Loop through addons
 			while($aRec = $oAddons->fetchRow(MYSQL_ASSOC)){
+ 
+                // Multiple Module types now possible we use the first one for displayicon
+                $aRec['function'] = preg_replace('/,.*$/',"",$aRec['function']);
+                
 				// grab for page_id's and section_id's if Addon is a PAGE TYPE MODULE
 				if($aRec['function'] == 'page'){					
 					++$aAddons['count_pagemodules'];
