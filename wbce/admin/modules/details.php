@@ -91,31 +91,33 @@ $template->set_var(array(
 								)
 						);
 						
-switch ($module['function']) {
-	case NULL:
-		$type_name = $TEXT['UNKNOWN'];
-		break;
-	case 'page':
-		$type_name = $TEXT['PAGE'];
-		break;
-	case 'wysiwyg':
-		$type_name = $TEXT['WYSIWYG_EDITOR'];
-		break;
-	case 'tool':
-		$type_name = $TEXT['ADMINISTRATION_TOOL'];
-		break;
-	case 'admin':
-		$type_name = $TEXT['ADMIN'];
-		break;
-	case 'administration':
-		$type_name = $TEXT['ADMINISTRATION'];
-		break;
-	case 'snippet':
-		$type_name = $TEXT['CODE_SNIPPET'];
-		break;
-	default:
-		$type_name = $TEXT['UNKNOWN'];
+$type_name ="";
+if     (empty($module['function'])){
+    $type_name = $TEXT['UNKNOWN'];
 }
+if (preg_match("/page/", $module['function'])){
+    $type_name .= $TEXT['PAGE'].", ";
+}
+if (preg_match("/wysiwyg/", $module['function'])){
+    $type_name .= $TEXT['WYSIWYG_EDITOR'].", ";
+}
+if (preg_match("/tool/", $module['function'])){
+    $type_name .= $TEXT['ADMINISTRATION_TOOL'].", ";
+}
+if (preg_match("/admin/", $module['function'])){
+    $type_name .= $TEXT['ADMIN'].", ";
+}
+if (preg_match("/snippet/", $module['function'])){
+    $type_name .= $TEXT['CODE_SNIPPET'].", ";
+}
+if (preg_match("/initialize/", $module['function'])){
+    $type_name .= $TEXT['INITIALIZE'].", ";
+}
+if (preg_match("/preinit/", $module['function'])){
+    $type_name .= $TEXT['PREINIT'].", ";
+}
+
+$type_name= trim($type_name,", ");
 $template->set_var('TYPE', $type_name);
 
 // Insert language headings

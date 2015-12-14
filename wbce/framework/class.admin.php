@@ -10,8 +10,13 @@
  * @license GNU GPL2 (or any later version)
  */
 
-//no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+// Must include code to stop this file being accessed directly
+if (!defined('WB_PATH')) {
+    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
+    throw new IllegalFileException();
+}
+/* -------------------------------------------------------- */
+require_once WB_PATH . '/framework/class.wb.php';
 
 // Get WB version
 require_once ADMIN_PATH . '/interface/version.php';
@@ -347,7 +352,7 @@ class admin extends wb
         if (isset($_GET['tool'])) {
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function`=\'tool\' AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
+            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend_body.js file to include
@@ -408,7 +413,7 @@ class admin extends wb
         if (isset($_GET['tool'])) {
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function`=\'tool\' AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
+            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend.js or backend.css file to include
