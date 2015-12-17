@@ -43,6 +43,12 @@ if(!defined('WB_PATH')) { throw new IllegalFileException(); }
             require_once($sFilterDirectory.'filterDroplets.php');
             $content = doFilterDroplets($content);
         }
+        
+/* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */       
+        if (class_exists ("I")) {
+            $content = I::Filter($content);
+        }
+        
 /* ### filter type: protect email addresses ################################# */
         if( ($output_filter_mode & pow(2, 0)) || ($output_filter_mode & pow(2, 1)) ) {
             if (file_exists($sFilterDirectory.'filterEmail.php')) {
@@ -50,11 +56,13 @@ if(!defined('WB_PATH')) { throw new IllegalFileException(); }
                 $content = doFilterEmail($content, $output_filter_mode);
             }
         }
+        
 /* ### filter type: change [wblinkxx] into real URLs ######################## */
         if (file_exists($sFilterDirectory.'filterWbLink.php')) {
             require_once($sFilterDirectory.'filterWbLink.php');
             $content = doFilterWbLink($content);
         }
+        
 /* ### filter type: full qualified URLs to relative URLs##################### */
         if($filter_settings['sys_rel'] == 1){
             if (file_exists($sFilterDirectory.'filterRelUrl.php')) {
@@ -62,6 +70,7 @@ if(!defined('WB_PATH')) { throw new IllegalFileException(); }
                 $content = doFilterRelUrl($content);
             }
         }
+        
 /* ### filter type: moves css definitions from <body> into <head> ########### */
         if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
             require_once($sFilterDirectory.'filterCssToHead.php');
@@ -71,6 +80,7 @@ if(!defined('WB_PATH')) { throw new IllegalFileException(); }
 /* ### end of filters ####################################################### */
         return $content;
     }
+    
 /* ************************************************************************** */
 /**
  * function to read the current filter settings
