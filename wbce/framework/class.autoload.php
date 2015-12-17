@@ -1,16 +1,70 @@
 <?php
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+/**
+@file
+@brief This file contains the new registry based autoloader.
 
+The autoloader has no dependencies for other files only constant WB_PATH(path to webroot) is needed. 
+So it maybe usefull in other enviroments too.  
+*/
+
+/**
+@brief This is the main autoloader class in Websitebaker(CE)
+
+Actually this is the only one too besides from the Twig autoloader which is moved to a module soon.
+
+The autoloader is registry based , so all directories/files/patterns need to be registered somwhere in the CMS code. 
+The registry allows Modules snipits Droplets and any other piece of code anywhere in WBCE to register its classes 
+for further execution. 
+
+Here some examples for register actions, all path values are expected to be given from WB_PATH as the starting point.
+
+@code
+// register a new directory to be searched
+WbAuto::AddDir("/classes/");
+WbAuto::AddDir("/classes/fields");
+
+// register a single file, this allows for classname != filename 
+WbAuto::AddFile("MultiCrud","/classes/multicrud.php");
+WbAuto::AddFile("R","/includes/rb.php");
+
+// register additional search patterns for file search in directory %s is the classname.
+WbAuto::AddType("class.%s.inc.php");
+
+@endcode 
+
+Everything is Global and can easyly be called from everywhere even the internal variables (for debugging if you like)  
+@code
+echo  "<pre>"; print_r(WbAuto::$Dirs); echo  "</pre>";
+echo  "<pre>"; print_r(WbAuto::$Files); echo  "</pre>";
+echo  "<pre>"; print_r(WbAuto::$Types); echo  "</pre>";
+@endcode
+
+@attention There is one very usefull thing to keep in mind @code class_exists('MyClass'); @endcode triggers the autoloader, so it tests if the class is available and loads it.
+
+
+*/ 
 // !!! Need to remember, that i need to extend this so it loads directories above webroot!!!
-
+// !!! Need to add a list of loaded classes for debugging.
 class WbAuto{
 
-    // Vars
-    public static $Dirs=array();    // Dirs to search
-    public static $Files=array();   // Class filename combinations for loader 
+    /**
+    @brief Stores the dirs to search in loader 
+    @var array $Dirs
+    */    
+    public static $Dirs=array();  
+
+    /**
+    @brief Stores class filename combinations for loader.
+    @var array $Files
+    */    
+    public static $Files=array();   
     
-    //Search templates to search for files in the directories
+    /**
+    @brief Stores search templates to search for in the search dirs.
+    @var array $Types
+    */    
     public static $Types=array('class.%s.php',
                                '%s.class.php',
                                '%s.class.inc', 
@@ -18,9 +72,15 @@ class WbAuto{
                                '%s.inc', 
                                '%s.inc.php',  
                                'class.%s.inc'); 
+
+
+
+    /**
+    @brief The actual loader that is registered whith spl_autoload_register('WbAuto::Loader');
     
-    // The function actually registered to PHP autoloading
-    static function Loader($ClassName){
+    This is the workhorse that does the actual loading. 
+    */
+    static public function Loader($ClassName){
         //already loaded, never mind
         //echo $ClassName."<br />";
         if (class_exists($ClassName, FALSE)) return FALSE; 
@@ -45,14 +105,39 @@ class WbAuto{
         }   
     }
     
-    // add a single class file 
-    // WbAuto::AddFile("MultiCrud","/classes/multicrud.php");
-    static function AddFile ($ClassName="", $ClassFile="", $overwrite= false){
+
+    /**
+    @brief Adds a single class <-> file combination to the autoload list.
+
+    These combinations allow for filename != clasname and are loaded first as it needs no directory searching.
+    The path starts from WB_PATH. And it allows for overwrite of already existing entries.
+    
+    @code
+    WbAuto::AddFile("MultiCrud","/modules/multicrud/classes/multicrud.php");
+    WbAuto::AddFile("R","/classes/rb.php");
+    WbAuto::AddFile("R","/includes/rb.php", true);
+    @endcode
+
+
+    @param string $ClassName
+        The actual name of the class to be loaded.
+
+    @param string $ClassFile
+        The path to the file to load for this class.
+
+    @param boolean $Overwrite 
+        Set to true already set entries are overwritten.
+
+    @retval boolean/string
+        Returns false on success, and an error message on failure. 
+
+    */
+    static public function AddFile ($ClassName="", $ClassFile="", $Overwrite= false){
     
         //Check for valid call return error if invalid
         if ($ClassName=="") return ("No class name set!");
         if ($ClassFile=="") return ("No class file set!");
-        if (isset(WbAuto::$Files[$ClassName]) and $overwrite== false) return  ("Class already exists ($ClassName)");
+        if (isset(WbAuto::$Files[$ClassName]) and $Overwrite== false) return  ("Class already exists ($ClassName)");
         
         // More Checks
         $LoadFile = WB_PATH.$ClassFile;
@@ -61,13 +146,34 @@ class WbAuto{
          
         // if all is ok set new Classfile 
         WbAuto::$Files[$ClassName]=$LoadFile;
-        return FALSE;
+        return false;
     
     }
  
+    /**
+    @brief Add a directory to be searched for matching class names/files.
+
+    Directories added here are searched for matching classfiles using patterns from the types array.
+    The direcctory path starts from WB_PATH(webroot). The defautl patters in WB is class.classname.php all lowercase letters.
+
+    @code
+    WbAuto::AddDir("/classes/");
+    WbAuto::AddDir("/modules/mymodule/classes/");
+    @code
+
+    @param string $Dir
+        The path to the Directory to include starting from WB_PATH
+
+    @retval boolean/string
+        Returns false on success, and an error message on failure. 
+    */
     // add a full directory to search for matching classfiles
     // WbAuto::AddDir("/classes/fields");
-    static function AddDir ($Dir){
+    static public function AddDir ($Dir=""){
+
+        // some checks
+        if (!is_string($Dir)) return ("Directory needs to be a string.");
+        if (empty ($Dir))     return ("Directory is empty.");
  
         // for windooze
         $Dir=str_replace ("\\", "/", $Dir);
@@ -88,12 +194,29 @@ class WbAuto{
         //avoid double entries
         WbAuto::$Dirs= array_unique(WbAuto::$Dirs);
  
-        return FALSE;
+        return false;
     }
  
-    // Add a new template to search for in directorys.
-    // WbAuto::AddType("class.%s.inc.php");
-    static function AddType ($Type){
+    /**
+    @brief Adds a new search template to the list of search templates.
+
+    Templates are used to look for matching files in the directory search.
+
+    @code
+    //  %s is the classname.
+    WbAuto::AddType("class.%s.inc.php");
+    WbAuto::AddType("%s.php");
+    WbAuto::AddType("%s.class.php");
+    @endcode 
+
+    @param string $Type
+        The search pattern/template to add.
+
+    @retval boolean/string
+        Returns false on success, and an error message on failure.     
+
+    */
+    static public function AddType ($Type){
 
         // Add Search template
         WbAuto::$Types[]=$Type;
@@ -101,23 +224,13 @@ class WbAuto{
         //avoid double entries
         WbAuto::$Types= array_unique(WbAuto::$Types);
 
-        return FALSE;
+        return false;
     }
 }
 
 //finally register this autoloader
 spl_autoload_register('WbAuto::Loader');
 
-//WbAuto::AddDir("/classes/");
-//WbAuto::AddDir("/classes/fields");
 
-//WbAuto::AddFile("R","/classes/rb.php");
-//WbAuto::AddFile("MultiCrud","/classes/multicrud.php");
-
-//WbAuto::AddType("class.%s.inc.php");
-
-//echo  "<pre>"; print_r(WbAuto::$Dirs); echo  "</pre>";
-//echo  "<pre>"; print_r(WbAuto::$Files); echo  "</pre>";
-//echo  "<pre>"; print_r(WbAuto::$Types); echo  "</pre>";
 
 

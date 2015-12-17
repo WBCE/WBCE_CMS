@@ -1,20 +1,78 @@
 <?php 
-/*
-Simple static Class for handling settings in Core and Modules
-All setting names may only contain a-z 0-9 and "_" 
-Core Settings are prepended by "wb_". (e.g. wb_maintainance_mode)
-Module settings are prepended by module name or maybe by a shortened form of the module name
-(e.g. wysi_my_setting for wysiwyg)
-Please keep in mind that WB stores settings only as strings.
+/**
+@file
+@brief Simple static class for handling global settings in Core and Modules
 
-Copyright Norbert Heimsath
-License GPLv2 or any later
+The basic idea is to make handling of global settings al lot easier. 
+
+@author Norbert Heimsath(heimsath.org)
+@copyright GPLv2 or any later
+
+For detailed information take a look at the actual documentation of class Settings.
+*/
+
+/**
+@brief This class handles the management of global settings.
+
+It takes care of getting and setting those and it handles the converion and generation into good old constants.
+
+All setting names may only contain a-z 0-9 and "_" \n     
+Core settings are prepended by "wb_". (e.g. wb_maintainance_mode)  \n   
+Module settings are prepended by module name or maybe by a shortened form of the module name.  \n  
+(e.g. wysi_my_setting for wysiwyg) 
+
+@attention 
+    Please keep in mind that WB stores settings only as strings.  
+
+All those settings are converted into constants in the init process using Settings::Setup();
+So "wb_maintainance_mode" is available as WB_MAINTAINANCE_MODE allover in WB(CE).
+
+Some examples:
+@code
+// create or edit a setting
+Settings::Set("wb_new_setting","the value");
+
+// using a setting
+if (WB_NEW_SETTING =="the value") echo "Horay";
+
+// there is a get function but this is mostly used internal
+$myValue= Settings::Get ("wb_new_setting");
+
+// deleting
+Settings::Delete("wb_new_setting");
+
+// if used in modules please prepend (shortened)module name to avoid collisions
+Settings::Set("wysi_new_setting","another value");
+@endcode
+
+@todo Extend this class to handle different tables.
+@todo Allow to fetch module speciffic settings as an array, maybe even prefetch settings as an array.
+    So we only need to return partial arrays of this main array.
+
 */
 
 class Settings {
 
-    // sets or overwrites a config setting
-    public static function Set($name, $value, $overwrite=true) {
+    /** 
+    @brief Sets a global setting.
+
+    The Overwrite attribute has been added for use in upgradescripts where you do not want 
+    to overwrite an existing setting. Often you only want to add a setting only if its not already set. 
+    
+    @param string $name
+        The settings name.
+
+    @param undefined $value  
+        The value, only strings/boolean allowed.
+
+    @param boolean $overwrite
+        Set to false to only write if setting does not exist.
+
+    @retval boolean/string
+        Returns false on success and an error message on failure.
+
+    */
+    public static function Set($name="", $value="", $overwrite=true) {
 	    global $database;
         
         //Make sure we only  got 'a-zA-Z0-9_'
@@ -56,8 +114,21 @@ class Settings {
         return false;
     }
 
+    /**
+    @brief Fetches a single setting. 
+    
+    Used mostly as helper, as all setings converted to constants.
 
-    // only used as helper, as all setings converted to constants
+    @param string $name
+        The settings name, eg. "wb_new_setting".
+
+    @param undefined $default
+        Whatever you like as a returnvalue if the method does not find a matching entry.
+
+    @retval array/undefined
+        Returns the value of the setting or $Default if nothing is found. 
+ 
+    */
     public static function Get($name, $default= false) {
         global $database; 
 
@@ -68,7 +139,18 @@ class Settings {
 
 	    return $default;
     }
+    /**
+    @brief Deletes single setting. 
+    
+    Simply removes a setting , nothing more.
 
+    @param string $name
+        The settings name, eg. "wb_new_setting".
+
+    @retval boolean/string
+        Returns false on success and an error message on failure.
+ 
+    */
     public static function Del($name) {
 	    global $database;
 
@@ -84,9 +166,17 @@ class Settings {
         }
         return false;
     }
+    
 
+    /**
+    @brief Method to setup constants
 
-    // function to setup constants in init 
+    This Method is used in /framework/initialize.php to setup all settings as constants.  
+
+    @retval boolean/string
+        Returns false on success and an error message on failure.
+ 
+    */
     public static function Setup() {
         global $database; 
         
@@ -115,7 +205,14 @@ class Settings {
         return false;
     }
 
-    
+    /**
+    @brief A little method to display all settings in DB.
+
+    Basically it doe the same as Setup() but it generates a nice readable list.
+
+    @retval string 
+        All recent settings as a simple <br /> seperated list. 
+    */
     // a function to display all settings in DB same as setup but returns a nice list
     public static function Info() {
         global $database;
@@ -138,3 +235,6 @@ class Settings {
         return $out;
     }
 }
+
+
+
