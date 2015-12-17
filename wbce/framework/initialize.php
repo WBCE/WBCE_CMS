@@ -98,10 +98,6 @@ WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
 WbAuto::AddFile("PclZip","/include/pclzip/pclzip.lib.php");
 WbAuto::AddFile("Template","/include/phplib/template.inc");
 
-// register TWIG autoloader ---
-require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
-Twig_Autoloader::register();
-
 // register PHPMailer autoloader ---
 require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
 
