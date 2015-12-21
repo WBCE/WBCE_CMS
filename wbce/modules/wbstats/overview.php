@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.1.8
- * @lastmodified    October 22, 2014
+ * @version         0.1.9
+ * @lastmodified    Februari 20, 2015
  *
  */
  
@@ -178,4 +178,6 @@ $('.pags').live("click",function(e) {
 </div>
 
 <div style="clear:both"></div>
+<div style="text-align: center">Original Module by Ruud(<a href="http://dev4me.nl" target="_blank" >dev4me.nl</a>)</div>
+
 </div>

@@ -8,14 +8,15 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.1.8
- * @lastmodified    October 22, 2014
+ * @version         0.1.9
+ * @lastmodified    Februari 20, 2015
  *
  */
 
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 ?>
 <div class="full" style="height:auto;">
+    <?php /*
 	<h3><?php echo $help['installhead'] ?></h3>
 	<?php echo $help['installbody'] ?>
 	<br/><pre>include (WB_PATH.'/modules/wbstats/count.php');</pre><br/>
@@ -27,6 +28,7 @@ defined('WB_PATH') OR die(header('Location: ../index.php'));
 	<?php } ?>
 	<?php if (!defined('WB_VERSION') || version_compare(WB_VERSION,'2.8.2','<')) { ?>
 	<br/>
+	*/ ?>
 	<h3><?php echo $help['jqueryhead'] ?></h3>
 	<?php echo $help['jquerybody'] ?><br/>
 	<?php } ?>
