@@ -15,7 +15,7 @@
 
 $module_directory = 'wbstats';
 $module_name = 'WebsiteBaker Visitor statistics';
-$module_function = 'tool,page,snippet';
+$module_function = 'tool,page,snippet,preinit';
 $module_version = '0.2.0-beta.1';
 $module_platform = '2.8.x';
 $module_author = 'Dev4me - Ruud Eisinga - www.dev4me.nl, Norbert Heimsath (heimsath.org)';
