@@ -121,7 +121,6 @@ $msg .= (file_exists(WB_PATH.'/install/')) ?  $MESSAGE['START_INSTALL_DIR_EXISTS
 // We ignore the user rights as they don't matter; it's more dangerous to
 // keep the installer there!
 if(file_exists(WB_PATH.'/install/') || file_exists(WB_PATH.'/upgrade-script.php') ) {
-    if(!function_exists('rm_full_dir')) @ 
     if(file_exists(WB_PATH.'/upgrade-script.php')) unlink(WB_PATH.'/upgrade-script.php');
     if(file_exists(WB_PATH.'/install/'))           rm_full_dir(WB_PATH.'/install/');
 /*
