@@ -19,8 +19,6 @@
 
 require( '../../config.php' );
 
-require_once( WB_PATH . '/framework/class.admin.php' );
-require_once( WB_PATH . '/framework/functions.php' );
 $admin = new admin( 'admintools', 'admintools', true, false );
 if ( $admin->get_permission( 'admintools' ) == true )
 {

@@ -125,8 +125,6 @@ if (!defined("WB_PATH")) {
     die("Website not configured");
 }
 
-// Include class frontend
-require_once WB_PATH . "/framework/class.frontend.php";
 // Create new frontend object
 $wb = new frontend();
 // Collect general website settings

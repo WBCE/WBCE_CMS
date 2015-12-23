@@ -22,7 +22,6 @@ header('Pragma: no-cache');
 require('../../../../../config.php');
 
 // Create new admin object
-require(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
 if(!function_exists('cleanup')) {

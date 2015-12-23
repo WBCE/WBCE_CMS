@@ -24,9 +24,6 @@
 // tool_doclone.php
 // Where the actual cloning will take place
 require('../../config.php');
- 
- 
-require_once(WB_PATH.'/framework/class.order.php');
 
 // create admin object depending on platform (admin tools were moved out of settings with WB 2.7)
 $admin = new admin('admintools', 'admintools');

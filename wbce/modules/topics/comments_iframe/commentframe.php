@@ -30,7 +30,6 @@ $starttime = array_sum(explode(" ",microtime()));
 if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 
 
-require_once(WB_PATH.'/framework/class.frontend.php');
 // Create new frontend object
 $wb = new frontend();
 

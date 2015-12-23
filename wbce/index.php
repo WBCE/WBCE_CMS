@@ -35,7 +35,7 @@ if (!defined('TABLE_PREFIX')) {
     header('Location: ' . $target_url); exit; 
 }
 
-require_once WB_PATH . '/framework/class.frontend.php';
+
 // Create new frontend object
 $wb = new frontend();
 

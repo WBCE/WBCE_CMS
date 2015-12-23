@@ -259,7 +259,6 @@ class mform {
 	
 		
 	function mail($toaddress, $subject, $message, $fromname='', $replyto = '') {
-		require_once(WB_PATH."/framework/class.wbmailer.php");
 		$toArray = explode(',',$toaddress);
 		$fromaddress = $toArray[0];
 	

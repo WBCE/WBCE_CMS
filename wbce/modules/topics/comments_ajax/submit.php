@@ -13,7 +13,6 @@ require_once(WB_PATH.'/modules/'.$mod_dir.'/defaults/module_settings.default.php
 require_once(WB_PATH.'/modules/'.$mod_dir.'/module_settings.php');
 require_once (WB_PATH.'/modules/'.$mod_dir.'/functions_small.php');
 
-require_once(WB_PATH.'/framework/class.wb.php');
 $wb = new wb;
 
 // Load Language file

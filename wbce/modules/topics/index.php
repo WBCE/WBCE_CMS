@@ -21,9 +21,6 @@ if(!defined('WB_PATH')) {
 	header('Location: ../../');	
 	exit(0);
 }
-
-
-require_once(WB_PATH.'/framework/class.frontend.php');
  
 // Create new frontend object
 $wb = new frontend();

@@ -4,9 +4,6 @@ if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 $update_when_modified = true; // Tells script to update when this page was last updated
 require('permissioncheck.php');
 
-// Include WB functions file
-require(WB_PATH.'/framework/functions.php');
-
 $user_id = $admin->get_user_id();
 $user_in_groups = $admin->get_groups_id();
 

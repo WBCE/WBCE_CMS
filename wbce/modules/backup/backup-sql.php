@@ -63,7 +63,6 @@ require_once('../../config.php');
  *	Create new admin object
  *
  */
-require_once('../../framework/class.admin.php');
 $admin = new admin('Admintools', 'admintools', false, false);
 
 if ( $admin->get_permission('admintools') == false ) die ( header('Location: ../../index.php') );

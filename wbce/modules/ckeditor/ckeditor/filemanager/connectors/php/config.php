@@ -36,7 +36,6 @@ $Config['Enabled'] = false ;
 */
 // include WB config.php file and admin class
 require_once('../../../../../../config.php');
-require_once(WB_PATH .'/framework/class.admin.php');
 
 $wb_path = str_replace('\\','/', WB_PATH);
 $wb_path = str_replace('//','/', WB_PATH);

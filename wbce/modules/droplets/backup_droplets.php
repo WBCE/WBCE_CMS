@@ -19,8 +19,7 @@
 
 // tool_edit.php
 require_once( '../../config.php' );
-require_once( WB_PATH . '/framework/class.admin.php' );
-require_once( WB_PATH . '/framework/functions.php' );
+
 // create admin object depending on platform (admin tools were moved out of settings with WB 2.7)
 $admin              = new admin( 'admintools', 'admintools' );
 $admintool_link     = ADMIN_URL . '/admintools/index.php';

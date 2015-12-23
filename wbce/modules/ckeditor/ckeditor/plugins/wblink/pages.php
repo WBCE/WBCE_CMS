@@ -26,7 +26,6 @@ require('../../../../../config.php');
 $wb284  = (file_exists('../../../../../setup.ini.php')) ? true : false;
 
 // Create new admin object
-require(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
 if(!function_exists('cleanup')) {

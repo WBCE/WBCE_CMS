@@ -131,9 +131,7 @@ function status_msg($message, $class = 'check', $element = 'span')
 }
 
 // include required scripts and setup admin object
-@require_once 'config.php';
-require_once WB_PATH . '/framework/functions.php';
-require_once WB_PATH . '/framework/class.admin.php';
+require_once 'config.php';
 $admin = new admin('Addons', 'modules', false, false);
 
 // database tables including in WB package

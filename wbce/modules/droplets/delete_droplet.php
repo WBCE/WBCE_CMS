@@ -21,8 +21,6 @@ require( '../../config.php' );
 require_once( dirname( __FILE__ ) . '/functions.inc.php' );
 
 // Include WB admin wrapper script
-require_once( WB_PATH . '/framework/class.admin.php' );
-require_once( WB_PATH . '/framework/functions.php' );
 $admin = new admin( 'admintools', 'admintools', false, false );
 if ( $admin->get_permission( 'admintools' ) == true )
 {

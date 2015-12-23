@@ -9,7 +9,7 @@ require('../info.php');
 $mod_dir = $module_directory;
 $tablename = $mod_dir;
 
-require_once(WB_PATH.'/framework/class.wb.php');
+// initialize a new class WB
 $wb = new wb;
 
 
