@@ -15,14 +15,8 @@
  *
  */
 
-// Must include code to stop this file being access directly
-/* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-	// Stop this file being access directly
-		die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 // check if module language file exists for the language set by the user (e.g. DE, EN)
 if(!file_exists(WB_PATH .'/modules/wrapper/languages/'.LANGUAGE .'.php')) {

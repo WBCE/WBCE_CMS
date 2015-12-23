@@ -14,10 +14,9 @@
  * @lastmodified    $Date: 2011-01-10 13:21:47 +0100 (Mo, 10 Jan 2011) $
  *
  */
-// Must include code to stop this file being access directly
-/* -------------------------------------------------------- */
-if (! defined('WB_PATH')) { die('Cannot access this file directly'); }
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
 // Insert an extra row into the database
 $sql = 'INSERT INTO `'.TABLE_PREFIX.'mod_wysiwyg` '
      . 'SET `page_id`='.$page_id.', '

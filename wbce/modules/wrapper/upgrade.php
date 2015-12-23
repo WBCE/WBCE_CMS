@@ -14,14 +14,8 @@
  * @lastmodified    $Date: 2011-12-10 16:06:15 +0100 (Sa, 10. Dez 2011) $
  *
  */
-// Must include code to stop this file being access directly
-/* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-	// Stop this file being access directly
-		die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 $msg = '';
 $sTable = TABLE_PREFIX.'mod_wrapper';
@@ -34,4 +28,4 @@ if(($sOldType = $database->getTableEngine($sTable))) {
 } else {
 	$msg = $database->get_error();
 }
-// ------------------------------------
+

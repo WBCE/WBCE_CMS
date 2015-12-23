@@ -14,13 +14,9 @@
  * @lastmodified    $Date: 2012-01-16 18:29:11 +0100 (Mo, 16. Jan 2012) $
  *
  */
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if(!defined('WB_PATH')) {
-	require_once(dirname(dirname(__FILE__)).'/framework/globalExceptionHandler.php');
-	throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
 $module_directory = 'wysiwyg';
 $module_name = 'WYSIWYG';
 $module_function = 'page';

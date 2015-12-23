@@ -15,8 +15,8 @@
  * @lastmodified    $Date: 2011-01-10 13:21:47 +0100 (Mo, 10. Jan 2011) $
  *
  */
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 function wysiwyg_search($func_vars) {
 	extract($func_vars, EXTR_PREFIX_ALL, 'func');
