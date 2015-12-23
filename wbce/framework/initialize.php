@@ -267,6 +267,9 @@ define('EDITOR_WIDTH', 0);
 
 
 
+// finally load framework Funktions so we dont need to include this in almost every file 
+require_once(WB_PATH.'/framework/functions.php');
+
 
 
 /////////////////////////////////////////////////////////////////
