@@ -21,7 +21,6 @@
 require('../../config.php');
 
 // Print admin header
-require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Addons', 'languages_view', false);
 if( !$admin->checkFTAN() )
 {

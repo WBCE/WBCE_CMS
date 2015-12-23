@@ -46,7 +46,7 @@ $js_back = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id;
 // to print with or without header, default is with header
 // it is recommed to set the variable before including the /modules/admin.php
 $admin_header = (!isset($admin_header)) ? true : $admin_header;
-require_once WB_PATH . '/framework/class.admin.php';
+// init new class admin
 $admin = new admin('Pages', 'pages_modify', (bool) $admin_header);
 // this catches XSS in these params, too
 if (!$page_id && !$section_id) {

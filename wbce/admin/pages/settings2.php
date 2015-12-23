@@ -12,7 +12,6 @@
 
 // Create new admin object and print admin header
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
 
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Pages', 'pages_settings',false);
@@ -125,7 +124,6 @@ $viewing_groups = preg_replace("/[^\d,]/", "", implode(',', $viewing_groups));
 if($parent != $old_parent)
 {
     // Include ordering class
-    require(WB_PATH.'/framework/class.order.php');
     $order = new order(TABLE_PREFIX.'pages', 'position', 'page_id', 'parent');
     // Get new order
     $position = $order->get_new($parent);

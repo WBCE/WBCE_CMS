@@ -146,7 +146,7 @@ function build_page( &$admin, &$database )
 if( !(isset($admin) && is_object($admin) && (get_class($admin) == 'admin')) )
 {
     require( '../../config.php' );
-    require_once( WB_PATH.'/framework/class.admin.php' );
+
     $admin = new admin('Preferences');
 }
 echo build_page($admin, $database);

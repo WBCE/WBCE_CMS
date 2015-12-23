@@ -19,7 +19,6 @@
 // Include the config file
 require('../../config.php');
 require_once(WB_PATH .'/framework/functions.php');
-require_once(WB_PATH.'/framework/class.admin.php');
 // No print admin header
 $admin = new admin('Addons', 'modules_view', false);
 if( !$admin->checkFTAN() )

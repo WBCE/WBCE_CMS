@@ -51,7 +51,7 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
 // Setup admin object
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+
 
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Addons', 'templates_install', false);
@@ -111,7 +111,6 @@ if(! $_FILES['userfile']['error']) {
 }
 
 // include PclZip and create object from Add-on zip archive
-require_once(WB_PATH . '/include/pclzip/pclzip.lib.php');
 $archive = new PclZip($temp_file);
 
 // extract Add-on files into WBCE temp folder

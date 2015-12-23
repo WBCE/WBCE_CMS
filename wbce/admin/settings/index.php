@@ -11,7 +11,6 @@
  */
 
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
 
 if(isset($_GET['advanced']) && $_GET['advanced'] == 'yes') {
     $admin = new admin('Settings', 'settings_advanced');

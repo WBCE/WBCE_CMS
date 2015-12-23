@@ -24,7 +24,6 @@ if (!defined('DEBUG')) {define('DEBUG', $debug);}
 // Include the WB functions file
 require_once WB_PATH . '/framework/functions.php';
 // Create new admin object
-require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Pages', 'pages_modify', false);
 
 $action = 'show';
@@ -64,7 +63,6 @@ switch ($action) {
                 if ($admin_header) {$admin->print_header();}
                 $admin->print_error($database->get_error(), $backlink);
             } else {
-                require_once WB_PATH . '/framework/class.order.php';
                 $order = new order(TABLE_PREFIX . 'sections', 'position', 'section_id', 'page_id');
                 $order->clean($page_id);
                 $format = $TEXT['SECTION'] . ' %d  %s %s ' . strtolower($TEXT['DELETED']);
@@ -87,7 +85,7 @@ switch ($action) {
         }
         $action = 'show';
         $module = preg_replace('/\W/', '', $module); // fix secunia 2010-91-4
-        require_once WB_PATH . '/framework/class.order.php';
+
         // Get new order
         $order = new order(TABLE_PREFIX . 'sections', 'position', 'section_id', 'page_id');
         $position = $order->get_new($page_id);

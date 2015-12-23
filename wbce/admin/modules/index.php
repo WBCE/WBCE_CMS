@@ -12,7 +12,7 @@
 
 // Print admin header
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+
 $admin = new admin('Addons', 'modules');
 
 // Setup template object, parse vars to it, then parse it

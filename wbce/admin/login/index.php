@@ -16,7 +16,6 @@
 */
 
 require_once("../../config.php");
-require_once(WB_PATH."/framework/class.login.php");
 
 if(defined('SMART_LOGIN') AND SMART_LOGIN == 'enabled') {
 	// Generate username field name

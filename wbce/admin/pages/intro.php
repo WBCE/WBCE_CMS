@@ -19,7 +19,6 @@
 // Create new admin object
 require('../../config.php');
 
-require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_intro');
 $content = '';
 

@@ -17,7 +17,7 @@
  */
 
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+
 $admin = new admin('Pages', 'pages');
 
 // Include the WB functions file

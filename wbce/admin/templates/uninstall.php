@@ -12,7 +12,7 @@
 
 // Setup admin object
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Addons', 'templates_uninstall', false);
 if( !$admin->checkFTAN() )

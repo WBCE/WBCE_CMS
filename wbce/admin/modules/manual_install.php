@@ -25,7 +25,6 @@
  */
 // include WB configuration file and WB admin class
 require_once('../../config.php');
-require_once('../../framework/class.admin.php');
 
 // check user permissions for admintools (redirect users with wrong permissions)
 $admin = new admin('Admintools', 'admintools', false, false);
@@ -53,9 +52,6 @@ if ($referer != '' && (!(strpos($referer, $required_url) !== false || strpos($re
 
 // include WB functions file
 require_once(WB_PATH . '/framework/functions.php');
-
-// load WB language file
-require_once(WB_PATH . '/languages/' . LANGUAGE .'.php');
 
 // create Admin object with admin header
 $admin = new admin('Addons', '', true, false);

@@ -22,7 +22,6 @@ if(MANAGE_SECTIONS != 'enabled') {
 require_once(WB_PATH."/include/jscalendar/jscalendar-functions.php");
 /**/
 // Create new admin object
-require_once(WB_PATH.'/framework/class.admin.php');
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Pages', 'pages_modify',false);
 

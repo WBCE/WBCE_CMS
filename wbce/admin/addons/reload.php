@@ -24,7 +24,6 @@ if (count($post_check) == 0) die(header('Location: index.php?advanced'));
  */
 // include WB configuration file and WB admin class
 require_once('../../config.php');
-require_once('../../framework/class.admin.php');
 
 // check user permissions for admintools (redirect users with wrong permissions)
 $admin = new admin('Admintools', 'admintools', false, false);

@@ -12,7 +12,6 @@
 
 // Include config file and admin class file
 require '../../config.php';
-require_once WB_PATH . '/framework/class.admin.php';
 
 // Set parameter 'action' as alternative to javascript mechanism
 $action = 'cancel';

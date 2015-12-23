@@ -13,7 +13,6 @@
 // Print admin header
 require('../../config.php');
 
-require_once(WB_PATH.'/framework/class.admin.php');
 // Include the WB functions file
 require_once(WB_PATH.'/framework/functions.php');
 
