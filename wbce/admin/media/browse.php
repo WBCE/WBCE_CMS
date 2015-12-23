@@ -19,7 +19,7 @@ $starttime = explode(" ", microtime());
 $starttime = $starttime[0]+$starttime[1];
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 include ('parameters.php');
 
 // check if theme language file exists for the language set by the user (e.g. DE, EN)

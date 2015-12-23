@@ -38,7 +38,7 @@ if(trim($file) == '') {
 }
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Check if the template exists
 if(!is_dir(WB_PATH.'/templates/'.$file)) {

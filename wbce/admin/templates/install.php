@@ -74,7 +74,7 @@ if(! isset($_FILES['userfile'])) {
 }
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Set temp vars
 $temp_dir = WB_PATH.'/temp/';

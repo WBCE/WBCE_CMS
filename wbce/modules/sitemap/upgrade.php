@@ -25,7 +25,7 @@ if (defined('WB_PATH') == false) {
 	exit("Cannot access this file directly");
 }
 
-require_once(WB_PATH.'/framework/functions.php');
+ 
 $database = new database();
 
 // Setup styles to help id errors

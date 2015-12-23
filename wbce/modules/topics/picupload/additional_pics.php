@@ -20,7 +20,7 @@ $tablename = $module_directory;
 
 
 $theauto_header = false;
-require_once(WB_PATH.'/framework/class.admin.php');
+ 
 $admin = new admin('Pages', 'pages_modify', $theauto_header, TRUE);
 if(!$admin->is_authenticated()) { die(); }
 
@@ -34,7 +34,7 @@ if( isset($_GET['do']) AND $_GET['do'] == 'upload') {
 	if ( isset($_FILES['uploadpic']['tmp_name']) AND $_FILES['uploadpic']['tmp_name'] != '') {
 	include('uploader.inc.php');
 	echo $messages;
-	$picture_dir = ''.$settings_fetch['picture_dir']; //hat der Uploader geändert
+	$picture_dir = ''.$settings_fetch['picture_dir']; //hat der Uploader geï¿½ndert
 	//die();
 }
 }

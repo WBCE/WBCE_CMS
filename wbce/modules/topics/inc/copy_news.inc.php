@@ -15,7 +15,7 @@ require_once($mpath.'/functions.php');
 require(WB_PATH.'/framework/functions.php');
 
 $theauto_header = false;
-require_once(WB_PATH.'/framework/class.admin.php');
+ 
 $admin = new admin('Pages', 'pages_modify', $theauto_header, TRUE);
 if(!$admin->is_authenticated()) { die(); }
 
@@ -29,7 +29,7 @@ if ( isset($_GET['copysection']) AND is_numeric($_POST['copysection']) ) {
 }
 
 
-// Einen Datensatz abfragen unf ggf Feld 'is_topic_id' einfügen.
+// Einen Datensatz abfragen unf ggf Feld 'is_topic_id' einfï¿½gen.
 $sql = 'SELECT * FROM `'.TABLE_PREFIX.'mod_news_posts` WHERE  active=1 '.$copysection .' AND is_topic_id = 0 LIMIT 1';
 $query_post = $database->query($sql);
 if($database->is_error()) {
@@ -55,7 +55,7 @@ $groups_id = ','.$post['group_id'].',';
 $position = $post['position'];
 $content_short = '<!-- copy of news post '.$post_id.' -->'.$post['content_short'];
 $content_long = $post['content_long'];
-//$short_description = $post['content_short']; //Wird nicht übertragen
+//$short_description = $post['content_short']; //Wird nicht ï¿½bertragen
 
 $description = makemetadescription ( strip_tags($content_short . ' ' . $title) );
 $keywords = makemetakeywords ( strtolower(strip_tags($title .' '.$content_short)));
@@ -68,12 +68,12 @@ $content_short = addslashes($content_short);
 $content_long = addslashes($content_long);
 
 
-$commenting_topics = 2; //verzögert
+$commenting_topics = 2; //verzï¿½gert
 $commenting = $post['commenting'];
 if ($commenting == 'none') {$commenting_topics = -1;}
 if ($commenting == 'private') {$commenting_topics = 1;}
 
-$active_topics = 4; //öffentlich
+$active_topics = 4; //ï¿½ffentlich
 $active = $post['active'];
 if ($active == 0) {$active_topics = 0;}
 

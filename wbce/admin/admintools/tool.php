@@ -11,7 +11,7 @@
  */
 
 require('../../config.php');
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 //Fetch toolname
 $toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['tool']) : '');

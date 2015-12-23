@@ -43,7 +43,7 @@ if (!$admin->checkFTAN())
 $admin->print_header();
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Get values
 $page_title = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->get_post_escaped('page_title')));

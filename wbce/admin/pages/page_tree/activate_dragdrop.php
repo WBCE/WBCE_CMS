@@ -1,6 +1,6 @@
 <?php
 require('../../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+ 
 $admin = new admin('Pages', 'pages');
 
 if(!isset($_GET['dd']) || !is_numeric($_GET['dd']))	exit();

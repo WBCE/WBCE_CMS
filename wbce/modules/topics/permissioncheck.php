@@ -22,7 +22,7 @@ if(isset($_GET['fredit']) AND $_GET['fredit'] == 1) {
 
 if ($fredit == 1) { //frontend
 	$theauto_header = false;
-	require_once(WB_PATH.'/framework/class.admin.php');
+	 
 	$admin = new admin('Pages', 'pages_modify', $theauto_header, TRUE);
 	if ($isget==1) {
 		$page_id = (int) $_GET['page_id'];
@@ -72,8 +72,8 @@ if (isset($section_id)) {
 
 
 //Aus module_settings.php:
-//$authorsgroup: Die Gruppe, der Autoren angehören. 
-//$noadmin_nooptions: Default: 1: Nur der Admin (Gruppe 1) kann Settings ändern
+//$authorsgroup: Die Gruppe, der Autoren angehï¿½ren. 
+//$noadmin_nooptions: Default: 1: Nur der Admin (Gruppe 1) kann Settings ï¿½ndern
 
 $user_id = $admin->get_user_id();
 $user_in_groups = $admin->get_groups_id();
@@ -85,7 +85,7 @@ if ($authorsgroup > 0) { //Care about users
 	if (in_array($authorsgroup, $user_in_groups)) {
 		$authoronly = true; $showoptions = false; echo "AUTOR";
 	} else {
-		$author_trust_rating = 0; //Best Trust; Flag aus module_settings.php wird zurückgesetzt
+		$author_trust_rating = 0; //Best Trust; Flag aus module_settings.php wird zurï¿½ckgesetzt
 	}
 }
 
@@ -95,7 +95,7 @@ if (!in_array(1, $user_in_groups)) {
 	$authoronly = false; //An admin cannot be autor only
 }
 
-//Hier könnte man abwürgen, dass ein Autor ins Backend kommt. 
+//Hier kï¿½nnte man abwï¿½rgen, dass ein Autor ins Backend kommt. 
 if ($authoronly == true) {$fredit = 1;} //Provisorisch
 
 if ($fredit == 1) { 

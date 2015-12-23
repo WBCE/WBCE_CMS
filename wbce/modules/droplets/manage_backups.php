@@ -18,8 +18,8 @@
 global $TEXT;
 
 require_once('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
-require_once(WB_PATH.'/framework/functions.php');
+ 
+ 
 require_once(WB_PATH.'/include/pclzip/pclzip.lib.php');
 require_once( dirname(__FILE__).'/functions.inc.php' );
 

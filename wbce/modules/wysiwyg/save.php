@@ -32,7 +32,7 @@ if (!$admin->checkFTAN()) {
 $admin->print_header();
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 $sMediaUrl = WB_URL.MEDIA_DIRECTORY;
 $bBackLink = isset($_POST['pagetree']);

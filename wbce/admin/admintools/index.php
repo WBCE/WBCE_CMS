@@ -20,7 +20,7 @@ require('../../config.php');
 $admin = new admin('admintools', 'admintools');
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Setup template object, parse vars to it, then parse it
 // Create new template object

@@ -30,7 +30,7 @@ if(!isset($_POST['content'])) {
 // $content = $admin->strip_slashes($content);
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 $admin->print_header();
 // Write new content

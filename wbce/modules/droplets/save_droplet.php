@@ -20,8 +20,8 @@
 require('../../config.php');
 
 // Include WB admin wrapper script
-require_once(WB_PATH.'/framework/class.admin.php');
-require_once(WB_PATH.'/framework/functions.php');
+ 
+ 
 
 // check website baker platform (with WB 2.7, Admin-Tools were moved out of settings dialogue)
 if(file_exists(ADMIN_PATH .'/admintools/tool.php')) {

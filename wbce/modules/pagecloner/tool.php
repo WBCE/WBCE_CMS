@@ -38,10 +38,10 @@ if(LANGUAGE_LOADED) {
 echo '<p>'.$PCTEXT['INTRO_TEXT'].'</p>';
 
 // fetch pagelist and show them + clone button
-// require_once(WB_PATH.'/framework/class.admin.php');
+//  
 // $admin = new admin('Pages', 'pages');
 // Include the WB functions file
-// require_once(WB_PATH.'/framework/functions.php');
+//  
 
 ?>
 <script type="text/javascript" language="javascript">

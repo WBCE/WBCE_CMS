@@ -22,7 +22,7 @@ if (!$admin->checkFTAN())
 }
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Get values
 $title = $admin->get_post_escaped('title');

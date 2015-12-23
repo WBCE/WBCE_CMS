@@ -16,7 +16,7 @@ require('../../config.php');
 $admin = new admin('Media', 'media_rename', false);
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Get the current dir
 $directory = $admin->get_get('dir');

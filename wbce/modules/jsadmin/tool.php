@@ -26,7 +26,7 @@ if(isset($_POST['save_settings']))  {
 	}
 
 	// Include functions file
-	require_once(WB_PATH.'/framework/functions.php');
+	 
 	save_setting('mod_jsadmin_persist_order', isset($_POST['persist_order']));
 	save_setting('mod_jsadmin_ajax_order_pages', isset($_POST['ajax_order_pages']));
 	save_setting('mod_jsadmin_ajax_order_sections', isset($_POST['ajax_order_sections']));

@@ -12,7 +12,7 @@
 
 require('../../config.php');
 include_once('resize_img.php');
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 if (isset($_GET['img']) && isset($_GET['t'])) {
 	$image = addslashes($_GET['img']);

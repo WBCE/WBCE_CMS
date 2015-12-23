@@ -19,8 +19,8 @@
 
 require('../../config.php');
 
-require_once(WB_PATH.'/framework/class.admin.php');
-require_once(WB_PATH.'/framework/functions.php');
+ 
+ 
 
 $admintool_link = ADMIN_URL .'/admintools/index.php';
 $module_edit_link = ADMIN_URL .'/admintools/tool.php?tool=droplets';

@@ -166,7 +166,7 @@ if (!$database->query($SQL))
   $admin->print_error($database->get_error());
 
 // Make topics post access files dir
-require_once(WB_PATH.'/framework/functions.php');
+ 
 if(make_dir(WB_PATH.PAGES_DIRECTORY.'/'.$tablename)) {
     // Add a index.php file to prevent directory spoofing
     $content = "<?php

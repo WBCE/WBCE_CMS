@@ -22,8 +22,8 @@
 */
 
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
-require_once(WB_PATH.'/framework/functions.php');
+ 
+ 
 
 // make sure that a page to clone was specified
 $pagetodo = isset($_GET['pagetoclone']) ? (int) $_GET['pagetoclone'] : 0;

@@ -32,7 +32,7 @@ if(!isset($_FILES['userfile'])) {
 }
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Create temp string
 $temp_string = '';

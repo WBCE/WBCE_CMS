@@ -32,7 +32,7 @@ $template->set_file('page', 'media.htt');
 $template->set_block('page', 'main_block', 'main');
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Get home folder not to show
 $home_folders = get_home_folders();

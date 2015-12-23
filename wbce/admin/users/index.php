@@ -199,7 +199,7 @@ if(!HOME_FOLDERS) {
 }
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+ 
 
 // Add media folders to home folder list
 $template->set_block('main_block', 'folder_list_block', 'folder_list');
