@@ -41,7 +41,6 @@ require_once(WB_PATH."/include/jscalendar/jscalendar-functions.php");
  * Include Website Baker template parser and configure it
  */
 // include template class and initiate object (set template folder: "./htt")
-require_once(WB_PATH . '/include/phplib/template.inc');
 $tpl = new Template(dirname(__FILE__) . '/htt');
 
 // configure handling of unknown {variables} (remove:=default, keep, comment)
