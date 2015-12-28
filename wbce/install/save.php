@@ -10,12 +10,16 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$debug = true;
+define ("WB_DEBUG", true);
+$debug= true; // left in for possible compatibility issues
 
-if (true === $debug) {
+if (WB_DEBUG === $debug) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 }
+define ("WB_SECFORM_TIMEOUT",'7200');
+
+
 // Start a session
 if (!defined('SESSION_STARTED')) {
     session_name('wb-installer');

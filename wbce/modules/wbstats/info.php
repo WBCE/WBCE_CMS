@@ -22,5 +22,4 @@ $module_author = 'Dev4me - Ruud Eisinga - www.dev4me.nl, Norbert Heimsath (heims
 $module_license = 'GNU General Public License';
 $module_description = 'Displays website statistics as an admintool and page module';
 
-?>
 

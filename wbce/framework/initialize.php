@@ -12,6 +12,9 @@
 
 // DEFAULT SYSTEM SETTINGS
 // remove all unwanted php fancy stuff
+
+// Set debug, but allow override in config. 
+if (!defined("WB_DEBUG")) define("WB_DEBUG", true);
  
 // no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
@@ -120,6 +123,11 @@ if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
 } else {
     ini_set('display_errors', 0); 
 }
+// If we are in Debug mode we use Max settings
+if (WB_DEBUG === $debug) {
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+}
 
 //Default Timezone.... 
 date_default_timezone_set('UTC');
@@ -135,7 +143,8 @@ SanitizeHttpReferer();
 // SESSION 
 // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
 // Later we should get a nice session class instead of this improvised stuff.
-ini_set('session.gc_maxlifetime', WB_SECFORM_TIMEOUT);
+ini_set('session.gc_maxlifetime', intval(WB_SECFORM_TIMEOUT));
+ini_set('session.cookie_lifetime', intval(WB_SECFORM_TIMEOUT));
 ini_set( 'session.cookie_httponly', 1 );
 if(WB_PROTOCOLL=="https"){ 
     ini_set( 'session.cookie_secure', 1 );
