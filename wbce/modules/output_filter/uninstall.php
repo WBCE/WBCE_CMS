@@ -14,11 +14,9 @@
  * @lastmodified    $Date: 2011-11-09 01:12:37 +0100 (Mi, 09. Nov 2011) $
  *
  */
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-require_once( dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-if(!defined('WB_PATH')) { throw new IllegalFileException(); }
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
 
 $table = TABLE_PREFIX .'mod_output_filter';
 $database->query("DROP TABLE IF EXISTS `$table`");
