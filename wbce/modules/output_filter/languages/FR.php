@@ -20,18 +20,26 @@
 $module_description = 'Ce module g&egrave;re le filtrage des donn&eacute;es avant affichage &agrave; l&apos;utilisateur. Permets de filtrer les liens mailto et les adresses emails.';
 
 // Headings and text outputs
-$MOD_MAIL_FILTER['HEADING'] = 'Options: Output Filter';
-$MOD_MAIL_FILTER['HOWTO'] = 'Vous pouvez configurer le filtrage des donn&eacute;es avant affichage gr&acirc;ce aux options ci-dessous.<p style="line-height:1.5em;"><strong>Conseil: </strong>Les liens Mailto peuvent &ecirc;tre crypt&eacute;s &agrave; l&apos;aide d&apos;une fonction Javascript. Pour utiliser cette fonctionnalit&eacute;, vous devez ajouter le code PHP <code style="background:#FFA;color:#900;">&lt;?php register_frontend_modfiles(&apos;js&apos;);?&gt;</code> dans la partie &lt;head&gt; de index.php de votre fichier mod&egrave;le. Sans cette modification, seulement le caract&egrave;re @ sera remplac&eacute; dans le champ mailto.</p>';
-$MOD_MAIL_FILTER['WARNING'] = '';
+$OPF['HEADING'] = 'Options: Output Filter';
+$OPF['HOWTO'] = 'Vous pouvez configurer le filtrage des donn&eacute;es avant affichage gr&acirc;ce aux options ci-dessous.<p style="line-height:1.5em;"><strong>Conseil: </strong>Les liens Mailto peuvent &ecirc;tre crypt&eacute;s &agrave; l&apos;aide d&apos;une fonction Javascript. Pour utiliser cette fonctionnalit&eacute;, vous devez ajouter le code PHP <code style="background:#FFA;color:#900;">&lt;?php register_frontend_modfiles(&apos;js&apos;);?&gt;</code> dans la partie &lt;head&gt; de index.php de votre fichier mod&egrave;le. Sans cette modification, seulement le caract&egrave;re @ sera remplac&eacute; dans le champ mailto.</p>';
+$OPF['WARNING'] = '';
 
 // Text and captions of form elements
-$MOD_MAIL_FILTER['BASIC_CONF'] = 'Configuration de base des Emails';
-$MOD_MAIL_FILTER['SYS_REL'] = 'Frontendoutput with  relative Urls';
-$MOD_MAIL_FILTER['EMAIL_FILTER'] = 'Filtrer le texte des Emails';
-$MOD_MAIL_FILTER['MAILTO_FILTER'] = 'Filtrer les liens mailto des Emails';
-$MOD_MAIL_FILTER['ENABLED'] = 'Activ&eacute;';
-$MOD_MAIL_FILTER['DISABLED'] = 'D&eacute;sactiv&eacute;';
+$OPF['BASIC_CONF'] = 'Configuration de base des Emails';
+$OPF['SYS_REL'] = 'Frontendoutput with  relative Urls';
+$OPF['EMAIL_FILTER'] = 'Filtrer le texte des Emails';
+$OPF['MAILTO_FILTER'] = 'Filtrer les liens mailto des Emails';
+$OPF['ENABLED'] = 'Activ&eacute;';
+$OPF['DISABLED'] = 'D&eacute;sactiv&eacute;';
 
-$MOD_MAIL_FILTER['REPLACEMENT_CONF']= 'Remplacements';
-$MOD_MAIL_FILTER['AT_REPLACEMENT']	= 'Remplacer "@" par';
-$MOD_MAIL_FILTER['DOT_REPLACEMENT']	= 'Remplacer "." par';
+$OPF['REPLACEMENT_CONF']= 'Remplacements';
+$OPF['AT_REPLACEMENT']	= 'Remplacer "@" par';
+$OPF['DOT_REPLACEMENT']	= 'Remplacer "." par';
+
+$OPF['ALL_ON_OFF'] = 'Enable/Disable all old Outputfilter';
+$OPF['DROPLETS'] = 'Droplets filter';
+$OPF['WBLINK'] = 'WB-Link Filter';
+$OPF['INSERT'] = 'CSS, JS, Meta Insert Filter';
+$OPF['JS_MAILTO'] = 'Use Javascript on Mailtofilter';
+$OPF['SHORT_URL'] = 'Use short url filter';
+$OPF['CSS_TO_HEAD'] = 'Use CSS to head';
