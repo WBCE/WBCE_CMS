@@ -50,10 +50,13 @@ if ($toolCheck) {
     // a few more helper vars (save values or reset to default settings)
     $saveSettings= (isset($_POST['save_settings'])|| (isset($_POST['action']) && strtolower($_POST['action']  ) == 'save'));
     $saveDefault = (isset($_POST['save_default']));
- 
+    if (isset($_POST['no_page']) and $_POST['no_page']=="no_page") $noPage=true;
+    else                                                           $noPage=false;
 
-    // create admin-object 
-    $admin = new admin('admintools', 'admintools');
+    // create admin-object but suppress headers if no page is set 
+    // for example this offers opportunety to give back  files for download
+    if ($noPage) $admin = new admin('admintools', 'admintools',false);
+    else         $admin = new admin('admintools', 'admintools');
 
     // show title if not function 'save' is requested
     if(!$doSave) {
@@ -75,8 +78,9 @@ if ($toolCheck) {
     //Load actual tool
     require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
 
-    // output footer
-	$admin->print_footer();  
+    // output footer if  we are not in no_page mode
+	if (!$noPage) $admin->print_footer();  
+	
 } else {
     // invalid module name requested, jump to index.php of admintools
 	header('location: '.$returnToTools); exit;
