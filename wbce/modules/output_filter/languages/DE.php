@@ -37,10 +37,10 @@ $OPF['AT_REPLACEMENT']      = 'Ersetze "@" durch';
 $OPF['DOT_REPLACEMENT']     = 'Ersetze "." durch';
 
 
-$OPF['ALL_ON_OFF'] = 'Enable/Disable all old Outputfilter';
-$OPF['DROPLETS'] = 'Droplets filter';
+$OPF['ALL_ON_OFF'] = 'Alle Filter Aktivierene/Deaktivieren';
+$OPF['DROPLETS'] = 'Droplets Filter';
 $OPF['WBLINK'] = 'WB-Link Filter';
 $OPF['INSERT'] = 'CSS, JS, Meta Insert Filter';
-$OPF['JS_MAILTO'] = 'Use Javascript on Mailtofilter';
-$OPF['SHORT_URL'] = 'Use short url filter';
-$OPF['CSS_TO_HEAD'] = 'Use CSS to head';
+$OPF['JS_MAILTO'] = 'Javascript für Mailtofilter';
+$OPF['SHORT_URL'] = 'Short Url Filter(no /pages/)';
+$OPF['CSS_TO_HEAD'] = 'CSS in den Head transferieren.';
