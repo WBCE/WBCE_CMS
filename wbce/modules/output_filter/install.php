@@ -3,7 +3,7 @@
  *
  * @category        modules
  * @package         output_filter
- * @author          Christian Sommer, WB-Project, Werner v.d. Decken
+ * @author          Christian Sommer, WB-Project, Werner v.d. Decken, Norbert Heimsath(heimsath.org)
  * @copyright       WebsiteBaker Org. e.V.
  * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
@@ -18,18 +18,19 @@
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 
-$table = TABLE_PREFIX .'mod_output_filter';
-$database->query("DROP TABLE IF EXISTS `$table`");
+Settings::Set('wb_suppress_old_opf',0, false);
+Settings::Set('opf_droplets',1, false);
+Settings::Set('opf_wblink',1, false);
+Settings::Set('opf_insert',1, false);   
+Settings::Set('opf_sys_rel',1, false);
+Settings::Set('opf_email_filter',1, false);
+Settings::Set('opf_mailto_filter',1, false);
+Settings::Set('opf_js_mailto',1, false);
+Settings::Set('opf_short_url',0, false);
+Settings::Set('opf_css_to_head',1, false);
+Settings::Set('opf_at_replacement',"(at)", false);
+Settings::Set('opf_dot_replacement',"(dot)", false);
 
-$database->query("CREATE TABLE IF NOT EXISTS `$table` (
-    `sys_rel` INT NOT NULL DEFAULT '0',
-    `email_filter` VARCHAR(1) NOT NULL DEFAULT '0',
-    `mailto_filter` VARCHAR(1) NOT NULL DEFAULT '0',
-    `at_replacement` VARCHAR(255) NOT NULL DEFAULT '(at)',
-    `dot_replacement` VARCHAR(255) NOT NULL DEFAULT '(dot)'
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"
-);
-
-// add default values to the module table
-$database->query("INSERT INTO ".TABLE_PREFIX
-    ."mod_output_filter (sys_rel,email_filter, mailto_filter, at_replacement, dot_replacement) VALUES ('0','1', '1', '(at)', '(dot)')");
+//Setting version
+include ("info.php")
+Settings::Set("opf_version", $module_version) ;

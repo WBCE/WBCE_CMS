@@ -3,7 +3,7 @@
  *
  * @category        modules
  * @package         output_filter
- * @author          Christian Sommer, WB-Project, Werner v.d. Decken
+ * @author          Christian Sommer, WB-Project, Werner v.d. Decken, Norbert Heimsath(heimsath.org)
  * @copyright       WebsiteBaker Org. e.V.
  * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
@@ -18,5 +18,18 @@
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 
-$table = TABLE_PREFIX .'mod_output_filter';
-$database->query("DROP TABLE IF EXISTS `$table`");
+Settings::Del('wb_suppress_old_opf');
+Settings::Del('opf_droplets');
+Settings::Del('opf_wblink');
+Settings::Del('opf_insert');   
+Settings::Del('opf_sys_rel');
+Settings::Del('opf_email_filter');
+Settings::Del('opf_mailto_filter');
+Settings::Del('opf_js_mailto');
+Settings::Del('opf_short_url');
+Settings::Del('opf_css_to_head');
+Settings::Del('opf_at_replacement');
+Settings::Del('opf_dot_replacement');
+
+// deleting version too 
+Settings::Set("opf_version") ;
