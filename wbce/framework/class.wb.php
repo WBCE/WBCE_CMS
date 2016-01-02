@@ -178,12 +178,17 @@ class wb extends SecureForm
 
     public function page_link($link)
     {
+        // Check for [wblink
+        if (substr($link, 0, 7) == '[wblink') {
+            return $link;
+        }
+        
         // Check for :// in the link (used in URL's) as well as mailto:
         if (strstr($link, '://') == '' and substr($link, 0, 7) != 'mailto:') {
             return WB_URL . PAGES_DIRECTORY . $link . PAGE_EXTENSION;
-        } else {
-            return $link;
         }
+        return $link;
+        
     }
 
     // Get POST data
