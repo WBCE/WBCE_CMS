@@ -13,12 +13,11 @@
 // Create new admin object and print admin header
 require('../../config.php');
 
-// suppress to print the header, so no new FTAN will be set
-$admin = new admin('Pages', 'pages_settings',false);
 
-// Get page id
-if(!isset($_POST['page_id']) || !is_numeric($_POST['page_id']))
-{
+$admin = new admin('Pages', 'pages_settings');
+
+// Get page id or return to startpage
+if(!isset($_POST['page_id']) || !is_numeric($_POST['page_id'])) {
     header("Location: index.php");
     exit(0);
 } else {
@@ -26,29 +25,36 @@ if(!isset($_POST['page_id']) || !is_numeric($_POST['page_id']))
 }
 
 /*
+/// hmm , not implemented ... maybe we do this 
 if( (!($page_id = $admin->checkIDKEY('page_id', 0, $_SERVER['REQUEST_METHOD']))) )
 {
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 */
+
 $pagetree_url = ADMIN_URL.'/pages/index.php';
 $target_url = ADMIN_URL.'/pages/settings.php?page_id='.$page_id;
 
-if (!$admin->checkFTAN())
-{
-    $admin->print_header();
+if (!$admin->checkFTAN()){
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$target_url);
 }
-// After check print the header
-$admin->print_header();
-
-// Include the WB functions file
- 
 
 // Get values
 $page_title = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->get_post_escaped('page_title')));
 $menu_title = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->get_post_escaped('menu_title')));
 $the_link = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->get_post_escaped('link')));
+//echo $the_link;
+//direct link gets special threatment
+$direct_link = "";
+
+//is this link a WBlink? (direct link)
+if (preg_match ("/^\[wblink\d+\]$/",  $the_link)) $direct_link=$the_link;
+
+//is this an external Link (direct link)
+if (preg_match ("/\:\/\//",  $the_link)) $direct_link=$the_link;
+
+//echo $direct_link;
+
 $page_code = intval($admin->get_post('page_code')) ;
 $description = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->add_slashes($admin->get_post('description'))));
 $keywords = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->add_slashes($admin->get_post('keywords'))));
@@ -78,9 +84,7 @@ if($the_link == '' || substr($the_link,0,1)=='.'){
 
 
 
-// Get existing perms
-// $database = new database();
-
+// Get existing page parameters
 $sql = 'SELECT `parent`,`link`,`position`,`admin_groups`,`admin_users` FROM `'.TABLE_PREFIX.'pages` WHERE `page_id`='.$page_id;
 $results = $database->query($sql);
 
@@ -145,19 +149,16 @@ else {
 }
 
 // Work-out what the link should be
-if($parent == '0')
-{
+
+if($parent == '0') {
+
     $link = '/'.page_filename($the_link);
     
-        // rename menu titles: index && intro to prevent clashes with intro page feature and WB core file /pages/index.php
-    if($link == '/index' || $link == '/intro')
-    {
-        $link .= '_' .$page_id;
-        $filename = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($the_link).'_'.$page_id .PAGE_EXTENSION;
-    } else {
-        $filename = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($the_link).PAGE_EXTENSION;
-    }
+    // rename menu titles: index && intro to prevent clashes with intro page feature and WB core file /pages/index.php
+    if($link == '/index' || $link == '/intro') {$link .= '_' .$page_id;} 
+    $filename = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($link).PAGE_EXTENSION;    
 } else {
+
     $parent_section = '';
     $hSql = 'SELECT `link` FROM `'.TABLE_PREFIX.'pages` WHERE `page_id` = '.$parent;
     $parent_section = $database->get_one($hSql);
@@ -172,12 +173,18 @@ if($parent == '0')
 
 }
 
+//handle direct links
+if ($direct_link != "") {
+    $link=$direct_link;
+}
+
 // Check if a page with same page filename exists
 // $database = new database();
 $sql = 'SELECT `page_id`,`page_title` FROM `'.TABLE_PREFIX.'pages` WHERE `link` = "'.$link.'" AND `page_id` != '.$page_id;
+//echo $sql;
 $get_same_page = $database->query($sql);
 
-if($get_same_page->numRows() > 0)
+if($get_same_page->numRows() > 0 and $direct_link=="")
 {
     $admin->print_error($MESSAGE['PAGES_PAGE_EXISTS']);
 }

@@ -544,6 +544,7 @@ $MESSAGE['PAGES_ADDED'] = 'Page added successfully';
 $MESSAGE['PAGES_ADDED_HEADING'] = 'Page heading added successfully';
 $MESSAGE['PAGES_BLANK_MENU_TITLE'] = 'Please enter a menu title';
 $MESSAGE['PAGES_BLANK_PAGE_TITLE'] = 'Please enter a page title';
+$MESSAGE['PAGES_BLANK_LINK_TITLE'] = 'Please enter a page link';
 $MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE'] = 'Error creating access file in the /pages directory (insufficient privileges)';
 $MESSAGE['PAGES_CANNOT_DELETE_ACCESS_FILE'] = 'Error deleting access file in the /pages directory (insufficient privileges)';
 $MESSAGE['PAGES_CANNOT_REORDER'] = 'Error re-ordering page';

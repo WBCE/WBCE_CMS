@@ -12,7 +12,9 @@
 
 // Create new admin object
 require('../../config.php');
-$admin = new admin('Pages', 'pages_settings');
+
+// param false needed as silly admin construct generates  output 
+$admin = new admin('Pages', 'pages_settings', false);
 // Include the WB functions file
 require_once(WB_PATH.'/framework/functions-utf8.php');
 
@@ -24,6 +26,7 @@ if(!isset($_GET['page_id']) || !is_numeric($_GET['page_id']))
 } else {
     $page_id = $_GET['page_id'];
 }
+$admin->print_header();
 
 /*
 if( (!($page_id = $admin->checkIDKEY('page_id', 0, $_SERVER['REQUEST_METHOD']))) )
@@ -56,15 +59,12 @@ if((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admi
 }
 
 // Get page details
-/* $database = new database();  */
 $sql = 'SELECT * FROM `'.TABLE_PREFIX.'pages` WHERE `page_id`='.$page_id;
 $results = $database->query($sql);
 if($database->is_error()) {
-    $admin->print_header();
     $admin->print_error($database->get_error());
 }
 if($results->numRows() == 0) {
-    $admin->print_header();
     $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }
 $results_array = $results->fetchRow();
@@ -88,11 +88,17 @@ $template->set_file('page', 'pages_settings.htt');
 $template->set_block('page', 'main_block', 'main');
 $template->set_var('FTAN', $admin->getFTAN());
 
-// just get the last part of the link , everything behind last /
-$pos = strrpos($results_array['link'],"/");
-$len = strlen($results_array['link']);
-$cut = $pos - $len +1 ;
-$restlink =substr($results_array['link'], $cut);
+
+
+if(!preg_match ("/^\[wblink\d+\]$/",  $results_array['link']) and !preg_match ("/\:\/\//",  $results_array['link'])) {
+    // just get the last part of the link , everything behind last /
+    $pos = strrpos($results_array['link'],"/");
+    $len = strlen($results_array['link']);
+    $cut = $pos - $len +1 ;
+    $restlink =substr($results_array['link'], $cut);
+} else {
+    $restlink = $results_array['link'];
+}
 
 
 $template->set_var(array(

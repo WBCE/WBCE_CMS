@@ -99,7 +99,20 @@ class admin extends wb
             $result = @$database->query($sql);
             $row = @$result->fetchRow(MYSQLI_ASSOC);
             if ($row) {
-                $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
+                // wblink    
+                if(preg_match ("/^\[wblink\d+\]$/",  $row['link'] )) {
+                    $view_url = $row['link'];
+                    $this->preprocess($view_url);
+                } 
+                // direkt link
+                elseif (preg_match ("/\:\/\//",  $row['link'] )) {
+                    $view_url = $row['link'];
+                } 
+                // normal link
+                else {
+                    $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
+                }
+                
             }
 
         }
