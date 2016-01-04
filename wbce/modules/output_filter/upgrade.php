@@ -17,6 +17,39 @@
 //no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
+// function fetched from old filter routines
+// this function whith if exits, may not be at the end ... 
+/**
+ * function to read the current filter settings
+ * @global object $database
+ * @global object $admin
+ * @param void
+ * @return array contains all settings
+ */
+if (!function_exists("getOutputFilterSettings")) {
+    function getOutputFilterSettings() {
+        global $database, $admin;
+    // set default values
+        $settings = array(
+            'sys_rel'         => 0,
+            'email_filter'    => 0,
+            'mailto_filter'   => 0,
+            'at_replacement'  => '(at)',
+            'dot_replacement' => '(dot)'
+        );
+    // request settings from database
+        $sql = 'SELECT * FROM `'.TABLE_PREFIX.'mod_output_filter`';
+        if(($res = $database->query($sql))) {
+            if(($rec = $res->fetchRow())) {
+                $settings = $rec;
+                $settings['at_replacement']  = $admin->strip_slashes($settings['at_replacement']);
+                $settings['dot_replacement'] = $admin->strip_slashes($settings['dot_replacement']);
+            }
+        }
+    // return array with filter settings
+        return $settings;
+    }
+}
 
 $msg = '';
 
@@ -54,39 +87,7 @@ $table = TABLE_PREFIX .'mod_output_filter';
 $database->query("DROP TABLE IF EXISTS `$table`");
 
 //Setting Version
-include ("info.php")
+include ("info.php");
 Settings::Set("opf_version", $module_version) ;
 
 
-// function fetched from old filter routines
-/**
- * function to read the current filter settings
- * @global object $database
- * @global object $admin
- * @param void
- * @return array contains all settings
- */
-if (! function_exists("getOutputFilterSettings")) {
-    function getOutputFilterSettings() {
-        global $database, $admin;
-    // set default values
-        $settings = array(
-            'sys_rel'         => 0,
-            'email_filter'    => 0,
-            'mailto_filter'   => 0,
-            'at_replacement'  => '(at)',
-            'dot_replacement' => '(dot)'
-        );
-    // request settings from database
-        $sql = 'SELECT * FROM `'.TABLE_PREFIX.'mod_output_filter`';
-        if(($res = $database->query($sql))) {
-            if(($rec = $res->fetchRow())) {
-                $settings = $rec;
-                $settings['at_replacement']  = $admin->strip_slashes($settings['at_replacement']);
-                $settings['dot_replacement'] = $admin->strip_slashes($settings['dot_replacement']);
-            }
-        }
-    // return array with filter settings
-        return $settings;
-    }
-}
