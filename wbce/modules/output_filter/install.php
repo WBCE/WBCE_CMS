@@ -32,5 +32,5 @@ Settings::Set('opf_at_replacement',"(at)", false);
 Settings::Set('opf_dot_replacement',"(dot)", false);
 
 //Setting version
-include ("info.php")
-Settings::Set("opf_version", $module_version) ;
+include ("info.php");
+Settings::Set("opf_version", $module_version);
