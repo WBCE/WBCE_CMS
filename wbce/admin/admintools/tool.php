@@ -46,12 +46,16 @@ if ($toolCheck) {
     $modulePath=WB_PATH."/modules/$toolDir/"; // we need this one later on too 
     $languagePath=$modulePath.'languages/';    
     $returnUrl= ADMIN_URL."/admintools/tool.php?tool=$toolDir";
+    
+    //include info,php for additional infos 
+    include($modulePath."/info.php" );
 
     // a few more helper vars (save values or reset to default settings)
     $saveSettings= (isset($_POST['save_settings'])|| (isset($_POST['action']) && strtolower($_POST['action']  ) == 'save'));
     $saveDefault = (isset($_POST['save_default']));
+    $noPage=false;
     if (isset($_POST['no_page']) and $_POST['no_page']=="no_page") $noPage=true;
-    else                                                           $noPage=false;
+    if (isset($module_nopage) and $module_nopage)                  $noPage=true;
 
     // create admin-object but suppress headers if no page is set 
     // for example this offers opportunety to give back  files for download
@@ -59,7 +63,7 @@ if ($toolCheck) {
     else         $admin = new admin('admintools', 'admintools');
 
     // show title if not function 'save' is requested
-    if(!$doSave) {
+    if(!$doSave and !$noPage) {
 		print '<h4><a href="'.ADMIN_URL.'/admintools/index.php" '.
 			  'title="'.$HEADING['ADMINISTRATION_TOOLS'].'">'.
 			   $HEADING['ADMINISTRATION_TOOLS'].'</a>'.
