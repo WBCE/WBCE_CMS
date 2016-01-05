@@ -111,6 +111,7 @@ class admin extends wb
                 // normal link
                 else {
                     $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
+                    if (OPF_SHORT_URL) {$ view_url = WB_URL. $ row ['link']; }
                 }
                 
             }

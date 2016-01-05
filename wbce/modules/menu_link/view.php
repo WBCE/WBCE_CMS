@@ -54,6 +54,7 @@ if($query_tpid->numRows() == 1)
 		if($target_page_link != null)
 		{
 			$target_url = WB_URL.PAGES_DIRECTORY.$target_page_link.PAGE_EXTENSION.$anchor;
+            if (OPF_SHORT_URL) {$ target_url = WB_URL. $ target_page_link. $ anchor; }
 			header('Location: '.$target_url);
 			exit;
 		}
