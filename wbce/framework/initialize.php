@@ -124,7 +124,7 @@ if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
     ini_set('display_errors', 0); 
 }
 // If we are in Debug mode we use Max settings
-if (WB_DEBUG === $debug) {
+if (WB_DEBUG === true) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 }
