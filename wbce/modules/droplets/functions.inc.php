@@ -38,7 +38,7 @@ function wb_handle_copy($droplet_id) {
     // add new droplet
     $result = $database->query($query);
     if( ! $database->is_error() ) {
-        $new_id = mysql_insert_id();
+        $new_id = $database->get_one("SELECT LAST_INSERT_ID()");
         if ( version_compare(WB_VERSION, '2.8.2', '>=')  && WB_VERSION<>"2.8.x" ) {
             $new_id = $admin->getIDKEY($new_id);
         }
