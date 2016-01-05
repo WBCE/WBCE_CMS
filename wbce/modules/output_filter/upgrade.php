@@ -65,20 +65,20 @@ Settings::Set('opf_insert',1, false);
 if (isset($data["sys_rel"]))       Settings::Set('opf_sys_rel',$data["sys_rel"], false);
 else                               Settings::Set('opf_sys_rel',1, false);
 
-if (isset($data["email_filter"]))  Settings::Set('',$data["email_filter"], false);
+if (isset($data["email_filter"]))  Settings::Set('opf_email_filter',$data["email_filter"], false);
 else                               Settings::Set('opf_email_filter',1, false);    
 
-if (isset($data["mailto_filter"])) Settings::Set('',$data["mailto_filter"], false);
+if (isset($data["mailto_filter"])) Settings::Set('opf_mailto_filter',$data["mailto_filter"], false);
 else                               Settings::Set('opf_mailto_filter',1, false);       
 
 Settings::Set('opf_js_mailto',1, false);
 Settings::Set('opf_short_url',0, false);
 Settings::Set('opf_css_to_head',1, false);
 
-if (isset($data["at_replacement"]))  Settings::Set('',$data["at_replacement"], false);
+if (isset($data["at_replacement"]))  Settings::Set('opf_at_replacement',$data["at_replacement"], false);
 else                                 Settings::Set('opf_at_replacement',"(at)", false);      
 
-if (isset($data["dot_replacement"])) Settings::Set('',$data["dot_replacement"], false);
+if (isset($data["dot_replacement"])) Settings::Set('opf_dot_replacement',$data["dot_replacement"], false);
 else                                 Settings::Set('opf_dot_replacement',"(dot)", false);
 
 
