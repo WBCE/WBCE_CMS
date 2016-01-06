@@ -22,7 +22,7 @@ $module_description = 'This module allows you to backup your files and databases
 // text outputs
 $MOD_BACKUP['BACKUP_ALL_FILES'] 	= 	'Backup van alle bestanden (database niet inbegrepen)';
 $MOD_BACKUP['BACKUP_ALL_TABLES'] 	= 	'Backup van alle tabellen in de database (bestanden niet inbegrepen)';
-$MOD_BACKUP['BACKUP_WB_SPECIFIC'] 	= 	'Backup enkel de WB specifieke tabellen (bestanden niet inbegrepen)';
+$MOD_BACKUP['BACKUP_WB_SPECIFIC'] 	= 	'Backup enkel de WBCE specifieke tabellen (bestanden niet inbegrepen)';
 $MOD_BACKUP['ADD_DROP'] 	= 	'Toevoegen "DROP TABLE IF EXISTS"';
 $TEXT['BACKUP_DATABASE']		=	'Backup';
 

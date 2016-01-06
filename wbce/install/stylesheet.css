@@ -18,7 +18,7 @@ table {font-size: 1em; border-collapse: collapse; width: 100%;}
 body {
     padding: 0; border:0; margin: 0;
     background: url('background.png') repeat-x 0px 0px;
-    background-color: #a8bccb;
+    background-color: #647087;
     height: 101%;
 }
 
@@ -128,7 +128,7 @@ td.value input {
 h1.step-row {
    margin : 0;
    display :inline;
-   color : #6699ff;
+   color : #647087;
 }
 /*
     FORM Elements
@@ -163,7 +163,7 @@ input.submit.good {
 */
 img {border: none; }
 p  { margin: 11px 0 4px 0 }
-h1 { color: #3a628f; font-size: 1.3em; margin: 10px 0 5px; border-top: medium none }
+h1 { color: #000; font-size: 1.3em; margin: 10px 0 5px; border-top: medium none }
 a, a:link, a:visited, a:active  { color: #003366; text-decoration: underline }
 a:focus {outline: none; }
 a:hover  { color: #336699 }

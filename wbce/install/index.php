@@ -71,7 +71,7 @@ if (strpos($sapi, 'apache') !== false || strpos($sapi, 'nsapi') !== false) {
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<title>WebsiteBaker CE Installation Wizard</title>
+<title>WBCE Installation Wizard</title>
 <link href="stylesheet.css" rel="stylesheet" type="text/css" />
 <script>
 
@@ -95,7 +95,7 @@ function change_os(type) {
 <div class="body">
 <table>
 <tbody>
-<tr style="background: #a9c9ea;">
+<tr style="background: #eee;">
     <td>
         <img style="margin-top:.7em" src="logo.png" alt="WBCE Logo" />
     </td>
@@ -113,7 +113,7 @@ function change_os(type) {
     <input type="hidden" name="remember" id="remember" value="true" />
 
         <div class="welcome">
-            Welcome to the WebsiteBaker CE Installation Wizard.
+            Welcome to the Installation Wizard of WBCE CMS.
         </div>
         <?php
 if (isset($_SESSION['message']) and $_SESSION['message'] != '') {
@@ -458,7 +458,7 @@ if (!isset($_SESSION['config_rename'])) {
         <tr>
                 <td class="name">Username:</td>
                 <td class="value">
-                    <input <?php echo field_error('database_username');?> type="text" tabindex="10" name="database_username" value="<?php if (isset($_SESSION['database_username'])) {echo $_SESSION['database_username'];} else {echo 'root';}
+                    <input <?php echo field_error('database_username');?> type="text" tabindex="10" name="database_username" value="<?php if (isset($_SESSION['database_username'])) {echo $_SESSION['database_username'];} else {echo '';}
     ?>" />
                 </td>
         </tr>
@@ -510,12 +510,12 @@ if (!isset($_SESSION['config_rename'])) {
         <tr>
             <td class="name">Loginname:</td>
             <td class="value">
-                <input <?php echo field_error('admin_username');?> type="text" tabindex="14" name="admin_username" value="<?php if (isset($_SESSION['admin_username'])) {echo $_SESSION['admin_username'];} else {echo 'admin';}
+                <input <?php echo field_error('admin_username');?> type="text" tabindex="14" name="admin_username" value="<?php if (isset($_SESSION['admin_username'])) {echo $_SESSION['admin_username'];} else {echo '';}
     ?>" />
             </td>
         </tr>
         <tr>
-            <td class="name">Email:</td>
+            <td class="name">E-Mail:</td>
             <td class="value">
                 <input <?php echo field_error('admin_email');?> type="text" tabindex="15" name="admin_email" value="<?php if (isset($_SESSION['admin_email'])) {echo $_SESSION['admin_email'];}
     ?>" />
@@ -528,7 +528,7 @@ if (!isset($_SESSION['config_rename'])) {
             </td>
         </tr>
         <tr>
-            <td class="name">Re-Password:</td>
+            <td class="name">Repeat Password:</td>
             <td class="value">
                 <input <?php echo field_error('admin_repassword');?> type="password" tabindex="17" name="admin_repassword" value=""  />
             </td>
@@ -545,7 +545,7 @@ if (!isset($_SESSION['config_rename'])) {
                 <tr valign="top">
                     <td>
                         <p class="warning">
-                        WebsiteBaker CE is released under the
+                        WBCE is released under the
                         <a href="http://www.gnu.org/licenses/gpl.html" target="_blank" tabindex="19">GNU General Public License</a>.
                         <br />
                         By clicking install, you are accepting the license.
@@ -556,7 +556,7 @@ if (!isset($_SESSION['config_rename'])) {
             <td>
             <p class="center">
                 <?php if ($installFlag == true) {?>
-                <input type="submit" tabindex="20" name="install" value="Install WebsiteBaker CE" />
+                <input type="submit" tabindex="20" name="install" value="Install WBCE CMS" />
                 <?php } else {?>
                 <input type="button" tabindex="20" name="restart" value="Check your Settings in Step1 or Step2" class="submit" onclick="javascript: window.location = '<?php print $_SERVER['SCRIPT_NAME']?>';" />
                 <?php }
@@ -572,7 +572,7 @@ if (!isset($_SESSION['config_rename'])) {
 
 <div style="margin: 0 0 3em; padding: 0; text-align:center;">
     <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WebsiteBaker CE</a> is released under the
+    <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WBCE</a> is released under the
     <a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a>
     <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
 </div >

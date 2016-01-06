@@ -7,6 +7,7 @@
 
     <input type="hidden" name="no_page" value="no_page" />
     <?php echo $admin->getFTAN(); ?>
-    <input type="submit" name="backup" value="<?php echo $TEXT['BACKUP_DATABASE']; ?>" onclick="javascript: if(!confirm('<?php echo $MESSAGE['GENERIC']['PLEASE_BE_PATIENT']; ?>')) { return false; }" />
+	<p><?php echo $MESSAGE['GENERIC']['PLEASE_BE_PATIENT']; ?></p>
+    <input type="submit" name="backup" value="<?php echo $TEXT['BACKUP_DATABASE']; ?>"  />
     <input style="float:right;" type="submit" name="admin_tools" id="admin_tools" value="<?php echo $HEADING['ADMINISTRATION_TOOLS']; ?>" />
 </form>

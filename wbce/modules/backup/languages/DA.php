@@ -22,7 +22,7 @@ $module_description = 'This module allows you to backup your files and databases
 // text outputs
 $MOD_BACKUP['BACKUP_ALL_FILES'] 	= 	'Tag backup alle filer (databasen ikke inkluderet)';
 $MOD_BACKUP['BACKUP_ALL_TABLES'] = 'Tag backup af alle tabeller i databasen (filer ikke inkluderet)';
-$MOD_BACKUP['BACKUP_WB_SPECIFIC'] = 'Tag kun backup af WB-tabeller i databasen (filer ikke inkluderet)';
+$MOD_BACKUP['BACKUP_WB_SPECIFIC'] = 'Tag kun backup af WBCE-tabeller i databasen (filer ikke inkluderet)';
 $MOD_BACKUP['ADD_DROP'] 	= 	'tilf&oslash;j "DROP TABLE IF EXISTS"';
 $TEXT['BACKUP_DATABASE'] = 'Tag backup';
 
