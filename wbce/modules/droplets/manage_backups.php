@@ -56,10 +56,6 @@ if ( isset( $_GET['del'] ) ) {
 
 $backup_files = wb_find_backups( WB_PATH.'/modules/droplets/export/' );
 
-// no more files
-if ( ! count( $backup_files ) > 0 ) {
-    echo header( "Location: ".ADMIN_URL."/admintools/tool.php?tool=droplets\n\n" );
-}
 
 ?>
 
@@ -103,6 +99,8 @@ if ( count( $backup_files ) > 0 ) {
     }
     echo "</table>\n";
 }
+else  echo "<b>No backups available!</b>";
 ?>
 
 <br /><br />[ <a href="<?php echo ADMIN_URL; ?>/admintools/tool.php?tool=droplets">&laquo; <?php echo $TEXT['BACK'];?></a> ]<br /><br />
+
