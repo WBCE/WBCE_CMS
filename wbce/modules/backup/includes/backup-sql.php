@@ -61,7 +61,7 @@ else {
     // Create output header
     $output = "".
     "#\n".
-    "# Website Baker ".WB_VERSION." Database Backup\n".
+    "# WBCE ".WBCE_VERSION." Database Backup\n".
     "# ".WB_URL."\n".
     "# ".gmdate(DATE_FORMAT, time()+TIMEZONE).", ".gmdate(TIME_FORMAT, time()+TIMEZONE)."\n".
     "# modul version: ".$module_version."\n".
