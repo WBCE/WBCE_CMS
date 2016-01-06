@@ -13,15 +13,17 @@
 // no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
-// throw away output buffer as we are going to send a file here
-ob_end_clean(); 
-
 
 require_once($modulePath."/info.php");
 
 // if you are lucky this will work but server settings may possibly prevent this
 if (ini_get("max_execution_time") < 120)
-    set_time_limit(120); // increase timeout to 2 minutes
+    // need to suppress an error message here , as it starts unwanted output here
+    // and that leads to display on screen instead of downloading file
+    @set_time_limit(30);
+    @set_time_limit(45);
+    @set_time_limit(60);
+    @set_time_limit(120); // increase timeout to 2 minutes
 
 // BACKUP FILES MODE
 if ($_POST['tables']=='FILES') {
@@ -143,4 +145,4 @@ function DownloadFile($file) { // $file: including path
   }
 }
 
-?>
+
