@@ -181,10 +181,12 @@ function wb_unpack_and_import( $temp_file, $temp_unzip ) {
                     // Slurp file contents
                     $lines = file( $temp_unzip.'/'.$file );
                     // First line: Description
+                    $description = "";
                     if ( preg_match( '#^//\:(.*)$#', $lines[0], $match ) ) {
                         $description = $match[1];
                     }
                     // Second line: Usage instructions
+                    $usage = "";
                     if ( preg_match( '#^//\:(.*)$#', $lines[1], $match ) ) {
                         $usage       = addslashes( $match[1] );
                     }
