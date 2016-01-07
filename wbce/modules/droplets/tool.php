@@ -39,27 +39,23 @@ if ( count( $backup_files ) > 0 ) {
     $twig_data['backup_mgmt'] = true;
 }
 
-// ----- export -----
-if(isset($_REQUEST['export']))
+// convert some keys into actions
+foreach(array_values(array('export','upload','delete')) as $key)
 {
-    $list = $_REQUEST['markeddroplet'];
-    if(count($list))
+    if(isset($_REQUEST[$key]))
     {
-        $twig_data['info'] = wbce_export_droplets($list);
+        $_GET['do'] = $key;
+        break;
     }
 }
+
 // ----- duplicate -----
-elseif ( isset($_GET['copy']) )
+if ( isset($_GET['copy']) )
 {
     $id = $_GET['copy'];
     if ( is_numeric($id) ) {
         wbce_copy_droplet($id);
     }
-}
-// ----- import -----
-elseif ( isset($_GET['upload']) )
-{
-    $twig_data['content'] = wbce_handle_upload();
 }
 // ----- recover from backup -----
 elseif ( isset($_GET['recover']) && file_exists( WB_PATH.'/modules/droplets/export/'.$_GET['recover'] ) )
@@ -89,6 +85,7 @@ elseif ( isset($_GET['recover']) && file_exists( WB_PATH.'/modules/droplets/expo
             . $DR_TEXT['IMPORTED']
             . '</div>';
     }
+    $twig_data['more_header_links'] = $DR_TEXT['IMPORTED'];
 }
 
 // action
@@ -96,9 +93,27 @@ if(isset($_GET['do']))
 {
     switch($_GET['do'])
     {
+        // ----- export -----
+        case 'export':
+            $list = $_REQUEST['markeddroplet'];
+            if(count($list))
+            {
+                $twig_data['info'] = wbce_export_droplets($list);
+            }
+            break;
+
+        // ----- import -----
+        case 'upload':
+            $twig_data['content'] = wbce_handle_upload();
+            $twig_data['more_header_links'] = $DR_TEXT['UPLOAD'];
+            break;
+
         // ----- delete -----
         case 'delete':
-           $_POST['markeddroplet'] = array($_GET['droplet_id']);
+           if(isset($_GET['droplet_id']) && ! isset($_POST['markeddroplet']))
+           {
+               $_POST['markeddroplet'] = array($_GET['droplet_id']);
+           }
            wbce_delete_droplets();
            break;
 
