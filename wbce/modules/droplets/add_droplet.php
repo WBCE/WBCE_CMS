@@ -31,7 +31,7 @@ if ( $admin->get_permission( 'admintools' ) == true )
     else
     {
         $droplet_id = intval( $database->get_one( "SELECT LAST_INSERT_ID()" ) );
-        $admin->print_success( $TEXT['SUCCESS'], WB_URL . '/modules/droplets/modify_droplet.php?droplet_id=' . $droplet_id );
+        $admin->print_success( $TEXT['SUCCESS'], ADMIN_URL.'/admintools/tool.php?tool=droplets&do=modify&droplet_id=' . $droplet_id );
     }
 }
 else

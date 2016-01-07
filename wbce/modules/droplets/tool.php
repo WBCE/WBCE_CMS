@@ -39,6 +39,7 @@ if ( count( $backup_files ) > 0 ) {
     $twig_data['backup_mgmt'] = true;
 }
 
+// ----- export -----
 if(isset($_REQUEST['export']))
 {
     $list = $_REQUEST['markeddroplet'];
@@ -47,6 +48,7 @@ if(isset($_REQUEST['export']))
         $twig_data['info'] = wbce_export_droplets($list);
     }
 }
+// ----- duplicate -----
 elseif ( isset($_GET['copy']) )
 {
     $id = $_GET['copy'];
@@ -54,10 +56,12 @@ elseif ( isset($_GET['copy']) )
         wbce_copy_droplet($id);
     }
 }
+// ----- import -----
 elseif ( isset($_GET['upload']) )
 {
     $twig_data['content'] = wbce_handle_upload();
 }
+// ----- recover from backup -----
 elseif ( isset($_GET['recover']) && file_exists( WB_PATH.'/modules/droplets/export/'.$_GET['recover'] ) )
 {
     $result = wbce_unpack_and_import( WB_PATH.'/modules/droplets/export/'.$_GET['recover'], WB_PATH.'/temp/unzip/' );
@@ -92,6 +96,12 @@ if(isset($_GET['do']))
 {
     switch($_GET['do'])
     {
+        // ----- delete -----
+        case 'delete':
+           $_POST['markeddroplet'] = array($_GET['droplet_id']);
+           wbce_delete_droplets();
+           break;
+
         // ----- modify droplet -----
         case 'modify':
             include_once WB_PATH . '/include/editarea/wb_wrapper_edit_area.php';
@@ -181,6 +191,10 @@ if(! isset($twig_data['content']))
 {
     $twig_data['droplets'] = wbce_list_droplets();
 }
+
+echo "<textarea style=\"width:100%;height:200px;color:#000;background-color:#fff;\">";
+print_r( $twig_data['droplets'] );
+echo "</textarea>";
 
 // print result
 wbce_twig_display($twig_data);

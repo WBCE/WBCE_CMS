@@ -181,7 +181,8 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
  * @param  string  $code PHP code to check.
  * @return boolean|array If true, then check was successful, otherwise an array(message,line) of errors is returned.
  */
-function wbce_check_syntax($code){
+function wbce_check_syntax($code)
+{
     $braces=0;
     $inString=0;
     foreach (token_get_all('<?php ' . $code) as $token)
@@ -242,11 +243,21 @@ function wbce_check_syntax($code){
     return $code;
 }   // end function wbce_check_syntax()
 
-function wbce_check_unique($name) {
+/**
+ * check for unique droplet name
+ *
+ * @param  string   $name
+ * @return boolean
+ **/
+function wbce_check_unique($name)
+{
 	global $database;
-	$query_droplets = $database->query("SELECT name FROM ".TABLE_PREFIX."mod_droplets WHERE name = '$name'");
+	$query_droplets = $database->query(sprintf(
+        "SELECT `name`  FROM `%smod_droplets` WHERE `name` = '%s'",
+        TABLE_PREFIX, $name
+    ));
 	return ($query_droplets->numRows() == 1);
-}
+}   // end function wbce_check_unique()
 
 /**
  * delete droplet(s)
@@ -262,14 +273,26 @@ function wbce_delete_droplets()
         return false;
     }
 
+    // get the droplet(s) data
+    $droplets = array();
+    foreach ( $list as $id ) {
+        $result = $database->query(sprintf(
+            "SELECT * FROM `%smod_droplets` WHERE id='%d'",
+            TABLE_PREFIX, $id
+        ));
+        if ( $result->numRows() > 0 ) {
+            $droplets[] = $result->fetchRow();
+        }
+    }
+
     // create a backup
-    wbce_backup_droplets( $list, 'drop_delete' );
+    wbce_backup_droplets( $droplets, 'drop_delete' );
 
     // delete
-    foreach($list as $id)
+    foreach(array_values($list) as $id)
     {
         $database->query(sprintf(
-            "DELETE FROM `%smod_droplets' WHERE id = '%d' LIMIT 1",
+            "DELETE FROM `%smod_droplets` WHERE id = '%d' LIMIT 1",
             TABLE_PREFIX, $id
         ));
     }
