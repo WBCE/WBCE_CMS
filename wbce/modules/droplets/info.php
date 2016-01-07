@@ -20,18 +20,21 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '1.75';
+$module_version = '1.8';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
 $module_author = 'Ruud, pcwacht, WebBird';
 $module_license = 'GNU General Public License';
 $module_description = 'This tool allows you to manage your local Droplets.';
 
-$module_home = 'http://www.websitebakers.com/pages/droplets/about-droplets.php';
+$module_home = 'http://www.wbce.org';
 $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 
 /**
  * Version history
+ *
+ * v1.8  - Bianka Martinovic ("WebBird")
+ *       - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/92
  *
  * v1.75 - Bianka Martinovic ("WebBird")
  *       - fixed "Undefined variable: imports" issue
