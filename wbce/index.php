@@ -66,7 +66,7 @@ require WB_PATH . '/framework/frontend.functions.php';
 ob_start();
 
 // require template include.php 
-if (file_exits(WB_PATH . '/templates/' . TEMPLATE . '/include.php')){
+if (file_exists(WB_PATH . '/templates/' . TEMPLATE . '/include.php')){
     require WB_PATH . '/templates/' . TEMPLATE . '/include.php'; 
 }
 
