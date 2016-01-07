@@ -192,9 +192,5 @@ if(! isset($twig_data['content']))
     $twig_data['droplets'] = wbce_list_droplets();
 }
 
-echo "<textarea style=\"width:100%;height:200px;color:#000;background-color:#fff;\">";
-print_r( $twig_data['droplets'] );
-echo "</textarea>";
-
 // print result
 wbce_twig_display($twig_data);
