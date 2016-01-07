@@ -64,6 +64,13 @@ require WB_PATH . '/framework/frontend.functions.php';
 
 //Get pagecontent in buffer for Droplets and/or Filter operations
 ob_start();
+
+// require template include.php 
+if (file_exits(WB_PATH . '/templates/' . TEMPLATE . '/include.php')){
+    require WB_PATH . '/templates/' . TEMPLATE . '/include.php'; 
+}
+
+//require the actual template file 
 require WB_PATH . '/templates/' . TEMPLATE . '/index.php';
 $output = ob_get_clean();
  
