@@ -1,20 +1,14 @@
 <?php
+
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        module
- * @package         droplet
- * @author          Ruud Eisinga (Ruud) John (PCWacht) Bianka (WebBird)
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2010, Website Baker Org. e.V.
- * @link		    http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.4.9 and higher
- * @version         $Id$
- * @filesource	    $HeadURL$
- * @lastmodified    $Date$
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 $module_directory = 'droplets';
@@ -23,7 +17,7 @@ $module_function = 'tool';
 $module_version = '1.8';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
-$module_author = 'Ruud, pcwacht, WebBird';
+$module_author = 'Ruud, pcwacht, WebBird (for WBCE)';
 $module_license = 'GNU General Public License';
 $module_description = 'This tool allows you to manage your local Droplets.';
 

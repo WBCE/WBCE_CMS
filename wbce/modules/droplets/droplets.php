@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WebsiteBaker Community Edition (WBCE)
  * Way Better Content Editing.
