@@ -126,7 +126,7 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
     }
     else
     {
-        if(!@mkdir($temp_dir,'0770'))
+        if(!@mkdir($temp_dir,OCTAL_DIR_MODE))
         {
             $err = error_get_last();
             return '<div class="alertbox error">'.
