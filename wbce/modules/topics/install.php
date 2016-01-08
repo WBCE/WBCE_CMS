@@ -298,6 +298,7 @@ if (!function_exists('wb_unpack_and_import')) {
       }
       closedir($dh);
     }
+    if (!isset($imports)) $imports=array();
     return array(
         'count' => $count,
         'errors' => $errors,
