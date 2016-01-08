@@ -1,0 +1,94 @@
+<script type="text/javascript" src="{{ WB_URL }}/modules/droplets/js/jquery.tablesorter.js"></script>
+
+<br />
+<button class="button" type="button" name="add_droplet" onclick="javascript: window.location = '{{ WB_URL }}/modules/droplets/add_droplet.php';">
+    {{ TEXT.ADD|raw }} {{ DR_TEXT.DROPLETS|raw }}
+</button>
+<button class="button" type="button" name="upload_droplet" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;upload=1';">
+    {{ DR_TEXT.UPLOAD|raw }}
+</button>
+<button class="button" type="button" name="backup" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=backup_droplets'">
+    {{ DR_TEXT.BACKUP|raw }}
+</button>
+{% if backup_mgmt %}
+<button class="button" type="button" name="backup_mgmt" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups';">
+    {{ DR_TEXT.MANAGE_BACKUPS|raw }}
+</button>'
+{% endif %}
+
+<a href="#" style="float:right" onclick="javascript: window.open('{{ WB_URL }}/modules/droplets/readme/{{ DR_TEXT.README|raw }}','helpwindow','width=700,height=550,directories=no,location=no,menubar=no,scrollbars=yes,status=no,toolbar=no,resizable=yes');">
+	<img src="{{ WB_URL }}/modules/droplets/img/help.png" alt="{{ DR_TEXT.HELP|raw }}" />
+</a>
+
+<br />
+
+{% if info %}
+{{ info|raw }}
+{% endif %}
+
+<form method="post" action="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets">
+{{ FTAN|raw }}
+<table class="droplets row_a tablesorter" id="myTable">
+	<thead>
+		<tr>
+			<th width="15%"></th>
+			<th width="20%">{{ TEXT.NAME|raw }}</th>
+			<th width="55%">{{ TEXT.DESCRIPTION|raw }}</th>
+			<th width="7%">{{ TEXT.ACTIVE|raw }}</th>
+			<th width="3%"></th>
+		</tr>
+	</thead>
+	<tbody>
+{% set num_droplets = "" %}
+{% for item in droplets %}
+{% if loop.last %}{% set num_droplets = loop.index %}{% endif %}
+   	    <tr class="row_{% if loop.index % 2 %}b{% endif %}">
+			<td>
+                <input type="checkbox" name="markeddroplet[]" id="markeddroplet[]" value="{{ item.id }}" />
+				<a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}" title="{{ TEXT.MODIFY|raw }}">
+					<img src="{{ THEME_URL }}/images/modify_16.png" border="0" alt="Modify" />
+				</a>
+				<a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;copy={{ item.id }}" title="{{ DR_TEXT.DUPLICATE|raw }}">
+                    <img src="{{ THEME_URL }}/images/add_child.png" alt="" />
+                </a>
+                <a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}" class="tooltip">
+                    <img src="{{ WB_URL }}/modules/droplets/img/info.png" alt="" />{{ item.comments|raw }}
+                </a>
+                {% if item.valid_code and item.unique %}
+                    <img src="{{ WB_URL }}/modules/droplets/img/droplet.png" border="0" title="valid" alt="valid" />
+                {% else %}
+                    <img src="{{ WB_URL }}/modules/droplets/img/invalid.gif" border="0" title="invalid" alt="invalid" />
+                {% endif %}
+			</td>
+			<td>
+                {{ item.name }}
+			</td>
+			<td>
+				<small>{{ item.description|raw }}</small>
+			</td>
+			<td>
+				<strong>{% if item.active == 1 %}<span style="color: green;">{{ TEXT.YES }}</span>{% else %}<span style="color: red;">{{ TEXT.NO }}</span>{% endif %}</strong>
+			</td>
+			<td>
+				<a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=delete&amp;droplet_id={{ item.id }}');" title="{{ TEXT.DELETE|raw }}">
+					<img src="{{ THEME_URL }}/images/delete_16.png" border="0" alt="X" />
+				</a>
+			</td>
+		</tr>
+{% endfor %}
+    </tbody>
+    <tr class="">
+        <td colspan="5" style="text-align: right; border-top: 1px solid #000; border-bottom: 3px double #000;">{{ num_droplets }}</td>
+    </tr>
+</table><br />
+
+{{ DR_TEXT.MARKED }}:
+<input type="submit" class="button" name="export" id="export" value="{{ DR_TEXT.EXPORT|raw }}" />
+<input type="submit" class="button" name="delete" id="delete" value="{{ TEXT.DELETE|raw }}" onclick="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets');" />
+<span style="font-size:smaller">{{ DR_TEXT.DEL_INFO|raw }}</span>
+</form><br />
+
+<div style="text-align:center;background-color:#fff;border:1px solid #aaa;padding:15px;">
+    <strong>Droplets V{{ module_version }}</strong><br />
+    [ <a href="http://addons.wbce.org/pages/droplets.php" target="_blank">{{ DR_TEXT.DOWNLOAD|raw }}</a> ]
+</div>

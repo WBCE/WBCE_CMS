@@ -1,0 +1,22 @@
+    <form method="post" action="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;upload=1" enctype="multipart/form-data" name="upload">
+    {{ FTAN|raw }}
+      <fieldset class="fieldset">
+        <legend>{{ DR_TEXT.UPLOAD }}</legend>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <input type="file" name="userfile" size="50" />
+                <script type="text/javascript">document.upload.userfile.focus();</script>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="submit" class="button" value="{{ DR_TEXT.UPLOAD }}" name="submit" />
+                <input type="submit" class="button" value="{{ TEXT.CANCEL }}" name="cancel" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </form>
