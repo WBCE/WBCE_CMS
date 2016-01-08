@@ -112,7 +112,7 @@ function wbce_copy_droplet($droplet_id)
  **/
 function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=false)
 {
-    global $DR_TEXT;
+    global $DR_TEXT, $MESSAGE;
 
     if(!$list || !is_array($list) || !count($list)) { return false; }
 
@@ -120,8 +120,21 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
     $temp_dir = WB_PATH . '/temp/droplets/';
 
     //  make sure it's empty
-    if(is_dir($temp_dir)) { rm_full_dir($temp_dir,true); }
-    else                  { mkdir($temp_dir,'0770');     }
+    if(is_dir($temp_dir))
+    {
+        rm_full_dir($temp_dir,true);
+    }
+    else
+    {
+        if(!@mkdir($temp_dir,'0770'))
+        {
+            $err = error_get_last();
+            return '<div class="alertbox error">'.
+                   $MESSAGE['MEDIA_DIR_NOT_MADE'].': '.
+                   $err['message'].
+                   '</div>';
+        }
+    }
 
     $details = array();
     $result  = '';
@@ -131,11 +144,20 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
     {
         $sFile = $temp_dir . $droplet['name'] . '.php';
         $fh    = fopen( $sFile, 'w' );
+        if(!is_resource($fh))
+        {
+            return '<div class="alertbox error">'.
+                   $DR_TEXT['PACK_ERROR'].
+                   '</div>';
+        }
+        else
+        {
         $details[] = $DR_TEXT['SAVING'] . ': ' . $sFile;
         fwrite( $fh, '//:' . $droplet['description'] . "\n" );
         fwrite( $fh, '//:' . str_replace("\n"," ",$droplet['comments']) . "\n" );
         fwrite( $fh, $droplet['code'] );
         fclose( $fh );
+    }
     }
 
     // add current date to filename
@@ -543,11 +565,33 @@ function wbce_unpack_and_import( $temp_file, $temp_unzip )
         {
             if ( $file != "." && $file != ".." )
             {
-                if ( preg_match( '/^(.*)\.php$/i', $file, $name_match ) ) {
+                if ( preg_match( '/^(.*)\.php$/i', $file, $name_match ) )
+                {
                     // Name of the Droplet = Filename
                     $name  = $name_match[1];
                     // Slurp file contents
                     $lines = file( $temp_unzip.'/'.$file );
+                    // check the number of lines: more than 3!
+                    if(!(count($lines) > 3))
+                    {
+                        // try to resolve by reading the file again
+                        if(!(count($lines) > 1))
+                        {
+                            ini_set('auto_detect_line_endings', true);
+                            $lines = file( $temp_unzip.'/'.$file );
+                        }
+                        else
+                        {
+                            $errors[$name] = 'Invalid file, unable to import!';
+                            continue;
+                        }
+                        // still failing -> break!
+                        if(!(count($lines) > 3))
+                        {
+                            $errors[$name] = 'Invalid file, unable to import!';
+                            continue;
+                        }
+                    }
                     // First line: Description
                     $description = "";
                     if ( preg_match( '#^//\:(.*)$#', $lines[0], $match ) ) {
