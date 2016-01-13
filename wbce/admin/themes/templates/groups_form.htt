@@ -222,11 +222,13 @@
 	</td>
 </tr>
 </table>
+<hr />
 
 <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" style="padding-top: 5px; padding-bottom: 5px;">
 <tr>
-	<td valign="top" align="left" width="150">{TEXT_MODULE_PERMISSIONS}:</td>
 	<td valign="top" align="left">
+        <h2>{TEXT_MODULE_PERMISSIONS}</h2>
+        <h3>{SECTION_MODULES}</h3>
 		<ul style="margin: 0; padding: 0; list-style: none;">
 			<!-- BEGIN module_list_block -->
 			<li>
@@ -235,9 +237,21 @@
 			</li>
 			<!-- END module_list_block -->
 		</ul>
+        <br/>
+        <h3>{SECTION_ADMINTOOLS}</h3>
+		<ul style="margin: 0; padding: 0; list-style: none;">
+			<!-- BEGIN admintools_list_block -->
+			<li>
+				<input type="checkbox" name="module_permissions[]" id="m_{VALUE}" value="{VALUE}" {CHECKED} />
+				<label for="m_{VALUE}">{NAME}</label>
+			</li>
+			<!-- END admintools_list_block -->
+		</ul>
 	</td>
-	<td valign="top" align="left" width="150">{TEXT_TEMPLATE_PERMISSIONS}:</td>
+
 	<td valign="top" align="left">
+        <h2>{TEXT_TEMPLATE_PERMISSIONS}</h2>
+        <h3>{SECTION_TEMPLATES}</h3>
 		<ul style="margin: 0; padding: 0; list-style: none;">
 			<!-- BEGIN template_list_block -->
 			<li>

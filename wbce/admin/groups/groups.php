@@ -91,7 +91,21 @@ switch ($action) {
                 $template->parse('module_list', 'module_list_block', true);
             }
         }
-
+        // Insert values into admin module list
+        $template->set_block('main_block', 'admintools_list_block', 'admintools_list');
+        $result = $database->query('SELECT * FROM `' . TABLE_PREFIX . 'addons` WHERE `type` = "module" AND `function` LIKE "%tool%" ORDER BY `name`');
+        if ($result->numRows() > 0) {
+            while ($addon = $result->fetchRow()) {
+                $template->set_var('VALUE', $addon['directory']);
+                $template->set_var('NAME', $addon['name']);
+                if (!is_numeric(array_search($addon['directory'], $module_permissions))) {
+                    $template->set_var('CHECKED', ' checked="checked"');
+                } else {
+                    $template->set_var('CHECKED', '');
+                }
+                $template->parse('admintools_list', 'admintools_list_block', true);
+            }
+        }
         // Insert values into template list
         $template->set_block('main_block', 'template_list_block', 'template_list');
         $result = $database->query('SELECT * FROM `' . TABLE_PREFIX . 'addons` WHERE `type` = "template" ORDER BY `name`');
