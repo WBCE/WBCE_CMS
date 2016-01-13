@@ -88,7 +88,7 @@ function wbce_copy_droplet($droplet_id)
     {
         $new_id = $database->get_one("SELECT LAST_INSERT_ID()");
         // Added PCWacht - javascript redirect... since headers are already sent
-        $url = ADMIN_URL . '/admintools/tool.php?tool=droplets?droplet_id='.$new_id;
+        $url = ADMIN_URL . '/admintools/tool.php?tool=droplets&do=modify&droplet_id='.$new_id;
         echo '<script type="text/javascript">';
         echo 'window.location.href="'.$url.'";';
         echo '</script>';
