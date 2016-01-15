@@ -20,7 +20,7 @@ $r = $stats->getVisitors();
 //print_r($r);
 ?>
 
-<div class="middle h265">
+<div class="wbstats_middle wbstats_h265">
 	<h3><?php echo $WS['REFTOP10'] ?></h3>
 	<table width="100%" border="0" cellpadding="3" cellspacing="0">
 		<tr>
@@ -32,14 +32,14 @@ $r = $stats->getVisitors();
 			foreach($r['referer'] as $key => $data) { ?>
 		<tr>
 			<td><?php echo $key ?></td>
-			<td><span class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></span></td>
-			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
+			<td><span class="wbstats_expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></span></td>
+			<td nowrap><div class="wbstats_vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 		</tr>
 		<?php } ?>
     </table>
 </div>
   
-<div class="middle h265">
+<div class="wbstats_middle wbstats_h265">
     <h3><?php echo $WS['PAGETOP10'] ?></h3>
 	<table width="100%" cellpadding="3" cellspacing="0">
 		<tr>
@@ -50,15 +50,15 @@ $r = $stats->getVisitors();
 		<?php if(isset($r['pages'])) foreach($r['pages'] as $key => $data) { ?>
 		<tr>
 			<td><?php echo $key ?></td>
-			<td><span class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></span></td>
-			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['REQUESTS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
+			<td><span class="wbstats_expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></span></td>
+			<td nowrap><div class="wbstats_vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['REQUESTS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 		</tr>
 		<?php } ?>
     </table>
 </div>
 
 <div style="clear:both"></div>
-<div class="middle h265">
+<div class="wbstats_middle wbstats_h265">
     <h3><?php echo $WS['KEYSTOP10'] ?></h3>
 	<table width="100%" border="0" cellpadding="3" cellspacing="0">
 		<tr>
@@ -69,14 +69,14 @@ $r = $stats->getVisitors();
 		<?php if(isset($r['keyword'])) foreach($r['keyword'] as $key => $data) { ?>
 		<tr>
 			<td><?php echo $key ?></td>
-			<td><span class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></span></td>
-			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
+			<td><span class="wbstats_expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></span></td>
+			<td nowrap><div class="wbstats_vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 		</tr>
 		<?php } ?>
 	</table>
 </div>
 
-<div class="middle h265">
+<div class="wbstats_middle wbstats_h265">
     <h3><?php echo $WS['LANGTOP10'] ?></h3>
 	<table width="100%" border="0" cellpadding="3" cellspacing="0">
 		<tr>
@@ -87,8 +87,8 @@ $r = $stats->getVisitors();
 		<?php if(isset($r['language'])) foreach($r['language'] as $key => $data) { ?>
 		<tr>
 			<td><?php echo $key ?></td>
-			<td><span class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></span></td>
-			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
+			<td><span class="wbstats_expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></span></td>
+			<td nowrap><div class="wbstats_vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 		</tr>
 		<?php } ?>
 	</table>

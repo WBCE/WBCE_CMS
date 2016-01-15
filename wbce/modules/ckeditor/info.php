@@ -14,7 +14,10 @@
  *
  *
  * Changelog
- * 
+ *  version 4.5.5 
+ *  add only ckeditor for compatible android and other mobile
+ *  Krzysztof Winnicki
+ *  2016-01-13 14:40:55
  *  version 4.4.8 150706
  *  ! update to CKE 4.4.8
  *
@@ -129,7 +132,7 @@ if(!defined('WB_PATH')) {
 $module_directory	= 'ckeditor';
 $module_name			= 'CKEditor';
 $module_function	= 'WYSIWYG';
-$module_version		= '4.4.8';
+$module_version		= '4.5.5';
 $module_platform	= '2.8.3';
 $module_author		= 'Michael Tenschert, Dietrich Roland Pehlke, erpe, Luisehahne, WebBird';
 $module_license		= '<a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>';

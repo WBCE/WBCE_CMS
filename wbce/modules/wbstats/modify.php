@@ -13,8 +13,8 @@ $module_visitors_link = '?page_id='.$page_id.'&visitors';
 $module_history_link = '?page_id='.$page_id.'&history';
 ?>
 <script type="text/javascript" src="<?php echo WB_URL ?>/modules/wbstats/js/jquery.poshytip.js"></script>
-<div id="container">
-<div class="sysmenu">
+<div id="wbstats_container">
+<div class="wbstats_sysmenu">
   <a href="<?php echo $module_overview_link  ?>"><?php echo $WS['MENU1'] ?></a>
   <a href="<?php echo $module_visitors_link  ?>"><?php echo $WS['MENU2'] ?></a>
   <a href="<?php echo $module_history_link  ?>"><?php echo $WS['MENU3'] ?></a>

@@ -59,6 +59,8 @@
 			'{SEE_ALSO}'			=> $see_also_output, 
 			'{SEE_PREVNEXT}'		=> $see_prevnext_output,  
 			'[BACK]'				=> $page_link, 
+            '[TEXTBACK]'			=> $TEXT['BACK'],
+            '[TEXTNEXT]'			=> $TEXT['NEXT'],
 			'[PICTURE_DIR]'			=> $picture_dir, 
 			'[PICTURE]'				=> $picture, 
 			'{PICTURE}'				=> $picture_tag, 

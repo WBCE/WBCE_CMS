@@ -1,12 +1,12 @@
 @import url("js/tip-twitter.css"); 
 
-.sysmenu {
+.wbstats_sysmenu {
     clear: both;
 	margin:10px 1%;
 	width:98%;
     padding: 0;
 }
-.sysmenu a {
+.wbstats_sysmenu a {
 	background-color: #303641;
 	padding: 10px !important; 
 	color: #fff;
@@ -15,13 +15,13 @@
 	font-size: 12px;
 	display:inline-block;
 }
-.sysmenu a#current,.sysmenu a:hover {
+.wbstats_sysmenu a#current,.wbstats_sysmenu a:hover {
 	background-color: #D25E59;
 	text-decoration: none;
 	color: #fff;
 }
 
-#container * {
+#wbstats_container * {
 	box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
@@ -33,13 +33,13 @@
 }
 
 
-#container {
+#wbstats_container {
 	position:relative;
 	margin: 10px auto;
 	color:#222;
 	width: 100%;
 }
-#container h3 {
+#wbstats_container h3 {
 	background-color:#303641;
 	color:#FFFFFF;
 	padding:5px;
@@ -48,17 +48,17 @@
 	font-size:1.4em;
 }
 
-#container h3 span{
+#wbstats_container h3 span{
 	position:absolute;
 	right:20px;
 }
-#container h3 span a{
+#wbstats_container h3 span a{
 	text-decoration:none;
 	color:#FFFFFF;
 	font-size:1em;
 }
 
-#container td h4 {
+#wbstats_container td h4 {
 	background-color:#464E5E;
 	color:#fff;
 	padding:1px 5px;
@@ -67,32 +67,32 @@
 	font-weight: bold;
 }
 
-#container td, #container th {
+#wbstats_container td, #container th {
 	vertical-align: bottom;
 }
-#container pre {
+#wbstats_container pre {
 	background: #eee;
 	border: 1px solid #333;
 	padding: 5px;
 	display:inline-block;
 }
 
-.h250 {
+.wbstats_h250 {
 	min-height: 295px;
 }
-.h265{
+.wbstats_h265{
 	min-height: 370px;
 }
-.h600{
+.wbstats_h600{
 	min-height: 610px;
 }
-.right {
+.wbstats_right {
 	float: right !important;
 }
-.left {
+.wbstats_left {
 	float: left;
 }
-.middle {
+.wbstats_middle {
 	height: 265px;
 	position:relative;
 	margin:10px 1%;
@@ -104,7 +104,7 @@
 	padding: 15px;
 }
 
-.full {
+.wbstats_wbsfull {
 	position:relative;
 	margin:10px 1%;
 	width:98%;
@@ -115,7 +115,7 @@
 	height: 295px;
 }
 
-.bar {
+.wbstats_bar {
 	margin-right:1px;
 	margin-left:1px;
 	z-index:1;
@@ -124,39 +124,39 @@
 	overflow:hidden;
 	cursor: pointer;
 }
-.vbar {
+.wbstats_vbar {
 	background-color:#CBCFD8;
 	cursor: pointer;
 	margin: 3px 0
 }
-.bar:hover, .vbar:hover {
+.wbstats_bar:hover, .wbstats_vbar:hover {
 	margin-right:1px;
 	z-index:1;
 	background-color:#CBCFD8;
 
 }
-.expand,.expandunder {
+.wbstats_expand,.wbstats_expandunder {
 	cursor: pointer;
 }
-.timeline {
+.wbstats_timeline {
 	border-left:1px #DDDDDD solid;
 	font-size:0.8em !important;
 	color:#333333;
 }
-.underline {
+.wbstats_underline {
 	border-bottom:1px dotted #999;
 }
-.popup th {
+.wbstats_popup th {
 font-size: 12px;
 	font-weight: bold;
 	color: #fff;
 	border-bottom: 1px solid #fff;
 }
-.popup td {
+.wbstats_popup td {
 	color: #fff;
 	padding: 3px;
 }
-#loading {
+#wbstats_loading {
 	font-size: 16px;
  	background: #464E5E; 
 	color: #FFF;

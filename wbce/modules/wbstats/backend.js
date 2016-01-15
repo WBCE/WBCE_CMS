@@ -1,5 +1,5 @@
 $(function(){
-	$('.bar, .vbar, .expand').poshytip({
+	$('.wbstats_bar, .wbstats_vbar, .wbstats_expand').poshytip({
 		className: 'tip-twitter',
 		showTimeout: 1,
 		alignTo: 'cursor',
@@ -10,7 +10,7 @@ $(function(){
 		fade: true,
 		slide: false
 	});
-	$('.expandunder').poshytip({
+	$('.wbstats_expandunder').poshytip({
 		className: 'tip-twitter',
 		alignTo: 'target',
 		showTimeout: 1,
@@ -20,9 +20,9 @@ $(function(){
 		fade: true,
 		slide: false
 	});
-	$(".bar").each(function() { $.data(this, "realHeight", $(this).height()); }).css({ height: "1px" }).each(function() { $(this).animate({ height: $(this).data("realHeight") }, 1000); });
+	$(".wbstats_bar").each(function() { $.data(this, "realHeight", $(this).height()); }).css({ height: "1px" }).each(function() { $(this).animate({ height: $(this).data("realHeight") }, 1000); });
 }); 
-function OnBeforeUnLoad () { document.getElementById('loading').style.display = 'block'; }
+function OnBeforeUnLoad () { if (document.getElementById('wbstats_loading') != null) { document.getElementById('wbstats_loading').style.display = 'block';} }
 window.onbeforeunload = OnBeforeUnLoad;
 function GetCurrentPage() { 
 	if (!document.getElementsByTagName) return;
