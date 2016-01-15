@@ -25,7 +25,7 @@ $module_overview_link = ADMIN_URL .'/admintools/tool.php?tool=wbstats&overview';
 $module_visitors_link = ADMIN_URL .'/admintools/tool.php?tool=wbstats&visitors';
 $module_history_link = ADMIN_URL .'/admintools/tool.php?tool=wbstats&history';
 $module_help_link = ADMIN_URL .'/admintools/tool.php?tool=wbstats&help';
-
+$viewmode = false;
 
 
 require_once ("head.php");

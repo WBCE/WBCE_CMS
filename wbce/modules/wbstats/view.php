@@ -21,6 +21,8 @@ $module_history_link = $plink.'?history';
 </div>
 <?php 
 require_once($mpath.'class.stats.php');
+$viewmode = true;
+
 if (isset($_GET['overview'])) {
 	require ($mpath."overview.php");
 	return;

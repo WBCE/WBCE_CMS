@@ -11,6 +11,7 @@ require_once(!file_exists($lang) ? $mpath . '/languages/EN.php' : $lang );
 $module_overview_link = '?page_id='.$page_id.'&overview';
 $module_visitors_link = '?page_id='.$page_id.'&visitors';
 $module_history_link = '?page_id='.$page_id.'&history';
+$viewmode = false;
 ?>
 
 <div id="wbstats_container">
