@@ -14,8 +14,6 @@ if(!isset($_POST['topic_id']) OR !is_numeric($_POST['topic_id'])) {
 $update_when_modified = true; // Tells script to update when this page was last updated
 require('permissioncheck.php');
 
-// Include WB functions file
-require(WB_PATH.'/framework/functions.php');
 
 $topiclinks_text = '';
 if (isset($_POST['topiclinks'])) {
