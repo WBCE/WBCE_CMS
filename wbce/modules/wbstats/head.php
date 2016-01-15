@@ -14,7 +14,6 @@
  */
  
 defined('WB_PATH') OR die(header('Location: ../index.php'));  ?>
-<script type="text/javascript" src="<?php echo WB_URL ?>/modules/wbstats/js/jquery.poshytip.js"></script>
 <div id="wbstats_loading" class="box" style="display:none;"><?php echo $WS['PLEASEWAIT'] ?></div>
 <div id="wbstats_container">
 <div class="wbstats_sysmenu">

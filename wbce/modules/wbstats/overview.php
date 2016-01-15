@@ -23,12 +23,12 @@ function AutoRefresh( t ) {
 	setTimeout("location.reload(true);", t);
 }
 AutoRefresh(5*60000);
-$('.visitors').live("click", function(e) { 
+$('.visitors').on("click", null, function(e) { 
 	e.preventDefault();
 	$('tr#pags').hide(); 
 	$('tr#visits').show(); 
 });
-$('.pags').live("click",function(e) {
+$('.pags').on("click", null, function(e) {
 	e.preventDefault();
 	$('tr#visits').hide(); 
 	$('tr#pags').show(); 
@@ -116,7 +116,7 @@ $('.pags').live("click",function(e) {
 				$bar_height=round((205/$max)*$value+5);
 				if ($bar_height == 0) $bar_height = 1;	
 				echo "\t\t\t<td width=\"19\">";
-				echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$bar['title']." - $value ".$WS['VISITORS']."\"></div></td>\n";
+				echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$bar['title']." - $value ".$WS['VISITORS']."\"></div></td>\n";
 			}	
 		?>
 		</tr>
@@ -148,7 +148,7 @@ $('.pags').live("click",function(e) {
 				$bar_height=round((195/$max)*$value+5);
 				if ($bar_height == 0) $bar_height = 1;	
 				echo "\t\t\t<td width=\"19\">";
-				echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$days['title'].$days['tooltip']."\"></div></td>\n";
+				echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$days['title'].$days['tooltip']."\"></div></td>\n";
 			}	
 		?>
 		</tr>
@@ -163,7 +163,7 @@ $('.pags').live("click",function(e) {
 				$bar_height=round((195/$max)*$value+5);
 				if ($bar_height == 0) $bar_height = 1;	
 				echo "\t\t\t<td width=\"19\">";
-				echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$days['title'].$days['tooltip']."\"></div></td>\n";
+				echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$days['title'].$days['tooltip']."\"></div></td>\n";
 			}	
 		?>
 		</tr>

@@ -85,7 +85,7 @@ $resetlink=   "javascript: confirm_link('".$are."', '".WB_URL.'/modules/wbstats/
 
 		echo "<td width=\"38\">";
 		echo "<a href=\"$module_history_link&m=$key&y=$show_year\">";
-		echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$data['title']." - $value ".$WS['VISITORS']."\"></div>";
+		echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$data['title']." - $value ".$WS['VISITORS']."\"></div>";
 		echo "</a></td>\n";
 		}
 	?>
@@ -122,7 +122,7 @@ $resetlink=   "javascript: confirm_link('".$are."', '".WB_URL.'/modules/wbstats/
 		if ($max > 0) {$bar_height=round((195/$max)*$value+5);} else $bar_height = 5;
 
 		echo "<td width=\"30\">";
-		echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$data['title'].$data['tooltip']."\"></div>";
+		echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$data['title'].$data['tooltip']."\"></div>";
 		echo "</td>\n";
 		}
 	?>
