@@ -1,7 +1,7 @@
 CKEditor 4
 ==========
 
-Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.  
+Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.  
 http://ckeditor.com - See LICENSE.md for license information.
 
 CKEditor is a text editor to be used inside web pages. It's not a replacement
@@ -32,8 +32,8 @@ installation proceeded properly. Take a look at the `samples` directory.
 
 To test your installation, just call the following page at your website:
 
-	http://<your site>/<CKEditor installation path>/samples/index.html
+    http://<your site>/<CKEditor installation path>/samples/index.html
 
 For example:
 
-	http://www.example.com/ckeditor/samples/index.html
+    http://www.example.com/ckeditor/samples/index.html
