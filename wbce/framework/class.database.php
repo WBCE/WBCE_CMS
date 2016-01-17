@@ -191,9 +191,11 @@ class database
  */
     public function field_exists($table_name, $field_name)
     {
-        $sql = 'DESCRIBE `' . $table_name . '` `' . $field_name . '` ';
-        $query = $this->query($sql);
-        return ($query->numRows() != 0);
+        $sql="SHOW COLUMNS FROM `$table_name` LIKE '$field_name'";
+        $result = $this->query($sql);
+        $exists = (mysql_num_rows($result))?TRUE:FALSE;
+        if($exists) return true;
+        else        return false;
     }
 
 /*
