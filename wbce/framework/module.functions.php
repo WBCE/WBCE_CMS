@@ -140,4 +140,22 @@ if (!function_exists('toggle_css_file')) {
 }
 
 
-
+// function to obtain the module language file depending on the backend language of the current user
+if (!function_exists('get_module_language_file')) {
+   function get_module_language_file($mymod_dir) {
+      $mymod_dir = strip_tags($mymod_dir);
+      if(file_exists(WB_PATH .'/modules/' .$mymod_dir .'/languages/' .LANGUAGE .'.php')) {
+         // a module language file exists for the users backend language
+         return (WB_PATH .'/modules/' .$mymod_dir .'/languages/' .LANGUAGE .'.php');
+      } else {
+         // an English module language file must exist in all multi-lingual modules
+         if(file_exists(WB_PATH .'/modules/' .$mymod_dir .'/languages/EN.php')) {
+            return (WB_PATH .'/modules/' .$mymod_dir .'/languages/EN.php');
+         } else {
+            echo '<p><strong>Error: </strong>';
+            echo 'Default language file (EN.php) of module "' .htmlentities($mymod_dir) .'" does not exist.</p><br />';
+            return false;
+         }
+      }
+   }
+}
