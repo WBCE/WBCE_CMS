@@ -336,11 +336,11 @@ if((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES) && $field_set && file_exists(WB
                 if($results_array['page_code'] == $page['page_code'])
                 {
                     $template->set_var('SELECTED', ' selected="selected"');
-                } elseif($results_array['page_code'] == $page['page_code'])
+                } /*elseif($results_array['page_code'] == $page['page_code'])
                 {
                     $template->set_var('SELECTED', ' disabled="disabled" class="disabled"');
                     $list_next_level=false;
-                } elseif($can_modify != true)
+                }*/ elseif($can_modify != true)
                 {
                     $template->set_var('SELECTED', ' disabled="disabled" class="disabled"');
                 } else {
