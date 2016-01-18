@@ -14,8 +14,8 @@ if ($see_also_text != '') {
 	$see_also_text = substr($see_also_text, 1, -1);
 	
 	if ($topic_seealso_support == '') { 
-		$theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id IN (".$see_also_text.") AND active > '2' $query_extra ORDER BY $sort_topics_by";
-		if ($frombackend) $theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id IN (".$see_also_text.") AND active > '0' ORDER BY $sort_topics_by";												
+		$theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id IN (".$see_also_text.") AND active > '2' AND section_id > '0' $query_extra ORDER BY $sort_topics_by";
+		if ($frombackend) $theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id IN (".$see_also_text.") AND active > '0' AND section_id > '0' ORDER BY $sort_topics_by";												
 		$query_topics = $database->query($theq); // 
 		
 		if($query_topics->numRows() > 0) {
