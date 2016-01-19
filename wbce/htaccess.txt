@@ -31,9 +31,14 @@ RewriteRule ^sitemap.xml$ /google_sitemap.php [L]
 
 #Force non-www:
 #RewriteCond %{HTTP_HOST} ^www\.example\.com [NC]
-#RewriteRule ^(.*)$ http://example.com/$1 [L,R=301] 
+#RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+
+#Redirect /index.php
+#RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
+#RewriteRule ^index\.php$ http://www.example.com [R=301,L]  
 
 # Don't fix direct file links
+#RewriteBase /
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_URI} !(.*)/$
 #RewriteRule ^(.*)$ $1/ [L,R=301]

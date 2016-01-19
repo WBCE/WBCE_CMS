@@ -193,9 +193,9 @@ class database
     {
         $sql="SHOW COLUMNS FROM `$table_name` LIKE '$field_name'";
         $result = $this->query($sql);
-        $exists = (mysql_num_rows($result))?TRUE:FALSE;
-        if($exists) return true;
-        else        return false;
+        if (!$result) return false;
+        $exists = ($result->numRows())?true:false;
+        return $exists;
     }
 
 /*

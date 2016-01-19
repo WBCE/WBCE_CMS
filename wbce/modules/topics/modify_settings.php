@@ -502,9 +502,9 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 			<td class="setting_name"><br/><?php echo $TEXT['TITLE']; ?></td>
 			<td class="setting_fields">
 			<?php 
-			$see_also_link_title = '<h4>'.$MOD_TOPICS['SEE_ALSO_FRONTEND'].'</h4>';
+/*			$see_also_link_title = '<h4>'.$MOD_TOPICS['SEE_ALSO_FRONTEND'].'</h4>';
 			$next_link_title = '<h4>'.$MOD_TOPICS['SEE_NEXT_POST'].'</h4>';
-			$previous_link_title = '<h4>'.$MOD_TOPICS['SEE_PREV_POST'].'</h4>';
+			$previous_link_title = '<h4>'.$MOD_TOPICS['SEE_PREV_POST'].'</h4>'; */
 			
 			?>
 			

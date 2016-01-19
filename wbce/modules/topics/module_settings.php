@@ -53,11 +53,11 @@ $paramdelimiter = '&amp;'; //use '&amp;' or '&' in special cases.
 //See also, previous, next Links: ----------------------------------------------------
 $showmax_prev_next_links = 5; // how much previous/next links are shown.
 
-if (isset($MOD_TOPICS)) {
+/*if (isset($MOD_TOPICS)) {
 	$see_also_link_title = '<h4>'.$MOD_TOPICS['SEE_ALSO_FRONTEND'].'</h4>';
 	$next_link_title = '<h4>'.$MOD_TOPICS['SEE_NEXT_POST'].'</h4>';
 	$previous_link_title = '<h4>'.$MOD_TOPICS['SEE_PREV_POST'].'</h4>';
-}
+}*/
 //------------------------------------------------------------------------------------
 
 
