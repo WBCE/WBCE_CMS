@@ -24,14 +24,21 @@
                  . 'WHERE `page_id` IN('.$sPageIdList.')';
             if (($oPages = $database->query($sql))) {
                 while (($aPage = $oPages->fetchRow(MYSQLI_ASSOC))) {
+                    $ashortlink =  $aPage['link']."/"; 
                     $aPage['link'] = ($aPage['link']
                                      ? PAGES_DIRECTORY.$aPage['link'].PAGE_EXTENSION
-                                     : '#');
+                                     : '#'); 
+                    
                     // collect all search-replace pairs with valid links
                     if (is_readable(WB_PATH.$aPage['link'])) {
                         // replace death link with found and valide link
+                        if (OPF_SHORT_URL) {  
+                        $aSearchReplaceList['[wblink'.$aPage['page_id'].']'] =
+                            WB_URL.$ashortlink;                             
+                        } else {
                         $aSearchReplaceList['[wblink'.$aPage['page_id'].']'] =
                             WB_URL.$aPage['link'];
+                        }
                     }
                 }
             }
