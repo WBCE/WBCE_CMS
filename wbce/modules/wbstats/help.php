@@ -15,7 +15,7 @@
 
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 ?>
-<div class="full" style="height:auto;">
+<div class="wbstats_wbsfull" style="height:auto;">
     <?php /*
 	<h3><?php echo $help['installhead'] ?></h3>
 	<?php echo $help['installbody'] ?>

@@ -23,12 +23,12 @@ function AutoRefresh( t ) {
 	setTimeout("location.reload(true);", t);
 }
 AutoRefresh(5*60000);
-$('.visitors').live("click", function(e) { 
+$('.visitors').on("click", null, function(e) { 
 	e.preventDefault();
 	$('tr#pags').hide(); 
 	$('tr#visits').show(); 
 });
-$('.pags').live("click",function(e) {
+$('.pags').on("click", null, function(e) {
 	e.preventDefault();
 	$('tr#visits').hide(); 
 	$('tr#pags').show(); 
@@ -36,7 +36,7 @@ $('.pags').live("click",function(e) {
 
 </script>
 
-<div class="middle h600">
+<div class="wbstats_middle wbstats_h600">
 	<h3><?php echo $WS['GENERAL'] ?></h3>
 	<table width="100%" border="0" cellpadding="5" cellspacing="0">
 		<tr valign="top">
@@ -52,7 +52,7 @@ $('.pags').live("click",function(e) {
 			<td colspan="2"><h4><?php echo $WS['LIVE'] ?></h4></td>
 		</tr>
 		<tr valign="top">
-			<td><span<?php if($r['online_title']) { echo ' class="expandunder underline" title="'.$r['online_title'].'"'; } ?>><strong><?php echo $WS['CURRENTONLINE'] ?></span></strong></td><td><?php echo $r['online'] ?></td>
+			<td><span<?php if($r['online_title']) { echo ' class="wbstats_expandunder wbstats_underline" title="'.$r['online_title'].'"'; } ?>><strong><?php echo $WS['CURRENTONLINE'] ?></span></strong></td><td><?php echo $r['online'] ?></td>
 		</tr>
 		<tr valign="top">
 			<td colspan="2"><h4><?php echo $WS['TODAY'] ?></h4></td>
@@ -102,7 +102,7 @@ $('.pags').live("click",function(e) {
     </table>
 </div>
 
-<div class="middle h250">
+<div class="wbstats_middle wbstats_h250">
 	<h3><?php echo $WS['LAST24'] ?></h3>
 	<table height="230" width="100%" cellpadding="0" cellspacing="0" align="right">
 		<tr valign="bottom" height="210">
@@ -116,20 +116,20 @@ $('.pags').live("click",function(e) {
 				$bar_height=round((205/$max)*$value+5);
 				if ($bar_height == 0) $bar_height = 1;	
 				echo "\t\t\t<td width=\"19\">";
-				echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$bar['title']." - $value ".$WS['VISITORS']."\"></div></td>\n";
+				echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$bar['title']." - $value ".$WS['VISITORS']."\"></div></td>\n";
 			}	
 		?>
 		</tr>
 		<tr height="20">
-			<td colspan="6" width="25%" class="timeline"><?PHP echo date("H:i",mktime(date("H")-23, 0, 0, date("n"), date("j"), date("Y"))+TIMEZONE); ?></td>
-			<td colspan="6" width="25%" class="timeline"><?PHP echo date("H:i",mktime(date("H")-17, 0, 0, date("n"), date("j"), date("Y"))+TIMEZONE); ?></td>
-			<td colspan="6" width="25%" class="timeline"><?PHP echo date("H:i",mktime(date("H")-11, 0, 0, date("n"), date("j"), date("Y"))+TIMEZONE); ?></td>
-			<td colspan="6" width="25%" class="timeline"><?PHP echo date("H:i",mktime(date("H")-5, 0, 0, date("n"), date("j"), date("Y"))+TIMEZONE); ?></td>
+			<td colspan="6" width="25%" class="wbstats_timeline"><?PHP echo date("H:i",mktime(date("H")-23, 0, 0, date("n"), date("j"), date("Y"))+TIMEZONE); ?></td>
+			<td colspan="6" width="25%" class="wbstats_timeline"><?PHP echo date("H:i",mktime(date("H")-17, 0, 0, date("n"), date("j"), date("Y"))+TIMEZONE); ?></td>
+			<td colspan="6" width="25%" class="wbstats_timeline"><?PHP echo date("H:i",mktime(date("H")-11, 0, 0, date("n"), date("j"), date("Y"))+TIMEZONE); ?></td>
+			<td colspan="6" width="25%" class="wbstats_timeline"><?PHP echo date("H:i",mktime(date("H")-5, 0, 0, date("n"), date("j"), date("Y"))+TIMEZONE); ?></td>
 		</tr>
 	</table>
 </div>
 
-<div class="middle  h250">
+<div class="wbstats_middle  wbstats_h250">
 	<h3><?php echo $WS['LAST30'] ?>
 		<span>
 		<a href="" class="visitors"><?php echo $WS['VISITORS'] ?></a> | 
@@ -148,7 +148,7 @@ $('.pags').live("click",function(e) {
 				$bar_height=round((195/$max)*$value+5);
 				if ($bar_height == 0) $bar_height = 1;	
 				echo "\t\t\t<td width=\"19\">";
-				echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$days['title'].$days['tooltip']."\"></div></td>\n";
+				echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$days['title'].$days['tooltip']."\"></div></td>\n";
 			}	
 		?>
 		</tr>
@@ -163,16 +163,16 @@ $('.pags').live("click",function(e) {
 				$bar_height=round((195/$max)*$value+5);
 				if ($bar_height == 0) $bar_height = 1;	
 				echo "\t\t\t<td width=\"19\">";
-				echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$days['title'].$days['tooltip']."\"></div></td>\n";
+				echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$days['title'].$days['tooltip']."\"></div></td>\n";
 			}	
 		?>
 		</tr>
 		<tr height="20">
-			<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-29, date("Y"))); ?></td>
-			<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-23, date("Y"))); ?></td>
-			<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-17, date("Y"))); ?></td>
-			<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-11, date("Y"))); ?></td>
-			<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-5, date("Y"))); ?></td>
+			<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-29, date("Y"))); ?></td>
+			<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-23, date("Y"))); ?></td>
+			<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-17, date("Y"))); ?></td>
+			<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-11, date("Y"))); ?></td>
+			<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, date("n"), date("j")-5, date("Y"))); ?></td>
 		</tr>
 	</table>
 </div>

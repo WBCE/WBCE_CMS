@@ -349,8 +349,8 @@ if($query_topic->numRows() > 0) {
 				$commented_date = gmdate(DATE_FORMAT, $commentedtime);
 				$commented_time = gmdate(TIME_FORMAT, $commentedtime);
 				$cuid = (int) $comment['commented_by'];
-				$vars = array('[NAME]','[EMAIL]','[WEBSITE]','[COMMENT]','[DATE]','[TIME]', '{NAME}', '[USER_ID]', '[COMMENT_ID]');
-				$values = array(($comment['name']), ($comment['email']), ($comment['website']), ($comment['comment']), $commented_date, $commented_time, $nameLink, $cuid, $comment_id);			
+				$vars = array('[NAME]','[EMAIL]','[WEBSITE]','[COMMENT]','[COMMENTS]','[DATE]','[TIME]', '{NAME}', '[USER_ID]', '[COMMENT_ID]');
+				$values = array(($comment['name']), ($comment['email']), ($comment['website']), ($comment['comment']),($TEXT['COMMENTS']), $commented_date, $commented_time, $nameLink, $cuid, $comment_id);			
 				
 				$allcomments .= str_replace($vars, $values, $setting_comments_loop);
 			} // end while

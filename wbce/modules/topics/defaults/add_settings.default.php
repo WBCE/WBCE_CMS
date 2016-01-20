@@ -30,7 +30,7 @@ $topic_header = addslashes('<div class="mod_topic_page">
 ');
 $topic_footer = addslashes('{SEE_ALSO}
 {SEE_PREVNEXT}
-<p class="topics-back"><a href="[BACK]">Zur&uuml;ck</a></p>
+<p class="topics-back"><a href="[BACK]">[TEXTBACK]</a></p>
 [EDITLINK]
 </div>
 <hr/>
@@ -52,7 +52,7 @@ $pnsa_string = addslashes('<p style="margin-top:5px; clear:left;">
 $pnsa_max=4;
 
 
-$comments_header = addslashes('<h2>Kommentare</h2>
+$comments_header = addslashes('<h2>Comments</h2>
 ');
 $comments_loop = addslashes('<blockquote class="mod_topic_commentbox">
 <p class="comment_date">[DATE]</p>

@@ -1,0 +1,23 @@
+/*
+Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
+*/
+
+/* "Font Size" combo width */
+.cke_combo__font .cke_combo_text,
+.cke_combo__format .cke_combo_text,
+.cke_combo__style .cke_combo_text, 
+.cke_combo__fontsize .cke_combo_text
+{
+    width: 5em !important;
+}
+
+/* "Font Size" panel size */
+.cke_combopanel__font,
+.cke_combopanel__format,
+.cke_combopanel__styles, 
+.cke_combopanel__fontsize
+{
+    width: auto !important;
+}
+

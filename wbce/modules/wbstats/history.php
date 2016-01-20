@@ -25,9 +25,14 @@ else {$show_year=date("Y",$time);}
 $stats = new stats();
 $r = $stats->getHistory($show_month,$show_year);
 //print_r($r);
+
+//Reset link
+$are = $TEXT['ARE_YOU_SURE'];             
+$resetlink=   "javascript: confirm_link('".$are."', '".WB_URL.'/modules/wbstats/reset.php?rstc'."')"; 
+ 
 ?>
 
-  <div class="middle">
+  <div class="wbstats_middle">
     <h3><?php echo $WS['HISTORY'] ?></h3>
 
 	<table width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -57,7 +62,7 @@ $r = $stats->getHistory($show_month,$show_year);
 	  <td width="30%">&nbsp;</td><td width="20%">&nbsp;</td>
     </table>
   </div>
-  <div class="middle">
+  <div class="wbstats_middle">
     <h3>
 	<?php 
 	echo $WS['YEAR']." ".date("Y",mktime(0, 0, 0, $show_month, 1, $show_year)); 
@@ -80,21 +85,21 @@ $r = $stats->getHistory($show_month,$show_year);
 
 		echo "<td width=\"38\">";
 		echo "<a href=\"$module_history_link&m=$key&y=$show_year\">";
-		echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$data['title']." - $value ".$WS['VISITORS']."\"></div>";
+		echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$data['title']." - $value ".$WS['VISITORS']."\"></div>";
 		echo "</a></td>\n";
 		}
 	?>
     </tr><tr height="20">
-	<td colspan="3" width="25%" class="timeline"><?PHP echo date("M.Y",mktime(0, 0, 0, 1, 1, $show_year)); ?></td>
-	<td colspan="3" width="25%" class="timeline"><?PHP echo date("M.Y",mktime(0, 0, 0, 4, 1, $show_year)); ?></td>
-	<td colspan="3" width="25%" class="timeline"><?PHP echo date("M.Y",mktime(0, 0, 0, 7, 1, $show_year)); ?></td>
-	<td colspan="3" width="25%" class="timeline"><?PHP echo date("M.Y",mktime(0, 0, 0, 10, 1, $show_year)); ?></td>
+	<td colspan="3" width="25%" class="wbstats_timeline"><?PHP echo date("M.Y",mktime(0, 0, 0, 1, 1, $show_year)); ?></td>
+	<td colspan="3" width="25%" class="wbstats_timeline"><?PHP echo date("M.Y",mktime(0, 0, 0, 4, 1, $show_year)); ?></td>
+	<td colspan="3" width="25%" class="wbstats_timeline"><?PHP echo date("M.Y",mktime(0, 0, 0, 7, 1, $show_year)); ?></td>
+	<td colspan="3" width="25%" class="wbstats_timeline"><?PHP echo date("M.Y",mktime(0, 0, 0, 10, 1, $show_year)); ?></td>
 	</tr></table>
   </div>
   
   <div style="clear:both"></div>
   
-  <div class="full">
+  <div class="wbstats_wbsfull">
     <h3>
 	<?php 
 	echo date("F Y",mktime(0, 0, 0, $show_month, 1, $show_year)); 
@@ -117,19 +122,26 @@ $r = $stats->getHistory($show_month,$show_year);
 		if ($max > 0) {$bar_height=round((195/$max)*$value+5);} else $bar_height = 5;
 
 		echo "<td width=\"30\">";
-		echo "<div class=\"bar\" style=\"height:".$bar_height."px;\" title=\"".$data['title'].$data['tooltip']."\"></div>";
+		echo "<div class=\"wbstats_bar\" style=\"height:".$bar_height."px;\" title=\"".$data['title'].$data['tooltip']."\"></div>";
 		echo "</td>\n";
 		}
 	?>
 	
 	
     </tr><tr height="20">
-	<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 1, $show_year)); ?></td>
-	<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 7, $show_year)); ?></td>
-	<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 13, $show_year)); ?></td>
-	<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 19, $show_year)); ?></td>
-	<td colspan="7" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 25, $show_year)); ?></td>
+	<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 1, $show_year)); ?></td>
+	<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 7, $show_year)); ?></td>
+	<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 13, $show_year)); ?></td>
+	<td colspan="6" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 19, $show_year)); ?></td>
+	<td colspan="7" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 25, $show_year)); ?></td>
 	</tr></table>
   </div>
+<?php  if ($viewmode == false) { ?>
+  <br />
+  <div class="wbstats_sysmenu">
+    <input type="button"  value="<?php echo $TEXT['RESET']; ?>"onclick="<?php echo $resetlink; ?>"/>
+    <hr />
+  </div>
+<?php  } ?>
   <div style="clear:both"></div>
 </div>

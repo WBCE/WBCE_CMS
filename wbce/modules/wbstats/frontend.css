@@ -1,12 +1,12 @@
 @import url("../wbstats/js/tip-twitter.css"); 
-.sysmenu {
+.wbstats_sysmenu {
     border-bottom: 3px solid #EEEEEE;
     clear: both;
     height: 23px;
     margin: 1px 25px 0 10px;
     padding: 0;
 }
-.sysmenu a {
+.wbstats_sysmenu a {
 	background-color: #28609B;
 	height:15px;
 	padding: 5px !important; 
@@ -16,14 +16,14 @@
 	font-size: 12px;
 	display:inline-block;
 }
-.sysmenu a#current,.sysmenu a:hover {
+.wbstats_sysmenu a#current,.wbstats_sysmenu a:hover {
 	background-color: #D25E59;
 	text-decoration: none;
 	color: #fff;
 }
 
 
-#container {
+#wbstats_container {
 	position:relative;
 	margin: 10px auto;
 	color:#222;
@@ -31,7 +31,7 @@
 	width: 100%;
 	
 }
-#container h3 {
+#wbstats_container h3 {
 	background-color:#28609B;
 	color:#FFFFFF;
 	padding:5px;
@@ -40,7 +40,7 @@
 	font-size:1.4em;
 }
 
-#container h3 span{
+#wbstats_container h3 span{
 	position:absolute;
 	right:20px;
 }
@@ -50,7 +50,7 @@
 	font-size:1em;
 }
 
-#container td h4 {
+#wbstats_container td h4 {
 	background-color:#6699cc;
 	color:#fff;
 	padding:1px 5px;
@@ -60,34 +60,34 @@
 }
 
 
-#container td, #container th {
+#wbstats_container td, #container th {
 	font-size:11px;
 	color: #111;
 	padding: 1px 0;
 }
-#container pre {
+#wbstats_container pre {
 	background: #eee;
 	border: 1px solid #333;
 	padding: 5px;
 	display:inline-block;
 }
 
-.h250 {
+.wbstats_h250 {
 	height: 260px;
 }
-.h265{
+.wbstats_h265{
 	height: 265px;
 }
-.h600{
+.wbstats_h600{
 	height: 570px;
 }
-.right {
+.wbstats_right {
 	float: right !important;
 }
-.left {
+.wbstats_left {
 	float: left;
 }
-.middle {
+.wbstats_middle {
 	position:relative;
 	margin:10px 1% 0 0;
 	width:46%;
@@ -98,7 +98,7 @@
 	padding: 15px 1%;
 }
 
-.full {
+.wbstats_wbsfull {
 	position:relative;
 	margin:10px 1% 0 0;
 	width:95%;
@@ -106,10 +106,10 @@
 	background-color:#FFFFFF;
 	border: 1px solid #28609B;
 	padding: 15px 1%;
-	height: 255px;
+	height: 300px;
 }
 
-.bar {
+.wbstats_bar {
 	margin-right:1px;
 	margin-left:1px;
 	z-index:1;
@@ -118,34 +118,34 @@
 	overflow:hidden;
 	cursor: pointer;
 }
-.vbar {
+.wbstats_vbar {
 	height:15px;
 	background-color:#6699cc;
 	cursor: pointer;
 }
-.bar:hover, .vbar:hover {
+.wbstats_bar:hover, .wbstats_vbar:hover {
 	margin-right:1px;
 	z-index:1;
 	background-color:#6699cc;
 
 }
-.expand,.expandunder {
+.wbstats_expand,.wbstats_expandunder {
 	cursor: pointer;
 }
-.timeline {
+.wbstats_timeline {
 	border-left:1px #DDDDDD solid;
 	font-size:0.8em !important;
 	color:#333333;
 }
-.underline {
+.wbstats_underline {
 	border-bottom:1px dotted #999;
 }
-.popup th {
+.wbstats_popup th {
 font-size: 12px;
 	font-weight: bold;
 	color: #fff;
 	border-bottom: 1px solid #fff;
 }
-.popup td {
+.wbstats_popup td {
 	color: #fff;
 }

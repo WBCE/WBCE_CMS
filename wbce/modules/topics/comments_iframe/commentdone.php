@@ -101,8 +101,8 @@ if (($section_id * $cid) > 0) {
 			$output = '<h4>'.$MOD_TOPICS['COMMENT_SAVED'].'</h4><hr/>';
 			
 			
-			$vars = array('[NAME]','[EMAIL]','[WEBSITE]','[COMMENT]','[DATE]','[TIME]','[USER_ID]','[USERNAME]','[DISPLAY_NAME]', '{NAME}');
-			$values = array($name, $comment['email'], $comment['website'], $thecomment, '', '', '0', '', '',  $nameLink);
+			$vars = array('[NAME]','[EMAIL]','[WEBSITE]','[COMMENT]','[COMMENTS]','[DATE]','[TIME]','[USER_ID]','[USERNAME]','[DISPLAY_NAME]', '{NAME}');
+			$values = array($name, $comment['email'], $comment['website'], $thecomment,($TEXT['COMMENTS']), '', '', '0', '', '',  $nameLink);
 			
 			$outputjs = str_replace($vars, $values, $setting_comments_loop);
 			$outputjs = preg_replace('/\s+/', ' ', $outputjs); //einzeilig für Javascript	

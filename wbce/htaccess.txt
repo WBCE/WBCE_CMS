@@ -1,12 +1,91 @@
+#ErrorDocument 404 /404.php
+
+<IfModule mod_rewrite.c>
+<IfModule mod_env.c>
+SetEnv HTTP_MOD_REWRITE On
+</IfModule>
 RewriteEngine On
-# If called directly - redirect to short url version
-RewriteCond %{REQUEST_URI} !/pages/intro.php
-RewriteCond %{REQUEST_URI} /pages
-RewriteRule ^pages/(.*).php$ /$1/ [R=301,L]
 
-# Send the request to the short.php for processing
-RewriteCond %{REQUEST_URI} !^/(pages|admin|framework|include|languages|media|account|search|temp|templates/.*)$
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([\/\sa-zA-Z0-9._-]+)$ /short.php?_wb=$1 [QSA,L]
+## make google_sitemap.php visible as sitemap.xml
+RewriteRule ^sitemap.xml$ /google_sitemap.php [L]
 
+## uncomment (remove #) the next three lines to rewrite host to include www
+#RewriteCond %{HTTP_HOST} !^www\.               [NC]
+#RewriteCond %{HTTP_HOST} ^([^.]+\.[a-z]{2,6})$ [NC]
+#RewriteRule ^(.*)$       http://www.%1/$1      [R=301,L]
+
+## If old url's are called directly - redirect to short url version
+#RewriteCond %{REQUEST_URI} !/pages/intro.php
+#RewriteCond %{REQUEST_URI} /pages
+#RewriteRule ^pages/(.*).php$ /$1/ [R=301,L]
+
+## Send the request to the short.php for processing
+#RewriteCond %{REQUEST_URI} !^/(pages|admin|cfg|framework|include|languages|media|account|search|temp|templates/.*)$
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^([\/\sa-zA-Z0-9._-]+)$ short.php?_wb=$1 [QSA,L]
+
+#Force www:
+#RewriteCond %{HTTP_HOST} ^example.com [NC]
+#RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301,NC]
+
+#Force non-www:
+#RewriteCond %{HTTP_HOST} ^www\.example\.com [NC]
+#RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+
+#Redirect /index.php
+#RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.php\ HTTP/
+#RewriteRule ^index\.php$ http://www.example.com [R=301,L]  
+
+# Don't fix direct file links
+#RewriteBase /
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_URI} !(.*)/$
+#RewriteRule ^(.*)$ $1/ [L,R=301]
+# Finally, forward everything to your front-controller (index.php)
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule .* index.php [QSA,L]
+</IfModule>
+
+# Apache config
+#<IfModule mod_headers.c>    
+#Header add Access-Control-Allow-Origin "*"
+#Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
+#Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
+#</IfModule>
+#
+# nginx config
+#if ($filename ~* ^.*?\.(eot)|(ttf)|(woff)$){
+#	add_header Access-Control-Allow-Origin *;
+#}
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/gif "access plus 1 month"
+ExpiresByType image/jpeg "access plus 1 month"
+ExpiresByType image/png "access plus 1 month"
+ExpiresByType text/css "access plus 1 week"
+ExpiresByType text/javascript "access plus 1 week"
+ExpiresByType application/javascript "access plus 1 week"
+ExpiresByType application/x-javascript "access plus 1 week"
+ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+FileETag INode MTime Size
+#<IfModule mod_deflate.c>
+#<IfModule mod_filter.c>
+#AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/x-javascript
+#</IfModule>
+#</IfModule> 
+
+#<ifModule mod_gzip.c>
+#mod_gzip_on Yes
+#mod_gzip_dechunk Yes
+#mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
+#mod_gzip_item_include handler ^cgi-script$
+#mod_gzip_item_include mime ^text/.*
+#mod_gzip_item_include mime ^application/x-javascript.*
+#mod_gzip_item_exclude mime ^image/.*
+#mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+#</ifModule>
