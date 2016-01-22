@@ -136,7 +136,7 @@ $resetlink=   "javascript: confirm_link('".$are."', '".WB_URL.'/modules/wbstats/
 	<td colspan="7" class="wbstats_timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 25, $show_year)); ?></td>
 	</tr></table>
   </div>
-<?php  if ($viewmode == false) { ?>
+<?php  if ($viewmode == false and $admin->ami_group_member("1") ) { ?>
   <br />
   <div class="wbstats_sysmenu">
     <input type="button"  value="<?php echo $TEXT['RESET']; ?>"onclick="<?php echo $resetlink; ?>"/>
