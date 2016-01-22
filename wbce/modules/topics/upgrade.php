@@ -98,7 +98,7 @@ if (!function_exists('wb_unpack_and_import')) {
     global $admin, $database;
 
     // Include the PclZip class file
-    require_once (WB_PATH . '/include/pclzip/pclzip.lib.php');
+    // require_once (WB_PATH . '/include/pclzip/pclzip.lib.php');
 
     $errors = array();
     $count = 0;

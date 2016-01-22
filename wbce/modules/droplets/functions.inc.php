@@ -175,7 +175,7 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
     $details[]  = '<br />' . $DR_TEXT['CREATE_ARCHIVE'] . ': '. $filename;
     $temp_file = WB_PATH.'/modules/droplets/export/'.$filename.'.zip';
 
-    require_once( WB_PATH . '/include/pclzip/pclzip.lib.php' );
+    //require_once( WB_PATH . '/include/pclzip/pclzip.lib.php' );
     $archive   = new PclZip( $temp_file );
     $file_list = $archive->create( $temp_dir, PCLZIP_OPT_REMOVE_ALL_PATH );
     if ( $file_list == 0 )
