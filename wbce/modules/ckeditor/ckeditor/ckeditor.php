@@ -344,7 +344,7 @@ class CKEditor
         $out  = "<script type=\"text/javascript\">";
         $out .= "//<![CDATA[\n";
         $out .= 'if( document.querySelectorAll(".cke") ) {'
-              . 'LoadOnFly("head", WB_URL+"/modules/'.$modPathName.'/backend.css");'
+              . 'LoadOnFly("head", WB_URL+"/modules/'.$modPathName.'/backend.css");' // We dont have function LoadOnFly / Krzysztof Winnicki 
               . '    }';
         $out .= "\n//]]>";
         $out .= "</script>\n";
@@ -359,7 +359,7 @@ class CKEditor
      */
     private function script($js)
     {
-        $this->loadBackendCss();
+        //$this->loadBackendCss(); // ! loading tree times - css need load one time in init / Krzysztof Winnicki
         $out = "<script type=\"text/javascript\">";
         $out .= "//<![CDATA[\n";
         $out .= $js;
@@ -472,6 +472,21 @@ class CKEditor
         if (strpos($ckeditorPath, '..') !== 0) {
             $out .= $this->script("window.CKEDITOR_BASEPATH='". $ckeditorPath ."';");
         }
+
+        // load one time css / Krzysztof Winnicki
+        $modPathName = basename(dirname(__DIR__));
+        //$out  .= '<link href="'.WB_URL.'/modules/'.$modPathName.'/backend.css" rel="stylesheet" type="text/css" /> ';
+        $out  = "<script type=\"text/javascript\">";
+        $out  .= ' var styles = document.createElement("link");';
+        $out  .= ' styles.rel = "stylesheet";';
+        $out  .= ' styles.type = "text/css";';
+        $out  .= ' styles.href = "'.WB_URL.'/modules/'.$modPathName.'/backend.css'.'";';        
+        $out .= "//<![CDATA[\n";  
+        $out .= ' if ( document.querySelectorAll(".cke") ) { ';          
+        $out .= 'document.getElementsByTagName("head")[0].appendChild(styles);'. '    } ';
+        $out .= "\n//]]>";
+        $out .= "</script>";
+
 
         $out .= "<script type=\"text/javascript\" src=\"" . $ckeditorPath . 'ckeditor.js' . $args . "\"></script>\n";
 
