@@ -137,7 +137,7 @@ class admin extends wb
             'REVISION' => REVISION, // Legacy: WB-classic
             'SERVER_ADDR' => ($this->get_group_id() == 1
                 ? (!isset($_SERVER['SERVER_ADDR'])
-                    ? '129.0.0.1'
+                    ? '127.0.0.1'
                     : $_SERVER['SERVER_ADDR'])
                 : ''),
             'WB_URL' => WB_URL,
