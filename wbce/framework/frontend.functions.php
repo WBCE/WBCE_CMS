@@ -509,6 +509,8 @@ function bind_jquery($file_id = 'jquery')
         $jquery_links .= '<script src="' . WB_URL . '/include/jquery/jquery-min.js" type="text/javascript"></script>' . "\n";
         $jquery_links .= '<script src="' . WB_URL . '/include/jquery/jquery-insert.js" type="text/javascript"></script>' . "\n";
         $jquery_links .= '<script src="' . WB_URL . '/include/jquery/jquery-include.js" type="text/javascript"></script>' . "\n";
+        $jquery_links .= '<script src="' . WB_URL . '/include/jquery/jquery-migrate-min.js" type="text/javascript"></script>' . "\n";
+
         /* workout to insert ui.css and theme */
         $jquery_theme = WB_PATH . '/modules/jquery/jquery_theme.js';
         $jquery_links .= file_exists($jquery_theme)
