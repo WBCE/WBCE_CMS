@@ -6,185 +6,121 @@
 <html lang='{LANGUAGE}'>
 <!--<![endif]-->
 
-
-
-
 <head>
+    <title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title>
 
+    <meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
+    <meta name="description" content="{TEXT_ADMINISTRATION}" />
+    <meta name="keywords" content="{TEXT_ADMINISTRATION}" />
+    <meta name="author" content="WBCE" />
+    <meta http-equiv="Content-Encoding" content="gzip" />
+    <meta http-equiv="Accept-Encoding" content="gzip, deflate" />
 
+    <link href="{THEME_URL}/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
 
-
-<title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title>
-
-<meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
-<meta name="description" content="{TEXT_ADMINISTRATION}" />
-<meta name="keywords" content="{TEXT_ADMINISTRATION}" />
-<meta name="author" content="WBCE" />
-<meta http-equiv="Content-Encoding" content="gzip" />
-<meta http-equiv="Accept-Encoding" content="gzip, deflate" />
-
-
-
-
-
-
-<link href="{THEME_URL}/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
-
-
-<!-- include styles -->
-<link href="{THEME_URL}/former-css.css" rel="stylesheet" type="text/css" />
-<link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
-<link href="{THEME_URL}/extern-modules-correction.css" rel="stylesheet" type="text/css" />
-<link href="{THEME_URL}/theme-config.css" rel="stylesheet" type="text/css" />
+    <!-- include styles -->
+    <link href="{THEME_URL}/former-css.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME_URL}/extern-modules-correction.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME_URL}/theme-config.css" rel="stylesheet" type="text/css" />
 
 {BACKEND_MODULE_CSS}
 
+    <!-- jS/JQ -->
 
+    <script type="text/javascript">
+    var WB_URL = '{WB_URL}';
+    var THEME_URL = '{THEME_URL}';
+    var ADMIN_URL = '{ADMIN_URL}';
+    </script>
 
+    <!-- jQuery-Scripte from original theme -->
+    <script src="{WB_URL}/include/jquery/jquery-min.js" type="text/javascript"></script>
+    <script src="{WB_URL}/include/jquery/jquery-insert.js" type="text/javascript"></script>
+    <script src="{WB_URL}/include/jquery/jquery-include.js" type="text/javascript"></script>
+    <script src="{WB_URL}/include/jquery/jquery-migrate.js" type="text/javascript"></script>
 
-<!-- jS/JQ -->
+    <!-- additional load jquery-ui -->
+    <script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"></script>
+    <script>window.jQuery.ui || document.write('<script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"><\/script>')</script>
 
-<script type="text/javascript">
-var WB_URL = '{WB_URL}';
-var THEME_URL = '{THEME_URL}';
-var ADMIN_URL = '{ADMIN_URL}';
-</script>
-
-
-<!-- jQuery-Scripte from original theme -->
-<script src="{WB_URL}/include/jquery/jquery-min.js" type="text/javascript"></script>
-<script src="{WB_URL}/include/jquery/jquery-insert.js" type="text/javascript"></script>
-<script src="{WB_URL}/include/jquery/jquery-include.js" type="text/javascript"></script>
-
-
-<!-- additional load jquery-ui -->
-<script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"></script>
-<script>window.jQuery.ui || document.write('<script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"><\/script>')</script>
-
-
-
-<!--[if lt IE 7]><script type="text/javascript" src="{WB_URL}/include/jquery/jquery-pngFix.js"></script><![endif]-->
-<script src="{WB_URL}/include/jquery/jquery-plugins.js" type="text/javascript"></script>
-<script type="text/javascript">
-function confirm_link(message, url) {
-	if(confirm(message)) location.href = url;
-}
-</script>
-
-
-
-
-
+    <!--[if lt IE 7]><script type="text/javascript" src="{WB_URL}/include/jquery/jquery-pngFix.js"></script><![endif]-->
+    <script src="{WB_URL}/include/jquery/jquery-plugins.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    function confirm_link(message, url) {
+        if(confirm(message)) location.href = url;
+    }
+    </script>
 
 {BACKEND_MODULE_JS}
 
+    <!-- ######################## AREA for additional JQ/JS ########################################### -->
+    <!-- NOTE: load action here and not at page end: unfortunately some modules don't call the jquerys at the end of page -->
 
+    <!-- load additional modules -->
+    <script src="{THEME_URL}/jquery_added/plugins/jqueryStickyElements/jquery.StickyElements.2.1.0.js" type="text/javascript"></script>
+    <script src="{THEME_URL}/jquery_added/plugins/jqueryNiceFileInputWbVersion/jquery.nicefileinput.min.js" type="text/javascript"></script>
 
-<!-- ######################## AREA for additional JQ/JS ########################################### -->
-<!-- NOTE: load action here and not at page end: unfortunately some modules don't call the jquerys at the end of page -->
-
-
-<!-- load additional modules -->
-<script src="{THEME_URL}/jquery_added/plugins/jqueryStickyElements/jquery.StickyElements.2.1.0.js" type="text/javascript"></script>
-<script src="{THEME_URL}/jquery_added/plugins/jqueryNiceFileInputWbVersion/jquery.nicefileinput.min.js" type="text/javascript"></script>
-
-<!-- additional calls and scripts -->
-<script src="{THEME_URL}/jquery_added/jqTemplateActions.js" type="text/javascript"></script>
-
-
-
+    <!-- additional calls and scripts -->
+    <script src="{THEME_URL}/jquery_added/jqTemplateActions.js" type="text/javascript"></script>
 
 </head>
-
 <body>
+    <div class='container'>
+        <div id="headerarea" class="clearfix">
+            <div id="branding">
+                <div id="branding-text">WebsiteBaker CE</div>
+                <div id="branding-logo"></div>
+            </div>           
+            <a id="frontendtitel" href="{ADMIN_URL}" title="{TITLE_START}">
+                {WEBSITE_TITLE} - {TEXT_ADMINISTRATION}
+                <!-- <img src="{THEME_URL}/images/logo.png" border="0" alt="Logo" /> -->
+            </a> 
+        </div><!-- ENDE headerarea -->
+        
+        <!-- ########## pagetopmenu ############################################### -->
+        <div id="pagetopmenu" class="clearfix stickySidebarElement">
+            <ul id="pagetopmenu_menu">
+                <li><a id="link_home" href="{ADMIN_URL}/start/index.php" title="{TITLE_START}"></a></li>
+                <li><a id="link_back" href="javascript:history.back()" target="_self" title="{TITLE_BACK}"></a></li>
+                <li><a id="link_frontend" href="{URL_VIEW}" target="_blank" title="{TITLE_VIEW}"></a></li>
+                <li><a id="link_logout" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}"></a></li>
+            </ul>
+        </div><!-- ##### ENDE pagetopmenu ####################### -->
+        
+        <div id="sidebararea" class="clearfix stickySidebarElement">    
+            <div id="userbox" class="stickySidebarElement">
+                <span id="user-introtext">{WELCOME_MESSAGE} {CURRENT_USER} </span>
+                <br/>
+                <span id="user-name">{DISPLAY_NAME}</span>
+                <br/>
+                <a id="user-button" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a>
+            </div>
+            
+            <div id="mainmenu" class="clearfix stickySidebarElement">
+                <ul class="clearfix stickySidebarElement">
+                <!-- BEGIN linkBlock -->
+                <li class="{CLASS}"><a href="{LINK}" target="{TARGET}" title="{TITLE}"><span>{TITLE}</span></a></li>
+                <!-- END linkBlock -->
+                </ul>
+            </div>
+            
+            <div id="systeminfo" class="stickySidebarElement">
+                <span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
+                <span class="version">Tag: {WBCE_TAG}</span><br/>
+                <span id="admincheck" class="version"><a href="#">Admin</a><span class="theme-version-number"></span></span>
+            </div>
+            
+            <div id="sidebararea_togglebutton"></div>
+        </div>
+            
+        <div id="mainarea" class="clearfix stickySidebarElement">
+            <div id="contentarea" class="clearfix">
+                <!-- ################### Up from here: Original Code from original template ########### -->
 
-
-
-
-
-<div class='container'>
-
-	<div id="headerarea" class="clearfix">
-	
-		<div id="branding">
-			<div id="branding-text">WebsiteBaker CE</div>
-			<div id="branding-logo"></div>
-		</div>
-		
-		<a id="frontendtitel" href="{ADMIN_URL}" title="{TITLE_START}">
-			{WEBSITE_TITLE} - {TEXT_ADMINISTRATION}
-			<!-- <img src="{THEME_URL}/images/logo.png" border="0" alt="Logo" /> -->
-		</a> 
-
-	</div><!-- ENDE headerarea -->
-	
-
-	
-	
-	<!-- ########## pagetopmenu ############################################### -->
-	<div id="pagetopmenu" class="clearfix stickySidebarElement">
-
-		<ul id="pagetopmenu_menu">
-			<li><a id="link_home" href="{ADMIN_URL}/start/index.php" title="{TITLE_START}"></a></li>
-			<li><a id="link_back" href="javascript:history.back()" target="_self" title="{TITLE_BACK}"></a></li>
-			<li><a id="link_frontend" href="{URL_VIEW}" target="_blank" title="{TITLE_VIEW}"></a></li>
-			<li><a id="link_logout" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}"></a></li>
-		</ul>
-		
-	
-	</div><!-- ##### ENDE pagetopmenu ####################### -->
-	
-	
-	
-
-	
-	<div id="sidebararea" class="clearfix stickySidebarElement">
-	
-		
-		<div id="userbox" class="stickySidebarElement">
-		
-			<span id="user-introtext">{WELCOME_MESSAGE} {CURRENT_USER} </span>
-			<br/>
-			<span id="user-name">{DISPLAY_NAME}</span>
-			<br/>
-			<a id="user-button" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a>
-		</div>
-		
-		<div id="mainmenu" class="clearfix stickySidebarElement">
-			<ul class="clearfix stickySidebarElement">
-			<!-- BEGIN linkBlock -->
-			<li class="{CLASS}"><a href="{LINK}" target="{TARGET}" title="{TITLE}"><span>{TITLE}</span></a></li>
-			<!-- END linkBlock -->
-			</ul>
-		</div>
-		
-		<div id="systeminfo" class="stickySidebarElement">
-			<span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
-			<span class="version">Tag: {WBCE_TAG}</span><br/>
-			<span id="admincheck" class="version"><a href="#">Admin</a><span class="theme-version-number"></span></span>
-		</div>
-		
-		<div id="sidebararea_togglebutton"></div>
-
-	</div>
-
-		
-	<div id="mainarea" class="clearfix stickySidebarElement">
-		
-		
-
-
-
-		
-		<div id="contentarea" class="clearfix">
-			<!-- ################### Up from here: Original Code from original template ########### -->
-
-				<!-- senseless positioning-table: needed for old modules which base on class td.content -->
-				<table id="former_positioning_table">
-					<tr>
-						<td class="content">
-			
-
-
-						
+                    <!-- senseless positioning-table: needed for old modules which base on class td.content -->
+                    <table id="former_positioning_table">
+                        <tr>
+                            <td class="content">
+                
 <!-- END header_block -->
