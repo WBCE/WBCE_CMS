@@ -5,6 +5,893 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2016-01-23:** NorHei [[c9521da](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c9521da92d9cfeae7dd3e0af05adb94d4968429b)]
+   > ckeditor 4.5.5 loading css three times
+     https://github.com/qssocial/WebsiteBaker_CommunityEdition/commit/ddb56403b57877653b245ede47d4c5f3096d3278
+     Thanks to Krzysztof Winnicki (qsocial)
+
+ * **2016-01-23:** NorHei [[68cd9c0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/68cd9c054263591db3fe0468a6ed5b649b774ec6)]
+   > I am pretty sure this schould be 127.0.0.1 not 129.0.0.1
+     Thanks to Krzysztof Winnicki (qsocial)
+
+ * **2016-01-23:** NorHei [[3ee3b8f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3ee3b8fd55c378ff7e6025fc95f8a34a602ab1d2)]
+   > Reset button on Wbstats is only available for group admin
+     Like Ruud stated its not a good idea of having a client delete
+     2 years of statistic data whith an(ok, maybe 2) accidental click(s).
+     
+     Thanks to Krzysztof Winnicki (qsocial)
+
+ * **2016-01-22:** NorHei [[adef5b0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/adef5b0982f43670f2af7bddaae524d0a09ef9e3)]
+   > Removed some unneeded requires for pclzip.
+
+ * **2016-01-20:** NorHei [[7f7a228](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7f7a228a7ad924f3006e079ff0c04d96e941b1b6)]
+   > Revert "wblink - correction short url"
+     Its not wanted to change all single places in WBCE where Urls are
+     generated as the shorturl filter takes care of this.
+     
+     As its still possible to have manual entered URLs for example,
+     the filter is needed anyway.
+     
+     This reverts commit 6e97205e594468b33eaa6b6effefbfecba22fb9c.
+
+ * **2016-01-20:** NorHei [[7495feb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7495feb24600c59899b77d62201601bd0d7aa909)]
+   > Merge pull request #102 from qssocial/master
+     Commiting pull from qsocial testing enviroment .
+     
+     NEw version of CKE now supports mobile devices , dont use any newer version as it got bugs. 
+     Updated Jquery 
+     Lots of updates for WBstats and Topics.
+     New reset button for WBStats .
+     Topics got new Jcrop.
+ * **2016-01-19:** qssocial [[6e97205](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6e97205e594468b33eaa6b6effefbfecba22fb9c)]
+   > wblink - correction short url
+
+ * **2016-01-19:** qssocial [[e309fcb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e309fcb8c4c5df9d1d99d87c659d6ec144da6218)]
+   > Last change
+
+ * **2016-01-19:** NorHei [[7b34240](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7b342406fb097e6559b8926a303aec14e88423cc)]
+   > Missing var $error_code , missing break in switch.
+
+ * **2016-01-18:** NorHei [[34a4202](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/34a4202455ef986ecfade42c28bb3eadc4bd6617)]
+   > Again #68
+     Changed it to look like the statement around line 429
+
+ * **2016-01-18:** NorHei [[0b9540f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0b9540f82dba814f771b953fe9b28b22e6c2ec56)]
+   > ELSEIF have same conditions #68
+     admin\pages\settings\settings.php
+     Ln:331 = If and ELSEIF have same conditions
+     Ln:334 = If and ELSEIF have same conditions
+     
+     It seems that the code has been changed to use page_code instead of page
+     
+     Simply commented out the second unused  option.
+
+ * **2016-01-18:** NorHei [[e33d183](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e33d18387a7000b66c0767e6b558dbbd7100da5a)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-01-18:** NorHei [[957d7b8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/957d7b815c38d41a0a36bafc2b3b617e5f6522db)]
+   > Removed function get_module_language_file readded
+     Damm this thing really was needed by some modules.
+     Here it is again.
+
+ * **2016-01-18:** instantflorian [[057bb81](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/057bb816eb7ed1497c600f3ce9f9cecefc306237)]
+   > Fixes for Topics
+     prevent linking to deleted items and remove non-revertable default
+     headlines for prev/next
+
+ * **2016-01-18:** NorHei [[d6084fc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d6084fcc02c8952cc81294e7bdac858c1db1ac85)]
+   > Last one was a buggyy bugfix
+
+ * **2016-01-17:** qssocial [[4d13d82](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4d13d82f5ce2365ffd24996aeb07d79a66dddfc1)]
+   > Class database throws error on field_exits(),  Topics require function.php
+
+ * **2016-01-17:** NorHei [[b38b465](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b38b465f2728c3e67f2abd5776c1d3f6ab140ec0)]
+   > Class database throws error on field_exits()
+     Fatal error: Call to a member function numRows() on a non-object in S:\WBCE(php7Sql-strict)\html\framework\class.database.php on line 196
+     
+     Schould be fixed now.
+
+ * **2016-01-17:** qssocial [[9d5260e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9d5260e726305ad00bb1893d0c3cf44efef17627)]
+   > Update CKEditor 4.5.5
+
+ * **2016-01-17:** NorHei [[fc7d5d2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fc7d5d26625b73f51fa6152f0c2f47a5796a5dd0)]
+   > Topics require function.php
+     http://forum.wbce.org/viewtopic.php?pid=2969#p2969
+     forgot to change a functions.php call
+
+ * **2016-01-17:** qssocial [[89b605b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/89b605b06ae11afd1014918eadececf0a4357156)]
+   > Update google_sitemap, short.php, htaccess.txt
+
+ * **2016-01-15:** qssocial [[a34c953](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a34c953b296283e09efdc06c79c8039fc58172dc)]
+   > change wbstats view.pho button reset
+
+ * **2016-01-14:** qssocial [[02cd1bb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/02cd1bb33661d2f4e2c74e3613f5b8f2ebcbe1df)]
+   > save_seealso.php - Fatal error: Cannot redeclare file_list() (previously declared and more
+     save_seealso.php
+     delete line 18 //require(WB_PATH.'/framework/functions.php');
+     Fatal error: Cannot redeclare file_list() (previously declared in
+     D:\Programming\www\wamp22ap1\www\wbcegit\framework\functions.php:181) in
+     D:\Programming\www\wamp22ap1\www\wbcegit\framework\functions.php on line
+     204
+
+ * **2016-01-14:** qssocial [[ea6e3df](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ea6e3df9844eee57883731ee273adfe06a2afb78)]
+   > Correction javascript.
+     Correction javascript. Change live to on for compatible with jquery
+     2.1.4
+
+ * **2016-01-14:** qssocial [[1e63bce](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1e63bced151d4d50d1557e3905575c78f123fe95)]
+   > Small change for testing
+     + jquery 2.1.4
+     + ckeditor 4.55
+     change css classes in module wbstats
+     + reset button in module wbstats
+     small change in module topics
+     small change in template advancedThemeWbFlat for jquery ui
+
+ * **2016-01-13:** NorHei [[f40973a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f40973abdaa63aa2254fadf1fbcb94a29eb04c3a)]
+   > Admintools permissions
+     qsocial was so kind to send me a nice patch that allows to set
+     permissions on admin tools. Now only those admin tools that you got
+     the permission to use appear in admin tool list.
+     If you try to acces tool you are not allowed via direct url , you are
+     redirected to admin tool index.
+
+ * **2016-01-13:** Bianka Martinovic [[5ed1e39](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5ed1e39113a268767eca855e2e51fa01e6d418a1)]
+   > Fixed URL in line 91 (see #92)
+
+ * **2016-01-11:** NorHei [[42c5732](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/42c573275c7ddb41364adb7786bb4db2e2fd5b97)]
+   > MYSQL Strict patch got removed somehow , now hes back in.
+
+ * **2016-01-09:** NorHei [[52807be](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/52807be1fe4623d46f609a479ead2b4c0cc82656)]
+   > Added upload Class by Colin Verot (verot.net)
+     This is a very nice Upload class whith some pratical image
+     handling functions.
+     
+     More details at :
+     http://www.verot.net/php_class_upload.htm
+     
+     Have fun
+     Norbert
+
+ * **2016-01-08:** NorHei [[87d84dd](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/87d84dde54561773760caaad07db60c99eff9c93)]
+   > Installer notice that breaks the installer redirect
+     Notice: Undefined variable: imports in \modules\topics\install.php on line 305
+
+ * **2016-01-08:** Bianka Martinovic [[1975a7f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1975a7f3add8684a538558ed398cd4dc411890a8)]
+   > fixed dirmode (#92)
+
+ * **2016-01-08:** Bianka Martinovic [[f5af77a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f5af77a4a470de64f2cdb9da087bae4c43598fde)]
+   > fixed typo in class.admin.php and menu_link/view.php (#95); converted line endings in droplet RandomImage.php from MAC to DOS; some fixes in functions.inc.php (#92)
+
+ * **2016-01-08:** Bianka Martinovic [[10220fa](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/10220fa29bcbd6be8bac57ea1e1e0ccc79be4455)]
+   > added missing templates folder
+
+ * **2016-01-08:** NorHei [[d7625a4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d7625a45fe2ce36694acb3ff80b145e7b8a2325d)]
+   > Bugfix on menu link
+
+ * **2016-01-07:** Bianka Martinovic [[f0bb2a0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f0bb2a072beaef5839a4927d8ff048fbdb11bff4)]
+   > fix for issue #91
+
+ * **2016-01-07:** Bianka Martinovic [[744dbd8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/744dbd8d611ed8deb3958d982c024f95a95003d5)]
+   > fix for issue  #94
+
+ * **2016-01-07:** Bianka Martinovic [[6b693b3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6b693b3bdeb20fc22a63a6de0938abeddc001732)]
+   > changed some more copyright headers
+
+ * **2016-01-07:** Bianka Martinovic [[b47aef4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b47aef469a50302749ef0e1a0a2b417763e49251)]
+   > some more fixes
+
+ * **2016-01-07:** Bianka Martinovic [[8f44b5d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8f44b5dbfddb523b8bad067bd6db53bf94695fdc)]
+   > left some debug output (oops)
+
+ * **2016-01-07:** Bianka Martinovic [[1d8340d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1d8340dda0865541227875ff308337b8b55bdec2)]
+   > some fixes, removed another file
+
+ * **2016-01-07:** Bianka Martinovic [[164beaf](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/164beaf08a1c4928253fb891985a8a242eb005f7)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_Clone
+
+ * **2016-01-07:** Bianka Martinovic [[a9d9709](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a9d970907ac4f1783283bfc877f5cedb37e9b6a8)]
+   > complete review / recoding in progress
+
+ * **2016-01-07:** NorHei [[c2a9215](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c2a9215daf008647258bf392c224196505dd9b6e)]
+   > include.php for templates
+     Your templates needs some special funtionality to be called before
+      the actual templatefile loading  takes place.
+     No problem as each template now may have a include.php that
+     is executed directly before calling the template.
+
+ * **2016-01-06:** NorHei [[5ab4b48](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5ab4b4800293310698e9446447056f834995ce0a)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-01-06:** NorHei [[8462c23](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8462c23d5b855710fd9de2055d095005b36cf13b)]
+   > Headers already sent , when droplets backups are empty.
+     Warning: Cannot modify header information - headers already sent by (output started at /var/www/web207/html/wbce_norbert_heimsath_de/modules/phplib/classes/phplib/template.inc:668) in /var/www/web207/html/wbce_norbert_heimsath_de/modules/droplets/manage_backups.php on line 61
+     
+     NEver mind i fixed it ...
+
+ * **2016-01-06:** instantflorian [[9ee8aa7](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9ee8aa794d69515e4fbd9f867c244e92cbeee5fc)]
+   > Branding issue
+
+ * **2016-01-06:** NorHei [[6557d9f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6557d9f4a0ee8cded526f15eb183138a1e2ae187)]
+   > Missing default values in Droplet function file
+     Notice: Undefined variable: description in D:\Programming\www\wamp22ap1\www\wbce12\modules\droplets\functions.inc.php on line 205
+     
+     Notice: Undefined variable: usage in D:\Programming\www\wamp22ap1\www\wbce12\modules\droplets\functions.inc.php on line 205
+     
+     Still issue #88
+     
+     Thanks to qssocial
+
+ * **2016-01-06:** NorHei [[ee13ea8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ee13ea82bcc91e368b9f8393e7b7ab0eaf39aa72)]
+   > Typo in last change of class admin
+
+ * **2016-01-06:** NorHei [[7bd62ed](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7bd62edfccb641d426b743b173110b843cebe32e)]
+   > Backup tool file not downloading
+     Warning: Cannot set max_execution_time above master value of 45
+     (tried to set 60) in
+     /var/www/web913/html/eso/wbce0106/modules/backup/includes/backup-sql.php
+     on line 26
+     
+     Fixed by supppressing warning. As trying to increase timelimit is
+     extremely usefull.
+
+ * **2016-01-06:** instantflorian [[95d5777](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/95d5777d4e8b53be5f3f4df0cc2bc51addaefe1e)]
+   > Design fixes to installer, fix for install error, update language files of backup tool
+
+ * **2016-01-05:** NorHei [[6d54341](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6d543416031c182a2a34754533383cd1d08d4b9b)]
+   > Cloning droplets #88
+     Cloning droplets #88
+     When i try to Clone Droplets i get a nice bunch of errors .
+
+ * **2016-01-05:** NorHei [[ba953c9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ba953c97530d39e1378466dfb869a7b7a0d1dc8f)]
+   > Install and short_url
+     Install and short_url #83
+     
+     Install was already fixed.
+     
+     For SHORT_URL:
+     Class.admin add
+     line 102
+     add
+     if (OPF_SHORT_URL) {$ view_url = WB_URL. $ row ['link']; }
+     
+     view.php menu_link
+     add
+     line 56
+     if (OPF_SHORT_URL) {$ target_url = WB_URL. $ target_page_link. $ anchor; }
+     
+     Both added !
+     
+     Thanks to qssocial!
+
+ * **2016-01-05:** NorHei [[54a0473](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/54a0473cc732ba16e6c7b012f7ff1e23ae06159a)]
+   > Uncaught TypeError: Cannot read property 'style' of null
+     Issue #87
+     
+     Uncaught TypeError: Cannot read property 'style' of null
+     and
+     browser.msie
+     
+     Thanks to qssocial!!!
+
+ * **2016-01-05:** NorHei [[c0de5b8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c0de5b86cc17ea109ed6da3ad4e0a46d53d7229b)]
+   > Fix for outputfilter upgrade.php
+     Notice:  Use of undefined constant OPF_MAILTO_FILTER - assumed
+     'OPF_MAILTO_FILTER' in
+     S:\WBCE(phpweb)\html\modules\output_filter\filter_routines.php on line 46
+     
+     Thanks to Evaki !
+
+ * **2016-01-05:** NorHei [[0a86cd4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0a86cd498d0ebc6ee5f3e39ddd65e22645332a55)]
+   > Admintools loading info.php  and allow for no_page via info.php.
+     Admintools now load the info.php for additional avaialble information.
+     This allows for storing additional options in info.php.
+     
+     On special option is supported now , you can suppress the full WB output in the Backend via
+     $module_nopage = true;
+     in info.php
+     
+     This was needed for Webadmin tool and maybe is needed for other tools too.
+     That way webadmin now can run under userrights restrictions of WB as a protected include.
+     For those who like to edit on a full scale texteditor there a several browser plugins
+     that allow to use you local editor for working on a textarea.
+
+ * **2016-01-05:** NorHei [[d9e382c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d9e382cee26c779f018a29e9315f0f6efb27d642)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-01-05:** NorHei [[f23b50c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f23b50c4043b7724cf4db392fc2d7aaff2202f12)]
+   > Some more fixes for output filter upgrade.php and initialize.php
+
+ * **2016-01-04:** NorHei [[4a75516](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4a755160f8414dd91b1331f6e3ca2a919ac12191)]
+   > Some fixes for output filter upgrade.php
+
+ * **2016-01-03:** instantflorian [[034fc51](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/034fc510dfdcd0dd9de9e95379203016cb25582d)]
+   > removed fixed width of filename input field
+
+ * **2016-01-03:** instantflorian [[43c5403](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/43c5403c45b53648034d87a58b854d829963180c)]
+   > Fixes to install.php and de.php
+
+ * **2016-01-03:** NorHei [[0cbee82](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0cbee82dc6f985da2eec6dbc2999c6b1a63e9184)]
+   > Allow external links and wblinks in page settings now
+     You are now allowed enter external links or wblinks in the page settings.
+     
+     If you just enter :
+     http://www.google.de
+     or
+     [wblink2]
+     in the "filename" field in page settings.
+     
+     The link is shown in show_menu functions.
+     
+     This is made because i wanted menulinks that are actually real links,
+     therefore we needed this functionality in the core first.
+     
+     But now i really think of hiding this filename field, as it can be
+     very confusing to plain users.
+
+ * **2016-01-03:** NorHei [[cb6f6a6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/cb6f6a6956c490fcfb449a5eed8145c9774a90bc)]
+   > Moved preprocess to class wb as we needed some [wblinkxxx] in the backend.
+
+ * **2016-01-02:** NorHei [[f072e44](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f072e44da7eb3230c616870510acdbdafbd83594)]
+   > Fixed handling of wblink in class wb page_link()
+
+ * **2016-01-01:** NorHei [[4e78912](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4e7891276b0240945de595382052de7cb8f3bce4)]
+   > First Review for backup module
+     - Now use a template file
+     - tool.php is now more or less apeform like.
+     - Manual include of libs and files mostly removed
+     - No more manual access check needed
+     - FTAN implemented
+     - Cleaned up folder Structure
+     - Uses "no_page" now.
+     - Added return to admin tools button.
+     - No more risk that an attacker attacks the backup-sql.php
+     
+     Using an include isn't the perfect solution(can't be reused),
+     but it certainly will do for now.
+
+ * **2016-01-01:** NorHei [[799ede7](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/799ede71de28c1a56b9a12122314dd6de88db86f)]
+   > New function for admin tools no_page.
+     I had the problem that i was working on a admin tool that was offering a
+     file for download. the problem was that calling new admin() produced some
+     headers and output cause of silly PHPlib.
+     
+     Now we have an additional post variable "no_page" to suppress all admin
+     output.  Simply add:
+     
+     <input type="hidden" name="no_page" value="no_page" />
+     
+     To the template and you are done.
+     
+     This was needed to get modules like backup to the standard apeform format
+
+ * **2016-01-01:** NorHei [[4407a4e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4407a4e1419c66e6d833be6b40995004bfa804b4)]
+   > Output filter updated upgrade install and uninstall and upgrade script
+     Should now upgrade smooth and easy
+
+ * **2016-01-01:** NorHei [[d87cd45](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d87cd451851dd3cf65a44e887813cdab7944372b)]
+   > Added German Translation vor output_filter
+
+ * **2015-12-31:** NorHei [[3b3ca47](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3b3ca479375aa4ef1777511b3fa952eb1d8a7d48)]
+   > Output filter  modul, language files
+
+ * **2015-12-30:** NorHei [[447d0bf](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/447d0bf5382b388cffa086c31174bd72b78f5416)]
+   > Full rework of old outputfilter.
+     - You now can switch ALL Filter on and of, even droplets and insert.
+     - Fixed css to head as the old version only functioned whith XHTML,
+       not html4 neither html5. And to be true it wasn't really functional
+       at all.
+     - Removed the bullshit Ftan_Supported File.(even though ftan is supported)
+     - Removed useless/halfbaken filter API File.
+     - Tool now runns whith Settings Class so no extra DB Table is needed.
+     - All filter can be turned off completely.(for interaction whith OPF Dashboard)
+     - Short URL is now a filter routine , so there no longer is a need for a
+       droplet in the template.
+     - Removed that odd mailfilter mojo which used binary filter to set options
+       but only had 3 options.
+     - Some smaller tweaks on several filter.
+     - Some general cleanup.
+     - filter_functions-php  is the main filter file again, and index.php is
+       changed to use it.
+     
+     For me its fist time the old WB filter feel usefull and functional at least
+     to some extend, and more importand you can deactivate what you don't need.
+     
+     Todo:
+     - Fetch old DB settings on upgrade, remove old Table.
+     - Add new Language Vars to Language files and code
+     - Set default settinmgs on install
+
+ * **2015-12-28:** NorHei [[ef1d3c9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ef1d3c9b4ec9ded7deb877662be7c53bc54dd5b3)]
+   > Headers already sent on istall+ some more debug
+     We had a headers already sent on install class login.
+     A missing constant produced a notice and the info.php of wbstats had spaces after a ?>
+     
+     Added Constant WB_DEBUG for global Debug setting.
+
+ * **2015-12-27:** NorHei [[454adda](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/454adda07bfd09e5dce33b42ed1ef7bf9975b908)]
+   > Notice in wbstats/preinit.php if no referer is set.
+     Notice: Undefined index: HTTP_REFERER in S:\WBCE(phpweb)\html\modules\wbstats\preinit.php on line 6
+
+ * **2015-12-27:** NorHei [[4de24bb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4de24bb18467a1dfae12b5cd7193173b7228ea04)]
+   > TypeError: $(...).poshytip is not a function
+     JS error caused by wbstats frontend.js  \#81
+
+ * **2015-12-23:** NorHei [[e516849](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e5168497d1a32d2a93cc4369b88064e3b8c52952)]
+   > Small bug caused by removal of require functions.php
+     Parse error: syntax error, unexpected 'if' (T_IF) in /var/www/web207/html/wbce_norbert_heimsath_de/admin/start/index.php on line 125
+     
+     Fixed
+
+ * **2015-12-23:** NorHei [[ec18193](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ec181934c7903c6bb58f4dac117f26503a576249)]
+   > Another run to remove unecessary  require statements
+     The last for now
+
+ * **2015-12-23:** NorHei [[6668cf9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6668cf91636938b99887df9dbdd14f3d4be14359)]
+   > Another tour to remove unecessary require calls
+     Calls for class.admin.php are handled by autoloader.
+     Calls for functions.php are obsolete as its loaded in the /framework/initialize.php
+
+ * **2015-12-23:** NorHei [[edd3f2e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/edd3f2eeb9a6c34fdf1661e15295ef7b527b7b23)]
+   > Added /framework/functions.php  to initialize
+     As it is loaded in almost any file
+     
+     require_once(WB_PATH.'/framework/functions.php');
+
+ * **2015-12-23:** NorHei [[953c6f6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/953c6f66df60eb9c328338ddf9fdf44e162e4e23)]
+   > Cleanup some index.php and some direct access on some modules
+
+ * **2015-12-23:** NorHei [[e2df6aa](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e2df6aad899b475ffac5d9aed8c77ac7a14c8882)]
+   > Removed unnecessary Require statements , quite a lot .
+
+ * **2015-12-23:** NorHei [[9cb0371](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9cb0371bf488385619680938af99033272eafcdf)]
+   > Bugfix for moving PHPlib some parts tried to load it manually
+     Autoloader takes Care now , removed the manual require, as PHPlib is moved to a module
+
+ * **2015-12-23:** NorHei [[af52d4b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/af52d4b9d7b009af0b2d4123208b57326f994d20)]
+   > Bumped Version number to 1.2.0-alpha.1
+
+ * **2015-12-23:** NorHei [[f95a234](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f95a234e53ae296ff5e4a9461b6ad9c424117f29)]
+   > Merge remote-tracking branch 'origin/master' into continue
+
+ * **2015-12-21:** NorHei [[dad31b8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dad31b8c352f48156f0671f45be44a43d70c0917)]
+   > WbStats forgot preinit in function list.
+
+ * **2015-12-21:** NorHei [[a4603a9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a4603a94c58644c32be016eee08bead008e20f5a)]
+   > Added a WBStats that uses the new Features
+     This wbstats no longer needs to be manually added to the template.
+     Referer handling is done by the module itself, no need to modyfy the config.php.
+     Wbstats now comes whith a beta state frontend module, so you can dieplay stats
+     whithout granting BE access.
+
+ * **2015-12-18:** NorHei [[2dbf460](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2dbf460407abd860a827432a04bb3cb6b63b4c9e)]
+   > Deleted the includes that where moved to a module(Twig, PHPlib)
+
+ * **2015-12-18:** NorHei [[513ae63](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/513ae632c35fb42af6f2a43be4f8b93dd73b9b99)]
+   > Moved PHPlib(Template) to a module for later removing.
+     After removing all old PHP lib templates from the core we will remove this module too.
+     But ist still available vor manual install if older Modules require it
+
+ * **2015-12-17:** NorHei [[d633417](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d6334170b2e1e08b2403ad5df3638056eafc03d8)]
+   > Moved Twig to a module
+     Whith the new module features this was extremely easy.
+     Its still initialized in the Init process, only a few lines later.
+     
+     This serves two purposes. First its a sample modue to implement other
+     template engines. Second, core is no longer tied to a template engine.
+     Even it its unlikely that Twig will be removed from the corepackage, its
+     at least possible.
+     
+     Have fun
+     Norbert
+
+ * **2015-12-17:** NorHei [[e44313d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e44313d28d892fefe8d7b9dfd9675c9954d36514)]
+   > Removed completely unused functions in module.functions.php
+
+ * **2015-12-17:** NorHei [[8f55c69](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8f55c69b2c79480f2908f4a7385a7134e8d97e97)]
+   > Added class I to the list of outputfilters
+     Now i still need to add compatibility for the old Frontend/Backend files.
+
+ * **2015-12-17:** NorHei [[509a4ff](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/509a4fffd295e350dd56164f0b2034e4c888ff56)]
+   > Added class Settings and class WBAuto(autoloader) whith doxygen documentation
+
+ * **2015-12-17:** NorHei [[910ffe4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/910ffe4363ff1a4e29b6940888392d0ad4b87ed7)]
+   > Added classes Insert and I for better handling of JS, CSS, Metas and Title
+     Those two classes allow registering of JS, CSS, Metas and Title for later
+     use in the template and provides a filter for replacement.
+     
+     "I" is a simple facade for class Insert here some examples:
+     
+     //Meta
+     I::AddMeta(array (
+         "setname"=>"charset",
+         "charset"=>"ISO-8859-1"
+     ));
+     
+     //CSS
+     I::AddCss (array(
+         'setname'=>"font-awesome",
+         'href'   =>"https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+         'media'  =>"screen"
+     ));
+     I::AddCss (array(
+         'setname'=>"local-script2",
+         'style'  =>"#htto {position:absolute}"
+     ));
+     
+     //Js
+     I::AddJs (array(
+         'setname'=>"jquery",
+         'position'=>"BodyLow",
+         'src'=>"https://code.jquery.com/jquery-2.1.4.min.js"
+     ));
+     I::AddJs (array(
+         'setname'=>"test2",
+         'position'=>"HeadLow",
+         'src'=>WB_URL."modules/colorbox/js/colorbox.min.js",
+         'script'=>"jQuery('a.gallery').colorbox();"
+     ));
+
+ * **2015-12-15:** NorHei [[5655bcb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5655bcbb0865ec8137df80368c908a6c5e7c25a6)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2015-12-15:** NorHei [[9adebc0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9adebc01ace665acc66728dd1e09679fc22a7a88)]
+   > Set version number to stable
+
+ * **2015-12-14:** NorHei [[2e7cd7e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2e7cd7edf6a4e48c09a29ecca5a4e095c4d4f02c)]
+   > Extend loading of module files (andmin/admintoos/tools.php)
+     one sql statement needed change.
+
+ * **2015-12-14:** NorHei [[46c40dd](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/46c40dd584436206ebbb74b11d77086a99182e41)]
+   > Merge remote-tracking branch 'origin/master' into continue
+
+ * **2015-12-14:** NorHei [[fbe5d25](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fbe5d25a8833892152c9894fdc7fe835319fac9a)]
+   > Extend loading of module files (Made sure that new modules install correct)
+     As module could have multiple functions now i first made sure the string is
+     kept functional on install(it was by default) and second took care of most
+     common typos, spaces behind a comma or at end and beginning of the string.
+
+ * **2015-12-14:** NorHei [[acda464](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/acda46472c58dfbdf4bab0c346ab0d960fa102f9)]
+   > Another unneeded  require for pclZip this time.
+
+ * **2015-12-14:** NorHei [[59967c6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/59967c6719c0a5290c4c60fe3ef1dd8b22f10f39)]
+   > Removed the old crumpy header suppression.
+     This is no longer needed for WB(CE) as checkFtan runns whithout that bullshit.
+
+ * **2015-12-14:** NorHei [[1b7373e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1b7373e9b518b0ea93e6933c9483dff5c8eb1c89)]
+   > No need to load class admin manually
+
+ * **2015-12-14:** NorHei [[b23d58b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b23d58b4026226e727e7137b12fc9aedc5eb3ee3)]
+   > Yess, i want to see warnings during installation if i activated that in the BE
+     And i moved helper Functions to the End.
+
+ * **2015-12-14:** NorHei [[1abe33c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1abe33c0b9cd777ac054531dede8a4acf0454b32)]
+   > Extend loading of module files (addon_monitor)
+     Addon Monitor needed some fixes too for allowing multiple module functions.
+     First function mow is used for Icon generation and i guess classification,
+     but finally the whole concept needs to be rethought , as modules now can
+     be in multiple categories.
+
+ * **2015-12-14:** NorHei [[e909a52](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e909a529f801d511594f90f0b9f1bfdd97cb1f90)]
+   > Extend loading of module files (language added module names)
+     Added names for module type "initilaize" and "preinit" to the EN.php
+
+ * **2015-12-14:** NorHei [[23269b4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/23269b4624c0e6f30d326f17222f50557e86ad2c)]
+   > Extend loading of module files (refine some corefiles)
+     some corefiles could not handle having a CSV ind the modul function (initialize,preinit,tool,snippet)
+     
+     Now they can :-)
+
+ * **2015-12-14:** NorHei [[08cf3ed](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/08cf3ed37c687393495db982fc6ec56f6c59b11b)]
+   > Extend loading of module files (initialize.php, preinit.php)
+     Greatly extendes the Loading mechanism for modules.
+     
+     /framework/initialize.php  now loads the file initialize.php and preinit.php
+     if the module info contains "initialize" or "preinit"in $module_function.
+     
+     Preinit is hooked into initialize process very early, where only the database
+     is loaded and nothing else. You even can set important System constants here or
+     redefine the Page id. This is needed so things like the multidomain patch can
+     be implemented as a module.
+     
+     Initialize is hooked near the end of the initialize process where most global
+     stuff is already set. Autoloader is available , Settings are available, Path
+     and other constants is set. This is a good place where you can register classes
+     that schould be able to run in FE and BE. Library modules can be made this way.,
+     just register your classes here for the autoloader. Classes in include.php only
+     are avaialble in frontend right now.
+     
+     Including include.php has changed too in frontend functions. It now allows for
+     loading snippets from any modul that got "snippet" in $module_function.
+     This,  together whith initialize and preinit now allows a lot of combinations
+     in modules. News can bring their own anynews, slider can bring a nice snipit
+     with admintool combination, library modules are possible, multidomain as a module,
+     ... and many more options.
+     
+     This still needs some addons to be fully functional, but those changes come up soon.
+
+ * **2015-12-14:** instantflorian [[f0e1580](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f0e15809dcac500cfd59d34041dd77decc0dc72d)]
+   > Yet another depreciated thing
+
+ * **2015-12-13:** NorHei [[07a8ae5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/07a8ae532c4e738d155c86ca2ca0903ba8990887)]
+   > Undefined index: _media_test in /.../admin/media/upload.php on line 103
+     http://forum.wbce.org/viewtopic.php?pid=2593#p2593
+     
+     Problem is in mediacenter, because the mediasettings only exist, when at least one time the mediaoptions are stored. So storing the options will end up this notice until an new folder is created.
+     One idea for solving this would be to check if mediasettings for a folder do exist:
+     upload.php line 102
+     
+     [== PHP ==]
+     if(file_exists($relative.$filename) && isset($pathsettings[$resizepath])) {
+
+ * **2015-12-12:** NorHei [[bbc84c9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/bbc84c920c3f7e29b2a90a2f36c1c3d11b2e762e)]
+   > Deprecated: Methods with the same name as their class will not be constructors
+     Deprecated: Methods with the same name as their class will not be
+     constructors in a future version of PHP; Template has a
+     deprecated constructor in /.../include/phplib/template.inc on line 70
+     
+     Deprecated: Methods with the same name as their class will not be
+     constructors in a future version of PHP; wbmailer has a
+     deprecated constructor in /.../framework/class.wbmailer.php on line 35
+
+ * **2015-12-11:** instantflorian [[0218f41](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0218f418594564b88994289066704a68a2309931)]
+   > Add missing miniform DE translations
+
+ * **2015-12-10:** instantflorian [[5e40987](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5e40987b3290a7a25c7f33d63493e505cc088977)]
+   > Topics: Fix for PHP7, remove username display
+
+ * **2015-12-09:** NorHei [[0291384](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/02913846b78239cd0a0f943c2725f441f058fd25)]
+   > Removed unused vars $include_head_file and  $include_body_file
+     Both where only defined, but not used anywhere in the core.
+     So i guess its save to remove em.
+
+ * **2015-12-08:** NorHei [[af71dda](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/af71ddad7dbb9b5d08b1e02bdbce3ea75fef6d81)]
+   > Merge remote-tracking branch 'origin/master' into continue
+
+ * **2015-12-08:** instantflorian [[29eab64](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/29eab64cb0c9b226da224202ae2b581527a29b12)]
+   > Replace index.html with index.php (and add another missing one)
+
+ * **2015-12-08:** NorHei [[e75fb30](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e75fb30fe9071667710c89388d6cf811681b416a)]
+   > Modules: added initialize.php and pre_init.php
+     Both files allow the Module author to hook into the initialize process of WB(CE)
+     pre_init.php hooks into initialize before anything else than the database
+     initialization is done Yo can change System Constants like WB_PATH or change languages
+     post parameters or maybe the domain or page_id.  That way even the multifomain patch may
+     become a maintainable(via admin tool) modul.
+     
+     initialize.php is loaded after autoloader is activated , system constants are set, and
+     session is activated. You now can login users, change Languages , still change the page_id
+     and maybe register some additional system classes as the autoloader is already active.
+     
+     This is available vor ALL Modules and as a special feature it is available in the backend.
+     So its possible to register classes for backend use here.
+     
+     Have Fun
+     Norbert
+
+ * **2015-12-08:** instantflorian [[e31a8eb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e31a8eb7b45a36314b22ce8557d077133bf80967)]
+   > Create templates directory for miniform module
+     to avoid irritating error messages during install
+
+ * **2015-12-08:** NorHei [[d98bebc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d98bebcce00d14774645050c691ecefd2576341a)]
+   > Constant FUNCTIONS_FILE_LOADED was removed
+     It was not used anywhere in the whole WB core +modules.
+     So i guess its save to remove.
+
+ * **2015-12-08:** NorHei [[4796ec3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4796ec3d2bc53bd1712590773e3792eb314e9c16)]
+   > Autoload removed unnecessary require(_once) statements.
+     Removed lot of require(_once) statements in the /framework/ dir.
+     almost all unecessary ones.
+
+ * **2015-12-08:** NorHei [[b28bd40](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b28bd40a1692fc1960f7fdab06260912d093fb41)]
+   > We now allow include.php for all module.
+     This way an admintool is allowed to bring its own frontend functions.
+     Page modules can offer additional functions pagewide.
+     
+     Examples:
+     Ruuds Slider that is maintained via an admin tool. Before this you
+     had to install the admin tool and the snipit seperately, or do some
+     ugly tricks.  Now you can use combinations like this whithout any extra trouble.
+     (admin tool whith include.php)
+     
+     News module whith integrated functions like anynews that are available on any page.
+     (page module whith additional include.php)
+     
+     Or maybe an Editor that comes whith functions for usieng it in frontend Forms.
+     (wysiwyg whith include.php))
+     
+     The same works for gallerys too.
+     
+     Simply add an include.php to your module, if your module is installed and the file is there , its loaded.
+     Although nice to register classes for the autoloader. That way you easyly create a library module.
+     
+     Hope Module authors have fun whith this.
+
+ * **2015-12-04:** NorHei [[971f38b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/971f38b367dee3f5f37fa0b3920ddc4e28409d8f)]
+   > Fix for mysql strict mode.
+     Hopefully this will fix problems whith strict mode for now.
+     Not sure if its allowed to set this on every server.
+     Later we will go to fix all SQL queries.
+     
+     Thanks to marmot in this thread:
+     http://forum.wbce.org/viewtopic.php?pid=2483#p2483
+
+ * **2015-12-01:** NorHei [[7a216b3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7a216b3b644e6ec369a61f5b5b9c9838a31a3cb2)]
+   > Increased Version number  to 1.1.3-rc.1 please read more!
+     YES i know that not entirely correct but i could not go to 1.1.2-rc.1 as this would be lower than 1.1.2
+     From now on we strictly follow our versioning guidelines .
+     
+     https://github.com/WBCE/Versioning-Scheme
+
+ * **2015-12-01:** NorHei [[7ad015f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7ad015f089475ce973e395d398738467c5012883)]
+   > Installed miniform 0.8 to avoid template deletion on upgrade.
+     Nothing else to say :-)
+
+ * **2015-12-01:** NorHei [[6a199f5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6a199f50bcaf974e9badea243991ef300bf4e8c2)]
+   > Revert "Odd semicolon"
+     This reverts commit 98bda74703228b4271b3cc00f856d479884fe216.
+     
+     This nasty construct seems to rely on the concept that if the first expression in an if() is false , all othere aren't executed
+     
+     if(($addon['directory'] == DEFAULT_TEMPLATE) ? $selected = ' selected="selected"' : $selected = '');
+     
+     So i had to undo changes as changing the backend theme stopped to function properly.
+
+ * **2015-11-27:** NorHei [[98bda74](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/98bda74703228b4271b3cc00f856d479884fe216)]
+   > Odd semicolon
+     admin\settings\index.php
+     Ln:237 = Odd semicolon
+     Ln:249 = Odd semicolon
+
+ * **2015-11-25:** NorHei [[d322a7f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d322a7f48795e9977ffec100b60cf6d1519b19c3)]
+   > This line does not end with the expected EOL:'LF'
+     html/admin/pages/add.php
+     ln:116/117
+     This line does not end with the expected EOL:'LF'
+
+ * **2015-11-25:** NorHei [[9aa8673](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9aa8673c99d435c23866ebd585a5aad1041a85c7)]
+   > $key have the same name as the parent FOREACH $key
+     framework\addon.precheck.inc.php
+     Ln:161 = FOREACH $key have the same name as the parent FOREACH $key
+     Ln:161 = FOREACH $value have the same name as the parent FOREACH $value
+     Ln:298 = FOREACH $value have the same name as the parent FOREACH $value
+     Ln:318 = FOREACH $key have the same name as the parent FOREACH $key
+     
+     Fixed this.
+
+ * **2015-11-25:** NorHei [[10729d6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/10729d68d97d0110b260f4563f074f2ef74b8091)]
+   > increase version number
+
+ * **2015-11-23:** NorHei [[0c6d01a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0c6d01a9aaf4745e0a2c3c2b052ba7d7dd82de34)]
+   > Notice: Undefined variable: menu_link in page_tree.php
+     Notice: Undefined variable: menu_link in ...\wbce\admin\pages\page_tree\page_tree.php on line 161
+     
+     Issue #65
+     
+     Hello,
+     when logged in to backend as a user I got a message in pages:
+     Notice: Undefined variable: menu_link in ...\wbce\admin\pages\page_tree\page_tree.php on line 161
+     
+     Please initiate menu_link as below
+     $menu_link = false;
+     // manage SECTIONS and DATES Icons -->
+     $canManageSections = (MANAGE_SECTIONS == 'enabled' && $admin->get_permission('pages_modify') == true && $can_modify == true)?true:false;
+     
+     Thanks to qssocial
+
+ * **2015-11-23:** NorHei [[5efd6b5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5efd6b528a2b2c46cd7aa8cc1e5e4610678e6ed9)]
+   > Wrong style align:... schould be text-align:...in module functions
+
+ * **2015-11-23:** NorHei [[b591d37](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b591d37feab10c3fe8add98ca53110cf964e3c9e)]
+   > brackets wrong again ...in search.php
+
+ * **2015-11-23:** NorHei [[0eecc5e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0eecc5e2e623e4719e4942fb68f551aef8de00b2)]
+   > missing bracket in search.php
+
+ * **2015-11-20:** instantflorian [[91615ad](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/91615adac6d9f839443334e715bd0f692eeebb3c)]
+   > WBCE reference in Argos BE theme
+
+ * **2015-11-19:** instantflorian [[4fb357b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4fb357b1e99ed7d27c8599f87f0356cb81d2ca23)]
+   > width of input fields should not be 98% per default
+
+ * **2015-11-19:** NorHei [[dd0714c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dd0714c6a000631790087d16c533cda84fbe2eb2)]
+   > Little typofix in HTTPS handling.
+     Https handling in initialize.php had a little typo .
+
+ * **2015-11-19:** NorHei [[95c5bb7](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/95c5bb724b5209368716bfc37fe67a378c5bba7a)]
+   > Updated version to 1.1.1 for beta 2
+     This is a Bugfix only release , fixed some upgrade bugs and some installer
+     bugs , a little but nasty bug in autoloader having trouble whith capital
+     letters in path and many more fixes. Just take a look here at git.
+
+ * **2015-11-19:** NorHei [[ca2f33a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ca2f33ac00f924c74ed27335586c6cb4ee4c481b)]
+   > Bug in autoloader if WB_PATH contained Capital letters.
+     The autoloader enforces  the use of non capital letters in classes loaded
+     by directory selection. The strtolower function did too much and lowered the
+     Path too ...
+
+ * **2015-11-18:** NorHei [[15a191d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/15a191d7aa761f8c331f5486936528bab0d6a781)]
+   > ['HTTPS'] is not reliable ... :-(
+
+ * **2015-11-18:** NorHei [[3d58dd9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3d58dd99baa1c578c6398940a7f7b6f004826d66)]
+   > $_REQUEST['search_path'] may not be an array
+     PEntest experimented whith different contents in get vars.
+     Thx to evaki
+
+ * **2015-11-18:** NorHei [[2f6b837](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2f6b8370be748badf0c23cc28399338e325ec914)]
+   > Prevent direct access on initialize.php
+
+ * **2015-11-18:** Bianka Martinovic [[bb79cb4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/bb79cb4a354dea41146da851662e8ae443cad85f)]
+   > fix for issue #57
+
+ * **2015-11-17:** NorHei [[b4a6b1f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b4a6b1ffa3fc9b557e3cb7be4ffddf372dd724ab)]
+   > removed useless require for Secureform class as Autoloader takes care
+
+ * **2015-11-17:** NorHei [[aaaf97a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/aaaf97a3c18cd1959b07ec98a35d89f22ddaae1f)]
+   > removed useless require for DB class as it is already loaded
+
+ * **2015-11-17:** NorHei [[448c389](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/448c38990e71e4c98f62d60e2d2f9a81f870b509)]
+   > getFTAN() returns a hidden field whith title="" alt=""
+     simply removed this
+     
+     Thx to Webbird  for reporting
+
+ * **2015-11-17:** NorHei [[9fd6f52](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9fd6f525325f7d4ba1733c3493ccf60d0763b136)]
+   > Changed position of the OPF Loader so its available in frontend.functions now.
+     opf_controller was needed in frontend.functions.php too so i moved the
+     opf Loader up to load before  frontend.functions.php  is loaded.
+     
+     Thx to Mrbaseman who found that problem.
+
+ * **2015-11-16:** instantflorian [[31e487b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/31e487b4691ddfc7686acea1f3521bbffd8e2b2b)]
+   > changes on default FE templates
+     wbce template: replace short php tag with full php tag
+     simple responsive template: add direct access prohibition according to
+     wbce template
+     advanced flat be theme: login link was not shown after sending new
+     password
+
+ * **2015-11-15:** NorHei [[57ce05d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/57ce05d2f91ecd24e59f23bc78d46ed22da0089e)]
+   > Https Cookie Secure now set if called via https
+     Added Check if called via https cookie is set to secure only.
+     Later We schould add a switch for this.
+
+ * **2015-11-15:** NorHei [[674ff66](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/674ff6609e302e9bf4b6cbb4d4b1a54a95c2d325)]
+   > Search input was not sanitized enough.
+     It was possible to submit arrays and provoke error messages.
+     Thx To Evaki!
+
+ * **2015-11-15:** NorHei [[21a3520](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/21a3520c1a04d38bc62b0b48f510db503ebe8fde)]
+   > More changes for upgrade process
+     Secureform and captchacontroll not correctly set on upgrade from old
+     WB versions.
+
+ * **2015-11-12:** instantflorian [[6756e97](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6756e97310cb27275e47b1b434dfa086e9917692)]
+   > Error in name+directory in argos theme, Wording error in Advanced theme
+
+ * **2015-11-11:** NorHei [[afa54d4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/afa54d4302a64d9e8394375d9b7e248324666021)]
+   > Loginform Autocomplete and Upgrade Script
+     Small review of upgrade script especially issue #48 and a few other
+     minor changes. Now using Settings::Set() instead of the function build
+     into the script as it allows to not overwrite existing Settings.
+     
+     Allowing loginforms to have autocomplete was regarded a security issue,
+     So please templatebuilders  pull before  editing the templates as i already
+     added this once a time ago ;-)
+
+ * **2015-11-10:** instantflorian [[d514045](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d514045aea51a8e20f2f031a2b40205b6317928e)]
+   > Bugfix, misplaced </div> + version number update
+
+ * **2015-11-09:** NorHei [[d3705ef](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d3705efb886fec3c70f458ba341bb6bdeaf4121b)]
+   > Added parameter overwrite to Settings::Set()
+     Settings::Set($key,$value,$overwrite=true)
+     
+     If overwrite is set to false this method won't overwrite existing values.
+     This was needed for upgrade script rewrite.
+
+ * **2015-11-09:** cwsoft [[3d38caa](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3d38caa93fe44017516ca849dd67060fb8fc9e83)]
+   > Updated CHANGELOG.md
+
  * **2015-11-09:** instantflorian [[91e64e0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/91e64e098f790a414cc3c6ae74cf5b78e943252a)]
    > New slogan
 
