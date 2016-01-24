@@ -492,25 +492,15 @@ if (!function_exists('page_footer')) {
     }
 }
 
-function bind_jquery($file_id = 'jquery')
+function wb_bind_jquery($file_id = 'jquery')
 {
 
     $jquery_links = '';
     /* include the Javascript jquery api  */
     if ($file_id == 'jquery' and file_exists(WB_PATH . '/include/jquery/jquery-min.js')) {
-        $wbpath = str_replace('\\', '/', WB_PATH); // fixed localhost problem with ie
-        $jquery_links .= "<script type=\"text/javascript\">\n"
-        . "var URL = '" . WB_URL . "';\n"
-        /* ."var WB_PATH = '".$wbpath."';\n" */
-        . "var WB_URL = '" . WB_URL . "';\n"
-        . "var TEMPLATE_DIR = '" . TEMPLATE_DIR . "';\n"
-        . "</script>\n";
-
         $jquery_links .= '<script src="' . WB_URL . '/include/jquery/jquery-min.js" type="text/javascript"></script>' . "\n";
         $jquery_links .= '<script src="' . WB_URL . '/include/jquery/jquery-insert.js" type="text/javascript"></script>' . "\n";
         $jquery_links .= '<script src="' . WB_URL . '/include/jquery/jquery-include.js" type="text/javascript"></script>' . "\n";
-        $jquery_links .= '<script src="' . WB_URL . '/include/jquery/jquery-migrate-min.js" type="text/javascript"></script>' . "\n";
-
         /* workout to insert ui.css and theme */
         $jquery_theme = WB_PATH . '/modules/jquery/jquery_theme.js';
         $jquery_links .= file_exists($jquery_theme)
@@ -545,7 +535,7 @@ if (!function_exists('register_frontend_modfiles_body')) {
         $body_links = "";
 
         /* include the Javascript jquery api  */
-        $body_links .= bind_jquery($file_id);
+        $body_links .= wb_bind_jquery($file_id);
 
         if ($file_id !== "css" && $file_id == "js" && $file_id !== "jquery") {
             $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/frontend_body.js" type="text/javascript"></script>';
@@ -586,20 +576,45 @@ if (!function_exists('register_frontend_modfiles_body')) {
     }
 }
 
+// Function to make the systemvars Block 
+function wb_make_js_sys_vars () {
+        $wbpath = str_replace('\\', '/', WB_PATH); // fixed localhost problem with ie
+        $sys_vars = "<script type=\"text/javascript\">\n"
+        . "var URL = '" . WB_URL . "';\n"
+        /* ."var WB_PATH = '".$wbpath."';\n" */
+        . "var WB_URL = '" . WB_URL . "';\n"
+        . "var TEMPLATE_DIR = '" . TEMPLATE_DIR . "';\n"
+        . "</script>\n";
+        return $sys_vars;
+}
+
+
 // Function to add optional module Javascript or CSS stylesheets into the <head> section of the frontend
+// First parameter defines the type of link to be rendered, the second if the Result is Printed or Returned
 if (!function_exists('register_frontend_modfiles')) {
-    function register_frontend_modfiles($file_id = "css")
-    {
-        // sanity check of parameter passed to the function
+    function register_frontend_modfiles($file_id = "css", $return=false)
+    {        
+        // sanitize value 
         $file_id = strtolower($file_id);
-        if ($file_id !== "css" && $file_id !== "javascript" && $file_id !== "js" && $file_id !== "jquery") {
+        if ($file_id == "javascript") $file_id = "js";
+        
+        // no valid value , return whith nothing
+        if ($file_id !== "css"  && $file_id !== "js" && $file_id !== "jquery") {
             return;
         }
 
+        // Variable declarations
+        static $call_count=0; // Add system values only once
         global $wb, $database, $include_head_link_css, $include_head_links;
+        
         // define default baselink and filename for optional module javascript and stylesheet files
         $head_links = "";
-
+        
+        // Echo systemvars only once
+        if (!$call_count and $file_id !="css") $head_links.= wb_make_js_sys_vars ();
+        
+        // defines different "templates" for rendering the Link (css/js)
+        // no templates needed for Jquery
         switch ($file_id) {
         case 'css':
             $base_link = '<link href="' . WB_URL . '/modules/{MODULE_DIRECTORY}/frontend.css"';
@@ -611,7 +626,8 @@ if (!function_exists('register_frontend_modfiles')) {
             }
             break;
         case 'jquery':
-            $head_links .= bind_jquery($file_id);
+            $head_links .= wb_bind_jquery($file_id);
+            $call_count++; 
             break;
         case 'js':
             $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/frontend.js" type="text/javascript"></script>';
@@ -620,8 +636,7 @@ if (!function_exists('register_frontend_modfiles')) {
                 $head_links .= !strpos($head_links, $include_head_links) ? $include_head_links : '';
                 $include_head_links = '';
             }
-            break;
-        default:
+            $call_count++;
             break;
         }
 
@@ -664,6 +679,7 @@ if (!function_exists('register_frontend_modfiles')) {
                 $head_links .= '<script src="' . WB_URL . '/modules/output_filter/js/mdcr.js" type="text/javascript"></script>' . "\n";
             }
         }
+        if ($return) return $head_links;
         print $head_links;
     }
 }

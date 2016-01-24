@@ -60,7 +60,7 @@ if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
 
 // Load functions available to templates, modules and code sections
 // also, set some aliases for backward compatibility
-require WB_PATH . '/framework/frontend.functions.php';
+require_once WB_PATH . '/framework/frontend.functions.php';
 
 //Get pagecontent in buffer for Droplets and/or Filter operations
 ob_start();
