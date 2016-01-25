@@ -11,6 +11,6 @@
 $module_description = 'Ein einfacher Schalter f&uuml;r den Wartungsmodus als Admin Tool.';
 
 // Language vars
-$MOD_MAINTAINANCE['HEADER'] =      'Wartungs Modus';
-$MOD_MAINTAINANCE['DESCRIPTION'] = 'Haken setzen um Wartungsmodus zu aktivieren, Haken entfernen um den Modus zu beenden.';
-$MOD_MAINTAINANCE['CHECKBOX'] =    'Wartungs Modus Aktivieren';
+$MOD_MAINTAINANCE['HEADER'] =      'Wartungsmodus';
+$MOD_MAINTAINANCE['DESCRIPTION'] = 'Im Wartungsmodus wird Besuchern im Frontend nur eine Baustellenseite angezeigt. <br />Hinweis: Als im Backend angemeldeter Administrator sieht man die Frontend-Inhalte auch bei aktiviertem Wartungsmodus.';
+$MOD_MAINTAINANCE['CHECKBOX'] =    'Wartungsmodus aktivieren';
