@@ -26,7 +26,10 @@ require_once dirname(__FILE__).'/functions.inc.php';
 
 // removes empty entries from the table; this may happen if someone adds a
 // droplet but does not save any changes
-$database->query(sprintf("DELETE FROM `%smod_droplets` WHERE name=''",TABLE_PREFIX));
+if (!$admin->get_get("do")) {
+    $database->query(sprintf("DELETE FROM `%smod_droplets` WHERE name=''",TABLE_PREFIX));
+}
+
 
 $twig_data = array(
     'FTAN' => (method_exists($admin,'getFTAN') ? $admin->getFTAN() : '')

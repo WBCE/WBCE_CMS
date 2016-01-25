@@ -26,7 +26,7 @@ echo "</textarea>";
 if ( $admin->get_permission('admintools') == true )
 {
     // Get id
-    if ( isset($_POST['droplet_id']) && is_numeric($_POST['droplet_id']) )
+    if ( isset($_POST['droplet_id']) && is_numeric($_POST['droplet_id']) && !empty($_POST['droplet_id']))
     {
         $droplet_id = intval($_POST['droplet_id']);
     }
