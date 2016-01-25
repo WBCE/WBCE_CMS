@@ -672,12 +672,6 @@ if (!function_exists('register_frontend_modfiles')) {
                     ;
                 }
             }
-            // include the Javascript email protection function
-            if ($file_id != 'css' && file_exists(WB_PATH . '/modules/droplets/js/mdcr.js')) {
-                $head_links .= '<script src="' . WB_URL . '/modules/droplets/js/mdcr.js" type="text/javascript"></script>' . "\n";
-            } elseif ($file_id != 'css' && file_exists(WB_PATH . '/modules/output_filter/js/mdcr.js')) {
-                $head_links .= '<script src="' . WB_URL . '/modules/output_filter/js/mdcr.js" type="text/javascript"></script>' . "\n";
-            }
         }
         if ($return) return $head_links;
         print $head_links;

@@ -19,9 +19,9 @@ function doFilterEmail($content) {
     // test if js-decryption is installed
         if( !preg_match('/<head.*<.*src=\".*\/mdcr.js.*>.*<\/head/siU', $content) ) {           
             // try to insert js-decrypt into <head> if available
-            $script = str_replace('\\', '/',str_replace(WB_PATH,'', dirname(__FILE__)).'/js/mdcr.js');
+            $script = str_replace('\\', '/',str_replace(WB_PATH,'', dirname(dirname(__FILE__))).'/js/mdcr.js');
             if(is_readable(WB_PATH.$script)) {
-                $scriptLink = '<script src="'.WB_URL.$script.'" type="text/javascript"></script>';
+                $scriptLink = "\t".'<script src="'.WB_URL.$script.'" type="text/javascript"></script>'."\n\n";
                 $regex = '/(.*)(<\s*?\/\s*?head\s*>.*)/isU';
                 $replace = '$1'.$scriptLink.'$2';
                 $content = preg_replace ($regex, $replace, $content);
