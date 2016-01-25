@@ -506,18 +506,13 @@ function wb_bind_jquery($file_id = 'jquery')
         $jquery_links .= file_exists($jquery_theme)
         ? '<script src="' . WB_URL . '/modules/jquery/jquery_theme.js" type="text/javascript"></script>' . "\n"
         : '<script src="' . WB_URL . '/include/jquery/jquery_theme.js" type="text/javascript"></script>' . "\n";
-        /* workout to insert plugins functions, set in templatedir */
-        $jquery_frontend_file = TEMPLATE_DIR . '/jquery_frontend.js';
-        $jquery_links .= file_exists(str_replace(WB_URL, WB_PATH, $jquery_frontend_file))
-        ? '<script src="' . $jquery_frontend_file . '" type="text/javascript"></script>' . "\n"
-        : '';
     }
     return $jquery_links;
 }
 
 // Function to add optional module Javascript into the <body> section of the frontend
 if (!function_exists('register_frontend_modfiles_body')) {
-    function register_frontend_modfiles_body($file_id = "js")
+    function register_frontend_modfiles_body($file_id = "js", $return=false)
     {
         // sanity check of parameter passed to the function
         $file_id = strtolower($file_id);
