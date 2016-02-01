@@ -66,3 +66,4 @@ $template->parse('main', 'main_block', false);
 $template->pparse('output', 'page');
 
 $admin->print_footer();
+
