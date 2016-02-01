@@ -19,9 +19,11 @@
 $module_directory	= 'backup';
 $module_name		= 'Backup';
 $module_function	= 'tool';
-$module_version		= '2.9.0';
+$module_version		= '2.9.1';
 $module_platform	= '2.8.x';
 $module_author		= 'Ryan Djurovich, John, Hans>Null (QuickFix), Dietrich Roland Pehlke (aldus), File Backup (mjm4842), Ruud, Norbert Heimsath(heimsath.org).';
 $module_license		= 'GNU General Public License';
 $module_description = 'This module allows you to backup your database and your files.';
-?>
+$module_icon        = 'fa fa-save';
+
+

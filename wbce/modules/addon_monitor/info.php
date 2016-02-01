@@ -15,9 +15,15 @@
 $module_directory 		= 'addon_monitor';
 $module_name 			= 'AddonMonitor';
 $module_function 		= 'tool';
-$module_version 		= '0.6.0';
+$module_version 		= '0.6.1';
 $module_status          = 'stable';
 $module_platform 		= '2.8.x'; 
 $module_author 			= 'Christian M. Stefan (Stefek)';
 $module_license 		= 'GNU/GPL v.2';
 $module_description 	= 'This AdminTool\'s entire purpose is to give you a handy way to overview all the installed add-ons on your WebsiteBaker CMS System. You will be able to see whether or not your installed modules are in use and where.';
+$module_icon            = 'fa fa-plug';
+
+
+
+
+

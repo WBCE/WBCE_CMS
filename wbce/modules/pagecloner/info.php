@@ -89,5 +89,10 @@ $module_platform 		= '2.8.x';
 $module_author 			= 'John Maats - PCWacht - Dietrich Roland Pehlke - Stephan Kuehn - vBoedefeld - WebBird';
 $module_license 		= 'GNU General Public License';
 $module_description 	= 'This addon allows you to clone a page or a complete tree with all page and sections. Copying of complete datasets from pagesections to their clones is limited to following modules: wywsiwyg, form, mpform, code, code2. Only the sections (with their default) settings are cloned for not supported modules.';
+$module_icon            = 'fa fa-clone';
+
 $module_guid 		    = '25bfa866-2ee3-4731-8f44-f49f01c8294a';
 $module_home 		    = 'http://wbce.org';
+
+
+

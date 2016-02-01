@@ -11,15 +11,16 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$module_directory = 'droplets';
-$module_name = 'Droplets';
-$module_function = 'tool';
-$module_version = '2.0.0';
-$module_platform = '2.8.x';
-$lepton_platform = '1.x';
-$module_author = 'Ruud, pcwacht, WebBird (for WBCE)';
-$module_license = 'GNU General Public License';
+$module_directory   = 'droplets';
+$module_name        = 'Droplets';
+$module_function    = 'tool';
+$module_version     = '2.0.1';
+$module_platform    = '2.8.x';
+$lepton_platform    = '1.x';
+$module_author      = 'Ruud, pcwacht, WebBird (for WBCE)';
+$module_license     = 'GNU General Public License v2';
 $module_description = 'This tool allows you to manage your local Droplets.';
+$module_icon        = 'fa fa-eyedropper';
 
 $module_home = 'http://www.wbce.org';
 $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
@@ -27,6 +28,8 @@ $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 /**
  * Version history
  *
+   v2.0.1 Added Icon, Norbert
+
  * v2.0.0 - Bianka Martinovic ("WebBird")
  *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/92
  *
