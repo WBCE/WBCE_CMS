@@ -15,14 +15,14 @@
 		
 		<div class="admintools_tool themebox dynamicGrid_2">
 		
-			<div class="tb_header">			
-				<a href="{ADMIN_URL}/admintools/tool.php?tool={TOOL_DIR}"></a>
+			<div class="tb_header" >			
+				<i class="{TOOL_ICON}"></i><a href="{ADMIN_URL}/admintools/tool.php?tool={TOOL_DIR}"></a>
 			</div>
 			
 			<div class="tb_content_outer">
-				<div class="tb_content">
+				<div class="tb_content" style="height:185px; overflow:hidden; padding-right:45px; margin-bottom:5px;">
 			
-					<a class="tb_titel" href="{ADMIN_URL}/admintools/tool.php?tool={TOOL_DIR}">{TOOL_NAME}</a>
+					<a class="tb_titel"  href="{ADMIN_URL}/admintools/tool.php?tool={TOOL_DIR}">{TOOL_NAME}</a>
 					{TOOL_DESCRIPTION}
 				
 				</div><!-- ENDE tb_content -->
