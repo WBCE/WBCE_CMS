@@ -15,12 +15,13 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 
 // compatibility mode for versions before 2.8.1
-if (isset($wb)) {$admin = $wb;}
+/*if (isset($wb)) {$admin = $wb;}
 if (isset($wb->default_link)) {$default_link = $wb->default_link;}
 if (isset($wb->page_trail)) {$page_trail = $wb->page_trail;}
 if (isset($wb->page_description)) {$page_description = $wb->page_description;}
 if (isset($wb->page_keywords)) {$page_keywords = $wb->page_keywords;}
 if (isset($wb->link)) {$page_link = $wb->link;}
+*/
 
 $include_head_link_css = '';
 $include_body_links = '';
@@ -66,6 +67,16 @@ if (($resSnippets = $database->query($sql))) {
         }
     }
 }
+
+// Sysvars always added to Insert
+I::AddJs (array(
+    'setname'=>"wbsysvars", 
+    'position'=>"HeadTop", 
+    'script'=> wb_make_js_sys_vars (), 
+    'overwrite'=>true
+));
+
+
 
 // Frontend functions
 if (!function_exists('page_link')) {
@@ -145,117 +156,7 @@ if (!function_exists('search_highlight')) {
     }
 }
 
-if (!function_exists('page_menu')) {
-    /**
-     * Old menu generator
-     * @deprecated from WB 2.9.x and up
-     * @global <type> $wb
-     * @param <type> $parent
-     * @param <type> $menu_number
-     * @param <type> $item_template
-     * @param <type> $menu_header
-     * @param <type> $menu_footer
-     * @param <type> $default_class
-     * @param <type> $current_class
-     * @param <type> $recurse
-     */
-    function page_menu($parent = 0, $menu_number = 1, $item_template = '<li[class]>[a] [menu_title] [/a]</li>', $menu_header = '<ul>', $menu_footer = '</ul>', $default_class = ' class="menu_default"', $current_class = ' class="menu_current"', $recurse = LEVEL)
-    {
-        global $wb;
-        $wb->menu_number = $menu_number;
-        $wb->menu_item_template = $item_template;
-        $wb->menu_item_footer = '';
-        $wb->menu_parent = $parent;
-        $wb->menu_header = $menu_header;
-        $wb->menu_footer = $menu_footer;
-        $wb->menu_default_class = $default_class;
-        $wb->menu_current_class = $current_class;
-        $wb->menu_recurse = $recurse + 2;
-        $wb->menu();
-        unset($wb->menu_parent);
-        unset($wb->menu_number);
-        unset($wb->menu_item_template);
-        unset($wb->menu_item_footer);
-        unset($wb->menu_header);
-        unset($wb->menu_footer);
-        unset($wb->menu_default_class);
-        unset($wb->menu_current_class);
-        unset($wb->menu_start_level);
-        unset($wb->menu_collapse);
-        unset($wb->menu_recurse);
-    }
-}
 
-if (!function_exists('show_menu')) {
-    /**
-     * Old menu generator
-     * @deprecated from WB 2.9.x and up
-     * @global  $wb
-     * @param <type> $menu_number
-     * @param <type> $start_level
-     * @param <type> $recurse
-     * @param <type> $collapse
-     * @param <type> $item_template
-     * @param <type> $item_footer
-     * @param <type> $menu_header
-     * @param <type> $menu_footer
-     * @param <type> $default_class
-     * @param <type> $current_class
-     * @param <type> $parent
-     */
-    function show_menu($menu_number = null, $start_level = null, $recurse = null, $collapse = null, $item_template = null, $item_footer = null, $menu_header = null, $menu_footer = null, $default_class = null, $current_class = null, $parent = null)
-    {
-        global $wb;
-        if (isset($menu_number)) {
-            $wb->menu_number = $menu_number;
-        }
-
-        if (isset($start_level)) {
-            $wb->menu_start_level = $start_level;
-        }
-
-        if (isset($recurse)) {
-            $wb->menu_recurse = $recurse;
-        }
-
-        if (isset($collapse)) {
-            $wb->menu_collapse = $collapse;
-        }
-
-        if (isset($item_template)) {
-            $wb->menu_item_template = $item_template;
-        }
-
-        if (isset($item_footer)) {
-            $wb->menu_item_footer = $item_footer;
-        }
-
-        if (isset($menu_header)) {
-            $wb->menu_header = $menu_header;
-        }
-
-        if (isset($menu_footer)) {
-            $wb->menu_footer = $menu_footer;
-        }
-
-        if (isset($default_class)) {
-            $wb->menu_default_class = $default_class;
-        }
-
-        if (isset($current_class)) {
-            $wb->menu_current_class = $current_class;
-        }
-
-        if (isset($parent)) {
-            $wb->menu_parent = $parent;
-        }
-
-        $wb->menu();
-        unset($wb->menu_recurse);
-        unset($wb->menu_parent);
-        unset($wb->menu_start_level);
-    }
-}
 
 if (!function_exists('page_content')) {
     /**
@@ -384,57 +285,7 @@ if (!function_exists('show_content')) {
     }
 }
 
-if (!function_exists('show_breadcrumbs')) {
-    function show_breadcrumbs($sep = ' &raquo; ', $level = 0, $links = true, $depth = -1, $title = '')
-    {
-        global $wb, $database, $MENU;
-        $page_id = $wb->page_id;
-        $title = (trim($title) == '') ? $MENU['BREADCRUMB'] : $title;
-        if ($page_id != 0) {
-            $counter = 0;
-            // get links as array
-            $bread_crumbs = $wb->page_trail;
-            $count = sizeof($bread_crumbs);
-            // level can't be greater than sum of links
-            $level = ($count <= $level) ? $count - 1 : $level;
-            // set level from which to show, delete indexes in array
-            $crumbs = array_slice($bread_crumbs, $level);
-            $depth = ($depth <= 0) ? sizeof($crumbs) : $depth;
-            // if empty array, set orginal links
-            $crumbs = (!empty($crumbs)) ? $crumbs : $wb->page_trail;
-            $total_crumbs = (($depth <= 0) || ($depth > sizeof($crumbs))) ? sizeof($crumbs) : $depth;
-            print '<div class="breadcrumb"><span class="title">' . $title . '</span>';
-            //  print_r($crumbs);
-            foreach ($crumbs as $temp) {
-                if ($counter == $depth) {break;}
-                // set links and separator
-                $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id`=' . (int) $temp;
-                $query_menu = $database->query($sql);
-                $page = $query_menu->fetchRow();
-                $show_crumb = (($links == true) && ($temp != $page_id))
-                ? '<a href="' . page_link($page['link']) . '" class="link">' . $page['menu_title'] . '</a>'
-                : '<span class="crumb">' . $page['menu_title'] . '</span>';
-                // Permission
-                switch ($page['visibility']) {
-                case 'none':
-                case 'hidden':
-                    // if show, you know there is an error in a hidden page
-                    print $show_crumb . '&nbsp;';
-                    break;
-                default:
-                    print $show_crumb;
-                    break;
-                }
 
-                if (($counter != $total_crumbs - 1)) {
-                    print '<span class="separator">' . $sep . '</span>';
-                }
-                $counter++;
-            }
-            print "</div>\n";
-        }
-    }
-}
 
 // Function for page title
 if (!function_exists('page_title')) {
@@ -514,40 +365,34 @@ function wb_bind_jquery($file_id = 'jquery')
 if (!function_exists('register_frontend_modfiles_body')) {
     function register_frontend_modfiles_body($file_id = "js", $return=false)
     {
-        // sanity check of parameter passed to the function
+    
+        // sanitize value 
         $file_id = strtolower($file_id);
-        if ($file_id !== "css" && $file_id !== "javascript" && $file_id !== "js" && $file_id !== "jquery") {
+        if ($file_id == "javascript") $file_id = "js";
+        
+        // no valid value , return whith nothing
+        if ($file_id !== "js" && $file_id !== "jquery") {
             return;
         }
-
-        // define constant indicating that the register_frontent_files was invoked
-        if (!defined('MOD_FRONTEND_BODY_JAVASCRIPT_REGISTERED')) {
-            define('MOD_FRONTEND_BODY_JAVASCRIPT_REGISTERED', true);
-        }
-
+        
         global $wb, $database, $include_body_links;
+
         // define default baselink and filename for optional module javascript files
-        $body_links = "";
+        $body_links = $include_body_links;
+        
+        
+        if ($file_id == "jquery" ) {   
+            $body_links .= wb_bind_jquery($file_id);
+        }    
 
-        /* include the Javascript jquery api  */
-        $body_links .= wb_bind_jquery($file_id);
-
-        if ($file_id !== "css" && $file_id == "js" && $file_id !== "jquery") {
+        if ($file_id == "js") {
             $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/frontend_body.js" type="text/javascript"></script>';
             $base_file = "frontend_body.js";
-
-            // ensure that frontend_body.js is only added once per module type
-            if (!empty($include_body_links)) {
-                if (strpos($body_links, $include_body_links) === false) {
-                    $body_links .= $include_body_links;
-                }
-                $include_body_links = '';
-            }
 
             // gather information for all models embedded on actual page
             $page_id = $wb->page_id;
             $sql = 'SELECT `module` FROM `' . TABLE_PREFIX . 'sections` ';
-            $sql .= 'WHERE `page_id` = ' . (int) $page_id . ' AND `module`<>\'wysiwyg\'';
+            $sql .= 'WHERE `page_id` = ' . (int) $page_id . ' ';
             if (($query_modules = $database->query($sql))) {
                 while ($row = $query_modules->fetchRow()) {
                     // check if page module directory contains a frontend_body.js file
@@ -555,10 +400,8 @@ if (!function_exists('register_frontend_modfiles_body')) {
                         // create link with frontend_body.js source for the current module
                         $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link);
 
-                        // define constant indicating that the register_frontent_files_body was invoked
-                        if (!defined('MOD_FRONTEND_BODY_JAVASCRIPT_REGISTERED')) {define('MOD_FRONTEND_BODY_JAVASCRIPT_REGISTERED', true);}
-
                         // ensure that frontend_body.js is only added once per module type
+                        // as same could have been loaded for a snippet 
                         if (strpos($body_links, $tmp_link) === false) {
                             $body_links .= $tmp_link;
                         }
@@ -566,8 +409,9 @@ if (!function_exists('register_frontend_modfiles_body')) {
                 }
             }
         }
-
-        print $body_links . "\n";
+        
+        if ($return) return $body_links. "\n";
+        print $body_links. "\n";
     }
 }
 
@@ -612,25 +456,19 @@ if (!function_exists('register_frontend_modfiles')) {
         // no templates needed for Jquery
         switch ($file_id) {
         case 'css':
+            $head_links = $include_head_link_css;
             $base_link = '<link href="' . WB_URL . '/modules/{MODULE_DIRECTORY}/frontend.css"';
             $base_link .= ' rel="stylesheet" type="text/css" media="screen" />';
             $base_file = "frontend.css";
-            if (!empty($include_head_link_css)) {
-                $head_links .= !strpos($head_links, $include_head_link_css) ? $include_head_link_css : '';
-                $include_head_link_css = '';
-            }
             break;
         case 'jquery':
             $head_links .= wb_bind_jquery($file_id);
             $call_count++; 
             break;
         case 'js':
+            $head_links = $include_head_links;
             $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/frontend.js" type="text/javascript"></script>';
             $base_file = "frontend.js";
-            if (!empty($include_head_links)) {
-                $head_links .= !strpos($head_links, $include_head_links) ? $include_head_links : '';
-                $include_head_links = '';
-            }
             $call_count++;
             break;
         }
@@ -646,25 +484,13 @@ if (!function_exists('register_frontend_modfiles')) {
                     if (file_exists(WB_PATH . "/modules/" . $row['module'] . "/$base_file")) {
                         // create link with frontend.js or frontend.css source for the current module
                         $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link);
-
-                        // define constant indicating that the register_frontent_files was invoked
-                        if ($file_id == 'css') {
-                            if (!defined('MOD_FRONTEND_CSS_REGISTERED')) {
-                                define('MOD_FRONTEND_CSS_REGISTERED', true);
-                            }
-
-                        } else {
-                            if (!defined('MOD_FRONTEND_JAVASCRIPT_REGISTERED')) {
-                                define('MOD_FRONTEND_JAVASCRIPT_REGISTERED', true);
-                            }
-
-                        }
+                      
                         // ensure that frontend.js or frontend.css is only added once per module type
+                        // as it can be loaded already by a snippet
                         if (strpos($head_links, $tmp_link) === false) {
                             $head_links .= $tmp_link . "\n";
                         }
                     }
-                    ;
                 }
             }
         }
@@ -673,4 +499,174 @@ if (!function_exists('register_frontend_modfiles')) {
     }
 }
 
+/////////////////////////////////////////////////
+//////// Old Page menu /Showmenu stuff
+////////////////////////////////////////////////7
 
+if (!function_exists('show_breadcrumbs')) {
+    function show_breadcrumbs($sep = ' &raquo; ', $level = 0, $links = true, $depth = -1, $title = '')
+    {
+        global $wb, $database, $MENU;
+        $page_id = $wb->page_id;
+        $title = (trim($title) == '') ? $MENU['BREADCRUMB'] : $title;
+        if ($page_id != 0) {
+            $counter = 0;
+            // get links as array
+            $bread_crumbs = $wb->page_trail;
+            $count = sizeof($bread_crumbs);
+            // level can't be greater than sum of links
+            $level = ($count <= $level) ? $count - 1 : $level;
+            // set level from which to show, delete indexes in array
+            $crumbs = array_slice($bread_crumbs, $level);
+            $depth = ($depth <= 0) ? sizeof($crumbs) : $depth;
+            // if empty array, set orginal links
+            $crumbs = (!empty($crumbs)) ? $crumbs : $wb->page_trail;
+            $total_crumbs = (($depth <= 0) || ($depth > sizeof($crumbs))) ? sizeof($crumbs) : $depth;
+            print '<div class="breadcrumb"><span class="title">' . $title . '</span>';
+            //  print_r($crumbs);
+            foreach ($crumbs as $temp) {
+                if ($counter == $depth) {break;}
+                // set links and separator
+                $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id`=' . (int) $temp;
+                $query_menu = $database->query($sql);
+                $page = $query_menu->fetchRow();
+                $show_crumb = (($links == true) && ($temp != $page_id))
+                ? '<a href="' . page_link($page['link']) . '" class="link">' . $page['menu_title'] . '</a>'
+                : '<span class="crumb">' . $page['menu_title'] . '</span>';
+                // Permission
+                switch ($page['visibility']) {
+                case 'none':
+                case 'hidden':
+                    // if show, you know there is an error in a hidden page
+                    print $show_crumb . '&nbsp;';
+                    break;
+                default:
+                    print $show_crumb;
+                    break;
+                }
+
+                if (($counter != $total_crumbs - 1)) {
+                    print '<span class="separator">' . $sep . '</span>';
+                }
+                $counter++;
+            }
+            print "</div>\n";
+        }
+    }
+}
+
+
+if (!function_exists('page_menu')) {
+    /**
+     * Old menu generator
+     * @deprecated from WB 2.9.x and up
+     * @global <type> $wb
+     * @param <type> $parent
+     * @param <type> $menu_number
+     * @param <type> $item_template
+     * @param <type> $menu_header
+     * @param <type> $menu_footer
+     * @param <type> $default_class
+     * @param <type> $current_class
+     * @param <type> $recurse
+     */
+    function page_menu($parent = 0, $menu_number = 1, $item_template = '<li[class]>[a] [menu_title] [/a]</li>', $menu_header = '<ul>', $menu_footer = '</ul>', $default_class = ' class="menu_default"', $current_class = ' class="menu_current"', $recurse = LEVEL)
+    {
+        global $wb;
+        $wb->menu_number = $menu_number;
+        $wb->menu_item_template = $item_template;
+        $wb->menu_item_footer = '';
+        $wb->menu_parent = $parent;
+        $wb->menu_header = $menu_header;
+        $wb->menu_footer = $menu_footer;
+        $wb->menu_default_class = $default_class;
+        $wb->menu_current_class = $current_class;
+        $wb->menu_recurse = $recurse + 2;
+        $wb->menu();
+        unset($wb->menu_parent);
+        unset($wb->menu_number);
+        unset($wb->menu_item_template);
+        unset($wb->menu_item_footer);
+        unset($wb->menu_header);
+        unset($wb->menu_footer);
+        unset($wb->menu_default_class);
+        unset($wb->menu_current_class);
+        unset($wb->menu_start_level);
+        unset($wb->menu_collapse);
+        unset($wb->menu_recurse);
+    }
+}
+
+
+
+
+if (!function_exists('show_menu')) {
+    /**
+     * Old menu generator
+     * @deprecated from WB 2.9.x and up
+     * @global  $wb
+     * @param <type> $menu_number
+     * @param <type> $start_level
+     * @param <type> $recurse
+     * @param <type> $collapse
+     * @param <type> $item_template
+     * @param <type> $item_footer
+     * @param <type> $menu_header
+     * @param <type> $menu_footer
+     * @param <type> $default_class
+     * @param <type> $current_class
+     * @param <type> $parent
+     */
+    function show_menu($menu_number = null, $start_level = null, $recurse = null, $collapse = null, $item_template = null, $item_footer = null, $menu_header = null, $menu_footer = null, $default_class = null, $current_class = null, $parent = null)
+    {
+        global $wb;
+        if (isset($menu_number)) {
+            $wb->menu_number = $menu_number;
+        }
+
+        if (isset($start_level)) {
+            $wb->menu_start_level = $start_level;
+        }
+
+        if (isset($recurse)) {
+            $wb->menu_recurse = $recurse;
+        }
+
+        if (isset($collapse)) {
+            $wb->menu_collapse = $collapse;
+        }
+
+        if (isset($item_template)) {
+            $wb->menu_item_template = $item_template;
+        }
+
+        if (isset($item_footer)) {
+            $wb->menu_item_footer = $item_footer;
+        }
+
+        if (isset($menu_header)) {
+            $wb->menu_header = $menu_header;
+        }
+
+        if (isset($menu_footer)) {
+            $wb->menu_footer = $menu_footer;
+        }
+
+        if (isset($default_class)) {
+            $wb->menu_default_class = $default_class;
+        }
+
+        if (isset($current_class)) {
+            $wb->menu_current_class = $current_class;
+        }
+
+        if (isset($parent)) {
+            $wb->menu_parent = $parent;
+        }
+
+        $wb->menu();
+        unset($wb->menu_recurse);
+        unset($wb->menu_parent);
+        unset($wb->menu_start_level);
+    }
+}
