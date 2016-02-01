@@ -1886,6 +1886,21 @@ iframe#wb_informationcenter {
   -webkit-transition: 0.5s;
   transition: 0.5s;
 }
+.themebox .tb_header i {
+  display:inline-block;
+  position: absolute;
+  left: 0px;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 70px;
+  line-height: 74px;
+  font-weight: normal;
+  color: #cbcfd8;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
 .themebox .tb_content {
   position: relative;
   min-height: 120px;
@@ -1962,9 +1977,12 @@ iframe#wb_informationcenter {
   -webkit-transition: all 1s;
   transition: all 1s;
 }
+
+
 .themebox:hover {
   background-color: #3b4250;
 }
+.themebox:hover .tb_header i,
 .themebox:hover .tb_header a:before,
 .themebox:hover .tb_header span.tb_icon:before {
   -webkit-transform: rotate(-12deg) scale(1.8);
@@ -2149,7 +2167,7 @@ div.themebox#module_settings .tb_header a:before {
 
 div.themebox#module_admintools .tb_header a:before,
 div.themebox.admintools_tool .tb_header a:before {
-  content: "";
+  content: "";
 }
 
 div.themebox#module_access .tb_header a:before {
