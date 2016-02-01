@@ -16,7 +16,7 @@
     <meta http-equiv="Content-Encoding" content="gzip" />
     <meta http-equiv="Accept-Encoding" content="gzip, deflate" />
 
-    <link href="{THEME_URL}/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
+    <link href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 
     <!-- include styles -->
     <link href="{THEME_URL}/former-css.css" rel="stylesheet" type="text/css" />
