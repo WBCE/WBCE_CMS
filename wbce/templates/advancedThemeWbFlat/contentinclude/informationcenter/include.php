@@ -45,7 +45,7 @@ if ($bLoggedIn) {
 			
 
 			<!-- Load FontAwesome -->
-			<link href="<?php echo THEME_URL; ?>/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
+			<link href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 
 			<!-- prepare backend-css to include html -->
 			<link href="<?php echo THEME_URL;?>/theme.css" rel="stylesheet" type="text/css" media="screen" />
@@ -67,18 +67,7 @@ if ($bLoggedIn) {
 
 
 
-			<script>
-				// fallback fontAwesome -- > load from own server if contact to maxcdn.bootstrapcdn.com fails
-				// use also for developing on local stations if there is no contact to internet (= local installed webserver)
-				(function($){
-					var $span = $('<span class="fa" style="display:none"></span>').appendTo('body');
-					if ($span.css('fontFamily') !== 'FontAwesome' ) {
-						// Fallback Link
-						$('head').append('<link href="../../webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">');
-					}
-					$span.remove();
-				})(jQuery);
-			</script>
+			
 
 
 		</body>
