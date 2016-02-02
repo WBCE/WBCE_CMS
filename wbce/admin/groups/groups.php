@@ -25,6 +25,7 @@ switch ($action) {
     case 'modify':
         // Create new admin object
         $admin = new admin('Access', 'groups_modify');
+        
         // Check if group group_id is a valid number and doesnt equal 1
         $group_id = intval($admin->checkIDKEY('group_id', 0, $_SERVER['REQUEST_METHOD']));
         if ($group_id == 0) {
@@ -38,6 +39,7 @@ switch ($action) {
         // Get existing values
         $results = $database->query("SELECT * FROM " . TABLE_PREFIX . "groups WHERE group_id = '" . $group_id . "'");
         $group = $results->fetchRow();
+        
         // Setup template object, parse vars to it, then parse it
         // Create new template object
         $template = new Template(dirname($admin->correct_theme_source('groups_form.htt')));
@@ -52,6 +54,7 @@ switch ($action) {
             'ADVANCED_LINK' => 'groups.php',
             'FTAN' => $admin->getFTAN(),
         ));
+        
         // Tell the browser whether or not to show advanced options
         if (true == (isset($_POST['advanced']) and (strpos($_POST['advanced'], ">>") > 0))) {
             $template->set_var('DISPLAY_ADVANCED', '');
@@ -71,8 +74,10 @@ switch ($action) {
         foreach ($system_permissions as $name) {
             $template->set_var($name . '_checked', ' checked="checked"');
         }
+        
         // Explode module permissions
         $module_permissions = explode(',', $group['module_permissions']);
+        
         // Explode template permissions
         $template_permissions = explode(',', $group['template_permissions']);
 
@@ -91,6 +96,7 @@ switch ($action) {
                 $template->parse('module_list', 'module_list_block', true);
             }
         }
+        
         // Insert values into admin module list
         $template->set_block('main_block', 'admintools_list_block', 'admintools_list');
         $result = $database->query('SELECT * FROM `' . TABLE_PREFIX . 'addons` WHERE `type` = "module" AND `function` LIKE "%tool%" ORDER BY `name`');
@@ -106,6 +112,7 @@ switch ($action) {
                 $template->parse('admintools_list', 'admintools_list_block', true);
             }
         }
+        
         // Insert values into template list
         $template->set_block('main_block', 'template_list_block', 'template_list');
         $result = $database->query('SELECT * FROM `' . TABLE_PREFIX . 'addons` WHERE `type` = "template" ORDER BY `name`');
@@ -167,6 +174,7 @@ switch ($action) {
         // Parse template object
         $template->parse('main', 'main_block', false);
         $template->pparse('output', 'page');
+        
         // Print admin footer
         $admin->print_footer();
         break;
@@ -178,6 +186,7 @@ switch ($action) {
         if ($group_id == 0) {
             $admin->print_error($MESSAGE['USERS_NO_GROUP']);
         }
+        
         // Check if user id is a valid number and doesnt equal 1
         if (($group_id < 2)) {
             // if($admin_header) { $admin->print_header(); }
@@ -191,17 +200,19 @@ switch ($action) {
 
         // the check for group_id field is only for old broken entries
         $sql = 'SELECT COUNT(*) FROM `' . TABLE_PREFIX . 'users` WHERE groups_id ="' . $group_id . '"
-				                                                      OR group_id ="' . $group_id . '"
-				                                                      OR groups_id LIKE "' . $group_id . ',%"
-				                                                      OR groups_id LIKE "%,' . $group_id . '"
-				                                                      OR groups_id LIKE "%,' . $group_id . ',%"  ';
+                                                                      OR group_id ="' . $group_id . '"
+                                                                      OR groups_id LIKE "' . $group_id . ',%"
+                                                                      OR groups_id LIKE "%,' . $group_id . '"
+                                                                      OR groups_id LIKE "%,' . $group_id . ',%"  ';
         $count = $count + $database->get_one($sql);
 
         if ($count > 0) {
             $admin->print_error($MESSAGE['GROUP_HAS_MEMBERS']);
         }
+        
         // Print header
         $admin->print_header();
+        
         // Delete the group
         $database->query("DELETE FROM `" . TABLE_PREFIX . "groups` WHERE `group_id` = '" . $group_id . "' LIMIT 1");
         if ($database->is_error()) {
@@ -209,6 +220,7 @@ switch ($action) {
         } else {
             $admin->print_success($MESSAGE['GROUPS_DELETED']);
         }
+        
         // Print admin footer
         $admin->print_footer();
         break;
@@ -216,3 +228,4 @@ switch ($action) {
     default:
         break;
 }
+
