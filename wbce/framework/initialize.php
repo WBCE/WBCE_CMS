@@ -10,6 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
+
+
 // DEFAULT SYSTEM SETTINGS
 // remove all unwanted php fancy stuff
 
@@ -44,8 +46,7 @@ $database = new database();
 // PRE INIT
 
 //// BESSER MYSQL FIND_IN_SET()?
-http://forum.wbce.org/viewtopic.php?id=84
-
+//http://forum.wbce.org/viewtopic.php?id=84
 
 // Pre init, modules may change everyting as almost nothing is already set here
 // Module may hook here to change Page_id Language or whatever. Even System Constants.
@@ -66,18 +67,38 @@ if (($resSnippets = $database->query($sql))) {
 
 // SYSTEM CONSTANTS
 // Now we start definig System constants if not already set
+// Lots of compatibility work here, please only use the WB_ constants in future stuff
 
-if (!defined('ADMIN_DIRECTORY')) {define('ADMIN_DIRECTORY', 'admin');}
-if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
-    die('Invalid admin-directory: ' . ADMIN_DIRECTORY);
+// WB_ADMIN_DIRECTORY (ADMIN_DIRECTORY)
+if (!defined('ADMIN_DIRECTORY') and !defined('WB_ADMIN_DIRECTORY')) {
+    define('ADMIN_DIRECTORY', 'admin');
+    define('WB_ADMIN_DIRECTORY', 'admin');    
+} 
+if (!defined('ADMIN_DIRECTORY') and defined('WB_ADMIN_DIRECTORY')) {
+    define('ADMIN_DIRECTORY', WB_ADMIN_DIRECTORY);
+}
+if (defined('ADMIN_DIRECTORY') and !defined('WB_ADMIN_DIRECTORY')) {
+    define('WB_ADMIN_DIRECTORY', ADMIN_DIRECTORY);
+}
+// check if someone added crap in the config
+if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . WB_ADMIN_DIRECTORY)) {
+    die('Invalid admin-directory: ' . WB_ADMIN_DIRECTORY);
 }
 
-if (!defined('ADMIN_URL')) {define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);}
-if (!defined('WB_PATH')) {define('WB_PATH', dirname(dirname(__FILE__)));}
-if (!defined('ADMIN_PATH')) {define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);}
+// WB_ADMIN_URL (ADMIN_URL)
+if (!defined('ADMIN_URL'))     {define('ADMIN_URL', WB_URL . '/' . WB_ADMIN_DIRECTORY);}
+if (!defined('WB_ADMIN_URL'))  {define('WB_ADMIN_URL', WB_URL . '/' . WB_ADMIN_DIRECTORY);}
 
+// WB_PATH
+if (!defined('WB_PATH'))       {define('WB_PATH', dirname(dirname(__FILE__)));}
+
+// WB_ADMIN_PATH (ADMIN_PATH)
+if (!defined('ADMIN_PATH'))    {define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);}
+if (!defined('WB_ADMIN_PATH')) {define('WB_ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);}
+
+// WB_PROTOCOLL (This is a new Constant so no old variant)
 $protocoll="http";
-// $_SERVER['HTTPS'] is not reliable ... :-(
+// $_SERVER['HTTPS'] alone is not reliable ... :-(
 //https://github.com/dmikusa-pivotal/cf-php-apache-buildpack/issues/6
 if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
     $protocoll="https"; 
@@ -109,13 +130,30 @@ require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
 // Get all global settings as constants from DB Settings
 Settings::Setup ();
 
+
+
+// RESULTING CONSTANTS
 // some resulting constants need to be set manually 
+
+// DO_NOT_TRACK (deprecated, not used and we remove this soon)
 define('DO_NOT_TRACK', (isset($_SERVER['HTTP_DNT'])));
+
+// Filemodes
 $string_file_mode = STRING_FILE_MODE;
 define('OCTAL_FILE_MODE', (int) octdec($string_file_mode));
+define('WB_OCTAL_FILE_MODE', (int) octdec($string_file_mode));
+
+//Dirmodes
 $string_dir_mode = STRING_DIR_MODE;
 define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
+define('WB_OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
 
+// WB_MEDIA_URL (there is no old couterpart)
+if (!defined ("WB_MEDIA_URL")) define ("WB_MEDIA_URL",  WB_URL.MEDIA_DIRECTORY);
+
+
+
+// ERROR REPORTING
 // set error-reporting
 if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
     error_reporting(ER_LEVEL);
@@ -129,11 +167,13 @@ if (WB_DEBUG === true) {
     error_reporting(E_ALL);
 }
 
-//Default Timezone.... 
+
+
+//DEFAULT TIMEZONE
 date_default_timezone_set('UTC');
 
 
-
+// SANITIZE REFERER
 // sanitize $_SERVER['HTTP_REFERER']
 // NeeDS TO BE REMOVES ASAP
 SanitizeHttpReferer();
@@ -179,7 +219,7 @@ if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started']
 
 
 
-// INITIALIZE.PHP
+// MODULES INITIALIZE.PHP
 // For now we put modules initialize.php here
 // Yess all modules are now allowed to have a initialize.php. `function`=\'snippet\'
 // From now on Twig may be a module :-)
@@ -265,17 +305,23 @@ if (isset($_SESSION['TIME_FORMAT'])) {
 }
 
 
+// MORE SYSTEM CONSTANTS
 
-// Set Theme dir
-define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
-define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
+// WB_THEME_URL (THEME_URL)
+if (!defined("THEME_URL")) define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
+if (!defined("WB_THEME_URL")) define('WB_THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
 
-// extended wb_settings this part really needs some loving as both aren't implemented fully functional
-define('EDIT_ONE_SECTION', false);
-define('EDITOR_WIDTH', 0);
+// WB_THEME_PATH (THEME_PATH)
+if (!defined("THEME_PATH")) define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
+if (!defined("WB_THEME_PATH")) define('WB_THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
+
+// extended wb_settings this part really needs some loving as both aren't 
+// implemented fully functional so this is still work on progress.
+define('EDIT_ONE_SECTION', false); // allow to edit just one section whithout all other
+define('EDITOR_WIDTH', 0);         // define a basic editor width
 
 
-
+// FUNCTIONS.PHP
 // finally load framework Funktions so we dont need to include this in almost every file 
 require_once(WB_PATH.'/framework/functions.php');
 
@@ -284,8 +330,9 @@ require_once(WB_PATH.'/framework/functions.php');
 /////////////////////////////////////////////////////////////////
 // Helper Functions
 /////////////////////////////////////////////////////////////////
-// needs some loving too !!!!
+// Moved down here as they need to be removed/reworked sooner or later 
 
+// Maybe change this so it produces a $_SERVER['HTTP_REFERER_SAVE'] or $_SERVER['HTTP_REFERER_LOCAL']
 /**
  * sanitize $_SERVER['HTTP_REFERER']
  */
@@ -314,6 +361,7 @@ function SanitizeHttpReferer()
     $_SERVER['HTTP_REFERER'] = $sTmpReferer;
 }
 
+// This one is very questionable too 
 /**
  * makePhExp
  * @param array list of names for placeholders
