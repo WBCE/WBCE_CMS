@@ -22,4 +22,4 @@ $module_author = 'Ruud';
 $module_license = 'GNU General Public License';
 $module_description = 'This module allows you to create a quick and simple form without complicated settings.';
 
-?>
+

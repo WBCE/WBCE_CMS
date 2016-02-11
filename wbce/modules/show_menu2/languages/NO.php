@@ -1,7 +1,4 @@
 <?php
-
-// $Id: NO.php 1360 2010-12-28 10:45:55Z Luisehahne $
-
 /*
     show_menu2: show_menu replacement for Website Baker 
     Copyright (C) 2006-2009, Brodie Thiesfield
@@ -29,4 +26,5 @@
 // Norwegian Moduledscripton
 $module_description = 'Dette er en kode snutt (snippet) beregnet p&aring; Website Baker CMS og er en fullgod erstatning for den innebygde meny modulen. For n&aelig;rmere beskrivelse se (Kun p&aring; Engelsk) <a href="http://code.jellycan.com/show_menu2/" target="_blank">http://code.jellycan.com/show_menu2/</a> , for mer WB spesifikke detaljer se <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> filen.';
 
-?>
+// Module language vars
+$SHOW_MENU2['SHOW_MENU2'] ="ShowMenu2";

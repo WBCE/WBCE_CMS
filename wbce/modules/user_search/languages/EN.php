@@ -1,33 +1,17 @@
 <?php
+/**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
+ */
 
-// $Id: EN.php 591 2008-01-24 19:42:05Z doc $
-
-/*
-
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2008, Ryan Djurovich
-
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
- -----------------------------------------------------------------------------------------
-  ENGLISH LANGUAGE FILE FOR THE ADDON: USER_SEARCH
- -----------------------------------------------------------------------------------------
-*/
-
-// module name
-$module_name = 'User search';
+// English Modul description
+$module_description = 'This module provides a search function for the user management.';
 
 // text outputs
 $MOD_USER_SEARCH['HEADING']				= 'Search users';

@@ -1,7 +1,4 @@
 <?php
-
-// $Id: DE.php 1360 2010-12-28 10:45:55Z Luisehahne $
-
 /*
     show_menu2: show_menu replacement for Website Baker 
     Copyright (C) 2006-2009, Brodie Thiesfield
@@ -29,4 +26,5 @@
 // Deutsche Modulbeschreibung
 $module_description = 'Dieses Modul integriert die erweiterte Men&uuml;funktion <code>show_menu2()</code> in Website Baker. Detailierte Informationen gibt es auf <a href="http://code.jellycan.com/show_menu2/" target="_blank">http://code.jellycan.com/show_menu2/</a> oder in der <a href="{WB_URL}/modules/show_menu2/README.de.txt" target="_blank">readme</a> Datei.';
 
-?>
+// Module language vars
+$SHOW_MENU2['SHOW_MENU2'] ="ShowMenu2";

@@ -43,4 +43,4 @@ $module_author = 'Ryan Djurovich, thorn';
 $module_license = 'GNU General Public License';
 $module_description = 'This module allows you to insert a link into the menu.';
 
-?>
+

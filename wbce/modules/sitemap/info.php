@@ -102,4 +102,4 @@ $module_description = 'This module allows you to easily create a sitemap. You ca
 $module_home = 'http://www.websitebakers.com';
 $module_guid = '8B7C09E5-6246-4264-8959-8AA542D7BD6';
 
-?>
+
