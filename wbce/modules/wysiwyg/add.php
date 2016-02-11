@@ -1,21 +1,17 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        modules
- * @package         wysiwyg
- * @author          WebsiteBaker Project
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: add.php 1538 2011-12-10 15:06:15Z Luisehahne $
- * @filesource		$HeadURL: http://svn.websitebaker2.org/branches/2.8.x/wb/modules/wysiwyg/modify.php $
- * @lastmodified    $Date: 2011-01-10 13:21:47 +0100 (Mo, 10 Jan 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
+
 //no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 // Insert an extra row into the database
 $sql = 'INSERT INTO `'.TABLE_PREFIX.'mod_wysiwyg` '
