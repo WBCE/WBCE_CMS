@@ -13,4 +13,5 @@
 // English Modul description
 $module_description = 'Basic WYSIWYG editor field';
 
+// Module language vars
 $MOD_WYSIWYG['WYSIWYG'] ="WYSIWYG";
