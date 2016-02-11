@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Dansk modulbeskrivelse
-$module_description = 'Dette modul g&oslash;r det muligt at redigere sideindhold ved hj&aelig;lp af en grafisk editor.';
+// English Modul description
+$module_description = 'Basic WYSIWYG editor field';
 
 $MOD_WYSIWYG['WYSIWYG'] ="WYSIWYG";
