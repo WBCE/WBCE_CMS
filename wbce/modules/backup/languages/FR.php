@@ -24,6 +24,6 @@ $MOD_BACKUP['BACKUP_ALL_FILES'] 	= 	'Sauvegarder tout les fichiers (base de donn
 $MOD_BACKUP['BACKUP_ALL_TABLES'] 	= 	'Sauvegarder toutes les tables de la base de donn&eacute;es (fichiers pas inclus)';
 $MOD_BACKUP['BACKUP_WB_SPECIFIC'] 	= 	'Sauvegarder seulement les tables sp&eacute;cifiques &agrave; WBCE (fichiers pas inclus)';
 $MOD_BACKUP['ADD_DROP'] 	= 	'Ajouter "DROP TABLE IF EXISTS"';
-$TEXT['BACKUP_DATABASE']				=	'Sauvegarder';
+$MOD_BACKUP['BACKUP_DATABASE']				=	'Sauvegarder';
 
-?>
+

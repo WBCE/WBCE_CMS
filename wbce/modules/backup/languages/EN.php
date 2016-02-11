@@ -24,6 +24,6 @@ $MOD_BACKUP['BACKUP_ALL_FILES'] 	= 	'Backup all files (database not included)';
 $MOD_BACKUP['BACKUP_ALL_TABLES'] 	= 	'Backup all tables in database (files not included)';
 $MOD_BACKUP['BACKUP_WB_SPECIFIC'] 	= 	'Backup only WBCE-specific tables (files not included)';
 $MOD_BACKUP['ADD_DROP'] 	= 	'Add "DROP TABLE IF EXISTS"';
-$TEXT['BACKUP_DATABASE']				=	'Backup';
+$MOD_BACKUP['BACKUP_DATABASE']				=	'Backup';
 
-?>
+

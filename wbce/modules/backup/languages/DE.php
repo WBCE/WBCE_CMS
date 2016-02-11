@@ -24,6 +24,6 @@ $MOD_BACKUP['BACKUP_ALL_FILES'] 	= 	'Sicherung aller Dateien (Datenbank nicht en
 $MOD_BACKUP['BACKUP_ALL_TABLES'] 	=	'Sicherung der Datenbank (alle Tabellen, Dateien nicht enthalten)';
 $MOD_BACKUP['BACKUP_WB_SPECIFIC'] 	= 	'Sicherung nur der von WBCE generierten Tabellen der Datenbank (Dateien nicht enthalten)';
 $MOD_BACKUP['ADD_DROP'] 	= 	'F&uuml;ge "DROP TABLE IF EXIST" hinzu';
-$TEXT['BACKUP_DATABASE']				=	'Sicherung starten';
+$MOD_BACKUP['BACKUP_DATABASE']				=	'Sicherung starten';
 
-?>
+

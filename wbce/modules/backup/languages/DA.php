@@ -24,6 +24,6 @@ $MOD_BACKUP['BACKUP_ALL_FILES'] 	= 	'Tag backup alle filer (databasen ikke inklu
 $MOD_BACKUP['BACKUP_ALL_TABLES'] = 'Tag backup af alle tabeller i databasen (filer ikke inkluderet)';
 $MOD_BACKUP['BACKUP_WB_SPECIFIC'] = 'Tag kun backup af WBCE-tabeller i databasen (filer ikke inkluderet)';
 $MOD_BACKUP['ADD_DROP'] 	= 	'tilf&oslash;j "DROP TABLE IF EXISTS"';
-$TEXT['BACKUP_DATABASE'] = 'Tag backup';
+$MOD_BACKUP['BACKUP_DATABASE'] = 'Tag backup';
 
-?>
+

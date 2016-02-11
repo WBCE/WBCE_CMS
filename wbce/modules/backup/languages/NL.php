@@ -24,6 +24,6 @@ $MOD_BACKUP['BACKUP_ALL_FILES'] 	= 	'Backup van alle bestanden (database niet in
 $MOD_BACKUP['BACKUP_ALL_TABLES'] 	= 	'Backup van alle tabellen in de database (bestanden niet inbegrepen)';
 $MOD_BACKUP['BACKUP_WB_SPECIFIC'] 	= 	'Backup enkel de WBCE specifieke tabellen (bestanden niet inbegrepen)';
 $MOD_BACKUP['ADD_DROP'] 	= 	'Toevoegen "DROP TABLE IF EXISTS"';
-$TEXT['BACKUP_DATABASE']		=	'Backup';
+$MOD_BACKUP['BACKUP_DATABASE']		=	'Backup';
 
-?>
+

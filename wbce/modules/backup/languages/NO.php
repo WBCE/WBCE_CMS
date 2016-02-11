@@ -24,6 +24,6 @@ $MOD_BACKUP['BACKUP_ALL_FILES'] 	= 	'Sikkerhetskopier alle filer (databsen ikke 
 $MOD_BACKUP['BACKUP_ALL_TABLES']	='Sikkerhetskopier alle tabellene i databsen (filer ikke inkludert)';
 $MOD_BACKUP['BACKUP_WB_SPECIFIC']	='Sikkerhetskopier bare WBCE sine tabeller (filer ikke inkludert)';
 $MOD_BACKUP['ADD_DROP'] 	= 	'Legg til "DROP TABLE IF EXISTS"';
-$TEXT['BACKUP_DATABASE']			='Sikkerhetskopier';
+$MOD_BACKUP['BACKUP_DATABASE']			='Sikkerhetskopier';
 
-?>
+
