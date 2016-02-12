@@ -84,12 +84,11 @@ if($saveSettings) {
     // END ACTION!! 
 
     // report success or failure
-    toolMsg ($setError, $returnUrl );
+    Tool::Msg ($setError, $returnUrl );
 
 } else if ($saveDefault) {
 
     // setting defaults
-    $setError=Settings::Set ("wb_maintainance_mode", false);
     $setError=Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg");
     $setError=Settings::Set ("wb_secform_secrettime", '86400');
     $setError=Settings::Set ("wb_secform_timeout", '7200');
@@ -98,7 +97,7 @@ if($saveSettings) {
     $setError=Settings::Set ("fingerprint_with_ip_octets", "2");
 
     // report success or failure
-    toolMsg ($setError, $returnUrl );
+    Tool::Msg ($setError, $returnUrl );
 
 } else { 
 
