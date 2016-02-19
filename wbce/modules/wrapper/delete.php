@@ -16,7 +16,7 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 // Delete page from mod_wrapper
 $database->query("DELETE FROM ".TABLE_PREFIX."mod_wrapper WHERE section_id = '$section_id'");

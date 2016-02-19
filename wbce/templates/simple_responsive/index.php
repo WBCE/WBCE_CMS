@@ -1,6 +1,6 @@
 <?php
 // no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 ?><!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->

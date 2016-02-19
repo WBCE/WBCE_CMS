@@ -16,7 +16,7 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 // check if module language file exists for the language set by the user (e.g. DE, EN)
 if(!file_exists(WB_PATH .'/modules/wrapper/languages/'.LANGUAGE .'.php')) {

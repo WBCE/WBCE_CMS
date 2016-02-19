@@ -17,7 +17,8 @@
  */
 
 
-if(!defined('WB_PATH')) { exit('Direct access to this file is not allowed'); }
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 // Get system permissions
 if($admin->get_post('advanced') != 'yes') {

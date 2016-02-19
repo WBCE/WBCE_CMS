@@ -14,7 +14,7 @@
 *	@author		Ruud - http://forum.websitebaker2.org/index.php?action=profile;u=7276
 *	@package	Websitebaker - Modul: Latest News
 * 
-**/// prevent this file from being accessed directly
-if(!defined('WB_PATH')) die(header('Location: index.php'));  
+**///no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));  
 
 ?>

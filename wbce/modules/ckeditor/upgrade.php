@@ -15,11 +15,6 @@
  *
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if(!defined('WB_PATH')) {
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-	require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-	throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */

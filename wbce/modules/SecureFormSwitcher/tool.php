@@ -40,7 +40,7 @@ manual loading is no longer required.
 */
 
 // no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 // Check if this is is no CSRF attack or timeout.
 // but only check if form was send. Maybe we move this to tool too if all tools got secform

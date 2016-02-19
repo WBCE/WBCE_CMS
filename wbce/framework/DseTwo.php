@@ -14,7 +14,7 @@
  *                  ISTeasy class DseOne which is available under a cc-by-sa-3.0 license
  */
 //no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 class DseTwo
 {
