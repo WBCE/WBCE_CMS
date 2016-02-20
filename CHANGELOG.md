@@ -5,9 +5,810 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2016-02-20:** cwsoft [[12e3011](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/12e3011583cf8fe4f6ea77a093d258d0c415666f)]
+   > New branding WBCE - Way Better Content Editing
+     Applied new branding for WBCE.
+
+ * **2016-02-19:** NorHei [[8577210](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8577210bcf355e3d596b5c48855c991524ef2ce5)]
+   > Unified direct access protections and removed DVs global exeption handler.
+     Unified all but the ones used in topics as those are somewhat wrong
+     and need to be changed manually.
+
+ * **2016-02-12:** NorHei [[7bdd92f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7bdd92f0e8226699be4d690a62521973178895f7)]
+   > Small bug in secureform default settings
+
+ * **2016-02-11:** NorHei [[e0b0c12](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e0b0c12c1e570c48af7615ed4f56605796fdd68f)]
+   > Bumped Version number for more easy testing .
+
+ * **2016-02-11:** NorHei [[f77383e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f77383e59935191198386aec709154584896c2c9)]
+   > Bumped Version number for more easy testing .
+
+ * **2016-02-11:** NorHei [[59f9315](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/59f9315f06857dd159ae6c52dcc2291803514da4)]
+   > A nice travel through all language files
+     It showed me that  its not possible to include languageflies in an
+     elegant way to the new Tool Class. Used this research tour to do some cleanup.
+
+ * **2016-02-11:** NorHei [[9f34daf](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9f34dafe2e325bd3119414cac3c44802bb29ad5e)]
+   > Feels like changing a zillion index.php
+
+ * **2016-02-11:** NorHei [[31471b1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/31471b1abde3799d6df11afd5948428356422b98)]
+   > Wrapper language Files cleanup and some added or changed index.php
+
+ * **2016-02-11:** NorHei [[e55792c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e55792c225ca9885aa753151cc39e90130da0948)]
+   > WYSIWYG Small File Cleanup, end Tags and direct access
+
+ * **2016-02-11:** NorHei [[6cd41e6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6cd41e6c3f41d8acc81c7694e2423bc4003294a1)]
+   > WYSIWYG Language File Fixes
+
+ * **2016-02-11:** NorHei [[bce0db4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/bce0db47d7113b22da134fbd67416062a293022d)]
+   > Language file fix für backup modul.
+
+ * **2016-02-05:** NorHei [[1968189](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/19681892d8bf60ea003678aecfa80a55a74d8853)]
+   > Added a slightly modified version of PclZip
+     This version avoides some problems whith PHP 7
+     
+     fetched from here :
+     https://github.com/piwik/component-decompress/commit/deca40d71d29d6140aad39db007aea82676b7631
+
+ * **2016-02-04:** NorHei [[d14199c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d14199c3afa5e07212306b6cb08a83ba3e51c2f5)]
+   > Added system constants standard conform and some reformating on initialize
+     Did some minor reformating and commenting on /framework/initialize.php
+     
+     The more important thing is i added standard conform system constants.
+     As part of the cleanup process we now have all main system constants
+     whith a  WB_ prefix.
+     
+     WB_PATH
+     WB_URL
+     WB_ADMIN_DIRECTORY
+     WB_ADMIN_URL
+     WB_ADMIN_PATH
+     WB_OCTAL_FILE_MODE
+     WB_OCTAL_DIR_MODE
+     WB_THEME_URL
+     WB_THEME_PATH
+     
+     Plus a few ones New to WB (not so new on WBCE)
+     WB_PROTOCOLL
+     WB_MEDIA_URL
+     
+     Still many constants use the old format whithout WB_ but alot of them
+     will get their standard conform couterparts as soon as i had time to
+     rework the General Settings.  After we remove them , we will add a
+     compatibility module that still can create them for use in very old modules.
+     
+     Please use the new ones whenever possible.
+
+ * **2016-02-02:** NorHei [[b5a4e22](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b5a4e226787e613b588547e4916c3b65f561a0bd)]
+   > Just some file formating before doing changes .
+
+ * **2016-02-02:** instantflorian [[0dd38e0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0dd38e0071aa0b3b68c039d4d7413597515b34dd)]
+   > Page level limit correction in wblink, thx to bernd
+
+ * **2016-02-02:** NorHei [[b2d541a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b2d541a0b87f48cb436e7f61b4203e92f9917464)]
+   > Fixed some more Font awesome loading issues.
+
+ * **2016-02-02:** NorHei [[3d4e2ab](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3d4e2abfd5270cd021ddc8044c65882b7a4ec3a3)]
+   > Argos theme dynamic icons in admintools.
+     Plus some Font awesome loading issues.
+
+ * **2016-02-02:** NorHei [[8b33b63](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8b33b63cdf2da707b31cfaa1e9dc2ce878b5ba5f)]
+   > Moved Font Awesome to /includes/
+
+ * **2016-02-01:** NorHei [[c7a846c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c7a846ca6193da92e5ecba3538ceeb40011cb7ff)]
+   > Custom Admintool Icons
+     The template var {TOOL_ICON} now is available in admintools template.
+     
+     The admintool.htt from Flat Theme is adapted to this.
+
+ * **2016-02-01:** NorHei [[6848fd6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6848fd6859f64e042c167f4b043a096712c8dc8f)]
+   > Adapted theme.css for use of individual icons in admintools
+     Advanced Flat theme .
+     
+     Override automatic addition of icon on admintools
+     Line 2168
+     
+     Added individual icons to the rotate and scale effect
+     Line 1984
+     
+     Styling for the individual Icon
+     Line  1889
+     
+     It was hard to figure out how to do this , thats the reason
+     for the detailed description.
+
+ * **2016-02-01:** NorHei [[2f689d4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2f689d486e408e5836541caade7bdab076c290b6)]
+   > Added Font Awesome icons to all admin tools for use in custom icons.
+     Added icon code to info.php
+
+ * **2016-02-01:** NorHei [[aae2504](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/aae2504cc974b9a88c9ff413580bc9e395f98c3e)]
+   > Review for frontend-functions.php , small fix for topics
+     Made a first rewiew of the frontend functions and as a
+     result i had to remove a few old lines in topics.
+
+ * **2016-02-01:** NorHei [[7531193](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/75311938fd9cb08234f587bc2840c59b4de27d95)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-01-29:** Bianka Martinovic [[4d0db19](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4d0db193753bff87e36a53dfa7f76c54bd90b448)]
+   > fixed $language_name
+
+ * **2016-01-29:** NorHei [[b2bd575](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b2bd575bc2b76e478ef2013f6bb13aac0a47060a)]
+   > Just a nother small cleanup for index.php
+     You now schould be able to understand the whole file by just reading
+     it from top to the end .
+     
+     Its now even possible to see the structure how WB is actual working.
+     A bit strange i think :-)
+
+ * **2016-01-25:** Bianka Martinovic [[2435bbc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2435bbca4883669e611e2bad91d778469eefff26)]
+   > Set version to 2.0.0
+
+ * **2016-01-25:** NorHei [[7736758](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7736758455896a81ce2e7865ebac211969ba61c0)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-01-25:** NorHei [[6a27524](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6a27524563287eba666e7b4fd9ea386e5f86aba5)]
+   > Could not create new droplets #107
+     New Droplets are generated in  add_droplet.php.
+     
+     In tools.php  line 29 they are deleted again, always ...
+     So the query in line 131 cannot return any values for this droplet as
+     its already deleted .
+     So the hidden field cannot be populated and no droplet_id is sent to save.
+     
+     So the Droplet is created , deleted , and then tried to edit ...
+     
+     I added an if clause that only deletes the empty droplets on normal tool
+     view, whithout do=something. This should do it.  Hopefully.
+
+ * **2016-01-25:** instantflorian [[e44264d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e44264d8d857b3c31e8495649076ede373afc62f)]
+   > Spelling correction
+
+ * **2016-01-25:** NorHei [[711ebf3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/711ebf3c5f55be19dfe65d90d6bf29d1b0dd0be9)]
+   > Removed loading of jquery_frontend.js in Template Directory
+     This is useless , just load your Stuff in the Template
+
+ * **2016-01-25:** NorHei [[ba90896](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ba90896db817d1231052730ec97f89249177a893)]
+   > mdcr.js is loaded by its output filter , not needed in frontend functions
+     Removed mdcr.js in register_frontend_modfiles() as it is already loaded by
+     mail filter outputfilter.
+
+ * **2016-01-25:** NorHei [[912c484](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/912c4849486d16bbe611dcbb321fc42de8945e59)]
+   > Frontend Functions, JS System Vars are now loaded whithout Jquery too
+     And they are loaded only once.
+
+ * **2016-01-24:** NorHei [[073959e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/073959e7ac906cb8871320d7d58c5ffdace7a6f1)]
+   > Added jquery migrate to frontend functions
+     The default now should support most browsers and most jquery plugins.
+     At least this is the most compatible solution right now.
+     Jquery 1.12.0 and migrate 1.3.0.
+     
+     In frontend we use migrate-min, if you need Console messages , please
+     use the not minimized version.
+     
+     NExt Jquery upgrade will be done when Jquery 3 is really really stable and
+     most modules are at least Jquery 2 Compatible.
+
+ * **2016-01-24:** NorHei [[584b03a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/584b03a22faf7a9977de624b75c6c80627546b21)]
+   > Added Jquery Migrate to the backend.
+
+ * **2016-01-24:** NorHei [[5005fc4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5005fc445e9393120735026f1821bd1f97bfde9e)]
+   > Set Jquery version to 1.12.0 added Jquery migrate 1.3.0.
+     1.12 got same api but wider browser support, at least thats the
+     statement of Jquery team.
+     
+     I will try to load debug version of migrate if WB_ DEBUG is
+     turned on .
+
+ * **2016-01-24:** NorHei [[4b8b23d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4b8b23d86a8e1a8d1572895165789cf8f67a5651)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-01-24:** NorHei [[fbf6c93](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fbf6c936d071dd4938782184c4517cbefc19f530)]
+   > We dont need a collection of old Jquery
+
+ * **2016-01-23:** cwsoft [[3b3240d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3b3240d3fd836dcda46aeccd15ad9425e3778136)]
+   > Updated CHANGELOG.md
+
  * **2016-01-23:** NorHei [[c9521da](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c9521da92d9cfeae7dd3e0af05adb94d4968429b)]
    > ckeditor 4.5.5 loading css three times
+     From :
      https://github.com/qssocial/WebsiteBaker_CommunityEdition/commit/ddb56403b57877653b245ede47d4c5f3096d3278
+     
+     1. Ckeditor loading tree times css !.
+     2. CKEditor uses the functions "LoadOnFly" (we do not have it) for
+     loading css.
+     
+     Therefore, "backend.css" not worked properly.
+     I added to ckeditor.php in "private function init ()" loading of
+     "backend.css" and removed ln 360
+     " // $ this-> loadBackendCss ();"
+     Please see if it works correctly.
+     
+     <?php
+     /*
+     * Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+     * For licensing, see LICENSE.html or http://ckeditor.com/license
+     */
+     
+     /**
+      * \brief CKEditor class that can be used to create editor
+      * instances in PHP pages on server side.
+      * @see http://ckeditor.com
+      *
+      * Sample usage:
+      * @code
+      * $CKEditor = new CKEditor();
+      * $CKEditor->editor("editor1", "<p>Initial value.</p>");
+      * @endcode
+      */
+     class CKEditor
+     {
+         /**
+          * The version of %CKEditor.
+          */
+         const version = '4.5.5';
+         /**
+          * A constant string unique for each release of %CKEditor.
+          */
+         const timestamp = ' b34ea4d';
+         /**
+          * A string indicating the creation date of %CKEditor.
+          * Do not change it unless you want to force browsers to not use previously cached version of %CKEditor.
+          */
+         public $timestamp = "b34ea4d";
+     
+         /**
+          * URL to the %CKEditor installation directory (absolute or relative to document root).
+          * If not set, CKEditor will try to guess it's path.
+          *
+          * Example usage:
+          * @code
+          * $CKEditor->basePath = '/ckeditor/';
+          * @endcode
+          */
+         public $basePath;
+         /**
+          * An array that holds the global %CKEditor configuration.
+          * For the list of available options, see http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html
+          *
+          * Example usage:
+          * @code
+          * $CKEditor->config['height'] = 400;
+          * // Use @@ at the beggining of a string to ouput it without surrounding quotes.
+          * $CKEditor->config['width'] = '@@screen.width * 0.8';
+          * @endcode
+          */
+         public $config = array();
+         /**
+          * A boolean variable indicating whether CKEditor has been initialized.
+          * Set it to true only if you have already included
+          * &lt;script&gt; tag loading ckeditor.js in your website.
+          */
+         public $initialized = false;
+         /**
+          * Boolean variable indicating whether created code should be printed out or returned by a function.
+          *
+          * Example 1: get the code creating %CKEditor instance and print it on a page with the "echo" function.
+          * @code
+          * $CKEditor = new CKEditor();
+          * $CKEditor->returnOutput = true;
+          * $code = $CKEditor->editor("editor1", "<p>Initial value.</p>");
+          * echo "<p>Editor 1:</p>";
+          * echo $code;
+          * @endcode
+          */
+         public $returnOutput = false;
+         /**
+          * An array with textarea attributes.
+          *
+          * When %CKEditor is created with the editor() method, a HTML &lt;textarea&gt; element is created,
+          * it will be displayed to anyone with JavaScript disabled or with incompatible browser.
+          */
+         public $textareaAttributes = array( "rows" => 8, "cols" => 60 );
+         /**
+          * An array that holds event listeners.
+          */
+         private $events = array();
+         /**
+          * An array that holds global event listeners.
+          */
+         private $globalEvents = array();
+     
+         /**
+          * Main Constructor.
+          *
+          *  @param $basePath (string) URL to the %CKEditor installation directory (optional).
+          */
+         function __construct($basePath = null) {
+             if (!empty($basePath)) {
+                 $this->basePath = $basePath;
+             }
+         }
+     
+         /**
+          * Creates a %CKEditor instance.
+          * In incompatible browsers %CKEditor will downgrade to plain HTML &lt;textarea&gt; element.
+          *
+          * @param $name (string) Name of the %CKEditor instance (this will be also the "name" attribute of textarea element).
+          * @param $value (string) Initial value (optional).
+          * @param $config (array) The specific configurations to apply to this editor instance (optional).
+          * @param $events (array) Event listeners for this editor instance (optional).
+          *
+          * Example usage:
+          * @code
+          * $CKEditor = new CKEditor();
+          * $CKEditor->editor("field1", "<p>Initial value.</p>");
+          * @endcode
+          *
+          * Advanced example:
+          * @code
+          * $CKEditor = new CKEditor();
+          * $config = array();
+          * $config['toolbar'] = array(
+          *     array( 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike' ),
+          *     array( 'Image', 'Link', 'Unlink', 'Anchor' )
+          * );
+          * $events['instanceReady'] = 'function (ev) {
+          *     alert("Loaded: " + ev.editor.name);
+          * }';
+          * $CKEditor->editor("field1", "<p>Initial value.</p>", $config, $events);
+          * @endcode
+          */
+         public function editor($name, $value = "", $config = array(), $events = array())
+         {
+             $attr = "";
+             foreach ($this->textareaAttributes as $key => $val) {
+                 $attr.= " " . $key . '="' . str_replace('"', '&quot;', $val) . '"';
+             }
+             $out = "<textarea id=\"" . $name . "\" name=\"" . $name . "\"" . $attr . ">" . htmlspecialchars($value) . "</textarea>\n";
+             if (!$this->initialized) {
+                 $out .= $this->init();
+             }
+     
+             $_config = $this->configSettings($config, $events);
+             $js = $this->returnGlobalEvents();
+     
+             if (!empty($_config))
+                 $js .= "CKEDITOR.replace('".$name."', ".$this->jsEncode($_config).");";
+             else
+                 $js .= "CKEDITOR.replace('".$name."');";
+     
+             $out .= $this->script($js);
+     
+             if (!$this->returnOutput) {
+                 print $out;
+                 $out = "";
+             }
+             return $out;
+         }
+     
+         /**
+          * Replaces a &lt;textarea&gt; with a %CKEditor instance.
+          *
+          * @param $id (string) The id or name of textarea element.
+          * @param $config (array) The specific configurations to apply to this editor instance (optional).
+          * @param $events (array) Event listeners for this editor instance (optional).
+          *
+          * Example 1: adding %CKEditor to &lt;textarea name="article"&gt;&lt;/textarea&gt; element:
+          * @code
+          * $CKEditor = new CKEditor();
+          * $CKEditor->replace("article");
+          * @endcode
+          */
+         public function replace($id, $config = array(), $events = array())
+         {
+             $out = "";
+             if (!$this->initialized) {
+                 $out .= $this->init();
+             }
+     
+             $_config = $this->configSettings($config, $events);
+     
+             $js = $this->returnGlobalEvents();
+             if (!empty($_config)) {
+                 $js .= "CKEDITOR.replace('".$id."', ".$this->jsEncode($_config).");";
+             }
+             else {
+                 $js .= "CKEDITOR.replace('".$id."');";
+             }
+     
+             $out .= $this->script($js);
+             if (!$this->returnOutput) {
+                 print $out;
+                 $out = "";
+             }
+             return $out;
+         }
+     
+         /**
+          * Replace all &lt;textarea&gt; elements available in the document with editor instances.
+          *
+          * @param $className (string) If set, replace all textareas with class className in the page.
+          *
+          * Example 1: replace all &lt;textarea&gt; elements in the page.
+          * @code
+          * $CKEditor = new CKEditor();
+          * $CKEditor->replaceAll();
+          * @endcode
+          *
+          * Example 2: replace all &lt;textarea class="myClassName"&gt; elements in the page.
+          * @code
+          * $CKEditor = new CKEditor();
+          * $CKEditor->replaceAll( 'myClassName' );
+          * @endcode
+          */
+         public function replaceAll($className = null)
+         {
+             $out = "";
+             if (!$this->initialized) {
+                 $out .= $this->init();
+             }
+     
+             $_config = $this->configSettings();
+     
+             $js = $this->returnGlobalEvents();
+             if (empty($_config)) {
+                 if (empty($className)) {
+                     $js .= "CKEDITOR.replaceAll();";
+                 }
+                 else {
+                     $js .= "CKEDITOR.replaceAll('".$className."');";
+                 }
+             }
+             else {
+                 $classDetection = "";
+                 $js .= "CKEDITOR.replaceAll( function(textarea, config) {\n";
+                 if (!empty($className)) {
+                     $js .= "    var classRegex = new RegExp('(?:^| )' + '". $className ."' + '(?:$| )');\n";
+                     $js .= "    if (!classRegex.test(textarea.className))\n";
+                     $js .= "        return false;\n";
+                 }
+                 $js .= "    CKEDITOR.tools.extend(config, ". $this->jsEncode($_config) .", true);";
+                 $js .= "} );";
+     
+             }
+     
+             $out .= $this->script($js);
+     
+             if (!$this->returnOutput) {
+                 print $out;
+                 $out = "";
+             }
+     
+             return $out;
+         }
+     
+         /**
+          * Adds event listener.
+          * Events are fired by %CKEditor in various situations.
+          *
+          * @param $event (string) Event name.
+          * @param $javascriptCode (string) Javascript anonymous function or function name.
+          *
+          * Example usage:
+          * @code
+          * $CKEditor->addEventHandler('instanceReady', 'function (ev) {
+          *     alert("Loaded: " + ev.editor.name);
+          * }');
+          * @endcode
+          */
+         public function addEventHandler($event, $javascriptCode)
+         {
+             if (!isset($this->events[$event])) {
+                 $this->events[$event] = array();
+             }
+             // Avoid duplicates.
+             if (!in_array($javascriptCode, $this->events[$event])) {
+                 $this->events[$event][] = $javascriptCode;
+             }
+         }
+     
+         /**
+          * Clear registered event handlers.
+          * Note: this function will have no effect on already created editor instances.
+          *
+          * @param $event (string) Event name, if not set all event handlers will be removed (optional).
+          */
+         public function clearEventHandlers($event = null)
+         {
+             if (!empty($event)) {
+                 $this->events[$event] = array();
+             }
+             else {
+                 $this->events = array();
+             }
+         }
+     
+         /**
+          * Adds global event listener.
+          *
+          * @param $event (string) Event name.
+          * @param $javascriptCode (string) Javascript anonymous function or function name.
+          *
+          * Example usage:
+          * @code
+          * $CKEditor->addGlobalEventHandler('dialogDefinition', 'function (ev) {
+          *     alert("Loading dialog: " + ev.data.name);
+          * }');
+          * @endcode
+          */
+         public function addGlobalEventHandler($event, $javascriptCode)
+         {
+             if (!isset($this->globalEvents[$event])) {
+                 $this->globalEvents[$event] = array();
+             }
+             // Avoid duplicates.
+             if (!in_array($javascriptCode, $this->globalEvents[$event])) {
+                 $this->globalEvents[$event][] = $javascriptCode;
+             }
+         }
+     
+         /**
+          * Clear registered global event handlers.
+          * Note: this function will have no effect if the event handler has been already printed/returned.
+          *
+          * @param $event (string) Event name, if not set all event handlers will be removed (optional).
+          */
+         public function clearGlobalEventHandlers($event = null)
+         {
+             if (!empty($event)) {
+                 $this->globalEvents[$event] = array();
+             }
+             else {
+                 $this->globalEvents = array();
+             }
+         }
+     
+         /**
+          *
+          *
+          * @param
+          */
+         protected function loadBackendCss(  )
+         {
+             $modPathName = basename(dirname(__DIR__));
+             $out  = "<script type=\"text/javascript\">";
+             $out .= "//<![CDATA[\n";
+             $out .= 'if( document.querySelectorAll(".cke") ) {'
+                   . 'LoadOnFly("head", WB_URL+"/modules/'.$modPathName.'/backend.css");' // We dont have function LoadOnFly / Krzysztof Winnicki
+                   . '    }';
+             $out .= "\n//]]>";
+             $out .= "</script>\n";
+     
+             print $out;
+         }
+     
+         /**
+          * Prints javascript code.
+          *
+          * @param string $js
+          */
+         private function script($js)
+         {
+             //$this->loadBackendCss(); // ! loading tree times - css need load one time in init / Krzysztof Winnicki
+             $out = "<script type=\"text/javascript\">";
+             $out .= "//<![CDATA[\n";
+             $out .= $js;
+             $out .= "\n//]]>";
+             $out .= "</script>\n";
+             return $out;
+         }
+     
+         /**
+          * Returns the configuration array (global and instance specific settings are merged into one array).
+          *
+          * @param $config (array) The specific configurations to apply to editor instance.
+          * @param $events (array) Event listeners for editor instance.
+          */
+         private function configSettings($config = array(), $events = array())
+         {
+             $_config = $this->config;
+             $_events = $this->events;
+             if (is_array($config) && !empty($config)) {
+                 $_config = array_merge($_config, $config);
+             }
+     
+             if (is_array($events) && !empty($events)) {
+                 foreach ($events as $eventName => $code) {
+                     if (!isset($_events[$eventName])) {
+                         $_events[$eventName] = array();
+                     }
+                     if (!in_array($code, $_events[$eventName])) {
+                         $_events[$eventName][] = $code;
+                     }
+                 }
+             }
+     
+             if (!empty($_events)) {
+                 foreach($_events as $eventName => $handlers) {
+                     if (empty($handlers)) {
+                         continue;
+                     }
+                     else if (count($handlers) == 1) {
+                         $_config['on'][$eventName] = '@@'.$handlers[0];
+                     }
+                     else {
+                         $_config['on'][$eventName] = '@@function (ev){';
+                         foreach ($handlers as $handler => $code) {
+                             $_config['on'][$eventName] .= '('.$code.')(ev);';
+                         }
+                         $_config['on'][$eventName] .= '}';
+                     }
+                 }
+             }
+     
+             return $_config;
+         }
+     
+         /**
+          * Return global event handlers.
+          */
+         private function returnGlobalEvents()
+         {
+             static $returnedEvents;
+             $out = "";
+     
+             if (!isset($returnedEvents)) {
+                 $returnedEvents = array();
+             }
+     
+             if (!empty($this->globalEvents)) {
+                 foreach ($this->globalEvents as $eventName => $handlers) {
+                     foreach ($handlers as $handler => $code) {
+                         if (!isset($returnedEvents[$eventName])) {
+                             $returnedEvents[$eventName] = array();
+                         }
+                         // Return only new events
+                         if (!in_array($code, $returnedEvents[$eventName])) {
+                             $out .= ($code ? "\n" : "") . "CKEDITOR.on('". $eventName ."', $code);";
+                             $returnedEvents[$eventName][] = $code;
+                         }
+                     }
+                 }
+             }
+     
+             return $out;
+         }
+     
+         /**
+          * Initializes CKEditor (executed only once).
+          */
+         private function init()
+         {
+             static $initComplete;
+             $out = "";
+     
+             if (!empty($initComplete)) {
+                 return "";
+             }
+     
+             if ($this->initialized) {
+                 $initComplete = true;
+                 return "";
+             }
+     
+             $args = "";
+             $ckeditorPath = $this->ckeditorPath();
+     
+             if (!empty($this->timestamp) && $this->timestamp != "%"."TIMESTAMP%") {
+                 $args = '?t=' . $this->timestamp;
+             }
+     
+             // Skip relative paths...
+             if (strpos($ckeditorPath, '..') !== 0) {
+                 $out .= $this->script("window.CKEDITOR_BASEPATH='". $ckeditorPath ."';");
+             }
+     
+             // load one time css / Krzysztof Winnicki
+             $modPathName = basename(dirname(__DIR__));
+             //$out  .= '<link href="'.WB_URL.'/modules/'.$modPathName.'/backend.css" rel="stylesheet" type="text/css" /> ';
+             $out  = "<script type=\"text/javascript\">";
+             $out  .= ' var styles = document.createElement("link");';
+             $out  .= ' styles.rel = "stylesheet";';
+             $out  .= ' styles.type = "text/css";';
+             $out  .= ' styles.href = "'.WB_URL.'/modules/'.$modPathName.'/backend.css'.'";';
+             $out .= "//<![CDATA[\n";
+             $out .= ' if ( document.querySelectorAll(".cke") ) { ';
+             $out .= 'document.getElementsByTagName("head")[0].appendChild(styles);'. '    } ';
+             $out .= "\n//]]>";
+             $out .= "</script>";
+     
+             $out .= "<script type=\"text/javascript\" src=\"" . $ckeditorPath . 'ckeditor.js' . $args . "\"></script>\n";
+     
+             $extraCode = "";
+             if ($this->timestamp != self::timestamp) {
+                 $extraCode .= ($extraCode ? "\n" : "") . "CKEDITOR.timestamp = '". $this->timestamp ."';";
+             }
+             if ($extraCode) {
+                 $out .= $this->script($extraCode);
+             }
+     
+             $initComplete = $this->initialized = true;
+     
+             return $out;
+         }
+     
+         /**
+          * Return path to ckeditor.js.
+          */
+         private function ckeditorPath()
+         {
+             if (!empty($this->basePath)) {
+                 return $this->basePath;
+             }
+     
+             /**
+              * The absolute pathname of the currently executing script.
+              * Note: If a script is executed with the CLI, as a relative path, such as file.php or ../file.php,
+              * $_SERVER['SCRIPT_FILENAME'] will contain the relative path specified by the user.
+              */
+             if (isset($_SERVER['SCRIPT_FILENAME'])) {
+                 $realPath = dirname($_SERVER['SCRIPT_FILENAME']);
+             }
+             else {
+                 /**
+                  * realpath - Returns canonicalized absolute pathname
+                  */
+                 $realPath = realpath( './' ) ;
+             }
+     
+             /**
+              * The filename of the currently executing script, relative to the document root.
+              * For instance, $_SERVER['PHP_SELF'] in a script at the address http://example.com/test.php/foo.bar
+              * would be /test.php/foo.bar.
+              */
+             $selfPath = dirname($_SERVER['PHP_SELF']);
+             $file = str_replace("\\", "/", __FILE__);
+     
+             if (!$selfPath || !$realPath || !$file) {
+                 return "/ckeditor/";
+             }
+     
+             $documentRoot = substr($realPath, 0, strlen($realPath) - strlen($selfPath));
+             $fileUrl = substr($file, strlen($documentRoot));
+             $ckeditorUrl = str_replace("ckeditor_php5.php", "", $fileUrl);
+     
+             return $ckeditorUrl;
+         }
+     
+         /**
+          * This little function provides a basic JSON support.
+          *
+          * @param mixed $val
+          * @return string
+          */
+         private function jsEncode($val)
+         {
+             if (is_null($val)) {
+                 return 'null';
+             }
+             if (is_bool($val)) {
+                 return $val ? 'true' : 'false';
+             }
+             if (is_int($val)) {
+                 return $val;
+             }
+             if (is_float($val)) {
+                 return str_replace(',', '.', $val);
+             };
+             if (is_array($val) || is_object($val)) {
+                 if (is_array($val) && (array_keys($val) === range(0,count($val)-1))) {
+                     return '[' . implode(',', array_map(array($this, 'jsEncode'), $val)) . ']';
+                 }
+                 $temp = array();
+                 foreach ($val as $k => $v){
+                     $temp[] = $this->jsEncode("{$k}") . ':' . $this->jsEncode($v);
+                 }
+                 return '{' . implode(',', $temp) . '}';
+             }
+             // String otherwise
+             if (strpos($val, '@@') === 0)
+                 return substr($val, 2);
+             if (strtoupper(substr($val, 0, 9)) == 'CKEDITOR.')
+                 return $val;
+     
+             return '"' . str_replace(array("\\", "/", "\n", "\t", "\r", "\x08", "\x0c", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'), $val) . '"';
+         }
+     }
      Thanks to Krzysztof Winnicki (qsocial)
 
  * **2016-01-23:** NorHei [[68cd9c0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/68cd9c054263591db3fe0468a6ed5b649b774ec6)]
