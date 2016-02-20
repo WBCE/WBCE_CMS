@@ -1,9 +1,9 @@
 # WBCE - Way Better Content Editing
-[WBCE](http://wbce.org) is an easy to use content management system based on PHP/MySQL maintained by an [active community](http://forum.wbce.org). 
+[WBCE](http://wbce.org) is an easy to use content management system based on **PHP/MySQL** maintained by an [active community](http://forum.wbce.org). 
 
 ![](wbce-cms.jpg)
 
-WBCE started as `WebsiteBaker Community Edition`, a fork from the CMS WebsiteBaker 2.8.3 SP4 (which development got stuck for a too long time). With release WBCE 1.1 we implemented new features and security enhancements and decided to rename our CMS into `Way Better Content Editing`: our definition of a modern backend, great ease of use and highest flexibility. Welcome to [WBCE](http://wbce.org)!
+WBCE started as *WebsiteBaker Community Edition*, a fork from the CMS WebsiteBaker 2.8.3 SP4 (which development got stuck for a too long time). With release WBCE 1.1 we implemented new features and security enhancements and decided to rename our CMS into `WBCE - Way Better Content Editing`: our definition of a modern backend, great ease of use and highest flexibility. Welcome to [WBCE](http://wbce.org)!
 
 ## Features
 WBCE is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. WBCE is compatible to most modules and teamplates created up to WebsiteBaker 2.8.3 and to most WebsiteBaker modules and templates actively maintained.
@@ -17,9 +17,9 @@ WBCE is a content management system which aims to combine security, a user fried
 ## Links
   - [WBCE Project](http://wbce.org)
   - [User Forum](http://forum.wbce.org)
-  - [GitHub Repository](https://github.com/WBCE/WebsiteBaker_CommunityEdition)
-  - [Bugtracker](https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues)
-  - [Commit History](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master)
+  - [GitHub Repository](https://github.com/WBCE/WayBetterContentEditing)
+  - [Bugtracker](https://github.com/WBCE/WayBetterContentEditing/issues)
+  - [Commit History](https://github.com/WBCE/WayBetterContentEditing/commits/master)
   - [Changelog](CHANGELOG.md)
   - [Installation](INSTALL.md)
 
