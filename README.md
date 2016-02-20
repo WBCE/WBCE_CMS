@@ -1,6 +1,8 @@
 # WBCE - Way Better Content Editing
 [WBCE](http://wbce.org) is an easy to use content management system based on PHP/MySQL maintained by an [active community](http://forum.wbce.org). 
 
+![](wbce-cms.jpg)
+
 WBCE started as `WebsiteBaker Community Edition`, a fork from the CMS WebsiteBaker 2.8.3 SP4 (which development got stuck for a too long time). With release WBCE 1.1 we implemented new features and security enhancements and decided to rename our CMS into `Way Better Content Editing`: our definition of a modern backend, great ease of use and highest flexibility. Welcome to [WBCE](http://wbce.org)!
 
 ## Features
