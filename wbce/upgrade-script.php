@@ -131,6 +131,7 @@ function status_msg($message, $class = 'check', $element = 'span')
 }
 
 // include required scripts and setup admin object
+define ("WB_SECFORM_TIMEOUT", 7200); // versions bevore 2.8.2 do not have this value set so its needed
 @require_once 'config.php';
 require_once WB_PATH . '/framework/functions.php';
 require_once WB_PATH . '/framework/class.admin.php';
