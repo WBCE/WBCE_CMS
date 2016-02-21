@@ -1,16 +1,7 @@
-<<<<<<< HEAD
-# WBCE - Way Better Content Editing
-[WBCE](http://wbce.org) is an easy to use content management system based on **PHP/MySQL** maintained by an [active community](http://forum.wbce.org). 
-
-![](wbce-cms.jpg)
-
-WBCE started as *WebsiteBaker Community Edition*, a fork from the CMS WebsiteBaker 2.8.3 SP4 (which development got stuck for a too long time). With release WBCE 1.1 we implemented new features and security enhancements and decided to rename our CMS into `WBCE - Way Better Content Editing`: our definition of a modern backend, great ease of use and highest flexibility. Welcome to [WBCE](http://wbce.org)!
-=======
 # WebsiteBaker Community Edition (WBCE)
 The [WebsiteBaker Community Edition](http://wbce.org) (`WBCE` or `WebsiteBaker CE`) is the further development of the classic content management system (CMS) [WebsiteBaker](http://websitebaker.org), based on [WebsiteBaker 2.8.3-SP4](http://wiki.websitebaker.org/wbdownload/SP4ForWb2-8-3.zip). 
 
 Experienced developers, designers und users will work together to give `WebsiteBaker` a future - without personal struggles, without hopeless outdated modules and without templates from internet stone age. [WBCE](http://wbce.org) aims to show that `WebsiteBaker` is not yet dead - and there's a community, where the idea of reaching a common goal is more important than sandbox quarrels. Welcome to [WBCE](http://wbce.org)!
->>>>>>> parent of 12e3011... New branding WBCE - Way Better Content Editing
 
 ## Features
 `WebsiteBaker Community Edition` is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. As a further development of the approved, but a bit aged `WebsiteBaker` CMS, `WBCE` has broke free from burdens, but is as compatible as possible to all modules which are at least a little bit maintained.
@@ -26,9 +17,9 @@ Furthermore `WBCE` is shipped with the most useful modules and modifications for
 ## Links
   - [WBCE Project](http://wbce.org)
   - [User Forum](http://forum.wbce.org)
-  - [GitHub Repository](https://github.com/WBCE/WayBetterContentEditing)
-  - [Bugtracker](https://github.com/WBCE/WayBetterContentEditing/issues)
-  - [Commit History](https://github.com/WBCE/WayBetterContentEditing/commits/master)
+  - [GitHub Repository](https://github.com/WBCE/WebsiteBaker_CommunityEdition)
+  - [Bugtracker](https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues)
+  - [Commit History](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master)
   - [Changelog](CHANGELOG.md)
   - [Installation](INSTALL.md)
 
