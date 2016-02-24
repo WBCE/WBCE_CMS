@@ -131,6 +131,7 @@ function status_msg($message, $class = 'check', $element = 'span')
 }
 
 // include required scripts and setup admin object
+define ("WB_SECFORM_TIMEOUT", 7200); 
 require_once 'config.php';
 $admin = new admin('Addons', 'modules', false, false);
 
