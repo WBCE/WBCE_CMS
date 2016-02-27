@@ -112,19 +112,21 @@ function save_preferences( &$admin, &$database)
 // if no validation errors, try to update the database, otherwise return errormessages
         if(sizeof($err_msg) == 0)
         {
-            $sql  = 'UPDATE `'.TABLE_PREFIX.'users` ';
-            $sql .= 'SET `display_name`=\''.$display_name.'\', ';
+             $sql  = 'UPDATE `'.TABLE_PREFIX.'users` ';
+            $sql .= 'SET `display_name`=\''.$database->escapeString($display_name).'\', ';
             if($sPwHashNew) {
-                $sql .=     '`password`=\''.$sPwHashNew.'\', ';
+                $sql .=     '`password`=\''.$database->escapeString($sPwHashNew).'\', ';
             }
             if($email != '') {
-                $sql .=     '`email`=\''.$email.'\', ';
+                $sql .=     '`email`=\''.$database->escapeString($email).'\', ';
             }
-            $sql .=     '`language`=\''.$language.'\', ';
-            $sql .=     '`timezone`=\''.$timezone.'\', ';
-            $sql .=     '`date_format`=\''.$date_format.'\', ';
-            $sql .=     '`time_format`=\''.$time_format.'\' ';
+            $sql .=     '`language`=\''.$database->escapeString($language).'\', ';
+            $sql .=     '`timezone`=\''.$database->escapeString($timezone).'\', ';
+            $sql .=     '`date_format`=\''.$database->escapeString($date_format).'\', ';
+            $sql .=     '`time_format`=\''.$database->escapeString($time_format).'\' ';
             $sql .= 'WHERE `user_id`='.(int)$admin->get_user_id();
+            if( $database->query($sql) )
+
             if( $database->query($sql) )
             {
                 // update successfull, takeover values into the session
