@@ -177,6 +177,14 @@ class wb extends SecureForm
         return stripslashes($input);
     }
 
+    function strip_magic($input) {
+    if (get_magic_quotes_gpc() and is_string($input)) {
+            return stripslashes($input);
+        }
+        return $input;
+    }
+    
+
     // Escape backslashes for use with mySQL LIKE strings
     public function escape_backslashes($input)
     {
