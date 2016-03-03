@@ -83,7 +83,7 @@ function show_wysiwyg_editor($name, $id, $content, $width = '100%', $height = '2
 
 	$temp = '';
 	if (isset($admin->page_id)) {
-		$query = "SELECT `template` from `".TABLE_PREFIX."pages` where `page_id`='".$page_id."'";
+		$query = "SELECT `template` from `".TABLE_PREFIX."pages` where `page_id`='".(int)$page_id."'";
 		$temp = $database->get_one( $query );
 	}
 	$templateFolder = ($temp == "") ? DEFAULT_TEMPLATE : $temp;

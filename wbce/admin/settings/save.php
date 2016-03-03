@@ -189,10 +189,10 @@ if ($res_settings = $database->query($sql)) {
         }
 
         if (!in_array($value, $disallow_in_fields) && (isset($_POST[$setting_name]) || $passed == true)) {
-            $value = trim($admin->add_slashes($value));
+            $value = trim($admin->strip_magic($value));
             $sql = 'UPDATE `' . TABLE_PREFIX . 'settings` '
-            . 'SET `value`=\'' . $database->escapeString($value, ";") . '\' '
-            . 'WHERE `name`!=\'wb_version\' AND `name`=\'' . $database->escapeString($setting_name) . '\'';
+            . 'SET `value`=\'' . $database->escapeString($value) . '\' '
+            . 'WHERE `name`!=\'wb_version\' AND `name`=\'' . $setting_name . '\'';
             if (!$database->query($sql)) {
                 $admin->print_error($database->get_error, $js_back);
                 break;

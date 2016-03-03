@@ -80,7 +80,7 @@ if (!function_exists('get_page_link')) {
     function get_page_link($id)
     {
         global $database;
-        $sql = 'SELECT `link` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $id;
+        $sql = 'SELECT `link` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . (int)$id;
         $link = $database->get_one($sql);
         return $link;
     }
