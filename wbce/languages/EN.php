@@ -101,6 +101,8 @@ $TEXT['CURRENT'] = 'Current';
 $TEXT['CURRENT_FOLDER'] = 'Current Folder';
 $TEXT['CURRENT_PAGE'] = 'Current Page';
 $TEXT['CURRENT_PASSWORD'] = 'Current Password';
+$TEXT['NEW_PASSWORD'] = 'New Password';
+
 $TEXT['CUSTOM'] = 'Custom';
 $TEXT['DATABASE'] = 'Database';
 $TEXT['DATE'] = 'Date';
@@ -565,6 +567,7 @@ $MESSAGE['PAGES_SAVED'] = 'Page saved successfully';
 $MESSAGE['PAGES_SAVED_SETTINGS'] = 'Page settings saved successfully';
 $MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'] = 'Section properties saved successfully';
 $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'] = 'The (current) password you entered is incorrect';
+
 $MESSAGE['PREFERENCES_DETAILS_SAVED'] = 'Details saved successfully';
 $MESSAGE['PREFERENCES_EMAIL_UPDATED'] = 'Email updated successfully';
 $MESSAGE['PREFERENCES_INVALID_CHARS'] = 'Invalid password chars used';
@@ -656,6 +659,12 @@ $MESSAGE['USERS_NAME_INVALID_CHARS'] = 'Invalid chars for loginname found';
 $MESSAGE['USERS_NO_GROUP'] = 'No group was selected';
 $MESSAGE['USERS_PASSWORD_MISMATCH'] = 'The passwords you entered do not match';
 $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'The password you entered was too short';
+$MESSAGE['USERS_PASSWORD_TOO_LONG'] = 'The password you entered was too long';
+$MESSAGE['USERS_PASSWORD_INVALID_TYPE'] = 'The password you entered was of an invalid type(Array, Object...)';
+$MESSAGE['USERS_PASSWORD_EMPTY'] = 'The password you entered was of an invalid type(Array, Object...)';
+$MESSAGE['USERS_PASSWORD_INCORRECT'] = 'The (current) password you entered is incorrect';
+
+
 $MESSAGE['USERS_SAVED'] = 'User saved successfully';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';

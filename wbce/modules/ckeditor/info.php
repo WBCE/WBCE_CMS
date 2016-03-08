@@ -24,6 +24,6 @@ $module_name        = 'CKEditor v4.5.5';
 $module_function    = 'WYSIWYG';
 $module_version     = '4.5.5';
 $module_platform    = '2.8.3 SP5';
-$module_author      = 'Michael Tenschert, Dietrich Roland Pehlke, erpe, WebBird, Marmot, Luisehahne';
+$module_author      = 'Michael Tenschert, Dietrich Roland Pehlke, erpe, WebBird, Marmot, Luisehahne qssocial';
 $module_license     = '<a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>';
 $module_description = 'includes CKEditor 4.5.5, CKE allows editing content and can be integrated in frontend and backend modules.';
