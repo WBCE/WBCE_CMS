@@ -106,7 +106,7 @@ function check_wb_tables()
     $all_tables = array();
     if ($get_result->numRows() > 0) {
         while ($data = $get_result->fetchRow()) {
-            $tmp = str_replace(TABLE_PREFIX, '', $data[0]);
+            $tmp = substr($data[0], strlen(TABLE_PREFIX));
             if (in_array($tmp, $table_list)) {
                 $all_tables[] = $tmp;
             }
