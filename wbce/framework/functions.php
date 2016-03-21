@@ -1036,7 +1036,7 @@ function load_module($directory, $install = false)
             if($install == true) {
                 if(file_exists($directory.'/install.php')) {
                     require($directory.'/install.php');
-                        $retVal[] = isset($msg)?:'Info '.$module_name;
+                        if (isset($msg)) {$retVal[] = $msg; } else {$retVal[] = 'Info '.$module_name;}
                 }
             }
         }
