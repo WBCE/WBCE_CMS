@@ -74,9 +74,9 @@ JsAdmin.init_drag_drop = function() {
 			}
 		}
 
-	} else if(document.URL.indexOf("/admin/pages/sections.php") > 0) {
+	} else if(document.URL.indexOf(JsAdmin.ADMIN_URL + "/pages/sections.php") > -1) {
 		page_type = 'sections';
-	} else if(document.URL.indexOf("/admin/pages/modify.php") > 0) {
+	} else if(document.URL.indexOf(JsAdmin.ADMIN_URL + "/pages/modify.php") > -1) {
 		page_type = 'modules';
 		is_tree = true;
 		// Stash all UL ids
