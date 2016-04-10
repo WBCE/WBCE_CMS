@@ -65,6 +65,9 @@ class admin extends wb
                 $this->print_header();
             }
         }
+        // i know this sucks but some old stuff really need this
+        global $wb;
+        $wb = $this;
     }
 
     // Print the admin header
