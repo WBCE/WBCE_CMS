@@ -73,6 +73,15 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}pages` (
   `viewing_users` text{TABLE_COLLATION} NOT NULL,
   `modified_when` int(11) NOT NULL DEFAULT '0',
   `modified_by` int(11) NOT NULL DEFAULT '0',
+  `icon` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `image` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `thumb` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `image2` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `image3` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `image4` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `publish` int(11) NOT NULL DEFAULT '0',
+  `unpublish` int(11) NOT NULL DEFAULT '0',
+
   PRIMARY KEY (`page_id`)
 ){TABLE_ENGINE};
 -- --------------------------------------------------------

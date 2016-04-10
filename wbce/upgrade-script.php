@@ -506,15 +506,37 @@ Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
  *  Adding DB Fields
  */
 
-// Add field "redirect_type" to table "mod_menu_link"
+
 echo "<br />Adding field redirect_type to mod_menu_link table<br />";
 db_add_field('redirect_type', 'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER `target_page_id`");
 
-// Add field "namesection" to table "sections"
+
 echo "<br />Adding field namesection to sections table<br />";
 db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
 
+echo "<br />Adding field icon to pages table<br />";
+db_add_field('icon', 'pages', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT ''");
 
+echo "<br />Adding field image to pages table<br />";
+db_add_field('image', 'pages', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT ''");
+
+echo "<br />Adding field thumb to pages table<br />";
+db_add_field('thumb', 'pages', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT ''");
+
+echo "<br />Adding field image2 to pages table<br />";
+db_add_field('image2', 'pages', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT ''");
+
+echo "<br />Adding field image3 to pages table<br />";
+db_add_field('image3', 'pages', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT ''");
+
+echo "<br />Adding field image4 to pages table<br />";
+db_add_field('image4', 'pages', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT ''");
+
+echo "<br />Adding publish icon to pages table<br />";
+db_add_field('icon', 'publish', "int(11) NOT NULL DEFAULT '0'");
+
+echo "<br />Adding unpublish icon to pages table<br />";
+db_add_field('icon', 'unpublish', "int(11) NOT NULL DEFAULT '0'");
 
 
 
