@@ -112,6 +112,11 @@ if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){
 define ("WB_PROTOCOLL", $protocoll);
 
 
+// SELECTED AND CHECKED 
+// are needed in so many forms that i decided to lazy define them here
+if (!defined('WB_SELECT')) {define('WB_SELECT',' selected="selected" ');}
+if (!defined('WB_CHECK'))  {define('WB_CHECK',' checked="checked" ');}
+
 
 // AUTOLOADERS
 // register WB Autoloader 
