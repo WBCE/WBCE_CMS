@@ -9,7 +9,7 @@ class Tool {
     public $toolFile       = "tool.php";    // the file to be called in single tool link
     public $toolRetFile    = "index.php" ;  // the file used in the retunrn to list link
     public $toolLister     = false;
-    public $typeDir        = "/admintools";// type of the tool "/admintools", "/settingtools", "".
+    public $typeDir        = "/admintools";// type directory of the tool "/admintools", "/settings", "".
     
     public $doSave         = false;        // User pressed the save button
     public $returnToTools  = "";           // return path too admintools, settings or mainpage.
@@ -84,30 +84,34 @@ class Tool {
         $this->returnToTools = ADMIN_URL.'/admintools/index.php';
         $this->typeDir = "/admintools";
         $this->adminAccess = "admintools";
+         
         // only set if nothing is manually set
         if ($this->adminSection =="") $this->adminSection = "admintools";
         if ($this->toolType=="setting") {
-            $this->returnToTools = ADMIN_URL.'/settingtools/index.php';
-            $this->typeDir = "/settingtools";
+            $this->returnToTools = ADMIN_URL.'/settings/index.php';
+            $this->typeDir = "/settings";
             $this->adminAccess = "settings";
             $this->adminSection = "settings";
         }  
+        
         //Possibly we need on for each page here ... we will see
         // this one is not used anyway right now
         if ($this->toolType=="backend") {
             $this->returnToTools = ADMIN_URL.'/index.php';
             $this->typeDir = "";
         }
+         
         // check if Tool directory is fully valid
         if ($this->toolDir===false) $this->ReturnTo();
         
         // test for valid tool name
         if(!preg_match('/^[a-z][a-z_\-0-9]{2,}$/i', $this->toolDir)) $this->ReturnTo();
-        
+
         // file_exists?
         $path=WB_PATH."/modules/".$this->toolDir;
+        // die ($path);
         if (!file_exists($path)) $this->ReturnTo();
-        
+               
         //echo "<pre>"; print_r($_SESSION); echo "</pre>";
         
         // Check if tool is installed
@@ -140,7 +144,7 @@ class Tool {
         if ($this->toolType=="tool")
             $this->returnUrl= ADMIN_URL."/admintools/tool.php?tool=".$this->toolDir;
         if ($this->toolType=="setting")
-            $this->returnUrl= ADMIN_URL."/settingtools/tool.php?tool=".$this->toolDir;   
+            $this->returnUrl= ADMIN_URL."/settings/index.php?tool=".$this->toolDir;   
        // if ($this->toolType=="backend")
         //    $this->returnUrl= ADMIN_URL."/tool.php?tool=".$this->toolDir;   
             
@@ -190,10 +194,10 @@ class Tool {
         
         // only for Droplet Module as its using strange Globals
         global $twig;
- 
+            
         //check and generate vars and initialize the object
         $this->CheckVars ();
-        
+       
         // templateengine users like to have this in an Array
         $VARS=$this->GetPubVars();
 
@@ -330,10 +334,13 @@ class Tool {
         Simply returns to a givem address
     */
     private function ReturnTo($returnUrl="") {
+        echo $this->returnToTools;
         if (!$returnUrl) $returnUrl=$this->returnToTools;
-        header('location: '.$returnUrl); exit;   
+        //header('location: '.$returnUrl); 
+        exit;   
     }
 
  
 
 }
+
