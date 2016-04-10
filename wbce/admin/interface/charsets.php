@@ -43,4 +43,4 @@ $CHARSETS['big5'] = 'Chinese Traditional (big5)';
 $CHARSETS['iso-2022-jp'] = 'Japanese (iso-2022-jp)';
 $CHARSETS['iso-2022-kr'] = 'Korean (iso-2022-kr)';
 
-?>
+

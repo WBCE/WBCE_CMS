@@ -10,6 +10,14 @@
  * @license GNU GPL2 (or any later version)
  */
 
+/*
+////////////////////////////////////////////////////////////
+Functions Section
+This needs to stay up here !!!
+////////////////////////////////////////////////////////////
+*/
+
+
 // function to extract var/value-pair from DB
 function db_get_key_value($table, $key)
 {
@@ -129,6 +137,16 @@ function status_msg($message, $class = 'check', $element = 'span')
     $msg .= $message . '</' . $element . '>';
     echo $msg;
 }
+
+/*
+////////////////////////////////////////////////////////////
+Functions Section END
+////////////////////////////////////////////////////////////
+*/
+
+
+
+
 
 // include required scripts and setup admin object
 define ("WB_SECFORM_TIMEOUT", 7200); 
@@ -495,6 +513,9 @@ db_add_field('redirect_type', 'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER
 // Add field "namesection" to table "sections"
 echo "<br />Adding field namesection to sections table<br />";
 db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
+
+
+
 
 
 /**********************************************************

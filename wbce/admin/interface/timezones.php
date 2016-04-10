@@ -75,4 +75,4 @@ if(isset($user_time) && $user_time == true)
 // Reverse array so "System Default" is at the top
 $TIMEZONES = array_reverse($TIMEZONES, true);
 
-?>
+

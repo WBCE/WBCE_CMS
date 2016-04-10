@@ -63,4 +63,4 @@ if(isset($user_time) && $user_time == true)
 // Reverse array so "System Default" is at the top
 $DATE_FORMATS = array_reverse($DATE_FORMATS, true);
 
-?>
+
