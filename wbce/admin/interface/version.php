@@ -16,12 +16,12 @@ if (!defined('WB_URL')) {
 }
 
 // set WBCE version and release tag
-define('NEW_WBCE_VERSION', '1.2.0-alpha.3');
+define('NEW_WBCE_VERSION', '1.2.0-alpha.4');
 if (!defined('WBCE_VERSION')) {
     define('WBCE_VERSION', NEW_WBCE_VERSION);
 }
 
-define('NEW_WBCE_TAG', '1.2.0-alpha.3');
+define('NEW_WBCE_TAG', '1.2.0-alpha.4');
 if (!defined('WBCE_TAG')) {
     define('WBCE_TAG', NEW_WBCE_TAG);
 }
