@@ -21,18 +21,19 @@ if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
 // Get entered values
 	$display_name = $wb->add_slashes(strip_tags($admin->get_post('display_name')));
-	$language = $wb->get_post('language');
-	$timezone = $wb->get_post('timezone')*60*60;
+	$language = preg_match('/^[a-z]{2}$/si', $wb->get_post('language')) ? $wb->get_post('language') : 'EN';
+ 	$timezone = is_numeric($wb->get_post('timezone')) ? $wb->get_post('timezone')*60*60 : 0;
 	$date_format = $wb->get_post('date_format');
 	$time_format = $wb->get_post('time_format');
 
 // Update the database
-// $database = new database();
-	$sql  = "UPDATE `".TABLE_PREFIX."users` SET ";
-	$sql .= "`display_name` = '".$display_name."', `language` = '".$language."', ";
-	$sql .= "`timezone` = '".$timezone."', `date_format` = '".$date_format."', ";
-	$sql .= "`time_format` = '".$time_format."' ";
-	$sql .=	"WHERE `user_id` = '".$wb->get_user_id()."'";
+$sql  = 'UPDATE `'.TABLE_PREFIX.'users` '
+        . 'SET `display_name` = \''.$database->escapeString($display_name).'\', '
+        .     '`language` = \''.$database->escapeString($language).'\', '
+        .     '`timezone` = \''.$database->escapeString($timezone).'\', '
+        .     '`date_format` = \''.$database->escapeString($date_format).'\', '
+        .     '`time_format` = \''.$database->escapeString($time_format).'\' '
+        . 'WHERE `user_id` = \''.$wb->get_user_id().'\'';
 	$database->query($sql);
 	if($database->is_error()) {
 		$error[] = $database->get_error();

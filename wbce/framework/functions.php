@@ -994,45 +994,48 @@ function replace_vars($subject = '', &$replace = null)
 // Load module into DB
 function load_module($directory, $install = false)
 {
-    global $database, $admin, $MESSAGE;
-    $retVal = false;
-    if (is_dir($directory) && file_exists($directory . '/info.php')) {
-        require $directory . '/info.php';
-        if (isset($module_name)) {
-            if (!isset($module_license)) {$module_license = 'GNU General Public License';}
-            if (!isset($module_platform) && isset($module_designed_for)) {$module_platform = $module_designed_for;}
-            if (!isset($module_function) && isset($module_type)) {$module_function = $module_type;}
-            // trim, remove spaces and lowecase (most usual mistakes ;-)
-            $module_function = str_replace(' ', '',trim(strtolower($module_function)));
+    global $database,$admin,$MESSAGE;
+    $retVal = array();
+    if(is_dir($directory) && file_exists($directory.'/info.php'))
+    {
+        require($directory.'/info.php');
+        if(isset($module_name))
+        {
+            if(!isset($module_license)) { $module_license = 'GNU General Public License'; }
+            if(!isset($module_platform) && isset($module_designed_for)) { $module_platform = $module_designed_for; }
+            if(!isset($module_function) && isset($module_type)) { $module_function = $module_type; }
+            $module_function = strtolower($module_function);
             // Check that it doesn't already exist
-            $sqlwhere = 'WHERE `type` = \'module\' AND `directory` = \'' . $module_directory . '\'';
-            $sql = 'SELECT COUNT(*) FROM `' . TABLE_PREFIX . 'addons` ' . $sqlwhere;
-            if ($database->get_one($sql)) {
-                $sql = 'UPDATE `' . TABLE_PREFIX . 'addons` SET ';
-            } else {
+            $sqlwhere = 'WHERE `type` = \'module\' AND `directory` = \''.$module_directory.'\'';
+            $sql  = 'SELECT COUNT(*) FROM `'.TABLE_PREFIX.'addons` '.$sqlwhere;
+            if( $database->get_one($sql) ) {
+                $sql  = 'UPDATE `'.TABLE_PREFIX.'addons` SET ';
+            }else{
                 // Load into DB
-                $sql = 'INSERT INTO `' . TABLE_PREFIX . 'addons` SET ';
+                $sql  = 'INSERT INTO `'.TABLE_PREFIX.'addons` SET ';
                 $sqlwhere = '';
             }
-            $sql .= '`directory`=\'' . $module_directory . '\', ';
-            $sql .= '`name`=\'' . $module_name . '\', ';
-            $sql .= '`description`=\'' . addslashes($module_description) . '\', ';
-            $sql .= '`type`=\'module\', ';
-            $sql .= '`function`=\'' . $module_function . '\', ';
-            $sql .= '`version`=\'' . $module_version . '\', ';
-            $sql .= '`platform`=\'' . $module_platform . '\', ';
-            $sql .= '`author`=\'' . addslashes($module_author) . '\', ';
-            $sql .= '`license`=\'' . addslashes($module_license) . '\'';
-            $sql .= $sqlwhere;
-            $retVal = $database->query($sql);
+            $sql .= '`directory`=\''.$database->escapeString($module_directory, ";").'\', '
+                  . '`name`=\''.$database->escapeString($module_name, ";").'\', '
+                  . '`description`=\''.$database->escapeString($module_description, ";").'\', '
+                  . '`type`=\'module\', '
+                  . '`function`=\''.$database->escapeString($module_function, ";").'\', '
+                  . '`version`=\''.$database->escapeString($module_version, ";").'\', '
+                  . '`platform`=\''.$database->escapeString($module_platform, ";").'\', '
+                  . '`author`=\''.$database->escapeString($module_author, ";").'\', '
+                  . '`license`=\''.$database->escapeString($module_license, ";").'\''
+            . $sqlwhere;
+            $retVal[] = $database->query($sql);
             // Run installation script
-            if ($install == true) {
-                if (file_exists($directory . '/install.php')) {
-                    require $directory . '/install.php';
+            if($install == true) {
+                if(file_exists($directory.'/install.php')) {
+                    require($directory.'/install.php');
+                        $retVal[] = isset($msg)?:'Info '.$module_name;
                 }
             }
         }
     }
+return $retVal;
 }
 
 // Load template into DB
@@ -1040,38 +1043,40 @@ function load_template($directory)
 {
     global $database, $admin;
     $retVal = false;
-    if (is_dir($directory) && file_exists($directory . '/info.php')) {
-        require $directory . '/info.php';
-        if (isset($template_name)) {
-            if (!isset($template_license)) {
-                $template_license = 'GNU General Public License';
+    if(is_dir($directory) && file_exists($directory.'/info.php'))
+    {
+        require($directory.'/info.php');
+        if(isset($template_name))
+        {
+            if(!isset($template_license)) {
+              $template_license = 'GNU General Public License';
             }
-            if (!isset($template_platform) && isset($template_designed_for)) {
-                $template_platform = $template_designed_for;
+            if(!isset($template_platform) && isset($template_designed_for)) {
+              $template_platform = $template_designed_for;
             }
-            if (!isset($template_function)) {
-                $template_function = 'template';
+            if(!isset($template_function)) {
+              $template_function = 'template';
             }
             // Check that it doesn't already exist
-            $sqlwhere = 'WHERE `type`=\'template\' AND `directory`=\'' . $template_directory . '\'';
-            $sql = 'SELECT COUNT(*) FROM `' . TABLE_PREFIX . 'addons` ' . $sqlwhere;
-            if ($database->get_one($sql)) {
-                $sql = 'UPDATE `' . TABLE_PREFIX . 'addons` SET ';
-            } else {
+            $sqlwhere = 'WHERE `type`=\'template\' AND `directory`=\''.$template_directory.'\'';
+            $sql  = 'SELECT COUNT(*) FROM `'.TABLE_PREFIX.'addons` '.$sqlwhere;
+            if( $database->get_one($sql) ) {
+                $sql  = 'UPDATE `'.TABLE_PREFIX.'addons` SET ';
+            }else{
                 // Load into DB
-                $sql = 'INSERT INTO `' . TABLE_PREFIX . 'addons` SET ';
+                $sql  = 'INSERT INTO `'.TABLE_PREFIX.'addons` SET ';
                 $sqlwhere = '';
             }
-            $sql .= '`directory`=\'' . $template_directory . '\', ';
-            $sql .= '`name`=\'' . $template_name . '\', ';
-            $sql .= '`description`=\'' . addslashes($template_description) . '\', ';
-            $sql .= '`type`=\'template\', ';
-            $sql .= '`function`=\'' . $template_function . '\', ';
-            $sql .= '`version`=\'' . $template_version . '\', ';
-            $sql .= '`platform`=\'' . $template_platform . '\', ';
-            $sql .= '`author`=\'' . addslashes($template_author) . '\', ';
-            $sql .= '`license`=\'' . addslashes($template_license) . '\' ';
-            $sql .= $sqlwhere;
+            $sql .= '`directory`=\''.$database->escapeString($template_directory, ";").'\', '
+                  . '`name`=\''.$database->escapeString($template_name, ";").'\', '
+                  . '`description`=\''.$database->escapeString($template_description, ";").'\', '
+                  . '`type`=\'template\', '
+                  . '`function`=\''.$database->escapeString($template_function, ";").'\', '
+                  . '`version`=\''.$database->escapeString($template_version, ";").'\', '
+                  . '`platform`=\''.$database->escapeString($template_platform, ";").'\', '
+                  . '`author`=\''.$database->escapeString($template_author, ";").'\', '
+                  . '`license`=\''.$database->escapeString($template_license, ";").'\' '
+                  . $sqlwhere;
             $retVal = $database->query($sql);
         }
     }
@@ -1081,46 +1086,48 @@ function load_template($directory)
 // Load language into DB
 function load_language($file)
 {
-    global $database, $admin;
+    global $database,$admin;
     $retVal = false;
-    if (file_exists($file) && preg_match('#^([A-Z]{2}.php)#', basename($file))) {
+    if (file_exists($file) && preg_match('#^([A-Z]{2}.php)#', basename($file)))
+    {
         // require($file);  it's to large
         // read contents of the template language file into string
-        $data = @file_get_contents(WB_PATH . '/languages/' . str_replace('.php', '', basename($file)) . '.php');
+        $data = @file_get_contents(WB_PATH.'/languages/'.str_replace('.php','',basename($file)).'.php');
         // use regular expressions to fetch the content of the variable from the string
         $language_name = get_variable_content('language_name', $data, false, false);
-        $language_code = get_variable_content('language_code', $data, false, false);
+        $language_code = preg_replace('/^.*([a-zA-Z]{2})\.php$/si', '\1', $file);
         $language_author = get_variable_content('language_author', $data, false, false);
         $language_version = get_variable_content('language_version', $data, false, false);
         $language_platform = get_variable_content('language_platform', $data, false, false);
-
-        if (isset($language_name)) {
-            if (!isset($language_license)) {$language_license = 'GNU General Public License';}
-            if (!isset($language_platform) && isset($language_designed_for)) {$language_platform = $language_designed_for;}
+        $language_description = get_variable_content('language_platform', $data, false, false);
+        if(isset($language_name))
+        {
+            if(!isset($language_license)) { $language_license = 'GNU General Public License'; }
+            if(!isset($language_platform) && isset($language_designed_for)) { $language_platform = $language_designed_for; }
             // Check that it doesn't already exist
-            $sqlwhere = 'WHERE `type`=\'language\' AND `directory`=\'' . $language_code . '\'';
-            $sql = 'SELECT COUNT(*) FROM `' . TABLE_PREFIX . 'addons` ' . $sqlwhere;
-            if ($database->get_one($sql)) {
-                $sql = 'UPDATE `' . TABLE_PREFIX . 'addons` SET ';
-            } else {
+            $sqlwhere = 'WHERE `type`=\'language\' AND `directory`=\''.$language_code.'\'';
+            $sql  = 'SELECT COUNT(*) FROM `'.TABLE_PREFIX.'addons` '.$sqlwhere;
+            if( $database->get_one($sql) ) {
+                $sql  = 'UPDATE `'.TABLE_PREFIX.'addons` SET ';
+            }else{
                 // Load into DB
-                $sql = 'INSERT INTO `' . TABLE_PREFIX . 'addons` SET ';
+                $sql  = 'INSERT INTO `'.TABLE_PREFIX.'addons` SET ';
                 $sqlwhere = '';
             }
-            $sql .= '`directory`=\'' . $language_code . '\', ';
-            $sql .= '`name`=\'' . $language_name . '\', ';
-            $sql .= '`type`=\'language\', ';
-            $sql .= '`version`=\'' . $language_version . '\', ';
-            $sql .= '`platform`=\'' . $language_platform . '\', ';
-            $sql .= '`author`=\'' . addslashes($language_author) . '\', ';
-            $sql .= '`license`=\'' . addslashes($language_license) . '\' ';
-            $sql .= $sqlwhere;
+            $sql .= '`directory`=\''.$language_code.'\', '
+                  . '`name`=\''.$database->escapeString($language_name, ";").'\', '
+                  . '`type`=\'language\', '
+                  . '`version`=\''.$database->escapeString($language_version, ";").'\', '
+                  . '`platform`=\''.$database->escapeString($language_platform, ";").'\', '
+                  . '`author`=\''.$database->escapeString($language_author, ";").'\', '
+                  . '`description`=\'\', '
+                  . '`license`=\''.$database->escapeString($language_license, ";").'\' '
+                  . $sqlwhere;
             $retVal = $database->query($sql);
         }
     }
     return $retVal;
 }
-
 // Upgrade module info in DB, optionally start upgrade script
 function upgrade_module($directory, $upgrade = false)
 {
