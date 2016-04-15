@@ -403,7 +403,7 @@ function is_parent($page_id)
 {
     global $database;
     // Get parent
-    $sql = 'SELECT `parent` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $page_id;
+    $sql = 'SELECT `parent` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . (int)$page_id;
     $parent = $database->get_one($sql);
     // If parent isnt 0 return its ID
     if (is_null($parent)) {
@@ -418,7 +418,7 @@ function level_count($page_id)
 {
     global $database;
     // Get page parent
-    $sql = 'SELECT `parent` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $page_id;
+    $sql = 'SELECT `parent` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . (int)$page_id;
     $parent = $database->get_one($sql);
     if ($parent > 0) {
         // Get the level of the parent
@@ -435,7 +435,7 @@ function root_parent($page_id)
 {
     global $database;
     // Get page details
-    $sql = 'SELECT `parent`, `level` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $page_id;
+    $sql = 'SELECT `parent`, `level` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . (int)$page_id;
     $query_page = $database->query($sql);
     $fetch_page = $query_page->fetchRow();
     $parent = $fetch_page['parent'];
@@ -456,7 +456,7 @@ function get_page_title($id)
 {
     global $database;
     // Get title
-    $sql = 'SELECT `page_title` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $id;
+    $sql = 'SELECT `page_title` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . (int)$id;
     $page_title = $database->get_one($sql);
     return $page_title;
 }
@@ -466,7 +466,7 @@ function get_menu_title($id)
 {
     global $database;
     // Get title
-    $sql = 'SELECT `menu_title` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $id;
+    $sql = 'SELECT `menu_title` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . (int)$id;
     $menu_title = $database->get_one($sql);
     return $menu_title;
 }
@@ -505,7 +505,7 @@ function get_subs($parent, array $subs)
     // Connect to the database
     global $database;
     // Get id's
-    $sql = 'SELECT `page_id` FROM `' . TABLE_PREFIX . 'pages` WHERE `parent` = ' . $parent;
+    $sql = 'SELECT `page_id` FROM `' . TABLE_PREFIX . 'pages` WHERE `parent` = ' . (int)$parent;
     if (($query = $database->query($sql))) {
         while ($fetch = $query->fetchRow()) {
             $subs[] = $fetch['page_id'];
@@ -1015,15 +1015,15 @@ function load_module($directory, $install = false)
                 $sql  = 'INSERT INTO `'.TABLE_PREFIX.'addons` SET ';
                 $sqlwhere = '';
             }
-            $sql .= '`directory`=\''.$database->escapeString($module_directory, ";").'\', '
-                  . '`name`=\''.$database->escapeString($module_name, ";").'\', '
-                  . '`description`=\''.$database->escapeString($module_description, ";").'\', '
+            $sql .= '`directory`=\''.$database->escapeString($module_directory).'\', '
+                  . '`name`=\''.$database->escapeString($module_name).'\', '
+                  . '`description`=\''.$database->escapeString($module_description).'\', '
                   . '`type`=\'module\', '
-                  . '`function`=\''.$database->escapeString($module_function, ";").'\', '
-                  . '`version`=\''.$database->escapeString($module_version, ";").'\', '
-                  . '`platform`=\''.$database->escapeString($module_platform, ";").'\', '
-                  . '`author`=\''.$database->escapeString($module_author, ";").'\', '
-                  . '`license`=\''.$database->escapeString($module_license, ";").'\''
+                  . '`function`=\''.$database->escapeString($module_function).'\', '
+                  . '`version`=\''.$database->escapeString($module_version).'\', '
+                  . '`platform`=\''.$database->escapeString($module_platform).'\', '
+                  . '`author`=\''.$database->escapeString($module_author).'\', '
+                  . '`license`=\''.$database->escapeString($module_license).'\''
             . $sqlwhere;
             $retVal[] = $database->query($sql);
             // Run installation script
@@ -1067,15 +1067,15 @@ function load_template($directory)
                 $sql  = 'INSERT INTO `'.TABLE_PREFIX.'addons` SET ';
                 $sqlwhere = '';
             }
-            $sql .= '`directory`=\''.$database->escapeString($template_directory, ";").'\', '
-                  . '`name`=\''.$database->escapeString($template_name, ";").'\', '
-                  . '`description`=\''.$database->escapeString($template_description, ";").'\', '
+            $sql .= '`directory`=\''.$database->escapeString($template_directory).'\', '
+                  . '`name`=\''.$database->escapeString($template_name).'\', '
+                  . '`description`=\''.$database->escapeString($template_description).'\', '
                   . '`type`=\'template\', '
-                  . '`function`=\''.$database->escapeString($template_function, ";").'\', '
-                  . '`version`=\''.$database->escapeString($template_version, ";").'\', '
-                  . '`platform`=\''.$database->escapeString($template_platform, ";").'\', '
-                  . '`author`=\''.$database->escapeString($template_author, ";").'\', '
-                  . '`license`=\''.$database->escapeString($template_license, ";").'\' '
+                  . '`function`=\''.$database->escapeString($template_function).'\', '
+                  . '`version`=\''.$database->escapeString($template_version).'\', '
+                  . '`platform`=\''.$database->escapeString($template_platform).'\', '
+                  . '`author`=\''.$database->escapeString($template_author).'\', '
+                  . '`license`=\''.$database->escapeString($template_license).'\' '
                   . $sqlwhere;
             $retVal = $database->query($sql);
         }
@@ -1115,19 +1115,20 @@ function load_language($file)
                 $sqlwhere = '';
             }
             $sql .= '`directory`=\''.$language_code.'\', '
-                  . '`name`=\''.$database->escapeString($language_name, ";").'\', '
+                  . '`name`=\''.$database->escapeString($language_name).'\', '
                   . '`type`=\'language\', '
-                  . '`version`=\''.$database->escapeString($language_version, ";").'\', '
-                  . '`platform`=\''.$database->escapeString($language_platform, ";").'\', '
-                  . '`author`=\''.$database->escapeString($language_author, ";").'\', '
+                  . '`version`=\''.$database->escapeString($language_version).'\', '
+                  . '`platform`=\''.$database->escapeString($language_platform).'\', '
+                  . '`author`=\''.$database->escapeString($language_author).'\', '
                   . '`description`=\'\', '
-                  . '`license`=\''.$database->escapeString($language_license, ";").'\' '
+                  . '`license`=\''.$database->escapeString($language_license).'\' '
                   . $sqlwhere;
             $retVal = $database->query($sql);
         }
     }
     return $retVal;
 }
+
 // Upgrade module info in DB, optionally start upgrade script
 function upgrade_module($directory, $upgrade = false)
 {

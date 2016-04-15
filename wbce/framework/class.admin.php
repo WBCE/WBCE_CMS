@@ -364,7 +364,7 @@ class admin extends wb
         if (isset($_GET['tool'])) {
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool'], "%;_") . '\'';
+            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend_body.js file to include
@@ -425,7 +425,7 @@ class admin extends wb
         if (isset($_GET['tool'])) {
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool'], "%;_")  . '\'';
+            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend.js or backend.css file to include
