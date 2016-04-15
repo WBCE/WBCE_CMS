@@ -1214,26 +1214,7 @@ function get_modul_version($modulname, $source = true)
     return $version;
 }
 
-/*
- * @param string $varlist: commaseperated list of varnames to move into global space
- * @return bool:  false if one of the vars already exists in global space (error added to msgQueue)
- */
-function vars2globals_wrapper($varlist)
-{
-    $retval = true;
-    if ($varlist != '') {
-        $vars = explode(',', $varlist);
-        foreach ($vars as $var) {
-            if (isset($GLOBALS[$var])) {
-                ErrorLog::write('variabe $' . $var . ' already defined in global space!!', __FILE__, __FUNCTION__, __LINE__);
-                $retval = false;
-            } else {
-                global $$var;
-            }
-        }
-    }
-    return $retval;
-}
+
 
 /*
  * filter directory traversal more thoroughly, thanks to hal 9000
