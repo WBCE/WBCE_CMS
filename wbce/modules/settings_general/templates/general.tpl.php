@@ -78,81 +78,81 @@ margin:2px; padding:0;
         <hr />
         <!-- PAGE TRASH -->
         <div class="settingName" ><?php echo $TEXT['PAGE_TRASH'] ?></div>
-        <input type="radio" name="page_trash" id="page_trash_inline" style="width: 14px; height: 14px;" value="inline" <?php if (WB_PAGE_TRASH=="inline") echo 'checked="checked"'; ?> />
+        <input type="radio" name="page_trash" id="page_trash_inline" style="width: 14px; height: 14px;" value="inline" <?php if (PAGE_TRASH=="inline") echo 'checked="checked"'; ?> />
         <label for="page_trash_inline"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="page_trash" id="page_trash_disabled" style="width: 14px; height: 14px;" value="disabled" <?php if (WB_PAGE_TRASH=="disabled") echo 'checked="checked"'; ?> />
+        <input type="radio" name="page_trash" id="page_trash_disabled" style="width: 14px; height: 14px;" value="disabled" <?php if (PAGE_TRASH=="disabled") echo 'checked="checked"'; ?> />
         <label for="page_trash_disabled"><?php echo $TEXT['DISABLED'] ?></label>
         <hr />  
         
         <!-- PAGE LANGUAGES -->
         <div class="settingName" ><?php echo $TEXT['PAGE_LANGUAGES'] ?></div>  
-        <input type="radio" name="page_languages" id="page_languages_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_PAGE_LANGUAGES)  echo 'checked="checked"';?> />
+        <input type="radio" name="page_languages" id="page_languages_true" style="width: 14px; height: 14px;" value="true" <?php if (PAGE_LANGUAGES)  echo 'checked="checked"';?> />
         <label for="page_languages_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="page_languages" id="page_languages_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_PAGE_LANGUAGES)  echo 'checked="checked"';?> />
+        <input type="radio" name="page_languages" id="page_languages_false" style="width: 14px; height: 14px;" value="false" <?php if (!PAGE_LANGUAGES)  echo 'checked="checked"';?> />
         <label for="page_languages_false"><?php echo $TEXT['DISABLED'] ?></label>   
         <hr />
            
         <!-- MULTIPLE MENUS -->
         <div class="settingName" ><?php echo $TEXT['MULTIPLE_MENUS'] ?></div> 
-        <input type="radio" name="multiple_menus" id="multiple_menus_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_MULTIPLE_MENUS)  echo 'checked="checked"';?> />
+        <input type="radio" name="multiple_menus" id="multiple_menus_true" style="width: 14px; height: 14px;" value="true" <?php if (MULTIPLE_MENUS)  echo 'checked="checked"';?> />
         <label for="multiple_menus_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="multiple_menus" id="multiple_menus_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_MULTIPLE_MENUS)  echo 'checked="checked"';?> />
+        <input type="radio" name="multiple_menus" id="multiple_menus_false" style="width: 14px; height: 14px;" value="false" <?php if (!MULTIPLE_MENUS)  echo 'checked="checked"';?> />
         <label for="multiple_menus_false"><?php echo $TEXT['DISABLED'] ?></label>
         <hr />
         
         <!--HOME_FOLDERS -->
         <div class="settingName" ><?php echo $TEXT['HOME_FOLDERS'] ?></div>
-        <input type="radio" name="home_folders" id="home_folders_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_HOME_FOLDERS)  echo 'checked="checked"';?> />
+        <input type="radio" name="home_folders" id="home_folders_true" style="width: 14px; height: 14px;" value="true" <?php if (HOME_FOLDERS)  echo 'checked="checked"';?> />
         <label for="home_folders_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="home_folders" id="home_folders_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_HOME_FOLDERS)  echo 'checked="checked"';?> />
+        <input type="radio" name="home_folders" id="home_folders_false" style="width: 14px; height: 14px;" value="false" <?php if (!HOME_FOLDERS)  echo 'checked="checked"';?> />
         <label for="home_folders_false"><?php echo $TEXT['DISABLED'] ?></label>         
         <hr />
         
         <!-- MANAGE_SECTIONS --> 
         <div class="settingName" ><?php echo $HEADING['MANAGE_SECTIONS'] ?></div> 
-        <input type="radio" name="manage_sections" id="manage_sections_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_MANAGE_SECTIONS)  echo 'checked="checked"';?> />
+        <input type="radio" name="manage_sections" id="manage_sections_true" style="width: 14px; height: 14px;" value="true" <?php if (MANAGE_SECTIONS)  echo 'checked="checked"';?> />
         <label for="manage_sections_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="manage_sections" id="manage_sections_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_MANAGE_SECTIONS)  echo 'checked="checked"';?> />
+        <input type="radio" name="manage_sections" id="manage_sections_false" style="width: 14px; height: 14px;" value="false" <?php if (!MANAGE_SECTIONS)  echo 'checked="checked"';?> />
         <label for="manage_sections_false"><?php echo $TEXT['DISABLED'] ?></label>
        <hr />
         
         <!-- SECTION_BLOCKS -->
         <div class="settingName" ><?php echo $TEXT['SECTION_BLOCKS'] ?></div>   
-        <input type="radio" name="section_blocks" id="section_blocks_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_SECTION_BLOCKS)  echo 'checked="checked"';?> />
+        <input type="radio" name="section_blocks" id="section_blocks_true" style="width: 14px; height: 14px;" value="true" <?php if (SECTION_BLOCKS)  echo 'checked="checked"';?> />
         <label for="section_blocks_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="section_blocks" id="section_blocks_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_SECTION_BLOCKS)  echo 'checked="checked"';?> />
+        <input type="radio" name="section_blocks" id="section_blocks_false" style="width: 14px; height: 14px;" value="false" <?php if (!SECTION_BLOCKS)  echo 'checked="checked"';?> />
         <label for="section_blocks_false"><?php echo $TEXT['DISABLED'] ?></label>
         <hr />
         
         <!-- INTRO_PAGE -->
         <div class="settingName" ><?php echo $TEXT['INTRO_PAGE'] ?></div>   
-        <input type="radio" name="intro_page" id="intro_page_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_INTRO_PAGE)  echo 'checked="checked"';?> />
+        <input type="radio" name="intro_page" id="intro_page_true" style="width: 14px; height: 14px;" value="true" <?php if (INTRO_PAGE)  echo 'checked="checked"';?> />
         <label for="intro_page_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="intro_page" id="intro_page_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_INTRO_PAGE)  echo 'checked="checked"';?> />
+        <input type="radio" name="intro_page" id="intro_page_false" style="width: 14px; height: 14px;" value="false" <?php if (!INTRO_PAGE)  echo 'checked="checked"';?> />
         <label for="intro_page_false"><?php echo $TEXT['DISABLED'] ?></label>        
         <hr />
         
         <!-- HOMEPAGE_REDIRECTION -->
         <div class="settingName" ><?php echo $TEXT['HOMEPAGE_REDIRECTION'] ?></div>   
-        <input type="radio" name="homepage_redirection" id="homepage_redirection_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_HOMEPAGE_REDIRECTION)  echo 'checked="checked"';?> />
+        <input type="radio" name="homepage_redirection" id="homepage_redirection_true" style="width: 14px; height: 14px;" value="true" <?php if (HOMEPAGE_REDIRECTION)  echo 'checked="checked"';?> />
         <label for="homepage_redirection_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="homepage_redirection" id="homepage_redirection_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_HOMEPAGE_REDIRECTION)  echo 'checked="checked"';?> />
+        <input type="radio" name="homepage_redirection" id="homepage_redirection_false" style="width: 14px; height: 14px;" value="false" <?php if (!HOMEPAGE_REDIRECTION)  echo 'checked="checked"';?> />
         <label for="homepage_redirection_false"><?php echo $TEXT['DISABLED'] ?></label>        
         <hr />
         
         <!-- SMART_LOGIN -->
         <div class="settingName" ><?php echo $TEXT['SMART_LOGIN'] ?></div>   
-        <input type="radio" name="smart_login" id="smart_login_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_SMART_LOGIN)  echo 'checked="checked"';?> />
+        <input type="radio" name="smart_login" id="smart_login_true" style="width: 14px; height: 14px;" value="true" <?php if (SMART_LOGIN)  echo 'checked="checked"';?> />
         <label for="smart_login_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="smart_login" id="smart_login_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_SMART_LOGIN)  echo 'checked="checked"';?> />
+        <input type="radio" name="smart_login" id="smart_login_false" style="width: 14px; height: 14px;" value="false" <?php if (!SMART_LOGIN)  echo 'checked="checked"';?> />
         <label for="smart_login_false"><?php echo $TEXT['DISABLED'] ?></label>
         <hr />      
         
          <!-- LOGIN -->
         <div class="settingName" ><?php echo $TEXT['LOGIN'] ?></div>   
-        <input type="radio" name="frontend_login" id="frontend_login_true" style="width: 14px; height: 14px;" value="true" <?php if (WB_FRONTEND_LOGIN)  echo 'checked="checked"';?> />
+        <input type="radio" name="frontend_login" id="frontend_login_true" style="width: 14px; height: 14px;" value="true" <?php if (FRONTEND_LOGIN)  echo 'checked="checked"';?> />
         <label for="frontend_login_true"><?php echo $TEXT['ENABLED'] ?></label>
-        <input type="radio" name="frontend_login" id="frontend_login_false" style="width: 14px; height: 14px;" value="false" <?php if (!WB_FRONTEND_LOGIN)  echo 'checked="checked"';?> />
+        <input type="radio" name="frontend_login" id="frontend_login_false" style="width: 14px; height: 14px;" value="false" <?php if (!FRONTEND_LOGIN)  echo 'checked="checked"';?> />
         <label for="frontend_login_false"><?php echo $TEXT['DISABLED'] ?></label>
         <hr />
  
