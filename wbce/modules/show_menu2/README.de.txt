@@ -1,4 +1,4 @@
-﻿show_menu2, version 4.9
+﻿show_menu2, version 4.10.2
 =======================
 Ist ein Code-Snippet für das CMS Website Baker. Es stellt einen kompletten 
 Ersatz für die eingebaute Menüfuntionalität zur Verfügung. Alle, für die 
@@ -387,7 +387,7 @@ $aOptions
                     nützlich beim Debuggen der Menüausgabe.
     
     SM2_BUFFER      Gibt den HTML-Code nicht direkt aus, sondern speichert ihn intern
-                    zwischen und gibt ihn als kompletten String aus.
+                    zwischen und gibt ihn als kompletten String zurück.
     
     SM2_CURRTREE    Schliesst alle anderen Toplevelmenüs von der Betrachtung aus.
                     Es werden nur Menüpunkte des aktuellen Menüzweiges dargestellt.
@@ -521,6 +521,9 @@ Folgende tags sind NUR verfügbar, wenn das SM2_ALLINFO Flag gesetzt ist.
 
 [description]   Seitenbeschreibung
 [keywords]      Schlüsselworte der Seite
+
+Sowie alle weiteren Felder der Datenbanktabelle 'pages' mit ihrem namen in der Datenbank.
+Bei WBCE z.B. [icon],[image],[thumb],.... 
 
 
 

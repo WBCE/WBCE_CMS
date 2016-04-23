@@ -8,11 +8,6 @@
  * @copyright       WebsiteBaker Org. e.V.
  * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: include.php 1475 2011-07-12 23:07:10Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/show_menu2/include.php $
- * @lastmodified    $Date: 2011-07-13 01:07:10 +0200 (Mi, 13. Jul 2011) $
  *
  */
 
@@ -30,7 +25,6 @@ define('SM2_ALLINFO',      0x0020); // bit 5
 define('SM2_NOCACHE',      0x0040); // bit 6
 define('SM2_PRETTY',       0x0080); // bit 7
 define('SM2_ESCAPE',       0x0100); // bit 8
-define('SM2_NOESCAPE',          0); // NOOP, unnecessary with WB 2.6.7+
 define('SM2_BUFFER',       0x0200); // bit 9
 define('SM2_CURRTREE',     0x0400); // bit 10
 define('SM2_SHOWHIDDEN',   0x0800); // bit 11
@@ -209,7 +203,7 @@ class SM2_Formatter
             '@\[('.
                 'a|ac|/a|li|/li|ul|/ul|menu_title|menu_icon_0|menu_icon_1|'.
                 'page_title|page_icon|url|target|page_id|tooltip|'.
-                'parent|level|sib|sibCount|class|description|keywords|'.
+                'parent|level|sib|sibCount|class|description|keywords|[a-z][a-z0-9\_]*?[a-z0-9]|'.
                 SM2_CONDITIONAL.
             ')\]@',
             array($this, 'replace'),
@@ -255,6 +249,7 @@ class SM2_Formatter
         case 'class':
             $retval = $this->currClass; break;
         default:
+            // Simply look if there is a matching element in the array
             if (array_key_exists($aMatch, $this->page)) {
                 if ($this->flags & SM2_ESCAPE) {
                     $retval = htmlspecialchars($this->page[$aMatch], ENT_QUOTES);
@@ -468,6 +463,7 @@ function show_menu2(
     
     // search page results don't have any of the page data loaded by WB, so we load it 
     // ourselves using the referrer ID as the current page
+    // this is for the pageless pages search, preferences, login ....pageless pages suck
     $CURR_PAGE_ID = defined('REFERRER_ID') ? REFERRER_ID : PAGE_ID;
     if (count($wb->page) == 0 && defined('REFERRER_ID') && REFERRER_ID > 0) {
         global $database;
@@ -534,9 +530,12 @@ function show_menu2(
     // of the information and processed it, so we don't need to do it again.
     if (($flags & SM2_NOCACHE) != 0
         || !array_key_exists('show_menu2_data', $GLOBALS)
-        || !array_key_exists($aMenu, $GLOBALS['show_menu2_data'])) 
+        || !array_key_exists($aMenu, $GLOBALS['show_menu2_data'])
+        || (($flags & SM2_ALLINFO) AND !array_key_exists('show_menu2_allinfo', $GLOBALS))
+    ) 
     {
         global $database;
+        if ($flags & SM2_ALLINFO) $GLOBALS['show_menu2_allinfo']="ok";
 
         // create an array of all parents of the current page. As the page_trail
         // doesn't include the theoretical root element 0, we add it ourselves.
@@ -558,12 +557,8 @@ function show_menu2(
         // exist anyhow.
         $fields  = '`parent`,`page_id`,`menu_title`,`page_title`,`link`,`target`,';
 		$fields .= '`level`,`visibility`,`viewing_groups`';
-        if (version_compare(WB_VERSION, '2.7', '>=')) { // WB 2.7+
-            $fields .= ',`viewing_users`';
-        }
-		if(version_compare(WB_VERSION, '2.9.0', '>=')) {
-            $fields .= ',`menu_icon_0`,`menu_icon_1`,`page_icon`,`tooltip`';
-		}
+        $fields .= ',`viewing_users`';
+		
         if ($flags & SM2_ALLINFO) {
             $fields = '*';
         }
@@ -582,22 +577,22 @@ function show_menu2(
             // The array stores all elements in the correct display order.
             while ($page = $oRowset->fetchRow()) {
                 // ignore all pages that the current user is not permitted to view
-                if(version_compare(WB_VERSION, '2.7', '>=')) { // WB >= 2.7
-                    // 1. hidden pages aren't shown unless they are on the current page
-                    if ($page['visibility'] == 'hidden') {
-                        $page['sm2_hide'] = true;
-                    }
-                    
-                    // 2. all pages with no active sections (unless it is the top page) are ignored
-                    else if (!$wb->page_is_active($page) && $page['link'] != $wb->default_link && !INTRO_PAGE) {
-                        continue;
-                    }
-
-                    // 3. all pages not visible to this user (unless always visible to registered users) are ignored
-                    else if (!$wb->page_is_visible($page) && $page['visibility'] != 'registered') {
-                        continue;
-                    }
+                
+                // 1. hidden pages aren't shown unless they are on the current page
+                if ($page['visibility'] == 'hidden') {
+                    $page['sm2_hide'] = true;
                 }
+                
+                // 2. all pages with no active sections (unless it is the top page) are ignored
+                else if (!$wb->page_is_active($page) && $page['link'] != $wb->default_link && !INTRO_PAGE) {
+                    continue;
+                }
+
+                // 3. all pages not visible to this user (unless always visible to registered users) are ignored
+                else if (!$wb->page_is_visible($page) && $page['visibility'] != 'registered') {
+                    continue;
+                }
+                
 				if(!isset($page['tooltip'])) { $page['tooltip'] = $page['page_title']; }
                 // ensure that we have an array entry in the table to add this to
                 $idx = $page['parent'];

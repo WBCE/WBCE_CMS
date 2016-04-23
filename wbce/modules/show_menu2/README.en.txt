@@ -1,4 +1,4 @@
-show_menu2, version 4.9
+show_menu2, version 4.10.2
 =======================
 A code snippet for the Website Baker CMS software. It provides a complete 
 replacement for the builtin menu functions. All menu data is retrieved using 
@@ -466,6 +466,9 @@ The following tags are only available when the SM2_ALLINFO flag is used.
 
 [description]   Page description
 [keywords]      Page keywords
+
+And any fields available in the 'pages' DB Table simply by their name.
+E.g. in WBCE [icon],[image],[thumb],...
 
 
 
