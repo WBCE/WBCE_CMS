@@ -235,14 +235,19 @@ class Tool {
         
         // ok lets start output buffer As those old stuff does print and echo imediately 
         // this makes it hard to filter later on. 
+        // Output buffer for full page 
         ob_start();
         
 
         // create admin-object but suppress headers if no page is set 
         // for example this offers opportunety to give back  files for download
         // this possibly creates output already
-        if ($noPage) $admin = new admin($this->adminSection, $this->adminAccess,false);
-        else         $admin = new admin($this->adminSection, $this->adminAccess);
+        // class Admin gets a 
+        if ($noPage) $admin = new admin($this->adminSection, $this->adminAccess,false,true,$operateBuffer=false);
+        else         $admin = new admin($this->adminSection, $this->adminAccess,true, true,$operateBuffer=false);
+        
+        // Output buffer for module only 
+        ob_start();       
         
         // for use in this class methods
         $this->admin=$admin;
@@ -258,21 +263,33 @@ class Tool {
 
         //Load actual tool
         require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
-
-        // output footer if  we are not in no_page mode
-        if (!$noPage) $admin->print_footer();  
-        
         
         // Fetch the Buffer for later filtering
         $toolOutput = ob_get_clean ();
+        
+        // FILTER for OPF DASHBOARD just for this module(tool)
+        if(function_exists('opf_controller')) { 
+            $toolOutput = opf_controller('backend', $toolOutput, $this->toolDir);
+        }
+        echo $toolOutput;
 
-        // FILTER
-        // here we can add a Filter hook
+        // output footer if  we are not in no_page mode
+        if (!$noPage) $admin->print_footer($activateJsAdmin = false,$operateBuffer=false);  
+        
+        
+        // Fetch the Buffer for later filtering
+        $fullOutput = ob_get_clean ();
+
+        // FILTER for OPF DASHBOARD for whole page
+        if(function_exists('opf_controller')) { 
+            $fullOutput = opf_controller('backend', $fullOutput);
+        }
+        
         
         // echo if set so 
-        if (!$echo)  return $toolOutput;
+        if (!$echo)  return $fullOutput;
         
-        echo $toolOutput;
+        echo $fullOutput;
         return false;
 
     }

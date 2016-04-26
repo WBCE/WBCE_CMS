@@ -19,9 +19,9 @@ require_once ADMIN_PATH . '/interface/version.php';
 class admin extends wb
 {
     // Authenticate user then auto print the header
-    public function __construct($section_name = '##skip##', $section_permission = 'start', $auto_header = true, $auto_auth = true)
+    public function __construct($section_name = '##skip##', $section_permission = 'start', $auto_header = true, $auto_auth = true,$operateBuffer=true)
     {
-        parent::__construct(SecureForm::BACKEND);
+        parent::__construct(SecureForm::BACKEND);   
         if ($section_name != '##skip##') {
             global $database, $MESSAGE;
             // Specify the current applications name
@@ -62,7 +62,7 @@ class admin extends wb
 
             // Auto header code
             if ($auto_header == true) {
-                $this->print_header();
+                $this->print_header($body_tags = '',$operateBuffer);
             }
         }
         // i know this sucks but some old stuff really need this
@@ -71,8 +71,12 @@ class admin extends wb
     }
 
     // Print the admin header
-    public function print_header($body_tags = '')
+    public function print_header($body_tags = '', $operateBuffer=true)
     {
+        if ($operateBuffer){
+            ob_start();
+        }
+    
         // Get vars from the language file
         global $MENU, $MESSAGE, $TEXT, $database;
         // Connect to database and get website title
@@ -195,7 +199,7 @@ class admin extends wb
     }
 
     // Print the admin footer
-    public function print_footer($activateJsAdmin = false)
+    public function print_footer($activateJsAdmin = false,$operateBuffer=true)
     {
         // include the required file for Javascript admin
         if ($activateJsAdmin != false) {
@@ -216,6 +220,13 @@ class admin extends wb
         ));
         $footer_template->parse('header', 'footer_block', false);
         $footer_template->pparse('output', 'page');
+        if ($operateBuffer){
+            $allOutput = ob_get_clean ();
+            if(function_exists('opf_controller')) { 
+                $allOutput = opf_controller('backend', $allOutput);
+            }
+            echo $allOutput;
+        }
     }
 
     // Return a system permission
@@ -364,7 +375,7 @@ class admin extends wb
         if (isset($_GET['tool'])) {
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool']) . '\'';
+            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend_body.js file to include
@@ -377,9 +388,9 @@ class admin extends wb
         } elseif (isset($_GET['page_id']) || isset($_POST['page_id'])) {
             // check if displayed page in the backend contains a page module
             if (isset($_GET['page_id'])) {
-                $page_id = (int) $_GET['page_id']; // cast to int , no injection possible
+                $page_id = (int) addslashes($_GET['page_id']);
             } else {
-                $page_id = (int) $_POST['page_id'];// cast to int , no injection possible
+                $page_id = (int) addslashes($_POST['page_id']);
             }
             // gather information for all models embedded on actual page
             $sql = 'SELECT DISTINCT `module` FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id`=' . (int) $page_id;
@@ -425,7 +436,7 @@ class admin extends wb
         if (isset($_GET['tool'])) {
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool']) . '\'';
+            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend.js or backend.css file to include
