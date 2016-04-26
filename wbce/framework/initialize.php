@@ -331,15 +331,6 @@ define('EDITOR_WIDTH', 0);         // define a basic editor width
 require_once(WB_PATH.'/framework/functions.php');
 
 
-// OPF hook ,Load OutputFilter functions
-$file= WB_PATH .'/modules/outputfilter_dashboard/functions.php';
-if(file_exists($file)) {
-    include($file);
-    opf_controller('init');
-}
-
-
-
 /////////////////////////////////////////////////////////////////
 // Helper Functions
 /////////////////////////////////////////////////////////////////
