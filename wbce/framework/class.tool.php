@@ -353,7 +353,7 @@ class Tool {
     private function ReturnTo($returnUrl="") {
         echo $this->returnToTools;
         if (!$returnUrl) $returnUrl=$this->returnToTools;
-        //header('location: '.$returnUrl); 
+        header('location: '.$returnUrl); 
         exit;   
     }
 
