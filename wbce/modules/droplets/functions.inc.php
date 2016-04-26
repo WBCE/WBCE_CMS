@@ -25,6 +25,9 @@ if(LANGUAGE_LOADED) {
         require_once WB_PATH.'/modules/twig/initialize.php';
     }
 
+    global $HEADING;
+    global $TEXT;
+
     $twig = new Twig_Environment(new Twig_Loader_Filesystem(dirname(__FILE__) . '/templates'), array());
     $twig->addGlobal('WB_URL', WB_URL);
     $twig->addGlobal('ADMIN_URL', ADMIN_URL);
