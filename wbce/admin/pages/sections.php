@@ -427,7 +427,7 @@ switch ($action) {
         if ($query_sections->numRows() == 0) {
             // Modules list
             $sql = 'SELECT `name`,`directory`,`type` FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type` = "module" AND `function` = "page" AND `directory` != "menu_link" ';
+            $sql .= 'WHERE type = "module" AND function LIKE \'%page%\' AND directory != "menu_link" ';
             $sql .= 'ORDER BY `name`';
             $result = $database->query($sql);
             // if(DEBUG && $database->is_error()) { $admin->print_error($database->get_error()); }
