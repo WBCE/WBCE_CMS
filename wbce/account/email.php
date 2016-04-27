@@ -13,6 +13,11 @@
 // Must include code to stop this file being access directly
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
+// Check Ftan
+if (!$wb->checkFTAN()) {
+    $wb->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],WB_URL );
+}
+
 // Get entered values
 	$password = $wb->get_post('current_password');
 	$email = $wb->get_post('email');

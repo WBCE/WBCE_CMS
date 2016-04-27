@@ -19,6 +19,11 @@
 // Must include code to stop this file being access directly
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
+// Check Ftan
+if (!$wb->checkFTAN()) {
+    $wb->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],WB_URL );
+}
+
 // Get entered values
 	$display_name = $wb->add_slashes(strip_tags($admin->get_post('display_name')));
 	$language = preg_match('/^[a-z]{2}$/si', $wb->get_post('language')) ? $wb->get_post('language') : 'EN';
