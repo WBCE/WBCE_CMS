@@ -351,7 +351,7 @@ class Tool {
         Simply returns to a givem address
     */
     private function ReturnTo($returnUrl="") {
-        echo $this->returnToTools;
+        //echo $this->returnToTools;
         if (!$returnUrl) $returnUrl=$this->returnToTools;
         header('location: '.$returnUrl); 
         exit;   
