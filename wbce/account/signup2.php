@@ -19,7 +19,7 @@
 // Must include code to stop this file being access directly
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
-// require_once(WB_PATH.'/framework/class.wb.php');
+// Init new class wb
 $wb = new wb('Start', 'start', false, false);
 
 // Get details entered

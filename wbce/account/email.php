@@ -13,6 +13,11 @@
 // Must include code to stop this file being access directly
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
+// Check Ftan
+if (!$wb->checkFTAN()) {
+    $wb->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],WB_URL );
+}
+
 // Get entered values
 	$password = $wb->get_post('current_password');
 	$email = $wb->get_post('email');
@@ -27,9 +32,9 @@ if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 		if(!$wb->validate_email($email)) {
 			$error[] = $MESSAGE['USERS_INVALID_EMAIL'];
 		}else {
-			$email = $wb->add_slashes($email);
+			$email = $database->escapeString($email)
 // Update the database
-			$sql = "UPDATE `".TABLE_PREFIX."users` SET `email` = '".$database->escapeString($email)."' WHERE `user_id` = ".$wb->get_user_id();
+			$sql = "UPDATE `".TABLE_PREFIX."users` SET `email` = '".$email."' WHERE `user_id` = ".$wb->get_user_id();
 			$database->query($sql);
 			if($database->is_error()) {
 				$error[] = $database->get_error();

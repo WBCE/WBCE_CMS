@@ -36,6 +36,7 @@ require_once WB_PATH . '/framework/functions-utf8.php';
 echo '<style type="text/css">';
 include WB_PATH . '/account/frontend.css';
 echo "\n</style>\n";
+$ftan = $wb->getFTAN();
 $user_time = true;
 require ADMIN_PATH . '/interface/timezones.php';
 require ADMIN_PATH . '/interface/date_formats.php';
@@ -141,6 +142,7 @@ foreach ($TIME_FORMATS as $format => $title) {
 }
 // Insert language headings
 $template->set_var(array(
+    'FTAN' => $ftan,
     'HEADING_MY_SETTINGS' => $HEADING['MY_SETTINGS'],
     'HEADING_MY_EMAIL' => $HEADING['MY_EMAIL'],
     'HEADING_MY_PASSWORD' => $HEADING['MY_PASSWORD'],
