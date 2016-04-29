@@ -326,6 +326,11 @@ define('EDIT_ONE_SECTION', false); // allow to edit just one section whithout al
 define('EDITOR_WIDTH', 0);         // define a basic editor width
 
 
+// Version should be avaaiable not only in admin secction(BE)
+// Get WB version
+require_once ADMIN_PATH . '/interface/version.php';
+
+
 // FUNCTIONS.PHP
 // finally load framework Funktions so we dont need to include this in almost every file 
 require_once(WB_PATH.'/framework/functions.php');

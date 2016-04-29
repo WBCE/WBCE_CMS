@@ -13,9 +13,6 @@
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-// Get WB version
-require_once ADMIN_PATH . '/interface/version.php';
-
 class admin extends wb
 {
     // Authenticate user then auto print the header
