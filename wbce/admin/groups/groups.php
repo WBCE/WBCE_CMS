@@ -113,6 +113,22 @@ switch ($action) {
             }
         }
         
+        // Insert values into setting module list
+        $template->set_block('main_block', 'settingtools_list_block', 'settingtools_list');
+        $result = $database->query('SELECT * FROM `' . TABLE_PREFIX . 'addons` WHERE `type` = "module" AND `function` LIKE "%setting%" ORDER BY `name`');
+        if ($result->numRows() > 0) {
+            while ($addon = $result->fetchRow()) {
+                $template->set_var('VALUE', $addon['directory']);
+                $template->set_var('NAME', $addon['name']);
+                if (!is_numeric(array_search($addon['directory'], $module_permissions))) {
+                    $template->set_var('CHECKED', ' checked="checked"');
+                } else {
+                    $template->set_var('CHECKED', '');
+                }
+                $template->parse('settingtools_list', 'settingtools_list_block', true);
+            }
+        }
+        
         // Insert values into template list
         $template->set_block('main_block', 'template_list_block', 'template_list');
         $result = $database->query('SELECT * FROM `' . TABLE_PREFIX . 'addons` WHERE `type` = "template" ORDER BY `name`');
@@ -228,4 +244,3 @@ switch ($action) {
     default:
         break;
 }
-

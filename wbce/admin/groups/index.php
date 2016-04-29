@@ -148,7 +148,16 @@ if($result->numRows() > 0) {
         $template->parse('admintools_list', 'admintools_list_block', true);
     }
 }
-
+// Insert values into setting module list
+$template->set_block('main_block', 'settingtools_list_block', 'settingtools_list');
+$result = $database->query('SELECT * FROM `'.TABLE_PREFIX.'addons` WHERE `type` = "module" AND `function` LIKE "%setting%" ORDER BY `name`');
+if($result->numRows() > 0) {
+    while($addon = $result->fetchRow()) {
+        $template->set_var('VALUE', $addon['directory']);
+        $template->set_var('NAME', $addon['name']);
+        $template->parse('settingtools_list', 'settingtools_list_block', true);
+    }
+}
 // Insert values into template list
 $template->set_block('main_block', 'template_list_block', 'template_list');
 $result = $database->query('SELECT * FROM `'.TABLE_PREFIX.'addons` WHERE `type` = "template" ORDER BY `name`');
@@ -213,4 +222,3 @@ $template->pparse('output', 'page');
 
 // Print the admin footer
 $admin->print_footer();
-

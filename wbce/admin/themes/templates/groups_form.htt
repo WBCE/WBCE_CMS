@@ -244,6 +244,16 @@
                     </li>
                     <!-- END admintools_list_block -->
                 </ul>
+                <br/>
+                <h3>{SECTION_SETTINGTOOLS}Settingtools</h3>
+                <ul style="margin: 0; padding: 0; list-style: none;">
+                    <!-- BEGIN settingtools_list_block -->
+                    <li>
+                        <input type="checkbox" name="module_permissions[]" id="m_{VALUE}" value="{VALUE}" {CHECKED} />
+                        <label for="m_{VALUE}">{NAME}</label>
+                    </li>
+                    <!-- END settingtools_list_block -->
+                </ul>
             </td>
 
             <td valign="top" align="left">
