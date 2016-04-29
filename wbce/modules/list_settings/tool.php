@@ -27,7 +27,7 @@ if($results->numRows() > 0) {
             $data = file_get_contents($path);
             $tool_description = get_variable_content('module_description', $data, true, false);
             if ($tool_description) $tool['description']=$tool_description;
-            $tool_name        = get_variable_content('module_name', $data, true, false);
+            $tool_name        = get_variable_content('module_title', $data, true, false);
             if ($tool_name) $tool['name']=$tool_name;
         }
         

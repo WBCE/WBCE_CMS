@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * @category        modules
  * @package         Maintainance Mode
@@ -8,8 +8,8 @@
  */
  
 // module description 
-$module_description = 'General Settings like registration on/off or login on/off.';
+$module_description = 'System settings like directory limits, trashbin, menu etc.';
 
 // Headings and text outputs
-$MOD_SET_GENERAL['HEADER'] =           'General Settings';
-$MOD_SET_GENERAL['DESCRIPTION'] =      'General Settings like registration on/off or login on/off.';
+$MOD_SET_GENERAL['HEADER'] =           'System settings';
+$MOD_SET_GENERAL['DESCRIPTION'] =      'Please be careful! It is strongly recommended not to change these settings on a running site unless you really know what you do.';

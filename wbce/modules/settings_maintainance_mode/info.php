@@ -15,3 +15,4 @@ $module_platform    = '1.1.0';
 $module_author      = 'Norbert Heimsath(heimsath.org)';
 $module_license	    = 'WTFPL';
 $module_description = 'This setting offers a plain and simple switch to turn maintainance mode on and off.';
+$module_icon        = 'fa fa-ban';
