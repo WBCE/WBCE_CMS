@@ -15,4 +15,4 @@ $module_platform    = '1.1.0';
 $module_author      = 'Norbert Heimsath(heimsath.org)';
 $module_license	    = 'GPL v2 or any later';
 $module_description = 'SEO relevant settings like header, footer, default title, default keywords ';
-$module_icon        = 'fa fa-cogs';
+$module_icon        = 'fa fa-dashboard';

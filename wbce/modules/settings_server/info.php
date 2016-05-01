@@ -15,4 +15,4 @@ $module_platform    = '1.1.0';
 $module_author      = 'Norbert Heimsath(heimsath.org)';
 $module_license	    = 'GPL v2 or any later';
 $module_description = 'Set server directories and file/dir access. ';
-$module_icon        = 'fa fa-cogs';
+$module_icon        = 'fa fa-database';

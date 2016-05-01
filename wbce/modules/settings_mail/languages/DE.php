@@ -1,7 +1,7 @@
 ﻿<?php
 /**
  * @category        modules
- * @package         Default Settings
+ * @package         SEO Settings
  * @author          WBCE Project
  * @copyright       Norbert Heimsath
  * @license         GPLv2 or any later 
@@ -11,9 +11,9 @@
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
  
 // module description 
-$module_description = 'Manage system settings and default values';
-$module_title= "Default Settings";
+$module_description = 'Einstellungen für den Versand system- und modulgenerierter E-Mails.';
+$module_title= "Mail-Einstellungen";
 
 // Headings and text outputs
-$MOD_SET_GENERAL['HEADER'] =           'Default Settings';
-$MOD_SET_GENERAL['DESCRIPTION'] =      'Manage system settings and default values for this WBCE instance.';
+$MOD_SET_MAIL['HEADER'] =           "Mail-Einstellungen";
+$MOD_SET_MAIL['DESCRIPTION'] =      $TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'];
