@@ -532,13 +532,14 @@ db_add_field('image3', 'pages', "varchar(255) collate utf8_unicode_ci NOT NULL D
 echo "<br />Adding field image4 to pages table<br />";
 db_add_field('image4', 'pages', "varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT ''");
 
-echo "<br />Adding publish icon to pages table<br />";
-db_add_field('icon', 'publish', "int(11) NOT NULL DEFAULT '0'");
+echo "<br />Adding field publish to pages table<br />";
+db_add_field('publish', 'pages', "int(11) NOT NULL DEFAULT '0'");
 
 echo "<br />Adding unpublish icon to pages table<br />";
-db_add_field('icon', 'unpublish', "int(11) NOT NULL DEFAULT '0'");
+db_add_field('unpublish', 'pages', "int(11) NOT NULL DEFAULT '0'");
 
-
+echo "<br />Adding direct_link icon to pages table<br />";
+db_add_field('dlink', 'pages', "text collate utf8_unicode_ci NOT NULL DEFAULT '' AFTER link");
 
 /**********************************************************
  *  - making sure group_id is set correct there was a big bug in original WB 

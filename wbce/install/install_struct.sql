@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}pages` (
   `root_parent` int(11) NOT NULL DEFAULT '0',
   `level` int(11) NOT NULL DEFAULT '0',
   `link` text{TABLE_COLLATION} NOT NULL,
+  `dlink` text{TABLE_COLLATION} NOT NULL,
   `target` varchar(7){TABLE_COLLATION} NOT NULL DEFAULT '',
   `page_title` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `menu_title` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
