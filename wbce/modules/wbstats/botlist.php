@@ -432,4 +432,6 @@ $botUserAgents = array(
 	'zippp',
 	'zyborg'
 ); 
+
+$GLOBALS['botUserAgents']=$botUserAgents;
 	

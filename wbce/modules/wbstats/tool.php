@@ -15,8 +15,8 @@
 
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 
-$lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
-require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang );
+$GLOBALS['code2lang']=$code2lang;
+$GLOBALS['help']=$help;
 require_once('class.stats.php');
 
 $admintool_url = ADMIN_URL .'/admintools/index.php';
@@ -50,3 +50,4 @@ if (!$check = $database->get_one("SELECT sum(user) visitors FROM ".$table_day)) 
 	return;
 }
 require_once ("overview.php");
+

@@ -15,12 +15,12 @@
 
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 
-$table_day   = TABLE_PREFIX .'mod_wbstats_day';
-$table_ips   = TABLE_PREFIX .'mod_wbstats_ips';
-$table_pages = TABLE_PREFIX .'mod_wbstats_pages';
-$table_ref   = TABLE_PREFIX .'mod_wbstats_ref';
-$table_key   = TABLE_PREFIX .'mod_wbstats_keywords';
-$table_lang  = TABLE_PREFIX .'mod_wbstats_lang';
+$table_day   = $GLOBALS['table_day']   = TABLE_PREFIX .'mod_wbstats_day';
+$table_ips   = $GLOBALS['table_ips']   = TABLE_PREFIX .'mod_wbstats_ips';
+$table_pages = $GLOBALS['table_pages'] = TABLE_PREFIX .'mod_wbstats_pages';
+$table_ref   = $GLOBALS['table_ref']   = TABLE_PREFIX .'mod_wbstats_ref';
+$table_key   = $GLOBALS['table_key']   = TABLE_PREFIX .'mod_wbstats_keywords';
+$table_lang  = $GLOBALS['table_lang']  = TABLE_PREFIX .'mod_wbstats_lang';
 
 class counter {
 
