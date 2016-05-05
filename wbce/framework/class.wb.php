@@ -598,7 +598,7 @@ via the Settings panel in the backend of Website Baker
         return $recSection;
     }
 
-    public function get_page_details($page_id, $backLink = 'index.php')
+    public function get_page_details($page_id="", $backLink = 'index.php')
     {
         global $database, $TEXT;
         $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` ';

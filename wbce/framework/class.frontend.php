@@ -118,8 +118,10 @@ class frontend extends wb
         }
         return true;
     }
-
-    public function get_page_details()
+    
+    // Added the parameters from class WB to avoid error message 
+    // Parameters are not used at all 
+    public function get_page_details($page_id ="", $backLink = 'index.php')
     {
         global $database;
         if ($this->page_id != 0) {
