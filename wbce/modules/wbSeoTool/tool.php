@@ -19,15 +19,9 @@ if(!$admin->get_permission('admintools') || !$admin->get_permission('pages')) {
 	exit("insuficient privileges");
 }
 
-// Load Language Files
-if(LANGUAGE_LOADED) {
-	if(LANGUAGE != 'EN'){
-		// load EN language file in case foreign languages lack of key=>value pairs
-		require_once((dirname(__FILE__)) . '/languages/EN.php');
-	}
-	$sLangFile = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
-	require_once(!file_exists($sLangFile) ? (dirname(__FILE__)) . '/languages/EN.php' : $sLangFile );	
-}
+
+
+
 
 //	GET TOOL SETTINGS FROM DB (Json Array)
 $jsonSettings = $database->get_one("SELECT `settings_json` FROM `".TABLE_PREFIX."mod_page_seo_tool`");

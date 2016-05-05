@@ -25,8 +25,7 @@ if(file_exists($sFunctionsFile)){
 	require_once($sFunctionsFile);
 }
 
-function exportPageTreeToTwig() {
-	global $_CONFIG, $HEADING, $TEXT, $TOOL_TEXT, $toolUrl;
+
 	/**
 	 * 		Create Twig template object and configure it
 	 */
@@ -73,5 +72,4 @@ function exportPageTreeToTwig() {
 	$oTemplate->display(
 		array('pages' => pagesArray(TRUE))
 	);	
-}
-exportPageTreeToTwig();
+
