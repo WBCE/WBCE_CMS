@@ -23,19 +23,24 @@ $msgCls = 'msg-box'; // message css class
 if($doSave) {
 // take over post - arguments
     $data = array();
+    // all filter 
     $data['suppress_old_opf']       = (int)(intval(isset($_POST['suppress_old_opf']) ? $_POST['suppress_old_opf'] : 0) != 0);
-    $data['droplets']       = (int)(intval(isset($_POST['droplets']) ? $_POST['droplets'] : 0) != 0);
-    $data['wblink']       = (int)(intval(isset($_POST['wblink']) ? $_POST['wblink'] : 0) != 0);
-    $data['insert']       = (int)(intval(isset($_POST['insert']) ? $_POST['insert'] : 0) != 0);
-    $data['sys_rel']       = (int)(intval(isset($_POST['sys_rel']) ? $_POST['sys_rel'] : 0) != 0);
-    $data['email_filter']  = (int)(intval(isset($_POST['email_filter']) ? $_POST['email_filter'] : 0) != 0);
-    $data['mailto_filter'] = (int)(intval(isset($_POST['mailto_filter']) ? $_POST['mailto_filter'] : 0) != 0);
-    $data['js_mailto'] = (int)(intval(isset($_POST['js_mailto']) ? $_POST['js_mailto'] : 0) != 0);
-    $data['short_url'] = (int)(intval(isset($_POST['short_url']) ? $_POST['short_url'] : 0) != 0);
-    $data['css_to_head'] = (int)(intval(isset($_POST['css_to_head']) ? $_POST['css_to_head'] : 0) != 0);
+    //frontend
+    $data['droplets']        = (int)(intval(isset($_POST['droplets']) ? $_POST['droplets'] : 0) != 0);
+    $data['wblink']          = (int)(intval(isset($_POST['wblink']) ? $_POST['wblink'] : 0) != 0);
+    $data['insert']          = (int)(intval(isset($_POST['insert']) ? $_POST['insert'] : 0) != 0);
+    $data['sys_rel']         = (int)(intval(isset($_POST['sys_rel']) ? $_POST['sys_rel'] : 0) != 0);
+    $data['email_filter']    = (int)(intval(isset($_POST['email_filter']) ? $_POST['email_filter'] : 0) != 0);
+    $data['mailto_filter']   = (int)(intval(isset($_POST['mailto_filter']) ? $_POST['mailto_filter'] : 0) != 0);
+    $data['js_mailto']       = (int)(intval(isset($_POST['js_mailto']) ? $_POST['js_mailto'] : 0) != 0);
+    $data['short_url']       = (int)(intval(isset($_POST['short_url']) ? $_POST['short_url'] : 0) != 0);
+    $data['css_to_head']     = (int)(intval(isset($_POST['css_to_head']) ? $_POST['css_to_head'] : 0) != 0);
     $data['at_replacement']  = isset($_POST['at_replacement']) ? trim(strip_tags($_POST['at_replacement'])) : '';
     $data['dot_replacement'] = isset($_POST['dot_replacement']) ? trim(strip_tags($_POST['dot_replacement'])) : '';
-
+    //backend
+    $data['insert_be']       = (int)(intval(isset($_POST['insert_be']) ? $_POST['insert_be'] : 0) != 0);
+    $data['css_to_head_be']  = (int)(intval(isset($_POST['css_to_head_be']) ? $_POST['css_to_head_be'] : 0) != 0);
+    
     // dont use JAvascript Mailto if no mailto filter active.
     if ($data['js_mailto'] and !$data['mailto_filter']) $data['js_mailto']=0;
     
@@ -52,7 +57,9 @@ if($doSave) {
         }
         
         // set the values
+        // all filters
         $errmsg.=(string)Settings::Set("wb_suppress_old_opf", $data['suppress_old_opf']);
+        //frontend
         $errmsg.=(string)Settings::Set("opf_droplets", $data['droplets']);
         $errmsg.=(string)Settings::Set("opf_wblink", $data['wblink']);  
         $errmsg.=(string)Settings::Set("opf_insert", $data['insert']); 
@@ -64,6 +71,9 @@ if($doSave) {
         $errmsg.=(string)Settings::Set("opf_css_to_head", $data['css_to_head']);
         $errmsg.=(string)Settings::Set("opf_at_replacement", $data['at_replacement']);
         $errmsg.=(string)Settings::Set("opf_dot_replacement", $data['dot_replacement']);
+        //backend
+        $errmsg.=(string)Settings::Set("opf_insert_be", $data['insert_be']); 
+        $errmsg.=(string)Settings::Set("opf_css_to_head_be", $data['css_to_head_be']);
         
         if($errmsg=="") {
         //anything ok
@@ -83,7 +93,9 @@ if($doSave) {
 // read settings from the database to show
 
     $data = array();
+    //all filters
     $data['suppress_old_opf']  = Settings::Get('wb_suppress_old_opf',0);
+    //frontend
     $data['droplets']          = Settings::Get('opf_droplets',1);
     $data['wblink']            = Settings::Get('opf_wblink',1);
     $data['insert']            = Settings::Get('opf_insert',1);   
@@ -95,8 +107,11 @@ if($doSave) {
     $data['css_to_head']       = Settings::Get('opf_css_to_head',1);
     $data['at_replacement']    = Settings::Get('opf_at_replacement',"(at)");
     $data['dot_replacement']   = Settings::Get('opf_dot_replacement',"(dot)");
-   
+    //backend
+    $data['insert_be']         = Settings::Get('opf_insert_be',1); 
+    $data['css_to_head_be']    = Settings::Get('opf_css_to_head_be',1);
 }
 
 
 include($modulePath."templates/output_filter.tpl.php");
+

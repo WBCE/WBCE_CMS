@@ -3,7 +3,7 @@
  *
  * @category        modules
  * @package         output_filter
- * @author          Christian Sommer, WB-Project, Werner v.d. Decken
+ * @author          Christian Sommer, WB-Project, Werner v.d. Decken, Norbert Heimsath
  * @copyright       WebsiteBaker Org. e.V.
  * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
@@ -87,6 +87,66 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
     }
     
 /* ************************************************************************** */
+
+/**
+ * execute the backend output filter
+ * Only the basic ones here as sooner or later opf dashboardt will take this place
+ * @param string actual content
+ * @return string modified content
+ */
+    function executeBackendOutputFilter($content) {
+      
+        $sFilterDirectory = str_replace('\\', '/', dirname(__FILE__)).'/filters/';
+      
+
+/* ### filter type: execute droplets filter ################################# */
+//MAybe later we willl allow Droplets here.
+/*        if (OPF_DROPLETS){
+            if (file_exists($sFilterDirectory.'filterDroplets.php')) {
+                require_once($sFilterDirectory.'filterDroplets.php');
+                $content = doFilterDroplets($content);
+            }
+        }
+*/                
+/* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */ 
+//now available in BE too 
+        if (defined("OPF_INSERT_BE") AND OPF_INSERT_BE){
+            if (class_exists ("I")) {
+                $content = I::Filter($content);
+            }
+        }
+    
+/* ### filter type: protect email addresses ################################# */
+// emailfilter not needed in BE
+        
+/* ### filter type: change [wblinkxx] into real URLs ######################## */
+// would remove the [wblinkxxx] texts in CKE for example .. so no good idea
+        
+/* ### filter type: short url (instead of a droplet) ########### */
+// Short url not functional in BE and not needed anyway
+        
+/* ### filter type: full qualified URLs to relative URLs##################### */
+// would disturb BE functions
+
+        
+/* ### filter type: moves css definitions from <body> into <head> ########### */
+//this one truly may stay in (lots  of old modules have inline CSS ) 
+// maybe we even declare having css in the module html as being just ok.
+        if (defined("OPF_CSS_TO_HEAD_BE") AND OPF_CSS_TO_HEAD_BE){
+            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
+                require_once($sFilterDirectory.'filterCssToHead.php');
+                $content = doFilterCssToHead($content);
+            }
+        }
+       
+/* ### end of filters ####################################################### */
+        return $content;
+    }
+    
+/* ************************************************************************** */
+
+
+
 /**
  * function to read the current filter settings
  * @global object $database
