@@ -436,6 +436,8 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Uninstall Template';
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = 'Upload File(s)';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer Settings';
+$HEADING['FRONTEND'] = 'Frontend';
+$HEADING['BACKEND'] = 'Backend';
 
 /* MESSAGE */
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
