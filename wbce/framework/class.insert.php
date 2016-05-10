@@ -100,9 +100,11 @@ The Template should look like this:
 </head>
 <body>
 [[Js?pos=BodyTop]]
+[[Html?pos=BodyTop]]
     <!-- Sichtbarer Dokumentinhalt im body -->
     <p>Sehen Sie sich den Quellcode dieser Seite an.
       <kbd>(Kontextmenu: Seitenquelltext anzeigen)</kbd></p>
+[[Html?pos=BodyLow]]
 [[Js?pos=BodyLow]]
 </body>
 </html>
@@ -138,6 +140,12 @@ class Insert {
     private $Metas = array();
 
     /**
+    @brief Storage array for Html entries.
+    @var array $Html
+    */
+    private $Html = array();
+
+    /**
     @brief Storage variable for Title.
     @var string $Title
     */
@@ -149,7 +157,7 @@ class Insert {
     Possible values are "html", "xhtml", "html5"
     @var string $Render
     */    
-    private $Render= "html5"; 
+    public $Render= "html5"; 
     
     /**
     @brief The constructor only fetches the WB_RENDER Constant and copies 
@@ -598,14 +606,14 @@ class Insert {
         unset ($Content['setname']);
         
         // check for setnames that are alreasdy set if overwrite === false
-        if (isset($Content['overwrite']) and $Content['overwrite']===false and isset($this->Metas[$SetName])) {
+        if (isset($Content['overwrite']) and $Content['overwrite']===false and isset($this->Js[$SetName])) {
             return "Cannot add JS, setname($SetName) already in use!";
         }
         // no longer needed
         unset ($Content['overwrite']);
         
         // maybe the entry has the setsave flag
-        if (isset($this->Metas[$SetName]) and !empty($this->Metas[$SetName]['setsave'])) {
+        if (isset($this->Js[$SetName]) and !empty($this->Js[$SetName]['setsave'])) {
             return "Cannot add JS, Another entry whith same setname ($SetName) has the save flag on!";
         }
         
@@ -738,6 +746,199 @@ class Insert {
         return $RetVal;   
     }
     
+
+
+
+
+  ////////////////// Html //////////////////////////////////
+
+
+    /**
+    @brief Method to add Html entries to the Html array. 
+
+    AddHtml is for adding plain HTML to a set of predifined places.
+    (BodyTop, BodyLow). You even can define your own locations but then 
+    you have to add extra placeholders in the template. E.G  'position'=>"SomePos"
+    then you have to add  [[Html?pos=SomePos]] somewhere in you template.
+ 
+    @code
+    $i->AddHtml (array( 
+        'position'=>"BodyLow", 
+        'html'=>'<a href="http://www.startpage.de">Startpage, search whithout tracking</a>', 
+        'overwrite'=>true
+    ));
+    $i->AddHtml (array(
+        'setname'=>"cookie-warn", 
+        'position'=>"BodyTop", 
+        'html'=>'<div style="position: absolut top left; whidth: 100%; height: 50px">... Some Cookie Waring Stuff ...</div>'
+    ));
+    @endcode
+
+    ###Allowed Keys
+    @verbatim
+    Key         Typ         Description  
+    --------------------------------------------------------------------------------------------------
+    position    string      The Position where to insert this piece of JS
+    html        string      The HTML Text to insert. 
+    @endverbatim
+    All other Keys are the default ones you find in the class description.
+
+    For good setmanes pleass try to use the lowercase version of what this thing is.
+    @verbatim    
+    footer
+    cookie-warning
+    ... 
+    @endverbatim
+
+    ###The default Positions for insert Html are listed here. But you can define your own if you like.
+    @verbatim BodyTop, BodyLow @endverbatim
+
+    @param array $Content
+        The array that defines an entry. 
+
+    @retval boolean/string
+        Returns false on success, and an error message on failure. 
+    */
+
+    public function AddHtml ($Content){
+          // setname is used for identification of double entries , set to uniqid() if empty
+        if (isset($Content['setname']) and $Content['setname']!="") $SetName=$Content['setname'];
+        else                                                        $SetName=uniqid();
+        // no longer needed
+        unset ($Content['setname']);
+        
+        // check for setnames that are alreasdy set if overwrite === false
+        if (isset($Content['overwrite']) and $Content['overwrite']===false and isset($this->Html[$SetName])) {
+            return "Cannot add Html, setname($SetName) already in use!";
+        }
+        // no longer needed
+        unset ($Content['overwrite']);
+        
+        // maybe the entry has the setsave flag
+        if (isset($this->Html[$SetName]) and !empty($this->Html[$SetName]['setsave'])) {
+            return "Cannot add JS, Another entry whith same setname ($SetName) has the save flag on!";
+        }
+        
+        // Hey its all empty now!!!
+        if (empty($Content)) return "Cannot add Html, no content set!";
+        
+        // The main atributes are empty?
+        if (empty($Content['html'])) return "Html Nothing set no html content";
+
+        // Set default position
+        if (empty($Content['position'])) $Position="BodyLow";
+        else                             $Position=$Content['position'];
+          //echo "\n<pre>check:\n"; print_r($Content); echo "</pre>";
+        
+
+        // Set the actual entrx to the Html Array
+        if (!empty($Content['position'])) $this->Html[$SetName]['position'] = $Position;
+        if (!empty($Content['src']))      $this->Html[$SetName]['src'] = $Content['src'];
+        if (!empty($Content['script']))   $this->Html[$SetName]['script'] = $Content['script'];
+        if (!empty($Content['setsave']))  $this->Html[$SetName]['setsave'] = $Content['setsave'];
+
+        return false;
+    }
+
+    /**
+    @brief Method to get the Html array for checking or processing.
+
+    You can set a default return value if nothing is found. 
+
+    @param undefined $Default
+        You can define a special return var if the Html array is empty.
+
+    @param string $Position
+        Set this to only return Scripts whith a certain position set. 
+        Default position names can be found in docs to AddHtml().
+        $Position="All" returns the full Js array.
+
+    @retval array/undefined 
+        Returns the Array of already defined Java Scripts(for a certain position).
+    */
+    public function GetHtmls ($Position="All", $Default=false){
+        if (empty($this->Html)) return $Default;
+        if ($Position=="All") return $this->Html;
+        $Ret =array();
+        foreach  ($this->Html as $SetName=>$J){
+            if ($J['position']==$Position) 
+                $Ret[$SetName]=$J;
+        }
+        return $Ret;
+    }
+
+
+    /**
+    @brief Method to get the values of a single Html entry named whith "setname"
+    The method returns $Default if nothing is found. 
+
+    @param string $SetName 
+        Simply the setname used in AddHtml().
+
+    @param undefined $Default
+        Whatever you like as a returnvalue if the method does not find a matching entry.
+
+    @retval array/undefined 
+        Returns the value of the Html whith this "setname" or $Default if nothing is found.  
+    */
+    public function GetHtml ($SetName="", $Default=false){
+        if (empty($this->Html)) return $Default;
+        if ($SetName!="") return $Default;
+        if (!empty($this->Js[$SetName])) return $this->Html[$SetName];       
+        return $Default;
+    }
+
+
+    /**
+    @brief Renders all the Html for a certain position. 
+
+    @code
+    $i->RenderHtml();           //renders the default JS  "BodyLow"
+    $i->RenderHtml("BodyLow");  //Renders JS for "BodyLow" position. 
+    @endcode
+
+    @param string $Position
+        Set this to only return Scripts whith a certain position set. 
+        Default position names can be found in docs to AddHtml().
+        NO $Position="All" !!!
+
+    @param undefined $Default
+        Whatever you like as a returnvalue if the method does not find a matching entrys.
+
+    @retval string/undefined 
+        Returns the rendered Html for one position or $Default if nothing is found.  
+
+    */   
+    public function RenderHtml ($Position="BodyLow", $Default=""){
+        // All empty ??
+        if (empty($this->Html)) return $Default;  
+        
+        // sort aout the ones we want to show
+        $Ret =array();
+        foreach  ($this->Html as $SetName=>$J){
+            if ($J['position']==$Position) 
+                $Ret[$SetName]=$J;
+        }      
+        //print_r($Ret);
+        
+        // none in this position
+        if (!count($Ret)) return $Default;  
+        
+        // Run the render loop if src and script are set , both a rendered.
+        $RetVal ="";
+        foreach ($Ret as $J) {  
+            if (!empty($J['html'])) { 
+                $RetVal .= $J['src'];
+            }
+        }
+        return $RetVal;   
+    }
+    
+
+
+
+
+
 
 
     /**
