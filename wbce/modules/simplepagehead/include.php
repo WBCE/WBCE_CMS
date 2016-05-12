@@ -45,8 +45,6 @@ if (!function_exists('simplepagehead')) {
 		$module['news'] = array('mod_news_posts', 'post_id', 'title', 'content_short', '');
 		$module['bakery'] = array('mod_bakery_items', 'item_id', 'title', 'description', '');
 		$module['gallery'] = array('mod_gallery_images', 'image_id', 'title', 'description', '');
-		$module['gocart'] = array('mod_gocart_products', 'image_id', 'title', 'description','');
-		$module['news2'] = array('mod_news2_posts', 'post_id', 'title', 'description', 'keywords');
 		$module['topics'] = array('mod_topics', 'topic_id', 'title', 'description', 'keywords');
 		
 		#$module['module_name'] = array('table_name', 'id_name', 'title_field_name', 'description_field_name');
@@ -142,16 +140,22 @@ if (!function_exists('simplepagehead')) {
 		if ($generator == 1) {echo '<meta name="generator" content="CMS: Website Baker Community Edition; www.wbce.org"'."$endtag>\n";}
 		if ($notoolbartag == 1) {echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n"; }		
 		if ($favicon == 1) {
-			  echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n"; 
-			  echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" href="'.TEMPLATE_DIR.'/apple-touch-icon.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="57x57" href="'.TEMPLATE_DIR.'/apple-touch-icon-57x57.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="72x72" href="'.TEMPLATE_DIR.'/apple-touch-icon-72x72.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="76x76" href="'.TEMPLATE_DIR.'/apple-touch-icon-76x76.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="114x114" href="'.TEMPLATE_DIR.'/apple-touch-icon-114x114.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="120x120" href="'.TEMPLATE_DIR.'/apple-touch-icon-120x120.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="144x144" href="'.TEMPLATE_DIR.'/apple-touch-icon-144x144.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="152x152" href="'.TEMPLATE_DIR.'/apple-touch-icon-152x152.png'."\"$endtag>\n"; 
+			  if (file_exists(WB_PATH.'/favicon.ico')) { echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/favicon.ico')) { echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n" ;} 			  
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon.png')) { echo '<link rel="apple-touch-icon" href="'.TEMPLATE_DIR.'/apple-touch-icon.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon-57x57.png')) { echo '<link rel="apple-touch-icon" sizes="57x57" href="'.TEMPLATE_DIR.'/apple-touch-icon-57x57.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon-72x72.png')) { echo '<link rel="apple-touch-icon" sizes="72x72" href="'.TEMPLATE_DIR.'/apple-touch-icon-72x72.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon-76x76.png')) { echo '<link rel="apple-touch-icon" sizes="76x76" href="'.TEMPLATE_DIR.'/apple-touch-icon-76x76.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon-114x114.png')) { echo '<link rel="apple-touch-icon" sizes="114x114" href="'.TEMPLATE_DIR.'/apple-touch-icon-114x114.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon-120x120.png')) { echo '<link rel="apple-touch-icon" sizes="120x120" href="'.TEMPLATE_DIR.'/apple-touch-icon-120x120.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon-144x144.png')) { echo '<link rel="apple-touch-icon" sizes="144x144" href="'.TEMPLATE_DIR.'/apple-touch-icon-144x144.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon-152x152.png')) { echo '<link rel="apple-touch-icon" sizes="152x152" href="'.TEMPLATE_DIR.'/apple-touch-icon-152x152.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/apple-touch-icon-180x180.png')) { echo '<link rel="apple-touch-icon" sizes="180x180" href="'.TEMPLATE_DIR.'/apple-touch-icon-180x180.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/android-icon.png')) { echo '<link rel="shortcut icon" sizes="196x196" href="'.TEMPLATE_DIR.'/android-icon.png'."\"$endtag>\n" ;} 
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/smalltile.png')) { echo '<meta name="msapplication-square70x70logo" content="'.TEMPLATE_DIR.'/smalltile.png"' ."\"$endtag>\n" ;}
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/mediumtile.png')) { echo '	<meta name="msapplication-square150x150logo" content="'.TEMPLATE_DIR.'/mediumtile.png"' ."\"$endtag>\n" ;}
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/widetile.png')) { echo '<meta name="msapplication-wide310x150logo" content="'.TEMPLATE_DIR.'/widetile.png"' ."\"$endtag>\n" ;}
+			  if (file_exists(WB_PATH.'/templates/'.TEMPLATE.'/largetile.png')) { echo '<meta name="msapplication-square310x310logo" content="'.TEMPLATE_DIR.'/largetile.png"' ."\"$endtag>\n" ;}
 		}
 		
 	}
