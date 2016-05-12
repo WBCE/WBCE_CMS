@@ -27,10 +27,16 @@ if (!$admin->checkFTAN())
 // Get values
 $title = $admin->get_post_escaped('title');
 $title = htmlspecialchars($title);
+
 $module = preg_replace('/[^a-z0-9_-]/i', "", $admin->get_post('type')); // fix secunia 2010-93-4
+
 $parent = intval($admin->get_post('parent')); // fix secunia 2010-91-2
+
 $visibility = $admin->get_post('visibility');
 if (!in_array($visibility, array('public', 'private', 'registered', 'hidden', 'none'))) {$visibility = 'public';} // fix secunia 2010-91-2
+
+// Indirect validation as he checks id all listed groups exist 
+// If they do not exist he aborts completely 
 $admin_groups = $admin->get_post('admin_groups');
 $viewing_groups = $admin->get_post('viewing_groups');
 
@@ -44,24 +50,28 @@ $viewing_groups[] = 1;
 // After check print the header
 $admin->print_header();
 // check parent page permissions:
+
 if ($parent!=0) {
+    // Write acces to parent, if not you may not create subpages 
     if (!$admin->get_page_permission($parent,'admin'))
     {
         $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
     }
 
-} elseif (!$admin->get_permission('pages_add_l0','system'))
+} 
+// generic test if you may create pages
+elseif (!$admin->get_permission('pages_add_l0','system'))
 {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }    
 
-// check module permissions:
+// check module permissions: whithout module permissions you may not create a page whith this module
 if (!$admin->get_permission($module, 'module'))
 {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }    
 
-// Validate data
+// Validate title , no title or a title that starts whith a "." 
 if($title == '' || substr($title,0,1)=='.')
 {
     $admin->print_error($MESSAGE['PAGES_BLANK_PAGE_TITLE']);
@@ -145,11 +155,12 @@ $order->clean($parent);
 $position = $order->get_new($parent);
 
 // Work-out if the page parent (if selected) has a seperate template or language to the default
-$query_parent = $database->query("SELECT template, language FROM ".TABLE_PREFIX."pages WHERE page_id = '$parent'");
+$query_parent = $database->query("SELECT template, language, menu FROM ".TABLE_PREFIX."pages WHERE page_id = '$parent'");
 if ($query_parent->numRows() > 0) {
     $fetch_parent = $query_parent->fetchRow();
     $template = $fetch_parent['template'];
     $language = $fetch_parent['language'];
+    $menu= $fetch_parent['menu'];
 } else {
     $template = '';
     $language = DEFAULT_LANGUAGE;
@@ -170,7 +181,7 @@ $sql = 'INSERT INTO `'.TABLE_PREFIX.'pages` '
      .     '`template`=\''.$template.'\', '
      .     '`visibility`=\''.$visibility.'\', '
      .     '`position`='.$position.', '
-     .     '`menu`=1, '
+     .     '`menu`='.$menu.', '
      .     '`language`=\''.$language.'\', '
      .     '`searching`=1, '
      .     '`modified_when`='.time().', '
