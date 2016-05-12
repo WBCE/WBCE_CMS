@@ -40,6 +40,7 @@ if (!$admin->checkFTAN()){
 }
 
 // Get values
+$bBackLink = isset($_POST['pagetree']);
 $page_title = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->get_post_escaped('page_title')));
 $menu_title = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->get_post_escaped('menu_title')));
 $the_link = str_replace(array("[[", "]]"), '', htmlspecialchars($admin->get_post_escaped('link')));
@@ -73,13 +74,13 @@ $menu = intval($admin->get_post('menu')); // fix secunia 2010-91-3
 
 // Validate data
 if($page_title == '' || substr($page_title,0,1)=='.') {
-    $admin->print_error($MESSAGE['PAGES_BLANK_PAGE_TITLE']);
+    $admin->print_error($MESSAGE['PAGES_BLANK_PAGE_TITLE'], $target_url);
 }
 if($menu_title == '' || substr($menu_title,0,1)=='.') {
-    $admin->print_error($MESSAGE['PAGES_BLANK_MENU_TITLE']);
+    $admin->print_error($MESSAGE['PAGES_BLANK_MENU_TITLE'], $target_url);
 }
 if($the_link == '' || substr($the_link,0,1)=='.'){
-    $admin->print_error($MESSAGE['PAGES_BLANK_LINK_TITLE']);
+    $admin->print_error($MESSAGE['PAGES_BLANK_LINK_TITLE'], $target_url);
 }
 
 
@@ -108,7 +109,7 @@ foreach($admin->get_groups_id() as $cur_gid)
 }
 if((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users)))
 {
-    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], $target_url);
 }
 
 // Setup admin groups
@@ -186,7 +187,7 @@ $get_same_page = $database->query($sql);
 
 if($get_same_page->numRows() > 0 and $direct_link=="")
 {
-    $admin->print_error($MESSAGE['PAGES_PAGE_EXISTS']);
+    $admin->print_error($MESSAGE['PAGES_PAGE_EXISTS'], $target_url);
 }
 
 // Update page with new order
@@ -325,7 +326,11 @@ if($database->is_error())
 {
     $admin->print_error($database->get_error(), $target_url );
 } else {
-    $admin->print_success($MESSAGE['PAGES_SAVED_SETTINGS'], $target_url );
+	if ($bBackLink) {
+			$admin->print_success($MESSAGE['PAGES_SAVED_SETTINGS'], $pagetree_url );
+	} else {
+		$admin->print_success($MESSAGE['PAGES_SAVED_SETTINGS'], $target_url );
+	}
 }
 
 // Print admin footer
