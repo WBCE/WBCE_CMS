@@ -64,7 +64,7 @@
 <tr>
     <td width="100" height="20">{TEXT_FILENAME}:</td>
     <td width="240" height="20">
-        <input type="text" name="link" value="{LINK_VALUE}" style="width: 190px;" />{PAGE_EXTENSION}
+        <input type="text" name="link" value="{LINK_VALUE}" title="{TEXT_HINT_FILENAME}" style="width: 190px;" />{PAGE_EXTENSION}
     </td>
 </tr>
 <tr>
@@ -167,9 +167,10 @@
 	</td>
 </tr>
 <tr>
-	<td width="100">&nbsp;</td>
-	<td colspan="4">
+	
+	<td colspan="3">
 		<input type="submit" name="submit" value="{TEXT_SAVE} {SECTION_SETTINGS}" style="width: 117px;" />
+		<input type="submit" name="pagetree" value="{TEXT_SAVE} &amp; {TEXT_BACK}"/>
 		<input type="reset" name="reset" value="{TEXT_RESET}" style="width: 117px;" />
 	</td>
 </tr>

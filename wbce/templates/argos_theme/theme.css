@@ -74,9 +74,12 @@ select option.disabled { color :#aaaaaa; }
 .setting_value_permissions { width :50%; min-width :400px; }
 .setting_value input, .setting_value select, .setting_value textarea { width :100%; }
 .setting_value textarea { height :50px; }
-#admintools ul { padding :0; margin :0; }
-#admintools li { list-style-type :none; display :inline; float :left; width :45%; margin :10px; height:80px;}
-#admintools table.section td.description {display:block; height:60px; overflow:hidden; text-overflow:ellipsis;}
+#admintools ul,
+#settingtools ul { padding :0; margin :0; }
+#admintools li, 
+#settingtools li { list-style-type :none; display :inline; float :left; width :45%; margin :10px; height:80px;}
+#admintools table.section td.description, 
+#settingtools table.section td.description {display:block; height:60px; overflow:hidden; text-overflow:ellipsis;}
 .value_input input, .value_input text, .value_input select { width :100%; }
 #file_mode input, #dir_mode input { width :12px; height :12px; }
 #hide2 { display :none; }

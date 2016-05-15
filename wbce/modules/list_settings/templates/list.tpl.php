@@ -6,7 +6,7 @@ Tools list Tempalte
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 ?>
 <div id="settingtools">
-    <h2><?php echo $categoryName ?>DAAAA</h2>
+    <h2><?php echo $categoryName ?></h2>
     <ul>   
 <?php foreach($myTools  as  $tool): ?>   
 <?php  $toolLink=ADMIN_URL.$typeDir."/$toolFile?tool=".$tool['directory']; ?> 
