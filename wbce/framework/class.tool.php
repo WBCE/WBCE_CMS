@@ -78,6 +78,9 @@ class Tool {
     private function CheckVars () {
     
         global $database;
+
+        // Is session Var is missing the user is not logged in 
+        if (!isset($_SESSION['MODULE_PERMISSIONS'])) $this->ReturnTo("../index.php");
     
         // return url if something goes wrong , or back button is used
         // Admin access section
