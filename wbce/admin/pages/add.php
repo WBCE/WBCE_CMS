@@ -166,6 +166,8 @@ if ($query_parent->numRows() > 0) {
     $language = DEFAULT_LANGUAGE;
 }
 
+if (!isset($menu)) { $menu=1; }
+
 // Insert page into pages table
 $sql = 'INSERT INTO `'.TABLE_PREFIX.'pages` '
      . 'SET `parent`='.$parent.', '
@@ -181,7 +183,7 @@ $sql = 'INSERT INTO `'.TABLE_PREFIX.'pages` '
      .     '`template`=\''.$template.'\', '
      .     '`visibility`=\''.$visibility.'\', '
      .     '`position`='.$position.', '
-     .     '`menu`='.$menu.', '
+     .     '`menu`=\''.$menu.'\', '
      .     '`language`=\''.$language.'\', '
      .     '`searching`=1, '
      .     '`modified_when`='.time().', '
