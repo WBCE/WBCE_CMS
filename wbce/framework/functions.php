@@ -592,8 +592,12 @@ function media_filename($string)
 if (!function_exists('page_link')) {
     function page_link($link)
     {
-        global $admin;
-        return $admin->page_link($link);
+        global $wb;
+        /*global $admin;
+        //possibly called from FE and BE
+        if (isset ($admin) AND is_object($admin))
+            return $admin->page_link($link);*/
+        return $wb->page_link($link);
     }
 }
 
