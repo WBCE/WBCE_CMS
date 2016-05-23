@@ -17,7 +17,7 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 	
 // Set the language information
 $language_code = 'DE';
-$language_name = 'Germany';
+$language_name = 'German';
 $language_version = '3.1';
 $language_platform = '2.9';
 $language_author = 'Stefan Braunewell, Matthias Gallas, Florian Meerwinck';
@@ -630,7 +630,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Bitte geben Sie Ihre E-Mail-Adresse an';
 $MESSAGE['START_CURRENT_USER'] = 'Sie sind angemeldet als:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Das Installations-Verzeichnis "/install" existiert noch! Dies stellt ein Sicherheitsrisiko dar. Bitte l&#246;schen.';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Bitte die Datei "upgrade-script.php" l&#246;schen.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Willkommen imBackend Ihrer Website';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Willkommen im Backend Ihrer Website';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Bitte beachten Sie: Um ein neu installiertes Template zu verwenden, m&#252;ssen Sie dieses bei den "Grundeinstellungen" bzw. "Seiteneinstellungen" ausw&#228;hlen';
 $MESSAGE['UPLOAD_ERR_OK'] = 'Die Datei wurde erfolgreich hochgeladen';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'Die Gr&#246;&#223;e der hochgeladenen Datei &uum;berschreitet die PHP-Voreinstellung upload_max_filesize';

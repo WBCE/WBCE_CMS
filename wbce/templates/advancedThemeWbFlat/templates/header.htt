@@ -69,7 +69,7 @@
     <div class='container'>
         <div id="headerarea" class="clearfix">
             <div id="branding">
-                <div id="branding-text">WebsiteBaker CE</div>
+                <div id="branding-text">WBCE</div>
                 <div id="branding-logo"></div>
             </div>           
             <a id="frontendtitel" href="{ADMIN_URL}" title="{TITLE_START}">
