@@ -1,13 +1,7 @@
-<?php
-/*
- * Remark:  HTTP/1.1 requires a qualified URI incl. the scheme, name
- * of the host and absolute path as the argument of location. Some, but
- * not all clients will accept relative URIs also.
- */
-    $host = $_SERVER['HTTP_HOST'];
-    $uri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-    $file = 'install/index.php';
-    $target_url = 'http://' . $host . $uri . '/' . $file;
-    $sResponse = $_SERVER['SERVER_PROTOCOL'] . ' 307 Temporary Redirect';
-    header($sResponse);
-    header('Location: ' . $target_url); exit;  
+<?php 
+// All of those framework files has been replaced 
+// now if a filre loads one of this Libs multiple times the 
+// include_once stops the script from throwing errors 
+// for classes this file can be even completely empty as 
+// the autoloader normally takes care 
+include_once (__dir__."/includes/".basename(__FILE__));
