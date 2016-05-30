@@ -38,7 +38,7 @@ if (!defined('TABLE_PREFIX')) {
 
 // Create new frontend object
 $wb = new frontend();
-
+$admin=$wb; // a wild hack for some modules calling on $admin in the FE...
 
 // Figure out which page to display
 // Stop processing if intro page was shown
