@@ -227,7 +227,7 @@ ob_start();
 						<?php endif; //$p['visibility'] != 'deleted' && $p['visibility'] != 'none' ?>
 						&nbsp;&nbsp;</nobr>						
 					</small>
-				</td>
+				</td><td>&nbsp;</td>
 				<td class="list_actions">&nbsp;
 					<?php if($canMoveUP) : ?>
 					<a href="../pages/move_up.php?page_id={PAGE_ID}" title="<?php echo $TEXT['MOVE_UP']; ?>"><img src="{THEME_ICONS}/up_16.png" border="0" alt="/\" /></a>			
@@ -327,3 +327,4 @@ if(isset($use_dragdrop_switch) && $use_dragdrop_switch == TRUE){
 ?>
 </div>
 </div>
+
