@@ -48,11 +48,7 @@
 <div id="admin_header">
   <div id="header_top">
     <div id="topmenu"> <a href="{ADMIN_URL}" title="{TITLE_START}">Home</a>| <a href="{URL_VIEW}" target="_blank" title="{TITLE_VIEW}">{TITLE_VIEW}</a>| <a href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a>
-	  <br />
-      <br />
-      <span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
-      <span class="version">Tag: {WBCE_TAG}</span><br/>
-      <span class="version">Admin theme v1.7.5</span>
+	
 	 </div>
     <a href="{ADMIN_URL}" title="{TITLE_START}" id="website_title">
     {WEBSITE_TITLE} - {TEXT_ADMINISTRATION}
@@ -72,3 +68,4 @@
 <tr>
   <td class="content">
 <!-- END header_block -->
+
