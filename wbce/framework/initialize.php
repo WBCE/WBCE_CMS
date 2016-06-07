@@ -195,6 +195,7 @@ if(WB_PROTOCOLL=="https"){
     ini_set( 'session.cookie_secure', 1 );
 }
 session_name(APP_NAME . '-sid');
+session_set_cookie_params(0);
 //session_set_cookie_params(WB_SECFORM_TIMEOUT);
 
 // Start a session
