@@ -264,6 +264,9 @@ class Tool {
                 '&nbsp;&raquo;&nbsp;'.$module_name.'</h4>'."\n";
         }
 
+        // eine Variable für this festlegen
+        $oWrapper=$this;
+        
         //Load actual tool
         require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
         
@@ -313,7 +316,7 @@ class Tool {
         Returns path for template file, either the one from the BE template 
         or the default one from the module.
     */
-    private function GetTemplatePath($filename) {
+    public function GetTemplatePath($filename) {
     
         // Path in BE template
         $path=THEME_PATH.'/modules/'.$this->toolDir.'/templates/'.$filename;
