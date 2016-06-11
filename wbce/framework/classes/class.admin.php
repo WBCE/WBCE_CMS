@@ -135,6 +135,7 @@ class admin extends wb
             'CHARSET' => $charset,
             'LANGUAGE' => strtolower(LANGUAGE),
             'WBCE_VERSION' => WBCE_VERSION,
+            'PHP_VERSION' => phpversion (),           
             'WBCE_TAG' => (in_array(WBCE_TAG, array('', '-'))
                 ? '-'
                 : '<a href="https://github.com/WBCE/WebsiteBaker_CommunityEdition/releases/tag/' . WBCE_TAG . '" target="_blank">' . WBCE_TAG . '</a>'
@@ -213,6 +214,12 @@ class admin extends wb
         $footer_template->set_file('page', 'footer.htt');
         $footer_template->set_block('page', 'footer_block', 'header');
         $footer_template->set_var(array(
+            'WBCE_VERSION' => WBCE_VERSION,
+            'PHP_VERSION' => phpversion (),           
+            'WBCE_TAG' => (in_array(WBCE_TAG, array('', '-'))
+                ? '-'
+                : '<a href="https://github.com/WBCE/WebsiteBaker_CommunityEdition/releases/tag/' . WBCE_TAG . '" target="_blank">' . WBCE_TAG . '</a>'
+            ),
             'BACKEND_BODY_MODULE_JS' => $this->register_backend_modfiles_body('js'),
             'WB_URL' => WB_URL,
             'ADMIN_URL' => ADMIN_URL,
@@ -449,9 +456,10 @@ class admin extends wb
 
         // check if backend.js or backend.css files needs to be included to the <head></head> section of the backend
         if (isset($_GET['tool'])) {
+            $_GET['tool']=preg_replace("/[^a-z0-9_]/isu","", $_GET['tool']); //prevent any injections 
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
+            $sql .= 'WHERE `type`=\'module\'  AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend.js or backend.css file to include
@@ -484,6 +492,7 @@ class admin extends wb
                 }
             }
             // write out links with all external module javascript/CSS files, remove last line feed
+            echo htmlentities("HL:".$head_links);
             return rtrim($head_links);
         }
     }
