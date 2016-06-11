@@ -395,9 +395,10 @@ class admin extends wb
         }
         // check if backend_body.js files needs to be included to the <body></body> section of the backend
         if (isset($_GET['tool'])) {
-            // check if displayed page contains a installed admin tool
+            $_GET['tool']=preg_replace("/[^a-z0-9_]/isu","", $_GET['tool']); //prevent any injections
+        // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
+            $sql .= 'WHERE `type`=\'module\'  AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend_body.js file to include
