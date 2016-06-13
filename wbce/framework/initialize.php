@@ -222,9 +222,9 @@ ini_get("session.cookie_httponly"));
 
 
 $now=time();
-echo "Now: $now <br>";
-echo "discard_after:".$_SESSION['WB']['discard_after']."<br>";
-echo "Secform timeout:".WB_SECFORM_TIMEOUT."<br>";
+//echo "Now: $now <br>";
+//echo "discard_after:".$_SESSION['WB']['discard_after']."<br>";
+//echo "Secform timeout:".WB_SECFORM_TIMEOUT."<br>";
 if (isset($_SESSION['WB']['discard_after']) && $now > $_SESSION['WB']['discard_after']) {
     // this session has worn out its welcome; kill it and start a brand new one
     session_unset();
@@ -233,7 +233,7 @@ if (isset($_SESSION['WB']['discard_after']) && $now > $_SESSION['WB']['discard_a
     echo "Run out , killing session";
 }
 $_SESSION['WB']['discard_after'] = $now + WB_SECFORM_TIMEOUT;
-echo "discard_after2:".$_SESSION['WB']['discard_after']."<br>";
+//echo "discard_after2:".$_SESSION['WB']['discard_after']."<br>";
 
 
 if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
