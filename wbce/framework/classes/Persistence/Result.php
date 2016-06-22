@@ -4,7 +4,6 @@ namespace Persistence;
 
 class Result
 {
-
     /**
      * PDO statement.
      *
@@ -90,5 +89,15 @@ class Result
         $errorInfo = $this->statement->errorInfo();
 
         return $errorInfo[2];
+    }
+
+    /**
+     * Get PDO statement.
+     *
+     * @return \PDOStatement
+     */
+    public function getPdoStatement()
+    {
+        return $this->statement;
     }
 }
