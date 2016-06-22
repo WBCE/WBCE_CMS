@@ -48,6 +48,13 @@ class Database
     private $charset = 'utf8';
 
     /**
+     * Database DSN.
+     *
+     * @var string
+     */
+    private $dsn;
+
+    /**
      * PDO connection.
      *
      * @var \PDO
@@ -59,34 +66,38 @@ class Database
      */
     public function __construct()
     {
-        if (defined('DB_DRIVER')) {
-            $this->driver = DB_DRIVER;
-        }
-
-        if (defined('DB_HOST')) {
-            $this->host = DB_HOST;
-
-            if (defined('DB_PORT')) {
-                $this->host . ':' . DB_PORT;
-            }
-        }
-
-        if (defined('DB_NAME')) {
-            $this->dbname = DB_NAME;
+        if (defined('DB_DSN') && strlen(DB_DSN) > 0) {
+            $this->dsn = DB_DSN;
         } else {
-            throw new DatabaseException('Database name (DB_NAME) not defined');
-        }
+            if (defined('DB_DRIVER')) {
+                $this->driver = DB_DRIVER;
+            }
 
-        if (defined('DB_USERNAME')) {
-            $this->username = DB_USERNAME;
-        }
+            if (defined('DB_HOST')) {
+                $this->host = DB_HOST;
 
-        if (defined('DB_PASSWORD')) {
-            $this->password = DB_PASSWORD;
-        }
+                if (defined('DB_PORT')) {
+                    $this->host . ':' . DB_PORT;
+                }
+            }
 
-        if (defined('DB_CHARSET')) {
-            $this->charset = preg_replace('/[^a-z0-9]/i', '', DB_CHARSET);
+            if (defined('DB_NAME')) {
+                $this->dbname = DB_NAME;
+            } else {
+                throw new DatabaseException('Database name (DB_NAME) not defined');
+            }
+
+            if (defined('DB_USERNAME')) {
+                $this->username = DB_USERNAME;
+            }
+
+            if (defined('DB_PASSWORD')) {
+                $this->password = DB_PASSWORD;
+            }
+
+            if (defined('DB_CHARSET')) {
+                $this->charset = preg_replace('/[^a-z0-9]/i', '', DB_CHARSET);
+            }
         }
 
         $this->connect();
@@ -99,11 +110,20 @@ class Database
      */
     public function connect()
     {
-        $this->pdo = new \PDO($this->driver . ':host=' . $this->host . ';dbname=' . $this->dbname, $this->username, $this->password, array(
+        $options = array(
             \PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL,
-        ));
-        $this->pdo->exec('SET NAMES ' . $this->charset);
-        $this->pdo->exec('SET @@sql_mode=""');
+        );
+
+        if ($this->dsn) {
+            $this->pdo = new \PDO($this->dsn);
+        } else {
+            $this->pdo = new \PDO($this->driver . ':host=' . $this->host . ';dbname=' . $this->dbname, $this->username, $this->password, $options);
+            $this->pdo->exec('SET NAMES ' . $this->charset);
+        }
+
+        if ($this->driver === 'mysql') {
+            $this->pdo->exec('SET @@sql_mode=""');
+        }
 
         return true;
     }
@@ -219,7 +239,7 @@ class Database
      */
     public function getDatabaseName()
     {
-        return $this->dbname;
+        return $this->dbname ? : $this->dsn;
     }
 
     /**
