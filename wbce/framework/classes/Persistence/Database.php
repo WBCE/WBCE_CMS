@@ -4,6 +4,7 @@ namespace Persistence;
 
 class Database
 {
+
     /**
      * PDO driver.
      *
@@ -76,7 +77,7 @@ class Database
                 $this->host = DB_HOST;
 
                 if (defined('DB_PORT')) {
-                    $this->host.':'.DB_PORT;
+                    $this->host . ':' . DB_PORT;
                 }
             }
 
@@ -116,8 +117,8 @@ class Database
         if ($this->dsn) {
             $this->pdo = new \PDO($this->dsn);
         } else {
-            $this->pdo = new \PDO($this->driver.':host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password, $options);
-            $this->pdo->exec('SET NAMES '.$this->charset);
+            $this->pdo = new \PDO($this->driver . ':host=' . $this->host . ';dbname=' . $this->dbname, $this->username, $this->password, $options);
+            $this->pdo->exec('SET NAMES ' . $this->charset);
         }
 
         if ($this->driver === 'mysql') {
@@ -238,7 +239,7 @@ class Database
      */
     public function getDatabaseName()
     {
-        return $this->dbname ?: $this->dsn;
+        return $this->dbname ? : $this->dsn;
     }
 
     /**
@@ -299,7 +300,7 @@ class Database
      */
     public function hasColumn($table, $column)
     {
-        $result = $this->preparedQuery('SHOW COLUMNS FROM '.$table.' LIKE :column', array(
+        $result = $this->preparedQuery('SHOW COLUMNS FROM ' . $table . ' LIKE :column', array(
             'column' => $column,
         ));
         if ($result->error()) {
@@ -323,14 +324,14 @@ class Database
     public function addColumn($table, $column, $description)
     {
         if (!$this->hasColumn($table, $column)) {
-            $result = $this->query('ALTER TABLE '.$table.' ADD '.$column.' '.$description);
+            $result = $this->query('ALTER TABLE ' . $table . ' ADD ' . $column . ' ' . $description);
             if ($result->error()) {
                 throw new DatabaseException($result->error());
             }
 
             return $this->hasColumn($table, $column);
         }
-        throw new DatabaseException('Cannot add column '.$column.' in table '.$table.'. A column with that name already exists.');
+        throw new DatabaseException('Cannot add column ' . $column . ' in table ' . $table . '. A column with that name already exists.');
     }
 
     /**
@@ -347,14 +348,14 @@ class Database
     public function modifyColumn($table, $column, $description)
     {
         if ($this->hasColumn($table, $column)) {
-            $result = $this->query('ALTER TABLE '.$table.' MODIFY '.$column.' '.$description);
+            $result = $this->query('ALTER TABLE ' . $table . ' MODIFY ' . $column . ' ' . $description);
             if ($result->error()) {
                 throw new DatabaseException($result->error());
             }
 
             return true;
         }
-        throw new DatabaseException('Cannot modify column '.$column.' in table '.$table.'. A column with that name doesn\'t exists.');
+        throw new DatabaseException('Cannot modify column ' . $column . ' in table ' . $table . '. A column with that name doesn\'t exists.');
     }
 
     /**
@@ -370,14 +371,14 @@ class Database
     public function dropColumn($table, $column)
     {
         if ($this->hasColumn($table, $column)) {
-            $result = $this->query('ALTER TABLE '.$table.' DROP '.$column);
+            $result = $this->query('ALTER TABLE ' . $table . ' DROP ' . $column);
             if ($result->error()) {
                 throw new DatabaseException($result->error());
             }
 
             return true;
         }
-        throw new DatabaseException('Cannot drop column '.$column.' in table '.$table.'. A column with that name doesn\'t exists.');
+        throw new DatabaseException('Cannot drop column ' . $column . ' in table ' . $table . '. A column with that name doesn\'t exists.');
     }
 
     /**
@@ -407,9 +408,40 @@ class Database
 
                 return $this->pdo->exec($sql);
             }
-            throw new DatabaseException('Dump file '.$dumpFile.' is empty');
+            throw new DatabaseException('Dump file ' . $dumpFile . ' is empty');
         }
-        throw new DatabaseException('Cannot read dump file '.$dumpFile);
+        throw new DatabaseException('Cannot read dump file ' . $dumpFile);
+    }
+
+    /**
+     * Update row
+     *
+     * @param string $table
+     * @param string $primaryKey
+     * @param array $data
+     * @return Result
+     * @throws DatabaseException
+     */
+    public function updateRow($table, $primaryKey, array $data)
+    {
+
+        if (isset($data[$primaryKey])) {
+            $sql = 'UPDATE ' . $table . ' SET ';
+
+            $parameters = array();
+            foreach ($data as $column => $value) {
+                if ($column !== $primaryKey) {
+                    $sql .= $column . '= ? ';
+                    $parameters[] = $value;
+                }
+            }
+
+            $sql .= 'WHERE ' . $primaryKey . ' = ?';
+            $parameters[] = $data[$primaryKey];
+
+            return $this->preparedQuery($sql, $parameters);
+        }
+        throw new DatabaseException('Cannot find primary key in data');
     }
 
     /**
@@ -424,12 +456,12 @@ class Database
         switch ($name) {
             case 'db_handle':
             case 'DbHandle':
-                trigger_error('Property '.$name.' is deprecated, use the method getPdo() instead', E_USER_DEPRECATED);
+                trigger_error('Property ' . $name . ' is deprecated, use the method getPdo() instead', E_USER_DEPRECATED);
 
                 return $this->getPdo();
             case 'db_name':
             case 'DbName':
-                trigger_error('Property '.$name.' is deprecated, use the method getDatabaseName() instead', E_USER_DEPRECATED);
+                trigger_error('Property ' . $name . ' is deprecated, use the method getDatabaseName() instead', E_USER_DEPRECATED);
 
                 return $this->getDatabaseName();
         }
@@ -447,39 +479,39 @@ class Database
     {
         switch ($name) {
             case 'get_one':
-                trigger_error('Method '.$name.'(\$query) is deprecated, use the method getOne(\$query) instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '(\$query) is deprecated, use the method getOne(\$query) instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'getOne'), $args);
             case 'is_error':
-                trigger_error('Method '.$name.'() is deprecated, use the method hasError() instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '() is deprecated, use the method hasError() instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'hasError'), $args);
             case 'get_error':
-                trigger_error('Method '.$name.'() is deprecated, use the method getError() instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '() is deprecated, use the method getError() instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'getError'), $args);
             case 'escapeString':
-                trigger_error('Method '.$name.'(\$string) is deprecated, use the method quote(\$string) instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '(\$string) is deprecated, use the method quote(\$string) instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'quote'), $args);
             case 'field_exists':
-                trigger_error('Method '.$name.'(\$table_name, \$field_name) is deprecated, use the method hasColumn(\$table, \$column) instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '(\$table_name, \$field_name) is deprecated, use the method hasColumn(\$table, \$column) instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'hasColumn'), $args);
             case 'field_add':
-                trigger_error('Method '.$name.'(\$table_name, \$field_name, \$description) is deprecated, use the method addColumn(\$table, \$column, \$description) instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '(\$table_name, \$field_name, \$description) is deprecated, use the method addColumn(\$table, \$column, \$description) instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'addColumn'), $args);
             case 'field_modify':
-                trigger_error('Method '.$name.'(\$table_name, \$field_name, \$description) is deprecated, use the method modifyColumn(\$table, \$column, \$description) instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '(\$table_name, \$field_name, \$description) is deprecated, use the method modifyColumn(\$table, \$column, \$description) instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'modifyColumn'), $args);
             case 'field_remove':
-                trigger_error('Method '.$name.'(\$table_name, \$field_name) is deprecated, use the method dropColumn(\$table, \$column) instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '(\$table_name, \$field_name) is deprecated, use the method dropColumn(\$table, \$column) instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'dropColumn'), $args);
             case 'SqlImport':
-                trigger_error('Method '.$name.'(\$sSqlDump, \$sTablePrefix, \$bPreserve, \$sTblEngine, \$sTblCollation) is deprecated, use the method import((\$dumpFile, \$tablePrefix, \$preserve, \$tableEngine, \$tableCollation)) instead', E_USER_DEPRECATED);
+                trigger_error('Method ' . $name . '(\$sSqlDump, \$sTablePrefix, \$bPreserve, \$sTblEngine, \$sTblCollation) is deprecated, use the method import((\$dumpFile, \$tablePrefix, \$preserve, \$tableEngine, \$tableCollation)) instead', E_USER_DEPRECATED);
 
                 return call_user_func_array(array($this, 'import'), $args);
         }
