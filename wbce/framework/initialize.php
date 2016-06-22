@@ -34,13 +34,12 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 
 // DATABASE
 // Load database class
-require_once (dirname(__FILE__) . '/class.database.php');
-//require_once (dirname(__FILE__) . '/classes/Persistence/Database.php');
-//require_once (dirname(__FILE__) . '/classes/Persistence/Result.php');
-// Create database class
-$database = new database();
+require_once (dirname(__FILE__) . '/classes/Persistence/Database.php');
+require_once (dirname(__FILE__) . '/classes/Persistence/Result.php');
 
-$database->import('asdasd');
+// Create database class
+$database = new \Persistence\Database();
+
 
 // PRE INIT
 //// BESSER MYSQL FIND_IN_SET()?

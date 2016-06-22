@@ -4,6 +4,7 @@ namespace Persistence;
 
 class Result
 {
+
     /**
      * PDO statement.
      *
