@@ -4,7 +4,6 @@ namespace Persistence;
 
 class Result
 {
-
     /**
      * PDO statement.
      *
@@ -78,18 +77,6 @@ class Result
         $this->fetchStyle = $fetchStyle;
 
         return $this->statement->fetch($fetchStyle);
-    }
-
-    /**
-     * Get error message.
-     *
-     * @return string
-     */
-    public function error()
-    {
-        $errorInfo = $this->statement->errorInfo();
-
-        return $errorInfo[2];
     }
 
     /**
