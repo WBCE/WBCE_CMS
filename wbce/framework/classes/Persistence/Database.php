@@ -166,7 +166,7 @@ class Database
      *
      * @return Result
      */
-    public function preparedQuery($query, $parameters = array())
+    public function preparedQuery($query, array $parameters = array())
     {
         $statement = $this->pdo->prepare($query);
         $statement->execute($parameters);
@@ -182,19 +182,15 @@ class Database
      * Get the first column of the first row.
      *
      * @param string $query
-     * @param array  $parameters
      *
      * @return mixed
      */
-    public function getOne($query, $parameters = array())
+    public function getOne($query)
     {
-        $statement = $this->pdo->prepare($query);
-        $statement->execute($parameters);
+        $statement = $this->pdo->query($query);
 
         if ($statement) {
-            $result = $statement->fetchColumn();
-
-            return $result;
+            return $statement->fetchColumn();
         }
 
         return;
@@ -275,17 +271,18 @@ class Database
      */
     public function getTableEngine($table)
     {
-        $result = $this->preparedQuery('SHOW TABLE STATUS LIKE :table', array(
-            'table' => $table,
-        ));
+        if ($this->driver === 'mysql') {
+            $result = $this->preparedQuery('SHOW TABLE STATUS LIKE :table', array(
+                'table' => $table,
+            ));
 
-        if ($result) {
-            $row = $result->fetchRow();
+            if ($result) {
+                $row = $result->fetchRow();
 
-            return $row['Engine'];
+                return $row['Engine'];
+            }
         }
-
-        return 'Unknown';
+        return $this->driver;
     }
 
     /**
@@ -414,34 +411,62 @@ class Database
     }
 
     /**
-     * Update row
+     * Update row.
      *
      * @param string $table
      * @param string $primaryKey
-     * @param array $data
+     * @param array  $data
+     *
      * @return Result
+     *
      * @throws DatabaseException
      */
     public function updateRow($table, $primaryKey, array $data)
     {
-
         if (isset($data[$primaryKey])) {
-            $sql = 'UPDATE ' . $table . ' SET ';
-
             $parameters = array();
-            foreach ($data as $column => $value) {
-                if ($column !== $primaryKey) {
-                    $sql .= $column . '= ? ';
-                    $parameters[] = $value;
-                }
-            }
 
-            $sql .= 'WHERE ' . $primaryKey . ' = ?';
+            $sets = array_map(function ($column, $value) use ($parameters, $primaryKey) {
+                if ($column !== $primaryKey) {
+                    $parameters[] = $value;
+
+                    return $column . ' = ?';
+                }
+            }, $data);
+
             $parameters[] = $data[$primaryKey];
+
+            $sql = 'UPDATE ' . $table . ' SET ' . implode(', ', $sets) . '
+                WHERE ' . $primaryKey . ' = ?';
 
             return $this->preparedQuery($sql, $parameters);
         }
         throw new DatabaseException('Cannot find primary key in data');
+    }
+
+    /**
+     * Insert row.
+     *
+     * @param string $table
+     * @param array  $data
+     *
+     * @return Result
+     */
+    public function insertRow($table, array $data)
+    {
+        $parameters = array();
+
+        $columns = array_keys($data);
+        $values = array_map(function ($value) use ($parameters) {
+            $parameters[] = $value;
+
+            return '?';
+        }, $data);
+
+        $sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ')
+            VALUES (' . implode(', ', $values) . ')';
+
+        return $this->preparedQuery($sql, $parameters);
     }
 
     /**
@@ -475,7 +500,7 @@ class Database
      *
      * @return mixed
      */
-    public function __call($name, $args)
+    public function __call($name, array $args)
     {
         switch ($name) {
             case 'get_one':
