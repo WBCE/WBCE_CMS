@@ -378,7 +378,7 @@ class admin extends wb
         }
     }
 
-    // Function to add optional module Javascript or CSS stylesheets into the <body> section of the backend
+    // Function to add optional module Javascript into the <body> section of the backend
     public function register_backend_modfiles_body($file_id = "js")
     {
         // Set return value as we need to add up values
@@ -389,49 +389,84 @@ class admin extends wb
         if ($file_id !== "javascript" && $file_id !== "js") {
             return;
         }
+        
         global $database;
+        
+        // empty collector var
         $body_links = "";
-        // define default baselink and filename for optional module javascript and stylesheet files
-        if ($file_id == "js") {
-            $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/backend_body.js" type="text/javascript"></script>';
-            $base_file = "backend_body.js";
-        }
+        
+        // no css variant here in body
+        // define default baselink and filename for optional module javascript and stylesheet files  
+               
+        // new theme position
+        $theme_link = '<script src="' . WB_URL . '/templates/'.DEFAULT_THEME.'/modules/{MODULE_DIRECTORY}/backend_body.js" type="text/javascript"></script>';
+
+        // old position of file
+        $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/backend_body.js" type="text/javascript"></script>';
+        
+        // filename
+        $base_file = "backend_body.js";
+        
+        
+        
         // check if backend_body.js files needs to be included to the <body></body> section of the backend
         if (isset($_GET['tool'])) {
-            $_GET['tool']=preg_replace("/[^a-z0-9_]/isu","", $_GET['tool']); //prevent any injections
-        // check if displayed page contains a installed admin tool
+        
+            //prevent any injections
+            $_GET['tool']=preg_replace("/[^a-z0-9_]/isu","", $_GET['tool']); 
+            
+            // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
             $sql .= 'WHERE `type`=\'module\'  AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
             $result = $database->query($sql);
-            if ($result->numRows()) {
+            if ($result->numRows()) { // Yess it does 
+            
                 // check if admin tool directory contains a backend_body.js file to include
                 $tool = $result->fetchRow(MYSQLI_ASSOC);
-                if (file_exists(WB_PATH . '/modules/' . $tool['directory'] . '/' . $base_file)) {
-                    // return link to the backend_body.js file
-                    $retval.= str_replace('{MODULE_DIRECTORY}', $tool['directory'], $base_link);
+                
+                // Test for override in template
+                if (file_exists(WB_PATH . '/templates/'.DEFAULT_THEME.'/modules/'. $tool['directory'] . '/' . $base_file)) {
+                    // return link to the backend.js or backend.css file of tools 
+                    $retval.= str_replace("{MODULE_DIRECTORY}", $tool['directory'], $theme_link)."\n";
                 }
+              
+                // Test for old position
+                else if (file_exists(WB_PATH . '/modules/' . $tool['directory'] . '/' . $base_file)) {
+                    // return link to the backend.js or backend.css file of tools 
+                    $retval.= str_replace("{MODULE_DIRECTORY}", $tool['directory'], $base_link)."\n";
+                }                            
             }
-        } //N : ifelse entfernt da wir ja jetzt beides brauchen
+        } 
         
         if (isset($_GET['page_id']) || isset($_POST['page_id'])) {
+        
             // check if displayed page in the backend contains a page module
+            // post and get both are allowed
             if (isset($_GET['page_id'])) {
                 $page_id = (int) addslashes($_GET['page_id']);
             } else {
                 $page_id = (int) addslashes($_POST['page_id']);
             }
+            
             // gather information for all models embedded on actual page
             $sql = 'SELECT DISTINCT `module` FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id`=' . (int) $page_id;
             $query_modules = $database->query($sql);
             while ($row = $query_modules->fetchRow(MYSQLI_ASSOC)) {
-                // check if page module directory contains a backend_body.js file
-                if (file_exists(WB_PATH . '/modules/' . $row['module'] . '/' . $base_file)) {
-                    // create link with backend_body.js source for the current module
-                    $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link);
-                    // ensure that backend_body.js is only added once per module type
-                    if (strpos($body_links, $tmp_link) === false) {
-                        $body_links .= $tmp_link . "\n";
-                    }
+                $tmp_link ="";
+                // Test for override in template
+                if (file_exists(WB_PATH . '/templates/'.DEFAULT_THEME.'/modules/'. $row['module'] . '/' . $base_file)) {
+                    // return link to the backend.js or backend.css file of tools 
+                    $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $theme_link)."\n";
+                } 
+                // or maybe old version old position
+                else if(file_exists(WB_PATH . '/modules/' . $row['module'] . '/' . $base_file)) {
+                    // return link to the backend.js or backend.css file of tools 
+                    $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link)."\n";
+                }
+                
+                // ensure that backend_body.js is only added once per module type
+                if (!empty($tmp_link) AND strpos($body_links, $tmp_link) === false) {
+                    $body_links .= $tmp_link . "\n";
                 }
             }
             // write out links with all external module javascript/CSS files, remove last line feed
@@ -457,33 +492,64 @@ class admin extends wb
         // define default baselink and filename for optional module javascript and stylesheet files
         $head_links = "";
         if ($file_id == "css") {
+        
+             // old position of file
             $base_link = '<link href="' . WB_URL . '/modules/{MODULE_DIRECTORY}/backend.css"';
             $base_link .= ' rel="stylesheet" type="text/css" media="screen" />';
+            
+            // new theme position
+            $theme_link = '<link href="' . WB_URL . '/templates/'.DEFAULT_THEME.'/modules/{MODULE_DIRECTORY}/backend.css"';
+            $theme_link .= ' rel="stylesheet" type="text/css" media="screen" />';
+            
+            //filename
             $base_file = "backend.css";
+            
         } else {
+        
+            // old position of file
             $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/backend.js" type="text/javascript"></script>';
+            
+            // new theme position
+            $theme_link = '<script src="' . WB_URL . '/templates/'.DEFAULT_THEME.'/modules/{MODULE_DIRECTORY}/backend.js" type="text/javascript"></script>';
+
+            //filename
             $base_file = "backend.js";
+           
         }
 
         // check if backend.js or backend.css files needs to be included to the <head></head> section of the backend
+        // this is for admintools and backend modules as same as settings , all have $_GET['tool'] or $_POST['tool'] set
         if (isset($_GET['tool'])) {
-            $_GET['tool']=preg_replace("/[^a-z0-9_]/isu","", $_GET['tool']); //prevent any injections 
+        
+            //prevent any injections 
+            $_GET['tool']=preg_replace("/[^a-z0-9_]/isu","", $_GET['tool']); 
+            
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
             $sql .= 'WHERE `type`=\'module\'  AND `directory`=\'' . addslashes($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
+            
                 // check if admin tool directory contains a backend.js or backend.css file to include
                 $tool = $result->fetchRow(MYSQLI_ASSOC);
-                if (file_exists(WB_PATH . '/modules/' . $tool['directory'] . '/' . $base_file)) {
+
+                // Test for override in template
+                if (file_exists(WB_PATH . '/templates/'.DEFAULT_THEME.'/modules/'. $tool['directory'] . '/' . $base_file)) {
                     // return link to the backend.js or backend.css file of tools 
-                    $retval.= str_replace("{MODULE_DIRECTORY}", $tool['directory'], $base_link)."\n";//N
+                    $retval.= str_replace("{MODULE_DIRECTORY}", $tool['directory'], $theme_link)."\n";
                 }
+              
+                // Test for old position
+                else if (file_exists(WB_PATH . '/modules/' . $tool['directory'] . '/' . $base_file)) {
+                    // return link to the backend.js or backend.css file of tools 
+                    $retval.= str_replace("{MODULE_DIRECTORY}", $tool['directory'], $base_link)."\n";
+                }
+                
             }
         } 
-        //N : ifelse entfernt da wir ja jetzt beides brauchen
         
         // Now we got modules that maybe tools , but maybe page editors too 
+        // post and get both are allowed
         if (isset($_GET['page_id']) || isset($_POST['page_id'])) {
             // check if displayed page in the backend contains a page module
             if (isset($_GET['page_id'])) {
@@ -492,26 +558,37 @@ class admin extends wb
                 $page_id = (int) $_POST['page_id'];
             }
 
-            // gather information for all models embedded on actual page
+            // gather information for all moduls embedded on actual page
             $sql = 'SELECT `module` FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id`=' . (int) $page_id;
             $query_modules = $database->query($sql);
             while ($row = $query_modules->fetchRow(MYSQLI_ASSOC)) {
-                // check if page module directory contains a backend.js or backend.css file
-                if (file_exists(WB_PATH . '/modules/' . $row['module'] . '/' . $base_file)) {
-                    // create link with backend.js or backend.css source for the current module
-                    $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link);
-                    // ensure that backend.js or backend.css is only added once per module type
-                    if (strpos($head_links, $tmp_link) === false) {
-                        $head_links .= $tmp_link . "\n";
-                    }
+                $tmp_link ="";
+                
+                // Test for override in template
+                if (file_exists(WB_PATH . '/templates/'.DEFAULT_THEME.'/modules/'. $row['module'] . '/' . $base_file)) {
+                    // return link to the backend.js or backend.css file of tools 
+                    $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $theme_link)."\n";//N
+                } 
+                // or maybe old version old position
+                else if(file_exists(WB_PATH . '/modules/' . $row['module'] . '/' . $base_file)) {
+                    // return link to the backend.js or backend.css file of tools 
+                    $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link)."\n";
                 }
+                
+                // ensure that backend.js or backend.css is only added once per module type
+                if (!empty ($tmp_link) AND strpos($head_links, $tmp_link) === false) {
+                    $head_links .= $tmp_link . "\n";
+                }
+ 
             }
+            
             // write out links with all external module javascript/CSS files, remove last line feed
             //echo htmlentities("HL:".$head_links);
-            $retval.= rtrim($head_links);//N
+            $retval.= rtrim($head_links);
         }
         
         return $retval; //N
     }
 }
+
 
