@@ -381,6 +381,9 @@ class admin extends wb
     // Function to add optional module Javascript or CSS stylesheets into the <body> section of the backend
     public function register_backend_modfiles_body($file_id = "js")
     {
+        // Set return value as we need to add up values
+        $retval="";//N
+        
         // sanity check of parameter passed to the function
         $file_id = strtolower($file_id);
         if ($file_id !== "javascript" && $file_id !== "js") {
@@ -405,10 +408,12 @@ class admin extends wb
                 $tool = $result->fetchRow(MYSQLI_ASSOC);
                 if (file_exists(WB_PATH . '/modules/' . $tool['directory'] . '/' . $base_file)) {
                     // return link to the backend_body.js file
-                    return str_replace('{MODULE_DIRECTORY}', $tool['directory'], $base_link);
+                    $retval.= str_replace('{MODULE_DIRECTORY}', $tool['directory'], $base_link);
                 }
             }
-        } elseif (isset($_GET['page_id']) || isset($_POST['page_id'])) {
+        } //N : ifelse entfernt da wir ja jetzt beides brauchen
+        
+        if (isset($_GET['page_id']) || isset($_POST['page_id'])) {
             // check if displayed page in the backend contains a page module
             if (isset($_GET['page_id'])) {
                 $page_id = (int) addslashes($_GET['page_id']);
@@ -430,13 +435,18 @@ class admin extends wb
                 }
             }
             // write out links with all external module javascript/CSS files, remove last line feed
-            return rtrim($body_links);
+            $retval.= rtrim($body_links);
         }
+        
+        return $retval; //N
     }
 
     // Function to add optional module Javascript or CSS stylesheets into the <head> section of the backend
     public function register_backend_modfiles($file_id = "css")
-    {
+    {   
+        // Set return value as we need to add up values
+        $retval="";//N
+        
         // sanity check of parameter passed to the function
         $file_id = strtolower($file_id);
         if ($file_id !== "css" && $file_id !== "javascript" && $file_id !== "js") {
@@ -466,11 +476,15 @@ class admin extends wb
                 // check if admin tool directory contains a backend.js or backend.css file to include
                 $tool = $result->fetchRow(MYSQLI_ASSOC);
                 if (file_exists(WB_PATH . '/modules/' . $tool['directory'] . '/' . $base_file)) {
-                    // return link to the backend.js or backend.css file
-                    return str_replace("{MODULE_DIRECTORY}", $tool['directory'], $base_link);
+                    // return link to the backend.js or backend.css file of tools 
+                    $retval.= str_replace("{MODULE_DIRECTORY}", $tool['directory'], $base_link)."\n";//N
                 }
             }
-        } elseif (isset($_GET['page_id']) || isset($_POST['page_id'])) {
+        } 
+        //N : ifelse entfernt da wir ja jetzt beides brauchen
+        
+        // Now we got modules that maybe tools , but maybe page editors too 
+        if (isset($_GET['page_id']) || isset($_POST['page_id'])) {
             // check if displayed page in the backend contains a page module
             if (isset($_GET['page_id'])) {
                 $page_id = (int) $_GET['page_id'];
@@ -493,9 +507,11 @@ class admin extends wb
                 }
             }
             // write out links with all external module javascript/CSS files, remove last line feed
-            echo htmlentities("HL:".$head_links);
-            return rtrim($head_links);
+            //echo htmlentities("HL:".$head_links);
+            $retval.= rtrim($head_links);//N
         }
+        
+        return $retval; //N
     }
 }
 
