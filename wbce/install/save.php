@@ -323,7 +323,7 @@ if (!file_exists(WB_PATH . '/framework/class.database.php')) {
 include WB_PATH . '/framework/class.database.php';
 try {
     $database = new database();
-} catch (DatabaseException $e) {
+} catch (Exception $e) {
     $sMsg = 'Database host name, username and/or password incorrect.<br />MySQL Error:<br />'
     . $e->getMessage();
     set_error($sMsg);
