@@ -84,7 +84,7 @@ class Result
      *
      * @return WDOStatement
      */
-    public function getPdoStatement()
+    public function getStatement()
     {
         return $this->statement;
     }
