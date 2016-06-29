@@ -4,7 +4,6 @@ namespace Persistence;
 
 class WDO extends \PDO
 {
-
     /**
      * Table prefix.
      *
@@ -25,7 +24,7 @@ class WDO extends \PDO
     {
         $this->tablePrefix = $tablePrefix;
         parent::__construct($dsn, $user, $password, $driverOptions);
-        $this->setAttribute(WDO::ATTR_STATEMENT_CLASS, array('WDOStatement', array($this)));
+        $this->setAttribute(self::ATTR_STATEMENT_CLASS, array('WDOStatement', array($this)));
     }
 
     /**
