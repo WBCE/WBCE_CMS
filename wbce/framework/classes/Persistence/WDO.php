@@ -79,6 +79,6 @@ class WDO extends \PDO
      */
     protected function replaceTablePrefix($statement)
     {
-        return str_replace(array('[TP]', '{TP}'), $this->tablePrefix, $statement);
+        return str_replace(array('{TABLE_PREFIX}', '{TP}'), $this->tablePrefix, $statement);
     }
 }
