@@ -47,7 +47,7 @@ class WDO extends \PDO
      * @param string $statement
      * @param array  $driverOptions
      *
-     * @return \WDOStatement
+     * @return WDOStatement
      */
     public function prepare($statement, array $driverOptions = array())
     {
@@ -61,7 +61,7 @@ class WDO extends \PDO
      *
      * @param string $statement
      *
-     * @return \WDOStatement
+     * @return WDOStatement
      */
     public function query($statement)
     {

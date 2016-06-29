@@ -4,7 +4,6 @@ namespace Persistence;
 
 class Result
 {
-
     /**
      * WDO statement.
      *
