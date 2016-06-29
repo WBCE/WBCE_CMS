@@ -20,8 +20,8 @@ if (count(get_included_files()) == 1)
     die(header("Location: ../index.php", TRUE, 301));
 
 // Stop execution if PHP version is too old
-if (version_compare(PHP_VERSION, '5.3.6', '<')) {
-    die('PHP-' . PHP_VERSION . ' found, but at last PHP-5.3.6 required !!');
+if (version_compare(PHP_VERSION, '5.3.6', '<') AND !defined("WB_IGNORE_PHP_VERSION")) {
+    die ('PHP-' . PHP_VERSION . ' found, but at last PHP-5.3.6 required !!');
 }
 
 // disable MAgic quotes if php version is below 5.4.0.
