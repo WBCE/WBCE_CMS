@@ -2,7 +2,7 @@
 
 namespace Handler;
 
-class Autload
+class Autoload
 {
     /**
      * Directories.
