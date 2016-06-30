@@ -497,6 +497,16 @@ class Database
     }
 
     /**
+     * Get number of executed queries.
+     *
+     * @return int
+     */
+    public function getNumberOfQueries()
+    {
+        return $this->getPdo()->getNumberOfQueries();
+    }
+
+    /**
      * Insert row.
      *
      * @param string $table

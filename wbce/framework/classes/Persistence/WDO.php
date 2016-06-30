@@ -12,6 +12,13 @@ class WDO extends \PDO
     protected $tablePrefix;
 
     /**
+     * Number of executed queries.
+     *
+     * @var int
+     */
+    protected $numberOfQueries = 0;
+
+    /**
      * Constructor.
      *
      * @param string $dsn
@@ -36,6 +43,7 @@ class WDO extends \PDO
      */
     public function exec($statement)
     {
+        $this->numberOfQueries += 1;
         $statement = $this->replaceTablePrefix($statement);
 
         return parent::exec($statement);
@@ -51,6 +59,7 @@ class WDO extends \PDO
      */
     public function prepare($statement, array $driverOptions = array())
     {
+        $this->numberOfQueries += 1;
         $statement = $this->replaceTablePrefix($statement);
 
         return parent::prepare($statement, $driverOptions);
@@ -65,6 +74,7 @@ class WDO extends \PDO
      */
     public function query($statement)
     {
+        $this->numberOfQueries += 1;
         $statement = $this->replaceTablePrefix($statement);
 
         return parent::query($statement);
@@ -80,5 +90,15 @@ class WDO extends \PDO
     protected function replaceTablePrefix($statement)
     {
         return str_replace(array('{TABLE_PREFIX}', '{TP}'), $this->tablePrefix, $statement);
+    }
+
+    /**
+     * Get number of executed queries.
+     *
+     * @return int
+     */
+    public function getNumberOfQueries()
+    {
+        return $this->numberOfQueries;
     }
 }
