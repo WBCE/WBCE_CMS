@@ -36,6 +36,9 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 // Load database class
 require_once (dirname(__FILE__) . '/classes/Persistence/Database.php');
 require_once (dirname(__FILE__) . '/classes/Persistence/Result.php');
+require_once (dirname(__FILE__) . '/classes/Persistence/DatabaseException.php');
+require_once (dirname(__FILE__) . '/classes/Persistence/WDO.php');
+require_once (dirname(__FILE__) . '/classes/Persistence/WDOStatement.php');
 
 // Create database class
 $database = new \Persistence\Database();
