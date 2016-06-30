@@ -55,12 +55,22 @@ class Autoload
      */
     public function addDirectory($directory)
     {
-        if (is_dir($directory)) {
-            $this->directories[] = rtrim(DIRECTORY_DIR, $directory).DIRECTORY_DIR;
+        $this->directories[] = $this->trimPath($directory);
+    }
 
-            return true;
-        }
-        throw new \InvalidArgumentException('Directory '.$directory.' don\'t exists');
+    /**
+     * Trim path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function trimPath($path)
+    {
+        $path = ltrim($path, WB_PATH);
+        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+
+        return DIRECTORY_SEPARATOR.trim($path, DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -73,7 +83,7 @@ class Autoload
     public function addDirectories(array $directories)
     {
         foreach ($directories as $directory) {
-            return $this->addDirectory($directory);
+            $this->addDirectory($directory);
         }
     }
 
@@ -89,12 +99,7 @@ class Autoload
      */
     public function addFile($className, $classFileName)
     {
-        if (is_file($classFileName)) {
-            $this->files[$className] = ltrim(DIRECTORY_DIR, $classFileName);
-
-            return true;
-        }
-        throw new \InvalidArgumentException('Class file '.$classFileName.' don\'t exists');
+        $this->files[$className] = $this->trimPath($classFileName);
     }
 
     /**
@@ -107,7 +112,7 @@ class Autoload
     public function addFiles(array $files)
     {
         foreach ($files as $className => $classFileName) {
-            return $this->addFile($className, $classFileName);
+            $this->addFile($className, $classFileName);
         }
     }
 
@@ -166,19 +171,20 @@ class Autoload
         foreach ($this->directories as $directory) {
 
             // PSR class loading
-            $classFileName = $directory.$classFileName;
-            if (!$this->load($classFileName)) {
+            $classFileName = $directory.DIRECTORY_SEPARATOR.$classFileName;
+            if (!$this->loadFile($classFileName.'.php')) {
 
                 // Type-based class loading
                 foreach ($this->types as $type) {
-                    $classFileName = $directory . strtolower(sprintf($type, $classFileName));
+                    $classFileName = $directory.strtolower(sprintf($type, $classFileName));
 
-                    return $this->load($classFileName);
+                    return $this->loadFile($classFileName);
                 }
             } else {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -191,6 +197,7 @@ class Autoload
      */
     protected function loadFile($fileName)
     {
+        $fileName = WB_PATH.$fileName;
         if (is_file($fileName)) {
             require_once $fileName;
 
