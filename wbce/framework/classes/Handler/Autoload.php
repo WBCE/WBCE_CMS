@@ -125,12 +125,12 @@ class Autoload
      */
     public function addType($type)
     {
-        if (substr_count('*', $type) === 1) {
+        if (substr_count('%s', $type) === 1) {
             $this->types[] = $type;
 
             return true;
         }
-        throw new \InvalidArgumentException('Type '.$type.' has no or not only one wildcard');
+        throw new \InvalidArgumentException('Type ' . $type . ' has no or not only one string placeholder (%s)');
     }
 
     /**
@@ -171,14 +171,13 @@ class Autoload
         foreach ($this->directories as $directory) {
 
             // PSR class loading
-            $classFileName = $directory.DIRECTORY_SEPARATOR.$classFileName;
-            if (!$this->loadFile($classFileName.'.php')) {
+            if (!$this->loadFile($directory . DIRECTORY_SEPARATOR . $classFileName . '.php')) {
 
                 // Type-based class loading
                 foreach ($this->types as $type) {
-                    $classFileName = $directory.strtolower(sprintf($type, $classFileName));
-
-                    return $this->loadFile($classFileName);
+                    if ($this->loadFile($directory . DIRECTORY_SEPARATOR . strtolower(sprintf($type, $classFileName)))) {
+                        return true;
+                    }
                 }
             } else {
                 return true;
@@ -197,7 +196,8 @@ class Autoload
      */
     protected function loadFile($fileName)
     {
-        $fileName = WB_PATH.$fileName;
+        $fileName = WB_PATH . $fileName;
+        echo 'Checked : ' . $fileName . '<BR />';
         if (is_file($fileName)) {
             require_once $fileName;
 
