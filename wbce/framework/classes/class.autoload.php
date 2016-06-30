@@ -128,11 +128,14 @@ class WbAuto{
     @param boolean $Overwrite 
         Set to true already set entries are overwritten.
 
+    @param boolean $DirektPath 
+        Set to true to add a direkt path whithout added WB_PATH
+
     @retval boolean/string
         Returns false on success, and an error message on failure. 
 
     */
-    static public function AddFile ($ClassName="", $ClassFile="", $Overwrite= false){
+    static public function AddFile ($ClassName="", $ClassFile="", $Overwrite= false,$DirektPath=false){
     
         //Check for valid call return error if invalid
         if ($ClassName=="") return ("No class name set!");
@@ -141,6 +144,16 @@ class WbAuto{
         
         // More Checks
         $LoadFile = WB_PATH.$ClassFile;
+        
+        // allow to add dirs directly
+        if ($DirektPath) {
+            //construct full filepath whithout WB path
+            $LoadFile = WB_PATH.$ClassFile;
+        } else {
+            //construct full filepath whith WB path
+            $LoadFile = WB_PATH.$ClassFile;
+        }
+          
         if (!is_file($LoadFile)) return ("File does not exist or not a file: $LoadFile");
         if (!is_readable($LoadFile)) return ("File not readable: $LoadFile");  
          
@@ -159,17 +172,23 @@ class WbAuto{
     @code
     WbAuto::AddDir("/classes/");
     WbAuto::AddDir("/modules/mymodule/classes/");
-    @code
+    WbAuto::AddDir("/var/web345/html/websitebaker/modules/mymodule/classes/" ,true);   
+    @endcode
 
     @param string $Dir
         The path to the Directory to include starting from WB_PATH
 
+    @param bool $Dir
+        if set to true WB_PATH is not added
+        
+    @param boolean $DirektPath 
+        Set to true to add a direkt path whithout added WB_PATH
+
+
     @retval boolean/string
         Returns false on success, and an error message on failure. 
     */
-    // add a full directory to search for matching classfiles
-    // WbAuto::AddDir("/classes/fields");
-    static public function AddDir ($Dir=""){
+    static public function AddDir ($Dir="" ,$DirektPath=false){
 
         // some checks
         if (!is_string($Dir)) return ("Directory needs to be a string.");
@@ -178,13 +197,19 @@ class WbAuto{
         // for windooze
         $Dir=str_replace ("\\", "/", $Dir);
         
-        //always trim at front end end
+        //always trim at front and end
         $Dir=trim($Dir, "/");
         
-        //construct full dir
-        $AddDir=WB_PATH."/".$Dir."/";
-        
-        //Some checks
+        // allow to add dirs directly
+        if ($DirektPath) {
+            //construct full dir whithout WB path
+            $AddDir="/".$Dir."/";
+        } else {
+            //construct full dir whith WB path
+            $AddDir=WB_PATH."/".$Dir."/";
+        }
+                
+        //Some more checks
         if (!is_dir($AddDir)) return ("Not a directory: $AddDir");
         if (!is_readable($AddDir)) return ("Directory not readable: $AddDir");
         
@@ -230,6 +255,7 @@ class WbAuto{
 
 //finally register this autoloader
 spl_autoload_register('WbAuto::Loader');
+
 
 
 
