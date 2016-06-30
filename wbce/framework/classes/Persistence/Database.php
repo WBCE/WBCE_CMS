@@ -239,9 +239,9 @@ class Database
     /**
      * Set error.
      *
-     * @param string $statement WDOStatement
+     * @param string $statement \PDOStatement
      */
-    public function setError(WDOStatement $statement = null)
+    public function setError(\PDOStatement $statement = null)
     {
         $errorInfo = $this->wdo->errorInfo();
         if ($statement) {

@@ -7,7 +7,7 @@ class Result
     /**
      * WDO statement.
      *
-     * @var WDOStatement
+     * @var \PDOStatement
      */
     private $statement;
 
@@ -21,9 +21,9 @@ class Result
     /**
      * Constructor.
      *
-     * @param WDOStatement $statement
+     * @param \PDOStatement $statement
      */
-    public function __construct(WDOStatement $statement)
+    public function __construct(\PDOStatement $statement)
     {
         $this->statement = $statement;
     }
@@ -80,9 +80,9 @@ class Result
     }
 
     /**
-     * Get WDO statement.
+     * Get PDO statement.
      *
-     * @return WDOStatement
+     * @return \PDOStatement
      */
     public function getPdoStatement()
     {

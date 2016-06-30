@@ -31,7 +31,6 @@ class WDO extends \PDO
     {
         $this->tablePrefix = $tablePrefix;
         parent::__construct($dsn, $user, $password, $driverOptions);
-        $this->setAttribute(self::ATTR_STATEMENT_CLASS, array('WDOStatement', array($this)));
     }
 
     /**
@@ -55,7 +54,7 @@ class WDO extends \PDO
      * @param string $statement
      * @param array  $driverOptions
      *
-     * @return WDOStatement
+     * @return \PDOStatement
      */
     public function prepare($statement, array $driverOptions = array())
     {
@@ -66,11 +65,11 @@ class WDO extends \PDO
     }
 
     /**
-     * Executes an SQL statement, returning a result set as a WDOStatement object.
+     * Executes an SQL statement, returning a result set as a PDO statement object.
      *
      * @param string $statement
      *
-     * @return WDOStatement
+     * @return \PDOStatement
      */
     public function query($statement)
     {
