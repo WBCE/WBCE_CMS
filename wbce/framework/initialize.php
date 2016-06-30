@@ -30,7 +30,23 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
 }
 
-
+/*
+// PRE DB MODULES
+// load all predb.php files form folders that start whith predb_
+$aPreDb=array();
+$p= dirname(dirname(__FILE__))."/modules/predb_*";
+$aPreDb=glob($p);
+//print_r($aPreDb);
+if ($aPreDb!==false AND !empty($aPreDb)){
+    foreach ($aPreDb as $m){
+        $f=$m."/predb.php";
+        if (file_exists($f)) {
+            require_once ($f);
+       
+        }
+    }
+}
+*/
 
 // DATABASE
 // Load database class
