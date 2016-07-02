@@ -93,7 +93,7 @@ class Settings {
 
     */
     public static function Set($name="", $value="", $overwrite=true) {
-	    global $database;
+        global $database;
         
         //Make sure we only  got 'a-zA-Z0-9_'
         if (!preg_match("/[a-zA-Z0-9\-]+/u", $name)) return "Name only may contain 'a-zA-Z0-9_'";
@@ -111,7 +111,7 @@ class Settings {
 
 
         // Already set ? Database always returns a string here not a boolean.
-	    $prev_value = Settings::Get($name, false);
+        $prev_value = Settings::Get($name, false);
 
         // echo "value=".$value."<br>";
 
@@ -123,17 +123,17 @@ class Settings {
         $value = $database->escapeString($value);
 
         // If its a boolean there was nothing set.
-	    if($prev_value === false) {
+        if($prev_value === false) {
             $sql="INSERT INTO ".TABLE_PREFIX."settings (name,value) VALUES ('$name','$value')";
-		    $database->query($sql);
-	    } else {
+            $database->query($sql);
+        } else {
             // stop here if overwrite is false
             if ($overwrite===false) return "Setting already exists, overwrite forbidden";
 
             $sql="UPDATE ".TABLE_PREFIX."settings SET value = '$value' WHERE name = '$name'";
             //echo htmlentities( $sql);
-		    $database->query($sql);
-	    }
+            $database->query($sql);
+        }
         return false;
     }
 
@@ -199,11 +199,11 @@ class Settings {
         $name =  $database->escapeString($name); // never thrust an input ;-)
 
         $sql="SELECT value FROM ".TABLE_PREFIX."settings WHERE name = '".$name."'";
-	    $rs = $database->query($sql);
+        $rs = $database->query($sql);
 
-	    if($row = $rs->fetchRow()) return self::DeSerialize($row['value']);
+        if($row = $rs->fetchRow()) return self::DeSerialize($row['value']);
 
-	    return $default;
+        return $default;
     }
     
     
@@ -266,7 +266,7 @@ class Settings {
         $MyNewArray=array();
         foreach ($MyArray as $key=>$value){
             if (preg_match("/^$prefix/", $key)) {
-                $MyNewArray[$key]=$value;
+                $MyNewArray[$key]=self::DeSerialize($value);
             } 
         }
         
@@ -291,12 +291,12 @@ class Settings {
  
     */
     public static function Del($name) {
-	    global $database;
+        global $database;
 
         // is it set ?
-	    $prev_value = Settings::Get($name);
+        $prev_value = Settings::Get($name);
 
-  	    if($prev_value === false) { 
+        if($prev_value === false) { 
             return "Setting not set";
         }      
         else {
