@@ -21,11 +21,16 @@ Core settings are prepended by "wb_". (e.g. wb_maintainance_mode)  \n
 Module settings are prepended by module name or maybe by a shortened form of the module name.  \n  
 (e.g. wysi_my_setting for wysiwyg) 
 
+This class Now stores its data values although in its $aSettings array. for cached handling of requests. 
+
+
 @attention 
-    Please keep in mind that WB stores settings only as strings.  
+    Please keep in mind that WB stores settings only as strings. 
 
 All those settings are converted into constants in the init process using Settings::Setup();
 So "wb_maintainance_mode" is available as WB_MAINTAINANCE_MODE allover in WB(CE).
+
+
 
 Some examples:
 @code
@@ -45,13 +50,28 @@ Settings::Delete("wb_new_setting");
 Settings::Set("wysi_new_setting","another value");
 @endcode
 
-@todo Extend this class to handle different tables.
-@todo Allow to fetch module speciffic settings as an array, maybe even prefetch settings as an array.
-    So we only need to return partial arrays of this main array.
+@attention
+Arrays and objects are now automatically serialized and de serialized by the "Get" functions.
+As constants aren't capable of containing arrays and objects bevore PHP7 constants keep the serialized version
+whith a !!SARRAY!! or !!SOBJECT!! prefix. But you can use the Settings::DeSerialize() function to de 
+serialize a constant
+
+@code
+$aNeededArray = Settings::DeSerialize(WB_MY_ARRAY_SETTING);
+@endcode
+
+
+@todo Extend this class to handle different tables. Maybe by making this a class whith instances and a static facade. 
+
+
 
 */
 
 class Settings {
+
+    public static $aSettings=array();
+
+
 
     /** 
     @brief Sets a global setting.
@@ -80,8 +100,8 @@ class Settings {
         $name = strtolower($name);
 
         // need to make sure , we only store a string
-        if (is_array($value))    return "Arrays can't be stored in constants";
-        if (is_object($value))   return "Objects can't be stored in constants";
+        if (is_array($value))    $value="!!SARRAY!!". serialize($value);
+        if (is_object($value))   $value="!!SOBJECT!!". serialize($value);
         if (is_resource($value)) return "Resources can't be stored in constants";   
      
         if     (is_bool($value))   $value = $value ? 'true' : 'false';
@@ -95,6 +115,9 @@ class Settings {
 
         // echo "value=".$value."<br>";
 
+        // Set it to our Dataarray
+        self::$aSettings[$name]=$value;
+        
         // better go for savety
         $name =  $database->escapeString($name);
         $value = $database->escapeString($value);
@@ -114,10 +137,19 @@ class Settings {
         return false;
     }
 
+    
+       
     /**
     @brief Fetches a single setting. 
     
-    Used mostly as helper, as all setings converted to constants.
+    Prefered Way of fetching Data As constants  update only on next reload.  
+    
+    Example:  
+    
+    @code
+    GetFromDb("WB_DEFAULT_LANGUAGE");  
+    // Returns "DE" or whatever language is set.  
+    @endcode
 
     @param string $name
         The settings name, eg. "wb_new_setting".
@@ -130,15 +162,122 @@ class Settings {
  
     */
     public static function Get($name, $default= false) {
+        
+        if(isset(self::$aSettings[$name])) return self::DeSerialize(self::$aSettings[$name]);
+
+        return $default;
+    }
+
+    
+    
+    /**
+    @brief Fetches a single setting from DB  
+    
+    Used mostly as helper, as all setings converted to constants and stored in settings Class. 
+    
+    Example:  
+    
+    @code
+    GetFromDb("WB_DEFAULT_THEME");  
+    // Returns "argos_theme" or whatever theme is set.  
+    @endcode
+
+    @param string $name
+        The settings name, eg. "wb_new_setting".
+
+    @param undefined $default
+        Whatever you like as a returnvalue if the method does not find a matching entry.
+
+    @retval array/undefined
+        Returns the value of the setting or $Default if nothing is found. 
+ 
+    */
+    public static function GetFromDb($name, $default= false) {
         global $database; 
+
+        $name = strtolower($name); // DB stores lowercase
+        $name =  $database->escapeString($name); // never thrust an input ;-)
 
         $sql="SELECT value FROM ".TABLE_PREFIX."settings WHERE name = '".$name."'";
 	    $rs = $database->query($sql);
 
-	    if($row = $rs->fetchRow()) return $row['value'];
+	    if($row = $rs->fetchRow()) return self::DeSerialize($row['value']);
 
 	    return $default;
     }
+    
+    
+    
+    /**
+    @brief Fetches all settings whith a certain prefix. 
+    
+    Prefered Way of fetching Data As constants  update only on next reload.  
+    
+    Example:  
+    
+    @code
+    echo "<pre>";
+    print_r (Settings::GetPrefix("WB"));
+    echo "<pre>";
+    
+    // Returns 
+        
+    Array
+    (
+        [WB_VERSION] => 2.8.3
+        [WB_REVISION] => 1641
+        [WB_SP] => SP4
+        [WB_MAINTAINANCE_MODE] => 
+        [WB_SUPPRESS_OLD_OPF] => 0
+        ...
+        [WB_DEFAULT_THEME] => argos_theme
+    }    
+        
+    @endcode
+    
+    @param string $name
+        The settings name, eg. "wb_new_setting".
+
+    @param string $prefix
+        The prefix of the setting WB_ ,   TOPICS_ ,   MYMODULE_ ,.... 
+
+    @param undefined $default
+        Whatever you like as a returnvalue if the method does not find a matching entry.
+
+    @retval array/undefined
+        Returns the valuee for this prefix or $Default if nothing is found. 
+ 
+    */
+    public static function GetPrefix($prefix, $default= false) {      
+    
+        // fetch array
+        $MyArray=self::$aSettings;
+
+        //  values are all uppercase
+        $prefix = strtoupper($prefix);
+        
+        // May only contain A-Z0-9_ case insensitiv
+        $prefix =preg_replace("/[^A-Z0-9]/s","",$prefix);
+        
+        // compensate for input errors (All "_" removed in regex)
+        $prefix = $prefix."_";
+        
+        // Filter the Array for matching keys
+        $MyNewArray=array();
+        foreach ($MyArray as $key=>$value){
+            if (preg_match("/^$prefix/", $key)) {
+                $MyNewArray[$key]=$value;
+            } 
+        }
+        
+        // return if not empty
+        if(!empty($MyNewArray)) return $MyNewArray;
+
+        return $default;
+    }
+    
+
+    
     /**
     @brief Deletes single setting. 
     
@@ -155,12 +294,13 @@ class Settings {
 	    global $database;
 
         // is it set ?
-	    $prev_value = Settings::get($name);
+	    $prev_value = Settings::Get($name);
 
   	    if($prev_value === false) { 
             return "Setting not set";
         }      
         else {
+            unset(self::$aSettings[$name]);
             $sql="DELETE FROM ".TABLE_PREFIX."settings WHERE name = '$name'";
             $database->query($sql);
         }
@@ -168,10 +308,12 @@ class Settings {
     }
     
 
+    
     /**
-    @brief Method to setup constants
+    @brief Method to setup constants and variables
 
-    This Method is used in /framework/initialize.php to setup all settings as constants.  
+    This Method is used in /framework/initialize.php to setup all settings as constants. 
+    And create the aSettings Array inside the class for faster getting of values. 
 
     @retval boolean/string
         Returns false on success and an error message on failure.
@@ -180,6 +322,8 @@ class Settings {
     public static function Setup() {
         global $database; 
         
+        // empty array 
+        self::$aSettings=array();
         // Get website settings (title, keywords, description, header, footer...)
         $sql = 'SELECT `name`, `value` FROM `' . TABLE_PREFIX . 'settings`';
         if (($get_settings = $database->query($sql))) {
@@ -194,8 +338,10 @@ class Settings {
                 if ($setting_value == 'true') {
                     $setting_value = true;
                 }
-                if (!defined($setting_name)) //already set manually in config ?
+                if (!defined($setting_name)) {//already set manually in config ?
                     define($setting_name, $setting_value);
+                } 
+                self::$aSettings[$setting_name]=self::DeSerialize(constant ( $setting_name )) ;
                 $x++;
             }
         } 
@@ -205,36 +351,67 @@ class Settings {
         return false;
     }
 
+    
+    
     /**
     @brief A little method to display all settings in DB.
 
-    Basically it doe the same as Setup() but it generates a nice readable list.
+    This now calls to the self::$aSettings Array too to see difference between Constant and Variables.
 
     @retval string 
         All recent settings as a simple <br /> seperated list. 
     */
-    // a function to display all settings in DB same as setup but returns a nice list
     public static function Info() {
         global $database;
 
         $sql = 'SELECT `name`, `value` FROM `' . TABLE_PREFIX . 'settings`';
         if (($get_settings = $database->query($sql))) {
-            $out = "<h3>All Settings in DB</h3>";
+            $out = "<h3>All Settings in DB </h3>";
 
             while ($setting = $get_settings->fetchRow(MYSQL_ASSOC)) {
                 $setting_name = strtoupper($setting['name']);
                 $setting_value = $setting['value'];
                 $setting_value = htmlentities($setting_value);
+                $setting_value_var =htmlentities(self::$aSettings[strtoupper($setting['name'])]);
                
-                $out.= "$setting_name = $setting_value <br />";                   
+                $out.= "<b>$setting_name</b><br />Konstant: $setting_value<br />Variable: $setting_value_var<br />";                   
             }
         } 
         else {
             die($database->get_error());
         }
+        
         return $out;
     }
+
+    
+    
+    /**
+    @brief Unserialize arrays abd objects stored as serialized strings 
+    
+    It is used internally and to unserialize arrays and objects stored in constants
+
+    @param string $value
+        The serialized value
+
+    @retval boolean/string
+        Returns the unserialized object or array. 
+ 
+    */
+    static function DeSerialize($value) {
+        if (preg_match("/^!!SARRAY!!/", $value)) {
+            $value= preg_replace ("/^!!SARRAY!!/", "" ,$value);
+            return unserialize ($value);        
+        }
+        if (preg_match("/^!!SOBJECT!!/", $value)) {
+            $value= preg_replace ("/^!!SOBJECT!!/", "" ,$value);
+            return unserialize ($value);        
+        }
+     
+        return $value;
+    } 
 }
+
 
 
 
