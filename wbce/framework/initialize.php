@@ -144,7 +144,7 @@ if (!defined('WB_CHECK')) {
 
 // AUTOLOADERS
 // register WB Autoloader
-require WB_PATH . "/framework/class.autoload.php";
+require WB_PATH . "/framework/classes/class.autoload.php";
 WbAuto::AddDir("/framework/");
 WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
 WbAuto::AddFile("SecureForm", "/framework/SecureForm.php");
