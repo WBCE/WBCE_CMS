@@ -52,6 +52,8 @@ if ($aPreDb!==false AND !empty($aPreDb)){
 // Load database class
 require_once (dirname(__FILE__) . '/classes/Persistence/Database.php');
 require_once (dirname(__FILE__) . '/classes/Persistence/Result.php');
+require_once (dirname(__FILE__) . '/classes/Persistence/DatabaseException.php');
+require_once (dirname(__FILE__) . '/classes/Persistence/WDO.php');
 
 // Create database class
 $database = new \Persistence\Database();

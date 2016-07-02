@@ -12,11 +12,18 @@ class Database
     protected $error;
 
     /**
-     * PDO driver.
+     * WDO driver.
      *
      * @var string
      */
     protected $driver = 'mysql';
+
+    /**
+     * Table prefix.
+     *
+     * @var string
+     */
+    protected $tablePrefix = '';
 
     /**
      * Database host.
@@ -61,11 +68,11 @@ class Database
     protected $dsn;
 
     /**
-     * PDO connection.
+     * WDO connection.
      *
-     * @var \PDO
+     * @var WDO
      */
-    protected $pdo;
+    protected $wdo;
 
     /**
      * Constructor.
@@ -104,6 +111,10 @@ class Database
             if (defined('DB_CHARSET')) {
                 $this->charset = preg_replace('/[^a-z0-9]/i', '', DB_CHARSET);
             }
+
+            if (defined('TABLE_PREFIX')) {
+                $this->tablePrefix = TABLE_PREFIX;
+            }
         }
 
         $this->connect();
@@ -117,18 +128,18 @@ class Database
     public function connect()
     {
         $options = array(
-            \PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL,
+            WDO::ATTR_CURSOR => WDO::CURSOR_SCROLL,
         );
 
         if ($this->dsn) {
-            $this->pdo = new \PDO($this->dsn);
+            $this->wdo = new WDO($this->dsn);
         } else {
-            $this->pdo = new \PDO($this->driver.':host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password, $options);
-            $this->pdo->exec('SET NAMES '.$this->charset);
+            $this->wdo = new WDO($this->driver.':host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password, $options, $this->tablePrefix);
+            $this->wdo->exec('SET NAMES '.$this->charset);
         }
 
         if ($this->driver === 'mysql') {
-            $this->pdo->exec('SET @@sql_mode=""');
+            $this->wdo->exec('SET @@sql_mode=""');
         }
 
         return true;
@@ -141,7 +152,7 @@ class Database
      */
     public function disconnect()
     {
-        $this->pdo = null;
+        $this->wdo = null;
 
         return true;
     }
@@ -155,7 +166,7 @@ class Database
      */
     public function query($query)
     {
-        $statement = $this->pdo->query($query);
+        $statement = $this->wdo->query($query);
         $this->setError($statement);
 
         if ($statement) {
@@ -175,7 +186,7 @@ class Database
      */
     public function preparedQuery($query, array $parameters = array())
     {
-        $statement = $this->pdo->prepare($query);
+        $statement = $this->wdo->prepare($query);
         $statement->execute($parameters);
         $this->setError($statement);
 
@@ -195,7 +206,7 @@ class Database
      */
     public function getOne($query)
     {
-        $statement = $this->pdo->query($query);
+        $statement = $this->wdo->query($query);
         $this->setError($statement);
 
         if ($statement) {
@@ -232,7 +243,7 @@ class Database
      */
     public function setError(\PDOStatement $statement = null)
     {
-        $errorInfo = $this->pdo->errorInfo();
+        $errorInfo = $this->wdo->errorInfo();
         if ($statement) {
             $errorInfo = $statement->errorInfo();
         }
@@ -244,13 +255,13 @@ class Database
     }
 
     /**
-     * Get PDO connection.
+     * Get WDO connection.
      *
-     * @return \PDO
+     * @return WDO
      */
     public function getPdo()
     {
-        return $this->pdo;
+        return $this->wdo;
     }
 
     /**
@@ -272,7 +283,7 @@ class Database
      */
     public function quote($string)
     {
-        return trim($this->pdo->quote($string), '\'');
+        return trim($this->wdo->quote($string), '\'');
     }
 
     /**
@@ -284,7 +295,7 @@ class Database
      */
     public function getLastInsertId($name = null)
     {
-        return $this->pdo->lastInsertId($name);
+        return $this->wdo->lastInsertId($name);
     }
 
     /**
@@ -477,11 +488,22 @@ class Database
             if ($result && !$this->getError()) {
                 return $result;
             }
+        } else {
+            //throw new DatabaseException('Cannot find primary key ' . $primaryKey . ' in data');
+            $this->error = 'Cannot find primary key '.$primaryKey.' in data';
         }
-        //throw new DatabaseException('Cannot find primary key ' . $primaryKey . ' in data');
-        $this->error = 'Cannot find primary key '.$primaryKey.' in data';
 
         return false;
+    }
+
+    /**
+     * Get number of executed queries.
+     *
+     * @return int
+     */
+    public function getNumberOfQueries()
+    {
+        return $this->getPdo()->getNumberOfQueries();
     }
 
     /**

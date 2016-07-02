@@ -5,18 +5,18 @@ namespace Persistence;
 class Result
 {
     /**
-     * PDO statement.
+     * WDO statement.
      *
      * @var \PDOStatement
      */
     private $statement;
 
     /**
-     * PDO fetch style.
+     * WDO fetch style.
      *
      * @var int
      */
-    private $fetchStyle = \PDO::FETCH_BOTH;
+    private $fetchStyle = WDO::FETCH_BOTH;
 
     /**
      * Constructor.
@@ -62,7 +62,7 @@ class Result
             $offset = $numberOfRows - 1;
         }
 
-        return $this->statement->fetch($this->fetchStyle, \PDO::FETCH_ORI_ABS, $offset);
+        return $this->statement->fetch($this->fetchStyle, WDO::FETCH_ORI_ABS, $offset);
     }
 
     /**
@@ -72,7 +72,7 @@ class Result
      *
      * @return mixed
      */
-    public function fetchRow($fetchStyle = \PDO::FETCH_BOTH)
+    public function fetchRow($fetchStyle = WDO::FETCH_BOTH)
     {
         $this->fetchStyle = $fetchStyle;
 
