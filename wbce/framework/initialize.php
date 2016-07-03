@@ -49,8 +49,13 @@ if ($aPreDb!==false AND !empty($aPreDb)){
 */
 
 // DATABASE
-// Load and in intialize database class
+// Load database class
 require_once (dirname(__FILE__) . '/class.database.php');
+
+// Create database class
+//$database = new database();
+$database = new \Persistence\Database();
+
 
 // PRE INIT
 //// BESSER MYSQL FIND_IN_SET()?

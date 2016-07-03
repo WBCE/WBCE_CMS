@@ -66,9 +66,9 @@ class WbAuto{
     @var array $Types
     */    
     public static $Types=array('class.%s.php',
+                               '%s.php', 
                                '%s.class.php',
                                '%s.class.inc', 
-                               '%s.php', 
                                '%s.inc', 
                                '%s.inc.php',  
                                'class.%s.inc'); 
@@ -81,22 +81,28 @@ class WbAuto{
     This is the workhorse that does the actual loading. 
     */
     static public function Loader($ClassName){
+
+        $ClassName=preg_replace("/\\\/s", "/" ,$ClassName);
+    
         //already loaded, never mind
-        //echo $ClassName."<br />";
-        if (class_exists($ClassName, FALSE)) return FALSE; 
+        if (class_exists(basename($ClassName), FALSE)) return FALSE; 
+       
+        $ClassPath=dirname($ClassName);
+        if      ($ClassPath==".") $ClassPath="";
+        else if($ClassPath=="/") $ClassPath="";
+        else                      $ClassPath=strtolower($ClassPath)."/"; 
         
         //if there is an fileentry for this class
         if (array_key_exists ($ClassName, WbAuto::$Files)) { 
-            //echo (WbAuto::$Files[$ClassName]); 
             require_once (WbAuto::$Files[$ClassName]); 
             return FALSE;
         }
         
+         
         //Search dirs for matching class files
         foreach (WbAuto::$Dirs as $sDirVal) {
             foreach (WbAuto::$Types as $sTypeVal) {
-                $sTestFile= $sDirVal. strtolower(sprintf($sTypeVal, $ClassName));
-                //echo $sTestFile."</br>";
+                $sTestFile= $sDirVal.$ClassPath. strtolower(sprintf($sTypeVal, basename($ClassName)));
                 if (is_file($sTestFile)) {
                     include($sTestFile);
                     return FALSE;
@@ -255,7 +261,6 @@ class WbAuto{
 
 //finally register this autoloader
 spl_autoload_register('WbAuto::Loader');
-
 
 
 

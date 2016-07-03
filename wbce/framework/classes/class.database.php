@@ -81,7 +81,87 @@ class database
         }
         return $this->connected;
     }
+    
 
+     /**
+     * Update row.
+     *
+     * @param string $table
+     * @param string $primaryKey
+     * @param array  $data
+     *
+     * @return Result
+     *
+     * @throws DatabaseException
+     */
+    function updateRow($table = '', $primaryKey = '', $data = array()){
+        $retVal = false;
+        if (isset($data[$primaryKey])) {
+            $parameters = array();
+            foreach ($data as $column => $value) {
+                $parameters[] = "`".trim($column)."` = '".$value."', ";             
+            }
+            $sValues = implode("", $parameters);
+            $sValues = substr($sValues, 0, -2);
+            $sqlRowCheck = "SELECT COUNT(*) FROM `".$table."` WHERE `".$primaryKey."` = '".$data[$primaryKey]."'";
+            if ($this->get_one($sqlRowCheck)) {
+                $strQuery = sprintf("UPDATE `%s` SET %s WHERE `%s` = '%s'", $table, $sValues, $primaryKey, $data[$primaryKey]);
+            } else { 
+                $strQuery =  sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
+            }
+            if($this->query($strQuery)){                    
+                $retVal = true; 
+            }else{ 
+                $retVal = $this->get_error();
+            }
+        }
+        return $retVal;
+    }
+    
+    
+    /**
+     * Insert row.
+     *
+     * @param string $table
+     * @param array  $data
+     *
+     * @return Result
+    */
+    public function insertRow($table, array $data)
+    {
+        $retVal = false;
+        $parameters = array();
+        foreach ($data as $column => $value) {
+            $parameters[] = "`".trim($column)."` = '".$value."', ";             
+        }
+        $sValues = implode("", $parameters);
+        $sValues = substr($sValues, 0, -2);
+        $strQuery =  sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
+        if($this->query($strQuery)){                    
+            $retVal = true; 
+        }else{ 
+            $retVal = $this->get_error();
+        }
+        return $retVal;
+    }
+    
+    
+    /**
+     * Replace placeholder with table prefix.
+     *
+     * @param string $statement
+     *
+     * @return string
+     */
+    protected function replaceTablePrefix($statement)
+    {
+        if(strpos($statement, '{T') !== false) {
+            $statement = str_replace(array('{TABLE_PREFIX}', '{TP}'), TABLE_PREFIX, $statement);
+        }
+        return $statement;
+    }   
+    
+       
     // Disconnect from the database
     public function disconnect()
     {
@@ -97,6 +177,7 @@ class database
     public function query($statement)
     {
         $mysql = new mysql($this->db_handle);
+        $statement = $this->replaceTablePrefix($statement);
         $mysql->query($statement);
         $this->set_error($mysql->error());
         if ($mysql->error()) {
@@ -106,9 +187,11 @@ class database
         }
     }
 
+
     // Gets the first column of the first row
     public function get_one($statement)
     {
+        $statement = $this->replaceTablePrefix($statement);
         $q = mysqli_query($this->db_handle, $statement);
         if ($q === false) {
             $this->set_error(mysqli_error($this->db_handle));
