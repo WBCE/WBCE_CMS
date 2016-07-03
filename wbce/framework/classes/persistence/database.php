@@ -539,6 +539,8 @@ class Database
      *
      * @return mixed
      */
+
+    /*
     public function __call($name, array $args)
     {
         switch ($name) {
@@ -580,4 +582,5 @@ class Database
                 return call_user_func_array(array($this, 'import'), $args);
         }
     }
+    */
 }
