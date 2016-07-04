@@ -540,47 +540,47 @@ class Database
      * @return mixed
      */
 
-    /*
+    
     public function __call($name, array $args)
     {
         switch ($name) {
+            
             case 'get_one':
                 trigger_error('Method '.$name.'(\$query) is deprecated, use the method getOne(\$query) instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'getOne'), $args);
+
             case 'is_error':
                 trigger_error('Method '.$name.'() is deprecated, use the method hasError() instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'hasError'), $args);
+
             case 'get_error':
                 trigger_error('Method '.$name.'() is deprecated, use the method getError() instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'getError'), $args);
+
             case 'escapeString':
                 trigger_error('Method '.$name.'(\$string) is deprecated, use the method quote(\$string) instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'quote'), $args);
+
             case 'field_exists':
                 trigger_error('Method '.$name.'(\$table_name, \$field_name) is deprecated, use the method hasColumn(\$table, \$column) instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'hasColumn'), $args);
+
             case 'field_add':
                 trigger_error('Method '.$name.'(\$table_name, \$field_name, \$description) is deprecated, use the method addColumn(\$table, \$column, \$description) instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'addColumn'), $args);
+
             case 'field_modify':
                 trigger_error('Method '.$name.'(\$table_name, \$field_name, \$description) is deprecated, use the method modifyColumn(\$table, \$column, \$description) instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'modifyColumn'), $args);
+
             case 'field_remove':
                 trigger_error('Method '.$name.'(\$table_name, \$field_name) is deprecated, use the method dropColumn(\$table, \$column) instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'dropColumn'), $args);
+
             case 'SqlImport':
                 trigger_error('Method '.$name.'(\$sSqlDump, \$sTablePrefix, \$bPreserve, \$sTblEngine, \$sTblCollation) is deprecated, use the method import((\$dumpFile, \$tablePrefix, \$preserve, \$tableEngine, \$tableCollation)) instead', E_USER_DEPRECATED);
-
                 return call_user_func_array(array($this, 'import'), $args);
         }
     }
-    */
+    
 }
