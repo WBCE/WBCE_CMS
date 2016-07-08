@@ -953,7 +953,7 @@ class Insert {
     public function Filter($Content) {
             $i=$this;
             $Content=preg_replace_callback( 
-                '/\[\[(Metas|Title|Css|Js)(?:\?pos\=)?(.*?)\]\]/',
+                '/\[\[(Metas|Title|Css|Js)(?:\?pos\=)?(.*?)\]\]/i',
                 function($match) use ($i) { 
                     return call_user_func(array($i, "Render".$match[1]), $match[2]);               
                 },
