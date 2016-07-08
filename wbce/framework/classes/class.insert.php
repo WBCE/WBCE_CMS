@@ -941,7 +941,7 @@ class Insert {
 
 
 
-    /**
+     /**
     @brief The output filter function that does the actual replacement of the template placeholders.
 
     @param string $Content 
@@ -951,10 +951,11 @@ class Insert {
         The filtered/replaced content.  
     */
     public function Filter($Content) {
+            $i=$this;
             $Content=preg_replace_callback( 
                 '/\[\[(Metas|Title|Css|Js)(?:\?pos\=)?(.*?)\]\]/',
-                function($match) { 
-                    return call_user_func(array($this, "Render".$match[1]), $match[2]);               
+                function($match) use ($i) { 
+                    return call_user_func(array($i, "Render".$match[1]), $match[2]);               
                 },
                 $Content
             );
