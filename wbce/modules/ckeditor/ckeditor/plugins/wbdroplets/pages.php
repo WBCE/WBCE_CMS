@@ -30,21 +30,16 @@ $admin = new admin('Pages', 'pages_modify', false);
 
 
 if(!function_exists('cleanup')) {
-  function cleanup ($string) {
-    global $database;
-    // if magic quotes on
-    if (get_magic_quotes_gpc())
-    {
-        $string = stripslashes($string);
-    }
-    if(isset($database)&&method_exists($database,"escapeString")) {
-      return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
-    } elseif (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')){
-      return preg_replace("/\r?\n/", "\\n", mysqli_real_escape_string($database->db_handle, $string)); 
-    } else {
-      return preg_replace("/\r?\n/", "\\n", mysql_real_escape_string($string)); 
-    }
-  } // end function cleanup
+    function cleanup ($string) {
+        global $database;
+        // if magic quotes on
+        if (get_magic_quotes_gpc())
+        {
+            $string = stripslashes($string);
+        }
+        return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
+        
+    } // end function cleanup
 }
 
 /**
