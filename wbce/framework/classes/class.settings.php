@@ -104,35 +104,37 @@ class Settings {
         if (is_object($value))   $value="!!SOBJECT!!". serialize($value);
         if (is_resource($value)) return "Resources can't be stored in constants";   
      
-        if     (is_bool($value))   $value = $value ? 'true' : 'false';
+        if     (is_bool($value))   $value = $value ? 'btrueb' : 'bfalseb';
         //elseif (is_string($value)) $value = $value;
         //else                       $value="$value";
         // Not needed as Type juggling is done in sql composing 
 
 
         // Already set ? Database always returns a string here not a boolean.
-        $prev_value = Settings::Get($name, false);
+        $prev_value = Settings::GetDb($name, false);
 
         // echo "value=".$value."<br>";
 
-        // Set it to our Dataarray
-        self::$aSettings[$name]=$value;
         
         // better go for savety
-        $name =  $database->escapeString($name);
-        $value = $database->escapeString($value);
+        $ename =  $database->escapeString($name);
+        $evalue = $database->escapeString($value);
 
         // If its a boolean there was nothing set.
         if($prev_value === false) {
-            $sql="INSERT INTO ".TABLE_PREFIX."settings (name,value) VALUES ('$name','$value')";
+            $sql="INSERT INTO ".TABLE_PREFIX."settings (name,value) VALUES ('$ename','$evalue')";
             $database->query($sql);
+            // Set it to our Dataarray
+            self::$aSettings[$name]=$value;
         } else {
             // stop here if overwrite is false
             if ($overwrite===false) return "Setting already exists, overwrite forbidden";
 
-            $sql="UPDATE ".TABLE_PREFIX."settings SET value = '$value' WHERE name = '$name'";
+            $sql="UPDATE ".TABLE_PREFIX."settings SET value = '$evalue' WHERE name = '$ename'";
             //echo htmlentities( $sql);
             $database->query($sql);
+            // Set it to our Dataarray
+            self::$aSettings[$name]=$value;
         }
         return false;
     }
@@ -147,7 +149,7 @@ class Settings {
     Example:  
     
     @code
-    GetFromDb("WB_DEFAULT_LANGUAGE");  
+    GetDb("WB_DEFAULT_LANGUAGE");  
     // Returns "DE" or whatever language is set.  
     @endcode
 
@@ -162,7 +164,9 @@ class Settings {
  
     */
     public static function Get($name, $default= false) {
-        
+        $name = strtoupper($name);
+//         echo $name;
+//         echo self::$aSettings[$name];
         if(isset(self::$aSettings[$name])) return self::DeSerialize(self::$aSettings[$name]);
 
         return $default;
@@ -178,7 +182,7 @@ class Settings {
     Example:  
     
     @code
-    GetFromDb("WB_DEFAULT_THEME");  
+    GetDb("WB_DEFAULT_THEME");  
     // Returns "argos_theme" or whatever theme is set.  
     @endcode
 
@@ -192,7 +196,7 @@ class Settings {
         Returns the value of the setting or $Default if nothing is found. 
  
     */
-    public static function GetFromDb($name, $default= false) {
+    public static function GetDb($name, $default= false) {
         global $database; 
 
         $name = strtolower($name); // DB stores lowercase
@@ -201,7 +205,17 @@ class Settings {
         $sql="SELECT value FROM ".TABLE_PREFIX."settings WHERE name = '".$name."'";
         $rs = $database->query($sql);
 
-        if($row = $rs->fetchRow()) return self::DeSerialize($row['value']);
+        if($row = $rs->fetchRow()) {
+            $setting_value =self::DeSerialize($row['value']);
+            if ($setting_value == 'bfalseb') {
+                return false;
+            }
+            if ($setting_value == 'btrueb') {
+                return true;
+            }
+            return self::DeSerialize($setting_value);
+        }
+      
 
         return $default;
     }
@@ -332,16 +346,17 @@ class Settings {
             while ($setting = $get_settings->fetchRow(MYSQL_ASSOC)) {
                 $setting_name = strtoupper($setting['name']);
                 $setting_value = $setting['value'];
-                if ($setting_value == 'false') {
+                if ($setting_value == 'bfalseb') {
                     $setting_value = false;
                 }
-                if ($setting_value == 'true') {
+                if ($setting_value == 'btrueb') {
                     $setting_value = true;
                 }
                 if (!defined($setting_name)) {//already set manually in config ?
                     define($setting_name, $setting_value);
                 } 
-                self::$aSettings[$setting_name]=self::DeSerialize(constant ( $setting_name )) ;
+                
+                self::$aSettings[$setting_name]=self::DeSerialize(constant($setting_name)) ;
                 $x++;
             }
         } 
@@ -411,6 +426,7 @@ class Settings {
         return $value;
     } 
 }
+
 
 
 
