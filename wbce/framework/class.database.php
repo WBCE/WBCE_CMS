@@ -7,9 +7,9 @@
 
 if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
 
-    require_once __dir__.'/classes/Persistence/Database.php';
-    require_once __dir__.'/classes/Persistence/Result.php';
-    require_once __dir__.'/classes/Persistence/DatabaseException.php';
+    require_once __dir__.'/classes/persistence/database.php';
+    require_once __dir__.'/classes/persistence/result.php';
+    require_once __dir__.'/classes/persistence/databaseexception.php';
 
     class database extends Persistence\Database
     {
