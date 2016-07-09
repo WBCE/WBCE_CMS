@@ -4,6 +4,7 @@ namespace Persistence;
 
 class Result
 {
+
     /**
      * WDO statement.
      *
@@ -74,9 +75,19 @@ class Result
      */
     public function fetchRow($fetchStyle = WDO::FETCH_BOTH)
     {
-        $this->fetchStyle = $fetchStyle;
+        // Converting mysql constants, PDO::FETCH_NUM and PDO::FETCH_LAZY are 
+        // not supported anymore with this class.
+        switch ($fetchStyle) {
+            case MYSQLI_ASSOC:
+                $this->fetchStyle = WDO::FETCH_ASSOC;
+                break;
+            case MYSQLI_BOTH:
+                $this->fetchStyle = WDO::FETCH_BOTH;
+            default:
+                $this->fetchStyle = $fetchStyle;
+        }
 
-        return $this->statement->fetch($fetchStyle);
+        return $this->statement->fetch($this->fetchStyle);
     }
 
     /**
