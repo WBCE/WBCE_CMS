@@ -74,9 +74,18 @@ class Result
      */
     public function fetchRow($fetchStyle = \PDO::FETCH_BOTH)
     {
-        $this->fetchStyle = $fetchStyle;
-
-        return $this->statement->fetch($fetchStyle);
+        // Converting MYSQL(I) to PDO constants
+        // needed as all old Modules call this whith mysqli parameters
+        switch ($fetchStyle) {
+            case MYSQLI_ASSOC:
+                $this->fetchStyle = \PDO::FETCH_ASSOC;
+                break;
+            case MYSQLI_BOTH:
+                $this->fetchStyle = \PDO::FETCH_BOTH;
+            default:
+                $this->fetchStyle = $fetchStyle;
+        }
+        return $this->statement->fetch($this->fetchStyle);
     }
 
     /**
