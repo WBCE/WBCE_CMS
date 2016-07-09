@@ -15,7 +15,7 @@ if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
     {
         public function __construct()
         {
-            trigger_error('Manual include of class database is no longer needed as long as you include the config.php somewhere in your script. ', E_USER_DEPRECATED);
+            //trigger_error('Manual include of class database is no longer needed as long as you include the config.php somewhere in your script. ', E_USER_DEPRECATED);
             parent::__construct();
         }
     }
@@ -23,9 +23,10 @@ if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
 }
 else{
     require_once __dir__.'/classes/class.database.php';
-    trigger_error('Manual include of class database is no longer needed as long as you include the config.php somewhere in your script. ', E_USER_DEPRECATED);
-    trigger_error('Please try to get PDO suppport for your webspace as we sooner or later change to PDO database drivers ', E_USER_DEPRECATED);
+//     trigger_error('Manual include of class database is no longer needed as long as you include the config.php somewhere in your script. ', E_USER_DEPRECATED);
+//     trigger_error('Please try to get PDO suppport for your webspace as we sooner or later change to PDO database drivers ', E_USER_DEPRECATED);
 }
+
 
 
 

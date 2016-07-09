@@ -520,12 +520,12 @@ class Database
         switch ($name) {
             case 'db_handle':
             case 'DbHandle':
-                trigger_error('Property '.$name.' is deprecated, use the method getPdo() instead', E_USER_DEPRECATED);
+                //trigger_error('Property '.$name.' is deprecated, use the method getPdo() instead', E_USER_DEPRECATED);
 
                 return $this->getPdo();
             case 'db_name':
             case 'DbName':
-                trigger_error('Property '.$name.' is deprecated, use the method getDatabaseName() instead', E_USER_DEPRECATED);
+               // trigger_error('Property '.$name.' is deprecated, use the method getDatabaseName() instead', E_USER_DEPRECATED);
 
                 return $this->getDatabaseName();
         }
