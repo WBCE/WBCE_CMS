@@ -32,7 +32,7 @@ if (file_exists($file)) {
 // Check if the config file has been set-up
 // If not redirect to the installer.
 if (!defined('TABLE_PREFIX')) {
-    require dirname(__FILE__) . '/framework/redirect_installer.php';
+    require dirname(__FILE__) . '/framework/includes/redirect_installer.php';
 }
 
 
