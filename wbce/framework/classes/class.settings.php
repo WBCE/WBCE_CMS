@@ -105,13 +105,15 @@ class Settings {
         if (is_resource($value)) return "Resources can't be stored in constants";   
      
         if     (is_bool($value))   $value = $value ? 'btrueb' : 'bfalseb';
+        
         //elseif (is_string($value)) $value = $value;
         //else                       $value="$value";
         // Not needed as Type juggling is done in sql composing 
 
 
         // Already set ? Database always returns a string here not a boolean.
-        $prev_value = Settings::GetDb($name, false);
+        // false können wir nicht mehmen NULL auch nicht 
+        $prev_value = Settings::Get($name, "#++#nullMAdrinn==?");
 
         // echo "value=".$value."<br>";
 
@@ -121,7 +123,7 @@ class Settings {
         $evalue = $database->escapeString($value);
 
         // If its a boolean there was nothing set.
-        if($prev_value === false) {
+        if($prev_value === "#++#nullMAdrinn==?") {
             $sql="INSERT INTO ".TABLE_PREFIX."settings (name,value) VALUES ('$ename','$evalue')";
             $database->query($sql);
             // Set it to our Dataarray

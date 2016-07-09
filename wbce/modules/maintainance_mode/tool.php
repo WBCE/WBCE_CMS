@@ -40,7 +40,7 @@ manual loading is no longer required.
 */
 
 //no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 // Check if this is is no CSRF attack or timeout.
 // but only check if form was send. Maybe we move this to tool too if all tools got secform
@@ -63,7 +63,7 @@ if($saveSettings) {
     // END ACTION!! 
 
     // report success or failure
-    toolMsg ($setError, $returnUrl );
+    Tool::Msg ($setError, $returnUrl );
 
 } else if ($saveDefault) {
 
@@ -71,17 +71,18 @@ if($saveSettings) {
     $setError=Settings::Set ("wb_maintainance_mode", false);
 
     // report success or failure
-    toolMsg ($setError, $returnUrl );
+    Tool::Msg ($setError, $returnUrl );
 
 } else { 
 
     // Display form
     // get setting from DB , as constant may not be set yet.
-	$maintMode=(string)Settings::Get ("wb_maintainance_mode");
-    if ($maintMode=="true") $maintMode=' checked="checked" ';
+	$maintMode=Settings::Get ("wb_maintainance_mode", NULL);
+    if ($maintMode===true) $maintMode=' checked="checked" ';
     else                $maintMode='';  
 
     include($modulePath."templates/maintainance.tpl.php");
     
 }
  
+
