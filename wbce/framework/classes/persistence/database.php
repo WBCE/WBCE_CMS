@@ -228,12 +228,12 @@ class Database
     /**
      * Set error.
      *
-     * @param string $statement \PDOStatement
+     * @param mixed $statement
      */
-    public function setError(\PDOStatement $statement = null)
+    public function setError($statement = null)
     {
         $errorInfo = $this->pdo->errorInfo();
-        if ($statement) {
+        if ($statement instanceof \PDOStatement) {
             $errorInfo = $statement->errorInfo();
         }
 
