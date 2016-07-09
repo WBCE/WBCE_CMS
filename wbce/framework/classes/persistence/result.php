@@ -72,11 +72,20 @@ class Result
      *
      * @return mixed
      */
-    public function fetchRow($fetchStyle = \PDO::FETCH_BOTH)
+    public function fetchRow($fetchStyle = WDO::FETCH_BOTH)
     {
-        $this->fetchStyle = $fetchStyle;
+        // Converting MYSQL(I) to PDO constants
+        switch ($fetchStyle) {
+            case MYSQLI_ASSOC:
+                $this->fetchStyle = WDO::FETCH_ASSOC;
+                break;
+            case MYSQLI_BOTH:
+                $this->fetchStyle = WDO::FETCH_BOTH;
+            default:
+                $this->fetchStyle = $fetchStyle;
+        }
 
-        return $this->statement->fetch($fetchStyle);
+        return $this->statement->fetch($this->fetchStyle);
     }
 
     /**
