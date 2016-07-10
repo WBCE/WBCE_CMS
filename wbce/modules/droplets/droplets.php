@@ -62,7 +62,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 // request the droplet code from database
 					$sql = 'SELECT `code` FROM `'.TABLE_PREFIX.'mod_droplets` WHERE `name` LIKE "'.$droplet_name.'" AND `active` = 1';
 					$codedata = $GLOBALS['database']->get_one($sql);
-					if (!is_null($codedata))
+					if (!empty($codedata))
 					{
 						$newvalue = do_eval($codedata, $varlist, $wb_page_data);
 // check returnvalue (must be a string of 1 char at least or (bool)true
