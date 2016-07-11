@@ -60,6 +60,7 @@ $data = getOutputFilterSettings();
 Settings::Set('wb_suppress_old_opf',0, false);
 Settings::Set('opf_droplets',1, false);
 Settings::Set('opf_wblink',1, false);
+Settings::Set('opf_auto_placeholder',1, false);
 Settings::Set('opf_insert',1, false);  
 
 if (isset($data["sys_rel"]))       Settings::Set('opf_sys_rel',$data["sys_rel"], false);
@@ -71,6 +72,7 @@ else                               Settings::Set('opf_email_filter',1, false);
 if (isset($data["mailto_filter"])) Settings::Set('opf_mailto_filter',$data["mailto_filter"], false);
 else                               Settings::Set('opf_mailto_filter',1, false);       
 
+ 
 Settings::Set('opf_js_mailto',1, false);
 Settings::Set('opf_short_url',0, false);
 Settings::Set('opf_css_to_head',1, false);

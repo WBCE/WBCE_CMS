@@ -952,13 +952,79 @@ class Insert {
     */
     public function Filter($Content) {
             $i=$this;
+            // replace all exept those whith a "\" escape character.  
             $Content=preg_replace_callback( 
-                '/\[\[(Metas|Title|Css|Js)(?:\?pos\=)?(.*?)\]\]/i',
+                '/\[\[(Metas|Title|Css|Js|Html)(?:\?pos\=)?(.*?)\]\]/i',
                 function($match) use ($i) { 
                     return call_user_func(array($i, "Render".$match[1]), $match[2]);               
                 },
                 $Content
             );
+            return $Content;
+    }
+    
+    
+    /**
+    @brief Auto Add function will add all placeholders on autopilot to the Content .
+    
+    Basically this still is an output filter that simply adds some placeholders to a HTML page. 
+    It is based on regexes at this is more error resistant that using a DOM class.
+
+    @param string $Content 
+        The HTML content to filter 
+
+    @retval string 
+        The filtered/replaced content.  
+    */
+    public function AddPlaceholder($Content) {
+
+            //  no [[Js?pos=headTop]] present, so add it 
+            if (!preg_match("/\[\[Js\?pos\=HeadTop\]\]/i", $Content)) {
+                $Content = preg_replace("/<\s*head.*>/iU","$0\n[[Js?pos=HeadTop]]" ,$Content );
+            }
+            //  no [[Css]] present, so add it 
+            if (!preg_match("/\[\[Css\]\]/i", $Content)) {
+                $Content = preg_replace("/<\s*head.*>/iU","$0\n[[Css]]" ,$Content );
+            }
+             //  no [[Metas]] present, so add it 
+            if (!preg_match("/\[\[Metas\]\]/i", $Content)) {
+                $Content = preg_replace("/<\s*head.*>/iU","$0\n[[Metas]]" ,$Content );
+            }          
+            //  no [[Title]] present, so add it 
+            if (!preg_match("/\[\[Title\]\]/i", $Content)) {
+                $Content = preg_replace("/<\s*head.*>/iU","$0\n[[Title]]" ,$Content );
+            }
+            
+            
+            //  no [[Js?pos=HeadLow]] present, so add it 
+            if (!preg_match("/\[\[Js\?pos\=HeadLow\]\]/i", $Content)) {
+                $Content = preg_replace("#<\s*/\s*head\s*>#iU","\n[[Js?pos=HeadLow]]\n$0  <!-- $0 -->" ,$Content );
+            }
+            
+
+            //  no [[Html?pos=BodyTop]] present, so add it 
+            if (!preg_match("/\[\[Html\?pos\=BodyTop\]\]/i", $Content)) {
+                $Content = preg_replace("/<\s*body.*>/iU","$0\n[[Html?pos=BodyTop]]\n" ,$Content );
+            }
+            //  no [[Js?pos=BodyTop]] present, so add it 
+            if (!preg_match("/\[\[Js\?pos\=BodyTop\]\]/i", $Content)) {
+                $Content = preg_replace("/<\s*body.*>/iU","$0\n[[Js?pos=BodyTop]]" ,$Content );
+            }
+            //  no [[Html?pos=BodyLow]] present, so add it 
+            if (!preg_match("/\[\[Html\?pos\=BodyLow\]\]/i", $Content)) {
+                $Content = preg_replace("/<\s*\/\s*body\s*>/iU","\n[[Html?pos=BodyLow]]\n$0" ,$Content );
+            }
+            //  no [[Js?pos=BodyLow]] present, so add it 
+            if (!preg_match("/\[\[Js\?pos\=BodyLow\]\]/i", $Content)) {
+                $Content = preg_replace("/<\s*\/\s*body\s*>/iU","\n[[Js?pos=BodyLow]]\n$0" ,$Content );
+            }
+
+ 
+
+            
+            
+            
+            
             return $Content;
     }
 }    

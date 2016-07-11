@@ -21,6 +21,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 Settings::Del('wb_suppress_old_opf');
 Settings::Del('opf_droplets');
 Settings::Del('opf_wblink');
+Settings::Del('opf_auto_placeholder');
 Settings::Del('opf_insert');   
 Settings::Del('opf_sys_rel');
 Settings::Del('opf_email_filter');

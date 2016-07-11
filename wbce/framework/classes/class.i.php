@@ -703,6 +703,23 @@ class I {
         $i=I::getInstance();
         return $i->Filter($Content);
     }
+    
+  /**
+    @brief Auto Add function will add all placeholders on autopilot to the Content .
+    
+    Basically this still is an output filter that simply adds some placeholders to a HTML page. 
+    It is based on regexes at this is more error resistant that using a DOM class.
+
+    @param string $Content 
+        The HTML content to filter 
+
+    @retval string 
+        The filtered/replaced content.  
+    */
+    public static function AddPlaceholder($Content) {
+        $i=I::getInstance();
+        return $i->AddPlaceholder($Content);
+    }
 
 }
 

@@ -34,6 +34,7 @@ $OPF['DOT_REPLACEMENT']     = 'Ersetze "." durch';
 $OPF['ALL_ON_OFF'] = 'Alle Filter aktivieren/deaktivieren';
 $OPF['DROPLETS'] = 'Droplets-Filter';
 $OPF['WBLINK'] = 'wblink-Filter';
+$OPF['AUTO_PLACEHOLDER'] = 'Platzhalter für Insertfilter einzufügen wenn nicht existent.';
 $OPF['INSERT'] = 'CSS-, JS-, Meta-Insert-Filter';
 $OPF['JS_MAILTO'] = 'Javascript für Mailto-Filter';
 $OPF['SHORT_URL'] = 'Short Url Filter(kein /pages/, kein .php)';

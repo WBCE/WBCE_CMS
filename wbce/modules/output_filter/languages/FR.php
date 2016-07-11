@@ -32,6 +32,7 @@ $OPF['DOT_REPLACEMENT']	= 'Remplacer "." par';
 
 $OPF['ALL_ON_OFF'] = 'Enable/Disable all old Outputfilter';
 $OPF['DROPLETS'] = 'Droplets filter';
+$OPF['AUTO_PLACEHOLDER'] = 'Try to add placeholder for insert filter if they do not exist';
 $OPF['WBLINK'] = 'WB-Link Filter';
 $OPF['INSERT'] = 'CSS, JS, Meta Insert Filter';
 $OPF['JS_MAILTO'] = 'Use Javascript on Mailtofilter';
