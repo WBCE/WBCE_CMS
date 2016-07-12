@@ -59,6 +59,7 @@ $data = getOutputFilterSettings();
 // Set old values if exists otherwise go for default 
 Settings::Set('wb_suppress_old_opf',0, false);
 Settings::Set('opf_droplets',1, false);
+Settings::Set('opf_droplets_be',1, false);
 Settings::Set('opf_wblink',1, false);
 Settings::Set('opf_auto_placeholder',1, false);
 Settings::Set('opf_insert',1, false);  

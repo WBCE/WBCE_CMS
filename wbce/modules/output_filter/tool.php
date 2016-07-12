@@ -27,6 +27,7 @@ if($doSave) {
     $data['suppress_old_opf'] = (int)(intval(isset($_POST['suppress_old_opf']) ? $_POST['suppress_old_opf'] : 0) != 0);
     //frontend
     $data['droplets']         = (int)(intval(isset($_POST['droplets']) ? $_POST['droplets'] : 0) != 0);
+    $data['droplets_be']      = (int)(intval(isset($_POST['droplets_be']) ? $_POST['droplets_be'] : 0) != 0);
     $data['wblink']           = (int)(intval(isset($_POST['wblink']) ? $_POST['wblink'] : 0) != 0);
     $data['auto_placeholder'] = (int)(intval(isset($_POST['auto_placeholder']) ? $_POST['auto_placeholder'] : 0) != 0);
     $data['insert']           = (int)(intval(isset($_POST['insert']) ? $_POST['insert'] : 0) != 0);
@@ -62,6 +63,7 @@ if($doSave) {
         $errmsg.=(string)Settings::Set("wb_suppress_old_opf", $data['suppress_old_opf']);
         //frontend
         $errmsg.=(string)Settings::Set("opf_droplets", $data['droplets']);
+        $errmsg.=(string)Settings::Set("opf_droplets_be", $data['droplets_be']);
         $errmsg.=(string)Settings::Set("opf_wblink", $data['wblink']);  
         $errmsg.=(string)Settings::Set("opf_auto_placeholder", $data['auto_placeholder']);  
         $errmsg.=(string)Settings::Set("opf_insert", $data['insert']); 
@@ -93,12 +95,15 @@ if($doSave) {
     }
 } else {
 // read settings from the database to show
+// the trick ist to use return values that will function as default values if 
+// the value is not set :-)
 
     $data = array();
     //all filters
     $data['suppress_old_opf']  = Settings::Get('wb_suppress_old_opf',0);
     //frontend
     $data['droplets']          = Settings::Get('opf_droplets',1);
+    $data['droplets_be']       = Settings::Get('opf_droplets_be',1);
     $data['wblink']            = Settings::Get('opf_wblink',1);
     $data['auto_placeholder']  = Settings::Get('opf_auto_placeholder',1);
     $data['insert']            = Settings::Get('opf_insert',1);   
