@@ -203,13 +203,13 @@ class WbAuto{
         // for windooze
         $Dir=str_replace ("\\", "/", $Dir);
         
-        //always trim at front and end
-        $Dir=trim($Dir, "/");
+        //always trim at  end
+        $Dir=rtrim($Dir, "/");
         
         // allow to add dirs directly
         if ($DirektPath) {
             //construct full dir whithout WB path
-            $AddDir="/".$Dir."/";
+            $AddDir=$Dir."/";
         } else {
             //construct full dir whith WB path
             $AddDir=WB_PATH."/".$Dir."/";
