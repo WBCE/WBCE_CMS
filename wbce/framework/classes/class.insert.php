@@ -998,7 +998,8 @@ class Insert {
             
             //  no [[Js?pos=HeadLow]] present, so add it 
             if (!preg_match("/\[\[Js\?pos\=HeadLow\]\]/i", $Content)) {
-                $Content = preg_replace("#<\s*/\s*head\s*>#iU","\n[[Js?pos=HeadLow]]\n$0  <!-- $0 -->" ,$Content );
+                $Content = preg_replace("#<\s*/\s*head\s*>#iU","\n[[Js?pos=HeadLow]]\n$0" ,$Content );
+                //$Content = preg_replace("#<\s*/\s*head\s*>#iU","\n[[Js?pos=HeadLow]]\n$0  <!-- $0 -->" ,$Content );
             }
             
 
