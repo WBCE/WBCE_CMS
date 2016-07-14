@@ -121,9 +121,9 @@ class Database
         );
 
         if ($this->dsn) {
-            $this->pdo = new \PDO($this->dsn);
+            $this->pdo = new WDO($this->dsn);
         } else {
-            $this->pdo = new \PDO($this->driver.':host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password, $options);
+            $this->pdo = new WDO($this->driver.':host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password, $options, TABLE_PREFIX);
             $this->pdo->exec('SET NAMES '.$this->charset);
         }
 
@@ -173,7 +173,7 @@ class Database
      *
      * @return Result
      */
-    public function preparedQuery($query, array $parameters = array())
+    public function preparedQuery($query, $parameters = array())
     {
         $statement = $this->pdo->prepare($query);
         $statement->execute($parameters);
