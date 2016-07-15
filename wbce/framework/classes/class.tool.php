@@ -247,7 +247,7 @@ class Tool {
         // this possibly creates output already
         // class Admin gets a 
         if ($noPage) $admin = new admin($this->adminSection, $this->adminAccess,false,true,$operateBuffer=false);
-        else         $admin = new admin($this->adminSection, $this->adminAccess,true, true,$operateBuffer=false);
+        else         $admin = new admin($this->adminSection, $this->adminAccess,true, true,$operateBuffer=true);
         
         // Output buffer for module only 
         ob_start();       
@@ -280,7 +280,7 @@ class Tool {
         echo $toolOutput;
 
         // output footer if  we are not in no_page mode
-        if (!$noPage) $admin->print_footer($activateJsAdmin = false,$operateBuffer=false);  
+        if (!$noPage) $admin->print_footer($activateJsAdmin = false,$operateBuffer=true);  
         
         
         // Fetch the Buffer for later filtering
