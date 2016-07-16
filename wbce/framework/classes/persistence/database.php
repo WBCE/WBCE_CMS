@@ -444,7 +444,7 @@ class Database
         return false;
     }
 
-    /**
+        /**
      * Update row.
      *
      * @param string $table
@@ -458,16 +458,17 @@ class Database
     public function updateRow($table, $primaryKey, array $data)
     {
         if (isset($data[$primaryKey])) {
-            $parameters = array();
 
-            $sets = array_map(function ($column, $value) use ($parameters, $primaryKey) {
-                if ($column !== $primaryKey) {
+			$parameters = array();
+            $sets = array();
+
+			foreach ($data as $column => $value) {
+				if ($column !== $primaryKey) {
                     $parameters[] = $value;
-
-                    return $column.' = ?';
+					$sets[] = $column.' = ?';
                 }
-            }, $data);
-
+			}
+			
             $parameters[] = $data[$primaryKey];
 
             $sql = 'UPDATE '.$table.' SET '.implode(', ', $sets).' WHERE '.$primaryKey.' = ?';
@@ -494,17 +495,18 @@ class Database
      */
     public function insertRow($table, array $data)
     {
+		$values = array();
         $parameters = array();
 
-        $columns = array_keys($data);
-        $values = array_map(function ($value) use ($parameters) {
-            $parameters[] = $value;
-
-            return '?';
-        }, $data);
+		foreach ($data as $value) {
+			$values[] = '?';
+			$parameters[] = $value;
+		}
+		
+		$columns = array_keys($data);
 
         $sql = 'INSERT INTO '.$table.' ('.implode(', ', $columns).') VALUES ('.implode(', ', $values).')';
-
+		
         return $this->preparedQuery($sql, $parameters);
     }
 
