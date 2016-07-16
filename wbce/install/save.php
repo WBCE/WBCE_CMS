@@ -316,13 +316,18 @@ define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 require ADMIN_PATH . '/interface/version.php';
 
+
 // Try connecting to database
 if (!file_exists(WB_PATH . '/framework/class.database.php')) {
     set_error('It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!');
 }
 include WB_PATH . '/framework/class.database.php';
 try {
-    $database = new database();
+    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
+    $database = new \Persistence\Database();
+    } else {
+        $database = new database();
+    }
 } catch (Exception $e) {
     $sMsg = 'Database host name, username and/or password incorrect.<br />MySQL Error:<br />'
     . $e->getMessage();
@@ -465,3 +470,4 @@ $thisApp = new Login(
         'GROUPS_TABLE' => TABLE_PREFIX . "groups",
     )
 );
+
