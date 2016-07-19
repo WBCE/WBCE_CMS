@@ -43,6 +43,7 @@ echo  "<pre>"; print_r(WbAuto::$Types); echo  "</pre>";
 
 @attention There is one very usefull thing to keep in mind @code class_exists('MyClass'); @endcode triggers the autoloader, so it tests if the class is available and loads it.
 
+A last note to mention the $DirektPath Option should allow to access directories outside of webroot . 
 
 */ 
 // !!! Need to remember, that i need to extend this so it loads directories above webroot!!!
@@ -81,24 +82,30 @@ class WbAuto{
     This is the workhorse that does the actual loading. 
     */
     static public function Loader($ClassName){
-
-        $ClassName=preg_replace("/\\\/s", "/" ,$ClassName);
     
         //already loaded, never mind
-        if (class_exists(basename($ClassName), FALSE)) return FALSE; 
+        if (class_exists($ClassName, FALSE)) return FALSE; 
+
+        // Filebased loading first 
+        //if there is an fileentry for this class
+        if (array_key_exists ($ClassName, self::$Files)) { 
+            require_once (self::$Files[$ClassName]); 
+            return FALSE;
+        }
+
+        //replace "\" whith DIRECTORY_SEPARATOR
+        $ClassName=str_replace(array("\\", "/"), DIRECTORY_SEPARATOR ,$ClassName);
+    
+        //already loaded, never mind
+        //if (class_exists(basename($ClassName), FALSE)) return FALSE; 
        
         $ClassPath=dirname($ClassName);
         if      ($ClassPath==".") $ClassPath="";
         else if($ClassPath=="/") $ClassPath="";
         else                      $ClassPath=strtolower($ClassPath)."/"; 
         
-        //if there is an fileentry for this class
-        if (array_key_exists ($ClassName, WbAuto::$Files)) { 
-            require_once (WbAuto::$Files[$ClassName]); 
-            return FALSE;
-        }
-        
-         
+       
+          
         //Search dirs for matching class files
         foreach (WbAuto::$Dirs as $sDirVal) {
             foreach (WbAuto::$Types as $sTypeVal) {
@@ -117,11 +124,15 @@ class WbAuto{
 
     These combinations allow for filename != clasname and are loaded first as it needs no directory searching.
     The path starts from WB_PATH. And it allows for overwrite of already existing entries.
+    And as its loaded first it has priority over directory based class loading.
     
     @code
     WbAuto::AddFile("MultiCrud","/modules/multicrud/classes/multicrud.php");
     WbAuto::AddFile("R","/classes/rb.php");
     WbAuto::AddFile("R","/includes/rb.php", true);
+    
+    // namespace classes .. (needs more testing) 
+    WbAuto::AddFile("persistence\database","/framework/classes/persistence/database.php", true);
     @endcode
 
 
@@ -141,27 +152,31 @@ class WbAuto{
         Returns false on success, and an error message on failure. 
 
     */
-    static public function AddFile ($ClassName="", $ClassFile="", $Overwrite= false,$DirektPath=false){
+    static public function AddFile ($ClassName="", $ClassFile="", $Overwrite= false, $DirektPath=false){
     
         //Check for valid call return error if invalid
-        if ($ClassName=="") return ("No class name set!");
-        if ($ClassFile=="") return ("No class file set!");
+        if ($ClassName=="") return ("AddFile, no 'ClassName' set!");
+        if ($ClassFile=="") return ("AddFile, no 'ClassFile' set!");
+        if (!is_string($ClassName)) return ("AddFile,'ClassName' is not a string");
+        if (!is_string($ClassFile)) return ("AddFile,'ClassFile' is not a string");
+        if (!is_bool($Overwrite)) return ("AddFile invalid parameter 'Overwrite' is not a boolean! ");
+        if (!is_bool($DirektPath)) return ("AddFile invalid parameter 'DirektPath' is not a boolean! ");
         if (isset(WbAuto::$Files[$ClassName]) and $Overwrite== false) return  ("Class already exists ($ClassName)");
         
-        // More Checks
-        $LoadFile = WB_PATH.$ClassFile;
+        // for windooze make sure we got the right seperator 
+        $ClassFile = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ClassFile);
         
         // allow to add dirs directly
         if ($DirektPath) {
-            //construct full filepath whithout WB path
-            $LoadFile = WB_PATH.$ClassFile;
+            //this file delivers a full file path  whithout WB path
+            $LoadFile = $ClassFile;
         } else {
-            //construct full filepath whith WB path
+            //construct full filepath whith WB path default behavior
             $LoadFile = WB_PATH.$ClassFile;
         }
           
-        if (!is_file($LoadFile)) return ("File does not exist or not a file: $LoadFile");
-        if (!is_readable($LoadFile)) return ("File not readable: $LoadFile");  
+        if (!is_file($LoadFile)) return ("AddFile, File does not exist or not a file: $LoadFile");
+        if (!is_readable($LoadFile)) return ("AddFile, File not readable: $LoadFile");  
          
         // if all is ok set new Classfile 
         WbAuto::$Files[$ClassName]=$LoadFile;
@@ -197,27 +212,27 @@ class WbAuto{
     static public function AddDir ($Dir="" ,$DirektPath=false){
 
         // some checks
-        if (!is_string($Dir)) return ("Directory needs to be a string.");
-        if (empty ($Dir))     return ("Directory is empty.");
+        if (!is_string($Dir)) return ("AddDir: Directory needs to be a string.");
+        if (empty ($Dir))     return ("AddDir: Directory is empty.");
  
-        // for windooze
-        $Dir=str_replace ("\\", "/", $Dir);
+        // for windooze make sure we got the right seperator 
+        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
         
-        //always trim at  end
-        $Dir=rtrim($Dir, "/");
+        //always trim and re-add so we make sure we have a seperator at the end 
+        $Dir=rtrim($Dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
         
         // allow to add dirs directly
         if ($DirektPath) {
             //construct full dir whithout WB path
-            $AddDir=$Dir."/";
+            $AddDir=$Dir;
         } else {
             //construct full dir whith WB path
-            $AddDir=WB_PATH."/".$Dir."/";
+            $AddDir=WB_PATH."/".$Dir;
         }
                 
         //Some more checks
-        if (!is_dir($AddDir)) return ("Not a directory: $AddDir");
-        if (!is_readable($AddDir)) return ("Directory not readable: $AddDir");
+        if (!is_dir($AddDir)) return ("AddDir: Not a directory using is_dir: $AddDir");
+        if (!is_readable($AddDir)) return ("AddDir: Directory not readable: $AddDir");
         
         // Add Dir
         WbAuto::$Dirs[]=$AddDir;
