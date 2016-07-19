@@ -216,7 +216,7 @@ class WbAuto{
         if (empty ($Dir))     return ("AddDir: Directory is empty.");
  
         // for windooze make sure we got the right seperator 
-        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+        $Dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $Dir);
         
         //always trim and re-add so we make sure we have a seperator at the end 
         $Dir=rtrim($Dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
