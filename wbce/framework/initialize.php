@@ -31,6 +31,14 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
 }
 
+// compatibility fix , sooner or later better replace the old constants
+// // compatibility fix , sooner or later better replace the old constants
+if (!defined("MYSQL_BOTH")) define('MYSQL_BOTH',MYSQLI_BOTH);
+if (!defined("MYSQL_NUM")) define('MYSQL_NUM',MYSQLI_NUM);
+if (!defined("MYSQL_ASSOC")) define('MYSQL_ASSOC',MYSQLI_ASSOC);
+
+
+
 require dirname(__FILE__)."/classes/class.autoload.php"; 
 WbAuto::AddDir(dirname(__FILE__)."/classes/",true);
 
