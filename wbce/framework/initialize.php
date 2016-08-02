@@ -37,6 +37,8 @@ if (!defined("MYSQL_BOTH")) define('MYSQL_BOTH',MYSQLI_BOTH);
 if (!defined("MYSQL_NUM")) define('MYSQL_NUM',MYSQLI_NUM);
 if (!defined("MYSQL_ASSOC")) define('MYSQL_ASSOC',MYSQLI_ASSOC);
 
+// EARLY CONSTANT HANDLING
+if (!defined("WB_TABLE_PREFIX")) define("WB_TABLE_PREFIX", TABLE_PREFIX);
 
 
 require dirname(__FILE__)."/classes/class.autoload.php"; 
