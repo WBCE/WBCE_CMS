@@ -39,7 +39,7 @@ if (!defined("MYSQL_ASSOC")) define('MYSQL_ASSOC',MYSQLI_ASSOC);
 
 // EARLY CONSTANT HANDLING
 if (!defined("WB_TABLE_PREFIX")) define("WB_TABLE_PREFIX", TABLE_PREFIX);
-
+if (!defined("TABLE_PREFIX")) define("TABLE_PREFIX", WB_TABLE_PREFIX);
 
 require dirname(__FILE__)."/classes/class.autoload.php"; 
 WbAuto::AddDir(dirname(__FILE__)."/classes/",true);
