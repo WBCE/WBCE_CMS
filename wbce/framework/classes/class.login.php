@@ -22,13 +22,20 @@ class login extends admin
     {
         // Get language vars
         global $MESSAGE, $database;
+        
+        // use admin class constructor 
         parent::__construct();
-        // Get configuration values
+        
+        // Get configuration values, and set them as class vars
         while (list($key, $value) = each($config_array)) {
             $this->{(strtolower($key))} = $value;
         }
+        
+        // set Redirect url ..
         if (!isset($this->redirect_url)) {$this->redirect_url = '';}
-        // Get the supplied username and password
+        
+        // Get the supplied username and passwordfield if set.
+        // this is used by spam protection methods
         if ($this->get_post('username_fieldname') != '') {
             $username_fieldname = $this->get_post('username_fieldname');
             $password_fieldname = $this->get_post('password_fieldname');
@@ -36,21 +43,19 @@ class login extends admin
             $username_fieldname = 'username';
             $password_fieldname = 'password';
         }
+        
+        // fetch username and Password
         $this->username = htmlspecialchars(strtolower($this->get_post($username_fieldname)), ENT_QUOTES);
-
         $this->password = $this->get_post($password_fieldname);
-        // Figure out if the "remember me" option has been checked
-        if ($this->get_post('remember') == 'true') {
-            $this->remember = $this->get_post('remember');
-        } else {
-            $this->remember = false;
-        }
+        
         // Get the length of the supplied username and password
         if ($this->get_post($username_fieldname) != '') {
             $this->username_len = strlen($this->username);
             $this->password_len = strlen($this->password);
         }
+        
         // If the url is blank, set it to the default url
+        // We got a posted url here , dont think this is a good idea... 
         $this->url = $this->get_post('url');
         if ($this->redirect_url != '') {
             $this->url = $this->redirect_url;
@@ -58,29 +63,15 @@ class login extends admin
         if (strlen($this->url) < 2) {
             $this->url = $config_array['DEFAULT_URL'];
         }
+        
+        // Already logged in ... but we are not sure at all the user is allowed that place ...
+        // does not feel good 
+        
+        
         if ($this->is_authenticated() == true) {
             // User already logged-in, so redirect to default url
             header('Location: ' . $this->url);
             exit();
-        } elseif ($this->is_remembered() == true) {
-            // User has been "remembered"
-            // Get the users password
-            // $database = new database();
-            $sql = 'SELECT * FROM `' . $this->users_table . '` ';
-            $sql .= 'WHERE `user_id`=\'' . $this->get_safe_remember_key() . '\'';
-            $query_details = $database->query($sql);
-            $fetch_details = $query_details->fetchRow();
-            $this->username = $fetch_details['username'];
-            $this->password = $fetch_details['password'];
-            // Check if the user exists (authenticate them)
-            if ($this->authenticate()) {
-                // Authentication successful
-                header("Location: " . $this->url);
-                exit(0);
-            } else {
-                $this->message = $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
-                $this->increase_attemps();
-            }
         } elseif ($this->username == '' and $this->password == '') {
             $this->message = $MESSAGE['LOGIN_BOTH_BLANK'];
             $this->display_login();
@@ -109,9 +100,6 @@ class login extends admin
     public function authenticate()
     {
         global $database;
-        // Get user information
-        // $database = new database();
-        // $query = 'SELECT * FROM `'.$this->users_table.'` WHERE MD5(`username`) = "'.md5($this->username).'" AND `password` = "'.$this->password.'" AND `active` = 1';
         $loginname = (preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->username);
         $sql = 'SELECT * FROM `' . $this->users_table . '` ';
         $sql .= 'WHERE `username`=\'' . $loginname . '\' AND `password`=\'' . $this->password . '\' AND `active`=1';
@@ -219,91 +207,18 @@ class login extends admin
     }
 
     // Function to set a "remembering" cookie for the user
+    // Only still here for compatibility
     public function remember($user_id)
     {
         return true;
-//        global $database;
-        //        $remember_key = '';
-        //        // Generate user id to append to the remember key
-        //        $length = 11-strlen($user_id);
-        //        if($length > 0) {
-        //            for($i = 1; $i <= $length; $i++) {
-        //                $remember_key .= '0';
-        //            }
-        //        }
-        //        // Generate remember key
-        //        $remember_key .= $user_id.'_';
-        //        $salt = "abchefghjkmnpqrstuvwxyz0123456789";
-        //        srand((double)microtime()*1000000);
-        //        $i = 0;
-        //        while ($i <= 10) {
-        //            $num = rand() % 33;
-        //            $tmp = substr($salt, $num, 1);
-        //            $remember_key = $remember_key . $tmp;
-        //            $i++;
-        //        }
-        //        $remember_key = $remember_key;
-        //        // Update the remember key in the db
-        //        // $database = new database();
-        //        $database->query("UPDATE ".$this->users_table." SET remember_key = '$remember_key' WHERE user_id = '$user_id' LIMIT 1");
-        //        if($database->is_error()) {
-        //            return false;
-        //        } else {
-        //            // Workout options for the cookie
-        //            $cookie_name = 'REMEMBER_KEY';
-        //            $cookie_value = $remember_key;
-        //            $cookie_expire = time()+60*60*24*30;
-        //            // Set the cookie
-        //            if(setcookie($cookie_name, $cookie_value, $cookie_expire, '/')) {
-        //                return true;
-        //            } else {
-        //                return false;
-        //            }
-        //        }
+
     }
 
     // Function to check if a user has been remembered
+    // Only still here for compatibility
     public function is_remembered()
     {
         return false;
-//        global $database;
-        //        // add if get_safe_remember_key not empty
-        //        if(isset($_COOKIE['REMEMBER_KEY']) && ($_COOKIE['REMEMBER_KEY'] != '') && ($this->get_safe_remember_key() <> '' ) )
-        //        {
-        //            // Check if the remember key is correct
-        //            // $database = new database();
-        //            $sql = "SELECT `user_id` FROM `" . $this->users_table . "` WHERE `remember_key` = '";
-        //            $sql .= $this->get_safe_remember_key() . "' LIMIT 1";
-        //            $check_query = $database->query($sql);
-        //
-        //            if($check_query->numRows() > 0)
-        //            {
-        //                $check_fetch = $check_query->fetchRow();
-        //                $user_id = $check_fetch['user_id'];
-        //                // Check the remember key prefix
-        //                $remember_key_prefix = '';
-        //                $length = 11-strlen($user_id);
-        //                if($length > 0)
-        //                {
-        //                    for($i = 1; $i <= $length; $i++)
-        //                    {
-        //                        $remember_key_prefix .= '0';
-        //                    }
-        //                }
-        //                $remember_key_prefix .= $user_id.'_';
-        //                $length = strlen($remember_key_prefix);
-        //                if(substr($_COOKIE['REMEMBER_KEY'], 0, $length) == $remember_key_prefix)
-        //                {
-        //                    return true;
-        //                } else {
-        //                    return false;
-        //                }
-        //            } else {
-        //                return false;
-        //            }
-        //        } else {
-        //            return false;
-        //        }
     }
 
     // Display the login screen
@@ -368,17 +283,6 @@ class login extends admin
         }
     }
 
-    // sanities the REMEMBER_KEY cookie to avoid SQL injection
-    public function get_safe_remember_key()
-    {
-        if (!((strlen($_COOKIE['REMEMBER_KEY']) == 23) && (substr($_COOKIE['REMEMBER_KEY'], 11, 1) == '_'))) {
-            return '';
-        }
-
-        // create a clean cookie (XXXXXXXXXXX_YYYYYYYYYYY) where X:= numeric, Y:= hash
-        $clean_cookie = sprintf('%011d', (int) substr($_COOKIE['REMEMBER_KEY'], 0, 11)) . substr($_COOKIE['REMEMBER_KEY'], 11);
-        return ($clean_cookie == $_COOKIE['REMEMBER_KEY']) ? $this->add_slashes($clean_cookie) : '';
-    }
 
     // Warn user that they have had to many login attemps
     public function warn()
