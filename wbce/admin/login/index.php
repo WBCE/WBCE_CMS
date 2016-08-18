@@ -17,25 +17,10 @@
 
 require_once("../../config.php");
 
-if(defined('SMART_LOGIN') AND SMART_LOGIN == 'enabled') {
-	// Generate username field name
-	$username_fieldname = 'username_';
-	$password_fieldname = 'password_';
-	$salt = "abchefghjkmnpqrstuvwxyz0123456789";
-	srand((double)microtime()*1000000);
-	$i = 0;
-	while ($i <= 7) {
-		$num = rand() % 33;
-		$tmp = substr($salt, $num, 1);
-		$username_fieldname = $username_fieldname . $tmp;
-		$password_fieldname = $password_fieldname . $tmp;
-		$i++;
-	}
-} else {
-	$username_fieldname = 'username';
-	$password_fieldname = 'password';
-}
+$username_fieldname = 'username';
+$password_fieldname = 'password';
 
+        
 $admin = new admin('Start', '', false, false);
 
 $WarnUrl = str_replace(WB_PATH,WB_URL,$admin->correct_theme_source('warning.html'));
