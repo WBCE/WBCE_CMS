@@ -131,6 +131,10 @@ class Database
             $this->pdo->exec('SET @@sql_mode=""');
         }
 
+        unset($this->username );
+        unset($this->password );
+        unset($this->dbname );
+        
         return true;
     }
 
