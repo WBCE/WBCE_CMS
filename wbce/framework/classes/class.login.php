@@ -18,13 +18,22 @@ require_once ADMIN_PATH . '/interface/version.php';
 
 class login extends admin
 {
+
+    public $username_fieldname="";
+    public $password_fieldname="";
+
     public function __construct($config_array)
     {
+        
+
+        
         // Get language vars
         global $MESSAGE, $database;
         
         // use admin class constructor 
         parent::__construct();
+         
+        
         
         // Get configuration values, and set them as class vars
         while (list($key, $value) = each($config_array)) {
@@ -35,24 +44,27 @@ class login extends admin
         if (!isset($this->redirect_url)) {$this->redirect_url = '';}
         
         // Get the supplied username and passwordfield if set.
-        // this is used by spam protection methods
-        if ($this->get_post('username_fieldname') != '') {
-            $username_fieldname = $this->get_post('username_fieldname');
-            $password_fieldname = $this->get_post('password_fieldname');
-        } else {
-            $username_fieldname = 'username';
-            $password_fieldname = 'password';
+      
+        // manually set by configuration array
+        if ($this->username_fieldname!="" AND $this->password_fieldname!=""){
+            // all ok 
+            
+        }
+        // this is used by some spam protection methods
+        elseif ($this->get_post('username_fieldname') != '' AND $this->get_post('password_fieldname'!= '')) {
+            $this->username_fieldname = $this->get_post('username_fieldname');
+            $this->password_fieldname = $this->get_post('password_fieldname');
+        } 
+        // Default field names 
+        else {
+            $this->username_fieldname = 'username';
+            $this->password_fieldname = 'password';
         }
         
         // fetch username and Password
-        $this->username = htmlspecialchars(strtolower($this->get_post($username_fieldname)), ENT_QUOTES);
-        $this->password = $this->get_post($password_fieldname);
+        $this->username = $this->get_post($this->username_fieldname);
+        $this->password = $this->get_post($this->password_fieldname);
         
-        // Get the length of the supplied username and password
-        if ($this->get_post($username_fieldname) != '') {
-            $this->username_len = strlen($this->username);
-            $this->password_len = strlen($this->password);
-        }
         
         // If the url is blank, set it to the default url
         // We got a posted url here , dont think this is a good idea... 
@@ -68,136 +80,36 @@ class login extends admin
         // does not feel good 
         
         
-        if ($this->is_authenticated() == true) {
-            // User already logged-in, so redirect to default url
-            header('Location: ' . $this->url);
-            exit();
-        } elseif ($this->username == '' and $this->password == '') {
+        // Hey no input ok just display login
+        if ($this->username == '' and $this->password == '') {
             $this->message = $MESSAGE['LOGIN_BOTH_BLANK'];
             $this->display_login();
-        } elseif ($this->username == '') {
-            $this->message = $MESSAGE['LOGIN_USERNAME_BLANK'];
-            $this->increase_attemps();
-        } elseif ($this->password == '') {
-            $this->message = $MESSAGE['LOGIN_PASSWORD_BLANK'];
-            $this->increase_attemps();
-        } else {
-            // Check if the user exists (authenticate them)
-            $this->password = md5($this->password);
-            if ($this->authenticate()) {
-                // Authentication successful
-                //echo $this->url;exit();
+        } 
+        else {
+            // Check if the user exists 
+            // (authenticate them, load session vars and more this does all the work)
+            $uUserOk=WbAuth::Authenticate ($this->password,$this->username); 
+             
+            // Authentication successful
+            if ($uUserOk===false) {
+            
+                //echo "Login says successfull";  
+                
+                // User logged-in, so redirect to default $this->url whatever it is 
                 header("Location: " . $this->url);
                 exit(0);
             } else {
-                $this->message = $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
+                $this->message = $uUserOk;
                 $this->increase_attemps();
             }
         }
     }
 
-    // Authenticate the user (check if they exist in the database)
-    public function authenticate()
-    {
-        global $database;
-        $loginname = (preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->username);
-        $sql = 'SELECT * FROM `' . $this->users_table . '` ';
-        $sql .= 'WHERE `username`=\'' . $loginname . '\' AND `password`=\'' . $this->password . '\' AND `active`=1';
-        $results = $database->query($sql);
-        $results_array = $results->fetchRow();
-        $num_rows = $results->numRows();
-        if ($num_rows == 1) {
-            $user_id = $results_array['user_id'];
-            $this->user_id = $user_id;
-            $_SESSION['USER_ID'] = $user_id;
-            $_SESSION['GROUP_ID'] = $results_array['group_id'];
-            $_SESSION['GROUPS_ID'] = $results_array['groups_id'];
-            $_SESSION['USERNAME'] = $results_array['username'];
-            $_SESSION['DISPLAY_NAME'] = $results_array['display_name'];
-            $_SESSION['EMAIL'] = $results_array['email'];
-            $_SESSION['HOME_FOLDER'] = $results_array['home_folder'];
-            // Run remember function if needed
-            if ($this->remember == true) {
-                $this->remember($this->user_id);
-            }
-            // Set language
-            if ($results_array['language'] != '') {
-                $_SESSION['LANGUAGE'] = $results_array['language'];
-            }
-            // Set timezone
-            if ($results_array['timezone'] != '-72000') {
-                $_SESSION['TIMEZONE'] = $results_array['timezone'];
-            } else {
-                // Set a session var so apps can tell user is using default tz
-                $_SESSION['USE_DEFAULT_TIMEZONE'] = true;
-            }
-            // Set date format
-            if ($results_array['date_format'] != '') {
-                $_SESSION['DATE_FORMAT'] = $results_array['date_format'];
-            } else {
-                // Set a session var so apps can tell user is using default date format
-                $_SESSION['USE_DEFAULT_DATE_FORMAT'] = true;
-            }
-            // Set time format
-            if ($results_array['time_format'] != '') {
-                $_SESSION['TIME_FORMAT'] = $results_array['time_format'];
-            } else {
-                // Set a session var so apps can tell user is using default time format
-                $_SESSION['USE_DEFAULT_TIME_FORMAT'] = true;
-            }
-
-            // Get group information
-            $_SESSION['SYSTEM_PERMISSIONS'] = array();
-            $_SESSION['MODULE_PERMISSIONS'] = array();
-            $_SESSION['TEMPLATE_PERMISSIONS'] = array();
-            $_SESSION['GROUP_NAME'] = array();
-
-            $first_group = true;
-            foreach (explode(",", $this->get_session('GROUPS_ID')) as $cur_group_id) {
-                $sql = 'SELECT * FROM `' . $this->groups_table . '` WHERE `group_id`=\'' . $cur_group_id . '\'';
-                $results = $database->query($sql);
-                $results_array = $results->fetchRow();
-                $_SESSION['GROUP_NAME'][$cur_group_id] = $results_array['name'];
-                // Set system permissions
-                if ($results_array['system_permissions'] != '') {
-                    $_SESSION['SYSTEM_PERMISSIONS'] = array_merge($_SESSION['SYSTEM_PERMISSIONS'], explode(',', $results_array['system_permissions']));
-                }
-                // Set module permissions
-                if ($results_array['module_permissions'] != '') {
-                    if ($first_group) {
-                        $_SESSION['MODULE_PERMISSIONS'] = explode(',', $results_array['module_permissions']);
-                    } else {
-                        $_SESSION['MODULE_PERMISSIONS'] = array_intersect($_SESSION['MODULE_PERMISSIONS'], explode(',', $results_array['module_permissions']));
-                    }
-                }
-                // Set template permissions
-                if ($results_array['template_permissions'] != '') {
-                    if ($first_group) {
-                        $_SESSION['TEMPLATE_PERMISSIONS'] = explode(',', $results_array['template_permissions']);
-                    } else {
-                        $_SESSION['TEMPLATE_PERMISSIONS'] = array_intersect($_SESSION['TEMPLATE_PERMISSIONS'], explode(',', $results_array['template_permissions']));
-                    }
-                }
-                $first_group = false;
-            }
-
-            // Update the users table with current ip and timestamp
-            $get_ts = time();
-            $get_ip = $_SERVER['REMOTE_ADDR'];
-            $sql = 'UPDATE `' . $this->users_table . '` ';
-            $sql .= 'SET `login_when`=\'' . $get_ts . '\', `login_ip`=\'' . $get_ip . '\' ';
-            $sql .= 'WHERE `user_id`=\'' . $user_id . '\'';
-            $database->query($sql);
-        } else {
-            $num_rows = 0;
-        }
-        // Return if the user exists or not
-        return $num_rows;
-    }
-
+ 
     // Increase the count for login attemps
     public function increase_attemps()
     {
+        $_SESSION['ATTEMPS'] = 0;
         if (!isset($_SESSION['ATTEMPS'])) {
             $_SESSION['ATTEMPS'] = 0;
         } else {
@@ -211,7 +123,6 @@ class login extends admin
     public function remember($user_id)
     {
         return true;
-
     }
 
     // Function to check if a user has been remembered

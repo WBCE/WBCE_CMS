@@ -78,6 +78,7 @@ class WbUser {
 */       
     public function Load ($User="") {
         
+        
         if (!empty($User)){
         
             if (is_integer($User)) 
@@ -102,14 +103,16 @@ class WbUser {
 */       
     public function LoadUserByName ($UserName="") {
     
+        $UserName= $this->Database->escapeString($UserName);
+    
         $sql  = "SELECT * FROM " . WB_TABLE_PREFIX . "users ";
         $sql .= "WHERE username='" . $UserName . "' AND active=1";
-         
+       
         $Results = $this->Database->query($sql);
         $NumRows = $Results->numRows();
         
-        if ($NumRows ==1) 
-            return $this->FetchUserResult($Results); 
+        if ($NumRows ==1) {
+            return $this->FetchUserResult($Results); }
         
         if ($NumRows >1)
             return "LoadUserByName: Multiple results ($NumRows) for username/n";
@@ -128,6 +131,8 @@ class WbUser {
     The users id
 */       
     public function LoadUserById ($UserId="") {
+    
+        $UserId=(int)$UserId;
     
         $sql  = "SELECT * FROM " . WB_TABLE_PREFIX . "users ";
         $sql .= "WHERE user_id='" . $UserId . "' AND active=1";
@@ -151,6 +156,8 @@ class WbUser {
     The users email
 */       
     public function LoadUserByEmail ($UserMail="") {
+    
+         $UserMail= $this->Database->escape($UserName);
     
          if (defined(!("WB_ALLOW_EMAIL_AUTH") AND WB_ALLOW_EMAIL_AUTH==true))
             return "Authentication via email not allowed, check/set WB_ALLOW_EMAIL_AUTH";
@@ -216,7 +223,7 @@ class WbUser {
     @retval boolean/string
         Returns false on success, and an error message on failure.          
 */
-    public function  UserToSession(){
+    public function  StoreToSession(){
     
         if ($this->UserId===NULL)
             return "UserToSession: User has no ID cannot store to session.";
@@ -263,10 +270,10 @@ class WbUser {
         }
 
         // Set permission stuff 
-        $_SESSION['SYSTEM_PERMISSIONS'] = array();
-        $_SESSION['MODULE_PERMISSIONS'] = array();
-        $_SESSION['TEMPLATE_PERMISSIONS'] = array();
-        $_SESSION['GROUP_NAME'] = array();
+        $_SESSION['SYSTEM_PERMISSIONS'] = $this->SystemPermissions;
+        $_SESSION['MODULE_PERMISSIONS'] = $this->ModulePermissions;
+        $_SESSION['TEMPLATE_PERMISSIONS'] = $this->TemplatePermissions;
+        $_SESSION['GROUP_NAME'] = $this->GroupName;
 
     
     
@@ -281,10 +288,10 @@ class WbUser {
     @retval boolean/string
         Returns false on success, and an error message on failure.          
 */
-    public function  Store(){
+    public function  Save(){
         
         if ($this->GroupId===NULL OR $this->GroupIds=="") 
-            return "StoreUser: You need to set a group before saving";
+            return "Save: You need to set a group before saving";
         
         //Delete entry if we  already find him 
         if ($this->UserId!==NULL) {
@@ -293,7 +300,7 @@ class WbUser {
         
         // do query and return array if we encounter some trouble 
         $this->Database->query($sql); 
-        if ($this->Database->is_error()) return "StoreUser: ".$this->Database->get_error(); 
+        if ($this->Database->is_error()) return "Save: ".$this->Database->get_error(); 
         
         
         // now insert again 
@@ -306,7 +313,7 @@ class WbUser {
        // echo "$sql<br>";
        // do query and return array if we encounter some trouble 
        $this->Database->query($sql); 
-       if ($this->Database->is_error()) return "StoreUser: ".$this->Database->get_error(); 
+       if ($this->Database->is_error()) return "Save: ".$this->Database->get_error(); 
        
        // Set uid if this was a new entry so object remain consistent
        if ($this->UserId!==NULL) 
@@ -328,12 +335,16 @@ class WbUser {
         $first_group = true;
         foreach (explode(",", $this->GroupIds) as $cur_group_id) {
             $sql = 'SELECT * FROM `' . WB_TABLE_PREFIX . 'groups` WHERE `group_id`=\'' . $cur_group_id . '\'';
+            echo "<br>$sql<br>";
             $results = $this->Database->query($sql);
+
             $results_array = $results->fetchRow();
+                       
             $this->GroupName[$cur_group_id] = $results_array['name'];
             // Set system permissions
             if ($results_array['system_permissions'] != '') {
                 $this->SystemPermissions = array_merge($this->SystemPermissions, explode(',', $results_array['system_permissions']));
+                // echo"<pre>"; var_dump($this->SystemPermissions); echo"<pre>";
             }
             // Set module permissions
             if ($results_array['module_permissions'] != '') {
@@ -357,4 +368,3 @@ class WbUser {
     
 
 } 
-
