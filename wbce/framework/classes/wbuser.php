@@ -295,7 +295,7 @@ class WbUser {
         
         //Delete entry if we  already find him 
         if ($this->UserId!==NULL) {
-            $sql="DELETE FROM `usr_web207_4`.`wbce00users` WHERE `wbce00users`.`user_id` = {$this->UserId}";
+            $sql="DELETE FROM `" . WB_TABLE_PREFIX . "users` WHERE `user_id` = {$this->UserId}";
         }
         
         // do query and return array if we encounter some trouble 
@@ -310,7 +310,7 @@ class WbUser {
             VALUES ('{$this->UserId}', '{$this->GroupId}', '{$this->GroupIds}', '{$this->Active}', '{$this->UserName}', '{$this->Password}', '{$this->RememberKey}', '{$this->LastReset}', '{$this->DisplayName}', '{$this->Email}', '{$this->TimeZone}', '{$this->DateFormat}', '{$this->TimeFormat}', '{$this->Language}', '{$this->HomeFolder}', '{$this->LoginWhen}','{$this->LoginIp}')    
         ";
         
-       // echo "$sql<br>";
+       //echo "$sql<br>";
        // do query and return array if we encounter some trouble 
        $this->Database->query($sql); 
        if ($this->Database->is_error()) return "Save: ".$this->Database->get_error(); 
@@ -335,7 +335,7 @@ class WbUser {
         $first_group = true;
         foreach (explode(",", $this->GroupIds) as $cur_group_id) {
             $sql = 'SELECT * FROM `' . WB_TABLE_PREFIX . 'groups` WHERE `group_id`=\'' . $cur_group_id . '\'';
-            echo "<br>$sql<br>";
+            //echo "<br>$sql<br>";
             $results = $this->Database->query($sql);
 
             $results_array = $results->fetchRow();

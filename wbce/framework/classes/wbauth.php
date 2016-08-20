@@ -29,6 +29,7 @@ class WbAuth  {
         
         // username may only be lowercase.. html chars dont belong here 
         $uUser = $this->get_post($username_fieldname);
+        $uUser = $this->CleanUser($uUser);
 
         $sPassword = $this->get_post($password_fieldname);
         
@@ -53,7 +54,7 @@ class WbAuth  {
         // Authentication successfull so :
         
         // get access rights for the user 
-        echo  $oUser->FetchGroupInfo();
+        $oUser->FetchGroupInfo();
 
         // store necessary userdata to session
         $oUser->StoreToSession();
@@ -100,18 +101,18 @@ class WbAuth  {
         }
     
         // test for old  MD5 password
-        if ($oUser->password=md5($sPassword)) {
+        if ($oUser->Password=md5($sPassword)) {
             // try to rehash 
-            $oUser->password=self::Hash($sPassword);
+            $oUser->Password=self::Hash($sPassword);
             //save user to db
             $oUser->Save();
            
             return $oUser;
         }
         // test for modern password
-        if (function_exists('password_verify') AND password_verify ( $sPassword , $oUser->password )){
+        if (function_exists('password_verify') AND password_verify ( $sPassword , $oUser->Password )){
             // try to rehash maybe some stronger Algo available 
-            $oUser->password=self::Hash($sPassword);
+            $oUser->Password=self::Hash($sPassword);
             //save user to db
             $oUser->Save();
             
@@ -145,7 +146,7 @@ class WbAuth  {
             return md5($sPassword);
         }
         
-        return password_hash($sPassword) ;
+        return password_hash($sPassword, PASSWORD_DEFAULT) ;
     }
     
     
@@ -164,7 +165,7 @@ class WbAuth  {
         if ( !$sbUserOk) return "Invalid User";
         
         $sPassword=self::GenerateRandomPassword();
-        $oUser->password=self::Hash($sPassword);
+        $oUser->Password=self::Hash($sPassword);
         //save user to db
         $oUser->Save();
         
@@ -243,6 +244,19 @@ class WbAuth  {
         return $sPassword;
     }
 
-
+//////////////////////////
+// Helper functions
+/////////////////////////
+    
+    
+    /**
+        @brief the username does not need html tags , is all lowercase and specialchars are convertet to entities
+    */
+    private function CleanUser($sUserName) {
+       $sUserName= strip_tags($sUserName);
+       $sUserName= htmlspecialchars($sUserName);
+       $sUserName= strtolower($sUserName);  
+    }
+    
 }
 
