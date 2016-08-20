@@ -72,17 +72,10 @@ if(ENABLED_CAPTCHA) {
 if(isset($_SESSION['captcha'])) { unset($_SESSION['captcha']); }
 
 // Generate a random password then update the database with it
-$new_pass = '';
-$salt = "abchefghjkmnpqrstuvwxyz0123456789";
-srand((double)microtime()*1000000);
-$i = 0;
-while ($i <= 7) {
-	$num = rand() % 33;
-	$tmp = substr($salt, $num, 1);
-	$new_pass = $new_pass . $tmp;
-	$i++;
-}
-$md5_password = md5($new_pass);
+$new_pass = WbAuth::GenerateRandomPassword();
+
+// hash it 
+$md5_password = WbAuth::Hash();
 
 // Check if username already exists
 $sql = 'SELECT `user_id` FROM `'.TABLE_PREFIX.'users` WHERE `username` = \''.$username.'\'';
@@ -101,9 +94,6 @@ if($results->numRows() > 0) {
 		$wb->print_error($MESSAGE['USERS_INVALID_EMAIL'], $js_back, false);
 	}
 }
-
-// MD5 supplied password
-$md5_password = md5($new_pass);
 
 // Inser the user into the database
 $sql = '';

@@ -31,14 +31,12 @@ if (!$wb->checkFTAN()) {
 	$sNewPassword = is_null($sNewPassword) ? '' : $sNewPassword;
 	$sNewPasswordRetyped = $wb->get_post('new_password2');
 	$sNewPasswordRetyped= is_null($sNewPasswordRetyped) ? '' : $sNewPasswordRetyped;
-// Check existing password
-	$sql  = 'SELECT `password` ';
-	$sql .= 'FROM `'.TABLE_PREFIX.'users` ';
-	$sql .= 'WHERE `user_id` = '.$wb->get_user_id();
+
 // Validate values
-	if (md5($sCurrentPassword) != $database->get_one($sql)) {
-		$error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
-	}else {
+    if(false!==WbAuth::CheckUser ($sCurrentPassword, $wb->get_user_id()){
+            $error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
+    }
+	else {
 		if(strlen($sNewPassword) < $iMinPassLength) {
 			$error[] = $MESSAGE['USERS_PASSWORD_TOO_SHORT'];
 		}else {
@@ -50,7 +48,7 @@ if (!$wb->checkFTAN()) {
 					$error[] = $MESSAGE['PREFERENCES_INVALID_CHARS'];
 				}else {
 // generate new password hash
-					$sPwHashNew = md5($sNewPassword);
+					$sPwHashNew = WBAuth::Hash($sNewPassword);
 // Update the database
 					$sql  = 'UPDATE `'.TABLE_PREFIX.'users` ';
 					$sql .= 'SET `password`=\''.$sPwHashNew.'\' ';

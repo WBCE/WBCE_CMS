@@ -43,13 +43,11 @@ if(isset($_POST['email']) && $_POST['email'] != "" )
 			// Tell the user that their password cannot be reset more than once per hour
 				$errMsg = $MESSAGE['FORGOT_PASS_ALREADY_RESET'];
 			} else {
-				require_once(WB_PATH.'/framework/PasswordHash.php');
-				$pwh = new PasswordHash(0, true);
 				$old_pass = $results_array['password'];
 			// Generate a random password then update the database with it
-				$new_pass = $pwh->NewPassword();
+				$new_pass = WbAuth::GenerateRandomPassword();
 				$sql = 'UPDATE `'.TABLE_PREFIX.'users` '.
-				       'SET `password`=\''.$pwh->HashPassword($new_pass, true).'\', '.
+				       'SET `password`=\''.WbAuth::Hash($new_pass).'\', '.
 				           '`last_reset`='.time().' '.
 				       'WHERE `user_id`='.(int)$results_array['user_id'];
 				unset($pwh); // destroy $pwh-Object
