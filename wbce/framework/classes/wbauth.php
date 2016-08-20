@@ -157,19 +157,19 @@ class WbAuth  {
         Uses the random password creator , GenerateRandomPassword() 
 
     @param undefined $uUser The user to generate a temp password for (You may use name, ID or email.)  
-    @retval boolean/string Returns false on success, and an error message on failure.          
+    @retval boolean/string Returns false on failure, and the password on succcess.          
 */    
    public static function GenerateTempPassword ($uUser){
         $oUser = new WbUser();
         $sbUserOk = $oUser->LoadUser($uUser);
-        if ( !$sbUserOk) return "Invalid User";
+        if ( !$sbUserOk) return false;
         
         $sPassword=self::GenerateRandomPassword();
         $oUser->Password=self::Hash($sPassword);
         //save user to db
         $oUser->Save();
         
-        return false;     
+        return $sPassword;     
     }
     
     
