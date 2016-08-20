@@ -221,6 +221,8 @@ $filesRemove['1'] = array(
 $filesRemove['2'] = array(
 
     '[FRAMEWORK]/SecureForm.mtab.php',
+    '[FRAMEWORK]/PasswordHash.php',
+    '[FRAMEWORK]/classes/PasswordHash.php',
     '[MODULES]/SecureFormSwitcher/FTAN_SUPPORTED',
     '[MODULES]/SecureFormSwitcher/files/SecureForm.mtab.php',
     '[MODULES]/SecureFormSwitcher/htt/help.png',
