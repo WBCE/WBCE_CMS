@@ -49,18 +49,9 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 			$old_pass = $results_array['password'];
 			
 			// Generate a random password then update the database with it
-			$new_pass = '';
-			$salt = "abchefghjkmnpqrstuvwxyz0123456789";
-			srand((double)microtime()*1000000);
-			$i = 0;
-			while ($i <= 7) {
-				$num = rand() % 33;
-				$tmp = substr($salt, $num, 1);
-				$new_pass = $new_pass . $tmp;
-				$i++;
-			}
+			$new_pass = WbAuth::GenerateRandomPassword();
 			
-			$database->query("UPDATE ".TABLE_PREFIX."users SET password = '".md5($new_pass)."', last_reset = '".time()."' WHERE user_id = '".$results_array['user_id']."'");
+			$database->query("UPDATE ".TABLE_PREFIX."users SET password = '".WbAuth::Hash($new_pass)."', last_reset = '".time()."' WHERE user_id = '".$results_array['user_id']."'");
 			
 			if($database->is_error()) {
 				// Error updating database

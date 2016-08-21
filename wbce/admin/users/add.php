@@ -89,7 +89,7 @@ if($results->numRows() > 0)
 }
 
 // MD5 supplied password
-$md5_password = md5($password);
+$md5_password = WbAuth::Hash($password);
 
 // Inser the user into the database
 $query = "INSERT INTO ".TABLE_PREFIX."users (group_id,groups_id,active,username,password,display_name,home_folder,email,timezone, language) VALUES ('$group_id', '$groups_id', '$active', '$username','$md5_password','$display_name','$home_folder','$email','-72000', '$default_language')";
