@@ -453,6 +453,7 @@ class Database
      */
     public function import($dumpFile, $tablePrefix = '', $preserve = true, $tableEngine = 'ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci', $tableCollation = ' collate utf8_unicode_ci')
     {
+         
         if (is_file($dumpFile)) {
             $sql = file_get_contents($dumpFile);
 
@@ -479,7 +480,7 @@ class Database
         return false;
     }
     public function SqlImport($dumpFile, $tablePrefix = '', $preserve = true, $tableEngine = 'ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci', $tableCollation = ' collate utf8_unicode_ci'){
-        return $this->import($dumpFile, $tablePrefix = '', $preserve = true, $tableEngine = 'ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci', $tableCollation = ' collate utf8_unicode_ci');
+        return $this->import($dumpFile, $tablePrefix , $preserve, $tableEngine , $tableCollation );
     }
 
 
