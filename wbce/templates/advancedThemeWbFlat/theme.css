@@ -2179,7 +2179,7 @@ div.themebox#module_settings .tb_header a:before {
 
 div.themebox#module_admintools .tb_header a:before,
 div.themebox.admintools_tool .tb_header a:before {
-    content: "";
+    content: "";
 }
 
 div.themebox#module_access .tb_header a:before {
