@@ -76,17 +76,11 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (38, 'wbmailer_smtp_username', ''),
 (39, 'wbmailer_smtp_password', ''),
 (40, 'fingerprint_with_ip_octets', '0'),
-(42, 'wb_secform_secret', '5609bnefg93jmgi99igjefg');
-(43, 'wb_secform_secrettime', '86400');
-(44, 'wb_secform_timeout', '7200');
-(45, 'wb_secform_tokenname', 'formtoken');
-(46, 'wb_secform_usefp', false);
+(42, 'wb_secform_secret', '5609bnefg93jmgi99igjefg'),
+(43, 'wb_secform_secrettime', '86400'),
+(44, 'wb_secform_timeout', '7200'),
+(45, 'wb_secform_tokenname', 'formtoken'),
+(46, 'wb_secform_usefp', false),
 (47, 'fingerprint_with_ip_octet', '2');
--- (48, '', '');
--- (49, '', '');
--- (50, '', '');
--- (51, '', '');
--- (52, '', '');
-
 
 
