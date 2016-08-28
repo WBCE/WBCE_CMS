@@ -324,7 +324,7 @@ if (!file_exists(WB_PATH . '/framework/class.database.php')) {
 include WB_PATH . '/framework/class.database.php';
 try {
     if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-    $database = new \Persistence\Database();
+		$database = new \Persistence\Database();
     } else {
         $database = new database();
     }
@@ -340,54 +340,66 @@ if (!defined('WB_INSTALL_PROCESS')) {
 /*****************************
 Begin Create Database Tables
  *****************************/
-$sInstallDir = dirname(__FILE__);
-if (is_readable($sInstallDir . '/install_struct.sql')) {
-    if (!$database->SqlImport($sInstallDir . '/install_struct.sql', TABLE_PREFIX, false)) {
-        set_error('unable to import \'install/install_struct.sql\'');
-    }
-} else {
-    set_error('unable to read file \'install/install_struct.sql\'');
+$aSqlFiles = array(
+	'install_struct.sql', 
+	'install_data.sql'
+);
+foreach ($aSqlFiles as $sFileName){ 
+	$sFile = dirname(__FILE__).'/'.$sFileName;
+	$bPreserve = ($sFileName == "install_struct.sql") ? false : true;
+	if (is_readable($sFile)) {
+		if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve, $bPreserve)) {
+			set_error("unable to read import 'install/".$sFileName."'");
+		}
+	} else {
+		if(file_exists($sFile)){
+			set_error("unable to read file 'install/".$sFileName."'");
+		}else{
+			set_error("file 'install/".$sFileName."' doesn't exist!");
+		}
+	}
 }
-if (is_readable($sInstallDir . '/install_data.sql')) {
-    if (!$database->SqlImport($sInstallDir . '/install_data.sql', TABLE_PREFIX)) {
-        set_error('unable to import \'install/install_data.sql\'');
-    }
-} else {
-    set_error('unable to read file \'install/install_data.sql\'');
+
+// add settings from install input
+$aSettings = array( 
+	'wbce_version'     => WBCE_VERSION, 
+	'wbce_tag'         => WBCE_TAG, 
+	'wb_version'       => VERSION,   // Legacy: WB-Classic
+	'wb_revision'      => REVISION,  // Legacy: WB-Classic
+	'wb_sp'            => SP,        // Legacy: WB-Classic
+	'website_title'    => $website_title, 
+	'default_language' => $default_language, 
+	'app_name'         => 'wb-'.$session_rand, 
+	'default_timezone' => $default_timezone, 
+	'operating_system' => $operating_system, 
+	'string_file_mode' => $file_mode, 
+	'string_dir_mode'  => $dir_mode, 
+	'server_email'     => $admin_email
+);
+
+require_once WB_PATH.'/framework/classes/class.settings.php';
+foreach($aSettings as $name=>$value){	
+	Settings::Set($name, $value);
 }
-$sql = // add settings from install input
-'INSERT INTO `' . TABLE_PREFIX . 'settings` (`name`, `value`) VALUES '
-. '(\'wbce_version\', \'' . WBCE_VERSION . '\'),'
-. '(\'wbce_tag\', \'' . WBCE_TAG . '\'),'
-. '(\'wb_version\', \'' . VERSION . '\'),'    // Legacy: WB-Classic
- . '(\'wb_revision\', \'' . REVISION . '\'),' // Legacy: WB-Classic
- . '(\'wb_sp\', \'' . SP . '\'),'             // Legacy: WB-Classic
- . '(\'website_title\', \'' . $website_title . '\'),'
-. '(\'default_language\', \'' . $default_language . '\'),'
-. '(\'app_name\', \'wb-' . $session_rand . '\'),'
-. '(\'default_timezone\', \'' . $default_timezone . '\'),'
-. '(\'operating_system\', \'' . $operating_system . '\'),'
-. '(\'string_file_mode\', \'' . $file_mode . '\'),'
-. '(\'string_dir_mode\', \'' . $dir_mode . '\'),'
-. '(\'server_email\', \'' . $admin_email . '\')';
-if (!($database->query($sql))) {
-    set_error('unable to write \'install presets\' into table \'settings\'');
-}
-$sql = // add the Admin user
-'INSERT INTO `' . TABLE_PREFIX . 'users` '
-. 'SET `user_id`=1, '
-. '`group_id`=1, '
-. '`groups_id`=\'1\', '
-. '`active`=\'1\', '
-. '`username`=\'' . $admin_username . '\', '
-. '`language`=\'' . $default_language . '\', '
-. '`password`=\'' . md5($admin_password) . '\', '
-. '`email`=\'' . $admin_email . '\', '
-. '`timezone`=\'' . $default_timezone . '\', '
-. '`display_name`=\'Administrator\'';
-if (!($database->query($sql))) {
+
+// add the Admin user
+$aAdminUser = array(
+	'user_id'      => 1,
+	'group_id'     => 1, 
+	'groups_id'    => '1', 
+	'active'       => '1', 
+	'username'     => $admin_username, 
+	'language'     => $default_language, 
+	'password'     => md5($admin_password), 
+	'email'        => $admin_email, 
+	'timezone'     => $default_timezone, 
+	'display_name' => 'Administrator'
+);
+
+if (!($database->insertRow('{TP}users', $aAdminUser))) {
     set_error('unable to write Administrator account into table \'users\'');
 }
+
 /**********************
 END OF TABLES IMPORT
  **********************/
