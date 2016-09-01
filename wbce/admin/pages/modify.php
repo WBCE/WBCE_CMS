@@ -154,6 +154,9 @@ if($query_sections->numRows() > 0)
             {
                 print /* '<a name="'.$section_id.'"></a>'. */"\n";
                 // output block name if blocks are enabled
+                
+                echo '<div class="module-wrapper">';
+                
                 if (SECTION_BLOCKS) {
                     if (isset($block[$section['block']]) && trim(strip_tags(($block[$section['block']]))) != '')
                     {
@@ -170,13 +173,15 @@ if($query_sections->numRows() > 0)
                     $sec_anchor = (defined( 'SEC_ANCHOR' ) && ( SEC_ANCHOR != '' )  ? 'id="'.SEC_ANCHOR.$section['section_id'].'"' : '');
                     $sSectionInfoLine = '<div class="section-info" '.$sec_anchor.' ><b>'.$TEXT['BLOCK']
                                       . ': </b>'.$block_name.' ('.$section['block'].') <b> Modul: </b>'
-                                      . $section['module'].'<b>  ID: </b>'.$section_id.'<b>  Name: </b>' . $section['namesection'].'</div>'.PHP_EOL;
+                                      . $section['module'].'<b>  ID: </b>'.$section_id.($section['namesection'] ? '  <b>Name: </b>' . $section['namesection'] : '').'</div>'.PHP_EOL;
                     echo $sSectionInfoLine;
 
 
                 }
                 
                 require(WB_PATH.'/modules/'.$module.'/modify.php');
+                
+                echo '</div>';
             }
         }
     }
