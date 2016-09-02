@@ -13,6 +13,9 @@
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
+// Hey we are on a frontend Page
+if (!defined('WB_FRONTEND')) define('WB_FRONTEND', true);
+
 
 // compatibility mode for versions before 2.8.1
 /*if (isset($wb)) {$admin = $wb;}
