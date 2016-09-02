@@ -19,6 +19,9 @@ $starttime = array_sum(explode(" ", microtime()));
 // Set debug mode (old and deprecated new WB_DEBUG is set in config or initialize.php)
 define('DEBUG', false);
 
+// Hey we are on a frontend Page
+if (!defined('WB_FRONTEND')) define('WB_FRONTEND', true);
+
 // Include config file
 // Config file includes /framework/initialize.php as there are many 
 // scripts that wont go via the index.php we cannot change this right now.
