@@ -13,7 +13,7 @@
 $module_directory = 'date_time_picker';
 $module_name = 'Date and Time Picker';
 $module_function = 'initialize';
-$module_version = '1.0.0-alpha.1';
+$module_version = '1.0.0-beta.2';
 $module_platform = '1.2.0';
 $module_author = 'Christian M. Stefan(Classfile), Norbert Heimsath (Module), Kartik Visweswaran (Javascript) ';
 $module_license = 'MIT-License for Daatetimepicker Javascript, GPL v2 for Module';
