@@ -295,6 +295,57 @@ class wb extends SecureForm
         return (isset($_SESSION['USE_DEFAULT_TIMEZONE']) ? '-72000' : $_SESSION['TIMEZONE']);
     }
 
+        // Return a system permission
+    public function get_permission($name, $type = 'system')
+    {
+        // Append to permission type
+        $type .= '_permissions';
+        // Check if we have a section to check for
+        if ($name == 'start') {
+            return true;
+        } else {
+            // Set system permissions var
+            $system_permissions = $this->get_session('SYSTEM_PERMISSIONS');
+            // Set module permissions var
+            $module_permissions = $this->get_session('MODULE_PERMISSIONS');
+            // Set template permissions var
+            $template_permissions = $this->get_session('TEMPLATE_PERMISSIONS');
+            // Return true if system perm = 1
+            if (isset($$type) && is_array($$type) && is_numeric(array_search($name, $$type))) {
+                if ($type == 'system_permissions') {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                if ($type == 'system_permissions') {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+    }
+
+    public function get_user_details($user_id)
+    {
+        global $database;
+        $retval = array('username' => 'unknown', 'display_name' => 'Unknown', 'email' => '');
+        $sql = 'SELECT `username`,`display_name`,`email` ';
+        $sql .= 'FROM `' . TABLE_PREFIX . 'users` ';
+        $sql .= 'WHERE `user_id`=' . (int) $user_id;
+        if (($resUsers = $database->query($sql))) {
+            if (($recUser = $resUsers->fetchRow(MYSQLI_ASSOC))) {
+                $retval = $recUser;
+            }
+        }
+        return $retval;
+    }
+
+
+
+
+
     // Validate supplied email address
     public function validate_email($email)
     {
