@@ -8,6 +8,7 @@
 
 <head>
     <title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title>
+    [[Title]]
 
     <meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
     <meta name="description" content="{TEXT_ADMINISTRATION}" />
@@ -15,8 +16,12 @@
     <meta name="author" content="WBCE" />
     <meta http-equiv="Content-Encoding" content="gzip" />
     <meta http-equiv="Accept-Encoding" content="gzip, deflate" />
+    [[Metas]]
+
 
     <link href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+
+    [[Css]]
 
     <!-- include styles -->
     <link href="{THEME_URL}/former-css.css" rel="stylesheet" type="text/css" />
@@ -33,6 +38,8 @@
     var THEME_URL = '{THEME_URL}';
     var ADMIN_URL = '{ADMIN_URL}';
     </script>
+
+    [[Js?pos=HeadTop]]
 
     <!-- jQuery-Scripte from original theme -->
     <script src="{WB_URL}/include/jquery/jquery-min.js" type="text/javascript"></script>
@@ -64,8 +71,12 @@
     <!-- additional calls and scripts -->
     <script src="{THEME_URL}/jquery_added/jqTemplateActions.js" type="text/javascript"></script>
 
+
+    [[Js?pos=HeadLow]]
 </head>
 <body>
+    [[Js?pos=BodyTop]]
+    [[Html?pos=BodyTop]]
     <div class='container'>
         <div id="headerarea" class="clearfix">
             <div id="branding">

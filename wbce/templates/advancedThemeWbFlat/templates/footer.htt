@@ -33,9 +33,9 @@
     </div><!-- ##### ENDE toggleboxarea ################################# -->
     
 
-
+[[Html?pos=BodyLow]]
 {BACKEND_BODY_MODULE_JS}
-
+[[Js?pos=BodyLow]]
 </body>
 </html>
 <!-- END footer_block -->

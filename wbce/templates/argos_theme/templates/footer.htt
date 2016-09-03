@@ -17,7 +17,9 @@
         Admin theme v1.8.5
     </div> 
 </div>
+[[Html?pos=BodyLow]]
 {BACKEND_BODY_MODULE_JS}
+[[Js?pos=BodyLow]]
 </body>
 </html>
 <!-- END footer_block -->
