@@ -33,6 +33,11 @@ if ($wb_inst->is_authenticated()==false) {
 	header('Location: '.WB_URL.'/account/login.php');
 	exit(0);
 }
+if ($wb_inst->get_permission("preferences", 'system') === false) {
+    header('Location: '.WB_URL.'/index.php');
+    exit(0);
+}
+
 
 $page_id = !empty($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0;
 
