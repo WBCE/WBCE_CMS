@@ -36,8 +36,13 @@ class WbGroup{
 
     public function Load ($iGroupId=false){
         
+        global $TEXT,$MESSAGE
+        
         // if we dont ave an Id set whith the functioncall look if we got an ID in the class. 
         if ($iGroupId===false and $this->iId!==NULL) $iGroupId=$this->iId;
+        
+        // still nothing selected 
+        if (!$iGroupId) return "WbGroup::Load: {$MESSAGE['USERS_NO_GROUP']}";
         
         // DB security :-)
         $iGroupId=(int)$iGroupId;
@@ -52,25 +57,36 @@ class WbGroup{
             return $this->FetchResult($hResult); 
         
         if ($NumRows !=1)
-            return "WbGroup::Load: ID $iGroupId not found/n";        
+            return "WbGroup::Load: $iGroupId {$TEXT['NOT_FOUND']}";        
     
     }
 
     public function Save (){
     
+        global $MESSAGE
+    
         if ($this->sName=="") 
-            return "Save: You need to set a name before saving";
-            
+            return "WbGroup::Save: {$MESSAGE['GROUPS_GROUP_NAME_BLANK']}";
+        
+        // already existing group ??
         if ($this->iId!==NULL) {
             $this->iId=(int)$this->iId;
             $sql="DELETE FROM `" . WB_TABLE_PREFIX . "groups` WHERE `group_id` = {$this->iId}";
+            
+            // do query and return array if we encounter some trouble 
+            $this->Database->query($sql); 
+            if ($this->Database->is_error()) return "WbGroup::Save : ".$this->Database->get_error(); 
+        }
+        // going to create a new group 
+        else {
+            $count = 0;
+            
+            $sql="SELECT COUNT(name) FROM `" . WB_TABLE_PREFIX . "groups` WHERE `name` = {$this->iName}";
+            $count = $count + $database->get_one($sql);
+
+            if ($count > 0) return "WbGroup::Save : ".$MESSAGE['GROUPS_GROUP_NAME_EXISTS'];   
         }
       
-        // do query and return array if we encounter some trouble 
-        $this->Database->query($sql); 
-        if ($this->Database->is_error()) return "WbGroup::Save : ".$this->Database->get_error(); 
-
-        
         // now insert again 
         $sql  = "INSERT INTO `" . WB_TABLE_PREFIX . "groups` ";
         $sql .= " 
@@ -79,7 +95,7 @@ class WbGroup{
         ";
         
        //echo "$sql<br>";
-       // do query and return array if we encounter some trouble 
+       // do query and return error if we encounter some trouble 
        $this->Database->query($sql); 
        if ($this->Database->is_error()) return "WbGroup::Save: ".$this->Database->get_error(); 
        
@@ -91,7 +107,9 @@ class WbGroup{
     } 
     
     public function AddPermission ($sPermission, $sType){
-        $sType= "s{$sType}SystemPermissions";
+        // just a little Error corection
+        $sType= ucfirst(trim($sType));        
+        $sType= "s{$sType}Permissions";
         if (empty($this->$sType ) ) {
             $this->$sType=$sPermission;
             return false;
@@ -107,7 +125,7 @@ class WbGroup{
     } 
     
     public function DelPermission ($sPermission, $sType){
-        $sType= "s{$sType}SystemPermissions";
+        $sType= "s{$sType}Permissions";
         if (empty($this->$sType ) ) {
             // All empty, all ok! 
             return false;
@@ -125,7 +143,7 @@ class WbGroup{
     public function List ($bNoAdmin=true) {
         $aGroupList=array();
         
-        $sql  = "Select group_id,name FROM `" . WB_TABLE_PREFIX . "groups` ";
+        $sql  = "SELECT group_id,name FROM `" . WB_TABLE_PREFIX . "groups` ";
         if  ($bNoAdmin) $sql .= " WHERE group_id !='1' ";
         $hResult=$this->Database->query($sql);
         $iNumRows = $hResult->numRows();
@@ -139,7 +157,41 @@ class WbGroup{
         return $aGroupList;
     }
     
-    
+    public function Delete ($iGroupId=false) {
+        global $MESSAGE;
+        
+        // if we dont ave an Id set whith the functioncall look if we got an ID in the class. 
+        if ($iGroupId===false and $this->iId!==NULL) $iGroupId=$this->iId;
+        
+        $iGroupId=(int)$iGroupId;
+        
+        // Still nothing set or set 0 
+        if (!$iGroupId) return "WbGroup::Delete: No GroupID set!\n";
+        
+        // count group members
+        $count = 0;
+        
+        // the check for group_id field is only for old broken entries
+        $sql = 'SELECT COUNT(*) FROM `' . TABLE_PREFIX . 'users` WHERE groups_id ="' . $iGroupId . '"
+                                                                      OR group_id ="' . $iGroupId . '"
+                                                                      OR groups_id LIKE "' . $iGroupId . ',%"
+                                                                      OR groups_id LIKE "%,' . $iGroupId . '"
+                                                                      OR groups_id LIKE "%,' . $iGroupId . ',%"  ';
+        // we got more than one , thats bad
+        $count = $count + $database->get_one($sql);
+        if ($count > 0) {
+            return "WbGroup::Delete: {$MESSAGE['GROUP_HAS_MEMBERS']}\n";
+        }
+        
+        
+        $sql="DELETE FROM `" . WB_TABLE_PREFIX . "groups` WHERE `group_id` = {$iGroupId}";
+       
+        // do query and return error if we encounter some trouble 
+        $this->Database->query($sql); 
+        if ($this->Database->is_error()) return "WbGroup::Delete, DB error : ".$this->Database->get_error();
+        
+        return false;
+    }
     
     /**
     @brief Sorts the Group result into this object data structure.  
