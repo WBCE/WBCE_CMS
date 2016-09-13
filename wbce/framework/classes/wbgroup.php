@@ -1,5 +1,10 @@
 <?php
+/**
+    @file 
+    @brief  
+    
 
+*/
 
 
 
@@ -36,10 +41,10 @@ class WbGroup{
 
     public function Load ($iGroupId=false){
         
-        global $TEXT,$MESSAGE
+        global $TEXT,$MESSAGE;
         
-        // if we dont ave an Id set whith the functioncall look if we got an ID in the class. 
-        if ($iGroupId===false and $this->iId!==NULL) $iGroupId=$this->iId;
+        // if we dont ave an Id set whith the function call look if we got an ID in the class. 
+        if ($iGroupId===false AND $this->iId!==NULL) $iGroupId=$this->iId;
         
         // still nothing selected 
         if (!$iGroupId) return "WbGroup::Load: {$MESSAGE['USERS_NO_GROUP']}";
@@ -63,10 +68,10 @@ class WbGroup{
 
     public function Save (){
     
-        global $MESSAGE
+        global $MESSAGE;
     
         if ($this->sName=="") 
-            return "WbGroup::Save: {$MESSAGE['GROUPS_GROUP_NAME_BLANK']}";
+            return "WbGroup::Save 1: {$MESSAGE['GROUPS_GROUP_NAME_BLANK']}";
         
         // already existing group ??
         if ($this->iId!==NULL) {
@@ -75,38 +80,39 @@ class WbGroup{
             
             // do query and return array if we encounter some trouble 
             $this->Database->query($sql); 
-            if ($this->Database->is_error()) return "WbGroup::Save : ".$this->Database->get_error(); 
+            if ($this->Database->is_error()) return "WbGroup::Save 2: ".$this->Database->get_error(); 
         }
         // going to create a new group 
         else {
             $count = 0;
             
-            $sql="SELECT COUNT(name) FROM `" . WB_TABLE_PREFIX . "groups` WHERE `name` = {$this->iName}";
-            $count = $count + $database->get_one($sql);
+            $sql="SELECT COUNT(name) FROM `" . WB_TABLE_PREFIX . "groups` WHERE name = '{$this->sName}'";
+            $count = $count + $this->Database->get_one($sql);
 
-            if ($count > 0) return "WbGroup::Save : ".$MESSAGE['GROUPS_GROUP_NAME_EXISTS'];   
+            if ($count > 0) return "WbGroup::Save 3: ".$MESSAGE['GROUPS_GROUP_NAME_EXISTS'];   
         }
       
         // now insert again 
         $sql  = "INSERT INTO `" . WB_TABLE_PREFIX . "groups` ";
         $sql .= " 
                    ( `group_id`,     `name`,          `system_permissions`,          `module_permissions`,          `template_permissions`     )
-            VALUES ('{$this->iId}', '{$this->Name}', '{$this->sSystemPermissions}', '{$this->sModulePermissions}', '{$this->sTemplatePermissions}' )    
+            VALUES ('{$this->iId}', '{$this->sName}', '{$this->sSystemPermissions}', '{$this->sModulePermissions}', '{$this->sTemplatePermissions}' )    
         ";
         
-       //echo "$sql<br>";
+       echo "$sql<br>";
        // do query and return error if we encounter some trouble 
+       
        $this->Database->query($sql); 
-       if ($this->Database->is_error()) return "WbGroup::Save: ".$this->Database->get_error(); 
+       if ($this->Database->is_error()) return "WbGroup::Save 4: ".$this->Database->get_error(); 
        
        // Set uid if this was a new entry so object remain consistent
-       if ($this->UserId!==NULL) 
-            $this->UserId = $this->Database->getLastInsertId();
+       if ($this->iId!==NULL) 
+            $this->iId = $this->Database->getLastInsertId();
        
        return false;
     } 
     
-    public function AddPermission ($sPermission, $sType){
+    public function AddPermission ($sType, $sPermission){
         // just a little Error corection
         $sType= ucfirst(trim($sType));        
         $sType= "s{$sType}Permissions";
@@ -120,11 +126,13 @@ class WbGroup{
         // Add the element
         $aPermissions[]=$sPermission;
         
+        $aPermissions=array_unique($aPermissions);
+        
         $this->$sType=implode(",", $aPermissions); 
         return false;
     } 
     
-    public function DelPermission ($sPermission, $sType){
+    public function DelPermission ($sType, $sPermission){
         $sType= "s{$sType}Permissions";
         if (empty($this->$sType ) ) {
             // All empty, all ok! 
@@ -140,7 +148,7 @@ class WbGroup{
         return false;
     } 
 
-    public function List ($bNoAdmin=true) {
+    public function DoList ($bNoAdmin=true) {
         $aGroupList=array();
         
         $sql  = "SELECT group_id,name FROM `" . WB_TABLE_PREFIX . "groups` ";
@@ -150,7 +158,7 @@ class WbGroup{
         
         // found some Groups
         if ($iNumRows > 0) {
-            while ($aRow=$hResult->fetch_assoc()){
+            while ($aRow=$hResult->fetchRow()){
                 $aGroupList[$aRow['group_id']]= $aRow['name'];
             }
         }
@@ -178,7 +186,7 @@ class WbGroup{
                                                                       OR groups_id LIKE "%,' . $iGroupId . '"
                                                                       OR groups_id LIKE "%,' . $iGroupId . ',%"  ';
         // we got more than one , thats bad
-        $count = $count + $database->get_one($sql);
+        $count = $count + $this->Database->get_one($sql);
         if ($count > 0) {
             return "WbGroup::Delete: {$MESSAGE['GROUP_HAS_MEMBERS']}\n";
         }
@@ -205,7 +213,7 @@ class WbGroup{
     private function   FetchResult($hResult){
         // resultat holen
         $oRow = $hResult->fetchRow();
-       //echo "<pre>"; var_dump($Row); echo "</pre>";
+       //echo "<pre>"; var_dump($oRow); echo "</pre>";
         $this->iId=$oRow['group_id'];
         $this->sName=$oRow['name'];
         $this->sSystemPermissions=$oRow['system_permissions'];
