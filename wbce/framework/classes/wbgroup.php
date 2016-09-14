@@ -52,7 +52,7 @@ class WbGroup{
         // DB security :-)
         $iGroupId=(int)$iGroupId;
     
-        $sql  = "SELECT * FROM " . WB_TABLE_PREFIX . "groups ";
+        $sql  = "SELECT * FROM {TP}groups ";
         $sql .= "WHERE group_id='" . $iGroupId . "' ";
          
         $hResult = $this->Database->query($sql);
@@ -69,10 +69,10 @@ class WbGroup{
     public function Save (){
     
         global $MESSAGE;
-    
+
         if ($this->sName=="") 
             return "WbGroup::Save 1: {$MESSAGE['GROUPS_GROUP_NAME_BLANK']}";
-        
+
         // already existing group ??
         if ($this->iId!==NULL) {
             $this->iId=(int)$this->iId;
@@ -86,30 +86,33 @@ class WbGroup{
         else {
             $count = 0;
             
-            $sql="SELECT COUNT(name) FROM `" . WB_TABLE_PREFIX . "groups` WHERE name = '{$this->sName}'";
+            $sql="SELECT COUNT(name) FROM `{TP}groups` WHERE name = '{$this->sName}'";
             $count = $count + $this->Database->get_one($sql);
 
             if ($count > 0) return "WbGroup::Save 3: ".$MESSAGE['GROUPS_GROUP_NAME_EXISTS'];   
         }
-      
-        // now insert again 
-        $sql  = "INSERT INTO `" . WB_TABLE_PREFIX . "groups` ";
-        $sql .= " 
-                   ( `group_id`,     `name`,          `system_permissions`,          `module_permissions`,          `template_permissions`     )
-            VALUES ('{$this->iId}', '{$this->sName}', '{$this->sSystemPermissions}', '{$this->sModulePermissions}', '{$this->sTemplatePermissions}' )    
-        ";
+
+        // now insert again as this is basically a manual Mysql REPLACE
+        $aArray=array(
+            'group_id' => $this->iId,     
+            'name' =>$this->Name,          
+            'system_permissions' =>$this->sSystemPermissions,           
+            'module_permissions' =>$this->sModulePermissions,            
+            'template_permissions' =>$this->sTemplatePermissions
+        );
+
+        //echo "<pre>"; print_r ($sql); echo "</pre>";
         
-       echo "$sql<br>";
-       // do query and return error if we encounter some trouble 
-       
-       $this->Database->query($sql); 
-       if ($this->Database->is_error()) return "WbGroup::Save 4: ".$this->Database->get_error(); 
-       
-       // Set uid if this was a new entry so object remain consistent
-       if ($this->iId!==NULL) 
+        // do query and return error if we encounter some trouble 
+        $this->Database->insertRow('{TP}groups', $aInsertArray);
+
+        if ($this->Database->is_error()) return "WbGroup::Save 4: ".$this->Database->get_error(); 
+
+        // Set uid if this was a new entry so object remain consistent
+        if ($this->iId!==NULL) 
             $this->iId = $this->Database->getLastInsertId();
-       
-       return false;
+
+        return false;
     } 
     
     public function AddPermission ($sType, $sPermission){
@@ -151,7 +154,7 @@ class WbGroup{
     public function DoList ($bNoAdmin=true) {
         $aGroupList=array();
         
-        $sql  = "SELECT group_id,name FROM `" . WB_TABLE_PREFIX . "groups` ";
+        $sql  = "SELECT group_id,name FROM `{TP}groups` ";
         if  ($bNoAdmin) $sql .= " WHERE group_id !='1' ";
         $hResult=$this->Database->query($sql);
         $iNumRows = $hResult->numRows();
@@ -180,7 +183,7 @@ class WbGroup{
         $count = 0;
         
         // the check for group_id field is only for old broken entries
-        $sql = 'SELECT COUNT(*) FROM `' . TABLE_PREFIX . 'users` WHERE groups_id ="' . $iGroupId . '"
+        $sql = 'SELECT COUNT(*) FROM `{TP}users` WHERE groups_id ="' . $iGroupId . '"
                                                                       OR group_id ="' . $iGroupId . '"
                                                                       OR groups_id LIKE "' . $iGroupId . ',%"
                                                                       OR groups_id LIKE "%,' . $iGroupId . '"
