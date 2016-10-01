@@ -104,14 +104,14 @@ if($saveSettings) {
         $setError.=Settings::Set ("wb_home_folders", false);   
     }
 
-    // We set the setting
+     // We set the setting
     if ($admin->get_post("manage_sections")=="true") {
-        $setError.=Settings::Set ("manage_sections", true);
-        $setError.=Settings::Set ("wb_manage_sections", true);
+        $setError.=Settings::Set ("manage_sections", "enabled");
+        $setError.=Settings::Set ("wb_manage_sections", "enabled");
     }
     else {
-        $setError.=Settings::Set ("manage_sections", false);
-        $setError.=Settings::Set ("wb_manage_sections", false);   
+        $setError.=Settings::Set ("manage_sections", "diabled");
+        $setError.=Settings::Set ("wb_manage_sections", "disabled");   
     }
 
     // We set the setting
@@ -249,8 +249,8 @@ if($saveSettings) {
     $setError.=Settings::Set ("home_folders", true);    
     $setError.=Settings::Set ("wb_home_folders", true);    
     
-    $setError.=Settings::Set ("manage_sections", true);
-    $setError.=Settings::Set ("wb_manage_sections", true);
+    $setError.=Settings::Set ("manage_sections", "enabled");
+    $setError.=Settings::Set ("wb_manage_sections", "enabled");
     
     $setError.=Settings::Set ("section_blocks", true);
     $setError.=Settings::Set ("wb_section_blocks", true);

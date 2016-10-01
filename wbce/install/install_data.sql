@@ -58,7 +58,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (20, 'homepage_redirection', 'false'),
 (21, 'page_languages', 'true'),
 (22, 'wysiwyg_editor', 'ckeditor'),
-(23, 'manage_sections', 'true'),
+(23, 'manage_sections', 'enabled'),
 (24, 'section_blocks', 'true'),
 (25, 'smart_login', 'true'),
 (26, 'frontend_login', 'false'),
