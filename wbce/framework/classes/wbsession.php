@@ -236,7 +236,7 @@ class WbSession{
         if ($_SESSION['WBCE']['SessionStarted']=true){}
     @endcode
     
-    Returns Session Start time of false 
+    @return string/boolean  Session Start time of false. 
     
 */
     public static function  IsStarted(){
@@ -248,5 +248,46 @@ class WbSession{
         else 
             return false;
     }
+    
+/**
+     @brief Simple debug helper to show all session vars in an overview.
+
+    Just call it WbSession::Debug() and it will return an overview
+
+    @return string Returns an html Overview of aall Session Vars 
+*/    
+    public static function  Debug(){    
+        $aSession=array();
+        $aPerm=array();
+        $aGlobal=array();
+        $sOut="";
+       
+        $aSession=$_SESSION[self::$Store];
+        $aPerm=$_SESSION[self::$StorePerm];
+        $aGlobal=$_SESSION;
+        unset ($aGlobal[self::$Store]);
+        unset ($aGlobal[self::$StorePerm]);
+        
+        
+        if (!empty($aSession)){
+            $sOut="<h3>WBCE Session</h3>";
+            foreach ($aSession as $sKey=>$uValue){
+                $sOut="$sKey: $uValue<br>\n";
+            }
+        }
+        if (!empty($aPerm)){
+            $sOut="<h3>WBCE Permanent Session</h3>";
+            foreach ($aPerm as $sKey=>$uValue){
+                $sOut="$sKey: $uValue<br>\n";
+            }
+        }
+        if (!empty($aGlobal)){
+            $sOut="<h3>Global session vars</h3>";
+            foreach ($aGlobal as $sKey=>$uValue){
+                $sOut="$sKey: $uValue<br>\n";
+            }
+        }
+    }
+    
 
 }
