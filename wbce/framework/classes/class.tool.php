@@ -207,14 +207,8 @@ class Tool {
         // PHP templater like all vars in a direct manner 
         extract($VARS);
     
-        // Loading language files we start whith default EN
-        if(is_file($this->languagePath.'EN.php')) {
-            extract($this->GetLangVars($this->languagePath.'EN.php'), EXTR_OVERWRITE); 
-        }        
-        // Get actual language if exists
-        if(is_file($this->languagePath.LANGUAGE.'.php')) {
-            extract($this->GetLangVars($this->languagePath.LANGUAGE.'.php'),EXTR_OVERWRITE); 
-        } 
+        // Loading language files 
+        extract($this->GetLangVars($TEXT, $MENU, $HEADING, $MESSAGE, $OVERVIEW));
 
         // Setting the Category name for breadcrumb
         $categoryName= $HEADING['ADMINISTRATION_TOOLS'];
@@ -311,15 +305,25 @@ class Tool {
         return call_user_func('get_object_vars', $this);
     }
     /**
-        Read all public vars of this object into one array
+        Read all vars of this module language files into one array
     */
-    public function GetLangVars ($sLangFile) {
-        include($sLangFile); 
-        unset($sLangFile);
+    public function GetLangVars ($TEXT, $MENU, $HEADING, $MESSAGE, $OVERVIEW) {
+        if(is_file($this->languagePath.'EN.php'))
+            include_once($this->languagePath.'EN.php'); 
+            
+        if(is_file($this->languagePath.LANGUAGE.'.php') AND LANGUAGE != 'EN' ) 
+            include_once($this->languagePath.LANGUAGE.'.php');
+        
+        // no longer needed here , and we don't want to export em again 
+        unset($TEXT, $MENU, $HEADING, $MESSAGE, $OVERVIEW);
+
         // Collect all Vars set in the incude file 
-        $localVariables = compact(array_keys(get_defined_vars()));
-        array_merge($GLOBALS, $localVariables);
-        return $localVariables;
+        $aLocalVariables = compact(array_keys(get_defined_vars()));
+        
+        // set new globals too as some scripts want to import language files vie global. 
+        $GLOBALS += $aLocalVariables;        
+     
+        return $aLocalVariables;
     }
     
     
