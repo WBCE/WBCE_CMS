@@ -209,11 +209,11 @@ class Tool {
     
         // Loading language files we start whith default EN
         if(is_file($this->languagePath.'EN.php')) {
-            include($this->languagePath.'EN.php'); 
+            extract($this->GetLangVars($this->languagePath.'EN.php'), EXTR_OVERWRITE); 
         }        
         // Get actual language if exists
         if(is_file($this->languagePath.LANGUAGE.'.php')) {
-            include($this->languagePath.LANGUAGE.'.php'); 
+            extract($this->GetLangVars($this->languagePath.LANGUAGE.'.php'),EXTR_OVERWRITE); 
         } 
 
         // Setting the Category name for breadcrumb
@@ -310,6 +310,19 @@ class Tool {
         public function GetPubVars () {
         return call_user_func('get_object_vars', $this);
     }
+    /**
+        Read all public vars of this object into one array
+    */
+    public function GetLangVars ($sLangFile) {
+        include($sLangFile); 
+        unset($sLangFile);
+        // Collect all Vars set in the incude file 
+        $localVariables = compact(array_keys(get_defined_vars()));
+        array_merge($GLOBALS, $localVariables);
+        return $localVariables;
+    }
+    
+    
 
     
     /**
