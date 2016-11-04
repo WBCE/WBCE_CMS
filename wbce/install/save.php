@@ -27,9 +27,14 @@ if (!defined('SESSION_STARTED')) {
     define('SESSION_STARTED', true);
 }
 // get random-part for session_name()
+// Random name is for later sessions , not installer session
 list($usec, $sec) = explode(' ', microtime());
 srand((float) $sec + ((float) $usec * 100000));
 $session_rand = rand(1000, 9999);
+
+// Some default settings
+$_SESSION['message']=array();
+$_SESSION['ERROR_FIELD']=array();
 
 // Function to set error
 function set_error($message, $field_name = '')
@@ -68,15 +73,16 @@ function set_error($message, $field_name = '')
             $_SESSION['admin_repassword'] = $_POST['admin_repassword'];
         }
         // Set the message
-        $_SESSION['message'] = $message;
+        
+        $_SESSION['message'][] = $message;
+        echo "<pre>";print_r($_SESSION['message']);echo "</pre>";
         // Set the element(s) to highlight
         if ($field_name != '') {
-            $_SESSION['ERROR_FIELD'] = $field_name;
+            $_SESSION['ERROR_FIELD'][] = $field_name;
         }
+        echo "<pre>";print_r($_SESSION['ERROR_FIELD']);echo "</pre>";
         // Specify that session support is enabled
-        $_SESSION['session_support'] = '<font class="good">Enabled</font>';
-        // Redirect to first page again and exit
-        header('Location: index.php?sessions_checked=true'); exit;
+        $_SESSION['session_support'] = '<span class="good">Enabled</span>';
     }
 }
 
@@ -121,8 +127,10 @@ function add_slashes($input)
 
 // Begin check to see if form was even submitted
 // Set error if no post vars found
+$IsError=false;
 if (!isset($_POST['website_title'])) {
     set_error('e1:Please fill-in the form below');
+    $IsError=true;
 }
 // End check to see if form was even submitted
 
@@ -131,6 +139,7 @@ if (!isset($_POST['website_title'])) {
 // Check if user has entered the installation url
 if (!isset($_POST['wb_url']) or $_POST['wb_url'] == '') {
     set_error('e2:Please enter an absolute URL', 'wb_url');
+    $IsError=true;
 } else {
     $wb_url = $_POST['wb_url'];
 }
@@ -139,6 +148,7 @@ $wb_url = rtrim($wb_url, '\\/');
 // Get the default time zone
 if (!isset($_POST['default_timezone']) or !is_numeric($_POST['default_timezone'])) {
     set_error('e3:Please select a valid default timezone', 'default_timezone');
+    $IsError=true;
 } else {
     $default_timezone = $_POST['default_timezone'] * 60 * 60;
 }
@@ -150,11 +160,13 @@ $sLangDir = str_replace('\\', '/', dirname(dirname(__FILE__)) . '/languages/');
 $allowed_languages = preg_replace('/^.*\/([A-Z]{2})\.php$/iU', '\1', glob($sLangDir . '??.php'));
 if (!isset($_POST['default_language']) or !in_array($_POST['default_language'], $allowed_languages)) {
     set_error('e4:Please select a valid default backend language', 'default_language');
+    $IsError=true;
 } else {
     $default_language = $_POST['default_language'];
     // make sure the selected language file exists in the language folder
     if (!file_exists('../languages/' . $default_language . '.php')) {
         set_error('e5:The language file: \'' . $default_language . '.php\' is missing. Upload file to language folder or choose another language', 'default_language');
+        $IsError=true;
     }
 }
 // End default language details code
@@ -163,6 +175,7 @@ if (!isset($_POST['default_language']) or !in_array($_POST['default_language'], 
 // Get operating system
 if (!isset($_POST['operating_system']) or $_POST['operating_system'] != 'linux' and $_POST['operating_system'] != 'windows') {
     set_error('e6: Please select a valid operating system');
+    $IsError=true;
 } else {
     $operating_system = $_POST['operating_system'];
 }
@@ -183,6 +196,7 @@ if ($operating_system == 'windows') {
 // Check if user has entered a database host
 if (!isset($_POST['database_host']) or $_POST['database_host'] == '') {
     set_error('e7:Please enter a database host name', 'database_host');
+    $IsError=true;
 } else {
     $database_host = trim($_POST['database_host']);
 }
@@ -197,30 +211,35 @@ if (isset($aMatches[1])) {
 // Check if user has entered a database username
 if (!isset($_POST['database_username']) or $_POST['database_username'] == '') {
     set_error('e8:Please enter a database username', 'database_username');
+    $IsError=true;
 } else {
     $database_username = $_POST['database_username'];
 }
 // Check if user has entered a database password
 if (!isset($_POST['database_password'])) {
     set_error('e9:Please enter a database password', 'database_password');
+    $IsError=true;
 } else {
     $database_password = $_POST['database_password'];
 }
 // Check if user has entered a database name
 if (!isset($_POST['database_name']) or $_POST['database_name'] == '') {
     set_error('e10:Please enter a database name', 'database_name');
+    $IsError=true;
 } else {
     // make sure only allowed characters are specified
     if (preg_match('/[^a-z0-9_-]+/i', $_POST['database_name'])) {
         // contains invalid characters (only a-z, A-Z, 0-9 and _ allowed to avoid problems with table/field names)
         set_error('e11:Only characters a-z, A-Z, 0-9, - and _ allowed in database name.', 'database_name');
+        $IsError=true;
     }
     $database_name = $_POST['database_name'];
 }
 // Get table prefix
-if (preg_match('/[^a-z0-9_]+/i', $_POST['table_prefix'])) {
+if (preg_match('/[^a-z0-9_]+/', $_POST['table_prefix'])) {
     // contains invalid characters (only a-z, A-Z, 0-9 and _ allowed to avoid problems with table/field names)
-    set_error('e12: Only characters a-z, A-Z, 0-9 and _ allowed in table_prefix.', 'table_prefix');
+    set_error('e12: Only characters a-z and 0-9 allowed in table_prefix.', 'table_prefix');
+    $IsError=true;
 } else {
     $table_prefix = $_POST['table_prefix'];
 }
@@ -230,6 +249,7 @@ $install_tables = true;
 // Get website title
 if (!isset($_POST['website_title']) or $_POST['website_title'] == '') {
     set_error('e12: Please enter a website title', 'website_title');
+    $IsError=true;
 } else {
     $website_title = add_slashes($_POST['website_title']);
 }
@@ -239,32 +259,48 @@ if (!isset($_POST['website_title']) or $_POST['website_title'] == '') {
 // Get admin username
 if (!isset($_POST['admin_username']) or $_POST['admin_username'] == '') {
     set_error('e13:Please enter a username for the Administrator account', 'admin_username');
+    $IsError=true;
 } else {
     $admin_username = $_POST['admin_username'];
 }
 // Get admin email and validate it
 if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
     set_error('e14:Please enter an email for the Administrator account', 'admin_email');
+    $IsError=true;
 } else {
     if (preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i', $_POST['admin_email'])) {
         $admin_email = $_POST['admin_email'];
     } else {
         set_error('e15:Please enter a valid email address for the Administrator account', 'admin_email');
+        $IsError=true;
     }
 }
 // Get the two admin passwords entered, and check that they match
 if (!isset($_POST['admin_password']) or $_POST['admin_password'] == '') {
     set_error('e16:Please enter a password for the Administrator account', 'admin_password');
+    $IsError=true;
 } else {
     $admin_password = $_POST['admin_password'];
 }
 if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
     set_error('e17:Please make sure you re-enter the password for the Administrator account', 'admin_repassword');
+    $IsError=true;
 } else {
     $admin_repassword = $_POST['admin_repassword'];
+    if ($admin_password != $admin_repassword) {
+        set_error('e18:Sorry, the two Administrator account passwords you entered do not match', 'admin_repassword');
+        $IsError=true;
+    }   
 }
-if ($admin_password != $admin_repassword) {
-    set_error('e18:Sorry, the two Administrator account passwords you entered do not match', 'admin_repassword');
+
+
+// If we got form errors 
+if ($IsError){
+   // Redirect to first page again and exit
+   // To see debug output , just uncomment the Location header
+   echo "<h4>Called Error</4>";
+   header('Location: index.php?sessions_checked=true'); 
+   exit;
 }
 
 $database_charset = 'utf8';
@@ -382,7 +418,7 @@ foreach($aSettings as $name=>$value){
 	Settings::Set($name, $value);
 }
 
-// add the Admin user
+// add the Admin user Using md5 here should be not a a problem as password is rehashed on first login if possible
 $aAdminUser = array(
 	'user_id'      => 1,
 	'group_id'     => 1, 

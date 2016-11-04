@@ -116,8 +116,10 @@ function change_os(type) {
             Welcome to the Installation Wizard of WBCE CMS.
         </div>
         <?php
-if (isset($_SESSION['message']) and $_SESSION['message'] != '') {
-    ?><div  style="width: 700px; padding: 10px; margin-bottom: 5px; border: 1px solid #FF0000; background-color: #FFDBDB;"><b>Error:</b> <?php echo $_SESSION['message'];?></div><?php
+if (isset($_SESSION['message']) and !empty($_SESSION['message'])) {
+    ?><div  style="width: 700px; padding: 10px; margin-bottom: 5px; border: 1px solid #FF0000; background-color: #FFDBDB;">
+        <?php foreach ($_SESSION['message'] as $message) {echo "<b>Error:</b> ".$message."<br>";}?>
+     </div><?php
 }
 ?>
         <table>
@@ -450,9 +452,9 @@ if (!isset($_SESSION['config_rename'])) {
         <tr>
             <td class="name">Table Prefix: </td>
             <td class="value" style="white-space: nowrap;">
-                <input <?php echo field_error('table_prefix')?> type="text" tabindex="9" name="table_prefix" value="<?php if (isset($_SESSION['table_prefix'])) {echo $_SESSION['table_prefix'];} else {echo 'wbce_';}
+                <input <?php echo field_error('table_prefix')?> type="text" tabindex="9" name="table_prefix" value="<?php if (isset($_SESSION['table_prefix'])) {echo $_SESSION['table_prefix'];} else {echo 'wbce000';}
     ?>" />
-                <span style="display: inline;">&nbsp;([a-zA-Z0-9_])</span>
+                <span style="display: inline;">&nbsp;([a-z0-9])</span>
             </td>
         </tr>
         <tr>

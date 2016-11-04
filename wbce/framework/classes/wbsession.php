@@ -243,10 +243,19 @@ class WbSession{
         if (
             isset ($_SESSION[self::$Store]['SessionStarted']) AND    
             is_int($_SESSION[self::$Store]['SessionStarted'])
-        ) 
+        ){ 
             return $_SESSION[self::$Store]['SessionStarted'];
-        else 
-            return false;
+        }
+        elseif (
+            defined('SESSION_STARTED') AND
+            session_name()=='wb-installer'
+        ){
+            self::Set("SessionStarted", time());
+            return $_SESSION[self::$Store]['SessionStarted'];
+        }
+        else { 
+            return false; 
+        }
     }
     
 /**
