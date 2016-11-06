@@ -360,27 +360,35 @@ if (!isset($_SESSION['config_rename'])) {
     $aAllowedLanguages = preg_replace('/^.*\/([A-Z]{2})\.php$/iU', '\1', glob($sLangDir . '??.php'));
     sort($aAllowedLanguages);
     $sOutput = PHP_EOL;
-    foreach ($aAllowedLanguages as $sLangCode) {
+
+     foreach ($aAllowedLanguages as $sLangCode) {
         if (is_readable($sLangDir . $sLangCode . '.php')) {
             if (($sContent = file_get_contents($sLangDir . $sLangCode . '.php', false, null, -1, 3000)) !== false) {
                 if (preg_match('/.*\s*\$language_name\s*=\s*([\'\"])([^\1]*)\1\s*;/siU', $sContent, $aMatches)) {
-                    $sOutput .= '<option value="' . $sLangCode . '"';
-                    if (
-                        (isset($_SESSION['default_language']) and $_SESSION['default_language'] == $sLangCode) ||
-                        (!isset($_SESSION['default_language']) and $sLangCode == 'EN')
-                    ) {
-                        $sOutput .= ' selected="selected"';
-                    }
-                    $sOutput .= '>' . $aMatches[2] . '</option>' . PHP_EOL;
+                    $aLangs[$sLangCode]= $aMatches[2];
                 }
             }
         }
+    }
+    $aAllowedLanguages=$aLangs;
+    natsort($aAllowedLanguages);
+    
+    foreach ($aAllowedLanguages as $sLangCode=>$Language) {   
+        $sOutput .= '<option value="' . $sLangCode . '"';
+        if (
+            (isset($_SESSION['default_language']) and $_SESSION['default_language'] == $sLangCode) ||
+            (!isset($_SESSION['default_language']) and $sLangCode == 'EN')
+        ) {
+            $sOutput .= ' selected="selected"';
+        }
+        $sOutput .= '>' . $Language . '</option>' . PHP_EOL;    
     }
     if (isset($sContent)) {unset($sContent);}
 // output Language options
     echo $sOutput;
     ?>
                 </select>
+                <?php //echo "<pre>";print_r($aAllowedLanguages);echo "</pre>";?>
             </td>
             <td colspan="4">&nbsp;</td>
         </tr>
@@ -581,4 +589,3 @@ if (!isset($_SESSION['config_rename'])) {
 
 </body>
 </html>
-
