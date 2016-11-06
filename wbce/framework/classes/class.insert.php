@@ -461,16 +461,17 @@ class Insert {
         
         // Href gets some special threatment so you can have an always refreshed browser cache
         // by changing the file URL whith a get parameter
-        if (!defined('WB_CSS_REFRESH_BROWSER_CACHE') OR  WB_CSS_REFRESH_BROWSER_CACHE===true){
-            if (!empty($Content['href'])) {
-			    $sFilePath = str_replace(WB_URL, WB_PATH, $Content['href']);
-			    if(is_file($sFilePath)){				
-				    $this->Css[$SetName]['href'] = $Content['href'].'?'.filemtime ($sFilePath);
-			    }else{
-				    $this->Css[$SetName]['href'] = $Content['href'];
-			    }
-		    }
-        } 
+        if (!empty($Content['href'])) {
+            $sFilePath = str_replace(WB_URL, WB_PATH, $Content['href']);
+            if(is_file($sFilePath)){
+                $this->Css[$SetName]['href'] = $Content['href']
+            }
+            if (!defined('WB_CSS_REFRESH_BROWSER_CACHE') OR  WB_CSS_REFRESH_BROWSER_CACHE===true){
+                $this->Css[$SetName]['href'] .= '?' . filemtime($sFilePath);
+            }
+        }
+
+
 
         if (!empty($Content['media']))$this->Css[$SetName]['media'] = $Content['media'];
         if (!empty($Content['style']))$this->Css[$SetName]['style'] = $Content['style'];
@@ -642,18 +643,19 @@ class Insert {
           //echo "\n<pre>check:\n"; print_r($Content); echo "</pre>";
         
         if (!empty($Content['position'])) $this->Js[$SetName]['position'] = $Position;
+
         // SRC gets some special threatment so you can have an always refreshed browser cache
         // by changing the file URL whith a get parameter
-        if (!defined('WB_JS_REFRESH_BROWSER_CACHE') OR  WB_CSS_REFRESH_BROWSER_CACHE===true){
-            if (!empty($Content['src'])) {
-			    $sFilePath = str_replace(WB_URL, WB_PATH, $Content['src']);
-			    if(is_file($sFilePath)){				
-				    $this->Js[$SetName]['src'] = $Content['src'].'?'.filemtime ($sFilePath);
-			    }else{
-				    $this->Js[$SetName]['src'] = $Content['src'];
-			    }
-		    }
-        }   
+        if (!empty($Content['scr'])) {
+            $sFilePath = str_replace(WB_URL, WB_PATH, $Content['src']);
+            if(is_file($sFilePath)){
+                $this->Js[$SetName]['src'] = $Content['src'];
+            }
+            if (!defined('WB_JS_REFRESH_BROWSER_CACHE') OR  WB_JS_REFRESH_BROWSER_CACHE===true){
+                $this->Js[$SetName]['href'] .= '?' . filemtime($sFilePath);
+            }
+        }
+
         if (!empty($Content['script']))   $this->Js[$SetName]['script'] = $Content['script'];
         if (!empty($Content['setsave']))  $this->Js[$SetName]['setsave'] = $Content['setsave'];
 
