@@ -462,16 +462,18 @@ class Insert {
         // Href gets some special threatment so you can have an always refreshed browser cache
         // by changing the file URL whith a get parameter
         if (!empty($Content['href'])) {
+            // Set value if exits
+            $this->Css[$SetName]['href'] = $Content['href'];
+
+            // if its an internal file we handle the caching options
             $sFilePath = str_replace(WB_URL, WB_PATH, $Content['href']);
             if(is_file($sFilePath)){
-                $this->Css[$SetName]['href'] = $Content['href']
-            }
-            if (!defined('WB_CSS_REFRESH_BROWSER_CACHE') OR  WB_CSS_REFRESH_BROWSER_CACHE===true){
-                $this->Css[$SetName]['href'] .= '?' . filemtime($sFilePath);
+                if (!defined('WB_CSS_REFRESH_BROWSER_CACHE') OR  WB_CSS_REFRESH_BROWSER_CACHE===true){
+                    // Append a Parameter that depends on the last time the file was modified 
+                    $this->Css[$SetName]['href'] .= '?' . filemtime($sFilePath);
+                }   
             }
         }
-
-
 
         if (!empty($Content['media']))$this->Css[$SetName]['media'] = $Content['media'];
         if (!empty($Content['style']))$this->Css[$SetName]['style'] = $Content['style'];
@@ -647,13 +649,17 @@ class Insert {
         // SRC gets some special threatment so you can have an always refreshed browser cache
         // by changing the file URL whith a get parameter
         if (!empty($Content['scr'])) {
+            // Set value if exits
+            $this->Js[$SetName]['src'] = $Content['src'];
+
+            // if its an internal file we handle the caching options
             $sFilePath = str_replace(WB_URL, WB_PATH, $Content['src']);
             if(is_file($sFilePath)){
-                $this->Js[$SetName]['src'] = $Content['src'];
-            }
-            if (!defined('WB_JS_REFRESH_BROWSER_CACHE') OR  WB_JS_REFRESH_BROWSER_CACHE===true){
-                $this->Js[$SetName]['href'] .= '?' . filemtime($sFilePath);
-            }
+                if (!defined('WB_JS_REFRESH_BROWSER_CACHE') OR  WB_JS_REFRESH_BROWSER_CACHE===true){
+                    // Append a Parameter that depends on the time the file was last modified 
+                    $this->Js[$SetName]['href'] .= '?' . filemtime($sFilePath);
+                }
+            }  
         }
 
         if (!empty($Content['script']))   $this->Js[$SetName]['script'] = $Content['script'];
