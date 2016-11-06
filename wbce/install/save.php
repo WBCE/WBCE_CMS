@@ -431,6 +431,7 @@ $aAdminUser = array(
 	'timezone'     => $default_timezone, 
 	'display_name' => 'Administrator'
 );
+print_r($aAdminUser);
 
 if (!($database->insertRow('{TP}users', $aAdminUser))) {
     set_error('e26:unable to write Administrator account into table \'users\'');
@@ -487,35 +488,16 @@ foreach ($dirs as $type => $dir) {
         closedir($handle);
     }
 }
+
+
+
 // Check if there was a database error
 if ($database->is_error()) {
     set_error("e28:".$database->get_error());
 }
 
-$ThemeUrl = WB_URL . $admin->correct_theme_source('warning.html');
-// Setup template object, parse vars to it, then parse it
-$ThemePath = realpath(WB_PATH . $admin->correct_theme_source('login.htt'));
+$loc=ADMIN_URL . "/login/index.php";
+header("Location: $loc");
 
-// Log the user in and go to Website Baker Administration
-$thisApp = new Login(
-    array(
-        "MAX_ATTEMPS" => "50",
-        "WARNING_URL" => $ThemeUrl . "/warning.html",
-        "USERNAME_FIELDNAME" => 'admin_username',
-        "PASSWORD_FIELDNAME" => 'admin_password',
-        "REMEMBER_ME_OPTION" => SMART_LOGIN,
-        "MIN_USERNAME_LEN" => "2",
-        "MIN_PASSWORD_LEN" => "3",
-        "MAX_USERNAME_LEN" => "30",
-        "MAX_PASSWORD_LEN" => "30",
-        'LOGIN_URL' => ADMIN_URL . "/login/index.php",
-        'DEFAULT_URL' => ADMIN_URL . "/start/index.php",
-        'TEMPLATE_DIR' => $ThemePath,
-        'TEMPLATE_FILE' => 'login.htt',
-        'FRONTEND' => false,
-        'FORGOTTEN_DETAILS_APP' => ADMIN_URL . "/login/forgot/index.php",
-        'USERS_TABLE' => TABLE_PREFIX . "users",
-        'GROUPS_TABLE' => TABLE_PREFIX . "groups",
-    )
-);
+
 
