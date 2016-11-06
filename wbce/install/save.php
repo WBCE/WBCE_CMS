@@ -75,12 +75,10 @@ function set_error($message, $field_name = '')
         // Set the message
         
         $_SESSION['message'][] = $message;
-        echo "<pre>";print_r($_SESSION['message']);echo "</pre>";
         // Set the element(s) to highlight
         if ($field_name != '') {
             $_SESSION['ERROR_FIELD'][] = $field_name;
         }
-        echo "<pre>";print_r($_SESSION['ERROR_FIELD']);echo "</pre>";
         // Specify that session support is enabled
         $_SESSION['session_support'] = '<span class="good">Enabled</span>';
     }
@@ -431,7 +429,7 @@ $aAdminUser = array(
 	'timezone'     => $default_timezone, 
 	'display_name' => 'Administrator'
 );
-print_r($aAdminUser);
+//print_r($aAdminUser);
 
 if (!($database->insertRow('{TP}users', $aAdminUser))) {
     set_error('e26:unable to write Administrator account into table \'users\'');

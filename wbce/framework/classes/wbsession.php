@@ -248,7 +248,7 @@ class WbSession{
         }
         elseif (
             defined('SESSION_STARTED') AND
-            session_name()=='wb-installer'
+            SESSION_STARTED===true
         ){
             self::Set("SessionStarted", time());
             return $_SESSION[self::$Store]['SessionStarted'];
