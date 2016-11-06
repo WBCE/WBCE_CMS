@@ -206,7 +206,7 @@ else {
 		// retrieve the group name
 		$result=$database->query("SELECT name from `".TABLE_PREFIX."groups` WHERE group_id = '$g_id'");
 		
-		$group_name = $resul->fetchRow();
+		$group_name = $result->fetchRow();
 		$xmlstoresearch .= "<groupname>".$group_name["name"]."</groupname>";
 		}
 		
