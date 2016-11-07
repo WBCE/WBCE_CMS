@@ -169,7 +169,7 @@ class DateTimePicker{
 			'media'   =>"screen"
 		));
 		// DateTimePicker_overrides.css
-		$cssOverrides = THEME_URL.'/modules/date_time_picker/css/overrides.css';
+		$cssOverrides = THEME_URL.'/css/date_time_picker_override.css';
 		if(is_readable(str_replace(WB_URL, WB_PATH, $cssOverrides))){
 			I::AddCss (array(
 				'setname' => "datetimepicker_overrides_css", 
@@ -183,11 +183,13 @@ class DateTimePicker{
 			'setname'  =>"datetimepicker_js", 
 			'position' =>"HeadLow", 
 			'src'      => $jsFile
-		));		
+		));	
+			echo '<script type="text/javascript" src="'.$jsFile.'"></script>';
+		
 		
 		$sPluginCfg = " lang: '".strtolower(LANGUAGE)."'";	
 		// take care of the leading comma (,) before each new setting
-		$sPluginCfg .= ($this->sMask == true) ? '", mask: "true' : '';
+		$sPluginCfg .= ($this->mask == true) ? '", mask: "true' : '';
 		$sPluginCfg .= ($this->lazyInit == true) ? ", lazyInit: 'true'" : '';
 		$sPluginCfg .= ($this->step != 60) ? ", step: ".$this->step : '';
 		
@@ -245,14 +247,13 @@ class DateTimePicker{
 							var ID = '#' + FIELD.replace('reset_', '');
 							$(ID).attr('value', '');
 						});
-					}
-					
+					}					
 				});
 			");				
 			I::AddJs (array(
-				'setname'=>"DateTimePicker", 
-				'position'=>"HeadLow", 
-				'script'=> $sJS
+				'setname'  => "DateTimePicker", 
+				'position' => "BodyLow", 
+				'script'   => $sJS
 			));
 		}
 	}
@@ -328,8 +329,7 @@ class DateTimePicker{
 /**
     @brief Fetches the DTFormat from WBCE enviroment ???
 */	
-	protected function _getDTFormat() {		
-		$sFormat = '';
+	protected function _getDTFormat($sFormat = '') {
 		$sDate = $this->sDateFormat;
 		$sTime = $this->sTimeFormat;
 		if($sDate != '' && $sTime != '') {
@@ -343,7 +343,7 @@ class DateTimePicker{
 
 
 /**
-    @brief Please fill out what this does  ???
+    @brief - format the timestamp into a human readable shape using the preset Date/Time Format
 */
 	public function reformatTimeStamp($sTimeStamp)
 	{		
@@ -354,14 +354,14 @@ class DateTimePicker{
 
 
 /**
-    @brief Please fill out what this does  ???
+    @brief - Take the date string from the form field and convert it into a timestamp
 */	
 	public function strToTimestamp($sPickerString, $offset='') {
 		$sPickerString = trim($sPickerString);
 		if($sPickerString == '0' || $sPickerString == '') return('0');
 		if($offset == '0') $offset = '';
 		
-		if($this->timepicker == true && $this->timepicker == true){
+		if($this->timepicker == true){
 			// convert given string to {yyyy-mm-dd} for use with strtotime function:			
 			// "dd.mm.yyyy"?
 			if(preg_match('/^\d{1,2}\.\d{1,2}\.\d{2}(\d{2})?/', $sPickerString)) {
