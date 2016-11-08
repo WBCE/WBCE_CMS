@@ -24,43 +24,44 @@ Why a new Session class ?
 */
 class WbSession{
 
-    // Sub array to store all information , so we do not interferre whith other implemented scripts.  
-    private static $Store="WBCE";
-    private static $StorePerm="WBCE_Perm"  ;
+    // Define the name for a Sub array to store all information , 
+    // so we do not interferre whith other implemented scripts in the $_SESSION var.  
+    public static $Store="WBCE";
+    public static $StorePerm="WBCE_Perm";
    
 
     public static function  Start(){
     
+        // WBCE always uses Cookies 
         ini_set('session.use_cookies', true);  # use session cookies
-    
-    
+        
+        
         // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
         // Later we should get a nice session class instead of this improvised stuff.
         ini_set('session.gc_maxlifetime', intval(WB_SECFORM_TIMEOUT));
         //ini_set('session.cookie_lifetime', intval(WB_SECFORM_TIMEOUT));
         ini_set( 'session.cookie_httponly', 1 );
+        
+        // Secure Cookies if we use https
         if(WB_PROTOCOLL=="https"){ 
             ini_set( 'session.cookie_secure', 1 );
         }
-        session_name(APP_NAME . '-sid');
-        session_set_cookie_params(0);
-        // this was commented out, because cookie is not refreshed on every pageload(silly php) , so 
-        // we always timed out WB_SECFORM_TIMEOUT seconds after first page load ... 
-        //session_set_cookie_params(WB_SECFORM_TIMEOUT);
         
-        
-        // Start a session
+    
+
+        // Start a session if needed 
         if (!self::IsStarted()) {
+            // Session parameter
+            session_name(APP_NAME . '-sid');
+            session_set_cookie_params(0);
+            //session_set_cookie_params(WB_SECFORM_TIMEOUT);
+        
             session_start();
             
             // this is used by only by installer in index.php and save.php we will remove this later
-            if (!defined('SESSION_STARTED')) define('SESSION_STARTED', true);
-            
-            // New way for check if session exists uses this Var
-            self::Set("SessionStarted", time());
-        } 
-    
-    
+            define('SESSION_STARTED', true);
+        }
+
         // make sure session never exeeds lifetime
         /**
         //That will set the session cookie with a fresh ttl.
@@ -85,14 +86,18 @@ class WbSession{
         self::Set('discard_after', $now + WB_SECFORM_TIMEOUT);
         //echo "discard_after2:".$_SESSION['WB']['discard_after']."<br>";
 
-
-        if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
+        // ASP Still expects old placement of Session Var
+        /// @todo Change ASP to use WbSession::Get() then change setting session startet in Session class too.  
+        if (!isset($_SESSION['session_started'])) 
             $_SESSION['session_started'] = time();
-        }
-   
+
         return false;
     }
 
+    public static function  test ($text=""){
+        return $text;
+    
+    }
     
     public static function  ReStart($Kill=false){
     
@@ -111,7 +116,7 @@ class WbSession{
    
         # restarting
         self::Start(true);
-        self::RegenerateId(true);
+        self::RegenerateId(true); 
    
     }
     
@@ -124,7 +129,7 @@ class WbSession{
 */       
     
      public static function  ReInit(){
-        if (!WBSession::IsStarted) return "no session running!";
+        if (!self::IsStarted) return "no session running!";
         
         // save permanent Data
         $SavePerm=array();
@@ -216,7 +221,7 @@ class WbSession{
     public static function  GetPerm($sVar="",$Default=false){
 
         if (empty($sVar)) return $Default;
-        if (!WBSession::IsStarted) return $Default;
+        if (!self::IsStarted) return $Default;
 
         if (isset($_SESSION[self::$StorePerm][$sVar])) return $_SESSION[self::$StorePerm][$sVar];
 
@@ -231,7 +236,7 @@ class WbSession{
     this is much shorter and more easy to read than the direct call for the Variable. 
     
     @code
-        if (WbSession::IsStarted){}
+        if (self::IsStarted){}
         
         if ($_SESSION['WBCE']['SessionStarted']=true){}
     @endcode
@@ -240,28 +245,28 @@ class WbSession{
     
 */
     public static function  IsStarted(){
+        // minimum PHP 5.4 we can do this 
+        if (function_exists ( "session_status" ) AND session_status() == PHP_SESSION_NONE ) 
+            return true;
+    
         if (
+            isset ($_SESSION) AND
             isset ($_SESSION[self::$Store]['SessionStarted']) AND    
             is_int($_SESSION[self::$Store]['SessionStarted'])
-        ){ 
-            return $_SESSION[self::$Store]['SessionStarted'];
-        }
-        elseif (
-            defined('SESSION_STARTED') AND
-            SESSION_STARTED===true
-        ){
-            self::Set("SessionStarted", time());
-            return $_SESSION[self::$Store]['SessionStarted'];
-        }
-        else { 
-            return false; 
-        }
+        )
+            return true;
+            
+        //This one is for old Installer 
+        if (defined('SESSION_STARTED'))
+           return true; 
+    
+        return false;
     }
     
 /**
      @brief Simple debug helper to show all session vars in an overview.
 
-    Just call it WbSession::Debug() and it will return an overview
+    Just call it self::Debug() and it will return an overview
 
     @return string Returns an html Overview of aall Session Vars 
 */    
@@ -300,3 +305,4 @@ class WbSession{
     
 
 }
+
