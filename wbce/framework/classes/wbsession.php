@@ -131,7 +131,7 @@ class WbSession{
 */       
     
      public static function  ReInit(){
-        if (!self::IsStarted) return "no session running!";
+        if (!self::IsStarted()) return "no session running!";
         
         // save permanent Data
         $SavePerm=array();
