@@ -234,7 +234,7 @@ if (!isset($_POST['database_name']) or $_POST['database_name'] == '') {
     $database_name = $_POST['database_name'];
 }
 // Get table prefix
-if (preg_match('/[^a-z0-9_]+/', $_POST['table_prefix'])) {
+if (preg_match('/[^a-z0-9]+/', $_POST['table_prefix'])) {
     // contains invalid characters (only a-z, A-Z, 0-9 and _ allowed to avoid problems with table/field names)
     set_error('e12: Only characters a-z and 0-9 allowed in table_prefix.', 'table_prefix');
     $IsError=true;
@@ -296,7 +296,7 @@ if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
 if ($IsError){
    // Redirect to first page again and exit
    // To see debug output , just uncomment the Location header
-   echo "<h4>Called Error</4>";
+   //echo "<h4>Called Error</4>";
    header('Location: index.php?sessions_checked=true'); 
    exit;
 }
@@ -495,7 +495,8 @@ if ($database->is_error()) {
 }
 
 $loc=ADMIN_URL . "/login/index.php";
-header("Location: $loc");
+//header("Location: $loc");
+
 
 
 
