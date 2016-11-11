@@ -64,6 +64,10 @@ Settings::Set('opf_wblink',1, false);
 Settings::Set('opf_auto_placeholder',1, false);
 Settings::Set('opf_insert',1, false);  
 
+//backend
+Settings::Set('opf_insert_be',1); 
+Settings::Set('opf_css_to_head_be',1);
+
 if (isset($data["sys_rel"]))       Settings::Set('opf_sys_rel',$data["sys_rel"], false);
 else                               Settings::Set('opf_sys_rel',1, false);
 

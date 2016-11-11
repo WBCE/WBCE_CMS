@@ -33,6 +33,10 @@ Settings::Set('opf_css_to_head',1, false);
 Settings::Set('opf_at_replacement',"(at)", false);
 Settings::Set('opf_dot_replacement',"(dot)", false);
 
+//backend
+Settings::Set('opf_insert_be',1); 
+Settings::Set('opf_css_to_head_be',1);
+
 //Setting version
 include ("info.php");
 Settings::Set("opf_version", $module_version);
