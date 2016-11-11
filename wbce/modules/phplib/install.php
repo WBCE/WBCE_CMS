@@ -1,7 +1,7 @@
 <?php
 /**
 @category        modules
-@package         Twig
+@package         PHP lib
 @author          Norbert Heimsath
 @copyright       WTFPL
 */

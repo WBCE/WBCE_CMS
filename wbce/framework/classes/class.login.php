@@ -25,7 +25,7 @@ class login extends admin
     public function __construct($config_array)
     {
         
-
+        
         
         // Get language vars
         global $MESSAGE, $database;
@@ -89,14 +89,15 @@ class login extends admin
             // Check if the user exists 
             // (authenticate them, load session vars and more this does all the work)
             $uUserOk=WbAuth::Authenticate ($this->password,$this->username); 
-             
-            // Authentication successful
+             // Authentication successful
             if ($uUserOk===false) {
             
-                //echo "Login says successfull";  
+                     
+
                 
-                // User logged-in, so redirect to default $this->url whatever it is 
+                //User logged-in, so redirect to default $this->url whatever it is 
                 header("Location: " . $this->url);
+                
                 exit(0);
             } else {
                 $this->message = $uUserOk;
@@ -198,7 +199,7 @@ class login extends admin
     // Warn user that they have had to many login attemps
     public function warn()
     {
-        header('Location: ' . $this->warning_url);
+        //header('Location: ' . $this->warning_url);
         exit(0);
     }
 

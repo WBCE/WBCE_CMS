@@ -43,6 +43,7 @@ class WbAuth  {
     @return boolean/string returns false or Error message.      
 */
     public static function Authenticate ($sPassword,$uUser) {
+        
         global $database, $wb;
 
         // check the username/mail/ID and password combination
@@ -66,7 +67,7 @@ class WbAuth  {
         // store changes to user 
         $oUser->Save();
         
-        
+
         // Return false as all is ok 
         return false;
     }

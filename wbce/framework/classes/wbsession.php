@@ -21,6 +21,8 @@ Why a new Session class ?
 - Modules can override the default behavior by registering an override class whith a single file direct registration in the autoloader.
 - Extra functionality like permanent arrays that stay even after Logout .
 
+@todo A lot of refinements to this session class as this is only an improvised rudimentary class! 
+
 */
 class WbSession{
 
@@ -245,17 +247,20 @@ class WbSession{
     
 */
     public static function  IsStarted(){
+        /// @todo somehow everything exept if (defined('SESSION_STARTED')) was causing trouble ..
+        /// i actually have no idea how and why , but this resulted in an empty SessionStarted
+        /// so for now this stays as simple as it is . 
         // minimum PHP 5.4 we can do this 
-        if (function_exists ( "session_status" ) AND session_status() == PHP_SESSION_NONE ) 
-            return true;
-    
-        if (
-            isset ($_SESSION) AND
-            isset ($_SESSION[self::$Store]['SessionStarted']) AND    
-            is_int($_SESSION[self::$Store]['SessionStarted'])
-        )
-            return true;
-            
+//         if (function_exists ( "session_status" ) AND session_status() == PHP_SESSION_NONE ) 
+//             return true;
+//     
+//         if (
+//             isset ($_SESSION) AND
+//             isset ($_SESSION[self::$Store]['SessionStarted']) AND    
+//             is_int($_SESSION[self::$Store]['SessionStarted'])
+//         )
+//             return true;
+//             
         //This one is for old Installer 
         if (defined('SESSION_STARTED'))
            return true; 
@@ -305,4 +310,3 @@ class WbSession{
     
 
 }
-
