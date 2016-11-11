@@ -85,7 +85,10 @@ class WbAuth  {
     public static function CheckUser ($sPassword, $uUser){
     
         global $MESSAGE;
-        
+
+        // Default Sleep time on Login        
+        if (!defined('WB_LOGIN_SLEEP')) define('WB_LOGIN_SLEEP',3);
+
         // hey no input ... 
         if (empty($sPassword) AND empty($uUser)) return $MESSAGE['LOGIN_BOTH_BLANK']; 
         if (empty($uUser)) return $MESSAGE['LOGIN_USERNAME_BLANK']; 
@@ -94,22 +97,32 @@ class WbAuth  {
         // load user
         $oUser = new WbUser();
         $sbUserOk = $oUser->Load($uUser);
-        // loading failed
-        // Still we only return failed for an attacker to have no clue what went wrong.
+
+        // loading failed user does not exist
         if ($sbUserOk)  {
+            // Wait a moment for this result
+            sleep (WB_LOGIN_SLEEP);
+
             unset($oUser);
+            // Still we only return failed for an attacker to have no clue what went wrong.
             return $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
         }
-        if (!$oUser->Active) {
+
+        // User deactivated or already a login in progress
+        if ($oUser->Active==0 OR $oUser->Active>=2) {
+            // Wait a moment for this result
+            sleep (WB_LOGIN_SLEEP);
+
+        
             unset($oUser);
             return $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
         }
 
         // Deactivate user
-        $oUser->Active=0;
+        $oUser->Active=2;
         $oUser->Save();
         
-        if (!defined('WB_LOGIN_SLEEP')) define('WB_LOGIN_SLEEP',3);
+        // sleep a moment 
         sleep (WB_LOGIN_SLEEP);
 
         // Reset here 
