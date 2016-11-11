@@ -495,7 +495,7 @@ if ($database->is_error()) {
 }
 
 $loc=ADMIN_URL . "/login/index.php";
-//header("Location: $loc");
+header("Location: $loc");
 
 
 
