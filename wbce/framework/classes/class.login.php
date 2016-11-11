@@ -199,7 +199,7 @@ class login extends admin
     // Warn user that they have had to many login attemps
     public function warn()
     {
-        //header('Location: ' . $this->warning_url);
+        header('Location: ' . $this->warning_url);
         exit(0);
     }
 
