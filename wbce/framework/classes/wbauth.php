@@ -121,7 +121,7 @@ class WbAuth  {
       
 
         // test for old  MD5 password
-        if ($oUser->Password=md5($sPassword)) {
+        if ($oUser->Password==md5($sPassword)) {
             // try to rehash 
             $oUser->Password=self::Hash($sPassword);
             //save user to db
