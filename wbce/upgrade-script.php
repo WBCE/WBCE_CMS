@@ -170,6 +170,8 @@ $FAIL = ' <span class="error">FAILED</span> ';
 $DEFAULT_THEME = 'advancedThemeWbFlat';
 $stepID = 1;
 $dirRemove = array(
+'[MODULES]/maintainance_mode/'
+
 /*
 '[TEMPLATE]/allcss/',
 '[TEMPLATE]/blank/',
