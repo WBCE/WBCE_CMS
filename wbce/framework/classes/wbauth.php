@@ -118,16 +118,7 @@ class WbAuth  {
             return $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
         }
 
-        // Deactivate user
-        $oUser->Active=2;
-        $oUser->Save();
-        
-        // sleep a moment 
-        sleep (WB_LOGIN_SLEEP);
-
-        // Reset here 
-        $oUser->Active=1;
-        $oUser->Save();
+      
 
         // test for old  MD5 password
         if ($oUser->Password=md5($sPassword)) {
@@ -147,6 +138,19 @@ class WbAuth  {
             
             return $oUser;
         }
+        
+          // Deactivate user
+        $oUser->Active=2;
+        $oUser->Save();
+        
+        // sleep a moment 
+        sleep (WB_LOGIN_SLEEP);
+
+        // Reset here 
+        $oUser->Active=1;
+        $oUser->Save();
+        
+        
         
         unset($oUser);
         return $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
