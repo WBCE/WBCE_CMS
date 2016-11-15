@@ -1,5 +1,15 @@
 <!-- BEGIN main_block -->
 
+<script type="text/javascript" src="{WB_URL}/include/formretain.js">
+
+/***********************************************
+* Recall Form Values script- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* Please keep this notice intact
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
 <script type="text/javascript">
 function toggle_radio(radio_on, radio_off) {
 	document.getElementById(radio_on).checked = true;
@@ -17,7 +27,7 @@ function toggle_radio(radio_on, radio_off) {
 <tr>
 	<td width="150">{TEXT_USERNAME}:</td>
 	<td class="value_input">
-		<input type="text" name="{USERNAME_FIELDNAME}" maxlength="30" value="{USERNAME}" />
+		<input type="text" name="{USERNAME_FIELDNAME}" maxlength="30" value="{USERNAME}" class="memorize" />
 	</td>
 </tr>
 <tr>
@@ -41,13 +51,13 @@ function toggle_radio(radio_on, radio_off) {
 <tr>
 	<td>{TEXT_DISPLAY_NAME}:</td>
 	<td class="value_input">
-		<input type="text" name="display_name" maxlength="255" value="{DISPLAY_NAME}" />
+		<input type="text" name="display_name" maxlength="255" value="{DISPLAY_NAME}" class="memorize" />
 	</td>
 </tr>
 <tr>
 	<td>{TEXT_EMAIL}:</td>
 	<td class="value_input">
-		<input type="text" name="email" maxlength="255" value="{EMAIL}" />
+		<input type="text" name="email" maxlength="255" value="{EMAIL}" class="memorize" />
 	</td>
 </tr>
 <tr style="{DISPLAY_HOME_FOLDERS}">

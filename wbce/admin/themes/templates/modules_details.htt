@@ -19,10 +19,7 @@
 	<td>{TEXT_VERSION}:</td>
 	<td>{VERSION}</td>
 </tr>
-<tr>
-	<td>{TEXT_DESIGNED_FOR}:</td>
-	<td>Website Baker {DESIGNED_FOR}</td>
-</tr>
+
 <tr>
 	<td valign="top">{TEXT_DESCRIPTION}:</td>
 	<td style="text-align: justify;">{DESCRIPTION}</td>
