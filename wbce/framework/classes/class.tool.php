@@ -47,6 +47,13 @@ class Tool {
     
     */
     public function __construct ($toolType=false, $toolDir=false ) {
+        
+        // return url if something goes wrong , or back button is used
+        // Cannot set this in the Variable definition , so set it here
+        $this->returnToTools = ADMIN_URL.'/admintools/index.php';
+    
+    
+    
         // no tool Dir given, try to fetch from get or post
         if (!$toolDir) { 
             // POST overwrites GET
@@ -83,10 +90,11 @@ class Tool {
         if (!isset($_SESSION['MODULE_PERMISSIONS'])) $this->ReturnTo("../index.php");
     
         // return url if something goes wrong , or back button is used
+        // !!!!No longer done here as this overrides manual settings!!!!
         // Admin access section
-        $this->returnToTools = ADMIN_URL.'/admintools/index.php';
-        $this->typeDir = "/admintools";
-        $this->adminAccess = "admintools";
+        //$this->returnToTools = ADMIN_URL.'/admintools/index.php';
+        //$this->typeDir = "/admintools";
+        //$this->adminAccess = "admintools";
          
         // only set if nothing is manually set
         if ($this->adminSection =="") $this->adminSection = "admintools";
@@ -383,4 +391,5 @@ class Tool {
  
 
 }
+
 
