@@ -83,7 +83,7 @@ class WbSession{
         if (self::Get('discard_after') && $now > self::Get('discard_after')) {
             // this session has worn out its welcome; kill it and start a brand new one
             self::ReInit();
-            echo "Session Time Run out , killing session";
+            //echo "Session Time Run out , killing session";
         }
         self::Set('discard_after', $now + WB_SECFORM_TIMEOUT);
         //echo "discard_after2:".$_SESSION['WB']['discard_after']."<br>";
