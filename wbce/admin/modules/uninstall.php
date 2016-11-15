@@ -93,7 +93,7 @@ if ( $info->numRows() > 0) {
 }
 
 include_once (WB_PATH.'/modules/'.$file.'/info.php');
-if (isset ($module_level) AMD $module_level=="core")
+if (isset ($module_level) AND $module_level=="core")
     $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES']);
 
 // Check if we have permissions on the directory
