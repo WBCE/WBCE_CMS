@@ -423,7 +423,7 @@ function wb_make_js_sys_vars ($scripttags=true) {
         $wbpath = str_replace('\\', '/', WB_PATH); // fixed localhost problem with ie
         $sys_vars="";
         if ($scripttags==true)
-            $sys_vars .= "<script type=\"text/javascript\">\n"
+            $sys_vars .= "<script type=\"text/javascript\">\n";
         $sys_vars .= "var URL = '" . WB_URL . "';\n"
         /* ."var WB_PATH = '".$wbpath."';\n" */
         . "var WB_URL = '" . WB_URL . "';\n"
