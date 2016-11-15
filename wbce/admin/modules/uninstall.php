@@ -92,6 +92,10 @@ if ( $info->numRows() > 0) {
     $admin->print_error(str_replace ($TEXT['FILE'], "Modul", $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE']).$msg.$page_names);
 }
 
+include_once (WB_PATH.'/modules/'.$file.'/info.php');
+if (isset ($module_level) AMD $module_level=="core")
+    $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES']);
+
 // Check if we have permissions on the directory
 if(!is_writable(WB_PATH.'/modules/'.$file)) {
     $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL']);
@@ -115,3 +119,4 @@ $admin->print_success($MESSAGE['GENERIC_UNINSTALLED']);
 
 // Print admin footer
 $admin->print_footer();
+
