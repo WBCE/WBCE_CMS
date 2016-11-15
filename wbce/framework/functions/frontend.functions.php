@@ -75,7 +75,7 @@ if (($resSnippets = $database->query($sql))) {
 I::AddJs (array(
     'setname'=>"wbsysvars", 
     'position'=>"HeadTop", 
-    'script'=> wb_make_js_sys_vars (), 
+    'script'=> wb_make_js_sys_vars (false), 
     'overwrite'=>true
 ));
 
@@ -419,14 +419,17 @@ if (!function_exists('register_frontend_modfiles_body')) {
 }
 
 // Function to make the systemvars Block 
-function wb_make_js_sys_vars () {
+function wb_make_js_sys_vars ($scripttags=true) {
         $wbpath = str_replace('\\', '/', WB_PATH); // fixed localhost problem with ie
-        $sys_vars = "<script type=\"text/javascript\">\n"
-        . "var URL = '" . WB_URL . "';\n"
+        $sys_vars="";
+        if ($scripttags==true)
+            $sys_vars .= "<script type=\"text/javascript\">\n"
+        $sys_vars .= "var URL = '" . WB_URL . "';\n"
         /* ."var WB_PATH = '".$wbpath."';\n" */
         . "var WB_URL = '" . WB_URL . "';\n"
-        . "var TEMPLATE_DIR = '" . TEMPLATE_DIR . "';\n"
-        . "</script>\n";
+        . "var TEMPLATE_DIR = '" . TEMPLATE_DIR . "';\n";
+        if ($scripttags==true)
+        $sys_vars.="</script>\n";
         return $sys_vars;
 }
 
