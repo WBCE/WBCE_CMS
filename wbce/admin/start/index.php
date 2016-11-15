@@ -95,6 +95,10 @@ if($admin->get_permission('media') != true)
 {
     $template->set_var('DISPLAY_MEDIA', 'display:none;');
 }
+if($admin->get_permission('preferences') != true)
+{
+    $template->set_var('DISPLAY_PREFERENCES', 'display:none;');
+}
 if($admin->get_permission('addons') != true)
 {
     $template->set_var('DISPLAY_ADDONS', 'display:none;');
@@ -199,3 +203,4 @@ $template->pparse('output', 'page');
 
 // Print admin footer
 $admin->print_footer();
+

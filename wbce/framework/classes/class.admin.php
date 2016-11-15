@@ -37,6 +37,7 @@ class admin extends wb
 
                 // Now check if they are allowed in this section
                 if ($this->get_permission($section_permission) == false) {
+                    echo $section_permission."<br>";
                     die($MESSAGE['ADMIN_INSUFFICIENT_PRIVELLIGES']);
                 }
             }
@@ -168,7 +169,7 @@ class admin extends wb
             array(ADMIN_URL . '/pages/index.php', '', $MENU['PAGES'], 'pages', 1),
             array(ADMIN_URL . '/media/index.php', '', $MENU['MEDIA'], 'media', 1),
             array(ADMIN_URL . '/addons/index.php', '', $MENU['ADDONS'], 'addons', 1),
-            array(ADMIN_URL . '/preferences/index.php', '', $MENU['PREFERENCES'], 'preferences', 0),
+            array(ADMIN_URL . '/preferences/index.php', '', $MENU['PREFERENCES'], 'preferences', 1),
             array(ADMIN_URL . '/settings/index.php', '', $MENU['SETTINGS'], 'settings', 1),
             array(ADMIN_URL . '/admintools/index.php', '', $MENU['ADMINTOOLS'], 'admintools', 1),
             array(ADMIN_URL . '/access/index.php', '', $MENU['ACCESS'], 'access', 1),
@@ -544,5 +545,6 @@ class admin extends wb
         return $retval; //N
     }
 }
+
 
 
