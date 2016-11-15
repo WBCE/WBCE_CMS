@@ -170,7 +170,8 @@ switch ($action) {
             'SECTION_USERS' => $MENU['USERS'],
             'SECTION_GROUPS' => $MENU['GROUPS'],
             'SECTION_ADMINTOOLS' => $MENU['ADMINTOOLS'],
-            'TEXT_VIEW' => $TEXT['VIEW'],
+            'SECTION_PREFERENCES' => $MENU['PREFERENCES']
+,           'TEXT_VIEW' => $TEXT['VIEW'],
             'TEXT_ADD' => $TEXT['ADD'],
             'TEXT_LEVEL' => $TEXT['LEVEL'],
             'TEXT_MODIFY' => $TEXT['MODIFY'],
