@@ -117,6 +117,9 @@ Replacement is done by the filter function
 echo $i->Filter($string);
 @endcode
 
+
+@todo We need methods to remove entries from the lists.  
+
 */
 class Insert {
 

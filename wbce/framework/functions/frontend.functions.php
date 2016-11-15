@@ -456,7 +456,16 @@ if (!function_exists('register_frontend_modfiles')) {
         $head_links = "";
         
         // Echo systemvars only once
-        if (!$call_count and $file_id !="css") $head_links.= wb_make_js_sys_vars ();
+        if (!$call_count and $file_id !="css") {
+            $head_links.= wb_make_js_sys_vars ();
+            // Sysvars always added to Insert
+            I::AddJs (array(
+                'setname'=>"wbsysvars", 
+                'position'=>"HeadTop", 
+                'script'=> " ", 
+                'overwrite'=>true
+            ));
+        }
         
         // defines different "templates" for rendering the Link (css/js)
         // no templates needed for Jquery
@@ -676,3 +685,4 @@ if (!function_exists('show_menu')) {
         unset($wb->menu_start_level);
     }
 }
+
