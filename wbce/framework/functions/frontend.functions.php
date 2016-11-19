@@ -459,12 +459,7 @@ if (!function_exists('register_frontend_modfiles')) {
         if (!$call_count and $file_id !="css") {
             $head_links.= wb_make_js_sys_vars ();
             // Sysvars always added to Insert
-            I::AddJs (array(
-                'setname'=>"wbsysvars", 
-                'position'=>"HeadTop", 
-                'script'=> " ", 
-                'overwrite'=>true
-            ));
+           I::DelJs ("wbsysvars");
         }
         
         // defines different "templates" for rendering the Link (css/js)

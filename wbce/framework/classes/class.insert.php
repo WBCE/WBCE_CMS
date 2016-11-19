@@ -489,6 +489,37 @@ class Insert {
 
 
     /**
+    @brief Method to delete a named CSS  entry.
+    
+    Simply remove an entry by its "setname" 
+    ~~~~~~~~~~
+        $hInsertHandle->DelCss ("setnameOfYourEntry");
+    ~~~~~~~~~~
+    @param string $SetName
+        The setname for the entry to delete 
+    @retval boolean/string
+    Returns false on success, and an error message on failure. 
+
+    */
+    public function DelCss ($SetName=""){
+         if (!isset($Content['setname']) OR empty ($Content['setname']))
+            return "DelCss can not delete unknown Entry!";
+
+         if (!isset($this->Css[$SetName])) 
+            return "DelCss entry does not exist ($SetName)!";
+         
+         // maybe the entry has the setsave flag
+        if (!empty($this->Css[$SetName]['setsave'])) {
+            return "DelCss Cannot delete Css Entry , $SetName has the save flag on!";
+        }
+         
+        unset ($this->Css[$SetName]);
+        return false;
+    }
+
+
+
+    /**
     @brief Method to get the CSS array for checking or processing.
 
     You can set a default return value if nothing is found. 
@@ -670,6 +701,47 @@ class Insert {
 
         return false;
     }
+
+
+
+    /**
+    @brief Method to delete a named JS  entry.
+    
+    Simply remove an entry by its SetName 
+    ~~~~~~~~~~
+        $hInsertHandle->DelJs ($SetName="SetNameOfYourEntry");
+    ~~~~~~~~~~
+    @param string $SetName
+        The setname for the entry to delete 
+    @retval boolean/string
+    Returns false on success, and an error message on failure. 
+
+    */
+    public function DelJs ($SetName=""){
+         if (!isset($Content['setname']) OR empty ($Content['setname']))
+            return "DelJs can not delete unknown Entry!";
+
+         if (!isset($this->Js[$SetName])) 
+            return "DelJs entry does not exist ($SetName)!";
+         
+         // maybe the entry has the setsave flag
+        if (!empty($this->Js[$SetName]['setsave'])) {
+            return "DelJs Cannot delete JS Entry , $SetName has the save flag on!";
+        }
+         
+        unset ($this->Js[$SetName]);
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
 
     /**
     @brief Method to get the Js array for checking or processing.

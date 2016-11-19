@@ -505,6 +505,38 @@ class I {
         return $i->AddCss($Content);
     }
  
+
+    /**
+    @brief Method to delete a named CSS  entry.
+    
+    Simply remove an entry by its "setname" 
+    ~~~~~~~~~~
+        $hInsertHandle->DelCss ("setnameOfYourEntry");
+    ~~~~~~~~~~
+    @param string $SetName
+        The setname for the entry to delete 
+    @retval boolean/string
+    Returns false on success, and an error message on failure. 
+
+    */
+    public function DelCss ($SetName=""){
+         if (!isset($Content['setname']) OR empty ($Content['setname']))
+            return "DelCss can not delete unknown Entry!";
+
+         if (!isset($this->Css[$SetName])) 
+            return "DelCss entry does not exist ($SetName)!";
+         
+         // maybe the entry has the setsave flag
+        if (!empty($this->Css[$SetName]['setsave'])) {
+            return "DelCss Cannot delete Css Entry , $SetName has the save flag on!";
+        }
+         
+        unset ($this->Css[$SetName]);
+        return false;
+    }
+
+
+
     /**
     @brief Method to get the CSS array for checking or processing.
     
@@ -613,6 +645,27 @@ class I {
         return $i->AddJs($Content);
     }
     
+
+    /**
+    @brief Method to delete a named JS  entry.
+    
+    Simply remove an entry by its SetName 
+    ~~~~~~~~~~
+        I::DelJs ($SetName="SetNameOfYourEntry");
+    ~~~~~~~~~~
+    @param string $SetName
+        The setname for the entry to delete 
+    @retval boolean/string
+    Returns false on success, and an error message on failure. 
+
+    */
+    public static function DelJs ($SetName=""){
+        $i=I::getInstance();
+        return $i->DelJs($SetName);
+    }
+
+
+
 
     /**
     @brief Method to get the Js array for checking or processing.
