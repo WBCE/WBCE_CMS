@@ -61,8 +61,8 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (23, 'manage_sections', 'enabled'),
 (24, 'section_blocks', 'true'),
 (25, 'smart_login', 'true'),
-(26, 'frontend_login', 'false'),
-(27, 'frontend_signup', 'false'),
+(26, 'frontend_login', 'bfalseb'),
+(27, 'frontend_signup', 'bfalseb'),
 (28, 'search', 'public'),
 (29, 'page_extension', '.php'),
 (30, 'page_spacer', '-'),
@@ -82,5 +82,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (45, 'wb_secform_tokenname', 'formtoken'),
 (46, 'wb_secform_usefp', false),
 (47, 'fingerprint_with_ip_octet', '2');
+(48, 'wb_frontend_login', 'bfalseb'),
+(49, 'wb_frontend_signup', 'bfalseb'),
 
 

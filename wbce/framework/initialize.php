@@ -31,8 +31,8 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
 }
 
+
 // compatibility fix , sooner or later better replace the old constants
-// // compatibility fix , sooner or later better replace the old constants
 if (!defined("MYSQL_BOTH")) define('MYSQL_BOTH',MYSQLI_BOTH);
 if (!defined("MYSQL_NUM")) define('MYSQL_NUM',MYSQLI_NUM);
 if (!defined("MYSQL_ASSOC")) define('MYSQL_ASSOC',MYSQLI_ASSOC);
@@ -80,7 +80,7 @@ else{
 //http://forum.wbce.org/viewtopic.php?id=84
 
 // Pre init, modules may change everyting as almost nothing is already set here
-// Module may hook here to change Page_id Language or whatever. Even System Constants.
+// Module may hook here to change Page_id Language or whatever. Even most System Constants.
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
 $sql .= 'WHERE function LIKE \'%preinit%\' ';
 if (($resSnippets = $database->query($sql))) {
