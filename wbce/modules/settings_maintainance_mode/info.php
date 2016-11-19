@@ -16,3 +16,4 @@ $module_author      = 'Norbert Heimsath(heimsath.org)';
 $module_license	    = 'WTFPL';
 $module_description = 'This setting offers a plain and simple switch to turn maintainance mode on and off.';
 $module_icon        = 'fa fa-ban';
+$module_level	    = 'core'; // remove this if you really want to unistall the module 

@@ -16,3 +16,4 @@ $module_author      = 'Norbert Heimsath(heimsath.org)';
 $module_license	    = 'GPLv2';
 $module_description = 'Edit your personal Data';
 $module_icon        = 'fa fa-user';
+$module_level	    = 'core'; // remove this if you really want to unistall the module 
