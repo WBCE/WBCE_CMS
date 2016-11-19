@@ -175,8 +175,19 @@ if (!function_exists('page_content')) {
      * @param int $block
      * @return void
      */
-    function page_content($block = 1)
+    function page_content($block = 1, $echo=true)
     {
+
+        // We don't want to display the page content 
+        // We want it as a return value  
+        if ($echo===false) {
+            ob_start();		
+	        page_content($block);
+	        $out = ob_get_contents();
+	        ob_end_clean();
+            return $out; 
+        }
+
         // Get outside objects
         global $TEXT, $MENU, $HEADING, $MESSAGE;
         global $globals;
