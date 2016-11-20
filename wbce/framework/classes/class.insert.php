@@ -502,7 +502,7 @@ class Insert {
 
     */
     public function DelCss ($SetName=""){
-         if (!isset($Content['setname']) OR empty ($Content['setname']))
+         if (empty ($SetName))
             return "DelCss can not delete unknown Entry!";
 
          if (!isset($this->Css[$SetName])) 
@@ -718,7 +718,7 @@ class Insert {
 
     */
     public function DelJs ($SetName=""){
-         if (!isset($Content['setname']) OR empty ($Content['setname']))
+         if (empty ($SetName))
             return "DelJs can not delete unknown Entry!";
 
          if (!isset($this->Js[$SetName])) 
