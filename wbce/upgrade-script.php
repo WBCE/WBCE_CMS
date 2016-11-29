@@ -511,6 +511,10 @@ Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
  */
 
 
+echo "<br />Adding field group_id to users table as this may not be there on very old installations <br />";
+db_add_field('group_id', 'users', "INT NOT NULL DEFAULT '0' AFTER `user_id`");
+
+
 echo "<br />Adding field redirect_type to mod_menu_link table<br />";
 db_add_field('redirect_type', 'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER `target_page_id`");
 
