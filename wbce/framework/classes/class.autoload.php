@@ -135,7 +135,9 @@ class WbAuto{
     WbAuto::AddFile("persistence\database","/framework/classes/persistence/database.php", true);
     @endcode
 
-
+    @note Autodetection for direct path added , so in most cases you no longer need 
+    the direct path parameter. 
+ 
     @param string $ClassName
         The actual name of the class to be loaded.
 
@@ -166,9 +168,12 @@ class WbAuto{
         // for windooze make sure we got the right seperator 
         $ClassFile = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $ClassFile);
         
-        // allow to add dirs directly
-        if ($DirektPath) {
-            //this file delivers a full file path  whithout WB path
+        // allow to add files directly
+        if (
+            strpos( $ClassFile, WB_PATH ) !== FALSE ||  //Autodetection of direct path added
+            $DirektPath
+        ) {
+            //this file delivers a full file path  whithout adding WB path
             $LoadFile = $ClassFile;
         } else {
             //construct full filepath whith WB path default behavior
@@ -196,6 +201,9 @@ class WbAuto{
     WbAuto::AddDir("/var/web345/html/websitebaker/modules/mymodule/classes/" ,true);   
     @endcode
 
+    @note Autodetection for direct path added , so in most cases you no longer need 
+    the direct path parameter. 
+
     @param string $Dir
         The path to the Directory to include starting from WB_PATH
 
@@ -222,7 +230,10 @@ class WbAuto{
         $Dir=rtrim($Dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
         
         // allow to add dirs directly
-        if ($DirektPath) {
+        if (
+            strpos( $ClassFile, WB_PATH ) !== FALSE ||  //Autodetection of direct path added
+            $DirektPath
+        ) {
             //construct full dir whithout WB path
             $AddDir=$Dir;
         } else {
