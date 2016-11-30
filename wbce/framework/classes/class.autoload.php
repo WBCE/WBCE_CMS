@@ -231,7 +231,7 @@ class WbAuto{
         
         // allow to add dirs directly
         if (
-            strpos( $ClassFile, WB_PATH ) !== FALSE ||  //Autodetection of direct path added
+            strpos( $Dir, WB_PATH ) !== FALSE ||  //Autodetection of direct path added
             $DirektPath
         ) {
             //construct full dir whithout WB path
