@@ -357,7 +357,7 @@ if (!file_exists(WB_PATH . '/framework/class.database.php')) {
 }
 include WB_PATH . '/framework/class.database.php';
 try {
-    if(false AND extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
+    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
 		$database = new \Persistence\Database();
     } else {
         $database = new database();
@@ -366,10 +366,17 @@ try {
     $sMsg = 'e22: Database host name, username and/or password incorrect.<br />MySQL Error:<br />'
     . $e->getMessage();
     set_error($sMsg);
+    $IsError=true;
 }
 if (!defined('WB_INSTALL_PROCESS')) {
     define('WB_INSTALL_PROCESS', true);
 }
+
+
+// We got DB errors
+if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
+
+
 
 /*****************************
 Begin Create Database Tables
@@ -384,15 +391,22 @@ foreach ($aSqlFiles as $sFileName){
 	if (is_readable($sFile)) {
 		if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve, $bPreserve)) {
 			set_error("e23:unable to read import 'install/".$sFileName."'dfdfdf".$database->get_error() );
+			$IsError=true;
 		}
 	} else {
 		if(file_exists($sFile)){
-			set_error("e24:unable to read file 'install/".$sFileName."'");
+			set_error("e24:unable to read file 'install/".$sFileName."'");$IsError=true;
 		}else{
-			set_error("e25:file 'install/".$sFileName."' doesn't exist!");
+			set_error("e25:file 'install/".$sFileName."' doesn't exist!");$IsError=true;
 		}
 	}
 }
+
+
+// Struct file errors
+if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
+
+
 
 // add settings from install input
 $aSettings = array( 
@@ -432,8 +446,12 @@ $aAdminUser = array(
 //print_r($aAdminUser);
 
 if (!($database->insertRow('{TP}users', $aAdminUser))) {
-    set_error('e26:unable to write Administrator account into table \'users\'');
+    set_error('e26:unable to write Administrator account into table \'users\'');$IsError=true;
 }
+
+// Add  admin errors
+if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
+
 
 /**********************
 END OF TABLES IMPORT
@@ -474,7 +492,7 @@ foreach ($dirs as $type => $dir) {
                     // Pretty ugly hack to let modules run $admin->set_error
                     // See dummy class definition admin_dummy above
                     if ($admin->error != '') {
-                        set_error("e27:".$admin->error);
+                        set_error("e27:".$admin->error);$IsError=true;
                     }
                 } elseif ($type == 'templates') {
                     load_template($dir . '/' . $file);
@@ -491,11 +509,16 @@ foreach ($dirs as $type => $dir) {
 
 // Check if there was a database error
 if ($database->is_error()) {
-    set_error("e28:".$database->get_error());
+    set_error("e28:".$database->get_error());$IsError=true;
 }
+
+// All other Final errors
+if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
+
 
 $loc=ADMIN_URL . "/login/index.php";
 header("Location: $loc");
+
 
 
 
