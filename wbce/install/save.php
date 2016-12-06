@@ -42,7 +42,7 @@ $_SESSION['ERROR_FIELD']=array();
 $_POST = array_map('trim', $_POST);
 
 // Require needed helper functions
-require_once(__DIR__."/functions/save_helper.php"); 
+require_once("save_helper.php"); 
 
 // Begin check to see if form was even submitted
 // Set error if no post vars found
@@ -51,6 +51,7 @@ if (!isset($_POST['website_title'])) {
     set_error('e1:Please fill-in the form below');
     $IsError=true;
 }
+
 // End check to see if form was even submitted
 
 // Begin path and timezone details code
@@ -116,7 +117,10 @@ if ($operating_system == 'windows') {
 if (!isset($_POST['database_host']) or $_POST['database_host'] == '') {
     set_error('e7:Please enter a database host name', 'database_host');
     $IsError=true;
-} 
+} else {
+    $database_host = $_POST['database_host'];
+}
+
 
 // extract port if available
 if (isset($database_port)) {unset($database_port);}
@@ -193,6 +197,8 @@ if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
         $IsError=true;
     }
 }
+
+
 // Get the two admin passwords entered, and check that they match
 if (!isset($_POST['admin_password']) or $_POST['admin_password'] == '') {
     set_error('e16:Please enter a password for the Administrator account', 'admin_password');
@@ -200,6 +206,7 @@ if (!isset($_POST['admin_password']) or $_POST['admin_password'] == '') {
 } else {
     $admin_password = $_POST['admin_password'];
 }
+
 if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
     set_error('e17:Please make sure you re-enter the password for the Administrator account', 'admin_repassword');
     $IsError=true;
@@ -221,7 +228,38 @@ if ($IsError){
    exit;
 }
 
+
+
 $database_charset = 'utf8';
+
+//LEts See if we are able to connect to DB  No DB class needed for this on first
+// I dont want any files Written before we know the content is worth it 
+
+try {
+    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
+        $dbtest = new pdo( 
+            "mysql:host=$database_host;dbname=$database_name",
+            $database_username,
+            $database_password,
+            array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+        );
+    } else {
+        $dbtest = new mysqli(
+            $database_host, 
+            $database_username, 
+            $database_password, 
+            $database_name
+        );
+    }
+} 
+catch (Exception $e) {
+    $sMsg = 'e29: Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
+        . $e->getMessage();
+    // We end right here and dont collect any more errors
+    set_error($sMsg,"",true);
+}
+
+
 // End admin user details code
 
 // build name and content of the config file
@@ -253,9 +291,11 @@ if (is_writable($config_filename)) {
     $sMsg = 'e20:The configuration file <' . $config_filename . '> is missing or not writable.<br />'
     . 'Change its permissions so it is, then re-run step 4.';
 }
-if ($sMsg) {set_error($sMsg);} // if something gone wrong, break with message
-                               // include config file to set constants
+if ($sMsg) {set_error($sMsg,"",true);} // if something gone wrong, break with message
+                               
+// include config file to set constants
 include_once $config_filename;
+
 // now we can complete the config file
 $config_content
 = PHP_EOL . 'require_once(dirname(__FILE__).\'/framework/initialize.php\');' . PHP_EOL
@@ -271,9 +311,9 @@ define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 require ADMIN_PATH . '/interface/version.php';
 
 
-// Try connecting to database
+// Try connecting to database This time whith our Classes 
 if (!file_exists(WB_PATH . '/framework/class.database.php')) {
-    set_error('e21:It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!');
+    set_error('e21:It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!',"",true);
 }
 include WB_PATH . '/framework/class.database.php';
 try {
@@ -285,16 +325,17 @@ try {
 } catch (Exception $e) {
     $sMsg = 'e22: Database host name, username and/or password incorrect.<br />MySQL Error:<br />'
     . $e->getMessage();
-    set_error($sMsg);
-    $IsError=true;
+    set_error($sMsg,"",true);
+   
 }
+
+
+// Cant remember what this was for , but it was important
 if (!defined('WB_INSTALL_PROCESS')) {
     define('WB_INSTALL_PROCESS', true);
 }
 
 
-// We got DB errors
-if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
 
 
 
@@ -310,22 +351,16 @@ foreach ($aSqlFiles as $sFileName){
 	$bPreserve = ($sFileName == "install_struct.sql") ? false : true;
 	if (is_readable($sFile)) {
 		if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve, $bPreserve)) {
-			set_error("e23:unable to read import 'install/".$sFileName."'dfdfdf".$database->get_error() );
-			$IsError=true;
+			set_error("e23:unable to read import 'install/".$sFileName."'dfdfdf".$database->get_error(),"",true);
 		}
 	} else {
 		if(file_exists($sFile)){
-			set_error("e24:unable to read file 'install/".$sFileName."'");$IsError=true;
+			set_error("e24:unable to read file 'install/".$sFileName."'","",true);
 		}else{
-			set_error("e25:file 'install/".$sFileName."' doesn't exist!");$IsError=true;
+			set_error("e25:file 'install/".$sFileName."' doesn't exist!","",true);
 		}
 	}
 }
-
-
-// Struct file errors
-if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
-
 
 
 // add settings from install input
@@ -366,7 +401,7 @@ $aAdminUser = array(
 //print_r($aAdminUser);
 
 if (!($database->insertRow('{TP}users', $aAdminUser))) {
-    set_error('e26:unable to write Administrator account into table \'users\'');$IsError=true;
+    set_error('e26:unable to write Administrator account into table \'users\'',"",true);
 }
 
 // Add  admin errors
@@ -412,7 +447,7 @@ foreach ($dirs as $type => $dir) {
                     // Pretty ugly hack to let modules run $admin->set_error
                     // See dummy class definition admin_dummy above
                     if ($admin->error != '') {
-                        set_error("e27:".$admin->error);$IsError=true;
+                        set_error("e27:".$admin->error,"",true);
                     }
                 } elseif ($type == 'templates') {
                     load_template($dir . '/' . $file);
@@ -426,14 +461,10 @@ foreach ($dirs as $type => $dir) {
 }
 
 
-
 // Check if there was a database error
 if ($database->is_error()) {
-    set_error("e28:".$database->get_error());$IsError=true;
+    set_error("e28:".$database->get_error(),"",true);
 }
-
-// All other Final errors
-if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
 
 
 $loc=ADMIN_URL . "/login/index.php";

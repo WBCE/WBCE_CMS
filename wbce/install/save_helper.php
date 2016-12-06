@@ -54,6 +54,12 @@ function set_error($message, $field_name = '', $now=false)
         }
         // Specify that session support is enabled
         $_SESSION['session_support'] = '<span class="good">Enabled</span>';
+        
+        // There was a request for immediate redirect 
+        if ($now===true) {
+            header('Location: index.php?sessions_checked=true'); 
+            exit;
+        }
     }
 }
 
