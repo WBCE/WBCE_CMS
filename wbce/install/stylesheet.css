@@ -124,6 +124,20 @@ td.value input {
    vertical-align :middle;
  }
  
+ #world_writeable { 
+     width : auto;
+     vertical-align :left;
+ } 
+ 
+ #file_perms_box {
+    line-height:2em; 
+    position: relative; 
+    width: 100%; 
+    float:left; 
+    margin: 0; 
+    padding: 0; 
+    padding-top: 5px;
+ }
  
 h1.step-row {
    margin : 0;

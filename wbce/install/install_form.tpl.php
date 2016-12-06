@@ -20,7 +20,7 @@
         if(type == 'linux') {
             document.getElementById('operating_system_linux').checked = true;
             document.getElementById('operating_system_windows').checked = false;
-            document.getElementById('file_perms_box').style.display = 'none';
+            document.getElementById('file_perms_box').style.display = 'block';
         } else if(type == 'windows') {
             document.getElementById('operating_system_linux').checked = false;
             document.getElementById('operating_system_windows').checked = true;
@@ -129,46 +129,6 @@
                         </tr>
                     </thead>
                     <tbody>
-<?php
-$config = '<span class="good">Writeable</span>';
-$config_content = "<?php\n";
-$configFile = '/config.php';
-if (!isset($_SESSION['config_rename'])) {
-    if ((file_exists($wb_path . '/config.php.new') == true) && !(file_exists($wb_path . $configFile) == true)) {
-        rename($wb_path . '/config.php.new', $wb_path . $configFile);
-    }
-    if ((file_exists($wb_path . $configFile) == true)) {
-        // next operation only if file is writeable
-        if (is_writeable($wb_path . $configFile)) {
-            // already installed? it's not empty
-            if (filesize($wb_path . $configFile) > 128) {
-                $installFlag = false;
-                $config = '<span class="bad">Not empty! WebsiteBaker CE already installed?</span>';
-                // try to open and to write
-            } elseif (!$handle = fopen($wb_path . $configFile, 'w')) {
-                $installFlag = false;
-                $config = '<span class="bad">Not Writeable</span>';
-            } else {
-                if (fwrite($handle, $config_content) === false) {
-                    $installFlag = false;
-                    $config = '<span class="bad">Not Writeable</span>';
-                } else {
-                    $config = '<span class="good">Writeable</span>';
-                    $_SESSION['config_rename'] = true;
-                }
-                // Close file
-                fclose($handle);
-            }
-        } else {
-            $installFlag = false;
-            $config = '<span class="bad">Not Writeable</span>';
-        }
-    } else {
-        $installFlag = false;
-        $config = '<span class="bad">Missing!!?</span>';
-    }
-}
-?>
                         <tr>
                             <td style="color: #666666;"><?php print $wb_root . $configFile?></td>
                             <td colspan="3"  ><?php echo $config?></td>
@@ -223,8 +183,7 @@ if (!isset($_SESSION['config_rename'])) {
                         </tr>
                     </tbody>
                 </table>
-        <?php if ($installFlag == true) {
-            ?>
+<?php if ($installFlag == true) : ?>
                 <table>
                     <thead>
                         <tr>
@@ -249,229 +208,179 @@ if (!isset($_SESSION['config_rename'])) {
                     </tr>
                     <tr>
                         <td class="name">Default Timezone:</td>
-                        <td class="value"><select <?php echo field_error('default_timezone');?> tabindex="3" name="default_timezone" style="width: 100%;">
-        <?php
-        /*
-            build list of TimeZone options
-            */
-            $aZones = array(-12, -11, -10, -9, -8, -7, -6, -5, -4, -3.5, -3, -2, -1, 0, 1, 2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8, 9, 9.5, 10, 11, 12, 13);
-            $sOutput = PHP_EOL;
-            foreach ($aZones as $fOffset) {
-                $sItemTitle = 'GMT ' . (($fOffset > 0) ? '+' : '') . (($fOffset == 0) ? '' : (string) $fOffset . ' Hours');
-                $sOutput .= '<option value="' . (string) $fOffset . '"';
-                if (
-                    (isset($_SESSION['default_timezone']) and $_SESSION['default_timezone'] == (string) $fOffset) ||
-                    (!isset($_SESSION['default_timezone']) and $fOffset == 0)
-                ) {
-                    $sOutput .= ' selected="selected"';
-                }
-                $sOutput .= '>' . $sItemTitle . '</option>' . PHP_EOL;
-            }
-        // output Timezone options
-            echo $sOutput;
-            ?>
+                        <td class="value">
+                            <select <?php echo field_error('default_timezone');?> tabindex="3" name="default_timezone" style="width: 100%;">
+
+                            <?php foreach ($aZones as $fOffset): ?>
+                                <option value="<?php echo (string)$fOffset ?>" <?php if (TzSelected($fOffset)) echo 'selected="selected"' ?> >
+                                    <?php echo 'GMT ' . (($fOffset > 0) ? '+' : '') . (($fOffset == 0) ? '' : (string) $fOffset . ' Hours') ?>
+                                </option>
+                            <?php endforeach ; ?>
+                                
                             </select>
-                        </td>
+                        </td><!-- class value -->
                     </tr>
                 <tr>
                     <td class="name">Default Language: </td>
-                    <td class="value"><select <?php echo field_error('default_language');?> tabindex="3" name="default_language" style="width: 100%;">
-        <?php
-        /*
-            Find all available languages in /language/ folder and build option list from
-            */
-            $sLangDir = str_replace('\\', '/', dirname(dirname(__FILE__)) . '/languages/');
-            $aAllowedLanguages = preg_replace('/^.*\/([A-Z]{2})\.php$/iU', '\1', glob($sLangDir . '??.php'));
-            sort($aAllowedLanguages);
-            $sOutput = PHP_EOL;
+                    <td class="value">
+                        <select <?php echo field_error('default_language');?> tabindex="3" name="default_language" style="width: 100%;">
 
-            foreach ($aAllowedLanguages as $sLangCode) {
-                if (is_readable($sLangDir . $sLangCode . '.php')) {
-                    if (($sContent = file_get_contents($sLangDir . $sLangCode . '.php', false, null, -1, 3000)) !== false) {
-                        if (preg_match('/.*\s*\$language_name\s*=\s*([\'\"])([^\1]*)\1\s*;/siU', $sContent, $aMatches)) {
-                            $aLangs[$sLangCode]= $aMatches[2];
-                        }
-                    }
-                }
-            }
-            $aAllowedLanguages=$aLangs;
-            natsort($aAllowedLanguages);
-            
-            foreach ($aAllowedLanguages as $sLangCode=>$Language) {   
-                $sOutput .= '<option value="' . $sLangCode . '"';
-                if (
-                    (isset($_SESSION['default_language']) and $_SESSION['default_language'] == $sLangCode) ||
-                    (!isset($_SESSION['default_language']) and $sLangCode == 'EN')
-                ) {
-                    $sOutput .= ' selected="selected"';
-                }
-                $sOutput .= '>' . $Language . '</option>' . PHP_EOL;    
-            }
-            if (isset($sContent)) {unset($sContent);}
-        // output Language options
-            echo $sOutput;
-            ?>
+                        <?php foreach ($aAllowedLanguages as $sLangCode=>$Language): ?>
+                        
+                            <option value="<?php echo $sLangCode ?>" <?php if (LangSelected($sLangCode)) echo 'selected="selected"' ?> >
+                                <?php echo$Language ?> 
+                            </option>
+                         
+                        <?php endforeach ; ?>
+
                         </select>
                         <?php //echo "<pre>";print_r($aAllowedLanguages);echo "</pre>";?>
                     </td>
                     <td colspan="4">&nbsp;</td>
                 </tr>
-            </tbody>
-                </table>
-
-                <table>
-                    <thead>
-                <tr>
-                    <th class="step-row" colspan="4">
-                    <h1 class="step-row">Step 4</h1>&nbsp;Please specify your operating system information below...
-                    </th>
-                </tr>
-                    </thead>
-            <tbody>
-                <tr>
-                    <td class="name">Server Operating System: </td>
-                    <td style="">
-                        <input type="radio" tabindex="4" name="operating_system" id="operating_system_linux" onclick="document.getElementById('file_perms_box').style.display = 'none';" value="linux"<?php if (!isset($_SESSION['operating_system']) or $_SESSION['operating_system'] == 'linux') {echo ' checked="checked"';}
-            ?> />
-                        <span style="cursor: pointer;" onclick="javascript: change_os('linux');">Linux/Unix based</span>
-                        <br />
-                        <input type="radio" tabindex="5" name="operating_system" id="operating_system_windows" onclick="document.getElementById('file_perms_box').style.display = 'none';" value="windows"<?php if (isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {echo ' checked="checked"';}
-            ?> />
-                        <span style="cursor: pointer;" onclick="javascript: change_os('windows');">Windows</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="name">&nbsp;</td>
-                    <td class="value">
-                        <div id="file_perms_box" style="line-height:2em; position: relative; width: 100%;float:left; margin: 0; padding: 0; display: <?php if (isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {echo 'none';} else {echo 'none';}
-            ?>;">
-                            <input type="checkbox" tabindex="6" name="world_writeable" id="world_writeable" value="true"<?php if (isset($_SESSION['world_writeable']) and $_SESSION['world_writeable'] == true) {echo ' checked="checked';}
-            ?> />
-                            <label style=" margin: 0;  " for="world_writeable">
-                                World-writeable file permissions (777)
-                            </label>
-                        <br />
-                            <p class="warning">(Please note: only recommended for testing environments)</p>
-                        </div>
-                    </td>
-                </tr>
                 </tbody>
-                </table>
-                <table>
-                    <thead>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="step-row" colspan="4">
+                        <h1 class="step-row">Step 4</h1>&nbsp;Please specify your operating system information below...
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name">Server Operating System: </td>
+                        <td style="">
+                            <input type="radio" tabindex="4" name="operating_system" id="operating_system_linux" onclick="document.getElementById('file_perms_box').style.display = 'none';" value="linux"<?php echo $sLinux ?> />
+                            <span style="cursor: pointer;" onclick="javascript: change_os('linux');">Linux/Unix based</span>
+                            <br />
+                            <input type="radio" tabindex="5" name="operating_system" id="operating_system_windows" onclick="document.getElementById('file_perms_box').style.display = 'none';" value="windows"<?php echo $sWindows ?> />
+                            <span style="cursor: pointer;" onclick="javascript: change_os('windows');">Windows</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="name">&nbsp;</td>
+                        <td class="value">
+                            <div id="file_perms_box" style="display: <?php echo $sPermissionBlock?>;">
+                                <input type="checkbox" tabindex="6" name="world_writeable" id="world_writeable" value="true" <?php echo $sWorldWriteableCheck?> />
+                                <label style=" margin: 0;  " for="world_writeable">
+                                    World-writeable file permissions (777)
+                                </label>
+                            <br />
+                                <p class="warning">(Please note: only recommended for testing environments) <br />You can adjust this setting later in the Backend<br /></p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <thead>
                     <tr>
                         <th colspan="4" class="step-row">
                         <h1 class="step-row">Step 5</h1>&nbsp;Please enter your MySQL database server details below...
                         </th>
                     </tr>
-                    </thead>
+                </thead>
                 <tbody>
                     <tr>
                         <td class="name">Host Name</td>
                         <td class="value">
-                            <input <?php echo field_error('database_host');?> type="text" tabindex="7" name="database_host" value="<?php if (isset($_SESSION['database_host'])) {echo $_SESSION['database_host'];} else {echo 'localhost';}
-            ?>" />
+                            <input <?php echo field_error('database_host');?> type="text" tabindex="7" name="database_host" value="<?php echo $sDatabaseHost ?>" />
                         </td>
                     </tr>
                     <tr>
                         <td class="name">Database Name: </td>
                         <td class="value" style="white-space: nowrap;">
-                            <input <?php echo field_error('database_name')?> type="text" tabindex="8" name="database_name" value="<?php if (isset($_SESSION['database_name'])) {echo $_SESSION['database_name'];} else {echo 'DatabaseName';}
-            ?>" />
+                            <input <?php echo field_error('database_name')?> type="text" tabindex="8" name="database_name" value="<?php echo $sDatabaseName  ?>" />
                         <span style="display: inline;">&nbsp;([a-zA-Z0-9_-])</span>
                         </td>
                     </tr>
-                <tr>
-                    <td class="name">Table Prefix: </td>
-                    <td class="value" style="white-space: nowrap;">
-                        <input <?php echo field_error('table_prefix')?> type="text" tabindex="9" name="table_prefix" value="<?php if (isset($_SESSION['table_prefix'])) {echo $_SESSION['table_prefix'];} else {echo 'wbce000';}
-            ?>" />
-                        <span style="display: inline;">&nbsp;([a-z0-9])</span>
-                    </td>
-                </tr>
-                <tr>
-                        <td class="name">Username:</td>
-                        <td class="value">
-                            <input <?php echo field_error('database_username');?> type="text" tabindex="10" name="database_username" value="<?php if (isset($_SESSION['database_username'])) {echo $_SESSION['database_username'];} else {echo '';}
-            ?>" />
+                    <tr>
+                        <td class="name">Table Prefix: </td>
+                        <td class="value" style="white-space: nowrap;">
+                            <input <?php echo field_error('table_prefix')?> type="text" tabindex="9" name="table_prefix" value="<?php echo $sTablePrefix ?>" />
+                            <span style="display: inline;">&nbsp;([a-z0-9])</span>
                         </td>
-                </tr>
-                <tr>
+                    </tr>
+                    <tr>
+                            <td class="name">Username:</td>
+                            <td class="value">
+                                <input <?php echo field_error('database_username');?> type="text" tabindex="10" name="database_username" value="<?php echo $sDatabaseUsername  ?>" />
+                            </td>
+                    </tr>
+                    <tr>
+                            <td class="name">Password:</td>
+                            <td class="value">
+                                <input type="password" tabindex="11" name="database_password" value="<?php echo $sDatabasePassword ?>" />
+                            </td>
+                    </tr>
+                    <tr>
+                        <td class="name hide" colspan="2">
+                            <input type="checkbox" tabindex="12" name="install_tables" id="install_tables" value="true"<?php if (!isset($_SESSION['install_tables'])) {echo ' checked="checked"';} elseif ($_SESSION['install_tables'] == 'true') {echo ' checked="checked"';}
+                ?> />
+                            <label for="install_tables" style="color: #666666;">Install Tables</label>
+                            <br />
+                            <span style="font-size: 1px; color: #666666;">(Please note: May remove existing tables and data)</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4" class="step-row">
+                        <h1 class="step-row">Step 6</h1>&nbsp;Please enter your website title below...
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name">Website Title:</td>
+                        <td class="value">
+                            <input <?php echo field_error('website_title');?> type="text" tabindex="13" name="website_title" value="<?php echo $sWebsiteTitle  ?>" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4" class="step-row">
+                        <h1 class="step-row">Step 7</h1> Please enter your Administrator account details below...
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name">Loginname:</td>
+                        <td class="value">
+                            <input <?php echo field_error('admin_username');?> type="text" tabindex="14" name="admin_username" value="<?php echo $sAdminUsername  ?>" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="name">E-Mail:</td>
+                        <td class="value">
+                            <input <?php echo field_error('admin_email');?> type="text" tabindex="15" name="admin_email" value="<?php echo $sAdminEmail ?>" />
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="name">Password:</td>
                         <td class="value">
-                            <input type="password" tabindex="11" name="database_password" value="<?php if (isset($_SESSION['database_password'])) {echo $_SESSION['database_password'];}
-            ?>" />
+                            <input <?php echo field_error('admin_password');?> type="password" tabindex="16" name="admin_password" value="<?php echo $sAdminPassword ?>" />
                         </td>
-                </tr>
-                <tr>
-                    <td class="name hide" colspan="2">
-                        <input type="checkbox" tabindex="12" name="install_tables" id="install_tables" value="true"<?php if (!isset($_SESSION['install_tables'])) {echo ' checked="checked"';} elseif ($_SESSION['install_tables'] == 'true') {echo ' checked="checked"';}
-            ?> />
-                        <label for="install_tables" style="color: #666666;">Install Tables</label>
-                        <br />
-                        <span style="font-size: 1px; color: #666666;">(Please note: May remove existing tables and data)</span>
-                    </td>
-                </tr>
+                    </tr>
+                    <tr>
+                        <td class="name">Repeat Password:</td>
+                        <td class="value">
+                            <input <?php echo field_error('admin_repassword');?> type="password" tabindex="17" name="admin_repassword" value="<?php echo $sAdminRepassword ?>"  />
+                        </td>
+                    </tr>
                 </tbody>
-                </table>
-                <table>
-                <thead>
-                <tr>
-                    <th colspan="4" class="step-row">
-                    <h1 class="step-row">Step 6</h1>&nbsp;Please enter your website title below...
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="name">Website Title:</td>
-                    <td class="value">
-                        <input <?php echo field_error('website_title');?> type="text" tabindex="13" name="website_title" value="<?php if (isset($_SESSION['website_title'])) {echo $_SESSION['website_title'];} else {echo 'Enter your website title';}
-            ?>" />
-                    </td>
-                </tr>
-                </tbody>
-                </table>
-                <table>
-                <thead>
-                <tr>
-                    <th colspan="4" class="step-row">
-                    <h1 class="step-row">Step 7</h1> Please enter your Administrator account details below...
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="name">Loginname:</td>
-                    <td class="value">
-                        <input <?php echo field_error('admin_username');?> type="text" tabindex="14" name="admin_username" value="<?php if (isset($_SESSION['admin_username'])) {echo $_SESSION['admin_username'];} else {echo '';}
-            ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="name">E-Mail:</td>
-                    <td class="value">
-                        <input <?php echo field_error('admin_email');?> type="text" tabindex="15" name="admin_email" value="<?php if (isset($_SESSION['admin_email'])) {echo $_SESSION['admin_email'];}
-            ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="name">Password:</td>
-                    <td class="value">
-                        <input <?php echo field_error('admin_password');?> type="password" tabindex="16" name="admin_password" value="" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="name">Repeat Password:</td>
-                    <td class="value">
-                        <input <?php echo field_error('admin_repassword');?> type="password" tabindex="17" name="admin_repassword" value=""  />
-                    </td>
-                </tr>
-                </tbody>
-                </table>
-        <?php }
-        ?>
-                <table>
+            </table>
+<?php endif; // installFlag ?>
+            <table>
                 <tbody>
                     <tr valign="top">
                         <td><strong>Please note: &nbsp;</strong></td>
@@ -489,18 +398,17 @@ if (!isset($_SESSION['config_rename'])) {
                     <tr valign="top">
                         <td>
                             <p class="center">
-                                <?php if ($installFlag == true) {?>
-                                <input type="submit" tabindex="20" name="install" value="Install WBCE CMS" />
-                                <?php } else {?>
-                                <input type="button" tabindex="20" name="restart" value="Check your Settings in Step1 or Step2" class="submit" onclick="javascript: window.location = '<?php print $_SERVER['SCRIPT_NAME']?>';" />
-                                <?php }
-                ?>
+                                <?php if ($installFlag == true): ?>
+                                    <input type="submit" tabindex="20" name="install" value="Install WBCE CMS" />
+                                <?php else :?>
+                                    <input type="button" tabindex="20" name="restart" value="Check your Settings in Step1 or Step2" class="submit" onclick="javascript: window.location = '<?php print $_SERVER['SCRIPT_NAME']?>';" />
+                                <?php endif; //install flag ?>
                             </p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
+            
         </form>
     </div> <!-- class body -->
 

@@ -47,10 +47,10 @@ function save_user_data()
         } else {
             $_SESSION['operating_system'] = $_POST['operating_system'];
         }
-        if (!isset($_POST['world_writeable'])) {
-            $_SESSION['world_writeable'] = false;
+        if (isset($_POST['world_writeable']) AND $_POST['world_writeable']=="true") {
+            $_SESSION['world_writeable'] = "true";
         } else {
-            $_SESSION['world_writeable'] = true;
+            $_SESSION['world_writeable'] = "false";
         }
         $_SESSION['database_host'] = $_POST['database_host'];
         $_SESSION['database_username'] = $_POST['database_username'];

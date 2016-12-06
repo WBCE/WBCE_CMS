@@ -113,4 +113,169 @@ if (
     $sSaveModeText="Enabled";
 }
 
+////////////////////////////////////////////
+// Check config.php 
+////////////////////////////////////////////
+
+$config = '<span class="good">Writeable</span>';
+$config_content = "<?php\n";
+$configFile = '/config.php';
+if (!isset($_SESSION['config_rename'])) {
+    if ((file_exists($wb_path . '/config.php.new') == true) && !(file_exists($wb_path . $configFile) == true)) {
+        rename($wb_path . '/config.php.new', $wb_path . $configFile);
+    }
+    if ((file_exists($wb_path . $configFile) == true)) {
+        // next operation only if file is writeable
+        if (is_writeable($wb_path . $configFile)) {
+            // already installed? it's not empty
+            if (filesize($wb_path . $configFile) > 128) {
+                $installFlag = false;
+                $config = '<span class="bad">Not empty! WebsiteBaker CE already installed?</span>';
+                // try to open and to write
+            } elseif (!$handle = fopen($wb_path . $configFile, 'w')) {
+                $installFlag = false;
+                $config = '<span class="bad">Not Writeable</span>';
+            } else {
+                if (fwrite($handle, $config_content) === false) {
+                    $installFlag = false;
+                    $config = '<span class="bad">Not Writeable</span>';
+                } else {
+                    $config = '<span class="good">Writeable</span>';
+                    $_SESSION['config_rename'] = true;
+                }
+                // Close file
+                fclose($handle);
+            }
+        } else {
+            $installFlag = false;
+            $config = '<span class="bad">Not Writeable</span>';
+        }
+    } else {
+        $installFlag = false;
+        $config = '<span class="bad">Missing!!?</span>';
+    }
+}
+
+
+////////////////////////////////////////////
+// TimeZones  
+////////////////////////////////////////////
+// setting zones manually
+$aZones = array(-12, -11, -10, -9, -8, -7, -6, -5, -4, -3.5, -3, -2, -1, 0, 1, 2, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8, 9, 9.5, 10, 11, 12, 13);
+
+// Function for easy templating
+function TzSelected($fOffset) {
+    if (
+        (isset($_SESSION['default_timezone']) and $_SESSION['default_timezone'] == (string) $fOffset) ||
+        (!isset($_SESSION['default_timezone']) and $fOffset == 0)
+    ) {
+        return true;
+    }
+    return false;
+}
+
+
+
+
+////////////////////////////////////////////
+// Fetch allowed Languages  
+////////////////////////////////////////////
+
+//Find all available languages in /language/ folder and build option list from
+
+$sLangDir = str_replace('\\', '/', dirname(dirname(__FILE__)) . '/languages/');
+$aAllowedLanguages = preg_replace('/^.*\/([A-Z]{2})\.php$/iU', '\1', glob($sLangDir . '??.php'));
+sort($aAllowedLanguages);
+$sOutput = PHP_EOL;
+
+foreach ($aAllowedLanguages as $sLangCode) {
+    if (is_readable($sLangDir . $sLangCode . '.php')) {
+        if (($sContent = file_get_contents($sLangDir . $sLangCode . '.php', false, null, -1, 3000)) !== false) {
+            if (preg_match('/.*\s*\$language_name\s*=\s*([\'\"])([^\1]*)\1\s*;/siU', $sContent, $aMatches)) {
+                $aLangs[$sLangCode]= $aMatches[2];
+            }
+        }
+    }
+}
+$aAllowedLanguages=$aLangs;
+natsort($aAllowedLanguages);
+
+// Function for easy templating
+function LangSelected($sLangCode) {
+    if (
+        (isset($_SESSION['default_language']) and $_SESSION['default_language'] == $sLangCode) ||
+        (!isset($_SESSION['default_language']) and $sLangCode == 'EN')
+    ) {
+        return true;
+    }
+    return false;
+}
+
+////////////////////////////////////////////
+// OS Stuff  
+////////////////////////////////////////////
+// for shorter Templating
+$sLinux = '';
+$sWindows='';
+$sPermissionBlock='';
+$sWorldWriteableCheck='';
+//Linux
+if (!isset($_SESSION['operating_system']) or $_SESSION['operating_system'] == 'linux') {$sLinux = ' checked="checked"';}
+
+// Windows
+if (isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {$sWindows=' checked="checked"';}
+
+// Permissions Block
+if (isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {$sPermissionBlock= 'none';} 
+else                                                                                     {$sPermissionBlock= 'block';}
+
+// World Writable checkbox
+if (isset($_SESSION['world_writeable']) and $_SESSION['world_writeable'] == "true") { $sWorldWriteableCheck= ' checked="checked"';}
+
+
+
+////////////////////////////////////////////
+// DB Stuff  
+////////////////////////////////////////////
+//for shorter Templating
+$sDatabaseHost =     'localhost';
+$sDatabaseName =     'DatabaseName';
+$sTablePrefix =      'wbce000';
+$sDatabaseUsername = '';
+$sDatabasePassword = '';
+
+
+if (isset($_SESSION['database_host']))     {$sDatabaseHost= $_SESSION['database_host'];} 
+if (isset($_SESSION['database_name']))     {$sDatabaseName= $_SESSION['database_name'];} 
+if (isset($_SESSION['table_prefix']))      {$sTablePrefix= $_SESSION['table_prefix'];} 
+if (isset($_SESSION['database_username'])) {$sDatabaseUsername= $_SESSION['database_username'];} 
+if (isset($_SESSION['database_password'])) {$sDatabasePassword= $_SESSION['database_password'];}
+
+/// @todo reactivate the install Tables settings / better overwrite existing tables
+
+////////////////////////////////////////////
+// Page title 
+////////////////////////////////////////////
+//for shorter Templating
+$sWebsiteTitle="Enter your website title";
+
+if (isset($_SESSION['website_title']))   {$sWebsiteTitle= $_SESSION['website_title'];} 
+
+
+////////////////////////////////////////////
+// Admin Stuff  
+////////////////////////////////////////////
+//for shorter Templating
+$sAdminPassword="";
+$sAdminRepassword="";
+$sAdminUsername="";
+$sAdminEmail="";
+
+if (isset($_SESSION['admin_username']))   {$sAdminUsername= $_SESSION['admin_username'];} 
+if (isset($_SESSION['admin_email']))      {$sAdminEmail= $_SESSION['admin_email'];}
+if (isset($_SESSION['admin_password']))   {$sAdminPassword= $_SESSION['admin_password'];} 
+if (isset($_SESSION['admin_repassword'])) {$sAdminRepassword= $_SESSION['admin_repassword'];}
+
+// Include the template
 include "install_form.tpl.php";
+
