@@ -42,7 +42,7 @@ $_SESSION['ERROR_FIELD']=array();
 $_POST = array_map('trim', $_POST);
 
 // Require needed helper functions
-require_once("save_helper.php"); 
+require_once("helper_functions.php"); 
 
 // Begin check to see if form was even submitted
 // Set error if no post vars found
