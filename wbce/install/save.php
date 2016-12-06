@@ -17,6 +17,8 @@ if (WB_DEBUG === $debug) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 }
+
+// needed by class secureform 
 define ("WB_SECFORM_TIMEOUT",'7200');
 
 
@@ -27,7 +29,7 @@ if (!defined('SESSION_STARTED')) {
     define('SESSION_STARTED', true);
 }
 // get random-part for session_name()
-// Random name is for later sessions , not installer session
+// Random name is for later sessions (more secure), not installer session
 list($usec, $sec) = explode(' ', microtime());
 srand((float) $sec + ((float) $usec * 100000));
 $session_rand = rand(1000, 9999);
@@ -36,92 +38,11 @@ $session_rand = rand(1000, 9999);
 $_SESSION['message']=array();
 $_SESSION['ERROR_FIELD']=array();
 
-// Function to set error
-function set_error($message, $field_name = '')
-{
-//    global $_POST;
-    if (isset($message) and $message != '') {
-        // Copy values entered into session so user doesn't have to re-enter everything
-        if (isset($_POST['website_title'])) {
-            $_SESSION['wb_url'] = $_POST['wb_url'];
-            $_SESSION['default_timezone'] = $_POST['default_timezone'];
-            $_SESSION['default_language'] = $_POST['default_language'];
-            if (!isset($_POST['operating_system'])) {
-                $_SESSION['operating_system'] = 'linux';
-            } else {
-                $_SESSION['operating_system'] = $_POST['operating_system'];
-            }
-            if (!isset($_POST['world_writeable'])) {
-                $_SESSION['world_writeable'] = false;
-            } else {
-                $_SESSION['world_writeable'] = true;
-            }
-            $_SESSION['database_host'] = $_POST['database_host'];
-            $_SESSION['database_username'] = $_POST['database_username'];
-            $_SESSION['database_password'] = $_POST['database_password'];
-            $_SESSION['database_name'] = $_POST['database_name'];
-            $_SESSION['table_prefix'] = $_POST['table_prefix'];
-            if (!isset($_POST['install_tables'])) {
-                $_SESSION['install_tables'] = false;
-            } else {
-                $_SESSION['install_tables'] = true;
-            }
-            $_SESSION['website_title'] = $_POST['website_title'];
-            $_SESSION['admin_username'] = $_POST['admin_username'];
-            $_SESSION['admin_email'] = $_POST['admin_email'];
-            $_SESSION['admin_password'] = $_POST['admin_password'];
-            $_SESSION['admin_repassword'] = $_POST['admin_repassword'];
-        }
-        // Set the message
-        
-        $_SESSION['message'][] = $message;
-        // Set the element(s) to highlight
-        if ($field_name != '') {
-            $_SESSION['ERROR_FIELD'][] = $field_name;
-        }
-        // Specify that session support is enabled
-        $_SESSION['session_support'] = '<span class="good">Enabled</span>';
-    }
-}
+// Trim all entries in $_POST array
+$_POST = array_map('trim', $_POST);
 
-// Function to workout what the default permissions are for files created by the webserver
-function default_file_mode($temp_dir)
-{
-    if (version_compare(PHP_VERSION, '5.3.6', '>=') && is_writable($temp_dir)) {
-        $filename = $temp_dir . '/test_permissions.txt';
-        $handle = fopen($filename, 'w');
-        fwrite($handle, 'This file is to get the default file permissions');
-        fclose($handle);
-        $default_file_mode = '0' . substr(sprintf('%o', fileperms($filename)), -3);
-        unlink($filename);
-    } else {
-        $default_file_mode = '0777';
-    }
-    return $default_file_mode;
-}
-
-// Function to workout what the default permissions are for directories created by the webserver
-function default_dir_mode($temp_dir)
-{
-    if (version_compare(PHP_VERSION, '5.3.6', '>=') && is_writable($temp_dir)) {
-        $dirname = $temp_dir . '/test_permissions/';
-        mkdir($dirname);
-        $default_dir_mode = '0' . substr(sprintf('%o', fileperms($dirname)), -3);
-        rmdir($dirname);
-    } else {
-        $default_dir_mode = '0777';
-    }
-    return $default_dir_mode;
-}
-
-function add_slashes($input)
-{
-    if (get_magic_quotes_gpc() || (!is_string($input))) {
-        return $input;
-    }
-    $output = addslashes($input);
-    return $output;
-}
+// Require needed helper functions
+require_once(__DIR__."/functions/save_helper.php"); 
 
 // Begin check to see if form was even submitted
 // Set error if no post vars found
@@ -195,9 +116,8 @@ if ($operating_system == 'windows') {
 if (!isset($_POST['database_host']) or $_POST['database_host'] == '') {
     set_error('e7:Please enter a database host name', 'database_host');
     $IsError=true;
-} else {
-    $database_host = trim($_POST['database_host']);
-}
+} 
+
 // extract port if available
 if (isset($database_port)) {unset($database_port);}
 $aMatches = preg_split('/:/s', $database_host, -1, PREG_SPLIT_NO_EMPTY);
@@ -518,7 +438,6 @@ if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
 
 $loc=ADMIN_URL . "/login/index.php";
 header("Location: $loc");
-
 
 
 
