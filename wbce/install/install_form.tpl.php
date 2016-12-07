@@ -386,6 +386,7 @@
         <a href="http://www.wbce.org/"  target="_blank">WBCE</a> is released under the
         <a href="http://www.gnu.org/licenses/gpl.html"  target="_blank">GNU General Public License</a>
         <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+        <br > WBCE Version: <?php echo NEW_WBCE_VERSION ?>
     </div > <!-- class footer -->
 
 </body>

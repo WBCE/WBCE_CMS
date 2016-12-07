@@ -29,6 +29,9 @@ $wb_root = str_replace(realpath($doc_root), '', $wb_path);
 // Require helper functions
 require_once("helper_functions.php"); 
 
+// Require Version Info
+require_once("../admin/interface/version.php"); 
+
 // This is to decide if we display the Install Button on the end of the page 
 $installFlag = true;
 
