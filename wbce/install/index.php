@@ -10,6 +10,12 @@
  * @license GNU GPL2 (or any later version)
  */
 
+define ("WB_DEBUG", true);
+
+if (WB_DEBUG === true) {
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+}
 
 // start Session if not already started
 if (!defined('SESSION_STARTED')) {
@@ -94,7 +100,7 @@ if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
 else {
     $sPhpVersion="bad";
     $installFlag = false;
-    set_error('e30: Your PHP version is too old !');
+    set_error(d('e30: ').'Your PHP version is too old !');
 }
 
 

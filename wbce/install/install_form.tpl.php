@@ -58,7 +58,7 @@
             <div class="warningbox"  >
             
                 <?php foreach ($_SESSION['message'] as $message):?>
-                <b>Error:</b><?php echo $message?><br>
+                <b>Error: </b><?php echo $message?><br>
                 <?php endforeach;?>
                 
             </div>

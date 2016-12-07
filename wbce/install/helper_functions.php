@@ -123,3 +123,11 @@ function field_error($field_name = '')
         return ' class="wrong"';
     }
 }
+
+// returns content only if WB_DEBUG is true
+function d($s){
+    if (defined("WB_DEBUG") and WB_DEBUG===true)
+        return $s;
+    else 
+        return ''; 
+}

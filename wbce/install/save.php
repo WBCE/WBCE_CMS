@@ -11,9 +11,8 @@
  */
 
 define ("WB_DEBUG", true);
-$debug= true; // left in for possible compatibility issues
 
-if (WB_DEBUG === $debug) {
+if (WB_DEBUG === true) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 }
@@ -48,7 +47,7 @@ require_once("helper_functions.php");
 // Set error if no post vars found
 $IsError=false;
 if (!isset($_POST['website_title'])) {
-    set_error('e1:Please fill-in the form below');
+    set_error(d('e1: ').'Please fill-in the form below');
     $IsError=true;
 }
 
@@ -58,7 +57,7 @@ if (!isset($_POST['website_title'])) {
 
 // Check if user has entered the installation url
 if (!isset($_POST['wb_url']) or $_POST['wb_url'] == '') {
-    set_error('e2:Please enter an absolute URL', 'wb_url');
+    set_error(d('e2: ').'Please enter an absolute URL', 'wb_url');
     $IsError=true;
 } else {
     $wb_url = $_POST['wb_url'];
@@ -67,7 +66,7 @@ if (!isset($_POST['wb_url']) or $_POST['wb_url'] == '') {
 $wb_url = rtrim($wb_url, '\\/');
 // Get the default time zone
 if (!isset($_POST['default_timezone']) or !is_numeric($_POST['default_timezone'])) {
-    set_error('e3:Please select a valid default timezone', 'default_timezone');
+    set_error(d('e3: ').'Please select a valid default timezone', 'default_timezone');
     $IsError=true;
 } else {
     $default_timezone = $_POST['default_timezone'] * 60 * 60;
@@ -79,13 +78,13 @@ if (!isset($_POST['default_timezone']) or !is_numeric($_POST['default_timezone']
 $sLangDir = str_replace('\\', '/', dirname(dirname(__FILE__)) . '/languages/');
 $allowed_languages = preg_replace('/^.*\/([A-Z]{2})\.php$/iU', '\1', glob($sLangDir . '??.php'));
 if (!isset($_POST['default_language']) or !in_array($_POST['default_language'], $allowed_languages)) {
-    set_error('e4:Please select a valid default backend language', 'default_language');
+    set_error(d('e4: ').'Please select a valid default backend language', 'default_language');
     $IsError=true;
 } else {
     $default_language = $_POST['default_language'];
     // make sure the selected language file exists in the language folder
     if (!file_exists('../languages/' . $default_language . '.php')) {
-        set_error('e5:The language file: \'' . $default_language . '.php\' is missing. Upload file to language folder or choose another language', 'default_language');
+        set_error(d('e5: ').'The language file: \'' . $default_language . '.php\' is missing. Upload file to language folder or choose another language', 'default_language');
         $IsError=true;
     }
 }
@@ -94,7 +93,7 @@ if (!isset($_POST['default_language']) or !in_array($_POST['default_language'], 
 // Begin operating system specific code
 // Get operating system
 if (!isset($_POST['operating_system']) or $_POST['operating_system'] != 'linux' and $_POST['operating_system'] != 'windows') {
-    set_error('e6: Please select a valid operating system');
+    set_error(d('e6: ').'Please select a valid operating system');
     $IsError=true;
 } else {
     $operating_system = $_POST['operating_system'];
@@ -118,7 +117,7 @@ if ($operating_system == 'windows') {
 // Begin database details code
 // Check if user has entered a database host
 if (!isset($_POST['database_host']) or empty($_POST['database_host'])) {
-    set_error('e7:Please enter a database host name', 'database_host');
+    set_error(d('e7: ').'Please enter a database host name', 'database_host');
     $IsError=true;
 } else {
     $database_host = $_POST['database_host'];
@@ -126,27 +125,27 @@ if (!isset($_POST['database_host']) or empty($_POST['database_host'])) {
 
 // Check if user has entered a database username
 if (!isset($_POST['database_username']) or $_POST['database_username'] == '') {
-    set_error('e8:Please enter a database username', 'database_username');
+    set_error(d('e8: ').'Please enter a database username', 'database_username');
     $IsError=true;
 } else {
     $database_username = $_POST['database_username'];
 }
 // Check if user has entered a database password
 if (!isset($_POST['database_password'])) {
-    set_error('e9:Please enter a database password', 'database_password');
+    set_error(d('e9: ').'Please enter a database password', 'database_password');
     $IsError=true;
 } else {
     $database_password = $_POST['database_password'];
 }
 // Check if user has entered a database name
 if (!isset($_POST['database_name']) or $_POST['database_name'] == '') {
-    set_error('e10:Please enter a database name', 'database_name');
+    set_error(d('e10: ').'Please enter a database name', 'database_name');
     $IsError=true;
 } else {
     // make sure only allowed characters are specified
     if (preg_match('/[^a-z0-9_-]+/i', $_POST['database_name'])) {
         // contains invalid characters (only a-z, A-Z, 0-9 and _ allowed to avoid problems with table/field names)
-        set_error('e11:Only characters a-z, A-Z, 0-9, - and _ allowed in database name.', 'database_name');
+        set_error(d('e11: ').'Only characters a-z, A-Z, 0-9, - and _ allowed in database name.', 'database_name');
         $IsError=true;
     }
     $database_name = $_POST['database_name'];
@@ -154,7 +153,7 @@ if (!isset($_POST['database_name']) or $_POST['database_name'] == '') {
 // Get table prefix
 if (preg_match('/[^a-z0-9]+/', $_POST['table_prefix'])) {
     // contains invalid characters (only a-z, A-Z, 0-9 and _ allowed to avoid problems with table/field names)
-    set_error('e12: Only characters a-z and 0-9 allowed in table_prefix.', 'table_prefix');
+    set_error(d('e12: ').'Only characters a-z and 0-9 allowed in table_prefix.', 'table_prefix');
     $IsError=true;
 } else {
     $table_prefix = $_POST['table_prefix'];
@@ -164,7 +163,7 @@ $install_tables = true;
 // Begin website title code
 // Get website title
 if (!isset($_POST['website_title']) or $_POST['website_title'] == '') {
-    set_error('e12: Please enter a website title', 'website_title');
+    set_error(d('e12a: ').'Please enter a website title', 'website_title');
     $IsError=true;
 } else {
     $website_title = add_slashes($_POST['website_title']);
@@ -174,20 +173,20 @@ if (!isset($_POST['website_title']) or $_POST['website_title'] == '') {
 // Begin admin user details code
 // Get admin username
 if (!isset($_POST['admin_username']) or $_POST['admin_username'] == '') {
-    set_error('e13:Please enter a username for the Administrator account', 'admin_username');
+    set_error(d('e13: ').'Please enter a username for the Administrator account', 'admin_username');
     $IsError=true;
 } else {
     $admin_username = $_POST['admin_username'];
 }
 // Get admin email and validate it
 if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
-    set_error('e14:Please enter an email for the Administrator account', 'admin_email');
+    set_error(d('e14: ').'Please enter an email for the Administrator account', 'admin_email');
     $IsError=true;
 } else {
     if (preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i', $_POST['admin_email'])) {
         $admin_email = $_POST['admin_email'];
     } else {
-        set_error('e15:Please enter a valid email address for the Administrator account', 'admin_email');
+        set_error(d('e15: ').'Please enter a valid email address for the Administrator account', 'admin_email');
         $IsError=true;
     }
 }
@@ -195,19 +194,19 @@ if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
  
 // Get the two admin passwords entered, and check that they match
 if (!isset($_POST['admin_password']) or $_POST['admin_password'] == '') {
-    set_error('e16:Please enter a password for the Administrator account', 'admin_password');
+    set_error(d('e16: ').'Please enter a password for the Administrator account', 'admin_password');
     $IsError=true;
 } else {
     $admin_password = $_POST['admin_password'];
 }
 
 if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
-    set_error('e17:Please make sure you re-enter the password for the Administrator account', 'admin_repassword');
+    set_error(d('e17: ').'Please make sure you re-enter the password for the Administrator account', 'admin_repassword');
     $IsError=true;
 } else {
     $admin_repassword = $_POST['admin_repassword'];
     if ($admin_password != $admin_repassword) {
-        set_error('e18:Sorry, the two Administrator account passwords you entered do not match', 'admin_repassword');
+        set_error(d('e18: ').'Sorry, the two Administrator account passwords you entered do not match', 'admin_repassword');
         $IsError=true;
     }   
 }
@@ -272,7 +271,7 @@ try {
     }
 } 
 catch (Exception $e) {
-    $sMsg = 'e29: Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
+    $sMsg = d('e29: ').'Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
         . $e->getMessage();
     // We end right here and dont collect any more errors
     set_error($sMsg,"",true);
@@ -304,10 +303,10 @@ $sMsg = '';
 if (is_writable($config_filename)) {
     // try to write file
     if (file_put_contents($config_filename, $config_content) === false) {
-        $sMsg = 'e19:Cannot write to the configuration file <' . $config_filename . '>';
+        $sMsg = d('e19: ').'Cannot write to the configuration file <' . $config_filename . '>';
     }
 } else {
-    $sMsg = 'e20:The configuration file <' . $config_filename . '> is missing or not writable.<br />'
+    $sMsg = d('e20: ').'The configuration file <' . $config_filename . '> is missing or not writable.<br />'
     . 'Change its permissions so it is, then re-run step 4.';
 }
 if ($sMsg) {set_error($sMsg,"",true);} // if something gone wrong, break with message
@@ -332,7 +331,7 @@ require ADMIN_PATH . '/interface/version.php';
 
 // Try connecting to database This time whith our Classes 
 if (!file_exists(WB_PATH . '/framework/class.database.php')) {
-    set_error('e21:It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!',"",true);
+    set_error(d('e21: ').'It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!',"",true);
 }
 include WB_PATH . '/framework/class.database.php';
 try {
@@ -342,8 +341,8 @@ try {
         $database = new database();
     }
 } catch (Exception $e) {
-    $sMsg = 'e22: Database host name, username and/or password incorrect.<br />MySQL Error:<br />'
-    . $e->getMessage();
+    $sMsg = d('e22: ').'Database host name, username and/or password incorrect.'. d('<br />MySQL Error:<br />')
+    . d($e->getMessage());
     set_error($sMsg,"",true);
    
 }
@@ -370,13 +369,13 @@ foreach ($aSqlFiles as $sFileName){
     $bPreserve = ($sFileName == "install_struct.sql") ? false : true;
     if (is_readable($sFile)) {
         if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve, $bPreserve)) {
-            set_error("e23:unable to read import 'install/".$sFileName."'dfdfdf".$database->get_error(),"",true);
+            set_error(d('e23: ')."Unable to read import 'install/".$sFileName."'".d($database->get_error(),"",true));
         }
     } else {
         if(file_exists($sFile)){
-            set_error("e24:unable to read file 'install/".$sFileName."'","",true);
+            set_error(d('e24: ')."Unable to read file 'install/".$sFileName."'","",true);
         }else{
-            set_error("e25:file 'install/".$sFileName."' doesn't exist!","",true);
+            set_error(d('e25: ')."File 'install/".$sFileName."' doesn't exist!","",true);
         }
     }
 }
@@ -420,7 +419,7 @@ $aAdminUser = array(
 //print_r($aAdminUser);
 
 if (!($database->insertRow('{TP}users', $aAdminUser))) {
-    set_error('e26:unable to write Administrator account into table \'users\'',"",true);
+    set_error(d('e26: ').'unable to write Administrator account into table \'users\'',"",true);
 }
 
 // Add  admin errors
@@ -466,7 +465,7 @@ foreach ($dirs as $type => $dir) {
                     // Pretty ugly hack to let modules run $admin->set_error
                     // See dummy class definition admin_dummy above
                     if ($admin->error != '') {
-                        set_error("e27:".$admin->error,"",true);
+                        set_error(d('e27: ').$admin->error,"",true);
                     }
                 } elseif ($type == 'templates') {
                     load_template($dir . '/' . $file);
@@ -482,7 +481,7 @@ foreach ($dirs as $type => $dir) {
 
 // Check if there was a database error
 if ($database->is_error()) {
-    set_error("e28:".$database->get_error(),"",true);
+    set_error(d('e28: ').$database->get_error(),"",true);
 }
 
 
