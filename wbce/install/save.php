@@ -112,22 +112,16 @@ if ($operating_system == 'windows') {
 }
 // End operating system specific code
 
+
+//echo "<pre>"; var_dump($_POST); echo "</pre>";
+
 // Begin database details code
 // Check if user has entered a database host
-if (!isset($_POST['database_host']) or $_POST['database_host'] == '') {
+if (!isset($_POST['database_host']) or empty($_POST['database_host'])) {
     set_error('e7:Please enter a database host name', 'database_host');
     $IsError=true;
 } else {
     $database_host = $_POST['database_host'];
-}
-
-
-// extract port if available
-if (isset($database_port)) {unset($database_port);}
-$aMatches = preg_split('/:/s', $database_host, -1, PREG_SPLIT_NO_EMPTY);
-if (isset($aMatches[1])) {
-    $database_host = $aMatches[0];
-    $database_port = (int) $aMatches[1];
 }
 
 // Check if user has entered a database username
@@ -198,7 +192,7 @@ if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
     }
 }
 
-
+ 
 // Get the two admin passwords entered, and check that they match
 if (!isset($_POST['admin_password']) or $_POST['admin_password'] == '') {
     set_error('e16:Please enter a password for the Administrator account', 'admin_password');
@@ -230,6 +224,22 @@ if ($IsError){
 
 
 
+// extract port if available
+if (isset($database_port)) {unset($database_port);}
+$aMatches = preg_split('/:/s', $database_host, -1, PREG_SPLIT_NO_EMPTY);
+if (isset($aMatches[1])) {
+    $database_host = $aMatches[0];
+    $database_port = (int) $aMatches[1];
+}
+
+// PDO fix  http://php.net/manual/de/pdo.connections.php#82591
+if ($database_host=="localhost") 
+    $database_host="127.0.0.1";
+
+$sPdoPort="";
+if (isset($database_port))
+    $sPdoPort=";port=".(string)$database_port;
+
 $database_charset = 'utf8';
 
 //LEts See if we are able to connect to DB  No DB class needed for this on first
@@ -238,18 +248,27 @@ $database_charset = 'utf8';
 try {
     if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
         $dbtest = new pdo( 
-            "mysql:host=$database_host;dbname=$database_name",
+            "mysql: host=$database_host $sPdoPort;dbname=$database_name",
             $database_username,
             $database_password,
             array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
         );
     } else {
-        $dbtest = new mysqli(
-            $database_host, 
-            $database_username, 
-            $database_password, 
-            $database_name
-        );
+        if (isset($database_port))
+            $dbtest = new mysqli(
+                $database_host, 
+                $database_username, 
+                $database_password, 
+                $database_name,
+                $database_port
+            );
+        else 
+            $dbtest = new mysqli(
+                $database_host, 
+                $database_username, 
+                $database_password, 
+                $database_name
+            );
     }
 } 
 catch (Exception $e) {
@@ -318,7 +337,7 @@ if (!file_exists(WB_PATH . '/framework/class.database.php')) {
 include WB_PATH . '/framework/class.database.php';
 try {
     if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-		$database = new \Persistence\Database();
+        $database = new \Persistence\Database();
     } else {
         $database = new database();
     }
@@ -343,60 +362,60 @@ if (!defined('WB_INSTALL_PROCESS')) {
 Begin Create Database Tables
  *****************************/
 $aSqlFiles = array(
-	'install_struct.sql', 
-	'install_data.sql'
+    'install_struct.sql', 
+    'install_data.sql'
 );
 foreach ($aSqlFiles as $sFileName){ 
-	$sFile = dirname(__FILE__).'/'.$sFileName;
-	$bPreserve = ($sFileName == "install_struct.sql") ? false : true;
-	if (is_readable($sFile)) {
-		if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve, $bPreserve)) {
-			set_error("e23:unable to read import 'install/".$sFileName."'dfdfdf".$database->get_error(),"",true);
-		}
-	} else {
-		if(file_exists($sFile)){
-			set_error("e24:unable to read file 'install/".$sFileName."'","",true);
-		}else{
-			set_error("e25:file 'install/".$sFileName."' doesn't exist!","",true);
-		}
-	}
+    $sFile = dirname(__FILE__).'/'.$sFileName;
+    $bPreserve = ($sFileName == "install_struct.sql") ? false : true;
+    if (is_readable($sFile)) {
+        if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve, $bPreserve)) {
+            set_error("e23:unable to read import 'install/".$sFileName."'dfdfdf".$database->get_error(),"",true);
+        }
+    } else {
+        if(file_exists($sFile)){
+            set_error("e24:unable to read file 'install/".$sFileName."'","",true);
+        }else{
+            set_error("e25:file 'install/".$sFileName."' doesn't exist!","",true);
+        }
+    }
 }
 
 
 // add settings from install input
 $aSettings = array( 
-	'wbce_version'     => WBCE_VERSION, 
-	'wbce_tag'         => WBCE_TAG, 
-	'wb_version'       => VERSION,   // Legacy: WB-Classic
-	'wb_revision'      => REVISION,  // Legacy: WB-Classic
-	'wb_sp'            => SP,        // Legacy: WB-Classic
-	'website_title'    => $website_title, 
-	'default_language' => $default_language, 
-	'app_name'         => 'wb-'.$session_rand, 
-	'default_timezone' => $default_timezone, 
-	'operating_system' => $operating_system, 
-	'string_file_mode' => $file_mode, 
-	'string_dir_mode'  => $dir_mode, 
-	'server_email'     => $admin_email
+    'wbce_version'     => WBCE_VERSION, 
+    'wbce_tag'         => WBCE_TAG, 
+    'wb_version'       => VERSION,   // Legacy: WB-Classic
+    'wb_revision'      => REVISION,  // Legacy: WB-Classic
+    'wb_sp'            => SP,        // Legacy: WB-Classic
+    'website_title'    => $website_title, 
+    'default_language' => $default_language, 
+    'app_name'         => 'wb-'.$session_rand, 
+    'default_timezone' => $default_timezone, 
+    'operating_system' => $operating_system, 
+    'string_file_mode' => $file_mode, 
+    'string_dir_mode'  => $dir_mode, 
+    'server_email'     => $admin_email
 );
 
 require_once WB_PATH.'/framework/classes/class.settings.php';
-foreach($aSettings as $name=>$value){	
-	Settings::Set($name, $value);
+foreach($aSettings as $name=>$value){   
+    Settings::Set($name, $value);
 }
 
 // add the Admin user Using md5 here should be not a a problem as password is rehashed on first login if possible
 $aAdminUser = array(
-	'user_id'      => 1,
-	'group_id'     => 1, 
-	'groups_id'    => '1', 
-	'active'       => '1', 
-	'username'     => $admin_username, 
-	'language'     => $default_language, 
-	'password'     => md5($admin_password), 
-	'email'        => $admin_email, 
-	'timezone'     => $default_timezone, 
-	'display_name' => 'Administrator'
+    'user_id'      => 1,
+    'group_id'     => 1, 
+    'groups_id'    => '1', 
+    'active'       => '1', 
+    'username'     => $admin_username, 
+    'language'     => $default_language, 
+    'password'     => md5($admin_password), 
+    'email'        => $admin_email, 
+    'timezone'     => $default_timezone, 
+    'display_name' => 'Administrator'
 );
 //print_r($aAdminUser);
 

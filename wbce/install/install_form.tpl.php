@@ -56,153 +56,127 @@
             </div>
 <?php if (isset($_SESSION['message']) and !empty($_SESSION['message'])): ?>
             <div class="warningbox"  >
+            
                 <?php foreach ($_SESSION['message'] as $message):?>
-                    <b>Error:</b><?php echo $message?><br>
+                <b>Error:</b><?php echo $message?><br>
                 <?php endforeach;?>
+                
             </div>
 <?php endif; ?>
-                <table class="step1" >
-                    <thead>
-                        <tr>
-                            <th colspan="4" class="step-row">
-                                <h1 class="step-row">Step 1</h1>
-                                &nbsp;Please check the following requirements are met before continuing...
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <table class="step1" >
+                <thead>
+                    <tr>
+                        <th colspan="4" class="step-row">
+                            <h1 class="step-row">Step 1</h1>
+                            &nbsp;Please check the following requirements are met before continuing...
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
 <?php if ($sSessionSupportClass == 'bad') :?>
-                        <tr>
-                            <td colspan="6" class="error">Please note: PHP Session Support may appear disabled if your browser does not support cookies.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="6" class="error">Please note: PHP Session Support may appear disabled if your browser does not support cookies.</td>
+                    </tr>
 <?php endif;?>
-                        <tr>
-                            <td >PHP Version >= 5.3.6</td>
-                            <td>
-                                <span class="<?php echo $sPhpVersion?>">
-                                    <?php echo PHP_VERSION;?>
-                                </span>
-                            </td>
-                            <td >PHP Session Support</td>
-                            <td>
-                                <span class="<?php echo $sSessionSupportClass?>">
-                                    <?php echo $sSessionSupportText?>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td >Server DefaultCharset</td>
-                            <td>
-                                <span class="<?php echo $chrval?>">
-                                    <?php echo (($chrval == 'good') ? $e_adc.'OK' : $e_adc)?>
-                                </span>
-                            </td>
-                            <td>PHP Safe Mode</td>
-                            <td>
-                                <span class="<?php echo $sSaveModeClass?>">
-                                    <?php echo $sSaveModeText?>
-                                </span>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td >PHP Version >= 5.3.6</td>
+                        <td>
+                            <span class="<?php echo $sPhpVersion?>">
+                                <?php echo PHP_VERSION;?>
+                            </span>
+                        </td>
+                        <td >PHP Session Support</td>
+                        <td>
+                            <span class="<?php echo $sSessionSupportClass?>">
+                                <?php echo $sSessionSupportText?>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >Server DefaultCharset</td>
+                        <td>
+                            <span class="<?php echo $chrval?>">
+                                <?php echo (($chrval == 'good') ? $e_adc.'OK' : $e_adc)?>
+                            </span>
+                        </td>
+                        <td>PHP Safe Mode</td>
+                        <td>
+                            <span class="<?php echo $sSaveModeClass?>">
+                                <?php echo $sSaveModeText?>
+                            </span>
+                        </td>
+                    </tr>
 <?php if ($chrval == "bad") :?>
-                        <tr>
-                            <td colspan="6" style="font-size: 10px;" class="bad">
-                                <p class="warning">
-                                    <b>Please note:</b> Yor webserver is configured to deliver <b><?php echo $e_adc;?></b> charset only.<br />
-                                    To display national special characters (e.g.: &auml; &aacute;) in clear manner, switch off this preset please(or let it do by your hosting provider).<br />
-                                    In any case you can choose <b><?php echo $e_adc;?></b> in the settings of WebsiteBaker CE.<br />
-                                    But this solution does not guarantee a correct displaying of the content from all modules!
-                                </p>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="6" style="font-size: 10px;" class="bad">
+                            <p class="warning">
+                                <b>Please note:</b> Yor webserver is configured to deliver <b><?php echo $e_adc;?></b> charset only.<br />
+                                To display national special characters (e.g.: &auml; &aacute;) in clear manner, switch off this preset please(or let it do by your hosting provider).<br />
+                                In any case you can choose <b><?php echo $e_adc;?></b> in the settings of WebsiteBaker CE.<br />
+                                But this solution does not guarantee a correct displaying of the content from all modules!
+                            </p>
+                        </td>
+                    </tr>
 <?php endif;?>
-                    </tbody>
-                </table><!-- class syscheck -->
+                </tbody>
+            </table><!-- class step1 -->
 
-
-                <table class="step2">
-                    <thead>
-                        <tr>
-                            <th colspan="4" class="step-row">
-                            <h1 class="step-row">Step 2</h1>&nbsp;Please check the following files/folders are writeable before continuing...
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td ><?php print $wb_root . $configFile?></td>
-                            <td colspan="3"  ><?php echo $config?></td>
-                        </tr>
-                        <tr>
-                            <td ><?php print $wb_root?>/pages/</td>
-                            <td><?php if (is_writable('../pages/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../pages/')) {
-                    $installFlag = false;
-                    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
-                ?></td>
-                            <td ><?php print $wb_root?>/media/</td>
-                            <td><?php if (is_writable('../media/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../media/')) {
-                    $installFlag = false;
-                    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
-                ?></td>
-                        </tr>
-                        <tr>
-                            <td ><?php print $wb_root?>/templates/</td>
-                            <td><?php if (is_writable('../templates/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../templates/')) {
-                    $installFlag = false;
-                    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
-                ?></td>
-                            <td ><?php print $wb_root?>/modules/</td>
-                            <td><?php if (is_writable('../modules/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../modules/')) {
-                    $installFlag = false;
-                    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
-                ?></td>
-                        </tr>
-                        <tr>
-                            <td ><?php print $wb_root?>/languages/</td>
-                            <td><?php if (is_writable('../languages/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../languages/')) {
-                    $installFlag = false;
-                    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
-                ?></td>
-                            <td ><?php print $wb_root?>/temp/</td>
-                            <td><?php if (is_writable('../temp/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../temp/')) {
-                    $installFlag = false;
-                    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
-                ?></td>
-                        </tr>
-                        <tr>
-                            <td ><?php print $wb_root?>/config/</td>
-                            <td><?php if (is_writable('../config/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../config/')) {
-                    $installFlag = false;
-                    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
-                ?></td>
-                            <td ><?php print $wb_root?>/var/</td>
-                            <td><?php if (is_writable('../var/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../var/')) {
-                    $installFlag = false;
-                    echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
-                ?></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <table class="step2">
+                <thead>
+                    <tr>
+                        <th colspan="4" class="step-row">
+                        <h1 class="step-row">Step 2</h1>&nbsp;Please check the following files/folders are writeable before continuing...
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><?php print $wb_root . $configFile?></td>
+                        <td colspan="3"  ><?php echo $config?></td>
+                    </tr>
+                    <tr>
+                        <td><?php print $wb_root?>/pages/</td>
+                        <td><?php echo $sDirPages ?></td>
+                        <td><?php print $wb_root?>/media/</td>
+                        <td><?php echo $sDirMedia ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php print $wb_root?>/templates/</td>
+                        <td><?php echo $sDirTemplates ?></td>
+                        <td><?php print $wb_root?>/modules/</td>
+                        <td><?php echo $sDirModules ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php print $wb_root?>/languages/</td>
+                        <td><?php echo $sDirLanguages ?></td>
+                        <td><?php print $wb_root?>/temp/</td>
+                        <td><?php echo $sDirTemp ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php print $wb_root?>/config/</td>
+                        <td><?php echo $sDirConfig ?></td>
+                        <td><?php print $wb_root?>/var/</td>
+                        <td><?php echo $sDirVar ?></td>
+                    </tr>
+                </tbody>
+            </table><!-- class step2 -->
+            
 <?php if ($installFlag == true) : ?>
-                <table class="step3">
-                    <thead>
-                        <tr>
-                            <th colspan="4" class="step-row">
+
+            <table class="step3">
+                <thead>
+                    <tr>
+                        <th colspan="4" class="step-row">
                             <h1 class="step-row">Step 3</h1>&nbsp;Please check URL settings, and select a default timezone and a default backend language...
-                            </th>
-                        </tr>
-                    </thead>
+                        </th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
                         <td class="name">Absolute URL:</td>
                         <td class="value">
-                            <?php
-            // Try to guess installation URL
-                $guessed_url = 'http://' . $_SERVER["SERVER_NAME"] . $_SERVER["SCRIPT_NAME"];
-                $guessed_url = rtrim(dirname($guessed_url), 'install');
-                ?>
-                            <input <?php echo field_error('wb_url');?> type="text" tabindex="1" name="wb_url" style="width: 99%;" value="<?php if (isset($_SESSION['wb_url'])) {echo $_SESSION['wb_url'];} else {echo $guessed_url;}
-                ?>" />
+                  
+                            <input <?php echo field_error('wb_url');?> type="text" tabindex="1" name="wb_url" style="width: 99%;" value="<?php echo $sWbUrl ?>" />
                         </td>
                         <td colspan="4">&nbsp;</td>
                     </tr>
@@ -220,32 +194,32 @@
                             </select>
                         </td><!-- class value -->
                     </tr>
-                <tr>
-                    <td class="name">Default Language: </td>
-                    <td class="value">
-                        <select <?php echo field_error('default_language');?> tabindex="3" name="default_language" style="width: 100%;">
+                    <tr>
+                        <td class="name">Default Language: </td>
+                        <td class="value">
+                            <select <?php echo field_error('default_language');?> tabindex="3" name="default_language" style="width: 100%;">
 
-                        <?php foreach ($aAllowedLanguages as $sLangCode=>$Language): ?>
-                        
-                            <option value="<?php echo $sLangCode ?>" <?php if (LangSelected($sLangCode)) echo 'selected="selected"' ?> >
-                                <?php echo$Language ?> 
-                            </option>
-                         
-                        <?php endforeach ; ?>
+                            <?php foreach ($aAllowedLanguages as $sLangCode=>$Language): ?>
+                            
+                                <option value="<?php echo $sLangCode ?>" <?php if (LangSelected($sLangCode)) echo 'selected="selected"' ?> >
+                                    <?php echo$Language ?> 
+                                </option>
+                            
+                            <?php endforeach ; ?>
 
-                        </select>
-                        <?php //echo "<pre>";print_r($aAllowedLanguages);echo "</pre>";?>
-                    </td>
-                    <td colspan="4">&nbsp;</td>
-                </tr>
+                            </select>
+                            <?php //echo "<pre>";print_r($aAllowedLanguages);echo "</pre>";?>
+                        </td>
+                        <td colspan="4">&nbsp;</td>
+                    </tr>
                 </tbody>
-            </table>
+            </table><!-- class step3 -->
 
             <table class="step4">
                 <thead>
                     <tr>
                         <th class="step-row" colspan="4">
-                        <h1 class="step-row">Step 4</h1>&nbsp;Please specify your operating system information below...
+                            <h1 class="step-row">Step 4</h1>&nbsp;Please specify your operating system information below...
                         </th>
                     </tr>
                 </thead>
@@ -268,13 +242,14 @@
                                 <label style=" margin: 0;  " for="world_writeable">
                                     World-writeable file permissions (777)
                                 </label>
-                            <br />
+                                <br />
                                 <p class="warning">(Please note: only recommended for testing environments) <br />You can adjust this setting later in the Backend<br /></p>
                             </div>
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table><!-- class step4 -->
+            
             <table class="step5">
                 <thead>
                     <tr>
@@ -317,7 +292,8 @@
                             </td>
                     </tr>
                 </tbody>
-            </table>
+            </table><!-- class step5 -->
+            
             <table class="step6">
                 <thead>
                     <tr>
@@ -334,7 +310,8 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table><!-- class step6 -->
+            
             <table class="step7">
                 <thead>
                     <tr>
@@ -369,8 +346,10 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table><!-- class step7 -->
+        
 <?php endif; // installFlag ?>
+
             <table class="step8">
                 <tbody>
                     <tr valign="top">
@@ -381,8 +360,7 @@
                             <p class="warning">
                                 WBCE is released under the
                                 <a href="http://www.gnu.org/licenses/gpl.html" target="_blank" tabindex="19">GNU General Public License</a>.
-                                <br />
-                                By clicking install, you are accepting the license.
+                                <br />By clicking install, you are accepting the license.
                             </p>
                         </td>
                     </tr>
@@ -398,8 +376,8 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
-            
+            </table><!-- class step8 -->
+        
         </form>
     </div> <!-- class body -->
 
@@ -408,7 +386,7 @@
         <a href="http://www.wbce.org/"  target="_blank">WBCE</a> is released under the
         <a href="http://www.gnu.org/licenses/gpl.html"  target="_blank">GNU General Public License</a>
         <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    </div >  <!-- class footer -->
+    </div > <!-- class footer -->
 
 </body>
 </html>
