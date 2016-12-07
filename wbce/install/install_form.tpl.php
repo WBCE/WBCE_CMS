@@ -34,12 +34,12 @@
     <div class="body">
         <table>
             <tbody>
-                <tr style="background: #eee;">
+                <tr class="header" >
                     <td>
-                        <img style="margin-top:.7em" src="logo.png" alt="WBCE Logo" />
+                        <img class="logo"  src="logo.png" alt="WBCE CMS Logo" />
                     </td>
                     <td>
-                        <h1 style="border:none; margin-top:1em;font-size:150%;">WBCE Installation Wizard</h1>
+                        <h1 class="headline" >Installation Wizard</h1>
                     </td>
                 </tr>
             </tbody>
@@ -55,13 +55,13 @@
                 Welcome to the Installation Wizard of WBCE CMS.
             </div>
 <?php if (isset($_SESSION['message']) and !empty($_SESSION['message'])): ?>
-            <div  style="width: 700px; padding: 10px; margin-bottom: 5px; border: 1px solid #FF0000; background-color: #FFDBDB;">
+            <div class="warningbox"  >
                 <?php foreach ($_SESSION['message'] as $message):?>
                     <b>Error:</b><?php echo $message?><br>
                 <?php endforeach;?>
             </div>
 <?php endif; ?>
-                <table>
+                <table class="step1" >
                     <thead>
                         <tr>
                             <th colspan="4" class="step-row">
@@ -77,13 +77,13 @@
                         </tr>
 <?php endif;?>
                         <tr>
-                            <td style="color: #666666;">PHP Version >= 5.3.6</td>
+                            <td >PHP Version >= 5.3.6</td>
                             <td>
                                 <span class="<?php echo $sPhpVersion?>">
                                     <?php echo PHP_VERSION;?>
                                 </span>
                             </td>
-                            <td style="color: #666666;">PHP Session Support</td>
+                            <td >PHP Session Support</td>
                             <td>
                                 <span class="<?php echo $sSessionSupportClass?>">
                                     <?php echo $sSessionSupportText?>
@@ -91,13 +91,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="color: #666666;">Server DefaultCharset</td>
+                            <td >Server DefaultCharset</td>
                             <td>
                                 <span class="<?php echo $chrval?>">
                                     <?php echo (($chrval == 'good') ? $e_adc.'OK' : $e_adc)?>
                                 </span>
                             </td>
-                            <td style="color: #666666;">PHP Safe Mode</td>
+                            <td>PHP Safe Mode</td>
                             <td>
                                 <span class="<?php echo $sSaveModeClass?>">
                                     <?php echo $sSaveModeText?>
@@ -117,10 +117,10 @@
                         </tr>
 <?php endif;?>
                     </tbody>
-                </table>
+                </table><!-- class syscheck -->
 
 
-                <table>
+                <table class="step2">
                     <thead>
                         <tr>
                             <th colspan="4" class="step-row">
@@ -130,52 +130,52 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="color: #666666;"><?php print $wb_root . $configFile?></td>
+                            <td ><?php print $wb_root . $configFile?></td>
                             <td colspan="3"  ><?php echo $config?></td>
                         </tr>
                         <tr>
-                            <td style="color: #666666;"><?php print $wb_root?>/pages/</td>
+                            <td ><?php print $wb_root?>/pages/</td>
                             <td><?php if (is_writable('../pages/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../pages/')) {
                     $installFlag = false;
                     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
                 ?></td>
-                            <td style="color: #666666;"><?php print $wb_root?>/media/</td>
+                            <td ><?php print $wb_root?>/media/</td>
                             <td><?php if (is_writable('../media/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../media/')) {
                     $installFlag = false;
                     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
                 ?></td>
                         </tr>
                         <tr>
-                            <td style="color: #666666;"><?php print $wb_root?>/templates/</td>
+                            <td ><?php print $wb_root?>/templates/</td>
                             <td><?php if (is_writable('../templates/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../templates/')) {
                     $installFlag = false;
                     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
                 ?></td>
-                            <td style="color: #666666;"><?php print $wb_root?>/modules/</td>
+                            <td ><?php print $wb_root?>/modules/</td>
                             <td><?php if (is_writable('../modules/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../modules/')) {
                     $installFlag = false;
                     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
                 ?></td>
                         </tr>
                         <tr>
-                            <td style="color: #666666;"><?php print $wb_root?>/languages/</td>
+                            <td ><?php print $wb_root?>/languages/</td>
                             <td><?php if (is_writable('../languages/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../languages/')) {
                     $installFlag = false;
                     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
                 ?></td>
-                            <td style="color: #666666;"><?php print $wb_root?>/temp/</td>
+                            <td ><?php print $wb_root?>/temp/</td>
                             <td><?php if (is_writable('../temp/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../temp/')) {
                     $installFlag = false;
                     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
                 ?></td>
                         </tr>
                         <tr>
-                            <td style="color: #666666;"><?php print $wb_root?>/config/</td>
+                            <td ><?php print $wb_root?>/config/</td>
                             <td><?php if (is_writable('../config/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../config/')) {
                     $installFlag = false;
                     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
                 ?></td>
-                            <td style="color: #666666;"><?php print $wb_root?>/var/</td>
+                            <td ><?php print $wb_root?>/var/</td>
                             <td><?php if (is_writable('../var/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../var/')) {
                     $installFlag = false;
                     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
@@ -184,7 +184,7 @@
                     </tbody>
                 </table>
 <?php if ($installFlag == true) : ?>
-                <table>
+                <table class="step3">
                     <thead>
                         <tr>
                             <th colspan="4" class="step-row">
@@ -241,7 +241,7 @@
                 </tbody>
             </table>
 
-            <table>
+            <table class="step4">
                 <thead>
                     <tr>
                         <th class="step-row" colspan="4">
@@ -252,7 +252,7 @@
                 <tbody>
                     <tr>
                         <td class="name">Server Operating System: </td>
-                        <td style="">
+                        <td >
                             <input type="radio" tabindex="4" name="operating_system" id="operating_system_linux" onclick="document.getElementById('file_perms_box').style.display = 'none';" value="linux"<?php echo $sLinux ?> />
                             <span style="cursor: pointer;" onclick="javascript: change_os('linux');">Linux/Unix based</span>
                             <br />
@@ -275,7 +275,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table>
+            <table class="step5">
                 <thead>
                     <tr>
                         <th colspan="4" class="step-row">
@@ -316,18 +316,9 @@
                                 <input type="password" tabindex="11" name="database_password" value="<?php echo $sDatabasePassword ?>" />
                             </td>
                     </tr>
-                    <tr>
-                        <td class="name hide" colspan="2">
-                            <input type="checkbox" tabindex="12" name="install_tables" id="install_tables" value="true"<?php if (!isset($_SESSION['install_tables'])) {echo ' checked="checked"';} elseif ($_SESSION['install_tables'] == 'true') {echo ' checked="checked"';}
-                ?> />
-                            <label for="install_tables" style="color: #666666;">Install Tables</label>
-                            <br />
-                            <span style="font-size: 1px; color: #666666;">(Please note: May remove existing tables and data)</span>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
-            <table>
+            <table class="step6">
                 <thead>
                     <tr>
                         <th colspan="4" class="step-row">
@@ -344,7 +335,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table>
+            <table class="step7">
                 <thead>
                     <tr>
                         <th colspan="4" class="step-row">
@@ -380,7 +371,7 @@
                 </tbody>
             </table>
 <?php endif; // installFlag ?>
-            <table>
+            <table class="step8">
                 <tbody>
                     <tr valign="top">
                         <td><strong>Please note: &nbsp;</strong></td>
@@ -412,10 +403,10 @@
         </form>
     </div> <!-- class body -->
 
-    <div class="footer" style="margin: 0 0 3em; padding: 0; text-align:center;">
+    <div class="footer" >
         <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-        <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WBCE</a> is released under the
-        <a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a>
+        <a href="http://www.wbce.org/"  target="_blank">WBCE</a> is released under the
+        <a href="http://www.gnu.org/licenses/gpl.html"  target="_blank">GNU General Public License</a>
         <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
     </div >  <!-- class footer -->
 

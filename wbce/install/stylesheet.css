@@ -172,18 +172,66 @@ input.submit.good {
     background-color: #deffde;
     border-color: green;
 }
+
 /*
     COMMON Elements
 */
 img {border: none; }
-p  { margin: 11px 0 4px 0 }
-h1 { color: #000; font-size: 1.3em; margin: 10px 0 5px; border-top: medium none }
-a, a:link, a:visited, a:active  { color: #003366; text-decoration: underline }
-a:focus {outline: none; }
-a:hover  { color: #336699 }
+p   { margin: 11px 0 4px 0; }
+h1  { color: #000; font-size: 1.3em; margin: 10px 0 5px; border-top: medium none; }
+a, a:link, a:visited, a:active  { color: #003366; text-decoration: underline; }
+a:focus  { outline: none; }
+a:hover  { color: #336699; }
+
+/* ************************************************************************** */
+
+
 /*
-    HINTS
-*/
+ *  page elements
+ */
+.header  {
+    background: #eee;
+}
+.logo  {
+    margin-top:.7em
+}
+.headline  {
+    border:none; 
+    font-size:200%;
+}
+.warningbox{
+    width: 700px; 
+    padding: 10px; 
+    margin-bottom: 5px; 
+    border: 1px solid #FF0000; 
+    background-color: #FFDBDB;
+}
+
+.step1 td{
+    color: #666666;   
+}
+
+.step1 td{
+    color: #666666;   
+}
+.step2 td{
+    color: #666666;   
+}
+
+.footer { 
+    margin: 0 0 3em; 
+    padding: 0; 
+    text-align:center;  
+}
+.footer a {
+    color: #000000;
+}
+
+
+
+/*
+ HINTS                                  *
+ */
 
 .warning, .error {
     color: #b70000;
@@ -205,8 +253,9 @@ a:hover  { color: #336699 }
 .center { text-align: center; }
 .hide { display: none; }
 /*
-    List Elements
-*/
+ L ist Elements                          *
+ */
 ul  { margin: 0; padding: 2px 0 2px 15px; }
 li  { list-style-type: square; margin: 0; }
-/* ************************************************************************** */
+
+
