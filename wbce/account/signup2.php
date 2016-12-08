@@ -38,20 +38,27 @@ if (!$wb->checkFTAN())
 	exit();
 }
 */
+
+$bSignError=false;
+
 // Check values
 if($groups_id == "") {
 	$wb->print_error($MESSAGE['USERS_NO_GROUP'], $js_back, false);
+	$bSignError=true;
 }
 if(!preg_match('/^[a-z]{1}[a-z0-9_-]{2,}$/i', $username)) {
 	$wb->print_error( $MESSAGE['USERS_NAME_INVALID_CHARS'].' / '.
 	                  $MESSAGE['USERS_USERNAME_TOO_SHORT'], $js_back);
+	                  $bSignError=true;
 }
 if($email != "") {
 	if($wb->validate_email($email) == false) {
 		$wb->print_error($MESSAGE['USERS_INVALID_EMAIL'], $js_back, false);
+		$bSignError=true;
 	}
 } else {
 	$wb->print_error($MESSAGE['SIGNUP_NO_EMAIL'], $js_back, false);
+	$bSignError=true;
 }
 
 $email = $wb->add_slashes($email);
@@ -64,24 +71,23 @@ if(ENABLED_CAPTCHA) {
 		// Check for a mismatch
 		if(!isset($_POST['captcha']) OR !isset($_SESSION['captcha']) OR $_POST['captcha'] != $_SESSION['captcha']) {
 			$wb->print_error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'], $js_back, false);
+			$bSignError=true;
 		}
 	} else {
 		$wb->print_error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'], $js_back, false);
+		$bSignError=true;
 	}
 }
 if(isset($_SESSION['captcha'])) { unset($_SESSION['captcha']); }
 
-// Generate a random password then update the database with it
-$new_pass = WbAuth::GenerateRandomPassword();
 
-// hash it 
-$md5_password = WbAuth::Hash();
 
 // Check if username already exists
 $sql = 'SELECT `user_id` FROM `'.TABLE_PREFIX.'users` WHERE `username` = \''.$username.'\'';
 $results = $database->query($sql);
 if($results->numRows() > 0) {
 	$wb->print_error($MESSAGE['USERS_USERNAME_TAKEN'], $js_back, false);
+	$bSignError=true;
 }
 
 // Check if the email already exists
@@ -90,36 +96,46 @@ $results = $database->query($sql);
 if($results->numRows() > 0) {
 	if(isset($MESSAGE['USERS_EMAIL_TAKEN'])) {
 		$wb->print_error($MESSAGE['USERS_EMAIL_TAKEN'], $js_back, false);
+		$bSignError=true;
 	} else {
 		$wb->print_error($MESSAGE['USERS_INVALID_EMAIL'], $js_back, false);
+		$bSignError=true;
 	}
 }
 
-// Inser the user into the database
-$sql = '';
-$query = "INSERT INTO ".TABLE_PREFIX."users (group_id,groups_id,active,username,password,display_name,email) VALUES ('$groups_id', '$groups_id', '$active', '$username','$md5_password','$display_name','$email')";
-$database->query($query);
+if ($bSignError===false){
 
-if($database->is_error()) {
-	// Error updating database
-	$message = $database->get_error();
-} else {
-	// Setup email to send
-	$mail_to = $email;
-	$mail_subject = $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'];
+    // Generate a random password then update the database with it
+    $new_pass = WbAuth::GenerateRandomPassword();
 
-	// Replace placeholders from language variable with values
-	$search = array('{LOGIN_DISPLAY_NAME}', '{LOGIN_WEBSITE_TITLE}', '{LOGIN_NAME}', '{LOGIN_PASSWORD}');
-	$replace = array($display_name, WEBSITE_TITLE, $username, $new_pass); 
-	$mail_message = str_replace($search, $replace, $MESSAGE['SIGNUP2_BODY_LOGIN_INFO']);
+    // hash it 
+    $md5_password = WbAuth::Hash($new_pass);
 
-	// Try sending the email
-	if($wb->mail(SERVER_EMAIL,$mail_to,$mail_subject,$mail_message)) {
-		$display_form = false;
-		$wb->print_success($MESSAGE['FORGOT_PASS_PASSWORD_RESET'], WB_URL.'/account/login.php' );
-	} else {
-		$database->query("DELETE FROM ".TABLE_PREFIX."users WHERE username = '$username'");
-		$wb->print_error($MESSAGE['FORGOT_PASS_CANNOT_EMAIL'], $js_back, false);
-	}
+    // Inser the user into the database
+    $sql = '';
+    $query = "INSERT INTO ".TABLE_PREFIX."users (group_id,groups_id,active,username,password,display_name,email) VALUES ('$groups_id', '$groups_id', '$active', '$username','$md5_password','$display_name','$email')";
+    $database->query($query);
+
+    if($database->is_error()) {
+        // Error updating database
+        $message = $database->get_error();
+    } else {
+        // Setup email to send
+        $mail_to = $email;
+        $mail_subject = $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'];
+
+        // Replace placeholders from language variable with values
+        $search = array('{LOGIN_DISPLAY_NAME}', '{LOGIN_WEBSITE_TITLE}', '{LOGIN_NAME}', '{LOGIN_PASSWORD}');
+        $replace = array($display_name, WEBSITE_TITLE, $username, $new_pass); 
+        $mail_message = str_replace($search, $replace, $MESSAGE['SIGNUP2_BODY_LOGIN_INFO']);
+
+        // Try sending the email
+        if($wb->mail(SERVER_EMAIL,$mail_to,$mail_subject,$mail_message)) {
+            $display_form = false;
+            $wb->print_success($MESSAGE['FORGOT_PASS_PASSWORD_RESET'], WB_URL.'/account/login.php' );
+        } else {
+            $database->query("DELETE FROM ".TABLE_PREFIX."users WHERE username = '$username'");
+            $wb->print_error($MESSAGE['FORGOT_PASS_CANNOT_EMAIL'], $js_back, false);
+        }
+    }
 }
-
