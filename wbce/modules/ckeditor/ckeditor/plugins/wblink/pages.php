@@ -30,7 +30,6 @@ require(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
 if(!function_exists('cleanup')) {
-
     function cleanup ($string) {
         global $database;
         // if magic quotes on
@@ -38,15 +37,11 @@ if(!function_exists('cleanup')) {
         {
             $string = stripslashes($string);
         }
-        if(isset($database)&&method_exists($database,"escapeString")) {
-          return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
-        } elseif (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')){
-          return preg_replace("/\r?\n/", "\\n", mysqli_real_escape_string($database->db_handle, $string)); 
-        } else {
-          return preg_replace("/\r?\n/", "\\n", mysql_real_escape_string($string)); 
-        }
-   } // end function cleanup
+        return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
+        
+    } // end function cleanup
 }
+
 
 $InternPagesSelectBox = "var InternPagesSelectBox = new Array( ";
 $PagesTitleSelectBox = "var PagesTitleSelectBox = new Array( ";

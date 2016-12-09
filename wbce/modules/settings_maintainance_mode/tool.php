@@ -78,7 +78,7 @@ if($saveSettings) {
     // Display form
     // get setting from DB , as constant may not be set yet.
 	$maintMode=(string)Settings::Get ("wb_maintainance_mode");
-    if ($maintMode=="true") $maintMode=' checked="checked" ';
+    if ($maintMode===true) $maintMode=' checked="checked" ';
     else                $maintMode='';  
 
     include($modulePath."templates/maintainance.tpl.php");

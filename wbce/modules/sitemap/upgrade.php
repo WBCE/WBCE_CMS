@@ -62,7 +62,7 @@ if ($module_version < $new_module_version) {
   if (!array_key_exists('sitemaploop', $items)){
   		if ($database->query("ALTER TABLE `".$dbtable."` CHANGE `loop` `sitemaploop` TEXT NOT NULL")) {
   			echo '<span class="good">Database field <i>loop</i> renamed to <i>sitemaploop</i> successfully</span><br />';
-  		} else { echo '<span class="bad">'.mysql_error().'</span><br />'; $result = 1;}
+  		} else { echo '<span class="bad">'.$database->error().'</span><br />'; $result = 1;}
   } else { echo '<span class="ok">Database field <i>sitemaploop</i> already exists, update not needed.</span><br />';}
 
   echo "<BR><B>Trying to add database field '<i>show_hidden</i>'...</B><BR>";
@@ -70,7 +70,7 @@ if ($module_version < $new_module_version) {
   if (!array_key_exists('show_hidden', $items)){
   		if ($database->query("ALTER TABLE `".$dbtable."` ADD `show_hidden` INT NOT NULL")) {
   			echo '<span class="good">Database field <i>show_hidden</i> added successfully</span><br />';
-  		} else { echo '<span class="bad">'.mysql_error().'</span><br />'; $result = 1;}
+  		} else { echo '<span class="bad">'.$database->error().'</span><br />'; $result = 1;}
   } else { echo '<span class="ok">Database field <i>show_hidden</i> already exists, update not needed.</span><br />'; }
 
   if($result == 1) die();

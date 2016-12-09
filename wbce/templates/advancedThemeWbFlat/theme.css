@@ -638,7 +638,7 @@ a#frontendtitel:hover {
 #branding {
   position: absolute;
   right: 30px;
-  bottom: 0px;
+  bottom: 6px;
   width: 300px;
   height: 55px;
   padding-right: 120px;
@@ -646,10 +646,11 @@ a#frontendtitel:hover {
 
 #branding-text {
   color: #ADB5C3;
-  padding-top: 20px;
-  font-size: 20px;
-  line-height: 24px;
+  padding-top: 17px;
+  font-size: 30px;
+  line-height: 30px;
   text-align: right;
+  letter-spacing: +1px;
 }
 
 #branding-logo {
@@ -2178,7 +2179,7 @@ div.themebox#module_settings .tb_header a:before {
 
 div.themebox#module_admintools .tb_header a:before,
 div.themebox.admintools_tool .tb_header a:before {
-  content: "";
+    content: "";
 }
 
 div.themebox#module_access .tb_header a:before {

@@ -43,44 +43,16 @@ class Preferences {
         // Check password against DB only if a user is set 
         if (!$userId) return false;
         
-        $sql  = 'SELECT `password` ';
-        $sql .= 'FROM `'.TABLE_PREFIX.'users` ';
-        $sql .= 'WHERE `user_id` = '.(int)$userId;
-        $passHash = $database->get_one($sql);
-        
-        // old md5 passwords
-        if (md5($password) ==  $passHash) return false;
-
-        // sha1 replacement
-        if ($this->HashPass($password,"sha1") == $passHash) return false;
-
-        // PHP 5.5 buildin password functions
-        if (version_compare(PHP_VERSION, '5.5.0' ) >= 0){
-            if (password_verify ($password, $passHash)) return false;
+        if(WbAuth::CheckUser ($password, (int)$userId)){
+            return false;
         }
-        return $MESSAGE['USERS_PASSWORD_INCORRECT'];
+        else {
+            return $MESSAGE['USERS_PASSWORD_INCORRECT'];
+        }
     }
     
     public function HashPass ($password, $forceOld=false){  
-        
-        if (version_compare(PHP_VERSION, '5.5.0' ) >= 0  and $forceOld===false) {
-            //use_bcrypt
-            if (defined ('WB_PASS_COST'))
-                $password = password_hash($password, PASSWORD_BCRYPT, array('cost'=> WB_PASS_COST));
-            else
-                $password = password_hash($password, PASSWORD_BCRYPT);           
-        } else if  ($forceOld=="md5") {
-            //now we go for Very Old
-            $password= md5($password);     
-        } else { 
-            //This is a extremely poor replacement for bcrypt 
-            // but far better than md5
-            $password = "hier ist dfdfd".$password."allesFtdg";
-            for ($i = 1; $i <= 1959; $i++) {
-                $password=sha1($password);
-            }        
-        }
-        return $password;
+        return WBAuth::Hash($password);
     }
 
 

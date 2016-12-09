@@ -45,6 +45,15 @@
             </td>
         </tr>
         <tr>
+            <td width="35%"><?php echo $OPF['AUTO_PLACEHOLDER']?>:</td>
+            <td>
+                <input type="radio" <?php echo ($data['auto_placeholder']=='1') ? 'checked="checked"' :'';?>
+                    name="auto_placeholder" value="1"><?php echo $OPF['ENABLED'];?>
+                <input type="radio" <?php echo (($data['auto_placeholder'])=='0') ? 'checked="checked"' :'';?>
+                    name="auto_placeholder" value="0"><?php echo $OPF['DISABLED'];?>
+            </td>
+        </tr>
+        <tr>
             <td width="35%"><?php echo $OPF['INSERT']?>:</td>
             <td>
                 <input type="radio" <?php echo ($data['insert']=='1') ? 'checked="checked"' :'';?>
@@ -111,6 +120,15 @@
         <!-- BACKEND -->
         
         <tr><td colspan="2"><br /><strong><?php echo $HEADING['BACKEND'];?>:</strong></td></tr>
+         <tr>
+            <td width="35%"><?php echo $OPF['DROPLETS']?>:</td>
+            <td>
+                <input type="radio" <?php echo ($data['droplets_be']=='1') ? 'checked="checked"' :'';?>
+                    name="droplets_be" value="1"><?php echo $OPF['ENABLED'];?>
+                <input type="radio" <?php echo (($data['droplets_be'])=='0') ? 'checked="checked"' :'';?>
+                    name="droplets_be" value="0"><?php echo $OPF['DISABLED'];?>
+            </td>
+        </tr>
         <tr>
             <td width="35%"><?php echo $OPF['INSERT']?>:</td>
             <td>

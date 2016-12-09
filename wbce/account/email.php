@@ -1,5 +1,9 @@
 <?php
 /**
+    @file 
+    @brief This file sets the new emailadress for frontend preferences. 
+*/
+/**
  * WebsiteBaker Community Edition (WBCE)
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
@@ -21,14 +25,11 @@ if (!$wb->checkFTAN()) {
 // Get entered values
 	$password = $wb->get_post('current_password');
 	$email = $wb->get_post('email');
-// validate password
-	$sql  = "SELECT `user_id` FROM `".TABLE_PREFIX."users` ";
-	$sql .= "WHERE `user_id` = ".$wb->get_user_id()." AND `password` = '".md5($password)."'";
-	$rowset = $database->query($sql);
+
 // Validate values
-	if($rowset->numRows() == 0) {
-		$error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
-	}else {
+	if(false!==WbAuth::CheckUser ($sCurrentPassword, $wb->get_user_id()){
+            $error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
+    }else {
 		if(!$wb->validate_email($email)) {
 			$error[] = $MESSAGE['USERS_INVALID_EMAIL'];
 		}else {

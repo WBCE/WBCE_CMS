@@ -194,6 +194,7 @@ $template->set_var(array(
                                 'SECTION_USERS' => $MENU['USERS'],
                                 'SECTION_GROUPS' => $MENU['GROUPS'],
                                 'SECTION_ADMINTOOLS' => $MENU['ADMINTOOLS'],
+                                'SECTION_PREFERENCES' => $MENU['PREFERENCES'],
                                 'TEXT_VIEW' => $TEXT['VIEW'],
                                 'TEXT_ADD' => $TEXT['ADD'],
                                 'TEXT_LEVEL' => $TEXT['LEVEL'],

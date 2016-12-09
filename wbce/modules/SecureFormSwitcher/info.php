@@ -16,7 +16,7 @@ $module_author      = 'Complete rewrite. Norbert Heimsath(heimsath.org)';
 $module_license	    = 'GPLv2 or any later';
 $module_description = 'This tool provides some additional security features for CSRF protection. ';
 $module_icon        = 'fa fa-unlock';
-
+$module_level	    = 'core'; // remove this if you really want to unistall the module 
 
 
 

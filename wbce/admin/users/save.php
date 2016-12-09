@@ -104,7 +104,7 @@ if($password == "") {
     $query = "UPDATE ".TABLE_PREFIX."users SET groups_id = '$groups_id', group_id = '$group_id', active = '$active'$username_code, display_name = '$display_name', home_folder = '$home_folder', email = '$email' WHERE user_id = '$user_id'";
 } else {
     // MD5 supplied password
-    $md5_password = md5($password);
+    $md5_password = WbAuth::Hash($password);
     $query = "UPDATE ".TABLE_PREFIX."users SET groups_id = '$groups_id', group_id = '$group_id', active = '$active'$username_code, display_name = '$display_name', home_folder = '$home_folder', email = '$email', password = '$md5_password' WHERE user_id = '$user_id'";
 }
 $database->query($query);

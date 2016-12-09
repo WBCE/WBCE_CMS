@@ -70,8 +70,10 @@ if($admin->get_post('advanced') != 'yes') {
 	$system_permissions['groups_add'] = $system_permissions['groups'];
 	$system_permissions['groups_modify'] = $system_permissions['groups'];
 	$system_permissions['groups_delete'] = $system_permissions['groups'];
-	$system_permissions['admintools'] = $admin->get_post('admintools');
-	$system_permissions['admintools_settings'] = $system_permissions['admintools'];
+    $system_permissions['admintools'] = $admin->get_post('admintools');
+    $system_permissions['admintools_settings'] = $system_permissions['admintools'];
+    $system_permissions['preferences'] = $admin->get_post('preferences');
+    $system_permissions['preferences_settings'] = $system_permissions['preferences'];
 } else {
 	// Pages
 	$system_permissions['pages_view'] = $admin->get_post('pages_view');
@@ -135,6 +137,16 @@ if($admin->get_post('advanced') != 'yes') {
 		} else {
 			$system_permissions['admintools'] = '';
 		}
+        // preferences
+        $system_permissions['preferences_settings'] = $admin->get_post('preferences_settings');
+        if($system_permissions['preferences_settings'] == 1) {
+            $system_permissions['preferences'] = 1;
+        } else {
+            $system_permissions['preferences'] = '';
+        }
+		
+		
+		
 	if($system_permissions['modules'] == 1 OR $system_permissions['templates'] == 1 OR $system_permissions['languages'] == 1) {
 		$system_permissions['addons'] = 1;
 	} else {

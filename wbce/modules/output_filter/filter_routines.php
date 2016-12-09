@@ -35,6 +35,12 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
             }
         }
                 
+/* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */       
+        if (OPF_AUTO_PLACEHOLDER){
+            if (class_exists ("I")) {
+                $content = I::AddPlaceholder($content);
+            }
+        }
 /* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */       
         if (OPF_INSERT){
             if (class_exists ("I")) {
@@ -99,15 +105,14 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
         $sFilterDirectory = str_replace('\\', '/', dirname(__FILE__)).'/filters/';
       
 
-/* ### filter type: execute droplets filter ################################# */
-//MAybe later we willl allow Droplets here.
-/*        if (OPF_DROPLETS){
-            if (file_exists($sFilterDirectory.'filterDroplets.php')) {
-                require_once($sFilterDirectory.'filterDroplets.php');
-                $content = doFilterDroplets($content);
+/* ### filter type: execute droplets filter for backend ################################# */
+        if (OPF_DROPLETS_BE){
+            if (file_exists($sFilterDirectory.'filterDropletsBe.php')) {
+                require_once($sFilterDirectory.'filterDropletsBe.php');
+                $content = doFilterDropletsBe($content);
             }
         }
-*/                
+        
 /* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */ 
 //now available in BE too 
         if (defined("OPF_INSERT_BE") AND OPF_INSERT_BE){

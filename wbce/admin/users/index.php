@@ -41,11 +41,19 @@ $template->set_var('STATUS_ICON', ( ($iUserStatus==0) ? $UserStatusActive : $Use
 $template->set_var('ADVANCED_SEARCH', $TEXT['ADVANCED_SEARCH'] );
 $template->set_var('QUICK_SEARCH_STRG_F', $TEXT['QUICK_SEARCH_STRG_F'] );
 
+
+
 // Get existing value from database
 $sql  = 'SELECT * FROM `'.TABLE_PREFIX.'users` ' ;
 $sql .= 'WHERE 1 ';
 $sql .= 'AND user_id != 1 ';
-$sql .=     'AND active = '.$iUserStatus.' ';
+
+// Take Care of Temp deactivation by auth class
+// Sets active status to 2  
+if ($iUserStatus==0)  
+    $sql .=     'AND active = 0 ';
+else 
+    $sql .=     'AND active >= 1 ';
 $sql .= 'ORDER BY `display_name`,`username`';
 //echo $sql;
 

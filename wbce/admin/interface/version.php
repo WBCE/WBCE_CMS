@@ -10,18 +10,14 @@
  * @license GNU GPL2 (or any later version)
  */
 
-if (!defined('WB_URL')) {
-    header('Location: ../index.php');
-    exit(0);
-}
 
 // set WBCE version and release tag
-define('NEW_WBCE_VERSION', '1.2.0-alpha.4');
+define('NEW_WBCE_VERSION', '1.2.0-alpha.9');
 if (!defined('WBCE_VERSION')) {
     define('WBCE_VERSION', NEW_WBCE_VERSION);
 }
 
-define('NEW_WBCE_TAG', '1.2.0-alpha.4');
+define('NEW_WBCE_TAG', '1.2.0-alpha.9');
 if (!defined('WBCE_TAG')) {
     define('WBCE_TAG', NEW_WBCE_TAG);
 }

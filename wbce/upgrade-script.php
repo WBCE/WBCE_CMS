@@ -170,6 +170,8 @@ $FAIL = ' <span class="error">FAILED</span> ';
 $DEFAULT_THEME = 'advancedThemeWbFlat';
 $stepID = 1;
 $dirRemove = array(
+'[MODULES]/maintainance_mode/'
+
 /*
 '[TEMPLATE]/allcss/',
 '[TEMPLATE]/blank/',
@@ -221,6 +223,8 @@ $filesRemove['1'] = array(
 $filesRemove['2'] = array(
 
     '[FRAMEWORK]/SecureForm.mtab.php',
+    '[FRAMEWORK]/PasswordHash.php',
+    '[FRAMEWORK]/classes/PasswordHash.php',
     '[MODULES]/SecureFormSwitcher/FTAN_SUPPORTED',
     '[MODULES]/SecureFormSwitcher/files/SecureForm.mtab.php',
     '[MODULES]/SecureFormSwitcher/htt/help.png',
@@ -507,6 +511,10 @@ Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
  */
 
 
+echo "<br />Adding field group_id to users table as this may not be there on very old installations <br />";
+db_add_field('group_id', 'users', "INT NOT NULL DEFAULT '0' AFTER `user_id`");
+
+
 echo "<br />Adding field redirect_type to mod_menu_link table<br />";
 db_add_field('redirect_type', 'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER `target_page_id`");
 
@@ -783,31 +791,38 @@ Settings::Set('wb_sp',SP);              // Legacy: WB-classic
 /**********************************************************
  *  - Set some new standard conform settings
  */
-if (!defined('WB_DEFAULT_TITLE') Settings::Set ("wb_default_title", WEBSITE_TITLE);
-if (!defined('WB_DEFAULT_DESCRIPTION') Settings::Set ("wb_default_description", WEBSITE_DESCRIPTION);
-if (!defined('WB_DEFAULT_KEYWORDS') Settings::Set ("wb_default_keywords", WEBSITE_KEYWORDS);
-if (!defined('WB_SITE_HEADER') Settings::Set ("wb_site_header", WEBSITE_HEADER);
-if (!defined('WB_SITE_FOOTER') Settings::Set ("wb_site_footer", WEBSITE_FOOTER);
-if (!defined('WB_PAGE_LEVEL_LIMIT') Settings::Set ("wb_page_level_limit", PAGE_LEVEL_LIMIT);
-if (!defined('WB_PAGE_TRASH') Settings::Set ("wb_page_trash", PAGE_TRASH);
-if (!defined('WB_PAGE_LANGUAGES') Settings::Set ("wb_page_languages", PAGE_LANGUAGES);
-if (!defined('WB_MULTIPLE_MENUS') Settings::Set ("wb_multiple_menus", MULTIPLE_MENUS);
-if (!defined('WB_HOME_FOLDERS') Settings::Set ("wb_home_folders", HOME_FOLDERS);
-if (!defined('WB_MANAGE_SECTIONS') Settings::Set ("wb_manage_sections", MANAGE_SECTIONS);
-if (!defined('WB_SECTION_BLOCKS') Settings::Set ("wb_section_blocks", SECTION_BLOCKS);
-if (!defined('WB_INTRO_PAGE') Settings::Set ("wb_intro_page", INTRO_PAGE);
-if (!defined('WB_HOMEPAGE_REDIRECTION') Settings::Set ("wb_homepage_redirection", HOMEPAGE_REDIRECTION);
-if (!defined('WB_SMART_LOGIN') Settings::Set ("wb_smart_login", SMART_LOGIN);
-if (!defined('WB_FRONTEND_LOGIN') Settings::Set ("wb_frontend_login", FRONTEND_LOGIN);
-if (!defined('WB_REDIRECT_TIMER') Settings::Set ("wb_redirect_timer", REDIRECT_TIMER);
-if (!defined('WB_FRONTEND_SIGNUP') Settings::Set ("wb_frontend_signup", FRONTEND_SIGNUP);
-if (!defined('WB_ER_LEVEL') Settings::Set ("wb_er_level", ER_LEVEL);
-if (!defined('WB_WYSIWYG_STYLE') Settings::Set ("wb_wysiwyg_style", WYSIWYG_STYLE);
-if (!defined('WB_WYSIWYG_EDITOR') Settings::Set ("wb_wysiwyg_editor", WYSIWYG_EDITOR);
+if (!defined('WB_DEFAULT_TITLE')) Settings::Set ("wb_default_title", WEBSITE_TITLE);
+if (!defined('WB_DEFAULT_DESCRIPTION')) Settings::Set ("wb_default_description", WEBSITE_DESCRIPTION);
+if (!defined('WB_DEFAULT_KEYWORDS')) Settings::Set ("wb_default_keywords", WEBSITE_KEYWORDS);
+if (!defined('WB_SITE_HEADER')) Settings::Set ("wb_site_header", WEBSITE_HEADER);
+if (!defined('WB_SITE_FOOTER')) Settings::Set ("wb_site_footer", WEBSITE_FOOTER);
+if (!defined('WB_PAGE_LEVEL_LIMIT')) Settings::Set ("wb_page_level_limit", PAGE_LEVEL_LIMIT);
+if (!defined('WB_PAGE_TRASH')) Settings::Set ("wb_page_trash", PAGE_TRASH);
+if (!defined('WB_PAGE_LANGUAGES')) Settings::Set ("wb_page_languages", PAGE_LANGUAGES);
+if (!defined('WB_MULTIPLE_MENUS')) Settings::Set ("wb_multiple_menus", MULTIPLE_MENUS);
+if (!defined('WB_HOME_FOLDERS')) Settings::Set ("wb_home_folders", HOME_FOLDERS);
+if (!defined('WB_MANAGE_SECTIONS')) Settings::Set ("wb_manage_sections", MANAGE_SECTIONS);
+if (!defined('WB_SECTION_BLOCKS')) Settings::Set ("wb_section_blocks", SECTION_BLOCKS);
+if (!defined('WB_INTRO_PAGE')) Settings::Set ("wb_intro_page", INTRO_PAGE);
+if (!defined('WB_HOMEPAGE_REDIRECTION')) Settings::Set ("wb_homepage_redirection", HOMEPAGE_REDIRECTION);
+if (!defined('WB_SMART_LOGIN')) Settings::Set ("wb_smart_login", SMART_LOGIN);
+if (!defined('WB_FRONTEND_LOGIN')) Settings::Set ("wb_frontend_login", FRONTEND_LOGIN);
+if (!defined('WB_REDIRECT_TIMER')) Settings::Set ("wb_redirect_timer", REDIRECT_TIMER);
+if (!defined('WB_FRONTEND_SIGNUP')) Settings::Set ("wb_frontend_signup", FRONTEND_SIGNUP);
+if (!defined('WB_ER_LEVEL')) Settings::Set ("wb_er_level", ER_LEVEL);
+if (!defined('WB_WYSIWYG_STYLE')) Settings::Set ("wb_wysiwyg_style", WYSIWYG_STYLE);
+if (!defined('WB_WYSIWYG_EDITOR')) Settings::Set ("wb_wysiwyg_editor", WYSIWYG_EDITOR);
 //if (!defined('') Settings::Set ("", );
 
+// NEw admin Permission "preferences" added
+$database->query("
+INSERT INTO `".TABLE_PREFIX."groups` 
+(`group_id`, `name`, `system_permissions`, `module_permissions`, `template_permissions`) 
+VALUES
+(1, 'Administrators', 'pages,pages_view,pages_add,pages_add_l0,pages_settings,pages_modify,pages_intro,pages_delete,media,media_view,media_upload,media_rename,media_delete,media_create,addons,modules,modules_view,modules_install,modules_uninstall,templates,templates_view,templates_install,templates_uninstall,languages,languages_view,languages_install,languages_uninstall,settings,settings_basic,settings_advanced,access,users,users_view,users_add,users_modify,users_delete,groups,groups_view,groups_add,groups_modify,groups_delete,admintools,preferences,preferences_settings', '', '');
 
 
+");
 
 
 

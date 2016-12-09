@@ -16,3 +16,4 @@ $module_author      = 'Norbert Heimsath(heimsath.org)';
 $module_license	    = 'GPL v2 or any later';
 $module_description = 'General Settings like registration on/off or login on/off.';
 $module_icon        = 'fa fa-sliders';
+$module_level	    = 'core'; // remove this if you really want to unistall the module 

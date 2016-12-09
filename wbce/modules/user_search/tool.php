@@ -204,7 +204,9 @@ else {
 		$xmlstoresearch .= "<idgroup>".$g_id."</idgroup>";
 		
 		// retrieve the group name
-		$group_name = mysql_fetch_assoc(mysql_query ("SELECT name from `".TABLE_PREFIX."groups` WHERE group_id = '$g_id'"));
+		$result=$database->query("SELECT name from `".TABLE_PREFIX."groups` WHERE group_id = '$g_id'");
+		
+		$group_name = $result->fetchRow();
 		$xmlstoresearch .= "<groupname>".$group_name["name"]."</groupname>";
 		}
 		

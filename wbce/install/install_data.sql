@@ -12,7 +12,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 -- Daten für Tabelle `groups`
 --
 INSERT INTO `{TABLE_PREFIX}groups` (`group_id`, `name`, `system_permissions`, `module_permissions`, `template_permissions`) VALUES
-(1, 'Administrators', 'pages,pages_view,pages_add,pages_add_l0,pages_settings,pages_modify,pages_intro,pages_delete,media,media_view,media_upload,media_rename,media_delete,media_create,addons,modules,modules_view,modules_install,modules_uninstall,templates,templates_view,templates_install,templates_uninstall,languages,languages_view,languages_install,languages_uninstall,settings,settings_basic,settings_advanced,access,users,users_view,users_add,users_modify,users_delete,groups,groups_view,groups_add,groups_modify,groups_delete,admintools', '', '');
+(1, 'Administrators', 'pages,pages_view,pages_add,pages_add_l0,pages_settings,pages_modify,pages_intro,pages_delete,media,media_view,media_upload,media_rename,media_delete,media_create,addons,modules,modules_view,modules_install,modules_uninstall,templates,templates_view,templates_install,templates_uninstall,languages,languages_view,languages_install,languages_uninstall,settings,settings_basic,settings_advanced,access,users,users_view,users_add,users_modify,users_delete,groups,groups_view,groups_add,groups_modify,groups_delete,admintools,preferences,preferences_settings', '', '');
 --
 -- Daten für Tabelle `search`
 --
@@ -58,11 +58,11 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (20, 'homepage_redirection', 'false'),
 (21, 'page_languages', 'true'),
 (22, 'wysiwyg_editor', 'ckeditor'),
-(23, 'manage_sections', 'true'),
+(23, 'manage_sections', 'enabled'),
 (24, 'section_blocks', 'true'),
 (25, 'smart_login', 'true'),
-(26, 'frontend_login', 'false'),
-(27, 'frontend_signup', 'false'),
+(26, 'frontend_login', 'bfalseb'),
+(27, 'frontend_signup', 'bfalseb'),
 (28, 'search', 'public'),
 (29, 'page_extension', '.php'),
 (30, 'page_spacer', '-'),
@@ -76,7 +76,13 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (38, 'wbmailer_smtp_username', ''),
 (39, 'wbmailer_smtp_password', ''),
 (40, 'fingerprint_with_ip_octets', '0'),
-(41, 'mediasettings', '');
-
+(42, 'wb_secform_secret', '5609bnefg93jmgi99igjefg'),
+(43, 'wb_secform_secrettime', '86400'),
+(44, 'wb_secform_timeout', '7200'),
+(45, 'wb_secform_tokenname', 'formtoken'),
+(46, 'wb_secform_usefp', false),
+(47, 'fingerprint_with_ip_octet', '2');
+(48, 'wb_frontend_login', 'bfalseb'),
+(49, 'wb_frontend_signup', 'bfalseb'),
 
 

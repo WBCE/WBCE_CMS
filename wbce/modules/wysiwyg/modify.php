@@ -45,7 +45,7 @@ if(!isset($wysiwyg_editor_loaded)) {
 				$entry='content'.$wysiwyg_section['section_id'];
 				$id_list[] = $entry;
 			}
-			require(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php');
+			require_once(WB_PATH.'/modules/'.WYSIWYG_EDITOR.'/include.php');
 		}
 	}
 }

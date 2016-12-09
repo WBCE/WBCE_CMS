@@ -116,7 +116,7 @@
 		  
 			<div class="col_6">
 			
-				<div id="module_preferences" class="themebox">
+				<div id="module_preferences" class="themebox" style="{DISPLAY_PREFERENCES};">
 				
 					<div class="tb_header">			
 						<a href="{ADMIN_URL}/preferences/index.php"></a>

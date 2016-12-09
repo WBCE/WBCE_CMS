@@ -13,7 +13,6 @@
 
 
 // DEFAULT SYSTEM SETTINGS
-// remove all unwanted php fancy stuff
 
 // Set debug, but allow override in config. 
 if (!defined("WB_DEBUG")) define("WB_DEBUG", true);
@@ -33,14 +32,46 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 }
 
 
+// compatibility fix , sooner or later better replace the old constants
+if (!defined("MYSQL_BOTH")) define('MYSQL_BOTH',MYSQLI_BOTH);
+if (!defined("MYSQL_NUM")) define('MYSQL_NUM',MYSQLI_NUM);
+if (!defined("MYSQL_ASSOC")) define('MYSQL_ASSOC',MYSQLI_ASSOC);
+
+// EARLY CONSTANT HANDLING
+if (!defined("WB_TABLE_PREFIX")) define("WB_TABLE_PREFIX", TABLE_PREFIX);
+if (!defined("TABLE_PREFIX")) define("TABLE_PREFIX", WB_TABLE_PREFIX);
+
+require dirname(__FILE__)."/classes/class.autoload.php"; 
+WbAuto::AddDir(dirname(__FILE__)."/classes/",true);
+
+
+// PRE DB
+// load all predb.php files form folders that start whith predb_
+$aPreDb=array();
+$p= dirname(dirname(__FILE__))."/modules/predb_*";
+$aPreDb=glob($p);
+//print_r($aPreDb);
+if ($aPreDb!==false AND !empty($aPreDb)){
+    foreach ($aPreDb as $m){
+        $f=$m."/predb.php";
+        if (file_exists($f)) {
+            require_once ($f);
+       
+        }
+    }
+}
 
 // DATABASE
 // Load database class
-require_once(dirname(__FILE__)."/class.database.php");
+// require_once(dirname(__FILE__)."/class.database.php");
 
-// Create database class
-$database = new database();
-
+// Create database class autoloader schould take care
+if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
+    $database = new \Persistence\Database();
+}
+else{
+    $database = new database();
+}
 
 
 // PRE INIT
@@ -49,7 +80,7 @@ $database = new database();
 //http://forum.wbce.org/viewtopic.php?id=84
 
 // Pre init, modules may change everyting as almost nothing is already set here
-// Module may hook here to change Page_id Language or whatever. Even System Constants.
+// Module may hook here to change Page_id Language or whatever. Even most System Constants.
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
 $sql .= 'WHERE function LIKE \'%preinit%\' ';
 if (($resSnippets = $database->query($sql))) {
@@ -120,10 +151,9 @@ if (!defined('WB_CHECK'))  {define('WB_CHECK',' checked="checked" ');}
 
 // AUTOLOADERS
 // register WB Autoloader 
-require WB_PATH . "/framework/class.autoload.php"; 
-WbAuto::AddDir("/framework/");
+
 WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
-WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
+WbAuto::AddFile("SecureForm","/framework/classes/SecureForm.php");
 WbAuto::AddFile("PclZip","/include/pclzip/pclzip.lib.php");
 
 // register PHPMailer autoloader ---
@@ -184,43 +214,61 @@ date_default_timezone_set('UTC');
 SanitizeHttpReferer();
 
 
-
-// SESSION 
-// WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
-// Later we should get a nice session class instead of this improvised stuff.
-ini_set('session.gc_maxlifetime', intval(WB_SECFORM_TIMEOUT));
-ini_set('session.cookie_lifetime', intval(WB_SECFORM_TIMEOUT));
-ini_set( 'session.cookie_httponly', 1 );
-if(WB_PROTOCOLL=="https"){ 
-    ini_set( 'session.cookie_secure', 1 );
-}
-session_name(APP_NAME . '-sid');
-session_set_cookie_params(WB_SECFORM_TIMEOUT);
-
-// Start a session
-if (!defined('SESSION_STARTED')) {
-    session_start();
-    
-    // this is used by only by installer in index.php and save.php we will remove this later
-    define('SESSION_STARTED', true);
-    
-    // New way for check if session exists
-    $_SESSION['WB']['SessionStarted']=true;
-}
-
-// make sure session never exeeds lifetime
-$now=time();
-if (isset($_SESSION['WB']['discard_after']) && $now > $_SESSION['WB']['discard_after']) {
-    // this session has worn out its welcome; kill it and start a brand new one
-    session_unset();
-    session_destroy();
-    session_start();
-}
-$_SESSION['WB']['discard_after'] = $now + WB_SECFORM_TIMEOUT;
-
-if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
-    $_SESSION['session_started'] = time();
-}
+WbSession::Start();
+// // SESSION 
+// // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
+// // Later we should get a nice session class instead of this improvised stuff.
+// ini_set('session.gc_maxlifetime', intval(WB_SECFORM_TIMEOUT));
+// //ini_set('session.cookie_lifetime', intval(WB_SECFORM_TIMEOUT));
+// ini_set( 'session.cookie_httponly', 1 );
+// if(WB_PROTOCOLL=="https"){ 
+//     ini_set( 'session.cookie_secure', 1 );
+// }
+// session_name(APP_NAME . '-sid');
+// session_set_cookie_params(0);
+// //session_set_cookie_params(WB_SECFORM_TIMEOUT);
+// 
+// // Start a session
+// if (!defined('SESSION_STARTED')) {
+//     session_start();
+//     
+//     // this is used by only by installer in index.php and save.php we will remove this later
+//     define('SESSION_STARTED', true);
+//     
+//     // New way for check if session exists
+//     $_SESSION['WB']['SessionStarted']=true;
+// }
+// 
+// // make sure session never exeeds lifetime
+// /**
+// //That will set the session cookie with a fresh ttl.
+// setcookie( ini_get("session.name"), session_id(),
+// time()+ini_get("session.cookie_lifetime"),
+// ini_get("session.cookie_path"),
+// ini_get("session.cookie_domain"),
+// ini_get("session.cookie_secure"),
+// ini_get("session.cookie_httponly"));
+// */
+// 
+// 
+// $now=time();
+// //echo "Now: $now <br>";
+// //echo "discard_after:".$_SESSION['WB']['discard_after']."<br>";
+// //echo "Secform timeout:".WB_SECFORM_TIMEOUT."<br>";
+// if (isset($_SESSION['WB']['discard_after']) && $now > $_SESSION['WB']['discard_after']) {
+//     // this session has worn out its welcome; kill it and start a brand new one
+//     session_unset();
+//     session_destroy();
+//     session_start();
+//     echo "Run out , killing session";
+// }
+// $_SESSION['WB']['discard_after'] = $now + WB_SECFORM_TIMEOUT;
+// //echo "discard_after2:".$_SESSION['WB']['discard_after']."<br>";
+// 
+// 
+// if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
+//     $_SESSION['session_started'] = time();
+// }
 
 
 
@@ -384,3 +432,4 @@ function makePhExp($sList)
     //return preg_replace('/^(.*)$/', '/\[$1\]/s', $aList);
     return preg_replace('/^(.*)$/', '[$1]', $aList);
 }
+

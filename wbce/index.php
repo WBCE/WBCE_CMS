@@ -19,6 +19,9 @@ $starttime = array_sum(explode(" ", microtime()));
 // Set debug mode (old and deprecated new WB_DEBUG is set in config or initialize.php)
 define('DEBUG', false);
 
+// Hey we are on a frontend Page
+if (!defined('WB_FRONTEND')) define('WB_FRONTEND', true);
+
 // Include config file
 // Config file includes /framework/initialize.php as there are many 
 // scripts that wont go via the index.php we cannot change this right now.
@@ -32,13 +35,13 @@ if (file_exists($file)) {
 // Check if the config file has been set-up
 // If not redirect to the installer.
 if (!defined('TABLE_PREFIX')) {
-    require dirname(__FILE__) . '/framework/redirect_installer.php';
+    require dirname(__FILE__) . '/framework/includes/redirect_installer.php';
 }
 
 
 // Create new frontend object
 $wb = new frontend();
-
+$admin=$wb; // a wild hack for some modules calling on $admin in the FE...
 
 // Figure out which page to display
 // Stop processing if intro page was shown

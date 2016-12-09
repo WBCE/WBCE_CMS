@@ -64,7 +64,8 @@ if( !$admin->validate_email($email) )
     // check that email is unique in whoole system
         $sql  = 'SELECT COUNT(*) FROM `'.TABLE_PREFIX.'users` ';
         $sql .= 'WHERE `user_id` <> '.(int)$admin->get_user_id().' AND `email` LIKE "'.$email.'"';
-        if( $database->get_one($sql) > 0 ){ $error[] = $MESSAGE['USERS_EMAIL_TAKEN']; }
+        $dbcount=$database->get_one($sql);
+        if( $dbcount > 0 ){ $error[] = $MESSAGE['USERS_EMAIL_TAKEN']; }
     }
 }
 

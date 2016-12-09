@@ -11,7 +11,6 @@
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 
-$setError=Settings::Del ("wb_maintainance_mode");
 $setError=Settings::Del ("wb_secform_secret");
 $setError=Settings::Del ("wb_secform_secrettime");
 $setError=Settings::Del ("wb_secform_timeout");

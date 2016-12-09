@@ -16,3 +16,4 @@ $module_author      = 'Norbert Heimsath(heimsath.org)';
 $module_license	    = 'GPL v2 or any later';
 $module_description = 'Mail Settings for WBCE';
 $module_icon        = 'fa fa-envelope';
+$module_level	    = 'core'; // remove this if you really want to unistall the module 
