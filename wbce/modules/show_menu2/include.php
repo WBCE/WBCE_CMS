@@ -439,6 +439,8 @@ function show_menu2(
 {
     global $wb;
 
+    $aMenu = get_menu_id ($aMenu);
+    
     // extract the flags and set $aOptions to an array
     $flags = 0;
     if (is_int($aOptions)) {
