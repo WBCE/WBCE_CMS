@@ -239,6 +239,10 @@ class Database
     {
         return $this->error;
     }
+    public function error()
+    {
+        return $this->error;
+    }
 
     /**
      * Set error.
