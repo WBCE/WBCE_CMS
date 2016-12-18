@@ -8,7 +8,9 @@
  */
  
 // module description 
-$module_description = 'This setting offers a plain and simple switch to turn maintainance mode on and off.';
+$module_description = 'This tool offers a plain and simple switch to turn maintainance mode on and off.';
+$module_title = "Maintainance Mode Switcher";
+
 
 // Headings and text outputs
 $MOD_MAINTAINANCE['HEADER'] =      'Maintainance Mode';

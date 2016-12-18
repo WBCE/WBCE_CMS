@@ -19,7 +19,7 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
             <?php echo $admin->getFTAN(); ?>
             <table cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td colspan="2"><?php echo $MOD_MAINTAINANCE['DESCRIPTION']; ?></td>
+                    <td colspan="2"><?php echo $MOD_MAINTAINANCE['DESCRIPTION']; ?>:</td>
                 </tr>
                 <tr>
                     <td width="20"><input type="checkbox" name="maintMode" id="maintMode" value="true" <?php echo $maintMode ?>/></td>
@@ -31,7 +31,7 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
                      </td>
                     <td class="tdright">
                         <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" id="save_default" value="<?php echo $HEADING['DEFAULT_SETTINGS']; ?>" />
-                        <input type="submit" name="admin_tools" id="admin_tools" value="<?php echo $MENU['SETTINGS']; ?>" />
+                        <input type="submit" name="admin_tools" id="admin_tools" value="<?php echo $HEADING['ADMINISTRATION_TOOLS']; ?>" />
                     </td>
                 </tr>
             </table>

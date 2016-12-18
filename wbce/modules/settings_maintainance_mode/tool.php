@@ -77,7 +77,7 @@ if($saveSettings) {
 
     // Display form
     // get setting from DB , as constant may not be set yet.
-	$maintMode=(string)Settings::Get ("wb_maintainance_mode");
+	$maintMode=Settings::Get ("wb_maintainance_mode", NULL);
     if ($maintMode===true) $maintMode=' checked="checked" ';
     else                $maintMode='';  
 
@@ -85,3 +85,4 @@ if($saveSettings) {
     
 }
  
+
