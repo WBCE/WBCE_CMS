@@ -485,7 +485,7 @@ echo "<br />Adding sec_anchor to settings table<br />";
 Settings::Set('sec_anchor','wb_', false);
 
 echo "<br />Adding redirect timer to settings table<br />";
-Settings::Set('redirect_timer','1500', false);
+Settings::Set('redirect_timer','500', false);
 
 echo "<br />Updating rename_files_on_upload to settings table<br />";
 Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js', false);

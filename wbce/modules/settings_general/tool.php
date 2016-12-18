@@ -174,8 +174,8 @@ if($saveSettings) {
         }
         else {
             $setError.=$TEXT['REDIRECT_AFTER']." (Redirect Timer) out of range, default set.<br />";
-            $setError.=Settings::Set ("redirect_timer", "1500");
-            $setError.=Settings::Set ("wb_redirect_timer", "1500");             
+            $setError.=Settings::Set ("redirect_timer", "500");
+            $setError.=Settings::Set ("wb_redirect_timer", "500");             
         }
     }
     
