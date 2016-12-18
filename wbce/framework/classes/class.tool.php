@@ -98,6 +98,8 @@ class Tool {
          
         // only set if nothing is manually set
         if ($this->adminSection =="") $this->adminSection = "admintools";
+        
+        // settings for settings ;-)
         if ($this->toolType=="setting") {
             $this->returnToTools = ADMIN_URL.'/settings/index.php';
             $this->typeDir = "/settings";
@@ -105,7 +107,7 @@ class Tool {
             $this->adminSection = "settings";
         }  
         
-        //Possibly we need on for each page here ... we will see
+        //Possibly we need one for each page here ... we will see
         // this one is not used anyway right now
         if ($this->toolType=="backend") {
             $this->returnToTools = ADMIN_URL.'/index.php';
@@ -261,9 +263,9 @@ class Tool {
          // only if we do not look at page listing
         if(!$doSave and !$noPage and !preg_match("/backend/", $module_function) ) {
             print '<h4><a href="'.$returnToTools.
-                'title="'.$categoryName.'">'.
+                '" title="'.$categoryName.'">'.
                 $categoryName.'</a>'.
-                '&nbsp;&raquo;&nbsp;'.$module_name.'</h4>'."\n";
+                '&nbsp;&raquo;&nbsp;'.$module_title.'</h4>'."\n";
         }
 
         // eine Variable für this festlegen
@@ -356,7 +358,7 @@ class Tool {
     
     /**
         Wrapper for $admin->print_error,$admin->print_success
-        If a error is set it prits the error otherwise it prints the sucess 
+        If a error is set it prints the error otherwise it prints the sucess 
         In Addition it controlls the return address and sets a default if needed.
         
         This is just a comfort Function to shorten the Code of the Tool
@@ -366,7 +368,7 @@ class Tool {
         //fetch Globals
         global $MESSAGE, $admin;
   
-        if ($returnUrl=="" )   $returnUrl=WB_ADMIN_URL;
+        if ($returnUrl=="" )   $returnUrl=$this->returnToTools;
 
         // Check if there is error, otherwise say successful
         if($setError) {
