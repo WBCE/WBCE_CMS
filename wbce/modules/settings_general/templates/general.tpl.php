@@ -188,10 +188,11 @@ margin:2px; padding:0;
         
         
         <!-- WYSIWYG_STYLE -->
+        <!--
         <label class="settingName" for="wysiwyg_style"><?php echo $TEXT['WYSIWYG_STYLE'] ?></label>
         <input type="text" id="wysiwyg_style" name="wysiwyg_style" maxlength="255"  value="<?php echo WYSIWYG_STYLE ?>" style="width:350px" /><br />
         <hr />       
-        
+        -->
         <!-- WYSIWYG_EDITOR -->
         <?php $groups=gs_GetEditorArray(); ?>
         <label class="settingName" for="wysiwyg_editor"><?php echo $TEXT['WYSIWYG_EDITOR'] ?></label>
