@@ -89,7 +89,7 @@ function parent_list($parent) {
 	$get_pages = $database->query($query);
 	while($page = $get_pages->fetchRow()) {
 		// Stop users from adding pages with a level of more than the set page level limit
-		if($page['level']+1 < PAGE_LEVEL_LIMIT) {
+		if($page['level']+1 <= PAGE_LEVEL_LIMIT) {
 			// Get user perms
 			$admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
 			$admin_users = explode(',', str_replace('_', '', $page['admin_users']));
