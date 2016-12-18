@@ -11,9 +11,9 @@
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
  
 // module description 
-$module_description = 'Manage system settings and default values';
+$module_description = 'Manage System default Settings';
 $module_title= "Default Settings";
 
 // Headings and text outputs
 $MOD_SET_GENERAL['HEADER'] =           'Default Settings';
-$MOD_SET_GENERAL['DESCRIPTION'] =      'Manage system settings and default values for this WBCE instance.';
+$MOD_SET_GENERAL['DESCRIPTION'] =      'Manage System default Settings, default timezone, default template, default language...';
