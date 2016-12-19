@@ -245,6 +245,11 @@ class admin extends wb
                     }
                 }
             }
+            
+            // Process direct Output if set. This ends the script here and regular output is not put out. 
+            $this->DirectOutput();
+            
+            //Output all regular pagecontent
             echo $allOutput;
         }
         
