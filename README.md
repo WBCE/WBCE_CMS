@@ -1,3 +1,6 @@
+ > establish connection from NetBeans IDE to GitHub
+ > ...
+
 # WebsiteBaker Community Edition (WBCE)
 The [WebsiteBaker Community Edition](http://wbce.org) (`WBCE` or `WebsiteBaker CE`) is the further development of the classic content management system (CMS) [WebsiteBaker](http://websitebaker.org), based on [WebsiteBaker 2.8.3-SP4](http://wiki.websitebaker.org/wbdownload/SP4ForWb2-8-3.zip). 
 
