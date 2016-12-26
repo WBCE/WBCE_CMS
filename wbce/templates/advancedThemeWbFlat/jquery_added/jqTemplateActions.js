@@ -99,7 +99,7 @@ $(document).ready( function() {
 	
 	// Specials for separate module-pages admintools --> deactivate link in head
 	// just unbind click-handler for the link (Note: do not remove link, cause css designs link-tag)
-	$('td.content > h4 a').click(function () {return false;});
+	//$('td.content > h4 a').click(function () {return false;});
 	// ENDE special deactivate link
 	
 
