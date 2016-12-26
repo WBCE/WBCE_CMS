@@ -192,7 +192,7 @@ if (!function_exists('get_menu_id')) {
     If fed whith a string it tries to find this string in the $block[] array of the recent template.
     It returns the id if found otherwise it returns 1 (default template block)
     
-    @param unknown $uMenu may be string or integer
+    @param unknown $uBlock may be string or integer
     @return integer 
 */
     function get_menu_id ($uMenu) {
@@ -236,7 +236,7 @@ if (!function_exists('page_content')) {
         // We want it as a return value  
         if ($echo===false) {
             ob_start();		
-	        page_content($block);
+	        page_content($uBlock);
 	        $out = ob_get_contents();
 	        ob_end_clean();
             return $out; 

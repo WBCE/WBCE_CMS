@@ -67,10 +67,12 @@ class frontend extends wb
                 return false;
             }
         }
+        
         // Check if we should add page language sql code
         if (PAGE_LANGUAGES) {
             $this->sql_where_language = ' AND `language`=\'' . LANGUAGE . '\'';
         }
+        
         // Get default page
         // Check for a page id
         $table_p = TABLE_PREFIX . 'pages';

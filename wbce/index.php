@@ -38,6 +38,8 @@ if (!defined('TABLE_PREFIX')) {
     require dirname(__FILE__) . '/framework/includes/redirect_installer.php';
 }
 
+// Hey we are in the frontend
+define ("WB_FRONTEND"=true);
 
 // Create new frontend object
 $wb = new frontend();
@@ -107,12 +109,10 @@ if (!defined("WB_SUPPRESS_OLD_OPF") or !WB_SUPPRESS_OLD_OPF){
     }
 }
 
+
 // Process direct Output if set. This ends the script here and regular output is not put out. 
 $wb->DirectOutput();
 
-// now send complete page to the browser
+// No direct output, send complete page to the browser and end the script 
 echo $output;
 
-
-// end of wb-script
-exit;
