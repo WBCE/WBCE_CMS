@@ -14,7 +14,7 @@
 	<meta name="description" content="Retrieve Login Details" />
 	<meta name="keywords" content="Retrieve Login Details" />
 
-	<link href="{THEME_URL}/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">
+    <link href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 
 	<!-- include styles -->
 	<link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
@@ -69,7 +69,7 @@
         var $span = $('<span class="fa" style="display:none"></span>').appendTo('body');
         if ($span.css('fontFamily') !== 'FontAwesome' ) {
             // Fallback Link
-            $('head').append('<link href="{THEME_URL}/webfonts/fontawesome_include/font-awesome.4.2.0.min.css" type="text/css" rel="stylesheet">');
+            $('head').append('<link href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">');
         }
         $span.remove();
     })(jQuery);
