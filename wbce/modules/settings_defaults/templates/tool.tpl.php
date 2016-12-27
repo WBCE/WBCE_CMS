@@ -7,50 +7,45 @@ And to activate default setting it heed to have name+id="save_default".
 $returnUrl      Is used as form Action it sends the form to itself(apeform)
 
 Language vars whit preceding MOD_ can be found in the launguage file of this module
-Other language vars are from the default WB (e.g. $TEXT or $HEADING are from the 
-WBCE language files)
+Other language vars are from the default WB language files.(e.g. $TEXT or $HEADING )
 
 The default button uses a simple Javascript return confirm()for a simple "Are you sure?"
 */?>
 <style>
-.settings form {
-    width: 90%;
+    .settings form {
+        width: 90%;
 
-}
-.settings label,
-.settings input,
-.settings .settingName {
-    float: left;
-}    
-.settings .settingName {
-    width: 250px;
-}
-.settings .settingName::after {    
-    content: ": ";
-}
+    }
+    .settings label,
+    .settings input,
+    .settings .settingName {
+        float: left;
+    }    
+    .settings .settingName {
+        width: 250px;
+    }
+    .settings .settingName::after {    
+        content: ": ";
+    }
 
-.settings hr,
-.settings br {
-clear:both;
-margin:2px; padding:0;
-}
+    .settings hr,
+    .settings br {
+    clear:both;
+    margin:2px; padding:0;
+    }
 
-.settings .admin_tools{
-    float:right;
-}
+    .settings .admin_tools{
+        float:right;
+    }
 
-.settings .save_default{
-    margin-left: 30px;
-}
+    .settings .save_default{
+        margin-left: 30px;
+    }
 
-.settings select {
-    width:450px;
-}
-
- 
+    .settings select {
+        width:450px;
+    }  
 </style>
-
-
 <div class="settings">
     <h2><?php echo $MOD_SET_GENERAL['HEADER']; ?></h2>
     <form id="settings_seo_form" name="store_settings" style="margin-top: 1em; display: true;" action="<?php echo $returnUrl; ?>" method="post">
