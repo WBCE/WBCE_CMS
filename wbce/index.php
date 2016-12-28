@@ -38,8 +38,6 @@ if (!defined('TABLE_PREFIX')) {
     require dirname(__FILE__) . '/framework/includes/redirect_installer.php';
 }
 
-// Hey we are in the frontend
-define ("WB_FRONTEND"=true);
 
 // Create new frontend object
 $wb = new frontend();
