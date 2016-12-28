@@ -359,6 +359,30 @@ class wb extends SecureForm
         }
     }
 
+    public function get_page_permission($page, $action = 'admin')
+    {
+        if ($action != 'viewing') {$action = 'admin';}
+        $action_groups = $action . '_groups';
+        $action_users = $action . '_users';
+        $groups = $users = '0';
+        if (is_array($page)) {
+            $groups = $page[$action_groups];
+            $users = $page[$action_users];
+        } else {
+            global $database;
+            $sql = 'SELECT `' . $action_groups . '`,`' . $action_users . '` ';
+            $sql .= 'FROM `' . TABLE_PREFIX . 'pages` ';
+            $sql .= 'WHERE `page_id`=' . (int) $page;
+            if (($res = $database->query($sql))) {
+                if (($rec = $res->fetchRow(MYSQLI_ASSOC))) {
+                    $groups = $rec[$action_groups];
+                    $users = $rec[$action_users];
+                }
+            }
+        }
+        return ($this->ami_group_member($groups) || $this->is_group_match($this->get_user_id(), $users));
+    }
+
     public function get_user_details($user_id)
     {
         global $database;
