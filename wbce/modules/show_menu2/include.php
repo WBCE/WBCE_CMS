@@ -442,12 +442,12 @@ function show_menu2(
     $aMenu = get_menu_id ($aMenu);
     
     // extract the flags and set $aOptions to an array
-    $flags = 0;
+    $flags = SM2_TRIM;
     if (is_int($aOptions)) {
         $flags = $aOptions;
         $aOptions = array();
     }
-    else if (isset($aOptions['flags'])) {
+    elseif (isset($aOptions['flags'])) {
         $flags = $aOptions['flags'];
     }
     else {
@@ -705,7 +705,7 @@ function show_menu2(
         if (!is_object($aItemOpen)) {
             static $sm2formatter;
             if (!isset($sm2formatter)) {
-                $sm2formatter = new SM2_Formatter;
+                $sm2formatter = new SM2_Formatter();
             }
             $formatter = $sm2formatter;
             $formatter->set($flags, $aItemOpen, $aItemClose, 
