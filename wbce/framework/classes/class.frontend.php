@@ -372,13 +372,22 @@ $content = preg_replace($pattern,$link,$content);
         } else {
             $menu_number = '1';
         }
+        
         // Query pages
-        $sql = 'SELECT `page_id`,`menu_title`,`page_title`,`link`,`target`,`level`,';
-        $sql .= '`visibility`,viewing_groups,viewing_users ';
-        $sql .= 'FROM `' . TABLE_PREFIX . 'pages` ';
-        $sql .= 'WHERE `parent`=' . (int) $this->menu_parent . ' AND ' . $menu_number . ' AND ' . $this->extra_where_sql . ' ';
-        $sql .= 'ORDER BY `position` ASC';
+        $sql ="
+            SELECT
+                `page_id`,`menu_title`,`page_title`,`link`,`target`,`level`,`visibility`,viewing_groups,viewing_users 
+            FROM 
+                {TP}pages
+            WHERE
+                `parent`='" . (int) $this->menu_parent . "' AND
+                {$menu_number}                              AND
+                {$this->extra_where_sql}
+            ORDER BY 
+                `position` ASC
+        ";     
         $query_menu = $database->query($sql);
+        
         // Check if there are any pages to show
         if ($query_menu->numRows() > 0) {
             // Print menu header
