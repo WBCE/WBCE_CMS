@@ -10,10 +10,10 @@
  * @license GNU GPL2 (or any later version)
  */
 
-
+// define WB_PATH as it isn't yet defined
+defined("WB_PATH") OR define("WB_PATH", dirname(__DIR__));
 
 // DEFAULT SYSTEM SETTINGS
-
 // Set debug, but allow override in config. 
 if (!defined("WB_DEBUG")) define("WB_DEBUG", true);
  
