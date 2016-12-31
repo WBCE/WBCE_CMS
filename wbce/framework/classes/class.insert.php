@@ -682,7 +682,7 @@ class Insert {
 
         // SRC gets some special threatment so you can have an always refreshed browser cache
         // by changing the file URL whith a get parameter
-        if (!empty($Content['scr'])) {
+        if (!empty($Content['src'])) {
             // Set value if exits
             $this->Js[$SetName]['src'] = $Content['src'];
 
