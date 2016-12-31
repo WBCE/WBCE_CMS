@@ -691,7 +691,7 @@ class Insert {
             if(is_file($sFilePath)){
                 if (!defined('WB_JS_REFRESH_BROWSER_CACHE') OR  WB_JS_REFRESH_BROWSER_CACHE===true){
                     // Append a Parameter that depends on the time the file was last modified 
-                    $this->Js[$SetName]['href'] .= '?' . filemtime($sFilePath);
+                    $this->Js[$SetName]['src'] .= '?' . filemtime($sFilePath);
                 }
             }  
         }
