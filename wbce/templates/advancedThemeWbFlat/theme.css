@@ -513,7 +513,7 @@ blockquote, q {
 
 /* ::grid-media-queries:: media queries for the project */
 #contentarea {
-  min-width: 900px !important;
+ /* min-width: 900px !important; */
   margin: 0 auto;
   max-width: 1069px !important;
   -webkit-transition: all 1s;
@@ -522,7 +522,7 @@ blockquote, q {
 
 @media (max-width: 1047px) {
   div#sidebararea + div#mainarea > div#contentarea {
-    width: 900px;
+    /* width: 900px; */
     -webkit-transition: all 1s;
             transition: all 1s;
   }
@@ -536,14 +536,14 @@ blockquote, q {
   }
 
   div#sidebararea.closedsidebar + div#mainarea > div#contentarea {
-    min-width: 900px;
+    /* min-width: 900px; */
     -webkit-transition: all 1s;
             transition: all 1s;
   }
 }
 @media (min-width: 1048px) and (max-width: 1359px) {
   div#sidebararea + div#mainarea > div#contentarea {
-    min-width: 900px;
+   /* min-width: 900px; */
     width: auto;
     max-width: 900px;
     -webkit-transition: 1s;
@@ -551,7 +551,7 @@ blockquote, q {
   }
 
   div#sidebararea.closedsidebar + div#mainarea > div#contentarea {
-    min-width: 900px;
+   /* min-width: 900px; */
     width: auto;
     max-width: 1069px;
     -webkit-transition: 1s;
@@ -560,7 +560,7 @@ blockquote, q {
 }
 @media (min-width: 1360px) {
   div#sidebararea + div#mainarea > div#contentarea {
-    min-width: 900px;
+    /* min-width: 900px; */
     width: auto;
     max-width: 1148px;
     -webkit-transition: all 1s;

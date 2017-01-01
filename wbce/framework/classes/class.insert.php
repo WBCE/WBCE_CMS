@@ -682,7 +682,7 @@ class Insert {
 
         // SRC gets some special threatment so you can have an always refreshed browser cache
         // by changing the file URL whith a get parameter
-        if (!empty($Content['scr'])) {
+        if (!empty($Content['src'])) {
             // Set value if exits
             $this->Js[$SetName]['src'] = $Content['src'];
 
@@ -691,7 +691,7 @@ class Insert {
             if(is_file($sFilePath)){
                 if (!defined('WB_JS_REFRESH_BROWSER_CACHE') OR  WB_JS_REFRESH_BROWSER_CACHE===true){
                     // Append a Parameter that depends on the time the file was last modified 
-                    $this->Js[$SetName]['href'] .= '?' . filemtime($sFilePath);
+                    $this->Js[$SetName]['src'] .= '?' . filemtime($sFilePath);
                 }
             }  
         }
