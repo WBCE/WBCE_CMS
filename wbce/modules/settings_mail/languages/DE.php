@@ -11,7 +11,7 @@
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
  
 // module description 
-$module_description = 'Einstellungen für den Versand system- und modulgenerierter E-Mails.';
+$module_description = 'Einstellungen für den Versand system- und modulgenerierter E-Mails';
 $module_title= "Mail-Einstellungen";
 
 // Headings and text outputs
