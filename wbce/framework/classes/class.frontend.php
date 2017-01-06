@@ -35,7 +35,8 @@ class frontend extends wb
     public $website_title, $website_description, $website_keywords, $website_header, $website_footer;
 
     // ugly database stuff
-    public $extra_where_sql, $sql_where_language;
+    public $extra_where_sql=""; 
+    public $sql_where_language="";
 
     public function __construct()
     {
@@ -67,25 +68,38 @@ class frontend extends wb
                 return false;
             }
         }
+        
         // Check if we should add page language sql code
         if (PAGE_LANGUAGES) {
-            $this->sql_where_language = ' AND `language`=\'' . LANGUAGE . '\'';
+            $this->sql_where_language = " AND 
+                `language`='" . LANGUAGE . "'";
         }
+        
         // Get default page
         // Check for a page id
-        $table_p = TABLE_PREFIX . 'pages';
-        $table_s = TABLE_PREFIX . 'sections';
         $now = time();
-        $sql = 'SELECT `p`.`page_id`, `link` ';
-        $sql .= 'FROM `' . $table_p . '` AS `p` INNER JOIN `' . $table_s . '` USING(`page_id`) ';
-        $sql .= 'WHERE `parent`=0 AND `visibility`=\'public\' ';
-        $sql .= 'AND ((' . $now . '>=`publ_start` OR `publ_start`=0) ';
-        $sql .= 'AND (' . $now . '<=`publ_end` OR `publ_end`=0)) ';
-        if (trim($this->sql_where_language) != '') {
-            $sql .= trim($this->sql_where_language) . ' ';
-        }
-        $sql .= 'ORDER BY `p`.`position` ASC';
+        $sql="
+            SELECT 
+                `p`.`page_id`, `link` 
+            FROM 
+                `{TP}pages` AS `p` INNER JOIN `{TP}sections` USING(`page_id`)
+            WHERE 
+                `parent`=0 AND `visibility`='public' AND 
+                (
+                    ( $now >=`publ_start` OR `publ_start`=0) AND 
+                    ( $now <=`publ_end` OR `publ_end`=0)
+                ) AND
+                (
+                    ( $now >= p.publish OR p.publish=0) AND 
+                    ( $now <= p.unpublish OR p.unpublish=0)
+                )
+                {$this->sql_where_language}
+                
+            ORDER BY 
+                `p`.`position` ASC
+        ";
         $get_default = $database->query($sql);
+
         $default_num_rows = $get_default->numRows();
         if (!isset($page_id) or !is_numeric($page_id)) {
             // Go to or show default page
@@ -358,13 +372,22 @@ $content = preg_replace($pattern,$link,$content);
         } else {
             $menu_number = '1';
         }
+        
         // Query pages
-        $sql = 'SELECT `page_id`,`menu_title`,`page_title`,`link`,`target`,`level`,';
-        $sql .= '`visibility`,viewing_groups,viewing_users ';
-        $sql .= 'FROM `' . TABLE_PREFIX . 'pages` ';
-        $sql .= 'WHERE `parent`=' . (int) $this->menu_parent . ' AND ' . $menu_number . ' AND ' . $this->extra_where_sql . ' ';
-        $sql .= 'ORDER BY `position` ASC';
+        $sql ="
+            SELECT
+                `page_id`,`menu_title`,`page_title`,`link`,`target`,`level`,`visibility`,viewing_groups,viewing_users 
+            FROM 
+                {TP}pages
+            WHERE
+                `parent`='" . (int) $this->menu_parent . "' AND
+                {$menu_number}                              AND
+                {$this->extra_where_sql}
+            ORDER BY 
+                `position` ASC
+        ";     
         $query_menu = $database->query($sql);
+        
         // Check if there are any pages to show
         if ($query_menu->numRows() > 0) {
             // Print menu header
@@ -437,3 +460,4 @@ $content = preg_replace($pattern,$link,$content);
         exit;
     }
 }
+

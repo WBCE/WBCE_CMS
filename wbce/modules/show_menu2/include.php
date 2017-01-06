@@ -47,22 +47,22 @@ define('SM2_CONDITIONAL','if\s*\(([^\)]+)\)\s*{([^}]*)}\s*(?:else\s*{([^}]*)}\s*
 define('SM2_COND_TERM','\s*(\w+)\s*(<|<=|==|=|=>|>|!=)\s*([\w\-]+)\s*');
 class SM2_Formatter
 {
-    var $output;
-    var $flags;
-    var $itemOpen;
-    var $itemClose;
-    var $menuOpen;
-    var $menuClose;
-    var $topItemOpen;
-    var $topMenuOpen;
+    public $output;
+    public $flags;
+    public $itemOpen;
+    public $itemClose;
+    public $menuOpen;
+    public $menuClose;
+    public $topItemOpen;
+    public $topMenuOpen;
     
-    var $isFirst;
-    var $page;
-    var $url;
-    var $currSib;
-    var $sibCount;
-    var $currClass;
-    var $prettyLevel;
+    public $isFirst;
+    public $page;
+    public $url;
+    public $currSib;
+    public $sibCount;
+    public $currClass;
+    public $prettyLevel;
 
     // output the data
     function output($aString) {
@@ -439,13 +439,15 @@ function show_menu2(
 {
     global $wb;
 
+    $aMenu = get_menu_id ($aMenu);
+    
     // extract the flags and set $aOptions to an array
-    $flags = 0;
+    $flags = SM2_TRIM;
     if (is_int($aOptions)) {
         $flags = $aOptions;
         $aOptions = array();
     }
-    else if (isset($aOptions['flags'])) {
+    elseif (isset($aOptions['flags'])) {
         $flags = $aOptions['flags'];
     }
     else {
@@ -454,6 +456,9 @@ function show_menu2(
         @error_logs('show_menu2 error: $aOptions is invalid. No flags supplied!');
     }
     
+    // from classic
+    if ($flags & 0xF == 0) { $flags |= SM2_TRIM; }
+
     // ensure we have our group 1 flag, we don't check for the "exactly 1" part, but
     // we do ensure that they provide at least one.
     if (0 == ($flags & _SM2_GROUP_1)) {
@@ -500,6 +505,7 @@ function show_menu2(
     }
     elseif ($aStart < 0) {   // SM2_ROOT+N
         $aStartLevel = $aStart - SM2_ROOT;
+        //echo "<h3>StartLEvel:$aStartLevel</h3>";
         $aStart = 0;
     }
 
@@ -531,11 +537,11 @@ function show_menu2(
     if (($flags & SM2_NOCACHE) != 0
         || !array_key_exists('show_menu2_data', $GLOBALS)
         || !array_key_exists($aMenu, $GLOBALS['show_menu2_data'])
-        || (($flags & SM2_ALLINFO) AND !array_key_exists('show_menu2_allinfo', $GLOBALS))
+        
     ) 
     {
         global $database;
-        if ($flags & SM2_ALLINFO) $GLOBALS['show_menu2_allinfo']="ok";
+        
 
         // create an array of all parents of the current page. As the page_trail
         // doesn't include the theoretical root element 0, we add it ourselves.
@@ -571,6 +577,7 @@ function show_menu2(
 		$sql .= 'WHERE '.$wb->extra_where_sql.' '.$menuLimitSql.' ';
 		$sql .= 'ORDER BY `level` ASC, `position` ASC';
         $sql = str_replace('hidden', 'IGNOREME', $sql); // we want the hidden pages
+       // echo "<br>$sql<br>";
         $oRowset = $database->query($sql);
         if (is_object($oRowset) && $oRowset->numRows() > 0) {
             // create an in memory array of the database data based on the item's parent. 
@@ -595,7 +602,10 @@ function show_menu2(
                 
 				if(!isset($page['tooltip'])) { $page['tooltip'] = $page['page_title']; }
                 // ensure that we have an array entry in the table to add this to
+                
                 $idx = $page['parent'];
+                // netter Versuch , aber macht die Ebenen struktur kaputt
+                //if ($aStart==0) $idx =0; 
                 if (!array_key_exists($idx, $rgParent)) {
                     $rgParent[$idx] = array();
                 }
@@ -678,6 +688,8 @@ function show_menu2(
         unset($rgParent);
     }
 /*
+    // Deactivated only display to max level, not sure if its a good idea
+
     // adjust $aMaxLevel to the level number of the final level that 
     // will be displayed. That is, we display all levels <= aMaxLevel.
     if ($aMaxLevel == SM2_ALL) {
@@ -697,13 +709,23 @@ function show_menu2(
     }
 */
     // generate the menu
-    $retval = false;
+    $retval = false; 
+    
+    // This was needed for Language based navigation 
+    if ($aStart == 0){
+        reset($GLOBALS['show_menu2_data'][$aMenu]);
+        $aStart =key($GLOBALS['show_menu2_data'][$aMenu]);
+    }
+    
+    //echo "<pre>"; print_r($GLOBALS['show_menu2_data']); echo"</pre>";
+    //echo "<pre>START:"; print_r($aStart); echo"</pre>";
     if (array_key_exists($aStart, $GLOBALS['show_menu2_data'][$aMenu])) {
+       //echo "<h3>go!!</h3>";
         $formatter = $aItemOpen;
         if (!is_object($aItemOpen)) {
             static $sm2formatter;
             if (!isset($sm2formatter)) {
-                $sm2formatter = new SM2_Formatter;
+                $sm2formatter = new SM2_Formatter();
             }
             $formatter = $sm2formatter;
             $formatter->set($flags, $aItemOpen, $aItemClose, 
@@ -719,11 +741,13 @@ function show_menu2(
         
         // display the menu
         $formatter->initialize();
+
         sm2_recurse(
             $GLOBALS['show_menu2_data'][$aMenu],
             $aStart,    // parent id to start displaying sub-menus
             $aStartLevel, $showAllLevel, $aMaxLevel, $flags, 
             $formatter);
+
         $formatter->finalize();
         
         // if we are returning something, get the data
@@ -864,4 +888,5 @@ function sm2_recurse(
         $aFormatter->finishList();
     }
 }
+
 

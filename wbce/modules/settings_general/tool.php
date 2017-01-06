@@ -174,8 +174,8 @@ if($saveSettings) {
         }
         else {
             $setError.=$TEXT['REDIRECT_AFTER']." (Redirect Timer) out of range, default set.<br />";
-            $setError.=Settings::Set ("redirect_timer", "1500");
-            $setError.=Settings::Set ("wb_redirect_timer", "1500");             
+            $setError.=Settings::Set ("redirect_timer", "500");
+            $setError.=Settings::Set ("wb_redirect_timer", "500");             
         }
     }
     
@@ -267,8 +267,8 @@ if($saveSettings) {
     $setError.=Settings::Set ("frontend_login", false);
     $setError.=Settings::Set ("wb_frontend_login", false);   
   
-    $setError.=Settings::Set ("redirect_timer", "1500");
-    $setError.=Settings::Set ("wb_redirect_timer", "1500"); 
+    $setError.=Settings::Set ("redirect_timer", "500");
+    $setError.=Settings::Set ("wb_redirect_timer", "500"); 
     
     $setError.=Settings::Set ("frontend_signup", false);
     $setError.=Settings::Set ("wb_frontend_signup", false);

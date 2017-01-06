@@ -45,7 +45,8 @@
   color: #ffffff;
   background-color: #28609B;
   border-right: 4px solid #F1F1F1;
-  cursor: text;
+  /*this was to deactivate links in admintools*/
+  /*cursor: text;*/
 }
 #contentarea td.content > h4:first-child > a:first-child:before {
   -moz-box-sizing: border-box;

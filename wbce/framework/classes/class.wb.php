@@ -16,6 +16,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 class wb extends SecureForm
 {
 
+    public $sDirectOutput="";
+
     public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:'; // General initialization function
                                                               // performed when frontend or backend is loaded.
 
@@ -24,6 +26,36 @@ class wb extends SecureForm
         parent::__construct($mode);
     }
 
+/**
+    @brief  for easy output of JSON strings XML for ajax...... 
+*/    
+    
+    public function DirectOutput($sContent=false) {
+        if (is_string($sContent)){
+            $this->sDirectOutput.=$sContent;
+        }
+        
+        if (empty ($this->sDirectOutput)) return;
+
+        // kill all output buffering
+        while (ob_get_level())
+        {
+            ob_end_clean ();
+        }
+        
+        echo $this->sDirectOutput;
+        exit;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 /* ****************
  * check if one or more group_ids are in both group_lists
  *
@@ -327,6 +359,30 @@ class wb extends SecureForm
         }
     }
 
+    public function get_page_permission($page, $action = 'admin')
+    {
+        if ($action != 'viewing') {$action = 'admin';}
+        $action_groups = $action . '_groups';
+        $action_users = $action . '_users';
+        $groups = $users = '0';
+        if (is_array($page)) {
+            $groups = $page[$action_groups];
+            $users = $page[$action_users];
+        } else {
+            global $database;
+            $sql = 'SELECT `' . $action_groups . '`,`' . $action_users . '` ';
+            $sql .= 'FROM `' . TABLE_PREFIX . 'pages` ';
+            $sql .= 'WHERE `page_id`=' . (int) $page;
+            if (($res = $database->query($sql))) {
+                if (($rec = $res->fetchRow(MYSQLI_ASSOC))) {
+                    $groups = $rec[$action_groups];
+                    $users = $rec[$action_users];
+                }
+            }
+        }
+        return ($this->ami_group_member($groups) || $this->is_group_match($this->get_user_id(), $users));
+    }
+
     public function get_user_details($user_id)
     {
         global $database;
@@ -511,6 +567,9 @@ via the Settings panel in the backend of Website Baker
         $sRetval = $sThemeFile;
         if (file_exists(THEME_PATH . '/templates/' . $sThemeFile)) {
             $sRetval = THEME_PATH . '/templates/' . $sThemeFile;
+        } 
+        elseif (file_exists(WB_PATH."/templates/default_theme/templates/" . $sThemeFile)) {
+            $sRetval = WB_PATH."/templates/default_theme/templates/" . $sThemeFile;
         } else {
             if (file_exists(ADMIN_PATH . '/themes/templates/' . $sThemeFile)) {
                 $sRetval = ADMIN_PATH . '/themes/templates/' . $sThemeFile;

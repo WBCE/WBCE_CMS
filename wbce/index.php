@@ -108,9 +108,9 @@ if (!defined("WB_SUPPRESS_OLD_OPF") or !WB_SUPPRESS_OLD_OPF){
 }
 
 
-// now send complete page to the browser
+// Process direct Output if set. This ends the script here and regular output is not put out. 
+$wb->DirectOutput();
+
+// No direct output, send complete page to the browser and end the script 
 echo $output;
 
-
-// end of wb-script
-exit;

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @category        modules
  * @package         Maintainance Mode
@@ -8,9 +8,10 @@
  */
  
 // Module description 
-$module_description = 'Ein einfacher Schalter f&uuml;r den Wartungsmodus.';
+$module_description = 'Ein einfacher Schalter f&uuml;r den Wartungsmodus als Admin Tool.';
+$module_title = "Wartungsmodus Umschalter";
 
 // Language vars
-$MOD_MAINTAINANCE['HEADER'] =      'Wartungsmodus';
-$MOD_MAINTAINANCE['DESCRIPTION'] = 'Im Wartungsmodus wird statt des Inhalts nur eine neutrale Hinweisseite angezeigt. Text und Gestaltung der Hinweisseite können individuell angepasst werden, indem die Datei /templates/systemplates/maintainance.tpl.php bearbeitet wird.';
-$MOD_MAINTAINANCE['CHECKBOX'] =    'Wartungsmodus aktiv';
+$MOD_MAINTAINANCE['HEADER'] =      'Wartungsmodus Umschalter';
+$MOD_MAINTAINANCE['DESCRIPTION'] = 'Im Wartungsmodus wird Besuchern im Frontend nur eine Baustellenseite angezeigt. <br />Hinweis: Als im Backend angemeldeter Administrator sieht man die Frontend-Inhalte auch bei aktiviertem Wartungsmodus.';
+$MOD_MAINTAINANCE['CHECKBOX'] =    'Wartungsmodus aktivieren';

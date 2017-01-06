@@ -36,7 +36,7 @@ $template->set_var('HEADING_ADMINISTRATION_TOOLS', $HEADING['ADMINISTRATION_TOOL
 
 // Insert tools into tool list
 $template->set_block('main_block', 'tool_list_block', 'tool_list');
-$results = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' AND `function` LIKE '%tool%' AND `directory` not in ('".(implode("','",$_SESSION['MODULE_PERMISSIONS']))."') order by name");
+$results = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' AND `function` LIKE '%tool%' AND `function` NOT LIKE '%hidden%' AND    `directory` not in ('".(implode("','",$_SESSION['MODULE_PERMISSIONS']))."') order by name");
 if($results->numRows() > 0) {
     while($tool = $results->fetchRow()) {
         $template->set_var('TOOL_NAME', $tool['name']);

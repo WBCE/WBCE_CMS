@@ -1255,6 +1255,54 @@ if (!function_exists('url_encode')) {
 
 
 
+/**
+    @brief Extended redirection 
+    will execute header('Location... if headers not already sent
+    if heders already sent will fall back to a JS solution
+    should JS be disabled will fall back to meta http refresh
 
+    @param string $sUrl  simply the url
+    @return send header or echo html
+ */
+function wb_redirect($sUrl) {
+    if (headers_sent() == false){    
+        header('Location: '.$sUrl);
+    } else {  
+        echo '<script type="text/javascript">window.location.href="'.$sUrl.'";</script>';
+        echo '<noscript><meta http-equiv="refresh" content="0;url='.$sUrl.'" /></noscript>';
+    }
+    exit;
+}
+
+
+/**
+    @brief This is a simple function to show var_dump or print_r output
+    in a predefined wrapper useful for development purposes mostly
+    
+    Example usage:
+    ~~~~~~~~~~~~~~
+    wb_dump($admin, 'display $admin object', true);
+    wb_dump(TEMPLATE_DIR);
+
+
+    @param mixed $mVar
+    @param string $sHeading (optional)
+    @param bool $bShowWithVarDump  decide whether you want var_dump or simple print_r as output 
+
+    @return string   The debug output
+*/
+function wb_dump($mVar = '', $sHeading ='', $bShowWithVarDump = false){
+    echo '<style type="text/css">pre.debug_dump {
+        background: lightyellow; padding:6px; margin:4px; border: 1px dotted red;
+        }</style>';
+    echo '<pre class="debug_dump">';
+        if($sHeading != '')
+            echo '<b style="color: blue;">'.$sHeading.':</b><hr />';
+        $func = ($bShowWithVarDump == true) ? 'var_dump' : 'print_r';
+        if((is_array($mVar)) or (!is_array($mVar) && $mVar != '' ))
+            $func($mVar);
+        else echo '<i>~ (empty) ~</i>';
+    echo '</pre>';  
+}
 
 
