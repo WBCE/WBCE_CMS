@@ -81,3 +81,6 @@ div.buttonRow{
     text-decoration:none !important;
     background-color: #409940;
 }
+div.settingValue select {
+    padding: .5em .2em .5em .2em;
+}

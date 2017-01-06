@@ -171,9 +171,12 @@ div.formRow input[type="password"],
 div.formRow textarea,
 div.formRow select {
     margin: 0;
-    padding: .32em;
+    padding: .48em 0 .48em .4em;
     width: 99%;
     outline: 0;
+}
+div.formRow select {
+    padding: 0;
 }
 div.formRow input.has-file-ext{
     width: 85%;
@@ -183,7 +186,7 @@ div.settingValue textarea {
     min-height: 80px;
 }
 div.settingValue select {
-    padding: .4em .3em;
+    padding: 0 .2em 0 .2em;
     //font-family: monospace, Courier, "Lucida Sans Typewriter", "Lucida Typewriter";
     //font-size: 1.05em;
 }
