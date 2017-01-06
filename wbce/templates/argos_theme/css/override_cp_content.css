@@ -36,7 +36,7 @@ div.buttonRow{
 }
 
 /*
-    Tabs & button (implement FontAwesome icons)
+    cpTabs
 */
 .cpWrap > .cpTabs {
     margin: -24px -24px 24px;
@@ -80,76 +80,4 @@ div.buttonRow{
 {
     text-decoration:none !important;
     background-color: #409940;
-}
-
-
-/* 
-    Buttons
-*/
-a.button, 
-button.button, 
-div.button, 
-div.button input
-{
-    outline: 0 !important;
-    border: 0 !important;
-    font-weight: normal;
-    text-indent: 0;
-    border-spacing: 0;
-    margin: 0.2em;
-    font: normal 1.0em/2em Helvetica, Arial;
-    text-decoration: none;
-
-}
-
-.button 
-{
-    padding: 0.3em 1.0em;
-    display: inline-block;
-    white-space: nowrap;
-}
-button.button {
-    padding: 0.27em 1.0em;
-}
-.button, div.button input 
-{	
-    color: #f2f2f2;
-    background-color: #505b6d;
-    cursor: pointer;
-}
-.button,
-.button:hover 
-{
-    text-decoration: none;
-}
-.button:hover ,
-.button:active,
-.button:focus,
-.button.sel,
-.button.sel:hover 
-{
-    outline: 0 !important;
-    color: #fff !important;
-    background-color: #464E5E !important;
-    text-decoration: none !important;
-}
-div.button input,
-div.button input:hover,
-div.button input:active,
-div.button input:focus 
-{
-    padding: 0;
-    margin: -1px;
-    padding-top: -1px;
-    display: inline;
-}
-div.button:hover input,
-div.button:focus input,
-div.button input:hover,
-div.button input:active,
-div.button input:focus 
-{
-    color: #fff !important;
-    background-color: #464E5E !important;
-    outline: 0 !important;
 }

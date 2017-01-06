@@ -19,7 +19,7 @@
 
     <link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{ADMIN_URL}/themes/css/cp_content.css" media="screen">
-    <link rel="stylesheet" href="{THEME_URL#}/css/override_cp_content.css" media="screen">
+    <link rel="stylesheet" href="{THEME_URL}/css/override_cp_content.css" media="screen">
     {BACKEND_MODULE_CSS}
     [[Css]]
 
