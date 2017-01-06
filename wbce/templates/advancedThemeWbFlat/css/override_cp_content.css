@@ -1,0 +1,353 @@
+
+/**
+----------------------------------------------------------------
+ overrides for the control panel content are in "FlatTheme"
+----------------------------------------------------------------
+*/
+
+/*
+    Settings Forms
+*/
+div.cpForm  {
+    padding-top: 5px;
+}
+
+div.cpForm .formHeading{
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 0;
+}
+div.cpForm .formDescription{
+    font-size: 110%;
+}
+
+label.settingName:after{
+    content: ':';
+}
+div.formHeading{
+    font-weight: bold;
+    color: #303641;
+    font-size: 19px;
+    line-height: 24px;
+}
+div.buttonRow{
+    margin-top: 10px;
+}
+
+
+/**
+ * Buttons 
+ * we have several types of buttons: 
+   <input type="button">
+   <button>
+   and anchor (link) based buttons
+   the following css handles all the above types
+   Note: we use a jQuery Plugin in order to enframe input type buttons into
+         a div container we couldn't otherwise apply icons to all the buttons
+ */
+a.button, 
+button.button, 
+div.button, 
+div.button input
+{
+    outline: 0 !important;
+    border:  0 !important;
+    font-weight: normal;
+    text-indent: 0;
+    border-spacing: 0;
+    margin-right: 0.6em;
+    font: normal 1.0em/2em Helvetica, Arial;
+    text-decoration: none;
+}
+
+.button 
+{
+    padding: 0 .7em 0 .5em;
+    display: inline-block;
+    white-space: nowrap;
+}
+button.button {
+    padding: 0.27em 1.0em;
+}
+.button, div.button input 
+{	
+    color: #f2f2f2;
+    background-color: #505b6d;
+    cursor: pointer;
+}
+
+.button,
+.button:hover 
+{
+    text-decoration: none;
+}
+
+.button:hover,
+.button:active,
+.button:focus,
+.button.sel,
+.button.sel:hover 
+{
+    outline: 0 !important;
+    color: #fff !important;
+    background-color: #464E5E !important;
+    text-decoration: none !important;
+}
+
+div.button input,
+div.button input:hover,
+div.button input:active,
+div.button input:focus 
+{
+    padding: 0;
+    margin: -1px;
+    padding-top: -1px;
+    display: inline;
+}
+
+div.button:hover input,
+div.button:focus input,
+div.button input:hover,
+div.button input:active,
+div.button input:focus 
+{
+    color: #fff !important;
+    background-color: #464E5E !important;
+    outline: 0 !important;
+}
+
+/* correct file upload button */
+.NFI-button {
+    padding: 8px 16px;
+}
+input.NFI-filename{
+    width: auto !important;
+}
+/* 
+implement FontAwesome and ASCII icons to Buttons
+*/
+.button:before
+{
+    font-family: FontAwesome;
+    width: 1em;
+    text-align: center;
+    font-size: 1.2em;
+    margin: 0 0.4em 0 0;
+    padding: 0 0.3em 0 -0.1em;
+    pointer-events: none;
+}
+
+.ico-email:before     { content: "\f0e0";}
+.ico-add:before       { content: "\f0fe";}
+.ico-edit:before,
+.ico-modify:before    { content: "\f040";}
+.ico-delete:before    { content: "\f1f8";}
+.ico-cross:before     { content: "\2716";}
+.ico-settings:before  { content: "\f0ad";}
+.ico-help:before      { content: "\f1cd";}
+.ico-sections:before  { content: "\f00b";}
+.ico-save:before      { content: "\f0c7";}
+.ico-reset:before     { content: "\f01e";}
+.ico-save-back:before { content: "\2714";}
+.ico-cancel:before    { content: "\2718";}
+.ico-dragdrop:before  { content: '\f256';} 
+
+/* Control Panel Wrap, Control Panel Tabs */
+.cpWrap { 
+    background: #fff; 
+    -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 8px -2px rgba(0, 0, 0, 0.1); 
+    -moz-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 8px -2px rgba(0, 0, 0, 0.1); 
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2); 
+    position: relative; 
+    margin: 0; 
+    padding: 12px 20px; 
+    border-radius: 3px; 
+    word-wrap: break-word; 
+    -webkit-box-sizing: border-box; 
+    -moz-box-sizing: border-box; 
+    box-sizing: border-box; 
+    overflow: hidden; 
+}
+
+/**
+ * cpTabs
+ * used in backend pages module and several other backend/admin tools;
+ * generates a tabbed content area and the tabs itself
+ */
+.cpWrap > .cpTabs { 
+    margin: -24px -24px 24px; 
+    padding: 2px 11px 0; 
+    overflow: hidden; 
+    border-top: 2px solid #556C87;
+    background-color: #859AB2; 
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.05); 
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.05); 
+    -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.05); 
+}
+.cpTabs li .tab {
+    font-weight: normal;
+    margin: 0 .2em;
+    text-decoration: none;
+    background-color: #464E5E;
+    line-height: 1.3em;
+    padding-right: 1.2em;
+}
+
+.cpTabs li .tab:hover {
+    background-color:#5E697F;
+    text-decoration:none !important;
+}
+
+.cpTabs:after { 
+    content: '.'; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden; 
+}
+
+.cpTabs .tab, .cpTabs span { 
+    display: block; 
+    padding: 9px 10px; 
+    color: #fff; 
+    white-space: nowrap; 
+}
+.cpTabs span { 
+    display: block; 
+    padding: 9px  0 0 14px; 
+    font-size:16px; 
+    white-space: inherit; 
+}
+
+.cpTabs li.notab { 
+    display: inline-block; 
+    float:left; 
+    font-size: 13px; 
+}
+
+.cpTabs li .tab.sel { 
+    background: #fff; 
+    -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 8px -2px rgba(0, 0, 0, 0.1); 
+    -moz-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 8px -2px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 8px -2px rgba(0, 0, 0, 0.1);
+    cursor: default; 	
+}
+
+/* FontAwesome based Icons for Tabs */
+.cpTabs li .tab:before
+{
+    font-family: FontAwesome;
+    width: 1em;
+    text-align: center;
+    font-size: 1.2em;
+    margin: 0 0.4em 0 0;
+    padding: 0 0.3em 0 -0.1em;
+    pointer-events: none;
+    font-size: 1.4em;
+    padding: 0 .2em 0 0.5em;
+}
+.tab-sections:before {
+    content: "\f00b";
+}
+.tab-settings:before {
+    content: "\f0ad";
+}
+.tab-modify:before {
+    content: "\f040";
+}
+
+/* 
+        Image based Icons for Tabs 
+        (comment these css rules if you prefere using FontAwesome Icons)
+*/
+.tab-sections:before {
+    content: "\00a0\00a0";
+    background-image: url(../images/sections_16.png); filter: invert(100%);
+}
+.tab-settings:before {
+    content: "\00a0\00a0";
+    background-image: url(../images/options_16.png);  filter: invert(100%);
+}
+.tab-modify:before {
+    content: "\00a0\00a0";
+    background-image: url(../images/modify_16.png);   filter: invert(100%);
+}
+
+.sel.tab-sections:before,
+.sel.tab-settings:before,
+.sel.tab-modify:before
+{
+    filter: invert(10%);
+}
+/* <end:image based icons> */
+
+
+/* 	
+        responsive break points
+        adapt to your needs
+*/
+
+@media (max-width: 950px) 
+{
+    .cpWrap div.cpLastchange 
+    {
+        display: block;
+        float: left;
+        text-align: left;
+        font-size: .8em;
+        line-height: 1.9em;
+    }
+    div.cpForm{
+        clear: both;
+    }
+    div.cpForm label.settingName
+    {
+        text-align:left;
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+    }
+    div.cpForm label.settingValue
+    {
+        display: inline;
+        width: 100%;
+        margin-bottom: 5px;
+
+    }
+    .cpWrap > .cpTabs li {
+        display: inline-block;
+        width:100%;
+        padding: 0.2em 0 0.4em;
+    }
+    div.formRow input[type="file"],
+    div.formRow input[type="email"],
+    div.formRow input[type="text"],
+    div.formRow input[type="password"],
+    div.formRow textarea,
+    div.formRow select,		
+    div.formRow .form-control
+    {		
+        width: 100%;
+        min-width: 300px !important;
+        display: inline-block;
+    }
+    span.file-ext{
+        display: none;
+    }
+    div.cpForm label.settingName, 
+    div.cpForm div.settingValue {
+        float: inherit;
+        width:100%;
+    }
+    div.cpForm label.settingName{
+        padding-top: 5px;
+    }
+    div.cp-third, div.cp-two-thirds { 
+        width: 95%!important;
+        float: left;
+        padding: 12px 6px;
+    }
+    div.buttonsRow .pos-right {
+        float: none;
+    }
+}
