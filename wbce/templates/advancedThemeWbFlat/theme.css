@@ -513,16 +513,16 @@ blockquote, q {
 
 /* ::grid-media-queries:: media queries for the project */
 #contentarea {
-  //min-width: 900px !important;
+  /* min-width: 900px !important; */
   margin: 0 auto;
-  //max-width: 1069px !important;
+  /* max-width: 1069px !important; */
   -webkit-transition: all 1s;
           transition: all 1s;
 }
 
 @media (max-width: 1047px) {
   div#sidebararea + div#mainarea > div#contentarea {
-    width: 900px;
+    /* width: 900px; */
     -webkit-transition: all 1s;
             transition: all 1s;
   }
@@ -536,14 +536,14 @@ blockquote, q {
   }
 
   div#sidebararea.closedsidebar + div#mainarea > div#contentarea {
-    min-width: 900px;
+   /*min-width: 900px;*/
     -webkit-transition: all 1s;
             transition: all 1s;
   }
 }
 @media (min-width: 1048px) and (max-width: 1359px) {
   div#sidebararea + div#mainarea > div#contentarea {
-    //min-width: 900px;
+    /*min-width: 900px;*/
     width: auto;
     max-width: 900px;
     -webkit-transition: 1s;
@@ -551,7 +551,7 @@ blockquote, q {
   }
 
   div#sidebararea.closedsidebar + div#mainarea > div#contentarea {
-    min-width: 900px;
+   /*min-width: 900px;*/
     width: auto;
     max-width: 1069px;
     -webkit-transition: 1s;
@@ -560,7 +560,7 @@ blockquote, q {
 }
 @media (min-width: 1360px) {
   div#sidebararea + div#mainarea > div#contentarea {
-    min-width: 900px;
+   /*min-width: 900px;*/
     width: auto;
     max-width: 1148px;
     -webkit-transition: all 1s;
@@ -1256,7 +1256,7 @@ select option {
 }
 .NFI-button:before {
   font-family: fontAwesome;
-  content: "ï?¼";
+  content: "\f07c";
 }
 .NFI-button:hover {
   background-color: #464e5e;
@@ -1436,7 +1436,7 @@ td > input[type='text'] {
 }
 
 #pagetopmenu a#link_home:before {
-  content: "ï€•";
+  content: "\f015";
   font-size: 30px;
 }
 
@@ -1575,15 +1575,15 @@ div.pagesubmenu ul li a {
 }
 
 #link_page_modify:before {
-  content: "ï?€";
+  content: "\f040";
 }
 
 #link_page_settings:before {
-  content: "ï€“";
+  content: "\f013";
 }
 
 #link_page_sections:before {
-  content: "ï€¼";
+  content: "\f03c";
 }
 
 .menu_edit_pages li#link_page_list {
@@ -2272,7 +2272,7 @@ div.calendar * {
 }
 .section-info:before {
   font-family: FontAwesome;
-  content: "";
+  content: "\f03c";
   position: absolute;
   left: 0;
   top: 0;
