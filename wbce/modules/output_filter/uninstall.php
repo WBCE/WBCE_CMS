@@ -17,7 +17,7 @@
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-
+if(!defined(WB_SUPPRESS_OLD_OPF)){
 Settings::Del('wb_suppress_old_opf');
 Settings::Del('opf_droplets');
 Settings::Del('opf_droplets_be');
@@ -32,6 +32,7 @@ Settings::Del('opf_short_url');
 Settings::Del('opf_css_to_head');
 Settings::Del('opf_at_replacement');
 Settings::Del('opf_dot_replacement');
+}
 
 // deleting version too 
 Settings::Set("opf_version") ;

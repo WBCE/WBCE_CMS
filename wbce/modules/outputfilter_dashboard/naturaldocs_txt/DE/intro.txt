@@ -1,0 +1,24 @@
+Header: Einf&uuml;hrung (de)
+
+Group: Einf&uuml;hrung
+
+Topic: Beschreibung
+        OutputFilter sind kleine PHP-Programme, die auf die Ausgabe der Webseite angewendet werden,
+        und dort &Auml;nderungen am Inhalt durchf&uuml;hren. Diese &Auml;nderungen erfolgen nur in der Ausgabe der
+        Webseite - der Inhalt in der Datenbank wird nicht ver&auml;ndert. Die Filter k&ouml;nnen
+        diese &Auml;nderungen serverseitig mit Hilfe von PHP-Befehlen erreichen, oder clientseitig durch
+        den Einsatz von Javascript.
+
+Topic: Patch
+        Damit OutputfilterDashboard funktioniert, m&uuml;ssen zwei Dateien von WebsiteBaker
+        angepa&szlig;t werden. Siehe hierzu <Core-Dateien ver&auml;ndern>.
+
+Topic: Admin-Tool
+        Das Admin-Tool ist der zentrale Punkt um Filter zu installieren, steuern, l&ouml;schen oder
+        zu exportieren. Siehe hierzu <Admin-Tool (de)>.
+
+Topic: Filter
+        F&uuml;r die Installation von Filtern siehe <Filter Installieren>.
+
+        Um eigene Filter zu schreiben siehe        <Inline-Filter schreiben (de)>,
+        <Plugin-Filter schreiben (de)>, <Modul-Filter schreiben (de)>.
