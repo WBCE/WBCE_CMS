@@ -462,7 +462,7 @@ class Database
             $sql = file_get_contents($dumpFile);
 
             if (strlen($sql) > 0) {
-                $sql = str_replace(array('{TABLE_PREFIX}', '{TABLE_ENGINE}', '{TABLE_COLLATION}'), array($tablePrefix, $tableEngine, $tableCollation), $sql);
+                $sql = str_replace(array('{TP}','{TABLE_PREFIX}', '{TABLE_ENGINE}', '{TABLE_COLLATION}'), array($tablePrefix, $tablePrefix, $tableEngine, $tableCollation), $sql);
 
                 if ($preserve) {
                     $sql = preg_replace('/(.*DROP\sTABLE\sIF\sEXISTS.*)/', '', $sql);

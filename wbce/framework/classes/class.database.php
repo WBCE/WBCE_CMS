@@ -419,8 +419,8 @@ class database
         $sTblCollation = ' collate utf8_unicode_ci') {
         $retval = true;
         $this->error = '';
-        $aSearch = array('{TABLE_PREFIX}', '{TABLE_ENGINE}', '{TABLE_COLLATION}');
-        $aReplace = array($sTablePrefix, $sTblEngine, $sTblCollation);
+        $aSearch = array('{TP}','{TABLE_PREFIX}', '{TABLE_ENGINE}', '{TABLE_COLLATION}');
+        $aReplace = array($sTablePrefix,$sTablePrefix, $sTblEngine, $sTblCollation);
         $sql = '';
         $aSql = file($sSqlDump);
         while (sizeof($aSql) > 0) {

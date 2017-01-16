@@ -55,8 +55,8 @@ function wbce_copy_droplet($droplet_id)
 
     // get droplet code
     $query_content = $database->query(sprintf(
-        "SELECT * FROM `%smod_droplets` WHERE `id` = '%s'",
-        TABLE_PREFIX, $droplet_id
+        "SELECT * FROM `{TP}mod_droplets` WHERE `id` = '%s'",
+         $droplet_id
     ));
 
     $fetch_content = $query_content->fetchRow(MYSQL_ASSOC);
@@ -67,23 +67,23 @@ function wbce_copy_droplet($droplet_id)
 
     // look for doubles
     $found = $database->query(sprintf(
-        "SELECT * FROM `%smod_droplets` WHERE `name`='%s'",
-         TABLE_PREFIX, $new_name
+        "SELECT * FROM `{TP}mod_droplets` WHERE `name`='%s'",
+          $new_name
     ));
     while( $found->numRows() > 0 )
     {
         $new_name = $name . "_" . $i;
         $found = $database->query(sprintf(
-            "SELECT * FROM `%smod_droplets` WHERE `name`='%s'",
-             TABLE_PREFIX, $new_name
+            "SELECT * FROM `{TP}mod_droplets` WHERE `name`='%s'",
+              $new_name
         ));
         $i++;
     }
 
     // add new droplet
     $result = $database->query(sprintf(
-        "INSERT INTO `%smod_droplets` VALUES ( NULL, '%s', '%s', '%s', '%s', '%s', 1, 0, 0, 0, '%s' )",
-        TABLE_PREFIX, $new_name, $code, $fetch_content['description'], time(),
+        "INSERT INTO `{TP}mod_droplets` VALUES ( NULL, '%s', '%s', '%s', '%s', '%s', 1, 0, 0, 0, '%s' )",
+         $new_name, $code, $fetch_content['description'], time(),
         $admin->get_user_id(),  $fetch_content['comments']
     ));
 
@@ -278,8 +278,8 @@ function wbce_check_unique($name)
 {
 	global $database;
 	$query_droplets = $database->query(sprintf(
-        "SELECT `name`  FROM `%smod_droplets` WHERE `name` = '%s'",
-        TABLE_PREFIX, $name
+        "SELECT `name`  FROM `{TP}mod_droplets` WHERE `name` = '%s'",
+         $name
     ));
 	return ($query_droplets->numRows() == 1);
 }   // end function wbce_check_unique()
@@ -302,8 +302,8 @@ function wbce_delete_droplets()
     $droplets = array();
     foreach ( $list as $id ) {
         $result = $database->query(sprintf(
-            "SELECT * FROM `%smod_droplets` WHERE id='%d'",
-            TABLE_PREFIX, $id
+            "SELECT * FROM `{TP}mod_droplets` WHERE id='%d'",
+             $id
         ));
         if ( $result->numRows() > 0 ) {
             $droplets[] = $result->fetchRow();
@@ -317,8 +317,8 @@ function wbce_delete_droplets()
     foreach(array_values($list) as $id)
     {
         $database->query(sprintf(
-            "DELETE FROM `%smod_droplets` WHERE id = '%d' LIMIT 1",
-            TABLE_PREFIX, $id
+            "DELETE FROM `{TP}mod_droplets` WHERE id = '%d' LIMIT 1",
+             $id
         ));
     }
 }   // end function wbce_delete_droplets()
@@ -353,8 +353,8 @@ function wbce_export_droplets($list,$filename='drop_export',$export_id=0,$return
     $droplets = array();
     foreach ( $list as $id ) {
         $result = $database->query(sprintf(
-            "SELECT * FROM `%smod_droplets` WHERE id='%d'",
-            TABLE_PREFIX, $id
+            "SELECT * FROM `{TP}mod_droplets` WHERE id='%d'",
+             $id
         ));
         if ( $result->numRows() > 0 ) {
             $droplets[] = $result->fetchRow();
@@ -474,9 +474,9 @@ function wbce_list_droplets()
 
     // if ($loggedin_user == '1') {
     if ($admin_user) {
-    	$query_droplets = $database->query(sprintf("SELECT * FROM `%smod_droplets` ORDER BY `name` ASC",TABLE_PREFIX));
+    	$query_droplets = $database->query("SELECT * FROM `{TP}mod_droplets` ORDER BY `name` ASC");
     } else {
-    	$query_droplets = $database->query(sprintf("SELECT * FROM `%smod_droplets` WHERE `admin_view` <> '1' ORDER BY `name` ASC",TABLE_PREFIX));
+    	$query_droplets = $database->query("SELECT * FROM `{TP}mod_droplets` WHERE `admin_view` <> '1' ORDER BY `name` ASC");
     }
 
     if($query_droplets->numRows() > 0)
@@ -487,8 +487,8 @@ function wbce_list_droplets()
             if(is_array($droplet) && isset($droplet['name']))
             {
                 $get_modified_user = $database->query(sprintf(
-                    "SELECT `display_name`, `username`, `user_id` FROM `%susers` WHERE `user_id` = '%d' LIMIT 1",
-                    TABLE_PREFIX, $droplet['modified_by']
+                    "SELECT `display_name`, `username`, `user_id` FROM `{TP}users` WHERE `user_id` = '%d' LIMIT 1",
+                     $droplet['modified_by']
                 ));
         		if($get_modified_user->numRows() > 0) {
         			$fetch_modified_user = $get_modified_user->fetchRow();
@@ -613,15 +613,15 @@ function wbce_unpack_and_import( $temp_file, $temp_unzip )
                     // Already in the DB?
                     $stmt  = 'INSERT';
                     $id    = NULL;
-                    $found = $database->get_one(sprintf("SELECT * FROM `%smod_droplets` WHERE name='%s'",TABLE_PREFIX,$name));
+                    $found = $database->get_one(sprintf("SELECT * FROM `{TP}mod_droplets` WHERE name='%s'",$name));
                     if ( $found && $found > 0 ) {
                         $stmt = 'REPLACE';
                         $id   = $found;
                     }
                     // execute
                     $result = $database->query(sprintf(
-                        "%s INTO `%smod_droplets` VALUES(" . ($id ? "'$id'" : 'NULL') . ",'%s','%s','%s','%s','%d',1,0,0,0,'%s')",
-                        $stmt, TABLE_PREFIX, $name, $code, $description, time(), $admin->get_user_id(), $usage
+                        "%s INTO `{TP}mod_droplets` VALUES(" . ($id ? "'$id'" : 'NULL') . ",'%s','%s','%s','%s','%d',1,0,0,0,'%s')",
+                        $stmt,  $name, $code, $description, time(), $admin->get_user_id(), $usage
                     ));
                     if( ! $database->is_error() ) {
                         $count++;

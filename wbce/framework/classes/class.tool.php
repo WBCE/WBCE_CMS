@@ -167,6 +167,8 @@ class Tool {
         
         if (isset($module_directory) )    $this->module_directory    = $module_directory;
         if (isset($module_name))          $this->module_name         = $module_name;
+        if (isset($module_title))         $this->module_title        = $module_title;
+        else                              $this->module_title        = $this->module_name;
         if (isset($module_function))      $this->module_function     = $module_function;
         if (isset($module_version))       $this->module_version      = $module_version;
         if (isset($module_platform))      $this->module_platform     = $module_platform;

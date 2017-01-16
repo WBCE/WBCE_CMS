@@ -38,32 +38,18 @@
 }
 
 @font-face {
-    font-family: 'open_sans';
-    src:url('webfonts/fonts/opensans-italic-webfont.eot');
-    src:url('webfonts/fonts/opensans-italic-webfont.eot?#iefix') format('embedded-opentype'),
-        url('webfonts/fonts/opensans-italic-webfont.woff2') format('woff2'),
-        url('webfonts/fonts/opensans-italic-webfont.woff') format('woff'),
-        url('webfonts/fonts/opensans-italic-webfont.ttf') format('truetype'),
-        url('webfonts/fonts/opensans-italic-webfont.svg#open_sansitalic') format('svg');
-    font-weight: normal;
-    font-style: italic;
-
-}
-
-@font-face {
     font-family: 'FontAwesome';
-    src:url('webfonts/fonts/fontawesome-webfont.eot');
-    src:url('webfonts/fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
-        url('webfonts/fonts/fontawesome-webfont.woff2') format('woff2'),
-        url('webfonts/fonts/fontawesome-webfont.woff') format('woff'),
-        url('webfonts/fonts/fontawesome-webfont.ttf') format('truetype'),
-        url('webfonts/fonts/fontawesome-webfont.svg#fontawesome') format('svg');
+    src:url('../../include/font-awesome/fonts/fontawesome-webfont.eot');
+    src:url('../../include/font-awesome/fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../../include/font-awesome/fonts/fontawesome-webfont.woff2') format('woff2'),
+        url('../../include/font-awesome/fonts/fontawesome-webfont.woff') format('woff'),
+        url('../../include/font-awesome/fonts/fontawesome-webfont.ttf') format('truetype'),
+        url('../../include/font-awesome/fonts/fontawesome-webfont.svg#fontawesome') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 /* old theme as basis 
- * --> not alle elements get a new format 
+ * --> not all elements get a new format 
  * --------------------------------------------------------------------------------- */
 /* new theme starts from here 
  * --> overwrite old classes
@@ -72,7 +58,7 @@
  /* ::reste:: general resets for unique starting-point */
 html, body {
   height: 100%;
-  /* html, body: height 100%; - nur so später height 100% für content möglich */
+  /* html, body: height 100%; - nur so sp�ter height 100% f�r content m�glich */
   margin: 0;
   padding: 0;
 }
@@ -513,9 +499,9 @@ blockquote, q {
 
 /* ::grid-media-queries:: media queries for the project */
 #contentarea {
- /* min-width: 900px !important; */
+  /* min-width: 900px !important; */
   margin: 0 auto;
-  max-width: 1069px !important;
+  /* max-width: 1069px !important; */
   -webkit-transition: all 1s;
           transition: all 1s;
 }
@@ -536,14 +522,14 @@ blockquote, q {
   }
 
   div#sidebararea.closedsidebar + div#mainarea > div#contentarea {
-    /* min-width: 900px; */
+   /*min-width: 900px;*/
     -webkit-transition: all 1s;
             transition: all 1s;
   }
 }
 @media (min-width: 1048px) and (max-width: 1359px) {
   div#sidebararea + div#mainarea > div#contentarea {
-   /* min-width: 900px; */
+    /*min-width: 900px;*/
     width: auto;
     max-width: 900px;
     -webkit-transition: 1s;
@@ -551,7 +537,7 @@ blockquote, q {
   }
 
   div#sidebararea.closedsidebar + div#mainarea > div#contentarea {
-   /* min-width: 900px; */
+   /*min-width: 900px;*/
     width: auto;
     max-width: 1069px;
     -webkit-transition: 1s;
@@ -560,7 +546,7 @@ blockquote, q {
 }
 @media (min-width: 1360px) {
   div#sidebararea + div#mainarea > div#contentarea {
-    /* min-width: 900px; */
+   /*min-width: 900px;*/
     width: auto;
     max-width: 1148px;
     -webkit-transition: all 1s;
@@ -638,7 +624,7 @@ a#frontendtitel:hover {
 #branding {
   position: absolute;
   right: 30px;
-  bottom: 6px;
+  bottom: 0px;
   width: 300px;
   height: 55px;
   padding-right: 120px;
@@ -646,11 +632,10 @@ a#frontendtitel:hover {
 
 #branding-text {
   color: #ADB5C3;
-  padding-top: 17px;
-  font-size: 30px;
-  line-height: 30px;
+  padding-top: 20px;
+  font-size: 20px;
+  line-height: 24px;
   text-align: right;
-  letter-spacing: +1px;
 }
 
 #branding-logo {
@@ -1216,10 +1201,14 @@ select,
 textarea,
 input[type='text'],
 input[type='password'] {
-  margin: 2px;
-  padding: 4px;
-  color: #738097;
-  border: 1px solid #cbcfd8;
+    color: #738097;
+    border: 1px solid #cbcfd8;
+    margin: 2px;
+}
+input[type='text'],
+input[type='password'],
+textarea{
+    padding: 4px;
 }
 
 select:focus,
@@ -1253,7 +1242,7 @@ select option {
 }
 .NFI-button:before {
   font-family: fontAwesome;
-  content: "";
+  content: "\f07c";
 }
 .NFI-button:hover {
   background-color: #464e5e;
@@ -1360,37 +1349,37 @@ td > input[type='text'] {
 
 /* symbol pages */
 #mainmenu ul li.pages a:before {
-  content: "";
+  content: "\f044";
 }
 
 /* symbol media */
 #mainmenu ul li.media a:before {
-  content: "";
+  content: "\f03e";
 }
 
 /* symbol addons */
 #mainmenu ul li.addons a:before {
-  content: "";
+  content: "\f1b3";
 }
 
 /* symbol (my personal login) settings = module preferences */
 #mainmenu ul li.preferences a:before {
-  content: "";
+  content: "\f007";
 }
 
 /* symbol options = module settings */
 #mainmenu ul li.settings a:before {
-  content: "";
+  content: "\f085";
 }
 
 /* symbol admin tools */
 #mainmenu ul li.admintools a:before {
-  content: "";
+  content: "\f19d";
 }
 
 /* symbol users = module access */
 #mainmenu ul li.access a:before {
-  content: "";
+  content: "\f0c0";
 }
 
 /* ::menus-pagetopmenu:: ###### menus -->  pagetopmenu ################## */
@@ -1433,21 +1422,21 @@ td > input[type='text'] {
 }
 
 #pagetopmenu a#link_home:before {
-  content: "";
+  content: "\f015";
   font-size: 30px;
 }
 
 #pagetopmenu a#link_back:before {
-  content: "";
+  content: "\f0a8";
   font-size: 28px;
 }
 
 #pagetopmenu a#link_frontend:before {
-  content: "";
+  content: "\f108";
 }
 
 #pagetopmenu a#link_logout:before {
-  content: "";
+  content: "\f011";
   font-size: 29px;
 }
 
@@ -1572,15 +1561,15 @@ div.pagesubmenu ul li a {
 }
 
 #link_page_modify:before {
-  content: "";
+  content: "\f040";
 }
 
 #link_page_settings:before {
-  content: "";
+  content: "\f013";
 }
 
 #link_page_sections:before {
-  content: "";
+  content: "\f03c";
 }
 
 .menu_edit_pages li#link_page_list {
@@ -1668,7 +1657,7 @@ a.linkbox:hover {
   -moz-box-sizing: border-box;
        box-sizing: border-box;
   font-family: FontAwesome;
-  content: "";
+  content: "\f04e";
   display: block;
   position: absolute;
   left: 0px;
@@ -1719,7 +1708,7 @@ div.button_advanced_settings a {
 }
 div.button_advanced_settings a:before {
   font-family: FontAwesome;
-  content: "";
+  content: "";
   display: inline-block;
   margin-right: 8px;
   font-size: 20px;
@@ -1775,7 +1764,7 @@ div.button_advanced_settings a:hover {
 }
 
 #toggelboxarea_togglebutton:before {
-  content: "";
+  content: "\f141";
   display: block;
   width: 10px;
   margin: 0 auto;
@@ -1835,7 +1824,7 @@ iframe#wb_informationcenter {
   text-align: right;
 }
 .alertbox:before {
-  content: "";
+  content: "\f071";
   font-family: FontAwesome;
   display: block;
   position: absolute;
@@ -1884,7 +1873,7 @@ iframe#wb_informationcenter {
 .themebox .tb_header a:before,
 .themebox .tb_header span.tb_icon:before {
   font-family: FontAwesome;
-  content: "";
+  content: "";
   display: block;
   position: absolute;
   left: 0px;
@@ -1983,7 +1972,7 @@ iframe#wb_informationcenter {
 .themebox .tb_footer span.tb_icon:before {
   font-family: FontAwesome;
   display: block;
-  content: "";
+  content: "\f00a";
   font-weight: normal;
   font-size: 15px;
   -webkit-transition: all 1s;
@@ -2058,10 +2047,10 @@ iframe#wb_informationcenter {
   line-height: 48px;
 }
 .dashboard .dashboard_information .label_icon.count_pages:before {
-  content: "";
+  content: "";
 }
 .dashboard .dashboard_information .label_icon.last_modified:before {
-  content: "";
+  content: "";
 }
 .dashboard:hover .tb_header a:before,
 .dashboard:hover .tb_header span.tb_icon:before {
@@ -2155,55 +2144,56 @@ div.themebox#addons_reload .tb_footer span.tb_icon:before {
   background-color: rgba(203, 207, 216, 0.1);
 }
 
+
 /* ::elements-themeboxes-individual-element-settings:: icons and colors for individual themeboxes */
 div.themebox#module_pages .tb_header a:before {
-  content: "";
+  content: "\f044";
   font-size: 80px;
 }
 
 div.themebox#module_media .tb_header a:before {
-  content: "";
+  content: "\f03e";
 }
 
 div.themebox#module_addons .tb_header a:before {
-  content: "";
+  content: "\f1b3";
 }
 
 div.themebox#module_preferences .tb_header a:before {
-  content: "";
+  content: "\f007";
 }
 
 div.themebox#module_settings .tb_header a:before {
-  content: "";
+  content: "\f085";
 }
 
 div.themebox#module_admintools .tb_header a:before,
 div.themebox.admintools_tool .tb_header a:before {
-    content: "";
+  content: "\f19d";
 }
 
 div.themebox#module_access .tb_header a:before {
-  content: "";
+  content: "\f0c0";
 }
 
 div.themebox#addons_modules .tb_header a:before {
-  content: "";
+  content: "\f1b3";
 }
 
 div.themebox#addons_templates .tb_header a:before {
-  content: "";
+  content: "\f1c5";
 }
 
 div.themebox#addons_languages .tb_header a:before {
-  content: "";
+  content: "\f1ab";
 }
 
 div.themebox#admin_users .tb_header a:before {
-  content: "";
+  content: "\f007";
 }
 
 div.themebox#admin_groups .tb_header a:before {
-  content: "";
+  content: "\f0c0";
 }
 
 /* Classes used for animation toggle action sidebar */
@@ -2268,7 +2258,7 @@ div.calendar * {
 }
 .section-info:before {
   font-family: FontAwesome;
-  content: "";
+  content: "\f03c";
   position: absolute;
   left: 0;
   top: 0;
@@ -2421,7 +2411,7 @@ a#page_login_homelink {
 }
 
 a#page_login_homelink:after {
-  content: "";
+  content: "\f108";
   font-family: FontAwesome;
   display: inline-block;
   position: relative;
