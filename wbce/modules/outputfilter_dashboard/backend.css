@@ -1,0 +1,331 @@
+/*
+backend.css
+*/
+
+/**
+ *
+ * @category        tool
+ * @package         Outputfilter Dashboard
+ * @version         1.5.1
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
+ * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
+ * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
+ * @link            https://forum.wbce.org/viewtopic.php?id=176
+ * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
+ * @license         GNU General Public License, Version 3
+ * @platform        WebsiteBaker 2.8.x
+ * @requirements    PHP 5.4 and higher
+ * 
+ * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
+ * 
+ * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * OutputFilter-Dashboard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ **/
+
+.hideupload  { display: none }
+.filters-table a  { font-weight: bold }
+.filters-table thead td,
+.filters-table caption { 
+    color: #fff !important; 
+    font-weight: bold; 
+    background-color: #515d76 
+}
+.filters-table caption {
+    font-size: 14px; 
+    font-weight: bold; 
+    line-height: 160%; 
+    text-align: left; 
+    padding-left: 10px; 
+    height: 22px 
+}
+table.filters-table { 
+    border: solid 1px #515d76; 
+    margin-bottom: 8px ;
+    background-color: #e0fbcf; 
+}
+.filters-table th, b { 
+   color: #515d76; 
+   font-weight: bold; 
+   background-repeat: repeat-x; 
+   background-attachment: scroll; 
+   background-position: 0 0; 
+   text-align: right; 
+   width: 180px !important; 
+   vertical-align: top 
+}
+/*table foot*/
+.filters-table tfoot td, 
+.filters-table tfoot th { 
+    background-color: #e0eef8; 
+    background-image: none; 
+    background-position: 0 -50px; 
+    padding: 5px; 
+    border-top: 2px solid #fff; 
+    border-bottom: 2px solid #fff 
+}
+/*rows*/
+.row_a td,
+.row_a th,
+.row_a { 
+    background: #fafafb url(templates/images/box_bg.png) repeat-x 0 -2px; 
+    border-bottom: 1px solid #becadb ;
+}
+.row_b td,
+.row_b th { 
+    background: #fafafb url(templates/images/box_bg.png) repeat-x 0 12px; 
+    border-bottom: 1px solid #becadb ;
+}
+
+.filters-table .row_a td,
+.filters-table .row_b td,
+.filters-table .last-modified td {
+    line-height: 36px;
+}.
+
+/*    
+------------------| dashboard-rows
+*/
+tr.inactive td, tr.inactive a  {color: #999}
+/*last-modified row*/
+tr.last-modified   { 
+    font-weight: bold; 
+    background-color: rgb(235, 250, 237) !important; 
+    background-image: none !important 
+}
+td.row-separator  { 
+   border-top: 2px solid #515d76 
+}
+
+div#upload-panel { 
+   background: rgb(250, 250, 251) url(templates/images/box_bg.png) repeat-x 0 -2px; 
+   text-align: center; 
+   margin-bottom: 6px; 
+   padding: 6px; 
+   border: solid 1px #515d76 
+}
+
+/*special customization*/
+textarea,
+textarea:focus,
+input, 
+input:focus { 
+    color: #6c1111; 
+    font-family: monospace; 
+    padding: 2px; 
+    bottom: 30px; 
+    border-style: solid; 
+    border-width: 2px; 
+    border-color: #999 #ccc #dadada #999 
+}
+textarea:focus, 
+input:focus  { 
+    background-color: #fffcdd 
+}
+/*READONLY*/
+input[type=text][readonly], 
+textarea[readonly], 
+select[disabled], 
+div.disabled  { 
+   color: #4b4545; 
+   background-color: #f4f4f4; 
+   border: inset 2px #999 
+}
+
+
+button { 
+    cursor: pointer; 
+    padding: 2px 7px 2px 5px; 
+    min-width: 150px 
+}
+button img {
+    margin-right: 4px;
+    margin-bottom: -2px;
+    margin-left: 2px;
+    border: none;
+}
+
+#close-panel { 
+    text-align: right; 
+    margin: 0 
+}
+/*let js-onclick images act like links*/
+img.link { 
+    cursor: pointer 
+}
+img.info { 
+    cursor: help 
+}
+span.arrow  /*used in arrays*/ { 
+   color: #515d76; 
+   font-size: large 
+}
+
+a:hover { 
+    text-decoration: none 
+}
+h2 { 
+    color: #516182; 
+    font-family: Verdana, Arial; 
+    letter-spacing: 1px 
+}
+a:focus { 
+    outline: none; 
+}
+
+/*
+----------------------------------| standard notes
+*/
+.warning, 
+tr.warning td { 
+    color: #900 !important; 
+    font-size: 11px; 
+    background-color: #ffefed !important; 
+    background-image: none !important; 
+    margin-top: 2px; 
+    margin-right: 2px; 
+    margin-bottom: 2px; 
+    padding: 2px; 
+    border: solid 1px 
+}
+.notification, 
+tr.notification td     { 
+    color: #360 !important; 
+    font-size: 11px; 
+    background-color: rgb(235, 250, 237) !important; 
+    background-color: rgba(235, 250, 237,0.5) !important; 
+    background-image: none !important; 
+    margin-top: 2px; margin-right: 2px; 
+    margin-bottom: 2px; 
+    padding: 2px; 
+    border: solid 1px }
+
+
+/*
+----------------------------------| check-tree (see backend_body.js)
+*/
+div.checktreestylearea { 
+    font-size: 12px;  
+    background-color: #fff; 
+    margin-top: 5px; 
+    margin-right: 5px; 
+    margin-bottom: 5px; 
+    padding: 10px 5px; 
+    width: 97%; 
+    border: dashed 1px #515d76 
+}
+ul.checktreestyle, 
+ul.checktreestyle * {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+ul.checktreestyle img.arrow {
+    border: 0;
+    width: 20px;
+}
+ul.checktreestyle li {
+    margin: 0 0 6px 0;
+}
+ul.checktreestyle li ul {
+    margin: 5px 0 0 20px;
+}
+ul.checktreestyle label  { 
+   cursor: pointer 
+}
+ul.checktreestyle label.hover  { 
+   color: #961c1c; 
+   background-color: #f8f8f8 
+}
+ul.checktreestyle li .arrow {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    float: left;
+    background: transparent no-repeat 0 4px;
+}
+ul.checktreestyle li .collapsed  { 
+    background-image: url(templates/images/collapsed.png); 
+    background-position: 0 0 
+}
+ul.checktreestyle li .expanded  { 
+    background-image: url(templates/images/expanded.png); 
+    background-position: 0 0 
+}
+ul.checktreestyle li .checkbox  { 
+    background: url(templates/images/unchecked.png) no-repeat 2px -3px; 
+    cursor: pointer; 
+    width: 20px; 
+    height: 18px; 
+    float: left 
+}
+ul.checktreestyle li .checked {
+    background-image: url(templates/images/checked.png);
+}
+ul.checktreestyle li .half_checked {
+    background-image: url(templates/images/marker.png);
+}
+
+/*
+----------------------------------| activity
+*/
+.activity {
+   display: inline; 
+   font-size: 18px; 
+   line-height: 18px; 
+   cursor: pointer; 
+   cursor: hand;
+}
+.activity img {
+   vertical-align: middle; 
+   width: 16px; 
+   height: 16px; 
+   background: transparent url(templates/images/activity.png) no-repeat; 
+   background-position: 0px 0px;
+}
+.activity-checked img{
+   background-position: 0px -17px;
+}
+.activity-disabled img{
+   background-position: 0px -32px;
+}
+.activity-checked .activity-disabled img{
+   background-position: 0px -48px;
+}
+/*
+----------------------------------| drag&drop
+*/
+.dragdrop_handle { 
+    cursor: move; 
+    padding: 0; 
+    width: 20px !important; 
+    border-style: solid; 
+    border-width: 2px 2px 3px; 
+    border-color: #cad2d9 #bac5ce 
+}
+
+.jsadmin_drag {
+    cursor: move;
+}
+
+.jsadmin_drag a, 
+.jsadmin_drag input, 
+.jsadmin_drag select {
+    cursor: pointer;
+}
+
+ul.jsadmin_drag_area {
+    border: solid 1px #99f;
+}
+

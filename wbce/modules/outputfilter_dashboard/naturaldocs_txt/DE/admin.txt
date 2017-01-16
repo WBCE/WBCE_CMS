@@ -1,0 +1,161 @@
+Header: Admin-Tool (de)
+
+Group: Admin-Tool
+
+Topic: Admin-Tool &Uuml;bersicht 
+        In der Filter-&Uuml;bersicht werden alle installiertien Filter angezeigt, gruppiert nach Typ
+        des Filters. Die Reihenfolge in der Liste entspricht dabei der Reihenfolge, in der die
+        Filter angewendet werden.
+        
+        (see admintool_de.png)
+
+        *Aktiv/Inaktiv:*
+
+        Das Icon vor dem Namen zeigt an, ob der Filter aktiv (gr&uuml;n) oder inaktiv (grau) ist.
+        Inaktive Filter werden nicht ausgef&uuml;hrt.
+        Klicken Sie das Icon an, um den Zustand umzuschalten.
+        
+        *Name:*
+        
+        Der Name des Filters.
+        
+        Klicken Sie den Namen an, um auf die Filter-Einstellungen Seite zu gelangen.
+
+        *Typ:*
+        
+        Der Typ des Filters. Es gibt Inline-Filter, Plugin-Filter oder Modul-Filter.
+        Durch Klicken auf das Symbol k&ouml;nnen Sie zwischen Inline- und Plugin-Filtern umschalten.
+        Einige Meta-Informationen (z.B. Versionsnummer und Autor eines Plugin-Filters) gehen dabei verloren.
+        
+        *Beschreibung:*
+        
+        Eine kurze Beschreibung.
+        
+        *Aktionen:*
+        
+        Fragezeichen - (optional) Die Hilfeseiten des Filters &ouml;ffnen.
+        Werkzeug - (optional) Die erweiterten Einstellungen des Filters &ouml;ffnen.
+        Schriftrolle - (optional) Den CSS-Editor des Filters &ouml;ffnen.
+        Pfeil hoch - Filter nach oben verschieben. 
+        Pfeil runter - Filter nach unten verschieben.
+        L&ouml;schen - Filter l&ouml;schen (nur Inline- und Plugin-Filter).
+        Exportieren - Filter exportieren (nur Inline- and Plugin-Filter).
+
+Topic: Filter exportieren
+        
+        Benutzen Sie das "Exportieren"-Icon in der Filter-&Uuml;bersicht, um einen vorhandenen
+        Inline- oder Plugin-Filter zu exportieren.
+        Modul-Filter k&ouml;nnen nicht exportiert werden, da sie Teil eines WebsiteBaker Modules
+        sind.
+
+        Inline-Filter werden beim exportieren automatisch in Plugin-Filter umgewandelt.
+
+Topic: Filter Installieren
+
+Inline-Filter installieren:
+        Um einen neuen Inline-Filter zu installieren, klicken Sie einfach den 
+        "Neuen Inline-Filter hinzuf&uuml;gen"-Schaltfl&auml;che an,        und geben Sie die Daten des Filters
+        in das Formular auf der folgenden Seite ein.
+
+        (see install_inline_en.png)
+        
+        Name des Filters - Name des neuen Filters. Jeder Filter mu&szlig; einen eigenen,
+                        eindeutigen Namen haben.
+        Beschreibung - Ein beschreibender Text f&uuml;r den Filter oder die Funktion.
+        Typ - Typ des Filters. Legt fest, auf welche Ausgabe der Filter angewendet wird.
+                Siehe weiter unten.
+        Filter auf diese Module anwenden - W&auml;hlen Sie hier die Module aus, auf die der Filter
+                angewendet werden soll. Bitte bachten Sie, da&szlig; hier per default "Alle Module" ausgew&auml;hlt
+                ist. Sie sollten die Auswahl auf die Module beschr&auml;nken, f&uuml;r die der Filter tats&auml;chlich
+                gedacht ist.
+        Filter auf diese Seiten anwenden - W&auml;hlen Sie hier die Seiten aus, auf die der Filter
+                angewendet werden soll. Bitte bachten Sie, da&szlig; hier per default "Alle Seiten" ausgew&auml;hlt
+                ist. Sie k&ouml;nnen die Auswahl auf die Seiten beschr&auml;nken, f&uuml;r die der Filter tats&auml;chlich
+                gedacht ist.
+        Name der Funktion - Name der Haupt-Funktion dieses Filters. Dies mu&szlig; der gleiche Name sein,
+                wie unten in dem Text-Eingabebereich. Dieser Name mu&szlig; eindeutig sein, kein anderer Filter
+                darf den gleichen Namen verwenden. Es ist daher am sichersten den vorgegebenen Namen
+                zu verwenden.
+
+        *Filter-Typen:*
+        
+        Modul - Filter vom Typ "Modul" werden direkt auf die Ausgabe von Modulen angewendet,
+                also auf die Ausgabe der Datei !view.php! des Modules.
+        Modul (zuletzt) - Filter dieses Types verhalten sich wie "Modul", werden aber erst nach
+                allen Filtern vom Typ "Modul" ausgef&uuml;hrt.
+        Seite - Filter vom Typ "Seite" werden auf die Ausgabe der kompletten Seite angewendet,
+                dies umfast das HTML des Templates (<head>, <body>), die Men&uuml;s, Snippets und alle Module
+                auf dieser Seite.
+        Seite (zuletzt) - Filter dieses Types verhalten sich wie "Seite", werden aber erst nach
+                allen Filtern vom Typ "Seite" ausgef&uuml;hrt.
+        
+        *Filter auf Module und Seiten anwenden:*
+
+        Benutzen Sie die "Filter auf diese Module/Seiten anwenden"-Baumansicht um den Filter
+        auf bestimmte Module oder Seiten zu beschr&auml;nken. Auf diese Weise mu&szlig; der Filter nicht
+        f&uuml;r jede Seite ausgef&uuml;hrt werden, sondern nur da, wo er tats&auml;chlich ben&ouml;tigt wird.
+
+        *Beispiele:*
+        
+        * Um einen Filter vom Typ "Modul" auf alle WYSIWYG-Abschnitte auf allen Seiten anzuwenden,
+                w&auml;hlen Sie "WYSIWYG" in der Modul-Baumansicht, und "Alle Seiten" in der Seiten-Baumansicht.
+        * Um den selben Filter auf WYSIWYG- und News-Abschnitte anzuwenden, aber nur auf den
+                Seiten "Intro" und "First Page" anzuwenden, w&auml;hlen Sie "WYSIWYG" in der Modul-Baumansicht,
+                und "Intro" und "First Page" in der Seiten-Baumansicht.
+        * Das folgende Bild zeigt die Einstellungen um den Filter auf WYSIWYG-Abschnitte auf den
+                Seiten "Intro", "First Page", "Page 1", "Page 2", und auf einer oder mehreren
+                Unterseiten der Seite "Description" anzuwenden.
+
+        (see install_inline_trees_en.png)
+        
+        Ab OpF Version 1.5 und WBCE 1.2 ist es auch m&ouml;glich, Filter aufs Backend anzuwenden.
+        Wenn die WB-Version Backend-Filtering unterst&uuml;tzt, erscheinen die entsprechenden Backend-Module 
+        ebenfalls in der Baumansicht der Module.  
+        Wenn man in einem solchen Filter, der aufs Backend wirkt, einen Fehler hat, kann es sein, dass 
+        das Backend nicht mehr zug&auml;nglich ist. In diesem Fall kann das Backend-Filtering komplett deaktiviert
+        werden, indem die folgende Zeile zur globalen !config.php! von WBCE hinzugef&uuml;gt wird:
+        > define('WB_OPF_BE_OFF', 'off');
+        Der Wert ist dabei egal - sobald eine Konstante mit diesem Namen definiert ist, wird das Backend
+        nicht mehr gefiltert und Sie haben wieder Zugang, um den Filter zu korrigieren.
+        
+        *Die Filter-Funktion:*
+        
+        Um die Filter-Funktion einzugeben benutzen Sie den Editor.
+        
+        (see install_inline_func_en.png)
+
+        *Parameter der Funktion:*
+        
+        &$content - (String) Der Inhalt des Modules oder der Seite, &Uuml;bergeben per Referenz.
+                &Auml;nderungen an dieser Variable &auml;ndern direkt die Ausgabe.
+        $page_id - (Int) Die actuelle page_id der Seite.
+        $section_id - (int/Bool) Die aktuelle section_id des Abschnittes. Bei Filtern vom Typ
+                "Seite" ist dieser Wert immer !FALSE!.
+        $module - (String/Bool) Name des aktuellen Modules. Bei Filtern vom Typ "Seite" ist dieser
+                Wert immer !FALSE!.
+        $wb - Eine Instanz der Klasse wb.
+
+        *R&uuml;ckgabewert:*
+        
+        Die Filter-Funktion mu&szlig; !FALSE! zur&uuml;ckgeben, wenn im Falle eines Fehlers der Inhalt
+        von !$content! m&ouml;glicherweise besch&auml;digt ist.
+        
+        In allen anderen F&auml;llen mu&szlig; die Funktion !TRUE! zur&uuml;ckgeben.
+
+        *Wie schreibt man eine eigene Filter-Funktion:*
+
+        Sehen Sie <Filter functions>.
+
+
+Plugin-Filter installieren:
+
+        Um Plugin-Filter zu installieren, klicken sie die "Plugin-Filter hochladen"-Schaltfl&auml;che an,
+        und benutzen Sie das dann erscheinende Formular um einen Filter zu installieren.
+
+        (see install_plugin_en.png)
+        
+
+Modul-Filter installieren:
+
+        Modul-Filter werden als Teil eines anderen Modules installiert, daher gibt es daf&uuml;r keine
+        eigene Methode.

@@ -406,8 +406,19 @@ echo $drops;
 $file_name = (!in_array("mod_topics", $all_tables) ? "install.php" : "upgrade.php");
 require_once WB_PATH . "/modules/topics/" . $file_name;
 
-//update output filter 
+
+// update output filter - we still need this to convert traditional outputfilter settings
+// from a database table to a setting 
 require_once WB_PATH . "/modules/output_filter/upgrade.php";
+
+// OpF Dashboard
+if (!in_array("mod_outputfilter_dashboard", $all_tables)) {
+   echo "<br />Install OpF Dashboard<br />";
+   require_once WB_PATH . "/modules/outputfilter_dashboard/install.php";
+} else {
+   echo "<br />Upgrade  OpF Dashboard<br />";
+   require_once WB_PATH . "/modules/outputfilter_dashboard/upgrade.php";
+}
 
 
 // check again all tables, to get a new array
