@@ -1,0 +1,141 @@
+/*
+-----------------------------| Dialogue Box (see backend_body.js)
+*/
+#dialog-content-inner {
+    padding-top: 10px;
+    padding-bottom: 10px 
+}
+#dialog      {
+    background: #fff;
+    text-align: center;
+    position: absolute;
+    z-index: 200;
+    border: solid 2px 
+}
+#dialog_header {
+    position:relative;
+    height:24px;
+    font-size:14px;
+    font-weight:bold;
+
+}
+#dialog_title {
+    float:left;
+    margin: 3px 0px 0px 6px;
+
+}
+#dialog_close  {
+    background: url(images/dialog_close.gif) no-repeat;
+    cursor: pointer;
+    margin: 4px 6px 0 0;
+    width: 16px;
+    height: 16px;
+    float: right 
+}
+#dialog_content  {
+    color: #333;
+    font-size: 13px;
+    padding: 6px;
+    position: relative 
+}
+#dialog_bar   {
+    color: #666666;
+    font-size: 13px;
+    text-align: center !important;
+    margin: 0 10px;
+    padding: 6px;
+    position: relative;
+    border-style: solid none none !important;
+    border-width: 1px 0 0 !important;
+    border-color:    !important 
+}
+#dialog_mask    {
+    background: #bdc2ca;
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    filter: alpha(opacity=80);
+    opacity: .80   
+}
+#dialog button  {
+    font-weight: bold 
+}
+#dialog  h2   {
+    color: #516182;
+    font-size: 18px;
+    font-family: "Trebuchet MS", Verdana, Arial;
+    text-align: center 
+}
+
+    /* Error */
+.errorbody {
+    background:#fff url(images/error_bg.jpg) bottom right no-repeat
+}
+.errorheader,
+.errorbody button   {
+    color: #6f2c2c;
+    font-weight: bold;
+    background: url(images/error_header.gif) repeat-x 
+}
+.errorborder, .errorbody button  {
+    border-color: #924949 !important 
+}
+    /* Warning */
+.warningbody {
+    background:#fff url(images/warning_bg.jpg) bottom right no-repeat
+}
+.warningheader, 
+.warningbody button  {
+    color: #994605;
+    background: url(images/warning_header.gif) repeat-x 
+}
+.warningborder, 
+.warningbody button   {
+    border-color: #c5a524 !important 
+}
+
+    /* Success */
+.successbody  {
+    background: #fff url(images/success_bg.jpg) no-repeat right bottom 
+}
+.successheader, 
+.successbody button  {
+    color: #3c7f51;
+    font-weight: bold;
+    background: url(images/success_header.gif) repeat-x 
+}
+.successborder,  
+.successbody button     {
+    border-color: #390 !important 
+}
+
+    /* Prompt, Message, Query */
+.promptbody, 
+.messagebody, 
+.querybody  {
+    color: #515d76;
+    background: #fff url(images/prompt_bg.jpg) no-repeat right bottom 
+}
+.promptheader, 
+.messageheader, 
+.queryheader, 
+.promptbody button, 
+.messagebody button, 
+.querybody button  {
+    background:url(images/prompt_header.gif) repeat-x;
+    color:#355468
+}
+.promptborder, 
+.messageborder, 
+.queryborder, 
+.promptbody button, 
+.messagebody button, 
+.querybody button    {
+    border-color: #4f6d81 !important 
+}
+.messagebody    {
+    background-image: none 
+}

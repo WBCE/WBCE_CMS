@@ -1,0 +1,4 @@
+Header: Inline-Filter schreiben (de)
+
+Bitte sehen Sie die Beschreibung unter <Admin-Tool (de)>.
+
