@@ -24,6 +24,7 @@
 // Must include code to stop this file being access directly
 if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 
+
 // Load Language file
 $mod_dir = basename(dirname(__FILE__));
 $tablename = $mod_dir;
@@ -43,15 +44,13 @@ if(!defined('TOPICS_DIRECTORY_DEPTH')) {define('TOPICS_DIRECTORY_DEPTH', $topics
 
 require_once(WB_PATH.'/modules/'.$mod_dir.'/functions_small.php');
 
-//$topics_use_wysiwyg = 1;
 
 // check if frontend.css file needs to be included into the <body></body> of view.php
-// later we simply put the I::AddCss here
-/*if((!function_exists('register_frontend_modfiles') || !defined('MOD_FRONTEND_CSS_REGISTERED')) &&  file_exists(WB_PATH .'/modules/'.$mod_dir.'/frontend.css')) {
+if((!function_exists('register_frontend_modfiles') || !defined('MOD_FRONTEND_CSS_REGISTERED')) &&  file_exists(WB_PATH .'/modules/'.$mod_dir.'/frontend.css')) {
    echo '<style type="text/css">';
    include(WB_PATH .'/modules/'.$mod_dir.'/frontend.css');
    echo "\n</style>\n";
-} */
+} 
 
 
 
@@ -66,31 +65,39 @@ if(isset($_GET['p']) AND is_numeric($_GET['p']) AND $_GET['p'] >= 0) {
 
 $t = topics_localtime();
 
-
+$refreshstring = '';
 $makeeditlink = false;
 $authoronly = false;
 $fredit = $fredit_default;
-if($wb->is_authenticated()) {	
+if($wb->is_authenticated()) {
+	$refreshstring = '?t='.$t; //forces loading of files		
 	$user_id = $admin->get_user_id();
 	$user_in_groups = $admin->get_groups_id();
 	if ($authorsgroup > 0) { //Care about users	
-		if (in_array($authorsgroup, $user_in_groups)) {$authoronly = true; $fredit = 1;} //Ist nur Autor
+		if (in_array($authorsgroup, $user_in_groups)) {$authoronly = true; $fredit = 1; $makeeditlink = true;} //Ist nur Autor
 	}
 	
 	if (in_array(1, $user_in_groups)) {	
 		$authoronly = false; //An admin cannot be autor only
 		$makeeditlink = true;
 	}
+	
+	//Editlink bedeutet noch nicht, dass der User tatsaechlich entwas tun kann, sondern nur, dass er den Link gezeigt bekommt.
+	//man muss also nicht so vorsichtig sein:
+	if ($user_id < 4) {
+		$makeeditlink = true;
+	}
 }
 
-//Check if there is an error in the access-file
-/*if (defined('TOPIC_ID')) {
+//Eventuell ist die section_id falsch - hier korrigieren
+if (defined('TOPIC_ID')) {
 	$t_id = TOPIC_ID;
-	$query_topic = $database->query("SELECT section_id FROM ".TABLE_PREFIX."mod_topics WHERE topic_id = '$t_id'");
+	$query_topic = $database->query("SELECT section_id, page_id FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id = '$t_id'");
 	$fetch_section= $query_topic->fetchRow();
-	if ($section_id != $fetch_section['section_id'])  {echo '<h2>Section_id mismatch!</h2><h3>Accessfile section_id '.$section_id.'<br/>Database section_id '.$fetch_section['section_id'].'</h3><hr/>';}
+	//if ($section_id != $fetch_section['section_id'])  {echo '<h2>Section_id mismatch!</h2><h3>Accessfile section_id '.$section_id.'<br/>Database section_id '.$fetch_section['section_id'].'</h3><hr/>';}
 	$section_id = $fetch_section['section_id'];
-}*/
+	$page_id = $fetch_section['page_id'];
+}
 
 
 // Get settings
@@ -193,11 +200,20 @@ if ($autoarchiveArr == 0) {
 	if ($sort_topics == -4) {$query_extra = ' AND published_when < '.$t.' ';} //Reversed = Archive
 }
 
+//CHIO2015
+// Check if there is a group defined
+if(isset($_GET['tg']) AND is_numeric($_GET['tg']) AND $_GET['tg'] >= 0) {
+	$thegroup = ','.$_GET['tg'].',';
+	$sectionquery .= " AND groups_id LIKE '%".$thegroup."%' ";
+} 
+
+
 //-------------------------------------------------------------------------------------------------------------------------------------------
 //various things:
 $minimum_commentedtime = $t - $topics_comment_cookie; //Seconds
 
-$picture_dir = WB_URL.$settings_fetch['picture_dir'];
+if ($settings_fetch['picture_dir'] != '' ) {$picture_dir = WB_URL.$settings_fetch['picture_dir'];} else {$picture_dir = '';}
+
 $section_title = $settings_fetch['section_title'];
 $section_description = $settings_fetch['section_description'];
 
@@ -219,11 +235,12 @@ if(!isset($settings_fetch['various_values'])){
 $use_commenting_settings = (int) $vv[3];
 if ($use_commenting_settings < 0) {$use_commenting_settings = 0;}
 
-$short_textareaheight = (int) $vv[0]; if ($short_textareaheight == -2) {$short_textareaheight = 150;}
-$short_textareaheight = 150; //always 150 in this version, compatibility problems
+$short_textareaheight = (int) $vv[0]; 
+if ($short_textareaheight < 0 AND $short_textareaheight > -10) {$short_textareaheight = 150;}
 
 $long_textareaheight = (int) $vv[1]; if ($long_textareaheight == -2) {$long_textareaheight = 400;}
 $extra_textareaheight = (int) $vv[2]; if ($extra_textareaheight == -2) {$extra_textareaheight = 300;}
+
 $use_commenting_settings = (int) $vv[3]; if ($use_commenting_settings < 0) {$use_commenting_settings = 0;}
 $maxcommentsperpage = (int) $vv[5]; if ($maxcommentsperpage < 0) {$maxcommentsperpage = 0;}
 $commentstyle = (int) $vv[6];
@@ -243,10 +260,10 @@ $w_view = (int) $pv[2]; if ($w_view == -2) {$w_view = 200;}
 $h_view = (int) $pv[3]; if ($h_view == -2) {$h_view = 0;}
 $w_thumb = (int) $pv[4]; if ($w_thumb == -2) {$w_thumb = 100;}
 $h_thumb = (int) $pv[5]; if ($h_thumb == -2) {$h_thumb = 100;}
-$zoomclass = $pv[6]; if ($zoomclass == "-2") {$zoomclass = "fbx";}
-$zoomrel = $pv[7]; if ($zoomrel == "-2") {$zoomclass = "fancybox";}
+$zoomclass = $pv[6]; if ($zoomclass == "-2") {$zoomclass = "";}
+$zoomrel = $pv[7]; if ($zoomrel == "-2") {$zoomclass = "";}
 
-$zoomclass2 = $pv[14]; if ($zoomclass2 == "-2") {$zoomclass2 = "fbx";}
+$zoomclass2 = $pv[14]; if ($zoomclass2 == "-2") {$zoomclass2 = "colorbox";}
 $zoomrel2 = $pv[15]; if ($zoomrel2 == "-2") {$zoomclass2 = "fancybox";}
 
 
@@ -256,6 +273,7 @@ $zoomrel2 = $pv[15]; if ($zoomrel2 == "-2") {$zoomclass2 = "fancybox";}
 //Prepare Query:
 $qactive = " active > '3' ";	
 if ($wb->is_authenticated()) {$qactive = " (active > '3' OR active = '1') ";}
+$qactive .= ' AND title <> "" ' ;
 
 // Check if there is a specific topic defined
 if (isset($_GET['topic_id']) AND is_numeric($_GET['topic_id']) AND $_GET['topic_id'] >= 0) {

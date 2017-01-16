@@ -7,6 +7,8 @@ $mpath = WB_PATH.'/modules/'.$mod_dir.'/';
 require_once($mpath.'defaults/module_settings.default.php');
 require_once($mpath.'module_settings.php');
 
+// Include the ordering class
+require(WB_PATH.'/framework/class.order.php');
 // Get new order
 $order = new order(TABLE_PREFIX.'mod_'.$tablename, 'position', 'topic_id', 'section_id');
 $position = $order->get_new($section_id);
@@ -14,7 +16,8 @@ $position = $order->get_new($section_id);
 // Get default commenting
 $query_settings = $database->query("SELECT commenting FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id = '$section_id'");
 $settings_fetch = $query_settings->fetchRow();
-$commenting = $settings_fetch['commenting'];
+//$commenting = $settings_fetch['commenting'];
+$commenting = -2; //Use Settings default
 
 // Insert new row into database
 $t = 0; //= topic is just startet, begin time is when first saved    //topics_localtime();

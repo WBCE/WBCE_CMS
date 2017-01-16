@@ -28,11 +28,11 @@ if($query_settings->numRows() == 0) {
 			require_once(WB_PATH.'/modules/'.$mod_dir.'/languages/'.LANGUAGE.'.php');
 		}
 	}
-	$settings = $query_settings->fetchRow();	
-	$vv = explode(',',$settings['various_values'].',-2,-2,-2,-2,-2,-2');
+	$settings_fetch = $query_settings->fetchRow();	
+	$vv = explode(',',$settings_fetch['various_values'].',-2,-2,-2,-2,-2,-2');
 	$emailsettings = (int) $vv[4]; if ($emailsettings < 0) {$emailsettings = 2;} //Wie bisher: Pflichtfeld
 	
-	$default_link = $settings['default_link'];
+	$default_link = $settings_fetch['default_link'];
 	
 	?>
    
@@ -126,7 +126,7 @@ if($query_settings->numRows() == 0) {
 		$_SESSION['captcha_retry_topics'] = true;
 	}
 	// Captcha
-	if($settings['use_captcha']) {
+	if($settings_fetch['use_captcha']) {
 	?>
 	<table cellpadding="2" cellspacing="0" border="0">
 	<tr>

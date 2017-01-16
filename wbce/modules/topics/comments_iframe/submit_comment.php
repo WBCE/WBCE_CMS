@@ -13,7 +13,7 @@ require_once(WB_PATH.'/modules/'.$mod_dir.'/defaults/module_settings.default.php
 require_once(WB_PATH.'/modules/'.$mod_dir.'/module_settings.php');
 require_once (WB_PATH.'/modules/'.$mod_dir.'/functions_small.php');
 
-
+require_once(WB_PATH.'/framework/class.wb.php');
 $wb = new wb;
 
 
@@ -41,15 +41,15 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND isset($_GET['sec
 	// Check captcha
 	$query_settings = $database->query("SELECT use_captcha,default_link, various_values, commenting FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id = '$section_id'");
 	if($query_settings->numRows() == 0) { 
-		exit(header('Location: '.WB_URL.'/modules/'.$mod_dir.'/nopage.php?err=6')); //exit(header("Location: ".WB_URL.PAGES_DIRECTORY.""));
+		exit(header('Location: '.WB_URL.'/modules/'.$mod_dir.'/comments_iframe/nopage.php?err=6')); //exit(header("Location: ".WB_URL.PAGES_DIRECTORY.""));
 		
 	} else {
-		$settings = $query_settings->fetchRow();
+		$settings_fetch = $query_settings->fetchRow();
 		
 		//various values
 		$use_commenting_settings = 0;
-		if ($settings['various_values'] != '') {
-			$vv = explode(',',$settings['various_values']);		
+		if ($settings_fetch['various_values'] != '') {
+			$vv = explode(',',$settings_fetch['various_values']);		
 			$use_commenting_settings = (int) $vv[3];
 			$emailsettings = (int) $vv[4]; if ($emailsettings < 0) {$emailsettings = 2;} //Wie bisher: Pflichtfeld
 		}			
@@ -58,14 +58,15 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND isset($_GET['sec
 		if($query_topic->numRows() != 1) { die('no topic!'); }
 		$topicfetch = $query_topic->fetchRow();		
 		$link = $topicfetch['link'];		
-		$commenting = $topicfetch['commenting'];
+		$commenting = (int) $topicfetch['commenting'];
 		$topicauthornr = $topicfetch['posted_by'];
 		
+		if( $commenting < -1) {$use_commenting_settings = 1;} //Defaultwert verenden
 		//Wenn: angekreuzt: Individielle EInstellungen ignorieren, dann die Settings-Einstellungen verwenden.
-		if ($use_commenting_settings == 1) { $commenting = $settings['commenting'];}
+		if ($use_commenting_settings == 1) { $commenting = (int) $settings_fetch['commenting'];}
 		
 		if ($commenting < 1) { 
-			exit(header('Location: '.WB_URL.'/modules/'.$mod_dir.'/nopage.php?err=7')); 
+			exit(header('Location: '.WB_URL.'/modules/'.$mod_dir.'/comments_iframe/nopage.php?err=7')); 
 		}
 		
 		
@@ -105,7 +106,7 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND isset($_GET['sec
 		if(ENABLED_ASP) {
 			if(isset($_SESSION['captcha_retry_topics'])) unset($_SESSION['captcha_retry_topics']);
 		}
-		if($settings['use_captcha']) {
+		if($settings_fetch['use_captcha']) {
 			if(isset($_POST['captcha']) AND $_POST['captcha'] != '') {
 				// Check for a mismatch
 				if(!isset($_POST['captcha']) OR !isset($_SESSION['captcha']) OR $_POST['captcha'] != $_SESSION['captcha']) {
@@ -141,7 +142,7 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND isset($_GET['sec
 	if ($hpstart  != 'http://') { $thesite = 'http://'.$thesite; }
 	if ($thesite == 'http://') {$thesite  = '';}
 	
-	$show_link = $settings['default_link'];
+	$show_link = $settings_fetch['default_link'];
 	
 	
 	
@@ -166,41 +167,12 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND isset($_GET['sec
 	}		
 	
 	
-	//Der spamfilter könnte $active verändert haben, deswegen $commentextra erst hier vergeben:
+	//Der spamfilter koennte $active veraendert haben, deswegen $commentextra erst hier vergeben:
 	$commentextra = '';
 	if ($active==0) {$commentextra = rand ( 1000000 , 9999999 );}
 	
 	
-	//Mail:
 	
-	if ($admin_email != '') { 
-		$mail_subject = "Comment: " . $topicfetch['title'];
-	
-		if($themail != '') {$email = $themail; } else {$email = 'noname@domain.com'; }	
-		$headers = "Content-Type: text/html\n";
-		$headers .= "Content-Transfer-Encoding: 8bit\n";
-		$headers .= "From: " . $thename . "<" . $email . ">\n";
-		$headers .= "Reply-To: " . $email . "\n";
-
-		
-		
-	
-		$mail_message = nl2br(strip_tags(stripslashes($commentpost)));	
-		$mail_message .= '<br/><br/>
-		<a href="'.$topic_link.'">See Comment</a> | <a href="'.$backend_link.'#comments">Edit Comments</a>';
-		
-		if ($commentextra != '') {
-			$mail_message .=  '| <a href="'.$topic_link.'?publ='.$commentextra.'">Publish</a>';
-		}
-			
-		$wb->mail(SERVER_EMAIL,$admin_email,$mail_subject,$mail_message);
-		//echo $mail_message;
-		//die('mail wurde versendet');
-		
-	} else {
-		//die('mail konnte nicht versendet werden');
-	
-	}// End Mail
 	
 	if ($spamlevel > 1) {
 		//exit(header("Location: ".WB_URL."/modules/".$mod_dir."/comments_iframe/nopage.php")); //exit(header("Location: ".WB_URL.PAGES_DIRECTORY.""));
@@ -214,6 +186,7 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND isset($_GET['sec
 	$theq = str_replace(array("[", "]"), array("&#91;", "&#93;"), $theq);
 	$query = $database->query($theq);
 	$last_insert = $database->get_one("SELECT LAST_INSERT_ID()");
+	$cid = $last_insert;
 	
 	
 	if ( $active==1) { topics_update_comments_count ($topic_id) ;}
@@ -233,6 +206,38 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND isset($_GET['sec
 	}
 	$Gueltigkeit = time()+3456000;	//40 Tage
 	setcookie("commentdetails", $last_insert, $gueltigkeit);
+	
+	
+	//Mail:
+	
+	if ($admin_email != '') { 
+		$mail_subject = "Comment: " . $topicfetch['title'];
+	
+		if($themail != '') {$email = $themail; } else {$email = 'noname@domain.com'; }	
+		$headers = "Content-Type: text/html\n";
+		$headers .= "Content-Transfer-Encoding: 8bit\n";
+		$headers .= "From: " . $thename . "<" . $email . ">\n";
+		$headers .= "Reply-To: " . $email . "\n";
+
+		
+		
+	
+		$mail_message = nl2br(strip_tags(stripslashes($commentpost)));	
+		$mail_message .= '<br/><br/>
+		<a href="'.$cid.'#tcid'.$topic_id.'">See Comment</a> | <a href="'.$backend_link.'#comments">Edit Comments</a>';
+		
+		if ($commentextra != '') {
+			$mail_message .=  '| <a href="'.$topic_link.'?publ='.$commentextra.'#tcid'.$cid.'">Publish</a>';
+		}
+			
+		$wb->mail(SERVER_EMAIL,$admin_email,$mail_subject,$mail_message);
+		//echo $mail_message;
+		//die('mail wurde versendet');
+		
+	} else {
+		//die('mail konnte nicht versendet werden');
+	
+	}// End Mail
 		
 	header('Location: '.WB_URL."/modules/".$mod_dir."/comments_iframe/commentdone.php?cid=$last_insert&tid=$topic_id");
 	//ende chio

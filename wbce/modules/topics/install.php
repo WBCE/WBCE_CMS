@@ -45,8 +45,8 @@ $mod_topics = 'CREATE TABLE `'.TABLE_PREFIX.'mod_'.$tablename.'` ( '
       . '`posted_first` INT NOT NULL DEFAULT \'0\','
       . '`posted_modified` INT NOT NULL DEFAULT \'0\','
       . '`posted_by` INT NOT NULL DEFAULT \'0\','
-      . '`modified_by` TEXT NOT NULL ,'
-      . '`authors` TEXT NOT NULL ,'
+      . '`modified_by`  VARCHAR(255) NOT NULL DEFAULT \'\','
+      . '`authors`  VARCHAR(255) NOT NULL DEFAULT \'\','
 
       . '`position` INT NOT NULL DEFAULT \'0\','
       . '`link` TEXT NOT NULL ,'
@@ -62,7 +62,7 @@ $mod_topics = 'CREATE TABLE `'.TABLE_PREFIX.'mod_'.$tablename.'` ( '
       . '`content_long` LONGTEXT NOT NULL ,'
       . '`content_extra` TEXT NOT NULL ,'
 
-      . '`commenting` TINYINT NOT NULL DEFAULT \'0\','
+      . '`commenting` TINYINT NOT NULL DEFAULT \'-2\','
       . '`see_also` VARCHAR(255) NOT NULL DEFAULT \'\','
 
       . '`topic_score` INT NOT NULL DEFAULT \'0\','
@@ -89,7 +89,7 @@ $mod_topics = 'CREATE TABLE `'.TABLE_PREFIX.'mod_'.$tablename.'_comments` ( '
       . '`email` VARCHAR(255) NOT NULL DEFAULT \'\','
       . '`website` VARCHAR(255) NOT NULL DEFAULT \'\','
       . '`show_link` INT NOT NULL DEFAULT \'0\','
-      . '`comment` TEXT NOT NULL ,'
+      . '`comment` TEXT  NOT NULL DEFAULT \'\','
       . '`commented_when` INT NOT NULL DEFAULT \'0\','
       . '`commented_by` INT NOT NULL DEFAULT \'0\','
       . 'PRIMARY KEY (comment_id)'
@@ -103,38 +103,38 @@ $mod_topics = 'CREATE TABLE `'.TABLE_PREFIX.'mod_'.$tablename.'_settings` ( '
       . '`page_id` INT NOT NULL DEFAULT \'0\','
 
       . '`section_title` VARCHAR(255) NOT NULL DEFAULT \'\','
-      . '`section_description` TEXT NOT NULL ,'
+      . '`section_description` TEXT NOT NULL DEFAULT \'\','
       . '`is_master_for` VARCHAR(255) NOT NULL DEFAULT \'\','
       . '`sort_topics` INT NOT NULL DEFAULT \'0\','
       . '`topics_per_page` INT NOT NULL DEFAULT \'0\','
       . '`use_timebased_publishing` TINYINT NOT NULL DEFAULT \'0\','
       . '`autoarchive` VARCHAR(255) NOT NULL DEFAULT \'\','
-      . '`various_values` VARCHAR(255) NOT NULL DEFAULT \'150,450,0,0,2,0,0,0,0,0\','
+      . '`various_values` VARCHAR(255) NOT NULL DEFAULT \'150,450,0,0,2,0,1,0,0,0\','
 
       . '`picture_dir` VARCHAR(255) NOT NULL DEFAULT \'\','
-      . '`picture_values` VARCHAR(255) NOT NULL DEFAULT \'0,0,300,0,70,70,colorbox\','
+      . '`picture_values` VARCHAR(255) NOT NULL DEFAULT \'0,1200,440,280,100,100,,,0,1200,440,0,0,120,colorbox,fancybox\','
 
-      . '`header` TEXT NOT NULL ,'
-      . '`topics_loop` TEXT NOT NULL ,'
-      . '`footer` TEXT NOT NULL ,'
+      . '`header` TEXT  NOT NULL DEFAULT \'\','
+      . '`topics_loop` TEXT  NOT NULL DEFAULT \'\','
+      . '`footer` TEXT  NOT NULL DEFAULT \'\','
 
-      . '`topic_header` TEXT NOT NULL,'
-      . '`topic_footer` TEXT NOT NULL,'
-      . '`topic_block2` TEXT NOT NULL,'
-      . '`pnsa_string` TEXT NOT NULL,'
+      . '`topic_header` TEXT  NOT NULL DEFAULT \'\','
+      . '`topic_footer` TEXT  NOT NULL DEFAULT \'\','
+      . '`topic_block2` TEXT  NOT NULL DEFAULT \'\','
+      . '`pnsa_string` TEXT  NOT NULL DEFAULT \'\','
       . '`pnsa_max` INT NOT NULL DEFAULT \'4\','
 
-      . '`commenting` TINYINT NOT NULL DEFAULT \'0\','
-      . '`default_link` TINYINT NOT NULL DEFAULT \'0\','
-      . '`use_captcha` TINYINT NOT NULL DEFAULT \'0\','
-      . '`sort_comments` TINYINT NOT NULL DEFAULT \'0\','
+      . '`commenting` TINYINT NOT NULL DEFAULT \'2\','
+      . '`default_link` TINYINT NOT NULL DEFAULT \'3\','
+      . '`use_captcha` TINYINT NOT NULL DEFAULT \'1\','
+      . '`sort_comments` TINYINT NOT NULL DEFAULT \'0\','	  
 
-      . '`comments_header` TEXT NOT NULL,'
-      . '`comments_loop` TEXT NOT NULL,'
-      . '`comments_footer` TEXT NOT NULL,'
+      . '`comments_header` TEXT  NOT NULL DEFAULT \'\','
+      . '`comments_loop` TEXT  NOT NULL DEFAULT \'\','
+      . '`comments_footer` TEXT  NOT NULL DEFAULT \'\','
 
       . 'PRIMARY KEY (section_id)'
-            . ' )';
+      . ' )';
 $database->query($mod_topics);
 
 // create the RSS count table
@@ -166,7 +166,7 @@ if (!$database->query($SQL))
   $admin->print_error($database->get_error());
 
 // Make topics post access files dir
- 
+require_once(WB_PATH.'/framework/functions.php');
 if(make_dir(WB_PATH.PAGES_DIRECTORY.'/'.$tablename)) {
     // Add a index.php file to prevent directory spoofing
     $content = "<?php
@@ -207,7 +207,7 @@ header('Location: ../');
 //Create folders and copy example pics
 $picpath = WB_PATH.MEDIA_DIRECTORY.'/'.$tablename.'-pictures';
 make_dir($picpath);
-$frompath = (WB_PATH.'/modules/'.$mod_dir.'/img/');
+$frompath = (WB_PATH.'/modules/'.$mod_dir.'/defaults/demopics/');
 if (!file_exists($picpath.'/1.jpg')) { copy($frompath.'1.jpg', $picpath.'/1.jpg') ; }
 if (!file_exists($picpath.'/2.jpg')) { copy($frompath.'2.jpg', $picpath.'/2.jpg') ; }
 if (!file_exists($picpath.'/3.jpg')) { copy($frompath.'3.jpg', $picpath.'/3.jpg') ; }
@@ -243,7 +243,7 @@ if (!function_exists('wb_unpack_and_import')) {
     global $admin, $database;
 
     // Include the PclZip class file
-     //require_once (WB_PATH . '/include/pclzip/pclzip.lib.php');
+    require_once (WB_PATH . '/include/pclzip/pclzip.lib.php');
 
     $errors = array();
     $count = 0;
@@ -298,7 +298,6 @@ if (!function_exists('wb_unpack_and_import')) {
       }
       closedir($dh);
     }
-    if (!isset($imports)) $imports=array();
     return array(
         'count' => $count,
         'errors' => $errors,

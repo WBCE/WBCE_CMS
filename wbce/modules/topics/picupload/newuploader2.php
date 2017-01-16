@@ -14,7 +14,7 @@ if(isset($_REQUEST['section_id']) AND is_numeric($_REQUEST['section_id']) AND is
 }
 
 $theauto_header = false;
- 
+require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', $theauto_header, TRUE);
 if(!$admin->is_authenticated()) { die(); }
 

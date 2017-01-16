@@ -18,6 +18,8 @@ $query_settings = $database->query("SELECT sort_topics FROM ".TABLE_PREFIX."mod_
 $settings_fetch = $query_settings->fetchRow();
 $sort_topics = $settings_fetch['sort_topics'];
 
+// Include the ordering class
+require(WB_PATH.'/framework/class.order.php');
 
 // Create new order object an reorder
 $order = new order($table, 'position', $id_field, 'section_id');

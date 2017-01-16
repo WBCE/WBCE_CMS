@@ -3,7 +3,7 @@
 if (!function_exists('getimagesize')) { die("<h2>function 'getimagesize' doesnt exist</h2>"); }
 
 $theauto_header = false;
- 
+require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', $theauto_header, TRUE);
 if(!$admin->is_authenticated()) { die(); }
 

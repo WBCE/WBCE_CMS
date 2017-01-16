@@ -5,7 +5,7 @@ if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 
 if (($topic_id * $cid) == 0)  {exit ('no topic_id, no comment_id');} //no topic_id, no comment_id;
 
-
+/*
 $query_topic = $database->query("SELECT section_id,commenting FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id = '".$topic_id."'");
 $commenting = 0;
 if($query_topic->numRows() > 0) { 
@@ -14,10 +14,12 @@ if($query_topic->numRows() > 0) {
 	$commenting = $fetch_topic['commenting'];	
 }
 
+
 //var_dump($settings_fetch);
 $setting_comments_loop = $settings_fetch['comments_loop']; //} else {$section_id = 0;}
-
+*/
 //various values
+/*
 $use_commenting_settings = 0;
 if ($settings_fetch['various_values'] != '') {
 	$vv = explode(',',$settings_fetch['various_values']);		
@@ -26,10 +28,15 @@ if ($settings_fetch['various_values'] != '') {
 if ($use_commenting_settings > 0) { $commenting = $settings_fetch['commenting']; }
 
 
-if ($commenting < 1 ) {exit ('No Commenting');}
+echo '<p>use_commenting_settings:'.$use_commenting_settings.'</p>';
+echo '<p>settings_fetch[commenting]:'.$settings_fetch['commenting'].'</p>';
+echo '<p>commenting:'.$commenting.'</p>';
+echo '<p>commentingoben:'.$commentingoben.'</p>';
+*/
+if ($commenting < 1 ) {exit ('Der Admin wurde benachrichtigt');}
 
 if (($section_id * $cid) > 0) {
-
+	$setting_comments_loop = $settings_fetch['comments_loop']; //} else {$section_id = 0;}
 
 // Query for comments
 	$query_comments = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$tablename."_comments WHERE comment_id = '".$cid."'");
@@ -52,8 +59,8 @@ if (($section_id * $cid) > 0) {
 			$output = '<h4>'.$MOD_TOPICS['COMMENT_SAVED'].'</h4><hr/>';
 			
 			
-			$vars = array('[NAME]','[EMAIL]','[WEBSITE]','[COMMENT]','[COMMENTS]','[DATE]','[TIME]','[USER_ID]','[USERNAME]','[DISPLAY_NAME]', '{NAME}');
-			$values = array($name, $comment['email'], $comment['website'], $thecomment,($TEXT['COMMENTS']), '', '', '0', '', '',  $nameLink);
+			$vars = array('[NAME]','[EMAIL]','[WEBSITE]','[COMMENT]','[DATE]','[TIME]','[USER_ID]','[USERNAME]','[DISPLAY_NAME]', '{NAME}');
+			$values = array($name, $comment['email'], $comment['website'], $thecomment, '', '', '0', '', '',  $nameLink);
 			
 			$outputshow = str_replace($vars, $values, $setting_comments_loop);
 			

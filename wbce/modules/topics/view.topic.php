@@ -50,8 +50,17 @@ $setting_topic_block2 = $settings_fetch['topic_block2'];
 $setting_comments_header = $settings_fetch['comments_header'];
 $setting_comments_loop = $settings_fetch['comments_loop'];
 $setting_comments_footer = $settings_fetch['comments_footer'];
-	
-$setting_pnsa_string = $settings_fetch['pnsa_string'].$serializedelimiter.$serializedelimiter.$serializedelimiter.$serializedelimiter; //Add some empty 
+
+/*
+if ( isset($settings_fetch['pnsa_array']) ) {
+	//echo '<h2>neue Methode</h2>';
+	$setting_pnsa_array = unserialize(base64_decode($settings_fetch['pnsa_array']));
+} else {	
+		
+}
+*/
+//echo '<h2>alte Methode</h2>';
+$setting_pnsa_string = stripslashes($settings_fetch['pnsa_string']);	
 $setting_pnsa_array = explode($serializedelimiter,$setting_pnsa_string);
 
 if (is_array($setting_pnsa_array) AND count($setting_pnsa_array) > 4 ) {
@@ -92,6 +101,8 @@ if ($sort_topics == 3) {$query_extra = '';} //Evencalendar: Dont hide
 $theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id = '".TOPIC_ID."' AND ".$qactive. $query_extra;
 $query_topic = $database->query($theq);
 
+
+
 if($query_topic->numRows() > 0) {
 	$checkwhatstring = $setting_topic_header.$setting_topic_footer.$setting_topic_block2;
 	
@@ -107,6 +118,9 @@ if($query_topic->numRows() > 0) {
 	if ($thetp == 0) {$thetp =  $topic['posted_first'];}
 	$posted_publ_date = gmdate(DATE_FORMAT, $thetp);
 	$posted_publ_time = gmdate(TIME_FORMAT, $thetp);
+	
+	$outdated_class = ' ';
+	if ($sort_topics == 3 AND $thetp < $t) { $outdated_class = ' tp_outdated ';}
 	
 	
 	//Handle Users:	
@@ -185,12 +199,7 @@ if($query_topic->numRows() > 0) {
 		include(WB_PATH.'/modules/'.$mod_dir.'/inc/link_list.inc.php');			
 	}
 	
-	//ADDITIONAL_PICTURES
-	if ( strpos($checkwhatstring, '[ADDITIONAL_PICTURES]') === false ) {
-		$additional_pictures = '';
-	} else {
-		include(WB_PATH.'/modules/'.$mod_dir.'/inc/additional_pictures.php');			
-	}
+	
 	
 	
 	$eventplaceholders = false;
@@ -211,27 +220,33 @@ if($query_topic->numRows() > 0) {
 	$picture_tag = '';
 	$thumb_tag = '';
 	
-	if ( $pictureplaceholders == true AND $picture != '') {
+	if ( $pictureplaceholders == true AND $picture != '' AND $picture_dir != '') {
+		$zoompic = WB_PATH.$settings_fetch['picture_dir'].'/zoom/'.$picture;
+		$picture .= $refreshstring;
 		$picturelink = '';
 		if ($extrafield_1_name == 'Picture Link') {$picturelink = $txtr1;}
-		if ($extrafield_2_name == 'Picture Link') {$picturelink = $txtr2;}
-		if ($extrafield_3_name == 'Picture Link') {$picturelink = $txtr3;}
+		
 		if ($picturelink != '') { $picturelink = '<a href="'.$picturelink.'" target="_blank" class="tp_piclink">'; }
 					
 		if (substr($picture, 0, 7) == 'http://') {
 			//external file:
+			
 			$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture.'" alt="'.$topic['short_description'].'" />';
+			if ($picturelink == '' AND $zoomclass != '') { $picturelink = '<a href="'.$picture.'" target="_blank" rel="'.$zoomrel.'" class="'.$zoomclass.'">';}
 			$thumb_tag = '<img class="tp_thumb tp_thumb'.$page_id.'" src="'.$picture.'" alt="" />';
-		} else {
-			if ($picture_dir != '') {			
-				$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture_dir.'/'.$picture.'" alt="'.$topic['short_description'].'" />';
+		} else {						
+			$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture_dir.'/'.$picture.'" alt="'.$topic['short_description'].'" />';
+			
+			//Check if there is a picture in folder "zoom"			
+			if (file_exists($zoompic)) {
+				if (!defined('OG_IMAGE')) define('OG_IMAGE', $picture_dir.'/zoom/'.$picture);
 				if ($zoomclass != '' AND $picturelink == '') {
-					//Check if there is a picture in folder "zoom"
-					$zoompic = WB_PATH.$settings_fetch['picture_dir'].'/zoom/'.$picture;			
-					if (file_exists($zoompic)) { $picturelink = '<a href="'.$picture_dir.'/zoom/'.$picture.'" target="_blank" rel="'.$zoomrel.'" class="'.$zoomclass.'">'; }		
+					 $picturelink = '<a href="'.$picture_dir.'/zoom/'.$picture.'" target="_blank" rel="'.$zoomrel.'" class="'.$zoomclass.'">';
 				}
-			}
+			}			
 		}
+		
+		
 		//something to link:
 		if ($picturelink != '') { $picture_tag = $picturelink.$picture_tag.'</a>'; }
 		
@@ -246,30 +261,33 @@ if($query_topic->numRows() > 0) {
 		$pos = strpos ($authors,','.$user_id.',');
 		if ($pos !== false){$makeeditlink = true;}	
 	}
-	if ($makeeditlink) { $edit_link = '<div class="mod_topic_edit"><a class="tp_editlink" target="_blank" href="'.WB_URL.'/modules/'.$mod_dir.'/modify_topic.php?page_id='.PAGE_ID.$paramdelimiter.'section_id='.$section_id.$paramdelimiter.'topic_id='.TOPIC_ID.$paramdelimiter.'fredit='.$fredit.'">Edit</a></div>'; }
-			
-	if ($short_textareaheight > 0) {		
-		$topic_short=$topic['content_short'];
-		if( $topics_use_plain_text > 0) {$topic_short = nl2br($topic_short);}
-		$wb->preprocess($topic_short);
-	} else {
-		$topic_short = '';
-	}
-			
-	if ($long_textareaheight > 0) {		
-		$topic_long = $topic['content_long'];
-		if( $topics_use_plain_text > 0) {$topic_long = nl2br($topic_long);}
-		$wb->preprocess($topic_long);
-	} else {
-		$topic_long = '';
-	}
+	if ($makeeditlink) { $edit_link = '<a class="tp_editlink" target="_blank" href="'.WB_URL.'/modules/'.$mod_dir.'/modify_topic.php?page_id='.PAGE_ID.$paramdelimiter.'section_id='.$section_id.$paramdelimiter.'topic_id='.TOPIC_ID.$paramdelimiter.'fredit='.$fredit.'"></a>'; }
 	
-	if ($extra_textareaheight > 0) {
-		$topic_extra = $topic['content_extra'];
-		if( $topics_use_plain_text > 0) {$topic_extra = nl2br($topic_extra);}
-		$wb->preprocess($topic_extra);
+	$topic_short = '';		
+	if ($short_textareaheight > 0) { $topic_short=$topic['content_short']; } 
+	if ($short_textareaheight < -10) { $topic_short = nl2br($topic['content_short']); }	
+	
+	$topic_long = '';		
+	if ($long_textareaheight > 0) { $topic_long = $topic['content_long']; }		
+	if ($long_textareaheight < -10) { $topic_long = nl2br($topic['content_long']); }
+	
+	$topic_extra = '';
+	if ($extra_textareaheight > 0) { $topic_extra = $topic['content_extra']; }
+	if ($extra_textareaheight < -10) { $topic_extra = nl2br($topic['content_extra']); }
+	
+	
+	//ADDITIONAL_PICTURES
+	if ( strpos($checkwhatstring, '[ADDITIONAL_PICTURES]') !== false OR strpos($topic_long, '[ADDITIONAL_PICTURES]') !== false) {
+		include(WB_PATH.'/modules/'.$mod_dir.'/inc/additional_pictures.php');
+		
+		//Special: ADDITIONAL_PICTURES kann auch in Long sein.
+		if (strpos($topic_long, '[ADDITIONAL_PICTURES]') !== false) {
+			$topic_long = str_replace('[ADDITIONAL_PICTURES]', $additional_pictures, $topic_long);
+			$additional_pictures = '';
+		}
+		
 	} else {
-		$topic_extra = '';
+		$additional_pictures = '';			
 	}
 	
 	
@@ -278,23 +296,29 @@ if($query_topic->numRows() > 0) {
 	
 	$comments_count = 0;
 	$commentsclass = 0;
-	//Check, if there are placeholders for Comments:
-	if ( strpos($checkwhatstring, '[COMMENTS') !== false) { 
-		$comments_count = $topic['comments_count'];			
-		if ($comments_count > 0) {$commentsclass = 1;
-			if ($comments_count > 2) {$commentsclass = 2;
-				if ($comments_count > 5) {$commentsclass = 3;
-					if ($comments_count > 8) {$commentsclass = 4;}
-				}
+	$commentsclass_class = '';
+	$comments_count = $topic['comments_count'];
+	if ($comments_count > 0) {
+		$commentsclass = topics_commentsclass ($comments_count);
+		$commentsclass_class = ' mod_topic_comments'.$commentsclass;
+	}		
+			
+	/*			
+	if ($comments_count > 0) {$commentsclass = 1;
+		if ($comments_count > 2) {$commentsclass = 2;
+			if ($comments_count > 5) {$commentsclass = 3;
+				if ($comments_count > 8) {$commentsclass = 4;}
 			}
-		}						
-	} 
+		}
+		$commentsclass_class = ' mod_topic_comments'.$commentsclass;
+	}						
+	 */
 	
 	//Fetch comments:
 	//------------------------------------------------------------------------------------------------------------------------------------------
 	// Show comments section if we have to
 	$commenting = $topic['commenting'];
-	if ($use_commenting_settings == 1) {$commenting = $settings_fetch['commenting'];}
+	if ($use_commenting_settings == 1 OR $commenting < -1) {$commenting = $settings_fetch['commenting'];}
 	if ($commenting < 0) {$use_commenting = -1;}	
 	$allcomments = '';
 	//echo $use_commenting;
@@ -349,8 +373,8 @@ if($query_topic->numRows() > 0) {
 				$commented_date = gmdate(DATE_FORMAT, $commentedtime);
 				$commented_time = gmdate(TIME_FORMAT, $commentedtime);
 				$cuid = (int) $comment['commented_by'];
-				$vars = array('[NAME]','[EMAIL]','[WEBSITE]','[COMMENT]','[COMMENTS]','[DATE]','[TIME]', '{NAME}', '[USER_ID]', '[COMMENT_ID]');
-				$values = array(($comment['name']), ($comment['email']), ($comment['website']), ($comment['comment']),($TEXT['COMMENTS']), $commented_date, $commented_time, $nameLink, $cuid, $comment_id);			
+				$vars = array('[NAME]','[EMAIL]','[WEBSITE]','[COMMENT]','[DATE]','[TIME]', '{NAME}', '[USER_ID]', '[COMMENT_ID]');
+				$values = array(($comment['name']), ($comment['email']), ($comment['website']), ($comment['comment']), $commented_date, $commented_time, $nameLink, $cuid, $comment_id);			
 				
 				$allcomments .= str_replace($vars, $values, $setting_comments_loop);
 			} // end while
@@ -404,6 +428,7 @@ if($query_topic->numRows() > 0) {
 	
 	
 
+	$classes = $mod_dir.'_page mod_topic_page mod_topic_active'.$topic['active'].$commentsclass_class.$outdated_class; 
 	
 	//-------------------------------------------------------------------------------------------
 	//Make the final output:		

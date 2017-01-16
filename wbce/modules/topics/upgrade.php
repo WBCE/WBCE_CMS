@@ -38,7 +38,7 @@ if(!isset($fetch['groups_id'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$mod_dir."` ADD `groups_id` VARCHAR(255) NOT NULL DEFAULT ''")) {
 		echo '<span class="good">Database Field groups_id added successfully</span><br />';
 	}
-		echo '<span class="bad">'.$database->error().'</span><br />';
+		echo '<span class="bad">'.mysql_error().'</span><br />';
 } else {
 	echo '<span class="ok">Database Field groups_id exists, update not needed</span><br />';
 }
@@ -50,7 +50,7 @@ if(!isset($fetch['commentextra'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$mod_dir."_comments` ADD `commentextra` VARCHAR(255) NOT NULL DEFAULT ''")) {
 		echo '<span class="good">Database Field commentextra added successfully</span><br />';
 	}
-		echo '<span class="bad">'.$database->error().'</span><br />';
+		echo '<span class="bad">'.mysql_error().'</span><br />';
 } else {
 	echo '<span class="ok">Database Field commentextra exists, update not needed</span><br />';
 }	
@@ -98,7 +98,7 @@ if (!function_exists('wb_unpack_and_import')) {
     global $admin, $database;
 
     // Include the PclZip class file
-    // require_once (WB_PATH . '/include/pclzip/pclzip.lib.php');
+    require_once (WB_PATH . '/include/pclzip/pclzip.lib.php');
 
     $errors = array();
     $count = 0;

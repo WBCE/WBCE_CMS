@@ -27,7 +27,7 @@ if (($query_topics->numRows()) != 1) {
 	exit("So what happend with the topic?"); 
 }
 $thistopic = $query_topics->fetchRow();
-//ueberpruefung:
+//Überprüfung:
 if ($authoronly) {
 	$authors = $thistopic['authors'];
 	$pos = strpos ($authors,','.$user_id.',');
@@ -85,7 +85,7 @@ echo '</td></tr></table><hr/>';
 
 
 $t = time();
-$t2 = $t - (60 * 60 * 24 * 30); //1 Monat zurueck
+$t2 = $t - (60 * 60 * 24 * 30); //1 Monat zurück
 $query_extra = '';
 if ($sort_topics == 3) {$query_extra = ' AND published_when >= '.$t2.' ';}
 
@@ -107,7 +107,7 @@ if ($restrict2picdir > 1) {
 
 
 $limit_sql = ' LIMIT 100';
-$theq = "SELECT published_when, section_id, page_id, topic_id, link, title, short_description, hascontent, active, authors FROM ".TABLE_PREFIX."mod_".$tablename." where hascontent > '0' AND section_id > '0' ".$query_extra." ORDER BY ".$sort_topics_by.$limit_sql;
+$theq = "SELECT published_when, section_id, page_id, topic_id, link, title, short_description, hascontent, active, authors FROM ".TABLE_PREFIX."mod_".$tablename." where hascontent > '0' ".$query_extra." ORDER BY ".$sort_topics_by.$limit_sql;
 	$query_topics = $database->query($theq);
 
 // Loop through existing topics

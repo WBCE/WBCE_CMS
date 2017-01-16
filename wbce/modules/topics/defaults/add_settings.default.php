@@ -10,45 +10,53 @@ $topics_per_page = 0;
 
 $header = '
 <!-- Header -->
+<h2>[SECTION_TITLE]</h2>
 ';
-$topics_loop = addslashes('<div class="mod_topic_loop mod_topic_active[ACTIVE] mod_topic_comments[COMMENTSCLASS]">
+$topics_loop = addslashes('<div class="[CLASSES]">
 {THUMB}
 <h3 class="mt_title">{TITLE}</h3>
-[TOPIC_SHORT] 
-[READ_MORE][EDITLINK]<div style="clear:both"></div></div>
+[TOPIC_SHORT]
+[READ_MORE][EDITLINK]<div style="clear:both"></div>
+</div>
 ');
 $footer = addslashes('{PREV_NEXT_PAGES}
 ');
 
 
-$topic_header = addslashes('<div class="mod_topic_page">
+$topic_header = addslashes('<div class="[CLASSES]">
 <h1 class="tp_headline">[TITLE]</h1>
-<p class="tp_author">[USER_DISPLAY_NAME] on [PUBL_DATE]</p>
+<p class="tp_author">[USER_DISPLAY_NAME] ([USER_NAME]) on [PUBL_DATE]</p>
 [USER_MODIFIEDINFO]
-<div class="tp_picture">{PICTURE}</div><div class="tp_topicshort">[TOPIC_SHORT]</div> 
+<div class="tp_teaser hideOnDesktops">{PICTURE}[TOPIC_SHORT]</div>
 <div style="clear:both"></div>
+[ADDITIONAL_PICTURES]
 ');
-$topic_footer = addslashes('{SEE_ALSO}
-{SEE_PREVNEXT}
-<p class="topics-back"><a href="[BACK]">[TEXTBACK]</a></p>
+$topic_footer = addslashes('<div class="hideOnDesktops showOnTablets">
+{SEE_ALSO}{SEE_PREVNEXT}
+</div>
+<p class="topics-back"><a href="[BACK]">Back</a></p>
 [EDITLINK]
 </div>
-<hr/>
 ');
 $topic_block2 = addslashes('<!--see help how to use a second block -->
-<div class="topic_block2">
+<div class="sidebar topic_block2 desktop-teaser showOnMobiles">
 {PICTURE}
 [TOPIC_SHORT]
-{SEE_ALSO}
-{SEE_PREVNEXT}
+{SEE_ALSO}{SEE_PREVNEXT}
 </div>
 ');
 
-$pnsa_string = addslashes('<p style="margin-top:5px; clear:left;">
-<a href="[LINK]"><img src="[PICTURE_DIR]/thumbs/[PICTURE]" height="30" width="30" border="0" alt="[TITLE]" style="float:left; margin:0 6px 10px 0;" /></a>
-<a href="[LINK]"><strong>[TITLE]</strong></a><br/>
-<span class="pnsa_link">[SHORT_DESCRIPTION]</span></p>
+$pnsa_string_raw = addslashes('<a class="pnsa_block" [HREF]>[THUMB]
+<strong>[TITLE]</strong><br />
+[SHORT_DESCRIPTION]
+<span class="pnsaclear"></span>
+</a>
 ');
+$see_also_link_title = '<h4>'.$MOD_TOPICS['SEE_ALSO_FRONTEND'].'</h4>';
+$next_link_title = '<h4>'.$MOD_TOPICS['SEE_NEXT_POST'].'</h4>';
+$previous_link_title = '<h4>'.$MOD_TOPICS['SEE_PREV_POST'].'</h4>';
+$setting_additionalpics_string = '{THUMB}';
+$pnsa_string = $see_also_link_title.$serializedelimiter.$next_link_title.$serializedelimiter.$previous_link_title.$serializedelimiter.$pnsa_string_raw.$serializedelimiter.$pnsa_string_raw.$serializedelimiter.$setting_additionalpics_string;
 $pnsa_max=4;
 
 

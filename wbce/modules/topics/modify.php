@@ -1,5 +1,5 @@
 <?php
-
+$showoptions = false;
 // Must include code to stop this file being access directly
 if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 require('permissioncheck.php');
@@ -246,7 +246,6 @@ Sorted by: <?php echo $sort_topics_by; ?>
 
 	if ($is_master == '') {
 		echo $TEXT['NONE_FOUND'].'<hr/>';
-
 		if ($showoptions) {
 			echo '<a class="topic-modify-settings" href="'.WB_URL.'/modules/'.$mod_dir.'/modify_settings.php?page_id='.$page_id.$paramdelimiter.'section_id='.$section_id.$paramdelimiter.'do=setmaster">Set as TopicsMaster</a>';
 		}
