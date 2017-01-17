@@ -36,7 +36,7 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
         
-        if(opf_is_registed('OPF CSS to head')){
+        if(opf_is_registered('OPF CSS to head')){
             return require(WB_PATH.'/modules/mod_opf_csstohead/upgrade.php');
         }
         

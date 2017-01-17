@@ -35,7 +35,7 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registed('OPF Droplets')){
+        if(opf_is_registered('OPF Droplets')){
             return require(WB_PATH.'/modules/mod_opf_droplets/upgrade.php');
         }
         
