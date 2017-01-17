@@ -35,7 +35,7 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registed('OPF Short URL')){
+        if(opf_is_registered('OPF Short URL')){
             return require(WB_PATH.'/modules/mod_opf_short_url/upgrade.php');
         }
         
@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_short_url/filter.php',
             'funcname' => 'opff_mod_opf_short_url',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => 0,
+            'active' => (!class_exists('Settings') || Settings::Get('opf_short_url', 0)),
             'allowedit' => 0
         ));
         opf_move_up_before(
@@ -57,7 +57,7 @@ if(defined('WB_URL'))
             )
         );
 
-        // opf before 1.5.1 did not register the setting:
-        if(class_exists('Settings')) Settings::Set('opf_opf_short_url',1, false);
+        // ensure settings are present
+        if(class_exists('Settings')) Settings::Set('opf_short_url',1, false);
     }
 }

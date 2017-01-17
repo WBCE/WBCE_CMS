@@ -29,8 +29,8 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 
-        Settings::Del('opf_opf_insert');
-        Settings::Del('opf_opf_insert'.'_be');
+        Settings::Del('opf_insert');
+        Settings::Del('opf_insert'.'_be');
 
         // check whether outputfilter-module is installed {
         if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {

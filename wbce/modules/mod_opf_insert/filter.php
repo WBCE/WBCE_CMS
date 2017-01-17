@@ -32,8 +32,8 @@ if(!defined('WB_PATH')) {
         
 function opff_mod_opf_insert (&$content, $page_id, $section_id, $module, $wb) {
     if(!class_exists('Settings') 
-        || (Settings::Get('opf_opf_insert', true) && ($page_id != 'backend'))
-        || (Settings::Get('opf_opf_insert'.'_be', true) && ($page_id == 'backend'))){
+        || (Settings::Get('opf_insert', true) && ($page_id != 'backend'))
+        || (Settings::Get('opf_insert'.'_be', true) && ($page_id == 'backend'))){
         if (class_exists ("I")) {
             $content = I::Filter($content);
         }

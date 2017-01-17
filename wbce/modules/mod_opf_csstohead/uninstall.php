@@ -30,8 +30,8 @@ if(!defined('WB_PATH')) {
 
 
         
-        Settings::Del('opf_opf_css_to_head');
-        Settings::Del('opf_opf_css_to_head'.'_be');
+        Settings::Del('opf_css_to_head');
+        Settings::Del('opf_css_to_head'.'_be');
 
         // check whether outputfilter-module is installed {
         if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {

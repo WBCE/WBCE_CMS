@@ -34,7 +34,6 @@ if(!defined('WB_PATH')) {
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 // function fetched from old filter routines
-// this function whith if exits, may not be at the end ... 
 /**
  * function to read the current filter settings
  * @global object $database
@@ -72,6 +71,9 @@ $msg = '';
 // getting old Data
 $data = getOutputFilterSettings();
 
+if(!class_exists('Settings')) return FALSE;
+
+
 // Set old values if exists otherwise go for default 
 Settings::Set('wb_suppress_old_opf',0, false);
 Settings::Set('opf_droplets',1, false);
@@ -105,12 +107,9 @@ else                                 Settings::Set('opf_dot_replacement',"(dot)"
 $table = TABLE_PREFIX .'mod_output_filter';
 $database->query("DROP TABLE IF EXISTS `$table`");
 
-//Setting Version
-include ("info.php");
-Settings::Set("opf_version", $module_version) ;
-
 Settings::Set('opf_insert_be',1); 
 Settings::Set('opf_css_to_head_be',1);
 
 Settings::Set('opf_show_advanced_backend',false,false);
 
+return TRUE;

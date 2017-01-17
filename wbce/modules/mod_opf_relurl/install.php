@@ -35,10 +35,17 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registed('OPF Sys Rel')){
+        if(opf_is_registered('OPF Sys Rel')){
             return require(WB_PATH.'/modules/mod_opf_relurl/upgrade.php');
         }
         
+
+        // when upgrading from classical output filter....
+        if( class_exists('Settings') && (Settings::Get('opf_sys_rel',NULL)===NULL)){
+            // Setting does not yet exist
+            require(WB_PATH.'/modules/mod_opf_relurl/upgrade.php');
+        }
+
         // install filter
         opf_register_filter(array(
             'name' => 'OPF Sys Rel',
@@ -46,7 +53,7 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_relurl/filter.php',
             'funcname' => 'opff_mod_opf_relurl',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => 1,
+            'active' => (!class_exists('Settings') || Settings::Get('opf_sys_rel', 1)),
             'allowedit' => 0
         ));
         opf_move_up_before(
@@ -56,7 +63,7 @@ if(defined('WB_URL'))
             )
         );
 
-        // opf before 1.5.1 did not register the setting:
-        if(class_exists('Settings')) Settings::Set('opf_opf_sys_rel',1, false);
+        // ensure settings are present
+        if(class_exists('Settings')) Settings::Set('opf_sys_rel',1, false);
     }
 }

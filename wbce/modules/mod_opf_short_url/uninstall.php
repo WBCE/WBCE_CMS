@@ -29,7 +29,7 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 
-        Settings::Del('opf_opf_short_url');
+        Settings::Del('opf_short_url');
 
         // check whether outputfilter-module is installed {
         if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {

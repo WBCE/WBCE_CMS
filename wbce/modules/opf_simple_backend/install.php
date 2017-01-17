@@ -32,6 +32,15 @@ if(!defined('WB_PATH')) {
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
+if(!class_exists('Settings')) return FALSE;
+
+// when upgrading from classical output filter....
+if( (Settings::Get('opf_show_advanced_backend',NULL)===NULL)){
+    // Setting does not yet exist
+    require(WB_PATH.'/modules/opf_simple_backend/upgrade.php');
+}
+
+// otherwise fall back to defaults:
 
 Settings::Set('wb_suppress_old_opf',0, false);
 Settings::Set('opf_droplets',1, false);

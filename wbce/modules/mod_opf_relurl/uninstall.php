@@ -29,7 +29,7 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 
-        Settings::Del('opf_opf_sys_rel');
+        Settings::Del('opf_sys_rel');
 
         // check whether outputfilter-module is installed {
         if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {

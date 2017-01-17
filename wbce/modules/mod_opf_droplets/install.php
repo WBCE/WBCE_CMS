@@ -35,7 +35,7 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registed('OPF Droplets')){
+        if(opf_is_registered('OPF Droplets')){
             return require(WB_PATH.'/modules/mod_opf_droplets/upgrade.php');
         }
         
@@ -46,16 +46,16 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_droplets/filter.php',
             'funcname' => 'opff_mod_opf_droplets',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => 1,
+            'active' => (!class_exists('Settings') || Settings::Get('opf_droplets', 1)),
             'allowedit' => 0,
             'pages_parent' => 'all,backend'
         ));
         // move up to the top
         opf_move_up_before('OPF Droplets');
 
-        // opf before 1.5.1 did not register the setting:
-        if(class_exists('Settings')) Settings::Set('opf_opf_droplets',1, false);
-        if(class_exists('Settings')) Settings::Set('opf_opf_droplets'.'_be',1, false);
+        // ensure settings are present
+        if(class_exists('Settings')) Settings::Set('opf_droplets',1, false);
+        if(class_exists('Settings')) Settings::Set('opf_droplets'.'_be',1, false);
      }
 }
 

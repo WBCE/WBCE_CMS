@@ -32,6 +32,9 @@ if(!defined('WB_PATH')) {
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-// upgrade stuff to be added here
+if(!class_exists('Settings')) return FALSE;
+
+Settings::Set('opf_css_to_head',1, false);
+Settings::Set('opf_css_to_head_be',1, false);
 
 return TRUE;

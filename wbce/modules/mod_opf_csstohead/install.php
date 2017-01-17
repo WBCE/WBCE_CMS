@@ -36,7 +36,7 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
         
-        if(opf_is_registed('OPF CSS to head')){
+        if(opf_is_registered('OPF CSS to head')){
             return require(WB_PATH.'/modules/mod_opf_csstohead/upgrade.php');
         }
         
@@ -47,15 +47,15 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_csstohead/filter.php',
             'funcname' => 'opff_mod_opf_csstohead',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => 1,
+            'active' => (!class_exists('Settings') || Settings::Get('opf_css_to_head', 1)),
             'allowedit' => 0,
             'pages_parent' => 'all,backend'
         ));
          // insert opf_move_up_before here if anything else must be run later
         
-        // opf before 1.5.1 did not register the setting:
-        if(class_exists('Settings')) Settings::Set('opf_opf_css_to_head',1, false);
-        if(class_exists('Settings')) Settings::Set('opf_opf_css_to_head'.'_be',1, false);
+        // ensure settings are present
+        if(class_exists('Settings')) Settings::Set('opf_css_to_head',1, false);
+        if(class_exists('Settings')) Settings::Set('opf_css_to_head'.'_be',1, false);
     }
 }
 

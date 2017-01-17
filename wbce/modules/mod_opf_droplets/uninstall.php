@@ -29,8 +29,8 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
         
-        Settings::Del('opf_opf_droplets');
-        Settings::Del('opf_opf_droplets'.'_be');
+        Settings::Del('opf_droplets');
+        Settings::Del('opf_droplets'.'_be');
 
         // check whether outputfilter-module is installed {
         if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {

@@ -34,7 +34,7 @@ if(!defined('WB_PATH')) {
  */
         
 function opff_mod_opf_short_url (&$content, $page_id, $section_id, $module, $wb) {
-    if(!class_exists('Settings') || Settings::Get('opf_opf_short_url', true)){
+    if(!class_exists('Settings') || Settings::Get('opf_short_url', true)){
         // $GLOBALS['wb']->preprocess($content); // this line is obsolete IMHO
         $sUrlStart = WB_URL.PAGES_DIRECTORY;
         $sUrlEnd = PAGE_EXTENSION;
