@@ -759,7 +759,7 @@ function opf_move_up_one($name,$verbose=TRUE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     $pos = opf_get_position($name,$verbose);
-    $type = opf_get_type($name);
+    $type = opf_get_type($name,$verbose);
     if($pos!==FALSE && $type!==FALSE && $pos>0) {
         $pos_new = $pos-1;
         return(opf_switch_position($type, $pos, $pos_new));
@@ -768,11 +768,11 @@ function opf_move_up_one($name,$verbose=TRUE) {
 }
 
 // move down position by one
-function opf_move_down_one($name) {
+function opf_move_down_one($name,$verbose=TRUE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
-    $pos = opf_get_position($name);
-    $type = opf_get_type($name);
+    $pos = opf_get_position($name,$verbose);
+    $type = opf_get_type($name,$verbose);
     if($pos!==FALSE && $type!==FALSE) {
         $max = opf_get_position_max($type);
         if($max && $pos<$max) {

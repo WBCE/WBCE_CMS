@@ -71,8 +71,9 @@ $msg = '';
 // getting old Data
 $data = getOutputFilterSettings();
 
+if(!class_exists('Settings')) return FALSE;
+
 // Set old values if exists otherwise go for default 
-if(class_exists('Settings')) {
 if (isset($data["email_filter"]))  Settings::Set('opf_email_filter',$data["email_filter"], false);
 else                               Settings::Set('opf_email_filter',1, false);    
 
@@ -88,11 +89,5 @@ if (isset($data["dot_replacement"])) Settings::Set('opf_dot_replacement',$data["
 else                                 Settings::Set('opf_dot_replacement',"(dot)", false);
 
 
-//finally delete the old table as its no longer needed
-$table = TABLE_PREFIX .'mod_output_filter';
-$database->query("DROP TABLE IF EXISTS `$table`");
 
 return TRUE;
-}
-
-return FALSE;

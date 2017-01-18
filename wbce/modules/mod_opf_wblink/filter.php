@@ -35,7 +35,7 @@ if(!defined('WB_PATH')) {
  */
         
 function opff_mod_opf_wblink (&$content, $page_id, $section_id, $module, $wb) {
-    if(!class_exists('Settings') || Settings::Get('opf_opf_wblink', true)){
+    if(!class_exists('Settings') || Settings::Get('opf_wblink', true)){
         global $database;
 
         $pattern = '/\[wblink([0-9]+)\]/isU';

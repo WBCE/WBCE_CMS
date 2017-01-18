@@ -39,14 +39,15 @@ if(defined('WB_URL'))
             return require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
         }
 
+        if(!class_exists('Settings')) return FALSE;
+
         // when upgrading from classical output filter....
-        if(class_exists('Settings')){
-            if( (Settings::Get('opf_opf_email',NULL)===NULL)){
-                // Setting does not yet exist
-                require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
-            }
+        if( class_exists('Settings') && (Settings::Get('opf_email',NULL)===NULL)){
+            // Setting does not yet exist
+            require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
         }
         
+        // ensure settings are present
         Settings::Set('opf_mailto_filter',1, false);
         Settings::Set('opf_email_filter',1, false);
         Settings::Set('opf_js_mailto',1, false);
@@ -60,7 +61,7 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_email/filter.php',
             'funcname' => 'opff_mod_opf_email',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => 1,
+            'active' => (!class_exists('Settings') || Settings::Get('opf_email', 1)),
             'allowedit' => 0,
             'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email'
         ));
@@ -75,7 +76,7 @@ if(defined('WB_URL'))
             )
         );
 
-        // opf before 1.5.1 did not register the setting:
-        Settings::Set('opf_opf_email',1, false);
+        // ensure settings are present
+        Settings::Set('opf_email',1, false);
     }
 }

@@ -167,7 +167,7 @@ function _cbDoExecuteFilter($match) {
 
         
 function opff_mod_opf_email (&$content, $page_id, $section_id, $module, $wb) {
-    if(Settings::Get('opf_opf_email', true)){
+    if(Settings::Get('opf_email', true)){
         $content = doFilterEmail($content);
     }
     return(TRUE);

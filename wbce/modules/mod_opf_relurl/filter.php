@@ -34,7 +34,7 @@ if(!defined('WB_PATH')) {
  */
         
 function opff_mod_opf_relurl (&$content, $page_id, $section_id, $module, $wb) {
-    if(!class_exists('Settings') || Settings::Get('opf_opf_sys_rel', true)){
+    if(!class_exists('Settings') || Settings::Get('opf_sys_rel', true)){
         $sAppUrl  = rtrim(str_replace('\\', '/', WB_URL), '/').'/';
         $sAppPath = rtrim(str_replace('\\', '/', WB_PATH), '/').'/';
         $content = preg_replace_callback(

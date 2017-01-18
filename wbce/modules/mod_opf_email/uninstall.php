@@ -30,7 +30,7 @@ if(!defined('WB_PATH')) {
 
 
 
-Settings::Del('opf_opf_email');
+Settings::Del('opf_email');
 
 Settings::Del('opf_email_filter');
 Settings::Del('opf_mailto_filter');

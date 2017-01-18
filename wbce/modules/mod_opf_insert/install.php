@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_insert/filter.php',
             'funcname' => 'opff_mod_opf_insert',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => 1,
+            'active' => (!class_exists('Settings') || Settings::Get('opf_insert', 1)),
             'allowedit' => 0,
             'pages_parent' => 'all,backend'
         ));
@@ -61,8 +61,8 @@ if(defined('WB_URL'))
             )
         );
 
-        // opf before 1.5.1 did not register the setting:
-        if(class_exists('Settings')) Settings::Set('opf_opf_insert',1, false);
-        if(class_exists('Settings')) Settings::Set('opf_opf_insert'.'_be',1, false);
+        // ensure settings are present
+        if(class_exists('Settings')) Settings::Set('opf_insert',1, false);
+        if(class_exists('Settings')) Settings::Set('opf_insert'.'_be',1, false);
     }
 }

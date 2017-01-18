@@ -35,8 +35,8 @@ if(!defined('WB_PATH')) {
         
 function opff_mod_opf_droplets (&$content, $page_id, $section_id, $module, $wb) {
     if(!class_exists('Settings') 
-        || (Settings::Get('opf_opf_droplets', true) && ($page_id != 'backend'))
-        || (Settings::Get('opf_opf_droplets'.'_be', true) && ($page_id == 'backend'))){
+        || (Settings::Get('opf_droplets', true) && ($page_id != 'backend'))
+        || (Settings::Get('opf_droplets'.'_be', true) && ($page_id == 'backend'))){
         if(file_exists(WB_PATH .'/modules/droplets/droplets.php')) {
             include_once(WB_PATH .'/modules/droplets/droplets.php');
             if(function_exists('evalDroplets')) {

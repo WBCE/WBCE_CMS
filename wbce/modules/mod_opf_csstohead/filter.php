@@ -34,8 +34,8 @@ if(!defined('WB_PATH')) {
  */
 function opff_mod_opf_csstohead (&$content, $page_id, $section_id, $module, $wb) {
     if(!class_exists('Settings') 
-        || (Settings::Get('opf_opf_css_to_head', true) && ($page_id != 'backend'))
-        || (Settings::Get('opf_opf_css_to_head'.'_be', true) && ($page_id == 'backend'))){
+        || (Settings::Get('opf_css_to_head', true) && ($page_id != 'backend'))
+        || (Settings::Get('opf_css_to_head'.'_be', true) && ($page_id == 'backend'))){
         // move css definitions into head section
         $sPattern1 = '/(?:<body.*?)(<link[^>]*?\"text\/css\".*?\/?>)/si';
         $sPattern3 = '/(?:<body.*?)(<link[^>]*?\"stylesheet\".*?\/?>)/si';

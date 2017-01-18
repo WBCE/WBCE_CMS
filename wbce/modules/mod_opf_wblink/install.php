@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_wblink/filter.php',
             'funcname' => 'opff_mod_opf_wblink',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => 1,
+            'active' => (!class_exists('Settings') || Settings::Get('opf_wblink', 1)),
             'allowedit' => 0
         ));
          opf_move_up_before(
@@ -58,7 +58,7 @@ if(defined('WB_URL'))
                'WB-Link'
             )
         );
-        // opf before 1.5.1 did not register the setting:
-        if(class_exists('Settings')) Settings::Set('opf_opf_wblink',1, false);
+        // ensure settings are present
+        if(class_exists('Settings')) Settings::Set('opf_wblink',1, false);
     }
 }
