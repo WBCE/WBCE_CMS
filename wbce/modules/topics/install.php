@@ -241,10 +241,11 @@ if (file_exists(WB_PATH.'/modules/droplets/functions.inc.php')) {
 if (!function_exists('wb_unpack_and_import')) {
   function wb_unpack_and_import($temp_file, $temp_unzip) {
     global $admin, $database;
-
+   
     // Include the PclZip class file
     require_once (WB_PATH . '/include/pclzip/pclzip.lib.php');
 
+    $imports = array();
     $errors = array();
     $count = 0;
     $archive = new PclZip($temp_file);
