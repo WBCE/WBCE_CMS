@@ -99,7 +99,7 @@ if (!function_exists('wb_unpack_and_import')) {
 
     // Include the PclZip class file
     require_once (WB_PATH . '/include/pclzip/pclzip.lib.php');
-
+    $imports= array();
     $errors = array();
     $count = 0;
     $archive = new PclZip($temp_file);
