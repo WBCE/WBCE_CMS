@@ -59,10 +59,10 @@ $database->query($theq);
 $query_details = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE page_id = '$page_id'");
 if($query_details->numRows() == 1) {
 	$query_details2 = $database->query("SELECT * FROM ".TABLE_PREFIX."pages WHERE page_id = '$page_id'");
-	$link = $query_details2->fetchRow();
-	if(is_writable(WB_PATH.PAGES_DIRECTORY.$link['link'].PAGE_EXTENSION)) {
-		unlink(WB_PATH.PAGES_DIRECTORY.$link['link'].PAGE_EXTENSION);
+	$topiclink = $query_details2->fetchRow();
+	if(is_writable(WB_PATH.PAGES_DIRECTORY.$topiclink['link'].PAGE_EXTENSION)) {
+		unlink(WB_PATH.PAGES_DIRECTORY.$topiclink['link'].PAGE_EXTENSION);
 	}
 }
 
-?>
+

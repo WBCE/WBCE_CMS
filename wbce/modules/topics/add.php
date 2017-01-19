@@ -91,7 +91,7 @@ if (isset($firsttopic) AND is_dir($test) ) {
 	
 	$filename = WB_PATH.$topics_directory.'welcome'.PAGE_EXTENSION;
 	define('TOPICS_DIRECTORY_DEPTH', $topics_directory_depth);
-	topics_archive_file ($filename, $topic_id, $section_id, $page_id);
+	topics_archive_file ($filename, $topic_id, $section_id, $page_id, $create_topics_accessfiles);
 	
 }
 

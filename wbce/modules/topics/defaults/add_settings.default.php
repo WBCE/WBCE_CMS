@@ -25,7 +25,7 @@ $footer = addslashes('{PREV_NEXT_PAGES}
 
 $topic_header = addslashes('<div class="[CLASSES]">
 <h1 class="tp_headline">[TITLE]</h1>
-<p class="tp_author">[USER_DISPLAY_NAME] ([USER_NAME]) on [PUBL_DATE]</p>
+<p class="tp_author">[USER_DISPLAY_NAME] on [PUBL_DATE]</p>
 [USER_MODIFIEDINFO]
 <div class="tp_teaser hideOnDesktops">{PICTURE}[TOPIC_SHORT]</div>
 <div style="clear:both"></div>
