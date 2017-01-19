@@ -42,6 +42,6 @@ Settings::Del('opf_dot_replacement');
 if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
   require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
   // un-install filter
-  opf_unregister_filter('OPF E-Mail');
+  opf_unregister_filter('E-Mail');
 }
         

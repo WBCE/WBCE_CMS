@@ -35,7 +35,7 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registered('OPF E-Mail')){
+        if(opf_is_registered('E-Mail')){
             return require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
         }
 
@@ -56,7 +56,7 @@ if(defined('WB_URL'))
 
         // install filter
         opf_register_filter(array(
-            'name' => 'OPF E-Mail',
+            'name' => 'E-Mail',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_email/filter.php',
             'funcname' => 'opff_mod_opf_email',
@@ -66,7 +66,7 @@ if(defined('WB_URL'))
             'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email'
         ));
         opf_move_up_before(
-            'OPF E-Mail',
+            'E-Mail',
             array(
                'CSS to head',
                'Insert',

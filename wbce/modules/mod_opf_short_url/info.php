@@ -37,7 +37,7 @@ if(!defined('WB_PATH')) {
 
 
 $module_directory        = 'mod_opf_short_url';
-$module_name                = 'OPF OPF Short URL';
+$module_name                = 'OPF Short URL';
 $module_function        = 'opffilter';
 $module_version                = '1.0.0';
 $module_platform        = 'WBCE 1.2.x ';

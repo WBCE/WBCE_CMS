@@ -36,13 +36,13 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
         
-        if(opf_is_registered('OPF CSS to head')){
+        if(opf_is_registered('CSS to head')){
             return require(WB_PATH.'/modules/mod_opf_csstohead/upgrade.php');
         }
         
         // install filter
         opf_register_filter(array(
-            'name' => 'OPF CSS to head',
+            'name' => 'CSS to head',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_csstohead/filter.php',
             'funcname' => 'opff_mod_opf_csstohead',

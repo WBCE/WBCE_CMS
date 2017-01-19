@@ -8,7 +8,7 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
- * @package         OPF CSS to head
+ * @package         OPF Auto Placeholder
  * @version         1.0.0
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -29,12 +29,28 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 
-//no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+$PRECHECK = array();
 
-if(!class_exists('Settings')) return FALSE;
+$PRECHECK['WBCE_VERSION'] = array(
+    'VERSION' => '1.2', 
+    'OPERATOR' => '>='
+);
 
-Settings::Set('opf_css_to_head',1, false);  
-Settings::Set('opf_css_to_head'.'_be',1, false);  
+$PRECHECK['WB_ADDONS'] = array(
+    'outputfilter_dashboard'=>array(
+        'VERSION' => '1.5.1', 
+        'OPERATOR' => '>='
+    )
+);        
 
-return TRUE;
+$status = defined('WBCE_VERSION');
+$required = $TEXT['INSTALLED'];
+$actual = ($status) ? $TEXT['INSTALLED'] : $TEXT['NOT_INSTALLED'];
+
+$PRECHECK['CUSTOM_CHECKS'] = array(
+    'WBCE' => array(
+        'REQUIRED' => $required, 
+        'ACTUAL' => $actual, 
+        'STATUS' => $status
+    )
+);

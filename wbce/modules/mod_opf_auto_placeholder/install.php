@@ -8,7 +8,7 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
- * @package         OPF WB-Link
+ * @package         OPF Auto Placeholder
  * @version         1.0.0
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -35,30 +35,35 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registered('WB-Link')){
-            return require(WB_PATH.'/modules/mod_opf_wblink/upgrade.php');
+        if(opf_is_registered('Auto Placeholder')){
+            return require(WB_PATH.'/modules/mod_opf_auto_placeholder/upgrade.php');
         }
         
         // install filter
         opf_register_filter(array(
-            'name' => 'WB-Link',
+            'name' => 'Auto Placeholder',
             'type' => OPF_TYPE_PAGE,
-            'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_wblink/filter.php',
-            'funcname' => 'opff_mod_opf_wblink',
+            'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_auto_placeholder/filter.php',
+            'funcname' => 'opff_mod_opf_auto_placeholder',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => (!class_exists('Settings') || Settings::Get('opf_wblink', 1)),
-            'allowedit' => 0
+            'active' => (!class_exists('Settings') || Settings::Get('opf_auto_placeholder', 1)),
+            'allowedit' => 0,
+            'pages_parent' => 'all,backend'
         ));
-         opf_move_up_before(
-            'WB-Link',
+        opf_move_up_before(
+            'Auto Placeholder',
             array(
+               'Insert',
                'CSS to head',
+               'E-Mail',
                'Sys Rel',
                'Short URL',
                'WB-Link'
             )
         );
+
         // ensure settings are present
-        if(class_exists('Settings')) Settings::Set('opf_wblink',1, false);
+        if(class_exists('Settings')) Settings::Set('opf_auto_placeholder',1, false);
+        if(class_exists('Settings')) Settings::Set('opf_auto_placeholder'.'_be',1, false);
     }
 }

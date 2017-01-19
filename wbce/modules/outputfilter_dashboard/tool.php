@@ -184,7 +184,7 @@ if(isset($force_csspath)) $csspath = $force_csspath;
 
 if(opf_show_classical_tool()){  //=========================== classical tool view =====
     require(WB_PATH."/modules/opf_simple_backend/tool.php");
-} else {
+} else { 
 
 if($add && $doSave ){ //================================================ add =====
 

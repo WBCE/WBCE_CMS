@@ -35,13 +35,13 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registered('OPF Short URL')){
+        if(opf_is_registered('Short URL')){
             return require(WB_PATH.'/modules/mod_opf_short_url/upgrade.php');
         }
         
         // install filter
         opf_register_filter(array(
-            'name' => 'OPF Short URL',
+            'name' => 'Short URL',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_short_url/filter.php',
             'funcname' => 'opff_mod_opf_short_url',
@@ -50,7 +50,7 @@ if(defined('WB_URL'))
             'allowedit' => 0
         ));
         opf_move_up_before(
-            'OPF Short URL',
+            'Short URL',
             array(
                'CSS to head',
                'Sys Rel'

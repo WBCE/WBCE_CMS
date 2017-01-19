@@ -39,7 +39,7 @@ info.php
 // see the file CHANGELOG for details about the history of this module
 
 $module_directory   = 'outputfilter_dashboard';
-$module_name        = 'OutputFilter Dashboard';
+$module_name        = 'Output Filter Dashboard';
 $module_function    = 'tool';
 $module_version     = '1.5.1';
 $module_platform    = 'WebsiteBaker 2.8.x';

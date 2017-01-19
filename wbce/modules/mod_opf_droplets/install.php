@@ -35,13 +35,13 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registered('OPF Droplets')){
+        if(opf_is_registered('Droplets')){
             return require(WB_PATH.'/modules/mod_opf_droplets/upgrade.php');
         }
         
         // install filter
         opf_register_filter(array(
-            'name' => 'OPF Droplets',
+            'name' => 'Droplets',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_droplets/filter.php',
             'funcname' => 'opff_mod_opf_droplets',
@@ -51,7 +51,7 @@ if(defined('WB_URL'))
             'pages_parent' => 'all,backend'
         ));
         // move up to the top
-        opf_move_up_before('OPF Droplets');
+        opf_move_up_before('Droplets');
 
         // ensure settings are present
         if(class_exists('Settings')) Settings::Set('opf_droplets',1, false);
