@@ -37,5 +37,5 @@ if(!defined('WB_PATH')) {
         if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
           require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
           // un-install filter
-          opf_unregister_filter('OPF CSS to head');
+          opf_unregister_filter('CSS to head');
         }

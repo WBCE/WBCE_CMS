@@ -37,7 +37,7 @@ if(!defined('WB_PATH')) {
 
 
 $module_directory        = 'mod_opf_email';
-$module_name                = 'OPF OPF E-Mail';
+$module_name                = 'OPF E-Mail';
 $module_function        = 'opffilter,tool';
 $module_version                = '1.0.0';
 $module_platform        = 'WBCE 1.2.x ';

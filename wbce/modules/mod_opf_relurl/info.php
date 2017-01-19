@@ -37,7 +37,7 @@ if(!defined('WB_PATH')) {
 
 
 $module_directory        = 'mod_opf_relurl';
-$module_name                = 'OPF OPF Sys Rel';
+$module_name                = 'OPF Sys Rel';
 $module_function        = 'opffilter';
 $module_version                = '1.0.0';
 $module_platform        = 'WBCE 1.2.x ';

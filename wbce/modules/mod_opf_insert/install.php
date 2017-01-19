@@ -35,13 +35,13 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registered('OPF Insert')){
+        if(opf_is_registered('Insert')){
             return require(WB_PATH.'/modules/mod_opf_insert/upgrade.php');
         }
         
         // install filter
         opf_register_filter(array(
-            'name' => 'OPF Insert',
+            'name' => 'Insert',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_insert/filter.php',
             'funcname' => 'opff_mod_opf_insert',
@@ -51,7 +51,7 @@ if(defined('WB_URL'))
             'pages_parent' => 'all,backend'
         ));
         opf_move_up_before(
-            'OPF Insert',
+            'Insert',
             array(
                'CSS to head',
                'E-Mail',

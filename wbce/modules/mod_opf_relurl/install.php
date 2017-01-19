@@ -35,7 +35,7 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registered('OPF Sys Rel')){
+        if(opf_is_registered('Sys Rel')){
             return require(WB_PATH.'/modules/mod_opf_relurl/upgrade.php');
         }
         
@@ -48,7 +48,7 @@ if(defined('WB_URL'))
 
         // install filter
         opf_register_filter(array(
-            'name' => 'OPF Sys Rel',
+            'name' => 'Sys Rel',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_relurl/filter.php',
             'funcname' => 'opff_mod_opf_relurl',
@@ -57,7 +57,7 @@ if(defined('WB_URL'))
             'allowedit' => 0
         ));
         opf_move_up_before(
-            'OPF Sys Rel',
+            'Sys Rel',
             array(
                'CSS to head'
             )

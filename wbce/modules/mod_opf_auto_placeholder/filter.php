@@ -8,7 +8,7 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
- * @package         OPF CSS to head
+ * @package         OPF Auto Placeholder
  * @version         1.0.0
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -29,12 +29,13 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 
-//no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+        
+function opff_mod_opf_auto_placeholder (&$content, $page_id, $section_id, $module, $wb) {
+    if(!class_exists('Settings') || (Settings::Get('opf_auto_placeholder', true) )){
+        if (class_exists ("I")) {
+            $content = I::AddPlaceholder($content);
+        }
+    }
+    return(TRUE);
+}
 
-if(!class_exists('Settings')) return FALSE;
-
-Settings::Set('opf_css_to_head',1, false);  
-Settings::Set('opf_css_to_head'.'_be',1, false);  
-
-return TRUE;

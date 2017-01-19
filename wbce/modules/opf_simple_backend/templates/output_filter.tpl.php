@@ -7,32 +7,6 @@
     <?php echo $admin->getFTAN(); ?>
     <input type="hidden" name="action" value="save" />
     <table width="98%" cellspacing="0" cellpadding="5px" class="row_a">
-    
-        <!-- ALL OLD FILTER -->
-        
-        <tr><td colspan="2"><strong><?php echo $OPF['BASIC_CONF'];?>:</strong></td></tr>
-        <tr >
-            <td width="35%"><?php echo $OPF['ALL_ON_OFF']?>:</td>
-            <td>
-                <input type="radio" <?php echo ($data['suppress_old_opf']=='0') ?'checked="checked"' :'';?>
-                    name="suppress_old_opf" value="0"><?php echo $OPF['ENABLED'];?>
-                <input type="radio" <?php echo (($data['suppress_old_opf'])=='1') ?'checked="checked"' :'';?>
-                    name="suppress_old_opf" value="1"><?php echo $OPF['DISABLED'];?>
-                    
-            </td>
-        </tr>
-        <tr >
-            <td width="35%"><?php echo $TEXT['SHOW_ADVANCED']?>:</td>
-            <td>
-                <input type="radio" <?php echo ($data['show_advanced_backend']=='1') ?'checked="checked"' :'';?>
-                    name="show_advanced_backend" value="1"><?php echo $OPF['ENABLED'];?>
-                <input type="radio" <?php echo (($data['show_advanced_backend'])=='0') ?'checked="checked"' :'';?>
-                    name="show_advanced_backend" value="0"><?php echo $OPF['DISABLED'];?>
-                    
-            </td>
-        </tr>
-        <tr><td colspan="2" style="border-top: 1px dotted black !important; "></td></tr>
-        
         <!-- FRONTEND -->
         
         <tr><td colspan="2"><br /><strong><?php echo $HEADING['FRONTEND'];?>:</strong></td></tr>
@@ -171,6 +145,35 @@
             <td><input type="text" style="width: 160px" value="<?php echo $data['dot_replacement'];?>" 
                 name="dot_replacement"/></td>
         </tr>
+
+    
+        <!-- ALL OLD FILTER -->
+        
+        <tr><td colspan="2" style="border-top: 1px dotted black !important; "></td></tr>
+
+        <tr><td colspan="2"><strong><?php echo $OPF['BASIC_CONF'];?>:</strong></td></tr>
+        <tr >
+            <td width="35%"><?php echo $OPF['ALL_ON_OFF']?>:</td>
+            <td>
+                <input type="radio" <?php echo ($data['suppress_old_opf']=='0') ?'checked="checked"' :'';?>
+                    name="suppress_old_opf" value="0"><?php echo $OPF['ENABLED'];?>
+                <input type="radio" <?php echo (($data['suppress_old_opf'])=='1') ?'checked="checked"' :'';?>
+                    name="suppress_old_opf" value="1"><?php echo $OPF['DISABLED'];?>
+                    
+            </td>
+        </tr>
+        <tr >
+            <td width="35%"><?php echo $TEXT['SHOW_ADVANCED']?>:</td>
+            <td>
+                <input type="radio" <?php echo ($data['show_advanced_backend']=='1') ?'checked="checked"' :'';?>
+                    name="show_advanced_backend" value="1"><?php echo $OPF['ENABLED'];?>
+                <input type="radio" <?php echo (($data['show_advanced_backend'])=='0') ?'checked="checked"' :'';?>
+                    name="show_advanced_backend" value="0"><?php echo $OPF['DISABLED'];?>
+                    
+            </td>
+        </tr>
+        
+
     </table>
     <input type="submit" style="margin-top:10px; width:140px;" value="<?php echo $TEXT['SAVE']; ?>" />
 </form>

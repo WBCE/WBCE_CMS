@@ -141,4 +141,3 @@ if($doSave) {
 }
 
 include(WB_PATH."/modules/opf_simple_backend/templates/output_filter.tpl.php");
-

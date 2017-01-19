@@ -35,6 +35,6 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 
 if(!class_exists('Settings')) return FALSE;
 
-Settings::Set('opf_wblink',1, false);
+Settings::Set('opf_wblink',1, false);  
 
 return TRUE;
