@@ -58,7 +58,7 @@
  /* ::reste:: general resets for unique starting-point */
 html, body {
   height: 100%;
-  /* html, body: height 100%; - nur so sp�ter height 100% f�r content m�glich */
+  /* html, body: height 100%; - nur so später height 100% für content möglich */
   margin: 0;
   padding: 0;
 }
@@ -702,7 +702,7 @@ a#frontendtitel:hover {
 }
 
 #sidebararea_togglebutton:before {
-  content: "";
+  content: "ï";
   font-family: FontAwesome;
   display: block;
   width: 45px;
@@ -809,7 +809,7 @@ div.calendar {
 }
 
 /* ::typography:: general css for text elements */
-/* Standard: Abstand unten für letzte Elemente neutralisieren */
+/* Standard: Abstand unten fÃ¼r letzte Elemente neutralisieren */
 p:last-child,
 h1:last-child, h2:last-child, h3:last-child, h4:last-child, h5:last-child, h6:last-child,
 div:last-child,
@@ -818,13 +818,13 @@ dl:last-child, dt:last-child, dd:last-child {
   margin-bottom: 0;
 }
 
-/* Standard: Abstand oben für erste Elemente neutralisieren */
+/* Standard: Abstand oben fÃ¼r erste Elemente neutralisieren */
 p:first-child,
 h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child {
   margin-top: 0;
 }
 
-/* Standardvorgabe Fließtext, Zeilenhöhe für vertikales Raster */
+/* Standardvorgabe FlieÃtext, ZeilenhÃ¶he fÃ¼r vertikales Raster */
 html {
   font-size: 14px;
   line-height: 24px;
@@ -836,7 +836,7 @@ p {
   margin-bottom: 24px;
 }
 
-/* Überschriften */
+/* Ãberschriften */
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 24px;
   font-size: inherit;
@@ -844,7 +844,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #303641;
 }
 h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child {
-  /* Abstände Überschrift am Anfang neutralisieren */
+  /* AbstÃ¤nde Ãberschrift am Anfang neutralisieren */
   margin-top: 0;
 }
 
@@ -922,7 +922,7 @@ hr {
 }
 
 /* Textelemente */
-/* Zitatblöcke */
+/* ZitatblÃ¶cke */
 blockquote {
   position: relative;
   font-size: 28px;
@@ -1577,7 +1577,7 @@ div.pagesubmenu ul li a {
 }
 .menu_edit_pages li#link_page_list:before {
   font-size: 22px;
-  content: "";
+  content: "ï¢";
 }
 .menu_edit_pages li#link_page_list:hover {
   background-color: #303641;
@@ -2169,7 +2169,7 @@ div.themebox#module_settings .tb_header a:before {
 
 div.themebox#module_admintools .tb_header a:before,
 div.themebox.admintools_tool .tb_header a:before {
-  content: "\f19d";
+  content: "";
 }
 
 div.themebox#module_access .tb_header a:before {
