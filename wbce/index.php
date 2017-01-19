@@ -91,14 +91,15 @@ $output = ob_get_clean();
 
 // OPF hook, apply outputfilter
 if(function_exists('opf_apply_filters')) {
+
+    // execute OPF Dashboard Filter 
     $output = opf_controller('page', $output);
-}
+} 
+else {
 
-
-// execute old frontend output filters or not
-if (!defined("WB_SUPPRESS_OLD_OPF") or !WB_SUPPRESS_OLD_OPF){
-    // Module is installed, filter file in place?
+    // execute old frontend output filters
     $file=WB_PATH . '/modules/output_filter/filter_routines.php';
+    // Module is installed, filter file in place?
     if (file_exists($file)) {
         include_once ($file);
         if (function_exists('executeFrontendOutputFilter')) {
@@ -106,6 +107,10 @@ if (!defined("WB_SUPPRESS_OLD_OPF") or !WB_SUPPRESS_OLD_OPF){
         }
     }
 }
+
+
+
+
 
 
 // Process direct Output if set. This ends the script here and regular output is not put out. 

@@ -23,8 +23,7 @@ $msgCls = 'msg-box'; // message css class
 if($doSave) {
 // take over post - arguments
     $data = array();
-    // all filter 
-    $data['suppress_old_opf'] = (int)(intval(isset($_POST['suppress_old_opf']) ? $_POST['suppress_old_opf'] : 0) != 0);
+
     //frontend
     $data['droplets']         = (int)(intval(isset($_POST['droplets']) ? $_POST['droplets'] : 0) != 0);
     $data['droplets_be']      = (int)(intval(isset($_POST['droplets_be']) ? $_POST['droplets_be'] : 0) != 0);
@@ -59,8 +58,7 @@ if($doSave) {
         }
         
         // set the values
-        // all filters
-        $errmsg.=(string)Settings::Set("wb_suppress_old_opf", $data['suppress_old_opf']);
+       
         //frontend
         $errmsg.=(string)Settings::Set("opf_droplets", $data['droplets']);
         $errmsg.=(string)Settings::Set("opf_droplets_be", $data['droplets_be']);
@@ -99,8 +97,7 @@ if($doSave) {
 // the value is not set :-)
 
     $data = array();
-    //all filters
-    $data['suppress_old_opf']  = Settings::Get('wb_suppress_old_opf',0);
+  
     //frontend
     $data['droplets']          = Settings::Get('opf_droplets',1);
     $data['droplets_be']       = Settings::Get('opf_droplets_be',1);

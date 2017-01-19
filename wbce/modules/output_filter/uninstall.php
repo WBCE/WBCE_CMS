@@ -17,22 +17,23 @@
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-if(!defined(WB_SUPPRESS_OLD_OPF)){
-Settings::Del('wb_suppress_old_opf');
-Settings::Del('opf_droplets');
-Settings::Del('opf_droplets_be');
-Settings::Del('opf_wblink');
-Settings::Del('opf_auto_placeholder');
-Settings::Del('opf_insert');   
-Settings::Del('opf_sys_rel');
-Settings::Del('opf_email_filter');
-Settings::Del('opf_mailto_filter');
-Settings::Del('opf_js_mailto');
-Settings::Del('opf_short_url');
-Settings::Del('opf_css_to_head');
-Settings::Del('opf_at_replacement');
-Settings::Del('opf_dot_replacement');
-}
+// Commented out , cause of new OPF dashboard still needs those settings.  
+//if(!defined(WB_SUPPRESS_OLD_OPF)){
+//Settings::Del('wb_suppress_old_opf');
+//Settings::Del('opf_droplets');
+//Settings::Del('opf_droplets_be');
+//Settings::Del('opf_wblink');
+//Settings::Del('opf_auto_placeholder');
+//Settings::Del('opf_insert');   
+//Settings::Del('opf_sys_rel');
+//Settings::Del('opf_email_filter');
+//Settings::Del('opf_mailto_filter');
+//Settings::Del('opf_js_mailto');
+//Settings::Del('opf_short_url');
+//Settings::Del('opf_css_to_head');
+//Settings::Del('opf_at_replacement');
+//Settings::Del('opf_dot_replacement');
+//}
 
 // deleting version too 
-Settings::Set("opf_version") ;
+Settings::Del("opf_version") ;
