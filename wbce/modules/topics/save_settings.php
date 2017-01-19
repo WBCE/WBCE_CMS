@@ -4,6 +4,9 @@ if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 $update_when_modified = true; // Tells script to update when this page was last updated
 require('permissioncheck.php');
 
+// Include WB functions file
+require(WB_PATH.'/framework/functions.php');
+
 $user_id = $admin->get_user_id();
 $user_in_groups = $admin->get_groups_id();
 
@@ -23,8 +26,8 @@ $settings_fetch = $query_settings->fetchRow();
 
 
 // This code removes any <?php tags and adds slashes
-$friendly = array('&lt;', '&gt;', '?php');
-$raw = array('<', '>', '');
+$friendly = array('&lt;', '&gt;', '?php',$serializedelimiter);
+$raw = array('<', '>', '',' ');
 
 $get_settings_from = 0; //Preserved for future
 $section_title = $admin->add_slashes(str_replace($friendly, $raw, trim($_POST['section_title'])));
@@ -62,8 +65,10 @@ $topic_header = $admin->add_slashes(str_replace($friendly, $raw, $_POST['topic_h
 $topic_footer = $admin->add_slashes(str_replace($friendly, $raw, $_POST['topic_footer']));
 $topic_block2 = $admin->add_slashes(str_replace($friendly, $raw, $_POST['topic_block2']));
 
-$pnsa_string = 	$admin->add_slashes(str_replace($friendly, $raw, $_POST['pnsa_string']));
-$sa_string = $admin->add_slashes(str_replace($friendly, $raw, $_POST['sa_string']));
+
+//Previous, NExt, See also:
+$pnsa_string = 	str_replace($friendly, $raw, $_POST['pnsa_string']);
+$sa_string = str_replace($friendly, $raw, $_POST['sa_string']);
 /*
 Sorry, this doesnt work proper*/
 $see_also_link_title = str_replace($friendly, $raw, $_POST['see_also_link_title']);
@@ -73,14 +78,30 @@ $previous_link_title = str_replace($friendly, $raw, $_POST['previous_link_title'
 //additionalpics_string
 $additionalpics_string = str_replace($friendly, $raw, $_POST['additionalpics_string']);
 
-$pnsa_array = array($see_also_link_title, $next_link_title, $previous_link_title, $pnsa_string, $sa_string, $additionalpics_string);
-$pnsa_string =  implode($serializedelimiter,$pnsa_array);
-//$pnsa_string = urlencode(serialize($pnsa_array));*/
+$pnsa_array = array(stripslashes($see_also_link_title), stripslashes($next_link_title), stripslashes($previous_link_title), stripslashes($pnsa_string), stripslashes($sa_string), stripslashes($additionalpics_string), '','','','');
+$pnsa_string =  $admin->add_slashes(implode($serializedelimiter,$pnsa_array));
 
-$pnsa_max = $admin->add_slashes($_POST['pnsa_max']);
+//ADD new field to database if not exists:
+//if (!isset($settings_fetch['pnsa_array'])) { $database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` ADD `pnsa_array` BLOB NOT NULL DEFAULT ''"); }
+//$pnsa_array_string = base64_encode(serialize($pnsa_array));
+//echo $pnsa_array_string;
+//die();
+
+//Test:
+//$pnsa_array = array($_POST['see_also_link_title'], $_POST['next_link_title'], $_POST['previous_link_title'], $_POST['pnsa_string'], $_POST['sa_string'], $_POST['additionalpics_string'], '','','','');
+//$pnsa_string = serialize($pnsa_array);
+//if (4==4 OR !unserialize ($pnsa_string)) {
+
+	//$pnsa_string = serialize($pnsa_array);
+//}	
 
 
-$commenting = $admin->add_slashes($_POST['commenting']);
+
+
+$pnsa_max = (int) $_POST['pnsa_max'];
+
+
+$commenting = (int) ($_POST['commenting']);
 $default_link = $admin->add_slashes($_POST['default_link']);
 $use_captcha = $admin->add_slashes($_POST['use_captcha']);
 $sort_comments = $admin->add_slashes($_POST['sort_comments']);
@@ -93,8 +114,8 @@ $gototopicslist =  (int) $_POST['gototopicslist'];
 
 
 $short_textareaheight = (int) $_POST['short_textareaheight'];
-$long_textareaheight = (int) $_POST['long_textareaheight'];
-$extra_textareaheight = (int) $_POST['extra_textareaheight'];
+$long_textareaheight = (int) intval($_POST['long_textareaheight']);
+$extra_textareaheight = (int) intval($_POST['extra_textareaheight']);
 $emailsettings = (int) $_POST['emailsettings']; if ($emailsettings < 0) {$emailsettings = 0;}
 $maxcommentsperpage = (int) $_POST['maxcommentsperpage']; if ($maxcommentsperpage < 0) {$maxcommentsperpage = 0;}
 $commentstyle = (int) $_POST['commentstyle']; if ($commentstyle < 0) {$commentstyle = 0;}
@@ -128,6 +149,16 @@ $picture_values = str_replace(' ','',$picture_values);
 $picture_values = str_replace('-','_',$picture_values);
 
 $is_master_for = $admin->add_slashes(trim($_POST['is_master_for']));
+
+if ($is_master_for == '' AND isset($_POST['is_master_for_check']) ) {
+	$is_master_for_check = $admin->add_slashes(trim($_POST['is_master_for_check']));
+	//die($is_master_for_check);
+	$is_master_for = 'same picture dir';
+}
+
+
+
+
 $is_master_for = str_replace(' ','', $is_master_for);
 
 if ($is_master_for != '') {
@@ -157,20 +188,19 @@ if ($is_master_for != '') {
 	}
 }
 if ($is_master_for == '') {
-	$is_master_for = $settings_fetch['is_master_for']; //Use old is_master_for if empty
+	//$is_master_for = $settings_fetch['is_master_for']; //Use old is_master_for if empty
 }
 
 
 
 $saveforall = 0;
 if (isset($_POST['saveforall']) AND $_POST['saveforall'] == '1') {$saveforall = 1;}
-if ($allow_global_settings_change == 2) {$saveforall = 1;}
+//if ($allow_global_settings_change == 2) {$saveforall = 1;} //Outdated 2016
 
 
 // Update settings
 $theq = "UPDATE ".TABLE_PREFIX."mod_".$tablename."_settings SET 	
-	picture_dir='$picture_dir', 
-	is_master_for='$is_master_for', 
+	picture_dir='$picture_dir', 	
 	sort_topics = '$sort_topics', 
 	topics_per_page = '$topics_per_page', 
 	use_timebased_publishing = '$use_timebased_publishing', 
@@ -195,8 +225,10 @@ $theq = "UPDATE ".TABLE_PREFIX."mod_".$tablename."_settings SET
 	use_captcha = '$use_captcha'";
 	
 	if ($saveforall == 1) {
-		//nothing
+		//same picture dir
+		$theq .= " WHERE picture_dir = '$picture_dir'";
 	} else {
+		$theq .= ", is_master_for='$is_master_for'"; //Master nur speichern, wenn DIESE EInstellungen
 		$theq .= " WHERE section_id = '$section_id' AND page_id = '$page_id'";
 	}
 

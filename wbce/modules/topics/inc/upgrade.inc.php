@@ -15,7 +15,7 @@ if(!isset($topic_fetch['authors'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."` ADD `authors` VARCHAR(255) NOT NULL DEFAULT ''")) {
 		echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "authors" added successfully</div><br />';
 	}
-		echo '<div style="color:#e92a0b; font-weight:bold;">'.$database->error().'</div><br />';
+		echo '<div style="color:#e92a0b; font-weight:bold;">'.mysql_error().'</div><br />';
 } else {
 	echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "authors" exists, update not needed</div><br />';
 }
@@ -31,7 +31,7 @@ if(!isset($topic_fetch['comments_count'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."` ADD `comments_count` INT NOT NULL DEFAULT '-1'")) {
 		echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "comments_count" added successfully</div><br />';
 	}
-		echo '<div style="color:#e92a0b; font-weight:bold;">'.$database->error().'</div><br />';
+		echo '<div style="color:#e92a0b; font-weight:bold;">'.mysql_error().'</div><br />';
 } else {
 	echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "comments_count" exists, update not needed</div><br />';
 }
@@ -55,7 +55,7 @@ if(!isset($settings_fetch['various_values'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` ADD `various_values` VARCHAR(255) NOT NULL DEFAULT '150,450,0,0,2,0,0,0,0,0'")) {
 		echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "various_values" added successfully</div><br />';
 	}
-		echo '<div style="color:#e92a0b; font-weight:bold;">'.$database->error().'</div><br />';
+		echo '<div style="color:#e92a0b; font-weight:bold;">'.mysql_error().'</div><br />';
 } else {
 	echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "various_values" exists, update not needed</div><br />';
 }
@@ -71,7 +71,7 @@ if(!isset($settings_fetch['autoarchive'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` ADD `autoarchive` VARCHAR(255) NOT NULL DEFAULT ''")) {
 		echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "autoarchive" added successfully</div><br />';
 	}
-		echo '<div style="color:#e92a0b; font-weight:bold;">'.$database->error().'</div><br />';
+		echo '<div style="color:#e92a0b; font-weight:bold;">'.mysql_error().'</div><br />';
 } else {
 	echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "autoarchive" exists, update not needed</div><br />';
 }
@@ -87,7 +87,7 @@ if(!isset($settings_fetch['picture_values'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` ADD `picture_values` VARCHAR(255) NOT NULL DEFAULT '0,0,300,0,70,70,fbx'")) {
 		echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "picture_values" added successfully</div><br />';
 	}
-		echo '<div style="color:#e92a0b; font-weight:bold;">'.$database->error().'</div><br />';
+		echo '<div style="color:#e92a0b; font-weight:bold;">'.mysql_error().'</div><br />';
 } else {
 	echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "picture_values" exists, update not needed</div><br />';
 }
@@ -103,7 +103,7 @@ if(!isset($settings_fetch['is_master_for'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` ADD `is_master_for` VARCHAR(255) NOT NULL DEFAULT ''")) {
 		echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "is_master_for" added successfully</div><br />';
 	}
-		echo '<div style="color:#e92a0b; font-weight:bold;">'.$database->error().'</div><br />';
+		echo '<div style="color:#e92a0b; font-weight:bold;">'.mysql_error().'</div><br />';
 } else {
 	echo '<div style="color:#0bb61f; font-weight:bold;">Database Field "is_master_for" exists, update not needed</div><br />';
 }

@@ -38,6 +38,15 @@ if(!isset($_GET['topic_id']) OR !is_numeric($_GET['topic_id'])) {
 
 require('permissioncheck.php');
 
+
+// Include WB functions file
+require(WB_PATH.'/framework/functions.php');
+// Include the ordering class
+require(WB_PATH.'/framework/class.order.php');
+
+
+
+
 // Get settings
 $query_settings = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id = '$section_id'");
 if($query_settings->numRows() != 1) {

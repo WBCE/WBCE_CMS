@@ -18,12 +18,12 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 	// global $admin;
 
 	$msg = array();
-	$sql  = 'DROP TABLE IF EXISTS `'.TABLE_PREFIX.'mod_droplets` ';
+	$sql  = 'DROP TABLE IF EXISTS `{TP}mod_droplets` ';
 	if( !$database->query($sql) ) {
 		$msg[] = $database->get_error();
 	}
 
-	$sql  = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_droplets` ( ';
+	$sql  = 'CREATE TABLE IF NOT EXISTS `{TP}mod_droplets` ( ';
 	$sql .= '`id` INT NOT NULL auto_increment, ';
 	$sql .= '`name` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, ';
 	$sql .= '`code` LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL , ';
@@ -37,6 +37,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 	$sql .= '`comments` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, ';
 	$sql .= 'PRIMARY KEY ( `id` ) ';
 	$sql .= ') ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
+    echo 
+
 	if( !$database->query($sql) ) {
 		$msg[] = $database->get_error();
 	}
@@ -74,7 +76,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 			$name = substr($dropfile,0,-4);
 			$modified_when = time();
 			$modified_by = (method_exists($admin, 'get_user_id') && ($admin->get_user_id()!=null) ? $admin->get_user_id() : 1);
-			$sql  = 'INSERT INTO `'.TABLE_PREFIX.'mod_droplets` SET ';
+			$sql  = 'INSERT INTO `{TP}mod_droplets` SET ';
 			$sql .= '`name` = \''.$name.'\', ';
 			$sql .= '`code` = \''.$droplet.'\', ';
 			$sql .= '`description` = \''.$description.'\', ';

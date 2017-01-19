@@ -18,7 +18,7 @@ $query_content = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$tablenam
 $fetch_content = $query_content->fetchRow();
 if ($section_id != $fetch_content['section_id']) {die();} //zu Sicherheit
 
-//�berpr�fung:
+//Ueberpruefung:
 if ($authoronly) {
 	$authors = $fetch_content['authors'];
 	$pos = strpos ($authors,','.$user_id.',');
@@ -30,7 +30,7 @@ if ($authoronly) {
 
 
 $topics_use_wysiwyg = 1;
-if ($topics_use_plain_text > 0) {$topics_use_wysiwyg = 0;}
+//if ($topics_use_plain_text > 0) {$topics_use_wysiwyg = 0;}
 
 if ($fredit == 1) ($showoptions = false);
 
@@ -48,7 +48,7 @@ $showmax_prev_next_links = (int) $settings_fetch['pnsa_max'];
 $short_textareaheight = 150;
 $long_textareaheight = 400;
 $extra_textareaheight = 0;
-if ($use_extra_wysiwyg > 0) {$extra_textareaheight = 300;}
+//if ($use_extra_wysiwyg > 0) {$extra_textareaheight = 300;}
 $use_commenting_settings = 0;
 if(!isset($settings_fetch['various_values'])){
 	$database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` ADD `various_values` VARCHAR(255) NOT NULL DEFAULT '150,450,0,0'");
@@ -56,9 +56,9 @@ if(!isset($settings_fetch['various_values'])){
 } else {
 	if ($settings_fetch['various_values'] != '') {
 		$vv = explode(',',$settings_fetch['various_values'].',-2,-2,-2,-2,-2,-2,-2');
-		$short_textareaheight = (int) $vv[0]; if ($short_textareaheight < 0) {$short_textareaheight = 150;}
-		$long_textareaheight = (int) $vv[1]; if ($long_textareaheight == -2) {$long_textareaheight = 400;}
-		$extra_textareaheight = (int) $vv[2]; if ($extra_textareaheight == -2) {$extra_textareaheight = 300;}
+		$short_textareaheight = (int) $vv[0]; //if ($short_textareaheight < 0) {$short_textareaheight = 150;}
+		$long_textareaheight = (int) $vv[1]; //if ($long_textareaheight == -2) {$long_textareaheight = 400;}
+		$extra_textareaheight = (int) $vv[2]; //if ($extra_textareaheight == -2) {$extra_textareaheight = 300;}
 		$use_commenting_settings = (int) $vv[3]; if ($use_commenting_settings < 0) {$use_commenting_settings = 0;}
 	}
 }
@@ -110,12 +110,12 @@ if (!empty($leptoken)) {
 
 
 
-<table class="row_a" cellpadding="2" cellspacing="0" border="0" width="100%">
+<table class="modifytopic-toptable row_a" cellpadding="2" cellspacing="0" border="0" width="100%">
 <tr><td>
 <div class="modifytopic1"><?php echo $TEXT['TITLE']; ?>:<br/>
-<input type="text" name="title" value="<?php echo (htmlspecialchars($fetch_content['title'])); ?>" style="width: 90%;" maxlength="255" /></div>
+<input type="text" name="title" value="<?php echo ($fetch_content['title']); ?>" class="tpfw90" maxlength="255" /></div>
 <div class="modifytopic1"><?php echo $MOD_TOPICS['SHORT_DESCRIPTION']; ?>:<br/>
-<textarea name="short_description" style="width: 90%; height: 30px;"><?php echo (htmlspecialchars($fetch_content['short_description'])); ?></textarea></div>
+<textarea name="short_description" class="tpfw90 tpfh30"><?php echo (htmlspecialchars($fetch_content['short_description'])); ?></textarea></div>
 <?php 
 /*=================================================================================================================
 New in Topics 2.8: groups_id */
@@ -138,29 +138,62 @@ if (isset($fetch_content['groups_id']) AND isset($topics_groups)) {
 
 
 <div class="modifytopic1"><?php echo $TEXT['ACTIVE']; ?>:<br/>
-	<select name="active" style="width: 90%;">
+	<select name="active" class="tpfw90">
 			<option value="0" <?php if($fetch_content['active'] == '0') { echo 'selected="selected"'; } echo '>'.$MOD_TOPICS['ACTIVE_0']; ?></option>
 			<option value="1" <?php if($fetch_content['active'] == '1') { echo 'selected="selected"'; } echo '>'.$MOD_TOPICS['ACTIVE_1']; ?></option>
-			<option value="2" <?php if($fetch_content['active'] == '2') { echo 'selected="selected"'; } echo '>'.$MOD_TOPICS['ACTIVE_2']; ?></option>
-			<option value="3" <?php if($fetch_content['active'] == '3') { echo 'selected="selected"'; } echo '>'.$MOD_TOPICS['ACTIVE_3']; ?></option>
+			<option class="tp_ne1" value="2" <?php if($fetch_content['active'] == '2') { echo 'selected="selected"'; } echo '>'.$MOD_TOPICS['ACTIVE_2']; ?></option>
+			<option class="tp_ne1" value="3" <?php if($fetch_content['active'] == '3') { echo 'selected="selected"'; } echo '>'.$MOD_TOPICS['ACTIVE_3']; ?></option>
 			<option value="4" <?php if($fetch_content['active'] == '4') { echo 'selected="selected"'; } echo '>'.$MOD_TOPICS['ACTIVE_4']; ?></option>
 			<?php if ($authoronly == false OR $author_can_change_position) { ?>
-			<option value="5" <?php if($fetch_content['active'] == '5') { echo 'selected'; } echo '>'.$MOD_TOPICS['ACTIVE_5']; ?></option>
-			<option value="6" <?php if($fetch_content['active'] == '6') { echo 'selected'; } echo '>'.$MOD_TOPICS['ACTIVE_6']; ?></option>
+			<option class="tp_ne1" value="5" <?php if($fetch_content['active'] == '5') { echo 'selected'; } echo '>'.$MOD_TOPICS['ACTIVE_5']; ?></option>
+			<option class="tp_ne1" value="6" <?php if($fetch_content['active'] == '6') { echo 'selected'; } echo '>'.$MOD_TOPICS['ACTIVE_6']; ?></option>
 			<?php } ?>
 		</select>
 </div>
-<div class="modifytopic1" style="display:<?php if( $use_commenting < 0 OR $use_commenting_settings == 1) {echo 'none';} else {echo 'block';} ?>;"><?php echo $TEXT['COMMENTING']; ?>:<br/>
-	<select name="commenting" style="width: 90%;">
-		<option value="-1" <?php if($fetch_content['commenting'] == '-1') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['ALLDISABLED']; ?></option>
-		<option value="0" <?php if($fetch_content['commenting'] == '0') { echo 'selected="selected"'; } ?>><?php echo  $TEXT['DISABLED']; ?></option>
-		<option value="1" <?php if($fetch_content['commenting'] == '1') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['MODERATED']; ?></option>
-		<option value="2" <?php if($fetch_content['commenting'] == '2') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['DELAY']; ?></option>
-		<option value="3" <?php if($fetch_content['commenting'] == '3') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['IMMEDIATELY']; ?></option>
+
+<?php
+//Kommentare:
+$commenting = (int) $fetch_content['commenting']; //echo '<p>commenting: '.$commenting .'</p>';
+// if use_commenting_settings == 1: die Box gar nicht zeigen:
+
+if ($use_commenting_settings == 1) {
+	echo '<input type="hidden" name="commenting" value="'.$commenting.'" />';
+} else {
+	$kArr = array(-2 => 'Default', -1 => $MOD_TOPICS['ALLDISABLED'], 0 => $TEXT['DISABLED'], 1 => $MOD_TOPICS['MODERATED'], 2 => $MOD_TOPICS['DELAY'], 3 => $MOD_TOPICS['IMMEDIATELY'] );
+	//var_dump ($kArr);
+	if ( $commenting < -1) {
+		$settingscommenting = (int) $settings_fetch['commenting'];
+		if (array_key_exists ($settingscommenting, $kArr) ) {
+			$kArr[-2] = 'Default ('.$kArr[$settingscommenting].')';
+		}
+	} 	
+	
+	//Aufbauen:
+	echo '<div class="modifytopic1">'.$TEXT['COMMENTING'].':<br/><select name="commenting" class="tpfw90">
+	';	
+	foreach ($kArr as $key => $value) {
+		echo '<option value="'.$key.'" '; if($commenting == $key) { echo 'selected="selected"';} echo '>'.$value.'</option>
+		';
+	}
+	echo '</select></div>
+	';
+}
+
+?>
+
+
+<!--div class="modifytopic1" style="display:<?php if( $use_commenting < 0 OR $use_commenting_settings == 1) {echo 'none';} else {echo 'block';} ?>;"><?php echo $TEXT['COMMENTING']; ?>:<br/>
+	<select name="commenting" class="tpfw90">
+		<option value="-2" <?php if($commenting == -2) { echo 'selected="selected"'; } ?>>Default</option>
+		<option value="-1" <?php if($commenting == -1) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['ALLDISABLED']; ?></option>
+		<option value="0" <?php if($commenting == 0) { echo 'selected="selected"'; } ?>><?php echo  $TEXT['DISABLED']; ?></option>
+		<option value="1" <?php if($commenting == 1) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['MODERATED']; ?></option>
+		<option value="2" <?php if($commenting == 2) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['DELAY']; ?></option>
+		<option value="3" <?php if($commenting == 3) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['IMMEDIATELY']; ?></option>
 	</select>
-</div>
+</div-->
 <div class="modifytopic1" style="display:<?php if ($use_timebased_publishing > 0) {echo 'block';} else {echo 'none';} ?>;">
-<table>
+<table class="tpbreaktable" >
 <tr><td><?php echo $TEXT['PUBL_START_DATE']; ?>:</td><td>
 	<?php
 	$published_when = 0;
@@ -190,6 +223,7 @@ if (isset($fetch_content['groups_id']) AND isset($topics_groups)) {
 
 
 <?php
+$use_pictures = 1; //Standard now
 $picture_dir = ''.$settings_fetch['picture_dir']; //Auch wenn es leer ist
 if ($use_pictures > 0) {
 
@@ -224,15 +258,15 @@ if ($use_pictures > 0) {
 
 		//======= Picture:
 		echo $TEXT['IMAGE'].":<br/>";
-		echo '<input type="text" style="width:300px;" value="'.$picfile.'" name="picture" id="picture" onchange="javascript:changepic(1)" />';
+		echo '<input class="tp_ne1" type="text" style="width:300px;" value="'.$picfile.'" name="picture" id="picture" onchange="javascript:changepic(1)" />';
 		echo '<div class="topicpic_container"><img src="'.$previewpic.'" name="topicpic" id="topicpic" alt="" /></div>';
 		
 		
 		echo '<div class="switchbox">
 		<a href="javascript:openpicturepreviews();"><img src="img/picselect.gif" width="40" height="26" title="Select" alt="Select" /></a>
 		<a class="showpictureupload" href="javascript:showpictureupload('.$topic_id.');"><img src="img/picupload.gif" width="40" height="26" title="Upload" alt="Upload" /></a>
-		<a id="openpicturemodifytext" href="javascript:openpicturemodify();"><img src="img/picmodify.gif" width="40" height="26" title="Modify" alt="Modify" /></a>
-		&nbsp; <a id="showadditionalpictures" href="javascript:showadditionalpictures('.$topic_id.');"><img src="img/picadditional.gif" width="40" height="26" title="Modify" alt="Additional" /></a>
+		<a class="tp_ne1" id="openpicturemodifytext" href="javascript:openpicturemodify();"><img src="img/picmodify.gif" width="40" height="26" title="Modify" alt="Modify" /></a>
+		&nbsp; <a class="tp_ne1" id="showadditionalpictures" href="javascript:showadditionalpictures('.$topic_id.');"><img src="img/picadditional.gif" width="40" height="26" title="Modify" alt="Additional" /></a>
 		</div>';
 		
 		//echo '<a href="javascript:openpicturepreviews();">'.$MOD_TOPICS['SHOW_PREVIEWS'].'</a>';
@@ -264,10 +298,17 @@ if ($use_pictures > 0) {
 <hr/>
 <table class="row_a" cellpadding="2" cellspacing="0" border="0" width="100%">
 <?php
-
+//======================================================================================================
+// Up to 3 Editors: 
 //Editor short
 if ($short_textareaheight < 1) {
-	echo '<tr><td><textarea name="short" style="display:none">'.$fetch_content['content_short'].'</textarea></td></tr>';
+	if ($short_textareaheight < -10) {
+		echo '<tr><td>'.$TEXT['SHORT'].':</td></tr>
+		<tr><td>';
+		echo '<tr><td><textarea name="short" style="width: 98%; height:'.(0 - $short_textareaheight).'px">'.$fetch_content['content_short'].'</textarea></td></tr>';
+	} else {	
+		echo '<tr><td><textarea name="short" style="display:none">'.$fetch_content['content_short'].'</textarea></td></tr>';
+	}
 } else {
 	echo '<tr><td>'.$TEXT['SHORT'].':</td></tr>
 	<tr><td>';
@@ -281,7 +322,13 @@ if ($short_textareaheight < 1) {
 
 //Editor Long
 if ($long_textareaheight < 1) {
-	echo '<textarea name="long" rows="30" cols="3" style="display:none">'.$fetch_content['content_long'].'</textarea>';
+	if ($short_textareaheight < -10) {
+		echo '<tr><td>'.$TEXT['LONG'].':</td></tr>
+		<tr><td>';
+		echo '<tr><td><textarea name="long" style="width: 98%; height:'.(0 - $long_textareaheight).'px">'.$fetch_content['content_long'].'</textarea></td></tr>';
+	} else {
+		echo '<textarea name="long" rows="30" cols="3" style="display:none">'.$fetch_content['content_long'].'</textarea>';
+	}
 } else {
 	echo '<tr><td>'.$TEXT['LONG'].':</td></tr>
 	<tr><td>';
@@ -296,7 +343,13 @@ if ($long_textareaheight < 1) {
 
 //Editor EXTRA
 if ($extra_textareaheight < 10) {
-	echo '<tr><td><textarea name="extra" rows="30" cols="3" style="display:none">'.$fetch_content['content_extra'].'</textarea></td></tr>';
+	if ($short_textareaheight < -10) {
+		echo '<tr><td>'.$MOD_TOPICS['EXTRA'].':</td></tr>
+		<tr><td>';
+		echo '<tr><td><textarea name="extra" style="width: 98%; height:'.(0 - $extra_textareaheight).'px">'.$fetch_content['content_extra'].'</textarea></td></tr>';
+	} else {
+		echo '<tr><td><textarea name="extra" rows="30" cols="3" style="display:none">'.$fetch_content['content_extra'].'</textarea></td></tr>';
+	}
 } else {
 	echo '<tr><td>'.$MOD_TOPICS['EXTRA'].':</td></tr>
 	<tr><td>';
@@ -307,13 +360,19 @@ if ($extra_textareaheight < 10) {
 	}
 	echo "\n</td></tr>\n";
 }
+//End Editors
+//======================================================================================================
+?>
+</table>
 
+
+<?php //======================================================================================================
+//Modify Extrafields, Metatags, filename, move topic
 ?>
 
-</table>
-<hr/>
+<hr class="modify_header_and_file" />
 <?php $diff = time() - $fetch_content['posted_first']; ?>
-<table class="row_a" cellpadding="2" cellspacing="0" border="0" width="100%">
+<table class="modify_header_and_file row_a" cellpadding="2" cellspacing="0" border="0" width="100%">
 <tr><td style="width:70%; padding-right:10px;">
 <div <?php if ($fetch_content['content_long'] == '') {echo ' style="display:none;"';} ?>>
 <div class="modifytopic1">Meta-Description:<br/>
@@ -337,6 +396,8 @@ $t = time() - $fetch_content['posted_first']; $t = $t / 3600;
 if ( $t < 4)   {$allow_change_link = 1;}
 if($hascontent < 1) {$allow_change_link = 0;}
 //echo $t;
+
+$allow_change_link = 1; //Replace outdated option, 2016
 if($allow_change_link AND $author_trust_rating < 3) { echo '<div class="modifytopic1">'.$MOD_TOPICS['CHANGE_URL'].':<br/><input type="text" name="user_link" value="'.$fetch_content['link'].'" style="width: 98%;" maxlength="255" /><br/>'.$MOD_TOPICS['CHANGE_URL_HINT'].'</div>'; } ?>
 
 <?php
@@ -384,15 +445,21 @@ if ($fredit == 1) {$modifyurl = WB_URL.'/modules/'.$mod_dir.'/modify_fe.php?page
 ?>
 </td>
 </tr></table>
+<?php //======================================================================================================
+//End Modify Extrafields, Metatags, filename, move topic
+
+//Start: Save, Cancel
+?>
 
 <table cellpadding="2" cellspacing="0" border="0" width="100%">
 <tr>
 	<td align="left">
 		<input type="hidden" name="gototopicslist" id="gototopicslist" value="" />
-		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" /> <input type="submit" onclick="document.getElementById('gototopicslist').value = '1';" value="<?php echo $MOD_TOPICS['SAVE_FINISH']; ?>" />
+		<input type="hidden" name="transfer_ownership" id="transfer_ownership" value="" />
+		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>"  /> <input type="submit" onclick="document.getElementById('gototopicslist').value = '1';" value="<?php echo $MOD_TOPICS['SAVE_FINISH']; ?>" />
 	</td>
 	<td align="right">
-		<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo $modifyurl; ?>';" style="width: 100px; margin-top: 5px;" />
+		<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo $modifyurl; ?>';" />
 	</td>
 </tr>
 </table>
@@ -445,6 +512,9 @@ if ($fredit == 1) {$modifyurl = WB_URL.'/modules/'.$mod_dir.'/modify_fe.php?page
 <hr/>
 <a name="pnsa_links" id="pnsa_links"></a>
 <?php
+//Start Block: Edit other pages:
+echo '<div class="modify_other_pages">';
+
 $query_topics = $database->query("SELECT topic_id FROM ".TABLE_PREFIX."mod_".$tablename);
 if($query_topics->numRows() > 0) { //Shit, cant find the bug, should be > 1
 	//echo '<table cellpadding="2" cellspacing="0" border="0" width="100%"><tr><td>';
@@ -478,7 +548,7 @@ if($query_topics->numRows() > 0) { //Shit, cant find the bug, should be > 1
 
 
 
-	$query_extra = '';
+	$query_extra = ' AND title <> "" ';
 
 	$modifylink = 'modify_topic.php?page_id='.$page_id.$paramdelimiter.'section_id='.$section_id.$paramdelimiter.'fredit='.$fredit.$paramdelimiter.'topic_id=';
 	$see_also_text = $fetch_content['see_also'];
@@ -490,8 +560,10 @@ if($query_topics->numRows() > 0) { //Shit, cant find the bug, should be > 1
 	//if ($show_prevnext_links == 1 OR  $see_also_text != '') {
 	
 	
-	$setting_pnsa_string = $settings_fetch['pnsa_string'].$serializedelimiter.$serializedelimiter.$serializedelimiter.$serializedelimiter; //Add some empty 
-	$setting_pnsa_array = explode($serializedelimiter,$setting_pnsa_string);
+	
+	//Parse one string into 5 fields:
+	$setting_pnsa_string = stripslashes($settings_fetch['pnsa_string']);
+	$setting_pnsa_array = explode($serializedelimiter,$setting_pnsa_string);		
 	
 	if (is_array($setting_pnsa_array) AND count($setting_pnsa_array) > 4 ) {
 		$see_also_link_title = $setting_pnsa_array[0];
@@ -501,20 +573,27 @@ if($query_topics->numRows() > 0) { //Shit, cant find the bug, should be > 1
 		$setting_sa_string = $setting_pnsa_array[4];
 	} 
 
-	echo '<table class="pnsa_links"><tr><td class="pn_links">';
+	echo '<table class="pnsa_links"><tr><td class="modify_pnsa_links pn_links">';
 	$frombackend = true;
 	if (!defined('TOPIC_ID')) {define('TOPIC_ID', $topic_id); }
 	$picture_dir = WB_URL.$settings_fetch['picture_dir'];
 	if ($authoronly == false) {
+		$refreshstring = '?t='.$t; //forces loading of files
 		include('inc/find_pnsa_links.inc.php');
 		if ($see_prevnext_output != '') {echo $see_prevnext_output;} else {echo $TEXT['NONE_FOUND'];}
 		echo '</td><td class="sa_links">';
 		if ($see_also_output != '') {echo $see_also_output;} else {echo '<b>'.$MOD_TOPICS['SEE_ALSO_FRONTEND']. '</b><br/>'.$TEXT['NONE_FOUND'];}
 	}
-	echo '</td><td class="modifytopictd">';
-
-
-	//echo $fetch_content['see_also'];
+	echo '</td></tr></table>';
+	//End Table PN_SA
+	
+	echo '</div>'; //end class="modify_other_pages"
+	
+	//=======================================================================================
+	
+	//Start Block: Buttons:
+	echo '<div class="modify_buttons"><h2>&nbsp;</h2>';
+	
 	$params = 'page_id='.$page_id.$paramdelimiter.'section_id='.$section_id.$paramdelimiter.'topic_id='.$topic_id.$paramdelimiter.'fredit='.$fredit;
 	echo '<div class="topic-modifytopic">';
 	if ($fetch_content['content_long'] != '' AND $author_trust_rating < 3) {
@@ -539,15 +618,19 @@ if($query_topics->numRows() > 0) { //Shit, cant find the bug, should be > 1
 	}
 
 
-	echo "</div></td></tr></table>\n<hr />\n";
-
-
-
+	echo "</div></div>"; //END Block: Buttons:
 
 }
 
+//alternative delete button
+if ($author_trust_rating < 3) {
+	echo '<a class="topic-modifytopic-delete-alternative" href="javascript: confirm_link(\''.$TEXT['ARE_YOU_SURE']. '\', \''.WB_URL.'/modules/'.$mod_dir.'/delete_topic.php?'.$params.'\');" title="'.$TEXT['DELETE'].'">'.$TEXT['DELETE'].'</a>';
+}
+
 ?>
-</div>
+<hr style="clear:both" />
+</div><!-- end block pnsa and modify buttons -->
+
 <a name="comments" id="comments"></a>
 
 
@@ -587,8 +670,39 @@ if($query_comments->numRows() > 0) {
 	}
 	?>
 </table>
-	<?php
+
+
+<?php
 }
+
+echo '<div class="authorinfo tp_ne1">';
+//Who is the owner of this topic? Who gets emails about new comments?
+$commenting = (int) $fetch_content['commenting'];
+if( $commenting < -1) {$use_commenting_settings = 1;} //Defaultwert verenden
+//Wenn: angekreuzt: Individuelle Einstellungen ignorieren, dann die Settings-Einstellungen verwenden.
+if ($use_commenting_settings == 1) { $commenting = (int) $settings_fetch['commenting'];}
+
+//echo $commenting; //Puh!
+if ($commenting > 0) { 
+	$topicauthornr = $fetch_content['posted_by'];
+	$query_topicauthor = $database->query("SELECT email FROM ".TABLE_PREFIX."users WHERE user_id = '".$topicauthornr."'");
+	if ($query_topicauthor->numRows() > 0) {
+		$authorfetch = $query_topicauthor->fetchRow();
+		$this_admin_email = $authorfetch['email'];		
+	} else {
+		$this_admin_email = 'unknown';
+	}
+		
+	if ($user_id === $topicauthornr) {
+		echo '<p>You are the owner of this topic. Notifications about new comments will be sent to '.$this_admin_email.'</p>';
+	} else {		
+		echo '<div>The owner of this topic is: '.$this_admin_email.'</div>';
+		if ($this_admin_email != 'unknown') {
+			echo '<div>On save: <a id="transfer_ownership_id" href="#" onclick="document.getElementById(\'transfer_ownership\').value = \'1\'; return false;">Transfer ownership to me</a></div>';
+		}
+	}
+}
+echo '</div>'; //End authorinfo
 ?>
 
 <div class="buttonfloater"><div class="inner">
@@ -598,22 +712,15 @@ if($query_comments->numRows() > 0) {
 <a href="#pnsa_links" class="down"></a>
 </div></div>
 
-
-<p> </p>
-<!--div id="picturechooser"></div-->
-<table id="choosertable" border="0" cellpadding="0" cellspacing="0"><tr class="r1"> <td class="c1"><img src="img/shadow/shadow_nw.png" alt="" /></td><td class="c2">&nbsp;</td><td class="c3"><img src="img/shadow/shadow_ne.png" alt="" /></td></tr><tr class="r2"><td class="c1">&nbsp;</td>
-<td class="inner"><div style="float:left;">
-
-<!-- form action="" method="get" name="whattodo" id="whattodo">
-<input type="checkbox" name="todocheckbox" id="todocheckbox" value="modify" onclick="changetodo('modify');" /> Modify Picture
-</form -->
-
-
-
-</div><div class="topicpic_preview_close"><a href="javascript:choosethispicture(0);"><img src="img/closebox.png" alt="close" /></a></div>
-<div id="picturechooser"></div></td>
-<td class="c3">&nbsp;</td></tr><tr class="r3"><td class="c1"><img src="img/shadow/shadow_sw.png" alt="" /></td><td class="c2">&nbsp;</td><td  class="c3"><img src="img/shadow/shadow_se.png" alt="" /></td></tr></table>
-
+<!--
+<div id="topics_chooser_overlay">
+	<div class="topics_chooser_outer">
+		<div class="topicpic_preview_close"><a href="javascript:choosethispicture(0);"><img src="img/closebox.png" alt="close" /></a></div>
+		<div id="topics_picturechooser"></div>
+		
+	</div>
+</div>
+-->
 
 <script type="text/javascript">
 	var section_id = <?php echo $section_id; ?>;

@@ -3,7 +3,7 @@ require_once(dirname(__FILE__).'/../../../config.php');
 if(!defined('WB_PATH')) { 	die("sorry, no access..");}
 
 // Get id
-//Hier ist topic_id nicht nï¿½tig
+//Hier ist topic_id nicht nötig
 if(isset($_REQUEST['section_id']) AND is_numeric($_REQUEST['section_id']) AND isset($_REQUEST['page_id']) AND is_numeric($_REQUEST['page_id'])  ) {
 	$section_id = (int) $_REQUEST['section_id']; 
 	$page_id = (int) $_REQUEST['page_id']; 
@@ -17,7 +17,7 @@ if(isset($_REQUEST['section_id']) AND is_numeric($_REQUEST['section_id']) AND is
 
 
 $theauto_header = false;
- 
+require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', $theauto_header, TRUE);
 if(!$admin->is_authenticated()) { die(); }
 

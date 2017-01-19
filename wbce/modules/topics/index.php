@@ -21,7 +21,10 @@ if(!defined('WB_PATH')) {
 	header('Location: ../../');	
 	exit(0);
 }
- 
+
+
+require_once(WB_PATH.'/framework/class.frontend.php');
+require_once(WB_PATH.'/framework/functions.php');
 // Create new frontend object
 $wb = new frontend();
 $topic_link2 = page_filename($topic_link);

@@ -1,29 +1,30 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category       modules
- * @package        ckeditor
- * @authors        WebsiteBaker Project, Michael Tenschert, Dietrich Roland Pehlke, Dietmar Wöllbrink
- * @copyright      WebsiteBaker Org. e.V.
- * @link           http://websitebaker.org/
- * @license        http://www.gnu.org/licenses/gpl.html
- * @platform       WebsiteBaker 2.8.3
- * @requirements   PHP 5.3.6 and higher
- * @version        $Id: info.php 137 2012-03-17 23:29:07Z Luisehahne $
- * @filesource     $HeadURL: http://webdesign:8080/svn/ckeditor-dev/branches/info.php $
- *
- *
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
-//no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+/* -------------------------------------------------------- */
+// Must include code to stop this file being accessed directly
+if(!defined('WB_PATH')) {
+
+	require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
+	throw new IllegalFileException();
+}
+/* -------------------------------------------------------- */
 
 $module_directory   = 'ckeditor';
-$module_name        = 'CKEditor v4.5.5';
+$module_name        = 'CKEditor';
 $module_function    = 'WYSIWYG';
-$module_version     = '4.5.5';
-$module_platform    = '2.8.3 SP5';
-$module_author      = 'Michael Tenschert, Dietrich Roland Pehlke, erpe, WebBird, Marmot, Luisehahne qssocial';
-$module_license     = '<a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>';
-$module_description = 'includes CKEditor 4.5.5, CKE allows editing content and can be integrated in frontend and backend modules.';
+$module_version     = '4.5.11';
+$module_platform    = '1.1.3';
+$module_author      = 'Colinax (for WBCE)';
+$module_license		= '<a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>';
+$module_description = 'includes CKEditor 4.5.11, CKE allows editing content and can be integrated in frontend and backend modules.';
+$module_home        = 'http://www.wbce.org';

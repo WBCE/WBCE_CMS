@@ -36,6 +36,8 @@ function resizepic($filepath, $newfilepath, $pic_soll_w, $pic_soll_h, $checksize
 	
 	//ratio > 1: Querformat
 	$ist_ratio = $pic_ist_w / $pic_ist_h;
+	if  ($positionW > 0 AND  $positionH > 0) { $ist_ratio = $positionW / $positionH;}
+	
 	if  ($pic_soll_w > 0 AND  $pic_soll_h > 0) {
 		$soll_ratio = $pic_soll_w / $pic_soll_h;
 	} else {

@@ -669,8 +669,8 @@ function opf_is_registered($name, $verbose=FALSE) {
        )
     ) return(TRUE);
     else {
-        if($verbose)
-            trigger_error('opf_is_registered(): Filter not registred: '.$name, E_USER_WARNING);
+        if($verbose AND false)
+            trigger_error('opf_is_registered(): Filter not registred', E_USER_WARNING);
     }
     return(FALSE);
 }

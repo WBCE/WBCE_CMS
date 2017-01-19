@@ -12,7 +12,9 @@
 ################################################
 
 ---     WebsiteBaker CKEditor module         ---
----     FAQ: How to use customization         --- 
+---     FAQ: How to use customization         ---
+
+        ATTENTION ; THEESE DOCS MIGHT BE OUTDATED !!!!!!!!!!!!!!!!!!!! 
 
 ################################################
 ################################################

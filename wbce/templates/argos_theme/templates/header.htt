@@ -18,6 +18,8 @@
     <link href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 
     <link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{ADMIN_URL}/themes/css/cp_content.css" media="screen">
+    <link rel="stylesheet" href="{THEME_URL}/css/override_cp_content.css" media="screen">
     {BACKEND_MODULE_CSS}
     [[Css]]
 
@@ -25,6 +27,7 @@
     var WB_URL = '{WB_URL}';
     var THEME_URL = '{THEME_URL}';
     var ADMIN_URL = '{ADMIN_URL}';
+    var LANGUAGE = '{LANGUAGE}';
     </script>
 
     [[Js?pos=HeadTop]]

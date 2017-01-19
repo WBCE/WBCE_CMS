@@ -32,6 +32,9 @@ $tablename = $mod_dir;
 include(WB_PATH.'/modules/'.$mod_dir.'/defaults/module_settings.default.php');
 if (file_exists(WB_PATH.'/modules/'.$mod_dir.'/module_settings.php')) { include(WB_PATH.'/modules/'.$mod_dir.'/module_settings.php'); }
 
+$database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_rss_count`");
+$database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_rss_statistic`");
+
 $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_obsolete`");
 $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_comments_obsolete`");
 $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_settings_obsolete`");
@@ -40,7 +43,7 @@ $database->query("RENAME TABLE `".TABLE_PREFIX."mod_".$tablename."` TO `".TABLE_
 $database->query("RENAME TABLE `".TABLE_PREFIX."mod_".$tablename."_comments` TO `".TABLE_PREFIX."mod_".$tablename."_comments_obsolete`");
 $database->query("RENAME TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` TO `".TABLE_PREFIX."mod_".$tablename."_settings_obsolete`");
 
- 
+require_once(WB_PATH.'/framework/functions.php');
 rm_full_dir(WB_PATH.$topics_directory);
 
 ?>
