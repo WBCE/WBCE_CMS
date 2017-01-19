@@ -25,9 +25,9 @@ $t = topics_localtime();
 require_once(WB_PATH."/include/jscalendar/jscalendar-functions.php");
 
 // Include WB functions file
-require(WB_PATH.'/framework/functions.php');
+require_once(WB_PATH.'/framework/functions.php');
 // Include the ordering class
-require(WB_PATH.'/framework/class.order.php');
+require_once(WB_PATH.'/framework/class.order.php');
 
 // Get Settings
 $query_settings = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id = '$section_id'");

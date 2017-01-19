@@ -5,7 +5,7 @@ $update_when_modified = true; // Tells script to update when this page was last 
 require('permissioncheck.php');
 
 // Include WB functions file
-require(WB_PATH.'/framework/functions.php');
+require_once(WB_PATH.'/framework/functions.php');
 
 $user_id = $admin->get_user_id();
 $user_in_groups = $admin->get_groups_id();
