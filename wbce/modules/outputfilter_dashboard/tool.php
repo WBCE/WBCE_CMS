@@ -182,10 +182,6 @@ $csspath = opf_fetch_get( 'csspath', NULL, 'string');
 if(isset($force_edit)) $edit = TRUE;
 if(isset($force_csspath)) $csspath = $force_csspath;
 
-if(opf_show_classical_tool()){  //=========================== classical tool view =====
-    require(WB_PATH."/modules/opf_simple_backend/tool.php");
-} else { 
-
 if($add && $doSave ){ //================================================ add =====
 
     require(WB_PATH."/modules/$ModDir/add_filter.php");
@@ -465,11 +461,7 @@ if($add && $doSave ){ //================================================ add ===
     $tpl->set_block('page', 'main_block', 'main');
     $tpl->parse('main', 'main_block', false);
     print opf_filter_Comments($tpl->parse('output', 'main', false));
-}
 
-    if (opf_offer_classical_tool()){
-        require(WB_PATH."/modules/opf_simple_backend/advanced.php");
-    }
 }
 
 if($need_footer){

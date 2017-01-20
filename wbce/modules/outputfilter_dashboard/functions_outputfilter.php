@@ -648,8 +648,6 @@ function opf_register_filter($filter, $serialized=FALSE) {
         unset($opf_FILTERS); 
         opf_preload_filter_definitions(); 
         opf_set_active($name, $active);
-        if(opf_classical_filters_obsolete())
-            Settings::Set("WB_SUPPRESS_OLD_OPF",true);
     }
 
     return($res);
@@ -775,8 +773,6 @@ function opf_unregister_filter($name) {
             if(class_exists('Settings') && defined('WBCE_VERSION')){
                 Settings::Del( opf_filter_name_to_setting($name));
                 Settings::Del( opf_filter_name_to_setting($name).'_be');
-                if(!opf_classical_filters_obsolete($name))
-                    Settings::Del("WB_SUPPRESS_OLD_OPF");
             }
             
             if(opf_db_run_query( "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard` SET `position`=`position`-1

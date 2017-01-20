@@ -10,7 +10,6 @@ Header: Version-History
 	- suppress warning when <opf_move_up_before> is called and !$ref_name! not found
 	- store active/inactive state not only inside opf but also as WBCE Settings value
 	- add additional hint upon an attempt to install a module filter as a plugin
-	- integrate simple backend if installed as a separate module in WBCE
 	- trigger upgrade/install of module filters
 
 1.5.0 %(mrbaseman, 29 Sept 2016)%

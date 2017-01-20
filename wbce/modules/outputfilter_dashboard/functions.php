@@ -669,8 +669,8 @@ function opf_is_registered($name, $verbose=FALSE) {
        )
     ) return(TRUE);
     else {
-        if($verbose AND false)
-            trigger_error('opf_is_registered(): Filter not registred', E_USER_WARNING);
+        if($verbose)
+            trigger_error('opf_is_registered(): Filter not registred: '.$name, E_USER_WARNING);
     }
     return(FALSE);
 }
@@ -686,8 +686,32 @@ function opf_is_active($name) {
               . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
               . " WHERE `name`='%s'", $name
            )
-        ) return(TRUE);
+        ) {
+            if(class_exists('Settings') && defined('WBCE_VERSION')){
+                // in WBCE check for settings state as well, if enabled there return true 
+                if(Settings::Get( opf_filter_name_to_setting($name), TRUE))
+                    return TRUE;
+                // if disabled but a backend version of this filter exists and it is on:  
+                if(Settings::Get( opf_filter_name_to_setting($name).'_be', FALSE)){
+                    $filter_settings=opf_filter_get_data($name);
+                    // check if backend is also enabled inside of the filter 
+                    if($filter_settings){
+                        if(in_array('backend', $filter_settings['pages_parent']))
+                            return(TRUE);
+                    }
+                    // if backend is not on inside the filter
+                    return(FALSE);
+                } 
+                // if both, backend, and frontend are off via Settings class
+                return(FALSE);
+            }
+            // other platforms, e.g. wb classic or older WBCE
+            return(TRUE);
+        }
+        // Query failed - e.g. filter is not installed
+        return(FALSE);
     }
+    // filter is disabled in the dashboard. Really simple db-Query returns that it is off
     return(FALSE);
 }
 
@@ -1682,42 +1706,3 @@ function opf_create_dirname($str){
        return $s;
 }
 
-
-// check if all componets are there to disable classical filters in WBCE
-function opf_classical_filters_obsolete($name='not_supplied'){
-    $needed_modules = array(
-        'outputfilter_dashboard', 
-        'mod_opf_csstohead',
-        'mod_opf_droplets',
-        'mod_opf_email',
-        'mod_opf_insert',
-        'mod_opf_relurl',
-        'mod_opf_sample',
-        'mod_opf_short_url',
-        'mod_opf_wblink',
-    );
-    foreach ($needed_modules as $module){
-        if($module==$name) return FALSE;
-        if(!file_exists(WB_PATH.'/modules/'.$module.'/info.php')) return FALSE;
-    }
-    return TRUE;
-}
-
-
-// check if we shall display the classical backend tool only, provided that it is there
-function opf_show_classical_tool(){
-    if(class_exists('Settings') && defined('WBCE_VERSION')){
-        if(!file_exists(WB_PATH.'/modules/opf_simple_backend/tool.php')) return FALSE;
-        if(!Settings::Get('opf_show_advanced_backend')) return TRUE;
-    }
-    return(FALSE);
-}
-
-// check if we shall offer to switch to the classical backend tool
-function opf_offer_classical_tool(){
-    if(class_exists('Settings') && defined('WBCE_VERSION')){
-        if(!file_exists(WB_PATH.'/modules/opf_simple_backend/advanced.php')) return FALSE;
-        if(Settings::Get('opf_show_advanced_backend')) return TRUE;
-    }
-    return(FALSE);
-}

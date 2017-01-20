@@ -17,7 +17,7 @@
 
 $module_directory   = 'output_filter';
 $module_name        = 'Output Filter';
-$module_function    = 'backend,hidden';  // switch this back to 'tool' to re-enable
+$module_function    = 'setting';
 $module_version     = '1.3.0';
 $module_platform    = '2.8.3';
 $module_author      = 'Christian Sommer(doc), WB-Project, Werner v.d. Decken(DarkViper), NorHei(heimsath.org)';
