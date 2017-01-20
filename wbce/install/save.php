@@ -456,14 +456,15 @@ $dirs['modules'] = WB_PATH . '/modules/';
 $dirs['templates'] = WB_PATH . '/templates/';
 $dirs['languages'] = WB_PATH . '/languages/';
 
-//this one needs to go first
-load_module( $dirs['modules'] . 'outputfilter_dashboard',true);
- if ($admin->error != '') {
-    set_error(d("e26a: /outputfilter_dashboard : ").$admin->error,"",true);
-}
-if ($database->is_error()) {
-    set_error(d("e26b: /outputfilter_dashboard : ").$database->get_error(),"",true);
-}
+//this one needs to go first, so module filter can use the installer.  
+
+    load_module( $dirs['modules'] . 'outputfilter_dashboard',true);
+    if ($admin->error != '') {
+        set_error(d("e26a: /outputfilter_dashboard : ").$admin->error,"",true);
+    }
+    if ($database->is_error()) {
+        set_error(d("e26b: /outputfilter_dashboard : ").$database->get_error(),"",true);
+    }
 
 foreach ($dirs as $type => $dir) {
     
