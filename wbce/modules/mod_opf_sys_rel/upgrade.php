@@ -55,7 +55,7 @@ if (!function_exists("getOutputFilterSettings")) {
         );
 
         // check if traditional database table exists
-        $sql = 'SHOW TABLES LIKE `'.TABLE_PREFIX.'mod_output_filter`';
+        $sql = "SHOW TABLES LIKE '".TABLE_PREFIX."mod_output_filter'";
         if(($res = $database->query($sql))) {
             if ($res->numRows() > 0 ) {
                 // request settings from database
@@ -87,3 +87,4 @@ else                               Settings::Set('opf_sys_rel',1, false);
 
 
 return TRUE;
+
