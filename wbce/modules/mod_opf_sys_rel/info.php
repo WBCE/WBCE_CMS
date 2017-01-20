@@ -36,7 +36,7 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 
-$module_directory        = 'mod_opf_relurl';
+$module_directory        = 'mod_opf_sys_rel';
 $module_name                = 'OPF Sys Rel';
 $module_function        = 'opffilter';
 $module_version                = '1.0.0';

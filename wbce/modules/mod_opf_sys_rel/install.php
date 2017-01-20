@@ -36,22 +36,22 @@ if(defined('WB_URL'))
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
         if(opf_is_registered('Sys Rel')){
-            return require(WB_PATH.'/modules/mod_opf_relurl/upgrade.php');
+            return require(WB_PATH.'/modules/mod_opf_sys_rel/upgrade.php');
         }
         
 
         // when upgrading from classical output filter....
         if( class_exists('Settings') && (Settings::Get('opf_sys_rel',NULL)===NULL)){
             // Setting does not yet exist
-            require(WB_PATH.'/modules/mod_opf_relurl/upgrade.php');
+            require(WB_PATH.'/modules/mod_opf_sys_rel/upgrade.php');
         }
 
         // install filter
         opf_register_filter(array(
             'name' => 'Sys Rel',
             'type' => OPF_TYPE_PAGE,
-            'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_relurl/filter.php',
-            'funcname' => 'opff_mod_opf_relurl',
+            'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_sys_rel/filter.php',
+            'funcname' => 'opff_mod_opf_sys_rel',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
             'active' => (!class_exists('Settings') || Settings::Get('opf_sys_rel', 1)),
             'allowedit' => 0
