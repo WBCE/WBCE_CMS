@@ -37,7 +37,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 	$sql .= '`comments` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, ';
 	$sql .= 'PRIMARY KEY ( `id` ) ';
 	$sql .= ') ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
-    echo 
+
 
 	if( !$database->query($sql) ) {
 		$msg[] = $database->get_error();

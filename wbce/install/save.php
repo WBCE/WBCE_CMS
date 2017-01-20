@@ -11,6 +11,7 @@
  */
 
 define ("WB_DEBUG", true);
+$_SESSION['ERROR_FIELD']=array();
 
 if (WB_DEBUG === true) {
     ini_set('display_errors', 1);
@@ -455,17 +456,32 @@ $dirs['modules'] = WB_PATH . '/modules/';
 $dirs['templates'] = WB_PATH . '/templates/';
 $dirs['languages'] = WB_PATH . '/languages/';
 
+//this one needs to go first
+load_module( $dirs['modules'] . 'outputfilter_dashboard',true);
+ if ($admin->error != '') {
+    set_error(d("e26a: /outputfilter_dashboard : ").$admin->error,"",true);
+}
+if ($database->is_error()) {
+    set_error(d("e26b: /outputfilter_dashboard : ").$database->get_error(),"",true);
+}
+
 foreach ($dirs as $type => $dir) {
+    
     if ($handle = opendir($dir)) {
         while (false !== ($file = readdir($handle))) {
             if ($file != '' and substr($file, 0, 1) != '.' and $file != 'admin.php' and $file != 'index.php') {
+            
                 // Get addon type
                 if ($type == 'modules') {
                     load_module($dir . '/' . $file, true);
                     // Pretty ugly hack to let modules run $admin->set_error
                     // See dummy class definition admin_dummy above
+                   
                     if ($admin->error != '') {
-                        set_error(d('e27: ').$admin->error,"",true);
+                        set_error(d("e27: /$file : ").$admin->error,"",true);
+                    }
+                    if ($database->is_error()) {
+                        set_error(d("e27a: /$file : ").$database->get_error(),"",true);
                     }
                 } elseif ($type == 'templates') {
                     load_template($dir . '/' . $file);
@@ -476,6 +492,7 @@ foreach ($dirs as $type => $dir) {
         }
         closedir($handle);
     }
+    
 }
 
 
@@ -487,6 +504,7 @@ if ($database->is_error()) {
 
 $loc=ADMIN_URL . "/login/index.php";
 header("Location: $loc");
+
 
 
 
