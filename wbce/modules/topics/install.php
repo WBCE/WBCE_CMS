@@ -75,7 +75,7 @@ $mod_topics = 'CREATE TABLE `'.TABLE_PREFIX.'mod_'.$tablename.'` ( '
       . '`pnsa_cache` TEXT NOT NULL ,'
 
       . 'PRIMARY KEY (topic_id)'
-      . ' )';
+      . ' ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
 $database->query($mod_topics);
 
 
@@ -93,7 +93,7 @@ $mod_topics = 'CREATE TABLE `'.TABLE_PREFIX.'mod_'.$tablename.'_comments` ( '
       . '`commented_when` INT NOT NULL DEFAULT \'0\','
       . '`commented_by` INT NOT NULL DEFAULT \'0\','
       . 'PRIMARY KEY (comment_id)'
-            . ' )';
+            . ' ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
 $database->query($mod_topics);
 
 $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_settings`");
@@ -134,7 +134,7 @@ $mod_topics = 'CREATE TABLE `'.TABLE_PREFIX.'mod_'.$tablename.'_settings` ( '
       . '`comments_footer` TEXT  NOT NULL DEFAULT \'\','
 
       . 'PRIMARY KEY (section_id)'
-      . ' )';
+      . ' ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
 $database->query($mod_topics);
 
 // create the RSS count table
@@ -147,7 +147,7 @@ $SQL = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_topics_rss_count` ( ".
     "`timestamp` TIMESTAMP, ".
     "PRIMARY KEY (`id`), ".
     "KEY (`md5_ip`, `date`) ".
-    ") ENGINE=MyIsam AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
+    ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 if (!$database->query($SQL))
   $admin->print_error($database->get_error());
 
@@ -161,7 +161,7 @@ $SQL = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_topics_rss_statistic` ( 
     "`timestamp` TIMESTAMP, ".
     "PRIMARY KEY (`id`), ".
     "KEY (`date`) ".
-    ") ENGINE=MyIsam AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
+    ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 if (!$database->query($SQL))
   $admin->print_error($database->get_error());
 
