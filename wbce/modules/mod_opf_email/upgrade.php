@@ -44,7 +44,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 if (!function_exists("getOutputFilterSettings")) {
     function getOutputFilterSettings() {
         global $database, $admin;
-    // set default values
+        // set default values
         $settings = array(
             'sys_rel'         => 0,
             'email_filter'    => 0,
@@ -52,16 +52,23 @@ if (!function_exists("getOutputFilterSettings")) {
             'at_replacement'  => '(at)',
             'dot_replacement' => '(dot)'
         );
-    // request settings from database
-        $sql = 'SELECT * FROM `'.TABLE_PREFIX.'mod_output_filter`';
+
+        // check if traditional database table exists
+        $sql = 'SHOW TABLES LIKE `'.TABLE_PREFIX.'mod_output_filter`';
         if(($res = $database->query($sql))) {
-            if(($rec = $res->fetchRow())) {
-                $settings = $rec;
-                $settings['at_replacement']  = $admin->strip_slashes($settings['at_replacement']);
-                $settings['dot_replacement'] = $admin->strip_slashes($settings['dot_replacement']);
+            if ($res->numRows() > 0 ) {
+                // request settings from database
+                $sql = 'SELECT * FROM `'.TABLE_PREFIX.'mod_output_filter`';
+                if(($res = $database->query($sql))) {
+                    if(($rec = $res->fetchRow())) {
+                        $settings = $rec;
+                        $settings['at_replacement']  = $admin->strip_slashes($settings['at_replacement']);
+                        $settings['dot_replacement'] = $admin->strip_slashes($settings['dot_replacement']);
+                    }
+                }
             }
         }
-    // return array with filter settings
+        // return array with filter settings
         return $settings;
     }
 }
