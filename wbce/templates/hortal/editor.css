@@ -1,0 +1,222 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,700,400italic,700italic);
+@import url(colorset/colorset.php);
+
+body { 
+	font-family: 'Raleway', sans-serif;	
+	font-size: 16px;
+	line-height:150%;
+	background: #fff;	
+}
+
+
+
+a:link, a:visited {
+	text-decoration: none;
+	transition:0.5s all;
+}
+a:hover, a:active {;
+	text-decoration: underline;
+	transition:0.5s all;
+}
+
+a img {border:0}	
+p a {font-weight:bold;}	
+td {vertical-align:top;}
+
+/* ------------------------------------------------ */
+h1, h2, h3, h4, h5, h6 { margin: 10px 0 4px 0; line-height: 120%;}
+p {margin:0 0 5px 0; }
+
+
+h1 { 
+	font-size: 3em;
+	font-weight: 300;
+	line-height:110%;
+}
+
+h2 { font-size: 1.6em; }
+h3 { font-size: 1.3em;}
+h4 { font-size: 1em; margin:10px 0 0 0;}
+h5 { font-size: 0.95em; margin:10px 0 0 0;}
+h6 { font-size: 0.9em; margin:3px 0 0 0;}
+
+form {margin: 0;}
+
+hr {
+	padding: 10px 0px 5px 0px;
+	border: 0;
+	clear:both;
+}
+
+
+
+ul li {	
+	padding-bottom: 0px;
+	list-style: url(img/lipu.gif);
+			
+} 
+
+ul {	
+	line-height: 150%;
+	margin-top: 0;
+	margin-bottom: 10px;
+	margin-left: 0.7em;
+	padding-left: 0.7em;
+		
+}
+
+ol {	
+	line-height: 150%;
+	margin-top: 0;
+	margin-bottom: 10px;
+	margin-left: 0.9em;
+	padding-left: 0.9em;		
+}
+
+
+blockquote {
+	padding: 6px;	
+	margin: 3px 0 20px 0;
+}
+
+pre, .code {	
+	padding: 6px 0 20px 6px;
+	margin: 3px 0 20px 0;	
+	font-size:1em;	
+	overflow:auto; 
+	line-height:2.2em;	
+}
+
+address {
+	line-height:120%;
+	margin: 10px 0 20px 0;
+	padding-left: 10px;	
+	font-style: normal;
+	font-weight: bold;
+}
+
+
+input[type="text"], input[type="submit"], input[type="file"], select,textarea { width:96%; max-width:400px; padding: 3px 1%; margin-bottom:5px;}
+input[type="image"] {border:none; background: transparent;}
+
+
+/*-----------------------------------------------------------------
+
+table {border-collapse:collapse; border:0;}*/
+
+
+/* Inline font Styles */
+/* Pretty styles for changing text in the WYSIWYG editor */
+
+.important	{font-weight:bold;color:#f00;}
+.code				{font-family: "Courier New", Courier, mono; letter-spacing: 1px;}
+
+.info-box		{border: 1px solid #cc3; background-color:#dadbe8;padding:4px;}
+
+
+
+/*-----------------------------------------------------------------*/	
+
+/* Specials 
+p img[align="right"], h3 img[align="right"] {float:right; width:49%; margin: 3px 0 2px 0.5%; height:auto;}
+p img[align="left"], h3 img[align="left"] {float:left; width:49%; margin: 3px 1% 2px 0; height:auto;}
+*/
+/*-----------------------------------------------------------------*/	
+
+/* Standards */
+
+a[href$=".pdf"] {
+    background: url(img/pdficon12.png) no-repeat;
+    padding-left: 20px;
+}
+
+.highlight {background-color:#ffcc00;}
+
+.teaserbutton {
+    display: block; clear:both; padding: 5px 10px 5px 10px;  margin: 10px 10px 10px 10px;  text-align: center;  border: 2px solid #ccc;  border-radius: 1.2em; transition: 0.8s all;
+	background: rgba(200, 200, 200, 0.5);
+}
+
+.teaserbutton:hover {
+	background: rgba(50, 50, 50, 0.5); color: #fff;  border-radius: 0.5em;  text-shadow:none;
+}
+
+.responsiveVideo, .flex-video {
+   position: relative; padding-bottom: 56.25%; padding-top: 30px;  height: 0; overflow: hidden;
+}
+
+.responsiveVideo iframe, .flex-video iframe, .responsiveVideo object, .flex-video object, .responsiveVideo embed, .flex-video embed  {
+   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+}
+
+
+editlink {}
+
+
+table {
+	border-collapse:collapse;
+	border: none;
+}
+
+table.table {
+	clear:both;	
+	border-collapse:collapse;
+	border: none;	
+	border-top: 1px solid #666;
+	margin: 20px 0 5px 0;
+	width:100%;
+	font: 0.85em;	
+}
+
+table.table caption {font-size:1.1em; text-align:left; }
+table.table th {font-size:0.9em; padding: 4px; text-align:left; vertical-align: top;   border: none; border-bottom: 1px solid #999;}
+table.table tbody td {font-size:0.9em; padding: 4px; vertical-align: top;  border: none; border-bottom: 1px solid #999;}
+table.table tbody tr:hover td {background-color:#eee;}
+table.table tbody td p, table.table tbody td h1, table.table tbody td h2, table.table tbody td h3, table.table tbody td h4 {margin: 0; line-height:110%;}
+
+img.picfull {max-width:100%; height:auto;}
+img.pic2left {float:left; max-width:48%; margin: 3px 3% 2px 0; height:auto;}
+img.pic2right {float:right; max-width:48%; margin: 3px 0 2px 0.9%; height:auto;}
+
+img.pic3left {float:left; max-width:32%; margin: 3px 1.5% 2px 0; height:auto;}
+img.pic3right {float:right; max-width:32%; margin: 3px 0 2px 0.3%; height:auto;}
+
+img.pic4left {float:left; max-width:24%; margin: 3px 1% 2px 0; height:auto;}
+img.pic4right {float:right; max-width:24%; margin: 3px 0 2px 0.5%; height:auto;}
+
+
+
+/*Show and Hide Responsive*/
+.hideOnDesktops {display: none;}	
+
+	
+
+
+
+/* Small devices (tablets, up to 768px) */
+@media (max-width: 768px) {
+	img.pic2left, img.pic2right {max-width: 100%;  margin: 3px 0 2px 0;}
+	img.pic3left, img.pic3right, img.pic4left, img.pic4right  {max-width: 49%;}
+	
+	/*Show and Hide Responsive*/
+	body .hideOnTablets {display: none;}
+	.hideOnDesktops {display: block;}
+	
+	
+	
+
+}
+
+/* Small devices (Smartphone, up to <480px) */
+@media (max-width: 479px) {
+	img.pic2left, img.pic2right {max-width: 100%;  margin: 3px 0 2px 0;}
+	img.pic3left, img.pic3right, img.pic4left, img.pic4right  {max-width: 49%;}
+	
+	/*Show and Hide Responsive*/
+	.hideOnMobiles {display: none;}
+	body .hideOnTablets {display: block;}
+	body .hideOnDesktops {display: block;}
+		
+	
+
+}
