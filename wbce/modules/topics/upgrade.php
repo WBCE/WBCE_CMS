@@ -66,7 +66,7 @@ $SQL = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_topics_rss_count` ( ".
     "`timestamp` TIMESTAMP, ".
     "PRIMARY KEY (`id`), ".
     "KEY (`md5_ip`, `date`) ".
-    ") ENGINE=MyIsam AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
+    ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 if (!$database->query($SQL))
   $admin->print_error($database->get_error());
 
@@ -80,7 +80,7 @@ $SQL = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_topics_rss_statistic` ( 
     "`timestamp` TIMESTAMP, ".
     "PRIMARY KEY (`id`), ".
     "KEY (`date`) ".
-    ") ENGINE=MyIsam AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
+    ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 if (!$database->query($SQL))
   $admin->print_error($database->get_error());
 
