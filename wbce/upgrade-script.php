@@ -772,7 +772,7 @@ echo '<br />Templates reloaded<br />';
 
 
 ////delete languages
-//$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'language'");
+$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'language'");
 // Load all languages
 if (($handle = opendir(WB_PATH . '/languages/'))) {
     while (false !== ($file = readdir($handle))) {
