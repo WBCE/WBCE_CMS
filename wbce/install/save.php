@@ -484,7 +484,14 @@ foreach ($dirs as $type => $dir) {
     
     if ($handle = opendir($dir)) {
         while (false !== ($file = readdir($handle))) {
-            if ($file != '' and substr($file, 0, 1) != '.' and $file != 'admin.php' and $file != 'index.php') {
+            if (
+                $file != '' and 
+                substr($file, 0, 1) != '.' and 
+                $file != 'admin.php' and 
+                $file != 'index.php' and 
+                $file != 'droplets' and 
+                $file != 'outputfilter_dashboard' 
+            ) {
             
                 // Get addon type
                 if ($type == 'modules') {
