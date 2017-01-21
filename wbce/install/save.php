@@ -11,6 +11,8 @@
  */
 
 define ("WB_DEBUG", true);
+
+
 $_SESSION['ERROR_FIELD']=array();
 
 if (WB_DEBUG === true) {
@@ -466,6 +468,17 @@ $dirs['languages'] = WB_PATH . '/languages/';
         set_error(d("e26b: /outputfilter_dashboard : ").$database->get_error(),"",true);
     }
 
+
+// As some Module need to install Droplets we need Dropletss in next step 
+    load_module( $dirs['modules'] . 'outputfilter_dashboard',true);
+    if ($admin->error != '') {
+        set_error(d("e26c: /droplets : ").$admin->error,"",true);
+    }
+    if ($database->is_error()) {
+        set_error(d("e26d: /droplets : ").$database->get_error(),"",true);
+    }
+
+// Now we go and install all other modules 
 foreach ($dirs as $type => $dir) {
     
     if ($handle = opendir($dir)) {
