@@ -11,6 +11,7 @@
  */
 
 define ("WB_DEBUG", true);
+define ("WB_INSTALLER", true);
 
 
 $_SESSION['ERROR_FIELD']=array();
