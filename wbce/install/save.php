@@ -471,7 +471,7 @@ $dirs['languages'] = WB_PATH . '/languages/';
 
 
 // As some Module need to install Droplets we need Dropletss in next step 
-    load_module( $dirs['modules'] . 'outputfilter_dashboard',true);
+    load_module( $dirs['modules'] . 'droplets',true);
     if ($admin->error != '') {
         set_error(d("e26c: /droplets : ").$admin->error,"",true);
     }
