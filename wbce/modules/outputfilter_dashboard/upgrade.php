@@ -103,13 +103,16 @@ foreach($plugins as $plugin_dir){
     }
 }
 
-// run install scripts of module filters - they should start upgrade if already installed
-foreach( preg_grep('/\/install.php/', opf_io_filelist(WB_PATH.'/modules')) as $installer){
-    if(strpos($installer,'outputfilter_dashboard')===FALSE){ 
-        $contents = file_get_contents($installer);
-        if(preg_match('/opf_register_filter/',$contents)){
-            require($installer);
+// Only block this if WBCE CMS installer is running, if this is an Upgrade or 
+// Module install, we need this thing. 
+if(!defined('WB_INSTALL')){  
+    // run install scripts of module filters - they should start upgrade if already installed
+    foreach( preg_grep('/\/install.php/', opf_io_filelist(WB_PATH.'/modules')) as $installer){
+        if(strpos($installer,'outputfilter_dashboard')===FALSE){ 
+            $contents = file_get_contents($installer);
+            if(preg_match('/opf_register_filter/',$contents)){
+                require($installer);
+            }
         }
     }
 }
-

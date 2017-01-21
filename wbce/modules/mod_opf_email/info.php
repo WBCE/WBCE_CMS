@@ -7,7 +7,7 @@
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
- * @category        opffilter,tool
+ * @category        opffilter
  * @package         OPF E-Mail
  * @version         1.0.0
  * @authors         Martin Hecht (mrbaseman)
@@ -38,7 +38,7 @@ if(!defined('WB_PATH')) {
 
 $module_directory        = 'mod_opf_email';
 $module_name                = 'OPF E-Mail';
-$module_function        = 'opffilter,tool';
+$module_function        = 'opffilter';
 $module_version                = '1.0.0';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author                = 'Martin Hecht (mrbaseman)';

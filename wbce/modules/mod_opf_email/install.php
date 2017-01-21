@@ -7,7 +7,7 @@
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
- * @category        opffilter,tool
+ * @category        opffilter
  * @package         OPF E-Mail
  * @version         1.0.0
  * @authors         Martin Hecht (mrbaseman)
@@ -61,7 +61,7 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_email/filter.php',
             'funcname' => 'opff_mod_opf_email',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => (!class_exists('Settings') || Settings::Get('opf_email', 1)),
+            'active' => (!class_exists('Settings') || (Settings::Get('opf_email', 1)==1))?1:0,
             'allowedit' => 0,
             'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email'
         ));

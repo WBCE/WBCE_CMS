@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_short_url/filter.php',
             'funcname' => 'opff_mod_opf_short_url',
             'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
-            'active' => (!class_exists('Settings') || Settings::Get('opf_short_url', 0)),
+            'active' => (class_exists('Settings') && (Settings::Get('opf_short_url', 0)!=0))?1:0,
             'allowedit' => 0
         ));
         opf_move_up_before(
@@ -58,6 +58,6 @@ if(defined('WB_URL'))
         );
 
         // ensure settings are present
-        if(class_exists('Settings')) Settings::Set('opf_short_url',1, false);
+        if(class_exists('Settings')) Settings::Set('opf_short_url',0, false);
     }
 }

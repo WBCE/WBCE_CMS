@@ -7,7 +7,7 @@
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
- * @category        opffilter,tool
+ * @category        opffilter
  * @package         OPF E-Mail
  * @version         1.0.0
  * @authors         Martin Hecht (mrbaseman)
@@ -46,15 +46,15 @@ if (!function_exists("getOutputFilterSettings")) {
         global $database, $admin;
         // set default values
         $settings = array(
-            'sys_rel'         => 0,
-            'email_filter'    => 0,
-            'mailto_filter'   => 0,
+            'sys_rel'         => 1,
+            'email_filter'    => 1,
+            'mailto_filter'   => 1,
             'at_replacement'  => '(at)',
             'dot_replacement' => '(dot)'
         );
 
         // check if traditional database table exists
-        $sql = 'SHOW TABLES LIKE `'.TABLE_PREFIX.'mod_output_filter`';
+        $sql = "SHOW TABLES LIKE '".TABLE_PREFIX."mod_output_filter'";
         if(($res = $database->query($sql))) {
             if ($res->numRows() > 0 ) {
                 // request settings from database
