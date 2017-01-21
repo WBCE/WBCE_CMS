@@ -22,7 +22,7 @@ header('Pragma: no-cache');
 require('../../../../../config.php');
 
 // Create new admin object
-require(WB_PATH.'/framework/class.admin.php');
+require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
 if(!function_exists('cleanup')) {
@@ -35,9 +35,9 @@ if(!function_exists('cleanup')) {
 			$string = stripslashes($string);
 		}
 		if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli'))
-			return preg_replace("/\r?\n/", "\\n", mysqli_real_escape_string($database->db_handle, $string));
+			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
 		else
-			return preg_replace("/\r?\n/", "\\n", mysql_real_escape_string($string));
+			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
 
 	} // end function cleanup
 }
@@ -71,3 +71,4 @@ $usage = substr($usage,0,-2);
 echo $DropletSelectBox .= " );\n";
 echo $description .= " );\n";
 echo $usage .= " );\n";
+
