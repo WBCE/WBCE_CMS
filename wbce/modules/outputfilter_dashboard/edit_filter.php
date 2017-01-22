@@ -68,6 +68,8 @@ if(!$filters = opf_db_query( "SELECT * FROM `".TABLE_PREFIX."mod_outputfilter_da
 $filter = $filters[0];
 $types = opf_get_types();
 $name = $filter['name'];
+// update active/inactive state from Settings
+$filter['active']=opf_is_active($filter['name']);
 $active = ($filter['active']==1?1:0);
 $userfunc = ($filter['userfunc']==1?1:0);
 $plugin = $filter['plugin'];

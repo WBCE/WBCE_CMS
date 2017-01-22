@@ -248,6 +248,8 @@ if($add && $doSave ){ //================================================ add ===
         } else {
             $filter['sep_line'] = FALSE;
         }
+        // update active/inactive state from Settings
+        $filter['active']=opf_is_active($filter['name']);
         if($filter['active']) {
             $filter['active_link'] = "$ToolUrl&amp;id=$filter_id&amp;active=0";
         } else {
