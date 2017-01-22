@@ -723,6 +723,9 @@ function opf_set_active($name, $active=1) {
         trigger_error('opf_set_active(): Wrong status', E_USER_WARNING);
         return(FALSE);
     }
+    global $opf_FILTERS;
+    unset($opf_FILTERS); 
+    opf_preload_filter_definitions(); 
     if(opf_is_registered($name, TRUE)) {
         if(class_exists('Settings') && defined('WBCE_VERSION')){
             Settings::Set( opf_filter_name_to_setting($name), $active);
