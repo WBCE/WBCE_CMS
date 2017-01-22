@@ -21,7 +21,7 @@
 /*
  *        CHANGELOG
  *
- *      1.0.0        2017-01-12      - turn classical outputfilter to an OpF filter module
+ *      1.0.0        2017-01-22      - turn classical outputfilter to an OpF filter module
  *
  */
 
