@@ -98,4 +98,3 @@ else                                 Settings::Set('opf_dot_replacement',"(dot)"
 
 
 return TRUE;
-

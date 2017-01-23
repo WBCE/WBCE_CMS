@@ -52,7 +52,7 @@ if(defined('WB_URL'))
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_sys_rel/filter.php',
             'funcname' => 'opff_mod_opf_sys_rel',
-            'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
+            'desc' => "turn full qualified URLs to relative URLs",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_sys_rel', 1)==1))?1:0,
             'allowedit' => 0
         ));

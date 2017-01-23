@@ -2,7 +2,7 @@
 Header: Version-History
 
 1.5:
-1.5.1 %(mrbaseman, 22 Jan 2017)%
+1.5.1 %(mrbaseman, 23 Jan 2017)%
         - allow arrays for !$ref_name! in <opf_move_up_before>
 	- switch to colon separator in ajax helper
 	- if !$ref_name! is ommited in <opf_move_up_before>, move !$name! up to the top

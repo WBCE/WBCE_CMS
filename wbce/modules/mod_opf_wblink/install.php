@@ -45,7 +45,7 @@ if(defined('WB_URL'))
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_wblink/filter.php',
             'funcname' => 'opff_mod_opf_wblink',
-            'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
+            'desc' => "change internal wblinkxx into real URLs",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_wblink', 1)==1))?1:0,
             'allowedit' => 0
         ));

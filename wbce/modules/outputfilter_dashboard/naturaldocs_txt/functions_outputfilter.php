@@ -646,7 +646,6 @@ function opf_register_filter($filter, $serialized=FALSE) {
         // force refresh the filter definitions
         global $opf_FILTERS;
         unset($opf_FILTERS); 
-        opf_preload_filter_definitions(); 
         opf_set_active($name, $active);
     }
 

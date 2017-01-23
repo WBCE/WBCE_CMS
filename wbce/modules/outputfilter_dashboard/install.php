@@ -107,16 +107,12 @@ foreach($plugins as $plugin_dir){
     }
 }
 
-// Only block this if CMS installer is running, if this is an Upgrade or 
-// Module install , we need this thing. 
-if(!defined('WB_INSTALL')){  
 // run install scripts of already present module filters
-    foreach( preg_grep('/\/install.php/', opf_io_filelist(WB_PATH.'/modules')) as $installer){
-        if(strpos($installer,'outputfilter_dashboard')===FALSE){ 
-            $contents = file_get_contents($installer);
-            if(preg_match('/opf_register_filter/',$contents)){
-                require($installer);
-            }
+foreach( preg_grep('/\/install.php/', opf_io_filelist(WB_PATH.'/modules')) as $installer){
+    if(strpos($installer,'outputfilter_dashboard')===FALSE){ 
+        $contents = file_get_contents($installer);
+        if(preg_match('/opf_register_filter/',$contents)){
+            require($installer);
         }
     }
 }

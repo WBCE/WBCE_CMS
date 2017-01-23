@@ -60,7 +60,7 @@ if(defined('WB_URL'))
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_email/filter.php',
             'funcname' => 'opff_mod_opf_email',
-            'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
+            'desc' => "protect email addresses in text, mailto links, and javascript",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_email', 1)==1))?1:0,
             'allowedit' => 0,
             'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email'

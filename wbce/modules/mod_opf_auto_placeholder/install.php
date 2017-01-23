@@ -45,7 +45,7 @@ if(defined('WB_URL'))
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_auto_placeholder/filter.php',
             'funcname' => 'opff_mod_opf_auto_placeholder',
-            'desc' => "This filter module is a replacement for the former output_filter to be used with OpF",
+            'desc' => "Auto Add Placeholders for Javascript, CSS, Metas and Title",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_auto_placeholder', 1)==1))?1:0,
             'allowedit' => 0,
             'pages_parent' => 'all,backend'

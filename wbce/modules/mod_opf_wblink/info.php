@@ -21,7 +21,7 @@
 /*
  *        CHANGELOG
  *
- *      1.0.0        2017-01-22      - turn classical outputfilter to an OpF filter module
+ *      1.0.0        2017-01-23      - turn classical outputfilter to an OpF filter module
  *
  */
 
@@ -43,5 +43,5 @@ $module_version                = '1.0.0';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author                = 'Martin Hecht (mrbaseman)';
 $module_license                = 'GNU GPL2 (or any later version)';
-$module_description        = 'This filter module is a replacement for the former output_filter to be used with OpF';
+$module_description        = 'change internal wblinkxx into real URLs';
 $module_level           = 'core';
