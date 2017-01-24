@@ -17,6 +17,7 @@ This needs to stay up here !!!
 ////////////////////////////////////////////////////////////
 */
 
+define ("WB_UPGRADE_SCRIPT", true);
 
 // function to extract var/value-pair from DB
 function db_get_key_value($table, $key)
