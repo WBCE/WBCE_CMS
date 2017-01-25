@@ -708,10 +708,10 @@ function opf_is_active($name) {
             // other platforms, e.g. wb classic or older WBCE
             return(TRUE);
         }
-        // Query failed - e.g. filter is not installed
+        // db-Query returns that it is off
         return(FALSE);
     }
-    // filter is disabled in the dashboard. Really simple db-Query returns that it is off
+    // filter is not registered in the dashboard
     return(FALSE);
 }
 

@@ -1537,8 +1537,9 @@ function opf_is_childpage($child, $parent) {
 function opf_filter_is_active($name) {
     if(opf_filter_get_rel_pos($name)===FALSE)
         return(FALSE);
-    else
-        return(TRUE);
+    else 
+        // this check is more expensive but takes settings into account
+        opf_is_active($name);
 }
 
 
