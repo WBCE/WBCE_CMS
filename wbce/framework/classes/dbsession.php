@@ -139,6 +139,8 @@ class DbSession
  
   public  function clean($expire)
   {
+    if (Settings::Get ("wb_secform_timeout") !==false)
+        $expire=Settings::Get ("wb_secform_timeout");
     $q = "DELETE FROM `{TP}sessions` WHERE DATE_ADD(`last_accessed`, INTERVAL ".(int) $expire." SECOND) < NOW()"; 
     $this->database->query($q);
  

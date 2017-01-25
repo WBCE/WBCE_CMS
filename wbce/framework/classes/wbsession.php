@@ -41,8 +41,8 @@ class WbSession{
         // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
         // Later we should get a nice session class instead of this improvised stuff.
         ini_set('session.gc_maxlifetime', intval(WB_SECFORM_TIMEOUT));
-        ini_set('session.gc_probability', 1);
-        ini_set('session.gc_divisor', 1);
+//         ini_set('session.gc_probability', 1);
+//         ini_set('session.gc_divisor', 1);
         
         // This was removed cause the cookie livetime is not refreshed by php 
         // So session was not refreshed by user interaction.
