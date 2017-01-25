@@ -455,7 +455,7 @@ class Database
      *
      * @return mixed
      */
-    public function SqlImport($dumpFile, $tablePrefix = '', $preserve = true, $tableEngine = 'ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci', $tableCollation = ' collate utf8_unicode_ci')
+    public function SqlImport($dumpFile, $tablePrefix = '', $preserve = true, $tableEngine = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci', $tableCollation = ' collate utf8_unicode_ci')
     {
          
         if (is_file($dumpFile)) {

@@ -415,7 +415,7 @@ class database
     public function SqlImport($sSqlDump,
         $sTablePrefix = '',
         $bPreserve = true,
-        $sTblEngine = 'ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
+        $sTblEngine = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
         $sTblCollation = ' collate utf8_unicode_ci') {
         $retval = true;
         $this->error = '';

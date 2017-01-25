@@ -836,6 +836,21 @@ VALUES
 
 
 
+// Add new Sessions Table 
+
+$database->query("
+
+CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}sessions` (
+  `id` char(32) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id',
+  `data` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Data',
+  `last_accessed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last timestamp',
+  `user` int(11) NOT NULL COMMENT 'User Id',
+   PRIMARY KEY (`id`),
+   INDEX (`last_accessed`),
+   INDEX (`user`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='WBCE Session Table';
+
+");
 
 
 /**********************************************************
