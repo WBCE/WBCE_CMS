@@ -231,8 +231,8 @@ class SecureForm
 
         // mt_srand(hexdec(crc32(microtime()));
         $token = dechex(mt_rand());
-        $hash = sha1($secret . '-' . $token . '-' . $timeout);
-        $signed = $token . '-' . $timeout . '-' . $hash;
+        $hash = sha1($secret . '-' . $token . '-' . md5(WbSession::Get('SessionTokenIdentifier')));
+        $signed = $token . '-' . $hash;
 
         if ($as_tag == true) {
             // by default return a complete, hidden <input>-tag
@@ -266,9 +266,9 @@ class SecureForm
 
         $parts = explode('-', $latoken);
 
-        if (count($parts) == 3) {
-            list($token, $timeout, $hash) = $parts;
-            if ($hash == sha1($secret . '-' . $token . '-' . $timeout) and $timeout > time()) {
+        if (count($parts) == 2) {
+            list($token, $hash) = $parts;
+            if ($hash == sha1($secret . '-' . $token . '-' . md5(WbSession::Get('SessionTokenIdentifier'))) ) {
                 $isok = true;
             }
         }

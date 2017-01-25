@@ -67,6 +67,14 @@ class WbSession{
             
             session_start();
             
+            
+            // Session identifier used by Secureform class , so we dont need to use session_id
+            // and tokens stay valid if we just refresh session id
+            if (WbSession::Get('SessionTokenIdentifier')==false) {
+                $rnd=new RandomGen();
+                WbSession::Set('SessionTokenIdentifier', $rnd->TextToken(32));
+            }
+            
             // this is used by only by installer in index.php and save.php we will remove this later
             define('SESSION_STARTED', true);
         }
