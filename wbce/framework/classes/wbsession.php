@@ -41,7 +41,14 @@ class WbSession{
         // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
         // Later we should get a nice session class instead of this improvised stuff.
         ini_set('session.gc_maxlifetime', intval(WB_SECFORM_TIMEOUT));
+        ini_set('session.gc_probability', 1);
+        ini_set('session.gc_divisor', 1);
+        
+        // This was removed cause the cookie livetime is not refreshed by php 
+        // So session was not refreshed by user interaction.
         //ini_set('session.cookie_lifetime', intval(WB_SECFORM_TIMEOUT));
+        
+        // No javascript access to sessioncookie
         ini_set( 'session.cookie_httponly', 1 );
         
         // Secure Cookies if we use https
@@ -56,8 +63,8 @@ class WbSession{
             // Session parameter
             session_name(APP_NAME . '-sid');
             session_set_cookie_params(0);
-            //session_set_cookie_params(WB_SECFORM_TIMEOUT);
-        
+       
+            
             session_start();
             
             // this is used by only by installer in index.php and save.php we will remove this later
@@ -65,17 +72,7 @@ class WbSession{
         }
 
         // make sure session never exeeds lifetime
-        /**
-        //That will set the session cookie with a fresh ttl.
-        setcookie( ini_get("session.name"), session_id(),
-        time()+ini_get("session.cookie_lifetime"),
-        ini_get("session.cookie_path"),
-        ini_get("session.cookie_domain"),
-        ini_get("session.cookie_secure"),
-        ini_get("session.cookie_httponly"));
-        */
-
-
+       
         $now=time();
         //echo "Now: $now <br>";
         //echo "discard_after:".$_SESSION['WB']['discard_after']."<br>";
@@ -107,14 +104,14 @@ class WbSession{
         $_SESSION = array();
         session_unset ();
     
-        // Kill the cookie
-        if (isset($_COOKIE[session_name()])) {setcookie(session_name(), '', 0, '/');}
+        // Kill the cookie // now done by session handler 
+        //if (isset($_COOKIE[session_name()])) {setcookie(session_name(), '', 0, '/');}
         
         #destroy the session
         session_destroy();
     
         #if kill is set, end script here.
-        if ($Kill) {die('Scrip and session ended by function ReStart($Kill=true) ');}
+        if ($Kill) {die('Scrip and session ended by function Session::ReStart($Kill=true) ');}
    
         # restarting
         self::Start(true);
@@ -213,6 +210,8 @@ class WbSession{
         if (!self::IsStarted()) return $Default;
 
         if (isset($_SESSION[self::$Store][$sVar])) return $_SESSION[self::$Store][$sVar];
+        // Fallback for old Vars 
+        if (isset($_SESSION[$sVar])) return $_SESSION[$sVar];
 
         return $Default;
     }
@@ -273,7 +272,7 @@ class WbSession{
 
     Just call it self::Debug() and it will return an overview
 
-    @return string Returns an html Overview of aall Session Vars 
+    @return string Returns an html Overview of all Session Vars 
 */    
     public static function  Debug(){    
         $aSession=array();

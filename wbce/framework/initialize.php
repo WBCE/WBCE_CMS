@@ -214,61 +214,19 @@ date_default_timezone_set('UTC');
 SanitizeHttpReferer();
 
 
+// SESSION 
+
+// Initialize Custom Session Handler 
+// Stores Sessions to DB 
+// As session table possibly not installed , it may not run whith installer and upgradescript 
+// We then simply fallback to PHP default Session handling. 
+if (!defined("WB_UPGRADE_SCRIPT") AND !defined("WB_INSTALLER")) {
+    $hCustomSessionHandler= new DbSession();
+}
+
+// Init  special Session handling and Start session. 
 WbSession::Start();
-// // SESSION 
-// // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
-// // Later we should get a nice session class instead of this improvised stuff.
-// ini_set('session.gc_maxlifetime', intval(WB_SECFORM_TIMEOUT));
-// //ini_set('session.cookie_lifetime', intval(WB_SECFORM_TIMEOUT));
-// ini_set( 'session.cookie_httponly', 1 );
-// if(WB_PROTOCOLL=="https"){ 
-//     ini_set( 'session.cookie_secure', 1 );
-// }
-// session_name(APP_NAME . '-sid');
-// session_set_cookie_params(0);
-// //session_set_cookie_params(WB_SECFORM_TIMEOUT);
-// 
-// // Start a session
-// if (!defined('SESSION_STARTED')) {
-//     session_start();
-//     
-//     // this is used by only by installer in index.php and save.php we will remove this later
-//     define('SESSION_STARTED', true);
-//     
-//     // New way for check if session exists
-//     $_SESSION['WB']['SessionStarted']=true;
-// }
-// 
-// // make sure session never exeeds lifetime
-// /**
-// //That will set the session cookie with a fresh ttl.
-// setcookie( ini_get("session.name"), session_id(),
-// time()+ini_get("session.cookie_lifetime"),
-// ini_get("session.cookie_path"),
-// ini_get("session.cookie_domain"),
-// ini_get("session.cookie_secure"),
-// ini_get("session.cookie_httponly"));
-// */
-// 
-// 
-// $now=time();
-// //echo "Now: $now <br>";
-// //echo "discard_after:".$_SESSION['WB']['discard_after']."<br>";
-// //echo "Secform timeout:".WB_SECFORM_TIMEOUT."<br>";
-// if (isset($_SESSION['WB']['discard_after']) && $now > $_SESSION['WB']['discard_after']) {
-//     // this session has worn out its welcome; kill it and start a brand new one
-//     session_unset();
-//     session_destroy();
-//     session_start();
-//     echo "Run out , killing session";
-// }
-// $_SESSION['WB']['discard_after'] = $now + WB_SECFORM_TIMEOUT;
-// //echo "discard_after2:".$_SESSION['WB']['discard_after']."<br>";
-// 
-// 
-// if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
-//     $_SESSION['session_started'] = time();
-// }
+
 
 
 
