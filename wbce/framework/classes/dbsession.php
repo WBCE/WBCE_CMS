@@ -29,9 +29,12 @@
     Cron Scripts on some Debian derivates killing sessions after 24 Minutes ignoring all Settings. 
     
     I am not too happy whith this 2 Classes Solution , but it will fix the problems for now. 
-     
+    
+    Setting the Return Values to true is a bad bad fix for PHP 7  but the only avaiable 
+    http://stackoverflow.com/questions/34117651/php7-symfony-2-8-failed-to-write-session-data
+    https://github.com/snc/SncRedisBundle/blob/master/Session/Storage/Handler/RedisSessionHandler.php 
 */
-define("BLURP", "BLAAA"); 
+
 class DbSession
 {
   private $alive = true;
@@ -123,8 +126,8 @@ class DbSession
     $sql = "REPLACE INTO `{TP}sessions` (`id`, `data`, `user`) 
     VALUES ('".$this->database->escapeString($sid)."', '".$this->database->escapeString($data)."', '$user')";
     $this->database->query($sql);
- 
-    return $this->database->affected_rows;
+    
+    return true;
   }
  
   public  function destroy($sid)
@@ -134,7 +137,8 @@ class DbSession
  
     $_SESSION = array();
  
-    return $this->database->affected_rows;
+    
+    return true;
   }
  
   public  function clean($expire)
@@ -144,6 +148,7 @@ class DbSession
     $q = "DELETE FROM `{TP}sessions` WHERE DATE_ADD(`last_accessed`, INTERVAL ".(int) $expire." SECOND) < NOW()"; 
     $this->database->query($q);
  
-    return $this->database->affected_rows;
+    return true;
   }
 } 
+
