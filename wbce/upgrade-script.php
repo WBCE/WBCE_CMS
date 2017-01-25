@@ -171,6 +171,7 @@ $FAIL = ' <span class="error">FAILED</span> ';
 $DEFAULT_THEME = 'advancedThemeWbFlat';
 $stepID = 1;
 $dirRemove = array(
+'[MODULES]/SecureFormSwitcher/'
 /*
 '[TEMPLATE]/allcss/',
 '[TEMPLATE]/blank/',
@@ -744,7 +745,7 @@ foreach ($aModuleList as $sModul) {
 
 echo '<h2>Step ' . ($stepID++) . ' : Reload all addons database entry (no upgrade)</h2>';
 ////delete modules
-//$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'module'");
+$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'module'");
 // Load all modules
 if (($handle = opendir(WB_PATH . '/modules/'))) {
     while (false !== ($file = readdir($handle))) {
@@ -759,7 +760,7 @@ echo '<br />Modules reloaded<br />';
 
 
 ////delete templates
-//$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'template'");
+$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'template'");
 // Load all templates
 if (($handle = opendir(WB_PATH . '/templates/'))) {
     while (false !== ($file = readdir($handle))) {

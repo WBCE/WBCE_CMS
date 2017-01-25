@@ -69,7 +69,7 @@ if($saveSettings) {
     else $setError.=$SFS['TOKENNAME_ERR'];
 
     $timeout=$admin->get_post("timeout");
-    if (preg_match("/^[0-9]{1,5}$/u", $timeout)) $setError.=Settings::Set ("wb_secform_timeout", $timeout);
+    if (preg_match("/^[0-9]{1,6}$/u", $timeout)) $setError.=Settings::Set ("wb_secform_timeout", $timeout);
     else $setError.=$SFS['TIMEOUT_ERR'];
 
     $secret=$admin->get_post("secret");
@@ -77,7 +77,7 @@ if($saveSettings) {
     else $setError.=$SFS['SECRET_ERR'];
 
     $secretTime=$admin->get_post("secretTime");
-    if (preg_match("/^[0-9]{1,5}$/u", $secretTime)) $setError.=Settings::Set ("wb_secform_secrettime", $secretTime);
+    if (preg_match("/^[0-9]{1,6}$/u", $secretTime)) $setError.=Settings::Set ("wb_secform_secrettime", $secretTime);
     else $setError.=$SFS['SECRETTIME_ERR'];
 
 

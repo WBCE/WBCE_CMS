@@ -8,10 +8,11 @@
  */
 
 //Module description
-$module_description = 'Einige Zusatzeinstellungen f&uuml;r den Formular und CSRF Schutz.';
+$module_title="Sicherheits Einstellungen";
+$module_description = 'Einige Zusatzeinstellungen f&uuml;r den Formular und Session Schutz.';
 
-$SFS['HEADER'] =      'Formular und CSRF Einstellungen.';
-$SFS['DESCRIPTION'] = 'Hier k&ouml;nnen sie die Sicherheit f&uuml;r Formulare weiter erh&ouml;hen und weitere Einstellungen vornehmen';
+$SFS['HEADER'] =      'Sicherheitseinstellung f&uuml;r Formulare und Session.';
+$SFS['DESCRIPTION'] = 'Hier k&ouml;nnen sie die Sicherheit f&uuml;r Formulare und Sessions weiter erh&ouml;hen und weitere Einstellungen vornehmen';
 
 // Backend variables
 $SFS['SUBMIT'] = '&uuml;bernehmen';
@@ -38,13 +39,13 @@ $SFS['SECRET'] = 'Secret [a-zA-Z0-9] 20-60 Zeichen';
 $SFS['SECRET_TTIP'] = '<em>Hilfe</em>Ein zuf&auml;lliger Schl&uuml;ssel, der f&uuml;r die Token-Erstellung verwendet wird. Empfohlen sind mind. 20 Zeichen.';
 $SFS['SECRET_ERR'] = 'Das Secret darf a-zA-z0-9 enthalten und muss zwischen 20 und 60 Zeichen lang sein';
 
-$SFS['SECRETTIME'] = 'Secrettime [0-9] 1-5 Zeichen';
+$SFS['SECRETTIME'] = 'Secrettime [0-9] 1-6 Zeichen';
 $SFS['SECRETTIME_TTIP'] = '<em>Hilfe</em>Zeit (in Sekunden), bis der Secret-Schl&uuml;ssel sich erneuert.';
-$SFS['SECRETTIME_ERR'] = 'Secrettime darf nur Zahlen enthalten und max. 5 stellen lang sein';
+$SFS['SECRETTIME_ERR'] = 'Secrettime darf nur Zahlen enthalten und max. 6 stellen lang sein';
 
-$SFS['TIMEOUT'] = 'Timeout [0-9] 1-5 Zeichen';
-$SFS['TIMEOUT_TTIP'] = '<em>Hilfe</em>Zeit (in Sekunden), bis ein Formular-Token nicht mehr gilt.';
-$SFS['TIMEOUT_ERR'] = 'Timeout darf nur Zahlen enthalten und max. 5 stellen lang sein';
+$SFS['TIMEOUT'] = 'Session/Token Timeout [0-9] 1-6 Zeichen';
+$SFS['TIMEOUT_TTIP'] = '<em>Hilfe</em>Zeit (in Sekunden), bis Sesion und Token nicht mehr gelten.';
+$SFS['TIMEOUT_ERR'] = 'Timeout darf nur Zahlen enthalten und max. 6 stellen lang sein';
 
 $SFS['USEFP'] = 'Fingerprinting';
 $SFS['USEFP_TTIP'] = '<em>Hilfe</em>Zus&auml;tzlich zur IP-Adresse wird Betriebssystem und Browser zu jeder TAN-Validierung hinzugezogen.';
