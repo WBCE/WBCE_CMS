@@ -99,7 +99,7 @@ class Settings {
         if (!preg_match("/[a-zA-Z0-9\-]+/u", $name)) return "Name only may contain 'a-zA-Z0-9_'";
         $name = strtolower($name);
 
-        // need to make sure , we only store a string
+        // need to make sure , we only store a string 
         if (is_array($value))    $value="!!SARRAY!!". serialize($value);
         if (is_object($value))   $value="!!SOBJECT!!". serialize($value);
         if (is_resource($value)) return "Resources can't be stored in constants";   
@@ -115,7 +115,7 @@ class Settings {
         // false können wir nicht mehmen NULL auch nicht 
         $prev_value = Settings::Get($name, "#++#nullMAdrinn==?");
 
-        // echo "value=".$value."<br>";
+         //echo "value=".$value."<br>";
 
         
         // better go for savety
@@ -124,17 +124,19 @@ class Settings {
 
         // If its a boolean there was nothing set.
         if($prev_value === "#++#nullMAdrinn==?") {
-            $sql="INSERT INTO ".TABLE_PREFIX."settings (name,value) VALUES ('$ename','$evalue')";
+            $sql="INSERT INTO {TP}settings (name,value) VALUES ('$ename','$evalue')";
             $database->query($sql);
+            
             // Set it to our Dataarray
             self::$aSettings[$name]=$value;
         } else {
             // stop here if overwrite is false
             if ($overwrite===false) return "Setting already exists, overwrite forbidden";
 
-            $sql="UPDATE ".TABLE_PREFIX."settings SET value = '$evalue' WHERE name = '$ename'";
+            $sql="UPDATE {TP}settings SET value = '$evalue' WHERE name = '$ename'";
             //echo htmlentities( $sql);
             $database->query($sql);
+            
             // Set it to our Dataarray
             self::$aSettings[$name]=$value;
         }
@@ -166,7 +168,7 @@ class Settings {
  
     */
     public static function Get($name, $default= false) {
-        $name = strtoupper($name);
+        $name = strtolower($name);
 //         echo $name;
 //         echo self::$aSettings[$name];
         if(isset(self::$aSettings[$name])) return self::DeSerialize(self::$aSettings[$name]);
@@ -270,7 +272,7 @@ class Settings {
         $MyArray=self::$aSettings;
 
         //  values are all uppercase
-        $prefix = strtoupper($prefix);
+        $prefix = strtolower($prefix);
         
         // May only contain A-Z0-9_ case insensitiv
         $prefix =preg_replace("/[^A-Z0-9]/s","",$prefix);
@@ -309,6 +311,8 @@ class Settings {
     public static function Del($name) {
         global $database;
 
+        $name=strtolower($name);
+        
         // is it set ?
         $prev_value = Settings::Get($name);
 
@@ -341,7 +345,7 @@ class Settings {
         // empty array 
         self::$aSettings=array();
         // Get website settings (title, keywords, description, header, footer...)
-        $sql = 'SELECT `name`, `value` FROM `' . TABLE_PREFIX . 'settings`';
+        $sql = 'SELECT `name`, `value` FROM `{TP}settings`';
         if (($get_settings = $database->query($sql))) {
             $x = 0; //counter for debug
 
@@ -358,7 +362,7 @@ class Settings {
                     define($setting_name, $setting_value);
                 } 
                 
-                self::$aSettings[$setting_name]=self::DeSerialize(constant($setting_name)) ;
+                self::$aSettings[strtolower($setting_name)]=self::DeSerialize(constant($setting_name)) ;
                 $x++;
             }
         } 
@@ -381,7 +385,7 @@ class Settings {
     public static function Info() {
         global $database;
 
-        $sql = 'SELECT `name`, `value` FROM `' . TABLE_PREFIX . 'settings`';
+        $sql = "SELECT `name`, `value` FROM `{TP}settings` WHERE name='test' ";
         if (($get_settings = $database->query($sql))) {
             $out = "<h3>All Settings in DB </h3>";
 
@@ -389,9 +393,9 @@ class Settings {
                 $setting_name = strtoupper($setting['name']);
                 $setting_value = $setting['value'];
                 $setting_value = htmlentities($setting_value);
-                $setting_value_var =htmlentities(self::$aSettings[strtoupper($setting['name'])]);
+                $setting_value_var =htmlentities(self::$aSettings[strtolower($setting['name'])]);
                
-                $out.= "<b>$setting_name</b><br />Konstant: $setting_value<br />Variable: $setting_value_var<br />";                   
+                $out.= "<b>$setting_name</b><br />Db: $setting_value<br />Variable: $setting_value_var<br />";                   
             }
         } 
         else {
@@ -404,7 +408,7 @@ class Settings {
     
     
     /**
-    @brief Unserialize arrays abd objects stored as serialized strings 
+    @brief Unserialize arrays and objects stored as serialized strings 
     
     It is used internally and to unserialize arrays and objects stored in constants
 
