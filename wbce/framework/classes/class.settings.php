@@ -385,7 +385,7 @@ class Settings {
     public static function Info() {
         global $database;
 
-        $sql = "SELECT `name`, `value` FROM `{TP}settings` WHERE name='test' ";
+        $sql = "SELECT `name`, `value` FROM `{TP}settings` ";
         if (($get_settings = $database->query($sql))) {
             $out = "<h3>All Settings in DB </h3>";
 
