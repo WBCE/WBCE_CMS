@@ -21,6 +21,10 @@ $admin = new admin('Media', 'media_rename', false);
 // Get the current dir
 $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
 $directory = (isset(${$requestMethod}['dir'])) ? ${$requestMethod}['dir'] : '';
+// remove any /../
+if (preg_match("/\.\./s", $directory)) $directory = '' ;   
+// only continue if this is an existing Directory 
+if (!file_exists(WB_PATH.MEDIA_DIRECTORY.$directory)) $directory = '' ;  
 $directory = ($directory == '/') ?  '' : $directory;
 
 $dirlink = 'browse.php?dir='.$directory;
