@@ -18,7 +18,7 @@ if (isset($_GET['_wb'])) {
 	// - One Directory up   ../   (\.\.\/)
 	// - Home   ./   (\.\/)
 	// - Link to external file   //   (\/\/)
-	if (preg_match ("/(^\.|\.\.|\\\\|\/\/)/s", $_GET['_wb'])) {
+	if (preg_match ("/(^\.|\.\.|\\\\|\/\/|\%)/s", $_GET['_wb'])) {
 		header('Location: ' . ERROR_PAGE); 
 		exit;
 	}
