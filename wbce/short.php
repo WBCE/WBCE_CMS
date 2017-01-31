@@ -15,9 +15,7 @@ define('ERROR_PAGE', '/'); //Change this to point to your existing 404 page with
 
 if (isset($_GET['_wb'])) {
 	// Stopping some unwanted behavior
-	// - One Directory up   ../   (\.\.\/)
-	// - Home   ./   (\.\/)
-	// - Link to external file   //   (\/\/)
+	
 	if (preg_match ("/(^\.|\.\.|\\\\|\/\/|\%)/s", $_GET['_wb'])) {
 		header('Location: ' . ERROR_PAGE); 
 		exit;
