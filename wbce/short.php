@@ -22,6 +22,22 @@ if (isset($_GET['_wb'])) {
 		header('Location: ' . ERROR_PAGE); 
 		exit;
 	}
+
+    // We need additional steps to make sure we stay in side the WB Directory
+    $_GET['_wb'] = realpath($_GET['_wb']);
+
+    // file does not exist
+    if ($_GET['_wb'] === false) {
+        header('Location: ' . ERROR_PAGE); 
+		exit;
+	}
+    
+    // WB Pfad enthalten
+    if (!preg_match("/^".preg_quote(realpath(__DIR__))."/s", $_GET['_wb'])){
+        header('Location: ' . ERROR_PAGE); 
+		exit;
+	}
+
 	
 	// create safe PHP_SELF and SCRIPT_NAME for modules using them
     $parsed = parse_url($_SERVER['REQUEST_URI']);
