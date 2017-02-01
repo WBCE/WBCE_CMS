@@ -2,7 +2,7 @@
 
 /*
 Short.php & .htaccess example & Dropletcode
-Version 4.0 - November 24, 2015
+Version 4.1 - Feb 01, 2017
 Developer - Ruud Eisinga / www.dev4me.nl
 Special thanks to: Norbert Heimsath
 
@@ -14,28 +14,37 @@ $_ext = ".php";
 define('ERROR_PAGE', '/'); //Change this to point to your existing 404 page without the /pages/ and .php extension!
 
 if (isset($_GET['_wb'])) {
-	// Stopping some unwanted behavior
-	
-	if (preg_match ("/(^\.|\.\.|\\\\|\/\/|\%)/s", $_GET['_wb'])) {
-		header('Location: ' . ERROR_PAGE); 
-		exit;
-	}
 
+    // fetch the page to call 
+    $page = trim($_GET['_wb'], '/');
+    
+    // some Basic Regex filter stopping ". at beginning" , ".. somewhere in path",  
+    // "// somewhere in path" and "% chars"
+    if (preg_match ("/(^\.|\.\.|\\\\|\/\/|\%)/s", $_GET['_wb'])) {
+        header('Location: ' . ERROR_PAGE); 
+        exit;
+    }
+    
+    //construct the path to call 
+    $fullpag = __DIR__ . $_pages . '/' . $page . $_ext;
+    
     // We need additional steps to make sure we stay in side the WB Directory
-    $_GET['_wb'] = realpath($_GET['_wb']);
+    // in case someone managed to hide some ".." or "//" by using some encoding tricks
+    $fullpag = realpath($fullpag);
 
-    // file does not exist
-    if ($_GET['_wb'] === false) {
+    // realpath does not exist , exit to error page
+    if ($fullpag === false) {
         header('Location: ' . ERROR_PAGE); 
 		exit;
 	}
     
-    // WB Pfad enthalten
-    if (!preg_match("/^".preg_quote(realpath(__DIR__))."/s", $_GET['_wb'])){
-        header('Location: ' . ERROR_PAGE); 
+    // Full WB Path missing in path , exit to error page.
+    $rex="/^".preg_quote(realpath(__DIR__),"/")."/s";
+    if (!preg_match($rex, $fullpag)){
+        echo "path miss $fullpag<br>";
+        //header('Location: ' . ERROR_PAGE); 
 		exit;
 	}
-
 	
 	// create safe PHP_SELF and SCRIPT_NAME for modules using them
     $parsed = parse_url($_SERVER['REQUEST_URI']);
@@ -45,8 +54,6 @@ if (isset($_GET['_wb'])) {
     $_SERVER['SCRIPT_NAME'] = $scriptName;
 
 	// find page to show
-    $page = trim($_GET['_wb'], '/');
-    $fullpag = dirname(__FILE__) . $_pages . '/' . $page . $_ext;
     if (file_exists($fullpag)) {
         chdir(dirname($fullpag));
         include $fullpag;
@@ -95,3 +102,5 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([\/\sa-zA-Z0-9._-]+)$ /short.php?_wb=$1 [QSA,L]
 -- END .htaccess */
+
+
