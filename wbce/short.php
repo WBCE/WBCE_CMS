@@ -41,8 +41,7 @@ if (isset($_GET['_wb'])) {
     // Full WB Path missing in path , exit to error page.
     $rex="/^".preg_quote(realpath(__DIR__),"/")."/s";
     if (!preg_match($rex, $fullpag)){
-        echo "path miss $fullpag<br>";
-        //header('Location: ' . ERROR_PAGE); 
+        header('Location: ' . ERROR_PAGE); 
 		exit;
 	}
 	
