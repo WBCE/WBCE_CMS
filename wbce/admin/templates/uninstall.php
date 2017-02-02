@@ -23,28 +23,22 @@ if( !$admin->checkFTAN() )
 // After check print the header
 $admin->print_header();
 
-// Check if user selected template
-if(!isset($_POST['file']) OR $_POST['file'] == "") {
-    header("Location: index.php");
-    exit(0);
-} else {
-    $file = $_POST['file'];
-}
-
-// Extra protection
-if(trim($file) == '') {
-    header("Location: index.php");
-    exit(0);
-}
-
-// Include the WB functions file
- 
-
-// Check if the template exists
-if(!is_dir(WB_PATH.'/templates/'.$file)) {
+// Check if user selected a valid template file
+$file = $_POST['file'];
+$root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . 'templates');
+$raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $file);
+if(! ($raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
+    // template file not found inside WBCE templates folder
     $admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
 
+// Extract template folder from realpath for further usage inside script
+$file = basename($raw_dir);
+
+// Include functions.php for backward compatibility with WBCE 1.x
+require_once WB_PATH . '/framework/functions.php';
+
+// Helper function
 if (!function_exists("replace_all")) {
     function replace_all ($aStr = "", &$aArray ) {
         foreach($aArray as $k=>$v) $aStr = str_replace("{{".$k."}}", $v, $aStr);
@@ -55,8 +49,6 @@ if (!function_exists("replace_all")) {
 /**
 *    Check if the template is the standard-template or still in use
 */
-
-
 // check whether the template is used as default wb theme
 if($file == DEFAULT_THEME) {
     $temp = array ('name' => $file );
@@ -70,45 +62,45 @@ if ($file == DEFAULT_TEMPLATE) {
     $admin->print_error( $msg );
 
 } else {
-    
+
     /**
     *    Check if the template is still in use by a page ...
     */
     $info = $database->query("SELECT page_id, page_title FROM ".TABLE_PREFIX."pages WHERE template='".$file."' order by page_title");
-    
+
     if ($info->numRows() > 0) {
         /**
         *    Template is still in use, so we're collecting the page-titles
         */
-        
+
         /**
         *    The base-message template-string for the top of the message
         */
-      
+
         $msg_template_str = $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'];
         $temp = explode(";",$MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES']);
         $add = $info->numRows() == 1 ? $temp[0] : $temp[1];
-        
+
         /**
         *    The template-string for displaying the Page-Titles ... in this case as a link
         */
         $page_template_str = "- <b><a href='../pages/settings.php?page_id={{id}}'>{{title}}</a></b><br />";
-        
+
         $values = array ('type' => 'Template', 'type_name' => $file, 'pages' => $add);
         $msg = replace_all ( $msg_template_str,  $values );
-        
+
         $page_names = "";
-        
+
         while ($data = $info->fetchRow() ) {
-            
+
             $page_info = array(
-                'id'    => $data['page_id'], 
+                'id'    => $data['page_id'],
                 'title' => $data['page_title']
             );
-            
+
             $page_names .= replace_all ( $page_template_str, $page_info );
         }
-        
+
         /**
         *    Printing out the error-message and die().
         */
