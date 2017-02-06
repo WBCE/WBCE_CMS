@@ -13,7 +13,7 @@
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -32,14 +32,14 @@ if(!defined('WB_PATH')) {
 if(defined('WB_URL'))
 {
 
-    // check whether outputfilter-module is installed 
+    // check whether outputfilter-module is installed
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
-        
-        if(opf_is_registed('OPF CSS to head')){
+
+        if(opf_is_registered('OPF CSS to head')){
             return require(WB_PATH.'/modules/mod_opf_csstohead/upgrade.php');
         }
-        
+
         // install filter
         opf_register_filter(array(
             'name' => 'OPF CSS to head',
@@ -52,7 +52,7 @@ if(defined('WB_URL'))
             'pages_parent' => 'all,backend'
         ));
          // insert opf_move_up_before here if anything else must be run later
-        
+
         // opf before 1.5.1 did not register the setting:
         if(class_exists('Settings')) Settings::Set('opf_opf_css_to_head',1, false);
         if(class_exists('Settings')) Settings::Set('opf_opf_css_to_head'.'_be',1, false);

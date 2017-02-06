@@ -13,7 +13,7 @@
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -31,11 +31,11 @@ if(!defined('WB_PATH')) {
 
 if(defined('WB_URL'))
 {
-    // check whether outputfilter-module is installed 
+    // check whether outputfilter-module is installed
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registed('OPF E-Mail')){
+        if(opf_is_registered('OPF E-Mail')){
             return require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
         }
 
@@ -46,7 +46,7 @@ if(defined('WB_URL'))
                 require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
             }
         }
-        
+
         Settings::Set('opf_mailto_filter',1, false);
         Settings::Set('opf_email_filter',1, false);
         Settings::Set('opf_js_mailto',1, false);
