@@ -12,31 +12,32 @@
 
 // Create admin object
 require('../../config.php');
-
 $admin = new admin('Media', 'media_rename', false);
 
-// Include the WB functions file
- 
-
-// Get the current dir
+// extract user specified directory from superglobal $_GET
 $directory = $admin->get_get('dir');
 
-// remove any /../
-if (preg_match("/\.\./s", $directory)) $directory = '' ;   
-// only continue if this is an existing Directory 
-if (!file_exists(WB_PATH.MEDIA_DIRECTORY.$directory)) $directory = '' ;  
-
-// "/" is like empty
-$directory = ($directory == '/') ?  '' : $directory;
-
-$dirlink = 'browse.php?dir='.$directory;
-$rootlink = 'browse.php?dir=';
-// $file_id = intval($admin->get_get('id'));
-
-// first Check to see if it contains ..
-if (!check_media_path($directory)) {
-	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'],$rootlink, false);
+// check if user specified a valid folder inside WBCE media folder
+$root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . MEDIA_DIRECTORY);
+$raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $directory);
+if(! ($raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
+    // selected folder not inside WBCE media folder
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], 'browse.php?dir=', false);
+	// stop any further script execution due to security violoation
+	die;
 }
+
+// build relative directory starting from WBCE MEDIA (e.g. /folder/subfolder)
+$directory = str_replace($root_dir, '', $raw_dir);
+// convert Windows DIR_SEP \ with Linux DIR_SEP / (legacy code below relies on this)
+$directory = str_replace('\\', '/', $directory);
+
+// build links for browsing the directory
+$dirlink = 'browse.php?dir=' . $directory;
+$rootlink = 'browse.php?dir=';
+
+// include functions.php (backwards compatibility with WBCE 1.x)
+require_once WB_PATH . '/framework/functions.php';
 
 // Get the temp id
 $file_id = intval($admin->checkIDKEY('id', false, $_SERVER['REQUEST_METHOD']));
@@ -101,7 +102,7 @@ if(!isset($rename_file)) {
 $template = new Template(dirname($admin->correct_theme_source('media_rename.htt')));
 $template->set_file('page', 'media_rename.htt');
 $template->set_block('page', 'main_block', 'main');
-//echo WB_PATH.'/media/'.$directory.'/'.$rename_file;
+
 if($type == 'folder') {
 	$template->set_var('DISPlAY_EXTENSION', 'hide');
 	$extension = '';
@@ -121,7 +122,6 @@ $template->set_var(array(
 					'FILENAME' => $rename_file,
 					'DIR' => $directory,
 					'FILE_ID' => $admin->getIDKEY($file_id),
-					// 'FILE_ID' => $file_id,
 					'TYPE' => $type,
 					'EXTENSION' => $extension,
 					'FTAN' => $admin->getFTAN()

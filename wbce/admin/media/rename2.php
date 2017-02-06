@@ -12,29 +12,33 @@
 
 // Create admin object
 require('../../config.php');
-
 $admin = new admin('Media', 'media_rename', false);
 
-// Include the WB functions file
- 
-
-// Get the current dir
+// extract user specified directory from superglobals $_GET or $_POST
 $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
 $directory = (isset(${$requestMethod}['dir'])) ? ${$requestMethod}['dir'] : '';
-// remove any /../
-if (preg_match("/\.\./s", $directory)) $directory = '' ;   
-// only continue if this is an existing Directory 
-if (!file_exists(WB_PATH.MEDIA_DIRECTORY.$directory)) $directory = '' ;  
-$directory = ($directory == '/') ?  '' : $directory;
 
-$dirlink = 'browse.php?dir='.$directory;
-$rootlink = 'browse.php?dir=';
-// $file_id = intval($admin->get_post('id'));
-
-// first Check to see if it contains ..
-if (!check_media_path($directory)) {
-	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'],$rootlink, false);
+// check if user specified a valid folder inside WBCE media folder
+$root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . MEDIA_DIRECTORY);
+$raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $directory);
+if(! ($raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
+    // selected folder not inside WBCE media folder
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], 'browse.php?dir=', false);
+	// stop any further script execution due to security violoation
+	die;
 }
+
+// build relative directory starting from WBCE MEDIA (e.g. /folder/subfolder)
+$directory = str_replace($root_dir, '', $raw_dir);
+// convert Windows DIR_SEP \ with Linux DIR_SEP / (legacy code below relies on this)
+$directory = str_replace('\\', '/', $directory);
+
+// build links for browsing the directory
+$dirlink = 'browse.php?dir=' . $directory;
+$rootlink = 'browse.php?dir=';
+
+// include functions.php (backwards compatibility with WBCE 1.x)
+require_once WB_PATH . '/framework/functions.php';
 
 // Get the temp id
 $file_id = intval($admin->checkIDKEY('id', false, $_SERVER['REQUEST_METHOD']));
@@ -154,6 +158,8 @@ if($admin->get_post('overwrite') != 'yes' AND file_exists(WB_PATH.MEDIA_DIRECTOR
 	} else {
 		$admin->print_error($MESSAGE['MEDIA_FILE_EXISTS'], "rename.php?dir=$directory&id=$file_id", false);
 	}
+	// stop script execution (file or folder already exists)
+	die;
 }
 
 // Try and rename the file/folder

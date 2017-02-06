@@ -14,7 +14,7 @@
 require('../../config.php');
 
 // Include the WB functions file
- 
+
 
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Media', 'media_create', false);
@@ -30,6 +30,7 @@ if(strstr($name, '..')) {
 }
 
 // Remove bad characters
+// ToDo: Better would be to throw error when an invalid character is detected
 $name = trim(media_filename($name),'.');
 
 // Target location
