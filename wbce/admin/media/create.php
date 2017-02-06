@@ -13,9 +13,8 @@
 // Print admin header
 require('../../config.php');
 
-require_once(WB_PATH.'/framework/class.admin.php');
-// Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+// include functions.php (backwards compatibility with WBCE 1.x)
+require_once WB_PATH . '/framework/functions.php';
 
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Media', 'media_create', false);
@@ -31,6 +30,7 @@ if(strstr($name, '..')) {
 }
 
 // Remove bad characters
+// ToDo: Better would be to throw error when an invalid character is detected
 $name = trim(media_filename($name),'.');
 
 // Target location
