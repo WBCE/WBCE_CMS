@@ -14,34 +14,31 @@
 require('../../config.php');
 $admin = new admin('Media', 'media_delete', false);
 
-// Get the current dir
+// Get current dir (relative to media)
 $directory = $admin->get_get('dir');
-$directory = ($directory == '/') ?  '' : $directory;
-
+$directory = ($directory == '/' or $directory == '\\') ? '' : $directory;
 $dirlink = 'browse.php?dir='.$directory;
-$rootlink = 'browse.php?dir=';
 
-// Check to see if it contains ..
+// Ensure directory is inside WBCE media folder
 if (!check_media_path($directory)) {
-	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'],$rootlink,false);
+	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'], 'browse.php?dir=', false);
 	die;
 }
 
 // Get the file id
 $file_id = $admin->checkIDKEY('id', false, $_SERVER['REQUEST_METHOD']);
 if (!$file_id) {
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $dirlink,false);
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $dirlink, false);
 	die;
 }
 
 // Get home folder not to show
 $home_folders = get_home_folders();
-$usedFiles = array();
 
 // Figure out what folder name the temp id is
 if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 	// Loop through the files and dirs an add to list
-   while (false !== ($file = readdir($handle))) {
+	while (false !== ($file = readdir($handle))) {
 		if(substr($file, 0, 1) != '.' AND $file != '.svn' AND $file != 'index.php') {
 			if(is_dir(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$file)) {
 				if(!isset($home_folders[$directory.'/'.$file])) {

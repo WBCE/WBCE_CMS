@@ -10,15 +10,12 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Print admin header
+// Create admin object
 require('../../config.php');
-
-// suppress to print the header, so no new FTAN will be set
 $admin = new admin('Media', 'media_create', false);
 
-// Check FTAN stuff
-if (!$admin->checkFTAN())
-{
+// Check FTAN
+if (!$admin->checkFTAN()) {
 	$admin->print_header();
 	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
@@ -30,11 +27,11 @@ $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
 $name = (isset(${$requestMethod}['name'])) ? ${$requestMethod}['name'] : '';
 $name = media_filename($name);
 
-// Get target location
+// Get target location and ensure target is inside WBCE media folder
 $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
 $target = (isset(${$requestMethod}['target'])) ? ${$requestMethod}['target'] : '';
 if (!check_media_path($target, false)) {
-	$admin->print_error($MESSAGE['MEDIA_TARGET_DOT_DOT_SLASH']);
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 
 // Create relative path of the new dir name
@@ -45,8 +42,8 @@ if(file_exists($directory)) {
 	$admin->print_error($MESSAGE['MEDIA_DIR_EXISTS']);
 }
 
-if ( sizeof(createFolderProtectFile( $directory )) )
-{
+// Create folder and add an index.php to prevent directory listing
+if (sizeof(createFolderProtectFile($directory))) {
 	$admin->print_error($MESSAGE['MEDIA_DIR_NOT_MADE']);
 } else {
 	$admin->print_success($MESSAGE['MEDIA_DIR_MADE']);

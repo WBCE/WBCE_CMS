@@ -14,27 +14,16 @@
 require('../../config.php');
 $admin = new admin('Media', 'media_rename', false);
 
-// extract user specified directory from superglobal $_GET
+// Get current dir (relative to media)
 $directory = $admin->get_get('dir');
+$directory = ($directory == '/' or $directory == '\\') ? '' : $directory;
+$dirlink = 'browse.php?dir='.$directory;
 
-// check if user specified a valid folder inside WBCE media folder
-$root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . MEDIA_DIRECTORY);
-$raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $directory);
-if(! ($raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
-    // selected folder not inside WBCE media folder
+// Ensure directory is inside WBCE media folder
+if (!check_media_path($directory)) {
 	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], 'browse.php?dir=', false);
-	// stop any further script execution due to security violoation
 	die;
 }
-
-// build relative directory starting from WBCE MEDIA (e.g. /folder/subfolder)
-$directory = str_replace($root_dir, '', $raw_dir);
-// convert Windows DIR_SEP \ with Linux DIR_SEP / (legacy code below relies on this)
-$directory = str_replace('\\', '/', $directory);
-
-// build links for browsing the directory
-$dirlink = 'browse.php?dir=' . $directory;
-$rootlink = 'browse.php?dir=';
 
 // include functions.php (backwards compatibility with WBCE 1.x)
 require_once WB_PATH . '/framework/functions.php';
@@ -47,6 +36,7 @@ if (!$file_id) {
 
 // Get home folder not to show
 $home_folders = get_home_folders();
+
 // Check for potentially malicious files
 $forbidden_file_types  = preg_replace( '/\s*[,;\|#]\s*/','|',RENAME_FILES_ON_UPLOAD);
 
