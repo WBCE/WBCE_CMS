@@ -150,7 +150,7 @@ Functions Section END
 
 
 // include required scripts and setup admin object
-define ("WB_SECFORM_TIMEOUT", 7200); 
+define ("WB_SECFORM_TIMEOUT", 7200);
 require_once 'config.php';
 $admin = new admin('Addons', 'modules', false, false);
 
@@ -218,7 +218,7 @@ $filesRemove['1'] = array(
     '[TEMPLATE]/argos_theme/templates/users_form.htt',
 );
 
-// hopefully we add the removed files here these files are for 1.1.0 
+// hopefully we add the removed files here these files are for 1.1.0
 // as a result of adding class Settings and rework of the admin tool system
 $filesRemove['2'] = array(
 
@@ -410,7 +410,7 @@ require_once WB_PATH . "/modules/topics/" . $file_name;
 
 
 // update output filter - we still need this to convert traditional outputfilter settings
-// from a database table to a setting 
+// from a database table to a setting
 require_once WB_PATH . "/modules/output_filter/upgrade.php";
 
 // OpF Dashboard
@@ -499,7 +499,7 @@ echo "<br />Adding redirect timer to settings table<br />";
 Settings::Set('redirect_timer','500', false);
 
 echo "<br />Updating rename_files_on_upload to settings table<br />";
-Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js', false);
+Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk', false);
 
 echo "<br />Adding mediasettings to settings table<br />";
 Settings::Set('mediasettings','', false);
@@ -511,7 +511,7 @@ Settings::Set ("wb_secform_secrettime", '86400', false);
 Settings::Set ("wb_secform_timeout", '7200', false);
 Settings::Set ("wb_secform_tokenname", 'formtoken', false);
 Settings::Set ("wb_secform_usefp", false, false);
-Settings::Set('fingerprint_with_ip_octets', '0', false); 
+Settings::Set('fingerprint_with_ip_octets', '0', false);
 
 echo "<br />Removing Secureform selector, no longer needed.<br />";
 Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
@@ -561,7 +561,7 @@ echo "<br />Adding direct_link icon to pages table<br />";
 db_add_field('dlink', 'pages', "text collate utf8_unicode_ci NOT NULL DEFAULT '' AFTER link");
 
 /**********************************************************
- *  - making sure group_id is set correct there was a big bug in original WB 
+ *  - making sure group_id is set correct there was a big bug in original WB
  *  WBCE 1.0.0
  */
 
@@ -569,13 +569,13 @@ $table = TABLE_PREFIX."users";
 
 // set group_id to first group of groups_id
 $sql = "UPDATE $table SET `group_id` = CAST(groups_id AS SIGNED)";
-$query = $database->query($sql); 
+$query = $database->query($sql);
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
 // if admin, set group_id to 1
 $sql = "UPDATE $table SET `group_id` = 1 WHERE FIND_IN_SET('1', groups_id) > '0'";
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
-$query = $database->query($sql); 
+$query = $database->query($sql);
 
 
 /**********************************************************
@@ -827,8 +827,8 @@ if (!defined('WB_WYSIWYG_EDITOR')) Settings::Set ("wb_wysiwyg_editor", WYSIWYG_E
 
 // NEw admin Permission "preferences" added
 $database->query("
-INSERT INTO `".TABLE_PREFIX."groups` 
-(`group_id`, `name`, `system_permissions`, `module_permissions`, `template_permissions`) 
+INSERT INTO `".TABLE_PREFIX."groups`
+(`group_id`, `name`, `system_permissions`, `module_permissions`, `template_permissions`)
 VALUES
 (1, 'Administrators', 'pages,pages_view,pages_add,pages_add_l0,pages_settings,pages_modify,pages_intro,pages_delete,media,media_view,media_upload,media_rename,media_delete,media_create,addons,modules,modules_view,modules_install,modules_uninstall,templates,templates_view,templates_install,templates_uninstall,languages,languages_view,languages_install,languages_uninstall,settings,settings_basic,settings_advanced,access,users,users_view,users_add,users_modify,users_delete,groups,groups_view,groups_add,groups_modify,groups_delete,admintools,preferences,preferences_settings', '', '');
 
@@ -837,7 +837,7 @@ VALUES
 
 
 
-// Add new Sessions Table 
+// Add new Sessions Table
 
 $database->query("
 
@@ -848,7 +848,7 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}sessions` (
   `user` int(11) NOT NULL COMMENT 'User Id',
    PRIMARY KEY (`id`),
    INDEX (`last_accessed`),
-   INDEX (`user`) 
+   INDEX (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='WBCE Session Table';
 
 ");

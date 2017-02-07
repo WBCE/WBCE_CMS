@@ -67,7 +67,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (29, 'page_extension', '.php'),
 (30, 'page_spacer', '-'),
 (31, 'pages_directory', '/pages'),
-(32, 'rename_files_on_upload', 'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js'),
+(32, 'rename_files_on_upload', 'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk'),
 (33, 'media_directory', '/media'),
 (34, 'wbmailer_routine', 'phpmail'),
 (35, 'wbmailer_default_sendername', 'WB Mailer'),
