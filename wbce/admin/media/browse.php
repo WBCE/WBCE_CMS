@@ -12,14 +12,13 @@
 
 // Create admin object
 require('../../config.php');
-
 $admin = new admin('Media', 'media', false);
 
 $starttime = explode(" ", microtime());
 $starttime = $starttime[0]+$starttime[1];
 
 // Include the WB functions file
- 
+
 include ('parameters.php');
 
 // check if theme language file exists for the language set by the user (e.g. DE, EN)
@@ -96,14 +95,13 @@ if($directory == '/' OR $directory == '\\') {
 
 $dir_backlink = 'browse.php?dir='.$directory;
 
-// Check to see if it contains ../
+// Ensure $directory is inside WBCE media folder
 if (!check_media_path($directory)) {
-	// $admin->print_header();
 	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH']);
 }
 
+// Ensure directory exists
 if(!file_exists(WB_PATH.MEDIA_DIRECTORY.$directory)) {
-	// $admin->print_header();
 	$admin->print_error($MESSAGE['MEDIA_DIR_DOES_NOT_EXIST']);
 }
 
@@ -114,12 +112,14 @@ if($admin->get_get('up') == 1) {
 	exit(0);
 }
 
-if ($_SESSION['GROUP_ID'] != 1 && $pathsettings['global']['admin_only']) { // Only show admin the settings link
+// Hide admin settings for all non admins
+if ($_SESSION['GROUP_ID'] != 1 && $pathsettings['global']['admin_only']) {
 	$template->set_var('DISPLAY_SETTINGS', 'hide');
 }
 
 // Workout the parent dir link
 $parent_dir_link = ADMIN_URL.'/media/browse.php?dir='.$directory.'&amp;up=1';
+
 // Workout if the up arrow should be shown
 if(($directory == '') or ($directory==$currentHome)) {
 	$display_up_arrow = 'hide';
@@ -130,7 +130,6 @@ if(($directory == '') or ($directory==$currentHome)) {
 // Insert values
 $template->set_var(array(
 					'THEME_URL' => THEME_URL,
-					// 'THEME_URL' => '',
 					'CURRENT_DIR' => $directory,
 					'PARENT_DIR_LINK' => $parent_dir_link,
 					'DISPLAY_UP_ARROW' => $display_up_arrow,
@@ -183,7 +182,6 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 								'NAME' => $name,
 								'NAME_SLASHED' => addslashes($name),
 								'TEMP_ID' => $admin->getIDKEY($temp_id),
-								// 'TEMP_ID' => $temp_id,
 								'LINK' => "browse.php?dir=$directory/$link_name",
 								'LINK_TARGET' => '_self',
 								'ROW_BG_COLOR' => $row_bg_color,
@@ -231,7 +229,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 
 
 			if (!$pathsettings['global']['show_thumbs']) {
-				$info = getimagesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name);
+				$info = @getimagesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name);
 				if ($info[0]) {
 					$imgdetail = fsize(filesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name)).'<br /> '.$info[0].' x '.$info[1].' px';
 					$icon = 'thumb.php?t=1&amp;img='.$directory.'/'.$name;
@@ -244,7 +242,6 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 								'NAME' => $name,
 								'NAME_SLASHED' => addslashes($name),
 								'TEMP_ID' => $admin->getIDKEY($temp_id),
-								// 'TEMP_ID' => $temp_id,
 								'LINK' => WB_URL.MEDIA_DIRECTORY.$directory.'/'.$name,
 								'LINK_TARGET' => '_blank',
 								'ROW_BG_COLOR' => $row_bg_color,
