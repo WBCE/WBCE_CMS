@@ -14,28 +14,20 @@
 require('../../config.php');
 $admin = new admin('Media', 'media_rename', false);
 
-// extract user specified directory from superglobals $_GET or $_POST
+// Include WBCE functions file (legacy for WBCE 1.1.x)
+require_once WB_PATH . '/framework/functions.php';
+
+// Get current dir (relative to media)
 $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
 $directory = (isset(${$requestMethod}['dir'])) ? ${$requestMethod}['dir'] : '';
+$directory = ($directory == '/' or $directory == '\\') ? '' : $directory;
+$dirlink = 'browse.php?dir='.$directory;
 
-// check if user specified a valid folder inside WBCE media folder
-$root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . MEDIA_DIRECTORY);
-$raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $directory);
-if(! ($raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
-    // selected folder not inside WBCE media folder
+// Ensure directory is inside WBCE media folder
+if (!check_media_path($directory)) {
 	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], 'browse.php?dir=', false);
-	// stop any further script execution due to security violoation
 	die;
 }
-
-// build relative directory starting from WBCE MEDIA (e.g. /folder/subfolder)
-$directory = str_replace($root_dir, '', $raw_dir);
-// convert Windows DIR_SEP \ with Linux DIR_SEP / (legacy code below relies on this)
-$directory = str_replace('\\', '/', $directory);
-
-// build links for browsing the directory
-$dirlink = 'browse.php?dir=' . $directory;
-$rootlink = 'browse.php?dir=';
 
 // include functions.php (backwards compatibility with WBCE 1.x)
 require_once WB_PATH . '/framework/functions.php';
@@ -44,6 +36,7 @@ require_once WB_PATH . '/framework/functions.php';
 $file_id = intval($admin->checkIDKEY('id', false, $_SERVER['REQUEST_METHOD']));
 if (!$file_id) {
 	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$dirlink, false);
+	die;
 }
 
 // Check for potentially malicious files
@@ -54,7 +47,7 @@ $home_folders = get_home_folders();
 // Figure out what folder name the temp id is
 if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 	// Loop through the files and dirs an add to list
-   while (false !== ($file = readdir($handle))) {
+	while (false !== ($file = readdir($handle))) {
 		$info = pathinfo($file);
 		$ext = isset($info['extension']) ? $info['extension'] : '';
 		if(substr($file, 0, 1) != '.' AND $file != '.svn' AND $file != 'index.php') {
@@ -69,6 +62,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 			}
 		}
 	}
+
 	$temp_id = 0;
 	if(isset($DIR)) {
 		sort($DIR);
@@ -80,6 +74,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 			}
 		}
 	}
+
 	if(isset($FILE)) {
 		sort($FILE);
 		foreach($FILE AS $name) {
@@ -92,63 +87,47 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 	}
 }
 
-$file_id = $admin->getIDKEY($file_id);
-
+// Check if there is a file/folder to rename
 if(!isset($rename_file)) {
 	$admin->print_error($MESSAGE['MEDIA_FILE_NOT_FOUND'], $dirlink, false);
+	die;
 }
 
-// Check if they entered a new name
-if(media_filename($admin->get_post('name')) == "") {
+// Check if a new file/folder name was defined
+$file_id = $admin->getIDKEY($file_id);
+if($admin->get_post('name') == '') {
 	$admin->print_error($MESSAGE['MEDIA_BLANK_NAME'], "rename.php?dir=$directory&id=$file_id", false);
-} else {
-	$old_name = $admin->get_post('old_name');
-	$new_name =  media_filename($admin->get_post('name'));
+	die;
 }
 
-// Check if they entered an extension
-if($type == 'file') {
-	if(media_filename($admin->get_post('extension')) == "") {
-		$admin->print_error($MESSAGE['MEDIA_BLANK_EXTENSION'], "rename.php?dir=$directory&id=$file_id", false);
-	} else {
-		$extension = media_filename($admin->get_post('extension'));
-	}
-} else {
-	$extension = '';
+// Extract new name and file extension from user input
+$new_name = media_filename($admin->get_post('name'));
+$extension = media_filename($admin->get_post('extension'));
+
+if($type == 'file' && ($extension == '' || $extension == '_')) {
+	$admin->print_error($MESSAGE['MEDIA_BLANK_EXTENSION'], "rename.php?dir=$directory&id=$file_id", false);
+	die;
 }
 
-// Join new name and extension
-$name = $new_name.$extension;
-
-$info = pathinfo(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name);
-$ext = isset($info['extension']) ? $info['extension'] : '';
-$dots = (substr($info['basename'], 0, 1) == '.') || (substr($info['basename'], -1, 1) == '.');
-
-if( preg_match('/'.$forbidden_file_types.'$/i', $ext) || $dots == '.' ) {
+// Stop hiding files/folders by adding a leading dot
+if (substr($new_name, 0, 1) == '.') {
 	$admin->print_error($MESSAGE['MEDIA_CANNOT_RENAME'], "rename.php?dir=$directory&id=$file_id", false);
+	die;
 }
 
-// Check if the name contains ..
-if(strstr($name, '..')) {
-	$admin->print_error($MESSAGE['MEDIA_NAME_DOT_DOT_SLASH'], "rename.php?dir=$directory&id=$file_id", false);
+// Check if the file extension is in blacklist
+$ext = stristr($extension, '.');
+$ext = substr($ext, 1, strlen($ext));
+if (preg_match('/' . $forbidden_file_types . '$/i', $ext)) {
+	$admin->print_error($MESSAGE['MEDIA_CANNOT_RENAME'], "rename.php?dir=$directory&id=$file_id", false);
+	die;
 }
 
-// Check if the name is index.php
+// Concatenate new filename, strip invalid chars and perform some checks
+$name = media_filename($new_name . $extension);
 if($name == 'index.php') {
 	$admin->print_error($MESSAGE['MEDIA_NAME_INDEX_PHP'], "rename.php?dir=$directory&id=$file_id", false);
-}
-
-// Check that the name still has a value
-if($name == '') {
-	$admin->print_error($MESSAGE['MEDIA_BLANK_NAME'], "rename.php?dir=$directory&id=$file_id", false);
-}
-
-$info = pathinfo(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$rename_file);
-$ext = isset($info['extension']) ? $info['extension'] : '';
-$dots = (substr($info['basename'], 0, 1) == '.') || (substr($info['basename'], -1, 1) == '.');
-
-if( preg_match('/'.$forbidden_file_types.'$/i', $ext) || $dots == '.' ) {
-	$admin->print_error($MESSAGE['MEDIA_CANNOT_RENAME'], "rename.php?dir=$directory&id=$file_id", false);
+	die;
 }
 
 // Check if we should overwrite or not
@@ -162,13 +141,10 @@ if($admin->get_post('overwrite') != 'yes' AND file_exists(WB_PATH.MEDIA_DIRECTOR
 	die;
 }
 
-// Try and rename the file/folder
+// Finally, try to rename the file/folder
 if(rename(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$rename_file, WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name)) {
-	$usedFiles = array();
-    // feature freeze
-	// require_once(ADMIN_PATH.'/media/dse.php');
-
 	$admin->print_success($MESSAGE['MEDIA_RENAMED'], $dirlink);
 } else {
 	$admin->print_error($MESSAGE['MEDIA_CANNOT_RENAME'], "rename.php?dir=$directory&id=$file_id", false);
+	die;
 }
