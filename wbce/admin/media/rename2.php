@@ -59,6 +59,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 			}
 		}
 	}
+
 	$temp_id = 0;
 	if(isset($DIR)) {
 		sort($DIR);
@@ -70,6 +71,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 			}
 		}
 	}
+
 	if(isset($FILE)) {
 		sort($FILE);
 		foreach($FILE AS $name) {
@@ -98,7 +100,8 @@ if($admin->get_post('name') == '') {
 // Extract new name and file extension from user input
 $new_name = media_filename($admin->get_post('name'));
 $extension = media_filename($admin->get_post('extension'));
-if($type == 'file' && $extension == '') {
+
+if($type == 'file' && ($extension == '' || $extension == '_')) {
 	$admin->print_error($MESSAGE['MEDIA_BLANK_EXTENSION'], "rename.php?dir=$directory&id=$file_id", false);
 	die;
 }

@@ -34,7 +34,7 @@ if (!check_media_path($target, false)) {
 	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 
-// Create relative path of the new dir name
+// Create absolute path of the new dir name
 $directory = WB_PATH . $target . '/' . $name;
 
 // Check to see if the folder already exists
