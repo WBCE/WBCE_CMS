@@ -1,76 +1,72 @@
 <?php
-
 /*
+
 Short.php & .htaccess example & Dropletcode
-Version 4.1 - Feb 01, 2017
+Version 4.1.1 - Feb 02, 2017
 Developer - Ruud Eisinga / www.dev4me.nl
 Special thanks to: Norbert Heimsath
 
- */
+*/
 
+// Configurable options, make sure it matches your WB config
 $_pages = "/pages";
 $_ext = ".php";
-
 define('ERROR_PAGE', '/'); //Change this to point to your existing 404 page without the /pages/ and .php extension!
 
+
+// Do not change anything below this line!
 if (isset($_GET['_wb'])) {
 
-    // fetch the page to call 
+    // Read the name of the page to be opened 
     $page = trim($_GET['_wb'], '/');
-    
-    // some Basic Regex filter stopping ". at beginning" , ".. somewhere in path",  
-    // "// somewhere in path" and "% chars"
-    if (preg_match ("/(^\.|\.\.|\\\\|\/\/|\%)/s", $_GET['_wb'])) {
-        header('Location: ' . ERROR_PAGE); 
+    unset($_GET['_wb']);
+	
+    // do some Basic Regex filter stopping ". at beginning" , ".. somewhere in path",  
+    // or "\ somewhere in path"
+    // or "// somewhere in path" and "% chars"
+    if (preg_match ("/(^\.|\.\.|\\\\|\/\/|\%)/s", $page)) {
+        header('Location: ' . ERROR_PAGE ); 
         exit;
     }
     
-    //construct the path to call 
-    $fullpag = __DIR__ . $_pages . '/' . $page . $_ext;
+    // construct the path to call 
+    $fullPagePath = __DIR__ . $_pages . '/' . $page . $_ext;
     
     // We need additional steps to make sure we stay in side the WB Directory
     // in case someone managed to hide some ".." or "//" by using some encoding tricks
-    $fullpag = realpath($fullpag);
-
-    // realpath does not exist , exit to error page
-    if ($fullpag === false) {
-        header('Location: ' . ERROR_PAGE); 
-		exit;
-	}
-    
-    // Full WB Path missing in path , exit to error page.
-    $rex="/^".preg_quote(realpath(__DIR__),"/")."/s";
-    if (!preg_match($rex, $fullpag)){
-        header('Location: ' . ERROR_PAGE); 
-		exit;
+	// Note: If the path is not existing, realpath will return false
+    if($fullPagePath = realpath($fullPagePath)) {
+		// Make sure the path is not outside the current directory (open_basedir simulation)
+		$rex="/^".preg_quote(realpath(__DIR__),"/")."/s";
+		if (!preg_match($rex, $fullPagePath)){
+			$fullPagePath = false;
+		}
 	}
 	
 	// create safe PHP_SELF and SCRIPT_NAME for modules using them
     $parsed = parse_url($_SERVER['REQUEST_URI']);
-    $pathed = pathinfo($parsed["path"]);
     $scriptName = preg_replace("/(.php|.html|.htm).+$/u","$1",$parsed["path"]);
 	$_SERVER['PHP_SELF'] = $scriptName;
     $_SERVER['SCRIPT_NAME'] = $scriptName;
 
 	// find page to show
-    if (file_exists($fullpag)) {
-        chdir(dirname($fullpag));
-        include $fullpag;
+    if ($fullPagePath !== false && file_exists($fullPagePath)) {
+        chdir(dirname($fullPagePath));
+        include $fullPagePath;
     } else {
         $page = trim(ERROR_PAGE, '/');
-        $fullpag = dirname(__FILE__) . $_pages . '/' . $page . $_ext;
-        if (file_exists($fullpag)) {
-            chdir(dirname($fullpag));
+		$fullPagePath = __DIR__ . $_pages . '/' . $page . $_ext;
+        if (file_exists($fullPagePath)) {
+            chdir(dirname($fullPagePath));
 			header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found...");
-            include $fullpag;
+            include $fullPagePath;
         } else {
-            header('Location: ' . ERROR_PAGE,true,404);
+            header('Location: ' . ERROR_PAGE);
         }
     }
 } else {
-    header('Location: ' . ERROR_PAGE,true,404);
+    header('Location: ' . ERROR_PAGE);
 }
-
 
 
 /* droplet code
