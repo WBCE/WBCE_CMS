@@ -5,6 +5,1902 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2017-02-08:** NorHei [[cb9bc05](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/cb9bc05068054308551ecd52c2d3ac28c88cc8e1)]
+   > Updated short.php whith ruuds Version for better 404 Handling Thanks Ruud
+
+ * **2017-02-08:** cwsoft [[e36ba43](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e36ba43c273ae03400b584132f90286fedaa7515)]
+   > Further code refinement for WBCE media center
+
+ * **2017-02-07:** cwsoft [[a90645a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a90645a25d178858cbfb29d6439cc1badb7bbfc0)]
+   > Add lnk to forbidden media file extensions
+
+ * **2017-02-07:** cwsoft [[f8bb05c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f8bb05c7710443dfbbd600ff2f9ad1072f446139)]
+   > Some code cleanup of the media center
+
+ * **2017-02-07:** cwsoft [[8d8f3a1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8d8f3a1858e0fefd6afa2f614e6349ed743e8a1f)]
+   > Some more fixes for the media center
+
+ * **2017-02-06:** cwsoft [[276efb4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/276efb4dd9f4aa2f9ba466e9ca696b6560eaeabb)]
+   > Removed obsolete version file in project root folder
+
+ * **2017-02-06:** cwsoft [[8fe1fee](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8fe1fee8932a4f104138d850c8b55a81b1727872)]
+   > Fix for XSS problem JVN#53859609
+
+ * **2017-02-02:** cwsoft [[182b17b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/182b17b79800f18a9bccf8a7f9cfabf7f2846209)]
+   > Fix for JVN#10983966
+
+ * **2017-02-01:** NorHei [[3b7eadc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3b7eadc96136b77a8fe2a81b9b8173fb23a56bce)]
+   > Forgot some debug stuff in short.php
+
+ * **2017-02-01:** NorHei [[d7f275e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d7f275ecdb0ffdcef84661beaa9e96988e11a6e6)]
+   > Some more fixes for short.php
+
+ * **2017-01-31:** NorHei [[5e6c28f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5e6c28f5a12bf4a244ee922ac9063a02843553b0)]
+   > Deleted comments as they are no longer correct
+
+ * **2017-01-31:** NorHei [[2398767](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/23987673b53bda68e953d537799fdd8f8d74d99c)]
+   > one more regex fix
+
+ * **2017-01-31:** NorHei [[d6cad8e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d6cad8eaf346319587f9fd07507e86dfc64387af)]
+   > Fix for filter regex in short.php
+
+ * **2017-01-31:** NorHei [[4ea8422](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4ea8422e4449da7998921116d93aaea77e028a31)]
+   > Experimental fix for short.php JVN73083905
+     Basically this exploit does not Work whith 1.2.x  but to add some additional security
+     I added realpath() and a check if we still are inside of the WB directory.
+     
+     This is experimental , as i have no testserver whith short url.
+
+ * **2017-01-30:** NorHei [[63c2ab4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/63c2ab41531fbad5545bb8881a16d67cfc68820f)]
+   > It was possible to generate directories whith html Tags in filename.
+     Pretty certainly it was possible too to load files whith such names .
+
+ * **2017-01-30:** NorHei [[07c3cfe](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/07c3cfe1dbabeed0894081a86125fdbaaa1e3463)]
+   > Fix for XSS problem JVN#53859609
+     The "dir" Parameter was used completely unchecked...
+
+ * **2017-01-27:** NorHei [[b74855f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b74855f448544a0814bb05c0e1d1215d2fcc603c)]
+   > Forgot some debugging in last commit
+
+ * **2017-01-27:** NorHei [[75cca40](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/75cca401989381bf12cb8b40643672bc10f0a609)]
+   > class Settings . Not showing changes immediately in Settings::Get()
+     Fixed now
+     
+     there was some strtoupper/strtolower confusion.
+
+ * **2017-01-25:** Martin Hecht [[8a311f0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8a311f00a3ed6804d87f5b5b82430de9561b86e3)]
+   > opf: immediately show correct active state and reflect settings in opf_filter_is_active
+
+ * **2017-01-25:** NorHei [[30729a2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/30729a2234bc98d175264aeb4045594c26aed309)]
+   > Custom Session handler fix for PHP7
+     Under PHP 7:
+     Warning: session_write_close(): Session callback expects true/false
+     return value in /var/www/web913/html/eso/w0125/framework/classes/dbsession.php
+     on line 62
+     
+     Solution is to always return true , but i am not happy wwhith that.
+     Still i have no other solution.
+     
+     for more Details have a look at
+     http://stackoverflow.com/questions/34117651/
+     php7-symfony-2-8-failed-to-write-session-data
+     
+     https://github.com/snc/SncRedisBundle/blob/master/Session/Storage/
+     Handler/RedisSessionHandler.php
+
+ * **2017-01-25:** NorHei [[992a39a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/992a39ad4fcec2db3cc8f0008488a5a36cfc8425)]
+   > Removed Secure Form Switcher , added Security settings
+
+ * **2017-01-25:** NorHei [[14397f4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/14397f439e5c31d68d791cb71815c94dcbc07b74)]
+   > Custom Session Handler now completely ignores PHP settings
+     Internal timeout always overrides PHP settings.
+
+ * **2017-01-25:** NorHei [[13b8716](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/13b87167c5f6f99e3afc0a7909675674f8a428f5)]
+   > Tied CSRF tokeens to session , so they have no seperate timeout .
+     Now hopefully we cann make a session timer...
+
+ * **2017-01-25:** NorHei [[0e3efcc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0e3efcc88e1bef821e31b8e9e29cba2c4fe22e38)]
+   > Added Class for halfway crypto proof generaion of Integers and TextToken
+
+ * **2017-01-25:** NorHei [[b789c46](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b789c4685e6401d0167e5096e1a0c6f17369edde)]
+   > DB based session handling added
+     Filebased Default sessions encountered a Lot of Problems on different
+     shared hostings. Shared Temp directories caused GCs from other clients
+     clearing our sessions to early. Cron Scripts on some Debian derivates
+     killing sessions after 24 Minutes ignoring all Settings.
+     
+     Another options we now have are:
+     List active sessions.
+     List Users whith active sessions.
+     Disconnect Users.
+     
+     Still we need to build an Interface around this.
+
+ * **2017-01-25:** NorHei [[f763525](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f763525afe3b2b6b62659c1ed24587d5dd263f7b)]
+   > Default Table Engine now InnoDb. Some preps for DB based Sessions
+     As i work whith tons of Tables on a dayly Basis , i can state there is no real
+     option than using InnoDb.
+     
+     Some preparations for DB based Sessions.
+
+ * **2017-01-24:** NorHei [[ff50c77](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ff50c77ffa1f3fb811724e8a0a399bf0f53db962)]
+   > Added Marker , to know when upgrade Script is running .
+
+ * **2017-01-23:** Martin Hecht [[fdb22d3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fdb22d3b9248f036acf1b75f52c810a0c9b44bc9)]
+   > opf: remove redundant function calls and add meaningful description to filters
+
+ * **2017-01-22:** Martin Hecht [[9c49f0e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9c49f0e3ebf0604f0c4b95a58572b7d0122dbad5)]
+   > Merge pull request #213 from mrbaseman/opf
+     opf: fix warning about global variable (#211)
+ * **2017-01-22:** Martin Hecht [[b056a6d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b056a6d64e9ba4dbf96d858c8254ef0916d3bae2)]
+   > opf: fix warning about global variable when switching filter active/inactive
+
+ * **2017-01-22:** NorHei [[8acaaee](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8acaaee4251dc73f781a0cdb38256e22f469fb4f)]
+   > Merge pull request #210 from mrbaseman/opf
+     opf and filter modules: fix active/inactive
+ * **2017-01-22:** Martin Hecht [[4e8a961](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4e8a961c0f7249fb110a2c1ee3d8be61fc21c6ed)]
+   > opf and filter modules: fix active/inactive
+
+ * **2017-01-21:** NorHei [[e9c4415](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e9c4415748de6af82244324f83d90ad78fff2a0f)]
+   > CKE editor Fix (mysql_real_excape_string, require->require_once)
+     I did not remove WB Classic compatibility.
+     
+     https://forum.wbce.org/viewtopic.php?pid=8295#p8295
+     
+     The code used mysql_real_escape_string() that will fail inf the server has no
+     mysql module installed.
+     
+     Many servers only support mysqli and PDO.
+     
+     Another issue is that WBCE has an autoloader so all core classes are available
+     as soon as you required config.php. If you try to require class admin that is
+     already loaded at this point the code may fail because of double declaration.
+     So please use require _once.
+
+ * **2017-01-21:** NorHei [[70604ad](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/70604ad1deca5818d0444b06ef2a101202803697)]
+   > Some fixes for theme.css
+
+ * **2017-01-21:** NorHei [[0106646](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/01066462d2ba9c727a31a61a44deae8166735d3f)]
+   > Page Language should not be activated by default
+     Because if so all vistors from other countrys than your's will only see "UNder Construction"
+
+ * **2017-01-21:** NorHei [[a1724f6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a1724f6ad9a1ff835828b76e46d6f9c542441205)]
+   > Installer tried to install Droplets and OPF 2 Times
+
+ * **2017-01-21:** NorHei [[7445f51](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7445f51758ca01793d97f906866cf376f22f370e)]
+   > Copy paste error in installer
+
+ * **2017-01-21:** NorHei [[f0d6135](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f0d6135a7a6b322883a3ab32c110262fed0374f7)]
+   > New Constant WB_INSTALLER. small mods on OPF install procedure.
+     Constant only set if install script is running.
+
+ * **2017-01-21:** NorHei [[0d54d35](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0d54d351e85fe8ba6f6bfeb0bd82d3dace01fca5)]
+   > Install error , trying to install droplets bevore droplets are installed.
+     Error: e27a: /topics : Table '{TABLE}.{PREFIX}mod_droplets' doesn't exist
+     
+     {TABLE}, {PREFIX} = correct values
+     
+     Well, of course it does not exist, I'm trying to install a new instance... -.-
+     
+     I always thought this error was dorplets .. thanks to new debug , we now know thats Topics .. Trying to install a droplet bevore Droplets are installed ... :-)
+     We have this as a duplicate somewhere here :-)
+     
+     Depending on the order of the files in the filesystem , this error may appear , or may not .
+     On second run the droplets tables are installed , and topics runs through. :-)
+
+ * **2017-01-21:** NorHei [[f7c87b0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f7c87b0f002690ab54d320a9e404ced448137f26)]
+   > Bumped Version to 1.2.0-alpha.10
+
+ * **2017-01-21:** NorHei [[575e26a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/575e26aad4be5513f37266909fa2c9516cc358fc)]
+   > Some small fixes to OPF
+     Error: e26b: /outputfilter_dashboard : You have an error in your SQL syntax;
+      check the manual that corresponds to your MySQL server version for the right
+     syntax to use near '`wbce000mod_output_filter`' at line 1
+     
+     Small correction on Mailfilter Installer
+     Removed a few Lines from main installer , for more easy debugging on install process.
+     The buildin Dashboard does not need to load the filter on itself
+     
+     Removed tool from mailfilter into.php, as ist not needed.
+
+ * **2017-01-21:** NorHei [[d14799d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d14799d03e30f96379850b84f9c82f5ed07b5628)]
+   > Merge pull request #204 from mrbaseman/opf
+     rename mod_opf_relurl and update opf
+ * **2017-01-20:** Martin Hecht [[f15abff](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f15abff6a93c50844b9dc82cd018b870ac23d625)]
+   > check classical opf settings table for existence
+
+ * **2017-01-20:** Martin Hecht [[c95d700](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c95d7009794abe23b2d6281587862fe9703d94b4)]
+   > rename mod_opf_relurl and update opf
+
+ * **2017-01-20:** NorHei [[3da84a9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3da84a98a54a6c6fa4cab51b3dd924064fd145cb)]
+   > Enhanced Debugging in installer
+     If modules fail cause of DB errors , installer now states what module failed.
+
+ * **2017-01-20:** NorHei [[cf70ff3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/cf70ff3e9faa13ed3f40508538359cbdfc229042)]
+   > Fixed Small droplet bug, Dashboard now installs first on installer run.
+     So Module filters can register after Dashboard installed.
+
+ * **2017-01-20:** NorHei [[6020be3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6020be30c32acf5b40d433df8faf6df3d5af8beb)]
+   > Topics Upgrade script now upgrades to Innodb too
+     Only new tables , old ones are not changed yet
+
+ * **2017-01-20:** NorHei [[09176bf](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/09176bfd084a489261bd8bd2a51f079c3b4ddbfb)]
+   > Topics installer now uses Innodb and correct collation
+
+ * **2017-01-20:** NorHei [[f4f2be4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f4f2be49b42f78247460b500868f3f53b917ab80)]
+   > Removed Opf Simple backend  as its no longer needed
+
+ * **2017-01-20:** NorHei [[b7fb81f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b7fb81f727b455a5c2951ecd2f5da8a170ca9a38)]
+   > Merge branch '1.2.x' of https://github.com/WBCE/WebsiteBaker_CommunityEdition into 1.2.x
+
+ * **2017-01-20:** NorHei [[274ce59](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/274ce59f5638f73fb6205d41e5e0ef6a6cbbdde5)]
+   > New (default) templates for WBCE
+
+ * **2017-01-20:** NorHei [[79dca0b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/79dca0b0fc21c664139b1f9374dcdba8a56bcf1a)]
+   > On upgrade reloading of Languages was deactivated
+
+ * **2017-01-19:** NorHei [[61b3a7c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/61b3a7c5469ad7fdc7c8409b9f5280729346f209)]
+   > Small Changes for better compatibility whith OPf Dashboard .
+
+ * **2017-01-19:** NorHei [[86be56c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/86be56c2e1207d48a413dbd18dee82340b276579)]
+   > Update theme CSS to remove double Admintool icons
+     To all !!! Please pull before commiting !!!
+ * **2017-01-19:** NorHei [[ccbee73](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ccbee73e4b6051e360086f25abca4cd549db8a1e)]
+   > Even more topics refixes .
+     Have a look at
+     
+     https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/1.2.x/wbce/modules/topics
+     
+     for an overview.
+
+ * **2017-01-19:** NorHei [[6382d5b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6382d5b04090c25926c1877c2c04ced74d8a4f7e)]
+   > More Topics re fixes
+     Lots of requre that better be require_once
+
+ * **2017-01-19:** NorHei [[abd0374](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/abd0374bd82a62cc7250b760f55f1e548811de78)]
+   > Re fixed Topics
+     See
+     8a5bafe646de0e56eddc922c0650f82e5b7aa095
+     
+     On instalations where mysql drivers no longer present this causes lots of errors.
+
+ * **2017-01-19:** NorHei [[f5cb89c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f5cb89cfb326d2c429e129f40de1aaf5b625323e)]
+   > Removed some Changes for a Pagetree that will never come
+
+ * **2017-01-19:** NorHei [[ba1a9eb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ba1a9eb966c90a6f849a7b4dcc14140a1df573d7)]
+   > Merge pull request #203 from mrbaseman/opf
+     more opf fixes...
+ * **2017-01-19:** Martin Hecht [[79931ae](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/79931ae274f35683eea7ea977aeebb45b59bd854)]
+   > Merge branch '1.2.x' into opf
+
+ * **2017-01-19:** Martin Hecht [[eed047c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/eed047ce96ea203d4d50d2736528dccb223c0ad5)]
+   > more opf fixes...
+
+ * **2017-01-18:** NorHei [[03d7ed3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/03d7ed3f35a65012af80c86ae942ebe45806a0f1)]
+   > push push ,github not diplaying last push
+
+ * **2017-01-18:** NorHei [[9ea8399](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9ea8399f8d203a7e8782fb76cb8a0b2e1dd96465)]
+   > OPF install bug  Topics upgrade bug
+     Warning prevented installation and was irritating on upgrade
+     Martin plase have a look.
+     
+     Warning: hello opf_is_registered(): Filter not registred in /var/www/web207/html/wbce12x_norbert-heimsath_de/modules/outputfilter_dashboard/functions.php on line 673
+     
+     Topics , same as in  Install
+     
+     Notice in line 160 , @import was undefined
+
+ * **2017-01-18:** NorHei [[8e5b043](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8e5b0435fb05fde6839ee68c8bdb328743f3e71e)]
+   > Topics installer bug
+     Notice: Undefined variable: imports in /.../modules/topics/install.php on line 304
+
+ * **2017-01-18:** NorHei [[d301c4a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d301c4afe2088babb813935237bb45edccb8522c)]
+   > Merge pull request #191 from mrbaseman/opf
+     fixes for OpF Dashboard and filter modules
+ * **2017-01-17:** Martin Hecht [[62a04ad](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/62a04ad1b16605f2a1daacdd52b88d8e62b3ceb6)]
+   > fixes for OpF Dashboard and filter modules
+
+ * **2017-01-17:** NorHei [[65ee1cc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/65ee1cce05a88c6b4dce126cd7fe6c4f4e07ef9b)]
+   > testcommit
+
+ * **2017-01-17:** NorHei [[b6a88e8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b6a88e8a7183b59a8a135d4d25da7f37993db83b)]
+   > Just some more typos in OPF modules
+
+ * **2017-01-17:** NorHei [[24bbfb3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/24bbfb3618435f6898c4f8ccaf97c7446ed18a40)]
+   > Typo in function name module mod_opf_insert
+
+ * **2017-01-16:** NorHei [[3575091](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/35750916ae14336be8fb3140b623d7809befa157)]
+   > Upgrade topics to 0.9.2
+
+ * **2017-01-16:** NorHei [[1ebbe43](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1ebbe439bfb8c0c4be2b042eb2f7006742060007)]
+   > First TRy on multi installer script , to allow installation of multiple  modules at once
+     Just put all module dirs into one Zipfile .
+
+ * **2017-01-16:** NorHei [[30f9ef6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/30f9ef640ccf7d630d746534b92394557e6fd8f5)]
+   > Merge pull request #185 from WBCE/master
+     merge back 
+ * **2017-01-16:** NorHei [[aef5ba9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/aef5ba983595167821a039dec026d1f3fdcb819e)]
+   > Merge pull request #184 from WBCE/1.2.x
+     1.2.x to master
+ * **2017-01-16:** NorHei [[d69d2a4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d69d2a40d323f3239f4f19603e83186e49a5b65d)]
+   > Merge pull request #182 from mrbaseman/opf
+     add OpF Dashboard as replacement for classical output filter
+ * **2017-01-15:** NorHei [[42eb6bc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/42eb6bcc2958671f58ca63d73929c7eb57929339)]
+   > Added {TP}=={TABLE_PREFIX} for sql import MEthod
+
+ * **2017-01-15:** NorHei [[819c0b0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/819c0b0e7922dbee2e83c2ea3118f4bb6ff6433c)]
+   > Merge branch '1.2.x' of https://github.com/WBCE/WebsiteBaker_CommunityEdition into 1.2.x
+
+ * **2017-01-15:** NorHei [[8a5f86c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8a5f86cfc3ba69dca877cab81bc0e3b2e5324146)]
+   > First Try on fixing Droplets install error
+
+ * **2017-01-15:** NorHei [[8ef8ca9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8ef8ca956b7a14ec4c70cfe82d1c8068af63b506)]
+   > Merge pull request #183 from WebDesignWorx/1.2.x
+     Set correct FontAwesome URL in "Flat Theme" theme.css
+ * **2017-01-14:** WebDesignWorx [[fe9e3ec](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fe9e3ec49b4af8493da522fdd1b396880035c8d3)]
+   > Set correct FontAwesome URL in "Flat" Theme (position changed after this commit: https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/291c0e9e809b1028680a99fef4c661b7245dff1e)
+
+ * **2017-01-11:** Martin Hecht [[72297b8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/72297b8d32eaa59a8ae404a6458b61d570b3a130)]
+   > add OpF Dashboard as replacement for classical output filter
+
+ * **2017-01-09:** NorHei [[0e08574](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0e08574473dbefab8610154ba3ce8a2bcd76f445)]
+   > Merge branch '1.2.x' of https://github.com/WBCE/WebsiteBaker_CommunityEdition into 1.2.x
+
+ * **2017-01-09:** NorHei [[84cc7cb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/84cc7cb99774c6c6c601ec886c652b6214536d99)]
+   > Update ckeditor to 4.5.11
+     Many thanks to colinax!!
+
+ * **2017-01-08:** NorHei [[614a629](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/614a6290f2bebb9eb29bda89179411f23ab7f287)]
+   > Merge pull request #177 from WebDesignWorx/1.2.x
+     Allow the content area of advancedThemeWbFlat to be responsive.
+ * **2017-01-07:** Stefek [[997515b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/997515b45dfea22b4ab5492245320a9a8f2c316f)]
+   > Allow the content area of advancedThemeWbFlat to be responsive. These changes were overwritten incidentally by my last commit.
+
+ * **2017-01-07:** NorHei [[828d57b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/828d57b6a74204cdabd550a4aa8035713c95810b)]
+   > Small issue in Class tool whith  $module_title
+     Comments on  b80498e
+     
+     $module_title Variable doesn't exist.
+     Please change back to $module_name as it breaks the output with a
+     
+     Notice: Undefined variable: module_title in [.....]framework\classes\class.tool.php on line 268
+
+ * **2017-01-07:** NorHei [[cf6e737](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/cf6e737bc88cc0dc723c97876dca8dba066d5777)]
+   > Merge pull request #175 from WebDesignWorx/1.2.x
+     1.2.x
+ * **2017-01-07:** NorHei [[b479ec1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b479ec13b348a1c143a4bc4766e3e4a7008e5f02)]
+   > Merge pull request #176 from WBCE/1.2.x
+     1.2.x merge to master 
+ * **2017-01-06:** Stefek [[3f487bb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3f487bbeec4c3b51b840b248f328e22227fed832)]
+   > consecutive changes to previous commit; concerns mainly FireFox issue handling + FontAwesome replacements
+
+ * **2017-01-06:** Stefek [[ab72107](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ab72107387da6102faa0519b51c56889a509996f)]
+   > add additional changes to ArgosTheme concerning previous commit
+
+ * **2017-01-06:** Mareike [[51faeeb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/51faeebf3dc8ec9792f5e46151f1c995bf3f21e7)]
+   > Revert "add additional changes to ArgosTheme concerning previous commit"
+     This reverts commit fd7b7c881d0fbe91d4a345fda19090017805a764.
+ * **2017-01-06:** Stefek [[fd7b7c8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fd7b7c881d0fbe91d4a345fda19090017805a764)]
+   > add additional changes to ArgosTheme concerning previous commit
+
+ * **2017-01-06:** Stefek [[2ba8d35](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2ba8d35465ceeafaddb6f6e7bc7c84106e650713)]
+   > add more files allowing for consistent layouting of forms and buttons across Backend Themes. This commit intoduces overrides to the previously commited global files + overrides for the pageTree
+
+ * **2017-01-06:** Stefek [[4c31d5a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4c31d5aa89d3dafa51301ef9a3c7b2203b21c59d)]
+   > add 2 global files for use in BackendThemes allowing for consistent layouting of forms and buttons across Backend Themes
+
+ * **2017-01-02:** NorHei [[811d722](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/811d7225a557f75c318a4ff8c6d76afafdde0e87)]
+   > copy error sm2
+
+ * **2017-01-01:** NorHei [[fa1fee1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fa1fee14238b88295615f51270692dfe1e79c5d0)]
+   > Merge pull request #170 from WebDesignWorx/1.2.x
+     Make content area of theme flat responsive and a few bug fixed . 
+     Thanks to stefanek !!! 
+ * **2016-12-31:** Mareike [[39d2503](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/39d25035947887171c7408add987796f532820b7)]
+   > handled wrong index href  instead of src on line 694
+
+ * **2016-12-31:** Stefek [[eed7a06](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/eed7a06e07b875805843940c0228500e96f7a18d)]
+   > handled wrong index scr instead of src, causing the AddJs method to break.
+
+ * **2016-12-31:** Stefek [[3e5db60](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3e5db60530f1724bae6aaabc63ca51ee54bbf792)]
+   > Allow the content area of advancedThemeWbFlat to be responsive. This is needed along with further commits.
+
+ * **2016-12-30:** NorHei [[c1c8855](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c1c885589bf2b6d91a29015f809c1805e9ad967c)]
+   > More SQL cleanup in class frontend
+
+ * **2016-12-30:** NorHei [[a522003](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a52200360c81afe25a7812df44d9b9279353b77a)]
+   > Just some SQL cleanup in class frontend
+
+ * **2016-12-30:** NorHei [[8ea7983](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8ea79833551e3772aa3b36e0985ff3d27c516ee8)]
+   > Merge branch '1.2.x' of https://github.com/WBCE/WebsiteBaker_CommunityEdition into 1.2.x
+
+ * **2016-12-30:** NorHei [[15735bd](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/15735bd39fa8660820a0fa794bb551ddb23db05c)]
+   > Tried a Fix for an old show-menu2 Problem.
+     https://forum.wbce.org/viewtopic.php?id=859
+
+ * **2016-12-30:** NorHei [[516863f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/516863fc6671e9fa3e713430625e9a5d15212a40)]
+   > Merge pull request #169 from WebDesignWorx/1.2.x
+     1.2.x
+     
+     Notice: Use of undefined constant WB_PATH - assumed 'WB_PATH' in H:\WbPortable\root\wbce_dev\WebDesignWorx\WebsiteBaker_CommunityEdition\wbce\framework\classes\class.autoload.php on line 234
+ * **2016-12-29:** NorHei [[d3ddda5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d3ddda52a867c608fb25809156965777cb5208e2)]
+   > Very minor fixes to SM2
+
+ * **2016-12-29:** Mareike [[c27f89b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c27f89bb19eced77e81dd8eb6347b26487e51ff2)]
+   > Revert "establish connection from local IDE to GitHub"
+     This reverts commit 33b768888d7def996c605b2e6dbe31c692caf50a.
+ * **2016-12-28:** NorHei [[014b60c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/014b60cbb5acd0730f9e172b041ec8da990791eb)]
+   > WB_FRONTEND was already defined
+     added it double
+
+ * **2016-12-28:** NorHei [[a0961b3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a0961b3e32e9c773a4cff64e948c19bca6c55968)]
+   > Moved get_page_permission() from Class Admin to class Wb
+     As Admin Extends WB , there schould be noch problems at all.
+     
+     get_page_permission() was needed in the frontend too so i
+     moved it. (was needed by loginbox)
+
+ * **2016-12-28:** NorHei [[d011c10](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d011c1008f1e449636c5347095806060cc7714d9)]
+   > PHP Mailer needed another patch
+     https://forum.wbce.org/viewtopic.php?id=857
+
+ * **2016-12-27:** NorHei [[43d18bc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/43d18bccb3b2e28a259706cb468cba1fcadcf3de)]
+   > Security Fix for PHP Mailer
+     Updated PHP Mailer version , as it fixes a critical bug.
+     
+     http://www.golem.de/news/websicherheit-phpmailer-bringt-eine-boese-weihnachtsueberraschung-1612-125255.html
+     
+     https://github.com/PHPMailer/PHPMailer/releases
+
+ * **2016-12-26:** NorHei [[291c0e9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/291c0e9e809b1028680a99fef4c661b7245dff1e)]
+   > Removed Font Awesome from Flat Theme
+     Thamks to WebDesignWorx
+
+ * **2016-12-26:** NorHei [[c8333b0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c8333b0886e076b559b3b080e0c74fdbb8fab836)]
+   > ADDED KONSTANT WB_FRONTEND
+     Plus som real minor changes (formatting ... )
+
+ * **2016-12-26:** NorHei [[5fd58fc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5fd58fcafec04c2ad8b22bc0ef94151ca4afcd57)]
+   > Fixed Breadcrumb in Admintoools
+     Tanks to Florian
+
+ * **2016-12-25:** Stefek [[76e749b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/76e749b2a8befc27207fcc8f648633adb6bba740)]
+   > define WB_PATH in framework/initialize.php
+
+ * **2016-12-22:** NorHei [[d3e3581](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d3e35816d8dc0385b8a716c9b795509599a3c71b)]
+   > Admin tools can be hidden now , like setting tools
+
+ * **2016-12-21:** Stefek [[33b7688](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/33b768888d7def996c605b2e6dbe31c692caf50a)]
+   > establish connection from local IDE to GitHub
+
+ * **2016-12-19:** NorHei [[415767e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/415767e992eeb614a490e05912bd968d0dd94a76)]
+   > Direct output pipe for all situations
+     I extended class wb to offer a direct output pipe for modules/templates
+     and even for the core. This is especial usefulll for Javascript ajax requests
+     and JSON replies.
+     
+     If you call
+     
+     $admin->DirectOutput("ANTON AUS TIROL");
+     or in frontend
+     $wb->DirectOutput("ANTON AUS TIROL");
+     
+     It will output only "ANTON AUS TIROL" and  stopp script execution immediately.
+     
+     If you just set
+     
+     $admin->sDirectOutput="";
+     or in frontend
+     $wb->sDirectOutput="";
+     
+     It will runn through full Page generation but still "ANTON AUS TIROL"
+     Will be the only answer given back as page.
+     
+     Replace ANTON AUS TIROL  whith you favourite JSON or XLM answer.
+
+ * **2016-12-18:** NorHei [[2e15105](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2e151053eab406b60b4330b888563bfa86159d32)]
+   > Invalid Level Display in Page Cloner
+     https://forum.wbce.org/viewtopic.php?id=410
+     
+     Fixed
+     Solution was given in thread, thanks to Bernd
+
+ * **2016-12-18:** NorHei [[099042d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/099042da35a13189a8790b5bb3c5931d2d34a4f4)]
+   > Fixed Maintainance Mode as Setting
+     Maintainance Mode did not save setting.
+
+ * **2016-12-18:** NorHei [[77122a1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/77122a1bf22526f882178e1d4f6ae1cd8dfd9994)]
+   > Revert "Removed Admin tool for maintainance Mode, now using setting."
+     This reverts commit 740d33a710a03c621396fa1ea759f1ce2345cb23.
+
+ * **2016-12-18:** NorHei [[b80498e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b80498efb1166a72fa5e67c762e5f216f4efe7e9)]
+   > Fixed Link generation for breadcrumb on class tool (Partial)
+     This is partial cause the flat theme  somehow compeltely kills the Link.
+
+ * **2016-12-18:** NorHei [[f2f8dee](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f2f8deeee570dbbaf86d44a64646c66586f6d709)]
+   > Small language file change on settings_default
+
+ * **2016-12-18:** NorHei [[0bbc317](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0bbc31775199e22f966a3b9df74bb072be104576)]
+   > Some more corrections for REDIRECT_TIMER
+     Defaults to 500
+
+ * **2016-12-18:** NorHei [[c9a5f74](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c9a5f74965e15026cc5969fdaff1e2739749c4f6)]
+   > WYSIWYG_STYLE commented out in settings as it is not used at all
+
+ * **2016-12-18:** NorHei [[fbc99c4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fbc99c449a4aaf65b4cebe04677f41adf9200256)]
+   > Redirect timer  to 500ms default
+
+ * **2016-12-18:** NorHei [[28ca7fb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/28ca7fb8f83cb15754ae1404b3e97bfd33a38367)]
+   > Upgrade script stoped cause of missing DB method.
+     https://forum.wbce.org/viewtopic.php?pid=7591#p7591
+
+ * **2016-12-13:** NorHei [[9727e2e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9727e2ed89402b8bcf3988dbb370393e4165667a)]
+   > Small bugfix in frontend functions
+     Thx to Mr Tenschert
+
+ * **2016-12-10:** NorHei [[a05fe9b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a05fe9b30aec2118ef74c6308b14e8b0ab6af743)]
+   > Forgot to update the System Templates on last Change
+
+ * **2016-12-10:** NorHei [[4f8ab13](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4f8ab13ea477023ecbd852905a18c1ae570199e8)]
+   > Added WbSearchBox class
+     I was extremely tired of the complicated ways i had to use to display loginboxes and seachboxes
+         in WBCE templates. there where a few snippets for this but they where not templateable at all,
+         depended on TWIG , did not match all my needs....
+     
+         So here we got a new Searchbox whith enough Divs to get a decent styling, an option to override
+         the whole design in your Template , options to override almost everything and you may fetch the
+         result instead of echo it immediately.
+     
+         The Basic call usually looks like this:
+         ````
+             WbSearchBox::Show();
+         ````
+         You may supply an options array to this Static method.
+         ````
+             WbSearchBox::Show(array(
+                 "sHeadline"   => "Search here:",
+                 "sSendText"   => "GO"
+                 "sFormMethod" => "post"
+             ));
+         ````
+         Or you may use the OOP variant:
+         ````
+             $SB= new WbSearchBox()
+             $SB->sHeadline    = "Search here:",
+             $SB->sSendText    =  "GO"
+             $SB->sFormMethod  = "post"
+             $SB->Display();
+         ````
+         The Display Method allows for returning the value instead of echo it directly
+         ````
+             $sMySearchBoxHtml=$SB->Display(false);
+         ````
+         In addition it is possible to hand an options array directly to the constructor
+         ````
+             $aOptions= array(
+                 "sHeadline"   => "Search here:",
+                 "sSendText"   => "GO"
+                 "sFormMethod" => "post"
+             ));
+     
+             $SB= new WbSearchBox($aOptions)
+             $SB->Display();
+         ````
+     
+         __Templates__
+     
+         The Template for this Class is stored in: @n
+             /templates/systemplates/searchbox.tpl.php
+     
+         To override it whith your own create the folder /systemplates/ in your template folder and copy the file
+         "searchbox.tpl.php" from the default folder to your folder. Change the file to match your needs.
+         The class will override the system file automatic.
+
+ * **2016-12-10:** NorHei [[6a5d9d8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6a5d9d83419ddfd14870957a69acd46fb71bc403)]
+   > Added a few helpfull functions wb_redirect() and wb_dump()
+     The first is an enhanced redirect using javascript or
+     meta refresh if basic redirect fails.
+     
+     The seccond is a convienient dump function for easy var checks.
+     (no more echo "<pre>" ....)
+
+ * **2016-12-09:** NorHei [[ac96acd](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ac96acd0010e83f875a6e244dcc2858b71d7a5a5)]
+   > Templating: Page blocks and menus can be called by name now
+     info.php
+     ````
+     // VARIABLES FOR ADDITIONAL MENUES AND BLOCKS
+     $menu[1]       = 'Main';
+     $menu[2]       = 'Top';
+     $menu[99]       = 'Hidden';  // for hidden Pages , sometimes using the hidden page setting isn't enough
+     // $menu[100]       = 'Hidden2'; //if you need multiple hidden menus , please continue counting from 99 up
+     
+     $block[1]      = 'Main';
+     $block[2]      = 'Left';
+     $block[99]     = 'Hidden'; // for hidden Blocks , sometimes blocks need to be hidden.
+     // $block[100]     = 'Hidden2'; // if you need multiple hidden blocks , please continue counting from 99 up
+     
+     ````
+     You now can call :
+     
+     `````
+     show_menu2("Main");
+     show_menu2("Top");
+     
+     <?php page_content("Left");
+     <?php page_content("Main");
+     
+     `````
+     
+     Now we can more easyly define default blocks for templates
+
+ * **2016-12-09:** NorHei [[5407343](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5407343e8b98c435a89aa9554dab0d07222e3174)]
+   > Merge remote-tracking branch 'origin/1.2.x'
+
+ * **2016-12-09:** NorHei [[6fd9fcc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6fd9fcca4e82c6aac25671cb3d428ef036824fa1)]
+   > Merged whith 1.2.x Branch
+     Replaced by 1.2.x to be more precise
+
+ * **2016-12-08:** NorHei [[cd01cff](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/cd01cfffc62b2c65dddc2969d7ff7a6b96c9c21d)]
+   > Fix for  incorrect checks on frontend signup
+     https://forum.wbce.org/viewtopic.php?id=812
+     https://forum.wbce.org/viewtopic.php?pid=7287#p7287
+
+ * **2016-12-07:** NorHei [[ab587a1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ab587a12c6d956148a067f15c5dbb2c27b046485)]
+   > Disturbing error codes can be deactivated in installer
+     For Stable releases you can deactivate the error codes by setting
+     WB_DEBUG to false.
+     
+     Errorcodes are passed through the d() function, so they are only
+     displayed when WB_DEBUG is true.
+
+ * **2016-12-07:** NorHei [[f022635](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f022635ce611769bfc60b6b71a13ec875dd91b9b)]
+   > Installer now displays WBCE version
+
+ * **2016-12-07:** NorHei [[bfe745a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/bfe745a64b09a7361bd209c0123ab58de48e5f50)]
+   > Fixed another error on Save , Review step 3
+
+ * **2016-12-07:** NorHei [[6d498c6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6d498c66935389950d192f93de7b52be41148708)]
+   > Bumped Version
+
+ * **2016-12-07:** NorHei [[b974280](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b974280480e5ea4ec3616c22e6d8b50f7bb72039)]
+   > Moved alot of styles to stylesheet , removed long deactivated setting.
+     Moved alot of styles to stylesheet, but nor all so far.
+     
+     Removed long deactivated "install tables" setting.
+     
+     Installing whitout tables makes no sense at all
+
+ * **2016-12-06:** NorHei [[5970a3f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5970a3f710e79fadfd8f0bcb7eb66a586ed27f5b)]
+   > Installer  Review part 2
+     Moved some css to css file
+     
+     Removed a lot of Code from the Template .
+     
+     Added it as structured code to the installer script.
+     
+     Cleaaning up is a really ugly work ...:-(
+
+ * **2016-12-06:** NorHei [[235764d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/235764db3c41f31443be25489b2006a4af97fc19)]
+   > Installer Review,  Template file, more functions moved to external File.
+     This installer is a real nightmare.
+     
+     The first review only does some cleanup , sorts out files ,
+     seperates the Template from the Installer script, removes
+     redundant stuff ...
+     
+     This now is only halfway done as i run outof time , but the installer
+     schould still be fullly functional... hopefully...
+     
+     Still got to Remove a lot of spagetty code froom the template :-(
+     
+     Now i Know why noone wanted to do this ..
+
+ * **2016-12-06:** NorHei [[8d05c7c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8d05c7cccb5ec3e9f336be5715015d040104e6ea)]
+   > Continued on reviwing the installer
+     Sorted Out error handling a bit more ...
+
+ * **2016-12-06:** NorHei [[ed70ab3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ed70ab3690998f4bf2fe2b31b17007995728b970)]
+   > Installer , better handling of whitespace chars, removed functions from save file.
+     Installer now detects an empty field if there are only whitespace
+     chars in the field.
+     
+     Moved the functions in the Save.php file to a seperate file.
+     This is part of installer review.
+
+ * **2016-12-05:** NorHei [[c89b475](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c89b4759fd9c24c50383504ef7169e292ff99887)]
+   > Installer fix , not catching all errors
+     As it says , after modyfying Error Messages to be collected and displayed
+     all together i forgot some lines to catch other errors than for errors.
+     
+     Fixed now .
+
+ * **2016-11-30:** NorHei [[329d1b2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/329d1b2f0270d405c871e5bf6f17f4411948c809)]
+   > Added Flags to language folder
+
+ * **2016-11-30:** NorHei [[2a3c8a8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2a3c8a8364277a3ef5768bc46200d1a51f6bc31b)]
+   > Small Fix  for copy paste error in autoloader
+
+ * **2016-11-29:** NorHei [[ba5fba9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ba5fba9a9300c47433b3c3e237e711c9f7db330c)]
+   > Possibly re-added  field "group_id" on Upgrade script
+     Upgrade testst from even 2.7 ran pretty smooth exept htat this
+     field was missing. So i decided to take care of importing
+     very old installations and add this field in upgrade script.
+
+ * **2016-11-29:** NorHei [[0645845](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/06458451fe3435e4d8c90ce9e13535c402fd1ea0)]
+   > Added autodetection for direct path in class WbAuto
+     Now in most cases the direct path parameter is no longer needed.
+     Thanks to Christian
+
+ * **2016-11-20:** NorHei [[5d52391](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5d52391cd297a558b9fff4b1a4eb8419a122ec6f)]
+   > Bugfix for Insert::DelJS() und DelCSS
+     Copy paste error
+
+ * **2016-11-19:** NorHei [[15c44d1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/15c44d1cc1e9b656f230f77386276870d75f9b28)]
+   > page_content() now has the option to return its content ~~~~~~~~ page_content($block = 1, $echo=true) ~~~~~~~~
+     If you set echo to false , it will retunrn its content
+     as a returnvalue.
+
+ * **2016-11-19:** NorHei [[c5acd73](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c5acd7342f662260c130edf14af550dd85e98869)]
+   > Merge branch '1.2.x' of https://github.com/WBCE/WebsiteBaker_CommunityEdition into 1.2.x
+
+ * **2016-11-19:** NorHei [[acec973](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/acec97337687bd3c3a7344d5e8dc00cb0ff2cf4b)]
+   > Fixed emty script tags in page , added new methods to Insert Class
+     DelCss ();
+     DelJs ();
+     
+     Methods added to delete JS or CSS inserted entries if needed.
+     Used this to fix Bug #156
+
+ * **2016-11-19:** instantflorian [[9006edf](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9006edfd3e63b66be80bf10ad2af8f8af0bd1b77)]
+   > Add module level to info.php of system modules
+     to avoid unwanted uninstall
+
+ * **2016-11-19:** NorHei [[35376fa](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/35376fad1b6a42d52a078929540f15cf225aa706)]
+   > Frontend Login settings not displayed correct
+     We using "bfalseb" and  "btrueb" if storing boolean values into the DB
+     theese db Settings where not changed in install DB.
+     "bfalseb" and  "btrueb"  are restored to true boolean values
+     "false" and  "true" are only restored as strings
+
+ * **2016-11-16:** instantflorian [[388627d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/388627df3b50091e95fb51057e0d11f2a71364f4)]
+   > Implement select2 for module selection
+
+ * **2016-11-16:** NorHei [[2e6a937](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2e6a937f81de393f612c8e9fd388cacc015e821e)]
+   > Module uninstall throw error
+
+ * **2016-11-16:** NorHei [[7b42a28](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7b42a286a6a97a04d524996938557a6ea197d180)]
+   > Removed module that not yet in use
+
+ * **2016-11-15:** NorHei [[bd7733e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/bd7733e15c225798771f979b710cfc3a5112cb64)]
+   > Preferences no longer shown if permissions deactivated.
+
+ * **2016-11-15:** NorHei [[c2cef4f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c2cef4f142bc64ad308fad574f9a3cc38e5e636b)]
+   > Class tool was overriding manual settings unintentionaly
+     This caused problems whith preferences
+
+ * **2016-11-15:** NorHei [[7427884](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/742788404292affca278f409c7e9ae1ed277c72d)]
+   > The Word "Preferences" was not displayed in edit group .
+
+ * **2016-11-15:** NorHei [[31b5320](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/31b532058f1b6479620d276cad66bcbf9d60095b)]
+   > Merge branch '1.2.x' of https://github.com/WBCE/WebsiteBaker_CommunityEdition into 1.2.x
+
+ * **2016-11-15:** NorHei [[1076392](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/107639219d554fee4cebc664ee87d5f87d835ba5)]
+   > Double Javascript sysvars in FE
+     The new automatic Placeholders and the old Frontend functions for Javascript collide and
+     create a double output for the system vars .
+     
+     To avoid this , the old functions now overwrite the entriy for the new ones
+     So sysvars only displayed once.
+     
+     As a result , we found that its necessar to add some new methods to class
+     I and class Insert , to delete entries.
+
+ * **2016-11-15:** NorHei [[368920b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/368920b18f1c372addd1d4a08fe32ba9758e95b1)]
+   > Small fix for last commit  : missing ";"
+
+ * **2016-11-15:** instantflorian [[f5a54ce](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f5a54ce5d358788ad6f020e97273eecb7f77a853)]
+   > Save create user form-data for 60 seconds
+     To avoid to enter all the data again if sth. was wrong or missing.
+     Script from http://www.dynamicdrive.com/dynamicindex16/formremember.htm,
+     changed storing time from 100 days to 60 seconds.
+     Change in modules_details to remove hard coded "Website Baker".
+
+ * **2016-11-15:** NorHei [[855fc26](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/855fc265d354084c1ad66e6da2e2ac4ea8bfb3de)]
+   > Class insert does not need or want script tags
+
+ * **2016-11-15:** NorHei [[90fc216](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/90fc216308c91336e8d4fdce82255c60f05ed628)]
+   > "Session Time Run out , killing session" debug message still active
+     Now deactivated
+
+ * **2016-11-15:** NorHei [[e3e8173](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e3e8173756d3237f97c769dba969463e757fcd63)]
+   > Uninstall of core modules mnot allowed
+     We have so many core modules that are a really bad idea to uninstall as
+     it could break the whole site or prevent backend settings , or possibly stop you from logging ins.
+     So we decided to add an extra Parameter to the List in info.php.
+     
+     $module_level="<user|core>"
+     
+     Core modules cannot be deinstalled. You need to change the info.php via AFE or
+     FTP before you can deinstall such modules.
+
+ * **2016-11-14:** instantflorian [[44c553c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/44c553ca169bc92ff2b41403649d603a8208ae98)]
+   > Clarification about intro page
+
+ * **2016-11-14:** instantflorian [[48f51dd](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/48f51dd5e732f1da8c4d8897922802a3ad2caa3c)]
+   > Output Filter Wording
+     Minor fixes to info.php and de.php
+
+ * **2016-11-12:** NorHei [[e50c91d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e50c91d40f1e1d0ea1d68492a3a69711445510ff)]
+   > Login Possible whith any passord
+     Fixed Bug .. There was a = instead of a == in an if clause ...
+
+ * **2016-11-12:** NorHei [[740d33a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/740d33a710a03c621396fa1ea759f1ce2345cb23)]
+   > Removed Admin tool for maintainance Mode, now using setting.
+
+ * **2016-11-12:** NorHei [[a3fb1fb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a3fb1fbcd3b986002235f96b7307255b85b5e420)]
+   > No Extra delay if you login correct on a single atempt.
+     Still bcrypt takes a bit longer than old md5()
+
+ * **2016-11-11:** NorHei [[1f2f60e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1f2f60e102f0f7e67f8a293d2ede68174bf7064f)]
+   > Display users temp blocked by login
+     Login sets users "active" to 2 for 3 Seconds
+     We need to set active users to >=1 not just ==1
+
+ * **2016-11-11:** NorHei [[55ad059](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/55ad059ad7c3336b0964c7032736bcfd8104972d)]
+   > BE output filtering was not activated on install
+     Insert and Css to head where not loaded upon default install  and, or
+     Upgrade. Nedded to set the new System Settings in the module
+     install.php and upgrade.php.
+
+ * **2016-11-11:** NorHei [[3818501](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3818501e8dcefed89969dd480d041888d9339b17)]
+   > Login Spam protection now only allows one Login for one user in 3 Sec
+     Should run as expected now , update for last commit
+
+ * **2016-11-11:** NorHei [[31c4d6a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/31c4d6aae3d5b09a80d4785562e567f611057bcc)]
+   > Login delay extended , fix for WbSession
+     ~~~~~~~~~~~
+     self::IsStarted
+     ~~~~~~~~~~~
+     needed to be
+     ~~~~~~~~~~~~~
+     self::IsStarted()
+     ~~~~~~~~~~~~
+     
+     in WbSession
+     
+     On Login every user is set inactive for  a few seconds
+     
+     WB_LOGIN_SLEEP is the constant
+     
+     So no additional Login atempts if one is already running ...
+     
+     arg damm this needs some fixing ... ok on next commit
+
+ * **2016-11-11:** NorHei [[f19677a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f19677aa7ec8dcc664a453951ea7b52265f887f4)]
+   > Reactivated Login protection, it was turned off for debugging
+
+ * **2016-11-11:** NorHei [[24f6830](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/24f6830d818a8aa97af8f8195fff70e256805de0)]
+   > commented out header installer save.php
+
+ * **2016-11-11:** NorHei [[de407fa](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/de407fa1f9fe420f4064ba453e724fda82c91fc9)]
+   > more bplaced ?
+     not so sure
+
+ * **2016-11-11:** NorHei [[aee09a4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/aee09a4552a832caa7a99194d1c12e97c673d19d)]
+   > More bplaced and Login fixes
+     Like
+     Reduced WbSession::IsStarted to the simple basic WB Version
+     As anything else caused login errors
+     .
+
+ * **2016-11-08:** NorHei [[ba2adb9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ba2adb9c01896fe2445e7fa8667731220baf7793)]
+   > Out of memmory on Bplaced
+     It seemed like the WbSession Class ran out of Memmoryy on certain Webservers
+     Maybe it was running into an endless loop or a PHP bug ,
+     i am not really sure about that.
+     
+     But changing the IsSession method helped ,
+     so it seems like its fixed now.
+
+ * **2016-11-07:** NorHei [[c8af098](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c8af098c8939874ecad977b3cdea0a820e926a8c)]
+   > Small changes on Datetimepicker Module
+     Thanks to Christian
+
+ * **2016-11-06:** NorHei [[356212f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/356212f59df008b0aede7515e40f1b7ff73a7a80)]
+   > Some more refinements on AddCss and AddJs
+     WE only can check internal files for browser caching options
+
+ * **2016-11-06:** NorHei [[69e276b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/69e276b465e813317dd83c4ca0ebab17c6599987)]
+   > Class insert  If then for refreshing Browser cache was buggy
+     href in CSS snd scr in JS where not loaded if refresh cache was disabled
+
+ * **2016-11-06:** NorHei [[dff227d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dff227d76daf1309bdbd02cc77c23dc6c5f3409e)]
+   > Typo fix for last change
+
+ * **2016-11-06:** NorHei [[0768d83](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0768d8359039a2d4b01955e62e1fd29bce37412c)]
+   > Removed old DB query mysql_somethin() -> $database->something
+
+ * **2016-11-06:** NorHei [[8a5bafe](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8a5bafe646de0e56eddc922c0650f82e5b7aa095)]
+   > mysql_error  to $databasee->error()
+     I hope this is a good idea and the right replacement
+
+ * **2016-11-06:** NorHei [[9210c2a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9210c2a9f2489659ed4438aa5090f8a993360ed6)]
+   > more fixes
+
+ * **2016-11-06:** NorHei [[9ae03af](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9ae03af403976d2ef0ca19ec5daa5b951748a2ca)]
+   > collection of bugfixes
+
+ * **2016-11-06:** NorHei [[182d307](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/182d3073fb36cdad26ff6f7f819d9c9d4b82f48e)]
+   > Changed sorting of languages in installer
+     This cannot be a final solution, as PHP functions asort() or natsort ()
+     cannot handle UTF-8 Chars.
+
+ * **2016-11-06:** NorHei [[7447df9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7447df9677be4bcd7867aaac44dc9299a0b24b8e)]
+   > Deleting admin on install fixed
+     In certain circumstance  the ad min user vas deleted on install ..
+     
+     connected to #149
+
+ * **2016-11-04:** NorHei [[72f8cd7](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/72f8cd7a4951d498f3fc7879d39a4572f571ee45)]
+   > Installer issues  (Session error messages... )
+     Installer now displays all error Messages at once.
+     Displaying only on , and then on page reload showing the
+      next one was pretty anoying.
+     
+     Changed Prefix to only lowercase and no "_" for future
+     DB systems .
+     
+     Fixed Cookie Message to diplay only if problem is found .
+     
+     Added Array for later coloring of fields containing errors.
+     Coloring need to be done in next stepp.
+     
+     $_SESSION['ERROR_FIELD']
+     Contains all fields whith errors
+
+ * **2016-11-03:** NorHei [[0414c70](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0414c70fff33d848c11c65ee56c3c9607e91c9c9)]
+   > Parse Error in Upgrade script
+     Parse error: syntax error, unexpected 'Settings' (T_STRING)
+     in /var/www/web207/html/wbce12x_norbert-heimsath_de/upgrade-script.php
+     on line 788
+     
+     Missing Bracket ")"
+
+ * **2016-11-03:** NorHei [[5358376](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5358376013a8515088e35c8247a01354e914e470)]
+   > Suppressing of Browser cache for class Insert new Constants
+     WB_JS_REFRESH_BROWSER_CACHE
+     If set true all JS files in class Insert get an parameter attached so
+     browser thinks they are a new file.
+     
+     WB_CSS_REFRESH_BROWSER_CACHE
+     If set true all CSS files in class insert get an parameter attached
+     so browser thinks they are a new file.
+
+ * **2016-11-03:** NorHei [[dd581d6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dd581d669b5ab56a2b14678edce67c46adcc6119)]
+   > show_wysiwyg_editor was loaded multiple times , now fixed
+
+ * **2016-10-25:** NorHei [[5cfa4e5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5cfa4e5d68eec26da15301722ec1aeadb34df150)]
+   > Added testfiles for steffeks pagetree
+     This files load the new pages module if present.
+     
+     If not they load the old legacy files.
+
+ * **2016-10-23:** NorHei [[9986334](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9986334439035a7ac9ce79d40ebb441e269fe1a2)]
+   > Language File loading in class Tools , some refinements.
+     Some Language files relie on global Language Vars already set .
+
+ * **2016-10-23:** NorHei [[81462c3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/81462c337e10f04a5aa303270726ccb2b2765f1a)]
+   > Compatibility patch Tools Class will now load language files in Global context
+
+ * **2016-10-18:** NorHei [[fa2e77d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fa2e77d45d8f92e36f936fae332f5df9cd96ddb6)]
+   > Added Session vars display for debugging
+     WbSession::Debug
+     Returns an HTML overview of all Session vars
+
+ * **2016-10-18:** NorHei [[37686e8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/37686e8c4ea7e45c1f44eea93b2de12a9a3e1657)]
+   > Added Session Class
+     From Now Modules can override the Session by registering another
+     Session claass early and filebased.
+     
+     Added Methods for storing ang retrieving session values
+     These store their values in a Sub array so the stay out of the way if
+     we implment some external Software.
+     WbSession::Set()
+     WbSession::Get()
+     WbSession::SetPerm()
+     WbSession::GetPerm()
+     
+     We have a permanent session storage where data can survive a logout.
+     As login is only session based, this is the place to move the logout.
+     WbSession::Logout();
+     
+     Extra method for check session
+     WbSession::IsStarted();
+
+ * **2016-10-01:** NorHei [[0904fd6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0904fd69ef41aead234395447ff764c248e40c1a)]
+   > MANAGE_SECTIONS constant was set to wrong value
+     It was True , but should have been "enabled"
+
+ * **2016-09-14:** NorHei [[dc9e76f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dc9e76fcf2c1a2c748ebfdb691f98cb0eb12cea3)]
+   > Adapted Class WbGroup to the new DB functions ... love this
+
+ * **2016-09-13:** NorHei [[d369fd7](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d369fd73d9704319daab5dde3dbf5f461d964513)]
+   > Bugfixes for class WbGroups , this should be functional so far
+
+ * **2016-09-13:** NorHei [[f0cea8f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f0cea8f392cad8a9bb890cc406558b56c2b5bfc2)]
+   > Lots of extensions to Class group
+
+ * **2016-09-04:** NorHei [[4998d24](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4998d24a41cbf9c7f242686190116286e151c699)]
+   > Almost finished WbGroup Class
+     Class to manage Groups , far more comfotable than how its done in the old WB
+
+ * **2016-09-03:** NorHei [[86913d2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/86913d250566135a35854940fc9fdfb5a9846932)]
+   > account/preferences now only available , when preferences available in BE
+     This now can be sett by using group settings
+
+ * **2016-09-03:** NorHei [[098441f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/098441fddf623111a012b9ee30a022a83d05b1f1)]
+   > Moved get_user_details and get_permission to Class WB
+     The are now needed in FE too
+
+ * **2016-09-03:** NorHei [[08a732b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/08a732b2232c524e92637fa58829584d773c120a)]
+   > Set a more precise Version for Date Time Picker
+
+ * **2016-09-03:** NorHei [[7895240](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/78952405941652f0fe8a3516ab84f4186137f2d1)]
+   > Added new date time picker Module.
+
+ * **2016-09-03:** NorHei [[8477430](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8477430c0dc9bc37811f2913ffb6e3632ae8c3e0)]
+   > Adapted BE Templates to use class Insert
+     Added the placeholders for use whith Class Insert(I)
+
+ * **2016-09-02:** NorHei [[123582f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/123582f5c044393d42876b140a359c59cf0ceb44)]
+   > An extra place for setting WB_FRONTEND (in index.php)
+
+ * **2016-09-02:** NorHei [[5d8dfd6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5d8dfd625d2e59da86e6e117576b345be10f88d6)]
+   > Constant WB_FRONTEND
+     Whenever frontend functions are loaded this constant is defined.
+     
+     So use :
+     
+     if (defined(WB_FRONTEND)) {
+     	// do Frontend speciffic stuff
+             ....
+     }
+
+ * **2016-08-28:** NorHei [[504fac2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/504fac213eb2f700163e8f4f096204495e83cb4b)]
+   > added some Error codes to install save.php
+
+ * **2016-08-28:** NorHei [[972e97a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/972e97a6fd8a07198417f8b78195d9d65fde0e48)]
+   > Little Bug in installer Sql
+
+ * **2016-08-28:** NorHei [[76a3a51](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/76a3a5150f8f5a8346e2402779e544d90fed55e3)]
+   > NEw DB Class method import renamed to the old SqlImport
+     For more compatibility.
+     
+     Thx to stefek !!!
+
+ * **2016-08-28:** NorHei [[3b15e09](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3b15e09b9d3d7f618dce93a9341c6a47a3c0a3df)]
+   > Some simplification to installlation save script
+     Thanks to Stefek !!!
+
+ * **2016-08-28:** NorHei [[9ab4187](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9ab41873cf8dc58d21b8627c3f78c1bc605f8e46)]
+   > Removed double Admintool icon
+     Someone readded it .. it needs to stay unset in Theme CSS
+
+ * **2016-08-28:** NorHei [[5d6e8d8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5d6e8d803274694e4a4d4222c4a0b8b7213245eb)]
+   > Permissions for Preferences added
+     The permission settings for Preferences where completely missing .
+     Added them now.
+     This was a problem as the Preferences module expected a permission setting
+     (as it should)
+
+ * **2016-08-28:** NorHei [[454ce76](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/454ce76f88a44484ffd84e719fae8f57d0bfebd2)]
+   > Error in Class DB did stop installation from running
+
+ * **2016-08-21:** NorHei [[3ea8189](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3ea8189de7637e6dd17ff6dfff3ece5ee58f1c3a)]
+   > WbAuth for admin Login Forgot and usermanagement .
+
+ * **2016-08-21:** NorHei [[3f06594](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3f06594f50d13cec81fd4fe9e7f947e20037dc9a)]
+   > Class auth Was called WBAuth and is obsolete
+
+ * **2016-08-20:** NorHei [[5462442](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/54624429275211a07c1d0398718d37d1f7296776)]
+   > Added PasswordHash clas to uggrade script for removal
+
+ * **2016-08-20:** NorHei [[10e8573](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/10e8573afb2f1f9bfdd42918664cc169fab17d0c)]
+   > Removed PasswordHash Class as its not used any longer .
+
+ * **2016-08-20:** NorHei [[db4a4e9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/db4a4e9e39f6dac8e52caeeca2389cab26429dda)]
+   > Frontend account modified to use new WbAuth
+
+ * **2016-08-20:** NorHei [[9a643bc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9a643bc1836d43d6a2d92fa5714eed8f35ae1aae)]
+   > WbAuth::GenerateTempPassword retzurns Password now for further use .
+
+ * **2016-08-20:** NorHei [[dd5fb02](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/dd5fb02cb833bec29aeae954bd62aa0bb215d019)]
+   > Preference module modified to us class WbAuth
+
+ * **2016-08-20:** NorHei [[90a53e3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/90a53e3fb65c28e11861be524823838699046f0f)]
+   > Login class using wbauth and wbuser now, minor fixes to  wbauth and wbuser
+
+ * **2016-08-19:** NorHei [[49fc8a4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/49fc8a44240a3b4391249688a356f9623498ce76)]
+   > Littlefix for last change
+
+ * **2016-08-19:** NorHei [[5419538](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5419538e1904c2cb5439e096baa668bd1b10f1b3)]
+   > PDO DB Class the __call function was not answering to method_exists() requests..
+     As this is needed for Multi WB modules ...
+     I hat to replace it whith old replacement functions..
+
+ * **2016-08-18:** NorHei [[1e04701](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1e04701f017ef5b481e3d070d9d923ab4410b465)]
+   > Rework the Login process first Step
+     Added Classes WbUser and WbAuth
+     
+     WbUser is the basic class for doing a complete user management.
+     In the future  WBUser should be responsible for adding , editing  and storing users.
+     Theres alreads a lot of functionality , but its not finished yet.
+     
+     WbAuth is just a static class to do the basic workload of Authentication from
+     simply everywhere in WB.
+     Simply call WbAuth::AutoAuthenticate();
+     
+     And you are done.
+
+ * **2016-08-18:** NorHei [[eb21c9d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/eb21c9dfd40889ebe51d6ac99879fcb82ac28d92)]
+   > Database no longer stores password and username.
+     We are working on removing all traces of DB access Data after connecting to the db
+     but this class was giving this Data an exta place to store this stuff ...
+     
+     Now the class deletes the Variables after connecting as it should be in the future.
+
+ * **2016-08-18:** NorHei [[fee6068](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fee606819bb1c067a1ee4d9bbc6208e3dbe5fdbc)]
+   > Removed Smart Login stuff in Admin Login.
+
+ * **2016-08-18:** NorHei [[49ea8d9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/49ea8d9a0fcb15b72d8070aff89c3fdff52e82a3)]
+   > REmoved "remember me" from class login as it isnt really used.
+
+ * **2016-08-18:** NorHei [[282271d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/282271d61497d25f2cd320ddbeca074f5e22d3b2)]
+   > Very minor change to preferences for better debuging
+
+ * **2016-08-03:** NorHei [[af32af6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/af32af65215f185ec6a022c86a3deff1b4f30f7c)]
+   > A basic user klass that is needed for rewriting Login Stuff
+     At least it will save me a lot of work when rewiting login
+
+ * **2016-08-02:** NorHei [[3255fca](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3255fcae1e2d97a6fb24d9ed18489bf17a24b61e)]
+   > Database Errors where always set to NULL
+
+ * **2016-08-02:** NorHei [[93c6c8b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/93c6c8b6e5994cc3a5fc4970ad7969b72426d371)]
+   > Future proof version of last fix
+
+ * **2016-08-02:** NorHei [[77aafd1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/77aafd1b339cfbe3032f56883c09df66a8e59281)]
+   > TABLE_PREFIX -> WB_TABLE_PREFIX comply to standard
+
+ * **2016-07-25:** NorHei [[76bac76](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/76bac76407bae6d83e4f87cc5f228c69ba059f4c)]
+   > Added Half ready classes
+
+ * **2016-07-19:** NorHei [[d3c78b9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d3c78b91d0a93f4f7e5997213205d7a7d46de223)]
+   > Wrong variable name in class WbAuto(Autoloader)
+
+ * **2016-07-19:** NorHei [[b06d0c4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b06d0c479b74d566e46f1cb86248a9ded3c17b42)]
+   > Old MYSQL constants where missing
+     Soooner or later we need to replace em all
+
+ * **2016-07-19:** NorHei [[329f96a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/329f96a5f9eef413e06acd9b13a13c62f7f0c324)]
+   > Some fixes for the autoloader , may need some additional rework
+
+ * **2016-07-19:** NorHei [[6515645](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/65156459c6f0c8de53e2d362ddefdb816e3bafc9)]
+   > Merge pull request #144 from rjgamer/patch-3
+     Update database.php
+ * **2016-07-16:** Jonathan Nessier [[721392e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/721392e86912513b3a212a04e9c976b3177a9e26)]
+   > Update database.php
+     Fixed bugs, see PM conversation
+ * **2016-07-16:** NorHei [[f9d6a73](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f9d6a736f670a66c34ede01a014784628cdd631a)]
+   > fixed Install problem whith new DB class
+     Thx to cwsoft for reporting.
+
+ * **2016-07-15:** NorHei [[ed956d3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ed956d3235b649756f3698d6f73f6304ecbb4b2d)]
+   > Small fix for class tool concerning output buffering/filtering
+
+ * **2016-07-14:** NorHei [[0001a03](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0001a033835712507decc1a243c38eba94105ded)]
+   > Some More  additions to PDO DB Class
+     Added WDO websitebaker Data Object
+     Thnx to RJGamer und steffek !
+
+ * **2016-07-13:** NorHei [[292421d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/292421dd3437e37f61ddb0a46bb0ca7b81bfb1fd)]
+   > Small fix for autoloader unter Windows
+
+ * **2016-07-12:** NorHei [[fe34229](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fe342296913864d07681fe508a635961a8885c75)]
+   > This needs a run of the upgrade script , so bumping version
+
+ * **2016-07-12:** NorHei [[9cde887](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9cde8874bf6e304bd895682e2c412da09f0f3300)]
+   > Droplets in Backend
+     From Now on its possible to use Droplets in then BE pages .
+     Instead of [[yourdroplet]] you have to use [[[yourdroplet]]]
+     As filtering for [[yourdroplet]] in the backend would replace all
+     droplets in WYSIWYG fields for example.
+     
+     In addition the extra <p> tags created by many Editors are filtered out.
+     <p>[[yourdroplet]]</p> will become
+     
+     [[yourdroplet]] again.
+     
+     Not sure if thats a goob idea but we will see.
+     This is only done in FE display.
+     
+     Right now all droplets can be used as BE Droplets, but i guess not many
+     reallly make sense.
+     
+     I really need to free Droplets from this silly eval , as this slows down
+     the execution speed drastically.
+
+ * **2016-07-12:** NorHei [[fcf749e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fcf749e9e737cea1bc01fb427ff31c6ef4a23276)]
+   > Forgot some debug display in class insert
+
+ * **2016-07-11:** NorHei [[c9c5465](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c9c5465f88d8334f96e0ac15f9713cc3461d2d24)]
+   > Added automatic insertion of placeholders for class insert
+     The new placeholders are now added to templates that do not have em.
+     This is done by a new output filter  contained inn Class insert.
+     
+     As its an output filter you can turn it on and off in the opf settings.
+     
+     If you encounter any trouble whith this please inform me.
+
+ * **2016-07-10:** NorHei [[2616425](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2616425a5dc16a1f8b0b264d57f108577578db92)]
+   > Evil droplets where eating my insert tags
+     To be more precise they where eating all droplets that where not in
+     the Droplet list in DB , replacing em whith empty strngs...
+     
+     That included my insert Tags... [[Css]]....
+
+ * **2016-07-10:** NorHei [[c07cea9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c07cea9fab74a5828fb432d22258d087b815b5bf)]
+   > CKE had trouble whith new DB class
+     <b>Warning</b>:  mysql_real_escape_string() [<a href='function.mysql-real-
+     escape-string'>function.mysql-real-escape-string</a>]: A link to the server
+      could not be established in <b>/var/www/web207/html/wbce12x_norbert-heimsath
+     _de/modules/ckeditor/ckeditor/plugins/wbdroplets/pages.php</b> on line
+     <b>45</b><br />
+
+ * **2016-07-10:** NorHei [[7dfe949](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7dfe9495844f4fc485a38cd85bb8f40944276091)]
+   > Removed deprecated messages as they caus only tons of trouble
+     CKE no longer working , dozens of header already send messages ..
+
+ * **2016-07-10:** NorHei [[fbf8034](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fbf8034ca0629bb13d74ae178e2e985430ed0f09)]
+   > Some major bugs in settings class and some cleanup
+     Extendes settings class had some issues whith storing  boolean data.
+     And some cleanups in module files .
+
+ * **2016-07-09:** NorHei [[2837a93](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2837a9310d31c393dcc6130392cce19e8da5f55c)]
+   > Class settings had problems whith storing and retrieving booleans
+
+ * **2016-07-09:** NorHei [[316166c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/316166c800b034f15c2b7a87118f032ec157bc49)]
+   > Merge pull request #143 from rjgamer/patch-2
+     Fixed set error
+ * **2016-07-09:** Jonathan Nessier [[fd4a496](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fd4a49609400e3e72300f1251bc1e35882107287)]
+   > Fixed set error
+
+ * **2016-07-09:** NorHei [[6d26922](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6d269228935e03defd0c318d43358a589145d7b3)]
+   > PDO DB class produced some warnings
+     Warning: getModulesArray() [function.getmodulesarray]:
+     This PDORow is not from a writable result set in /var/www/web207/html/
+     wbce12x_norbert-heimsath_de/modules/addon_monitor/functions.php on line 42
+     
+     Notice: Indirect modification of overloaded element of PDORow has no
+     effect in /var/www/web207/html/wbce12x_norbert-heimsath_de/modules
+     /addon_monitor/functions.php on line 51
+
+ * **2016-07-09:** NorHei [[f0f6411](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f0f6411da7710dbd1823a3875e283bb58be83f7c)]
+   > Some path adjustmets on database compatibility file
+
+ * **2016-07-09:** NorHei [[edfe975](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/edfe97538def9ce5248ec2e87ba65bf2a5450a1e)]
+   > Redirect installer , wrong file path
+
+ * **2016-07-09:** NorHei [[3b1a5c9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3b1a5c91127b6b65a783f702c8a9e4b867df7e35)]
+   > turned of deprecated messages for now
+
+ * **2016-07-08:** NorHei [[f0be616](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f0be616251f55efd107320ff3cdc500da5e95fe5)]
+   > Placeholders for insert class now case insensitive
+
+ * **2016-07-08:** NorHei [[51fb074](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/51fb0749d95968e19db2a891c59d98a344565803)]
+   > Bug in class insert
+     closure was missing a use , and closures dont function whith $this
+     on old php versions
+
+ * **2016-07-04:** NorHei [[6814eb5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6814eb5f2548d2f9a68385c7fade43a999a5c3c6)]
+   > Put in deprecated messages again WE will add those to the old class too
+     Maybe we have a nice idea to inform from where this was called .
+
+ * **2016-07-04:** NorHei [[31a87f2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/31a87f2722c3bcceffba66a1938ee10f353b4287)]
+   > Forgot to add initilaize.php
+
+ * **2016-07-03:** NorHei [[e3642d9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e3642d9bfbb194b4887f071981b05b623a6fdabf)]
+   > Commented Out deprecated messages  for nen method names
+
+ * **2016-07-03:** NorHei [[699ce63](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/699ce63759da553d8103d3cf34d64aed1df8f435)]
+   > Even More Framework modifications
+     Autoloader now loads DB system too
+     
+     The old DB clas is upgraded to the new functions too
+     Thanks to Steffek!!!
+     
+     persistence is renamed to lowercase   as all files should go for being lowercase.
+
+ * **2016-07-02:** NorHei [[155a074](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/155a074225c275027caa11f2fbcdf50a33e24b88)]
+   > Initialize loads correct database file now
+
+ * **2016-07-02:** NorHei [[d3da15d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d3da15d0ba3dbc6d5ded27cd060b624d032c693a)]
+   > Loads of cleanup in framework folder
+     Removed some compatibility files , as new classes do not need them.
+     
+     Old DB class is back in and the include file looks for PDO drivers
+     and only loads new class if they are available.
+     
+     An deprecated error message is shown when compatibility files are called.
+
+ * **2016-07-02:** NorHei [[4b6d5e7](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4b6d5e78670eb4dcc72320643890e808765ea1a9)]
+   > Small fix for Settings
+     Needed to  De serialize in GetPrefix  too :-)
+
+ * **2016-07-02:** NorHei [[62f22c7](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/62f22c77e881e3a2c7b0d56001f5accc58c94e2f)]
+   > Extended Class Settings
+     Now we can store Arrays and objects.
+     
+     And we can fetch all settings for a module for example by one simple call
+     to the class .
+
+ * **2016-06-30:** NorHei [[ac20c83](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ac20c83f3efead9e100e91cce98cd227f91e8cdd)]
+   > Experimental code for modules loaded bevore Database
+
+ * **2016-06-30:** NorHei [[fd99c0f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fd99c0f42c85f03d5a84e8b885d77ed0cc5de104)]
+   > Enabled Autoloader to register direct paths
+     Added a Parameter to Autoloader to register direct paths whithout a
+     preset WB_PATH.
+     Usefull to register things outside of webroot or before paths are loaded.
+
+ * **2016-06-29:** NorHei [[b3c2672](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b3c2672f61ddb47c4be61cb91125ffaa49b082f9)]
+   > WB_IGNORE_PHP_VERSION added
+     WB_IGNORE_PHP_VERSION
+     Only can be set in Config. If defined, it ignores the version
+     check in /framework/inititialize.php (define anything  you want)
+
+ * **2016-06-28:** NorHei [[421bcb0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/421bcb0c4f4802b9edfece3657deb6bab21ab9ec)]
+   > Merge pull request #139 from rjgamer/1.2.x
+     Database classes refactored
+ * **2016-06-24:** NorHei [[a7a390c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a7a390cfd3535b7e3f0650947c47bdd0bcdb2a6b)]
+   > Theme overrides for backend.css and backend.js
+     Now it should be possible to override backend.css and backend.js
+     via the BE Theme .
+     
+     Example  if the code moduel had a backend.css and backend.js
+     you could do a Override in
+     /templates/YOURTHEME/modules/code/
+     Just add one or both files there.
+     You can even override if codde has non of this files.
+
+ * **2016-06-24:** NorHei [[d905fb6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d905fb62a4e4999c560d75ab9b8d2a3675d6604f)]
+   > Problems loading Backend.css and Backend js .
+     We ha d problems when an admin tool tried to act as a edit page for pages as
+     class admin was einther loading files for a tool or a page editor.
+     But we had a tool that was a page editor :-)
+
+ * **2016-06-23:** rjgamer [[9834bb5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9834bb5b499f4545f3a1ae2043d95f2bebcb8e0e)]
+   > Updated database classes
+
+ * **2016-06-23:** rjgamer [[0b3198c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0b3198c531dc7791cfad07c005c54b52ace43488)]
+   > Added and fixed some methods
+
+ * **2016-06-23:** rjgamer [[4bd7aea](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4bd7aea8ef55c1c8ab07eabe42c315629b6eca97)]
+   > Updated .gitignore
+
+ * **2016-06-22:** rjgamer [[5782222](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/578222299a378aed6d5101f9b7cb79e5daa93225)]
+   > Added new updateRow method
+
+ * **2016-06-22:** rjgamer [[204c2e5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/204c2e5671b53fa9447491c869dec45300645291)]
+   > Fixed some bugs
+
+ * **2016-06-22:** rjgamer [[f6719f5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f6719f5bb6bc5b6c4659b32cacd7d50a94ec2d18)]
+   > Added DB_DSN for SQLite
+
+ * **2016-06-22:** rjgamer [[d7b6745](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d7b6745551b763f4bec8c648217e06c7acba8095)]
+   > Added method getPdoStatement()
+
+ * **2016-06-22:** rjgamer [[1ddc2f6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/1ddc2f645cf973766d3deba7e22041f38f5446d2)]
+   > Database classes refactored
+
+ * **2016-06-13:** NorHei [[66388fe](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/66388feda6ea971f2a1d9229ae4b44f5e18e05af)]
+   > Forgot to remove some debug stuff
+     Thanks to Stephan
+
+ * **2016-06-11:** NorHei [[c5d8b87](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c5d8b87b3b969e6d7b5fd5a9d4e8c7e0043c3b8c)]
+   > Tools, backend, settings for backend_body.js
+     Same as the last fix , just for backend_body.js
+
+ * **2016-06-11:** NorHei [[0a95a0e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0a95a0ed8cc2b4932f030b1d7b3028ac21f89fd0)]
+   > Changed class admin register_backend_modfiles for tool setting and backend modules
+     Class admin now supports tool setting and backend modules and loads
+     backend.js and css correct.
+     
+     Added regex for injections prevention.
+
+ * **2016-06-10:** NorHei [[134cfec](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/134cfec3579b214663f20504a1387f4527b0cca8)]
+   > Added the Var $aWrapper for easy access and handling of $this.
+     Needed for new pagetree
+
+ * **2016-06-09:** NorHei [[4d3d857](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4d3d857b334c43184b3e33d528600f08ea4d31a9)]
+   > Reactivated new settings too, as the won't collide whith any old modules.
+     Same as preferences
+
+ * **2016-06-07:** NorHei [[e8439e4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e8439e4300390bc13d72a6ef14b0b6609342696f)]
+   > Set Session Cookie Livetime to 0 = unlimited
+     Wont interferee whith the session management then.
+     Session management done serverside.
+
+ * **2016-06-07:** NorHei [[ecb1593](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ecb15935438f854a81903eb05de52015d6c04de5)]
+   > Session Timeout does not prolong after page load.
+     After adding a function that certainly ends the session relyably after its
+     timeout i found that the session does not prolong on page calls.
+     
+     Problem was that i set the cookie Lifetime and php does not prolong this
+     when extending the session (PHP But/Feature)
+
+ * **2016-06-05:** NorHei [[83d8c29](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/83d8c29e33857f38944ec8c4e69cad9891dfcb1e)]
+   > Pushed templates Version numbers
+
+ * **2016-06-05:** NorHei [[4f57264](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4f57264f4e3228338f2ebec10113f2276f3e045f)]
+   > Reactivated the new  Preferences Admintool
+     The new backendfunctionality is almost complete , and the new
+     Preferences is far better than the old one.
+     
+     As this does not interferre whith any old Modules , i think this is a good Idea.
+
+ * **2016-06-05:** NorHei [[b8315d1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b8315d16c078f951f4371159f85a83cb8370725b)]
+   > Small changes on Argos BE Template
+     Moved the informational Box to the bottom as it colided whith the navigation
+     on small screens whith big fonts or if you extend the navigation.
+     
+     Added PHP version as informational field.
+
+ * **2016-06-05:** NorHei [[adfa7ed](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/adfa7ed8d95e56b2555772ed358d8aa0d81e8f94)]
+   > Added a few variables to the footer Template in print Footer
+
+ * **2016-06-05:** NorHei [[4eda537](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4eda5377341dd84f5a897d34b381b339c405a86b)]
+   > Just some alignments on the Logo in Flat Theme
+
+ * **2016-06-05:** NorHei [[ec35516](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ec35516bebd69eace36033d1e40ac7750649e0b4)]
+   > Flat BE theme missing admintool icon
+
+ * **2016-06-05:** NorHei [[8821534](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8821534997943a605862bb04eec16930a2db6408)]
+   > BE Theme was missing a font
+
+ * **2016-06-02:** NorHei [[b0b01bc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b0b01bca6c6a4fda88ae800c6b3df79d985be578)]
+   > Several small BE fixes
+     Removed Link to Websitebaker
+     Several minor fixes
+     Just the first step , several more to come.
+
+ * **2016-06-02:** NorHei [[51b400a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/51b400a859c46ff5dda40ae51e037a52128a83ea)]
+   > Pagetree fix
+     Fixed a missing <td>&nbsp</td>
+     
+     http://forum.wbce.org/viewtopic.php?pid=4834#p4834
+     
+     Thanks to Stefek!!
+
+ * **2016-05-30:** NorHei [[771827a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/771827a5d655dc4ab485067a938290e559cdc25e)]
+   > Fix for modules using WB Classic exeption handler instead of redirecting directly
+     Just for compatibility.
+
+ * **2016-05-30:** NorHei [[91bc2a2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/91bc2a2fb63cc77924cdc7e00281929965787002)]
+   > A wild hack for modules calling $admin in the FE
+     Some modules like PRocalendar  or MPform  are calling on $admin in the Frontend.
+     Possibly because under WB Classic getFTAN() is only available in BE.
+     
+     http://forum.wbce.org/viewtopic.php?pid=4743#p4743
+     
+     Done something very similar for  modules calling on $wb in the BE.
+
+ * **2016-05-28:** NorHei [[f976481](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f97648190019959aacce53292693957f49b65fb2)]
+   > Replaced new BE functionality whith old (modularity removed)
+     Calling admintools from whithin a class caused several tools to fail.
+     Now we first fix the modules and then add the new feature in a 2.0 Version.
+     2.0 as it breaks something...
+     
+     For 1.2.x we stick whith the old variant to not create any bad surprises
+     for users and have updated modules available when changes are applied.
+     
+     Still there are a lot of new variables and functionality available in
+     admintools as the script calling the Tools has been enhanced.
+
+ * **2016-05-27:** NorHei [[75d5bee](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/75d5bee9c23047cdf2a8d9414eff2f559ca4a843)]
+   > Compatibility fix  for this release
+     Many modules stoped working because they couldnt fin PHPlib, TWIG or did
+     double includes of corefiles. The two libraries are put back as fake files.
+     The Core Files now hace include_once files that stop old modules to load
+     em more often than necessary. Next step is to restore the old Backend.
+
+ * **2016-05-23:** instantflorian [[a18e725](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a18e7253b101b88e42d1fe6926fc96bb8091de5b)]
+   > Typo in german language file, smaller template optimizations
+
+ * **2016-05-19:** NorHei [[e4d7577](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e4d7577206d1960d75a4629acdaceb78e0c077fa)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-05-19:** NorHei [[6bc653f](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6bc653f3e9f78153cb02de37d380bf72b45dc64e)]
+   > framework/functions.php  page_link() makes trouble in FE
+     As reported in  #134
+     
+     Topics:
+     when calling a topics detail page in FE, instead of the page just an error occurs:
+     Fatal error: Call to a member function page_link() on a non-object in /.../framework/functions.php on line 596
+     
+     This function is needed in FE and BE so i first decided to add an IF THEN , but then remembered that in BE i do a
+     $wb = $admin;
+     So a $wb is always available when a $admin is.
+     
+     So i only changed this back ti $wb.
+
+ * **2016-05-16:** instantflorian [[abf4c2d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/abf4c2d0ef1aacbbf9448e0671040b025fb5b2eb)]
+   > Fix for issue 133
+
+ * **2016-05-15:** NorHei [[b8cc0da](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b8cc0da282e9fb608106346dd79ec69e656f9000)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-05-15:** NorHei [[3bbabab](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3bbababf2c62a1089e1d3d7098b6ea1c342ddc18)]
+   > When not logged in tool.php throws error instead of redirecting
+     Issue #132
+     
+     if a visitor calls http://domain.tld/admin/settings/tool.php
+     he is not redirected to the login screen but sees
+     Notice: Undefined index: MODULE_PERMISSIONS in /.../framework/class.tool.php on line 124
+     Warning: implode(): Invalid arguments passed in /.../framework/class.tool.php on line 124
+     Warning: Cannot modify header information - headers already sent by (output started at /.../framework/class.tool.php:124) in /.../framework/class.admin.php on line 34
+     
+     Schould be fixed by now ...
+     Thx to Florian for reporting.
+
+ * **2016-05-12:** instantflorian [[c867e2a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c867e2a71d177541a78ebe084e949ef6162a4a91)]
+   > Added Save&Go Back to page settings + tooltip for filename/URL field
+     Also corrected missing target pages on error (you were lead to the page
+     tree instead of staying on the settings page)
+
+ * **2016-05-12:** instantflorian [[061b74a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/061b74a3c1b72c610bfaad045f30991ccf714e68)]
+   > Missing ? in breadcrumb, styles for new settings overview in argos theme
+     This is NOT the fix for the reported bug 132!
+
+ * **2016-05-12:** instantflorian [[a8672fa](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a8672fa49df8d6958392022d0fa5eba83a728263)]
+   > SimplePageHead now checks if icons exist
+
+ * **2016-05-12:** instantflorian [[5e331e6](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5e331e6af186d90b4be28395ac878e742010aeae)]
+   > Added missing reference to fontawesome webfont, minor branding issues
+
+ * **2016-05-12:** NorHei [[348a000](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/348a000d126f87711fd6059b42df8465a928443f)]
+   > It seems that language and templates are fetched from parent but menu is not
+     Issue #124
+     This is fixed now
+
+ * **2016-05-12:** NorHei [[33d3eb3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/33d3eb3868768136beea3855c763aeb6afceda18)]
+   > Aborted test to move  more functionality to class WB  and dry out Admin and Frontend classes
+     Started in 6c85efbc98e6eb45999f4348e7517af9facd9a0d
+     
+     ending this for now . :-(
+
+ * **2016-05-10:** NorHei [[7a25fc0](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7a25fc0f2d5d4c495f13f5692c9408f35229565b)]
+   > \admin\groups\groups.php sql error
+     Issue #130
+     
+     Fatal error: Call to a member function numRows() on a non-object
+     in \admin\groups\groups.php on line 87
+     $result = $database->query('SELECT * FROM ' . TABLE_PREFIX . 'addons
+     WHERE type = "module" AND LIKE "%page%" ORDER BY name');
+     
+     Change to
+     $result = $database->query('SELECT * FROM ' . TABLE_PREFIX . 'addons
+     WHERE type = "module" AND function LIKE "%page%" ORDER BY name');
+     
+     Thanks to 	qssocial!!
+     I love bug reports whith solutions!!
+
+ * **2016-05-10:** NorHei [[51f74b3](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/51f74b363431d0bfeb00bcf2456b5c46385309d9)]
+   > Finally  Html blocks are added to class Insert
+     You now can use AddHtml() to insert  extra Html to your templates .
+     Functionality is the same as AddJs() but you dont have different variants
+     of html.
+     
+     This is usefull for dynamic footers , or Warning bars on top of the page
+     and many other Applications.
+     
+     MAybe its nice to remember that this functions also in BE templates now.
+
+ * **2016-05-06:** NorHei [[0a121d4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0a121d447bce3cd9cd659f394708a0ee588d6f93)]
+   > Filter  Insert and CSS to head now available in BE
+     They got their own settings in the filter settings.
+     
+     MAybe i should move those settings to settings ...
+
+ * **2016-05-06:** NorHei [[15ca881](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/15ca881d09a0b97e7dfc2d996e89067b74662535)]
+   > added Language vars "FRONTEND","BACKEND"
+
+ * **2016-05-05:** NorHei [[e23500d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e23500d790551a16e9bfbe2b356260da091c3895)]
+   > Global vars stoped working from inside a class namespace on WBSTATS
+     Global Vars are seldom a good idea , now runnig inside a Class namespace
+     they failed to function because theyy were only set in the local namespace
+     not in the Global one.
+     
+     Personal i would prefer people do tools either whith real functional
+     classes or simply by doing procedural code whith includes. Having a
+     mixture mostly generates lots of problems.
+     
+     Hopefully i caught them all.
+
+ * **2016-05-05:** NorHei [[16529d5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/16529d557c6682ba389d149f00f91da64ecbfaf9)]
+   > admin/groups/index.php change: function` = "%page%"
+     My new Job really makes me a bit tired ...
+     
+     Thankt to Krzysztof again !!!
+
+ * **2016-05-05:** NorHei [[d4fd7fa](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d4fd7fa0d2247f31c4b0cfde5a46e85ffccb636c)]
+   > Seo Tool was not ready to run inside class tools.
+
+ * **2016-05-05:** NorHei [[423647d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/423647d647aa2eb29baaf06bddf7fac3ebd64a24)]
+   > Error after moving some MEthods from class admin to class wb
+     Strict Standards: Declaration of frontend::get_page_details() should be
+     compatible with wb::get_page_details($page_id, $backLink = 'index.php')
+     in /.../framework/class.frontend.php on line 17
+     
+     See #127
+     
+     should be fixed for now
+
+ * **2016-05-04:** NorHei [[0bbecbc](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0bbecbc325a9276b1e5eaa6018319e47c494d334)]
+   > Added a new field to pages Table "dlink" for a fully functional menulink
+     After several tests it turned out that a fully functional menulink needs
+     an extra field. This field opens the option to have real url and wblinks
+     in the menulink so redirect is no longer necessary , but still possible.
+     
+     I just add the field in this release as anything else depends on the
+     modules  Menulink and SM2/3. They will adapt this after this Release.
+
+ * **2016-05-01:** NorHei [[78cd300](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/78cd30045a3113997d3459b9a36435104ee59180)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-05-01:** NorHei [[e307600](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e3076002acc3d20291d6471f7f11009ffdbff2f5)]
+   > Fixes for multifunctional modules. some missing %%
+     Thanks to Krzysztof
+
+ * **2016-04-29:** instantflorian [[ac4aa76](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ac4aa768da0f93dda6d37c0ffe0b6028a9eccf87)]
+   > Language files and icon definitions for new settings
+     also fixed a bug in list_settings which prevented usage of translated
+     title. Also removed duplicate of maintainance mode settings folder in
+     itself.
+
+ * **2016-04-29:** NorHei [[faa5a86](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/faa5a86f93a754bab41c8cd810533c3a1b7c4f09)]
+   > Detaailed access management for settings.
+     Added access management for settings to /admin/groups/.
+     
+     You now can define exactly what settings a group has access to.
+
+ * **2016-04-29:** NorHei [[cf983db](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/cf983db84e9d1be7af8a5f6539066a2a797decbe)]
+   > forgot to save one file
+
+ * **2016-04-29:** NorHei [[6c85efb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6c85efbc98e6eb45999f4348e7517af9facd9a0d)]
+   > Moved a lot of functions from class admin to class WB
+     I really wanted  permissions in the FE too.
+
+ * **2016-04-29:** NorHei [[e672da9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/e672da91f5098da50e30b028d12de28358393319)]
+   > Version should not only be avilable in BE (admin section).
+
+ * **2016-04-28:** instantflorian [[9d9fb60](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9d9fb60a6ac54cdd838e74d6104506036ffdf3c8)]
+   > Some legal stuff
+
+ * **2016-04-27:** NorHei [[032b62e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/032b62e167789f45ce8a3831b871fc4cb5546010)]
+   > Forgot some more debugging in class.tools.php
+     Taht generated an output bevore calling header.
+
+ * **2016-04-27:** NorHei [[edafe34](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/edafe34a68dabe40f905370e48757869aae62a9f)]
+   > Adding FTAN to FE prefernces
+     After
+       https://www.htbridge.com/advisory/HTB23296
+     
+     Krzysztof thinks its a good idea add an FTAN to the frontend preferences ,
+     and as long as this is not replaced by something better
+     i guess he is right.
+     
+     Thanks Krzysztof
+
+ * **2016-04-27:** NorHei [[5417462](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5417462a3265442435cc9f344aa43ac65b9586e3)]
+   > Missing adaption to multifunctional modules
+     https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/125
+     
+     Thanks to Krzysztof!
+
+ * **2016-04-27:** NorHei [[f532398](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f5323981e185473eb63be251b1566cd6e4a4dce3)]
+   > Just a bug in account/email.php
+
+ * **2016-04-26:** NorHei [[f6e6920](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f6e69206e22a6aa277b02b6c6887554a0da6371b)]
+   > Bug in Droplets?
+     Notice: Undefined variable: HEADING in /var/www/web913/html/eso/wbce04251/
+     modules/droplets/functions.inc.php on line 32
+     
+     Notice: Undefined variable: TEXT in /var/www/web913/html/eso/wbce04251/
+     modules/droplets/functions.inc.php on line 33
+     
+     Did a wild guess , as i could not reproduce...
+
+ * **2016-04-26:** NorHei [[d0dba83](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d0dba83173a46861a8072979598db82351c9fa4e)]
+   > Class tools in maintainance mode, forgot to upload new settings.
+     Class Tools was still in maintainance mode , redirects deactivated.
+     
+     Somehow i forgot to upload the new files for Settings.
+
+ * **2016-04-26:** NorHei [[b294e10](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b294e10ba3e45dfcaa08a61aa5befe2128f63e67)]
+   > LAtest version of OPF does not need any initialization .
+
+ * **2016-04-26:** NorHei [[2fe5a67](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/2fe5a6708a2b1fc08a905fa0745da82c85281cd4)]
+   > New hooks for OPF Dashboard
+     Filters can now be applied to the Backend too.
+
+ * **2016-04-23:** NorHei [[ffd5245](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ffd5245881c2130aa56296987e0e059bec7cc396)]
+   > SM2 flexible displaying of new DB fields and ficing ALLINFO
+     SM2  now allows to access new fields in the 'pages' table , simply by
+     addressing them via [column_name] SM2_ALLINFO needs to be set for this
+     to functions.
+     
+     SM2_ALLINFO had a bug where if the cache was already filles whith a
+     non ALLINFO tree the extra infos never got loaded.
+     
+     Now Allinfo sets a variable to check if a full scale array is already
+     loaded into the cache , otherwise it fetches a new cache.
+
+ * **2016-04-17:** NorHei [[70dc11e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/70dc11e63d5b081179766e38ac039ba94cd8755e)]
+   > Too early use of new Constants
+     Switched back to old ones
+
+ * **2016-04-15:** NorHei [[060375b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/060375ba32b0878fa09b5b68ce0cce4a2e7d661c)]
+   > Admin dasboard in Advanced Flat Theme tried to load Font Awesome several times
+     It tried to load FA from the old Template location several times.
+     BE now loads FA and Jquery(UI) by default.
+
+ * **2016-04-15:** NorHei [[b67b9d2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/b67b9d2d18fbc8a3751c53ad0a9cf0f27e4bd871)]
+   > Looks like CLass LogFile can be removed savely
+
+ * **2016-04-15:** NorHei [[d5e99d8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d5e99d83ca8ba6a5ecb65f9e07bed0f65fc8a51f)]
+   > Bumped Version for easy Upgrade
+
+ * **2016-04-15:** NorHei [[41b2138](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/41b2138c89f461dca6fbf8890a4e46169af3cf1d)]
+   > Just a few more corrections
+     Nothing serious
+
+ * **2016-04-15:** NorHei [[8b6afb1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/8b6afb115a58b5a0153e3f9712eae14a34eeae51)]
+   > Partially ported Security fix from  1.1.6 .
+     account/details.php            ported
+     account/email.php              ported
+     /admin/preferences/save.php    no longer exist
+     admin/settings/save.php        no longer exist
+     framework/class.admin.php      ported
+     framework/functions.php        ported
+     
+     Some  Fields where piped directlyto DB  whitout any validation
+     or escaping ... bad bad thing.
+     
+     http://forum.websitebaker.org/index.php/topic,28998.msg203463.html#msg203463
+     https://www.htbridge.com/advisory/HTB23296
+
+ * **2016-04-15:** NorHei [[ad08647](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ad08647d698884006afd869347f650832792f312)]
+   > Patch for problems whith WBstats when upgrading. Possibly others.
+     Problem appears when there is a "wb_" in the modul name and the table
+     prefix is a "wb_" too .
+     
+     http://forum.wbce.org/viewtopic.php?pid=4012
+     
+     Thanks to Marmot !!!
+     
+     Ported from 1.1.6
+
+ * **2016-04-14:** NorHei [[9ca1a64](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9ca1a64d403da8759cdb8d46d070be8f02fab62f)]
+   > If /admin dir is changed , drag and Drop in manage sections stops working.
+     http://forum.wbce.org/viewtopic.php?pid=4109#p4109
+     
+     Thanks to Bernd
+
+ * **2016-04-12:** NorHei [[74e887d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/74e887d085723bc19b86268bd43da6695488847e)]
+   > Bumped Version to Alpha3  for easy upgrading.
+
+ * **2016-04-12:** NorHei [[4c238e2](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/4c238e276fc3c18777773d8d1162d1632290df3f)]
+   > Activated new preferences . Now preferences are a simple module.
+     You now can uninstall preferences Moduel and install a new one .
+
+ * **2016-04-10:** NorHei [[3b2848b](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/3b2848b5b3ff21584baba84ca0c131982d189bf5)]
+   > Some Template changes for previous BE changes , it now should look reasonable good.
+     BE templates now can define extra formatig for Admintool type modules .
+     
+     Simply add /modules/modulename/templatename.php(twig)
+     To your template. Only new Modules support this.
+
+ * **2016-04-10:** NorHei [[7efbca5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7efbca515219d0527d70ebedcb8c574257abaf08)]
+   > Small Fix for  class tool , it was  tied to testing enviroment.
+
+ * **2016-04-10:** NorHei [[f964ce8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f964ce8bcd080a2bac0d04d111b1b82014fbd99f)]
+   > Replaced admin/admintools/ whith files using class tools
+     Only index is really necessary , but i leave tool.php for compatibility.
+     Basically both files are the same. For example the Usermanagement relies to find
+     User Search on tool.php?tool=usersearch.
+     Later we can remove the Tool.php
+
+ * **2016-04-10:** NorHei [[d2d31a4](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d2d31a4de5c85f79521e87dc32ab5d13f40cec9e)]
+   > Added all Modules needed for new BE funcktionality/modularity
+     For now we got all modules for basic functionality.
+     
+     Listing Tools, Settings, BE pages and panels, where panels is not finished yet.
+     And the BE page lister is only a admintool right now.
+
+ * **2016-04-10:** NorHei [[c3cc3e1](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c3cc3e15b08f379f4950d4d8aa6741b04195db9a)]
+   > Lazy added WB_SELECT, WB_CHECK for for easy forms.
+     define('WB_SELECT',' selected="selected" ');
+     define('WB_CHECK',' checked="checked" ');
+
+ * **2016-04-10:** NorHei [[fbe1752](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/fbe17525235aed792694effe372201280bd25c5e)]
+   > Publish the instance of class admin as  $wb in global var.
+     Some frontend functions used in the backened need this, had a lot of
+     strange bugs cause of missing $wb. Strange stuff ...
+
+ * **2016-04-10:** NorHei [[64f047c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/64f047cd19697a168f3e16a52f35d3e3bd9caf6f)]
+   > Added class Tool, the basis for moving the BE to consits only of tool modules.
+     In the first Step class tool does take care of rendering admin tools.
+     In the second it will render Settings, and in the last Step it will take
+     care of rendering all BE Pages.
+     
+     A nice example for this will be thw new Preferences page that is no longer
+     a real page. In the Upcomming upload it will be a simple call for a
+     tool module whith class tool.
+
+ * **2016-04-10:** NorHei [[a863d83](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/a863d83926d597a4791ac13191f3ccfd4649df11)]
+   > Added  multiple fields to Pages Table. Images, icons, and start/stop date.
+     Added:
+     icon         Page icon (FA icon for example and default)
+     image        Page image
+     thumb        Page Thumb
+     image2       extra image
+     image3       extra image
+     image4       extra image
+     publish      page publish date, unix timestamp
+     unpublish    unpublish date, unix timestamp
+     
+     As WB Classic does not document or announce anyting about new DB fields i
+     can not go for compatibility here. So simply lets do it.
+     This all makes the pages table to big for my taste, but for now i do
+     not see a better solution. Maybe in next review.
+
+ * **2016-04-10:** NorHei [[18a82c5](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/18a82c5b7b228816cef02294982a94fff0a9c368)]
+   > Some Minor changes ...
+     Hex we are back again .. now i will upload all ste stuff in made here
+     step by step
+
+ * **2016-03-08:** NorHei [[45884fb](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/45884fb5983e0fcdb633fed5afa85fe1015648d5)]
+   > Added Some Languge Vars /some new constants defined in upgrade script
+     Minor changes to CKE editor
+
+ * **2016-02-24:** NorHei [[69e2c9e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/69e2c9e96e7acb4e21013e7095583b7158a65220)]
+   > Merge branch 'master' of https://github.com/WBCE/WebsiteBaker_CommunityEdition
+
+ * **2016-02-24:** NorHei [[ac299e8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ac299e856461c455258bf4edf62f8b278f015140)]
+   > Fix for upgrade from WB 2.8.1
+     WB_SECFORM_TIMEOUT was not set when upgrading from WB 2.8.1
+     Issue #110
+
+ * **2016-02-21:** cwsoft [[ae71573](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ae71573c26536f17293ca15063a9c835738fa221)]
+   > Revert back CHANGELOG.md to previous state
+
+ * **2016-02-21:** instantflorian [[00ac056](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/00ac05656845300886e541cab58b397c835362f0)]
+   > Revert "New branding WBCE - Way Better Content Editing"
+     This reverts commit 12e3011583cf8fe4f6ea77a093d258d0c415666f.
+     
+     # Conflicts:
+     #	README.md
+
+ * **2016-02-20:** cwsoft [[6a21b7a](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/6a21b7a9426871f8c5e203ba6bf977372eff71a8)]
+   > Updated links
+     Github resolves links to renamed projects automatically. However, explicit is better than implicit.
+
+ * **2016-02-20:** cwsoft [[90d59ac](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/90d59ac357aeb2d30e75ff5e1ae8f403a4354de1)]
+   > Added Screenshot to README
+
+ * **2016-02-20:** cwsoft [[db39e54](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/db39e54b31b099024fdb17370854147baabc1255)]
+   > Updated CHANGELOG
+
  * **2016-02-20:** cwsoft [[12e3011](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/12e3011583cf8fe4f6ea77a093d258d0c415666f)]
    > New branding WBCE - Way Better Content Editing
      Applied new branding for WBCE.
