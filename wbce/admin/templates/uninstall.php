@@ -13,7 +13,6 @@
 // Setup admin object
 require('../../config.php');
 
-// suppress to print the header, so no new FTAN will be set
 $admin = new admin('Addons', 'templates_uninstall', false);
 if( !$admin->checkFTAN() )
 {
@@ -24,7 +23,7 @@ if( !$admin->checkFTAN() )
 $admin->print_header();
 
 // Check if user selected a valid template file
-$file = $_POST['file'];
+$file = $admin->get_post('file');
 $root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . 'templates');
 $raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $file);
 if(! ($raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
@@ -66,7 +65,8 @@ if ($file == DEFAULT_TEMPLATE) {
     /**
     *    Check if the template is still in use by a page ...
     */
-    $info = $database->query("SELECT page_id, page_title FROM ".TABLE_PREFIX."pages WHERE template='".$file."' order by page_title");
+    $tpl_dir = $database->escapeString($file);
+    $info = $database->query("SELECT page_id, page_title FROM ".TABLE_PREFIX."pages WHERE template='".$tpl_dir."' order by page_title");
 
     if ($info->numRows() > 0) {
         /**
@@ -118,12 +118,12 @@ if(!rm_full_dir(WB_PATH.'/templates/'.$file)) {
     $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL']);
 } else {
     // Remove entry from DB
-    $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = '".$file."' AND type = 'template'");
+    $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = '".$tpl_dir."' AND type = 'template'");
 }
 
 // Update pages that use this template with default template
 // $database = new database();
-$database->query("UPDATE ".TABLE_PREFIX."pages SET template = '".DEFAULT_TEMPLATE."' WHERE template = '$file'");
+$database->query("UPDATE ".TABLE_PREFIX."pages SET template = '".DEFAULT_TEMPLATE."' WHERE template = '$tpl_dir'");
 
 // Print success message
 $admin->print_success($MESSAGE['GENERIC_UNINSTALLED']);
