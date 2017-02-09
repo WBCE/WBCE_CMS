@@ -10,15 +10,14 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Print admin header
-require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
-$admin = new admin('Addons', 'modules');
+// Include required files
+require '../../config.php';
 
-// Setup template object, parse vars to it, then parse it
+// Setup admin object, print header and check section permissions
+$admin = new admin('Addons', 'modules', true, true);
+
 // Create new template object
 $template = new Template(dirname($admin->correct_theme_source('modules.htt')));
-// $template->debug = true;
 $template->set_file('page', 'modules.htt');
 $template->set_block('page', 'main_block', 'main');
 
@@ -38,7 +37,13 @@ $module_files = glob(WB_PATH . '/modules/*');
 $template->set_block('main_block', 'install_list_block', 'install_list');
 $template->set_block('main_block', 'upgrade_list_block', 'upgrade_list');
 $template->set_block('main_block', 'uninstall_list_block', 'uninstall_list');
-$template->set_var(array('INSTALL_VISIBLE' => 'hide', 'UPGRADE_VISIBLE' => 'hide', 'UNINSTALL_VISIBLE' => 'hide'));
+$template->set_var(
+    array(
+        'INSTALL_VISIBLE' => 'hide',
+        'UPGRADE_VISIBLE' => 'hide',
+        'UNINSTALL_VISIBLE' => 'hide'
+    )
+);
 
 $show_block = false;
 foreach ($module_files as $index => $path) {
@@ -57,8 +62,8 @@ foreach ($module_files as $index => $path) {
             $template->set_var('VALUE', basename($path));
             $template->set_var('NAME', basename($path));
             $template->parse('upgrade_list', 'upgrade_list_block', true);
-        } 
-        
+        }
+
         if (file_exists($path . '/uninstall.php')) {
             $show_block = true;
             $template->set_var('UNINSTALL_VISIBLE', '');
@@ -87,39 +92,37 @@ if(!$show_block || count($module_files) == 0 || !isset($_GET['advanced']) || $ad
     $template->set_var('DISPLAY_MANUAL_INSTALL', 'hide');
 }
 
-// Insert language headings
-$template->set_var(array(
-                    'HEADING_INSTALL_MODULE' => $HEADING['INSTALL_MODULE'],
-                    'HEADING_UNINSTALL_MODULE' => $HEADING['UNINSTALL_MODULE'],
-                    'OVERWRITE_NEWER_FILES' => $MESSAGE['ADDON_OVERWRITE_NEWER_FILES'],
-                    'HEADING_MODULE_DETAILS' => $HEADING['MODULE_DETAILS'],
-                    'HEADING_INVOKE_MODULE_FILES' => $HEADING['INVOKE_MODULE_FILES']
-                    )
-                );
-// insert urls
-$template->set_var(array(
-                    'ADMIN_URL' => ADMIN_URL,
-                    'WB_URL' => WB_URL,
-                    'THEME_URL' => THEME_URL,
-                    'FTAN' => $admin->getFTAN()
-                    )
-                );
-// Insert language text and messages
-$template->set_var(array(
-    'URL_TEMPLATES' => $admin->get_permission('templates') ? 
-        '<a href="' . ADMIN_URL . '/templates/index.php">' . $MENU['TEMPLATES'] . '</a>' : '',
-    'URL_LANGUAGES' => $admin->get_permission('languages') ? 
-        '<a href="' . ADMIN_URL . '/languages/index.php">' . $MENU['LANGUAGES'] . '</a>' : '',
-    'URL_ADVANCED' => $admin->get_permission('admintools') ? 
-        '<a href="' . ADMIN_URL . '/modules/index.php?advanced">' . $TEXT['ADVANCED'] . '</a>' : '',
-    'TEXT_INSTALL' => $TEXT['INSTALL'],
-    'TEXT_UNINSTALL' => $TEXT['UNINSTALL'],
-    'TEXT_VIEW_DETAILS' => $TEXT['VIEW_DETAILS'],
-    'TEXT_PLEASE_SELECT' => $TEXT['PLEASE_SELECT'],
-    'TEXT_MANUAL_INSTALLATION' => $MESSAGE['ADDON_MANUAL_INSTALLATION'],
-    'TEXT_MANUAL_INSTALLATION_WARNING' => $MESSAGE['ADDON_MANUAL_INSTALLATION_WARNING'],
-    'TEXT_EXECUTE' => $TEXT['EXECUTE'],
-    'TEXT_FILE' => $TEXT['FILE']
+// Insert language headings, urls and text messages
+$template->set_var(
+    array(
+        // Headings
+        'HEADING_INSTALL_MODULE' => $HEADING['INSTALL_MODULE'],
+        'HEADING_UNINSTALL_MODULE' => $HEADING['UNINSTALL_MODULE'],
+        'OVERWRITE_NEWER_FILES' => $MESSAGE['ADDON_OVERWRITE_NEWER_FILES'],
+        'HEADING_MODULE_DETAILS' => $HEADING['MODULE_DETAILS'],
+        'HEADING_INVOKE_MODULE_FILES' => $HEADING['INVOKE_MODULE_FILES'],
+
+        // URLs
+        'ADMIN_URL' => ADMIN_URL,
+        'WB_URL' => WB_URL,
+        'THEME_URL' => THEME_URL,
+        'FTAN' => $admin->getFTAN(),
+
+        // Text messages
+        'URL_TEMPLATES' => $admin->get_permission('templates') ?
+            '<a href="' . ADMIN_URL . '/templates/index.php">' . $MENU['TEMPLATES'] . '</a>' : '',
+        'URL_LANGUAGES' => $admin->get_permission('languages') ?
+            '<a href="' . ADMIN_URL . '/languages/index.php">' . $MENU['LANGUAGES'] . '</a>' : '',
+        'URL_ADVANCED' => $admin->get_permission('admintools') ?
+            '<a href="' . ADMIN_URL . '/modules/index.php?advanced">' . $TEXT['ADVANCED'] . '</a>' : '',
+        'TEXT_INSTALL' => $TEXT['INSTALL'],
+        'TEXT_UNINSTALL' => $TEXT['UNINSTALL'],
+        'TEXT_VIEW_DETAILS' => $TEXT['VIEW_DETAILS'],
+        'TEXT_PLEASE_SELECT' => $TEXT['PLEASE_SELECT'],
+        'TEXT_MANUAL_INSTALLATION' => $MESSAGE['ADDON_MANUAL_INSTALLATION'],
+        'TEXT_MANUAL_INSTALLATION_WARNING' => $MESSAGE['ADDON_MANUAL_INSTALLATION_WARNING'],
+        'TEXT_EXECUTE' => $TEXT['EXECUTE'],
+        'TEXT_FILE' => $TEXT['FILE']
     )
 );
 

@@ -1,60 +1,49 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        admin
- * @package         templates
- * @author          WebsiteBaker Project
- * @copyright       Ryan Djurovich
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: details.php 1625 2012-02-29 00:50:57Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/admin/templates/details.php $
- * @lastmodified    $Date: 2012-02-29 01:50:57 +0100 (Mi, 29. Feb 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
-// Include the config file
-require('../../config.php');
-require_once(WB_PATH .'/framework/functions.php');
-require_once(WB_PATH.'/framework/class.admin.php');
-// suppress to print the header, so no new FTAN will be set
-$admin = new admin('Addons', 'templates_view', false);
-if( !$admin->checkFTAN() )
-{
+// Include required files
+require '../../config.php';
+require_once WB_PATH . '/framework/functions.php';	// for WBCE 1.1.x compatibility
+
+// Setup admin object, skip header for FTAN validation and check section permissions
+$admin = new admin('Addons', 'templates_view', false, true);
+if(! $admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
+// Output admin backend header (this creates a new FTAN)
+$admin->print_header();
 
-// Get template name
-if(!isset($_POST['file']) OR $_POST['file'] == "") {
-    header("Location: index.php");
-    exit(0);
-} else {
-    $file = preg_replace('/[^a-z0-9_-]/i', "", $_POST['file']);  // fix secunia 2010-92-2
+// Check if user selected a valid template file
+$file = trim($admin->get_post('file'));
+$root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . 'templates');
+$raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $file);
+if(! ($file && $raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
+	// template file empty or outside WBCE templates folder
+	$admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
 
-// Check if the template exists
-if(!file_exists(WB_PATH.'/templates/'.$file)) {
-    header("Location: index.php");
-    exit(0);
-}
+// Extract template folder from realpath for further usage inside script
+$file = basename($raw_dir);
 
-// Print admin header
-$admin = new admin('Addons', 'templates_view');
-
-// Setup template object, parse vars to it, then parse it
 // Create new template object
 $template = new Template(dirname($admin->correct_theme_source('templates_details.htt')));
-// $template->debug = true;
 $template->set_file('page', 'templates_details.htt');
 $template->set_block('page', 'main_block', 'main');
 $template->set_var('FTAN', $admin->getFTAN());
 
 // Insert values
-$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND directory = '$file'");
+$file_escaped = $database->escapeString($file);
+$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND directory = '$file_escaped'");
 if($result->numRows() > 0) {
     $row = $result->fetchRow();
 }
@@ -76,32 +65,29 @@ if(function_exists('file_get_contents') && file_exists(WB_PATH.'/templates/'.$fi
 if($tool_description !== false) {
     // Override the template-description with correct desription in users language
     $row['description'] = $tool_description;
-}    
+}
 
-$template->set_var(array(
-                                'NAME' => $row['name'],
-                                'AUTHOR' => $row['author'],
-                                'DESCRIPTION' => $row['description'],
-                                'VERSION' => $row['version'],
-                                'DESIGNED_FOR' => $row['platform']
-                                )
-                        );
+$template->set_var(
+    array(
+        // General data
+        'NAME' => $row['name'],
+        'AUTHOR' => $row['author'],
+        'DESCRIPTION' => $row['description'],
+        'VERSION' => $row['version'],
+        'DESIGNED_FOR' => $row['platform'],
 
-// Insert language headings
-$template->set_var(array(
-                                'HEADING_TEMPLATE_DETAILS' => $HEADING['TEMPLATE_DETAILS']
-                                )
-                        );
-// Insert language text and messages
-$template->set_var(array(
-                                'TEXT_NAME' => $TEXT['NAME'],
-                                'TEXT_AUTHOR' => $TEXT['AUTHOR'],
-                                'TEXT_VERSION' => $TEXT['VERSION'],
-                                'TEXT_DESIGNED_FOR' => $TEXT['DESIGNED_FOR'],
-                                'TEXT_DESCRIPTION' => $TEXT['DESCRIPTION'],
-                                'TEXT_BACK' => $TEXT['BACK']
-                                )
-                        );
+        // Headings
+        'HEADING_TEMPLATE_DETAILS' => $HEADING['TEMPLATE_DETAILS'],
+
+        // Text messages
+        'TEXT_NAME' => $TEXT['NAME'],
+        'TEXT_AUTHOR' => $TEXT['AUTHOR'],
+        'TEXT_VERSION' => $TEXT['VERSION'],
+        'TEXT_DESIGNED_FOR' => $TEXT['DESIGNED_FOR'],
+        'TEXT_DESCRIPTION' => $TEXT['DESCRIPTION'],
+        'TEXT_BACK' => $TEXT['BACK']
+        )
+);
 
 // Parse template object
 $template->parse('main', 'main_block', false);

@@ -49,46 +49,45 @@ function find_addon_root_path($zip) {
 // do not display notices and warnings during installation
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
-// Setup admin object
-require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+// Include required files
+require '../../config.php';
+require_once WB_PATH . '/framework/addon.precheck.inc.php';
+require_once WB_PATH . '/framework/functions.php';	        // WBCE 1.1.x compatibility
+require_once WB_PATH . '/include/pclzip/pclzip.lib.php';    // WBCE 1.1.x compatibility
 
-// suppress to print the header, so no new FTAN will be set
-$admin = new admin('Addons', 'templates_install', false);
+// Setup admin object, skip header for FTAN validation and check section permissions
+$admin = new admin('Addons', 'templates_install', false, true);
 if(! $admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
+// Output admin backend header (this creates a new FTAN)
 $admin->print_header();
 
-// Check if template dir is writable
-if(! is_writable(WB_PATH.'/templates/')) {
-    if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
-    $admin->print_error($MESSAGE['TEMPLATES']['BAD_PERMISSIONS']);
-}
-
 // Check if user uploaded a file
-if(! isset($_FILES['userfile'])) {
-    header("Location: index.php");
-    exit(0);
+if(! (isset($_FILES['userfile']) && isset($_FILES['userfile']['name']))) {
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 
-// Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+// Check write permissions for templates folder
+if(! is_writable(WB_PATH.'/templates/')) {
+    $admin->print_error($MESSAGE['GENERIC_BAD_PERMISSIONS']);
+}
 
-// Set temp vars
-$temp_dir = WB_PATH.'/temp/';
-$temp_file = $temp_dir . $_FILES['userfile']['name'];
-$temp_unzip = WB_PATH.'/temp/unzip/';
+// Create unique file within WBCE /temp folder
+$temp_dir = WB_PATH . '/temp/';
+$temp_file = tempnam($temp_dir, 'wb_');
+$temp_unzip = WB_PATH . '/temp/unzip/';
 
+// Move uploaded file to WBCE /temp folder and deal with possible upload errors
 if(! $_FILES['userfile']['error']) {
-    // Try to upload the file to the temp dir
+    // Try uploading file to WBCE /temp folder
     if( !move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
         $admin->print_error($MESSAGE['GENERIC_BAD_PERMISSIONS']);
     }
 } else {
-    // index for language files
-    $key = 'UNKNOW_UPLOAD_ERROR';
+    // work out error message
+    $error_code = $_FILES['userfile']['error'];
     switch ($error_code) {
         case UPLOAD_ERR_INI_SIZE:
             $key = 'UPLOAD_ERR_INI_SIZE';
@@ -110,8 +109,7 @@ if(! $_FILES['userfile']['error']) {
     $admin->print_error($MESSAGE[$key].'<br />'.$MESSAGE['GENERIC_CANNOT_UPLOAD']);
 }
 
-// include PclZip and create object from Add-on zip archive
-require_once(WB_PATH . '/include/pclzip/pclzip.lib.php');
+// create PclZip object to extract Addon zip archives
 $archive = new PclZip($temp_file);
 
 // extract Add-on files into WBCE temp folder
@@ -133,7 +131,6 @@ unset($theme_directory);
 require($temp_unzip.'info.php');
 
 // Perform Add-on requirement checks before proceeding
-require(WB_PATH . '/framework/addon.precheck.inc.php');
 preCheckAddon($temp_file);
 
 // Delete the temp unzip directory
@@ -156,7 +153,7 @@ if(is_dir(WB_PATH.'/templates/'.$template_directory)) {
             if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
             $admin->print_error($MESSAGE['GENERIC_ALREADY_INSTALLED']);
         }
-    } 
+    }
     $success_message=$MESSAGE['GENERIC_UPGRADED'];
 } else {
     $success_message=$MESSAGE['GENERIC_INSTALLED'];
