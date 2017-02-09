@@ -10,96 +10,89 @@
  * @license GNU GPL2 (or any later version)
  */
 
+// Include required files
+require '../../config.php';
+require_once WB_PATH . '/framework/addon.precheck.inc.php';
+require_once WB_PATH . '/framework/functions.php';	        // WBCE 1.1.x compatibility
+require_once WB_PATH . '/include/pclzip/pclzip.lib.php';    // WBCE 1.1.x compatibility
 
-// Setup admin object
-require('../../config.php');
-$admin = new admin('Addons', 'modules_install');
-
-// Perform Add-on requirement checks before proceeding
-require_once(WB_PATH . '/framework/addon.precheck.inc.php');
-
-// check if a valid form is send
+// Setup admin object, skip header for FTAN validation and check section permissions
+$admin = new admin('Addons', 'modules_install', false, true);
 if(! $admin->checkFTAN()) {
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
+}
+// Output admin backend header (this creates a new FTAN)
+$admin->print_header();
+
+// Check if user uploaded a file
+if(! (isset($_FILES['userfile']) && isset($_FILES['userfile']['name']))) {
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 
-// Check if module folder is writable
+// Check write permissions for modules folder
 if(! is_writable(WB_PATH.'/modules/')) {
-    if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
     $admin->print_error($MESSAGE['GENERIC_BAD_PERMISSIONS']);
 }
 
-// Check if user uploaded a file
-if(!isset($_FILES['userfile'])) {
-    header("Location: index.php");
-    exit(0);
-}
+// Create unique file within WBCE /temp folder
+$temp_dir = WB_PATH . '/temp/';
+$temp_file = tempnam($temp_dir, 'wb_');
+$temp_unzip = WB_PATH . '/temp/unzip/';
 
-
-// Set temp vars
-$temp_dir = WB_PATH.'/temp/';
-$temp_file = $temp_dir . $_FILES['userfile']['name'];
-$temp_unzip = WB_PATH.'/temp/unzip/';
-
+// Move uploaded file to WBCE /temp folder and deal with possible upload errors
 if(! $_FILES['userfile']['error']) {
-    // Try to upload the file to the temp dir
+    // Try uploading file to WBCE /temp folder
     if( !move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
         $admin->print_error($MESSAGE['GENERIC_BAD_PERMISSIONS']);
     }
 } else {
+    // work out error message
     $error_code=$_FILES['userfile']['error'];
-    // index for language files
-        switch ($error_code) {
-            case UPLOAD_ERR_INI_SIZE:
-                $key = 'UPLOAD_ERR_INI_SIZE';
-                break;
-            case UPLOAD_ERR_FORM_SIZE:
-                $key = 'UPLOAD_ERR_FORM_SIZE';
-                break;
-            case UPLOAD_ERR_PARTIAL:
-                $key = 'UPLOAD_ERR_PARTIAL';
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                $key = 'UPLOAD_ERR_NO_FILE';
-                break;
-            case UPLOAD_ERR_NO_TMP_DIR:
-                $key = 'UPLOAD_ERR_NO_TMP_DIR';
-                break;
-            case UPLOAD_ERR_CANT_WRITE:
-                $key = 'UPLOAD_ERR_CANT_WRITE';
-                break;
-            case UPLOAD_ERR_EXTENSION:
-                $key = 'UPLOAD_ERR_EXTENSION';
-                break;
-            default:
-                $key = 'UNKNOW_UPLOAD_ERROR';
-        }
+    switch ($error_code) {
+        case UPLOAD_ERR_INI_SIZE:
+            $key = 'UPLOAD_ERR_INI_SIZE';
+            break;
+        case UPLOAD_ERR_FORM_SIZE:
+            $key = 'UPLOAD_ERR_FORM_SIZE';
+            break;
+        case UPLOAD_ERR_PARTIAL:
+            $key = 'UPLOAD_ERR_PARTIAL';
+            break;
+        case UPLOAD_ERR_NO_FILE:
+            $key = 'UPLOAD_ERR_NO_FILE';
+            break;
+        case UPLOAD_ERR_NO_TMP_DIR:
+            $key = 'UPLOAD_ERR_NO_TMP_DIR';
+            break;
+        case UPLOAD_ERR_CANT_WRITE:
+            $key = 'UPLOAD_ERR_CANT_WRITE';
+            break;
+        case UPLOAD_ERR_EXTENSION:
+            $key = 'UPLOAD_ERR_EXTENSION';
+            break;
+        default:
+            $key = 'UNKNOW_UPLOAD_ERROR';
+    }
     $admin->print_error($MESSAGE[$key].'<br />'.$MESSAGE['GENERIC_CANNOT_UPLOAD']);
 }
 
-// include PclZip and create object from Add-on zip archive
+// create PclZip object to extract Addon zip archives
 $archive = new PclZip($temp_file);
-
 
 // extract Add-on files into WBCE temp folder
 $aAddonRootPath = find_addon_root_path($archive);
-echo "<pre>"; print_r($aAddonRootPath);echo "</pre>";
-
+### echo "<pre>"; print_r($aAddonRootPath);echo "</pre>";
 
 // No info.php found
 if (count ($aAddonRootPath) <1) {
   $admin->print_error($MESSAGE['GENERIC_INVALID_ADDON_FILE']);
 }
 
-
 $ecount=1;
 
-foreach($aAddonRootPath as $addon_root_path){ 
-
-    echo "Addon root path: $addon_root_path<br>";
-    
-    
-    
+foreach($aAddonRootPath as $addon_root_path){
+    ### echo "Addon root path: $addon_root_path<br>";
     $list = $archive->extract(
         PCLZIP_OPT_PATH, $temp_unzip,
         PCLZIP_CB_PRE_EXTRACT, 'pclzip_extraction_filter',
@@ -110,31 +103,31 @@ foreach($aAddonRootPath as $addon_root_path){
     if (! ($list && file_exists($temp_unzip . 'info.php'))) {
         $admin->print_error($MESSAGE['GENERIC_INVALID_ADDON_FILE'].  $addon_root_path );
     }
-    
+
     // Include module info file
     unset($module_directory);
-    // require always fetched the first cached file 
+    // require always fetched the first cached file
     //require($temp_unzip.'info.php');
     $exec=file_get_contents ($temp_unzip.'info.php');
     $exec=preg_replace("/^.*\<\?(php)?/uis","", $exec);
     eval ($exec);
-   
+
     // Perform Add-on requirement checks before proceeding
     preCheckAddon($temp_file);
 
     // Delete temporary unzip directory
     rm_full_dir($temp_unzip);
- 
+
     // Check if the file is valid
     if(! isset($module_directory)) {
         if (file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
         $admin->print_error($MESSAGE['GENERIC_INVALID'].": $temp_file" );
     }
-    
-    echo "Module dir : $module_directory<br>";
-    
+
+    ### echo "Module dir : $module_directory<br>";
+
     //if ($ecount==0) exit;
-    
+
     // Check if this module is already installed
     // and compare versions if so
     $new_module_version = $module_version;
@@ -151,14 +144,14 @@ foreach($aAddonRootPath as $addon_root_path){
             $action="upgrade";
         }
     }
-    
+
     // Set module directory
     $module_dir = WB_PATH.'/modules/'.$module_directory;
-    echo "moduledir: $module_dir<br>";
-    
+    ### echo "moduledir: $module_dir<br>";
+
     // Make sure the module dir exists, and chmod if needed
     make_dir($module_dir);
-    
+
     // Unzip module to the module dir
     if(isset($_POST['overwrite'])) {
         $list = $archive->extract(
@@ -176,8 +169,6 @@ foreach($aAddonRootPath as $addon_root_path){
     if(! $list) {
         $admin->print_error($MESSAGE['GENERIC_CANNOT_UNZIP']);
     }
-
-    
 
     // Chmod all the uploaded files
     $dir = dir($module_dir);
@@ -204,18 +195,16 @@ foreach($aAddonRootPath as $addon_root_path){
          echo "$module_name - upgraded! <br>";
         //$admin->print_success($MESSAGE['GENERIC_UPGRADED']. ": $module_name");
     }
-    
+
     $ecount--;
-    
-}    
+
+}
 
 // Delete the temp zip file
 if(file_exists($temp_file)) { unlink($temp_file); }
 
 // Print admin footer
 $admin->print_footer();
-
-
 
 // Helper  Functions
 /**
@@ -245,7 +234,7 @@ function find_addon_root_path($zip) {
     $aAddonList=array();
     // get list of files contained in the zip object
     if (($zip_files = $zip->listContent()) == 0) return '';
- 
+
     // find first folder containing an info.php file
     foreach($zip_files as $zip_file => $info) {
         if (basename($info['filename']) == 'info.php') {

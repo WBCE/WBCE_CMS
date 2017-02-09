@@ -10,54 +10,39 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/**
- * check if there is anything to do
- */
+// Include required files
+require '../../config.php';
+require_once WB_PATH . '/framework/functions.php';	// for WBCE 1.1.x compatibility
+
+// limit advanced Addon settings to users with access to admintools
+$admin = new admin('Admintools', 'admintools', false, false);
+if ($admin->get_permission('admintools') == false) {
+	die(header('Location: index.php'));
+}
+
+// reload Addon overview page if not at least on advanced Addon setting was selected
 $post_check = array('reload_modules', 'reload_templates', 'reload_languages');
 foreach ($post_check as $index => $key) {
 	if (!isset($_POST[$key])) unset($post_check[$index]);
 }
-if (count($post_check) == 0) die(header('Location: index.php?advanced'));
-
-/**
- * check if user has permissions to access this file
- */
-// include WB configuration file and WB admin class
-require_once('../../config.php');
-
-// check user permissions for admintools (redirect users with wrong permissions)
-$admin = new admin('Admintools', 'admintools', false, false);
-
-if ($admin->get_permission('admintools') == false) die(header('Location: ../../index.php'));
-
-// check if the referer URL if available
-$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] :
-	(isset($HTTP_SERVER_VARS['HTTP_REFERER']) ? $HTTP_SERVER_VARS['HTTP_REFERER'] : '');
-$referer = '';
-// if referer is set, check if script was invoked from "admin/modules/index.php"
-$required_url = ADMIN_URL . '/addons/index.php';
-if ($referer != '' && (!(strpos($referer, $required_url) !== false || strpos($referer, $required_url) !== false)))
-	die(header('Location: ../../index.php'));
-
-// include WB functions file
-require_once(WB_PATH . '/framework/functions.php');
-
-// load WB language file
-require_once(WB_PATH . '/languages/' . LANGUAGE .'.php');
-
-// create Admin object with admin header
-$admin = new admin('Addons', '', false, false);
-$js_back = ADMIN_URL . '/addons/index.php?advanced';
-
-if (!$admin->checkFTAN())
-{
-	$admin->print_header();
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$js_back);
+if (count($post_check) == 0) {
+	die(header('Location: index.php?advanced'));
 }
+
+// Setup admin object, skip header for FTAN validation and check section permissions
+$admin = new admin('Addons', 'addons', false, true);
+$js_back = ADMIN_URL . '/addons/index.php?advanced';
+if(! $admin->checkFTAN()) {
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
+}
+// Output admin backend header (this creates a new FTAN)
+$admin->print_header();
 
 /**
  * Reload all specified Addons
  */
+require_once WB_PATH . '/languages/' . LANGUAGE .'.php';
 $msg = array();
 $table = TABLE_PREFIX . 'addons';
 
@@ -84,7 +69,7 @@ foreach ($post_check as $key) {
 				$admin->print_error($MESSAGE['ADDON_ERROR_RELOAD'], $js_back);
 			}
 			break;
-			
+
 		case 'reload_templates':
 			if ($handle = opendir(WB_PATH . '/templates')) {
 				// delete templates from database
@@ -103,7 +88,6 @@ foreach ($post_check as $key) {
 
 			} else {
 				// provide error message and stop
-				$admin->print_header();
 				$admin->print_error($MESSAGE['ADDON_ERROR_RELOAD'], $js_back);
 			}
 			break;
@@ -113,7 +97,7 @@ foreach ($post_check as $key) {
 				// delete languages from database
 				$sql = "DELETE FROM `$table` WHERE `type` = 'language'";
 				$database->query($sql);
-			
+
 				// loop over all languages
 				while(false !== ($file = readdir($handle))) {
 					if ($file != '' && substr($file, 0, 1) != '.' && $file != 'index.php') {
@@ -123,10 +107,9 @@ foreach ($post_check as $key) {
 				closedir($handle);
 				// add success message
 				$msg[] = $MESSAGE['ADDON_LANGUAGES_RELOADED'];
-				
+
 			} else {
 				// provide error message and stop
-				$admin->print_header();
 				$admin->print_error($MESSAGE['ADDON_ERROR_RELOAD'], $js_back);
 			}
 			break;
@@ -134,6 +117,5 @@ foreach ($post_check as $key) {
 }
 
 // output success message
-$admin->print_header();
 $admin->print_success(implode($msg, '<br />'), $js_back);
 $admin->print_footer();

@@ -10,31 +10,30 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Setup admin object
-require('../../config.php');
+// Include required files
+require '../../config.php';
+require_once WB_PATH . '/framework/functions.php';	        // WBCE 1.1.x compatibility
 
-$admin = new admin('Addons', 'languages_uninstall', false);
+// Setup admin object, skip header for FTAN validation and check section permissions
+$admin = new admin('Addons', 'languages_uninstall', false, true);
 if(! $admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
-// After check print the header
+// Output admin backend header (this creates a new FTAN)
 $admin->print_header();
 
 // Check if user selected a valid language file
 $lang_code = $admin->get_post('code');
-if (! preg_match('/[A-Z]{2}/', $lang_code)) {
+if (! preg_match('/^[A-Z]{2}$/', $lang_code)) {
 	// no valid WBCE language code defined (e.g. EN, DE ..)
-    $admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
+	$admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
 
 // Check if the language files exists
 if(! file_exists(WB_PATH . '/languages/' . $lang_code . '.php')) {
 	$admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
-
-// Include functions.php for backward compatibility with WBCE 1.x
-require_once WB_PATH . '/framework/functions.php';
 
 // Create escaped string (not needed here, but beeing explicit is better than implicit)
 $lang_code_escaped = $database->escapeString($lang_code);

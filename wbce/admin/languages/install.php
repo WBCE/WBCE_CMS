@@ -13,64 +13,51 @@
 // do not display notices and warnings during installation
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
-// Setup admin object
-require('../../config.php');
+// Include required files
+require '../../config.php';
+require_once WB_PATH . '/framework/addon.precheck.inc.php';
+require_once WB_PATH . '/framework/functions.php';	        // WBCE 1.1.x compatibility
+require_once WB_PATH . '/include/pclzip/pclzip.lib.php';    // WBCE 1.1.x compatibility
 
-$admin = new admin('Addons', 'languages_install', false);
-if( !$admin->checkFTAN() )
-{
-	$admin->print_header();
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
+// Setup admin object, skip header for FTAN validation and check section permissions
+$admin = new admin('Addons', 'languages_install', false, true);
+if(! $admin->checkFTAN()) {
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
-// After check print the header
+// Output admin backend header (this creates a new FTAN)
 $admin->print_header();
 
 // Check if user uploaded a file
-if(!isset($_FILES['userfile'])) {
-	header("Location: index.php");
-	exit(0);
+if(! (isset($_FILES['userfile']) && isset($_FILES['userfile']['name']))) {
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 
-// Include the WB functions file
- 
-
-// Create temp string
-$temp_string = '';
-$salt = "abchefghjkmnpqrstuvwxyz0123456789";
-srand((double)microtime()*1000000);
-$i = 0;
-while ($i <= 7) {
-	$num = rand() % 33;
-	$tmp = substr($salt, $num, 1);
-	$temp_string = $temp_string . $tmp;
-	$i++;
+// Check write permissions for languages folder
+if(! is_writable(WB_PATH.'/languages/')) {
+    $admin->print_error($MESSAGE['GENERIC_BAD_PERMISSIONS']);
 }
 
-// Set temp vars
-$temp_dir = WB_PATH.'/temp/';
-$temp_file = $temp_dir . 'language'.$temp_string;
+// Create unique file within WBCE /temp folder
+$temp_dir = WB_PATH . '/temp/';
+$temp_file = tempnam($temp_dir, 'wb_');
 
-// Check if language dir is writable
-if(!is_writable(WB_PATH.'/languages/')) {
-	if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
-	$admin->print_error($MESSAGE['GENERIC_BAD_PERMISSIONS']);
-}
-
-// Try to upload the file to the temp dir
-if(!move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
-	if(file_exists($temp_file)) { unlink($temp_file); } // Remove temp file
+// Move uploaded file into WBCE /temp folder
+if(! move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
+	if(file_exists($temp_file)) {
+		unlink($temp_file);
+	}
 	$admin->print_error($MESSAGE['GENERIC_CANNOT_UPLOAD']);
 }
 
 // Check if uploaded file is a valid language file (no binary file etc.)
 $content = file_get_contents($temp_file);
-if (strpos($content, '<?php') === false) $admin->print_error($MESSAGE['GENERIC_INVALID_LANGUAGE_FILE']);
+if (strpos($content, '<?php') === false) {
+	$admin->print_error($MESSAGE['GENERIC_INVALID_LANGUAGE_FILE']);
+}
 
 // Remove any vars with name "language_code"
 unset($language_code);
-
-// Include precheck files for versionCompare routine
-require(WB_PATH . '/framework/addon.precheck.inc.php');
 
 // Read the temp file and look for a language code
 require($temp_file);
