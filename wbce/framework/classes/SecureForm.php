@@ -139,7 +139,7 @@ class SecureForm
         $TimeSeed = floor(time() / $secrettime) * $secrettime; //round(floor) time() to whole days
         $DomainSeed = $_SERVER['SERVER_NAME'];                 // generate a numerical from server name.
 
-        $Seed = $TimeSeed + $DomainSeed;
+        $Seed = $TimeSeed . $DomainSeed;
         $secret .= md5($Seed); //
 
         $secret .= $this->_secret . $this->_serverdata . session_id();
