@@ -5,6 +5,28 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2017-02-10:** instantflorian [[ca364d8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ca364d8c038ef325cc1116d82306c38d3e5256e1)]
+   > Update version.php
+     Changed version to 1.1.11
+ * **2017-02-10:** cwsoft [[6393832](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/63938321b282b6a50880b4fca41a702a46855539)]
+   > Removed outdated mysql calls in Topics upgrade scripts
+
+ * **2017-02-09:** cwsoft [[9640ce9](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9640ce9fb630c018847e32d522fdd1985997818b)]
+   > Major code review and refinement of all Addon action handler files
+     - unified permission checks and user input validation
+     - removed obsolete code blocks
+     - replaced inhouse code with PHP functions where possible
+
+ * **2017-02-09:** cwsoft [[82da6f8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/82da6f8d7ebe7a6ef1baa064528af632c0fe87de)]
+   > Code refinement for all Addon uninstall handlers
+
+ * **2017-02-09:** cwsoft [[c199d77](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/c199d7718e07ef81b43f84a4214c22657f5838d1)]
+   > Merge pull request #215 from rjgamer/patch-4
+     Update SecureForm.php
+
+ * **2017-02-08:** cwsoft [[5d6848c](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/5d6848cf7432b740b8f92f408e42ac1d834c7062)]
+   > Updated CHANGELOG.md
+
  * **2017-02-08:** NorHei [[7a4d23d](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7a4d23df6f5858f888e01cda5b049ce6971c3a24)]
    > Added Ruuds Version of Short.php
      Ruud refined our Patch to have the intended 404 functionality.
