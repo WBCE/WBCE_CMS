@@ -130,7 +130,6 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
                      </td>
                     <td class="tdright">
                         <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" id="save_default" value="<?php echo $HEADING['DEFAULT_SETTINGS']; ?>" />
-                        <input type="submit" name="admin_tools" id="admin_tools" value="<?php echo $HEADING['ADMINISTRATION_TOOLS']; ?>" />
                     </td>
                 </tr>
                 <tr>
