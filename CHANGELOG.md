@@ -5,6 +5,23 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2017-02-10:** cwsoft [[5030708](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/503070864134d5cc7159fb4ce01e61aa60e605fc)]
+   > Updated PHP Mailer to v5.2.22
+     - Security fix for the 3rd party library PHPMailer
+     - See [CVE-2017-5223](https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2017-5223)
+     
+     https://github.com/PHPMailer/PHPMailer/releases/tag/v5.2.22
+
+ * **2016-02-05:** NorHei [[89eff23](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/89eff235c20ccf8f0983478452e1d6619c27da81)]
+   > Added a slightly modified version of PclZip
+     This version avoides some problems whith PHP 7
+     
+     fetched from here :
+     https://github.com/piwik/component-decompress/commit/deca40d71d29d6140aad39db007aea82676b7631
+
+ * **2017-02-10:** cwsoft [[0b83765](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/0b83765a68ae6d4055367fd510562307411ce8b5)]
+   > Updated CHANGELOG.md
+
  * **2017-02-10:** instantflorian [[ca364d8](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/ca364d8c038ef325cc1116d82306c38d3e5256e1)]
    > Update version.php
      Changed version to 1.1.11
