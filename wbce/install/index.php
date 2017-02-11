@@ -33,26 +33,26 @@ $wb_path = dirname(dirname(realpath(__FILE__)));
 $wb_root = str_replace(realpath($doc_root), '', $wb_path);
 
 // Require helper functions
-require_once("helper_functions.php"); 
+require_once("helper_functions.php");
 
 // Require Version Info
-require_once("../admin/interface/version.php"); 
+require_once("../admin/interface/version.php");
 
-// This is to decide if we display the Install Button on the end of the page 
+// This is to decide if we display the Install Button on the end of the page
 $installFlag = true;
 
 
 ////////////////////////////////////////////
-// Session check 
+// Session check
 ////////////////////////////////////////////
 
-// Check if the page has been reloaded 
+// Check if the page has been reloaded
 // needed as part of checking if sessions are active
 // Reloads page if not already checked for session
 if (!isset($_GET['sessions_checked']) or $_GET['sessions_checked'] != 'true') {
     // Set session variable
     $_SESSION['session_support'] = '<span class="good">Enabled</span>';
-    // Reload page if not already checked 
+    // Reload page if not already checked
     header('Location: index.php?sessions_checked=true'); exit;
 } else {
     // Check if session variable has been saved after reload
@@ -68,7 +68,7 @@ if (!isset($_GET['sessions_checked']) or $_GET['sessions_checked'] != 'true') {
 
 
 ////////////////////////////////////////////
-// Check charset 
+// Check charset
 ////////////////////////////////////////////
 
 // Check if AddDefaultCharset is set
@@ -90,13 +90,13 @@ $e_adc=$e_adc."";
 
 
 ////////////////////////////////////////////
-// PHP version check 
+// PHP version check
 ////////////////////////////////////////////
 
 // No install button if Version failes
 if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
     $sPhpVersion="good";
-} 
+}
 else {
     $sPhpVersion="bad";
     $installFlag = false;
@@ -105,13 +105,13 @@ else {
 
 
 ////////////////////////////////////////////
-// Check Save Mode 
+// Check Save Mode
 ////////////////////////////////////////////
 
 if (
-    ini_get('safe_mode') == '' || 
-    strpos(strtolower(ini_get('safe_mode')), 'off') !== false || 
-    ini_get('safe_mode') == 0) 
+    ini_get('safe_mode') == '' ||
+    strpos(strtolower(ini_get('safe_mode')), 'off') !== false ||
+    ini_get('safe_mode') == 0)
 {
     $sSaveModeClass="good";
     $sSaveModeText="Disabled";
@@ -122,7 +122,7 @@ if (
 
 
 ////////////////////////////////////////////
-// Check config.php 
+// Check config.php
 ////////////////////////////////////////////
 
 $config = '<span class="good">Writeable</span>';
@@ -166,16 +166,16 @@ if (!isset($_SESSION['config_rename'])) {
 
 
 ////////////////////////////////////////////
-// Check directories  
+// Check directories
 ////////////////////////////////////////////
 
 if (is_writable('../pages/')) {
     $sDirPages= '<span class="good">Writeable</span>';
-} 
+}
 elseif (!file_exists('../pages/')) {
     $sDirPages=  '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
-} 
+}
 else {
     $sDirPages=  '<span class="bad">Unwriteable</span>';
     $installFlag = false;
@@ -184,24 +184,24 @@ else {
 
 if (is_writable('../media/')) {
     $sDirMedia= '<span class="good">Writeable</span>';
-} 
+}
 elseif (!file_exists('../media/')) {
     $sDirMedia= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
-} 
+}
 else {
     $sDirMedia= '<span class="bad">Unwriteable</span>';
     $installFlag = false;
 }
-     
-     
+
+
 if (is_writable('../templates/')) {
     $sDirTemplates= '<span class="good">Writeable</span>';
-} 
+}
 elseif (!file_exists('../templates/')) {
     $sDirTemplates= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
-} 
+}
 else {
     $sDirTemplates= '<span class="bad">Unwriteable</span>';
     $installFlag = false;
@@ -210,7 +210,7 @@ else {
 
 if (is_writable('../modules/')) {
     $sDirModules= '<span class="good">Writeable</span>';
-} 
+}
 elseif (!file_exists('../modules/')) {
     $sDirModules= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
@@ -219,74 +219,74 @@ else {
     $sDirModules= '<span class="bad">Unwriteable</span>';
     $installFlag = false;
 }
-               
+
 
 if (is_writable('../languages/')) {
     $sDirLanguages= '<span class="good">Writeable</span>';
-} 
+}
 elseif (!file_exists('../languages/')) {
     $sDirLanguages= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
-} 
+}
 else {
     $sDirLanguages= '<span class="bad">Unwriteable</span>';
     $installFlag = false;
 }
-               
+
 
 if (is_writable('../temp/')) {
     $sDirTemp= '<span class="good">Writeable</span>';
-} 
+}
 elseif (!file_exists('../temp/')) {
     $sDirTemp= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
-} 
+}
 else {
     $sDirTemp= '<span class="bad">Unwriteable</span>';
     $installFlag = false;
 }
-               
+
 
 if (is_writable('../config/')) {
     $sDirConfig= '<span class="good">Writeable</span>';
-} 
+}
 elseif (!file_exists('../config/')) {
     $sDirConfig= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
-} 
+}
 else {
     $sDirConfig= '<span class="bad">Unwriteable</span>';
     $installFlag = false;
 }
-               
+
 
 if (is_writable('../var/')) {
     $sDirVar= '<span class="good">Writeable</span>';
 } elseif (!file_exists('../var/')) {
     $sDirVar= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
-} 
+}
 else {
     $sDirVar= '<span class="bad">Unwriteable</span>';
     $installFlag = false;
 }
-          
-          
+
+
 ////////////////////////////////////////////
 // Absolute URL
 ////////////////////////////////////////////
 
-// Try to guess installation URL   
+// Try to guess installation URL
 $guessed_url = 'http://' . $_SERVER["SERVER_NAME"] . $_SERVER["SCRIPT_NAME"];
 $guessed_url = rtrim(dirname($guessed_url), 'install');
 $sWbUrl= $guessed_url;
 
-// is there is one set in session choose that 
-if (isset($_SESSION['wb_url'])) {$sWbUrl= $_SESSION['wb_url'];} 
+// is there is one set in session choose that
+if (isset($_SESSION['wb_url'])) {$sWbUrl= $_SESSION['wb_url'];}
 
 
 ////////////////////////////////////////////
-// TimeZones  
+// TimeZones
 ////////////////////////////////////////////
 
 // setting zones manually
@@ -305,7 +305,7 @@ function TzSelected($fOffset) {
 
 
 ////////////////////////////////////////////
-// Fetch allowed Languages  
+// Fetch allowed Languages
 ////////////////////////////////////////////
 
 //Find all available languages in /language/ folder and build option list from
@@ -340,7 +340,7 @@ function LangSelected($sLangCode) {
 
 
 ////////////////////////////////////////////
-// OS Stuff  
+// OS Stuff
 ////////////////////////////////////////////
 
 // for shorter Templating
@@ -355,7 +355,7 @@ if (!isset($_SESSION['operating_system']) or $_SESSION['operating_system'] == 'l
 if (isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {$sWindows=' checked="checked"';}
 
 // Permissions Block
-if (isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {$sPermissionBlock= 'none';} 
+if (isset($_SESSION['operating_system']) and $_SESSION['operating_system'] == 'windows') {$sPermissionBlock= 'none';}
 else                                                                                     {$sPermissionBlock= 'block';}
 
 // World Writable checkbox
@@ -363,38 +363,38 @@ if (isset($_SESSION['world_writeable']) and $_SESSION['world_writeable'] == "tru
 
 
 ////////////////////////////////////////////
-// DB Stuff  
+// DB Stuff
 ////////////////////////////////////////////
 
 //for shorter Templating
 $sDatabaseHost =     'localhost';
 $sDatabaseName =     'DatabaseName';
-$sTablePrefix =      'wbce000';
+$sTablePrefix =      'wbce_';
 $sDatabaseUsername = '';
 $sDatabasePassword = '';
 
 
-if (isset($_SESSION['database_host']))     {$sDatabaseHost= $_SESSION['database_host'];} 
-if (isset($_SESSION['database_name']))     {$sDatabaseName= $_SESSION['database_name'];} 
-if (isset($_SESSION['table_prefix']))      {$sTablePrefix= $_SESSION['table_prefix'];} 
-if (isset($_SESSION['database_username'])) {$sDatabaseUsername= $_SESSION['database_username'];} 
+if (isset($_SESSION['database_host']))     {$sDatabaseHost= $_SESSION['database_host'];}
+if (isset($_SESSION['database_name']))     {$sDatabaseName= $_SESSION['database_name'];}
+if (isset($_SESSION['table_prefix']))      {$sTablePrefix= $_SESSION['table_prefix'];}
+if (isset($_SESSION['database_username'])) {$sDatabaseUsername= $_SESSION['database_username'];}
 if (isset($_SESSION['database_password'])) {$sDatabasePassword= $_SESSION['database_password'];}
 
 /// @todo reactivate the install Tables settings / better overwrite existing tables
 
 
 ////////////////////////////////////////////
-// Page title 
+// Page title
 ////////////////////////////////////////////
 
 //for shorter Templating
 $sWebsiteTitle="Enter your website title";
 
-if (isset($_SESSION['website_title']))   {$sWebsiteTitle= $_SESSION['website_title'];} 
+if (isset($_SESSION['website_title']))   {$sWebsiteTitle= $_SESSION['website_title'];}
 
 
 ////////////////////////////////////////////
-// Admin Stuff  
+// Admin Stuff
 ////////////////////////////////////////////
 
 //for shorter Templating
@@ -403,14 +403,14 @@ $sAdminRepassword="";
 $sAdminUsername="";
 $sAdminEmail="";
 
-if (isset($_SESSION['admin_username']))   {$sAdminUsername= $_SESSION['admin_username'];} 
+if (isset($_SESSION['admin_username']))   {$sAdminUsername= $_SESSION['admin_username'];}
 if (isset($_SESSION['admin_email']))      {$sAdminEmail= $_SESSION['admin_email'];}
-if (isset($_SESSION['admin_password']))   {$sAdminPassword= $_SESSION['admin_password'];} 
+if (isset($_SESSION['admin_password']))   {$sAdminPassword= $_SESSION['admin_password'];}
 if (isset($_SESSION['admin_repassword'])) {$sAdminRepassword= $_SESSION['admin_repassword'];}
 
 
 ////////////////////////////////////////////
-// Include  Template  
+// Include  Template
 ////////////////////////////////////////////
 
 // Finally include the template

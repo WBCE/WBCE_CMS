@@ -21,7 +21,7 @@ if (WB_DEBUG === true) {
     error_reporting(E_ALL);
 }
 
-// needed by class secureform 
+// needed by class secureform
 define ("WB_SECFORM_TIMEOUT",'7200');
 
 
@@ -45,7 +45,7 @@ $_SESSION['ERROR_FIELD']=array();
 $_POST = array_map('trim', $_POST);
 
 // Require needed helper functions
-require_once("helper_functions.php"); 
+require_once("helper_functions.php");
 
 // Begin check to see if form was even submitted
 // Set error if no post vars found
@@ -155,9 +155,9 @@ if (!isset($_POST['database_name']) or $_POST['database_name'] == '') {
     $database_name = $_POST['database_name'];
 }
 // Get table prefix
-if (preg_match('/[^a-z0-9]+/', $_POST['table_prefix'])) {
+if (preg_match('/[^a-z0-9_]+/', $_POST['table_prefix'])) {
     // contains invalid characters (only a-z, A-Z, 0-9 and _ allowed to avoid problems with table/field names)
-    set_error(d('e12: ').'Only characters a-z and 0-9 allowed in table_prefix.', 'table_prefix');
+    set_error(d('e12: ').'Only characters a-z, 0-9 and _ allowed in table_prefix.', 'table_prefix');
     $IsError=true;
 } else {
     $table_prefix = $_POST['table_prefix'];
@@ -195,7 +195,7 @@ if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
     }
 }
 
- 
+
 // Get the two admin passwords entered, and check that they match
 if (!isset($_POST['admin_password']) or $_POST['admin_password'] == '') {
     set_error(d('e16: ').'Please enter a password for the Administrator account', 'admin_password');
@@ -212,16 +212,16 @@ if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
     if ($admin_password != $admin_repassword) {
         set_error(d('e18: ').'Sorry, the two Administrator account passwords you entered do not match', 'admin_repassword');
         $IsError=true;
-    }   
+    }
 }
 
 
-// If we got form errors 
+// If we got form errors
 if ($IsError){
    // Redirect to first page again and exit
    // To see debug output , just uncomment the Location header
    //echo "<h4>Called Error</4>";
-   header('Location: index.php?sessions_checked=true'); 
+   header('Location: index.php?sessions_checked=true');
    exit;
 }
 
@@ -236,7 +236,7 @@ if (isset($aMatches[1])) {
 }
 
 // PDO fix  http://php.net/manual/de/pdo.connections.php#82591
-if ($database_host=="localhost") 
+if ($database_host=="localhost")
     $database_host="127.0.0.1";
 
 $sPdoPort="";
@@ -246,11 +246,11 @@ if (isset($database_port))
 $database_charset = 'utf8';
 
 //LEts See if we are able to connect to DB  No DB class needed for this on first
-// I dont want any files Written before we know the content is worth it 
+// I dont want any files Written before we know the content is worth it
 
 try {
     if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-        $dbtest = new pdo( 
+        $dbtest = new pdo(
             "mysql: host=$database_host $sPdoPort;dbname=$database_name",
             $database_username,
             $database_password,
@@ -259,21 +259,21 @@ try {
     } else {
         if (isset($database_port))
             $dbtest = new mysqli(
-                $database_host, 
-                $database_username, 
-                $database_password, 
+                $database_host,
+                $database_username,
+                $database_password,
                 $database_name,
                 $database_port
             );
-        else 
+        else
             $dbtest = new mysqli(
-                $database_host, 
-                $database_username, 
-                $database_password, 
+                $database_host,
+                $database_username,
+                $database_password,
                 $database_name
             );
     }
-} 
+}
 catch (Exception $e) {
     $sMsg = d('e29: ').'Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
         . $e->getMessage();
@@ -314,7 +314,7 @@ if (is_writable($config_filename)) {
     . 'Change its permissions so it is, then re-run step 4.';
 }
 if ($sMsg) {set_error($sMsg,"",true);} // if something gone wrong, break with message
-                               
+
 // include config file to set constants
 include_once $config_filename;
 
@@ -333,7 +333,7 @@ define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 require ADMIN_PATH . '/interface/version.php';
 
 
-// Try connecting to database This time whith our Classes 
+// Try connecting to database This time whith our Classes
 if (!file_exists(WB_PATH . '/framework/class.database.php')) {
     set_error(d('e21: ').'It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!',"",true);
 }
@@ -348,7 +348,7 @@ try {
     $sMsg = d('e22: ').'Database host name, username and/or password incorrect.'. d('<br />MySQL Error:<br />')
     . d($e->getMessage());
     set_error($sMsg,"",true);
-   
+
 }
 
 
@@ -365,10 +365,10 @@ if (!defined('WB_INSTALL_PROCESS')) {
 Begin Create Database Tables
  *****************************/
 $aSqlFiles = array(
-    'install_struct.sql', 
+    'install_struct.sql',
     'install_data.sql'
 );
-foreach ($aSqlFiles as $sFileName){ 
+foreach ($aSqlFiles as $sFileName){
     $sFile = dirname(__FILE__).'/'.$sFileName;
     $bPreserve = ($sFileName == "install_struct.sql") ? false : true;
     if (is_readable($sFile)) {
@@ -386,38 +386,38 @@ foreach ($aSqlFiles as $sFileName){
 
 
 // add settings from install input
-$aSettings = array( 
-    'wbce_version'     => WBCE_VERSION, 
-    'wbce_tag'         => WBCE_TAG, 
+$aSettings = array(
+    'wbce_version'     => WBCE_VERSION,
+    'wbce_tag'         => WBCE_TAG,
     'wb_version'       => VERSION,   // Legacy: WB-Classic
     'wb_revision'      => REVISION,  // Legacy: WB-Classic
     'wb_sp'            => SP,        // Legacy: WB-Classic
-    'website_title'    => $website_title, 
-    'default_language' => $default_language, 
-    'app_name'         => 'wb-'.$session_rand, 
-    'default_timezone' => $default_timezone, 
-    'operating_system' => $operating_system, 
-    'string_file_mode' => $file_mode, 
-    'string_dir_mode'  => $dir_mode, 
+    'website_title'    => $website_title,
+    'default_language' => $default_language,
+    'app_name'         => 'wb-'.$session_rand,
+    'default_timezone' => $default_timezone,
+    'operating_system' => $operating_system,
+    'string_file_mode' => $file_mode,
+    'string_dir_mode'  => $dir_mode,
     'server_email'     => $admin_email
 );
 
 require_once WB_PATH.'/framework/classes/class.settings.php';
-foreach($aSettings as $name=>$value){   
+foreach($aSettings as $name=>$value){
     Settings::Set($name, $value);
 }
 
 // add the Admin user Using md5 here should be not a a problem as password is rehashed on first login if possible
 $aAdminUser = array(
     'user_id'      => 1,
-    'group_id'     => 1, 
-    'groups_id'    => '1', 
-    'active'       => '1', 
-    'username'     => $admin_username, 
-    'language'     => $default_language, 
-    'password'     => md5($admin_password), 
-    'email'        => $admin_email, 
-    'timezone'     => $default_timezone, 
+    'group_id'     => 1,
+    'groups_id'    => '1',
+    'active'       => '1',
+    'username'     => $admin_username,
+    'language'     => $default_language,
+    'password'     => md5($admin_password),
+    'email'        => $admin_email,
+    'timezone'     => $default_timezone,
     'display_name' => 'Administrator'
 );
 //print_r($aAdminUser);
@@ -459,7 +459,7 @@ $dirs['modules'] = WB_PATH . '/modules/';
 $dirs['templates'] = WB_PATH . '/templates/';
 $dirs['languages'] = WB_PATH . '/languages/';
 
-//this one needs to go first, so module filter can use the installer.  
+//this one needs to go first, so module filter can use the installer.
 
     load_module( $dirs['modules'] . 'outputfilter_dashboard',true);
     if ($admin->error != '') {
@@ -470,7 +470,7 @@ $dirs['languages'] = WB_PATH . '/languages/';
     }
 
 
-// As some Module need to install Droplets we need Dropletss in next step 
+// As some Module need to install Droplets we need Dropletss in next step
     load_module( $dirs['modules'] . 'droplets',true);
     if ($admin->error != '') {
         set_error(d("e26c: /droplets : ").$admin->error,"",true);
@@ -479,26 +479,26 @@ $dirs['languages'] = WB_PATH . '/languages/';
         set_error(d("e26d: /droplets : ").$database->get_error(),"",true);
     }
 
-// Now we go and install all other modules 
+// Now we go and install all other modules
 foreach ($dirs as $type => $dir) {
-    
+
     if ($handle = opendir($dir)) {
         while (false !== ($file = readdir($handle))) {
             if (
-                $file != '' and 
-                substr($file, 0, 1) != '.' and 
-                $file != 'admin.php' and 
-                $file != 'index.php' and 
-                $file != 'droplets' and 
-                $file != 'outputfilter_dashboard' 
+                $file != '' and
+                substr($file, 0, 1) != '.' and
+                $file != 'admin.php' and
+                $file != 'index.php' and
+                $file != 'droplets' and
+                $file != 'outputfilter_dashboard'
             ) {
-            
+
                 // Get addon type
                 if ($type == 'modules') {
                     load_module($dir . '/' . $file, true);
                     // Pretty ugly hack to let modules run $admin->set_error
                     // See dummy class definition admin_dummy above
-                   
+
                     if ($admin->error != '') {
                         set_error(d("e27: /$file : ").$admin->error,"",true);
                     }
@@ -514,7 +514,7 @@ foreach ($dirs as $type => $dir) {
         }
         closedir($handle);
     }
-    
+
 }
 
 

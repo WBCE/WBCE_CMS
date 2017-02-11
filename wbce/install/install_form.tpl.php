@@ -1,7 +1,7 @@
-<?php 
+<?php
 /**
     @file
-    @brief Simply the Template file for the Installer form 
+    @brief Simply the Template file for the Installer form
 
     @todo Remove the spagetty ;-)
 */
@@ -56,11 +56,11 @@
             </div>
 <?php if (isset($_SESSION['message']) and !empty($_SESSION['message'])): ?>
             <div class="warningbox"  >
-            
+
                 <?php foreach ($_SESSION['message'] as $message):?>
                 <b>Error: </b><?php echo $message?><br>
                 <?php endforeach;?>
-                
+
             </div>
 <?php endif; ?>
             <table class="step1" >
@@ -160,7 +160,7 @@
                     </tr>
                 </tbody>
             </table><!-- class step2 -->
-            
+
 <?php if ($installFlag == true) : ?>
 
             <table class="step3">
@@ -175,7 +175,7 @@
                     <tr>
                         <td class="name">Absolute URL:</td>
                         <td class="value">
-                  
+
                             <input <?php echo field_error('wb_url');?> type="text" tabindex="1" name="wb_url" style="width: 99%;" value="<?php echo $sWbUrl ?>" />
                         </td>
                         <td colspan="4">&nbsp;</td>
@@ -190,7 +190,7 @@
                                     <?php echo 'GMT ' . (($fOffset > 0) ? '+' : '') . (($fOffset == 0) ? '' : (string) $fOffset . ' Hours') ?>
                                 </option>
                             <?php endforeach ; ?>
-                                
+
                             </select>
                         </td><!-- class value -->
                     </tr>
@@ -200,11 +200,11 @@
                             <select <?php echo field_error('default_language');?> tabindex="3" name="default_language" style="width: 100%;">
 
                             <?php foreach ($aAllowedLanguages as $sLangCode=>$Language): ?>
-                            
+
                                 <option value="<?php echo $sLangCode ?>" <?php if (LangSelected($sLangCode)) echo 'selected="selected"' ?> >
-                                    <?php echo$Language ?> 
+                                    <?php echo$Language ?>
                                 </option>
-                            
+
                             <?php endforeach ; ?>
 
                             </select>
@@ -249,7 +249,7 @@
                     </tr>
                 </tbody>
             </table><!-- class step4 -->
-            
+
             <table class="step5">
                 <thead>
                     <tr>
@@ -276,7 +276,7 @@
                         <td class="name">Table Prefix: </td>
                         <td class="value" style="white-space: nowrap;">
                             <input <?php echo field_error('table_prefix')?> type="text" tabindex="9" name="table_prefix" value="<?php echo $sTablePrefix ?>" />
-                            <span style="display: inline;">&nbsp;([a-z0-9])</span>
+                            <span style="display: inline;">&nbsp;([a-z0-9_])</span>
                         </td>
                     </tr>
                     <tr>
@@ -293,7 +293,7 @@
                     </tr>
                 </tbody>
             </table><!-- class step5 -->
-            
+
             <table class="step6">
                 <thead>
                     <tr>
@@ -311,7 +311,7 @@
                     </tr>
                 </tbody>
             </table><!-- class step6 -->
-            
+
             <table class="step7">
                 <thead>
                     <tr>
@@ -347,7 +347,7 @@
                     </tr>
                 </tbody>
             </table><!-- class step7 -->
-        
+
 <?php endif; // installFlag ?>
 
             <table class="step8">
@@ -377,7 +377,7 @@
                     </tr>
                 </tbody>
             </table><!-- class step8 -->
-        
+
         </form>
     </div> <!-- class body -->
 
