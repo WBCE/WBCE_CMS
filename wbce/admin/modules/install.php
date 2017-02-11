@@ -109,7 +109,9 @@ foreach($aAddonRootPath as $addon_root_path){
     // require always fetched the first cached file
     //require($temp_unzip.'info.php');
     $exec=file_get_contents ($temp_unzip.'info.php');
-    $exec = preg_replace("/^.<?(php)?/ui", "", trim($exec));
+    ##$exec = preg_replace("/^.<?(php)?/ui", "", trim($exec));
+    ## TODO: need to get rid of preg_replace and eval as it is not stable enough
+    $exec = preg_replace("/^<\?php/ui", "", trim($exec));
     eval ($exec);
 
     // Perform Add-on requirement checks before proceeding
