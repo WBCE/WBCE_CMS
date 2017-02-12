@@ -5,6 +5,21 @@ Please visit the [WBCE Github](https://github.com/WBCE/WebsiteBaker_CommunityEdi
 
 ## Auto generated Git commit history
 
+ * **2017-02-12:** instantflorian [[9a1eb92](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/9a1eb9270747221cb9596219f8459623bfc696c5)]
+   > Update modify_settings.php
+     undo last changes
+ * **2017-02-12:** instantflorian [[331aa5e](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/331aa5ed6116f2a54b58497a45ea096646cafc7d)]
+   > Update modify_settings.php
+     commented out hard codes see prev/next headlines
+ * **2017-02-11:** instantflorian [[d939b23](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/d939b23eb7b2feccec77c633d8e9233bd11a232e)]
+   > Update module_settings.default.php
+     correction to last commit, needs inverted commas instead of quotes
+ * **2017-02-11:** instantflorian [[3423318](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/342331896c6f51790039969f7d598ff77f982029)]
+   > Update module_settings.default.php
+     Avoid problems with former UTF-8 invalid delimiter
+ * **2017-02-11:** cwsoft [[7aa7c08](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/7aa7c08cea2c45ea652d9a7e18ffb697e1ecee1a)]
+   > Updated CHANGELOG.md
+
  * **2017-02-10:** cwsoft [[5030708](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/503070864134d5cc7159fb4ce01e61aa60e605fc)]
    > Updated PHP Mailer to v5.2.22
      - Security fix for the 3rd party library PHPMailer
