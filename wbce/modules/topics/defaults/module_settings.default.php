@@ -73,7 +73,7 @@ $sort_comments = '0';
 
 //Advanced setting:
 
-$serializedelimiter = "¬ª";
+$serializedelimiter = '$_$';
 $create_topics_accessfiles = 1;
 
 //Support other Modules:

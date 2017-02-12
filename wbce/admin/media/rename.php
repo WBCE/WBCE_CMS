@@ -12,24 +12,24 @@
 
 // Create admin object
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Media', 'media_rename', false);
 
-// Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+// Include WBCE functions file (legacy for WBCE 1.1.x)
+require_once WB_PATH . '/framework/functions.php';
 
-// Get the current dir
+// Get current dir (relative to media)
 $directory = $admin->get_get('dir');
-$directory = ($directory == '/') ?  '' : $directory;
-
+$directory = ($directory == '/' or $directory == '\\') ? '' : $directory;
 $dirlink = 'browse.php?dir='.$directory;
-$rootlink = 'browse.php?dir=';
-// $file_id = intval($admin->get_get('id'));
 
-// first Check to see if it contains ..
+// Ensure directory is inside WBCE media folder
 if (!check_media_path($directory)) {
-	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'],$rootlink, false);
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], 'browse.php?dir=', false);
+	die;
 }
+
+// include functions.php (backwards compatibility with WBCE 1.x)
+require_once WB_PATH . '/framework/functions.php';
 
 // Get the temp id
 $file_id = intval($admin->checkIDKEY('id', false, $_SERVER['REQUEST_METHOD']));
@@ -39,6 +39,7 @@ if (!$file_id) {
 
 // Get home folder not to show
 $home_folders = get_home_folders();
+
 // Check for potentially malicious files
 $forbidden_file_types  = preg_replace( '/\s*[,;\|#]\s*/','|',RENAME_FILES_ON_UPLOAD);
 
@@ -94,7 +95,7 @@ if(!isset($rename_file)) {
 $template = new Template(dirname($admin->correct_theme_source('media_rename.htt')));
 $template->set_file('page', 'media_rename.htt');
 $template->set_block('page', 'main_block', 'main');
-//echo WB_PATH.'/media/'.$directory.'/'.$rename_file;
+
 if($type == 'folder') {
 	$template->set_var('DISPlAY_EXTENSION', 'hide');
 	$extension = '';
@@ -114,7 +115,6 @@ $template->set_var(array(
 					'FILENAME' => $rename_file,
 					'DIR' => $directory,
 					'FILE_ID' => $admin->getIDKEY($file_id),
-					// 'FILE_ID' => $file_id,
 					'TYPE' => $type,
 					'EXTENSION' => $extension,
 					'FTAN' => $admin->getFTAN()

@@ -200,7 +200,7 @@ $filesRemove['1'] = array(
     '[TEMPLATE]/argos_theme/templates/users_form.htt',
 );
 
-// hopefully we add the removed files here these files are for 1.1.0 
+// hopefully we add the removed files here these files are for 1.1.0
 // as a result of adding class Settings and rework of the admin tool system
 $filesRemove['2'] = array(
 
@@ -464,7 +464,7 @@ echo "<br />Adding redirect timer to settings table<br />";
 Settings::Set('redirect_timer','1500', false);
 
 echo "<br />Updating rename_files_on_upload to settings table<br />";
-Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js', false);
+Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk', false);
 
 echo "<br />Adding mediasettings to settings table<br />";
 Settings::Set('mediasettings','', false);
@@ -476,7 +476,7 @@ Settings::Set ("wb_secform_secrettime", '86400', false);
 Settings::Set ("wb_secform_timeout", '7200', false);
 Settings::Set ("wb_secform_tokenname", 'formtoken', false);
 Settings::Set ("wb_secform_usefp", false, false);
-Settings::Set('fingerprint_with_ip_octets', '0', false); 
+Settings::Set('fingerprint_with_ip_octets', '0', false);
 
 echo "<br />Removing Secureform selector, no longer needed.<br />";
 Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
@@ -496,7 +496,7 @@ db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
 
 
 /**********************************************************
- *  - making sure group_id is set correct there was a big bug in original WB 
+ *  - making sure group_id is set correct there was a big bug in original WB
  *  WBCE 1.0.0
  */
 
@@ -504,13 +504,13 @@ $table = TABLE_PREFIX."users";
 
 // set group_id to first group of groups_id
 $sql = "UPDATE $table SET `group_id` = CAST(groups_id AS SIGNED)";
-$query = $database->query($sql); 
+$query = $database->query($sql);
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
 // if admin, set group_id to 1
 $sql = "UPDATE $table SET `group_id` = 1 WHERE FIND_IN_SET('1', groups_id) > '0'";
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
-$query = $database->query($sql); 
+$query = $database->query($sql);
 
 
 /**********************************************************

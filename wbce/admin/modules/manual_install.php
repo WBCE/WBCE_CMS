@@ -1,101 +1,76 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        admin
- * @package         modules
- * @author          Ryan Djurovich, Christian Sommer, WebsiteBaker Project
- * @copyright       Ryan Djurovich
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: manual_install.php 1603 2012-02-08 03:08:19Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/modules/manual_install.php $
- * @lastmodified    $Date: 2012-02-08 04:08:19 +0100 (Mi, 08. Feb 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
-/**
- * check if there is anything to do
- */
+// Include required files
+require '../../config.php';
+require_once WB_PATH . '/framework/functions.php';	// for WBCE 1.1.x compatibility
 
-/**
- * check if user has permissions to access this file
- */
-// include WB configuration file and WB admin class
-require_once('../../config.php');
-require_once('../../framework/class.admin.php');
-
-// check user permissions for admintools (redirect users with wrong permissions)
+// limit advanced Module settings to users with access to admintools
 $admin = new admin('Admintools', 'admintools', false, false);
+if ($admin->get_permission('admintools') == false) {
+	die(header('Location: index.php'));
+}
 
-if (!(isset($_POST['action']) && in_array($_POST['action'], array('install', 'upgrade', 'uninstall')))) { die(header('Location: index.php?advanced')); }
-if (!(isset($_POST['file']) && $_POST['file'] != '' && (strpos($_POST['file'], '..') === false))){  die(header('Location: index.php?advanced'));  }
-
+// Setup admin object, skip header for FTAN validation and check section permissions
+$admin = new admin('Addons', 'modules_install', false, true);
 $js_back = ADMIN_URL . '/modules/index.php?advanced';
-if( !$admin->checkFTAN() )
-{
+if(! $admin->checkFTAN()) {
     $admin->print_header();
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$js_back);
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
+}
+// Output admin backend header (this creates a new FTAN)
+$admin->print_header();
+
+// Check if a valid action was defined
+$action = $admin->get_post('action');
+if (! in_array($action, array('install', 'upgrade', 'uninstall'))) {
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
 }
 
-if ($admin->get_permission('admintools') == false) { die(header('Location: ../../index.php')); }
-
-// check if the referer URL if available
-$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] :
-    (isset($HTTP_SERVER_VARS['HTTP_REFERER']) ? $HTTP_SERVER_VARS['HTTP_REFERER'] : '');
-$referer = '';
-// if referer is set, check if script was invoked from "admin/modules/index.php"
-$required_url = ADMIN_URL . '/modules/index.php';
-if ($referer != '' && (!(strpos($referer, $required_url) !== false || strpos($referer, $required_url) !== false))) 
-{ die(header('Location: ../../index.php')); }
-
-// include WB functions file
-require_once(WB_PATH . '/framework/functions.php');
-
-// load WB language file
-require_once(WB_PATH . '/languages/' . LANGUAGE .'.php');
-
-// create Admin object with admin header
-$admin = new admin('Addons', '', true, false);
-
-/**
- * Manually execute the specified module file (install.php, upgrade.php or uninstall.php)
- */
-// check if specified module folder exists
-$mod_path = WB_PATH . '/modules/' . basename(WB_PATH . '/' . $_POST['file']);
-
-// let the old variablename if module use it
-$module_dir = $mod_path;
-if (!file_exists($mod_path . '/' . $_POST['action'] . '.php'))
-{
-    $admin->print_header();
-    $admin->print_error($TEXT['NOT_FOUND'].': <tt>"'.htmlentities(basename($mod_path)).'/'.$_POST['action'].'.php"</tt> ', $js_back);
+// Check if a valid module file was defined
+$file = trim($admin->get_post('file'));
+$root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . 'modules');
+$raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $file);
+if(! ($file && $raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
+    // module file empty or outside WBCE module folder
+    $admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED'], $js_back);
 }
 
-// include modules install.php script
-require($mod_path . '/' . $_POST['action'] . '.php');
+// Extract module folder from realpath for further usage inside script
+$file = basename($raw_dir);
+
+// Execute specified module action handler (install.php, upgrade.php or uninstall.php)
+$mod_path = WB_PATH . '/modules/' . $file;
+if(file_exists($mod_path . '/' . $action . '.php')) {
+    require $mod_path . '/' . $action . '.php';
+} else {
+    $admin->print_error($TEXT['NOT_FOUND'].': <tt>"'.htmlentities($file).'/'.$action.'.php"</tt> ', $js_back);
+}
 
 // load module info into database and output status message
 load_module($mod_path, false);
-$msg = $TEXT['EXECUTE'] . ': <tt>"' . htmlentities(basename($mod_path)) . '/' . $_POST['action'] . '.php"</tt>';
+$msg = $TEXT['EXECUTE'] . ': <tt>"' . htmlentities($file) . '/' . $action . '.php"</tt>';
 
-switch ($_POST['action'])
-{
+switch ($action) {
     case 'install':
-        // $admin->print_header();
         $admin->print_success($msg, $js_back);
         break;
 
     case 'upgrade':
         upgrade_module(basename($mod_path), false);
-        // $admin->print_header();
         $admin->print_success($msg, $js_back);
         break;
-    
+
     case 'uninstall':
-        // $admin->print_header();
         $admin->print_success($msg, $js_back);
         break;
 }

@@ -1,30 +1,23 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        admin
- * @package         templates
- * @author          WebsiteBaker Project
- * @copyright       Ryan Djurovich
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: index.php 1625 2012-02-29 00:50:57Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/admin/templates/index.php $
- * @lastmodified    $Date: 2012-02-29 01:50:57 +0100 (Mi, 29. Feb 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
-// Print admin header
-require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
-$admin = new admin('Addons', 'templates');
+// Include required files
+require '../../config.php';
 
-// Setup template object, parse vars to it, then parse it
+// Setup admin object, print header and check section permissions
+$admin = new admin('Addons', 'templates', true, true);
+
 // Create new template object
 $template = new Template(dirname($admin->correct_theme_source('templates.htt')));
-// $template->debug = true;
 $template->set_file('page', 'templates.htt');
 $template->set_block('page', 'main_block', 'main');
 $template->set_var('FTAN', $admin->getFTAN());
@@ -51,33 +44,30 @@ if($admin->get_permission('templates_view') != true) {
     $template->set_var('DISPLAY_LIST', 'hide');
 }
 
-// Insert language headings
-$template->set_var(array(
-                    'HEADING_INSTALL_TEMPLATE' => $HEADING['INSTALL_TEMPLATE'],
-                    'HEADING_UNINSTALL_TEMPLATE' => $HEADING['UNINSTALL_TEMPLATE'],
-                    'HEADING_TEMPLATE_DETAILS' => $HEADING['TEMPLATE_DETAILS']
-                )
-            );
-// insert urls
-$template->set_var(array(
-                    'ADMIN_URL' => ADMIN_URL,
-                    'WB_URL' => WB_URL,
-                    'THEME_URL' => THEME_URL,
-                    'FTAN' => $admin->getFTAN()
-                )
-            );
-// Insert language text and messages
-$template->set_var(array(
-    'URL_MODULES' => $admin->get_permission('modules') ? 
-        '<a href="' . ADMIN_URL . '/modules/index.php">' . $MENU['MODULES'] . '</a>' : '',
-    'URL_LANGUAGES' => $admin->get_permission('languages') ?
-        '<a href="' . ADMIN_URL . '/languages/index.php">' . $MENU['LANGUAGES'] . '</a>' : '',
-    'URL_ADVANCED' => '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;',
-    'TEXT_INSTALL' => $TEXT['INSTALL'],
-    'TEXT_UNINSTALL' => $TEXT['UNINSTALL'],
-    'TEXT_VIEW_DETAILS' => $TEXT['VIEW_DETAILS'],
-    'TEXT_PLEASE_SELECT' => $TEXT['PLEASE_SELECT'],
-    'CHANGE_TEMPLATE_NOTICE' => $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE']
+// Insert language headings, urls and text messages
+$template->set_var(
+    array(
+        // Headings
+        'HEADING_INSTALL_TEMPLATE' => $HEADING['INSTALL_TEMPLATE'],
+        'HEADING_TEMPLATE_DETAILS' => $HEADING['TEMPLATE_DETAILS'],
+
+        // URLs
+        'ADMIN_URL' => ADMIN_URL,
+        'WB_URL' => WB_URL,
+        'THEME_URL' => THEME_URL,
+        'FTAN' => $admin->getFTAN(),
+
+        // Text messages
+        'URL_MODULES' => $admin->get_permission('modules') ?
+            '<a href="' . ADMIN_URL . '/modules/index.php">' . $MENU['MODULES'] . '</a>' : '',
+        'URL_LANGUAGES' => $admin->get_permission('languages') ?
+            '<a href="' . ADMIN_URL . '/languages/index.php">' . $MENU['LANGUAGES'] . '</a>' : '',
+        'URL_ADVANCED' => '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;',
+        'TEXT_INSTALL' => $TEXT['INSTALL'],
+        'TEXT_UNINSTALL' => $TEXT['UNINSTALL'],
+        'TEXT_VIEW_DETAILS' => $TEXT['VIEW_DETAILS'],
+        'TEXT_PLEASE_SELECT' => $TEXT['PLEASE_SELECT'],
+        'CHANGE_TEMPLATE_NOTICE' => $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE']
     )
 );
 

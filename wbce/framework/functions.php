@@ -583,7 +583,7 @@ function media_filename($string)
     require_once WB_PATH . '/framework/functions-utf8.php';
     $string = entities_to_7bit($string);
     // Now remove all bad characters
-    $bad = array('\'', '"', '`', '!', '@', '#', '$', '%', '^', '&', '*', '=', '+', '|', '/', '\\', ';', ':', ',', '?');
+    $bad = array('\'', '"', '`', '!', '@', '#', '$', '%', '^', '&', '*', '=', '+', '|', '/', '\\', ';', ':', ',', '?','[',']','~','<','>');
     $string = str_replace($bad, '', $string);
     // replace multiple dots in filename to single dot and (multiple) dots at the end of the filename to nothing
     $string = preg_replace(array('/\.+/', '/\.+$/', '/\s/'), array('.', '', '_'), $string);

@@ -12,25 +12,30 @@
 
 require('../../config.php');
 include_once('resize_img.php');
-require_once(WB_PATH.'/framework/functions.php');
 
+// Include WBCE functions file (legacy for WBCE 1.1.x)
+require_once WB_PATH . '/framework/functions.php';
+
+// Check if an image is specified
 if (isset($_GET['img']) && isset($_GET['t'])) {
 	$image = addslashes($_GET['img']);
+	$type = (int) $_GET['t'];
 
-	// Check to see if it contains ..
+	// Ensure image is inside WBCE media folder
 	if (!check_media_path($image)) {
-		$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'], WB_URL, false);
+		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], WB_URL, false);
+		die;
 	}
 
-	$type = addslashes($_GET['t']);
-	$media = WB_PATH.MEDIA_DIRECTORY;
-	$img=new RESIZEIMAGE($media.$image);
+	// Create a thumbnail for the specified image
+	$img_path = WB_PATH . MEDIA_DIRECTORY .$image;
+	$img = new RESIZEIMAGE($img_path);
 	if ($img->imgWidth) {
 		if ($type == 1) {
 			$img->resize_limitwh(50,50);
-		} else if ($type == 2) {
+		} elseif ($type == 2) {
 			$img->resize_limitwh(200,200);
-		} 
+		}
 		$img->close();
 	} else {
 		header ("Content-type: image/jpeg");

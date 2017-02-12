@@ -200,7 +200,7 @@ if (is_array($setting_pnsa_array) AND count($setting_pnsa_array) > 4 ) {
 	$setting_sa_string = $setting_pnsa_string;
 }	
 
-//Neu: Enthält auch die Daten zu den additional pictures
+//Neu: EnthÃ¤lt auch die Daten zu den additional pictures
 $setting_additionalpics_string = '{THUMB}';
 if (is_array($setting_pnsa_array) AND count($setting_pnsa_array) > 5 ) {
 	$setting_additionalpics_string = $setting_pnsa_array[5];

@@ -12,46 +12,36 @@
 
 // Create admin object
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Media', 'media_delete', false);
 
-// Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+// Include WBCE functions file (legacy for WBCE 1.1.x)
+require_once WB_PATH . '/framework/functions.php';
 
-// Get the current dir
+// Get current dir (relative to media)
 $directory = $admin->get_get('dir');
-$directory = ($directory == '/') ?  '' : $directory;
-
+$directory = ($directory == '/' or $directory == '\\') ? '' : $directory;
 $dirlink = 'browse.php?dir='.$directory;
-$rootlink = 'browse.php?dir=';
 
-// Check to see if it contains ..
+// Ensure directory is inside WBCE media folder
 if (!check_media_path($directory)) {
-	// $admin->print_header();
-	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'],$rootlink,false );
+	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH'], 'browse.php?dir=', false);
+	die;
 }
 
 // Get the file id
 $file_id = $admin->checkIDKEY('id', false, $_SERVER['REQUEST_METHOD']);
 if (!$file_id) {
-	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $dirlink,false);
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $dirlink, false);
+	die;
 }
 
 // Get home folder not to show
 $home_folders = get_home_folders();
-$usedFiles = array();
-// feature freeze
-// require_once(ADMIN_PATH.'/media/dse.php');
-/*
 
-if(!empty($currentdir)) {
-	$usedFiles = $Dse->getMatchesFromDir( $directory, DseTwo::RETURN_USED);
-}
-*/
 // Figure out what folder name the temp id is
 if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 	// Loop through the files and dirs an add to list
-   while (false !== ($file = readdir($handle))) {
+	while (false !== ($file = readdir($handle))) {
 		if(substr($file, 0, 1) != '.' AND $file != '.svn' AND $file != 'index.php') {
 			if(is_dir(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$file)) {
 				if(!isset($home_folders[$directory.'/'.$file])) {
@@ -88,11 +78,14 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 // Check to see if we could find an id to match
 if(!isset($delete_file)) {
 	$admin->print_error($MESSAGE['MEDIA_FILE_NOT_FOUND'], $dirlink, false);
+	die;
 }
-$relative_path = WB_PATH.MEDIA_DIRECTORY.'/'.$directory.'/'.$delete_file;
+
 // Check if the file/folder exists
+$relative_path = WB_PATH.MEDIA_DIRECTORY.'/'.$directory.'/'.$delete_file;
 if(!file_exists($relative_path)) {
 	$admin->print_error($MESSAGE['MEDIA_FILE_NOT_FOUND'], $dirlink, false);
+	die;
 }
 
 // Find out whether its a file or folder
@@ -102,6 +95,7 @@ if($type == 'folder') {
 		$admin->print_success($MESSAGE['MEDIA_DELETED_DIR'], $dirlink);
 	} else {
 		$admin->print_error($MESSAGE['MEDIA_CANNOT_DELETE_DIR'], $dirlink, false);
+		die;
 	}
 } else {
 	// Try and delete the file
@@ -109,5 +103,6 @@ if($type == 'folder') {
 		$admin->print_success($MESSAGE['MEDIA_DELETED_FILE'], $dirlink);
 	} else {
 		$admin->print_error($MESSAGE['MEDIA_CANNOT_DELETE_FILE'], $dirlink, false);
+		die;
 	}
 }

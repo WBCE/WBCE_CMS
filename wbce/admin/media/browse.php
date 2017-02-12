@@ -12,23 +12,19 @@
 
 // Create admin object
 require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Media', 'media', false);
 
-$starttime = explode(" ", microtime());
-$starttime = $starttime[0]+$starttime[1];
+// Include WBCE functions file (legacy for WBCE 1.1.x)
+require_once WB_PATH . '/framework/functions.php';
 
-// Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
-include ('parameters.php');
+// Include parameters
+include 'parameters.php';
 
-// check if theme language file exists for the language set by the user (e.g. DE, EN)
-if(!file_exists(THEME_PATH .'/languages/'.LANGUAGE .'.php')) {
-	// no theme language file exists for the language set by the user, include default theme language file EN.php
-	require_once(THEME_PATH .'/languages/EN.php');
-} else {
-	// a theme language file exists for the language defined by the user, load it
+// include theme language file matching users language or default
+if(file_exists(THEME_PATH .'/languages/'.LANGUAGE .'.php')) {
 	require_once(THEME_PATH .'/languages/'.LANGUAGE .'.php');
+} else {
+	require_once(THEME_PATH .'/languages/EN.php');
 }
 
 // Byte convert for filesize
@@ -56,24 +52,25 @@ function get_filetype_icon($fname) {
 	$extension = (isset($pathinfo['extension'])) ? strtolower($pathinfo['extension']) : '';
 	if (file_exists(THEME_PATH.'/images/files/'.$extension.'.png')) {
 		return $extension;
-	} else {
-		return 'blank_16';
 	}
+	return 'blank_16';
 }
 
-function ShowTip($name,$detail='') {
-$parts = explode(".", $name);
-$ext = strtolower(end($parts));
-if (strpos('.gif.jpg.jpeg.png.bmp.',$ext) )
-	return 'onmouseover="overlib(\'<img src=\\\''.$name.'\\\' maxwidth=\\\'200\\\' maxheight=\\\'200\\\'>\',VAUTO, WIDTH)" onmouseout="nd()" ' ;
-else
+// Tooltip onmouseover
+function ShowTip($name, $detail='') {
+	$parts = explode(".", $name);
+	$ext = strtolower(end($parts));
+	if (strpos('.gif.jpg.jpeg.png.bmp.', $ext)) {
+		return 'onmouseover="overlib(\'<img src=\\\''.$name.'\\\' maxwidth=\\\'200\\\' maxheight=\\\'200\\\'>\',VAUTO, WIDTH)" onmouseout="nd()" ';
+	}
 	return '';
 }
 
+// Human readable filesize
 function fsize($size) {
-   if($size == 0) return("0 Bytes");
-   $filesizename = array(" bytes", " kB", " MB", " GB", " TB");
-   return round($size/pow(1024, ($i = floor(log($size, 1024)))), 1) . $filesizename[$i];
+	if($size == 0) return("0 Bytes");
+	$filesizename = array(" bytes", " kB", " MB", " GB", " TB");
+	return round($size/pow(1024, ($i = floor(log($size, 1024)))), 1) . $filesizename[$i];
 }
 
 // Setup template object, parse vars to it, then parse it
@@ -82,29 +79,23 @@ $template = new Template(dirname($admin->correct_theme_source('media_browse.htt'
 $template->set_file('page', 'media_browse.htt');
 $template->set_block('page', 'main_block', 'main');
 
-// Get the current dir
+// Get current dir (relative to media)
 $currentHome = $admin->get_home_folder();
-$directory =	(($currentHome) AND (!array_key_exists('dir',$_GET)))
-				?
-				$currentHome
-				:
-				$admin->strip_slashes($admin->get_get('dir')) ;
+$directory = $admin->get_get('dir');
+$directory = ($currentHome AND (!$directory)) ? $currentHome : $directory;
+$directory = ($directory == '/' or $directory == '\\') ? '' : $directory;
+$dirlink = 'browse.php?dir='.$directory;
 
-if($directory == '/' OR $directory == '\\') {
-	$directory = '';
-}
-
-$dir_backlink = 'browse.php?dir='.$directory;
-
-// Check to see if it contains ../
+// Ensure directory is inside WBCE media folder
 if (!check_media_path($directory)) {
-	// $admin->print_header();
-	$admin->print_error($MESSAGE['MEDIA_DIR_DOT_DOT_SLASH']);
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], 'browse.php?dir=', false);
+	die;
 }
 
+// Ensure directory exists
 if(!file_exists(WB_PATH.MEDIA_DIRECTORY.$directory)) {
-	// $admin->print_header();
-	$admin->print_error($MESSAGE['MEDIA_DIR_DOES_NOT_EXIST']);
+	$admin->print_error($MESSAGE['MEDIA_DIR_DOES_NOT_EXIST'], 'browse.php?dir=', false);
+	die;
 }
 
 // Check to see if the user wanted to go up a directory into the parent folder
@@ -114,12 +105,14 @@ if($admin->get_get('up') == 1) {
 	exit(0);
 }
 
-if ($_SESSION['GROUP_ID'] != 1 && $pathsettings['global']['admin_only']) { // Only show admin the settings link
+// Hide admin settings for non admins
+if ($_SESSION['GROUP_ID'] != 1 && $pathsettings['global']['admin_only']) {
 	$template->set_var('DISPLAY_SETTINGS', 'hide');
 }
 
 // Workout the parent dir link
 $parent_dir_link = ADMIN_URL.'/media/browse.php?dir='.$directory.'&amp;up=1';
+
 // Workout if the up arrow should be shown
 if(($directory == '') or ($directory==$currentHome)) {
 	$display_up_arrow = 'hide';
@@ -130,7 +123,6 @@ if(($directory == '') or ($directory==$currentHome)) {
 // Insert values
 $template->set_var(array(
 					'THEME_URL' => THEME_URL,
-					// 'THEME_URL' => '',
 					'CURRENT_DIR' => $directory,
 					'PARENT_DIR_LINK' => $parent_dir_link,
 					'DISPLAY_UP_ARROW' => $display_up_arrow,
@@ -143,13 +135,6 @@ $home_folders = get_home_folders();
 
 // Generate list
 $template->set_block('main_block', 'list_block', 'list');
-
-$usedFiles = array();
-// require_once(ADMIN_PATH.'/media/dse.php');
-// $filename =  $currentdir;
-if(!empty($currentdir)) {
-	$usedFiles = $Dse->getMatchesFromDir( $currentdir, DseTwo::RETURN_USED);
-}
 
 // Check for potentially malicious files
 $forbidden_file_types  = preg_replace( '/\s*[,;\|#]\s*/','|',RENAME_FILES_ON_UPLOAD);
@@ -183,7 +168,6 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 								'NAME' => $name,
 								'NAME_SLASHED' => addslashes($name),
 								'TEMP_ID' => $admin->getIDKEY($temp_id),
-								// 'TEMP_ID' => $temp_id,
 								'LINK' => "browse.php?dir=$directory/$link_name",
 								'LINK_TARGET' => '_self',
 								'ROW_BG_COLOR' => $row_bg_color,
@@ -231,7 +215,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 
 
 			if (!$pathsettings['global']['show_thumbs']) {
-				$info = getimagesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name);
+				$info = @getimagesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name);
 				if ($info[0]) {
 					$imgdetail = fsize(filesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name)).'<br /> '.$info[0].' x '.$info[1].' px';
 					$icon = 'thumb.php?t=1&amp;img='.$directory.'/'.$name;
@@ -244,7 +228,6 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 								'NAME' => $name,
 								'NAME_SLASHED' => addslashes($name),
 								'TEMP_ID' => $admin->getIDKEY($temp_id),
-								// 'TEMP_ID' => $temp_id,
 								'LINK' => WB_URL.MEDIA_DIRECTORY.$directory.'/'.$name,
 								'LINK_TARGET' => '_blank',
 								'ROW_BG_COLOR' => $row_bg_color,
