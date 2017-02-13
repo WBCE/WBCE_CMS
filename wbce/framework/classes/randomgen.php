@@ -84,7 +84,7 @@ class RandomGen {
         $filter = (int) (1 << $bits) - 1;
 
         do {
-            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+            $rnd = hexdec(bin2hex($this->random_pseudo_bytes_wrapper($bytes)));
 
             // Discard irrelevant bits.
             $rnd = $rnd & $filter;
@@ -94,4 +94,31 @@ class RandomGen {
         return ($min + $rnd);
     }
 
+    /**
+        @brief Fallback function as sometimes 'openssl_random_pseudo_bytes' does not function_exists
+    
+        @param int $numBytes Number of bytes , same as in  'openssl_random_pseudo_bytes'
+        @return string String of bytes.  
+    */
+    function random_pseudo_bytes_wrapper($numBytes) {
+    if (function_exists('openssl_random_pseudo_bytes') || is_callable('openssl_random_pseudo_bytes') ) {
+        //use openssl random pseudo bytes
+        return openssl_random_pseudo_bytes($numBytes);
+    } else if (function_exists('mt_rand')) {
+        //fall back to less secure Mersenne-Twister mt_rand()
+        $tmp='';
+        for ($i=0; $i < $numBytes; $i++) {
+            $tmp.=chr(mt_rand(0, 255));
+        }
+        return $tmp;
+    } else {
+        //fall back to least secure php rand()
+        $tmp='';
+        for ($i=0; $i < $numBytes; $i++) {
+            $tmp.=chr(rand(0, 255));
+        }
+        return $tmp;
+    }
+}
+    
 }
