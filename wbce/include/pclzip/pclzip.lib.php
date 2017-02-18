@@ -1787,7 +1787,9 @@ class PclZip
     $v_memory_limit = ini_get('memory_limit');
     $v_memory_limit = trim($v_memory_limit);
     $last           = strtolower(substr($v_memory_limit, -1));
-
+    // Fix for PHP 7.1+ to avoid notice about non well formed numeric values
+    // Old PHP version accepted "128M" *1024. Strip of last character e.g. "M" to avoid warnings.
+    $v_memory_limit = (float) substr($v_memory_limit, 0, -1);
     if ($last == 'g') {
       //$v_memory_limit = $v_memory_limit*1024*1024*1024;
       $v_memory_limit = $v_memory_limit * 1073741824;
