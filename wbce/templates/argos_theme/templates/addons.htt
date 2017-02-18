@@ -1,0 +1,60 @@
+<!-- BEGIN main_block -->
+<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="100%" style="margin-bottom:10px;">
+	<tr style="background:#f0f0f0;">
+		<td valign="middle" align="left"><h2>{ADDONS_OVERVIEW}</h2></td>
+		<td align="right">{URL_ADVANCED}</td>
+	</tr>
+</table>
+
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="99%" align="center">
+	<tr>
+		<td align="center" valign="top">
+			<!-- BEGIN modules_block -->
+			<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" {DISPLAY_MODULES} >
+				<tr>
+					<td class="graphic" align="center" valign="middle" rowspan="2"><a href="{ADMIN_URL}/modules/index.php"><img src="{THEME_URL}/icons/modules.png" alt="0" /> </a> </td>
+					<td class="description" valign="top"><a href="{ADMIN_URL}/modules/index.php"><span class="title">{MODULES}</span></a><p>{MODULES_OVERVIEW}</p></td>
+				</tr>
+			</table>
+			<!-- END modules_block -->
+			<!-- BEGIN templates_block -->
+			<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" {DISPLAY_TEMPLATES} >
+				<tr>
+					<td class="graphic" align="center" valign="middle" rowspan="2"><a href="{ADMIN_URL}/templates/index.php"><img src="{THEME_URL}/icons/templates.png" alt="{TEMPLATES}" /> </a> </td>
+					<td class="description" valign="top"><a href="{ADMIN_URL}/templates/index.php"><span class="title">{TEMPLATES}</span></a><p>{TEMPLATES_OVERVIEW}</p></td>
+				</tr>
+			</table>
+			<!-- END templates_block -->
+			<!-- BEGIN languages_block -->
+			<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" {DISPLAY_LANGUAGES} >
+				<tr>
+					<td class="graphic" align="center" valign="middle" rowspan="2"><a href="{ADMIN_URL}/languages/index.php"><img src="{THEME_URL}/icons/languages.png" alt="{LANGUAGES}" /> </a> </td>
+					<td class="description" valign="top"> <a href="{ADMIN_URL}/languages/index.php"><span class="title">{LANGUAGES}</span></a><p>{LANGUAGES_OVERVIEW}</p></td>
+				</tr>
+			</table>
+			<!-- END languages_block -->
+			<!-- BEGIN reload_block -->
+			<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" {DISPLAY_RELOAD} >
+				<tr>
+					<td class="graphic" align="center" valign="middle" rowspan="2"><img src="{THEME_URL}/icons/admintools.png" alt="{TXT_ADMIN_SETTINGS}" /> </td>
+					<td class="description" valign="top"><span class="title">{TXT_ADMIN_SETTINGS}</span>
+						<form action="{RELOAD_URL}" method="post">
+						{FTAN}
+							{MESSAGE_RELOAD_ADDONS}
+							<br style="margin-bottom: 0.5em" />
+							<input {DISPLAY_MODULES} type="checkbox" name="reload_modules" id="reload_modules" value="true" />
+							<label {DISPLAY_MODULES} for="reload_modules">{MODULES}</label>
+							<input {DISPLAY_TEMPLATES} type="checkbox" name="reload_templates" id="reload_templates" value="true" />
+							<label {DISPLAY_TEMPLATES} for="reload_templates">{TEMPLATES}</label>
+							<input {DISPLAY_LANGUAGES} type="checkbox" name="reload_languages" id="reload_languages" value="true" />
+							<label {DISPLAY_LANGUAGES} for="reload_languages">{LANGUAGES}</label>
+							<input type="submit" name="submit" value="{TEXT_RELOAD}" />
+						</form>
+					</td>
+				</tr>
+			</table>
+			<!-- END reload_block -->
+		</td>
+	</tr>
+</table>
+<!-- END main_block -->

@@ -1,0 +1,123 @@
+<!-- BEGIN main_block -->
+<script src="{THEME_URL}/jquery/toggle_zip.js" type="text/javascript"></script>
+
+<table summary="" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td width="300" valign="top" align="left">
+	<h2>{HEADING_UPLOAD_FILES}</h2>
+      <form name="upload" action="upload.php" method="post" enctype="multipart/form-data" class="{DISPLAY_UPLOAD}">
+		{FTAN}
+		<table summary="" cellpadding="3" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td>{TEXT_TARGET_FOLDER}:<br />
+              <select name="target" style="width:100%;" 
+		   onchange="browse.location.href='browse.php?dir=' +
+		   	document.upload.target.value.substr(6,100);
+		   document.create.target.value = document.upload.target.value;">
+                <option value="{MEDIA_DIRECTORY}{HOME_DIRECTORY}" selected="selected">{MEDIA_DIRECTORY}{HOME_DIRECTORY}</option>
+                <!-- BEGIN dir_list_block -->
+                <option value="{NAME}">{NAME}</option>
+                <!-- END dir_list_block -->
+              </select>
+            </td>
+          </tr>
+        </table>
+        <table summary="" cellpadding="3" cellspacing="0" border="0" width="100%">
+          <tr>
+		  	<td valign="top">
+				<input type="checkbox" name="unzip" id="unzip"  onclick="toggle();" />
+				<label for="unzip">{TEXT_UNZIP_FILE}</label>
+				<span id="delzip" style="display: none;"><br />
+				<input type="checkbox" name="delzip" id="deletezip" />
+				<label for="deletezip">{TEXT_DELETE_ZIP}</label></span>
+			</td>
+          </tr>
+          <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file1" /> </td>
+          </tr>
+          <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file2" id="file2" style="visibility: visible;" /> </td>
+          </tr>
+          <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file3" id="file3" style="visibility: visible;" /> </td>
+          </tr>
+          <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file4" id="file4" style="visibility: visible;" /> </td>
+          </tr>
+          <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file5" id="file5" style="visibility: visible;" /> </td>
+          </tr>
+		  <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file6" id="file6" style="visibility: visible;" /> </td>
+          </tr>
+          <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file7" id="file7" style="visibility: visible;" /> </td>
+          </tr>
+          <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file8" id="file8" style="visibility: visible;" /> </td>
+          </tr>
+		  <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file9" id="file9" style="visibility: visible;" /> </td>
+          </tr>
+          <tr>
+            <td width="50%" align="left"><input type="file" size="33" name="file10" id="file10" style="visibility: visible;" /> </td>
+          </tr>
+        </table>
+
+        <table summary="" cellpadding="3" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td colspan="2"><input type="checkbox" name="overwrite" id="overwrite" value="yes" />
+              <label for="overwrite">{TEXT_OVERWRITE_EXISTING} {TEXT_FILES}</label><br />
+              <input type="submit" name="submit" value="{TEXT_UPLOAD_FILES}" style="width:160px;margin-top:5px;" />
+            </td>
+          </tr>
+        </table>
+      </form>
+<!--
+If you want to HIDE the option of creating folders in the Media-folder (for your clients, for example),
+please set the class below to "hide", else to "show".
+--> 
+      <div class="show">
+	  <br /><br />
+        <form name="create" action="create.php" method="post" class="{DISPLAY_CREATE}">
+		{FTAN}
+          <h2>{HEADING_CREATE_FOLDER}</h2>
+          <table summary="" cellpadding="3" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td>{TEXT_NAME}:<br />
+              <input type="text" name="name" style="width:98%;" /></td>
+            </tr>
+          </table>
+          <table summary="" cellpadding="3" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td>{TEXT_TARGET_FOLDER}:<br />
+                <select name="target" style="width:100%;">
+                  <option value="{MEDIA_DIRECTORY}{HOME_DIRECTORY}" selected="selected">{MEDIA_DIRECTORY}{HOME_DIRECTORY}</option>
+                  <!-- BEGIN dir_list_block -->
+                  <option value="{NAME}">{NAME} </option>
+                  <!-- END dir_list_block -->
+                </select>
+              </td>
+            </tr>
+          </table>
+          <table summary="" cellpadding="3" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td><input type="submit" name="submit" value="{TEXT_CREATE_FOLDER}" style="width:160px;" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <!-- END main_block -->
+    </td>
+	<td width="10">&nbsp;</td>
+    <td width="580" valign="top" align="right">
+	<h2 style="padding-left:3px;">{HEADING_BROWSE_MEDIA}</h2>
+	<span class="{DISPLAY_SETTINGS}" style="margin-bottom:2px;">{OPTIONS}:&nbsp;
+	<a href="setparameter.php" target="browse">{CHANGE_SETTINGS}</a>&nbsp;&nbsp;|&nbsp;
+	<a href="browse.php?dir={CURRENT_DIR}" target="browse">{TEXT_RELOAD}</a>
+	</span>
+	<iframe name="browse" width="99%" height="550" src="browse.php" scrolling="yes" frameborder="0" style="border:1px solid #333;"></iframe>
+    </td>
+  </tr>
+</table>

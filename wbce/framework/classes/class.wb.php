@@ -562,7 +562,7 @@ via the Settings panel in the backend of Website Baker
      * @return string the relative theme path
      *
      */
-    public function correct_theme_source($sThemeFile = 'start.htt')
+     public function correct_theme_source($sThemeFile = 'start.htt')
     {
         $sRetval = $sThemeFile;
         if (file_exists(THEME_PATH . '/templates/' . $sThemeFile)) {
@@ -570,12 +570,9 @@ via the Settings panel in the backend of Website Baker
         } 
         elseif (file_exists(WB_PATH."/templates/default_theme/templates/" . $sThemeFile)) {
             $sRetval = WB_PATH."/templates/default_theme/templates/" . $sThemeFile;
-        } else {
-            if (file_exists(ADMIN_PATH . '/themes/templates/' . $sThemeFile)) {
-                $sRetval = ADMIN_PATH . '/themes/templates/' . $sThemeFile;
-            } else {
-                throw new InvalidArgumentException('missing template file ' . $sThemeFile);
-            }
+        } 
+        else {
+            die("Template File missing"); 
         }
         return $sRetval;
     }

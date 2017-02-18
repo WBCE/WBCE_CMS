@@ -1,0 +1,33 @@
+<!-- BEGIN main_block -->
+<h2>{ACCESS}</h2>
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="99%" align="center">
+	<tr>
+		<td align="center" valign="top">
+			<!-- BEGIN users_block -->	
+			<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" {DISPLAY_USERS} >
+				<tr>
+					<td class="graphic" align="center" valign="top" rowspan="2">
+						<a href="{ADMIN_URL}/users/index.php"><img src="{THEME_URL}/icons/users.png" alt="{USERS}" /></a>
+					</td>
+					<td class="description" valign="top">
+						<a href="{ADMIN_URL}/users/index.php"><span class="title">{USERS}</span></a><p>{USERS_OVERVIEW}</p>
+					</td>
+				</tr>
+			</table>	
+			<!-- END users_block -->
+			<!-- BEGIN groups_block -->		
+			<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" {DISPLAY_GROUPS} >
+				<tr>
+					<td class="graphic" align="center" valign="top" rowspan="2">
+						<a href="{ADMIN_URL}/groups/index.php"><img src="{THEME_URL}/icons/groups.png" alt="{GROUPS}" /></a>
+					</td>
+					<td class="description" valign="top">
+						<a href="{ADMIN_URL}/groups/index.php"><span class="title">{GROUPS}</span></a><p>{GROUPS_OVERVIEW}</p>
+					</td>
+				</tr>
+			</table>
+			<!-- END groups_block -->
+		</td>
+	</tr>
+</table>
+<!-- END main_block -->

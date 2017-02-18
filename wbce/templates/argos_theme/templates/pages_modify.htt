@@ -1,0 +1,25 @@
+<!-- BEGIN main_block -->
+
+<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="100%" style="margin-bottom:10px;">
+<tr style="background:#f0f0f0;">
+	<td valign="middle" align="left"><h2>{HEADING_MODIFY_PAGE}</h2></td>
+	<td align="left" width="20%">ID: {PAGE_ID}</td>
+	<td align="right">
+		{TEXT_CURRENT_PAGE}:
+		<b>{PAGE_TITLE}</b>
+		- 
+		<a href="{ADMIN_URL}/pages/settings.php?page_id={PAGE_IDKEY}">{TEXT_CHANGE_SETTINGS}</a>
+<!-- BEGIN show_section_block -->
+		<font style="{DISPLAY_MANAGE_SECTIONS}">-</font>
+		<a href="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" style="{DISPLAY_MANAGE_SECTIONS}">{TEXT_MANAGE_SECTIONS}</a>
+<!-- END show_section_block -->
+		<font style="color:#999;" class="{CLASS_DISPLAY_MODIFIED}"><br />
+<!-- BEGIN show_modify_block -->
+		{LAST_MODIFIED} {MODIFIED_BY} ({MODIFIED_BY_USERNAME}), {MODIFIED_WHEN}
+<!-- END show_modify_block -->
+		</font>
+	</td>
+</tr>
+</table>
+
+<!-- END main_block -->
