@@ -55,7 +55,6 @@
 
     <!--[if lt IE 7]><script type="text/javascript" src="{WB_URL}/include/jquery/jquery-pngFix.js"></script><![endif]-->
     <script src="{WB_URL}/include/jquery/jquery-plugins.js" type="text/javascript"></script>
-    <script src="{ADMIN_URL}/themes/js/input_button_icons_plugin.js"></script>
     <script type="text/javascript">
     function confirm_link(message, url) {
         if(confirm(message)) location.href = url;

@@ -82,10 +82,10 @@
     </tr>
 </table><br />
 
-{{ DR_TEXT.MARKED }}:
+<b>{{ DR_TEXT.MARKED }}:</b><br />
 <input type="submit" class="button" name="export" id="export" value="{{ DR_TEXT.EXPORT|raw }}" />
 <input type="submit" class="button" name="delete" id="delete" value="{{ TEXT.DELETE|raw }}" onclick="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets');" />
-<span style="font-size:smaller">{{ DR_TEXT.DEL_INFO|raw }}</span>
+<br /><span style="font-size:smaller">{{ DR_TEXT.DEL_INFO|raw }}</span>
 </form><br />
 
 <div style="text-align:center;background-color:#fff;border:1px solid #aaa;padding:15px;">
