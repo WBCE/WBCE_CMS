@@ -360,7 +360,7 @@ if (!isset($_SESSION['config_rename'])) {
     $sOutput = PHP_EOL;
     foreach ($aAllowedLanguages as $sLangCode) {
         if (is_readable($sLangDir . $sLangCode . '.php')) {
-            if (($sContent = file_get_contents($sLangDir . $sLangCode . '.php', false, null, -1, 3000)) !== false) {
+            if (($sContent = file_get_contents($sLangDir . $sLangCode . '.php', false, null)) !== false) {
                 if (preg_match('/.*\s*\$language_name\s*=\s*([\'\"])([^\1]*)\1\s*;/siU', $sContent, $aMatches)) {
                     $sOutput .= '<option value="' . $sLangCode . '"';
                     if (
