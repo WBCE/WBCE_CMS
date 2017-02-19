@@ -18,7 +18,7 @@ framework/functions.php
 
 Admin class is initialized($admin) and header printed.
 
-Additional vars for this tool: 
+Additional vars for this tool:
 $modulePath     Path to this module directory
 $languagePath   Path to language files of this module
 $returnToTools  Url to return to generic tools page
@@ -35,7 +35,7 @@ Language files no longer need manual loading.
 All other vars usually abailable in Admin pages schould be available here too.
 Maybe you need to import them via global.
 
-backend.js and backend.css are automatically loaded, 
+backend.js and backend.css are automatically loaded,
 manual loading is no longer required.
 */
 
@@ -47,20 +47,20 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 if($doSave) {
     if (!$admin->checkFTAN()) {
         //3rd param = false =>no auto footer, no exit.
-	    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$returnUrl, false); 
+	    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$returnUrl, false);
     }
 }
 
 // Form send , ok lets see what to do
 if($saveSettings) {
 
-    // ONLY HERE THE ACTUAL ACTION IS GOING ON!!    
+    // ONLY HERE THE ACTUAL ACTION IS GOING ON!!
 
     // We set the setting
     if ($admin->get_post("maintMode")) $setError=Settings::Set ("wb_maintainance_mode", true);
     else                               $setError=Settings::Set ("wb_maintainance_mode", false);
 
-    // END ACTION!! 
+    // END ACTION!!
 
     // report success or failure
     Tool::Msg ($setError, $returnUrl );
@@ -73,16 +73,16 @@ if($saveSettings) {
     // report success or failure
     Tool::Msg ($setError, $returnUrl );
 
-} else { 
+} else {
 
     // Display form
     // get setting from DB , as constant may not be set yet.
 	$maintMode=Settings::Get ("wb_maintainance_mode", NULL);
     if ($maintMode===true) $maintMode=' checked="checked" ';
-    else                $maintMode='';  
+    else                $maintMode='';
 
-    include($modulePath."templates/maintainance.tpl.php");
-    
+    include($this->GetTemplatePath("maintainance.tpl.php"));
+
 }
- 
+
 

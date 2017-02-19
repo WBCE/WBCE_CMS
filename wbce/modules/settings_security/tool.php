@@ -18,7 +18,7 @@ framework/functions.php
 
 Admin class is initialized($admin) and header printed.
 
-Additional vars for this tool: 
+Additional vars for this tool:
 $modulePath     Path to this module directory
 $languagePath   Path to language files of this module
 $returnToTools  Url to return to generic tools page
@@ -35,7 +35,7 @@ Language files no longer need manual loading.
 All other vars usually abailable in Admin pages schould be available here too.
 Maybe you need to import them via global.
 
-backend.js and backend.css are automatically loaded, 
+backend.js and backend.css are automatically loaded,
 manual loading is no longer required.
 */
 
@@ -47,14 +47,14 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 if($doSave) {
     if (!$admin->checkFTAN()) {
         //3rd param = false =>no auto footer, no exit.
-	    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$returnUrl, false); 
+	    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$returnUrl, false);
     }
 }
 
 // Form send , ok lets see what to do
 if($saveSettings) {
 
-    // ONLY HERE THE ACTUAL ACTION IS GOING ON!!    
+    // ONLY HERE THE ACTUAL ACTION IS GOING ON!!
 
     // Use fingerprinting
     if ($admin->get_post("useFP")) $setError=Settings::Set ("wb_secform_usefp", true);
@@ -81,7 +81,7 @@ if($saveSettings) {
     else $setError.=$SFS['SECRETTIME_ERR'];
 
 
-    // END ACTION!! 
+    // END ACTION!!
 
     // report success or failure
     Tool::Msg ($setError, $returnUrl );
@@ -99,7 +99,7 @@ if($saveSettings) {
     // report success or failure
     Tool::Msg ($setError, $returnUrl );
 
-} else { 
+} else {
 
     // Get form vars
     $selected = ' selected="selected" ';
@@ -108,8 +108,8 @@ if($saveSettings) {
     // get settings from DB , as constant may not be set yet.
 	$useFP=(string)Settings::Get ("wb_secform_usefp");
     if ($useFP=="true") $useFP=$checked;
-    else                $useFP='';  
-    
+    else                $useFP='';
+
     $ipOctets   = (string)Settings::Get ("fingerprint_with_ip_octets");
     $tokenName  = Settings::Get ("wb_secform_tokenname");
     $timeout    = Settings::Get ("wb_secform_timeout");
@@ -117,7 +117,7 @@ if($saveSettings) {
     $secretTime = Settings::Get ("wb_secform_secrettime");
 
     //Display form
-    include($modulePath."templates/sfs.tpl.php");
-    
+    include($this->GetTemplatePath("sfs.tpl.php"));
+
 }
- 
+
