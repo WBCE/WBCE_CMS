@@ -1,2 +1,4 @@
-*.db
-*nbproject*
+/wbce/config.php
+/wbce/install/
+/wbce/media/*
+/wbce/pages/*
