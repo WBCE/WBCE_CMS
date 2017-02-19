@@ -1,0 +1,60 @@
+/*** fitgrid modified version for use in wbce theme *******************/
+
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	outline: none;
+	vertical-align: top;
+}
+.clearfix {
+	height:0;
+	clear:both;
+	display:block;
+	overflow:hidden;
+	visibility:hidden;
+	width:0;
+	height:0;
+}
+.row {
+	/*margin: 0 .5em;*/
+	/*padding: 2% 1em 0;*/
+	overflow: hidden;
+	height: 1%;
+	*zoom: 1;
+	min-height: 1%;
+}
+/*** columns w/ margin ************************************************/
+.fg1,.fg2,.fg3,.fg4,.fg5,.fg6,.fg7,.fg8,.fg9,.fg10,.fg11,.fg12 {
+	margin:0 2% 0;
+	padding: 0;
+	float:left;
+	position:relative;
+}
+.fg12 {	width:96%; }
+.fg11 {	width:87.66%; }
+.fg10 {	width:79.33%; }
+.fg9  { width:71%; }
+.fg8  { width:62.66%; }
+.fg7  { width:54.33%; }
+.fg6  { width:46%; }
+.fg5  { width:37.66%; }
+.fg4  { width:29.33%; }
+.fg3  { width:21%; }
+.fg2  { width:12.66%; }
+.fg1  { width:4.33%; }
+
+/*** push w/ columns **************************************************/
+.push12 { margin-left:100%; }
+.push11 { margin-left:93.66%; }
+.push10 { margin-left:85.33%; }
+.push9  { margin-left:77%; }
+.push8  { margin-left:68.66%; }
+.push7  { margin-left:60.33%; }
+.push6  { margin-left:52%; }
+.push5  { margin-left:43.66%; }
+.push4  { margin-left:35.33%; }
+.push3  { margin-left:27%; }
+.push2  { margin-left:18.66%; }
+.push1  { margin-left:10.33%; }
+

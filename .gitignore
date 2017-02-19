@@ -2,3 +2,6 @@
 /wbce/install/
 /wbce/media/*
 /wbce/pages/*
+
+!/wbce/pages/index.php
+!/wbce/media/.empty
