@@ -1,74 +1,65 @@
 <!-- BEGIN main_block -->
+<h2>
+	Erweiterungen &raquo; Sprachen
+	<div class="headline-link">
+		<i class="fa fa-puzzle-piece"></i> {URL_MODULES}
+		&nbsp;&nbsp;|&nbsp;&nbsp;
+		<i class="fa fa-map"></i> {URL_TEMPLATES}
+	</div>
+</h2>
 
-<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="100%" style="margin-bottom:10px;">
-	<tr style="background:#f0f0f0;">
-		<td align="left">{CHANGE_TEMPLATE_NOTICE}</td>
-		<td align="right">
-			{URL_MODULES}
-			-
-			{URL_TEMPLATES}
-			-
-			{URL_ADVANCED}
-		</td>
-     </tr>
-</table>
-
-<form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL}">
-{FTAN}
-  <h2>{HEADING_INSTALL_LANGUAGE}</h2>
-  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-    <tr>
-      <td>
-        <input type="file" name="userfile" size="97" />
-        <script type="text/javascript">
-		document.install.userfile.focus();
-		</script><br /><br />
-      </td>
-      <td width="110" align="left">
-        <input type="submit" name="submit" value="{TEXT_INSTALL}" style="width: 100px;" />
-      </td>
-    </tr>
-  </table>
-  <br />
+<!-- install ---------------------------------------------------------->
+<form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL} fg12 content-box">
+	{FTAN}
+  <h3 class="fg12">{HEADING_INSTALL_LANGUAGE}</h3>
+	<div class="fg9">
+		<input type="file" name="userfile">
+	</div>
+	<div class="fg3 right">
+		<button type="submit" name="submit">
+			<i class="fa fa-fw fa-check"></i>
+			{TEXT_INSTALL}
+		</button>
+	</div>
+	<div class="clearfix"></div>
 </form>
-<form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL}">
-{FTAN}
-  <h2>{HEADING_UNINSTALL_LANGUAGE}</h2>
-  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-    <tr>
-      <td>
-        <select name="code" style="width: 97%;">
-		<option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+
+<!-- uninstall -------------------------------------------------------->
+<form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL} fg12 content-box">
+	{FTAN}
+  <h3 class="fg12">{HEADING_UNINSTALL_LANGUAGE}</h3>
+	<div class="fg9">
+		<select name="code" class="wdt300">
+		<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
 		<!-- BEGIN language_list_block -->
 			<option value="{VALUE}">{NAME}</option>
-          <!-- END language_list_block -->
-        </select>
-      </td>
-      <td width="110">
-        <input type="submit" name="submit" value="{TEXT_UNINSTALL}" style="width: 100px;" />
-      </td>
-    </tr>
-  </table>
-  <br />
+		  <!-- END language_list_block -->
+		</select>
+	</div>
+	<div class="fg3 right">
+		<button type="submit" name="submit" class="danger">
+			<i class="fa fa-fw fa-remove"></i>
+			{TEXT_UNINSTALL}
+		</button>
+	</div>
+	<div class="clearfix"></div>
 </form>
-<form name="details" action="details.php" method="post" class="{DISPLAY_LIST}">
-{FTAN}
-  <h2>{HEADING_LANGUAGE_DETAILS}</h2>
-  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-    <tr>
-      <td>
-        <select name="code" style="width: 97%;">
-		<option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+
+<!-- details ---------------------------------------------------------->
+<form name="details" action="details.php" method="post" class="{DISPLAY_LIST} fg12 content-box">
+	{FTAN}
+  <h3 class="fg12">{HEADING_LANGUAGE_DETAILS}</h3>
+	<div class="fg9">
+		<select name="code" onchange="this.form.submit();" class="wdt300">
+		<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
 		<!-- BEGIN language_list_block -->
 			<option value="{VALUE}">{NAME}</option>
-          <!-- END language_list_block -->
-        </select>
-      </td>
-      <td width="110">
-        <input type="submit" name="submit" value="{TEXT_VIEW_DETAILS}" style="width: 100px;" />
-      </td>
-    </tr>
-  </table>
-  <br />
+		  <!-- END language_list_block -->
+		</select>
+	</div>
+	<div class="fg3 right">
+		<!-- no submit button needed here -->
+	</div>
+	<div class="clearfix"></div>
 </form>
 <!-- END main_block -->

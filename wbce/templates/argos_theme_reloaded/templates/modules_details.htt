@@ -1,33 +1,32 @@
 <!-- BEGIN main_block -->
+<h2>
+	{HEADING_MODULE_DETAILS}
+	<div class="headline-link">
+		<i class="fa fa-reply">
+			<a href="#" onclick="window.location = 'index.php';">
+				zurück
+			</a>
+		</i>
+	</div>
+</h2>
 
-<h2>{HEADING_MODULE_DETAILS}</h2>
+<div class="fg12 content-box info-box">
+	<div class="fg2">{TEXT_NAME}:</div>
+	<div class="fg10">{NAME}</div>
 
-<table summary="" cellpadding="5" cellspacing="0" border="0">
-<tr>
-	<td width="100">{TEXT_NAME}:</td>
-	<td>{NAME}</td>
-</tr>
-<tr>
-	<td>{TEXT_TYPE}:</td>
-	<td>{TYPE}</td>
-</tr>
-<tr>
-	<td>{TEXT_AUTHOR}:</td>
-	<td>{AUTHOR}</td>
-</tr>
-<tr>
-	<td>{TEXT_VERSION}:</td>
-	<td>{VERSION}</td>
-</tr>
+	<div class="fg2">{TEXT_TYPE}:</div>
+	<div class="fg10">{TYPE}</div>
 
-<tr>
-	<td valign="top">{TEXT_DESCRIPTION}:</td>
-	<td style="text-align: justify;">{DESCRIPTION}</td>
-</tr>
-</table>
+	<div class="fg2">{TEXT_AUTHOR}:</div>
+	<div class="fg10">{AUTHOR}</div>
 
-<br />
+	<div class="fg2">{TEXT_VERSION}:</div>
+	<div class="fg10">{VERSION}</div>
 
-<button onclick="window.location = 'index.php';">{TEXT_BACK}</button>
+	<div class="fg2">{TEXT_DESIGNED_FOR}:</div>
+	<div class="fg10">WBCE {DESIGNED_FOR}</div>
 
+	<div class="fg2">{TEXT_DESCRIPTION}:</div>
+	<div class="fg10">{DESCRIPTION}</div>
+</div>
 <!-- END main_block -->
