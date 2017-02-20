@@ -35,10 +35,6 @@ $(document).ready(function() {
 		$(this).parent().hide('slow');
 	});
 
-
-
-
-
 	/*** toggle the advanced links in addons **************************/
 	$('#show-advanced a').click(function(e) {
 		e.preventDefault();
@@ -70,7 +66,6 @@ $(document).ready(function() {
 		}
 	});
 
-
 	/*** toggle the upload fields in media ****************************/
 	$('#unzip').click(function() {
 		if ($('#file2').css('display') == 'block') {
@@ -99,17 +94,14 @@ $(document).ready(function() {
 	$('.section-info').addClass('fg12');
 
 
-	/*** suppress the unnecessary h4 header in admintools *************/
-	/*
+	/*** hide the (unnecessary) breadcrumbs in settings & admintools **/
 	$('h4').each(function() {
 		$(this).find('a').each(function() {
-			var title = $(this).attr('title');
-			if (title == 'Admin-Tools') {
+			if ($(this).hasClass('internal')) {
 				$(this).parent().css('display', 'none');
 			}
 		});
 	});
-	*/
 
 });
 

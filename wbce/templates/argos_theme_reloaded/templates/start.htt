@@ -1,6 +1,6 @@
 <!-- BEGIN main_block -->
-<section class="top">
-	<div class="fg6 section" style="{DISPLAY_PAGES}">
+<ul class="top">
+	<li class="fg6 section" style="{DISPLAY_PAGES}">
 		<div class="fg2 graphic">
 			<a href="{ADMIN_URL}/pages/index.php">
 				<i class="fa fa-3x fa-files-o"></i>
@@ -12,9 +12,9 @@
 			</a>
 			{PAGES_OVERVIEW}
 		</div>
-	</div>
+	</li>
 
-	<div class="fg6 section" style="{DISPLAY_MEDIA}">
+	<li class="fg6 section" style="{DISPLAY_MEDIA}">
 		<div class="fg2 graphic">
 			<a href="{ADMIN_URL}/media/index.php">
 				<i class="fa fa-3x fa-image"></i>
@@ -25,9 +25,9 @@
 			</a>
 			{MEDIA_OVERVIEW}
 		</div>
-	</div>
+	</li>
 
-	<div class="fg6 section" style="{DISPLAY_ADDONS}">
+	<li class="fg6 section" style="{DISPLAY_ADDONS}">
 		<div class="fg2 graphic">
 			<a href="{ADMIN_URL}/addons/index.php">
 				<i class="fa fa-3x fa-sitemap"></i>
@@ -39,9 +39,9 @@
 			</a>
 			{ADDONS_OVERVIEW}
 		</div>
-	</div>
+	</li>
 
-	<div class="fg6 section">
+	<li class="fg6 section">
 		<div class="fg2 graphic">
 			<a href="{ADMIN_URL}/preferences/index.php">
 				<i class="fa fa-3x fa-sliders"></i>
@@ -53,9 +53,9 @@
 			</a>
 			{PREFERENCES_OVERVIEW}
 		</div>
-	</div>
+	</li>
 
-	<div class="fg6 section" style="{DISPLAY_SETTINGS}">
+	<li class="fg6 section" style="{DISPLAY_SETTINGS}">
 		<div class="fg2 graphic">
 			<a href="{ADMIN_URL}/settings/index.php">
 				<i class="fa fa-3x fa-gears"></i>
@@ -67,9 +67,9 @@
 			</a>
 			{SETTINGS_OVERVIEW}
 		</div>
-	</div>
+	</li>
 
-	<div class="fg6 section" style="{DISPLAY_ADMINTOOLS}">
+	<li class="fg6 section" style="{DISPLAY_ADMINTOOLS}">
 		<div class="fg2 graphic">
 			<a href="{ADMIN_URL}/admintools/index.php">
 				<i class="fa fa-3x fa-wrench"></i>
@@ -81,9 +81,9 @@
 			</a>
 			{ADMINTOOLS_OVERVIEW}
 		</div>
-	</div>
+	</li>
 
-	<div class="fg6 section" style="{DISPLAY_ACCESS}">
+	<li class="fg6 section" style="{DISPLAY_ACCESS}">
 		<div class="fg2 graphic">
 			<a href="{ADMIN_URL}/access/index.php">
 				<i class="fa fa-3x fa-users"></i>
@@ -95,6 +95,6 @@
 			</a>
 			{ACCESS_OVERVIEW}
 		</div>
-	</div>
-</section>
+	</li>
+</ul>
 <!-- END main_block -->

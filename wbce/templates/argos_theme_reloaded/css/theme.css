@@ -19,10 +19,9 @@ body {
 }
 
 #admin-header, #content-container {
-	width: 950px;
+	width: 950px; /* to get a bit of responibility change to max-width */
 	margin: 0 auto;
 	position: relative;
-	/*border: 1px solid firebrick;*/
 }
 #admin-header {
 	margin-top: 10px;
@@ -231,7 +230,7 @@ select {
 	background-color: #eee;
 	height: 28px;
 	width: 150px;
-	padding: 2px 3px;
+	padding: 2px 15px 2px 3px;
 	background-image: url(../images/down.png);
 	background-position: right;
 	background-repeat: no-repeat;
@@ -239,6 +238,14 @@ select {
 select:focus,
 select:hover {
 	border: 1px solid #647086;
+}
+select:disabled {
+	border: 1px solid #ccc;
+	background-color: #f0f0f0;
+	background-image: none;
+}
+select:hover:disabled, input:focus:disabled {
+	border: 1px solid #ccc;
 }
 option {
 	padding: 2px;
@@ -253,6 +260,7 @@ input[type="radio"] {
 label {
 	cursor: pointer;
 	vertical-align: -2px;
+	margin-right: 10px;
 }
 
 /* buttons */
@@ -270,10 +278,6 @@ button.danger {
 }
 button:hover {
 	opacity: 0.85;
-}
-/* ??? needed anymore ??? */
-button#admin_tools {
-	background-color: #464E5E;
 }
 
 /*** content section **************************************************/
@@ -350,7 +354,38 @@ span.title {
 	font-size: 10px;
 }
 
-/*** error and success messages ****************************************/
+/*** settings -> security *********************************************/
+a.tooltip {
+	color: #28609b;
+}
+.help {
+	opacity: 0.9;
+	padding: 2px 4px 6px 8px !important;
+}
+.help em {
+	font-size: 13px !important;
+}
+
+/*** settings -> server ***********************************************/
+.permissionTable table,
+.permissionTable th,
+.permissionTable td {
+	border: 1px solid #999;
+	border-color: #999;
+}
+.permissionTable th.header {
+	background-color: #dedede;
+}
+.permissionTable input[type="checkbox"] {
+	margin-bottom: 0;
+}
+.permissionTable th,
+.permissionTable td {
+	height: 24px;
+	vertical-align: middle;
+}
+
+/*** error and success messages ***************************************/
 .msg-box {
 	background-color: #d5fbd5;
 	border: 1px solid #147d14;
@@ -382,6 +417,7 @@ span.title {
 	z-index: 999;
 	padding: 0 20px;
 	opacity: 0.8;
+	font-weight: bold;
 }
 .close {
 	position: absolute;
@@ -452,21 +488,28 @@ span.title {
 .desc { line-height: 1.3 }
 
 /*** some width overwrites ********************************************/
-.wdt50 		{ width: 50px; }
-.wdt60 		{ width: 60px; }
-.wdt100 	{ width: 100px; }
-.wdt120 	{ width: 120px; }
-.wdt150 	{ width: 150px; }
-.wdt200 	{ width: 200px; }
-.wdt250 	{ width: 250px; }
-.wdt300 	{ width: 300px; }
-.wdt400 	{ width: 400px; }
-.wdt500 	{ width: 500px; }
+.wdt50 		{ width: 50px !important; }
+.wdt60 		{ width: 60px !important; }
+.wdt100 	{ width: 100px !important; }
+.wdt120 	{ width: 120px !important; }
+.wdt150 	{ width: 150px !important; }
+.wdt200 	{ width: 200px !important; }
+.wdt250 	{ width: 250px !important; }
+.wdt300 	{ width: 300px !important; }
+.wdt350 	{ width: 350px !important; }
+.wdt400 	{ width: 400px !important; }
+.wdt500 	{ width: 500px !important; }
+.wdt550 	{ width: 550px !important; }
 
 /*** fixes for some odd behavior **************************************/
 /* if there is an empty string in _details.htt */
 .info-box div.fg10:after {
 	content: '\00a0';
+}
+
+/* fix a layout issue in stettings-securtiy */
+.sfs .fg9 {
+	padding: 6px 0 18px 0;
 }
 
 /*** footer section ***************************************************/
