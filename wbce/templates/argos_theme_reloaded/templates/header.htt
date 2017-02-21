@@ -17,7 +17,7 @@
 
     <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
     <link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
-	<link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css"<i>
+	<link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
 
     {BACKEND_MODULE_CSS}
     [[Css]]
@@ -59,7 +59,7 @@
 	<div id="header-top">
 		<h1 id="header" class="fg6">
 			<a href="{ADMIN_URL}" title="{TITLE_START}" id="website_title">
-			{WEBSITE_TITLE} - {TEXT_ADMINISTRATION}
+			{WEBSITE_TITLE} - {TEXT_ADMINISTRATION} <br> <span style="color:#f00;">!!! Work in progress !!!</span>
 			</a>
 		</h1>
 		<div id="top-menu" class="fg6 right">
@@ -87,7 +87,7 @@
 
 <div id="content-container">
 <!-- remains here for compatibility with older modules (td.content) -->
-<table align="center" style="width: 100%;" border="0">
+<table id="legacy" align="center" style="width: 100%;" border="0">
 	<tr>
 		<td class="content">
 <!-- END header_block -->

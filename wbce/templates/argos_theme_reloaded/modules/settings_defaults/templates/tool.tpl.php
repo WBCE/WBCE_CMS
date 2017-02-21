@@ -7,11 +7,11 @@
 </h2>
 
 <section class="settings fg12 content-box">
-	<div class="fg12 top bot"><?=$MOD_SET_GENERAL['DESCRIPTION']?></div>
+	<div class="fg12 top bot desc"><?=$MOD_SET_GENERAL['DESCRIPTION']?></div>
 
 	<hr class="fg12">
 
-    <form id="settings_seo_form" name="store_settings" style="margin-top: 1em; display: true;" action="<?=$returnUrl; ?>" method="post">
+    <form id="settings_seo_form" name="store_settings" action="<?=$returnUrl; ?>" method="post">
         <?=$admin->getFTAN()?>
 
         <!-- Language -->

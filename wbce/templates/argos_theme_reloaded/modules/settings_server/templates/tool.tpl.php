@@ -1,10 +1,90 @@
 <script>
     $(document).ready(function() {
+		/* toggle the acces-settings tables */
 		$('#operating_system_linux').click(function() {
 			$('#access_settings').show('slow');
 		});
 		$('#operating_system_windows').click(function() {
 			$('#access_settings').hide('slow');
+		});
+
+		/* update the mode strings on the fly */
+		var initFileMode = $('#string-file-mode').html();
+		var initDirMode  = $('#string-dir-mode').html();
+
+		$('input[type="checkbox"]').change(function() {
+			var fileMode = parseInt($('#string-file-mode').html());
+			var dirMode = parseInt($('#string-dir-mode').html());
+			var which = $(this).attr('id');
+			var val = ($(this).is(':checked')) ? 1 : 0;
+
+			if (which.substr(0,4) == 'file') {
+				// file mode calculation
+				if (which == 'file_u_r')
+					newFileMode = (val == 0) ? fileMode - 400 : fileMode + 400;
+				if (which == 'file_u_w')
+					newFileMode = (val == 0) ? fileMode - 200 : fileMode + 200;
+				if (which == 'file_u_e')
+					newFileMode = (val == 0) ? fileMode - 100 : fileMode + 100;
+				if (which == 'file_g_r')
+					newFileMode = (val == 0) ? fileMode - 40 : fileMode + 40;
+				if (which == 'file_g_w')
+					newFileMode = (val == 0) ? fileMode - 20 : fileMode + 20;
+				if (which == 'file_g_e')
+					newFileMode = (val == 0) ? fileMode - 10 : fileMode + 10;
+				if (which == 'file_o_r')
+					newFileMode = (val == 0) ? fileMode - 4 : fileMode + 4;
+				if (which == 'file_o_w')
+					newFileMode = (val == 0) ? fileMode - 2 : fileMode + 2;
+				if (which == 'file_o_e')
+					newFileMode = (val == 0) ? fileMode - 1 : fileMode + 1;
+				// prepare new file mode string (leading zeros!)
+				if (newFileMode < 100) newFileMode = '0' + newFileMode;
+				if (newFileMode < 10) newFileMode = '0' + newFileMode;
+				newFileMode = '0' + newFileMode;
+				newFileMode = newFileMode.toString();
+				// change color by changed string
+				if (newFileMode != initFileMode) {
+					$('#string-file-mode').css('color', 'firebrick');
+				} else {
+					$('#string-file-mode').css('color', '#000');
+				}
+				// show new mode
+				$('#string-file-mode').html(newFileMode);
+			} else {
+				// dir mode calculation
+				if (which == 'dir_u_r')
+					newDirMode = (val == 0) ? dirMode - 400 : dirMode + 400;
+				if (which == 'dir_u_w')
+					newDirMode = (val == 0) ? dirMode - 200 : dirMode + 200;
+				if (which == 'dir_u_e')
+					newDirMode = (val == 0) ? dirMode - 100 : dirMode + 100;
+				if (which == 'dir_g_r')
+					newDirMode = (val == 0) ? dirMode - 40 : dirMode + 40;
+				if (which == 'dir_g_w')
+					newDirMode = (val == 0) ? dirMode - 20 : dirMode + 20;
+				if (which == 'dir_g_e')
+					newDirMode = (val == 0) ? dirMode - 10 : dirMode + 10;
+				if (which == 'dir_o_r')
+					newDirMode = (val == 0) ? dirMode - 4 : dirMode + 4;
+				if (which == 'dir_o_w')
+					newDirMode = (val == 0) ? dirMode - 2 : dirMode + 2;
+				if (which == 'dir_o_e')
+					newDirMode = (val == 0) ? dirMode - 1 : dirMode + 1;
+				// prepare new dir mode string (leading zeros!)
+				if (newDirMode < 100) newDirMode = '0' + newDirMode;
+				if (newDirMode < 10) newDirMode = '0' + newDirMode;
+				newDirMode = '0' + newDirMode;
+				newDirMode = newDirMode.toString();
+				// change color by changed string
+				if (newDirMode != initDirMode) {
+					$('#string-dir-mode').css('color', 'firebrick');
+				} else {
+					$('#string-dir-mode').css('color', '#000');
+				}
+				// show new mode
+				$('#string-dir-mode').html(newDirMode);
+			}
 		});
 	});
 </script>
@@ -45,7 +125,7 @@
                 <table>
                     <tr>
                         <th class="header" colspan="3">
-							<?=$TEXT['FILES'].'&nbsp;'.STRING_FILE_MODE?>
+							<?=$TEXT['FILES'].'&nbsp;<span id="string-file-mode">'.STRING_FILE_MODE.'</span>'?>
 						</th>
                     </tr>
                     <tr>
@@ -74,7 +154,7 @@
                 <table>
                     <tr>
                         <th class="header" colspan="3">
-							<?=$TEXT['DIRECTORIES']."&nbsp;".STRING_DIR_MODE ?>
+							<?=$TEXT['DIRECTORIES'].'&nbsp;<span id="string-dir-mode">'.STRING_DIR_MODE.'</span>'?>
 						</th>
                     </tr>
                     <tr>

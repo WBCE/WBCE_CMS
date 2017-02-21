@@ -41,31 +41,6 @@ $(document).ready(function() {
 		$('#advanced-block').toggle();
 	});
 
-	/*** handle settings file-perms visibility depending on OS ***/
-	// set initial state
-	if ($('#os-linux').is(':checked') == true) {
-		$('#file-perms').show();
-	}
-	if ($('#os-windows').is(':checked') == true) {
-		$('#file-perms').hide();
-	}
-
-	// toggle state
-	$('#os-linux').click(function(e) {
-		if ($('#os-linux').is(':checked') == true) {
-			$('#file-perms').show();
-		} else {
-			$('#file-perms').hide();
-		}
-	});
-	$('#os-windows').click(function(e) {
-		if ($('#os-windows').is(':checked') == true) {
-			$('#file-perms').hide();
-		} else {
-			$('#file-perms').show();
-		}
-	});
-
 	/*** toggle the upload fields in media ****************************/
 	$('#unzip').click(function() {
 		if ($('#file2').css('display') == 'block') {
@@ -94,14 +69,42 @@ $(document).ready(function() {
 	$('.section-info').addClass('fg12');
 
 
-	/*** hide the (unnecessary) breadcrumbs in settings & admintools **/
-	$('h4').each(function() {
-		$(this).find('a').each(function() {
-			if ($(this).hasClass('internal')) {
-				$(this).parent().css('display', 'none');
-			}
+	/*** patch some issues for consistent look as possible ************/
+
+	// hide the (unnecessary?) breadcrumbs only in settings
+	var myKey = /settings/;
+	var myStr = window.location.pathname;
+	myMatch = myStr.search(myKey);
+	if (myMatch != -1) {
+		$('h4').each(function() {
+			$(this).find('a').each(function() {
+				if ($(this).hasClass('internal')) {
+					$(this).parent().css('display', 'none');
+				}
+			});
 		});
-	});
+	}
+
+	// wrap a content-box around the 3rd party admin-tools
+	// and do some "cosmetics"
+	var myKey = /admintools\/tool.php/;
+	var myStr = window.location.pathname;
+	myMatch = myStr.search(myKey);
+	if (myMatch != -1) { // we are in admintools
+		$('#legacy td.content').addClass('content-box fg12 top legacy');
+		$('input[type=submit]').first().before('<hr>');
+		$('h2').css('margin', '10px 0 0 0');
+
+		var whichTool = location.search.substr(1);
+
+		if (whichTool == 'tool=outputfilter_dashboard') { //opf-dashboard
+			$('button').css('width', 'auto');
+			$('input[type=file]').css('height', 'auto');
+		}
+		if (whichTool == 'tool=captcha_control') { //captcha control
+			$('span').css('top','10px');
+		}
+	}
 
 });
 

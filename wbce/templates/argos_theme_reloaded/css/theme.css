@@ -34,6 +34,7 @@ body {
 a {
 	color :#28609b;
 	text-decoration :none;
+    font-family: Ubuntu, Arial, Helvetica, sans-serif; /* Chromium */
 }
 a:hover {
 	text-decoration :underline;
@@ -166,7 +167,7 @@ input,
 select,
 textarea,
 button {
-	margin-bottom: 10px;
+	margin-bottom: 10px !important;
 }
 
 /*** text input ***/
@@ -377,12 +378,16 @@ a.tooltip {
 	background-color: #dedede;
 }
 .permissionTable input[type="checkbox"] {
-	margin-bottom: 0;
+	margin-bottom: 0 !important;
 }
 .permissionTable th,
 .permissionTable td {
 	height: 24px;
 	vertical-align: middle;
+}
+
+.permissionTable td label {
+	margin: 0 !important; /* Chromium */
 }
 
 /*** error and success messages ***************************************/
@@ -510,6 +515,17 @@ a.tooltip {
 /* fix a layout issue in stettings-securtiy */
 .sfs .fg9 {
 	padding: 6px 0 18px 0;
+}
+/* fixes for 3rd-party admin-tools */
+.legacy {
+	padding: 10px;
+}
+.legacy h4 {
+	padding: 0;
+	margin: 0;
+}
+input#admin_tools {
+	display: none;
 }
 
 /*** footer section ***************************************************/
