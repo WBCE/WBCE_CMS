@@ -14,7 +14,7 @@
         <?php $selects=ds_GetLanguagesArray(); ?>
         <div class="fg2"><?=$TEXT['LANGUAGE']?></div>
         <div class="fg10">
-			<select name="default_language" id="default_language">
+			<select name="default_language" id="default_language" class="wdt150">
 				<?php if (is_array($selects)) : ?>
 					<?php foreach ($selects as $value) : ?>
 						<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_LANGUAGE == $value['directory']) echo 'selected'; ?>  class="hasFlag" style="background-image: url(<?=WB_URL?>/languages/<?=$value['directory']?>.png);">
@@ -29,7 +29,7 @@
         <?php $selects=ds_GetTimezonesArray(); ?>
         <div class="fg2"><?=$TEXT['TIMEZONE'] ?></div>
         <div class="fg10">
-			<select name="default_timezone" id="default_timezone">
+			<select name="default_timezone" id="default_timezone" class="wdt150">
 				<?php if (is_array($selects)) : ?>
 					<?php foreach ($selects as $key=>$value) : ?>
 						<option value="<?=$key ?>" <?php if (DEFAULT_TIMEZONE == $key*60*60) echo 'selected'; ?> >
@@ -44,7 +44,7 @@
         <?php $selects=ds_GetDateFormatArray(); ?>
         <div class="fg2"><?=$TEXT['DATE_FORMAT'] ?></div>
         <div class="fg10">
-			<select name="default_date_format" id="default_date_format">
+			<select name="default_date_format" id="default_date_format" class="wdt150">
 				<?php if (is_array($selects)) : ?>
 					<?php foreach ($selects as $key=>$value) : ?>
 						<?php $key = str_replace('|', ' ', $key); ?>
@@ -60,7 +60,7 @@
         <?php $selects=ds_GetTimeFormatArray(); ?>
         <div class="fg2"><?=$TEXT['TIME_FORMAT'] ?></div>
         <div class="fg10">
-			<select name="default_time_format" id="default_time_format">
+			<select name="default_time_format" id="default_time_format" class="wdt150">
 				<?php if (is_array($selects)) : ?>
 					<?php foreach ($selects as $key=>$value) : ?>
 						<?php $key = str_replace('|', ' ', $key);?>

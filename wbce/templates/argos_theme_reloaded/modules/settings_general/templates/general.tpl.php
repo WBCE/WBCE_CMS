@@ -161,7 +161,7 @@
         <?php $groups=gs_GetGroupArray(); ?>
 		<div class="fg3"><?=$TEXT['SIGNUP'] ?></div>
 		<div class="fg9">
-			<select name="frontend_signup" id="frontend_signup" <?php if (!$groups) echo 'disabled'; ?> >
+			<select name="frontend_signup" id="frontend_signup" <?php if (!$groups) echo 'disabled'; ?> class="wdt150">
 				<?php if (is_array($groups)) : ?>
 					<option value="false"><?=$TEXT['DISABLED'] ?></option>
 					<?php foreach (gs_GetGroupArray() as $group) : ?>
@@ -177,7 +177,7 @@
 
         <div class="fg3"><?=$TEXT['PHP_ERROR_LEVEL'] ?></div>
         <div class="fg9">
-			<select name="er_level" id="er_level" >
+			<select name="er_level" id="er_level" class="wdt150">
 				<?php require(ADMIN_PATH.'/interface/er_levels.php'); ?>
 				<?php foreach ($ER_LEVELS AS $value => $title) : ?>
 					<option value="<?=$value ?>" <?php if(ER_LEVEL == $value) echo 'selected'; ?> >
@@ -191,7 +191,7 @@
         <?php $groups=gs_GetEditorArray(); ?>
         <div class="fg3" for="wysiwyg_editor"><?=$TEXT['WYSIWYG_EDITOR'] ?></div>
         <div class="fg9">
-			<select name="wysiwyg_editor" id="wysiwyg_editor">
+			<select name="wysiwyg_editor" id="wysiwyg_editor" class="wdt150">
 				<option value="none" <?php if(WYSIWYG_EDITOR == "none") echo 'selected'; ?> >
 					<?=$TEXT['NONE']; ?>
 				</option>

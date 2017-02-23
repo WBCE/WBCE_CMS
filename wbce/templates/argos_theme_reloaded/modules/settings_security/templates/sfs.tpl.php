@@ -10,8 +10,8 @@
 	<form id="sfs_form" name="store_settings" action="<?=$returnUrl; ?>" method="post">
 		<?=$admin->getFTAN()?>
 
-		<div class="fg3">
-			<input type="checkbox" name="useFP" id="useFP" value="true" <?=$useFP ?> >
+		<div class="fg3 right">
+			<input type="checkbox" name="useFP" id="useFP" value="true" <?=$useFP ?> style="margin-top:7px;">
 		</div>
 		<div class="fg9">
 			<label for="useFP">
@@ -25,7 +25,7 @@
 			</label>
 		</div>
 
-		<div class="fg3">
+		<div class="fg3 right">
 			<select name="ipOctets" >
 				<?php for ($i = 1; $i <= 4; $i++) : ?>
 				<option value="<?=$i?>" <?php if ($ipOctets==$i) echo $selected ?> >
@@ -47,7 +47,7 @@
 		</div>
 
 		<div class="fg3">
-			<input type="text" name="tokenName" id="tokenName" value="<?=$tokenName ?>">
+			<input type="text" name="tokenName" id="tokenName" value="<?=$tokenName ?>" style="width:100%;">
 		</div>
 		<div class="fg9">
 			<label for="tokenName">
@@ -62,7 +62,7 @@
 		</div>
 
 		<div class="fg3">
-			<input type="text" name="timeout" id="timeout" value="<?=$timeout ?>">
+			<input type="text" name="timeout" id="timeout" value="<?=$timeout ?>" style="width:100%;">
 		</div>
 		<div class="fg9">
 			<label for="timeout">
@@ -77,7 +77,7 @@
 		</div>
 
 		<div class="fg3">
-			<input type="text" name="secret" id="secret" value="<?=$secret ?>">
+			<input type="text" name="secret" id="secret" value="<?=$secret ?>" style="width:100%;">
 		</div>
 		<div class="fg9">
 			<label for="secret"><?=$SFS['SECRET']?>
@@ -91,7 +91,7 @@
 		</div>
 
 		<div class="fg3">
-			<input type="text" name="secretTime" id="secretTime" value="<?=$secretTime ?>">
+			<input type="text" name="secretTime" id="secretTime" value="<?=$secretTime ?>" style="width:100%;">
 		</div>
 		<div class="fg9">
 			<label for="secretTime"><?=$SFS['SECRETTIME']?>

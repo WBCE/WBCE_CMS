@@ -17,7 +17,7 @@
 
 		<div class="fg3">{TEXT_NAME}:</div>
 		<div class="fg9">
-			<input type="text" name="group_name" maxlength="255" value="{GROUP_NAME}" class="wdt250">
+			<input type="text" name="group_name" maxlength="255" value="{GROUP_NAME}" class="wdt150">
 		</div>
 
 		<hr class="fg12">
@@ -262,11 +262,11 @@
 	</form>
 
 
-	<form name="advanced" action="{ADVANCED_LINK}" method="post" class="fg6 push6 right" style="position:relative; bottom:38px;">
+	<form name="advanced" action="{ADVANCED_LINK}" method="post" class="fg6 push6 right advanced-options">
 		<input type="hidden" name="group_id" value="{GROUP_ID}">
 		<input type="hidden" name="action" value="modify">
 		{FTAN}
-		<input type="submit" name="advanced" onclick="window.location = '{ADVANCED_LINK}';" value="{ADVANCED_BUTTON}" class="wdt300">
+		<input type="submit" name="advanced" onclick="window.location = '{ADVANCED_LINK}';" value="{ADVANCED_BUTTON}">
 	</form>
 </div> <!-- end content-box -->
 

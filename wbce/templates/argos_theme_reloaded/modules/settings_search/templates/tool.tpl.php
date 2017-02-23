@@ -13,7 +13,7 @@
         <!-- search visibility ---------------------------------------->
         <div class="fg3"><?=$TEXT['VISIBILITY']?></div>
         <div class="fg9">
-        <select class="long" name="search" id="search">
+        <select class="wdt150" name="search" id="search">
             <option value="public" <?php if (SEARCH=="private") echo WB_SELECT; ?>  class="hasFlag" style="background-image:url(<?=THEME_URL?>/images/fa-eye.png);">
 				<?=$TEXT['PUBLIC']?>
 			</option>

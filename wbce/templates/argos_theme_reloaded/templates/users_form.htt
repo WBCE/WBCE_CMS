@@ -16,17 +16,17 @@
 
 	<div class="fg3">{TEXT_USERNAME}:</div>
 	<div class="fg9">
-		<input type="text" name="{USERNAME_FIELDNAME}" maxlength="30" value="{USERNAME}">
+		<input type="text" name="{USERNAME_FIELDNAME}" maxlength="30" value="{USERNAME}" class="wdt150">
 	</div>
 
 	<div class="fg3">{TEXT_PASSWORD}:</div>
 	<div class="fg9">
-		<input type="password" name="password" maxlength="30">
+		<input type="password" name="password" maxlength="30" class="wdt150">
 	</div>
 
 	<div class="fg3">{TEXT_RETYPE_PASSWORD}:</div>
 	<div class="fg9">
-		<input type="password" name="password2" maxlength="30">
+		<input type="password" name="password2" maxlength="30" class="wdt150">
 	</div>
 
 	<div class="fg9 push3 warning bot" style="{DISPLAY_EXTRA}">
@@ -35,17 +35,17 @@
 
 	<div class="fg3">{TEXT_DISPLAY_NAME}:</div>
 	<div class="fg9">
-		<input type="text" name="display_name" maxlength="255" value="{DISPLAY_NAME}" />
+		<input type="text" name="display_name" maxlength="255" value="{DISPLAY_NAME}" class="wdt150">
 	</div>
 
 	<div class="fg3">{TEXT_EMAIL}:</div>
 	<div class="fg9">
-		<input type="text" name="email" maxlength="255" value="{EMAIL}" />
+		<input type="text" name="email" maxlength="255" value="{EMAIL}" class="wdt150">
 	</div>
 
 	<div class="fg3" style="{DISPLAY_HOME_FOLDERS}">{TEXT_HOME_FOLDER}:</div>
 	<div class="fg9" style="{DISPLAY_HOME_FOLDERS}">
-		<select name="home_folder" class="sel200">
+		<select name="home_folder" class="wdt200">
 			<option value="">{TEXT_NONE}</option>
 			<!-- BEGIN folder_list_block -->
 			<option value="{FOLDER}"{SELECTED}>{NAME}</option>
@@ -55,7 +55,7 @@
 
 	<div class="fg3">{TEXT_GROUP}:</div>
 	<div class="fg9">
-		<select name="groups[]" multiple class="sel200">
+		<select name="groups[]" multiple class="wdt200">
 			<!-- BEGIN group_list_block -->
 			<option value="{ID}" {SELECTED}>{NAME}</option>
 			<!-- END group_list_block -->

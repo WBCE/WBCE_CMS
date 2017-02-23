@@ -12,7 +12,7 @@
 	<input type="hidden" name="userstatus" value="{USER_STATUS}">
 
 	<h3 id="user-type" class="fg12 green">
-		<button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times red"></button>
+		<button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times red" ></button>
 		<span>{HEADING_MODIFY_DELETE_USER}</span>
 	</h3>
 	<div id="user-list" class="fg12">

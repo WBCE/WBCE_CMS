@@ -180,43 +180,43 @@
         <!-- PAGES_DIRECTORY -->
         <div class="fg3"><?=$TEXT['PAGES_DIRECTORY']?></div>
         <div class="fg9">
-			<input type="text" id="pages_directory" name="pages_directory" maxlength="255" value="<?=PAGES_DIRECTORY?>">
+			<input type="text" id="pages_directory" name="pages_directory" maxlength="255" value="<?=PAGES_DIRECTORY?>" class="wdt100">
 		</div>
 
         <!-- MEDIA_DIRECTORY -->
         <div class="fg3"><?=$TEXT['MEDIA_DIRECTORY']?></div>
         <div class="fg9">
-			<input type="text" id="media_directory" name="media_directory" maxlength="255" value="<?=MEDIA_DIRECTORY?>">
+			<input type="text" id="media_directory" name="media_directory" maxlength="255" value="<?=MEDIA_DIRECTORY?>" class="wdt100">
 		</div>
 
         <!-- PAGE_EXTENSION -->
         <div class="fg3"><?=$TEXT['PAGE_EXTENSION']?></div>
         <div class="fg9">
-			<input class="long" type="text" id="page_extension" name="page_extension" maxlength="255" value="<?=PAGE_EXTENSION?>">
+			<input type="text" id="page_extension" name="page_extension" maxlength="255" value="<?=PAGE_EXTENSION?>" class="wdt100">
 		</div>
 
         <!-- PAGE_SPACER-->
         <div class="fg3"><?=$TEXT['PAGE_SPACER']?></div>
         <div class="fg9">
-			<input type="text" id="page_spacer" name="page_spacer" maxlength="255"  value="<?=PAGE_SPACER?>">
+			<input type="text" id="page_spacer" name="page_spacer" maxlength="255"  value="<?=PAGE_SPACER?>" class="wdt100">
 		</div>
 
         <!-- RENAME_FILES_ON_UPLOAD -->
         <div class="fg3"><?=$TEXT['RENAME_FILES_ON_UPLOAD']?></div>
         <div class="fg9">
-			<input class="wdt500" type="text" id="rename_files_on_upload" name="rename_files_on_upload" maxlength="255"  value="<?=RENAME_FILES_ON_UPLOAD?>">
+			<input type="text" id="rename_files_on_upload" name="rename_files_on_upload" maxlength="255"  value="<?=RENAME_FILES_ON_UPLOAD?>" class="wdt500">
 		</div>
 
         <!-- SESSION_IDENTIFIER -->
         <div class="fg3"><?=$TEXT['SESSION_IDENTIFIER'] ?></div>
         <div class="fg9">
-			<input type="text" id="app_name" name="app_name" maxlength="255"  value="<?=APP_NAME ?>">
+			<input type="text" id="app_name" name="app_name" maxlength="255"  value="<?=APP_NAME ?>" class="wdt100">
 		</div>
 
         <!-- SEC_ANCHOR -->
         <div class="fg3"><?=$TEXT['SEC_ANCHOR'] ?></div>
         <div class="fg9">
-			<input type="text" id="sec_anchor" name="sec_anchor" maxlength="255"  value="<?=SEC_ANCHOR ?>">
+			<input type="text" id="sec_anchor" name="sec_anchor" maxlength="255"  value="<?=SEC_ANCHOR ?>" class="wdt100">
 		</div>
 
 		<hr class="fg12">

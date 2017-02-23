@@ -33,7 +33,7 @@
 			<?=$TEXT['DISPLAY_NAME']?>:
 		</div>
 		<div class="fg9">
-			<input type="text" id="display_name" name="display_name" value="<?=$userDisplayName?>">
+			<input type="text" id="display_name" name="display_name" value="<?=$userDisplayName?>" class="wdt200">
 		</div>
 
 		<div class="fg3">
@@ -84,7 +84,7 @@
 			<?=$HEADING['MY_EMAIL']?>:
 		</div>
 		<div class="fg9">
-			<input type="text" id="email" name="email" value="<?=$userMail?>">
+			<input type="text" id="email" name="email" value="<?=$userMail?>" class="wdt200">
 		</div>
 
 		<div class="fg12 bot warning"><?=$TOOL['PASSWORD']?></div>
@@ -93,21 +93,21 @@
 			<?=$TEXT['NEW_PASSWORD']?>:
 		</div>
 		<div class="fg9">
-			<input type="password" id="new_password_1" name="new_password_1" value=""><br />
+			<input type="password" id="new_password_1" name="new_password_1" value="" class="wdt150">
 		</div>
 
 		<div class="fg3">
 			<?=$TEXT['RETYPE_NEW_PASSWORD']?>:
 		</div>
 		<div class="fg9">
-			<input type="password" id="new_password_2" name="new_password_2" value="">
+			<input type="password" id="new_password_2" name="new_password_2" value="" class="wdt150">
 		</div>
 
 		<div class="fg3">
 			<?=$TEXT['NEED_CURRENT_PASSWORD']?>:
 		</div>
 		<div class="fg9">
-			<input type="password" id="current_password" name="current_password" value="">
+			<input type="password" id="current_password" name="current_password" value="" class="wdt150">
 		</div>
 
 		<hr class="fg12">

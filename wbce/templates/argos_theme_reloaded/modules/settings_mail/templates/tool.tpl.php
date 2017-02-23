@@ -76,13 +76,13 @@
             <!-- WBMAILER_SMTP_USERNAME -->
             <div class="fg4"><?=$TEXT['WBMAILER_SMTP_USERNAME'] ?></div>
             <div class="fg8">
-				<input class="long" type="text" id="wbmailer_smtp_username" name="wbmailer_smtp_username" maxlength="250"  value="<?=WBMAILER_SMTP_USERNAME?>" >
+				<input class="wdt150" type="text" id="wbmailer_smtp_username" name="wbmailer_smtp_username" maxlength="250"  value="<?=WBMAILER_SMTP_USERNAME?>" >
             </div>
 
             <!-- WBMAILER_SMTP_PASSWORD -->
             <div class="fg4"><?=$TEXT['WBMAILER_SMTP_PASSWORD'] ?></div>
             <div class="fg8">
-				<input class="long" type="password" id="wbmailer_smtp_password" name="wbmailer_smtp_password" maxlength="250"  value="<?=WBMAILER_SMTP_PASSWORD?>" >
+				<input class="wdt150" type="password" id="wbmailer_smtp_password" name="wbmailer_smtp_password" maxlength="250"  value="<?=WBMAILER_SMTP_PASSWORD?>" >
             </div>
 
         </div>

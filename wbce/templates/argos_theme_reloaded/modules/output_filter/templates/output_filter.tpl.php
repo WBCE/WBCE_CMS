@@ -185,13 +185,13 @@
 
 		<div class="fg4"><?=$OPF['AT_REPLACEMENT'];?>:</div>
 		<div class="fg8">
-			<input type="text" style="width: 160px" value="<?=$data['at_replacement'];?>"
+			<input type="text"  class="wdt150" value="<?=$data['at_replacement'];?>"
 			name="at_replacement"/>
 		</div>
 
 		<div class="fg4"><?=$OPF['DOT_REPLACEMENT'];?>:</div>
 		<div class="fg8">
-			<input type="text" style="width: 160px" value="<?=$data['dot_replacement'];?>"
+			<input type="text"  class="wdt150" value="<?=$data['dot_replacement'];?>"
 			name="dot_replacement"/>
 		</div>
 

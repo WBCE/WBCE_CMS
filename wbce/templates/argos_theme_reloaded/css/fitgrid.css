@@ -6,22 +6,22 @@
 */
 
 
-* {
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+* { 
+	-moz-box-sizing: border-box; 
+	-webkit-box-sizing: border-box; 
 	box-sizing: border-box;
-	/* remember: box-sizing is not supported by IE7 :( */
+	/* remember: box-sizing is not supported by IE7 :( */	
 	outline: none;
 	vertical-align: top;
 }
 
-.fg-center {
+.center {
 	max-width: 80em;
 	margin: 0 auto;
 	position: relative;
 }
 
-.fg-row {
+.row {
 	margin: 0 .5em;
 	padding: 2% 1em 0;
 	overflow: hidden;
@@ -40,7 +40,7 @@
 	height:0;
 }
 
-/* =======================================
+/* ======================================= 
    columns w/ margin
    ======================================= */
 .fg1,.fg2,.fg3,.fg4,.fg5,.fg6,.fg7,.fg8,.fg9,.fg10,.fg11,.fg12 {
@@ -99,10 +99,10 @@
 	width:4.33%;
 }
 
-/* =======================================
+/* ======================================= 
    push w/ columns
    ======================================= */
-
+   
 .push12 {
 	margin-left:100%;
 }
@@ -151,16 +151,16 @@
 	margin-left:10.33%;
 }
 
-/* =======================================
+/* ======================================= 
    columns w/o margin
    ======================================= */
-
+  
 .fg-no-gutter{
 	padding: 0 3.5%;
 	margin-top: 0;
 	margin-bottom: 0;
-}
-
+}  
+   
 .fg-no-gutter > [class*="fg"] {
 	margin:0;
 	padding:0;
@@ -221,10 +221,10 @@
 	width:8.33%;
 }
 
-/* =======================================
+/* ======================================= 
    push columns w/o margin
    ======================================= */
-
+   
 .fg-no-gutter .push12 {
 	margin-left:100%;
 }
@@ -281,42 +281,42 @@
 	display: none !important;
 }
 
-/* =======================================
+/* ======================================= 
    media queries
    ======================================= */
 
-/* tablet size */
+/* tablet size */   
 @media screen and (max-width: 48em ) {
-
-}
-
+	
+}   
+    
 /* smartphone size */
 @media screen and (max-width: 36.5em ) {
-
+	
 	.row{
 		padding: 0 1em;
 		margin: 0;
 	}
-
+	
 	.fg1,.fg2{
 		width: 46%;
 		margin-bottom: 1em;
-	}
+	}	
 
 	.fg3,.fg4,.fg5,.fg6,.fg7,.fg8,.fg9,.fg10,.fg11,.fg12 {
 		margin:0 2% 1em;
 		padding:0;
 		width:96%;
 	}
-
+	
 	.fg-no-gutter > [class*="fg"] {
 		width: 50%;
 	}
-
+	
 	.fg-no-mobile{
 		display: none !important;
 	}
-
+	
 	.fg-no-desktop{
 		display: block !important;
 	}

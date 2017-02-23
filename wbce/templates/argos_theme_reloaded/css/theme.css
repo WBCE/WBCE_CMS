@@ -177,7 +177,6 @@ input[type="number"] {
 	border: 1px solid #999;
 	background-color: #eee;
 	height: 28px;
-	width: 150px;
 	padding: 4px;
 }
 input[type="text"]:focus,
@@ -210,7 +209,6 @@ textarea {
 	border: 1px solid #999;
 	background-color: #eee;
 	padding: 4px;
-	width: 250px;
 	height: auto;
 	resize: vertical;
 	line-height: 1.2;
@@ -229,7 +227,6 @@ select {
 	border: 1px solid #999;
 	background-color: #eee;
 	height: 28px;
-	width: 150px;
 	padding: 2px 15px 2px 3px;
 	background-image: url(../images/down.png);
 	background-position: right;
@@ -285,7 +282,7 @@ input[type="button"] {
 	background-color: #647086;
 	color: #fff;
 	height: 28px;
-	width:150px;
+	min-width:150px;
 	padding: 5px;
 	text-transform: uppercase;
 }
@@ -409,6 +406,7 @@ span.title {
 	margin-right: 10px;
 	height: 30px;
 	width: 40px;
+	min-width: 40px;
 	margin-bottom: 0 !important;
 	background-color: #eee !important;
 }
@@ -420,6 +418,12 @@ span.title {
 	overflow-x: hidden;
 	margin-bottom: 10px;
 	padding: 5px 10px;
+}
+
+/*** access -> groups *************************************************/
+form.advanced-options {
+	position: absolute;
+	bottom: 0;
 }
 
 /*** media ************************************************************/
@@ -569,6 +573,7 @@ a.tooltip {
 /*** some width overwrites ********************************************/
 .wdt50 		{ width: 50px !important; }
 .wdt60 		{ width: 60px !important; }
+.wdt80 		{ width: 80px !important; }
 .wdt100 	{ width: 100px !important; }
 .wdt120 	{ width: 120px !important; }
 .wdt150 	{ width: 150px !important; }
@@ -579,6 +584,7 @@ a.tooltip {
 .wdt400 	{ width: 400px !important; }
 .wdt500 	{ width: 500px !important; }
 .wdt550 	{ width: 550px !important; }
+.wdt600 	{ width: 600px !important; }
 
 /*** fixes for some odd behavior **************************************/
 /* if there is an empty string in _details.htt */
@@ -591,8 +597,22 @@ a.tooltip {
 	padding: 6px 0 18px 0;
 }
 
-/*** fixes for 3rd-party admin-tools **********************************/
-/* hide the obsolete back-button */
+/*** fixes for 3rd-party modules **************************************/
+/* give forms some horizontal padding */
+form { padding: 0 2%; }
+/* and reset the padding if inside a content-box */
+.content-box form { padding: 0; }
+
+/* other styling for h2 inside a content-box */
+.content-box h2 {
+	background-color: transparent;
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+/* hide the obsolete back-button in admin-tools */
 input#admin_tools {
 	display: none;
 }
@@ -612,15 +632,12 @@ input#admin_tools {
 }
 /* padding for the elements inside the content-box */
 .adminModuleWrapper.legacy {
-	padding: 0 2%;
+	padding: 0 1%;
 }
-
-/*** fixes for 3rd-party page-modules *********************************/
-/* padding for the elements inside the content-box */
 .pageModuleWrapper.legacy {
 	padding: 10px 2% 0 2%;
 }
-/* tableborder amd inputwidth in Miniform */
+/* tableborder and inputwidth in miniform */
 .pageModuleWrapper table.settable {
 	border: none !important;
 }
@@ -652,14 +669,12 @@ input#admin_tools {
 }
 
 /*** some mobile adaption *********************************************/
-/*** I don't like ecessive media queries ;-) **************************/
-/* smartphone size */
+/*** I don't like exessive media queries ;-) **************************/
 @media screen and (max-width: 36.5em ) {
-	.desktop-only { display: none; }
-	.mobile-only { display: block !important; }
 	.loged-in-as { display: none; }
 	.section { height: auto; }
 	.right { text-align: left; }
 	#content-container { margin-bottom: 0; }
 	#footer { position: relative; }
+	form.advanced-options { position: relative; }
 }
