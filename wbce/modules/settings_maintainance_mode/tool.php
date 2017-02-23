@@ -81,7 +81,7 @@ if($saveSettings) {
     if ($maintMode===true) $maintMode=' checked="checked" ';
     else                $maintMode='';
 
-    include($this->GetTemplatePath("maintainance.tpl.php"));
+    include($modulePath."templates/maintainance.tpl.php");
 
 }
 

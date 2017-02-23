@@ -81,9 +81,7 @@ if ($toolCheck) {
     }
 
     //Load actual tool
-    echo '<div class="adminModuleWrapper">';
     require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
-    echo '</div>';
 
     // output footer if  we are not in no_page mode
     if (!$noPage) $admin->print_footer();

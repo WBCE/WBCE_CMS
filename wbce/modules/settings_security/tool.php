@@ -117,7 +117,7 @@ if($saveSettings) {
     $secretTime = Settings::Get ("wb_secform_secrettime");
 
     //Display form
-    include($this->GetTemplatePath("sfs.tpl.php"));
+    include($modulePath."templates/sfs.tpl.php");
 
 }
 

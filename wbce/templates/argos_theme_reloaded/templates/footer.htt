@@ -1,8 +1,8 @@
 <!-- BEGIN footer_block -->
 
-</td>
+</td> <!-- .content -->
 </tr>
-</table>
+</table> <!-- #legacy -->
 
 <div class="clearfix"></div> <!-- für alle Fälle ;-)) -->
 </div> <!-- #content-container -->

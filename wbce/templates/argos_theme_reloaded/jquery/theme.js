@@ -77,7 +77,9 @@ $(document).ready(function() {
 
 	});
 
-	/*** patch some issues for a consistent look as possible **********/
+	/******************************************************************
+	 * patch some issues for a consistent look as possible            *
+	 ******************************************************************/
 
 	// hide the breadcrumbs in settings
 	var myKey = /settings/;
