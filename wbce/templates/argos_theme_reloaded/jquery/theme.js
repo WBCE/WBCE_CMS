@@ -53,8 +53,6 @@ $(document).ready(function() {
 		$('#advanced-block').toggle();
 	});
 
-
-
 	/*** toggle the upload fields in media ****************************/
 	$('#unzip').click(function() {
 		if ($('#file2').css('display') == 'block') {
@@ -81,7 +79,7 @@ $(document).ready(function() {
 
 	/*** patch some issues for a consistent look as possible **********/
 
-	// hide the breadcrumbs only in settings
+	// hide the breadcrumbs in settings
 	var myKey = /settings/;
 	var myStr = window.location.pathname;
 	myMatch = myStr.search(myKey);
@@ -128,14 +126,14 @@ $(document).ready(function() {
 	$('.pageModuleWrapper').addClass('fg12 content-box legacy');
 
 	if ($('.pageModuleWrapper')[0]) { // it is an page-tool
-		// add classes to textareas in sitemap-module
 		var myStr = $('.section-info').html();
-
+		// add classes to textareas in sitemap-module
 		var myKey = /sitemap/;
 		myMatch = myStr.search(myKey);
 		if (myMatch != -1) {
 			$('textarea').addClass('code tabbed');
 		}
+		// patch the input length in wrapper
 		var myKey = /wrapper/;
 		myMatch = myStr.search(myKey);
 		if (myMatch != -1) {
@@ -187,9 +185,6 @@ $(document).ready(function() {
 		}
 	}
 	*/
-
-
-
 });
 
 

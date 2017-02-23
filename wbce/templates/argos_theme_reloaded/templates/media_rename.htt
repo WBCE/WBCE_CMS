@@ -1,60 +1,66 @@
 <!-- BEGIN main_block -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!doctype html>
+<html lang="en">
 <head>
-<title>Rename Media</title>
-<link href="{THEME_URL}/media.css" rel="stylesheet" type="text/css" />
+	<meta charset="{CHARSET}">
+	<title>Media Rename</title>
+	<link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
+	<!-- !!! uses fitgrid defs for mobile devices because we're in an iframe !!! -->
+	<link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
+	<link href="{THEME_URL}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="{THEME_URL}/css/media.css" rel="stylesheet" type="text/css">
+
+	<script src="{THEME_URL}/jquery/jquery-min.js"></script>
+
+	<script>
+		$(document).ready(function(){
+			$('#rename-name').focus();
+			$('#cancel-rename').click(function(e) {
+				window.location = 'browse.php';
+				//$('#media-tools',parent.document).show();
+			});
+			//$('#media-tools',parent.document).hide();
+
+		});
+	</script>
 </head>
-<body>
 
-<!-- BEGIN main_block -->
+<body id="media-rename">
 
-<style>
-.hide {display:none;}
-</style>
+	<form name="rename" action="rename2.php" method="post">
+		{FTAN}
+		<input type="hidden" name="dir" value="{DIR}">
+		<input type="hidden" name="old_name" value="{FILENAME}">
+		<input type="hidden" name="id" value="{FILE_ID}">
 
-<form name="rename" action="rename2.php" method="post">
-<input type="hidden" name="dir" value="{DIR}" />
-<input type="hidden" name="old_name" value="{FILENAME}" />
-<input type="hidden" name="id" value="{FILE_ID}" />
-{FTAN}
-<table summary="" cellpadding="5" cellspacing="0" border="0" width="400" align="center">
-<tr>
-	<td align="center" colspan="2">{TEXT_RENAME} '{FILENAME}' {TEXT_TO}:</td>
-</tr>
-<tr>
-	<td>
-		<input type="text" name="name" style="width: 100%;" />
-		<script type="text/javascript">
-		document.rename.name.focus();
-		</script>
-	</td>
-	<td width="50" class="{DISPlAY_EXTENSION}">
-		<input type="text" name="extension" style="width: 50px;" value="{EXTENSION}" />
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<input type="checkbox" name="overwrite" id="overwrite" value="yes" />
-		<label for="overwrite">
-		{TEXT_OVERWRITE_EXISTING} {TYPE}
-		</label>
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<input type="submit" name="submit" value="{TEXT_RENAME}" style="width: 49%;" />
-		<input type="button" name="cancel" value="{TEXT_CANCEL}" style="width: 49%;" onclick="javascript: window.location = 'browse.php';" />
-	</td>
-</tr>
-</table>
-
-</form>
-
-</td>
-</tr>
-</table>
-
+		<section class="row" style="margin-top: 10px;">
+			<section class="fg12 content-box">
+				<div class="fg12" style="margin-top: 10px;">{TEXT_RENAME} <b>'{FILENAME}'</b> {TEXT_TO}:</div>
+				<div class="fg12">
+					<input type="text" name="name" id="rename-name" style="width: 89%;">
+					<input type="text" name="extension" style="width: 9%;" value="{EXTENSION}" class="{DISPlAY_EXTENSION}">
+				</div>
+				<div class="fg12">
+					<label>
+						<input type="checkbox" name="overwrite" id="overwrite" value="yes">
+						{TEXT_OVERWRITE_EXISTING} {TYPE}
+					</label>
+				</div>
+				<div class="fg2">
+					<button type="submit" name="submit">
+						<i class="fa fa-fw fa-check"></i>
+						{TEXT_RENAME}
+					</button>
+				</div>
+				<div class="fg2" style="text-align: right;">
+					<button type="button" name="cancel" id="cancel-rename">
+						<i class="fa fa-fw fa-reply"></i>
+						{TEXT_CANCEL}
+					</button>
+				</div>
+			</section>
+		</section>
+	</form>
 </body>
 </html>
 
