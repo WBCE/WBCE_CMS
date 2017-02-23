@@ -198,6 +198,25 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
 }
 
 /**
+    @brief Fix for php 7 throwing an error and no longer returning false
+*/
+function evaltest($code){
+    $response=NULL;
+    try {
+        $response=@eval($code);
+        var_dump($response);
+    } catch (ParseError $e) {
+        $response=false;
+        echo 'Caught exception: '.$e->getMessage()."\n";
+        
+    }
+    var_dump($response);
+    return $response;
+}
+
+
+
+/**
  * Check the syntax of some PHP code.
  *
  * Found here:
@@ -244,7 +263,7 @@ function wbce_check_syntax($code)
     $err_set  = @ini_set('display_errors','on');
     ob_start();
     $braces || $code = "if(0){{$code}\n}";
-    if (@eval($code) === false) {
+    if (evaltest($code) === false) {
         if ($braces) {
             $braces = PHP_INT_MAX;
         } else {
@@ -639,3 +658,4 @@ function wbce_unpack_and_import( $temp_file, $temp_unzip )
     return array( 'count' => $count, 'errors' => $errors, 'imported' => $imports );
 
 }   // end function wbce_unpack_and_import()
+
