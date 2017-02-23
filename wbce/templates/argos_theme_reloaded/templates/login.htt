@@ -1,77 +1,64 @@
 <!-- BEGIN mainBlock -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!doctype html>
+<html lang="de">
 <head>
-<title>{TEXT_LOGIN}</title>
-<meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
-<meta http-equiv="content-language" content="{LANGUAGE}" />
-<meta name="description" content="{TEXT_LOGIN}" />
-<meta name="keywords" content="{TEXT_LOGIN}" />
-<link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
+	<title>{TEXT_LOGIN}</title>
+	<meta charset="{CHARSET}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
+	<link href="{THEME_URL}/css/login.css" rel="stylesheet" type="text/css">
 </head>
+
 <body onload="document.login.{USERNAME_FIELDNAME}.focus();">
-<div style="text-align:left;font-size:20px;color:#fff;padding:15px 0 0 50px;height:100px;">
-	<!-- <img src="{THEME_URL}/images/logo.png" alt="Logo" /> -->
-	{TEXT_LOGIN}
-</div> 
-<table class="container" summary="" cellpadding="0" cellspacing="0" border="0" width="770" align="center" style="margin-top: 30px;">
-  <tr>
-    <td class="content">
-      <form name="login" class="login" action="{ACTION_URL}" method="post" autocomplete="off" >
-        <input type="hidden" name="url" value="{URL}" />
-        <input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
-        <input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" autocomplete="off" />
-        <table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="500">
-          <tr>
-            <td height="40" align="center" colspan="2">{MESSAGE}</td>
-          </tr>
-          <tr>
-            <td height="10" colspan="2"></td>
-          </tr>
-          <tr>
-            <td width="170" height="30" align="right">{TEXT_USERNAME}:</td>
-            <td>
-              <input type="text" maxlength="{MAX_USERNAME_LEN}" name="{USERNAME_FIELDNAME}" value="{USERNAME}" style="width: 180px;" />
-            </td>
-          </tr>
-          <tr>
-            <td width="170" height="30" align="right">{TEXT_PASSWORD}:</td>
-            <td>
-              <input type="password" maxlength="{MAX_PASSWORD_LEN}" name="{PASSWORD_FIELDNAME}" style="width: 180px;" />
-            </td>
-          </tr>
-         
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              <input type="submit" name="submit" value="{TEXT_LOGIN}" style="width: 180px; font-size: 10px; text-transform: uppercase; color: #003366; border: 1px solid #336699; background-color: #DDDDDD; padding: 3px;" />
-            </td>
-          </tr>
-          <tr>
-            <td height="10" colspan="2"></td>
-          </tr>
-        </table>
-      </form>
-      <center>
-        <a href="{FORGOTTEN_DETAILS_APP}">{TEXT_FORGOTTEN_DETAILS}</a> 
-		<br />
-        <br />
-        <br />
-        <a href="{WB_URL}/">{TEXT_HOME}</a>
-      </center>
-    </td>
-  </tr>
-</table>
-<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" style="padding:10px 0;">
-  <tr>
-    <td style="font-size:10px;text-align:center;">
-      <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-      <a href="http://www.wbce.org/" title="external">WBCE</a> is released under the
-      <a href="http://www.gnu.org/licenses/gpl.html" title="WBCE is released under the GNU General Public License">GNU General Public License</a>
-      <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    </td>
-  </tr>
-</table>
+
+	<div id="container">
+		<header class="fg-center">
+			<div class="fg-row">
+				<h1 class="fg12 center">{TEXT_LOGIN}</h1>
+			</div>
+		</header>
+
+		<section class="fg-center">
+			<div class="fg-row">
+				<div class="fg12 content-box">
+					<form name="login" class="login" action="{ACTION_URL}" method="post" autocomplete="off" style="margin-top:20px;">
+						<input type="hidden" name="url" value="{URL}">
+						<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}">
+						<input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" autocomplete="off">
+
+						<div class="fg5 label">{TEXT_USERNAME}:</div>
+						<div class="fg7">
+							<input type="text" maxlength="{MAX_USERNAME_LEN}" name="{USERNAME_FIELDNAME}" value="{USERNAME}">
+						</div>
+
+						<div class="fg5 label">{TEXT_PASSWORD}:</div>
+						<div class="fg7">
+							<input type="password" maxlength="{MAX_PASSWORD_LEN}" name="{PASSWORD_FIELDNAME}">
+						</div>
+
+						<div class="fg5">&nbsp;</div>
+						<div class="fg7">
+							<button type="submit" name="submit">{TEXT_LOGIN}</button>
+						</div>
+					</form>
+
+					<hr class="fg12">
+
+					<div class="fg12 center">
+						<p><a href="{FORGOTTEN_DETAILS_APP}">
+							{TEXT_FORGOTTEN_DETAILS}
+						</a></p>
+
+						<p><a href="{WB_URL}/">
+							{TEXT_HOME}
+						</a></p>
+				</div>
+			</div>
+		</section>
+	</div>
+
 </body>
 </html>
 <!-- END mainBlock -->

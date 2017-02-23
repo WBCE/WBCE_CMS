@@ -42,7 +42,7 @@
 		<div class="fg9">
 		<select name="language" id="language" class="wdt200">
 			<?php foreach ($languageData as $l) :?>
-				<option value="<?=$l['code']?>" <?=$l['selected']?>><?=$l['name']?> (<?=$l['code']?>)</option>
+				<option value="<?=$l['code']?>" <?=$l['selected']?> class="hasFlag" style="background-image: url(<?=WB_URL?>/languages/<?=$l['code']?>.png);"><?=$l['name']?> (<?=$l['code']?>)</option>
 			<?php endforeach; ?>
 			</select>
 		</div>

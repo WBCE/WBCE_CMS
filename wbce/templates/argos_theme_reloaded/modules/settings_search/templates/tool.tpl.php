@@ -1,9 +1,5 @@
 <h2>
-	<?=$MENU['SETTINGS'].' &raquo; '.$MOD_SET_GENERAL['HEADER']?>
-	<div class="headline-link">
-		<i class="fa fa-fw fa-reply"></i>
-		<a href="index.php"><?=$MENU['SETTINGS']?></a>
-	</div>
+	<a href="index.php"><?=$MENU['SETTINGS']?></a> &raquo; <?=$MOD_SET_GENERAL['HEADER']?>
 </h2>
 
 <section class="settings fg12 content-box">
@@ -18,17 +14,17 @@
         <div class="fg3"><?=$TEXT['VISIBILITY']?></div>
         <div class="fg9">
         <select class="long" name="search" id="search">
-            <option value="public" <?php if (SEARCH=="private") echo WB_SELECT; ?> >
-				<?=$TEXT['PUBLIC']     ?>
+            <option value="public" <?php if (SEARCH=="private") echo WB_SELECT; ?>  class="hasFlag" style="background-image:url(<?=THEME_URL?>/images/fa-eye.png);">
+				<?=$TEXT['PUBLIC']?>
 			</option>
-            <option value="private" <?php if (SEARCH=="private") echo WB_SELECT; ?> >
-				<?=$TEXT['PRIVATE']    ?>
+            <option value="private" <?php if (SEARCH=="private") echo WB_SELECT; ?> class="hasFlag" style="background-image:url(<?=THEME_URL?>/images/fa-eye-slash.png);" >
+				<?=$TEXT['PRIVATE']?>
 			</option>
-            <option value="registered" <?php if (SEARCH=="private") echo WB_SELECT; ?> >
-				<?=$TEXT['REGISTERED'] ?>
+            <option value="registered" <?php if (SEARCH=="private") echo WB_SELECT; ?> class="hasFlag" style="background-image:url(<?=THEME_URL?>/images/fa-key.png);" >
+				<?=$TEXT['REGISTERED']?>
 			</option>
-            <option value="none"<?php if (SEARCH=="private") echo WB_SELECT; ?>>
-				<?=$TEXT['NONE']       ?>
+            <option value="none"<?php if (SEARCH=="private") echo WB_SELECT; ?> class="hasFlag" style="background-image:url(<?=THEME_URL?>/images/fa-user-secret.png);">
+				<?=$TEXT['NONE']?>
 			</option>
         </select>
         </div>

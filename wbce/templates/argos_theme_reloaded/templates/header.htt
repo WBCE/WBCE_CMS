@@ -72,18 +72,24 @@
 			<a href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">
 				<i class="fa fa-fw fa-sign-out"></i> {TITLE_LOGOUT}
 			</a>
-			<p>Angemeldet als: {DISPLAY_NAME}</p>
+			<p class="loged-in-as">Angemeldet als: {DISPLAY_NAME}</p>
 		</div>
 	</div>
 	<div class="clearfix"></div>
-	<div id="main-menu" class="row">
+	<div id="main-menu" class="row desktop-only">
 		<ul class="menu fg12">
 			<!-- BEGIN linkBlock -->
 			<li class="{CLASS}"><a href="{LINK}" target="{TARGET}"><span>{TITLE}</span></a></li>
 			<!-- END linkBlock -->
 		</ul>
 	</div>
-</div>
+	<div id="mobile-menu" class="mobile-only" style="display:none;">
+		<ul class="menu">
+			<!-- BEGIN linkBlock -->
+			<li class="{CLASS}"><a href="{LINK}" target="{TARGET}"><span>{TITLE}</span></a></li>
+			<!-- END linkBlock -->
+		</ul>
+	</div></div>
 
 <div id="content-container">
 <!-- remains here for compatibility with older modules (td.content) -->

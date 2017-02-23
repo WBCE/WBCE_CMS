@@ -1,9 +1,5 @@
 <h2>
-	<?=$MENU['SETTINGS'].' &raquo; '.$MOD_SET_GENERAL['HEADER']; ?>
-	<div class="headline-link">
-		<i class="fa fa-fw fa-reply"></i>
-		<a href="index.php"><?=$MENU['SETTINGS']; ?></a>
-	</div>
+	<a href="index.php"><?=$MENU['SETTINGS']?></a> &raquo; <?=$MOD_SET_GENERAL['HEADER']?>
 </h2>
 
 <section class="settings fg12 content-box">
@@ -21,7 +17,7 @@
 			<select name="default_language" id="default_language">
 				<?php if (is_array($selects)) : ?>
 					<?php foreach ($selects as $value) : ?>
-						<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_LANGUAGE == $value['directory']) echo 'selected'; ?> >
+						<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_LANGUAGE == $value['directory']) echo 'selected'; ?>  class="hasFlag" style="background-image: url(<?=WB_URL?>/languages/<?=$value['directory']?>.png);">
 							<?=$value['name']." (".$value['directory'].")"?>
 						</option>
 					<?php endforeach; ?>

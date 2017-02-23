@@ -1,33 +1,37 @@
 <!-- BEGIN main_block -->
 <h2>{ACCESS}</h2>
-<table summary="" cellpadding="0" cellspacing="0" border="0" width="99%" align="center">
-	<tr>
-		<td align="center" valign="top">
-			<!-- BEGIN users_block -->	
-			<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" {DISPLAY_USERS} >
-				<tr>
-					<td class="graphic" align="center" valign="top" rowspan="2">
-						<a href="{ADMIN_URL}/users/index.php"><img src="{THEME_URL}/icons/users.png" alt="{USERS}" /></a>
-					</td>
-					<td class="description" valign="top">
-						<a href="{ADMIN_URL}/users/index.php"><span class="title">{USERS}</span></a><p>{USERS_OVERVIEW}</p>
-					</td>
-				</tr>
-			</table>	
-			<!-- END users_block -->
-			<!-- BEGIN groups_block -->		
-			<table summary="" cellpadding="0" cellspacing="0" border="0" class="section" {DISPLAY_GROUPS} >
-				<tr>
-					<td class="graphic" align="center" valign="top" rowspan="2">
-						<a href="{ADMIN_URL}/groups/index.php"><img src="{THEME_URL}/icons/groups.png" alt="{GROUPS}" /></a>
-					</td>
-					<td class="description" valign="top">
-						<a href="{ADMIN_URL}/groups/index.php"><span class="title">{GROUPS}</span></a><p>{GROUPS_OVERVIEW}</p>
-					</td>
-				</tr>
-			</table>
-			<!-- END groups_block -->
-		</td>
-	</tr>
-</table>
+
+<ul>
+	<!-- BEGIN users_block -->
+	<li class="fg6 section" {DISPLAY_USERS}>
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/users/index.php">
+				<i class="fa fa-3x fa-user"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/users/index.php">
+				<span class="title">{USERS}</span>
+			</a>
+			{USERS_OVERVIEW}
+		</div>
+	</li>
+	<!-- END users_block -->
+
+	<!-- BEGIN groups_block -->
+	<li class="fg6 section" {DISPLAY_GROUPS} >
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/groups/index.php">
+				<i class="fa fa-3x fa-users"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/groups/index.php">
+				<span class="title">{GROUPS}</span>
+			</a>
+			{GROUPS_OVERVIEW}
+		</div>
+	</li>
+	<!-- END groups_block -->
+</ul>
 <!-- END main_block -->

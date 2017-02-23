@@ -14,7 +14,7 @@
 			</a>
 			{TOOL_DESCRIPTION}
 		</div>
-	</div>
+	</li>
 	<!-- END tool_list_block -->
 </ul>
 {TOOL_LIST}

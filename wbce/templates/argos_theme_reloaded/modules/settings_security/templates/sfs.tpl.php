@@ -1,9 +1,5 @@
 <h2>
-	<?=$MENU['SETTINGS'].' &raquo; '.$SFS['HEADER']?>
-	<div class="headline-link">
-		<i class="fa fa-fw fa-reply"></i>
-		<a href="index.php"><?=$MENU['SETTINGS']?></a>
-	</div>
+	<a href="index.php"><?=$MENU['SETTINGS']?></a> &raquo; <?=$SFS['HEADER']?>
 </h2>
 
 <section class="sfs fg12 content-box">

@@ -6,11 +6,7 @@
 <?php endif; ?>
 
 <h2>
-	<?=$MENU['SETTINGS'].' &raquo; '.$OPF['HEADING']?>
-	<div class="headline-link">
-		<i class="fa fa-fw fa-reply"></i>
-		<a href="index.php"><?=$MENU['SETTINGS']?></a>
-	</div>
+	<a href="index.php"><?=$MENU['SETTINGS']?></a> &raquo; <?=$OPF['HEADING']?>
 </h2>
 
 <section class="output-filter fg12 content-box">

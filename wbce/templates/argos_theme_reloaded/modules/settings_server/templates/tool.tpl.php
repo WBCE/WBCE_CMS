@@ -90,11 +90,7 @@
 </script>
 
 <h2>
-	<?=$MENU['SETTINGS'].' &raquo; '.$HEADING['SERVER_SETTINGS']?>
-	<div class="headline-link">
-		<i class="fa fa-fw fa-reply"></i>
-		<a href="index.php"><?=$MENU['SETTINGS']?></a>
-	</div>
+	<a href="index.php"><?=$MENU['SETTINGS']?></a> &raquo; <?=$HEADING['SERVER_SETTINGS']?>
 </h2>
 
 <section class="settings fg12 content-box">

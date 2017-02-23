@@ -1,9 +1,5 @@
 <h2>
-	<?=$MENU['SETTINGS'].' &raquo; '.$MOD_MAINTAINANCE['HEADER']?>
-	<div class="headline-link">
-		<i class="fa fa-fw fa-reply"></i>
-		<a href="index.php"><?=$MENU['SETTINGS']?></a>
-	</div>
+	<a href="index.php"><?=$MENU['SETTINGS']?></a> &raquo; <?=$MOD_MAINTAINANCE['HEADER']?>
 </h2>
 
 <section class="maintMode fg12 content-box">
