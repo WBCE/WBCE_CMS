@@ -19,13 +19,18 @@ $admin = new admin('Pages', 'pages');
 $admin->clearIDKEY();
 
 // Include the WB functions file
- 
+
 
 /**
  *	Include PageTree script
  *
 */
-require_once(dirname(__FILE__).'/page_tree/page_tree.php');
+if (file_exists(THEME_PATH.'/patch/page_tree.php')) :
+	// intermediate solution to enable better styling
+	require_once(THEME_PATH.'/patch/page_tree.php');
+else :
+	require_once(dirname(__FILE__).'/page_tree/page_tree.php');
+endif;
 
 // Setup template object
 $template = new Template(dirname($admin->correct_theme_source('pages.htt')));
@@ -153,7 +158,7 @@ function parent_list($parent){
             // Get user perms
             $admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
             $admin_users = explode(',', str_replace('_', '', $page['admin_users']));
-            
+
             $in_group = FALSE;
             foreach($admin->get_groups_id() as $cur_gid) {
                 if (in_array($cur_gid, $admin_groups)) {
