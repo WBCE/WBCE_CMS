@@ -73,19 +73,13 @@
 
                     <td class="list-calendar">
 						<input type="text" id="start_date{VAR_SECTION_ID}" name="start_date{VAR_SECTION_ID}" value="{VALUE_PUBL_START}" class="wdt120">
-						<!--
-                        <img src="{THEME_URL}/images/calendar_16.png" id="trigger_start{VAR_SECTION_ID}" style="cursor:pointer;" title="{TEXT_CALENDAR}" alt="{TEXT_CALENDAR}">
-                        <img src="{THEME_URL}/images/{CLOCK_DEL_16_PNG}" style="cursor:pointer;" alt="{TEXT_DELETE_DATE}" title="{TEXT_DELETE_DATE}" onclick="document.section_properties.start_date{VAR_SECTION_ID}.value=''">-->
                         <i id="trigger_start{VAR_SECTION_ID}" class="fa fa-lg fa-calendar-plus-o" title="{TEXT_CALENDAR}"></i>
                         <i id="trigger_start{VAR_SECTION_ID}" class="fa fa-lg fa-calendar-times-o red" title="{TEXT_CALENDAR}" onclick="$('#start_date{VAR_SECTION_ID}').val('')"></i>
 					</td>
 
                     <td class="list-calendar">
 						<input type="text" id="end_date{VAR_SECTION_ID}" name="end_date{VAR_SECTION_ID}" value="{VALUE_PUBL_END}" class="wdt120">
-                        <!--
-                        <img src="{THEME_URL}/images/calendar_16.png" id="trigger_stop{VAR_SECTION_ID}" alt="{TEXT_CALENDAR}" style="cursor: pointer;" title="{TEXT_CALENDAR}">
-                        <img src="{THEME_URL}/images/{CLOCK_DEL_16_PNG}" style="cursor:pointer;" alt="{TEXT_DELETE_DATE}" title="{TEXT_DELETE_DATE}" onclick="document.section_properties.end_date{VAR_SECTION_ID}.value=''" >-->
-                         <i id="trigger_stop{VAR_SECTION_ID}" class="fa fa-lg fa-calendar-plus-o" title="{TEXT_CALENDAR}"></i>
+                        <i id="trigger_stop{VAR_SECTION_ID}" class="fa fa-lg fa-calendar-plus-o" title="{TEXT_CALENDAR}"></i>
                         <i id="trigger_start{VAR_SECTION_ID}" class="fa fa-lg fa-calendar-times-o red" title="{TEXT_CALENDAR}" onclick="$('#end_date{VAR_SECTION_ID}').val('')"></i>
                     </td>
 

@@ -81,7 +81,7 @@ if ($toolCheck) {
     }
 
     //Load actual tool
-    echo '<div class="adminModuleWrapper">';
+    echo '<div class="adminModuleWrapper '.$toolDir.'">';
     require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
     echo '</div>';
 

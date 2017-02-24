@@ -21,6 +21,7 @@ function toggle_visibility(id){
 		writeSessionCookie (id, "1");//Addition for remembering expanded state of pages
 	}
 }
+/*
 var plus = new Image;
 plus.src = THEME_URL+"/images/expand.png";
 var minus = new Image;
@@ -33,6 +34,17 @@ function toggle_plus_minus(id) {
 		document.images['plus_minus_' + id].src = plus.src;
 	}
 }
+*/
+/*** replacement for above function ***********************************/
+function togglePlusMinus(id) {
+	var source = '.plus-minus-' + id;
+	if ($(source).hasClass('fa-folder-o')) {
+		$(source).removeClass('fa-folder-o').addClass('fa-folder-open-o');
+	} else {
+		$(source).removeClass('fa-folder-open-o').addClass('fa-folder-o');
+	}
+}
+/**********************************************************************/
 
 if(typeof jQuery != 'undefined') {
     jQuery(document).ready(function($) {

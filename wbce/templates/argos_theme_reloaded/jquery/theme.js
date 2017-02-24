@@ -5,7 +5,7 @@ function confirm_link(message, url) {
 	}
 }
 
-/*** get the variables and return them as an associative array *********/
+/*** get the url variables and return them as an associative array ****/
 function getUrlVars() {
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -95,98 +95,75 @@ $(document).ready(function() {
 		});
 	}
 
-	// wrap the admintool-modules in admintools -> tool
-	$('.adminModuleWrapper').addClass('fg12 content-box legacy top');
-
-	if ($(".adminModuleWrapper")[0]) { // it is an admin-tool
-
-		$('h4').addClass('adminModuleHeader'); // let h4 looks like h2
-		var whichTool = getUrlVars()['tool']; // fetch which tool
-		if (whichTool == 'outputfilter_dashboard') { // opf-dashboard
-			$('button').css('width', 'auto');
-			$('input[type=file]').css('height', 'auto');
-		}
-		if (whichTool == 'wbSeoTool') { // seo-tool
-			$('#pageTree').css('margin','0');
-		}
-		if (whichTool == 'addon_monitor') { // addon-monitor
-			$('#sometabs.tabs').css('width', '100%').css('padding', '0');
-			$('#tool').hide();
-		}
-		if (whichTool == 'captcha_control') { // captcha-control
-			$('span').css('top','10px');
-		}
-	}
-
-	// temporarily wrap the page_tree
-	$('.pages_list').wrap('<section class="fg12 content-box"></section>');
-
 	// styling for section-info in page -> modify
 	$('.section-info').addClass('fg12');
 
-	// wrap the page-modules in pages -> modify
+	/*** wrap and patch the admintool-modules in admintools -> tool ***/
+	$('.adminModuleWrapper').addClass('fg12 content-box legacy top');
+
+	if ($(".adminModuleWrapper")[0]) { // it is an admin-tool
+		// let h4 looks like h2
+		$('h4').addClass('adminModuleHeader');
+		// which tool is loaded?
+		var thisTool = $('.adminModuleWrapper');
+
+		// outputfilter_dashboard
+		if ($(thisTool).hasClass('outputfilter_dashboard')) {
+			$('button').css('width','auto');
+			$('input[type=file]').css('height','auto');
+		}
+		// wbSeoTool
+		if ($(thisTool).hasClass('wbSeoTool')) {
+			$('#pageTree').css('margin','0');
+		}
+		// addon_monitor
+		if ($(thisTool).hasClass('addon_monitor')) {
+			$('#sometabs.tabs').css('width', '100%').css('padding', '0');
+			$('#tool').hide();
+		}
+		// captcha_control
+		if ($(thisTool).hasClass('captcha_control')) {
+			$('span').css('top','10px');
+		}
+		// pagecloner
+		if ($(thisTool).hasClass('pagecloner')) {
+			$('.pages_list table').css('width','100%');
+		}
+
+		// to be continued ... ;-)
+		//
+		//if ($(thisTool).hasClass('')) {
+		//}
+	}
+
+	/*** wrap the page-modules in pages -> modify *********************/
 	$('.pageModuleWrapper').addClass('fg12 content-box legacy');
 
 	if ($('.pageModuleWrapper')[0]) { // it is an page-tool
-		var myStr = $('.section-info').html();
-		// add classes to textareas in sitemap-module
-		var myKey = /sitemap/;
-		myMatch = myStr.search(myKey);
-		if (myMatch != -1) {
-			$('textarea').addClass('code tabbed');
-		}
-		// patch the input length in wrapper
-		var myKey = /wrapper/;
-		myMatch = myStr.search(myKey);
-		if (myMatch != -1) {
+		// which module is loaded?
+		var thisMod = $('.pageModuleWrapper');
+
+		// wrapper
+		if ($(thisMod).hasClass('wrapper')) {
 			$('input[type=text]').css('width', 'auto');
 		}
+		// sitemap
+		if ($(thisMod).hasClass('sitemap')) {
+			$('select').css('width','300px');
+			$('input').each(function() {
+				if ($(this).attr('name') == 'depth') {
+					$(this).attr('type','text').addClass('wdt50');
+				}
+			});
+			$('textarea').addClass('code tabbed');
+
+		}
+
+		// to be continued ... ;-)
+		//
+		//if ($(thisMod).hasClass('')) {
+		//}
 	}
-
-
-
-	// wrapper for the edit-forms in pages -> modify
-	// not needed if the core-file mod will be accepted !
-/*
-	var myKey = /pages\/modify.php/;
-	var myStr = window.location.pathname;
-	myMatch = myStr.search(myKey);
-	if (myMatch != -1) {
-		$('form').wrap('<section class="fg12 content-box top legacy"></section>');
-		$('input[type=submit]').first().before('<hr>');
-		$('input[type=button]').first().before('<hr>');
-		$('#wbstats_container').wrap('<section class="fg12 content-box top"></section>');
-		//$('.topic-modify').wrap('<section class="fg12 content-box top"></section>'); // it's not enough
-	}
-*/
-
-	// wrap a content-box around the 3rd party admin-tools
-	// and do some "cosmetics"
-	// not needed if the core-file mod will be accepted !
-	/*
-	var myKey = /admintools\/tool.php/;
-	var myStr = window.location.pathname;
-	myMatch = myStr.search(myKey);
-	if (myMatch != -1) { // we are in admintools with tool.php
-		$('#legacy td.content').addClass('content-box fg12 top legacy');
-		$('h2').css('margin', '10px 0 0 0');
-
-		var whichTool = location.search.substr(1);
-		if (whichTool != 'tool=addon_monitor' && whichTool != 'tool=droplets') { // !addon-monitor !droplets
-			$('input[type=submit]').first().before('<hr>');
-		}
-		if (whichTool == 'tool=outputfilter_dashboard') { // opf-dashboard
-			$('button').css('width', 'auto');
-			$('input[type=file]').css('height', 'auto');
-		}
-		if (whichTool == 'tool=captcha_control') { // captcha-control
-			$('span').css('top','10px');
-		}
-		if (whichTool == 'tool=wbSeoTool') { // seo-tool
-			$('#pageTree').css('margin','0');
-		}
-	}
-	*/
 });
 
 

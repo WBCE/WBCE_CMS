@@ -175,7 +175,7 @@ if($query_sections->numRows() > 0)
 
 
                 }
-                echo '<div class="pageModuleWrapper">';
+                echo '<div class="pageModuleWrapper '.$module.'">';
                 require(WB_PATH.'/modules/'.$module.'/modify.php');
                 echo '</div>';
             }
