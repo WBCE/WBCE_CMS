@@ -18,10 +18,7 @@ if(!defined('WB_URL')) {
 $refreshstring = '?rs='.time(); //forces refresh
 $template_edit_link = false;
 if ($wb->is_authenticated()) {
-	$user_id = (int) $wb->get_user_id();
-	if ($user_id === 1) {$template_edit_link = true;}
-	//So koennte dann der Edit-Link aussehen:
-	//echo '<a class="template_edit_link" href="'.ADMIN_URL.'/pages/modify.php?page_id='.PAGE_ID.'" target="_blank">&nbsp;</a>'; unset($user_id);}
+	if ($wb->ami_group_member('1')) {$template_edit_link = true;}
 	
 	$refreshstring = '?rs='.time(); //forces refresh
 } 
@@ -222,11 +219,7 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
 	<div role="contentinfo" class="footer">
 	<a id="gototopswitch" href="#" onclick="gototop();return false;"><img src="<?php echo TEMPLATE_DIR;?>/img/up.png" alt="up" title="Go to top"></a>
 	<div class="contentinner">
-	<?php page_footer(); 
-	
-	//Du kannst das auch entfernen, wenn du den Link zB im Impressum angibst:
-	if (LEVEL > 0 AND $page_id % 5 == 0) {echo '<div style="font-size:12px;">Template by <a href="http://webdesign-grafik.at/templateinfo.php" target="_blank">webdesign-grafik.at</a></div>'; } 
-	?>	
+	<?php page_footer();  ?>	
 	</div></div><!-- //footer -->	
 	</div><!-- //mainbox -->
 	<div class="clearer"></div>

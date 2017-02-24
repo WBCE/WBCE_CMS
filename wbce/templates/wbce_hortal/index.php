@@ -21,8 +21,7 @@ if(!defined('WB_URL')) {
 $refreshstring = '?rs='.time(); //forces refresh
 $template_edit_link = false;
 if ($wb->is_authenticated()) {
-	$user_id = (int) $wb->get_user_id();
-	if ($user_id === 1) {$template_edit_link = true;}
+	if ($wb->ami_group_member('1')) {$template_edit_link = true;}
 	//So koennte dann der Edit-Link aussehen:
 	//echo '<a class="template_edit_link" href="'.ADMIN_URL.'/pages/modify.php?page_id='.PAGE_ID.'" target="_blank">&nbsp;</a>'; unset($user_id);}
 	
@@ -200,7 +199,7 @@ var cookie_permission_url = "<?php echo TEMPLATE_DIR?>/inc/cookie_permission.php
 		<div role="navigation" id="nav">
 					<?php 
 					echo $mainmenu;
-					?><div style="clear:both;"/></div>
+					?><div style="clear:both;"></div>
 		</div><!-- end nav --></div><!-- end menuebox -->
 		<div style="clear:both;"></div>			
 	</div><!-- end headerbox -->
@@ -214,7 +213,7 @@ var cookie_permission_url = "<?php echo TEMPLATE_DIR?>/inc/cookie_permission.php
 	$menuside = '';
 	if (!$isstartpage) {
 		ob_start();  	
-		show_menu2(1, SM2_ROOT+1, SM2_CURR+5, SM2_TRIM,  '<li ><a class="[class] lev[level]" href="[url]" class="[class] men">[menu_title]</a>', '</li>', '<ul>', '</ul>');
+		show_menu2(1, SM2_ROOT+1, SM2_CURR+5, SM2_TRIM,  '<li ><a class="[class] lev[level]" href="[url]">[menu_title]</a>', '</li>', '<ul>', '</ul>');
 		$menuside=ob_get_contents();
 		ob_end_clean(); 
 	}
@@ -289,15 +288,17 @@ if ($template_edit_link == true) {
 </div><!-- end footer left -->
 <div role="contentinfo" class="center">
 <a id="gototopswitch" href="#" onclick="gototop();return false;"><img src="<?php echo TEMPLATE_DIR;?>/img/up.png" alt="Go to top" title="Go to top"></a>
-<?php page_footer(); 
-if (LEVEL > 0 AND $page_id % 5 == 0) {echo '<div class="footercredits">Template by <a href="http://webdesign-grafik.at/templateinfo.php" target="_blank">webdesign-grafik.at</a></div>'; } 
-
-?>
+<?php page_footer(); ?>
 </div><!-- end footer center -->
 </div><!-- end footer -->
 <a href="#" id="nav2close" class="toggleMenu"><span style="display:none;">Mobiler Menu</span></a><div id="nav2"></div>
 <script type="text/javascript" src="<?php echo TEMPLATE_DIR;?>/template.js"></script>
 <?php if (function_exists('register_frontend_modfiles_body')) { register_frontend_modfiles_body(); } ?>
-<?php if ($template_edit_link == true ) {include 'colorset/colorpicker.inc.php';} ?>
+
+<?php 
+//Remove this to deactivate ColorPicker
+if ($template_edit_link == true) {include 'colorset/colorpicker.inc.php';} 
+
+?>
 </body>
 </html>

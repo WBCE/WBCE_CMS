@@ -40,23 +40,19 @@ echo $css;
 
 
 $css_param = implode(',',$css_paramArrNew);
-
-
 if (isset($_GET['do']) AND $_GET['do'] == "save" ) {
 	require('../../../config.php');
 	if (defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 	require_once WB_PATH . '/framework/class.frontend.php';
 	$wb = new frontend();
 	if (is_numeric($wb->get_session('USER_ID'))) {
-		//Ist angemeldet:
-		$u_id = (int) $wb->get_session('USER_ID');
-		if ($u_id == 1) { //der Superadmin
-
+		if ($wb->ami_group_member('1')) {
 			$p =  __DIR__.'/param.txt';
 			file_put_contents ($p, $css_param);
 		}
 	}
 }
+
 
 
 ?>

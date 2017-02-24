@@ -42,8 +42,8 @@ $wb = new frontend();
 require(WB_PATH.'/framework/frontend.functions.php');
 
 if ( isset($_REQUEST['q']) ) { $q = $_REQUEST['q']; } else {$q = '';}
-//$q = preg_replace("/[^\\0-9a-zA-Z_\-\.\/]/", "", $q);  // only allow valid chars 
-$q = addslashes($q);
+$q=$database->escapeString($q);
+//$q = addslashes($q);
 
 //echo $q ;
 $counter = 0;

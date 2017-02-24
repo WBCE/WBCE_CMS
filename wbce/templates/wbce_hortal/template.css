@@ -175,6 +175,7 @@ a.homelink img { max-width:90%; max-height:100%; }
 #nav ul li,  #nav2 ul li {
 	list-style-type: none;
 	list-style-image: none;
+	list-style: none;
 	margin: 0;
 	padding: 0;
 }
@@ -387,6 +388,18 @@ a.colpick-button {display:block; clear:both; width:80%; margin:10px auto; paddin
 Smaller Screens */
 @media screen and (max-width: 1110px) {
 	#nav ul li a span {padding: 11px 5px 9px 2px; font-size:0.95em;}
+	
+	/*Touch Menu*/
+	/* Child menu for iPads*/
+	#nav  li ul {display:none; margin: -3px 0 0 0; opacity:1; }
+	#nav  li ul ul { display:none; }
+	#nav  li:hover ul ul, #nav  li.subMenu ul ul { display:none;}
+	#nav  li:hover>ul, #nav  li li:hover>ul, #nav li.tabselected ul  { display:block;}
+
+
+
+
+	
 }
 /* ======================================================================
 Smaller Screens */

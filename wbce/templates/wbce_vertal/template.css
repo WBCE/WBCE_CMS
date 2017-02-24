@@ -217,7 +217,7 @@ body, html {
 
 /* Login Box */
 #showlogin {display:block; float:left; position:relative;  width:30px; text-align:left; margin:6px 6px 0 15px; }
-#login-box {position:absolute; width:180px; left:20px; top:0; padding:5px; font-size:11px; z-index:2000;}
+#login-box {position:absolute; width:180px; left:20px; top:0; padding:5px; font-size:11px; }
 #login-box .loginsubmit {border:0; margin:10px 10px 0 0}
 #login-box .inputfield {width:80px; border: 1px solid #c9e8f9; padding:1px;}
 

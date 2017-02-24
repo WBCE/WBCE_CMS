@@ -29,7 +29,7 @@ function showcolorchanges() {
 		all_v.push(v);
 	}
 	css_param = all_v.join(',');
-	//console.log(css_param);
+	console.log(css_param);
 	savecolorchanges();
 	add_css();		
 }
@@ -60,11 +60,9 @@ function checkcolor(f) {
 	return f;
 }
 function add_css(plus) {
-	var cssurl = WB_URL+'/templates/wbce_hortal/colorset/colorset.php?f='+css_param;
+	var cssurl = TEMPLATE_DIR+'/colorset/colorset.php?f='+css_param;
 	if (plus == 'submit') {cssurl += '&do=save'; }
-	//var csstag = '<link rel="stylesheet" href="'+cssurl+'" type="text/css" />';
 	var csstag = 'link rel="stylesheet"  href="'+cssurl+'" type="text/css" /';
-	//console.log(csstag);
 
 	$('head').append('<'+csstag+'>');
 }

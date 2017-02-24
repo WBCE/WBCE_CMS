@@ -71,5 +71,6 @@ if (file_exists($p)) {
 <script>
 var css_param = '<?php echo $css_param; ?>';
 var css_paramOrig = '<?php echo $css_paramOrig; ?>';
+var TEMPLATE_DIR = '<?php echo TEMPLATE_DIR; ?>';
 </script>
 <script type="text/javascript" src="<?php echo TEMPLATE_DIR; ?>/colorset/colorpicker.js<?php echo $refreshstring; ?>"></script>
