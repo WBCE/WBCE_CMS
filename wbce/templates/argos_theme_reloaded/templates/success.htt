@@ -1,0 +1,12 @@
+<!-- BEGIN main_block -->
+<div class="msg-box fg12 top">
+	<i class=" fa fa-2x fa-check signal"></i>
+	<p>{MESSAGE}</p>
+	<!-- BEGIN show_redirect_block -->
+	<script>
+		setTimeout("location.href='{REDIRECT}'", {REDIRECT_TIMER});
+	</script>
+	<!-- END show_redirect_block -->
+	<p><a href="{REDIRECT}" name="submit">{BACK}</a></p>
+</div>
+<!-- END main_block -->

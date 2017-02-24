@@ -145,7 +145,7 @@ if($query_sections->numRows() > 0)
     {
         $section_id = $section['section_id'];
         $module = $section['module'];
-        
+
         //Have permission?
         if(!is_numeric(array_search($module, $module_permissions)))
         {
@@ -175,8 +175,9 @@ if($query_sections->numRows() > 0)
 
 
                 }
-                
+                echo '<div class="pageModuleWrapper '.$module.'">';
                 require(WB_PATH.'/modules/'.$module.'/modify.php');
+                echo '</div>';
             }
         }
     }

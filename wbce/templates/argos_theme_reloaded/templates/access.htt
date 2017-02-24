@@ -1,0 +1,37 @@
+<!-- BEGIN main_block -->
+<h2>{ACCESS}</h2>
+
+<ul>
+	<!-- BEGIN users_block -->
+	<li class="fg6 section" {DISPLAY_USERS}>
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/users/index.php">
+				<i class="fa fa-3x fa-user"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/users/index.php">
+				<span class="title">{USERS}</span>
+			</a>
+			{USERS_OVERVIEW}
+		</div>
+	</li>
+	<!-- END users_block -->
+
+	<!-- BEGIN groups_block -->
+	<li class="fg6 section" {DISPLAY_GROUPS} >
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/groups/index.php">
+				<i class="fa fa-3x fa-users"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/groups/index.php">
+				<span class="title">{GROUPS}</span>
+			</a>
+			{GROUPS_OVERVIEW}
+		</div>
+	</li>
+	<!-- END groups_block -->
+</ul>
+<!-- END main_block -->

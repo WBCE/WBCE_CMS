@@ -1,0 +1,100 @@
+<!-- BEGIN main_block -->
+<ul class="top">
+	<li class="fg6 section" style="{DISPLAY_PAGES}">
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/pages/index.php">
+				<i class="fa fa-3x fa-files-o"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/pages/index.php">
+				<span class="title">{PAGES}</span>
+			</a>
+			{PAGES_OVERVIEW}
+		</div>
+	</li>
+
+	<li class="fg6 section" style="{DISPLAY_MEDIA}">
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/media/index.php">
+				<i class="fa fa-3x fa-image"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/media/index.php"><span class="title">{MEDIA}</span>
+			</a>
+			{MEDIA_OVERVIEW}
+		</div>
+	</li>
+
+	<li class="fg6 section" style="{DISPLAY_ADDONS}">
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/addons/index.php">
+				<i class="fa fa-3x fa-sitemap"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/addons/index.php">
+				<span class="title">{ADDONS}</span>
+			</a>
+			{ADDONS_OVERVIEW}
+		</div>
+	</li>
+
+	<li class="fg6 section">
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/preferences/index.php">
+				<i class="fa fa-3x fa-sliders"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/preferences/index.php">
+				<span class="title">{PREFERENCES}</span>
+			</a>
+			{PREFERENCES_OVERVIEW}
+		</div>
+	</li>
+
+	<li class="fg6 section" style="{DISPLAY_SETTINGS}">
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/settings/index.php">
+				<i class="fa fa-3x fa-gears"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/settings/index.php">
+				<span class="title">{SETTINGS}</span>
+			</a>
+			{SETTINGS_OVERVIEW}
+		</div>
+	</li>
+
+	<li class="fg6 section" style="{DISPLAY_ADMINTOOLS}">
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/admintools/index.php">
+				<i class="fa fa-3x fa-wrench"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/admintools/index.php">
+				<span class="title">{ADMINTOOLS}</span>
+			</a>
+			{ADMINTOOLS_OVERVIEW}
+		</div>
+	</li>
+
+	<li class="fg6 section" style="{DISPLAY_ACCESS}">
+		<div class="fg2 graphic">
+			<a href="{ADMIN_URL}/access/index.php">
+				<i class="fa fa-3x fa-users"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/access/index.php">
+				<span class="title">{ACCESS}</span>
+			</a>
+			{ACCESS_OVERVIEW}
+		</div>
+	</li>
+</ul>
+<!-- END main_block -->

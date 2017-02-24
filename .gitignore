@@ -1,2 +1,10 @@
-*.db
-*nbproject*
+/wbce/upgrade-script.php
+/wbce/config.php
+/wbce/install/*
+/wbce/media/*
+/wbce/pages/*
+/wbce/temp/*
+
+!/wbce/pages/index.php
+!/wbce/media/.empty
+!/wbce/temp/index.php

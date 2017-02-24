@@ -1,0 +1,21 @@
+<!-- BEGIN main_block -->
+<h2>{HEADING_ADMINISTRATION_TOOLS}</h2>
+<ul>
+	<!-- BEGIN tool_list_block -->
+	<li class="fg6 section">
+		<div class="fg2 graphic">
+			<a class= "title" href="{ADMIN_URL}/admintools/tool.php?tool={TOOL_DIR}">
+				<i class="fa fa-3x {TOOL_ICON}"></i>
+			</a>
+		</div>
+		<div class="fg10 description">
+			<a href="{ADMIN_URL}/admintools/tool.php?tool={TOOL_DIR}">
+				<span class="title">{TOOL_NAME}</span>
+			</a>
+			{TOOL_DESCRIPTION}
+		</div>
+	</li>
+	<!-- END tool_list_block -->
+</ul>
+{TOOL_LIST}
+<!-- END main_block -->

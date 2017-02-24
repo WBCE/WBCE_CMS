@@ -22,7 +22,7 @@ if($results->numRows() > 0) {
         if (!isset($tool['module_icon'])) $tool['module_icon'] = "fa fa-graduation-cap";
 
         $path=WB_PATH.'/modules/'.$tool['directory'].'/languages/'.LANGUAGE .'.php';
-        
+
         if (file_exists($path)) {
             $data = file_get_contents($path);
             $tool_description = get_variable_content('module_description', $data, true, false);
@@ -30,24 +30,24 @@ if($results->numRows() > 0) {
             $tool_name        = get_variable_content('module_name', $data, true, false);
             if ($tool_name) $tool['name']=$tool_name;
         }
-        
+
         // Sooner or later this needs to be added to the Database
         // For now this just works
 
         // Default Icon
-        $tool['icon']="fa fa-graduation-cap";       
-        
+        $tool['icon']="fa fa-graduation-cap";
+
         $path=WB_PATH .'/modules/' .$tool['directory'] .'/info.php';
         if (file_exists($path)) {
             $data = file_get_contents($path);
             $tool_icon = get_variable_content('module_icon', $data, true, false);
-            if ($tool_icon) $tool['icon']=$tool_icon;               
+            if ($tool_icon) $tool['icon']=$tool_icon;
         }
-        
-        $myTools[]=$tool;        
-    }      
+
+        $myTools[]=$tool;
+    }
 }
 include($this->GetTemplatePath("list.tpl.php"));
-    
 
- 
+
+

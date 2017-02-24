@@ -1,0 +1,27 @@
+<!-- BEGIN footer_block -->
+
+</td> <!-- .content -->
+</tr>
+</table> <!-- #legacy -->
+
+<div class="clearfix"></div> <!-- für alle Fälle ;-)) -->
+</div> <!-- #content-container -->
+
+<div id="footer">
+	WBCE Version: {WBCE_VERSION} &middot; Tag: {WBCE_TAG} &middot; Admin Theme Version: 2.0.1
+	<br>
+	<!-- PHP Version:  {PHP_VERSION}
+	<br> -->
+	 <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+	<a href="http://wbce.org/" title="external">WBCE</a> is released under the
+	<a href="http://www.gnu.org/licenses/gpl.html" title="WBCE is released under the GNU General Public License">GNU General Public License</a>
+	<!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+</div>
+
+[[Html?pos=BodyLow]]
+{BACKEND_BODY_MODULE_JS}
+[[Js?pos=BodyLow]]
+
+</body>
+</html>
+<!-- END footer_block -->

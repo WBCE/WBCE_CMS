@@ -1,0 +1,680 @@
+/*** font-definition **************************************************/
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('../fonts/Ubuntu-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*** some basics ******************************************************/
+html {
+	overflow :-moz-scrollbars-vertical; /* Force firefox to always show room for a vertical scrollbar */
+}
+body {
+    font-family: Ubuntu, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #333;
+    background: url(../images/background.png) #f3f3f3 0 0 repeat-x;
+    margin: 0;
+}
+
+#admin-header, #content-container {
+	max-width: 950px; /* to get a bit of responibility change to max-width */
+	margin: 0 auto;
+}
+#admin-header {
+	margin-top: 10px;
+}
+#content-container {
+	margin-bottom: 40px; /* provide some space for fixed footer */
+}
+
+/*** html basics ******************************************************/
+a {
+	color :#28609b;
+	text-decoration :none;
+    font-family: Ubuntu, Arial, Helvetica, sans-serif; /* Chromium */
+}
+a:hover {
+	text-decoration :underline;
+}
+hr {
+	height: 1px;
+	border: none;
+	border-bottom: 1px dotted #999;
+	margin-bottom: 10px !important;
+}
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+h2 {
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+    background-color: #cfcfcf;
+    padding: 5px;
+    font-weight: normal;
+    margin: 10px 2%;
+}
+h3 {
+    text-align: left;
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    border-bottom: 1px dotted #999;
+}
+
+/*** header section ***************************************************/
+#header {
+	height: 50px;
+	font-size: 18px;
+	font-weight: bold;
+	background-image:url(../images/wblogo.png);
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+#header a {
+	display: inline-block;
+	padding: 16px 0 0 64px;
+	color: #f9f9f9;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+#top-menu {
+	color: #f9f9f9;
+	font-size: 13px;
+}
+#top-menu a {
+	color: inherit;
+}
+#top-menu a:hover {
+	color: #ddd;
+	text-decoration: none;
+}
+
+/*** main menu ********************************************************/
+ul.menu  {
+    list-style-type: none;
+    margin-top: 14px;
+}
+.menu li {
+    display: inline;
+    margin: 0 2px 0 0;
+    padding: 0;
+    font-size: 13px;
+    font-weight: bold;
+    border-bottom: 3px solid #c9c9c9;
+}
+.menu a {
+    float: left;
+    color: #fff !important;
+    margin: 0 5px 0 0;
+    padding: 0;
+    text-decoration: none;
+    border-bottom: 3px solid #cacaca;
+}
+.menu a span {
+    display: block;
+    background-color: #464e5e;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    padding: 6px;
+}
+.menu a:hover, .menu a:hover span {
+    background-color: #bcc2ce;
+    color: #303641;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    text-decoration: none;
+}
+.menu .current a, .menu a:hover {
+    border-bottom: 3px solid #303641;
+}
+
+/*** overall form elements ********************************************/
+/* first reset most of the browser depend styling */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+/*input[type="submit"],
+input[type="reset"],*/
+select,
+option,
+textarea,
+button {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-image: none;
+	background: transparent;
+	border: none;
+	padding: 0;
+}
+select::-ms-expand {
+  display:none;
+}
+.lt-ie10 select {
+    background-image: none;
+}
+
+/* than set some overall basics */
+input,
+select,
+textarea,
+button {
+	margin-bottom: 10px !important;
+}
+
+/*** text input ***/
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"] {
+	border: 1px solid #999;
+	background-color: #eee;
+	height: 28px;
+	padding: 4px;
+}
+input[type="text"]:focus,
+input[type="text"]:hover,
+input[type="password"]:focus,
+input[type="password"]:hover,
+input[type="email"]:focus,
+input[type="email"]:hover,
+input[type="number"]:focus,
+input[type="number"]:hover {
+	border: 1px solid #647086;
+}
+
+input:disabled {
+	border: 1px solid #ccc;
+	background-color: #f0f0f0;
+}
+input:hover:disabled, input:focus:disabled {
+	border: 1px solid #ccc;
+}
+
+/* file input */
+input[type="file"] {
+	/* can't be really styled */
+	height: 28px;
+}
+
+/* textarea */
+textarea {
+	border: 1px solid #999;
+	background-color: #eee;
+	padding: 4px;
+	height: auto;
+	resize: vertical;
+	line-height: 1.2;
+}
+textarea:focus,
+textarea:hover {
+	border: 1px solid #647086;
+}
+textarea.code, input.code {
+	font-family: courier, monospace;
+	color: #000;
+}
+
+/* select boxes */
+select {
+	border: 1px solid #999;
+	background-color: #eee;
+	height: 28px;
+	padding: 2px 15px 2px 3px;
+	background-image: url(../images/down.png);
+	background-position: right;
+	background-repeat: no-repeat;
+}
+select[multiple] {
+	height: auto;
+}
+select:focus,
+select:hover {
+	border: 1px solid #647086;
+}
+select:disabled {
+	border: 1px solid #ccc;
+	background-color: #f0f0f0;
+	background-image: none;
+}
+select:hover:disabled, input:focus:disabled {
+	border: 1px solid #ccc;
+}
+option {
+	padding: 4px;
+}
+option:nth-child(even) {
+	background-color: #ddd;
+}
+option.hasFlag {
+	background-repeat:no-repeat;
+	background-position: left center;
+	padding-left:20px;
+}
+optgroup {
+	border-bottom: 1px solid #666;
+}
+
+/* check boxes & radio buttons */
+input[type="checkbox"],
+input[type="radio"] {
+	cursor: pointer;
+	margin-right: 5px;
+}
+label {
+	cursor: pointer;
+	vertical-align: -2px;
+	margin-right: 10px;
+}
+
+/* buttons */
+button,
+input[type="submit"],
+input[type="button"] {
+	border: 1px solid #999;
+	background-color: #647086;
+	color: #fff;
+	height: 28px;
+	min-width:150px;
+	padding: 5px;
+	text-transform: uppercase;
+}
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+	opacity: 0.85;
+}
+button.danger {
+	background-color: firebrick;
+}
+
+/*** content section **************************************************/
+.section {
+	margin-bottom: 15px;
+    border: 1px solid #999;
+    height: 80px;
+    background-color: #fdfdfd;
+    overflow: hidden;
+    padding-top: 5px;
+}
+.graphic {
+	padding-top: 7px;
+}
+.graphic a, .graphic i {
+	color: #666;
+}
+.description {
+    text-align: left;
+    padding: 4px 0px 0 0px;
+}
+.description {
+	overflow: hidden;
+}
+.title {
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+span.title {
+    display: block;
+}
+.headline-link {
+	float: right;
+	font-size: 12px;
+	padding-top: 3px;
+}
+.content-box {
+	margin-bottom: 10px;
+    border: 1px solid #999;
+    background-color: #fdfdfd;
+}
+.info-box {
+	line-height: 2;
+}
+
+/*** pages ************************************************************/
+.subheader {
+	background-color: #ddd;
+	border-top: 1px dotted #666;
+	margin-bottom: 15px;
+}
+.subheader div {
+	padding: 5px 5px;
+}
+.section-info {
+	margin-bottom: 5px;
+	padding: 5px;
+	border: 1px solid #999;
+	background-color: #eee;
+}
+
+/*** pages -> modify **************************************************/
+
+/*** page sections ****************************************************/
+#page-sections table {
+	width: 100%;
+}
+#page-sections tr {
+	background-color: #f0f0f0;
+}
+#page-sections tr:hover {
+	background-color: #d5dde7;
+}
+#page-sections td {
+	vertical-align: middle !important;
+	padding: 5px 3px;
+}
+#page-sections .sections-list-header td {
+	height: 30px;
+	background-color: #ccc;
+	font-weight: normal;
+}
+#page-sections .header-list-type,
+#page-sections .list-type {
+}
+#page-sections .list-section-id,
+#page-sections .header-list-section-id{
+	text-align: right;
+	width: 40px;
+	padding-right: 5px;
+}
+#page-sections .list-calendar i {
+	cursor: pointer;
+	padding-top: 5px;
+}
+#page-sections td select,
+#page-sections td input {
+	margin-bottom: 0 !important;
+}
+
+/*** access -> users **************************************************/
+#user-type {
+}
+#user-type span {
+	display: inline-block;
+	padding-top: 8px;
+}
+#user-status {
+	margin-right: 10px;
+	height: 30px;
+	width: 40px;
+	min-width: 40px;
+	margin-bottom: 0 !important;
+	background-color: #eee !important;
+}
+#user-list {
+	width: 600px;
+	height: 90px;
+	overflow: scroll;
+	border: 1px solid #999;
+	overflow-x: hidden;
+	margin-bottom: 10px;
+	padding: 5px 10px;
+}
+
+/*** access -> groups *************************************************/
+form.advanced-options {
+	position: absolute;
+	bottom: 0;
+}
+
+/*** media ************************************************************/
+#media-upload input[type="file"] {
+	font-size: 10px;
+}
+
+/*** settings -> security *********************************************/
+a.tooltip {
+	color: #28609b;
+}
+.help {
+	opacity: 0.9;
+	padding: 2px 4px 6px 8px !important;
+}
+.help em {
+	font-size: 13px !important;
+}
+
+/*** settings -> server ***********************************************/
+.permissionTable table,
+.permissionTable th,
+.permissionTable td {
+	border: 1px solid #999;
+	border-color: #999;
+}
+.permissionTable th.header {
+	background-color: #dedede;
+}
+.permissionTable input[type="checkbox"] {
+	margin-bottom: 0 !important;
+}
+.permissionTable th,
+.permissionTable td {
+	height: 24px;
+	vertical-align: middle;
+}
+
+.permissionTable td label {
+	margin: 0 !important; /* Chromium */
+}
+
+/*** error and success messages ***************************************/
+.msg-box {
+	background-color: #d5fbd5;
+	border: 1px solid #147d14;
+	color: #147d14;
+	text-align: center;
+	position: relative;
+}
+
+.error-box {
+	background-color: #fee;
+	border: 1px solid firebrick; /*#b22222*/
+	color: firebrick;
+	text-align: center;
+}
+.signal {
+	position: absolute;
+	left: 15px;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+.msg-box input, .error-box input {
+	color: inherit;
+}
+.inline {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 999;
+	padding: 0 20px;
+	opacity: 0.8;
+	font-weight: bold;
+}
+.close {
+	position: absolute;
+	right: 2px;
+	top: 0;
+	cursor: pointer;
+}
+
+/*** inline warning/info/... text *************************************/
+.warning {
+	background-color: #fee;
+	border: 1px solid firebrick; /*#b22222*/
+	color: firebrick;
+	padding: 5px;
+}
+.warning:before {
+	font-family: FontAwesome;
+	content: '\f06a\00a0'; /* exclamation-circle */
+}
+.ok {
+	background-color: #d5fbd5;
+	border: 1px solid #147d14;
+	color: #147d14;
+	padding: 5px;
+}
+.ok:before {
+	font-family: FontAwesome;
+	content: '\f058\00a0'; /* check-circle */
+}
+.question {
+	background-color: #fdeac9;
+	border: 1px solid #6e4e14;
+	color: #6e4e14;
+	padding: 5px;
+}
+.question:before {
+	font-family: FontAwesome;
+	content: '\f059\00a0'; /* question-circle */
+}
+.info {
+	background-color: #cce7f0;
+	border: 1px solid #135e77;
+	color: #135e77;
+	padding: 5px;
+}
+.info:before {
+	font-family: FontAwesome;
+	content: '\f05a\00a0'; /* info-circle */
+}
+
+/*** mixed layout classes *********************************************/
+.left { text-align: left; }
+.center { text-align: center; }
+.right { text-align: right; }
+
+.top { margin-top: 10px; }
+.bot { margin-bottom: 10px; }
+
+.auto { height: auto; }
+.hide {	display: none; }
+
+.red { color: firebrick !important; }
+.green { color: #147d14; }
+.blue { color: #135e77; }
+
+.bold { font-weight: bold; }
+
+.desc { line-height: 1.3; }
+
+.legacy { padding: 1% 2%; }
+
+/*** some width overwrites ********************************************/
+.wdt50 		{ width: 50px !important; }
+.wdt60 		{ width: 60px !important; }
+.wdt80 		{ width: 80px !important; }
+.wdt100 	{ width: 100px !important; }
+.wdt120 	{ width: 120px !important; }
+.wdt150 	{ width: 150px !important; }
+.wdt200 	{ width: 200px !important; }
+.wdt250 	{ width: 250px !important; }
+.wdt300 	{ width: 300px !important; }
+.wdt350 	{ width: 350px !important; }
+.wdt400 	{ width: 400px !important; }
+.wdt500 	{ width: 500px !important; }
+.wdt550 	{ width: 550px !important; }
+.wdt600 	{ width: 600px !important; }
+
+/*** fixes for some odd behavior **************************************/
+/* if there is an empty string in _details.htt */
+.info-box div.fg10:after {
+	content: '\00a0';
+}
+
+/* fix a layout issue in stettings-securitiy */
+.sfs .fg9 {
+	padding: 6px 0 18px 0;
+}
+
+/*** fixes for 3rd-party modules **************************************/
+/* give forms some horizontal padding */
+form { padding: 0 2%; }
+/* and reset the padding if inside a content-box */
+.content-box form { padding: 0; }
+
+/* other styling for h2 inside a content-box */
+.content-box h2 {
+	background-color: transparent;
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+/* hide the obsolete back-button in admin-tools */
+input#admin_tools {
+	display: none;
+}
+/* hide evtl. headlines in the content-box ****************************/
+.adminModuleWrapper h2:first-of-type {
+	display: none;
+}
+/* let the h4 header looks like a h2 **********************************/
+.adminModuleHeader {
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+    background-color: #cfcfcf;
+    padding: 5px;
+    font-weight: normal;
+    margin: 10px 2% 0 2%;
+}
+/* padding for the elements inside the content-box */
+.adminModuleWrapper.legacy {
+	padding: 0 1%;
+}
+.pageModuleWrapper.legacy {
+	padding: 10px 2% 0 2%;
+}
+/* tableborder and inputwidth in miniform */
+.pageModuleWrapper table.settable {
+	border: none !important;
+}
+.pageModuleWrapper table.settable input,
+.pageModuleWrapper table.settable select {
+	width: auto;
+}
+.pageModuleWrapper table.msgtable {
+	border: none !important;
+	margin-bottom: 15px;
+}
+
+/*** footer section ***************************************************/
+#footer {
+	text-align: center;
+	font-size: 11px;
+	border-top: 3px solid #cacbca;
+	padding: 5px;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background-color: #647086;
+	color: #fff;
+	line-height: 1.3;
+	z-index: 9999;
+}
+#footer a {
+	color: inherit;
+}
+
+/*** some mobile adaption *********************************************/
+/*** I don't like exessive media queries ;-) **************************/
+@media screen and (max-width: 36.5em ) {
+	.loged-in-as { display: none; }
+	.section { height: auto; }
+	.right { text-align: left; }
+	#content-container { margin-bottom: 0; }
+	#footer { position: relative; }
+	form.advanced-options { position: relative; }
+}

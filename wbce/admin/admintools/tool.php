@@ -11,11 +11,11 @@
  */
 
 require('../../config.php');
- 
+
 
 //Fetch toolname
 $toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['tool']) : '');
-  
+
 // figure out if the form of the tool was send
 // the form needs to have exactly the right field names for this to function.
 // 'save_settings' set or 'action'set and == 'save'
@@ -34,7 +34,7 @@ if(!preg_match('/^[a-z][a-z_\-0-9]{2,}$/i', $toolDir)) $toolCheck=false;
 $sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
        'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' '.
        'AND `directory`=\''.$database->escapeString($toolDir).'\' '.
-       'AND `directory` NOT IN(\''.(implode("','",$_SESSION['MODULE_PERMISSIONS'])).'\') '; 
+       'AND `directory` NOT IN(\''.(implode("','",$_SESSION['MODULE_PERMISSIONS'])).'\') ';
 if(!($toolName = $database->get_one($sql)))  $toolCheck=false;
 
 // back button triggered, so go back.
@@ -44,11 +44,11 @@ if (isset ($_POST['admin_tools'])) {$toolCheck=false;}
 if ($toolCheck) {
 
     // Defining some path for use in the actual admin tool
-    $modulePath=WB_PATH."/modules/$toolDir/"; // we need this one later on too 
-    $languagePath=$modulePath.'languages/';    
+    $modulePath=WB_PATH."/modules/$toolDir/"; // we need this one later on too
+    $languagePath=$modulePath.'languages/';
     $returnUrl= ADMIN_URL."/admintools/tool.php?tool=$toolDir";
-    
-    //include info,php for additional infos 
+
+    //include info,php for additional infos
     include($modulePath."/info.php" );
 
     // a few more helper vars (save values or reset to default settings)
@@ -58,7 +58,7 @@ if ($toolCheck) {
     if (isset($_POST['no_page']) and $_POST['no_page']=="no_page") $noPage=true;
     if (isset($module_nopage) and $module_nopage)                  $noPage=true;
 
-    // create admin-object but suppress headers if no page is set 
+    // create admin-object but suppress headers if no page is set
     // for example this offers opportunety to give back  files for download
     if ($noPage) $admin = new admin('admintools', 'admintools',false);
     else         $admin = new admin('admintools', 'admintools');
@@ -73,19 +73,21 @@ if ($toolCheck) {
 
     // Loading language files we start whith default EN
     if(is_file($languagePath.'EN.php')) {
-        require_once($languagePath.'EN.php'); 
-    }        
+        require_once($languagePath.'EN.php');
+    }
     // Get actual language if exists
     if(is_file($languagePath.LANGUAGE.'.php')) {
-        require_once($languagePath.LANGUAGE.'.php'); 
-    } 
+        require_once($languagePath.LANGUAGE.'.php');
+    }
 
     //Load actual tool
+    echo '<div class="adminModuleWrapper '.$toolDir.'">';
     require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
+    echo '</div>';
 
     // output footer if  we are not in no_page mode
-    if (!$noPage) $admin->print_footer();  
-    
+    if (!$noPage) $admin->print_footer();
+
 } else {
     // invalid module name requested, jump to index.php of admintools
     header('location: '.$returnToTools); exit;
@@ -94,14 +96,14 @@ if ($toolCheck) {
 // helper Function
 function toolMsg ($setError=false, $returnUrl="" ){
     global $admin;
-    global $MESSAGE;  
+    global $MESSAGE;
     if ($returnUrl=="" )   $returnUrl=ADMIN_URL.'/admintools/index.php';
 
     // Check if there is error, otherwise say successful
     if($setError) {
         //3rd param = false =>no auto footer, no exit
-        $admin->print_error($setError, $returnUrl,false); 
+        $admin->print_error($setError, $returnUrl,false);
     } else {
-        $admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl); 
+        $admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl);
     }
-} 
+}
