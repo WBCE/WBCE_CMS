@@ -2,10 +2,10 @@
 <!--- !!! relevant table cell for drag'n'drop sorting: #7 (0-indexed) -->
 <div class="clearfix"></div>
 <section class="{DISPLAY_ADD}">
-	<h2>
+	<h2 id="heading-add-page">
 		{HEADING_ADD_PAGE}
 		<div class="headline-link">
-			<a href="#heading-add-page" title="zu Seiten">
+			<a href="#heading-page-list" title="zu Seiten">
 				<i class="fa fa-list-alt fa-lg"></i>
 			</a>
 		</div>
@@ -109,12 +109,10 @@
 <script>
 	// check if the correct (modified) page_tree.php is loaded
 	$(document).ready(function(){
-		/*
 		var inTemplate = $('#modification-check').html();
 		if (inTemplate != 'IN_TEMPLATE') {
-			alert('missing modification in:\n"backend/pages/index.php"');
+			alert('missing modification in:\n"backend/pages/legacy.index.php"');
 		}
-		*/
 	});
 </script>
 <!-- END main_block -->
