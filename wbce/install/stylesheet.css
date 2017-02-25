@@ -1,0 +1,261 @@
+@charset "UTF-8";
+/* <![CDATA[ */
+/*
+*/
+* { margin :0px auto; padding :0px; }
+* html body * { overflow :visible; }
+
+html {
+    padding:0;
+    margin:0;
+    border:0;
+    font-size:85%; font-family: Arial, Verdana, Helvetica, sans-serif;
+    color: #202020;
+    overflow :-moz-scrollbars-vertical;
+    overflow-x :auto;
+}
+table {font-size: 1em; border-collapse: collapse; width: 100%;}
+body {
+    padding: 0; border:0; margin: 0;
+    background: url('background.png') repeat-x 0px 0px;
+    background-color: #647087;
+    height: 101%;
+}
+
+div.body {
+    width: 60em;
+    margin: 2em auto;
+    background-color: #ffffff;
+    border: solid 1px #305c8d;
+    padding: 20px 20px 5px 20px;
+    border-radius: 1%;
+    -webkit-box-shadow: 2px 2px 15px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 15px -2px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 15px -2px rgba(0,0,0,0.75);
+}
+
+.welcome {
+  color: #6F7374;
+  padding: 5px; 
+  text-align: center; 
+  font-size: 1.525em; 
+  font-weight: bold;
+  
+}
+div.content {
+    margin-top:20px;
+}
+
+/*
+    TABLE Elements
+*/
+table {
+    background-color: #f8f8ff;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    width: 100%;
+    border-style: solid;
+    border-width: 1px 2px 2px 1px;
+    border-color: #a3baca;
+}
+    table > thead {
+        background-color: #f2f1ff;
+    }
+        table > thead > tr {
+        }
+            table > thead > tr > th {
+                color: #6F7374;
+                font-size: 1.125em;
+                padding: 0.525em 0.2em;
+                text-align: left;
+                border-bottom :1px groove #7E7171; /* #d2d1cc; */
+            }
+            table > thead > tr > td {
+                color: #555758;
+                font-size: 1.08em;
+                padding: 1.2em 1em;
+            }
+    table > tbody {
+        display: block;
+        padding: 0.5em 0;
+    }
+        table > tbody > tr {
+   border-bottom :0px solid #222222; /* #d2d1cc; */
+   padding :0.8em 0 0.2em 0;
+   width :100%;
+}
+            table > tbody > tr > th {
+                font-size: 1em;
+                width: 1%;
+                padding-left: 0.8em; padding-right: 0.8em;
+                vertical-align: top;
+                text-align: right;
+                white-space: nowrap;
+            }
+            table > tbody > tr > td {
+                font-size: 1em;
+                width: 19%;
+                padding-left: 0.8em; padding-right: 0.8em;
+                vertical-align: top;
+                text-align: left;
+            line-height :2em;
+            }
+
+td.step-row {
+   line-height : 3em;
+   color : #666666;
+   font-weight : bold;
+   font-size : 100%;
+}
+td.name { 
+   width : 180px;
+   color: #666666;
+   vertical-align :middle;
+   font-weight : bold;
+   font-size : 90%;
+   float :left;
+ }
+td.value { 
+   width : 60%;
+   vertical-align :middle;
+ }
+td.value input { 
+   width : 100%;
+   vertical-align :middle;
+ }
+ 
+ #world_writeable { 
+     width : auto;
+     vertical-align :left;
+ } 
+ 
+ #file_perms_box {
+    line-height:2em; 
+    position: relative; 
+    width: 100%; 
+    float:left; 
+    margin: 0; 
+    padding: 0; 
+    padding-top: 5px;
+ }
+ 
+h1.step-row {
+   margin : 0;
+   display :inline;
+   color : #647087;
+}
+/*
+    FORM Elements
+*/
+form { margin: 0; }
+input, select { padding: 2px; border: solid 1px #a3baca; }
+input:focus, select:focus { background: #fdf8e8; }
+input.submit    {
+    color: #305c8d;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px;
+    margin: 1em 0;
+    cursor: pointer;
+    border: outset 2px green;
+}
+input.submit:hover  {
+    border-style: inset;
+}
+input.submit.bad {
+    background-color: #fde8e8;
+    border-color: red;
+}
+input.submit.good {
+    background-color: #deffde;
+    border-color: green;
+}
+
+/*
+    COMMON Elements
+*/
+img {border: none; }
+p   { margin: 11px 0 4px 0; }
+h1  { color: #000; font-size: 1.3em; margin: 10px 0 5px; border-top: medium none; }
+a, a:link, a:visited, a:active  { color: #003366; text-decoration: underline; }
+a:focus  { outline: none; }
+a:hover  { color: #336699; }
+
+/* ************************************************************************** */
+
+
+/*
+ *  page elements
+ */
+.header  {
+    background: #eee;
+}
+.logo  {
+    margin-top:.7em
+}
+.headline  {
+    border:none; 
+    font-size:200%;
+}
+.warningbox{
+    width: 700px; 
+    padding: 10px; 
+    margin-bottom: 5px; 
+    border: 1px solid #FF0000; 
+    background-color: #FFDBDB;
+}
+
+.step1 td{
+    color: #666666;   
+}
+
+.step1 td{
+    color: #666666;   
+}
+.step2 td{
+    color: #666666;   
+}
+
+.footer { 
+    margin: 0 0 3em; 
+    padding: 0; 
+    text-align:center;  
+}
+.footer a {
+    color: #000000;
+}
+
+
+
+/*
+ HINTS                                  *
+ */
+
+.warning, .error {
+    color: #b70000;
+    line-height: 1.2em;
+    background-color: #fde8e8;
+    margin-top: 0.5em;
+    padding: 0.3em 0.5em;
+    border: solid 1px
+}
+.warning {
+    color: #ca6800;
+}
+.bad { color: #b70000; font-weight: bold;}
+.good { color: #118301; font-weight: bold; }
+.warn { color: #ca6800; }
+.hint { color: #464646; font-size: 0.85em; }
+.small { font-size: 0.85em; }
+.italic { font-style: italic; }
+.center { text-align: center; }
+.hide { display: none; }
+/*
+ L ist Elements                          *
+ */
+ul  { margin: 0; padding: 2px 0 2px 15px; }
+li  { list-style-type: square; margin: 0; }
+
+
