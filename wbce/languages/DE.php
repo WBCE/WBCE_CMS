@@ -566,6 +566,7 @@ $MESSAGE['PAGES_INTRO_LINK'] = 'Vorschaltseite bearbeiten';
 $MESSAGE['PAGES_INTRO_NOT_WRITABLE'] = 'Die Vorschaltseite konnte nicht bearbeitet werden (ungen&#252;gende Schreibrechte?)';
 $MESSAGE['PAGES_INTRO_SAVED'] = 'Vorschaltseite wurde erfolgreich gespeichert';
 $MESSAGE['PAGES_LAST_MODIFIED'] = 'Die letzte &#196;nderung wurde durchgef&#252;hrt von';
+$MESSAGE['PAGES_LAST_MODIFICATION'] = 'Letzte &#196;nderung';
 $MESSAGE['PAGES_NOT_FOUND'] = 'Die Seite wurde nicht gefunden';
 $MESSAGE['PAGES_NOT_SAVED'] = 'Fehler beim Speichern der Seite';
 $MESSAGE['PAGES_PAGE_EXISTS'] = 'Eine Seite mit diesem Titel existiert bereits';

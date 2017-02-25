@@ -25,7 +25,7 @@
 			PageID: <b>{PAGE_ID}</b>
 		</div>
 		<div style="float: right; text-align: right; color: #999;" class="{DISPLAY_MODIFIED}">
-			Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}
+			{LAST_MODIFICATION}: {MODIFIED_BY} - {MODIFIED_WHEN}
 		</div>
 	</header>
 

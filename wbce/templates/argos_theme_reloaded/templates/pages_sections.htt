@@ -23,10 +23,8 @@
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			PageID: <b>{PAGE_ID}</b>
 		</div>
-		<div style="float: right; text-align: right; color:#999; display: none;" class="{DISPLAY_MODIFIED}">
-			<!-- disabled - no infos from core available -------------->
-			Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</span>
-			<!--------------------------------------------------------->
+		<div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}">
+			{LAST_MODIFICATION}: {MODIFIED_BY} - {MODIFIED_WHEN}</span>
 		</div>
 	</header>
 

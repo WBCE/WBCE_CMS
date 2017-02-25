@@ -561,6 +561,7 @@ $MESSAGE['PAGES_INTRO_LINK'] = 'Click HERE to modify the intro page';
 $MESSAGE['PAGES_INTRO_NOT_WRITABLE'] = 'Cannot write to file /pages/intro.php (insufficient privileges)';
 $MESSAGE['PAGES_INTRO_SAVED'] = 'Intro page saved successfully';
 $MESSAGE['PAGES_LAST_MODIFIED'] = 'Last modification by';
+$MESSAGE['PAGES_LAST_MODIFICATION'] = 'Last modification by';
 $MESSAGE['PAGES_NOT_FOUND'] = 'Page not found';
 $MESSAGE['PAGES_NOT_SAVED'] = 'Error saving page';
 $MESSAGE['PAGES_PAGE_EXISTS'] = 'A page with the same or similar title exists';
