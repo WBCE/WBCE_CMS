@@ -381,7 +381,7 @@ ob_start();
 		<?php foreach ($statusMap as $icon => $fa) : ?>
 			&nbsp;<i class="fa fa-lg <?=$fa?>"></i>
 			&nbsp;<?=ucfirst($TEXT[strtoupper($icon)])?>
-		<? endforeach; ?>
+		<?php endforeach; ?>
 
 		<?php
 		if(isset($use_dragdrop_switch) && $use_dragdrop_switch == TRUE){
