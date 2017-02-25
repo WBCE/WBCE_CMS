@@ -48,10 +48,10 @@
     font-weight: normal;
     font-style: normal;
 }
-/* old theme as basis 
- * --> not all elements get a new format 
+/* old theme as basis
+ * --> not all elements get a new format
  * --------------------------------------------------------------------------------- */
-/* new theme starts from here 
+/* new theme starts from here
  * --> overwrite old classes
  * ---------------------------------------------------------------------------------  */
 
@@ -175,7 +175,7 @@ blockquote, q {
   clear: both;
 }
 
-/* dynamic grid 
+/* dynamic grid
  * --> given number off columns-/box-elements adapts to the space of the outer element  */
 /* set traditional clearfix to structure classes */
 .dynamicGrid-outer:before,
@@ -1578,7 +1578,7 @@ div.pagesubmenu ul li a {
 }
 .menu_edit_pages li#link_page_list:before {
   font-size: 22px;
-  content: "ï¢";
+  content: "\f122";
 }
 .menu_edit_pages li#link_page_list:hover {
   background-color: #303641;
@@ -1808,9 +1808,9 @@ iframe#wb_informationcenter {
   border: 0px solid transparent;
 }
 
-/* 
+/*
  * Elements: Alterboxes - boxes to alert an information
- * ****************************************************** 
+ * ******************************************************
  *
  */
 /* ::elements-alertboxes::  */
@@ -2068,9 +2068,9 @@ iframe#wb_informationcenter {
   background-color: transparent;
 }
 
-/* 
+/*
  * Elements: Themeboxes - colored boxes
- * ****************************************************** 
+ * ******************************************************
  *
  */
 /* ::elements-themeboxes-colors:: colors for themeboxes */
