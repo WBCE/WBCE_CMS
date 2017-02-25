@@ -8,22 +8,22 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'RU';
-$language_name = 'Russia';
+$language_name = 'Russian'; // русский
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Kirill Karakulko (kirill@nadosoft.com)';
 $language_license = 'GNU General Public License';
 
-	
+
 
 
 $MENU['ACCESS'] = '&#1044;&#1086;&#1089;&#1090;&#1091;&#1087;';

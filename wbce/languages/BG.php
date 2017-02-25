@@ -8,22 +8,22 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'BG';
-$language_name = 'Bulgaria';
+$language_name = 'Bulgarian'; //български
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Hristo Benev(&#1061;&#1088;&#1080;&#1089;&#1090;&#1086; &#1041;&#1077;&#1085;&#1077;&#1074;)';
 $language_license = 'GNU General Public License';
 
-	
+
 
 
 $MENU['ACCESS'] = '&#1044;&#1086;&#1089;&#1090;&#1098;&#1087;';
