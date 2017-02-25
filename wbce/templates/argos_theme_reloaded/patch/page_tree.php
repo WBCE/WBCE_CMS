@@ -378,7 +378,7 @@ ob_start();
 	<div class="pages-legend">
 		<b><?=$TEXT['VISIBILITY']?> (<?=$MENU['PAGES']?>): </b>
 
-		<? foreach ($statusMap as $icon => $fa) : ?>
+		<?php foreach ($statusMap as $icon => $fa) : ?>
 			&nbsp;<i class="fa fa-lg <?=$fa?>"></i>
 			&nbsp;<?=ucfirst($TEXT[strtoupper($icon)])?>
 		<? endforeach; ?>
