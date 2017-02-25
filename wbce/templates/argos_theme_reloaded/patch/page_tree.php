@@ -49,6 +49,16 @@ while ($page = $pages->fetchRow()) :
 	endif;
 endwhile;
 
+/*** map the status img's to fa's *****************************/
+$statusMap = array(
+	'public'		=> 'fa-eye',
+	'hidden'		=> 'fa-eye-slash',
+	'registered'	=> 'fa-key',
+	'private'		=> 'fa-user-secret',
+	'none'			=> 'fa-ban',
+	'deleted'		=> 'fa-trash red',
+);
+
 /*** function draw_pagetree() *****************************************/
 function draw_pagetree($pages_list) {
 	global $admin, $database, $use_working_copy, $icons_dir, $TEXT, $HEADING, $MESSAGE, $statusMap;
@@ -124,15 +134,6 @@ function draw_pagetree($pages_list) {
 			endif;
 		endif;
 
-		/*** map the status img's to fa's *****************************/
-		$statusMap = array(
-			'public'		=> 'fa-eye',
-			'hidden'		=> 'fa-eye-slash',
-			'registered'	=> 'fa-key',
-			'private'		=> 'fa-user-secret',
-			'none'			=> 'fa-ban',
-			'deleted'		=> 'fa-trash red',
-		);
 		foreach ($statusMap as $img => $fa) :
 			if ($p['visibility'] == $img) :
 				$status_icon = $fa;
@@ -372,16 +373,16 @@ ob_start();
 	<?php if(!empty($pages_list)) : ?>
 		<?= draw_pagetree($pages_list); ?>
 	<?php else : ?>
-		<div class="no-page-found">(<?=$TEXT['NONE_FOUND']?>)</div>';
+		<div class="no-page-found">(<?=$TEXT['NONE_FOUND']?>)</div>
 	<?php endif; ?>
 
 	<div class="pages-legend">
 		<b><?=$TEXT['VISIBILITY']?> (<?=$MENU['PAGES']?>): </b>
 
-		<? foreach ($statusMap as $icon => $fa) : ?>
+		<?php foreach ($statusMap as $icon => $fa) : ?>
 			&nbsp;<i class="fa fa-lg <?=$fa?>"></i>
 			&nbsp;<?=ucfirst($TEXT[strtoupper($icon)])?>
-		<? endforeach; ?>
+		<?php endforeach; ?>
 
 		<?php
 		if(isset($use_dragdrop_switch) && $use_dragdrop_switch == TRUE){
@@ -402,7 +403,7 @@ ob_start();
 			</button>
 		</span>
 		<?php } ?>
-		<span style="float:right;">&nbsp;<?=$MENU['PAGES']?> total: <?=$number_all_pages?>&nbsp;</span>
+		<span style="float:right;">&nbsp;<?=$MENU['PAGES']?> total: <?=$number_all_pages?></span>
 	</div>
 </div>
 

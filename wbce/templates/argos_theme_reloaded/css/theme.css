@@ -459,9 +459,8 @@ span.title {
 }
 
 .pages-legend {
-	/*border-top: solid 2px #d5dde7;*/
 	margin-top: 5px;
-	padding: 4px 0;
+	padding: 4px;
 }
 
 div.no-page-found {
