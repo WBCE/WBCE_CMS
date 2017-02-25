@@ -1,7 +1,5 @@
 <?php
-
 /*
-
  Website Baker Project <http://www.websitebaker.org/>
  Copyright (C) 2004-2008, Ryan Djurovich
 
@@ -18,19 +16,16 @@
  You should have received a copy of the GNU General Public License
  along with Website Baker; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 */
 
 require('../../config.php');
- 
- 
 
 // make sure that a page to clone was specified
 $pagetodo = isset($_GET['pagetoclone']) ? (int) $_GET['pagetoclone'] : 0;
 
 // check if specified page exists in the database
 $query = "SELECT * FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$pagetodo'";
-$get_pagetodo = $database->query($query);   
+$get_pagetodo = $database->query($query);
 $is_pagetodo = $get_pagetodo->fetchRow();
 
 // check website baker platform (with WB 2.7, Admin-Tools were moved out of settings dialogue)
@@ -44,7 +39,7 @@ if(file_exists(ADMIN_PATH .'/admintools/tool.php')) {
 // redirect to pageclone main page if no valid page was specified
 if ($pagetodo < 1 || !$is_pagetodo) {
 	die(header('Location: '.$pageclone_link));
-} 
+}
 
 // create admin object depending on platform (admin tools were moved out of settings with WB 2.7)
 if(file_exists(ADMIN_PATH .'/admintools/tool.php')) {
@@ -82,7 +77,7 @@ $template->set_file('page', 'template.html');
 $template->set_block('page', 'main_block', 'main');
 
 // Parent page list
-$database = new database();
+##$database = new database();
 function parent_list($parent) {
 	global $admin, $database, $template;
 	$query = "SELECT * FROM ".TABLE_PREFIX."pages WHERE parent = '$parent' AND visibility!='deleted' ORDER BY position ASC";
@@ -154,7 +149,7 @@ $template->set_var(array(
 								'TEXT_PAGETODO' => $pagetodo,
 								'TEXT_ADD' => $PCTEXT['ADD'],
 								'TEXT_RESET' => $TEXT['RESET'],
-								'TEXT_ADMINISTRATORS' => $TEXT['ADMINISTRATORS'],								
+								'TEXT_ADMINISTRATORS' => $TEXT['ADMINISTRATORS'],
 								'TEXT_PRIVATE_VIEWERS' => $TEXT['PRIVATE_VIEWERS'],
 								'TEXT_REGISTERED_VIEWERS' => $TEXT['REGISTERED_VIEWERS'],
 								'INTRO_LINK' => $MESSAGE['PAGES']['INTRO_LINK'],
@@ -175,7 +170,5 @@ if($admin->get_permission('pages_intro') != true OR INTRO_PAGE != 'enabled') {
 // Parse template object
 $template->parse('main', 'main_block', false);
 $template->pparse('output', 'page');
-}	
+}
 $admin->print_footer();
-
-?>
