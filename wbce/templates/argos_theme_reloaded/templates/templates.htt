@@ -12,16 +12,17 @@
 <form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL} fg12 content-box">
 	{FTAN}
 	<h3 class="fg12">{HEADING_INSTALL_TEMPLATE}</h3>
-	<div class="fg9">
-		<input type="file" name="userfile">
+	<div class="row">
+		<div class="fg9">
+			<input type="file" name="userfile">
+		</div>
+		<div class="fg3 right">
+			<button type="submit" name="submit">
+				<i class="fa fa-fw fa-check"></i>
+				{TEXT_INSTALL}
+			</button>
+		</div>
 	</div>
-	<div class="fg3 right">
-		<button type="submit" name="submit">
-			<i class="fa fa-fw fa-check"></i>
-			{TEXT_INSTALL}
-		</button>
-	</div>
-	<div class="clearfix"></div>
 </form>
 
 <div class="fg12 info bot">{CHANGE_TEMPLATE_NOTICE}.</div>
@@ -30,38 +31,40 @@
 <form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL} fg12 content-box">
 	{FTAN}
 	<h3 class="fg12">{HEADING_UNINSTALL_TEMPLATE}</h3>
-	<div class="fg9">
-		<select name="file" class="wdt300">
-			<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-			<!-- BEGIN template_list_block -->
-			<option value="{VALUE}">{NAME}</option>
-			<!-- END template_list_block -->
-		</select>
+	<div class="row">
+		<div class="fg9">
+			<select name="file" class="wdt300">
+				<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
+				<!-- BEGIN template_list_block -->
+				<option value="{VALUE}">{NAME}</option>
+				<!-- END template_list_block -->
+			</select>
+		</div>
+		<div class="fg3 right">
+			<button type="submit" name="submit" class="danger">
+				<i class="fa fa-fw fa-remove"></i>
+				{TEXT_UNINSTALL}
+			</button>
+		</div>
 	</div>
-	<div class="fg3 right">
-		<button type="submit" name="submit" class="danger">
-			<i class="fa fa-fw fa-remove"></i>
-			{TEXT_UNINSTALL}
-		</button>
-	</div>
-	<div class="clearfix"></div>
 </form>
 
 <!-- details ---------------------------------------------------------->
 <form name="details" action="details.php" method="post" class="{DISPLAY_LIST} fg12 content-box">
 	{FTAN}
 	<h3 class="fg12">{HEADING_TEMPLATE_DETAILS}</h3>
-	<div class="fg9">
-		<select name="file" onchange="this.form.submit();" class="wdt300">
-			<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-			<!-- BEGIN template_list_block -->
-			<option value="{VALUE}">{NAME}</option>
-			<!-- END template_list_block -->
-		</select>
+	<div class="row">
+		<div class="fg9">
+			<select name="file" onchange="this.form.submit();" class="wdt300 bot">
+				<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
+				<!-- BEGIN template_list_block -->
+				<option value="{VALUE}">{NAME}</option>
+				<!-- END template_list_block -->
+			</select>
+		</div>
+		<div class="fg3 right">
+			<!-- no submit button needed here -->
+		</div>
 	</div>
-	<div class="fg3 right">
-		<!-- no submit button needed here -->
-	</div>
-	<div class="clearfix"></div>
 </form>
 <!-- END main_block -->

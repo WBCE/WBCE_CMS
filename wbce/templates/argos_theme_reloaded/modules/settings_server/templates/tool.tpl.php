@@ -102,121 +102,138 @@
         <?=$admin->getFTAN()?>
 
         <!-- filesystem permissions-->
-        <div class="fg3" ><?=$TEXT['SERVER_OPERATING_SYSTEM']?></div>
-        <div class="fg9" >
-			<label>
-				<input type="radio" name="operating_system" id="operating_system_linux" value="linux" <?php if (OPERATING_SYSTEM=="linux") echo WB_CHECK; ?> >
-				<?=$TEXT['LINUX_UNIX_BASED'] ?>
-			</label>
-			<label>
-				<input type="radio" name="operating_system" id="operating_system_windows" value="windows" <?php if (OPERATING_SYSTEM=="windows") echo WB_CHECK; ?> >
-				<?=$TEXT['WINDOWS'] ?>
-			</label>
+        <div class="row">
+			<div class="fg3" ><?=$TEXT['SERVER_OPERATING_SYSTEM']?></div>
+			<div class="fg9" >
+				<label>
+					<input type="radio" name="operating_system" id="operating_system_linux" value="linux" <?php if (OPERATING_SYSTEM=="linux") echo WB_CHECK; ?> >
+					<?=$TEXT['LINUX_UNIX_BASED'] ?>
+				</label>
+				<label>
+					<input type="radio" name="operating_system" id="operating_system_windows" value="windows" <?php if (OPERATING_SYSTEM=="windows") echo WB_CHECK; ?> >
+					<?=$TEXT['WINDOWS'] ?>
+				</label>
+			</div>
         </div>
 
 		<!-- access settings -->
         <div id="access_settings" <?php if (OPERATING_SYSTEM=="linux") echo 'style="display:block"'; else echo 'style="display:none"'; ?> >
-            <div class="fg3"><?=$TEXT['FILESYSTEM_PERMISSIONS']?></div>
-            <div class="fg4 permissionTable bot">
-                <table>
-                    <tr>
-                        <th class="header" colspan="3">
-							<?=$TEXT['FILES'].'&nbsp;<span id="string-file-mode">'.STRING_FILE_MODE.'</span>'?>
-						</th>
-                    </tr>
-                    <tr>
-						<th class="left"><?=$TEXT['USER']?></th>
-						<th class="left"><?=$TEXT['GROUP']?></th>
-						<th class="left"><?=$TEXT['OTHERS']?></th>
-                    </tr>
-                    <tr>
-                        <td><label><input type="checkbox" name="file_u_r" id="file_u_r" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'u', 'r')) echo WB_CHECK?>><?=$TEXT['READ']?></label></td>
-                        <td><label><input type="checkbox" name="file_g_r" id="file_g_r" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'g', 'r')) echo WB_CHECK?>><?=$TEXT['READ']?></label></td>
-                        <td><label><input type="checkbox" name="file_o_r" id="file_o_r" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'o', 'r')) echo WB_CHECK?>><?=$TEXT['READ']?></label></td>
-                    </tr>
-                    <tr>
-                        <td><label><input type="checkbox" name="file_u_w" id="file_u_w" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'u', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE']?></label></td>
-                        <td><label><input type="checkbox" name="file_g_w" id="file_g_w" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'g', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE']?></label></td>
-                        <td><label><input type="checkbox" name="file_o_w" id="file_o_w" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'o', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE']?></label></td>
-                    </tr>
-                    <tr>
-                        <td><label><input type="checkbox" name="file_u_e" id="file_u_e" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'u', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE']?></label></td>
-                        <td><label><input type="checkbox" name="file_g_e" id="file_g_e" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'g', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE']?></label></td>
-                        <td><label><input type="checkbox" name="file_o_e" id="file_o_e" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'o', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE']?></label></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="fg5 permissionTable bot">
-                <table>
-                    <tr>
-                        <th class="header" colspan="3">
-							<?=$TEXT['DIRECTORIES'].'&nbsp;<span id="string-dir-mode">'.STRING_DIR_MODE.'</span>'?>
-						</th>
-                    </tr>
-                    <tr>
-                       <th class="left"><?=$TEXT['USER']?></th>
-                       <th class="left"><?=$TEXT['GROUP']?></th>
-                       <th class="left"><?=$TEXT['OTHERS']?></th>
-                    </tr>
-                    <tr>
-                        <td><label><input type="checkbox" name="dir_u_r" id="dir_u_r" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'u', 'r')) echo WB_CHECK?>><?=$TEXT['READ'] ?></label></td>
-                        <td><label><input type="checkbox" name="dir_g_r" id="dir_g_r" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'g', 'r')) echo WB_CHECK?>><?=$TEXT['READ'] ?></label></td>
-                        <td><label><input type="checkbox" name="dir_o_r" id="dir_o_r" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'o', 'r')) echo WB_CHECK?>><?=$TEXT['READ'] ?></label></td>
-                    </tr>
-                    <tr>
-                        <td><label><input type="checkbox" name="dir_u_w" id="dir_u_w" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'u', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE'] ?></label></td>
-                        <td><label><input type="checkbox" name="dir_g_w" id="dir_g_w" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'g', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE'] ?></label></td>
-                        <td><label><input type="checkbox" name="dir_o_w" id="dir_o_w" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'o', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE'] ?></label></td>
-                    </tr>
-                    <tr>
-                        <td><label><input type="checkbox" name="dir_u_e" id="dir_u_e" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'u', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE'] ?></label></td>
-                        <td><label><input type="checkbox" name="dir_g_e" id="dir_g_e" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'g', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE'] ?></label></td>
-                        <td><label><input type="checkbox" name="dir_o_e" id="dir_o_e" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'o', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE'] ?></label></td>
-                    </tr>
-                </table>
-            </div>
+            <div class="row">
+				<div class="fg3"><?=$TEXT['FILESYSTEM_PERMISSIONS']?></div>
+				<div class="fg9 permissionTable bot">
+					<table style="float:left; margin-right:20px;">
+						<tr>
+							<th class="header" colspan="3">
+								<?=$TEXT['FILES'].'&nbsp;<span id="string-file-mode">'.STRING_FILE_MODE.'</span>'?>
+							</th>
+						</tr>
+						<tr>
+							<th class="left"><?=$TEXT['USER']?></th>
+							<th class="left"><?=$TEXT['GROUP']?></th>
+							<th class="left"><?=$TEXT['OTHERS']?></th>
+						</tr>
+						<tr>
+							<td><label><input type="checkbox" name="file_u_r" id="file_u_r" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'u', 'r')) echo WB_CHECK?>><?=$TEXT['READ']?></label></td>
+							<td><label><input type="checkbox" name="file_g_r" id="file_g_r" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'g', 'r')) echo WB_CHECK?>><?=$TEXT['READ']?></label></td>
+							<td><label><input type="checkbox" name="file_o_r" id="file_o_r" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'o', 'r')) echo WB_CHECK?>><?=$TEXT['READ']?></label></td>
+						</tr>
+						<tr>
+							<td><label><input type="checkbox" name="file_u_w" id="file_u_w" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'u', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE']?></label></td>
+							<td><label><input type="checkbox" name="file_g_w" id="file_g_w" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'g', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE']?></label></td>
+							<td><label><input type="checkbox" name="file_o_w" id="file_o_w" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'o', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE']?></label></td>
+						</tr>
+						<tr>
+							<td><label><input type="checkbox" name="file_u_e" id="file_u_e" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'u', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE']?></label></td>
+							<td><label><input type="checkbox" name="file_g_e" id="file_g_e" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'g', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE']?></label></td>
+							<td><label><input type="checkbox" name="file_o_e" id="file_o_e" value="true" <?php if (extract_permission(STRING_FILE_MODE, 'o', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE']?></label></td>
+						</tr>
+					</table>
+
+					<table>
+						<tr>
+							<th class="header" colspan="3">
+								<?=$TEXT['DIRECTORIES'].'&nbsp;<span id="string-dir-mode">'.STRING_DIR_MODE.'</span>'?>
+							</th>
+						</tr>
+						<tr>
+						   <th class="left"><?=$TEXT['USER']?></th>
+						   <th class="left"><?=$TEXT['GROUP']?></th>
+						   <th class="left"><?=$TEXT['OTHERS']?></th>
+						</tr>
+						<tr>
+							<td><label><input type="checkbox" name="dir_u_r" id="dir_u_r" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'u', 'r')) echo WB_CHECK?>><?=$TEXT['READ'] ?></label></td>
+							<td><label><input type="checkbox" name="dir_g_r" id="dir_g_r" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'g', 'r')) echo WB_CHECK?>><?=$TEXT['READ'] ?></label></td>
+							<td><label><input type="checkbox" name="dir_o_r" id="dir_o_r" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'o', 'r')) echo WB_CHECK?>><?=$TEXT['READ'] ?></label></td>
+						</tr>
+						<tr>
+							<td><label><input type="checkbox" name="dir_u_w" id="dir_u_w" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'u', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE'] ?></label></td>
+							<td><label><input type="checkbox" name="dir_g_w" id="dir_g_w" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'g', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE'] ?></label></td>
+							<td><label><input type="checkbox" name="dir_o_w" id="dir_o_w" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'o', 'w')) echo WB_CHECK?>><?=$TEXT['WRITE'] ?></label></td>
+						</tr>
+						<tr>
+							<td><label><input type="checkbox" name="dir_u_e" id="dir_u_e" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'u', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE'] ?></label></td>
+							<td><label><input type="checkbox" name="dir_g_e" id="dir_g_e" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'g', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE'] ?></label></td>
+							<td><label><input type="checkbox" name="dir_o_e" id="dir_o_e" value="true" <?php if (extract_permission(STRING_DIR_MODE, 'o', 'e')) echo WB_CHECK?>><?=$TEXT['EXECUTE'] ?></label></td>
+						</tr>
+					</table>
+				</div>
+			</div>
         </div>
 
         <!-- PAGES_DIRECTORY -->
+        <div class="row">
         <div class="fg3"><?=$TEXT['PAGES_DIRECTORY']?></div>
         <div class="fg9">
 			<input type="text" id="pages_directory" name="pages_directory" maxlength="255" value="<?=PAGES_DIRECTORY?>" class="wdt100">
 		</div>
+		</div>
 
         <!-- MEDIA_DIRECTORY -->
+        <div class="row">
         <div class="fg3"><?=$TEXT['MEDIA_DIRECTORY']?></div>
         <div class="fg9">
 			<input type="text" id="media_directory" name="media_directory" maxlength="255" value="<?=MEDIA_DIRECTORY?>" class="wdt100">
 		</div>
+		</div>
 
         <!-- PAGE_EXTENSION -->
+        <div class="row">
         <div class="fg3"><?=$TEXT['PAGE_EXTENSION']?></div>
         <div class="fg9">
 			<input type="text" id="page_extension" name="page_extension" maxlength="255" value="<?=PAGE_EXTENSION?>" class="wdt100">
 		</div>
+		</div>
 
         <!-- PAGE_SPACER-->
+        <div class="row">
         <div class="fg3"><?=$TEXT['PAGE_SPACER']?></div>
         <div class="fg9">
 			<input type="text" id="page_spacer" name="page_spacer" maxlength="255"  value="<?=PAGE_SPACER?>" class="wdt100">
 		</div>
+		</div>
 
         <!-- RENAME_FILES_ON_UPLOAD -->
+        <div class="row">
         <div class="fg3"><?=$TEXT['RENAME_FILES_ON_UPLOAD']?></div>
         <div class="fg9">
 			<input type="text" id="rename_files_on_upload" name="rename_files_on_upload" maxlength="255"  value="<?=RENAME_FILES_ON_UPLOAD?>" class="wdt500">
 		</div>
+		</div>
 
         <!-- SESSION_IDENTIFIER -->
+        <div class="row">
         <div class="fg3"><?=$TEXT['SESSION_IDENTIFIER'] ?></div>
         <div class="fg9">
 			<input type="text" id="app_name" name="app_name" maxlength="255"  value="<?=APP_NAME ?>" class="wdt100">
 		</div>
+		</div>
 
         <!-- SEC_ANCHOR -->
+        <div class="row">
         <div class="fg3"><?=$TEXT['SEC_ANCHOR'] ?></div>
         <div class="fg9">
 			<input type="text" id="sec_anchor" name="sec_anchor" maxlength="255"  value="<?=SEC_ANCHOR ?>" class="wdt100">
+		</div>
 		</div>
 
 		<hr class="fg12">

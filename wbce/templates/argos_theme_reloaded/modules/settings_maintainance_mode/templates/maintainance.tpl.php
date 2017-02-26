@@ -10,11 +10,13 @@
 	<form id="maintainance_mode_form" name="store_settings" style="margin-top: 1em; display: true;" action="<?=$returnUrl; ?>" method="post">
 		<?=$admin->getFTAN(); ?>
 
-		<div class="fg12">
-			<label>
-				<input type="checkbox" name="maintMode" id="maintMode" value="true" <?=$maintMode ?> >
-				<?=$MOD_MAINTAINANCE['CHECKBOX']; ?>
-			</label>
+        <div class="row">
+			<div class="fg12">
+				<label>
+					<input type="checkbox" name="maintMode" id="maintMode" value="true" <?=$maintMode ?> >
+					<?=$MOD_MAINTAINANCE['CHECKBOX']; ?>
+				</label>
+			</div>
 		</div>
 
 		<hr class="fg12">

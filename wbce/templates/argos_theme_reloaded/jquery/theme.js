@@ -99,7 +99,11 @@ $(document).ready(function() {
 	$('.section-info').addClass('fg12');
 
 	/*** wrap and patch the admintool-modules in admintools -> tool ***/
-	$('.adminModuleWrapper').addClass('fg12 content-box legacy top');
+	var isMessage = $(".msg-box")[0];
+	var isError = $(".error-box")[0];
+	if (!isMessage && !isError) {
+		$('.adminModuleWrapper').addClass('fg12 content-box legacy top');
+	}
 
 	if ($(".adminModuleWrapper")[0]) { // it is an admin-tool
 		// let h4 looks like h2

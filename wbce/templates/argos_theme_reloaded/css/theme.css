@@ -26,7 +26,7 @@ body {
 	margin-top: 10px;
 }
 #content-container {
-	margin-bottom: 40px; /* provide some space for fixed footer */
+	margin-bottom: 55px; /* provide some space for fixed footer */
 }
 
 /*** html basics ******************************************************/
@@ -162,13 +162,14 @@ select::-ms-expand {
 }
 
 /* than set some overall basics */
+/*
 input,
 select,
 textarea,
 button {
 	margin-bottom: 10px !important;
 }
-
+*/
 /*** text input ***/
 input[type="text"],
 input[type="password"],
@@ -270,7 +271,7 @@ input[type="radio"] {
 }
 label {
 	cursor: pointer;
-	vertical-align: -2px;
+	vertical-align: middle;
 	margin-right: 10px;
 }
 
@@ -286,6 +287,7 @@ input[type="button"] {
 	min-width:150px;
 	padding: 5px;
 	text-transform: uppercase;
+	margin-bottom: 10px;
 }
 button:hover,
 input[type="submit"]:hover,
@@ -389,6 +391,9 @@ span.title {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
+}
+.pages-list li {
+	cursor: move;
 }
 
 .page-list {
@@ -671,6 +676,7 @@ a.tooltip {
 
 .top { margin-top: 10px; }
 .bot { margin-bottom: 10px; }
+.nom { margin-top: 0 !important; margin-bottom: 0 !important; }
 
 .auto { height: auto; }
 .hide {	display: none; }
@@ -710,6 +716,35 @@ a.tooltip {
 /* fix a layout issue in stettings-securitiy */
 .sfs .fg9 {
 	padding: 6px 0 18px 0;
+}
+
+/* pages - modify */
+.wrapper input[type="text"] {
+	margin-bottom: 10px;
+}
+
+.sitemap input[type="text"],
+.sitemap textarea,
+.sitemap select {
+	margin-bottom: 10px;
+}
+
+.menu_link input[type="text"],
+.menu_link select {
+	margin-bottom: 10px;
+}
+
+/* tableborder and inputwidth in miniform */
+.pageModuleWrapper table.settable {
+	border: none !important;
+}
+.pageModuleWrapper table.settable input,
+.pageModuleWrapper table.settable select {
+	width: auto;
+}
+.pageModuleWrapper table.msgtable {
+	border: none !important;
+	margin-bottom: 15px;
 }
 
 /*** fixes for 3rd-party modules **************************************/
@@ -752,18 +787,12 @@ input#admin_tools {
 .pageModuleWrapper.legacy {
 	padding: 10px 2% 0 2%;
 }
-/* tableborder and inputwidth in miniform */
-.pageModuleWrapper table.settable {
-	border: none !important;
+/* line height in backup */
+.backup input[type="radio"] {
+	margin-bottom: 10px;
 }
-.pageModuleWrapper table.settable input,
-.pageModuleWrapper table.settable select {
-	width: auto;
-}
-.pageModuleWrapper table.msgtable {
-	border: none !important;
-	margin-bottom: 15px;
-}
+/* ! some more styling is done in /jquery/theme.js ! */
+
 
 /*** footer section ***************************************************/
 #footer {

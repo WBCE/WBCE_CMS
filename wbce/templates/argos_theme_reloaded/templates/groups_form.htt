@@ -15,240 +15,296 @@
 
 		<h3 class="fg12" id="header-add-group">Gruppe hinzufügen</h3>
 
-		<div class="fg3">{TEXT_NAME}:</div>
-		<div class="fg9">
-			<input type="text" name="group_name" maxlength="255" value="{GROUP_NAME}" class="wdt150">
+		<div class="row">
+			<div class="fg3">{TEXT_NAME}:</div>
+			<div class="fg9">
+				<input type="text" name="group_name" maxlength="255" value="{GROUP_NAME}" class="wdt150">
+			</div>
 		</div>
 
 		<hr class="fg12">
 
 		<div style="{DISPLAY_BASIC}">
-			<div class="fg3"><b>{TEXT_SYSTEM_PERMISSIONS}:</b></div>
-			<div class="fg3">
-				<input type="checkbox" name="pages" id="pages" value="1" {pages_checked} />
-				<label for="pages">{SECTION_PAGES}</label>
-			</div>
-			<div class="fg3">
-				<input type="checkbox" name="media" id="media" value="1" {media_checked} />
-				<label for="media">{SECTION_MEDIA}</label>
-			</div>
-			<div class="fg3">
-				<input type="checkbox" name="modules" id="modules" value="1" {modules_checked} />
-				<label for="modules">{SECTION_MODULES}</label>
-			</div>
-
-			<div class="fg3 push3">
-				<input type="checkbox" name="templates" id="templates" value="1" {templates_checked} />
-				<label for="templates">{SECTION_TEMPLATES}</label>
-			</div>
-			<div class="fg3">
-				<input type="checkbox" name="languages" id="languages" value="1" {languages_checked} />
-				<label for="languages">{SECTION_LANGUAGES}</label>
-			</div>
-			<div class="fg3">
-				<input type="checkbox" name="settings" id="settings" value="1" {settings_checked} />
-				<label for="settings">{SECTION_SETTINGS}</label>
+			<div class="row">
+				<div class="fg3"><b>{TEXT_SYSTEM_PERMISSIONS}:</b></div>
+				<div class="fg3">
+					<input type="checkbox" name="pages" id="pages" value="1" {pages_checked} />
+					<label for="pages">{SECTION_PAGES}</label>
+				</div>
+				<div class="fg3">
+					<input type="checkbox" name="media" id="media" value="1" {media_checked} />
+					<label for="media">{SECTION_MEDIA}</label>
+				</div>
+				<div class="fg3">
+					<input type="checkbox" name="modules" id="modules" value="1" {modules_checked} />
+					<label for="modules">{SECTION_MODULES}</label>
+				</div>
 			</div>
 
-			<div class="fg3 push3">
-				<input type="checkbox" name="users" id="users" value="1" {users_checked} />
-				<label for="users">{SECTION_USERS}</label>
+			<div class="row">
+				<div class="fg3 push3">
+					<input type="checkbox" name="templates" id="templates" value="1" {templates_checked} />
+					<label for="templates">{SECTION_TEMPLATES}</label>
+				</div>
+				<div class="fg3">
+					<input type="checkbox" name="languages" id="languages" value="1" {languages_checked} />
+					<label for="languages">{SECTION_LANGUAGES}</label>
+				</div>
+				<div class="fg3">
+					<input type="checkbox" name="settings" id="settings" value="1" {settings_checked} />
+					<label for="settings">{SECTION_SETTINGS}</label>
+				</div>
 			</div>
-			<div class="fg3">
-				<input type="checkbox" name="groups" id="groups" value="1" {groups_checked} />
-				<label for="groups">{SECTION_GROUPS}</label>
-			</div>
-			<div class="fg3">
-				<input type="checkbox" name="admintools" id="admintools" value="1" {admintools_checked} />
-				<label for="admintools">{SECTION_ADMINTOOLS}</label>
+
+			<div class="row">
+				<div class="fg3 push3">
+					<input type="checkbox" name="users" id="users" value="1" {users_checked} />
+					<label for="users">{SECTION_USERS}</label>
+				</div>
+				<div class="fg3">
+					<input type="checkbox" name="groups" id="groups" value="1" {groups_checked} />
+					<label for="groups">{SECTION_GROUPS}</label>
+				</div>
+				<div class="fg3">
+					<input type="checkbox" name="admintools" id="admintools" value="1" {admintools_checked} />
+					<label for="admintools">{SECTION_ADMINTOOLS}</label>
+				</div>
 			</div>
 		</div> <!-- end display basic -->
 
 		<div style="{DISPLAY_ADVANCED}">
 
-			<div class="fg3">{TEXT_SYSTEM_PERMISSIONS}:</div>
+			<div class="row">
+				<div class="fg3 bold top">{TEXT_SYSTEM_PERMISSIONS}:</div>
 
-			<h3 class="fg9">{SECTION_PAGES}</h3>
-
-			<div class="fg3 push3">
-				<input name="pages_view" id="pages_view" type="checkbox" value="1" {pages_view_checked} />
-				<label for="pages_view">{TEXT_VIEW}</label>
-			</div>
-			<div class="fg3">
-				<input name="pages_add" id="pages_add" type="checkbox" value="1" {pages_add_checked} />
-				<label for="pages_add">{TEXT_ADD}</label>
-				<br>
-				<input name="pages_add_l0" id="pages_add_l0" type="checkbox" value="1" {pages_add_l0_checked} />
-				<label for="pages_add_l0">{TEXT_LEVEL} 0</label>
-			</div>
-			<div class="fg3">
-				<input name="pages_settings" id="pages_settings" type="checkbox" value="1" {pages_settings_checked} />
-				<label for="pages_settings">{TEXT_MODIFY_SETTINGS}</label>
+				<h3 class="fg9">{SECTION_PAGES}</h3>
 			</div>
 
-			<div class="fg3 push3">
-				<input name="pages_modify" id="pages_modify" type="checkbox" value="1" {pages_modify_checked} />
-				<label for="pages_modify">{TEXT_MODIFY_CONTENT}</label>
-			</div>
-			<div class="fg3">
-				<input name="pages_intro" id="pages_intro" type="checkbox" value="1" {pages_intro_checked} />
-				<label for="pages_intro">{HEADING_MODIFY_INTRO_PAGE}</label>
-			</div>
-			<div class="fg3">
-				<input name="pages_delete" id="pages_delete" type="checkbox" value="1" {pages_delete_checked} />
-				<label for="pages_delete">{TEXT_DELETE}</label>
-			</div>
-
-			<h3 class="fg9 push3">{SECTION_MEDIA}</h3>
-
-			<div class="fg3 push3">
-				<input name="media_view" id="media_view" type="checkbox" value="1" {media_view_checked} />
-				<label for="media_view">{TEXT_VIEW}</label>
-			</div>
-			<div class="fg3">
-				<input name="media_upload" id="media_upload" type="checkbox" value="1" {media_upload_checked} />
-				<label for="media_upload">{TEXT_UPLOAD_FILES}</label>
-			</div>
-			<div class="fg3">
-				<input name="media_rename" id="media_rename" type="checkbox" value="1" {media_rename_checked} />
-				<label for="media_rename">{TEXT_RENAME}</label>
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="pages_view" id="pages_view" type="checkbox" value="1" {pages_view_checked} />
+					<label for="pages_view">{TEXT_VIEW}</label>
+				</div>
+				<div class="fg3">
+					<input name="pages_add" id="pages_add" type="checkbox" value="1" {pages_add_checked} />
+					<label for="pages_add">{TEXT_ADD}</label>
+					<br>
+					<input name="pages_add_l0" id="pages_add_l0" type="checkbox" value="1" {pages_add_l0_checked} />
+					<label for="pages_add_l0">{TEXT_LEVEL} 0</label>
+				</div>
+				<div class="fg3">
+					<input name="pages_settings" id="pages_settings" type="checkbox" value="1" {pages_settings_checked} />
+					<label for="pages_settings">{TEXT_MODIFY_SETTINGS}</label>
+				</div>
 			</div>
 
-			<div class="fg3 push3">
-				<input name="media_delete" id="media_delete" type="checkbox" value="1" {media_delete_checked} />
-				<label for="media_delete">{TEXT_DELETE}</label>
-			</div>
-			<div class="fg6">
-				<input name="media_create" id="media_create" type="checkbox" value="1" {media_create_checked} />
-				<label for="media_create">{TEXT_CREATE_FOLDER}</label>
-			</div>
-
-			<h3 class="fg9 push3">{SECTION_MODULES}</h3>
-
-			<div class="fg3 push3">
-				<input name="modules_view" id="modules_view" type="checkbox" value="1" {modules_view_checked} />
-				<label for="modules_view">{TEXT_VIEW}</label>
-			</div>
-			<div class="fg3">
-				<input name="modules_install" id="modules_install" type="checkbox" value="1" {modules_install_checked} />
-				<label for="modules_install">{TEXT_ADD}</label>
-			</div>
-			<div class="fg3">
-				<input name="modules_uninstall" id="modules_uninstall" type="checkbox" value="1" {modules_uninstall_checked} />
-				<label for="modules_uninstall">{TEXT_DELETE}</label>
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="pages_modify" id="pages_modify" type="checkbox" value="1" {pages_modify_checked} />
+					<label for="pages_modify">{TEXT_MODIFY_CONTENT}</label>
+				</div>
+				<div class="fg3">
+					<input name="pages_intro" id="pages_intro" type="checkbox" value="1" {pages_intro_checked} />
+					<label for="pages_intro">{HEADING_MODIFY_INTRO_PAGE}</label>
+				</div>
+				<div class="fg3">
+					<input name="pages_delete" id="pages_delete" type="checkbox" value="1" {pages_delete_checked} />
+					<label for="pages_delete">{TEXT_DELETE}</label>
+				</div>
 			</div>
 
-			<h3 class="fg9 push3">{SECTION_TEMPLATES}</h3>
-
-			<div class="fg3 push3">
-				<input name="templates_view" id="templates_view" type="checkbox" value="1" {templates_view_checked} />
-				<label for="templates_view">{TEXT_VIEW}</label>
-			</div>
-			<div class="fg3">
-				<input name="templates_install" id="templates_install" type="checkbox" value="1" {templates_install_checked} />
-				<label for="templates_install">{TEXT_ADD}</label>
-			</div>
-			<div class="fg3">
-				<input name="templates_uninstall" id="templates_uninstall" type="checkbox" value="1" {templates_uninstall_checked} />
-				<label for="templates_uninstall">{TEXT_DELETE}</label>
+			<div class="row">
+				<h3 class="fg9 push3">{SECTION_MEDIA}</h3>
 			</div>
 
-			<h3 class="fg9 push3">{SECTION_LANGUAGES}</h3>
-
-			<div class="fg3 push3">
-				<input name="languages_view" id="languages_view" type="checkbox" value="1" {languages_view_checked} />
-				<label for="languages_view">{TEXT_VIEW}</label>
-			</div>
-			<div class="fg3">
-				<input name="languages_install" id="languages_install" type="checkbox" value="1" {languages_install_checked} />
-				<label for="languages_install">{TEXT_ADD}</label>
-			</div>
-			<div class="fg3">
-				<input name="languages_uninstall" id="languages_uninstall" type="checkbox" value="1" {languages_uninstall_checked} />
-				<label for="languages_uninstall">{TEXT_DELETE}</label>
-			</div>
-
-			<h3 class="fg9 push3">{SECTION_SETTINGS}</h3>
-
-			<div class="fg3 push3">
-				<input name="settings_basic" id="settings_basic" type="checkbox" value="1" {settings_basic_checked} />
-				<label for="settings_basic">{TEXT_BASIC}</label>
-			</div>
-			<div class="fg6">
-					<input name="settings_advanced" id="settings_advanced" type="checkbox" value="1" {settings_advanced_checked} />
-				<label for="settings_advanced">{TEXT_ADVANCED}</label>
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="media_view" id="media_view" type="checkbox" value="1" {media_view_checked} />
+					<label for="media_view">{TEXT_VIEW}</label>
+				</div>
+				<div class="fg3">
+					<input name="media_upload" id="media_upload" type="checkbox" value="1" {media_upload_checked} />
+					<label for="media_upload">{TEXT_UPLOAD_FILES}</label>
+				</div>
+				<div class="fg3">
+					<input name="media_rename" id="media_rename" type="checkbox" value="1" {media_rename_checked} />
+					<label for="media_rename">{TEXT_RENAME}</label>
+				</div>
 			</div>
 
-			<h3 class="fg9 push3">{SECTION_USERS}</h3>
-
-			<div class="fg3 push3">
-				<input name="users_view" id="users_view" type="checkbox" value="1" {users_view_checked} />
-				<label for="users_view">{TEXT_VIEW}</label>
-			</div>
-			<div class="fg6">
-					<input name="users_add" id="users_add" type="checkbox" value="1" {users_add_checked} />
-				<label for="users_add">{TEXT_ADD}</label>
-			</div>
-			<div class="fg3 push3">
-				<input name="users_modify" id="users_modify" type="checkbox" value="1" {users_modify_checked} />
-				<label for="users_modify">{TEXT_MODIFY}</label>
-			</div>
-			<div class="fg6">
-					<input name="users_delete" id="users_delete" type="checkbox" value="1" {users_delete_checked} />
-				<label for="users_delete">{TEXT_DELETE}</label>
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="media_delete" id="media_delete" type="checkbox" value="1" {media_delete_checked} />
+					<label for="media_delete">{TEXT_DELETE}</label>
+				</div>
+				<div class="fg6">
+					<input name="media_create" id="media_create" type="checkbox" value="1" {media_create_checked} />
+					<label for="media_create">{TEXT_CREATE_FOLDER}</label>
+				</div>
 			</div>
 
-			<h3 class="fg9 push3">{SECTION_GROUPS}</h3>
-
-			<div class="fg3 push3">
-				<input name="groups_view" id="groups_view" type="checkbox" value="1" {groups_view_checked} />
-				<label for="groups_view">{TEXT_VIEW}</label>
-			</div>
-			<div class="fg6">
-					<input name="groups_add" id="groups_add" type="checkbox" value="1" {groups_add_checked} />
-				<label for="groups_add">{TEXT_ADD}</label>
-			</div>
-			<div class="fg3 push3">
-				<input name="groups_modify" id="groups_modify" type="checkbox" value="1" {groups_modify_checked} />
-				<label for="groups_modify">{TEXT_MODIFY}</label>
-			</div>
-			<div class="fg6">
-				<input name="groups_delete" id="groups_delete" type="checkbox" value="1" {groups_delete_checked} />
-				<label for="groups_delete">{TEXT_DELETE}</label>
+			<div class="row">
+				<h3 class="fg9 push3">{SECTION_MODULES}</h3>
 			</div>
 
-			<h3 class="fg9 push3">{SECTION_ADMINTOOLS}</h3>
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="modules_view" id="modules_view" type="checkbox" value="1" {modules_view_checked} />
+					<label for="modules_view">{TEXT_VIEW}</label>
+				</div>
+				<div class="fg3">
+					<input name="modules_install" id="modules_install" type="checkbox" value="1" {modules_install_checked} />
+					<label for="modules_install">{TEXT_ADD}</label>
+				</div>
+				<div class="fg3">
+					<input name="modules_uninstall" id="modules_uninstall" type="checkbox" value="1" {modules_uninstall_checked} />
+					<label for="modules_uninstall">{TEXT_DELETE}</label>
+				</div>
+			</div>
 
-			<div class="fg9 push3">
-				<input name="admintools_settings" id="admintools_settings" type="checkbox" value="1" {admintools_settings_checked} />
-				<label for="admintools_settings">{TEXT_MODIFY_SETTINGS}</label>
+			<div class="row">
+				<h3 class="fg9 push3">{SECTION_TEMPLATES}</h3>
+			</div>
+
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="templates_view" id="templates_view" type="checkbox" value="1" {templates_view_checked} />
+					<label for="templates_view">{TEXT_VIEW}</label>
+				</div>
+				<div class="fg3">
+					<input name="templates_install" id="templates_install" type="checkbox" value="1" {templates_install_checked} />
+					<label for="templates_install">{TEXT_ADD}</label>
+				</div>
+				<div class="fg3">
+					<input name="templates_uninstall" id="templates_uninstall" type="checkbox" value="1" {templates_uninstall_checked} />
+					<label for="templates_uninstall">{TEXT_DELETE}</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<h3 class="fg9 push3">{SECTION_LANGUAGES}</h3>
+			</div>
+
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="languages_view" id="languages_view" type="checkbox" value="1" {languages_view_checked} />
+					<label for="languages_view">{TEXT_VIEW}</label>
+				</div>
+				<div class="fg3">
+					<input name="languages_install" id="languages_install" type="checkbox" value="1" {languages_install_checked} />
+					<label for="languages_install">{TEXT_ADD}</label>
+				</div>
+				<div class="fg3">
+					<input name="languages_uninstall" id="languages_uninstall" type="checkbox" value="1" {languages_uninstall_checked} />
+					<label for="languages_uninstall">{TEXT_DELETE}</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<h3 class="fg9 push3">{SECTION_SETTINGS}</h3>
+			</div>
+
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="settings_basic" id="settings_basic" type="checkbox" value="1" {settings_basic_checked} />
+					<label for="settings_basic">{TEXT_BASIC}</label>
+				</div>
+				<div class="fg6">
+						<input name="settings_advanced" id="settings_advanced" type="checkbox" value="1" {settings_advanced_checked} />
+					<label for="settings_advanced">{TEXT_ADVANCED}</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<h3 class="fg9 push3">{SECTION_USERS}</h3>
+			</div>
+
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="users_view" id="users_view" type="checkbox" value="1" {users_view_checked} />
+					<label for="users_view">{TEXT_VIEW}</label>
+				</div>
+				<div class="fg6">
+						<input name="users_add" id="users_add" type="checkbox" value="1" {users_add_checked} />
+					<label for="users_add">{TEXT_ADD}</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="users_modify" id="users_modify" type="checkbox" value="1" {users_modify_checked} />
+					<label for="users_modify">{TEXT_MODIFY}</label>
+				</div>
+				<div class="fg6">
+						<input name="users_delete" id="users_delete" type="checkbox" value="1" {users_delete_checked} />
+					<label for="users_delete">{TEXT_DELETE}</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<h3 class="fg9 push3">{SECTION_GROUPS}</h3>
+			</div>
+
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="groups_view" id="groups_view" type="checkbox" value="1" {groups_view_checked} />
+					<label for="groups_view">{TEXT_VIEW}</label>
+				</div>
+				<div class="fg6">
+						<input name="groups_add" id="groups_add" type="checkbox" value="1" {groups_add_checked} />
+					<label for="groups_add">{TEXT_ADD}</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="fg3 push3">
+					<input name="groups_modify" id="groups_modify" type="checkbox" value="1" {groups_modify_checked} />
+					<label for="groups_modify">{TEXT_MODIFY}</label>
+				</div>
+				<div class="fg6">
+					<input name="groups_delete" id="groups_delete" type="checkbox" value="1" {groups_delete_checked} />
+					<label for="groups_delete">{TEXT_DELETE}</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<h3 class="fg9 push3">{SECTION_ADMINTOOLS}</h3>
+			</div>
+
+			<div class="row">
+				<div class="fg9 push3">
+					<input name="admintools_settings" id="admintools_settings" type="checkbox" value="1" {admintools_settings_checked} />
+					<label for="admintools_settings">{TEXT_MODIFY_SETTINGS}</label>
+				</div>
 			</div>
 		</div> <!-- end display advanced -->
 
 		<hr class="fg12 top">
 
-		<div class="fg6">
-			<div class="bot"><b>{TEXT_MODULE_PERMISSIONS}:</b></div>
-			<ul>
-			<!-- BEGIN module_list_block -->
-			<li>
-				<input type="checkbox" name="module_permissions[]" id="m_{VALUE}" value="{VALUE}" {CHECKED} />
-				<label for="m_{VALUE}">{NAME}</label>
-			</li>
-			<!-- END module_list_block -->
-			</ul>
-		</div>
+		<div class="row">
+			<div class="fg6">
+				<div class="bot"><b>{TEXT_MODULE_PERMISSIONS}:</b></div>
+				<ul>
+					<!-- BEGIN module_list_block -->
+					<li style="margin-bottom:5px; margin-left:15px;">
+						<input type="checkbox" name="module_permissions[]" id="m_{VALUE}" value="{VALUE}" {CHECKED} />
+						<label for="m_{VALUE}">{NAME}</label>
+					</li>
+					<!-- END module_list_block -->
+				</ul>
+			</div>
 
-		<div class="fg6">
+			<div class="fg6">
 			<div class="bot"><b>{TEXT_TEMPLATE_PERMISSIONS}:</b></div>
-			<ul>
-			<!-- BEGIN template_list_block -->
-			<li>
-				<input type="checkbox" name="template_permissions[]" id="t_{VALUE}" value="{VALUE}" {CHECKED} />
-				<label for="t_{VALUE}">{NAME}</label>
-			</li>
-			<!-- END template_list_block -->
-			</ul>
+				<ul>
+					<!-- BEGIN template_list_block -->
+					<li style="margin-bottom:5px; margin-left:15px;">
+						<input type="checkbox" name="template_permissions[]" id="t_{VALUE}" value="{VALUE}" {CHECKED} />
+						<label for="t_{VALUE}">{NAME}</label>
+					</li>
+					<!-- END template_list_block -->
+				</ul>
+			</div>
 		</div>
 
 		<hr class="fg12">

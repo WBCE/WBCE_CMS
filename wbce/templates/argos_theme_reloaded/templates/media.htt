@@ -9,7 +9,7 @@
 			{FTAN}
 			<div class="fg12" style="margin-top: 5px;">{TEXT_TARGET_FOLDER}:</div>
 			<div class="fg12">
-				<select name="target" id="upload-target" style="width: 100%;">
+				<select name="target" id="upload-target" class="bot" style="width: 100%;">
 					<option value="{MEDIA_DIRECTORY}{HOME_DIRECTORY}" selected="selected">{MEDIA_DIRECTORY}{HOME_DIRECTORY}</option>
 					<!-- BEGIN dir_list_block -->
 					<option value="{NAME}">{NAME}</option>
@@ -18,7 +18,7 @@
 			</div>
 			<div class="fg12">
 				<label style="font-size: 12px;">
-					<input type="checkbox" name="unzip" id="unzip">
+					<input type="checkbox" name="unzip" id="unzip" class="bot">
 					{TEXT_UNZIP_FILE}
 				</label>
 			</div>
@@ -40,7 +40,7 @@
 			<div class="fg12"><input type="file" name="file9" id="file9" style="display: block;"></div>
 			<div class="fg12"><input type="file" name="file10" id="file10" style="display: block;"></div>
 
-			<div class="fg12">
+			<div class="fg12 top bot">
 				<label>
 					<input type="checkbox" name="overwrite" id="overwrite" value="yes">
 					{TEXT_OVERWRITE_EXISTING} {TEXT_FILES}
@@ -64,10 +64,10 @@
 			{FTAN}
 			<div class="fg12" style="margin-top: 5px;">{TEXT_NAME}:</div>
 			<div class="fg12">
-				<input type="text" name="name" style="width: 100%;"></div>
+				<input type="text" name="name" style="width:100%;" class="bot"></div>
 			<div class="fg12">{TEXT_TARGET_FOLDER}:</div>
 			<div class="fg12">
-				<select name="target" id="target-folder" style="width:100%;">
+				<select name="target" id="target-folder" style="width:100%;" class="bot">
 					<option value="{MEDIA_DIRECTORY}{HOME_DIRECTORY}" selected>
 						{MEDIA_DIRECTORY}{HOME_DIRECTORY}
 					</option>

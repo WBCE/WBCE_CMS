@@ -50,33 +50,35 @@
 
 <!-- advanced block --------------------------------------------------->
 <div id="advanced-block" class="fg12 section auto" {DISPLAY_RELOAD}>
-	<div class="fg1 graphic">
-			<i class="fa fa-3x fa-wrench"></i>
-	</div>
-	<div class="fg11 description">
-		<span class="title">{TXT_ADMIN_SETTINGS}</span>
-		<form action="{RELOAD_URL}" method="post">
-			{FTAN}
-			<p>{MESSAGE_RELOAD_ADDONS}</p>
-			<div>
-			<label {DISPLAY_MODULES}>
-				<input type="checkbox" name="reload_modules" value="true">
-				{MODULES}
-			</label>
-			<label {DISPLAY_TEMPLATES}>
-				<input type="checkbox" name="reload_templates" value="true">
-				{TEMPLATES}
-			</label>
-			<label {DISPLAY_LANGUAGES}>
-				<input {DISPLAY_LANGUAGES} type="checkbox" name="reload_languages" value="true">
-				{LANGUAGES}
-			</label>
-			<button type="submit" name="submit" style="margin: -4px 0 0 20px;">
-				<i class="fa fa-fw fa-refresh"></i>
-				{TEXT_RELOAD}
-			</button>
-			</div>
-		</form>
+	<div class="row">
+		<div class="fg1 graphic">
+				<i class="fa fa-3x fa-wrench"></i>
+		</div>
+		<div class="fg11 description">
+			<span class="title">{TXT_ADMIN_SETTINGS}</span>
+			<form action="{RELOAD_URL}" method="post">
+				{FTAN}
+				<p>{MESSAGE_RELOAD_ADDONS}</p>
+				<div>
+				<label {DISPLAY_MODULES}>
+					<input type="checkbox" name="reload_modules" value="true">
+					{MODULES}
+				</label>
+				<label {DISPLAY_TEMPLATES}>
+					<input type="checkbox" name="reload_templates" value="true">
+					{TEMPLATES}
+				</label>
+				<label {DISPLAY_LANGUAGES}>
+					<input {DISPLAY_LANGUAGES} type="checkbox" name="reload_languages" value="true">
+					{LANGUAGES}
+				</label>
+				<button type="submit" name="submit" style="margin: -4px 0 0 20px;">
+					<i class="fa fa-fw fa-refresh"></i>
+					{TEXT_RELOAD}
+				</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 <!-- END main_block -->

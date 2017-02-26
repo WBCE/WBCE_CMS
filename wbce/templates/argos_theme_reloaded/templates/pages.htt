@@ -17,70 +17,87 @@
 			{FTAN}
 
 			<section class="fg7" style="margin-top: 10px;">
-				<div class="fg4">{TEXT_TITLE}:</div>
-				<div class="fg8">
-					<input type="text" name="title" class="wdt250">
+				<div class="row">
+					<div class="fg4">{TEXT_TITLE}:</div>
+					<div class="fg8">
+						<input type="text" name="title" class="wdt250">
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_TYPE}:</div>
-				<div class="fg8">
-					<select name="type" class="wdt250">
-						<!-- BEGIN module_list_block -->
-						<option value="{VALUE}"{SELECTED}>{NAME}</option>
-						<!-- END module_list_block -->
-					</select>
+				<div class="row">
+					<div class="fg4">{TEXT_TYPE}:</div>
+					<div class="fg8">
+						<select name="type" class="wdt250">
+							<!-- BEGIN module_list_block -->
+							<option value="{VALUE}"{SELECTED}>{NAME}</option>
+							<!-- END module_list_block -->
+						</select>
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_PARENT}:</div>
-				<div class="fg8">
-					<select  name="parent" onchange="return disabled_hack_for_ie(this);" class="wdt150">
-						<!-- BEGIN page_list_block2 -->
-						<option value="{ID}"{DISABLED}>{TITLE}</option>
-						<!-- END page_list_block2 -->
-					</select>
+				<div class="row">
+					<div class="fg4">{TEXT_PARENT}:</div>
+					<div class="fg8">
+						<select  name="parent" onchange="return disabled_hack_for_ie(this);" class="wdt150">
+							<!-- BEGIN page_list_block2 -->
+							<option value="{ID}"{DISABLED}>{TITLE}</option>
+							<!-- END page_list_block2 -->
+						</select>
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_VISIBILITY}:</div>
-				<div class="fg8">
-					<select name="visibility" onchange="toggle_viewers();" class="wdt150">
-						<option value="public" {SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">{TEXT_PUBLIC}</option>
-						<option value="private" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">{TEXT_PRIVATE}</option>
-						<option value="registered" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);">{TEXT_REGISTERED}</option>
-						<option value="hidden" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">{TEXT_HIDDEN}</option>
-						<option value="none" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);">{TEXT_NONE}</option>
-					</select>
+				<div class="row">
+					<div class="fg4">{TEXT_VISIBILITY}:</div>
+					<div class="fg8">
+						<select name="visibility" onchange="toggle_viewers();" class="wdt150">
+							<option value="public" {SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">{TEXT_PUBLIC}</option>
+							<option value="private" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">{TEXT_PRIVATE}</option>
+							<option value="registered" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);">{TEXT_REGISTERED}</option>
+							<option value="hidden" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">{TEXT_HIDDEN}</option>
+							<option value="none" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);">{TEXT_NONE}</option>
+						</select>
+					</div>
 				</div>
 
-				<div class="fg8 push4">
-					<button type="submit" name="submit">
-						<i class="fa fa-fw fa-plus"></i>
-						{TEXT_ADD}
-					</button>
+				<div class="row">
+					<div class="fg8 push4">
+						<button type="submit" name="submit">
+							<i class="fa fa-fw fa-plus"></i>
+							{TEXT_ADD}
+						</button>
+					</div>
 				</div>
 			</section>
 
 			<section class="fg5" style="margin-top: 10px;">
-				<div class="fg12">
-					{TEXT_ADMINISTRATORS}:
-					<ul style="list-style-type: none; margin: 0; padding: 0;">
-						<!-- BEGIN group_list_block -->
-						<li>
-						<input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}"{CHECKED}{DISABLED} />
-						<label for="admin_group_{TOGGLE}">{NAME}</label>
-						</li>
-						<!-- END group_list_block -->
-					</ul>
+				<div class="row">
+					<div class="fg12">
+						<div style="margin-bottom:5px;">
+							{TEXT_ADMINISTRATORS}:
+						</div>
+						<ul style="list-style-type: none; margin: 0; padding: 0;">
+							<!-- BEGIN group_list_block -->
+							<li style="margin-bottom:5px;">
+							<input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}"{CHECKED}{DISABLED} />
+							<label for="admin_group_{TOGGLE}">{NAME}</label>
+							</li>
+							<!-- END group_list_block -->
+						</ul>
+					</div>
 				</div>
-				<div class="fg12" id="viewers" style="display: none;">
-					{TEXT_REGISTERED_VIEWERS}:
-					<ul style="list-style-type: none; margin: 0; padding: 0;">
-						<!-- BEGIN group_list_block2 -->
-						<li>
-						<input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}"{CHECKED}{DISABLED} />
-						<label for="viewing_group_{TOGGLE}">{NAME}</label>
-						</li>
-						<!-- END group_list_block2 -->
-					</ul>
+
+				<div class="row">
+					<div class="fg12" id="viewers" style="display: none;">
+						{TEXT_REGISTERED_VIEWERS}:
+						<ul style="list-style-type: none; margin: 0; padding: 0;">
+							<!-- BEGIN group_list_block2 -->
+							<li style="margin-bottom:5px;">
+							<input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}"{CHECKED}{DISABLED} />
+							<label for="viewing_group_{TOGGLE}">{NAME}</label>
+							</li>
+							<!-- END group_list_block2 -->
+						</ul>
+					</div>
 				</div>
 			</section>
 		</form>

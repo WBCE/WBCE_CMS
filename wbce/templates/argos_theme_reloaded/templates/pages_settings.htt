@@ -35,78 +35,95 @@
 			<input type="hidden" name="page_id" value="{PAGE_ID}">
 			<section class="fg7">
 
-				<div class="fg4">{TEXT_PAGE_TITLE}:</div>
-				<div class="fg8">
-					<input type="text" name="page_title" value="{PAGE_TITLE}" class="wdt250">
+				<div class="row">
+					<div class="fg4">{TEXT_PAGE_TITLE}:</div>
+					<div class="fg8">
+						<input type="text" name="page_title" value="{PAGE_TITLE}" class="wdt250">
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_MENU_TITLE}:</div>
-				<div class="fg8">
-					<input type="text" name="menu_title" value="{MENU_TITLE}">
+				<div class="row">
+					<div class="fg4">{TEXT_MENU_TITLE}:</div>
+					<div class="fg8">
+						<input type="text" name="menu_title" value="{MENU_TITLE}">
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_FILENAME}:</div>
-				<div class="fg8">
-					<input type="text" name="link" value="{LINK_VALUE}"><span style="vertical-align: -5px;">&nbsp;{PAGE_EXTENSION}</span>
+				<div class="row">
+					<div class="fg4">{TEXT_FILENAME}:</div>
+					<div class="fg8">
+						<input type="text" name="link" value="{LINK_VALUE}"><span style="vertical-align: -5px;">&nbsp;{PAGE_EXTENSION}</span>
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_PARENT}:</div>
-				<div class="fg8">
-					<select name="parent" onchange="return disabled_hack_for_ie(this);" class="wdt250">
-						<!-- BEGIN page_list_block2 -->
-						<option value="{ID}" {SELECTED}>
-							{TITLE}
-						</option>
-						<!-- END page_list_block2 -->
-					</select>
+				<div class="row">
+					<div class="fg4">{TEXT_PARENT}:</div>
+					<div class="fg8">
+						<select name="parent" onchange="return disabled_hack_for_ie(this);" class="wdt250">
+							<!-- BEGIN page_list_block2 -->
+							<option value="{ID}" {SELECTED}>
+								{TITLE}
+							</option>
+							<!-- END page_list_block2 -->
+						</select>
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_VISIBILITY}:</div>
-				<div class="fg8">
-					<select name="visibility" onchange="javascript: toggle_viewers();">
-						<option value="public" {PUBLIC_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">
-							{TEXT_PUBLIC}
-						</option>
-						<option value="private" {PRIVATE_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">
-							{TEXT_PRIVATE}
-						</option>
-						<option value="registered" {REGISTERED_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);">
-							{TEXT_REGISTERED}
-						</option>
-						<option value="hidden" {HIDDEN_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">
-							{TEXT_HIDDEN}
-						</option>
-						<option value="none" {NO_VIS_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);">
-							{TEXT_NONE}
-						</option>
-					</select>
+				<div class="row">
+					<div class="fg4">{TEXT_VISIBILITY}:</div>
+					<div class="fg8">
+						<select name="visibility" onchange="javascript: toggle_viewers();">
+							<option value="public" {PUBLIC_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">
+								{TEXT_PUBLIC}
+							</option>
+							<option value="private" {PRIVATE_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">
+								{TEXT_PRIVATE}
+							</option>
+							<option value="registered" {REGISTERED_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);">
+								{TEXT_REGISTERED}
+							</option>
+							<option value="hidden" {HIDDEN_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">
+								{TEXT_HIDDEN}
+							</option>
+							<option value="none" {NO_VIS_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);">
+								{TEXT_NONE}
+							</option>
+						</select>
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_DESCRIPTION}:</div>
-				<div class="fg8">
-					<textarea name="description">{DESCRIPTION}</textarea>
+				<div class="row">
+					<div class="fg4">{TEXT_DESCRIPTION}:</div>
+					<div class="fg8">
+						<textarea name="description">{DESCRIPTION}</textarea>
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_KEYWORDS}:</div>
-				<div class="fg8">
-					<textarea name="keywords">{KEYWORDS}</textarea>
+				<div class="row">
+					<div class="fg4">{TEXT_KEYWORDS}:</div>
+					<div class="fg8">
+						<textarea name="keywords">{KEYWORDS}</textarea>
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_TARGET}:</div>
-				<div class="fg8">
-					<select name="target" >
-						<option value="_blank" {BLANK_SELECTED}>
-							{TEXT_NEW_WINDOW}
-						</option>
-						<option value="_self" {SELF_SELECTED}>
-							{TEXT_SAME_WINDOW}
-						</option>
-						<option value="_top" {TOP_SELECTED}>
-							{TEXT_TOP_FRAME}
-						</option>
-					</select>
+				<div class="row">
+					<div class="fg4">{TEXT_TARGET}:</div>
+					<div class="fg8">
+						<select name="target" >
+							<option value="_blank" {BLANK_SELECTED}>
+								{TEXT_NEW_WINDOW}
+							</option>
+							<option value="_self" {SELF_SELECTED}>
+								{TEXT_SAME_WINDOW}
+							</option>
+							<option value="_top" {TOP_SELECTED}>
+								{TEXT_TOP_FRAME}
+							</option>
+						</select>
+					</div>
 				</div>
 
+				<div class="row">
 				<div class="fg4">{TEXT_TEMPLATE}:</div>
 				<div class="fg8">
 					<select name="template">
@@ -116,56 +133,66 @@
 						<!-- END template_list_block -->
 					</select>
 				</div>
-
-				<div class="fg4" style="{DISPLAY_MENU_LIST}">
-					{TEXT_MENU}:
-				</div>
-				<div class="fg8" style="{DISPLAY_MENU_LIST}">
-					<select name="menu">
-						<!-- BEGIN menu_list_block -->
-						<option value="{VALUE}" {SELECTED}>{NAME}</option>
-						<!-- END menu_list_block -->
-					</select>
-
 				</div>
 
-				<div class="fg4" style="{DISPLAY_LANGUAGE_LIST}">
-					{TEXT_LANGUAGE}:
+				<div class="row">
+					<div class="fg4" style="{DISPLAY_MENU_LIST}">
+						{TEXT_MENU}:
+					</div>
+					<div class="fg8" style="{DISPLAY_MENU_LIST}">
+						<select name="menu">
+							<!-- BEGIN menu_list_block -->
+							<option value="{VALUE}" {SELECTED}>{NAME}</option>
+							<!-- END menu_list_block -->
+						</select>
+
+					</div>
 				</div>
-				<div class="fg8" style="{DISPLAY_LANGUAGE_LIST}">
-					<select name="language">
-						<!-- BEGIN language_list_block -->
-						<option value="{VALUE}" {SELECTED} class="hasFlag" style="background-image:url({WB_URL}/languages/{VALUE}.png);">{NAME}</option>
-						<!-- END language_list_block -->
-					</select>
+
+				<div class="row">
+					<div class="fg4" style="{DISPLAY_LANGUAGE_LIST}">
+						{TEXT_LANGUAGE}:
+					</div>
+					<div class="fg8" style="{DISPLAY_LANGUAGE_LIST}">
+						<select name="language">
+							<!-- BEGIN language_list_block -->
+							<option value="{VALUE}" {SELECTED} class="hasFlag" style="background-image:url({WB_URL}/languages/{VALUE}.png);">{NAME}</option>
+							<!-- END language_list_block -->
+						</select>
+					</div>
+					</div>
 				</div>
 
 				<div {DISPLAY_CODE_PAGE_LIST}>
-				<div class="fg4">{TEXT_PAGE_CODE}:</div>
-				<div class="fg8">
-					<select name="page_code">
-						<!-- BEGIN page_code_list_block -->
-						<option value="{VALUE}" {SELECTED}>{PAGE_VALUE}</option>
-						<!-- END page_code_list_block -->
-					</select>
-				</div>
+					<div class="row">
+						<div class="fg4">{TEXT_PAGE_CODE}:</div>
+						<div class="fg8">
+							<select name="page_code">
+								<!-- BEGIN page_code_list_block -->
+								<option value="{VALUE}" {SELECTED}>{PAGE_VALUE}</option>
+								<!-- END page_code_list_block -->
+							</select>
+						</div>
+					</div>
 				</div>
 
-				<div class="fg4">{TEXT_SEARCHING}:</div>
-				<div class="fg8">
-					<select name="searching">
-						<option value="1">{TEXT_ENABLED}</option>
-						<option value="0" {SEARCHING_DISABLED}>{TEXT_DISABLED}</option>
-					</select>
+				<div class="row">
+					<div class="fg4">{TEXT_SEARCHING}:</div>
+					<div class="fg8">
+						<select name="searching">
+							<option value="1">{TEXT_ENABLED}</option>
+							<option value="0" {SEARCHING_DISABLED}>{TEXT_DISABLED}</option>
+						</select>
+					</div>
 				</div>
 			</section>
 
 			<section class="fg5">
 				<div class="fg12">
-					{TEXT_ADMINISTRATORS}:
+					<div style="margin-bottom:5px;">{TEXT_ADMINISTRATORS}:</div>
 					<ul>
 						<!-- BEGIN group_list_block -->
-						<li>
+						<li style="margin-bottom:5px;">
 							<input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}" {CHECKED} {DISABLED}>
 							<label for="admin_group_{TOGGLE}">{NAME}</label>
 						</li>
@@ -177,7 +204,7 @@
 					{TEXT_ALLOWED_VIEWERS}:
 					<ul>
 						<!-- BEGIN group_list_block2 -->
-						<li>
+						<li style="margin-bottom:5px;">
 							<input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}" {CHECKED} {DISABLED}>
 							<label for="viewing_group_{TOGGLE}">{NAME}</label>
 						</li>
