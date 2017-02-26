@@ -61,7 +61,7 @@
 				</a>
 			</td >
 			<td class="details">
-				{IMAGEDETAIL}<br>{DATE}
+				{IMAGEDETAIL}<br><span style="color:#666; font-style:italic;">{DATE}</span>
 			</td>
 			<td class="rename {DISPLAY_RENAME}">
 				<a href="rename.php?dir={CURRENT_DIR}&amp;id={TEMP_ID}">
