@@ -14,7 +14,7 @@
 if(!defined('WB_PATH')){
 	require('../../config.php');
 }
-// param false needed as silly admin construct generates  output 
+// param false needed as silly admin construct generates  output
 $admin = new admin('Pages', 'pages_settings', false);
 // Include the WB functions file
 require_once(WB_PATH.'/framework/functions-utf8.php');
@@ -107,8 +107,8 @@ $template->set_var(array(
                 // 'PAGE_IDKEY' => $admin->getIDKEY($results_array['page_id']),
                 'PAGE_IDKEY' => $results_array['page_id'],
                 'PAGE_TITLE' => ($results_array['page_title']),
-                'LINK_VALUE' => ($restlink),              
-                'PAGE_EXTENSION' => (PAGE_EXTENSION),               
+                'LINK_VALUE' => ($restlink),
+                'PAGE_EXTENSION' => (PAGE_EXTENSION),
                 'MENU_TITLE' => ($results_array['menu_title']),
                 'DESCRIPTION' => ($results_array['description']),
                 'KEYWORDS' => ($results_array['keywords']),
@@ -455,7 +455,7 @@ if($admin->get_permission('pages_add_l0') == true OR $results_array['level'] == 
     if($results_array['parent'] == 0)
     {
         $selected = ' selected="selected"';
-    } else { 
+    } else {
         $selected = '';
     }
     $template->set_var(array(
@@ -626,6 +626,7 @@ $template->set_var(array(
                 'TEXT_SAVE' => $TEXT['SAVE'],
                 'TEXT_RESET' => $TEXT['RESET'],
                 'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
+                'LAST_MODIFICATION' => $MESSAGE['PAGES_LAST_MODIFICATION'],
                 'HEADING_MODIFY_PAGE' => $HEADING['MODIFY_PAGE']
             ) );
 

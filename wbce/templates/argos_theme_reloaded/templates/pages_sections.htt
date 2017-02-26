@@ -1,6 +1,6 @@
 <!-- BEGIN main_block -->
 <!--- !!! relevant table cell for drag'n'drop sorting: #5 (0-indexed) -->
-<div class="jsadmin jcalendar hide"></div>
+<div class="jcalendar hide"></div>
 
 <section id="page-sections">
 	<h2 style="margin-bottom: 0;">
@@ -23,10 +23,8 @@
 			&nbsp;&nbsp;|&nbsp;&nbsp;
 			PageID: <b>{PAGE_ID}</b>
 		</div>
-		<div style="float: right; text-align: right; color:#999; display: none;" class="{DISPLAY_MODIFIED}">
-			<!-- disabled - no infos from core available -------------->
-			Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</span>
-			<!--------------------------------------------------------->
+		<div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}">
+			{LAST_MODIFICATION}: {MODIFIED_BY} - {MODIFIED_WHEN}</span>
 		</div>
 	</header>
 
@@ -124,11 +122,16 @@
 		<form name="add" action="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" method="post" class="fg12" style="margin-top: 10px;">
 			{FTAN}
 			<input type="hidden" name="page_id" value="{PAGE_IDKEY}">
-   			<select name="module" class="sel250" onchange="this.form.submit();">
+   			<select name="module" class="sel250">
                 <!-- BEGIN module_block -->
     			 <option value="{VALUE}"{SELECTED}>{NAME}</option>
                  <!-- END module_block -->
    			</select>
+   			<button type="submit" name="save">
+				<i class="fa fa-fw fa-plus"></i>
+				{TEXT_ADD}
+			</button>
+
 		</form>
 	</section>
 </section>

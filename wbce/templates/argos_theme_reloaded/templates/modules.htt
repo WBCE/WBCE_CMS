@@ -14,59 +14,62 @@
 <form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL} fg12 content-box">
 	{FTAN}
 	<h3 class="fg12">{HEADING_INSTALL_MODULE}</h3>
-	<div class="fg9">
-		<input type="file" name="userfile">
-		<br>
-		<label>	<input type="checkbox" name="overwrite" value="false">
-			{OVERWRITE_NEWER_FILES}
-		</label>
+	<div class="row">
+		<div class="fg9">
+			<input type="file" name="userfile" class="bot">
+			<br>
+			<label>	<input type="checkbox" name="overwrite" value="false">
+				{OVERWRITE_NEWER_FILES}
+			</label>
+		</div>
+		<div class="fg3 right">
+			<button type="submit" name="submit">
+				<i class="fa fa-fw fa-check"></i>
+				{TEXT_INSTALL}
+			</button>
+		</div>
 	</div>
-	<div class="fg3 right">
-		<button type="submit" name="submit">
-			<i class="fa fa-fw fa-check"></i>
-			{TEXT_INSTALL}
-		</button>
-	</div>
-	<div class="clearfix"></div>
 </form>
 
 <!-- uninstall -------------------------------------------------------->
 <form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL} fg12 content-box">
 	{FTAN}
 	<h3 class="fg12">{HEADING_UNINSTALL_MODULE}</h3>
-	<div class="fg9">
-		<select name="file" class="wdt300">
-			<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-			<!-- BEGIN module_list_block -->
-			<option value="{VALUE}">{NAME}</option>
-			<!-- END module_list_block -->
-		</select>
+	<div class="row">
+		<div class="fg9">
+			<select name="file" class="wdt300">
+				<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
+				<!-- BEGIN module_list_block -->
+				<option value="{VALUE}">{NAME}</option>
+				<!-- END module_list_block -->
+			</select>
+		</div>
+		<div class="fg3 right">
+			<button type="submit" name="submit" class="danger">
+				<i class="fa fa-fw fa-remove"></i>
+				{TEXT_UNINSTALL}
+			</button>
+		</div>
 	</div>
-	<div class="fg3 right">
-		<button type="submit" name="submit" class="danger">
-			<i class="fa fa-fw fa-remove"></i>
-			{TEXT_UNINSTALL}
-		</button>
-	</div>
-	<div class="clearfix"></div>
 </form>
 
 <!-- details ---------------------------------------------------------->
 <form name="details" action="details.php" method="post" class="{DISPLAY_LIST} fg12 content-box">
 	{FTAN}
 	<h3 class="fg12">{HEADING_MODULE_DETAILS}</h3>
-	<div class="fg9">
-		<select name="file" onchange="this.form.submit();" class="wdt300">
-			<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-			<!-- BEGIN module_list_block -->
-			<option value="{VALUE}">{NAME}</option>
-			<!-- END module_list_block -->
-		</select>
+	<div class="row">
+		<div class="fg9">
+			<select name="file" onchange="this.form.submit();" class="wdt300 bot">
+				<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
+				<!-- BEGIN module_list_block -->
+				<option value="{VALUE}">{NAME}</option>
+				<!-- END module_list_block -->
+			</select>
+		</div>
+		<div class="fg3 right">
+			<!-- no submit button needed here -->
+		</div>
 	</div>
-	<div class="fg3 right">
-		<!-- no submit button needed here -->
-	</div>
-	<div class="clearfix"></div>
 </form>
 
 <!-- advanced block --------------------------------------------------->
@@ -77,61 +80,67 @@
 
 	<form name="manual_install" action="manual_install.php" method="post" class="{INSTALL_VISIBLE} top">
 		{FTAN}
-		<div class="fg3">
-			{TEXT_FILE}: "install.php"
-		</div>
-		<div class="fg9">
-			<input type="hidden" name="action" value="install">
-			<select name="file" class="wdt250">
-				<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-				<!-- BEGIN install_list_block -->
-				<option value="{VALUE}">{NAME}</option>
-				<!-- END install_list_block -->
-			</select>
-			<button type="submit" name="submit">
-				<i class="fa fa-fw fa-check"></i>
-				{TEXT_EXECUTE}
-			</button>
+		<div class="row">
+			<div class="fg3">
+				{TEXT_FILE}: "install.php"
+			</div>
+			<div class="fg9">
+				<input type="hidden" name="action" value="install">
+				<select name="file" class="wdt250">
+					<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
+					<!-- BEGIN install_list_block -->
+					<option value="{VALUE}">{NAME}</option>
+					<!-- END install_list_block -->
+				</select>
+				<button type="submit" name="submit">
+					<i class="fa fa-fw fa-check"></i>
+					{TEXT_EXECUTE}
+				</button>
+			</div>
 		</div>
 	</form>
 
 	<form name="manual_upgrade" action="manual_install.php" method="post" class="{UPGRADE_VISIBLE}">
 		{FTAN}
-		<div class="fg3">
-			{TEXT_FILE}: "upgrade.php"
-		</div>
-		<div class="fg9">
-			<input type="hidden" name="action" value="upgrade">
-			<select name="file" class="wdt250">
-				<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-				<!-- BEGIN install_list_block -->
-				<option value="{VALUE}">{NAME}</option>
-				<!-- END install_list_block -->
-			</select>
-			<button type="submit" name="submit">
-				<i class="fa fa-fw fa-check"></i>
-				{TEXT_EXECUTE}
-			</button>
+		<div class="row">
+			<div class="fg3">
+				{TEXT_FILE}: "upgrade.php"
+			</div>
+			<div class="fg9">
+				<input type="hidden" name="action" value="upgrade">
+				<select name="file" class="wdt250">
+					<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
+					<!-- BEGIN install_list_block -->
+					<option value="{VALUE}">{NAME}</option>
+					<!-- END install_list_block -->
+				</select>
+				<button type="submit" name="submit">
+					<i class="fa fa-fw fa-check"></i>
+					{TEXT_EXECUTE}
+				</button>
+			</div>
 		</div>
 	</form>
 
 	<form name="manual_uninstall" action="manual_install.php" method="post" class="{UNINSTALL_VISIBLE}">
 		{FTAN}
-		<div class="fg3">
-			{TEXT_FILE}: "uninstall.php"
-		</div>
-		<div class="fg9">
-			<input type="hidden" name="action" value="uninstall">
-			<select name="file" class="wdt250">
-				<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-				<!-- BEGIN install_list_block -->
-				<option value="{VALUE}">{NAME}</option>
-				<!-- END install_list_block -->
-			</select>
-			<button type="submit" name="submit">
-				<i class="fa fa-fw fa-check"></i>
-				{TEXT_EXECUTE}
-			</button>
+		<div class="row">
+			<div class="fg3">
+				{TEXT_FILE}: "uninstall.php"
+			</div>
+			<div class="fg9">
+				<input type="hidden" name="action" value="uninstall">
+				<select name="file" class="wdt250">
+					<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
+					<!-- BEGIN install_list_block -->
+					<option value="{VALUE}">{NAME}</option>
+					<!-- END install_list_block -->
+				</select>
+				<button type="submit" name="submit">
+					<i class="fa fa-fw fa-check"></i>
+					{TEXT_EXECUTE}
+				</button>
+			</div>
 		</div>
 	</form>
 

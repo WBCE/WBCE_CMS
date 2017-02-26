@@ -70,6 +70,7 @@ $template->set_var(array(
             'MODIFIED_BY_USERNAME' => $user['username'],
             'MODIFIED_WHEN' => $modified_ts,
             'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
+            'LAST_MODIFICATION' => $MESSAGE['PAGES_LAST_MODIFICATION'],
             ));
 
 $template->set_block('main_block', 'show_modify_block', 'show_modify');

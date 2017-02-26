@@ -11,43 +11,53 @@
 			<?=$admin->getFTAN()?>
 
         <!-- WEBSITE_TITLE -->
-        <div class="fg3">
-			<?=$TEXT['WEBSITE_TITLE']?>
-		</div>
-        <div class="fg9">
-			<input type="text" id="website_title" name="website_title" maxlength="30" value="<?=WEBSITE_TITLE?>" class="wdt350">
+        <div class="row">
+			<div class="fg3">
+				<?=$TEXT['WEBSITE_TITLE']?>
+			</div>
+			<div class="fg9">
+				<input type="text" id="website_title" name="website_title" maxlength="30" value="<?=WEBSITE_TITLE?>" class="wdt350">
+			</div>
 		</div>
 
         <!-- WEBSITE DESCRIPTION -->
-        <div class="fg3">
-			<?=$TEXT['WEBSITE_DESCRIPTION']?>
-		</div>
-        <div class="fg9">
-			<textarea id="website_description" name="website_description" class="wdt350"><?=WEBSITE_DESCRIPTION?></textarea>
+        <div class="row">
+			<div class="fg3">
+				<?=$TEXT['WEBSITE_DESCRIPTION']?>
+			</div>
+			<div class="fg9">
+				<textarea id="website_description" name="website_description" class="wdt350"><?=WEBSITE_DESCRIPTION?></textarea>
+			</div>
 		</div>
 
         <!-- WEBSITE KEYWORDS -->
-        <div class="fg3">
-			<?=$TEXT['WEBSITE_KEYWORDS']?>
-		</div>
-        <div class="fg9">
-			<textarea id="website_keywords" name="website_keywords" class="wdt350"><?=WEBSITE_KEYWORDS?></textarea>
+        <div class="row">
+			<div class="fg3">
+				<?=$TEXT['WEBSITE_KEYWORDS']?>
+			</div>
+			<div class="fg9">
+				<textarea id="website_keywords" name="website_keywords" class="wdt350"><?=WEBSITE_KEYWORDS?></textarea>
+			</div>
 		</div>
 
         <!-- WEBSITE HEADER -->
-        <div class="fg3">
-			<?=$TEXT['WEBSITE_HEADER']?>
-		</div>
-        <div class="fg9">
-			<textarea id="website_header" name="website_header" class="wdt350"><?=WEBSITE_HEADER?></textarea>
+        <div class="row">
+			<div class="fg3">
+				<?=$TEXT['WEBSITE_HEADER']?>
+			</div>
+			<div class="fg9">
+				<textarea id="website_header" name="website_header" class="wdt350"><?=WEBSITE_HEADER?></textarea>
+			</div>
 		</div>
 
          <!-- WEBSITE FOOTER -->
-        <div class="fg3">
-			<?=$TEXT['WEBSITE_FOOTER']?>
-		</div>
-        <div class="fg9">
-			<textarea id="website_footer" name="website_footer" class="wdt350"><?=WEBSITE_FOOTER?></textarea>
+        <div class="row">
+			<div class="fg3">
+				<?=$TEXT['WEBSITE_FOOTER']?>
+			</div>
+			<div class="fg9">
+				<textarea id="website_footer" name="website_footer" class="wdt350"><?=WEBSITE_FOOTER?></textarea>
+			</div>
 		</div>
 
 		<hr class="fg12">

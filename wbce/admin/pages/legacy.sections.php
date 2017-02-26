@@ -9,7 +9,7 @@
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  */
- 
+
 if(!defined('WB_PATH')){
 	require('../../config.php');
 }
@@ -174,6 +174,16 @@ switch ($action) {
         $jscal_use_time = true; // whether to use a clock, too
         require_once WB_PATH . "/include/jscalendar/wb-setup.php";
 
+        // Get display name of person who last modified the page
+		$user=$admin->get_user_details($results_array['modified_by']);
+
+		// Convert the unix ts for modified_when to human a readable form
+		if($results_array['modified_when'] != 0) {
+			$modified_ts = gmdate(TIME_FORMAT.', '.DATE_FORMAT, $results_array['modified_when']+TIMEZONE);
+		} else {
+			$modified_ts = 'Unknown';
+		}
+
         // Setup template object, parse vars to it, then parse it
         // Create new template object
         $tpl = new Template(dirname($admin->correct_theme_source('pages_sections.htt')));
@@ -206,6 +216,9 @@ switch ($action) {
             'TEXT_PUBL_START_DATE' => $TEXT{'PUBL_START_DATE'},
             'TEXT_PUBL_END_DATE' => $TEXT['PUBL_END_DATE'],
             'TEXT_ACTIONS' => $TEXT['ACTIONS'],
+            'MODIFIED_BY' => $user['display_name'],
+            'MODIFIED_BY_USERNAME' => $user['username'],
+            'MODIFIED_WHEN' => $modified_ts,
             'ADMIN_URL' => ADMIN_URL,
             'WB_URL' => WB_URL,
             'THEME_URL' => THEME_URL,
@@ -463,7 +476,9 @@ switch ($action) {
             'TEXT_ADD_SECTION' => $TEXT['ADD_SECTION'],
             'TEXT_MOVE_UP' => $TEXT['MOVE_UP'],
             'TEXT_MOVE_DOWN' => $TEXT['MOVE_DOWN'],
-        )
+            'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
+            'LAST_MODIFICATION' => $MESSAGE['PAGES_LAST_MODIFICATION'],
+       )
         );
         $tpl->parse('main', 'main_block', false);
         $tpl->pparse('output', 'page');

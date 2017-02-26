@@ -12,94 +12,106 @@
 
         <!-- Language -->
         <?php $selects=ds_GetLanguagesArray(); ?>
-        <div class="fg2"><?=$TEXT['LANGUAGE']?></div>
-        <div class="fg10">
-			<select name="default_language" id="default_language" class="wdt150">
-				<?php if (is_array($selects)) : ?>
-					<?php foreach ($selects as $value) : ?>
-						<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_LANGUAGE == $value['directory']) echo 'selected'; ?>  class="hasFlag" style="background-image: url(<?=WB_URL?>/languages/<?=$value['directory']?>.png);">
-							<?=$value['name']." (".$value['directory'].")"?>
-						</option>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</select>
+        <div class="row">
+			<div class="fg2"><?=$TEXT['LANGUAGE']?></div>
+			<div class="fg10">
+				<select name="default_language" id="default_language" class="wdt150">
+					<?php if (is_array($selects)) : ?>
+						<?php foreach ($selects as $value) : ?>
+							<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_LANGUAGE == $value['directory']) echo 'selected'; ?>  class="hasFlag" style="background-image: url(<?=WB_URL?>/languages/<?=$value['directory']?>.png);">
+								<?=$value['name']." (".$value['directory'].")"?>
+							</option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</select>
+			</div>
 		</div>
 
         <!-- Timezones -->
         <?php $selects=ds_GetTimezonesArray(); ?>
-        <div class="fg2"><?=$TEXT['TIMEZONE'] ?></div>
-        <div class="fg10">
-			<select name="default_timezone" id="default_timezone" class="wdt150">
-				<?php if (is_array($selects)) : ?>
-					<?php foreach ($selects as $key=>$value) : ?>
-						<option value="<?=$key ?>" <?php if (DEFAULT_TIMEZONE == $key*60*60) echo 'selected'; ?> >
-							<?=$value?>
-						</option>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</select>
+        <div class="row">
+			<div class="fg2"><?=$TEXT['TIMEZONE'] ?></div>
+			<div class="fg10">
+				<select name="default_timezone" id="default_timezone" class="wdt150">
+					<?php if (is_array($selects)) : ?>
+						<?php foreach ($selects as $key=>$value) : ?>
+							<option value="<?=$key ?>" <?php if (DEFAULT_TIMEZONE == $key*60*60) echo 'selected'; ?> >
+								<?=$value?>
+							</option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</select>
+			</div>
 		</div>
 
         <!-- Dateformats -->
         <?php $selects=ds_GetDateFormatArray(); ?>
-        <div class="fg2"><?=$TEXT['DATE_FORMAT'] ?></div>
-        <div class="fg10">
-			<select name="default_date_format" id="default_date_format" class="wdt150">
-				<?php if (is_array($selects)) : ?>
-					<?php foreach ($selects as $key=>$value) : ?>
-						<?php $key = str_replace('|', ' ', $key); ?>
-						<option value="<?=$key ?>" <?php if (DEFAULT_DATE_FORMAT == $key) echo 'selected'; ?> >
-							<?=$value?>
-						</option>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</select>
+        <div class="row">
+			<div class="fg2"><?=$TEXT['DATE_FORMAT'] ?></div>
+			<div class="fg10">
+				<select name="default_date_format" id="default_date_format" class="wdt150">
+					<?php if (is_array($selects)) : ?>
+						<?php foreach ($selects as $key=>$value) : ?>
+							<?php $key = str_replace('|', ' ', $key); ?>
+							<option value="<?=$key ?>" <?php if (DEFAULT_DATE_FORMAT == $key) echo 'selected'; ?> >
+								<?=$value?>
+							</option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</select>
+			</div>
 		</div>
 
         <!-- timeformats -->
         <?php $selects=ds_GetTimeFormatArray(); ?>
-        <div class="fg2"><?=$TEXT['TIME_FORMAT'] ?></div>
-        <div class="fg10">
-			<select name="default_time_format" id="default_time_format" class="wdt150">
-				<?php if (is_array($selects)) : ?>
-					<?php foreach ($selects as $key=>$value) : ?>
-						<?php $key = str_replace('|', ' ', $key);?>
-						<option value="<?=$key ?>" <?php if (DEFAULT_TIME_FORMAT == $key) echo 'selected'; ?> >
-							<?=$value?>
-						</option>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</select>
+        <div class="row">
+			<div class="fg2"><?=$TEXT['TIME_FORMAT'] ?></div>
+			<div class="fg10">
+				<select name="default_time_format" id="default_time_format" class="wdt150">
+					<?php if (is_array($selects)) : ?>
+						<?php foreach ($selects as $key=>$value) : ?>
+							<?php $key = str_replace('|', ' ', $key);?>
+							<option value="<?=$key ?>" <?php if (DEFAULT_TIME_FORMAT == $key) echo 'selected'; ?> >
+								<?=$value?>
+							</option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</select>
+			</div>
 		</div>
 
          <!-- Default FE template -->
         <?php $selects=ds_GetTemplatesArray(); ?>
-        <div class="fg2"><?=$TEXT['TEMPLATE'] ?></div>
-        <div class="fg10">
-			<select name="default_template" id="default_template" class="wdt250">
-				<?php if (is_array($selects)) : ?>
-					<?php foreach ($selects as $value) : ?>
-						<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_TEMPLATE == $value['directory']) echo 'selected'; ?> >
-							<?=$value['name']." (".$value['directory'].")"?>
-						</option>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</select>
+        <div class="row">
+			<div class="fg2"><?=$TEXT['TEMPLATE'] ?></div>
+			<div class="fg10">
+				<select name="default_template" id="default_template" class="wdt250">
+					<?php if (is_array($selects)) : ?>
+						<?php foreach ($selects as $value) : ?>
+							<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_TEMPLATE == $value['directory']) echo 'selected'; ?> >
+								<?=$value['name']." (".$value['directory'].")"?>
+							</option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</select>
+			</div>
 		</div>
 
         <!-- Default BE theme -->
         <?php $selects=ds_GetThemesArray(); ?>
-        <div class="fg2"><?=$TEXT['THEME'] ?></div>
-        <div class="fg10">
-			<select name="default_theme" id="default_theme" class="wdt250">
-				<?php if (is_array($selects)) : ?>
-					<?php foreach ($selects as $value) : ?>
-						<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_THEME == $value['directory']) echo 'selected'; ?> >
-							<?=$value['name']." (".$value['directory'].")" ?>
-						</option>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</select>
+        <div class="row">
+			<div class="fg2"><?=$TEXT['THEME'] ?></div>
+			<div class="fg10">
+				<select name="default_theme" id="default_theme" class="wdt250">
+					<?php if (is_array($selects)) : ?>
+						<?php foreach ($selects as $value) : ?>
+							<option value="<?=$value['directory'] ?>" <?php if (DEFAULT_THEME == $value['directory']) echo 'selected'; ?> >
+								<?=$value['name']." (".$value['directory'].")" ?>
+							</option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</select>
+			</div>
 		</div>
 
         <hr class="fg12">

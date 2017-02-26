@@ -29,28 +29,34 @@
         <?=$admin->getFTAN(); ?>
 
         <!-- DEFAULT_SENDER_MAIL -->
-        <div class="fg4"><?=$TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] ?></div>
-        <div class="fg8">
-			<input class="wdt250" type="text" id="server_email" name="server_email" maxlength="255"  value="<?=SERVER_EMAIL?>">
+        <div class="row">
+			<div class="fg4"><?=$TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] ?></div>
+			<div class="fg8">
+				<input class="wdt250" type="text" id="server_email" name="server_email" maxlength="255"  value="<?=SERVER_EMAIL?>">
+			</div>
         </div>
 
         <!-- DEFAULT_SENDER_MAIL -->
-        <div class="fg4"><?=$TEXT['WBMAILER_DEFAULT_SENDER_NAME'] ?></div>
-        <div class="fg8">
-			<input class="wdt250" type="text" id="wbmailer_default_sendername" name="wbmailer_default_sendername" maxlength="255"  value="<?=WBMAILER_DEFAULT_SENDERNAME?>">
-		</div>
+        <div class="row">
+			<div class="fg4"><?=$TEXT['WBMAILER_DEFAULT_SENDER_NAME'] ?></div>
+			<div class="fg8">
+				<input class="wdt250" type="text" id="wbmailer_default_sendername" name="wbmailer_default_sendername" maxlength="255"  value="<?=WBMAILER_DEFAULT_SENDERNAME?>">
+			</div>
+        </div>
 
         <!-- WBMAILER_FUNCTION -->
-        <div class="fg4" ><?=$TEXT['WBMAILER_FUNCTION'] ?></div>
-        <div class="fg8">
-			<label>
-				<input type="radio" name="wbmailer_routine" id="mailer-php" value="phpmail" <?php if (WBMAILER_ROUTINE=="phpmail") echo WB_CHECK; ?> >
-				<?=$TEXT['WBMAILER_PHP'] ?>
-			</label>
-			<label>
-				<input type="radio" name="wbmailer_routine" id="mailer-smtp" style="width: 14px; height: 14px;" value="smtp" <?php if (WBMAILER_ROUTINE=="smtp") echo WB_CHECK; ?> >
-				<?=$TEXT['WBMAILER_SMTP'] ?>
-			</label>
+        <div class="row">
+			<div class="fg4" ><?=$TEXT['WBMAILER_FUNCTION'] ?></div>
+			<div class="fg8">
+				<label>
+					<input type="radio" name="wbmailer_routine" id="mailer-php" value="phpmail" <?php if (WBMAILER_ROUTINE=="phpmail") echo WB_CHECK; ?> >
+					<?=$TEXT['WBMAILER_PHP'] ?>
+				</label>
+				<label>
+					<input type="radio" name="wbmailer_routine" id="mailer-smtp" style="width: 14px; height: 14px;" value="smtp" <?php if (WBMAILER_ROUTINE=="smtp") echo WB_CHECK; ?> >
+					<?=$TEXT['WBMAILER_SMTP'] ?>
+				</label>
+			</div>
         </div>
 
         <div id="smtp-settings" <?php if (WBMAILER_ROUTINE=="smtp") echo 'style="display:block"'; else echo 'style="display:none"'; ?>>
@@ -62,27 +68,35 @@
  			<hr class="fg12 top bot">
 
 			<!-- WBMAILER_SMTP_HOST -->
-            <div class="fg4"><?=$TEXT['WBMAILER_SMTP_HOST'] ?></div>
-            <div class="fg8">
-				<input class="wdt250" type="text" id="wbmailer_smtp_host" name="wbmailer_smtp_host" maxlength="250"  value="<?=WBMAILER_SMTP_HOST?>" >
+			<div class="row">
+				<div class="fg4"><?=$TEXT['WBMAILER_SMTP_HOST'] ?></div>
+				<div class="fg8">
+					<input class="wdt250" type="text" id="wbmailer_smtp_host" name="wbmailer_smtp_host" maxlength="250"  value="<?=WBMAILER_SMTP_HOST?>" >
+				</div>
             </div>
 
             <!-- WBMAILER_SMTP_AUTH -->
-            <div class="fg4"><?=$TEXT['WBMAILER_SMTP_AUTH'] ?></div>
-            <div class="fg8">
-				<input type="checkbox" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="true" disabled checked>
+			<div class="row">
+				<div class="fg4"><?=$TEXT['WBMAILER_SMTP_AUTH'] ?></div>
+				<div class="fg8">
+					<input type="checkbox" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="true" disabled checked>
+				</div>
             </div>
 
             <!-- WBMAILER_SMTP_USERNAME -->
-            <div class="fg4"><?=$TEXT['WBMAILER_SMTP_USERNAME'] ?></div>
-            <div class="fg8">
-				<input class="wdt150" type="text" id="wbmailer_smtp_username" name="wbmailer_smtp_username" maxlength="250"  value="<?=WBMAILER_SMTP_USERNAME?>" >
+			<div class="row">
+				<div class="fg4"><?=$TEXT['WBMAILER_SMTP_USERNAME'] ?></div>
+				<div class="fg8">
+					<input class="wdt150" type="text" id="wbmailer_smtp_username" name="wbmailer_smtp_username" maxlength="250"  value="<?=WBMAILER_SMTP_USERNAME?>" >
+				</div>
             </div>
 
             <!-- WBMAILER_SMTP_PASSWORD -->
-            <div class="fg4"><?=$TEXT['WBMAILER_SMTP_PASSWORD'] ?></div>
-            <div class="fg8">
-				<input class="wdt150" type="password" id="wbmailer_smtp_password" name="wbmailer_smtp_password" maxlength="250"  value="<?=WBMAILER_SMTP_PASSWORD?>" >
+			<div class="row">
+				<div class="fg4"><?=$TEXT['WBMAILER_SMTP_PASSWORD'] ?></div>
+				<div class="fg8">
+					<input class="wdt150" type="password" id="wbmailer_smtp_password" name="wbmailer_smtp_password" maxlength="250"  value="<?=WBMAILER_SMTP_PASSWORD?>" >
+				</div>
             </div>
 
         </div>
