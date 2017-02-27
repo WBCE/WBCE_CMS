@@ -1,4 +1,0 @@
-Format: 1.51
-
-Alter Language: PHP
-        Add Ignored Function Prefixes in Index: opf_

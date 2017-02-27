@@ -17,6 +17,7 @@
 			</div>
 			<div class="fg9">
 				<input type="text" id="website_title" name="website_title" maxlength="30" value="<?=WEBSITE_TITLE?>" class="wdt350">
+				<span class="title-counter"></span> Zeichen [<span class="title-remain"></span> Rest]
 			</div>
 		</div>
 
@@ -27,6 +28,7 @@
 			</div>
 			<div class="fg9">
 				<textarea id="website_description" name="website_description" class="wdt350"><?=WEBSITE_DESCRIPTION?></textarea>
+				<span class="desc-counter"></span> Zeichen [<span class="desc-remain"></span> Rest]
 			</div>
 		</div>
 
@@ -77,3 +79,55 @@
 
     </form>
 </section>
+
+<script>
+	$(document).ready(function() {
+		// title char-counter
+		var titleLimit = 30;
+		var titleInit = $('#website_title').val().length;
+		var titleTail = titleLimit - titleInit;
+		$('.title-counter').html(titleInit).css('color','#147d14');
+		$('.title-remain').html(titleTail).css('color','#147d14');
+
+		$('#website_title').keyup(function(){
+			var count = $(this).val().length;
+			$('.title-counter').html(count);
+			$('.title-remain').html(titleLimit - count);
+			if (count > titleLimit) {
+				$('.title-counter').css('color','firebrick');
+				$('.title-remain').css('color','firebrick').html(0);
+			} else {
+				$('.title-counter').css('color','#147d14');
+				if ($('.title-remain').html() == 0) {
+					$('.title-remain').css('color','firebrick');
+				} else {
+					$('.title-remain').css('color','#147d14');
+				}
+			}
+		});
+
+		// description char-counter
+		var descLimit = 150;
+		var descInit = $('#website_description').val().length;
+		var descTail = descLimit - descInit;
+		$('.desc-counter').html(descInit).css('color','#147d14');
+		$('.desc-remain').html(descTail).css('color','#147d14');
+
+		$('#website_description').keyup(function(){
+			var count = $(this).val().length;
+			$('.desc-counter').html(count);
+			$('.desc-remain').html(descLimit - count);
+			if (count > descLimit) {
+				$('.desc-counter').css('color','firebrick');
+				$('.desc-remain').css('color','firebrick').html(0);
+			} else {
+				$('.desc-counter').css('color','#147d14');
+				if ($('.desc-remain').html() == 0) {
+					$('.desc-remain').css('color','firebrick');
+				} else {
+					$('.desc-remain').css('color','#147d14');
+				}
+			}
+		});
+	});
+</script>

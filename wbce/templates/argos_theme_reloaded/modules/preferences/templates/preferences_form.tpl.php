@@ -12,7 +12,7 @@
 	</div>
 <?php endif; ?>
 
-<h2><?=$HEADING['MY_SETTINGS']?></h2>
+<h2><?=$MENU['PREFERENCES']?></h2>
 
 <section class="preferences fg12 content-box">
 	<div class="fg12 top bot"><?=$TOOL['DESCRIPTION']; ?></div>

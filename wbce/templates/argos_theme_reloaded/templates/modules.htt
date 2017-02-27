@@ -1,6 +1,6 @@
 <!-- BEGIN main_block -->
 <h2>
-	Erweiterungen &raquo; Module
+	{TEXT_ADDONS} &raquo; {TEXT_MODULES}
 	<div class="headline-link">
 		<i class="fa fa-map"> {URL_TEMPLATES}</i>
 		&nbsp;&nbsp;|&nbsp;&nbsp;

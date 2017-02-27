@@ -1,3 +1,0 @@
-Header: Create Inline-Filter (en)
-
-Please see <Admin-Tool (en)> on how to create an Inline-Filter.

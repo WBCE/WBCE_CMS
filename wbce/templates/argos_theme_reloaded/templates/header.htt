@@ -58,7 +58,7 @@
 <div id="admin-header">
 	<div id="header-top">
 		<h1 id="header" class="fg6">
-			<a href="{ADMIN_URL}" title="{TITLE_START}" id="website_title">
+			<a href="{ADMIN_URL}" title="{TITLE_START}">
 			{WEBSITE_TITLE} - {TEXT_ADMINISTRATION}
 			</a>
 		</h1>

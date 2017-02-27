@@ -487,6 +487,7 @@ div.no-page-found {
 }
 #page-sections tr:hover {
 	background-color: #d5dde7;
+	cursor: move;
 }
 #page-sections td {
 	vertical-align: middle !important;

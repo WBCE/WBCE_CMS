@@ -45,14 +45,14 @@
 				<div class="row">
 					<div class="fg4">{TEXT_MENU_TITLE}:</div>
 					<div class="fg8">
-						<input type="text" name="menu_title" value="{MENU_TITLE}">
+						<input type="text" name="menu_title" value="{MENU_TITLE}" class="wdt250">
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="fg4">{TEXT_FILENAME}:</div>
 					<div class="fg8">
-						<input type="text" name="link" value="{LINK_VALUE}"><span style="vertical-align: -5px;">&nbsp;{PAGE_EXTENSION}</span>
+						<input type="text" name="link" value="{LINK_VALUE}"style="width:220px;"><span style="vertical-align: -5px;">&nbsp;{PAGE_EXTENSION}</span>
 					</div>
 				</div>
 
@@ -72,7 +72,7 @@
 				<div class="row">
 					<div class="fg4">{TEXT_VISIBILITY}:</div>
 					<div class="fg8">
-						<select name="visibility" onchange="javascript: toggle_viewers();">
+						<select name="visibility" onchange="javascript: toggle_viewers();" class="wdt250">
 							<option value="public" {PUBLIC_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">
 								{TEXT_PUBLIC}
 							</option>
@@ -93,23 +93,27 @@
 				</div>
 
 				<div class="row">
-					<div class="fg4">{TEXT_DESCRIPTION}:</div>
+					<div class="fg4">
+						{TEXT_DESCRIPTION}:
+						<br>
+						<span class="desc-counter"></span> Zeichen [<span class="desc-remain"></span> Rest]
+					</div>
 					<div class="fg8">
-						<textarea name="description">{DESCRIPTION}</textarea>
+						<textarea name="description" class="site-description wdt250">{DESCRIPTION}</textarea>
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="fg4">{TEXT_KEYWORDS}:</div>
 					<div class="fg8">
-						<textarea name="keywords">{KEYWORDS}</textarea>
+						<textarea name="keywords" class="wdt250">{KEYWORDS}</textarea>
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="fg4">{TEXT_TARGET}:</div>
 					<div class="fg8">
-						<select name="target" >
+						<select name="target" class="wdt150">
 							<option value="_blank" {BLANK_SELECTED}>
 								{TEXT_NEW_WINDOW}
 							</option>
@@ -126,7 +130,7 @@
 				<div class="row">
 				<div class="fg4">{TEXT_TEMPLATE}:</div>
 				<div class="fg8">
-					<select name="template">
+					<select name="template" class="wdt150">
 						<option value="" style="border-bottom:1px solid #666;">{TEXT_SYSTEM_DEFAULT}</option>
 						<!-- BEGIN template_list_block -->
 						<option value="{VALUE}" {SELECTED}>{NAME}</option>
@@ -140,7 +144,7 @@
 						{TEXT_MENU}:
 					</div>
 					<div class="fg8" style="{DISPLAY_MENU_LIST}">
-						<select name="menu">
+						<select name="menu" class="wdt150">
 							<!-- BEGIN menu_list_block -->
 							<option value="{VALUE}" {SELECTED}>{NAME}</option>
 							<!-- END menu_list_block -->
@@ -154,7 +158,7 @@
 						{TEXT_LANGUAGE}:
 					</div>
 					<div class="fg8" style="{DISPLAY_LANGUAGE_LIST}">
-						<select name="language">
+						<select name="language" class="wdt150">
 							<!-- BEGIN language_list_block -->
 							<option value="{VALUE}" {SELECTED} class="hasFlag" style="background-image:url({WB_URL}/languages/{VALUE}.png);">{NAME}</option>
 							<!-- END language_list_block -->
@@ -167,7 +171,7 @@
 					<div class="row">
 						<div class="fg4">{TEXT_PAGE_CODE}:</div>
 						<div class="fg8">
-							<select name="page_code">
+							<select name="page_code" class="wdt150">
 								<!-- BEGIN page_code_list_block -->
 								<option value="{VALUE}" {SELECTED}>{PAGE_VALUE}</option>
 								<!-- END page_code_list_block -->
@@ -179,7 +183,7 @@
 				<div class="row">
 					<div class="fg4">{TEXT_SEARCHING}:</div>
 					<div class="fg8">
-						<select name="searching">
+						<select name="searching" class="wdt150">
 							<option value="1">{TEXT_ENABLED}</option>
 							<option value="0" {SEARCHING_DISABLED}>{TEXT_DISABLED}</option>
 						</select>
@@ -232,3 +236,31 @@
 	</section>
 </section>
 <!-- END main_block -->
+
+<script>
+	$(document).ready(function() {
+		// description char-counter
+		var descLimit = 150;
+		var descInit = $('.site-description').val().length;
+		var descTail = descLimit - descInit;
+		$('.desc-counter').html(descInit).css('color','#147d14');
+		$('.desc-remain').html(descTail).css('color','#147d14');
+
+		$('.site-description').keyup(function(){
+			var count = $(this).val().length;
+			$('.desc-counter').html(count);
+			$('.desc-remain').html(descLimit - count);
+			if (count > descLimit) {
+				$('.desc-counter').css('color','firebrick');
+				$('.desc-remain').css('color','firebrick').html(0);
+			} else {
+				$('.desc-counter').css('color','#147d14');
+				if ($('.desc-remain').html() == 0) {
+					$('.desc-remain').css('color','firebrick');
+				} else {
+					$('.desc-remain').css('color','#147d14');
+				}
+			}
+		});
+	});
+</script>
