@@ -224,6 +224,7 @@ textarea.code, input.code {
 }
 
 /* select boxes */
+/* styling for select2 --> in file(s) where it is needed ! */
 select {
 	border: 1px solid #999;
 	background-color: #eee;
