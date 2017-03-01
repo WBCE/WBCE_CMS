@@ -5,10 +5,17 @@
  * @author Karelkin Vladislav
  * @copyright 2007/2013 GPL
 
- Version 1.8.4 20131006 (Ruud)
- - Small bugfix for topics module pages (thnx fischstäbchenbrenner)
- - Bugfix when multiple modules are on one page. (thnx fischstäbchenbrenner)
- 
+ Version 1.8.6 20160215 (Ruud)
+ - set Shorturl default to false. (was true by accident)
+ - xsl style set to relative path
+
+ Version 1.8.5 20160210 (Ruud)
+ - added oneforall support (multiple named modules possible)
+ - added optional xsl for browser viewing.
+
+ Version 1.8.4 20131004 (Ruud)
+ - few small bugfixes for Topics module
+
  Version 1.8.3 20130814 (Ruud)
  - small bugix on using an undeclared static variable
 
@@ -16,9 +23,9 @@
  - Added support when shorturl is used
  - Prevent multiple listings when pages have multiple sections
  - Prevent "empty links" to be listed.
- 
+
  Version 1.8.1 20130426 (Christoph Marti)
- - Relies on section_id instead of page_id to check module page visibility 
+ - Relies on section_id instead of page_id to check module page visibility
 
  Version 1.8.0 (Christoph Marti)
  - Reworked some parts of the code
@@ -28,11 +35,11 @@
  - Added Showcase module
 
  Version 1.7.0 (Ruud)
- - List only post on newspages that are public 
+ - List only post on newspages that are public
 
  Version 1.6.0.20100917 (Ruud)
- - Added Topics module 
- 
+ - Added Topics module
+
  Version 1.5.4.20100520 (MurgtalNet on WB Forum)
  - Debugs on admin path
 
@@ -44,13 +51,13 @@
 
  Version 1.5.2.20090918 (Olivier Labbe (a.k.a. VotreEspace))
  - Add portfolio module possibilities
- 
+
  Version 1.5.1.20090725 (Olivier Labbe (a.k.a. VotreEspace))
  - Will not show outside links from menu link
- 
+
  Version 1.5 (Ruud, thanks to "Mike")
  - The homepage is now listed as the WB_URL (without /pages/home.php)
- 
+
  Version 1.4 (Christoph Marti)
  - Replaced the hardcoded page directory name /pages by the wb constant PAGES_DIRECTORY
  - Added feature to hide urls which contain unwanted words (eg. for web pages which are blocked by robots.txt)
@@ -72,8 +79,11 @@
 
 // Set configuration values
 
+$sitemap_version = '1.8.6';
+
 // Debug information on / off
 $debug               = false;
+if(isset($_GET['debug'])) $debug = true;
 
 // If shorturl is used, no pages and .php
 // For use with shorturl V3: http://www.dev4me.nl/modules-snippets/opensource/shortlinks/
@@ -104,7 +114,7 @@ $bakery_frequency    = "weekly";  	//
 
 // Catalog Module
 $catalogs_priority    = "0.5";		//
-$catalogs_frequency   = "weekly";  	// 
+$catalogs_frequency   = "weekly";  	//
 
 // Portfolio Module
 $portfolio_priority  = "0.5";		//
@@ -118,6 +128,13 @@ $topics_frequency    = "weekly";  	//
 // Showcase Module
 $showcase_priority   = "0.5";		//
 $showcase_frequency  = "weekly";  	//
+
+// OneForAll Module
+$oneforall_mod_names	= "oneforall";	// Names of the oneforall modules. Seperated by a comma.
+//$oneforall_mod_names	= "oneforall,projects,portfolio";	// Names of the oneforall modules. Seperated by a comma.
+
+$oneforall_priority    	= "0.5";		//
+$oneforall_frequency  	= "weekly";  	//
 
 
 // -------------------------------------------------------------------------
@@ -183,7 +200,7 @@ function check_link($link, $exclude) {
 		$unwanted = "Skipped empty link\n";
 		return $unwanted;
 	}
-	
+
 	$listed[] = $link;
 	return true;
 }
@@ -234,8 +251,8 @@ if ($debug) {
 <?php
 } else {
 	@header("Content-Type: application/xml");
-	echo '<?xml version="1.0" encoding="UTF-8"?>';
-	echo "\n";
+	echo '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
+	if(file_exists('./google_sitemap.xsl')) echo '<?xml-stylesheet type="text/xsl" href="google_sitemap.xsl"?>'.PHP_EOL;
 	echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 }
 
@@ -254,13 +271,12 @@ $sql = "SELECT p.`link`, p.`modified_when`, p.`parent`, p.`position`, s.`section
 			AND (s.`publ_start` = '0' OR s.`publ_start` <= $ts)
 			AND (s.`publ_end` = '0' OR s.`publ_end` >= $ts)
 		ORDER BY p.`parent`, p.`position` ASC";
-	$result = $database->query($sql);
+$result = $database->query($sql);
 
 // Loop through the pages
 if ($result && $result->numRows() > 0) {
 	while ($page = $result->fetchRow()) {
-		$public[]  = $page['section_id'];
-		$modules[] = $page['module'];
+
 		$checked = check_link($page['link'], $exclude);
 
 		if ($checked === true) {
@@ -269,7 +285,7 @@ if ($result && $result->numRows() > 0) {
 			$freq    = $page_frequency;
 			$pri     = $page_priority;
 			if ($page['parent'] == 0) {
-				if ($page['position'] == 1) {  
+				if ($page['position'] == 1) {
 					$pri  = $page_home_priority;   // Should be the homepage
 					$link = WB_URL.'/';
 				} else {
@@ -278,6 +294,8 @@ if ($result && $result->numRows() > 0) {
 			}
 			output_xml($link, $lastmod, $freq, $pri);
 			$counter++;
+			$public[]  = $page['section_id'];
+			$modules[] = $page['module'];
 		}
 		else {
 			$debug_info[] = $checked;
@@ -310,9 +328,9 @@ if (in_array('news', $modules)) {
 			if (!in_array($news['section_id'], $public)) continue;
 			$checked = check_link($news['link'], $exclude);
 			if ($checked === true) {
-				$link     = htmlspecialchars($wb->page_link($news['link']));	
+				$link     = htmlspecialchars($wb->page_link($news['link']));
 				$lastweek = time() - (4 * 7 * 24 * 60 * 60);
-				if ($news['posted_when'] < $lastweek) { 
+				if ($news['posted_when'] < $lastweek) {
 					$news_priority = $news_old_priority;
 				}
 				if ((version_compare(WB_VERSION, '2.7.0') <= 0) && $news['published_when'] > 0){
@@ -415,7 +433,7 @@ if (in_array($topics_mod_name, $modules)) {
 	$t = mktime ( (int) gmdate("H"), (int) gmdate("i"), (int) gmdate("s"), (int) gmdate("n"), (int) gmdate("j"), (int) gmdate("Y")) + DEFAULT_TIMEZONE;
 	$sql = "SELECT `section_id`, `link`, `posted_modified`
 			FROM `".TABLE_PREFIX."mod_".$topics_mod_name."`
-			WHERE (`active` > '3' OR `hascontent` = '1')
+			WHERE (`active` > '3' OR `active` = '1')
 				AND (`published_when` = '0' OR `published_when` < ".$t.")
 				AND (`published_until` = '0' OR `published_until` > ".$t.")
 			ORDER BY `position` DESC";
@@ -465,6 +483,32 @@ if (in_array('showcase', $modules)) {
 	}
 }
 
+$oneforall_mods = explode(',',$oneforall_mod_names);
+foreach ( $oneforall_mods as $oneforall_mod_name) {
+	$oneforall_mod_name = trim($oneforall_mod_name);
+	if (in_array($oneforall_mod_name, $modules)) {
+		$sql = "SELECT `section_id`,  `page_id`, `link`, `modified_when`
+				FROM `".TABLE_PREFIX."mod_".$oneforall_mod_name."_items`
+				WHERE `active` = '1'";
+		$rs_oneforall = $database->query($sql);
+		if($rs_oneforall->numRows() > 0) {
+			while($oneforall = $rs_oneforall->fetchRow()) {
+				if (!in_array($oneforall['section_id'], $public)) continue;
+				$page = $database->get_one("SELECT `link` FROM `".TABLE_PREFIX."pages` WHERE `page_id`='".$oneforall['page_id']."'");
+				$checked = check_link($page.$oneforall['link'], $exclude);
+				if ($checked === true) {
+					$link    = htmlspecialchars($wb->page_link($page.$oneforall['link']));
+					$lastmod = gmdate("Y-m-d", $oneforall['modified_when']+TIMEZONE);
+					output_xml($link, $lastmod, $oneforall_frequency, $oneforall_priority);
+					$counter++;
+				}
+				else {
+					$debug_info[] = $checked;
+				}
+			}
+		}
+	}
+}
 
 // Add another module here...
 // Example code
