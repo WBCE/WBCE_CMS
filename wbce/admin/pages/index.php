@@ -12,7 +12,8 @@ if(!defined('WB_PATH')){
 	require('../../config.php');
 }
 $sArea = 'index';
-$sFile = WB_PATH.'/modules/backend_pages/pages/'.$sArea.'.php';
+// dont arm this yet
+$sFile = WB_PATH.'/modules/backend_pages/tool_not_yet.php';
 if(is_readable($sFile)){
 	
 	$_GET['tool'] = "backend_pages"; 
@@ -22,9 +23,9 @@ if(is_readable($sFile)){
 	$tool = new tool("backend", "backend_pages");	
 	$tool->adminSection = "pages";
 	$tool->adminAccess  = "start";
-	$tool->returnUrl    = ADMIN_URL.'/pages/'.$sArea.'.php';	
+	$tool->returnUrl    = ADMIN_URL.'/pages/index.php';	
 	$tool->Process(true);
 	
 }else{
-	include(ADMIN_PATH.'/pages/legacy.'.$sArea.'.php');
+	include(ADMIN_PATH.'/pages/legacy.index.php');
 }
