@@ -8,22 +8,22 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'IT';
-$language_name = 'Italy';
+$language_name = 'Italian'; // Italiano
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Roberto Rossi';
 $language_license = 'GNU General Public License';
 
-	
+
 
 
 $MENU['ACCESS'] = 'Accesso';

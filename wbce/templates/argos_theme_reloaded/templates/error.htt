@@ -1,0 +1,7 @@
+<!-- BEGIN main_block -->
+<div class="fg12 error-box top">
+	<i class=" fa fa-2x fa-warning signal"></i>
+	<p>{MESSAGE}</p>
+	<p><a href="{LINK}" name="submit">{BACK}</a></p>
+</div>
+<!-- END main_block -->

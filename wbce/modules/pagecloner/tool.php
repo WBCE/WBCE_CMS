@@ -1,7 +1,5 @@
 <?php
-
 /*
-
  Website Baker Project <http://www.websitebaker.org/>
  Copyright (C) 2004-2008, Ryan Djurovich
 
@@ -18,7 +16,6 @@
  You should have received a copy of the GNU General Public License
  along with Website Baker; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 */
 
 // Direct access prevention
@@ -38,10 +35,10 @@ if(LANGUAGE_LOADED) {
 echo '<p>'.$PCTEXT['INTRO_TEXT'].'</p>';
 
 // fetch pagelist and show them + clone button
-//  
+//
 // $admin = new admin('Pages', 'pages');
 // Include the WB functions file
-//  
+//
 
 ?>
 <script type="text/javascript" language="javascript">
@@ -106,13 +103,11 @@ function make_list($parent, $editable_pages) {
 	global $admin, $template, $database, $TEXT, $PCTEXT, $MESSAGE;
 	?>
 	<ul id="p<?php echo $parent; ?>" <?php if($parent != 0) { echo 'class="page_list"'; } ?>>
-	<?php	
+	<?php
 	// Get page list from database
-	$database = new database();
-		$query = "SELECT * FROM ".TABLE_PREFIX."pages WHERE parent = '$parent' AND visibility != 'deleted' ORDER BY position ASC";
-
+	$query = "SELECT * FROM ".TABLE_PREFIX."pages WHERE parent = '$parent' AND visibility != 'deleted' ORDER BY position ASC";
 	$get_pages = $database->query($query);
-	
+
 	// Insert values into main page list
 	if($get_pages->numRows() > 0)	{
 		while($page = $get_pages->fetchRow()) {
@@ -134,7 +129,7 @@ function make_list($parent, $editable_pages) {
 			} else {
 				$can_modify = false;
 			}
-						
+
 			// Work out if we should show a plus or not
 			if(PAGE_TRASH != 'inline') {
 				$get_page_subs = $database->query("SELECT page_id,admin_groups,admin_users FROM ".TABLE_PREFIX."pages WHERE parent = '".$page['page_id']."' AND visibility!='deleted'");
@@ -146,11 +141,11 @@ function make_list($parent, $editable_pages) {
 			} else {
 				$display_plus = false;
 			}
-			
+
 			// Work out how many pages there are for this parent
 			$num_pages = $get_pages->numRows();
 			?>
-			
+
 			<li id="p<?php echo $page['parent']; ?>" style="padding: 2px 0px 2px 0px;">
 			<table width="720" cellpadding="1" cellspacing="0" border="0" style="background-color: #F0F0F0;">
 			<tr>
@@ -195,7 +190,7 @@ function make_list($parent, $editable_pages) {
 			</tr>
 			</table>
 			</li>
-							
+
 			<?php
 			// Get subs
 			$editable_pages=make_list($page['page_id'], $editable_pages);
@@ -287,29 +282,31 @@ if($editable_pages == 0) {
 }
 
 // Insert language headings
-$template->set_var(array(
-								'HEADING_ADD_PAGE' => $HEADING['ADD_PAGE'],
-								'HEADING_MODIFY_INTRO_PAGE' => $HEADING['MODIFY_INTRO_PAGE']
-								)
-						);
+$template->set_var(
+	array(
+		'HEADING_ADD_PAGE' => $HEADING['ADD_PAGE'],
+		'HEADING_MODIFY_INTRO_PAGE' => $HEADING['MODIFY_INTRO_PAGE']
+	)
+
+);
 // Insert language text and messages
-$template->set_var(array(
-								'TEXT_TITLE' => $TEXT['TITLE'],
-								'TEXT_TYPE' => $TEXT['TYPE'],
-								'TEXT_PARENT' => $TEXT['PARENT'],
-								'TEXT_VISIBILITY' => $TEXT['VISIBILITY'],
-								'TEXT_PUBLIC' => $TEXT['PUBLIC'],
-								'TEXT_PRIVATE' => $TEXT['PRIVATE'],
-								'TEXT_REGISTERED' => $TEXT['REGISTERED'],
-								'TEXT_HIDDEN' => $TEXT['HIDDEN'],
-								'TEXT_NONE' => $TEXT['NONE'],
-								'TEXT_NONE_FOUND' => $TEXT['NONE_FOUND'],
-								'TEXT_ADD' => $TEXT['ADD'],
-								'TEXT_RESET' => $TEXT['RESET'],
-								'TEXT_ADMINISTRATORS' => $TEXT['ADMINISTRATORS'],								
-								'TEXT_PRIVATE_VIEWERS' => $TEXT['PRIVATE_VIEWERS'],
-								'TEXT_REGISTERED_VIEWERS' => $TEXT['REGISTERED_VIEWERS'],
-								'INTRO_LINK' => $MESSAGE['PAGES']['INTRO_LINK'],
-								)
-						);
-?>
+$template->set_var(
+	array(
+		'TEXT_TITLE' => $TEXT['TITLE'],
+		'TEXT_TYPE' => $TEXT['TYPE'],
+		'TEXT_PARENT' => $TEXT['PARENT'],
+		'TEXT_VISIBILITY' => $TEXT['VISIBILITY'],
+		'TEXT_PUBLIC' => $TEXT['PUBLIC'],
+		'TEXT_PRIVATE' => $TEXT['PRIVATE'],
+		'TEXT_REGISTERED' => $TEXT['REGISTERED'],
+		'TEXT_HIDDEN' => $TEXT['HIDDEN'],
+		'TEXT_NONE' => $TEXT['NONE'],
+		'TEXT_NONE_FOUND' => $TEXT['NONE_FOUND'],
+		'TEXT_ADD' => $TEXT['ADD'],
+		'TEXT_RESET' => $TEXT['RESET'],
+		'TEXT_ADMINISTRATORS' => $TEXT['ADMINISTRATORS'],
+		'TEXT_PRIVATE_VIEWERS' => $TEXT['PRIVATE_VIEWERS'],
+		'TEXT_REGISTERED_VIEWERS' => $TEXT['REGISTERED_VIEWERS'],
+		'INTRO_LINK' => $MESSAGE['PAGES']['INTRO_LINK'],
+	)
+);

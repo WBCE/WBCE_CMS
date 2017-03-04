@@ -1,0 +1,62 @@
+<!-- BEGIN mainBlock -->
+<!doctype html>
+<html lang="de">
+<head>
+	<title>{TEXT_LOGIN}</title>
+	<meta charset="{CHARSET}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
+	<link href="{THEME_URL}/css/login.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onload="document.forgot_pass.email.focus();">
+
+	<div id="container">
+		<header class="fg-center">
+			<div class="fg-row">
+				<h1 class="fg12 center">{SECTION_FORGOT}</h1>
+			</div>
+		</header>
+
+		<section class="fg-center">
+			<div class="fg-row">
+				<div class="fg12 content-box">
+					<form name="login" class="login" action="{ACTION_URL}" method="post" autocomplete="off">
+						<input type="hidden" name="url" value="{URL}">
+
+						<div class="fg12 center">
+							<p>{MESSAGE}:</p>
+						</div>
+
+						<hr class="fg12" style="margin-bottom: 15px;">
+
+						<div class="fg12 center">
+							<span>{TEXT_EMAIL}:</span>
+							<input type="text" name="email" value="{EMAIL}">
+						</div>
+
+						<div class="fg12 center">
+							<button type="submit" name="submit" style="width:200px;">{TEXT_SEND_DETAILS}</button>
+						</div>
+					</form>
+
+					<hr class="fg12">
+
+					<div class="fg12 center">
+						<p><a href="{LOGIN_URL}">
+							{TEXT_NEED_TO_LOGIN}
+						</a></p>
+
+						<p><a href="{WB_URL}/">
+							{TEXT_HOME}
+						</a></p>
+				</div>
+			</div>
+		</section>
+	</div>
+
+</body>
+</html>
+<!-- END mainBlock -->

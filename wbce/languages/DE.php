@@ -8,22 +8,22 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'DE';
-$language_name = 'German';
+$language_name = 'German'; // Deutsch
 $language_version = '3.1';
 $language_platform = '2.9';
 $language_author = 'Stefan Braunewell, Matthias Gallas, Florian Meerwinck';
 $language_license = 'GNU General Public License';
 
-	
+
 
 
 $MENU['ACCESS'] = 'Benutzerverwaltung';
@@ -566,6 +566,7 @@ $MESSAGE['PAGES_INTRO_LINK'] = 'Vorschaltseite bearbeiten';
 $MESSAGE['PAGES_INTRO_NOT_WRITABLE'] = 'Die Vorschaltseite konnte nicht bearbeitet werden (ungen&#252;gende Schreibrechte?)';
 $MESSAGE['PAGES_INTRO_SAVED'] = 'Vorschaltseite wurde erfolgreich gespeichert';
 $MESSAGE['PAGES_LAST_MODIFIED'] = 'Die letzte &#196;nderung wurde durchgef&#252;hrt von';
+$MESSAGE['PAGES_LAST_MODIFICATION'] = 'Letzte &#196;nderung';
 $MESSAGE['PAGES_NOT_FOUND'] = 'Die Seite wurde nicht gefunden';
 $MESSAGE['PAGES_NOT_SAVED'] = 'Fehler beim Speichern der Seite';
 $MESSAGE['PAGES_PAGE_EXISTS'] = 'Eine Seite mit diesem Titel existiert bereits';

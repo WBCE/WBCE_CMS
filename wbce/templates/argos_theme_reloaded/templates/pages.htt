@@ -1,0 +1,135 @@
+<!-- BEGIN main_block -->
+<!--- !!! relevant table cell for drag'n'drop sorting: #7 (0-indexed) -->
+<div class="clearfix"></div>
+<section class="{DISPLAY_ADD}">
+	<h2 id="heading-add-page">
+		{HEADING_ADD_PAGE}
+		<div class="headline-link">
+			<a href="#heading-page-list" title="zu Seiten">
+				<i class="fa fa-list-alt fa-lg"></i>
+			</a>
+		</div>
+	</h2>
+
+	<section class="fg12 content-box">
+
+		<form name="add" action="add.php" method="post">
+			{FTAN}
+
+			<section class="fg7" style="margin-top: 10px;">
+				<div class="row">
+					<div class="fg4">{TEXT_TITLE}:</div>
+					<div class="fg8">
+						<input type="text" name="title" class="wdt250">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="fg4">{TEXT_TYPE}:</div>
+					<div class="fg8">
+						<select name="type" class="wdt250">
+							<!-- BEGIN module_list_block -->
+							<option value="{VALUE}"{SELECTED}>{NAME}</option>
+							<!-- END module_list_block -->
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="fg4">{TEXT_PARENT}:</div>
+					<div class="fg8">
+						<select  name="parent" onchange="return disabled_hack_for_ie(this);" class="wdt150">
+							<!-- BEGIN page_list_block2 -->
+							<option value="{ID}"{DISABLED}>{TITLE}</option>
+							<!-- END page_list_block2 -->
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="fg4">{TEXT_VISIBILITY}:</div>
+					<div class="fg8">
+						<select name="visibility" onchange="toggle_viewers();" class="wdt150">
+							<option value="public" {SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">{TEXT_PUBLIC}</option>
+							<option value="private" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">{TEXT_PRIVATE}</option>
+							<option value="registered" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);">{TEXT_REGISTERED}</option>
+							<option value="hidden" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">{TEXT_HIDDEN}</option>
+							<option value="none" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);">{TEXT_NONE}</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="fg8 push4">
+						<button type="submit" name="submit">
+							<i class="fa fa-fw fa-plus"></i>
+							{TEXT_ADD}
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<section class="fg5" style="margin-top: 10px;">
+				<div class="row">
+					<div class="fg12">
+						<div style="margin-bottom:5px;">
+							{TEXT_ADMINISTRATORS}:
+						</div>
+						<ul style="list-style-type: none; margin: 0; padding: 0;">
+							<!-- BEGIN group_list_block -->
+							<li style="margin-bottom:5px;">
+							<input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}"{CHECKED}{DISABLED} />
+							<label for="admin_group_{TOGGLE}">{NAME}</label>
+							</li>
+							<!-- END group_list_block -->
+						</ul>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="fg12" id="viewers" style="display: none;">
+						{TEXT_REGISTERED_VIEWERS}:
+						<ul style="list-style-type: none; margin: 0; padding: 0;">
+							<!-- BEGIN group_list_block2 -->
+							<li style="margin-bottom:5px;">
+							<input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}"{CHECKED}{DISABLED} />
+							<label for="viewing_group_{TOGGLE}">{NAME}</label>
+							</li>
+							<!-- END group_list_block2 -->
+						</ul>
+					</div>
+				</div>
+			</section>
+		</form>
+	</section>
+</section>
+
+<section class="row {DISPLAY_INTRO}">
+	<header class="fg12">
+		<h2>{HEADING_MODIFY_INTRO_PAGE}</h2>
+	</header>
+
+	<section class="fg12 content-box">
+		<p style="margin-left: 10px;">
+			<i class="fa fa-lg fa-edit"></i> <a href="intro.php">{INTRO_LINK}</a>
+		</p>
+	</section>
+</section>
+
+<script>
+	//addition for remembering expanded state of pages
+	var THEME_URL = '{THEME_URL}';
+	var WB_URL = '{WB_URL}';
+</script>
+<script src="{THEME_URL}/patch/page_index.js" type="text/javascript"></script>
+
+<script>
+	// check if the correct (modified) page_tree.php is loaded
+	$(document).ready(function(){
+		var inTemplate = $('#modification-check').html();
+		if (inTemplate != 'IN_TEMPLATE') {
+			alert('missing modification in:\n"backend/pages/legacy.index.php"');
+		}
+	});
+</script>
+<!-- END main_block -->

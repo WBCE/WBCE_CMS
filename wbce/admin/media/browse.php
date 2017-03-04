@@ -217,6 +217,8 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 					$imgdetail = fsize(filesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name)).'<br /> '.$info[0].' x '.$info[1].' px';
 					$icon = 'thumb.php?t=1&amp;img='.$directory.'/'.$name;
 					$tooltip = ShowTip('thumb.php?t=2&amp;img='.$directory.'/'.$name);
+				} else {
+					$imgdetail = fsize(filesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name));
 				}
 			}
 

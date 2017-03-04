@@ -41,42 +41,42 @@ if($doSave) {
     //backend
     $data['insert_be']       = (int)(intval(isset($_POST['insert_be']) ? $_POST['insert_be'] : 0) != 0);
     $data['css_to_head_be']  = (int)(intval(isset($_POST['css_to_head_be']) ? $_POST['css_to_head_be'] : 0) != 0);
-    
+
     // dont use JAvascript Mailto if no mailto filter active.
     if ($data['js_mailto'] and !$data['mailto_filter']) $data['js_mailto']=0;
-    
-    
+
+
     if ($admin->checkFTAN()) {
     // update database settings
     // OPF_JS_MAILTO
         $errmsg="";
-        
+
         // do some small validations
         if ((!file_exists(WB_PATH.'/short.php') or !file_exists(WB_PATH.'/.htaccess')) and $data['short_url']){
-            $errmsg.= "Short URL not set, please check that short.php and .htaccess are present in your webroot directory";  
+            $errmsg.= "Short URL not set, please check that short.php and .htaccess are present in your webroot directory";
             $data['short_url']=0;
         }
-        
+
         // set the values
-       
+
         //frontend
         $errmsg.=(string)Settings::Set("opf_droplets", $data['droplets']);
         $errmsg.=(string)Settings::Set("opf_droplets_be", $data['droplets_be']);
-        $errmsg.=(string)Settings::Set("opf_wblink", $data['wblink']);  
-        $errmsg.=(string)Settings::Set("opf_auto_placeholder", $data['auto_placeholder']);  
-        $errmsg.=(string)Settings::Set("opf_insert", $data['insert']); 
+        $errmsg.=(string)Settings::Set("opf_wblink", $data['wblink']);
+        $errmsg.=(string)Settings::Set("opf_auto_placeholder", $data['auto_placeholder']);
+        $errmsg.=(string)Settings::Set("opf_insert", $data['insert']);
         $errmsg.=(string)Settings::Set("opf_sys_rel", $data['sys_rel']);
         $errmsg.=(string)Settings::Set("opf_email_filter", $data['email_filter']);
         $errmsg.=(string)Settings::Set("opf_mailto_filter", $data['mailto_filter']);
-        $errmsg.=(string)Settings::Set("opf_js_mailto", $data['js_mailto']);       
+        $errmsg.=(string)Settings::Set("opf_js_mailto", $data['js_mailto']);
         $errmsg.=(string)Settings::Set("opf_short_url", $data['short_url']);
         $errmsg.=(string)Settings::Set("opf_css_to_head", $data['css_to_head']);
         $errmsg.=(string)Settings::Set("opf_at_replacement", $data['at_replacement']);
         $errmsg.=(string)Settings::Set("opf_dot_replacement", $data['dot_replacement']);
         //backend
-        $errmsg.=(string)Settings::Set("opf_insert_be", $data['insert_be']); 
+        $errmsg.=(string)Settings::Set("opf_insert_be", $data['insert_be']);
         $errmsg.=(string)Settings::Set("opf_css_to_head_be", $data['css_to_head_be']);
-        
+
         if($errmsg=="") {
         //anything ok
             $msgTxt = "<b>".$MESSAGE['RECORD_MODIFIED_SAVED']."</b>";
@@ -93,17 +93,17 @@ if($doSave) {
     }
 } else {
 // read settings from the database to show
-// the trick ist to use return values that will function as default values if 
+// the trick ist to use return values that will function as default values if
 // the value is not set :-)
 
     $data = array();
-  
+
     //frontend
     $data['droplets']          = Settings::Get('opf_droplets',1);
     $data['droplets_be']       = Settings::Get('opf_droplets_be',1);
     $data['wblink']            = Settings::Get('opf_wblink',1);
     $data['auto_placeholder']  = Settings::Get('opf_auto_placeholder',1);
-    $data['insert']            = Settings::Get('opf_insert',1);   
+    $data['insert']            = Settings::Get('opf_insert',1);
     $data['sys_rel']           = Settings::Get('opf_sys_rel',1);
     $data['email_filter']      = Settings::Get('opf_email_filter',1);
     $data['mailto_filter']     = Settings::Get('opf_mailto_filter',1);
@@ -113,12 +113,12 @@ if($doSave) {
     $data['at_replacement']    = Settings::Get('opf_at_replacement',"(at)");
     $data['dot_replacement']   = Settings::Get('opf_dot_replacement',"(dot)");
     //backend
-    $data['insert_be']         = Settings::Get('opf_insert_be',1); 
+    $data['insert_be']         = Settings::Get('opf_insert_be',1);
     $data['css_to_head_be']    = Settings::Get('opf_css_to_head_be',1);
-    
-    
+
+
 }
 
 
-include($modulePath."templates/output_filter.tpl.php");
+include($this->GetTemplatePath("output_filter.tpl.php"));
 

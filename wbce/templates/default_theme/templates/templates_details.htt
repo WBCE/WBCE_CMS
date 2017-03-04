@@ -17,7 +17,7 @@
 </tr>
 <tr>
 	<td>{TEXT_DESIGNED_FOR}:</td>
-	<td>Website Baker {DESIGNED_FOR}</td>
+	<td>WBCE {DESIGNED_FOR}</td>
 </tr>
 <tr>
 	<td valign="top">{TEXT_DESCRIPTION}:</td>

@@ -1,4 +1,4 @@
-Wysiwyg_multitab by Norbert Heimsath is licensed under GPLv3
+The WBCE Colorbox module by Norbert Heimsath is licensed under GPLv3
 
 Colorbox Jquery plugin is under MIT License.
 http://opensource.org/licenses/mit-license.php
