@@ -230,9 +230,9 @@ select {
 	background-color: #eee;
 	height: 28px;
 	padding: 2px 15px 2px 3px;
-	background-image: url(../images/down.png);
-	background-position: right;
-	background-repeat: no-repeat;
+	background-image: url(../images/down.png) !important;
+	background-position: right !important;
+	background-repeat: no-repeat !important;
 }
 select[multiple] {
 	height: auto;
@@ -433,8 +433,7 @@ span.title {
 	text-align: center;
 }
 
-.page-move-up, .page-move-down {
-	display: none;
+.page-move-up, .page-move-down, .header-move-up, .header-move-down{
 	width: 20px;
 }
 
@@ -448,12 +447,12 @@ span.title {
 	border-bottom: 1px solid #666;
 }
 #page-list-header .header-status {
-	width: 55px;
+	width: 48px;
 }
 #page-list-header .header-menu-title {
 }
 #page-list-header .header-page-title {
-	width: 350px;
+	width: 346px;
 }
 #page-list-header .header-page-id {
 	width: 40px;
@@ -688,6 +687,7 @@ a.tooltip {
 .blue { color: #135e77; }
 
 .bold { font-weight: bold; }
+.strike { text-decoration: line-through; }
 
 .desc { line-height: 1.3; }
 
@@ -748,53 +748,6 @@ a.tooltip {
 	border: none !important;
 	margin-bottom: 15px;
 }
-
-/*** fixes for 3rd-party modules **************************************/
-/* give forms some horizontal padding */
-form { padding: 0 2%; }
-/* and reset the padding if inside a content-box */
-.content-box form { padding: 0; }
-
-/* other styling for h2 inside a content-box */
-.content-box h2 {
-	background-color: transparent;
-	margin-left: 0;
-	margin-right: 0;
-	padding-left: 0;
-	padding-right: 0;
-}
-
-/* hide the obsolete back-button in admin-tools */
-input#admin_tools {
-	display: none;
-}
-/* hide evtl. headlines in the content-box ****************************/
-.adminModuleWrapper h2:first-of-type {
-	display: none;
-}
-/* let the h4 header looks like a h2 **********************************/
-.adminModuleHeader {
-    text-align: left;
-    font-size: 16px;
-    color: #333;
-    background-color: #cfcfcf;
-    padding: 5px;
-    font-weight: normal;
-    margin: 10px 2% 0 2%;
-}
-/* padding for the elements inside the content-box */
-.adminModuleWrapper.legacy {
-	padding: 0 1%;
-}
-.pageModuleWrapper.legacy {
-	padding: 10px 2% 0 2%;
-}
-/* line height in backup */
-.backup input[type="radio"] {
-	margin-bottom: 10px;
-}
-/* ! some more styling is done in /jquery/theme.js ! */
-
 
 /*** footer section ***************************************************/
 #footer {

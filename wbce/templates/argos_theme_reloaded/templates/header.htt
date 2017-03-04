@@ -18,6 +18,7 @@
     <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
     <link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
+	<link href="{THEME_URL}/css/module-fixes.css" rel="stylesheet" type="text/css">
 
     {BACKEND_MODULE_CSS}
     [[Css]]
@@ -46,6 +47,7 @@
 
 	<script src="{THEME_URL}/jquery/autosize.min.js" type="text/javascript"></script>
 	<script src="{THEME_URL}/jquery/theme.js" type="text/javascript"></script>
+	<script src="{THEME_URL}/jquery/module-fixes.js" type="text/javascript"></script>
 
     {BACKEND_MODULE_JS}
     [[Js?pos=HeadLow]]
