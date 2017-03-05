@@ -1,6 +1,6 @@
 <!-- BEGIN main_block -->
 <h2>
-	Erweiterungen &raquo; Module
+	{TEXT_ADDONS} &raquo; {TEXT_MODULES}
 	<div class="headline-link">
 		<i class="fa fa-map"> {URL_TEMPLATES}</i>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -149,3 +149,24 @@
 	</div>
 </div>
 <!-- END main_block -->
+
+<link href="{WB_URL}/include/select2/css/select2.min.css" rel="stylesheet">
+<style type="text/css">
+.select2-selection {
+	border: 1px solid #999 !important;
+	background-color: #eee !important;
+	border-radius: 0 !important;
+}
+.select2-selection:hover, .select2-selection:focus{
+	border: 1px solid #647086 !important;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+	background-color: #ccc !important;
+	color: #000 !important;
+}
+
+</style>
+<script src="{WB_URL}/include/select2/js/select2.js"></script>
+<script>
+  $('select').select2();
+</script>

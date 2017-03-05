@@ -8,7 +8,7 @@
 </div> <!-- #content-container -->
 
 <div id="footer">
-	WBCE Version: {WBCE_VERSION} &middot; Tag: {WBCE_TAG} &middot; Admin Theme Version: 2.0.1
+	WBCE Version: {WBCE_VERSION} &bull; Tag: {WBCE_TAG} &bull; Admin Theme Version: 2.0.1
 	<br>
 	PHP Version:  {PHP_VERSION}
 	<br>

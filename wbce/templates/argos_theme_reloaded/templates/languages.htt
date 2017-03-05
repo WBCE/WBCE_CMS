@@ -1,6 +1,6 @@
 <!-- BEGIN main_block -->
 <h2>
-	Erweiterungen &raquo; Sprachen
+	{TEXT_ADDONS} &raquo; {TEXT_LANGUAGES}
 	<div class="headline-link">
 		<i class="fa fa-puzzle-piece"></i> {URL_MODULES}
 		&nbsp;&nbsp;|&nbsp;&nbsp;
