@@ -13,12 +13,11 @@
 define ("WB_DEBUG", true);
 define ("WB_INSTALLER", true);
 
-
 $_SESSION['ERROR_FIELD']=array();
 
 if (WB_DEBUG === true) {
-    ini_set('display_errors', 1);
     error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 }
 
 // needed by class secureform

@@ -79,7 +79,7 @@
                     </tr>
 <?php endif;?>
                     <tr>
-                        <td >PHP Version >= 5.3.6</td>
+                        <td >PHP Version >= 5.4.0</td>
                         <td>
                             <span class="<?php echo $sPhpVersion?>">
                                 <?php echo PHP_VERSION;?>

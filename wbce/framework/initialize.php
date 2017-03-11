@@ -23,16 +23,9 @@ if (! defined('WB_DEBUG')) {
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 // Stop execution if PHP version is too old
-if (version_compare(PHP_VERSION, '5.3.6', '<')) {
-    die ('PHP-' . PHP_VERSION . ' found, but at last PHP-5.3.6 required !!');
-}
-
-// disable MAgic quotes if php version is below 5.4.0.
-// Since  5.4.0 magic quotes is removed entirely
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-    ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
+    die ('PHP-' . PHP_VERSION . ' found, but at last PHP-5.4.0 is required !!');
 }
-
 
 // compatibility fix , sooner or later better replace the old constants
 if (!defined("MYSQL_BOTH")) define('MYSQL_BOTH',MYSQLI_BOTH);
@@ -191,7 +184,7 @@ if (!defined ("WB_MEDIA_URL")) define ("WB_MEDIA_URL",  WB_URL.MEDIA_DIRECTORY);
 // GLOBAL WBCE ERROR REPORTING
 if (WB_DEBUG === true or WB_DEBUG === '1') {
     // Note: define('WB_DEBUG', true) in WBCE config.php forces max. PHP error output for debugging
-    error_reporting(E_ALL|E_STRICT);
+    error_reporting(E_ALL);
 } else {
     // set PHP error reporting level to user defined values (admin/interface/er_levels.php)
     switch (ER_LEVEL) {
@@ -202,7 +195,7 @@ if (WB_DEBUG === true or WB_DEBUG === '1') {
             error_reporting(0);
             break;
         case 'E2':    // show all errors and notices
-            error_reporting(E_ALL|E_STRICT);
+            error_reporting(E_ALL);
             break;
         case 'E3':    // show errors, no notices
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);

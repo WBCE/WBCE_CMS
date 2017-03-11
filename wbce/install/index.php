@@ -10,11 +10,12 @@
  * @license GNU GPL2 (or any later version)
  */
 
+
 define ("WB_DEBUG", true);
 
 if (WB_DEBUG === true) {
-    ini_set('display_errors', 1);
     error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 }
 
 // start Session if not already started
@@ -94,7 +95,7 @@ $e_adc=$e_adc."";
 ////////////////////////////////////////////
 
 // No install button if Version failes
-if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
+if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
     $sPhpVersion="good";
 }
 else {
