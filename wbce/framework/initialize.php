@@ -14,9 +14,11 @@
 defined("WB_PATH") OR define("WB_PATH", dirname(__DIR__));
 
 // DEFAULT SYSTEM SETTINGS
-// Set debug, but allow override in config. 
-if (!defined("WB_DEBUG")) define("WB_DEBUG", true);
- 
+// WB_DEBUG can be overwritten via WBCE config.php (if enabled, max. PHP error output is shown)
+if (! defined('WB_DEBUG')) {
+    define('WB_DEBUG', false);
+}
+
 // no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
@@ -41,7 +43,7 @@ if (!defined("MYSQL_ASSOC")) define('MYSQL_ASSOC',MYSQLI_ASSOC);
 if (!defined("WB_TABLE_PREFIX")) define("WB_TABLE_PREFIX", TABLE_PREFIX);
 if (!defined("TABLE_PREFIX")) define("TABLE_PREFIX", WB_TABLE_PREFIX);
 
-require dirname(__FILE__)."/classes/class.autoload.php"; 
+require dirname(__FILE__)."/classes/class.autoload.php";
 WbAuto::AddDir(dirname(__FILE__)."/classes/",true);
 
 
@@ -56,7 +58,7 @@ if ($aPreDb!==false AND !empty($aPreDb)){
         $f=$m."/predb.php";
         if (file_exists($f)) {
             require_once ($f);
-       
+
         }
     }
 }
@@ -89,7 +91,7 @@ if (($resSnippets = $database->query($sql))) {
         //echo  dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/pre_init.php';
         if (file_exists(dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/preinit.php')) {
             include dirname(dirname(__FILE__)). '/modules/' . $module_dir . '/preinit.php';
-            
+
         }
     }
 }
@@ -103,8 +105,8 @@ if (($resSnippets = $database->query($sql))) {
 // WB_ADMIN_DIRECTORY (ADMIN_DIRECTORY)
 if (!defined('ADMIN_DIRECTORY') and !defined('WB_ADMIN_DIRECTORY')) {
     define('ADMIN_DIRECTORY', 'admin');
-    define('WB_ADMIN_DIRECTORY', 'admin');    
-} 
+    define('WB_ADMIN_DIRECTORY', 'admin');
+}
 if (!defined('ADMIN_DIRECTORY') and defined('WB_ADMIN_DIRECTORY')) {
     define('ADMIN_DIRECTORY', WB_ADMIN_DIRECTORY);
 }
@@ -132,25 +134,25 @@ $protocoll="http";
 // $_SERVER['HTTPS'] alone is not reliable ... :-(
 //https://github.com/dmikusa-pivotal/cf-php-apache-buildpack/issues/6
 if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
-    $protocoll="https"; 
+    $protocoll="https";
 }
 if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == 443) {
     $protocoll="https";
 }
-if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){ 
-    $protocoll="https";    
+if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){
+    $protocoll="https";
 }
 define ("WB_PROTOCOLL", $protocoll);
 
 
-// SELECTED AND CHECKED 
+// SELECTED AND CHECKED
 // are needed in so many forms that i decided to lazy define them here
 if (!defined('WB_SELECT')) {define('WB_SELECT',' selected="selected" ');}
 if (!defined('WB_CHECK'))  {define('WB_CHECK',' checked="checked" ');}
 
 
 // AUTOLOADERS
-// register WB Autoloader 
+// register WB Autoloader
 
 WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
 WbAuto::AddFile("SecureForm","/framework/classes/SecureForm.php");
@@ -168,7 +170,7 @@ Settings::Setup ();
 
 
 // RESULTING CONSTANTS
-// some resulting constants need to be set manually 
+// some resulting constants need to be set manually
 
 // DO_NOT_TRACK (deprecated, not used and we remove this soon)
 define('DO_NOT_TRACK', (isset($_SERVER['HTTP_DNT'])));
@@ -186,23 +188,35 @@ define('WB_OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
 // WB_MEDIA_URL (there is no old couterpart)
 if (!defined ("WB_MEDIA_URL")) define ("WB_MEDIA_URL",  WB_URL.MEDIA_DIRECTORY);
 
-
-
-// ERROR REPORTING
-// set error-reporting
-if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
-    error_reporting(ER_LEVEL);
-    ini_set('display_errors', 1);   
+// GLOBAL WBCE ERROR REPORTING
+if (WB_DEBUG === true or WB_DEBUG === '1') {
+    // Note: define('WB_DEBUG', true) in WBCE config.php forces max. PHP error output for debugging
+    error_reporting(E_ALL|E_STRICT);
 } else {
-    ini_set('display_errors', 0); 
+    // set PHP error reporting level to user defined values (admin/interface/er_levels.php)
+    switch (ER_LEVEL) {
+        case 'E0':    // system default (php.ini)
+            error_reporting(ini_get('error_reporting'));
+            break;
+        case 'E1':    // hide all errors and notices
+            error_reporting(0);
+            break;
+        case 'E2':    // show all errors and notices
+            error_reporting(E_ALL|E_STRICT);
+            break;
+        case 'E3':    // show errors, no notices
+            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+            break;
+        default:      // system default (php.ini)
+            error_reporting(ini_get('error_reporting'));
+    }
 }
-// If we are in Debug mode we use Max settings
-if (WB_DEBUG === true) {
+// adapt display_error directive in php.ini to reflect error_reporting level
+if (error_reporting() == 0) {
+    ini_set('display_errors', 0);
+} else {
     ini_set('display_errors', 1);
-    error_reporting(E_ALL);
 }
-
-
 
 //DEFAULT TIMEZONE
 date_default_timezone_set('UTC');
@@ -214,17 +228,17 @@ date_default_timezone_set('UTC');
 SanitizeHttpReferer();
 
 
-// SESSION 
+// SESSION
 
-// Initialize Custom Session Handler 
-// Stores Sessions to DB 
-// As session table possibly not installed , it may not run whith installer and upgradescript 
-// We then simply fallback to PHP default Session handling. 
+// Initialize Custom Session Handler
+// Stores Sessions to DB
+// As session table possibly not installed , it may not run whith installer and upgradescript
+// We then simply fallback to PHP default Session handling.
 if (!defined("WB_UPGRADE_SCRIPT") AND !defined("WB_INSTALLER")) {
     $hCustomSessionHandler= new DbSession();
 }
 
-// Init  special Session handling and Start session. 
+// Init  special Session handling and Start session.
 WbSession::Start();
 
 
@@ -326,7 +340,7 @@ if (!defined("WB_THEME_URL")) define('WB_THEME_URL', WB_URL . '/templates/' . DE
 if (!defined("THEME_PATH")) define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
 if (!defined("WB_THEME_PATH")) define('WB_THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
 
-// extended wb_settings this part really needs some loving as both aren't 
+// extended wb_settings this part really needs some loving as both aren't
 // implemented fully functional so this is still work on progress.
 define('EDIT_ONE_SECTION', false); // allow to edit just one section whithout all other
 define('EDITOR_WIDTH', 0);         // define a basic editor width
@@ -338,14 +352,14 @@ require_once ADMIN_PATH . '/interface/version.php';
 
 
 // FUNCTIONS.PHP
-// finally load framework Funktions so we dont need to include this in almost every file 
+// finally load framework Funktions so we dont need to include this in almost every file
 require_once(WB_PATH.'/framework/functions.php');
 
 
 /////////////////////////////////////////////////////////////////
 // Helper Functions
 /////////////////////////////////////////////////////////////////
-// Moved down here as they need to be removed/reworked sooner or later 
+// Moved down here as they need to be removed/reworked sooner or later
 
 // Maybe change this so it produces a $_SERVER['HTTP_REFERER_SAVE'] or $_SERVER['HTTP_REFERER_LOCAL']
 /**
@@ -376,7 +390,7 @@ function SanitizeHttpReferer()
     $_SERVER['HTTP_REFERER'] = $sTmpReferer;
 }
 
-// This one is very questionable too 
+// This one is very questionable too
 /**
  * makePhExp
  * @param array list of names for placeholders

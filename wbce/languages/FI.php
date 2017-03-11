@@ -23,9 +23,7 @@ $language_platform = '2.8.x';
 $language_author = 'Jontse';
 $language_license = 'GNU General Public License';
 
-
-
-
+/* MENU */
 $MENU['ACCESS'] = 'K&#228;ytt&#228;j&#228;t';
 $MENU['ADDON'] = 'Add-on';
 $MENU['ADDONS'] = 'Lis&#228;osat';

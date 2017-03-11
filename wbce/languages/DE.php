@@ -24,8 +24,6 @@ $language_author = 'Stefan Braunewell, Matthias Gallas, Florian Meerwinck';
 $language_license = 'GNU General Public License';
 
 
-
-
 $MENU['ACCESS'] = 'Benutzerverwaltung';
 $MENU['ADDON'] = 'Add-on';
 $MENU['ADDONS'] = 'Erweiterungen';
@@ -42,7 +40,7 @@ $MENU['MEDIA'] = 'Medien';
 $MENU['MODULES'] = 'Module';
 $MENU['PAGES'] = 'Seiten';
 $MENU['PREFERENCES'] = 'Meine Daten';
-$MENU['SETTINGS'] = 'Grundeinstellungen';
+$MENU['SETTINGS'] = 'Einstellungen';
 $MENU['START'] = 'Dashboard';
 $MENU['TEMPLATES'] = 'Templates';
 $MENU['USERS'] = 'Benutzer';
@@ -396,8 +394,11 @@ $TEXT['THEME_IMPORT_HTT'] = 'Templatedateien importieren';
 $TEXT['THEME_SELECT_HTT'] = 'Templatedateien ausw&#228;hlen';
 $TEXT['THEME_NOMORE_HTT'] = 'Keine weiteren vorhanden';
 $TEXT['THEME_START_IMPORT'] = 'Importieren';
-
-
+// PHP error levels (since WBCE 1.2.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Verwende Systemeinstellung (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Fehler und Warnungen unterdrücken (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Fehler und Warnungen anzeigen (Entwicklung)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Nur Fehler, keine Warnungen anzeigen';
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On Voraussetzungen nicht erf&#252;llt';
 $HEADING['ADD_CHILD_PAGE'] = 'Unterseite hinzuf&#252;gen';

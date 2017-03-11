@@ -395,7 +395,11 @@ $TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
 $TEXT['THEME_SELECT_HTT'] = 'select templates';
 $TEXT['THEME_NOMORE_HTT'] = 'no more available';
 $TEXT['THEME_START_IMPORT'] = 'import';
-
+// PHP error levels (since WBCE 1.2.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Kieg&#233;sz&#237;t&#224;k&#246;vetelm&#233;nyek nem megfelel-?-?k';

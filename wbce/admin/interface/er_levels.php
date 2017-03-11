@@ -13,11 +13,11 @@
 // no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
+// set PHP error reporting to the user defined level
+// Note: define('WB_DEBUG', true); in WBCE config.php forces error_reporting(E_ALL|E_STRICT)
 $ER_LEVELS = array(
-    ''  => isset($TEXT['SYSTEM_DEFAULT']) ? $TEXT['SYSTEM_DEFAULT'] : 'System Default',
-    '0' => 'E_NONE',
-    '6143' => 'E_ALL',
-    '6135' => 'E_ALL^E_NOTICE', // standard: E_ALL without E_NOTICE
-    '8191' => 'E_ALL&E_STRICT', // for programmers
-    '-1'   => 'E_EVERYTHING'
+    'E0' => $TEXT['ERR_USE_SYSTEM_DEFAULT'],        // system default (php.ini)
+    'E1' => $TEXT['ERR_HIDE_ERRORS_NOTICES'],       // error_reporting(0)
+    'E2' => $TEXT['ERR_SHOW_ERRORS_NOTICES'],       // error_reporting(E_ALL|E_STRICT)
+    'E3' => $TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES']   // error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE)
 );

@@ -23,9 +23,6 @@ $language_platform = '2.8.x';
 $language_author = 'Samuel Mateo, Jr. | samuelmateo.com';
 $language_license = 'GNU General Public License';
 
-
-
-
 $MENU['ACCESS'] = 'Acceso';
 $MENU['ADDON'] = 'Add-on';
 $MENU['ADDONS'] = 'Add-ons';
@@ -47,8 +44,6 @@ $MENU['START'] = 'Inicio';
 $MENU['TEMPLATES'] = 'Plantillas';
 $MENU['USERS'] = 'Usuarios';
 $MENU['VIEW'] = 'Vista Preliminar';
-
-
 
 $TEXT['ACCOUNT_SIGNUP'] = 'Abrir Cuenta';
 $TEXT['ACTIONS'] = 'Acciones';
@@ -396,7 +391,11 @@ $TEXT['THEME_SELECT_HTT'] = 'select templates';
 $TEXT['THEME_NOMORE_HTT'] = 'no more available';
 $TEXT['THEME_START_IMPORT'] = 'import';
 
-
+// PHP error levels (since WBCE 1.2.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On requirements not met';
 $HEADING['ADD_CHILD_PAGE'] = 'Add child page';

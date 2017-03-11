@@ -389,7 +389,11 @@ $TEXT['WYSIWYG_STYLE'] = 'WYSIWYG Style';
 $TEXT['YES'] = 'Yes';
 $TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
 $TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
-
+// PHP error levels (since WBCE 1.2.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 /* HEADING */
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On requirements not met';
