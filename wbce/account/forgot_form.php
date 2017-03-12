@@ -93,35 +93,56 @@ if(isset($_POST['email']) && $_POST['email'] != "" )
 	$email = '';
 }
 
-if( ($errMsg=='') && ($message != '')) {
-	// $message = $MESSAGE['FORGOT_PASS_NO_DATA'];
-	$message_color = '000000';
-} else {
-	$message = $errMsg;
-	$message_color = 'ff0000';
-}
+
 ?>
-<div style="margin: 1em auto;">
-	<button type="button" value="cancel" onClick="javascript: window.location = '<?php print $_SESSION['HTTP_REFERER'] ?>';"><?php print $TEXT['CANCEL'] ?></button>
-</div>
-<h1 style="text-align: center;"><?php echo $MENU['FORGOT']; ?></h1>
+
+
+<style type="text/css">
+
+table.forgot-form-table {
+	max-width:50%;
+}
+
+table.forgot-form-table td {
+	width:50%;
+	padding:0.5em;
+}
+
+table.forgot-form-table td input[type="text"], 
+table.forgot-form-table td input[type="password"], 
+table.forgot-form-table td select {
+	background-color:transparent;
+	border-style:solid; 
+	border-width:1px;
+	padding:0.2em;
+	width:100%;
+}
+
+table.forgot-form-table td button {
+	width:100%;
+}
+</style>
+
+<h1><?php echo $MENU['FORGOT']; ?></h1>
 <form name="forgot_pass" action="<?php echo WB_URL.'/account/forgot.php'; ?>" method="post">
 	<input type="hidden" name="url" value="{URL}" />
-		<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="500">
-		<tr>
-			<td height="40" align="center" style="color: #<?php echo $message_color; ?>;" colspan="3">
-			<strong><?php echo $message; ?></strong>
-			</td>
-		</tr>
+	<p><strong><?php echo $message; ?></strong></p>
+
+	
 <?php if(!isset($display_form) OR $display_form != false) { ?>
-		<tr>
-			<td height="10" colspan="2"></td>
-		</tr>
-		<tr>
-			<td width="165" height="30" align="right"><?php echo $TEXT['EMAIL']; ?>:</td>
-			<td><input type="text" maxlength="255" name="email" value="<?php echo $email; ?>" style="width: 180px;" /></td>
-			<td><input type="submit" name="submit" value="<?php echo $TEXT['SEND_DETAILS']; ?>" style="width: 180px; font-size: 10px; color: #003366; border: 1px solid #336699; background-color: #DDDDDD; padding: 3px; text-transform: uppercase;" /></td>
-		</tr>
+<table class="forgot-form-table">
+	<tr>
+		<td><?php echo $TEXT['EMAIL']; ?>:</td>
+		<td><input type="text" maxlength="255" name="email" value="<?php echo $email; ?>" /></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>
+			<input type="submit" name="submit" value="<?php echo $TEXT['SEND_DETAILS']; ?>" /> &nbsp;&nbsp;&nbsp;
+			<input type="button" value="<?php print $TEXT['CANCEL'] ?>" onClick="javascript: window.location = '<?php print $_SESSION['HTTP_REFERER'] ?>';">
+		</td>
+	</tr>
+</table>	
 <?php } ?>
-		</table>
+		
 </form>

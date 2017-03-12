@@ -10,19 +10,42 @@
 	{ERROR_VALUE}
 </p>
 <!-- END error_block -->
-<div style="margin: 1em auto;">
-	<button type="button" value="cancel" onClick="javascript: window.location = '{HTTP_REFERER}';">{TEXT_CANCEL}</button>
-</div>
-<hr />
+
+<style type="text/css">
+
+table.user-data-table {
+	width:100%;
+}
+
+table.user-data-table td {
+	width:50%;
+	padding:0.5em;
+}
+
+table.user-data-table td input[type="text"], 
+table.user-data-table td input[type="password"], 
+table.user-data-table td select {
+	background-color:transparent;
+	border-style:solid; 
+	border-width:1px;
+	padding:0.2em;
+	width:100%;
+}
+
+table.user-data-table td button {
+	width:100%;
+}
+</style>
+
+<h1>{TEXT_PREFERENCES}</h1>
+
 <form name="details" action="" method="post">
     {FTAN}
 	<h3>{HEADING_MY_SETTINGS}</h3>
-	<table summary="" cellpadding="5" cellspacing="0" border="0" width="100%">
+	<table class="user-data-table">
 		<tr>
-			<td width="160">{TEXT_DISPLAY_NAME}:</td>
-			<td>
-				<input type="text" name="display_name" value="{DISPLAY_NAME}" style="width: 98%;" readonly="readonly" />
-			</td>
+			<td>{TEXT_DISPLAY_NAME}:</td>
+			<td><input type="text" name="display_name" value="{DISPLAY_NAME}"  readonly="readonly" /></td>
 		</tr>
 		<tr>
 			<td>{TEXT_LANGUAGE}:</td>
@@ -37,7 +60,7 @@
 		<tr>
 			<td>{TEXT_TIMEZONE}:</td>
 			<td>
-				<select name="timezone" style="width: 98%;">
+				<select name="timezone" >
 					<option value="-20">{MOD_PREFERENCE_PLEASE_SELECT}</option>
 <!-- BEGIN timezone_list_block -->
 					<option value="{VALUE}" {SELECTED}>{NAME}</option>
@@ -48,7 +71,7 @@
 		<tr>
 			<td>{TEXT_DATE_FORMAT}:</td>
 			<td>
-				<select name="date_format" style="width: 98%;">
+				<select name="date_format" >
 					<option value="">{MOD_PREFERENCE_PLEASE_SELECT}</option>
 <!-- BEGIN date_format_list_block -->
 					<option value="{VALUE}" {SELECTED}>{NAME}</option>
@@ -59,7 +82,7 @@
 		<tr>
 			<td>{TEXT_TIME_FORMAT}:</td>
 			<td>
-				<select name="time_format" style="width: 98%;">
+				<select name="time_format" >
 					<option value="">{MOD_PREFERENCE_PLEASE_SELECT}</option>
 <!-- BEGIN time_format_list_block -->
 					<option value="{VALUE}" {SELECTED}>{NAME}</option>
@@ -70,7 +93,7 @@
 		<tr>
 			<td>&nbsp;</td>
 			<td>
-				<button type="reset" name="reset" value="reset">{TEXT_RESET}</button>
+				
 				<button type="submit" name="action" value="details">{MOD_PREFERENCE_SAVE_SETTINGS}</button>
 			</td>
 		</tr>
@@ -80,23 +103,23 @@
 <form name="email" action="" method="post">
     {FTAN}
 	<h3>{HEADING_MY_EMAIL}</h3>
-	<table summary="" cellpadding="5" cellspacing="0" border="0" width="100%">
+	<table class="user-data-table">
 		<tr>
 			<td>{TEXT_EMAIL}:</td>
 			<td>
-				<input type="text" name="email" value="{EMAIL}" style="width: 98%;" />
+				<input type="text" name="email" value="{EMAIL}"  />
 			</td>
 		</tr>
 		<tr>
-			<td width="160">{TEXT_CURRENT_PASSWORD}:</td>
+			<td>{TEXT_CURRENT_PASSWORD}:</td>
 			<td>
-				<input type="password" name="current_password" style="width: 98%;" />
+				<input type="password" name="current_password"  />
 			</td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
 			<td>
-				<button type="reset" name="reset" value="reset">{TEXT_RESET}</button>
+				
 				<button type="submit" name="action" value="email">{MOD_PREFERENCE_SAVE_EMAIL}</button>
 			</td>
 		</tr>
@@ -106,29 +129,29 @@
 <form name="password" action="" method="post">
     {FTAN}
 	<h3>{HEADING_MY_PASSWORD}</h3>
-	<table summary="" cellpadding="5" cellspacing="0" border="0" width="100%">
+	<table class="user-data-table">
 		<tr>
-			<td width="160">{TEXT_CURRENT_PASSWORD}:</td>
+			<td>{TEXT_CURRENT_PASSWORD}:</td>
 			<td>
-				<input type="password" name="current_password" style="width: 98%;" />
+				<input type="password" name="current_password"  />
 			</td>
 		</tr>
 		<tr>
-			<td width="160">{TEXT_NEW_PASSWORD}:</td>
+			<td>{TEXT_NEW_PASSWORD}:</td>
 			<td>
-				<input type="password" name="new_password" style="width: 98%;" />
+				<input type="password" name="new_password"  />
 			</td>
 		</tr>
 		<tr>
-			<td width="160">{TEXT_RETYPE_NEW_PASSWORD}:</td>
+			<td>{TEXT_RETYPE_NEW_PASSWORD}:</td>
 			<td>
-				<input type="password" name="new_password2" style="width: 98%;" />
+				<input type="password" name="new_password2"  />
 			</td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
 			<td>
-				<button type="reset" name="reset" value="reset">{TEXT_RESET}</button>
+				
 				<button type="submit" name="action" value="password">{MOD_PREFERENCE_SAVE_PASSWORD}</button>
 			</td>
 		</tr>

@@ -23,12 +23,48 @@ $_SESSION['HTTP_REFERER'] =  isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_
 require_once(WB_PATH.'/include/captcha/captcha.php');
 
 ?>
-<div style="margin: 1em auto;">
-	<button type="button" value="cancel" onClick="javascript: window.location = '<?php print $_SESSION['HTTP_REFERER'] ?>';"><?php print $TEXT['CANCEL'] ?></button>
-</div>
-<h1>&nbsp;<?php echo $TEXT['SIGNUP']; ?></h1>
 
-<form name="user" action="<?php echo WB_URL.'/account/signup.php'; ?>" method="post">
+<style type="text/css">
+
+
+
+table.user-form  {
+	width:100%;
+	margin:2em 0;
+}
+
+td.user-form-desc {
+	width:33%;
+	vertical-align:top;
+	text-align:left;
+	padding:0.2em 0.2em 0.2em 0;
+}
+
+td.user-form-field {
+	width:66%;
+	vertical-align:top;
+	text-align:left;
+	padding:0.2em 0.2em 0.2em 0;
+}
+
+td.user-form-field input {
+	width:100%;
+	padding:0.2em;
+}
+
+td.user-form-field input[type="text"] {
+	background-color:transparent;
+	border-style:solid; 
+	border-width:1px;
+}
+
+
+
+</style>
+
+<h1><?php echo $TEXT['SIGNUP']; ?></h1>
+
+<form name="user" class="user-box" action="<?php echo WB_URL.'/account/signup.php'; ?>" method="post">
 	<?php echo $admin->getFTAN(); ?>
 	<?php if(ENABLED_ASP) { // add some honeypot-fields
 	?>
@@ -48,45 +84,34 @@ require_once(WB_PATH.'/include/captcha/captcha.php');
 	<?php }
 	?>
     </div>
-<table>
+	
+<table class="user-form">
 <tr>
-	<td width="180"><?php echo $TEXT['USERNAME']; ?>:</td>
-	<td class="value_input">
-		<input type="text" name="username" maxlength="30" style="width:300px;"/>
-	</td>
+	<td class="user-form-desc"><?php echo $TEXT['USERNAME']; ?>:</td>
+	<td class="user-form-field"><input type="text" name="username" maxlength="30" /></td>
 </tr>
 <tr>
-	<td><?php echo $TEXT['DISPLAY_NAME']; ?> (<?php echo $TEXT['FULL_NAME']; ?>):</td>
-	<td class="value_input">
-		<input type="text" name="display_name" maxlength="255" style="width:300px;" />
-	</td>
+	<td class="user-form-desc"><?php echo $TEXT['DISPLAY_NAME']; ?> (<?php echo $TEXT['FULL_NAME']; ?>):</td>
+	<td class="user-form-field"><input type="text" name="display_name" maxlength="255"  /></td>
 </tr>
 <tr>
-	<td><?php echo $TEXT['EMAIL']; ?>:</td>
-	<td class="value_input">
-		<input type="text" name="email" maxlength="255" style="width:300px;"/>
-	</td>
+	<td class="user-form-desc"><?php echo $TEXT['EMAIL']; ?>:</td>
+	<td class="user-form-field"><input type="text" name="email" maxlength="255" /></td>
 </tr>
 <?php
 // Captcha
 if(ENABLED_CAPTCHA) {
 	?><tr>
-		<td class="field_title"><?php echo $TEXT['VERIFICATION']; ?>:</td>
+		<td class="user-form-desc"><?php echo $TEXT['VERIFICATION']; ?>:</td>
 		<td><?php call_captcha(); ?></td>
 		</tr>
 	<?php
 }
 ?>
 <tr>
-	<td>&nbsp;</td>
-	<td>
-		<input type="submit" name="submit" value="<?php echo $TEXT['SIGNUP']; ?>" />
-		<input type="reset" name="reset" value="<?php echo $TEXT['RESET']; ?>" />
-	</td>
+	<td class="user-form-desc">&nbsp;</td>
+	<td class="user-form-field"><input type="submit" name="submit" value="<?php echo $TEXT['SIGNUP']; ?>" /></td>
 </tr>
 </table>
 
 </form>
-
-<br />
-&nbsp; 
