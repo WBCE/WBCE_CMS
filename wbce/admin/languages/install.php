@@ -10,9 +10,6 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// do not display notices and warnings during installation
-error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
-
 // Include required files
 require '../../config.php';
 require_once WB_PATH . '/framework/addon.precheck.inc.php';

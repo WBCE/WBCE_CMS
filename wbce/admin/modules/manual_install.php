@@ -17,7 +17,7 @@ require_once WB_PATH . '/framework/functions.php';	// for WBCE 1.1.x compatibili
 // limit advanced Module settings to users with access to admintools
 $admin = new admin('Admintools', 'admintools', false, false);
 if ($admin->get_permission('admintools') == false) {
-	die(header('Location: index.php'));
+    die(header('Location: index.php'));
 }
 
 // Setup admin object, skip header for FTAN validation and check section permissions
