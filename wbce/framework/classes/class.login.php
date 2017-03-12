@@ -18,56 +18,37 @@ require_once ADMIN_PATH . '/interface/version.php';
 
 class login extends admin
 {
-
-    public $username_fieldname="";
-    public $password_fieldname="";
+    public $username_fieldname = 'username';
+    public $password_fieldname = 'password';
 
     public function __construct($config_array)
     {
-        
-        
-        
         // Get language vars
         global $MESSAGE, $database;
-        
-        // use admin class constructor 
+
+        // use admin class constructor
         parent::__construct();
-         
-        
-        
+
         // Get configuration values, and set them as class vars
         while (list($key, $value) = each($config_array)) {
             $this->{(strtolower($key))} = $value;
         }
-        
-        // set Redirect url ..
+
+        // set Redirect URL
         if (!isset($this->redirect_url)) {$this->redirect_url = '';}
-        
-        // Get the supplied username and passwordfield if set.
-      
-        // manually set by configuration array
-        if ($this->username_fieldname!="" AND $this->password_fieldname!=""){
-            // all ok 
-            
-        }
-        // this is used by some spam protection methods
-        elseif ($this->get_post('username_fieldname') != '' AND $this->get_post('password_fieldname'!= '')) {
+
+        // check if login fieldnames were submitted via POST request (e.g. username_ojlxcskt)
+        if (($this->get_post('username_fieldname') != '') AND ($this->get_post('password_fieldname') != '')) {
             $this->username_fieldname = $this->get_post('username_fieldname');
             $this->password_fieldname = $this->get_post('password_fieldname');
-        } 
-        // Default field names 
-        else {
-            $this->username_fieldname = 'username';
-            $this->password_fieldname = 'password';
         }
-        
+
         // fetch username and Password
         $this->username = $this->get_post($this->username_fieldname);
         $this->password = $this->get_post($this->password_fieldname);
-        
-        
+
         // If the url is blank, set it to the default url
-        // We got a posted url here , dont think this is a good idea... 
+        // We got a posted url here , dont think this is a good idea...
         $this->url = $this->get_post('url');
         if ($this->redirect_url != '') {
             $this->url = $this->redirect_url;
@@ -75,29 +56,24 @@ class login extends admin
         if (strlen($this->url) < 2) {
             $this->url = $config_array['DEFAULT_URL'];
         }
-        
+
         // Already logged in ... but we are not sure at all the user is allowed that place ...
-        // does not feel good 
-        
-        
+        // does not feel good
+
+
         // Hey no input ok just display login
         if ($this->username == '' and $this->password == '') {
             $this->message = $MESSAGE['LOGIN_BOTH_BLANK'];
             $this->display_login();
-        } 
+        }
         else {
-            // Check if the user exists 
+            // Check if the user exists
             // (authenticate them, load session vars and more this does all the work)
-            $uUserOk=WbAuth::Authenticate ($this->password,$this->username); 
+            $uUserOk=WbAuth::Authenticate ($this->password,$this->username);
              // Authentication successful
             if ($uUserOk===false) {
-            
-                     
-
-                
-                //User logged-in, so redirect to default $this->url whatever it is 
+                //User logged-in, so redirect to default $this->url whatever it is
                 header("Location: " . $this->url);
-                
                 exit(0);
             } else {
                 $this->message = $uUserOk;
@@ -106,7 +82,6 @@ class login extends admin
         }
     }
 
- 
     // Increase the count for login attemps
     public function increase_attemps()
     {
