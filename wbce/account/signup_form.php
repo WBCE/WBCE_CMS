@@ -53,7 +53,7 @@ td.user-form-field input {
 }
 
 td.user-form-field input[type="text"] {
-	background-color:transparent;
+	background-color:#fff;
 	border-style:solid; 
 	border-width:1px;
 }

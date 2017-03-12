@@ -59,7 +59,7 @@ $thisApp->redirect_url = (isset($thisApp->redirect_url) && ($thisApp->redirect_u
 }
 
 .login-box input[type="text"], .login-box input[type="password"] {
-	background-color:transparent;
+	background-color:#fff;
 	border-style:solid; 
 	border-width:1px;
 }

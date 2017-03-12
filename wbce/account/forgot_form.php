@@ -100,22 +100,19 @@ if(isset($_POST['email']) && $_POST['email'] != "" )
 <style type="text/css">
 
 table.forgot-form-table {
-	max-width:50%;
+	width:100%;
 }
 
 table.forgot-form-table td {
-	width:50%;
 	padding:0.5em;
 }
 
-table.forgot-form-table td input[type="text"], 
-table.forgot-form-table td input[type="password"], 
-table.forgot-form-table td select {
-	background-color:transparent;
+table.forgot-form-table td input[type="text"] {
+	background-color:#fff;
 	border-style:solid; 
 	border-width:1px;
 	padding:0.2em;
-	width:100%;
+	width:20em;
 }
 
 table.forgot-form-table td button {
