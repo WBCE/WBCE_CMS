@@ -113,6 +113,9 @@ if(! $_FILES['userfile']['error']) {
     $admin->print_error($MESSAGE[$key].'<br />'.$MESSAGE['GENERIC_CANNOT_UPLOAD']);
 }
 
+// remove temporary unzip folder if exists to avoid unzip process fails
+rm_full_dir($temp_unzip);
+
 // create PclZip object to extract Addon zip archives
 $archive = new PclZip($temp_file);
 
