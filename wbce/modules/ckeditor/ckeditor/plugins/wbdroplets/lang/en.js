@@ -4,9 +4,9 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'wbdroplets', 'en', {
 	wbdroplets: {
-		insBtn: 'Insert WB Droplets into page',
+		insBtn: 'Insert WBCE Droplets into page',
 		menu: 'Droplet-properties',
-		title: 'WB-Droplets',
+		title: 'WBCE Droplets',
 		name: 'Droplet name',
 		errorName: 'Please insert a name for the Droplet'
 	},

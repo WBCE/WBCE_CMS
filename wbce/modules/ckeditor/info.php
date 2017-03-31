@@ -22,7 +22,7 @@ if(!defined('WB_PATH')) {
 $module_directory   = 'ckeditor';
 $module_name        = 'CKEditor';
 $module_function    = 'WYSIWYG';
-$module_version     = '4.6.2.1';
+$module_version     = '4.6.2.2';
 $module_platform    = '1.0.0';
 $module_author      = 'diverse, cwsoft, Norhei, Colinax';
 $module_license		= '<a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>';
