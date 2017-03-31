@@ -48,7 +48,9 @@ if(($admin->get_permission('media_view') === true))
 	// user allowed to view MEDIA folder -> enable PHP connector
 	$Config['Enabled'] = true ;
 	// allow actions to list folders and files
-	$Config['ConfigAllowedCommands'] = array('GetFolders', 'GetFoldersAndFiles') ;
+	//$Config['ConfigAllowedCommands'] = array('GetFolders', 'GetFoldersAndFiles') ;
+    $Config['ConfigAllowedCommands'] = array('QuickUpload', 'FileUpload', 'GetFolders', 'GetFoldersAndFiles', 'CreateFolder') ;
+
 }
 
 // Path to user files relative to the document root.
@@ -79,7 +81,7 @@ $Config['ForceSingleExtension'] = true ;
 $Config['SecureImageUploads'] = true;
 
 // What the user can do with this connector.
-// $Config['ConfigAllowedCommands'] = array('QuickUpload', 'FileUpload', 'GetFolders', 'GetFoldersAndFiles', 'CreateFolder') ;
+//$Config['ConfigAllowedCommands'] = array('QuickUpload', 'FileUpload', 'GetFolders', 'GetFoldersAndFiles', 'CreateFolder') ;
 
 /**
    Check WB permissions of the user/group for the MEDIA folder and
