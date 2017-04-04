@@ -182,7 +182,7 @@ if($saveSettings) {
     // FRONTEND_SIGNUP
     $value=$admin->get_post("frontend_signup");
     if ($value){
-        if ($value==false) {
+        if ($value=="false") {
             $setError.=Settings::Set ("frontend_signup", false);
             $setError.=Settings::Set ("wb_frontend_signup", false);
         } else {
