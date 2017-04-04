@@ -1,34 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
-   "http://www.w3.org/TR/html4/frameset.dtd">
-<!--
- * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2010 Frederico Caldeira Knabben
- *
- * == BEGIN LICENSE ==
- *
- * Licensed under the terms of any of the following licenses at your
- * choice:
- *
- *  - GNU General Public License Version 2 or later (the "GPL")
- *    http://www.gnu.org/licenses/gpl.html
- *
- *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
- *    http://www.gnu.org/licenses/lgpl.html
- *
- *  - Mozilla Public License Version 1.1 or later (the "MPL")
- *    http://www.mozilla.org/MPL/MPL-1.1.html
- *
- * == END LICENSE ==
- *
- * This page compose the File Browser dialog frameset.
--->
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>FCKeditor - Resources Browser</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link href="browser.css" type="text/css" rel="stylesheet">
-		<script type="text/javascript" src="js/fckxml.js"></script>		
-		<script type="text/javascript">
+<head>
+<title>Filemanager - Media Directory</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="browser.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="js/fckxml.js"></script>
+<script type="text/javascript">
 // Automatically detect the correct document.domain (#1919).
 (function()
 {
@@ -180,23 +157,22 @@ function OnUploadCompleted( errorNumber, fileUrl, fileName, customMsg )
 		window.frames['frmUpload'].OnUploadCompleted( errorNumber, fileName ) ;
 }
 
-		</script>
-	</head>
-		
-	<frameset cols="150,*" class="Frame" framespacing="0" frameborder="1">
-		<frameset rows="45,*" framespacing="0" >
-			<frame src="frmresourcetype.html" scrolling="no" frameborder="0">
-			<frame name="frmFolders" src="frmfolders.html" scrolling="auto" frameborder="0">
-		</frameset>
-		<frameset rows="45,*,70" framespacing="0">
-			<frame name="frmActualFolder" src="frmactualfolder.html" scrolling="no" frameborder="0">
-			<frame name="frmResourcesList" src="frmresourceslist.html" scrolling="auto" frameborder="0">
-			<frameset cols="150,*,0" framespacing="0" frameborder="0">
-				<frame name="frmCreateFolder" src="frmcreatefolder.html" scrolling="no" frameborder="0">
-				<frame name="frmUpload" src="frmupload.html" scrolling="no" frameborder="0">
-				<frame name="frmUploadWorker" src="javascript:void(0)" scrolling="no" frameborder="0">
-			</frameset>
-		</frameset>
-	</frameset>
-		
+</script>
+</head>
+<frameset cols="150,*" class="Frame" framespacing="0" frameborder="1">
+  <frameset rows="45,*" framespacing="0" >
+    <frame src="frmresourcetype.html" scrolling="no" frameborder="0">
+    <frame name="frmFolders" src="frmfolders.html" scrolling="auto" frameborder="0">
+  </frameset>
+  <frameset rows="45,*,70" framespacing="0">
+    <frame name="frmActualFolder" src="frmactualfolder.html" scrolling="no" frameborder="0">
+    <frame name="frmResourcesList" src="frmresourceslist.html" scrolling="auto" frameborder="0">
+    <frameset cols="150,*,0" framespacing="0" frameborder="0">
+    <frame name="frmCreateFolder" src="frmcreatefolder.html" scrolling="no" frameborder="0">
+    <frame name="frmUpload" src="frmupload.html" scrolling="no" frameborder="0">
+    <frame name="frmUploadWorker" src="javascript:void(0)" scrolling="no" frameborder="0">
+  </frameset>
+  </frameset>
+</frameset>
+<noframes></noframes>
 </html>

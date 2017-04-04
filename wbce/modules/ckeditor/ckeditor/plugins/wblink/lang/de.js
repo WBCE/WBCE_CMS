@@ -1,6 +1,6 @@
-﻿/*
+/*
 Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
+For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'wblink', 'de', {
 	acccessKey: 'Zugriffstaste',
@@ -9,8 +9,8 @@ CKEDITOR.plugins.setLang( 'wblink', 'de', {
 	advisoryTitle: 'Titel Beschreibung',
 	anchor: {
 		toolbar: 'Anker einfügen/editieren',
-		menu: 'Anker-Eigenschaften',
-		title: 'Anker-Eigenschaften',
+		menu: 'Anker Eigenschaften',
+		title: 'Anker Eigenschaften',
 		name: 'Anker Name',
 		errorName: 'Bitte geben Sie den Namen des Ankers ein',
 		remove: 'Anker entfernen'
@@ -23,7 +23,7 @@ CKEDITOR.plugins.setLang( 'wblink', 'de', {
 	emailBody: 'Nachrichtentext',
 	emailSubject: 'Betreffzeile',
 	id: 'Id',
-	info: 'Link-Info',
+	info: 'Link Info',
 	langCode: 'Sprachenkürzel',
 	langDir: 'Schreibrichtung',
 	langDirLTR: 'Links nach Rechts (LTR)',
@@ -31,14 +31,14 @@ CKEDITOR.plugins.setLang( 'wblink', 'de', {
 	menu: 'Link editieren',
 	name: 'Name',
 	noAnchors: '(keine Anker im Dokument vorhanden)',
-	noEmail: 'Bitte geben Sie e-Mail Adresse an',
+	noEmail: 'Bitte geben Sie eine E-Mail Adresse an',
 	noUrl: 'Bitte geben Sie die Link-URL an',
 	other: '<andere>',
-	popupDependent: 'Abhängig (Netscape)',
-	popupFeatures: 'Pop-up Fenster-Eigenschaften',
-	popupFullScreen: 'Vollbild (IE)',
+	popupDependent: 'Abhängig',
+	popupFeatures: 'Pop-up Fenster Eigenschaften',
+	popupFullScreen: 'Vollbild',
 	popupLeft: 'Linke Position',
-	popupLocationBar: 'Adress-Leiste',
+	popupLocationBar: 'Adressleiste',
 	popupMenuBar: 'Menü-Leiste',
 	popupResizable: 'Größe änderbar',
 	popupScrollBars: 'Rollbalken',
@@ -54,7 +54,7 @@ CKEDITOR.plugins.setLang( 'wblink', 'de', {
 	targetFrameName: 'Ziel-Fenster-Name',
 	targetPopup: '<Pop-up Fenster>',
 	targetPopupName: 'Pop-up Fenster-Name',
-	title: 'WB-Link',
+	title: 'Link',
 	toAnchor: 'Anker in dieser Seite',
 	toEmail: 'E-Mail',
 	toUrl: 'URL',
@@ -62,9 +62,9 @@ CKEDITOR.plugins.setLang( 'wblink', 'de', {
 	type: 'Link-Typ',
 	unlink: 'Link entfernen',
 	upload: 'Hochladen',
-	toWb: 'WB-Link',
-	wbPage: 'WB-Seite',
-	newsItem: 'Direkt - Link',
+	toWb: 'WBCE Link',
+	wbPage: 'WBCE Seite',
+	newsItem: 'Direkt Link',
 	selectNews: 'Bitte einen News-Beitrag wählen',
 	selectTopics: 'Bitte einen Topics-Beitrag wählen',
 	selectBakery: 'Bitte einen Bakery-Artikel wählen',

@@ -1,6 +1,6 @@
-﻿/*
+/*
 Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
+For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'wblink', 'fr', {
 	acccessKey: 'Touche d\'accessibilité',
@@ -34,9 +34,9 @@ CKEDITOR.plugins.setLang( 'wblink', 'fr', {
 	noEmail: 'Veuillez entrer l\'adresse e-mail',
 	noUrl: 'Veuillez entrer l\'adresse du lien',
 	other: '<autre>',
-	popupDependent: 'Dépendante (Netscape)',
+	popupDependent: 'Dépendante',
 	popupFeatures: 'Options de la fenêtre popup',
-	popupFullScreen: 'Plein écran (IE)',
+	popupFullScreen: 'Plein écran',
 	popupLeft: 'Position gauche',
 	popupLocationBar: 'Barre d\'adresse',
 	popupMenuBar: 'Barre de menu',
@@ -56,15 +56,15 @@ CKEDITOR.plugins.setLang( 'wblink', 'fr', {
 	targetPopupName: 'Nom de la fenêtre popup',
 	title: 'Lien',
 	toAnchor: 'Transformer le lien en ancre dans le texte',
-	toEmail: 'E-mail',
+	toEmail: 'E-Mail',
 	toUrl: 'URL',
 	toolbar: 'Lien',
 	type: 'Type de lien',
 	unlink: 'Supprimer le lien',
 	upload: 'Envoyer',
-	toWb: 'WB-Link',
-	wbPage: 'WB-Page',
-	newsItem: 'Direkt - Link',
+	toWb: 'WBCE Link',
+	wbPage: 'WBCE Page',
+	newsItem: 'Direct Link',
 	selectNews: 'Please select a news-item',
 	selectTopics: 'Please select a topics-item',
 	selectBakery: 'Please select a bakery-item',
