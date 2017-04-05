@@ -1,69 +1,60 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        frontend
- * @package         account
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: signup2.php 5 2015-04-27 08:02:19Z luisehahne $
- * @filesource      $HeadURL: https://localhost:8443/svn/wb283Sp4/SP4/branches/wb/account/signup2.php $
- * @lastmodified    $Date: 2015-04-27 10:02:19 +0200 (Mo, 27. Apr 2015) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 // Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
+if(! defined('WB_PATH')) {
+	die('Cannot access this file directly');
+}
 
-// Init new class wb
+// Setup wb object, skip header and skip permission checks
 $wb = new wb('Start', 'start', false, false);
+$js_back = WB_URL . '/account/signup.php';
 
-// Get details entered
-$groups_id = FRONTEND_SIGNUP;
-$active = 1;
-$username = strtolower(strip_tags($wb->get_post_escaped('username')));
-$display_name = strip_tags($wb->get_post_escaped('display_name'));
+// Get raw user inputs
+$username = strtolower(strip_tags($wb->get_post('username')));
+$display_name = strip_tags($wb->get_post('display_name'));
 $email = $wb->get_post('email');
 
-// Create a javascript back link
-$js_back = WB_URL.'/account/signup.php';
-/*
-if (!$wb->checkFTAN())
-{
-	$wb->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back, false);
-	exit();
-}
-*/
+// Set some other variables
+$groups_id = FRONTEND_SIGNUP;
+$active = 1;
+$bSignError = false;
 
-$bSignError=false;
-
-// Check values
-if($groups_id == "") {
+// Check user inputs
+if($groups_id == '') {
 	$wb->print_error($MESSAGE['USERS_NO_GROUP'], $js_back, false);
-	$bSignError=true;
+	$bSignError = true;
 }
 if(!preg_match('/^[a-z]{1}[a-z0-9_-]{2,}$/i', $username)) {
-	$wb->print_error( $MESSAGE['USERS_NAME_INVALID_CHARS'].' / '.
-	                  $MESSAGE['USERS_USERNAME_TOO_SHORT'], $js_back);
-	                  $bSignError=true;
+	$wb->print_error(
+		$MESSAGE['USERS_NAME_INVALID_CHARS'].' / '.
+	    $MESSAGE['USERS_USERNAME_TOO_SHORT'], $js_back
+	);
+	$bSignError = true;
 }
-if($email != "") {
+if($email != '') {
 	if($wb->validate_email($email) == false) {
 		$wb->print_error($MESSAGE['USERS_INVALID_EMAIL'], $js_back, false);
-		$bSignError=true;
+		$bSignError = true;
 	}
 } else {
 	$wb->print_error($MESSAGE['SIGNUP_NO_EMAIL'], $js_back, false);
-	$bSignError=true;
+	$bSignError = true;
 }
 
-$email = $wb->add_slashes($email);
+// Replace placeholder with system values
 $search = array('{SERVER_EMAIL}');
-$replace = array( SERVER_EMAIL);
+$replace = array(SERVER_EMAIL);
+
 // Captcha
 if(ENABLED_CAPTCHA) {
 	$MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'] = str_replace($search,$replace,$MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
@@ -71,53 +62,51 @@ if(ENABLED_CAPTCHA) {
 		// Check for a mismatch
 		if(!isset($_POST['captcha']) OR !isset($_SESSION['captcha']) OR $_POST['captcha'] != $_SESSION['captcha']) {
 			$wb->print_error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'], $js_back, false);
-			$bSignError=true;
+			$bSignError = true;
 		}
 	} else {
 		$wb->print_error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'], $js_back, false);
-		$bSignError=true;
+		$bSignError = true;
 	}
 }
 if(isset($_SESSION['captcha'])) { unset($_SESSION['captcha']); }
 
-
+// Prepare user land variables for SQL querries
+$username_escaped = $database->escapeString($username);
+$display_name_escaped = $database->escapeString($display_name);
+$email_escaped = $database->escapeString($email);
+$groups_id_escaped = $database->escapeString($groups_id);
 
 // Check if username already exists
-$sql = 'SELECT `user_id` FROM `'.TABLE_PREFIX.'users` WHERE `username` = \''.$username.'\'';
+$sql = 'SELECT `user_id` FROM `'.TABLE_PREFIX.'users` WHERE `username` = \'' . $username_escaped . '\'';
 $results = $database->query($sql);
 if($results->numRows() > 0) {
 	$wb->print_error($MESSAGE['USERS_USERNAME_TAKEN'], $js_back, false);
-	$bSignError=true;
+	$bSignError = true;
 }
 
 // Check if the email already exists
-$sql = 'SELECT `user_id` FROM `'.TABLE_PREFIX.'users` WHERE `email` = \''.$wb->add_slashes($email).'\'';
+$sql = 'SELECT `user_id` FROM `'.TABLE_PREFIX.'users` WHERE `email` = \'' . $email_escaped . '\'';
 $results = $database->query($sql);
 if($results->numRows() > 0) {
 	if(isset($MESSAGE['USERS_EMAIL_TAKEN'])) {
 		$wb->print_error($MESSAGE['USERS_EMAIL_TAKEN'], $js_back, false);
-		$bSignError=true;
+		$bSignError = true;
 	} else {
 		$wb->print_error($MESSAGE['USERS_INVALID_EMAIL'], $js_back, false);
-		$bSignError=true;
+		$bSignError = true;
 	}
 }
 
-if ($bSignError===false){
-
-    // Generate a random password then update the database with it
+if ($bSignError === false) {
+    // Generate a random password and hash it
     $new_pass = WbAuth::GenerateRandomPassword();
-
-    // hash it 
     $md5_password = WbAuth::Hash($new_pass);
 
-    // Inser the user into the database
-    $sql = '';
-    $query = "INSERT INTO ".TABLE_PREFIX."users (group_id,groups_id,active,username,password,display_name,email) VALUES ('$groups_id', '$groups_id', '$active', '$username','$md5_password','$display_name','$email')";
-    $database->query($query);
-
-    if($database->is_error()) {
-        // Error updating database
+    // add new user into database
+    $sql = "INSERT INTO ".TABLE_PREFIX."users (group_id,groups_id,active,username,password,display_name,email) VALUES ('$groups_id_escaped', '$groups_id_escaped', '$active', '$username_escaped','$md5_password','$display_name_escaped','$email_escaped')";
+    $database->query($sql);
+    if ($database->is_error()) {
         $message = $database->get_error();
     } else {
         // Setup email to send
@@ -126,7 +115,7 @@ if ($bSignError===false){
 
         // Replace placeholders from language variable with values
         $search = array('{LOGIN_DISPLAY_NAME}', '{LOGIN_WEBSITE_TITLE}', '{LOGIN_NAME}', '{LOGIN_PASSWORD}');
-        $replace = array($display_name, WEBSITE_TITLE, $username, $new_pass); 
+        $replace = array($display_name, WEBSITE_TITLE, $username, $new_pass);
         $mail_message = str_replace($search, $replace, $MESSAGE['SIGNUP2_BODY_LOGIN_INFO']);
 
         // Try sending the email
@@ -134,7 +123,7 @@ if ($bSignError===false){
             $display_form = false;
             $wb->print_success($MESSAGE['FORGOT_PASS_PASSWORD_RESET'], WB_URL.'/account/login.php' );
         } else {
-            $database->query("DELETE FROM ".TABLE_PREFIX."users WHERE username = '$username'");
+            $database->query("DELETE FROM ".TABLE_PREFIX."users WHERE username = '$username_escaped'");
             $wb->print_error($MESSAGE['FORGOT_PASS_CANNOT_EMAIL'], $js_back, false);
         }
     }
