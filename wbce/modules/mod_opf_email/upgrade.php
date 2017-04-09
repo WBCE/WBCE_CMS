@@ -7,9 +7,9 @@
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
- * @category        opffilter
+ * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.0
+ * @version         1.0.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -41,8 +41,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
  * @param void
  * @return array contains all settings
  */
-if (!function_exists("getOutputFilterSettings")) {
-    function getOutputFilterSettings() {
+if (!function_exists("_getOutputFilterSettings")) {
+    function _getOutputFilterSettings() {
         global $database, $admin;
         // set default values
         $settings = array(
@@ -76,7 +76,7 @@ if (!function_exists("getOutputFilterSettings")) {
 $msg = '';
 
 // getting old Data
-$data = getOutputFilterSettings();
+$data = _getOutputFilterSettings();
 
 if(!class_exists('Settings')) return FALSE;
 
