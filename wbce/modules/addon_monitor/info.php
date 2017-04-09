@@ -20,7 +20,7 @@ $module_status          = 'stable';
 $module_platform 		= '2.8.x'; 
 $module_author 			= 'Christian M. Stefan (Stefek)';
 $module_license 		= 'GNU/GPL v.2';
-$module_description 	= 'This AdminTool\'s entire purpose is to give you a handy way to overview all the installed add-ons on your WebsiteBaker CMS System. You will be able to see whether or not your installed modules are in use and where.';
+$module_description 	= 'List all installed Modules and templates and shoe where they are used (or not).';
 $module_icon            = 'fa fa-plug';
 
 
