@@ -240,8 +240,8 @@ if($saveSettings) {
     $setError.=Settings::Set ("page_trash", "inline");
     $setError.=Settings::Set ("wb_page_trash", "inline");
 
-    $setError.=Settings::Set ("page_languages", true);
-    $setError.=Settings::Set ("wb_page_languages", true);
+    $setError.=Settings::Set ("page_languages", false);
+    $setError.=Settings::Set ("wb_page_languages", false);
 
     $setError.=Settings::Set ("multiple_menus", true);
     $setError.=Settings::Set ("wb_multiple_menus", true);
