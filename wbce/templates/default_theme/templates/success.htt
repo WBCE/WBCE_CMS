@@ -1,0 +1,11 @@
+<!-- BEGIN main_block -->
+<div class="msg-box rounded">
+	<p>{MESSAGE}</p>
+<!-- BEGIN show_redirect_block -->
+ <script type="text/javascript">
+  setTimeout("location.href='{REDIRECT}'", {REDIRECT_TIMER});
+ </script>
+<!-- END show_redirect_block -->
+<input type="button" name="submit" value="{BACK}" onclick="javascript: window.location = '{REDIRECT}';" />
+</div>
+<!-- END main_block -->
