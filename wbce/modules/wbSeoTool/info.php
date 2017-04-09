@@ -13,14 +13,14 @@
  */
  
 $module_directory   = 'wbSeoTool';
-$module_name        = 'SEO Tool for WebsiteBaker CMS';
+$module_name        = 'SEO Tool';
 $module_function    = 'tool';
 $module_version     = '0.6.1';
 $module_status      = 'Stable';
 $module_platform    = '2.8.3';
 $module_author      = 'Christian M. Stefan <stefek@designthings.de>';
 $module_license     = 'GNU General Public License v.2';
-$module_description = 'This Admin-Tool provides some SEO handling help for your WebsiteBaker CMS Installation.';
+$module_description = 'This Admin-Tool provides some SEO handling help.';
 $module_icon        = 'fa fa-line-chart';
 
 
