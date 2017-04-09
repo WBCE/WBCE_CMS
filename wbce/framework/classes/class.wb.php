@@ -557,6 +557,8 @@ via the Settings panel in the backend of Website Baker
 
     /**
      * checks if there is an alternative Theme template
+
+        @attention   Deactivated Default theme 
      *
      * @param string $sThemeFile set the template.htt
      * @return string the relative theme path
@@ -568,9 +570,9 @@ via the Settings panel in the backend of Website Baker
         if (file_exists(THEME_PATH . '/templates/' . $sThemeFile)) {
             $sRetval = THEME_PATH . '/templates/' . $sThemeFile;
         } 
-        elseif (file_exists(WB_PATH."/templates/default_theme/templates/" . $sThemeFile)) {
-            $sRetval = WB_PATH."/templates/default_theme/templates/" . $sThemeFile;
-        } 
+//        elseif (file_exists(WB_PATH."/templates/default_theme/templates/" . $sThemeFile)) {
+//            $sRetval = WB_PATH."/templates/default_theme/templates/" . $sThemeFile;
+//        } 
         else {
             die("Template File missing"); 
         }
