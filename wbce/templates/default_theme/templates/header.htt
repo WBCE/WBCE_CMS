@@ -17,7 +17,7 @@
 
     <link href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 
-    <link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
+    <link href="{WB_URL}/templates/default_theme/theme.css" rel="stylesheet" type="text/css" />
     
     {BACKEND_MODULE_CSS}
     [[Css]]
