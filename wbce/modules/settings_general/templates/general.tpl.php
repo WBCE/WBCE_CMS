@@ -209,5 +209,30 @@ margin:2px; padding:0;
         <input type="submit" name="save_settings" class="save_settings" value="<?php echo $TEXT['SAVE']; ?>" />
         <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" class="save_default" value="<?php echo $TEXT['SYSTEM_DEFAULT']; ?>" />
         
+        
+         <!-- Default FE template -->
+        <?php $selects=ds_GetTemplatesArray(); ?>
+        <label class="settingName" for="default_template"><?php echo $TEXT['TEMPLATE'] ?></label>
+        <select name="default_template" id="default_template">
+         <?php if (is_array($selects)) :?>
+            <?php foreach ($selects as $value): ?>
+            <option value="<?php echo $value['directory'] ?>" <?php if(DEFAULT_TEMPLATE == $value['directory']) echo 'selected="selected"'; ?> ><?php echo $value['name']." (".$value['directory'].")" ?></option>
+            <?php endforeach; ?>
+        <?php endif; ?> 
+        </select><br />      
+
+        <!-- Default BE theme -->
+        <?php $selects=ds_GetThemesArray(); ?>
+        <label class="settingName" for="default_theme"><?php echo $TEXT['THEME'] ?></label>
+        <select name="default_theme" id="default_theme">
+         <?php if (is_array($selects)) :?>
+            <?php foreach ($selects as $value): ?>
+            <option value="<?php echo $value['directory'] ?>" <?php if(DEFAULT_THEME == $value['directory']) echo 'selected="selected"'; ?> ><?php echo $value['name']." (".$value['directory'].")" ?></option>
+            <?php endforeach; ?>
+        <?php endif; ?> 
+        </select><br />      
+ 
+
+
     </form>
 </div><!-- settingsGeneral -->

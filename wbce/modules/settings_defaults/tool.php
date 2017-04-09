@@ -128,23 +128,7 @@ if($saveSettings) {
     }   
     
     
-    //Templates
-    $value=$admin->get_post("default_template");
-    if ($value){  
-        if (ds_TemplatePossible($value)) {
-            $setError.=Settings::Set ("DEFAULT_TEMPLATE", $value);
-            $setError.=Settings::Set ("WB_DEFAULT_TEMPLATE", $value);             
-        }              
-    }   
-    
-    //Themes
-    $value=$admin->get_post("default_theme");
-    if ($value){ 
-        if (ds_ThemePossible($value)) {
-            $setError.=Settings::Set ("DEFAULT_THEME", $value);
-            $setError.=Settings::Set ("WB_DEFAULT_THEME", $value);             
-        }              
-    }    
+   
     
     // END ACTION!! 
 
@@ -170,11 +154,7 @@ if($saveSettings) {
     $setError.=Settings::Set ("DEFAULT_TIME_FORMAT", 'g:i A');
     $setError.=Settings::Set ("WB_DEFAULT_TIME_FORMAT", 'g:i A');  
     
-    $setError.=Settings::Set ("DEFAULT_TEMPLATE", 'wbce');
-    $setError.=Settings::Set ("WB_DEFAULT_TEMPLATE", 'wbce');  
-
-    $setError.=Settings::Set ("DEFAULT_THEME", 'advancedThemeWbFlat');
-    $setError.=Settings::Set ("WB_DEFAULT_THEME", 'advancedThemeWbFlat');  
+  
     
     
     // report success or failure
