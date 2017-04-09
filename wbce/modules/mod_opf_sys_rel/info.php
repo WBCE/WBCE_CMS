@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.0
+ * @version         1.0.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -21,6 +21,9 @@
 /*
  *        CHANGELOG
  *
+ *        1.0.3        2017-04-07        - improved handling of leading double-slashes 
+ *      1.0.2   2017-04-07      - fix upgrade script to avoid function name collision
+ *        1.0.1   2017-04-06      - bugfix: remove leading double-slashes from urls
  *      1.0.0        2017-01-23      - turn classical outputfilter to an OpF filter module
  *
  */
@@ -39,7 +42,7 @@ if(!defined('WB_PATH')) {
 $module_directory        = 'mod_opf_sys_rel';
 $module_name                = 'OPF Sys Rel';
 $module_function        = 'opffilter';
-$module_version                = '1.0.0';
+$module_version                = '1.0.3';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author                = 'Martin Hecht (mrbaseman)';
 $module_license                = 'GNU GPL2 (or any later version)';

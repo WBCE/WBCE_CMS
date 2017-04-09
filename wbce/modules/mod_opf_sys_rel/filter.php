@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.0
+ * @version         1.0.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -48,7 +48,7 @@ function opff_mod_opf_sys_rel (&$content, $page_id, $section_id, $module, $wb) {
                 // in case of death link show original link
                     return $aMatches[0];
                 } else {
-                    return $aMatches[1].$sAppRel.$aMatches[2];
+                    return $aMatches[1].preg_replace('/^(\/+)/', '/', $sAppRel.$aMatches[2]);
                 }
             },
             $content
