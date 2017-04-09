@@ -17,7 +17,7 @@
 
 $module_directory   = 'jsadmin';
 $module_name        = 'Javascript Admin';
-$module_function    = 'tool';
+$module_function    = 'setting';
 $module_version     = '1.4.1';
 $module_platform    = '2.7 | 2.8.x';
 $module_author      = 'Stepan Riha, Swen Uth';
