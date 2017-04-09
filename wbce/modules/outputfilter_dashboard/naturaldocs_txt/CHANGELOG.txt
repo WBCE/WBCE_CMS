@@ -2,6 +2,13 @@
 Header: Version-History
 
 1.5:
+1.5.3 %(mrbaseman, 7 Apr 2017)%
+        - added fallbacks in <opf_insert_frontend_files> in case the template lacks head
+	- improved debug messages for calls to <opf_is_registered>
+
+1.5.2 %(mrbaseman, 8 Mar 2017)%
+        - use !OPF_TYPE! constants when exporting filters
+
 1.5.1 %(mrbaseman, 25 Jan 2017)%
         - allow arrays for !$ref_name! in <opf_move_up_before>
 	- switch to colon separator in ajax helper

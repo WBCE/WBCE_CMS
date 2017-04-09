@@ -8,7 +8,7 @@ functions.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.1
+ * @version         1.5.3
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
@@ -55,13 +55,37 @@ include_once(WB_PATH . '/framework/module.functions.php');
 // include the module language file depending on the backend language of the current user
 if (!include(get_module_language_file($mod_dir))) return;
 
-// stupid way to keep filters in order (section --> section_last --> page --> page_last)
-if(!defined('OPF_TYPE_SECTION')) {
-    define('OPF_TYPE_SECTION','3section');
-    define('OPF_TYPE_SECTION_LAST','5section_last');
-    define('OPF_TYPE_PAGE','7page');
-    define('OPF_TYPE_PAGE_LAST','8page_last');
+if(!defined('OPF_VERBOSE')){
+  if(defined('DEBUG')){
+    define('OPF_VERBOSE', DEBUG);
+  } else {
+    define('OPF_VERBOSE', FALSE);
+  }
 }
+
+
+// stupid way to keep filters in order (section --> section_last --> page --> page_last)
+$OPF_TYPE_ASSIGNMENTS = array(
+    'OPF_TYPE_SECTION' =>'3section',
+    'OPF_TYPE_SECTION_LAST' => '5section_last',
+    'OPF_TYPE_PAGE' => '7page',
+    'OPF_TYPE_PAGE_LAST' => '8page_last'
+);
+
+if(!defined('OPF_TYPE_SECTION')) {
+    foreach( $OPF_TYPE_ASSIGNMENTS as $opf_type_name => $opf_type_string){
+       define ($opf_type_name , $opf_type_string);
+    }
+}
+
+// when exporting we should be able to revert these assignments
+function opf_revert_type_consts($input){
+    foreach( $OPF_TYPE_ASSIGNMENTS as $opf_type_name => $opf_type_string){
+       $input = preg_replace("/'".$opf_type_string."'/", $opf_type_name, $input);
+    }
+    return $input;
+}
+
 
 require_once(dirname(__FILE__).'/functions_outputfilter.php');
 
@@ -626,7 +650,7 @@ function opf_get_position_min($type) {
 
 
 // get position
-function opf_get_position($name, $verbose=TRUE) {
+function opf_get_position($name, $verbose=OPF_VERBOSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     if(opf_is_registered($name, $verbose)) {
@@ -638,11 +662,13 @@ function opf_get_position($name, $verbose=TRUE) {
            )
        );
     }
+    if($verbose && OPF_VERBOSE)
+        trigger_error('opf_get_position(): filter not registered: '.$name, E_USER_WARNING);    
     return(FALSE);
 }
 
 // get type
-function opf_get_type($name,$verbose=TRUE) {
+function opf_get_type($name,$verbose=OPF_VERBOSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     if(opf_is_registered($name, $verbose)) {
@@ -654,6 +680,8 @@ function opf_get_type($name,$verbose=TRUE) {
            )
         );
     }
+    if($verbose && OPF_VERBOSE)
+        trigger_error('opf_get_type(): filter not registered: '.$name, E_USER_WARNING);    
     return(FALSE);
 }
 
@@ -668,10 +696,8 @@ function opf_is_registered($name, $verbose=FALSE) {
              . " WHERE `name`='%s'", $name
        )
     ) return(TRUE);
-    else {
-        if($verbose)
-            trigger_error('opf_is_registered(): Filter not registred: '.$name, E_USER_WARNING);
-    }
+    if($verbose && OPF_VERBOSE)
+        trigger_error('opf_is_registered(): filter not registred: '.$name, E_USER_WARNING);
     return(FALSE);
 }
 
@@ -679,7 +705,7 @@ function opf_is_registered($name, $verbose=FALSE) {
 function opf_is_active($name) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
-    if(opf_is_registered($name, TRUE)) {
+    if(opf_is_registered($name, OPF_VERBOSE)) {
         if(
            opf_db_query_vars( 
               "SELECT `active`"
@@ -711,7 +737,8 @@ function opf_is_active($name) {
         // db-Query returns that it is off
         return(FALSE);
     }
-    // filter is not registered in the dashboard
+    if (OPF_VERBOSE)
+        trigger_error('opf_is_active(): filter not registered: '.$name, E_USER_WARNING);    
     return(FALSE);
 }
 
@@ -724,7 +751,7 @@ function opf_set_active($name, $active=1) {
         return(FALSE);
     }
     opf_preload_filter_definitions(); 
-    if(opf_is_registered($name, TRUE)) {
+    if(opf_is_registered($name, OPF_VERBOSE)) {
         if(class_exists('Settings') && defined('WBCE_VERSION')){
             Settings::Set( opf_filter_name_to_setting($name), $active);
             $filter_settings=opf_filter_get_data($name);
@@ -740,6 +767,8 @@ function opf_set_active($name, $active=1) {
            )
         );
     }
+    if(OPF_VERBOSE)
+        trigger_error('opf_set_active(): filter not registered: '.$name, E_USER_WARNING);    
     return(FALSE);
 }
 
@@ -780,7 +809,7 @@ function opf_switch_position($type, $pos1, $pos2) {
 }
 
 // move up position by one
-function opf_move_up_one($name,$verbose=TRUE) {
+function opf_move_up_one($name,$verbose=OPF_VERBOSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     $pos = opf_get_position($name,$verbose);
@@ -793,7 +822,7 @@ function opf_move_up_one($name,$verbose=TRUE) {
 }
 
 // move down position by one
-function opf_move_down_one($name,$verbose=TRUE) {
+function opf_move_down_one($name,$verbose=OPF_VERBOSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     $pos = opf_get_position($name,$verbose);
@@ -1201,22 +1230,40 @@ function opf_insert_frontend_files(&$content) {
     if($opf_HEADER!=array()) {
         // put $opf_HEADER into <head></head>
         $str = implode("\n", $opf_HEADER);
-        $content_new = preg_replace('~</head>~',$str."\n</head>",$content);
+        $content_new = preg_replace('~</head>~i',$str."\n</head>",$content);
         $opf_HEADER = array();
         if($content_new===FALSE || $content_new==$content) {
-            trigger_error('failed to change html head-section', E_USER_WARNING);
-            return(FALSE);
+            // fallback: if template lacks a head section try to insert one
+            $content_new = preg_replace('~<body~i',"<head>\n".$str."\n</head>\n<body",$content);
+            if($content_new===FALSE || $content_new==$content) {
+                // next fallback: if template lacks a body tag even try to insert that
+                $content_new = preg_replace('~(<html[^>]*>)~i',
+                    '$1'."\n<head>\n".$str."\n</head>",$content); // hmm... we don't have a body after all...
+                if($content_new===FALSE || $content_new==$content) {
+                    if(OPF_VERBOSE){
+                        trigger_error('failed to change html head-section', E_USER_WARNING);
+                    }
+                    return(FALSE);
+                }
+            }
         }
         $content = $content_new;
     }
     if($opf_BODY!=array()) {
         // put $opf_BODY into <body></body>
         $str = implode("\n", $opf_BODY);
-        $content_new = preg_replace('~</body>~',$str."\n</body>",$content);
+        $content_new = preg_replace('~</body>~i',$str."\n</body>",$content);
         $opf_BODY = array();
         if($content_new===FALSE || $content_new==$content) {
-            trigger_error('failed to change html body-section', E_USER_WARNING);
-            return(FALSE);
+            // fallback: if </body> is not found insert it - we have </head> from above 
+                   $content_new = preg_replace('~</head>(.*)</html>~i',
+                "</head>\n<body>\n".'$1\n'.$str."\n</body>\n</html>",$content); 
+            if($content_new===FALSE || $content_new==$content) {
+                if(OPF_VERBOSE){
+                    trigger_error('failed to change html body-section', E_USER_WARNING);
+                }
+                return(FALSE);
+            }
         }
         $content = $content_new;
     }
