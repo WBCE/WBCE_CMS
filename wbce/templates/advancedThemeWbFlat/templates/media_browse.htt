@@ -1,0 +1,59 @@
+<!-- BEGIN main_block -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Browse Media</title>
+<link href="{THEME_URL}/browse.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+function confirm_link(message, url) {
+	if(confirm(message)) location.href = url;
+}
+</script>
+<script type="text/javascript" src="overlib.js"></script>
+</head>
+<body onload="parent.document.create.target.value = '{MEDIA_DIRECTORY}{CURRENT_DIR}'; parent.document.upload.target.value = '{MEDIA_DIRECTORY}{CURRENT_DIR}';">
+
+<table summary="" cellpadding="4" cellspacing="0" border="0" width="100%" style="border-bottom: 1px solid #666; width: 100%;">
+<tr style="background-color: #DDD;">
+	<td width="16" align="center" style="padding-left: 10px;">
+		<a href="{PARENT_DIR_LINK}"><img src="{THEME_URL}/images/up_folder_16.png" border="0" class="{DISPLAY_UP_ARROW}" alt="^" /></a>
+	</td>
+	<td width="50">
+		<a href="{PARENT_DIR_LINK}" class="{DISPLAY_UP_ARROW}">{TEXT_UP}</a>
+	</td>
+	<td align="left">
+		<strong>{TEXT_CURRENT_FOLDER}: {MEDIA_DIRECTORY}{CURRENT_DIR}</strong>
+	</td>
+</tr>
+</table>
+
+<table summary="" cellpadding="4" cellspacing="0" border="0" width="100%" class="{DISPLAY_LIST_TABLE}">
+<!-- BEGIN list_block -->
+<tr style="background-color: #{ROW_BG_COLOR};">
+	<td width="18" style="padding-left: 10px;">
+		<a href="{LINK}" target="{LINK_TARGET}"><img {MOUSEOVER} src="{FT_ICON}" class="{DISPLAY_ICON}" border="0" alt="" /></a>
+	</td>
+	<td>
+		<a {MOUSEOVER} href="{LINK}" target="{LINK_TARGET}">{NAME}</a>
+	</td>
+	<td width="120">
+		<small>{IMAGEDETAIL}<br />{DATE}</small>
+	</td>
+	<td width="60" align="right" class="{DISPLAY_RENAME}">
+		<a href="rename.php?dir={CURRENT_DIR}&amp;id={TEMP_ID}"><img src="{THEME_URL}/images/modify_16.png" alt="{TEXT_RENAME}" border="0" /> </a> &nbsp;&nbsp;
+		<a href="#" onclick="javascript: confirm_link('{CONFIRM_DELETE}\n {NAME_SLASHED}', 'delete.php?dir={CURRENT_DIR}&amp;id={TEMP_ID}');"><img src="{THEME_URL}/images/delete_16.png" alt="{TEXT_DELETE}" border="0" /></a>&nbsp;&nbsp;
+	</td>
+   <td width="16" align="right" class="">
+	   <img src="{THEME_URL}/images/{IMAGE_EXIST}" title="{IMAGE_TITLE}" alt="{IMAGE_TITLE}" />
+   </td>
+</tr>
+<!-- END list_block -->
+</table>
+
+
+<font class="{DISPLAY_NONE_FOUND}"><br />&nbsp;&nbsp;{NONE_FOUND}</font>
+</body>
+</html>
+
+
+<!-- END main_block -->
