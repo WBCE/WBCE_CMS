@@ -561,10 +561,17 @@ via the Settings panel in the backend of Website Baker
     * @return string fullpath to template file
     */
     public function correct_theme_source($sThemeFile = 'start.htt') {
+        // check for template file inside active backend theme templates folder (default)
         $theme_path = THEME_PATH . '/templates/' . $sThemeFile;
         if (is_readable($theme_path)) {
             return $theme_path;
         }
+        // check for template file inside WBCE system theme templates folder (fallback)
+        $theme_path = ADMIN_PATH . '/theme/fallback/templates/' . $sThemeFile;
+        if (is_readable($theme_path)) {
+            return $theme_path;
+        }
+        // show error message in worst case
         die('Error: Missing ' . $sThemeFile . ' in backend theme folder /templates/' .
             basename(THEME_PATH) . '/templates/'
         );
