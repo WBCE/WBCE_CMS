@@ -263,7 +263,21 @@ else {
 
 if (is_writable('../var/')) {
     $sDirVar= '<span class="good">Writeable</span>';
-} elseif (!file_exists('../var/')) {
+} 
+elseif (!file_exists('../var/')) {
+    $sDirVar= '<span class="bad">Directory Not Found</span>';
+    $installFlag = false;
+}
+else {
+    $sDirVar= '<span class="bad">Unwriteable</span>';
+    $installFlag = false;
+}
+
+
+if (is_writable('../log/')) {
+    $sDirVar= '<span class="good">Writeable</span>';
+} 
+elseif (!file_exists('../log/')) {
     $sDirVar= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
 }

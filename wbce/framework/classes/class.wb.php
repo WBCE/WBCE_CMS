@@ -15,6 +15,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 
 class wb extends SecureForm
 {
+    public $SysLog;
 
     public $sDirectOutput="";
 
@@ -24,17 +25,20 @@ class wb extends SecureForm
     public function __construct($mode = SecureForm::FRONTEND)
     {
         parent::__construct($mode);
+        
+        // Connect to system Logger 
+        $this->SysLog=new SysLog();
     }
 
 /**
-    @brief  for easy output of JSON strings XML for ajax......
-*/
-
+    @brief  for easy output of JSON strings XML for ajax...... 
+*/    
+    
     public function DirectOutput($sContent=false) {
         if (is_string($sContent)){
             $this->sDirectOutput.=$sContent;
         }
-
+        
         if (empty ($this->sDirectOutput)) return;
 
         // kill all output buffering
@@ -42,20 +46,20 @@ class wb extends SecureForm
         {
             ob_end_clean ();
         }
-
+        
         echo $this->sDirectOutput;
         exit;
     }
-
-
-
-
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 /* ****************
  * check if one or more group_ids are in both group_lists
  *
@@ -204,7 +208,7 @@ class wb extends SecureForm
 
 
     /**
-    Strip values from magic quotes if magic quotes is on.
+    Strip values from magic quotes if magic quotes is on. 
     */
     function strip_magic($input) {
     if (get_magic_quotes_gpc() and is_string($input)) {
@@ -227,13 +231,13 @@ class wb extends SecureForm
         if (substr($link, 0, 7) == '[wblink') {
             return $link;
         }
-
+        
         // Check for :// in the link (used in URL's) as well as mailto:
         if (strstr($link, '://') == '' and substr($link, 0, 7) != 'mailto:') {
             return WB_URL . PAGES_DIRECTORY . $link . PAGE_EXTENSION;
         }
         return $link;
-
+        
     }
 
     // Get POST data
@@ -509,7 +513,7 @@ class wb extends SecureForm
             }
             exit();
         }
-
+        
     }
 
     // Validate send email
@@ -555,26 +559,26 @@ via the Settings panel in the backend of Website Baker
         }
     }
 
-   /**
-    * Returns the fullpath of a given template file
-    * @param string $sThemeFile theme template file (template.htt)
-    * @return string fullpath to template file
-    */
-    public function correct_theme_source($sThemeFile = 'start.htt') {
-        // check for template file inside active backend theme templates folder (default)
-        $theme_path = THEME_PATH . '/templates/' . $sThemeFile;
-        if (is_readable($theme_path)) {
-            return $theme_path;
+    /**
+     * checks if there is an alternative Theme template
+     *
+     * @param string $sThemeFile set the template.htt
+     * @return string the relative theme path
+     *
+     */
+     public function correct_theme_source($sThemeFile = 'start.htt')
+    {
+        $sRetval = $sThemeFile;
+        if (file_exists(THEME_PATH . '/templates/' . $sThemeFile)) {
+            $sRetval = THEME_PATH . '/templates/' . $sThemeFile;
+        } 
+        elseif (file_exists(WB_PATH."/templates/default_theme/templates/" . $sThemeFile)) {
+            $sRetval = WB_PATH."/templates/default_theme/templates/" . $sThemeFile;
+        } 
+        else {
+            die("Template File missing"); 
         }
-        // check for template file inside WBCE system theme templates folder (fallback)
-        $theme_path = ADMIN_PATH . '/theme/fallback/templates/' . $sThemeFile;
-        if (is_readable($theme_path)) {
-            return $theme_path;
-        }
-        // show error message in worst case
-        die('Error: Missing ' . $sThemeFile . ' in backend theme folder /templates/' .
-            basename(THEME_PATH) . '/templates/'
-        );
+        return $sRetval;
     }
 
     /**
@@ -613,7 +617,7 @@ via the Settings panel in the backend of Website Baker
             return false;
         }
     }
-
+    
     /*
  * replace all "[wblink{page_id}]" with real links
  * @param string &$content : reference to global $content
@@ -640,6 +644,17 @@ via the Settings panel in the backend of Website Baker
         }
     }
 
+ 
 
+}
 
+/**
+    @brief Global function for easy access of WB class
+    @return handle The Class WB object handle. 
+*/
+function WB() {
+    if (isset($GLOBALS['wb']) AND is_object($GLOBALS['wb'])){
+        return $GLOBALS['wb'];
+    }
+    return NULL;
 }
