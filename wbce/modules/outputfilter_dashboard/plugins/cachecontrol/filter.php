@@ -36,7 +36,7 @@ function opff_cachecontrol(&$content, $page_id, $section_id, $module, $wb) {
     $extracts = opf_cut_extract($head,    $regex, 2, 'i', '~', $extracts);
     $extracts = opf_cut_extract($body,    $regex, 2, 'i', '~', $extracts);
     foreach($extracts as $k=>$str) {
-        if(strpos($str, WB_PATH)===0) 
+        if(strpos($str, WB_PATH)===0)
             $file = $str;
         else
             $file = str_replace(WB_URL, WB_PATH, $str);

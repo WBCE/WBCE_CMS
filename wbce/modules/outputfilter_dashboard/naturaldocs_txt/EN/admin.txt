@@ -2,51 +2,51 @@ Header: Admin-Tool (en)
 
 Group: Admin-Tool
 
-Topic: Admin-Tool Overview 
+Topic: Admin-Tool Overview
         The overview lists all installed filters, grouped by type of filter.
         The filters are executed in the same order as they appear in this list.
 
         (see admintool_en.png)
 
         *Active/Inactive:*
-        
+
         The first icon indicates whether a filter is active (green) or inactive (grey). Inactive
         filters are never executed.
         Click on the icon to change the state.
-        
+
         *Name:*
-        
+
         This shows the name of the filter.
-        
+
         Click on the name to open the filter settings page.
 
         *Type:*
-        
+
         The type of the filter. Possible types are Inline-Filter, Plugin-Filter, or Module-Filter.
         By clicking on the symbol you can switch between Inline- and Plugin-Filter.
         Some Meta-Data however is lost in this process (e.g. Version number and Author of a Plugin-Filter).
-        
+
         *Description:*
-        
+
         A short description.
-        
+
         *Actions:*
-        
+
         Question mark - (optional) Open filter's help pages.
         Tool - (optional) Open filter's advanced settings page.
         Scroll - (optional) Open filter's CSS-Editor.
-        Arrow up - Move filter up. 
+        Arrow up - Move filter up.
         Arrow down - Move filter down.
         Delete - Delete filter (Inline- and Plugin-Filter only).
         Export - Export filter (Inline- and Plugin-Filter only).
 
 
 Topic: Export Filters
-        
+
         Use the "export"-icon in the Overview to export an existing Inline- or Plugin-Filter.
         Module-Filters can't be exported, since those filters are part of an WebsiteBaker
         module.
-        
+
         Please note that Inline-Filters will be converted to Plugin-Filters automatically
         while being exported.
 
@@ -56,7 +56,7 @@ Install Inline-Filters:
         To install a new inline-filter, just press the "Add new inline filter"-Button, and
         insert the filter-dependent data into the form.
         (see install_inline_en.png)
-        
+
         Name of Filter - Name of the new filter. Each filter must have an unique name.
         Description - A descriptive text about the filter, it's functionality, or what ever.
         Type - Type of Filter. Type can be one of *Module*, *Module (last)*, *Page* or
@@ -74,7 +74,7 @@ Install Inline-Filters:
                            be unique among all filters. It's safe to keep the default name.
 
         *Types of filters:*
-        
+
         Module - Filters of type "Module" will be applied to the output of modules directly,
                  i.e. to the output from module's !view.php! file.
         Module (last) - These acts like "Module", but will be applied after all filters of type
@@ -84,15 +84,15 @@ Install Inline-Filters:
                modules in that page.
         Page (last) - These acts like "Page", but will be applied after all filters of type
                  "Page".
-        
+
         *Apply Filter to Modules and Pages:*
-        
+
         Use the "Apply filter to theses ..."-tree-views to restrict the filter to only a few
         modules and/or pages. This way, the filter has not to be called for every single page,
         but only for those pages where it is needed.
 
         *Examples:*
-        
+
         * To apply a filter of type "Module" to all WYSIWYG-sections on all pages
                 choose "WYSIWYG" in the modules tree-view, and "All Pages" in the pages tree-view.
         * To apply the same filter to WYSIWYG and News-sections, but only on the pages called
@@ -105,22 +105,22 @@ Install Inline-Filters:
         (see install_inline_trees_en.png)
 
         Starting with  OpF Version 1.5 and WBCE 1.2 it is possible to apply filters to the backend.
-        If yur WB-Version supports backend filtering the appropriate backend modules will appear 
-        in the tree view of the modules.  
-        In case you have a mistake in such a filter which is applied to the backend, it might become 
+        If yur WB-Version supports backend filtering the appropriate backend modules will appear
+        in the tree view of the modules.
+        In case you have a mistake in such a filter which is applied to the backend, it might become
         completely unusable. In that case add the following line to your global !config.php! of WBCE
         > define('WB_OPF_BE_OFF', 'off');
-        The value doesn't really matter, just if the constant is defined, there will no filter be 
+        The value doesn't really matter, just if the constant is defined, there will no filter be
         applied to the backend and you have access to the dashboard again and you can fix the filters.
 
         *The Filter Function:*
-        
+
         To actually enter a filter-function, use the EditArea.
-        
+
         (see install_inline_func_en.png)
 
         *Parameters:*
-        
+
         &$content - The module's or page's content, passed by reference. There is no need to
                     return this variable, since all changes to this variable will be applied
                     to the original value automatically.
@@ -132,10 +132,10 @@ Install Inline-Filters:
         $wb - An instance of WB's frontend class.
 
         *Return value:*
-        
+
         The Filter-function must return !FALSE! in the case of an error, e.g. in case !$content!
         is in an unknown condition.
-        
+
         In all other cases, the function should return !TRUE!.
 
         *How to write the filter-function itself:*
@@ -149,7 +149,7 @@ Install Plugin-Filters:
         to upload a Filter.
 
         (see install_plugin_en.png)
-        
+
 
 Install Module-Filters:
 

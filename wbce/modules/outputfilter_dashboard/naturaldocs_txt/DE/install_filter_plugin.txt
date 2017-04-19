@@ -10,14 +10,14 @@ Die folgenden Platzhalter k&ouml;nnen anstelle von hart codierten Pfaden innerha
         >        {SYSVAR:WB_PATH}  = wird durch den Inhalt der Konstanten WB_PATH ersetzt
         >        {OPF:PLUGIN_URL}  = wird durch  WB_URL.'/modules/outputfilter_dashboard/plugins/{plugin_name}' ersetzt
         >        {OPF:PLUGIN_PATH} = wird durch WB_PATH.'/modules/outputfilter_dashboard/plugins/{plugin_name}' ersetzt
-                        
-Innerhalb der Filter funktionen funktionieren die folgenden KONSTANTEN f&uuml;r OPF Plugins 
-        >        OPF_PLUGINS_PATH  
+
+Innerhalb der Filter funktionen funktionieren die folgenden KONSTANTEN f&uuml;r OPF Plugins
+        >        OPF_PLUGINS_PATH
         >        OPF_PLUGINS_URL
                         Der Pfad und die Url zum Plugins-Ordner ist sehr lang und wird h&auml;ufig innerhalb von FIltern ben&ouml;tigt,
                         daher sind diese Konstanten eine bequeme Erg&auml;nzung.
-                        Die URL ist 
-        > OPF_PLUGINS_URL = [ WB_URL.'/modules/'.basename(dirname(__FILE__)).'/plugins/' ] 
+                        Die URL ist
+        > OPF_PLUGINS_URL = [ WB_URL.'/modules/'.basename(dirname(__FILE__)).'/plugins/' ]
 
 plugin_info.php:
         ><?php
@@ -50,7 +50,7 @@ plugin_install.php:
 
         Standardm&auml;&szlig;ig werden neu installierte Filter ans Ende gestellt, aber Sie k&ouml;nnen die Position des Filters nachdem es registriert ist mit der Funktion <opf_move_up_before> beeinflussen.
 
-        
+
 filter.php:
         Diese Datei enth&auml;lt die Filter-Funktion.
         See <The Filter-Function itself>.

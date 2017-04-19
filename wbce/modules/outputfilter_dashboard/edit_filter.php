@@ -8,7 +8,7 @@ edit_filter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.3
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
@@ -18,22 +18,22 @@ edit_filter.php
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 // prevent this file from being accessed directly
@@ -43,7 +43,7 @@ if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 $mod_dir = basename(dirname(__FILE__));
 require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
 
-// include module.functions.php 
+// include module.functions.php
 include_once(WB_PATH . '/framework/module.functions.php');
 
 // include the module language file depending on the backend language of the current user
@@ -235,7 +235,7 @@ array_merge($LANG['MOD_OPF'],
     if($helppath_onclick){
         $tpl->set_block('page', 'help_block', 'help');
         $tpl->parse('TPL_HELP_BLOCK', 'help_block', false);
-    } else { 
+    } else {
         $tpl->set_var('TPL_HELP_BLOCK', "");
     }
 
@@ -243,7 +243,7 @@ array_merge($LANG['MOD_OPF'],
     if(!empty($file)){
         $tpl->set_block('page', 'file_area_block', 'file_area');
         $tpl->parse('TPL_FILE_AREA_BLOCK', 'file_area_block', false);
-    } else { 
+    } else {
         $tpl->set_var('TPL_FILE_AREA_BLOCK', "");
     }
 
@@ -251,7 +251,7 @@ array_merge($LANG['MOD_OPF'],
     if(!empty($func)){
         $tpl->set_block('page', 'func_area_block', 'func_area');
         $tpl->parse('TPL_FUNC_AREA_BLOCK', 'func_area_block', false);
-    } else { 
+    } else {
         $tpl->set_var('TPL_FUNC_AREA_BLOCK', "");
     }
 
@@ -260,7 +260,7 @@ array_merge($LANG['MOD_OPF'],
         $TPL_EXTRA_FIELDS_BLOCK="";
         foreach($extra_fields as $field){
             $template=$field['type'];
-        if($field['type']=='editarea')$template='textarea';        
+        if($field['type']=='editarea')$template='textarea';
         $tpl_field_text=opf_quotes($field['text']);
         $tpl->set_var('tpl_field_text', $tpl_field_text);
         $tpl_field_name=opf_quotes($field['name']);
@@ -291,30 +291,30 @@ array_merge($LANG['MOD_OPF'],
             foreach($field['value'] as $key=>$value){
             $tpl->set_var('tpl_key', $key);
             $tpl->set_var('tpl_value', $value);
-            $keyid=uniqid(); 
-            $list_growfield[]=$keyid; 
+            $keyid=uniqid();
+            $list_growfield[]=$keyid;
             $tpl->set_var('tpl_keyid', $keyid);
-            $valid=uniqid(); 
-            $list_growfield[]=$valid; 
+            $valid=uniqid();
+            $list_growfield[]=$valid;
             $tpl->set_var('tpl_valid', $valid);
             // first parse the block specific to this field type
-               $TPL_EXTRA_FIELDS_BLOCK .= $tpl->parse('TPL_FIELD_BLOCK', 'array_row_block', false);   
+               $TPL_EXTRA_FIELDS_BLOCK .= $tpl->parse('TPL_FIELD_BLOCK', 'array_row_block', false);
             }
-        } else {  
+        } else {
            // in short, pretty much the same, but just do it only once
            $tpl->set_block('page', $template.'_block', 'extra_field');
-           $TPL_EXTRA_FIELDS_BLOCK .= $tpl->parse('TPL_FIELD_BLOCK', $template.'_block', false);   
+           $TPL_EXTRA_FIELDS_BLOCK .= $tpl->parse('TPL_FIELD_BLOCK', $template.'_block', false);
         }
         }
         $tpl->set_var('TPL_EXTRA_FIELDS_BLOCK', $TPL_EXTRA_FIELDS_BLOCK);
-    } else { 
+    } else {
         $tpl->set_var('TPL_EXTRA_FIELDS_BLOCK', "");
     }
 
     // if list_editarea is present update tpl_list_editarea
     if(!empty($list_editarea)){
         $tpl_list_editarea = 'var opf_editarea_list = new Array();';
-        $i = 0; 
+        $i = 0;
         foreach($list_editarea as $lid) {
             $tpl_list_editarea .= 'opf_editarea_list['.$i++.'] = '."'$lid';";
         }
@@ -324,7 +324,7 @@ array_merge($LANG['MOD_OPF'],
     // if list_growfield is present update tpl_list_growfield
     if(!empty($list_growfield)){
         $tpl_list_growfield = 'var opf_growfield_list = new Array();';
-        $i = 0; 
+        $i = 0;
         foreach($list_growfield as $lid) {
             $tpl_list_growfield .= 'opf_growfield_list['.$i++.'] = '."'$lid';";
         }

@@ -1,6 +1,6 @@
 How to install:
 ===============
-You have to patch two files: 
+You have to patch two files:
  wb/index.php
  wb/framework/frontend.functions.php
 to make this module work.

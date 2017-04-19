@@ -5,7 +5,7 @@ Group: Installation des OutputFilter-Dashboard Moduls
 Topic: Voraussetzungen
 
         Website Baker 2.8 oder neuer.
-        
+
 Topic: Vor der Installation
 
 
@@ -22,7 +22,7 @@ Topic: Vor der Installation
         Texteditor. Richten Sie dann in OutputFilter-Dashboard den Filter wieder ein.
 
         Nun m&uuml;ssen noch alle m&ouml;glicherweise installierte Filter-Module deinstalliert werden.
-        
+
 Topic: Installation
 
         Installieren Sie OutputFilter-Dashboard wie &uuml;blich.
@@ -49,7 +49,7 @@ Topic: wb/index.php
                 >
                 >// Load functions available to templates, modules and code sections
                 >// also, set some aliases for backward compatibility
-        
+
         und *passen Sie diesen Zeilen wie folgt an* (f&uuml;gen Sie den mittleren Teil ein):
 
                 >// Collect general website settings
@@ -66,7 +66,7 @@ Topic: wb/index.php
 
 
         Dann suchen Sie diese Zeilen (am Ende der Datei):
-        
+
                 >require(WB_PATH.'/templates/'.TEMPLATE.'/index.php');
                 >$output = ob_get_contents();
                 >if(ob_get_length() > 0) { ob_end_clean(); }
@@ -74,9 +74,9 @@ Topic: wb/index.php
                 >// execute frontend output filters
                 >       if(file_exists(WB_PATH .'/modules/output_filter/index.php')) {
                 >               include_once(WB_PATH .'/modules/output_filter/index.php');
-                
+
         und *passen Sie diesen Zeilen wie folgt an* (f&uuml;gen Sie den mittleren Teil ein):
-        
+
                 >require(WB_PATH.'/templates/'.TEMPLATE.'/index.php');
                 >$output = ob_get_contents();
                 >if(ob_get_length() > 0) { ob_end_clean(); }
@@ -84,24 +84,24 @@ Topic: wb/index.php
                 >// apply outputfilter
                 >if(function_exists('opf_controller')) {
                 >   $output = opf_controller('page', $output);
-                >} 
+                >}
                 >
                 >// execute frontend output filters
                 >       if(file_exists(WB_PATH .'/modules/output_filter/index.php')) {
                 >               include_once(WB_PATH .'/modules/output_filter/index.php');
-                
+
 
 Topic: wb/framework/frontend.functions.php
 
         &Ouml;ffen Sie nun die Datei !wb/framework/frontend.functions.php!, und suchen Sie die nachstehenden Zeilen (ungef&auml;hr bei Zeile 312):
-        
+
                 >     ob_start(); // fetch original content
                 >     require(WB_PATH.'/modules/'.$module.'/view.php');
                 >     $content = ob_get_clean();
                 > } else {
                 >     continue;
                 > }
-                
+
         und *passen Sie diesen Zeilen wie folgt an* (f&uuml;gen Sie den mittleren Teil ein):
 
                 >     ob_start(); // fetch original content
@@ -122,7 +122,7 @@ Topic: wb/framework/frontend.functions.php
 
         und *ersetzen* Sie dies durch den folgenden Code-Block:
 
-                >  else {  // Searchresults! But also some special pages, 
+                >  else {  // Searchresults! But also some special pages,
                 >           // e.g. guestbook (add entry), news (add comment) uses this
                 >              ob_start(); // fetch original content
                 >              require(PAGE_CONTENT);

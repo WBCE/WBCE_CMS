@@ -8,7 +8,7 @@ languages/EN.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.3
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
@@ -18,22 +18,22 @@ languages/EN.php
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 /*
@@ -50,9 +50,9 @@ $LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST']  = 'A <em>&quot;Module-Type&quot;</em> 
 
 $LANG['MOD_OPF']['TXT_MODULE_TREE'] = 'In the Module-tree below, select the modules to which the filter should be applied';
 
-$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'A <em>Page-Type</em> or <em>Page-Type (last)</em> Filter will be applied to every displayed page (including e.g. output from snippets and the template itself) as a whole.'; 
+$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'A <em>Page-Type</em> or <em>Page-Type (last)</em> Filter will be applied to every displayed page (including e.g. output from snippets and the template itself) as a whole.';
 
-$LANG['MOD_OPF']['TXT_SUB_PAGES'] = 'Select or deselect Pages/Subpages below.<br />The filter will be applied to all selected pages along with all selected modules in the above &quot;module-tree&quot;'; 
+$LANG['MOD_OPF']['TXT_SUB_PAGES'] = 'Select or deselect Pages/Subpages below.<br />The filter will be applied to all selected pages along with all selected modules in the above &quot;module-tree&quot;';
 
 $LANG['MOD_OPF']['TXT_FILTER_FUNC'] = 'Enter the filter-function below.';
 
@@ -236,9 +236,9 @@ $LANG['MOD_OPF']['TXT_ERR_NO_UPLOAD'] = 'No file uploaded';
 
 $LANG['MOD_OPF']['TXT_ERR_PHP_ERR'] = 'PHP error code: %d';
 
-$LANG['MOD_OPF']['TXT_ERR_UPLOAD_SIZE'] = 'Uploaded file exceeds size limit %d'; 
+$LANG['MOD_OPF']['TXT_ERR_UPLOAD_SIZE'] = 'Uploaded file exceeds size limit %d';
 
-$LANG['MOD_OPF']['TXT_ERR_UPLOAD_EXT'] = 'Uploaded file does not match extension %s'; 
+$LANG['MOD_OPF']['TXT_ERR_UPLOAD_EXT'] = 'Uploaded file does not match extension %s';
 
 $LANG['MOD_OPF']['TXT_ERR_UPLOAD_TYPE'] = 'Uploaded file does not match type %s';
 

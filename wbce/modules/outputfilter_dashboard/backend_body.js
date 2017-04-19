@@ -6,7 +6,7 @@ backend_body.js
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.3
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
@@ -16,37 +16,37 @@ backend_body.js
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 $(document).ready(function()
 {
-// ---| insert jQuery Dialogue CSS & JS Files 
+// ---| insert jQuery Dialogue CSS & JS Files
     if($("#dashboard").length) {
        $.insert(WB_URL+"/modules/outputfilter_dashboard/dialog/jquery.dialog.css");
        $.insert(WB_URL+"/modules/outputfilter_dashboard/dialog/jquery.dialog.js");
-      } 
-// ---| show upload area 
+      }
+// ---| show upload area
   $("button.show-upload").click(function() {
     $("#upload-panel").slideToggle("fast");
   });
-  
-// ---| show upload area 
+
+// ---| show upload area
   $("p#close-panel img").click(function() {
     $("#upload-panel").slideToggle("fast");
   });
@@ -56,7 +56,7 @@ $(document).ready(function()
 
 var MODULE_URL = WB_URL + '/admin/admintools/tool.php?tool=outputfilter_dashboard';
 var ICONS = WB_URL + '/modules/outputfilter_dashboard/images';
-var AJAX_PLUGINS =  WB_URL + '/modules/outputfilter_dashboard/ajax'; 
+var AJAX_PLUGINS =  WB_URL + '/modules/outputfilter_dashboard/ajax';
 
 
 $(function() {
@@ -94,16 +94,16 @@ Original copyright notice follows:
     Version: 0.22
     Project Website: http://static.geewax.org/checktree/
     Author: JJ Geewax <jj@geewax.org>
-    
+
     License:
-    The CheckTree jQuery plugin is currently available for use in all personal or 
-    commercial projects under both MIT and GPL licenses. This means that you can choose 
+    The CheckTree jQuery plugin is currently available for use in all personal or
+    commercial projects under both MIT and GPL licenses. This means that you can choose
     the license that best suits your project, and use it accordingly.
 */
 
 (function(jQuery) {
 jQuery.fn.checkTree_my = function(settings) {
-    
+
     settings = jQuery.extend({
     /* Callbacks
         The callbacks should be functions that take one argument. The checkbox tree
@@ -116,20 +116,20 @@ jQuery.fn.checkTree_my = function(settings) {
     onHalfCheck: null,
     onLabelHoverOver: null,
     onLabelHoverOut: null,
-    
+
     /* Valid choices: 'expand', 'check' */
     labelAction: "expand",
     allChildrenMarksParentChecked: "yes",
     checkedMarksChildrenChecked: "yes",
-                
+
     // Debug (currently does nothing)
     debug: false
     }, settings);
-    
+
     var $tree = this;
-    
+
     $tree.find("li")
-    
+
     // Hide all checkbox inputs
     .find(":checkbox")
         .change(function() {
@@ -137,7 +137,7 @@ jQuery.fn.checkTree_my = function(settings) {
         // Children can change the state of a parent based on what they do as a group.
         var $all = jQuery(this).siblings("ul").find(":checkbox");
         var $checked = $all.filter(":checked");
-        
+
         // All children are checked
         if ($all.length == $checked.length) {
             if(settings.allChildrenMarksParentChecked=="yes") {
@@ -161,14 +161,14 @@ jQuery.fn.checkTree_my = function(settings) {
             if(settings.checkedMarksChildrenChecked=="yes") {
             jQuery(this).prop("checked", false).siblings(".checkbox").removeClass("checked").removeClass("half_checked");
             } else {
-            jQuery(this).siblings(".checkbox").not("checked").prop("checked", false).removeClass("half_checked");    
+            jQuery(this).siblings(".checkbox").not("checked").prop("checked", false).removeClass("half_checked");
             }
             // Fire parent's onUnCheck callback
             if (settings.onUnCheck) settings.onUnCheck(jQuery(this).parent());
         }
-        
+
         // Some children are checked, makes the parent in a half checked state.
-        else { 
+        else {
             // Fire parent's onHalfCheck callback only if it's going to change
             if (settings.onHalfCheck && !jQuery(this).siblings(".checkbox").hasClass("half_checked"))
             settings.onHalfCheck(jQuery(this).parent());
@@ -181,32 +181,32 @@ jQuery.fn.checkTree_my = function(settings) {
         })
         .hide()
     .end()
-    
+
     .each(function() {
-        
+
         // Go through and hide only ul's (subtrees) that do not have a sibling div.expanded:
         // We do this to not collapse *all* the subtrees (if one is open and checkTree is called again)
         jQuery(this).find("ul").each(function() {
         if (!jQuery(this).siblings(".expanded").length) jQuery(this).hide();
         });
-        
+
         // Copy the label
         var $label = jQuery(this).children("label").clone();
         // Create or the image for the checkbox next to the label
         var $checkbox = jQuery('<div class="checkbox"></div>');
         // Create the image for the arrow (to expand and collapse the hidden trees)
         var $arrow = jQuery('<div class="arrow"></div>');
-        
+
         // If the li has children:
         if (jQuery(this).is(":has(ul)")) {
         // If the subtree is not visible, make the arrow collapsed. Otherwise expanded.
         if (jQuery(this).children("ul").is(":hidden")) $arrow.addClass("collapsed");
         else $arrow.addClass("expanded");
-        
+
         // When you click the image, toggle the child list
         $arrow.click(function() {
             jQuery(this).siblings("ul").toggle();
-            
+
             // Swap the classes: expanded <-> collapsed and fire the onExpand/onCollapse events
             if (jQuery(this).hasClass("collapsed")) {
             jQuery(this)
@@ -224,7 +224,7 @@ jQuery.fn.checkTree_my = function(settings) {
             }
         });
         }
-        
+
         // When you click the checkbox, it should do the checking/unchecking
         $checkbox.click(function() {
         // Toggle the checked class)
@@ -244,51 +244,51 @@ jQuery.fn.checkTree_my = function(settings) {
             if (jQuery(this).hasClass("checked")) {
             // Fire the check callback for this parent
             if (settings.onCheck) settings.onCheck(jQuery(this).parent());
-            
+
             // Go to the sibling list, and find all unchecked checkbox images
             jQuery(this).siblings("ul").find(".checkbox").not(".checked")
             // Set as fully checked:
             .removeClass("half_checked")
             .addClass("checked")
-            
+
             // For each one, fire the onCheck callback
             .each(function() {
                 if (settings.onCheck) settings.onCheck(jQuery(this).parent());
             })
-            
+
             // For each one, check the checkbox (actual input element)
             .siblings(":checkbox")
                 .prop("checked", true)
             ;
           }
-        
+
           // If Unchecked:
           else {
             // Fire the uncheck callback for this parent
             if (settings.onUnCheck) settings.onUnCheck(jQuery(this).parent());
-            
+
             // Go to the sibling list and find all checked checkbox images
             jQuery(this).siblings("ul").find(".checkbox").filter(".checked")
             // Set as fully unchecked
             .removeClass("half_checked")
             .removeClass("checked")
-            
+
             // For each one fire the onUnCheck callback
             .each(function() {
                 if (settings.onUnCheck) settings.onUnCheck(jQuery(this).parent());
             })
-            
+
             // For each one, uncheck the checkbox (the actual input element)
             .siblings(":checkbox")
                 .prop("checked", false)
             ;
           }
            }
-                                
+
         // Tell our parent checkbox that we've changed (they might need to change their state)
         jQuery(this).parents("ul").siblings(":checkbox").change();
         });
-        
+
         // Add the appropriate classes to the new checkbox image based on the old one:
         if (jQuery(this).children('.checkbox').hasClass('checked'))
         $checkbox.addClass('checked');
@@ -298,12 +298,12 @@ jQuery.fn.checkTree_my = function(settings) {
         }
         else if (jQuery(this).children('.checkbox').hasClass('half_checked'))
         $checkbox.addClass('half_checked');
-        
+
         // Remove any existing arrows or checkboxes or labels
         jQuery(this).children(".arrow").remove();
         jQuery(this).children(".checkbox").remove();
         jQuery(this).children("label").remove();
-        
+
         // Prepend the new arrow, label, and checkbox images to the front of the LI
         jQuery(this)
         .prepend($label)
@@ -311,7 +311,7 @@ jQuery.fn.checkTree_my = function(settings) {
         .prepend($arrow)
         ;
     })
-    
+
     .find("label")
         // Clicking the labels should do the labelAction (either expand or check)
         .click(function() {
@@ -325,10 +325,10 @@ jQuery.fn.checkTree_my = function(settings) {
             break;
         }
         })
-        
+
         // Add a hover class to the labels when hovering
         .hover(
-        function() { 
+        function() {
             jQuery(this).addClass("hover");
             if (settings.onLabelHoverOver) settings.onLabelHoverOver(jQuery(this).parent());
         },
@@ -348,7 +348,7 @@ jQuery.fn.checkTree_my = function(settings) {
 
 /**
  * jQuery custom checkboxes
- * 
+ *
  * Copyright (c) 2008 Khavilo Dmitry (http://widowmaker.kiev.ua/checkbox/)
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
@@ -366,53 +366,53 @@ jQuery.fn.checkTree_my = function(settings) {
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
         };
-        
+
         $.fn.checkbox = function(options) {
                 /* IE6 background flicker fix */
-                try        { document.execCommand('BackgroundImageCache', false, true);        } catch (e) {}
-                
+                try     { document.execCommand('BackgroundImageCache', false, true);    } catch (e) {}
+
                 /* Default settings */
                 var settings = {
                         cls: 'jquery-checkbox',  /* checkbox  */
                         empty: 'empty.png'  /* checkbox  */
                 };
-                
+
                 /* Processing settings */
                 settings = $.extend(settings, options || {});
-                
+
                 /* Adds check/uncheck & disable/enable events */
                 var addEvents = function(object)
                 {
                         var checked = object.checked;
                         var disabled = object.disabled;
                         var $object = $(object);
-                        
+
                         if ( object.stateInterval )
                                 clearInterval(object.stateInterval);
-                        
+
                         object.stateInterval = setInterval(
-                                function() 
+                                function()
                                 {
                                         if ( object.disabled != disabled )
                                                 $object.trigger( (disabled = !!object.disabled) ? 'disable' : 'enable');
                                         if ( object.checked != checked )
                                                 $object.trigger( (checked = !!object.checked) ? 'check' : 'uncheck');
-                                }, 
+                                },
                                 10 /* in miliseconds. Low numbers this can decrease performance on slow computers, high will increase responce time */
                         );
                         return $object;
                 };
                 //try { console.log(this); } catch(e) {}
-                
+
                 /* Wrapping all passed elements */
-                return this.each(function() 
+                return this.each(function()
                 {
                         var ch = this; /* Reference to DOM Element*/
                         var $ch = addEvents(ch); /* Adds custom events and returns, jQuery enclosed object */
-                        
+
                         /* Removing wrapper if already applied  */
                         if (ch.wrapper) ch.wrapper.remove();
-                        
+
                         /* Creating wrapper for checkbox and assigning "hover" event */
                         ch.wrapper = $('<span class="' + settings.cls + '"><span class="mark"><img src="' + settings.empty + '" /></span></span>');
                         ch.wrapperInner = ch.wrapper.children('span:eq(0)');
@@ -420,10 +420,10 @@ jQuery.fn.checkTree_my = function(settings) {
                                 function(e) { ch.wrapperInner.addClass(settings.cls + '-hover');CB(e); },
                                 function(e) { ch.wrapperInner.removeClass(settings.cls + '-hover');CB(e); }
                         );
-                        
+
                         /* Wrapping checkbox */
                         $ch.css({position: 'absolute', zIndex: -1, visibility: 'hidden'}).after(ch.wrapper);
-                        
+
                         /* Ttying to find "our" label */
                         var label = false;
                         if ($ch.attr('id'))
@@ -450,19 +450,19 @@ jQuery.fn.checkTree_my = function(settings) {
                         $ch.click(function(e) { CB(e); });
                         $ch.bind('disable', function() { ch.wrapperInner.addClass(settings.cls+'-disabled');}).bind('enable', function() { ch.wrapperInner.removeClass(settings.cls+'-disabled');});
                         $ch.bind('check', function() { ch.wrapper.addClass(settings.cls+'-checked' );}).bind('uncheck', function() { ch.wrapper.removeClass(settings.cls+'-checked' );});
-                        
+
                         /* Disable image drag-n-drop for IE */
                         $('img', ch.wrapper).bind('dragstart', function () {return false;}).bind('mousedown', function () {return false;});
-                        
+
                         /* Firefox antiselection hack */
                         if ( window.getSelection )
                                 ch.wrapper.css('MozUserSelect', 'none');
-                        
+
                         /* Applying checkbox state */
                         if ( ch.checked )
                                 ch.wrapper.addClass(settings.cls + '-checked');
                         if ( ch.disabled )
-                                ch.wrapperInner.addClass(settings.cls + '-disabled');                        
+                                ch.wrapperInner.addClass(settings.cls + '-disabled');
                 });
         }
 })(jQuery);
@@ -784,10 +784,10 @@ $.fn.growfield.presets = {};
 if(typeof opf_use_checktrees!='undefined') {
     $("ul.tree1").checkTree_my({labelAction: "check", allChildrenMarksParentChecked: "yes", checkedMarksChildrenChecked: "yes"});
     $("ul.tree2").checkTree_my({labelAction: "check", allChildrenMarksParentChecked: "yes", checkedMarksChildrenChecked: "yes"});
-    
+
     //modules_checktree_visibility();
     $("input[class=activity]").checkbox({ cls:"activity", empty: WB_URL+"/modules/outputfilter_dashboard/templates/images/empty.gif"});
-    
+
 }
 
 

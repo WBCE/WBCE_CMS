@@ -2,9 +2,13 @@
 Header: Version-History
 
 1.5:
+1.5.4 %(mrbaseman, 19 Apr 2017)%
+	- fix for opf_db functions when previous queries have triggered already an error
+
 1.5.3 %(mrbaseman, 7 Apr 2017)%
-        - added fallbacks in <opf_insert_frontend_files> in case the template lacks head
-	- improved debug messages for calls to <opf_is_registered>
+        - added fallddbacks in <opf_insert_frontend_files> in case the template lacks head
+        - improved debug messages for calls to <opf_is_registered>
+
 
 1.5.2 %(mrbaseman, 8 Mar 2017)%
         - use !OPF_TYPE! constants when exporting filters

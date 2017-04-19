@@ -2,9 +2,13 @@
 Header: Version-History
 
 1.5:
+1.5.4 %(mrbaseman, 19 Apr 2017)%
+        - fix for opf_db functions when previous queries have triggered already an error
+
 1.5.3 %(mrbaseman, 7 Apr 2017)%
-        - added fallbacks in <opf_insert_frontend_files> in case the template lacks head
+        - added fallddbacks in <opf_insert_frontend_files> in case the template lacks head
         - improved debug messages for calls to <opf_is_registered>
+
 
 1.5.2 %(mrbaseman, 8 Mar 2017)%
         - use !OPF_TYPE! constants when exporting filters
@@ -26,14 +30,14 @@ Header: Version-History
         - automagically initialize the global filter list
         - allow to sort filters via drag&drop
         - make exported filter human-readable
-        - improve processing of formatting of documentation 
+        - improve processing of formatting of documentation
         - when exporting a filter create a filter.php file
         - during export also insert placeholders introduced in version 1.4.4
         - allow to convert between inline filters and plugin filters
         - added <opf_move_up_before> to move filters up in the list during installation
         - search for pre-existing module filters during installation of opf
         - cleaned up backend_body.js
-        - support backend filtering, provided that the class "Tool" exists and the settings have been converted to modules 
+        - support backend filtering, provided that the class "Tool" exists and the settings have been converted to modules
         In case you have created a filter which screws up the backend completely, add the following line to your global !config.php! of your WBCE installation
         > define('WB_OPF_BE_OFF', 'off');
         The value doesn't really matter, just if the constant is defined, there will no filter be applied to the backend and you have access to the dashboard again and you can fix the filters.
@@ -55,7 +59,7 @@ Header: Version-History
         - remove unused code part from add_filter to fix array conversion warnings
         - update plugin filters to use new placeholders introduced in 1.4.4
         *in order to pick up this change you have to remove the example filters before upgrading OpF*
-        - update documentation: added a section which explains the use of the constants and placeholders 
+        - update documentation: added a section which explains the use of the constants and placeholders
 
 1.4.7 %(mrbaseman, 21 Feb 2016)%
         - a couple of cosmetic bugfixes (correctly display Umlauts in filter list, replace German ss special char with ss in filter description, remove unused filter_id from template parsing, properly initialize TPL_EXTRA_FIELDS_BLOCK in edit_filter, fix for using global LANG inside method in WBCE)
@@ -66,7 +70,7 @@ Header: Version-History
 1.4.6 %(mrbaseman, 18 Feb 2016)%
         - add module icon for WBCE 1.2
         - bugfix: do not allow moving up uppermost filter
-        - switch from FTANs to IDKEYs in many places of the backend 
+        - switch from FTANs to IDKEYs in many places of the backend
 
 1.4.5 %(mrbaseman, 09 Feb 2016)%
         - update documentation layout
@@ -81,24 +85,24 @@ Header: Version-History
         >        {SYSVAR:WB_URL}   = will replace with the content of the Constant WB_URL
         >        {SYSVAR:WB_PATH}  = will replace with the content of the Constant WB_PATH
         >        {OPF:PLUGIN_URL}  = will replace with WB_URL.'/modules/outputfilter_dashboard/plugins/{your_plugin}'
-        >        {OPF:PLUGIN_PATH} = will replace with WB_PATH.'/modules/outputfilter_dashboard/plugins/{your_plugin}'                        
-                        
-        - added 2 CONSTANTS to work with OPF Plugins 
-        >        !OPF_PLUGINS_PATH!  
+        >        {OPF:PLUGIN_PATH} = will replace with WB_PATH.'/modules/outputfilter_dashboard/plugins/{your_plugin}'
+
+        - added 2 CONSTANTS to work with OPF Plugins
+        >        !OPF_PLUGINS_PATH!
         >        !OPF_PLUGINS_URL!
                         the path and url to the plugins folder is very long and is being used extensivly in Filters,
                         therefore the constants are a convenient addition.
-                        The URL is 
-        > OPF_PLUGINS_URL = [ WB_URL.'/modules/'.basename(dirname(__FILE__)).'/plugins/' ] 
-                                
-        
+                        The URL is
+        > OPF_PLUGINS_URL = [ WB_URL.'/modules/'.basename(dirname(__FILE__)).'/plugins/' ]
+
+
 1.4.3 %(mrbaseman, 03 Feb 2016)%
         - fix ftan for sp5 and for singletab mode in earlier versions
         - a couple of fixes for the additional fields loop
         - correctly unregister from pmf
 
 1.4.2 %(mrbaseman, 29 Jan 2016)%
-        - add default value for %$opt% in opf_controller 
+        - add default value for %$opt% in opf_controller
 
 1.4.1 %(mrbaseman, 26 Jan 2016)%
         - fix headers/ftan issue for latest WBCE versions
@@ -626,7 +630,7 @@ Header: Version-History
 
 2009-12-29  %(Thomas thorn Hornik)%
 
-        - changed link to docu. 
+        - changed link to docu.
 
 2009-12-29  %(Thomas thorn Hornik)%
 
