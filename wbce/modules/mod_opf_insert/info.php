@@ -4,24 +4,23 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
  * @package         OPF Insert
- * @version         1.0.0
+ * @version         1.0.1
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
 
 /*
- *        CHANGELOG
+ *      CHANGELOG
  *
- *      1.0.0        2017-01-23      - turn classical outputfilter to an OpF filter module
+ *      1.0.1   2017-04-11      - make install/upgrade work w/o classical output_filters
+ *      1.0.0   2017-01-23      - turn classical outputfilter to an OpF filter module
  *
  */
 
@@ -36,12 +35,12 @@ if(!defined('WB_PATH')) {
 /* -------------------------------------------------------- */
 
 
-$module_directory        = 'mod_opf_insert';
-$module_name                = 'OPF Insert';
+$module_directory       = 'mod_opf_insert';
+$module_name            = 'OPF Insert';
 $module_function        = 'opffilter';
-$module_version                = '1.0.0';
+$module_version         = '1.0.1';
 $module_platform        = 'WBCE 1.2.x ';
-$module_author                = 'Martin Hecht (mrbaseman)';
-$module_license                = 'GNU GPL2 (or any later version)';
-$module_description        = 'fill out placeholders for Javascript, CSS, Metas and Title';
+$module_author          = 'Martin Hecht (mrbaseman)';
+$module_license         = 'GNU GPL2 (or any later version)';
+$module_description     = 'fill out placeholders for Javascript, CSS, Metas and Title';
 $module_level           = 'core';

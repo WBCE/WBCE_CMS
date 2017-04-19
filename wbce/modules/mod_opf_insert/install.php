@@ -4,16 +4,14 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
  * @package         OPF Insert
- * @version         1.0.0
+ * @version         1.0.1
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -31,14 +29,16 @@ if(!defined('WB_PATH')) {
 
 if(defined('WB_URL'))
 {
-    // check whether outputfilter-module is installed 
+    // check whether outputfilter-module is installed
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registered('Insert')){
-            return require(WB_PATH.'/modules/mod_opf_insert/upgrade.php');
+        $upgrade_result=require(WB_PATH.'/modules/mod_opf_insert/upgrade.php');
+        if($upgrade_result==FALSE) return FALSE;
+        if(opf_is_registered('Insert')){ // filter already registered
+            return TRUE;
         }
-        
+
         // install filter
         opf_register_filter(array(
             'name' => 'Insert',
@@ -60,9 +60,5 @@ if(defined('WB_URL'))
                'WB-Link'
             )
         );
-
-        // ensure settings are present
-        if(class_exists('Settings')) Settings::Set('opf_insert',1, false);
-        if(class_exists('Settings')) Settings::Set('opf_insert'.'_be',1, false);
     }
 }
