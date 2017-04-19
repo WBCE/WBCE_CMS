@@ -231,6 +231,10 @@ class admin extends wb
         if ($operateBuffer){
             // OPF dashboard
             $allOutput = ob_get_clean ();
+            $file=WB_PATH . '/modules/outputfilter_dashboard/functions.php';
+            if (file_exists($file)) {
+                include_once ($file);
+	    }
             if(function_exists('opf_controller')) { 
                 $allOutput = opf_controller('backend', $allOutput);
             }

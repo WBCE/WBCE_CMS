@@ -280,6 +280,10 @@ class Tool {
         $toolOutput = ob_get_clean ();
         
         // FILTER for OPF DASHBOARD just for this module(tool)
+        $file=WB_PATH . '/modules/outputfilter_dashboard/functions.php';
+        if (file_exists($file)) {
+            include_once ($file);
+        }
         if(function_exists('opf_controller')) { 
             $toolOutput = opf_controller('backend', $toolOutput, $this->toolDir);
         }
