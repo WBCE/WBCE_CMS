@@ -16,7 +16,8 @@ if(! defined('WB_PATH')) {
 }
 
 // Setup wb object, skip header and skip permission checks
-$wb = new wb('Start', 'start', false, false);
+$wb = new admin('Start', 'start', false, false);
+$wb->page_id=PAGE_ID;
 $js_back = WB_URL . '/account/signup.php';
 
 // Get raw user inputs

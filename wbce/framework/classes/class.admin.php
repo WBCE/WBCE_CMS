@@ -18,6 +18,7 @@ require_once ADMIN_PATH . '/interface/version.php';
 
 class admin extends wb
 {
+    
     // Authenticate user then auto print the header
     public function __construct($section_name = '##skip##', $section_permission = 'start', $auto_header = true, $auto_auth = true,$operateBuffer=true)
     {
@@ -66,6 +67,7 @@ class admin extends wb
                 $this->print_header($body_tags = '',$operateBuffer);
             }
         }
+        
         // i know this sucks but some old stuff really need this
         global $wb;
         $wb = $this;

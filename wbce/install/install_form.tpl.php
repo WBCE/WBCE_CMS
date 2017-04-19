@@ -158,6 +158,12 @@
                         <td><?php print $wb_root?>/var/</td>
                         <td><?php echo $sDirVar ?></td>
                     </tr>
+                    <tr>
+                        <td><?php print $wb_root?>/log/</td>
+                        <td><?php echo $sDirLog ?></td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
                 </tbody>
             </table><!-- class step2 -->
 
