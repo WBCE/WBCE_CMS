@@ -4,16 +4,16 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright       Ryan Djurovich (2004-2009)
+ * @copyright       WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.2
+ * @version         1.0.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -38,7 +38,7 @@ if ( $msgTxt != '') :?>
     <?php echo $admin->getFTAN(); ?>
     <input type="hidden" name="action" value="save" />
     <table width="98%" cellspacing="0" cellpadding="5px" class="row_a">
-            
+
         <tr><td colspan="2"><br /><strong><?php echo $HEADING['FRONTEND'];?>:</strong></td></tr>
         <tr>
             <td width="35%"><?php echo $OPF['EMAIL_FILTER'];?>:</td>
@@ -67,18 +67,18 @@ if ( $msgTxt != '') :?>
                     name="js_mailto" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>
-        
+
         <!-- REPLACEMENTS -->
-        
+
         <tr><td colspan="2"><br /><strong><?php echo $OPF['REPLACEMENT_CONF'];?>:</strong></td></tr>
         <tr>
             <td><?php echo $OPF['AT_REPLACEMENT'];?>:</td>
-            <td><input type="text" style="width: 160px" value="<?php echo $data['at_replacement'];?>" 
+            <td><input type="text" style="width: 160px" value="<?php echo $data['at_replacement'];?>"
                 name="at_replacement"/></td>
         </tr>
         <tr>
             <td><?php echo $OPF['DOT_REPLACEMENT'];?>:</td>
-            <td><input type="text" style="width: 160px" value="<?php echo $data['dot_replacement'];?>" 
+            <td><input type="text" style="width: 160px" value="<?php echo $data['dot_replacement'];?>"
                 name="dot_replacement"/></td>
         </tr>
     </table>

@@ -4,16 +4,16 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright       Ryan Djurovich (2004-2009)
+ * @copyright       WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.2
+ * @version         1.0.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -37,13 +37,13 @@ if(!defined('WB_PATH')) {
  */
 
 function doFilterEmail($content) {
- 
+
     // If necessary (Both true) check if mdcr.js is added to the head of template
-    // In not try to add it. 
-    if(Settings::Get('opf_mailto_filter', true) 
+    // In not try to add it.
+    if(Settings::Get('opf_mailto_filter', true)
        and Settings::Get('opf_js_mailto', true) ){
     // test if js-decryption is installed
-        if( !preg_match('/<head.*<.*src=\".*\/mdcr.js.*>.*<\/head/siU', $content) ) {           
+        if( !preg_match('/<head.*<.*src=\".*\/mdcr.js.*>.*<\/head/siU', $content) ) {
             // try to insert js-decrypt into <head> if available
             $script = str_replace('\\', '/',str_replace(WB_PATH,'', dirname(dirname(__FILE__))).'/js/mdcr.js');
             if(is_readable(WB_PATH.$script)) {
@@ -55,7 +55,7 @@ function doFilterEmail($content) {
         }
     }
 
-    // Search for Maillinks 
+    // Search for Maillinks
 
     // first search part to find all mailto email addresses
     $pattern = '#(<a[^<]*href\s*?=\s*?"\s*?mailto\s*?:\s*?)([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4})([^"]*?)"([^>]*>)(.*?)</a>';
@@ -85,7 +85,7 @@ function doFilterEmail($content) {
  * @return string proceeded replacement string
  */
 function _cbDoExecuteFilter($match) {
-    
+
     $search = array('@', '.');
     $replace = array(
         Settings::Get('opf_at_replacement', '(at)') ,
@@ -94,7 +94,7 @@ function _cbDoExecuteFilter($match) {
 
     // check if the match contains the expected number of subpatterns (6|8)
     switch (count($match)) {
-    
+
         case 8:
         /** OUTPUT FILTER FOR EMAIL ADDRESSES EMBEDDED IN TEXT **/
         // 1.. text mails only, 3.. text mails + mailto (no JS), 7 text mails + mailto (JS)
@@ -157,7 +157,7 @@ function _cbDoExecuteFilter($match) {
             // return $match[1] .str_replace($search, $replace, $match[2]) .$match[3] .'"' .$match[4] .$match[5] .'</a>';
             }
         break;
-        
+
         default:
         // number of subpatterns do not match the requirements ... do nothing
             return $match[0];
@@ -165,7 +165,7 @@ function _cbDoExecuteFilter($match) {
     }
 }
 
-        
+
 function opff_mod_opf_email (&$content, $page_id, $section_id, $module, $wb) {
     if(Settings::Get('opf_email', true)){
         $content = doFilterEmail($content);
