@@ -4,16 +4,16 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright       Ryan Djurovich (2004-2009)
+ * @copyright       WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
  * @package         OPF CSS to head
- * @version         1.0.0
+ * @version         1.0.1
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -34,7 +34,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 
 if(!class_exists('Settings')) return FALSE;
 
-Settings::Set('opf_css_to_head',1, false);  
-Settings::Set('opf_css_to_head'.'_be',1, false);  
+Settings::Set('opf_css_to_head',1, false);
+Settings::Set('opf_css_to_head'.'_be',1, false);
 
 return TRUE;
