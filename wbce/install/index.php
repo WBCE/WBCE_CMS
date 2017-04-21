@@ -275,14 +275,14 @@ else {
 
 
 if (is_writable('../log/')) {
-    $sDirVar= '<span class="good">Writeable</span>';
+    $sDirLog= '<span class="good">Writeable</span>';
 } 
 elseif (!file_exists('../log/')) {
-    $sDirVar= '<span class="bad">Directory Not Found</span>';
+    $sDirLog= '<span class="bad">Directory Not Found</span>';
     $installFlag = false;
 }
 else {
-    $sDirVar= '<span class="bad">Unwriteable</span>';
+    $sDirLog= '<span class="bad">Unwriteable</span>';
     $installFlag = false;
 }
 
