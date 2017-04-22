@@ -402,4 +402,35 @@ function ds_GetLanguagesArray(){
     return false;
 }
 
+function ds_GetTemplatesArray(){
+    
+    global $database;
+    $ret = array();
+    
+    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function != 'theme' ORDER BY name");
+    if($result->numRows() > 0) {
+        while($addon = $result->fetchRow())
+        {
+            $ret[]=$addon;   
+        }
+        return $ret;
+    } 
+    return false;
+}
 
+
+function ds_GetThemesArray(){
+    
+    global $database;
+    $ret = array();
+    
+    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function = 'theme' ORDER BY name");
+    if($result->numRows() > 0) {
+        while($addon = $result->fetchRow())
+        {
+            $ret[]=$addon;   
+        }
+        return $ret;
+    } 
+    return false;
+}

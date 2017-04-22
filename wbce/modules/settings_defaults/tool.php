@@ -271,6 +271,22 @@ function ds_LanguagePossible($Name=""){
     else                        return false;
 }
 
+function ds_GetLanguagesArray(){
+     
+     global $database;
+     $ret = array();
+     
+     $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'language' ORDER BY directory");
+     if($result->numRows() > 0) {
+         while($addon = $result->fetchRow())
+         {
+             $ret[]=$addon;   
+         }
+         return $ret;
+     } 
+     return false;
+ }
+
 
 
 
