@@ -102,8 +102,9 @@ class SysLog{
 
         Uses WBCE core functions make_dir() and change_mode()
     */        
-    public function __construct($log_file = WB_PATH. "/log/system.log") {
+    public function __construct($log_file = "") {
     
+        if ($log_file=="") $log_file = WB_PATH. "/log/system.log";
         $this->log_file = $log_file;
 
         if(!file_exists($log_file)){ //Attempt to create log file 
