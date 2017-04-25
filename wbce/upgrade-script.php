@@ -171,7 +171,8 @@ $FAIL = ' <span class="error">FAILED</span> ';
 $DEFAULT_THEME = 'advancedThemeWbFlat';
 $stepID = 1;
 $dirRemove = array(
-'[MODULES]/SecureFormSwitcher/'
+'[MODULES]/SecureFormSwitcher/',
+'[MODULES]/output_filter/'
 /*
 '[TEMPLATE]/allcss/',
 '[TEMPLATE]/blank/',
@@ -409,10 +410,6 @@ $file_name = (!in_array("mod_topics", $all_tables) ? "install.php" : "upgrade.ph
 require_once WB_PATH . "/modules/topics/" . $file_name;
 
 
-// update output filter - we still need this to convert traditional outputfilter settings
-// from a database table to a setting
-require_once WB_PATH . "/modules/output_filter/upgrade.php";
-
 // OpF Dashboard
 if (!in_array("mod_outputfilter_dashboard", $all_tables)) {
    echo "<br />Install OpF Dashboard<br />";
@@ -422,6 +419,11 @@ if (!in_array("mod_outputfilter_dashboard", $all_tables)) {
    require_once WB_PATH . "/modules/outputfilter_dashboard/upgrade.php";
 }
 
+// uninstall classical output filter module
+$file_name = WB_PATH . "/modules/output_filter/uninstall.php";
+if (file_exists($file_name)) {
+    include_once ($file_name);
+}
 
 // check again all tables, to get a new array
 if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
