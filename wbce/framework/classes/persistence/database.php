@@ -258,8 +258,9 @@ class Database
 
         if (isset($errorInfo[2])) {
             $this->error = $errorInfo[2];
+        } else {
+            $this->error = null;
         }
-        //$this->error = null;
     }
 
     /**
