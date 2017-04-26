@@ -1,19 +1,13 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        modules
- * @package         backup
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2010, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher - See notes below for file backups.
- * @version         $Id$
- * @filesource      $HeadURL$
- * @lastmodified    $Date$
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 $module_directory	= 'backup';
@@ -25,5 +19,3 @@ $module_author		= 'Ryan Djurovich, John, Hans>Null (QuickFix), Dietrich Roland P
 $module_license		= 'GNU General Public License';
 $module_description = 'This module allows you to backup your database and your files.';
 $module_icon        = 'fa fa-save';
-
-

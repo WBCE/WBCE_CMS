@@ -13,7 +13,6 @@
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-
 $module_directory = 'wysiwyg';
 $module_name = 'WYSIWYG';
 $module_function = 'page';
