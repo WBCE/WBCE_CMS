@@ -6,12 +6,12 @@
 			<table style="width: 900px; " border="0" cellspacing="0" cellpadding="0" align="center">
 				<tbody>
 					<tr>
-						<td style="font-size:14px;font-family:'lucida grande',tahoma,verdana,arial,sans-serif;background:#111111;color:#ffffff;font-weight:bold;vertical-align:middle;text-align:left;padding:5px 30px 5px 30px; -webkit-font-smoothing: antialiased;">
+						<td style="font-size:14px;font-family:'lucida grande',tahoma,verdana,arial,sans-serif;background:#215A7A;color:#ffffff;font-weight:bold;vertical-align:middle;text-align:left;padding:5px 30px 5px 30px; -webkit-font-smoothing: antialiased;">
 							{WEBSITE_TITLE}
 						</td>
 					</tr>
 					<tr>
-						<td style="font-size:18px;font-family:'lucida grande',tahoma,verdana,arial,sans-serif;background:#aaaaaa;color:#000000;font-weight:bold;vertical-align:middle;text-align:left;padding:20px 30px 20px 30px;">
+						<td style="font-size:18px;font-family:'lucida grande',tahoma,verdana,arial,sans-serif;background:#A8BCCB;color:#000000;font-weight:bold;vertical-align:middle;text-align:left;padding:20px 30px 20px 30px;">
 							{HEADER}
 						</td>
 					</tr>
@@ -29,7 +29,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="font-size:10px;font-family:'lucida grande',tahoma,verdana,arial,sans-serif;background:#111111;color:#ffffff;font-weight:bold;vertical-align:middle;text-align:right;padding:5px 30px 5px 30px;">
+						<td style="font-size:10px;font-family:'lucida grande',tahoma,verdana,arial,sans-serif;background:#215A7A;color:#ffffff;font-weight:bold;vertical-align:middle;text-align:right;padding:5px 30px 5px 30px;">
 							<a style="text-decoration:none;color:#ffffff" href="{WB_URL}">{WEBSITE_TITLE}</a>
 						</td>
 					</tr>

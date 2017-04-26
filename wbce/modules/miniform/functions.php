@@ -8,10 +8,11 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.8
- * @lastmodified    november 26, 2015
+ * @version         0.10.0
+ * @lastmodified    april 10, 2017
  *
  */
+
 
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
@@ -36,7 +37,7 @@ class mform {
 	
 	function getSelectTemplate($current = null) {
 		$listarray = $this->getTemplates();
-		$list = '<select class="templates" name="template">';
+		$list = '<select class="templates mf-input" name="template">';
 		foreach ($listarray as $key => $value) {
 			$s = $value == $current ? ' selected="selected"' : '';
 			$list .= '<option '.$s.' value="'.$value.'">'.$key.'</option>';
@@ -88,7 +89,8 @@ class mform {
 		return $this->upload_whitelist;
 	}
 	function check_whitelist($filename) {
-		$file_ext=strtolower(end(explode('.',$filename)));
+		$file_tmp=explode('.',$filename);
+		$file_ext=strtolower(end($file_tmp));
 		return(in_array($file_ext,explode(',',$this->upload_whitelist)));
 	}
 	function add_template($template, $var, $value) {
@@ -123,7 +125,7 @@ class mform {
 		}elseif(isset($_POST[$postfield])) {
 			$val =  $_POST[$postfield];
 		} elseif(isset($_GET[$getfield])) {
-			$val = $_GET[$getfield];
+			$val = urldecode($_GET[$getfield]);
 			$this->fieldGetSeen = true;
 		} else {
 			$val = isset($_SESSION['form'][$postfield]) ? $_SESSION['form'][$postfield] : null;
@@ -150,6 +152,28 @@ class mform {
 		$captcha = ob_get_contents();
 		ob_end_clean();
 		return $captcha;
+	}
+	
+	function reCaptcha($siteKey = null) {
+		$rval = '';
+		if($siteKey) {
+			$rval = '<div class="g-recaptcha" data-sitekey="'.$siteKey.'"></div>';
+			$rval .= '<script src="https://www.google.com/recaptcha/api.js"></script>';
+		}
+		return $rval;
+	}
+	
+	function reCaptcha_check($secretKey = null) {
+		if($secretKey) {
+			if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+				$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
+				$responseData = json_decode($verifyResponse);
+				if($responseData->success == true) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	// Insert or Update table with posted fields in array
@@ -259,6 +283,7 @@ class mform {
 	
 		
 	function mail($toaddress, $subject, $message, $fromname='', $replyto = '') {
+		require_once(WB_PATH."/framework/class.wbmailer.php");
 		$toArray = explode(',',$toaddress);
 		$fromaddress = $toArray[0];
 	
@@ -289,11 +314,41 @@ class mform {
 		foreach($this->attachements as $filename => $file) {
 			$myMail->AddAttachment($file, $filename);
 		}
+		
+ 		$myMail->SMTPAutoTLS = false; // tell phpmailer not to autouse TLS is not configured
+		$myMail->SMTPOptions = array( // allow self_signed ssl.
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		); 
+		
 		// check if there are any send mail errors, otherwise say successful
 		if (!$myMail->Send()) {
+			$this->error = $myMail->ErrorInfo;
 			return false;
 		} else {
 			return true;
 		}
 	}
+	
+	
+	function remote_data($url = ''){
+	 
+		if (!function_exists('curl_init')){
+			die('Sorry cURL is not installed!');
+		}
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_USERAGENT, "Miniform remote_data()");
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+		$result = curl_exec($ch);
+		curl_close($ch);
+		return $result;
+	}
+
+
 } //end class
