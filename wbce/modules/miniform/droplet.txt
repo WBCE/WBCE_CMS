@@ -1,0 +1,13 @@
+1. Create a droplet with a name like "Lastform".
+2. Put this code into the droplet :
+
+
+if(!isset($_SESSION['lastform'])) return 'No data';
+$value = $_SESSION['lastform'];
+unset($_SESSION['lastform']);
+return $value;
+
+
+
+3. On your "Thank you" page you now can put [[lastform]] somewhere. 
+This will show the content of the email that has been sent to the website owner.
