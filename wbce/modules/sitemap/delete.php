@@ -20,5 +20,3 @@
 
 // Delete page from mod_sitemap
 $database->query("DELETE FROM ".TABLE_PREFIX."mod_sitemap WHERE section_id = '$section_id'");
-
-?>

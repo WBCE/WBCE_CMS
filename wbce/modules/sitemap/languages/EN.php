@@ -19,7 +19,7 @@ $SMTEXT['MSETTINGS']		= 'Main Settings';
 $SMTEXT['DISPLAY']			= 'Display';
 $SMTEXT['WHOLESITE']		= 'Whole site';
 $SMTEXT['CHILDREN_CP']		= 'Children of current page';
-$SMTEXT['HIDDEN_CHILDREN_CP']		= 'Hidden Children of current page';
+$SMTEXT['HIDDEN_CHILDREN_CP'] = 'Hidden Children of current page';
 $SMTEXT['PEERS_CP']			= 'Peers of current page';
 $SMTEXT['PAGE_LEVEL_LIMIT']	= 'Page level limit';
 $SMTEXT['LSETTINGS']		= 'Layout settings';
@@ -28,5 +28,7 @@ $SMTEXT['LHEADER']			= 'Level header';
 $SMTEXT['LLOOP']			= 'Level loop';
 $SMTEXT['LFOOTER']			= 'Level footer';
 $SMTEXT['FOOTER']			= 'Footer';
+$SMTEXT['MENUS']			= 'Menus';
+$SMTEXT['ALLMENUS']			= 'Use all menus';
 
 

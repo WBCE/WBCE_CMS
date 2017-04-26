@@ -28,5 +28,7 @@ $SMTEXT['LHEADER']			= 'Listenbeginn';
 $SMTEXT['LLOOP']			= 'Listeninhalt';
 $SMTEXT['LFOOTER']			= 'Listenende';
 $SMTEXT['FOOTER']			= 'Fu&szlig;zeile';
+$SMTEXT['MENUS']			= 'Men&uuml;s';
+$SMTEXT['ALLMENUS']			= 'Alle Menüs verwenden';
 
 
