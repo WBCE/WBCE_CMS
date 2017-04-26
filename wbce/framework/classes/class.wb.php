@@ -15,6 +15,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 
 class wb extends SecureForm
 {
+    public $SysLog;
 
     public $sDirectOutput="";
 
@@ -24,6 +25,9 @@ class wb extends SecureForm
     public function __construct($mode = SecureForm::FRONTEND)
     {
         parent::__construct($mode);
+        
+        // Connect to system Logger 
+        $this->SysLog=new SysLog();
     }
 
 /**
@@ -642,4 +646,15 @@ via the Settings panel in the backend of Website Baker
 
  
 
+}
+
+/**
+    @brief Global function for easy access of WB class
+    @return handle The Class WB object handle. 
+*/
+function WB() {
+    if (isset($GLOBALS['wb']) AND is_object($GLOBALS['wb'])){
+        return $GLOBALS['wb'];
+    }
+    return NULL;
 }

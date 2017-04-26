@@ -32,9 +32,9 @@ Topic: License (Software)
         along with OutputFilter-Dashboard.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
         Copyright (C) 2009 Thomas "thorn" Hornik <thorn@nettest.thekk.de>
-        
+
         Copyright (C) 2010 Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>
 
         Copyright (C) 2016 Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
-        
+
         (see GPL3.png)

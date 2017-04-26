@@ -4,16 +4,16 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright       Ryan Djurovich (2004-2009)
+ * @copyright       WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
- * @category        opffilter
+ * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.0
+ * @version         1.0.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -31,7 +31,7 @@ if(!defined('WB_PATH')) {
 
 if(defined('WB_URL'))
 {
-    // check whether outputfilter-module is installed 
+    // check whether outputfilter-module is installed
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
@@ -39,20 +39,11 @@ if(defined('WB_URL'))
             return require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
         }
 
-        if(!class_exists('Settings')) return FALSE;
-
-        // when upgrading from classical output filter....
-        if( class_exists('Settings') && (Settings::Get('opf_email',NULL)===NULL)){
-            // Setting does not yet exist
-            require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
+        $upgrade_result=require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
+        if($upgrade_result==FALSE) return FALSE;
+        if(opf_is_registered('E-Mail')){ // filter already registered
+            return TRUE;
         }
-        
-        // ensure settings are present
-        Settings::Set('opf_mailto_filter',1, false);
-        Settings::Set('opf_email_filter',1, false);
-        Settings::Set('opf_js_mailto',1, false);
-        Settings::Set('opf_at_replacement',"(at)", false);
-        Settings::Set('opf_dot_replacement',"(dot)", false);
 
         // install filter
         opf_register_filter(array(
@@ -75,8 +66,5 @@ if(defined('WB_URL'))
                'WB-Link'
             )
         );
-
-        // ensure settings are present
-        Settings::Set('opf_email',1, false);
     }
 }

@@ -4,16 +4,16 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright       Ryan Djurovich (2004-2009)
+ * @copyright       WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
- * @category        opffilter
+ * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.0
+ * @version         1.0.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -40,23 +40,23 @@ if($doSave) {
     $data['js_mailto']       = (int)(intval(isset($_POST['js_mailto']) ? $_POST['js_mailto'] : 0) != 0);
     $data['at_replacement']  = isset($_POST['at_replacement']) ? trim(strip_tags($_POST['at_replacement'])) : '';
     $data['dot_replacement'] = isset($_POST['dot_replacement']) ? trim(strip_tags($_POST['dot_replacement'])) : '';
-    
+
     // dont use JAvascript Mailto if no mailto filter active.
     if ($data['js_mailto'] and !$data['mailto_filter']) $data['js_mailto']=0;
-    
-    
+
+
     if ($admin->checkFTAN()) {
     // update database settings
     // OPF_JS_MAILTO
         $errmsg="";
-        
+
         // set the values
         $errmsg.=(string)Settings::Set("opf_email_filter", $data['email_filter']);
         $errmsg.=(string)Settings::Set("opf_mailto_filter", $data['mailto_filter']);
-        $errmsg.=(string)Settings::Set("opf_js_mailto", $data['js_mailto']);       
+        $errmsg.=(string)Settings::Set("opf_js_mailto", $data['js_mailto']);
         $errmsg.=(string)Settings::Set("opf_at_replacement", $data['at_replacement']);
         $errmsg.=(string)Settings::Set("opf_dot_replacement", $data['dot_replacement']);
-        
+
         if($errmsg=="") {
         //anything ok
             $msgTxt = "<b>".$MESSAGE['RECORD_MODIFIED_SAVED']."</b>";

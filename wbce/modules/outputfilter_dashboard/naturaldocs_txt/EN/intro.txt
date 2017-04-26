@@ -17,7 +17,7 @@ Topic: Admin-Tool
 
 Topic: Filters
         See <Install Filters> on how to install filters.
-        
+
         To write your own filters, see <Create Inline-Filter (en)>, <Create Plugin-Filter (en)>,
         <Create Module-Filter (en)>.
 

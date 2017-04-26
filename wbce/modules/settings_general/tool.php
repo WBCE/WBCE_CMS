@@ -223,6 +223,25 @@ if($saveSettings) {
     }
 
 
+    //Templates
+    $value=$admin->get_post("default_template");
+    if ($value){  
+        if (ds_TemplatePossible($value)) {
+            $setError.=Settings::Set ("DEFAULT_TEMPLATE", $value);
+            $setError.=Settings::Set ("WB_DEFAULT_TEMPLATE", $value);             
+        }              
+    }   
+    
+    //Themes
+    $value=$admin->get_post("default_theme");
+    if ($value){ 
+        if (ds_ThemePossible($value)) {
+            $setError.=Settings::Set ("DEFAULT_THEME", $value);
+            $setError.=Settings::Set ("WB_DEFAULT_THEME", $value);             
+        }              
+    }    
+
+
 
     // END ACTION!!
 
@@ -240,8 +259,8 @@ if($saveSettings) {
     $setError.=Settings::Set ("page_trash", "inline");
     $setError.=Settings::Set ("wb_page_trash", "inline");
 
-    $setError.=Settings::Set ("page_languages", true);
-    $setError.=Settings::Set ("wb_page_languages", true);
+    $setError.=Settings::Set ("page_languages", false);
+    $setError.=Settings::Set ("wb_page_languages", false);
 
     $setError.=Settings::Set ("multiple_menus", true);
     $setError.=Settings::Set ("wb_multiple_menus", true);
@@ -283,6 +302,12 @@ if($saveSettings) {
     if (!gs_EditorPossible($value)) $value="none";
     $setError.=Settings::Set ("wysiwyg_editor", $value);
     $setError.=Settings::Set ("wb_wysiwyg_editor", $value);
+
+    $setError.=Settings::Set ("DEFAULT_TEMPLATE", 'wbce');
+    $setError.=Settings::Set ("WB_DEFAULT_TEMPLATE", 'wbce');  
+
+    $setError.=Settings::Set ("DEFAULT_THEME", 'advancedThemeWbFlat');
+    $setError.=Settings::Set ("WB_DEFAULT_THEME", 'advancedThemeWbFlat');  
 
 
     // report success or failure
@@ -359,4 +384,53 @@ function gs_EditorPossible($AddonId){
     $results = $database->query($sql);
     if($results->numRows() > 0) return true;
     else                        return false;
+}
+
+function ds_GetLanguagesArray(){
+    
+    global $database;
+    $ret = array();
+    
+    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'language' ORDER BY directory");
+    if($result->numRows() > 0) {
+        while($addon = $result->fetchRow())
+        {
+            $ret[]=$addon;   
+        }
+        return $ret;
+    } 
+    return false;
+}
+
+function ds_GetTemplatesArray(){
+    
+    global $database;
+    $ret = array();
+    
+    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function != 'theme' ORDER BY name");
+    if($result->numRows() > 0) {
+        while($addon = $result->fetchRow())
+        {
+            $ret[]=$addon;   
+        }
+        return $ret;
+    } 
+    return false;
+}
+
+
+function ds_GetThemesArray(){
+    
+    global $database;
+    $ret = array();
+    
+    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function = 'theme' ORDER BY name");
+    if($result->numRows() > 0) {
+        while($addon = $result->fetchRow())
+        {
+            $ret[]=$addon;   
+        }
+        return $ret;
+    } 
+    return false;
 }

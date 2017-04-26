@@ -8,32 +8,32 @@ convert.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.1
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
+ * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 /*
@@ -47,7 +47,7 @@ if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 $mod_dir = basename(dirname(__FILE__));
 require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
 
-// include module.functions.php 
+// include module.functions.php
 include_once(WB_PATH . '/framework/module.functions.php');
 
 // include the module language file depending on the backend language of the current user
@@ -119,11 +119,11 @@ if($filter['plugin']!='' && !file_exists($plugin_dir.$filter['plugin'])) {
 if($filter['plugin']!='') {
     $filter_file=$filter['file'];
     $filter_file = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$filter['plugin'], $filter_file);
-    $filter_file = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter_file);        
+    $filter_file = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter_file);
     if(file_exists($filter_file)){
         $filter['func']=file_get_contents($filter_file);
-        $filter['file'] = ''; 
-        rm_full_dir($plugin_dir.$filter['plugin']); 
+        $filter['file'] = '';
+        rm_full_dir($plugin_dir.$filter['plugin']);
         $filter['plugin'] = '';
     } else {
         $convert_message = sprintf($text_failed, $LANG['MOD_OPF']['TXT_NO_SUCH_DIR']);
@@ -131,7 +131,7 @@ if($filter['plugin']!='') {
     }
 } else {
 
-    if( file_exists($plugin_dir.$plugin_name) 
+    if( file_exists($plugin_dir.$plugin_name)
         || !opf_io_mkdir($plugin_dir.$plugin_name)
         || !is_writable($plugin_dir.$plugin_name)) {
         $convert_message = sprintf($text_failed, $LANG['MOD_OPF']['TXT_WRITE_DENIED'], $plugin_dir.$plugin_name);
@@ -148,7 +148,7 @@ if($filter['plugin']!='') {
     // get filter-data serialised
     $filter_ser = serialize($filter);
     $filter_ser = opf_escape_string($filter_ser);
-    
+
     $file_info = <<<EOD
 <?php
 \$plugin_directory   = '$plugin_name';

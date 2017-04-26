@@ -27,7 +27,7 @@ Header: Version-History
 
 1.2.1 %(mrbaseman; 21 Feb 2016)%
         - use sysvar placeholders
-        
+
 1.2.0 %(thorn; 28 Dec 2009)%
         - updated module for use with OutputFilter-Dashboard
 

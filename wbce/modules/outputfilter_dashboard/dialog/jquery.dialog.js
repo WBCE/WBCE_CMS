@@ -2,13 +2,13 @@
 
 
 /*
- * Dialog plugin Version 1.5 
+ * Dialog plugin Version 1.5
  * Copyright (c) 2008 Chris Winberry
  * Email: transistech@gmail.com
- * 
+ *
  * Original Design: Michael Leigeber
  * http://www.leigeber.com/2008/04/custom-javascript-dialog-boxes/
- * 
+ *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
@@ -18,7 +18,7 @@
 // ----------------
 // Dialog Types:  error, warning, success, prompt, message, query
 // width/height = null : Default Size
-// width/height = 0    : Auto Size to contents 
+// width/height = 0    : Auto Size to contents
 // buttons == 0 : No Buttons
 // buttons == 1 : "Ok"
 // buttons == 2 : "Yes"/"No"
@@ -28,7 +28,7 @@
 // --------------------
 // showDialog(title, message, type, width, height, autohide, atcursor, modal, buttons, button1, button2)
 */
-                
+
 // global variables //
 var TIMER = 5;
 var SPEED = 1000;
@@ -45,7 +45,7 @@ var isIE = (navigator.appName == 'Microsoft Internet Explorer');
 if (window.attachEvent) document.attachEvent("onmousemove",MouseMv);
 else document.addEventListener("mousemove",MouseMv,false);
 
-function MouseMv(e) 
+function MouseMv(e)
 {
  if (!e) e = window.event;
  if (typeof e.pageX == "number") MouseMv.X = e.pageX;
@@ -116,10 +116,10 @@ function getScrollSize()
  {
   var db = document.body;
   var dde = document.documentElement;
- 
+
   var scrollHeight = Math.max(db.scrollHeight, dde.scrollHeight, db.offsetHeight, dde.offsetHeight, db.clientHeight, dde.clientHeight)
   var scrollWidth = Math.max(db.scrollWidth, dde.scrollWidth, db.offsetWidth, dde.offsetWidth, db.clientWidth, dde.clientWidth)
-  
+
   return {x: scrollWidth, y: scrollHeight};
  }
  catch(e) {}
@@ -133,7 +133,7 @@ function getScrollPos()
  try
  {
   if (typeof(pageXOffset) != 'undefined') {return {x: pageXOffset, y: pageYOffset};}  // IE throws an exception if I use "!isDef(pageXOffset)"
-  else 
+  else
   {
    var db = document.body;
    var dde = document.documentElement;
@@ -146,7 +146,7 @@ function getScrollPos()
 }
 
 // build/show the dialog box, populate the data and call the fadeDialog function //
-function showDialog(title, message, type, width, height, autohide, atcursor, modal, buttons, button1, button2) 
+function showDialog(title, message, type, width, height, autohide, atcursor, modal, buttons, button1, button2)
 {
  var dialog;
  var dialogheader;
@@ -174,9 +174,9 @@ function showDialog(title, message, type, width, height, autohide, atcursor, mod
   case 4: if (!isDef(button1)) {button1 = 'Ok'; buttons = 1;} if (!isDef(button2)) {buttons = 1;} break;  // Accepts a single user-defined button, (defaults to "Ok")
   default: button1 = 'Yes'; button2 = 'No'; break;
  }
- 
- 
- if (!el('dialog')) 
+
+
+ if (!el('dialog'))
  {
   dialog = document.createElement('div');
   dialog.id = 'dialog';
@@ -214,7 +214,7 @@ function showDialog(title, message, type, width, height, autohide, atcursor, mod
   doc.close();
   doc.body.onclick = hideDialog;
  }
- else 
+ else
  {
   dialog = el('dialog');
   dialogheader = el('dialog_header');
@@ -230,7 +230,7 @@ function showDialog(title, message, type, width, height, autohide, atcursor, mod
   if (modal) dialogmask.style.display = 'block';
 
  dialogbar.style.display = ((buttons>0)?'block':'none');
- 
+
  dialog.style.opacity = .00;
  dialog.style.filter = 'alpha(opacity=0)';
  dialog.alpha = 0;
@@ -241,8 +241,8 @@ function showDialog(title, message, type, width, height, autohide, atcursor, mod
   var docElem = document.documentElement;
   var docBody = document.body;
   content = ((docElem.clientHeight) ? docElem : docBody);
- }  
-  
+ }
+
  dialog.className = type + "border";
 
  dialogheader.className = type + "header";
@@ -251,7 +251,7 @@ function showDialog(title, message, type, width, height, autohide, atcursor, mod
  dialogbody.className = type + 'body';
 
  dialogbar.className = type + "border";
- 
+
  dialogcontent.innerHTML = message;
  if (type == 'message') dialogcontent.style.overflow = 'auto';
 
@@ -268,26 +268,26 @@ function showDialog(title, message, type, width, height, autohide, atcursor, mod
  {
   if (width == 0) dialog.style.width = 'auto';  // auto setting
   else dialog.style.width = width + 'px';
- } 
+ }
 
  if (!isDef(height) || (isIE && height == 0))  // default setting (IE auto doesn't work so set to default)
  {
   dialogcontent.style.height = DEFAULT_CONTENT_HEIGHT + 'px';
   dialog.style.height = (getHeight(dialogheader) + DEFAULT_CONTENT_HEIGHT + (isIE?0:13) + getHeight(dialogbar)) + 'px';  // + 2 * 6px content padding + 2 * 1px bar border
- } 
+ }
  else
  {
   if (height == 0)  // auto setting
   {
    dialogcontent.style.height = 'auto';
    dialog.style.height = 'auto';
-  } 
+  }
   else
   {
    dialogcontent.style.height = (height - getHeight(dialogheader) - getHeight(dialogbar)) + 'px';
    dialog.style.height = (height + (isIE?0:13)) + 'px';  // + 2 * 6px content padding + 1px bar border
-  } 
- } 
+  }
+ }
 
  var dialogtop, dialogleft;
  var contentwidth = getWidth(content), contentheight = getHeight(content);
@@ -310,7 +310,7 @@ function showDialog(title, message, type, width, height, autohide, atcursor, mod
   dialogtop = ((contentheight - dialogheight) / 2);  // Position in center of WRAPPER
   dialogleft = ((contentwidth - dialogwidth) / 2);
  }
- 
+
  if ((dialogtop + dialogheight) > contentheight - 2) dialogtop = contentheight - dialogheight - 2;  // Prevent dialog from being clipped by content bottom border
  if ((dialogleft + dialogwidth) > contentwidth - 2) dialogleft = contentwidth - dialogwidth - 2;    // Prevent dialog from being clipped by content right border
  dialogtop += scrollPos.y;
@@ -323,15 +323,15 @@ function showDialog(title, message, type, width, height, autohide, atcursor, mod
  {
   var scrollSize = getScrollSize();
 
-  dialogmask.style.height = scrollSize.y + 'px';  
-  dialogmask.style.width = scrollSize.x + 'px';   
+  dialogmask.style.height = scrollSize.y + 'px';
+  dialogmask.style.width = scrollSize.x + 'px';
   var doc = dialogmask.contentDocument || dialogmask.contentWindow.document;
   doc.body.style.height = dialogmask.style.height;  // Resize dialog mask body to full height of window so that it will capture an onclick event
  }
- 
+
  dialog.timer = setInterval("fadeDialog(1)", TIMER);
 
- if(autohide) 
+ if(autohide)
  {
 //  dialogclose.style.visibility = "hidden";
   window.setTimeout("hideDialog()", (autohide * 1000));
@@ -353,26 +353,26 @@ function hideDialog(buttonId)
 }
 
 // fade-in the dialog box //
-function fadeDialog(flag) 
+function fadeDialog(flag)
 {
  var dialog = el('dialog');
  var value;
 
  if (!isDef(flag)) {flag = 1;}
- 
- if(flag == 1) {value = dialog.alpha + SPEED;} 
+
+ if(flag == 1) {value = dialog.alpha + SPEED;}
  else {value = dialog.alpha - SPEED;}
- 
+
  dialog.alpha = value;
  dialog.style.opacity = (value / 100);
  dialog.style.filter = 'alpha(opacity=' + value + ')';
 
- if(value >= 99) 
+ if(value >= 99)
  {
   clearInterval(dialog.timer);
   dialog.timer = null;
- } 
- else if(value <= 1) 
+ }
+ else if(value <= 1)
  {
   dialog.style.visibility = "hidden";
   if (el('dialog_mask')) el('dialog_mask').style.display = 'none';
@@ -395,7 +395,7 @@ function opf_message_helper(action) {
         else {
                 if(DLGRESULT==2) {
                         document.getElementById('outputfilter').action=action;
-                        document.getElementById('outputfilter').submit(); 
+                        document.getElementById('outputfilter').submit();
                 }
         }
 }

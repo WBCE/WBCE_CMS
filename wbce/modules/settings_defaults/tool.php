@@ -128,23 +128,7 @@ if($saveSettings) {
     }   
     
     
-    //Templates
-    $value=$admin->get_post("default_template");
-    if ($value){  
-        if (ds_TemplatePossible($value)) {
-            $setError.=Settings::Set ("DEFAULT_TEMPLATE", $value);
-            $setError.=Settings::Set ("WB_DEFAULT_TEMPLATE", $value);             
-        }              
-    }   
-    
-    //Themes
-    $value=$admin->get_post("default_theme");
-    if ($value){ 
-        if (ds_ThemePossible($value)) {
-            $setError.=Settings::Set ("DEFAULT_THEME", $value);
-            $setError.=Settings::Set ("WB_DEFAULT_THEME", $value);             
-        }              
-    }    
+   
     
     // END ACTION!! 
 
@@ -170,11 +154,7 @@ if($saveSettings) {
     $setError.=Settings::Set ("DEFAULT_TIME_FORMAT", 'g:i A');
     $setError.=Settings::Set ("WB_DEFAULT_TIME_FORMAT", 'g:i A');  
     
-    $setError.=Settings::Set ("DEFAULT_TEMPLATE", 'wbce');
-    $setError.=Settings::Set ("WB_DEFAULT_TEMPLATE", 'wbce');  
-
-    $setError.=Settings::Set ("DEFAULT_THEME", 'advancedThemeWbFlat');
-    $setError.=Settings::Set ("WB_DEFAULT_THEME", 'advancedThemeWbFlat');  
+  
     
     
     // report success or failure
@@ -190,21 +170,7 @@ if($saveSettings) {
 //////////////////////////////
 // Helper functions down here 
 
-function ds_GetLanguagesArray(){
-    
-    global $database;
-    $ret = array();
-    
-    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'language' ORDER BY directory");
-    if($result->numRows() > 0) {
-        while($addon = $result->fetchRow())
-        {
-            $ret[]=$addon;   
-        }
-        return $ret;
-    } 
-    return false;
-}
+
 
 function ds_GetTimezonesArray(){
     include(ADMIN_PATH.'/interface/timezones.php');
@@ -304,6 +270,22 @@ function ds_LanguagePossible($Name=""){
     if($results->numRows() > 0) return true;
     else                        return false;
 }
+
+function ds_GetLanguagesArray(){
+     
+     global $database;
+     $ret = array();
+     
+     $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'language' ORDER BY directory");
+     if($result->numRows() > 0) {
+         while($addon = $result->fetchRow())
+         {
+             $ret[]=$addon;   
+         }
+         return $ret;
+     } 
+     return false;
+ }
 
 
 

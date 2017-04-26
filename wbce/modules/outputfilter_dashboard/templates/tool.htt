@@ -6,32 +6,32 @@ templates/tool.htt
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.1
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
+ * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 */-->
@@ -44,15 +44,15 @@ templates/tool.htt
 
 <h2>{TXT_OUTPUTFILTER_DASHBOARD}</h2>
 
-<!--/* insert here what comes out of parsing export_block: */-->  
+<!--/* insert here what comes out of parsing export_block: */-->
 {TPL_EXPORT_BLOCK}
 
-<!--/* insert here what comes out of parsing upload_block: */-->  
+<!--/* insert here what comes out of parsing upload_block: */-->
 {TPL_UPLOAD_BLOCK}
 
 
-<!--/* if the core patch has not been applied insert here 
-       what comes out of parsing patch_block: */-->  
+<!--/* if the core patch has not been applied insert here
+       what comes out of parsing patch_block: */-->
 {TPL_PATCH_BLOCK}
 
 <noscript>
@@ -68,7 +68,7 @@ templates/tool.htt
 
         </td>
     </tr>
-    <tr>        
+    <tr>
         <td align="left">
             <form action="{tpl_add_onclick}" method="POST">
             <input type="hidden" name="save_settings" value="save_settings"/>
@@ -77,7 +77,7 @@ templates/tool.htt
             <button type="button" id="show-upload" class="show-upload" title="{TXT_UPLOAD_FILTER}"><img src="{IMAGE_URL}/add_inline_opf.png" alt="" /><img src="{IMAGE_URL}/plugin.png" border="0" alt="" /> {TXT_UPLOAD_PLUGIN_FILTER}</button>
             </form>
         </td>
-        <td align="right" valign="top"> &nbsp; 
+        <td align="right" valign="top"> &nbsp;
         <a href="{tpl_help_url}" onclick="{tpl_help_onclick}" target="help" title="{TXT_HELP_BROWSER}">
             <img src="{IMAGE_URL}/help.png" alt="[?]" /> {TXT_HELP}
         </a>
@@ -125,7 +125,7 @@ templates/tool.htt
     <tfoot>
         <tr>
             <td colspan="14"></td>
-        </tr>        
+        </tr>
     </tfoot>
 </table>
 </form>
@@ -138,10 +138,10 @@ templates/tool.htt
 Copyright &copy; 2009-2010, Thomas 'thorn' Hornik <a title="thorn@nettest.thekk.de" href="mailto:thorn@nettest.thekk.de">thorn@nettest.thekk.de</a><br />
 Copyright &copy; 2010-2015, Christian M. Stefan (Stefek) <a title="stefek@designthings.de" href="mailto:stefek@designthings.de">stefek@designthings.de</a><br />
 Copyright &copy; 2016, Martin Hecht (mrbaseman) <a title="mrbaseman@gmx.de" href="mailto:mrbaseman@gmx.de">mrbaseman@gmx.de</a><br />
-<a href="https://github.com/WebsiteBaker-modules/outpufilter_dashboard" target="_blank" title="{TXT_VISIT_PROJECTS_WEBSITE}">
-        <img src="{IMAGE_URL}/a_blank.png" alt="" />Project Website</a></p>    
+<a href="https://github.com/WebsiteBaker-modules/outputfilter_dashboard" target="_blank" title="{TXT_VISIT_PROJECTS_WEBSITE}">
+        <img src="{IMAGE_URL}/a_blank.png" alt="" />Project Website</a></p>
     <p><a href="{tpl_tool_url}" onclick="{tpl_help_onclick}" title="{TXT_HELP_BROWSER}">
-        <img src="{IMAGE_URL}/help_big.png" alt="[?]" /></a>        
+        <img src="{IMAGE_URL}/help_big.png" alt="[?]" /></a>
     </p><br />
 
     <img style="float:left; padding:5px;" src="{MOD_URL}/docs/files/images/GPL3.png" alt="GNU GPL Vers.3" />
@@ -153,7 +153,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU General Public License</a> for more details.</small></p>
 <br />
 </div>
-<script type="text/javascript"> 
+<script type="text/javascript">
     /* <![CDATA[ */
         var WB_URL = '{WB_URL}';
         var LOAD_DRAGDROP = true;
@@ -197,7 +197,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://ww
     var opf_message_button1 = '{TXT_OK}';
     var opf_message_button2 = null;
     var opf_message_action2 = 0;
-// --></script>    
+// --></script>
 <!-- END upload_block -->
 
 
@@ -244,10 +244,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://ww
         {tpl_filter_css_link_start}
         <a href="{tpl_filter_css_link}" title="{TXT_EDITCSS}"><img src="{IMAGE_URL}/css_script.gif" alt="[css]" border="0" /></a>
         {tpl_filter_css_link_end}
-    </td>        
+    </td>
     <td {tpl_filter_move}>
         {tpl_filter_moveup_link_start}
-        
+
         <a href="{tpl_filter_moveup_link}" title="{TXT_MOVE_UP}"><img src="{IMAGE_URL}/up_16.png" border="0" alt="/\" /></a>
         {tpl_filter_moveup_link_end}
     </td>
@@ -258,7 +258,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://ww
     </td>
     <td {tpl_filter_separator}>
         {tpl_filter_delete_link_start}
-        <a href="{tpl_filter_delete_link}" onclick="{tpl_filter_delete_query}" title="{TXT_DELETE_FILTER}"> 
+        <a href="{tpl_filter_delete_link}" onclick="{tpl_filter_delete_query}" title="{TXT_DELETE_FILTER}">
         <img src="{IMAGE_URL}/delete_16.png" border="0" alt="[x]" /></a>
         {tpl_filter_delete_link_end}
     </td>

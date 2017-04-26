@@ -8,32 +8,32 @@ tool.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.1
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
+ * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 // prevent this file from being accessed directly
@@ -46,7 +46,7 @@ require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
 // Setting Global for use inside of method in WBCE
 global $LANG;
 
-// include module.functions.php 
+// include module.functions.php
 include_once(WB_PATH . '/framework/module.functions.php');
 
 // include the module language file depending on the backend language of the current user
@@ -67,9 +67,9 @@ $ToolUrl = ADMIN_URL."/admintools/tool.php?tool=$ModDir";
 // check the fTAN - $doSave is set by admin/admintools/tool.php
 if($doSave){
     global $MESSAGE;
-    if ( method_exists( $admin, 'checkFTAN' ) ) { 
+    if ( method_exists( $admin, 'checkFTAN' ) ) {
        if ( !$admin->checkFTAN()  ) {
-          if ((ob_get_contents()=="") && (!headers_sent()) 
+          if ((ob_get_contents()=="") && (!headers_sent())
               && (!(class_exists ("Tool") && defined('WBCE_VERSION'))) ){
              $admin->print_header();
           }
@@ -77,18 +77,18 @@ if($doSave){
           $admin->print_footer();
           exit();
        }
-    } 
+    }
 }
 $need_footer=FALSE;
 // depending on the WB version/fork the admin header is already printed/cached or not...
-if ((ob_get_contents()=="") && (!headers_sent()) 
-     && (!(class_exists ("Tool") && defined('WBCE_VERSION'))) ){ 
+if ((ob_get_contents()=="") && (!headers_sent())
+     && (!(class_exists ("Tool") && defined('WBCE_VERSION'))) ){
     $admin->print_header();
     $need_footer=TRUE;
 }
 
 $ftan="";
-if ( method_exists( $admin, 'getFTAN' ) ) { 
+if ( method_exists( $admin, 'getFTAN' ) ) {
   $ftan=$admin->getFTAN();
 }
 
@@ -201,7 +201,7 @@ if($add && $doSave ){ //================================================ add ===
     require_once(WB_PATH.'/framework/class.order.php');
     // Create new order object and reorder
     $order = new order(TABLE_PREFIX.'mod_outputfilter_dashboard', 'position', 'id', 'type');
-    foreach(opf_get_types() as $type => $typename){ 
+    foreach(opf_get_types() as $type => $typename){
         $order->clean($type);
     }
 
@@ -240,7 +240,7 @@ if($add && $doSave ){ //================================================ add ===
         if(method_exists($admin, 'getIDKEY')){
              $filter_id=$admin->getIDKEY($filter_id);
              $filter['filter_id']=$filter_id;
-        } 
+        }
         // line to separate filter-types
         if($old_type!=$filter['type']) {
             $old_type = $filter['type'];
@@ -340,7 +340,7 @@ if($add && $doSave ){ //================================================ add ===
         // Setup template object
         $tpl->set_block('page', 'export_block', 'export');
         $tpl->parse('TPL_EXPORT_BLOCK', 'export_block', false);
-    } else { 
+    } else {
         // store empty string otherwise
         $tpl->set_var('TPL_EXPORT_BLOCK', "");
     }
@@ -350,7 +350,7 @@ if($add && $doSave ){ //================================================ add ===
     if($upload_message){
         $tpl->set_block('page', 'upload_block', 'upload');
         $tpl->parse('TPL_UPLOAD_BLOCK', 'upload_block', false);
-    } else { 
+    } else {
         $tpl->set_var('TPL_UPLOAD_BLOCK', "");
     }
 
@@ -358,10 +358,10 @@ if($add && $doSave ){ //================================================ add ===
     if(!$patch_applied){
         $tpl->set_block('page', 'patch_block', 'patch');
         $tpl->parse('TPL_PATCH_BLOCK', 'patch_block', false);
-    } else { 
+    } else {
         $tpl->set_var('TPL_PATCH_BLOCK', "");
     }
-    
+
     // construct the table rows for displaying the filter list
     $TPL_FILTER_BLOCK="";
     $tpl->set_block('page', 'filter_block', 'filter');

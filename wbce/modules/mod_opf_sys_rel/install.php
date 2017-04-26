@@ -4,16 +4,16 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright       Ryan Djurovich (2004-2009)
+ * @copyright       WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.0
+ * @version         1.0.4
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -31,19 +31,14 @@ if(!defined('WB_PATH')) {
 
 if(defined('WB_URL'))
 {
-    // check whether outputfilter-module is installed 
+    // check whether outputfilter-module is installed
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        if(opf_is_registered('Sys Rel')){
-            return require(WB_PATH.'/modules/mod_opf_sys_rel/upgrade.php');
-        }
-        
-
-        // when upgrading from classical output filter....
-        if( class_exists('Settings') && (Settings::Get('opf_sys_rel',NULL)===NULL)){
-            // Setting does not yet exist
-            require(WB_PATH.'/modules/mod_opf_sys_rel/upgrade.php');
+        $upgrade_result=require(WB_PATH.'/modules/mod_opf_sys_rel/upgrade.php');
+        if($upgrade_result==FALSE) return FALSE;
+        if(opf_is_registered('Sys Rel')){ // filter already registered
+            return TRUE;
         }
 
         // install filter
@@ -62,8 +57,5 @@ if(defined('WB_URL'))
                'CSS to head'
             )
         );
-
-        // ensure settings are present
-        if(class_exists('Settings')) Settings::Set('opf_sys_rel',1, false);
     }
 }

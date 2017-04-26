@@ -15,7 +15,7 @@
 */
 
 // Deutsche Modulbeschreibung
-$module_description 	= 'Dieses Modul stellt Javascript Funktionen f&uuml;r die Website Baker Benutzeroberfl&auml;che zur Verf&uuml;gung. Verwendet das YahooUI Javascript Framework.';
+$module_description 	= 'Einstellungen für das Verhalten des Seitenbaumes und der Abschnittsverwaltung';
 
 // Ueberschriften und Textausgaben
 $MOD_JSADMIN['TXT_HEADING_B'] 				= 'Bitte w&auml;hlen Sie die gew&uuml;nschten Javascript Funktionen aus';

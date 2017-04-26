@@ -40,7 +40,7 @@ opf_register_filter(array(
     'allowedit' => 0,
     'allowedittarget' => 1,
     'configurl'=> '',
-    'additional_fields' => 
+    'additional_fields' =>
         array(
             array(
                 'label' => array('EN'=>'Locale','DE'=>'Spracheinstellung'),

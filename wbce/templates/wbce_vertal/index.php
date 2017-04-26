@@ -58,7 +58,7 @@ if(function_exists('register_frontend_modfiles')) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="<?php echo TEMPLATE_DIR; ?>/editor.css<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo TEMPLATE_DIR; ?>/template.css<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo TEMPLATE_DIR; ?>/colorset/colorset.php<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
+
 
 <?php
 // Generate vistor statistic if module is installed 
@@ -237,9 +237,6 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
 	</script>	
 	<script type="text/javascript" src="<?php echo TEMPLATE_DIR; ?>/template.js?<?php echo $refreshstring; ?>"></script>
 	
-	<?php 
-	//Und das ist der Farbwaehler. Du kannst das loeschen, wenn du die Farben fixiert hast.
-	if ($template_edit_link == true ) {include 'colorset/colorpicker.inc.php';} 
-	?>	
+	
 </body>
 </html>

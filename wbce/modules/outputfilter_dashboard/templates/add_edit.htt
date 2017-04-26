@@ -6,32 +6,32 @@ templates/add_edit.htt
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.1
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
+ * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 */-->
@@ -56,9 +56,9 @@ templates/add_edit.htt
             &nbsp;<input id="activity" type="checkbox" class="activity" value="1" name="active" {tpl_filter_active} />
             &nbsp;<label for="activity" style="font-size:x-small;font-weight:bold;color:#515D76;">{TXT_ACTIVE} / {TXT_INACTIVE}</label>
         </td>
-        
-    
-    </tr>    
+
+
+    </tr>
     <tr>
         <th>{TXT_DESCRIPTION}:
             {TPL_HELP_BLOCK}
@@ -67,8 +67,8 @@ templates/add_edit.htt
             <textarea id="desc" name="desc" cols="65" style="width: 98%; height:auto" {tpl_filter_readonly}>{tpl_filter_description}</textarea>
         </td>
     </tr>
-    </table>    
-    
+    </table>
+
     <table class="row_a filters-table" cellpadding="2" cellspacing="0" border="0" align="center" width="100%">
     <caption>{TXT_FILTER_OUTPUT_SETTINGS}</caption>
 
@@ -77,13 +77,13 @@ templates/add_edit.htt
         <td>
             <select name="type" style="width: 160px" {tpl_filter_disabled} onchange="modules_checktree_visibility()">
                 {tpl_filter_type_options}
-            </select><br />    
+            </select><br />
             <p style="display:none;" ID="OPF_ID_SEC_DESC" class="notification"><strong>{TXT_MODULE_TYPE_LAST}</strong></p>
             <p style="display:none;" ID="OPF_ID_PAGE_DESC" class="notification"><strong>{TXT_TYPE_LAST}</strong></p>
         </td>
     </tr>
     <tr style="display:none;" id="OPF_ID_CHECKTREE">
-        <th><p><img src="{IMAGE_URL}/modules_go.png" alt="" /><br />{TXT_FILTER_MODULES}:</p>    
+        <th><p><img src="{IMAGE_URL}/modules_go.png" alt="" /><br />{TXT_FILTER_MODULES}:</p>
         </th>
         <td>
             <p class="notification">{TXT_MODULE_TREE}:</p>
@@ -95,7 +95,7 @@ templates/add_edit.htt
         </th>
         <td>
             <p class="notification" style="display:none;" ID="OPF_ID_PAGE_DESC_2">{TXT_MODULE_TREE}:</p>
-            <p class="notification" style="display:none;" ID="OPF_ID_SEC_DESC_2">{TXT_SUB_PAGES}:</p>            
+            <p class="notification" style="display:none;" ID="OPF_ID_SEC_DESC_2">{TXT_SUB_PAGES}:</p>
             {tpl_pages_list1}
         </td>
     </tr>
@@ -154,7 +154,7 @@ var opf_use_checktrees = true;
 <!--/*  // if $list_editarea insert:
     var opf_editarea_list = new Array();
     // and append the output of the loop
-    $i = 0; 
+    $i = 0;
     foreach($tpl_list_editarea as $id) {
         $tpl_list_editarea .= 'opf_editarea_list['.$i++.'] = '."'$id';";
     }
@@ -163,7 +163,7 @@ var opf_use_checktrees = true;
 <!--/*  // if $list_growfield insert:
     var opf_growfield_list = new Array();
     // and append the output of the loop
-    $i = 0; 
+    $i = 0;
     foreach($tpl_list_growfield as $id) {
         $tpl_list_growfield .= 'opf_growfield_list['.$i++.'] = '."'$id';";
     }
@@ -232,16 +232,16 @@ var opf_use_checktrees = true;
         <td><span class="arrow">=></span></td>
         <td style="width:60%;"><textarea id="{tpl_valid}" name="{tpl_field_name}[v][]" style="width:95%;" rows="1" />{tpl_value}</textarea></td>
     </tr>
-    </table>                   
+    </table>
     </td>
-    </tr>                 
+    </tr>
 <!-- END array_row_block -->
 
 
 <!-- BEGIN func_area_block -->
     <tr>
         <th>&nbsp;</th>
-        <td><p class="notification">{TXT_FILTER_FUNC}</p></td>        
+        <td><p class="notification">{TXT_FILTER_FUNC}</p></td>
     </tr>
     <tr>
         <td colspan="2"><textarea id="func" name="func"  cols="65" rows="6" style="width: 98%; height: 400px;">{tpl_func}</textarea></td>

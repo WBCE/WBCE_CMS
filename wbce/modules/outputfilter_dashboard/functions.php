@@ -8,32 +8,32 @@ functions.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.1
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
+ * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 
@@ -44,24 +44,48 @@ if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 $mod_dir = basename(dirname(__FILE__));
 require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
 
-if(!defined('OPF_PLUGINS_PATH')) 
+if(!defined('OPF_PLUGINS_PATH'))
     define('OPF_PLUGINS_PATH', dirname(__FILE__).'/plugins/');
-if(!defined('OPF_PLUGINS_URL')) 
+if(!defined('OPF_PLUGINS_URL'))
     define('OPF_PLUGINS_URL', WB_URL.'/modules/'.$mod_dir.'/plugins/');
 
-// include module.functions.php 
+// include module.functions.php
 include_once(WB_PATH . '/framework/module.functions.php');
 
 // include the module language file depending on the backend language of the current user
 if (!include(get_module_language_file($mod_dir))) return;
 
-// stupid way to keep filters in order (section --> section_last --> page --> page_last)
-if(!defined('OPF_TYPE_SECTION')) {
-    define('OPF_TYPE_SECTION','3section');
-    define('OPF_TYPE_SECTION_LAST','5section_last');
-    define('OPF_TYPE_PAGE','7page');
-    define('OPF_TYPE_PAGE_LAST','8page_last');
+if(!defined('OPF_VERBOSE')){
+  if(defined('DEBUG')){
+    define('OPF_VERBOSE', DEBUG);
+  } else {
+    define('OPF_VERBOSE', FALSE);
+  }
 }
+
+
+// stupid way to keep filters in order (section --> section_last --> page --> page_last)
+$OPF_TYPE_ASSIGNMENTS = array(
+    'OPF_TYPE_SECTION' =>'3section',
+    'OPF_TYPE_SECTION_LAST' => '5section_last',
+    'OPF_TYPE_PAGE' => '7page',
+    'OPF_TYPE_PAGE_LAST' => '8page_last'
+);
+
+if(!defined('OPF_TYPE_SECTION')) {
+    foreach( $OPF_TYPE_ASSIGNMENTS as $opf_type_name => $opf_type_string){
+       define ($opf_type_name , $opf_type_string);
+    }
+}
+
+// when exporting we should be able to revert these assignments
+function opf_revert_type_consts($input){
+    foreach( $OPF_TYPE_ASSIGNMENTS as $opf_type_name => $opf_type_string){
+       $input = preg_replace("/'".$opf_type_string."'/", $opf_type_name, $input);
+    }
+    return $input;
+}
+
 
 require_once(dirname(__FILE__).'/functions_outputfilter.php');
 
@@ -110,7 +134,9 @@ function opf_db_query($q_str) {
     $q_str = vsprintf($q_str, $args);
   }
   $result = $database->query($q_str);
-  if($database->is_error()) { // SQL-query failed -- return FALSE
+  if($result === NULL) { // SQL-query failed -- return FALSE
+    if(OPF_VERBOSE)
+        trigger_error('db error '.opf_db_get_error(), E_USER_WARNING);
     return(FALSE);
   }
   $ret=FALSE;
@@ -121,8 +147,8 @@ function opf_db_query($q_str) {
   }
   if($ret)
     return($results);
-    else return(TRUE);  // success without returning results (e.g. update) 
-  
+    else return(TRUE);  // success without returning results (e.g. update)
+
 }
 
 
@@ -141,21 +167,22 @@ function opf_db_query_vars($q_str) {
     $q_str = vsprintf($q_str, $args);
   }
   $result = $database->query($q_str);
-  if($database->is_error()) { // SQL-query failed -- return FALSE
+  if($result === NULL) { // SQL-query failed -- return FALSE
+    if(OPF_VERBOSE)
+        trigger_error('db error '.opf_db_get_error(), E_USER_WARNING);
     return(FALSE);
   }
   $results = array();
   if($results = $result->fetchRow()) {
-      $results=$results[0];
-      if(count($results)==1) 
-    if(is_array($results)) 
+    $results=$results[0];
+    if(count($results)==1)
+      if(is_array($results))
          return(current($results)); // single value
-      // not sure if we ever arrive at thiese lines:
-      if(count($results)==0) return(TRUE); // success without results 
-      return($results);
+    if(count($results)==0) return(TRUE); // success without results
+    return($results); // array filled with several values
   }
   if(empty($results)) return(NULL); // no matches
-  return(FALSE);
+  return(FALSE); // should never be reached
 }
 
 // we need a special variant for insert and delete where no results are returned
@@ -172,17 +199,19 @@ function opf_db_run_query($q_str) {
     $q_str = vsprintf($q_str, $args);
   }
   $result = $database->query($q_str);
-  if($database->is_error()) { // SQL-query failed -- return FALSE
+  if($result === NULL) { // SQL-query failed -- return FALSE
+    if(OPF_VERBOSE)
+        trigger_error('db error '.opf_db_get_error(), E_USER_WARNING);
     return(FALSE);
   }
-  return(TRUE);  // success 
+  return(TRUE);  // success
 }
 
 
-// returns the database status and the 
+// returns the database status and the
 function opf_db_get_error($asstring=TRUE){
   global $database;
-  if($database->is_error()) { 
+  if($database->is_error()) {
     return( $database->get_error() );
   }
   if($asstring)return("");
@@ -481,19 +510,19 @@ function opf_upload_move($id, $path, $name='') {
   }
   if(!rename(__OPF_UPLOAD_DIRNAME.$id, $path.$name)) {
     return(FALSE);
-  } 
+  }
   return($name);
 }
 
 
 
-// end of pmf replacements... 
-/* ----------------------------------------------------------------- */ 
+// end of pmf replacements...
+/* ----------------------------------------------------------------- */
 
 // check wether the core contains the patches
 
 function opf_check_patched(){
-    // WBCE calls opf_controller directly, wb 2.8.3 sp6 uses the OutputFilterApi 
+    // WBCE calls opf_controller directly, wb 2.8.3 sp6 uses the OutputFilterApi
     $patch_applied=FALSE;
     if($content = file_get_contents(WB_PATH.'/framework/frontend.functions.php')) {
         if(file_exists(WB_PATH.'/framework/functions/frontend.functions.php')) {
@@ -510,24 +539,24 @@ function opf_check_patched(){
                     }
                     if(!file_exists(WB_PATH.'/modules/output_filter/index.php')){
                        $patch_applied = TRUE;
-                    } else { 
+                    } else {
                         if ( $content = file_get_contents(WB_PATH.'/modules/output_filter/index.php')) {
-                            // sp4 and sp5 started to use OutputFilterApi 
+                            // sp4 and sp5 started to use OutputFilterApi
                             // but it was broken at that time
                             if(preg_match('/OpF/', $content)) {
                                 $patch_applied = TRUE;
                             }
                         }
-                    }            
+                    }
                 }
             }
-        } 
+        }
     }
     return $patch_applied;
 }
 
 
-// correct the umlauts in filter description in short 
+// correct the umlauts in filter description in short
 function opf_correct_umlauts($arg) {
   $replacements = array (
     '&amp;auml;' => '&auml;',
@@ -583,7 +612,7 @@ function opf_check_name($name) {
 // fetch array of all filters
 function opf_select_filters($type='') {
     if($type=='') {
-        $res = opf_db_query( 
+        $res = opf_db_query(
             "SELECT * FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
             . " ORDER BY `type`,`position` ASC");
     } else {
@@ -605,7 +634,7 @@ function opf_get_data($id) {
 // get max position
 function opf_get_position_max($type) {
     return(
-       opf_db_query_vars( 
+       opf_db_query_vars(
            "SELECT MAX(`position`) "
            . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
            . " WHERE `type`='%s'", $type
@@ -616,7 +645,7 @@ function opf_get_position_max($type) {
 // get min position
 function opf_get_position_min($type) {
     return(
-        opf_db_query_vars( 
+        opf_db_query_vars(
             "SELECT MIN(`position`)"
             . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
             . " WHERE `type`='%s'", $type
@@ -626,34 +655,38 @@ function opf_get_position_min($type) {
 
 
 // get position
-function opf_get_position($name, $verbose=TRUE) {
+function opf_get_position($name, $verbose=OPF_VERBOSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     if(opf_is_registered($name, $verbose)) {
         return(
-           opf_db_query_vars( 
+           opf_db_query_vars(
               "SELECT `position`"
               . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
               . " WHERE `name`='%s'", $name
            )
        );
     }
+    if($verbose && OPF_VERBOSE)
+        trigger_error('opf_get_position(): filter not registered: '.$name, E_USER_WARNING);
     return(FALSE);
 }
 
 // get type
-function opf_get_type($name,$verbose=TRUE) {
+function opf_get_type($name,$verbose=OPF_VERBOSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     if(opf_is_registered($name, $verbose)) {
         return(
-           opf_db_query_vars( 
+           opf_db_query_vars(
               "SELECT `type`"
                . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
                . " WHERE `name`='%s'", $name
            )
         );
     }
+    if($verbose && OPF_VERBOSE)
+        trigger_error('opf_get_type(): filter not registered: '.$name, E_USER_WARNING);
     return(FALSE);
 }
 
@@ -662,16 +695,14 @@ function opf_is_registered($name, $verbose=FALSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     if(
-       opf_db_query_vars( 
+       opf_db_query_vars(
           "SELECT TRUE FROM"
              . " `".TABLE_PREFIX."mod_outputfilter_dashboard`"
              . " WHERE `name`='%s'", $name
        )
     ) return(TRUE);
-    else {
-        if($verbose)
-            trigger_error('opf_is_registered(): Filter not registred: '.$name, E_USER_WARNING);
-    }
+    if($verbose && OPF_VERBOSE)
+        trigger_error('opf_is_registered(): filter not registered: '.$name, E_USER_WARNING);
     return(FALSE);
 }
 
@@ -679,29 +710,29 @@ function opf_is_registered($name, $verbose=FALSE) {
 function opf_is_active($name) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
-    if(opf_is_registered($name, TRUE)) {
+    if(opf_is_registered($name, OPF_VERBOSE)) {
         if(
-           opf_db_query_vars( 
+           opf_db_query_vars(
               "SELECT `active`"
               . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
               . " WHERE `name`='%s'", $name
            )
         ) {
             if(class_exists('Settings') && defined('WBCE_VERSION')){
-                // in WBCE check for settings state as well, if enabled there return true 
+                // in WBCE check for settings state as well, if enabled there return true
                 if(Settings::Get( opf_filter_name_to_setting($name), TRUE))
                     return TRUE;
-                // if disabled but a backend version of this filter exists and it is on:  
+                // if disabled but a backend version of this filter exists and it is on:
                 if(Settings::Get( opf_filter_name_to_setting($name).'_be', FALSE)){
                     $filter_settings=opf_filter_get_data($name);
-                    // check if backend is also enabled inside of the filter 
+                    // check if backend is also enabled inside of the filter
                     if($filter_settings){
                         if(in_array('backend', $filter_settings['pages_parent']))
                             return(TRUE);
                     }
                     // if backend is not on inside the filter
                     return(FALSE);
-                } 
+                }
                 // if both, backend, and frontend are off via Settings class
                 return(FALSE);
             }
@@ -711,7 +742,8 @@ function opf_is_active($name) {
         // db-Query returns that it is off
         return(FALSE);
     }
-    // filter is not registered in the dashboard
+    if (OPF_VERBOSE)
+        trigger_error('opf_is_active(): filter not registered: '.$name, E_USER_WARNING);
     return(FALSE);
 }
 
@@ -723,23 +755,25 @@ function opf_set_active($name, $active=1) {
         trigger_error('opf_set_active(): Wrong status', E_USER_WARNING);
         return(FALSE);
     }
-    opf_preload_filter_definitions(); 
-    if(opf_is_registered($name, TRUE)) {
+    opf_preload_filter_definitions();
+    if(opf_is_registered($name, OPF_VERBOSE)) {
         if(class_exists('Settings') && defined('WBCE_VERSION')){
             Settings::Set( opf_filter_name_to_setting($name), $active);
             $filter_settings=opf_filter_get_data($name);
             if($filter_settings)
-                Settings::Set( opf_filter_name_to_setting($name).'_be', $active && 
+                Settings::Set( opf_filter_name_to_setting($name).'_be', $active &&
                     in_array('backend', $filter_settings['pages_parent']));
         }
         return(
-           opf_db_run_query( 
+           opf_db_run_query(
                "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard`"
                . " SET `active`='%s'"
                . " WHERE `name`='%s'", $active, $name
            )
         );
     }
+    if(OPF_VERBOSE)
+        trigger_error('opf_set_active(): filter not registered: '.$name, E_USER_WARNING);
     return(FALSE);
 }
 
@@ -749,13 +783,13 @@ function opf_switch_position($type, $pos1, $pos2) {
     $pos2 = (int)$pos2;
     if(abs($pos1-$pos2)!=1)
         return(FALSE);
-    $name1 = opf_db_query_vars( 
+    $name1 = opf_db_query_vars(
        "SELECT `name`"
        . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
        . " WHERE `type`='%s'"
        . " AND `position`=%d", $type, $pos1
     );
-    $name2 = opf_db_query_vars( 
+    $name2 = opf_db_query_vars(
         "SELECT `name`"
         . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
         . " WHERE `type`='%s'"
@@ -763,12 +797,12 @@ function opf_switch_position($type, $pos1, $pos2) {
     );
     if($name1===FALSE || $name2===FALSE)
         return(FALSE);
-    $res1 = opf_db_run_query( 
+    $res1 = opf_db_run_query(
         "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard`"
         . " SET `position`=%d"
         . " WHERE `name`='%s'", $pos2, $name1
     );
-    $res2 = opf_db_run_query( 
+    $res2 = opf_db_run_query(
         "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard`"
         . " SET `position`=%d"
         . " WHERE `name`='%s'", $pos1, $name2
@@ -780,7 +814,7 @@ function opf_switch_position($type, $pos1, $pos2) {
 }
 
 // move up position by one
-function opf_move_up_one($name,$verbose=TRUE) {
+function opf_move_up_one($name,$verbose=OPF_VERBOSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     $pos = opf_get_position($name,$verbose);
@@ -793,7 +827,7 @@ function opf_move_up_one($name,$verbose=TRUE) {
 }
 
 // move down position by one
-function opf_move_down_one($name,$verbose=TRUE) {
+function opf_move_down_one($name,$verbose=OPF_VERBOSE) {
     $name = opf_check_name($name);
     if(!$name) return(FALSE);
     $pos = opf_get_position($name,$verbose);
@@ -812,7 +846,7 @@ function opf_move_down_one($name,$verbose=TRUE) {
 // returns the WHERE-query for the target-modules, depending if the backend is supported
 function opf_get_module_query(){
     $return_value = " WHERE `function`='page' ";
-    if (class_exists("Tool") && defined('WBCE_VERSION')){ // backend-filtering supported 
+    if (class_exists("Tool") && defined('WBCE_VERSION')){ // backend-filtering supported
         $module_types = array( 'tool', 'setting', 'panel', 'backend' );
         foreach ($module_types as $m) {
             $return_value .= " OR `function`='$m' ";
@@ -825,8 +859,8 @@ function opf_get_module_query(){
 // get list of all installed page-modules useable as target (wysiwyg, news, ...)
 function opf_list_target_modules($sorted=FALSE) { // read from table wb_addons
     $m = array();
-    if(!$modules 
-       = opf_db_query( 
+    if(!$modules
+       = opf_db_query(
           "SELECT *"
           . " FROM  `".TABLE_PREFIX."addons`"
           . opf_get_module_query()
@@ -843,8 +877,8 @@ function opf_list_target_modules($sorted=FALSE) { // read from table wb_addons
     $m = opf_modules_categories('categories');
     $full_list = opf_modules_categories('modules');
     foreach($modules as $module) {
-        // backend-filtering is not supported when there is no class "Tool" 
-        if(($module['function'] != 'page') && (!(class_exists ("Tool") && defined('WBCE_VERSION')))) continue;  
+        // backend-filtering is not supported when there is no class "Tool"
+        if(($module['function'] != 'page') && (!(class_exists ("Tool") && defined('WBCE_VERSION')))) continue;
         if(isset($full_list[$module['directory']])) {
             $type = $full_list[$module['directory']];
             if($type=='IGNORE') continue;
@@ -859,7 +893,7 @@ function opf_list_target_modules($sorted=FALSE) { // read from table wb_addons
 
 /*
     Function: opf_modules_categories
-        
+
 
     (start code)
     // module --> category
@@ -952,7 +986,7 @@ function opf_modules_categories($type='modules') {
         $m['poll'] = array();
         $m['listing'] = array();
         $m['various'] = array();
-        if (class_exists ("Tool") && defined('WBCE_VERSION')){ // backend-filtering supported 
+        if (class_exists ("Tool") && defined('WBCE_VERSION')){ // backend-filtering supported
             $m['backend'] = array();
         }
         return($m);
@@ -1052,18 +1086,18 @@ function opf_preload_filter_definitions() {
     global $opf_PAGECHILDS; // store all child--page-relations
     global $opf_PAGES; // global storage of page-data
     global $opf_MODULES; // global storage of modules
-    
-    if(isset($opf_FILTERS) && is_array($opf_FILTERS)) return(FALSE);    
-    
-    $opf_FILTERS 
-        = $opf_HEADER 
-        = $opf_BODY 
-        = $opf_PAGECHILDS 
-        = $opf_PAGES 
+
+    if(isset($opf_FILTERS) && is_array($opf_FILTERS)) return(FALSE);
+
+    $opf_FILTERS
+        = $opf_HEADER
+        = $opf_BODY
+        = $opf_PAGECHILDS
+        = $opf_PAGES
         = $opf_MODULES = array();
     // fetch page-data
-    $pages 
-       = opf_db_query( 
+    $pages
+       = opf_db_query(
            "SELECT *"
            . " FROM `".TABLE_PREFIX."pages`"
            . " ORDER BY `level`,`position` ASC"
@@ -1107,7 +1141,7 @@ function opf_preload_filter_definitions() {
         while($trail) {
             $pid = array_pop($trail);
             foreach($trail as $p) {
-                //if(!in_array($pid, $opf_PAGECHILDS[$p])) 
+                //if(!in_array($pid, $opf_PAGECHILDS[$p]))
                 // much more expensive than the array_unique()-calls below!
                     $opf_PAGECHILDS[$p][] = $pid;
         }
@@ -1136,11 +1170,11 @@ function opf_apply_filters(&$content, $type, $module, $page_id, $section_id, $wb
         if(is_array($filter) && isset($filter['pages_parent'])) {
             if($filter['active'] && $filter['type']==$type
                 && ($module=='' || in_array($module, $filter['modules']) || in_array('all', $filter['modules']))
-                && ( ($page_id == 'backend') 
+                && ( ($page_id == 'backend')
                  || (in_array('all', $filter['pages']) || in_array($page_id, $filter['pages']))
                  || (in_array('all', $filter['pages_parent']) || in_array($page_id, $filter['pages_parent']))
                 )) {
-                
+
                 if(!function_exists($filter['funcname'])) {
                     $filter['file'] = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter['file']);
                     $filter['file'] = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$filter['plugin'], $filter['file']);
@@ -1201,22 +1235,40 @@ function opf_insert_frontend_files(&$content) {
     if($opf_HEADER!=array()) {
         // put $opf_HEADER into <head></head>
         $str = implode("\n", $opf_HEADER);
-        $content_new = preg_replace('~</head>~',$str."\n</head>",$content);
+        $content_new = preg_replace('~</head>~i',$str."\n</head>",$content);
         $opf_HEADER = array();
         if($content_new===FALSE || $content_new==$content) {
-            trigger_error('failed to change html head-section', E_USER_WARNING);
-            return(FALSE);
+            // fallback: if template lacks a head section try to insert one
+            $content_new = preg_replace('~<body~i',"<head>\n".$str."\n</head>\n<body",$content);
+            if($content_new===FALSE || $content_new==$content) {
+                // next fallback: if template lacks a body tag even try to insert that
+                $content_new = preg_replace('~(<html[^>]*>)~i',
+                    '$1'."\n<head>\n".$str."\n</head>",$content); // hmm... we don't have a body after all...
+                if($content_new===FALSE || $content_new==$content) {
+                    if(OPF_VERBOSE){
+                        trigger_error('failed to change html head-section', E_USER_WARNING);
+                    }
+                    return(FALSE);
+                }
+            }
         }
         $content = $content_new;
     }
     if($opf_BODY!=array()) {
         // put $opf_BODY into <body></body>
         $str = implode("\n", $opf_BODY);
-        $content_new = preg_replace('~</body>~',$str."\n</body>",$content);
+        $content_new = preg_replace('~</body>~i',$str."\n</body>",$content);
         $opf_BODY = array();
         if($content_new===FALSE || $content_new==$content) {
-            trigger_error('failed to change html body-section', E_USER_WARNING);
-            return(FALSE);
+            // fallback: if </body> is not found insert it - we have </head> from above
+            $content_new = preg_replace('~</head>(.*)</html>~i',
+                "</head>\n<body>\n".'$1\n'.$str."\n</body>\n</html>",$content);
+            if($content_new===FALSE || $content_new==$content) {
+                if(OPF_VERBOSE){
+                    trigger_error('failed to change html body-section', E_USER_WARNING);
+                }
+                return(FALSE);
+            }
         }
         $content = $content_new;
     }
@@ -1226,20 +1278,20 @@ function opf_insert_frontend_files(&$content) {
 // Get page-hierarchy
 /*
 array
-108 => 
+108 =>
     array
       'title' => string 'News' (length=4)
       'child' => boolean false
-131 => 
+131 =>
     array
       'title' => string 'test2' (length=5)
-      'child' => 
+      'child' =>
     array
-      134 => 
+      134 =>
           array
         'title' => string 'Test' (length=4)
         'child' => boolean false
-      135 => 
+      135 =>
           array
         'title' => string 'Test2' (length=5)
         'child' => boolean false
@@ -1377,7 +1429,7 @@ global $LANG;
     } elseif($type=='tree') {
         $plist  = '<div class="checktreestylearea"><ul class="tree2 checktreestyle">';
         $plist .= '<li><input type="checkbox" name="searchresult" value="0" '.$search_checked.' /><label>'.$LANG['MOD_OPF']['TXT_SEARCH_RESULTS'].'</label></li>';
-        if (class_exists ("Tool") && defined('WBCE_VERSION')){ // backend-filtering supported 
+        if (class_exists ("Tool") && defined('WBCE_VERSION')){ // backend-filtering supported
             $plist .= '<li><input type="checkbox" name="backend" value="backend" '.$backend_checked.' /><label>'.$LANG['MOD_OPF']['TXT_BACKEND'].'</label></li>';
         }
         $plist .= '<li><input type="checkbox" name="pages_parent[]" value="all" /><label>'.$LANG['MOD_OPF']['TXT_ALL_PAGES'].'</label><ul>';
@@ -1392,11 +1444,11 @@ global $LANG;
 function opf_css_save() {
     $id = opf_fetch_post( 'id', NULL, 'int');
     $css = opf_fetch_post( 'css', '', 'unchanged');
-    
+
     if(!$id) {
         return NULL;
     }
-    
+
     $csspath = opf_db_query_vars( "SELECT `csspath` FROM ".TABLE_PREFIX."mod_outputfilter_dashboard WHERE `id`=%d", $id);
     if($csspath && file_exists($csspath) && is_writable($csspath)) {
         $fh = fopen($csspath, "wb");
@@ -1452,7 +1504,7 @@ function opf_save() {
 
     // add additional data
     $filter_old = array();
-    if($id>0 && opf_db_query_vars( 
+    if($id>0 && opf_db_query_vars(
         "SELECT TRUE FROM ".TABLE_PREFIX."mod_outputfilter_dashboard"
            . " WHERE `id`=%d", $id)) {
         // comes from edit, so fetch old data from DB
@@ -1533,7 +1585,7 @@ function opf_save() {
     }
 
     // prevent inline-filters from overwriting a different filter with same name
-    if($id==0) { // we come from add-filter 
+    if($id==0) { // we come from add-filter
         while(opf_is_registered($name))
             $name .= mt_rand(0,9);
     } else { // we come from edit-filter: allow to overwrite old one (same $id)
@@ -1627,7 +1679,7 @@ function opf_controller($arg, $opt=null, $module='', $page_id=0, $section_id=0) 
     Private Function: opf_fetch_entry_language
         fetch a string from an array based on WB's !LANGUAGE! setting
 
-    Prototype: 
+    Prototype:
         %string% opf_fetch_entry_language( %array% $descs )
 
     Parameters:
@@ -1667,16 +1719,16 @@ function opf_dump_var($var, $spacing=""){
         $result = "array (\n";
         $numeric_keys=true;
         foreach(array_keys($var) as $key){
-            if(!is_numeric($key)) 
+            if(!is_numeric($key))
                 $numeric_keys=false;
         }
         foreach($var as $key => $value){
             if(!is_numeric($key)){
-                  $result .= "$spacing    \"$key\" => "
+                $result .= "$spacing    \"$key\" => "
                     . opf_dump_var($value,"$spacing    ")
                     .",\n";
             } else if($numeric_keys){
-                  $result .= "$spacing    $key => "
+                $result .= "$spacing    $key => "
                     . opf_dump_var($value,"$spacing    ")
                     .",\n";
             }

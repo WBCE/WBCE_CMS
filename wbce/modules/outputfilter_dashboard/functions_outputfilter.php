@@ -8,32 +8,32 @@ functions_outputfilter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.1
+ * @version         1.5.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2017 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outpufilter_dashboard
+ * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.4 and higher
- * 
+ *
  * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
- * 
+ *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OutputFilter-Dashboard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  **/
 
 /*
@@ -47,7 +47,7 @@ if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 $mod_dir = basename(dirname(__FILE__));
 require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
 
-// include module.functions.php 
+// include module.functions.php
 include_once(WB_PATH . '/framework/module.functions.php');
 
 // include the module language file depending on the backend language of the current user
@@ -60,7 +60,7 @@ require_once(dirname(__FILE__).'/functions.php');
     Topic: The Filter-Function itself
         The Filter function must have an unique name, and should have a "opff_"-prefix
 
-    Prototype: 
+    Prototype:
         %bool% opff_unique_name( %string% &$content, %int% $page_id, %int% $section_id, %string% $module, %object% $wb )
 
     Parameters:
@@ -106,7 +106,7 @@ require_once(dirname(__FILE__).'/functions.php');
 
         *You don't need this function for inline-filters!*
 
-    Prototype: 
+    Prototype:
         %bool% opf_register_filter( %array% $filter, %bool% $serialized=FALSE )
 
     Parameters:
@@ -135,14 +135,14 @@ require_once(dirname(__FILE__).'/functions.php');
         type - %(string)% - Type of Filter (see below).
         funcname - %(string)% - Unique name of Filter-Function. This function is called to apply the filter.
                It has to be an unique name and should begin with "opff_", e.g. !opff_correct_date()!.
-        func - %(string)% - "Inline-Function" (see below).  
+        func - %(string)% - "Inline-Function" (see below).
         file - %(string)% - Name and absolute path of file containing the Filter-Function.
                Use either !func! or !file!.
         active - %(int)% - Set Filter active (!1!), or inactive (!0!) after installation. Defaults to !1!.
         allowedit - %(int)% - Set Filter-Settings editable (!1!), or not editable (!0!) (see below). Defaults to !0!.
         allowedittarget - %(int)% - Set additional Filter-Settings editable (see below). Defaults to !0!.
         desc - %(string/array)% - Description of Filter (see below).
-        configurl - %(string)% - URL to Filter-Settings (e.g. to an Admin-Tool). 
+        configurl - %(string)% - URL to Filter-Settings (e.g. to an Admin-Tool).
                 E.g.: !'configurl' => ADMIN_URL.'/admintools/tool.php?tool=output_filter'!. Default: "".
         csspath - %(string)% - Name and absolute path of CSS-file.
               E.g.: !'csspath' => '{SYSVAR:WB_PATH}/modules/opf_prettify/prettify/prettify.css'!. Default: "".
@@ -153,7 +153,7 @@ require_once(dirname(__FILE__).'/functions.php');
         pages - %(string/array)%  - List of pages (see below).
         pages_parent - %(string/array)%  - List of pages (see below).
         additional_fields - %(array)%  - List of additional Settings-Fields (see below).
-    
+
     type:
         Determines on which type of content the filter is applied to.
 
@@ -256,7 +256,7 @@ require_once(dirname(__FILE__).'/functions.php');
         >   'DE' => "Beschreibung\n..."
         > )
         Using the latter form, there has to be at least an English ( !'EN'! ) entry.
-    
+
     modules:
         List of modules the filter (of type OPF_TYPE_SECTION or OPF_TYPE_SECTION_LAST ) is applied to.
         In the following two examples, the filter will be applied to all WYSIWYG- and News-sections.
@@ -272,11 +272,11 @@ require_once(dirname(__FILE__).'/functions.php');
         'all_gallery_types' - fancy_box, flickrgallery, gallery, gdpics, imageflow, imagegallery, lightbox2, lightbox, panoramic_image, pickle, picturebox, tiltviewer, smoothgallery, swift, slideshow
         'all_wrapper_types' - curl, inlinewrapper, wrapper
         'all_calendar_types' - calendar, event, event_calendar
-        'all_shop_types' - bakery, gocart, 
-        'all_code_types' - code, code2, show_code 
+        'all_shop_types' - bakery, gocart,
+        'all_code_types' - code, code2, show_code
         'all_poll_types' - doodler, polls
         'all_listing_types' - aggregator, bookings_v2, bookmarks, cabin, dirlist, faqbaker, faqmaker, members, mfz, sitemap
-        'all_various_types' - feedback, newsreader, shoutbox, simpleviewer, small_ads, zitate 
+        'all_various_types' - feedback, newsreader, shoutbox, simpleviewer, small_ads, zitate
 
         See <opf_modules_categories> for the actual module -> category relation.
 
@@ -496,7 +496,7 @@ function opf_register_filter($filter, $serialized=FALSE) {
             $additional_fields_languages = serialize($additional_fields_languages);
     } else
         $additional_fields_languages = serialize('');
-    if($filter_installed) {    
+    if($filter_installed) {
         if(isset($additional_fields) && !empty($additional_fields)) {
             $additional_values = array();
             foreach($additional_fields as $field) {
@@ -526,7 +526,7 @@ function opf_register_filter($filter, $serialized=FALSE) {
         } else
             $additional_values = '';
     }
-    if(isset($additional_fields) && !empty($additional_fields)) {    
+    if(isset($additional_fields) && !empty($additional_fields)) {
             $additional_fields = serialize($additional_fields);
     } else
         $additional_fields = serialize('');
@@ -544,7 +544,7 @@ function opf_register_filter($filter, $serialized=FALSE) {
 
     $fileCheck = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $file);
     $fileCheck = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$plugin, $fileCheck);
-    
+
     if(($fileCheck=='' && $func=='') || (($fileCheck!='' && $func!=''))) {
         trigger_error('File OR Function needed', E_USER_WARNING);
         if($force) { // store it nevertheless, but set it inactive
@@ -566,15 +566,15 @@ function opf_register_filter($filter, $serialized=FALSE) {
             $func = preg_replace('/\?>\s*<\?php/','',"<?php // ATTN: given funcname and used name differ.\n?>".$func);
         } else
             return(FALSE);
-    } 
-    
+    }
+
     if($func!='' && preg_match("/$funcname\s*\(/", $func)) {
         // remove warning again when funcname is corrected
         $func = preg_replace('/\s*\/\/\s*ATTN: given funcname and used name differ.\s*/',"\n",$func);
     }
 
     // insert values into DB
-    
+
     // get next free position for type
     $position =    opf_db_query_vars( "SELECT MAX(`position`) FROM `".TABLE_PREFIX."mod_outputfilter_dashboard` WHERE `type`='%s'", $type);
     if(!$position) $position = 0;  // NULL -> no entries
@@ -641,11 +641,11 @@ function opf_register_filter($filter, $serialized=FALSE) {
                                             $modules,$desc,$pages,$pages_parent,$allowedit,$allowedittarget,
                                             $configurl,$csspath,$helppath,$additional_values,$additional_fields,
                                             $additional_fields_languages);
-                                            
+
     if(class_exists('Settings') && defined('WBCE_VERSION')){
         // force refresh the filter definitions
         global $opf_FILTERS;
-        unset($opf_FILTERS); 
+        unset($opf_FILTERS);
         opf_set_active($name, $active);
     }
 
@@ -656,15 +656,15 @@ function opf_register_filter($filter, $serialized=FALSE) {
 /*
     Function: opf_move_up_before
         Upon registration move a filter up to a position before another one.
-        This function can be used after <opf_register_filter()> to adjust its position 
+        This function can be used after <opf_register_filter()> to adjust its position
         in the filter list. By default, freshly installed filters are appended to the
-        end of the list of filters of the same type. Use this function inside the 
-        <install.php> to move the filter up to a target position denoted by the 
+        end of the list of filters of the same type. Use this function inside the
+        <install.php> to move the filter up to a target position denoted by the
         name of another filter. You can repeat this with different names of filters
         from which you know that they have to be applied after the one you are installing.
-        Alternatively, if !$ref_name! is an array, the filter denoted by !$name! 
+        Alternatively, if !$ref_name! is an array, the filter denoted by !$name!
         is moved upwards to the position of the upper-most entry of the whole list.
-        If !$ref_name! is ommited, the filter !$name! is moved up to the 
+        If !$ref_name! is ommited, the filter !$name! is moved up to the
         top of the whole list. In this case the return value is the new position of
         the filter !$name!
 
@@ -714,7 +714,7 @@ function opf_move_up_before($name, $ref_name=""){
         $ref_pos = opf_get_position($ref_name, FALSE);
         $ref_type = opf_get_type($ref_name,FALSE);
         while($ref_pos!==FALSE && $pos!==FALSE && $ref_type==$type && $ref_pos>0 && $pos>$ref_pos) {
-            if(opf_move_up_one($name,FALSE)===FALSE) 
+            if(opf_move_up_one($name,FALSE)===FALSE)
                 return(FALSE);
             $pos = opf_get_position($name,FALSE);
         }
@@ -730,7 +730,7 @@ function opf_move_up_before($name, $ref_name=""){
         This function is used to remove a filter.
         Use this for Module-Filters in the module's !uninstall.php!-file.
 
-    Prototype: 
+    Prototype:
         %bool% opf_unregister_filter( %string% $name )
 
     Parameters:
@@ -773,7 +773,7 @@ function opf_unregister_filter($name) {
                 Settings::Del( opf_filter_name_to_setting($name));
                 Settings::Del( opf_filter_name_to_setting($name).'_be');
             }
-            
+
             if(opf_db_run_query( "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard` SET `position`=`position`-1
                       WHERE `type`='%s' AND `position`>%d", $type, $pos))
             return(TRUE);
@@ -787,7 +787,7 @@ function opf_unregister_filter($name) {
     Function: opf_register_frontend_files
         Register JS- or CSS-files to be loaded into the page's <head>-section.
 
-    Prototype: 
+    Prototype:
         %bool% opf_register_frontend_files( %string% $file, %string% $type, %string% $target='head', %string% $media='screen', %string% $iehack )
 
     Parameters:
@@ -810,7 +810,7 @@ function opf_unregister_filter($name) {
         > // IE-Hack
         > opf_register_frontend_files(WB_URL.'/modules/opf_fix_png_ie6/sl.js', 'js', 'head', '', '[if lte IE 6]');
         > // output: <!--[if lte IE 6]><script ...></script><![endif]-->
-    
+
         > // usage of "inline"-script
         > opf_register_frontend_files('
         >   <script type="text/javascript">function do_highlight() { highlighter.highlight(); }</script>
@@ -848,7 +848,7 @@ function opf_register_frontend_files($file, $type, $target='head', $media='scree
         Register an Javascript onload-function inside
         page's <head>-section, using window.attachEvent() or window.addEventListener().
 
-    Prototype: 
+    Prototype:
         %bool% opf_register_onload_event( %string% $function_name )
 
     Parameters:
@@ -882,7 +882,7 @@ function opf_register_onload_event($function_name) {
     Function: opf_register_onload
         Register an Javascript script onload-function inside page's <body>-section.
 
-    Prototype: 
+    Prototype:
         %bool% opf_register_onload( %string% $script )
 
     Parameters:
@@ -914,7 +914,7 @@ function opf_register_onload($script) {
         Register an Javascript onload-event inside
         page's <head>-section, using jquery's !jQuery(document).ready()! method.
 
-    Prototype: 
+    Prototype:
         %bool% opf_register_document_ready( %string% $js )
 
     Parameters:
@@ -946,9 +946,9 @@ function opf_register_document_ready($js) {
 
 /*
     Function: opf_find_class
-        Check whether a class (or any other attribute) is present in content. 
+        Check whether a class (or any other attribute) is present in content.
 
-    Prototype: 
+    Prototype:
         %bool% opf_find_class( %string% $content, %string% $match, %string% $tag='', %string% $attr='class' )
 
     Parameters:
@@ -985,7 +985,7 @@ function opf_register_document_ready($js) {
             // ... apply filter
         (end)
 
-        Regular expressions are allowed, too. Those regexs are performed ungreedy (PCRE_UNGREEDY). 
+        Regular expressions are allowed, too. Those regexs are performed ungreedy (PCRE_UNGREEDY).
         (start code)
         // search for class "cpp", "c" or "c++" in HTML-tag <pre> or <textarea>
         if(opf_find_class($content, '(cpp|c|c\+\+)', '(pre|textarea)')) {
@@ -1003,9 +1003,9 @@ function opf_find_class($content, $match, $tag='', $attr='class') {
 
 /*
     Function: opf_add_class
-        Add a class to a present HTML-tag, i.e. !<pre>!. The class will be added to all appearance of the given HTML-tag. 
+        Add a class to a present HTML-tag, i.e. !<pre>!. The class will be added to all appearance of the given HTML-tag.
 
-    Prototype: 
+    Prototype:
         %bool% opf_add_class( %string% $content, %string% $class, %string% $tag )
 
     Parameters:
@@ -1047,9 +1047,9 @@ function opf_add_class(&$content, $class, $tag) {
 /*
     Function: opf_add_class_to_class
         Add a class to an already present class.
-        The new class will be added to all appearance of the given class. 
+        The new class will be added to all appearance of the given class.
 
-    Prototype: 
+    Prototype:
         %bool% opf_add_class_to_class( %string% $content, %string% $class, %string% $present_class, %string% $tag='' )
 
     Parameters:
@@ -1100,7 +1100,7 @@ function opf_add_class_to_class(&$content, $class, $present_class, $tag='') {
     Function: opf_add_class_to_attr
         Add a class to all HTML-tags that has a given attribute.
 
-    Prototype: 
+    Prototype:
         %bool% opf_add_class_to_attr( %string% $content, %string% $class, %string% $attr, %string% $value, %string% $tag='' )
 
     Parameters:
@@ -1136,7 +1136,7 @@ function opf_add_class_to_attr(&$content, $class, $attr, $value, $tag='') {
     Function: opf_cut_extract
         Cuts pieces out of content using a regular expression and replace them by placeholders.
 
-    Prototype: 
+    Prototype:
         %array% opf_cut_extract( %string% &$content, %string% $regex, %string% $subpattern=0, %string% $modifers='iU', %string% $delimiter='~', %string% $extracts='' )
 
     Parameters:
@@ -1158,7 +1158,7 @@ function opf_add_class_to_attr(&$content, $class, $attr, $value, $tag='') {
         function opff_work_on_links(&$content, $page_id, $section_id, $module, $wb) {
             $extracts = opf_cut_extract($content, '<a href=[^>]+>.*</a>'); // cut $extracts out of content
             var_dump($extracts);
-            var_dump($content); 
+            var_dump($content);
             opf_glue_extract($content, $extracts); // put $extracts back into $content
             return(TRUE);
         }
@@ -1229,7 +1229,7 @@ function opf_cut_extract(&$content, $regex, $subpattern=0, $modifers='iU', $deli
     Private Function: opf_fetch_extract
         Description
 
-    Prototype: 
+    Prototype:
         %array% opf_fetch_extract( %string% &$content, %string% $regex, %string% $subpattern=0, %string% $modifers='iU', %string% $delimiter='~' )
 
 */
@@ -1254,9 +1254,9 @@ function opf_fetch_extract($content, $regex, $subpattern=0, $modifers='iU', $del
 
 /*
     Function: opf_glue_extract
-        
 
-    Prototype: 
+
+    Prototype:
         %bool% opf_glue_extract( %string% &$content, %string% $extracts )
 
     Parameters:
@@ -1298,7 +1298,7 @@ function opf_filter_get_name_current() {
     Function: opf_filter_get_data
         Fetch data from filter.
 
-    Prototype: 
+    Prototype:
         %array% opf_filter_get_data( %string% $name='' )
 
     Parameters:
@@ -1328,20 +1328,20 @@ function opf_filter_get_name_current() {
             'csspath' => string '/var/www/wbtest/modules/opf_prettify/prettify/prettify.css' (length=58)
             'funcname' => string 'opff_prettify' (length=13)
             'configurl' => string '' (length=0)
-            'modules' => 
+            'modules' =>
                 array
                     0 => string 'download_gallery' (length=16)
                     1 => string 'manual' (length=6)
                     2 => string 'news' (length=4)
                     3 => string 'wysiwyg' (length=7)
             'desc' => string 'Prettifies all &lt;pre class=&quot;prettyprint&quot;&gt; and ...' (length=455)
-            'pages' => 
+            'pages' =>
                 array
                     0 => string 'all' (length=3)
                     1 => string '99' (length=2)
                     2 => string '104' (length=3)
                     3 ...
-            'pages_parent' => 
+            'pages_parent' =>
                 array
                     0 => string 'all' (length=3)
                     1 => string '99' (length=2)
@@ -1371,7 +1371,7 @@ function opf_filter_get_data($name='') {
     Function: opf_filter_get_rel_pos
         Checks if a given filter was or will be executed.
 
-    Prototype: 
+    Prototype:
         %int% opf_filter_get_rel_pos( %string% $name )
 
     Parameters:
@@ -1437,7 +1437,7 @@ function opf_filter_get_rel_pos($name) {
         return(1);
     if($data['activated']==TRUE || $data['failed']==TRUE)
         return(-1);
-    return(FALSE); // ??
+    return(FALSE); // not installed or inactive
 }
 
 
@@ -1445,7 +1445,7 @@ function opf_filter_get_rel_pos($name) {
     Function: opf_filter_exists
         Checks whether a given filter exists
 
-    Prototype: 
+    Prototype:
         %bool% opf_filter_exists( %string% $name, %bool% $verbose )
 
     Parameters:
@@ -1471,7 +1471,7 @@ function opf_filter_exists($name, $verbose=FALSE) {
     if(!isset($opf_FILTERS[$name])) {
         if($verbose) trigger_error('opf_filter_exists(): '.htmlspecialchars($name,ENT_QUOTES).' not defined', E_USER_WARNING);
         return(FALSE);
-    } else 
+    } else
         return(TRUE);
 }
 
@@ -1480,7 +1480,7 @@ function opf_filter_exists($name, $verbose=FALSE) {
     Function: opf_is_childpage
         Checks whether a page is a subpage of a given page (or the same page)
 
-    Prototype: 
+    Prototype:
         %bool% opf_is_childpage( %int% $child,  %int% $parent )
 
     Parameters:
@@ -1517,7 +1517,7 @@ function opf_is_childpage($child, $parent) {
     Function: opf_filter_is_active
         Checkes whether a given filter is active for the actual module and page_id
 
-    Prototype: 
+    Prototype:
         %bool% opf_filter_is_active( %string% $name )
 
     Parameters:
@@ -1537,7 +1537,7 @@ function opf_is_childpage($child, $parent) {
 function opf_filter_is_active($name) {
     if(opf_filter_get_rel_pos($name)===FALSE)
         return(FALSE);
-    else 
+    else
         // this check is more expensive but takes settings into account
         opf_is_active($name);
 }
@@ -1547,7 +1547,7 @@ function opf_filter_is_active($name) {
     Function: opf_filter_get_additional_values
         Receive additional filter arguments
 
-    Prototype: 
+    Prototype:
         %array% opf_filter_get_additional_values( %void% )
 
     This function fetches additional filter arguments from filter-settings.
@@ -1579,21 +1579,21 @@ function opf_filter_get_additional_values() {
 
 /*
     Function: opf_filter_name_to_setting
-        For WBCE 1.2: This function converts the name of a filter to the settings string 
+        For WBCE 1.2: This function converts the name of a filter to the settings string
         which is associated with the active/inactive state of the given filter name.
 
-    Prototype: 
+    Prototype:
         %string% opf_filter_name_to_setting( %string% )
 
     Parameters:
         $name - %string% the name of the filter
-    
+
     Returns:
         the name of the corresponding setting (in lowercase letters)
 
     Examples:
         (start code)
-        if(Settings::Get(opf_filter_name_to_setting($name))){ 
+        if(Settings::Get(opf_filter_name_to_setting($name))){
           // do something;
         }
         (end)

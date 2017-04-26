@@ -9,15 +9,15 @@ The following tokens can be used instead of hardcoded pathes within OpF-Plugins
         >        {SYSVAR:WB_URL}   = will replace with the content of the Constant WB_URL
         >        {SYSVAR:WB_PATH}  = will replace with the content of the Constant WB_PATH
         >        {OPF:PLUGIN_URL}  = will replace with WB_URL.'/modules/outputfilter_dashboard/plugins/{your_plugin}'
-        >        {OPF:PLUGIN_PATH} = will replace with WB_PATH.'/modules/outputfilter_dashboard/plugins/{your_plugin}'                        
-                        
-inside the filter functions the following CONSTANTS work with OPF Plugins 
-        >        OPF_PLUGINS_PATH  
+        >        {OPF:PLUGIN_PATH} = will replace with WB_PATH.'/modules/outputfilter_dashboard/plugins/{your_plugin}'
+
+inside the filter functions the following CONSTANTS work with OPF Plugins
+        >        OPF_PLUGINS_PATH
         >        OPF_PLUGINS_URL
                         the path and url to the plugins folder is very long and is being used extensivly in Filters,
                         therefore the constants are a convenient addition.
-                        The URL is 
-        > OPF_PLUGINS_URL = [ WB_URL.'/modules/'.basename(dirname(__FILE__)).'/plugins/' ] 
+                        The URL is
+        > OPF_PLUGINS_URL = [ WB_URL.'/modules/'.basename(dirname(__FILE__)).'/plugins/' ]
 
 plugin_info.php:
         ><?php

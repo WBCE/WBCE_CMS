@@ -4,16 +4,16 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright       Ryan Djurovich (2004-2009)
+ * @copyright       WebsiteBaker Org. e.V. (2009-2015)
  * @copyright       WBCE Project (2015-2017)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.0
+ * @version         1.0.4
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x 
+ * @platform        WBCE 1.2.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -32,7 +32,7 @@ if(!defined('WB_PATH')) {
 /**
  * Convert full qualified, local URLs into relative URLs
  */
-        
+
 function opff_mod_opf_sys_rel (&$content, $page_id, $section_id, $module, $wb) {
     if(!class_exists('Settings') || Settings::Get('opf_sys_rel', true)){
         $sAppUrl  = rtrim(str_replace('\\', '/', WB_URL), '/').'/';
@@ -48,12 +48,12 @@ function opff_mod_opf_sys_rel (&$content, $page_id, $section_id, $module, $wb) {
                 // in case of death link show original link
                     return $aMatches[0];
                 } else {
-                    return $aMatches[1].$sAppRel.$aMatches[2];
+                    return $aMatches[1].preg_replace('/^(\/+)/', '/', $sAppRel.$aMatches[2]);
                 }
             },
             $content
         );
-        
+
     }
     return(TRUE);
 }

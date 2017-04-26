@@ -40,12 +40,12 @@ a:active {  text-decoration: underline }
 a  { color: #a00000; }
 a:active  { color: #a00000; }
 
-h4  { 
-    color: #b32312; 
-    font-size: 15px !important; 
-    width: 90%; 
-    border-bottom: 
-    1px solid 
+h4  {
+    color: #b32312;
+    font-size: 15px !important;
+    width: 90%;
+    border-bottom:
+    1px solid
 }
 td {
     vertical-align: top }
@@ -86,20 +86,20 @@ blockquote {
 
 
 /* ______MENU_______ */
-#Menu  { 
-   font-size: 9pt; 
-   background-image: url(../files/images/docu_logo.gif); 
-   background-repeat: no-repeat; 
-   background-position: 0 6px; 
-   padding: 115px 0 0 
+#Menu  {
+   font-size: 9pt;
+   background-image: url(../files/images/docu_logo.gif);
+   background-repeat: no-repeat;
+   background-position: 0 6px;
+   padding: 115px 0 0
 }
 .ContentPage #Menu,
-.IndexPage #Menu  { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 31ex; 
-    overflow: hidden 
+.IndexPage #Menu  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 31ex;
+    overflow: hidden
 }
 .ContentPage .Firefox #Menu,
 .IndexPage .Firefox #Menu {
@@ -107,67 +107,67 @@ blockquote {
 }
 
 
-.MTitle   { 
-    font-size: 16pt; 
-    font-variant: small-caps; 
-    font-weight: bold; 
-    text-align: center; 
-    display: none; 
-    margin-bottom: 15px; 
-    padding: 5px 10px 15px; 
-    border-bottom: 1px dotted #000000 
+.MTitle   {
+    font-size: 16pt;
+    font-variant: small-caps;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+    margin-bottom: 15px;
+    padding: 5px 10px 15px;
+    border-bottom: 1px dotted #000000
 }
 
-.MSubTitle  { 
-    font-size: 9pt; 
-    font-variant: normal; 
-    font-weight: normal; 
-    margin-top: 1ex; 
+.MSubTitle  {
+    font-size: 9pt;
+    font-variant: normal;
+    font-weight: normal;
+    margin-top: 1ex;
     margin-bottom: 5px
 }
 
 .MEntry a:link,
 .MEntry a:hover,
-.MEntry a:visited  { 
-    color: #515d76; 
-    font-size: 14px !important; 
-    margin-right: 0 
+.MEntry a:visited  {
+    color: #515d76;
+    font-size: 14px !important;
+    margin-right: 0
 }
 .MEntry a:active { color: #A00000; margin-right: 0 }
 
 
-div.MGroup {  
-    background-color: #f6f8ff; 
-    margin-right: 5px; 
-    margin-left: 4px; 
-    padding-left: 2px; 
-    border: solid 1px #515d76 
+div.MGroup {
+    background-color: #f6f8ff;
+    margin-right: 5px;
+    margin-left: 4px;
+    padding-left: 2px;
+    border: solid 1px #515d76
 }
 
-.MGroup { 
-   font-weight: bold; 
-   margin: 1em 0 1em 10px; 
-   padding: 0 
+.MGroup {
+   font-weight: bold;
+   margin: 1em 0 1em 10px;
+   padding: 0
 }
 
 .MGroupContent {
-    font-variant: normal; 
-    font-weight: normal 
+    font-variant: normal;
+    font-weight: normal
 }
 
 .MGroup a:link,
 .MGroup a:hover,
-.MGroup a:visited { 
-    color: #515d76; 
-    font-size: 13px !important; 
-    margin-right: 10px 
+.MGroup a:visited {
+    color: #515d76;
+    font-size: 13px !important;
+    margin-right: 10px
 }
-.MGroup a:active { 
-    color: #A00000; 
-    margin-right: 10px 
+.MGroup a:active {
+    color: #A00000;
+    margin-right: 10px
 }
-.MEntry .MFile a { 
-   font-size: 12px !important; 
+.MEntry .MFile a {
+   font-size: 12px !important;
 }
 
 
@@ -182,26 +182,26 @@ font-size: 8pt; font-style: italic }
 .MLink {
 font-style: italic }
 /*SELECTED MENU ITEMS*/
-#MSelected   { 
-    color: #000000; 
-    background-color: #dae0ed; 
-    padding: 0 
+#MSelected   {
+    color: #000000;
+    background-color: #dae0ed;
+    padding: 0
 }
 /*  Close off the left side when its in a group.  */
 div.MGroup #MSelected {
-    padding-left: 9px; 
+    padding-left: 9px;
     border-left-width: 1px;
-    background-color: #dae0ed; 
+    background-color: #dae0ed;
 }
-#MSelected  { 
-    background-color: #f6f8ff; 
-    margin-right: 5px; 
-    margin-left: 4px; 
-    padding-left: 9px; 
-    border-left: 1px 
+#MSelected  {
+    background-color: #f6f8ff;
+    margin-right: 5px;
+    margin-left: 4px;
+    padding-left: 9px;
+    border-left: 1px
 }
 
-/*  A treat for Mozilla users.  Blatantly non-standard.  Will be replaced with CSS 3 attributes when finalized/supported.  
+/*  A treat for Mozilla users.  Blatantly non-standard.  Will be replaced with CSS 3 attributes when finalized/supported.
 .Firefox #MSelected {
 -moz-border-radius-topright: 10px;
 -moz-border-radius-bottomright: 10px }
@@ -215,13 +215,13 @@ div.MGroup #MSelected {
     margin: .25em 0;
 }
 
-#MSearchField  { 
-    color: #515d76; 
-    font: italic 9pt "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif; 
-    background-color: #fdf8e0; 
-    padding: 2px 4px; 
-    width: 100%; 
-    border: solid 1px 
+#MSearchField  {
+    color: #515d76;
+    font: italic 9pt "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+    background-color: #fdf8e0;
+    padding: 2px 4px;
+    width: 100%;
+    border: solid 1px
 }
     /* Only Opera gets it right. */
 .Firefox #MSearchField,
@@ -241,16 +241,16 @@ div.MGroup #MSelected {
 
 /* Firefox doesn't do this right in frames without #MSearchPanel added on.
 It's presence doesn't hurt anything other browsers. */
-#MSearchPanel.MSearchPanelInactive:hover #MSearchField  { 
-    background-color: #fdf8e0; 
-    padding: 1px 3px; 
-    border: solid 1px #515d76 
+#MSearchPanel.MSearchPanelInactive:hover #MSearchField  {
+    background-color: #fdf8e0;
+    padding: 1px 3px;
+    border: solid 1px #515d76
 }
-.MSearchPanelActive #MSearchField  { 
-    font-style: normal; 
-    background-color: #ffffff; 
-    padding: 1px 3px; 
-    border: solid 1px #515d76 
+.MSearchPanelActive #MSearchField  {
+    font-style: normal;
+    background-color: #ffffff;
+    padding: 1px 3px;
+    border: solid 1px #515d76
 }
 
 #MSearchType {
@@ -313,12 +313,12 @@ iframe#MSearchResults {
     padding-bottom: 15px;
 }
 
-.ContentPage #Content  { 
-    font-size: 9pt; 
-    background-color: #ffffff; 
-    margin: 10px 10px 0px 31ex; 
-    padding: 5px; 
-    border: solid 2px #3c4557 
+.ContentPage #Content  {
+    font-size: 9pt;
+    background-color: #ffffff;
+    margin: 10px 10px 0px 31ex;
+    padding: 5px;
+    border: solid 2px #3c4557
 }
 .ContentPage .Firefox #Content {
     margin-left: 27ex;
@@ -331,65 +331,65 @@ iframe#MSearchResults {
     margin-bottom: 3em;
 }
 
-h3.CTitle  { 
-    color: #3c4557; 
-    font-size: 12pt; 
-    border-style: solid; 
-    border-width: 0 0 2px; 
-    border-color: #a0a0a0 #a0a0a0 #515d76 
+h3.CTitle  {
+    color: #3c4557;
+    font-size: 12pt;
+    border-style: solid;
+    border-width: 0 0 2px;
+    border-color: #a0a0a0 #a0a0a0 #515d76
 }
-.CTitle {       
-    margin: 0 15px .5em 15px 
+.CTitle {
+    margin: 0 15px .5em 15px
 }
 
 .CGroup .CTitle {
-    font-size: 16pt; 
+    font-size: 16pt;
     font-variant: small-caps;
-    padding-left: 15px; 
+    padding-left: 15px;
     padding-right: 15px;
-    border-width: 0 0 2px 0; 
+    border-width: 0 0 2px 0;
     border-color: #000000;
-    margin-left: 0; 
-    margin-right: 0 
+    margin-left: 0;
+    margin-right: 0
 }
 
 .CClass .CTitle,
 .CInterface .CTitle,
 .CDatabase .CTitle,
 .CDatabaseTable .CTitle,
-.CSection .CTitle  { 
-    color: #ffffff; 
-    font-size: 16pt; 
-    background-color: #5a6986; 
-    margin-right: 20px; 
-    margin-left: 0; 
-    padding: 10px 15px; 
-    border-width: 2px 0; 
-    border-color: #000000 
+.CSection .CTitle  {
+    color: #ffffff;
+    font-size: 16pt;
+    background-color: #5a6986;
+    margin-right: 20px;
+    margin-left: 0;
+    padding: 10px 15px;
+    border-width: 2px 0;
+    border-color: #000000
 }
 
 #MainTopic .CTitle {
     font-size: 18pt;
-    color: #FFFFFF; 
+    color: #FFFFFF;
     background-color: #515D76;
     padding: 10px 15px 10px 15px;
-    border-width: 0 0 3px 0; 
+    border-width: 0 0 3px 0;
     border-color: #000000;
-    margin-left: 0; 
-    margin-right: 0 
+    margin-left: 0;
+    margin-right: 0
 }
 
 .CBody  { margin-right: 15px; margin-left: 45px }
 
 
 .CToolTip {
-    position: absolute; 
+    position: absolute;
     visibility: hidden;
     left: 0; top: 0;
     background-color: #FFFFE0;
     padding: 5px;
-    border-width: 1px 2px 2px 1px; 
-    border-style: solid; 
+    border-width: 1px 2px 2px 1px;
+    border-style: solid;
     border-color: #000000;
     font-size: 8pt;
 }
@@ -412,7 +412,7 @@ h3.CTitle  {
 }
 
 .CBody pre {
-        color: #6c1111; 
+        color: #6c1111;
     font: 10pt "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, monospace;
     border-style: solid; border-width: 2px; border-color: #999 #ccc #dadada #999;
     background-color: #fffcdd;
@@ -438,8 +438,8 @@ h3.CTitle  {
 
 .CDLDescription {
     font-size: 10pt;  /*  For browsers that don't inherit correctly, like Opera 5.  */
-    padding-bottom: .5em; 
-    padding-left: 2ex 
+    padding-bottom: .5em;
+    padding-left: 2ex
 }
 
 
@@ -526,10 +526,10 @@ a.CImageLink:hover { color: #808080 }
     font-size: 12pt; font-weight: bold;
     margin-bottom: .5em }
 
-.SBorder  { 
-    background-color: #eaeaee; 
-    padding: 15px; border: 
-    dashed 1px #515d76 
+.SBorder  {
+    background-color: #eaeaee;
+    padding: 15px; border:
+    dashed 1px #515d76
 }
 .STable {
     font-size: 9pt; width: 100% }
@@ -549,8 +549,8 @@ a.CImageLink:hover { color: #808080 }
     padding-top: .5em; padding-bottom: .25em }
 
 .SGroup .SEntry {
-    font-weight: bold; 
-    font-variant: small-caps; 
+    font-weight: bold;
+    font-variant: small-caps;
     font-size: 120%
 }
 
@@ -564,7 +564,7 @@ a.CImageLink:hover { color: #808080 }
 .SDatabaseTable td,
 .SSection td {
     font-size: 10pt;
-    padding-bottom: .25em 
+    padding-bottom: .25em
 }
 
 .SClass td,
@@ -601,13 +601,13 @@ a.CImageLink:hover { color: #808080 }
     margin: 0 15px 1em 15px }
 
 .CHEntry {
-    border-width: 1px 2px 2px 1px; 
-    border-style: solid; 
+    border-width: 1px 2px 2px 1px;
+    border-style: solid;
     border-color: #A0A0A0;
     margin-bottom: 3px;
     padding: 2px 2ex;
     font-size: 10pt;
-    background-color: #F4F4F4; 
+    background-color: #F4F4F4;
     color: #606060;
 }
 
@@ -662,15 +662,15 @@ a.CImageLink:hover { color: #808080 }
 
 
 .IPageTitle {
-    font-size: 20pt; 
+    font-size: 20pt;
     font-weight: bold;
-    color: #FFFFFF; 
+    color: #FFFFFF;
     background-color: #515D76;
     padding: 10px 15px 10px 15px;
-    border-width: 0 0 3px 0; 
-    border-color: #000000; 
+    border-width: 0 0 3px 0;
+    border-color: #000000;
     border-style: solid;
-    margin: -15px -15px 0 -15px 
+    margin: -15px -15px 0 -15px
 }
 
 .FramedSearchResultsPage .IPageTitle {
@@ -687,7 +687,7 @@ a.CImageLink:hover { color: #808080 }
 }
 
 .INavigationBar a {
-    font-weight: bold 
+    font-weight: bold
 }
 
 .IHeading {
@@ -704,9 +704,9 @@ a.CImageLink:hover { color: #808080 }
     font-size: 10pt;
     padding-left: 1ex;
 }
-.PopupSearchResultsPage .IEntry  { 
-    font-size: 8pt; 
-    padding: 1px 5px; 
+.PopupSearchResultsPage .IEntry  {
+    font-size: 8pt;
+    padding: 1px 5px;
 }
 .PopupSearchResultsPage .Opera9 .IEntry,
 .FramedSearchResultsPage .Opera9 .IEntry {
@@ -725,8 +725,8 @@ a.CImageLink:hover { color: #808080 }
     /*  While it may cause some entries to look like links when they aren't, I found it's much easier to read the
      index if everything's the same color.  */
 .ISymbol {
-    font-weight: bold; 
-    color: #900000  
+    font-weight: bold;
+    color: #900000
 }
 
 .IndexPage .ISymbolPrefix,
@@ -791,12 +791,12 @@ a.IFile {
     text-align: right;
     margin-right: 10px;
 }
-    
-.mypriv_var   { 
+
+.mypriv_var   {
     font: 10pt "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier,
-    monospace; font-weight: bold; 
+    monospace; font-weight: bold;
 }
-.mypriv_vartype {  
+.mypriv_vartype {
     font: italic 10pt "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier,
     monospace;  color: #808080;
 }
@@ -805,10 +805,10 @@ a.IFile {
   #Menu {
     display: none;
   }
-  .ContentPage #Content, 
-  .ContentPage .Firefox #Content  { 
-      margin-left: 0; 
-      width: 800px 
+  .ContentPage #Content,
+  .ContentPage .Firefox #Content  {
+      margin-left: 0;
+      width: 800px
   }
 }
 

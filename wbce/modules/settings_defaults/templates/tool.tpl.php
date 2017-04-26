@@ -103,29 +103,7 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
             <?php endforeach; ?>
         <?php endif; ?> 
         </select><br /> 
-
-         <!-- Default FE template -->
-        <?php $selects=ds_GetTemplatesArray(); ?>
-        <label class="settingName" for="default_template"><?php echo $TEXT['TEMPLATE'] ?></label>
-        <select name="default_template" id="default_template">
-         <?php if (is_array($selects)) :?>
-            <?php foreach ($selects as $value): ?>
-            <option value="<?php echo $value['directory'] ?>" <?php if(DEFAULT_TEMPLATE == $value['directory']) echo 'selected="selected"'; ?> ><?php echo $value['name']." (".$value['directory'].")" ?></option>
-            <?php endforeach; ?>
-        <?php endif; ?> 
-        </select><br />      
-
-        <!-- Default BE theme -->
-        <?php $selects=ds_GetThemesArray(); ?>
-        <label class="settingName" for="default_theme"><?php echo $TEXT['THEME'] ?></label>
-        <select name="default_theme" id="default_theme">
-         <?php if (is_array($selects)) :?>
-            <?php foreach ($selects as $value): ?>
-            <option value="<?php echo $value['directory'] ?>" <?php if(DEFAULT_THEME == $value['directory']) echo 'selected="selected"'; ?> ><?php echo $value['name']." (".$value['directory'].")" ?></option>
-            <?php endforeach; ?>
-        <?php endif; ?> 
-        </select><br />      
-        
+       
         
    
         
