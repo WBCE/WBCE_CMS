@@ -235,6 +235,34 @@ $filesRemove['2'] = array(
     '[MODULES]/captcha_control/install_struct.sql'
 );
 
+// removes old jquery stuff
+$filesRemove['3'] = array(
+
+    '[INCLUDE]/jquery/MIT-LICENSE.txt',
+    '[INCLUDE]/jquery/GPL-LICENSE.txt',
+    '[INCLUDE]/jquery/version.txt',
+    '[INCLUDE]/jquery/jquery-pngFix.js',
+    '[INCLUDE]/jquery/jquery-min132.js',
+    '[INCLUDE]/jquery/jquery-min161.js',
+    '[INCLUDE]/jquery/jquery-min164.js',
+    '[INCLUDE]/jquery/jquery-min170.js',
+    '[INCLUDE]/jquery/jquery-ui.css',
+    '[INCLUDE]/jquery/images/ui-anim_basic_16x16.gif',
+    '[INCLUDE]/jquery/images/ui-bg_flat_0_aaaaaa_40x100.png',
+    '[INCLUDE]/jquery/images/ui-bg_flat_75_ffffff_40x100.png',
+    '[INCLUDE]/jquery/images/ui-bg_glass_55_fbf9ee_1x400.png',
+    '[INCLUDE]/jquery/images/ui-bg_glass_65_ffffff_1x400.png',
+    '[INCLUDE]/jquery/images/ui-bg_glass_75_dadada_1x400.png',
+    '[INCLUDE]/jquery/images/ui-bg_glass_75_e6e6e6_1x400.png',
+    '[INCLUDE]/jquery/images/ui-bg_glass_95_fef1ec_1x400.png',
+    '[INCLUDE]/jquery/images/ui-bg_highlight-soft_75_cccccc_1x100.png',
+    '[INCLUDE]/jquery/images/ui-icons_222222_256x240.png',
+    '[INCLUDE]/jquery/images/ui-icons_2e83ff_256x240.png',
+    '[INCLUDE]/jquery/images/ui-icons_454545_256x240.png',
+    '[INCLUDE]/jquery/images/ui-icons_888888_256x240.png',
+    '[INCLUDE]/jquery/images/ui-icons_cd0a0a_256x240.png'
+);
+
 // check existing tables
 $all_tables = check_wb_tables();
 
