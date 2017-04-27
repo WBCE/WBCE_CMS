@@ -8,10 +8,10 @@
  */
 
 //Module description
-$module_title="Sicherheits Einstellungen";
+$module_title = "Sicherheits-Einstellungen";
 $module_description = 'Einige Zusatzeinstellungen f&uuml;r den Formular und Session Schutz.';
 
-$SFS['HEADER'] =      'Sicherheitseinstellung f&uuml;r Formulare und Session.';
+$SFS['HEADER'] = 'Sicherheitseinstellung f&uuml;r Formulare und Session.';
 $SFS['DESCRIPTION'] = 'Hier k&ouml;nnen sie die Sicherheit f&uuml;r Formulare und Sessions weiter erh&ouml;hen und weitere Einstellungen vornehmen';
 
 // Backend variables
@@ -50,5 +50,3 @@ $SFS['TIMEOUT_ERR'] = 'Timeout darf nur Zahlen enthalten und max. 6 stellen lang
 $SFS['USEFP'] = 'Fingerprinting';
 $SFS['USEFP_TTIP'] = '<em>Hilfe</em>Zus&auml;tzlich zur IP-Adresse wird Betriebssystem und Browser zu jeder TAN-Validierung hinzugezogen.';
 $SFS['USEFP_Err'] = '';
-
-

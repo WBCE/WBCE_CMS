@@ -12,7 +12,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
  
 // module description 
 $module_description = 'Settings for website search.';
-$module_title= "Search Settings";
+$module_title = "Search Settings";
 
 // Headings and text outputs
 $MOD_SET_GENERAL['HEADER'] =           'Search Settings';

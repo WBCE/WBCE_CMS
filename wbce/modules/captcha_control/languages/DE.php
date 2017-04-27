@@ -16,7 +16,8 @@
 */
 
 // Deutsche Modulbeschreibung
-$module_description 	= 'Admin-Tool um das Verhalten von CAPTCHA und ASP zu kontrollieren';
+$module_description = 'Admin-Tool um das Verhalten von CAPTCHA und ASP zu kontrollieren.';
+$module_title = "Spamschutz-Einstellungen";
 
 // Ueberschriften und Textausgaben
 $MOD_CAPTCHA_CONTROL['HEADING']           = 'Captcha- und ASP Steuerung';
@@ -40,6 +41,7 @@ $MOD_CAPTCHA_CONTROL['OLD_IMAGE']         = 'Alter Stil (nicht empfohlen)';
 $MOD_CAPTCHA_CONTROL['TEXT']              = 'Text-CAPTCHA';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_ENTER_TEXT']= 'Fragen und Antworten';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_TEXT_DESC'] = 'Bitte hier alles l&ouml;schen'."\n".'sonst werden Ihre &Auml;nderungen nicht gespeichert!'."\n".'### Beispiel ###'."\n".'Hier k&ouml;nnen sie Fragen und Antworten eingeben.'."\n".'Entweder:'."\n".'?Wie ist der Vorname von Claudia Schiffer?'."\n".'!Claudia'."\n".'?Frage 2'."\n".'!Antwort 2'."\n".' ... '."\n".'wenn nur eine Sprache benutzt wird.'."\n".''."\n".'Oder, wenn die Sprache relevant ist:'."\n".'?EN:What\'s Claudia Schiffer\'s first name?'."\n".'!Claudia'."\n".'?EN:Question 2'."\n".'!Answer 2'."\n".'?DE:Wie ist der Vorname von Claudia Schiffer?'."\n".'!Claudia'."\n".' ... '."\n".'### Beispiel ###'."\n".'';
+
 $MOD_CAPTCHA['VERIFICATION']           = 'Pr&uuml;fziffer';
 $MOD_CAPTCHA['ADDITION']               = 'plus';
 $MOD_CAPTCHA['SUBTRAKTION']            = 'minus';
@@ -48,5 +50,3 @@ $MOD_CAPTCHA['VERIFICATION_INFO_RES']  = 'Bitte Ergebnis eintragen';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Bitte Text eintragen';
 $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Bitte Frage beantworten';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Das Ergebnis ist falsch. Bitte tragen Sie es erneut ein';
-
-

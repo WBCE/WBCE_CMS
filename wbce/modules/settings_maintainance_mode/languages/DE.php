@@ -6,12 +6,12 @@
  * @copyright       Norbert Heimsath
  * @license         WTFPL
  */
- 
- //no direct file access
+
+//no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
- 
-// Module description 
-$module_description = 'Zugriff auf das gesamte Frontend deaktivieren';
+
+// module description
+$module_description = 'Zugriff auf das gesamte Frontend deaktivieren.';
 $module_title = "Wartungsmodus";
 
 // Language vars
