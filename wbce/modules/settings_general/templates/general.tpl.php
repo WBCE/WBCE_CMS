@@ -63,19 +63,24 @@ margin:2px; padding:0;
         <label class="settingName" for="bname">Benutzername</label>
         <input type="text" id="bname" maxlength="30">
         */ ?>
+        
         <input type="submit" name="save_settings" class="save_settings" value="<?php echo $TEXT['SAVE']; ?>" />
         <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" class="save_default" value="<?php echo $TEXT['SYSTEM_DEFAULT']; ?>" />
         <input type="submit" name="admin_tools" class="admin_tools" value="<?php echo $MENU['SETTINGS']; ?>" />
-        <br />  <br />  
+        <br />
+        
+        <br />
+        
         <hr />
+        
         <label class="settingName" for="page_level_limit"><?php echo $TEXT['PAGE_LEVEL_LIMIT'] ?></label>
         <select name="page_level_limit" id="page_level_limit">
         <?php for($i = 1; $i <= 10; $i++): ?>
             <option value="<?php echo $i; ?>" <?php if (PAGE_LEVEL_LIMIT==$i) echo 'selected="selected"';?> ><?php echo $i; ?></option>
         <?php endfor; ?>
         </select>
-        
         <hr />
+        
         <!-- PAGE TRASH -->
         <div class="settingName" ><?php echo $TEXT['PAGE_TRASH'] ?></div>
         <input type="radio" name="page_trash" id="page_trash_inline" style="width: 14px; height: 14px;" value="inline" <?php if (PAGE_TRASH=="inline") echo 'checked="checked"'; ?> />
@@ -114,7 +119,7 @@ margin:2px; padding:0;
         <label for="manage_sections_true"><?php echo $TEXT['ENABLED'] ?></label>
         <input type="radio" name="manage_sections" id="manage_sections_false" style="width: 14px; height: 14px;" value="false" <?php if (!MANAGE_SECTIONS)  echo 'checked="checked"';?> />
         <label for="manage_sections_false"><?php echo $TEXT['DISABLED'] ?></label>
-       <hr />
+        <hr />
         
         <!-- SECTION_BLOCKS -->
         <div class="settingName" ><?php echo $TEXT['SECTION_BLOCKS'] ?></div>   
@@ -176,7 +181,6 @@ margin:2px; padding:0;
         <hr />
         
         <!-- ERROR_LEVEL -->
-        
         <label class="settingName" for="er_level"><?php echo $TEXT['PHP_ERROR_LEVEL'] ?></label>
         <select name="er_level" id="er_level" >
             <?php require(ADMIN_PATH.'/interface/er_levels.php'); ?>
@@ -186,13 +190,13 @@ margin:2px; padding:0;
         </select>
         <hr />        
         
-        
         <!-- WYSIWYG_STYLE -->
         <!--
         <label class="settingName" for="wysiwyg_style"><?php echo $TEXT['WYSIWYG_STYLE'] ?></label>
         <input type="text" id="wysiwyg_style" name="wysiwyg_style" maxlength="255"  value="<?php echo WYSIWYG_STYLE ?>" style="width:350px" /><br />
         <hr />       
         -->
+        
         <!-- WYSIWYG_EDITOR -->
         <?php $groups=gs_GetEditorArray(); ?>
         <label class="settingName" for="wysiwyg_editor"><?php echo $TEXT['WYSIWYG_EDITOR'] ?></label>
@@ -204,11 +208,7 @@ margin:2px; padding:0;
             <?php endforeach; ?>
         <?php endif; ?> 
         </select>
-        
-         <br /><br />
-        <input type="submit" name="save_settings" class="save_settings" value="<?php echo $TEXT['SAVE']; ?>" />
-        <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" class="save_default" value="<?php echo $TEXT['SYSTEM_DEFAULT']; ?>" />
-        
+        <hr />
         
          <!-- Default FE template -->
         <?php $selects=ds_GetTemplatesArray(); ?>
@@ -219,7 +219,8 @@ margin:2px; padding:0;
             <option value="<?php echo $value['directory'] ?>" <?php if(DEFAULT_TEMPLATE == $value['directory']) echo 'selected="selected"'; ?> ><?php echo $value['name']." (".$value['directory'].")" ?></option>
             <?php endforeach; ?>
         <?php endif; ?> 
-        </select><br />      
+        </select>
+        <hr />      
 
         <!-- Default BE theme -->
         <?php $selects=ds_GetThemesArray(); ?>
@@ -230,9 +231,12 @@ margin:2px; padding:0;
             <option value="<?php echo $value['directory'] ?>" <?php if(DEFAULT_THEME == $value['directory']) echo 'selected="selected"'; ?> ><?php echo $value['name']." (".$value['directory'].")" ?></option>
             <?php endforeach; ?>
         <?php endif; ?> 
-        </select><br />      
+        </select>
+        <hr />      
  
-
-
+        <br />
+        <input type="submit" name="save_settings" class="save_settings" value="<?php echo $TEXT['SAVE']; ?>" />
+        <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" class="save_default" value="<?php echo $TEXT['SYSTEM_DEFAULT']; ?>" />
+        
     </form>
 </div><!-- settingsGeneral -->
