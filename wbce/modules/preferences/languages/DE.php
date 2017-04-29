@@ -13,6 +13,6 @@ $module_description = 'Stellen Sie ihre persönlichen Daten ein oder passen Sie 
 
 
 // Language vars
-$TOOL['HEADER'] =      'Meine Daten';
+$TOOL['HEADER'] = 'Meine Daten';
 $TOOL['DESCRIPTION'] = 'Stellen Sie ihre persönlichen Daten ein oder passen Sie Ihr Passwort an.';
 $TOOL['PASSWORD'] = 'Eine Änderung des Passworts muss mit der Eingabe des aktuellen Passwortes bestätigt werden.';

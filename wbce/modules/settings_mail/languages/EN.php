@@ -9,10 +9,10 @@
 
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
- 
-// module description 
+
+// module description
 $module_description = 'Settings for WBCE Mailer.';
-$module_title= "Mailer Settings";
+$module_title = "Mailer Settings";
 
 // Headings and text outputs
 $MOD_SET_MAIL['HEADER'] =           $HEADING['WBMAILER_SETTINGS'];

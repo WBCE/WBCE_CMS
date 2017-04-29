@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @category        modules
  * @package         Maintainance Mode
@@ -6,13 +6,13 @@
  * @copyright       Norbert Heimsath
  * @license         WTFPL
  */
- 
+
 //no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)); 
- 
-// module description 
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+
+// module description
 $module_description = 'Maximale Ebenentiefe, Papierkorb, Frontend-Registrierung u.a.m. ';
-$module_title= "System-Einstellungen";
+$module_title = "System-Einstellungen";
 
 // Headings and text outputs
 $MOD_SET_GENERAL['HEADER'] =           'System-Einstellungen';

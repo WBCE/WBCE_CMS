@@ -15,6 +15,10 @@
  -----------------------------------------------------------------------------------------
 */
 
+// module description 
+$module_description = 'Admin-Tool to control CAPTCHA and and Advanced-Spam-Protection (ASP).';
+$module_title = "Spam Protection";
+
 // Headings and text outputs
 $MOD_CAPTCHA_CONTROL['HEADING']           = 'Captcha and ASP control';
 $MOD_CAPTCHA_CONTROL['HOWTO']             = 'Here you can control the behavior of "CAPTCHA" and "Advanced Spam Protection" (ASP). To get ASP work with a given module, this special module has to be adapted to make use of ASP.';
@@ -46,5 +50,3 @@ $MOD_CAPTCHA['VERIFICATION_INFO_RES']  = 'Fill in the result';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Fill in the text';
 $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Answer the question';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Verification failed';
-
-

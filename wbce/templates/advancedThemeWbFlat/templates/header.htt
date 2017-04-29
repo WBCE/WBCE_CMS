@@ -43,11 +43,11 @@
 
     [[Js?pos=HeadTop]]
 
-    <!-- jQuery-Scripte from original theme -->
+    <!-- jQuery-Scripte -->
     <script src="{WB_URL}/include/jquery/jquery-min.js" type="text/javascript"></script>
     <script src="{WB_URL}/include/jquery/jquery-insert.js" type="text/javascript"></script>
     <script src="{WB_URL}/include/jquery/jquery-include.js" type="text/javascript"></script>
-    <script src="{WB_URL}/include/jquery/jquery-migrate.js" type="text/javascript"></script>
+    <script src="{WB_URL}/include/jquery/jquery-migrate-min.js" type="text/javascript"></script>
 
     <!-- additional load jquery-ui -->
     <script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"></script>

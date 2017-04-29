@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @category        modules
  * @package         SEO Settings
@@ -12,7 +12,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
  
 // module description 
 $module_description = 'Darstellung und Ergebnisanzeige der Suchfunktion anpassen.';
-$module_title= "Such-Einstellungen";
+$module_title = "Such-Einstellungen";
 
 // Headings and text outputs
 $MOD_SET_GENERAL['HEADER'] =           'Einstellungen für die Website-Suche';

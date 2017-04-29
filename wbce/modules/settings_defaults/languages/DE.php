@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @category        modules
  * @package         Default Settings
@@ -10,9 +10,9 @@
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
  
-// module description 
+// module description
 $module_description = 'Sprache, Zeitzone, Datums- und Uhrzeitformat';
-$module_title= "Standardwerte";
+$module_title = "Standardwerte";
 
 // Headings and text outputs
 $MOD_SET_GENERAL['HEADER'] =           'Standardwerte';

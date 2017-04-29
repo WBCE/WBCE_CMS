@@ -8,10 +8,10 @@
  */
 
 //Module description
-$module_title="Security Settings";
+$module_title = "Security Settings";
 $module_description = 'This modul offers a few additional security settings to refine your sessin and form protection.';
 
-$SFS['HEADER'] =      'Security settings for session and forms.';
+$SFS['HEADER'] = 'Security settings for session and forms.';
 $SFS['DESCRIPTION'] = 'You can increase your security settings for your forms (CSRF protection)';
 
 // Backend variables
@@ -50,5 +50,3 @@ $SFS['TIMEOUT_ERR'] = "Timeout not Saved : Only 0-9 and between 1 to 6 character
 $SFS['USEFP'] = 'Fingerprinting';
 $SFS['USEFP_TTIP'] = '<em>Help</em>Require OS and browser for every TAN-validation additionally to the IP-address.';
 $SFS['USEFP_Err'] = "";
-
-

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @category        modules
  * @package         SEO Settings
@@ -12,6 +12,6 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
  
 // module description 
 $module_description = 'Zugriffsrechte, Datei-/Ordnernamen, hochladbare Dateien u.a.m.';
-$module_title= "Server-Einstellungen";
+$module_title = "Server-Einstellungen";
 
 
