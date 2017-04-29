@@ -54,9 +54,11 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
         
         <input type="submit" name="save_settings" class="save_settings" value="<?php echo $TEXT['SAVE']; ?>" />
         <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" class="save_default" value="<?php echo $TEXT['SYSTEM_DEFAULT']; ?>" />
-        <br />  <br />  
-        <hr />
+         <br />
         
+        <br />
+        
+        <hr />
         
         <!-- Language -->
         <?php $selects=ds_GetLanguagesArray(); ?>
@@ -67,7 +69,8 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
             <option value="<?php echo $value['directory'] ?>" <?php if(DEFAULT_LANGUAGE == $value['directory']) echo 'selected="selected"'; ?> ><?php echo $value['name']." (".$value['directory'].")" ?></option>
             <?php endforeach; ?>
         <?php endif; ?> 
-        </select><br /> 
+        </select>
+        <hr />
 
         <!-- Timezones -->
         <?php $selects=ds_GetTimezonesArray(); ?>
@@ -78,7 +81,8 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
             <option value="<?php echo $key ?>" <?php if(DEFAULT_TIMEZONE == $key*60*60) echo 'selected="selected"'; ?> ><?php echo $value ?></option>
             <?php endforeach; ?>
         <?php endif; ?> 
-        </select><br /> 
+        </select>
+        <hr />
 
         <!-- Dateformats -->
         <?php $selects=ds_GetDateFormatArray(); ?>
@@ -90,7 +94,8 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
             <option value="<?php echo $key ?>" <?php if(DEFAULT_DATE_FORMAT == $key) echo 'selected="selected"'; ?> ><?php echo $value ?></option>
             <?php endforeach; ?>
         <?php endif; ?> 
-        </select><br /> 
+        </select>
+        <hr />
 
         <!-- timeformats -->
         <?php $selects=ds_GetTimeFormatArray(); ?>
@@ -102,12 +107,10 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
             <option value="<?php echo $key ?>" <?php if(DEFAULT_TIME_FORMAT == $key) echo 'selected="selected"'; ?> ><?php echo $value ?></option>
             <?php endforeach; ?>
         <?php endif; ?> 
-        </select><br /> 
-       
+        </select>
+        <hr />
         
-   
-        
-         <hr /><br />
+        <br />
         <input type="submit" name="save_settings" class="save_settings" value="<?php echo $TEXT['SAVE']; ?>" />
         <input type="submit" onclick="return confirm('<?php echo $TEXT['ARE_YOU_SURE']?>'); " name="save_default" class="save_default" value="<?php echo $TEXT['SYSTEM_DEFAULT']; ?>" />
         

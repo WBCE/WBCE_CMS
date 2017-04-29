@@ -227,8 +227,8 @@ if($saveSettings) {
     $value=$admin->get_post("default_template");
     if ($value){  
         if (ds_TemplatePossible($value)) {
-            $setError.=Settings::Set ("DEFAULT_TEMPLATE", $value);
-            $setError.=Settings::Set ("WB_DEFAULT_TEMPLATE", $value);             
+            $setError.=Settings::Set ("default_template", $value);
+            $setError.=Settings::Set ("wb_default_template", $value);             
         }              
     }   
     
@@ -236,8 +236,8 @@ if($saveSettings) {
     $value=$admin->get_post("default_theme");
     if ($value){ 
         if (ds_ThemePossible($value)) {
-            $setError.=Settings::Set ("DEFAULT_THEME", $value);
-            $setError.=Settings::Set ("WB_DEFAULT_THEME", $value);             
+            $setError.=Settings::Set ("default_theme", $value);
+            $setError.=Settings::Set ("wb_default_theme", $value);             
         }              
     }    
 
@@ -286,8 +286,8 @@ if($saveSettings) {
     $setError.=Settings::Set ("frontend_login", false);
     $setError.=Settings::Set ("wb_frontend_login", false);
 
-    $setError.=Settings::Set ("redirect_timer", "500");
-    $setError.=Settings::Set ("wb_redirect_timer", "500");
+    $setError.=Settings::Set ("redirect_timer", "1500");
+    $setError.=Settings::Set ("wb_redirect_timer", "1500");
 
     $setError.=Settings::Set ("frontend_signup", false);
     $setError.=Settings::Set ("wb_frontend_signup", false);
@@ -386,22 +386,6 @@ function gs_EditorPossible($AddonId){
     else                        return false;
 }
 
-function ds_GetLanguagesArray(){
-    
-    global $database;
-    $ret = array();
-    
-    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'language' ORDER BY directory");
-    if($result->numRows() > 0) {
-        while($addon = $result->fetchRow())
-        {
-            $ret[]=$addon;   
-        }
-        return $ret;
-    } 
-    return false;
-}
-
 function ds_GetTemplatesArray(){
     
     global $database;
@@ -418,6 +402,19 @@ function ds_GetTemplatesArray(){
     return false;
 }
 
+function ds_TemplatePossible($Name=""){
+
+    global $database;
+
+    if (empty ($Name)) return false;
+    if (!preg_match("/^[a-z0-9\-\_]+$/is",$Name)) return false;
+    
+    $sql="SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function != 'theme' AND directory ='$Name'";
+
+    $results = $database->query($sql);
+    if($results->numRows() > 0) return true;
+    else                        return false;
+}
 
 function ds_GetThemesArray(){
     
@@ -425,6 +422,36 @@ function ds_GetThemesArray(){
     $ret = array();
     
     $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function = 'theme' ORDER BY name");
+    if($result->numRows() > 0) {
+        while($addon = $result->fetchRow())
+        {
+            $ret[]=$addon;   
+        }
+        return $ret;
+    } 
+    return false;
+}
+
+function ds_ThemePossible($Name=""){
+
+    global $database;
+
+    if (empty ($Name)) return false;
+    if (!preg_match("/^[a-z0-9\-\_]+$/is",$Name)) return false;
+    
+    $sql="SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function = 'theme' AND directory ='$Name'";
+
+    $results = $database->query($sql);
+    if($results->numRows() > 0) return true;
+    else                        return false;
+}
+
+function ds_GetLanguagesArray(){
+    
+    global $database;
+    $ret = array();
+    
+    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'language' ORDER BY directory");
     if($result->numRows() > 0) {
         while($addon = $result->fetchRow())
         {
