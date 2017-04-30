@@ -51,6 +51,7 @@ if ($showoptions) {
 
 // Get Authors
 $query_users = $database->query("SELECT * FROM ".TABLE_PREFIX."users WHERE groups_id LIKE '".$authorsgroup."'");
+echo $authorsgroup;
 if ($query_users->numRows() > 0) {
 
 	if ($set_author) {

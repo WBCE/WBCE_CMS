@@ -11,6 +11,9 @@ if(!defined('WB_URL')) {
 function makemetadescription ($thestring) {
 	
 	$the_description = stripslashes($thestring);
+	$wsp   = "\\x00-\\x20";    //all white-spaces and control chars
+	$the_description = preg_replace( "/[".$wsp."]+/" , ' ', $the_description );
+	
 	$the_description = str_replace('"', ' ', $the_description); 
 	$the_description = str_replace("'", ' ', $the_description); 
 	$the_description = str_replace('\'', ' ', $the_description); 
@@ -23,6 +26,7 @@ function makemetadescription ($thestring) {
 		}
 	}
 	//$the_description = ' '.$the_description;
+	$the_description = trim(str_replace('   ',' ',$the_description));
 	$the_description = trim(str_replace('  ',' ',$the_description));
 
 	return (' '.$the_description);

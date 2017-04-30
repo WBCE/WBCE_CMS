@@ -8,7 +8,7 @@ if(!defined('WB_URL')) {
 
 function topics_localtime() {
 	//return time();
-	return gmmktime ( (int) gmdate("H"), (int) gmdate("i"), (int) gmdate("s"), (int) gmdate("n"), (int) gmdate("j"), (int) gmdate("Y")); // + DEFAULT_TIMEZONE;
+	return gmmktime ( (int) gmdate("H"), (int) gmdate("i"), (int) gmdate("s"), (int) gmdate("n"), (int) gmdate("j"), (int) gmdate("Y")) + DEFAULT_TIMEZONE;
 }
 
 function topics_update_comments_count ($topic_id) {
@@ -82,9 +82,10 @@ function users_lowest_groupid() {
 	return 0;
 }
 
-function topics_archive_file ($filename, $t_id, $s_id, $p_id, $create_topics_accessfiles = 0)
-{
+function topics_archive_file ($filename, $t_id, $s_id, $p_id, $create_topics_accessfiles = 0) {
+	
 	if ($create_topics_accessfiles != 1) {return 0;}
+	
 	
 	//global $topics_directory;
 	//global $topics_directory_depth;
@@ -107,8 +108,9 @@ require(WB_PATH."/index.php");
 	$handle = fopen($filename, 'w');
 	fwrite($handle, $content);
 	fclose($handle);
-
+	
 	//echo '<p>Auto-archived: '.$link.'</p>';
+	
 }
 
 function topics_frontendfooter () {

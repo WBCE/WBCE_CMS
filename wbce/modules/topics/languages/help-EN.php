@@ -24,7 +24,7 @@
 // Help file in English
 ?>
 <p>English Help</p>
-<p>(Sorry, the english help is not completed yet)</p>
+<p style="color:red;"><b>(Sorry, the english help is not completed yet)</b></p>
 <p>Topics ist based on the News-Module, but made for full pages, like articles,
   stories, tutorials. It has search engine optimization, better commenting and
   support of pictures.</p>
@@ -118,7 +118,7 @@ else { page_content(2); }</p>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td colspan="2"><h4>Overview-Page AND Single Topic Page</h4></td>
+    <td colspan="2"><h4>Overview-Page AND  Topic Page</h4></td>
   </tr>
   <tr>
     <td>[TOPIC_SHORT]</td>
@@ -131,6 +131,23 @@ else { page_content(2); }</p>
   <tr>
     <td>{PICTURE}</td>
     <td>the full image tag</td>
+  </tr>
+  <tr>
+    <td>[THUMB]</td>
+    <td>the <strong>full</strong> url of the picture; &quot;&lt;img src=&quot;http://www......
+      /media/topics-pictures/thumbs/thepic.jpg&quot; class=&quot;&quot;&gt;</td>
+  </tr>
+  <tr>
+    <td>{THUMB}</td>
+    <td>the <strong>full</strong> url + link: &lt;a href=&quot;...&quot;&gt;&lt;img src=&quot;...&quot; /&gt;&lt;/a&gt;</td>
+  </tr>
+  <tr>
+    <td>[ADDITIONAL_PICTURES]</td>
+    <td>A small gallery</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
   <tr>
     <td>[ACTIVE]</td>

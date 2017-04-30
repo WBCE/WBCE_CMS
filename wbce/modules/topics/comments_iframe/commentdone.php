@@ -67,13 +67,30 @@ if($query_settings->numRows() > 0) {
 	$setting_comments_loop = $settings_fetch['comments_loop']; //} else {$section_id = 0;}
 	
 	//various values
-	$use_commenting_settings = 0;
-	if ($settings_fetch['various_values'] != '') {
-		$vv = explode(',',$settings_fetch['various_values']);		
-		if (count($vv) > 3) {$use_commenting_settings = (int) $vv[3];}
-	}
-	if ($use_commenting_settings > 0) { $commenting = $settings_fetch['commenting']; }
+		$use_commenting_settings = 0;
+		if ($settings_fetch['various_values'] != '') {
+			$vv = explode(',',$settings_fetch['various_values']);		
+			$use_commenting_settings = (int) $vv[3];
+			$emailsettings = (int) $vv[4]; if ($emailsettings < 0) {$emailsettings = 2;} //Wie bisher: Pflichtfeld
+		}
+		
+					
+
+		$query_topic = $database->query("SELECT link, commenting, posted_by,title  FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id = '$topic_id'");
+		if($query_topic->numRows() != 1) { die('no topic!'); }
+		$topicfetch = $query_topic->fetchRow();		
+		$link = $topicfetch['link'];		
+		$commenting = (int) $topicfetch['commenting'];
+		$topicauthornr = $topicfetch['posted_by'];
+		
+	
+		
+		if( $commenting < -1) {$use_commenting_settings = 1;} //Defaultwert verenden
+		//Wenn: angekreuzt: Individielle EInstellungen ignorieren, dann die Settings-Einstellungen verwenden.
+		if ($use_commenting_settings == 1) { $commenting = (int) $settings_fetch['commenting'];}
+
 }
+
 
 if ($commenting < 1 ) {exit ('</body></html>');}
 

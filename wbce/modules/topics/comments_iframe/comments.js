@@ -48,6 +48,11 @@ function validateForm() {
 
 }
 
+function doresize() {
+	h = document.getElementById('wraptable').offsetHeight;
+	if (h > 300 && h < 800) {parent.resizeframe(h); }
+}
+
 function dostoreit(k,v) {
  	console.log("Speichern: k:" + k + ' v: ' + v);
 	localStorage.setItem(k, v);

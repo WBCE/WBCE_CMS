@@ -132,7 +132,7 @@ if ( strpos($setting_topics_loop, '[USER_') !== false ) {
 
 
 if ($use_commenting_settings == 1) {$commenting = $settings_fetch['commenting'];}
-if ($commenting < 0) {$use_commenting = -1;}
+//if ($commenting < 0) {$use_commenting = -1;} //Outdated 2016
 
 
 	
@@ -200,8 +200,14 @@ if($num_topics > 0) {
 		}		
 		//----------------------------------------------------------------------------------
 		
-		$hascontent = $topic['hascontent'];				
-		if($hascontent < 1) { $titleplus = $title; $readmorelink = ''; $topic_link='#';} else { $titleplus = '<a href="'.$topic_link.'">'.$title.'</a>';  $readmorelink = '<div class="tp_readmore"><a href="'.$topic_link.'">'.$TEXT['READ_MORE'].'</a></div>';}
+		$hascontent = $topic['hascontent'];
+						
+		if($hascontent < 1) { 
+			$titleplus = $title; $readmorelink = ''; $href = ' '; //$topic_link='#'; 
+		} else { 
+			$titleplus = '<a href="'.$topic_link.'">'.$title.'</a>';  $readmorelink = '<div class="tp_readmore"><a href="'.$topic_link.'">'.$TEXT['READ_MORE'].'</a></div>';
+			$href = ' href="'.$topic_link.'" ';
+		}
 		
 		
 		if ($makejumplist > 0) {		
@@ -213,15 +219,16 @@ if($num_topics > 0) {
 				
 		//Handle Pictures and Thumbs:				
 		$picture = $topic['picture'];
-		$thumb = $picture;
+		//$thumb = $picture;
 		$picture_tag = '';
 		$thumb_tag = '';
 		
-		if ( $pictureplaceholders == true AND $picture != '') {			
+		if ( $pictureplaceholders == true AND $picture != '') {
+			$picture .= $refreshstring;			
 			if (substr($picture, 0, 7) == 'http://') {
 				//external file:
 				$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture.'" alt="" />';
-				$thumb_tag = '<img class="tp_thumb tp_thumb'.$page_id.'" src="'.$picture.'" alt="" />';
+				$thumb_tag = '<img style="max-width:'.$w_thumb.'px;" class="tp_thumb_external tp_thumb tp_thumb'.$page_id.'" src="'.$picture.'" alt="" />';
 			} else {
 				if ($picture_dir != '') {			
 					$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture_dir.'/'.$picture.'" alt="" />';
@@ -236,44 +243,37 @@ if($num_topics > 0) {
 			if ($hascontent > 0) {$thumb_tag = '<a href="'.$topic_link.'">'.$thumb_tag.'</a>';}		
 		}
 		
+		$topic_short = '';
+		if ($short_textareaheight > 0) { $topic_short=$topic['content_short']; } 
+		if ($short_textareaheight < -10) { $topic_short=nl2br($topic['content_short']); } 
 		
-		if ($short_textareaheight > 0) {		
-			$topic_short=$topic['content_short'];
-			if( $topics_use_plain_text > 0) {$topic_short = nl2br($topic_short);}
-			$wb->preprocess($topic_short);
-		} else {
-			$topic_short = '';
-		}
-			
+		$topic_long = '';	
 		if ($get_long_content == 1) {		
 			$topic_long = $topic['content_long'];
-			if( $topics_use_plain_text > 0) {$topic_long = nl2br($topic_long);}
-			$wb->preprocess($topic_long);
-		} else {
-			$topic_long = '';
-		}
+			if ($long_textareaheight < -10) { $topic_long=nl2br($topic_long); } 
+		} 
 		
 		//Check if the first long content should be displayed
 		$topic_long_first = '';
 		if ($counter == 1 AND $showoffset == 0 AND $topic_long == '' AND strpos($setting_topics_loop, '[CONTENT_LONG_FIRST]') !== false ) {
 			$topic_long_first = $topic['content_long'];
-			if( $topics_use_plain_text > 0) {$topic_long_first = nl2br($topic_long_first);}
-			$wb->preprocess($topic_long_first);
+			if ($long_textareaheight < -10) { $topic_long_first=nl2br($topic_long); } 
 			$readmorelink = '';					
 		}
 		
 		
-	
-		if ($extra_textareaheight > 0 AND $get_extra_content == 1) {
+		$topic_extra = '';
+		if ($get_extra_content == 1) {
 			$topic_extra = $topic['content_extra'];
-			if( $topics_use_plain_text > 0) {$topic_extra = nl2br($topic_extra);}
-			$wb->preprocess($topic_extra);
+			if ($extra_textareaheight < -10) { $topic_extra=nl2br($topic_extra); }
+
 		} else {
-			$topic_extra = '';
+			
 		}
 		
 		$comments_count = 0;
 		$commentsclass = 0;
+		$commentsclass_class = '';
 		if ($use_commenting >= 0) {
 			$dorefresch = 1;
 			if(isset($topic['comments_count'])) {
@@ -290,16 +290,22 @@ if($num_topics > 0) {
 				$database->query($theq);		
 			}
 		
-			//Check, if there are placeholders for Comments:
-			if ( strpos($setting_topics_loop, '[COMMENTS') !== false) { 			
-				if ($comments_count > 0) {$commentsclass = 1;
-					if ($comments_count > 2) {$commentsclass = 2;
-						if ($comments_count > 5) {$commentsclass = 3;
-							if ($comments_count > 8) {$commentsclass = 4;}
-						}
+			$commentsclass_class = ' ';
+			if ($comments_count > 0) {
+				$commentsclass = topics_commentsclass ($comments_count);
+				$commentsclass_class = ' mod_topic_comments'.$commentsclass;
+			}
+			/*			
+			if ($comments_count > 0) {$commentsclass = 1;
+				if ($comments_count > 2) {$commentsclass = 2;
+					if ($comments_count > 5) {$commentsclass = 3;
+						if ($comments_count > 8) {$commentsclass = 4;}
 					}
-				}						
-			} 	
+				}
+				$commentsclass_class = ' mod_topic_comments'.$commentsclass;
+			}
+			*/
+				
 		}	//END: if ($use_commenting < 0)	
 		
 		
@@ -313,7 +319,7 @@ if($num_topics > 0) {
 			$pos = strpos ($authors,','.$user_id.',');
 			if ($pos !== false){$makelisteditlink = true;}	
 		}
-		if ($makelisteditlink == 1) { $edit_link = '<div class="mod_topic_edit"><a class="tp_editlink" target="_blank" href="'.WB_URL.'/modules/'.$mod_dir.'/modify_topic.php?page_id='.$topic['page_id'].$paramdelimiter.'section_id='.$topic['section_id'].$paramdelimiter.'topic_id='.$t_id.$paramdelimiter.'fredit='.$fredit.'">Edit</a></div>'; }
+		if ($makelisteditlink == 1) { $edit_link = '<a class="tp_editlink" target="_blank" href="'.WB_URL.'/modules/'.$mod_dir.'/modify_topic.php?page_id='.$topic['page_id'].$paramdelimiter.'section_id='.$topic['section_id'].$paramdelimiter.'topic_id='.$t_id.$paramdelimiter.'fredit='.$fredit.'"></a>'; }
 
 
 		$user_changed_info = '';
@@ -326,10 +332,16 @@ if($num_topics > 0) {
 				$user_changed_info .= '</span>';
 			}
 		}
+		
+		$count2 = $counter % 2; if ($count2 == 0) {$count2 = 2;}
+		$count12 = $counter % 12; if ($count12 == 0) {$count12 = 12;}
+		$classes = $mod_dir.'_loop mod_topic_loop mod_topic_active'.$active.$commentsclass_class.' tpcount-'.$counter.' tpcount2-'.$count2.' tpcount12-'.$count12; 
+		
+		
 					
 		// Replace vars with values
-		$vars = array('[TOPIC_ID]', '[TITLE]', '{TITLE}', '[SHORT_DESCRIPTION]', '[TOPIC_SHORT]', '[LINK]', '[MODI_DATE]', '[MODI_TIME]', '[PUBL_DATE]', '[PUBL_TIME]', '[READ_MORE]', '[ACTIVE]', '[PICTURE_DIR]', '[PICTURE]', '{PICTURE}', '{THUMB}', '[COUNTER]', '[COUNTER2]', '[COUNTER3]','[EDITLINK]','[XTRA1]', '[XTRA2]', '[XTRA3]', '[COMMENTSCOUNT]', '[COMMENTSCLASS]');
-		$values = array($t_id, $title, $titleplus, $topic['short_description'], $topic_short, $topic_link, $posted_modi_date, $posted_modi_time, $posted_publ_date, $posted_publ_time, $readmorelink, $active, $picture_dir, $picture, $picture_tag, $thumb_tag, $counter, ($counter % 2), ($counter % 3), $edit_link, $topic['txtr1'], $topic['txtr2'], $topic['txtr3'], $comments_count, $commentsclass);
+		$vars = array('[TOPIC_ID]', '[TITLE]', '{TITLE}', '[SHORT_DESCRIPTION]', '[TOPIC_SHORT]', '[LINK]', '[MODI_DATE]', '[MODI_TIME]', '[PUBL_DATE]', '[PUBL_TIME]', '[READ_MORE]', '[ACTIVE]', '[PICTURE_DIR]', '[PICTURE]', '{PICTURE}', '{THUMB}', '[COUNTER]', '[COUNTER2]','[EDITLINK]','[XTRA1]', '[XTRA2]', '[XTRA3]', '[COMMENTSCOUNT]', '[COMMENTSCLASS]', '[CLASSES]', '[HREF]');
+		$values = array($t_id, $title, $titleplus, $topic['short_description'], $topic_short, $topic_link, $posted_modi_date, $posted_modi_time, $posted_publ_date, $posted_publ_time, $readmorelink, $active, $picture_dir, $picture, $picture_tag, $thumb_tag, $counter, ($counter % 2), $edit_link, $topic['txtr1'], $topic['txtr2'], $topic['txtr3'], $comments_count, $commentsclass, $classes, $href);
 		$listrow = str_replace($vars, $values, $setting_topics_loop);
 		
 		if (isset($users)) {	

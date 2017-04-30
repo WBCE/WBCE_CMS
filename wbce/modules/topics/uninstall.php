@@ -32,6 +32,9 @@ $tablename = $mod_dir;
 include(WB_PATH.'/modules/'.$mod_dir.'/defaults/module_settings.default.php');
 if (file_exists(WB_PATH.'/modules/'.$mod_dir.'/module_settings.php')) { include(WB_PATH.'/modules/'.$mod_dir.'/module_settings.php'); }
 
+$database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_rss_count`");
+$database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_rss_statistic`");
+
 $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_obsolete`");
 $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_comments_obsolete`");
 $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_settings_obsolete`");

@@ -1,10 +1,18 @@
 innerh = 0.9*window.innerHeight;
 innerw = 0.8*window.innerWidth;
-if (innerh < 600) innerh = 600;
-if (innerw < 900) innerw = 900;
+//if (innerh < 500) innerh = 500;
+//if (innerw < 768) innerw = 768;
 
-function changepic(wie) {
-	alert(wie);
+var lastopentab = 0;
+
+$( document ).ready(function() {
+	$( "body" ).append( '<div id="topics_chooser_overlay"><div class="topicpic_preview_close"><a href="javascript:choosethispicture(0);"><img src="img/closebox.png" alt="close" /></a></div><div id="topics_picturechooser"></div></div>');
+
+	document.getElementById('topics_picturechooser').style.height = innerh+"px";
+	document.getElementById('topics_chooser_overlay').style.width = innerw+"px";	
+});	
+
+function changepic(wie) {	
 	if (wie == 1) {
 		var bildname = document.modify.picture.value;		
 		if (bildname.substr(0,7) != 'http://') {
@@ -164,25 +172,28 @@ function selectRadioButtons (element,wert) {
 	}	
 }
 
+
+
+//-----------------------------------------------------------------------------------
+//Select Pictures
 //-----------------------------------------------------------------------------------
 function openpicturepreviews() {	
-	closepictureupload ();
-	//document.getElementById('whattodo').style.display = "block";
-	document.getElementById('picturechooser').style.display = "block";
-	document.getElementById('picturechooser').style.height = innerh+"px";
-	document.getElementById('picturechooser').style.width = innerw+"px";
-	document.getElementById('picturechooser').innerHTML = "<h2>wird geladen</h2>";	
-	getpicturepreviews();	
+	closepictureupload ();	
+	getpicturepreviews();
+	$('#topics_chooser_overlay').addClass('visible');
+		
 }
 
 function closepicturepreviews() {
-	document.getElementById('choosertable').style.display = "none";
+	$('#topics_chooser_overlay').removeClass('visible');	
 }
 
 
 //Ajax Script based on http://www.degraeve.com/reference/simple-ajax-example.php
 
 function getpicturepreviews() {
+
+//old AJAX, coud be replaced...
     var xmlHttpReq = false;
     var self = this;
     // Mozilla/Safari
@@ -207,66 +218,35 @@ function getpicturepreviews() {
 
 function getresults() {   
 	qstr = 'section_id=' + section_id+'&page_id='+page_id; // NOTE: no '?' before querystring
-	//alert(qstr);
     return qstr;
 }
 
-function showpicturepreviews(str){
-    //document.getElementById("suggestbox").innerHTML = '<div class="ajax">'+str+'</div>';
-	document.getElementById('picturechooser').innerHTML = str;
-	document.getElementById('choosertable').style.display = "block";
-	document.getElementById('choosertable').style.width = innerw+"px";
-	//document.getElementById('choosertable').style.height = innerh+"px";
-	
-}
-
-
-function OBSOLETE_choosethispicture(picfile) {
-
-	modify = document.getElementById('todocheckbox').checked;	
-	document.getElementById('todocheckbox').checked = false;
-	
-	if (modify) {		
-		document.getElementById('picturechooser').innerHTML = '<iframe src="picupload/uploadview.php?section_id='+section_id+'&page_id='+page_id+'&fn='+picfile+'" frameborder="0" class="" style="width:'+(innerw-30)+'px; height:'+(innerh-50)+'px;" scrolling="auto"></iframe>';	
-		document.getElementById('whattodo').style.display = "none";
-	} else {	
-		document.images['topicpic'].style.display = "block";
-		document.getElementById('choosertable').style.display = "none";
-		if (picfile!=0) {
-			document.images['topicpic'].src = topicpicloc + picfile +'?time=' + new Date().getTime();	
-			document.getElementById('picture').value=picfile;
-		}
-	}
+function showpicturepreviews(str){	
+	document.getElementById('topics_picturechooser').innerHTML = str;	
 }
 
 
 
 function choosethispicture(picfile) {
 	document.images['topicpic'].style.display = "block";
-	document.getElementById('choosertable').style.display = "none";
+	$('#topics_chooser_overlay').removeClass('visible');
+	
 	if (picfile!=0) {
 		document.images['topicpic'].src = topicpicloc + picfile +'?time=' + new Date().getTime();	
 		document.getElementById('picture').value=picfile;
+	} else {
+		document.images['topicpic'].src = document.images['topicpic'].src +'?time=' + new Date().getTime();		
 	}
 }
 
 function additionalpicture(topic_id, picpath) {
-	alert(picpath);
-	pics = document.getElementById('additionalpictures').innerHTML;
-	//pics += '<a href="javascript:openpicturemodify(\'topic'.$topic_id.'/'.$pic.'\');"><img src="'.$morepics_url.$pic.'" title="'.$pic.'" alt="'.$pic.'" /></a>
-	
+	pics = document.getElementById('additionalpictures').innerHTML;	
 	pics += '<img src="'+picpath+'" />';
 	document.getElementById('additionalpictures').innerHTML = pics;
-	
-	
-alert(picfile);
 }
 
 
-function copythistopic() {
-	document.getElementById('copytopic').value = 1;
-	document.modify.submit();
-}
+
 
 function openpicturemodify(picfile) {
 	closepictureupload ()
@@ -274,41 +254,72 @@ function openpicturemodify(picfile) {
 	if (!picfile) {
 		picfile = document.modify.picture.value;		
 		if (picfile.substr(0,7) == 'http://') { alert('not possible'); return 0; }
-	}
-	
-	//openpicturepreviews();
-	document.getElementById('choosertable').style.display = "block";
-	//document.getElementById('picturechooser').style.display = "block";
-	document.getElementById('picturechooser').style.height = innerh+"px";
-	document.getElementById('picturechooser').style.width = innerw+"px";
-	
-	//getpicturepreviews();
-	//document.getElementById('picturechooser').innerHTML = 'HALLO';
-	document.getElementById('picturechooser').innerHTML = '<iframe src="picupload/uploadview.php?section_id='+section_id+'&page_id='+page_id+'&topic_id='+topic_id+'&fn='+picfile+'" frameborder="0" class="" XXstyle="width:'+(innerw-00)+'px; height:'+(innerh-00)+'px;" scrolling="no"></iframe>';
-		
-	//alert(picfile);
+	}	
+	document.getElementById('topics_picturechooser').innerHTML = '<iframe src="picupload/uploadview.php?section_id='+section_id+'&page_id='+page_id+'&topic_id='+topic_id+'&fn='+picfile+'" frameborder="0" class="" XXstyle="width:'+(innerw-00)+'px; height:'+(innerh-00)+'px;" scrolling="no"></iframe>';
+	$('#topics_chooser_overlay').addClass('visible');	
 }
 
 
-function OBSOLETE_showuploader() {
-	document.getElementById('picturechooser').innerHTML = '<iframe src="picupload/uploader.php?section_id='+section_id+'&page_id='+page_id+'" frameborder="0" class="" style="width:'+(innerw-30)+'px; height:'+(innerh-50)+'px;" scrolling="auto"></iframe>';
+
+
+//----------------------------------------------------------------
+
+function copythistopic() {
+	document.getElementById('copytopic').value = 1;
+	document.modify.submit();
 }
 
 function showtabarea(nr) {
+
+	if (nr==0) {
+		if (localStorage['topics_lastopentab'+section_id]) {
+			lastopentab = parseInt( localStorage['topics_lastopentab'+section_id]); 
+			if (lastopentab > 0) {nr = lastopentab;}
+		} 
+	}
+	if (nr==0) nr=1;
+	
 	i=0;
 	while (i < 7) {
 		i++;
+		nar = '#linktabarea'+i;
+		
 		if (i == nr) {			
 			document.getElementById('tabarea'+i).style.display = "block";
-			document.getElementById('linktabarea'+i).style.borderBottom = "0";
-			document.getElementById('linktabarea'+i).style.backgroundColor = "#fff";			
+			//document.getElementById('linktabarea'+i).style.borderBottom = "0";
+			//document.getElementById('linktabarea'+i).style.backgroundColor = "#fff";
+			$(nar).addClass( "activeTab" );
+								
 		} else {
 		
 			document.getElementById('tabarea'+i).style.display = "none";
 			if (document.getElementById('linktabarea'+i)) {
-				document.getElementById('linktabarea'+i).style.borderBottom = "1px solid #666";			
-				document.getElementById('linktabarea'+i).style.backgroundColor = "transparent";
+				
 			}
+			$(nar).removeClass( "activeTab" );
 		}
-	}
+	}	
+	
+	localStorage.setItem('topics_lastopentab'+section_id, nr);
+	$('.settingsform input, .settingsform textarea').css({"background-color": "none"});
+	
+	//window.localStorage.clear(); //try that
 }
+
+function showtabareajQuery(nr) {
+	//Funktioniert leider nicht
+	n = '#tabarea'+lastopentab;
+	//$('.tabarea').css( "z-index", 1000 );
+	$(n).css( "z-index", 1000 );
+	$(n).fadeOut();
+	
+	n = '#tabarea'+nr;
+	$(n).css( "z-index", 2000 );
+	$(n).fadeIn();
+		document.getElementById('tabarea'+nr).style.display = "block";
+	console.log(n);
+	
+	lastopentab = nr;
+}
+
+
