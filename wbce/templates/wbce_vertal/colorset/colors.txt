@@ -1,0 +1,27 @@
+body {color:#[f0];}
+h1 {color: #[f1];}
+h2 {color: #[f2];}
+h3  {color: #[f3];}
+h4, h5, h6  {color: #[f4];}
+a { color: #[f5];}
+a:hover {color: #[f6]; } 
+
+#nav a{ color: #[f5];}
+#nav a.menu-current, #nav a.menu-parent, #nav a:hover { color: #[f6] ! important;}
+
+hr{
+	border: none; border-bottom:dotted #[f4] 1px;
+
+}
+
+
+address { border-left: 6px solid #[f3]; }
+
+
+blockquote {	
+	border: 1px solid #[f3]; 
+}
+
+input , select, textarea, pre, code, blockquote {
+	border: 1px solid #[f1]; background: #eee; color: #[f2];
+}
