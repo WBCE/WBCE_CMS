@@ -1,14 +1,14 @@
-﻿/*
+/*
 Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
+For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'wbdroplets', 'fr', {
 	wbdroplets: {
-		toolbar: 'WB-Droplets einfügen',
-		menu: 'Droplet-Eigenschaften',
-		title: 'WB-Droplets',
-		name: 'Droplet Name',
-		errorName: 'Bitte geben Sie den Namen des Droplets ein'
+		insBtn: 'Insérer WBCE Droplets',
+		menu: 'Droplet Propriétés',
+		title: 'WBCE Droplets',
+		name: 'Droplet nom',
+		errorName: 'Sil vous plaît entrez le nom de Droplets'
 	},
-	editDroplet: 'Droplet bearbeiten'
+	editDroplet: 'Modifier Droplet'
 });
