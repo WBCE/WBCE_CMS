@@ -559,7 +559,7 @@ blockquote, q {
   div#sidebararea.closedsidebar + div#mainarea > div#contentarea {
     max-width: 1069px;
     width: auto;
-    transistion: 1s;
+    transition: 1s;
   }
 }
 /* ::grid-media-queries-low-screen-switch:: special media query for screens with lower height */
