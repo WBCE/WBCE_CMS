@@ -1,10 +1,7 @@
   if ( typeof jQuery != 'undefined' ) {
     jQuery(document).ready(function($)
     {
-      if ( typeof $.tablesorter == 'undefined' ) {
-		alert('tablesorter not loaded!');
-	  }
-	  else {
+      if ( typeof $.tablesorter != 'undefined' ) {
         $("#myTable").tablesorter({
             headers: {
               0: {sorter: false},
