@@ -17,7 +17,7 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 	
 // Set the language information
 $language_code = 'DE';
-$language_name = 'Germany';
+$language_name = 'German';
 $language_version = '3.1';
 $language_platform = '2.9';
 $language_author = 'Stefan Braunewell, Matthias Gallas, Florian Meerwinck';
