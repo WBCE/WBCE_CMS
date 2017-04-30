@@ -42,6 +42,6 @@ $(document).ready(function()
 	    return this.hostname && this.hostname == location.hostname;
 	  }).addClass("internal");
 
-	$('form').attr('autocomplete', 'off');
+	//$('form').attr('autocomplete', 'off');
 
 });
