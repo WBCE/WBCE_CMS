@@ -8,15 +8,16 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.8
- * @lastmodified    november 26, 2015
+ * @version         0.10.0
+ * @lastmodified    april 10, 2017
  *
  */
+
 
 $module_directory = 'miniform';
 $module_name = 'MiniForm';
 $module_function = 'page';
-$module_version = '0.8';
+$module_version = '0.10.0';
 $module_platform = '2.8.x';
 $module_author = 'Ruud';
 $module_license = 'GNU General Public License';
