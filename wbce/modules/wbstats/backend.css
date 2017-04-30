@@ -7,7 +7,7 @@
     padding: 0;
 }
 .sysmenu a {
-	background-color: #28609B;
+	background-color: #303641;
 	padding: 10px !important; 
 	color: #fff;
 	text-decoration: none;
@@ -40,7 +40,7 @@
 	width: 100%;
 }
 #container h3 {
-	background-color:#28609B;
+	background-color:#303641;
 	color:#FFFFFF;
 	padding:5px;
 	margin:0px;
@@ -59,7 +59,7 @@
 }
 
 #container td h4 {
-	background-color:#6699cc;
+	background-color:#464E5E;
 	color:#fff;
 	padding:1px 5px;
 	margin:0px;
@@ -68,8 +68,7 @@
 }
 
 #container td, #container th {
-	font-size:11px;
-	color: #111;
+	vertical-align: bottom;
 }
 #container pre {
 	background: #eee;
@@ -82,7 +81,7 @@
 	min-height: 295px;
 }
 .h265{
-	min-height: 305px;
+	min-height: 370px;
 }
 .h600{
 	min-height: 610px;
@@ -101,7 +100,7 @@
 	float:left;
 	z-index:1;
 	background-color:#e7e7e7;
-	border: 0px solid #28609B;
+	border: 0px solid #303641;
 	padding: 15px;
 }
 
@@ -111,7 +110,7 @@
 	width:98%;
 	z-index:1;
 	background-color:#e7e7e7;
-	border: 0px solid #28609B;
+	border: 0px solid #303641;
 	padding: 15px;
 	height: 295px;
 }
@@ -120,20 +119,20 @@
 	margin-right:1px;
 	margin-left:1px;
 	z-index:1;
-	background-color:#28609B;
+	background-color:#303641;
 	font-size:0.8em;
 	overflow:hidden;
 	cursor: pointer;
 }
 .vbar {
-	height:15px;
-	background-color:#6699cc;
+	background-color:#CBCFD8;
 	cursor: pointer;
+	margin: 3px 0
 }
 .bar:hover, .vbar:hover {
 	margin-right:1px;
 	z-index:1;
-	background-color:#6699cc;
+	background-color:#CBCFD8;
 
 }
 .expand,.expandunder {
@@ -155,17 +154,18 @@ font-size: 12px;
 }
 .popup td {
 	color: #fff;
+	padding: 3px;
 }
 #loading {
 	font-size: 16px;
- 	background: #6699cc; 
+ 	background: #464E5E; 
 	color: #FFF;
 	width:300px;
 	text-align: center; 
 	vertical-align: center; 
 	padding: 20px 0;
     position:absolute;
-    top:240px;
+    top:100px;
     left:50%;
     margin:0px 0 0 -150px; 
     display:none;
