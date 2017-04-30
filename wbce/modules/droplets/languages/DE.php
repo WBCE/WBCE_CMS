@@ -1,43 +1,51 @@
 <?php
 
-/**
- * WebsiteBaker Community Edition (WBCE)
- *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright Website Baker Org. e.V. (2009-2015)
- * @copyright wbce.org (since 2015)
- * @license GNU GPL2 (http://www.gnu.org/licenses/gpl.html)
- **/
+// $Id: DE.php 1098 2009-07-27 07:37:22Z Ruebenwurzel $
 
+/*
+
+ Website Baker Project <http://www.websitebaker.org/>
+ Copyright (C) 2004-2009, Ryan Djurovich
+
+ Website Baker is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ Website Baker is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Website Baker; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
+// Deutsche Modulbeschreibung
 $module_description 	= 'Mit Droplets kann PHP-Code in WYSIWYG-Abschnitten, Templates oder Modulen an beliebiger Stelle zur Verf&uuml;gung gestellt werden.';
 
 // Ueberschriften und Textausgaben
+$DR_TEXT['DROPLETS']	= 'Droplet';
+$DR_TEXT['BACKUP']		= 'Droplets sichern (Zip)';
+$DR_TEXT['RESTORE']		= 'Droplets wiederherstellen (Zipped)';
+$DR_TEXT['HELP']		= 'Hilfe';
+$DR_TEXT['README']		= 'readme.html';
+$DR_TEXT['INVALIDCODE']	= 'Dieses Droplet enth&auml;lt ung&uuml;ltigen PHP code';
+$DR_TEXT['NOTUNIQUE']	= 'Dieser Dropletname ist bereits vorhanden!';
 $DR_TEXT['ADMIN_EDIT']	= 'bearbeiten';
 $DR_TEXT['ADMIN_VIEW']	= 'ansehen';
-$DR_TEXT['BACKUP']		= 'Droplets sichern (Zip)';
-$DR_TEXT['DEL_INFO']    = '(Hinweis: Beim L&ouml;schen wird vorher automatisch eine Sicherung erstellt.)';
-$DR_TEXT['DELETE_ALL']  = 'Alle l&ouml;schen';
-$DR_TEXT['DELETED']     = 'Droplet(s) gel&ouml;scht. Hinweis: Vor dem L&ouml;schen wurde eine Sicherung erstellt.';
-$DR_TEXT['DOWNLOAD']    = 'Weitere Droplets herunterladen';
-$DR_TEXT['DROPLETS']	= 'Droplet';
-$DR_TEXT['DUPLICATE']   = 'Droplet duplizieren';
-$DR_TEXT['EXPORT']      = 'Exportieren';
-$DR_TEXT['HELP']		= 'Hilfe';
-$DR_TEXT['HELP']		= 'Hilfe';
-$DR_TEXT['INVALIDCODE']	= 'Dieses Droplet enth&auml;lt ung&uuml;ltigen PHP code';
-$DR_TEXT['IMPORTED']    = 'Droplet(s) importiert';
-$DR_TEXT['MARKED']      = 'Markierte';
-$DR_TEXT['MISSING_ID']  = 'ID fehlt oder ist fehlerhaft';
-$DR_TEXT['NOTUNIQUE']	= 'Dieser Dropletname ist bereits vorhanden!';
-$DR_TEXT['PACK_ERROR']  = 'Packaging error';
-$DR_TEXT['README']		= 'readme.html';
-$DR_TEXT['RESTORE']		= 'Droplets wiederherstellen (Zipped)';
-$DR_TEXT['SAVING']      = 'Speichere';
-$DR_TEXT['UPLOAD']      = 'Import';
-$DR_TEXT['USED']		= 'Dieses Droplet wird auf folgenden Seiten benutzt (-s):<br />';
 $DR_TEXT['WYSIWYG']		= 'Wysiwyg';
-
-$DR_TEXT['BACKUP_CREATED'] = 'Archiv erzeugt';
-$DR_TEXT['CREATE_ARCHIVE'] = 'Erzeuge Archiv';
-$DR_TEXT['IMPORT_ERRORS']  = 'Fehler beim Import';
+$DR_TEXT['HELP']		= 'Hilfe';
+$DR_TEXT['USED']		= 'Dieses Droplet wird auf folgenden Seiten benutzt (-s):<br />';
+$DR_TEXT['UPLOAD'] = 'Import';
+$DR_TEXT['IMPORT_ERRORS'] = 'Fehler beim Import';
+$DR_TEXT['MARKED'] = 'Markierte';
+$DR_TEXT['EXPORT'] = 'Exportieren';
 $DR_TEXT['MANAGE_BACKUPS'] = 'Backups';
+$DR_TEXT['IMPORTED'] = 'Droplet(s) importiert';
+$DR_TEXT['DELETE_ALL'] = 'Alle l&ouml;schen';
+$DR_TEXT['DUPLICATE'] = 'Droplet duplizieren';
+
+?>

@@ -1,29 +1,39 @@
 <?php
-
 /**
- * WebsiteBaker Community Edition (WBCE)
- * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
- * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later version)
+ * @category        module
+ * @package         droplet
+ * @author          Ruud Eisinga (Ruud) John (PCWacht)
+ * @author          WebsiteBaker Project
+ * @copyright       2004-2009, Ryan Djurovich
+ * @copyright       2009-2011, Website Baker Org. e.V.
+ * @link			http://www.websitebaker2.org/
+ * @license         http://www.gnu.org/licenses/gpl.html
+ * @platform        WebsiteBaker 2.8.x
+ * @requirements    PHP 5.2.2 and higher
+ * @version         $Id: install.php 1544 2011-12-15 15:57:59Z Luisehahne $
+ * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/droplets/install.php $
+ * @lastmodified    $Date: 2011-12-15 16:57:59 +0100 (Do, 15. Dez 2011) $
+ *
  */
+/* -------------------------------------------------------- */
+// Must include code to stop this file being accessed directly
+if(!defined('WB_PATH')) {
 
-//no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
-
+	require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
+	throw new IllegalFileException();
+}
+/* -------------------------------------------------------- */
 
 	// global $admin;
 
 	$msg = array();
-	$sql  = 'DROP TABLE IF EXISTS `{TP}mod_droplets` ';
+	$sql  = 'DROP TABLE IF EXISTS `'.TABLE_PREFIX.'mod_droplets` ';
 	if( !$database->query($sql) ) {
 		$msg[] = $database->get_error();
 	}
 
-	$sql  = 'CREATE TABLE IF NOT EXISTS `{TP}mod_droplets` ( ';
+	$sql  = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_droplets` ( ';
 	$sql .= '`id` INT NOT NULL auto_increment, ';
 	$sql .= '`name` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, ';
 	$sql .= '`code` LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL , ';
@@ -37,8 +47,6 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 	$sql .= '`comments` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, ';
 	$sql .= 'PRIMARY KEY ( `id` ) ';
 	$sql .= ') ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
-
-
 	if( !$database->query($sql) ) {
 		$msg[] = $database->get_error();
 	}
@@ -76,7 +84,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 			$name = substr($dropfile,0,-4);
 			$modified_when = time();
 			$modified_by = (method_exists($admin, 'get_user_id') && ($admin->get_user_id()!=null) ? $admin->get_user_id() : 1);
-			$sql  = 'INSERT INTO `{TP}mod_droplets` SET ';
+			$sql  = 'INSERT INTO `'.TABLE_PREFIX.'mod_droplets` SET ';
 			$sql .= '`name` = \''.$name.'\', ';
 			$sql .= '`code` = \''.$droplet.'\', ';
 			$sql .= '`description` = \''.$description.'\', ';
