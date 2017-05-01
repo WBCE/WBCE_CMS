@@ -24,4 +24,4 @@ $template_platform = '1.0.0';
 $template_author = 'Yetiie';
 $template_license = '<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License (GPLv3)</a>';
 $template_license_terms = '-';
-$template_description = 'Enhanced backend theme for WebsiteBaker CE';
+$template_description = 'Enhanced backend theme for WBCE';

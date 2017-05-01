@@ -13,7 +13,6 @@
  *
  */
 
-
 $module_directory = 'miniform';
 $module_name = 'MiniForm';
 $module_function = 'page';
@@ -22,5 +21,3 @@ $module_platform = '2.8.x';
 $module_author = 'Ruud';
 $module_license = 'GNU General Public License';
 $module_description = 'This module allows you to create a quick and simple form without complicated settings.';
-
-?>
