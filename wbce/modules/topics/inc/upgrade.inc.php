@@ -7,9 +7,9 @@ $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_".$tablename."_cache
 
 // topics table:
 $query_topics = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." LIMIT 1");
-$topic_fetch = $query_topics->fetchRow();
+$topic_fetch = $query_topics->fetchRow();	
 
-
+	
 // Add field authors to mod_topics
 if(!isset($topic_fetch['authors'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."` ADD `authors` VARCHAR(255) NOT NULL DEFAULT ''")) {
@@ -24,7 +24,7 @@ if($database->is_error()) {
 	echo ("OOPS, something went wrong. If it's a duplicate error then it's okay - it means that your database has already been modified.<br/>The error was: ".$database->get_error());
 } else {
 	echo ("SUCCESS: The required changes have been made to your database.");
-}
+}	
 
 // Add field comments_count to mod_topics
 if(!isset($topic_fetch['comments_count'])){
@@ -43,13 +43,13 @@ if($database->is_error()) {
 }
 
 
-//Settings table
+//Settings table	
 
 // Add various_values:
 $query_settings = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$tablename."_settings LIMIT 1");
-$settings_fetch = $query_settings->fetchRow();
+$settings_fetch = $query_settings->fetchRow();	
 
-
+	
 // Add field various_values to mod_topics
 if(!isset($settings_fetch['various_values'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` ADD `various_values` VARCHAR(255) NOT NULL DEFAULT '150,450,0,0,2,0,0,0,0,0'")) {
@@ -142,3 +142,7 @@ if (!file_exists($mpath.'module_settings.php')) { copy($mpath.'defaults/module_s
 if (!file_exists($mpath.'frontend.css')) { copy($mpath.'defaults/frontend.default.css', $mpath.'frontend.css') ; }
 if (!file_exists($mpath.'comment_frame.css')) { copy($mpath.'defaults/comment_frame.default.css', $mpath.'comment_frame.css') ; }
 if (!file_exists($mpath.'frontend.js')) { copy($mpath.'defaults/frontend.default.js', $mpath.'frontend.js') ; }
+
+
+
+?>
