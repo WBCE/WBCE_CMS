@@ -71,7 +71,7 @@ if (strpos($sapi, 'apache') !== false || strpos($sapi, 'nsapi') !== false) {
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<title>WebsiteBaker CE Installation Wizard</title>
+<title>WBCE Installation Wizard</title>
 <link href="stylesheet.css" rel="stylesheet" type="text/css" />
 <script>
 
@@ -97,10 +97,8 @@ function change_os(type) {
 <tbody>
 <tr style="background: #a9c9ea;">
     <td>
-        <img style="margin-top:.7em" src="logo.png" alt="WBCE Logo" />
-    </td>
-    <td>
-        <h1 style="border:none; margin-top:1em;font-size:150%;">WBCE Installation Wizard</h1>
+        <img style="margin-top:.7em;height: 50px;float: left;" src="logo.png" alt="WBCE Logo">
+        <h1 style="border:none; margin:1em;font-size:150%;float: right;">WBCE Installation Wizard</h1>
     </td>
 </tr>
 </tbody>
@@ -113,7 +111,7 @@ function change_os(type) {
     <input type="hidden" name="remember" id="remember" value="true" />
 
         <div class="welcome">
-            Welcome to the WebsiteBaker CE Installation Wizard.
+            Welcome to the WBCE Installation Wizard.
         </div>
         <?php
 if (isset($_SESSION['message']) and $_SESSION['message'] != '') {
@@ -185,7 +183,7 @@ if (ini_get('safe_mode') == '' || strpos(strtolower(ini_get('safe_mode')), 'off'
 <p class="warning">
 <b>Please note:</b> Yor webserver is configured to deliver <b><?php echo $e_adc;?></b> charset only.<br />
 To display national special characters (e.g.: &auml; &aacute;) in clear manner, switch off this preset please(or let it do by your hosting provider).<br />
-In any case you can choose <b><?php echo $e_adc;?></b> in the settings of WebsiteBaker CE.<br />
+In any case you can choose <b><?php echo $e_adc;?></b> in the settings of WBCE.<br />
 But this solution does not guarranty a correct displaying of the content from all modules!
 </p>
 </td>
@@ -217,7 +215,7 @@ if (!isset($_SESSION['config_rename'])) {
             // already installed? it's not empty
             if (filesize($wb_path . $configFile) > 128) {
                 $installFlag = false;
-                $config = '<span class="bad">Not empty! WebsiteBaker CE already installed?</span>';
+                $config = '<span class="bad">Not empty! WBCE already installed?</span>';
                 // try to open and to write
             } elseif (!$handle = fopen($wb_path . $configFile, 'w')) {
                 $installFlag = false;
@@ -545,7 +543,7 @@ if (!isset($_SESSION['config_rename'])) {
                 <tr valign="top">
                     <td>
                         <p class="warning">
-                        WebsiteBaker CE is released under the
+                        WBCE is released under the
                         <a href="http://www.gnu.org/licenses/gpl.html" target="_blank" tabindex="19">GNU General Public License</a>.
                         <br />
                         By clicking install, you are accepting the license.
@@ -556,7 +554,7 @@ if (!isset($_SESSION['config_rename'])) {
             <td>
             <p class="center">
                 <?php if ($installFlag == true) {?>
-                <input type="submit" tabindex="20" name="install" value="Install WebsiteBaker CE" />
+                <input type="submit" tabindex="20" name="install" value="Install WBCE" />
                 <?php } else {?>
                 <input type="button" tabindex="20" name="restart" value="Check your Settings in Step1 or Step2" class="submit" onclick="javascript: window.location = '<?php print $_SERVER['SCRIPT_NAME']?>';" />
                 <?php }
@@ -572,7 +570,7 @@ if (!isset($_SESSION['config_rename'])) {
 
 <div style="margin: 0 0 3em; padding: 0; text-align:center;">
     <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WebsiteBaker CE</a> is released under the
+    <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WBCE</a> is released under the
     <a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a>
     <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
 </div >
