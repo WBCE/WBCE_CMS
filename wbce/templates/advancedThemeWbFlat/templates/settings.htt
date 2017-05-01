@@ -207,7 +207,6 @@
 		<td class="setting_name">&nbsp;</td>
 		<td class="setting_value_permissions">
 			<input type="submit" name="submit" value="{TEXT_SAVE}" class="save" />
-			<input type="reset" name="reset" value="{TEXT_RESET}" class="reset" />
 		</td>
 		<td class="setting_value_permissions" style="text-align: right;">
 			<button title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}'; return false;" class="{DISPLAY_ADVANCED_BUTTON}">{ADVANCED_BUTTON}</button>
@@ -296,7 +295,6 @@
 		<td class="setting_name">&nbsp;</td>
 		<td class="setting_value_permissions">
 			<input type="submit" name="submit" value="{TEXT_SAVE}" class="save" />
-			<input type="reset" name="reset" value="{TEXT_RESET}" class="reset" />
 		</td>
 		<td class="setting_value_permissions" style="text-align: right;">
 			<button title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}'; return false;" class="{DISPLAY_ADVANCED_BUTTON}">{ADVANCED_BUTTON}</button>
@@ -387,7 +385,6 @@
 		<td class="setting_name">&nbsp;</td>
 		<td class="setting_value_permissions">
 			<input type="submit" name="submit" value="{TEXT_SAVE}" class="save" />
-			<input type="reset" name="reset" value="{TEXT_RESET}" class="reset" />
 		</td>
 		<td class="setting_value_permissions" style="text-align: right;">
 			<button title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}'; return false;" class="{DISPLAY_ADVANCED_BUTTON}">{ADVANCED_BUTTON}</button>
@@ -591,7 +588,6 @@
 		<td class="setting_name">&nbsp;</td>
 		<td class="setting_value_permissions">
 			<input type="submit" name="submit" value="{TEXT_SAVE}" class="save" />
-			<input type="reset" name="reset" value="{TEXT_RESET}" class="reset" />
 		</td>
 		<td class="setting_value_permissions" style="text-align: right;">
 			<button title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}'; return false;" class="{DISPLAY_ADVANCED_BUTTON}">{ADVANCED_BUTTON}</button>
