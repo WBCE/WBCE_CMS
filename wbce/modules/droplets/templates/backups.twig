@@ -1,0 +1,33 @@
+<table class="droplets row_a" style="width: 100%;">
+    <thead>
+    <tr class="row_b">
+        <th class="header">{{ TEXT.NAME|raw }}</th>
+        <th class="header">{{ TEXT.SIZE|raw }} (Byte)</th>
+        <th class="header">{{ TEXT.DATE|raw }}</th>
+        <th class="header">{{ TEXT.FILES|raw }}</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for file in backup_files %}
+    <tr>
+        <td>
+            <a href="#" title="{{ file.list }}"><img src="{{ WB_URL }}/modules/droplets/img/list.png" alt="" /> {{ file.name }}</a>
+        </td>
+        <td>{{ file.stat.size }}</td>
+        <td>{{ file.stat.ctime|date('r') }}</td>
+        <td>{{ file.count }}</td>
+        <td>
+            <a href="{{ WB_URL }}/modules/droplets/export/{{ file.name }}" title="Download"><img src="{{ WB_URL }}/modules/droplets/img/download.png" alt="Download" /></a>
+            <a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;recover={{ file.name }}');" title="Recover"><img src="{{ WB_URL }}/modules/droplets/img/import.png" alt="Recover" /></a>
+            <a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups&amp;del={{ file.name }}');" title="Delete"><img src="{{ THEME_URL }}/images/delete_16.png" alt="X" /></a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<button type="button"
+        name="backup_mgmt"
+        onclick="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups&amp;del=all');">
+        {{ DR_TEXT.DELETE_ALL|raw }}
+</button>

@@ -1,37 +1,34 @@
 <?php
+
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        module
- * @package         droplet
- * @author          Ruud Eisinga (Ruud) John (PCWacht) Bianka (WebBird)
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2010, Website Baker Org. e.V.
- * @link		    http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.4.9 and higher
- * @version         $Id$
- * @filesource	    $HeadURL$
- * @lastmodified    $Date$
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '1.75';
+$module_version = '2.0.0';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
-$module_author = 'Ruud, pcwacht, WebBird';
+$module_author = 'Ruud, pcwacht, WebBird (for WBCE)';
 $module_license = 'GNU General Public License';
 $module_description = 'This tool allows you to manage your local Droplets.';
 
-$module_home = 'http://www.websitebakers.com/pages/droplets/about-droplets.php';
+$module_home = 'http://www.wbce.org';
 $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 
 /**
  * Version history
+ *
+ * v2.0.0 - Bianka Martinovic ("WebBird")
+ *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/92
  *
  * v1.75 - Bianka Martinovic ("WebBird")
  *       - fixed "Undefined variable: imports" issue
