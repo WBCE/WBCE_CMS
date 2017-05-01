@@ -13,7 +13,7 @@
  */
  
 $module_directory   = 'wbSeoTool';
-$module_name        = 'SEO Tool for WebsiteBaker CMS';
+$module_name        = 'SEO Tool';
 $module_function    = 'tool';
 $module_version     = '0.6.0';
 $module_status      = 'Stable';
