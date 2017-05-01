@@ -16,7 +16,7 @@
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 
 
-function _db_add_field($field, $table, $desc) {
+function mod_wbstats_db_add_field($field, $table, $desc) {
 	global $database;
 	$table = TABLE_PREFIX.$table;
 	$query = $database->query("DESCRIBE $table '$field'");
@@ -28,8 +28,8 @@ function _db_add_field($field, $table, $desc) {
 	}
 }
 
-//_db_add_field("`session`", "mod_wbstats_ips", "varchar(64) NOT NULL default '' AFTER `ip`");
-//_db_add_field("`page`", "mod_wbstats_ips", "varchar(255) NOT NULL default '' AFTER `online`");
-//_db_add_field("`loggedin`", "mod_wbstats_ips", "int(1) NOT NULL default '0' AFTER `page`");
-//_db_add_field("`bots`", "mod_wbstats_day", "int(1) NOT NULL default '0' AFTER `view`");
+//mod_wbstats_db_add_field("`session`", "mod_wbstats_ips", "varchar(64) NOT NULL default '' AFTER `ip`");
+//mod_wbstats_db_add_field("`page`", "mod_wbstats_ips", "varchar(255) NOT NULL default '' AFTER `online`");
+//mod_wbstats_db_add_field("`loggedin`", "mod_wbstats_ips", "int(1) NOT NULL default '0' AFTER `page`");
+//mod_wbstats_db_add_field("`bots`", "mod_wbstats_day", "int(1) NOT NULL default '0' AFTER `view`");
 

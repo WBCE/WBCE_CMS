@@ -17,7 +17,7 @@
 // prevent this file from being accessed directly
 if(!defined('WB_PATH')) die(header('Location: index.php'));  
 
-function _db_add_field($field, $table, $desc) {
+function mod_minform_db_add_field($field, $table, $desc) {
 	global $database;
 	$table = TABLE_PREFIX.$table;
 	$query = $database->query("DESCRIBE $table '$field'");
@@ -25,11 +25,11 @@ function _db_add_field($field, $table, $desc) {
 		$query = $database->query("ALTER TABLE $table ADD $field $desc");
 	}
 }
-_db_add_field("`use_recaptcha`"   ,"mod_miniform", "INT NOT NULL default '0'");
-_db_add_field("`recaptcha_key`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
-_db_add_field("`recaptcha_secret`","mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
-_db_add_field("`remote_id`"		  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
-_db_add_field("`remote_name`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+mod_minform_db_add_field("`use_recaptcha`"   ,"mod_miniform", "INT NOT NULL default '0'");
+mod_minform_db_add_field("`recaptcha_key`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+mod_minform_db_add_field("`recaptcha_secret`","mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+mod_minform_db_add_field("`remote_id`"		  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+mod_minform_db_add_field("`remote_name`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
 
 $path = WB_PATH.'/modules/miniform/';
 if(file_exists($path.'new_frontend.css')) {

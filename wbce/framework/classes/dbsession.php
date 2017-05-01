@@ -106,7 +106,7 @@ class DbSession
   {
     $sql = "SELECT `data` FROM `{TP}sessions` WHERE `id` = '".$this->database->escapeString($sid)."' LIMIT 1";
     $res = $this->database->query($sql);
- 
+    if($this->database->is_error()) return '';
     if($res->numRows() == 1)
     {
       $fields = $res->fetchRow();

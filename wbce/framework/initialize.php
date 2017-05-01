@@ -227,7 +227,7 @@ SanitizeHttpReferer();
 // Stores Sessions to DB
 // As session table possibly not installed , it may not run whith installer and upgradescript
 // We then simply fallback to PHP default Session handling.
-if (!defined("WB_UPGRADE_SCRIPT") AND !defined("WB_INSTALLER")) {
+if (FALSE AND !defined("WB_UPGRADE_SCRIPT") AND !defined("WB_INSTALLER")) { // always use fallback until DbSession is fixed - remove "FALSE AND" to reactivate
     $hCustomSessionHandler= new DbSession();
 }
 
