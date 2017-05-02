@@ -14,7 +14,7 @@
 $module_directory   = 'droplets';
 $module_name        = 'Droplets';
 $module_function    = 'tool';
-$module_version     = '2.1.1';
+$module_version     = '3.0.1';
 $module_platform    = '2.8.x';
 $lepton_platform    = '1.x';
 $module_author      = 'Ruud, pcwacht, WebBird (for WBCE)';
@@ -28,10 +28,10 @@ $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 /**
  * Version history
  *
- * v2.1.1 - cwsoft (fixed fatal error in case Droplet code syntax was invalid)
+ * v3.0.1 - cwsoft (fixed fatal error in case Droplet code syntax was invalid)
  *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/216
  *
- * v2.0.1 - norhei (Added Icon)
+ * v3.0.0 - norhei (Added Icon)
  *
  * v2.0.0 - Bianka Martinovic ("WebBird")
  *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/92
