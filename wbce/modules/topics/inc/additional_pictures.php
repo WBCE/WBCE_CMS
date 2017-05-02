@@ -13,7 +13,21 @@ if ($zoomrel2 != '') {$linkclassrel .= ' rel="'.$zoomrel2.'" ';}
 if (is_dir($additional_picture_path)) {
 	$additional_picture_url = WB_URL.$settings_fetch['picture_dir'].'/topic'.TOPIC_ID.'/';
 	
-	$files = glob($additional_picture_path."/*.{jpg,png,gif}", GLOB_BRACE);
+	$dir = $additional_picture_path . '/';
+      $extensions = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+
+      $result = array();
+      $directory = new DirectoryIterator($dir);
+      foreach ($directory as $fileinfo) {
+          if ($fileinfo->isFile()) {
+              $extension = strtolower(pathinfo($fileinfo->getFilename(), PATHINFO_EXTENSION));
+              if (in_array($extension, $extensions)) {
+                  $result[] = $dir.$fileinfo->getFilename();
+              }
+          }
+      }
+      $files  = $result;
+    
  	if(count($files) > 0 ) {	
 		natcasesort($files);
 		

@@ -97,15 +97,13 @@ if ($use_presets) {
 	
 	 
 	$presets_dir = opendir($presets_files);				
-	while ($file=readdir($presets_dir)) {
-		if ($file != "." && $file != "..") {						
-			if (preg_match('.js',$file)) {
-				$filename = substr($file, 0, -3);
-				if ($filename == "default") continue;
-				echo '<option value="'.$filename.'">'.$filename.'</option>'; 
-			}
-		}
-	}
+        while ($file=readdir($presets_dir)) {
+                if ($file != "." && $file != "..") {									
+                    $filename = substr($file, 0, -3);
+                    if ($filename == "default") continue;
+                    echo '<option value="'.$filename.'">'.$filename.'</option>'; 
+                }
+	   }
 	echo '</select></form>
 	</td><td><div id="presetsdescription">NOTE: the presets-option will change the field contents. If you dont want to keep the changes, do NOT save!</div></td></tr></table>';
 
