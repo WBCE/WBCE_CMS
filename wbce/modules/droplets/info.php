@@ -13,7 +13,7 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '2.0.0.2';
+$module_version = '2.0.2';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
 $module_author = 'Ruud, pcwacht, WebBird (for WBCE)';
@@ -25,10 +25,10 @@ $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 /**
  * Version history
  *
- * v2.0.0.2 - cwsoft (fixed fatal error in case Droplet code syntax was invalid)
+ * v2.0.2 - cwsoft (fixed fatal error in case Droplet code syntax was invalid)
  *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/216
  *
- * v2.0.0.1 - norhei
+ * v2.0.1 - norhei
  *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f6e69206e22a6aa277b02b6c6887554a0da6371b
  *
  * v2.0.0 - Bianka Martinovic ("WebBird")
@@ -55,29 +55,5 @@ $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
  *		 - no longer uses jQueryAdmin or LibraryAdmin;
  *         tablesorter jQuery plugin included directly;
  *         please note that you will have to ensure that jquery is loaded!
- *
- * v1.64 - Bianka Martinovic ("WebBird")
- *       - fixed delete_droplet.php
- *
- * v1.63 - Bianka Martinovic ("WebBird")
- *       - use motTableSorter (loaded by LibraryAdmin) if available
- *
- * v1.6  - Bianka Martinovic ("WebBird")
- *       - changes needed to run with WB 2.8.2
- *
- * v1.51 - Bianka Martinovic ("WebBird")
- *       - updated NO language file
- *       - added RU language file (thanks to forum user "Eugene"!)
- *       - new: Error message when no droplet is marked while clicking on
- *              'Export' or 'Delete' button
- *
- * v1.5  - Bianka Martinovic ("WebBird")
- *       - fix: hardcoded admin path
- *
- * v1.4  - Bianka Martinovic ("WebBird")
- *       - new: Duplicate a droplet with one click
- *       - new: Show module version
- *       - new: added links to AMASP module and droplets download pages
- *       - new: Show droplets count
  *
  **/
