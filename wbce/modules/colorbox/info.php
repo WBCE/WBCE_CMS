@@ -13,7 +13,7 @@
 $module_directory = 'colorbox';
 $module_name = 'colorbox_v1.6.4';
 $module_function = 'snippet';
-$module_version = '1.6.4';
+$module_version = '1.6.4.1';
 $module_platform = '1.x';
 $module_author = 'Complete rewrite by Norbert Heimsath, updated by instantflorian';
 $module_license = '<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licencse 3.0</a>';
