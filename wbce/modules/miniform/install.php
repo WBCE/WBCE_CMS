@@ -60,9 +60,3 @@ foreach ( $files as $file ) {
 		}
 	}
 }
-					
-					
-
-
-
-?>

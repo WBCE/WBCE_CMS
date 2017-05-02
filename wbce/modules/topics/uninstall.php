@@ -45,5 +45,3 @@ $database->query("RENAME TABLE `".TABLE_PREFIX."mod_".$tablename."_settings` TO 
 
 require_once(WB_PATH.'/framework/functions.php');
 rm_full_dir(WB_PATH.$topics_directory);
-
-?>

@@ -22,5 +22,3 @@
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 $database->query("DROP TABLE ".TABLE_PREFIX."mod_sitemap");
-
-?>

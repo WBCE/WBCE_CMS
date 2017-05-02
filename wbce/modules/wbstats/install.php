@@ -86,5 +86,3 @@ $database->query("CREATE TABLE `$table_lang` (
 	PRIMARY KEY  (`id`)
 	)"
 );
-
-?>

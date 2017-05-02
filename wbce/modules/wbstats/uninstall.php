@@ -28,6 +28,3 @@ $database->query("DROP TABLE IF EXISTS `$table_pages`");
 $database->query("DROP TABLE IF EXISTS `$table_ref`");
 $database->query("DROP TABLE IF EXISTS `$table_key`");
 $database->query("DROP TABLE IF EXISTS `$table_lang`");
-
-
-?>

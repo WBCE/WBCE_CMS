@@ -308,5 +308,3 @@ if (!function_exists('wb_unpack_and_import')) {
 }
 // install the droplet(s)
 wb_unpack_and_import(WB_PATH.'/modules/topics/droplets/droplet_topics_rss_statistic.zip', WB_PATH . '/temp/unzip/');
-
-?>
