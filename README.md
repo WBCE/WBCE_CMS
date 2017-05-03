@@ -1,5 +1,5 @@
-# WBCE
-[WBCE CMS](http://wbce.org) is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. It is shipped with useful modules for simple pages, news/blog like pages, contact forms and useful admin tools. A broad variety of modules for galleries, interaction and structured content is available in the WBCE Add-On Repository (http://addons.wbce.org) and can be installed by just uploading a zip file.
+# WBCE CMS
+[WBCE CMS](http://wbce.org) is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. It is shipped with useful modules for simple pages, news/blog like pages, contact forms and useful admin tools. A broad variety of modules for galleries, interaction and structured content etc. is available in the [WBCE Add-On Repository](http://addons.wbce.org) and can be installed easily.
 
 ## Requirements
   - about 20 MB webspace
@@ -10,6 +10,7 @@
 ## Links
   - [WBCE Project](http://wbce.org)
   - [User Forum](https://forum.wbce.org)
+  - [User Documentation](http://help.wbce.org)
   - [GitHub Repository](https://github.com/WBCE/WebsiteBaker_CommunityEdition)
   - [Bugtracker](https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues)
   - [Commit History](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master)
@@ -17,7 +18,7 @@
   - [Installation](INSTALL.md)
 
 ## License
-[WBCE](http://wbce.org) is released under the **GNU General Public License v2** or any later version.
+[WBCE CMS](http://wbce.org) is released under the **GNU General Public License v2** or any later version.
 Please refer to the [LICENSE](LICENSE.md) file for a copy of the license.
 
     /**
