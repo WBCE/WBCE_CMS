@@ -7,7 +7,6 @@
 	<!--
 	<link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
-	<link href="{WB_URL}/include/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/media.css" rel="stylesheet" type="text/css">
 
 	<script src="{THEME_URL}/jquery/jquery-min.js"></script>
