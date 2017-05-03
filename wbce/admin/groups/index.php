@@ -79,7 +79,9 @@ if($admin->get_permission('groups_delete') != true) {
 // Insert language headings
 $template->set_var(array(
 	'HEADING_MODIFY_DELETE_GROUP' => $HEADING['MODIFY_DELETE_GROUP'],
-	'HEADING_ADD_GROUP' => $HEADING['ADD_GROUP']
+	'HEADING_ADD_GROUP' => $HEADING['ADD_GROUP'],
+    'HEADING_ACCESS' => $MENU['ACCESS'],
+    'HEADING_GROUPS' => $MENU['GROUPS']
 	)
 );
 // Insert language text and messages

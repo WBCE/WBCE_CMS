@@ -49,6 +49,7 @@ $template->set_var(
     array(
         // Headings
         'HEADING_INSTALL_TEMPLATE' => $HEADING['INSTALL_TEMPLATE'],
+        'HEADING_UNINSTALL_TEMPLATE' => $HEADING['UNINSTALL_TEMPLATE'],
         'HEADING_TEMPLATE_DETAILS' => $HEADING['TEMPLATE_DETAILS'],
 
         // URLs

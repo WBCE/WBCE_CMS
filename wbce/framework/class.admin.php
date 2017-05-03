@@ -139,6 +139,7 @@ class admin extends wb
             'TITLE_VIEW' => $MENU['VIEW'],
             'TITLE_HELP' => $MENU['HELP'],
             'TITLE_LOGOUT' => $MENU['LOGOUT'],
+            'LOGGED_IN_AS' => $TEXT['LOGGED_IN'],
             'URL_VIEW' => $view_url,
             'URL_HELP' => 'http://websitebaker.org/en/help.php',
             'BACKEND_MODULE_CSS' => $this->register_backend_modfiles('css'), // adds backend.css
@@ -201,6 +202,8 @@ class admin extends wb
             'WB_URL' => WB_URL,
             'ADMIN_URL' => ADMIN_URL,
             'THEME_URL' => THEME_URL,
+            'WBCE_VERSION' => WBCE_VERSION,
+            'PHP_VERSION' => substr(phpversion(),0,6),
         ));
         $footer_template->parse('header', 'footer_block', false);
         $footer_template->pparse('output', 'page');

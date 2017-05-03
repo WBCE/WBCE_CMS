@@ -112,6 +112,7 @@ if($type == 'folder') {
 
 $template->set_var(array(
 					'THEME_URL' => THEME_URL,
+					'WB_URL' => WB_URL,
 					'FILENAME' => $rename_file,
 					'DIR' => $directory,
 					'FILE_ID' => $admin->getIDKEY($file_id),
