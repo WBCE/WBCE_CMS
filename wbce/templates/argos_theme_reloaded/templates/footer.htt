@@ -1,0 +1,21 @@
+<!-- BEGIN footer_block -->
+
+</td> <!-- .content -->
+</tr>
+</table> <!-- #legacy -->
+
+<div class="clearfix"></div> <!-- für alle Fälle ;-)) -->
+</div> <!-- #content-container -->
+
+<div id="footer">
+	WBCE Version: {WBCE_VERSION} &bull;
+	Backend Version: 2.0.1
+	&bull;
+	PHP Version: {PHP_VERSION}
+</div>
+
+{BACKEND_BODY_MODULE_JS}
+
+</body>
+</html>
+<!-- END footer_block -->

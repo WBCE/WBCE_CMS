@@ -1,0 +1,84 @@
+<!-- BEGIN main_block -->
+<h2>
+	{ADDONS_OVERVIEW}
+	<div class="headline-link">
+		<i class="fa fa-expand" id="show-advanced"> {URL_ADVANCED}</i>
+	</div>
+</h2>
+
+<div class="fg6 section" {DISPLAY_MODULES}>
+	<div class="fg2 graphic">
+		<a href="{ADMIN_URL}/modules/index.php">
+			<i class="fa fa-3x fa-puzzle-piece"></i>
+		</a>
+	</div>
+	<div class="fg10 description">
+		<a href="{ADMIN_URL}/modules/index.php">
+			<span class="title">{MODULES}</span>
+		</a>
+		{MODULES_OVERVIEW}
+	</div>
+</div>
+
+<div class="fg6 section" {DISPLAY_LANGUAGES}>
+	<div class="fg2 graphic">
+		<a href="{ADMIN_URL}/languages/index.php">
+			<i class="fa fa-3x fa-language"></i>
+		</a>
+	</div>
+	<div class="fg10 description">
+		<a href="{ADMIN_URL}/languages/index.php">
+			<span class="title">{LANGUAGES}</span>
+		</a>
+		{LANGUAGES_OVERVIEW}
+	</div>
+</div>
+
+<div class="fg6 section" {DISPLAY_TEMPLATES}>
+	<div class="fg2 graphic">
+		<a href="{ADMIN_URL}/templates/index.php">
+			<i class="fa fa-3x fa-map"></i>
+		</a>
+	</div>
+	<div class="fg10 description">
+		<a href="{ADMIN_URL}/templates/index.php">
+			<span class="title">{TEMPLATES}</span>
+		</a>
+		{TEMPLATES_OVERVIEW}
+	</div>
+</div>
+
+<!-- advanced block --------------------------------------------------->
+<div id="advanced-block" class="fg12 section auto" {DISPLAY_RELOAD}>
+	<div class="row" style="padding-left:0;">
+		<div class="fg1 graphic">
+				<i class="fa fa-3x fa-wrench"></i>
+		</div>
+		<div class="fg11 description">
+			<span class="title">{TXT_ADMIN_SETTINGS}</span>
+			<form action="{RELOAD_URL}" method="post">
+				{FTAN}
+				<p>{MESSAGE_RELOAD_ADDONS}</p>
+				<div>
+				<label {DISPLAY_MODULES}>
+					<input type="checkbox" name="reload_modules" value="true">
+					{MODULES}
+				</label>
+				<label {DISPLAY_TEMPLATES}>
+					<input type="checkbox" name="reload_templates" value="true">
+					{TEMPLATES}
+				</label>
+				<label {DISPLAY_LANGUAGES}>
+					<input {DISPLAY_LANGUAGES} type="checkbox" name="reload_languages" value="true">
+					{LANGUAGES}
+				</label>
+				<button type="submit" name="submit" style="margin: -4px 0 0 20px;" class="danger">
+					<i class="fa fa-fw fa-refresh"></i>
+					{TEXT_RELOAD}
+				</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- END main_block -->

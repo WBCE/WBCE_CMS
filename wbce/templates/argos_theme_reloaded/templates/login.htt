@@ -1,0 +1,64 @@
+<!-- BEGIN mainBlock -->
+<!doctype html>
+<html lang="de">
+<head>
+	<title>{TEXT_LOGIN}</title>
+	<meta charset="{CHARSET}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
+	<link href="{THEME_URL}/css/login.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onload="document.login.{USERNAME_FIELDNAME}.focus();">
+
+	<div id="container">
+		<header class="fg-center">
+			<div class="fg-row">
+				<h1 class="fg12 center">{TEXT_LOGIN}</h1>
+			</div>
+		</header>
+
+		<section class="fg-center">
+			<div class="fg-row">
+				<div class="fg12 content-box">
+					<form name="login" class="login" action="{ACTION_URL}" method="post" autocomplete="off" style="margin-top:20px;">
+						<input type="hidden" name="url" value="{URL}">
+						<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}">
+						<input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" autocomplete="off">
+
+						<div class="fg5 label">{TEXT_USERNAME}:</div>
+						<div class="fg7">
+							<input type="text" maxlength="{MAX_USERNAME_LEN}" name="{USERNAME_FIELDNAME}" value="{USERNAME}">
+						</div>
+
+						<div class="fg5 label">{TEXT_PASSWORD}:</div>
+						<div class="fg7">
+							<input type="password" maxlength="{MAX_PASSWORD_LEN}" name="{PASSWORD_FIELDNAME}">
+						</div>
+
+						<div class="fg5">&nbsp;</div>
+						<div class="fg7">
+							<button type="submit" name="submit">{TEXT_LOGIN}</button>
+						</div>
+					</form>
+
+					<hr class="fg12">
+
+					<div class="fg12 center">
+						<p><a href="{FORGOTTEN_DETAILS_APP}">
+							{TEXT_FORGOTTEN_DETAILS}
+						</a></p>
+
+						<p><a href="{WB_URL}/">
+							{TEXT_HOME}
+						</a></p>
+				</div>
+			</div>
+		</section>
+	</div>
+
+</body>
+</html>
+<!-- END mainBlock -->
