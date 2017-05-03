@@ -1,12 +1,5 @@
-# WebsiteBaker Community Edition (WBCE)
-The [WebsiteBaker Community Edition](http://wbce.org) (`WBCE` or `WebsiteBaker CE`) is the further development of the classic content management system (CMS) [WebsiteBaker](http://websitebaker.org), based on [WebsiteBaker 2.8.3-SP4](http://wiki.websitebaker.org/wbdownload/SP4ForWb2-8-3.zip). 
-
-Experienced developers, designers und users will work together to give `WebsiteBaker` a future - without personal struggles, without hopeless outdated modules and without templates from internet stone age. [WBCE](http://wbce.org) aims to show that `WebsiteBaker` is not yet dead - and there's a community, where the idea of reaching a common goal is more important than sandbox quarrels. Welcome to [WBCE](http://wbce.org)!
-
-## Features
-`WebsiteBaker Community Edition` is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. As a further development of the approved, but a bit aged `WebsiteBaker` CMS, `WBCE` has broke free from burdens, but is as compatible as possible to all modules which are at least a little bit maintained.
-
-Furthermore `WBCE` is shipped with the most useful modules and modifications for `WebsiteBaker` recently developed by the community. So you have the full power of a tweaked `WebsiteBaker` without patching core files and installing modules by yourself. `WBCE` shows what WebsiteBaker could be. 
+# WBCE
+[WBCE CMS](http://wbce.org) is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. It is shipped with useful modules for simple pages, news/blog like pages, contact forms and useful admin tools. A broad variety of modules for galleries, interaction and structured content is available in the WBCE Add-On Repository (http://addons.wbce.org) and can be installed by just uploading a zip file.
 
 ## Requirements
   - about 20 MB webspace
@@ -16,7 +9,7 @@ Furthermore `WBCE` is shipped with the most useful modules and modifications for
 
 ## Links
   - [WBCE Project](http://wbce.org)
-  - [User Forum](http://forum.wbce.org)
+  - [User Forum](https://forum.wbce.org)
   - [GitHub Repository](https://github.com/WBCE/WebsiteBaker_CommunityEdition)
   - [Bugtracker](https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues)
   - [Commit History](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master)
@@ -24,11 +17,11 @@ Furthermore `WBCE` is shipped with the most useful modules and modifications for
   - [Installation](INSTALL.md)
 
 ## License
-[WebsiteBaker CE](http://wbce.org) is released under the **GNU General Public License v2** or any later version.
+[WBCE](http://wbce.org) is released under the **GNU General Public License v2** or any later version.
 Please refer to the [LICENSE](LICENSE.md) file for a copy of the license.
 
     /**
-     * WebsiteBaker Community Edition (WBCE)
+     * WBCE CMS
      * Way Better Content Editing.
      * Visit http://wbce.org to learn more and to join the community.
      *
