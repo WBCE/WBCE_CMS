@@ -17,7 +17,7 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 	
 // Set the language information
 $language_code = 'NL';
-$language_name = 'Netherlands';
+$language_name = 'Dutch'; // Nederlands
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Bramus, CodeALot, Luckyluke, Argos';

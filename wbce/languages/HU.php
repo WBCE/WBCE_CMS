@@ -17,7 +17,7 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 	
 // Set the language information
 $language_code = 'HU';
-$language_name = 'Hungary';
+$language_name = 'Hungarian'; // Magyar
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Zsolt + Robert';

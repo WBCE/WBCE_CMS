@@ -17,7 +17,7 @@ if (count(get_included_files()) == 1) {
 
 // Set the language information
 $language_code = 'EN';
-$language_name = 'English';
+$language_name = 'English'; // English
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Ryan Djurovich, Christian Sommer';

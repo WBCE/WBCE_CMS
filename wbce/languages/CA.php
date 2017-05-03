@@ -17,7 +17,7 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 	
 // Set the language information
 $language_code = 'CA';
-$language_name = 'Canada';
+$language_name = 'Catalan'; // Català
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Carles Escrig (simkin)';
