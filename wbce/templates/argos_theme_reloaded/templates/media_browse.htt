@@ -2,12 +2,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="{CHARSET}">
-	<title>Browse Media</title>
-	<link href="{THEME_URL}/css/media.css" rel="stylesheet" type="text/css">
+    <meta charset="{CHARSET}">
+    <title>Browse Media</title>
 
-	<script type="text/javascript" src="overlib.js"></script>
+    <link href="{INCLUDE_PATH}/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="{THEME_URL}/css/media.css" rel="stylesheet" type="text/css">
 
+    <script src="{INCLUDE_PATH}/jquery/jquery-min.js"></script>
+    <script type="text/javascript" src="overlib.js"></script>
 	<script>
 	function confirm_link(message, url) {
 		if (confirm(message)) {
