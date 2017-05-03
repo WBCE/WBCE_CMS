@@ -62,17 +62,26 @@ if(isset($_POST['page_id']) AND is_numeric($_POST['page_id']) AND isset($_POST['
 			$vv = explode(',',$settings_fetch['various_values']);		
 			$use_commenting_settings = (int) $vv[3];
 			$emailsettings = (int) $vv[4]; if ($emailsettings < 0) {$emailsettings = 2;} //Wie bisher: Pflichtfeld
-		}			
+		} else {
+			die(); //nur zur Sicherheit
+		}
+		
+					
 
 		$query_topic = $database->query("SELECT link, commenting, posted_by,title  FROM ".TABLE_PREFIX."mod_".$tablename." WHERE topic_id = '$topic_id'");
 		if($query_topic->numRows() != 1) { die('no topic!'); }
 		$topicfetch = $query_topic->fetchRow();		
 		$link = $topicfetch['link'];		
-		$commenting = $topicfetch['commenting'];
+		$commenting = (int) $topicfetch['commenting'];
 		$topicauthornr = $topicfetch['posted_by'];
 		
+	
+		
+		if( $commenting < -1) {$use_commenting_settings = 1;} //Defaultwert verenden
 		//Wenn: angekreuzt: Individielle EInstellungen ignorieren, dann die Settings-Einstellungen verwenden.
-		if ($use_commenting_settings == 1) { $commenting = $settings_fetch['commenting'];}
+		if ($use_commenting_settings == 1) { $commenting = (int) $settings_fetch['commenting'];}
+	
+		
 		
 		if ($commenting < 1) { 
 			//exit(header('Location: '.WB_URL.'/modules/'.$mod_dir.'/nopage.php?err=7')); 
@@ -145,7 +154,8 @@ if(isset($_POST['page_id']) AND is_numeric($_POST['page_id']) AND isset($_POST['
 		unset($_SESSION['submitted_when']);
 	}
 	
-	
+		
+		
 	//Brachialer Spamschutz
 	include ('../inc/spamfilter.inc.php');
 	
@@ -178,41 +188,12 @@ if(isset($_POST['page_id']) AND is_numeric($_POST['page_id']) AND isset($_POST['
 	}		
 	
 	
-	//Der spamfilter könnte $active verändert haben, deswegen $commentextra erst hier vergeben:
+	//Der spamfilter koennte $active veraendert haben, deswegen $commentextra erst hier vergeben:
 	$commentextra = '';
 	if ($active==0) {$commentextra = rand ( 1000000 , 9999999 );}
 	
 	
-	//Mail:
 	
-	if ($admin_email != '') { 
-		$mail_subject = "Comment: " . $topicfetch['title'];
-	
-		if($themail != '') {$email = $themail; } else {$email = 'noname@domain.com'; }	
-		$headers = "Content-Type: text/html\n";
-		$headers .= "Content-Transfer-Encoding: 8bit\n";
-		$headers .= "From: " . $thename . "<" . $email . ">\n";
-		$headers .= "Reply-To: " . $email . "\n";
-
-		
-		
-	
-		$mail_message = nl2br(strip_tags(stripslashes($commentpost)));	
-		$mail_message .= '<br/><br/>
-		<a href="'.$topic_link.'">See Comment</a> | <a href="'.$backend_link.'#comments">Edit Comments</a>';
-		
-		if ($commentextra != '') {
-			$mail_message .=  '| <a href="'.$topic_link.'?publ='.$commentextra.'">Publish</a>';
-		}
-			
-		$wb->mail(SERVER_EMAIL,$admin_email,$mail_subject,$mail_message);
-		//echo $mail_message;
-		//die('mail wurde versendet');
-		
-	} else {
-		//die('mail konnte nicht versendet werden');
-	
-	}// End Mail
 	
 	if ($spamlevel > 1) {
 		exit(header("Location: ".WB_URL."/modules/".$mod_dir."/nopage.php")); //exit(header("Location: ".WB_URL.PAGES_DIRECTORY.""));
@@ -241,10 +222,45 @@ if(isset($_POST['page_id']) AND is_numeric($_POST['page_id']) AND isset($_POST['
 		$gueltigkeit = time() + $topics_comment_cookie;
 		setcookie("comment".$topic_id, $last_insert.','.time(), $gueltigkeit);
 	}
-	$Gueltigkeit = time()+3456000;	//40 Tage
+	$gueltigkeit = time()+3456000;	//40 Tage
 	setcookie("commentdetails", $last_insert, $gueltigkeit);
 	
 	$cid = $last_insert;
+	
+	
+	//Mail:
+	
+	if ($admin_email != '') { 
+		$mail_subject = "Comment: " . $topicfetch['title'];
+	
+		if($themail != '') {$email = $themail; } else {$email = 'noname@domain.com'; }	
+		$headers = "Content-Type: text/html\n";
+		$headers .= "Content-Transfer-Encoding: 8bit\n";
+		$headers .= "From: " . $thename . "<" . $email . ">\n";
+		$headers .= "Reply-To: " . $email . "\n";
+
+		
+		
+	
+		$mail_message = nl2br(strip_tags(stripslashes($commentpost)));	
+		$mail_message .= '<br/><br/>
+		<a href="'.$topic_link.'#tcid'.$cid.'"> | <a href="'.$backend_link.'#comments">Edit Comments</a>';
+		
+		if ($commentextra != '') {
+			$mail_message .=  '| <a href="'.$topic_link.'?publ='.$commentextra.'#tcid'.$cid.'">Publish</a>';
+		}
+			
+		$wb->mail(SERVER_EMAIL,$admin_email,$mail_subject,$mail_message);
+		//echo $mail_message;
+		//die('mail wurde versendet');
+		
+	} else {
+		//die('mail konnte nicht versendet werden');
+	
+	}// End Mail
+	
+	
+	
 	include('commentdone.php');
 	
 	

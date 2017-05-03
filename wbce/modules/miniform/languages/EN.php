@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.7
- * @lastmodified    april 7, 2014
+ * @version         0.10.0
+ * @lastmodified    april 6, 2017
  *
  */
 
@@ -25,11 +25,15 @@ $MF['TEXT_SUCCESS'] = 'Success page';
 $MF['TEXT_NOPAGE'] = 'No successpage, standard text only';
 $MF['TEXT_CANCEL'] = 'Cancel';
 $MF['TEXT_SAVE'] = 'Save';
+$MF['TEXT_RECAPTCHA'] = 'Use reCaptcha';
+$MF['TEXT_RCKEY'] = 'reCaptcha Site key';
+$MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';
 $MF['MANAGE'] = 'Modify template';
 $MF['SUBJECT'] = 'Form sent by the website';
 $MF['THANKYOU'] = 'Thank you for filling out this form. We will contact you ASAP';
 $MF['NOTALL'] = 'Please fill all required fields.';
 $MF['INVALID'] = 'Invalid filetype, upload not accepted!';
+$MF['SENDERROR'] = 'Error sending the form!';
 
 $MF['HISTORY'] = 'Show history';
 $MF['RECEIVED'] = 'Received messages (last 50)';
@@ -39,3 +43,12 @@ $MF['REMOVE'] = 'Delete';
 $MF['SAVEAS'] = 'Save template as';
 $MF['HELP'] = 'Help';
 $MF['TPL_GEN'] = 'Template Generator';
+
+$MF['EDITREMOTE'] = 'Customize template on miniform website';
+$MF['DOREMOTE'] = 'Load template from miniform website';
+$MF['REMOTE'] = 'Remote ID';
+$MF['LOAD'] = 'Load';
+
+$MF['LOADING'] = 'Loading remote template';
+$MF['LOADERROR'] = 'Loading failed!';
+$MF['LOADSUCCESS'] = 'Remote template successfully loaded! Don\'t forget to save!';

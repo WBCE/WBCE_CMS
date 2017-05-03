@@ -9,7 +9,7 @@ Experienced developers, designers und users will work together to give `WebsiteB
 Furthermore `WBCE` is shipped with the most useful modules and modifications for `WebsiteBaker` recently developed by the community. So you have the full power of a tweaked `WebsiteBaker` without patching core files and installing modules by yourself. `WBCE` shows what WebsiteBaker could be. 
 
 ## Requirements
-  - about 10 MB webspace
+  - about 20 MB webspace
   - PHP 5.3.6 or newer
   - mySQL 5.0 or newer
   - mode_rewrite for `even nicer` URLs (optional)

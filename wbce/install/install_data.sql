@@ -48,7 +48,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (10, 'redirect_timer', '1500'),
 (11, 'home_folders', 'true'),
 (12, 'warn_page_leave', '1'),
-(13, 'default_template', 'wbce'),
+(13, 'default_template', 'wbce_vertal'),
 (14, 'default_theme', 'advancedThemeWbFlat'),
 (15, 'default_charset', 'utf-8'),
 (16, 'multiple_menus', 'true'),

@@ -75,7 +75,7 @@ if($results->numRows() > 0) {
 		}
 		if ($user['login_ip'] == 0) {
 			$lastip="0.0.0.0";
-		} else { 
+		} else {
 			$lastip=$user['login_ip'];
 		}
         $template->set_var('VALUE',$admin->getIDKEY($user['user_id']));
@@ -104,8 +104,10 @@ $HeaderTitle .= (($iUserStatus == 1) ? strtolower($TEXT['ACTIVE']) : strtolower(
 // Insert language headings
 $template->set_var(array(
         'HEADING_MODIFY_DELETE_USER' => $HeaderTitle,
-        'HEADING_ADD_USER' => $HEADING['ADD_USER']
-        )
+        'HEADING_ADD_USER' => $HEADING['ADD_USER'],
+        'HEADING_ACCESS' => $MENU['ACCESS'],
+        'HEADING_USERS' => $MENU['USERS']
+       )
 );
 // insert urls
 $template->set_var(array(

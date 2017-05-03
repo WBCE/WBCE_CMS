@@ -1,13 +1,12 @@
-﻿/**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.html or http://ckeditor.com/license
- */
+/*
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
+*/
 
 CKEDITOR.plugins.add( 'wbdroplets', {
 	requires: 'dialog,fakeobjects',
-	lang: 'af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh', // %REMOVE_LINE_CORE%
-	icons: 'wbdroplets', // %REMOVE_LINE_CORE%
-
+	lang: 'de,en,fr,nl',
+	icons: 'wbdroplets',
 
 	init: function( editor ) {
 		// Add the link and unlink buttons.
@@ -15,9 +14,9 @@ CKEDITOR.plugins.add( 'wbdroplets', {
 
 		if ( editor.ui.addButton ) {
 			editor.ui.addButton( 'Wbdroplets', {
-				label: editor.lang.wbdroplets.wbdroplets.toolbar,
+				label: editor.lang.wbdroplets.wbdroplets.insBtn,
 				command: 'wbdroplets',
-				toolbar: 'wblinks,10'
+				toolbar: 'links,40'
 			});
 		}
 

@@ -101,31 +101,25 @@ $thumb_file =WB_PATH.$picture_dir.'/thumbs/'.$file_name;
 
 $previewWidth = $w_thumb;
 $previewHeight = $h_thumb;
-
 if ($whatdir == 'view') {
 	$previewWidth = $w_view;
 	$previewHeight = $h_view;
 	$w_thumb = $w_view;
-	$h_thumb = 0; //$h_view;
+	$h_thumb = $h_view;
 	
 	$thumb_file =WB_PATH.$picture_dir.'/'.$file_name;
 }
 
-if ($previewWidth == 0 OR $previewHeight == 0) {
-	$ratio = '';
-	$thumb_size = 100;
-	//if ($previewWidth == 0) {$previewWidth = 200;}
-	//if ($previewHeight == 0) {$previewHeight = 200;}
-} else {
-	$ratio = $previewWidth / $previewHeight;
-	$thumb_size = $previewHeight;
-	if ($ratio > 1) {$thumb_size = $previewWidth;}
-}
+//echo "<p>Werte wie angegeben: previewWidth: $previewWidth, previewHeight: $previewHeight<p>";
+
+
+
 
 //echo '<p>ratio: '.$ratio.'<p>';
-
-$h_thumb = 0; //$h_view;
-
+/*
+if ($previewHeight == 0) { $h_thumb = 0; }
+if ($previewWidth == 0) { $w_thumb = 0; }
+*/
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {	
 
@@ -134,14 +128,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	//deleteFile($thumb_file);
 	
 	//Neues Thumb erstellen
-	//echo "<p>$thumb_file<br/>w_thumb: $w_thumb, h_thumb: $h_thumb, w: ".$_POST['w'].' h: '. $_POST['h'].'<p>';
+	$post_w = (int)$_POST['w'];
+	$post_h = (int)$_POST['h'];
+	
+	//echo "<p>w_thumb: $w_thumb, h_thumb: $h_thumb, w: ".$post_w.' h: '. $post_h.'<p>';
 	//die();
-	if (resizepic($full_file, $thumb_file, $w_thumb, $h_thumb, 0, $_POST['x'], $_POST['y'], $_POST['w'], $_POST['h'])) {
+	if (resizepic($full_file, $thumb_file, $w_thumb, $h_thumb, 0, $_POST['x'], $_POST['y'], $post_w, $post_h)) {
 		$admin->print_success('Thumb erfolgreich geändert', WB_URL.'/modules/'.$mod_dir.'/picupload/uploadview.php?'.$p.'&fn='.$subdir.$file_name);
 	}
 } 	else {
 
-
+	//==============================================================
+	//Vorgabewerte für jCrop
+	//==============================================================
+	if ($previewWidth == 0 OR $previewHeight == 0) {
+		$ratio = ''; //keine Ratio-Vorgabe beim Beschneiden
+		$thumb_size = 100;		
+	} else {
+		$ratio = $previewWidth / $previewHeight;
+		$thumb_size = $previewHeight;
+		if ($ratio > 1) {$thumb_size = $previewWidth;}
+	}
 			
 			
 	echo '
@@ -161,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		</div>
 		<br />
 		<!-- This is the form that our event handler fills -->
-		<form action="'.WB_URL.'/modules/'.$mod_dir.'/picupload/modify_thumb.php?page_id='.$page_id.'&section_id='.$section_id.'&topic_id='.$topic_id.'&fn='.$subdir.$file_name.'" method="post" onsubmit="return checkCoords();">
+		<form id="topics_pic_crop" action="'.WB_URL.'/modules/'.$mod_dir.'/picupload/modify_thumb.php?page_id='.$page_id.'&section_id='.$section_id.'&topic_id='.$topic_id.'&fn='.$subdir.$file_name.'" method="post" onsubmit="return checkCoords();">
 								<input type="hidden" name="section_id" value="'.$section_id.'">
 								<input type="hidden" name="page_id" value="'.$page_id.'">
 								<input type="hidden" name="topic_id" value="'.$topic_id.'">
@@ -171,8 +178,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<input type="hidden" id="y" name="y" />
 			<input type="hidden" id="w" name="w" />
 			<input type="hidden" id="h" name="h" />
-			<input style="width: 130px;" type="submit" value="GO!" /><br />
-			<input style="width: 130px;" type="button" value="'.$TEXT['CANCEL'].'" onClick="window.location=\''.WB_URL.'/modules/'.$mod_dir.'/picupload/uploadview.php?page_id='.$page_id.'&section_id='.$section_id.'&topic_id='.$topic_id.'&fn='.$subdir.$file_name.'\'"/>
+			<input class="cropbutton cropbutton_go"  type="submit" value="GO!" /><br />
+			<input class="cropbutton cropbutton_cancel" type="button" value="'.$TEXT['CANCEL'].'" onClick="window.location=\''.WB_URL.'/modules/'.$mod_dir.'/picupload/uploadview.php?page_id='.$page_id.'&section_id='.$section_id.'&topic_id='.$topic_id.'&fn='.$subdir.$file_name.'\'"/>
 		</form>
 	</div>';
 

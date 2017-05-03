@@ -58,7 +58,8 @@ erf&uuml;llt die Seite (genauer: die Section)</p>
   werden tats&auml;chlich
   verschoben,
   ein &quot;Undo&quot;
-  ist nur durch manuelles Zur&uuml;ck-verschieben (jedes Topic einzeln) m&ouml;glich. </p>
+  ist nur durch manuelles Zur&uuml;ck-verschieben (jedes Topic einzeln) m&ouml;glich. <br>
+  Vorher muss das Datum ge&auml;ndert werden - sonst werden Topics sofort wieder Auto-Archiviert.</p>
 <hr>
 <h2><a name="pictures" id="pictures"></a>Bilder</h2>
 <p><strong>Bildverzeichnis</strong>: Vorgabe: /media/topics-pictures<br>
@@ -79,19 +80,31 @@ erf&uuml;llt die Seite (genauer: die Section)</p>
     Klassen aus.<br>
     [PICTURE] (Klammern beachten!) gibt nur den Dateinamen aus. &lt;a&gt;, &lt;img&gt; muss
 angegeben werden.</p>
-<p>{THUMB}<br>
-  entspricht also ungef&auml;hr:<br>&lt;a href=&quot;[LINK]&quot;&gt;&lt;img
-class=&quot;tp_thumb tp_thumb[TOPIC_ID]&quot; src=&quot;[PICTURE_DIR]/thumbs/[PICTURE]&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;</p>
+<p>[THUMB] {THUMB}<br>
+  entspricht also ungef&auml;hr:<br>
+  &lt;img
+class=&quot;tp_thumb tp_thumb[TOPIC_ID]&quot; src=&quot;[PICTURE_DIR]/thumbs/[PICTURE]&quot; alt=&quot;&quot; title=&quot;[TITLE]&quot;
+/&gt;<br>&lt;a href=&quot;[LINK]&quot;&gt;&lt;img
+class=&quot;tp_thumb tp_thumb[TOPIC_ID]&quot; src=&quot;[PICTURE_DIR]/thumbs/[PICTURE]&quot; alt=&quot;&quot; title=&quot;[TITLE]&quot; /&gt;&lt;/a&gt;</p>
 <p>Der Unterschied ist, dass {THUMB} keinen Link enth&auml;lt, wenn es keinen Link
   gibt, die
   &quot;lange Variante&quot; dann trotzdem einen Link erzeugt.<br>
-  Daher wird man meist {THUMB} und {PICTURE} verwenden und nur unter besondernen
+  Daher wird man meist [THUMB], {THUMB} und {PICTURE} verwenden und nur unter
+  besondernen
 Umst&auml;nden die volle HTML-Version.</p>
 <p>[PICTURE] kann eventuell auch eine volle URL (beginnend mit http://) enthalten.
 Dann funktioniert {PICTURE} bzw{THUMB} immer noch.</p>
-<p>Ist eine Zoom Class angegeben, wird ein Link auf da Zoom-Bild gesetzt.<br>
+<p>Ist eine Zoom Class oder Rel angegeben, wird ein Link auf da Zoom-Bild gesetzt.<br>
   Wenn eines der 3 Extra-Felder ([XTRA1-3]) den Namen &quot;Picture Link&quot; hat und
-  mit http beginnt, wird dieser Link bei {PICTURE} verwendet.<br>
+mit http beginnt, wird dieser Link bei {PICTURE} verwendet.</p>
+<p><strong>[ADDITIONAL_PICTURES]</strong><br>
+  Zus&auml;tzlich k&ouml;nnen weitere Bilder hochgeladen werden, die &uuml;ber den
+  Platzhalter [ADDITIONAL_PICTURES] ausgegeben werden k&ouml;nnen.<br>
+  Die Reihenfolge ist
+  alpabetisch. Eine 
+Sortierung oder Beschriftung ist derzeit nicht m&ouml;glich.</p>
+<p>Hinweis: Dieser Platzhalter kann auch im Langtext eingesetzt werden! Unbedingt
+  dabei Format &quot;Normal DIV&quot; verwenden.<br>
 </p>
 <hr>
 <h2><a name="loop" id="loop"></a>&Uuml;bersicht-Seite</h2>
@@ -125,6 +138,16 @@ m&ouml;gliche Platzhalter:</p>
 [CONTENT_EXTRA]: Das Extra-Feld (WYSIWYG)<br>
 [CONTENT_LONG]: Inhalt des Lang-Textes<br>
 [CONTENT_LONG_FIRST]: Gibt nur im ersten Eintrag den Lang-Text aus</p>
+<p><strong>Gruppen:</strong><br>
+  Gruppen wie im News-Modul sind m&ouml;glich. Ein Topic kann aber in mehreren Gruppen
+    sein. <br>
+  Dazu ist in<em> module_settings.php </em>folgende
+  Zeile auskommentieren und entsprechend &auml;ndern. Die Nummern (nur diese werden
+  gespeichert!) sind frei w&auml;hlbar und k&ouml;nnen dem News-Modul angepasst werden.<br>
+//$topics_groups = array('group2'=&gt;2,'group3'=&gt;3,'group4'=&gt;4);</p>
+<p>Angesprochen werden diese Gruppen &uuml;ber den Parameter &quot;tg&quot;, also zB. ?tg=4<br>
+  M&ouml;glich ist auch ?tg=1,4 f&uuml;r Gruppe 1 und 4, dazu muss die Reihenfolge aber
+    geachtet werden.</p>
 <hr>
 <h2><a name="topic" id="topic"></a>Thema (Einzelansicht)</h2>
 <p>Praktisch alle Platzhalter, die in der &Uuml;bersichtseite m&ouml;glich
@@ -171,6 +194,9 @@ ist.<br>
 [TOPIC_ID] {TITLE} [TITLE] [LINK] [SHORT_DESCRIPTION] [PICTURE_DIR] [PICTURE]<br>
 Da hier nur selten Thumbs verwendet werden, sind die Platzhalter auf das N&ouml;tigste
 reduziert.</p>
+<p>Typisch:<br>
+  &lt;a class=&quot;pnsa&quot; href=&quot;[LINK]&quot;&gt;&lt;img class=&quot;pnsathumb&quot; src=&quot;[PICTURE_DIR]/thumbs/[PICTURE]&quot; alt=&quot;&quot; /&gt;&lt;b&gt;[TITLE]&lt;/b&gt; [SHORT_DESCRIPTION]<br>
+  &lt;br style=&quot;clear:both;&quot; /&gt;&lt;/a&gt;</p>
 <p>Hinweis: Diese Einstellungen werden sowohl im Frontend als auch im Backend
   benutzt, wo aber verschiedene Stylesheets gelten. Deswegen kann es besser sein,
   Styles
@@ -178,9 +204,15 @@ reduziert.</p>
   style=&quot;display:block; ....&gt;</p>
 <hr>
 <h2><a name="comments" id="comments"></a>Kommentare</h2>
-<p>Einige Einstellungen sind nur &quot;Voreinstellungen&quot;, die an anderer Stelle individuell
+<p>Die Vorgaben (aus, moderiert, verz&ouml;gert/sofort freischalten) k&ouml;nnen pro Topic
+  und generell eingestellt werden. <br>
+  Bei einem Topic bewirkt die Einstellung &quot;Default (XX)&quot;, dass die Einstellungen
+unter Optionen verwendet werden.<br>
+Die Checkbox &quot;Individuelle Einstellungen der Topics ignorieren.&quot; erzwingt bei
+allen Topics diese Einstellung.</p>
+<p>  Einige Einstellungen sind nur &quot;Voreinstellungen&quot;, die an anderer Stelle individuell
   vergeben werden k&ouml;nnen, etwa:<br>
-  &quot;Link zur Website&quot;: Die Art des Links kann bei jedem Kommentar einzeln ge&auml;ndert
+&quot;Link zur Website&quot;: Die Art des Links kann bei jedem Kommentar einzeln ge&auml;ndert
 werden.</p>
 <p>Platzhalter:<br>
 {NAME} [NAME] [EMAIL] [WEBSITE] [COMMENT] [DATE] [TIME] [USER_ID]<br>
@@ -190,6 +222,7 @@ den Feldinhalt.<br>
 [EMAIL] sollte nie verwendet werden.</p>
 <p>Die Kommentarfunktion ist noch verbesserungsw&uuml;rdig, sie reicht aber in den
   allermeisten F&auml;llen aus.</p>
+<p>Zu jedem Kommentar bekommt derjenige ein eMail, der das Topic angelegt hat.</p>
 <hr>
 <h2><a name="various" id="various"></a>Weiteres</h2>
 <p>Presets sind kleine Javascript-Dateien, die die Feldinhalte &auml;ndern - so als
@@ -530,6 +563,10 @@ Link erzeugt.</p>
     <td>[COMMENFRAME]</td>
     <td>Die iFrame zum Kommentieren.  Wird der Platzhalter nicht angegeben, wird
       er wie in den vorigen Versionen gehandhabt.</td>
+  </tr>
+  <tr>
+    <td>[ADDITIONAL_PICTURES]</td>
+    <td>Gibt weitere Bilder aus. Kann auch direkt im Langtext sein.</td>
   </tr>
   <tr>
     <td>&nbsp;</td>

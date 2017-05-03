@@ -32,7 +32,7 @@ $mod_dir = basename(dirname(__FILE__));
 $tablename = $mod_dir;
 
 $query = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$mod_dir);
-$fetch = $query->fetchRow();
+$fetch = $query->fetchRow();	
 // Add field groups_id
 if(!isset($fetch['groups_id'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$mod_dir."` ADD `groups_id` VARCHAR(255) NOT NULL DEFAULT ''")) {
@@ -42,9 +42,9 @@ if(!isset($fetch['groups_id'])){
 } else {
 	echo '<span class="ok">Database Field groups_id exists, update not needed</span><br />';
 }
-
+	
 $query = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$mod_dir.'_comments');
-$fetch = $query->fetchRow();
+$fetch = $query->fetchRow();	
 // Add field commentextra
 if(!isset($fetch['commentextra'])){
 	if($database->query("ALTER TABLE `".TABLE_PREFIX."mod_".$mod_dir."_comments` ADD `commentextra` VARCHAR(255) NOT NULL DEFAULT ''")) {
@@ -53,8 +53,8 @@ if(!isset($fetch['commentextra'])){
 		echo '<span class="bad">'.$database->get_error().'</span><br />';
 } else {
 	echo '<span class="ok">Database Field commentextra exists, update not needed</span><br />';
-}
-
+}	
+	
 
 // create the RSS count table
 $SQL = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_topics_rss_count` ( ".

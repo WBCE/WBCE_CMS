@@ -1,5 +1,5 @@
-﻿/*
-Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+/*
+Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'flash', 'bn', {
@@ -11,7 +11,7 @@ CKEDITOR.plugins.setLang( 'flash', 'bn', {
 	alignAbsMiddle: 'Abs উপর',
 	alignBaseline: 'মূল রেখা',
 	alignTextTop: 'টেক্সট উপর',
-	bgcolor: 'বেকগ্রাউন্ড রং',
+	bgcolor: 'পৃষ্ঠতলের রং',
 	chkFull: 'Allow Fullscreen', // MISSING
 	chkLoop: 'লূপ',
 	chkMenu: 'ফ্ল্যাশ মেনু এনাবল কর',

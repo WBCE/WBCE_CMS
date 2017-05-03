@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.1.8
- * @lastmodified    October 22, 2014
+ * @version         0.1.9
+ * @lastmodified    Februari 20, 2015
  *
  */
 
@@ -28,6 +28,3 @@ $database->query("DROP TABLE IF EXISTS `$table_pages`");
 $database->query("DROP TABLE IF EXISTS `$table_ref`");
 $database->query("DROP TABLE IF EXISTS `$table_key`");
 $database->query("DROP TABLE IF EXISTS `$table_lang`");
-
-
-?>

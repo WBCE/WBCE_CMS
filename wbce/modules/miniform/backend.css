@@ -7,7 +7,7 @@
 }
 
 .msgtable tr{
-	background: #F0F0F0;
+	background: #ddd;
 }
 
 .msgtable td{
@@ -15,20 +15,9 @@
 }
 
 .settable .small {
-	width: 120px;
+	width: 190px;
 }
-.settable a.recved {
-	display: bock;
-	background: #999;
-	color: #fff;
-	padding: 5px 10px;
-	border: 1px solid #666;
-	text-decoration: none;
-}
-.settable a.recved:hover {
-	text-decoration: none;
-	background: #777;
-}
+
 
 .msgtable .small {
 	width: 100px;
@@ -39,6 +28,73 @@
 	padding: 10px;
 	background: #fff;
 	border: 1px solid #333;
-	max-height: 270px;
+	/* max-height: 270px; */
 	overflow: auto;
 }
+
+span.sleft {
+	display: inline-block;
+	width: 150px;
+}
+a.mf-button,
+.mf-button {
+	font-weight: 400;
+	display: inline-block;
+	border: 1px solid #666;
+	background: #777 !important;
+	color: #fff;
+	padding: 4px 15px;
+	border-radius: 3px;
+	margin-right: 10px;
+	text-align: center;
+	-webkit-transition: background-color 200ms linear;
+    -ms-transition: background-color 200ms linear;
+    transition: background-color 200ms linear;
+}
+a.mf-button:hover,
+.mf-button:hover {
+	background: #aaa !important;
+}
+
+.mf-input {
+    padding: 5px;
+    width: 250px;
+    border: 1px solid #555;
+    border-radius: 2px;
+    margin-right: 7px;
+}
+.mf-input:focus {
+    border: 1px solid rgba(41, 128, 185,1.0);
+	box-shadow: 0 1px 0 hsla(210,65%,9%,.02) inset, 0 0 2px hsla(210,65%,9%,.1) inset, 0 1px 0 hsla(0,0%,100%,.2)
+}
+.mf-input.wide {
+	width: 500px;
+}
+.mf-loading {
+	font-weight: bold;
+	background: #ddd;
+	border: 2px solid #aaa;
+	color: #000;
+	padding: 5px 15px;
+	border-radius: 3px;
+	margin-bottom: 10px;
+}
+.mf-error {
+	font-weight: bold;
+	background: rgba(192, 57, 43,0.7);
+	border: 2px solid rgba(192, 57, 43,1.0);
+	color: #fff;
+	padding: 5px 15px;
+	border-radius: 3px;	
+	margin-bottom: 10px;
+}
+.mf-success {
+	font-weight: bold;
+	background: rgba(39, 174, 96,0.7);
+	border: 2px solid rgba(39, 174, 96,1.0);
+	color: #fff;
+	padding: 5px 15px;
+	border-radius: 3px;	
+	margin-bottom: 10px;
+}
+

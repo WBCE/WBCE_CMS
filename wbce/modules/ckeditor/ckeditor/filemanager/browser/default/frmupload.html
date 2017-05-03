@@ -1,33 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<!--
- * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2010 Frederico Caldeira Knabben
- *
- * == BEGIN LICENSE ==
- *
- * Licensed under the terms of any of the following licenses at your
- * choice:
- *
- *  - GNU General Public License Version 2 or later (the "GPL")
- *    http://www.gnu.org/licenses/gpl.html
- *
- *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
- *    http://www.gnu.org/licenses/lgpl.html
- *
- *  - Mozilla Public License Version 1.1 or later (the "MPL")
- *    http://www.mozilla.org/MPL/MPL-1.1.html
- *
- * == END LICENSE ==
- *
- * Page used to upload new files in the current folder.
--->
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>File Upload</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link href="browser.css" type="text/css" rel="stylesheet" >
-		<script type="text/javascript" src="js/common.js"></script>
-		<script type="text/javascript">
+<head>
+<title>File Upload</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="browser.css" type="text/css" rel="stylesheet" >
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
 
 function SetCurrentFolder( resourceType, folderPath )
 {
@@ -93,16 +71,25 @@ window.onload = function()
 {
 	window.top.IsLoadedUpload = true ;
 }
-		</script>
-	</head>
-	<body>
-		<form id="frmUpload" action="" target="frmUploadWorker" method="post" >
-			<table class="fullHeight" cellspacing="0" cellpadding="0" width="100%" border="0">
-			<tr>
-			<td nowrap="nowrap">&nbsp;</td>
-			</tr>
-			</table>
-		</form>
-	</body>
-
+</script>
+</head>
+<body>
+<form id="frmUpload" action="" target="frmUploadWorker" method="post" enctype="multipart/form-data" onsubmit="return OnSubmit();">
+<table class="fullHeight" cellspacing="0" cellpadding="0" width="100%" border="0">
+<tr>
+<td nowrap="nowrap"><fieldset class="fUpload">
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
+<tr>
+<td width="60"><img alt="Upload a new file in this folder" src="images/newFile.gif" /></td>
+<td width="260"><input id="NewFile" name="NewFile" style="width: 100%" type="file"></td>
+<td>&nbsp;
+<input id="btnUpload" type="submit" value="Upload"></td>
+<td><div id="eUploadMessage"></div></td>
+</tr>
+</table>
+</fieldset></td>
+</tr>
+</table>
+</form>
+</body>
 </html>

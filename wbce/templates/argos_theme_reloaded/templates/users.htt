@@ -1,0 +1,56 @@
+<!-- BEGIN main_block -->
+<h2>
+	{HEADING_ACCESS} &raquo; {HEADING_USERS}
+	<div class="headline-link">
+		<i class="fa fa-users"></i>
+		<a href="{ADMIN_URL}/groups/index.php">{TEXT_MANAGE_GROUPS}</a>
+	</div>
+</h2>
+
+<form name="users" action="users.php" method="post" class="fg12 content-box">
+	{FTAN}
+	<input type="hidden" name="userstatus" value="{USER_STATUS}">
+
+	<h3 id="user-type" class="fg12 green">
+		<button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times red" ></button>
+		<span>{HEADING_MODIFY_DELETE_USER}</span>
+	</h3>
+	<div id="user-list" class="fg12">
+		<!-- BEGIN list_block -->
+		<label>
+			<input type="radio" name="user_id" value="{VALUE}" {STATUS}>
+			{NAME}
+		</label>
+		<br>
+		<!-- END list_block -->
+	</div>
+	<div class="fg6">
+		<button type="submit" name="modify" value="{TEXT_MODIFY}" class="{DISPLAY_MODIFY}">
+			<i class="fa fa-fw fa-save"></i>
+			{TEXT_MODIFY}
+		</button>
+	</div>
+	<div class="fg6 right">
+		<button type="submit" name="delete" value="{TEXT_DELETE}" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE} danger">
+			<i class="fa fa-fw fa-remove"></i>
+			{TEXT_DELETE}
+		</button>
+	</div>
+</form>
+
+<script>
+	$(document).ready(function(){
+		$("#user-status").click(function() {
+			window.location = 'index.php?status={USER_STATUS}';
+		});
+		if (window.location.search == '?status=1') {
+			$('#user-status').removeClass('fa-user-times red').addClass('fa-user green');
+			$('#user-type').removeClass('green').addClass('red');
+		} else {
+			$('#user-status').removeClass('fa-user green').addClass('fa-user-times red');
+			$('#user-type').removeClass('red').addClass('green');
+		}
+	});
+</script>
+
+<!-- END main_block -->

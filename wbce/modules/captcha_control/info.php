@@ -8,9 +8,6 @@
  * @license         GPLv2 or any later
  */
 
-//no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
-
 $module_directory 	= 'captcha_control';
 $module_name        = 'Captcha and Advanced-Spam-Protection (ASP) Control';
 $module_function    = 'tool';

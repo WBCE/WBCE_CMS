@@ -27,7 +27,7 @@ if(!file_exists(WB_PATH.'/modules/'.$mod_dir.'/languages/info-'.LANGUAGE.'.php')
 	
 
 
-
+$use_getfrom = true; $use_presets = true; $use_pictures = 1; $allow_global_settings_change = 1; //outdated options
 
 if ($use_getfrom) { echo '<a href="#" onclick="makevisible(\'getfromtable\');" >Get from</a>'; }
 if ($use_getfrom && $use_presets) echo " | ";
@@ -77,7 +77,7 @@ if ($use_presets) {
 
 <form name="presets" action="#" method="get" style="margin: 0;">
 <select name="getpresets" id="getpresets" onchange="changepresets(this.options[this.selectedIndex].value);">  
-     <option disabled="disabled" value="--">------------------------------</option>';
+     <option disabled="disabled" value="--">------------------------------</option> <option value="--">none</option>';
 	 
 	//check if theres a default file in the template folder:
 	$theq = "SELECT template FROM ".TABLE_PREFIX."pages WHERE page_id = ".$page_id;
@@ -92,20 +92,18 @@ if ($use_presets) {
 	}
 	
 	if (file_exists(WB_PATH.'/templates/'.$thistemplate.'/topics-preset.js')) {
-		echo '<option value="../../templates/'.$thistemplate.'/topics-preset.js">Template default</option> <option disabled="disabled" value="--">------------------------------</option>'; 	
+		echo '<option value="../../templates/'.$thistemplate.'/topics-preset.js">Template default</option><option disabled="disabled" value="--">------------------------------</option>'; 	
 	}
 	
 	 
 	$presets_dir = opendir($presets_files);				
-	while ($file=readdir($presets_dir)) {
-		if ($file != "." && $file != "..") {						
-			if (preg_match('.js',$file)) {
-			$filename = substr($file, 0, -3);
-			if ($filename == "default") continue;
-			echo '<option value="'.$filename.'">'.$filename.'</option>'; 
-			}
-		}
-	}
+        while ($file=readdir($presets_dir)) {
+                if ($file != "." && $file != "..") {									
+                    $filename = substr($file, 0, -3);
+                    if ($filename == "default") continue;
+                    echo '<option value="'.$filename.'">'.$filename.'</option>'; 
+                }
+	   }
 	echo '</select></form>
 	</td><td><div id="presetsdescription">NOTE: the presets-option will change the field contents. If you dont want to keep the changes, do NOT save!</div></td></tr></table>';
 
@@ -144,9 +142,9 @@ if(!isset($settings_fetch['various_values'])){
 $use_commenting_settings = (int) $vv[3];
 if ($use_commenting_settings < 0) {$use_commenting_settings = 0;}
 
-$short_textareaheight = (int) $vv[0]; if ($short_textareaheight < 0) {$short_textareaheight = 0;}
-$long_textareaheight = (int) $vv[1]; if ($long_textareaheight == -2) {$long_textareaheight = 400;}
-$extra_textareaheight = (int) $vv[2]; if ($extra_textareaheight == -2) {$extra_textareaheight = 300;}
+$short_textareaheight = (int) $vv[0]; if ($short_textareaheight < 0 AND $short_textareaheight > -10) {$short_textareaheight = 0;}
+$long_textareaheight = (int) $vv[1]; if ($long_textareaheight < 0 AND $long_textareaheight > -10) {$long_textareaheight = 400;}
+$extra_textareaheight = (int) $vv[2]; if ($extra_textareaheight < 0 AND $extra_textareaheight > -10) {$extra_textareaheight = 300;}
 $use_commenting_settings = (int) $vv[3]; if ($use_commenting_settings < 0) {$use_commenting_settings = 0;}
 
 $emailsettings = (int) $vv[4]; if ($emailsettings < 0) {$emailsettings = 2;} //Wie bisher: Pflichtfeld
@@ -167,29 +165,47 @@ if(!isset($settings_fetch['picture_values'])){
 
 $w_zoom = (int) $pv[0]; if ($w_zoom == -2) {$w_zoom = 0;}
 $h_zoom = (int) $pv[1]; if ($h_zoom == -2) {$h_zoom = 1000;}
-$w_view = (int) $pv[2]; if ($w_view == -2) {$w_view = 300;}
+$w_view = (int) $pv[2]; if ($w_view == -2) {$w_view = 380;}
 $h_view = (int) $pv[3]; if ($h_view == -2) {$h_view = 0;}
-$w_thumb = (int) $pv[4]; if ($w_thumb == -2) {$w_thumb = 70;}
-$h_thumb = (int) $pv[5]; if ($h_thumb == -2) {$h_thumb = 70;}
+$w_thumb = (int) $pv[4]; if ($w_thumb == -2) {$w_thumb = 100;}
+$h_thumb = (int) $pv[5]; if ($h_thumb == -2) {$h_thumb = 100;}
 $zoomclass = $pv[6]; if ($zoomclass == "-2") {$zoomclass = "fbx";}
 $zoomrel= $pv[7]; if ($zoomrel == "-2") {$zoomrel = "fbx";}
 
 $w_zoom2 = (int) $pv[8]; if ($w_zoom2 == -2) {$w_zoom2 = 0;}
 $h_zoom2 = (int) $pv[9]; if ($h_zoom2 == -2) {$h_zoom2 = 1000;}
-$w_view2 = (int) $pv[10]; if ($w_view2 == -2) {$w_view2 = 300;}
+$w_view2 = (int) $pv[10]; if ($w_view2 == -2) {$w_view2 = 380;}
 $h_view2 = (int) $pv[11]; if ($h_view2 == -2) {$h_view2 = 0;}
-$w_thumb2 = (int) $pv[12]; if ($w_thumb2 == -2) {$w_thumb2 = 70;}
-$h_thumb2 = (int) $pv[13]; if ($h_thumb2 == -2) {$h_thumb2 = 70;}
+$w_thumb2 = (int) $pv[12]; if ($w_thumb2 == -2) {$w_thumb2 = 100;}
+$h_thumb2 = (int) $pv[13]; if ($h_thumb2 == -2) {$h_thumb2 = 100;}
 $zoomclass2 = $pv[14]; if ($zoomclass2 == "-2") {$zoomclass2 = "fbx";}
 $zoomrel2= $pv[15]; if ($zoomrel2 == "-2") {$zoomrel2 = "fbx";}
 
+$nameArr = array('w_zoom', 'w_view', 'w_thumb', 'h_zoom', 'h_view', 'h_thumb');
+foreach ($nameArr as $n) {
+	if ($$n == 0) {$$n = 'prop.';}
+	$n.='2';
+	if ($$n == 0) {$$n = 'prop.';}
+}
 
 
 
-$setting_pnsa_string = stripslashes($settings_fetch['pnsa_string']).$serializedelimiter.$serializedelimiter.$serializedelimiter.$serializedelimiter; //Add some empty ;			
 //Parse one string into 5 fields:
-$setting_pnsa_array = explode($serializedelimiter,$setting_pnsa_string);
+$setting_pnsa_string = stripslashes($settings_fetch['pnsa_string']);
+//$test = unserialize ($setting_pnsa_string);
+//var_dump($test);
 
+/*
+//if (isset($settings_fetch['pnsa_array']) AND unserialize($settings_fetch['pnsa_array']) == true) {
+if ( isset($settings_fetch['pnsa_array']) ) {
+	//neue Methode:
+	$setting_pnsa_array = unserialize(base64_decode($settings_fetch['pnsa_array']));
+} else {	
+	//Alte Methode:	
+		
+}
+*/
+$setting_pnsa_array = explode($serializedelimiter,$setting_pnsa_string);
 if (is_array($setting_pnsa_array) AND count($setting_pnsa_array) > 4 ) {
 	$see_also_link_title = $setting_pnsa_array[0];
 	$next_link_title = $setting_pnsa_array[1];
@@ -197,10 +213,20 @@ if (is_array($setting_pnsa_array) AND count($setting_pnsa_array) > 4 ) {
 	$setting_pnsa_string = $setting_pnsa_array[3];
 	$setting_sa_string = $setting_pnsa_array[4];				
 } else {
+/*
+	//OLD Fallback
+	include(WB_PATH.'/modules/'.$mod_dir.'/defaults/add_settings.default.php');
+	$setting_pnsa_string = stripslashes($pnsa_string_raw);
 	$setting_sa_string = $setting_pnsa_string;
+	$see_also_link_title = '<h4>'.$MOD_TOPICS['SEE_ALSO_FRONTEND'].'</h4>';
+	$next_link_title = '<h4>'.$MOD_TOPICS['SEE_NEXT_POST'].'</h4>';
+	$previous_link_title = '<h4>'.$MOD_TOPICS['SEE_PREV_POST'].'</h4>';
+	*/
+	
 }	
 
-//Neu: Enthält auch die Daten zu den additional pictures
+//OLD Fallback
+//Enthaelt auch die Daten zu den additional pictures
 $setting_additionalpics_string = '{THUMB}';
 if (is_array($setting_pnsa_array) AND count($setting_pnsa_array) > 5 ) {
 	$setting_additionalpics_string = $setting_pnsa_array[5];
@@ -247,11 +273,11 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 	<table class="settingsleft" cellpadding="2" cellspacing="0">		
 		<tr>
 			<td class="setting_name" width="20%"><?php echo $TEXT['TITLE']; ?>:</td>
-			<td class="setting_fields"><input class="inputf" type="text" name="section_title" value="<?php echo htmlspecialchars($settings_fetch['section_title']); ?>" style="width: 98%;" maxlength="255" /></td>
+			<td class="setting_fields"><input class="tpfw98" type="text" name="section_title" value="<?php echo htmlspecialchars($settings_fetch['section_title']); ?>"  maxlength="255" /></td>
 		</tr>
 		<tr>
 			<td class="setting_name" width="20%"><?php echo $TEXT['DESCRIPTION']; ?>:</td>
-			<td class="setting_fields"><textarea name="section_description" rows="10" cols="1" style="width: 98%; height: 50px;"><?php echo htmlspecialchars($settings_fetch['section_description']); ?></textarea></td>
+			<td class="setting_fields"><textarea name="section_description" rows="10" cols="1" class="tpfw98" style="height: 50px;"><?php echo htmlspecialchars($settings_fetch['section_description']); ?></textarea></td>
 		</tr>
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 		<tr>
@@ -259,17 +285,20 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		$use_timebased_publishing = (int) $settings_fetch['use_timebased_publishing'];
 		if ($use_timebased_publishing == 3 AND $othersectionspresent < 1) { $use_timebased_publishing = 0; }
 		
+		
+		
+		
 		if ($is_master != '') { ?>
 			<tr><td class="setting_name"><?php echo $MOD_TOPICS['TOPICSMASTER_SELECT']; ?>:</td>
 			<td class="setting_fields">
-				<input class="inputf" type="text" name="is_master_for" value="<?php echo $is_master; ?>" style="width: 98%;" maxlength="255" />
+				<input class="inputf tpfw98" type="text" name="is_master_for" value="<?php echo $is_master; ?>"  maxlength="255" />
 				<input type="hidden" name="use_timebased_publishing" value="0" />
 			</td>
 		<?php } else { ?>
 		
 			<td class="setting_name"><?php echo $MOD_TOPICS['TIMEBASED_PUBL']; ?>:</td>
 			<td class="setting_fields">
-				<select name="use_timebased_publishing" style="width: 99%;"  id="use_timebased_publishing" onchange="topictimefieldchanged(1,this.options[this.selectedIndex].value);">					
+				<select name="use_timebased_publishing" class="tpfw98"  id="use_timebased_publishing" onchange="topictimefieldchanged(1,this.options[this.selectedIndex].value);">					
 					<option value="0" <?php if($use_timebased_publishing == 0) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['DATE_USAGE_0']; ?></option>
 					<option value="1" <?php if($use_timebased_publishing == 1) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['DATE_USAGE_1']; ?></option>
 					<option value="2" <?php if($use_timebased_publishing == 2) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['DATE_USAGE_2']; ?></option>
@@ -301,7 +330,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		<tr id="autoarchivetr" style="display: <?php if($use_timebased_publishing == 3) {echo "";} else {echo "none";} ?>" >
 			<td class="setting_name"> <?php echo $MOD_TOPICS['AUTO_ARCHIVE'] ?></td>
 			<td>
-			<select name="autoarchive_action" style="width: 30%;"  onchange="topictimefieldchanged(2,this.options[this.selectedIndex].value);">					
+			<select name="autoarchive_action" class="tpfw30" style="width: 30%;"  onchange="topictimefieldchanged(2,this.options[this.selectedIndex].value);">					
 				<option value="0" <?php if($autoarchive_action == 0) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['AUTO_ARCHIVE_0']; ?></option>
 				<option value="1" <?php if($autoarchive_action == 1) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['AUTO_ARCHIVE_1']; ?></option>
 				<option value="2" <?php if($autoarchive_action == 2) { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['AUTO_ARCHIVE_2']; ?></option>
@@ -359,7 +388,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		<tr>
 			<td class="setting_name"><?php echo $MOD_TOPICS['SORT_TOPICS']; ?>:</td>
 			<td class="setting_fields">
-				<select name="sort_topics" style="width: 99%;">
+				<select name="sort_topics" class="tpfw98">
 					<option value="0" <?php if($settings_fetch['sort_topics'] == '0') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['SORT_POSITION']; ?></option>
 					<option value="1" <?php if($settings_fetch['sort_topics'] == '1') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['SORT_PUBL']; ?></option>
 					<!--option value="2" <?php if($settings_fetch['sort_topics'] == '2') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['SORT_SCORE']; ?></option-->
@@ -380,12 +409,33 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 			<?php 				
 			$topics_per_page = (int) $settings_fetch['topics_per_page'];
 			if ($topics_per_page < 0) {$topics_per_page = 0;}
-			echo '<input type="text" name="topics_per_page" style="width: 30px;" value="'.$topics_per_page.'" />';
+			echo '<input type="text" name="topics_per_page" style="width: 60px;" value="'.$topics_per_page.'" />';
 			echo ' (0: '.$TEXT['UNLIMITED'].', 1: '.$MOD_TOPICS['SINGLETOPIC'].')';
 			
 			?>
 			</td>
 		</tr>
+		<?php 
+		//========================================================================//
+		//is_master Option:
+		if ($is_master == '') {
+			$theq = "SELECT topic_id FROM ".TABLE_PREFIX."mod_".$mod_dir." WHERE section_id > '".$section_id."'";	
+			$query = $database->query($theq);				
+			if($query->numRows() == 0) { //OK, no topics in this section
+				$theq = "SELECT section_id FROM ".TABLE_PREFIX."mod_".$mod_dir."_settings WHERE section_id > '0' AND section_id <> '".$section_id."' AND picture_dir = '".$settings_fetch['picture_dir']."' AND is_master_for = '' ";	
+				$query = $database->query($theq);
+				if($query->numRows() > 1) { //OK, more than 1 section which is NOT master
+					echo '<tr>
+				<td class="setting_name">Master Section:</td>
+				<td class="setting_fields">
+				<input type="checkbox" name="is_master_for_check" value="same picture dir" /> Use as aggregator for other topic-sections.
+				</td>
+				</tr>
+				';
+				}
+			}
+		}
+		?>
 	</table>
 
 	<div class="infodiv"><?php echo $MOD_TOPICS_INFO['SECTIONSETTINGS']; ?>
@@ -407,6 +457,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 	<td class="setting_fields">	
 		
 		<table class="picture_values">
+		<tr><td>&nbsp;</td><td colspan=2>Standard:</td><td colspan=2>Additional:</td></tr>
 		<tr><td>&nbsp;</td><td>width:</td><td>height:</td><td>width*:</td><td>height*:</td></tr>
 		<tr><td>Zoom:</td>
 		<td><input type="text" name="w_zoom" id="w_zoom" size="4" value="<?php echo $w_zoom; ?>" style="width:40px; "></td><td><input type="text" name="h_zoom" id="h_zoom" size="4" value="<?php echo $h_zoom; ?>" style="width:40px; "></td>
@@ -430,7 +481,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		</tr>
 		<tr><td colspan="5">
 	[ADDITIONAL_PICTURES] Loop:<br/>
-	<textarea name="additionalpics_string" rows="3" cols="40" style="width: 98%; height: 30px;"><?php echo str_replace($raw, $friendly, $setting_additionalpics_string); ?></textarea>
+	<textarea name="additionalpics_string" rows="3" cols="40" class="tpfw98 tpfh30"><?php echo str_replace($raw, $friendly, $setting_additionalpics_string); ?></textarea>
 	</td></tr>
 		
 		</table>
@@ -451,15 +502,15 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 	<table class="settingsleft" cellpadding="2" cellspacing="0">		
 		<tr>
 			<td class="setting_name" width="20%"><?php echo $TEXT['HEADER']; ?>:</td>
-			<td class="setting_fields"><textarea name="header" rows="10" cols="1" style="width: 98%; height: 50px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['header'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="header" rows="10" cols="1" class="tpfw98" style="height: 50px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['header'])); ?></textarea></td>
 		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['LOOP']; ?>:</td>
-			<td class="setting_fields"><textarea name="topics_loop" rows="10" cols="1" style="width: 98%; height: 80px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['topics_loop'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="topics_loop" rows="10" cols="1" class="tpfw98" style="height: 80px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['topics_loop'])); ?></textarea></td>
 		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['FOOTER']; ?>:</td>
-			<td class="setting_fields"><textarea name="footer" rows="10" cols="1" style="width: 98%; height: 50px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['footer'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="footer" rows="10" cols="1" class="tpfw98" style="height: 50px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['footer'])); ?></textarea></td>
 		</tr>
 	</td></tr>
 	</table>
@@ -474,7 +525,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 	<table class="settingsleft" cellpadding="2" cellspacing="0">
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['HEADER']; ?>:</td>
-			<td class="setting_fields"><textarea name="topic_header" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['topic_header'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="topic_header" rows="10" cols="1" class="tpfw98" style="height: 60px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['topic_header'])); ?></textarea></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
@@ -482,11 +533,11 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['FOOTER']; ?>:</td>
-			<td class="setting_fields"><textarea name="topic_footer" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['topic_footer'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="topic_footer" rows="10" cols="1" class="tpfw98" style="height: 60px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['topic_footer'])); ?></textarea></td>
 		</tr>		
 		<tr>
 			<td class="setting_name"><?php echo $MOD_TOPICS['TOPICBLOCK2']; ?></td>
-			<td class="setting_fields"><textarea name="topic_block2" rows="10" cols="1" style="width: 98%; height: 80px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['topic_block2'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="topic_block2" rows="10" cols="1" class="tpfw98" style="height: 80px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['topic_block2'])); ?></textarea></td>
 		</tr>
 	</table>
 	<div class="infodiv"><?php echo $MOD_TOPICS_INFO['TOPIC']; ?>
@@ -502,34 +553,35 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 			<td class="setting_name"><br/><?php echo $TEXT['TITLE']; ?></td>
 			<td class="setting_fields">
 			<?php 
+			/*
 			$see_also_link_title = '<h4>'.$MOD_TOPICS['SEE_ALSO_FRONTEND'].'</h4>';
 			$next_link_title = '<h4>'.$MOD_TOPICS['SEE_NEXT_POST'].'</h4>';
 			$previous_link_title = '<h4>'.$MOD_TOPICS['SEE_PREV_POST'].'</h4>';
-			
+			*/
 			?>
 			
 			
 				<table width="98%" border="0" cellspacing="0" cellpadding="0">
 				  <tr>
-				    <td width="33%"><?php echo $MOD_TOPICS['SEE_ALSO_FRONTEND']; ?><br/><input class="inputf" name="see_also_link_title" type="text" maxlength="255" value="<?php echo htmlspecialchars($see_also_link_title); ?>" /></td>
-				     <td width="33%"><?php echo $MOD_TOPICS['SEE_NEXT_POST']; ?><br/><input class="inputf" name="next_link_title" type="text" maxlength="255" value="<?php echo htmlspecialchars($next_link_title); ?>" /></td>
-				     <td width="33%"><?php echo $MOD_TOPICS['SEE_PREV_POST']; ?><br/><input class="inputf" name="previous_link_title" type="text" maxlength="255" value="<?php echo htmlspecialchars($previous_link_title); ?>" /></td>
+				    <td width="33%"><?php echo $MOD_TOPICS['SEE_ALSO_FRONTEND']; ?><br/><input class="tpfw90" name="see_also_link_title" type="text" maxlength="255" value="<?php echo htmlspecialchars(stripslashes($see_also_link_title)); ?>" /></td>
+				     <td width="33%"><?php echo $MOD_TOPICS['SEE_NEXT_POST']; ?><br/><input class="tpfw90" name="next_link_title" type="text" maxlength="255" value="<?php echo htmlspecialchars(stripslashes($next_link_title)); ?>" /></td>
+				     <td width="33%"><?php echo $MOD_TOPICS['SEE_PREV_POST']; ?><br/><input class="tpfw90" name="previous_link_title" type="text" maxlength="255" value="<?php echo htmlspecialchars(stripslashes($previous_link_title)); ?>" /></td>
 			      </tr>
 			  </table>
 			</td>
 		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $MOD_TOPICS['SEE_ALSO_LOOP']; ?></td>			 
-			<td class="setting_fields"><textarea name="sa_string" rows="3" cols="40" style="width: 98%; height: 30px;"><?php echo str_replace($raw, $friendly, $setting_sa_string); ?></textarea></td>
+			<td class="setting_fields"><textarea name="sa_string" rows="3" cols="40" class="tpfw98 tpfh30" style="height: 30px;"><?php echo str_replace($raw, $friendly, stripslashes($setting_sa_string)); ?></textarea></td>
 		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $MOD_TOPICS['PREVNEXT_LOOP']; ?></td>
-			<td class="setting_fields"><textarea name="pnsa_string" rows="3" cols="40" style="width: 98%; height: 30px;"><?php echo str_replace($raw, $friendly, $setting_pnsa_string); ?></textarea></td>		
+			<td class="setting_fields"><textarea name="pnsa_string" rows="3" cols="40" class="tpfw98" style="height: 30px;"><?php echo str_replace($raw, $friendly, stripslashes($setting_pnsa_string)); ?></textarea></td>		
 		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $MOD_TOPICS['PNSA_MAX']; ?>:</td>
 			<td class="setting_fields">
-				<select name="pnsa_max" style="width: 98%;">
+				<select name="pnsa_max" class="tpfw98">
 					<option value="0"><?php echo $TEXT['NONE']; ?></option>
 					<?php
 					for($i = 1; $i <= 8; $i++) {					
@@ -556,7 +608,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['COMMENTING']; ?>:</td>
 			<td class="setting_fields">
-				<select name="commenting" style="width: 98%;">
+				<select name="commenting" class="tpfw98">
 					<option value="-1" <?php if($settings_fetch['commenting'] == '-1') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['ALLDISABLED']; ?></option>
 					<option value="0" <?php if($settings_fetch['commenting'] == '0') { echo 'selected="selected"'; } ?>><?php echo$TEXT['DISABLED']; ?></option>					
 					<option value="1" <?php if($settings_fetch['commenting'] == '1') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['MODERATED']; ?></option>
@@ -576,7 +628,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		<tr>
 			<td  width="20%"><?php echo $MOD_TOPICS['DEFAULT_HP_LINK']; ?>:</td>
 			<td>
-				<select name="default_link" style="width: 98%;">
+				<select name="default_link" class="tpfw98">
 					<option value="-1" <?php if($settings_fetch['default_link'] == '-1') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['HP_LINK_DISABLED']; ?></option>					
 					<option value="0" <?php if($settings_fetch['default_link'] == '0') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['HP_LINK_OFF']; ?></option>
 					<option value="1" <?php if($settings_fetch['default_link'] == '1') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['HP_LINK_MASKED']; ?></option>
@@ -589,7 +641,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		<tr>
 			<td  width="20%"><?php echo $TEXT['EMAIL']; ?>:</td>
 			<td>
-				<select name="emailsettings" style="width: 98%;">					
+				<select name="emailsettings" class="tpfw98">					
 					<option value="0" <?php if($emailsettings == '0') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['EMAIL_NONE']; ?></option>
 					<option value="1" <?php if($emailsettings == '1') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['EMAIL_OPTIONAL']; ?></option>
 					<option value="2" <?php if($emailsettings == '2') { echo 'selected="selected"'; } ?>><?php echo $MOD_TOPICS['EMAIL_REQUIRED']; ?></option>				
@@ -625,15 +677,15 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['COMMENTS'].' '.$TEXT['HEADER']; ?>:</td>
-			<td class="setting_fields"><textarea name="comments_header" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['comments_header'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="comments_header" rows="10" cols="1" class="tpfw98 tpfh60"><?php echo str_replace($raw, $friendly, ($settings_fetch['comments_header'])); ?></textarea></td>
 		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['COMMENTS'].' '.$TEXT['LOOP']; ?>:</td>
-			<td class="setting_fields"><textarea name="comments_loop" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['comments_loop'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="comments_loop" rows="10" cols="1" class="tpfw98 tpfh60"><?php echo str_replace($raw, $friendly, ($settings_fetch['comments_loop'])); ?></textarea></td>
 		</tr>
 		<tr>
 			<td class="setting_name"><?php echo $TEXT['COMMENTS'].' '.$TEXT['FOOTER']; ?>:</td>
-			<td class="setting_fields"><textarea name="comments_footer" rows="10" cols="1" style="width: 98%; height: 60px;"><?php echo str_replace($raw, $friendly, ($settings_fetch['comments_footer'])); ?></textarea></td>
+			<td class="setting_fields"><textarea name="comments_footer" rows="10" cols="1" class="tpfw98 tpfh60"><?php echo str_replace($raw, $friendly, ($settings_fetch['comments_footer'])); ?></textarea></td>
 		</tr>
 		
 		<tr>
@@ -666,9 +718,9 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		<td class="setting_fields">
 			<?php
 			
-			echo $TEXT['SHORT'].': <input class="inputf" style="width:24px;margin-right:20px;" name="short_textareaheight" type="text" maxlength="3" value="'.$short_textareaheight.'" /> ';
-			echo $TEXT['LONG'].': <input class="inputf" style="width:24px;margin-right:20px;"  name="long_textareaheight" type="text" maxlength="3" value="'.$long_textareaheight.'" /> ';
-			echo $MOD_TOPICS['EXTRA'].': <input class="inputf" style="width:24px;margin-right:20px;" name="extra_textareaheight" type="text" maxlength="3" value="'.$extra_textareaheight.'" /> ';
+			echo $TEXT['SHORT'].': <input class="inputf" style="width:24px;margin-right:20px;" name="short_textareaheight" type="text" maxlength="4" value="'.$short_textareaheight.'" /> ';
+			echo $TEXT['LONG'].': <input class="inputf" style="width:24px;margin-right:20px;"  name="long_textareaheight" type="text" maxlength="4" value="'.$long_textareaheight.'" /> ';
+			echo $MOD_TOPICS['EXTRA'].': <input class="inputf" style="width:24px;margin-right:20px;" name="extra_textareaheight" type="text" maxlength="4" value="'.$extra_textareaheight.'" /> ';
 			echo '<p>'.$MOD_TOPICS['EDITOR_HEIGHTS_HINT'].'</p><hr/>';
 			
 			
@@ -690,7 +742,8 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 </div>
 
 <script type="text/javascript">
-	showtabarea(1);
+	section_id = <?php echo $section_id; ?>;
+	showtabarea(0);
 </script>
 
 		
@@ -699,12 +752,12 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		<tr>
 			<td align="left">
 			<input type="hidden" name="gototopicslist" id="gototopicslist" value="" />
-			<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" /> <input type="submit" onclick="document.getElementById('gototopicslist').value = '1';" value="<?php echo $MOD_TOPICS['SAVE_FINISH']; ?>" />
+			<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" /> <input type="submit" onclick="document.getElementById('gototopicslist').value = '1';" value="<?php echo $MOD_TOPICS['SAVE_FINISH']; ?>" />
 			</td>
 			<td align="right">
 				<?php $backurl = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id;
 				if ($fredit == 1) {$backurl = WB_URL.'/modules/'.$mod_dir.'/modify_fe.php?page_id='.$page_id.'&section_id='.$section_id.'&fredit=1';} ?>
-				<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo $backurl; ?>';" style="width: 100px; margin-top: 5px;" />
+				<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo $backurl; ?>';"  />
 			</td>
 		</tr>
 	</table>

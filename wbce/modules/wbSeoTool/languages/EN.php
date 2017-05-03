@@ -12,7 +12,7 @@
  * @copyright   Christian M. Stefan
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  */
-
+$module_description          = 'This Admin-Tool provides some SEO handling help.';
 
 $TOOL_TEXT['NOSCRIPT_MESSAGE']  = "The browser you're using has JavaScript turn off. You'll need to turn it on, in order to work with this Admin-Tool";
 $TOOL_TEXT['CLICK2EDIT']        = 'Click to edit inline';

@@ -12,7 +12,7 @@
  * @copyright   Christian M. Stefan
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  */
-$module_description          = 'Mit diesem Tool kann man die META Einstellungen und URLs der Seiten in einem SeitenBaum bearbeiten.';
+$module_description          = 'Mit diesem Tool kann man die META Einstellungen und URLs der Seiten in einem Seitenbaum bearbeiten.';
 
 $TOOL_TEXT['NOSCRIPT_MESSAGE']  = "In dem von Ihnen verwendeten Browser ist JavaScript ausgeschaltet. F&uuml;r dieses Admin-Tool muss JavaScript eingeschaltet sein, damit es richtig funktionieren kann.";
 $TOOL_TEXT['CLICK2EDIT']        = 'klicken zum Bearbeiten';

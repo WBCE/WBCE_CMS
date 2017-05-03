@@ -1,28 +1,28 @@
 <?php
+/**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
+ */
+
+$module_directory = 'pagecloner';
+$module_name = 'Page Cloner';
+$module_function = 'tool';
+$module_version = '1.0.1';
+$module_platform = '2.8.x';
+$module_author = 'John Maats - PCWacht - Dietrich Roland Pehlke - Stephan Kuehn - vBoedefeld - WebBird';
+$module_license = 'GNU General Public License';
+$module_description = 'This addon allows you to clone a page or a complete tree with all page and sections. Copying of complete datasets from pagesections to their clones is limited to following modules: wywsiwyg, form, mpform, code, code2. Only the sections (with their default) settings are cloned for not supported modules.';
+$module_guid = '25bfa866-2ee3-4731-8f44-f49f01c8294a';
+$module_home = 'http://wbce.org';
 
 /*
-
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2008, Ryan Djurovich
-
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-------------------------------------------------------------------------------------------------------
-  Page Cloner module for Website Baker v2.6.x to WB 2.7
-	Module allows to clone existing pages
-  Licensed under GNU, written by John Maats
+  Page Cloner Changelog
 ------------------------------------------------------------------------------------------------------
     v1.0.1  (05.11.2015)
          !  fix page_id column detection (thx to florian: http://forum.wbce.org/viewtopic.php?pid=2137#p2137)
@@ -55,7 +55,7 @@
 		+   fixed Strict standards: mktime() warning
 		+   fixed use of undefined var $page_id
 		
-    v0.54   (Stephan Kühn; 10. August 2010)
+    v0.54   (Stephan KÃ¼hn; 10. August 2010)
         +   mpform support
         +   migrating the pagetree idea by pcwacht support 
         
@@ -80,14 +80,3 @@
 		+ initial release
 ------------------------------------------------------------------------------------------------------
 */
-
-$module_directory 		= 'pagecloner';
-$module_name 			= 'Page Cloner';
-$module_function 		= 'tool';
-$module_version 		= '1.0.1';
-$module_platform 		= '2.8.x';
-$module_author 			= 'John Maats - PCWacht - Dietrich Roland Pehlke - Stephan Kuehn - vBoedefeld - WebBird';
-$module_license 		= 'GNU General Public License';
-$module_description 	= 'This addon allows you to clone a page or a complete tree with all page and sections. Copying of complete datasets from pagesections to their clones is limited to following modules: wywsiwyg, form, mpform, code, code2. Only the sections (with their default) settings are cloned for not supported modules.';
-$module_guid 		    = '25bfa866-2ee3-4731-8f44-f49f01c8294a';
-$module_home 		    = 'http://wbce.org';

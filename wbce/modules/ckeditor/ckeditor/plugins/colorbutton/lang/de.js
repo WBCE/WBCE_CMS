@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'colorbutton', 'de', {
@@ -11,7 +11,7 @@ CKEDITOR.plugins.setLang( 'colorbutton', 'de', {
 		'8B4513': 'Braun',
 		'2F4F4F': 'Dunkles Schiefergrau',
 		'008080': 'Blaugrün',
-		'000080': 'Navy',
+		'000080': 'Marineblau',
 		'4B0082': 'Indigo',
 		'696969': 'Dunkelgrau',
 		B22222: 'Ziegelrot',
@@ -19,7 +19,7 @@ CKEDITOR.plugins.setLang( 'colorbutton', 'de', {
 		DAA520: 'Goldgelb',
 		'006400': 'Dunkelgrün',
 		'40E0D0': 'Türkis',
-		'0000CD': 'Medium Blau',
+		'0000CD': 'Mittelblau',
 		'800080': 'Lila',
 		'808080': 'Grau',
 		F00: 'Rot',
@@ -28,13 +28,13 @@ CKEDITOR.plugins.setLang( 'colorbutton', 'de', {
 		'008000': 'Grün',
 		'0FF': 'Cyan',
 		'00F': 'Blau',
-		EE82EE: 'Hellviolett',
+		EE82EE: 'Violett',
 		A9A9A9: 'Dunkelgrau',
 		FFA07A: 'Helles Lachsrosa',
 		FFA500: 'Orange',
 		FFFF00: 'Gelb',
 		'00FF00': 'Lime',
-		AFEEEE: 'Blaß-Türkis',
+		AFEEEE: 'Blasstürkis',
 		ADD8E6: 'Hellblau',
 		DDA0DD: 'Pflaumenblau',
 		D3D3D3: 'Hellgrau',
@@ -45,7 +45,29 @@ CKEDITOR.plugins.setLang( 'colorbutton', 'de', {
 		F0FFFF: 'Azurblau',
 		F0F8FF: 'Alice Blau',
 		E6E6FA: 'Lavendel',
-		FFF: 'Weiß'
+		FFF: 'Weiß',
+		'1ABC9C': 'Strong Cyan', // MISSING
+		'2ECC71': 'Emerald', // MISSING
+		'3498DB': 'Bright Blue', // MISSING
+		'9B59B6': 'Amethyst', // MISSING
+		'4E5F70': 'Grayish Blue', // MISSING
+		'F1C40F': 'Vivid Yellow', // MISSING
+		'16A085': 'Dark Cyan', // MISSING
+		'27AE60': 'Dark Emerald', // MISSING
+		'2980B9': 'Strong Blue', // MISSING
+		'8E44AD': 'Dark Violet', // MISSING
+		'2C3E50': 'Desaturated Blue', // MISSING
+		'F39C12': 'Orange', // MISSING
+		'E67E22': 'Carrot', // MISSING
+		'E74C3C': 'Pale Red', // MISSING
+		'ECF0F1': 'Bright Silver', // MISSING
+		'95A5A6': 'Light Grayish Cyan', // MISSING
+		'DDD': 'Light Gray', // MISSING
+		'D35400': 'Pumpkin', // MISSING
+		'C0392B': 'Strong Red', // MISSING
+		'BDC3C7': 'Silver', // MISSING
+		'7F8C8D': 'Grayish Cyan', // MISSING
+		'999': 'Dark Gray' // MISSING
 	},
 	more: 'Weitere Farben...',
 	panelTitle: 'Farben',

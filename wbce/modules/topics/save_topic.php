@@ -25,9 +25,9 @@ $t = topics_localtime();
 require_once(WB_PATH."/include/jscalendar/jscalendar-functions.php");
 
 // Include WB functions file
-require(WB_PATH.'/framework/functions.php');
+require_once(WB_PATH.'/framework/functions.php');
 // Include the ordering class
-require(WB_PATH.'/framework/class.order.php');
+require_once(WB_PATH.'/framework/class.order.php');
 
 // Get Settings
 $query_settings = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id = '$section_id'");
@@ -42,7 +42,7 @@ if($admin->get_post('title') == '') {
 	$title = "Untitled".$topic_id;
 	$active = 0;
 } else {
-	$title = $admin->get_post_escaped('title');
+	$title =  htmlspecialchars ($admin->get_post_escaped('title'));
 	$active = $admin->get_post_escaped('active');
 }
 
@@ -53,11 +53,15 @@ $short = $admin->get_post_escaped('short');
 $long = $admin->get_post_escaped('long');
 $extra = $admin->get_post_escaped('extra');
 
+
+/*
+$topics_use_plain_text = 0; //old option
 if( $topics_use_plain_text > 0) {
 	$short = strip_tags($short);
 	$long = strip_tags($long);
 	$extra = strip_tags($extra);
 }
+*/
 
 /**************************/
 //Use the extra-Editor only for pictures:
@@ -118,6 +122,8 @@ $picture = $admin->get_post_escaped('picture');
 $see_also = $admin->get_post_escaped('see_also');
 $gototopicslist =  (int) $_POST['gototopicslist'];
 
+
+
 $queryextra = '';
 
 //Move Topic?
@@ -131,6 +137,7 @@ if ($movetopic > 0) {
 
 
 $queryextra .= topics_updatetimeNuser ($topic_id);
+
 $t = topics_localtime();
 
 $publishedwhen = jscalendar_to_timestamp($admin->get_post_escaped('publishdate'));
@@ -164,6 +171,16 @@ $theqbase = " short_description = '$short_description', content_short = '$short'
 
 //New field groups_id:
 if (isset($topic_fetch['groups_id'])) { $theqbase .= ", groups_id = '$groups_id'"; }
+
+
+$transfer_ownership =  (int) $_POST['transfer_ownership'];
+if ($transfer_ownership == 1) {
+	$theqbase .= ", posted_by = '$user_id'";
+}
+
+
+
+
 
 // Update row
 $theq = "UPDATE ".TABLE_PREFIX."mod_".$tablename. " SET ".$theqbase.", title = '$title', link = '$topic_link', published_when = '$publishedwhen', published_until = '$publisheduntil', active = '$active' WHERE topic_id = '$topic_id'";

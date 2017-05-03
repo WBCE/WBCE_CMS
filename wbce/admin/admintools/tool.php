@@ -16,7 +16,7 @@ require_once(WB_PATH.'/framework/functions.php');
 
 //Fetch toolname
 $toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['tool']) : '');
-  
+
 // figure out if the form of the tool was send
 // the form needs to have exactly the right field names for this to function.
 // 'save_settings' set or 'action'set and == 'save'
@@ -44,16 +44,16 @@ if (isset ($_POST['admin_tools'])) {$toolCheck=false;}
 if ($toolCheck) {
 
     // Defining some path for use in the actual admin tool
-    $modulePath=WB_PATH."/modules/$toolDir/"; // we need this one later on too 
-    $languagePath=$modulePath.'languages/';    
+    $modulePath=WB_PATH."/modules/$toolDir/"; // we need this one later on too
+    $languagePath=$modulePath.'languages/';
     $returnUrl= ADMIN_URL."/admintools/tool.php?tool=$toolDir";
 
     // a few more helper vars (save values or reset to default settings)
     $saveSettings= (isset($_POST['save_settings'])|| (isset($_POST['action']) && strtolower($_POST['action']  ) == 'save'));
     $saveDefault = (isset($_POST['save_default']));
- 
 
-    // create admin-object 
+
+    // create admin-object
     $admin = new admin('admintools', 'admintools');
 
     // show title if not function 'save' is requested
@@ -66,18 +66,20 @@ if ($toolCheck) {
 
     // Loading language files we start whith default EN
     if(is_file($languagePath.'EN.php')) {
-        require_once($languagePath.'EN.php'); 
-    }        
+        require_once($languagePath.'EN.php');
+    }
     // Get actual language if exists
     if(is_file($languagePath.LANGUAGE.'.php')) {
-        require_once($languagePath.LANGUAGE.'.php'); 
-    } 
+        require_once($languagePath.LANGUAGE.'.php');
+    }
 
     //Load actual tool
+    echo '<div class="adminModuleWrapper '.$toolDir.'">';
     require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
+    echo '</div>';
 
     // output footer
-	$admin->print_footer();  
+	$admin->print_footer();
 } else {
     // invalid module name requested, jump to index.php of admintools
 	header('location: '.$returnToTools); exit;
@@ -86,14 +88,14 @@ if ($toolCheck) {
 // helper Function
 function toolMsg ($setError=false, $returnUrl="" ){
     global $admin;
-    global $MESSAGE;  
+    global $MESSAGE;
     if ($returnUrl=="" )   $returnUrl=ADMIN_URL.'/admintools/index.php';
 
     // Check if there is error, otherwise say successful
     if($setError) {
         //3rd param = false =>no auto footer, no exit
-	    $admin->print_error($setError, $returnUrl,false); 
+	    $admin->print_error($setError, $returnUrl,false);
     } else {
-	    $admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl); 
+	    $admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl);
     }
-} 
+}

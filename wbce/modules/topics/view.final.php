@@ -72,6 +72,7 @@
 			'[XTRA2]'				=> $txtr2, 
 			'[XTRA3]'				=> $txtr3, 
 			
+			'[CLASSES]'				=> $classes,
 			'[COMMENTSCOUNT]'		=> $comments_count, 
 			'[COMMENTSCLASS]'		=> $commentsclass,
 			'[TOPIC_SCORE]'			=> $topic_score, 
@@ -112,4 +113,5 @@
 	// Topic Block2
 	$topic_block2 = str_replace(array_keys($placeholders), array_values($placeholders), $setting_topic_block2);
 	define("TOPIC_BLOCK2", $topic_block2); //define always to prevent from double-Topics
+	if (!defined("MODULES_BLOCK2")) {define("MODULES_BLOCK2", $topic_block2); } 
 ?>	

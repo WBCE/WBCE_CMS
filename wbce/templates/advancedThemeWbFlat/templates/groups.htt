@@ -1,0 +1,30 @@
+<!-- BEGIN main_block -->
+
+<form name="groups" action="groups.php" method="post">
+ {FTAN}
+  <table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="100%" style="margin-bottom:10px;">
+	<tr style="background:#f0f0f0;">
+		<td align="left"><h2>{HEADING_MODIFY_DELETE_GROUP}</h2></td>
+		<td align="right">
+		<!-- BEGIN manage_users_block -->
+		<a href="{ADMIN_URL}/users/index.php">{TEXT_MANAGE_USERS}</a>
+		<!-- END manage_users_block -->
+		</td>
+     </tr>
+</table>
+
+  <select name="group_id" style="width: 500px;">
+    <!-- BEGIN list_block -->
+    <option value="{VALUE}">
+    {NAME}
+    </option>
+    <!-- END list_block -->
+  </select>
+  <input type="submit" name="modify" style="width: 100px;" value="{TEXT_MODIFY}" class="{DISPLAY_MODIFY}" />
+  <input type="submit" name="delete" style="width: 100px;" value="{TEXT_DELETE}" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE}" />
+</form>
+<br />
+<h2 class="{DISPLAY_ADD}">
+  {HEADING_ADD_GROUP}
+</h2>
+<!-- END main_block -->

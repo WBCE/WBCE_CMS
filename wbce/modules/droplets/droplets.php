@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WebsiteBaker Community Edition (WBCE)
  * Way Better Content Editing.
@@ -10,19 +11,27 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if(!defined('WB_PATH')) {
-
-	require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-	throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 	function do_eval($_x_codedata, $_x_varlist, &$wb_page_data)
 	{
 		extract($_x_varlist, EXTR_SKIP);
-		return(eval($_x_codedata));
+		try {
+			// till PHP 5 eval returns false and proceeds code execution in case of errors
+			if (defined('WB_DEBUG') && WB_DEBUG) {
+				return(eval($_x_codedata));
+			} else {
+				return(@eval($_x_codedata));
+			}
+		} catch (ParseError $e) {
+			// PHP 7+ throws a ParseError exception if error occur inside eval
+			// show error message caused by missformed Droplet code so we know what to be fixed
+			if (defined('WB_DEBUG') && WB_DEBUG) {
+				return '<strong>Droplet error: </strong>' . $e->getMessage() . '<br />';
+			}
+		}
+		return false;
 	}
 
 	function processDroplets( &$wb_page_data ) {

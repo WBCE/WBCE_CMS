@@ -23,5 +23,3 @@ if(defined('WB_PATH') == false) {
 
 $table = TABLE_PREFIX ."mod_menu_link";
 $database->query("DROP TABLE `$table`");
-
-?>

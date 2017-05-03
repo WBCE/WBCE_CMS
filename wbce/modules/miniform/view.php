@@ -8,22 +8,13 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.8
- * @lastmodified    november 26, 2015
+ * @version         0.10.0
+ * @lastmodified    april 10, 2017
  *
  */
 
  /*
-todo: file uploads
 
-- upload one or more files 
-- save the files to a temp location with random name
-- keep original name and temp name as sessions
-- when sending mail, add temp file and set name to original name
-- after sending, clean temp files 
-- clean old files (orphans that did not send)
-  
- 
  */
 if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 global $MF;
@@ -32,9 +23,9 @@ if(!file_exists(WB_PATH.'/modules/miniform/languages/'.LANGUAGE.'.php')) {
 } else {
 	require(WB_PATH.'/modules/miniform/languages/'.LANGUAGE.'.php');
 }
-
 require_once (dirname(__FILE__).'/functions.php');
 
+if(isset($_SESSION['lastform'])) unset($_SESSION['lastform']);
 mb_internal_encoding(DEFAULT_CHARSET);
 
 $mf = new mform($section_id);
@@ -71,6 +62,12 @@ $message = "";
 $message_class = "hidden";
 $form_class = "";
 $use_captcha = ( strpos($template,"{CAPTCHA}")==false ) ? false : true;
+
+$use_recaptcha = $settings['use_recaptcha'];
+$recaptcha_key = $settings['recaptcha_key'];
+$recaptcha_secret = $settings['recaptcha_secret'];
+if(!$recaptcha_key || !$recaptcha_secret) $use_recaptcha = false;
+
 $use_asp = ( strpos($template,"{ASPFIELDS}")==false ) ? false : true;
 $captcha_class = $use_captcha ? "":"hidden";
 $captcha = "";
@@ -80,8 +77,12 @@ $next_required = true;
 $aspdetect = false;
 
 if ($use_captcha && $mf->dataPosted && $mf->myPost) {
-
-	if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
+	if($use_recaptcha) {
+		if($mf->reCaptcha_check($recaptcha_secret) === false) {
+			$var[] = "{CAPTCHA_ERROR}"; $value[] = " missing";
+			$all_required = false;
+		}
+	} elseif(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
 		$ccheck = time(); $ccheck1 = time();
 		if(isset($_SESSION['captcha'.$section_id])) $ccheck1 = $_SESSION['captcha'.$section_id];
 		if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
@@ -188,10 +189,18 @@ if($mf->myPost) {
 	if(!$aspdetect) {
 		if ($all_required && $mf->dataPosted) {
 			if(!isset($next_template) || !$next_template) {
+				// add extra data by other modules SESSION['miniform']['mydata'] will be used as {MYDATA} in the email template
+				if(isset($_SESSION['miniform'])) { 
+					foreach($_SESSION['miniform'] as $_skey => $_svalue) {
+						$emailmessage = $mf->add_template($emailmessage, '{'.mb_strtoupper($_skey).'}', $_svalue);
+					}
+				}
 				// store message in database
 				$data['message_id'] = 0;
 				$data['section_id'] = $section_id;
 				$emailmessage = $mf->add_template($emailmessage, '{MAILMESSAGE}', $email_field_data);
+				//$emailmessage = preg_replace('#\{[A-Za-z_][A-Za-z_0-9.,-\/\\ ]*?\}#s', '', $emailmessage); 
+				$_SESSION['lastform'] = $emailmessage;
 				$data['data'] = addslashes($emailmessage); 
 				$data['submitted_when'] = time();
 				$mf->update_record('mod_miniform_data', 'message_id', $data );
@@ -209,6 +218,9 @@ if($mf->myPost) {
 					$message .= $MF['THANKYOU'];
 					$message_class = "ok";
 					$form_class = "hidden";
+				} else {
+					$message .= $MF['SENDERROR']."<br>".$mf->error;
+					$message_class = "error";
 				}
 			} else {
 				$template = $next_template;
@@ -229,7 +241,11 @@ if ($use_asp) {
 			'</div>';
 }
 if ($use_captcha) {
-	$captcha = $mf->captcha($section_id);
+	if($use_recaptcha) {
+		$captcha = $mf->reCaptcha($recaptcha_key);
+	} else {
+		$captcha = $mf->captcha($section_id);
+	}
 }
 $var[] = "{EMAILMESSAGE}"; $value[] = $mf->add_template($emailmessage, '{MAILMESSAGE}', $email_field_data);
 $var[] = "{PREVIOUS}"; $value[] = $prevdata;
@@ -244,9 +260,11 @@ $var[] = "{SECTION_ID}";$value[] = $section_id;
 $var[] = "{DATE}";$value[] = date( DATE_FORMAT , time()+TIMEZONE );
 $var[] = "{TIME}";$value[] = date( TIME_FORMAT , time()+TIMEZONE );
 $template = $mf->add_template($template, $var, $value);
+
 //clean unused fields in the template
-$template = preg_replace('#\{[A-Za-z_][A-Za-z_0-9.,-\/\\ ]*?\}#s', '', $template); 
+//$template = preg_replace('#\{[A-Za-z_][A-Za-z_0-9.,-\/\\ ]*?\}#s', '', $template); 
+$template = preg_replace('#\{(.*?)\}#s', '', $template); 
+													 
 unset($var);
 unset($value);
 echo $template;
-//echo nl2br(htmlspecialchars($prevdata));

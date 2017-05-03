@@ -17,7 +17,7 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 	
 // Set the language information
 $language_code = 'FR';
-$language_name = 'France';
+$language_name = 'French'; // Français
 $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Marin Susac';

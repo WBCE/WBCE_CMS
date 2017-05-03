@@ -1,0 +1,37 @@
+<!-- BEGIN main_block -->
+<h2>
+	{HEADING_ACCESS} &raquo; {HEADING_GROUPS}
+	<div class="headline-link">
+		<i class="fa fa-user"></i>
+		<a href="{ADMIN_URL}/users/index.php">{TEXT_MANAGE_USERS}</a>
+	</div>
+</h2>
+<div class="fg12 content-box">
+	<h3 class="fg12">{HEADING_MODIFY_DELETE_GROUP}</h3>
+
+	<form name="groups" action="groups.php" method="post">
+		{FTAN}
+
+		<div class="fg6">
+			<select name="group_id" class="wdt200">
+				<!-- BEGIN list_block -->
+				<option value="{VALUE}">
+				{NAME}
+				</option>
+				<!-- END list_block -->
+			</select>
+
+			<button type="submit" name="modify" class="{DISPLAY_MODIFY}">
+				<i class="fa fa-fw fa-pencil"></i>
+				{TEXT_MODIFY}
+			</button>
+		</div>
+		<div class="fg6 right">
+			<button type="submit" name="delete" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE} danger">
+				<i class="fa fa-fw fa-remove"></i>
+				{TEXT_DELETE}
+			</button>
+		</div>
+	</form>
+</div>
+<!-- END main_block -->

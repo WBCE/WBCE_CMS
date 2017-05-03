@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.2.2 and higher
- * @version         0.8
- * @lastmodified    november 26, 2015
+ * @version         0.10.0
+ * @lastmodified    april 10, 2017
  *
  */
 
@@ -24,6 +24,11 @@ $mod_miniform = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_miniform` ('
 	. ' `subject` VARCHAR(128) NOT NULL DEFAULT \'\',' 
 	. ' `template` VARCHAR(64) NOT NULL DEFAULT \'form\',' 
 	. ' `successpage` INT NOT NULL DEFAULT \'0\',' 
+	. ' `use_recaptcha` INT NOT NULL DEFAULT \'0\',' 
+	. ' `recaptcha_key` VARCHAR(64) NOT NULL DEFAULT \'\',' 
+	. ' `recaptcha_secret` VARCHAR(64) NOT NULL DEFAULT \'\',' 
+	. ' `remote_id` VARCHAR(64) NOT NULL DEFAULT \'\',' 
+	. ' `remote_name` VARCHAR(64) NOT NULL DEFAULT \'\',' 
 	. ' PRIMARY KEY ( `section_id` ) '
 	. ' )';
 $database->query($mod_miniform);
@@ -55,9 +60,3 @@ foreach ( $files as $file ) {
 		}
 	}
 }
-					
-					
-
-
-
-?>
