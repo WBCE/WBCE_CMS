@@ -103,7 +103,7 @@ ul.menu  {
 }
 .menu li {
     display: inline;
-    margin: 0 2px 0 0;
+    /*margin: 0 2px 0 0;*/
     padding: 0;
     font-size: 13px;
     font-weight: bold;
@@ -304,7 +304,7 @@ button.danger {
 .section {
 	margin-bottom: 15px;
     border: 1px solid #999;
-    height: 80px;
+    height: 90px;
     background-color: #fdfdfd;
     overflow: hidden;
     padding-top: 5px;
