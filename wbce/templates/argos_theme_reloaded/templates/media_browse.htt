@@ -4,7 +4,7 @@
 <head>
 	<meta charset="{CHARSET}">
 	<title>Browse Media</title>
-    <link href="{THEME_URL}/css/font-awesome.css" type="text/css" rel="stylesheet">
+	<link href="{WB_URL}/include/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/media.css" rel="stylesheet" type="text/css">
 
     <script src="{INCLUDE_PATH}/jquery/jquery-min.js"></script>

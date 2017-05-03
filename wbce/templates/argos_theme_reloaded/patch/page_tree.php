@@ -169,7 +169,7 @@ ob_start();
 				<td class="page-status" style="{padding_left}">
 					<?php if ($expandable == true): ?>
 						<a href="javascript: toggle_visibility('p{PAGE_ID}');" title="<?php echo $plus_minusTitle; ?>">
-							<i class="fa fa-lg <?=$plus_minusIcon?> plus-minus-{PAGE_ID} bold"  onclick="togglePlusMinus('{PAGE_ID}');"></i>
+							<i class="fa fa-lg <?php echo $plus_minusIcon?> plus-minus-{PAGE_ID} bold"  onclick="togglePlusMinus('{PAGE_ID}');"></i>
 						</a>
 					<?php else: ?>
 						<img src="{THEME_ICONS}/empty.png" border="0" alt="" />
@@ -287,7 +287,7 @@ ob_start();
 
 				<td class="page-delete">
 					<?php if ($canDeleteAndModify) : ?>
-						<a href="#" onclick="confirm_link('{MENU_TITLE}\n\n\t<?php echo $MESSAGE['PAGES_DELETE_CONFIRM']; ?>?','../pages/delete.php?page_id={pageIDKEY}');" title="<?php echo $TEXT['DELETE']; ?>">
+						<a href="#" onclick="confirm_link('{PAGE_ID}\n\n\t<?php echo $MESSAGE['PAGES_DELETE_CONFIRM']; ?>?','../pages/delete.php?page_id={pageIDKEY}');" title="<?php echo $TEXT['DELETE']; ?>">
 							<i class="fa fa-lg fa-remove red"></i>
 						</a>
 					<?php else: ?>
@@ -353,37 +353,37 @@ ob_start();
 					Status
 				</td>
 				<td class="header-menu-title">
-					<?=$TEXT['MENU_TITLE']?>
+					<?php echo $TEXT['MENU_TITLE']?>
 				</td>
 				<td class="header-page-title">
-					<?=$TEXT['PAGE_TITLE']?>
+					<?php echo $TEXT['PAGE_TITLE']?>
 				</td>
 				<td class="header-page-id">
 					PageID
 				</td>
 				<td class="header-modifications">
-					<?=$TEXT['MODIFY']?>
+					<?php echo $TEXT['MODIFY']?>
 				</td>
 				<td class="header-move-up"></td>
 				<td class="header-move-down"></td>
 				<td class="header-actions">
-					<?=$TEXT['ACTIONS']?>
+					<?php echo $TEXT['ACTIONS']?>
 				</td>
 			</tr>
 	</table>
 
 	<?php if(!empty($pages_list)) : ?>
-		<?= draw_pagetree($pages_list); ?>
+		<?php echo draw_pagetree($pages_list); ?>
 	<?php else : ?>
-		<div class="no-page-found">(<?=$TEXT['NONE_FOUND']?>)</div>
+		<div class="no-page-found">(<?php echo $TEXT['NONE_FOUND']?>)</div>
 	<?php endif; ?>
 
 	<div class="pages-legend">
-		<b><?=$TEXT['VISIBILITY']?> (<?=$MENU['PAGES']?>): </b>
+		<b><?php echo $TEXT['VISIBILITY']?> (<?php echo $MENU['PAGES']?>): </b>
 
 		<?php foreach ($statusMap as $icon => $fa) : ?>
-			&nbsp;<i class="fa fa-lg <?=$fa?>"></i>
-			&nbsp;<?=ucfirst($TEXT[strtoupper($icon)])?>
+			&nbsp;<i class="fa fa-lg <?php echo $fa?>"></i>
+			&nbsp;<?php echo ucfirst($TEXT[strtoupper($icon)])?>
 		<?php endforeach; ?>
 
 		<?php
@@ -405,7 +405,7 @@ ob_start();
 			</button>
 		</span>
 		<?php } ?>
-		<span style="float:right;">&nbsp;<?=$MENU['PAGES']?> total: <?=$number_all_pages?></span>
+		<span style="float:right;">&nbsp;<?php echo $MENU['PAGES']?> total: <?php echo $number_all_pages?></span>
 	</div>
 </div>
 
