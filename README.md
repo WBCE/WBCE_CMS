@@ -13,14 +13,14 @@
   - [WBCE Project](http://wbce.org)
   - [User Forum](https://forum.wbce.org)
   - [User Documentation](http://help.wbce.org)
-  - [GitHub Repository](https://github.com/WBCE/WebsiteBaker_CommunityEdition)
-  - [Bugtracker](https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues)
-  - [Commit History](https://github.com/WBCE/WebsiteBaker_CommunityEdition/commits/master)
+  - [GitHub Repository](https://github.com/WBCE/WBCE_CMS)
+  - [Bugtracker](https://github.com/WBCE/WBCE_CMS/issues)
+  - [Commit History](https://github.com/WBCE/WBCE_CMS/commits/master)
   - [Changelog](CHANGELOG.md)
   - [Installation](INSTALL.md)
 
 ## License
-[WBCE CMS](http://wbce.org) is released under the **GNU General Public License v2** or any later version.
+[WBCE CMS](http://www.wbce.org) is released under the **GNU General Public License v2** or any later version.
 Please refer to the [LICENSE](LICENSE.md) file for a copy of the license.
 
     /**
