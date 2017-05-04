@@ -1,6 +1,8 @@
 # WBCE CMS
 [WBCE CMS](http://wbce.org) is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. It is shipped with useful modules for simple pages, news/blog like pages, contact forms and useful admin tools. A broad variety of modules for galleries, interaction and structured content etc. is available in the [WBCE Add-On Repository](http://addons.wbce.org) and can be installed easily.
 
+![Screenshot of WBCE Backend](https://forum.wbce.org/wbce_screenshot_backend_klein.png)
+
 ## Requirements
   - about 20 MB webspace
   - PHP 5.3.6 or newer
