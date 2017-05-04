@@ -23,7 +23,8 @@ body {
 	margin: 0 auto;
 }
 #admin-header {
-	margin-top: 10px;
+	padding-top: 10px;
+	height: 107px;
 }
 #content-container {
 	margin-bottom: 55px; /* provide some space for fixed footer */
@@ -33,7 +34,7 @@ body {
 a {
 	color :#28609b;
 	text-decoration :none;
-    font-family: Ubuntu, Arial, Helvetica, sans-serif; /* Chromium */
+    font-family: Ubuntu, Arial, Helvetica, sans-serif; /* Chrome */
 }
 a:hover {
 	text-decoration :underline;
@@ -44,7 +45,7 @@ hr {
 	border-bottom: 1px dotted #999;
 	margin-bottom: 10px !important;
 }
-ul {
+ul, li {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
@@ -69,6 +70,9 @@ h3 {
 }
 
 /*** header section ***************************************************/
+#header-top {
+	height: 50px;
+}
 #header {
 	height: 50px;
 	font-size: 18px;
@@ -87,6 +91,7 @@ h3 {
 #top-menu {
 	color: #f9f9f9;
 	font-size: 13px;
+	/*height: 50px;*/
 }
 #top-menu a {
 	color: inherit;
@@ -95,11 +100,19 @@ h3 {
 	color: #ddd;
 	text-decoration: none;
 }
+#top-menu p {
+	margin-bottom: 0;
+}
 
 /*** main menu ********************************************************/
+#main-menu {
+	height: 47px;
+	padding-top: 18px;
+}
 ul.menu  {
     list-style-type: none;
-    margin-top: 14px;
+    box-sizing: border-box;
+    /*margin-top: 14px;*/
 }
 .menu li {
     display: inline;
@@ -107,7 +120,6 @@ ul.menu  {
     padding: 0;
     font-size: 13px;
     font-weight: bold;
-    border-bottom: 3px solid #c9c9c9;
 }
 .menu a {
     float: left;
@@ -116,13 +128,12 @@ ul.menu  {
     padding: 0;
     text-decoration: none;
     border-bottom: 3px solid #cacaca;
-}
-.menu a span {
     display: block;
     background-color: #464e5e;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
-    padding: 6px;
+    height: 29px;
+    padding: 6px 6px 0 6px;
 }
 .menu a:hover, .menu a:hover span {
     background-color: #bcc2ce;

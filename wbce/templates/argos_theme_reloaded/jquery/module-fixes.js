@@ -4,20 +4,6 @@ $(document).ready(function() {
 	 * patch some issues for a consistent look as possible            *
 	 ******************************************************************/
 
-	// hide the breadcrumbs in settings
-	var myKey = /settings/;
-	var myStr = window.location.pathname;
-	myMatch = myStr.search(myKey);
-	if (myMatch != -1) {
-		$('h4').each(function() {
-			$(this).find('a').each(function() {
-				if ($(this).hasClass('internal')) {
-					$(this).parent().css('display', 'none');
-				}
-			});
-		});
-	}
-
 	// styling for section-info in page -> modify
 	$('.section-info').addClass('fg12');
 
@@ -72,7 +58,7 @@ $(document).ready(function() {
 
 		// wrapper
 		if ($(thisMod).hasClass('wrapper')) {
-			$('input[type=text]').css('width', 'auto');
+			$('input[type=text]').css('width', '300px');
 		}
 		// sitemap
 		if ($(thisMod).hasClass('sitemap')) {
@@ -90,6 +76,16 @@ $(document).ready(function() {
 		//
 		//if ($(thisMod).hasClass('')) {
 		//}
+	}
+
+	//read the location
+	var address = window.location.pathname;
+
+	// handle topics subpages
+	var module = /topics/;
+	match = address.search(module);
+	if (match != -1) {
+		$('td.content').addClass('fg12 content-box legacy top');
 	}
 
 });
