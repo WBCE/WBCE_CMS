@@ -1,7 +1,7 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
- * More Baking. Less Struggling.
+ * WBCE CMS
+ * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
@@ -154,9 +154,12 @@ $FAIL = ' <span class="error">FAILED</span> ';
 $DEFAULT_THEME = 'advancedThemeWbFlat';
 $stepID = 1;
 $dirRemove = array(
+
+    '[TEMPLATE]/blank/',
+    '[TEMPLATE]/argos_theme/'
+
 /*
 '[TEMPLATE]/allcss/',
-'[TEMPLATE]/blank/',
 '[TEMPLATE]/round/',
 '[TEMPLATE]/simple/',
  */
@@ -166,43 +169,12 @@ $filesRemove['0'] = array(
 
     '[ADMIN]/preferences/details.php',
     '[ADMIN]/preferences/email.php',
-    '[ADMIN]/preferences/password.php',
-
-);
-
-$filesRemove['1'] = array(
-
-    '[TEMPLATE]/argos_theme/templates/access.htt',
-    '[TEMPLATE]/argos_theme/templates/addons.htt',
-    '[TEMPLATE]/argos_theme/templates/admintools.htt',
-    '[TEMPLATE]/argos_theme/templates/error.htt',
-    '[TEMPLATE]/argos_theme/templates/groups.htt',
-    '[TEMPLATE]/argos_theme/templates/groups_form.htt',
-    '[TEMPLATE]/argos_theme/templates/languages.htt',
-    '[TEMPLATE]/argos_theme/templates/languages_details.htt',
-    '[TEMPLATE]/argos_theme/templates/media.htt',
-    '[TEMPLATE]/argos_theme/templates/media_browse.htt',
-    '[TEMPLATE]/argos_theme/templates/media_rename.htt',
-    '[TEMPLATE]/argos_theme/templates/modules.htt',
-    '[TEMPLATE]/argos_theme/templates/modules_details.htt',
-    '[TEMPLATE]/argos_theme/templates/pages.htt',
-    '[TEMPLATE]/argos_theme/templates/pages_modify.htt',
-    '[TEMPLATE]/argos_theme/templates/pages_sections.htt',
-    '[TEMPLATE]/argos_theme/templates/pages_settings.htt',
-    '[TEMPLATE]/argos_theme/templates/preferences.htt',
-    '[TEMPLATE]/argos_theme/templates/setparameter.htt',
-    '[TEMPLATE]/argos_theme/templates/settings.htt',
-    '[TEMPLATE]/argos_theme/templates/start.htt',
-    '[TEMPLATE]/argos_theme/templates/success.htt',
-    '[TEMPLATE]/argos_theme/templates/templates.htt',
-    '[TEMPLATE]/argos_theme/templates/templates_details.htt',
-    '[TEMPLATE]/argos_theme/templates/users.htt',
-    '[TEMPLATE]/argos_theme/templates/users_form.htt',
+    '[ADMIN]/preferences/password.php'
 );
 
 // hopefully we add the removed files here these files are for 1.1.0
 // as a result of adding class Settings and rework of the admin tool system
-$filesRemove['2'] = array(
+$filesRemove['1'] = array(
 
     '[FRAMEWORK]/SecureForm.mtab.php',
     '[MODULES]/SecureFormSwitcher/FTAN_SUPPORTED',
@@ -221,7 +193,7 @@ $all_tables = check_wb_tables();
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Upgrade script</title>
+<title>WBCE - Upgrade Script</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 html { overflow: -moz-scrollbars-vertical; /* Force firefox to always show room for a vertical scrollbar */ }
@@ -295,7 +267,7 @@ h3 { font-size: 120%; }
 </head>
 <body>
 <div id="container">
-<h1>WebsiteBaker Community Edition - Upgrade Script</h1>
+<h1>WBCE - Upgrade Script</h1>
 <?php
 // extract previous WBCE version from DB (if exists)
 $old_wbce_version = array(
@@ -344,7 +316,7 @@ if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confir
 <p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.<br /><strong class="error">Note: </strong>The upgrade script alters some settings of your existing database!!! You need to confirm the disclaimer before proceeding.</p>
 
 <form name="send" action="<?php echo $_SERVER['SCRIPT_NAME'];?>" method="post">
-<textarea cols="80" rows="5">DISCLAIMER: The WebsiteBaker CE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WebsiteBaker CE database was created before you can proceed.</textarea>
+<textarea cols="80" rows="5">DISCLAIMER: The WBCE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</textarea>
 <br /><br /><input name="backup_confirmed" type="checkbox" value="confirmed" />&nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created.
 <br /><br /><input name="send" type="submit" value="Start upgrade script" />
 </form>
