@@ -32,14 +32,13 @@ if ($wb->is_authenticated()) {
 
 
 //============================================================================================================
-//Der folgende Bereich ist zu 99% bei allen modernen Templates (nehezu gleich) gleich. 
+//Der folgende Bereich ist zu 99% bei allen modernen Templates (nahezu gleich) gleich. 
 //Du wirst hier bis fast zum Ende des <head> nichts aendern muessen
 //============================================================================================================
 
 //So kannst du feststellen, ob die Seite die Startseite ist und dann die Ausgabe anders machen:
 $isstartpage = false;
 if ( !isset($page_id) ) { $isstartpage = true; }
-if ( isset($template_id) AND $page_id==4)  { $isstartpage = true; } // wbce.at presentation, you can remove this line
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo strtolower(LANGUAGE); ?>">
@@ -47,10 +46,10 @@ if ( isset($template_id) AND $page_id==4)  { $isstartpage = true; } // wbce.at p
 <?php if(function_exists('simplepagehead')) {
 	simplepagehead('/', 1, 0, 0); 
 } else { ?>
-<title><?php page_title(); ?></title>
-<meta http-equiv="Content-Type" content="text/html; charset=<?php if(defined('DEFAULT_CHARSET')) { echo DEFAULT_CHARSET; } else { echo 'utf-8'; }?>" />
-<meta name="description" content="<?php page_description(); ?>" />
-<meta name="keywords" content="<?php page_keywords(); ?>" />
+	<title><?php page_title(); ?></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php if(defined('DEFAULT_CHARSET')) { echo DEFAULT_CHARSET; } else { echo 'utf-8'; }?>" />
+	<meta name="description" content="<?php page_description(); ?>" />
+	<meta name="keywords" content="<?php page_keywords(); ?>" />
 <?php }
 
 //Hier wird alles JS/CSS dazugeladen, was Module und Templates brauchen. Das ist ganz wichtig:
@@ -63,6 +62,7 @@ if(function_exists('register_frontend_modfiles')) {
 <link href="<?php echo TEMPLATE_DIR; ?>/editor.css<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo TEMPLATE_DIR; ?>/template.css<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
 
+<link href="<?php echo TEMPLATE_DIR; ?>/colorset/colorset.php<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
 
 <?php
 // Generate vistor statistic if module is installed 
@@ -121,7 +121,6 @@ if(defined('OG_IMAGE') AND OG_IMAGE != '') { 	echo '
 ?>
 <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/responsive-slider/responsiveslides.css" type="text/css" media="screen" />
 
-
 <?php 
 /*============================================================================================================
 Jetzt haben wir alles, was wir fuer die Ausgabe brauchen.
@@ -132,7 +131,6 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
 
 ============================================================================================================ */
 ?>
-
 </head>
 <body class="body<?php echo $page_id; if ($isstartpage == true) {echo ' isstartpage'; } ?>">
 <script>
@@ -209,7 +207,7 @@ var cookie_permission_url = "<?php echo TEMPLATE_DIR?>/inc/cookie_permission.php
 	
 	
 	//Die linke Box:
-	//Wenn ein Untermenu vorhanden ist, wird dieses gezeignt, ansonst die Datei leftblock.php
+	//Wenn ein Untermenu vorhanden ist, wird dieses gezeignt, ansonsten die Datei leftblock.php
 	$menuside = '';
 	if (!$isstartpage) {
 		ob_start();  	
@@ -295,6 +293,10 @@ if ($template_edit_link == true) {
 <script type="text/javascript" src="<?php echo TEMPLATE_DIR;?>/template.js"></script>
 <?php if (function_exists('register_frontend_modfiles_body')) { register_frontend_modfiles_body(); } ?>
 
+<?php 
+//Und das ist der Farbwaehler. Du kannst das loeschen, wenn du die Farben fixiert hast.
+if ($template_edit_link == true) {include 'colorset/colorpicker.inc.php';} 
+?>
 
 </body>
 </html>

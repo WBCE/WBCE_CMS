@@ -1,3 +1,4 @@
+var templatename = 'vertal';
 
 $( document ).ready(function() { 
 });
@@ -8,8 +9,8 @@ var css_paramArrOrig = css_param.split(',');
 var inputprop = 'color';
 var showinfo = false;
 
-if (localStorage['css_param'] && localStorage['css_param'] != '') {
-	css_param = localStorage['css_param'];
+if (localStorage['css_param_'+templatename] && localStorage['css_param_'+templatename] != '') {
+	css_param = localStorage['css_param_'+templatename];
 	css_paramArr = css_param.split(',');	
 	for ( var i = 0; i < css_paramArr.length; i++) {
 		var f_id = '#colorpicker #colorset_f'+i;
@@ -29,17 +30,17 @@ function showcolorchanges() {
 		all_v.push(v);
 	}
 	css_param = all_v.join(',');
-	console.log(css_param);
+	//console.log(css_param);
 	savecolorchanges();
 	add_css();		
 }
 
 function savecolorchanges() {
-	localStorage.setItem('css_param', css_param);
+	localStorage.setItem('css_param_'+templatename, css_param);
 }
 
 function resetcolorchanges() {
-	localStorage.setItem('css_param', '');
+	localStorage.setItem('css_param_'+templatename, '');
 	window.location.href = '?r='+Math.random();
 }
 
@@ -47,15 +48,13 @@ function submitcolorchanges() {
 	showcolorchanges();
 	savecolorchanges();
 	add_css('submit');
-	
-	
 }
 
 
 
 
 function checkcolor(f) {
-	//provisorisch
+	//ewig provisorisch
 	f = f.replace("#", "");	
 	return f;
 }

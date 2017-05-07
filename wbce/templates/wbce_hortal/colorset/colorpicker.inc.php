@@ -32,7 +32,23 @@ RESET Local: L&ouml;scht die lokal gespeicherten &Auml;nderungen.</p>
 </p>
 
 <?php
+//database dummy:
+$p =  __DIR__.'/param.txt';
+if (file_exists($p)) {
+	$css_param =  file_get_contents ($p);
+	$css_paramArr = explode(',',$css_param);
+	if (count($css_paramArr) < 7) {$css_param = $css_paramOrig; $css_paramArr = explode(',',$css_param);}	
+	$i = 0;
+	foreach ($css_paramArr as $f) {
+		$colorArr[$i][1] = $f;
+		$i++;
+	}		
+}
+
+
+
 $f = 0; $css_paramArr = array();
+
 foreach ($colorArr as $cArr) {
 	echo '<div class="pickerfield" style="">&nbsp;'.$cArr[0].'<br/>
 	<input id="colorset_f'.$f.'" name="colorset_f'.$f.'"  type="color"  value="#'.$cArr[1].'" onchange="showcolorchanges();" />
@@ -45,14 +61,7 @@ foreach ($colorArr as $cArr) {
 $css_param = implode(',',$css_paramArr);
 $css_paramOrig = $css_param;
 
-//database dummy:
-$p =  __DIR__.'/param.txt';
-if (file_exists($p)) {
-	$css_param =  file_get_contents ($p);
-	$css_paramArr = explode(',',$css_param);
-	if (count($css_paramArr) < 7) $css_param = $css_paramOrig;
-	
-}
+
 	
 
 

@@ -20,7 +20,7 @@ $menu[2] = 'None';
 
 if (LANGUAGE == 'DE') {
 	$block[1] ='Hauptinhalt';
-	$block[2] ='Linke Seite';
+	$block[2] ='Rechte Seite';
 	$block[3] ='Grosser Inhalt Oben';
 	$block[4] ='Grosser Inhalt Unten';
 
@@ -30,3 +30,4 @@ if (LANGUAGE == 'DE') {
 	$menu[1] ='Normal';
 	$menu[2] ='Unsichtbar';
 }
+?>

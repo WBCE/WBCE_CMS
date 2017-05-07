@@ -46,11 +46,14 @@ $p =  __DIR__.'/param.txt';
 if (file_exists($p)) {
 	$css_param =  file_get_contents ($p);
 	$css_paramArr = explode(',',$css_param);
-	if (count($css_paramArr) < 7) $css_param = $css_paramOrig;
-	
+	if (count($css_paramArr) < 7) {$css_param = $css_paramOrig; $css_paramArr = explode(',',$css_param);}
+		
+	$i = 0;
+	foreach ($css_paramArr as $f) {
+		$colorArr[$i][1] = $f;
+		$i++;
+	}	
 }
-	
-
 
 
 ?>

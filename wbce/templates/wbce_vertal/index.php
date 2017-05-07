@@ -34,7 +34,6 @@ if ($wb->is_authenticated()) {
 //So kannst du feststellen, ob die Seite die Startseite ist und dann die Ausgabe anders machen:
 $isstartpage = false;
 if ( !isset($page_id) ) { $isstartpage = true; }
-if ( isset($template_id) AND $page_id==4)  { $isstartpage = true; } // wbce.at presentation, you can remove this line
 
 ?>
 <!DOCTYPE html>
@@ -58,6 +57,8 @@ if(function_exists('register_frontend_modfiles')) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="<?php echo TEMPLATE_DIR; ?>/editor.css<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo TEMPLATE_DIR; ?>/template.css<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo TEMPLATE_DIR; ?>/colorset/colorset.php<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
+
 
 
 <?php
@@ -237,6 +238,10 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
 	</script>	
 	<script type="text/javascript" src="<?php echo TEMPLATE_DIR; ?>/template.js?<?php echo $refreshstring; ?>"></script>
 	
+	<?php 
+	//Und das ist der Farbwaehler. Du kannst das loeschen, wenn du die Farben fixiert hast.
+	if ($template_edit_link == true OR isset($template_id)) {include 'colorset/colorpicker.inc.php';} 
+	?>	
 	
 </body>
 </html>
