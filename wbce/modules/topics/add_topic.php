@@ -4,11 +4,11 @@ if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 
 require('permissioncheck.php');
 $mpath = WB_PATH.'/modules/'.$mod_dir.'/';
-require_once($mpath.'defaults/module_settings.default.php');
-require_once($mpath.'module_settings.php');
+//require_once($mpath.'defaults/module_settings.default.php');
+//require_once($mpath.'module_settings.php');
 
 // Include the ordering class
-require_once(WB_PATH.'/framework/class.order.php');
+require(WB_PATH.'/framework/class.order.php');
 // Get new order
 $order = new order(TABLE_PREFIX.'mod_'.$tablename, 'position', 'topic_id', 'section_id');
 $position = $order->get_new($section_id);

@@ -41,7 +41,7 @@ if( isset($_GET['do']) AND $_GET['do'] == 'upload') {
 	if ( isset($_FILES['uploadpic']['tmp_name']) AND $_FILES['uploadpic']['tmp_name'] != '') {
 		include('uploader.inc.php');
 		echo $messages;
-		$picture_dir = ''.$settings_fetch['picture_dir']; //hat der Uploader geändert
+		$picture_dir = ''.$settings_fetch['picture_dir']; //hat der Uploader geaendert
 		//die();
 	}
 }
@@ -87,22 +87,26 @@ $params = '&page_id='.$page_id.'&section_id='.$section_id.'&topic_id='.$topic_id
 $additional_picture_path = WB_PATH.''.$picture_dir.'/topic'.$topic_id;
 $pics = array();
 if (is_dir($additional_picture_path)) {
+	//$files = glob($additional_picture_path."/*.{jpg,png,gif}", GLOB_BRACE);
 	
-    $dir = $additional_picture_path . '/';
-      $extensions = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
-
-      $result = array();
-      $directory = new DirectoryIterator($dir);
-      foreach ($directory as $fileinfo) {
-          if ($fileinfo->isFile()) {
-              $extension = strtolower(pathinfo($fileinfo->getFilename(), PATHINFO_EXTENSION));
-              if (in_array($extension, $extensions)) {
-                  $result[] = $dir.$fileinfo->getFilename();
-              }
-          }
-      }
-      $files  = $result;
-    
+	//Siehe: https://forum.wbce.org/viewtopic.php?pid=8082#p8082
+	$dir = $additional_picture_path . '/';
+	$extensions = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+	
+	$result = array();
+	$directory = new DirectoryIterator($dir);
+	foreach ($directory as $fileinfo) {
+	  if ($fileinfo->isFile()) {
+		  $extension = strtolower(pathinfo($fileinfo->getFilename(), PATHINFO_EXTENSION));
+		  if (in_array($extension, $extensions)) {
+			  $result[] = $dir.$fileinfo->getFilename();
+		  }
+	  }
+	}
+	$files  = $result;
+	//------------------------------------------------------------
+	
+	
  	if(count($files) > 0 ) {
 		echo '<div class="switchmenu"><a class="thumbs" href="?list=thumbs'.$params.'">Thumb (edit)</a> | ';
 		echo '<a class="thumblink" href="?list=thumblink'.$params.'">Thumb</a> | ';

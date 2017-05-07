@@ -10,7 +10,7 @@ $fredit = 0; //frontend edit
 // include module_settings
 $topic_seealso_support = '';
 require_once(WB_PATH.'/modules/'.$mod_dir.'/defaults/module_settings.default.php');
-require_once(WB_PATH.'/modules/'.$mod_dir.'/module_settings.php');
+include(WB_PATH.'/modules/'.$mod_dir.'/module_settings.php');
 
 
 $isget = 0;
@@ -73,7 +73,7 @@ if (isset($section_id)) {
 
 //Aus module_settings.php:
 //$authorsgroup: Die Gruppe, der Autoren angehören. 
-//$noadmin_nooptions: Default: 1: Nur der Admin (Gruppe 1) kann Settings ändern
+//$noadmin_nooptions: Default: 1: Nur der Admin (Gruppe 1) kann Settings aendern
 
 $user_id = $admin->get_user_id();
 $user_in_groups = $admin->get_groups_id();
@@ -85,7 +85,7 @@ if ($authorsgroup > 0) { //Care about users
 	if (in_array($authorsgroup, $user_in_groups)) {
 		$authoronly = true; $showoptions = false; echo "AUTOR";
 	} else {
-		$author_trust_rating = 0; //Best Trust; Flag aus module_settings.php wird zurückgesetzt
+		$author_trust_rating = 0; //Best Trust; Flag aus module_settings.php wird zurueckgesetzt
 	}
 }
 
@@ -95,7 +95,7 @@ if (!in_array(1, $user_in_groups)) {
 	$authoronly = false; //An admin cannot be autor only
 }
 
-//Hier könnte man abwürgen, dass ein Autor ins Backend kommt. 
+//Hier könnte man abwuergen, dass ein Autor ins Backend kommt. 
 if ($authoronly == true) {$fredit = 1;} //Provisorisch
 
 if ($fredit == 1) { 

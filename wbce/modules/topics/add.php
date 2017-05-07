@@ -72,27 +72,13 @@ if($query->numRows() == 1) {
 	}
 	
 	$theq = "INSERT INTO ".TABLE_PREFIX."mod_".$mod_dir."_settings SET ";
-	$theq .= "section_id='".$section_id."', page_id='".$page_id."', section_title='".$section_title."' ". $addstring;
-	//echo $theq;
-	//die();
+	$theq .= "section_id='".$section_id."', page_id='".$page_id."', section_title='".$section_title."' ". $addstring;	
+	$database->query($theq);
 } else {
 	$theq = "INSERT INTO ".TABLE_PREFIX."mod_".$tablename."_settings (section_id,page_id,section_title,section_description,sort_topics,use_timebased_publishing,picture_dir,header,topics_loop,footer,topics_per_page,topic_header,topic_footer,topic_block2,pnsa_string,pnsa_max,comments_header,comments_loop,comments_footer,commenting,default_link,use_captcha,sort_comments) VALUES ('$section_id','$page_id','$section_title','','$sort_topics','$use_timebased_publishing','$picture_dir','$header','$topics_loop','$footer','$topics_per_page','$topic_header','$topic_footer','$topic_block2','$pnsa_string','$pnsa_max','$comments_header','$comments_loop','$comments_footer','$commenting','$default_link','$use_captcha','$sort_comments')";
+	$database->query($theq);	
 	include('defaults/first-topics.php');
 }
 
-$database->query($theq);
-
-$test =  WB_PATH.substr($topics_directory, 0, -1);
-//Add a frirst topic
-if (isset($firsttopic) AND is_dir($test) ) {
-	$database->query($firsttopic);	
-	// Get the id
-	$topic_id = $database->get_one("SELECT LAST_INSERT_ID()");	
-	
-	$filename = WB_PATH.$topics_directory.'welcome'.PAGE_EXTENSION;
-	define('TOPICS_DIRECTORY_DEPTH', $topics_directory_depth);
-	topics_archive_file ($filename, $topic_id, $section_id, $page_id, $create_topics_accessfiles);
-	
-}
 
 ?>

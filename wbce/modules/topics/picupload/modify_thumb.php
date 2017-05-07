@@ -26,9 +26,9 @@ if(isset($_GET['what']) AND $_GET['what'] == 'view') {$whatdir = 'view';}
 if(isset($_POST['what']) AND $_POST['what'] == 'view') {$whatdir = 'view';}
 
 if(!isset($_GET['fn'])) {die('no filename');}
-$file_name = $_GET['fn']; //zb file.jpg - gemeint ist immer zoom, außer es existiert nicht.
+$file_name = $_GET['fn']; //zb file.jpg - gemeint ist immer zoom, auszer es existiert nicht.
 
-//Vortest für getbasics.inc.php
+//Vortest fuer getbasics.inc.php
 $subdir = '';
 $morepicstest = explode('/', $file_name);
 if (count($morepicstest) == 2) {
@@ -134,12 +134,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	//echo "<p>w_thumb: $w_thumb, h_thumb: $h_thumb, w: ".$post_w.' h: '. $post_h.'<p>';
 	//die();
 	if (resizepic($full_file, $thumb_file, $w_thumb, $h_thumb, 0, $_POST['x'], $_POST['y'], $post_w, $post_h)) {
-		$admin->print_success('Thumb erfolgreich geändert', WB_URL.'/modules/'.$mod_dir.'/picupload/uploadview.php?'.$p.'&fn='.$subdir.$file_name);
+		$admin->print_success('Thumb erfolgreich geaendert', WB_URL.'/modules/'.$mod_dir.'/picupload/uploadview.php?'.$p.'&fn='.$subdir.$file_name);
 	}
 } 	else {
 
 	//==============================================================
-	//Vorgabewerte für jCrop
+	//Vorgabewerte fuer jCrop
 	//==============================================================
 	if ($previewWidth == 0 OR $previewHeight == 0) {
 		$ratio = ''; //keine Ratio-Vorgabe beim Beschneiden
@@ -218,7 +218,7 @@ if($query = $database->query($sql)){
 		
 		//Neues Thumb erstellen
 		if (generateThumb($full_file, $thumb_file, $settings['thumb_size'], 1, $settings['ratio'], $_POST['x'], $_POST['y'], $_POST['w'], $_POST['h'])) {
-			$admin->print_success('Thumb erfolgreich geändert', WB_URL.'/modules/foldergallery/modify_cat.php?page_id='.$page_id.'&section_id='.$section_id.'&cat_id='.$cat_id);
+			$admin->print_success('Thumb erfolgreich geaendert', WB_URL.'/modules/foldergallery/modify_cat.php?page_id='.$page_id.'&section_id='.$section_id.'&cat_id='.$cat_id);
 		}
 	}
 	else {

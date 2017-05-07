@@ -74,6 +74,9 @@ $MOD_TOPICS['DATE_USAGE_0'] = 'I dont care';
 $MOD_TOPICS['DATE_USAGE_1'] = 'I want to edit the date';
 $MOD_TOPICS['DATE_USAGE_2'] = 'Timebased publishing';
 $MOD_TOPICS['DATE_USAGE_3'] = 'Auto-Archive';
+$MOD_TOPICS['TOPICSMASTER_SELECT'] = 'TopicsMaster Sections';
+
+$MOD_TOPICS['TOPIC_DATE'] = 'topic date';
 
 $MOD_TOPICS['MOVE_TO'] = 'move to:';
 $MOD_TOPICS['AUTO_ARCHIVE'] = 'Auto-Archive';
@@ -155,7 +158,7 @@ $MOD_TOPICS['EDITAUTHORS'] = 'Edit authors';
 $MOD_TOPICS['AUTHORSHEADLINE'] = 'Other authors, that may modify this topic';
 $MOD_TOPICS['SETAUTHORSHEADLINE'] = 'Make author to owner:';
 
-$MOD_TOPICS['SAVEFORALL'] = 'Save this settings for ALL sections (be carefull!)';
+$MOD_TOPICS['SAVEFORALL'] = 'Save this settings for ALL sections with the same picture directory (be carefull!)';
 $MOD_TOPICS['SAVE_FINISH'] = 'Save and Finish';
 
 //Commentframe

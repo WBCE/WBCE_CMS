@@ -194,7 +194,10 @@ if ($use_commenting_settings == 1) {
 </div-->
 <div class="modifytopic1" style="display:<?php if ($use_timebased_publishing > 0) {echo 'block';} else {echo 'none';} ?>;">
 <table class="tpbreaktable" >
-<tr><td><?php echo $TEXT['PUBL_START_DATE']; ?>:</td><td>
+<tr><td><?php 
+	if ($use_timebased_publishing < 2) { echo $MOD_TOPICS['TOPIC_DATE']; } else { echo $TEXT['PUBL_START_DATE']; }
+
+?>:</td><td>
 	<?php
 	$published_when = 0;
 	if ($fetch_content['posted_first'] == 0) { // is new
@@ -376,9 +379,9 @@ if ($extra_textareaheight < 10) {
 <tr><td style="width:70%; padding-right:10px;">
 <div <?php if ($fetch_content['content_long'] == '') {echo ' style="display:none;"';} ?>>
 <div class="modifytopic1">Meta-Description:<br/>
-<textarea name="description" rows="30" cols="3" style="width: 98%; height: 50px;"><?php echo $fetch_content['description']; ?></textarea></div>
+<textarea onchange="tp_changedmetafield(this);" name="description" rows="30" cols="3" style="width: 98%; height: 50px;"><?php echo $fetch_content['description']; ?></textarea></div>
 <div class="modifytopic1">Meta-Keywords:<br/>
-<input type="text" name="keywords" value="<?php echo (htmlspecialchars($fetch_content['keywords'])); ?>" style="width: 98%;" maxlength="255" /></div>
+<input onchange="tp_changedmetafield(this);" type="text" name="keywords" value="<?php echo (htmlspecialchars($fetch_content['keywords'])); ?>" style="width: 98%;" maxlength="255" /></div>
 </div>
 <div class="modifytopictxtr" <?php if ($extrafield_1_name == '') {echo ' style="display:none;"';} echo '>'.$extrafield_1_name; ?><br/>
 <input type="text" name="txtr1" value="<?php echo (htmlspecialchars($fetch_content['txtr1'])); ?>" style="width: 98%;" maxlength="255" /></div>
@@ -598,9 +601,9 @@ if($query_topics->numRows() > 0) { //Shit, cant find the bug, should be > 1
 	echo '<div class="topic-modifytopic">';
 	if ($fetch_content['content_long'] != '' AND $author_trust_rating < 3) {
 		if ($topic_seealso_support == 'bakery') {
-			echo '<a class="topic-modifytopic-bakery" href="topicslist-bakery.php?'.$params.'">'.$MOD_TOPICS['SEE_ALSO_CHANGE']."</a>\n";
+			echo '<a class="topic-modifytopic-bakery" href="modify_seealso-bakery.php?'.$params.'">'.$MOD_TOPICS['SEE_ALSO_CHANGE']."</a>\n";
 		} else {
-			echo '<a class="topic-modifytopic-see-also" href="topicslist.php?'.$params.'">'.$MOD_TOPICS['SEE_ALSO_CHANGE']."</a>\n";
+			echo '<a class="topic-modifytopic-see-also" href="modify_seealso.php?'.$params.'">'.$MOD_TOPICS['SEE_ALSO_CHANGE']."</a>\n";
 		}
 		if ($authorsgroup > 0 AND ($author_invited OR $authoronly == false OR $user_id == $fetch_content['posted_by']) ) {
 			echo '<a class="topic-modifytopic-authors" href="modify_authors.php?'.$params.'">'.$MOD_TOPICS['EDITAUTHORS']."</a>\n";

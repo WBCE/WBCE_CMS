@@ -10,13 +10,12 @@ if(!defined('WB_URL')) {
 
 function makemetadescription ($thestring) {
 	
-	$the_description = stripslashes($thestring);
+	$the_description = html_entity_decode(stripslashes($thestring));
 	$wsp   = "\\x00-\\x20";    //all white-spaces and control chars
 	$the_description = preg_replace( "/[".$wsp."]+/" , ' ', $the_description );
 	
-	$the_description = str_replace('"', ' ', $the_description); 
-	$the_description = str_replace("'", ' ', $the_description); 
-	$the_description = str_replace('\'', ' ', $the_description); 
+	$bad = array('"', "'", '\'','    ','   ','  ');
+	$the_description = str_replace($bad, ' ', $the_description);
 	if (strlen($the_description) > 160) {
 		if(preg_match('/.{0,160}(?:[.!?:,])/su', $the_description, $match)) {  $the_description = $match[0]; }  //thanks to thorn	
 					
@@ -25,23 +24,15 @@ function makemetadescription ($thestring) {
 			if ($pos > 0) {$the_description = substr($the_description, 0,  $pos); }					
 		}
 	}
-	//$the_description = ' '.$the_description;
-	$the_description = trim(str_replace('   ',' ',$the_description));
-	$the_description = trim(str_replace('  ',' ',$the_description));
-
 	return (' '.$the_description);
 }
 
 function makemetakeywords ($thestring ) {
 	
-	$the_keywords = $thestring;
-	if (strlen($the_keywords) > 100) {
-		if(preg_match('/.{0,100}(?:[.!?:,])/su', $the_keywords, $match)) {  $the_keywords = $match[0]; }  //thanks to thorn
-		if (strlen($the_keywords) > 100) {
-			$pos = strpos($the_keywords, " ", 100);
-			if ($pos > 0) {$the_keywords = substr($the_keywords, 0,  $pos); }					
-		}
-	}	
+	$the_keywords = html_entity_decode(stripslashes($thestring));
+	$wsp   = "\\x00-\\x20";    //all white-spaces and control chars
+	$the_keywords = preg_replace( "/[".$wsp."]+/" , ' ', $the_keywords );
+	
 	$bad = array(
 	'\'', /* /  */ '"', /* " */	'<', /* < */	'>', /* > */
 	'{', /* { */	'}', /* } */	'[', /* [ */	']', /* ] */	'`', /* ` */
@@ -51,9 +42,16 @@ function makemetakeywords ($thestring ) {
 	';', /* ; */	':', /* : */	' ', /*   */	'.', /* . */	'?' /* ? */
 	);
 	$the_keywords = str_replace($bad, ',', $the_keywords);
-	$the_keywords = str_replace(',,,',',',$the_keywords);
-	$the_keywords = str_replace(',,',',',$the_keywords);
-
+	$the_keywordsArr = explode(',',$the_keywords);
+	$the_keywordsArr2 = array(); $ksum = 0;
+	foreach ($the_keywordsArr as $k) {
+		if (strlen($k) < 4) {continue;}
+		if (in_array($k, $the_keywordsArr2)) {continue;}
+		$the_keywordsArr2[] = $k;
+		$ksum += strlen($k);
+		if ($ksum > 60) {break;}
+	}
+	$the_keywords = implode(', ',$the_keywordsArr2);
 	return (' '.$the_keywords);
 }
 
@@ -83,7 +81,7 @@ function topics_move_topic($movetopic) {
 		$newpicture_dir = $sections_fetch['picture_dir'];
 		if ($restrict2picdir > 0 AND $newpicture_dir != $picture_dir) { die('No Permission'); }
 		
-		//Hier muss überprüft werden, ob der User überhaupt in die andere Section speichern darf.				
+		//Hier muss ueberprueft werden, ob der User ueberhaupt in die andere Section speichern darf.				
 		if (!$admin->get_page_permission($sections_fetch['page_id']))  { die('No Permission'); }
 		//------------------------------------------------------------
 		

@@ -107,7 +107,7 @@ while ($post = $query_post->fetchRow()) {
 	$position = $post['position'];
 	$content_short = '<!-- copy of news post '.$post_id.' -->'.$post['content_short'];
 	$content_long = $post['content_long'];
-	//$short_description = $post['content_short']; //Wird nicht übertragen
+	//$short_description = $post['content_short']; //Wird nicht uebertragen
 	
 	$description = makemetadescription ( strip_tags($content_short . ' ' . $title) );
 	$keywords = makemetakeywords ( strtolower(strip_tags($title .' '.$content_short)));

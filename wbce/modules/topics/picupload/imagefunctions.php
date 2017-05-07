@@ -109,13 +109,13 @@ function resizepic($filepath, $newfilepath, $pic_soll_w, $pic_soll_h, $checksize
 	
 	if ($pic_ist_w <=  $pic_soll_w_calc AND $pic_ist_h <=  $pic_soll_h_calc) {	
 		if ($bg == '') {
-		//1: Wenn keine Füllfarbe angegeben: das bild as is kopieren
+		//1: Wenn keine Fuellfarbe angegeben: das bild as is kopieren
 			//echo '1 width/height: '.$pic_ist_w.'/'.$pic_ist_h.'<br/>';
 			//die();
 			copy($filepath, $newfilepath);
 			return 0;
 		} else {
-		//2: weitermachen und Auffüllen
+		//2: weitermachen und Auffuellen
 		echo '2 width/height: '.$pic_ist_w.'/'.$pic_ist_h.'<br/>';
 			die();
 			$ofx = 0; $ofy = 0; $pic_soll_w_calc = $pic_ist_w;  $pic_soll_h_calc = $pic_ist_h; 
@@ -126,7 +126,7 @@ function resizepic($filepath, $newfilepath, $pic_soll_w, $pic_soll_h, $checksize
 	
 	//============================================================
 	//16.04.2013: 
-	//Bilder sollten nicht verändert werden, wenn sie zu klein sind UND Keine Soll-Höhe/Breite angegeben wurde:
+	//Bilder sollten nicht veraendert werden, wenn sie zu klein sind UND Keine Soll-Höhe/Breite angegeben wurde:
 	if ($pic_soll_h < 1 AND $pic_soll_h_calc < $pic_soll_h_calc) {$pic_soll_h_calc= $pic_soll_h_calc; $ofy = 0;}
 	if ($pic_soll_w < 1 AND $pic_soll_w_calc < $pic_soll_w_calc) {$pic_soll_w_calc= $pic_soll_w_calc; $ofx = 0;}
 	
@@ -158,8 +158,8 @@ function resizepic($filepath, $newfilepath, $pic_soll_w, $pic_soll_h, $checksize
 	
 	
 	
-	//Änderungen der Variablen die für JCrop newfileerstellung anders sein müssen	
-	//smallheight wird über ratio vom ausschnitt übernommen:
+	//Änderungen der Variablen die fuer JCrop newfileerstellung anders sein muessen	
+	//smallheight wird ueber ratio vom ausschnitt uebernommen:
 	if (!empty ($positionW) && !empty($positionH)) {	
 		$pic_soll_w_calc = $pic_soll_w;
 		$pic_soll_h_calc = $pic_soll_h;

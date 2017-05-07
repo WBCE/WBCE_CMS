@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$.insert('../../include/jquery/jquery-ui-min.js');
+	$.insert(WB_URL+'/include/jquery/jquery-ui-min.js');
 	$.insert(MOD_URL+'/picupload/jcrob/js/jquery.Jcrop.min.js');
 });
 
@@ -8,17 +8,16 @@ $(document).ready(function() {
 // Remember to invoke within jQuery(window).load(...)
 // If you don't, Jcrop may not initialize properly
 $(window).load(function(){
+	if (typeof settingsRatio == "undefined") { return; }
 	
 	$('#cropbox').Jcrop({
 		onChange: showPreview,
 		onSelect: updateCoords,
 		aspectRatio: settingsRatio
 	});
-
 });
 
-function showPreview(coords)
-{
+function showPreview(coords) {	
 	var imgWidth = $("#cropbox").width();
 	var scale = relWidth / imgWidth;
 	
@@ -41,8 +40,7 @@ function showPreview(coords)
 };
 
 
-function updateCoords(c)
-{
+function updateCoords(c) {
 	var imgWidth = $("#cropbox").width();
 	var scale = relWidth / imgWidth;
 

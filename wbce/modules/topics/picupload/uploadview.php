@@ -40,7 +40,7 @@ $imagename = $_REQUEST['fn'];
 $imagename = str_replace('zoom/','',$imagename );
 $imagename = str_replace('thumbs/','',$imagename );
 
-//Vortest für getbasics.inc.php
+//Vortest fuer getbasics.inc.php
 $subdir = '';
 $morepicstest = explode('/', $imagename);
 if (count($morepicstest) == 2) {

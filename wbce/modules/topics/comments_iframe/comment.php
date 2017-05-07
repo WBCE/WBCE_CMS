@@ -123,7 +123,7 @@ if($res->numRows() == 0) {
 		// Include index (wrapper) file
 		//require(WB_PATH.'/index.php');
 		
-		//von Chio eingefügt
+		//von Chio eingefuegt
 		require(WB_PATH.'/modules/'.$mod_dir.'/comments_iframe/commentframe.php');
 		
 		

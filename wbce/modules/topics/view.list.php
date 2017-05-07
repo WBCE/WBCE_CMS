@@ -228,7 +228,7 @@ if($num_topics > 0) {
 			if (substr($picture, 0, 7) == 'http://') {
 				//external file:
 				$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture.'" alt="" />';
-				$thumb_tag = '<img style="max-width:'.$w_thumb.'px;" class="tp_thumb_external tp_thumb tp_thumb'.$page_id.'" src="'.$picture.'" alt="" />';
+				$thumb = '<img style="max-width:'.$w_thumb.'px;" class="tp_thumb_external tp_thumb tp_thumb'.$page_id.'" src="'.$picture.'" alt="" />';
 			} else {
 				if ($picture_dir != '') {			
 					$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture_dir.'/'.$picture.'" alt="" />';
@@ -238,9 +238,11 @@ if($num_topics > 0) {
 						if (file_exists($zoompic)) { $picture_tag = '<a href="'.$picture_dir.'/zoom/'.$picture.'" target="_blank" class="'.$zoomclass.'">'.$picture_tag.'</a>'; }		
 					}
 				}
-				$thumb_tag = '<img class="tp_thumb tp_thumb'.$page_id.'" src="'.$picture_dir.'/thumbs/'.$picture.'" alt="" />';
+				$thumb = '<img class="tp_thumb tp_thumb'.$page_id.'" src="'.$picture_dir.'/thumbs/'.$picture.'" alt="" />';
+			
 			}
-			if ($hascontent > 0) {$thumb_tag = '<a href="'.$topic_link.'">'.$thumb_tag.'</a>';}		
+			$thumb_tag = $thumb;
+			if ($hascontent > 0) {$thumb_tag = '<a href="'.$topic_link.'">'.$thumb.'</a>';}		
 		}
 		
 		$topic_short = '';
@@ -310,8 +312,8 @@ if($num_topics > 0) {
 		
 		
 		//Placeholder [EDITLINK]
-		//Eigentlich müsste bei einem Topic-Master noch überprüft werden, ob der User Berechtigung für die angegebene page_id hat. 
-		//Das bremst aber zu stark ein und wird ohnehin beim Aufruf überprüft.
+		//Eigentlich muesste bei einem Topic-Master noch ueberprueft werden, ob der User Berechtigung fuer die angegebene page_id hat. 
+		//Das bremst aber zu stark ein und wird ohnehin beim Aufruf ueberprueft.
 		$edit_link = '';
 		if ($authoronly) {						
 			$makelisteditlink = false;
@@ -340,8 +342,8 @@ if($num_topics > 0) {
 		
 					
 		// Replace vars with values
-		$vars = array('[TOPIC_ID]', '[TITLE]', '{TITLE}', '[SHORT_DESCRIPTION]', '[TOPIC_SHORT]', '[LINK]', '[MODI_DATE]', '[MODI_TIME]', '[PUBL_DATE]', '[PUBL_TIME]', '[READ_MORE]', '[ACTIVE]', '[PICTURE_DIR]', '[PICTURE]', '{PICTURE}', '{THUMB}', '[COUNTER]', '[COUNTER2]','[EDITLINK]','[XTRA1]', '[XTRA2]', '[XTRA3]', '[COMMENTSCOUNT]', '[COMMENTSCLASS]', '[CLASSES]', '[HREF]');
-		$values = array($t_id, $title, $titleplus, $topic['short_description'], $topic_short, $topic_link, $posted_modi_date, $posted_modi_time, $posted_publ_date, $posted_publ_time, $readmorelink, $active, $picture_dir, $picture, $picture_tag, $thumb_tag, $counter, ($counter % 2), $edit_link, $topic['txtr1'], $topic['txtr2'], $topic['txtr3'], $comments_count, $commentsclass, $classes, $href);
+		$vars = array('[TOPIC_ID]', '[TITLE]', '{TITLE}', '[SHORT_DESCRIPTION]', '[TOPIC_SHORT]', '[LINK]', '[MODI_DATE]', '[MODI_TIME]', '[PUBL_DATE]', '[PUBL_TIME]', '[READ_MORE]', '[ACTIVE]', '[PICTURE_DIR]', '[PICTURE]', '{PICTURE}', '[THUMB]', '{THUMB}', '[COUNTER]', '[COUNTER2]','[EDITLINK]','[XTRA1]', '[XTRA2]', '[XTRA3]', '[COMMENTSCOUNT]', '[COMMENTSCLASS]', '[CLASSES]', '[HREF]');
+		$values = array($t_id, $title, $titleplus, $topic['short_description'], $topic_short, $topic_link, $posted_modi_date, $posted_modi_time, $posted_publ_date, $posted_publ_time, $readmorelink, $active, $picture_dir, $picture, $picture_tag, $thumb, $thumb_tag, $counter, ($counter % 2), $edit_link, $topic['txtr1'], $topic['txtr2'], $topic['txtr3'], $comments_count, $commentsclass, $classes, $href);
 		$listrow = str_replace($vars, $values, $setting_topics_loop);
 		
 		if (isset($users)) {	

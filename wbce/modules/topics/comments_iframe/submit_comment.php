@@ -180,7 +180,7 @@ if(isset($_GET['page_id']) AND is_numeric($_GET['page_id']) AND isset($_GET['sec
 	
 	// Insert the comment into db
 	
-	//Hinweis: FELD commentextra hier eventuell checken und einfügen
+	//Hinweis: FELD commentextra hier eventuell checken und einfuegen
 	
 	$theq = "INSERT INTO ".TABLE_PREFIX."mod_".$tablename."_comments (topic_id,name,website,email,comment,commented_when,commented_by,active,show_link,commentextra) VALUES ('$topic_id','$thename','$thesite','$themail','$comment','$commented_when','$commented_by','$active','$show_link','$commentextra')";
 	$theq = str_replace(array("[", "]"), array("&#91;", "&#93;"), $theq);

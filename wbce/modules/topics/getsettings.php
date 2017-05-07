@@ -1,5 +1,5 @@
 <?php require('../../config.php');
-header('Content-Type: text/plain'); // plain text file
+header('Content-Type: application/javascript');
 
 // Get id
 if(!isset($_GET['section_id']) OR !is_numeric($_GET['section_id'])) {
@@ -108,7 +108,9 @@ if ($wb->is_authenticated()) {echo "//Starting Javascript\n";} else {die("Sorry,
 	
 	//3======================================================================================
 	
-	
+	echo '
+//ov:
+';
 	//Topics Overview
 	$output = preg_replace("/\r|\n/s", "\\n", $settings_fetch['header']);
 	echo "document.modify.header.value = '".str_replace("\\n\\n", "\\n", $output)."';\n";
@@ -124,6 +126,9 @@ if ($wb->is_authenticated()) {echo "//Starting Javascript\n";} else {die("Sorry,
 	//4======================================================================================
 
 	
+	echo '
+//tp:
+';
 	//Topics Single View
 	$output = preg_replace("/\r|\n/s", "\\n", $settings_fetch['topic_header']);
 	echo "document.modify.topic_header.value = '".str_replace("\\n\\n", "\\n", $output)."';\n";
@@ -135,7 +140,12 @@ if ($wb->is_authenticated()) {echo "//Starting Javascript\n";} else {die("Sorry,
 	echo "document.modify.topic_block2.value = '".str_replace("\\n\\n", "\\n", $output)."';\n";
 	
 	
+	
 	//5======================================================================================
+	
+	echo '
+//pnsa:
+';
 	
 	if (is_array($setting_pnsa_array) AND count($setting_pnsa_array) > 4 ) {
 		echo "document.modify.see_also_link_title.value = '".$setting_pnsa_array[0]."';\n";
@@ -150,7 +160,11 @@ if ($wb->is_authenticated()) {echo "//Starting Javascript\n";} else {die("Sorry,
 	}
 	
 	//6======================================================================================
-		
+	
+	
+	echo '
+//comments:
+';	
 	//comments:
 	echo 'selectDropdownOption (document.modify.commenting, '.$settings_fetch['commenting'].");\n";
 	echo 'selectDropdownOption (document.modify.default_link, '.$settings_fetch['default_link'].");\n";

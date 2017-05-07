@@ -122,7 +122,7 @@ if (($section_id * $cid) > 0) {
 			$values = array($name, $comment['email'], $comment['website'], $thecomment, '', '', '0', '', '',  $nameLink);
 			
 			$outputjs = str_replace($vars, $values, $setting_comments_loop);
-			$outputjs = preg_replace('/\s+/', ' ', $outputjs); //einzeilig für Javascript	
+			$outputjs = preg_replace('/\s+/', ' ', $outputjs); //einzeilig fuer Javascript	
 			$outputjs = addslashes($outputjs);
 			
 			echo '<script type="text/javascript">

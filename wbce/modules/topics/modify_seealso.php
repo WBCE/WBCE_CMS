@@ -27,7 +27,7 @@ if (($query_topics->numRows()) != 1) {
 	exit("So what happend with the topic?"); 
 }
 $thistopic = $query_topics->fetchRow();
-//Überprüfung:
+//Überpruefung:
 if ($authoronly) {
 	$authors = $thistopic['authors'];
 	$pos = strpos ($authors,','.$user_id.',');
@@ -59,7 +59,7 @@ if ($sort_topics < 0) {
 }
 */
 $sort_topics_by = get_sort_topics_by($sort_topics);
-echo $sort_topics_by;
+//echo $sort_topics_by;
 //Find Links IN
 $topic_idstr = '%,'.$topic_id.',%';
 $tquery = "SELECT topic_id, see_also FROM `".TABLE_PREFIX."mod_".$tablename."` WHERE see_also LIKE '".$topic_idstr."'";
@@ -76,6 +76,8 @@ if(($query_topics->numRows()) > 0) {
 
 $see_also_text = substr($thistopic['see_also'], 1, -1); 
 if ($see_also_text == '') {$see_also_arr = array();} else $see_also_arr = explode(',',$see_also_text);
+
+	
 echo '<table class="topiclist-toptable"><tr><td><h3>'. $thistopic['title'].'</h3>';
 if ($thistopic['short_description'] != '') {echo '<div class="short_description">'. $thistopic['short_description'].'</div>';}	
 echo '<div class="short_content">'. $thistopic['content_short'].'</div>';
@@ -83,14 +85,16 @@ echo '</td><td class="parambox">';
 echo 'Links out: ' . count($see_also_arr) . '<br/>Links in: ' . count($linkin_array);
 echo '</td></tr></table><hr/>';
 
+echo '<input style="margin-left:0;" id="seealsofilter" onkeyup="filterchanged(this.value)" type="text" placeholder="filter"/>';
+
 
 $t = time();
-$t2 = $t - (60 * 60 * 24 * 30); //1 Monat zurück
+$t2 = $t - (60 * 60 * 24 * 30); //1 Monat zurueck
 $query_extra = '';
 if ($sort_topics == 3) {$query_extra = ' AND published_when >= '.$t2.' ';}
 
-
-if ($restrict2picdir > 1) {
+//echo $restrict2picdir;
+if ($restrict2picdir > 0) {
 	$picture_dir = $settings_fetch['picture_dir'];	
 	$theq = "SELECT section_id FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id > '0' AND picture_dir = '".$picture_dir."'";	
 	$query = $database->query($theq);				
@@ -107,7 +111,7 @@ if ($restrict2picdir > 1) {
 
 
 $limit_sql = ' LIMIT 100';
-$theq = "SELECT published_when, section_id, page_id, topic_id, link, title, short_description, hascontent, active, authors FROM ".TABLE_PREFIX."mod_".$tablename." where hascontent > '0' ".$query_extra." ORDER BY ".$sort_topics_by.$limit_sql;
+$theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." where hascontent > '0' ".$query_extra." ORDER BY ".$sort_topics_by.$limit_sql;
 	$query_topics = $database->query($theq);
 
 // Loop through existing topics
@@ -123,7 +127,7 @@ if($query_topics->numRows() > 0) {
 	<input type="hidden" name="topic_id" value="<?php echo $topic_id; ?>" />
 	<input type="hidden" name="fredit" value="<?php echo $fredit; ?>" />
    
-	<table class="topiclist-maintable">	
+	<table id="tp_filterList" class="topiclist-maintable">	
 	<tr><td class="linkin">&nbsp;</td><td class="see_also"><img src="img/link_to.gif" class="viewbutton" alt="" title="link TO" /></td><td class="anleitung"><?php echo $MOD_TOPICS['LINK_TO']; ?></td><td>&nbsp;</td></tr>
 	<?php
 	$counter=0;
@@ -157,7 +161,12 @@ if($query_topics->numRows() > 0) {
 		
 		if ($topic['hascontent'] > 0) { 
 			if ($modifylinkto != '') {echo $modifylinkto;} else {echo '<img src="img/none.gif" alt="" title="" />';}
-		 	echo '<strong>'.stripslashes($topic['title']).'</strong>'; if ($counter < 20 AND $topic['short_description'] !='') {echo '<div class="shortdesc">'.$topic['short_description'].'</div>';}
+		 	echo '<strong>'.stripslashes($topic['title']).'</strong>'; 
+			if ($counter < 50 AND $topic['short_description'] !='') {
+				echo '<div class="shortdesc">'.$topic['short_description'].'</div>';
+				$short = strip_tags($topic['content_short']);
+				echo '<div style="display:none">'.$short. ' '.$topic['description'].' '.$topic['keywords'].'</div>';			
+			}
 		} else {
 			echo '<img src="img/none.gif" alt="Switchto - " />'.stripslashes($topic['title']);
 		}
@@ -198,10 +207,48 @@ if($query_topics->numRows() > 0) {
 		</tr>
 	</table>
 	 </form>
+	 
+<script>
+var tp_filter_Arr = [];
+
+function tp_prepareFilter() {	
+	var dings = '#tp_filterList tr';	
+	$(dings).each(function() {
+		var tr = $( this );
+		var cont =  tr.text();
+		cont = cont.toLowerCase();
+		tp_filter_Arr.push({'tr':tr, 'tx':cont});	
+		
+	});
+	console.log(tp_filter_Arr[1]);	
+}
+
+function filterchanged(v) {
+	if (tp_filter_Arr.length == 0)  {tp_prepareFilter() ;}
+	var len = tp_filter_Arr.length;
+	
+	v = v.toLowerCase();
+
+	for (var i = 0; i < len; i++) {
+		cont = tp_filter_Arr[i].tx;
+		ts = tp_filter_Arr[i].tr;
+		var n = cont.indexOf(v);
+		if (n < 0) {
+			ts.hide(100);
+		} else {			
+			ts.show(100);
+		}
+		
+	}
+
+}
+</script>
+
 	<?php
 } else {
 	echo $TEXT['NONE_FOUND'];
 }
+
 
 if ($fredit == 1) {
 	topics_frontendfooter();

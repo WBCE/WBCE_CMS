@@ -42,7 +42,7 @@ if ($hascontent < 2) {
 }
 
 // Clean up ordering
-require_once(WB_PATH.'/framework/class.order.php');
+require(WB_PATH.'/framework/class.order.php');
 $order = new order(TABLE_PREFIX.'mod_'.$tablename, 'position', 'topic_id', 'section_id');
 $order->clean($section_id); 
 

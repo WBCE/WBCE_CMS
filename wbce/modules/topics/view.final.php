@@ -22,7 +22,7 @@
 			$the_stopdatetime = gmdate("H:i",$thetp);
 		}
 		
-		//Wer hier spezielle Würste gebraten haben will, muss sie sich selber machen ;-)
+		//Wer hier spezielle Wuerste gebraten haben will, muss sie sich selber machen ;-)
 		$event_placeholders = array(
 			'[EVENT_START_DATE]'	=> $posted_publ_date, 
 			'[EVENT_STOP_DATE]'		=> $the_stopdatetf, 
@@ -62,7 +62,7 @@
 			'[PICTURE_DIR]'			=> $picture_dir, 
 			'[PICTURE]'				=> $picture, 
 			'{PICTURE}'				=> $picture_tag, 
-			'{PICTURE}'				=> $picture_tag, 
+			'{THUMB}'				=> $thumb_tag, 
 			'[ADDITIONAL_PICTURES]'	=> $additional_pictures,
 			
 			'{FULL_TOPICS_LIST}'	=> $topics_linkslist,

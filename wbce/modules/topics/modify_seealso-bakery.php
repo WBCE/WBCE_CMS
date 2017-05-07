@@ -40,9 +40,9 @@ require('permissioncheck.php');
 
 
 // Include WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+require(WB_PATH.'/framework/functions.php');
 // Include the ordering class
-require_once(WB_PATH.'/framework/class.order.php');
+require(WB_PATH.'/framework/class.order.php');
 
 
 

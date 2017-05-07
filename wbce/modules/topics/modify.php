@@ -82,7 +82,7 @@ $params = 'page_id='.$page_id.$paramdelimiter.'section_id='.$section_id.$paramde
 //echo '<a href="?'.$params. (-1 - $sort_topics).'"><img src="'.$picsurl.'reverse.gif" alt="reverse" title="reverse" /></a>';
 
 $t = time();
-$t2 = $t - (60 * 60 * 24 * 30); //1 Monat zurück
+$t2 = $t - (60 * 60 * 24 * 30); //1 Monat zurueck
 // Loop through existing topics
 $query_topics = "SELECT * FROM `".TABLE_PREFIX."mod_".$tablename."` WHERE section_id = '$section_id' ORDER BY $sort_topics_by";
 

@@ -3,10 +3,10 @@ innerw = 0.8*window.innerWidth;
 //if (innerh < 500) innerh = 500;
 //if (innerw < 768) innerw = 768;
 
-var lastopentab = 0;
+var lastopentab = 1;
 
 $( document ).ready(function() {
-	$( "body" ).append( '<div id="topics_chooser_overlay"><div class="topicpic_preview_close"><a href="javascript:choosethispicture(0);"><img src="img/closebox.png" alt="close" /></a></div><div id="topics_picturechooser"></div></div>');
+	$( "body" ).append( '<div id="topics_chooser_overlay"><div class="topicpic_preview_close"><a class="topicpic_preview_closebox" href="javascript:choosethispicture(0);"></a></div><div id="topics_picturechooser"></div></div>');
 
 	document.getElementById('topics_picturechooser').style.height = innerh+"px";
 	document.getElementById('topics_chooser_overlay').style.width = innerw+"px";	
@@ -74,9 +74,10 @@ function closeadditionalpictures () {
 /*--------- END NewUploader ---------------*/
 
 function makevisible(what) {
-	document.getElementById(what).style.display="block";
-	if (what != 'getfromtable' && document.getElementById("getfromtable")) document.getElementById("getfromtable").style.display="none";
-	if (what != 'presetstable' && document.getElementById("presetstable")) document.getElementById("presetstable").style.display="none";
+	document.getElementById("getfromtable").style.display="none";
+	document.getElementById("presetstable").style.display="none";
+	document.getElementById("assistant").style.display="none";
+	document.getElementById(what).style.display="block";	
 }
 
 
@@ -126,15 +127,20 @@ function changesettings(sid) {
 
 }
 
-function changepresets(thefile) {
+function changepresets(thefile, what) {
 	
-	if (!thelanguage) {thelanguage = "en";}
+	var thelanguage = "en";	
 	
 	if( !document.createElement ) {
  		alert('No createElement, sorry');
   		return;
  	}
-	fn = 'presets-'+thelanguage+'/'+thefile+'.js';	
+	var d = new Date();
+	var n = d.getMilliseconds();
+
+	fn = 'presets-'+thelanguage+'/'+thefile+'.js?t='+n;
+	if (what == 'as') {fn = 'assistant/'+thefile+'.js?t='+n;}
+		
 	if (thefile.substr(0,3) == '../') {fn = thefile; }
 		
 	if (script) { 
@@ -264,20 +270,32 @@ function openpicturemodify(picfile) {
 
 //----------------------------------------------------------------
 
+function tp_changedmetafield(ths) {
+	var v = ths.value;
+	v = v.trim();
+	v = v.replace(/(\r\n|\n|\r)/gm," ");
+	v = v.replace(/\s+/g," ");
+	if (ths.type = 'input') {
+		ths.value = v;
+	} else {
+		ths.text = v;
+	}
+	//alert(v);
+}
+
 function copythistopic() {
 	document.getElementById('copytopic').value = 1;
 	document.modify.submit();
 }
 
 function showtabarea(nr) {
-
 	if (nr==0) {
 		if (localStorage['topics_lastopentab'+section_id]) {
 			lastopentab = parseInt( localStorage['topics_lastopentab'+section_id]); 
 			if (lastopentab > 0) {nr = lastopentab;}
 		} 
 	}
-	if (nr==0) nr=1;
+	if (nr==0) {nr=1;}
 	
 	i=0;
 	while (i < 7) {
@@ -285,17 +303,10 @@ function showtabarea(nr) {
 		nar = '#linktabarea'+i;
 		
 		if (i == nr) {			
-			document.getElementById('tabarea'+i).style.display = "block";
-			//document.getElementById('linktabarea'+i).style.borderBottom = "0";
-			//document.getElementById('linktabarea'+i).style.backgroundColor = "#fff";
-			$(nar).addClass( "activeTab" );
-								
-		} else {
-		
-			document.getElementById('tabarea'+i).style.display = "none";
-			if (document.getElementById('linktabarea'+i)) {
-				
-			}
+			document.getElementById('tabarea'+i).style.display = "block";			
+			$(nar).addClass( "activeTab" );								
+		} else {		
+			document.getElementById('tabarea'+i).style.display = "none";			
 			$(nar).removeClass( "activeTab" );
 		}
 	}	
@@ -303,9 +314,10 @@ function showtabarea(nr) {
 	localStorage.setItem('topics_lastopentab'+section_id, nr);
 	$('.settingsform input, .settingsform textarea').css({"background-color": "none"});
 	
-	//window.localStorage.clear(); //try that
+	//window.localStorage.clear(); //testing
 }
 
+/*
 function showtabareajQuery(nr) {
 	//Funktioniert leider nicht
 	n = '#tabarea'+lastopentab;
@@ -321,5 +333,5 @@ function showtabareajQuery(nr) {
 	
 	lastopentab = nr;
 }
-
+*/
 

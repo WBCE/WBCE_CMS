@@ -32,7 +32,9 @@ $use_getfrom = true; $use_presets = true; $use_pictures = 1; $allow_global_setti
 if ($use_getfrom) { echo '<a href="#" onclick="makevisible(\'getfromtable\');" >Get from</a>'; }
 if ($use_getfrom && $use_presets) echo " | ";
 if ($use_presets) { echo '<a href="#" onclick="makevisible(\'presetstable\');" >Presets</a>'; }
-if ($use_getfrom || $use_presets) echo "<br/>";
+
+
+echo ' | <a href="#" onclick="makevisible(\'assistant\');" >New: Assistant</a> (partial presets)';
 
 $query_others = $database->query("SELECT page_id, section_id FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id <> '$section_id' AND  section_id > '0' ORDER BY page_id ASC");
 $othersectionspresent = $query_others->numRows();
@@ -67,16 +69,15 @@ if ($use_getfrom) {
 
 if ($use_presets) { 
 	//get presets	
-	$thelanguage = strtolower(LANGUAGE);
-	if (!is_dir(WB_PATH.'/modules/'.$mod_dir.'/presets-'.$thelanguage)) { $thelanguage = 'en';}
-	$presets_files = WB_PATH.'/modules/'.$mod_dir.'/presets-'.$thelanguage;
+	$thelanguage = strtolower(LANGUAGE);	
+	$presets_files = WB_PATH.'/modules/'.$mod_dir.'/presets-en';
 	echo '<script type="text/javascript"> var thelanguage = "' .$thelanguage. '"; </script>';
 
 	echo '<table cellpadding="2" cellspacing="0" border="0" width="100%" id="presetstable" style="display:none;">
 <tr><td width="30%" valign="top">Presets:<br/>
 
 <form name="presets" action="#" method="get" style="margin: 0;">
-<select name="getpresets" id="getpresets" onchange="changepresets(this.options[this.selectedIndex].value);">  
+<select name="getpresets" id="getpresets" onchange="changepresets(this.options[this.selectedIndex].value, \'\');">  
      <option disabled="disabled" value="--">------------------------------</option> <option value="--">none</option>';
 	 
 	//check if theres a default file in the template folder:
@@ -96,20 +97,26 @@ if ($use_presets) {
 	}
 	
 	 
-	$presets_dir = opendir($presets_files);				
-        while ($file=readdir($presets_dir)) {
-                if ($file != "." && $file != "..") {									
-                    $filename = substr($file, 0, -3);
-                    if ($filename == "default") continue;
-                    echo '<option value="'.$filename.'">'.$filename.'</option>'; 
-                }
-	   }
+	$presets_dir = opendir($presets_files);
+	$fileArr = array();	
+	while ($file=readdir($presets_dir)) {
+		if ($file != "." && $file != "..") {									
+			$filename = substr($file, 0, -3);
+			$fileArr[] = $filename;
+		}
+	}
+	sort($fileArr);
+	foreach ($fileArr as $filename) {
+		echo '<option value="'.$filename.'">'.str_replace('_', ' ',$filename).'</option>'; 
+    }
 	echo '</select></form>
 	</td><td><div id="presetsdescription">NOTE: the presets-option will change the field contents. If you dont want to keep the changes, do NOT save!</div></td></tr></table>';
 
 
  } 
-
+echo '<div id="assistant" style="display:none">';
+include(WB_PATH.'/modules/'.$mod_dir.'/assistant/assistant.inc.php');
+echo '</div>';
 echo '<hr/>';
 
 
@@ -718,9 +725,9 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 		<td class="setting_fields">
 			<?php
 			
-			echo $TEXT['SHORT'].': <input class="inputf" style="width:24px;margin-right:20px;" name="short_textareaheight" type="text" maxlength="4" value="'.$short_textareaheight.'" /> ';
-			echo $TEXT['LONG'].': <input class="inputf" style="width:24px;margin-right:20px;"  name="long_textareaheight" type="text" maxlength="4" value="'.$long_textareaheight.'" /> ';
-			echo $MOD_TOPICS['EXTRA'].': <input class="inputf" style="width:24px;margin-right:20px;" name="extra_textareaheight" type="text" maxlength="4" value="'.$extra_textareaheight.'" /> ';
+			echo $TEXT['SHORT'].': <input class="inputf tpf-small" name="short_textareaheight" type="text" maxlength="4" value="'.$short_textareaheight.'" /> ';
+			echo $TEXT['LONG'].': <input class="inputf tpf-small" name="long_textareaheight" type="text" maxlength="4" value="'.$long_textareaheight.'" /> ';
+			echo $MOD_TOPICS['EXTRA'].': <input class="inputf tpf-small" name="extra_textareaheight" type="text" maxlength="4" value="'.$extra_textareaheight.'" /> ';
 			echo '<p>'.$MOD_TOPICS['EDITOR_HEIGHTS_HINT'].'</p><hr/>';
 			
 			

@@ -10,7 +10,7 @@ function validateForm() {
 		}
 	
 	m = document.comment.themoil.value;
-	//if (m != '') { //Wenn vorhanden, dann muss gültig sein
+	//if (m != '') { //Wenn vorhanden, dann muss gueltig sein
 		p1=m.indexOf('@');
 		p2=m.indexOf('.');
 		if (emailsettings > 1) { 

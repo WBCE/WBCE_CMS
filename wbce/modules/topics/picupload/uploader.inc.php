@@ -118,7 +118,7 @@ for($i=0; $i<$uploaded; $i++){
 	if ($bildtype == "" OR $width == 0) {
 		echo '<p style="color: red; text-align: center;">no picture file uploaded (jpg, gif, png)</p>';
 		continue;
-		//nur überspringen!
+		//nur ueberspringen!
 	}
 	
 	$fname = $_FILES['uploadpic']['name'][$i]; 
@@ -126,7 +126,7 @@ for($i=0; $i<$uploaded; $i++){
 	$fname = substr($fname, 0, strlen($fname) - 4);
 	$fname = page_filename($fname); 
 	
-	//ggf eine Zahl anhängen:
+	//ggf eine Zahl anhaengen:
 	if(isset($_REQUEST['nooverwrite']) ) {
 		$ncount = 1;
 		while ($ncount < 100) {

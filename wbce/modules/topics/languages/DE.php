@@ -79,6 +79,8 @@ $MOD_TOPICS['DATE_USAGE_2'] = 'Zeitgesteuerte Ver&ouml;ffentlichung';
 $MOD_TOPICS['DATE_USAGE_3'] = 'Auto-Archiv';
 $MOD_TOPICS['TOPICSMASTER_SELECT'] = 'TopicsMaster Sections';
 
+$MOD_TOPICS['TOPIC_DATE'] = 'Topic Datum';
+
 $MOD_TOPICS['MOVE_TO'] = 'verschieben zu:';
 $MOD_TOPICS['AUTO_ARCHIVE'] = 'Auto-Archivierung:';
 $MOD_TOPICS['AUTO_ARCHIVE_0'] = 'Aus';
@@ -159,7 +161,7 @@ $MOD_TOPICS['EDITAUTHORS'] = 'Autoren &auml;ndern';
 $MOD_TOPICS['AUTHORSHEADLINE'] = 'Weitere Autoren, die dieses Thema bearbeiten d&uuml;rfen';
 $MOD_TOPICS['SETAUTHORSHEADLINE'] = 'Anderen Autor zum Inhaber machen:';
 
-$MOD_TOPICS['SAVEFORALL'] = 'Einstellungen auch f&uuml;r alle anderen Abschnitte &uuml;bernehmen (VORSICHT!)';
+$MOD_TOPICS['SAVEFORALL'] = 'Einstellungen auch f&uuml;r alle anderen Abschnitte mit dem gleichen Bildverzeichnis &uuml;bernehmen (VORSICHT!)';
 $MOD_TOPICS['SAVE_FINISH'] = 'Sichern und fertig';
 
 //Commentframe

@@ -32,8 +32,8 @@ if (isset($_POST['topiclinks'])) {
 $database->query("UPDATE ".TABLE_PREFIX."mod_".$tablename." SET see_also = '$topiclinks_text' WHERE topic_id = '$topic_id'");
 
 // Check if there is a db error, otherwise say successful
-$gobackto = WB_URL.'/modules/'.$mod_dir.'/topicslist.php';
-if ($topic_seealso_support == 'bakery') {$gobackto = WB_URL.'/modules/'.$mod_dir.'/topicslist-bakery.php';}
+$gobackto = WB_URL.'/modules/'.$mod_dir.'/modify_seealso.php';
+if ($topic_seealso_support == 'bakery') {$gobackto = WB_URL.'/modules/'.$mod_dir.'/modify_seealso-bakery.php';}
 $gobackto .= '?page_id='.$page_id.'&section_id='.$section_id.'&topic_id='.$id.'&fredit='.$fredit;
 
 if($database->is_error()) {
