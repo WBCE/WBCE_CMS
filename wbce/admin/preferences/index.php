@@ -66,9 +66,6 @@ function build_page( &$admin, &$database )
     $template->set_block('main_block', 'timezone_list_block', 'timezone_list');
     foreach( $TIMEZONES AS $hour_offset => $title )
     {
-        if ($hour_offset == 'system_default') {
-            $hour_offset = isset($_SESSION['USE_DEFAULT_TIME_FORMAT']) ? $_SESSION['USE_DEFAULT_TIME_FORMAT'] : 0;
-        }
         $template->set_var('VALUE',    $hour_offset);
         $template->set_var('NAME',     $title);
         $template->set_var('SELECTED', ($admin->get_timezone() == ($hour_offset * 3600) ? ' selected="selected"' : '') );
