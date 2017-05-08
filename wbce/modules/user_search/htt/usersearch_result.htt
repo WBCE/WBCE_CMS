@@ -3,7 +3,7 @@
 <table width="98%" cellspacing="0" border="0" cellpadding="5px" class="row_a">
 	<tr>
 		<td style="width: 220px;"><strong>{SEARCH_DETAIL_RESULT}:</strong></td>
-		<td><strong>&nbsp;</td>
+		
 	</tr>
 <!-- BEGIN searchterm_block -->
 	<tr>				

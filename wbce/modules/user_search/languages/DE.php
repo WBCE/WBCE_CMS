@@ -31,8 +31,8 @@ $module_description = 'Dieses Modul bietet eine Suchfunktion f&uuml;r die Benutz
 
 // Textausgaben
 $MOD_USER_SEARCH['HEADING']				= 'Benutzer Suche';
-$MOD_USER_SEARCH['HOWTO']				= 'Hier sind einige zus&auml;tzliche Funktionen f&uuml;r die Suche.<br />Sie k&ouml;nnen verschiedene Kriterien kombinieren um die Suche zu verbessern. Falls sie ein Kriterium nicht ben&ouml;tigen, lassen Sie es einfach frei.';
-$MOD_USER_SEARCH['SUBMIT_ALERT']		= 'Eine Suche ohne Suchbegriff macht keinen Sinn ;-)';
+$MOD_USER_SEARCH['HOWTO']				= 'Hier sind einige zus&auml;tzliche Funktionen f&uuml;r die Suche. <br />Sie k&ouml;nnen verschiedene Kriterien kombinieren um die Suche zu verbessern. Falls sie ein Kriterium nicht ben&ouml;tigen, lassen Sie es einfach frei.';
+$MOD_USER_SEARCH['SUBMIT_ALERT']		= 'Eine Suche ohne Suchbegriff ergibt keinen Sinn ;-)';
 $MOD_USER_SEARCH['SUBMIT_TERM_ALERT'] 	= 'Wenn Sie einen Suchberiff angeben, m&uuml;ssen Sie mindestens ein Suchfeld ausw&auml;hlen!';
 $MOD_USER_SEARCH['SEARCH_ITEM']			= 'Suchbegriff';
 $MOD_USER_SEARCH['USE_WILDCARD']		= 'Verwenden Sie * als Wildcard.';

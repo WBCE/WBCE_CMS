@@ -131,10 +131,11 @@ else {
 		if (isset($_POST['realname']))  $wheretosearch += 2;
 		if (isset($_POST['email']))		$wheretosearch += 4;
 		
-		//$item = $admin->add_slashes($admin->get_post('begriff'));
+		$item_raw = $admin->add_slashes($admin->get_post('begriff'));
+		$item = $database->escapeString($item_raw);
 		
-		$xmlstoresearch .= "<searchterm>".$admin->add_slashes($admin->get_post('begriff'))."</searchterm>";
-		$item = str_replace("*", '%', $admin->add_slashes($admin->get_post('begriff')));
+		$xmlstoresearch .= "<searchterm>".$item."</searchterm>";
+		$item = str_replace("*", '%', $item);
 		
 	
 		switch($wheretosearch) {
@@ -191,14 +192,15 @@ else {
 			$xmlstoresearch .= "<before>true</before>";
 		}
 		// convert date to timestamp format to compare
-		$resultquery .= jscalendar_to_timestamp($_POST['comp_date'],TIMEZONE);
-		$xmlstoresearch .= "<date>".jscalendar_to_timestamp($_POST['comp_date'],TIMEZONE)."</date>";
+		$resultquery .= $database->escapeString(jscalendar_to_timestamp($_POST['comp_date'],TIMEZONE));
+		
+		$xmlstoresearch .= "<date>".$database->escapeString(jscalendar_to_timestamp($_POST['comp_date'],TIMEZONE))."</date>";
 		$xmlstoresearch .= "</datelastlogin>";
 		}
 	
 	// if a group was choosen modify the sql query
 	if (isset($_POST['groups'])&&($_POST['groups']!="-1")) {
-		$g_id = $_POST['groups'];
+		$g_id = $database->escapeString($_POST['groups']);
 		if ($resultquery!="") $resultquery .= ") AND";
 		$g_id = str_replace(",", '%', $g_id);
 		$resultquery .= " (groups_id LIKE '%$g_id%'";
@@ -237,7 +239,7 @@ else {
 		if ($wheretosearch != 0) {
 			// display if a search term was entered
 			$tpl->set_var('SEARCH_ITEM_RESULT', $MOD_USER_SEARCH['SEARCH_ITEM_RESULT']);
-			$tpl->set_var('BEGRIFF', $admin->add_slashes($admin->get_post('begriff')));
+			$tpl->set_var('BEGRIFF',htmlspecialchars($admin->get_post('begriff'),ENT_QUOTES, "UTF-8"));
 			$tpl->set_var('SEARCH_FIELD_RESULT', $MOD_USER_SEARCH['SEARCH_FIELD_RESULT']);
 			$tpl->set_var('DISPLAYSEARCHFIELD', $displaysearchfield);
 			$tpl->parse('searchterm_block_handle', 'searchterm_block');
