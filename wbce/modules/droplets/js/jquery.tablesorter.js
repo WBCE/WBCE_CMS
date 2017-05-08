@@ -146,7 +146,7 @@
                 if (typeof console != "undefined" && typeof console.debug != "undefined") {
                     console.log(s);
                 } else {
-                    alert(s);
+                   // alert(s);
                 }
             }
 
