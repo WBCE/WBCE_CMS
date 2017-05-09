@@ -64,7 +64,7 @@ $ThemePath = realpath(WB_PATH.$wb->correct_theme_source('login.htt'));
 $thisApp = new login(
 				array(
 						"MAX_ATTEMPS" => "3",
-						"WARNING_URL" => $ThemeUrl."/warning.html",
+						"WARNING_URL" => $ThemeUrl."/templates/warning.html",
 						"USERNAME_FIELDNAME" => 'username',
 						"PASSWORD_FIELDNAME" => 'password',
 						"REMEMBER_ME_OPTION" => SMART_LOGIN,
