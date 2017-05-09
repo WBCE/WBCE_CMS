@@ -56,7 +56,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (18, 'intro_page', 'false'),
 (19, 'page_trash', 'inline'),
 (20, 'homepage_redirection', 'false'),
-(21, 'page_languages', 'true'),
+(21, 'page_languages', 'false'),
 (22, 'wysiwyg_editor', 'ckeditor'),
 (23, 'manage_sections', 'true'),
 (24, 'section_blocks', 'true'),
