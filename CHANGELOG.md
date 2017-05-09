@@ -5,6 +5,36 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2017-05-08:** Christoph Bleiweis [[7d363a52](https://github.com/WBCE/WBCE_CMS/commit/7d363a5204357c0817d40d9b6f8aac81d5c5ed06)]
+   > Disable alert in droplets
+
+ * **2017-05-08:** Christoph Bleiweis [[b49ecf7c](https://github.com/WBCE/WBCE_CMS/commit/b49ecf7c4d6bba1df97030a7ac32dd3ea84f709e)]
+   > Update upgrade-script
+
+ * **2017-05-08:** Christoph Bleiweis [[0da62001](https://github.com/WBCE/WBCE_CMS/commit/0da620016aec17ac2d2f3a22c55ab8c2b55e691e)]
+   > Update user search
+     Update user search from 0.41 to 0.50
+
+ * **2017-05-07:** Christoph Bleiweis [[0aebd7aa](https://github.com/WBCE/WBCE_CMS/commit/0aebd7aa9d773199fe742b5be5ecc55c223d8a8c)]
+   > Update topics
+     Update topics from 0.9.3 to 0.9.4
+
+ * **2017-05-07:** Christoph Bleiweis [[5006f003](https://github.com/WBCE/WBCE_CMS/commit/5006f00383b14ce9f9b255b15df9ca315bcfe49f)]
+   > Revert fix for PHP 7.1
+
+ * **2017-05-07:** Christoph Bleiweis [[f2d381a1](https://github.com/WBCE/WBCE_CMS/commit/f2d381a130408a488b0519a7ebbbbc3d6047402e)]
+   > Update hortal and vertal
+
+ * **2017-05-06:** Christoph Bleiweis [[cc1e447a](https://github.com/WBCE/WBCE_CMS/commit/cc1e447ac392a51a028d99bd4c4158013ef0b8e6)]
+   > Updated install and upgrade script
+
+ * **2017-05-04:** Christoph Bleiweis [[ab118b70](https://github.com/WBCE/WBCE_CMS/commit/ab118b701465fe64acd0bd275498254f501de5a8)]
+   > CSS update for AR
+     Optimizes AR for Windows Devices and add a layout fix for topics
+
+ * **2017-05-04:** cwsoft [[bc75a56b](https://github.com/WBCE/WBCE_CMS/commit/bc75a56b53b538af246ee0a9960b2685400a76d3)]
+   > Updated CHANGELOG.md to reflect new WBCE repository name
+
  * **2017-05-04:** instantflorian [[b1f7491a](https://github.com/WBCE/WBCE_CMS/commit/b1f7491a2cea7ed37c00bb20c80fe00a9972d757)]
    > Update INSTALL.md
 
