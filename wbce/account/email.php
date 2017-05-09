@@ -32,7 +32,7 @@ if (!$wb->checkFTAN()) {
 		if(!$wb->validate_email($email)) {
 			$error[] = $MESSAGE['USERS_INVALID_EMAIL'];
 		}else {
-			$email = $database->escapeString($email)
+			$email = $database->escapeString($email);
 // Update the database
 			$sql = "UPDATE `".TABLE_PREFIX."users` SET `email` = '".$email."' WHERE `user_id` = ".$wb->get_user_id();
 			$database->query($sql);
