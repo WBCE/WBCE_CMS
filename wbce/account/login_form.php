@@ -37,28 +37,58 @@ if(defined('SMART_LOGIN') AND SMART_LOGIN == 'enabled') {
 
 $thisApp->redirect_url = (isset($thisApp->redirect_url) && ($thisApp->redirect_url!='')  ? $thisApp->redirect_url : $_SESSION['HTTP_REFERER'] );
 ?>
-<div style="margin: 1em auto;">
-	<button type="button" value="cancel" onClick="javascript: window.location = '<?php print $_SESSION['HTTP_REFERER'] ?>';"><?php print $TEXT['CANCEL'] ?></button>
-</div>
-<h1>&nbsp;Login</h1>
-&nbsp;<?php 
+
+<style type="text/css">
+
+.login-info {
+	margin:1em 0;
+}
+
+.login-box table {
+	width:100%;
+}
+
+.login-box table td {
+	padding:0.5em;
+	width:50%;
+}
+
+.login-box input {
+	width:100%;
+	padding:0.2em;
+}
+
+.login-box input[type="text"], .login-box input[type="password"] {
+	background-color:#fff;
+	border-style:solid; 
+	border-width:1px;
+}
+	
+</style>
+
+<h1><?php echo $TEXT['LOGIN']; ?></h1>
+
+<p class="login-info">
+<?php 
   if(isset($thisApp->message)) {
     echo $thisApp->message; 
   }
 ?>
-<br />
-<br />
+</p>
 
 <form class="login-box" action="<?php echo WB_URL.'/account/login.php'; ?>" method="post" autocomplete="off">
 <input type="hidden" name="username_fieldname" value="<?php echo $username_fieldname; ?>" />
 <input type="hidden" name="password_fieldname" value="<?php echo $password_fieldname; ?>" autocomplete="off"/>
 <input type="hidden" name="redirect" value="<?php echo $thisApp->redirect_url;?>" />
 
-<table cellpadding="5" cellspacing="0" border="0" width="90%">
+
+
+
+<table cellpadding="5" cellspacing="0" border="0">
 <tr>
-	<td style="width:100px"><?php echo $TEXT['USERNAME']; ?>:</td>
-	<td class="value_input">
-		<input type="text" name="<?php echo $username_fieldname; ?>" maxlength="30" style="width:220px;"/>
+	<td><?php echo $TEXT['USERNAME']; ?>:</td>
+	<td>
+		<input type="text" name="<?php echo $username_fieldname; ?>" />
     	<script type="text/javascript">
     	// document.login.<?php echo $username_fieldname; ?>.focus();
     	var ref= document.getElementById("<?php echo $username_fieldname; ?>");
@@ -67,31 +97,20 @@ $thisApp->redirect_url = (isset($thisApp->redirect_url) && ($thisApp->redirect_u
 	</td>
 </tr>
 <tr>
-	<td style="width:100px"><?php echo $TEXT['PASSWORD']; ?>:</td>
-	<td class="value_input">
-		<input type="password" name="<?php echo $password_fieldname; ?>" maxlength="30" style="width:220px;"/>
-	</td>
-</tr>
-<?php if($username_fieldname != 'username') { ?>
-<tr>
-	<td>&nbsp;</td>
+	<td><?php echo $TEXT['PASSWORD']; ?>:</td>
 	<td>
-		<input type="checkbox" name="remember" id="remember" value="true"/>
-		<label for="remember"><?php echo $TEXT['REMEMBER_ME']; ?></label>
+		<input type="password" name="<?php echo $password_fieldname; ?>" />
 	</td>
 </tr>
-<?php } ?>
 <tr>
 	<td>&nbsp;</td>
 	<td>
 		<input type="submit" name="submit" value="<?php echo $TEXT['LOGIN']; ?>"  />
-		<input type="reset" name="reset" value="<?php echo $TEXT['RESET']; ?>"  />
+		
 	</td>
 </tr>
 </table>
 
 </form>
 
-<br />
-
-<a href="<?php echo WB_URL; ?>/account/forgot.php"><?php echo $TEXT['FORGOTTEN_DETAILS']; ?></a>
+<p><a href="<?php echo WB_URL; ?>/account/forgot.php"><?php echo $TEXT['FORGOTTEN_DETAILS']; ?></a></p>
