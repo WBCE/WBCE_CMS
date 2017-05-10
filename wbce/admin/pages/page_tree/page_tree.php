@@ -217,7 +217,7 @@ ob_start();
 				<?php endif; ?>
 					</small>
 				</div>
-				</td>
+				</td><td>&nbsp;</td>
 				<td class="list_actions">
 					<small><nobr>&nbsp;
 						<?php if($p['visibility'] != 'deleted' && $p['visibility'] != 'none') : ?>
