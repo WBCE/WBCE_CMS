@@ -29,4 +29,4 @@ $TOOL_TEXT['CUSTOM_KEYWORDS_STRING_HINT'] = '"Keywords" ist die Voreinstellung, 
 $TOOL_TEXT['USE_REMAINING_CHARS']         = 'Verbleibende Zeichen anzeigen';
 $TOOL_TEXT['USE_REMAINING_CHARS_HINT']    = 'Es wird angezeigt, wieviele Zeichen verbleiben (basierend auf "optimum" Einstellungen)';
 $TOOL_TEXT['USE_REWRITE_URL_HINT']        = 'Dies hier ist eine spezielle Einstellung, die Datenbank- und Core-Änderungen in WebsiteBaker vorraussetzt. Bei Unsicherheiten bitte hier nichts angeben.';
-$TOOL_TEXT['REWRITE_URL_WARNING_HINT']    = '<b>ACHTUNG</b>, dieses DB Feld <i>(%s)</i> existiert nicht. Bitte stellen Sie sicher, dass ein existierendes Feld verwendet wird oder verwenden Sie diese Funktion nicht. F&uuml;r weitere Information wenden Sie sich an <b><i>http://www.websitebaker.org/forum/</i></b>';
+$TOOL_TEXT['REWRITE_URL_WARNING_HINT']    = '<b>ACHTUNG</b>, dieses DB Feld <i>(%s)</i> existiert nicht. Bitte stellen Sie sicher, dass ein existierendes Feld verwendet wird oder verwenden Sie diese Funktion nicht.';

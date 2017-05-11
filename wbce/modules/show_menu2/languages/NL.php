@@ -27,6 +27,6 @@
 */
 
 //Module Description
-$module_description = 'Deze module integreert een de geavanceerde menu functie <code> show_menu2 () </ code> in Website Baker. Gedetailleerde informatie is beschikbaar op <a href="http://code.jellycan.com/show_menu2/" target="_blank"> http://code.jellycan.com/show_menu2/ </a> of in de <a href = "{WB_URL}/modules/show_menu2/README_EN" target = "_blank"> README </a>.';
+$module_description = 'Deze module integreert een de geavanceerde menu functie <code> show_menu2 () </ code> in WBCE CMS. Gedetailleerde informatie is beschikbaar in de <a href = "{WB_URL}/modules/show_menu2/README_EN" target = "_blank"> README </a>.';
 
 ?>

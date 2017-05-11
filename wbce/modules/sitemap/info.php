@@ -34,7 +34,7 @@ $module_platform  = '2.5.x - 2.8.x';
 $module_author    = 'Ryan Djurovich, Frank Schoep, Woudloper, Ruebenwurzel, Rob Smith, Mouring Kolhoff, Michael Milette, Dietrich Roland Pehlke, Christian M. Stefan (Stefanek) (last)';
 $module_license   = 'GNU General Public License';
 $module_description = 'This module allows you to easily create a sitemap. You can even work with additional layout settings for the sitemap. It also gives you the option to show hidden menu items if required';
-$module_home      = 'http://www.websitebakers.com';
+$module_home      = '';
 $module_guid      = '8B7C09E5-6246-4264-8959-8AA542D7BD6';
 
 

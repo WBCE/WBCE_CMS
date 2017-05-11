@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Radit detalas';
 $TEXT['VISIBILITY'] = 'Redzamiba';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'Ludzu atgriezies un aizpildi visus laukus';
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Uzinstalets veiksmigi';
 $MESSAGE['GENERIC_INVALID'] = 'Datne, ko nupat aug&#353;upieladeji, ir invalids';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -636,7 +636,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Jaievada e-pasta adrese';
 $MESSAGE['START_CURRENT_USER'] = 'Tu &#353;obrid esi ielogojies ka:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Bridinajums, instalacijas mape vel arvien eksiste!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Esi sveicinats WebsiteBaker administracija';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Esi sveicinats WBCE CMS administracija';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Ludzu iegaume: lai mainitu &#353;ablonu, jadotas uz iestatijumu sadalu';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
@@ -669,18 +669,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Mened&#382;et lietotaju grupas un noteikt to atlaujas...';
 $OVERVIEW['HELP'] = 'Jautajumi? Atrodi atbildi...';
-$OVERVIEW['LANGUAGES'] = 'Mened&#382;et WebsiteBaker valodas...';
+$OVERVIEW['LANGUAGES'] = 'Mened&#382;et WBCE CMS valodas...';
 $OVERVIEW['MEDIA'] = 'Mened&#382;et failus iek&#353; media mapes...';
-$OVERVIEW['MODULES'] = 'Mened&#382;et WebsiteBaker modulus...';
+$OVERVIEW['MODULES'] = 'Mened&#382;et WBCE CMS modulus...';
 $OVERVIEW['PAGES'] = 'Mened&#382;et lapas...';
 $OVERVIEW['PREFERENCES'] = 'Mainit preferences - e-pasta adresi, paroli, utt...';
-$OVERVIEW['SETTINGS'] = 'Mainit WebsiteBaker iestatijumus...';
+$OVERVIEW['SETTINGS'] = 'Mainit WBCE CMS iestatijumus...';
 $OVERVIEW['START'] = 'Administracijas parskats';
 $OVERVIEW['TEMPLATES'] = 'Mened&#382;et &#353;ablonus...';
-$OVERVIEW['USERS'] = 'Mened&#382;et lietotajus, kas var ielogties WebsiteBaker sistema...';
+$OVERVIEW['USERS'] = 'Mened&#382;et lietotajus, kas var ielogties WBCE CMS sistema...';
 $OVERVIEW['VIEW'] = 'Apskatit majas lapu jauna loga...';
 
 

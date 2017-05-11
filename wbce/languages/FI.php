@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'N&#228;yt&#228; tiedot';
 $TEXT['VISIBILITY'] = 'N&#228;kyvyys';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'Palaa ja t&#228;yt&#228; kaikki kent&#228;t';
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Asennettu';
 $MESSAGE['GENERIC_INVALID'] = 'Ladatussa tiedostossa virhe';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -669,7 +669,7 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'k&#228;ytt&#228;j&#228;ryhm&#228;t...';
 $OVERVIEW['HELP'] = 'Kysymykset, vastaukset...';
 $OVERVIEW['LANGUAGES'] = 'Muuta kieli...';
@@ -677,7 +677,7 @@ $OVERVIEW['MEDIA'] = 'Tiedostojen hallinta...';
 $OVERVIEW['MODULES'] = 'Moduulien hallinta...';
 $OVERVIEW['PAGES'] = 'Sivujen hallinta...';
 $OVERVIEW['PREFERENCES'] = 'S&#228;hk&#246;postiosoite, salsana... ';
-$OVERVIEW['SETTINGS'] = 'WebsiteBakerin asetukset...';
+$OVERVIEW['SETTINGS'] = 'WBCE CMS asetukset...';
 $OVERVIEW['START'] = 'P&#228;&#228;k&#228;ytt&#228;j&#228;tila';
 $OVERVIEW['TEMPLATES'] = 'Muuta sivupohjaa...';
 $OVERVIEW['USERS'] = 'K&#228;ytt&#228;j&#228;hallinta...';

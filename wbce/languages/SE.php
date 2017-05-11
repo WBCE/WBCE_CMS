@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Visa detaljer';
 $TEXT['VISIBILITY'] = 'Synlighetsgrad';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'G&#229; tillbaka och fyll i alla f&#228;lt';
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Installerat';
 $MESSAGE['GENERIC_INVALID'] = 'Filen du laddade upp &#228;r ogilltig';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -636,7 +636,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Du m&#229;ste skriva en e-postadress';
 $MESSAGE['START_CURRENT_USER'] = 'Du &#228;r inloggad som:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'VARNING, installationsmappen finns fortfarande kvar!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'V&#228;lkommen till administrationen av WebsiteBaker';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'V&#228;lkommen till administrationen av WBCE CMS';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Observera: f&#246;r att &#228;ndra Mall, m&#229;ste du g&#229; till Sektionen Inst&#228;llningar';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
@@ -669,18 +669,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Behandla anv&#228;ndargrupper och deras system&#229;tkomst...';
 $OVERVIEW['HELP'] = 'Hitta svar p&#229; dina fr&#229;gor (p&#229; engelska)...';
-$OVERVIEW['LANGUAGES'] = 'Behandla WebsiteBaker spr&#229;k...';
+$OVERVIEW['LANGUAGES'] = 'Behandla WBCE CMS spr&#229;k...';
 $OVERVIEW['MEDIA'] = 'Redigera inneh&#229;ll i mediabiblioteket...';
-$OVERVIEW['MODULES'] = 'Behandla WebsiteBaker moduler...';
+$OVERVIEW['MODULES'] = 'Behandla WBCE CMS moduler...';
 $OVERVIEW['PAGES'] = 'Redigera dina sidor...';
 $OVERVIEW['PREFERENCES'] = '&#196;ndra inst&#228;llningar som e-postadress, l&#246;senord, etc... ';
-$OVERVIEW['SETTINGS'] = '&#196;ndra inst&#228;llningar f&#246;r WebsiteBaker...';
+$OVERVIEW['SETTINGS'] = '&#196;ndra inst&#228;llningar f&#246;r WBCE CMS...';
 $OVERVIEW['START'] = 'Administration &#246;versyn';
 $OVERVIEW['TEMPLATES'] = '&#196;ndra utseendet med mallar...';
-$OVERVIEW['USERS'] = 'Behandla anv&#228;ndare som kan logga in till WebsiteBaker...';
+$OVERVIEW['USERS'] = 'Behandla anv&#228;ndare som kan logga in till WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Titta p&#229; dina sidor i ett nytt f&#246;nster...';
 
 

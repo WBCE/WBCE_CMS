@@ -77,7 +77,7 @@ $TEXT['BACKUP'] = 'Z&#225;lohov&#225;n&#237;';
 $TEXT['BACKUP_ALL_TABLES'] = 'Z&#225;lohovat v&#353;echny tabulky v datab&#225;zi';
 $TEXT['BACKUP_DATABASE'] = 'Z&#225;lohovat datab&#225;zi';
 $TEXT['BACKUP_MEDIA'] = 'Zaz&#225;lohovat m&#233;dia';
-$TEXT['BACKUP_WB_SPECIFIC'] = 'Z&#225;lohovat pouze tabulky WebsiteBakeru';
+$TEXT['BACKUP_WB_SPECIFIC'] = 'Z&#225;lohovat pouze tabulky WBCE CMSu';
 $TEXT['BASIC'] = 'Z&#225;kladn&#237;';
 $TEXT['BLOCK'] = 'Blok';
 $TEXT['CALENDAR'] = 'Calender';
@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Zobrazit';
 $TEXT['VISIBILITY'] = 'Viditelnost';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'Pros&#237;m vra&#357;te se zp&#283;t a vypl&#
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Instalace prob&#283;hla &#250;sp&#283;&#353;n&#283;';
 $MESSAGE['GENERIC_INVALID'] = 'Nahr&#225;van&#253; soubor je neplatn&#253;';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -669,18 +669,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Spravovat skupiny u&#382;ivatel&#367; a jejich opr&#225;vn&#283;n&#237;...';
 $OVERVIEW['HELP'] = 'M&#225;te ot&#225;zku? Hledejte odpov&#283;&#271;...';
-$OVERVIEW['LANGUAGES'] = 'Spravovat jazyky WebsiteBakeru...';
+$OVERVIEW['LANGUAGES'] = 'Spravovat jazyky WBCE CMSu...';
 $OVERVIEW['MEDIA'] = 'Spravovat soubory v adres&#225;&#345;i m&#233;di&#237;...';
-$OVERVIEW['MODULES'] = 'Spravovat moduly WebsiteBakeru...';
+$OVERVIEW['MODULES'] = 'Spravovat moduly WBCE CMSu...';
 $OVERVIEW['PAGES'] = 'Spravovat webov&#233; str&#225;nky...';
 $OVERVIEW['PREFERENCES'] = 'Zm&#283;na nastaven&#237; e-mailov&#233; adresy, hesla, atd... ';
-$OVERVIEW['SETTINGS'] = 'Zm&#283;na nastaven&#237; WebsiteBakeru...';
+$OVERVIEW['SETTINGS'] = 'Zm&#283;na nastaven&#237; WBCE CMSu...';
 $OVERVIEW['START'] = 'Administra&#269;n&#237; p&#345;ehled';
 $OVERVIEW['TEMPLATES'] = 'Zm&#283;nit vzhled a chov&#225;n&#237; webu pomoc&#237; &#353;ablon...';
-$OVERVIEW['USERS'] = 'Spravovat u&#382;ivate WebsiteBakeru...';
+$OVERVIEW['USERS'] = 'Spravovat u&#382;ivate WBCE CMSu...';
 $OVERVIEW['VIEW'] = 'Rychle prohl&#233;dhout str&#225;nky v nov&#233;m okn&#283;...';
 
 

@@ -27,6 +27,6 @@
 */
 
 // Norwegian Moduledscripton
-$module_description = 'Dette er en kode snutt (snippet) beregnet p&aring; Website Baker CMS og er en fullgod erstatning for den innebygde meny modulen. For n&aelig;rmere beskrivelse se (Kun p&aring; Engelsk) <a href="http://code.jellycan.com/show_menu2/" target="_blank">http://code.jellycan.com/show_menu2/</a> , for mer WB spesifikke detaljer se <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> filen.';
+$module_description = 'Dette er en kode snutt (snippet) beregnet p&aring; WBCE CMS og er en fullgod erstatning for den innebygde meny modulen. For n&aelig;rmere beskrivelse se <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> filen.';
 
 ?>

@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Pokaz szczeg&#243;ly';
 $TEXT['VISIBILITY'] = 'Widocznosc';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Domyslny mail nadawcy';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Domyslna nazwa nadawcy';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Okresl domyslny adres odbiorcy "FROM" i nadawcy "SENDER". Zaleca sie stosowanie ODBIORCY tak jak na przykladzie: <strong>admin@yourdomain.com</strong>. Niekt&#243;rzy dostawcy maili (np. <em>mail.com</em>) moga odrzucic maile od ODBIORCY adresu takiego jak np <em>name@mail.com</em> ze wzgledu na potraktowanie tego jako spam.<br /><br /> Wartosci domyslne sa uzywane tylko wtedy inne wartosci sa okreslone przez WebsiteBakera. Jesli tw&#243;j serwer obsluguje <acronym title="Prosty protok&#243;l przesylania poczty">SMTP</acronym>, mozesz skorzystac z tej funkcji.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Okresl domyslny adres odbiorcy "FROM" i nadawcy "SENDER". Zaleca sie stosowanie ODBIORCY tak jak na przykladzie: <strong>admin@yourdomain.com</strong>. Niekt&#243;rzy dostawcy maili (np. <em>mail.com</em>) moga odrzucic maile od ODBIORCY adresu takiego jak np <em>name@mail.com</em> ze wzgledu na potraktowanie tego jako spam.<br /><br /> Wartosci domyslne sa uzywane tylko wtedy inne wartosci sa okreslone przez WBCE CMS. Jesli tw&#243;j serwer obsluguje <acronym title="Prosty protok&#243;l przesylania poczty">SMTP</acronym>, mozesz skorzystac z tej funkcji.';
 $TEXT['WBMAILER_FUNCTION'] = 'Funkcja maila';
 $TEXT['WBMAILER_NOTICE'] = '<strong>Ustawienia poczty SMTP:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'mail PHP';
@@ -635,7 +635,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Nalezy wprowadzic adres e-mail';
 $MESSAGE['START_CURRENT_USER'] = 'Jestes obecnie zalogowany(-a) jako:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Uwaga: katalog instalacyjny wciaz istnieje!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Witamy w panelu administracyjnym WebsiteBakera';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Witamy w panelu administracyjnym WBCE CMS';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Uwaga: aby zmienic szablon, nalezy przejsc do sekcji Ustawienia';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
@@ -668,18 +668,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Narzedzia administracji WebsiteBakera...';
+$OVERVIEW['ADMINTOOLS'] = 'Narzedzia administracji WBCE CMS...';
 $OVERVIEW['GROUPS'] = 'Zarzadzaj grupami uzytkownik&#243;w i ich uprawnieniami systemowymi...';
 $OVERVIEW['HELP'] = 'Masz pytania? Znajdz odpowiedzi...';
-$OVERVIEW['LANGUAGES'] = 'Zarzadzaj jezykami WebsiteBakera...';
+$OVERVIEW['LANGUAGES'] = 'Zarzadzaj jezykami WBCE CMS...';
 $OVERVIEW['MEDIA'] = 'Zarzadzaj plikami przechowywanymi w folderze medi&#243;w...';
-$OVERVIEW['MODULES'] = 'Zarzadzaj modulami WebsiteBakera...';
+$OVERVIEW['MODULES'] = 'Zarzadzaj modulami WBCE CMS...';
 $OVERVIEW['PAGES'] = 'Zarzadzaj stronami...';
 $OVERVIEW['PREFERENCES'] = 'Zmien preferencje, takie jak adres e-mail, haslo itp... ';
-$OVERVIEW['SETTINGS'] = 'Zmien ustawienia WebsiteBakera...';
+$OVERVIEW['SETTINGS'] = 'Zmien ustawienia WBCE CMS...';
 $OVERVIEW['START'] = 'Panel administracyjny';
 $OVERVIEW['TEMPLATES'] = 'Zmien wyglad swojej strony za pomoca szablon&#243;w...';
-$OVERVIEW['USERS'] = 'Zarzadzaj uzytkownikami mogacymi logowac sie do WebsiteBakera...';
+$OVERVIEW['USERS'] = 'Zarzadzaj uzytkownikami mogacymi logowac sie do WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Podglad witryny w nowym oknie...';
 
 

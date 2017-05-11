@@ -27,6 +27,6 @@
 */
 
 // Deutsche Modulbeschreibung
-$module_description = 'Dieses Modul integriert die erweiterte Men&uuml;funktion <code>show_menu2()</code> in Website Baker. Detailierte Informationen gibt es auf <a href="http://code.jellycan.com/show_menu2/" target="_blank">http://code.jellycan.com/show_menu2/</a> oder in der <a href="{WB_URL}/modules/show_menu2/README.de.txt" target="_blank">readme</a> Datei.';
+$module_description = 'Dieses Modul integriert show_menu2() in  WBCE CMS. Detailierte Informationen gibt es in der <a href="{WB_URL}/modules/show_menu2/README.de.txt" target="_blank">readme</a> Datei.';
 
 ?>

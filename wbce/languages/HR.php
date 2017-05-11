@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Vidi detalje';
 $TEXT['VISIBILITY'] = 'Vidljivost';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'Molimo, vratite se nazad i popunite sva polja
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Instaliran uspje&#353;no';
 $MESSAGE['GENERIC_INVALID'] = 'Instaliran file je nevaljal';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -636,7 +636,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Unesite email adresu';
 $MESSAGE['START_CURRENT_USER'] = 'Trenutno ste logirani kao:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Upozorenje, instalacijski direktoriji nije jo&#353; obrisan!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Dobro do&#353;li u WebsiteBaker administraciju';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Dobro do&#353;li u WBCE CMS administraciju';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Obavijest: Za promjenu predlo&#353;ka idite na dio s Postavkama';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
@@ -669,18 +669,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Upravljajte grupama korisnika i njihovim sistemskim dopu&#353;tenjima.';
 $OVERVIEW['HELP'] = 'Imate pitanje? Prona&#240;ite odgovor...';
-$OVERVIEW['LANGUAGES'] = 'Uredite WebsiteBaker jezike...';
+$OVERVIEW['LANGUAGES'] = 'Uredite WBCE CMS jezike...';
 $OVERVIEW['MEDIA'] = 'Uredite fileove pohranjene u direktoriju "Media"...';
-$OVERVIEW['MODULES'] = 'Uredite WebsiteBaker module...';
+$OVERVIEW['MODULES'] = 'Uredite WBCE CMS module...';
 $OVERVIEW['PAGES'] = 'Uredite va&#353;e web stranice...';
 $OVERVIEW['PREFERENCES'] = 'Izmjenite postavke email adresa, lozinka i sl.... ';
-$OVERVIEW['SETTINGS'] = 'Promjenite postavke za WebsiteBaker...';
+$OVERVIEW['SETTINGS'] = 'Promjenite postavke za WBCE CMS...';
 $OVERVIEW['START'] = 'Pregled administracije';
 $OVERVIEW['TEMPLATES'] = 'Promijenite izgled i do&#382;ivljaj va&#353;eg weba s predlo&#353;cima...';
-$OVERVIEW['USERS'] = 'Upravljajte korisnicima koji se mogu logirati na WebsiteBaker...';
+$OVERVIEW['USERS'] = 'Upravljajte korisnicima koji se mogu logirati na WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Brzo pogledajte i listajte Va&#353; web u novom prozoru...';
 
 

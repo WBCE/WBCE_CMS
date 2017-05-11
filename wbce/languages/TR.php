@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Detaylar';
 $TEXT['VISIBILITY'] = 'G&#246;r&#252;n&#252;rl&#252;k';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'L&#252;tfen geri d&#246;n&#252;p b&#252;t&#25
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Ba&#254;ar&#253;l&#253; bir &#254;ekilde yerle&#254;tirildi';
 $MESSAGE['GENERIC_INVALID'] = 'Senin y&#252;kledi&#240;in dosya, ge&#231;ersizdir';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -636,7 +636,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Bir email adresi girmelisiniz.';
 $MESSAGE['START_CURRENT_USER'] = 'Sizin kulland&#253;&#240;&#253;n&#253;z giri&#254; ismi:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Uyar&#253;! Y&#252;kleme dizini halen duruyor!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Ho&#254;geldiniz WebsiteBaker Y&#246;netimine';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Ho&#254;geldiniz WBCE CMS Y&#246;netimine';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Please note: to change the template you must go to the Settings section';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
@@ -669,18 +669,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Kullan&#253;c&#253; Gruplar&#253;n&#253;n &#221;zinlerini D&#252;zenleme...';
 $OVERVIEW['HELP'] = 'Sorular&#253;n&#253;z? Cevaplar&#253;...';
-$OVERVIEW['LANGUAGES'] = 'WebsiteBaker Dilleri D&#252;zenleme...';
+$OVERVIEW['LANGUAGES'] = 'WBCE CMS Dilleri D&#252;zenleme...';
 $OVERVIEW['MEDIA'] = 'Resim Deposundaki Dosyalar&#253; Y&#246;netme...';
-$OVERVIEW['MODULES'] = 'WebsiteBaker Mod&#252;llerini Y&#246;netme...';
+$OVERVIEW['MODULES'] = 'WBCE CMS Mod&#252;llerini Y&#246;netme...';
 $OVERVIEW['PAGES'] = 'Website Sayfalar&#253;n&#253; Y&#246;netme...';
 $OVERVIEW['PREFERENCES'] = 'Email, &#222;ifre gibi ayarlar&#253; d&#252;zenleme... ';
-$OVERVIEW['SETTINGS'] = 'WebsiteBaker i&#231;in ayarlar&#253; d&#252;zenleme...';
+$OVERVIEW['SETTINGS'] = 'WBCE CMS i&#231;in ayarlar&#253; d&#252;zenleme...';
 $OVERVIEW['START'] = 'Y&#246;netici G&#246;r&#252;n&#252;m&#252;';
 $OVERVIEW['TEMPLATES'] = 'Websitenizdeki Kal&#253;plar&#253; De&#240;i&#254;tirme Ve D&#252;zenleme...';
-$OVERVIEW['USERS'] = 'WebsiteBaker kullan&#253;c&#253;lar&#253;n&#253; d&#252;zenleme...';
+$OVERVIEW['USERS'] = 'WBCE CMS kullan&#253;c&#253;lar&#253;n&#253; d&#252;zenleme...';
 $OVERVIEW['VIEW'] = 'Yeni bir pencerede sitenizin &#246;ng&#246;r&#252;n&#252;m&#252;...';
 
 

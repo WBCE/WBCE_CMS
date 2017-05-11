@@ -27,6 +27,6 @@
 */
 
 // Dansk modulbeskrivelse
-$module_description = 'Dette modul integrerer den udvidede men&uuml;funktion <code>show_menu2()</code> i Website Baker. Der findes detaljeret information p&aring; <a href="http://code.jellycan.com/show_menu2/" target="_blank">http://code.jellycan.com/show_menu2/</a> eller i <a href="{WB_URL}/modules/show_menu2/README.en.txt" target="_blank">readme</a>filen.';
+$module_description = 'Dette modul integrerer den udvidede men&uuml;funktion <code>show_menu2()</code> i  WBCE CMS. Der findes detaljeret information i <a href="{WB_URL}/modules/show_menu2/README.en.txt" target="_blank">readme</a>filen.';
 
 ?>

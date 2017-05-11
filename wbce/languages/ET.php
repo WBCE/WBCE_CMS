@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Vaata Detaile';
 $TEXT['VISIBILITY'] = 'N&#228;htavus';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'Palun mine tagasi ja t&#228;ida k&#245;ik v&#
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Edukalt paigaldatud';
 $MESSAGE['GENERIC_INVALID'] = '&#220;les laetud fail on vigane';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -636,7 +636,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Sa pead sisestama emaili aadressi';
 $MESSAGE['START_CURRENT_USER'] = 'Sa oled praegu sisse logitud:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Hoiatus, Installatsiooni kataloog eksisteerib!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Teretulemast WebsiteBaker Administratsiooni';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Teretulemast WBCE CMS Administratsiooni';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'M&#228;rge: kujunduse muutmiseks sa pead minema Seadete sektsiooni';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
@@ -669,18 +669,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Halda kasutajate gruppe ja nende &#245;iguseid...';
 $OVERVIEW['HELP'] = 'On k&#252;simusi? Leia oma vastus...';
-$OVERVIEW['LANGUAGES'] = 'Halda WebsiteBakeri keeli...';
+$OVERVIEW['LANGUAGES'] = 'Halda WBCE CMS keeli...';
 $OVERVIEW['MEDIA'] = 'Halda faile mis on media kaustas...';
-$OVERVIEW['MODULES'] = 'Halda WebsiteBakeri mooduleid...';
+$OVERVIEW['MODULES'] = 'Halda WBCE CMS mooduleid...';
 $OVERVIEW['PAGES'] = 'Halda oma veebisaidi lehek&#252;lgi...';
 $OVERVIEW['PREFERENCES'] = 'Muuda eelistusi nagu emaili aadress, parool, jne... ';
-$OVERVIEW['SETTINGS'] = 'Muuda seadeid WebsiteBakeri jaoks...';
+$OVERVIEW['SETTINGS'] = 'Muuda seadeid WBCE CMS jaoks...';
 $OVERVIEW['START'] = 'Administratsiooni &#252;levaade';
 $OVERVIEW['TEMPLATES'] = 'Change the look and feel of your website with templates...';
-$OVERVIEW['USERS'] = 'Halda kasutajaid kes saavad logida WebsiteBakerisse...';
+$OVERVIEW['USERS'] = 'Halda kasutajaid kes saavad logida WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Kiirelt vaata ja lehitse oma veebisaiti uues aknas...';
 
 

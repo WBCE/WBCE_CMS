@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = '&#1042;&#1080;&#1078; &#1076;&#1077;&#1090;&#1072;&#108
 $TEXT['VISIBILITY'] = '&#1042;&#1080;&#1076;&#1080;&#1084;&#1086;&#1089;&#1090;';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = '&#1042;&#1098;&#1088;&#1085;&#1077;&#1090;&#1
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = '&#1048;&#1085;&#1089;&#1090;&#1072;&#1083;&#1080;&#1088;&#1072;&#1085; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086;';
 $MESSAGE['GENERIC_INVALID'] = '&#1053;&#1077;&#1074;&#1072;&#1083;&#1080;&#1076;&#1077;&#1085; &#1092;&#1072;&#1081;&#1083;';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -636,7 +636,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = '&#1058;&#1088;&#1103;&#1073;&#1074;&#1072; &#1076
 $MESSAGE['START_CURRENT_USER'] = '&#1042;&#1080;&#1077; &#1074;&#1083;&#1103;&#1079;&#1086;&#1093;&#1090;&#1077; &#1082;&#1072;&#1090;&#1086;:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = '&#1042;&#1085;&#1080;&#1084;&#1072;&#1085;&#1080;&#1077;, &#1048;&#1085;&#1089;&#1090;&#1072;&#1083;&#1072;&#1094;&#1080;&#1086;&#1085;&#1085;&#1072;&#1090;&#1072; &#1076;&#1080;&#1088;&#1077;&#1082;&#1090;&#1086;&#1088;&#1080;&#1103; &#1074;&#1089;&#1077; &#1086;&#1097;&#1077; &#1089;&#1098;&#1097;&#1077;&#1089;&#1090;&#1074;&#1091;&#1074;&#1072;!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = '&#1044;&#1086;&#1073;&#1088;&#1077; &#1076;&#1086;&#1096;&#1083;&#1080; &#1074; &#1040;&#1084;&#1080;&#1085;&#1080;&#1089;&#1090;&#1088;&#1072;&#1090;&#1080;&#1074;&#1085;&#1072;&#1090;&#1072; &#1089;&#1090;&#1088;&#1072;&#1085;&#1080;&#1094;&#1072; &#1085;&#1072; WebsiteBaker';
+$MESSAGE['START_WELCOME_MESSAGE'] = '&#1044;&#1086;&#1073;&#1088;&#1077; &#1076;&#1086;&#1096;&#1083;&#1080; &#1074; &#1040;&#1084;&#1080;&#1085;&#1080;&#1089;&#1090;&#1088;&#1072;&#1090;&#1080;&#1074;&#1085;&#1072;&#1090;&#1072; &#1089;&#1090;&#1088;&#1072;&#1085;&#1080;&#1094;&#1072; &#1085;&#1072; WBCE CMS';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = '&#1042;&#1085;&#1080;&#1084;&#1072;&#1085;&#1080;&#1077;: &#1079;&#1072; &#1076;&#1072; &#1089;&#1084;&#1077;&#1085;&#1080;&#1090;&#1077; &#1096;&#1072;&#1073;&#1083;&#1086;&#1085;&#1072; &#1086;&#1090;&#1080;&#1076;&#1077;&#1090;&#1077; &#1074; &#1085;&#1072;&#1089;&#1090;&#1088;&#1086;&#1081;&#1082;&#1080;';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
@@ -669,18 +669,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1087;&#1086;&#1090;&#1088;&#1077;&#1073;&#1080;&#1090;&#1077;&#1083;&#1089;&#1082;&#1080;&#1090;&#1077; &#1075;&#1088;&#1091;&#1087;&#1080; &#1080; &#1090;&#1103;&#1093;&#1085;&#1080;&#1090;&#1077; &#1087;&#1088;&#1072;&#1074;&#1072;...';
 $OVERVIEW['HELP'] = '&#1048;&#1084;&#1072;&#1090;&#1077; &#1074;&#1098;&#1087;&#1088;&#1086;&#1089;&#1080;? &#1053;&#1072;&#1084;&#1077;&#1088;&#1077;&#1090;&#1077; &#1086;&#1090;&#1075;&#1086;&#1074;&#1086;&#1088;...';
-$OVERVIEW['LANGUAGES'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1077;&#1079;&#1080;&#1094;&#1080;&#1090;&#1077; &#1085;&#1072; WebsiteBaker...';
+$OVERVIEW['LANGUAGES'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1077;&#1079;&#1080;&#1094;&#1080;&#1090;&#1077; &#1085;&#1072; WBCE CMS...';
 $OVERVIEW['MEDIA'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1092;&#1072;&#1081;&#1083;&#1086;&#1074;&#1077;&#1090;&#1077; &#1074; &#1087;&#1072;&#1087;&#1082;&#1072; &#1084;&#1077;&#1076;&#1080;&#1103;...';
-$OVERVIEW['MODULES'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1084;&#1086;&#1076;&#1091;&#1083;&#1080;&#1090;&#1077; &#1085;&#1072; WebsiteBaker...';
+$OVERVIEW['MODULES'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1084;&#1086;&#1076;&#1091;&#1083;&#1080;&#1090;&#1077; &#1085;&#1072; WBCE CMS...';
 $OVERVIEW['PAGES'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1089;&#1090;&#1088;&#1072;&#1085;&#1080;&#1094;&#1080;&#1090;&#1077;...';
 $OVERVIEW['PREFERENCES'] = '&#1057;&#1084;&#1077;&#1085;&#1080; &#1087;&#1088;&#1077;&#1076;&#1087;&#1086;&#1095;&#1080;&#1090;&#1072;&#1085;&#1080;&#1103;&#1090;&#1072; &#1086;&#1090;&#1085;&#1086;&#1089;&#1085;&#1086; email &#1072;&#1076;&#1088;&#1077;&#1089;, &#1087;&#1072;&#1088;&#1086;&#1083;&#1072; &#1080; &#1076;&#1088;. ';
-$OVERVIEW['SETTINGS'] = '&#1057;&#1084;&#1077;&#1085;&#1080; &#1085;&#1072;&#1089;&#1090;&#1088;&#1086;&#1081;&#1082;&#1080;&#1090;&#1077; &#1085;&#1072; WebsiteBaker...';
+$OVERVIEW['SETTINGS'] = '&#1057;&#1084;&#1077;&#1085;&#1080; &#1085;&#1072;&#1089;&#1090;&#1088;&#1086;&#1081;&#1082;&#1080;&#1090;&#1077; &#1085;&#1072; WBCE CMS...';
 $OVERVIEW['START'] = '&#1055;&#1088;&#1077;&#1075;&#1083;&#1077;&#1076; &#1085;&#1072; &#1072;&#1076;&#1084;&#1080;&#1085;&#1080;&#1089;&#1090;&#1088;&#1080;&#1088;&#1072;&#1085;&#1077;';
 $OVERVIEW['TEMPLATES'] = '&#1055;&#1088;&#1086;&#1084;&#1077;&#1085;&#1080; &#1080;&#1079;&#1075;&#1083;&#1077;&#1076;&#1072; &#1085;&#1072; &#1089;&#1072;&#1081;&#1090;&#1072; &#1095;&#1088;&#1077;&#1079; &#1096;&#1072;&#1073;&#1083;&#1086;&#1085;&#1080;...';
-$OVERVIEW['USERS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1087;&#1086;&#1090;&#1088;&#1077;&#1073;&#1080;&#1090;&#1077;&#1083;&#1080;&#1090;&#1077; &#1084;&#1086;&#1078;&#1077;&#1097;&#1080; &#1076;&#1072; &#1074;&#1083;&#1103;&#1079;&#1072;&#1090; &#1074; WebsiteBaker...';
+$OVERVIEW['USERS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1087;&#1086;&#1090;&#1088;&#1077;&#1073;&#1080;&#1090;&#1077;&#1083;&#1080;&#1090;&#1077; &#1084;&#1086;&#1078;&#1077;&#1097;&#1080; &#1076;&#1072; &#1074;&#1083;&#1103;&#1079;&#1072;&#1090; &#1074; WBCE CMS...';
 $OVERVIEW['VIEW'] = '&#1042;&#1080;&#1078; &#1089;&#1074;&#1086;&#1103; &#1089;&#1072;&#1081;&#1090; &#1074; &#1085;&#1086;&#1074; &#1087;&#1088;&#1086;&#1079;&#1086;&#1088;&#1077;&#1094;...';
 
 

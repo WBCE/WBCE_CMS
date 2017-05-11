@@ -77,7 +77,7 @@ $TEXT['BACKUP'] = 'Sauvegarde';
 $TEXT['BACKUP_ALL_TABLES'] = 'Sauvegarder toutes les tables de la base de donn&#233;es';
 $TEXT['BACKUP_DATABASE'] = 'Sauvegarde de la base de donn&#233;es';
 $TEXT['BACKUP_MEDIA'] = 'Sauvegarde des fichiers media';
-$TEXT['BACKUP_WB_SPECIFIC'] = 'Sauvegarder uniquement les tables li&#233;es &#224; WebsiteBaker';
+$TEXT['BACKUP_WB_SPECIFIC'] = 'Sauvegarder uniquement les tables li&#233;es &#224; WBCE CMS';
 $TEXT['BASIC'] = 'Classique';
 $TEXT['BLOCK'] = 'Bloc';
 $TEXT['CALENDAR'] = 'Calendrier';
@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Propri&#233;t&#233;s';
 $TEXT['VISIBILITY'] = 'Visibilit&#233;';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Adresse d&apos;exp&#233;diteur par d&#233;faut';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Nom d&apos;exp&#233;diteur par d&#233;faut';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Merci d&apos;indiquer un nom et une adresse d&apos;exp&#233;diteur par d&#233;faut. Il est recommand&#233; d&apos;utiliser une adresse d&apos;exp&#233;diteur de la forme : <strong>admin@yourdomain.com</strong>. Certains op&#233;rateurs de mail (comme <em>mail.com</em>) peuvent rejeter les mails dont l&apos;adresse d&apos;exp&#233;diteur est de la forme <em>name@mail.com</em> envoy&#233;s via un relai, c&apos;est leur mani&#232;re de lutter contre le spam.<br /><br />Les valeurs par d&#233;faut sont uniquement utilis&#233;es si aucune autre valeur n&apos;est sp&#233;cifi&#233;e par WebsiteBaker. Si votre serveur supporte <acronym title="Simple mail transfer protocol">SMTP</acronym>, vous pouvez utiliser cette option pour l&apos;envoi d&apos;emails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Merci d&apos;indiquer un nom et une adresse d&apos;exp&#233;diteur par d&#233;faut. Il est recommand&#233; d&apos;utiliser une adresse d&apos;exp&#233;diteur de la forme : <strong>admin@yourdomain.com</strong>. Certains op&#233;rateurs de mail (comme <em>mail.com</em>) peuvent rejeter les mails dont l&apos;adresse d&apos;exp&#233;diteur est de la forme <em>name@mail.com</em> envoy&#233;s via un relai, c&apos;est leur mani&#232;re de lutter contre le spam.<br /><br />Les valeurs par d&#233;faut sont uniquement utilis&#233;es si aucune autre valeur n&apos;est sp&#233;cifi&#233;e par WBCE CMS. Si votre serveur supporte <acronym title="Simple mail transfer protocol">SMTP</acronym>, vous pouvez utiliser cette option pour l&apos;envoi d&apos;emails.';
 $TEXT['WBMAILER_FUNCTION'] = 'M&#233;canisme d&apos;envoi de mail';
 $TEXT['WBMAILER_NOTICE'] = '<strong>Param&#232;tres du serveur SMTP :</strong><br />Les param&#232;tres ci-dessous sont uniquement requis si vous souhaitez envoyer des mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. Si vous ne connaissez pas votre serveur SMTP ou si vous n&apos;&#234;tes pas s&#251;r de la valeur des param&#232;tres requis, conservez simplement le m&#233;canisme par d&#233;faut : PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -488,8 +488,8 @@ $MESSAGE['GENERIC_INSTALLED'] = 'Installation r&#233;ussie';
 $MESSAGE['GENERIC_INVALID'] = 'Le fichier charg&#233; est invalide';
 $MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Fichier d&apos;extension incorrect. V&#233;rifiez le fichier zip .';
 $MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Fichier de langue incorrect. V&#233;rifiez le fichier de langue.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -669,7 +669,7 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'Acc&#232;s aux outils d&apos;administration de WebsiteBaker...';
+$OVERVIEW['ADMINTOOLS'] = 'Acc&#232;s aux outils d&apos;administration de WBCE CMS...';
 $OVERVIEW['GROUPS'] = 'Gestions des groupes d&apos;utilisateurs et des permissions';
 $OVERVIEW['HELP'] = 'Aide et FAQ sur l&apos;utilisation du site';
 $OVERVIEW['LANGUAGES'] = 'Gestion des langues du site';

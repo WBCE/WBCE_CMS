@@ -360,7 +360,7 @@ $TEXT['VIEW_DETAILS'] = 'Se oplysninger';
 $TEXT['VISIBILITY'] = 'Synlighed';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Standard fra-adresse';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Standard afsendernavn';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Angiv standard "FRA"-adresse og "AFSENDER"-navn nedenfor. Det anbefales at angive FRA-adresse som: <strong>admin@dit-dom&#230;ne.dk</strong>. Nogle udbydere (f.eks. <em>mail.com</em>) kan afvise emails med en FRA-adresse som <em>navn@mail.com</em>, hvis de er sendt via en anden udbyder, for at undg&#229; spam.<br /><br />Standardv&#230;rdierne benyttes kun, hvis ingen andre v&#230;rdier angives i WebsiteBaker. Hvis din server underst&#248;tter <acronym title="Simple mail transfer protocol">SMTP</acronym>, kan du v&#230;lge at bruge denne til udg&#229;ende emails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Angiv standard "FRA"-adresse og "AFSENDER"-navn nedenfor. Det anbefales at angive FRA-adresse som: <strong>admin@dit-dom&#230;ne.dk</strong>. Nogle udbydere (f.eks. <em>mail.com</em>) kan afvise emails med en FRA-adresse som <em>navn@mail.com</em>, hvis de er sendt via en anden udbyder, for at undg&#229; spam.<br /><br />Standardv&#230;rdierne benyttes kun, hvis ingen andre v&#230;rdier angives i WBCE CMS. Hvis din server underst&#248;tter <acronym title="Simple mail transfer protocol">SMTP</acronym>, kan du v&#230;lge at bruge denne til udg&#229;ende emails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mailprogram';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP mail-program indstillinger:</strong><br />Indstillingerne nedenfor er kun n&#248;dvendige, hvis du vil sende emails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. Hvis du ikke kender adressen p&#229; din SMTP-v&#230;rt eller de kr&#230;vede indstillinger, s&#229; hold dig til standardprogrammet, PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -486,10 +486,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'G&#229; venligst tilbage og udfyld alle felte
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'Du har intet valgt!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Installeret';
 $MESSAGE['GENERIC_INVALID'] = 'Filen du overf&#248;rte er fejlbeh&#230;ftet';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'WebsiteBaker installationsfil ikke i korrekt format. Kontroller *.zip formatet.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'WebsiteBaker sprogfil ikke i korrekt format. Kontroller tekstfilen.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'WebsiteBaker modulfil ikke gyldig. Kontroller tekstfilen.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'WebsiteBaker skabelon ikke gyldig. Kontroller tekstfilen.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'WBCE CMS installationsfil ikke i korrekt format. Kontroller *.zip formatet.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'WBCE CMS sprogfil ikke i korrekt format. Kontroller tekstfilen.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'WBCE CMS modulfil ikke gyldig. Kontroller tekstfilen.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'WBCE CMS skabelon ikke gyldig. Kontroller tekstfilen.';
 $MESSAGE['GENERIC_IN_USE'] = ' men bruges i ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Arkivfil mangler!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'Modulet er ikke korrekt installeret!';
@@ -635,7 +635,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Du skal indtaste en gyldig email-adresse';
 $MESSAGE['START_CURRENT_USER'] = 'Du er lige nu logget ind som:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'ADVARSEL! Installationsbiblioteket (mappen) findes stadig p&#229; serveren. Du b&#248;r slette den straks af hensyn til sikkerheden!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Velkommen til administration af din WebsiteBaker';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Velkommen til administration af din WBCE CMS';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'OBS: For at &#230;ndre skabelonen skal du g&#229; til punktet indstillinger';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
@@ -668,18 +668,18 @@ $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current act
 
 
 
-$OVERVIEW['ADMINTOOLS'] = 'WebsiteBaker administrationsv&#230;rkt&#248;jer...';
+$OVERVIEW['ADMINTOOLS'] = 'WBCE CMS administrationsv&#230;rkt&#248;jer...';
 $OVERVIEW['GROUPS'] = 'Administr&#233;r brugergrupper og deres systemrettigheder...';
 $OVERVIEW['HELP'] = 'Sp&#248;rgsm&#229;l? Find dine svar her...';
-$OVERVIEW['LANGUAGES'] = 'Administration af sprog i WebsiteBaker...';
+$OVERVIEW['LANGUAGES'] = 'Administration af sprog i WBCE CMS...';
 $OVERVIEW['MEDIA'] = 'Administr&#233;r filer i mappen medier...';
-$OVERVIEW['MODULES'] = 'Administr&#233;r WebsiteBaker moduler...';
+$OVERVIEW['MODULES'] = 'Administr&#233;r WBCE CMS moduler...';
 $OVERVIEW['PAGES'] = 'Administr&#233;r dine websider...';
 $OVERVIEW['PREFERENCES'] = 'Tilpas pr&#230;ferencer s&#229;som email-adresse, adgangskode, etc... ';
-$OVERVIEW['SETTINGS'] = 'Tilpas indstillinger for WebsiteBaker...';
+$OVERVIEW['SETTINGS'] = 'Tilpas indstillinger for WBCE CMS...';
 $OVERVIEW['START'] = 'Administrationsoversigt';
 $OVERVIEW['TEMPLATES'] = 'Skift udseende og layout/design p&#229; din webside v.h.a. skabeloner....';
-$OVERVIEW['USERS'] = 'Administr&#233;r brugere som kan logge ind p&#229; WebsiteBaker systemet...';
+$OVERVIEW['USERS'] = 'Administr&#233;r brugere som kan logge ind p&#229; WBCE CMS systemet...';
 $OVERVIEW['VIEW'] = 'Hurtig visning og gennemsyn af dit Websted i et nyt vindue..';
 
 

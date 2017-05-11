@@ -8,20 +8,20 @@
  */
 
 //Module description
-$module_description = 'Einige Zusatzeinstellungen f&uuml;r den Formular und CSRF Schutz.';
+$module_description = 'Einige Zusatzeinstellungen f&uuml;r den Formular- und CSRF-Schutz.';
 
-$SFS['HEADER'] =      'Formular und CSRF Einstellungen.';
-$SFS['DESCRIPTION'] = 'Hier k&ouml;nnen sie die Sicherheit f&uuml;r Formulare weiter erh&ouml;hen und weitere Einstellungen vornehmen';
+$SFS['HEADER'] =      'Formular- und CSRF-Einstellungen.';
+$SFS['DESCRIPTION'] = 'Hier k&ouml;nnen sie die Sicherheit f&uuml;r Formulare erh&ouml;hen und weitere Einstellungen vornehmen';
 
 // Backend variables
-$SFS['SUBMIT'] = '&uuml;bernehmen';
+$SFS['SUBMIT'] = 'Speichern';
 $SFS['RESET_SETTINGS'] = 'Standardeinstellung';
 $SFS['ON_OFF'] = 'Ein/Aus';
 
 // Variablen fuer AdminTool Optionen
 $SFS['USEIP'] = 'IP-Blocks (1-4, 0=kein Check)';
 $SFS['USEIP_TTIP'] = '<em>Hilfe</em>
-Diese Anzahl der Segmente einer IP-Adresse werden f&uuml;r den Fingerprint genutzt. "4" hei&szlig;t die gesamte IP-Adresse (dies macht nur bei festen IPs wie z.B. Servern Sinn). "2" ist ein guter Kompromiss, da im Heimbereich durch 24-Stunden Resets nur die ersten beiden Segmente konstant bleiben. 
+Diese Anzahl der Segmente einer IP-Adresse werden f&uuml;r den Fingerprint genutzt, d.h. bei "4" die gesamte IP-Adresse (dies macht nur bei festen IPs wie z.B. Servern Sinn). "2" ist ein guter Kompromiss, da im Heimbereich häufig durch 24-Stunden Resets nur die ersten beiden Segmente konstant bleiben. 
 <ul>
 <li>4= xxx.xxx.xxx.xxx</li>
 <li>3= xxx.xxx.xxx</li>
@@ -40,11 +40,11 @@ $SFS['SECRET_ERR'] = 'Das Secret darf a-zA-z0-9 enthalten und muss zwischen 20 u
 
 $SFS['SECRETTIME'] = 'Secrettime [0-9] 1-5 Zeichen';
 $SFS['SECRETTIME_TTIP'] = '<em>Hilfe</em>Zeit (in Sekunden), bis der Secret-Schl&uuml;ssel sich erneuert.';
-$SFS['SECRETTIME_ERR'] = 'Secrettime darf nur Zahlen enthalten und max. 5 stellen lang sein';
+$SFS['SECRETTIME_ERR'] = 'Secrettime darf nur Zahlen enthalten und max. 5 Stellen lang sein';
 
 $SFS['TIMEOUT'] = 'Timeout [0-9] 1-5 Zeichen';
 $SFS['TIMEOUT_TTIP'] = '<em>Hilfe</em>Zeit (in Sekunden), bis ein Formular-Token nicht mehr gilt.';
-$SFS['TIMEOUT_ERR'] = 'Timeout darf nur Zahlen enthalten und max. 5 stellen lang sein';
+$SFS['TIMEOUT_ERR'] = 'Timeout darf nur Zahlen enthalten und max. 5 Stellen lang sein';
 
 $SFS['USEFP'] = 'Fingerprinting';
 $SFS['USEFP_TTIP'] = '<em>Hilfe</em>Zus&auml;tzlich zur IP-Adresse wird Betriebssystem und Browser zu jeder TAN-Validierung hinzugezogen.';
