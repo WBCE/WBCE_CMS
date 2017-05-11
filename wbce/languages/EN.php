@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -357,7 +357,7 @@ $TEXT['VIEW_DETAILS'] = 'View Details';
 $TEXT['VISIBILITY'] = 'Visibility';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Default From Mail';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Default Sender Name';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WebsiteBaker. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Please specify a default "FROM" address and "SENDER" name below. It is recommended to use a FROM address like: <strong>admin@yourdomain.com</strong>. Some mail provider (e.g. <em>mail.com</em>) may reject mails with a FROM: address like <em>name@mail.com</em> sent via a foreign relay to avoid spam.<br /><br />The default values are only used if no other values are specified by WBCE CMS. If your server supports <acronym title="Simple mail transfer protocol">SMTP</acronym>, you may want use this option for outgoing mails.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Routine';
 $TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Settings:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
@@ -474,10 +474,10 @@ $MESSAGE['GENERIC_FILL_IN_ALL'] = 'Please go back and fill-in all fields';
 $MESSAGE['GENERIC_FORGOT_OPTIONS'] = 'You have selected no choice!';
 $MESSAGE['GENERIC_INSTALLED'] = 'Installed successfully';
 $MESSAGE['GENERIC_INVALID'] = 'The file you uploaded is invalid';
-$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WebsiteBaker installation file. Please check the *.zip format.';
-$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WebsiteBaker language file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WebsiteBaker module file. Please check the text file.';
-$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WebsiteBaker template file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_ADDON_FILE'] = 'Invalid WBCE CMS installation file. Please check the *.zip format.';
+$MESSAGE['GENERIC_INVALID_LANGUAGE_FILE'] = 'Invalid WBCE CMS language file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_MODULE_FILE'] = 'Invalid WBCE CMS module file. Please check the text file.';
+$MESSAGE['GENERIC_INVALID_TEMPLATE_FILE'] = 'Invalid WBCE CMS template file. Please check the text file.';
 $MESSAGE['GENERIC_IN_USE'] = ' but used in ';
 $MESSAGE['GENERIC_MISSING_ARCHIVE_FILE'] = 'Missing Archiv file!';
 $MESSAGE['GENERIC_MODULE_VERSION_ERROR'] = 'The module is not installed properly!';
@@ -629,7 +629,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'You must enter an email address';
 $MESSAGE['START_CURRENT_USER'] = 'You are currently logged in as:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Warning, Installation Directory Still Exists!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Welcome to WebsiteBaker Administration';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Welcome to WBCE CMS Administration';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Please note: to change the template you must go to the Settings section';
 
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
@@ -658,18 +658,18 @@ $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';
 
 /* OVERVIEW */
-$OVERVIEW['ADMINTOOLS'] = 'Access the WebsiteBaker administration tools...';
+$OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Manage user groups and their system permissions...';
 $OVERVIEW['HELP'] = 'Got a questions? Find your answer...';
-$OVERVIEW['LANGUAGES'] = 'Manage WebsiteBaker languages...';
+$OVERVIEW['LANGUAGES'] = 'Manage WBCE CMS languages...';
 $OVERVIEW['MEDIA'] = 'Manage files stored in the media folder...';
-$OVERVIEW['MODULES'] = 'Manage WebsiteBaker modules...';
-$OVERVIEW['PAGES'] = 'Manage your websites pages...';
+$OVERVIEW['MODULES'] = 'Manage WBCE CMS modules...';
+$OVERVIEW['PAGES'] = 'Manage the pages of your website...';
 $OVERVIEW['PREFERENCES'] = 'Change preferences such as email address, password, etc... ';
-$OVERVIEW['SETTINGS'] = 'Changes settings for WebsiteBaker...';
+$OVERVIEW['SETTINGS'] = 'Changes settings for WBCE CMS...';
 $OVERVIEW['START'] = 'Administration overview';
 $OVERVIEW['TEMPLATES'] = 'Change the look and feel of your website with templates...';
-$OVERVIEW['USERS'] = 'Manage users who can log-in to WebsiteBaker...';
+$OVERVIEW['USERS'] = 'Manage users who can log-in to WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Quickly view and browse your website in a new window...';
 
 $TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';

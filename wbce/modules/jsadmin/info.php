@@ -22,4 +22,4 @@ $module_version = '1.4.0';
 $module_platform = '2.8.x';
 $module_author = 'Stepan Riha, Swen Uth';
 $module_license	= 'BSD License';
-$module_description = 'This module adds Javascript functionality to the Website Baker Admin to improve some of the UI interactions. Uses the YahooUI library.';
+$module_description = 'This module adds Javascript functionality to the WBCE CMS backend to improve some of the UI interactions. Uses the YahooUI library.';
