@@ -66,9 +66,9 @@ if(isset($user_time) && $user_time == true)
 {
 	if(isset($TEXT['SYSTEM_DEFAULT']))
 	{
-		$TIMEZONES['system_default'] = $TIMEZONES[$actual_timezone].' ('.$TEXT['SYSTEM_DEFAULT'].')';
+		$TIMEZONES['20'] = $TIMEZONES[$actual_timezone].' ('.$TEXT['SYSTEM_DEFAULT'].')';
 	} else {
-		$TIMEZONES['system_default'] = $TIMEZONES[$actual_timezone].' (System Default)';
+		$TIMEZONES['20'] = $TIMEZONES[$actual_timezone].' (System Default)';
 	}
 }
 
