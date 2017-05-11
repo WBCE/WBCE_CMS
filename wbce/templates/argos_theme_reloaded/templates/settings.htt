@@ -161,11 +161,11 @@
 				<div class="fg3">{TEXT_SECTION_BLOCKS}:</div>
 				<div class="fg9">
 					<label>
-						<input type="radio" name="section_blocks" id="section_blocks_true" value="true"SECTION_BLOCKS_ENABLED}>
+						<input type="radio" name="section_blocks" id="section_blocks_true" value="true"{SECTION_BLOCKS_ENABLED}>
 						{TEXT_ENABLED}
 					</label>
 					<label>
-						<input type="radio" name="section_blocks" id="section_blocks_false" value="false"SECTION_BLOCKS_DISABLED}>
+						<input type="radio" name="section_blocks" id="section_blocks_false" value="false"{SECTION_BLOCKS_DISABLED}>
 						{TEXT_DISABLED}
 					</label>
 				</div>
