@@ -675,7 +675,7 @@ foreach ($aModuleList as $sModul) {
  */
 
 echo '<h2>Step ' . ($stepID++) . ' : Reload all addons database entry (no upgrade)</h2>';
-////delete modules
+// delete modules
 //$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'module'");
 // Load all modules
 if (($handle = opendir(WB_PATH . '/modules/'))) {
@@ -690,8 +690,8 @@ if (($handle = opendir(WB_PATH . '/modules/'))) {
 echo '<br />Modules reloaded<br />';
 
 
-////delete templates
-//$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'template'");
+// delete templates
+$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'template'");
 // Load all templates
 if (($handle = opendir(WB_PATH . '/templates/'))) {
     while (false !== ($file = readdir($handle))) {
@@ -704,8 +704,8 @@ if (($handle = opendir(WB_PATH . '/templates/'))) {
 echo '<br />Templates reloaded<br />';
 
 
-////delete languages
-//$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'language'");
+// delete languages
+$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'language'");
 // Load all languages
 if (($handle = opendir(WB_PATH . '/languages/'))) {
     while (false !== ($file = readdir($handle))) {
