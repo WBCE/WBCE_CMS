@@ -5,6 +5,65 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2017-05-12:** instantflorian [[05d4a6ae](https://github.com/WBCE/WBCE_CMS/commit/05d4a6ae7cf3e3c61008f232492933e1ee375a77)]
+   > Wording/Branding
+
+ * **2017-05-12:** Christoph Bleiweis [[41f59f6e](https://github.com/WBCE/WBCE_CMS/commit/41f59f6e594895633122353703392479c1d004c6)]
+   > set version to RC
+
+ * **2017-05-11:** Christoph Bleiweis [[faa2df4c](https://github.com/WBCE/WBCE_CMS/commit/faa2df4c5e5394a4fba0f4963be861da51fda3c6)]
+   > Bugfix for argos reloaded theme
+
+ * **2017-05-11:** instantflorian [[f4456755](https://github.com/WBCE/WBCE_CMS/commit/f4456755bcaf1d9745a45a9d80916451544e74e6)]
+   > Wording/Branding
+     and some typos and more detailled information about the maintainance
+     mode
+
+ * **2017-05-11:** Christoph Bleiweis [[5979f3ca](https://github.com/WBCE/WBCE_CMS/commit/5979f3cac5280625be2b46c19f742c152ba2cfb4)]
+   > Hotfix for timezone bug
+
+ * **2017-05-11:** instantflorian [[52189794](https://github.com/WBCE/WBCE_CMS/commit/52189794a8963fa91cbcf85ba76d9cc805b87ead)]
+   > Wording/Branding
+
+ * **2017-05-11:** Christoph Bleiweis [[05e8c821](https://github.com/WBCE/WBCE_CMS/commit/05e8c82176da921d58f364580d9c340cc132a2ed)]
+   > jcrob update for topics
+
+ * **2017-05-11:** Christoph Bleiweis [[cf6116a2](https://github.com/WBCE/WBCE_CMS/commit/cf6116a24b5c75a8d5d8c76b2316f9f1878195f6)]
+   > add Open Sans font to advancedThemeWbFlat
+
+ * **2017-05-11:** Christoph Bleiweis [[05e35ffa](https://github.com/WBCE/WBCE_CMS/commit/05e35ffa7441969b4b19ec2720b93950d8b9bbf3)]
+   > Pagetree fix
+     Fixed a missing <td>&nbsp</td>
+     http://forum.wbce.org/viewtopic.php?pid=4834#p4834
+
+ * **2017-05-10:** Christoph Bleiweis [[6570bc60](https://github.com/WBCE/WBCE_CMS/commit/6570bc601820d1d231ef1babdf653ea159c72702)]
+   > Remove formretain.js from users_form
+
+ * **2017-05-10:** Christoph Bleiweis [[1b054165](https://github.com/WBCE/WBCE_CMS/commit/1b05416507d6ce74186dbf8cb430f90274aa3284)]
+   > Update advancedThemeWbFlat
+
+ * **2017-05-10:** Christoph Bleiweis [[96574b25](https://github.com/WBCE/WBCE_CMS/commit/96574b2550b296ed31c0b5eee441005c2f4ee2b9)]
+   > Update login_form
+
+ * **2017-05-09:** Christoph Bleiweis [[1b09284d](https://github.com/WBCE/WBCE_CMS/commit/1b09284db32410a8d80f3cda8e6de6e97fe78bb5)]
+   > Fix for wrong warning_url
+
+ * **2017-05-09:** Christoph Bleiweis [[e44381c6](https://github.com/WBCE/WBCE_CMS/commit/e44381c608119a278e248ec2bf4c5a79c4a7caef)]
+   > Branding update
+
+ * **2017-05-09:** Christoph Bleiweis [[043e9755](https://github.com/WBCE/WBCE_CMS/commit/043e97553b40e6887d8635e0de6feab786ee25d8)]
+   > Fix for settings.php
+
+ * **2017-05-09:** Christoph Bleiweis [[ad322c50](https://github.com/WBCE/WBCE_CMS/commit/ad322c509d60da62e1a1a4cedb25edb3763c492f)]
+   > fix missing semikolon
+
+ * **2017-05-09:** Christoph Bleiweis [[457edb59](https://github.com/WBCE/WBCE_CMS/commit/457edb59c8f093fb556f0a686401ab3af85ab6db)]
+   > fix page_languages
+     page_language should be disabled by default
+
+ * **2017-05-09:** cwsoft [[cdc4c828](https://github.com/WBCE/WBCE_CMS/commit/cdc4c82843edea88f1a18d10d2d3d8739d69dc5b)]
+   > Updated CHANGELOG.md
+
  * **2017-05-08:** Christoph Bleiweis [[7d363a52](https://github.com/WBCE/WBCE_CMS/commit/7d363a5204357c0817d40d9b6f8aac81d5c5ed06)]
    > Disable alert in droplets
 
