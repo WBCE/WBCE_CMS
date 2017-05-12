@@ -5,6 +5,22 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2017-05-12:** instantflorian [[39fc1881](https://github.com/WBCE/WBCE_CMS/commit/39fc188199edd3d271d098c816a056c574611f4b)]
+   > Merge remote-tracking branch 'origin/master'
+
+ * **2017-05-12:** instantflorian [[b92e2c3a](https://github.com/WBCE/WBCE_CMS/commit/b92e2c3a8b2e45cc6bcd27f64cfaed53cbde4074)]
+   > Update info.php
+     syntax error
+ * **2017-05-12:** instantflorian [[37e70539](https://github.com/WBCE/WBCE_CMS/commit/37e70539c30e67457c307246286e7d4dac938109)]
+   > Revert "Syntax error, " instead of ', breaks update script unfortunately"
+     This reverts commit 738efd5dfe8936b12e213865d7ca8c7c83698967.
+
+ * **2017-05-12:** instantflorian [[738efd5d](https://github.com/WBCE/WBCE_CMS/commit/738efd5dfe8936b12e213865d7ca8c7c83698967)]
+   > Syntax error, " instead of ', breaks update script unfortunately
+
+ * **2017-05-12:** instantflorian [[e1819560](https://github.com/WBCE/WBCE_CMS/commit/e1819560f351ee4de1f7230cbd719a1c0cd8857b)]
+   > Updated changelog
+
  * **2017-05-12:** instantflorian [[05d4a6ae](https://github.com/WBCE/WBCE_CMS/commit/05d4a6ae7cf3e3c61008f232492933e1ee375a77)]
    > Wording/Branding
 
