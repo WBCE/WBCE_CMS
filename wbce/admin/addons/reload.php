@@ -49,7 +49,7 @@ $table = TABLE_PREFIX . 'addons';
 foreach ($post_check as $key) {
 	switch ($key) {
 		case 'reload_modules':
-			if ($handle = opendir(WB_PATH . '/modules')) {
+			if ($handle = opendir(WB_PATH . '/modules/')) {
 				// delete modules from database
 				$sql = "DELETE FROM `$table` WHERE `type` = 'module'";
 				$database->query($sql);
@@ -71,7 +71,7 @@ foreach ($post_check as $key) {
 			break;
 
 		case 'reload_templates':
-			if ($handle = opendir(WB_PATH . '/templates')) {
+			if ($handle = opendir(WB_PATH . '/templates/')) {
 				// delete templates from database
 				$sql = "DELETE FROM `$table` WHERE `type` = 'template'";
 				$database->query($sql);
