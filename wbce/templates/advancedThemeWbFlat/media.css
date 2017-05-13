@@ -5,10 +5,10 @@ body, td, th, input, textarea {
 }
 body {
     background-color: #FFFFFF;
-    margin: 0px;
+    margin: 0;
 }
 hr {
-    margin: 0px;
+    margin: 0;
     color: #003366;
     height: 1px;
 }

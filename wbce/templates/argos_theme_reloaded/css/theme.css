@@ -327,7 +327,7 @@ button.danger {
 }
 .description {
     text-align: left;
-    padding: 4px 0px 0 0px;
+    padding: 4px 0 0 0;
 }
 .description {
 	overflow: hidden;
@@ -580,7 +580,6 @@ a.tooltip {
 .permissionTable th,
 .permissionTable td {
 	border: 1px solid #999;
-	border-color: #999;
 }
 .permissionTable th.header {
 	background-color: #dedede;

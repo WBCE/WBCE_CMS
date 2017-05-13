@@ -298,7 +298,7 @@ blockquote, q {
 }
 /* columns-offset to right --> counts to width of column */
 .col-offset_0 {
-    margin-left: 0%;
+    margin-left: 0;
 }
 .col-offset_1 {
     margin-left: 8.33333333%;
@@ -445,7 +445,7 @@ a#frontendtitel:hover {
 #branding {
     position: absolute;
     right: 30px;
-    bottom: 0px;
+    bottom: 0;
     width: 300px;
     height: 55px;
     padding-right: 120px;
@@ -632,13 +632,13 @@ h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, 
 h1 {
     font-size: 21px;
     line-height: 48px;
-    margin: 72px 0px 48px 0px;
+    margin: 72px 0 48px 0;
     color: #303641;
 }
 h2 {
     font-size: 19px;
     line-height: 24px;
-    margin: 24px 0px;
+    margin: 24px 0;
     color: #303641;
 }
 h2.section_titel {
@@ -647,25 +647,25 @@ h2.section_titel {
 h3 {
     font-size: 14px;
     line-height: 24px;
-    margin: 0px 0px 24px 0px;
+    margin: 0 0 24px 0;
     color: #303641;
 }
 h4 {
     font-size: 14px;
     line-height: 24px;
-    margin: 0px 0px;
+    margin: 0 0;
     color: #303641;
 }
 h5 {
     font-size: 14px;
     line-height: 24px;
-    margin: 0px 0px;
+    margin: 0 0;
     color: #303641;
 }
 h6 {
     font-size: 14px;
     line-height: 24px;
-    margin: 0px 0px;
+    margin: 0 0;
     color: #303641;
 }
 /* Links */
@@ -906,7 +906,7 @@ button.noactivehover, .wb_button.noactivehover, div.button_advanced_settings a.n
     background-color: #303641;
 }
 button.small, .wb_button.small, div.button_advanced_settings a.small, a.wb_button.small, div.button_advanced_settings a.small, input[type='button'].small, input[type='submit'].small, input[type='reset'].small {
-    padding: 0px 8px;
+    padding: 0 8px;
     font-size: 11px;
     line-height: 24px;
 }
@@ -1284,10 +1284,10 @@ div.pagesubmenu ul li a {
 /* spans --> like list-elements */
 .linkbox > span.liste {
     display: block;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     padding-left: 15px;/* background-image: url(list-bullet.png);
   background-repeat: no-repeat;
-  background-position: 0px 6px;*/
+  background-position: 0 6px;*/
 }
 .linkbox > span.liste {
     padding-left: 30px;
@@ -1314,8 +1314,8 @@ div.pagesubmenu ul li a {
     content: "";
     display: block;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     width: 50px;
     height: 100%;
     padding-top: 5px;
@@ -1449,7 +1449,7 @@ iframe#wb_informationcenter {
     width: 436px;
     height: 394px;
     overflow: hidden;
-    border: 0px solid transparent;
+    border: 0 solid transparent;
 }
 /* 
  * Elements: Alterboxes - boxes to alert an information
@@ -1498,7 +1498,7 @@ iframe#wb_informationcenter {
 .themebox .tb_header {
     position: absolute;
     top: 0;
-    left: 0px;
+    left: 0;
     width: 120px;
     height: 100%;
 }
@@ -1514,7 +1514,7 @@ iframe#wb_informationcenter {
     content: "";
     display: block;
     position: absolute;
-    left: 0px;
+    left: 0;
     top: 20px;
     width: 100%;
     text-align: center;
@@ -1542,7 +1542,7 @@ iframe#wb_informationcenter {
 .themebox .tb_content a, .themebox .tb_content input[type='submit'] {
     display: inline-block;
     margin: 0 10px 7px 0;
-    padding: 0px 4px;
+    padding: 0 4px;
     font-weight: normal;
     text-decoration: none;
     color: #ffffff;
@@ -1662,7 +1662,7 @@ iframe#wb_informationcenter {
     -ms-transform: rotate(0deg) scale(6) !important;
     transform: rotate(0deg) scale(6) !important;
     top: 100px !important;
-    left: 0px !important;
+    left: 0 !important;
     opacity: 0.15 !important;
     transition: 1s !important;
 }
@@ -1940,8 +1940,8 @@ a#page_login_homelink:after {
     font-family: FontAwesome;
     display: inline-block;
     position: relative;
-    left: 0px;
-    bottom: 0px;
+    left: 0;
+    bottom: 0;
     padding: 5px 11px;
     font-weight: normal;
     color: #ffffff;

@@ -49,12 +49,11 @@
     content: "";
     display: block;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     width: 50px;
     height: 100%;
-    padding-top: 0px;
-    /* instead 5px */
+    padding-top: 0;
     text-align: center;
     font-size: 16px;
     font-weight: normal;

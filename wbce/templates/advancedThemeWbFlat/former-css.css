@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* ::OLD-theme:: */
 img {
-    border: 0px;
+    border: 0;
 }
 hr {
     margin: 15px 0;
@@ -55,7 +55,7 @@ div.box {
 }
 .title {
     text-align: left;
-    padding: 4px 5px 0px 3px;
+    padding: 4px 5px 0 3px;
     font-weight: bold;
     font-size: 14px;
     margin-bottom: 5px;
@@ -65,7 +65,7 @@ span.title {
 }
 .description {
     text-align: left;
-    padding: 4px 0px 0 0px;
+    padding: 4px 0 0 0;
 }
 .note {
     color: #666666;
@@ -329,7 +329,7 @@ img.page_list_rights {
     background-color: #ccddee;
 }
 div.content_box {
-    margin: 0em auto;
+    margin: 0 auto;
 }
 div.content_box form {
     width: 98%;
