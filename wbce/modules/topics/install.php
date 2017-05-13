@@ -233,11 +233,6 @@ if (!file_exists($mpath.'frontend.css')) { copy($mpath.'defaults/frontend.defaul
 if (!file_exists($mpath.'frontend.js')) { copy($mpath.'defaults/frontend.default.js', $mpath.'frontend.js') ; }
 
 
-// install or upgrade droplets
-if (file_exists(WB_PATH.'/modules/droplets/functions.inc.php')) {
-  include_once(WB_PATH.'/modules/droplets/functions.inc.php');
-}
-
 if (!function_exists('wb_unpack_and_import')) {
   function wb_unpack_and_import($temp_file, $temp_unzip) {
     global $admin, $database;
