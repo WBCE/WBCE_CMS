@@ -30,6 +30,4 @@
 $module_description = 'Med dette modul kan du indpakke indhold fra fremmede websider p&Atilde;&yen; dit websted ved hj&Atilde;&brvbar;lp af Inline Frames (iframe)';
 
 // Headings and text outputs
-$MOD_WRAPPER['NOTICE'] = 'Din browser underst&Atilde;¸tter ikke inline frames.<br />Klik p&Atilde;&yen; linket nedenfor for at bes&Atilde;¸ge det websted, som det var hensigten at vise her...<br />';
-
-?>
+$MOD_WRAPPER['NOTICE'] = 'Din browser underst&Atilde;Â¸tter ikke inline frames.<br />Klik p&Atilde;&yen; linket nedenfor for at bes&Atilde;Â¸ge det websted, som det var hensigten at vise her...<br />';

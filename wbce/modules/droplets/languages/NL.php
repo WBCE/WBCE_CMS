@@ -11,6 +11,7 @@
 
 $module_description     = 'This tool allows for managing your local Droplets.';
 
+//Variables for the backend
 $DR_TEXT['ADMIN_EDIT']	= 'Edit-Only';
 $DR_TEXT['ADMIN_VIEW']	= 'View-Only';
 $DR_TEXT['BACKUP']		= 'Backup Droplets (Zip)';
@@ -25,7 +26,7 @@ $DR_TEXT['DUPLICATE'] = 'Duplicate droplet';
 $DR_TEXT['EXPORT'] = 'Exporteer';
 $DR_TEXT['HELP']		= 'Help / Readme';
 $DR_TEXT['IMPORT_ERRORS'] = 'Fouten tijdens import';
-$DR_TEXT['IMPORTED'] = 'Droplet(s) geïmporteerd';
+$DR_TEXT['IMPORTED'] = 'Droplet(s) geÃ¯mporteerd';
 $DR_TEXT['INVALIDCODE']	= 'Deze Droplet heeft ongeldige PHP code';
 $DR_TEXT['MANAGE_BACKUPS'] = 'Beheer Backups';
 $DR_TEXT['MARKED'] = 'GemMarkeerd';

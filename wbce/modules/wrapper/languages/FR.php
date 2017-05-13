@@ -29,6 +29,4 @@
 $module_description = 'Ce module permet l&apos;int&eacute;gration de contenus externes sur votre page &agrave; l&apos;aide de cadres enlign&eacute; (iframe)';
 
 // Ueberschriften und Textausgaben
-$MOD_WRAPPER['NOTICE'] = 'Votre navigateur ne supporte pas les cadres enlign&eacute;<br />Cliquez sur le lien ci-dessous pour vous rendre au site qui &eacute;tais sens&eacute; être affich&eacute; ici...<br />';
-
-?>
+$MOD_WRAPPER['NOTICE'] = 'Votre navigateur ne supporte pas les cadres enlign&eacute;<br />Cliquez sur le lien ci-dessous pour vous rendre au site qui &eacute;tais sens&eacute; Ãªtre affich&eacute; ici...<br />';

@@ -548,7 +548,7 @@ $MESSAGE['MEDIA_SINGLE_UPLOADED'] = ' arquivo enviado com sucesso';
 $MESSAGE['MEDIA_TARGET_DOT_DOT_SLASH'] = 'N&#227;o pode possuir ../ na pasta alvo';
 $MESSAGE['MEDIA_UPLOADED'] = ' arquivos enviados com sucesso';
 $MESSAGE['MOD_FORM_EXCESS_SUBMISSIONS'] = 'Desculpe, este formul&#225;rio foi submetido v&#225;rias vezes nessa hora. Favor tentar novamente dentro de uma hora.';
-$MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'] = 'O N&#250;mero de Verifica&ccdil;&#227;o (conhecido como Captcha) que voc&#234; entrou, &#233; inv&#225;lido. Se estiver tendo problemas usando o Captcha, envie uma mensagem para: <a href="mailto:{SERVER_EMAIL}">{SERVER_EMAIL}</a>';
+$MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'] = 'O N&#250;mero de Verificac&#807;&#227;o (conhecido como Captcha) que voc&#234; entrou, &#233; inv&#225;lido. Se estiver tendo problemas usando o Captcha, envie uma mensagem para: <a href="mailto:{SERVER_EMAIL}">{SERVER_EMAIL}</a>';
 $MESSAGE['MOD_FORM_REQUIRED_FIELDS'] = 'Voc&#234; precisa preencher os seguintes campos';
 $MESSAGE['PAGES_ADDED'] = 'P&#225;gina adicionada com sucesso';
 $MESSAGE['PAGES_ADDED_HEADING'] = 'Cabe&ccdil;alho da P&#225;gina adicionado com sucesso.';

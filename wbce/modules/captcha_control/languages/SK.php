@@ -46,7 +46,5 @@ $MOD_CAPTCHA['SUBTRAKTION']            = 'm&iacute;nus';
 $MOD_CAPTCHA['MULTIPLIKATION']         = 'n&aacute;sobi&#357;';
 $MOD_CAPTCHA['VERIFICATION_INFO_RES']  = 'Vlo&#382;te v&yacute;sledok';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Vlo&#382;te text';
-$MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Odpoveï na ot&aacute;zku';
+$MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'OdpoveÃ¯ na ot&aacute;zku';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Overenie zlyhalo';
-
-?> 
