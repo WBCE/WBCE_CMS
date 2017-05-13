@@ -21,9 +21,8 @@
 	 + erstes release der Deutschen Sprachdatei
  -----------------------------------------------------------------------------------------
 **/
-
 // Array fuer alle sprachabhaengigen Textausgaben im Front- und Backend
-// Hinweis: Verwende nachfolgende Namenskonvention für die Sprachausgabe des Moduls: $MOD_MODULE_DIRECTORY
+// Hinweis: Verwende nachfolgende Namenskonvention fÃ¼r die Sprachausgabe des Moduls: $MOD_MODULE_DIRECTORY
 $MOD_PREFERENCE = array(
 	'PLEASE_SELECT' => 'bitte w&auml;hlen',
 	'DETAILS_SAVED'	=> 'allgemeine Einstellungen ge&auml;ndert',
@@ -31,4 +30,5 @@ $MOD_PREFERENCE = array(
 	'SAVE_EMAIL' => 'Email speichern',
 	'SAVE_PASSWORD' => 'Passwort speichern',
 );
+
 ?>
