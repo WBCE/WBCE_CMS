@@ -6,7 +6,7 @@
 </head>
 
 	<body>
-		<small><font color="#7f7f7f">Droplets Help</font></small><br />
+		<small><span style="color: #7f7f7f; ">Droplets Help</span></small><br />
 		<h2> <img src="../img/droplets_logo.png" alt="" width="297" height="81" border="0"></h2> <br />
 		Droplets are small chunks of php code (just like the code module) that can be included in your template or any other content section. <br />
 		Including a droplet is done by encapsulating the droplet name in double brackets. <br />
@@ -26,12 +26,12 @@
 		<br />
 		<h3>Coding Droplets</h3>
 		<br />
-		Droplets run in PHP mode, no <font color="#ff0000">&lt;?php</font> or <font color="#ff0000">?&gt;</font> is allowed in the code! If any of these tags are found in the code they will be removed. Your code will not run as expected. <br />
+		Droplets run in PHP mode, no <span style="color: #ff0000; ">&lt;?php</span> or <span style="color: #ff0000; ">?&gt;</span> is allowed in the code! If any of these tags are found in the code they will be removed. Your code will not run as expected. <br />
 		The droplet code can NOT echo or print data to the output stream directly. The Droplet name is replaced by the return value of the PHP code.<br />
 		Example: [[HelloWorld]] <br />
 		<br />
-		<font color="#ff0000">Wrong code:</font> echo &quot;Hello World&quot;; <br />
-		<font color="#339966">Correct code:</font> return &quot;Hello World&quot;; <br />
+		<span style="color: #ff0000; ">Wrong code:</span> echo &quot;Hello World&quot;; <br />
+		<span style="color: #339966; ">Correct code:</span> return &quot;Hello World&quot;; <br />
 		<br />
 		Since version 0.3 Droplets can modify the complete page content. <br />
 		When the Droplet is called, an extra variable ($wb_page_data) is made available. 

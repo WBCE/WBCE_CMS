@@ -70,7 +70,7 @@ function set_error($message, $field_name = '')
             $_SESSION['ERROR_FIELD'] = $field_name;
         }
         // Specify that session support is enabled
-        $_SESSION['session_support'] = '<font class="good">Enabled</font>';
+        $_SESSION['session_support'] = '<span class="good">Enabled</span>';
         // Redirect to first page again and exit
         header('Location: index.php?sessions_checked=true'); exit;
     }

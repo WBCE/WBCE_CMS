@@ -175,7 +175,7 @@ function make_list($parent, $editable_pages) {
 				</td>
 				<?php } ?>
 				<td align="left" width="375">
-					<font color="#999999"><?php echo ($page['menu_title']); ?></font>
+					<span style="color: #999999; "><?php echo ($page['menu_title']); ?></span>
 				</td>
 				<td align="center" valign="middle" width="130">
 				<?php if($page['visibility'] == 'public') { ?>
