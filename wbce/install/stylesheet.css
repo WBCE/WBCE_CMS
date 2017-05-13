@@ -25,12 +25,8 @@ table {
     width: 100%;
 }
 body {
-    padding: 0;
-    border: 0;
-    margin: 0;
     background: url('background.png') repeat-x 0px 0px;
     background-color: #a8bccb;
-    height: 101%;
 }
 div.body {
     width: 60em;
@@ -41,6 +37,19 @@ div.body {
     border-radius: 15px;
     box-shadow: 2px 2px 15px -2px rgba(0,0,0,0.75);
 }
+.header tr {
+    background: #a9c9ea;
+}
+.header img {
+    margin: 0.7em 1em 0 1em;
+    height: 50px;
+    float: left;
+}
+.header h1 {
+    margin: 1em;
+    font-size: 150%;
+    float: right;
+}
 .welcome {
     padding: 5px;
     text-align: center;
@@ -49,6 +58,13 @@ div.body {
 }
 div.content {
     margin-top: 20px;
+}
+.license {
+    margin: 0 0 3em;
+    text-align: center;
+}
+.grey {
+    color: #666666;
 }
 /*
     TABLE Elements
@@ -70,19 +86,19 @@ table > thead > tr > th {
     font-size: 1.125em;
     padding: 0.525em 0.2em;
     text-align: left;
-    border-bottom : 1px groove #7E7171; /* #d2d1cc; */
+    border-bottom : 1px groove #7E7171;
 }
 table > thead > tr > td {
     color: #555758;
-    font-size: 1.08em;
+    font-size: 1em;
     padding: 1.2em 1em;
 }
 table > tbody {
     display: block;
-    padding: 0.5em 0.5em;
+    padding: 1em;
 }
 table > tbody > tr {
-    border-bottom : 0px solid #222222; /* #d2d1cc; */
+    border-bottom : 0px solid #222222;
     padding : 0.8em 0 0.2em 0;
     width : 100%;
 }
@@ -98,8 +114,6 @@ table > tbody > tr > th {
 table > tbody > tr > td {
     font-size: 1em;
     width: 19%;
-    padding-left: 0.8em;
-    padding-right: 0.8em;
     vertical-align: top;
     text-align: left;
     line-height : 2em;
@@ -128,7 +142,6 @@ td.value input {
 h1.step-row {
     margin : 0;
     display : inline;
-    color : #6699ff;
 }
 /*
     FORM Elements

@@ -94,11 +94,11 @@ function change_os(type) {
 </head>
 <body>
 <div class="body">
- <table>
+ <table class="header">
   <tbody>
-   <tr style="background: #a9c9ea;">
-    <td><img style="margin-top:.7em;height: 50px;float: left;" src="logo.png" alt="WBCE Logo">
-     <h1 style="border:none; margin:1em;font-size:150%;float: right;">WBCE Installation Wizard</h1></td>
+   <tr>
+    <td><img src="logo.png" alt="WBCE Logo">
+     <h1>WBCE Installation Wizard</h1></td>
    </tr>
   </tbody>
  </table>
@@ -112,13 +112,12 @@ function change_os(type) {
 if (isset($_SESSION['message']) and $_SESSION['message'] != '') {
     ?>
   <div class="error"><b>Error:</b> <?php echo $_SESSION['message'];?></div>
-  <?php
-}
+  <?php } 
 ?>
   <table>
    <thead>
     <tr>
-     <th colspan="4" class="step-row"><h1 class="step-row">Step 1 </h1>
+     <th><h1 class="step-row">Step 1</h1>
       &nbsp;Please check the following requirements are met before continuing... </th>
     </tr>
    </thead>
@@ -130,7 +129,7 @@ if (isset($_SESSION['message']) and $_SESSION['message'] != '') {
     <?php }
 ?>
     <tr>
-     <td style="color: #666666;">PHP Version >= 5.3.6</td>
+     <td class="grey">PHP Version >= 5.3.6</td>
      <td><?php
 if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
     ?>
@@ -143,11 +142,11 @@ if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
       <?php
 }
 ?></td>
-     <td style="color: #666666;">PHP Session Support</td>
+     <td class="grey">PHP Session Support</td>
      <td><?php echo $session_support;?></td>
     </tr>
     <tr>
-     <td style="color: #666666;">Server DefaultCharset</td>
+     <td class="grey">Server DefaultCharset</td>
      <td><?php
 $chrval = (($e_adc != '') && (strtolower($e_adc) != 'utf-8') ? true : false);
 if ($chrval == false) {
@@ -161,7 +160,7 @@ if ($chrval == false) {
 }
 
 ?></td>
-     <td style="color: #666666;">PHP Safe Mode</td>
+     <td class="grey">PHP Safe Mode</td>
      <td><?php
 if (ini_get('safe_mode') == '' || strpos(strtolower(ini_get('safe_mode')), 'off') !== false || ini_get('safe_mode') == 0) {
     ?>
@@ -190,7 +189,7 @@ if (ini_get('safe_mode') == '' || strpos(strtolower(ini_get('safe_mode')), 'off'
   <table>
    <thead>
     <tr>
-     <th colspan="4" class="step-row"> <h1 class="step-row">Step 2</h1>
+     <th><h1 class="step-row">Step 2</h1>
       &nbsp;Please check the following files/folders are writeable before continuing... </th>
     </tr>
    </thead>
@@ -236,52 +235,52 @@ if (!isset($_SESSION['config_rename'])) {
 }
 ?>
     <tr>
-     <td style="color: #666666;"><?php print $wb_root . $configFile?></td>
+     <td class="grey"><?php print $wb_root . $configFile?></td>
      <td colspan="3"  ><?php echo $config?></td>
     </tr>
     <tr>
-     <td style="color: #666666;"><?php print $wb_root?>/pages/</td>
+     <td class="grey"><?php print $wb_root?>/pages/</td>
      <td><?php if (is_writable('../pages/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../pages/')) {
     $installFlag = false;
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
 ?></td>
-     <td style="color: #666666;"><?php print $wb_root?>/media/</td>
+     <td class="grey"><?php print $wb_root?>/media/</td>
      <td><?php if (is_writable('../media/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../media/')) {
     $installFlag = false;
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
 ?></td>
     </tr>
     <tr>
-     <td style="color: #666666;"><?php print $wb_root?>/templates/</td>
+     <td class="grey"><?php print $wb_root?>/templates/</td>
      <td><?php if (is_writable('../templates/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../templates/')) {
     $installFlag = false;
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
 ?></td>
-     <td style="color: #666666;"><?php print $wb_root?>/modules/</td>
+     <td class="grey"><?php print $wb_root?>/modules/</td>
      <td><?php if (is_writable('../modules/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../modules/')) {
     $installFlag = false;
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
 ?></td>
     </tr>
     <tr>
-     <td style="color: #666666;"><?php print $wb_root?>/languages/</td>
+     <td class="grey"><?php print $wb_root?>/languages/</td>
      <td><?php if (is_writable('../languages/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../languages/')) {
     $installFlag = false;
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
 ?></td>
-     <td style="color: #666666;"><?php print $wb_root?>/temp/</td>
+     <td class="grey"><?php print $wb_root?>/temp/</td>
      <td><?php if (is_writable('../temp/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../temp/')) {
     $installFlag = false;
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
 ?></td>
     </tr>
     <tr>
-     <td style="color: #666666;"><?php print $wb_root?>/config/</td>
+     <td class="grey"><?php print $wb_root?>/config/</td>
      <td><?php if (is_writable('../config/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../config/')) {
     $installFlag = false;
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
 ?></td>
-     <td style="color: #666666;"><?php print $wb_root?>/var/</td>
+     <td class="grey"><?php print $wb_root?>/var/</td>
      <td><?php if (is_writable('../var/')) {echo '<span class="good">Writeable</span>';} elseif (!file_exists('../var/')) {
     $installFlag = false;
     echo '<span class="bad">Directory Not Found</span>';} else {echo '<span class="bad">Unwriteable</span>';}
@@ -294,7 +293,7 @@ if (!isset($_SESSION['config_rename'])) {
   <table>
    <thead>
     <tr>
-     <th colspan="4" class="step-row"> <h1 class="step-row">Step 3</h1>
+     <th><h1 class="step-row">Step 3</h1>
       &nbsp;Please check URL settings, and select a default timezone and a default backend language... </th>
     </tr>
    </thead>
@@ -372,7 +371,7 @@ if (!isset($_SESSION['config_rename'])) {
   <table>
    <thead>
     <tr>
-     <th class="step-row" colspan="4"> <h1 class="step-row">Step 4</h1>
+     <th><h1 class="step-row">Step 4</h1>
       &nbsp;Please specify your operating system information below... </th>
     </tr>
    </thead>
@@ -392,7 +391,7 @@ if (!isset($_SESSION['config_rename'])) {
     ?>;">
        <input type="checkbox" tabindex="6" name="world_writeable" id="world_writeable" value="true"<?php if (isset($_SESSION['world_writeable']) and $_SESSION['world_writeable'] == true) {echo ' checked="checked';}
     ?> />
-       <label style=" margin: 0;  " for="world_writeable"> World-writeable file permissions (777) </label>
+       <label style="margin: 0;" for="world_writeable"> World-writeable file permissions (777) </label>
        <br />
        <p class="warning">(Please note: only recommended for testing environments)</p>
       </div></td>
@@ -402,7 +401,7 @@ if (!isset($_SESSION['config_rename'])) {
   <table>
    <thead>
     <tr>
-     <th colspan="4" class="step-row"> <h1 class="step-row">Step 5</h1>
+     <th><h1 class="step-row">Step 5</h1>
       &nbsp;Please enter your MySQL database server details below... </th>
     </tr>
    </thead>
@@ -437,16 +436,16 @@ if (!isset($_SESSION['config_rename'])) {
     <tr>
      <td class="name hide" colspan="2"><input type="checkbox" tabindex="12" name="install_tables" id="install_tables" value="true"<?php if (!isset($_SESSION['install_tables'])) {echo ' checked="checked"';} elseif ($_SESSION['install_tables'] == 'true') {echo ' checked="checked"';}
     ?> />
-      <label for="install_tables" style="color: #666666;">Install Tables</label>
+      <label for="install_tables" class="grey">Install Tables</label>
       <br />
-      <span style="font-size: 1px; color: #666666;">(Please note: May remove existing tables and data)</span></td>
+      <span  class="grey" style="font-size: 1px;">(Please note: May remove existing tables and data)</span></td>
     </tr>
    </tbody>
   </table>
   <table>
    <thead>
     <tr>
-     <th colspan="4" class="step-row"> <h1 class="step-row">Step 6</h1>
+     <th><h1 class="step-row">Step 6</h1>
       &nbsp;Please enter your website title below... </th>
     </tr>
    </thead>
@@ -461,7 +460,7 @@ if (!isset($_SESSION['config_rename'])) {
   <table>
    <thead>
     <tr>
-     <th colspan="4" class="step-row"> <h1 class="step-row">Step 7</h1>
+     <th><h1 class="step-row">Step 7</h1>
       Please enter your Administrator account details below... </th>
     </tr>
    </thead>
@@ -491,7 +490,7 @@ if (!isset($_SESSION['config_rename'])) {
   <table>
    <tbody>
     <tr valign="top">
-     <td><p class="warning"> <b>Please note:</b> <br />
+     <td><p class="warning"><b>Please note:</b> <br />
        WBCE is released under the <a href="http://www.gnu.org/licenses/gpl.html" target="_blank" tabindex="19">GNU General Public License</a>. <br />
        By clicking install, you are accepting the license. </p></td>
     </tr>
@@ -509,9 +508,9 @@ if (!isset($_SESSION['config_rename'])) {
   </table>
  </form>
 </div>
-<div style="margin: 0 0 3em; text-align:center;"> 
+<div class="license"> 
  <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. --> 
- <a href="http://www.wbce.org/" style="color: #000000;" target="_blank">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" style="color: #000000;" target="_blank">GNU General Public License</a> 
+ <a href="http://www.wbce.org/" target="_blank">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU General Public License</a> 
  <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. --> 
 </div >
 </body>
