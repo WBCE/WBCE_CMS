@@ -31,7 +31,6 @@
 }
 
 .clearfix {
-	height:0;
 	clear:both;
 	display:block;
 	overflow:hidden;

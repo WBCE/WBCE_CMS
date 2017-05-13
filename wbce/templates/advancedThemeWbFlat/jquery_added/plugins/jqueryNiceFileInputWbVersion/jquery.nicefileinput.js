@@ -2,7 +2,8 @@
 jQuery.NiceFileInput.js
 --------------------------------------
 Nice File Input - jQuery plugin which makes file inputs CSS styling an easy task.
-By Jorge Moreno - @alterebro 
+By Jorge Moreno - @alterebro
+https://github.com/alterebro/jQuery.NiceFileInput.js
 
 Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 Based on previous work of:

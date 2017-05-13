@@ -1,508 +1,390 @@
 @charset "UTF-8";
-
 /* ::OLD-theme:: */
 img {
-  border: 0px;
+    border: 0px;
 }
-
 hr {
-  margin: 15px 0;
-  color: #003366;
-  height: 1px;
+    margin: 15px 0;
+    color: #003366;
+    height: 1px;
 }
-
 .hide {
-  display: none;
+    display: none;
 }
-
 .note {
-  color: #666666;
-  font-size: 11px;
+    color: #666666;
+    font-size: 11px;
 }
-
 .center {
-  text-align: center;
+    text-align: center;
 }
-
 form {
-  margin: 0;
+    margin: 0;
 }
-
 label {
-  cursor: pointer;
+    cursor: pointer;
 }
-
 /* WB2.8 STYLES */
 .img_noborder img {
-  border: 0;
+    border: 0;
 }
-
 iframe {
-  border: 1px solid #35373a;
+    border: 1px solid #35373a;
 }
-
 div.box {
-  font-size: 11px;
-  width: 100%;
-  text-align: right;
-  margin: -10px 0 0 0;
+    font-size: 11px;
+    width: 100%;
+    text-align: right;
+    margin: -10px 0 0 0;
 }
-
 .section {
-  margin-top: 30px;
-  padding: 0;
-  border: 1px solid #999999;
-  height: 75px;
-  width: 100%;
-  background-color: #fdfdfd;
+    margin-top: 30px;
+    padding: 0;
+    border: 1px solid #999999;
+    height: 75px;
+    width: 100%;
+    background-color: #fdfdfd;
 }
-
 .graphic {
-  width: 100px;
-  height: 100px;
-  padding-right: 15px;
+    width: 100px;
+    height: 100px;
+    padding-right: 15px;
 }
-
 .graphic img {
-  vertical-align: middle;
+    vertical-align: middle;
 }
-
 .title {
-  text-align: left;
-  padding: 4px 5px 0px 3px;
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 5px;
+    text-align: left;
+    padding: 4px 5px 0px 3px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
 }
-
 span.title {
-  display: block;
+    display: block;
 }
-
 .description {
-  text-align: left;
-  padding: 4px 0px 0 0px;
+    text-align: left;
+    padding: 4px 0px 0 0px;
 }
-
 .note {
-  color: #666666;
-  font-size: 11px;
+    color: #666666;
+    font-size: 11px;
 }
-
 .bold {
-  font-weight: bold;
+    font-weight: bold;
 }
-
 .submit, .cancel {
-  width: 100px;
-  margin-top: 5px;
+    width: 100px;
+    margin-top: 5px;
 }
-
 .form_submit {
-  width: 100%;
+    width: 100%;
 }
-
 .form_submit .left {
-  text-align: left;
+    text-align: left;
 }
-
 .form_submit .right {
-  text-align: right;
+    text-align: right;
 }
-
 .input_small {
-  width: 20px;
+    width: 20px;
 }
-
 .input_narrow {
-  width: 100px;
+    width: 100px;
 }
-
 .input_normal {
-  width: 120px;
+    width: 120px;
 }
-
 .input_medium {
-  width: 150px;
+    width: 150px;
 }
-
 .input_wide {
-  width: 200px;
+    width: 200px;
 }
-
 .input_large {
-  width: 300px;
+    width: 300px;
 }
-
 .input_full {
-  width: 100%;
+    width: 100%;
 }
-
 select option.disabled {
-  color: #aaaaaa;
+    color: #aaaaaa;
 }
-
 .jsadmin_drag img {
-  margin-top: 2px;
-  vertical-align: top;
-  cursor: pointer;
+    margin-top: 2px;
+    vertical-align: top;
+    cursor: pointer;
 }
-
 .modify_link {
-  padding: 4px 0 0 7px;
+    padding: 4px 0 0 7px;
 }
-
 .settings_table td {
-  vertical-align: top;
-  text-align: left;
-  padding: 5px;
+    vertical-align: top;
+    text-align: left;
+    padding: 5px;
 }
-
 .setting_name {
-  width: 10%;
-  min-width: 180px;
+    width: 10%;
+    min-width: 180px;
 }
-
 .setting_value {
-  width: 90%;
+    width: 90%;
 }
-
 .setting_value_permissions {
-  width: 50%;
+    width: 50%;
 }
-
 .setting_value input, .setting_value select, .setting_value textarea {
-  width: 100%;
+    width: 100%;
 }
-
 .setting_value textarea {
-  height: 50px;
+    height: 50px;
 }
-
 #admintools ul {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
-
 #admintools li {
-  list-style-type: none;
-  display: inline;
-  float: left;
-  width: 48%;
-  margin: 0 10px 0 0;
+    list-style-type: none;
+    display: inline;
+    float: left;
+    width: 48%;
+    margin: 0 10px 0 0;
 }
-
 .value_input input, .value_input text, .value_input select {
-  width: 100%;
+    width: 100%;
 }
-
 #file_mode input, #dir_mode input {
-  width: 12px;
-  height: 12px;
+    width: 12px;
+    height: 12px;
 }
-
 #hide2 {
-  display: none;
+    display: none;
 }
-
 .page_list {
-  display: none;
+    display: none;
 }
-
 .page_list_show li {
-  display: block;
+    display: block;
 }
-
 img.page_list_rights {
-  border: none;
-  float: left;
-  margin: 0;
-  vertical-align: middle;
-  padding: 2px;
+    border: none;
+    float: left;
+    margin: 0;
+    vertical-align: middle;
+    padding: 2px;
 }
-
 .sections_list {
-  font-weight: bold;
-  padding-left: 10px;
+    font-weight: bold;
+    padding-left: 10px;
 }
-
 .header_list_menu_title {
-  text-align: left;
-  padding-left: 30px;
+    text-align: left;
+    padding-left: 30px;
 }
-
 .header_list_page_title {
-  width: 334px;
-  text-align: left;
+    width: 334px;
+    text-align: left;
 }
-
 .header_list_page_id {
-  width: 30px;
-  text-align: left;
+    width: 30px;
+    text-align: left;
 }
-
 .header_list_actions {
-  width: 178px;
-  text-align: left;
+    width: 178px;
+    text-align: left;
 }
-
 .list_menu_title {
-  text-align: left;
+    text-align: left;
 }
-
 .list_page_title {
-  width: 300px;
-  text-align: left;
+    width: 300px;
+    text-align: left;
 }
-
 .list_page_id {
-  width: 50px;
-  text-align: right;
-  padding-right: 15px;
+    width: 50px;
+    text-align: right;
+    padding-right: 15px;
 }
-
 .list_actions {
-  width: 25px;
-  text-align: left;
+    width: 25px;
+    text-align: left;
 }
-
 .value_page_code {
-  color: #006400;
-  font-weight: bold;
-  width: 240px;
+    color: #006400;
+    font-weight: bold;
+    width: 240px;
 }
-
 .list_page_code {
-  width: 240px;
+    width: 240px;
 }
-
 .list_page_language {
-  width: 240px;
+    width: 240px;
 }
-
 #multi_lingual {
-  font-weight: bold;
+    font-weight: bold;
 }
-
 .right {
-  text-align: right;
+    text-align: right;
 }
-
 .left {
-  text-align: left;
+    text-align: left;
 }
-
 /* set div layers in dead tables */
 .subcolumns {
-  width: 100%;
-  overflow: hidden;
-  margin: 10px 0;
+    width: 100%;
+    overflow: hidden;
+    margin: 10px 0;
 }
-
 .subcolumns_oldgecko {
-  width: 100%;
-  float: left;
-  margin: 10px 0;
+    width: 100%;
+    float: left;
+    margin: 10px 0;
 }
-
 .c10l, .c20l, .c25l, .c33l, .c40l, .c38l, .c50l, .c60l, .c62l, .c66l, .c75l, .c80l {
-  float: left;
+    float: left;
 }
-
 .c10r, .c20r, .c25r, .c33r, .c40r, .c38r, .c50r, .c60r, .c66r, .c62r, .c75r, .c80r {
-  float: right;
-  margin-left: -5px;
+    float: right;
+    margin-left: -5px;
 }
-
 .c10l, .c10r {
-  width: 10%;
+    width: 10%;
 }
-
 .c20l, .c20r {
-  width: 20%;
-  line-height: 2em;
+    width: 20%;
+    line-height: 2em;
 }
-
 .c40l, .c40r {
-  width: 40%;
+    width: 40%;
 }
-
 .c60l, .c60r {
-  width: 60%;
+    width: 60%;
 }
-
 .c25l, .c25r {
-  width: 28%;
+    width: 28%;
 }
-
 .c33l, .c33r {
-  width: 33.333%;
+    width: 33.333%;
 }
-
 .c50l, .c50r {
-  width: 50%;
+    width: 50%;
 }
-
 .c66l, .c66r {
-  width: 66.666%;
+    width: 66.666%;
 }
-
 .c38l, .c38r {
-  width: 38.2%;
+    width: 38.2%;
 }
-
 .c62l, .c62r {
-  width: 61.8%;
+    width: 61.8%;
 }
-
 .subc {
-  padding: 0 0.5em;
+    padding: 0 0.5em;
 }
-
 .subcl {
-  padding: 0 1em 0 0;
+    padding: 0 1em 0 0;
 }
-
 .subcr {
-  padding: 0 0 0 1em;
+    padding: 0 0 0 1em;
 }
-
 .c80l, .c80r, .c90l, .c90r {
-  width: 80%;
+    width: 80%;
 }
-
 .c75l, .c75r, .c80l, .c80r {
-  width: 75%;
+    width: 75%;
 }
-
 .info {
-  padding: 10px;
-  margin-bottom: 0.5em;
-  background: #f8f8f8;
-  color: #666666;
-  font-size: 11px;
+    padding: 10px;
+    margin-bottom: 0.5em;
+    background: #f8f8f8;
+    color: #666666;
+    font-size: 11px;
 }
-
 .note {
-  border: 2px #448844 solid;
-  padding: 10px;
-  margin: 10px auto;
-  background: #eeffee;
-  color: #004400;
+    border: 2px #448844 solid;
+    padding: 10px;
+    margin: 10px auto;
+    background: #eeffee;
+    color: #004400;
 }
-
 .important {
-  border: 2px #888844 solid;
-  padding: 10px;
-  margin-bottom: 1em;
-  background: #ffffee;
-  color: #444400;
+    border: 2px #888844 solid;
+    padding: 10px;
+    margin-bottom: 1em;
+    background: #ffffee;
+    color: #444400;
 }
-
 .warning {
-  border: 2px #884444 solid;
-  padding: 10px;
-  margin: 1em auto;
-  background: #ffeeee;
-  color: #440000;
+    border: 2px #884444 solid;
+    padding: 10px;
+    margin: 1em auto;
+    background: #ffeeee;
+    color: #440000;
 }
-
 .row_0 {
-  background-color: transparent;
+    background-color: transparent;
 }
-
 .row_1 {
-  background-color: #ccddee;
+    background-color: #ccddee;
 }
-
 div.content_box {
-  margin: 0em auto;
+    margin: 0em auto;
 }
-
 div.content_box form {
-  width: 98%;
+    width: 98%;
 }
-
-#language,
-#timezone,
-#date_format,
-#time_format,
-#display_name,
-#username,
-#email,
-#new_password_1,
-#new_password_2,
-#current_password {
-  width: 100%;
+#language, #timezone, #date_format, #time_format, #display_name, #username, #email, #new_password_1, #new_password_2, #current_password {
+    width: 100%;
 }
-
-#submit,
-#reset {
-  max-width: 100px;
+#submit, #reset {
+    max-width: 100px;
 }
-
 div#username {
-  height: 17px;
-  width: 118%;
-  text-align: left;
-  font-weight: bold;
-  margin: 0;
+    height: 17px;
+    width: 118%;
+    text-align: left;
+    font-weight: bold;
+    margin: 0;
 }
-
 .save_section {
-  margin: 20px auto 5px auto;
+    margin: 20px auto 5px auto;
 }
-
 .section-info {
-  margin: 1.5em 0;
+    margin: 1.5em 0;
 }
-
 .rounded {
-  border-radius: 10px;
-  -khtml-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
+    border-radius: 10px;
 }
-
 .bigger {
-  font-size: 150%;
+    font-size: 150%;
 }
-
 .strong {
-  font-weight: bold;
+    font-weight: bold;
 }
-
 .msg-box {
-  background: #e5ffe6;
-  border: 0.2em #009900 solid;
-  color: #336600;
-  margin-bottom: 1em;
-  padding: 0.63em;
-  text-align: center;
+    background: #e5ffe6;
+    border: 0.2em #009900 solid;
+    color: #336600;
+    margin-bottom: 1em;
+    padding: 0.63em;
+    text-align: center;
 }
-
 .error-box {
-  background: #ffeeee;
-  border: 0.2em #884444 solid;
-  color: #440000;
-  margin-bottom: 1em;
-  padding: 0.63em;
-  text-align: center;
+    background: #ffeeee;
+    border: 0.2em #884444 solid;
+    color: #440000;
+    margin-bottom: 1em;
+    padding: 0.63em;
+    text-align: center;
 }
-
-.msg-box p,
-.error-box p {
-  font-size: 120%;
+.msg-box p, .error-box p {
+    font-size: 120%;
 }
-
 select > option.user-inactive {
-  color: #990000;
+    color: #990000;
 }
-
 button.status {
-  cursor: pointer;
-  border-radius: 5px;
-  -khtml-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
+    cursor: pointer;
+    border-radius: 5px;
 }

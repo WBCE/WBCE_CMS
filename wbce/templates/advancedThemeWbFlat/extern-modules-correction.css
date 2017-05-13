@@ -16,82 +16,72 @@
    Have a look to the file with the jquery-scripts
 */
 #contentarea td.content > h4 {
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
-  display: inline-block;
-  position: relative;
-  height: 36px;
-  margin-bottom: 48px;
-  padding: 0 16px 0 0;
-  line-height: 36px;
-  vertical-align: middle;
-  font-weight: normal;
-  white-space: nowrap;
-  background-color: #cbcfd8;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    height: 36px;
+    margin-bottom: 48px;
+    padding: 0 16px 0 0;
+    line-height: 36px;
+    vertical-align: middle;
+    font-weight: normal;
+    white-space: nowrap;
+    background-color: #cbcfd8;
 }
-
 #contentarea td.content > h4:first-child > a:first-child {
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
-  display: inline-block;
-  position: relative;
-  height: 36px;
-  padding: 0 16px 0 60px;
-  font-size: 19px;
-  line-height: 24px;
-  line-height: 36px;
-  font-weight: normal;
-  text-decoration: none;
-  color: #ffffff;
-  background-color: #28609B;
-  border-right: 4px solid #F1F1F1;
-  cursor: text;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    height: 36px;
+    padding: 0 16px 0 60px;
+    font-size: 19px;
+    line-height: 36px;
+    font-weight: normal;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #28609B;
+    border-right: 4px solid #F1F1F1;
+    cursor: text;
 }
 #contentarea td.content > h4:first-child > a:first-child:before {
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
-  font-family: FontAwesome;
-  content: "";
-  display: block;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 50px;
-  height: 100%;
-  padding-top: 0px;
-  /* instead 5px */
-  text-align: center;
-  font-size: 16px;
-  font-weight: normal;
-  color: #cbcfd8;
-  background-color: #303641;
-  border-right: 1px solid #cccccc;
+    box-sizing: border-box;
+    font-family: FontAwesome;
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 50px;
+    height: 100%;
+    padding-top: 0px;
+    /* instead 5px */
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
+    color: #cbcfd8;
+    background-color: #303641;
+    border-right: 1px solid #cccccc;
 }
-
 #contentarea td.content > h4:first-child > a:first-child + a {
-  font-weight: normal;
-  text-decoration: none;
-  color: #303641;
+    font-weight: normal;
+    text-decoration: none;
+    color: #303641;
 }
-
 /* module Code2 --> hide hr */
 p + hr[size="1"] {
-  display: none;
+    display: none;
 }
-
 /* module news --> color correction  input button edit css */
 form input.mod_news_edit_css {
-  color: #ffffff;
-  background-color: #505b6d;
-  padding: 4px 16px;
+    color: #ffffff;
+    background-color: #505b6d;
+    padding: 4px 16px;
 }
-
 /* module secure form switcher --> hide an empty table row to show input button standardvalues highter on page */
 form.secure_switch div.right-content table.switch-ftan-form tbody tr:nth-child(8) {
-  display: none;
+    display: none;
 }
-
 /* page edit page_settings --> move admin-properties in td to the top */
 #contentarea div#page_settings table td {
-  vertical-align: top;
+    vertical-align: top;
 }
