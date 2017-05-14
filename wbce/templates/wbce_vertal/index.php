@@ -240,7 +240,7 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
 	
 	<?php 
 	//Und das ist der Farbwaehler. Du kannst das loeschen, wenn du die Farben fixiert hast.
-	if ($template_edit_link == true OR isset($template_id)) {include 'colorset/colorpicker.inc.php';} 
+	if ($template_edit_link == true) {include 'colorset/colorpicker.inc.php';} 
 	?>	
 	
 </body>

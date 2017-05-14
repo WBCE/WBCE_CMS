@@ -174,15 +174,15 @@ table.table tbody td {font-size:0.9em; padding: 4px; vertical-align: top;  borde
 table.table tbody tr:hover td {background-color:#eee;}
 table.table tbody td p, table.table tbody td h1, table.table tbody td h2, table.table tbody td h3, table.table tbody td h4 {margin: 0; line-height:110%;}
 
-img.picfull {max-width:100%; height:auto;}
-img.pic2left {float:left; max-width:48%; margin: 3px 3% 2px 0; height:auto;}
-img.pic2right {float:right; max-width:48%; margin: 3px 0 2px 0.9%; height:auto;}
+.picfull {max-width:100%; height:auto;}
+.pic2left {float:left; max-width:48%; margin: 3px 3% 2px 0; height:auto;}
+.pic2right {float:right; max-width:48%; margin: 3px 0 2px 0.9%; height:auto;}
 
-img.pic3left {float:left; max-width:32%; margin: 3px 1.5% 2px 0; height:auto;}
-img.pic3right {float:right; max-width:32%; margin: 3px 0 2px 0.3%; height:auto;}
+.pic3left {float:left; max-width:32%; margin: 3px 1.5% 2px 0; height:auto;}
+.pic3right {float:right; max-width:32%; margin: 3px 0 2px 0.3%; height:auto;}
 
-img.pic4left {float:left; max-width:24%; margin: 3px 1% 2px 0; height:auto;}
-img.pic4right {float:right; max-width:24%; margin: 3px 0 2px 0.5%; height:auto;}
+.pic4left {float:left; max-width:24%; margin: 3px 1% 2px 0; height:auto;}
+.pic4right {float:right; max-width:24%; margin: 3px 0 2px 0.5%; height:auto;}
 
 
 
@@ -195,8 +195,8 @@ img.pic4right {float:right; max-width:24%; margin: 3px 0 2px 0.5%; height:auto;}
 
 /* Small devices (tablets, up to 768px) */
 @media (max-width: 768px) {
-	img.pic2left, img.pic2right {max-width: 100%;  margin: 3px 0 2px 0;}
-	img.pic3left, img.pic3right, img.pic4left, img.pic4right  {max-width: 49%;}
+	.pic2left, .pic2right {max-width: 100%;  margin: 3px 0 2px 0;}
+	.pic3left, .pic3right, .pic4left, .pic4right  {max-width: 49%;}
 	
 	/*Show and Hide Responsive*/
 	body .hideOnTablets {display: none;}
@@ -209,8 +209,8 @@ img.pic4right {float:right; max-width:24%; margin: 3px 0 2px 0.5%; height:auto;}
 
 /* Small devices (Smartphone, up to <480px) */
 @media (max-width: 479px) {
-	img.pic2left, img.pic2right {max-width: 100%;  margin: 3px 0 2px 0;}
-	img.pic3left, img.pic3right, img.pic4left, img.pic4right  {max-width: 49%;}
+	.pic2left, .pic2right {max-width: 100%;  margin: 3px 0 2px 0;}
+	.pic3left, .pic3right, .pic4left, .pic4right  {max-width: 49%;}
 	
 	/*Show and Hide Responsive*/
 	.hideOnMobiles {display: none;}

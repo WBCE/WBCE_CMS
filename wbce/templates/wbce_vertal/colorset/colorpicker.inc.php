@@ -28,19 +28,6 @@ RESET Local: L&ouml;scht die lokal gespeicherten &Auml;nderungen.</p>
 </p>
 
 <?php
-$f = 0; $css_paramArr = array();
-foreach ($colorArr as $cArr) {
-	echo '<div class="pickerfield" style="">&nbsp;'.$cArr[0].'<br/>
-	<input id="colorset_f'.$f.'" name="colorset_f'.$f.'"  type="color"  value="#'.$cArr[1].'" onchange="showcolorchanges();" />
-	</div>';
-	$css_paramArr[] = $cArr[1];
-	$f++;
-
-}
-
-$css_param = implode(',',$css_paramArr);
-$css_paramOrig = $css_param;
-
 //database dummy:
 $p =  __DIR__.'/param.txt';
 if (file_exists($p)) {
@@ -55,7 +42,19 @@ if (file_exists($p)) {
 	}	
 }
 
+$f = 0; $css_paramArr = array();
 
+foreach ($colorArr as $cArr) {
+	echo '<div class="pickerfield" style="">&nbsp;'.$cArr[0].'<br/>
+	<input id="colorset_f'.$f.'" name="colorset_f'.$f.'"  type="color"  value="#'.$cArr[1].'" onchange="showcolorchanges();" />
+	</div>';
+	$css_paramArr[] = $cArr[1];
+	$f++;
+
+}
+
+$css_param = implode(',',$css_paramArr);
+$css_paramOrig = $css_param;
 ?>
 
 <a class="colpick-button" href="#" onclick="toogle_inputs(); return false;">Toggle Type</a>

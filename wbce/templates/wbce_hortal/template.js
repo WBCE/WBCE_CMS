@@ -96,8 +96,7 @@ function findprevnext() {
 		
 	if ($("body").hasClass('isstartpage')) { //is Startpage
 		anext = $("#nav li a:eq(1)" ).attr('href');
-		showprevnext('', anext ); 
-		//console.log( "startpage: " + anext);
+		if (typeof(anext) != "undefined") {showprevnext('', anext ); }		
 		return false;
 	}
 	
@@ -125,7 +124,9 @@ function findprevnext() {
 		
 		count ++;
 	});
+	console.log(count);
 	if (anext == 'break') {return false;}
+	if (count == 0) {return false;}
 	
 	//Nichts gefunden?
 	anext = ''; //kein Link

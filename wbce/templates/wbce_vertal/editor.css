@@ -6,19 +6,17 @@ body {
 	font-family: 'Open Sans', Arial, sans-serif;
 	font-size: 15px;
 	line-height:140%;
-	color:#000;
-	color:#808080;
 }
 
 
 /* colors */ 
-h1, h2, a { color: #6192bb;  text-shadow: 0px 1px 8px rgba(0,0,0,0.3);}
-h3, h4, h5, h6 { color: #35a7ff;  text-shadow: 0px 1px 5px #aaa;}
+h1, h2, a { text-shadow: 0px 1px 8px rgba(0,0,0,0.3);}
+h3, h4, h5, h6 {  text-shadow: 0px 1px 5px #aaa;}
 
-a:hover {color: #35a7ff; text-shadow: 0px 3px 3px rgba(0,0,0,0.5);	transition:0.5s all;} 
+a:hover {text-shadow: 0px 3px 3px rgba(0,0,0,0.5);	transition:0.5s all;} 
 
-#nav a{ color: #6192bb;  text-shadow: 0px 1px 8px #ccc;}
-#nav a.menu-current, #nav a.menu-parent, #nav a:hover { color: #35a7ff ! important;  text-shadow: 0px 1px 8px rgba(0,0,0,0.5);}
+#nav a{ text-shadow: 0px 1px 8px #ccc;}
+#nav a.menu-current, #nav a.menu-parent, #nav a:hover { text-shadow: 0px 1px 8px rgba(0,0,0,0.3);}
 
 
 
@@ -74,7 +72,6 @@ address {
 	line-height:120%;
 	margin: 10px 0 20px 0;
 	padding-left: 10px;
-	border-left: 6px solid #327893;
 	font-style: normal;
 	font-weight: bold;
 	}
@@ -90,16 +87,13 @@ pre, code {
 	margin: 3px 0 20px 0;	
 	font-size:1em;	
 	overflow:auto; 
-	line-height:1.5em;
-	color:#fff;		
+	line-height:1.5em;		
 }
 
 
 tbody td p, tbody td h1, tbody td h2, tbody td h3, tbody td h4 {}
 
-input , select, textarea, pre, code, blockquote {
-	border: 1px solid #194381; background: #eee; color: #194381;
-}
+
 input[type="text"], input[type="submit"], input[type="file"], select,textarea { width:96%; padding: 3px 1%; margin-bottom:5px;}
 input[type="image"] {border:none; background: transparent;}
 
@@ -160,15 +154,15 @@ table.table tbody td p, table.table tbody td h1, table.table tbody td h2, table.
 
 
 
-img.picfull {width:100%; height:auto;}
-img.pic2left {float:left; width:49%; margin: 3px 1% 2px 0; height:auto;}
-img.pic2right {float:right; width:49%; margin: 3px 0 2px 0.5%; height:auto;}
+.picfull {width:100%; height:auto;}
+.pic2left {float:left; width:49%; margin: 3px 1% 2px 0; height:auto;}
+.pic2right {float:right; width:49%; margin: 3px 0 2px 0.5%; height:auto;}
 
-img.pic3left {float:left; width:32%; margin: 3px 1.5% 2px 0; height:auto;}
-img.pic3right {float:right; width:32%; margin: 3px 0 2px 0.3%; height:auto;}
+.pic3left {float:left; width:32%; margin: 3px 1.5% 2px 0; height:auto;}
+.pic3right {float:right; width:32%; margin: 3px 0 2px 0.3%; height:auto;}
 
-img.pic4left {float:left; width:24%; margin: 3px 1% 2px 0; height:auto;}
-img.pic4right {float:right; width:24%; margin: 3px 0 2px 0.5%; height:auto;}
+.pic4left {float:left; width:24%; margin: 3px 1% 2px 0; height:auto;}
+.pic4right {float:right; width:24%; margin: 3px 0 2px 0.5%; height:auto;}
 
 
 /*Show and Hide Responsive*/
@@ -181,8 +175,8 @@ body .showOnDesktops {display: block;}
 
 /* Small devices (tablets, up to 768px) */
 @media (max-width: 768px) {
-	img.pic2left, img.pic2right {width: 100%;  margin: 3px 0 2px 0;}
-	img.pic3left, img.pic3right, img.pic4left, img.pic4right  {width: 49%;}
+	.pic2left, .pic2right {width: 100%;  margin: 3px 0 2px 0;}
+	.pic3left, .pic3right, .pic4left, .pic4right  {width: 49%;}
 	
 	/*Show and Hide Responsive*/
 	body .hideOnTablets {display: none;}
@@ -195,8 +189,8 @@ body .showOnDesktops {display: block;}
 
 /* Small devices (Smartphone, up to <440px) */
 @media (max-width: 440px) {
-	img.pic2left, img.pic2right {width: 100%;  margin: 3px 0 2px 0;}
-	img.pic3left, img.pic3right, img.pic4left, img.pic4right  {width: 49%;}
+	.pic2left, .pic2right {width: 100%;  margin: 3px 0 2px 0;}
+	.pic3left, .pic3right, .pic4left, .pic4right  {width: 49%;}
 	
 	/*Show and Hide Responsive*/
 	.hideOnMobiles {display: none;}

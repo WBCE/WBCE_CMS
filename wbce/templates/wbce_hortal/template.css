@@ -370,7 +370,7 @@ a.template_edit_link {width:16px; height:16px; position:absolute; top:0; left:0;
 
 
 /*Extra Colorpicker */
-#colorpickericon {display:block; width:48px; height:48px; background: url(img/colorpicker.png) no-repeat; z-index:5000; position: absolute; top:100px; right:0; cursor:pointer;}
+#colorpickericon {display:block; width:24px; height:24px; background: url(img/colorpicker.png) no-repeat; z-index:5000; position: absolute; top:100px; right:0; cursor:pointer;}
 #colorpicker {display:none; width:90px; background: #ddd; position: absolute; top:100px; right:0; z-index:5000; font-size:12px;line-height:100%; box-shadow: 0 20px 50px 0 rgba(0, 0, 0, 0.1);}
 .pickerfield {width:100%; height:40px; float:left;}
 
