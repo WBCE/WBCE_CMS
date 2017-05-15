@@ -5,6 +5,50 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2017-05-15:** Christoph Bleiweis [[a5b93901](https://github.com/WBCE/WBCE_CMS/commit/a5b939014ce3333253e62fecfb243b907cde335f)]
+   > Set WBCE version number
+
+ * **2017-05-14:** Christoph Bleiweis [[1532ec8e](https://github.com/WBCE/WBCE_CMS/commit/1532ec8e337da672be0330e2bac74127839a701d)]
+   > Updates/Fixes for Vertal and Hortal
+
+ * **2017-05-13:** Christoph Bleiweis [[da82deac](https://github.com/WBCE/WBCE_CMS/commit/da82deacec2b55a69d809bb23ef9268ef956b900)]
+   > some more improvements
+
+ * **2017-05-13:** Christoph Bleiweis [[82b5e419](https://github.com/WBCE/WBCE_CMS/commit/82b5e419df5104137b166d654cdb36801f994b15)]
+   > some more UTF-8 improvements
+
+ * **2017-05-13:** Christoph Bleiweis [[a9c3e13e](https://github.com/WBCE/WBCE_CMS/commit/a9c3e13e3f9ab69e3d094196612cc90da27b2efa)]
+   > Some optimization
+
+ * **2017-05-13:** Christoph Bleiweis [[0247ae9d](https://github.com/WBCE/WBCE_CMS/commit/0247ae9d3d27dc0707929b00806504c3ab1791b2)]
+   > HTML improvements
+
+ * **2017-05-13:** Christoph Bleiweis [[716bec19](https://github.com/WBCE/WBCE_CMS/commit/716bec19ae410bb160bc15e2b6a09e688f36b1b4)]
+   > UTF-8 improvements
+
+ * **2017-05-13:** Christoph Bleiweis [[12c46b63](https://github.com/WBCE/WBCE_CMS/commit/12c46b637677db6c08673a6aae8d295ca0bb5f5c)]
+   > some more css improvements
+
+ * **2017-05-13:** Christoph Bleiweis [[f899267d](https://github.com/WBCE/WBCE_CMS/commit/f899267deef978d3a94857ed218ceaa09598f4a3)]
+   > Update Installer
+     Some more CSS improvements
+
+ * **2017-05-13:** Christoph Bleiweis [[6ba8cc76](https://github.com/WBCE/WBCE_CMS/commit/6ba8cc7699ddba7711c339776fdfb77342bc95b9)]
+   > Fix a bug in topics
+     see: https://forum.wbce.org/viewtopic.php?pid=11693#p11693
+
+ * **2017-05-13:** Christoph Bleiweis [[31196989](https://github.com/WBCE/WBCE_CMS/commit/31196989b8c94f037e01faa44559a3f4e10063d1)]
+   > Fixes reload bug
+
+ * **2017-05-13:** Christoph Bleiweis [[ba821b29](https://github.com/WBCE/WBCE_CMS/commit/ba821b2982623db34f82694ddd0b700f4201583b)]
+   > Bugfix for reload.php
+
+ * **2017-05-13:** Christoph Bleiweis [[eeb82528](https://github.com/WBCE/WBCE_CMS/commit/eeb82528bb21110578f05f8ccb6555a90d721103)]
+   > Update Installer
+
+ * **2017-05-12:** instantflorian [[c37a7b7b](https://github.com/WBCE/WBCE_CMS/commit/c37a7b7b24dfb005cc5a508c5069f548e64cc59f)]
+   > Update changelog.md
+
  * **2017-05-12:** instantflorian [[39fc1881](https://github.com/WBCE/WBCE_CMS/commit/39fc188199edd3d271d098c816a056c574611f4b)]
    > Merge remote-tracking branch 'origin/master'
 
