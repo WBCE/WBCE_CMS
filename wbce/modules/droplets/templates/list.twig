@@ -70,7 +70,7 @@
 				<strong>{% if item.active == 1 %}<span style="color: green;">{{ TEXT.YES }}</span>{% else %}<span style="color: red;">{{ TEXT.NO }}</span>{% endif %}</strong>
 			</td>
 			<td>
-				<a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=delete&amp;droplet_id={{ item.id }}');" title="{{ TEXT.DELETE|raw }}">
+				<a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=delete&amp;droplet_id={{ item.id }}');" title="{{ TEXT.DELETE|raw }}">
 					<img src="{{ THEME_URL }}/images/delete_16.png" border="0" alt="X" />
 				</a>
 			</td>
@@ -84,7 +84,7 @@
 
 {{ DR_TEXT.MARKED }}:
 <input type="submit" class="button" name="export" id="export" value="{{ DR_TEXT.EXPORT|raw }}" />
-<input type="submit" class="button" name="delete" id="delete" value="{{ TEXT.DELETE|raw }}" onclick="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets');" />
+<input type="submit" class="button" name="delete" id="delete" value="{{ TEXT.DELETE|raw }}" onclick="javascript: alert('{{  DR_TEXT.DELETED|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets');" />
 <span style="font-size:smaller">{{ DR_TEXT.DEL_INFO|raw }}</span>
 </form><br />
 

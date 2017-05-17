@@ -102,6 +102,10 @@ table.tablesorter tbody td {
 .tablesorter-headerDesc {
     background: transparent url(img/desc.gif) center right no-repeat;
 }
+a.internal {
+    margin: 0 2px;
+    vertical-align: inherit;
+}
 /* fixes for Flat Theme */
 a.tooltip:hover span {
     z-index: 2147483647;

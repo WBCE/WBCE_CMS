@@ -25,6 +25,9 @@ $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 /**
  * Version history
  *
+ * v2.1.1 - colinax
+ *        - some template bugfixes
+ *
  * v2.1.0 - colinax
  *        - DEBUG mode disabled in add_droplet.php
  *        - Updated language files
