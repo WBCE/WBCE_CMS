@@ -13,7 +13,7 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '2.1.0';
+$module_version = '2.1.1';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
 $module_author = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax';
