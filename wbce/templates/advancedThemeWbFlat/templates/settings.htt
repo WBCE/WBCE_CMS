@@ -189,10 +189,6 @@
 	<!-- END show_php_error_level_block -->
 	<!-- BEGIN show_wysiwyg_block -->
 	<tr{DISPLAY_ADVANCED}>
-		<td class="setting_name">{TEXT_WYSIWYG_STYLE}:</td>
-		<td class="setting_value" colspan="2"><input type="text" name="wysiwyg_style" value="{WYSIWYG_STYLE}" /></td>
-	</tr>
-	<tr{DISPLAY_ADVANCED}>
 		<td class="setting_name">{TEXT_WYSIWYG_EDITOR}:</td>
 		<td class="setting_value" colspan="2">
 			<select name="wysiwyg_editor">
