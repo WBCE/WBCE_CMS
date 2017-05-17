@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -13,10 +13,10 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '2.0.2';
+$module_version = '2.1.0';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
-$module_author = 'Ruud, pcwacht, WebBird (for WBCE)';
+$module_author = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax';
 $module_license = 'GNU General Public License';
 $module_description = 'This tool allows you to manage your local Droplets.';
 $module_home = 'http://www.wbce.org';
@@ -25,10 +25,18 @@ $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 /**
  * Version history
  *
- * v2.0.2 - cwsoft (fixed fatal error in case Droplet code syntax was invalid)
+ * v2.1.0 - colinax
+ *        - DEBUG mode disabled in add_droplet.php
+ *        - Updated language files
+ *        - Updated Help
+ *        - Remove deprecated HTML Tags in functions.inc.php
+ *        - Updated jquery.tablesorter.js - https://github.com/Mottie/tablesorter
+ *
+ * v2.0.2 - cwsoft & colinax
+ *        - fixed fatal error in case Droplet code syntax was invalid)
  *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/216
  *
- * v2.0.1 - norhei
+ * v2.0.1 - norhei & colinax
  *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f6e69206e22a6aa277b02b6c6887554a0da6371b
  *
  * v2.0.0 - Bianka Martinovic ("WebBird")

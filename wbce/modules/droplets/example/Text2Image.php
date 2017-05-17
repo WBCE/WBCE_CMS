@@ -27,4 +27,4 @@ imagestring($image_handle, $font, $padding, $padding, $text, $text_color);
 imagejpeg($image_handle,WB_PATH.'/temp/'.$imgfilename,100);
 imagedestroy($image_handle);
 
-return '<img src="'.WB_URL.'/temp/'.$imgfilename.'" style="border:0px;margin:0px;padding:0px;vertical-align:middle;" />';
+return '<img src="'.WB_URL.'/temp/'.$imgfilename.'" style="border:0;margin:0;padding:0;vertical-align:middle;" />';

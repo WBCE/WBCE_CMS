@@ -1,7 +1,6 @@
 <?php
-
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -10,7 +9,7 @@
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  */
-
+ 
 /* -------------------------------------------------------- */
 // Must include code to stop this file being accessed directly
 if(!defined('WB_PATH')) {

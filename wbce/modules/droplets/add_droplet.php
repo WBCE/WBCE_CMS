@@ -1,7 +1,6 @@
 <?php
-
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -13,7 +12,7 @@
 
 require_once '../../config.php';
 
-$admin = new admin( 'admintools', 'admintools', true, false );
+$admin = new admin( 'admintools', 'admintools');
 if ( $admin->get_permission( 'admintools' ) == true )
 {
     $admintool_link   = ADMIN_URL . '/admintools/index.php';

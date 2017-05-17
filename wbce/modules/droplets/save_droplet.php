@@ -1,7 +1,6 @@
 <?php
-
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -9,8 +8,7 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- *
- **/
+ */
 
 require_once '../../config.php';
 require_once dirname(__FILE__) . '/functions.inc.php';

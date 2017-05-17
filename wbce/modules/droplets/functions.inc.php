@@ -466,12 +466,12 @@ function wbce_list_droplets()
         		$droplet['valid_code'] = wbce_check_syntax($droplet['code']);
         		if (!$droplet['valid_code'] === true)
                 {
-                    $comments = '<font color=\'red\'><strong>'.$DR_TEXT['INVALIDCODE'].'</strong></font><br /><br />'.$comments;
+                    $comments = '<span style="color: #ff0000;"><strong>'.$DR_TEXT['INVALIDCODE'].'</strong></span><br /><br />'.$comments;
                 }
         		$droplet['unique'] = wbce_check_unique($droplet['name']);
         		if ($droplet['unique'] === false)
                 {
-                    $comments = '<font color=\'red\'><strong>'.$DR_TEXT['NOTUNIQUE'].'</strong></font><br /><br />'.$comments;
+                    $comments = '<span style="color: #ff0000;"><strong>'.$DR_TEXT['NOTUNIQUE'].'</strong></span><br /><br />'.$comments;
                 }
         		$comments = '<span>'.$comments.'</span>';
                 $droplet['comments'] = $comments;

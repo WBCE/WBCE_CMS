@@ -1,7 +1,3 @@
-
-// $Id$
-
-
 function mdcr(a,b) {
   location.href=sdcr(a,b);
 }
