@@ -161,6 +161,7 @@ if(isset($_GET['do']))
 
         // ----- manage backups -----
         case 'manage_backups':
+	require_once( WB_PATH . '/include/pclzip/pclzip.lib.php' );
             $backup_files = wbce_find_backups( WB_PATH.'/modules/droplets/export/' );
             // file to delete?
             if ( isset( $_GET['del'] ) ) {
