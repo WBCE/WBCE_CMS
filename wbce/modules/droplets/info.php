@@ -13,7 +13,7 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '2.1.3';
+$module_version = '2.1.4';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
 $module_author = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax';
@@ -23,7 +23,11 @@ $module_home = 'http://www.wbce.org';
 $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 
 /**
- * Version histor
+ * Version history
+ *
+ * v2.1.4 - colinax
+ *        - Revert "Fix for no droplet bug" - The fix does not work correctly
+ *        - add some missing css styles
  *
  * v2.1.3 - colinax
  *        - Fix for no droplet bug

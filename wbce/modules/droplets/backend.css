@@ -84,6 +84,8 @@ table thead tr th, table.tablesorter tfoot tr th {
 }
 .sorter-false {
     pointer-events: none;
+    background: transparent !important;
+    background-color: #e6EEEE !important;
 }
 .tablesorter-headerUnSorted {
     background: transparent url(img/bg.gif) center right no-repeat;
