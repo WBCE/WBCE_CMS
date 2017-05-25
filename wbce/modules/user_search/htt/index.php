@@ -1,5 +1,1 @@
-<?php
-// prevent directory listing
-header('Location: ../../../index.php');
-
-
+<?php header("Location: ../index.php",true,301);

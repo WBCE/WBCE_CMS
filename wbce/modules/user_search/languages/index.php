@@ -1,4 +1,1 @@
-<?php
-header("Location: ../../../index.php");
-
-
+<?php header("Location: ../index.php",true,301);

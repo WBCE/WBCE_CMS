@@ -96,7 +96,7 @@ var youCanSubmit=true;
 	   	<tr>
 	   		<td>{REF_DATE}:</td>
 			<td colspan="2">
-				<input type="text" id="comp_date" name="comp_date" value="" style="width: 120px; cursor:default;" onFocus="javascript:this.blur();"/><img src="{ADMIN_URL}/images/clock_16.png" id="trigger_start" style="cursor: pointer;" title="{CALENDAR}" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" /><img src="{ADMIN_URL}/images/clock_del_16.png" style="cursor: pointer;" title="{ERASE_DATE}" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.promptu.comp_date.value=''" />
+				<input type="text" id="comp_date" name="comp_date" value="" style="width: 120px; cursor:default;" onFocus="javascript:this.blur();"/><img src="{THEME_URL}/images/clock_16.png" id="trigger_start" style="cursor: pointer;" title="{CALENDAR}" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" /><img src="{THEME_URL}/images/clock_del_16.png" style="cursor: pointer;" title="{ERASE_DATE}" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.promptu.comp_date.value=''" />
 			</td>
 		</tr>
 		<tr><td>&nbsp;</td><td colspan="2" style="font-size:smaller;">{USE_CALENDAR}</td></tr>
