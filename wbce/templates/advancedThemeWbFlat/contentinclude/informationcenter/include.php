@@ -36,7 +36,7 @@ if ($bLoggedIn) {
 
 
 	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<html>
 
 		<head>
 
@@ -48,7 +48,7 @@ if ($bLoggedIn) {
 			<link href="<?php echo WB_URL; ?>/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
 
 			<!-- prepare backend-css to include html -->
-			<link href="<?php echo THEME_URL;?>/theme.css" rel="stylesheet" type="text/css" media="screen" />
+			<link href="<?php echo THEME_URL;?>/css/theme.css" rel="stylesheet" type="text/css" media="screen" />
 			<link href="<?php echo THEME_URL;?>/contentinclude/informationcenter/informationcenter.css" rel="stylesheet" type="text/css" media="screen" />
 
 			<!-- jQuery-lib (get lib from relative path of wb system folder) -->

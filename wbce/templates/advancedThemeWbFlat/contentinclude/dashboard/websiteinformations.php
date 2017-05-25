@@ -59,38 +59,19 @@ if ($bLoggedIn) {
     // ###############################################################################################
     ?>
 
-    <a class="db_blocklink" href="<?php echo ADMIN_URL . '/pages/index.php';?>">
-        <table class="positioning">
-            <tr class="count_pages">
-                <td><span class="label_icon count_pages"></span></td>
-                <td>
-                    <span class="extra_large"><?php echo $iCountPages;?></span>
-                    <span class="extra_small"><?php echo $TEXT['TOTAL'];?></span>
-                </td>
-            </tr>
-            <tr class="last_modified">
-                <td><span class="label_icon last_modified"></span></td>
-                <td>
-                    <span class="large"><?php echo date('Y-m-d', $iLastModifiedDate);?></span><br/>
-                    <span class="extra_small"><?php echo $TEXT['LAST_UPDATE'];?></span>
-                </td>
-            </tr>
-            </tr>
-        </table>
-    </a>
-    <p>
-        <span class="extra_small nobreak"><?php echo $TEXT['TEMPLATE'];?>: </span>&nbsp;
-        <span class="nobreak"><?php echo $sDefaultTemplateName;?> </span>
-        <br/>
-        <span class="extra_small nobreak"><?php echo $TEXT['WEBSITE_TITLE'];?>: </span>&nbsp;
-        <span class="nobreak"><?php echo $sWebsiteTitelName;?> </span>
-        <br/>
-        <span class="extra_small nobreak"><?php echo $TEXT['PAGE_LANGUAGES'];?>: </span>&nbsp;
-        <span class="nobreak"><?php echo $sDefaultLanguageName;?> </span>
-    </p>
-
-
-
+<a class="db_blocklink" href="<?php echo ADMIN_URL . '/pages/index.php';?>">
+<table class="positioning">
+ <tr class="count_pages">
+  <td><span class="label_icon count_pages"></span></td>
+  <td><span class="extra_large"><?php echo $iCountPages;?></span> <span class="extra_small"><?php echo $TEXT['TOTAL'];?></span></td>
+ </tr>
+ <tr class="last_modified">
+  <td><span class="label_icon last_modified"></span></td>
+  <td><span class="large"><?php echo date('Y-m-d', $iLastModifiedDate);?></span><br/>
+   <span class="extra_small"><?php echo $TEXT['LAST_UPDATE'];?></span></td>
+ </tr>
+  </tr>
+ 
+</table>
+</a>
 <?php } // endif ($bLoggedIn) ?>
-
-

@@ -1,51 +1,26 @@
 <!-- BEGIN main_block -->
 
 <div id="page_modify_page">
+ <div id="edit_pages_head">
+  <h2 class="page_titel">{HEADING_MODIFY_PAGE}</h2>
+  <ul class="menu_edit_pages">
+   <li id="link_page_modify" class="current" title="{HEADING_MODIFY_PAGE}"> {HEADING_MODIFY_PAGE} </li>
+   <li id="link_page_settings"> <a href="{ADMIN_URL}/pages/settings.php?page_id={PAGE_IDKEY}" title="{TEXT_CHANGE_SETTINGS}">{TEXT_CHANGE_SETTINGS}</a> </li>
+   <!-- BEGIN show_section_block -->
+   <li id="link_page_sections" style="{DISPLAY_MANAGE_SECTIONS}"> <a href="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" title="{TEXT_MANAGE_SECTIONS}">{TEXT_MANAGE_SECTIONS}</a> </li>
+   <!-- END show_section_block -->
+   <li id="link_page_list"> <a href="{ADMIN_URL}/pages/index.php" title="Page List">Pages List</a> </li>
+  </ul>
+  <!-- ENDE menu_edit_pages -->
+  <div class="page_information"> <span>ID: {PAGE_ID}</span> <span>{TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b></span> </div>
+  <div class="sub_pageinfo"> <font class="sub_pageinfo {CLASS_DISPLAY_MODIFIED}"> 
+   <!-- BEGIN show_modify_block --> 
+   {LAST_MODIFIED} {MODIFIED_BY} ({MODIFIED_BY_USERNAME}), {MODIFIED_WHEN} 
+   <!-- END show_modify_block --> 
+   </font> </div>
+ </div>
+ <!-- ENDE edit_pages_head --> 
+ </div>
+<!-- ENDE page_modify_page --> 
 
-
-	<div id="edit_pages_head">
-		
-		<h2 class="page_titel">{HEADING_MODIFY_PAGE}</h2>
-
-		
-		<ul class="menu_edit_pages">
-		
-			<li id="link_page_modify" class="current" title="{HEADING_MODIFY_PAGE}">
-				{HEADING_MODIFY_PAGE}
-			</li>
-			<li id="link_page_settings">
-				<a href="{ADMIN_URL}/pages/settings.php?page_id={PAGE_IDKEY}" title="{TEXT_CHANGE_SETTINGS}">{TEXT_CHANGE_SETTINGS}</a>
-			</li>
-			<!-- BEGIN show_section_block -->
-			<li id="link_page_sections" style="{DISPLAY_MANAGE_SECTIONS}">
-				<a href="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" title="{TEXT_MANAGE_SECTIONS}">{TEXT_MANAGE_SECTIONS}</a>
-			</li>
-			<!-- END show_section_block -->
-			<li id="link_page_list">
-				<a href="{ADMIN_URL}/pages/index.php" title="Page List">Pages List</a>
-			</li>
-		
-		</ul><!-- ENDE menu_edit_pages -->	
-
-		
-
-		<div class="page_information">
-			<span>ID: {PAGE_ID}</span>
-			<span>{TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b></span>
-		</div>
-
-		
-		<div class="sub_pageinfo">
-			<font class="sub_pageinfo {CLASS_DISPLAY_MODIFIED}">
-			<!-- BEGIN show_modify_block -->
-					{LAST_MODIFIED} {MODIFIED_BY} ({MODIFIED_BY_USERNAME}), {MODIFIED_WHEN}
-			<!-- END show_modify_block -->
-			</font>
-		</div>
-		
-	</div><!-- ENDE edit_pages_head -->
-		
-	
-</div><!-- ENDE page_modify_page -->
-	
 <!-- END main_block -->

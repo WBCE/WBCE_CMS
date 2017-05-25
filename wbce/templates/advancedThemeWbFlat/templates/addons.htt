@@ -1,141 +1,74 @@
 <!-- BEGIN main_block -->
 
-
 <div id="page_addons">
-
-	<h2 class="page_titel">{ADDONS_OVERVIEW}</h2>
-
-	<div class="button_advanced_settings">
-				{URL_ADVANCED}
-	</div>
-	
-
-	
-
-	<!-- BEGIN modules_block -->
-	<div id="addons_modules" class="themebox" {DISPLAY_MODULES}>
-	
-		<div class="tb_header">			
-			<a href="{ADMIN_URL}/modules/index.php"></a>
-		</div>
-		
-		<div class="tb_content_outer">
-			<div class="tb_content">
-		
-				<a class="tb_titel" href="{ADMIN_URL}/modules/index.php">{MODULES}</a>
-				{MODULES_OVERVIEW}
-			
-			</div><!-- ENDE tb_content -->
-		</div><!-- ENDE tb_content_outer -->
-		
-		<div class="tb_footer">
-			<a href="{ADMIN_URL}/modules/index.php"></a>
-		</div><!-- ENDE tb_footer -->
-			
-	</div><!-- ENDE themebox -->
-	<!-- END modules_block -->
-	
-
-
-
-	
-
-	<!-- BEGIN templates_block -->
-	<div id="addons_templates" class="themebox" {DISPLAY_TEMPLATES}>
-	
-		<div class="tb_header">			
-			<a href="{ADMIN_URL}/templates/index.php"></a>
-		</div>
-		
-		<div class="tb_content_outer">
-			<div class="tb_content">
-		
-				<a class="tb_titel" href="{ADMIN_URL}/templates/index.php">{TEMPLATES}</a>
-				{TEMPLATES_OVERVIEW}
-			
-			</div><!-- ENDE tb_content -->
-		</div><!-- ENDE tb_content_outer -->
-		
-		<div class="tb_footer">
-			<a href="{ADMIN_URL}/templates/index.php"></a>
-		</div><!-- ENDE tb_footer -->
-			
-	</div><!-- ENDE themebox -->
-	<!-- END templates_block -->
-	
-
-	
-	<!-- BEGIN languages_block -->
-	<div id="addons_languages" class="themebox" {DISPLAY_LANGUAGES}>
-	
-		<div class="tb_header">			
-			<a href="{ADMIN_URL}/languages/index.php"></a>
-		</div>
-		
-		<div class="tb_content_outer">
-			<div class="tb_content">
-		
-				<a class="tb_titel" href="{ADMIN_URL}/languages/index.php">{LANGUAGES}</a>
-				{LANGUAGES_OVERVIEW}
-			
-			</div><!-- ENDE tb_content -->
-		</div><!-- ENDE tb_content_outer -->
-		
-		<div class="tb_footer">
-			<a href="{ADMIN_URL}/languages/index.php"></a>
-		</div><!-- ENDE tb_footer -->
-			
-	</div><!-- ENDE themebox -->
-	<!-- END languages_block -->
-	
-	
-
-
-	<!-- BEGIN reload_block -->
-	<div id="addons_reload" class="themebox" {DISPLAY_RELOAD}>
-	
-		<div class="tb_header">			
-			<span class="tb_icon"></span>
-		</div>
-		
-		<div class="tb_content_outer">
-			<div class="tb_content">
-		
-				<h2>{TXT_ADMIN_SETTINGS}</h2>
-				
-				<form action="{RELOAD_URL}" method="post">
-				{FTAN}
-					{MESSAGE_RELOAD_ADDONS}
-					<br style="margin-bottom: 0.5em" />
-					<input {DISPLAY_MODULES} type="checkbox" name="reload_modules" id="reload_modules" value="true" />
-					<label {DISPLAY_MODULES} for="reload_modules">{MODULES}</label>
-					<input {DISPLAY_TEMPLATES} type="checkbox" name="reload_templates" id="reload_templates" value="true" />
-					<label {DISPLAY_TEMPLATES} for="reload_templates">{TEMPLATES}</label>
-					<input {DISPLAY_LANGUAGES} type="checkbox" name="reload_languages" id="reload_languages" value="true" />
-					<label {DISPLAY_LANGUAGES} for="reload_languages">{LANGUAGES}</label>
-					<input type="submit" name="submit" value="{TEXT_RELOAD}" />
-				</form>
-		
-			</div><!-- ENDE tb_content -->
-		</div><!-- ENDE tb_content_outer -->
-		
-		<div class="tb_footer">
-			<span class="tb_icon"></span>
-		</div><!-- ENDE tb_footer -->
-			
-	</div><!-- ENDE themebox -->
-	<!-- END reload_block -->
-	
-	
-	
-	
-	
-	
-	
-
-
-
-</div><!-- ENDE page_addons -->
-
+ <h2 class="page_titel">{ADDONS_OVERVIEW}</h2>
+ <div class="button_advanced_settings"> {URL_ADVANCED} </div>
+ <!-- BEGIN modules_block -->
+ <div id="addons_modules" class="themebox" {DISPLAY_MODULES}>
+  <div class="tb_header"> <a href="{ADMIN_URL}/modules/index.php"></a> </div>
+  <div class="tb_content_outer">
+   <div class="tb_content"> <a class="tb_titel" href="{ADMIN_URL}/modules/index.php">{MODULES}</a> {MODULES_OVERVIEW} </div>
+   <!-- ENDE tb_content --> 
+  </div>
+  <!-- ENDE tb_content_outer -->
+  <div class="tb_footer"> <a href="{ADMIN_URL}/modules/index.php"></a> </div>
+  <!-- ENDE tb_footer --> 
+ </div>
+ <!-- ENDE themebox --> 
+ <!-- END modules_block --> 
+ <!-- BEGIN templates_block -->
+ <div id="addons_templates" class="themebox" {DISPLAY_TEMPLATES}>
+  <div class="tb_header"> <a href="{ADMIN_URL}/templates/index.php"></a> </div>
+  <div class="tb_content_outer">
+   <div class="tb_content"> <a class="tb_titel" href="{ADMIN_URL}/templates/index.php">{TEMPLATES}</a> {TEMPLATES_OVERVIEW} </div>
+   <!-- ENDE tb_content --> 
+  </div>
+  <!-- ENDE tb_content_outer -->
+  <div class="tb_footer"> <a href="{ADMIN_URL}/templates/index.php"></a> </div>
+  <!-- ENDE tb_footer --> 
+ </div>
+ <!-- ENDE themebox --> 
+ <!-- END templates_block --> 
+ <!-- BEGIN languages_block -->
+ <div id="addons_languages" class="themebox" {DISPLAY_LANGUAGES}>
+  <div class="tb_header"> <a href="{ADMIN_URL}/languages/index.php"></a> </div>
+  <div class="tb_content_outer">
+   <div class="tb_content"> <a class="tb_titel" href="{ADMIN_URL}/languages/index.php">{LANGUAGES}</a> {LANGUAGES_OVERVIEW} </div>
+   <!-- ENDE tb_content --> 
+  </div>
+  <!-- ENDE tb_content_outer -->
+  <div class="tb_footer"> <a href="{ADMIN_URL}/languages/index.php"></a> </div>
+  <!-- ENDE tb_footer --> 
+ </div>
+ <!-- ENDE themebox --> 
+ <!-- END languages_block --> 
+ <!-- BEGIN reload_block -->
+ <div id="addons_reload" class="themebox" {DISPLAY_RELOAD}>
+  <div class="tb_header"> <span class="tb_icon"></span> </div>
+  <div class="tb_content_outer">
+   <div class="tb_content">
+    <h2>{TXT_ADMIN_SETTINGS}</h2>
+    <form action="{RELOAD_URL}" method="post">
+     {FTAN}
+     {MESSAGE_RELOAD_ADDONS} <br style="margin-bottom: 0.5em" />
+     <input {DISPLAY_MODULES} type="checkbox" name="reload_modules" id="reload_modules" value="true" />
+     <label {DISPLAY_MODULES} for="reload_modules">{MODULES}</label>
+     <input {DISPLAY_TEMPLATES} type="checkbox" name="reload_templates" id="reload_templates" value="true" />
+     <label {DISPLAY_TEMPLATES} for="reload_templates">{TEMPLATES}</label>
+     <input {DISPLAY_LANGUAGES} type="checkbox" name="reload_languages" id="reload_languages" value="true" />
+     <label {DISPLAY_LANGUAGES} for="reload_languages">{LANGUAGES}</label>
+     <input type="submit" name="submit" value="{TEXT_RELOAD}" />
+    </form>
+   </div>
+   <!-- ENDE tb_content --> 
+  </div>
+  <!-- ENDE tb_content_outer -->
+  <div class="tb_footer"> <span class="tb_icon"></span> </div>
+  <!-- ENDE tb_footer --> 
+ </div>
+ <!-- ENDE themebox --> 
+ <!-- END reload_block --> 
+ </div>
+<!-- ENDE page_addons --> 
 
 <!-- END main_block -->

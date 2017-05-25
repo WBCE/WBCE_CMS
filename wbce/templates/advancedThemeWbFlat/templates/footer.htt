@@ -1,63 +1,38 @@
 <!-- BEGIN footer_block -->
 
-
-
-				<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" style="padding: 10px 0;">
-				  <tr>
-					<td style="font-size:12px;text-align:center;">
-					  <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-					  <a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the
-					  <a href="http://www.gnu.org/licenses/gpl.html" title="WBCE is released under the GNU General Public License">GNU General Public License</a><br />
-					  <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-					</td>
-				  </tr>
-				</table>
-			<!-- ################### Until here: Original Code from original template ########### -->
-			<!-- ################### own code to close page starts form here #################### -->
-
-
-
-						</td>
-					</tr>
-				</table><!-- ENDE former_positioning_table -->
-
-
-			</div><!-- ENDE contentarea -->
-		
-		
-	</div><!-- ENDE mainarea -->
-
-</div><!-- ENDE container -->
-
-
-
-
-
-
-
+<table width="100%">
+ <tr>
+  <td style="font-size:12px;text-align:center;"><!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. --> 
+   <a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" title="General Public License">GNU General Public License</a><br />
+ </tr>
+</table>
+<!-- ################### Until here: Original Code from original template ########### --> 
+<!-- ################### own code to close page starts form here #################### -->
+</td>
+</tr>
+</table>
+<!-- ENDE former_positioning_table -->
+</div>
+<!-- ENDE contentarea -->
+</div>
+<!-- ENDE mainarea -->
+ <link href="{WB_URL}/include/select2/css/select2.min.css" rel="stylesheet" />
+ <script src="{WB_URL}/include/select2/js/select2.min.js"></script>
+ <script type="text/javascript">$('select').select2();</script>
+</div>
+<!-- ENDE container --> 
 <!-- ########## toggleboxarea ############################################# -->
-
-<div id="toggleboxarea" >
-	<div class="togglebox">
-	
-
-		<iframe id="wb_informationcenter" src="{THEME_URL}/contentinclude/informationcenter/include.php" >
-		</iframe>		
-		
-		
-		<!-- Button to open togglebox -->
-		<div id="toggelboxarea_togglebutton"></div>
-
-
-		</div><!-- End togglebox-outer -->
-</div><!-- ##### ENDE toggleboxarea ################################# -->
-
-
-
+<div id="toggleboxarea">
+ <div class="togglebox">
+  <iframe id="wb_informationcenter" src="{THEME_URL}/contentinclude/informationcenter/include.php" > </iframe>
+  <!-- Button to open togglebox -->
+  <div id="toggelboxarea_togglebutton"></div>
+ </div>
+ <!-- End togglebox-outer -->
+</div> 
+<!-- ##### ENDE toggleboxarea ################################# --> 
 {BACKEND_BODY_MODULE_JS}
-
-
-
 </body>
 </html>
+
 <!-- END footer_block -->

@@ -1,100 +1,63 @@
 <!-- BEGIN main_block -->
 
 <div id="page_templates">
-
-
-	<h2 class="page_titel">{HEADING_INSTALL_TEMPLATE}</h2>
-
-	<div class="pagesubmenu topright">
-		<ul>
-			<li >{URL_MODULES}</li>
-			<li class="current">{HEADING_INSTALL_TEMPLATE}</li>
-			<li>{URL_LANGUAGES}</li>
-		</ul>
-	</div><!-- ENDE pagesubmenu -->
-	
-	<p class="change_template_notice">{CHANGE_TEMPLATE_NOTICE}</p>
-
-	<div class="button_advanced_settings">
-		{URL_ADVANCED}
-	</div>
-	
-
-
-	<form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL}">
-	{FTAN}
-
-	<h2>{HEADING_INSTALL_TEMPLATE}</h2>
-
-	<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-	<tr>
-		<td>
-			<input type="file" name="userfile" size="82" />
-			<script type="text/javascript">
-			document.install.userfile.focus();
-			</script><br /><br />
-		</td>
-		<td width="110" align="left">
-			<input type="submit" name="submit" value="{TEXT_INSTALL}" style="width: 100px;" />
-		</td>
-	</tr>
-	</table>
-
-	<br />
-
-	</form>
-
-	<form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL}">
-	{FTAN}
-
-	<h2>{HEADING_UNINSTALL_TEMPLATE}</h2>
-
-	<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-	<tr>
-		<td>
-			<select name="file" style="width: 97%;">
-			<option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
-			<!-- BEGIN template_list_block -->
-				<option value="{VALUE}">{NAME}</option>
-			<!-- END template_list_block -->
-			</select>
-		</td>
-		<td width="110">
-			<input type="submit" name="submit" value="{TEXT_UNINSTALL}" style="width: 100px;" />
-		</td>
-	</tr>
-	</table>
-
-	<br />
-
-	</form>
-
-	<form name="details" action="details.php" method="post" class="{DISPLAY_LIST}">
-	{FTAN}
-
-	<h2>{HEADING_TEMPLATE_DETAILS}</h2>
-
-	<table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-	<tr>
-		<td>
-			<select name="file" style="width: 97%;">
-			<option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
-			<!-- BEGIN template_list_block -->
-				<option value="{VALUE}">{NAME}</option>
-			<!-- END template_list_block -->
-			</select>
-		</td>
-		<td width="110">
-			<input type="submit" name="submit" value="{TEXT_VIEW_DETAILS}" style="width: 100px;" />
-		</td>
-	</tr>
-	</table>
-
-	<br />
-	</form>
-	
-	
-</div><!-- ENDE page_templates -->	
-	
+ <h2 class="page_titel">{HEADING_INSTALL_TEMPLATE}</h2>
+ <div class="pagesubmenu topright">
+  <ul>
+   <li >{URL_MODULES}</li>
+   <li class="current">{HEADING_INSTALL_TEMPLATE}</li>
+   <li>{URL_LANGUAGES}</li>
+  </ul>
+ </div>
+ <!-- ENDE pagesubmenu -->
+ <p class="change_template_notice">{CHANGE_TEMPLATE_NOTICE}</p>
+ <div class="button_advanced_settings"> {URL_ADVANCED} </div>
+ <form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL}">
+  {FTAN}
+  <h2>{HEADING_INSTALL_TEMPLATE}</h2>
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+   <tr>
+    <td><input type="file" name="userfile" size="82" />
+     <script type="text/javascript"> document.install.userfile.focus();</script><br />
+     <br /></td>
+    <td width="110" align="left"><input type="submit" name="submit" value="{TEXT_INSTALL}" style="width: 100px;" /></td>
+   </tr>
+  </table>
+  <br />
+ </form>
+ <form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL}">
+  {FTAN}
+  <h2>{HEADING_UNINSTALL_TEMPLATE}</h2>
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+   <tr>
+    <td><select name="file" style="width: 97%;">
+      <option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+      <!-- BEGIN template_list_block -->
+      <option value="{VALUE}">{NAME}</option>
+      <!-- END template_list_block -->
+     </select></td>
+    <td width="110"><input type="submit" name="submit" value="{TEXT_UNINSTALL}" style="width: 100px;" /></td>
+   </tr>
+  </table>
+  <br />
+ </form>
+ <form name="details" action="details.php" method="post" class="{DISPLAY_LIST}">
+  {FTAN}
+  <h2>{HEADING_TEMPLATE_DETAILS}</h2>
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+   <tr>
+    <td><select name="file" style="width: 97%;">
+      <option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+      <!-- BEGIN template_list_block -->
+      <option value="{VALUE}">{NAME}</option>
+      <!-- END template_list_block -->
+     </select></td>
+    <td width="110"><input type="submit" name="submit" value="{TEXT_VIEW_DETAILS}" style="width: 100px;" /></td>
+   </tr>
+  </table>
+  <br />
+ </form>
+</div>
+<!-- ENDE page_templates --> 
 
 <!-- END main_block -->

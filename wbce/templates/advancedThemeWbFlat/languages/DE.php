@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -10,7 +10,6 @@
  * @license GNU GPL2 (or any later version)
  */
 
-//Modul Description
 $template_description = 'Ein erweitertes Backend-Theme f&uuml;r WBCE';
 
 //Texts

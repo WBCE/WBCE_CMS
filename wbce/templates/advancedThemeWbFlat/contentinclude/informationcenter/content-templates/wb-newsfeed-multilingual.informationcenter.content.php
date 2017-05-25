@@ -7,7 +7,6 @@
  * More information see: info.php in main theme folder
 */
 
-
 if (!defined('WB_PATH')) {
     // include wb system data/functions
     include('../../../../config.php');
@@ -18,8 +17,6 @@ $bLoggedIn = (isset($_SESSION['USER_ID']) && is_numeric($_SESSION['USER_ID']));
 // go on only forward if logged in
 if ($bLoggedIn) {
 
-
-
 	// ### realize multilingual support for dashboard
 	// ### for multilingual dashboards use language files in diretory: 'themediretcory/languages/...'
 	// #################################################################################################
@@ -29,11 +26,6 @@ if ($bLoggedIn) {
     if (is_readable($sLangPath.DEFAULT_LANGUAGE.'.php')) { include($sLangPath.DEFAULT_LANGUAGE.'.php'); }
     if (is_readable($sLangPath.LANGUAGE.'.php'))         { include($sLangPath.LANGUAGE.'.php'); }
 
-
-	
-	
-	
-	
 	// ### IMPORTANT ########################################################################
 	// 
 	// USAGE: 
@@ -57,59 +49,43 @@ if ($bLoggedIn) {
 	// ######################################################################################
 ?>
 
+<div class="togglebox-content">
+ <h2>WB Information Center</h2>
+ <div class="dynamicGrid-outer"> <a id="linkbox_manuals" class="linkbox dynamicGrid_3" href="http://www.websitebaker.org/en/help/help-project.php" title="Manuals" target="_blank"><?php echo $TEXT['MANUALS']; ?></a> <a id="linkbox_community" class="linkbox dynamicGrid_3" href="http://forum.websitebaker.org/" title="Community" target="_blank"><?php echo $TEXT['COMMUNITY']; ?></a> <a id="linkbox_addons" class="linkbox dynamicGrid_3" href="http://addon.websitebaker.org/" title="AddOns" target="_blank"><?php echo $TEXT['ADDONS']; ?></a> </div>
+ <div id="togglebox_scrollbox">
+  <div class="wb_newsfeed">
+   <?php
+        // get newsfeed-url based on language
+        $url = "http://websitebaker.org/index.php?rss=131&lang=EN";
+        if($_SESSION['LANGUAGE']=="DE") $url = "http://websitebaker.org/index.php?rss=275&lang=DE";
+        if($_SESSION['LANGUAGE']=="NL") $url = "http://websitebaker.org/index.php?rss=385&lang=NL";
+        
+        
+        // get data to show wb newsfeeed in scrollbox
+        if (isset($_SESSION['wb_news_feed'])) {
+            $rawFeed = $_SESSION['wb_news_feed'];
+        } else {
+            $rawFeed = file_get_contents($url);
+            $_SESSION['wb_news_feed'] = $rawFeed;
+        }
+        $news = new SimpleXmlElement($rawFeed);
+    
+        
+        // output newsfeed
+        foreach ( $news->channel->item as $item ) {
+            $item->description = str_replace('{SYSVAR:AppUrl.MediaDir}','http://www.websitebaker.org/media/',$item->description);
+            echo '<h4><a href="'.(string)$item->link.'" target="_blank">'.(string)$item->title.'</a><span style="float:right;font-size:12px;">'.(string)$item->pubDate.'</span></h4>';
+            echo ''.(string)$item->description.'';
+            echo '<a class="wb_button" style="margin:0 0 12px 0;color:#fff;" href="'.(string)$item->link.'" target="_blank">Read more</a>';
+            echo '<br/>';
+        }
+    ?>
+  </div>
+  <!-- ENDE wb_newsfeed --> 
+ </div>
+ <!-- ENDE scrollbox --> 
+ 
+</div>
+<!-- End togglebox-content -->
 
-
-	<div class="togglebox-content">
-
-		<h2>WB Information Center</h2>
-
-		<div class="dynamicGrid-outer">
-			<a id="linkbox_manuals" class="linkbox dynamicGrid_3" href="http://www.websitebaker.org/en/help/help-project.php" title="Manuals" target="_blank"><?php echo $TEXT['MANUALS']; ?></a>
-			<a id="linkbox_community" class="linkbox dynamicGrid_3" href="http://forum.websitebaker.org/" title="Community" target="_blank"><?php echo $TEXT['COMMUNITY']; ?></a>
-			<a id="linkbox_addons" class="linkbox dynamicGrid_3" href="http://addon.websitebaker.org/" title="AddOns" target="_blank"><?php echo $TEXT['ADDONS']; ?></a>
-		</div>
-
-
-		
-		<div id="togglebox_scrollbox">
-			<div class="wb_newsfeed">
-
-			<?php
-				// get newsfeed-url based on language
-				$url = "http://websitebaker.org/index.php?rss=131&lang=EN";
-				if($_SESSION['LANGUAGE']=="DE") $url = "http://websitebaker.org/index.php?rss=275&lang=DE";
-				if($_SESSION['LANGUAGE']=="NL") $url = "http://websitebaker.org/index.php?rss=385&lang=NL";
-				
-				
-				// get data to show wb newsfeeed in scrollbox
-				if (isset($_SESSION['wb_news_feed'])) {
-					$rawFeed = $_SESSION['wb_news_feed'];
-				} else {
-					$rawFeed = file_get_contents($url);
-					$_SESSION['wb_news_feed'] = $rawFeed;
-				}
-				$news = new SimpleXmlElement($rawFeed);
-
-				
-				// output newsfeed
-				foreach ( $news->channel->item as $item ) {
-					$item->description = str_replace('{SYSVAR:AppUrl.MediaDir}','http://www.websitebaker.org/media/',$item->description);
-					echo '<h4><a href="'.(string)$item->link.'" target="_blank">'.(string)$item->title.'</a><span style="float:right;font-size:12px;">'.(string)$item->pubDate.'</span></h4>';
-					echo ''.(string)$item->description.'';
-					echo '<a class="wb_button" style="margin:0 0 12px 0;color:#fff;" href="'.(string)$item->link.'" target="_blank">Read more</a>';
-					echo '<br/>';
-				}
-			?>		
-
-		
-			</div><!-- ENDE wb_newsfeed -->
-		</div><!-- ENDE scrollbox -->
-
-		
-	</div><!-- End togglebox-content -->
-
-	
-
-
-<?php } // endif ($bLoggedIn) ?>	
-	
+<?php } // endif ($bLoggedIn) ?>

@@ -49,24 +49,12 @@ if ($bLoggedIn) {
     // ######################################################################################
     ?>
 
-
-
-	<div class="togglebox-content">
-
-		<h2>WBCE Information Center</h2>
-
-		<div class="dynamicGrid-outer">
-			<a id="linkbox_manuals" class="linkbox dynamicGrid_3" href="http://help.wbce.org" title="Manuals for WBCE" target="_blank"><?php echo $TEXT['MANUALS'];?></a>
-			<a id="linkbox_community" class="linkbox dynamicGrid_3" href="http://forum.wbce.org" title="WBCE Community Forum" target="_blank"><?php echo $TEXT['COMMUNITY'];?></a>
-			<a id="linkbox_addons" class="linkbox dynamicGrid_3" href="http://addons.wbce.org" title="Addons for WBCE" target="_blank"><?php echo $TEXT['ADDONS'];?></a>
-		</div>
-
-
-
-		<div id="togglebox_scrollbox">
-			<div class="wb_newsfeed">
-
-			<?php
+<div class="togglebox-content">
+ <h2>WBCE Information Center</h2>
+ <div class="dynamicGrid-outer"> <a id="linkbox_manuals" class="linkbox dynamicGrid_3" href="http://help.wbce.org" title="Manuals for WBCE" target="_blank"><?php echo $TEXT['MANUALS'];?></a> <a id="linkbox_community" class="linkbox dynamicGrid_3" href="http://forum.wbce.org" title="WBCE Community Forum" target="_blank"><?php echo $TEXT['COMMUNITY'];?></a> <a id="linkbox_addons" class="linkbox dynamicGrid_3" href="http://addons.wbce.org" title="Addons for WBCE" target="_blank"><?php echo $TEXT['ADDONS'];?></a> </div>
+ <div id="togglebox_scrollbox">
+  <div class="wb_newsfeed">
+   <?php
 /*
     // get newsfeed-url based on language
     $url = "http://websitebaker.org/index.php?rss=131&lang=EN";
@@ -92,16 +80,12 @@ if ($bLoggedIn) {
     }
      */
     ?>
-
-
-			</div><!-- ENDE wb_newsfeed -->
-		</div><!-- ENDE scrollbox -->
-
-
-	</div><!-- End togglebox-content -->
-
-
-
-
+  </div>
+  <!-- ENDE wb_newsfeed --> 
+ </div>
+ <!-- ENDE scrollbox --> 
+ 
+</div>
+<!-- End togglebox-content -->
 
 <?php } // endif ($bLoggedIn) ?>

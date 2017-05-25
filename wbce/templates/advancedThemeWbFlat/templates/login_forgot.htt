@@ -1,67 +1,44 @@
 <!-- BEGIN mainBlock -->
 
 <!DOCTYPE html>
-<!--[if IE 9 ]><html class="ie9" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><![endif]-->
-<!--[if lte IE 8 ]><html class="ie8" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<!--<![endif]-->
-
+<html>
 <head>
-	<title>Retrieve Login Details</title>
-	<meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
-	<meta http-equiv="content-language" content="{LANGUAGE}" />
-	<meta name="description" content="Retrieve Login Details" />
-	<meta name="keywords" content="Retrieve Login Details" />
-
-	<link href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-
-	<!-- include styles -->
-	<link href="{THEME_URL}/theme.css" rel="stylesheet" type="text/css" />
-
-	<!-- jQuery-Scripte from original theme -->
-	<script src="{WB_URL}/include/jquery/jquery-min.js" type="text/javascript"></script>
+<title>{SECTION_FORGOT}</title>
+<meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
+<meta http-equiv="content-language" content="{LANGUAGE}" />
+<meta name="description" content="{TEXT_FORGOT}" />
+<meta name="keywords" content="{TEXT_FORGOT}" />
+<link rel="stylesheet" href="{THEME_URL}/css/normalize.css" />
+<link rel="stylesheet" href="{THEME_URL}/css/theme.css" />
+<link rel="stylesheet" href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" />
+<script type="text/javascript" src="{WB_URL}/include/jquery/jquery-min.js"></script>
 </head>
 <body id="page_login" onload="document.forgot_pass.email.focus();">
 <div id="page_login_header">
-	<div id="page_login_logo">
-		WBCE
-	</div>
-	<div id="page_login_slogan">
-		Way Better Content Editing.
-	</div>
-</div><!-- ENDE page_login_header -->
-
-<div id="page_login_form" class="forgot-page">
-	<form name="forgot_pass" action="{ACTION_URL}" method="post">
-		<div >
-			{SECTION_FORGOT}
-		</div> 
-		<div >
-			{MESSAGE}	
-		</div> 
-		
-		<div id="page_login-fields" style="{DISPLAY_FORM}">
-			<br/><br/>
-			<span class="page_login_fieldname">{TEXT_EMAIL}:</span>
-			<span class="page_login_fieldelement"><input type="text" maxlength="255" name="email" value="{EMAIL}" /></span>
-			<br/>
-			
-			<input type="submit" name="submit" value="{TEXT_SEND_DETAILS}" >			
-			<a id="page_login_homelink" href="{WB_URL}/"></a>
-			<br/>			
-		</div>
-		<a id="page_login_forgottenlink" href="{LOGIN_URL}">{TEXT_NEED_TO_LOGIN}</a>
-	</form>
-</div><!-- ENDE forgot_pass -->
-
-<div id="login_license">
-    <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    <a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the
-    <a href="http://www.gnu.org/licenses/gpl.html" title="WBCE is released under the GNU General Public License">GNU General Public License</a><br />
-    <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
+ <div id="page_login_logo"> WBCE </div>
+ <div id="page_login_slogan"> Way Better Content Editing. </div>
 </div>
-
+<!-- ENDE page_login_header -->
+<div id="page_login_form" class="forgot-page">
+ <p>{SECTION_FORGOT}</p>
+ <p>{MESSAGE}</p>
+ <br/>
+ <form name="forgot_pass" action="{ACTION_URL}" method="post">
+  <div id="page_login-fields"> <span class="page_login_fieldname">{TEXT_EMAIL}:</span> <span class="page_login_fieldelement">
+   <input type="text" maxlength="255" name="email" value="{EMAIL}" />
+   </span> <br/>
+   <input type="submit" name="submit" value="{TEXT_SEND_DETAILS}" >
+   <a id="page_login_homelink" href="{WB_URL}/"></a> <br/>
+  </div>
+  <a id="page_login_forgottenlink" href="{LOGIN_URL}">{TEXT_NEED_TO_LOGIN}</a>
+ </form>
+</div>
+<!-- ENDE forgot_pass -->
+<div id="login_license"> 
+ <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. --> 
+ <a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" title="GNU General Public License">GNU General Public License</a><br />
+</div>
 </body>
 </html>
+
 <!-- END main_block -->

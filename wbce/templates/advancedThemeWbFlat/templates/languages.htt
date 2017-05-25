@@ -1,83 +1,61 @@
 <!-- BEGIN main_block -->
 
 <div id="page_languages">
+ <h2 class="page_titel">{HEADING_INSTALL_LANGUAGE}</h2>
+ <div class="pagesubmenu topright">
+  <ul>
+   <li>{URL_MODULES}</li>
+   <li>{URL_TEMPLATES}</li>
+   <li class="current">{HEADING_INSTALL_LANGUAGE}</li>
+  </ul>
+ </div>
+ <!-- ENDE pagesubmenu -->
+ <div class="button_advanced_settings"> {URL_ADVANCED} </div>
+ <form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL}">
+  {FTAN}
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+   <tr>
+    <td><input type="file" name="userfile" size="97" />
+     <script type="text/javascript">document.install.userfile.focus();</script><br />
+     <br /></td>
+    <td width="110" align="left"><input type="submit" name="submit" value="{TEXT_INSTALL}" style="width: 100px;" /></td>
+   </tr>
+  </table>
+  <br />
+ </form>
+ <form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL}">
+  {FTAN}
+  <h2>{HEADING_UNINSTALL_LANGUAGE}</h2>
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+   <tr>
+    <td><select name="code" style="width: 97%;">
+      <option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+      <!-- BEGIN language_list_block -->
+      <option value="{VALUE}">{NAME}</option>
+      <!-- END language_list_block -->
+     </select></td>
+    <td width="110"><input type="submit" name="submit" value="{TEXT_UNINSTALL}" style="width: 100px;" /></td>
+   </tr>
+  </table>
+  <br />
+ </form>
+ <form name="details" action="details.php" method="post" class="{DISPLAY_LIST}">
+  {FTAN}
+  <h2>{HEADING_LANGUAGE_DETAILS}</h2>
+  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
+   <tr>
+    <td><select name="code" style="width: 97%;">
+      <option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
+      <!-- BEGIN language_list_block -->
+      <option value="{VALUE}">{NAME}</option>
+      <!-- END language_list_block -->
+     </select></td>
+    <td width="110"><input type="submit" name="submit" value="{TEXT_VIEW_DETAILS}" style="width: 100px;" /></td>
+   </tr>
+  </table>
+  <br />
+ </form>
+</div>
+<!-- ENDE page_languages --> 
 
-	<h2 class="page_titel">{HEADING_INSTALL_LANGUAGE}</h2>
-
-	
-	<div class="pagesubmenu topright">
-		<ul>
-			<li>{URL_MODULES}</li>
-			<li>{URL_TEMPLATES}</li>
-			<li class="current">{HEADING_INSTALL_LANGUAGE}</li>
-		</ul>
-	</div><!-- ENDE pagesubmenu -->
-
-	<div class="button_advanced_settings">
-		{URL_ADVANCED}
-	</div>
-
-
-	<form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL}">
-	{FTAN}
-	  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-		<tr>
-		  <td>
-			<input type="file" name="userfile" size="97" />
-			<script type="text/javascript">
-			document.install.userfile.focus();
-			</script><br /><br />
-		  </td>
-		  <td width="110" align="left">
-			<input type="submit" name="submit" value="{TEXT_INSTALL}" style="width: 100px;" />
-		  </td>
-		</tr>
-	  </table>
-	  <br />
-	</form>
-	<form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL}">
-	{FTAN}
-	  <h2>{HEADING_UNINSTALL_LANGUAGE}</h2>
-	  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-		<tr>
-		  <td>
-			<select name="code" style="width: 97%;">
-			<option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
-			<!-- BEGIN language_list_block -->
-				<option value="{VALUE}">{NAME}</option>
-			  <!-- END language_list_block -->
-			</select>
-		  </td>
-		  <td width="110">
-			<input type="submit" name="submit" value="{TEXT_UNINSTALL}" style="width: 100px;" />
-		  </td>
-		</tr>
-	  </table>
-	  <br />
-	</form>
-	<form name="details" action="details.php" method="post" class="{DISPLAY_LIST}">
-	{FTAN}
-	  <h2>{HEADING_LANGUAGE_DETAILS}</h2>
-	  <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
-		<tr>
-		  <td>
-			<select name="code" style="width: 97%;">
-			<option value="" selected="selected">{TEXT_PLEASE_SELECT}...</option>
-			<!-- BEGIN language_list_block -->
-				<option value="{VALUE}">{NAME}</option>
-			  <!-- END language_list_block -->
-			</select>
-		  </td>
-		  <td width="110">
-			<input type="submit" name="submit" value="{TEXT_VIEW_DETAILS}" style="width: 100px;" />
-		  </td>
-		</tr>
-	  </table>
-	  <br />
-	</form>
-
-
-
-</div><!-- ENDE page_languages -->	
-
-<!-- END main_block -->
+<!-- END main_block --> 
