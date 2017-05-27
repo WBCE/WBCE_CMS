@@ -47,6 +47,7 @@ if (!isset($_POST['search'])) {
 	// Think to compare WB_URL and ADMIN_URL	
 	$tpl->set_var('WB_URL', WB_URL);
 	$tpl->set_var('ADMIN_URL', ADMIN_URL);
+    $tpl->set_var('THEME_URL', THEME_URL);
 	$tpl->set_var('FORM_VALID_URL', $_SERVER['REQUEST_URI']);
 	$tpl->set_var('JSCAL_IFFORMAT', $jscal_ifformat);
 	$tpl->set_var('JSCAL_FIRSTDAY', $jscal_firstday);
