@@ -1,6 +1,6 @@
 <!-- BEGIN header_block -->
 <!DOCTYPE html>
-<html lang='{LANGUAGE}'>
+<html lang="{LANGUAGE}">
 <head>
 <title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title>
 <meta charset="{CHARSET}">

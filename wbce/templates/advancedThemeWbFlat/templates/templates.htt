@@ -4,7 +4,7 @@
  <h2 class="page_titel">{HEADING_INSTALL_TEMPLATE}</h2>
  <div class="pagesubmenu topright">
   <ul>
-   <li >{URL_MODULES}</li>
+   <li>{URL_MODULES}</li>
    <li class="current">{HEADING_INSTALL_TEMPLATE}</li>
    <li>{URL_LANGUAGES}</li>
   </ul>

@@ -13,6 +13,7 @@
  <div class="button_advanced_settings"> {URL_ADVANCED} </div>
  <form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL}">
   {FTAN}
+  <h2>{HEADING_INSTALL_LANGUAGE}</h2>
   <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
    <tr>
     <td><input type="file" name="userfile" size="97" />

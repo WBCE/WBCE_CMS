@@ -1,7 +1,7 @@
 <!-- BEGIN main_block -->
 
 <!DOCTYPE html>
-<html lang='{LANGUAGE}'>
+<html lang="{LANGUAGE}">
 <head>
 <title>Browse Media</title>
 <link href="{THEME_URL}/css/browse.css" rel="stylesheet" type="text/css" />

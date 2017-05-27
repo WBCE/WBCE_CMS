@@ -508,7 +508,7 @@ a#frontendtitel:hover {
     position: relative;
     width: 100%;
     /* leave left area free --> left side bar */
-    padding: 196px 64px 73px 427px;
+    padding: 180px 0 0 420px;
 }
 #contentarea {
     position: relative;
@@ -1745,10 +1745,6 @@ div.calendar, div.calendar * {
 }
 #page_start div.columnGridRow div.col_6:nth-child(4) {
     clear: both;
-}
-/* page-settings: make column for input fields larger (overwrite html-settings)  */
-#page_settings form table td:nth-child(2) {
-    width: 500px !important;
 }
 /* page: modify page --> section info above every section */
 .section-info {

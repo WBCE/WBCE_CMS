@@ -10,16 +10,14 @@
   </ul>
  </div>
  <!-- ENDE pagesubmenu -->
- 
  <div class="button_advanced_settings"> {URL_ADVANCED} </div>
  <form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL}">
   {FTAN}
+  <h2>{HEADING_INSTALL_MODULE}</h2>
   <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%">
    <tr>
     <td valign="middle"><input type="file" name="userfile" size="97" />
-     <script type="text/javascript">
-			document.install.userfile.focus();
-			</script><br />
+     <script type="text/javascript">document.install.userfile.focus();</script><br />
      <input type="checkbox" name="overwrite" value="false"  />
      <span>{OVERWRITE_NEWER_FILES}</span></td>
     <td width="110" align="left"><input type="submit" name="submit" value="{TEXT_INSTALL}" style="width: 100px;" /></td>
