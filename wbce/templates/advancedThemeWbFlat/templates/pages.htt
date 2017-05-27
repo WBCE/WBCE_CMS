@@ -38,9 +38,9 @@
    </tr>
    <tr>
     <td width="151">{TEXT_PARENT}:</td>
-    <td width="240"><select  name="parent" style="width: 240px;" onchange="return disabled_hack_for_ie(this);">
+    <td width="240"><select  name="parent" style="width: 240px;">
       <!-- BEGIN page_list_block2 -->
-      <option value="{ID}"{DISABLED} style="background: {FLAG_ROOT_ICON} no-repeat center left; padding-left: 20px;">{TITLE}</option>
+      <option value="{ID}"{DISABLED}>{TITLE}</option>
       <!-- END page_list_block2 -->
      </select></td>
    </tr>

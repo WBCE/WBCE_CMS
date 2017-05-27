@@ -727,9 +727,6 @@ div.pages_list table td {
     vertical-align: middle !important;
     text-align: inherit;
 }
-.pagecloner .pages_list {
-    text-align-last: justify;
-}
 div.pages_list table td.list_actions {
     width: 30px;
     height: 20px;
