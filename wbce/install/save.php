@@ -79,7 +79,7 @@ function set_error($message, $field_name = '')
 // Function to workout what the default permissions are for files created by the webserver
 function default_file_mode($temp_dir)
 {
-    if (version_compare(PHP_VERSION, '5.3.6', '>=') && is_writable($temp_dir)) {
+    if (version_compare(PHP_VERSION, '5.4.0', '>=') && is_writable($temp_dir)) {
         $filename = $temp_dir . '/test_permissions.txt';
         $handle = fopen($filename, 'w');
         fwrite($handle, 'This file is to get the default file permissions');
@@ -95,7 +95,7 @@ function default_file_mode($temp_dir)
 // Function to workout what the default permissions are for directories created by the webserver
 function default_dir_mode($temp_dir)
 {
-    if (version_compare(PHP_VERSION, '5.3.6', '>=') && is_writable($temp_dir)) {
+    if (version_compare(PHP_VERSION, '5.4.0', '>=') && is_writable($temp_dir)) {
         $dirname = $temp_dir . '/test_permissions/';
         mkdir($dirname);
         $default_dir_mode = '0' . substr(sprintf('%o', fileperms($dirname)), -3);

@@ -11,7 +11,7 @@
  */
 
 // Start a session
-if (version_compare(PHP_VERSION, '5.3.6', '<')) {die('Sorry, you need to have PHP Version > 5.3.6');}
+if (version_compare(PHP_VERSION, '5.4.0', '<')) {die('Sorry, you need to have PHP Version > 5.4.0');}
 if (!defined('SESSION_STARTED')) {
     session_name('wb-installer');
     session_start();
@@ -98,7 +98,7 @@ function change_os(type) {
   <tbody>
    <tr>
     <td><img src="logo.png" alt="WBCE Logo">
-     <h1>WBCE Installation Wizard</h1></td>
+     <h1>Welcome to the WBCE Installation Wizard</h1></td>
    </tr>
   </tbody>
  </table>
@@ -107,7 +107,6 @@ function change_os(type) {
   <input type="hidden" name="username_fieldname" value="admin_username" />
   <input type="hidden" name="password_fieldname" value="admin_password" />
   <input type="hidden" name="remember" id="remember" value="true" />
-  <div class="welcome"> Welcome to the WBCE Installation Wizard. </div>
   <?php
 if (isset($_SESSION['message']) and $_SESSION['message'] != '') {
     ?>
@@ -129,9 +128,9 @@ if (isset($_SESSION['message']) and $_SESSION['message'] != '') {
     <?php }
 ?>
     <tr>
-     <td class="grey">PHP Version >= 5.3.6</td>
+     <td class="grey">PHP Version >= 5.4.0</td>
      <td><?php
-if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
+if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
     ?>
       <span class="good"><?php echo PHP_VERSION;?></span>
       <?php

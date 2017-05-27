@@ -14,14 +14,8 @@
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 // Stop execution if PHP version is too old
-if (version_compare(PHP_VERSION, '5.3.6', '<')) {
-    die ('PHP-' . PHP_VERSION . ' found, but at last PHP-5.3.6 required !!');
-}
-
-// disable MAgic quotes if php version is below 5.4.0.
-// Since  5.4.0 magic quotes is removed entirely
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-    ini_set("magic_quotes_runtime", 0); // Disable magic_quotes_runtime
+    die ('PHP-' . PHP_VERSION . ' found, but at last PHP-5.4.0 required !!');
 }
 
 if (!defined('ADMIN_DIRECTORY')) {define('ADMIN_DIRECTORY', 'admin');}
@@ -77,12 +71,34 @@ define('OCTAL_FILE_MODE', (int) octdec($string_file_mode));
 $string_dir_mode = STRING_DIR_MODE;
 define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
 
-// set error-reporting
-if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
-    error_reporting(ER_LEVEL);
-    ini_set('display_errors', 1);   
+// GLOBAL WBCE ERROR REPORTING
+if (WB_DEBUG === true or WB_DEBUG === '1') {
+    // Note: define('WB_DEBUG', true) in WBCE config.php forces max. PHP error output for debugging
+    error_reporting(E_ALL);
 } else {
-    ini_set('display_errors', 0); 
+    // set PHP error reporting level to user defined values (admin/interface/er_levels.php)
+    switch (ER_LEVEL) {
+        case 'E0':    // system default (php.ini)
+            error_reporting(ini_get('error_reporting'));
+            break;
+        case 'E1':    // hide all errors and notices
+            error_reporting(0);
+            break;
+        case 'E2':    // show all errors and notices
+            error_reporting(E_ALL);
+            break;
+        case 'E3':    // show errors, no notices
+            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+            break;
+        default:      // system default (php.ini)
+            error_reporting(ini_get('error_reporting'));
+    }
+}
+// adapt display_error directive in php.ini to reflect error_reporting level
+if (error_reporting() == 0) {
+    ini_set('display_errors', 0);
+} else {
+    ini_set('display_errors', 1);
 }
 
 // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 

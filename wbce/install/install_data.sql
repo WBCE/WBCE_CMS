@@ -41,7 +41,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (3, 'website_header', ''),
 (4, 'website_footer', ''),
 (5, 'wysiwyg_style', 'font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;'),
-(6, 'er_level', ''),
+(6, 'er_level', 'E0'),
 (7, 'sec_anchor', 'wb_'),
 (8, 'default_date_format', 'M d Y'),
 (9, 'default_time_format', 'g:i A'),

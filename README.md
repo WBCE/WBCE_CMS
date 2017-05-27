@@ -5,7 +5,7 @@
 
 ## Requirements
   - about 20 MB webspace
-  - PHP 5.3.6 or newer
+  - PHP 5.4.0 or newer
   - mySQL 5.0 or newer
   - mode_rewrite for `even nicer` URLs (optional)
 
