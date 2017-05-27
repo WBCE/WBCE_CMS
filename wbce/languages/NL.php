@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -8,13 +8,13 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'NL';
 $language_name = 'Dutch'; // Nederlands
@@ -22,8 +22,6 @@ $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Bramus, CodeALot, Luckyluke, Argos';
 $language_license = 'GNU General Public License';
-
-	
 
 
 $MENU['ACCESS'] = 'Toegang';
@@ -47,7 +45,6 @@ $MENU['START'] = 'Naar het hoofdmenu';
 $MENU['TEMPLATES'] = 'Templates';
 $MENU['USERS'] = 'Gebruikers';
 $MENU['VIEW'] = 'Website';
-
 
 
 $TEXT['ACCOUNT_SIGNUP'] = 'Aanmelden als gebruiker';
@@ -395,7 +392,11 @@ $TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
 $TEXT['THEME_SELECT_HTT'] = 'select templates';
 $TEXT['THEME_NOMORE_HTT'] = 'no more available';
 $TEXT['THEME_START_IMPORT'] = 'import';
-
+// PHP error levels (since WBCE 1.3.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Module voldoet niet aan de eisen';
@@ -443,7 +444,6 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Verwijderen template';
 $HEADING['UPGRADE_LANGUAGE'] = 'Upgraden/inschakelen taalbestand';
 $HEADING['UPLOAD_FILES'] = 'Uploaden bestanden';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer-instellingen';
-
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Fout tijdens het updaten van de add-onbestanden.';
@@ -608,6 +608,7 @@ Loginname: {LOGIN_NAME}
 Wachtwoord: {LOGIN_PASSWORD}
 
 Let op: dit is een automatisch aangemaakt nieuw wachtwoord. Uw oude wachtwoord is niet meer geldig!
+
 Heeft u vragen of opmerkingen, neem dan contact op met de websitebeheerder.
 
 Het is aan te raden om uw browser-cache te legen voordat u het nieuwe wachtwoord gebruikt.
@@ -622,6 +623,7 @@ Beste {LOGIN_DISPLAY_NAME},
 Welkom bij \'{LOGIN_WEBSITE_TITLE}\'.
 
 Uw \'{LOGIN_WEBSITE_TITLE}\' inloggegevens zijn:
+
 Loginname: {LOGIN_NAME}
 Wachtwoord: {LOGIN_PASSWORD}
 
@@ -666,7 +668,6 @@ $MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme director
 $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
 
-
 $OVERVIEW['ADMINTOOLS'] = 'Diverse extra beheerinstellingen.';
 $OVERVIEW['GROUPS'] = 'Beheren van de gebruikersgroepen en hun rechten.';
 $OVERVIEW['HELP'] = 'Uitgebreide hulp voor het gebruik van dit systeem.';
@@ -680,6 +681,4 @@ $OVERVIEW['START'] = 'Websitebeheer';
 $OVERVIEW['TEMPLATES'] = 'Beheren van de templates die u kunt toepassen.';
 $OVERVIEW['USERS'] = 'Beheren van de gebruikers van uw website.';
 $OVERVIEW['VIEW'] = 'Bekijk uw website zoals deze voor bezoekers te zien is (in een afzonderlijk venster).';
-
-
 

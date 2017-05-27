@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -8,13 +8,13 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'NO';
 $language_name = 'Norwegian'; // Norsk
@@ -22,8 +22,6 @@ $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Odd Egil Hansen (oeh)';
 $language_license = 'GNU General Public License';
-
-	
 
 
 $MENU['ACCESS'] = 'Tilgang';
@@ -47,7 +45,6 @@ $MENU['START'] = 'Start';
 $MENU['TEMPLATES'] = 'Maler';
 $MENU['USERS'] = 'Brukere';
 $MENU['VIEW'] = 'Forh&#229;ndsvis';
-
 
 
 $TEXT['ACCOUNT_SIGNUP'] = 'Konto Registrering';
@@ -395,7 +392,11 @@ $TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
 $TEXT['THEME_SELECT_HTT'] = 'select templates';
 $TEXT['THEME_NOMORE_HTT'] = 'no more available';
 $TEXT['THEME_START_IMPORT'] = 'import';
-
+// PHP error levels (since WBCE 1.3.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Kravene for installering av denne modulen er ikke oppfylt';
@@ -443,7 +444,6 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Avinstaller Mal';
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = 'Last opp fil(er)';
 $HEADING['WBMAILER_SETTINGS'] = 'Innstillinger for e-post senderen';
-
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
@@ -601,6 +601,7 @@ $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Hei {LOGIN_DISPLAY_NAME},
 
 Denne e-posten ble sendt til deg fordi \'glemt passord\' funksjonen er blitt benyttet p&#229; din konto.
+
 Dine nye \'{LOGIN_WEBSITE_TITLE}\' p&#229;loggingsdetalejer er:
 
 Loginname: {LOGIN_NAME}
@@ -608,8 +609,10 @@ Passord: {LOGIN_PASSWORD}
 
 Passordet dit er endret til det som st&#229;r over.
 Dette betyr at det gamle passordet dit ikke virker lenger!
+
 Hvis du har sp&#248;rsm&#229;le eller problemer med de nye p&#229;loggingsdataene
 b&#248;r du ta kontakt med \'{LOGIN_WEBSITE_TITLE}\' sine administratorer.
+
 Venligst husk &#229; t&#248;mme nettleserens cache f&#248;r du benytter deg av de nye p&#229;loggingsdetaljene dine, slik at du unng&#229;r uventede feil.
 Med hilsen
 ------------------------------------
@@ -665,7 +668,6 @@ $MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme director
 $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
 
-
 $OVERVIEW['ADMINTOOLS'] = 'G&#229; inn p&#229; WBCE CMS sine administrasjonsverkt&#248;y...';
 $OVERVIEW['GROUPS'] = 'Administrer grupper og deres system adgang...';
 $OVERVIEW['HELP'] = 'Har du et sp&#248;rsm&#229;l? Finn svaret...';
@@ -679,6 +681,4 @@ $OVERVIEW['START'] = 'Administrasjons oversikt';
 $OVERVIEW['TEMPLATES'] = 'Forandre utseende p&#229; internett siden med maler...';
 $OVERVIEW['USERS'] = 'Velg hvilke brukere som kan logge inn i WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Forh&#229;ndsvis internett siden din i et nytt vindu...';
-
-
 

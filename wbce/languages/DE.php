@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -8,13 +8,13 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'DE';
 $language_name = 'German'; // Deutsch
@@ -22,8 +22,6 @@ $language_version = '3.1';
 $language_platform = '2.8.x';
 $language_author = 'Stefan Braunewell, Matthias Gallas, Florian Meerwinck';
 $language_license = 'GNU General Public License';
-
-	
 
 
 $MENU['ACCESS'] = 'Benutzerverwaltung';
@@ -47,7 +45,6 @@ $MENU['START'] = 'Dashboard';
 $MENU['TEMPLATES'] = 'Templates';
 $MENU['USERS'] = 'Benutzer';
 $MENU['VIEW'] = 'Ansicht';
-
 
 
 $TEXT['ACCOUNT_SIGNUP'] = 'Registrierung';
@@ -194,6 +191,7 @@ $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. Eintragungen pro Stunde';
 $TEXT['MEDIA_DIRECTORY'] = 'Medienverzeichnis';
 $TEXT['MENU'] = 'Men&#252;';
 $TEXT['FILENAME'] = 'Dateiname';
+$TEXT['HINT_FILENAME'] = 'Alternativ kann eine komplette URL (z.B. http://www.wbce.org) angegeben werden';
 $TEXT['MENU_ICON_0'] = 'Men&#252;-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Men&#252;-Icon mouseover';
 $TEXT['MENU_TITLE'] = 'Men&#252;titel';
@@ -219,6 +217,7 @@ $TEXT['NO'] = 'Nein';
 $TEXT['NONE'] = 'Keine';
 $TEXT['NONE_FOUND'] = 'Nichts gefunden';
 $TEXT['NOT_FOUND'] = 'Nicht gefunden';
+$MENU['NOT_FOUND'] = 'Nicht gefunden';
 $TEXT['NOT_INSTALLED'] = 'nicht installiert';
 $TEXT['NO_IMAGE_SELECTED'] = 'Kein Bild ausgew&#228;hlt';
 $TEXT['NO_RESULTS'] = 'Keine Ergebnisse';
@@ -395,7 +394,11 @@ $TEXT['THEME_IMPORT_HTT'] = 'Templatedateien importieren';
 $TEXT['THEME_SELECT_HTT'] = 'Templatedateien ausw&#228;hlen';
 $TEXT['THEME_NOMORE_HTT'] = 'Keine weiteren vorhanden';
 $TEXT['THEME_START_IMPORT'] = 'Importieren';
-
+// PHP error levels (since WBCE 1.3.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Verwende Systemeinstellung (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Fehler und Warnungen unterdrücken (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Fehler und Warnungen anzeigen (Entwicklung)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Nur Fehler, keine Warnungen anzeigen';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On Voraussetzungen nicht erf&#252;llt';
@@ -443,7 +446,6 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Template deinstallieren';
 $HEADING['UPGRADE_LANGUAGE'] = 'Sprache registrieren/aktualisieren (Upgrade)';
 $HEADING['UPLOAD_FILES'] = 'Datei(en) &#252;bertragen';
 $HEADING['WBMAILER_SETTINGS'] = 'Maileinstellungen';
-
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Fehler beim Abgleich der Add-On-Informationen.';
@@ -554,6 +556,7 @@ $MESSAGE['PAGES_ADDED'] = 'Die Seite wurde erfolgreich hinzugef&#252;gt';
 $MESSAGE['PAGES_ADDED_HEADING'] = 'Seitenkopf erfolgreich hinzugef&#252;gt';
 $MESSAGE['PAGES_BLANK_MENU_TITLE'] = 'Bitte geben Sie einen Men&#252;titel ein';
 $MESSAGE['PAGES_BLANK_PAGE_TITLE'] = 'Bitte geben Sie einen Titel f&#252;r die Seite ein';
+$MESSAGE['PAGES_BLANK_LINK_TITLE'] = 'Bitte geben Sie einen Dateinamen oder eine URL (inkl. http://) ein';
 $MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE'] = 'Das Accessfile konnte im Seiten-Verzeichnis nicht angelegt werden (ungen&#252;gende Schreibrechte?)';
 $MESSAGE['PAGES_CANNOT_DELETE_ACCESS_FILE'] = 'Das Accessfile konnte im Seiten-Verzeichnis nicht gel&#246;scht werden (ungen&#252;gende Schreibrechte?)';
 $MESSAGE['PAGES_CANNOT_REORDER'] = 'Bei der Zusammenstellung der Seite ist ein Fehler aufgetreten';
@@ -564,6 +567,7 @@ $MESSAGE['PAGES_INTRO_LINK'] = 'Vorschaltseite bearbeiten';
 $MESSAGE['PAGES_INTRO_NOT_WRITABLE'] = 'Die Vorschaltseite konnte nicht bearbeitet werden (ungen&#252;gende Schreibrechte?)';
 $MESSAGE['PAGES_INTRO_SAVED'] = 'Vorschaltseite wurde erfolgreich gespeichert';
 $MESSAGE['PAGES_LAST_MODIFIED'] = 'Die letzte &#196;nderung wurde durchgef&#252;hrt von';
+$MESSAGE['PAGES_LAST_MODIFICATION'] = 'Letzte &#196;nderung';
 $MESSAGE['PAGES_NOT_FOUND'] = 'Die Seite wurde nicht gefunden';
 $MESSAGE['PAGES_NOT_SAVED'] = 'Fehler beim Speichern der Seite';
 $MESSAGE['PAGES_PAGE_EXISTS'] = 'Eine Seite mit diesem Titel existiert bereits';
@@ -628,7 +632,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Bitte geben Sie Ihre E-Mail-Adresse an';
 $MESSAGE['START_CURRENT_USER'] = 'Sie sind angemeldet als:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Das Installations-Verzeichnis "/install" existiert noch! Dies stellt ein Sicherheitsrisiko dar. Bitte l&#246;schen.';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Bitte die Datei "upgrade-script.php" l&#246;schen.';
-$MESSAGE['START_WELCOME_MESSAGE'] = 'Willkommen imBackend Ihrer Website';
+$MESSAGE['START_WELCOME_MESSAGE'] = 'Willkommen im Backend Ihrer Website';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Bitte beachten Sie: Um ein neu installiertes Template zu verwenden, m&#252;ssen Sie dieses bei den "Grundeinstellungen" bzw. "Seiteneinstellungen" ausw&#228;hlen';
 $MESSAGE['UPLOAD_ERR_OK'] = 'Die Datei wurde erfolgreich hochgeladen';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'Die Gr&#246;&#223;e der hochgeladenen Datei &uum;berschreitet die PHP-Voreinstellung upload_max_filesize';
@@ -660,7 +664,6 @@ $MESSAGE['THEME_DESTINATION_READONLY'] = 'Das Zielverzeichnis konnte nicht erste
 $MESSAGE['THEME_IMPORT_HTT'] = 'Zus&#228;tzliche Templatedatei(en) in das aktuelle Theme importieren.<br />Mit diesen Templates k&#246;nnen die Default-Templates &#252;berschrieben werden.';
 
 
-
 $OVERVIEW['ADMINTOOLS'] = 'Zugriff auf die Admin-Tools...';
 $OVERVIEW['GROUPS'] = 'Verwaltung von Gruppen und deren Zugangsberechtigungen...';
 $OVERVIEW['HELP'] = 'Noch Fragen? Hier finden Sie Antworten';
@@ -674,6 +677,4 @@ $OVERVIEW['START'] = 'Backend-Einstiegsseite';
 $OVERVIEW['TEMPLATES'] = 'Vorlagen verwalten...';
 $OVERVIEW['USERS'] = 'Verwaltung von Benutzern, die sich anmelden d&#252;rfen...';
 $OVERVIEW['VIEW'] = 'Ansicht Ihrer Website in einem neuen Fenster...';
-
-
 

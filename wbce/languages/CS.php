@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -8,13 +8,13 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'CS';
 $language_name = 'Czech'; // Čeština
@@ -22,8 +22,6 @@ $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'WebStep, s.r.o.';
 $language_license = 'GNU General Public License';
-
-	
 
 
 $MENU['ACCESS'] = 'P&#345;&#237;stup';
@@ -47,7 +45,6 @@ $MENU['START'] = '&#218;vod';
 $MENU['TEMPLATES'] = '&#352;ablony';
 $MENU['USERS'] = 'U&#382;ivatel&#233;';
 $MENU['VIEW'] = 'Zobrazit';
-
 
 
 $TEXT['ACCOUNT_SIGNUP'] = 'Registrace &#250;&#269;tu';
@@ -77,7 +74,7 @@ $TEXT['BACKUP'] = 'Z&#225;lohov&#225;n&#237;';
 $TEXT['BACKUP_ALL_TABLES'] = 'Z&#225;lohovat v&#353;echny tabulky v datab&#225;zi';
 $TEXT['BACKUP_DATABASE'] = 'Z&#225;lohovat datab&#225;zi';
 $TEXT['BACKUP_MEDIA'] = 'Zaz&#225;lohovat m&#233;dia';
-$TEXT['BACKUP_WB_SPECIFIC'] = 'Z&#225;lohovat pouze tabulky WBCE CMSu';
+$TEXT['BACKUP_WB_SPECIFIC'] = 'Z&#225;lohovat pouze tabulky WBCE CMS';
 $TEXT['BASIC'] = 'Z&#225;kladn&#237;';
 $TEXT['BLOCK'] = 'Blok';
 $TEXT['CALENDAR'] = 'Calender';
@@ -395,7 +392,11 @@ $TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
 $TEXT['THEME_SELECT_HTT'] = 'select templates';
 $TEXT['THEME_NOMORE_HTT'] = 'no more available';
 $TEXT['THEME_START_IMPORT'] = 'import';
-
+// PHP error levels (since WBCE 1.3.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On requirements not met';
@@ -443,7 +444,6 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Odinstalovat &#353;ablonu';
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = 'Nahr&#225;t soubor(y)';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer Settings';
-
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
@@ -668,20 +668,17 @@ $MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme director
 $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
 
-
 $OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Spravovat skupiny u&#382;ivatel&#367; a jejich opr&#225;vn&#283;n&#237;...';
 $OVERVIEW['HELP'] = 'M&#225;te ot&#225;zku? Hledejte odpov&#283;&#271;...';
-$OVERVIEW['LANGUAGES'] = 'Spravovat jazyky WBCE CMSu...';
+$OVERVIEW['LANGUAGES'] = 'Spravovat jazyky WBCE CMS...';
 $OVERVIEW['MEDIA'] = 'Spravovat soubory v adres&#225;&#345;i m&#233;di&#237;...';
-$OVERVIEW['MODULES'] = 'Spravovat moduly WBCE CMSu...';
+$OVERVIEW['MODULES'] = 'Spravovat moduly WBCE CMS...';
 $OVERVIEW['PAGES'] = 'Spravovat webov&#233; str&#225;nky...';
 $OVERVIEW['PREFERENCES'] = 'Zm&#283;na nastaven&#237; e-mailov&#233; adresy, hesla, atd... ';
-$OVERVIEW['SETTINGS'] = 'Zm&#283;na nastaven&#237; WBCE CMSu...';
+$OVERVIEW['SETTINGS'] = 'Zm&#283;na nastaven&#237; WBCE CMS...';
 $OVERVIEW['START'] = 'Administra&#269;n&#237; p&#345;ehled';
 $OVERVIEW['TEMPLATES'] = 'Zm&#283;nit vzhled a chov&#225;n&#237; webu pomoc&#237; &#353;ablon...';
-$OVERVIEW['USERS'] = 'Spravovat u&#382;ivate WBCE CMSu...';
+$OVERVIEW['USERS'] = 'Spravovat u&#382;ivate WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Rychle prohl&#233;dhout str&#225;nky v nov&#233;m okn&#283;...';
-
-
 

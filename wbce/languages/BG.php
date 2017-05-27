@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -8,13 +8,13 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'BG';
 $language_name = 'Bulgarian'; //български
@@ -22,8 +22,6 @@ $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Hristo Benev(&#1061;&#1088;&#1080;&#1089;&#1090;&#1086; &#1041;&#1077;&#1085;&#1077;&#1074;)';
 $language_license = 'GNU General Public License';
-
-	
 
 
 $MENU['ACCESS'] = '&#1044;&#1086;&#1089;&#1090;&#1098;&#1087;';
@@ -47,7 +45,6 @@ $MENU['START'] = '&#1053;&#1072;&#1095;&#1072;&#1083;&#1086;';
 $MENU['TEMPLATES'] = '&#1064;&#1072;&#1073;&#1083;&#1086;&#1085;&#1080;';
 $MENU['USERS'] = '&#1055;&#1086;&#1090;&#1088;&#1077;&#1073;&#1080;&#1090;&#1077;&#1083;&#1080;';
 $MENU['VIEW'] = '&#1042;&#1080;&#1078;';
-
 
 
 $TEXT['ACCOUNT_SIGNUP'] = '&#1056;&#1077;&#1075;&#1080;&#1089;&#1090;&#1088;&#1072;&#1094;&#1080;&#1103;';
@@ -395,7 +392,11 @@ $TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
 $TEXT['THEME_SELECT_HTT'] = 'select templates';
 $TEXT['THEME_NOMORE_HTT'] = 'no more available';
 $TEXT['THEME_START_IMPORT'] = 'import';
-
+// PHP error levels (since WBCE 1.3.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On requirements not met';
@@ -443,7 +444,6 @@ $HEADING['UNINSTALL_TEMPLATE'] = '&#1044;&#1077;&#1080;&#1085;&#1089;&#1090;&#10
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = '&#1050;&#1072;&#1095;&#1074;&#1072;&#1085;&#1077; &#1085;&#1072; &#1092;&#1072;&#1081;&#1083;&#1086;&#1074;&#1077;';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer Settings';
-
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
@@ -668,7 +668,6 @@ $MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme director
 $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
 
-
 $OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1087;&#1086;&#1090;&#1088;&#1077;&#1073;&#1080;&#1090;&#1077;&#1083;&#1089;&#1082;&#1080;&#1090;&#1077; &#1075;&#1088;&#1091;&#1087;&#1080; &#1080; &#1090;&#1103;&#1093;&#1085;&#1080;&#1090;&#1077; &#1087;&#1088;&#1072;&#1074;&#1072;...';
 $OVERVIEW['HELP'] = '&#1048;&#1084;&#1072;&#1090;&#1077; &#1074;&#1098;&#1087;&#1088;&#1086;&#1089;&#1080;? &#1053;&#1072;&#1084;&#1077;&#1088;&#1077;&#1090;&#1077; &#1086;&#1090;&#1075;&#1086;&#1074;&#1086;&#1088;...';
@@ -682,6 +681,4 @@ $OVERVIEW['START'] = '&#1055;&#1088;&#1077;&#1075;&#1083;&#1077;&#1076; &#1085;&
 $OVERVIEW['TEMPLATES'] = '&#1055;&#1088;&#1086;&#1084;&#1077;&#1085;&#1080; &#1080;&#1079;&#1075;&#1083;&#1077;&#1076;&#1072; &#1085;&#1072; &#1089;&#1072;&#1081;&#1090;&#1072; &#1095;&#1088;&#1077;&#1079; &#1096;&#1072;&#1073;&#1083;&#1086;&#1085;&#1080;...';
 $OVERVIEW['USERS'] = '&#1059;&#1087;&#1088;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; &#1087;&#1086;&#1090;&#1088;&#1077;&#1073;&#1080;&#1090;&#1077;&#1083;&#1080;&#1090;&#1077; &#1084;&#1086;&#1078;&#1077;&#1097;&#1080; &#1076;&#1072; &#1074;&#1083;&#1103;&#1079;&#1072;&#1090; &#1074; WBCE CMS...';
 $OVERVIEW['VIEW'] = '&#1042;&#1080;&#1078; &#1089;&#1074;&#1086;&#1103; &#1089;&#1072;&#1081;&#1090; &#1074; &#1085;&#1086;&#1074; &#1087;&#1088;&#1086;&#1079;&#1086;&#1088;&#1077;&#1094;...';
-
-
 

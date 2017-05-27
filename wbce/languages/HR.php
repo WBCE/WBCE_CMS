@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -8,13 +8,13 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
- * Made whith help of Automated Language File tool Copyright heimsath.org 
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
-	
+
 //no direct file access
 if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
-	
+
 // Set the language information
 $language_code = 'HR';
 $language_name = 'Croatian'; // Hrvatski
@@ -22,8 +22,6 @@ $language_version = '2.8';
 $language_platform = '2.8.x';
 $language_author = 'Vedran Presecki';
 $language_license = 'GNU General Public License';
-
-	
 
 
 $MENU['ACCESS'] = 'Pristup';
@@ -47,7 +45,6 @@ $MENU['START'] = 'Start';
 $MENU['TEMPLATES'] = 'Predlo&#353;ci';
 $MENU['USERS'] = 'Korisnici';
 $MENU['VIEW'] = 'Pogled';
-
 
 
 $TEXT['ACCOUNT_SIGNUP'] = 'Logiranje na Account';
@@ -395,7 +392,11 @@ $TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
 $TEXT['THEME_SELECT_HTT'] = 'select templates';
 $TEXT['THEME_NOMORE_HTT'] = 'no more available';
 $TEXT['THEME_START_IMPORT'] = 'import';
-
+// PHP error levels (since WBCE 1.3.0)
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On requirements not met';
@@ -443,7 +444,6 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Deinstaliraj predlo&#382;ak';
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = 'Nasnimi fileove';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer Settings';
-
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
@@ -668,7 +668,6 @@ $MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme director
 $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
 
-
 $OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
 $OVERVIEW['GROUPS'] = 'Upravljajte grupama korisnika i njihovim sistemskim dopu&#353;tenjima.';
 $OVERVIEW['HELP'] = 'Imate pitanje? Prona&#240;ite odgovor...';
@@ -682,6 +681,4 @@ $OVERVIEW['START'] = 'Pregled administracije';
 $OVERVIEW['TEMPLATES'] = 'Promijenite izgled i do&#382;ivljaj va&#353;eg weba s predlo&#353;cima...';
 $OVERVIEW['USERS'] = 'Upravljajte korisnicima koji se mogu logirati na WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Brzo pogledajte i listajte Va&#353; web u novom prozoru...';
-
-
 
