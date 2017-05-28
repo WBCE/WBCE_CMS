@@ -4,10 +4,9 @@
 	<meta charset="UTF-8">
 	<title>Intro Page</title>
 	<!-- meta information for search engines -->
-	<meta http-equiv="imagetoolbar" content="no" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-	<meta name="author" content="WebsiteBaker CE" />
+	<meta name="author" content="WBCE CMS" />
 	<meta name="robots" content="index,follow" />
 	<meta http-equiv="Content-Encoding" content="gzip" />
 	<meta http-equiv="Accept-Encoding" content="gzip, deflate" />
