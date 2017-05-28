@@ -291,7 +291,7 @@ if((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES) && $field_set && file_exists(WB
             $template->set_var('FLAG_CODE_ICON',' none ');
             if( $page['parent'] == 0 )
             {
-                $template->set_var('FLAG_CODE_ICON','url('.THEME_URL.'/images/flags/'.strtolower($page['language']).'.png)');
+                $template->set_var('FLAG_CODE_ICON','url('.WB_URL.'/languages/'.strtoupper($page['language']).'.png)');
             }
 
             // If the current page cannot be parent, then its children neither
@@ -382,7 +382,7 @@ function parent_list($parent)
         $template->set_var('FLAG_ROOT_ICON',' none ');
         if( $page['parent'] == 0  && $field_set)
         {
-            $template->set_var('FLAG_ROOT_ICON','url('.THEME_URL.'/images/flags/'.strtolower($page['language']).'.png)');
+            $template->set_var('FLAG_ROOT_ICON','url('.WB_URL.'/languages/'.strtoupper($page['language']).'.png)');
         }
         // If the current page cannot be parent, then its children neither
         $list_next_level = true;
