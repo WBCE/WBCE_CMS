@@ -457,9 +457,6 @@ via the Settings panel in the backend of Website Baker
         $sRetval = $sThemeFile;
         if (file_exists(THEME_PATH . '/templates/' . $sThemeFile)) {
             $sRetval = THEME_PATH . '/templates/' . $sThemeFile;
-        } else {
-            if (file_exists(ADMIN_PATH . '/themes/templates/' . $sThemeFile)) {
-                $sRetval = ADMIN_PATH . '/themes/templates/' . $sThemeFile;
             } else {
                 throw new InvalidArgumentException('missing template file ' . $sThemeFile);
             }
