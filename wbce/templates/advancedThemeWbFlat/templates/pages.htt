@@ -7,7 +7,7 @@
   <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" align="center">
    <tr>
     <td width="70" height="20">{TEXT_TITLE}:</td>
-    <td width="240" height="20"><input type="text" name="title" style="width: 232px;" /></td>
+    <td width="240" height="20"><input type="text" name="title" style="width: 240px;" /></td>
     <td rowspan="6" valign="top" style="padding-left: 20px; padding-top: 8px;">{TEXT_ADMINISTRATORS}:
      <ul style="list-style-type: none; margin: 0; padding: 0;">
       <!-- BEGIN group_list_block -->

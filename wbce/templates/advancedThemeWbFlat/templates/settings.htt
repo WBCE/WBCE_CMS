@@ -193,7 +193,7 @@
     <td class="setting_name">{TEXT_LANGUAGE}:</td>
     <td class="setting_value" colspan="2"><select name="default_language">
       <!-- BEGIN language_list_block -->
-      <option value="{CODE}"{SELECTED}>{NAME} ({CODE})</option>
+      <option value="{CODE}"{SELECTED} style="background: url({WB_URL}/languages/{CODE}.png) no-repeat center left; margin-left: 5px; padding-left: 25px;"> ({CODE}) {NAME}</option>
       <!-- END language_list_block -->
      </select></td>
    </tr>

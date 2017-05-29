@@ -864,6 +864,7 @@ select, textarea, input[type='text'], input[type='password'] {
     padding: 4px;
     color: #738097;
     border: 1px solid #cbcfd8;
+    height: 33px;
 }
 select:focus, textarea:focus, input[type='text']:focus, input[type='password']:focus {
     background-color: #f0f5f0;

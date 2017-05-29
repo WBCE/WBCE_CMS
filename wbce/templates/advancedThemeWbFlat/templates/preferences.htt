@@ -33,7 +33,7 @@
     <div class="c60l">
      <select name="language" id="language">
       <!-- BEGIN language_list_block -->
-      <option value="{CODE}"{SELECTED}>{NAME} ({CODE})</option>
+      <option value="{CODE}"{SELECTED} style="background: url({WB_URL}/languages/{CODE}.png) no-repeat center left; margin-left: 5px; padding-left: 25px;">({CODE}) {NAME}</option>
       <!-- END language_list_block -->
      </select>
     </div>
