@@ -460,7 +460,6 @@ via the Settings panel in the backend of Website Baker
             } else {
                 throw new InvalidArgumentException('missing template file ' . $sThemeFile);
             }
-        }
         return $sRetval;
     }
 

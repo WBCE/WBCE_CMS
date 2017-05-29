@@ -72,7 +72,7 @@ $string_dir_mode = STRING_DIR_MODE;
 define('OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
 
 // GLOBAL WBCE ERROR REPORTING
-if (WB_DEBUG === true or WB_DEBUG === '1') {
+if (intval(ER_LEVEL) > 0 or ER_LEVEL=="-1") {
     // Note: define('WB_DEBUG', true) in WBCE config.php forces max. PHP error output for debugging
     error_reporting(E_ALL);
 } else {
