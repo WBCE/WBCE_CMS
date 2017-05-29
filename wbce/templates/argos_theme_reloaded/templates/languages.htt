@@ -34,7 +34,7 @@
 			<select name="code" class="wdt300">
 			<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
 			<!-- BEGIN language_list_block -->
-				<option value="{VALUE}" class="hasFlag" style="background-image: url({THEME_URL}/images/flags/{VALUE}.png);">{NAME}</option>
+				<option value="{VALUE}" class="hasFlag" style="background-image: url({WB_URL}/languages/{VALUE}.png);">{NAME}</option>
 			  <!-- END language_list_block -->
 			</select>
 		</div>
@@ -56,7 +56,7 @@
 			<select name="code" onchange="this.form.submit();" class="wdt300 bot">
 			<option value="" selected>{TEXT_PLEASE_SELECT}...</option>
 			<!-- BEGIN language_list_block -->
-				<option value="{VALUE}" class="hasFlag" style="background-image: url({THEME_URL}/images/flags/{VALUE}.png);">{NAME}</option>
+				<option value="{VALUE}" class="hasFlag" style="background-image: url({WB_URL}/languages/{VALUE}.png);">{NAME}</option>
 			  <!-- END language_list_block -->
 			</select>
 		</div>
