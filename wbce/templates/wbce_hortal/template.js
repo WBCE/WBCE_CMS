@@ -223,7 +223,7 @@ function initmobilemenu() {
 		
 		$("#nav2 li a.menu-expand").unbind('click').bind('click', function(e) {			
 			
-			if ($(this).parent("li").hasClass("is_opened") ) {return true;} //wenn schon geklickt worden, also:class is_opened link ausführen
+			if ($(this).parent("li").hasClass("is_opened") ) {return true;} //wenn schon geklickt worden, also:class is_opened link ausfÃ¼hren
 			
 			e.preventDefault();
 			$(this).toggleClass("is_opened");

@@ -58,12 +58,12 @@ function initmobilemenu() {
 	
 	ms = $("#menucheck").css('display');
 	if ( ms != 'block') {	
-		$( "a.lev0.menu-expand" ).bind( "click", function() { //an jedes a.menu-expand h‰ngen 
+		$( "a.lev0.menu-expand" ).bind( "click", function() { //an jedes a.menu-expand h√§ngen 
 			
-			if ($(this).hasClass("isopened") ) {return true;} //wenn schon geklickt worden, also:class isopened link ausf¸hren
+			if ($(this).hasClass("isopened") ) {return true;} //wenn schon geklickt worden, also:class isopened link ausf√ºhren
 			
 			$( "#nav .isopened" ).removeClass( "isopened" ); //alle li und a 
-			//also noch keine class isopened?: Annh‰ngen	
+			//also noch keine class isopened?: Annh√§ngen	
 				
 			 $(this).addClass('isopened');  
 			 $(this).parent("li.menu-expand").addClass('isopened');  
