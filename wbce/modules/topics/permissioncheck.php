@@ -72,7 +72,7 @@ if (isset($section_id)) {
 
 
 //Aus module_settings.php:
-//$authorsgroup: Die Gruppe, der Autoren angehören. 
+//$authorsgroup: Die Gruppe, der Autoren angehÃ¶ren. 
 //$noadmin_nooptions: Default: 1: Nur der Admin (Gruppe 1) kann Settings aendern
 
 $user_id = $admin->get_user_id();
@@ -95,7 +95,7 @@ if (!in_array(1, $user_in_groups)) {
 	$authoronly = false; //An admin cannot be autor only
 }
 
-//Hier könnte man abwuergen, dass ein Autor ins Backend kommt. 
+//Hier kÃ¶nnte man abwÃ¼rgen, dass ein Autor ins Backend kommt. 
 if ($authoronly == true) {$fredit = 1;} //Provisorisch
 
 if ($fredit == 1) { 
@@ -103,4 +103,5 @@ if ($fredit == 1) {
 	//Header Ausgeben
 	require(WB_PATH.'/modules/'.$mod_dir .'/inc/fredithead.php');
 }
+
 ?>

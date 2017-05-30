@@ -13,7 +13,7 @@ document.modify.header.value = '<!-- Header -->\n';
 document.modify.topics_loop.value = '<div class="mod_topic_loop mod_topic_active[ACTIVE] mod_topic_comments[COMMENTSCLASS]">\n{THUMB}\n<h3 class="mt_title">{TITLE}</h3>\n[TOPIC_SHORT] \n[READ_MORE][EDITLINK]<div style="clear:both"></div></div>\n';
 document.modify.footer.value = '{PREV_NEXT_PAGES}\n';
 document.modify.topic_header.value = '<div class="mod_topic_page">\n<h1 class="tp_headline">[TITLE]</h1>\n<p class="tp_author">[USER_DISPLAY_NAME] on [PUBL_DATE]</p>\n[USER_MODIFIEDINFO]\n<div class="tp_picture">{PICTURE}</div><div class="tp_topicshort">[TOPIC_SHORT]</div> \n<div style="clear:both"></div>\n';
-document.modify.topic_footer.value = '{SEE_ALSO}\n{SEE_PREVNEXT}\n<p class="topics-back"><a href="[BACK]">Zurück</a></p>\n[EDITLINK]\n</div>\n<hr/>\n';
+document.modify.topic_footer.value = '{SEE_ALSO}\n{SEE_PREVNEXT}\n<p class="topics-back"><a href="[BACK]">ZurÃ¼ck</a></p>\n[EDITLINK]\n</div>\n<hr/>\n';
 document.modify.topic_block2.value = '<!--see help how to use a second block -->\n<div class="topic_block2">\n{PICTURE}\n[TOPIC_SHORT]\n{SEE_ALSO}\n{SEE_PREVNEXT}\n</div>\n';
 document.modify.see_also_link_title.value = '<h4>Siehe auch:</h4>';
 document.modify.next_link_title.value = '<h4>Neuere Themen:</h4>';

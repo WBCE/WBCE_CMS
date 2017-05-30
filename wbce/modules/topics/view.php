@@ -289,7 +289,7 @@ $limit_sql = '';
 if($setting_topics_per_page == 1) { 
 	//This is a Single Topics Page, figure out the TOPIC ID
 	
-	//TODO: Das könnte bei TopicMasters Ärger machen.
+	//TODO: Das kÃ¶nnte bei TopicMasters Ã„rger machen.
 	$theq = "SELECT topic_id, link, page_id FROM ".TABLE_PREFIX."mod_".$tablename." WHERE ".$sectionquery." AND ". $qactive.$query_extra." ORDER BY ".$sort_topics_by." LIMIT 1";
 	
 	$query_topics = $database->query($theq);

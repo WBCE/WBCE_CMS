@@ -27,7 +27,7 @@ if (($query_topics->numRows()) != 1) {
 	exit("So what happend with the topic?"); 
 }
 $thistopic = $query_topics->fetchRow();
-//�berpruefung:
+//Überprüfung:
 if ($authoronly) {
 	$authors = $thistopic['authors'];
 	$pos = strpos ($authors,','.$user_id.',');

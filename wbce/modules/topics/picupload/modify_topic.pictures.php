@@ -3,7 +3,7 @@ require_once(dirname(__FILE__).'/../../../config.php');
 if(!defined('WB_PATH')) { 	die("sorry, no access..");}
 
 // Get id
-//Hier ist topic_id nicht nötig
+//Hier ist topic_id nicht nÃ¶tig
 if(isset($_REQUEST['section_id']) AND is_numeric($_REQUEST['section_id']) AND isset($_REQUEST['page_id']) AND is_numeric($_REQUEST['page_id'])  ) {
 	$section_id = (int) $_REQUEST['section_id']; 
 	$page_id = (int) $_REQUEST['page_id']; 
@@ -78,6 +78,5 @@ if ($picture_dir != '') {
 } else { 
 	echo '<p>'.$MOD_TOPICS['NO_PICTUREDIR'].'<br/><b>'.$picture_dir.'</b></p><a href="'.$helppage.'#pictures" target="_blank" class="modifytopichelp">'.$MOD_TOPICS['SEE_HELP_FILE'].'</a>'; 
 }
-	
 
 ?>

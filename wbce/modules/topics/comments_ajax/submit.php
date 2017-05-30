@@ -94,7 +94,7 @@ if(isset($_POST['page_id']) AND is_numeric($_POST['page_id']) AND isset($_POST['
 		
 		if ($commenting < 2) { //Einstellung: Moderiert
 			$active=0;					
-		} else { //Einstellung: Höher als Moderiert (Verzögert freischalten, sofort)
+		} else { //Einstellung: HÃ¶her als Moderiert (VerzÃ¶gert freischalten, sofort)
 			$active=1;			
 		} 
 		

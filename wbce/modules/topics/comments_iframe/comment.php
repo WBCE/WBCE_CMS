@@ -83,7 +83,7 @@ if($res->numRows() == 0) {
 	// don't allow commenting if its disabled, or if post or group is inactive
 	//--------------------------------------------------------
 	//ausgeschaltet:
-	//Topics können auch kommentiert werden, wenn Seiten nicht aktiv sind.
+	//Topics kÃ¶nnen auch kommentiert werden, wenn Seiten nicht aktiv sind.
 	
 	/*
 	$t = time();
