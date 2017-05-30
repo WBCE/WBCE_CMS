@@ -60,7 +60,7 @@ switch ($wb->get_post('action')) {
 }
 
 // show template
-$template->set_file('page', 'template.html');
+$template->set_file('page', 'template.php');
 $template->set_block('page', 'main_block', 'main');
 // get existing values from database
 $sql = "SELECT display_name,email FROM " . TABLE_PREFIX . "users WHERE user_id = '" . $wb->get_user_id() . "'";
