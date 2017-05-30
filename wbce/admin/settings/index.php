@@ -153,10 +153,11 @@ if($is_advanced)
         while($addon = $result->fetchRow()) {
             $langIcons = (empty($addon['directory'])) ? 'none' : strtolower($addon['directory']);
 
-            $template->set_var('CODE',        $addon['directory']);
-            $template->set_var('NAME',        $addon['name']);
-            $template->set_var('FLAG',        THEME_URL.'/images/flags/'.$langIcons);
-            $template->set_var('SELECTED',    (DEFAULT_LANGUAGE == $addon['directory'] ? ' selected="selected"' : '') );
+            $template->set_var('CODE', $addon['directory']);
+            $template->set_var('NAME', $addon['name']);
+            $template->set_var('FLAG', WB_URL.'/languages/'.$langIcons);
+            $template->set_var('FLAG_ROOT_ICON','url('.WB_URL.'/languages/'.strtoupper($page['language']).'.png)');
+            $template->set_var('SELECTED', (DEFAULT_LANGUAGE == $addon['directory'] ? ' selected="selected"' : '') );
             $template->parse('language_list', 'language_list_block', true);
         }
     }

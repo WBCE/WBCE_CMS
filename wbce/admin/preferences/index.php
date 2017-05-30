@@ -53,10 +53,11 @@ function build_page( &$admin, &$database )
         while( $rec_lang = $res_lang->fetchRow() )
         {
             $langIcons = (empty($rec_lang['directory'])) ? 'none' : strtolower($rec_lang['directory']);
-            $template->set_var('CODE',        $rec_lang['directory']);
-            $template->set_var('NAME',        $rec_lang['name']);
-            $template->set_var('FLAG',        THEME_URL.'/images/flags/'.$langIcons);
-            $template->set_var('SELECTED',    (LANGUAGE == $rec_lang['directory'] ? ' selected="selected"' : '') );
+            $template->set_var('CODE', $rec_lang['directory']);
+            $template->set_var('NAME', $rec_lang['name']);
+            $template->set_var('FLAG', WB_URL.'/languages/'.$langIcons);
+            $template->set_var('FLAG_ROOT_ICON','url('.WB_URL.'/languages/'.strtoupper($page['language']).'.png)');
+            $template->set_var('SELECTED', (LANGUAGE == $rec_lang['directory'] ? ' selected="selected"' : '') );
             $template->parse('language_list', 'language_list_block', true);
         }
     }

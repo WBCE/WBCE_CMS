@@ -148,7 +148,7 @@ function parent_list($parent){
         // if parent = 0 set flag_icon
         $template->set_var('FLAG_ROOT_ICON',' none ');
         if( $page['parent'] == 0 && $field_set) {
-            $template->set_var('FLAG_ROOT_ICON','url('.THEME_URL.'/images/flags/'.strtolower($page['language']).'.png)');
+            $template->set_var('FLAG_ROOT_ICON','url('.WB_URL.'/languages/'.strtoupper($page['language']).'.png)');
         }
         // Stop users from adding pages with a level of more than the set page level limit
         if($page['level']+1 < PAGE_LEVEL_LIMIT) {

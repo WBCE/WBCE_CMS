@@ -545,7 +545,7 @@ if( ($res_languages = $database->query($sql)) )
         $template->set_var(array(
                                 'VALUE' => $l_codes[$l_name],
                                 'NAME' => $l_name,
-                                'FLAG_LANG_ICONS' => 'url('.THEME_URL.'/images/flags/'.$langIcons.'.png)',
+                                'FLAG_LANG_ICONS' => 'url('.WB_URL.'/languages/'.$langIcons.'.png)',
                                 ));
         // Check if it is selected
         if($results_array['language'] == $l_codes[$l_name])
