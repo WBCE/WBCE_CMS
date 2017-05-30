@@ -1,3 +1,1 @@
-<?php
-// no directory access
-header("Location: ../index.php",TRUE,301);
+<?php header("Location: ../index.php",true,301);

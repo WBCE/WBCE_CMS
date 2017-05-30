@@ -34,7 +34,7 @@ if(typeof loadcss != "function"){
 
 
 if(typeof jQuery != "function"){
-	head.js("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js");
+	head.js("//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js");
 }
 
 
@@ -103,5 +103,3 @@ head.ready(function() {
                                                 iframe:true
                                                 });
 });
-
-
