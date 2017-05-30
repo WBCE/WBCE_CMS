@@ -90,8 +90,6 @@ $TEXT['CHECKBOX_GROUP'] = 'Checkbox Group';
 $TEXT['CLOSE'] = 'Close';
 $TEXT['CODE'] = 'Code';
 $TEXT['CODE_SNIPPET'] = 'Code-snippet';
-$TEXT['INITIALIZE'] = 'Initialize';
-$TEXT['PREINIT'] = 'Pre-Initialize';
 $TEXT['COLLAPSE'] = 'Collapse';
 $TEXT['COMMENT'] = 'Comment';
 $TEXT['COMMENTING'] = 'Commenting';
@@ -101,7 +99,6 @@ $TEXT['CURRENT'] = 'Current';
 $TEXT['CURRENT_FOLDER'] = 'Current Folder';
 $TEXT['CURRENT_PAGE'] = 'Current Page';
 $TEXT['CURRENT_PASSWORD'] = 'Current Password';
-$TEXT['NEW_PASSWORD'] = 'New Password';
 $TEXT['CUSTOM'] = 'Custom';
 $TEXT['DATABASE'] = 'Database';
 $TEXT['DATE'] = 'Date';
@@ -194,7 +191,6 @@ $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. Submissions Per Hour';
 $TEXT['MEDIA_DIRECTORY'] = 'Media Directory';
 $TEXT['MENU'] = 'Menu';
 $TEXT['FILENAME'] = 'Filename';
-$TEXT['HINT_FILENAME'] = 'You can also enter a complete URL (z.B. http://www.wbce.org) instead';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Menu Title';
@@ -388,6 +384,14 @@ $TEXT['WYSIWYG_STYLE'] = 'WYSIWYG Style';
 $TEXT['YES'] = 'Yes';
 $TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
 $TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
+$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
+$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
+$TEXT['THEME_CURRENT'] = 'current active theme';
+$TEXT['THEME_START_COPY'] = 'copy';
+$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
+$TEXT['THEME_SELECT_HTT'] = 'select templates';
+$TEXT['THEME_NOMORE_HTT'] = 'no more available';
+$TEXT['THEME_START_IMPORT'] = 'import';
 // PHP error levels (since WBCE 1.3.0)
 $TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
 $TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
@@ -440,8 +444,6 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Uninstall Template';
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = 'Upload File(s)';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer Settings';
-$HEADING['FRONTEND'] = 'Frontend';
-$HEADING['BACKEND'] = 'Backend';
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
@@ -468,7 +470,6 @@ $MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'Already installed';
 $MESSAGE['GENERIC_BAD_PERMISSIONS'] = 'Unable to write to the target directory';
 $MESSAGE['GENERIC_BE_PATIENT'] = 'Please be patient.';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Unistalling this module failed or is not allowed.';
-$MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES'] = 'Cannot uninstall core modules!';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE'] = 'Cannot Uninstall: the selected file is in use';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'] = '<br /><br />{{type}} <b>{{type_name}}</b> could not be uninstalled, because it is still in use on {{pages}}.<br /><br />';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES'] = 'this page;these pages';
@@ -553,7 +554,6 @@ $MESSAGE['PAGES_ADDED'] = 'Page added successfully';
 $MESSAGE['PAGES_ADDED_HEADING'] = 'Page heading added successfully';
 $MESSAGE['PAGES_BLANK_MENU_TITLE'] = 'Please enter a menu title';
 $MESSAGE['PAGES_BLANK_PAGE_TITLE'] = 'Please enter a page title';
-$MESSAGE['PAGES_BLANK_LINK_TITLE'] = 'Please enter a file name or a link (incl. http://)';
 $MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE'] = 'Error creating access file in the /pages directory (insufficient privileges)';
 $MESSAGE['PAGES_CANNOT_DELETE_ACCESS_FILE'] = 'Error deleting access file in the /pages directory (insufficient privileges)';
 $MESSAGE['PAGES_CANNOT_REORDER'] = 'Error re-ordering page';
@@ -564,7 +564,6 @@ $MESSAGE['PAGES_INTRO_LINK'] = 'Click HERE to modify the intro page';
 $MESSAGE['PAGES_INTRO_NOT_WRITABLE'] = 'Cannot write to file /pages/intro.php (insufficient privileges)';
 $MESSAGE['PAGES_INTRO_SAVED'] = 'Intro page saved successfully';
 $MESSAGE['PAGES_LAST_MODIFIED'] = 'Last modification by';
-$MESSAGE['PAGES_LAST_MODIFICATION'] = 'Last modification by';
 $MESSAGE['PAGES_NOT_FOUND'] = 'Page not found';
 $MESSAGE['PAGES_NOT_SAVED'] = 'Error saving page';
 $MESSAGE['PAGES_PAGE_EXISTS'] = 'A page with the same or similar title exists';
@@ -597,9 +596,7 @@ E-Mail: {LOGIN_EMAIL}
 IP-Adress: {LOGIN_IP}
 Registration date: {SIGNUP_DATE}
 ----------------------------------------
-This message was automatic generated!
-
-';
+This message was automatic generated!';
 $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
@@ -618,9 +615,7 @@ Please remember to clean you browser-cache before using the new one to avoid une
 
 Regards
 ------------------------------------
-This message was automatic generated
-
-';
+This message was automatic generated';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
@@ -635,8 +630,7 @@ Regards
 Please:
 if you have received this message by an error, please delete it immediately!
 -------------------------------------
-This message was automatic generated!
-';
+This message was automatic generated!';
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Your login details...';
 $MESSAGE['SIGNUP_NO_EMAIL'] = 'You must enter an email address';
 $MESSAGE['START_CURRENT_USER'] = 'You are currently logged in as:';
@@ -664,13 +658,14 @@ $MESSAGE['USERS_NAME_INVALID_CHARS'] = 'Invalid chars for loginname found';
 $MESSAGE['USERS_NO_GROUP'] = 'No group was selected';
 $MESSAGE['USERS_PASSWORD_MISMATCH'] = 'The passwords you entered do not match';
 $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'The password you entered was too short';
-$MESSAGE['USERS_PASSWORD_TOO_LONG'] = 'The password you entered was too long';
-$MESSAGE['USERS_PASSWORD_INVALID_TYPE'] = 'The password you entered was of an invalid type(Array, Object...)';
-$MESSAGE['USERS_PASSWORD_EMPTY'] = 'The password you entered was of an invalid type(Array, Object...)';
-$MESSAGE['USERS_PASSWORD_INCORRECT'] = 'The (current) password you entered is incorrect';
 $MESSAGE['USERS_SAVED'] = 'User saved successfully';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';
+$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
+$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
+$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
+$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
+$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
 
 $OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';
@@ -686,21 +681,4 @@ $OVERVIEW['START'] = 'Administration overview';
 $OVERVIEW['TEMPLATES'] = 'Change the look and feel of your website with templates...';
 $OVERVIEW['USERS'] = 'Manage users who can log-in to WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Quickly view and browse your website in a new window...';
-
-
-$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
-$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
-$TEXT['THEME_CURRENT'] = 'current active theme';
-$TEXT['THEME_START_COPY'] = 'copy';
-$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
-$TEXT['THEME_SELECT_HTT'] = 'select templates';
-$TEXT['THEME_NOMORE_HTT'] = 'no more available';
-$TEXT['THEME_START_IMPORT'] = 'import';
-
-
-$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
-$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
-$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
-$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
-$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 

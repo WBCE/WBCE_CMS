@@ -191,7 +191,6 @@ $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. Eintragungen pro Stunde';
 $TEXT['MEDIA_DIRECTORY'] = 'Medienverzeichnis';
 $TEXT['MENU'] = 'Men&#252;';
 $TEXT['FILENAME'] = 'Dateiname';
-$TEXT['HINT_FILENAME'] = 'Alternativ kann eine komplette URL (z.B. http://www.wbce.org) angegeben werden';
 $TEXT['MENU_ICON_0'] = 'Men&#252;-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Men&#252;-Icon mouseover';
 $TEXT['MENU_TITLE'] = 'Men&#252;titel';
@@ -217,7 +216,6 @@ $TEXT['NO'] = 'Nein';
 $TEXT['NONE'] = 'Keine';
 $TEXT['NONE_FOUND'] = 'Nichts gefunden';
 $TEXT['NOT_FOUND'] = 'Nicht gefunden';
-$MENU['NOT_FOUND'] = 'Nicht gefunden';
 $TEXT['NOT_INSTALLED'] = 'nicht installiert';
 $TEXT['NO_IMAGE_SELECTED'] = 'Kein Bild ausgew&#228;hlt';
 $TEXT['NO_RESULTS'] = 'Keine Ergebnisse';
@@ -556,7 +554,6 @@ $MESSAGE['PAGES_ADDED'] = 'Die Seite wurde erfolgreich hinzugef&#252;gt';
 $MESSAGE['PAGES_ADDED_HEADING'] = 'Seitenkopf erfolgreich hinzugef&#252;gt';
 $MESSAGE['PAGES_BLANK_MENU_TITLE'] = 'Bitte geben Sie einen Men&#252;titel ein';
 $MESSAGE['PAGES_BLANK_PAGE_TITLE'] = 'Bitte geben Sie einen Titel f&#252;r die Seite ein';
-$MESSAGE['PAGES_BLANK_LINK_TITLE'] = 'Bitte geben Sie einen Dateinamen oder eine URL (inkl. http://) ein';
 $MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE'] = 'Das Accessfile konnte im Seiten-Verzeichnis nicht angelegt werden (ungen&#252;gende Schreibrechte?)';
 $MESSAGE['PAGES_CANNOT_DELETE_ACCESS_FILE'] = 'Das Accessfile konnte im Seiten-Verzeichnis nicht gel&#246;scht werden (ungen&#252;gende Schreibrechte?)';
 $MESSAGE['PAGES_CANNOT_REORDER'] = 'Bei der Zusammenstellung der Seite ist ein Fehler aufgetreten';
@@ -567,7 +564,6 @@ $MESSAGE['PAGES_INTRO_LINK'] = 'Vorschaltseite bearbeiten';
 $MESSAGE['PAGES_INTRO_NOT_WRITABLE'] = 'Die Vorschaltseite konnte nicht bearbeitet werden (ungen&#252;gende Schreibrechte?)';
 $MESSAGE['PAGES_INTRO_SAVED'] = 'Vorschaltseite wurde erfolgreich gespeichert';
 $MESSAGE['PAGES_LAST_MODIFIED'] = 'Die letzte &#196;nderung wurde durchgef&#252;hrt von';
-$MESSAGE['PAGES_LAST_MODIFICATION'] = 'Letzte &#196;nderung';
 $MESSAGE['PAGES_NOT_FOUND'] = 'Die Seite wurde nicht gefunden';
 $MESSAGE['PAGES_NOT_SAVED'] = 'Fehler beim Speichern der Seite';
 $MESSAGE['PAGES_PAGE_EXISTS'] = 'Eine Seite mit diesem Titel existiert bereits';
@@ -627,6 +623,14 @@ Passwort: {LOGIN_PASSWORD}
 
 ----------------------------------------
 Diese E-Mail wurde automatisch erstellt&#33;&#10;';
+
+
+
+
+
+
+
+
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Ihre Anmeldedaten';
 $MESSAGE['SIGNUP_NO_EMAIL'] = 'Bitte geben Sie Ihre E-Mail-Adresse an';
 $MESSAGE['START_CURRENT_USER'] = 'Sie sind angemeldet als:';
