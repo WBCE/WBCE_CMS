@@ -10,4 +10,4 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$module_description = 'Dieses Modul integriert show_menu2() in WBCE CMS. Detaillierte Informationen gibt es in der <a href="{WB_URL}/modules/show_menu2/README.de.txt" target="_blank">README</a> Datei.';
+$module_description = 'This module integrates show_menu2 () into WBCE CMS. Detailed information is available in the file <a href="{WB_URL}/modules/show_menu2/README.en.txt" target="_blank">README</a> file.';
