@@ -13,12 +13,17 @@
  * @lastmodified    $Date: 2012-02-16 13:12:17 +0100 (Do, 16. Feb 2012) $
  *
  */
+ 
 /*
 Database class
 This class will be used to interface between the database
 and the Website Baker code
  */
-
+ 
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+ 
+ 
 // define the old mysql consts for Backward compatibility
 if (!defined('MYSQL_ASSOC')) {
     define('MYSQL_ASSOC', 1);
@@ -73,11 +78,90 @@ class database
             $this->connected = true;
             //added cause of problems whith mysql strict mode
             mysqli_query($this->db_handle,"SET @@sql_mode=''");
-        
         }
         return $this->connected;
     }
+    
 
+     /**
+     * Update row.
+     *
+     * @param string $table
+     * @param string $primaryKey
+     * @param array  $data
+     *
+     * @return Result
+     *
+     * @throws DatabaseException
+     */
+    function updateRow($table = '', $primaryKey = '', $data = array()){
+        $retVal = false;
+        if (isset($data[$primaryKey])) {
+            $parameters = array();
+            foreach ($data as $column => $value) {
+                $parameters[] = "`".trim($column)."` = '".$value."', ";             
+            }
+            $sValues = implode("", $parameters);
+            $sValues = substr($sValues, 0, -2);
+            $sqlRowCheck = "SELECT COUNT(*) FROM `".$table."` WHERE `".$primaryKey."` = '".$data[$primaryKey]."'";
+            if ($this->get_one($sqlRowCheck)) {
+                $strQuery = sprintf("UPDATE `%s` SET %s WHERE `%s` = '%s'", $table, $sValues, $primaryKey, $data[$primaryKey]);
+            } else { 
+                $strQuery =  sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
+            }
+            if($this->query($strQuery)){                    
+                $retVal = true; 
+            }else{ 
+                $retVal = $this->get_error();
+            }
+        }
+        return $retVal;
+    }
+    
+    
+    /**
+     * Insert row.
+     *
+     * @param string $table
+     * @param array  $data
+     *
+     * @return Result
+    */
+    public function insertRow($table, array $data)
+    {
+        $retVal = false;
+        $parameters = array();
+        foreach ($data as $column => $value) {
+            $parameters[] = "`".trim($column)."` = '".$value."', ";             
+        }
+        $sValues = implode("", $parameters);
+        $sValues = substr($sValues, 0, -2);
+        $strQuery =  sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
+        if($this->query($strQuery)){                    
+            $retVal = true; 
+        }else{ 
+            $retVal = $this->get_error();
+        }
+        return $retVal;
+    }
+    
+    
+    /**
+     * Replace placeholder with table prefix.
+     *
+     * @param string $statement
+     *
+     * @return string
+     */
+    protected function replaceTablePrefix($statement)
+    {
+        if(strpos($statement, '{T') !== false) {
+            $statement = str_replace(array('{TABLE_PREFIX}', '{TP}'), TABLE_PREFIX, $statement);
+        }
+        return $statement;
+    }   
+    
+       
     // Disconnect from the database
     public function disconnect()
     {
@@ -93,6 +177,7 @@ class database
     public function query($statement)
     {
         $mysql = new mysql($this->db_handle);
+        $statement = $this->replaceTablePrefix($statement);
         $mysql->query($statement);
         $this->set_error($mysql->error());
         if ($mysql->error()) {
@@ -102,9 +187,11 @@ class database
         }
     }
 
+
     // Gets the first column of the first row
     public function get_one($statement)
     {
+        $statement = $this->replaceTablePrefix($statement);
         $q = mysqli_query($this->db_handle, $statement);
         if ($q === false) {
             $this->set_error(mysqli_error($this->db_handle));
@@ -187,9 +274,11 @@ class database
  */
     public function field_exists($table_name, $field_name)
     {
-        $sql = 'DESCRIBE `' . $table_name . '` `' . $field_name . '` ';
-        $query = $this->query($sql);
-        return ($query->numRows() != 0);
+        $sql="SHOW COLUMNS FROM `$table_name` LIKE '$field_name'";
+        $result = $this->query($sql);
+        if (!$result) return false;
+        $exists = ($result->numRows())?true:false;
+        return $exists;
     }
 
 /*
@@ -326,12 +415,12 @@ class database
     public function SqlImport($sSqlDump,
         $sTablePrefix = '',
         $bPreserve = true,
-        $sTblEngine = 'ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
+        $sTblEngine = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
         $sTblCollation = ' collate utf8_unicode_ci') {
         $retval = true;
         $this->error = '';
-        $aSearch = array('{TABLE_PREFIX}', '{TABLE_ENGINE}', '{TABLE_COLLATION}');
-        $aReplace = array($sTablePrefix, $sTblEngine, $sTblCollation);
+        $aSearch = array('{TP}','{TABLE_PREFIX}', '{TABLE_ENGINE}', '{TABLE_COLLATION}');
+        $aReplace = array($sTablePrefix,$sTablePrefix, $sTblEngine, $sTblCollation);
         $sql = '';
         $aSql = file($sSqlDump);
         while (sizeof($aSql) > 0) {
