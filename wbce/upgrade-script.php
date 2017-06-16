@@ -10,6 +10,9 @@
  * @license GNU GPL2 (or any later version)
  */
 
+if (!defined("W_UPGRADE_SCRIPT"))define ("W_UPGRADE_SCRIPT",  true) ;
+ 
+ 
 // function to extract var/value-pair from DB
 function db_get_key_value($table, $key)
 {
@@ -754,4 +757,7 @@ if (defined('ADMIN_URL')) {
 }
 
 echo '<br /><br /></div></body></html>';
+
+// Finally, destroy the session.
+session_destroy();
 

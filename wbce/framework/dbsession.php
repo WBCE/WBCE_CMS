@@ -29,126 +29,244 @@
     Cron Scripts on some Debian derivates killing sessions after 24 Minutes ignoring all Settings. 
     
     I am not too happy whith this 2 Classes Solution , but it will fix the problems for now. 
+    The second  Class used is class WbSession. (wbsession.php)  
     
     Setting the Return Values to true is a bad bad fix for PHP 7  but the only avaiable 
     http://stackoverflow.com/questions/34117651/php7-symfony-2-8-failed-to-write-session-data
     https://github.com/snc/SncRedisBundle/blob/master/Session/Storage/Handler/RedisSessionHandler.php 
+        
 */
 
 class DbSession
 {
-  private $alive = true;
-  private $database = NULL;
+    private $alive = true;
+    private $database = NULL;
+       
+    /**
+        @brief The constructor fetches the global DB session and sets the save handlers
+        
+        If we are in an install or upgrade process we fall back to basic session functionality. 
+        So the constructor stops after installing the DB table.  
+        
+        In other use cases the session is started here too. 
+        Here we do not want the session to be initialized here.   
+    */
+    public function __construct()
+    {   
+        $this->fetchGlobalDbInstanceOrDie ();
+
+        // We are installing somehow ?
+        if (defined("W_UPGRADE_SCRIPT") OR defined("W_INSTALLER")) {
+            $this->createDbTablesIfNotThere ();
+        }
+        else {
+            // Set session handler to overide PHP default
+            session_set_save_handler(
+                array(&$this, 'open'),
+                array(&$this, 'close'),
+                array(&$this, 'read'),
+                array(&$this, 'write'),
+                array(&$this, 'destroy'),
+                array(&$this, 'clean')     // Garbage collection gc
+            );     
+        }
+        
+        // Start the session // not starting it here  at all 
+        // session_start();
+    }
+    
+    /**
+        @brief Destructor to handle script end  
+        
+        Store the session if the script ends for some reason.   
+    */
+    public function __destruct()
+    {
+        if($this->alive)
+        {
+        session_write_close();
+        $this->alive = false;
+        }
+    }
+    
+    
+    /**
+        @brief Handler: Delete Session
+        
+        Delete session cookie and the destroy session
+    */
+    public function delete()
+    {
+    
+        // Inactivate/Delete Cookies if used
+        if(ini_get('session.use_cookies'))
+        {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params['path'], $params['domain'],
+            $params['secure'], $params['httponly']
+        );
+        }
+    
+        // Triggers the destroy Method 
+        session_destroy();
+    
+        $this->alive = false;
+    }
  
-  public function __construct()
-  {   
-  
-  
-    // Set handler to overide SESSION 
-    session_set_save_handler(
-      array(&$this, 'open'),
-      array(&$this, 'close'),
-      array(&$this, 'read'),
-      array(&$this, 'write'),
-      array(&$this, 'destroy'),
-      array(&$this, 'clean'));     // Garbage collection gc
+    /**
+        @brief Handler: Open Session
+        
+        As DB is connected by the constructor we need to do nothing here.
+    */
+    public function open()
+    {        
+        return true;
+    }
+    
+    /**
+        @brief Handler: Close Session
+        
+        We do not need to disconnect DB here as we only use a DB handle from outside.
+    */
+    public  function close()
+    { 
+        return true;
+    }
+    
+    /**
+        @brief Handler: Read Session
+        
+        Read session data from DB 
+    */
+    public  function read($sid)
+    {
+        $sql = "SELECT `data` FROM `{TP}dbsessions` WHERE `id` = '".$this->database->escapeString($sid)."' LIMIT 1";
+        $res = $this->database->query($sql);
+        if($this->database->is_error()) return '';
+        if($res->numRows() == 1)
+        {
+        $fields = $res->fetchRow();
+    
+        return $fields['data'];
+        }
+        else
+        {
+        return '';
+        }
+    }
+
+    
+    /**
+        @brief Handler: Write Session
+        
+        Write session data to DB 
+    */    
+    public  function write($sid, $data)
+    {
+        $user=WSession::get('USER_ID');
+        if (!is_numeric($user)) $user='0';
+        $sql = "REPLACE INTO `{TP}dbsessions` (`id`, `data`, `user`) 
+        VALUES ('".$this->database->escapeString($sid)."', '".$this->database->escapeString($data)."', '$user')";
+        $this->database->query($sql);
+        
+        return true;
+    }
+
+    
+    /**
+        @brief Handler: Destroy Session
+        
+        Delete session and its entire data to DB 
+    */   
+    public function destroy($sid)
+    {
+        $sql = "DELETE FROM `{TP}dbsessions` WHERE `id` = '".$this->database->escapeString($sid)."'"; 
+        $this->database->query($sql);
+    
+        $_SESSION = array();
     
         
-    // Start the session // not starting it here  at all 
-    // session_start();
-  }
- 
-  public function __destruct()
-  {
-    if($this->alive)
-    {
-      session_write_close();
-      $this->alive = false;
+        return true;
     }
-  }
- 
-  public function delete()
-  {
-  
-    // Inactivate/Delete Cookies if used
-    if(ini_get('session.use_cookies'))
-    {
-      $params = session_get_cookie_params();
-      setcookie(session_name(), '', time() - 42000,
-        $params['path'], $params['domain'],
-        $params['secure'], $params['httponly']
-      );
-    }
- 
-    session_destroy();
- 
-    $this->alive = false;
-  }
- 
-  public function open()
-  {    
-    // fetch database instance
-    global $database;
 
-    // Store to this class
-    $this->database=$database;
- 
-    return true;
-  }
- 
-  public  function close()
-  { 
-    // We do not need to disconnect DB here as we only use a DB handle from outside
-    return true;
-  }
- 
-  public  function read($sid)
-  {
-    $sql = "SELECT `data` FROM `{TP}dbsessions` WHERE `id` = '".$this->database->escapeString($sid)."' LIMIT 1";
-    $res = $this->database->query($sql);
-    if($this->database->is_error()) return '';
-    if($res->numRows() == 1)
+    /**
+        @brief Handler: Clean Session
+        
+        Delete session and its entire data if lifetime has exeded.  
+    */   
+    public function clean($expire)
     {
-      $fields = $res->fetchRow();
- 
-      return $fields['data'];
+        $expire = ini_get("session.gc_maxlifetime");
+        
+        if (Settings::Get ("wb_session_timeout") !==false){
+            $expire = Settings::Get ("wb_session_timeout");
+        }
+        elseif (Settings::Get ("wb_secform_timeout") !==false){
+            $expire = Settings::Get ("wb_secform_timeout");
+        }
+        $q = "DELETE FROM `{TP}dbsessions` WHERE DATE_ADD(`last_accessed`, INTERVAL ".(int) $expire." SECOND) < NOW()"; 
+        $this->database->query($q);
+    
+        return true;
     }
-    else
+    
+
+    //////////////////////////////////////////////
+    // Helper Functions
+
+    /**
+        @brief protected function to check if DB tables are existing. 
+        
+        @todo Move this thing to class Db 
+        
+        @param string $sTableName Name of the table to look for 
+        @return boolean TRUE on Table exists FALSE otherwise
+    */
+    protected function checkDbTableExist ($sTableName)
     {
-      return '';
+        $sql=" SHOW TABLES LIKE '{$sTableName}'";
+        $result = $this->database->query($sql);
+        if($result->num_rows == 1) return true;
+        return false;  
     }
-  }
- 
-  public  function write($sid, $data)
-  {
-    $user=WbSession::get('USER_ID');
-    if (!is_numeric($user)) $user='0';
-    $sql = "REPLACE INTO `{TP}dbsessions` (`id`, `data`, `user`) 
-    VALUES ('".$this->database->escapeString($sid)."', '".$this->database->escapeString($data)."', '$user')";
-    $this->database->query($sql);
     
-    return true;
-  }
- 
-  public  function destroy($sid)
-  {
-    $sql = "DELETE FROM `{TP}dbsessions` WHERE `id` = '".$this->database->escapeString($sid)."'"; 
-    $this->database->query($sql);
- 
-    $_SESSION = array();
- 
+    /**
+        @brief protected function to create DB tables if they do not exist. 
+    */
+    protected function createDbTablesIfNotThere ()
+    {    
+        $sql="
+            CREATE TABLE IF NOT EXISTS `{TP}dbsessions` (
+                `id` char(32) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id',
+                `data` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Data',
+                `last_accessed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last timestamp',
+                `user` int(11) NOT NULL COMMENT 'User Id',
+                PRIMARY KEY (`id`),
+                INDEX (`last_accessed`),
+                INDEX (`user`) 
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='WBCE Session Table';
+        ";
+        $this->database->query($sql);   
+    }
     
-    return true;
-  }
- 
-  public  function clean($expire)
-  {
-    if (Settings::Get ("wb_secform_timeout") !==false)
-        $expire=Settings::Get ("wb_secform_timeout");
-    $q = "DELETE FROM `{TP}dbsessions` WHERE DATE_ADD(`last_accessed`, INTERVAL ".(int) $expire." SECOND) < NOW()"; 
-    $this->database->query($q);
- 
-    return true;
-  }
+    
+    /**
+        @brief Fetch the global DB instance, die if there is none.   
+    */
+    protected function fetchGlobalDbInstanceOrDie ()
+    {
+        // fetch database instance
+        global $database;
+        
+        if (!is_object ($database)){ 
+            die('DBSession $database is no resource (DbConnection)');
+        }
+        
+        // Store to this class
+        $this->database=$database;
+    }
+    
+    
 } 
 
