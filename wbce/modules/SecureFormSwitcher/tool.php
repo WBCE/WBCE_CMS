@@ -69,7 +69,10 @@ if($saveSettings) {
     else $setError.=$SFS['TOKENNAME_ERR'];
 
     $timeout=$admin->get_post("timeout");
-    if (preg_match("/^[0-9]{1,5}$/u", $timeout)) $setError.=Settings::Set ("wb_secform_timeout", $timeout);
+    if (preg_match("/^[0-9]{1,5}$/u", $timeout)){ 
+        $setError.=Settings::Set ("wb_secform_timeout", $timeout);
+        $setError.=Settings::Set ("wb_session_timeout", $timeout);
+    }
     else $setError.=$SFS['TIMEOUT_ERR'];
 
     $secret=$admin->get_post("secret");
@@ -93,6 +96,7 @@ if($saveSettings) {
     $setError=Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg");
     $setError=Settings::Set ("wb_secform_secrettime", '86400');
     $setError=Settings::Set ("wb_secform_timeout", '7200');
+    $setError=Settings::Set ("wb_session_timeout", '7200');
     $setError=Settings::Set ("wb_secform_tokenname", 'formtoken');
     $setError=Settings::Set ("wb_secform_usefp", false);
     $setError=Settings::Set ("fingerprint_with_ip_octets", "2");

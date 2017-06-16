@@ -8,10 +8,10 @@
  */
 
 //Module description
-$module_description = 'Einige Zusatzeinstellungen f&uuml;r den Formular- und CSRF-Schutz.';
+$module_description = 'Einige Zusatzeinstellungen f&uuml;r  die Sicherheit';
 
-$SFS['HEADER'] =      'Formular- und CSRF-Einstellungen.';
-$SFS['DESCRIPTION'] = 'Hier k&ouml;nnen sie die Sicherheit f&uuml;r Formulare erh&ouml;hen und weitere Einstellungen vornehmen';
+$SFS['HEADER'] =      'Extra Sicherheitseinstellungen ';
+$SFS['DESCRIPTION'] = 'Hier k&ouml;nnen Sie weitere  Sicherheitseistellungen vornehmen';
 
 // Backend variables
 $SFS['SUBMIT'] = 'Speichern';
@@ -42,8 +42,8 @@ $SFS['SECRETTIME'] = 'Secrettime [0-9] 1-5 Zeichen';
 $SFS['SECRETTIME_TTIP'] = '<em>Hilfe</em>Zeit (in Sekunden), bis der Secret-Schl&uuml;ssel sich erneuert.';
 $SFS['SECRETTIME_ERR'] = 'Secrettime darf nur Zahlen enthalten und max. 5 Stellen lang sein';
 
-$SFS['TIMEOUT'] = 'Timeout [0-9] 1-5 Zeichen';
-$SFS['TIMEOUT_TTIP'] = '<em>Hilfe</em>Zeit (in Sekunden), bis ein Formular-Token nicht mehr gilt.';
+$SFS['TIMEOUT'] = 'Session/Token Timeout [0-9] 1-5 Zeichen';
+$SFS['TIMEOUT_TTIP'] = '<em>Hilfe</em>Zeit (in Sekunden), bis die Formular-Token und die Session ihre G&uuml;ltigkeit verlieren.';
 $SFS['TIMEOUT_ERR'] = 'Timeout darf nur Zahlen enthalten und max. 5 Stellen lang sein';
 
 $SFS['USEFP'] = 'Fingerprinting';

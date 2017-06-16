@@ -15,4 +15,4 @@ $msg = '';
 // Del old switch as now there is only one.
 Settings::Del ("secure_form_module");
 
-
+$setError=Settings::Set ("wb_session_timeout", WB_SECFORM_TIMEOUT);

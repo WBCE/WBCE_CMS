@@ -8,10 +8,10 @@
  */
 
 //Module description
-$module_description = 'This module offers a few additional security settings to refine your CSRF and form protection.';
+$module_description = 'This module offers a few additional security settings.';
 
-$SFS['HEADER'] =      'Security settings for CSRF protection and forms.';
-$SFS['DESCRIPTION'] = 'You can increase your security settings for your forms (CSRF protection)';
+$SFS['HEADER'] =      'More Security settings .';
+$SFS['DESCRIPTION'] = 'Here we have a few additional security settings';
 
 // Backend variables
 $SFS['SUBMIT'] = 'Accept';
@@ -42,8 +42,8 @@ $SFS['SECRETTIME'] = 'Secrettime [0-9] 1-5 characters';
 $SFS['SECRETTIME_TTIP'] = '<em>Help</em>Time (in seconds), until the secret-key will be renewed.';
 $SFS['SECRETTIME_ERR'] = "Secrettime not saved: Only 0-9 and between 1 to 5 characters<br />\n";
 
-$SFS['TIMEOUT'] = 'Timeout [0-9] 1-5 characters';
-$SFS['TIMEOUT_TTIP'] = '<em>Help</em>Time (in seconds), until the form-token becomes invalid.';
+$SFS['TIMEOUT'] = 'Session/token Timeout [0-9] 1-5 characters';
+$SFS['TIMEOUT_TTIP'] = '<em>Help</em>Time (in seconds), until the form-token and sessions becomes invalid.';
 $SFS['TIMEOUT_ERR'] = "Timeout not saved : Only 0-9 and between 1 to 5 characters<br />\n";
 
 $SFS['USEFP'] = 'Fingerprinting';
