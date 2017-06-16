@@ -46,7 +46,7 @@ SanitizeHttpReferer();
 date_default_timezone_set('UTC');
 
 // register WB Autoloader 
-require WB_PATH . "/framework/class.autoload.php"; 
+require_once WB_PATH . "/framework/class.autoload.php"; 
 
 
 // register TWIG autoloader ---
