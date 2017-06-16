@@ -97,7 +97,14 @@ class WSession{
         /// @todo Change ASP to use WSession::Get() then change setting session startet in Session class too.  
         if (!isset($_SESSION['session_started'])) 
             $_SESSION['session_started'] = time();
-
+            
+        //setcookie("WBCE_LastAccessTime", time());
+        $iExpire = time()+ WB_SESSION_TIMEOUT +1000;
+        $aDat= array("Time" => time(), "Timeout" =>  WB_SESSION_TIMEOUT);
+        
+        $sDat=json_encode($aDat);
+        setcookie("WBCELastAccessTime", $sDat , $iExpire, "/", false, 0);
+        
         return false;
     }
 
