@@ -26,6 +26,18 @@
 <script type="text/javascript" src="{THEME_URL}/jquery/jqueryStickyElements/jquery.StickyElements.2.1.0.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/jqueryNiceFileInputWbVersion/jquery.nicefileinput.min.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/jqTemplateActions.js"></script>
+
+<script>
+var wbSessionTiomeout= {WB_SESSION_TIMEOUT};
+var seconds = new Date().getTime() / 1000;
+seconds = Math.round(seconds);
+document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/'
+
+</script>
+
+
+
+
 </head>
 <body>
 <div class='container'>

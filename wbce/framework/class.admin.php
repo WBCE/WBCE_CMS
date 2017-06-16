@@ -110,6 +110,7 @@ class admin extends wb
         }
 
         $header_template->set_var(array(
+            'WB_SESSION_TIMEOUT' => WB_SESSION_TIMEOUT,
             'SECTION_NAME' => $MENU[strtoupper($this->section_name)],
             'BODY_TAGS' => $body_tags,
             'WEBSITE_TITLE' => ($title['value']),
