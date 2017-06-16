@@ -47,9 +47,7 @@ date_default_timezone_set('UTC');
 
 // register WB Autoloader 
 require WB_PATH . "/framework/class.autoload.php"; 
-WbAuto::AddDir("/framework/");
-WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
-WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
+
 
 // register TWIG autoloader ---
 require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';

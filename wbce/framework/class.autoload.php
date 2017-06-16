@@ -120,4 +120,6 @@ spl_autoload_register('WbAuto::Loader');
 //echo  "<pre>"; print_r(WbAuto::$Files); echo  "</pre>";
 //echo  "<pre>"; print_r(WbAuto::$Types); echo  "</pre>";
 
-
+WbAuto::AddDir("/framework/");
+WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
+WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
