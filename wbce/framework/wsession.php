@@ -30,17 +30,21 @@ class WSession{
     // so we do not interferre whith other implemented scripts in the $_SESSION var.  
     public static $Store="WBCE";
     public static $StorePerm="WBCE_Perm";
+    public static $Expire=7200; // PHP default value
    
 
     public static function  Start(){
     
+        // What it says :-)
+        self::tryToSetValidExpirationForInstallOrUpgrade();
+ 
         // WBCE always uses Cookies 
         ini_set('session.use_cookies', true);  # use session cookies
         
         
         // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
         // Later we should get a nice session class instead of this improvised stuff.
-        ini_set('session.gc_maxlifetime', intval(WB_SECFORM_TIMEOUT));
+        ini_set('session.gc_maxlifetime', intval(self::$Expire));
 //         ini_set('session.gc_probability', 1);
 //         ini_set('session.gc_divisor', 1);
         
@@ -102,10 +106,6 @@ class WSession{
         return false;
     }
 
-    public static function  test ($text=""){
-        return $text;
-    
-    }
     
     public static function  ReStart($Kill=false){
     
@@ -275,7 +275,36 @@ class WSession{
     
         return false;
     }
+  
+  
+/**
+    @brief Installer has no timeout constants set.
     
+    So we go and set our own expiration time from what we possibly can get 
+    In Installer and Upgrade Script this is nor relieable as it suffers from the normal issues of 
+    filebased sessions.  
+*/    
+    public static function  tryToSetValidExpirationForInstallOrUpgrade(){
+        
+        // All This to get a good , compatible installler 
+        self::$Expire = ini_get("session.gc_maxlifetime");
+        
+        if (Settings::Get ("wb_session_timeout") !==false){
+            self::$Expire = Settings::Get ("wb_session_timeout");
+        }
+        elseif (Settings::Get ("wb_secform_timeout") !==false){
+            self::$Expire = Settings::Get ("wb_secform_timeout");
+        }
+        if (Settings::GetDB ("wb_session_timeout") !==false){
+            self::$Expire = Settings::GetDb ("wb_session_timeout");
+        }
+        elseif (Settings::GetDB ("wb_secform_timeout") !==false){
+            self::$Expire = Settings::GetDb ("wb_secform_timeout");
+        }
+
+    }  
+  
+  
 /**
      @brief Simple debug helper to show all session vars in an overview.
 

@@ -14,6 +14,7 @@ $setError=Settings::Set ("wb_maintainance_mode", false);
 $setError=Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg");
 $setError=Settings::Set ("wb_secform_secrettime", '86400');
 $setError=Settings::Set ("wb_secform_timeout", '7200');
+$setError=Settings::Set ("wb_session_timeout", '7200');
 $setError=Settings::Set ("wb_secform_tokenname", 'formtoken');
 $setError=Settings::Set ("wb_secform_usefp", false);
 $setError=Settings::Set ("fingerprint_with_ip_octets", "2");

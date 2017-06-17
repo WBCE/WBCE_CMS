@@ -10,14 +10,20 @@
  * @license GNU GPL2 (or any later version)
  */
 
-if (!defined("W_INSTALLER"))define ("W_INSTALLER",  true) ; 
- 
-$debug = true;
+// needed by class secureform
+if (!defined("WB_SECFORM_TIMEOUT"))  define ("WB_SECFORM_TIMEOUT",  '7200') ;
 
-if (true === $debug) {
-    ini_set('display_errors', 1);
+// Define Debug and installer
+if (!defined("W_DEBUG"))             define ("W_DEBUG",  true) ;
+if (!defined("W_INSTALLER"))         define ("W_INSTALLER",  true) ; 
+
+
+if (W_DEBUG === true) {
     error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 }
+
+
 // Start a session
 if (!defined('SESSION_STARTED')) {
     session_name('wb-installer');
