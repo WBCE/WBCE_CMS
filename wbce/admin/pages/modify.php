@@ -93,7 +93,7 @@ $template->set_block('main_block', 'show_section_block', 'show_section');
 if($query_sections) {
     $template->set_block('show_section', '');
     $template->set_var('DISPLAY_MANAGE_SECTIONS', 'display:none;');
-} elseif(MANAGE_SECTIONS == 'enabled') {
+} elseif(MANAGE_SECTIONS == 'true') {
     $template->set_var('TEXT_MANAGE_SECTIONS', $HEADING['MANAGE_SECTIONS']);
     $template->parse('show_section', 'show_section_block', true);
 } else {
