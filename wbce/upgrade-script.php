@@ -363,6 +363,7 @@ echo '<h2>Step ' . ($stepID++) . ' : Updating database entries</h2>';
  */
 echo "<br />Adding default_theme to settings table<br />";
 Settings::Set('default_theme', $DEFAULT_THEME);
+Settings::Set('wb_session_timeout', WB_SECFORM_TIMEOUT);
 
 
 /**********************************************************
