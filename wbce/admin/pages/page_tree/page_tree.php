@@ -100,7 +100,7 @@ function draw_pagetree($pages_list) {
 		
 		$menu_link = false; 
         // manage SECTIONS and DATES Icons -->
-		$canManageSections = (MANAGE_SECTIONS == 'true' && $admin->get_permission('pages_modify') == true && $can_modify == true)?true:false;	
+		$canManageSections = (MANAGE_SECTIONS == 'enabled' && $admin->get_permission('pages_modify') == true && $can_modify == true)?true:false;	
 		// query publ_start / publ_end
 		if ($canManageSections == true){ 
 			if($query_sections = $database->query('SELECT `publ_start`, `publ_end`,`module` FROM `'.TABLE_PREFIX.'sections` WHERE `page_id` = '.$p['page_id'])){ 

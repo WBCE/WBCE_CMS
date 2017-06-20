@@ -121,7 +121,7 @@ $sections_available = (intval($database->get_one($sql)) != 0);
 if ($sections_available)
 {
     $template->set_var('DISPLAY_MANAGE_SECTIONS', 'display:none;');
-} elseif(MANAGE_SECTIONS == 'true')
+} elseif(MANAGE_SECTIONS == 'enabled')
 {
     $template->set_var('TEXT_MANAGE_SECTIONS', $HEADING['MANAGE_SECTIONS']);
 } else {

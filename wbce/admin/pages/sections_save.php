@@ -14,7 +14,7 @@
 require('../../config.php');
 
 // Make sure people are allowed to access this page
-if(MANAGE_SECTIONS != 'true') {
+if(MANAGE_SECTIONS != 'enabled') {
 	header('Location: '.ADMIN_URL.'/pages/index.php');
 	exit(0);
 }
