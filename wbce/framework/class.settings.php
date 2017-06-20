@@ -358,6 +358,16 @@ class Settings {
                 if ($setting_value == 'btrueb') {
                     $setting_value = true;
                 }
+                
+                /// @attention  This is for 1.x compatibility
+                /// @todo for 2.0 We need to cleanup the backend and remobe this. 
+                if ($setting_value == 'false') {
+                    $setting_value = false;
+                }
+                if ($setting_value == 'true') {
+                    $setting_value = true;
+                }
+                // End of part to remove
                 if (!defined($setting_name)) {//already set manually in config ?
                     define($setting_name, $setting_value);
                 } 
