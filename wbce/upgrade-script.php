@@ -157,24 +157,27 @@ $FAIL = ' <span class="error">FAILED</span> ';
 $DEFAULT_THEME = 'advancedThemeWbFlat';
 $stepID = 1;
 
-// removes old template and theme stuff
+// removes old folders
 $dirRemove = array(
 
     '[TEMPLATE]/blank/',
-    '[TEMPLATE]/argos_theme/'
+    '[TEMPLATE]/argos_theme/',
+    '[TEMPLATE]/argos_theme_reloaded/images/flags/',
+    '[TEMPLATE]/advancedThemeWbFlat/images/flags/',
+    '[TEMPLATE]/advancedThemeWbFlat/webfonts/',
+    '[TEMPLATE]/advancedThemeWbFlat/documentation/',
+    '[TEMPLATE]/advancedThemeWbFlat/jquery_added/',
+    '[ADMIN]/images/',
+    '[ADMIN]/themes/',
+    '[ADMIN]/pages/page_tree/icons/'
 );
 
+// files removed with 1.1 or before
 $filesRemove['0'] = array(
 
     '[ADMIN]/preferences/details.php',
     '[ADMIN]/preferences/email.php',
-    '[ADMIN]/preferences/password.php'
-);
-
-// hopefully we add the removed files here these files are for 1.1.0
-// as a result of adding class Settings and rework of the admin tool system
-$filesRemove['1'] = array(
-
+    '[ADMIN]/preferences/password.php',
     '[FRAMEWORK]/SecureForm.mtab.php',
     '[MODULES]/SecureFormSwitcher/FTAN_SUPPORTED',
     '[MODULES]/SecureFormSwitcher/files/SecureForm.mtab.php',
@@ -185,8 +188,8 @@ $filesRemove['1'] = array(
     '[MODULES]/captcha_control/install_struct.sql'
 );
 
-// removes old jquery stuff
-$filesRemove['2'] = array(
+// files removed with 1.2
+$filesRemove['1'] = array(
 
     '[INCLUDE]/jquery/MIT-LICENSE.txt',
     '[INCLUDE]/jquery/GPL-LICENSE.txt',
@@ -213,83 +216,107 @@ $filesRemove['2'] = array(
     '[INCLUDE]/jquery/images/ui-icons_cd0a0a_256x240.png'
 );
 
+// files removed with 1.3
+$filesRemove['2'] = array(
+
+    '[ACCOUNT]/template.html',
+    '[LANGUAGES]/SE.php',
+    '[MODULES]/pagecloner/template.html',
+    '[TEMPLATE]/advancedThemeWbFlat/browse.css',
+    '[TEMPLATE]/advancedThemeWbFlat/extern-modules-correction.css',
+    '[TEMPLATE]/advancedThemeWbFlat/former-css.css',
+    '[TEMPLATE]/advancedThemeWbFlat/media.css',
+    '[TEMPLATE]/advancedThemeWbFlat/theme.css',
+    '[TEMPLATE]/advancedThemeWbFlat/theme-config.css',
+);
+
 // check existing tables
 $all_tables = check_wb_tables();
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
 <head>
 <title>WBCE - Upgrade Script</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
-html { overflow: -moz-scrollbars-vertical; /* Force firefox to always show room for a vertical scrollbar */ }
-
+html {
+    overflow: -moz-scrollbars-vertical; /* Force firefox to always show room for a vertical scrollbar */
+}
 body {
-	margin:0;
-	padding:0;
-	border:0;
-	background: #EBF7FC;
-	color:#000;
-	font-family: 'Trebuchet MS', Verdana, Arial, Helvetica, Sans-Serif;
-	font-size: small;
-	height:101%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #EBF7FC;
+    color: #000;
+    font-family: 'Trebuchet MS', Verdana, Arial, Helvetica, Sans-Serif;
+    font-size: small;
+    height: 101%;
 }
-
 #container {
-	width:85%;
-	background: #A8BCCB url(templates/wb_theme/images/background.png) repeat-x;
-	border:1px solid #000;
-	color:#000;
-	margin:2em auto;
-	padding:0 15px;
-	min-height: 500px;
-	text-align:left;
+    width: 85%;
+    background: #A8BCCB url(templates/wb_theme/images/background.png) repeat-x;
+    border: 1px solid #000;
+    color: #000;
+    margin: 2em auto;
+    padding: 0 15px;
+    min-height: 500px;
+    text-align: left;
 }
-
-p { line-height:1.5em; }
-
+p {
+    line-height: 1.5em;
+}
 form {
-	display: inline-block;
-	line-height: 20px;
-	vertical-align: baseline;
+    display: inline-block;
+    line-height: 20px;
+    vertical-align: baseline;
 }
 input[type="submit"].restart {
-	background-color: #FFDBDB;
-	font-weight: bold;
+    background-color: #FFDBDB;
+    font-weight: bold;
 }
-
-h1,h2,h3,h4,h5,h6 {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #369;
-	margin-top: 1.0em;
-	margin-bottom: 0.1em;
+h1, h2, h3, h4, h5, h6 {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: #369;
+    margin-top: 1.0em;
+    margin-bottom: 0.1em;
 }
-
-h1 { font-size:150%; }
-h2 { font-size: 130%; border-bottom: 1px #CCC solid; }
-h3 { font-size: 120%; }
-
-.ok, .error { font-weight:bold; }
-.ok { color:green; }
-.error { color:red; }
-.check { color:#555; }
-
+h1 {
+    font-size: 150%;
+}
+h2 {
+    font-size: 130%;
+    border-bottom: 1px #CCC solid;
+}
+h3 {
+    font-size: 120%;
+}
+.ok, .error {
+    font-weight: bold;
+}
+.ok {
+    color: green;
+}
+.error {
+    color: red;
+}
+.check {
+    color: #555;
+}
 .warning {
-	width: 98%;
-	background:#FFDBDB;
-	padding:0.2em;
-	margin-top:0.5em;
-	border: 1px solid black;
+    width: 98%;
+    background: #FFDBDB;
+    padding: 0.2em;
+    margin-top: 0.5em;
+    border: 1px solid black;
 }
 .info {
-	width: 98%;
-	background:#99CC99;
-	padding:0.2em;
-	margin-top:0.5em;
-	border: 1px solid black;
+    width: 98%;
+    background: #99CC99;
+    padding: 0.2em;
+    margin-top: 0.5em;
+    border: 1px solid black;
 }
-
 </style>
 </head>
 <body>
@@ -331,8 +358,8 @@ if (!defined('WB_SP')) {define('WB_SP', '');}
 if (!defined('WB_REVISION')) {define('WB_REVISION', '');}
 
 ?>
-<p>This script upgrades <strong> <?php echo $oldVersion;?></strong> to <strong> <?php echo $newVersion?> </strong>.<br />The upgrade script modifies the existing database to reflect the changes introduced with the new version.</p>
-
+<p>This script upgrades <strong> <?php echo $oldVersion;?></strong> to <strong> <?php echo $newVersion?> </strong>.<br />
+ The upgrade script modifies the existing database to reflect the changes introduced with the new version.</p>
 <?php
 /*
  * Check if disclaimer was accepted
@@ -340,15 +367,18 @@ if (!defined('WB_REVISION')) {define('WB_REVISION', '');}
 if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confirmed')) {
     ?>
 <h2>Backup your files !!</h2>
-<p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.<br /><strong class="error">Note: </strong>The upgrade script alters some settings of your existing database!!! You need to confirm the disclaimer before proceeding.</p>
-
+<p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.<br />
+ <strong class="error">Note: </strong>The upgrade script alters some settings of your existing database!!! You need to confirm the disclaimer before proceeding.</p>
 <form name="send" action="<?php echo $_SERVER['SCRIPT_NAME'];?>" method="post">
-<textarea cols="80" rows="5">DISCLAIMER: The WBCE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</textarea>
-<br /><br /><input name="backup_confirmed" type="checkbox" value="confirmed" />&nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created.
-<br /><br /><input name="send" type="submit" value="Start upgrade script" />
+ <textarea cols="80" rows="5">DISCLAIMER: The WBCE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</textarea>
+ <br />
+ <br />
+ <input name="backup_confirmed" type="checkbox" value="confirmed" />
+ &nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created. <br />
+ <br />
+ <input name="send" type="submit" value="Start upgrade script" />
 </form>
 <br />
-
 <?php
 status_msg('<br />You need to confirm that you have created a manual backup of the /pages directory and the MySQL database before you can proceed.', 'warning', 'div');
     echo '<br /><br /></div></body></html>';
@@ -571,6 +601,8 @@ if (sizeof($filesRemove)) {
 }
 $searches = array(
     '[ADMIN]',
+    '[ACCOUNT]',
+    '[LANGUAGES]',
     '[MEDIA]',
     '[PAGES]',
     '[FRAMEWORK]',
@@ -579,6 +611,8 @@ $searches = array(
 );
 $replacements = array(
     substr(ADMIN_PATH, strlen(WB_PATH) + 1),
+    '/account',
+    '/languages',
     MEDIA_DIRECTORY,
     PAGES_DIRECTORY,
     '/framework',
@@ -624,12 +658,14 @@ if (sizeof($dirRemove)) {
     echo '<h2>Step  ' . ($stepID++) . ': Remove deprecated and old folders</h2>';
     $searches = array(
         '[ADMIN]',
+        '[ACCOUNT]',
         '[MEDIA]',
         '[PAGES]',
         '[TEMPLATE]',
     );
     $replacements = array(
         substr(ADMIN_PATH, strlen(WB_PATH) + 1),
+        '/account',
         MEDIA_DIRECTORY,
         PAGES_DIRECTORY,
         '/templates',
@@ -765,4 +801,5 @@ echo '<br /><br /></div></body></html>';
 
 // Finally, destroy the session.
 session_destroy();
+
 
