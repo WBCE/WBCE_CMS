@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-if (!defined("W_INSTALLER"))define ("W_INSTALLER",  true) ;
+if (!defined("WB_INSTALLER"))define ("WB_INSTALLER",  true) ;
  
 // Start a session
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {die('Sorry, you need to have PHP Version > 5.4.0');}

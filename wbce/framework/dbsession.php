@@ -56,7 +56,7 @@ class DbSession
         $this->fetchGlobalDbInstanceOrDie ();
 
         // We are installing somehow ?
-        if (defined("W_UPGRADE_SCRIPT") OR defined("W_INSTALLER")) {
+        if (defined("WB_UPGRADE_SCRIPT") OR defined("WB_INSTALLER")) {
             $this->createDbTablesIfNotThere ();
         }
         else {
