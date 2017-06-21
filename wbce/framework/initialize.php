@@ -46,10 +46,8 @@ SanitizeHttpReferer();
 date_default_timezone_set('UTC');
 
 // register WB Autoloader 
-require WB_PATH . "/framework/class.autoload.php"; 
-WbAuto::AddDir("/framework/");
-WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
-WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
+require_once WB_PATH . "/framework/class.autoload.php"; 
+
 
 // register TWIG autoloader ---
 require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
@@ -60,6 +58,7 @@ require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
 
 // Create database class
 $database = new database();
+
 
 // get all settings as constants
 Settings::Setup ();
@@ -101,40 +100,16 @@ if (error_reporting() == 0) {
     ini_set('display_errors', 1);
 }
 
-// WB_SECFORM_TIMEOUT we use this for now later we get seperate settings 
-// Later we should get a nice session class instead of this improvised stuff.
-ini_set('session.gc_maxlifetime', WB_SECFORM_TIMEOUT);
-ini_set( 'session.cookie_httponly', 1 );
-if(WB_PROTOCOLL=="https"){ 
-    ini_set( 'session.cookie_secure', 1 );
-}
-session_name(APP_NAME . '-sid');
-session_set_cookie_params(WB_SECFORM_TIMEOUT);
+// SESSION
 
-// Start a session
-if (!defined('SESSION_STARTED')) {
-    session_start();
-    
-    // this is used by only by installer in index.php and save.php we will remove this later
-    define('SESSION_STARTED', true);
-    
-    // New way for check if session exists
-    $_SESSION['WB']['SessionStarted']=true;
-}
+// Initialize Custom Session Handler
+// Stores Sessions to DB
+// As session table possibly not installed , it may not run whith installer and upgradescript
+// We then simply fallback to PHP default Session handling.
+$hCustomSessionHandler= new DbSession();
 
-// make sure session never exeeds lifetime
-$now=time();
-if (isset($_SESSION['WB']['discard_after']) && $now > $_SESSION['WB']['discard_after']) {
-    // this session has worn out its welcome; kill it and start a brand new one
-    session_unset();
-    session_destroy();
-    session_start();
-}
-$_SESSION['WB']['discard_after'] = $now + WB_SECFORM_TIMEOUT;
-
-if (defined('ENABLED_ASP') && ENABLED_ASP && !isset($_SESSION['session_started'])) {
-    $_SESSION['session_started'] = time();
-}
+// Init  special Session handling and Start session.
+WSession::Start();
 
 // Get users language
 if (

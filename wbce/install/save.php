@@ -10,12 +10,20 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$debug = true;
+// needed by class secureform
+if (!defined("WB_SECFORM_TIMEOUT"))  define ("WB_SECFORM_TIMEOUT",  '7200') ;
 
-if (true === $debug) {
-    ini_set('display_errors', 1);
+// Define Debug and installer
+if (!defined("W_DEBUG"))             define ("W_DEBUG",  true) ;
+if (!defined("W_INSTALLER"))         define ("W_INSTALLER",  true) ; 
+
+
+if (W_DEBUG === true) {
     error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 }
+
+
 // Start a session
 if (!defined('SESSION_STARTED')) {
     session_name('wb-installer');
@@ -447,29 +455,25 @@ if ($database->is_error()) {
     set_error($database->get_error());
 }
 
-$ThemeUrl = WB_URL . $admin->correct_theme_source('warning.html');
-// Setup template object, parse vars to it, then parse it
-$ThemePath = realpath(WB_PATH . $admin->correct_theme_source('login.htt'));
 
-// Log the user in and go to Website Baker Administration
-$thisApp = new Login(
-    array(
-        "MAX_ATTEMPS" => "50",
-        "WARNING_URL" => $ThemeUrl . "/warning.html",
-        "USERNAME_FIELDNAME" => 'admin_username',
-        "PASSWORD_FIELDNAME" => 'admin_password',
-        "REMEMBER_ME_OPTION" => SMART_LOGIN,
-        "MIN_USERNAME_LEN" => "2",
-        "MIN_PASSWORD_LEN" => "3",
-        "MAX_USERNAME_LEN" => "30",
-        "MAX_PASSWORD_LEN" => "30",
-        'LOGIN_URL' => ADMIN_URL . "/login/index.php",
-        'DEFAULT_URL' => ADMIN_URL . "/start/index.php",
-        'TEMPLATE_DIR' => $ThemePath,
-        'TEMPLATE_FILE' => 'login.htt',
-        'FRONTEND' => false,
-        'FORGOTTEN_DETAILS_APP' => ADMIN_URL . "/login/forgot/index.php",
-        'USERS_TABLE' => TABLE_PREFIX . "users",
-        'GROUPS_TABLE' => TABLE_PREFIX . "groups",
-    )
-);
+// Removing session for Custom Session handler to take effect on next step. 
+
+// Unset all of the session variables.
+$_SESSION = array();
+
+// If it's desired to kill the session, also delete the session cookie.
+// Note: This will destroy the session, and not just the session data!
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
+}
+
+// Finally, destroy the session.
+session_destroy();
+
+// Redirect to admin Login 
+$loc=ADMIN_URL . "/login/index.php";
+header("Location: $loc");

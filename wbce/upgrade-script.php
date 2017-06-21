@@ -10,6 +10,9 @@
  * @license GNU GPL2 (or any later version)
  */
 
+if (!defined("W_UPGRADE_SCRIPT"))define ("W_UPGRADE_SCRIPT",  true) ;
+ 
+ 
 // function to extract var/value-pair from DB
 function db_get_key_value($table, $key)
 {
@@ -360,6 +363,11 @@ echo '<h2>Step ' . ($stepID++) . ' : Updating database entries</h2>';
  */
 echo "<br />Adding default_theme to settings table<br />";
 Settings::Set('default_theme', $DEFAULT_THEME);
+if (defined("WB_SECFORM_TIMEOUT"))
+    Settings::Set('wb_secform_timeout', '7200');
+if (defined("WB_SEESSION_TIMEOUT"))
+    Settings::Set('wb_session_timeout', Settings::GetDb('wb_secform_timeout'));
+
 
 
 /**********************************************************
@@ -754,4 +762,7 @@ if (defined('ADMIN_URL')) {
 }
 
 echo '<br /><br /></div></body></html>';
+
+// Finally, destroy the session.
+session_destroy();
 
