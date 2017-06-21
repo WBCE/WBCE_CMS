@@ -1,0 +1,141 @@
+<script type="text/javascript">
+
+var youCanSubmit=true;
+
+	function CheckInput () {
+		if ((document.promptu.begriff.value == "")&&(document.promptu.comp_date.value == "")&&(document.promptu.elements['groups'].options[document.promptu.elements['groups'].selectedIndex].value == "-1")) {
+      		alert("{SUBMIT_ALERT}");
+      		document.promptu.begriff.focus();
+      		
+	      	return false;
+   	 	} else {
+   	 	document.promptu.comp_date.enabled = true;	
+	  	return youCanSubmit;
+		}
+	}
+
+	function show_help ( on_or_off ) {
+		var ref = document.getElementById("help");
+		if (ref)  ref.style.display= (on_or_off == 1) ? "block" : "none";
+	}
+
+
+	function TestGroupsCheckboxs(obj) {
+		if (document.promptu.begriff.value != "") {
+			var countbox=0; 
+			if(document.promptu.username.checked) 
+				countbox++;
+			if(document.promptu.realname.checked) 
+				countbox++;
+			if(document.promptu.email.checked) 
+				countbox++;
+			if (countbox <= 0) {
+				youCanSubmit=false;
+				alert("{SUBMIT_TERM_ALERT}");
+				obj.checked=true;
+				youCanSubmit=true;
+			}
+			else { youCanSubmit=true;}
+		}
+	}
+		
+	function TestTermSearchInput() {
+		if (document.promptu.begriff.value != "") {
+			var countbox=0; 
+			if(document.promptu.username.checked) 
+				countbox++;
+			if(document.promptu.realname.checked) 
+				countbox++;
+			if(document.promptu.email.checked) 
+				countbox++;
+			if (countbox <= 0) {
+				youCanSubmit=false;
+				alert("{SUBMIT_TERM_ALERT}");
+				document.promptu.username.checked=true;
+				youCanSubmit=true;
+			}
+			else { youCanSubmit=true;}
+		}
+	}	
+</script>
+
+<h2>{HEADING}</h2>
+<p>{HOWTO}</p>	
+
+<form name="promptu" method="post" action="{FORM_VALID_URL}" onsubmit="return CheckInput();">	
+	<table width="98%" cellspacing="0" border="0" cellpadding="5px" class="row_a">
+		<tr>
+			<td colspan="3"><strong>{SEARCH_ITEM}</strong></td>
+		</tr>
+		<tr>
+			<td style="width: 190px;">{SEARCH_ITEM}</td>
+
+			<td style="width: 220px;"><input type="text" id="begriff" name="begriff" style="width: 180px;" onblur="javascript:TestTermSearchInput();" /><img src="{WB_URL}/modules/user_search/images/info.gif" width="16px" height="16px" alt="info" align="top" style="margin-left:2px;cursor:pointer;" onmouseover='show_help(1);' onmouseout='show_help(0);' /></td>
+			<td rowspan="3">
+				<div id="help" style="width: 230px; height: 120px; border: 1px solid #000; font-size: 10px; padding: 3px; background-color: #BDCDD9; display: none;">{SEARCH_HELP}</div>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td style="font-size:smaller;">{USE_WILDCARD}</td>
+		</tr>
+		<tr>
+			<td valign="top" style="height: 90px;" >{SEARCH_IN}:</td>
+			<td valign="top">
+
+					<input type="checkbox" name="username" id="username1" checked="checked" value="true" onclick="javascript:TestGroupsCheckboxs(this);" /><label for="username">{USER_NAME}</label>
+					<br />
+					<input type="checkbox" name="realname" id="realname" checked="checked" value="true" onclick="javascript:TestGroupsCheckboxs(this);" /><label for="realname">{REAL_NAME}</label>
+					<br />
+					<input type="checkbox" name="email" id="email1" checked="checked" value="true" onclick="javascript:TestGroupsCheckboxs(this);" /><label for="email">{EMAIL}</label>
+	   		</td>
+	   	</tr>
+	   	<tr>
+			<td colspan="3"><br /><strong>{LAST_LOGIN}:</strong></td>
+		</tr>	
+	   	<tr>
+	   		<td>{REF_DATE}:</td>
+			<td style="width: 220px;">
+				<input type="text" id="comp_date" name="comp_date" value="" style="width: 120px; cursor:default;" onFocus="javascript:this.blur();"/><img src="{THEME_URL}/images/clock_16.png" id="trigger_start" style="cursor: pointer;" title="{CALENDAR}" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" /><img src="{THEME_URL}/images/clock_del_16.png" style="cursor: pointer;" title="{ERASE_DATE}" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.promptu.comp_date.value=''" />
+			</td>
+		</tr>
+		<tr><td>&nbsp;</td><td colspan="2" style="font-size:smaller;">{USE_CALENDAR}</td></tr>
+	   	<tr>
+			<td>{REF_DATE_LAST_LOGIN}:</td>			
+			<td colspan="2">
+				<input type="radio" name="datesearch" id="datesearch" checked="checked" value="after" /><label for="datesearch">{REF_DATE_AFTER}</label>
+				<input type="radio" name="datesearch" id="datesearch" value="before" /><label for="datesearch">{REF_DATE_BEFORE}</label>
+				<script type="text/javascript">
+						Calendar.setup(
+							{
+								inputField  : "comp_date",
+								ifFormat    : "{JSCAL_IFFORMAT}",
+								button      : "trigger_start",
+								firstDay    : {JSCAL_FIRSTDAY},
+								showsTime   : "true",
+								date        : "{JSCAL_TODAY}",
+								range       : [1970, 2037],
+								step        : 1
+							}
+						);
+				</script>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3"><br /><strong>{SEARCH_GROUPS}:</strong></td>
+		</tr>			
+		<tr>
+			<td>{SEARCH_IN}:</td>
+			<td style="width: 220px;">
+				<select size="1" id="groups" name="groups"  style="width: 180px;">
+				<option value="-1">{IN_ALL_GROUPS}</option>
+<!-- BEGIN groupsearch_block -->
+
+				<option value="{GROUP_ID}">{GROUP_NAME}</option>
+<!-- END groupsearch_block -->				
+				</select>
+			</td>
+		</tr>
+	</table>
+	<input type="submit" name="search" style="margin-top:10px; width:140px;" value="{BUTTON_SEARCH}" />
+</form>

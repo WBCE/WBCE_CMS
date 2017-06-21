@@ -1,0 +1,82 @@
+<h2>{HEADING_RESULT}</h2>
+<p>{HOWTO_RESULT}</p>	
+<table width="98%" cellspacing="0" border="0" cellpadding="5px" class="row_a">
+	<tr>
+		<td style="width: 220px;"><strong>{SEARCH_DETAIL_RESULT}:</strong></td>
+		
+	</tr>
+<!-- BEGIN searchterm_block -->
+	<tr>				
+		<td>{SEARCH_ITEM_RESULT}:</td>
+		<td>{BEGRIFF}</td>		
+	</tr>
+	<tr>				
+		<td>{SEARCH_FIELD_RESULT}:</td>
+		<td>{DISPLAYSEARCHFIELD}</td>		
+	</tr>
+<!-- END searchterm_block -->
+<!-- BEGIN group_block -->	
+	<tr>				
+		<td>{GROUP_RESULT}:</td>
+		<td>{GROUP_NAME}</td>		
+	</tr>
+<!-- END group_block -->
+<!-- BEGIN last_login_block -->		 
+	<tr>				
+		<td>{LAST_LOGIN}:</td>
+		<td>{BEFORE_OR_AFTER} {DATE_RESULT}</td>		
+	</tr>
+<!-- END last_login_block -->	
+	<tr>
+		<td colspan="2"><br /><strong>{SHOW_RESULT}:</strong></td>
+	</tr>
+	
+<!-- BEGIN no_result_block -->
+{NO_RESULT}	
+<!-- END no_result_block -->
+<!-- BEGIN result_table_block -->	
+<table width="100%" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
+	<tr style="background-color: #BDCDD9;">
+		<td align="right" style="font-weight:bold; border: 1px solid #ccc;">ID</td>
+		<td style="font-weight:bold; border: 1px solid #ccc;">{USER_NAME}</td>
+		<td style="font-weight:bold; border: 1px solid #ccc;">{REAL_NAME}</td>
+		<td style="font-weight:bold; border: 1px solid #ccc;">{EMAIL}</td>
+		<td style="font-weight:bold; border: 1px solid #ccc;">{LAST_LOGIN}</td>
+		<td style="font-weight:bold; border: 1px solid #ccc;">{LAST_IP}</td>
+	</tr>
+<!-- BEGIN result_list_block -->		
+	<tr style="background-color: {RESULT_BGCOL}">
+		<td align="center" style="border: 1px solid #ccc;">
+			<form name="edituser{RESULT_USER_ID}" method="post" action="{ADMIN_URL}/users/users.php" target="_blank">								
+			<input type="hidden" name="user_id" value="{IDKEY_USER_ID}" />
+			<input type="hidden" name="modify" value="modify" />
+			<input type="hidden" name="details" value="{RESULT_USER_ID}" />
+			<b>{RESULT_USER_ID}</b>
+			</form>
+		</td>
+		<td align="left" style="border: 1px solid #ccc;">
+			<a OnClick="javascript:if ({RESULT_USER_ID}!=1) { document.edituser{RESULT_USER_ID}.submit();} else {alert('{RESULT_ADMIN_DISABLED}');}; return false;" HREF="#" title="{RESULT_EDIT_USER}: {RESULT_DISPLAYNAME}">{RESULT_USERNAME}</a>
+		</td>
+		<td align="left" style="border: 1px solid #ccc;">
+		{RESULT_DISPLAYNAME}
+		</td>
+		<td align="left" style="border: 1px solid #ccc;">
+			<a href="mailto:{RESULT_EMAIL}">{RESULT_EMAIL}</a>
+		</td>
+		<td align="left" style="border: 1px solid #ccc;">
+		{RESULT_LASTLOGIN}/({RESULT_DAYS_INACTIVE})
+		</td>
+		<td align="left" style="border: 1px solid #ccc;">
+		{RESULT_LAST_IP}
+		</td>							
+	</tr>
+<!-- END result_list_block -->	
+	<tr>
+		<td colspan="6" style="font-size:smaller;" align="center">{HINT_EDIT}</td>
+	</tr>
+</table>
+</td>
+</tr>
+</table>
+<!-- END result_table_block -->
+

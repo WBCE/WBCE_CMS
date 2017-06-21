@@ -1,0 +1,37 @@
+/*
+Needed css for DatePicker calendar. 
+*/
+.calendar {
+    width: 216px;
+    border-bottom: #000 1px solid;
+    border-left: #000 1px solid;
+    border-spacing: 2px;
+    border-collapse: separate;
+    background: #aaa;
+    border-top: #000 1px solid;
+    border-right: #000 1px solid;
+}
+.calendar TH {
+    background: #333;
+    color: #fff;
+    font-weight: bold;
+    padding: 3px 5px;
+}
+.calendar TD {
+    text-align: center;
+    background: #ccc;
+    color: #000;
+    padding: 3px 5px;
+}
+.calendar TD.other-month {
+    background: #ddd;
+    color: #aaa;
+}
+.calendar TD.today {
+    background: #666;
+    color: #fff;
+}
+.calendar TD.dp-hover.selected {
+    background: #f33;
+    color: #fff;
+}
