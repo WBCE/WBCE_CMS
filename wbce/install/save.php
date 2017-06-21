@@ -14,11 +14,11 @@
 if (!defined("WB_SECFORM_TIMEOUT"))  define ("WB_SECFORM_TIMEOUT",  '7200') ;
 
 // Define Debug and installer
-if (!defined("W_DEBUG"))             define ("W_DEBUG",  true) ;
+if (!defined("WB_DEBUG"))             define ("WB_DEBUG",  true) ;
 if (!defined("WB_INSTALLER"))         define ("WB_INSTALLER",  true) ; 
 
 
-if (W_DEBUG === true) {
+if (WB_DEBUG === true) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
