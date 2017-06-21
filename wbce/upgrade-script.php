@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-if (!defined("W_UPGRADE_SCRIPT"))define ("W_UPGRADE_SCRIPT",  true) ;
+if (!defined("WB_UPGRADE_SCRIPT"))define ("WB_UPGRADE_SCRIPT",  true) ;
  
  
 // function to extract var/value-pair from DB
