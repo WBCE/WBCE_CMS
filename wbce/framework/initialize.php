@@ -177,6 +177,7 @@ define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
 define('EDIT_ONE_SECTION', false);
 define('EDITOR_WIDTH', 0);
 
+require_once WB_PATH . "/framework/functions.php"; 
 
 /////////////////////////////////////////////////////////////////
 // Helper Functions
