@@ -109,8 +109,13 @@ class admin extends wb
 
         }
 
+        // Session Timeout possibly not Defined on Upgrade
+        $sSessionTimeout="7200";
+        if (defined(WB_SECFORM_TIMEOUT)) $sSessionTimeout=WB_SECFORM_TIMEOUT;
+        if (defined(WB_SEESSION_TIMEOUT)) $sSessionTimeout=WB_SESSION_TIMEOUT;
+
         $header_template->set_var(array(
-            'WB_SESSION_TIMEOUT' => WB_SESSION_TIMEOUT,
+            'WB_SESSION_TIMEOUT' => $sSessionTimeout,
             'SECTION_NAME' => $MENU[strtoupper($this->section_name)],
             'BODY_TAGS' => $body_tags,
             'WEBSITE_TITLE' => ($title['value']),
