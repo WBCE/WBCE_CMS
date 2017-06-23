@@ -1,5 +1,5 @@
 <?php
-require('../../config.php');
+require_once('../../config.php');
 if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 
 // Get id
@@ -18,7 +18,7 @@ require('permissioncheck.php');
 
 
 // Include WB functions file
-//require(WB_PATH.'/framework/functions.php');
+require_once(WB_PATH.'/framework/functions.php');
 
 
 //get This Topic Params

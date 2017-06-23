@@ -22,7 +22,7 @@ $mpath = WB_PATH.'/modules/'.$mod_dir.'/';
 require_once($mpath.'/functions.php');
 
 // Include WB functions file
-require(WB_PATH.'/framework/functions.php');
+require_once(WB_PATH.'/framework/functions.php');
 
 $theauto_header = false;
 require_once(WB_PATH.'/framework/class.admin.php');
