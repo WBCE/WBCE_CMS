@@ -290,9 +290,7 @@ class WbAuto{
 spl_autoload_register('WbAuto::Loader');
 
 /// Then we add all stuff needed for WBCE
-WbAuto::AddDir("/framework/");
-WbAuto::AddFile("idna_convert","/include/idna_convert/idna_convert.class.php");
-WbAuto::AddFile("SecureForm","/framework/SecureForm.php");
+WbAuto::AddDir(dirname(__FILE__)."/",true);
 
 
 
