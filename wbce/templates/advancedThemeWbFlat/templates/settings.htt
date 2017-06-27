@@ -1,8 +1,16 @@
 <!-- BEGIN main_block -->
 
+
+
 <div id="page_settings">
  <h2 class="page_titel">{HEADING_GENERAL_SETTINGS}</h2>
  <form name="settings" action="save.php" method="post">
+ <div class="fixedsettingsbuttondiv"> 
+ <button type="submit" title="{TEXT_SAVE}"><i class="fa fa-download" aria-hidden="true"></i>
+</button><br />
+ <button title="{ADVANCED_BUTTON}. {MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}'; return false;" class="{DISPLAY_ADVANCED_BUTTON}">&nbsp;<i class="fa fa-ellipsis-v" aria-hidden="true"></i>&nbsp;
+</button>
+  </div>
    <hr />
  <input type="submit" name="submit" value="{TEXT_SAVE}" class="save" />
  <button title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}'; return false;" class="{DISPLAY_ADVANCED_BUTTON}">{ADVANCED_BUTTON}</button>

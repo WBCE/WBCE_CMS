@@ -153,8 +153,7 @@ caption, th, td {
 /* row --> preparation for all columns */
 .columnGridRow {
     position: relative;
-    margin-left: -16px;
-    margin-right: -16px;
+    
 }
 .col_1, .col_2, .col_3, .col_4, .col_5, .col_6, .col_7, .col_8, .col_9, .col_10, .col_11, .col_12 {
     position: relative;
@@ -1317,6 +1316,18 @@ div.button_advanced_settings a:before {
 div.button_advanced_settings a:hover {
     background-color: #235387;
 }
+
+.fixedsettingsbuttondiv {
+	position:fixed;
+	right:5px;
+	top:270px;
+	z-index:1000;
+}
+
+.fixedsettingsbutton button {
+	width:50px;
+}
+
 /* userbox: box with information about user */
 #userbox {
     position: relative;

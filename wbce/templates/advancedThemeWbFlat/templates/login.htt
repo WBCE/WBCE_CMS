@@ -15,7 +15,7 @@
 </head>
 <body id="page_login" onload="document.login.{USERNAME_FIELDNAME}.focus();">
 <div id="page_login_header">
- <div id="page_login_logo"> WBCE </div>
+ <div id="page_login_logo"> WBCE CMS</div>
  <div id="page_login_slogan"> Way Better Content Editing. </div>
 </div>
 <!-- BEGIN loginform -->

@@ -43,7 +43,7 @@ document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/'
 <div class='container'>
 <div id="headerarea" class="clearfix">
   <div id="branding">
-  <div id="branding-text">WBCE</div>
+  <div id="branding-text">WBCE CMS</div>
   <div id="branding-logo"></div>
  </div>
   <a id="frontendtitel" href="{ADMIN_URL}" title="{TITLE_START}"> {WEBSITE_TITLE} - {TEXT_ADMINISTRATION} 
