@@ -1,35 +1,19 @@
 <?php
-/*
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2007, Ryan Djurovich
+/**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
+ */
 
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
- -----------------------------------------------------------------------------------------
-  Code snippet SimplePageHead for Website Baker v2.6.x and later
-  Licencsed under GNU, written by Chio  Maisriml, www.websitebaker.at
- -----------------------------------------------------------------------------------------
-*/
-
-// Function to display a nearly complete html head, also for news module pages. 
-// Invoke function from template after "<head>" with:
-//    simplepagehead();     for xhtml
-//    simplepagehead("");   for html4
-
-// Displays: Charset, Title, Meta-Description, Meta-Keywords, Meta-Language, meta name="generator"
-// Plus (default): Link to favicon.ico (in WB_URL), no-ImageToolbar and "robots"="noindex,nofollow" on some pages.
+/* -------------------------------------------------------- */
+// Must include code to stop this file being accessed directly
+if(count(get_included_files()) ==1){header('Location: ../index.php');die();}
+/* -------------------------------------------------------- */
 
 
 if (!function_exists('simplepagehead')) {
@@ -44,11 +28,8 @@ if (!function_exists('simplepagehead')) {
 		// $module['module_name'] = array('table_name', 'id_name', 'title_field_name', 'description_field_name', 'keywords_field_name');
 		$module['news'] = array('mod_news_posts', 'post_id', 'title', 'content_short', '');
 		$module['bakery'] = array('mod_bakery_items', 'item_id', 'title', 'description', '');
-		$module['gallery'] = array('mod_gallery_images', 'image_id', 'title', 'description', '');
-		$module['gocart'] = array('mod_gocart_products', 'image_id', 'title', 'description','');
-		$module['news2'] = array('mod_news2_posts', 'post_id', 'title', 'description', 'keywords');
 		$module['topics'] = array('mod_topics', 'topic_id', 'title', 'description', 'keywords');
-		
+		$module['responsiveFG'] = array( "mod_responsiveFG_categories", "section_id", "cat_name", "description", "searchtext");
 		#$module['module_name'] = array('table_name', 'id_name', 'title_field_name', 'description_field_name');
 
 
@@ -63,6 +44,10 @@ if (!function_exists('simplepagehead')) {
 		$the_title = ''; //$wb->page_title;
 		$the_description = ''; //$wb->page_description; 
 		$the_keywords = ''; //$wb->page_keywords;
+		
+		if(!isset($section_id) AND (isset($_GET['cat_id'])) ) {
+			$section_id = $database->get_one("SELECT `section_id` FROM `".TABLE_PREFIX."sections` WHERE `page_id`=".$page_id." AND `module`='responsiveFG'");
+		}
 
 		// Look for the module name of the current section		
 		if(isset($page_id) && isset($section_id)) {
@@ -114,7 +99,8 @@ if (!function_exists('simplepagehead')) {
 		}
 		
 		if ($the_title=='') {$the_title = $wb->page_title; }
-		if (strlen($the_title) < 15) {$the_title = WEBSITE_TITLE. " - " .$the_title; }
+		//if (strlen($the_title) < 15) {$the_title = WEBSITE_TITLE. " - " .$the_title; }
+		if (WEBSITE_TITLE != $the_title) {$the_title = WEBSITE_TITLE. " - " .$the_title; }
 		
 
 		if ($the_description == '') { $the_description = $wb->page_description; }
@@ -128,6 +114,7 @@ if (!function_exists('simplepagehead')) {
 		echo "<title>$the_title</title>\n";
 		echo '<meta name="description" content="'.$the_description."\"$endtag>\n";
 		echo '<meta name="keywords" content="'. $the_keywords ."\"$endtag>\n";
+		
 	
 		$the_language = strtolower(LANGUAGE);
 		echo "<meta name=\"language\" content=\"$the_language\"$endtag>\n";
@@ -139,19 +126,21 @@ if (!function_exists('simplepagehead')) {
 			echo $indexstring; 
 		}
 		
-		if ($generator == 1) {echo '<meta name="generator" content="CMS: Website Baker Community Edition; www.wbce.org"'."$endtag>\n";}
+		if ($generator == 1) {echo '<meta name="generator" content="WBCE CMS; https://wbce.org"'."$endtag>\n";}
 		if ($notoolbartag == 1) {echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n"; }		
-		if ($favicon == 1) {
-			  echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n"; 
-			  echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" href="'.TEMPLATE_DIR.'/apple-touch-icon.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="57x57" href="'.TEMPLATE_DIR.'/apple-touch-icon-57x57.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="72x72" href="'.TEMPLATE_DIR.'/apple-touch-icon-72x72.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="76x76" href="'.TEMPLATE_DIR.'/apple-touch-icon-76x76.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="114x114" href="'.TEMPLATE_DIR.'/apple-touch-icon-114x114.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="120x120" href="'.TEMPLATE_DIR.'/apple-touch-icon-120x120.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="144x144" href="'.TEMPLATE_DIR.'/apple-touch-icon-144x144.png'."\"$endtag>\n"; 
-			  echo '<link rel="apple-touch-icon" sizes="152x152" href="'.TEMPLATE_DIR.'/apple-touch-icon-152x152.png'."\"$endtag>\n"; 
+		if ($favicon == 1) {			  
+			$tp = WB_PATH.'/templates/'.TEMPLATE;
+			$iconInRoot = false;
+			if (file_exists(WB_PATH.'/favicon.ico')) {	 echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n"; 	$iconInRoot = true;  }
+			if (file_exists($tp.'/favicon.ico') && $iconInRoot == false) { echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n";  } 
+			if (file_exists($tp.'/apple-touch-icon.png')) { echo '<link rel="apple-touch-icon" href="'.TEMPLATE_DIR.'/apple-touch-icon.png'."\"$endtag>\n";  }
+			if (file_exists($tp.'/apple-touch-icon-57x57.png')) {echo '<link rel="apple-touch-icon" sizes="57x57" href="'.TEMPLATE_DIR.'/apple-touch-icon-57x57.png'."\"$endtag>\n"; }
+			if (file_exists($tp.'/apple-touch-icon-72x72.png')) { echo '<link rel="apple-touch-icon" sizes="72x72" href="'.TEMPLATE_DIR.'/apple-touch-icon-72x72.png'."\"$endtag>\n"; }
+			if (file_exists($tp.'/apple-touch-icon-76x76.png')) { echo '<link rel="apple-touch-icon" sizes="76x76" href="'.TEMPLATE_DIR.'/apple-touch-icon-76x76.png'."\"$endtag>\n"; }
+			if (file_exists($tp.'/apple-touch-icon-114x114.png')) { echo '<link rel="apple-touch-icon" sizes="114x114" href="'.TEMPLATE_DIR.'/apple-touch-icon-114x114.png'."\"$endtag>\n"; }
+			if (file_exists($tp.'/apple-touch-icon-120x120.png')) { echo '<link rel="apple-touch-icon" sizes="120x120" href="'.TEMPLATE_DIR.'/apple-touch-icon-120x120.png'."\"$endtag>\n"; }
+			if (file_exists($tp.'/apple-touch-icon-144x144.png')) { echo '<link rel="apple-touch-icon" sizes="144x144" href="'.TEMPLATE_DIR.'/apple-touch-icon-144x144.png'."\"$endtag>\n"; }
+			if (file_exists($tp.'/apple-touch-icon-152x152.png')) { echo '<link rel="apple-touch-icon" sizes="152x152" href="'.TEMPLATE_DIR.'/apple-touch-icon-152x152.png'."\"$endtag>\n"; }
 		}
 		
 	}

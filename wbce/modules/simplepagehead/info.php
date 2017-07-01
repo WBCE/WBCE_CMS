@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -13,7 +13,7 @@
 $module_directory = 'simplepagehead';
 $module_name = 'SimplePageHead';
 $module_function = 'snippet';
-$module_version = '0.51';
+$module_version = '0.60';
 $module_platform = '2.8.3';
 $module_author = 'Chio, with a litte help from thorn. Extended for use with other modules by Christoph Marti. Updated by Florian Meerwinck for WBCE';
 $module_license = 'GNU General Public License';
