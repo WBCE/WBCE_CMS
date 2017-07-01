@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/modules-snippets/opensource/miniform/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.10.0
- * @lastmodified    april 10, 2017
+ * @requirements    PHP 5.6 and higher
+ * @version         0.11.0
+ * @lastmodified    june 30, 2017
  *
  */
 
@@ -58,6 +58,7 @@ $remote = $settings['remote_id'];
 $manage_url = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id.'&mt=1&name=';
 $delete_url = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id.'&delete=';
 
+$ajax_checked = $settings['use_ajax'] ? 'checked': '';
 $rc_checked = $settings['use_recaptcha'] ? 'checked': '';
 $rc_display = $settings['use_recaptcha'] ? '' : 'style="display:none;"';
 ?>
@@ -113,6 +114,7 @@ $(function() {
 				</select>
 		</td></tr>
 
+		<tr><td><?php echo $MF['TEXT_AJAX'] ?>: </td><td><input type="hidden" name="use_ajax" value="0" /><input type="checkbox"  name="use_ajax" value="1" <?php echo $ajax_checked ?> /></td></tr>
 		<tr><td><?php echo $MF['TEXT_RECAPTCHA'] ?>: </td><td><input type="hidden" name="use_recaptcha" value="0" /><input type="checkbox" id="rc" name="use_recaptcha" value="1" <?php echo $rc_checked ?> /></td></tr>
 		<tr class="rc" <?php echo $rc_display ?>><td><?php echo $MF['TEXT_RCKEY'] ?>: </td><td><input class="mf-input wide" type="text" name="recaptcha_key" value="<?php echo $settings['recaptcha_key'] ?>" /> - <a href="https://www.google.com/recaptcha/admin" target="_blank">get Google reCaptcha keys</a></td></tr>
 		<tr class="rc" <?php echo $rc_display ?>><td><?php echo $MF['TEXT_RCSECRET'] ?>: </td><td><input class="mf-input wide" type="text" name="recaptcha_secret" value="<?php echo $settings['recaptcha_secret'] ?>" /></td></tr>

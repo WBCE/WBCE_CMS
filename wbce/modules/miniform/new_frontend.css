@@ -1,4 +1,15 @@
-
+.miniform * {
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-font-smoothing:antialiased;
+	-moz-font-smoothing:antialiased;
+	-o-font-smoothing:antialiased;
+	font-smoothing:antialiased;
+	text-rendering:optimizeLegibility;
+}
 .miniform input[type="text"],
 .miniform input[type="email"],
 .miniform input[type="tel"],
@@ -22,6 +33,7 @@
 	padding:5px 0;
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid transparent;
+    border-radius: 5px;
     margin: 0 0 5px;
     width: 100%;
 }
@@ -39,12 +51,24 @@
 .miniform label label { vertical-align: middle;	cursor:pointer;}
 .miniform .hidden { display:none; }
 .miniform .error { 
-	color: #ff4136; 
+	background: #ff4136; 
+	color: #fff; 
 	font-weight: bold;
 	border:1px solid #ff4136;
+	border-radius: 5px; 
 	padding:5px; 
 	margin-bottom: 10px; 
 }
+.miniform .ok { 
+	background: #27ae60;
+	color: #fff; 
+	font-weight: bold;
+	border:1px solid #27ae60;
+	border-radius: 5px; 
+	padding:5px; 
+	margin-bottom: 10px; 
+}
+
 
 @media screen and (max-width: 468px) {
 	.miniform .half { width: 100%; margin-right:0; float: none;}
@@ -84,8 +108,9 @@
 	border:1px solid #CCC;
 	margin:0 0 5px;
 	padding:5px;
+	border-radius:5px;
 	outline: 0 none;
-	font-weight: 300;
+
 }
 .miniform input[type="text"]:hover,
 .miniform input[type="email"]:hover,
@@ -120,14 +145,15 @@
 .miniform button[type="submit"] {
 	cursor:pointer;
 	width: 100%;
-	/* border:none; */
-	/* background: #828c95; */
-	/* color:#FFF; */
+	border:none;
+	background: #828c95;
+	color:#FFF;
 	margin:0 0 5px;
 	padding:5px;
+	border-radius:5px;
 }
 .miniform button[type="submit"]:hover {
-	/* background: #b5bdc8; */
+	background: #b5bdc8;
 	-webkit-transition:background 0.3s ease-in-out;
 	-moz-transition:background 0.3s ease-in-out;
 	transition:background-color 0.3s ease-in-out;

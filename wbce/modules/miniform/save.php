@@ -7,12 +7,11 @@
  * @link			http://www.dev4me.nl/modules-snippets/opensource/miniform/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.10.0
- * @lastmodified    april 10, 2017
+ * @requirements    PHP 5.6 and higher
+ * @version         0.11.0
+ * @lastmodified    june 30, 2017
  *
  */
-
 
 require('../../config.php');
 require_once (WB_PATH.'/framework/functions.php');
@@ -23,6 +22,7 @@ if(isset($_POST['section_id'])) {
 	$email = $admin->add_slashes(strip_tags($_POST['email']));
 	$subject = $admin->add_slashes(strip_tags($_POST['subject']));
 	$template = $admin->add_slashes(strip_tags($_POST['template']));
+	$use_ajax = (int)$_POST['use_ajax'];
 	$use_recaptcha = (int)$_POST['use_recaptcha'];
 	$recaptcha_key = $admin->add_slashes(strip_tags($_POST['recaptcha_key']));
 	$recaptcha_secret = $admin->add_slashes(strip_tags($_POST['recaptcha_secret']));
@@ -33,6 +33,7 @@ if(isset($_POST['section_id'])) {
 			`subject` = '$subject', 
 			`successpage` = '$success', 
 			`template` = '$template',
+			`use_ajax` = '$use_ajax',
 			`use_recaptcha` = '$use_recaptcha',
 			`recaptcha_key` = '$recaptcha_key',
 			`recaptcha_secret` = '$recaptcha_secret'

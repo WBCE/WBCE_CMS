@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/modules-snippets/opensource/miniform/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.10.0
- * @lastmodified    april 10, 2017
+ * @requirements    PHP 5.6 and higher
+ * @version         0.11.0
+ * @lastmodified    june 30, 2017
  *
  */
 
@@ -24,6 +24,7 @@ $mod_miniform = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_miniform` ('
 	. ' `subject` VARCHAR(128) NOT NULL DEFAULT \'\',' 
 	. ' `template` VARCHAR(64) NOT NULL DEFAULT \'form\',' 
 	. ' `successpage` INT NOT NULL DEFAULT \'0\',' 
+	. ' `use_ajax` INT NOT NULL DEFAULT \'1\',' 
 	. ' `use_recaptcha` INT NOT NULL DEFAULT \'0\',' 
 	. ' `recaptcha_key` VARCHAR(64) NOT NULL DEFAULT \'\',' 
 	. ' `recaptcha_secret` VARCHAR(64) NOT NULL DEFAULT \'\',' 
@@ -37,7 +38,7 @@ $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_miniform_data`");
 $mod_miniformdata = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_miniform_data` ('
 	. ' `message_id` INT NOT NULL NOT NULL auto_increment,'
 	. ' `section_id` INT NOT NULL DEFAULT \'0\','
-	. ' `data` TEXT NOT NULL DEFAULT \'\',' 
+	. ' `data` TEXT NOT NULL,' 
 	. ' `submitted_when` INT NOT NULL DEFAULT \'0\',' 
 	. ' PRIMARY KEY ( `message_id` ) '
 	. ' )';
@@ -60,3 +61,4 @@ foreach ( $files as $file ) {
 		}
 	}
 }
+

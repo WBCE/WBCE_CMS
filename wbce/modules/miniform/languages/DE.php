@@ -25,6 +25,7 @@ $MF['TEXT_SUCCESS'] = 'Erfolgreich-Seite';
 $MF['TEXT_NOPAGE'] = 'Keine separate Erfolgreich-Seite, Standardtext anzeigen';
 $MF['TEXT_CANCEL'] = 'Abbrechen';
 $MF['TEXT_SAVE'] = 'Speichern';
+$MF['TEXT_AJAX'] = 'Ajax post verwenden';
 $MF['TEXT_RECAPTCHA'] = 'reCaptcha verwenden';
 $MF['TEXT_RCKEY'] = 'reCaptcha Site key';
 $MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';

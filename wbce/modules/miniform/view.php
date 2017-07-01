@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/modules-snippets/opensource/miniform/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.10.0
- * @lastmodified    april 10, 2017
+ * @requirements    PHP 5.6 and higher
+ * @version         0.11.0
+ * @lastmodified    june 30, 2017
  *
  */
 
@@ -27,6 +27,11 @@ require_once (dirname(__FILE__).'/functions.php');
 
 if(isset($_SESSION['lastform'])) unset($_SESSION['lastform']);
 mb_internal_encoding(DEFAULT_CHARSET);
+
+if(isAjaxRequest() && isset($_POST['miniform'])) {
+	$sid = (int)$_POST['miniform'];
+	$section_id = $sid;
+}
 
 $mf = new mform($section_id);
 
@@ -63,6 +68,7 @@ $message_class = "hidden";
 $form_class = "";
 $use_captcha = ( strpos($template,"{CAPTCHA}")==false ) ? false : true;
 
+$use_ajax = $settings['use_ajax'];
 $use_recaptcha = $settings['use_recaptcha'];
 $recaptcha_key = $settings['recaptcha_key'];
 $recaptcha_secret = $settings['recaptcha_secret'];
@@ -209,8 +215,8 @@ if($mf->myPost) {
 					unset($_SESSION['form']);
 					if($successpage) {
 						$page_link = $mf->page($successpage);
-						if(headers_sent()) {
-							echo '<script type="text/javascript">window.location = "'.$page_link.'"</script>';
+						if(headers_sent() || isAjaxRequest()) {
+							sendOutput('<script type="text/javascript">window.location = "'.$page_link.'"</script>');
 						} else {
 							die(header('Location: '.$page_link , TRUE , 301));
 						}
@@ -260,11 +266,17 @@ $var[] = "{SECTION_ID}";$value[] = $section_id;
 $var[] = "{DATE}";$value[] = date( DATE_FORMAT , time()+TIMEZONE );
 $var[] = "{TIME}";$value[] = date( TIME_FORMAT , time()+TIMEZONE );
 $template = $mf->add_template($template, $var, $value);
-
 //clean unused fields in the template
-//$template = preg_replace('#\{[A-Za-z_][A-Za-z_0-9.,-\/\\ ]*?\}#s', '', $template); 
 $template = preg_replace('#\{(.*?)\}#s', '', $template); 
-													 
 unset($var);
 unset($value);
-echo $template;
+
+
+$spinner = '';
+if(!defined("spinnerloaded")) {
+	$spinnerimg = WB_URL.'/modules/miniform/sending.gif';
+	$spinner = '<div class="minispinner" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;background: black url('.$spinnerimg.') center center no-repeat;opacity:.6;"></div>'."\n";
+	define ('spinnerloaded' , true );
+}
+if(!isAjaxRequest() && $use_ajax) $template = $spinner.'<div class="miniform_ajax">'.$template.'</div>';
+sendOutput($template);

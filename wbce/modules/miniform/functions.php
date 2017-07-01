@@ -16,7 +16,6 @@
 
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
-
 class mform {
 	
 	public $templates = array();
@@ -116,21 +115,26 @@ class mform {
 		if(isset($_FILES[$postfield]['name']) && $_FILES[$postfield]['name']) {
 			if ($this->check_whitelist($_FILES[$postfield]['name'])) {
 				if($_FILES[$postfield]['error'] == 0) {
-					$this->attachements[$_FILES[$postfield]['name']] = $_FILES[$postfield]['tmp_name'];
-					$val = $_FILES[$postfield]['name'];
+					if($_FILES[$postfield]['size'] > 0 && file_exists($_FILES[$postfield]['tmp_name'])) {
+						$this->attachements[$_FILES[$postfield]['name']] = $_FILES[$postfield]['tmp_name'];
+						$val = $_FILES[$postfield]['name'];
+					} else {
+						$this->error = $_FILES[$postfield]['name'].' - '.$MF['INVALID'];
+					}
 				}
 			} else {
 				$this->error = $_FILES[$postfield]['name'].' - '.$MF['INVALID'];
 			}
 		}elseif(isset($_POST[$postfield])) {
 			$val =  $_POST[$postfield];
+			if(substr($postfield,0,3) == 'mf_') $_SESSION['form'][$postfield] = $val;
 		} elseif(isset($_GET[$getfield])) {
 			$val = urldecode($_GET[$getfield]);
 			$this->fieldGetSeen = true;
+			if(substr($postfield,0,3) == 'mf_') $_SESSION['form'][$postfield] = $val;
 		} else {
 			$val = isset($_SESSION['form'][$postfield]) ? $_SESSION['form'][$postfield] : null;
 		}
-		if(substr($postfield,0,3) == 'mf_') $_SESSION['form'][$postfield] = $val;
 		if(is_array($val)) {
 			$val = join(" | ",$val);
 			$this->isArray = true;
@@ -350,5 +354,18 @@ class mform {
 		return $result;
 	}
 
-
 } //end class
+
+function isAjaxRequest () {
+	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == "XMLHttpRequest") return true;
+	return false;
+								   
+}
+function sendOutput($data) {
+	if(isAjaxRequest()) {
+		while (ob_get_level()) ob_end_clean();
+		die($data);
+	} else {
+		echo $data;
+	}
+}

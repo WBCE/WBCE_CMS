@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/modules-snippets/opensource/miniform/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.10.0
- * @lastmodified    april 10, 2017
+ * @requirements    PHP 5.6 and higher
+ * @version         0.11.0
+ * @lastmodified    june 30, 2017
  *
  */
 
@@ -25,6 +25,7 @@ function _db_add_field($field, $table, $desc) {
 		$query = $database->query("ALTER TABLE $table ADD $field $desc");
 	}
 }
+_db_add_field("`use_ajax`"   	  ,"mod_miniform", "INT NOT NULL default '1'");
 _db_add_field("`use_recaptcha`"   ,"mod_miniform", "INT NOT NULL default '0'");
 _db_add_field("`recaptcha_key`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
 _db_add_field("`recaptcha_secret`","mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
@@ -50,8 +51,4 @@ foreach ( $files as $file ) {
 		}
 	}
 }
-					
-					
-
-
 

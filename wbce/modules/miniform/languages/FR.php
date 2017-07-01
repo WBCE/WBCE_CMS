@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/modules-snippets/opensource/miniform/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.10.0
- * @lastmodified    april 6, 2017
+ * @requirements    PHP 5.6 and higher
+ * @version         0.11.0
+ * @lastmodified    june 30, 2017
  *
  */
 
@@ -25,6 +25,7 @@ $MF['TEXT_SUCCESS'] = 'Redirection Page Envoi R&eacute;ussi';
 $MF['TEXT_NOPAGE'] = 'pas de redirection de Page, utiliser le texte standard seulement';
 $MF['TEXT_CANCEL'] = 'Annuller';
 $MF['TEXT_SAVE'] = 'Sauvegarder';
+$MF['TEXT_AJAX'] = 'Use Ajax post';
 $MF['TEXT_RECAPTCHA'] = 'Use reCaptcha';
 $MF['TEXT_RCKEY'] = 'reCaptcha Site key';
 $MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';
