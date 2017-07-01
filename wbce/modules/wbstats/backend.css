@@ -93,7 +93,7 @@
 	float: left;
 }
 .middle {
-	height: 265px;
+	height: auto;
 	position:relative;
 	margin:10px 1%;
 	width:48%;
