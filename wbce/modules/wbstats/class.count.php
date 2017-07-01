@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.1.9
- * @lastmodified    Februari 20, 2015
+ * @requirements    PHP 5.6 and higher
+ * @version         0.1.11
+ * @lastmodified    June 29, 2017 
  *
  */
 
@@ -71,7 +71,7 @@ class counter {
 		$this->getHosts();
 		$this->getKeywords();
 		if ($this->newUser()) {
-			if(stristr($this->host, $this->referer_host) === false AND $this->referer_host <> "" ) {
+			if($this->referer_host && stristr($this->host, $this->referer_host) === false) {
 				if(!$id = $database->get_one("SELECT `id` from ".$table_ref." WHERE `referer`='".$this->referer_host."' AND day='".$this->day."'") ) {
 					$database->query("INSERT INTO ".$table_ref." (`day`, `referer`, `view`) VALUES ('".$this->day."', '".$this->referer_host."', '1')");
 				} else { 
@@ -104,14 +104,15 @@ class counter {
 	}
 	function getHosts() {
 		global $referer;
-		$this->ip=$_SERVER['REMOTE_ADDR']; 
-		if (isset($referer)) {
+		$this->ip = md5($_SERVER['REMOTE_ADDR']); 
+        if (defined( 'ORG_REFERER' )) {
+            $this->referer = ORG_REFERER;
+		} elseif (isset($referer)) {
 			$this->referer = $referer;
-			$this->page = $_SERVER['REQUEST_URI'];	
 		} else {
 			$this->referer = $_SERVER['HTTP_REFERER'];
-			$this->page = $_SERVER['REQUEST_URI']; 
 		} 	
+		$this->page = $_SERVER['REQUEST_URI']; 
 		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 			$this->language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'],0,2);
 		}
@@ -119,6 +120,12 @@ class counter {
 		if (substr($this->host,0,4) == "www.") $this->host=substr($this->host,4);
 		$this->referer_host = parse_url($this->referer, PHP_URL_HOST); // Referrer Host
 		if (substr($this->referer_host,0,4) == "www.") $this->referer_host=substr($this->referer_host,4);
+
+		$this->referer = addslashes($this->referer);
+		$this->page = addslashes($this->page);
+		$this->language = addslashes($this->language);
+		$this->referer_host = addslashes($this->referer_host);
+
 	}
 	
 	function getKeywords () {
@@ -128,6 +135,7 @@ class counter {
 		elseif(isset($parms['q'])) 		$this->keywords = 'Searchkey not provided'; 
 		elseif(isset($parms['p'])) 		$this->keywords = urldecode($parms['p']); 
 		elseif(isset($parms['query'])) 	$this->keywords = urldecode($parms['query']); 
+		$this->keywords = addslashes($this->keywords);
 	}
 
 	function newUser() {

@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.1.9
- * @lastmodified    Februari 20, 2015
+ * @requirements    PHP 5.6 and higher
+ * @version         0.1.11
+ * @lastmodified    June 29, 2017 
  *
  */
 
@@ -38,7 +38,7 @@ $database->query("CREATE TABLE `$table_day` (
 $database->query("DROP TABLE IF EXISTS `$table_ips`");
 $database->query("CREATE TABLE `$table_ips` (
 	`id` int(11) NOT NULL auto_increment,
-	`ip` varchar(15) NOT NULL default '',
+	`ip` varchar(32) NOT NULL default '',
 	`session` varchar(64) NOT NULL default '',
 	`time` int(20) NOT NULL default '0',
 	`online` int(20) NOT NULL default '0',
@@ -86,3 +86,4 @@ $database->query("CREATE TABLE `$table_lang` (
 	PRIMARY KEY  (`id`)
 	)"
 );
+

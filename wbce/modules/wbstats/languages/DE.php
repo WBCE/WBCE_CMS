@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.1.8
- * @lastmodified    October 22, 2014
+ * @requirements    PHP 5.6 and higher
+ * @version         0.1.11
+ * @lastmodified    June 29, 2017 
  *
  */
  

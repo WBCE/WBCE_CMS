@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.1.9
- * @lastmodified    Februari 20, 2015
+ * @requirements    PHP 5.6 and higher
+ * @version         0.1.11
+ * @lastmodified    June 29, 2017 
  *
  */
 
@@ -77,9 +77,9 @@ class stats {
 		if($query) {
 			$result['online'] = $query->numRows();
 			if($result['online']) {
-				$result['online_title'] = '<table class=\'popup\' cellpadding=\'2\'><tr><th colspan=\'4\'>'.$WS['CURRENTONLINE'].'</th></tr>';
+				$result['online_title'] = '<table class=\'popup\' cellpadding=\'2\'><tr><th colspan=\'3\'>'.$WS['CURRENTONLINE'].'</th></tr>';
 				while($res = $query->fetchRow()) {
-					$result['online_title']  .= '<tr><td>'.date(DATE_FORMAT,$res['online']+TIMEZONE).'</td><td>'.date(TIME_FORMAT,$res['online']+TIMEZONE).'</td><td>'.$res['ip'].'</td><td>'.$res['page'].'</td></tr>';
+					$result['online_title']  .= '<tr><td>'.date(DATE_FORMAT,$res['online']+TIMEZONE).'</td><td>'.date(TIME_FORMAT,$res['online']+TIMEZONE).'</td><td>'.$res['page'].'</td></tr>';
 				}
 				$result['online_title']  .= '</table>';
 				$result['online_title'] = htmlspecialchars($result['online_title']);
