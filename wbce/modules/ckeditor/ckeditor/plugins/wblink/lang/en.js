@@ -1,8 +1,9 @@
-/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'wblink', 'en', {
+/**
+ * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+
+CKEDITOR.plugins.setLang('wblink', 'en', {
 	acccessKey: 'Access Key',
 	advanced: 'Advanced',
 	advisoryContentType: 'Advisory Content Type',

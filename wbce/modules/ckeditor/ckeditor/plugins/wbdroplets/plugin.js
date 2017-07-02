@@ -3,34 +3,38 @@ Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 
-CKEDITOR.plugins.add( 'wbdroplets', {
+(function () {
+    "use strict";
+
+CKEDITOR.plugins.add('wbdroplets', {
 	requires: 'dialog,fakeobjects',
-	lang: 'de,en,fr,nl',
+	lang: 'de,en',
 	icons: 'wbdroplets',
 
-	init: function( editor ) {
+	init: function (editor) {
 		// Add the link and unlink buttons.
-		editor.addCommand( 'wbdroplets', new CKEDITOR.dialogCommand( 'wbdroplets' ) );
+		editor.addCommand('wbdroplets', new CKEDITOR.dialogCommand('wbdroplets'));
 
-		if ( editor.ui.addButton ) {
-			editor.ui.addButton( 'Wbdroplets', {
+		if (editor.ui.addButton) {
+			editor.ui.addButton('Wbdroplets', {
 				label: editor.lang.wbdroplets.wbdroplets.insBtn,
 				command: 'wbdroplets',
 				toolbar: 'links,40'
 			});
 		}
 
-		CKEDITOR.dialog.add( 'wbdroplets', this.path + 'dialogs/wbdroplets.js' );
+		CKEDITOR.dialog.add('wbdroplets', this.path + 'dialogs/wbdroplets.js');
 
-		editor.on( 'doubleclick', function( evt ) {
-			var dropletText = CKEDITOR.plugins.wbdroplets.getSelectedDroplet( editor );
-			if (dropletText) 
-				evt.data.dialog = 'wbdroplets';
+		editor.on('doubleclick', function (evt) {
+			var dropletText = CKEDITOR.plugins.wbdroplets.getSelectedDroplet(editor);
+			if (dropletText) {
+                evt.data.dialog = 'wbdroplets';
+            }
 		});
 
 		// If the "menu" plugin is loaded, register the menu items.
-		if ( editor.addMenuItems ) {
-			editor.addMenuGroup( 'wbdroplets' );
+		if (editor.addMenuItems) {
+			editor.addMenuGroup('wbdroplets');
 			editor.addMenuItems({
 				wbdroplets: {
 					label: editor.lang.wbdroplets.wbdroplets.menu,
@@ -42,12 +46,13 @@ CKEDITOR.plugins.add( 'wbdroplets', {
 		}
 
 		// If the "contextmenu" plugin is loaded, register the listeners.
-		if ( editor.contextMenu ) {
-			editor.contextMenu.addListener( function( element, selection ) {
+		if (editor.contextMenu) {
+			editor.contextMenu.addListener(function (element, selection) {
 
-			var dropletText = CKEDITOR.plugins.wbdroplets.getSelectedDroplet( editor );
-			if (!dropletText) 
-				return null;
+			var dropletText = CKEDITOR.plugins.wbdroplets.getSelectedDroplet(editor);
+			if (!dropletText) {
+                return null;
+            }
 
 			return { wbdroplets : CKEDITOR.TRISTATE_OFF};
 			});
@@ -66,16 +71,20 @@ CKEDITOR.plugins.wbdroplets = {
 	 * Get the surrounding link element of current selection.
 	 *
 	 */
-	getSelectedDroplet: function( editor ) {
-		var selection = editor.getSelection();
-		var range = selection.getRanges( )[ 0 ];
+	getSelectedDroplet: function (editor) {
+		var selection = editor.getSelection(),
+		    range = selection.getRanges()[0];
+                var content="";
 
-		if ( range ) {
-			range.shrink( CKEDITOR.SHRINK_TEXT );
-			content = editor.elementPath( range.getCommonAncestor() ).elements[0].$.innerHTML;
+		if (range) {
+			range.shrink(CKEDITOR.SHRINK_TEXT);
+			content = editor.elementPath(range.getCommonAncestor()).elements[0].$.innerHTML;
 			content = content.match(/\[\[([^\]]*)\]\]/);
-			if (content === null)		return null
-			else return 	content[1];
+			if (content === null) {
+               return null 
+            } else {
+                return content[1];
+            }
 		}
 		return null;
 	}
@@ -83,3 +92,4 @@ CKEDITOR.plugins.wbdroplets = {
 
 CKEDITOR.scriptLoader.load(CKEDITOR.plugins.getPath('wbdroplets')+'droplets.php');
 
+})();

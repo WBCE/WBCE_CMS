@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -33,7 +33,7 @@ if (true === $debug) {
  *	@param	string	Optional the width, default "100%" of given space.
  *	@param	string	Optional the height of the editor - default is '250px'
  */
-function show_wysiwyg_editor($name, $id, $content, $toolbar = false) {
+function show_wysiwyg_editor($name, $id, $content, $width='100%', $height='350px', $toolbar = false) {
 	global $database,$admin;
 
 	$modAbsPath = str_replace('\\','/',dirname(__FILE__));
@@ -89,16 +89,6 @@ function show_wysiwyg_editor($name, $id, $content, $toolbar = false) {
 		'wb:'
 	);
 
-	/**	The list of templates definition files to load. */
-	$ckeditor->resolve_path(
-		'templates_files',
-		$tplPath.'/wb_config/editor.templates.js',
-		$ModPath.'/wb_config/editor.templates.js'
-	);
-
-	/**	Bugfix for the template files as the ckeditor want an array instead a string ... */
-	$ckeditor->config['templates_files'] = array($ckeditor->config['templates_files']);
-
 	/**	The filebrowser are called in the include, because later on we can make switches, use WB_URL and so on */
 	$connectorPath = $ckeditor->basePath.'filemanager/connectors/php/connector.php';
 	$ckeditor->config['filebrowserBrowseUrl'] = $ckeditor->basePath.'filemanager/browser/default/browser.html?Connector='.$connectorPath;
@@ -115,12 +105,15 @@ function show_wysiwyg_editor($name, $id, $content, $toolbar = false) {
 	}
 
 	/**	Define all extra CKEditor plugins here */
-	$ckeditor->config['extraPlugins'] = 'wblink,wbdroplets,wbshybutton,wbsave,autolink,codemirror,colorbutton,copyformatting,flash,font,indentblock,justify,lineutils,oembed,panelbutton,templates,textselection,widget,widgetselection';
+	$ckeditor->config['extraPlugins'] = 'wbdroplets,wblink,wbsave,wbshybutton,autolink,ckawesome,codemirror,lineutils,oembed,textselection,widget,widgetselection,colorbutton,copyformatting,flash,font,indentblock,justify,panelbutton';
 	$ckeditor->config['removePlugins'] = 'wsc,link';
     $ckeditor->config['removeButtons'] = 'Font';
+    $ckeditor->config['fontawesomePath'] = WB_URL.'/include/font-awesome/css/font-awesome.min.css';
 
-    $ckeditor->config['height'] = '350px';
-    $ckeditor->config['width'] = '100%';
+    if ($toolbar) $ckeditor->config['toolbar'] = $toolbar;
+
+    $ckeditor->config['height'] = $height;
+    $ckeditor->config['width'] = $width;
 
 	/**
 	 *	Force the object to print/echo direct instead of returning the

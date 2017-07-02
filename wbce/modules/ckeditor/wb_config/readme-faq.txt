@@ -7,7 +7,7 @@ What files are there to customize CKEditor for WBCE?
 
 # Answer:   #
 
-There are three different configuration files (editor.css, editor.styles.js, editor.templates.js). All four configuration files can be found in the template folder, please take look inside:
+There are two different configuration files (editor.css and editor.styles.js). All two configuration files can be found in the template folder, please take look inside:
 
 + editor.css:	
 The default look of the WYSIWYG textarea and the preview. 
@@ -15,11 +15,7 @@ The default look of the WYSIWYG textarea and the preview.
 + editor.styles.js:
 The default styles you can choose from a dropdown in the CKEditor toolbar. 
 
-+ editor.templates.js:
-The default CKE templates you can choose of a button in CKEditor toolbar. 
-Please note: We recommend not to use CKE templates, because the WBCE template should define the different blocks and the template.
-
-All three configuration files are also available as default files in _wbinstallation/modules/ckeditor/wb_config
+All two configuration files are also available as default files in _wbinstallation/modules/ckeditor/wb_config
 
 IMPORTANT: Do not change any file of this folder! As they are overwritten with any update of CKEditor module and / or WBCE. You never have any problems when upgrading CKEditor module to another version.
 
@@ -56,13 +52,11 @@ editor.css
 1) _wbinstallation/templates/_yourdefaulttemplate/editor.css
 2) _wbinstallation/templates/_yourdefaulttemplate/css/editor.css
 3) _wbinstallation/templates/_yourdefaulttemplate/editor/editor.css
-4) _wbinstallation/templates/wb_config/editor.css
-5) _wbinstallation/modules/ckeditor/wb_config/editor.css
+4) _wbinstallation/modules/ckeditor/wb_config/editor.css
 
-editor.styles.js, editor.templates.js	
+editor.styles.js
 
 1) _wbinstallation/templates/_yourdefaulttemplate/editor.styles.js
 2) _wbinstallation/templates/_yourdefaulttemplate/js/editor.styles.js
 3) _wbinstallation/templates/_yourdefaulttemplate/editor/editor.styles.js
-4) _wbinstallation/templates/wb_config/editor.styles.js
-5) _wbinstallation/modules/ckeditor/wb_config/editor.styles.js
+4) _wbinstallation/modules/ckeditor/wb_config/editor.styles.js

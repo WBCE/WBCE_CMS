@@ -1,4 +1,14 @@
 <?php
+/**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
+ */
 
 /* -------------------------------------------------------- */
 // Must include code to stop this file being accessed directly
@@ -8,11 +18,6 @@ if(!defined('WB_PATH')) {
 	throw new IllegalFileException();
 }
 /* -------------------------------------------------------- */
-
-/*
-* Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
-* For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
 
 /**
  * \brief CKEditor class that can be used to create editor
@@ -27,7 +32,7 @@ if(!defined('WB_PATH')) {
  */
 class CKEditor {
 	/** The version of %CKEditor. */
-	const version = '4.6.2';
+	const version = '4.7.1';
 	/** A constant string unique for each release of %CKEditor.	*/
 	const timestamp = 'B8DJ5M3';
 
@@ -530,8 +535,7 @@ class CKEditorPlus extends CKEditor
 
 		public $paths = Array(
 		'contentsCss' => "",
-		'stylesSet' => "",
-		'templates_files' => "",
+		'stylesSet' => ""
 	);
 
 	public $files = array(
@@ -544,11 +548,6 @@ class CKEditorPlus extends CKEditor
 			'/editor.styles.js',
 			'/js/editor.styles.js',
 			'/editor/editor.styles.js'
-		),
-		'templates_files' => Array(
-			'/editor.templates.js',
-			'/js/editor.templates.js',
-			'/editor/editor.templates.js'
 		)
 	);
 

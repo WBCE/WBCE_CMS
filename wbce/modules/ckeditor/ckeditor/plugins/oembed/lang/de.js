@@ -1,8 +1,8 @@
 CKEDITOR.plugins.setLang('oembed', 'de', {
     title : "Medien Inhalt einbinden (Bilder, Video, Inhalt)",
-	button : "Medien Inhalt von verschiedenen Seiten einbinden",
+	button : "Medien Inhalt von Verschiedenen Seiten einbinden",
    	pasteUrl : "Fügen Sie eine Url (Gekürzte Urls werden auch erkannt) ein von einer Seite die Unterstützt wird (z.B.: YouTube, Flickr, Qik, Vimeo, Hulu, Viddler, MyOpera, etc.) ...",
-	invalidUrl : "Sie müssem eine korrekte URL angeben!",
+	invalidUrl : "Sie müssem eine korrekte URL an!",
 	noEmbedCode : "Kein embed Code gefunden, oder Seite wird nicht Unterstützt!",
 	url : "URL:",
 	width: "Breite:",

@@ -1,14 +1,14 @@
-/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
+/**
+ * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
 
-'use strict';
+(function () {
+    "use strict";
 
-( function() {
 CKEDITOR.plugins.add( 'wblink', {
 	requires: 'dialog,fakeobjects',
-	lang: 'de,en,fr,nl',
+	lang: 'de,en',
 	icons: 'anchor,anchor-rtl,link,unlink',
 	onLoad: function() {
 		// Add the CSS styles for anchor placeholders.
@@ -779,4 +779,4 @@ CKEDITOR.tools.extend( CKEDITOR.config, {
 		 * @member CKEDITOR.config
 		 */
 	} );
-} )();
+})();

@@ -1,6 +1,6 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
@@ -13,9 +13,9 @@
 $module_directory = 'ckeditor';
 $module_name = 'CKEditor';
 $module_function = 'WYSIWYG';
-$module_version = '4.6.2.2';
+$module_version = '4.7.1';
 $module_platform = '1.0.0';
 $module_author = 'diverse, cwsoft, Norhei, Colinax';
-$module_license = '<a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>';
-$module_description = 'includes CKEditor 4.6.2 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.';
+$module_license = 'GNU Lesser General Public License';
+$module_description = 'includes CKEditor 4.7.1 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.';
 $module_home = 'http://www.wbce.org';

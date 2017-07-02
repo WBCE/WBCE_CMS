@@ -45,6 +45,7 @@ if(!function_exists('cleanup')) {
 $DropletSelectBox = "var DropletSelectBox = new Array( ";
 $description = "var DropletInfoBox = new Array( ";
 $usage = "var DropletUsageBox = new Array( ";
+
 $array = array();
 	$sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_droplets` ';
 	$sql .= 'WHERE `active`=1 ';

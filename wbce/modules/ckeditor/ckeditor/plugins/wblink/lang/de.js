@@ -1,8 +1,9 @@
-/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
-*/
-CKEDITOR.plugins.setLang( 'wblink', 'de', {
+/**
+ * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
+
+CKEDITOR.plugins.setLang('wblink', 'de', {
 	acccessKey: 'Zugriffstaste',
 	advanced: 'Erweitert',
 	advisoryContentType: 'Inhaltstyp',
@@ -68,5 +69,5 @@ CKEDITOR.plugins.setLang( 'wblink', 'de', {
 	selectNews: 'Bitte einen News-Beitrag wählen',
 	selectTopics: 'Bitte einen Topics-Beitrag wählen',
 	selectBakery: 'Bitte einen Bakery-Artikel wählen',
-	noNews: 'Keine News Seite gewählt'	
+	noNews: 'Keine News Seite gewählt'
 });
