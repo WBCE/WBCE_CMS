@@ -16,8 +16,6 @@
 	<link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/module-fixes.css" rel="stylesheet" type="text/css">
 
-	<link href="{WB_URL}/include/jscalendar/calendar-system.css" rel="stylesheet" type="text/css">
-
     <script>
 		var WB_URL 		= '{WB_URL}';
 		var THEME_URL 	= '{THEME_URL}';
