@@ -297,7 +297,7 @@ if((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES) && $field_set && file_exists(WB
             // If the current page cannot be parent, then its children neither
             $list_next_level = true;
             // Stop users from adding pages with a level of more than the set page level limit
-            if($page['level']+1 < PAGE_LEVEL_LIMIT)
+            if($page['level']+1 <= PAGE_LEVEL_LIMIT)
             {
                 // Get user perms
                 $admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
