@@ -263,7 +263,7 @@
 			elseif($this->imgType=='JPG')
 			{
 				if(!empty($newfile))
-					@imagejpeg($newimg,$newfile,85);
+					@imagejpeg($newimg,$newfile);
 				else
 				{
 					@header("Content-type: image/jpeg");

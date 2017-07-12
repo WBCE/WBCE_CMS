@@ -21,7 +21,7 @@ function confirm_link(message, url) { if(confirm(message)) location.href = url; 
 <table summary="" cellpadding="4" cellspacing="0" border="0" width="100%" class="{DISPLAY_LIST_TABLE}">
  <!-- BEGIN list_block -->
  <tr style="background-color: #{ROW_BG_COLOR};">
-  <td width="18" style="padding-left: 10px;"><a href="{LINK}" target="{LINK_TARGET}"><img {MOUSEOVER} src="{FT_ICON}" class="{DISPLAY_ICON}" border="0" alt="" /></a></td>
+  <td width="100" style="padding-left: 10px;"><a href="{LINK}" target="{LINK_TARGET}"><img {MOUSEOVER} src="{FT_ICON}" class="{DISPLAY_ICON}" border="0" alt="" /></a></td>
   <td><a {MOUSEOVER} href="{LINK}" target="{LINK_TARGET}">{NAME}</a></td>
   <td width="120"><small>{IMAGEDETAIL}<br />
    {DATE}</small></td>

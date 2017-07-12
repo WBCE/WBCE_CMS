@@ -32,7 +32,7 @@ if (isset($_GET['img']) && isset($_GET['t'])) {
 	$img = new RESIZEIMAGE($img_path);
 	if ($img->imgWidth) {
 		if ($type == 1) {
-			$img->resize_limitwh(50,50);
+			$img->resize_limitwh(100,100);
 		} elseif ($type == 2) {
 			$img->resize_limitwh(200,200);
 		}
