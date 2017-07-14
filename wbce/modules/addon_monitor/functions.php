@@ -164,7 +164,7 @@ if(!function_exists('getLanguagesArray')){
 					}					
 				}				
 				// icon
-					$sIconFile = "/templates/".DEFAULT_THEME."/images/flags/".strtolower($aRec['directory']).".png";
+					$sIconFile = "/languages/".strtolower($aRec['directory']).".png";
 					if(is_readable(WB_PATH.$sIconFile)){				
 						$aRec['icon'] = "../..".$sIconFile;		
 					}else{
