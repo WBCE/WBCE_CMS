@@ -10,8 +10,14 @@
  * @license GNU GPL2 (or any later version)
  */
 
+/*
+////////////////////////////////////////////////////////////
+Functions Section
+This needs to stay up here !!!
+////////////////////////////////////////////////////////////
+*/
+
 if (!defined("WB_UPGRADE_SCRIPT"))define ("WB_UPGRADE_SCRIPT",  true) ;
- 
  
 // function to extract var/value-pair from DB
 function db_get_key_value($table, $key)
@@ -133,6 +139,12 @@ function status_msg($message, $class = 'check', $element = 'span')
     echo $msg;
 }
 
+/*
+////////////////////////////////////////////////////////////
+Functions Section END
+////////////////////////////////////////////////////////////
+*/
+
 // include required scripts and setup admin object
 define ("WB_SECFORM_TIMEOUT", 7200); // versions bevore 2.8.2 do not have this value set so its needed
 @require_once 'config.php';
@@ -159,7 +171,6 @@ $stepID = 1;
 
 // removes old folders
 $dirRemove = array(
-
     '[TEMPLATE]/argos_theme/',
     '[TEMPLATE]/argos_theme_reloaded/images/flags/',
     '[TEMPLATE]/advancedThemeWbFlat/images/flags/',
@@ -173,7 +184,6 @@ $dirRemove = array(
 
 // files removed with 1.1 or before
 $filesRemove['0'] = array(
-
     '[ADMIN]/preferences/details.php',
     '[ADMIN]/preferences/email.php',
     '[ADMIN]/preferences/password.php',
@@ -189,7 +199,6 @@ $filesRemove['0'] = array(
 
 // files removed with 1.2
 $filesRemove['1'] = array(
-
     '[INCLUDE]/jquery/MIT-LICENSE.txt',
     '[INCLUDE]/jquery/GPL-LICENSE.txt',
     '[INCLUDE]/jquery/version.txt',
@@ -217,7 +226,6 @@ $filesRemove['1'] = array(
 
 // files removed with 1.3
 $filesRemove['2'] = array(
-
     '[ACCOUNT]/template.html',
     '[LANGUAGES]/SE.php',
     '[MODULES]/pagecloner/template.html',
@@ -358,7 +366,7 @@ if (!defined('WB_REVISION')) {define('WB_REVISION', '');}
 
 ?>
 <p>This script upgrades <strong> <?php echo $oldVersion;?></strong> to <strong> <?php echo $newVersion?> </strong>.<br />
- The upgrade script modifies the existing database to reflect the changes introduced with the new version.</p>
+    The upgrade script modifies the existing database to reflect the changes introduced with the new version.</p>
 <?php
 /*
  * Check if disclaimer was accepted
@@ -367,15 +375,15 @@ if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confir
     ?>
 <h2>Backup your files !!</h2>
 <p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.<br />
- <strong class="error">Note: </strong>The upgrade script alters some settings of your existing database!!! You need to confirm the disclaimer before proceeding.</p>
+    <strong class="error">Note: </strong>The upgrade script alters some settings of your existing database!!! You need to confirm the disclaimer before proceeding.</p>
 <form name="send" action="<?php echo $_SERVER['SCRIPT_NAME'];?>" method="post">
- <textarea cols="80" rows="5">DISCLAIMER: The WBCE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</textarea>
- <br />
- <br />
- <input name="backup_confirmed" type="checkbox" value="confirmed" />
- &nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created. <br />
- <br />
- <input name="send" type="submit" value="Start upgrade script" />
+    <textarea cols="80" rows="5">DISCLAIMER: The WBCE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</textarea>
+    <br />
+    <br />
+    <input name="backup_confirmed" type="checkbox" value="confirmed" />
+    &nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created. <br />
+    <br />
+    <input name="send" type="submit" value="Start upgrade script" />
 </form>
 <br />
 <?php
@@ -503,7 +511,7 @@ echo "<br />Adding mediasettings to settings table<br />";
 Settings::Set('mediasettings','', false);
 
 echo "<br />Adding Secureform Settings if not exits.<br />";
-// Settings::Set ("wb_maintainance_mode", false, fals);
+// Settings::Set ("wb_maintainance_mode", false, false);
 Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg", false);
 Settings::Set ("wb_secform_secrettime", '86400', false);
 Settings::Set ("wb_secform_timeout", '7200', false);
@@ -800,5 +808,4 @@ echo '<br /><br /></div></body></html>';
 
 // Finally, destroy the session.
 session_destroy();
-
 
