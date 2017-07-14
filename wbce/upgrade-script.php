@@ -160,7 +160,6 @@ $stepID = 1;
 // removes old folders
 $dirRemove = array(
 
-    '[TEMPLATE]/blank/',
     '[TEMPLATE]/argos_theme/',
     '[TEMPLATE]/argos_theme_reloaded/images/flags/',
     '[TEMPLATE]/advancedThemeWbFlat/images/flags/',
