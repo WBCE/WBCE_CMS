@@ -49,7 +49,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (11, 'home_folders', 'true'),
 (12, 'warn_page_leave', '1'),
 (13, 'default_template', 'wbce_vertal'),
-(14, 'default_theme', 'advancedThemeWbFlat'),
+(14, 'default_theme', 'wbce_flat_theme'),
 (15, 'default_charset', 'utf-8'),
 (16, 'multiple_menus', 'true'),
 (17, 'page_level_limit', '4'),

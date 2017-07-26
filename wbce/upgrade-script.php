@@ -166,7 +166,7 @@ $table_list = array (
 
 $OK = ' <span class="ok">OK</span> ';
 $FAIL = ' <span class="error">FAILED</span> ';
-$DEFAULT_THEME = 'advancedThemeWbFlat';
+$DEFAULT_THEME = 'wbce_flat_theme';
 $stepID = 1;
 
 // removes old folders
