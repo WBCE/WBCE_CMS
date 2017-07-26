@@ -1,37 +1,21 @@
 <?php
-
-// $Id: DE.php 915 2009-01-21 19:27:01Z Ruebenwurzel $
-
-/*
-
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2009, Ryan Djurovich
-
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
- -----------------------------------------------------------------------------------------
-  DEUTSCHE SPRACHDATEI FUER DAS MODUL: MENU_LINK
- -----------------------------------------------------------------------------------------
-*/
+/**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
+ */
 
 // Deutsche Modulbeschreibung
-$module_description 	= 'Dieses Modul erm&ouml;glicht die Anzeige eines Links im Seitenmen&uuml;.';
+$module_description = 'Dieses Modul erm&ouml;glicht die Anzeige eines Links im Seitenmen&uuml;.';
 
 // Ueberschriften und Textausgaben
-$MOD_MENU_LINK['TEXT']				= 'Klicken Sie HIER um zur Startseite zu gelangen';
+$MOD_MENU_LINK['TEXT'] = 'Klicken Sie HIER um zur Startseite zu gelangen';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'Entfernte Adresse';
 $MOD_MENU_LINK['R_TYPE'] = 'Redirect-Typ';
 
-?>
+

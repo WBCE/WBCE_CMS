@@ -10,11 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// FRENCH Modul description
-$module_description = 'This module allows you to insert a link into the menu.';
+// English Modul description
+$module_description = 'Basic WYSIWYG editor field';
 
-// Headings and text outputs
-$MOD_MENU_LINK['TEXT'] = 'Cliquez ICI pour retourn&eacute; &agrave; la page principale';
-$MOD_MENU_LINK['EXTERNAL_LINK'] = 'Lien externe';
-
-
+// Module language vars
+$MOD_WYSIWYG['WYSIWYG'] ="WYSIWYG";

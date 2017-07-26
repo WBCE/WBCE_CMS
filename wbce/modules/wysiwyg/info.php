@@ -1,18 +1,13 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        modules
- * @package         wysiwyg
- * @author          WebsiteBaker Project
- * @copyright       2009-2012, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: info.php 1576 2012-01-16 17:29:11Z darkviper $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/wysiwyg/info.php $
- * @lastmodified    $Date: 2012-01-16 18:29:11 +0100 (Mo, 16. Jan 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 $module_directory = 'wysiwyg';
