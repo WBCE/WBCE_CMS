@@ -1,0 +1,198 @@
+<!-- BEGIN main_block -->
+
+<script src="{ADMIN_URL}/pages/page_settings.js" type="text/javascript"></script>
+
+<section id="page-settings">
+    <h2 class="page_titel"> {HEADING_MODIFY_PAGE_SETTINGS}
+        <div class="headline-link"> <a href="{ADMIN_URL}/pages/modify.php?page_id={PAGE_IDKEY}"> <i class="fa fa-edit"></i> {TEXT_MODIFY_PAGE} </a> <span style="{DISPLAY_MANAGE_SECTIONS}">&nbsp;&nbsp;|&nbsp;&nbsp;</span> <a href="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" style="{DISPLAY_MANAGE_SECTIONS}"> <i class="fa fa-bars"></i> {TEXT_MANAGE_SECTIONS} </a> </div>
+    </h2>
+
+    <header class="fg12 subheader">
+        <div style="float: left;"> {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
+            PageID: <b>{PAGE_ID}</b> </div>
+        <div style="float: right; text-align: right; color: #999;" class="{DISPLAY_MODIFIED}"> <i>Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</i> </div>
+    </header>
+    <section class="fg12 content-box" style="width: 100%;margin: 0;">
+        <form name="settings" action="settings2.php" method="post" style="margin-top: 15px;">
+            {FTAN}
+            <input type="hidden" name="page_id" value="{PAGE_ID}">
+            <section class="fg7">
+                <div class="row">
+                    <div class="fg4">{TEXT_PAGE_TITLE}:</div>
+                    <div class="fg8">
+                        <input type="text" name="page_title" value="{PAGE_TITLE}" class="wdt250">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4">{TEXT_MENU_TITLE}:</div>
+                    <div class="fg8">
+                        <input type="text" name="menu_title" value="{MENU_TITLE}" class="wdt250">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4">{TEXT_FILENAME}:</div>
+                    <div class="fg8">
+                        <input type="text" name="link" value="{LINK_VALUE}"style="width:220px;">
+                        <span style="vertical-align: -5px;">&nbsp;{PAGE_EXTENSION}</span> </div>
+                </div>
+                <div class="row">
+                    <div class="fg4">{TEXT_PARENT}:</div>
+                    <div class="fg8">
+                        <select name="parent" onchange="return disabled_hack_for_ie(this);" class="wdt250">
+                            <!-- BEGIN page_list_block2 -->
+                            <option value="{ID}" {SELECTED}> {TITLE} </option>
+                            <!-- END page_list_block2 -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4">{TEXT_VISIBILITY}:</div>
+                    <div class="fg8">
+                        <select name="visibility" onchange="javascript: toggle_viewers();" class="wdt250">
+                            <option value="public" {PUBLIC_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);"> {TEXT_PUBLIC} </option>
+                            <option value="private" {PRIVATE_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);"> {TEXT_PRIVATE} </option>
+                            <option value="registered" {REGISTERED_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);"> {TEXT_REGISTERED} </option>
+                            <option value="hidden" {HIDDEN_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);"> {TEXT_HIDDEN} </option>
+                            <option value="none" {NO_VIS_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);"> {TEXT_NONE} </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4"> {TEXT_DESCRIPTION}: <br>
+                        <span class="desc-counter"></span> Zeichen [<span class="desc-remain"></span> Rest] </div>
+                    <div class="fg8">
+                        <textarea name="description" class="site-description wdt250">{DESCRIPTION}</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4">{TEXT_KEYWORDS}:</div>
+                    <div class="fg8">
+                        <textarea name="keywords" class="wdt250">{KEYWORDS}</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4">{TEXT_TARGET}:</div>
+                    <div class="fg8">
+                        <select name="target" class="wdt200">
+                            <option value="_blank" {BLANK_SELECTED}> {TEXT_NEW_WINDOW} </option>
+                            <option value="_self" {SELF_SELECTED}> {TEXT_SAME_WINDOW} </option>
+                            <option value="_top" {TOP_SELECTED}> {TEXT_TOP_FRAME} </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4">{TEXT_TEMPLATE}:</div>
+                    <div class="fg8">
+                        <select name="template" class="wdt200">
+                            <option value="" style="border-bottom:1px solid #666;">{TEXT_SYSTEM_DEFAULT}</option>
+                            <!-- BEGIN template_list_block -->
+                            <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                            <!-- END template_list_block -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4" style="{DISPLAY_MENU_LIST}"> {TEXT_MENU}: </div>
+                    <div class="fg8" style="{DISPLAY_MENU_LIST}">
+                        <select name="menu" class="wdt200">
+                            <!-- BEGIN menu_list_block -->
+                            <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                            <!-- END menu_list_block -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4" style="{DISPLAY_LANGUAGE_LIST}"> {TEXT_LANGUAGE}: </div>
+                    <div class="fg8" style="{DISPLAY_LANGUAGE_LIST}">
+                        <select name="language" class="wdt200">
+                            <!-- BEGIN language_list_block -->
+                            <option value="{VALUE}" {SELECTED} class="hasFlag" style="background-image:url({WB_URL}/languages/{VALUE}.png);">{NAME}</option>
+                            <!-- END language_list_block -->
+                        </select>
+                    </div>
+                </div>
+                </div>
+                <div {DISPLAY_CODE_PAGE_LIST}>
+                    <div class="row">
+                        <div class="fg4">{TEXT_PAGE_CODE}:</div>
+                        <div class="fg8">
+                            <select name="page_code" class="wdt200">
+                                <!-- BEGIN page_code_list_block -->
+                                <option value="{VALUE}" {SELECTED}>{PAGE_VALUE}</option>
+                                <!-- END page_code_list_block -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="fg4">{TEXT_SEARCHING}:</div>
+                    <div class="fg8">
+                        <select name="searching" class="wdt200">
+                            <option value="1">{TEXT_ENABLED}</option>
+                            <option value="0" {SEARCHING_DISABLED}>{TEXT_DISABLED}</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+            <section class="fg5">
+                <div class="fg12">
+                    <div style="margin-bottom:5px;">{TEXT_ADMINISTRATORS}:</div>
+                    <ul>
+                        <!-- BEGIN group_list_block -->
+                        <li style="margin-bottom:5px;">
+                            <input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}" {CHECKED} {DISABLED}>
+                            <label for="admin_group_{TOGGLE}">{NAME}</label>
+                        </li>
+                        <!-- END group_list_block -->
+                    </ul>
+                </div>
+                <div class="fg12" id="allowed_viewers" style="{DISPLAY_VIEWERS}"> {TEXT_ALLOWED_VIEWERS}:
+                    <ul>
+                        <!-- BEGIN group_list_block2 -->
+                        <li style="margin-bottom:5px;">
+                            <input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}" {CHECKED} {DISABLED}>
+                            <label for="viewing_group_{TOGGLE}">{NAME}</label>
+                        </li>
+                        <!-- END group_list_block2 -->
+                    </ul>
+                </div>
+            </section>
+            <hr class="fg12">
+            <div class="fg6">
+                <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+            </div>
+            <div class="fg6 right">
+                <button type="button" onclick="location.href = 'index.php';"> <i class="fa fa-fw fa-reply"></i> zurück </button>
+            </div>
+        </form>
+    </section>
+</section>
+<!-- END main_block -->
+
+<script>
+	$(document).ready(function() {
+		// description char-counter
+		var descLimit = 150;
+		var descInit = $('.site-description').val().length;
+		var descTail = descLimit - descInit;
+		$('.desc-counter').html(descInit).css('color','#147d14');
+		$('.desc-remain').html(descTail).css('color','#147d14');
+
+		$('.site-description').keyup(function(){
+			var count = $(this).val().length;
+			$('.desc-counter').html(count);
+			$('.desc-remain').html(descLimit - count);
+			if (count > descLimit) {
+				$('.desc-counter').css('color','firebrick');
+				$('.desc-remain').css('color','firebrick').html(0);
+			} else {
+				$('.desc-counter').css('color','#147d14');
+				if ($('.desc-remain').html() == 0) {
+					$('.desc-remain').css('color','firebrick');
+				} else {
+					$('.desc-remain').css('color','#147d14');
+				}
+			}
+		});
+	});
+</script> 

@@ -1,0 +1,22 @@
+<!-- BEGIN main_block -->
+
+<h2 class="page_titel"> {HEADING_LANGUAGE_DETAILS}
+    <div class="headline-link"> <i class="fa fa-reply"> <a href="#" onclick="window.location = 'index.php';"> zurück </a> </i> </div>
+</h2>
+
+<div class="content-box info-box" style="display: inline-block; width: 100%;">
+    <div class="fg3 bold">{TEXT_NAME}:</div>
+    <div class="fg8">{NAME}</div>
+    <div class="fg1 right"><img src="{WB_URL}/languages/{CODE}.png" style="margin-top:6px;"></div>
+    <hr class="fg12 nom">
+    <div class="fg3 bold">{TEXT_CODE}:</div>
+    <div class="fg9">{CODE}</div>
+    <hr class="fg12 nom">
+    <div class="fg3 bold">{TEXT_AUTHOR}:</div>
+    <div class="fg9">{AUTHOR}</div>
+    <hr class="fg12 nom">
+    <div class="fg3 bold">{TEXT_VERSION}:</div>
+    <div class="fg9">{VERSION}</div>
+</div>
+
+<!-- END main_block -->

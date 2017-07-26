@@ -1,0 +1,11 @@
+<!-- BEGIN main_block -->
+
+<div class="top alertbox_error"> 
+    <i class=" fa fa-2x fa-warning signal"></i>
+    <p>{MESSAGE}</p>
+    <a href="{LINK}">
+    <input type="button" name="submit" id="submit" value="{BACK}" />
+    </a> 
+</div>
+
+<!-- END main_block --> 

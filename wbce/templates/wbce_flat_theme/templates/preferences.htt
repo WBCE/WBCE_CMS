@@ -1,0 +1,94 @@
+<!-- BEGIN main_block -->
+
+<h2 class="page_titel">{HEADING_MY_SETTINGS}</h2>
+
+<section class="preferences content-box">
+    <form name="{FORM_NAME}" id="{FORM_NAME}" action="{ACTION_URL}" method="post" class="top">
+        {FTAN}
+        <div class="row">
+            <div class="fg3"> {TEXT_USERNAME}: </div>
+            <div class="fg9"> {USERNAME} </div>
+        </div>
+        <hr class="fg12">
+        <div class="row">
+            <div class="fg3"> {TEXT_DISPLAY_NAME}: </div>
+            <div class="fg9">
+                <input type="text" id="display_name" name="display_name" value="{DISPLAY_NAME}" class="wdt250">
+            </div>
+        </div>
+        <div class="row">
+            <div class="fg3">{TEXT_LANGUAGE}:</div>
+            <div class="fg9">
+                <select name="language" id="language" class="wdt250">
+                    <!-- BEGIN language_list_block -->
+                    <option value="{CODE}" {SELECTED} class="hasFlag" style="background-image: url({WB_URL}/languages/{CODE}.png);">({CODE}) {NAME}</option>
+                    <!-- END language_list_block -->
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="fg3">{TEXT_TIMEZONE}:</div>
+            <div class="fg9">
+                <select name="timezone" id="timezone" class="wdt250">
+                    <!-- BEGIN timezone_list_block -->
+                    <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                    <!-- END timezone_list_block -->
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="fg3">{TEXT_DATE_FORMAT}:</div>
+            <div class="fg9">
+                <select name="date_format" id="date_format" class="wdt250">
+                    <!-- BEGIN date_format_list_block -->
+                    <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                    <!-- END date_format_list_block -->
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="fg3">{TEXT_TIME_FORMAT}:</div>
+            <div class="fg9">
+                <select name="time_format" id="time_format" class="wdt250">
+                    <!-- BEGIN time_format_list_block -->
+                    <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                    <!-- END time_format_list_block -->
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="fg3">{TEXT_EMAIL}:</div>
+            <div class="fg9">
+                <input type="text" id="email" name="email" value="{EMAIL}" class="wdt250">
+            </div>
+        </div>
+        <div class="row">
+            <div class="fg3">{TEXT_NEW_PASSWORD}:</div>
+            <div class="fg9">
+                <input type="password" id="new_password_1" name="new_password_1" value="{EMPTY_STRING}" class="wdt250">
+            </div>
+        </div>
+        <div class="row">
+            <div class="fg3">{TEXT_RETYPE_NEW_PASSWORD}:</div>
+            <div class="fg9">
+                <input type="password" id="new_password_2" name="new_password_2" value="{EMPTY_STRING}" class="wdt250">
+            </div>
+        </div>
+        <hr class="fg12">
+        <div class="row">
+            <div class="fg3">{TEXT_NEED_CURRENT_PASSWORD}:</div>
+            <div class="fg9">
+                <input type="password" id="current_password" name="current_password" value="{EMPTY_STRING}" class="wdt250">
+            </div>
+        </div>
+        <hr class="fg12">
+        </hr>
+        <div class="row">
+            <div class="fg9 push3">
+                <button type="submit" id="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- END main_block -->

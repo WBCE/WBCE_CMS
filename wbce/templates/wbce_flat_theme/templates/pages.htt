@@ -1,0 +1,289 @@
+<!-- BEGIN main_block -->
+
+<div id="pagesPage">
+<div id="pageListPanel" class="panel panel-default">
+    <h2 class="page_titel">{PAGES}</h2>
+    <div class="content-box panel-body"></div>
+</div>
+<!-- /.panel.panel-default -->
+<div class="fg4" style="margin: 0;">
+    <div class="panel panel-default {DISPLAY_ADD}">
+        <h2 class="page_titel">{HEADING_ADD_PAGE}</h2>
+        <div class="content-box panel-body">
+            <div class="addsite_insideborder">
+                <form name="add" action="add.php" method="post">
+                    {FTAN}
+                    <div class="form-group">
+                        <label for="inputTitle">{TEXT_TITLE}</label>
+                        <input type="text" name="title" id="inputTitle" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="selectType">{TEXT_TYPE}</label>
+                        <select id="selectType" name="type" class="form-control">
+                            <!-- BEGIN module_list_block -->
+                            <option value="{VALUE}"{SELECTED}>{NAME}</option>
+                            <!-- END module_list_block -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectParent">{TEXT_PARENT}</label>
+                        <select id="selectParent" name="parent" class="form-control">
+                            <!-- BEGIN page_list_block2 -->
+                            <option value="{ID}" {DISABLED} style="background: {FLAG_ROOT_ICON} no-repeat center left; padding-left: 20px;">{TITLE}</option>
+                            <!-- END page_list_block2 -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectVisibility">{TEXT_VISIBILITY}</label>
+                        <select id="selectVisibility" name="visibility" onchange="javascript: toggleViewers();">
+                            <option value="public"{SELECTED}>{TEXT_PUBLIC}</option>
+                            <option value="private">{TEXT_PRIVATE}</option>
+                            <option value="registered">{TEXT_REGISTERED}</option>
+                            <option value="hidden">{TEXT_HIDDEN}</option>
+                            <option value="none">{TEXT_NONE}</option>
+                        </select>
+                    </div>
+                    <p><strong>{TEXT_ADMINISTRATORS}</strong></p>
+                    <!-- BEGIN group_list_block -->
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}" {CHECKED} {DISABLED} />
+                            {NAME}
+                        </label>
+                    </div>
+                    <!-- END group_list_block -->
+                    
+                    <div id="viewers" style="display: none;">
+                        <p><strong>{TEXT_REGISTERED_VIEWERS}</strong></p>
+                        <!-- BEGIN group_list_block2 -->
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}" {CHECKED} {DISABLED} />
+                                {NAME}
+                            </label>
+                        </div>
+                        <!-- END group_list_block2 -->
+                    </div>
+                    <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> {TEXT_ADD}</button>
+                </form>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel.panel-default -->
+        
+        <div class="panel panel-default {DISPLAY_INTRO}">
+            <div class="panel-heading">
+                <h2 class="page_titel">{HEADING_MODIFY_INTRO_PAGE}</h2>
+            </div>
+            <div class="content-box">
+                <div class="addsite_insideborder"> <a href="intro.php">{INTRO_LINK}</a> </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel.panel-default -->
+    </div>
+    <!-- /.fg4 -->
+    
+</div>
+<!-- /#pagesPage -->
+
+<!-- Custom Javascript -->
+<script>
+
+    // Output fixes
+    $(function () {
+
+        function refreshStripes() {
+            $pageListUl.find('li:visible > table').each(function (index) {
+                if (index % 2 === 0) {
+                    $(this).addClass('table-striped');
+                } else {
+                    $(this).removeClass('table-striped');
+                }
+            });
+        }
+
+        var $pageList = $('.pages_list'),
+                $pageListUl = $pageList.children('ul'),
+                $pageListTitle = $pageList.find('h2:first'),
+                $pageListPanel = $('#pageListPanel'),
+                $toggleLinks = $('.toggle a'),
+                $btnExpand = $('.btn-expand'),
+                $btnCollapse = $('.btn-collapse');
+
+        $toggleLinks
+                .on('collapse-list', function (e) {
+                    var $this = $(this);
+                    $this
+                            .removeClass('expanded')
+                            .addClass('collapsed')
+                            .html('<i class="fa fa-fw fa-folder"></i>');
+
+                    var id = $this.data('id');
+                    $('#' + id, $pageListUl).hide();
+                    localStorage.setItem(id, 'collapsed');
+                    refreshStripes();
+                })
+                .on('expand-list', function (e) {
+                    var $this = $(this);
+                    $this
+                            .removeClass('collapsed')
+                            .addClass('expanded')
+                            .html('<i class="fa fa-fw fa-folder-open"></i>');
+
+                    var id = $this.data('id');
+                    $('#' + id, $pageListUl).show();
+                    localStorage.setItem(id, 'expanded');
+                    refreshStripes();
+                })
+                .on('click', function (e) {
+                    e.preventDefault();
+
+                    var $this = $(this);
+                    if ($this.hasClass('collapsed')) {
+                        $this.trigger('expand-list');
+                    } else {
+                        $this.trigger('collapse-list');
+                    }
+                });
+
+        $toggleLinks.each(function () {
+            var $this = $(this);
+
+            var id = $this.data('id');
+            if (localStorage.getItem(id) === 'collapsed') {
+                $this.trigger('collapse-list');
+            } else {
+                $this.trigger('expand-list');
+            }
+        });
+
+        $btnCollapse.on('click', function (e) {
+            e.preventDefault;
+            $toggleLinks.trigger('collapse-list');
+            $btnCollapse.blur();
+        });
+
+        $btnExpand.on('click', function (e) {
+            e.preventDefault;
+            $toggleLinks.trigger('expand-list');
+            $btnExpand.blur();
+        });
+
+        $pageListPanel.find('h2.page_titel').text($pageListTitle.text());
+        $pageListTitle.remove();
+
+        $pageListPanel
+                .find('.panel-body')
+                .prepend($pageList);
+
+        $pageList.show();
+
+        refreshStripes();
+
+        JsAdmin.DD.addMoveButton = function (tr, cell, op) {
+            cell = cell - 1;
+            if (op == 'down') {
+                cell++;
+            }
+
+            var item = JsAdmin.movable_rows[tr.id];
+            if (!JsAdmin.util.isNodeType(tr, 'tr')) {
+                var rows = tr.getElementsByTagName('tr');
+                tr = rows[0];
+            }
+
+            var html = '<a href="' + item.url + 'move_' + op + '.php' + item.params
+                    + '"><i class="fa fa-fw fa-arrow-circle-' + op
+                    + '"></i></a>';
+            tr.cells[cell].innerHTML = html;
+        };
+
+        JsAdmin.DD.deleteMoveButton = function (tr, cell, op) {
+            cell = cell - 1;
+            if (op == 'down') {
+                cell++;
+            }
+
+            if (!JsAdmin.util.isNodeType(tr, 'tr')) {
+                var rows = tr.getElementsByTagName('tr');
+                tr = rows[0];
+            }
+
+            tr.cells[cell].innerHTML = '';
+        };
+
+        JsAdmin.DD.liDDSwap.prototype.onDragEnter = function (e, id) {
+            // Swap with other element
+            var elt = id ? YAHOO.util.Dom.get(id) : null;
+            var item = JsAdmin.movable_rows[this.getEl().id];
+            var eltRowIndex = JsAdmin.util.getItemIndex(elt);
+            var rowIndex = JsAdmin.util.getItemIndex(this.getEl());
+            var wasFirst = !JsAdmin.util.getPreviousSiblingNode(this.getEl());
+            var wasLast = !JsAdmin.util.getNextSiblingNode(this.getEl());
+
+            if (eltRowIndex < rowIndex) {
+                elt.parentNode.insertBefore(this.getEl(), elt);
+            } else {
+                elt.parentNode.insertBefore(elt, this.getEl());
+            }
+            // Fixup buttons
+            var isFirst = !JsAdmin.util.getPreviousSiblingNode(this.getEl());
+            var isLast = !JsAdmin.util.getNextSiblingNode(this.getEl());
+
+            if (wasFirst != isFirst) {
+                if (isFirst) {
+                    JsAdmin.DD.deleteMoveButton(item.tr, this.buttonCell, 'up');
+                    JsAdmin.DD.addMoveButton(JsAdmin.util.getNextSiblingNode(item.item), this.buttonCell, 'up');
+                } else {
+                    JsAdmin.DD.addMoveButton(item.item, this.buttonCell, 'up');
+                    var first, prev = JsAdmin.util.getPreviousSiblingNode(item.item);
+                    while (prev) {
+                        first = prev;
+                        prev = JsAdmin.util.getPreviousSiblingNode(prev);
+                    }
+                    JsAdmin.DD.deleteMoveButton(JsAdmin.movable_rows[first.id].tr, this.buttonCell, 'up');
+                }
+            }
+            if (wasLast != isLast) {
+                if (isLast) {
+                    JsAdmin.DD.deleteMoveButton(item.tr, this.buttonCell, 'down');
+                    JsAdmin.DD.addMoveButton(JsAdmin.util.getPreviousSiblingNode(item.item), this.buttonCell, 'down');
+                } else {
+                    JsAdmin.DD.addMoveButton(item.item, this.buttonCell, 'down');
+                    var last, next = JsAdmin.util.getNextSiblingNode(item.item);
+                    while (next) {
+                        last = next;
+                        next = JsAdmin.util.getNextSiblingNode(next);
+                    }
+                    JsAdmin.DD.deleteMoveButton(JsAdmin.movable_rows[last.id].tr, this.buttonCell, 'down');
+                }
+            }
+
+            refreshStripes();
+
+            this.DDM.refreshCache(this.groups);
+        };
+    });
+
+    function addChildPage(page_id)
+    {
+        // find and select the page in the parent dropdown
+        $('#selectParent').val(page_id).trigger('change');
+
+        // set focus to add form
+        document.add.title.focus();
+    }
+
+    function toggleViewers() {
+        if (document.add.visibility.value == 'private') {
+            document.getElementById('viewers').style.display = 'block';
+        } else if (document.add.visibility.value == 'registered') {
+            document.getElementById('viewers').style.display = 'block';
+        } else {
+            document.getElementById('viewers').style.display = 'none';
+        }
+    }
+
+</script> 
+<!-- END main_block -->

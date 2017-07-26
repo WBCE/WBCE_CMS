@@ -1,0 +1,829 @@
+<!-- BEGIN main_block -->
+
+<form name="settings" action="save.php" method="post">
+    <input type="hidden" name="advanced" value="{ADVANCED}">
+    <input type="hidden" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="true">
+    {FTAN} 
+    
+    <!-- GENERAL SETTINGS ****************************************** -->
+    <h2 class="page_titel"> {HEADING_GENERAL_SETTINGS}
+        <div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-general-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-general-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
+    </h2>
+
+    <section class="content-box" style="padding:0;" id="settings-general-settings">
+        <div class="row top" style="padding-left:0;">
+            <div class="fg3">{TEXT_WEBSITE_TITLE}:</div>
+            <div class="fg9">
+                <input type="text" name="website_title" value="{WEBSITE_TITLE}" class="wdt300" id="website_title">
+                <span class="title-counter"></span> Zeichen [<span class="title-remain"></span> Rest] </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_WEBSITE_DESCRIPTION}:</div>
+            <div class="fg9">
+                <textarea name="website_description" id="website_description" class="wdt300">{WEBSITE_DESCRIPTION}</textarea>
+                <span class="desc-counter"></span> Zeichen [<span class="desc-remain"></span> Rest] </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_WEBSITE_KEYWORDS}:</div>
+            <div class="fg9">
+                <textarea name="website_keywords" class="wdt300">{WEBSITE_KEYWORDS}</textarea>
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_WEBSITE_HEADER}:</div>
+            <div class="fg9">
+                <textarea name="website_header" class="wdt300">{WEBSITE_HEADER}</textarea>
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_WEBSITE_FOOTER}:</div>
+            <div class="fg9">
+                <textarea name="website_footer" class="wdt300">{WEBSITE_FOOTER}</textarea>
+            </div>
+        </div>
+        
+        <!-- BEGIN show_page_level_limit_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_PAGE_LEVEL_LIMIT}:</div>
+                <div class="fg9">
+                    <select name="page_level_limit">
+                        <!-- BEGIN page_level_limit_list_block -->
+                        <option value="{NUMBER}"{SELECTED}>{NUMBER}</option>
+                        <!-- END page_level_limit_list_block -->
+                    </select>
+                </div>
+            </div>
+        </section>
+        <!-- END show_page_level_limit_block -->
+        
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_PAGE_TRASH}:</div>
+            <div class="fg9">
+                <label>
+                    <input type="radio" name="page_trash" id="page_trash_inline" value="inline" {PAGE_TRASH_INLINE}>
+                    {TEXT_ENABLED}
+                </label>
+                <label>
+                    <input type="radio" name="page_trash" id="page_trash_disabled" value="disabled" {PAGE_TRASH_DISABLED}>
+                    {TEXT_DISABLED}
+                </label>
+            </div>
+        </div>
+        <div class="row" style="padding-left:0; {DISPLAY_PAGE_TRASH_SEPARATE}">
+            <div class="fg3">{}:</div>
+            <div class="fg9">
+                <label>
+                    <input type="radio" name="page_trash" id="page_trash_separate" value="separate" {PAGE_TRASH_SEPARATE}>
+                    {TEXT_SEPARATE}
+                </label>
+            </div>
+        </div>
+        
+        <!-- BEGIN show_checkbox_1_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_PAGE_LANGUAGES}:</div>
+                <div class="fg9">
+                    <label>
+                        <input type="radio" name="page_languages" id="page_languages_true" value="true" {PAGE_LANGUAGES_ENABLED}>
+                        {TEXT_ENABLED}
+                    </label>
+                    <label>
+                        <input type="radio" name="page_languages" id="page_languages_false"  value="false" {PAGE_LANGUAGES_DISABLED}>
+                        {TEXT_DISABLED}
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_MULTIPLE_MENUS}:</div>
+                <div class="fg9">
+                    <label>
+                        <input type="radio" name="multiple_menus" id="multiple_menus_true" value="true" {MULTIPLE_MENUS_ENABLED}>
+                        {TEXT_ENABLED}
+                    </label>
+                    <label>
+                        <input type="radio" name="multiple_menus" id="multiple_menus_false" value="false" {MULTIPLE_MENUS_DISABLED}>
+                        {TEXT_DISABLED}
+                    </label>
+                </div>
+            </div>
+        </section>
+        <!-- END show_checkbox_1_block -->
+        
+        <div class="row" style="padding-left:0; {DISPLAY_PAGE_TRASH_SEPARATE}">
+            <div class="fg3">{TEXT_HOME_FOLDERS}:</div>
+            <div class="fg9">
+                <label>
+                    <input type="radio" name="home_folders" id="home_folders_true" value="true" {HOME_FOLDERS_ENABLED}>
+                    {TEXT_ENABLED}
+                </label>
+                <label>
+                    <input type="radio" name="home_folders" id="home_folders_false" value="false" {HOME_FOLDERS_DISABLED}>
+                    {TEXT_DISABLED}
+                </label>
+            </div>
+        </div>
+        
+        <!-- BEGIN show_checkbox_2_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_MANAGE_SECTIONS}:</div>
+                <div class="fg9">
+                    <label>
+                        <input type="radio" name="manage_sections" id="manage_sections_true" value="true" {MANAGE_SECTIONS_ENABLED}>
+                        {TEXT_ENABLED}
+                    </label>
+                    <label>
+                        <input type="radio" name="manage_sections" id="manage_sections_false" value="false" {MANAGE_SECTIONS_DISABLED}>
+                        {TEXT_DISABLED}
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_SECTION_BLOCKS}:</div>
+                <div class="fg9">
+                    <label>
+                        <input type="radio" name="section_blocks" id="section_blocks_true" value="true"{SECTION_BLOCKS_ENABLED}>
+                        {TEXT_ENABLED}
+                    </label>
+                    <label>
+                        <input type="radio" name="section_blocks" id="section_blocks_false" value="false"{SECTION_BLOCKS_DISABLED}>
+                        {TEXT_DISABLED}
+                    </label>
+                </div>
+            </div>
+        </section>
+        <!-- END show_checkbox_2_block -->
+        
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_INTRO_PAGE}:</div>
+            <div class="fg9">
+                <label>
+                    <input type="radio" name="intro_page" id="intro_page_true" value="true" {INTRO_PAGE_ENABLED}>
+                    {TEXT_ENABLED}
+                </label>
+                <label>
+                    <input type="radio" name="intro_page" id="intro_page_false" value="false" {INTRO_PAGE_DISABLED}>
+                    {TEXT_DISABLED}
+                </label>
+            </div>
+        </div>
+        
+        <!-- BEGIN show_checkbox_3_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_HOMEPAGE_REDIRECTION}:</div>
+                <div class="fg9">
+                    <label>
+                        <input type="radio" name="homepage_redirection" id="homepage_redirection_true" value="true" {HOMEPAGE_REDIRECTION_ENABLED}>
+                        {TEXT_ENABLED}
+                    </label>
+                    <label>
+                        <input type="radio" name="homepage_redirection" id="homepage_redirection_false" value="false" {HOMEPAGE_REDIRECTION_DISABLED}>
+                        {TEXT_DISABLED}
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_SMART_LOGIN}:</div>
+                <div class="fg9">
+                    <label>
+                        <input type="radio" name="smart_login" id="smart_login_true" value="true" {SMART_LOGIN_ENABLED}>
+                        {TEXT_ENABLED}
+                    </label>
+                    <label>
+                        <input type="radio" name="smart_login" id="smart_login_false" value="false" {SMART_LOGIN_DISABLED}>
+                        {TEXT_DISABLED}
+                    </label>
+                </div>
+            </div>
+        </section>
+        <!-- END show_checkbox_3_block -->
+        
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_LOGIN}:</div>
+            <div class="fg9">
+                <label>
+                    <input type="radio" name="frontend_login" id="frontend_login_true" value="true" {PRIVATE_ENABLED}>
+                    {TEXT_ENABLED}
+                </label>
+                <label>
+                    <input type="radio" name="frontend_login" id="frontend_login_false" value="false" {PRIVATE_DISABLED}>
+                    {TEXT_DISABLED}
+                </label>
+            </div>
+        </div>
+        
+        <!-- BEGIN show_redirect_timer_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_REDIRECT_AFTER}:</div>
+                <div class="fg9">
+                    <input type="text" name="redirect_timer" value="{REDIRECT_TIMER}" class="wdt50">
+                    ( <strong>0 - 10000</strong> | <strong>-1</strong> = {TEXT_DISABLED} ) </div>
+            </div>
+        </section>
+        <!-- END show_redirect_timer_block -->
+        
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_SIGNUP}:</div>
+            <div class="fg9">
+                <select name="frontend_signup" class="wdt250">
+                    <option value="false">{TEXT_DISABLED}</option>
+                    <!-- BEGIN group_list_block -->
+                    <option value="{ID}" {SELECTED}>{NAME}</option>
+                    <!-- END group_list_block -->
+                </select>
+            </div>
+        </div>
+        
+        <!-- BEGIN show_php_error_level_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_PHP_ERROR_LEVEL}:</div>
+                <div class="fg9">
+                    <select name="er_level" class="wdt250">
+                        <option value="">{TEXT_PLEASE_SELECT}...</option>
+                        <!-- BEGIN error_reporting_list_block -->
+                        <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                        <!-- END error_reporting_list_block -->
+                    </select>
+                </div>
+            </div>
+        </section>
+        <!-- END show_php_error_level_block --> 
+        
+        <!-- BEGIN show_wysiwyg_block -->
+        <section {DISPLAY_ADVANCED}> 
+            <!-- needed for what ?!? -->
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_WYSIWYG_EDITOR}:</div>
+                <div class="fg9">
+                    <select name="wysiwyg_editor" class="wdt250">
+                        <!-- BEGIN editor_list_block -->
+                        <option value="{FILE}" {SELECTED}>{NAME}</option>
+                        <!-- END editor_list_block -->
+                    </select>
+                </div>
+            </div>
+        </section>
+        <!-- END show_wysiwyg_block -->
+        
+        <hr class="fg12">
+        <div class="row" style="padding-left:0;">
+            <div class="fg9 push3">
+                <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- DEFAULT SETTINGS ****************************************** -->
+    <h2 class="page_titel"> {HEADING_DEFAULT_SETTINGS}
+        <div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-default-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-default-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
+    </h2>
+
+    <section class="content-box" style="padding:0;" id="settings-default-settings">
+        <div class="row top" style="padding-left:0;">
+            <div class="fg3">{TEXT_LANGUAGE}:</div>
+            <div class="fg9">
+                <select name="default_language" class="wdt250">
+                    <!-- BEGIN language_list_block -->
+                    <option value="{CODE}" {SELECTED} class="hasFlag" style="background-image: url({WB_URL}/languages/{CODE}.png);">({CODE}) {NAME}</option>
+                    <!-- END language_list_block -->
+                </select>
+            </div>
+        </div>
+        
+        <!-- BEGIN show_charset_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_CHARSET}:</div>
+                <div class="fg9">
+                    <select name="default_charset" class="wdt250">
+                        <option value="">{TEXT_PLEASE_SELECT}...</option>
+                        <!-- BEGIN charset_list_block -->
+                        <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                        <!-- END charset_list_block -->
+                    </select>
+                </div>
+            </div>
+        </section>
+        <!-- END show_charset_block -->
+        
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_TIMEZONE}:</div>
+            <div class="fg9">
+                <select name="default_timezone" class="wdt250">
+                    <option value="0">{TEXT_PLEASE_SELECT}...</option>
+                    <!-- BEGIN timezone_list_block -->
+                    <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                    <!-- END timezone_list_block -->
+                </select>
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_DATE_FORMAT}:</div>
+            <div class="fg9">
+                <select name="default_date_format" class="wdt250">
+                    <option value="M d Y">{TEXT_PLEASE_SELECT}...</option>
+                    <!-- BEGIN date_format_list_block -->
+                    <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                    <!-- END date_format_list_block -->
+                </select>
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_TIME_FORMAT}:</div>
+            <div class="fg9">
+                <select name="default_time_format" class="wdt250">
+                    <option value="g:i A">{TEXT_PLEASE_SELECT}...</option>
+                    <!-- BEGIN time_format_list_block -->
+                    <option value="{VALUE}" {SELECTED}>{NAME}</option>
+                    <!-- END time_format_list_block -->
+                </select>
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_TEMPLATE}:</div>
+            <div class="fg9">
+                <select name="default_template" class="wdt250">
+                    <!-- BEGIN template_list_block -->
+                    <option value="{FILE}"{SELECTED}>{NAME}</option>
+                    <!-- END template_list_block -->
+                </select>
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_THEME}:</div>
+            <div class="fg9">
+                <select name="default_theme" class="wdt250">
+                    <!-- BEGIN theme_list_block -->
+                    <option value="{FILE}"{SELECTED}>{NAME}</option>
+                    <!-- END theme_list_block -->
+                </select>
+            </div>
+        </div>
+        <hr class="fg12">
+        <div class="row" style="padding-left:0;">
+            <div class="fg9 push3">
+                <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SEARCH SETTINGS ****************************************** -->
+    <h2 class="page_titel"> {HEADING_SEARCH_SETTINGS}
+        <div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
+    </h2>
+
+    <section class="content-box" style="padding:0;" id="settings-search-settings">
+        <div class="row top" style="padding-left:0;">
+            <div class="fg3">{TEXT_VISIBILITY}:</div>
+            <div class="fg9">
+                <select name="search" class="wdt250">
+                    <option value="public">{TEXT_PUBLIC}</option>
+                    <option value="private" {PRIVATE_SEARCH}>{TEXT_PRIVATE}</option>
+                    <option value="registered" {REGISTERED_SEARCH}>{TEXT_REGISTERED}</option>
+                    <option value="none" {NONE_SEARCH}>{TEXT_NONE}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_TEMPLATE}:</div>
+            <div class="fg9">
+                <select name="search_template" class="wdt250">
+                    <!-- BEGIN search_template_list_block -->
+                    <option value="{FILE}" {SELECTED}>{NAME}</option>
+                    <!-- END search_template_list_block -->
+                </select>
+            </div>
+        </div>
+        
+        <!-- BEGIN show_search_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_HEADER}:</div>
+                <div class="fg9">
+                    <textarea name="search_header" class="tabbed code wdt500">{SEARCH_HEADER}</textarea>
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_RESULTS_HEADER}:</div>
+                <div class="fg9">
+                    <textarea name="search_results_header" class="tabbed code wdt500">{SEARCH_RESULTS_HEADER}</textarea>
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_RESULTS_LOOP}:</div>
+                <div class="fg9">
+                    <textarea name="search_results_loop" class="tabbed code wdt500">{SEARCH_RESULTS_LOOP}</textarea>
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_RESULTS_FOOTER}:</div>
+                <div class="fg9">
+                    <textarea name="search_results_footer" class="tabbed code wdt500">{SEARCH_RESULTS_FOOTER}</textarea>
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_NO_RESULTS}:</div>
+                <div class="fg9">
+                    <input type="text" name="search_no_results" value="{SEARCH_NO_RESULTS}" class="code wdt500">
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_FOOTER}:</div>
+                <div class="fg9">
+                    <textarea name="search_footer" class="tabbed code wdt500">{SEARCH_FOOTER}</textarea>
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_MODULE_ORDER}:</div>
+                <div class="fg9">
+                    <input type="text" name="search_module_order" class="wdt500" value="{SEARCH_MODULE_ORDER}">
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_MAX_EXCERPT}:</div>
+                <div class="fg9">
+                    <input type="text" name="search_max_excerpt" value="{SEARCH_MAX_EXCERPT}" class="wdt50">
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_TIME_LIMIT}:</div>
+                <div class="fg9">
+                    <input type="text" name="search_time_limit" value="{SEARCH_TIME_LIMIT}" class="wdt50">
+                </div>
+            </div>
+        </section>
+        <!-- END show_search_block -->
+        
+        <hr class="fg12">
+        <div class="row" style="padding-left:0;">
+            <div class="fg9 push3">
+                <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SERVER SETTINGS ****************************************** -->
+    <h2 class="page_titel"> {HEADING_SERVER_SETTINGS} </h2>
+
+    <section class="content-box" style="padding:0;" id="settings-server-settings">
+        <div class="row top" style="padding-left:0;">
+            <div class="fg3">{TEXT_SERVER_OPERATING_SYSTEM}:</div>
+            <div class="fg9">
+                <label id="os-linux-label">
+                    <input type="radio" name="operating_system" id="os-linux" value="linux" {LINUX_SELECTED}>
+                    {TEXT_LINUX_UNIX_BASED}
+                </label>
+                <label id="os-windows-label">
+                    <input type="radio" name="operating_system" id="os-windows" value="windows" {WINDOWS_SELECTED}>
+                    {TEXT_WINDOWS}
+                </label>
+                <input type="hidden" name="world_writeable" value="">
+            </div>
+        </div>
+        <section id="file-perms" class="row top" style="padding-left:0;">
+            <div class="fg3">{TEXT_FILESYSTEM_PERMISSIONS}:</div>
+            <div class="fg4" style="border-bottom: 1px dotted #999;"> <b>{TEXT_FILES}: <span id="string-file-mode">{STRING_FILE_MODE}</span></b> </div>
+            <div class="fg4" style="border-bottom: 1px dotted #999;"> <b>{TEXT_DIRECTORIES}: <span id="string-dir-mode">{STRING_DIR_MODE}</span></b> </div>
+            <div class="clearfix"></div>
+            <div class="fg1 push4 fg-center">{TEXT_USER}:</div>
+            <div class="fg1 fg-center">{TEXT_GROUP}:</div>
+            <div class="fg1 fg-center">{TEXT_OTHERS}:</div>
+            <div class="fg1 push1 fg-center">{TEXT_USER}:</div>
+            <div class="fg1 fg-center">{TEXT_GROUP}:</div>
+            <div class="fg1 fg-center">{TEXT_OTHERS}:</div>
+            <div class="fg1 push3">{TEXT_READ}:</div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_u_r" id="file_u_r" value="true"{FILE_U_R_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_g_r" id="file_g_r" value="true"{FILE_G_R_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_o_r" id="file_o_r" value="true"{FILE_O_R_CHECKED}>
+            </div>
+            <div class="fg1">{TEXT_READ}:</div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_u_r" id="dir_u_r" value="true"{DIR_U_R_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_g_r" id="dir_g_r" value="true"{DIR_G_R_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_o_r" id="dir_o_r" value="true"{DIR_O_R_CHECKED}>
+            </div>
+            <div class="fg1 push3">{TEXT_WRITE}:</div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_u_w" id="file_u_w" value="true"{FILE_U_W_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_g_w" id="file_g_w" value="true"{FILE_G_W_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_o_w" id="file_o_w" value="true"{FILE_O_W_CHECKED}>
+            </div>
+            <div class="fg1">{TEXT_WRITE}:</div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_u_w" id="dir_u_w" value="true"{DIR_U_W_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_g_w" id="dir_g_w" value="true"{DIR_G_W_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_o_w" id="dir_o_w" value="true"{DIR_O_W_CHECKED}>
+            </div>
+            <div class="fg1 push3">{TEXT_EXECUTE}:</div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_u_e" id="file_u_e" value="true"{FILE_U_E_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_g_e" id="file_g_e" value="true"{FILE_G_E_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="file_o_e" id="file_o_e" value="true"{FILE_O_E_CHECKED}>
+            </div>
+            <div class="fg1">{TEXT_EXECUTE}:</div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_u_e" id="dir_u_e" value="true"{DIR_U_E_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_g_e" id="dir_g_e" value="true"{DIR_G_E_CHECKED}>
+            </div>
+            <div class="fg1 fg-center">
+                <input type="checkbox" name="dir_o_e" id="dir_o_e" value="true"{DIR_O_E_CHECKED}>
+            </div>
+        </section>
+        <div class="row top" style="padding-left:0;">
+            <div class="fg3">{TEXT_PAGES_DIRECTORY}:</div>
+            <div class="fg9">
+                <input type="text" name="pages_directory" value="{PAGES_DIRECTORY}" class="wdt150">
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_MEDIA_DIRECTORY}:</div>
+            <div class="fg9">
+                <input type="text" name="media_directory" value="{MEDIA_DIRECTORY}" class="wdt150">
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_PAGE_EXTENSION}:</div>
+            <div class="fg9">
+                <input type="text" name="page_extension" value="{PAGE_EXTENSION}" class="wdt150">
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_PAGE_SPACER}:</div>
+            <div class="fg9">
+                <input type="text" name="page_spacer" value="{PAGE_SPACER}" class="wdt150">
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_RENAME_FILES_ON_UPLOAD}:</div>
+            <div class="fg9">
+                <input type="text" name="rename_files_on_upload" value="{RENAME_FILES_ON_UPLOAD}" class="wdt500">
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_SESSION_IDENTIFIER}:</div>
+            <div class="fg9">
+                <input type="text" name="app_name" value="{APP_NAME}" class="wdt150">
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_SEC_ANCHOR}:</div>
+            <div class="fg9">
+                <input type="text" name="sec_anchor" value="{SEC_ANCHOR}" class="wdt150">
+            </div>
+        </div>
+        <hr class="fg12">
+        <div class="row" style="padding-left:0;">
+            <div class="fg9 push3">
+                <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- MAILER SETTINGS ****************************************** -->
+    <h2 class="page_titel"> {HEADING_WBMAILER_SETTINGS} </h2>
+
+    <section class="content-box" style="padding:0;" id="settings-wbmailer-settings">
+        <p class="fg12 top bot desc">{TEXT_WBMAILER_DEFAULT_SETTINGS_NOTICE}</p>
+        <hr class="fg12">
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_WBMAILER_DEFAULT_SENDER_MAIL}:</div>
+            <div class="fg9">
+                <input type="text" name="server_email" value="{SERVER_EMAIL}">
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_WBMAILER_DEFAULT_SENDER_NAME}:</div>
+            <div class="fg9">
+                <input type="text" name="wbmailer_default_sendername" value="{WBMAILER_DEFAULT_SENDERNAME}">
+            </div>
+        </div>
+        <div class="row" style="padding-left:0;">
+            <div class="fg3">{TEXT_WBMAILER_FUNCTION}:</div>
+            <div class="fg9">
+                <label>
+                    <input type="radio" name="wbmailer_routine" id="mailer-php" value="phpmail" {PHPMAIL_SELECTED}>
+                    {TEXT_WBMAILER_PHP}
+                </label>
+                <label>
+                    <input type="radio" name="wbmailer_routine" id="mailer-smtp" value="smtp" {SMTPMAIL_SELECTED}>
+                    {TEXT_WBMAILER_SMTP}
+                </label>
+            </div>
+        </div>
+        <section id="smtp-settings" {SMTP_VISIBILITY}>
+            <hr class="fg12">
+            <p class="fg12 desc bot">{TEXT_WBMAILER_NOTICE}</p>
+            <hr class="fg12">
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_WBMAILER_SMTP_HOST}:</div>
+                <div class="fg9">
+                    <input type="text" name="wbmailer_smtp_host" value="{WBMAILER_SMTP_HOST}">
+                    <input type="hidden" name="wbmailer_smtp_auth" value="true">
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_WBMAILER_SMTP_USERNAME}:</div>
+                <div class="fg9">
+                    <input type="text" name="wbmailer_smtp_username" value="{WBMAILER_SMTP_USERNAME}">
+                </div>
+            </div>
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_WBMAILER_SMTP_PASSWORD}:</div>
+                <div class="fg9">
+                    <input type="password" name="wbmailer_smtp_password" value="{WBMAILER_SMTP_PASSWORD}">
+                </div>
+            </div>
+        </section>
+        <hr class="fg12">
+        <div class="row" style="padding-left:0;">
+            <div class="fg9 push3">
+                <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+            </div>
+        </div>
+    </section>
+</form>
+<!-- END main_block --> 
+
+<script>
+	$(document).ready(function() {
+
+		// toggle mailer state
+		$('#mailer-php').click(function(e) {
+			if ($(this).is(':checked') == true) {
+				$('#smtp-settings').toggle();
+			}
+		});
+		$('#mailer-smtp').click(function(e) {
+			if ($(this).is(':checked') == true) {
+				$('#smtp-settings').toggle();
+			}
+		});
+
+		// title char-counter
+		var titleLimit = 30;
+		var titleInit = $('#website_title').val().length;
+		var titleTail = titleLimit - titleInit;
+		$('.title-counter').html(titleInit).css('color','#147d14');
+		$('.title-remain').html(titleTail).css('color','#147d14');
+
+		$('#website_title').keyup(function(){
+			var count = $(this).val().length;
+			$('.title-counter').html(count);
+			$('.title-remain').html(titleLimit - count);
+			if (count > titleLimit) {
+				$('.title-counter').css('color','firebrick');
+				$('.title-remain').css('color','firebrick').html(0);
+			} else {
+				$('.title-counter').css('color','#147d14');
+				if ($('.title-remain').html() == 0) {
+					$('.title-remain').css('color','firebrick');
+				} else {
+					$('.title-remain').css('color','#147d14');
+				}
+			}
+		});
+
+		// description char-counter
+		var descLimit = 150;
+		var descInit = $('#website_description').val().length;
+		var descTail = descLimit - descInit;
+		$('.desc-counter').html(descInit).css('color','#147d14');
+		$('.desc-remain').html(descTail).css('color','#147d14');
+
+		$('#website_description').keyup(function(){
+			var count = $(this).val().length;
+			$('.desc-counter').html(count);
+			$('.desc-remain').html(descLimit - count);
+			if (count > descLimit) {
+				$('.desc-counter').css('color','firebrick');
+				$('.desc-remain').css('color','firebrick').html(0);
+			} else {
+				$('.desc-counter').css('color','#147d14');
+				if ($('.desc-remain').html() == 0) {
+					$('.desc-remain').css('color','firebrick');
+				} else {
+					$('.desc-remain').css('color','#147d14');
+				}
+			}
+		});
+
+		/* toggle the acces-settings tables */
+		// initial
+		if ($('#os-windows').attr('checked') == 'checked') {
+			$('#file-perms').hide();
+		}
+		$('#os-linux').click(function() {
+			$('#file-perms').show('slow');
+		});
+		$('#os-windows').click(function() {
+			$('#file-perms').hide('slow');
+		});
+
+		/* update the mode strings on the fly */
+		var initFileMode = $('#string-file-mode').html();
+		var initDirMode  = $('#string-dir-mode').html();
+
+		$('input[type="checkbox"]').change(function() {
+			var fileMode = parseInt($('#string-file-mode').html());
+			var dirMode = parseInt($('#string-dir-mode').html());
+			var which = $(this).attr('id');
+			var val = ($(this).is(':checked')) ? 1 : 0;
+
+			if (which.substr(0,4) == 'file') {
+				// file mode calculation
+				if (which == 'file_u_r')
+					newFileMode = (val == 0) ? fileMode - 400 : fileMode + 400;
+				if (which == 'file_u_w')
+					newFileMode = (val == 0) ? fileMode - 200 : fileMode + 200;
+				if (which == 'file_u_e')
+					newFileMode = (val == 0) ? fileMode - 100 : fileMode + 100;
+				if (which == 'file_g_r')
+					newFileMode = (val == 0) ? fileMode - 40 : fileMode + 40;
+				if (which == 'file_g_w')
+					newFileMode = (val == 0) ? fileMode - 20 : fileMode + 20;
+				if (which == 'file_g_e')
+					newFileMode = (val == 0) ? fileMode - 10 : fileMode + 10;
+				if (which == 'file_o_r')
+					newFileMode = (val == 0) ? fileMode - 4 : fileMode + 4;
+				if (which == 'file_o_w')
+					newFileMode = (val == 0) ? fileMode - 2 : fileMode + 2;
+				if (which == 'file_o_e')
+					newFileMode = (val == 0) ? fileMode - 1 : fileMode + 1;
+				// prepare new file mode string (leading zeros!)
+				if (newFileMode < 100) newFileMode = '0' + newFileMode;
+				if (newFileMode < 10) newFileMode = '0' + newFileMode;
+				newFileMode = '0' + newFileMode;
+				newFileMode = newFileMode.toString();
+				// change color by changed string
+				if (newFileMode != initFileMode) {
+					$('#string-file-mode').css('color', 'firebrick');
+				} else {
+					$('#string-file-mode').css('color', '#000');
+				}
+				// show new mode
+				$('#string-file-mode').html(newFileMode);
+			} else {
+				// dir mode calculation
+				if (which == 'dir_u_r')
+					newDirMode = (val == 0) ? dirMode - 400 : dirMode + 400;
+				if (which == 'dir_u_w')
+					newDirMode = (val == 0) ? dirMode - 200 : dirMode + 200;
+				if (which == 'dir_u_e')
+					newDirMode = (val == 0) ? dirMode - 100 : dirMode + 100;
+				if (which == 'dir_g_r')
+					newDirMode = (val == 0) ? dirMode - 40 : dirMode + 40;
+				if (which == 'dir_g_w')
+					newDirMode = (val == 0) ? dirMode - 20 : dirMode + 20;
+				if (which == 'dir_g_e')
+					newDirMode = (val == 0) ? dirMode - 10 : dirMode + 10;
+				if (which == 'dir_o_r')
+					newDirMode = (val == 0) ? dirMode - 4 : dirMode + 4;
+				if (which == 'dir_o_w')
+					newDirMode = (val == 0) ? dirMode - 2 : dirMode + 2;
+				if (which == 'dir_o_e')
+					newDirMode = (val == 0) ? dirMode - 1 : dirMode + 1;
+				// prepare new dir mode string (leading zeros!)
+				if (newDirMode < 100) newDirMode = '0' + newDirMode;
+				if (newDirMode < 10) newDirMode = '0' + newDirMode;
+				newDirMode = '0' + newDirMode;
+				newDirMode = newDirMode.toString();
+				// change color by changed string
+				if (newDirMode != initDirMode) {
+					$('#string-dir-mode').css('color', 'firebrick');
+				} else {
+					$('#string-dir-mode').css('color', '#000');
+				}
+				// show new mode
+				$('#string-dir-mode').html(newDirMode);
+			}
+		});
+	});
+</script> 

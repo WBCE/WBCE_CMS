@@ -1,0 +1,16 @@
+<!-- BEGIN main_block -->
+
+<section id="page-modify">
+    <h2 class="page_titel"> {HEADING_MODIFY_PAGE}
+        <div class="headline-link"> <a href="{ADMIN_URL}/pages/settings.php?page_id={PAGE_IDKEY}"> <i class="fa fa-cog"></i> {TEXT_CHANGE_SETTINGS} </a> <span style="{DISPLAY_MANAGE_SECTIONS}"> &nbsp;&nbsp;|&nbsp;&nbsp; </span> <a href="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" style="{DISPLAY_MANAGE_SECTIONS}"> <i class="fa fa-bars"></i> {TEXT_MANAGE_SECTIONS} </a> </div>
+    </h2>
+
+    <header class="fg12 subheader">
+        <div style="float: left;"> {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
+            PageID: <b>{PAGE_ID}</b> </div>
+        <div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}"> <i>Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</i> </div>
+    </header>
+</section>
+<div class="clearfix"></div>
+
+<!-- END main_block -->

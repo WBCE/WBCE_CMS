@@ -1,0 +1,16 @@
+<!-- BEGIN main_block -->
+
+<div class="top alertbox_success">
+    <i class=" fa fa-2x fa-check signal"></i>
+    <p>{MESSAGE}</p>
+    <!-- BEGIN show_redirect_block --> 
+    <script>
+		setTimeout("location.href='{REDIRECT}'", {REDIRECT_TIMER});
+	</script> 
+    <!-- END show_redirect_block --> 
+    <a href="{REDIRECT}">
+    <input type="button" name="submit" id="submit" value="{BACK}" />
+    </a>
+</div>
+
+<!-- END main_block --> 
