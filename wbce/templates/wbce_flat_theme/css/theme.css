@@ -29,10 +29,13 @@ body {
 /*** html basics ******************************************************/
 a {
     color: #28609b;
-    text-decoration: underline;
+    text-decoration: none;
     font-family: open_sans, Arial, Helvetica, sans-serif;
 }
-a:hover {
+h2 a {
+    text-decoration: underline;
+}
+h2 a:hover {
     text-decoration: none;
 }
 hr {
