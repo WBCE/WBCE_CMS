@@ -30,20 +30,6 @@ function exportPageTreeToTwig() {
 	/**
 	 * 		Create Twig template object and configure it
 	 */
-	 if(!class_exists('Twig_Autoloader')) {
-		$sTmp = dirname(__FILE__) . '/TwigTE/Twig/Autoloader.php';
-		
-		if(file_exists($sTmp)){
-			include($sTmp); 
-			Twig_Autoloader::register();
-		}else{
-			if(LANGUAGE == "DE"){
-				echo '<b>TWIG ist nicht initialisiert!</b><br />Bitte installieren Sie das TWIG Patch oder das TWIG Snippet. Siehe WebsiteBaker Forum Thread zu diesem Modul für weitere Information';
-			} else {
-				echo '<b>TWIG is not initialized!</b><br />Please install the TWIG Patch or the TWIG Snippet; see the WebsiteBaker Forum Thread of this Module for further information';		
-			}		
-		}
-	}
 	$oTwigLoader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/skel'); // tell Twig where templates will come from
 	$oTwig = new Twig_Environment($oTwigLoader, array(
 		'autoescape'       => false,

@@ -31,16 +31,7 @@ require_once((dirname(__FILE__)) . '/info.php');
 require_once((dirname(__FILE__)) . '/functions.php');
 
 $sAddonDir = $module_directory;
-// register TWIG autoloader if not done already 
-// this is of importance for WebsiteBaker Versions prior to 2.8.4. or derivate systems
-if(!class_exists('Twig_Autoloader')) {
-	$sTwigAutoloader = dirname(__FILE__) . '/TwigTE/Twig/Autoloader.php';
-	
-	if(file_exists($sTwigAutoloader)){
-		include($sTwigAutoloader); 
-		Twig_Autoloader::register();
-	}
-}
+
 /**
  * Create Twig template object and configure it
  */

@@ -21,9 +21,6 @@ if(LANGUAGE_LOADED) {
 	}
 }
 
-    if(!class_exists('Twig_Autoloader',false)) {
-        require_once WB_PATH.'/modules/twig/initialize.php';
-    }
 
     global $HEADING;
     global $TEXT;
