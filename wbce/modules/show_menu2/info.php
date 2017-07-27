@@ -1,26 +1,20 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        module
- * @package         show_menu2
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.7.0
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: info.php 1475 2011-07-12 23:07:10Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/modules/show_menu2/info.php $
- * @lastmodified    $Date: 2011-07-13 01:07:10 +0200 (Mi, 13. Jul 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 $module_directory = 'show_menu2';
 $module_name = 'show_menu2';
 $module_function = 'snippet';
-$module_version = '4.9.6';
+$module_version = '4.10.4';
 $module_platform = '2.8.2';
-$module_author = 'Brodie Thiesfield';
-$module_license = 'GNU General Public License';
-$module_description = 'Powerful module for all kinds of navigation menues. See the <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> file for details.';
+$module_author = 'Brodie Thiesfield, Manuela v.d.Decken, NorbertHeimsath(heimsath.org)';
+$module_license = 'GNU General Public License v2';
+$module_description = 'A code snippet for the Website Baker CMS providing a complete replacement for the builtin menu functions. See <a href="http://code.jellycan.com/show_menu2/" target="_blank">http://code.jellycan.com/show_menu2/</a> for details or view the <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> file.';

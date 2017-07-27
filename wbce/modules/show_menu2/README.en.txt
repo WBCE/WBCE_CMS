@@ -1,4 +1,4 @@
-show_menu2, version 4.9
+show_menu2, version 4.10.4
 =======================
 A code snippet for the Website Baker CMS software. It provides a complete 
 replacement for the builtin menu functions. All menu data is retrieved using 

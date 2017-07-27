@@ -65,65 +65,10 @@
  * 11. $parent:    (used internally) The page_id of the menu's root node, defaults is '0' (root level)
  */
 
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
- 
-class SM2_ShowMenuFormatter
-{
-    var $output;
-    var $itemTemplate;
-    var $itemFooter;
-    var $menuHeader;
-    var $menuFooter;
-    var $defaultClass;
-    var $currentClass;
-    
-    function output($aString) {
-        if ($this->flags & SM2_BUFFER) {
-            $this->output .= $aString;
-        }
-        else {
-            echo $aString;
-        }
-    }
-    function initialize() { $this->output = ''; }
-    function startList($aPage, $aUrl) { 
-        echo $this->menuHeader;
-    }
-    function startItem($aPage, $aUrl, $aCurrSib, $aSibCount) { 
-        // determine the class string to use
-        $thisClass = $this->defaultClass;
-        if ($aPage['page_id'] == PAGE_ID) {
-            $thisClass = $this->currentClass;
-        }
-        
-        // format and display this item
-        $item = str_replace( 
-                array(
-                    '[a]','[/a]','[menu_title]','[page_title]','[url]',
-                    '[target]','[class]'
-                    ),
-                array(
-                    "<a href='$aUrl' target='".$aPage['target']."'>", '</a>',
-                    $aPage['menu_title'], $aPage['page_title'], $aUrl, 
-                    $aPage['target'], $thisClass
-                    ),
-                $this->itemTemplate);
-        echo $item;
-    }
-    function finishItem() { 
-        echo $this->itemFooter;
-    }
-    function finishList() { 
-        echo $this->menuFooter;
-    }
-    function finalize() { }
-    function getOutput() {
-        return $this->output;
-    }
-}
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-function show_menu(
+function show_menu1(
     $aMenu          = 1, 
     $aStartLevel    = 0, 
     $aRecurse       = -1, 
@@ -190,4 +135,69 @@ function page_menu(
         $menu_header, $menu_footer, $default_class, $current_class, $aParent);
 }
 
-?>
+
+
+
+
+/**
+As Always formater goes to the end of the show
+
+
+
+*/
+class SM2_ShowMenuFormatter
+{
+    var $output;
+    var $itemTemplate;
+    var $itemFooter;
+    var $menuHeader;
+    var $menuFooter;
+    var $defaultClass;
+    var $currentClass;
+    
+    function output($aString) {
+        if ($this->flags & SM2_BUFFER) {
+            $this->output .= $aString;
+        }
+        else {
+            echo $aString;
+        }
+    }
+    function initialize() { $this->output = ''; }
+    function startList($aPage, $aUrl) { 
+        echo $this->menuHeader;
+    }
+    function startItem($aPage, $aUrl, $aCurrSib, $aSibCount) { 
+        // determine the class string to use
+        $thisClass = $this->defaultClass;
+        if ($aPage['page_id'] == PAGE_ID) {
+            $thisClass = $this->currentClass;
+        }
+        
+        // format and display this item
+        $item = str_replace( 
+                array(
+                    '[a]','[/a]','[menu_title]','[page_title]','[url]',
+                    '[target]','[class]'
+                    ),
+                array(
+                    "<a href='$aUrl' target='".$aPage['target']."'>", '</a>',
+                    $aPage['menu_title'], $aPage['page_title'], $aUrl, 
+                    $aPage['target'], $thisClass
+                    ),
+                $this->itemTemplate);
+        echo $item;
+    }
+    function finishItem() { 
+        echo $this->itemFooter;
+    }
+    function finishList() { 
+        echo $this->menuFooter;
+    }
+    function finalize() { }
+    function getOutput() {
+        return $this->output;
+    }
+}
+
+
