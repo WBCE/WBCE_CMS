@@ -70,7 +70,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (32, 'rename_files_on_upload', 'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk'),
 (33, 'media_directory', '/media'),
 (34, 'wbmailer_routine', 'phpmail'),
-(35, 'wbmailer_default_sendername', 'WB Mailer'),
+(35, 'wbmailer_default_sendername', 'WBCE CMS Mailer'),
 (36, 'wbmailer_smtp_host', ''),
 (37, 'wbmailer_smtp_auth', ''),
 (38, 'wbmailer_smtp_username', ''),
