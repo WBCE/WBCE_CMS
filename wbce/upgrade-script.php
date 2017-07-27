@@ -498,6 +498,9 @@ if (sizeof($all_tables) == sizeof($table_list)) {
  *  Adding or removing Settings
  */
 
+echo "<br />Resetting errorlevel for use of new parameters<br />";
+Settings::Set('er_level','E0');
+
 echo "<br />Adding sec_anchor to settings table<br />";
 Settings::Set('sec_anchor','wb_', false);
 
