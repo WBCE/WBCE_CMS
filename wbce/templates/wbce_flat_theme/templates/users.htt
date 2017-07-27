@@ -10,16 +10,12 @@
     <h3 id="user-type" class="fg12">
         <button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times" ></button>
         <span>{HEADING_MODIFY_DELETE_USER}</span> </h3>
-    <div id="user-list" class="fg12"> 
-        <!-- BEGIN list_block -->
-        <label>
-            <input type="radio" name="user_id" value="{VALUE}" {STATUS}>
-            {NAME}
-        </label>
-        <br>
-        <!-- END list_block -->
-    </div>
-    <div class="fg6">
+    <div id="user-list" class="fg6"> 
+        <select name="user_id">
+            <!-- BEGIN list_block -->
+                <option value="{VALUE}" {STATUS}>{NAME}</option>
+            <!-- END list_block -->
+        </select>
         <button type="submit" name="modify" value="{TEXT_MODIFY}" class="{DISPLAY_MODIFY}"> <i class="fa fa-fw fa-save"></i> {TEXT_MODIFY} </button>
     </div>
     <div class="fg6 right">
