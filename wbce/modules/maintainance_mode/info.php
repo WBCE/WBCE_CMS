@@ -10,7 +10,7 @@
 $module_directory = 'maintainance_mode';
 $module_name = 'Maintainance Mode Switcher';
 $module_function = 'tool';
-$module_version = '1.1.0';
+$module_version = '1.1.1';
 $module_platform = '1.1.0';
 $module_author = 'Norbert Heimsath(heimsath.org)';
 $module_license	= 'WTFPL';

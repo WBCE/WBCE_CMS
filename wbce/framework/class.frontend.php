@@ -10,15 +10,10 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
-require_once WB_PATH . '/framework/class.wb.php';
-//require_once(WB_PATH.'/framework/SecureForm.php');
+//no direct file access
+if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+
+
 
 class frontend extends wb
 {
@@ -55,7 +50,7 @@ class frontend extends wb
         global $database;
         
          // We have a Maintainance situation print under construction if not in group admin
-        if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE==true and !$this->ami_group_member('1'))
+        if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE===true and !$this->ami_group_member('1'))
             $this->print_under_construction();             
         
         

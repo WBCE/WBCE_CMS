@@ -54,11 +54,14 @@ if($doSave) {
 // Form send , ok lets see what to do
 if($saveSettings) {
 
+//     var_dump($saveSettings);
+//     var_dump($admin->get_post("maintMode"));
+    
     // ONLY HERE THE ACTUAL ACTION IS GOING ON!!    
 
     // We set the setting
-    if ($admin->get_post("maintMode")) $setError=Settings::Set ("wb_maintainance_mode", true);
-    else                               $setError=Settings::Set ("wb_maintainance_mode", false);
+    if ($admin->get_post("maintMode")=="true") {$setError=Settings::Set ("wb_maintainance_mode", true);}
+    else                                      { $setError=Settings::Set ("wb_maintainance_mode", false);}
 
     // END ACTION!! 
 
@@ -78,7 +81,7 @@ if($saveSettings) {
     // Display form
     // get setting from DB , as constant may not be set yet.
 	$maintMode=(string)Settings::Get ("wb_maintainance_mode");
-    if ($maintMode=="true") $maintMode=' checked="checked" ';
+    if ($maintMode) $maintMode=' checked="checked" ';
     else                $maintMode='';  
 
     include($modulePath."templates/maintainance.tpl.php");
