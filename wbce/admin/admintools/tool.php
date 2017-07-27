@@ -34,7 +34,7 @@ if(!preg_match('/^[a-z][a-z_\-0-9]{2,}$/i', $toolDir)) $toolCheck=false;
 //if ($wb->is_authenticated() !== true) $toolCheck=false; 
 
 // User has absolutely no permissions , possibly even not logged in :-)?
-if (empty($_SESSION['MODULE_PERMISSIONS'])) $toolCheck=false; 
+if (!isset($_SESSION['MODULE_PERMISSIONS'])) $toolCheck=false; 
 
 // Check if tool is installed but only if user is loged in 
 
