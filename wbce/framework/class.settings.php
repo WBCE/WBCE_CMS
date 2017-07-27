@@ -360,11 +360,11 @@ class Settings {
                 }
                 
                 /// @attention  This is for 1.x compatibility
-                /// @todo for 2.0 We need to cleanup the backend and remobe this. 
-                if ($setting_value == 'false') {
+                /// @todo for 2.0 We need to cleanup the backend and remove this. 
+                if ($setting_value === 'false') {
                     $setting_value = false;
                 }
-                if ($setting_value == 'true') {
+                if ($setting_value === 'true') {
                     $setting_value = true;
                 }
                 // End of part to remove
@@ -405,7 +405,7 @@ class Settings {
                 $setting_value = htmlentities($setting_value);
                 $setting_value_var =htmlentities(self::$aSettings[strtolower($setting['name'])]);
                
-                $out.= "<b>$setting_name</b><br />Db: $setting_value<br />Variable: $setting_value_var<br />";                   
+                $out.= "<b>$setting_name</b><br />Db: $setting_value<br />Variable: ".var_export(self::$aSettings[strtolower($setting['name'])],true)."<br />";                   
             }
         } 
         else {
