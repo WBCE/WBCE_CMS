@@ -30,12 +30,21 @@ $toolCheck = true;
 // test for valid tool name
 if(!preg_match('/^[a-z][a-z_\-0-9]{2,}$/i', $toolDir)) $toolCheck=false;
 
-// Check if tool is installed
-$sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
-       'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' '.
-       'AND `directory`=\''.$database->escapeString($toolDir).'\' '.
-       'AND `directory` NOT IN(\''.(implode("','",$_SESSION['MODULE_PERMISSIONS'])).'\') ';
-if(!($toolName = $database->get_one($sql)))  $toolCheck=false;
+// Check is user is logged in 
+//if ($wb->is_authenticated() !== true) $toolCheck=false; 
+
+// User has absolutely no permissions , possibly even not logged in :-)?
+if (empty($_SESSION['MODULE_PERMISSIONS'])) $toolCheck=false; 
+
+// Check if tool is installed but only if user is loged in 
+
+if ($toolCheck === true) {
+    $sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
+        'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' '.
+        'AND `directory`=\''.$database->escapeString($toolDir).'\' '.
+        'AND `directory` NOT IN(\''.(implode("','",$_SESSION['MODULE_PERMISSIONS'])).'\') ';
+    if(!($toolName = $database->get_one($sql)))  $toolCheck=false;
+}
 
 // back button triggered, so go back.
 if (isset ($_POST['admin_tools'])) {$toolCheck=false;}
