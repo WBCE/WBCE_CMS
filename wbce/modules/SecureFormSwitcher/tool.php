@@ -1,7 +1,7 @@
 <?php
 /**
  * @category        modules
- * @package         maintainance_mode
+ * @package         Security Settings
  * @author          WBCE Project
  * @copyright       Norbert Heimsath
  * @license			WTFPL
@@ -92,7 +92,6 @@ if($saveSettings) {
 } else if ($saveDefault) {
 
     // setting defaults
-    $setError=Settings::Set ("wb_maintainance_mode", false);
     $setError=Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg");
     $setError=Settings::Set ("wb_secform_secrettime", '86400');
     $setError=Settings::Set ("wb_secform_timeout", '7200');

@@ -10,7 +10,6 @@
 //no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
-$setError=Settings::Set ("wb_maintainance_mode", false);
 $setError=Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg");
 $setError=Settings::Set ("wb_secform_secrettime", '86400');
 $setError=Settings::Set ("wb_secform_timeout", '7200');
