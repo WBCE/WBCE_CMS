@@ -54,11 +54,14 @@ if($doSave) {
 // Form send , ok lets see what to do
 if($saveSettings) {
 
+//     var_dump($saveSettings);
+//     var_dump($admin->get_post("maintMode"));
+    
     // ONLY HERE THE ACTUAL ACTION IS GOING ON!!    
 
     // We set the setting
-    if ($admin->get_post("maintMode")) $setError=Settings::Set ("wb_maintainance_mode", true);
-    else                               $setError=Settings::Set ("wb_maintainance_mode", false);
+    if ($admin->get_post("maintMode")=="true") {$setError=Settings::Set ("wb_maintainance_mode", true);}
+    else                                      { $setError=Settings::Set ("wb_maintainance_mode", false);}
 
     // END ACTION!! 
 
