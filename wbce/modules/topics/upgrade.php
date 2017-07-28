@@ -88,11 +88,6 @@ $mod_dir = basename(dirname(__FILE__));
 $tablename = $mod_dir;
 require_once(WB_PATH.'/modules/'.$mod_dir.'/inc/upgrade.inc.php');
 
-// install or upgrade droplets
-if (file_exists(WB_PATH.'/modules/droplets/functions.inc.php')) {
-  include_once(WB_PATH.'/modules/droplets/functions.inc.php');
-}
-
 if (!function_exists('wb_unpack_and_import')) {
   function wb_unpack_and_import($temp_file, $temp_unzip) {
     global $admin, $database;
