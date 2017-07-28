@@ -289,7 +289,7 @@
             <div class="fg9">
                 <select name="default_language" class="wdt250">
                     <!-- BEGIN language_list_block -->
-                    <option value="{CODE}" {SELECTED} class="hasFlag" style="background-image: url({WB_URL}/languages/{CODE}.png);">({CODE}) {NAME}</option>
+                    <option value="{CODE}" {SELECTED}>{NAME}</option>
                     <!-- END language_list_block -->
                 </select>
             </div>

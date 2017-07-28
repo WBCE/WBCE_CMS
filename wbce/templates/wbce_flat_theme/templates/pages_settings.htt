@@ -40,7 +40,7 @@
                     <div class="fg8">
                         <select name="parent" onchange="return disabled_hack_for_ie(this);" class="wdt250">
                             <!-- BEGIN page_list_block2 -->
-                            <option value="{ID}" {SELECTED}> {TITLE} </option>
+                            <option value="{ID}" {SELECTED}>{TITLE}</option>
                             <!-- END page_list_block2 -->
                         </select>
                     </div>
@@ -49,11 +49,11 @@
                     <div class="fg4">{TEXT_VISIBILITY}:</div>
                     <div class="fg8">
                         <select name="visibility" onchange="javascript: toggle_viewers();" class="wdt250">
-                            <option value="public" {PUBLIC_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);"> {TEXT_PUBLIC} </option>
-                            <option value="private" {PRIVATE_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);"> {TEXT_PRIVATE} </option>
-                            <option value="registered" {REGISTERED_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);"> {TEXT_REGISTERED} </option>
-                            <option value="hidden" {HIDDEN_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);"> {TEXT_HIDDEN} </option>
-                            <option value="none" {NO_VIS_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);"> {TEXT_NONE} </option>
+                            <option value="public" {PUBLIC_SELECTED}>{TEXT_PUBLIC}</option>
+                            <option value="private" {PRIVATE_SELECTED}>{TEXT_PRIVATE}</option>
+                            <option value="registered" {REGISTERED_SELECTED}>{TEXT_REGISTERED}</option>
+                            <option value="hidden" {HIDDEN_SELECTED}>{TEXT_HIDDEN}</option>
+                            <option value="none" {NO_VIS_SELECTED}>{TEXT_NONE}</option>
                         </select>
                     </div>
                 </div>
@@ -74,9 +74,9 @@
                     <div class="fg4">{TEXT_TARGET}:</div>
                     <div class="fg8">
                         <select name="target" class="wdt200">
-                            <option value="_blank" {BLANK_SELECTED}> {TEXT_NEW_WINDOW} </option>
-                            <option value="_self" {SELF_SELECTED}> {TEXT_SAME_WINDOW} </option>
-                            <option value="_top" {TOP_SELECTED}> {TEXT_TOP_FRAME} </option>
+                            <option value="_blank" {BLANK_SELECTED}>{TEXT_NEW_WINDOW}</option>
+                            <option value="_self" {SELF_SELECTED}>{TEXT_SAME_WINDOW}</option>
+                            <option value="_top" {TOP_SELECTED}>{TEXT_TOP_FRAME}</option>
                         </select>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                     <div class="fg8" style="{DISPLAY_LANGUAGE_LIST}">
                         <select name="language" class="wdt200">
                             <!-- BEGIN language_list_block -->
-                            <option value="{VALUE}" {SELECTED} class="hasFlag" style="background-image:url({WB_URL}/languages/{VALUE}.png);">{NAME}</option>
+                            <option value="{VALUE}" {SELECTED}>{NAME}</option>
                             <!-- END language_list_block -->
                         </select>
                     </div>
