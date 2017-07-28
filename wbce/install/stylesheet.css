@@ -13,7 +13,7 @@ html {
     padding: 0;
     margin: 0;
     border: 0;
-    font-size: 85%;
+    font-size: 14px;
     font-family: Arial, Verdana, Helvetica, sans-serif;
     color: #202020;
     overflow : -moz-scrollbars-vertical;
@@ -26,7 +26,7 @@ table {
 }
 body {
     background: url('background.png') repeat-x 0 0;
-    background-color: #a8bccb;
+    background-color: #647087;
 }
 div.body {
     width: 60em;
@@ -56,6 +56,12 @@ div.content {
 .license {
     margin: 0 0 3em;
     text-align: center;
+}
+.license a {
+    color: #000000;
+}
+.license a:hover {
+    color: #c2c2c2;
 }
 .grey {
     color: #666666;
@@ -129,7 +135,7 @@ td.value {
     vertical-align : middle;
     white-space: nowrap;
 }
-td.value input {
+td.value input[type="text"], td.value input[type="password"] {
     width : 100%;
     vertical-align : middle;
 }
