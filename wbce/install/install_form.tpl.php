@@ -37,7 +37,7 @@
                 <tr>
                     <td>
                         <img class="logo"  src="logo.png" alt="WBCE CMS Logo" />
-                        <h1 class="headline" >Welcome to the Installation Wizard</h1>
+                        <h1>Welcome to the Installation Wizard</h1>
                     </td>
                 </tr>
             </tbody>
@@ -62,7 +62,7 @@
                 <thead>
                     <tr>
                         <th colspan="4" class="step-row">
-                            <h1 class="step-row">Step 1</h1>
+                            <h2 class="step-row">Step 1</h2>
                             &nbsp;Please check the following requirements are met before continuing...
                         </th>
                     </tr>
@@ -156,7 +156,7 @@
                 <thead>
                     <tr>
                         <th colspan="4" class="step-row">
-                            <h1 class="step-row">Step 2</h1>&nbsp;Please check following settings...
+                            <h2 class="step-row">Step 2</h2>&nbsp;Please check following settings...
                         </th>
                     </tr>
                 </thead>
@@ -241,7 +241,7 @@
                 <thead>
                     <tr>
                         <th colspan="4" class="step-row">
-                        <h1 class="step-row">Step 3</h1>&nbsp;Please enter your MySQL database server details below...
+                        <h2 class="step-row">Step 3</h2>&nbsp;Please enter your MySQL database server details below...
                         </th>
                     </tr>
                 </thead>
@@ -285,7 +285,7 @@
                 <thead>
                     <tr>
                         <th colspan="4" class="step-row">
-                        <h1 class="step-row">Step 4</h1> Please enter your Administrator account details below...
+                        <h2 class="step-row">Step 4</h2> Please enter your Administrator account details below...
                         </th>
                     </tr>
                 </thead>
@@ -293,25 +293,25 @@
                     <tr>
                         <td class="name">Loginname:</td>
                         <td class="value">
-                            <input <?php echo field_error('admin_username');?> type="text" tabindex="14" name="admin_username" value="<?php echo $sAdminUsername  ?>" />
+                            <input <?php echo field_error('admin_username');?> type="text" tabindex="12" name="admin_username" value="<?php echo $sAdminUsername  ?>" />
                         </td>
                     </tr>
                     <tr>
                         <td class="name">E-Mail:</td>
                         <td class="value">
-                            <input <?php echo field_error('admin_email');?> type="text" tabindex="15" name="admin_email" value="<?php echo $sAdminEmail ?>" />
+                            <input <?php echo field_error('admin_email');?> type="text" tabindex="13" name="admin_email" value="<?php echo $sAdminEmail ?>" />
                         </td>
                     </tr>
                     <tr>
                         <td class="name">Password:</td>
                         <td class="value">
-                            <input <?php echo field_error('admin_password');?> type="password" tabindex="16" name="admin_password" value="<?php echo $sAdminPassword ?>" />
+                            <input <?php echo field_error('admin_password');?> type="password" tabindex="14" name="admin_password" value="<?php echo $sAdminPassword ?>" />
                         </td>
                     </tr>
                     <tr>
                         <td class="name">Repeat Password:</td>
                         <td class="value">
-                            <input <?php echo field_error('admin_repassword');?> type="password" tabindex="17" name="admin_repassword" value="<?php echo $sAdminRepassword ?>"  />
+                            <input <?php echo field_error('admin_repassword');?> type="password" tabindex="15" name="admin_repassword" value="<?php echo $sAdminRepassword ?>"  />
                         </td>
                     </tr>
                 </tbody>
@@ -328,7 +328,7 @@
                         <td>
                             <p class="warning">
                                 WBCE is released under the
-                                <a href="http://www.gnu.org/licenses/gpl.html" target="_blank" tabindex="19">GNU General Public License</a>.
+                                <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU General Public License</a>.
                                 <br />By clicking install, you are accepting the license.
                             </p>
                         </td>
@@ -337,9 +337,9 @@
                         <td>
                             <p class="center">
                                 <?php if ($installFlag == true): ?>
-                                    <input type="submit" tabindex="20" name="install" value="Install WBCE CMS" />
+                                    <input type="submit" tabindex="16" name="install" value="Install WBCE CMS" />
                                 <?php else :?>
-                                    <input type="button" tabindex="20" name="restart" value="Check your Settings in Step 1" class="submit" onclick="javascript: window.location = '<?php print $_SERVER['SCRIPT_NAME']?>';" />
+                                    <input type="button" tabindex="16" name="restart" value="Check your Settings in Step 1" class="submit" onclick="javascript: window.location = '<?php print $_SERVER['SCRIPT_NAME']?>';" />
                                 <?php endif; //install flag ?>
                             </p>
                         </td>
