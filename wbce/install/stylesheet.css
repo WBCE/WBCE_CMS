@@ -13,9 +13,8 @@ html {
     padding: 0;
     margin: 0;
     border: 0;
-    font-size: 85%;
+    font-size: 14px;
     font-family: Arial, Verdana, Helvetica, sans-serif;
-    color: #202020;
     overflow : -moz-scrollbars-vertical;
     overflow-x : auto;
 }
@@ -26,7 +25,7 @@ table {
 }
 body {
     background: url('background.png') repeat-x 0 0;
-    background-color: #a8bccb;
+    background-color: #647087;
 }
 div.body {
     width: 60em;
@@ -41,7 +40,7 @@ div.body {
     background: #a9c9ea;
 }
 .header img {
-    margin: 0.7em 1em 0 1em;
+    margin: 0.7em 1em;
     height: 50px;
     float: left;
 }
@@ -49,6 +48,7 @@ div.body {
     margin: 1em;
     font-size: 150%;
     float: right;
+    color: #000080;
 }
 div.content {
     margin-top: 20px;
@@ -129,11 +129,11 @@ td.value {
     vertical-align : middle;
     white-space: nowrap;
 }
-td.value input {
+td.value input[type="text"], td.value input[type="password"] {
     width : 100%;
     vertical-align : middle;
 }
-h1.step-row {
+h2.step-row {
     margin : 0;
     display : inline;
 }
@@ -185,39 +185,39 @@ img {
 p {
     margin: 11px 0 4px 0
 }
-h1 {
-    color: #3a628f;
+h2 {
+    color: #000080;
     font-size: 1.3em;
     margin: 10px 0 5px;
     border-top: medium none
 }
 a, a:link, a:visited, a:active {
-    color: #003366;
+    color: #000080;
     text-decoration: underline
 }
 a:focus {
     outline: none;
 }
 a:hover {
-    color: #336699
+    text-decoration: none
 }
 /*
     HINTS
 */
 .warning, .error {
-    color: #b70000;
+    color: #800000;
     line-height: 1.2em;
     background-color: #FFDBDB;
     margin: 5px 0;
     padding: 10px;
-    border: 1px solid #b70000;
+    border: 1px solid #800000;
 }
 .bad {
-    color: #b70000;
+    color: #800000;
     font-weight: bold;
 }
 .good {
-    color: #118301;
+    color: #008000;
     font-weight: bold;
 }
 .warn {
