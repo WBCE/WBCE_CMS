@@ -84,6 +84,7 @@ class admin extends wb
         . 'WHERE `name`=\'website_title\'';
         $get_title = $database->query($sql);
         $title = $get_title->fetchRow(MYSQLI_ASSOC);
+        
         // Setup template object, parse vars to it, then parse it
         $header_template = new Template(dirname($this->correct_theme_source('header.htt')));
         $header_template->set_file('page', 'header.htt');
@@ -127,19 +128,20 @@ class admin extends wb
             'WBCE_VERSION' => WBCE_VERSION,
             'WBCE_TAG' => (in_array(WBCE_TAG, array('', '-'))
                 ? '-'
-                : '<a href="https://github.com/WBCE/WebsiteBaker_CommunityEdition/releases/tag/' . WBCE_TAG . '" target="_blank">' . WBCE_TAG . '</a>'
+                : '<a href="https://github.com/WBCE/WBCE_CMS/releases/tag/' . WBCE_TAG . '" target="_blank">' . WBCE_TAG . '</a>'
             ),
             'VERSION' => VERSION,   // Legacy: WB-classic
             'SP' => SP,             // Legacy: WB-classic
             'REVISION' => REVISION, // Legacy: WB-classic
             'SERVER_ADDR' => ($this->get_group_id() == 1
                 ? (!isset($_SERVER['SERVER_ADDR'])
-                    ? '129.0.0.1'
+                    ? '127.0.0.1'
                     : $_SERVER['SERVER_ADDR'])
                 : ''),
             'WB_URL' => WB_URL,
             'ADMIN_URL' => ADMIN_URL,
             'THEME_URL' => THEME_URL,
+            'PHP_VERSION' => substr(phpversion(),0,6),
             'TITLE_START' => $MENU['START'],
             'TITLE_BACK' => $TEXT['BACK'],
             'TITLE_VIEW' => $MENU['VIEW'],
@@ -147,7 +149,7 @@ class admin extends wb
             'TITLE_LOGOUT' => $MENU['LOGOUT'],
             'LOGGED_IN_AS' => $TEXT['LOGGED_IN'],
             'URL_VIEW' => $view_url,
-            'URL_HELP' => 'http://websitebaker.org/en/help.php',
+            'URL_HELP' => 'https://wbce.org/',
             'BACKEND_MODULE_CSS' => $this->register_backend_modfiles('css'), // adds backend.css
             'BACKEND_MODULE_JS' => $this->register_backend_modfiles('js'),   // adds backend.js
         )
@@ -203,13 +205,20 @@ class admin extends wb
         $footer_template = new Template(dirname($this->correct_theme_source('footer.htt')));
         $footer_template->set_file('page', 'footer.htt');
         $footer_template->set_block('page', 'footer_block', 'header');
+        
+        // Session Timeout possibly not Defined on Upgrade
+        if     ($sSessionTimeout=Settings::get("wb_session_timeout")) {}
+        elseif ($sSessionTimeout=Settings::get("wb_secform_timeout")) {}
+        else                                                          {$sSessionTimeout="7200";}
+        
         $footer_template->set_var(array(
-            'BACKEND_BODY_MODULE_JS' => $this->register_backend_modfiles_body('js'),
+            'WB_SESSION_TIMEOUT' => $sSessionTimeout,
             'WB_URL' => WB_URL,
             'ADMIN_URL' => ADMIN_URL,
             'THEME_URL' => THEME_URL,
-            'WBCE_VERSION' => WBCE_VERSION,
             'PHP_VERSION' => substr(phpversion(),0,6),
+            'WBCE_VERSION' => WBCE_VERSION,
+            'BACKEND_BODY_MODULE_JS' => $this->register_backend_modfiles_body('js'),
         ));
         $footer_template->parse('header', 'footer_block', false);
         $footer_template->pparse('output', 'page');

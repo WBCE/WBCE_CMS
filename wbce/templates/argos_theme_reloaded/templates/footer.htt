@@ -11,7 +11,8 @@
 	WBCE Version: {WBCE_VERSION} &bull;
 	Backend Version: 2.0.1
 	&bull;
-	PHP Version: {PHP_VERSION}
+	PHP Version: {PHP_VERSION} &bull;
+    Session timeout: <span id="countdowntimer">{WB_SESSION_TIMEOUT}</span> Seconds
 </div>
 
 {BACKEND_BODY_MODULE_JS}

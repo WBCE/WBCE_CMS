@@ -15,6 +15,7 @@
 <link href="{THEME_URL}/css/fitrgrid.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/themeextended.css" rel="stylesheet" type="text/css">
+{BACKEND_MODULE_CSS}
 <script>
 var WB_URL = '{WB_URL}';
 var THEME_URL = '{THEME_URL}';
@@ -31,12 +32,19 @@ var LANGUAGE = '{LANGUAGE}';
 <script type="text/javascript" src="{THEME_URL}/jquery/jqueryNiceFileInput/jquery.nicefileinput.min.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/theme.js"></script>
 {BACKEND_MODULE_JS}
-{BACKEND_MODULE_CSS}
 <script>
-var wbSessionTiomeout= {WB_SESSION_TIMEOUT};
-var seconds = new Date().getTime() / 1000;
-seconds = Math.round(seconds);
-document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/'
+    var wbSessionTiomeout= {WB_SESSION_TIMEOUT};
+    var seconds = new Date().getTime() / 1000;
+    seconds = Math.round(seconds);
+    document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/'
+
+    var timeleft = {WB_SESSION_TIMEOUT};
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("countdowntimer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
 </script>
 </head>
 <body>
@@ -62,18 +70,24 @@ document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/'
 <!-- ##### ENDE pagetopmenu ####################### -->
 
 <div id="sidebararea" class="stickySidebarElement">
-    <div id="userbox" class="stickySidebarElement"> <span id="user-introtext">{WELCOME_MESSAGE} {CURRENT_USER} </span> <br/>
-    <span id="user-name">{DISPLAY_NAME}</span> <br/>
-    <a id="user-button" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a> </div>
+    <div id="userbox" class="stickySidebarElement">
+        <span id="user-introtext">{WELCOME_MESSAGE} {CURRENT_USER} </span><br/>
+        <span id="user-name">{DISPLAY_NAME}</span><br/>
+        <a id="user-button" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a>
+    </div>
     <div id="mainmenu" class="stickySidebarElement">
-    <ul class="stickySidebarElement">
-        <!-- BEGIN linkBlock -->
-        <li class="{CLASS}"><a href="{LINK}" target="{TARGET}" title="{TITLE}"><span>{TITLE}</span></a></li>
-        <!-- END linkBlock -->
-    </ul>
-</div>
-    <div id="systeminfo" class="stickySidebarElement"> <span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
-    <span class="version">Tag: {WBCE_TAG}</span></div>
+        <ul class="stickySidebarElement">
+            <!-- BEGIN linkBlock -->
+            <li class="{CLASS}"><a href="{LINK}" target="{TARGET}" title="{TITLE}"><span>{TITLE}</span></a></li>
+            <!-- END linkBlock -->
+        </ul>
+    </div>
+    <div id="systeminfo" class="stickySidebarElement">
+        <span class="version">WBCE Version: {WBCE_VERSION}<br/>
+        <span class="version">Tag: {WBCE_TAG}</span><br/>
+        <span class="version">PHP Version: {PHP_VERSION}</span><br/>
+        <span class="version">Session timeout: <span id="countdowntimer">{WB_SESSION_TIMEOUT}</span> Seconds</span>
+    </div>
 </div>
 <div id="mainarea" class="stickySidebarElement">
 <div id="contentarea">
