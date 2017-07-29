@@ -2,8 +2,6 @@
 /**
     @file
     @brief Simply the Template file for the Installer form
-
-    @todo Remove the spagetty ;-)
 */
 ?><!DOCTYPE HTML>
 <html lang="en">
@@ -103,11 +101,11 @@
                     </tr>
 <?php if ($chrval == "bad") :?>
                     <tr>
-                        <td colspan="6" style="font-size: 10px;" class="bad">
+                        <td colspan="6" class="bad">
                             <p class="warning">
                                 <b>Please note:</b> Yor webserver is configured to deliver <b><?php echo $e_adc;?></b> charset only.<br />
                                 To display national special characters (e.g.: &auml; &aacute;) in clear manner, switch off this preset please(or let it do by your hosting provider).<br />
-                                In any case you can choose <b><?php echo $e_adc;?></b> in the settings of WebsiteBaker CE.<br />
+                                In any case you can choose <b><?php echo $e_adc;?></b> in the settings of WBCE.<br />
                                 But this solution does not guarantee a correct displaying of the content from all modules!
                             </p>
                         </td>
@@ -221,12 +219,12 @@
                             <span style="cursor: pointer;" onclick="javascript: change_os('windows');">Windows</span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="display: none;">
                         <td class="name">&nbsp;</td>
                         <td class="value">
-                            <div id="file_perms_box" style="display: none;">
+                            <div id="file_perms_box">
                                 <input type="checkbox" name="world_writeable" id="world_writeable" value="true" <?php echo $sWorldWriteableCheck?> />
-                                <label style="margin: 0;" for="world_writeable">
+                                <label for="world_writeable">
                                     World-writeable file permissions (777)
                                 </label>
                                 <br />
@@ -254,16 +252,16 @@
                     </tr>
                     <tr>
                         <td class="name">Database Name: </td>
-                        <td class="value" style="white-space: nowrap;">
+                        <td class="value">
                             <input <?php echo field_error('database_name')?> type="text" tabindex="8" name="database_name" value="<?php echo $sDatabaseName  ?>" />
-                        <span style="display: inline;">&nbsp;([a-zA-Z0-9_-])</span>
+                            <span>&nbsp;([a-zA-Z0-9_-])</span>
                         </td>
                     </tr>
                     <tr>
                         <td class="name">Table Prefix: </td>
-                        <td class="value" style="white-space: nowrap;">
+                        <td class="value">
                             <input <?php echo field_error('table_prefix')?> type="text" tabindex="9" name="table_prefix" value="<?php echo $sTablePrefix ?>" />
-                            <span style="display: inline;">&nbsp;([a-z0-9_])</span>
+                            <span>&nbsp;([a-z0-9_])</span>
                         </td>
                     </tr>
                     <tr>
@@ -319,7 +317,7 @@
 
 <?php endif; // installFlag ?>
 
-            <table class="step8">
+            <table class="step5">
                 <tbody>
                     <tr valign="top">
                         <td><strong>Please note: &nbsp;</strong></td>
@@ -345,10 +343,10 @@
                         </td>
                     </tr>
                 </tbody>
-            </table><!-- class step8 -->
+            </table><!-- class step5 -->
 
         </form>
-    </div> <!-- class body -->
+    </div><!-- class body -->
 
     <div class="license" >
         <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
@@ -356,9 +354,7 @@
         <a href="http://www.gnu.org/licenses/gpl.html"  target="_blank">GNU General Public License</a>
         <!-- Please note: the above reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
         <br > WBCE Version: <?php echo NEW_WBCE_VERSION ?>
-    </div > <!-- class footer -->
+    </div ><!-- class license -->
 
 </body>
 </html>
-
-
