@@ -173,10 +173,6 @@ $stepID = 1;
 $dirRemove = array(
     '[TEMPLATE]/argos_theme/',
     '[TEMPLATE]/argos_theme_reloaded/images/flags/',
-    '[TEMPLATE]/advancedThemeWbFlat/images/flags/',
-    '[TEMPLATE]/advancedThemeWbFlat/webfonts/',
-    '[TEMPLATE]/advancedThemeWbFlat/documentation/',
-    '[TEMPLATE]/advancedThemeWbFlat/jquery_added/',
     '[ADMIN]/images/',
     '[ADMIN]/themes/',
     '[ADMIN]/pages/page_tree/icons/'
@@ -229,12 +225,6 @@ $filesRemove['2'] = array(
     '[ACCOUNT]/template.html',
     '[LANGUAGES]/SE.php',
     '[MODULES]/pagecloner/template.html',
-    '[TEMPLATE]/advancedThemeWbFlat/browse.css',
-    '[TEMPLATE]/advancedThemeWbFlat/extern-modules-correction.css',
-    '[TEMPLATE]/advancedThemeWbFlat/former-css.css',
-    '[TEMPLATE]/advancedThemeWbFlat/media.css',
-    '[TEMPLATE]/advancedThemeWbFlat/theme.css',
-    '[TEMPLATE]/advancedThemeWbFlat/theme-config.css',
 );
 
 // check existing tables
