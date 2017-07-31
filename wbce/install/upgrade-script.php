@@ -130,7 +130,7 @@ function check_wb_tables()
  * @param string $element: witch HTML-tag use to cover the message
  * @return void
  */
-function status_msg($message, $class = 'check', $element = 'span')
+function status_msg($message, $class = 'grey', $element = 'span')
 {
     // returns a status message
     $msg = '<' . $element . ' class="' . $class . '">';
@@ -147,7 +147,9 @@ Functions Section END
 
 // include required scripts and setup admin object
 define ("WB_SECFORM_TIMEOUT", 7200); // versions bevore 2.8.2 do not have this value set so its needed
-@require_once 'config.php';
+
+@require_once '../config.php';
+
 require_once WB_PATH . '/framework/functions.php';
 require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
@@ -162,9 +164,9 @@ $table_list = array (
 'mod_news_comments','mod_news_groups','mod_news_posts','mod_news_settings',
 'mod_output_filter','mod_wrapper','mod_wysiwyg'
 );
- */
+*/
 
-$OK = ' <span class="ok">OK</span> ';
+$OK = ' <span class="good">OK</span> ';
 $FAIL = ' <span class="error">FAILED</span> ';
 $DEFAULT_THEME = 'wbce_flat_theme';
 $stepID = 1;
@@ -224,102 +226,40 @@ $filesRemove['1'] = array(
 $filesRemove['2'] = array(
     '[ACCOUNT]/template.html',
     '[LANGUAGES]/SE.php',
-    '[MODULES]/pagecloner/template.html',
+    '[MODULES]/pagecloner/template.html'
 );
 
 // check existing tables
 $all_tables = check_wb_tables();
 
 ?>
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="en">
 <head>
-<title>WBCE - Upgrade Script</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-html {
-    overflow: -moz-scrollbars-vertical; /* Force firefox to always show room for a vertical scrollbar */
-}
-body {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: #EBF7FC;
-    color: #000;
-    font-family: 'Trebuchet MS', Verdana, Arial, Helvetica, Sans-Serif;
-    font-size: small;
-    height: 101%;
-}
-#container {
-    width: 85%;
-    background: #A8BCCB url(templates/wb_theme/images/background.png) repeat-x;
-    border: 1px solid #000;
-    color: #000;
-    margin: 2em auto;
-    padding: 0 15px;
-    min-height: 500px;
-    text-align: left;
-}
-p {
-    line-height: 1.5em;
-}
-form {
-    display: inline-block;
-    line-height: 20px;
-    vertical-align: baseline;
-}
-input[type="submit"].restart {
-    background-color: #FFDBDB;
-    font-weight: bold;
-}
-h1, h2, h3, h4, h5, h6 {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    color: #369;
-    margin-top: 1.0em;
-    margin-bottom: 0.1em;
-}
-h1 {
-    font-size: 150%;
-}
-h2 {
-    font-size: 130%;
-    border-bottom: 1px #CCC solid;
-}
-h3 {
-    font-size: 120%;
-}
-.ok, .error {
-    font-weight: bold;
-}
-.ok {
-    color: green;
-}
-.error {
-    color: red;
-}
-.check {
-    color: #555;
-}
-.warning {
-    width: 98%;
-    background: #FFDBDB;
-    padding: 0.2em;
-    margin-top: 0.5em;
-    border: 1px solid black;
-}
-.info {
-    width: 98%;
-    background: #99CC99;
-    padding: 0.2em;
-    margin-top: 0.5em;
-    border: 1px solid black;
-}
-</style>
+<meta charset="utf-8" />
+<title>WBCE CMS Upgrade Script</title>
+<link href="normalize.css" rel="stylesheet" type="text/css" />
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<div id="container">
-<h1>WBCE - Upgrade Script</h1>
-<?php
+<div class="body">
+    <table class="header">
+        <tbody>
+            <tr>
+                <td><img class="logo"  src="logo.png" alt="WBCE CMS Logo" />
+                    <h1>Welcome to the Upgrade Script</h1></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="step1" >
+        <thead>
+            <tr>
+                <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Backup your files !!'; ?> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php
 // extract previous WBCE version from DB (if exists)
 $old_wbce_version = array(
     'VERSION' => db_get_key_value('settings', 'wbce_version'),
@@ -334,14 +274,14 @@ $old_wb_version = array(
 );
 
 // check if we upgrade from WBCE or WB-classic
-if (!is_null($old_wbce_version['VERSION'])) {
+    if (!is_null($old_wbce_version['VERSION'])) {
     // we upgrade from an older WBCE version
     $oldVersion = 'WBCE v' . $old_wbce_version['VERSION'] . ' (' . $old_wbce_version['TAG'] . ')';
 } else {
     // we upgrade from WB-classic, make sure that WB-classic is 2.7 or higher
     if (version_compare($old_wb_version['VERSION'], '2.7', '<')) {
         status_msg('<br />WebsiteBaker version below 2.7 can´t be upgraded to WBCE.<br />Please upgrade your WB version to 2.7 before upgrading to WBCE in a second step!', 'warning', 'div');
-        echo '<br /><br /></div></body></html>';
+        echo '</td></tr></tbody></table></div></body></html>';
         exit();
     }
     $oldVersion = 'WB-Classic v' . $old_wb_version['VERSION'] . ' (REV: ' . $old_wb_version['REV'] . ', SP: ' . $old_wb_version['SP'] . ')';
@@ -355,40 +295,54 @@ if (!defined('WB_SP')) {define('WB_SP', '');}
 if (!defined('WB_REVISION')) {define('WB_REVISION', '');}
 
 ?>
-<p>This script upgrades <strong> <?php echo $oldVersion;?></strong> to <strong> <?php echo $newVersion?> </strong>.<br />
-    The upgrade script modifies the existing database to reflect the changes introduced with the new version.</p>
+<p>This script upgrades <strong> <?php echo $oldVersion;?></strong> to <strong> <?php echo $newVersion?> </strong>.</p>
 <?php
-/*
- * Check if disclaimer was accepted
- */
+
+// Check if disclaimer was accepted
 if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confirmed')) {
-    ?>
-<h2>Backup your files !!</h2>
-<p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.<br />
-    <strong class="error">Note: </strong>The upgrade script alters some settings of your existing database!!! You need to confirm the disclaimer before proceeding.</p>
+?>
+
+<br /><p>The upgrade script modifies the existing database to reflect the changes introduced with the new version.</p>
+<p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.</p><br />
+
 <form name="send" action="<?php echo $_SERVER['SCRIPT_NAME'];?>" method="post">
-    <textarea cols="80" rows="5">DISCLAIMER: The WBCE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</textarea>
-    <br />
+    <pre>DISCLAIMER: The WBCE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</pre>
     <br />
     <input name="backup_confirmed" type="checkbox" value="confirmed" />
     &nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created. <br />
-    <br />
-    <input name="send" type="submit" value="Start upgrade script" />
+
+    <div class="warning">
+    <p>You need to confirm that you have created a manual backup of the /pages directory and the MySQL database before you can proceed.</p>
+    </div><br />
+    <p class="center">
+        <input name="send" type="submit" value="Start upgrade script" />
+    </p>
 </form>
 <br />
 <?php
-status_msg('<br />You need to confirm that you have created a manual backup of the /pages directory and the MySQL database before you can proceed.', 'warning', 'div');
-    echo '<br /><br /></div></body></html>';
-    exit();
+echo '</td></tr></tbody></table></div></body></html>';
+exit();
 }
-
-echo '<h2>Step ' . ($stepID++) . ' : Updating database entries</h2>';
+?></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="step2" >
+        <thead>
+            <tr>
+                <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Updating database entries'; ?> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php
 
 
 /**********************************************************
- *  - Adding field default_theme to settings table
- */
-echo "<br />Adding default_theme to settings table<br />";
+*  - Adding field default_theme to settings table
+*/
+
+echo "Adding default_theme to settings table<br />";
 Settings::Set('default_theme', $DEFAULT_THEME);
 if (defined("WB_SECFORM_TIMEOUT"))
     Settings::Set('wb_secform_timeout', '7200');
@@ -396,10 +350,9 @@ if (defined("WB_SEESSION_TIMEOUT"))
     Settings::Set('wb_session_timeout', Settings::GetDb('wb_secform_timeout'));
 
 
-
 /**********************************************************
- *  - Checking Core modules for installation status and install if necessary
- */
+*  - Checking Core modules for installation status and install if necessary
+*/
 
 // Droplets
 $drops = (!in_array("mod_droplets", $all_tables)) ? "<br />Install droplets<br />" : "<br />Upgrade droplets<br />";
@@ -452,8 +405,9 @@ if (is_file($ccontroll)) require_once $ccontroll;
 
 
 /**********************************************************
- *  - check tables comin with WebsiteBaker
- */
+*  - check tables comin with WebsiteBaker
+*/
+
 $check_text = 'total ';
 // $check_tables = mysqlCheckTables( DB_NAME ) ;
 
@@ -469,24 +423,21 @@ if (sizeof($all_tables) == sizeof($table_list)) {
     }
     echo '<br /></h4>';
     echo '<br /><form action="' . $_SERVER['PHP_SELF'] . '">';
-    echo '<input type="submit" value="kick me back" style="float:left;" />';
+    echo '<input type="submit" value="kick me back" />';
     echo '</form>';
     if (defined('ADMIN_URL')) {
         echo '<form action="' . ADMIN_URL . '" target="_self">';
         echo '&nbsp;<input type="submit" value="kick me to the Backend" />';
         echo '</form>';
     }
-    echo "<br /><br /></div>
-        </body>
-        </html>
-        ";
+    echo '</td></tr></tbody></table></div></body></html>';
     exit();
 }
 
 
 /**********************************************************
- *  Adding or removing Settings
- */
+*  Adding or removing Settings
+*/
 
 echo "<br />Resetting errorlevel for use of new parameters<br />";
 Settings::Set('er_level','E0');
@@ -517,8 +468,8 @@ Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
 
 
 /**********************************************************
- *  Adding DB Fields
- */
+*  Adding DB Fields
+*/
 
 // Add field "redirect_type" to table "mod_menu_link"
 echo "<br />Adding field redirect_type to mod_menu_link table<br />";
@@ -530,9 +481,9 @@ db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
 
 
 /**********************************************************
- *  - making sure group_id is set correct there was a big bug in original WB
- *  WBCE 1.0.0
- */
+*  - making sure group_id is set correct there was a big bug in original WB
+*  WBCE 1.0.0
+*/
 
 $table = TABLE_PREFIX."users";
 
@@ -548,9 +499,9 @@ $query = $database->query($sql);
 
 
 /**********************************************************
- *  - Update search no results database filed to create
- *  valid XHTML if search is empty
- */
+*  - Update search no results database filed to create
+*  valid XHTML if search is empty
+*/
 
 if (version_compare(WB_VERSION, '2.8', '<')) {
     echo "<br />Updating database field `no_results` of search table: ";
@@ -563,61 +514,80 @@ if (version_compare(WB_VERSION, '2.8', '<')) {
 
 
 /**********************************************************
- * upgrade media folder index protect files
- */
+* upgrade media folder index protect files
+*/
 
 $dir = (WB_PATH . MEDIA_DIRECTORY);
-echo '<h4>Upgrade ' . MEDIA_DIRECTORY . '/ index.php protect files</h4><br />';
+echo '<br /><strong>Upgrade ' . MEDIA_DIRECTORY . '/ index.php protect files</strong><br />';
 $array = rebuildFolderProtectFile($dir);
 if (sizeof($array)) {
-    print '<br /><strong>Upgrade ' . sizeof($array) . ' ' . MEDIA_DIRECTORY . '/ protect files</strong>' . " $OK<br />";
+    print '<strong>Upgrade ' . MEDIA_DIRECTORY . '/ ' . sizeof($array) . ' protect files</strong>' . " $OK<br /><br />";
 } else {
-    print '<br /><strong>Upgrade ' . MEDIA_DIRECTORY . '/ protect files</strong>' . " $FAIL!<br />";
+    print '<strong>Upgrade ' . MEDIA_DIRECTORY . '/ protect files</strong>' . " $FAIL!<br /><br />";
     print implode('<br />', $array);
 }
 
 
 /**********************************************************
- * upgrade posts folder index protect files
- */
+* upgrade posts folder index protect files
+*/
 
 $sPostsPath = WB_PATH . PAGES_DIRECTORY . '/posts';
-echo '<h4>Upgrade /posts/ index.php protect files</h4><br />';
+echo '<strong>Upgrade /posts/ index.php protect files</strong><br />';
 $array = rebuildFolderProtectFile($sPostsPath);
 if (sizeof($array)) {
-    print '<br /><strong>Upgrade ' . sizeof($array) . ' /posts/ protect files</strong>' . " $OK<br />";
+    print '<strong>Upgrade /posts/ ' . sizeof($array) . ' protect files</strong>' . " $OK";
 } else {
-    print '<br /><strong>Upgrade /posts/ protect files</strong>' . " $FAIL!<br />";
-    print implode('<br />', $array);
+    print '<strong>Upgrade /posts/ protect files</strong>' . " $FAIL!";
+    print implode('<br /><br />', $array);
 }
 
+?></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="step3" >
+        <thead>
+            <tr>
+                <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Remove deprecated and old files and folders'; ?> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php
 
 /* *****************************************************************************
- * - check for deprecated / never needed files
- */
+* - check for deprecated / never needed files
+*/
 
 if (sizeof($filesRemove)) {
-    echo '<h2>Step ' . ($stepID++) . ': Remove deprecated and old files</h2>';
+    echo 'Removing files<br />';
 }
+
 $searches = array(
-    '[ADMIN]',
+    '[ROOT]',
     '[ACCOUNT]',
+    '[ADMIN]',
+    '[FRAMEWORK]',
+    '[INCLUDE]',
     '[LANGUAGES]',
     '[MEDIA]',
-    '[PAGES]',
-    '[FRAMEWORK]',
     '[MODULES]',
-    '[TEMPLATE]',
+    '[PAGES]',
+    '[TEMPLATE]'
 );
+
 $replacements = array(
-    substr(ADMIN_PATH, strlen(WB_PATH) + 1),
+    '',
     '/account',
+    substr(ADMIN_PATH, strlen(WB_PATH) + 1),
+    '/framework',
+    '/include',
     '/languages',
     MEDIA_DIRECTORY,
-    PAGES_DIRECTORY,
-    '/framework',
     '/modules',
-    '/templates',
+    PAGES_DIRECTORY,
+    '/templates'
 );
 
 foreach ($filesRemove as $filesId) {
@@ -635,41 +605,52 @@ foreach ($filesRemove as $filesId) {
     }
 
     if ($msg != '') {
-        $msg = '<br /><br />Following files are deprecated, outdated or a security risk and
-				    can not be removed automatically.<br /><br />Please delete them
-					using FTP and restart upgrade-script!<br /><br />' . $msg . '<br />';
+        $msg = '<br /><br />Following files are deprecated, outdated or a security risk and can not be removed automatically.<br /><br />Please delete them using FTP and restart upgrade-script!<br /><br />' . $msg . '<br />';
         status_msg($msg, 'error warning', 'div');
-        echo '<p style="font-size:120%;"><strong>WARNING: The upgrade script failed ...</strong></p>';
+        echo '<p class="error"><strong>WARNING: The upgrade script failed ...</strong></p>';
 
         echo '<form action="' . $_SERVER['SCRIPT_NAME'] . '">';
         echo '&nbsp;<input name="send" type="submit" value="Restart upgrade script" />';
         echo '</form>';
-        echo '<br /><br /></div></body></html>';
+        echo '</td></tr></tbody></table></div></body></html>';
         exit;
     }
 }
 
 
 /**********************************************************
- * - check for deprecated / never needed directories
- */
+* - check for deprecated / never needed directories
+*/
 
 if (sizeof($dirRemove)) {
-    echo '<h2>Step  ' . ($stepID++) . ': Remove deprecated and old folders</h2>';
+    echo '<br />Removing folders';
+
     $searches = array(
-        '[ADMIN]',
+        '[ROOT]',
         '[ACCOUNT]',
+        '[ADMIN]',
+        '[FRAMEWORK]',
+        '[INCLUDE]',
+        '[LANGUAGES]',
         '[MEDIA]',
+        '[MODULES]',
         '[PAGES]',
-        '[TEMPLATE]',
+        '[TEMPLATE]'
     );
+
     $replacements = array(
-        substr(ADMIN_PATH, strlen(WB_PATH) + 1),
+        '',
         '/account',
+        substr(ADMIN_PATH, strlen(WB_PATH) + 1),
+        '/framework',
+        '/include',
+        '/languages',
         MEDIA_DIRECTORY,
+        '/modules',
         PAGES_DIRECTORY,
-        '/templates',
+        '/templates'
     );
+
     $msg = '';
     foreach ($dirRemove as $dir) {
         $dir = str_replace($searches, $replacements, $dir);
@@ -683,23 +664,21 @@ if (sizeof($dirRemove)) {
         }
     }
     if ($msg != '') {
-        $msg = '<br /><br />Following files are deprecated, outdated or a security risk and
-					can not be removed automatically.<br /><br />Please delete them
-					using FTP and restart upgrade-script!<br /><br />' . $msg . '<br />';
-        status_msg($msg, 'error warning', 'div');
-        echo '<p style="font-size:120%;"><strong>WARNING: The upgrade script failed ...</strong></p>';
-        echo '<form action="' . $_SERVER['SCRIPT_NAME'] . '">';
-        echo '&nbsp;<input name="send" type="submit" value="Restart upgrade script" />';
-        echo '</form>';
-        echo '<br /><br /></div></body></html>';
-        exit;
+    $msg = '<br /><br />Following files are deprecated, outdated or a security risk and can not be removed automatically.<br /><br />Please delete them using FTP and restart upgrade-script!<br /><br />' . $msg . '<br />';
+    status_msg($msg, 'error warning', 'div');
+    echo '<p class="error"><strong>WARNING: The upgrade script failed ...</strong></p>';
+    echo '<form action="' . $_SERVER['SCRIPT_NAME'] . '">';
+    echo '&nbsp;<input name="send" type="submit" value="Restart upgrade script" />';
+    echo '</form>';
+    echo '<</td></tr></tbody></table></div></body></html>';
+    exit;
     }
 }
 
 
 /**********************************************************
- * upgrade modules if newer version is available
- */
+* upgrade modules if newer version is available
+*/
 
 $aModuleList = array('news');
 foreach ($aModuleList as $sModul) {
@@ -715,10 +694,23 @@ foreach ($aModuleList as $sModul) {
 
 
 /**********************************************************
- *  - Reload all addons
- */
+*  - Reload all addons
+*/
 
-echo '<h2>Step ' . ($stepID++) . ' : Reload all addons database entry (no upgrade)</h2>';
+?></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="step4" >
+        <thead>
+            <tr>
+                <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Reload all addons database entry (no upgrade)'; ?> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php
+
 // delete modules
 //$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'module'");
 // Load all modules
@@ -726,13 +718,12 @@ if (($handle = opendir(WB_PATH . '/modules/'))) {
     while (false !== ($file = readdir($handle))) {
         if ($file != '' and substr($file, 0, 1) != '.' and $file != 'admin.php' and $file != 'index.php') {
             load_module(WB_PATH . '/modules/' . $file);
-            //     upgrade_module($file, true);
+            // upgrade_module($file, true);
         }
     }
     closedir($handle);
 }
-echo '<br />Modules reloaded<br />';
-
+echo 'Modules reloaded<br />';
 
 // delete templates
 $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'template'");
@@ -747,7 +738,6 @@ if (($handle = opendir(WB_PATH . '/templates/'))) {
 }
 echo '<br />Templates reloaded<br />';
 
-
 // delete languages
 $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'language'");
 // Load all languages
@@ -761,10 +751,9 @@ if (($handle = opendir(WB_PATH . '/languages/'))) {
 }
 echo '<br />Languages reloaded<br />';
 
-
 /**********************************************************
- *  - Set Version to new Version
- */
+*  - Set Version to new Version
+*/
 
 echo '<br />Update database version number to ' . NEW_WBCE_VERSION . ' (Tag: ' . NEW_WBCE_TAG . ')';
 Settings::Set('wbce_version',NEW_WBCE_VERSION);
@@ -775,30 +764,44 @@ Settings::Set('wb_sp',SP);              // Legacy: WB-classic
 
 
 /**********************************************************
- *  - End of upgrade script only some output stuff down here
- */
+*  - End of upgrade script only some output stuff down here
+*/
 
 if (!defined('DEFAULT_THEME')) {define('DEFAULT_THEME', $DEFAULT_THEME);}
 if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);}
 
-echo '<p style="font-size:120%;"><strong>Congratulations: The upgrade script is finished ...</strong></p>';
-status_msg('<br />Please delete the file <strong>upgrade-script.php</strong> via FTP before proceeding.', 'warning', 'div');
-// show buttons to go to the backend or frontend
-echo '<br />';
+?></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="step5" >
+        <thead>
+            <tr>
+                <th class="step-row"> Congratulations: The upgrade script is finished ... </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><div class="center"><?php
 
 if (defined('WB_URL')) {
     echo '<form action="' . WB_URL . '/">';
-    echo '&nbsp;<input type="submit" value="kick me to the Frontend" />';
+    echo '&nbsp;<input type="submit" value="Kick me to the Frontend" />';
     echo '</form>';
 }
 if (defined('ADMIN_URL')) {
     echo '<form action="' . ADMIN_URL . '/">';
-    echo '&nbsp;<input type="submit" value="kick me to the Backend" />';
+    echo '&nbsp;<input type="submit" value="Kick me to the Backend" />';
     echo '</form>';
 }
-
-echo '<br /><br /></div></body></html>';
 
 // Finally, destroy the session.
 session_destroy();
 
+                ?></div></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
