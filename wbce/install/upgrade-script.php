@@ -675,24 +675,6 @@ if (sizeof($dirRemove)) {
     }
 }
 
-
-/**********************************************************
-* upgrade modules if newer version is available
-*/
-
-$aModuleList = array('news');
-foreach ($aModuleList as $sModul) {
-    if (file_exists(WB_PATH . '/modules/' . $sModul . '/upgrade.php')) {
-        $currModulVersion = get_modul_version($sModul, false);
-        $newModulVersion = get_modul_version($sModul, true);
-        if ((version_compare($currModulVersion, $newModulVersion) <= 0)) {
-            echo '<h2>Step ' . ($stepID++) . ' : Upgrade module \'' . $sModul . '\' to version ' . $newModulVersion . '</h2>';
-            require_once WB_PATH . '/modules/' . $sModul . '/upgrade.php';
-        }
-    }
-}
-
-
 /**********************************************************
 *  - Reload all addons
 */
