@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="fg4">{TEXT_FILENAME}:</div>
                     <div class="fg8">
-                        <input type="text" name="link" value="{LINK_VALUE}"style="width:220px;">
+                        <input type="text" name="link" value="{LINK_VALUE}" class="wdt250">
                         <span style="vertical-align: -5px;">&nbsp;{PAGE_EXTENSION}</span> </div>
                 </div>
                 <div class="row">
@@ -73,7 +73,7 @@
                 <div class="row">
                     <div class="fg4">{TEXT_TARGET}:</div>
                     <div class="fg8">
-                        <select name="target" class="wdt200">
+                        <select name="target" class="wdt250">
                             <option value="_blank" {BLANK_SELECTED}>{TEXT_NEW_WINDOW}</option>
                             <option value="_self" {SELF_SELECTED}>{TEXT_SAME_WINDOW}</option>
                             <option value="_top" {TOP_SELECTED}>{TEXT_TOP_FRAME}</option>
@@ -83,7 +83,7 @@
                 <div class="row">
                     <div class="fg4">{TEXT_TEMPLATE}:</div>
                     <div class="fg8">
-                        <select name="template" class="wdt200">
+                        <select name="template" class="wdt250">
                             <option value="" style="border-bottom:1px solid #666;">{TEXT_SYSTEM_DEFAULT}</option>
                             <!-- BEGIN template_list_block -->
                             <option value="{VALUE}" {SELECTED}>{NAME}</option>
@@ -94,7 +94,7 @@
                 <div class="row">
                     <div class="fg4" style="{DISPLAY_MENU_LIST}"> {TEXT_MENU}: </div>
                     <div class="fg8" style="{DISPLAY_MENU_LIST}">
-                        <select name="menu" class="wdt200">
+                        <select name="menu" class="wdt250">
                             <!-- BEGIN menu_list_block -->
                             <option value="{VALUE}" {SELECTED}>{NAME}</option>
                             <!-- END menu_list_block -->
@@ -104,7 +104,7 @@
                 <div class="row">
                     <div class="fg4" style="{DISPLAY_LANGUAGE_LIST}"> {TEXT_LANGUAGE}: </div>
                     <div class="fg8" style="{DISPLAY_LANGUAGE_LIST}">
-                        <select name="language" class="wdt200">
+                        <select name="language" class="wdt250">
                             <!-- BEGIN language_list_block -->
                             <option value="{VALUE}" {SELECTED}>{NAME}</option>
                             <!-- END language_list_block -->
@@ -116,7 +116,7 @@
                     <div class="row">
                         <div class="fg4">{TEXT_PAGE_CODE}:</div>
                         <div class="fg8">
-                            <select name="page_code" class="wdt200">
+                            <select name="page_code" class="wdt250">
                                 <!-- BEGIN page_code_list_block -->
                                 <option value="{VALUE}" {SELECTED}>{PAGE_VALUE}</option>
                                 <!-- END page_code_list_block -->
@@ -127,7 +127,7 @@
                 <div class="row">
                     <div class="fg4">{TEXT_SEARCHING}:</div>
                     <div class="fg8">
-                        <select name="searching" class="wdt200">
+                        <select name="searching" class="wdt250">
                             <option value="1">{TEXT_ENABLED}</option>
                             <option value="0" {SEARCHING_DISABLED}>{TEXT_DISABLED}</option>
                         </select>

@@ -560,25 +560,25 @@
         <div class="row top" style="padding-left:0;">
             <div class="fg3">{TEXT_PAGES_DIRECTORY}:</div>
             <div class="fg9">
-                <input type="text" name="pages_directory" value="{PAGES_DIRECTORY}" class="wdt150">
+                <input type="text" name="pages_directory" value="{PAGES_DIRECTORY}" class="wdt250">
             </div>
         </div>
         <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_MEDIA_DIRECTORY}:</div>
             <div class="fg9">
-                <input type="text" name="media_directory" value="{MEDIA_DIRECTORY}" class="wdt150">
+                <input type="text" name="media_directory" value="{MEDIA_DIRECTORY}" class="wdt250">
             </div>
         </div>
         <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_PAGE_EXTENSION}:</div>
             <div class="fg9">
-                <input type="text" name="page_extension" value="{PAGE_EXTENSION}" class="wdt150">
+                <input type="text" name="page_extension" value="{PAGE_EXTENSION}" class="wdt250">
             </div>
         </div>
         <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_PAGE_SPACER}:</div>
             <div class="fg9">
-                <input type="text" name="page_spacer" value="{PAGE_SPACER}" class="wdt150">
+                <input type="text" name="page_spacer" value="{PAGE_SPACER}" class="wdt250">
             </div>
         </div>
         <div class="row" style="padding-left:0;">
@@ -590,13 +590,13 @@
         <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_SESSION_IDENTIFIER}:</div>
             <div class="fg9">
-                <input type="text" name="app_name" value="{APP_NAME}" class="wdt150">
+                <input type="text" name="app_name" value="{APP_NAME}" class="wdt250">
             </div>
         </div>
         <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_SEC_ANCHOR}:</div>
             <div class="fg9">
-                <input type="text" name="sec_anchor" value="{SEC_ANCHOR}" class="wdt150">
+                <input type="text" name="sec_anchor" value="{SEC_ANCHOR}" class="wdt250">
             </div>
         </div>
         <hr class="fg12">
@@ -616,13 +616,13 @@
         <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_WBMAILER_DEFAULT_SENDER_MAIL}:</div>
             <div class="fg9">
-                <input type="text" name="server_email" value="{SERVER_EMAIL}">
+                <input type="text" name="server_email" value="{SERVER_EMAIL}" class="wdt250">
             </div>
         </div>
         <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_WBMAILER_DEFAULT_SENDER_NAME}:</div>
             <div class="fg9">
-                <input type="text" name="wbmailer_default_sendername" value="{WBMAILER_DEFAULT_SENDERNAME}">
+                <input type="text" name="wbmailer_default_sendername" value="{WBMAILER_DEFAULT_SENDERNAME}" class="wdt250">
             </div>
         </div>
         <div class="row" style="padding-left:0;">

@@ -11,7 +11,7 @@
         <button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times" ></button>
         <span>{HEADING_MODIFY_DELETE_USER}</span> </h3>
     <div id="user-list" class="fg6"> 
-        <select name="user_id">
+        <select name="user_id" class="wdt250">
             <!-- BEGIN list_block -->
                 <option value="{VALUE}" {STATUS}>{NAME}</option>
             <!-- END list_block -->

@@ -194,7 +194,7 @@
             }
 
             var html = '<a href="' + item.url + 'move_' + op + '.php' + item.params
-                    + '"><i class="fa fa-fw fa-arrow-circle-' + op
+                    + '"><i class="fa fa-chevron-circle-' + op
                     + '"></i></a>';
             tr.cells[cell].innerHTML = html;
         };
