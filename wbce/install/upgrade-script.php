@@ -173,11 +173,15 @@ $stepID = 1;
 
 // removes old folders
 $dirRemove = array(
-    '[TEMPLATE]/argos_theme/',
-    '[TEMPLATE]/argos_theme_reloaded/images/flags/',
     '[ADMIN]/images/',
+    '[ADMIN]/pages/page_tree/icons/',
     '[ADMIN]/themes/',
-    '[ADMIN]/pages/page_tree/icons/'
+    '[TEMPLATE]/argos_theme/',
+    '[TEMPLATE]/argos_theme_classic/',
+    '[TEMPLATE]/argos_theme_reloaded/images/flags/',
+    '[TEMPLATE]/beesign_theme_ce/',
+    '[TEMPLATE]/DefaultTheme/',
+    '[TEMPLATE]/wb_theme/'
 );
 
 // files removed with 1.1 or before
@@ -224,6 +228,8 @@ $filesRemove['1'] = array(
 
 // files removed with 1.3
 $filesRemove['2'] = array(
+    '[ROOT]/config.php.new',
+    '[ROOT]/htaccess.txt',
     '[ACCOUNT]/template.html',
     '[LANGUAGES]/SE.php',
     '[MODULES]/pagecloner/template.html'
