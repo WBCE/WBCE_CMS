@@ -102,7 +102,7 @@ function mysqlCheckTables($dbName)
     return $data;
 }
 
-// check existings tables for upgrade or install
+// check existings tables for update or install
 function check_wb_tables()
 {
     global $database, $table_list;
@@ -176,6 +176,7 @@ $dirRemove = array(
     '[ADMIN]/images/',
     '[ADMIN]/pages/page_tree/icons/',
     '[ADMIN]/themes/',
+    '[TEMPLATE]/advancedThemeWbFlat/',
     '[TEMPLATE]/argos_theme/',
     '[TEMPLATE]/argos_theme_classic/',
     '[TEMPLATE]/argos_theme_reloaded/images/flags/',
@@ -243,7 +244,7 @@ $all_tables = check_wb_tables();
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>WBCE CMS Upgrade Script</title>
+<title>WBCE CMS Update Script</title>
 <link href="normalize.css" rel="stylesheet" type="text/css" />
 <link href="stylesheet.css" rel="stylesheet" type="text/css" />
 </head>
@@ -253,7 +254,7 @@ $all_tables = check_wb_tables();
         <tbody>
             <tr>
                 <td><img class="logo"  src="logo.png" alt="WBCE CMS Logo" />
-                    <h1>Welcome to the Upgrade Script</h1></td>
+                    <h1>Welcome to the Update Script</h1></td>
             </tr>
         </tbody>
     </table>
@@ -279,14 +280,14 @@ $old_wb_version = array(
     'SP' => defined('WB_SP') ? WB_SP : SP,
 );
 
-// check if we upgrade from WBCE or WB-classic
+// check if we update from WBCE or WB-classic
     if (!is_null($old_wbce_version['VERSION'])) {
-    // we upgrade from an older WBCE version
+    // we update from an older WBCE version
     $oldVersion = 'WBCE v' . $old_wbce_version['VERSION'] . ' (' . $old_wbce_version['TAG'] . ')';
 } else {
-    // we upgrade from WB-classic, make sure that WB-classic is 2.7 or higher
+    // we update from WB-classic, make sure that WB-classic is 2.7 or higher
     if (version_compare($old_wb_version['VERSION'], '2.7', '<')) {
-        status_msg('<br />WebsiteBaker version below 2.7 can´t be upgraded to WBCE.<br />Please upgrade your WB version to 2.7 before upgrading to WBCE in a second step!', 'warning', 'div');
+        status_msg('<br />WebsiteBaker version below 2.7 can´t be updated to WBCE.<br />Please update your WB version to 2.7 before upgrading to WBCE in a second step!', 'warning', 'div');
         echo '</td></tr></tbody></table></div></body></html>';
         exit();
     }
@@ -296,23 +297,23 @@ $old_wb_version = array(
 // string for new version
 $newVersion = 'WBCE v' . NEW_WBCE_VERSION . ' (' . NEW_WBCE_TAG . ')';
 
-// set addition settings if not exists, otherwise upgrade will be breaks
+// set addition settings if not exists, otherwise update will be breaks
 if (!defined('WB_SP')) {define('WB_SP', '');}
 if (!defined('WB_REVISION')) {define('WB_REVISION', '');}
 
 ?>
-<p>This script upgrades <strong> <?php echo $oldVersion;?></strong> to <strong> <?php echo $newVersion?> </strong>.</p>
+<p>This script updates <strong> <?php echo $oldVersion;?></strong> to <strong> <?php echo $newVersion?> </strong>.</p>
 <?php
 
 // Check if disclaimer was accepted
 if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confirmed')) {
 ?>
 
-<br /><p>The upgrade script modifies the existing database to reflect the changes introduced with the new version.</p>
+<br /><p>The update script modifies the existing database to reflect the changes introduced with the new version.</p>
 <p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.</p><br />
 
 <form name="send" action="<?php echo $_SERVER['SCRIPT_NAME'];?>" method="post">
-    <pre>DISCLAIMER: The WBCE upgrade script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</pre>
+    <pre>DISCLAIMER: The WBCE update script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</pre>
     <br />
     <input name="backup_confirmed" type="checkbox" value="confirmed" />
     &nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created. <br />
@@ -321,7 +322,7 @@ if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confir
     <p>You need to confirm that you have created a manual backup of the /pages directory and the MySQL database before you can proceed.</p>
     </div><br />
     <p class="center">
-        <input name="send" type="submit" value="Start upgrade script" />
+        <input name="send" type="submit" value="Start update script" />
     </p>
 </form>
 <br />
@@ -361,7 +362,7 @@ if (defined("WB_SEESSION_TIMEOUT"))
 */
 
 // Droplets
-$drops = (!in_array("mod_droplets", $all_tables)) ? "<br />Install droplets<br />" : "<br />Upgrade droplets<br />";
+$drops = (!in_array("mod_droplets", $all_tables)) ? "<br />Install droplets<br />" : "<br />Update droplets<br />";
 echo $drops;
 
 $file_name = (!in_array("mod_droplets", $all_tables) ? "install.php" : "upgrade.php");
@@ -372,7 +373,7 @@ if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();
 
 
 // Topics
-$drops = (!in_array("mod_topics", $all_tables)) ? "<br />Install Topics<br />" : "<br />Upgrade Topics<br />";
+$drops = (!in_array("mod_topics", $all_tables)) ? "<br />Install Topics<br />" : "<br />Update Topics<br />";
 echo $drops;
 
 $file_name = (!in_array("mod_topics", $all_tables) ? "install.php" : "upgrade.php");
@@ -383,7 +384,7 @@ if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();
 
 
 // Miniform
-$drops = (!in_array("mod_miniform", $all_tables)) ? "<br />Install Miniform<br />" : "<br />Upgrade Miniform<br />";
+$drops = (!in_array("mod_miniform", $all_tables)) ? "<br />Install Miniform<br />" : "<br />Update Miniform<br />";
 echo $drops;
 
 $file_name = (!in_array("mod_miniform", $all_tables) ? "install.php" : "upgrade.php");
@@ -394,7 +395,7 @@ if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();
 
 
 // Wb Stats //
-$drops = (!in_array("mod_wbstats_day", $all_tables)) ? "<br />Install WB Stats<br />" : "<br />Upgrade WB Stats<br />";
+$drops = (!in_array("mod_wbstats_day", $all_tables)) ? "<br />Install WB Stats<br />" : "<br />Update WB Stats<br />";
 echo $drops;
 
 $file_name = (!in_array("mod_wbstats_day", $all_tables) ? "install.php" : "upgrade.php");
@@ -405,7 +406,7 @@ if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();
 
 
 // Captcha Controll //
-echo "<br />Upgrade Captcha Controll<br />";
+echo "<br />Update Captcha Controll<br />";
 $ccontroll= WB_PATH . "/modules/captcha_control/upgrade.php" ;
 if (is_file($ccontroll)) require_once $ccontroll;
 
@@ -420,8 +421,8 @@ $check_text = 'total ';
 if (sizeof($all_tables) == sizeof($table_list)) {
     echo '<h4>NOTICE: Your database ' . DB_NAME . ' has ' . sizeof($all_tables) . ' ' . $check_text . ' tables from ' . sizeof($table_list) . ' included in package ' . $OK . '</h4>';
 } else {
-    status_msg('<br />Can\'t run Upgrade, missing tables', 'warning', 'div');
-    echo '<h4>Missing required tables. You can install them in backend->addons->modules->advanced. Then again run upgrade-script.php</h4>';
+    status_msg('<br />Can\'t run Update, missing tables', 'warning', 'div');
+    echo '<h4>Missing required tables. You can install them in backend->addons->modules->advanced. Then again run update.php</h4>';
     $result = array_diff($table_list, $all_tables);
     echo '<h4 class="warning"><br />';
     while (list($key, $val) = each($result)) {
@@ -460,7 +461,7 @@ Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,
 echo "<br />Adding mediasettings to settings table<br />";
 Settings::Set('mediasettings','', false);
 
-echo "<br />Adding Secureform Settings if not exits.<br />";
+echo "<br />Adding Secureform Settings if not exits<br />";
 // Settings::Set ("wb_maintainance_mode", false, false);
 Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg", false);
 Settings::Set ("wb_secform_secrettime", '86400', false);
@@ -469,7 +470,7 @@ Settings::Set ("wb_secform_tokenname", 'formtoken', false);
 Settings::Set ("wb_secform_usefp", false, false);
 Settings::Set('fingerprint_with_ip_octets', '0', false);
 
-echo "<br />Removing Secureform selector, no longer needed.<br />";
+echo "<br />Removing Secureform selector, no longer needed<br />";
 Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
 
 
@@ -520,31 +521,31 @@ if (version_compare(WB_VERSION, '2.8', '<')) {
 
 
 /**********************************************************
-* upgrade media folder index protect files
+* update media folder index protect files
 */
 
 $dir = (WB_PATH . MEDIA_DIRECTORY);
-echo '<br /><strong>Upgrade ' . MEDIA_DIRECTORY . '/ index.php protect files</strong><br />';
+echo '<br />Update ' . MEDIA_DIRECTORY . '/ index.php protect files<br />';
 $array = rebuildFolderProtectFile($dir);
 if (sizeof($array)) {
-    print '<strong>Upgrade ' . MEDIA_DIRECTORY . '/ ' . sizeof($array) . ' protect files</strong>' . " $OK<br /><br />";
+    print 'Update ' . MEDIA_DIRECTORY . '/ ' . sizeof($array) . ' protect files.' . " $OK .<br /><br />";
 } else {
-    print '<strong>Upgrade ' . MEDIA_DIRECTORY . '/ protect files</strong>' . " $FAIL!<br /><br />";
+    print 'Update ' . MEDIA_DIRECTORY . '/ protect files' . " $FAIL!<br /><br />";
     print implode('<br />', $array);
 }
 
 
 /**********************************************************
-* upgrade posts folder index protect files
+* update posts folder index protect files
 */
 
 $sPostsPath = WB_PATH . PAGES_DIRECTORY . '/posts';
-echo '<strong>Upgrade /posts/ index.php protect files</strong><br />';
+echo 'Update /posts/ index.php protect files<br />';
 $array = rebuildFolderProtectFile($sPostsPath);
 if (sizeof($array)) {
-    print '<strong>Upgrade /posts/ ' . sizeof($array) . ' protect files</strong>' . " $OK";
+    print 'Update /posts/ ' . sizeof($array) . ' protect files.' . " $OK .";
 } else {
-    print '<strong>Upgrade /posts/ protect files</strong>' . " $FAIL!";
+    print 'Update /posts/ protect files' . " $FAIL!";
     print implode('<br /><br />', $array);
 }
 
@@ -611,12 +612,12 @@ foreach ($filesRemove as $filesId) {
     }
 
     if ($msg != '') {
-        $msg = '<br /><br />Following files are deprecated, outdated or a security risk and can not be removed automatically.<br /><br />Please delete them using FTP and restart upgrade-script!<br /><br />' . $msg . '<br />';
+        $msg = '<br /><br />Following files are deprecated, outdated or a security risk and can not be removed automatically.<br /><br />Please delete them using FTP and restart update script!<br /><br />' . $msg . '<br />';
         status_msg($msg, 'error warning', 'div');
-        echo '<p class="error"><strong>WARNING: The upgrade script failed ...</strong></p>';
+        echo '<p class="error"><strong>WARNING: The update script failed ...</strong></p>';
 
         echo '<form action="' . $_SERVER['SCRIPT_NAME'] . '">';
-        echo '&nbsp;<input name="send" type="submit" value="Restart upgrade script" />';
+        echo '&nbsp;<input name="send" type="submit" value="Restart update script" />';
         echo '</form>';
         echo '</td></tr></tbody></table></div></body></html>';
         exit;
@@ -670,11 +671,11 @@ if (sizeof($dirRemove)) {
         }
     }
     if ($msg != '') {
-    $msg = '<br /><br />Following files are deprecated, outdated or a security risk and can not be removed automatically.<br /><br />Please delete them using FTP and restart upgrade-script!<br /><br />' . $msg . '<br />';
+    $msg = '<br /><br />Following files are deprecated, outdated or a security risk and can not be removed automatically.<br /><br />Please delete them using FTP and restart update script!<br /><br />' . $msg . '<br />';
     status_msg($msg, 'error warning', 'div');
-    echo '<p class="error"><strong>WARNING: The upgrade script failed ...</strong></p>';
+    echo '<p class="error"><strong>WARNING: The update script failed ...</strong></p>';
     echo '<form action="' . $_SERVER['SCRIPT_NAME'] . '">';
-    echo '&nbsp;<input name="send" type="submit" value="Restart upgrade script" />';
+    echo '&nbsp;<input name="send" type="submit" value="Restart update script" />';
     echo '</form>';
     echo '<</td></tr></tbody></table></div></body></html>';
     exit;
@@ -692,7 +693,7 @@ if (sizeof($dirRemove)) {
     <table class="step4" >
         <thead>
             <tr>
-                <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Reload all addons database entry (no upgrade)'; ?> </th>
+                <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Reload all addons database entry (no update)'; ?> </th>
             </tr>
         </thead>
         <tbody>
@@ -752,7 +753,7 @@ Settings::Set('wb_sp',SP);              // Legacy: WB-classic
 
 
 /**********************************************************
-*  - End of upgrade script only some output stuff down here
+*  - End of update script only some output stuff down here
 */
 
 if (!defined('DEFAULT_THEME')) {define('DEFAULT_THEME', $DEFAULT_THEME);}
@@ -765,7 +766,7 @@ if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFA
     <table class="step5" >
         <thead>
             <tr>
-                <th class="step-row"> Congratulations: The upgrade script is finished ... </th>
+                <th class="step-row"> Congratulations: The update script is finished ... </th>
             </tr>
         </thead>
         <tbody>
