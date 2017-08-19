@@ -298,9 +298,10 @@ $config_content
 . 'define(\'DB_CHARSET\', \'' . $database_charset . '\');' . PHP_EOL
 . 'define(\'TABLE_PREFIX\', \'' . $table_prefix . '\');' . PHP_EOL
 . PHP_EOL
-. 'define(\'WB_URL\', \'' . $wb_url . '\');' . PHP_EOL
+. 'define(\'WB_URL\', \'' . $wb_url . '\');'
+. ' // no leading/trailing slash or backslash.' . PHP_EOL
 . 'define(\'ADMIN_DIRECTORY\', \'admin\');'
-. '// no leading/trailing slash or backslash!! A simple directory name only!!' . PHP_EOL
+. ' // no leading/trailing slash or backslash. A simple directory name only.' . PHP_EOL
 ;
 // Check if the file exists and is writable first.
 $sMsg = '';
