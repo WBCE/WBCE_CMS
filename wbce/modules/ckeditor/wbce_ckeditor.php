@@ -32,7 +32,7 @@ if(!defined('WB_PATH')) {
  */
 class CKEditor {
 	/** The version of %CKEditor. */
-	const version = '4.7.1';
+	const version = '4.7.2';
 	/** A constant string unique for each release of %CKEditor.	*/
 	const timestamp = 'B8DJ5M3';
 
