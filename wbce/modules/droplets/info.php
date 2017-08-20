@@ -13,7 +13,7 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '2.1.4';
+$module_version = '2.2.4';
 $module_platform = '2.8.x';
 $lepton_platform = '1.x';
 $module_author = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax';
@@ -24,6 +24,9 @@ $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 
 /**
  * Version history
+
+2.2.4 norhei - added support for backend droplets
+
  *
  * v2.1.4 - colinax
  *        - Revert "Fix for no droplet bug" - The fix does not work correctly

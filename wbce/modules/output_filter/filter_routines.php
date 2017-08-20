@@ -111,8 +111,9 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 /* ### filter type: execute droplets filter for backend ################################# */
 // deactivated for now 
         if (OPF_DROPLETS_BE){
-            if (file_exists($sFilterDirectory.'filterDropletsBe.php')) {
-                require_once($sFilterDirectory.'filterDropletsBe.php');
+            $sFileDropletsBe=$sFilterDirectory.'filterDropletsBe.php';
+            if (file_exists($sFileDropletsBe)) {
+                require_once($sFileDropletsBe);
                 $content = doFilterDropletsBe($content);
             }
         }
