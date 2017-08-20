@@ -16,7 +16,7 @@ $module_description = 'A tool to configure the basic output filter of WB(CE)';
  
 // Headings and text outputs
 $OPF['HEADING']				= 'Beheersinstellingen: Output Filter';
-$OPF['HOWTO']				= 'Hier kan je de uitvoer filteren met onderstaande opties.<p style="line-height:1.5em;"><strong>Tip: </strong>Mailto links kunnen gecodeerd worden door een Javascript functie. Om van deze optie gebruik te kunnen maken moet je de PHP code <code style="background:#FFA;color:#900;">&lt;?php register_frontend_modfiles(\'js\');?&gt;</code> in de &lt;head&gt; sectie van het index.php bestand van je template plaatsen. Zonder deze aanpassing zal enkel het @ teken in het mailto deel vervangen worden.</p>';
+$OPF['HOWTO']				= 'Hier kan je de uitvoer filteren met onderstaande opties.';
 $OPF['WARNING']				= '';
 
 // Text and captions of form elements
@@ -38,3 +38,4 @@ $OPF['INSERT'] = 'CSS, JS, Meta Insert Filter';
 $OPF['JS_MAILTO'] = 'Use Javascript on Mailtofilter';
 $OPF['SHORT_URL'] = 'Use short url filter';
 $OPF['CSS_TO_HEAD'] = 'Use CSS to head';
+

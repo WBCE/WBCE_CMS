@@ -39,3 +39,4 @@ $OPF['INSERT'] = 'CSS-, JS-, Meta-Insert-Filter';
 $OPF['JS_MAILTO'] = 'Javascript für Mailto-Filter';
 $OPF['SHORT_URL'] = 'Short Url Filter(kein /pages/, kein .php)';
 $OPF['CSS_TO_HEAD'] = 'CSS in den Head transferieren';
+

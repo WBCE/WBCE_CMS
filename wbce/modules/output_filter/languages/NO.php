@@ -16,7 +16,7 @@ $module_description = 'A tool to configure the basic output filter of WB(CE)';
  
 // Headings and text outputs
 $OPF['HEADING']	= 'Valg: Filtrering av ut data';
-$OPF['HOWTO']	= 'Du kan gj&oslash;re innstillinger for utdatafitreringen i valgene nedenfor.<p style="line-height:1.5em;"><strong>Tips: </strong>Mailto linker kan krypteres av en Javascript funksjon. For &aring; f&aring; benyttet denne funksjonen, m&aring; det legges til f&oslash;lgende PHP kode <code style="background:#FFA;color:#900;">&lt;?php register_frontend_modfiles(\'js\');?&gt;</code> inn i &lt;head&gt; seksjonen i index.php p&aring; design malen din. Uten denne modifikasjonen, vil kun @ karakterer i mailto linker bli erstattet.</p>';
+$OPF['HOWTO']	= 'Du kan gj&oslash;re innstillinger for utdatafitreringen i valgene nedenfor.';
 $OPF['WARNING']	= '';
 
 // Text and captions of form elements
@@ -40,3 +40,4 @@ $OPF['INSERT'] = 'CSS, JS, Meta Insert Filter';
 $OPF['JS_MAILTO'] = 'Use Javascript on Mailtofilter';
 $OPF['SHORT_URL'] = 'Use short url filter';
 $OPF['CSS_TO_HEAD'] = 'Use CSS to head';
+

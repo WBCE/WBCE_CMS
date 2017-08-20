@@ -29,7 +29,7 @@
                     name="wblink" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>
-        <tr>
+       <!-- <tr>
             <td width="35%"><?php echo $OPF['AUTO_PLACEHOLDER']?>:</td>
             <td>
                 <input type="radio" <?php echo ($data['auto_placeholder']=='1') ? 'checked="checked"' :'';?>
@@ -37,8 +37,8 @@
                 <input type="radio" <?php echo (($data['auto_placeholder'])=='0') ? 'checked="checked"' :'';?>
                     name="auto_placeholder" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
-        </tr>
-        <tr>
+        </tr> -->
+       <!-- <tr>
             <td width="35%"><?php echo $OPF['INSERT']?>:</td>
             <td>
                 <input type="radio" <?php echo ($data['insert']=='1') ? 'checked="checked"' :'';?>
@@ -46,7 +46,7 @@
                 <input type="radio" <?php echo (($data['insert'])=='0') ? 'checked="checked"' :'';?>
                     name="insert" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
-        </tr>
+        </tr>-->
         <tr>
             <td width="35%"><?php echo $OPF['SYS_REL'];?>:</td>
             <td>
@@ -83,7 +83,7 @@
                     name="js_mailto" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>
-        <tr>
+        <!--<tr>
             <td width="35%"><?php echo $OPF['SHORT_URL']?>:</td>
             <td>
                 <input type="radio" <?php echo ($data['short_url']=='1') ?'checked="checked"' :'';?>
@@ -91,7 +91,7 @@
                 <input type="radio" <?php echo (($data['short_url'])=='0') ?'checked="checked"' :'';?>
                     name="short_url" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
-        </tr>
+        </tr>-->
         <tr>
             <td width="35%"><?php echo $OPF['CSS_TO_HEAD']?>:</td>
             <td>
@@ -114,7 +114,7 @@
                     name="droplets_be" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>
-        <tr>
+     <!--   <tr>
             <td width="35%"><?php echo $OPF['INSERT']?>:</td>
             <td>
                 <input type="radio" <?php echo ($data['insert_be']=='1') ? 'checked="checked"' :'';?>
@@ -122,7 +122,7 @@
                 <input type="radio" <?php echo (($data['insert_be'])=='0') ? 'checked="checked"' :'';?>
                     name="insert_be" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
-        </tr>
+        </tr>-->
         <tr>
             <td width="35%"><?php echo $OPF['CSS_TO_HEAD']?>:</td>
             <td>
