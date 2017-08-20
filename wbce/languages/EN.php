@@ -138,7 +138,8 @@ $TEXT['FOOTER'] = 'Footer';
 $TEXT['FORGOTTEN_DETAILS'] = 'Forgotten your details?';
 $TEXT['FORGOT_DETAILS'] = 'Forgot Details?';
 $TEXT['FROM'] = 'From';
-$TEXT['FRONTEND'] = 'Front-end';
+$TEXT['FRONTEND'] = 'Frontend';
+$TEXT['BACKEND'] = 'Backend';
 $TEXT['FULL_NAME'] = 'Full Name';
 $TEXT['FUNCTION'] = 'Function';
 $TEXT['GROUP'] = 'Group';
@@ -681,4 +682,5 @@ $OVERVIEW['START'] = 'Administration overview';
 $OVERVIEW['TEMPLATES'] = 'Change the look and feel of your website with templates...';
 $OVERVIEW['USERS'] = 'Manage users who can log-in to WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Quickly view and browse your website in a new window...';
+
 
