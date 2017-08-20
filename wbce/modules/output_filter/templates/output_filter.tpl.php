@@ -10,7 +10,7 @@
         
         <!-- FRONTEND -->
         
-        <tr><td colspan="2"><br /><strong><?php echo $HEADING['FRONTEND'];?>:</strong></td></tr>
+        <tr><td colspan="2"><br /><strong><?php echo $TEXT['FRONTEND'];?>:</strong></td></tr>
         <tr>
             <td width="35%"><?php echo $OPF['DROPLETS']?>:</td>
             <td>
@@ -104,7 +104,7 @@
         
         <!-- BACKEND -->
         
-        <tr><td colspan="2"><br /><strong><?php echo $HEADING['BACKEND'];?>:</strong></td></tr>
+        <tr><td colspan="2"><br /><strong><?php echo $TEXT['BACKEND'];?>:</strong></td></tr>
          <tr>
             <td width="35%"><?php echo $OPF['DROPLETS']?>:</td>
             <td>
@@ -149,4 +149,5 @@
     </table>
     <input type="submit" style="margin-top:10px; width:140px;" value="<?php echo $TEXT['SAVE']; ?>" />
 </form>
+
 

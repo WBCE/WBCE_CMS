@@ -119,6 +119,5 @@ if($doSave) {
 
 }
 
-
-include($this->GetTemplatePath("output_filter.tpl.php"));
+include($modulePath."templates/output_filter.tpl.php");
 
