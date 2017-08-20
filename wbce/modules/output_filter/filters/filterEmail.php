@@ -16,7 +16,7 @@ function doFilterEmail($content) {
     // If necessary (Both true) check if mdcr.js is added to the head of template
     // In not try to add it. 
     if (OPF_MAILTO_FILTER and OPF_JS_MAILTO){
-    // test if js-decryption is installed
+    // test if js-decryption is installed(was needed as frontend functions where adding this too possibly we can remove this test)
         if( !preg_match('/<head.*<.*src=\".*\/mdcr.js.*>.*<\/head/siU', $content) ) {           
             // try to insert js-decrypt into <head> if available
             $script = str_replace('\\', '/',str_replace(WB_PATH,'', dirname(dirname(__FILE__))).'/js/mdcr.js');
