@@ -3,7 +3,7 @@
  *
  * @category        modules
  * @package         output_filter
- * @author          Christian Sommer, WB-Project, Werner v.d. Decken
+ * @author          Christian Sommer, WB-Project, Werner v.d. Decken, Norbert Heimsath(heimsath.org)
  * @copyright       WebsiteBaker Org. e.V.
  * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
@@ -14,11 +14,26 @@
  * @lastmodified    $Date: 2011-11-09 01:12:37 +0100 (Mi, 09. Nov 2011) $
  *
  */
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-require_once( dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-if(!defined('WB_PATH')) { throw new IllegalFileException(); }
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-$table = TABLE_PREFIX .'mod_output_filter';
-$database->query("DROP TABLE IF EXISTS `$table`");
+// Commented out , cause of new OPF dashboard still needs those settings.  
+//if(!defined(WB_SUPPRESS_OLD_OPF)){
+//Settings::Del('wb_suppress_old_opf');
+//Settings::Del('opf_droplets');
+//Settings::Del('opf_droplets_be');
+//Settings::Del('opf_wblink');
+//Settings::Del('opf_auto_placeholder');
+//Settings::Del('opf_insert');   
+//Settings::Del('opf_sys_rel');
+//Settings::Del('opf_email_filter');
+//Settings::Del('opf_mailto_filter');
+//Settings::Del('opf_js_mailto');
+//Settings::Del('opf_short_url');
+//Settings::Del('opf_css_to_head');
+//Settings::Del('opf_at_replacement');
+//Settings::Del('opf_dot_replacement');
+//}
+
+// deleting version too 
+Settings::Del("opf_version") ;

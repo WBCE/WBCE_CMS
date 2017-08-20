@@ -3,7 +3,7 @@
  *
  * @category        modules
  * @package         output_filter
- * @author          Christian Sommer, WB-Project, Werner v.d. Decken
+ * @author          Christian Sommer, WB-Project, Werner v.d. Decken, Norbert Heimsath(heimsath.org)
  * @copyright       WebsiteBaker Org. e.V.
  * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
@@ -14,43 +14,89 @@
  * @lastmodified    $Date: 2011-12-10 16:06:15 +0100 (Sa, 10. Dez 2011) $
  *
  */
-// Must include code to stop this file being access directly
-/* -------------------------------------------------------- */
-if(defined('WB_PATH') == false)
-{
-    // Stop this file being access directly
-        die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+
+// function fetched from old filter routines
+// this function whith if exits, may not be at the end ... 
+/**
+ * function to read the current filter settings
+ * @global object $database
+ * @global object $admin
+ * @param void
+ * @return array contains all settings
+ */
+if (!function_exists("getOutputFilterSettings")) {
+    function getOutputFilterSettings() {
+        global $database, $admin;
+    // set default values
+        $settings = array(
+            'sys_rel'         => 0,
+            'email_filter'    => 0,
+            'mailto_filter'   => 0,
+            'at_replacement'  => '(at)',
+            'dot_replacement' => '(dot)'
+        );
+    // request settings from database
+        $sql = 'SELECT * FROM `'.TABLE_PREFIX.'mod_output_filter`';
+        if(($res = $database->query($sql))) {
+            if(($rec = $res->fetchRow())) {
+                $settings = $rec;
+                $settings['at_replacement']  = $admin->strip_slashes($settings['at_replacement']);
+                $settings['dot_replacement'] = $admin->strip_slashes($settings['dot_replacement']);
+            }
+        }
+    // return array with filter settings
+        return $settings;
+    }
 }
-/* -------------------------------------------------------- */
 
 $msg = '';
-$sTable = TABLE_PREFIX.'mod_output_filter';
-if(($sOldType = $database->getTableEngine($sTable))) {
-    if(('myisam' != strtolower($sOldType))) {
-        if(!$database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ')) {
-            $msg = $database->get_error();
-        }
-    }
-} else {
-    $msg = $database->get_error();
-}
-// ------------------------------------global $i;
-$table_name = TABLE_PREFIX .'mod_output_filter';
-$field_name = 'sys_rel';
-$i = (!isset($i) ? 1 : $i);
-print "<div style=\"margin:1em auto;font-size:1.1em;\">";
-print "<h4>Step $i: Updating Output Filter</h4>\n";
-$i++;
-$OK   = "<span class=\"ok\">OK</span>";
-$FAIL = "<span class=\"error\">FAILED</span>";
-if ( ($database->field_exists($table_name,$field_name) )) {
-        print "<br /><strong>'Output Filter already updated'</strong> $OK<br />\n";
-} else {
-    $description = 'INT NOT NULL DEFAULT \'0\' FIRST';
-    if( ($database->field_add($table_name,$field_name,$description )) ) {
-        print "<br /><strong>Updating Output Filter</strong> $OK<br />\n";
-    } else {
-            print "<br /><strong>Updating Output Filter</strong> $FAIL<br />\n";
-    }
-}
-print "</div>";
+
+// getting old Data
+$data = getOutputFilterSettings();
+
+// Set old values if exists otherwise go for default 
+Settings::Set('opf_droplets',1, false);
+Settings::Set('opf_droplets_be',1, false);
+Settings::Set('opf_wblink',1, false);
+Settings::Set('opf_auto_placeholder',1, false);
+Settings::Set('opf_insert',1, false);  
+
+//backend
+Settings::Set('opf_insert_be',1); 
+Settings::Set('opf_css_to_head_be',1);
+
+if (isset($data["sys_rel"]))       Settings::Set('opf_sys_rel',$data["sys_rel"], false);
+else                               Settings::Set('opf_sys_rel',1, false);
+
+if (isset($data["email_filter"]))  Settings::Set('opf_email_filter',$data["email_filter"], false);
+else                               Settings::Set('opf_email_filter',1, false);    
+
+if (isset($data["mailto_filter"])) Settings::Set('opf_mailto_filter',$data["mailto_filter"], false);
+else                               Settings::Set('opf_mailto_filter',1, false);       
+
+ 
+Settings::Set('opf_js_mailto',1, false);
+Settings::Set('opf_short_url',0, false);
+Settings::Set('opf_css_to_head',1, false);
+
+if (isset($data["at_replacement"]))  Settings::Set('opf_at_replacement',$data["at_replacement"], false);
+else                                 Settings::Set('opf_at_replacement',"(at)", false);      
+
+if (isset($data["dot_replacement"])) Settings::Set('opf_dot_replacement',$data["dot_replacement"], false);
+else                                 Settings::Set('opf_dot_replacement',"(dot)", false);
+
+
+//finally delete the old table as its no longer needed
+$table = TABLE_PREFIX .'mod_output_filter';
+$database->query("DROP TABLE IF EXISTS `$table`");
+
+//Setting Version
+include ("info.php");
+Settings::Set("opf_version", $module_version) ;
+
+Settings::Set('opf_insert_be',1); 
+Settings::Set('opf_css_to_head_be',1);
+
+

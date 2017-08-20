@@ -15,11 +15,16 @@
  *
  */
 
-$module_directory = 'output_filter';
-$module_name = 'Frontend Output Filter';
-$module_function = 'tool';
-$module_version = '0.5';
-$module_platform = '2.8.3';
-$module_author = 'Christian Sommer(doc), WB-Project, Werner v.d. Decken(DarkViper)';
-$module_license = 'GNU General Public License';
-$module_description = 'This module allows to filter the output before displaying it on the frontend. Support for filtering mailto links and mail addresses in strings.';
+$module_directory   = 'output_filter';
+$module_name        = 'Output Filter';
+$module_function    = 'tool';
+$module_version     = '1.3.0';
+$module_platform    = '2.8.3';
+$module_author      = 'Christian Sommer(doc), WB-Project, Werner v.d. Decken(DarkViper), NorHei(heimsath.org)';
+$module_license     = 'GNU General Public License v2';
+$module_description = 'This module allows to filter the output before displaying it.';
+$module_icon        = 'fa fa-filter';
+
+
+
+
