@@ -92,7 +92,7 @@ if (is_readable($sOpfFile)) {
 // Sooner or later this is going to be removed as we dont need to OPF systems 
 // So if the module is removed , this goes inactive. 
 if (!defined("WB_SUPPRESS_OLD_OPF") or  WB_SUPPRESS_OLD_OPF===false){
-    $sOldOpfPath=WB_PATH . '/modules/output_filter/index.php';
+    $sOldOpfPath=WB_PATH . '/modules/output_filter/filter_routines.php';
     // Module is installed?
     if (file_exists($sOldOpfPath)) {
         require_once $sOldOpfPath;
