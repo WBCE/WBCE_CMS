@@ -3,7 +3,7 @@
  *
  * @category        modules
  * @package         output_filter
- * @author          Christian Sommer, WB-Project, Werner v.d. Decken
+ * @author          Christian Sommer, WB-Project, Werner v.d. Decken, Norbert Heimsath(heimsath.org)
  * @copyright       WebsiteBaker Org. e.V.
  * @link            http://websitebaker.org/
  * @license         http://www.gnu.org/licenses/gpl.html
@@ -14,24 +14,28 @@
  * @lastmodified    $Date: 2011-12-10 16:06:15 +0100 (Sa, 10. Dez 2011) $
  *
  */
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-require_once( dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-if(!defined('WB_PATH')) { throw new IllegalFileException(); }
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-$table = TABLE_PREFIX .'mod_output_filter';
-$database->query("DROP TABLE IF EXISTS `$table`");
 
-$database->query("CREATE TABLE IF NOT EXISTS `$table` (
-    `sys_rel` INT NOT NULL DEFAULT '0',
-    `email_filter` VARCHAR(1) NOT NULL DEFAULT '0',
-    `mailto_filter` VARCHAR(1) NOT NULL DEFAULT '0',
-    `at_replacement` VARCHAR(255) NOT NULL DEFAULT '(at)',
-    `dot_replacement` VARCHAR(255) NOT NULL DEFAULT '(dot)'
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"
-);
+Settings::Set('opf_droplets',1, false);
+Settings::Set('opf_droplets_be',1, false);
+Settings::Set('opf_wblink',1, false);
+Settings::Set('opf_auto_placeholder',1, false); 
+Settings::Set('opf_insert',1, false);   
+Settings::Set('opf_sys_rel',1, false);
+Settings::Set('opf_email_filter',1, false);
+Settings::Set('opf_mailto_filter',1, false);
+Settings::Set('opf_js_mailto',1, false);
+Settings::Set('opf_short_url',0, false);
+Settings::Set('opf_css_to_head',1, false);
+Settings::Set('opf_at_replacement',"(at)", false);
+Settings::Set('opf_dot_replacement',"(dot)", false);
 
-// add default values to the module table
-$database->query("INSERT INTO ".TABLE_PREFIX
-    ."mod_output_filter (sys_rel,email_filter, mailto_filter, at_replacement, dot_replacement) VALUES ('0','1', '1', '(at)', '(dot)')");
+//backend
+Settings::Set('opf_insert_be',1); 
+Settings::Set('opf_css_to_head_be',1);
+
+//Setting version
+include ("info.php");
+Settings::Set("opf_version", $module_version);

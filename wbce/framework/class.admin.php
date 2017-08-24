@@ -10,13 +10,9 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
-require_once WB_PATH . '/framework/class.wb.php';
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+
 
 // Get WB version
 require_once ADMIN_PATH . '/interface/version.php';
@@ -24,7 +20,7 @@ require_once ADMIN_PATH . '/interface/version.php';
 class admin extends wb
 {
     // Authenticate user then auto print the header
-    public function __construct($section_name = '##skip##', $section_permission = 'start', $auto_header = true, $auto_auth = true)
+    public function __construct($section_name = '##skip##', $section_permission = 'start', $auto_header = true, $auto_auth = true, $operateBuffer=true)
     {
         parent::__construct(SecureForm::BACKEND);
         if ($section_name != '##skip##') {
@@ -67,14 +63,23 @@ class admin extends wb
 
             // Auto header code
             if ($auto_header == true) {
-                $this->print_header();
+                $this->print_header($body_tags = '',$operateBuffer);
             }
         }
+
+        // i know this sucks but some old stuff really need this
+	    global $wb;
+	    $wb = $this; 
     }
 
     // Print the admin header
-    public function print_header($body_tags = '')
+    public function print_header($body_tags = '', $operateBuffer=true)
     {
+        // this buffer is needed so we can later apply output filters to BE Output
+        if ($operateBuffer){
+	        ob_start();
+	    }
+        
         // Get vars from the language file
         global $MENU, $MESSAGE, $TEXT, $database;
         // Connect to database and get website title
@@ -192,7 +197,7 @@ class admin extends wb
     }
 
     // Print the admin footer
-    public function print_footer($activateJsAdmin = false)
+    public function print_footer($activateJsAdmin = false, $operateBuffer=true)
     {
         // include the required file for Javascript admin
         if ($activateJsAdmin != false) {
@@ -222,6 +227,35 @@ class admin extends wb
         ));
         $footer_template->parse('header', 'footer_block', false);
         $footer_template->pparse('output', 'page');
+        // If we operate on buffer in BE load all necessary filter 
+        if ($operateBuffer){
+            // fetch all output  
+            $allOutput = ob_get_clean ();
+
+            // OPF dashboard
+            // is it installed ?            
+            if(function_exists('opf_controller')) { 
+                // then apply backend filter  
+                $allOutput = opf_controller('backend', $allOutput);
+            }
+
+            // Conventional output filter 
+            // if not deactivated 
+            if (!defined("WB_SUPPRESS_OLD_OPF") or !WB_SUPPRESS_OLD_OPF){
+                // Module is installed, filter file in place?
+                $file=WB_PATH . '/modules/output_filter/filter_routines.php';
+                if (file_exists($file)) {
+                    include_once ($file);
+                    // Correct module ? Check it . 
+                    if (function_exists('executeBackendOutputFilter')) {
+                        // call the backend filter 
+                        $allOutput = executeBackendOutputFilter($allOutput);
+                    }
+                }
+            }
+            // finally output everything as if nothing happened 
+            echo $allOutput;
+        }
     }
 
     // Return a system permission
@@ -370,7 +404,7 @@ class admin extends wb
         if (isset($_GET['tool'])) {
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function`=\'tool\' AND `directory`=\'' . $database->escapeString($_GET['tool']) . '\'';
+            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool']) . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend_body.js file to include
@@ -431,7 +465,7 @@ class admin extends wb
         if (isset($_GET['tool'])) {
             // check if displayed page contains a installed admin tool
             $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function`=\'tool\' AND `directory`=\'' . $database->escapeString($_GET['tool'])  . '\'';
+            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool'])  . '\'';
             $result = $database->query($sql);
             if ($result->numRows()) {
                 // check if admin tool directory contains a backend.js or backend.css file to include

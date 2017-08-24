@@ -14,102 +14,110 @@
  * @lastmodified    $Date: 2011-11-09 01:12:37 +0100 (Mi, 09. Nov 2011) $
  *
  */
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-require_once( dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-if(!defined('WB_PATH')) { throw new IllegalFileException(); }
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-    $modPath = str_replace('\\', '/', dirname(__FILE__)).'/';
-    $msgTxt = '';
-    $msgCls = 'msg-box';
+$msgTxt = '';   //message content
+$msgCls = 'msg-box'; // message css class
 
-    if($doSave) {
-    // take over post - arguments
-        $data = array();
-        $data['sys_rel']       = (int)(intval(isset($_POST['sys_rel']) ? $_POST['sys_rel'] : 0) != 0);
-        $data['email_filter']  = (int)(intval(isset($_POST['email_filter']) ? $_POST['email_filter'] : 0) != 0);
-        $data['mailto_filter'] = (int)(intval(isset($_POST['mailto_filter']) ? $_POST['mailto_filter'] : 0) != 0);
-        $data['at_replacement']  = isset($_POST['at_replacement']) ? trim(strip_tags($_POST['at_replacement'])) : '';
-        $data['dot_replacement'] = isset($_POST['dot_replacement']) ? trim(strip_tags($_POST['dot_replacement'])) : '';
-        if ($admin->checkFTAN()) {
-        // update database settings
-            $sql = 'UPDATE `'.TABLE_PREFIX.'mod_output_filter` SET '.
-                      '`email_filter`='.$data['email_filter'].', '.
-                      '`sys_rel`='.$data['sys_rel'].', '.
-                      '`mailto_filter`='.$data['mailto_filter'].', '.
-                      '`at_replacement`=\''.$database->escapeString($data['at_replacement']).'\', '.
-                      '`dot_replacement`=\''.$database->escapeString($data['dot_replacement']).'\'';
-            if($database->query($sql)) {
-            //anything ok
-                $msgTxt = $MESSAGE['RECORD_MODIFIED_SAVED'];
-                $msgCls = 'msg-box';
-            }else {
-            // database error
-                $msgTxt = $MESSAGE['RECORD_MODIFIED_FAILED'];
-                $msgCls = 'error-box';
-            }
-        }else {
-        // FTAN error
-            $msgTxt = $MESSAGE['GENERIC_SECURITY_ACCESS'];
+if($doSave) {
+// take over post - arguments
+    $data = array();
+
+    //frontend
+    $data['droplets']         = (int)(intval(isset($_POST['droplets']) ? $_POST['droplets'] : 0) != 0);
+    $data['droplets_be']      = (int)(intval(isset($_POST['droplets_be']) ? $_POST['droplets_be'] : 0) != 0);
+    $data['wblink']           = (int)(intval(isset($_POST['wblink']) ? $_POST['wblink'] : 0) != 0);
+    $data['auto_placeholder'] = (int)(intval(isset($_POST['auto_placeholder']) ? $_POST['auto_placeholder'] : 0) != 0);
+    $data['insert']           = (int)(intval(isset($_POST['insert']) ? $_POST['insert'] : 0) != 0);
+    $data['sys_rel']          = (int)(intval(isset($_POST['sys_rel']) ? $_POST['sys_rel'] : 0) != 0);
+    $data['email_filter']     = (int)(intval(isset($_POST['email_filter']) ? $_POST['email_filter'] : 0) != 0);
+    $data['mailto_filter']    = (int)(intval(isset($_POST['mailto_filter']) ? $_POST['mailto_filter'] : 0) != 0);
+    $data['js_mailto']        = (int)(intval(isset($_POST['js_mailto']) ? $_POST['js_mailto'] : 0) != 0);
+    $data['short_url']        = (int)(intval(isset($_POST['short_url']) ? $_POST['short_url'] : 0) != 0);
+    $data['css_to_head']      = (int)(intval(isset($_POST['css_to_head']) ? $_POST['css_to_head'] : 0) != 0);
+    $data['at_replacement']   = isset($_POST['at_replacement']) ? trim(strip_tags($_POST['at_replacement'])) : '';
+    $data['dot_replacement']  = isset($_POST['dot_replacement']) ? trim(strip_tags($_POST['dot_replacement'])) : '';
+    //backend
+    $data['insert_be']       = (int)(intval(isset($_POST['insert_be']) ? $_POST['insert_be'] : 0) != 0);
+    $data['css_to_head_be']  = (int)(intval(isset($_POST['css_to_head_be']) ? $_POST['css_to_head_be'] : 0) != 0);
+
+    // dont use JAvascript Mailto if no mailto filter active.
+    if ($data['js_mailto'] and !$data['mailto_filter']) $data['js_mailto']=0;
+
+
+    if ($admin->checkFTAN()) {
+    // update database settings
+    // OPF_JS_MAILTO
+        $errmsg="";
+
+        // do some small validations
+        if ((!file_exists(WB_PATH.'/short.php') or !file_exists(WB_PATH.'/.htaccess')) and $data['short_url']){
+            $errmsg.= "Short URL not set, please check that short.php and .htaccess are present in your webroot directory";
+            $data['short_url']=0;
+        }
+
+        // set the values
+
+        //frontend
+        $errmsg.=(string)Settings::Set("opf_droplets", $data['droplets']);
+        $errmsg.=(string)Settings::Set("opf_droplets_be", $data['droplets_be']);
+        $errmsg.=(string)Settings::Set("opf_wblink", $data['wblink']);
+        $errmsg.=(string)Settings::Set("opf_auto_placeholder", $data['auto_placeholder']);
+        $errmsg.=(string)Settings::Set("opf_insert", $data['insert']);
+        $errmsg.=(string)Settings::Set("opf_sys_rel", $data['sys_rel']);
+        $errmsg.=(string)Settings::Set("opf_email_filter", $data['email_filter']);
+        $errmsg.=(string)Settings::Set("opf_mailto_filter", $data['mailto_filter']);
+        $errmsg.=(string)Settings::Set("opf_js_mailto", $data['js_mailto']);
+        $errmsg.=(string)Settings::Set("opf_short_url", $data['short_url']);
+        $errmsg.=(string)Settings::Set("opf_css_to_head", $data['css_to_head']);
+        $errmsg.=(string)Settings::Set("opf_at_replacement", $data['at_replacement']);
+        $errmsg.=(string)Settings::Set("opf_dot_replacement", $data['dot_replacement']);
+        //backend
+        $errmsg.=(string)Settings::Set("opf_insert_be", $data['insert_be']);
+        $errmsg.=(string)Settings::Set("opf_css_to_head_be", $data['css_to_head_be']);
+
+        if($errmsg=="") {
+        //anything ok
+            $msgTxt = "<b>".$MESSAGE['RECORD_MODIFIED_SAVED']."</b>";
+            $msgCls = 'msg-box';
+        } else {
+        // error
+            $msgTxt = "<b>".$MESSAGE['RECORD_MODIFIED_FAILED']."</b><p>".$errmsg."</p>";
             $msgCls = 'error-box';
         }
     }else {
-    // read settings from the database to show
-        require_once($modPath.'filter-routines.php');
-        $data = getOutputFilterSettings();
+    // FTAN error
+        $msgTxt = "<b>".$MESSAGE['GENERIC_SECURITY_ACCESS']."</b>";
+        $msgCls = 'error-box';
     }
-    // write out header if needed
-    if( $msgTxt != '') {
-    // write message box if needed
-        echo '<div class="'.$msgCls.'">'.$msgTxt.'</div>';
-    }
-?>
-<h2><?php echo $MOD_MAIL_FILTER['HEADING']; ?></h2>
-<p><?php echo $MOD_MAIL_FILTER['HOWTO']; ?></p>
-<form name="store_settings" action="<?php echo $returnUrl; ?>" method="post">
-    <?php echo $admin->getFTAN(); ?>
-    <input type="hidden" name="action" value="save" />
-    <table width="98%" cellspacing="0" cellpadding="5px" class="row_a">
-    <tr><td colspan="2"><strong><?php echo $MOD_MAIL_FILTER['BASIC_CONF'];?>:</strong></td></tr>
-    <tr>
-        <td width="35%"><?php echo $MOD_MAIL_FILTER['SYS_REL'];?>:</td>
-        <td>
-            <input type="radio" <?php echo ($data['sys_rel']=='1') ? 'checked="checked"' :'';?>
-                name="sys_rel" value="1"><?php echo $MOD_MAIL_FILTER['ENABLED'];?>
-            <input type="radio" <?php echo (($data['sys_rel'])=='0') ? 'checked="checked"' :'';?>
-                name="sys_rel" value="0"><?php echo $MOD_MAIL_FILTER['DISABLED'];?>
-        </td>
-    </tr>
-    <tr>
-        <td width="35%"><?php echo $MOD_MAIL_FILTER['EMAIL_FILTER'];?>:</td>
-        <td>
-            <input type="radio" <?php echo ($data['email_filter']=='1') ?'checked="checked"' :'';?>
-                name="email_filter" value="1"><?php echo $MOD_MAIL_FILTER['ENABLED'];?>
-            <input type="radio" <?php echo (($data['email_filter'])=='0') ?'checked="checked"' :'';?>
-                name="email_filter" value="0"><?php echo $MOD_MAIL_FILTER['DISABLED'];?>
-        </td>
-    </tr>
-    <tr>
-        <td><?php echo $MOD_MAIL_FILTER['MAILTO_FILTER'];?>:</td>
-        <td>
-            <input type="radio" <?php echo ($data['mailto_filter']=='1') ?'checked="checked"' :'';?>
-                name="mailto_filter" value="1"><?php echo $MOD_MAIL_FILTER['ENABLED'];?>
-            <input type="radio" <?php echo (($data['mailto_filter'])=='0') ?'checked="checked"' :'';?>
-                name="mailto_filter" value="0"><?php echo $MOD_MAIL_FILTER['DISABLED'];?>
-        </td>
-    </tr>
-    <tr><td colspan="2"><br /><strong><?php echo $MOD_MAIL_FILTER['REPLACEMENT_CONF'];?>:</strong></td></tr>
-    <tr>
-        <td><?php echo $MOD_MAIL_FILTER['AT_REPLACEMENT'];?>:</td>
-        <td><input type="text" style="width: 160px" value="<?php echo $data['at_replacement'];?>" 
-            name="at_replacement"/></td>
-    </tr>
-    <tr>
-        <td><?php echo $MOD_MAIL_FILTER['DOT_REPLACEMENT'];?>:</td>
-        <td><input type="text" style="width: 160px" value="<?php echo $data['dot_replacement'];?>" 
-            name="dot_replacement"/></td>
-    </tr>
-    </table>
-    <input type="submit" style="margin-top:10px; width:140px;" value="<?php echo $TEXT['SAVE']; ?>" />
-</form>
+} else {
+// read settings from the database to show
+// the trick ist to use return values that will function as default values if
+// the value is not set :-)
+
+    $data = array();
+
+    //frontend
+    $data['droplets']          = Settings::Get('opf_droplets',1);
+    $data['droplets_be']       = Settings::Get('opf_droplets_be',1);
+    $data['wblink']            = Settings::Get('opf_wblink',1);
+    $data['auto_placeholder']  = Settings::Get('opf_auto_placeholder',1);
+    $data['insert']            = Settings::Get('opf_insert',1);
+    $data['sys_rel']           = Settings::Get('opf_sys_rel',1);
+    $data['email_filter']      = Settings::Get('opf_email_filter',1);
+    $data['mailto_filter']     = Settings::Get('opf_mailto_filter',1);
+    $data['js_mailto']         = Settings::Get('opf_js_mailto',1);
+    $data['short_url']         = Settings::Get('opf_short_url',0);
+    $data['css_to_head']       = Settings::Get('opf_css_to_head',1);
+    $data['at_replacement']    = Settings::Get('opf_at_replacement',"(at)");
+    $data['dot_replacement']   = Settings::Get('opf_dot_replacement',"(dot)");
+    //backend
+    $data['insert_be']         = Settings::Get('opf_insert_be',1);
+    $data['css_to_head_be']    = Settings::Get('opf_css_to_head_be',1);
+
+
+}
+
+include($modulePath."templates/output_filter.tpl.php");
+

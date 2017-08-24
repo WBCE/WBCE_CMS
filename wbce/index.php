@@ -65,23 +65,44 @@ require WB_PATH . '/framework/frontend.functions.php';
 //Get pagecontent in buffer for Droplets and/or Filter operations
 ob_start();
 require WB_PATH . '/templates/' . TEMPLATE . '/index.php';
+
+
+// fetch the Page content for applying filters 
 $output = ob_get_clean();
  
-// OPF hook, apply outputfilter
-if(function_exists('opf_apply_filters')) {
-    $output = opf_controller('page', $output);
+
+// Load OPF Dashboard OutputFilter functions
+// As thish should replace the old filters on the long run , its a bad idea to 
+// have this in an output filter. 
+// Besides you cannnot deactivate the old filters if its IN the old filters   
+$sOpfFile = WB_PATH.'modules/outputfilter_dashboard/functions.php';
+if (is_readable($sOpfFile)) {
+	require_once($sOpfFile);
+   // apply outputfilter
+	if (function_exists('opf_apply_filters')) {
+		// use 'cache' instead of 'nocache' to enable page-cache.
+		// Do not use 'cache' in case you use dynamic contents (e.g. snippets)!
+		opf_controller('init', 'nocache');
+		$output = opf_controller('page', $output);
+	}
 }
 
+
 // execute old frontend output filters or not
+// Sooner or later this is going to be removed as we dont need to OPF systems 
+// So if the module is removed , this goes inactive. 
 if (!defined("WB_SUPPRESS_OLD_OPF") or  WB_SUPPRESS_OLD_OPF===false){
+    $sOldOpfPath=WB_PATH . '/modules/output_filter/filter_routines.php';
     // Module is installed?
-    if (file_exists(WB_PATH . '/modules/output_filter/index.php')) {
-        include_once WB_PATH . '/modules/output_filter/index.php';
+    if (file_exists($sOldOpfPath)) {
+        require_once $sOldOpfPath;
+        // module correctly loaded 
         if (function_exists('executeFrontendOutputFilter')) {
             $output = executeFrontendOutputFilter($output);
         }
     }
 }
+
 
 // now send complete page to the browser
 echo $output;
