@@ -1,20 +1,27 @@
+<!-- BEGIN header_block -->
 <!doctype html>
-<html lang="en">
+<html lang="{LANGUAGE}">
 <head>
- 	<meta charset="{CHARSET}">
-	<title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title>
+<!--(PH) TITLE+ --><title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title><!--(PH) TITLEi -->
+<!--(PH) META DESC+ --><meta name="description" content="{TEXT_ADMINISTRATION}" /><!--(PH) META DESC- -->
+<!--(PH) META KEY+ --><meta name="keywords" content="{TEXT_ADMINISTRATION}" /><!--(PH) META KEY -->
 
+<!--(PH) META HEAD+ -->
+ 	<meta charset="{CHARSET}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Encoding" content="gzip">
     <meta http-equiv="Accept-Encoding" content="gzip, deflate">
-
+<!--(PH) META HEAD- -->
+    
+<!--(PH) CSS HEAD TOP+ -->
 	<link href="{WB_URL}/include/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
-
     <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
     <link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/module-fixes.css" rel="stylesheet" type="text/css">
+<!--(PH) CSS HEAD TOP- -->
 
+<!--(PH) JS HEAD TOP+ -->	
     <script>
 		var WB_URL 		= '{WB_URL}';
 		var THEME_URL 	= '{THEME_URL}';
@@ -39,27 +46,36 @@
 	<script src="{THEME_URL}/jquery/jquery.cookie.js" type="text/javascript"></script>
 	<script src="{THEME_URL}/jquery/theme.js" type="text/javascript"></script>
 	<script src="{THEME_URL}/jquery/module-fixes.js" type="text/javascript"></script>
-
+<!--(PH) CSS HEAD TOP- -->
+	
+<!--(PH) CSS HEAD BTM+ -->
     {BACKEND_MODULE_CSS}
+<!--(PH) CSS HEAD BTM- -->
+
+<!--(PH) JS HEAD BTM+ -->
     {BACKEND_MODULE_JS}
-    
     <script>
-    var wbSessionTiomeout= {WB_SESSION_TIMEOUT};
-    var seconds = new Date().getTime() / 1000;
-    seconds = Math.round(seconds);
-    document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/'
+        var wbSessionTiomeout= {WB_SESSION_TIMEOUT};
+        var seconds = new Date().getTime() / 1000;
+        seconds = Math.round(seconds);
+        document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/'
 
-    var timeleft = {WB_SESSION_TIMEOUT};
-    var downloadTimer = setInterval(function(){
-    timeleft--;
-    document.getElementById("countdowntimer").textContent = timeleft;
-    if(timeleft <= 0)
-        clearInterval(downloadTimer);
-    },1000);
-</script>
+        var timeleft = {WB_SESSION_TIMEOUT};
+        var downloadTimer = setInterval(function(){
+        timeleft--;
+        document.getElementById("countdowntimer").textContent = timeleft;
+        if(timeleft <= 0)
+            clearInterval(downloadTimer);
+        },1000);
+    </script>
+<!--(PH) JS HEAD BTM+ -->
 </head>
-
 <body>
+<!--(PH) JS BODY TOP+ -->
+<!--(PH) JS BODY TOP- -->
+
+<!--(PH) HTML BODY TOP+ -->
+<!--(PH) HTML BODY TOP- -->
 
 <div id="admin-header">
 	<div id="header-top">
