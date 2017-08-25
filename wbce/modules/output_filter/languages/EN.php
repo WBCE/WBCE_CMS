@@ -31,13 +31,13 @@ $OPF['AT_REPLACEMENT']	= 'Replace "@" by';
 $OPF['DOT_REPLACEMENT']	= 'Replace "." by';
 
 $OPF['ALL_ON_OFF'] = 'Enable/Disable all old Outputfilter';
-$OPF['DROPLETS'] = 'Droplets filter';
+$OPF['DROPLETS'] = 'Droplets filter whithout this droplets won\'t function';
 $OPF['WBLINK'] = 'WB-Link Filter';
-$OPF['AUTO_PLACEHOLDER'] = 'Try to add placeholder for insert filter if they do not exist';
-$OPF['INSERT'] = 'CSS, JS, Meta insert filter';
+$OPF['AUTO_PLACEHOLDER'] = 'Try to add placeholder for moving JS, CSS and more around';
+$OPF['MOVE_STUFF'] = 'CSS, JS, Meta move to placeholders if marked';
+$OPF['REPLACE_STUFF'] = 'Relplace title keywords or description if marked for that.';
 $OPF['JS_MAILTO'] = 'Use Javascript on Mailtofilter';
 $OPF['SHORT_URL'] = 'Use short url filter';
 $OPF['CSS_TO_HEAD'] = 'Use CSS to head';
-
 
 

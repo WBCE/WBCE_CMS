@@ -18,11 +18,11 @@
 $module_directory   = 'output_filter';
 $module_name        = 'Output Filter';
 $module_function    = 'tool';
-$module_version     = '1.3.0';
-$module_platform    = '2.8.3';
-$module_author      = 'Christian Sommer(doc), WB-Project, Werner v.d. Decken(DarkViper), NorHei(heimsath.org)';
+$module_version     = '1.4.0';
+$module_platform    = '1.3.0';
+$module_author      = 'Complete rewrite NorHei(heimsath.org)';
 $module_license     = 'GNU General Public License v2';
-$module_description = 'This module allows to filter the output before displaying it.';
+$module_description = 'This module allows to filter the output before displaying it plus an admintool  for controlling the filter ';
 $module_icon        = 'fa fa-filter';
 
 

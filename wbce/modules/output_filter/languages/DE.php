@@ -32,11 +32,11 @@ $OPF['DOT_REPLACEMENT']     = 'Ersetze "." durch';
 
 
 $OPF['ALL_ON_OFF'] = 'Alle Filter aktivieren/deaktivieren';
-$OPF['DROPLETS'] = 'Droplets-Filter';
-$OPF['WBLINK'] = 'wblink-Filter';
-$OPF['AUTO_PLACEHOLDER'] = 'Platzhalter für fehlende Insertfilter einfügen';
-$OPF['INSERT'] = 'CSS-, JS-, Meta-Insert-Filter';
+$OPF['DROPLETS'] = 'Droplets-Filter, ohne diesen funktionieren Droplets nicht';
+$OPF['WBLINK'] = 'wblink-Filter, [wblinkXX] zu URL';
+$OPF['AUTO_PLACEHOLDER'] = 'Platzhalter Um Ziele zum Verschieben von JS, CSS und mehr zu haben';
+$OPF['MOVE_STUFF'] = 'CSS, JS und mehr wird zu seinen Platzhaltern verschoben.';
+$OPF['REPLACE_STUFF'] = 'Ersetze Title , keywords oder description aus Modulen heraus ';
 $OPF['JS_MAILTO'] = 'Javascript für Mailto-Filter';
 $OPF['SHORT_URL'] = 'Short Url Filter(kein /pages/, kein .php)';
 $OPF['CSS_TO_HEAD'] = 'CSS in den Head transferieren';
-
