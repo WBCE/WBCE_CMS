@@ -217,6 +217,7 @@ class admin extends wb
         else                                                          {$sSessionTimeout="7200";}
         
         $footer_template->set_var(array(
+            'BACKEND_BODY_MODULE_JS' => $this->register_backend_modfiles_body('js'),
             'WB_SESSION_TIMEOUT' => $sSessionTimeout,
             'WB_URL' => WB_URL,
             'ADMIN_URL' => ADMIN_URL,

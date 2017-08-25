@@ -76,6 +76,7 @@ if ( $info->numRows() > 0) {
     $admin->print_error(str_replace ($TEXT['FILE'], "Modul", $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE']).$msg.$page_names);
 }
 
+// check if we got a core module as you may not uninstall this 
 include_once (WB_PATH.'/modules/'.$file.'/info.php');
 if(isset ($module_level) AND $module_level=="core") {
     $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES']);

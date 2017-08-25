@@ -12,7 +12,12 @@
 
 $starttime = array_sum(explode(" ", microtime()));
 
-define('DEBUG', false);
+// If this is defined we are on a FE page , just nice to know.  
+if (!defined('WB_FRONTEND')) define('WB_FRONTEND', true);
+
+if(!defined ('WB_DEBUG')) define('WB_DEBUG', false);
+if(!defined ('DEBUG')) define('DEBUG', WB_DEBUG); //damm compatibility
+
 // Include config file
 $config_file = dirname(__FILE__) . '/config.php';
 if (file_exists($config_file)) {
@@ -35,7 +40,6 @@ if (!defined('TABLE_PREFIX')) {
     header('Location: ' . $target_url); exit; 
 }
 
-require_once WB_PATH . '/framework/class.frontend.php';
 // Create new frontend object
 $wb = new frontend();
 
@@ -62,10 +66,13 @@ if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
 // also, set some aliases for backward compatibility
 require WB_PATH . '/framework/frontend.functions.php';
 
+// Get template include file if exits
+if (file_exists(WB_PATH . '/templates/' . TEMPLATE . '/include.php'))
+    require WB_PATH . '/templates/' . TEMPLATE . '/include.php';
+
 //Get pagecontent in buffer for Droplets and/or Filter operations
 ob_start();
 require WB_PATH . '/templates/' . TEMPLATE . '/index.php';
-
 
 // fetch the Page content for applying filters 
 $output = ob_get_clean();

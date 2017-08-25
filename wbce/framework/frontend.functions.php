@@ -29,9 +29,9 @@ $include_head_link_css = '';
 $include_body_links = '';
 $include_head_links = '';
 
-// workout to included frontend.css, fronten.js and frontend_body.js in snippets
+// workout to included frontend.css, frontend.js and frontend_body.js in snippets
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
-$sql .= 'WHERE `type`=\'module\' AND `function`=\'snippet\'';
+$sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%snippet%\'';
 if (($resSnippets = $database->query($sql))) {
     while ($recSnippet = $resSnippets->fetchRow()) {
         $module_dir = $recSnippet['directory'];
