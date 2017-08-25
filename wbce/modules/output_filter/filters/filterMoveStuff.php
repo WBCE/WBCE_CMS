@@ -7,10 +7,10 @@
 function doFilterMoveStuff($sContent) {
 
     // Templates does not want any movement ? 
-    if (strpos($sContent,'<!--(NO MOVE)-->' !== false) {return $sContent;}
+    if (strpos($sContent,'<!--(NO MOVE)-->') !== false) {return $sContent;}
 
     // Do we have any placeholders to move to ?
-    if (strpos($sContent,'<!--(PH)' === false) {return $sContent;}
+    if (strpos($sContent,'<!--(PH)') === false) {return $sContent;}
 
     // Do we have any stuff to move, if not abort?
     if (strpos($sContent,'<!--(MOVE)') === false) {return $sContent;}
