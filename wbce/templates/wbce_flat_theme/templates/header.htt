@@ -82,7 +82,7 @@ var LANGUAGE = '{LANGUAGE}';
         </ul>
     </div>
     <div id="systeminfo" class="stickySidebarElement">
-        <span class="version">WBCE Version: {WBCE_VERSION}<br/>
+        <span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
         <span class="version">Tag: {WBCE_TAG}</span><br/>
         <span class="version">PHP Version: {PHP_VERSION}</span><br/>
         <span class="version">Session timeout: <span id="countdowntimer">{WB_SESSION_TIMEOUT}</span> Seconds</span>
