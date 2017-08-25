@@ -16,12 +16,16 @@ Predefined places in the template.
 In general it would be far better to place those Placeholders yourself.  
 
 This enables Droplets , snipets and modules to bring their own JS CSS and more whithout 
-the use of the very limited modfiles.    
+the use of the very limited modfiles. 
+
+In ajax cases where a json answer is send the placeholders have nothing to attach to ;-)
  
  */
 function doFilterGeneratePlaceholders($sContent) {
 
-    
+    // Template does not want any auto placeholder, ok abort ?
+    if (strpos($sContent,'<!--(NO PH)-->' !== false) {return $sContent;}
+
 // HTML tags are often written in strange fashion (<  head  > <body style="...") < / head >
 // thats the reason we need to use Regex here , in the later processes we prefer php buildin functions as they are much faster.
 

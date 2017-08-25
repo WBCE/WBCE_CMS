@@ -6,9 +6,14 @@
 
 */
 
-function doFilterReplaceStuff($sContent) {
+function doFilterReplaceStuff($sContent) { 
 
-    ///@todo remove this in production enviroment
+    // Template does not want any replacement ?
+    if (strpos($sContent,'<!--(NO REPLACE)-->' !== false) {return $sContent;}
+    
+    // Do we have any placeholders to move to ?
+    if (strpos($sContent,'<!--(PH)' === false) {return $sContent;}
+    
     // Do we have any stuff to move, if not abort?
     if (strpos($sContent,'<!--(REPLACE)') === false) {return $sContent;}
 

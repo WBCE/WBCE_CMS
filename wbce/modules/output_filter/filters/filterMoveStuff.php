@@ -6,12 +6,18 @@
  */
 function doFilterMoveStuff($sContent) {
 
-    ///@todo remove this in production enviroment
+    // Templates does not want any movement ? 
+    if (strpos($sContent,'<!--(NO MOVE)-->' !== false) {return $sContent;}
+
+    // Do we have any placeholders to move to ?
+    if (strpos($sContent,'<!--(PH)' === false) {return $sContent;}
+
     // Do we have any stuff to move, if not abort?
     if (strpos($sContent,'<!--(MOVE)') === false) {return $sContent;}
 
     // Does the stuf has at least one end, if not abort?
     if (strpos($sContent,'<!--(END)-->') === false) {return $sContent;}
+
 
     // As recursion is not allowed and makes no sense anyway , we can fetch all moves in one regex. 
     
