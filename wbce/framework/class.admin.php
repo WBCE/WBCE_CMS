@@ -254,6 +254,10 @@ class admin extends wb
                     }
                 }
             }
+            
+            // Process direct Output if set. This ends the script here and regular output is not put out.
+            $this->DirectOutput();
+            
             // finally output everything as if nothing happened 
             echo $allOutput;
         }

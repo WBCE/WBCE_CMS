@@ -76,7 +76,10 @@ require WB_PATH . '/templates/' . TEMPLATE . '/index.php';
 
 // fetch the Page content for applying filters 
 $output = ob_get_clean();
- 
+
+// Process $wb->DirectOutput (the variable) if set. This ends the script here and regular output is not put out.
+// But still all modules and templatescripts are finished at this point.  
+$wb->DirectOutput();
 
 // Load OPF Dashboard OutputFilter functions
 // As thish should replace the old filters on the long run , its a bad idea to 
