@@ -22,6 +22,8 @@ require_once WB_PATH . "/framework/class.wbmailer.php";
 
 class wb extends SecureForm
 {
+    // store a direct output 
+    public $sDirectOutput="";
 
     public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:'; // General initialization function
                                                               // performed when frontend or backend is loaded.
@@ -31,15 +33,56 @@ class wb extends SecureForm
         parent::__construct($mode);
     }
 
-/* ****************
- * check if one or more group_ids are in both group_lists
- *
- * @access public
- * @param mixed $groups_list1: an array or a coma seperated list of group-ids
- * @param mixed $groups_list2: an array or a coma seperated list of group-ids
- * @param array &$matches: an array-var whitch will return possible matches
- * @return bool: true there is a match, otherwise false
- */
+    
+    
+ /**
+    @brief  for easy output of JSON strings XML for ajax...... 
+    @param $sContent The content to pipe out 
+    @return string echos out this string 
+    
+    If you want the whole page to be processed (for internal functionality or whatever)
+    before output is done, just set the class variable manually 
+    
+    @code
+       $wb->sDirectOutput  = "My cool string.";
+       $admin->sDirectOutput  = "My cool string.";
+    @endcode
+    
+    DirectOutput is triggered once  before normal output is done.  
+    
+*/       
+    public function DirectOutput($sContent=false) {
+        
+        // Move to class
+        if (is_string($sContent)){
+            $this->sDirectOutput.=$sContent;
+        }
+        
+        // Return if Class var is still empty
+        if (empty ($this->sDirectOutput)) return;
+        
+        // kill all output buffering
+        while (ob_get_level())
+        {
+            ob_end_clean ();
+        }
+        
+        // directly output everyting and exit
+        echo $this->sDirectOutput;
+        exit;
+    }   
+    
+    
+
+    
+/** 
+ @brief check if one or more group_ids are in both group_lists
+ 
+ @param mixed $groups_list1: an array or a coma seperated list of group-ids
+ @param mixed $groups_list2: an array or a coma seperated list of group-ids
+ @param array &$matches: an array-var whitch will return possible matches
+ @return bool: true there is a match, otherwise false
+*/
     public function is_group_match($groups_list1 = '', $groups_list2 = '', &$matches = null)
     {
         if ($groups_list1 == '') {return false;}
@@ -53,13 +96,13 @@ class wb extends SecureForm
         $matches = array_intersect($groups_list1, $groups_list2);
         return (sizeof($matches) != 0);
     }
-/* ****************
- * check if current user is member of at least one of given groups
- * ADMIN (uid=1) always is treated like a member of any groups
- *
- * @access public
- * @param mixed $groups_list: an array or a coma seperated list of group-ids
- * @return bool: true if current user is member of one of this groups, otherwise false
+/**
+ @brief check if current user is member of at least one of given groups
+ 
+ @param mixed $groups_list: an array or a coma seperated list of group-ids
+ @return bool: true if current user is member of one of this groups, otherwise false
+
+ ADMIN (uid=1) always is treated like a member of any groups
  */
     public function ami_group_member($groups_list = '')
     {
@@ -457,7 +500,11 @@ via the Settings panel in the backend of Website Baker
         $sRetval = $sThemeFile;
         if (file_exists(THEME_PATH . '/templates/' . $sThemeFile)) {
             $sRetval = THEME_PATH . '/templates/' . $sThemeFile;
-            } else {
+            } 
+            elseif (file_exists(WB_PATH."/templates/default_theme/templates/" . $sThemeFile)) {
+                $sRetval = WB_PATH."/templates/default_theme/templates/" . $sThemeFile;
+            }
+            else {
                 throw new InvalidArgumentException('missing template file ' . $sThemeFile);
             }
         return $sRetval;
