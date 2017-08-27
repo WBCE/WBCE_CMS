@@ -8,7 +8,7 @@
     {FTAN}
     <input type="hidden" name="userstatus" value="{USER_STATUS}">
     <h3 id="user-type" class="fg12">
-        <button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times" ></button>
+        <button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times" style="margin: 0 0 1px 0;"></button>
         <span>{HEADING_MODIFY_DELETE_USER}</span> </h3>
     <div id="user-list" class="fg6"> 
         <select name="user_id" class="wdt250">
@@ -20,9 +20,6 @@
     </div>
     <div class="fg6 right">
         <button type="submit" name="delete" value="{TEXT_DELETE}" onclick="return confirm('{CONFIRM_DELETE}');" class="{DISPLAY_DELETE} danger"> <i class="fa fa-fw fa-remove"></i> {TEXT_DELETE} </button>
-    </div>
-    <div class="fg12">
-        {QUICK_SEARCH_STRG_F} <a href="{ADMIN_URL}/admintools/tool.php?tool=user_search" title="{ADVANCED_SEARCH}">{ADVANCED_SEARCH}</a>
     </div>
 </form>
 <div class="clearfix"></div>

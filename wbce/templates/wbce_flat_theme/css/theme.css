@@ -132,6 +132,7 @@ select {
 }
 select[multiple] {
     height: auto;
+    background-image: none !important;
 }
 select:focus, select:hover {
     border: 1px solid #647086;
