@@ -112,9 +112,12 @@ if (!function_exists('simplepagehead')) {
 		if ($favicon == 1) {              
             $tp = WB_PATH.'/templates/'.TEMPLATE;
             $iconInRoot = false;
-            echo "<!-- FAVICON+ -->";
+            if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) FAVICON+ -->";
             if (file_exists(WB_PATH.'/favicon.ico')) {   echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n";  $iconInRoot = true;  }
             if (file_exists($tp.'/favicon.ico') && $iconInRoot == false) { echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n";  } 
+            if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) FAVICON- -->";
+            
+            if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) APPLE TOUCH+ -->";
             if (file_exists($tp.'/apple-touch-icon.png')) { echo '<link rel="apple-touch-icon" href="'.TEMPLATE_DIR.'/apple-touch-icon.png'."\"$endtag>\n";  }
             if (file_exists($tp.'/apple-touch-icon-57x57.png')) {echo '<link rel="apple-touch-icon" sizes="57x57" href="'.TEMPLATE_DIR.'/apple-touch-icon-57x57.png'."\"$endtag>\n"; }
             if (file_exists($tp.'/apple-touch-icon-72x72.png')) { echo '<link rel="apple-touch-icon" sizes="72x72" href="'.TEMPLATE_DIR.'/apple-touch-icon-72x72.png'."\"$endtag>\n"; }
@@ -123,14 +126,25 @@ if (!function_exists('simplepagehead')) {
             if (file_exists($tp.'/apple-touch-icon-120x120.png')) { echo '<link rel="apple-touch-icon" sizes="120x120" href="'.TEMPLATE_DIR.'/apple-touch-icon-120x120.png'."\"$endtag>\n"; }
             if (file_exists($tp.'/apple-touch-icon-144x144.png')) { echo '<link rel="apple-touch-icon" sizes="144x144" href="'.TEMPLATE_DIR.'/apple-touch-icon-144x144.png'."\"$endtag>\n"; }
             if (file_exists($tp.'/apple-touch-icon-152x152.png')) { echo '<link rel="apple-touch-icon" sizes="152x152" href="'.TEMPLATE_DIR.'/apple-touch-icon-152x152.png'."\"$endtag>\n"; }
-            echo "<!-- FAVICON- -->";
+            if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) APPLE TOUCH- -->";            
         }
 		
 		
-		echo "<!--(PH) TITLE+ --><title>$the_title</title><!--(PH) TITLE- -->\n";
-		echo '<!--(PH) META DESC+ --><meta name="description" content="'.$the_description."\"$endtag><!--(PH) META DESC- -->\n";
-		echo '<!--(PH) META KEY+ --><meta name="keywords" content="'. $the_keywords ."\"$endtag><!--(PH) META KEY- -->\n";
-        echo "<!--(PH) META HEAD+ -->\n";       
+		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) TITLE+ -->"; 
+        echo "<title>$the_title</title>"; 
+        if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) TITLE- -->"; 
+        echo "\n";
+		if (OPF_AUTO_PLACEHOLDER) echo '<!--(PH) META DESC+ -->'; 
+		echo '<meta name="description" content="'.$the_description."\"$endtag>"; 
+		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META DESC- -->"; 
+		echo "\n";
+		if (OPF_AUTO_PLACEHOLDER) echo '<!--(PH) META KEY+ -->'; 
+		echo '<meta name="keywords" content="'. $the_keywords ."\"$endtag>"; 
+		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META KEY- -->"; 
+		echo "\n";
+        
+        if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META HEAD+ -->"; 
+        echo "\n";       
         echo '<meta http-equiv="Content-Type" content="text/html; charset='; if(defined('DEFAULT_CHARSET')) { echo DEFAULT_CHARSET; } else { echo 'utf-8'; } echo "\"$endtag>\n";
 		
 		$the_language = strtolower(LANGUAGE);
@@ -146,7 +160,7 @@ if (!function_exists('simplepagehead')) {
 		if ($generator == 1) {echo '<meta name="generator" content="WBCE CMS; https://wbce.org"'."$endtag>\n";}
 		if ($notoolbartag == 1) {echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n"; }		
 		
-		if($metaend) echo "<!--(PH) META HEAD- -->\n";
+		if($metaend AND OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META HEAD- -->\n";
 	}
 }
 
