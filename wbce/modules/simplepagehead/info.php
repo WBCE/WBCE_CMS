@@ -13,7 +13,7 @@
 $module_directory = 'simplepagehead';
 $module_name = 'SimplePageHead';
 $module_function = 'snippet';
-$module_version = '0.60';
+$module_version = '0.61';
 $module_platform = '2.8.3';
 $module_author = 'Chio, with a litte help from thorn. Extended for use with other modules by Christoph Marti. Updated by Florian Meerwinck for WBCE';
 $module_license = 'GNU General Public License';

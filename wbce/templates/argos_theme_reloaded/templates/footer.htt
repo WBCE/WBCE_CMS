@@ -1,10 +1,10 @@
 <!-- BEGIN footer_block -->
 
-</td> <!-- .content -->
-</tr>
-</table> <!-- #legacy -->
+        </td> <!-- .content -->
+        </tr>
+    </table> <!-- #legacy -->
 
-<div class="clearfix"></div> <!-- für alle Fälle ;-)) -->
+    <div class="clearfix"></div> <!-- für alle Fälle ;-)) -->
 </div> <!-- #content-container -->
 
 <div id="footer">
@@ -15,8 +15,11 @@
     Session timeout: <span id="countdown" class="timer"></span>
 </div>
 
-{BACKEND_BODY_MODULE_JS}
-
+<!--(PH) HTML BODY BTM+ -->
+<!--(PH) HTML BODY BTM- -->
+<!--(PH) JS BODY BTM+ -->
+    {BACKEND_BODY_MODULE_JS}
+<!--(PH) JS BODY BTM- -->
 </body>
 </html>
 <!-- END footer_block -->

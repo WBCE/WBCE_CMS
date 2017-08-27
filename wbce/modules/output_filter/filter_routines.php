@@ -37,18 +37,37 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
                 
 /* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
 // deactivated vor this revision       
-        if (OPF_AUTO_PLACEHOLDER and false){
-            if (class_exists ("I")) {
-                $content = I::AddPlaceholder($content);
+        if (OPF_AUTO_PLACEHOLDER){
+            if (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
+                require_once($sFilterDirectory.'filterGeneratePlaceholders.php');
+                $content = doFilterGeneratePlaceholders($content);
+            }
+        }
+
+        /* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */
+// deactivated for this revision       
+        if (OPF_MOVE_STUFF){
+            if (file_exists($sFilterDirectory.'filterMoveStuff.php')) {
+                require_once($sFilterDirectory.'filterMoveStuff.php');
+                $content = doFilterMoveStuff($content);
             }
         }
 /* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */
 // deactivated for this revision       
-        if (OPF_INSERT and false){
-            if (class_exists ("I")) {
-                $content = I::Filter($content);
+        if (OPF_REPLACE_STUFF){   
+            if (file_exists($sFilterDirectory.'filterReplaceStuff.php')) {
+                require_once($sFilterDirectory.'filterReplaceStuff.php');
+                $content = doFilterReplaceStuff($content);
             }
         }
+/* ### filter type: moves css definitions from <body> into <head> just for compatibility ########### */
+        if (OPF_CSS_TO_HEAD){
+            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
+                require_once($sFilterDirectory.'filterCssToHead.php');
+                $content = doFilterCssToHead($content);
+            }
+        }        
+        
     
 /* ### filter type: protect email addresses ################################# */
         if (OPF_MAILTO_FILTER || OPF_EMAIL_FILTER ) {
@@ -83,13 +102,12 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
             }
         }
         
-/* ### filter type: moves css definitions from <body> into <head> ########### */
-        if (OPF_CSS_TO_HEAD){
-            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
-                require_once($sFilterDirectory.'filterCssToHead.php');
-                $content = doFilterCssToHead($content);
-            }
-        }
+
+
+        
+
+        
+        
         
 /* ### end of filters ####################################################### */
         return $content;
@@ -118,13 +136,45 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
             }
         }
         
-/* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */ 
-//now available in BE too 
-        if (defined("OPF_INSERT_BE") AND OPF_INSERT_BE and false){
-            if (class_exists ("I")) {
-                $content = I::Filter($content);
+/* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
+        if (OPF_AUTO_PLACEHOLDER_BE){
+            if (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
+                require_once($sFilterDirectory.'filterGeneratePlaceholders.php');
+                $content = doFilterGeneratePlaceholders($content);
             }
         }
+        
+/* ### filter type: fill out placeholders for Javascript, CSS and new Metas   ################################# */
+// deactivated for this revision       
+        if (OPF_MOVE_STUFF_BE){
+            if (file_exists($sFilterDirectory.'filterMoveStuff.php')) {
+                require_once($sFilterDirectory.'filterMoveStuff.php');
+                $content = doFilterMoveStuff($content);
+            }
+        }
+        
+/* ### filter type: replace  placeholders for Metas and Title  ################################# */
+// deactivated for this revision       
+        if (OPF_REPLACE_STUFF_BE){
+            if (file_exists($sFilterDirectory.'filterReplaceStuff.php')) {
+                require_once($sFilterDirectory.'filterReplaceStuff.php');
+                $content = doFilterReplaceStuff($content);
+            }
+        }     
+        
+ /* ### filter type: moves css definitions from <body> into <head> ########### */
+//this one truly may stay in (lots  of old modules have inline CSS ) 
+// The correct way now is using the placeholders .. this stays for compatibility. 
+        if (OPF_CSS_TO_HEAD_BE){
+            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
+                require_once($sFilterDirectory.'filterCssToHead.php');
+                $content = doFilterCssToHead($content);
+            }
+        }       
+        
+        
+        
+        
     
 /* ### filter type: protect email addresses ################################# */
 // emailfilter not needed in BE
@@ -139,15 +189,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 // would disturb BE functions
 
         
-/* ### filter type: moves css definitions from <body> into <head> ########### */
-//this one truly may stay in (lots  of old modules have inline CSS ) 
-// maybe we even declare having css in the module html as being just ok.
-        if (defined("OPF_CSS_TO_HEAD_BE") AND OPF_CSS_TO_HEAD_BE){
-            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
-                require_once($sFilterDirectory.'filterCssToHead.php');
-                $content = doFilterCssToHead($content);
-            }
-        }
+
        
 /* ### end of filters ####################################################### */
         return $content;

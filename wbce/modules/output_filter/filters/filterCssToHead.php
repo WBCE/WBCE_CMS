@@ -1,14 +1,20 @@
 <?php
 /**
- * moves all css definitions from <body> into <head> section
- * @param string $content
- * @return string
- */
+    @brief Moves all free standing css definitions from <body> into <head> section. 
+    @param string $content
+    @return string
+    
+    To be more precise it moves them to the "<!--(PH) CSS HEAD BTM- -->" Placeholder.
+    This is here for compatibility. 
+*/
 function doFilterCssToHead($sContent) {
+    $sToPlaceHolder="<!--(PH) CSS HEAD BTM- -->";
+    
     // move css definitions into head section
-    $sPattern1 = '/(?:<body.*?)(<link[^>]*?\"text\/css\".*?\/?>)/si';
-    $sPattern3 = '/(?:<body.*?)(<link[^>]*?\"stylesheet\".*?\/?>)/si';
-    $sPattern2 = '/(?:<body.*?)(<style.*?<\/style>)/si';    
+    $sPattern1 = '/(?:<\s*body.*?)(<\s*link[^>]*?\"text\/css\".*?\/?\s*>)/si';
+    $sPattern3 = '/(?:<\s*body.*?)(<\s*link[^>]*?\"stylesheet\".*?\/?\s*>)/si';
+    $sPattern2 = '/(?:<\s*body.*?)(<\s*style.*?<\s*\/\s*style\s*>)/si';    
+     
     
     $aInsert = array();
     while(preg_match($sPattern1, $sContent, $aMatches)) {
@@ -25,8 +31,9 @@ function doFilterCssToHead($sContent) {
     }
     $aInsert = array_unique($aInsert);
     if(sizeof($aInsert) > 0) {
-        $sInsert = "\n".implode("\n", $aInsert)."\n</head>\n<body";
-        $sContent = preg_replace('/<\/head>.*?<body/si', $sInsert, $sContent, 1);
+        $sInsert = "\n".implode("\n", $aInsert)."\n".$sToPlaceHolder;
+        $sContent = preg_replace('/'.preg_quote($sToPlaceHolder).'/si', $sInsert, $sContent, 1);
     }
+        
     return $sContent;
 }

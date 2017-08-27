@@ -2,19 +2,25 @@
 <!DOCTYPE html>
 <html lang="{LANGUAGE}">
 <head>
+<!--(PH) TITLE+ --><title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title><!--(PH) TITLEi -->
+<!--(PH) META DESC+ --><meta name="description" content="{TEXT_ADMINISTRATION}" /><!--(PH) META DESC- -->
+<!--(PH) META KEY+ --><meta name="keywords" content="{TEXT_ADMINISTRATION}" /><!--(PH) META KEY -->
+
+<!--(PH) META HEAD+ -->
 <meta charset="{CHARSET}">
-<meta name="description" content="{TEXT_ADMINISTRATION}" />
-<meta name="keywords" content="{TEXT_ADMINISTRATION}" />
-<meta name="author" content="WBCE CMS" />
 <meta http-equiv="Content-Encoding" content="gzip" />
 <meta http-equiv="Accept-Encoding" content="gzip, deflate" />
-<title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title>
+<!--(PH) META HEAD- -->
+
+<!--(PH) CSS HEAD TOP+ -->
 <link href="{WB_URL}/include/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/fitrgrid.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/themeextended.css" rel="stylesheet" type="text/css">
-{BACKEND_MODULE_CSS}
+<!--(PH) CSS HEAD TOP- -->
+
+<!--(PH) JS HEAD TOP+ -->
 <script>
 var WB_URL = '{WB_URL}';
 var THEME_URL = '{THEME_URL}';
@@ -30,6 +36,13 @@ var LANGUAGE = '{LANGUAGE}';
 <script type="text/javascript" src="{THEME_URL}/jquery/jqueryStickyElements/jquery.StickyElements.2.1.0.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/jqueryNiceFileInput/jquery.nicefileinput.min.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/theme.js"></script>
+<!--(PH) JS HEAD TOP- -->
+
+<!--(PH) CSS HEAD BTM+ -->
+{BACKEND_MODULE_CSS}
+<!--(PH) CSS HEAD BTM- -->
+
+<!--(PH) JS HEAD BTM+ -->
 {BACKEND_MODULE_JS}
 <script>
     var wbSessionTiomeout= {WB_SESSION_TIMEOUT};
@@ -59,8 +72,15 @@ var LANGUAGE = '{LANGUAGE}';
     }
     var countdownTimer = setInterval('timer()', 1000);
 </script>
+<!--(PH) JS HEAD BTM+ -->
 </head>
 <body>
+<!--(PH) JS BODY TOP+ -->
+<!--(PH) JS BODY TOP- -->
+
+<!--(PH) HTML BODY TOP+ -->
+<!--(PH) HTML BODY TOP- -->
+
 <div class="container">
 <div id="headerarea">
     <div id="branding">

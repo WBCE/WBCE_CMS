@@ -248,21 +248,35 @@ if (!function_exists('show_menu')) {
 }
 
 if (!function_exists('page_content')) {
-    /**
-     *
-     * @global array $TEXT
-     * @global array $MENU
-     * @global array $HEADING
-     * @global array $MESSAGE
-     * @global array $globals several global vars
-     * @global datadase $database
-     * @global wb $wb
-     * @global string $global_name
-     * @param int $block
-     * @return void
-     */
-    function page_content($block = 1)
+/**
+    @brief  This functions fetches the page content for the different blocks of a page/template. 
+    
+    It now alllows to enter block names as well as block numbers.
+    The second parameter lets the function return the result instead of printing it immediately. 
+    @global array $TEXT
+    @global array $MENU
+    @global array $HEADING
+    @global array $MESSAGE
+    @global array $globals several global vars
+    @global datadase $database
+    @global wb $wb
+    @global string $global_name
+    
+    @param int/string $block   Template/page block, name or id 
+    @return void/string returns either nothing or the whole block content as returnvalue
+*/
+    function page_content($block = 1, $echo=true)
     {
+        $block =  get_block_id ($block);
+        // We don't want to display the page content 
+        // We want it as a return value  
+        if ($echo===false) {
+            ob_start();     
+            page_content($uBlock);
+            $out = ob_get_contents();
+            ob_end_clean();
+            return $out; 
+        }
         // Get outside objects
         global $TEXT, $MENU, $HEADING, $MESSAGE;
         global $globals;
@@ -282,16 +296,15 @@ if (!function_exists('page_content')) {
                 global $$global_name;
             }
         }
-        // Make sure block is numeric
-        if (($block = intval($block)) == 0) {$block = 1;}
         // Include page content
         if (!defined('PAGE_CONTENT') or $block != 1) {
             $page_id = intval($wb->page_id);
+            
+            // page is invisible ??
             if (($wb instanceof frontend) && !$wb->page_is_visible($wb->page)) {
                 // SOLVED dw2015
                 return;
             }
-
             // First get all sections for this page
             $sql = 'SELECT `section_id`, `module`, `publ_start`, `publ_end` ';
             $sql .= 'FROM `' . TABLE_PREFIX . 'sections` ';
@@ -314,6 +327,7 @@ if (!function_exists('page_content')) {
                 // Still no cotent found? Give it up, there's just nothing to show!
                 if ($query_sections->numRows() == 0) {return;}
             }
+            
             // Loop through them and include their module file
             while ($section = $query_sections->fetchRow()) {
                 // skip this section if it is out of publication-date
@@ -334,12 +348,10 @@ if (!function_exists('page_content')) {
                     ob_start(); // fetch original content
                     require WB_PATH . '/modules/' . $module . '/view.php';
                     $content = ob_get_clean();
-
                     //OPF hook
                     if(function_exists('opf_apply_filters')) {
                         $content = opf_controller('section', $content, $module, $page_id, $section_id);
                     }
-
                 } else {
                     continue;
                 }
@@ -352,12 +364,10 @@ if (!function_exists('page_content')) {
                     }
                     echo search_highlight($content, $arr_string);
                 } else {
-
                     // OPF Hook ,Apply Filters
                     if(function_exists('opf_apply_filters')) {
                        $content = opf_controller('special', $content);
                     }
-
                     echo PHP_EOL . $sec_anchor . PHP_EOL . $content;
                 }                                  
             }
@@ -367,12 +377,17 @@ if (!function_exists('page_content')) {
     }
 }
 
+
+
 if (!function_exists('show_content')) {
     function show_content($block = 1)
     {
         page_content($block);
     }
 }
+
+
+
 
 if (!function_exists('show_breadcrumbs')) {
     function show_breadcrumbs($sep = ' &raquo; ', $level = 0, $links = true, $depth = -1, $title = '')
@@ -653,4 +668,27 @@ if (!function_exists('register_frontend_modfiles')) {
     }
 }
 
+if (!function_exists('get_block_id')) {
+/**
+    @brief function to extract Block ID from Blockname 
+    
+    If fed whith an integer or numeric string it simply returns this as an integer.
+    If fed whith a string it tries to find this string in the $block[] array of the recent template.
+    It returns the id if found otherwise it returns 1 (default template block)
+    
+    @param unknown $uBlock may be string or integer
+    @return integer 
+*/
+    function get_block_id ($uBlock) {
+        if (is_int($uBlock) OR preg_match("/^[0-9]+$/is", $uBlock))
+            return (int)$uBlock;
+        else {
+            require (WB_PATH."/templates/".TEMPLATE."/info.php");
+            if ($key = array_search($uBlock, $block))
+                return (int) $key ;
+            else 
+                return 1;
+        }
+    }
+}
 

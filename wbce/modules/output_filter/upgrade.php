@@ -58,15 +58,27 @@ $data = getOutputFilterSettings();
 
 // Set old values if exists otherwise go for default 
 Settings::Set('opf_droplets',1, false);
-Settings::Set('opf_droplets_be',1, false);
+Settings::Set('opf_auto_placeholder',1, false); 
+Settings::Set('opf_move_stuff',1, false);   
+Settings::Set('opf_replace_stuff',1, false);   
+Settings::Set('opf_css_to_head',1, false);
+Settings::Set('opf_email_filter',1, false);
+Settings::Set('opf_mailto_filter',1, false);
+Settings::Set('opf_js_mailto',1, false);
+Settings::Set('opf_at_replacement',"(at)", false);
+Settings::Set('opf_dot_replacement',"(dot)", false);
 Settings::Set('opf_wblink',1, false);
-Settings::Set('opf_auto_placeholder',1, false);
-Settings::Set('opf_insert',1, false);  
+Settings::Set('opf_short_url',0, false);
+Settings::Set('opf_sys_rel',1, false);
 
 //backend
-Settings::Set('opf_insert_be',1); 
+Settings::Set('opf_droplets_be',1, false);
+Settings::Set('opf_auto_placeholder_be',1, false); 
+Settings::Set('opf_move_stuff_be',1, false);   
+Settings::Set('opf_replace_stuff_be',1, false); 
 Settings::Set('opf_css_to_head_be',1);
 
+// Override based on old WBCE settings
 if (isset($data["sys_rel"]))       Settings::Set('opf_sys_rel',$data["sys_rel"], false);
 else                               Settings::Set('opf_sys_rel',1, false);
 
@@ -76,17 +88,11 @@ else                               Settings::Set('opf_email_filter',1, false);
 if (isset($data["mailto_filter"])) Settings::Set('opf_mailto_filter',$data["mailto_filter"], false);
 else                               Settings::Set('opf_mailto_filter',1, false);       
 
- 
-Settings::Set('opf_js_mailto',1, false);
-Settings::Set('opf_short_url',0, false);
-Settings::Set('opf_css_to_head',1, false);
-
 if (isset($data["at_replacement"]))  Settings::Set('opf_at_replacement',$data["at_replacement"], false);
 else                                 Settings::Set('opf_at_replacement',"(at)", false);      
 
 if (isset($data["dot_replacement"])) Settings::Set('opf_dot_replacement',$data["dot_replacement"], false);
 else                                 Settings::Set('opf_dot_replacement',"(dot)", false);
-
 
 //finally delete the old table as its no longer needed
 $table = TABLE_PREFIX .'mod_output_filter';
@@ -96,7 +102,6 @@ $database->query("DROP TABLE IF EXISTS `$table`");
 include ("info.php");
 Settings::Set("opf_version", $module_version) ;
 
-Settings::Set('opf_insert_be',1); 
-Settings::Set('opf_css_to_head_be',1);
+
 
 
