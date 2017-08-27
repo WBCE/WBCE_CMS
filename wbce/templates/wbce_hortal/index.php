@@ -296,7 +296,7 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
                 </div>
                 <div class="innerbc">        
                     <!-- breadcrum navigation -->
-                    <?php echo $breadcrumbs ?>
+                    <?php if (isset($breadcrumbs)) { echo $breadcrumbs; } ?>
                 </div><!-- innerbc -->
                 <div id="beginContent" style="clear:both;"></div>
             </div><!-- breadcrumbs -->
