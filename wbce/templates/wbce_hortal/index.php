@@ -77,6 +77,7 @@ $mainmenu = show_menu2(
 
 // Breadcrumb Navigation
 //Breadcrumbs: Diese zeigen wir NICHT auf der Startseite:
+$breadcrumbs="";
 if ($isstartpage !== true) {            
     $breadcrumbs = show_menu2(
         1, 
