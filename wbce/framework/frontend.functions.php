@@ -362,12 +362,13 @@ if (!function_exists('page_content')) {
                         // exact match
                         $arr_string[0] = str_replace("_", " ", $arr_string[0]);
                     }
-                    echo search_highlight($content, $arr_string);
-                } else {
-                    // OPF Hook ,Apply Filters
+                    // OPF Hook, Apply Filters
                     if(function_exists('opf_apply_filters')) {
                        $content = opf_controller('special', $content);
                     }
+                    echo search_highlight($content, $arr_string);
+                } else {
+		    // no search result, OPF filters have been applied already above
                     echo PHP_EOL . $sec_anchor . PHP_EOL . $content;
                 }                                  
             }

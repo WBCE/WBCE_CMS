@@ -54,7 +54,7 @@ $wb->get_page_details();
 // Collect general website settings
 $wb->get_website_settings();
 
-// OPF hook ,Load OutputFilter functions
+// OPF hook, Load OutputFilter functions, needed at least for older versions of OpF
 if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
     include(WB_PATH .'/modules/outputfilter_dashboard/functions.php');
     // use 'cache' instead of 'nocache' to enable page-cache.
@@ -82,17 +82,15 @@ $output = ob_get_clean();
 $wb->DirectOutput();
 
 // Load OPF Dashboard OutputFilter functions
-// As thish should replace the old filters on the long run , its a bad idea to 
+// As this should replace the old filters on the long run, it is a bad idea to
 // have this in an output filter. 
-// Besides you cannnot deactivate the old filters if its IN the old filters   
-$sOpfFile = WB_PATH.'modules/outputfilter_dashboard/functions.php';
+// Besides, you cannnot deactivate the old filters if its IN the old filters
+$sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.php';
 if (is_readable($sOpfFile)) {
 	require_once($sOpfFile);
-   // apply outputfilter
+	// apply outputfilter, initialization is done above,
+	// and not needed anymore in latest versions of OpF
 	if (function_exists('opf_apply_filters')) {
-		// use 'cache' instead of 'nocache' to enable page-cache.
-		// Do not use 'cache' in case you use dynamic contents (e.g. snippets)!
-		opf_controller('init', 'nocache');
 		$output = opf_controller('page', $output);
 	}
 }
