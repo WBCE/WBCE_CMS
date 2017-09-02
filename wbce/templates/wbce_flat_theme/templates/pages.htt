@@ -1,89 +1,89 @@
 <!-- BEGIN main_block -->
 
 <div id="pagesPage">
-<div id="pageListPanel" class="panel panel-default">
-    <h2 class="page_titel">{PAGES}</h2>
-    <div class="content-box panel-body"></div>
-</div>
-<!-- /.panel.panel-default -->
-<div class="fg4" style="margin: 0;">
-    <div class="panel panel-default {DISPLAY_ADD}">
-        <h2 class="page_titel">{HEADING_ADD_PAGE}</h2>
-        <div class="content-box panel-body">
-            <div class="addsite_insideborder">
-                <form name="add" action="add.php" method="post">
-                    {FTAN}
-                    <div class="form-group">
-                        <label for="inputTitle">{TEXT_TITLE}</label>
-                        <input type="text" name="title" id="inputTitle" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="selectType">{TEXT_TYPE}</label>
-                        <select id="selectType" name="type" class="form-control">
-                            <!-- BEGIN module_list_block -->
-                            <option value="{VALUE}"{SELECTED}>{NAME}</option>
-                            <!-- END module_list_block -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="selectParent">{TEXT_PARENT}</label>
-                        <select id="selectParent" name="parent" class="form-control">
-                            <!-- BEGIN page_list_block2 -->
-                            <option value="{ID}" {DISABLED} style="background: {FLAG_ROOT_ICON} no-repeat center left; padding-left: 20px;">{TITLE}</option>
-                            <!-- END page_list_block2 -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="selectVisibility">{TEXT_VISIBILITY}</label>
-                        <select id="selectVisibility" name="visibility" onchange="javascript: toggleViewers();">
-                            <option value="public"{SELECTED}>{TEXT_PUBLIC}</option>
-                            <option value="private">{TEXT_PRIVATE}</option>
-                            <option value="registered">{TEXT_REGISTERED}</option>
-                            <option value="hidden">{TEXT_HIDDEN}</option>
-                            <option value="none">{TEXT_NONE}</option>
-                        </select>
-                    </div>
-                    <p><strong>{TEXT_ADMINISTRATORS}</strong></p>
-                    <!-- BEGIN group_list_block -->
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}" {CHECKED} {DISABLED} />
-                            {NAME}
-                        </label>
-                    </div>
-                    <!-- END group_list_block -->
-                    
-                    <div id="viewers" style="display: none;">
-                        <p><strong>{TEXT_REGISTERED_VIEWERS}</strong></p>
-                        <!-- BEGIN group_list_block2 -->
+    <div id="pageListPanel" class="panel panel-default">
+        <h2 class="page_titel">{PAGES}</h2>
+        <div class="content-box panel-body"></div>
+    </div>
+    <!-- /.panel.panel-default -->
+    <div class="fg4" style="margin: 0;">
+        <div class="panel panel-default {DISPLAY_ADD}">
+            <h2 class="page_titel">{HEADING_ADD_PAGE}</h2>
+            <div class="content-box panel-body">
+                <div class="addsite_insideborder">
+                    <form name="add" action="add.php" method="post">
+                        {FTAN}
+                        <div class="form-group">
+                            <label for="inputTitle">{TEXT_TITLE}</label>
+                            <input type="text" name="title" id="inputTitle" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="selectType">{TEXT_TYPE}</label>
+                            <select id="selectType" name="type" class="form-control">
+                                <!-- BEGIN module_list_block -->
+                                <option value="{VALUE}"{SELECTED}>{NAME}</option>
+                                <!-- END module_list_block -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectParent">{TEXT_PARENT}</label>
+                            <select id="selectParent" name="parent" class="form-control">
+                                <!-- BEGIN page_list_block2 -->
+                                <option value="{ID}" {DISABLED} style="background: {FLAG_ROOT_ICON} no-repeat center left; padding-left: 20px;">{TITLE}</option>
+                                <!-- END page_list_block2 -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectVisibility">{TEXT_VISIBILITY}</label>
+                            <select id="selectVisibility" name="visibility" onchange="javascript: toggleViewers();">
+                                <option value="public"{SELECTED}>{TEXT_PUBLIC}</option>
+                                <option value="private">{TEXT_PRIVATE}</option>
+                                <option value="registered">{TEXT_REGISTERED}</option>
+                                <option value="hidden">{TEXT_HIDDEN}</option>
+                                <option value="none">{TEXT_NONE}</option>
+                            </select>
+                        </div>
+                        <p><strong>{TEXT_ADMINISTRATORS}</strong></p>
+                        <!-- BEGIN group_list_block -->
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}" {CHECKED} {DISABLED} />
+                                <input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}" {CHECKED} {DISABLED} />
                                 {NAME}
                             </label>
                         </div>
-                        <!-- END group_list_block2 -->
-                    </div>
-                    <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> {TEXT_ADD}</button>
-                </form>
+                        <!-- END group_list_block -->
+
+                        <div id="viewers" style="display: none;">
+                            <p><strong>{TEXT_REGISTERED_VIEWERS}</strong></p>
+                            <!-- BEGIN group_list_block2 -->
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}" {CHECKED} {DISABLED} />
+                                    {NAME}
+                                </label>
+                            </div>
+                            <!-- END group_list_block2 -->
+                        </div>
+                        <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> {TEXT_ADD}</button>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
             </div>
-            <!-- /.panel-body -->
+            <!-- /.panel.panel-default -->
+
+            <div class="panel panel-default {DISPLAY_INTRO}">
+                <div class="panel-heading">
+                    <h2 class="page_titel">{HEADING_MODIFY_INTRO_PAGE}</h2>
+                </div>
+                <div class="content-box">
+                    <div class="addsite_insideborder"> <a href="intro.php">{INTRO_LINK}</a> </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel.panel-default -->
         </div>
-        <!-- /.panel.panel-default -->
-        
-        <div class="panel panel-default {DISPLAY_INTRO}">
-            <div class="panel-heading">
-                <h2 class="page_titel">{HEADING_MODIFY_INTRO_PAGE}</h2>
-            </div>
-            <div class="content-box">
-                <div class="addsite_insideborder"> <a href="intro.php">{INTRO_LINK}</a> </div>
-            </div>
-            <!-- /.panel-body -->
-        </div>
-        <!-- /.panel.panel-default -->
     </div>
     <!-- /.fg4 -->
-    
 </div>
 <!-- /#pagesPage -->
 

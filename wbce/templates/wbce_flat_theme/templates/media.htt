@@ -1,7 +1,7 @@
 <!-- BEGIN main_block -->
 
 <div class="lazyfix">
-    <!-- left frame - file browser ----------------------------------->
+    <!-- left frame - file browser -->
     <section class="fg8" id="media-browser">
         <h2 class="page_titel">{HEADING_BROWSE_MEDIA}</h2>
         <section class="fg12 content-box">
@@ -11,8 +11,8 @@
             </div>
         </section>
     </section>
-    <!-- right frame - upload & folder handling ------------------------>
-    <section class="fg4" id="media-upload" class="{DISPLAY_UPLOAD}">
+    <!-- right frame - upload & folder handling -->
+    <section id="media-upload" class="fg4 {DISPLAY_UPLOAD}">
     <div class="fg12">
         <h2 class="page_titel">{HEADING_UPLOAD_FILES}</h2>
         <section class="content-box pdng">
