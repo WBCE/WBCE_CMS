@@ -29,8 +29,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 
 /* ### filter type: execute droplets filter ################################# */
         if (OPF_DROPLETS){
-            if (file_exists($sFilterDirectory.'filterDroplets.php')) {
-                require_once($sFilterDirectory.'filterDroplets.php');
+            if (file_exists($sFilterDirectory.'filter_droplets.php')) {
+                require_once($sFilterDirectory.'filter_droplets.php');
                 $content = doFilterDroplets($content);
             }
         }
@@ -38,8 +38,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 /* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
 // deactivated vor this revision       
         if (OPF_AUTO_PLACEHOLDER){
-            if (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
-                require_once($sFilterDirectory.'filterGeneratePlaceholders.php');
+            if (file_exists($sFilterDirectory.'filter_generate_placeholders.php')) {
+                require_once($sFilterDirectory.'filter_generate_placeholders.php');
                 $content = doFilterGeneratePlaceholders($content);
             }
         }
@@ -47,23 +47,23 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
         /* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */
 // deactivated for this revision       
         if (OPF_MOVE_STUFF){
-            if (file_exists($sFilterDirectory.'filterMoveStuff.php')) {
-                require_once($sFilterDirectory.'filterMoveStuff.php');
+            if (file_exists($sFilterDirectory.'filter_move_stuff.php')) {
+                require_once($sFilterDirectory.'filter_move_stuff.php');
                 $content = doFilterMoveStuff($content);
             }
         }
 /* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */
 // deactivated for this revision       
         if (OPF_REPLACE_STUFF){   
-            if (file_exists($sFilterDirectory.'filterReplaceStuff.php')) {
-                require_once($sFilterDirectory.'filterReplaceStuff.php');
+            if (file_exists($sFilterDirectory.'filter_replace_stuff.php')) {
+                require_once($sFilterDirectory.'filter_replace_stuff.php');
                 $content = doFilterReplaceStuff($content);
             }
         }
 /* ### filter type: moves css definitions from <body> into <head> just for compatibility ########### */
         if (OPF_CSS_TO_HEAD){
-            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
-                require_once($sFilterDirectory.'filterCssToHead.php');
+            if (file_exists($sFilterDirectory.'filter_css_to_head.php')) {
+                require_once($sFilterDirectory.'filter_css_to_head.php');
                 $content = doFilterCssToHead($content);
             }
         }        
@@ -71,16 +71,16 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
     
 /* ### filter type: protect email addresses ################################# */
         if (OPF_MAILTO_FILTER || OPF_EMAIL_FILTER ) {
-            if (file_exists($sFilterDirectory.'filterEmail.php')) {
-                require_once($sFilterDirectory.'filterEmail.php');
+            if (file_exists($sFilterDirectory.'filter_email.php')) {
+                require_once($sFilterDirectory.'filter_email.php');
                 $content = doFilterEmail($content);
             }
         }
         
 /* ### filter type: change [wblinkxx] into real URLs ######################## */
         if (OPF_WBLINK){
-            if (file_exists($sFilterDirectory.'filterWbLink.php')) {
-                require_once($sFilterDirectory.'filterWbLink.php');
+            if (file_exists($sFilterDirectory.'filter_wb_link.php')) {
+                require_once($sFilterDirectory.'filter_wb_link.php');
                 $content = doFilterWbLink($content);
             }
         }
@@ -96,12 +96,29 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
         
 /* ### filter type: full qualified URLs to relative URLs##################### */
         if(OPF_SYS_REL){
-            if (file_exists($sFilterDirectory.'filterRelUrl.php')) {
-                require_once($sFilterDirectory.'filterRelUrl.php');
+            if (file_exists($sFilterDirectory.'filter_rel_url.php')) {
+                require_once($sFilterDirectory.'filter_rel_url.php');
                 $content = doFilterRelUrl($content);
             }
         }
+    
+/* ### filter type: full qualified URLs to relative URLs##################### */
+        if(OPF_REMOVE_COMMENTS){
+            if (file_exists($sFilterDirectory.'filter_remove_comments.php')) {
+                require_once($sFilterDirectory.'filter_remove_comments.php');
+                $frc = new filterRemoveComments();
+                $content = $frc->RunFilter($content);
+            }
+        }
         
+/* ### filter type: full qualified URLs to relative URLs##################### */
+        if(OPF_BASIC_HTML_MINIFY){
+            if (file_exists($sFilterDirectory.'filter_basic_html_minify.php')) {
+                require_once($sFilterDirectory.'filter_basic_html_minify.php');
+                $content = doFilterBasicHtmlMinify($content);
+            }
+        }
+ 
 
 
         
@@ -129,7 +146,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 /* ### filter type: execute droplets filter for backend ################################# */
 // deactivated for now 
         if (OPF_DROPLETS_BE){
-            $sFileDropletsBe=$sFilterDirectory.'filterDropletsBe.php';
+            $sFileDropletsBe=$sFilterDirectory.'filter_droplets_be.php';
             if (file_exists($sFileDropletsBe)) {
                 require_once($sFileDropletsBe);
                 $content = doFilterDropletsBe($content);
@@ -138,8 +155,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
         
 /* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
         if (OPF_AUTO_PLACEHOLDER_BE){
-            if (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
-                require_once($sFilterDirectory.'filterGeneratePlaceholders.php');
+            if (file_exists($sFilterDirectory.'filter_generate_placeholders.php')) {
+                require_once($sFilterDirectory.'filter_generate_placeholders.php');
                 $content = doFilterGeneratePlaceholders($content);
             }
         }
@@ -147,8 +164,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 /* ### filter type: fill out placeholders for Javascript, CSS and new Metas   ################################# */
 // deactivated for this revision       
         if (OPF_MOVE_STUFF_BE){
-            if (file_exists($sFilterDirectory.'filterMoveStuff.php')) {
-                require_once($sFilterDirectory.'filterMoveStuff.php');
+            if (file_exists($sFilterDirectory.'filter_move_stuff.php')) {
+                require_once($sFilterDirectory.'filter_move_stuff.php');
                 $content = doFilterMoveStuff($content);
             }
         }
@@ -156,8 +173,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 /* ### filter type: replace  placeholders for Metas and Title  ################################# */
 // deactivated for this revision       
         if (OPF_REPLACE_STUFF_BE){
-            if (file_exists($sFilterDirectory.'filterReplaceStuff.php')) {
-                require_once($sFilterDirectory.'filterReplaceStuff.php');
+            if (file_exists($sFilterDirectory.'filter_replace_stuff.php')) {
+                require_once($sFilterDirectory.'filter_replace_stuff.php');
                 $content = doFilterReplaceStuff($content);
             }
         }     
@@ -166,15 +183,34 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 //this one truly may stay in (lots  of old modules have inline CSS ) 
 // The correct way now is using the placeholders .. this stays for compatibility. 
         if (OPF_CSS_TO_HEAD_BE){
-            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
-                require_once($sFilterDirectory.'filterCssToHead.php');
+            if (file_exists($sFilterDirectory.'filter_css_to_head.php')) {
+                require_once($sFilterDirectory.'filter_css_to_head.php');
                 $content = doFilterCssToHead($content);
             }
         }       
         
+/* ### filter type: full qualified URLs to relative URLs##################### */
+        if(OPF_REMOVE_COMMENTS_BE){
+            if (file_exists($sFilterDirectory.'filter_remove_comments.php')) {
+                require_once($sFilterDirectory.'filter_remove_comments.php');
+                $frc = new filterRemoveComments();
+                $content = $frc->RunFilter($content);
+            }
+        }
         
+/* ### filter type: full qualified URLs to relative URLs##################### */
+        if(OPF_BASIC_HTML_MINIFY_BE){
+            if (file_exists($sFilterDirectory.'filter_basic_html_minify.php')) {
+                require_once($sFilterDirectory.'filter_basic_html_minify.php');
+                $content = doFilterBasicHtmlMinify($content);
+            }
+        }
+ 
         
-        
+  Settings::Set('opf_remove_comments',1, false);
+Settings::Set('opf_basic_html_minify',1, false);      
+ Settings::Set('opf_remove_comments_be',1, false);
+Settings::Set('opf_basic_html_minify_be',1, false);       
     
 /* ### filter type: protect email addresses ################################# */
 // emailfilter not needed in BE
@@ -204,7 +240,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
  * @global object $database
  * @global object $admin
  * @param void
- * @return array contains all settings
+ * @return array contains some necessary settings especially vor Backwards compatibility
  */
     function getOutputFilterSettings() {
         //fetch settings whith default values
