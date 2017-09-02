@@ -20,31 +20,26 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 // Commented out , cause of new OPF dashboard still needs those settings.  
 Settings::Del('wb_suppress_old_opf');
 //frontend
-Settings::Del('opf_droplets');
-Settings::Del('opf_auto_placeholder'); 
-Settings::Del('opf_move_stuff');   
-Settings::Del('opf_replace_stuff');   
-Settings::Del('opf_css_to_head');
-Settings::Del('opf_email_filter');
-Settings::Del('opf_mailto_filter');
-Settings::Del('opf_js_mailto');
-Settings::Del('opf_at_replacement');
-Settings::Del('opf_dot_replacement');
-Settings::Del('opf_wblink');
-Settings::Del('opf_short_url');
-Settings::Del('opf_sys_rel');
-Settings::Del('opf_remove_comments');
-Settings::Del('basic_html_minify');
+Settings::Del('opf_droplets',1, false);
+Settings::Del('opf_auto_placeholder',1, false); 
+Settings::Del('opf_move_stuff',1, false);   
+Settings::Del('opf_replace_stuff',1, false);   
+Settings::Del('opf_css_to_head',1, false);
+Settings::Del('opf_email_filter',1, false);
+Settings::Del('opf_mailto_filter',1, false);
+Settings::Del('opf_js_mailto',1, false);
+Settings::Del('opf_at_replacement',"(at)", false);
+Settings::Del('opf_dot_replacement',"(dot)", false);
+Settings::Del('opf_wblink',1, false);
+Settings::Del('opf_short_url',0, false);
+Settings::Del('opf_sys_rel',1, false);
 
 //backend
-Settings::Del('opf_droplets_be');
-Settings::Del('opf_auto_placeholder_be'); 
-Settings::Del('opf_move_stuff_be');   
-Settings::Del('opf_replace_stuff_be'); 
+Settings::Del('opf_droplets_be',1, false);
+Settings::Del('opf_auto_placeholder_be',1, false); 
+Settings::Del('opf_move_stuff_be',1, false);   
+Settings::Del('opf_replace_stuff_be',1, false); 
 Settings::Del('opf_css_to_head_be',1);
-Settings::Del('opf_remove_comments_be');
-Settings::Del('basic_html_minify_be');
-
 
 // deleting version too 
 Settings::Del("opf_version") ;

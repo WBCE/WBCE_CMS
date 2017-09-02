@@ -111,24 +111,6 @@
                     name="sys_rel" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>
-        <tr>
-            <td width="35%"><?php echo $OPF['REMOVE_COMMENTS'];?>:</td>
-            <td>
-                <input type="radio" <?php echo ($data['remove_comments']=='1') ? 'checked="checked"' :'';?>
-                    name="remove_comments" value="1"><?php echo $OPF['ENABLED'];?>
-                <input type="radio" <?php echo (($data['remove_comments'])=='0') ? 'checked="checked"' :'';?>
-                    name="remove_comments" value="0"><?php echo $OPF['DISABLED'];?>
-            </td>
-        </tr>
-        <tr>
-            <td width="35%"><?php echo $OPF['BASIC_HTML_MINIFY'];?>:</td>
-            <td>
-                <input type="radio" <?php echo ($data['basic_html_minify']=='1') ? 'checked="checked"' :'';?>
-                    name="basic_html_minify" value="1"><?php echo $OPF['ENABLED'];?>
-                <input type="radio" <?php echo (($data['basic_html_minify'])=='0') ? 'checked="checked"' :'';?>
-                    name="basic_html_minify" value="0"><?php echo $OPF['DISABLED'];?>
-            </td>
-        </tr>
 
         
         <!-- BACKEND -->
@@ -179,26 +161,6 @@
                     name="css_to_head_be" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>
-        <tr>
-            <td width="35%"><?php echo $OPF['REMOVE_COMMENTS'];?>:</td>
-            <td>
-                <input type="radio" <?php echo ($data['remove_comments_be']=='1') ? 'checked="checked"' :'';?>
-                    name="remove_comments_be" value="1"><?php echo $OPF['ENABLED'];?>
-                <input type="radio" <?php echo (($data['remove_comments_be'])=='0') ? 'checked="checked"' :'';?>
-                    name="remove_comments_be" value="0"><?php echo $OPF['DISABLED'];?>
-            </td>
-        </tr>
-        <tr>
-            <td width="35%"><?php echo $OPF['BASIC_HTML_MINIFY'];?>:</td>
-            <td>
-                <input type="radio" <?php echo ($data['basic_html_minify_be']=='1') ? 'checked="checked"' :'';?>
-                    name="basic_html_minify_be" value="1"><?php echo $OPF['ENABLED'];?>
-                <input type="radio" <?php echo (($data['basic_html_minify_be'])=='0') ? 'checked="checked"' :'';?>
-                    name="basic_html_minify_be" value="0"><?php echo $OPF['DISABLED'];?>
-            </td>
-        </tr>
-
-        
         
         <!-- REPLACEMENTS -->
         
