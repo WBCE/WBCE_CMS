@@ -111,6 +111,15 @@
                     name="sys_rel" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>
+        <tr>
+            <td width="35%"><?php echo $OPF['REMOVE_SYSTEM_PH'];?>:</td>
+            <td>
+                <input type="radio" <?php echo ($data['remove_system_ph']=='1') ? 'checked="checked"' :'';?>
+                    name="remove_system_ph" value="1"><?php echo $OPF['ENABLED'];?>
+                <input type="radio" <?php echo (($data['remove_system_ph'])=='0') ? 'checked="checked"' :'';?>
+                    name="remove_system_ph" value="0"><?php echo $OPF['DISABLED'];?>
+            </td>
+        </tr>
 
         
         <!-- BACKEND -->
@@ -161,7 +170,17 @@
                     name="css_to_head_be" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>
-        
+        <tr>
+            <td width="35%"><?php echo $OPF['REMOVE_SYSTEM_PH'];?>:</td>
+            <td>
+                <input type="radio" <?php echo ($data['remove_system_ph_be']=='1') ? 'checked="checked"' :'';?>
+                    name="remove_system_ph_be" value="1"><?php echo $OPF['ENABLED'];?>
+                <input type="radio" <?php echo (($data['remove_system_ph_be'])=='0') ? 'checked="checked"' :'';?>
+                    name="remove_system_ph_be" value="0"><?php echo $OPF['DISABLED'];?>
+            </td>
+        </tr>
+
+      
         <!-- REPLACEMENTS -->
         
         <tr><td colspan="2"><br /><strong><?php echo $OPF['REPLACEMENT_CONF'];?>:</strong></td></tr>

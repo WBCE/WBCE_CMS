@@ -40,3 +40,4 @@ $OPF['REPLACE_STUFF'] = 'Ersetze title, keywords oder description aus Modulen he
 $OPF['JS_MAILTO'] = 'Javascript für Mailto-Filter';
 $OPF['SHORT_URL'] = 'ShortUrl-Filter (kein /pages/, kein .php; htaccess-Anpassung erforderlich!)';
 $OPF['CSS_TO_HEAD'] = 'CSS in den Head transferieren';
+$OPF['REMOVE_SYSTEM_PH'] = 'Vom Core automatisch generierte Kommentare löschen.';

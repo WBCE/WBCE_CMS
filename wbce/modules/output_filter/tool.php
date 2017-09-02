@@ -32,14 +32,17 @@ if($doSave) {
     $data['wblink']           = (int)(intval(isset($_POST['wblink']) ? $_POST['wblink'] : 0) != 0);
     $data['short_url']        = (int)(intval(isset($_POST['short_url']) ? $_POST['short_url'] : 0) != 0);
     $data['sys_rel']          = (int)(intval(isset($_POST['sys_rel']) ? $_POST['sys_rel'] : 0) != 0);
-   
+    $data['remove_system_ph']          = (int)(intval(isset($_POST['remove_system_ph']) ? $_POST['remove_system_ph'] : 0) != 0);
+  
     //backend
     $data['droplets_be']         = (int)(intval(isset($_POST['droplets_be']) ? $_POST['droplets_be'] : 0) != 0);
     $data['auto_placeholder_be'] = (int)(intval(isset($_POST['auto_placeholder_be']) ? $_POST['auto_placeholder_be'] : 0) != 0);
     $data['move_stuff_be']       = (int)(intval(isset($_POST['move_stuff_be']) ? $_POST['move_stuff_be'] : 0) != 0);
     $data['replace_stuff_be']    = (int)(intval(isset($_POST['replace_stuff_be']) ? $_POST['replace_stuff_be'] : 0) != 0);
     $data['css_to_head_be']      = (int)(intval(isset($_POST['css_to_head_be']) ? $_POST['css_to_head_be'] : 0) != 0);
+    $data['remove_system_ph_be']             = (int)(intval(isset($_POST['remove_system_ph_be']) ? $_POST['remove_system_ph_be'] : 0) != 0);
 
+    
     // dont use JAvascript Mailto if no mailto filter active.
     if ($data['js_mailto'] and !$data['mailto_filter']) $data['js_mailto']=0;
 
@@ -71,6 +74,7 @@ if($doSave) {
         $errmsg.=(string)Settings::Set("opf_wblink", $data['wblink']);
         $errmsg.=(string)Settings::Set("opf_short_url", $data['short_url']);
         $errmsg.=(string)Settings::Set("opf_sys_rel", $data['sys_rel']);     
+        $errmsg.=(string)Settings::Set("opf_remove_system_ph", $data['remove_system_ph']);     
         
         //backend
         $errmsg.=(string)Settings::Set("opf_droplets_be", $data['droplets_be']);
@@ -78,6 +82,7 @@ if($doSave) {
         $errmsg.=(string)Settings::Set("opf_move_stuff_be", $data['move_stuff_be']);
         $errmsg.=(string)Settings::Set("opf_replace_stuff_be", $data['replace_stuff_be']);
         $errmsg.=(string)Settings::Set("opf_css_to_head_be", $data['css_to_head_be']);      
+        $errmsg.=(string)Settings::Set("opf_remove_system_ph_be", $data['remove_system_ph_be']);     
         
         if($errmsg=="") {
         //anything ok
@@ -114,6 +119,7 @@ if($doSave) {
     $data['wblink']            = Settings::Get('opf_wblink',1);
     $data['short_url']         = Settings::Get('opf_short_url',0);    
     $data['sys_rel']           = Settings::Get('opf_sys_rel',1);
+    $data['remove_system_ph']           = Settings::Get('opf_remove_system_ph',1);
  
     //backend
     $data['droplets_be']        = Settings::Get('opf_droplets_be',1);
@@ -121,6 +127,7 @@ if($doSave) {
     $data['move_stuff_be']      = Settings::Get('opf_move_stuff_be',1);
     $data['replace_stuff_be']   = Settings::Get('opf_replace_stuff_be',1);
     $data['css_to_head_be']     = Settings::Get('opf_css_to_head_be',1);
+    $data['remove_system_ph_be']           = Settings::Get('opf_remove_system_ph_be',1);
 
 
 }
