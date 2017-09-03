@@ -5,6 +5,833 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2017-09-03:** Christoph Bleiweis [[09aa99dc](https://github.com/WBCE/WBCE_CMS/commit/09aa99dcb10a7c92d697d6707223b3c487ffe65d)]
+   > Twig 1.35-DEV
+
+ * **2017-09-03:** Christoph Bleiweis [[86a82d75](https://github.com/WBCE/WBCE_CMS/commit/86a82d755f678fcec4abc1909f274bfc6d210bb5)]
+   > PHPMailer 5.2.25
+
+ * **2017-09-03:** NorHei [[cea5888e](https://github.com/WBCE/WBCE_CMS/commit/cea5888e6695528cc2be8877a8dbb65c512d3487)]
+   > Merge branch 'master' of https://github.com/WBCE/WBCE_CMS
+
+ * **2017-09-03:** NorHei [[e65dd809](https://github.com/WBCE/WBCE_CMS/commit/e65dd809b9f7cfe34c48b6ee8a3cae18350f886b)]
+   > Two more spaces ...
+
+ * **2017-09-03:** NorHei [[f7f3b643](https://github.com/WBCE/WBCE_CMS/commit/f7f3b643561c3884971371355815ae35b0e39dc6)]
+   > Some extra spaces caused trouble , copy paste issue ..
+
+ * **2017-09-02:** Christoph Bleiweis [[c17acb9a](https://github.com/WBCE/WBCE_CMS/commit/c17acb9af14bde32e5393cfd33d06c5799d12f77)]
+   > small fixes vor wbce flat .htt
+
+ * **2017-09-02:** NorHei [[ab2eec8a](https://github.com/WBCE/WBCE_CMS/commit/ab2eec8ae434365a804e4bdb56d461a6e18a869c)]
+   > Now we just use a simple Filter to avoid confusion
+
+ * **2017-09-02:** NorHei [[5da0a1c2](https://github.com/WBCE/WBCE_CMS/commit/5da0a1c2038614507d2b1bc1ff90dac8b006bf05)]
+   > Undone last Commit
+
+ * **2017-09-02:** NorHei [[ff16a04a](https://github.com/WBCE/WBCE_CMS/commit/ff16a04aff71faccc15e5c78ff8be233b0a0ed2c)]
+   > Enhanced  output filter
+     To avoid confusion placeholders and other comments are removed.
+     In addition we added a simple html minify.
+
+ * **2017-09-01:** Martin Hecht [[e48b48a9](https://github.com/WBCE/WBCE_CMS/commit/e48b48a9bc9086d30672290abb8ef677d0cdb009)]
+   > fix OpF filter hooks
+
+ * **2017-08-27:** NorHei [[e9e2ca6c](https://github.com/WBCE/WBCE_CMS/commit/e9e2ca6c41b97da3a7060923147aac75f0da095f)]
+   > Some fixes for placeholders in simplepagehead
+
+ * **2017-08-27:** NorHei [[d9e4eda6](https://github.com/WBCE/WBCE_CMS/commit/d9e4eda6ac2d6f199498e251944c0b2d0249516c)]
+   > Breadcrumb error in hortal solved
+
+ * **2017-08-27:** Christoph Bleiweis [[935eda56](https://github.com/WBCE/WBCE_CMS/commit/935eda568f8dff99697327dbe1270b6e5c51a96c)]
+   > fix for Undefined variable: breadcrumbs
+     closes #297
+
+ * **2017-08-27:** instantflorian [[23a90bd5](https://github.com/WBCE/WBCE_CMS/commit/23a90bd5dd492e9abae04f4ff0c0bdcc9da6e129)]
+   > Update EN.php
+     small changes for displaying the same information as in german
+ * **2017-08-27:** instantflorian [[4c607227](https://github.com/WBCE/WBCE_CMS/commit/4c607227389a459ec401e47e06343a482b2c5d4e)]
+   > Update DE.php
+     corrected some typos
+ * **2017-08-27:** Christoph Bleiweis [[60a1db3a](https://github.com/WBCE/WBCE_CMS/commit/60a1db3af719afe6114426c40ed806a83f748f98)]
+   > Remove double loading of template var in class admin
+
+ * **2017-08-27:** instantflorian [[9c8fab42](https://github.com/WBCE/WBCE_CMS/commit/9c8fab42b2b4aee032d9deeede3b64b23beb0f27)]
+   > Update index.php
+     Fix vor #294
+ * **2017-08-27:** NorHei [[2ae6c627](https://github.com/WBCE/WBCE_CMS/commit/2ae6c6279a64ee2bdb805c1d78984496d19966a8)]
+   > Merge pull request #293 from WBCE/filter_from_2_0_and_opf
+     Filter from 2 0 and opf and multimodule 
+ * **2017-08-27:** NorHei [[92271b41](https://github.com/WBCE/WBCE_CMS/commit/92271b41fc7bf23550ab5352d6e285521222e7fa)]
+   > Merge pull request #292 from WBCE/multimodule
+     Multimodule
+ * **2017-08-27:** NorHei [[836d7817](https://github.com/WBCE/WBCE_CMS/commit/836d781729fffd9300a2171e27f551de85a42378)]
+   > Merge pull request #291 from WBCE/master
+     get the recent changes on master into Filters 
+ * **2017-08-27:** NorHei [[6ee6c2dd](https://github.com/WBCE/WBCE_CMS/commit/6ee6c2dd9a8047625abe8774e2f32ffdd583a526)]
+   > Merge branch 'filter_from_2_0_and_opf' into master
+
+ * **2017-08-26:** Christoph Bleiweis [[eaaaa341](https://github.com/WBCE/WBCE_CMS/commit/eaaaa341a36aade11b4a83257d1c9f70ffceb249)]
+   > improved session timer
+
+ * **2017-08-26:** Christoph Bleiweis [[73563828](https://github.com/WBCE/WBCE_CMS/commit/735638280a456811191b8fbb7f4678dab382ecc3)]
+   > User management uses now select2
+
+ * **2017-08-26:** NorHei [[fee21532](https://github.com/WBCE/WBCE_CMS/commit/fee2153299996fcb00d61050dae644cd182b5a7b)]
+   > Direct output pipe for all situations
+     Especially important , it clears all buffers.
+     
+     I extended class wb to offer a direct output pipe for modules/templates
+     and even for the core. This is especial usefulll for Javascript ajax requests
+     and JSON replies.
+     
+     If you call
+     
+     $admin->DirectOutput("ANTON AUS TIROL");
+     or in frontend
+     $wb->DirectOutput("ANTON AUS TIROL");
+     
+     It will output only "ANTON AUS TIROL" and  stopp script execution immediately.
+     
+     If you just set
+     
+     $admin->sDirectOutput="";
+     or in frontend
+     $wb->sDirectOutput="";
+     
+     It will runn through full Page generation but still "ANTON AUS TIROL"
+     Will be the only answer given back as page.
+     
+     Replace ANTON AUS TIROL  whith you favourite JSON or XLM answer.
+
+ * **2017-08-26:** NorHei [[c67c1ad6](https://github.com/WBCE/WBCE_CMS/commit/c67c1ad6c5471132320eaa0bf3e986d9fcdf3a05)]
+   > Hopefully fixed the halfway already implemented multimodule functions
+     So one Module can fullify multiple roles.
+
+ * **2017-08-25:** Christoph Bleiweis [[9ff534ac](https://github.com/WBCE/WBCE_CMS/commit/9ff534ac7ad9b200bec757b011984aa9bc84b8e9)]
+   > small fix for correct html output
+
+ * **2017-08-25:** NorHei [[d1524075](https://github.com/WBCE/WBCE_CMS/commit/d1524075d69fc970e8b70c51828f22641fb88d99)]
+   > Some small fixes for hortal
+
+ * **2017-08-25:** NorHei [[5e6cc915](https://github.com/WBCE/WBCE_CMS/commit/5e6cc91543f2e4ad44aff2a94dede1d024e7ebd1)]
+   > Some fixes for hortal , somehow it was broken
+
+ * **2017-08-25:** NorHei [[80e8b1cd](https://github.com/WBCE/WBCE_CMS/commit/80e8b1cd8d8d83ce5e08d4e0d4e246de7df9cd47)]
+   > Small fix forgot a few brackets
+
+ * **2017-08-25:** NorHei [[6f411431](https://github.com/WBCE/WBCE_CMS/commit/6f4114313b818dc8e408514e0fe26a31d0c15f7b)]
+   > Some refinements to outputfilters  eg deactivating move stuff
+     You can deactivate move stuff now in the template by writing
+     <!--(NO PH)-->
+     No placeholders
+     
+     <!--(NO MOVE)-->
+     No moving of code
+     
+     <!--(NO REPLACE)-->
+     No replacements
+     
+     If there are no placeholders present in the template
+     <!--(NO PH)-->  deactivates the whole system.
+
+ * **2017-08-25:** NorHei [[3d40ce3d](https://github.com/WBCE/WBCE_CMS/commit/3d40ce3d62c8b1ab10f2f9f67933931100d5db4b)]
+   > Cleaned up Hortal Template and added Placeholders.
+     Moved most php code to above template.
+     Corrected identing.
+     page_content ($block, $echo) now can return its content if you set
+     $echo to false. So no need for playing whith buffers.
+     Added placeholders for move and replace stuff.
+
+ * **2017-08-25:** NorHei [[20ed09c9](https://github.com/WBCE/WBCE_CMS/commit/20ed09c9a8bfae477e9ae710dbcc7b1a430eeb00)]
+   > Added page_content() function from 2.0 to frontend_functions
+     Now this function accepts the block names instead of the block id
+     and has a second parameter to either echo the content or return it
+     .
+     Default for second parameter  is $echo=true so contend is echoed.
+
+ * **2017-08-25:** NorHei [[c571405b](https://github.com/WBCE/WBCE_CMS/commit/c571405b0a24c38dfefc371c0ed9771abfdce206)]
+   > Adapted Backend Templates to new placeholders
+     Even though this isn't entirely necessary it will give us a more clean
+     source output in the BE.
+
+ * **2017-08-25:** NorHei [[6a461288](https://github.com/WBCE/WBCE_CMS/commit/6a4612882f7753e7c6406d2a83704aa0ac8a2e11)]
+   > Added a new method for modules to add stuff to the main template(JS, CSS, HTML, META and more)
+     Basicallly this is a extension to CSS to head , so modules, droplets, snipets and whatever can add
+     small blocks to several places in the template.
+     
+     In the First step a filter adds several placeholder to the template.
+     Some are for moving content to this location some for easy replacement of
+     some elements. If those placeholders are already present in the template
+     they are not set once more. In general its far better to set those
+     placeholders manually in your template. In addition you can define your
+     own placeholders if you need to.
+     
+     ```
+     <!--(PH) TITLE+ -->< title > wieder Anderer titel < / title><!--(PH) TITLE- -->
+     <!--(PH) META DESC+ --><meta name="description" content="bl bla "/><!--(PH) META DESC- -->
+     <!--(PH) META KEY+ --><meta name="keywords" content=""/><!--(PH) META KEY- -->
+     
+     <!--(PH) META HEAD+ -->
+     <!--(PH) META HEAD- -->
+     
+     <!--(PH) CSS HEAD TOP+ -->
+     <!--(PH) CSS HEAD TOP- -->
+     
+     <!--(PH) JS HEAD TOP+ -->
+     <!--(PH) JS HEAD TOP- -->
+     
+     <!--(PH) CSS HEAD BTM+ -->
+     <!--(PH) CSS HEAD BTM- -->
+     
+     <!--(PH) JS HEAD BTM+ -->
+     <!--(PH) JS HEAD BTM- -->
+     
+     <!--(PH) JS BODY TOP+ -->
+     <!--(PH) JS BODY TOP- -->
+     
+     <!--(PH) HTML BODY TOP+ -->
+     <!--(PH) HTML BODY TOP- -->
+     
+     <!--(PH) HTML BODY BTM+ -->
+     <!--(PH) HTML BODY BTM- -->
+     
+     <!--(PH) JS BODY BTM+ -->
+     <!--(PH) JS BODY BTM- -->
+     
+     ```
+     Have a look At the wbce page source in your browser.
+     Optionaly take a look into the default wbce templates
+     as they will be updated in one of the next commits.
+     
+     Now you can move your code into this places by simply echoing
+     
+     ```
+     <!--(MOVE) CSS HEAD BTM- -->
+     <style> .heinor1 {} </style>
+     <!--(END)-->
+     
+     <!--(MOVE) JS HEAD BTM+ -->
+     <!-- Just a comment -->
+     <script>alert('Hello!');</script>
+     <!--(END)-->
+     
+     <!--(MOVE) CSS HEAD BTM+ -->
+     <link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel=\"stylesheet\" >
+     <!--(END)-->
+     
+     ```
+     
+     OR replace the replaceablee tags whith
+     
+     ```
+     <!--(REPLACE) TITLE -->
+     < title > wieder Anderer titel < / title>
+     <!--(END)-->
+     
+     <!--(REPLACE) META DESC -->
+     <meta name=\"description\" content=\"bl bla \"/>
+     <!--(END)-->
+     
+     ```
+     This should come very handy for modules and anything else that wants to bring its own JS, CSS ....
+
+ * **2017-08-24:** NorHei [[5ae92e75](https://github.com/WBCE/WBCE_CMS/commit/5ae92e75ddfd290a68f5aac22ca0138f5b63e9ae)]
+   > Put the comments back in as they are needed and removed later
+     Still removed the unecessary space
+
+ * **2017-08-24:** NorHei [[b755a6cd](https://github.com/WBCE/WBCE_CMS/commit/b755a6cd5d8ca94eaaf3c693fe1fc5e59749df53)]
+   > Merge pull request #290 from WBCE/filter_from_2_0_and_opf
+     No Comments or other stuff allowed before Doctype declaration.
+ * **2017-08-24:** NorHei [[0e5a947a](https://github.com/WBCE/WBCE_CMS/commit/0e5a947ab05dd020881c2d0c4ac87b6f862b72c1)]
+   > No Comments or other stuff allowed before Doctype declaration.
+     This is not allowed in html !
+     
+     O
+
+ * **2017-08-24:** NorHei [[b4a885ef](https://github.com/WBCE/WBCE_CMS/commit/b4a885ef39e633a0e45410285f55036f045c9e0a)]
+   > Merge pull request #289 from WBCE/filter_from_2_0_and_opf
+     Filter from 2 0 and opf
+     
+     Quite a lot of changes to output filters
+     
+     CSS to head was fixed.  
+     CSS to head runns in backend now. 
+     Stefeks bakend droplets should be functional now.
+     Droples may bring their own CSS definitions , by simply echo them. 
+     they are moved to head then by the filter.   
+     ALL filters can be turned on and off . 
+     The horrible chaos of using binary flags for mail filter is replaced by simple constants. 
+     mdcr.js is loaded by the filter now , no more need to add this whith frontend modfiles. 
+     Prepared everything for a new JS to head filter.  
+ * **2017-08-22:** NorHei [[b4074a90](https://github.com/WBCE/WBCE_CMS/commit/b4074a906e08c9b953e222fd5dd04b32bb4bb160)]
+   > Filter routines , Main index.php tried to load wrong filter file.
+
+ * **2017-08-22:** NorHei [[c0fdcc2a](https://github.com/WBCE/WBCE_CMS/commit/c0fdcc2a8d8e74ba666c1ef519b9e2924842f03e)]
+   > Double loading of template var in class admin
+
+ * **2017-08-20:** NorHei [[076e7847](https://github.com/WBCE/WBCE_CMS/commit/076e78471f4bac0c853c057a25aaff26848a31d2)]
+   > Deactivated  all not yet needed stuff in Output filter module.
+     Plus its no longer necessary to add the javascript by frontend JS functions.
+
+ * **2017-08-20:** Christoph Bleiweis [[aad2b48a](https://github.com/WBCE/WBCE_CMS/commit/aad2b48ab15941741ecba1fb2d97da5f0e5d9472)]
+   > Add referer to config.php
+
+ * **2017-08-20:** NorHei [[d37800b3](https://github.com/WBCE/WBCE_CMS/commit/d37800b35077dbc291ca1a5ad330b064795db564)]
+   > Repaired Outputfilter backend tool
+     It relied on tools class for loading template. This is not in this version of wbce.
+     
+     Fixed template to correct text vars.
+
+ * **2017-08-20:** NorHei [[7872da32](https://github.com/WBCE/WBCE_CMS/commit/7872da32cfc3255fd40165f3db70a55254d59612)]
+   > Added text backend , as frontend already there.
+
+ * **2017-08-20:** NorHei [[ae0b3069](https://github.com/WBCE/WBCE_CMS/commit/ae0b3069abe66ec1edaa25742684a977c86771f0)]
+   > Droplets in Backend
+         From Now on its possible to use Droplets in then BE pages .
+         Instead of [[yourdroplet]] you have to use [[[yourdroplet]]]
+         As filtering for [[yourdroplet]] in the backend would replace all
+         droplets in WYSIWYG fields for example.
+     
+         In addition the extra <p> tags created by many Editors are filtered out.
+         <p>[[yourdroplet]]</p> will become
+     
+         [[yourdroplet]] again.
+     
+         Not sure if thats a goob idea but we will see.
+         This is only done in FE display.
+     
+         Right now all droplets can be used as BE Droplets, but i guess not many
+         reallly make sense.
+     
+         I really need to free Droplets from this silly eval , as this slows down
+         the execution speed drastically.
+
+ * **2017-08-20:** NorHei [[cba048a7](https://github.com/WBCE/WBCE_CMS/commit/cba048a76af747c7af826be39f2093681e9b100f)]
+   > Rework on class admin
+     Added Output buffer for operating whith filters in backend.
+     
+     Added option  $operateBuffer=true to print_header and print_footer.
+     So you can turn off Buffering if needed.
+     
+     Minimal changes to db queries
+     `function` LIKE \'%tool%\'
+     For later operation whith multimodules
+     
+     Repaired old register backend Modfiles
+     'BACKEND_BODY_MODULE_JS' => $this->register_backend_modfiles_body('js'),
+     This realy was missing , and noone ever noticed.
+
+ * **2017-08-20:** NorHei [[da256fee](https://github.com/WBCE/WBCE_CMS/commit/da256fee100b8ce098307f1773f738079819a2f5)]
+   > class Admin cleanup
+     Removed unnecessary require and  used far shorter
+     direct access protection.
+
+ * **2017-08-20:** NorHei [[2c77007f](https://github.com/WBCE/WBCE_CMS/commit/2c77007fafd671607bdeb293a44bec311053459a)]
+   > mdcr.js is loaded by its output filter, no longer needed in frontend functions
+     Removed mdcr.js in register_frontend_modfiles() as it is already loaded by
+     mail filter outputfilter.
+
+ * **2017-08-20:** NorHei [[1e5e48df](https://github.com/WBCE/WBCE_CMS/commit/1e5e48df8965fcc821330fead1b78a7536080a5e)]
+   > Just to remind us that CSS is now allowed in Droplets
+     As we use "css to head" filter , all Css from droplets is moved to the head section
+
+ * **2017-08-20:** NorHei [[4894cd64](https://github.com/WBCE/WBCE_CMS/commit/4894cd6410382f2ebede0045d2c462323a95809d)]
+   > Reviewed inclusion of filters in index.php
+
+ * **2017-08-20:** NorHei [[b39416ad](https://github.com/WBCE/WBCE_CMS/commit/b39416adb8ad853edb9fd90e5f70bc18119d42c7)]
+   > Added  Outputfilter module  from 2.0-dev
+     The filter api is a joke , so we nicely do it the ol manual way
+     Which gives us controll over all filters
+     
+     Still need to check initialize and tool.phpO
+
+ * **2017-08-19:** Christoph Bleiweis [[11f146ad](https://github.com/WBCE/WBCE_CMS/commit/11f146ade7e2a40c8aba83346c0405da79b13cfd)]
+   > CKE 4.7.2 Standard Edition
+
+ * **2017-08-19:** Christoph Bleiweis [[3abe067f](https://github.com/WBCE/WBCE_CMS/commit/3abe067fd69fadbc4e6008f0621dac87f8926e49)]
+   > Upgrade-Script is called now Update-Script
+
+ * **2017-08-19:** Christoph Bleiweis [[45a74a67](https://github.com/WBCE/WBCE_CMS/commit/45a74a67f6cc96a14592252b31b9208e79162a83)]
+   > Add a comment for easier handling
+
+ * **2017-08-19:** Christoph Bleiweis [[ae9041ef](https://github.com/WBCE/WBCE_CMS/commit/ae9041ef8d571fdfe2fc505c3deb1a3c1cabe8de)]
+   > Topics 0.9.4.2
+
+ * **2017-08-12:** Christoph Bleiweis [[bc3d156c](https://github.com/WBCE/WBCE_CMS/commit/bc3d156c7cbef775f741be2dbe29bc2da99d20a0)]
+   > Remove unnecessary or outdated files and folders
+
+ * **2017-08-11:** Christoph Bleiweis [[67059510](https://github.com/WBCE/WBCE_CMS/commit/6705951077dcb1b8b5b6d9d01584e649fc7460ea)]
+   > Wording/Branding
+
+ * **2017-08-06:** Christoph Bleiweis [[4cc73965](https://github.com/WBCE/WBCE_CMS/commit/4cc739650daad73d55f84fad652b584ab5deacca)]
+   > WBCE Flat Theme 1.5
+
+ * **2017-08-04:** Christoph Bleiweis [[9419eb4e](https://github.com/WBCE/WBCE_CMS/commit/9419eb4e628df92f5650f73eda40f46a55d14efc)]
+   > Remove unnecessary upgrade code
+
+ * **2017-08-04:** Christoph Bleiweis [[513d9a39](https://github.com/WBCE/WBCE_CMS/commit/513d9a39e1b7d737a349ff9d2bb63a3b8a608dc1)]
+   > small fix for WBCE Flat Theme
+     Hopefully remove the last background flag
+
+ * **2017-08-02:** Christoph Bleiweis [[23053cfb](https://github.com/WBCE/WBCE_CMS/commit/23053cfbaaac127a3f2230e92db845cb57fbe2f5)]
+   > Merge pull request #288 from WBCE/Upgrade-Script-2.0
+     Upgrade Script 2.0
+ * **2017-08-01:** Christoph Bleiweis [[9716423c](https://github.com/WBCE/WBCE_CMS/commit/9716423c5d43501b6f9267cf9969c6448df41e1d)]
+   > Upgrade Script 2.0
+
+ * **2017-07-30:** Christoph Bleiweis [[a3682833](https://github.com/WBCE/WBCE_CMS/commit/a3682833abbe1eff5c12652d446c71870c74d2b0)]
+   > Remove obsolete lines
+     These files are from a skipped version
+
+ * **2017-07-30:** Christoph Bleiweis [[b23ea088](https://github.com/WBCE/WBCE_CMS/commit/b23ea0882c6439be1fd4ee625869ba0c4037b45a)]
+   > small installer update
+     closes #6 and closes #212
+
+ * **2017-07-29:** Christoph Bleiweis [[2d9736a7](https://github.com/WBCE/WBCE_CMS/commit/2d9736a7bfc05f6fcc881e39a60c70e643cb5d9d)]
+   > Twig 1.34.5-DEV
+
+ * **2017-07-29:** Christoph Bleiweis [[972b94e7](https://github.com/WBCE/WBCE_CMS/commit/972b94e7d67384db0478ed7a2e8a6e11d4e93014)]
+   > PHPMailer 5.2.24
+
+ * **2017-07-29:** Christoph Bleiweis [[27214fcd](https://github.com/WBCE/WBCE_CMS/commit/27214fcdac17bc495666b0e65550905d890949a4)]
+   > Merge pull request #287 from WBCE/Installer-2.0
+     * Installer 2.0
+     * Small update for the installer
+ * **2017-07-29:** Christoph Bleiweis [[3c311bb0](https://github.com/WBCE/WBCE_CMS/commit/3c311bb0f12df3b19740670d9adca5103d4fafbd)]
+   > Small update for the installer
+
+ * **2017-07-28:** Christoph Bleiweis [[d41aaef9](https://github.com/WBCE/WBCE_CMS/commit/d41aaef916e96898ab4b16dbd87ba33d7f2defd6)]
+   > Fix a bug in topics
+     see: https://forum.wbce.org/viewtopic.php?pid=11693#p11693
+
+ * **2017-07-28:** Christoph Bleiweis [[1d524601](https://github.com/WBCE/WBCE_CMS/commit/1d524601e0f55f1a7d72536899841061d6e85e9b)]
+   > WBCE Flat Theme 1.4
+     some corrections and bumped version
+
+ * **2017-07-28:** Christoph Bleiweis [[44e9d792](https://github.com/WBCE/WBCE_CMS/commit/44e9d792b2a9ad31c7dd4a33bab687533014e9fa)]
+   > Installer 2.0
+
+ * **2017-07-28:** Christoph Bleiweis [[4d5fb965](https://github.com/WBCE/WBCE_CMS/commit/4d5fb9650dc85e59437164faa7152c4145c08a8d)]
+   > Merge pull request #286 from WBCE/class.admin-modifications-for-theme-stuff
+     class.admin modifications for theme stuff
+ * **2017-07-28:** Christoph Bleiweis [[2e996eab](https://github.com/WBCE/WBCE_CMS/commit/2e996eab28ac5eec21d4e0e5cb64de04ae740154)]
+   > Update SM2 (#285)
+
+ * **2017-07-28:** Christoph Bleiweis [[02b4bfff](https://github.com/WBCE/WBCE_CMS/commit/02b4bffff560357a36a211b4704464080e4b60a1)]
+   > remove not needed Flag Root icon
+
+ * **2017-07-28:** Christoph Bleiweis [[c444d7a8](https://github.com/WBCE/WBCE_CMS/commit/c444d7a8004ca9afa1437021de57cd1b9a4fe034)]
+   > Display users in an option list
+
+ * **2017-07-28:** Christoph Bleiweis [[6645e326](https://github.com/WBCE/WBCE_CMS/commit/6645e326a7952ea4b6e14710ee88ab654a496d92)]
+   > Small fix for WBCE Flat Theme
+
+ * **2017-07-28:** Christoph Bleiweis [[5603edbe](https://github.com/WBCE/WBCE_CMS/commit/5603edbedeb2cd008e51ce412e18c83dccb13f3e)]
+   > Add session timeout and php version to WBCE Flat Theme
+
+ * **2017-07-28:** Christoph Bleiweis [[7af9b658](https://github.com/WBCE/WBCE_CMS/commit/7af9b658d426675af155924fb2428b5ee8c36cca)]
+   > Add session timeout to AR
+
+ * **2017-07-28:** Christoph Bleiweis [[97f0ba6a](https://github.com/WBCE/WBCE_CMS/commit/97f0ba6a1a707b5e2da8b120ffea8b0b57be5438)]
+   > Some small fixes and duplicates for theme features
+     Hopefully the session timeout is still working correctly
+
+ * **2017-07-27:** instantflorian [[c06cc5f2](https://github.com/WBCE/WBCE_CMS/commit/c06cc5f2df4de77dfc56d540c88012f781c7af43)]
+   > Update Logo and default mailer name
+
+ * **2017-07-27:** NorHei [[95f54591](https://github.com/WBCE/WBCE_CMS/commit/95f54591b9a33d65009c57ccd341fe60798f93fb)]
+   > Removed unecessary calls for Twig TE Autoloader
+
+ * **2017-07-27:** NorHei [[ca23b994](https://github.com/WBCE/WBCE_CMS/commit/ca23b9943a880516044335d4e433f1075f61eeef)]
+   > Resetting errorlevel in upgradescript for use of new parameters
+
+ * **2017-07-27:** NorHei [[2b136bea](https://github.com/WBCE/WBCE_CMS/commit/2b136bea104eada041cc154b3c9ca0c828e2d568)]
+   > Merge pull request #284 from WBCE/Maintainance-Mode-Fixes
+     Maintainance mode fixes
+ * **2017-07-27:** NorHei [[1ed35832](https://github.com/WBCE/WBCE_CMS/commit/1ed35832f55e44b8489c483a8aa61d00bf73874b)]
+   > Merge pull request #283 from WBCE/Admintool_Problem
+     Admintool problem
+ * **2017-07-27:** NorHei [[42a2cfe6](https://github.com/WBCE/WBCE_CMS/commit/42a2cfe69f7b12902fd7c88f6530d080e9ff5e81)]
+   > Admin had an empty ['MODULE_PERMISSIONS' so the old one failed.
+
+ * **2017-07-27:** NorHei [[da9d2ffc](https://github.com/WBCE/WBCE_CMS/commit/da9d2ffcd9b27f8ed30c9e2f99f8368f9dbe0dae)]
+   > Fixed error messages shown when admin tool called while not logged in.
+
+ * **2017-07-27:** NorHei [[64681136](https://github.com/WBCE/WBCE_CMS/commit/6468113695c1964046e9afb5d0504e3a170ed0b1)]
+   > minimal changes on maintainance mode tool .
+
+ * **2017-07-27:** NorHei [[40339a40](https://github.com/WBCE/WBCE_CMS/commit/40339a40f4412275cdc88247c9d5b1e28c69f406)]
+   > bumped version of maintainance mode module.
+
+ * **2017-07-27:** NorHei [[72e7a2fa](https://github.com/WBCE/WBCE_CMS/commit/72e7a2fae618aab90d1c9d2e4091594a9cd34173)]
+   > more type juggling in class frontend
+
+ * **2017-07-27:** NorHei [[bf2f3d17](https://github.com/WBCE/WBCE_CMS/commit/bf2f3d17b684cd5af9c674e17c0fdc9582a853c6)]
+   > small fix for settings class as php makes trouble whith its type juggling
+
+ * **2017-07-27:** NorHei [[ffc33eb4](https://github.com/WBCE/WBCE_CMS/commit/ffc33eb416c67fc30ed30efc94c03c34d4b584ed)]
+   > Removed false settings as the secureform switcher was a copy from maintainance mode module
+
+ * **2017-07-27:** NorHei [[f03c9a96](https://github.com/WBCE/WBCE_CMS/commit/f03c9a96922320d7e39de34654f7fa75b9b15baa)]
+   > Fixed Maintainance mode Checkbox
+
+ * **2017-07-27:** Christoph Bleiweis [[e55191d3](https://github.com/WBCE/WBCE_CMS/commit/e55191d35b5464db247b970ac759dcbbe35e8920)]
+   > Some small language file corrections
+
+ * **2017-07-26:** Christoph Bleiweis [[929b2132](https://github.com/WBCE/WBCE_CMS/commit/929b2132a3b00a20a494ae09ea7a5e1c308df136)]
+   > remove advancedThemeWbFlat
+
+ * **2017-07-26:** Christoph Bleiweis [[29a5bf35](https://github.com/WBCE/WBCE_CMS/commit/29a5bf358f79c2c55476ef3e896f60fe2cc7de31)]
+   > set WBCE Flat Theme as default
+
+ * **2017-07-26:** Christoph Bleiweis [[c122602c](https://github.com/WBCE/WBCE_CMS/commit/c122602c227cd5cb3d94e155dd0fd6adaf9db876)]
+   > add WBCE Flat Theme 1.3.1
+
+ * **2017-07-23:** instantflorian [[aa14eb00](https://github.com/WBCE/WBCE_CMS/commit/aa14eb00f1a751a4345033b99bd6f08d0cfea04e)]
+   > Update README.md
+
+ * **2017-07-14:** Christoph Bleiweis [[6ff73ac2](https://github.com/WBCE/WBCE_CMS/commit/6ff73ac26fe1c705f9ca240ff8f86a756df53dff)]
+   > corrects the path to the flag icons
+
+ * **2017-07-14:** Christoph Bleiweis [[20c78430](https://github.com/WBCE/WBCE_CMS/commit/20c78430d1a460f0929e3c31fded9ed81030fec5)]
+   > add some comments from 2.0-dev
+
+ * **2017-07-14:** Christoph Bleiweis [[de377c6f](https://github.com/WBCE/WBCE_CMS/commit/de377c6f00b1320cb0152c8311aa316e978659fa)]
+   > Remove blank from the removal list
+
+ * **2017-07-12:** Christoph Bleiweis [[ca6d4e1b](https://github.com/WBCE/WBCE_CMS/commit/ca6d4e1bc341be0a75f5282b94c29a439db03f9f)]
+   > Better Thumbnails
+
+ * **2017-07-07:** Christoph Bleiweis [[61f8e065](https://github.com/WBCE/WBCE_CMS/commit/61f8e0658189ca704a80c5af91b6ae1e3e1258fa)]
+   > remove not needed css file
+     This file is already delivered with jquery-plugins.js
+
+ * **2017-07-07:** Christoph Bleiweis [[a449dc14](https://github.com/WBCE/WBCE_CMS/commit/a449dc1456307d14954b33020a563a0375e358dc)]
+   > Fix wrong page levels
+     fixes #282
+
+ * **2017-07-02:** Christoph Bleiweis [[83d70969](https://github.com/WBCE/WBCE_CMS/commit/83d70969e647bce1c8777ec6780a83c53585056c)]
+   > CKE 4.7.1 Standard Edition
+
+ * **2017-07-02:** Christoph Bleiweis [[5c17e0af](https://github.com/WBCE/WBCE_CMS/commit/5c17e0af4e5699d28d7a5cdbd5f2cb01243454d5)]
+   > Fix for wbstats upgrade.php
+
+ * **2017-07-01:** Christoph Bleiweis [[b38268df](https://github.com/WBCE/WBCE_CMS/commit/b38268df150997362960a338ee362be4942e55a6)]
+   > wbstats css fix
+
+ * **2017-07-01:** Christoph Bleiweis [[67ce3401](https://github.com/WBCE/WBCE_CMS/commit/67ce3401779deeb536b1d712ed64e080a36a3d04)]
+   > wbstats 0.1.11
+
+ * **2017-07-01:** Christoph Bleiweis [[3de0b4ae](https://github.com/WBCE/WBCE_CMS/commit/3de0b4ae8f7760f5787c4dd661e7687c31387296)]
+   > MiniForm 0.11
+
+ * **2017-07-01:** Christoph Bleiweis [[48a6646e](https://github.com/WBCE/WBCE_CMS/commit/48a6646e49a257c3984e4e64181b2ffc9f380512)]
+   > simplepagehead 0.60
+
+ * **2017-07-01:** Christoph Bleiweis [[ac0a5d41](https://github.com/WBCE/WBCE_CMS/commit/ac0a5d41b99154a0616aa1b20fe02aa7118ec3c3)]
+   > wbce_hortal searchbutton fix
+
+ * **2017-06-27:** instantflorian [[e352ab7b](https://github.com/WBCE/WBCE_CMS/commit/e352ab7b76c5b4f5dbfbf04419ea6b8e308441b3)]
+   > Fixes for Flat BE-Theme
+     remove horizontal scrollbar in dashboard, always visible save button for
+     settings, adding "CMS" to header
+
+ * **2017-06-24:** NorHei [[219a27e0](https://github.com/WBCE/WBCE_CMS/commit/219a27e08901adb7b0c1bac6bc004dab8381ea14)]
+   > Imported cleaned uo initialize.php from 2.0
+     Did some more refinements and added Doxygen compatible documentation
+
+ * **2017-06-23:** NorHei [[3843651c](https://github.com/WBCE/WBCE_CMS/commit/3843651cae9b2308a1e56525a08347efa6a1f1cd)]
+   > Fixed a few ulgy requre , better use require_once.
+
+ * **2017-06-23:** NorHei [[c181c68d](https://github.com/WBCE/WBCE_CMS/commit/c181c68dc6c38592553ea176966ee296a4c6f0cb)]
+   > Loading functions.php in initialize , like in 2.0
+
+ * **2017-06-23:** NorHei [[07d43199](https://github.com/WBCE/WBCE_CMS/commit/07d43199d444570c7413132505fb23f157cf0338)]
+   > Modified last fix as constants possibly set only after upgrade.
+
+ * **2017-06-23:** NorHei [[22a143d8](https://github.com/WBCE/WBCE_CMS/commit/22a143d8464eaaab85104b54ed31b27ab6d32859)]
+   > Bumped version of secureform Switcher
+
+ * **2017-06-23:** NorHei [[02b54a63](https://github.com/WBCE/WBCE_CMS/commit/02b54a638fc5e2ead7bee98b8f0c1f7926d0361a)]
+   > Txpofix on last change
+
+ * **2017-06-23:** NorHei [[53446454](https://github.com/WBCE/WBCE_CMS/commit/53446454df12f990f40591433f55f1e91128c163)]
+   > Fixed Error whith missing WB_SESSION_TIMEOUT
+     Use of undefined constant WB_SESSION_TIMEOUT -
+     assumed 'WB_SESSION_TIMEOUT' in
+     C:\xampp\htdocs\framework\class.admin.php on line 113.
+
+ * **2017-06-22:** Christoph Bleiweis [[3b36e1f0](https://github.com/WBCE/WBCE_CMS/commit/3b36e1f0842f0dddacc5d87acc7257e44bd95a03)]
+   > Update Upgrade Script
+
+ * **2017-06-21:** Christoph Bleiweis [[cda38d23](https://github.com/WBCE/WBCE_CMS/commit/cda38d23ea355d41148e067ba4c3371b241c8dad)]
+   > Small Fixes again for some Constants
+
+ * **2017-06-21:** Christoph Bleiweis [[bfb70951](https://github.com/WBCE/WBCE_CMS/commit/bfb709518cac335d92a623c311b9cca70fb8a1d9)]
+   > Revert user_search
+
+ * **2017-06-21:** NorHei [[c66be474](https://github.com/WBCE/WBCE_CMS/commit/c66be4742c7474ebc758ebc88441aff5efb0f921)]
+   > Merge pull request #280 from WBCE/admintool_upgrade
+     Upgrade admintool functionality to the version from 2.0_dev
+ * **2017-06-21:** NorHei [[2b10e6d5](https://github.com/WBCE/WBCE_CMS/commit/2b10e6d5c5c213d706e8609f4889ee5ba3f35b66)]
+   > Sql error when saving sections whith blocks deactivated
+     Plus some small security enhancements by  validating SQL input.
+
+ * **2017-06-21:** NorHei [[8a0eae1f](https://github.com/WBCE/WBCE_CMS/commit/8a0eae1f1a8ac7fa12654f0dd2558464b88f058c)]
+   > One more constant fix
+
+ * **2017-06-21:** NorHei [[bae13b18](https://github.com/WBCE/WBCE_CMS/commit/bae13b188041a7f355173dc4c84652b028f229b6)]
+   > Small Fixes for some Constants
+     Forgot the b   W_   instead WB_
+
+ * **2017-06-21:** NorHei [[97cbe7e9](https://github.com/WBCE/WBCE_CMS/commit/97cbe7e95883c840b0f6c4915ea935668c067310)]
+   > Upgrade admintool functionality to the version from 2.0_dev
+
+ * **2017-06-21:** NorHei [[35737055](https://github.com/WBCE/WBCE_CMS/commit/35737055e53fbb2c5dbd8e13178df03c2268982e)]
+   > Merge pull request #279 from WBCE/functional_sessions
+     Functional sessions
+ * **2017-06-20:** NorHei [[ca51c649](https://github.com/WBCE/WBCE_CMS/commit/ca51c649ba0a3922b5cb35981d73ef8aad04a860)]
+   > Fixed Settings again
+
+ * **2017-06-20:** NorHei [[867ad945](https://github.com/WBCE/WBCE_CMS/commit/867ad94575e5633d111cc0d3d35f8e87eeca45ab)]
+   > Reverted to older version b896ea89bf3cefc1e9dcf8b58fd68af5b09405f8
+
+ * **2017-06-20:** NorHei [[4e1d77c1](https://github.com/WBCE/WBCE_CMS/commit/4e1d77c17a9099fa082a590fdfdcc0eb44192964)]
+   > Merge branch 'functional_sessions' of https://github.com/WBCE/WBCE_CMS into functional_sessions
+
+ * **2017-06-20:** NorHei [[ac5d729f](https://github.com/WBCE/WBCE_CMS/commit/ac5d729f9785c39b5a7887aca7df22c44eb7a9ec)]
+   > Hopefully fixed the issues whith settings
+     Modified new Settings Class to comply whith old bugs
+     
+     true == "enabled"
+     
+     plus
+     
+     Old settings class converts "true" to true.
+     
+     I hope i fixed all issues now.
+     Later we should cleanup this mess.
+
+ * **2017-06-20:** instantflorian [[fdee46f7](https://github.com/WBCE/WBCE_CMS/commit/fdee46f7f6370613da2c5daae739249898c058c2)]
+   > Update page_tree.php
+     changed values for MANAGE_SECTIONS
+ * **2017-06-20:** instantflorian [[b8a395fb](https://github.com/WBCE/WBCE_CMS/commit/b8a395fbbfd40443b31a7d09b546cb02eb9ed956)]
+   > Update page_tree.php
+     changed values for MANAGE_SECTIONS
+ * **2017-06-20:** instantflorian [[e103e768](https://github.com/WBCE/WBCE_CMS/commit/e103e768443bbdbaf87f50a37593595e73ad6d1c)]
+   > Update settings.php
+     MANAGE_SECTIONS etc.
+ * **2017-06-20:** instantflorian [[57469fff](https://github.com/WBCE/WBCE_CMS/commit/57469fff26792f165653615d1687125fe8fb4429)]
+   > Update page_tree.php
+     MANAGE_SECTIONS is now true/false instead of enabled/disabled
+ * **2017-06-20:** instantflorian [[d8103cab](https://github.com/WBCE/WBCE_CMS/commit/d8103cab210f1c740c7b8ee266e12f20d12c4ad0)]
+   > Update sections_save.php
+     MANAGE_SECTIONS is now true/false instead of enabled/disabled
+ * **2017-06-20:** instantflorian [[7334d2db](https://github.com/WBCE/WBCE_CMS/commit/7334d2dbbce8f740ea5e34200be10565f029e041)]
+   > Update sections.php
+     MANAGE_SECTIONS is now true/false and no more enabled/disabled
+ * **2017-06-18:** NorHei [[5d5e2a7e](https://github.com/WBCE/WBCE_CMS/commit/5d5e2a7ee60a46b130507c0540bf86024c965964)]
+   > fixed missing sections button on pages modify
+
+ * **2017-06-18:** NorHei [[b896ea89](https://github.com/WBCE/WBCE_CMS/commit/b896ea89bf3cefc1e9dcf8b58fd68af5b09405f8)]
+   > One More Fix for upgrade
+
+ * **2017-06-18:** NorHei [[37c747de](https://github.com/WBCE/WBCE_CMS/commit/37c747defeafb27110ee6a18908bfefe642058ae)]
+   > Small fix for Upgrade Script
+
+ * **2017-06-17:** NorHei [[82f73b9a](https://github.com/WBCE/WBCE_CMS/commit/82f73b9afec4fc5182a628c128e382e1ca66a5f2)]
+   > ERROR, undefined constant WB_SECFORM_TIMEOUT
+     Notice: Use of undefined constant WB_SECFORM_TIMEOUT - assumed 'WB_SECFORM_TIMEOUT' in /www/htdocs/xxxxxxxx/xxxx.xxxx.xx/framework/wsession.php on line 43
+     
+     Now it finds a viable expiration time even if constant is not defined.
+     
+     There was a missing constant in admin class too.
+     
+     Added better error reporting in installer.
+
+ * **2017-06-16:** NorHei [[4e5fee61](https://github.com/WBCE/WBCE_CMS/commit/4e5fee61e6b5f7f2b972f81eff4eed87ec999308)]
+   > Removed Server Based Timeout cookie Servertime != Local time
+
+ * **2017-06-16:** NorHei [[f7993898](https://github.com/WBCE/WBCE_CMS/commit/f79938987657ba41c5544b56bae9f0ca22e2437d)]
+   > Add WB_SESSION_TIOMEOUT to class admin and Flat theme
+
+ * **2017-06-16:** NorHei [[95f275f9](https://github.com/WBCE/WBCE_CMS/commit/95f275f9157ab9b035848d5f2116e4a4433968be)]
+   > Cookie WBCELastAccessTime now always send
+     We always send the Cookie "WBCELastAccessTime"
+     Whith Last Access Time and Session timeout time in Json Format.
+     
+     "Time" = Last access Servertime
+     "Timeout"  = WB_SESSION_TIMEOUT
+     
+     So it should be Pretty easy now to make a timer.
+
+ * **2017-06-16:** NorHei [[b6872bfe](https://github.com/WBCE/WBCE_CMS/commit/b6872bfebc715e3fd9a3153aeb4ddb2a04028ea8)]
+   > Updated the secure form switcher
+     Renamed it a bit and added Session Setting Support
+     .
+
+ * **2017-06-16:** NorHei [[ceac2eab](https://github.com/WBCE/WBCE_CMS/commit/ceac2eab8d16b0fc0c360da10afc1aa37a929876)]
+   > Updated Secureform Class
+     Now we use the Session as a Token Basis
+     Needed to adapt name of session Class
+
+ * **2017-06-16:** NorHei [[fe2475f3](https://github.com/WBCE/WBCE_CMS/commit/fe2475f345462ec53c52efa33f7baf33d2767c67)]
+   > Updated class settings
+
+ * **2017-06-16:** NorHei [[e9c68f83](https://github.com/WBCE/WBCE_CMS/commit/e9c68f8313ac4239f0fd07c40513e0f63e726ffb)]
+   > Imported DB based sessions from dev version
+     Added some more documentation and tried to simplyfy a few things.
+     Autoloader is upgraded too.
+
+ * **2017-06-16:** NorHei [[4280c1c2](https://github.com/WBCE/WBCE_CMS/commit/4280c1c21eeac6863be6d9fa9991abc82a36b973)]
+   > Updated autoloader to dev version
+
+ * **2017-06-16:** NorHei [[059609dd](https://github.com/WBCE/WBCE_CMS/commit/059609dd452faca2c24dd35be665311bac132f9a)]
+   > Wee need enhanced DB functions from 2.0 Dev
+     They are stable so just import
+
+ * **2017-06-16:** NorHei [[854fd19e](https://github.com/WBCE/WBCE_CMS/commit/854fd19eff73e84cb32ced6d3f87e1d05561f7e5)]
+   > Small simplification on Initialize
+
+ * **2017-06-16:** NorHei [[de0cc461](https://github.com/WBCE/WBCE_CMS/commit/de0cc461e6eddc43e491dbbff464a92439fbb447)]
+   > Bumped Version
+
+ * **2017-06-01:** Christoph Bleiweis [[295c71f0](https://github.com/WBCE/WBCE_CMS/commit/295c71f02bc3c6a8c6a788009d876bf8765204f7)]
+   > Remove the page_tree icons
+     The icons are not needed anymore. WBCE links already to the theme icons
+
+ * **2017-05-31:** Christoph Bleiweis [[8d4f64ad](https://github.com/WBCE/WBCE_CMS/commit/8d4f64adba09608a95844b88679710c414128adc)]
+   > Bugfix for last change
+
+ * **2017-05-31:** Christoph Bleiweis [[7b485337](https://github.com/WBCE/WBCE_CMS/commit/7b485337db59f1f2843fa2ebecef779eba978347)]
+   > use flags in the languages folder
+     hopefully fixed now
+
+ * **2017-05-30:** Christoph Bleiweis [[4d4fcce2](https://github.com/WBCE/WBCE_CMS/commit/4d4fcce2fafa760c1058a44bc0d8ba5cc71b2051)]
+   > Update YUI to the latest 2.x version
+
+ * **2017-05-30:** instantflorian [[0d43a9e2](https://github.com/WBCE/WBCE_CMS/commit/0d43a9e2f559aa0f2051f7adeb5432a19c2edfcf)]
+   > Fix typo in de.php
+     regisriert -> registriert
+
+ * **2017-05-30:** Christoph Bleiweis [[83b883c9](https://github.com/WBCE/WBCE_CMS/commit/83b883c99150fb51e23987c691fdae0b880e09e2)]
+   > Change template.html to template.php
+
+ * **2017-05-30:** Christoph Bleiweis [[572e355d](https://github.com/WBCE/WBCE_CMS/commit/572e355d7f1865366927e805370c90d2dde131cc)]
+   > Update colorbox to 1.6.4.2
+
+ * **2017-05-30:** Christoph Bleiweis [[f52afa27](https://github.com/WBCE/WBCE_CMS/commit/f52afa277ccd1a3792902cfc149dedb6fb41ada8)]
+   > Update sm2 language files
+
+ * **2017-05-30:** Christoph Bleiweis [[725ea0e4](https://github.com/WBCE/WBCE_CMS/commit/725ea0e4d8f7c5cfe624a8f0012c604172ece85b)]
+   > some corrections for language files
+
+ * **2017-05-30:** Christoph Bleiweis [[7090b341](https://github.com/WBCE/WBCE_CMS/commit/7090b3410a88afa6f5ca357fcaa74d5de1f4cd6a)]
+   > replace ccdil with entity (decimal) code
+
+ * **2017-05-30:** Christoph Bleiweis [[7991190b](https://github.com/WBCE/WBCE_CMS/commit/7991190b782246ab7317dd652b8156eebd0039d4)]
+   > UFT 8 conform topics 0.9.4.1
+
+ * **2017-05-30:** Christoph Bleiweis [[62b0a39f](https://github.com/WBCE/WBCE_CMS/commit/62b0a39f995e9b295ef449a17885c068e25f0e55)]
+   > UTF 8 conform templates
+
+ * **2017-05-29:** Christoph Bleiweis [[088e5884](https://github.com/WBCE/WBCE_CMS/commit/088e58842e8693e6cfb698ada0db8860056423c0)]
+   > Bugfix for select2 issues
+
+ * **2017-05-29:** Christoph Bleiweis [[fc270861](https://github.com/WBCE/WBCE_CMS/commit/fc270861ac64ac4612c996a5a7d6dac0b69f0a2d)]
+   > Remove Flags from AR
+
+ * **2017-05-29:** Christoph Bleiweis [[a47ce9ec](https://github.com/WBCE/WBCE_CMS/commit/a47ce9ec3c9c8308a3d93e58e9b945968b93a7a6)]
+   > Bugfixes for last changes
+
+ * **2017-05-28:** Christoph Bleiweis [[26cd0bae](https://github.com/WBCE/WBCE_CMS/commit/26cd0bae4c9ca2d708a1bba0d20ae81d8f8b0e4b)]
+   > Bugfix for AR
+
+ * **2017-05-28:** Christoph Bleiweis [[612dd5c8](https://github.com/WBCE/WBCE_CMS/commit/612dd5c893029dded425ba049a99d72659edfbc6)]
+   > use the flags in the languages folder
+
+ * **2017-05-28:** Christoph Bleiweis [[25a77bbf](https://github.com/WBCE/WBCE_CMS/commit/25a77bbf5474cca6c339e283a01280f471a5c8b4)]
+   > Branding/Wording
+
+ * **2017-05-28:** Christoph Bleiweis [[e3b583e3](https://github.com/WBCE/WBCE_CMS/commit/e3b583e3dbe5ac511a72c38434ea490621b80a8a)]
+   > Remove the Fallback-Theme
+
+ * **2017-05-28:** Christoph Bleiweis [[fc36649e](https://github.com/WBCE/WBCE_CMS/commit/fc36649e00a99055ccabeb7fcf827f12a6398327)]
+   > Remove backup from core
+     We move it to the AOR and replace it with a better solution in a next WBCE version.
+
+ * **2017-05-28:** Christoph Bleiweis [[8ad5dd3b](https://github.com/WBCE/WBCE_CMS/commit/8ad5dd3b8d0ca59ab291b5461de4753db292f14d)]
+   > Remove user_search from core
+     We move it to the AOR and replace it with a better solution in a next WBCE version.
+
+ * **2017-05-27:** Christoph Bleiweis [[6fe53fb4](https://github.com/WBCE/WBCE_CMS/commit/6fe53fb447564d7b6ed6b3604ef4a3aaf3d23ff5)]
+   > Requirement PHP 5.4.0 & human friendly PHP error levels
+     Increased minimum requirements to PHP 5.4.0 and changes PHP error levels into human friendly format
+
+ * **2017-05-27:** Christoph Bleiweis [[cd1f4e41](https://github.com/WBCE/WBCE_CMS/commit/cd1f4e415f20fa86ed5273558df3d16250ccbae1)]
+   > Added small language updates and country flags
+
+ * **2017-05-27:** Christoph Bleiweis [[7d0cc517](https://github.com/WBCE/WBCE_CMS/commit/7d0cc5174db4b7eec992c791b00ffa3d06144f48)]
+   > Set WBCE version number
+
+ * **2017-05-27:** Christoph Bleiweis [[34ac6cf4](https://github.com/WBCE/WBCE_CMS/commit/34ac6cf4b0062fddfcb677aa2dc6e0803f067aa5)]
+   > Update for jQuery
+     With the switch to jQuery 2.2.4, we stop the support for IE8 and older.
+     JQuery Migrate is now available in the frontend.
+     JQuery 1.12.4 still exists as a legacy file.
+
+ * **2017-05-27:** Christoph Bleiweis [[e0dc01a3](https://github.com/WBCE/WBCE_CMS/commit/e0dc01a309a816b3f9b40a90e9ba45118ec44dc0)]
+   > remove images from admin folder
+     The folder is no longer required
+
+ * **2017-05-27:** Christoph Bleiweis [[0ea48b8a](https://github.com/WBCE/WBCE_CMS/commit/0ea48b8aec5af6e969b1c737bade0a3da5660f6a)]
+   > some more fixes
+
+ * **2017-05-27:** Christoph Bleiweis [[5ead188c](https://github.com/WBCE/WBCE_CMS/commit/5ead188cd44c59492ef83cceb9550972535dae66)]
+   > Bugfix for advancedThemeWbFlat
+
+ * **2017-05-27:** Christoph Bleiweis [[484c74a4](https://github.com/WBCE/WBCE_CMS/commit/484c74a4fb78ad5e0a6ae61ebca202806df2dea0)]
+   > Bugfix for user_search
+
+ * **2017-05-25:** Christoph Bleiweis [[c481b3fe](https://github.com/WBCE/WBCE_CMS/commit/c481b3fe9b048aa8dc19d21fa9d05875fdd63dc0)]
+   > Update advancedThemeWbFlat to 0.7
+
+ * **2017-05-25:** Christoph Bleiweis [[b140e487](https://github.com/WBCE/WBCE_CMS/commit/b140e48743244aa8a6b706e13b73b322962e8ad4)]
+   > Update pagecloner to 1.0.2
+
+ * **2017-05-25:** Christoph Bleiweis [[e5309971](https://github.com/WBCE/WBCE_CMS/commit/e530997170e98c6597ee1365c25b49bcc2e79052)]
+   > Update user_search to 0.51
+
+ * **2017-05-19:** Christoph Bleiweis [[8ed812f2](https://github.com/WBCE/WBCE_CMS/commit/8ed812f213750038b39a7f29defed72aa19b835b)]
+   > Update Droplets to 2.1.4
+     Revert "Fix for no droplet bug" - The fix does not work correctly and
+     add some missing css styles
+
+ * **2017-05-17:** Christoph Bleiweis [[384762a2](https://github.com/WBCE/WBCE_CMS/commit/384762a2a57e2a86b428e66720fb76fe04ac92bf)]
+   > Update droplets to 2.1.3
+     Fix for no droplet bug
+
+ * **2017-05-17:** Christoph Bleiweis [[cb2514e7](https://github.com/WBCE/WBCE_CMS/commit/cb2514e7595061c3675508614e7a424e2b28252b)]
+   > Update droplets to 2.1.2
+     Bugfix for backup function
+
+ * **2017-05-17:** Christoph Bleiweis [[1e168bbf](https://github.com/WBCE/WBCE_CMS/commit/1e168bbf2f4c641213d9aff3591f7c756d2aa70f)]
+   > correections for droplets info.php
+
+ * **2017-05-17:** Christoph Bleiweis [[5e68095c](https://github.com/WBCE/WBCE_CMS/commit/5e68095c765fceb80cd0540c57df54994d441262)]
+   > Update Droplets to 2.1.1
+     some template bugfixes
+
+ * **2017-05-17:** Christoph Bleiweis [[d15b3c06](https://github.com/WBCE/WBCE_CMS/commit/d15b3c0641973771c7f06a0cc04ecf031ea1e6c0)]
+   > remove wysiwyg_style
+
+ * **2017-05-17:** Christoph Bleiweis [[ff35006e](https://github.com/WBCE/WBCE_CMS/commit/ff35006e1ac741fd70b45c985162fc5532473bed)]
+   > Update Droplets to 2.1.0
+
+ * **2017-05-15:** instantflorian [[cdff3aa5](https://github.com/WBCE/WBCE_CMS/commit/cdff3aa5a24eb824d00740f91c851f60dc16b29f)]
+   > Update changelog
+
  * **2017-05-15:** Christoph Bleiweis [[a5b93901](https://github.com/WBCE/WBCE_CMS/commit/a5b939014ce3333253e62fecfb243b907cde335f)]
    > Set WBCE version number
 
