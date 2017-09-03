@@ -48,7 +48,7 @@ var LANGUAGE = '{LANGUAGE}';
     var wbSessionTiomeout= {WB_SESSION_TIMEOUT};
     var seconds = new Date().getTime() / 1000;
     seconds = Math.round(seconds);
-    document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/'
+    document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/';
 
     var upgradeTime = {WB_SESSION_TIMEOUT};
     var seconds = upgradeTime;

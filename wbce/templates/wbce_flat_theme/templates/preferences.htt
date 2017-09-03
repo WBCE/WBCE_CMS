@@ -82,7 +82,6 @@
             </div>
         </div>
         <hr class="fg12">
-        </hr>
         <div class="row">
             <div class="fg9 push3">
                 <button type="submit" id="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
