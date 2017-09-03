@@ -181,8 +181,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
         
 /* ### filter type: full qualified URLs to relative URLs##################### */
         if(OPF_REMOVE_SYSTEM_PH_BE){
-            if (file_exists($sFilterDirectory.'filterRemoveSystemPh.php ')) {
-                require_once($sFilterDirectory.'filterRemoveSystemPh.php ');
+            if (file_exists($sFilterDirectory.'filterRemoveSystemPh.php')) {
+                require_once($sFilterDirectory.'filterRemoveSystemPh.php');
                 $content = doFilterRemoveSystemPh($content);
             }
         }
