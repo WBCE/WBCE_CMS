@@ -411,6 +411,12 @@ $ccontroll= WB_PATH . "/modules/captcha_control/upgrade.php" ;
 if (is_file($ccontroll)) require_once $ccontroll;
 
 
+// Output Filter //
+echo "<br />Update Output Filter<br />";
+$outputfilter= WB_PATH . "/modules/output_filter/upgrade.php" ;
+require_once $outputfilter;
+
+
 /**********************************************************
 *  - check tables comin with WebsiteBaker
 */
