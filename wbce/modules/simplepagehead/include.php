@@ -113,8 +113,13 @@ if (!function_exists('simplepagehead')) {
             $tp = WB_PATH.'/templates/'.TEMPLATE;
             $iconInRoot = false;
             if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) FAVICON+ -->";
-            if (file_exists(WB_PATH.'/favicon.ico')) {   echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n";  $iconInRoot = true;  }
-            if (file_exists($tp.'/favicon.ico') && $iconInRoot == false) { echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n";  } 
+            if (file_exists($tp.'/favicon.ico')) {
+				echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n";
+			} else {
+				if (file_exists(WB_PATH.'/favicon.ico')) {
+					echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n";
+				}			
+			}
             if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) FAVICON- -->";
             
             if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) APPLE TOUCH+ -->";
