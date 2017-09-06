@@ -72,7 +72,7 @@ var LANGUAGE = '{LANGUAGE}';
     }
     var countdownTimer = setInterval('timer()', 1000);
 </script>
-<!--(PH) JS HEAD BTM+ -->
+<!--(PH) JS HEAD BTM- -->
 </head>
 <body>
 <!--(PH) JS BODY TOP+ -->
