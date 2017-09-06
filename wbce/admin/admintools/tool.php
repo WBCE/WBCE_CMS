@@ -65,6 +65,7 @@ if ($toolCheck) {
     $saveDefault = (isset($_POST['save_default']));
     $noPage=false;
     if (isset($_POST['no_page']) and $_POST['no_page']=="no_page") $noPage=true;
+    if (isset($_GET['no_page']) and $_GET['no_page']=="no_page")   $noPage=true;
     if (isset($module_nopage) and $module_nopage)                  $noPage=true;
 
     // create admin-object but suppress headers if no page is set
