@@ -18,7 +18,7 @@
                 // in case of death link show original link
                     return $aMatches[0];
                 } else {
-                    return $aMatches[1].$sAppRel.$aMatches[2];
+                    return  preg_replace('/(?<!:)\/+/','/',$aMatches[1].$sAppRel.$aMatches[2]);
                 }
             },
             $content
