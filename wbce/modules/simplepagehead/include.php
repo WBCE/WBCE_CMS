@@ -109,6 +109,27 @@ if (!function_exists('simplepagehead')) {
 		if ($the_keywords == '') { $the_keywords = WEBSITE_KEYWORDS; }
 		
 		
+		 if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META HEAD+ -->"; 
+        echo "\n";       
+        echo '<meta http-equiv="Content-Type" content="text/html; charset='; if(defined('DEFAULT_CHARSET')) { echo DEFAULT_CHARSET; } else { echo 'utf-8'; } echo "\"$endtag>\n";
+		
+		$the_language = strtolower(LANGUAGE);
+		echo "<meta name=\"language\" content=\"$the_language\"$endtag>\n";
+		
+		
+		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) TITLE+ -->"; 
+        echo "<title>$the_title</title>"; 
+        if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) TITLE- -->"; 
+        echo "\n";
+		if (OPF_AUTO_PLACEHOLDER) echo '<!--(PH) META DESC+ -->'; 
+		echo '<meta name="description" content="'.$the_description."\"$endtag>"; 
+		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META DESC- -->"; 
+		echo "\n";
+		if (OPF_AUTO_PLACEHOLDER) echo '<!--(PH) META KEY+ -->'; 
+		echo '<meta name="keywords" content="'. $the_keywords ."\"$endtag>"; 
+		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META KEY- -->"; 
+		echo "\n";
+        
 		if ($favicon == 1) {              
             $tp = WB_PATH.'/templates/'.TEMPLATE;
             $iconInRoot = false;
@@ -133,27 +154,7 @@ if (!function_exists('simplepagehead')) {
             if (file_exists($tp.'/apple-touch-icon-152x152.png')) { echo '<link rel="apple-touch-icon" sizes="152x152" href="'.TEMPLATE_DIR.'/apple-touch-icon-152x152.png'."\"$endtag>\n"; }
             if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) APPLE TOUCH- -->";            
         }
-		
-		
-		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) TITLE+ -->"; 
-        echo "<title>$the_title</title>"; 
-        if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) TITLE- -->"; 
-        echo "\n";
-		if (OPF_AUTO_PLACEHOLDER) echo '<!--(PH) META DESC+ -->'; 
-		echo '<meta name="description" content="'.$the_description."\"$endtag>"; 
-		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META DESC- -->"; 
-		echo "\n";
-		if (OPF_AUTO_PLACEHOLDER) echo '<!--(PH) META KEY+ -->'; 
-		echo '<meta name="keywords" content="'. $the_keywords ."\"$endtag>"; 
-		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META KEY- -->"; 
-		echo "\n";
-        
-        if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META HEAD+ -->"; 
-        echo "\n";       
-        echo '<meta http-equiv="Content-Type" content="text/html; charset='; if(defined('DEFAULT_CHARSET')) { echo DEFAULT_CHARSET; } else { echo 'utf-8'; } echo "\"$endtag>\n";
-		
-		$the_language = strtolower(LANGUAGE);
-		echo "<meta name=\"language\" content=\"$the_language\"$endtag>\n";
+       
 		
 		if ($norobotstag == 1) {
 			$indexstring = '';
