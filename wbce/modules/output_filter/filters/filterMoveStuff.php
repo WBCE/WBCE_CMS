@@ -6,6 +6,9 @@
  */
 function doFilterMoveStuff($sContent) {
 
+
+
+
     // Templates does not want any movement ? 
     if (strpos($sContent,'<!--(NO MOVE)-->') !== false) {return $sContent;}
 
@@ -24,7 +27,7 @@ function doFilterMoveStuff($sContent) {
     // The regex fetches this:
     // <!--(MOVE)(Content1) -->(Content2)<!--(END)-->  
     // Arbeitet auf dem gesamten String(s)->Zeilen werden nicht beachtet und ist Ungreedy
-    $sRegex = '/\<\!\-\-\(MOVE\)\ (.+([\+\-]))\ \-\-\>(.+)\<\!\-\-\(END\)\-\-\>/sU'; 
+    $sRegex = '/\s*?\<\!\-\-\(MOVE\)\ (.+([\+\-]))\ \-\-\>(.+)\<\!\-\-\(END\)\-\-\>\s*?/sU'; 
     preg_match_all($sRegex, $sContent, $aMatches);
     
     //print_r($aMatches);

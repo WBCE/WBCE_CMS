@@ -25,7 +25,7 @@ function doFilterReplaceStuff($sContent) {
     // The regex fetches this:
     // <!--(MOVE)(Content1) -->(Content2)<!--(END)-->  
     // Arbeitet auf dem gesamten String(s)->Zeilen werden nicht beachtet und ist Ungreedy
-    $sRegex = '/\<\!\-\-\(REPLACE\)\ (.+)\ \-\-\>(.+)\<\!\-\-\(END\)\-\-\>/sU'; 
+    $sRegex = '/\s*?\<\!\-\-\(REPLACE\)\ (.+)\ \-\-\>(.+)\<\!\-\-\(END\)\-\-\>\s*?/sU'; 
     preg_match_all($sRegex, $sContent, $aMatches);
     
     //print_r($aMatches);
