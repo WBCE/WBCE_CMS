@@ -32,6 +32,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
             }
         }
 
+        $menu_link = false;
         $canModify = false;
         if ($userHasPermission && (($page['visibility'] === 'deleted' && PAGE_TRASH === 'inline') || $page['visibility'] !== 'deleted')) {
             $canModify = true;
@@ -53,6 +54,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
             $querySections = $database->query('SELECT `module` FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id` = ' . $page['page_id'] . ' AND `module` = "menu_link"');
             if ($querySections->numRows() > 0) {
                 $canManageSections = false;
+                $menu_link = true;
             }
         }
 
@@ -111,8 +113,9 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
                             <a href="{restoreURL}" title="<?= $TEXT['RESTORE'] ?>"><i class="fa fa-fw fa-recycle"></i></a>
                             <?php
                         }
-                        if ($canManageSections) {
-                            ?>
+                        if (isset ($menu_link) && $menu_link == true) { ?>
+                        <i class="fa fa-link"></i>
+                        <?php } elseif ($canManageSections) { ?>
                             <a href="{modifySectionsURL}" title="<?= $HEADING['MANAGE_SECTIONS'] ?>"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
                         <?php } ?>
                     </td>
