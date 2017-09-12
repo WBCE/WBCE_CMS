@@ -1,164 +1,23 @@
 <?php
+/**
+    @file /templates/wbce_hortal/index.php
+    @brief Die Index Datei enthält das eigentliche (PHP) Template 
+    
+    Die include.php enthält sämtliche PHP definitionen die dann in der index.php (Also genau hier!!!) in das 
+    in das eigentliche Template eingefügt werden. 
+    
+*/
 //Das ist ein einzeiliger PHP-Kommentar. Er beginnt mit //
 /*Das ist ein mehrzeiliger PHP-Kommentar, Er beginnt mit /* und endet mit  */
-
-//Diese Kommentare helfen dir im folgenden, ein modernes Template zu verstehen.
-
-/* 
-Der erste Teil enthält sämtliche PHP definitionen die dann im Zweiten Teil in das 
-in das eigentliche Template eingefügt werden. 
-*/
-
-// Datei vor direktem Zugriff schützen 
-if(!defined('WB_URL')) { header('Location: ../index.php'); die();}
+//Diese Kommentare helfen dir im folgenden, das Template zu verstehen.
 
 
 //============================================================================================================
-// Hier einige Stellen an denen du Variablen einstellen kannst
-
-// Name des Home buttons
-$homename = 'Home';
-
-// Sonderbehandlung für Block 2 auf Mobilgeräten
-$block2mobile = 3; //0: simply hide on mobiles. 1: Move to bottom. 2: Move to Top, 3: Show Switch to open
-
-// Soll der Browser den Cache nutzen oder nicht. 
-// Durch das Anhängen eines GET parameters mit aktuellem Zeistempel wird der Browser überlistet. 
-$refreshstring = ''; // ''=> Browser caches JS, CSS ...//  '?rs='.time()=> no cache 
-
-// Seiten editieren Link anzeigen
-$template_edit_link = false;
-
-
-//============================================================================================================
-
-//============================================================================================================
-// Hier kommt jetzt der PHP Teil 
-
-// info.php laden , wird immer mal gebraucht 
-require_once __DIR__.'/info.php'; //Wir laden die info.php
-
-//So kannst du feststellen, ob die Seite die Startseite ist und dann die Ausgabe anders machen:
-$isstartpage = false;
-if ( !isset($page_id) ) { $isstartpage = true;}
-
-// Als admin angemeldet oder nicht ?
-$isAdmin=false;
-if ($wb->is_authenticated() AND $wb->ami_group_member('1')) $isAdmin=true;
-
-// Der Admin möchte immer das Aktuellste sehen
-if ($isAdmin) $refreshstring ='?rs='.time();
-
-// Der Admin darf immer die Seite editieren.
-if ($isAdmin) $template_edit_link = true;
-
-// Generate vistor statistic if module is installed 
-if (file_exists(WB_PATH.'/modules/wbstats/count.php')) { 
-    include (WB_PATH.'/modules/wbstats/count.php'); 
-} 
-
-// Menue: 
-// Fuer das Menue ist showmenu2 zustaendig.
-// Du kannst das auch direkt dort aufrufen, wo es gebraucht wird.
-// Aber hier speichern wir es gleich in eine Variable $mainmenu, damit wir es spaeter griffbereit haben:
-// Hier ist sehr viel angegeben, oft kommst du mit weniger aus:
-$mainmenu = show_menu2(
-    1, 
-    SM2_ROOT, 
-    SM2_ALL, 
-    SM2_ALL|SM2_BUFFER, 
-    '<li class="[class] lev[level]"><a href="[url]" target="[target]" class="lev[level] [class]" data-pid=[page_id]><span>[menu_title]</span></a>', 
-    '</li>', 
-    '<ul>', 
-    '</ul>', 
-    false, 
-    false
-);
-
-// Breadcrumb Navigation
-//Breadcrumbs: Diese zeigen wir NICHT auf der Startseite:
-$breadcrumbs="";
-if ($isstartpage !== true) {            
-    $breadcrumbs = show_menu2(
-        1, 
-        SM2_ROOT, 
-        SM2_ALL, 
-        SM2_CRUMB|SM2_BUFFER, 
-        '<span class="[class]">[a][menu_title]</a></span>', 
-        '', 
-        '', 
-        '', 
-        '<span><a href="'.WB_URL.'">'.$homename.'</a></span> <span class="[class]">[a][menu_title]</a></span>'
-    ); 
-}       
-            
-// if we have subdirectories and aren't on start page , generate a sidebar menu 
-$menuside = '';
-if (!$isstartpage) {
-    $menuside= show_menu2(
-        1, 
-        SM2_ROOT+1, 
-        SM2_CURR+5, 
-        SM2_TRIM|SM2_BUFFER,  
-        '<li ><a class="[class] lev[level]" href="[url]">[menu_title]</a>', 
-        '</li>', 
-        '<ul>', 
-        '</ul>'
-    );
-}
-            
-            
-
-//Bloecke
-//In der info.php des Templates koennen beliebige Inhaltsbloecke angegeben sein.
-//Ueblich ist aber eine bestimmte Aufteilung. Weiter unten geben wir diese Bloecke aus, und das Layout aendert sich, je nachdem, ob die Bloecke auch Inhalt haben.
-
-//Auch die Bloecke laden wir gleich hier in eine Variable $contentblock (Array), das hat Vorteile:
-
-
-foreach($block as $k=>$v){ //und haengen in einer Schleife alle an.
-    if ($k == 99) {continue;}  //ausser Block 99, der ist fuer "Keine Ausgabe" reserviert.
-    ob_start(); page_content($k); $contentblock[$k] = ob_get_clean();
-}
-
-// Manche Module koennen auch einen 2. Block ausgeben, der im ersten Block definiert wurde:
-if(defined('MODULES_BLOCK2') AND MODULES_BLOCK2 != '') { 
-    $contentblock[2] .= MODULES_BLOCK2; //der 2. Block wird einfach erweitert.
-}
-
-if(defined('TOPIC_BLOCK2') AND TOPIC_BLOCK2 != '') { 
-    $contentblock[2] = TOPIC_BLOCK2; //Bei Topics sollte der 2. Block aber vollstaendig ersetzt werden.
-}
-
-
-//Dieser Code ist noetig fuer die Blaettern-Schalter:
-//Alle Menu-Link Seiten heraussuchen und beim Blaettern ueperspringen. Sonst bleibt man an ihnen haengen.
-$theq = "SELECT page_id FROM ".TABLE_PREFIX."sections WHERE module = 'menu_link'";
-$query = $database->query($theq);
-$num = $query->numRows();
-$menulinks = array();
-if ($num > 0) {
-    while ($row = $query->fetchRow()) {
-        $page_id = (int) $row['page_id'];
-        $menulinks[] = $page_id;
-    }
-}
-$implodelinks=implode(',', $menulinks);
-
-
-
-// Jetzt haben wir alles, was wir fuer die Ausgabe brauchen.
+// Ab hier beginnt das eigentliche Template. 
 //============================================================================================================
 
 
-//============================================================================================================
-//Der folgende Bereich ist zu 99% bei allen modernen Templates (nahezu gleich) gleich. 
-//Du wirst hier bis fast zum Ende des <head> nichts aendern muessen
-//============================================================================================================
-
-
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="<?php echo strtolower(LANGUAGE); ?>">
 <head>
 <?php if(function_exists('simplepagehead')) {
