@@ -29,7 +29,8 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     die ('PHP-' . PHP_VERSION . ' found, but at last PHP-5.4.0 required !!');
 }
 
-
+// Starting Output buffering 
+ob_start();
 
 /**
     SOME EARLY CONSTANT HANDLING
@@ -501,3 +502,4 @@ function makePhExp($sList)
     //return preg_replace('/^(.*)$/', '/\[$1\]/s', $aList);
     return preg_replace('/^(.*)$/', '[$1]', $aList);
 }
+
