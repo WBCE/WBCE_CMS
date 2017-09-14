@@ -9,7 +9,7 @@ editAreaLoader.load_syntax["php"] = {
 			'include', 'require', 'include_once', 'require_once',
 			'for', 'foreach', 'as', 'if', 'elseif', 'else', 'while', 'do', 'endwhile',
             'endif', 'switch', 'case', 'endswitch',
-			'return', 'break', 'continue'
+			'return', 'break', 'continue', 'use', 'namespace'
 		]
 		,'reserved' : [
 			'_GET', '_POST', '_SESSION', '_SERVER', '_FILES', '_ENV', '_COOKIE', '_REQUEST',
@@ -125,6 +125,8 @@ editAreaLoader.load_syntax["php"] = {
 			    		,['endswitch']
 			    		,['endwhile']
 			    		,['return']
+			    		,['use']
+			    		,['namespace']
 			    		// function
 			    		,['unset', '§( {@} )']
 					]
