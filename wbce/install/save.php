@@ -167,8 +167,7 @@ $install_tables = true;
 // Begin website title code
 // Get website title
 if (!isset($_POST['website_title']) or $_POST['website_title'] == '') {
-    set_error(d('e12a: ').'Please enter a website title', 'website_title');
-    $IsError=true;
+    $_POST['website_title'] == 'My New Site';
 } else {
     $website_title = add_slashes($_POST['website_title']);
 }
@@ -235,29 +234,14 @@ if (isset($aMatches[1])) {
     $database_port = (int) $aMatches[1];
 }
 
-// PDO fix  http://php.net/manual/de/pdo.connections.php#82591
-if ($database_host=="localhost")
-    $database_host="127.0.0.1";
-
-$sPdoPort="";
-if (isset($database_port))
-    $sPdoPort=";port=".(string)$database_port;
 
 $database_charset = 'utf8';
 
-//LEts See if we are able to connect to DB  No DB class needed for this on first
+// Lets See if we are able to connect to DB.  No DB class needed for this on first.
 // I dont want any files Written before we know the content is worth it
 
 try {
-    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-        $dbtest = new pdo(
-            "mysql: host=$database_host $sPdoPort;dbname=$database_name",
-            $database_username,
-            $database_password,
-            array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-        );
-    } else {
-        if (isset($database_port))
+        if (!empty($database_port))
             $dbtest = new mysqli(
                 $database_host,
                 $database_username,
@@ -272,11 +256,10 @@ try {
                 $database_password,
                 $database_name
             );
-    }
 }
 catch (Exception $e) {
     $sMsg = d('e29: ').'Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
-        . $e->getMessage();
+        . $e->getMessage(). "Host: database_host, User: $database_username, Pass: $database_password, DB-Name: $database_name, Port: $database_port";
     // We end right here and dont collect any more errors
     set_error($sMsg,"",true);
 }
@@ -342,16 +325,12 @@ if (!file_exists(WB_PATH . '/framework/class.database.php')) {
 }
 include WB_PATH . '/framework/class.database.php';
 try {
-    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-        $database = new Database();
-    } else {
         $database = new database();
-    }
+    
 } catch (Exception $e) {
     $sMsg = d('e22: ').'Database host name, username and/or password incorrect.'. d('<br />MySQL Error:<br />')
     . d($e->getMessage());
     set_error($sMsg,"",true);
-
 }
 
 
