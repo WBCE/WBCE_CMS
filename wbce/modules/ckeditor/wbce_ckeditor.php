@@ -10,14 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if(!defined('WB_PATH')) {
-
-	require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-	throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
 
 /**
  * \brief CKEditor class that can be used to create editor
@@ -32,7 +26,7 @@ if(!defined('WB_PATH')) {
  */
 class CKEditor {
 	/** The version of %CKEditor. */
-	const version = '4.7.2';
+	const version = '4.7.3';
 	/** A constant string unique for each release of %CKEditor.	*/
 	const timestamp = 'B8DJ5M3';
 

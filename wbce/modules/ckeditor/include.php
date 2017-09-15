@@ -10,14 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if(!defined('WB_PATH')) {
-
-	require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-	throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
 
 $debug = false;
 
