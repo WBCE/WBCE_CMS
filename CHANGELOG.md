@@ -5,6 +5,74 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2017-09-15:** NorHei [[a72a1f48](https://github.com/WBCE/WBCE_CMS/commit/a72a1f4819619e3a158c4d0cfa7abe4763d44882)]
+   > Merge branch 'master' of https://github.com/WBCE/WBCE_CMS
+
+ * **2017-09-15:** NorHei [[90436aa3](https://github.com/WBCE/WBCE_CMS/commit/90436aa3fe4f168fdc66f0960a02a1daa3b0ac42)]
+   > Error Message on MAMP install
+     Warning: mysqli_connect(): (HY000/2002): Connection refused in
+     /Applications/MAMP/htdocs/wbce13/framework/class.database.php
+     on line 69
+     
+     Removed PDO stuff.
+     
+     In some cases pot was set 0 on connection attempt, this seems to
+     be ok on some php Versions but on others it is not.
+     
+     Changed the logic so this does not happen anymore.
+
+ * **2017-09-15:** Christoph Bleiweis [[22673b82](https://github.com/WBCE/WBCE_CMS/commit/22673b824622d2d5b0165051535eaa6900d88486)]
+   > CKE 4.7.3 Standard Edition
+
+ * **2017-09-14:** Christoph Bleiweis [[8c273b54](https://github.com/WBCE/WBCE_CMS/commit/8c273b54aa2aee40b8eb6a19a42140628bbe5303)]
+   > Bug fixes for EditArea (#301)
+
+ * **2017-09-12:** NorHei [[25686288](https://github.com/WBCE/WBCE_CMS/commit/2568628870e1247cac4fe3f02899fd55818c9055)]
+   > Updated Hortal to use include.php
+
+ * **2017-09-12:** NorHei [[4bdae4e7](https://github.com/WBCE/WBCE_CMS/commit/4bdae4e75e20da7b15c7f8e5e9488c9c09cafe33)]
+   > Output buffer problems ob_get_clean works different on PHP versions
+     ob_get_clean works different on different PHP versions, needed to
+     add a ob_start().
+
+ * **2017-09-11:** Christoph Bleiweis [[7fa7903f](https://github.com/WBCE/WBCE_CMS/commit/7fa7903f5629494d36319e9ca27d38d7b192c7f8)]
+   > page tree displays menu link items
+
+ * **2017-09-10:** NorHei [[b6d9bf1e](https://github.com/WBCE/WBCE_CMS/commit/b6d9bf1edf1ac708a1611c52c6a41af0aec346f1)]
+   > Regex Fixes  for Output filter (No more empty lines staying around)
+
+ * **2017-09-10:** NorHei [[b698dc57](https://github.com/WBCE/WBCE_CMS/commit/b698dc571ee29c7419f43ae7943949538e214eb2)]
+   > Handle Output generated in Snipits core , and so on
+     Applied a Patch so output from  Snippits core , and other
+     is handled by  the Outputfilter.
+
+ * **2017-09-09:** instantflorian [[09070985](https://github.com/WBCE/WBCE_CMS/commit/09070985b14c31ab101d90ae027453c858886bd9)]
+   > Meta attribute order / SMTP recommendation removal
+     Firefox complains if the charset/type of a page is not set inbetween the
+     first 1024 characters of a page and reloads it several times
+     (performance desaster), so the corresponding meta tag has to be placed
+     before all that favicon stuff. - And: temporarily removed the
+     recommendation to use SMTP for system generated mails since it does not
+     work on most servers any more (due to lacking TLS/SSL support)
+
+ * **2017-09-07:** Martin Hecht [[e9ff4103](https://github.com/WBCE/WBCE_CMS/commit/e9ff4103b176e69a6b141e0c9b0fbea16eca4294)]
+   > RelUrl: remove multiple slashes in sequence in url of course except for the double slashes after the protocol
+
+ * **2017-09-06:** NorHei [[313d101d](https://github.com/WBCE/WBCE_CMS/commit/313d101d8cec9347518457bf1db8a30fcbfba200)]
+   > Small Fix to display no header and footer on Admintools if required.
+
+ * **2017-09-06:** NorHei [[efba4b8c](https://github.com/WBCE/WBCE_CMS/commit/efba4b8cb039aeac05fea098c5b21741773f51bb)]
+   > Placeholders  had a bug in Admin Themes
+
+ * **2017-09-04:** Christoph Bleiweis [[68f479a0](https://github.com/WBCE/WBCE_CMS/commit/68f479a0d8c8db2ee6488746b83488e5b98a2362)]
+   > Corrects incorrect loading of the favicon
+
+ * **2017-09-04:** Martin Hecht [[ad42f3b6](https://github.com/WBCE/WBCE_CMS/commit/ad42f3b652424c44baec590c3c6a72510d835052)]
+   > upgrade output_filter module in update.php
+
+ * **2017-09-03:** instantflorian [[6ad9a4e1](https://github.com/WBCE/WBCE_CMS/commit/6ad9a4e17b4cfbdd300cdcc1bec5dd919b5ba78d)]
+   > Update Changelog
+
  * **2017-09-03:** Christoph Bleiweis [[09aa99dc](https://github.com/WBCE/WBCE_CMS/commit/09aa99dcb10a7c92d697d6707223b3c487ffe65d)]
    > Twig 1.35-DEV
 
