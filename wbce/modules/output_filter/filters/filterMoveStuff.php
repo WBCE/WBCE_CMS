@@ -30,13 +30,33 @@ function doFilterMoveStuff($sContent) {
     $sRegex = '/\s*?\<\!\-\-\(MOVE\)\ (.+([\+\-]))\ \-\-\>(.+)\<\!\-\-\(END\)\-\-\>\s*?/sU'; 
     preg_match_all($sRegex, $sContent, $aMatches);
     
-    //print_r($aMatches);
     
-    // Runn through the Array 
+    // Runn through the Array and remove old content
     foreach ($aMatches[0] as $iKey=>$sOldEntry) {
     
         // Remove the Old Entry
         $sContent = str_replace($sOldEntry, '', $sContent);
+    }
+    
+    // Remove exact Doubles
+    foreach ($aMatches[0] as $iKey=>$sEntry) {
+        foreach ($aMatches[0] as $iOKey=>$sOEntry){
+            // found entry whith exact match
+            if (trim($sEntry) == trim($sOEntry) AND $iKey != $iOKey){
+                //Remove the old one 
+                if (isset($aMatches[0][$iKey])) unset ($aMatches[0][$iKey]);
+                if (isset($aMatches[1][$iKey])) unset ($aMatches[1][$iKey]);
+                if (isset($aMatches[2][$iKey])) unset ($aMatches[2][$iKey]);
+                if (isset($aMatches[3][$iKey])) unset ($aMatches[3][$iKey]);
+                if (isset($aMatches[4][$iKey])) unset ($aMatches[4][$iKey]);
+                continue 2; 
+            }
+        }
+    }
+
+    
+    // Runn through the Array Again now Put in stuff 
+    foreach ($aMatches[0] as $iKey=>$sOldEntry) {
         
         // fetch the right Placeholder
         $sToPlaceHolder="<!--(PH) ".$aMatches[1][$iKey]." -->";
@@ -62,4 +82,5 @@ function doFilterMoveStuff($sContent) {
     }
     return $sContent; 
 }
+
 
