@@ -11,12 +11,12 @@
  */
 
 // set WBCE version and release tag
-define('NEW_WBCE_VERSION', '1.3.0-alpha.2');
+define('NEW_WBCE_VERSION', '1.3.0-beta.1');
 if (!defined('WBCE_VERSION')) {
     define('WBCE_VERSION', NEW_WBCE_VERSION);
 }
 
-define('NEW_WBCE_TAG', '1.3.0-alpha.2');
+define('NEW_WBCE_TAG', '1.3.0-beta.1');
 if (!defined('WBCE_TAG')) {
     define('WBCE_TAG', NEW_WBCE_TAG);
 }
