@@ -1,4 +1,7 @@
 /*** fixes for 3rd-party modules **************************************/
+
+.CodeMirror { width: 100% !important; }
+
 /* give forms some horizontal padding */
 form { padding: 0 2%; }
 /* and reset the padding if inside a content-box */
