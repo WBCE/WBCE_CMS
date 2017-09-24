@@ -161,7 +161,7 @@
                     name="replace_stuff_be" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
         </tr>       
-        <tr>
+    <!--    <tr>
             <td width="35%"><?php echo $OPF['CSS_TO_HEAD']?>:</td>
             <td>
                 <input type="radio" <?php echo ($data['css_to_head_be']=='1') ?'checked="checked"' :'';?>
@@ -169,7 +169,7 @@
                 <input type="radio" <?php echo (($data['css_to_head_be'])=='0') ?'checked="checked"' :'';?>
                     name="css_to_head_be" value="0"><?php echo $OPF['DISABLED'];?>
             </td>
-        </tr>
+        </tr> -->
         <tr>
             <td width="35%"><?php echo $OPF['REMOVE_SYSTEM_PH'];?>:</td>
             <td>
