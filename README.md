@@ -1,7 +1,7 @@
 # WBCE CMS
 [WBCE CMS](https://wbce.org) is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. It is shipped with useful modules for "usual" pages, news/blog like pages, contact forms and includes useful admin tools. A broad variety of modules for galleries, interaction and structured content etc. is available in the [WBCE Add-On Repository](https://addons.wbce.org) and can be installed easily.
 
-![Screenshot of WBCE Backend](https://forum.wbce.org/wbce_screenshot_backend_klein.png)
+![Screenshot of WBCE Backend](https://forum.wbce.org/wbce_cms_13_dashboard_600x367.jpg)
 
 ## Requirements
   - about 20 MB webspace
