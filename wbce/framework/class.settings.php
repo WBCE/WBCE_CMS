@@ -95,6 +95,7 @@ class Settings {
     public static function Set($name="", $value="", $overwrite=true) {
         global $database;
         
+        
         //Make sure we only  got 'a-zA-Z0-9_'
         if (!preg_match("/[a-zA-Z0-9\-]+/u", $name)) return "Name only may contain 'a-zA-Z0-9_'";
         $name = strtolower($name);
@@ -140,6 +141,7 @@ class Settings {
             // Set it to our Dataarray
             self::$aSettings[$name]=$value;
         }
+        
         return false;
     }
 
@@ -379,6 +381,7 @@ class Settings {
         else {
             die($database->get_error());
         }
+        
         return false;
     }
 
@@ -395,6 +398,7 @@ class Settings {
     public static function Info() {
         global $database;
 
+            
         $sql = "SELECT `name`, `value` FROM `{TP}settings` ";
         if (($get_settings = $database->query($sql))) {
             $out = "<h3>All Settings in DB </h3>";
@@ -405,7 +409,7 @@ class Settings {
                 $setting_value = htmlentities($setting_value);
                 $setting_value_var =htmlentities(self::$aSettings[strtolower($setting['name'])]);
                
-                $out.= "<b>$setting_name</b><br />Db: $setting_value<br />Variable: ".var_export(self::$aSettings[strtolower($setting['name'])],true)."<br />";                   
+                $out.= "<br /><b style=\"font-size:120%\">$setting_name</b><br /><b>Db</b>: $setting_value<br /><b>Array</b>: ".htmlentities(var_export(self::$aSettings[strtolower($setting['name'])],true))."<br />";                   
             }
         } 
         else {
@@ -442,6 +446,7 @@ class Settings {
         return $value;
     } 
 }
+
 
 
 
