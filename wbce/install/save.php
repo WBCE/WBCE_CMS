@@ -285,9 +285,7 @@ $config_content
 . ' // no leading/trailing slash or backslash.' . PHP_EOL
 . 'define(\'ADMIN_DIRECTORY\', \'admin\');'
 . ' // no leading/trailing slash or backslash. A simple directory name only.' . PHP_EOL
-. PHP_EOL
-. '$referer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');' . PHP_EOL
-;
+. PHP_EOL;
 // Check if the file exists and is writable first.
 $sMsg = '';
 if (is_writable($config_filename)) {
