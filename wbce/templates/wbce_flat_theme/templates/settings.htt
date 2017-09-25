@@ -111,7 +111,7 @@
         </section>
         <!-- END show_checkbox_1_block -->
         
-        <div class="row" style="padding-left:0; {DISPLAY_PAGE_TRASH_SEPARATE}">
+        <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_HOME_FOLDERS}:</div>
             <div class="fg9">
                 <label>
