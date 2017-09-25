@@ -5,6 +5,47 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2017-09-25:** instantflorian [[730c41c3](https://github.com/WBCE/WBCE_CMS/commit/730c41c33ea2a38f9a4d3d7083fdd43cf5f082f8)]
+   > update version
+
+ * **2017-09-25:** instantflorian [[6b3e7aa0](https://github.com/WBCE/WBCE_CMS/commit/6b3e7aa07d7de50a82d81304629d10f0e0cb0435)]
+   > Restore personal folder option
+     wrong CSS placeholder in BE templates
+
+ * **2017-09-24:** instantflorian [[ca6ca9d4](https://github.com/WBCE/WBCE_CMS/commit/ca6ca9d4d76a620498eab1d346fb8499a8b809a0)]
+   > Update README.md
+     new screenshot
+ * **2017-09-24:** NorHei [[24f5355b](https://github.com/WBCE/WBCE_CMS/commit/24f5355b9bb12dde97febe7eaab661e854ff76f9)]
+   > Removed CSS to head in BE
+     First it was never there before.
+     Second , it interacts whith Input  or textarea fields that contain
+     CSS definitions (moves them to the head :-))
+     Bad thing as they are needed in the field .
+
+ * **2017-09-24:** NorHei [[b44941d3](https://github.com/WBCE/WBCE_CMS/commit/b44941d36fd4657e2edafa59d6a2ad5184a2f42b)]
+   > Cosmetical changes on class Settings
+
+ * **2017-09-24:** NorHei [[a9441a7d](https://github.com/WBCE/WBCE_CMS/commit/a9441a7db3c595eb0910a35fefd8040a4abee513)]
+   > Changed WBSTATS so it generates the referer var  by itself.
+
+ * **2017-09-24:** NorHei [[fe3d135d](https://github.com/WBCE/WBCE_CMS/commit/fe3d135d651211d92d72290e96c7b2331566cf70)]
+   > Removed referer for WBSTATS from Config
+
+ * **2017-09-23:** Christoph Bleiweis [[b78e70a7](https://github.com/WBCE/WBCE_CMS/commit/b78e70a75f5ffbfd6a40c07284e65ce5114efa5b)]
+   > referer fix for config.php
+
+ * **2017-09-23:** Christoph Bleiweis [[be214198](https://github.com/WBCE/WBCE_CMS/commit/be214198c1d6647fed436b3b0db260c8cc34ddc5)]
+   > Fixes a styling bug with CodeMirror
+
+ * **2017-09-18:** instantflorian [[8277fb5a](https://github.com/WBCE/WBCE_CMS/commit/8277fb5af6e2fbac1710eb901599b9ed793295a7)]
+   > Update version.php
+     I've forgotten to change alpha to beta
+ * **2017-09-17:** NorHei [[5163e3a9](https://github.com/WBCE/WBCE_CMS/commit/5163e3a9dd326bba9932cf3143bb24f96094665f)]
+   > Move Filter now ignores exact doublettes.
+
+ * **2017-09-16:** instantflorian [[d0b8b111](https://github.com/WBCE/WBCE_CMS/commit/d0b8b111110a6a5a7926da79dcdb42b002186687)]
+   > Update Changelog
+
  * **2017-09-15:** NorHei [[a72a1f48](https://github.com/WBCE/WBCE_CMS/commit/a72a1f4819619e3a158c4d0cfa7abe4763d44882)]
    > Merge branch 'master' of https://github.com/WBCE/WBCE_CMS
 
