@@ -97,13 +97,13 @@ if(isset($_GET['do']))
     {
         // ----- export -----
         case 'export':
-            $list = $_REQUEST['markeddroplet'];
-            if(count($list))
-            {
-                $twig_data['info'] = wbce_export_droplets($list);
-            }
+            if (!empty($_REQUEST['markeddroplet'])){
+                $list = $_REQUEST['markeddroplet'];
+                if(is_array($list) AND count($list)) {
+                    $twig_data['info'] = wbce_export_droplets($list);
+                }
+            } 
             break;
-
         // ----- import -----
         case 'upload':
             $twig_data['content'] = wbce_handle_upload();
