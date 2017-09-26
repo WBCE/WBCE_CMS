@@ -71,6 +71,16 @@ class wbmailer extends PHPMailer
                 $this->SMTPAuth = true;                       // enable SMTP authentification
                 $this->Username = $db_wbmailer_smtp_username; // set SMTP username
                 $this->Password = $db_wbmailer_smtp_password; // set SMTP password
+                
+                $mail->SMTPAutoTLS = true;
+                
+                $this->SMTPOptions = array(
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
             }
         } else {
             // use PHP mail() function for outgoing mails send by Website Baker
