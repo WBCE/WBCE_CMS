@@ -77,7 +77,7 @@ Settings::Set('opf_droplets_be',1, false);
 Settings::Set('opf_auto_placeholder_be',1, false); 
 Settings::Set('opf_move_stuff_be',1, false);   
 Settings::Set('opf_replace_stuff_be',1, false); 
-Settings::Set('opf_css_to_head_be',1);
+Settings::Set('opf_css_to_head_be',0);
 Settings::Set("opf_remove_system_ph_be", 1, false)    ; 
 
 // Override based on old WBCE settings
