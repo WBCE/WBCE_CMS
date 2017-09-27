@@ -172,13 +172,12 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
  /* ### filter type: moves css definitions from <body> into <head> ########### */
 //this one truly may stay in (lots  of old modules have inline CSS ) 
 // The correct way now is using the placeholders .. this stays for compatibility. 
-// HAs been removed as it interacts whith BE forms that contain CSS in Textfields. 
-//        if (OPF_CSS_TO_HEAD_BE){
-//            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
-//                require_once($sFilterDirectory.'filterCssToHead.php');
-//                $content = doFilterCssToHead($content);
-//            }
-//        }       
+        if (OPF_CSS_TO_HEAD_BE){
+            if (file_exists($sFilterDirectory.'filterCssToHead.php')) {
+                require_once($sFilterDirectory.'filterCssToHead.php');
+                $content = doFilterCssToHead($content);
+            }
+        }       
         
 /* ### filter type: full qualified URLs to relative URLs##################### */
         if(OPF_REMOVE_SYSTEM_PH_BE){
