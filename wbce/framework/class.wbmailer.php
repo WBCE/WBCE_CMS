@@ -72,7 +72,7 @@ class wbmailer extends PHPMailer
                 $this->Username = $db_wbmailer_smtp_username; // set SMTP username
                 $this->Password = $db_wbmailer_smtp_password; // set SMTP password
                 
-                $mail->SMTPAutoTLS = true;
+                $this->SMTPAutoTLS = true;
                 
                 $this->SMTPOptions = array(
                     'ssl' => array(
