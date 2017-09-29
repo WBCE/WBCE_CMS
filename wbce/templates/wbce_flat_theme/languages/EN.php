@@ -12,7 +12,10 @@
 
 $template_description = 'Enhanced backend theme for WBCE';
 
-//Texts
+$TEXT['COLLAPSE_ALL'] = 'Collapse all';
+$TEXT['EXPAND_ALL'] = 'Expand all';
+
+// Texts translations
 $TEXT['ADMIN_ONLY'] = 'Settings for administrator only';
 $TEXT['NO_SHOW_THUMBS'] = 'Hide thumbnails';
 $TEXT['TEXT_HEADER'] = 'Set maximum imagesize for a folder</b><br><small><i>(resizing on new uploads only)</i></small>';

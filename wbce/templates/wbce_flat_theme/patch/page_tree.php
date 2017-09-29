@@ -8,9 +8,17 @@
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  */
+
 // prevent this file from being accessed directly
 if (!defined('WB_PATH'))
     die(header('Location: ../../index.php'));
+
+// Include translation
+if (is_file(WB_PATH . '/templates/wbce_flat_theme/languages/' . LANGUAGE . '.php')) {
+    require_once WB_PATH . '/templates/wbce_flat_theme/languages/' . LANGUAGE . '.php';
+} else {
+    require_once WB_PATH . '/templates/wbce_flat_theme/languages/EN.php';
+}
 
 // Include functions
 require_once 'functions/renderPageTree.php';
@@ -52,10 +60,14 @@ while ($page = $queryPages->fetchRow()) {
 $querySettings = $database->query('SELECT `value` FROM `' . TABLE_PREFIX . 'settings` WHERE `name` = "page_level_limit"');
 $settings = $querySettings->fetchRow();
 $pageLevelLimit = $settings['value'];
+
 ?>
 <div class="jsadmin"></div>
 <div class="pages_list" style="display: none;">
     <h2><?= $MENU['PAGES'] ?></h2>
+    <div>
+        <a href="#" class="btn-collapse"><i class="fa fa-fw fa-folder"></i><?= $TEXT['COLLAPSE_ALL'] ?></a> / <a href="#" class="btn-expand"><i class="fa fa-fw fa-folder-open"></i><?= $TEXT['EXPAND_ALL'] ?></a>
+    </div>
     <table id="pageListHeader" class="table" <?= (count($pages) === 0 ? 'style="display:none;"' : '') ?>>
         <thead>
         <th class="toggle"></th>
@@ -86,12 +98,13 @@ $pageLevelLimit = $settings['value'];
         <?php
     }
     $visibilityLegends = array('public', 'hidden', 'registered', 'private', 'none', 'deleted');
+
     ?>
     <hr />
     <p class="h5"><?= $TEXT['VISIBILITY'] ?> (<?= $MENU['PAGES'] ?>)</p>
     <ul class="list-inline">
         <?php foreach ($visibilityLegends as $legend) { ?>
-            <li>
+            <li class="list-inline-item">
                 <?php if ($legend === 'public') { ?>
                     <i class="fa fa-fw fa-eye"></i>
                 <?php } else if ($legend === 'private') { ?>

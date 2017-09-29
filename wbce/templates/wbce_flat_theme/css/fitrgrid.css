@@ -67,12 +67,19 @@
    ======================================= */
 /* larger viewport breakpoint: 800px+ */ 	
 @media screen and (min-width: 50.000em) {
+.fg1, .fg2 {
+    margin: 0 2% 0.25em;
+    margin-bottom: 0.25em;
+}
+.fg3, .fg4, .fg5, .fg6, .fg7, .fg8, .fg9, .fg10, .fg11, .fg12 {
+    margin: 0 2% 0.25em;
+}
 /* ======================================= 
    columns w/ margin
    ======================================= */
 .row {
-    margin: 0 .5em;
-    padding: 2% 1em 0;
+    margin: 0 0.25em;
+    padding: 1% 0.25em 0;
 }
 .fg12 {
     width: 96%;

@@ -736,7 +736,7 @@ div.pages_list .toggle, div.pages_list .visibility, div.pages_list .modify, div.
 div.pages_list .btndesk, div.pages_list .btnup, div.pages_list .btndown, div.pages_list .btndel, div.pages_list .btnaddc {
     width: 40px;
 }
- div.pages_list .visibility, div.pages_list .id {
+div.pages_list .visibility, div.pages_list .id {
     width: 30px;
 }
 div.pages_list .modify {
@@ -754,23 +754,23 @@ div.pages_list table tr:hover {
     background-color: #d9dde3;
     transition: 0.5s;
 }
-#pagesPage #pageListPanel ul td.toggle {
+#pagesPage #pageListCard ul td.toggle {
     width: 30px;
     padding: 4px 8px;
 }
-#pagesPage #pageListPanel ul ul td.toggle {
+#pagesPage #pageListCard ul ul td.toggle {
     width: 80px;
     padding-left: 40px;
 }
-#pagesPage #pageListPanel ul ul ul td.toggle {
+#pagesPage #pageListCard ul ul ul td.toggle {
     width: 120px;
     padding-left: 80px;
 }
-#pagesPage #pageListPanel ul ul ul ul td.toggle {
+#pagesPage #pageListCard ul ul ul ul td.toggle {
     width: 160px;
     padding-left: 120px;
 }
-#pagesPage #pageListPanel ul ul ul ul ul td.toggle {
+#pagesPage #pageListCard ul ul ul ul ul td.toggle {
     width: 200px;
     padding-left: 160px;
 }

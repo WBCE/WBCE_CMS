@@ -1,15 +1,14 @@
 <!-- BEGIN main_block -->
 
 <div id="pagesPage">
-    <div id="pageListPanel" class="panel panel-default">
-        <h2 class="page_titel">{PAGES}</h2>
-        <div class="content-box panel-body"></div>
+    <div id="pageListCard" class="card">
+        <h2 class="page_titel card-header">{PAGES}</h2>
+        <div class="content-box card-body"></div>
     </div>
-    <!-- /.panel.panel-default -->
     <div class="fg4" style="margin: 0;">
-        <div class="panel panel-default {DISPLAY_ADD}">
-            <h2 class="page_titel">{HEADING_ADD_PAGE}</h2>
-            <div class="content-box panel-body">
+        <div class="card {DISPLAY_ADD}">
+            <h2 class="page_titel card-header">{HEADING_ADD_PAGE}</h2>
+            <div class="content-box card-body">
                 <div class="addsite_insideborder">
                     <form name="add" action="add.php" method="post">
                         {FTAN}
@@ -52,7 +51,6 @@
                             </label>
                         </div>
                         <!-- END group_list_block -->
-
                         <div id="viewers" style="display: none;">
                             <p><strong>{TEXT_REGISTERED_VIEWERS}</strong></p>
                             <!-- BEGIN group_list_block2 -->
@@ -67,25 +65,16 @@
                         <button type="submit" name="save" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> {TEXT_ADD}</button>
                     </form>
                 </div>
-                <!-- /.panel-body -->
             </div>
-            <!-- /.panel.panel-default -->
-
-            <div class="panel panel-default {DISPLAY_INTRO}">
-                <div class="panel-heading">
-                    <h2 class="page_titel">{HEADING_MODIFY_INTRO_PAGE}</h2>
-                </div>
-                <div class="content-box">
-                    <div class="addsite_insideborder"> <a href="intro.php">{INTRO_LINK}</a> </div>
-                </div>
-                <!-- /.panel-body -->
+        </div>
+        <div class="card {DISPLAY_INTRO}">
+            <h2 class="page_titel">{HEADING_MODIFY_INTRO_PAGE}</h2>
+            <div class="content-box">
+                <div class="addsite_insideborder"> <a href="intro.php">{INTRO_LINK}</a> </div>
             </div>
-            <!-- /.panel.panel-default -->
         </div>
     </div>
-    <!-- /.fg4 -->
-</div>
-<!-- /#pagesPage -->
+</div><!-- /#pagesPage -->
 
 <!-- Custom Javascript -->
 <script>
@@ -106,7 +95,7 @@
         var $pageList = $('.pages_list'),
                 $pageListUl = $pageList.children('ul'),
                 $pageListTitle = $pageList.find('h2:first'),
-                $pageListPanel = $('#pageListPanel'),
+                $pageListCard = $('#pageListCard'),
                 $toggleLinks = $('.toggle a'),
                 $btnExpand = $('.btn-expand'),
                 $btnCollapse = $('.btn-collapse');
@@ -170,12 +159,13 @@
             $btnExpand.blur();
         });
 
-        $pageListPanel.find('h2.page_titel').text($pageListTitle.text());
+        $pageListCard.find('h2.page_titel').text($pageListTitle.text());
         $pageListTitle.remove();
 
-        $pageListPanel
-                .find('.panel-body')
-                .prepend($pageList);
+        $pageListCard
+                .find('.card-header')
+
+        $pageListCard.find('.card-body').append($pageList);
 
         $pageList.show();
 
@@ -285,5 +275,5 @@
         }
     }
 
-</script> 
+</script>
 <!-- END main_block -->

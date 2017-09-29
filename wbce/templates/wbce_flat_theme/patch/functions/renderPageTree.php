@@ -71,6 +71,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
         );
 
         ob_start();
+
         ?>
         <li class="p<?= $page['parent'] ?> <?= ($hasChildren ? 'has-children' : '') ?>">
             <table class="table">
@@ -107,6 +108,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
                             <?php
                         }
                         if ($page['visibility'] != 'deleted' && $canModifySettings) {
+
                             ?>
                             <a href="{modifySettingsURL}" title="<?= $HEADING['MODIFY_PAGE_SETTINGS'] ?>"><i class="fa fa-fw fa-cog"></i></a>
                         <?php } else if ($page['visibility'] == 'deleted') { ?>
@@ -136,7 +138,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
                     </td>
                     <td class="btndel">
                         <?php if ($canDeleteAndModify) { ?>
-                            <a href="javascript:confirm_link('PageID: {PAGE_ID}\n\n\t<?= $MESSAGE['PAGES_DELETE_CONFIRM'] ?>?','../pages/delete.php?page_id={pageIDKEY}');" title="<?= $TEXT['DELETE'] ?>"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            <a href="javascript:confirm_link('PageID: {PAGE_ID}\n\n<?= $MESSAGE['PAGES_DELETE_CONFIRM'] ?>?','../pages/delete.php?page_id={pageIDKEY}');" title="<?= $TEXT['DELETE'] ?>"><i class="fa fa-trash" aria-hidden="true"></i></a>
                         <?php } ?>
                     </td>
                     <td class="btnaddc">
