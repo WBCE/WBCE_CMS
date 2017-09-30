@@ -218,6 +218,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
  * @param void
  * @return array contains all settings
  */
+if (!function_exists("getOutputFilterSettings")) {
     function getOutputFilterSettings() {
         //fetch settings whith default values
         $settings = array(
@@ -229,3 +230,4 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
         );
         return $settings;
     }
+}

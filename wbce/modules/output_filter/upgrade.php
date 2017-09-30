@@ -26,8 +26,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
  * @param void
  * @return array contains all settings
  */
-if (!function_exists("getOutputFilterSettings")) {
-    function getOutputFilterSettings() {
+if (!function_exists("getOutputFilterSettingsOld")) {
+    function getOutputFilterSettingsOld() {
         global $database, $admin;
     // set default values
         $settings = array(
@@ -54,7 +54,7 @@ if (!function_exists("getOutputFilterSettings")) {
 $msg = '';
 
 // getting old Data
-$data = getOutputFilterSettings();
+$data = getOutputFilterSettingsOld();
 
 // Set old values if exists otherwise go for default 
 Settings::Set('opf_droplets',1, false);

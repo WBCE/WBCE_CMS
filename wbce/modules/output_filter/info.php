@@ -18,7 +18,7 @@
 $module_directory   = 'output_filter';
 $module_name        = 'Output Filter';
 $module_function    = 'tool';
-$module_version     = '1.4.1';
+$module_version     = '1.4.2';
 $module_platform    = '1.3.0';
 $module_author      = 'Complete rewrite NorHei(heimsath.org)';
 $module_license     = 'GNU General Public License v2';
