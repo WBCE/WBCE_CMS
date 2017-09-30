@@ -29,11 +29,12 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 
 /* ### filter type: execute droplets filter ################################# */
         if (OPF_DROPLETS){
-            if (file_exists($sFilterDirectory.'filterDroplets.php')) {
-                require_once($sFilterDirectory.'filterDroplets.php');
-                $content = doFilterDroplets($content);
-            }
-        }
+            $sFile = $sFilterDirectory.'filterDroplets.php';
+		    if (file_exists($sFile)) {
+			    require_once $sFile;
+			    $content = doFilterDroplets($content, 'frontend');
+		    }
+	    }
                 
 /* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
 // deactivated vor this revision       
@@ -134,14 +135,13 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
       
 
 /* ### filter type: execute droplets filter for backend ################################# */
-// deactivated for now 
         if (OPF_DROPLETS_BE){
-            $sFileDropletsBe=$sFilterDirectory.'filterDropletsBe.php';
-            if (file_exists($sFileDropletsBe)) {
-                require_once($sFileDropletsBe);
-                $content = doFilterDropletsBe($content);
-            }
-        }
+            $sFile = $sFilterDirectory.'filterDroplets.php';
+		    if (file_exists($sFile)) {
+			    require_once $sFile;
+			    $content = doFilterDroplets($content, 'backend');
+		    }
+	    }
         
 /* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
         if (OPF_AUTO_PLACEHOLDER_BE){
