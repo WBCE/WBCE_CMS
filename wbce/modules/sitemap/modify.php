@@ -47,7 +47,9 @@ if(isset($_GET['show_settings']) && in_array($_GET['show_settings'], array(1,0))
 }
 $sAcpiCheckfile = WB_URL.'/templates/'.DEFAULT_THEME.'/ACPI_READY';
 if(!is_file($sAcpiCheckfile)){
+	echo '<!--(MOVE) CSS HEAD TOP- -->';
 	echo '<link href="'.WB_URL.'/modules/sitemap/cp_content.css" rel="stylesheet" type="text/css">';
+	echo '<!--(END)-->';
 }
 // Get page content
 $query = "SELECT * FROM ".$db_table." WHERE section_id = '".$section_id."'";

@@ -29,7 +29,7 @@
 $module_directory = 'sitemap';
 $module_name      = 'Sitemap';
 $module_function  = 'page';
-$module_version   = '4.0.3';
+$module_version   = '4.0.4';
 $module_platform  = '2.5.x - 2.8.x';
 $module_author    = 'Ryan Djurovich, Frank Schoep, Woudloper, Ruebenwurzel, Rob Smith, Mouring Kolhoff, Michael Milette, Dietrich Roland Pehlke, Christian M. Stefan (Stefanek) (last)';
 $module_license   = 'GNU General Public License';
@@ -44,7 +44,12 @@ $module_guid      = '8B7C09E5-6246-4264-8959-8AA542D7BD6';
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	DEVELOPMENT HISTORY (Change Log):
 
-	v.4.0.2 2017-01-30 Christian M. Stefan (Stefanek)		
+	v.4.0.4 2017-09-16 Christian M. Stefan (Stefanek)		
+		[c] mostly CSS file addition for the backend
+		[+]	added support for new CSS move to head functions
+			see: https://forum.wbce.org/viewtopic.php?id=1598
+	
+	v.4.0.3 2017-01-30 Christian M. Stefan (Stefanek)		
 		[c] upgrade.php replace $database->error() with $database->get_error();
 			thanks to Florian for appropriate handling suggestions
 		

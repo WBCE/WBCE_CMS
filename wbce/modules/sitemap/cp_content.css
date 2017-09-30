@@ -125,14 +125,17 @@ div.settingValue {
     line-height: 1.2em;
     width: 71%;
 }
+div.cpForm div.settingName,
 div.cpForm label.settingName {
     width: 27%;
     margin-top: .005em;
     margin-right: 2px;
 }
-label.settingName:after {
+label.settingName:after,
+div.settingName label:after {
     content: ':';
 }
+div.cpForm div.settingName,
 div.cpForm label.settingName,
 div.cpForm div.settingValue {
     float: left
@@ -571,4 +574,69 @@ button.close{
     text-shadow: 0 1px 0 #fff;
     filter: alpha(opacity=20);
     opacity: .2;
+}
+
+
+/* ################ */
+@media (max-width: 750px) 
+{
+    .cpWrap div.cpLastchange 
+    {
+        display: block;
+        float: left;
+        text-align: left;
+        font-size: .8em;
+        line-height: 1.9em;
+    }
+    div.cpForm{
+        clear: both;
+    }
+    div.cpForm label.settingName,
+    div.cpForm div.settingName
+    {
+        text-align:left;
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+    }
+    div.cpForm label.settingValue
+    {
+        display: inline;
+        width: 100%;
+        margin-bottom: 5px;
+
+    }
+    div.formRow input[type="file"],
+    div.formRow input[type="email"],
+    div.formRow input[type="text"],
+    div.formRow input[type="password"],
+    div.formRow textarea,
+    div.formRow select,		
+    div.formRow .form-control
+    {		
+        width: 100%;
+        min-width: 300px !important;
+        display: inline-block;
+    }
+    span.file-ext{
+        display: none;
+    }
+    div.cpForm label.settingName, 
+    div.cpForm div.settingName, 
+    div.cpForm div.settingValue {
+        float: inherit;
+        width:100%;
+    }
+    div.cpForm label.settingName,
+    div.cpForm div.settingName{
+        padding-top: 5px;
+    }
+    div.cp-third, div.cp-two-thirds { 
+        width: 95%!important;
+        float: left;
+        padding: 12px 6px;
+    }
+    div.buttonsRow .pos-right {
+        float: none;
+    }
 }
