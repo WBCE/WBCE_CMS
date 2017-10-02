@@ -16,12 +16,12 @@
  */
 class Twig_Environment
 {
-    const VERSION = '1.35.0-DEV';
+    const VERSION = '1.35.0';
     const VERSION_ID = 13500;
     const MAJOR_VERSION = 1;
     const MINOR_VERSION = 35;
     const RELEASE_VERSION = 0;
-    const EXTRA_VERSION = 'DEV';
+    const EXTRA_VERSION = '';
 
     protected $charset;
     protected $loader;
@@ -382,6 +382,10 @@ class Twig_Environment
      * Loads a template.
      *
      * @param string|Twig_TemplateWrapper|Twig_Template $name The template name
+     *
+     * @throws Twig_Error_Loader  When the template cannot be found
+     * @throws Twig_Error_Runtime When a previously generated cache is corrupted
+     * @throws Twig_Error_Syntax  When an error occurred during compilation
      *
      * @return Twig_TemplateWrapper
      */
