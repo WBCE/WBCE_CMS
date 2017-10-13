@@ -19,6 +19,7 @@ $lepton_platform = '1.x';
 $module_author = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax';
 $module_license = 'GNU General Public License';
 $module_description = 'This tool allows you to manage your local Droplets.';
+$module_icon        = 'fa fa-eyedropper';
 $module_home = 'http://www.wbce.org';
 $module_guid = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 
