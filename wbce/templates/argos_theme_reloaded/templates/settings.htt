@@ -533,6 +533,11 @@
 	<h2 style="margin:10px 0;">
 		<i class="fa fa-expand"></i>
 		{HEADING_SERVER_SETTINGS}
+		<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
+			<a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;">
+				{ADVANCED_BUTTON}
+			</a>
+		</div>
 	</h2>
 	<section class="row content-box" style="padding:0;" id="settings-server-settings">
 		<div class="row top" style="padding-left:0;">
@@ -550,7 +555,8 @@
 			</div>
 		</div>
 
-		<section id="file-perms" class="row top" style="padding-left:0;">
+		<!-- BEGIN show_access_block -->
+		<section id="file-perms" class="row top" style="padding-left:0;" {DISPLAY_ADVANCED}>
 			<div class="fg3">{TEXT_FILESYSTEM_PERMISSIONS}:</div>
 			<div class="fg4" style="border-bottom: 1px dotted #999;">
 				<b>{TEXT_FILES}: <span id="string-file-mode">{STRING_FILE_MODE}</span></b>
@@ -598,6 +604,8 @@
 			<div class="fg1 fg-center"><input type="checkbox" name="dir_g_e" id="dir_g_e" value="true"{DIR_G_E_CHECKED}></div>
 			<div class="fg1 fg-center"><input type="checkbox" name="dir_o_e" id="dir_o_e" value="true"{DIR_O_E_CHECKED}></div>
 		</section>
+		<!-- END show_access_block -->
+
 
 		<div class="row top" style="padding-left:0;">
 			<div class="fg3">{TEXT_PAGES_DIRECTORY}:</div>
