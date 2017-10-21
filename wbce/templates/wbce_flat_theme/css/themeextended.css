@@ -162,6 +162,11 @@ button:hover, .wb_button:hover, input[type='button']:hover, input[type='submit']
     height: 50px;
     background: url("../images/wblogo.png") no-repeat right top;
 }
+@media screen and (max-width: 600px) {
+#branding {
+    display: none;
+}
+}
 a#frontendtitel {
     font-size: 20px;
     font-weight: bold;
