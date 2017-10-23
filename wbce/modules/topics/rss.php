@@ -98,7 +98,7 @@ $image_width = 100;
 $image_width_px = $image_width.'px';
 $last_publishing_date = 0;
 // loop through the topics
-while (false !== ($topic = $query->fetchRow())) {
+while ($topic = $query->fetchRow()) {
   $topic_link = WB_URL.$topics_virtual_directory.$topic['link'].PAGE_EXTENSION;
   $rfcdate = date('D, d M Y H:i:s O', (int) $topic["published_when"]);
   if ($last_publishing_date < (int) $topic['published_when'])
@@ -172,12 +172,12 @@ if ($use_counter) {
   $SQL = "SELECT DISTINCT `date`,`section_id` FROM `".TABLE_PREFIX."mod_topics_rss_count` WHERE `date`<'$date'";
   if (null == ($past = $database->query($SQL)))
     die(sprintf('[%s] %s', __LINE__, $database->get_error()));
-  while (false !== ($old = $past->fetchRow(MYSQL_ASSOC))) {
+  while ($old = $past->fetchRow(MYSQL_ASSOC)) {
     // walk through previous entries, add them to statistic and delete them from the count table
     $SQL = "SELECT COUNT(`md5_ip`) AS `callers`, SUM(`count`) AS `views` FROM `".TABLE_PREFIX."mod_topics_rss_count` WHERE `date`='{$old['date']}' AND `section_id`='{$old['section_id']}'";
     if (null == ($result = $database->query($SQL)))
       die(sprintf('[%s] %s', __LINE__, $database->get_error()));
-    if (false ===($statistic = $result->fetchRow(MYSQL_ASSOC)))
+    if ($statistic = $result->fetchRow(MYSQL_ASSOC))
       die(sprintf('[%s] %s', __LINE__, $database->get_error()));
     // insert the statistic into the statistic table
     $SQL = "INSERT INTO `".TABLE_PREFIX."mod_topics_rss_statistic` (`section_id`,`date`,`callers`,`views`) VALUES ('{$old['section_id']}','{$old['date']}','{$statistic['callers']}','{$statistic['views']}')";
