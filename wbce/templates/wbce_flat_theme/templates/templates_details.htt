@@ -1,7 +1,7 @@
 <!-- BEGIN main_block -->
 
 <h2 class="page_titel"> {HEADING_TEMPLATE_DETAILS}
-    <div class="headline-link"> <i class="fa fa-reply"> <a href="#" onclick="window.location = 'index.php';"> zurück </a> </i> </div>
+    <div class="headline-link"> <i class="fa fa-reply"> <a href="#" onclick="window.location = 'index.php';"> {TEXT_BACK} </a> </i> </div>
 </h2>
 
 <div class="content-box info-box" style="display: inline-block; width: 100%;">

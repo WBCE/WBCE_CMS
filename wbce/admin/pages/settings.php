@@ -580,6 +580,7 @@ switch ($results_array['target'])
 // Insert language text
 $template->set_var(array(
                 'HEADING_MODIFY_PAGE_SETTINGS' => $HEADING['MODIFY_PAGE_SETTINGS'],
+                'HEADING_MODIFY_PAGE' => $HEADING['MODIFY_PAGE'],
                 'TEXT_CURRENT_PAGE' => $TEXT['CURRENT_PAGE'],
                 'TEXT_MODIFY' => $TEXT['MODIFY'],
                 'TEXT_MODIFY_PAGE' => $HEADING['MODIFY_PAGE'],
@@ -613,8 +614,7 @@ $template->set_var(array(
                 'TEXT_DISABLED' => $TEXT['DISABLED'],
                 'TEXT_SAVE' => $TEXT['SAVE'],
                 'TEXT_RESET' => $TEXT['RESET'],
-                'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
-                'HEADING_MODIFY_PAGE' => $HEADING['MODIFY_PAGE']
+                'TEXT_BACK' => $TEXT['BACK']
             ) );
 
 $template->parse('main', 'main_block', false);

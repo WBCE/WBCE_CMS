@@ -8,7 +8,7 @@
     <header class="fg12 subheader">
         <div style="float: left;"> {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
             PageID: <b>{PAGE_ID}</b> </div>
-        <div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}"> <i>Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</i> </div>
+        <div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}"> <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i> </div>
     </header>
 </section>
 <div class="clearfix"></div>

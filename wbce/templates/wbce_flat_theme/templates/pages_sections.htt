@@ -11,7 +11,7 @@
     <header class="fg12 subheader">
         <div style="float: left;"> {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
             PageID: <b>{PAGE_ID}</b> </div>
-        <div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}"> <i>Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</i> </div>
+        <div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}"> <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i> </div>
     </header>
     <section class="fg12 content-box" style="width: 100%;margin: 0;">
         <form name="section_properties" action="{ADMIN_URL}/pages/sections_save.php?page_id={PAGE_IDKEY}" method="post">
@@ -59,7 +59,7 @@
             <hr class="fg12 top">
             <div class="fg12">
                 <button type="submit" name="save" style="float: left;"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
-                <button type="button" onclick="location.href = 'index.php';" style="float: right;"> <i class="fa fa-fw fa-reply"></i> zurück </button>
+                <button type="button" onclick="location.href = 'index.php';" style="float: right;"> <i class="fa fa-fw fa-reply"></i> {TEXT_BACK} </button>
             </div>
         </form>
     </section>
