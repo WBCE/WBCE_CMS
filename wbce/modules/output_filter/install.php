@@ -30,7 +30,7 @@ Settings::Set('opf_at_replacement',"(at)", false);
 Settings::Set('opf_dot_replacement',"(dot)", false);
 Settings::Set('opf_wblink',1, false);
 Settings::Set('opf_short_url',0, false);
-Settings::Set('opf_sys_rel',1, false);
+Settings::Set('opf_sys_rel',0, false);
 Settings::Set("opf_remove_system_ph", 1, false)  ; 
 
 //backend
