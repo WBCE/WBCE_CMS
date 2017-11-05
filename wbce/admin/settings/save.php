@@ -61,10 +61,20 @@ if (isset($_POST['wbmailer_routine']) && ($_POST['wbmailer_routine'] == 'smtp'))
 
 }
 
-
+// Work-out file mode
+if ($advanced == '') {
+    // Check if should be set to 777 or left alone
+    if (isset($_POST['world_writeable']) && $_POST['world_writeable'] == 'true') {
+        $file_mode = '0777';
+        $dir_mode = '0777';
+    } else {
+        $file_mode = STRING_FILE_MODE;
+        $dir_mode = STRING_DIR_MODE;
+    }
+} else {
     $file_mode = STRING_FILE_MODE;
     $dir_mode = STRING_DIR_MODE;
-
+    if ($admin->get_group_id() == '1') {
         // Work-out the octal value for file mode
         $u = 0;
         if (isset($_POST['file_u_r']) && $_POST['file_u_r'] == 'true') {
@@ -129,7 +139,8 @@ if (isset($_POST['wbmailer_routine']) && ($_POST['wbmailer_routine'] == 'smtp'))
             $o = $o + 1;
         }
         $dir_mode = "0" . $u . $g . $o;
-    
+    }
+}
 
 $allow_tags_in_fields = array('website_header', 'website_footer');
 $allow_empty_values = array('website_header', 'website_footer', 'sec_anchor', 'pages_directory', 'page_spacer');
@@ -221,4 +232,3 @@ while ($search_setting = $res_search->fetchRow()) {
 
 $admin->print_success($MESSAGE['SETTINGS_SAVED'], $js_back);
 $admin->print_footer();
-
