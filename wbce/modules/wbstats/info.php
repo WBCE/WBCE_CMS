@@ -15,10 +15,10 @@
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics';
-$module_function = 'tool,initialize';
-$module_version = '0.1.12';
+$module_function = 'tool';
+$module_version = '0.1.11';
 $module_platform = '2.8.x';
-$module_author = 'Dev4me - Ruud Eisinga - www.dev4me.nl Norbert Heimsath(heimsath.org)';
+$module_author = 'Dev4me - Ruud Eisinga - www.dev4me.nl';
 $module_license = 'GNU General Public License';
 $module_description = 'Displays website statistics as an admintool';
 
