@@ -93,7 +93,7 @@
 	float: left;
 }
 .middle {
-	height: auto;
+	min-height: 265px;
 	position:relative;
 	margin:10px 1%;
 	width:48%;
@@ -112,7 +112,7 @@
 	background-color:#e7e7e7;
 	border: 0px solid #303641;
 	padding: 15px;
-	height: 295px;
+	min-height: 295px;
 }
 
 .bar {

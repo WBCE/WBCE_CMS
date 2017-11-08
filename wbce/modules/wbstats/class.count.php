@@ -121,10 +121,10 @@ class counter {
 		$this->referer_host = parse_url($this->referer, PHP_URL_HOST); // Referrer Host
 		if (substr($this->referer_host,0,4) == "www.") $this->referer_host=substr($this->referer_host,4);
 
-		$this->referer = addslashes($this->referer);
-		$this->page = addslashes($this->page);
-		$this->language = addslashes($this->language);
-		$this->referer_host = addslashes($this->referer_host);
+		$this->referer = $this->escapeString($this->referer);
+		$this->page = $this->escapeString($this->page);
+		$this->language = $this->escapeString($this->language);
+		$this->referer_host = $this->escapeString($this->referer_host);
 
 	}
 	
@@ -135,7 +135,7 @@ class counter {
 		elseif(isset($parms['q'])) 		$this->keywords = 'Searchkey not provided'; 
 		elseif(isset($parms['p'])) 		$this->keywords = urldecode($parms['p']); 
 		elseif(isset($parms['query'])) 	$this->keywords = urldecode($parms['query']); 
-		$this->keywords = addslashes($this->keywords);
+		$this->keywords = $this->escapeString($this->keywords);
 	}
 
 	function newUser() {
@@ -168,6 +168,16 @@ class counter {
 			} 
 		} 
 		return false; 
+	}
+	
+	function escapeString($string) {	
+		global $database;
+		if(is_object($database->DbHandle)) { 
+			$rval = $database->escapeString($string);
+		} else {
+			$rval = mysql_real_escape_string ($string);
+		}
+		return $rval;
 	}
 	
 } // end class

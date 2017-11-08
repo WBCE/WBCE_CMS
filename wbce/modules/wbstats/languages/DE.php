@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.6 and higher
- * @version         0.1.11
- * @lastmodified    June 29, 2017 
+ * @requirements    PHP 5.2.2 and higher
+ * @version         0.1.8
+ * @lastmodified    October 22, 2014
  *
  */
  
@@ -45,13 +45,13 @@ $WS = array (
         "AVG30VISITS"	=> "Besucher pro Tag - 30 Tage",
         "REFTOP10"		=> "Top 10 - Referers",
         "PAGETOP10"		=> "Top 10 - Seiten",
-        "KEYSTOP10"		=> "Top 10 - Kennw&ouml;rter",
+        "KEYSTOP10"		=> "Top 10 - Keywords",
         "LANGTOP10"		=> "Top 10 - Sprache",
         "NUMBER"		=> "Nr.",
         "PERCENT"		=> "Prozent",
         "REFERER"		=> "Referer",
         "PAGES"			=> "Seite",
-        "KEYWORDS"		=> "Kennw&ouml;rter",
+        "KEYWORDS"		=> "Keywords",
         "LANGUAGES"		=> "Sprache",
         "HISTORY"		=> "History",
         "TOTALSINCE"	=> "Total seit",
@@ -73,7 +73,7 @@ $code2lang = array(
         'en'=>'Englisch',
         'et'=>'Estonisch',
         'fi'=>'Finnisch',
-        'fr'=>'Franz%ouml;sisch',
+        'fr'=>'Franz&ouml;sisch',
         'de'=>'Deutsch',
         'el'=>'Griechisch',
         'hi'=>'Hindi',
