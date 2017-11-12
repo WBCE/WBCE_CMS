@@ -8,7 +8,7 @@
         $sAppUrl  = rtrim(str_replace('\\', '/', WB_URL), '/').'/';
         $sAppPath = rtrim(str_replace('\\', '/', WB_PATH), '/').'/';
         $content = preg_replace_callback(
-            '/((?:href|src)\s*=\s*")([^\?\"]*?)/isU',
+            '/((?:href|src)\s*=\s*")([^?][^\?\"]*?)/isU',
             function ($aMatches) use ($sAppUrl, $sAppPath) {
                 $sAppRel = preg_replace('/^https?:\/\/[^\/]*(.*)$/is', '$1', $sAppUrl);
                 $aMatches[2] = str_replace('\\', '/', $aMatches[2]);
