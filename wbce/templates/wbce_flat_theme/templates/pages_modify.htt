@@ -10,7 +10,21 @@
             PageID: <b>{PAGE_ID}</b> </div>
         <div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}"> <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i> </div>
     </header>
+
 </section>
 <div class="clearfix"></div>
+
+<!-- BEGIN section_module_block -->
+<div class="section-info" id="{SECTION_ANCHOR}" >
+    <b>{TEXT_BLOCK}: </b>{BLOCK_NAME}
+    <b>Modul: </b>{SECTION_MODULE}
+    <b>ID: </b>{SECTION_ID}
+    <b>Name: </b>{SECTION_NAME}
+</div>
+
+<div class="pageModuleWrapper {SECTION_MODULE}">
+    {SECTION_MODIFY_OUTPUT}
+</div>
+<!-- END section_module_block -->
 
 <!-- END main_block -->
