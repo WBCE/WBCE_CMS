@@ -293,18 +293,6 @@ if (error_reporting() == 0) {
 date_default_timezone_set('UTC');
 
 
-/** 
-    SANITIZE REFERER
-    
-    sanitize $_SERVER['HTTP_REFERER']
-
-    @todo Needs to be repaced ASAP as this bullshit makes me sick. But its only way to have a halfway save 
-    refrerer string.  
-*/
-SanitizeHttpReferer();
-
-
-
 /** SESSION
 
     Initialize Custom Session Handler
@@ -340,6 +328,15 @@ if (($resSnippets = $database->query($sql))) {
     }
 }
 
+/** 
+    SANITIZE REFERER
+    
+    sanitize $_SERVER['HTTP_REFERER']
+
+    @todo Needs to be repaced ASAP as this bullshit makes me sick. But its only way to have a halfway save 
+    refrerer string.  
+*/
+SanitizeHttpReferer();
 
 
 /**
@@ -458,7 +455,7 @@ require_once(WB_PATH.'/framework/functions.php');
 
 /**
     @brief sanitize $_SERVER['HTTP_REFERER']
-    @todo Maybe change this so it produces a $_SERVER['HTTP_REFERER_SAVE'] or $_SERVER['HTTP_REFERER_LOCAL']
+    @todo Change WBCE so it uses the save referrer and no longer touches the basic referrer 
 */
 function SanitizeHttpReferer()
 {
@@ -483,6 +480,7 @@ function SanitizeHttpReferer()
         }
     }
     $_SERVER['HTTP_REFERER'] = $sTmpReferer;
+    $_SERVER['WB_SECURE_HTTP_REFERER'] = $sTmpReferer;
 }
 
 
