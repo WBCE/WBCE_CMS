@@ -48,6 +48,10 @@ $modified_ts = ($results_array['modified_when'] != 0) ? $modified_ts = date(TIME
 // Setup template object, parse vars to it, then parse it
 // Create new template object
 $template = new Template(dirname($admin->correct_theme_source('pages_modify.htt')));
+						
+// Disable removing of unknown vars to prevent the deleting of JavaScript arrays [] or {}
+$template->set_unknowns('keep');
+
 // $template->debug = true;
 $template->set_file('page', 'pages_modify.htt');
 $template->set_block('page', 'main_block', 'main');
@@ -129,6 +133,7 @@ $sql .= (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION && is_numeric($sectionI
 $sql .= ' ORDER BY position ASC';
 $query_sections = $database->query($sql);
 if ($query_sections->numRows() > 0) {
+	
     while ($section = $query_sections->fetchRow()) {
         $section_id = $section['section_id'];
         $module = $section['module'];
@@ -163,16 +168,19 @@ if ($query_sections->numRows() > 0) {
                     $template->set_var('SECTION_BLOCK', $section['block']);
                     $template->set_var('SECTION_NAME', $section['namesection']);
                 }
-
-                // Set section modify output as template var
+				
+                // Set section modify output as template var				
                 ob_start();
                 require(WB_PATH . '/modules/' . $module . '/modify.php');
                 $template->set_var('SECTION_MODIFY_OUTPUT', ob_get_clean());
 
+                // Parse section module
                 $template->parse('section_module', 'section_module_block', true);
+			
             }
         }
     }
+		
 }
 
 // Parse and print header template
