@@ -1,5 +1,5 @@
 <!-- BEGIN main_block -->
-
+{PAGE_TREE}
 <div id="pagesPage">
     <div id="pageListCard" class="card">
         <h2 class="page_titel card-header">{PAGES}</h2>
@@ -276,4 +276,6 @@
     }
 
 </script>
+
+{JS_ADMIN}
 <!-- END main_block -->
