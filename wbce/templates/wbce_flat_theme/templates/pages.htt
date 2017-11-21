@@ -1,9 +1,9 @@
 <!-- BEGIN main_block -->
-{PAGE_TREE}
+
 <div id="pagesPage">
     <div id="pageListCard" class="card">
-        <h2 class="page_titel card-header">{PAGES}</h2>
-        <div class="content-box card-body"></div>
+        <h2 class="page_titel card-header">{TEXT_PAGES}</h2>
+        <div class="content-box card-body">{PAGE_TREE}</div>			 
     </div>
     <div class="fg4" style="margin: 0;">
         <div class="card {DISPLAY_ADD}">
@@ -94,8 +94,6 @@
 
         var $pageList = $('.pages_list'),
                 $pageListUl = $pageList.children('ul'),
-                $pageListTitle = $pageList.find('h2:first'),
-                $pageListCard = $('#pageListCard'),
                 $toggleLinks = $('.toggle a'),
                 $btnExpand = $('.btn-expand'),
                 $btnCollapse = $('.btn-collapse');
@@ -158,14 +156,6 @@
             $toggleLinks.trigger('expand-list');
             $btnExpand.blur();
         });
-
-        $pageListCard.find('h2.page_titel').text($pageListTitle.text());
-        $pageListTitle.remove();
-
-        $pageListCard
-                .find('.card-header')
-
-        $pageListCard.find('.card-body').append($pageList);
 
         $pageList.show();
 
