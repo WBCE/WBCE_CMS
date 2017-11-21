@@ -1,7 +1,5 @@
 /*** fixes for 3rd-party modules **************************************/
 
-.CodeMirror { width: 100% !important; }
-
 /* give forms some horizontal padding */
 form { padding: 0 2%; }
 /* and reset the padding if inside a content-box */
@@ -45,4 +43,8 @@ input#admin_tools {
 .backup input[type="radio"] {
 	margin-bottom: 10px;
 }
+
+/* textarea width for code2 module */
+.CodeMirror { width: 100% !important; margin-top: 12px; margin-bottom: 6px;}
+
 /* ! some more styling is done in /jquery/module-fixes.js ! */

@@ -1,8 +1,26 @@
 @font-face {
-    font-family: 'ubuntu';
-    src:  url('../fonts/Ubuntu-Regular.ttf') format('truetype');
+    font-family: 'Noto';
+    src: url('../fonts/NotoSans-Regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+}
+@font-face {
+    font-family: 'Noto';
+    src: url('../fonts/NotoSans-Bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Noto';
+    src: url('../fonts/NotoSans-Italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Noto';
+    src: url('../fonts/NotoSans-BoldItalic-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
 }
 
 /*** basics ***********************************************************/
@@ -11,7 +29,7 @@ td,
 th,
 input,
 textarea {
-    font-family: ubuntu, Arial, Helvetica, sans-serif;
+    font-family: Noto, Arial, Helvetica, sans-serif;
     font-size: 13px;
 }
 body {
@@ -66,7 +84,7 @@ a:hover {
 	border-collapse: collapse;
 }
 #list .image {
-	width: 100px;
+	width: 60px;
 }
 #list .filename {
 }

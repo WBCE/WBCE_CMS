@@ -25,7 +25,7 @@
 			PageID: <b>{PAGE_ID}</b>
 		</div>
 		<div style="float: right; text-align: right; color: #999;" class="{DISPLAY_MODIFIED}">
-			<i>Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</i>
+			<i>{LAST_MODIFIED}: {MODIFIED_BY} - {MODIFIED_WHEN}</i>
 		</div>
 	</header>
 
@@ -73,21 +73,11 @@
 					<div class="fg4">{TEXT_VISIBILITY}:</div>
 					<div class="fg8">
 						<select name="visibility" onchange="javascript: toggle_viewers();" class="wdt250">
-							<option value="public" {PUBLIC_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">
-								{TEXT_PUBLIC}
-							</option>
-							<option value="private" {PRIVATE_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">
-								{TEXT_PRIVATE}
-							</option>
-							<option value="registered" {REGISTERED_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);">
-								{TEXT_REGISTERED}
-							</option>
-							<option value="hidden" {HIDDEN_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">
-								{TEXT_HIDDEN}
-							</option>
-							<option value="none" {NO_VIS_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);">
-								{TEXT_NONE}
-							</option>
+							<option value="public" {PUBLIC_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">{TEXT_PUBLIC}</option>
+							<option value="hidden" {HIDDEN_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">{TEXT_HIDDEN}</option>
+							<option value="registered" {REGISTERED_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);">{TEXT_REGISTERED}</option>
+							<option value="private" {PRIVATE_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">{TEXT_PRIVATE}</option>
+							<option value="none" {NO_VIS_SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);">{TEXT_NONE}</option>
 						</select>
 					</div>
 				</div>
@@ -164,14 +154,13 @@
 							<!-- END language_list_block -->
 						</select>
 					</div>
-					</div>
 				</div>
 
 				<div {DISPLAY_CODE_PAGE_LIST}>
 					<div class="row">
 						<div class="fg4">{TEXT_PAGE_CODE}:</div>
 						<div class="fg8">
-							<select name="page_code" class="wdt150">
+							<select name="page_code" class="wdt250">
 								<!-- BEGIN page_code_list_block -->
 								<option value="{VALUE}" {SELECTED}>{PAGE_VALUE}</option>
 								<!-- END page_code_list_block -->
@@ -228,7 +217,7 @@
 			<div class="fg6 right">
 				<button type="button" onclick="location.href = 'index.php';">
 					<i class="fa fa-fw fa-reply"></i>
-					zurück
+					{TEXT_BACK}
 				</button>
 			</div>
 

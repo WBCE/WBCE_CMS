@@ -5,6 +5,7 @@
  * Visit http://wbce.org to learn more and to join the community.
  *
  * @copyright Christian M. Stefan (Stefek)
+ * @copyright adapted version Bernd J. Michna (berndjm)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  */
@@ -297,7 +298,7 @@ ob_start();
 
 				<td class="page-add-child">
 					<?php if ($canAddChild) : ?>
-						<a href="#" onclick="add_child_page('{PAGE_ID}');" title="<?php echo $HEADING['ADD_CHILD_PAGE']; ?>">
+						<a href="#heading-add-page" onclick="add_child_page('{PAGE_ID}');" title="<?php echo $HEADING['ADD_CHILD_PAGE']; ?>">
 							<i class="fa fa-lg fa-copy"></i>
 						</a>
 					<?php endif; ?>

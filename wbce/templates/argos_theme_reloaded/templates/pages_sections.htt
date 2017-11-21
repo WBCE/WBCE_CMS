@@ -24,7 +24,7 @@
 			PageID: <b>{PAGE_ID}</b>
 		</div>
 		<div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}">
-			<i>Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</i>
+			<i>{LAST_MODIFIED}: {MODIFIED_BY} - {MODIFIED_WHEN}</i>
 		</div>
 	</header>
 
@@ -39,6 +39,8 @@
 					<td class="header_list_namesection">{TEXT_NAMESECTION}</td>
 					<td class="header_list_pubdate_start">{TEXT_PUBL_START_DATE}</td>
 					<td class="header_list_pubdate_end">{TEXT_PUBL_END_DATE}</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
 					<td class="header_list_sections_actions">
 						<i class="fa fa-lg fa-trash"></i>
 					</td>
@@ -66,7 +68,7 @@
                     </td>
 
                     <td class="list_namesection">
-                        <input type="text" id="namesection{VAR_SECTION_ID}" name="namesection{VAR_SECTION_ID}" value="{NAMESECTION}" class="wdt200">
+                        <input type="text" id="namesection{VAR_SECTION_ID}" name="namesection{VAR_SECTION_ID}" value="{NAMESECTION}" class="wdt160">
                     </td>
 
                     <td class="list-calendar">
@@ -81,10 +83,10 @@
                         <i id="trigger_start{VAR_SECTION_ID}" class="fa fa-lg fa-calendar-times-o red" title="{TEXT_CALENDAR}" onclick="$('#end_date{VAR_SECTION_ID}').val('')"></i>
                     </td>
 
-					<td style="display: none;">{VAR_MOVE_UP_URL}</td>
-                    <td style="display: none;">{VAR_MOVE_DOWN_URL}</td>
+					<td>{VAR_MOVE_UP_URL}</td>
+                    <td>{VAR_MOVE_DOWN_URL}</td>
 
-                    <td>
+                    <td style="text-align:center;">
                         <a href="#" onclick="confirm_link('{TEXT_ARE_YOU_SURE}', '{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}&amp;section_id={VAR_SECTION_IDKEY}');">
 							<i class="fa fa-lg fa-remove red"></i>
                         </a>
@@ -107,7 +109,7 @@
 				</button>
 				<button type="button" onclick="location.href = 'index.php';" style="float: right;">
 					<i class="fa fa-fw fa-reply"></i>
-					zurück
+					{TEXT_BACK}
 				</button>
 			</div>
 

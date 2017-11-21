@@ -8,11 +8,17 @@
 </div> <!-- #content-container -->
 
 <div id="footer">
-	WBCE Version: {WBCE_VERSION} &bull;
-	Backend Version: 2.0.1
-	&bull;
-	PHP Version: {PHP_VERSION} &bull;
-    Session timeout: <span id="countdown" class="timer"></span>
+	<div id="inner-footer">
+		<div class="scroll-to-top left fg1"><i class="fa fa-lg fa-arrow-circle-o-up"></i></div>
+		<div class="footer-info fg10">
+			WBCE Version: {WBCE_VERSION}
+			&bull;
+			Backend Version: 2.1.0
+			&bull;
+			PHP Version: {PHP_VERSION}
+		</div>
+		<div class="scroll-to-top right fg1"><i class="fa fa-lg fa-arrow-circle-o-up"></i></div>
+	</div>
 </div>
 
 <!--(PH) HTML BODY BTM+ -->

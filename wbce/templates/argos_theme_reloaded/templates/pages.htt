@@ -51,9 +51,9 @@
 					<div class="fg8">
 						<select name="visibility" onchange="toggle_viewers();" class="wdt150">
 							<option value="public" {SELECTED} class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye.png);">{TEXT_PUBLIC}</option>
-							<option value="private" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">{TEXT_PRIVATE}</option>
+							<option value="hidden" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-eye-slash.png);">{TEXT_HIDDEN}</option>
 							<option value="registered" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-key.png);">{TEXT_REGISTERED}</option>
-							<option value="hidden" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">{TEXT_HIDDEN}</option>
+							<option value="private" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-user-secret.png);">{TEXT_PRIVATE}</option>
 							<option value="none" class="hasFlag" style="background-image:url({THEME_URL}/images/fa-ban.png);">{TEXT_NONE}</option>
 						</select>
 					</div>

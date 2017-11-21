@@ -23,7 +23,7 @@
 			PageID: <b>{PAGE_ID}</b>
 		</div>
 		<div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}">
-			<i>Letzte Änderung: {MODIFIED_BY} - {MODIFIED_WHEN}</i>
+			<i>{LAST_MODIFIED}: {MODIFIED_BY} - {MODIFIED_WHEN}</i>
 		</div>
 	</header>
 </section>
@@ -31,9 +31,9 @@
 
 <!-- BEGIN section_module_block -->
 <div class="section-info" id="{SECTION_ANCHOR}" >
-    <b>{TEXT_BLOCK}: </b>{BLOCK_NAME}
-    <b>Modul: </b>{SECTION_MODULE}
-    <b>ID: </b>{SECTION_ID}
+    <b>{TEXT_BLOCK}: </b>{BLOCK_NAME}&nbsp;&nbsp;|&nbsp;&nbsp;
+    <b>Modul: </b>{SECTION_MODULE}&nbsp;&nbsp;|&nbsp;&nbsp;
+    <b>ID: </b>{SECTION_ID}&nbsp;&nbsp;|&nbsp;&nbsp;
     <b>Name: </b>{SECTION_NAME}
 </div>
 

@@ -4,7 +4,7 @@
 	<div class="headline-link">
 		<i class="fa fa-reply">
 			<a href="#" onclick="window.location = 'index.php';">
-				zurück
+				{TEXT_BACK}
 			</a>
 		</i>
 	</div>
@@ -23,11 +23,6 @@
 
 	<div class="fg3 bold">{TEXT_VERSION}:</div>
 	<div class="fg9">{VERSION}</div>
-
-	<hr class="fg12 nom">
-
-	<div class="fg3 bold">{TEXT_DESIGNED_FOR}:</div>
-	<div class="fg9">WBCE 1.1.x</div>
 
 	<hr class="fg12 nom">
 

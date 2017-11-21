@@ -77,6 +77,28 @@ $(document).ready(function() {
 
 	});
 
+	/*** scroll to top ************************************************/
+	$('.scroll-to-top').click(function() {
+		$('html, body').animate({scrollTop: (0)}, 'slow');
+	});
+
+	/*** check for unsaved changes ************************************/
+	/*
+	formmodified = 0;
+    $('form *').change(function(){
+        formmodified = 1;
+    });
+    window.onbeforeunload = confirmExit;
+    function confirmExit() {
+        if (formmodified == 1) {
+            return "Nicht gepeicherte Änderungen.\nDie Seite wirklich verlassen?";
+        }
+    }
+    $("input[name='commit']").click(function() {
+        formmodified = 0;
+    });
+    */
+
 });
 
 

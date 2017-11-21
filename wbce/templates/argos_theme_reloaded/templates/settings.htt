@@ -1,6 +1,12 @@
 <!-- BEGIN main_block -->
 <style type="text/css">
-	h2 {cursor: pointer;}
+.etabs { margin: 0; padding: 0; }
+.tab { display: inline-block; zoom:1; *display:inline; background: #eee; border: solid 1px #999; border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; }
+.tab a { font-size: 12px; line-height: 1.5; display: block; padding: 4px 10px; outline: none; }
+.tab a:hover { text-decoration: none; }
+.tab.active { background: #fff; position: relative; top: 1px; border-color: #666; }
+.tab a.active { font-weight: bold; }
+.tab-container .panel-container { background: #fff; border: solid #666 1px; padding: 10px; -moz-border-radius: 0 4px 4px 4px; -webkit-border-radius: 0 4px 4px 4px; }
 </style>
 
 <form name="settings" action="save.php" method="post">
@@ -8,17 +14,27 @@
 	<input type="hidden" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="true">
 	{FTAN}
 
+	<div id="tab-container" class="tab-container top">
+	<!-- THE TABS ************************************************** -->
+	<ul class='etabs'>
+		<li class="tab settings-general-settings"><a href="#settings-general-settings">{HEADING_GENERAL_SETTINGS}</a></li>
+		<li class="tab settings-default-settings"><a href="#settings-default-settings">{HEADING_DEFAULT_SETTINGS}</a></li>
+		<li class="tab settings-search-settings"><a href="#settings-search-settings">{HEADING_SEARCH_SETTINGS}</a></li>
+		<li class="tab settings-server-settings"><a href="#settings-server-settings">{HEADING_SERVER_SETTINGS}</a></li>
+		<li class="tab settings-wbmailer-settings"><a href="#settings-wbmailer-settings">{HEADING_WBMAILER_SETTINGS}</a></li>
+	</ul>
+
 	<!-- GENERAL SETTINGS ****************************************** -->
-	<h2 style="margin:10px 0;">
-		<i class="fa fa-expand"></i>
-		{HEADING_GENERAL_SETTINGS}
-		<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
-			<a href="#settings-general-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-general-settings'; return false;">
-				{ADVANCED_BUTTON}
-			</a>
-		</div>
-	</h2>
 	<section class="row content-box" style="padding:0;" id="settings-general-settings">
+		<h2 style="margin:10px 0; padding:0 12px;">
+			{HEADING_GENERAL_SETTINGS}
+			<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
+				<a href="#settings-general-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-general-settings'; return false;">
+					{ADVANCED_BUTTON}
+				</a>
+			</div>
+		</h2>
+
 		<div class="row top" style="padding-left:0;">
 			<div class="fg3">{TEXT_WEBSITE_TITLE}:</div>
 			<div class="fg9">
@@ -309,16 +325,15 @@
 	</section>
 
 	<!-- DEFAULT SETTINGS ****************************************** -->
-	<h2 style="margin:10px 0;">
-		<i class="fa fa-expand"></i>
-		{HEADING_DEFAULT_SETTINGS}
-		<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
-			<a href="#settings-default-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-default-settings'; return false;">
-				{ADVANCED_BUTTON}
-			</a>
-		</div>
-	</h2>
 	<section class="row content-box" style="padding:0;" id="settings-default-settings">
+		<h2 style="margin:10px 0; padding:0 12px;">
+			{HEADING_DEFAULT_SETTINGS}
+			<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
+				<a href="#settings-default-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-default-settings'; return false;">
+					{ADVANCED_BUTTON}
+				</a>
+			</div>
+		</h2>
 		<div class="row top" style="padding-left:0;">
 			<div class="fg3">{TEXT_LANGUAGE}:</div>
 			<div class="fg9">
@@ -417,16 +432,15 @@
 	</section>
 
 	<!-- SEARCH SETTINGS ****************************************** -->
-	<h2 style="margin:10px 0;">
-		<i class="fa fa-expand"></i>
-		{HEADING_SEARCH_SETTINGS}
-		<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
-			<a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;">
-				{ADVANCED_BUTTON}
-			</a>
-		</div>
-	</h2>
 	<section class="row content-box" style="padding:0;" id="settings-search-settings">
+		<h2 style="margin:10px 0; padding:0 12px;">
+			{HEADING_SEARCH_SETTINGS}
+			<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
+				<a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;">
+					{ADVANCED_BUTTON}
+				</a>
+			</div>
+		</h2>
 		<div class="row top" style="padding-left:0;">
 			<div class="fg3">{TEXT_VISIBILITY}:</div>
 			<div class="fg9">
@@ -530,17 +544,17 @@
 	</section>
 
 	<!-- SERVER SETTINGS ****************************************** -->
-	<h2 style="margin:10px 0;">
-		<i class="fa fa-expand"></i>
-		{HEADING_SERVER_SETTINGS}
-		<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
-			<a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;">
-				{ADVANCED_BUTTON}
-			</a>
-		</div>
-	</h2>
 	<section class="row content-box" style="padding:0;" id="settings-server-settings">
-		<div class="row top" style="padding-left:0;">
+		<h2 style="margin:10px 0; padding:0 12px;">
+			{HEADING_SERVER_SETTINGS}
+			<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}>
+				<a href="#settings-server-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-server-settings'; return false;">
+					{ADVANCED_BUTTON}
+				</a>
+			</div>
+		</h2>
+		<!-- BEGIN show_access_block -->
+		<div class="row top" style="padding-left:0;" {DISPLAY_ADVANCED}>
 			<div class="fg3">{TEXT_SERVER_OPERATING_SYSTEM}:</div>
 			<div class="fg9">
 				<label id="os-linux-label">
@@ -555,7 +569,6 @@
 			</div>
 		</div>
 
-		<!-- BEGIN show_access_block -->
 		<section id="file-perms" class="row top" style="padding-left:0;" {DISPLAY_ADVANCED}>
 			<div class="fg3">{TEXT_FILESYSTEM_PERMISSIONS}:</div>
 			<div class="fg4" style="border-bottom: 1px dotted #999;">
@@ -668,11 +681,10 @@
 	</section>
 
 	<!-- MAILER SETTINGS ****************************************** -->
-	<h2 style="margin:10px 0;">
-		<i class="fa fa-expand"></i>
-		{HEADING_WBMAILER_SETTINGS}
-	</h2>
 	<section class="row content-box" style="padding:0;" id="settings-wbmailer-settings">
+		<h2 style="margin:10px 0; padding:0 12px;">
+			{HEADING_WBMAILER_SETTINGS}
+		</h2>
 		<p class="fg12 top bot desc">{TEXT_WBMAILER_DEFAULT_SETTINGS_NOTICE}</p>
 
 		<hr class="fg12">
@@ -747,48 +759,39 @@
 			</div>
 		</div>
 	</section>
+	</div> <!-- end #tab-container -->
 </form>
 <!-- END main_block -->
 
 <script>
-	function initState(thisPart) {
-		if (typeof $.cookie(thisPart) === 'undefined') {
-			//$.cookie(thisPart, '0', { expires: 7, path: '/' });
-			$.cookie(thisPart, '0');
-			$('#' + thisPart).hide();
-		} else {
-			if ($.cookie(thisPart) == '0') {
-				$('#' + thisPart).hide();
-			} else {
-				$('#' + thisPart).show();
-				$('#' + thisPart).prev('h2').children('i').removeClass('fa-expand').addClass('fa-compress');
-			}
-		}
-	}
+
 
 	$(document).ready(function() {
+		// init the tabs
+		if (!sessionStorage.tabsName) {
+			sessionStorage.setItem('tabsName','settings-general-settings');
+		}
 
-		// init
-		initState('settings-general-settings');
-		initState('settings-default-settings');
-		initState('settings-search-settings');
-		initState('settings-server-settings');
-		initState('settings-wbmailer-settings');
+		active_tab = sessionStorage.getItem('tabsName');
 
-		// toggle the content-boxes
-		$('h2').click(function(e) {
-			if (e.target !== this) return;
-			var this_id = $(this).next('.content-box').attr('id');
-			$(this).next('.content-box').toggle();
-			if ($(this).next('.content-box').css('display') == 'block') {
-				$(this).children('i').removeClass('fa-expand').addClass('fa-compress');
-				//$.cookie(this_id, '1', { expires: 7, path: '/' });
-				$.cookie(this_id, '1');
-			} else {
-				$(this).children('i').removeClass('fa-compress').addClass('fa-expand');
-				//$.cookie(this_id, '0', { expires: 7, path: '/' });
-				$.cookie(this_id, '0');
+		$('#tab-container').easytabs({
+			animate : false,
+			defaultTab : 'li.' + active_tab,
+			transitionIn : 'slideDown',
+			transitionOut : 'slideUp',
+			transitionInEasing : 'linear',
+			transitionOutEasing : 'linear',
+			updateHash : false,
+		});
+
+		// fetch the active tab
+		$('.tab').click(function() {
+			if ($(this).hasClass('active')) {
+				tabs_name = $(this).children('a').attr('href');
+				tabs_name = tabs_name.substr(1);
 			}
+			//console.log(tabs_name);
+			sessionStorage.setItem('tabsName',tabs_name);
 		});
 
 		// toggle mailer state
@@ -853,7 +856,7 @@
 
 		/* toggle the acces-settings tables */
 		// initial
-		if ($('#os-windows').attr('checked') == 'checked') {
+		if ($('#os-windows').prop('checked') == true) {
 			$('#file-perms').hide();
 		}
 		$('#os-linux').click(function() {
