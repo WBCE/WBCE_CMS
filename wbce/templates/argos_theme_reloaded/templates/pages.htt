@@ -1,4 +1,5 @@
 <!-- BEGIN main_block -->
+{PAGE_TREE}
 <!--- !!! relevant table cell for drag'n'drop sorting: #7 (0-indexed) -->
 <div class="clearfix"></div>
 <section class="{DISPLAY_ADD}">
@@ -132,4 +133,6 @@
 		}
 	});
 </script>
+
+{JS_ADMIN}
 <!-- END main_block -->

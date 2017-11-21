@@ -19,22 +19,28 @@ $admin->clearIDKEY();
 // Include the WB functions file
 require_once(WB_PATH.'/framework/functions.php');
 
-/**
- *	Include PageTree script
- *
-*/
-if (file_exists(THEME_PATH.'/patch/page_tree.php')) :
+// Include page tree and define output
+ob_start();
+if (file_exists(THEME_PATH.'/patch/page_tree.php')) {
 	require_once(THEME_PATH.'/patch/page_tree.php');
-else :
+} else {
 	require_once(dirname(__FILE__).'/page_tree/page_tree.php');
-endif;
+}
+$pageTreeOutput = ob_get_clean();
 
 // Setup template object
 $template = new Template(dirname($admin->correct_theme_source('pages.htt')));
 
+// Disable removing of unknown vars
+$template->set_unknowns('keep');
+
 $template->set_file('page', 'pages.htt');
 $template->set_block('page', 'main_block', 'main');
 $template->set_var('FTAN', $admin->getFTAN());
+
+// Set page tree as var
+$template->set_var('PAGE_TREE', $pageTreeOutput);
+
 
 /**
  *	Insert values into the add page form
@@ -238,6 +244,7 @@ $template->set_var(array(
                         );
 // Insert language text and messages
 $template->set_var(array(
+								'TEXT_PAGES' => $MENU['PAGES'],
                                 'TEXT_TITLE' => $TEXT['TITLE'],
                                 'TEXT_TYPE' => $TEXT['TYPE'],
                                 'TEXT_PARENT' => $TEXT['PARENT'],
@@ -267,17 +274,24 @@ if($admin->get_permission('pages_intro') != true OR INTRO_PAGE != 'enabled') {
     $template->set_var('DISPLAY_INTRO', 'hide');
 }
 
+// Include JavaScript backend includes and define output
+ob_start();
+$jsadminFile = WB_PATH.'/modules/jsadmin/jsadmin_backend_include.php';
+if(is_file($jsadminFile)) {
+	include($jsadminFile);
+}
+$jsAdminOutput = ob_get_clean();
+
+// Oadd eggsurplus Javascript to output
+$jsAdminOutput .= PHP_EOL . '<script type="text/javascript" src="eggsurplus.js"></script>';
+
+// Set JavaScript backend as var
+$template->set_var('JS_ADMIN', $jsAdminOutput);
 
 // Parse template object
 $template->parse('main', 'main_block', false);
 $template->pparse('output', 'page');
 
-// include the required file for Javascript admin
-$jsadmin_file = WB_PATH.'/modules/jsadmin/jsadmin_backend_include.php';
-if($jsadmin_file) include($jsadmin_file);
-?>
-<script type="text/javascript" src="eggsurplus.js"></script>
-<?php
 // Print admin
 $admin->print_footer();
 ?>
