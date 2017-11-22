@@ -505,7 +505,7 @@ via the Settings panel in the backend of Website Baker
                 $sRetval = WB_PATH."/templates/default_theme/templates/" . $sThemeFile;
             }
             else {
-                throw new InvalidArgumentException('missing template file ' . $sThemeFile);
+                die('Following theme file is missing: '. $sThemeFile);
             }
         return $sRetval;
     }
