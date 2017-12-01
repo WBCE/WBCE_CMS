@@ -1,14 +1,13 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        module
- * @package         show_menu2
- * @author          WebsiteBaker Project
- * @copyright       Ryan Djurovich
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 define('SM2_ROOT',          -1000);
@@ -40,7 +39,7 @@ include_once("classes/sm2_formatter.php");
 // the comments characters from the beginning of the following include, all menu
 // functions in Website Baker will be implemented using show_menu2. While it is
 // commented out, the original WB functions will be used.
-//include('legacy.php');
+include('legacy.php');
 
 function error_logs($error_str)
 {

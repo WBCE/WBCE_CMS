@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$module_description = 'Dieses Modul integriert die erweiterte Men&uuml;funktion <code>show_menu2()</code> in Website Baker. Detailierte Informationen gibt es auf <a href="http://code.jellycan.com/show_menu2/" target="_blank">http://code.jellycan.com/show_menu2/</a> oder in der <a href="{WB_URL}/modules/show_menu2/README.de.txt" target="_blank">readme</a> Datei.';
+$module_description = 'Dieses Modul integriert die erweiterte Men&uuml;funktion show_menu2() in WBCE CMS. Detailierte Informationen gibt es in der <a href="{WB_URL}/modules/show_menu2/README.de.txt" target="_blank">readme</a> Datei oder auf <a href="https://sm2.wbce-cms.org/" target="_blank">sm2.wbce-cms.org</a>.';
 
 // Module language vars
 $SHOW_MENU2['SHOW_MENU2'] ="ShowMenu2";
