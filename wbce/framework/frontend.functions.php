@@ -16,6 +16,15 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 // Hey we are on a frontend Page
 if (!defined('WB_FRONTEND')) define('WB_FRONTEND', true);
 
+// compatibility mode for versions before 2.8.1
+// the news modul still needs it
+if (isset($wb)) {$admin = $wb;}
+if (isset($wb->default_link)) {$default_link = $wb->default_link;}
+if (isset($wb->page_trail)) {$page_trail = $wb->page_trail;}
+if (isset($wb->page_description)) {$page_description = $wb->page_description;}
+if (isset($wb->page_keywords)) {$page_keywords = $wb->page_keywords;}
+if (isset($wb->link)) {$page_link = $wb->link;}
+
 $include_head_link_css = '';
 $include_body_links = '';
 $include_head_links = '';
