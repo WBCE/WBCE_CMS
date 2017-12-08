@@ -225,8 +225,8 @@ if (!function_exists("getOutputFilterSettings")) {
             'sys_rel'         => Settings::Get("opf_sys_rel", 0),
             'email_filter'    => Settings::Get("opf_email_filter", 0),
             'mailto_filter'   => Settings::Get("opf_mailto_filter", 0),
-            'at_replacement'  => Settings::Get("opf_mailto_filter",'(at)'),
-            'dot_replacement' => Settings::Get("opf_mailto_filter",'(dot)')
+            'at_replacement'  => Settings::Get('opf_at_replacement', '(at)') ,
+            'dot_replacement' => Settings::Get('opf_dot_replacement', '(dot)') 
         );
         return $settings;
     }
