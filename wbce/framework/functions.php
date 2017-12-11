@@ -10,13 +10,9 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+
 // Define that this file has been loaded
 define('FUNCTIONS_FILE_LOADED', true);
 
@@ -439,7 +435,7 @@ function root_parent($page_id)
 {
     global $database;
     // Get page details
-    $sql = 'SELECT `parent`, `level` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $page_id;
+    $sql = 'SELECT `parent`, `level` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . (int)$page_id;
     $query_page = $database->query($sql);
     $fetch_page = $query_page->fetchRow();
     $parent = $fetch_page['parent'];
@@ -509,8 +505,7 @@ function get_subs($parent, array $subs)
     // Connect to the database
     global $database;
     // Get id's
-    $parent = (int)$parent;
-    $sql = 'SELECT `page_id` FROM `' . TABLE_PREFIX . 'pages` WHERE `parent` = ' . $parent;
+    $sql = 'SELECT `page_id` FROM `' . TABLE_PREFIX . 'pages` WHERE `parent` = ' . (int)$parent;
     if (($query = $database->query($sql))) {
         while ($fetch = $query->fetchRow()) {
             $subs[] = $fetch['page_id'];
@@ -1036,7 +1031,7 @@ function load_module($directory, $install = false)
             if($install == true) {
                 if(file_exists($directory.'/install.php')) {
                     require($directory.'/install.php');
-                        if (isset($msg)) {$retVal[] = $msg; } else {$retVal[] = 'Info '.$module_name;}
+                        $retVal[] = isset($msg)?:'Info '.$module_name;
                 }
             }
         }

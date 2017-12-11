@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -10,14 +10,14 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
-// Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
-/* -------------------------------------------------------- */
+//no direct file access
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+
+// Hey we are on a frontend Page
+if (!defined('WB_FRONTEND')) define('WB_FRONTEND', true);
+
 // compatibility mode for versions before 2.8.1
+// the news modul still needs it
 if (isset($wb)) {$admin = $wb;}
 if (isset($wb->default_link)) {$default_link = $wb->default_link;}
 if (isset($wb->page_trail)) {$page_trail = $wb->page_trail;}
@@ -29,14 +29,30 @@ $include_head_link_css = '';
 $include_body_links = '';
 $include_head_links = '';
 
-// workout to included frontend.css, frontend.js and frontend_body.js in snippets
+// Extra run for include.php now available to ALL modules. 
+// Yess all modules are now allowed to have a include.php. 
+
 $sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
-$sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%snippet%\'';
+$sql .= 'WHERE function LIKE \'%snippet%\' ';
 if (($resSnippets = $database->query($sql))) {
     while ($recSnippet = $resSnippets->fetchRow()) {
         $module_dir = $recSnippet['directory'];
         if (file_exists(WB_PATH . '/modules/' . $module_dir . '/include.php')) {
             include WB_PATH . '/modules/' . $module_dir . '/include.php';
+        }
+    }
+}
+
+// workout to included frontend.css, fronten.js and frontend_body.js in snippets
+// this old thing continues to load the old Frontend CSS/JS
+// This possibly moves to a module thats why i seperated it !
+// still this needs to call the new Library to store the  JS!
+$sql = 'SELECT `directory` FROM `' . TABLE_PREFIX . 'addons` ';
+$sql .= 'WHERE  function LIKE \'%snippet%\'';
+if (($resSnippets = $database->query($sql))) {
+    while ($recSnippet = $resSnippets->fetchRow()) {
+        $module_dir = $recSnippet['directory'];
+        if (file_exists(WB_PATH . '/modules/' . $module_dir . '/include.php')) {
             // check if frontend.css file needs to be included into the <head></head> of index.php
             if (file_exists(WB_PATH . '/modules/' . $module_dir . '/frontend.css')) {
                 $include_head_link_css .= '<link href="' . WB_URL . '/modules/' . $module_dir . '/frontend.css"';
@@ -135,117 +151,55 @@ if (!function_exists('search_highlight')) {
     }
 }
 
-if (!function_exists('page_menu')) {
-    /**
-     * Old menu generator
-     * @deprecated from WB 2.9.x and up
-     * @global <type> $wb
-     * @param <type> $parent
-     * @param <type> $menu_number
-     * @param <type> $item_template
-     * @param <type> $menu_header
-     * @param <type> $menu_footer
-     * @param <type> $default_class
-     * @param <type> $current_class
-     * @param <type> $recurse
-     */
-    function page_menu($parent = 0, $menu_number = 1, $item_template = '<li[class]>[a] [menu_title] [/a]</li>', $menu_header = '<ul>', $menu_footer = '</ul>', $default_class = ' class="menu_default"', $current_class = ' class="menu_current"', $recurse = LEVEL)
-    {
-        global $wb;
-        $wb->menu_number = $menu_number;
-        $wb->menu_item_template = $item_template;
-        $wb->menu_item_footer = '';
-        $wb->menu_parent = $parent;
-        $wb->menu_header = $menu_header;
-        $wb->menu_footer = $menu_footer;
-        $wb->menu_default_class = $default_class;
-        $wb->menu_current_class = $current_class;
-        $wb->menu_recurse = $recurse + 2;
-        $wb->menu();
-        unset($wb->menu_parent);
-        unset($wb->menu_number);
-        unset($wb->menu_item_template);
-        unset($wb->menu_item_footer);
-        unset($wb->menu_header);
-        unset($wb->menu_footer);
-        unset($wb->menu_default_class);
-        unset($wb->menu_current_class);
-        unset($wb->menu_start_level);
-        unset($wb->menu_collapse);
-        unset($wb->menu_recurse);
+
+if (!function_exists('get_block_id')) {
+/**
+    @brief function to extract Block ID from Blockname 
+    
+    If fed whith an integer or numeric string it simply returns this as an integer.
+    If fed whith a string it tries to find this string in the $block[] array of the recent template.
+    It returns the id if found otherwise it returns 1 (default template block)
+    
+    @param unknown $uBlock may be string or integer
+    @return integer 
+*/
+    function get_block_id ($uBlock) {
+        if (is_int($uBlock) OR preg_match("/^[0-9]+$/is", $uBlock))
+            return (int)$uBlock;
+        else {
+            require (WB_PATH."/templates/".TEMPLATE."/info.php");
+            if ($key = array_search($uBlock, $block))
+                return (int) $key ;
+            else 
+                return 1;
+        }
     }
 }
 
-if (!function_exists('show_menu')) {
-    /**
-     * Old menu generator
-     * @deprecated from WB 2.9.x and up
-     * @global  $wb
-     * @param <type> $menu_number
-     * @param <type> $start_level
-     * @param <type> $recurse
-     * @param <type> $collapse
-     * @param <type> $item_template
-     * @param <type> $item_footer
-     * @param <type> $menu_header
-     * @param <type> $menu_footer
-     * @param <type> $default_class
-     * @param <type> $current_class
-     * @param <type> $parent
-     */
-    function show_menu($menu_number = null, $start_level = null, $recurse = null, $collapse = null, $item_template = null, $item_footer = null, $menu_header = null, $menu_footer = null, $default_class = null, $current_class = null, $parent = null)
-    {
-        global $wb;
-        if (isset($menu_number)) {
-            $wb->menu_number = $menu_number;
+if (!function_exists('get_menu_id')) {
+/**
+    @brief function to extract Block ID from Blockname 
+    
+    If fed whith an integer or numeric string it simply returns this as an integer.
+    If fed whith a string it tries to find this string in the $block[] array of the recent template.
+    It returns the id if found otherwise it returns 1 (default template block)
+    
+    @param unknown $uBlock may be string or integer
+    @return integer 
+*/
+    function get_menu_id ($uMenu) {
+        if (is_int($uMenu) OR preg_match("/^[0-9]+$/is", $uMenu))
+            return (int)$uMenu;
+        else {
+            require (WB_PATH."/templates/".TEMPLATE."/info.php");
+            if ($key = array_search($uMenu, $menu))
+                return (int) $key ;
+            else 
+                return 0;
         }
-
-        if (isset($start_level)) {
-            $wb->menu_start_level = $start_level;
-        }
-
-        if (isset($recurse)) {
-            $wb->menu_recurse = $recurse;
-        }
-
-        if (isset($collapse)) {
-            $wb->menu_collapse = $collapse;
-        }
-
-        if (isset($item_template)) {
-            $wb->menu_item_template = $item_template;
-        }
-
-        if (isset($item_footer)) {
-            $wb->menu_item_footer = $item_footer;
-        }
-
-        if (isset($menu_header)) {
-            $wb->menu_header = $menu_header;
-        }
-
-        if (isset($menu_footer)) {
-            $wb->menu_footer = $menu_footer;
-        }
-
-        if (isset($default_class)) {
-            $wb->menu_default_class = $default_class;
-        }
-
-        if (isset($current_class)) {
-            $wb->menu_current_class = $current_class;
-        }
-
-        if (isset($parent)) {
-            $wb->menu_parent = $parent;
-        }
-
-        $wb->menu();
-        unset($wb->menu_recurse);
-        unset($wb->menu_parent);
-        unset($wb->menu_start_level);
     }
 }
+
 
 if (!function_exists('page_content')) {
 /**
@@ -253,6 +207,7 @@ if (!function_exists('page_content')) {
     
     It now alllows to enter block names as well as block numbers.
     The second parameter lets the function return the result instead of printing it immediately. 
+
     @global array $TEXT
     @global array $MENU
     @global array $HEADING
@@ -268,15 +223,17 @@ if (!function_exists('page_content')) {
     function page_content($block = 1, $echo=true)
     {
         $block =  get_block_id ($block);
+
         // We don't want to display the page content 
         // We want it as a return value  
         if ($echo===false) {
-            ob_start();     
+            ob_start();		
             page_content($uBlock);
             $out = ob_get_contents();
             ob_end_clean();
             return $out; 
         }
+
         // Get outside objects
         global $TEXT, $MENU, $HEADING, $MESSAGE;
         global $globals;
@@ -296,6 +253,7 @@ if (!function_exists('page_content')) {
                 global $$global_name;
             }
         }
+
         // Include page content
         if (!defined('PAGE_CONTENT') or $block != 1) {
             $page_id = intval($wb->page_id);
@@ -305,6 +263,7 @@ if (!function_exists('page_content')) {
                 // SOLVED dw2015
                 return;
             }
+
             // First get all sections for this page
             $sql = 'SELECT `section_id`, `module`, `publ_start`, `publ_end` ';
             $sql .= 'FROM `' . TABLE_PREFIX . 'sections` ';
@@ -348,10 +307,12 @@ if (!function_exists('page_content')) {
                     ob_start(); // fetch original content
                     require WB_PATH . '/modules/' . $module . '/view.php';
                     $content = ob_get_clean();
+
                     //OPF hook
                     if(function_exists('opf_apply_filters')) {
                         $content = opf_controller('section', $content, $module, $page_id, $section_id);
                     }
+
                 } else {
                     continue;
                 }
@@ -374,70 +335,6 @@ if (!function_exists('page_content')) {
             }
         } else {
             require PAGE_CONTENT;
-        }
-    }
-}
-
-
-
-if (!function_exists('show_content')) {
-    function show_content($block = 1)
-    {
-        page_content($block);
-    }
-}
-
-
-
-
-if (!function_exists('show_breadcrumbs')) {
-    function show_breadcrumbs($sep = ' &raquo; ', $level = 0, $links = true, $depth = -1, $title = '')
-    {
-        global $wb, $database, $MENU;
-        $page_id = $wb->page_id;
-        $title = (trim($title) == '') ? $MENU['BREADCRUMB'] : $title;
-        if ($page_id != 0) {
-            $counter = 0;
-            // get links as array
-            $bread_crumbs = $wb->page_trail;
-            $count = sizeof($bread_crumbs);
-            // level can't be greater than sum of links
-            $level = ($count <= $level) ? $count - 1 : $level;
-            // set level from which to show, delete indexes in array
-            $crumbs = array_slice($bread_crumbs, $level);
-            $depth = ($depth <= 0) ? sizeof($crumbs) : $depth;
-            // if empty array, set orginal links
-            $crumbs = (!empty($crumbs)) ? $crumbs : $wb->page_trail;
-            $total_crumbs = (($depth <= 0) || ($depth > sizeof($crumbs))) ? sizeof($crumbs) : $depth;
-            print '<div class="breadcrumb"><span class="title">' . $title . '</span>';
-            //  print_r($crumbs);
-            foreach ($crumbs as $temp) {
-                if ($counter == $depth) {break;}
-                // set links and separator
-                $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id`=' . (int) $temp;
-                $query_menu = $database->query($sql);
-                $page = $query_menu->fetchRow();
-                $show_crumb = (($links == true) && ($temp != $page_id))
-                ? '<a href="' . page_link($page['link']) . '" class="link">' . $page['menu_title'] . '</a>'
-                : '<span class="crumb">' . $page['menu_title'] . '</span>';
-                // Permission
-                switch ($page['visibility']) {
-                case 'none':
-                case 'hidden':
-                    // if show, you know there is an error in a hidden page
-                    print $show_crumb . '&nbsp;';
-                    break;
-                default:
-                    print $show_crumb;
-                    break;
-                }
-
-                if (($counter != $total_crumbs - 1)) {
-                    print '<span class="separator">' . $sep . '</span>';
-                }
-                $counter++;
-            }
-            print "</div>\n";
         }
     }
 }
@@ -541,11 +438,6 @@ if (!function_exists('register_frontend_modfiles_body')) {
             return;
         }
 
-        // define constant indicating that the register_frontent_files was invoked
-        if (!defined('MOD_FRONTEND_BODY_JAVASCRIPT_REGISTERED')) {
-            define('MOD_FRONTEND_BODY_JAVASCRIPT_REGISTERED', true);
-        }
-
         global $wb, $database, $include_body_links;
         // define default baselink and filename for optional module javascript files
         $body_links = "";
@@ -575,9 +467,6 @@ if (!function_exists('register_frontend_modfiles_body')) {
                     if (file_exists(WB_PATH . "/modules/" . $row['module'] . "/$base_file")) {
                         // create link with frontend_body.js source for the current module
                         $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link);
-
-                        // define constant indicating that the register_frontent_files_body was invoked
-                        if (!defined('MOD_FRONTEND_BODY_JAVASCRIPT_REGISTERED')) {define('MOD_FRONTEND_BODY_JAVASCRIPT_REGISTERED', true);}
 
                         // ensure that frontend_body.js is only added once per module type
                         if (strpos($body_links, $tmp_link) === false) {
@@ -643,18 +532,6 @@ if (!function_exists('register_frontend_modfiles')) {
                         // create link with frontend.js or frontend.css source for the current module
                         $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link);
 
-                        // define constant indicating that the register_frontent_files was invoked
-                        if ($file_id == 'css') {
-                            if (!defined('MOD_FRONTEND_CSS_REGISTERED')) {
-                                define('MOD_FRONTEND_CSS_REGISTERED', true);
-                            }
-
-                        } else {
-                            if (!defined('MOD_FRONTEND_JAVASCRIPT_REGISTERED')) {
-                                define('MOD_FRONTEND_JAVASCRIPT_REGISTERED', true);
-                            }
-
-                        }
                         // ensure that frontend.js or frontend.css is only added once per module type
                         if (strpos($head_links, $tmp_link) === false) {
                             $head_links .= $tmp_link . "\n";
@@ -668,28 +545,3 @@ if (!function_exists('register_frontend_modfiles')) {
         print $head_links;
     }
 }
-
-if (!function_exists('get_block_id')) {
-/**
-    @brief function to extract Block ID from Blockname 
-    
-    If fed whith an integer or numeric string it simply returns this as an integer.
-    If fed whith a string it tries to find this string in the $block[] array of the recent template.
-    It returns the id if found otherwise it returns 1 (default template block)
-    
-    @param unknown $uBlock may be string or integer
-    @return integer 
-*/
-    function get_block_id ($uBlock) {
-        if (is_int($uBlock) OR preg_match("/^[0-9]+$/is", $uBlock))
-            return (int)$uBlock;
-        else {
-            require (WB_PATH."/templates/".TEMPLATE."/info.php");
-            if ($key = array_search($uBlock, $block))
-                return (int) $key ;
-            else 
-                return 1;
-        }
-    }
-}
-

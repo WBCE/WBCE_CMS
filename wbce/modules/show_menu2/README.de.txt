@@ -1,6 +1,6 @@
-﻿show_menu2, version 4.10.4
-=======================
-Ist ein Code-Snippet für das CMS Website Baker. Es stellt einen kompletten 
+﻿Show_Menu2
+====================
+Ist ein Code-Snippet für das WBCE CMS. Es stellt einen kompletten 
 Ersatz für die eingebaute Menüfuntionalität zur Verfügung. Alle, für die 
 Erzeugung des Menüs erforderlichen Daten, werden durch eine einzige 
 Datenbankabfrage erzeugt. Durch umfangreiche Anpassungsmöglichkeiten des 
@@ -8,27 +8,12 @@ erzeugten HTML-Code können alle möglichen Menüarten (Listen, Breadcrumbs,
 Sitemaps, usw.) erzeugt werden.
 
 ---
-Deutsche Übersetzung von BerndJM. Dies ist eine weitgehend direkte Übersetzung 
-des englischen Originals. Bei Übersetzungs- oder Interpretationsfehlern, bitte 
-eine Email an bjm@wwnw.de.
+Deutsche Übersetzung von BerndJM, aktualisiert von Colinax. 
+Dies ist eine weitgehend direkte Übersetzung des englischen Originals.
 ---
 
-
-
-INSTALLATION
-============
-1. Die aktuelle Version von http://code.jellycan.com/show_menu2/ herunterladen.
-2. In das Admin-Backend der Website Baker Installation einlogen.
-3. Erweiterungen -> Module aufrufen.
-4. Wenn bereits eine frühere Version von show_menu2 installiert ist, diese über
-   "Modul deinstallieren" auswählen und deinstallieren.
-5. Im Abschnitt "Modul installieren" das im Schritt 1 heruntergeladene zip-File
-   auswählen und installieren.
-
-   
-   
 BENUTZUNG VON SHOW_MENU2
-========================
+===============
 Um show_menu2 zu benutzen muss das verwendete Template an den Stellen 
 modifiziert werden, an denen das Menü erscheinen soll. Bitte beachten: Wenn alte 
 Menüaufrufe ersetzt werden, müssen unbedingt auch die entsprechenden neuen 
@@ -70,14 +55,13 @@ Oder um beispielsweise bis zu zwei Unterebenen der aktuellen Seite anzuzeigen:
 
     show_menu2(0, SM2_CURR+1, SM2_CURR+2);
 
-Es gibt jede Menge Möglichkeiten, um die unterschiedlichsten Menüstrukturen zu 
-erzeugen. Zahlreiche Beispiele dazu findet man auf der Demo-Website: http://
-code.jellycan.com/sm2test/
+Es gibt jede Menge Möglichkeiten, um die unterschiedlichsten Menüstrukturen zu erzeugen.
+Zahlreiche Beispiele dazu findet man auf der Demo-Website: https://sm2.wbce-cms.org/
 
 
 
 HÄUFIGE FRAGEN
-==============
+==========
 
 Q:  Ich bin kein Programmierer. Gibt es keine einfachere Dokumentation? 
 A:  Nein, denn dies hier ist bereits die einfache Dokumentation.
@@ -85,16 +69,14 @@ A:  Nein, denn dies hier ist bereits die einfache Dokumentation.
 
 Q:  Wie kann ich ein sogenanntes Drop-Down Menü erstellen?
 A:  Dies hat nichts mit show_menu2 zu tun. Um ein Drop-Down Menü zu erzeugen muß
-    lediglich der CSS-Code des jeweiligen Templates angepaßt werden. Die nötigen 
-    Anpassungen findet man z.B. im "allcss2" Template aus dem WB Addon     
-    Repository -> http://addons.websitebaker.org/pages/templates.php
+    lediglich der CSS-Code des jeweiligen Templates angepaßt werden.
 
 
-Q:  Warum verschwindet das Menü nachdem ich in einer mehrsprachigen WB-Site die 
+Q:  Warum verschwindet das Menü nachdem ich in einer mehrsprachigen Webseite die 
     Suchfunktion benutzt habe?
 A:  Im verwendeten Template fehlen die notwendigen Zeilen:
 
-    1.  Im WB Admin Backend: Optionen -> Erweiterte Optionen anzeigen ->        
+    1.  Im Admin Backend: Optionen -> Erweiterte Optionen anzeigen ->        
         Suchoptionen -> Kopfzeile - hier direkt nach dem öffnenden <form> tag 
         folgende Zeile einfügen:
        
@@ -106,10 +88,6 @@ A:  Im verwendeten Template fehlen die notwendigen Zeilen:
         <input type="hidden" name="referrer" value="<?php echo defined('REFERRER_ID')?REFERRER_ID:PAGE_ID;?>" />
 
 
-Q:  Mehrsprachig? Das klingt toll. Wie macht man das?
-A:  http://help.websitebaker.org/pages/de/advanced-doku/designer-guide/mehrsprachige-webseiten.php
-
-
 Q:  Jedesmal wenn eine Seite aufgerufen wird, erzeugt SM2 folgende Warnmeldung:
     "show_menu2 error: $aOptions is invalid. No flags from group 1 supplied!"
 A:  Der Funktion wurden die falschen Werte oder eine falsche Anzahl an 
@@ -118,41 +96,41 @@ A:  Der Funktion wurden die falschen Werte oder eine falsche Anzahl an
     $aOptions Parameter zu übergeben sind.    
 
 
-Q:  How do I use a different class/picture/color/widget for each entry in a menu?
-A:  Use the [page_id] format string in the $aItemOpen string. Create a unique 
-    class or id for each menu item, then reference that item in your CSS or Javascript
-    to do whatever you want.
+Q:  Wie verwende ich für jeden Eintrag eine andere Klasse, Bild, Farbe oder Widget?
+A:  Verwenden Sie die Formatierungszeichenfolge [page_id] in der Zeichenfolge $aItemOpen.
+    Erstellen Sie für jedes Menüelement eine eindeutige Klasse oder ID, 
+    und verweisen Sie dann in Ihrem CSS oder Javascript auf dieses Element, um alles zu tun, was Sie möchten.
     
-    To add a unique class for each menu item (or similar):
+    So fügen Sie eine eindeutige Klasse für jeden Menüeintrag (oder ähnliches) hinzu:
     
         "<li><a href="[url]" target="[target]" class="[class] p[page_id]">[menu_title]</a>"
 
-        ... creating menu items like ...
+        ... erzeugt Menüpunkten wie ...
     
         <li><a href="/pages/foo/bar.php" target="_top" class="menu-top p45">Top Menu</a>
 
-        Reference this in your CSS like:
+        Verweisen Sie dies in Ihrem CSS wie:
         
         a.p45 { color: red; }
     
-    To add a unique ID for each menu item (or similar):
+    So fügen Sie eine eindeutige ID für jeden Menüeintrag (oder ähnliches) hinzu:
     
         "<li><a id="p[page_id]" href="[url]" target="[target]" class="[class]">[menu_title]</a>"
     
-        ... creating menu items like ...
+        ... erzeugt Menüpunkten wie ...
     
         <li><a id="p45" href="/pages/foo/bar.php" target="_top" class="menu-top">Top Menu</a>
 
-        Reference this in your CSS like:
+        Erzeugen Sie CSS Verweise wie:
         
         a#p45 { color: red; }
         
-        Note that the ID can only be used if that menu is generated and displayed one time
-        only on the page (because HTML ID's must be unique within a page). 
+        Beachten Sie, dass die ID nur verwendet werden kann, wenn das Menü nur einmal auf der Seite generiert 
+        und angezeigt wird (da HTML-IDs innerhalb einer Seite eindeutig sein müssen).
     
     
 FUNKTION
-========
+===============
 
 Der komplette Aufruf und die Vorgabe Parameterwerte für show_menu2 sind wie folgt:
 
@@ -199,7 +177,7 @@ Bitte beachten: bis einschliesslich $aOptions müssen alle Parameter explizit ü
 
 
 HTML-AUSGABE
-============
+===============
 Die HTML-Ausgabe hängt wesentlich davon ab, welche Parameter an die Funktion übergeben werden. 
 Unabhängig davon werden nachfolgende Klassen grundsätzlich für jedes Menü verwendet, wobei 
 einzelne Menüpunkte, wenn es erforderlich ist, auch mehrere Klassen erhalten können.
@@ -266,7 +244,7 @@ Beispiel einer HTML-Ausgabe:
 
 
 PARAMETER
-=========
+==========
 $aMenu      
     Nummer des Menüs. Diese ist nützlich um mehrere Menüs auf einer Seite zu    
     verwenden.
@@ -395,21 +373,21 @@ $aOptions
                     kombiniert werden.
     
     SM2_ESCAPE      Wendet htmlspecialchars auf den Menüstring an.
-                    Dies kann bei älteren Websitebaker Installationen erforderlich
+                    Dies kann bei älteren Installationen erforderlich
                     sein um eine valide HTML Ausgabe zu erzeugen.
                         
-    SM2_SHOWHIDDEN  Hidden pages are usually hidden all of the time, including 
-                    when they are active (i.e. current page or a parent page).
-                    Use private pages for time when you want pages to be
-                    hidden except when active. However for compatibility with
-                    release 4.8, supply this flag to enable hidden pages to
-                    become visible when they are active.
+    SM2_SHOWHIDDEN  Versteckte Seiten sind normalerweise immer verborgen, auch 
+                    wenn sie aktiv sind (z. B. aktuelle Seite oder eine übergeordnete Seite).
+                    Verwenden Sie private Seiten für Zeiten, in denen Seiten ausgeblendet 
+                    werden sollen, außer wenn sie aktiv sind. Aus Kompatibilitätsgründen zu 
+                    Release 4.8 muss dieses Flag jedoch angegeben werden, damit verborgene 
+                    Seiten sichtbar werden, wenn sie aktiv sind.
 
     SM2_XHTML_STRICT	Stellt die XHTML-Kompatibilität der Links sicher indem
-					in per [a] oder [ac] formatierten Links die Targetangabe
-					entfernt und das Argument title="[page_titel]" eingefügt
-					wird. Bei manuell zusammengestellten Links ist der Designer
-					selbst für die XHTML-Konformität zuständig.
+                    in per [a] oder [ac] formatierten Links die Targetangabe
+                    entfernt und das Argument title="[page_titel]" eingefügt
+                    wird. Bei manuell zusammengestellten Links ist der Designer
+                    selbst für die XHTML-Konformität zuständig.
 
 	SM2_NO_TITLE	Unterdrückt die Ausgabe des Inhaltes des Title-Attributes
 					bei [a] oder [ac] formatierten links. Im XHTML-Strikt Modus
@@ -424,8 +402,8 @@ $aItemOpen
     wird. Für den allerersten Menüeintrag kann mittels $aTopItemOpen ein anderer
     Formatstring definiert werden.
     Wenn dieser Parameter auf false gesetzt wird, wird der Vorgabe Formatstring
-    '[li][a][menu_title]</a>' verwendet um die Kompatibilität zur Website Baker
-    Standardfunktion show_menu() zu gewährleisten.
+    '[li][a][menu_title]</a>' verwendet um die Kompatibilität zur Standardfunktion
+    show_menu() zu gewährleisten.
     Da die Formatierung mittels CSS-Klassen oftmals einfacher ist, wenn sie auf den 
     <a> tag angewendet werden, empfiehlt es sich hier folgenden Formatstring zu
     verwenden: '<li>[ac][menu_title]</a>'.
@@ -465,7 +443,7 @@ $aTopMenuOpen
     
 
 ERWEITERTE OPTIONEN
-===================
+===============
 Der Parameter $aOptions kann auf zweierlei Arten verwendet werden. Zum einen, wie oben 
 im Abschnitt PARAMETER beschrieben, diese Art sollte für die allermeisten 
 Anwendungsfälle ausreichen. Um allerdings in speziellen Fällen die Sonderoptionen 
@@ -490,7 +468,7 @@ $aOptions parameter mit dem angelegten Array zu beliefern:
     
     
 FORMAT STRINGS
-==============
+==========
 Die folgenden Tags können in den Formatstrings für $aItemOpen und $aMenuOpen
 verwendet werden und sollen durch den entsprechenden Text ersetzt werden.
 
@@ -501,11 +479,11 @@ verwendet werden und sollen durch den entsprechenden Text ersetzt werden.
 [class]         Liste der Klassen für diese Seite
 [menu_title]    Text des Menütitel 
                 (HTML entity escaped ausser das SM2_NOESCAPE Flag ist gesetzt)
-[menu_icon_0]	die URL zu einer Bilddatei mit normal - Darstellung (ab WB2.9.0)
-[menu_icon_1]	die URL zu einer Bilddatei mit active/hover - Darstellung (ab WB2.9.0)
+[menu_icon_0]	die URL zu einer Bilddatei mit normal - Darstellung
+[menu_icon_1]	die URL zu einer Bilddatei mit active/hover - Darstellung
 [page_title]    text des Seitentitel 
                 (HTML entity escaped ausser das SM2_NOESCAPE Flag ist gesetzt)
-[page_icon]		die URL zu einer seitenbezogenen Bilddatei (ab WB2.9.0)
+[page_icon]		die URL zu einer seitenbezogenen Bilddatei
 [tooltip]       Tooltip-Text, der normal im title-Attribut der Links ausgegeben wird
 [url]           die URL der Seiten für den <a> tag
 [target]        das Seitenziel für den <a> tag
@@ -525,7 +503,7 @@ Folgende tags sind NUR verfügbar, wenn das SM2_ALLINFO Flag gesetzt ist.
 
 
 BEDINGTE FORMATIERUNG
-=====================
+===============
 Die Anweisung für eine bedingte Formatierung kann eine der folgenden Formen haben:
 
     [if(A){B}]
@@ -632,7 +610,7 @@ Alle Überprüfungen werden in der Reihenfolge ausgeführt, in der sie notiert s
 
 
 FORMATTER
-=========
+==========
 Achtung: dies ist ein fortgeschrittenes und äusserst selten benötigtes Feature!
 
 Mit umfangreichen Kenntnissen in der PHP Programmierung ist es möglich den vordefinierten

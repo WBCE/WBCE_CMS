@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$module_description = 'This module integrates show_menu2 () into WBCE CMS. Detailed information is available in the file <a href="{WB_URL}/modules/show_menu2/README.en.txt" target="_blank">README</a> file.';
+$module_description = 'This module integrates show_menu2() into WBCE CMS. For detailed information see the <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> file or view <a href="https://sm2.wbce-cms.org/" target="_blank">sm2.wbce-cms.org</a>.';
 
 // Module language vars
 $SHOW_MENU2['SHOW_MENU2'] ="ShowMenu2";
