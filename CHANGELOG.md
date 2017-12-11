@@ -5,6 +5,207 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2017-12-11:** Christoph Bleiweis [[d308c822](https://github.com/WBCE/WBCE_CMS/commit/d308c8220ba891fe823213827899491e50a13c95)]
+   > update version
+
+ * **2017-12-11:** Christoph Bleiweis [[71a74e9b](https://github.com/WBCE/WBCE_CMS/commit/71a74e9bdfc9c7b74e3dd744d4cc4988106e2d5d)]
+   >  SM2 with active compatibility mode (#318)
+     * Update functions.php and module.functions.php file
+     
+     * Update frontend.functions.php and remove old show_menu Code
+     
+     * SM2 with active compatibility mode
+     
+     The compatibility mode is now active and replaces the old sm commands from the core, so the version is not suitable for older CMS versions.
+     
+     * reinsert compatibility mode for versions before 2.8.1
+     
+     e.g. the news modul needs this to work in FE
+
+ * **2017-12-08:** Martin Hecht [[27e335e9](https://github.com/WBCE/WBCE_CMS/commit/27e335e959000b6cb386af372cdc8305cecf9a42)]
+   > fix mpform problem with WBCE 1.3 (#316)
+     symptom: when filling in a form users get redirected to the home page and the data entered is not processed: There are no notification mails to the site owner nor the data ends up in the submission table, see https://forum.wbce.org/viewtopic.php?id=1722
+     
+     I merge it for testing.
+     This PR fixes copy and paste mistakes, the install.php contains correct values.
+ * **2017-11-22:** Christoph Bleiweis [[c205e269](https://github.com/WBCE/WBCE_CMS/commit/c205e269e99689b2b89e94c159e8d8d698285992)]
+   > display missing theme file
+     fixes #308 and fixes #249
+
+ * **2017-11-21:** Christoph Bleiweis [[facecfa3](https://github.com/WBCE/WBCE_CMS/commit/facecfa35a316fd55d7b301e78f003d67ccb8062)]
+   > WBCE Flat 1.6.3
+     some small updates for last changes
+
+ * **2017-11-21:** Christoph Bleiweis [[078fb64e](https://github.com/WBCE/WBCE_CMS/commit/078fb64e34bdafe1899836a449c4835a63b706cc)]
+   > Pagetree output vars (#315)
+     * Added page tree and backend JS as output vars (#312), (#313) and (#314)
+
+ * **2017-11-21:** Christoph Bleiweis [[ed2ab01a](https://github.com/WBCE/WBCE_CMS/commit/ed2ab01a357c24f0679d4a65119da76dac68b70e)]
+   > Argos Reloaded 2.1.0
+     includes fixes for #303
+
+ * **2017-11-16:** Jonathan Nessier [[c9214eab](https://github.com/WBCE/WBCE_CMS/commit/c9214eabf0fb961af2918173936c4e3666b60c30)]
+   > Fixed $template conflict with modules (#311)
+
+ * **2017-11-15:** Jonathan Nessier [[31d54fed](https://github.com/WBCE/WBCE_CMS/commit/31d54feda40c1e6dee3f55065664b562215e1cd4)]
+   > Disable removing of unknown vars (#310)
+     Disable removing of unknown vars to prevent the deleting of JavaScript arrays [] or {}
+     
+     More: https://forum.wbce.org/viewtopic.php?pid=15181#p15181
+ * **2017-11-14:** NorHei [[1fbc2018](https://github.com/WBCE/WBCE_CMS/commit/1fbc2018ae7c940b23681eb41f319f93646d0771)]
+   > Initialize.php for wbstats reinstalled,.
+     Was removed in last change after i fixed the framework/initialize.php
+     The module now can fetch its referer this way again.
+
+ * **2017-11-14:** NorHei [[27912d31](https://github.com/WBCE/WBCE_CMS/commit/27912d317917c6907dd0a87a370b8ce9110c6ebe)]
+   > Referer Issues
+     In Initialize the Referer was "made save" before modules could load their initialize.php
+     That made it impossible for modules to fetch an unchanged Referrer
+     
+     In addition we now set a new server var that is needed for  some additional changes.
+     $_SERVER['WB_SECURE_HTTP_REFERER']
+
+ * **2017-11-13:** Christoph Bleiweis [[8bb5aaab](https://github.com/WBCE/WBCE_CMS/commit/8bb5aaab6fa6026a884b061bb9096e373b5547ff)]
+   > optimized mdcr.js for frontend output and bumped version for updating
+
+ * **2017-11-13:** Jonathan Nessier [[03a38e39](https://github.com/WBCE/WBCE_CMS/commit/03a38e39d3f678bf368f95808c1e1544fabbe5b0)]
+   > Added page section modify.phps as template vars. (#309)
+     * Added page section modify.phps as template vars. 
+     * Update pages_modify.htt
+     
+     Check this out for more info: 
+     https://forum.wbce.org/viewtopic.php?pid=15033#p15033
+
+ * **2017-11-12:** instantflorian [[19eb3fd7](https://github.com/WBCE/WBCE_CMS/commit/19eb3fd70ad222d60d4bac9a01928d39f5c84201)]
+   > Fix for RelURL filter
+     previous version caused errors with questionmarks / parameters in module
+     generated URLs, thanks to bernd for the fix
+
+ * **2017-11-08:** Christoph Bleiweis [[ab6c7a56](https://github.com/WBCE/WBCE_CMS/commit/ab6c7a565bc15ebc9c9c0676cc2bb5be5679f058)]
+   > replace visitor statistics with 0.1.11 version from developer repository (#307)
+     #306 there are some minor changes to our (old) 0.1.11 version, in this case the changes (from our 0.1.12 release) with the non-functional $Referer are removed
+ * **2017-11-07:** Christoph Bleiweis [[69201101](https://github.com/WBCE/WBCE_CMS/commit/69201101f2d490fb57f2e3a46fb4790f5b1b561a)]
+   > select2 4.0.5
+
+ * **2017-11-07:** Christoph Bleiweis [[2cbba6b3](https://github.com/WBCE/WBCE_CMS/commit/2cbba6b3820d78a4352db4b31c0fe568e6729db3)]
+   > phpmailer 5.2.26
+
+ * **2017-11-05:** Christoph Bleiweis [[2dc9823b](https://github.com/WBCE/WBCE_CMS/commit/2dc9823bf4d6a33fd6e1c2b2cb4d0cec030bfb9c)]
+   > Revert "Settings could not save file PErmissions"
+     This reverts commit aa7258df3f46166348109ecfa4c286f20586c31b.
+
+ * **2017-11-04:** NorHei [[5e8ff28a](https://github.com/WBCE/WBCE_CMS/commit/5e8ff28aab6c204bdf04b2dbbd40ec0202769bbc)]
+   > Small compatibility fix for filter module.
+
+ * **2017-10-31:** Christoph Bleiweis [[79e3f852](https://github.com/WBCE/WBCE_CMS/commit/79e3f852a857057a4ba9747d58a2ee081033ba2e)]
+   > fix page_languages typo
+
+ * **2017-10-30:** Christoph Bleiweis [[4c240967](https://github.com/WBCE/WBCE_CMS/commit/4c240967ce1de725a9317f07315aec71465a3224)]
+   > Translation updates for Core and wbce flat theme
+     fixes #303
+
+ * **2017-10-30:** Christoph Bleiweis [[f72b730b](https://github.com/WBCE/WBCE_CMS/commit/f72b730b6a2d83c3a0bd5f3b89ce790bb0049add)]
+   > disable relative URLs by default
+     fixes #305 older modules have problems with relative URLs
+
+ * **2017-10-29:** NorHei [[a29d1d1d](https://github.com/WBCE/WBCE_CMS/commit/a29d1d1d7584e9d923e0c791d7ac51f4031613f1)]
+   > Added class for mimtype, file extension conversion.
+     Class mimeConvert , converts mimtypes to file extension conversion
+     and vice versa.
+     
+     This was needed as elFinder expects mimetypes and WBCE still
+     uses file extensions. As many modern scripts expect mimetypes
+     i implemented this in the core.
+     
+     A more detailed documentation can be found in the source of the
+     file
+
+ * **2017-10-23:** instantflorian [[68d60751](https://github.com/WBCE/WBCE_CMS/commit/68d60751c3d574610ba6a941cc35b718ae492805)]
+   > Fix for topics-RSS
+
+ * **2017-10-21:** Christoph Bleiweis [[a2a5ff62](https://github.com/WBCE/WBCE_CMS/commit/a2a5ff62a0c707352769dad97b308860abed4aed)]
+   > wbce flat 1.6.2
+     small css improvement
+
+ * **2017-10-20:** Christoph Bleiweis [[b00ec888](https://github.com/WBCE/WBCE_CMS/commit/b00ec88884519f759ba73c5c8f04106fa7adef93)]
+   > fixed htt files for #302
+     closes #302
+
+ * **2017-10-18:** NorHei [[aa7258df](https://github.com/WBCE/WBCE_CMS/commit/aa7258df3f46166348109ecfa4c286f20586c31b)]
+   > Settings could not save file PErmissions
+     In settings File permissions only could be saved if advanced Options
+     are activated.
+     
+     Fixed this.
+     
+     Reported in :
+     
+     https://forum.wbce.org/viewtopic.php?id=1676
+     
+     Thx to Gawi!
+
+ * **2017-10-13:** NorHei [[46f2779a](https://github.com/WBCE/WBCE_CMS/commit/46f2779aaf29e9aa02e2e446a7ccd6176135fb2d)]
+   > Added admintool Icon functionality to Admintool Index
+     Now in the template there is a Variable available
+     
+     {TOOL_ICON}
+     
+     that contains the fontawesome icon.
+     
+     Icon is set in Module info.php
+     See Droplets as example
+     
+     Need some help to support this in BE themes now .
+
+ * **2017-10-02:** Christoph Bleiweis [[51fc16a8](https://github.com/WBCE/WBCE_CMS/commit/51fc16a86d8abeecafd8c3931c70edc3efbcc263)]
+   > Twig 1.35.0
+
+ * **2017-10-01:** NorHei [[d0eb87aa](https://github.com/WBCE/WBCE_CMS/commit/d0eb87aa22f7799a64d282fb8b53ae037d811898)]
+   > Escapeable Droplets  thx to stefanek
+     https://forum.wbce.org/viewtopic.php?id=1633
+
+ * **2017-09-30:** NorHei [[0be00dc2](https://github.com/WBCE/WBCE_CMS/commit/0be00dc2b7d443add74ed3c6f9e79e4bf12370ad)]
+   > Kompatibility patch failed on upgrade
+     https://forum.wbce.org/viewtopic.php?pid=14521#p14521
+     
+     Fatal error: Cannot redeclare getOutputFilterSettings()
+     (previously declared in /.../modules/output_filter/upgrade.php:31)
+     in /.../modules/output_filter/filter_routines.php on line 231
+
+ * **2017-09-30:** Christoph Bleiweis [[ae26e152](https://github.com/WBCE/WBCE_CMS/commit/ae26e1524c424adee518d27704f4f47ccbe82521)]
+   > Sitemap 4.0.4
+
+ * **2017-09-29:** NorHei [[03c9d2a2](https://github.com/WBCE/WBCE_CMS/commit/03c9d2a26a9284247f9cd5e87242551b9d0c6e0a)]
+   > Copy paste error in WB Mailer
+
+ * **2017-09-29:** Christoph Bleiweis [[eed97d82](https://github.com/WBCE/WBCE_CMS/commit/eed97d82333010a454df6ad9a633bacde6d43d18)]
+   > WBCE Flat Theme 1.6
+
+ * **2017-09-27:** NorHei [[335bd6c5](https://github.com/WBCE/WBCE_CMS/commit/335bd6c5ecff6406e884f997f643ad49a2617858)]
+   > Escapeable droplets
+     Thanks To stefanek:
+     https://forum.wbce.org/viewtopic.php?id=1633
+
+ * **2017-09-27:** NorHei [[951904a7](https://github.com/WBCE/WBCE_CMS/commit/951904a78acbd1a3f74b954c8ff95409c6e57ee6)]
+   > Refined default values though not needed now
+
+ * **2017-09-27:** NorHei [[77862d84](https://github.com/WBCE/WBCE_CMS/commit/77862d844235c27b5a3d6c9682f2a15aa4e3bd87)]
+   > Compatibility fix for Classic
+
+ * **2017-09-26:** NorHei [[0f59d175](https://github.com/WBCE/WBCE_CMS/commit/0f59d1759fdaa0f450dab5a3d968adb0c548f5ee)]
+   > PHPmailer issues #300
+     hier : #300
+     
+     https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting#php-56-certificate-verification-failure w
+
+ * **2017-09-26:** NorHei [[d67ba20d](https://github.com/WBCE/WBCE_CMS/commit/d67ba20d6acd6ca6584880eccb61bbec6811ad39)]
+   > Bugs in Droplet Module #277
+     This schould fix both
+     Please test
+
+ * **2017-09-25:** instantflorian [[d4f55fd4](https://github.com/WBCE/WBCE_CMS/commit/d4f55fd45381d987fc62019e91fbb5dae9b453b9)]
+   > update changelog
+
  * **2017-09-25:** instantflorian [[730c41c3](https://github.com/WBCE/WBCE_CMS/commit/730c41c33ea2a38f9a4d3d7083fdd43cf5f082f8)]
    > update version
 
