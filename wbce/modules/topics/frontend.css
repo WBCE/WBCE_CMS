@@ -26,13 +26,13 @@
 	background: url(img/calendar.png) no-repeat center 4px;
 }
 
-a.tp_editlink {display: block; position:absolute; top:-10px; right: -10px; width:32px; height: 32px; background: url(img/edit32.png) no-repeat; opacity: 0.1;  transition:0.5s all; }
+a.tp_editlink {display: block; position:absolute; top:-10px; right: -10px; width:32px; height: 32px; background: url(/modules/topics/img/edit32.png) no-repeat; opacity: 0.1;  transition:0.5s all; }
 a.tp_editlink:hover {opacity: 0.5; }
 
-.commclass1 {background: url(img/comments1.png) no-repeat right top;}
-.commclass2 {background: url(img/comments2.png) no-repeat right top;}
-.commclass3 {background: url(img/comments3.png) no-repeat right top;}
-.commclass4 {background: url(img/comments4.png) no-repeat right top;}
+.commclass1 {background: url(/modules/topics/img/comments1.png) no-repeat right top;}
+.commclass2 {background: url(/modules/topics/img/comments2.png) no-repeat right top;}
+.commclass3 {background: url(/modules/topics/img/comments3.png) no-repeat right top;}
+.commclass4 {background: url(/modules/topics/img/comments4.png) no-repeat right top;}
 
 
 /* ===============================================================
