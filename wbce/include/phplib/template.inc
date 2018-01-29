@@ -904,7 +904,7 @@ class Template
  /******************************************************************************
   * This function will add braces to a given variable name.
   *
-  * Returns: a string containing an braced variable name.
+  * Returns: a string containing a braced variable name.
   *
   * usage: varname(string $varname)
   *
