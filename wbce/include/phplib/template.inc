@@ -300,7 +300,7 @@ class Template
       $this->file[$varname] = $this->filename($filename);
     } else {
       reset($varname);
-      while (list($v, $f) = each($varname)) {
+      foreach ($varname as $v => $f) {
         if ($this->debug & 4) {
           echo "<p><b>set_file:</b> (with array) varname = $v, filename = $f</p>\n";
         }
@@ -395,7 +395,7 @@ class Template
         if ($this->debug & 1) {
           printf("<b>set_var:</b> (with scalar) <b>%s</b> = '%s'<br>\n", $varname, htmlentities($value));
         }
-        $this->varkeys[$varname] = "/".$this->varname($varname)."/";
+        $this->varkeys[$varname] = $this->varname($varname);
         if ($append && isset($this->varvals[$varname])) {
           $this->varvals[$varname] .= $value;
         } else {
@@ -404,12 +404,12 @@ class Template
       }
     } else {
       reset($varname);
-      while (list($k, $v) = each($varname)) {
+      foreach ($varname as $k => $v) {
         if (!empty($k)) {
           if ($this->debug & 1) {
             printf("<b>set_var:</b> (with array) <b>%s</b> = '%s'<br>\n", $k, htmlentities($v));
           }
-          $this->varkeys[$k] = "/".$this->varname($k)."/";
+          $this->varkeys[$k] = $this->varname($k);
           if ($append && isset($this->varvals[$k])) {
             $this->varvals[$k] .= $v;
           } else {
@@ -450,7 +450,7 @@ class Template
       }
     } else {
       reset($varname);
-      while (list($k, $v) = each($varname)) {
+      foreach ($varname as $k => $v) {
         if (!empty($v)) {
           if ($this->debug & 1) {
             printf("<b>clear_var:</b> (with array) <b>%s</b><br>\n", $v);
@@ -492,7 +492,7 @@ class Template
       }
     } else {
       reset($varname);
-      while (list($k, $v) = each($varname)) {
+      foreach ($varname as $k => $v) {
         if (!empty($v)) {
           if ($this->debug & 1) {
             printf("<b>unset_var:</b> (with array) <b>%s</b><br>\n", $v);
@@ -532,12 +532,13 @@ class Template
 
     // quote the replacement strings to prevent bogus stripping of special chars
     reset($this->varvals);
-    while (list($k, $v) = each($this->varvals)) {
-      $varvals_quoted[$k] = preg_replace(array('/\\\\/', '/\$/'), array('\\\\\\\\', '\\\\$'), $v);
-    }
+	foreach ($this->varvals as $k => $v) {
+		 $varvals_quoted[$k] = str_replace(array('\\\\', '$'), array('\\\\\\\\', '\$'), $v);
+	}
 
     $str = $this->get_var($varname);
-    $str = preg_replace($this->varkeys, $varvals_quoted, $str);
+
+    $str = str_replace($this->varkeys, $this->varvals, $str);
     return $str;
   }
 
@@ -618,7 +619,7 @@ class Template
       }
     } else {
       reset($varname);
-      while (list($i, $v) = each($varname)) {
+      foreach($varname as $i => $v) {
         if ($this->debug & 4) {
           echo "<p><b>parse:</b> (with array) target = $target, i = $i, varname = $v, append = $append</p>\n";
         }
@@ -691,7 +692,7 @@ class Template
       echo "<p><b>get_vars:</b> constructing array of vars...</p>\n";
     }
     reset($this->varkeys);
-    while (list($k, $v) = each($this->varkeys)) {
+    foreach ($this->varkeys as $k => $v) {
       $result[$k] = $this->get_var($k);
     }
     return $result;
@@ -729,7 +730,7 @@ class Template
       return $str;
     } else {
       reset($varname);
-      while (list($k, $v) = each($varname)) {
+      foreach ($varname as $k => $v) {
         if (isset($this->varvals[$v])) {
           $str = $this->varvals[$v];
         } else {
@@ -776,7 +777,7 @@ class Template
     }
 
     reset($m);
-    while (list($k, $v) = each($m)) {
+    foreach ($m as $k => $v) {
       if (!isset($this->varkeys[$v])) {
         if ($this->debug & 4) {
          echo "<p><b>get_undefined:</b> undefined: $v</p>\n";
@@ -901,10 +902,9 @@ class Template
 
 
  /******************************************************************************
-  * This function will construct a regexp for a given variable name with any
-  * special chars quoted.
+  * This function will add braces to a given variable name.
   *
-  * Returns: a string containing an escaped variable name.
+  * Returns: a string containing an braced variable name.
   *
   * usage: varname(string $varname)
   *
@@ -913,7 +913,7 @@ class Template
  * @return    string
   */
   function varname($varname) {
-    return preg_quote("{" . $varname . "}");
+	  return "{" . $varname . "}";
   }
 
 
