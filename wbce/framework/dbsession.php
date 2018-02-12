@@ -156,6 +156,8 @@ class DbSession
         }
     }
 
+
+		
     
     /**
         @brief Handler: Write Session
@@ -236,9 +238,12 @@ class DbSession
     */
     protected function createDbTablesIfNotThere ()
     {    
+
+		//ALTER TABLE `wbce_dbsessions` CHANGE `id` `id` VARCHAR(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id';
+
         $sql="
             CREATE TABLE IF NOT EXISTS `{TP}dbsessions` (
-                `id` char(32) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id',
+                `id` varchar(148) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id',
                 `data` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Data',
                 `last_accessed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last timestamp',
                 `user` int(11) NOT NULL COMMENT 'User Id',
@@ -248,6 +253,30 @@ class DbSession
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='WBCE Session Table';
         ";
         $this->database->query($sql);   
+
+		// Doing this in multiple steps as i had problems whith the index
+		$sql="
+			ALTER TABLE 
+				`{TP}dbsessions` 
+			DROP PRIMARY KEY;
+		";
+		$this->database->query($sql);
+
+		$sql="
+			ALTER TABLE 
+				`{TP}dbsessions` 
+			CHANGE 
+				`id` `id` VARCHAR(148) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id';
+		";
+		$this->database->query($sql);
+
+		$sql="
+			ALTER TABLE 
+				`{TP}dbsessions` 
+			ADD PRIMARY KEY(`id`);
+		";
+		$this->database->query($sql);
+
     }
     
     
