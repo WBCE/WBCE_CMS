@@ -32,7 +32,7 @@ class login extends admin
         global $MESSAGE, $database;
         parent::__construct();
         // Get configuration values
-        while (list($key, $value) = each($config_array)) {
+        foreach($config_array as $key => $value) {
             $this->{(strtolower($key))} = $value;
         }
         if (!isset($this->redirect_url)) {$this->redirect_url = '';}
