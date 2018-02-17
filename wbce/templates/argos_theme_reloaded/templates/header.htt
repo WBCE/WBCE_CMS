@@ -19,6 +19,7 @@
     <link href="{THEME_URL}/css/fitgrid.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
 	<link href="{THEME_URL}/css/module-fixes.css" rel="stylesheet" type="text/css">
+	<link href="{WB_URL}/include/jquery/jquery-ui.min.css" rel="stylesheet" type="text/css">
 <!--(PH) CSS HEAD TOP- -->
 
 <!--(PH) JS HEAD TOP+ -->
