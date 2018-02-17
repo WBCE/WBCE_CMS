@@ -21,6 +21,19 @@ require('../../config.php');
 require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Media', 'media');
 
+/* Preparation for replacing old media manager with elfinder */ 
+/* 
+$noPage=false;
+$modulePath=WB_PATH.'/modules/el_finder/';
+if (file_exists('../../modules/el_finder/tool.php')) {
+include ('../../modules/el_finder/tool.php');
+} else {
+	$admin->print_error($MESSAGE['MISSING_EL_FINDER'], '../index.php', false);
+	die;
+}
+*/
+
+/* I think from here on everything can be removed when switching over to elFinder */
 $starttime = explode(" ", microtime());
 $starttime = $starttime[0]+$starttime[1];
 include ('parameters.php');
@@ -113,4 +126,5 @@ $template->set_var(array(
 // Parse template object
 $template->parse('main', 'main_block', false);
 $template->pparse('output', 'page');
+/* ...until here */
 $admin->print_footer();
