@@ -547,7 +547,6 @@ $MESSAGE['MEDIA_RENAMED'] = 'Die Umbenennung ist erfolgt';
 $MESSAGE['MEDIA_SINGLE_UPLOADED'] = 'Datei wurde &#252;bertragen';
 $MESSAGE['MEDIA_TARGET_DOT_DOT_SLASH'] = 'Der Name des Zielverzeichnisses darf nicht ../ enthalten';
 $MESSAGE['MEDIA_UPLOADED'] = 'Dateien wurden &#252;bertragen';
-$MESSAGE['MISSING_EL_FINDER'] = 'Erforderliches Modul elFinder fehlt. Bitte Modul (re-)installieren.';
 $MESSAGE['MOD_FORM_EXCESS_SUBMISSIONS'] = 'Dieses Formular wurde zu oft aufgerufen. Bitte versuchen Sie es in einer Stunde noch einmal.';
 $MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'] = 'Die eingegebene Pr&#252;fziffer ist nicht korrekt.';
 $MESSAGE['MOD_FORM_REQUIRED_FIELDS'] = 'Bitte folgende Angaben erg&#228;nzen';

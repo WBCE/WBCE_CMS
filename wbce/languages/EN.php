@@ -548,7 +548,6 @@ $MESSAGE['MEDIA_RENAMED'] = 'Rename successful';
 $MESSAGE['MEDIA_SINGLE_UPLOADED'] = ' file was successfully uploaded';
 $MESSAGE['MEDIA_TARGET_DOT_DOT_SLASH'] = 'Cannot have ../ in the folder target';
 $MESSAGE['MEDIA_UPLOADED'] = ' files were successfully uploaded';
-$MESSAGE['MISSING_EL_FINDER'] = 'Required module elFinder is missing. Please (re-)install module.';
 $MESSAGE['MOD_FORM_EXCESS_SUBMISSIONS'] = 'Sorry, this form has been submitted too many times so far this hour. Please retry in the next hour.';
 $MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'] = 'The verification number (also known as Captcha) that you entered is incorrect. If you are having problems reading the Captcha, please email: <a href="mailto:{SERVER_EMAIL}">{SERVER_EMAIL}</a>';
 $MESSAGE['MOD_FORM_REQUIRED_FIELDS'] = 'You must enter details for the following fields';
