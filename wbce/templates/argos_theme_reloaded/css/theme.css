@@ -783,11 +783,6 @@ a.tooltip {
 	margin-bottom: 15px;
 }
 
-/* intro page */
-#former_positioning_table, .form_submit {
-    width: 99%;
-}
-
 /*** footer section ***************************************************/
 #footer {
 	position: fixed;

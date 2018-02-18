@@ -15,7 +15,7 @@ body {
     padding-top: 10px;
     height: 107px;
 }
-#former_positioning_table, .form_submit {
+#former_positioning_table {
     width: 99%;
 }
 .lazyfix .fg12 {
