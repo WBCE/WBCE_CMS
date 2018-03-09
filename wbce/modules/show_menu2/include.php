@@ -35,24 +35,18 @@ define('_SM2_GROUP_1',  0x000F); // exactly one flag from group 1 is required
 // Include default formatter
 include_once("classes/sm2_formatter.php");
 
-// Implement support for page_menu and show_menu using show_menu2. If you remove
-// the comments characters from the beginning of the following include, all menu
-// functions in Website Baker will be implemented using show_menu2. While it is
-// commented out, the original WB functions will be used.
-include('legacy.php');
-
 function error_logs($error_str)
 {
-                $log_error = true;
-                if ( ! function_exists('error_log') )
-                        $log_error = false;
+    $log_error = true;
+    if ( ! function_exists('error_log') )
+            $log_error = false;
 
-                $log_file = @ini_get('error_log');
-                if ( !empty($log_file) && ('syslog' != $log_file) && !@is_writable($log_file) )
-                        $log_error = false;
+    $log_file = @ini_get('error_log');
+    if ( !empty($log_file) && ('syslog' != $log_file) && !@is_writable($log_file) )
+            $log_error = false;
 
-                if ( $log_error )
-                        @error_log($error_str, 0);
+    if ( $log_error )
+            @error_log($error_str, 0);
 }
 
 function show_menu2(
@@ -156,9 +150,6 @@ function show_menu2(
         $aMaxLevel += $aStartLevel - SM2_START;
     }
 
-
-
-
     // we get the menu data once and store it in a global variable. This allows 
     // multiple calls to show_menu2 in a single page with only a single call to 
     // the database. If this variable exists, then we have already retrieved all
@@ -171,7 +162,6 @@ function show_menu2(
     {
         global $database;
         
-
         // create an array of all parents of the current page. As the page_trail
         // doesn't include the theoretical root element 0, we add it ourselves.
         $rgCurrParents = explode(",", '0,'.$wb->page['page_trail']);
@@ -270,7 +260,6 @@ function show_menu2(
             }
         }    
         unset($oRowset);
-        
 
         // mark all elements that are siblings of any element on the current path
         foreach ($rgCurrParents as $x) {
@@ -328,7 +317,7 @@ function show_menu2(
        //echo "<pre>"; print_r($rgParent); echo "</pre>";
         unset($rgParent);
     }
-/*
+    /*
     // Deactivated only display to max level, not sure if its a good idea
 
     // adjust $aMaxLevel to the level number of the final level that 
@@ -348,7 +337,7 @@ function show_menu2(
     else {  // SM2_START+N
         $aMaxLevel += $aStartLevel - SM2_START;
     }
-*/
+    */
     // generate the menu
     $retval = false; 
     
@@ -398,6 +387,261 @@ function show_menu2(
     }
 
     // clear the data if we aren't caching it
+    if (($flags & SM2_NOCACHE) != 0) {
+        unset($GLOBALS['show_menu2_data'][$aMenu]);
+    }
+    
+    return $retval;
+}
+
+function show_breadcrumbs(
+    $aMenu = 0,
+    $aStart = SM2_ROOT,
+    $aMaxLevel = SM2_CURR,
+    $aOptions = SM2_CRUMB,
+    $aItemOpen = '<span class="[class]"> > [a][menu_title]</a>',
+    $aItemClose = '</span>',
+    $aMenuOpen = '',
+    $aMenuClose = '',
+    $aTopItemOpen = false,
+    $aTopMenuOpen = false
+    )
+{
+    //I have removed the comments of this function, the code is the same as the code of the show_menu2 function itself.
+    global $wb;
+    
+    $flags = 0;
+    if (is_int($aOptions)) {
+        $flags = $aOptions;
+        $aOptions = array();
+    }
+    elseif (isset($aOptions['flags'])) {
+        $flags = $aOptions['flags'];
+    }
+    else {
+        $flags = SM2_TRIM;
+        $aOptions = array();
+        @error_logs('show_menu2 error: $aOptions is invalid. No flags supplied!');
+    }
+    
+    if ($flags & 0xF == 0) { $flags |= SM2_TRIM; }
+
+    if (0 == ($flags & _SM2_GROUP_1)) {
+        @error_logs('show_menu2 error: $aOptions is invalid. No flags from group 1 supplied!');
+        $flags |= SM2_TRIM;
+    }
+    
+    $CURR_PAGE_ID = defined('REFERRER_ID') ? REFERRER_ID : PAGE_ID;
+    if (count($wb->page) == 0 && defined('REFERRER_ID') && REFERRER_ID > 0) {
+        global $database;
+        $sql = 'SELECT * FROM `'.TABLE_PREFIX.'pages` WHERE `page_id` = '.REFERRER_ID.'';
+        $result = $database->query($sql);
+        if ($result->numRows() == 1) {
+            $wb->page = $result->fetchRow();
+        }
+        unset($result);
+    }
+    
+    if ($aMenu == 0) {
+        $aMenu = $wb->page['menu'] == '' ? 1 : $wb->page['menu'];
+    } 
+
+    $pageLevel  = $wb->page['level']  == '' ? 0 : $wb->page['level'];
+    $pageParent = $wb->page['parent'] == '' ? 0 : $wb->page['parent'];
+    
+    $aStartLevel = 0;
+    if ($aStart < SM2_ROOT) {
+        if ($aStart == SM2_CURR) {
+            $aStartLevel = $pageLevel;
+            $aStart = $pageParent;
+        }
+        else {
+            $aStartLevel = $pageLevel + $aStart - SM2_CURR;
+            $aStart = $CURR_PAGE_ID; 
+        }
+    }
+    elseif ($aStart < 0) {
+        $aStartLevel = $aStart - SM2_ROOT;
+        $aStart = 0;
+    }
+
+    if ($aMaxLevel == SM2_ALL) {
+        $aMaxLevel = 1000;
+    }
+    elseif ($aMaxLevel < 0) {
+        $aMaxLevel += $pageLevel - SM2_CURR;
+    }
+    elseif ($aMaxLevel >= SM2_MAX) {
+        $aMaxLevel += $aStartLevel - SM2_MAX;
+        if ($aMaxLevel > $pageLevel) {
+            $aMaxLevel = $pageLevel;
+        }
+    }
+    else {
+        $aMaxLevel += $aStartLevel - SM2_START;
+    }
+
+    if (($flags & SM2_NOCACHE) != 0
+        || !array_key_exists('show_menu2_data', $GLOBALS)
+        || !array_key_exists($aMenu, $GLOBALS['show_menu2_data'])
+        
+    )
+    {
+        global $database;
+        
+        $rgCurrParents = explode(",", '0,'.$wb->page['page_trail']);
+        array_pop($rgCurrParents);
+        $rgParent = array();
+
+        $menuLimitSql = ' AND `menu`='.$aMenu;
+        if ($aMenu == SM2_ALLMENU) {
+            $menuLimitSql = '';
+        }
+
+        $fields  = '`parent`,`page_id`,`menu_title`,`page_title`,`link`,`target`,';
+        $fields .= '`level`,`visibility`,`viewing_groups`,';
+        $fields .= '`viewing_users`';
+		
+        if ($flags & SM2_ALLINFO) {
+            $fields = '*';
+        }
+
+        $sql  = 'SELECT '.$fields.' FROM `'.TABLE_PREFIX.'pages` ';
+        $sql .= 'WHERE '.$wb->extra_where_sql.' '.$menuLimitSql.' ';
+        $sql .= 'ORDER BY `level` ASC, `position` ASC';
+        $sql = str_replace('hidden', 'IGNOREME', $sql);
+        $oRowset = $database->query($sql);
+        if (is_object($oRowset) && $oRowset->numRows() > 0) {
+            while ($page = $oRowset->fetchRow()) {
+                if ($page['visibility'] == 'hidden') {
+                    $page['sm2_hide'] = true;
+                }
+                
+                else if (!$wb->page_is_active($page) && $page['link'] != $wb->default_link && !INTRO_PAGE) {
+                    continue;
+                }
+
+                else if (!$wb->page_is_visible($page) && $page['visibility'] != 'registered') {
+                    continue;
+                }
+                
+				if(!isset($page['tooltip'])) { $page['tooltip'] = $page['page_title']; }
+                
+                $idx = $page['parent'];
+                if (!array_key_exists($idx, $rgParent)) {
+                    $rgParent[$idx] = array();
+                }
+
+                if ($page['page_id'] == $CURR_PAGE_ID) {
+                    $page['sm2_is_curr'] = true;
+                    $page['sm2_on_curr_path'] = true;
+                    if ($flags & SM2_SHOWHIDDEN) 
+					{ 
+                        unset($page['sm2_hide']); 
+                    }
+                }
+                if ($page['level'] == $aMaxLevel) {
+                    $page['sm2_is_max_level'] = true;
+                }
+
+                if (in_array($page['page_id'], $rgCurrParents)) {
+                    $page['sm2_is_parent'] = true;
+                    $page['sm2_on_curr_path'] = true;
+                    if ($flags & SM2_SHOWHIDDEN) 
+					{
+						unset($page['sm2_hide']);
+                    }
+                }
+                
+                $rgParent[$idx][] = $page;
+            }
+        }    
+        unset($oRowset);
+        
+        foreach ($rgCurrParents as $x) {
+            if (array_key_exists($x, $rgParent)) {
+                foreach (array_keys($rgParent[$x]) as $y) {
+                    $mark =& $rgParent[$x][$y];
+                    $mark['sm2_path_sibling'] = true;
+                    unset($mark);
+                }
+            }
+        }
+
+        $parentId = $pageParent;
+        foreach (array_keys($rgParent) as $x) {
+            $childSet =& $rgParent[$x];
+            
+            foreach (array_keys($childSet) as $y) {
+                $mark =& $childSet[$y];
+                if (array_key_exists($mark['page_id'], $rgParent)) {
+                    $mark['sm2_has_child'] = true;
+                    foreach ($rgParent[$mark['page_id']] as $z){
+                        if (!isset($z['sm2_hide'])){
+                            $mark['sm2_has_unhidden_child'] = true;
+                        }
+                    }
+                }
+                if ($mark['parent'] == $parentId && $mark['page_id'] != $CURR_PAGE_ID) {
+                    $mark['sm2_is_sibling'] = true;
+                }
+                
+                unset($mark);
+            }
+            
+            unset($childSet);
+        }
+        
+        if ($CURR_PAGE_ID != 0) {
+            sm2_mark_children($rgParent, $CURR_PAGE_ID, 1);
+        }
+        
+        if (!array_key_exists('show_menu2_data', $GLOBALS)) {
+            $GLOBALS['show_menu2_data'] = array();
+        }
+        $GLOBALS['show_menu2_data'][$aMenu] =& $rgParent;
+        unset($rgParent);
+    }
+
+    $retval = false; 
+    
+    if ($aStart == 0){
+        reset($GLOBALS['show_menu2_data'][$aMenu]);
+        $aStart =key($GLOBALS['show_menu2_data'][$aMenu]);
+    }
+    
+    if (array_key_exists($aStart, $GLOBALS['show_menu2_data'][$aMenu])) {
+        $formatter = $aItemOpen;
+        if (!is_object($aItemOpen)) {
+            static $sm2formatter;
+            if (!isset($sm2formatter)) {
+                $sm2formatter = new SM2_Formatter();
+            }
+            $formatter = $sm2formatter;
+            $formatter->set($flags, $aItemOpen, $aItemClose, 
+                $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen);
+        }
+        
+        $showAllLevel = $aStartLevel - 1;
+        if (isset($aOptions['notrim'])) {
+            $showAllLevel = $aStartLevel + $aOptions['notrim'];
+        }
+        
+        $formatter->initialize();
+
+        sm2_recurse(
+            $GLOBALS['show_menu2_data'][$aMenu],
+            $aStart,
+            $aStartLevel, $showAllLevel, $aMaxLevel, $flags, 
+            $formatter);
+
+        $formatter->finalize();
+        
+        if (($flags & SM2_BUFFER) != 0) {
+            $retval = $formatter->getOutput();
+        }
+    }
+
     if (($flags & SM2_NOCACHE) != 0) {
         unset($GLOBALS['show_menu2_data'][$aMenu]);
     }
@@ -529,5 +773,3 @@ function sm2_recurse(
         $aFormatter->finishList();
     }
 }
-
-

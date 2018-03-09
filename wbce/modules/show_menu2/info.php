@@ -13,7 +13,7 @@
 $module_directory = 'show_menu2';
 $module_name = 'show_menu2';
 $module_function = 'snippet';
-$module_version = '4.11';
+$module_version = '4.12';
 $module_platform = '1.3.0';
 $module_author = 'Brodie Thiesfield, Manuela v.d.Decken, NorbertHeimsath(heimsath.org)';
 $module_license = 'GNU General Public License v2';
