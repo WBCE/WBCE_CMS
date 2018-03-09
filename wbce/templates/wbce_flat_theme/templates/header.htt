@@ -31,10 +31,7 @@ var LANGUAGE = '{LANGUAGE}';
 <script src="{WB_URL}/include/jquery/jquery-insert.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-include.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-migrate-min.js" type="text/javascript"></script>
-<script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/jquery-plugins.js"></script>
-<script type="text/javascript" src="{THEME_URL}/jquery/jqueryStickyElements/jquery.StickyElements.2.1.0.js"></script>
-<script type="text/javascript" src="{THEME_URL}/jquery/jqueryNiceFileInput/jquery.nicefileinput.min.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/theme.js"></script>
 <!--(PH) JS HEAD TOP- -->
 
@@ -90,19 +87,12 @@ var LANGUAGE = '{LANGUAGE}';
 <a id="frontendtitel" href="{ADMIN_URL}" title="{TITLE_START}"> {WEBSITE_TITLE} - {TEXT_ADMINISTRATION} </a> </div>
 <!-- ENDE headerarea --> 
 
-<!-- ########## pagetopmenu ############################################### -->
-<div id="pagetopmenu" class="stickySidebarElement">
-    <a id="sidebararea_togglebutton" title="Toggle sidebar"></a>
-    <ul id="pagetopmenu_menu">
-        <li><a id="link_home" href="{ADMIN_URL}/start/index.php" title="{TITLE_START}"></a></li>
-        <li><a id="link_back" href="javascript:history.back()" target="_self" title="{TITLE_BACK}"></a></li>
-        <li><a id="link_frontend" href="{URL_VIEW}" target="_blank" title="{TITLE_VIEW}"></a></li>
-        <li><a id="link_logout" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}"></a></li>
-    </ul>
-</div>
-<!-- ##### ENDE pagetopmenu ####################### -->
-
 <div id="sidebararea" class="stickySidebarElement">
+
+    <div id="toggle" class="stickySidebarElement">
+        <a id="sidebararea_togglebutton" title="Toggle sidebar"></a>
+    </div>
+
     <div id="userbox" class="stickySidebarElement">
         <span id="user-introtext">{WELCOME_MESSAGE} {CURRENT_USER} </span><br/>
         <span id="user-name">{DISPLAY_NAME}</span><br/>
@@ -110,6 +100,8 @@ var LANGUAGE = '{LANGUAGE}';
     </div>
     <div id="mainmenu" class="stickySidebarElement">
         <ul class="stickySidebarElement">
+            <li class="board"><a href="{ADMIN_URL}/start/index.php" target="{TARGET}" title="{TITLE_START}"><span>{TITLE_START}</span></a></li>
+            <li class="feview"><a href="{URL_VIEW}" target="_blank" title="{TITLE_VIEW}"><span>{TITLE_VIEW}</span></a></li>
             <!-- BEGIN linkBlock -->
             <li class="{CLASS}"><a href="{LINK}" target="{TARGET}" title="{TITLE}"><span>{TITLE}</span></a></li>
             <!-- END linkBlock -->
@@ -127,7 +119,6 @@ var LANGUAGE = '{LANGUAGE}';
 <!-- ################### Up from here: Original Code from original template ########### -->
 
 <!-- senseless positioning-table: needed for old modules which base on class td.content -->
-<div class="row">
 <div class="fg12">
 <table id="former_positioning_table">
 <tr>

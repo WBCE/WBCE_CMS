@@ -19,6 +19,10 @@ body {
 }
 a {
     color: #adb5c3;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }
 p {
     margin: 0;
@@ -50,7 +54,7 @@ a:hover {
     font-size: 20px;
     line-height: 24px;
     text-align: right;
-    color: #46505f;
+    color: #323741;
     font-weight: bold;
 }
 .login_license {
@@ -60,11 +64,11 @@ a:hover {
     font-size: 11px;
     text-align: center;
 }
-div#page_login_form {
-    margin-top: 200px;
+#page_login_form {
+    margin-top: 180px;
     margin-left: 100px;
 }
-div#page_login_form span {
+#page_login_form span {
     display: inline-block;
 }
 span.page_login_fieldname {
@@ -76,6 +80,7 @@ span.page_login_fieldelement {
 #page_login input[type='text'], #page_login input[type='password'] {
     width: 98%;
     padding: 8px 5px;
+    margin-top: 3px;
 }
 #page_login input[type='checkbox'] {
     margin-left: 125px;
@@ -114,6 +119,8 @@ a:hover#page_login_homelink:after {
 a#page_login_forgottenlink {
     margin-left: 125px;
     font-weight: normal;
+    position: relative;
+    top: 10px;
 }
 button, .wb_button, div.button_advanced_settings a, a.wb_button, div.button_advanced_settings a, input[type='button'], input[type='submit'], input[type='reset'] {
     box-sizing: border-box !important;
@@ -126,6 +133,7 @@ button, .wb_button, div.button_advanced_settings a, a.wb_button, div.button_adva
     background-color: #505b6d;
     border: none;
 }
+
 @media (max-height:700px) {
 .login_license {
     margin-top: 4%;
@@ -147,10 +155,7 @@ div#page_login_form {
     right: 177px;
 }
 }
-@media (max-width:493px) {
-#page_login input[type='submit'] {
-    margin-left: 0;
-}
+@media (max-width:500px) {
 a#page_login_forgottenlink {
     display: inherit;
     margin: 10px 0;
@@ -166,13 +171,13 @@ a#page_login_forgottenlink {
     right: 5px;
     bottom: -25px;
 }
-}
-@media (max-width:400px) {
 span.page_login_fieldelement {
-    width: 100%;
+    width: 95%;
 }
 #page_login input[type='submit'] {
+    margin-left: 0;
+    margin-top: 30px;
     width: 100%;
-    width: calc(100% - 60px);
+    width: calc(100% - 75px);
 }
 }

@@ -27,13 +27,10 @@ div.calendar {
     z-index: 50;
 }
 #headerarea {
-    z-index: 3000;
+    z-index: 200;
 }
 #sidebararea {
-    z-index: 2000;
-}
-#pagetopmenu {
-    z-index: 1000;
+    z-index: 100;
 }
 /* Classes used for animation toggle action sidebar */
 #sidebararea.closedsidebar {
@@ -162,11 +159,6 @@ button:hover, .wb_button:hover, input[type='button']:hover, input[type='submit']
     height: 50px;
     background: url("../images/wblogo.png") no-repeat right top;
 }
-@media screen and (max-width: 600px) {
-#branding {
-    display: none;
-}
-}
 a#frontendtitel {
     font-size: 20px;
     font-weight: bold;
@@ -176,58 +168,24 @@ a#frontendtitel {
 a#frontendtitel:hover {
     color: #9fa8b8;
 }
-/* pagetopmenu & sidebararea_togglebutton */
-#pagetopmenu {
+/* sidebararea */
+#sidebararea {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 350px;
+    height: 100%;
+    padding: 120px 16px 16px 16px;
+    background-color: #46505f;
+    color: #ffffff;
+}
+/* togglebutton */
+#toggle {
     position: fixed;
     top: 72px;
     width: 100%;
-    padding-left: 350px; /* leave left area free --> left side bar */
-    background-color: #cbcfd8;
-    border-bottom: 1px solid #46505f;
 }
-#pagetopmenu_menu {
-    float: right;
-}
-#pagetopmenu ul li {
-    float: left;
-    margin: 0 1px 0 0;
-}
-#pagetopmenu ul li a {
-    display: block;
-    height: 40px;
-    width: 70px;
-    padding: 6px 18px;
-    text-align: center;
-    font-size: 26px;
-    font-weight: normal;
-    text-decoration: none;
-    color: #323741;
-    background-color: #bec3cd;
-}
-#pagetopmenu ul li a:hover {
-    color: #cbcfd8;
-    background-color: #28609B;
-}
-#pagetopmenu ul li.current a {
-    color: #ffffff;
-    background-color: #46505f;
-}
-#pagetopmenu ul li a:before {
-    font-family: FontAwesome;
-}
-#pagetopmenu a#link_home:before {
-    content: "";
-}
-#pagetopmenu a#link_back:before {
-    content: "";
-}
-#pagetopmenu a#link_frontend:before {
-    content: "";
-}
-#pagetopmenu a#link_logout:before {
-    content: "";
-}
-#pagetopmenu a#sidebararea_togglebutton {
+#toggle a#sidebararea_togglebutton {
     display: block;
     height: 40px;
     width: 70px;
@@ -241,25 +199,14 @@ a#frontendtitel:hover {
     cursor: pointer;
     float: left;
 }
-#pagetopmenu a#sidebararea_togglebutton:before {
+#toggle a#sidebararea_togglebutton:before {
     font-family: FontAwesome;
     font-size: 26px;
     content: "";
 }
-#pagetopmenu a#sidebararea_togglebutton:hover {
+#toggle a#sidebararea_togglebutton:hover {
     color: #cbcfd8;
     background-color: #28609B;
-}
-/* sidebararea */
-#sidebararea {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 350px;
-    height: 100%;
-    padding: 120px 16px 16px 16px;
-    background-color: #46505f;
-    color: #ffffff;
 }
 /* userbox: box with information about user */
 #userbox {
@@ -354,6 +301,14 @@ a#frontendtitel:hover {
     background-color: #4DB34E;
     border-bottom: 1px solid #45a246;
     border-top: none;
+}
+/* symbol dashboard */
+#mainmenu ul li.board a:before {
+    content: "";
+}
+/* symbol frontend view */
+#mainmenu ul li.feview a:before {
+    content: "";
 }
 /* symbol pages */
 #mainmenu ul li.pages a:before {
@@ -514,7 +469,7 @@ a#frontendtitel:hover {
 .themebox:hover .tb_footer a:before, .themebox:hover .tb_footer span.tb_icon:before {
     transform: scale(1.5);
 }
-/* color settings for themeboxes */
+/* green color settings for themeboxes */
 .themebox.green, .dashboard {
     background-color: #4DB34E;
 }
@@ -532,42 +487,6 @@ a#frontendtitel:hover {
 }
 .themebox.green a.db_blocklink:hover, .dashboard a.db_blocklink:hover {
     background-color: rgba(203, 207, 216, 0.3);
-}
-.themebox.blue, div.themebox#module_media, div.themebox#addons_reload {
-    background-color: #28609B;
-}
-.themebox.blue .tb_header a:before, div.themebox#module_media .tb_header a:before, div.themebox#addons_reload .tb_header a:before, .themebox.blue .tb_header span.tb_icon:before, div.themebox#module_media .tb_header span.tb_icon:before, div.themebox#addons_reload .tb_header span.tb_icon:before {
-    color: #ffffff;
-}
-.themebox.blue .tb_footer a:before, div.themebox#module_media .tb_footer a:before, div.themebox#addons_reload .tb_footer a:before, .themebox.blue .tb_footer span.tb_icon:before, div.themebox#module_media .tb_footer span.tb_icon:before, div.themebox#addons_reload .tb_footer span.tb_icon:before {
-    color: #ffffff;
-}
-.themebox.blue div.dashboard_information, div.themebox#module_media div.dashboard_information, div.themebox#addons_reload div.dashboard_information {
-    background-image: url("../images/preloader_blue.gif");
-}
-.themebox.blue:hover, div.themebox#module_media:hover, div.themebox#addons_reload:hover {
-    background-color: #235387;
-}
-.themebox.blue a.db_blocklink:hover, div.themebox#module_media a.db_blocklink:hover, div.themebox#addons_reload a.db_blocklink:hover {
-    background-color: rgba(203, 207, 216, 0.2);
-}
-.themebox.red {
-    background-color: #EE4E26;
-}
-.themebox.red .tb_header a:before, .themebox.red .tb_header span.tb_icon:before {
-    color: #ffffff;
-}
-.themebox.red .tb_footer a:before, .themebox.red .tb_footer span.tb_icon:before {
-    color: #ffffff;
-}
-.themebox.red div.dashboard_information {
-    background-image: url("../images/preloader_red.gif");
-}
-.themebox.red:hover {
-    background-color: #e83d12;
-}
-.themebox.red a.db_blocklink:hover {
-    background-color: rgba(203, 207, 216, 0.1);
 }
 /* startpage themeboxe fix */
 #page_start div.tb_content {
@@ -671,38 +590,6 @@ div.themebox#admin_users .tb_header a:before {
 }
 div.themebox#admin_groups .tb_header a:before {
     content: "";
-}
-/* Nice File Input */
-.NFI-wrapper {
-    margin: 1px 0;
-}
-.NFI-button {
-    box-sizing: border-box !important;
-    display: inline-block;
-    padding: 4px 16px;
-    font-weight: normal;
-    text-decoration: none;
-    color: #ffffff;
-    background-color: #505b6d;
-    border: none;
-    border-right: 1px solid #ffffff;
-}
-.NFI-button:before {
-    font-family: fontAwesome;
-    content: "";
-}
-.NFI-button:hover {
-    background-color: #46505f;
-}
-input.NFI-filename {
-    display: inline-block;
-    width: auto;
-    height: auto;
-    padding: 7px 8px !important;
-    background-color: #d9dde3;
-}
-input.NFI-filename:focus, input.NFI-filename:active {
-    background-color: transparent;
 }
 /* PageTree */
 .pages_list {

@@ -2,17 +2,9 @@
 /**
  * websiteinformations.php
  *
- * @category     Theme
- * @package      Theme_AdvancedWbFlat
- * @subpackage   TotalPageInfo
  * @copyright    Tom Mayer <tom.mayer@example.com>
  * @author       Yetie based on hints of wb development team
- * @license      http://www.gnu.org/licenses/gpl.html   GPL License
- * @version      0.0.1
- * @lastmodified $Date: $
- * @since        File available since 14.01.2015
- * @deprecated   This file/class/function is deprecated since the ...
- * @description  xyz
+ * @license      GPL License
  */
 
 if (!defined('WB_PATH')) {
