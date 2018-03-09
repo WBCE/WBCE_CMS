@@ -17,8 +17,15 @@ if (window.jQuery) {
 			return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
 		};
 		
+		$(":submit").click(function() { 
+			$('#ucomp').val(''); 
+			$('#uname').val(''); 
+			$('#umail').val(''); 
+		});
 		
 		function init_ajaxform() {
+			var initiator = '';
+			$(":submit").click(function() { initiator = this;  });
 			$('.miniform_ajax').each(function( index ) {
 				var $container = $(this);
 				var $form = $container.find('form');
@@ -26,22 +33,27 @@ if (window.jQuery) {
 				$form.on('submit',$form,function(event){
 					event.preventDefault(); 
 					var data = new FormData($form[0]);
+					data.append(initiator.name,initiator.value);
 					$.ajax({
 					    type: "POST",
 						data: data,
 						processData: false,
 						contentType: false,
 						beforeSend: function(){ $('.minispinner').fadeIn(10); },
-						complete: function(){ $('.minispinner').fadeOut(500); },
 						cache: false
-					}).done(function(data) {
+					})
+					.done(function(data) {
 						$container.html(data);
 						$message = $container.find('.error, .ok');
-						if( $message && $message.isInViewport() == false ) {
+						console.log($message); 
+						if($message.length && $message.isInViewport() == false ) {
 							$('html,body').animate({
 								scrollTop: $message.offset().top - topOffset
 							}, 500);
 						}
+					})
+					.always(function () { 
+						$('.minispinner').fadeOut(500);
 						init_ajaxform();
 					});
 				});

@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.11.0
- * @lastmodified    june 30, 2017
+ * @version         0.12.0
+ * @lastmodified    Januari 19, 2018
  *
  */
 
@@ -25,7 +25,12 @@ if(!file_exists(WB_PATH.'/modules/miniform/languages/'.LANGUAGE.'.php')) {
 }
 require_once (dirname(__FILE__).'/functions.php');
 
-if(isset($_SESSION['lastform'])) unset($_SESSION['lastform']);
+if(isset($_SESSION['lastform'])) {
+	unset($_SESSION['lastform']);
+	unset($_SESSION['form']);
+	$_SESSION['no'.$section_id] = true;
+} 
+
 mb_internal_encoding(DEFAULT_CHARSET);
 
 if(isAjaxRequest() && isset($_POST['miniform'])) {
@@ -39,14 +44,31 @@ $get_settings = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_miniform WHE
 $settings = $get_settings->fetchRow();
 $form = $settings['template'];
 $email = $settings['email'];
+$emailfrom = $settings['emailfrom'];
 $subject = $settings['subject'];
 $emailmessage = $mf->get_template('email');
 $emailmessage = $mf->add_template($emailmessage, "{SUBJECT}", $subject);
+
+$confirm_user = $settings['confirm_user'];
+$confirm_subject = $settings['confirm_subject'];
+$confirm_message = $mf->get_template('confirm-email');
+if(!$confirm_message) $confirm_message = $mf->get_template('email');
+$confirm_message = $mf->add_template($confirm_message, "{SUBJECT}", $confirm_subject);
+
 $email_field_val = $mf->get_template('email_field_value');
 $email_field_data = '';
 $replyto = '';
-
 $successpage = $settings['successpage'];
+
+if(!isset($_SESSION['no'.$section_id]) && !isset($_SESSION['form']) && $wb->get_user_id() > 0) {  // try to get last data
+	$mf->load_history($section_id, $wb->get_user_id(), null );
+	$_SESSION['no'.$section_id] = true;
+} 
+if(isset($_GET['guid'])) {
+	$guid = addslashes($_GET['guid']);
+	$mf->load_history($section_id, 0, $guid );
+	$mf->fieldGetSeen = true;
+}
 
 $prevdata = '';
 $dbdata = '';
@@ -68,6 +90,7 @@ $message_class = "hidden";
 $form_class = "";
 $use_captcha = ( strpos($template,"{CAPTCHA}")==false ) ? false : true;
 
+$no_store = $settings['no_store'];
 $use_ajax = $settings['use_ajax'];
 $use_recaptcha = $settings['use_recaptcha'];
 $recaptcha_key = $settings['recaptcha_key'];
@@ -129,6 +152,7 @@ if($mf->myPost) {
 	}
 	//Read all fields
 	foreach($fields as $key => $type) {
+		$fullkey = $key;
 		$post = $mf->safe_get_post($key);
 		//if($type!='-' && substr($key,0,2)!='__' && $post) $prevdata .= '<input type="hidden" name="'.$key.'" value="'.$post.'" />'."\n\t";
 		if($type!='-' && substr($key,0,2)!='__' && $post) $prevdata .= '<input type="hidden" name="'.$key.'" value="'.$post.'" />'."\n\t";
@@ -141,11 +165,16 @@ if($mf->myPost) {
 		}
 		$required = false;
 		$emailmessage = $mf->add_template($emailmessage, '{'.mb_strtoupper($key).'}', $post);
+		$confirm_message = $mf->add_template($confirm_message, '{'.mb_strtoupper($key).'}', $post);
 		if(substr($key,0,3)=="mf_") {
 			$key =  substr($key,3);
 			if (substr($key,0,2)=="r_") {
 				$required = true;
 				$key =  substr($key,2);
+			}
+			if (substr($key,-2)=="__") {
+				unset($_SESSION['form'][$fullkey]);
+				$key =  substr($key,0,-2);
 			}
 			$label_post = str_replace(" ","_",$post);
 			$var[] = "{".mb_strtoupper($key)."}"; $value[] = $post;
@@ -199,19 +228,33 @@ if($mf->myPost) {
 				if(isset($_SESSION['miniform'])) { 
 					foreach($_SESSION['miniform'] as $_skey => $_svalue) {
 						$emailmessage = $mf->add_template($emailmessage, '{'.mb_strtoupper($_skey).'}', $_svalue);
+						$confirm_message = $mf->add_template($confirm_message, '{'.mb_strtoupper($_skey).'}', $_svalue);
 					}
 				}
 				// store message in database
 				$data['message_id'] = 0;
 				$data['section_id'] = $section_id;
+				$data['session_data'] = $mf->serialize($_SESSION['form']);
+				$data['user_id'] = $wb->get_user_id();
+				$data['guid'] = $mf->guid();
+				$emailmessage = $mf->add_template($emailmessage, '{GUID}', $data['guid']);
 				$emailmessage = $mf->add_template($emailmessage, '{MAILMESSAGE}', $email_field_data);
+				$confirm_message = $mf->add_template($confirm_message, '{GUID}', $data['guid']);
+				$confirm_message = $mf->add_template($confirm_message, '{MAILMESSAGE}', $email_field_data);
 				//$emailmessage = preg_replace('#\{[A-Za-z_][A-Za-z_0-9.,-\/\\ ]*?\}#s', '', $emailmessage); 
 				$_SESSION['lastform'] = $emailmessage;
 				$data['data'] = addslashes($emailmessage); 
 				$data['submitted_when'] = time();
-				$mf->update_record('mod_miniform_data', 'message_id', $data );
+				if(!$no_store) $mf->update_record('mod_miniform_data', 'message_id', $data );
 				// send message by mail
-				if($mf->mail ($email, $subject, $emailmessage, WBMAILER_DEFAULT_SENDERNAME, $replyto)) {
+				if($mf->mail ($emailfrom, $email, $subject, $emailmessage, WBMAILER_DEFAULT_SENDERNAME, $replyto)) {
+					if($confirm_user && $wb->get_user_id() > 0) {
+						$useremail = $wb->get_email();
+						if(!$mf->mail ($emailfrom, $useremail, $confirm_subject, $confirm_message, WBMAILER_DEFAULT_SENDERNAME)) {
+							$message .= $MF['SENDERROR']."<br>".$mf->error;
+							$message_class = "error";
+						}
+					}
 					unset($_SESSION['form']);
 					if($successpage) {
 						$page_link = $mf->page($successpage);

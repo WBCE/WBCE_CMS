@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.11.0
- * @lastmodified    june 30, 2017
+ * @version         0.12.0
+ * @lastmodified    Januari 19, 2018
  *
  */
 
@@ -20,3 +20,5 @@ if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 $database->query("DROP TABLE ".TABLE_PREFIX."mod_miniform");
 $database->query("DROP TABLE ".TABLE_PREFIX."mod_miniform_data");
 
+
+?>

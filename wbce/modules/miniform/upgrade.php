@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.11.0
- * @lastmodified    june 30, 2017
+ * @version         0.12.0
+ * @lastmodified    Januari 19, 2018
  *
  */
 
@@ -31,6 +31,14 @@ _db_add_field("`recaptcha_key`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT
 _db_add_field("`recaptcha_secret`","mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
 _db_add_field("`remote_id`"		  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
 _db_add_field("`remote_name`"	  ,"mod_miniform", "VARCHAR(64) NOT NULL DEFAULT ''");
+_db_add_field("`emailfrom`"	  	  ,"mod_miniform", "VARCHAR(128) NOT NULL DEFAULT ''");
+_db_add_field("`confirm_user`"	  ,"mod_miniform", "INT NOT NULL default '0'");
+_db_add_field("`confirm_subject`" ,"mod_miniform", "VARCHAR(255) NOT NULL DEFAULT ''");
+_db_add_field("`disable_tls`"	  ,"mod_miniform", "INT NOT NULL default '0'");
+_db_add_field("`no_store`"	  	  ,"mod_miniform", "INT NOT NULL default '0'");
+_db_add_field("`user_id`"		  ,"mod_miniform_data", "INT NOT NULL default '0'");
+_db_add_field("`guid`"	  		  ,"mod_miniform_data", "VARCHAR(64) NOT NULL DEFAULT ''");
+_db_add_field("`session_data`"	  ,"mod_miniform_data", "MEDIUMTEXT NOT NULL");
 
 $path = WB_PATH.'/modules/miniform/';
 if(file_exists($path.'new_frontend.css')) {
@@ -51,4 +59,8 @@ foreach ( $files as $file ) {
 		}
 	}
 }
+					
+					
+
+
 

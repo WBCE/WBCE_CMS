@@ -12,7 +12,8 @@
 					</tr>
 					<tr>
 						<td style="font-size:18px;font-family:'lucida grande',tahoma,verdana,arial,sans-serif;background:#A8BCCB;color:#000000;font-weight:bold;vertical-align:middle;text-align:left;padding:20px 30px 20px 30px;">
-							{HEADER}
+							{HEADER}<br>
+							{SUBJECT}
 						</td>
 					</tr>
 					<tr>

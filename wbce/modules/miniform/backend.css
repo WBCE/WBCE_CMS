@@ -15,7 +15,8 @@
 }
 
 .settable .small {
-	width: 190px;
+	/* width: 190px; */
+	width: 290px;
 }
 
 
@@ -62,6 +63,7 @@ a.mf-button:hover,
     border: 1px solid #555;
     border-radius: 2px;
     margin-right: 7px;
+	height: auto !important;
 }
 .mf-input:focus {
     border: 1px solid rgba(41, 128, 185,1.0);

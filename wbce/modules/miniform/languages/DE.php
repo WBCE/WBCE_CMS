@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/modules-snippets/opensource/miniform/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.10.0
- * @lastmodified    april 6, 2017
+ * @requirements    PHP 5.6 and higher
+ * @version         0.12.0
+ * @lastmodified    Januari 19, 2018
  *
  */
 
@@ -25,10 +25,15 @@ $MF['TEXT_SUCCESS'] = 'Erfolgreich-Seite';
 $MF['TEXT_NOPAGE'] = 'Keine separate Erfolgreich-Seite, Standardtext anzeigen';
 $MF['TEXT_CANCEL'] = 'Abbrechen';
 $MF['TEXT_SAVE'] = 'Speichern';
+$MF['TEXT_NO_STORE'] = 'Empfangene Daten nicht in der Datenbank speichern';
 $MF['TEXT_AJAX'] = 'Ajax post verwenden';
 $MF['TEXT_RECAPTCHA'] = 'reCaptcha verwenden';
 $MF['TEXT_RCKEY'] = 'reCaptcha Site key';
 $MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';
+
+$MF['TEXT_EMAILFROM']    = 'E-Mail-Absender';
+$MF['TEXT_CONFIRM_USER'] = 'Bestätigung an authentifizierten Benutzer';
+$MF['TEXT_CONFIRM_SUBJ'] = 'Bestätigungs Betreff';
 
 $MF['MANAGE'] = 'Template anpassen';
 $MF['SUBJECT'] = 'Formular &uuml;ber die Website verschickt';

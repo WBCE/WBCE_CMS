@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.11.0
- * @lastmodified    june 30, 2017
+ * @version         0.12.0
+ * @lastmodified    Januari 19, 2018
  *
  */
 
@@ -25,10 +25,16 @@ $MF['TEXT_SUCCESS'] = 'Success page';
 $MF['TEXT_NOPAGE'] = 'No successpage, standard text only';
 $MF['TEXT_CANCEL'] = 'Cancel';
 $MF['TEXT_SAVE'] = 'Save';
+$MF['TEXT_NO_STORE'] = 'Do not store received data in the database';
 $MF['TEXT_AJAX'] = 'Use Ajax post';
 $MF['TEXT_RECAPTCHA'] = 'Use reCaptcha';
 $MF['TEXT_RCKEY'] = 'reCaptcha Site key';
 $MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';
+
+$MF['TEXT_EMAILFROM'] = 'Email Sender';
+$MF['TEXT_CONFIRM_USER'] = 'Confirmation to authenticated user';
+$MF['TEXT_CONFIRM_SUBJ'] = 'Confirmation subject';
+
 $MF['MANAGE'] = 'Modify template';
 $MF['SUBJECT'] = 'Form sent by the website';
 $MF['THANKYOU'] = 'Thank you for filling out this form. We will contact you ASAP';

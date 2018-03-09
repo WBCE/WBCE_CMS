@@ -7,9 +7,9 @@
  * @link			http://www.dev4me.nl/modules-snippets/opensource/miniform/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.10.0
- * @lastmodified    april 10, 2017
+ * @requirements    PHP 5.6 and higher
+ * @version         0.12.0
+ * @lastmodified    Januari 19, 2018
  *
  */
 
@@ -62,7 +62,7 @@ class mform {
 		if(!file_exists(dirname(__FILE__).'/templates/'.$name.'.htt')) return '';
 		$this->current = substr($name,5);
 		$tmp = file_get_contents(dirname(__FILE__).'/templates/'.$name.'.htt');
-		$var[] = "{URL}";				$value[] = $this->page(PAGE_ID);
+		$var[] = "{URL}";				$value[] = ''; // $this->page(PAGE_ID);
 		$var[] = "{WB_URL}";			$value[] = WB_URL;
 		$var[] = "{WEBSITE_TITLE}";		$value[] = WEBSITE_TITLE;
 		$var[] = "{MEDIA_DIRECTORY}";	$value[] = MEDIA_DIRECTORY;
@@ -286,10 +286,9 @@ class mform {
 	}
 	
 		
-	function mail($toaddress, $subject, $message, $fromname='', $replyto = '') {
+	function mail($fromaddress, $toaddress, $subject, $message, $fromname='', $replyto = '') {
 		require_once(WB_PATH."/framework/class.wbmailer.php");
 		$toArray = explode(',',$toaddress);
-		$fromaddress = $toArray[0];
 	
 		$myMail = new wbmailer();
 		// set user defined from address
@@ -319,7 +318,10 @@ class mform {
 			$myMail->AddAttachment($file, $filename);
 		}
 		
- 		$myMail->SMTPAutoTLS = false; // tell phpmailer not to autouse TLS is not configured
+ 		/*
+		$myMail->SMTPAutoTLS = false; // tell phpmailer not to autouse TLS is not configured
+		*/
+		
 		$myMail->SMTPOptions = array( // allow self_signed ssl.
 			'ssl' => array(
 				'verify_peer' => false,
@@ -327,7 +329,6 @@ class mform {
 				'allow_self_signed' => true
 			)
 		); 
-		
 		// check if there are any send mail errors, otherwise say successful
 		if (!$myMail->Send()) {
 			$this->error = $myMail->ErrorInfo;
@@ -354,6 +355,37 @@ class mform {
 		return $result;
 	}
 
+	function load_history($section_id, $user_id = 0, $guid = '') {
+		global $database;
+		if(!$user_id && !$guid) return;
+		if($user_id) $query = "SELECT `session_data` FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id`='$section_id' AND `user_id`='$user_id' ORDER BY `message_id` DESC LIMIT 1";
+		if($guid) $query = "SELECT `session_data` FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id`='$section_id' AND `guid`='$guid' LIMIT 1";
+		$res = $database->get_one($query);
+		if($res) $_SESSION['form'] = $this->unserialize($res);
+		return;
+		
+	}
+	
+	function serialize ($sObject) {
+		return serialize($sObject);
+	}
+	
+	function unserialize($sObject) {
+		$__ret = preg_replace_callback( '/s:([0-9]+):\"(.*?)\";/',
+			function ($matches) { return "s:".strlen($matches[2]).':"'.$matches[2].'";'; },
+			$sObject
+		);
+		return unserialize($__ret);
+	}
+
+	function guid() {
+		if (function_exists('com_create_guid') === true){
+			return str_replace(array('{','}','-'),'',com_create_guid());
+		}
+		return sprintf('%04X%04X%04X%04X%04X%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+	}
+	
+	
 } //end class
 
 function isAjaxRequest () {
