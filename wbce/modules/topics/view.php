@@ -46,7 +46,7 @@ require_once(WB_PATH.'/modules/'.$mod_dir.'/functions_small.php');
 
 
 // check if frontend.css file needs to be included into the <body></body> of view.php
-if((!function_exists('register_frontend_modfiles') || !defined('MOD_FRONTEND_CSS_REGISTERED')) &&  file_exists(WB_PATH .'/modules/'.$mod_dir.'/frontend.css')) {
+if((!function_exists('register_frontend_modfiles') && !defined('MOD_FRONTEND_CSS_REGISTERED')) &&  file_exists(WB_PATH .'/modules/'.$mod_dir.'/frontend.css')) {
    echo '<style type="text/css">';
    include(WB_PATH .'/modules/'.$mod_dir.'/frontend.css');
    echo "\n</style>\n";

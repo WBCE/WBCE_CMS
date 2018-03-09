@@ -3,7 +3,7 @@
 if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 if (!isset($tablename))  { exit("No tables defined"); }
 
-
+$thumb =''; 
 $autoarchive_action = 0;
 $ok = false;
 if ($autoarchiveArr != 0) {
@@ -227,18 +227,18 @@ if($num_topics > 0) {
 			$picture .= $refreshstring;			
 			if (substr($picture, 0, 7) == 'http://') {
 				//external file:
-				$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture.'" alt="" />';
+				$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture.'" alt="'.$title.'" title="'.$title.'"/>';
 				$thumb = '<img style="max-width:'.$w_thumb.'px;" class="tp_thumb_external tp_thumb tp_thumb'.$page_id.'" src="'.$picture.'" alt="" />';
 			} else {
 				if ($picture_dir != '') {			
-					$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture_dir.'/'.$picture.'" alt="" />';
+					$picture_tag = '<img class="tp_pic tp_pic'.$page_id.'" src="'.$picture_dir.'/'.$picture.'" alt="'.$title.'" />';
 					if ($zoomclass != '') {
 						//Check if there is a picture in folder "zoom"
 						$zoompic = WB_PATH.$settings_fetch['picture_dir'].'/zoom/'.$picture;			
 						if (file_exists($zoompic)) { $picture_tag = '<a href="'.$picture_dir.'/zoom/'.$picture.'" target="_blank" class="'.$zoomclass.'">'.$picture_tag.'</a>'; }		
 					}
 				}
-				$thumb = '<img class="tp_thumb tp_thumb'.$page_id.'" src="'.$picture_dir.'/thumbs/'.$picture.'" alt="" />';
+				$thumb = '<img class="tp_thumb tp_thumb'.$page_id.'" src="'.$picture_dir.'/thumbs/'.$picture.'" alt="'.$title.'" />';
 			
 			}
 			$thumb_tag = $thumb;

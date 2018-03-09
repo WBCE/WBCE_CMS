@@ -350,6 +350,7 @@ if(!method_exists($admin, 'register_backend_modfiles') && file_exists(WB_PATH ."
 			<?php 
 			
 			//The same like in modify_topic.php - should we make a function?
+			$picture_dir = ''.$settings_fetch['picture_dir']; //Auch wenn es leer ist
 			$theothersq = "SELECT section_title, section_id, page_id FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id > '0' ORDER BY section_id ASC";
 			if ($restrict2picdir > 0) {
 				$theq = "SELECT section_id FROM ".TABLE_PREFIX."mod_".$mod_dir."_settings WHERE section_id > '0' AND picture_dir = '".$picture_dir."'";	

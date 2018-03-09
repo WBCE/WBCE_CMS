@@ -3,7 +3,7 @@
 $module_directory = 'topics';
 $module_name = 'Topics';
 $module_function = 'page';
-$module_version = '0.9.4.2';
+$module_version = '0.9.4.3';
 $module_status = 'Stable';
 $module_platform = '2.8.x';
 $module_author = 'Started by Chio Maisriml, www.wbce.at';
@@ -14,6 +14,9 @@ $module_description = 'Topics is similar to news, but designed for lots of artic
 
 /**
  * Version history
+ *
+ * v0.9.4.3 (florian, 02.03.2018)
+ *        - Some fixes for reported bugs (see forum threads)
  *
  * v0.9.4.2 (Colinax, 19.08.2017)
  *        - Some adjustments for a better update experience
