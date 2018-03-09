@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.html or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 CKEDITOR.dialog.add( 'wbdroplets', function( editor ) {
@@ -11,7 +11,7 @@ CKEDITOR.dialog.add( 'wbdroplets', function( editor ) {
 		var attributeValue = element.data( 'cke-saved-name' );
 		this.setValueOf( 'info', 'txtName', attributeValue || '' );
 	};
-
+    
 	return {
 		title: editor.lang.wbdroplets.wbdroplets.title,
 		minWidth: 300,
@@ -19,8 +19,8 @@ CKEDITOR.dialog.add( 'wbdroplets', function( editor ) {
 		onOk: function() {
 			var name = CKEDITOR.tools.trim( this.getValueOf( 'info', 'droplet-edit' ) );
 			editor.insertHtml(name);
-		},			
-		
+		},
+        
 		onShow: function(){
 			var dropletText = CKEDITOR.plugins.wbdroplets.getSelectedDroplet( editor );
 			var dropletName = DropletSelectBox[0][1];
@@ -29,16 +29,16 @@ CKEDITOR.dialog.add( 'wbdroplets', function( editor ) {
 				dropletParts = (dropletText+' ').split("?");
 				for (i = 0; i < DropletSelectBox.length; i++) {
 					if (dropletParts[0] === DropletSelectBox[i][1]) {
-	  				dropletName = dropletParts[0];
-	  				isListed = true;
-	 			}
+                    dropletName = dropletParts[0];
+                    isListed = true;
+                }
 				};
 			}
 			this.setValueOf( 'info', 'txtName', dropletName );
 			if (isListed)
 				this.setValueOf( 'info', 'droplet-edit', '[['+dropletText+']]' );
 		},
-
+        
 		contents: [
 			{
 			id: 'info',
@@ -84,7 +84,7 @@ CKEDITOR.dialog.add( 'wbdroplets', function( editor ) {
 					this.onChange();
 				},
 			},
-						
+            
 			{
 				type: 'text',
 				id: 'droplet-edit',
@@ -93,13 +93,13 @@ CKEDITOR.dialog.add( 'wbdroplets', function( editor ) {
 				onLoad: function() {
 					this.allowOnChange = true;
 				},
-
+                
 				validate: function() {
 					var func = CKEDITOR.dialog.validate.notEmpty( editor.lang.wbdroplets.noUrl );
 					return func.apply( this );
 				},
 			},
-					
+            
 			{
 				id:'infoPreview',
 				type:'html',

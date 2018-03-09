@@ -29,9 +29,10 @@ $wb284  = (file_exists('../../../../../setup.ini.php')) ? true : false;
 require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
-if(!function_exists('cleanup')) {
-
-	function cleanup ($string) {
+if(!function_exists('cleanup'))
+{
+	function cleanup ($string)
+    {
 		global $database;
 		// if magic quotes on
 		if (get_magic_quotes_gpc())
@@ -39,10 +40,11 @@ if(!function_exists('cleanup')) {
 			$string = stripslashes($string);
 		}
 		if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli'))
+        {
 			return preg_replace("/\r?\n/", "\\n", $database->escapeString( $string));
-		else
+        } else {
 			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
-
+        }
 	} // end function cleanup
 }
 
@@ -57,12 +59,15 @@ function getPageTree($parent)
 	$sql .= 'WHERE `parent`= '.(int)$parent.' ';
     $sql .= ((PAGE_TRASH != 'inline') ?  'AND `visibility` != \'deleted\' ' : ' ');
 	$sql .= 'ORDER BY `position` ASC';
-
+    
 	if($resPage = $database->query($sql))
 	{
 		while( !false == ($page = $resPage->fetchRow() ) )
 		{
-			if(!$admin->page_is_visible($page)) { continue; }
+			if(!$admin->page_is_visible($page))
+            {
+                continue;
+            }
 			$menu_title = cleanup( $page['menu_title'] );
 			$page_title = cleanup( $page['page_title'] );
 			// Stop users from adding pages with a level of more than the set page level limit
@@ -90,45 +95,56 @@ $wblink_allowed_chars = "/[^ a-zA-Z0-9_äöüÄÖÜß!\"§$%&\/\(\)\[\]=\{\}\?\*
 $NewsItemsSelectBox = "var NewsItemsSelectBox = new Array();";
 $ModuleList = "var ModuleList = new Array();";
 $newsSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'news'");
-while($section = $newsSections->fetchRow()){
+while($section = $newsSections->fetchRow())
+{
 	$news = $database->query("SELECT title, link, page_id, post_id FROM ".TABLE_PREFIX."mod_news_posts WHERE active=1 AND section_id = ".$section['section_id']);
 	$ModuleList .= "ModuleList[".$section['page_id']."] = 'News';";
 	$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
-	while($item = $news->fetchRow()) {
-  	$item['title'] = preg_replace($wblink_allowed_chars , "" , $item['title']);
-  	if ($wb284)
-  		$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '[wblink".$item['page_id'].'?addon=news&item='.$item['post_id']."]');";
-		else	
+	while($item = $news->fetchRow())
+    {
+        $item['title'] = preg_replace($wblink_allowed_chars , "" , $item['title']);
+        if ($wb284) {
+			$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '[wblink".$item['page_id'].'?addon=news&item='.$item['post_id']."]');";
+        } else {
 			$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY.(addslashes($item['link'])).PAGE_EXTENSION."');";
+        }
 	}
 }
 
 $topicsSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'topics'");
-while($section = $topicsSections->fetchRow()){
+while($section = $topicsSections->fetchRow())
+{
 	$topics = $database->query("SELECT title, link, page_id, topic_id FROM ".TABLE_PREFIX."mod_topics WHERE active > 0 AND section_id = ".$section['section_id']);
 	$ModuleList .= "ModuleList[".$section['page_id']."] = 'Topics';";
 	$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
-	while($item = $topics->fetchRow()) {
-  	$item['title'] = preg_replace($wblink_allowed_chars , "" , $item['title']);
-  	if ($wb284 && file_exists("../../../../../modules/topics/WbLink.php"))
-  		$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '[wblink".$item['page_id'].'?addon=topics&item='.$item['topic_id']."]');";
-		else
+	while($item = $topics->fetchRow())
+    {
+        $item['title'] = preg_replace($wblink_allowed_chars , "" , $item['title']);
+		if ($wb284 && file_exists(WB_PATH."/modules/topics/WbLink.php"))
+		{
+			$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '[wblink".$item['page_id'].'?addon=topics&item='.$item['topic_id']."]');";
+		} else {
 			$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY."/topics/".(addslashes($item['link'])).PAGE_EXTENSION."');";
+		}
 	}
 }
 
 $bakerySections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'bakery'");
-while($section = $bakerySections->fetchRow()){
-  $bakery = $database->query("SELECT title, link, page_id, item_id FROM ".TABLE_PREFIX."mod_bakery_items WHERE active=1 AND section_id = ".$section['section_id']);
-  $ModuleList .= "ModuleList[".$section['page_id']."] = 'Bakery';";
-  $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
-  while($item = $bakery->fetchRow()) {
-  	$item['title'] = preg_replace($wblink_allowed_chars , "" , $item['title']);
-  	if ($wb284 && file_exists("../../../../../modules/bakery/WbLink.php"))
-    	$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '[wblink".$item['page_id'].'?addon=bakery&item='.$item['item_id']."]');";  
-    else
-    	$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY.(addslashes($item['link'])).PAGE_EXTENSION."');";
-  }
+while($section = $bakerySections->fetchRow())
+{
+	$bakery = $database->query("SELECT title, link, page_id, item_id FROM ".TABLE_PREFIX."mod_bakery_items WHERE active=1 AND section_id = ".$section['section_id']);
+	$ModuleList .= "ModuleList[".$section['page_id']."] = 'Bakery';";
+	$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
+	while($item = $bakery->fetchRow()) 
+    {
+		$item['title'] = preg_replace($wblink_allowed_chars , "" , $item['title']);
+		if ($wb284 && file_exists(WB_PATH."/modules/bakery/WbLink.php"))
+        {
+            $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '[wblink".$item['page_id'].'?addon=bakery&item='.$item['item_id']."]');";  
+        } else {
+            $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY.(addslashes($item['link'])).PAGE_EXTENSION."');";
+        }
+    }
 }
 
 echo $NewsItemsSelectBox;

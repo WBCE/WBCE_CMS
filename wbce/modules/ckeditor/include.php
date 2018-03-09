@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -21,29 +21,38 @@ if (true === $debug) {
 }
 
 /**
- *	Function called by parent, default by the wysiwyg-module
- *	@param	string	The name of the textarea to watch
- *	@param	mixed	The "id" - some other modules handel this param differ
- *	@param	string	Optional the width, default "100%" of given space.
- *	@param	string	Optional the height of the editor - default is '250px'
+ *    Function called by parent, default by the wysiwyg-module
+ *
+ *    @param    string    The name of the textarea to watch
+ *    @param    mixed    The "id" - some other modules handel this param differ
+ *    @param    string    Optional the width, default "100%" of given space.
+ *    @param    string    Optional the height of the editor - default is '250px'
  */
-function show_wysiwyg_editor($name, $id, $content, $width='100%', $height='350px', $toolbar = false) {
-	global $database,$admin;
+function show_wysiwyg_editor(
+    $name, 
+    $id, 
+    $content, 
+    $width='100%', 
+    $height='350px', 
+    $toolbar = false
+    ) {
+	global $database,$admin,$section_id;
 
 	$modAbsPath = str_replace('\\','/',dirname(__FILE__));
 	$ckeAbsPath = $modAbsPath.'/ckeditor/';
 	if (isset($_SERVER['SCRIPT_FILENAME'])) {
 		$realPath = str_replace('\\','/',dirname($_SERVER['SCRIPT_FILENAME']));
 	} else {
-		/** realpath - Returns canonicalized absolute pathname */
-		$realPath = str_replace('\\','/',realpath( './' )) ;
+        /**
+         * realpath - Returns canonicalized absolute pathname
+         */
+        $realPath = str_replace('\\','/',realpath( './' )) ;
 	}
 
 	$selfPath = str_replace('\\','/',dirname($_SERVER['SCRIPT_NAME']));
 	$documentRoot = str_replace('\\','/',realpath(substr($realPath, 0, strlen($realPath) - strlen($selfPath))));
 	$tplAbsPath = str_replace('\\','/',$documentRoot.'/templates');
 	$tplRelPath = str_replace($documentRoot,'',$tplAbsPath);
-
 	$modRelPath = str_replace($documentRoot,'',$modAbsPath);
 	$ckeRelPath = $modRelPath.'/ckeditor/';
 
@@ -68,14 +77,18 @@ function show_wysiwyg_editor($name, $id, $content, $width='100%', $height='350px
 	$templateFolder = ($temp == "") ? DEFAULT_TEMPLATE : $temp;
 	$ckeditor->setTemplatePath($templateFolder);
 
-	/**	Looking for the styles */
+	/**	
+     *	Looking for the styles
+     */
 	$ckeditor->resolve_path(
 		'contentsCss',
 		$tplPath.'/wb_config/editor.css',
 		$ModPath.'/wb_config/editor.css'
 	);
 
-	/**	Looking for the editor.styles at all ... */
+	/**
+     *	Looking for the editor.styles at all ...
+     */
 	$ckeditor->resolve_path(
 		'stylesSet',
 		$tplPath.'/wb_config/editor.styles.js',
@@ -83,14 +96,19 @@ function show_wysiwyg_editor($name, $id, $content, $width='100%', $height='350px
 		'wb:'
 	);
 
-	/**	The filebrowser are called in the include, because later on we can make switches, use WB_URL and so on */
+	/**
+     *	The filebrowser are called in the include, because later on we can make switches, use WB_URL and so on
+     */
 	$connectorPath = $ckeditor->basePath.'filemanager/connectors/php/connector.php';
 	$ckeditor->config['filebrowserBrowseUrl'] = $ckeditor->basePath.'filemanager/browser/default/browser.html?Connector='.$connectorPath;
 	$ckeditor->config['filebrowserImageBrowseUrl'] = $ckeditor->basePath.'filemanager/browser/default/browser.html?Type=Image&Connector='.$connectorPath;
 	$ckeditor->config['filebrowserFlashBrowseUrl'] = $ckeditor->basePath.'filemanager/browser/default/browser.html?Type=Flash&Connector='.$connectorPath;
 
-	/**	The Uploader has to be called, too. */
+	/**	
+     *	The Uploader has to be called, too
+     */
 	$ckeditor->config['uploader'] = false; // disabled for security reasons
+    
 	if($ckeditor->config['uploader']==true) {
 		$uploadPath = $ckeditor->basePath.'filemanager/connectors/php/upload.php?Type=';
 		$ckeditor->config['filebrowserUploadUrl'] = $uploadPath.'File';
@@ -98,9 +116,12 @@ function show_wysiwyg_editor($name, $id, $content, $width='100%', $height='350px
 		$ckeditor->config['filebrowserFlashUploadUrl'] = $uploadPath.'Flash';
 	}
 
-	/**	Define all extra CKEditor plugins here */
-	$ckeditor->config['extraPlugins'] = 'wbdroplets,wblink,wbsave,wbshybutton,autolink,ckawesome,codemirror,lineutils,oembed,textselection,widget,widgetselection,colorbutton,copyformatting,flash,font,indentblock,justify,panelbutton';
-	$ckeditor->config['removePlugins'] = 'wsc,link';
+	/**	
+     *	Define all extra CKEditor plugins here
+     *	This version contains the image2 plugin, to enable it, add simply image2 to the extraPlugins list
+     */
+	$ckeditor->config['extraPlugins'] = 'wbdroplets,wblink,wbsave,wbshybutton,autolink,ckawesome,codemirror,lineutils,oembed,textselection,widgetselection,colorbutton,copyformatting,flash,font,indentblock,justify,panelbutton';
+	$ckeditor->config['removePlugins'] = 'wsc,link,save';
     $ckeditor->config['removeButtons'] = 'Font';
     $ckeditor->config['fontawesomePath'] = WB_URL.'/include/font-awesome/css/font-awesome.min.css';
 
@@ -110,8 +131,7 @@ function show_wysiwyg_editor($name, $id, $content, $width='100%', $height='350px
     $ckeditor->config['width'] = $width;
 
 	/**
-	 *	Force the object to print/echo direct instead of returning the
-	 *	HTML source string.
+	 *	Force the object to print/echo direct instead of returning the HTML source string.
 	 */
 	$ckeditor->returnOutput = false;
 

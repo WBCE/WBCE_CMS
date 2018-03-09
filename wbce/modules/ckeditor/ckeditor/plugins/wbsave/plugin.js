@@ -1,14 +1,14 @@
 /**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 (function () {
     "use strict";
-
+    
     var wbsaveCmd = {
         readOnly: 1,
-
+        
         exec: function (editor) {
             if (editor.fire("save")) {
                 
@@ -27,7 +27,7 @@
                     $form.target = "";
                 });
                 $form.target = "dummy_iframe";
-
+                
                 if ($form) {
                     try {
                         $form.submit();
@@ -43,17 +43,16 @@
             }
         }
     };
-
+    
     CKEDITOR.plugins.add("wbsave", {
         lang: "de,en",
         icons: "wbsave",
         hidpi: true,
-
+        
         init: function (editor) {
             if (editor.elementMode !== CKEDITOR.ELEMENT_MODE_REPLACE) {
                 return;
             }
-
             var command = editor.addCommand("wbsave", wbsaveCmd);
             command.modes = {
                 wysiwyg: !!(editor.element.$.form)
@@ -66,7 +65,6 @@
             CKEDITOR.scriptLoader.load(CKEDITOR.plugins.getPath("wbsave") + "ibox.js");
         }
     });
-
 }());
 
 /**

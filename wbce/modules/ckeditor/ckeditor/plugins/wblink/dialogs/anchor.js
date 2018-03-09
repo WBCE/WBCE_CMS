@@ -1,25 +1,26 @@
 /**
- * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 (function() {
     "use strict";
+    
     CKEDITOR.dialog.add('anchor', function(editor) {
         // Function called in onShow to load selected element.
         var loadElements = function(element) {
             this._.selectedElement = element;
-
+            
             var attributeValue = element.data('cke-saved-name');
             this.setValueOf('info', 'txtName', attributeValue || '');
         };
-
+        
         function createFakeAnchor(editor, attributes) {
             return editor.createFakeElement(editor.document.createElement('a', {
                 attributes: attributes
             }), 'cke_anchor', 'anchor');
         }
-
+        
         return {
             title: editor.lang.wblink.anchor.title,
             minWidth: 300,
@@ -31,12 +32,12 @@
                     name: name,
                     'data-cke-saved-name': name
                 };
-
+                
                 if(this._.selectedElement) {
                     if(this._.selectedElement.data('cke-realelement')) {
                         var newFake = createFakeAnchor(editor, attributes);
                         newFake.replace(this._.selectedElement);
-
+                        
                         // Selecting fake element for IE. (#11377)
                         if(CKEDITOR.env.ie)
                             editor.getSelection().selectElement(newFake);
@@ -45,7 +46,7 @@
                 } else {
                     var sel = editor.getSelection(),
                         range = sel && sel.getRanges()[0];
-
+                    
                     // Empty anchor
                     if(range.collapsed) {
                         var anchor = createFakeAnchor(editor, attributes);
@@ -53,7 +54,7 @@
                     } else {
                         if(CKEDITOR.env.ie && CKEDITOR.env.version < 9)
                             attributes['class'] = 'cke_anchor';
-
+                        
                         // Apply style.
                         var style = new CKEDITOR.style({
                             element: 'a',
@@ -64,11 +65,11 @@
                     }
                 }
             },
-
+            
             onHide: function() {
                 delete this._.selectedElement;
             },
-
+            
             onShow: function() {
                 var sel = editor.getSelection(),
                     fullySelected = sel.getSelectedElement(),
@@ -76,15 +77,15 @@
                     linkElement = fakeSelected ?
                     CKEDITOR.plugins.wblink.tryRestoreFakeAnchor(editor, fullySelected) :
                     CKEDITOR.plugins.wblink.getSelectedLink(editor);
-
+                
                 if(linkElement) {
                     loadElements.call(this, linkElement);
                     !fakeSelected && sel.selectElement(linkElement);
-
+                    
                     if(fullySelected)
                         this._.selectedElement = fullySelected;
                 }
-
+                
                 this.getContentElement('info', 'txtName').focus();
             },
             contents: [{

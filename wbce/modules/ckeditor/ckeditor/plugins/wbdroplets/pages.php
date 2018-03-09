@@ -25,20 +25,22 @@ require('../../../../../config.php');
 require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
-if(!function_exists('cleanup')) {
-
-	function cleanup ($string) {
+if(!function_exists('cleanup'))
+{
+	function cleanup ($string) 
+    {
 		global $database;
 		// if magic quotes on
 		if (get_magic_quotes_gpc())
 		{
 			$string = stripslashes($string);
 		}
-		if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli'))
+		if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')) 
+        {
 			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
-		else
+		} else {
 			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
-
+        }
 	} // end function cleanup
 }
 
@@ -54,11 +56,10 @@ $array = array();
 	{
 		while( !false == ($droplet = $resRec->fetchRow() ) )
 		{
-
 			$title = cleanup($droplet['name']);
 			$desc = cleanup($droplet['description']);
 			$comments = cleanup($droplet['comments']);
-
+            
 	        $DropletSelectBox .=  "new Array( '".$title."', '".$droplet['name']."'), ";
 	        $description .=  "new Array( '".$title."', '".$desc."'), ";
 	        $usage .=  "new Array( '".$title."', '".$comments."'), ";
@@ -72,4 +73,3 @@ $usage = substr($usage,0,-2);
 echo $DropletSelectBox .= " );\n";
 echo $description .= " );\n";
 echo $usage .= " );\n";
-
