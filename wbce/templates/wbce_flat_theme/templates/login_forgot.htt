@@ -1,9 +1,10 @@
-<!-- BEGIN mainBlock -->
+<!-- BEGIN main_block -->
 
 <!DOCTYPE html>
 <html lang="{LANGUAGE}">
 <head>
 <title>{SECTION_FORGOT}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
 <meta http-equiv="content-language" content="{LANGUAGE}" />
 <meta name="description" content="{TEXT_FORGOT}" />
@@ -13,31 +14,27 @@
 <link rel="stylesheet" href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" />
 <script type="text/javascript" src="{WB_URL}/include/jquery/jquery-min.js"></script>
 </head>
-<body id="page_login" onload="document.forgot_pass.email.focus();">
-<div id="page_login_header">
-    <div id="page_login_logo"> WBCE CMS</div>
-    <div id="page_login_slogan"> Way Better Content Editing. </div>
+<body class="page_login" onload="document.forgot_pass.email.focus();">
+
+<div class="page_login_header">
+    <div class="page_login_logo">WBCE CMS</div>
+    <div class="page_login_slogan">Way Better Content Editing.</div>
 </div>
-<!-- ENDE page_login_header -->
-<div id="page_login_form" class="forgot-page">
+
+<!-- BEGIN forgot_pass -->
+<div class="page_login_form" class="forgot-page">
     <p>{SECTION_FORGOT}</p>
-    <p>{MESSAGE}</p>
-    <br/>
     <form name="forgot_pass" action="{ACTION_URL}" method="post">
-        <div id="page_login-fields"> <span class="page_login_fieldname">{TEXT_EMAIL}:</span> <span class="page_login_fieldelement">
-            <input type="text" maxlength="255" name="email" value="{EMAIL}" />
-            </span> <br/>
-            <input type="submit" name="submit" value="{TEXT_SEND_DETAILS}" >
-            <a id="page_login_homelink" href="{WB_URL}/"></a> <br/>
+        <div class="page_login-fields">
+            <span class="page_login_fieldelement"><input placeholder="{MESSAGE}" type="text" maxlength="255" name="email" value="{EMAIL}" /></span>
+            <br/>
+            <p><input type="submit" name="submit" value="{TEXT_SEND_DETAILS}" /></p>
         </div>
-        <a id="page_login_forgottenlink" href="{LOGIN_URL}">{TEXT_NEED_TO_LOGIN}</a>
     </form>
+    <p class="login_license"><!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. --><a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" title="GNU General Public License">GNU General Public License</a></p>
 </div>
 <!-- ENDE forgot_pass -->
-<div class="login_license"> 
-    <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    <a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" title="GNU General Public License">GNU General Public License</a><br />
-</div>
+
 </body>
 </html>
 

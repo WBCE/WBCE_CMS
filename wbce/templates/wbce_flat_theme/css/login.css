@@ -1,20 +1,15 @@
-@import url('font/opensans.css');
 *, *:before, *:after {
     box-sizing: inherit;
 }
 html {
-    font-size: 14px;
-    line-height: 24px;
-    font-family: open_sans, sans-serif;
+    font-size: 16px;
+    font-family: sans-serif;
     color: #ffffff;
-}
-html, body {
     height: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 body {
+    height: 100%;
+    box-sizing: border-box;
     background-color: #647087;
 }
 a {
@@ -23,161 +18,84 @@ a {
 }
 a:hover {
     text-decoration: underline;
-}
-p {
-    margin: 0;
-}
-a:hover {
     color: #909aad;
 }
-#page_login_header {
-    position: relative;
-    height: 30%;
+.page_login_header {
+    height: 216px;
     background-color: #323741;
 }
-#page_login_logo {
+.page_login_logo {
     position: absolute;
     right: 70px;
-    bottom: -50px;
+    top: 90px;
     height: 180px;
     padding-right: 170px;
     padding-top: 70px;
     text-align: right;
     font-size: 48px;
-    line-height: 50px;
     background: url("../images/wblogo_large.png") no-repeat right top;
 }
-#page_login_slogan {
+.page_login_slogan {
     position: absolute;
     right: 240px;
-    bottom: -30px;
+    top: 220px;
     font-size: 20px;
-    line-height: 24px;
     text-align: right;
     color: #323741;
     font-weight: bold;
 }
-.login_license {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    font-size: 11px;
+.page_login_form {
+    margin: 180px auto 0;
+    max-width: 500px;
     text-align: center;
+    padding: 16px;
 }
-#page_login_form {
-    margin-top: 180px;
-    margin-left: 100px;
-}
-#page_login_form span {
+.page_login_fieldelement {
     display: inline-block;
+    width: 100%;
 }
-span.page_login_fieldname {
-    width: 120px;
-}
-span.page_login_fieldelement {
-    width: 350px;
-}
-#page_login input[type='text'], #page_login input[type='password'] {
-    width: 98%;
+.page_login input {
+    width: 100%;
     padding: 8px 5px;
     margin-top: 3px;
+    text-align: center;
 }
-#page_login input[type='checkbox'] {
-    margin-left: 125px;
-}
-#page_login input[type='submit'] {
+.page_login input[type='submit'] {
     display: inline-block;
-    width: 290px;
-    margin-left: 125px;
-    padding: 8px 0;
+    max-width: 300px;
     color: #ffffff;
     background-color: #25588f;
-}
-#page_login input[type="submit"]:hover {
-    background-color: #225183;
-}
-a#page_login_homelink {
-    display: inline-block;
-    position: relative;
-    margin-left: 10px;
-}
-a#page_login_homelink:after {
-    content: "";
-    font-family: FontAwesome;
-    display: inline-block;
-    position: relative;
-    left: 0;
-    bottom: 0;
-    padding: 5px 11px;
-    font-weight: normal;
-    color: #ffffff;
-    background-color: #45a246;
-}
-a:hover#page_login_homelink:after {
-    background-color: #3d903e;
-}
-a#page_login_forgottenlink {
-    margin-left: 125px;
-    font-weight: normal;
-    position: relative;
-    top: 10px;
-}
-button, .wb_button, div.button_advanced_settings a, a.wb_button, div.button_advanced_settings a, input[type='button'], input[type='submit'], input[type='reset'] {
-    box-sizing: border-box !important;
-    display: inline-block;
-    margin-top: 12px;
-    padding: 4px 16px;
-    font-weight: normal;
-    text-decoration: none;
-    color: #ffffff;
-    background-color: #505b6d;
     border: none;
 }
-
-@media (max-height:700px) {
+.page_login input[type="submit"]:hover {
+    background-color: #225183;
+}
 .login_license {
-    margin-top: 4%;
     font-size: 11px;
+}
+@media (max-width:550px) {
+.page_login_logo {
+    background: none;
+    padding-right: 0;
+    right: 10px;
+}
+.page_login_slogan {
+    position: relative;
+    right: auto;
     text-align: center;
-    position: inherit;
-    padding: 0 2%;
+}
+.page_login_form {
+    margin: 90px auto 0;
 }
 }
-@media (max-width:600px) {
-div#page_login_form {
-    margin-top: 100px;
-    margin-left: 20px;
+@media (max-width:550px) and (max-height:650px) {
+.page_login_header {
+    height: 150px;
 }
-#page_login_logo {
-    right: 7px;
+.page_login_logo {
+    top: 30px;
 }
-#page_login_slogan {
-    right: 177px;
-}
-}
-@media (max-width:500px) {
-a#page_login_forgottenlink {
-    display: inherit;
-    margin: 10px 0;
-}
-#page_login_logo {
-    right: 5px;
-    background: transparent;
-    padding: 0 0 0 0;
-    height: 100px;
-}
-#page_login_slogan {
-    position: absolute;
-    right: 5px;
-    bottom: -25px;
-}
-span.page_login_fieldelement {
-    width: 95%;
-}
-#page_login input[type='submit'] {
-    margin-left: 0;
-    margin-top: 30px;
-    width: 100%;
-    width: calc(100% - 75px);
+.page_login_slogan {
+    top: 150px;
 }
 }
