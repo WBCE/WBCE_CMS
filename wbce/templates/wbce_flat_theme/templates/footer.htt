@@ -5,21 +5,15 @@
     <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
     <p style="font-size:12px;text-align:center;"><a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" title="General Public License">GNU General Public License</a></p>
 </div>
-<!-- ################### Until here: Original Code from original template ########### --> 
-<!-- ################### own code to close page starts form here #################### -->
+
 </td>
 </tr>
 </table>
 </div>
-<!-- ENDE former_positioning_table -->
-</div>
-<!-- ENDE contentarea -->
-</div>
-<!-- ENDE mainarea -->
-</div>
-<!-- ENDE container --> 
 
+</div>
 
+<script>var navigation = responsiveNav("foo", {customToggle: ".nav-toggle"});</script>
 <!--(PH) HTML BODY BTM+ -->
 <!--(PH) HTML BODY BTM- -->
 <!--(PH) JS BODY BTM+ -->

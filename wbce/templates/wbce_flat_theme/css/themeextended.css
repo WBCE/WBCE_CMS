@@ -1,17 +1,163 @@
 @import url('font/opensans.css');
-/* some basics */
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
+
+@viewport { width: device-width; }
+
 html {
     box-sizing: border-box;
+    min-height: 100%;
     line-height: 24px;
 }
 body {
-    font-family: open_sans, Arial, Helvetica, sans-serif;
+    font-family: open_sans, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
-    background-color: #f3f3f3;
+    min-height: 100%;
+    min-width: 290px;
+    text-size-adjust: 100%;
+    background: #444 url("../images/debut_dark.png") repeat;
+    color: #fff;
 }
+.main {
+    padding: 16px;
+    position: fixed;
+    overflow: hidden;
+    overflow-y: scroll;
+    box-shadow: 0 0 15px rgba(0,0,0, .6);
+    top: .8em;
+    right: 0;
+    bottom: 0;
+    width: 76%;
+    background: #f3f3f3;
+    color: #000;
+}
+.nav-collapse {
+    position: absolute;
+    width: 24%;
+    /*top: 2em;*/
+    left: 0;
+}
+.nav-collapse ul {
+    display: block;
+    width: 100%;
+    list-style: none;
+}
+.nav-collapse li {
+    width: 100%;
+    display: block;
+}
+
+.nav-collapse a {
+    transition: background .3s ease;
+    border-top: 1px solid rgba(255,255,255, .1);
+    display: block;
+    width: 100%;
+}
+.nav-collapse a:hover {
+    background: rgba(255,255,255, .1);
+}
+.nav-collapse .active a {
+    color: #fff; background: rgba(0,0,0, .3);
+}
+.nav-collapse li:first-child a {
+    border-top: 0;
+}
+.nav-collapse li:last-child a {
+    border-bottom: 0;
+}
+.nav-toggle {
+    display: none;
+}
+@media screen and (max-width: 40em) {
+.js .nav-collapse {
+    clip: rect(0 0 0 0);
+    max-height: 0;
+    position: absolute;
+    display: block;
+    overflow: hidden;
+}
+.nav-collapse {
+    top: 0;
+    width: 100%;
+    position: relative;
+}
+.nav-collapse.opened {
+    max-height: 9999px;
+}
+.nav-collapse a:hover {
+    background: transparent;
+}
+.nav-collapse .active a:hover {
+    color: #fff; 
+    background: rgba(0,0,0, .3);
+}
+.nav-toggle {
+    user-select: none;
+    text-decoration: none;
+    text-indent: -999px;
+    position: relative;
+    overflow: hidden;
+    width: 70px;
+    height: 55px;
+    float: right;
+    display: block;
+    margin: 0 -2em 1em 0;
+}
+.nav-toggle:before {
+    color: #444; /* Edit this to change the icon color */
+    font-family: "responsivenav";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    font-size: 28px;
+    text-transform: none;
+    position: absolute;
+    content: "\2261";
+    text-indent: 0;
+    text-align: center;
+    line-height: 65px;
+    speak: none;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+.nav-toggle.active:before {
+    font-size: 24px;
+    content: "\78";
+}
+.main {
+    box-shadow: none;
+    padding: 0 2em 2em;
+    border-radius: 0;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+#logo img {
+display: none;
+}
+#systeminfo {
+display: none;
+}
+}
+@media screen and (-webkit-min-device-pixel-ratio: 1.3), screen and (min--moz-device-pixel-ratio: 1.3), screen and (-o-min-device-pixel-ratio: 2 / 1), screen and (min-device-pixel-ratio: 1.3), screen and (min-resolution: 192dpi), screen and (min-resolution: 2dppx) {
+body {
+    background-image: url("../images/debut_dark_@2X.png");
+    background-size: 200px 200px;
+}
+}
+@media screen and (min-width: 76em) {
+.nav-collapse {
+    width: 18em;
+}
+.main {
+    width: auto;
+    left: 18em;
+}
+}
+
 /* tables still need 'cellspacing="0"' in the markup */
 table {
     border-collapse: separate;
@@ -19,40 +165,6 @@ table {
 }
 label {
     display: inline-flex;
-}
-#mainarea {
-    z-index: auto;
-}
-div.calendar {
-    z-index: 50;
-}
-#headerarea {
-    z-index: 200;
-}
-#sidebararea {
-    z-index: 100;
-}
-/* Classes used for animation toggle action sidebar */
-#sidebararea.closedsidebar {
-    left: -280px;
-}
-#mainmenu ul.closedsidebar {
-    left: 215px;
-}
-#mainmenu.closedsidebar {
-    top: -120px;
-}
-#userbox.closedsidebar {
-    opacity: 0;
-}
-#systeminfo.closedsidebar {
-    opacity: 0;
-}
-#pagetopmenu.closedsidebar {
-    padding-left: 70px;
-}
-.container #mainarea.closedsidebar {
-    padding-left: 72px;
 }
 /* H2 headings */
 .page_titel {
@@ -120,162 +232,20 @@ button, .wb_button, input[type='button'], input[type='submit'], input[type='rese
 button:hover, .wb_button:hover, input[type='button']:hover, input[type='submit']:hover, input[type='reset']:hover {
     background-color: #46505f;
 }
-/* headerarea */
-#mainarea {
-    position: relative;
-    width: 100%;
-    /* leave left area free --> left side bar */
-    padding: 115px 2% 0 352px;
+#logo img {
+    margin: 0 2%;
 }
-#contentarea {
-    max-width: 1280px;
-    padding-top: 0;
-    padding-bottom: 36px;
-}
-#headerarea {
-    position: fixed;
-    width: 100%;
-    height: 72px;
-    padding: 12px 18px;
-    background-color: #323741;
-    border-bottom: 1px solid #777777;
-    color: #ADB5C3;
-}
-#branding {
-    position: absolute;
-    right: 30px;
-    height: 55px;
-    padding-right: 120px;
-}
-#branding-text {
-    padding-top: 20px;
-    font-size: 20px;
-}
-#branding-logo {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 105px;
-    height: 50px;
-    background: url("../images/wblogo.png") no-repeat right top;
-}
-a#frontendtitel {
-    font-size: 20px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #ADB5C3;
-}
-a#frontendtitel:hover {
-    color: #9fa8b8;
-}
-/* sidebararea */
-#sidebararea {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 350px;
-    height: 100%;
-    padding: 120px 16px 16px 16px;
-    background-color: #46505f;
-    color: #ffffff;
-}
-/* togglebutton */
-#toggle {
-    position: fixed;
-    top: 72px;
-    width: 100%;
-}
-#toggle a#sidebararea_togglebutton {
-    display: block;
-    height: 40px;
-    width: 70px;
-    padding: 6px 18px;
-    text-align: center;
-    font-size: 26px;
-    font-weight: normal;
-    text-decoration: none;
-    color: #323741;
-    background-color: #bec3cd;
-    cursor: pointer;
-    float: left;
-}
-#toggle a#sidebararea_togglebutton:before {
-    font-family: FontAwesome;
-    font-size: 26px;
-    content: "";
-}
-#toggle a#sidebararea_togglebutton:hover {
-    color: #cbcfd8;
-    background-color: #28609B;
-}
-/* userbox: box with information about user */
-#userbox {
-    position: relative;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: 90px;
-    background: #323741 url("../images/symb_user.png") no-repeat 20px 12px;
-}
-#userbox #user-introtext {
-    font-size: 11px;
-}
-#userbox #user-name {
-    display: block;
-    padding-bottom: 12px;
-    font-size: 20px;
-}
-#userbox a#user-button {
-    position: absolute;
-    right: 20px;
-    bottom: 15px;
-    padding: 0 5px;
-    text-decoration: none;
-    font-size: 11px;
-    color: #ffffff;
-    background-color: #28609B;
-}
-#userbox a#user-button:hover {
-    background-color: #235387;
-}
-/* mainmenu */
-#mainmenu {
-    overflow: hidden;
-    position: relative;
-    top: 0;
-    margin-right: -16px;
-    margin-top: 36px;
-    padding-left: 50px;
-    font-size: 16px;
-}
-#mainmenu ul {
-    position: relative;
-}
-#mainmenu ul li {
-    border-top: 1px solid #3c4150;
-}
-#mainmenu ul li:hover {
-    border-top: 1px solid #46505f;
-}
-#mainmenu ul li:first-child {
-    border-top: none;
-}
-#mainmenu ul li a {
+.mainmenu ul li a {
     display: block;
     position: relative;
-    margin-right: -15px;
     padding-top: 12px;
     padding-bottom: 12px;
     padding-left: 80px;
     font-weight: normal;
     text-decoration: none;
-    color: #cbcfd8;
-    background-color: #323741;
+    color: #fff;
 }
-#mainmenu ul li a:hover {
-    color: #ffffff;
-    background-color: #3c4150;
-}
-#mainmenu ul li a:before {
+.mainmenu ul li a:before {
     font-family: FontAwesome;
     display: block;
     position: absolute;
@@ -287,68 +257,59 @@ a#frontendtitel:hover {
     text-align: center;
     font-size: 26px;
 }
-#mainmenu ul li a:hover:before {
+.mainmenu ul li a:hover:before {
     background-color: #EE4E26;
     border-top: 1px solid #d13710;
     border-bottom: 1px solid #d13710;
 }
-#mainmenu ul li.current a {
-    color: #ffffff;
-    background-color: #3c4150;
-}
-#mainmenu ul li.current a:before {
+.mainmenu ul li.current a:before {
     color: #ffffff;
     background-color: #4DB34E;
     border-bottom: 1px solid #45a246;
     border-top: none;
 }
 /* symbol dashboard */
-#mainmenu ul li.board a:before {
+.mainmenu ul li.board a:before {
     content: "";
 }
-/* symbol frontend view */
-#mainmenu ul li.feview a:before {
-    content: "";
-}
 /* symbol pages */
-#mainmenu ul li.pages a:before {
+.mainmenu ul li.pages a:before {
     content: "";
 }
 /* symbol media */
-#mainmenu ul li.media a:before {
+.mainmenu ul li.media a:before {
     content: "";
 }
 /* symbol addons */
-#mainmenu ul li.addons a:before {
+.mainmenu ul li.addons a:before {
     content: "";
 }
 /* symbol (my personal login) settings = module preferences */
-#mainmenu ul li.preferences a:before {
+.mainmenu ul li.preferences a:before {
     content: "";
 }
 /* symbol options = module settings */
-#mainmenu ul li.settings a:before {
+.mainmenu ul li.settings a:before {
     content: "";
 }
 /* symbol admin tools */
-#mainmenu ul li.admintools a:before {
+.mainmenu ul li.admintools a:before {
     content: "";
 }
 /* symbol users = module access */
-#mainmenu ul li.access a:before {
+.mainmenu ul li.access a:before {
     content: "";
 }
 /* systembox: box with information about WBCE */
 #systeminfo {
-    margin-top: 36px;
+    margin-top: 32px;
+    margin-left: 16px;
     font-size: 11px;
-    text-align: right;
+    line-height: 16px;
 }
 #systeminfo a {
-    color: #ebebeb;
-    font-weight: normal;
+    color: #fff;
     text-decoration: none;
-    font-style: italic;
 }
 #systeminfo a:hover {
     color: #e0e0e0;

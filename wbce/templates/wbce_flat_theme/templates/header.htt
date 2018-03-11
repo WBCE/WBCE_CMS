@@ -8,6 +8,7 @@
 
 <!--(PH) META HEAD+ -->
 <meta charset="{CHARSET}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Encoding" content="gzip" />
 <meta http-equiv="Accept-Encoding" content="gzip, deflate" />
 <!--(PH) META HEAD- -->
@@ -27,6 +28,7 @@ var THEME_URL = '{THEME_URL}';
 var ADMIN_URL = '{ADMIN_URL}';
 var LANGUAGE = '{LANGUAGE}';
 </script>
+<script src="{THEME_URL}/jquery/responsive-nav.min.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-min.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-insert.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-include.js" type="text/javascript"></script>
@@ -78,48 +80,31 @@ var LANGUAGE = '{LANGUAGE}';
 <!--(PH) HTML BODY TOP+ -->
 <!--(PH) HTML BODY TOP- -->
 
-<div class="container">
-<div id="headerarea">
     <div id="branding">
-    <div id="branding-text">WBCE CMS</div>
-    <div id="branding-logo"></div>
-</div>
-<a id="frontendtitel" href="{ADMIN_URL}" title="{TITLE_START}"> {WEBSITE_TITLE} - {TEXT_ADMINISTRATION} </a> </div>
-<!-- ENDE headerarea --> 
-
-<div id="sidebararea" class="stickySidebarElement">
-
-    <div id="toggle" class="stickySidebarElement">
-        <a id="sidebararea_togglebutton" title="Toggle sidebar"></a>
+        <div id="logo"><img alt="WBCE CMS" title="WBCE CMS" src="{THEME_URL}/images/wblogo_large.png"></div>
     </div>
 
-    <div id="userbox" class="stickySidebarElement">
-        <span id="user-introtext">{WELCOME_MESSAGE} {CURRENT_USER} </span><br/>
-        <span id="user-name">{DISPLAY_NAME}</span><br/>
-        <a id="user-button" href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a>
-    </div>
-    <div id="mainmenu" class="stickySidebarElement">
-        <ul class="stickySidebarElement">
-            <li class="board"><a href="{ADMIN_URL}/start/index.php" target="{TARGET}" title="{TITLE_START}"><span>{TITLE_START}</span></a></li>
-            <li class="feview"><a href="{URL_VIEW}" target="_blank" title="{TITLE_VIEW}"><span>{TITLE_VIEW}</span></a></li>
+    <div role="navigation" id="foo" class="mainmenu nav-collapse">
+        <ul>
+            <li class="board" id="board"><a href="{ADMIN_URL}/start/index.php" target="{TARGET}" title="{TITLE_START}"><span>{TITLE_START}</span></a></li>
             <!-- BEGIN linkBlock -->
             <li class="{CLASS}"><a href="{LINK}" target="{TARGET}" title="{TITLE}"><span>{TITLE}</span></a></li>
             <!-- END linkBlock -->
         </ul>
     </div>
-    <div id="systeminfo" class="stickySidebarElement">
-        <span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
-        <span class="version">Tag: {WBCE_TAG}</span><br/>
-        <span class="version">PHP Version: {PHP_VERSION}</span><br/>
-        <span class="version">Session timeout: <span id="countdown" class="timer"></span></span>
+    
+    <div id="systeminfo">
+        <span>WBCE Version: {WBCE_VERSION}</span><br/>
+        <span>Tag: {WBCE_TAG}</span><br/>
+        <span>PHP Version: {PHP_VERSION}</span><br/>
+        <span>Session timeout: <span id="countdown" class="timer"></span></span><br/>
+        <span>{CURRENT_USER} {DISPLAY_NAME}</span><br/>
+        <a href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a>
     </div>
-</div>
-<div id="mainarea" class="stickySidebarElement">
-<div id="contentarea">
-<!-- ################### Up from here: Original Code from original template ########### -->
 
-<!-- senseless positioning-table: needed for old modules which base on class td.content -->
-<div class="fg12">
+    <div role="main" class="main">
+      <a href="#nav" class="nav-toggle">Menu</a>
+      <div class="fg12">
 <table id="former_positioning_table">
 <tr>
     <td class="content">

@@ -19,59 +19,14 @@ function getUrlVars() {
 
 $(document).ready(function () {
 
-	// toggle-action for sidebar
-    $(function() {
-
-        // Evt. haben einige Variablen einen besseren Namen verdient :)
-        var $window = $(window),
-            maxWindowWidthToCloseSidebar = 500,
-            $sidebarareaTogglebutton = $('#sidebararea_togglebutton'),
-            $parentOfSidebarTogglebutton = $sidebarareaTogglebutton.parent();
-
-        function openSidebar() {
-
-        $parentOfSidebarTogglebutton.removeClass('closedsidebar');
-
-            $('#pagetopmenu').removeClass('closedsidebar', 1000);
-            $('#mainarea').removeClass('closedsidebar', 1000);
-            $('#sidebararea').removeClass('closedsidebar', 1000);
-            $('#mainmenu').removeClass('closedsidebar', 1000);
-            $('#mainmenu ul').removeClass('closedsidebar', 1000, function () {
-                $('#userbox').removeClass('closedsidebar', 800);
-                $('#systeminfo').removeClass('closedsidebar', 800);
-            });
+    // menulink --> check if link is active link and add active class to parent <li>
+    var pageurl = window.location.pathname,
+    urlRegExp = new RegExp(pageurl.replace(/\/$/,'') + "$");
+    $('#board a').each(function () {
+        if (urlRegExp.test(this.href.replace(/\/$/,''))) {
+            $(this).parent().addClass('current');
         }
-
-        function closeSidebar() {
-
-        $parentOfSidebarTogglebutton.addClass('closedsidebar');
-
-            $('#userbox').addClass('closedsidebar', 800);
-            $('#systeminfo').addClass('closedsidebar', 800);
-            $('#sidebararea').addClass('closedsidebar', 1000);
-            $('#mainmenu ul').addClass('closedsidebar', 1000);
-            $('#mainmenu').addClass('closedsidebar', 1000);
-            $('#pagetopmenu').addClass('closedsidebar', 1000);
-            $('#mainarea').addClass('closedsidebar', 1000);
-        }
-
-        $sidebarareaTogglebutton.on('click', function() {
-            if ($parentOfSidebarTogglebutton.hasClass('closedsidebar')) {
-                openSidebar();
-            } else {
-                closeSidebar();
-            }
-        });
-
-        $window.resize(function() {
-            if ($window.width() < maxWindowWidthToCloseSidebar) {
-                closeSidebar();
-            } else {
-                openSidebar();
-            }
-        });
     });
-    // ENDE script toggle action for sidebar
 
     // special for hard coded page pages --> add class 'page_titel' to first head of page
 	var page_url = document.URL;
