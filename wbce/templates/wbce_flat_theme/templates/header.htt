@@ -18,7 +18,6 @@
 <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/fitrgrid.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
-<link href="{THEME_URL}/css/themeextended.css" rel="stylesheet" type="text/css">
 <!--(PH) CSS HEAD TOP- -->
 
 <!--(PH) JS HEAD TOP+ -->
@@ -81,15 +80,16 @@ var LANGUAGE = '{LANGUAGE}';
 <!--(PH) HTML BODY TOP- -->
 
     <div id="branding">
-        <div id="logo"><img alt="WBCE CMS" title="WBCE CMS" src="{THEME_URL}/images/wblogo_large.png"></div>
+        <div id="logo"><img alt="WBCE CMS" title="WBCE CMS" src="{THEME_URL}/images/logo.png"></div>
     </div>
 
     <div role="navigation" id="foo" class="mainmenu nav-collapse">
         <ul>
-            <li class="board" id="board"><a href="{ADMIN_URL}/start/index.php" target="{TARGET}" title="{TITLE_START}"><span>{TITLE_START}</span></a></li>
+            <li class="link_dashboard" id="link_dashboard"><a href="{ADMIN_URL}/start/index.php" target="{TARGET}" title="{TITLE_START}"><span>{TITLE_START}</span></a></li>
             <!-- BEGIN linkBlock -->
             <li class="{CLASS}"><a href="{LINK}" target="{TARGET}" title="{TITLE}"><span>{TITLE}</span></a></li>
             <!-- END linkBlock -->
+            <li class="link_logout" id="link_logout"><a href="{ADMIN_URL}/logout/" target="{TARGET}" title="{TITLE_LOGOUT}"><span>{TITLE_LOGOUT}</span></a></li>
         </ul>
     </div>
     
@@ -99,7 +99,6 @@ var LANGUAGE = '{LANGUAGE}';
         <span>PHP Version: {PHP_VERSION}</span><br/>
         <span>Session timeout: <span id="countdown" class="timer"></span></span><br/>
         <span>{CURRENT_USER} {DISPLAY_NAME}</span><br/>
-        <a href="{ADMIN_URL}/logout/" title="{TITLE_LOGOUT}">{TITLE_LOGOUT}</a>
     </div>
 
     <div role="main" class="main">

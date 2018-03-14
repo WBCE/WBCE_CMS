@@ -4,6 +4,7 @@
     <h2 class="page_titel">Home</h2>
     
     <div class="alertbox" style="{DISPLAY_WARNING};"> {WARNING} </div>
+    
     <div class="fg6">
         <div id="module_pages" class="themebox dashboard" style="{DISPLAY_PAGES};">
             <div class="tb_header"> <a href="{ADMIN_URL}/pages/index.php"></a> </div>

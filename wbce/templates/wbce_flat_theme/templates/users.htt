@@ -4,11 +4,11 @@
     <div class="headline-link"> <i class="fa fa-users"></i> <a href="{ADMIN_URL}/groups/index.php">{TEXT_MANAGE_GROUPS}</a> </div>
 </h2>
 
-<form name="users" action="users.php" method="post" class="content-box" style="display: inline-block; width:100%;">
+<form name="users" action="users.php" method="post" class="content-box">
     {FTAN}
     <input type="hidden" name="userstatus" value="{USER_STATUS}">
     <h3 id="user-type" class="fg12">
-        <button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times" style="margin: 0 0 1px 0;"></button>
+        <button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times"></button>
         <span>{HEADING_MODIFY_DELETE_USER}</span> </h3>
     <div id="user-list" class="fg6"> 
         <select name="user_id" class="wdt250">

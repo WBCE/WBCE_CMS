@@ -4,7 +4,7 @@
     <div class="headline-link"> <i class="fa fa-reply"></i> <a href="index.php">Abbrechen</a> </div>
 </h2>
 
-<div class="fg12 content-box" style="width: 100%;margin: 0;">
+<div class="fg12 content-box">
     <form name="group" action="{ACTION_URL}" method="post" class="{DISPLAY_ADD}">
         {FTAN}
         <input type="hidden" name="advanced" value="{ADVANCED}">
@@ -337,7 +337,7 @@
                 <div class="bot"><b>{TEXT_MODULE_PERMISSIONS}:</b></div>
                 <ul>
                     <!-- BEGIN module_list_block -->
-                    <li style="margin-bottom:5px; margin-left:15px;">
+                    <li>
                         <label>
                             <input type="checkbox" name="module_permissions[]" id="m_{VALUE}" value="{VALUE}" {CHECKED} />
                             {NAME}
@@ -350,7 +350,7 @@
                 <div class="bot"><b>{TEXT_TEMPLATE_PERMISSIONS}:</b></div>
                 <ul>
                     <!-- BEGIN template_list_block -->
-                    <li style="margin-bottom:5px; margin-left:15px;">
+                    <li>
                         <label>
                             <input type="checkbox" name="template_permissions[]" id="t_{VALUE}" value="{VALUE}" {CHECKED} />
                             {NAME}

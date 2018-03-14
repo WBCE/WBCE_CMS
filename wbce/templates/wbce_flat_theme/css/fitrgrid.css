@@ -1,259 +1,76 @@
-/*
-	Original .fitgrd (www.fitgrd.com) - responsive grid system by Jan Müller
-	Fitrgrid - small screen first fork by John Coyne (aoimedia.co.uk) 2016
-	Licensed under GPL and MIT.
-*/
-.center {
-    max-width: 80em; /* 1280px */
-    margin: 0 auto;
-    position: relative;
-}
-.row {
-    margin: 0;
-    padding: 0 1em;
-    overflow: hidden;
-    height: 1%;
-    *zoom: 1;
-    min-height: 1%;
-}
-.clearfix {
-    height: 0;
-    clear: both;
-    display: block;
-    overflow: hidden;
-    visibility: hidden;
-    width: 0;
-    height: 0;
-}
-.fg1, .fg2 {
-    margin: 0 2% 1em;
-    padding: 0;
-    width: 46%;
-    margin-bottom: 1em;
-    float: left;
-}
-.fg3, .fg4, .fg5, .fg6, .fg7, .fg8, .fg9, .fg10, .fg11, .fg12 {
-    margin: 0 2% 1em;
-    padding: 0;
-    width: 96%;
-    float: left;
-    position: relative;
-}
-.fg-no-gutter > [class*="fg"] {
-    margin-bottom: 0;
-    padding: 0;
-}
-.fg-no-gutter img {
-    width: 100%;
-    height: 100%;
-}
-.fg-wide {
-    margin: 0;
-    padding: 0;
-}
-.fg-wide > [class*="fg"] {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-.fg-no-mobile {
-    display: none;
-}
-.fg-no-desktop {
-    display: block;
-}
-/* ======================================= 
-   media queries
-   ======================================= */
+/* Original .fitgrd (www.fitgrd.com) - responsive grid system by Jan Müller Fitrgrid - small screen first fork by John Coyne (aoimedia.co.uk) 2016 Licensed under GPL and MIT. */
+.center { max-width: 80em; /* 1280px */ margin: 0 auto; position: relative; }
+.row { margin: 0; padding: 0 1em; overflow: hidden; height: 1%; *zoom: 1; min-height: 1%; }
+.clearfix { height: 0; clear: both; display: block; overflow: hidden; visibility: hidden; width: 0; height: 0; }
+.fg1, .fg2 { margin: 0 2% 1em; padding: 0; width: 46%; margin-bottom: 1em; float: left; }
+.fg3, .fg4, .fg5, .fg6, .fg7, .fg8, .fg9, .fg10, .fg11, .fg12 { margin: 0 2% 1em; padding: 0; width: 96%; float: left; position: relative; }
+.fg-no-gutter > [class*="fg"] { margin-bottom: 0; padding: 0; }
+.fg-no-gutter img { width: 100%; height: 100%; }
+.fg-wide { margin: 0; padding: 0; }
+.fg-wide > [class*="fg"] { margin: 0; padding: 0; width: 100%; }
+.fg-no-mobile { display: none; }
+.fg-no-desktop { display: block; }
+/* =================== media queries =================== */
 /* larger viewport breakpoint: 800px+ */ 	
 @media screen and (min-width: 50.000em) {
-.fg1, .fg2 {
-    margin: 0 2% 0.25em;
-    margin-bottom: 0.25em;
-}
-.fg3, .fg4, .fg5, .fg6, .fg7, .fg8, .fg9, .fg10, .fg11, .fg12 {
-    margin: 0 2% 0.25em;
-}
-/* ======================================= 
-   columns w/ margin
-   ======================================= */
-.row {
-    margin: 0 0.25em;
-    padding: 1% 0.25em 0;
-}
-.fg12 {
-    width: 96%;
-}
-.fg11 {
-    width: 87.66%;
-}
-.fg10 {
-    width: 79.33%;
-}
-.fg9 {
-    width: 71%;
-}
-.fg8 {
-    width: 62.66%;
-}
-.fg7 {
-    width: 54.33%;
-}
-.fg6 {
-    width: 46%;
-}
-.fg5 {
-    width: 37.66%;
-}
-.fg4 {
-    width: 29.33%;
-}
-.fg3 {
-    width: 21%;
-}
-.fg2 {
-    width: 12.66%;
-}
-.fg1 {
-    width: 4.33%;
-}
-/* ======================================= 
-   push w/ columns
-   ======================================= */
-.push12 {
-    margin-left: 100%;
-}
-.push11 {
-    margin-left: 93.66%;
-}
-.push10 {
-    margin-left: 85.33%;
-}
-.push9 {
-    margin-left: 77%;
-}
-.push8 {
-    margin-left: 68.66%;
-}
-.push7 {
-    margin-left: 60.33%;
-}
-.push6 {
-    margin-left: 52%;
-}
-.push5 {
-    margin-left: 43.66%;
-}
-.push4 {
-    margin-left: 35.33%;
-}
-.push3 {
-    margin-left: 27%;
-}
-.push2 {
-    margin-left: 18.66%;
-}
-.push1 {
-    margin-left: 10.33%;
-}
-/* ======================================= 
-   columns w/o margin
-   ======================================= */
-.fg-no-gutter {
-    padding: 0 3.5%;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-.fg-no-gutter > [class*="fg"] {
-    margin: 0;
-    padding: 0;
-    float: left;
-    position: relative;
-}
-.fg-wide {
-    margin: 0;
-    padding: 0;
-    max-width: 99.999%; /* prevents ragged sub-pixel edge */
-}
-.fg-no-gutter .fg12 {
-    width: 100%;
-}
-.fg-no-gutter .fg11 {
-    width: 91.66%;
-}
-.fg-no-gutter .fg10 {
-    width: 83.33%;
-}
-.fg-no-gutter .fg9 {
-    width: 75%;
-}
-.fg-no-gutter .fg8 {
-    width: 66.66%;
-}
-.fg-no-gutter .fg7 {
-    width: 58.33%;
-}
-.fg-no-gutter .fg6 {
-    width: 50%;
-}
-.fg-no-gutter .fg5 {
-    width: 41.66%;
-}
-.fg-no-gutter .fg4 {
-    width: 33.33%;
-}
-.fg-no-gutter .fg3 {
-    width: 25%;
-}
-.fg-no-gutter .fg2 {
-    width: 16.66%;
-}
-.fg-no-gutter .fg1 {
-    width: 8.33%;
-}
-/* ======================================= 
-   push columns w/o margin
-   ======================================= */
-.fg-no-gutter .push12 {
-    margin-left: 100%;
-}
-.fg-no-gutter .push11 {
-    margin-left: 91.66%;
-}
-.fg-no-gutter .push10 {
-    margin-left: 83.33%;
-}
-.fg-no-gutter .push9 {
-    margin-left: 75%;
-}
-.fg-no-gutter .push8 {
-    margin-left: 66.66%;
-}
-.fg-no-gutter .push7 {
-    margin-left: 58.33%;
-}
-.fg-no-gutter .push6 {
-    margin-left: 50%;
-}
-.fg12 .push5 {
-    margin-left: 41.66%;
-}
-.fg-no-gutter .push4 {
-    margin-left: 33.33%;
-}
-.fg-no-gutter .push3 {
-    margin-left: 25%;
-}
-.fg-no-gutter .push2 {
-    margin-left: 16.66%;
-}
-.fg-no-gutter .push1 {
-    margin-left: 8.33%;
-}
-.fg-no-mobile {
-    display: block;
-}
-.fg-no-desktop {
-    display: none;
-}
+.fg1, .fg2 { margin: 0 2% 0.25em; margin-bottom: 0.25em; }
+.fg3, .fg4, .fg5, .fg6, .fg7, .fg8, .fg9, .fg10, .fg11, .fg12 { margin: 0 2% 0.25em; }
+/* =================== columns w/ margin =============== */
+.row { margin: 0 0.25em; padding: 1% 0.25em 0; }
+.fg12 { width: 96%; }
+.fg11 { width: 87.66%; }
+.fg10 { width: 79.33%; }
+.fg9 { width: 71%; }
+.fg8 { width: 62.66%; }
+.fg7 { width: 54.33%; }
+.fg6 { width: 46%; }
+.fg5 { width: 37.66%; }
+.fg4 { width: 29.33%; }
+.fg3 { width: 21%; }
+.fg2 { width: 12.66%; }
+.fg1 { width: 4.33%; }
+/* =================== push w/ columns ================= */
+.push12 { margin-left: 100%; }
+.push11 { margin-left: 93.66%; }
+.push10 { margin-left: 85.33%; }
+.push9 { margin-left: 77%; }
+.push8 { margin-left: 68.66%; }
+.push7 { margin-left: 60.33%; }
+.push6 { margin-left: 52%; }
+.push5 { margin-left: 43.66%; }
+.push4 { margin-left: 35.33%; }
+.push3 { margin-left: 27%; }
+.push2 { margin-left: 18.66%; }
+.push1 { margin-left: 10.33%; }
+/* =================== columns w/o margin ============== */
+.fg-no-gutter { padding: 0 3.5%; margin-top: 0; margin-bottom: 0; }
+.fg-no-gutter > [class*="fg"] { margin: 0; padding: 0; float: left; position: relative; }
+.fg-wide { margin: 0; padding: 0; max-width: 99.999%; /* prevents ragged sub-pixel edge */ }
+.fg-no-gutter .fg12 { width: 100%; }
+.fg-no-gutter .fg11 { width: 91.66%; }
+.fg-no-gutter .fg10 { width: 83.33%; }
+.fg-no-gutter .fg9 { width: 75%; }
+.fg-no-gutter .fg8 { width: 66.66%; }
+.fg-no-gutter .fg7 { width: 58.33%; }
+.fg-no-gutter .fg6 { width: 50%; }
+.fg-no-gutter .fg5 { width: 41.66%; }
+.fg-no-gutter .fg4 { width: 33.33%; }
+.fg-no-gutter .fg3 { width: 25%; }
+.fg-no-gutter .fg2 { width: 16.66%; }
+.fg-no-gutter .fg1 { width: 8.33%; }
+/* =================== push columns w/o margin ========= */
+.fg-no-gutter .push12 { margin-left: 100%; }
+.fg-no-gutter .push11 { margin-left: 91.66%; }
+.fg-no-gutter .push10 { margin-left: 83.33%; }
+.fg-no-gutter .push9 { margin-left: 75%; }
+.fg-no-gutter .push8 { margin-left: 66.66%; }
+.fg-no-gutter .push7 { margin-left: 58.33%; }
+.fg-no-gutter .push6 { margin-left: 50%; }
+.fg12 .push5 { margin-left: 41.66%; }
+.fg-no-gutter .push4 { margin-left: 33.33%; }
+.fg-no-gutter .push3 { margin-left: 25%; }
+.fg-no-gutter .push2 { margin-left: 16.66%; }
+.fg-no-gutter .push1 { margin-left: 8.33%; }
+.fg-no-mobile { display: block; }
+.fg-no-desktop { display: none; }
 }
