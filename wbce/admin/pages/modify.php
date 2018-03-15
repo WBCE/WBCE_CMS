@@ -143,9 +143,6 @@ if ($query_sections->numRows() > 0) {
             // Include the modules editing script if it exists
             if (file_exists(WB_PATH . '/modules/' . $module . '/modify.php')) {
 
-                // output block name if blocks are enabled
-                if (SECTION_BLOCKS) {
-
                     // Define section block name
                     if (isset($block[$section['block']]) && trim(strip_tags(($block[$section['block']]))) != '') {
                         $blockName = htmlentities(strip_tags($block[$section['block']]));
@@ -167,8 +164,7 @@ if ($query_sections->numRows() > 0) {
                     $pageModifyTemplate->set_var('SECTION_MODULE', $section['module']);
                     $pageModifyTemplate->set_var('SECTION_BLOCK', $section['block']);
                     $pageModifyTemplate->set_var('SECTION_NAME', $section['namesection']);
-                }
-				
+
                 // Set section modify output as template var				
                 ob_start();
                 require(WB_PATH . '/modules/' . $module . '/modify.php');
