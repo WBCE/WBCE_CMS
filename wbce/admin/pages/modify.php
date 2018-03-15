@@ -181,6 +181,9 @@ if ($query_sections->numRows() > 0) {
         }
     }
 		
+} else {
+	// Parse section module
+	$pageModifyTemplate->parse('section_module', '');	
 }
 
 // Parse and print header template
