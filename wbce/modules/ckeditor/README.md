@@ -1,12 +1,12 @@
 # CKEditor Standard Edition
 
 ## The popular Editor for the WBCE CMS
-Includes CKEditor 4.8.0 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.
+Includes CKEditor 4.9.0 Standard Package and some other Plugins, CKE allows editing content and can be integrated in modules.
 
-CKEditor 4.7.0.1 and later require WBCE 1.2 !!
+***CKEditor 4.7.0.1 and later require WBCE 1.2 !***
 
 
-## WBCE CKEditor FAQ: How to use customization ---
+## FAQ: Customizing CKEditor
 
 ### Question:
 
@@ -14,17 +14,17 @@ What files are there to customize CKEditor for WBCE?
 
 #### Answer:
 
-There are two different configuration files (editor.css and editor.styles.js). All two configuration files can be found in the template folder, please take look inside:
-
 + editor.css:	
-The default look of the WYSIWYG textarea and the preview. 
+The default look of the WYSIWYG textarea and the preview.
 
 + editor.styles.js:
-The default styles you can choose from a dropdown in the CKEditor toolbar. 
+The default styles you can choose from a dropdown in the CKEditor toolbar.
 
-All two configuration files are available as default files in _yourinstallation/modules/ckeditor/wb_config
+The configuration files could already be in the template folder, please take a look inside:
 
-IMPORTANT: Do not change any file of this folder! As they are overwritten with any update of CKEditor module and / or WBCE!
+All configuration files are available as default files in _yourinstallation/modules/ckeditor/wb_config
+
+*IMPORTANT: Do not change any file of this folder! As they are overwritten with any update of CKEditor module and / or WBCE!*
 
 
 ### Question:
@@ -33,7 +33,7 @@ How can I customize the CKEditor for WBCE?
 
 #### Answer:
 
-For customizing, copy the files of wb_config to _yourinstallation/templates/_yourdefaulttemplate folder, your changes are only for _yourdefaulttemplate
+For customizing, copy the files of wb_config to _yourinstallation/templates/_yourdefaulttemplate folder, your changes are only for _yourdefaulttemplate. Or copy the wb_config to _yourinstallation/templates folder and all changes are for all templates.
 
 
 ### Question:
@@ -51,11 +51,13 @@ editor.css
 1) _yourinstallation/templates/_yourdefaulttemplate/editor.css
 2) _yourinstallation/templates/_yourdefaulttemplate/css/editor.css
 3) _yourinstallation/templates/_yourdefaulttemplate/editor/editor.css
-4) _yourinstallation/modules/ckeditor/wb_config/editor.css
+4) _yourinstallation/templates/wb_config/editor.css
+5) _yourinstallation/modules/ckeditor/wb_config/editor.css
 
 editor.styles.js
 
 1) _yourinstallation/templates/_yourdefaulttemplate/editor.styles.js
 2) _yourinstallation/templates/_yourdefaulttemplate/js/editor.styles.js
 3) _yourinstallation/templates/_yourdefaulttemplate/editor/editor.styles.js
-4) _yourinstallation/modules/ckeditor/wb_config/editor.styles.js
+4) _yourinstallation/templates/wb_config/editor.styles.js
+5) _yourinstallation/modules/ckeditor/wb_config/editor.styles.js
