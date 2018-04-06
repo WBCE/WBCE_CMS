@@ -39,7 +39,7 @@
 			<div class="fg3">{TEXT_WEBSITE_TITLE}:</div>
 			<div class="fg9">
 				<input type="text" name="website_title" value="{WEBSITE_TITLE}" class="wdt300" id="website_title">
-				<span class="title-counter"></span> Zeichen [<span class="title-remain"></span> Rest]
+				<span class="title-counter"></span> {TEXT_CHARACTERS} [<span class="title-remain"></span> {TEXT_REMAINING}]
 			</div>
 		</div>
 
@@ -47,7 +47,7 @@
 			<div class="fg3">{TEXT_WEBSITE_DESCRIPTION}:</div>
 			<div class="fg9">
 				<textarea name="website_description" id="website_description" class="wdt300">{WEBSITE_DESCRIPTION}</textarea>
-				<span class="desc-counter"></span> Zeichen [<span class="desc-remain"></span> Rest]
+				<span class="desc-counter"></span> {TEXT_CHARACTERS} [<span class="desc-remain"></span> {TEXT_REMAINING}]
 			</div>
 		</div>
 

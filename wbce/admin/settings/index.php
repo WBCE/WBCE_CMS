@@ -705,8 +705,10 @@ if($is_advanced)
                     'WORLD_WRITEABLE_WARNING' => $MESSAGE['SETTINGS_WORLD_WRITEABLE_WARNING'],
                     'TEXT_MODULE_ORDER' => $TEXT['MODULE_ORDER'],
                     'TEXT_MAX_EXCERPT' => $TEXT['MAX_EXCERPT'],
-                    'TEXT_TIME_LIMIT' => $TEXT['TIME_LIMIT']
-                    ));
+                    'TEXT_TIME_LIMIT' => $TEXT['TIME_LIMIT'],
+                    'TEXT_CHARACTERS' => $TEXT['CHARACTERS'],
+                    'TEXT_REMAINING' => $TEXT['REMAINING']
+                ));
 
 if($is_advanced)
 {

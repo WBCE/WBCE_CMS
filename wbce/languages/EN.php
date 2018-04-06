@@ -85,6 +85,7 @@ $TEXT['CAP_EDIT_CSS'] = 'Edit CSS';
 $TEXT['CHANGE'] = 'Change';
 $TEXT['CHANGES'] = 'Changes';
 $TEXT['CHANGE_SETTINGS'] = 'Change Settings';
+$TEXT['CHARACTERS'] = 'Characters';
 $TEXT['CHARSET'] = 'Charset';
 $TEXT['CHECKBOX_GROUP'] = 'Checkbox Group';
 $TEXT['CLOSE'] = 'Close';
@@ -264,6 +265,7 @@ $TEXT['REDIRECT_AFTER'] = 'Redirect after';
 $TEXT['REGISTERED'] = 'Registered';
 $TEXT['REGISTERED_VIEWERS'] = 'Registered Viewers';
 $TEXT['RELOAD'] = 'Reload';
+$TEXT['REMAINING'] = 'Remaining';
 $TEXT['REMEMBER_ME'] = 'Remember Me';
 $TEXT['RENAME'] = 'Rename';
 $TEXT['RENAME_FILES_ON_UPLOAD'] = 'No upload for this filetypes';
@@ -682,5 +684,4 @@ $OVERVIEW['START'] = 'Administration overview';
 $OVERVIEW['TEMPLATES'] = 'Change the look and feel of your website with templates...';
 $OVERVIEW['USERS'] = 'Manage users who can log-in to WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Quickly view and browse your website in a new window...';
-
 
