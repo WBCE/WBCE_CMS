@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}users` (
   `language` varchar(5){TABLE_COLLATION} NOT NULL DEFAULT 'DE',
   `home_folder` text{TABLE_COLLATION} NOT NULL,
   `login_when` int(11) NOT NULL DEFAULT '0',
-  `login_ip` varchar(15){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `login_ip` varchar(50){TABLE_COLLATION} NOT NULL DEFAULT '',
   PRIMARY KEY (`user_id`)
 ){TABLE_ENGINE};
 
