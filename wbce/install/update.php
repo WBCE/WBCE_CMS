@@ -494,8 +494,9 @@ db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
 
 
 /**********************************************************
-*  - making sure group_id is set correct there was a big bug in original WB
-*  WBCE 1.0.0
+- making sure group_id is set correct there was a big bug in original WB
+WBCE 1.0.0                    
+- MAke Ip field IPv6 Compatible 
 */
 
 $table = TABLE_PREFIX."users";
@@ -507,8 +508,13 @@ echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '
 
 // if admin, set group_id to 1
 $sql = "UPDATE $table SET `group_id` = 1 WHERE FIND_IN_SET('1', groups_id) > '0'";
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 $query = $database->query($sql);
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+
+// Alter Table so it can store 
+$sql="ALTER TABLE $table CHANGE `login_ip` `login_ip` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';";
+$query = $database->query($sql);
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');  
 
 
 /**********************************************************
