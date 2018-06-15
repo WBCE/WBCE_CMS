@@ -152,8 +152,9 @@ function save_preferences( &$admin, &$database)
                 }
                 // Update timezone
                 if($timezone != '-72000') {
-                    $_SESSION['TIMEZONE'] = $timezone;
                     unset($_SESSION['USE_DEFAULT_TIMEZONE']);
+                } else {
+                    $_SESSION['USE_DEFAULT_TIMEZONE'] = true;
                 }
             }else {
                 $err_msg[] = 'invalid database UPDATE call in '.__FILE__.'::'.__FUNCTION__.'before line '.__LINE__;
