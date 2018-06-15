@@ -286,7 +286,8 @@ else {
 ////////////////////////////////////////////
 
 // Try to guess installation URL
-$guessed_url = 'http://' . $_SERVER["SERVER_NAME"] . $_SERVER["SCRIPT_NAME"];
+$scheme      = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+$guessed_url = $scheme . '://' . $_SERVER["SERVER_NAME"] . $_SERVER["SCRIPT_NAME"];
 $guessed_url = rtrim(dirname($guessed_url), 'install');
 $sWbUrl= $guessed_url;
 
