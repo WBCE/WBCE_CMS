@@ -63,7 +63,7 @@ switch ($wb->get_post('action')) {
 $template->set_file('page', 'template.php');
 $template->set_block('page', 'main_block', 'main');
 // get existing values from database
-$sql = "SELECT display_name,email FROM " . TABLE_PREFIX . "users WHERE user_id = '" . $wb->get_user_id() . "'";
+$sql = "SELECT display_name,email,language FROM " . TABLE_PREFIX . "users WHERE user_id = '" . $wb->get_user_id() . "'";
 $rowset = $database->query($sql);
 if ($database->is_error()) {
     $error[] = $database->get_error();
@@ -86,7 +86,7 @@ if ($res_lang = $database->query($sql) )
         $template->set_var('CODE', $rec_lang['directory']);
         $template->set_var('NAME', $rec_lang['name']);
         $template->set_var('FLAG', WB_URL.'/languages/'.$langIcons);
-        $template->set_var('SELECTED', (LANGUAGE == $rec_lang['directory'] ? ' selected="selected"' : '') );
+        $template->set_var('SELECTED', ($row['language'] == $rec_lang['directory'] ? ' selected="selected"' : '') );
         $template->parse('language_list', 'language_list_block', true);
     }
 }
