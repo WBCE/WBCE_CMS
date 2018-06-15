@@ -69,7 +69,7 @@ class admin extends wb
 
         // i know this sucks but some old stuff really need this
 	    global $wb;
-	    $wb = $this; 
+            if(!is_object($wb)) $wb = $this;
     }
 
     // Print the admin header
