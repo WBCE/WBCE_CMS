@@ -34,7 +34,8 @@ if (!defined('TABLE_PREFIX')) {
     $host = $_SERVER['HTTP_HOST'];
     $uri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
     $file = 'install/index.php';
-    $target_url = 'http://' . $host . $uri . '/' . $file;
+    $scheme      = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+    $target_url = $scheme . '://' . $host . $uri . '/' . $file;
     $sResponse = $_SERVER['SERVER_PROTOCOL'] . ' 307 Temporary Redirect';
     header($sResponse);
     header('Location: ' . $target_url); exit; 
