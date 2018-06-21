@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -48,25 +48,6 @@ if(defined('FINALIZE_SETUP')) {
 }
 // ---------------------------------------
 $msg = '<br />';
-// check if it is neccessary to start the uograde-script
-if(($admin->get_group_id()==1) && file_exists(WB_PATH.'/upgrade-script.php')) {
-    // check if it is neccessary to start the uograde-script
-    $sql = 'SELECT `value` FROM `'.TABLE_PREFIX.'settings` WHERE `name`=\'wb_revision\'';
-    if($wb_revision=$database->get_one($sql)) {
-    }
-    if (version_compare($wb_revision, REVISION ) < 0) {
-        if(!headers_sent()) {
-            header('Location: '.WB_URL.'/upgrade-script.php');
-            exit;
-        } else {
-            echo "<p style=\"text-align:center;\"> The <strong>upgrade script</strong> could not be start automatically.\n" .
-                 "Please click <a style=\"font-weight:bold;\" " .
-                 "href=\"".WB_URL."/upgrade-script.php\">on this link</a> to start the script!</p>\n";
-            exit;
-        }
-    }
-    $msg .= ''.$MESSAGE['START_UPGRADE_SCRIPT_EXISTS'].'<br />';
-}
 
 // Setup template object, parse vars to it, then parse it
 // Create new template object
@@ -114,32 +95,13 @@ if($admin->get_permission('admintools') != true)
 
 $msg .= (file_exists(WB_PATH.'/install/')) ?  $MESSAGE['START_INSTALL_DIR_EXISTS'] : '';
 
-// Check if installation directory still exists
-//
-// *****************************************************************************
-// Changed this for Websitebaker Community Edition: Just delete the files
-// We ignore the user rights as they don't matter; it's more dangerous to
-// keep the installer there!
+// Check if installation directory still exists and delete the files
 if(file_exists(WB_PATH.'/install/') || file_exists(WB_PATH.'/upgrade-script.php') ) {
     if(!function_exists('rm_full_dir')) @require_once(WB_PATH.'/framework/functions.php');
     if(file_exists(WB_PATH.'/upgrade-script.php')) unlink(WB_PATH.'/upgrade-script.php');
     if(file_exists(WB_PATH.'/install/'))           rm_full_dir(WB_PATH.'/install/');
-/*
-    // Check if user is part of Adminstrators group
-    if(in_array(1, $admin->get_groups_id()))
-    {
-        $template->set_var('WARNING', $msg );
-    } else {
-        $template->set_var('DISPLAY_WARNING', 'display:none;');
-    }
-} else {
-    $template->set_var('DISPLAY_WARNING', 'display:none;');
-*/
 }
 $template->set_var('DISPLAY_WARNING', 'display:none;');
-//
-// end changes
-// *****************************************************************************
 
 // Insert "Add-ons" section overview (pretty complex compared to normal)
 $addons_overview = $TEXT['MANAGE'].' ';
