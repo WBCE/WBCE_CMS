@@ -67,8 +67,9 @@ class DbSession
                 array(&$this, 'read'),
                 array(&$this, 'write'),
                 array(&$this, 'destroy'),
-                array(&$this, 'clean')     // Garbage collection gc
+                array(&$this, 'gc')     // Garbage collection gc
             );     
+			 $this->gc(1);
         }
         
         // Start the session // not starting it here  at all 
@@ -197,7 +198,7 @@ class DbSession
         
         Delete session and its entire data if lifetime has exeded.  
     */   
-    public function clean($expire)
+    public function gc($expire)
     {
         $expire = ini_get("session.gc_maxlifetime");
         
