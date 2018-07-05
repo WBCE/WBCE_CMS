@@ -94,7 +94,7 @@ pre, code {
 tbody td p, tbody td h1, tbody td h2, tbody td h3, tbody td h4 {}
 
 
-input[type="text"], input[type="submit"], input[type="file"], select,textarea { width:96%; padding: 3px 1%; margin-bottom:5px;}
+/* input[type="text"], input[type="submit"], input[type="file"], select,textarea { width:96%; padding: 3px 1%; margin-bottom:5px;} */
 input[type="image"] {border:none; background: transparent;}
 
 

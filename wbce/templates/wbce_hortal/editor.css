@@ -96,7 +96,7 @@ address {
 }
 
 
-input[type="text"], input[type="submit"], input[type="file"], select,textarea { padding: 3px 1%; margin-bottom:5px;}
+/* input[type="text"], input[type="submit"], input[type="file"], select,textarea { padding: 3px 1%; margin-bottom:5px;} */
 input[type="image"] {border:none; background: transparent;}
 
 
