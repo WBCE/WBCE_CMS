@@ -1,23 +1,27 @@
-CKEditor-oEmbed-Plugin
-======================
+NOTE
+=====
+This plugin is no longer developed, please migrate to the official CKEditor Embed Plugin - http://ckeditor.com/addon/embed
+
 
 oEmbed Plugin for CKEditor
+==========================
 
 This Plugin allows to insert embedded content (such as photos, videos, audio, and other rich media) via the OEmbed API. You only have to provide the url to the site (It works also when the url is shortened) you want to embed and the plugin does the rest.
 
 This Plugin uses the jquery-oembed-all Plugin  located at https://github.com/starfishmod/jquery-oembed-all.
 
-####Demo
+#### Demo
 
 http://w8tcha.github.com/CKEditor-oEmbed-Plugin/
 
-####Currently Supported Sites...
+#### Currently Supported Sites...
 
-###Video
+### Video
 * Youtube - oembed - YQL
 * Blip - oEmbed
 * Hulu - oEmbed
 * Vimeo - oEmbed
+* Nooledge - oEmbed
 * National film board of Canada - oEmbed
 * Qik - oEmbed
 * Dotsub - oEmbed
@@ -55,7 +59,7 @@ http://w8tcha.github.com/CKEditor-oEmbed-Plugin/
 * youku - embedded
 * wistia - Oembed
 
-###Audio
+### Audio
 * Soundcloud - oEmbed
 * HuffDuffer - oEmbed
 * BandCamp - YQL and Embedded
@@ -69,7 +73,7 @@ http://w8tcha.github.com/CKEditor-oEmbed-Plugin/
 * audioboo.fm - OGP 
 * Spotify - OGP YQL
 
-###Photo
+### Photo
 * flickr - oEmbed
 * photobucket - oEmbed
 * instagram - oEmbed
@@ -101,12 +105,13 @@ http://w8tcha.github.com/CKEditor-oEmbed-Plugin/
 * twitrpix - OGP
 * chictopia - OGP
 
-###Rich
+### Rich
 * Meetup - oEmbed
 * gigapans - Embedded
 * Slideshare - oEmbed
 * ebay - Embedded
 * scribd - Embedded
+* DocumentCloud - oEmbed
 * screenr - Embedded
 * tumblr- JSONP lookup
 * imdb - JSONP lookup via imdbapi.com
@@ -163,14 +168,14 @@ http://w8tcha.github.com/CKEditor-oEmbed-Plugin/
 * jsfiddle - embedded
 
 
-####License
+#### License
 
 Licensed under the terms of the MIT License.
 
-####Dependencies 
+#### Dependencies 
 This Plugin requires the following plugins to work: Widget, Dialog.
 
-####Installation
+#### Installation
 
  1. Before you can use the plugin you also need to download & install the widget plugin, if you have it not installed. http://ckeditor.com/addon/widget
  2. Extract the contents of the file into the "plugins" folder of CKEditor.

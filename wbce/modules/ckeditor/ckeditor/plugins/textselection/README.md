@@ -7,14 +7,14 @@ Forked from https://github.com/sirtet/ckeditor-dev/tree/master/plugins/textselec
 
 This Plugin will also work with the CodeMirror Plugin - http://ckeditor.com/addon/codemirror
 
-####Demo
+#### Demo
 http://w8tcha.github.io/CKEditor-TextSelection-Plugin/
 
-####License
+#### License
 
 Licensed under the terms of the MIT License.
 
-####Installation
+#### Installation
 
  1. Extract the contents of the file into the "plugins" folder of CKEditor.
  2. In the CKEditor configuration file (config.js) add the following code:
@@ -23,7 +23,7 @@ Licensed under the terms of the MIT License.
 config.extraPlugins = 'textselection';
 ````
 
-####TODO
+#### TODO
 
 * Add Support for the Source Dialog Plugin
 

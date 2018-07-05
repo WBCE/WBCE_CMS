@@ -10,8 +10,11 @@
             icons: 'oembed',
             hidpi: true,
             requires: 'widget,dialog',
-            lang: 'de,en,fr,nl,pl,pt-br,ru,tr', // %REMOVE_LINE_CORE%
-            version: 1.17,
+            lang: 'ar,ca,cs,de,en,es,fr,nl,pl,pt-br,ru,tr', // %REMOVE_LINE_CORE%
+            version: '1.18',
+            onLoad: function() {
+                CKEDITOR.document.appendStyleSheet( this.path + 'css/oembed.css' );
+            },
             init: function(editor) {
                 // Load jquery?
                 loadjQueryLibaries();
@@ -70,6 +73,9 @@
                         },
                         'div(embeddedContent,oembed-provider-*) script': {
                             attributes: '*'
+                        },
+                        'div(embeddedContent,oembed-provider-*) embed': {
+                            attributes: '*'
                         }
                     },
                     template:
@@ -80,6 +86,7 @@
                     },
                     init: function() {
                         var data = {
+                            title: this.element.data('title') || '',
                             oembed: this.element.data('oembed') || '',
                             resizeType: this.element.data('resizeType') || 'noresize',
                             maxWidth: this.element.data('maxWidth') || 560,
@@ -100,8 +107,7 @@
                 editor.ui.addButton('oembed', {
                     label: editor.lang.oembed.button,
                     command: 'oembed',
-                    toolbar: 'insert,10',
-                    icon: this.path + "icons/" + (CKEDITOR.env.hidpi ? "hidpi/" : "") + "oembed.png"
+                    toolbar: 'insert,10'
                 });
 
                 var resizeTypeChanged = function() {
@@ -146,7 +152,11 @@
                     }
                 }
 
-                function embedCode(url, instance, maxWidth, maxHeight, responsiveResize, resizeType, align, widget) {
+                function embedCode(url, instance, maxWidth, maxHeight, responsiveResize, resizeType, align, widget, title) {
+                    if (title === '') {
+                        alert(editor.lang.oembed.titleError);
+                        return false;
+                    }
                     jQuery('body').oembed(url, {
                         onEmbed: function(e) {
                             var elementAdded = false,
@@ -158,8 +168,11 @@
                                 widget.element.data('maxHeight', maxHeight);
                             }
 
-                            widget.element.data('align', align);
+                            if (title !== '') {
+                                widget.element.data('title', title);
+                            }
 
+                            widget.element.data('align', align);
                             // TODO handle align
                             if (align == 'center') {
                                 if (!widget.inline)
@@ -214,7 +227,9 @@
                         maxHeight: maxHeight,
                         maxWidth: maxWidth,
                         useResponsiveResize: responsiveResize,
-                        embedMethod: 'editor'
+                        embedMethod: 'editor',
+                        title: title,
+                        expandUrl: false,
                     });
                 }
 
@@ -225,6 +240,7 @@
                         minHeight: 155,
                         onShow: function() {
                             var data = {
+                                title: this.widget.element.data('title') || '',
                                 oembed: this.widget.element.data('oembed') || '',
                                 resizeType: this.widget.element.data('resizeType') || 'noresize',
                                 maxWidth: this.widget.element.data('maxWidth'),
@@ -269,6 +285,18 @@
                                         html: '<div style="white-space:normal;width:500px;padding-bottom:10px">' + editor.lang.oembed.pasteUrl + '</div>'
                                     }, {
                                         type: 'text',
+                                        id: 'embedTitle',
+                                        focus: function() {
+                                            this.getElement().focus();
+                                        },
+                                        label: editor.lang.oembed.embedTitle,
+                                        setup: function(widget) {
+                                            if (widget.data.title) {
+                                                this.setValue(widget.data.title);
+                                            }
+                                        },
+                                    }, {
+                                        type: 'text',
                                         id: 'embedCode',
                                         focus: function() {
                                             this.getElement().focus();
@@ -282,6 +310,7 @@
                                         },
                                         commit: function(widget) {
                                             var dialog = CKEDITOR.dialog.getCurrent(),
+                                                title = dialog.getValueOf('general', 'embedTitle'),
                                                 inputCode = dialog.getValueOf('general', 'embedCode').replace(/\s/g, ""),
                                                 resizeType = dialog.getContentElement('general', 'resizeType').
                                                     getValue(),
@@ -321,15 +350,17 @@
                                                 responsiveResize = false;
                                             }
 
-                                            embedCode(inputCode, editorInstance, maxWidth, maxHeight, responsiveResize, resizeType, align, widget);
+                                            embedCode(inputCode, editorInstance, maxWidth, maxHeight, responsiveResize, resizeType, align, widget, title);
 
+                                            widget.setData('title', title);
                                             widget.setData('oembed', inputCode);
                                             widget.setData('resizeType', resizeType);
                                             widget.setData('align', align);
                                             widget.setData('maxWidth', maxWidth);
                                             widget.setData('maxHeight', maxHeight);
                                         }
-                                    }, {
+                                    },
+                                    {
                                         type: 'hbox',
                                         widths: ['50%', '50%'],
                                         children: [
