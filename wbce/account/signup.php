@@ -10,8 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once realpath('../config.php');
-require_once __DIR__ .'/functions/functions.php';
+require_once '../config.php';
 
 // check if frontend signup_group and user_id is defined
 $signup_group = defined('FRONTEND_SIGNUP') ? (int) FRONTEND_SIGNUP : 0;
@@ -42,17 +41,14 @@ if (! is_readable(WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php')) {
 	die(header('Location: ' . $redirect_url));
 }
 
-$config = account_getConfig(); // get config from INI file
-
-
 // include default language file
 require_once WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php';
 $load_language = false;
 
 // set required page details
-$page_id          = (isset($_SESSION['PAGE_ID']) && ($_SESSION['PAGE_ID'] != '') ? $_SESSION['PAGE_ID'] : 0);
+$page_id = (isset($_SESSION['PAGE_ID']) && ($_SESSION['PAGE_ID'] != '') ? $_SESSION['PAGE_ID'] : 0);
 $page_description = '';
-$page_keywords    = '';
+$page_keywords = '';
 define('PAGE_ID', $page_id);
 define('ROOT_PARENT', 0);
 define('PARENT', 0);
@@ -61,15 +57,14 @@ define('PAGE_TITLE', $TEXT['SIGNUP']);
 define('MENU_TITLE', $TEXT['SIGNUP']);
 define('MODULE', '');
 define('VISIBILITY', 'public');
-// set the page content include file
-#if (isset($_POST['username'])) {
-#	define('PAGE_CONTENT', WB_PATH . '/account/signup_check.php');
-#} else {
-	define('PAGE_CONTENT', WB_PATH . '/account/signup_form.php');
-#}
 
-// Setup wb object, skip header and skip permission checks
-$wb = new wb('Start', 'start', false, false);
+// set the page content include file
+if (isset($_POST['username'])) {
+	define('PAGE_CONTENT', WB_PATH . '/account/signup2.php');
+} else {
+	define('PAGE_CONTENT', WB_PATH . '/account/signup_form.php');
+}
+
 // disable auto authentication
 $auto_auth = false;
 

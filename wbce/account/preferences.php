@@ -16,12 +16,16 @@
  *
  */
 
-require_once realpath('../config.php');
-require_once __DIR__ .'/functions/functions.php';
+require_once('../config.php');
 
 if(!FRONTEND_LOGIN) {
-	header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
-	exit(0);
+	if(INTRO_PAGE) {
+		header('Location: '.WB_URL.PAGES_DIRECTORY.'/index.php');
+		exit(0);
+	} else {
+		header('Location: '.WB_URL.'/index.php');
+		exit(0);
+	}
 }
 
 $wb_inst = new wb();
@@ -48,7 +52,5 @@ define('MODULE', '');
 define('VISIBILITY', 'public');
 
 define('PAGE_CONTENT', WB_PATH.'/account/preferences_form.php');
-
-
 // Include the index (wrapper) file
 require(WB_PATH.'/index.php');
