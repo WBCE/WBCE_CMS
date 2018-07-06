@@ -1,34 +1,31 @@
 <?php
-/**
-  Module developed for the Open Source Content Management System Website Baker (http://websitebaker.org)
-  Copyright (C) 2008, ISTeam, Werner von der Decken
-  Contact me: wkl(at)isteam.de, http://isteam.de
+/////////////////////////////////////////////////////////////////////////
+//                   LANGUAGE STRINGS FOR 'account'                    //
+/////////////////////////////////////////////////////////////////////////
 
-  This module is free software. You can redistribute it and/or modify it
-  under the terms of the GNU General Public License  - version 2 or later,
-  as published by the Free Software Foundation: http://www.gnu.org/licenses/gpl.html.
+$TXT_ACCOUNT['PLEASE_SELECT'] = 'bitte w&auml;hlen';
+$TXT_ACCOUNT['DETAILS_SAVED'] = 'allgemeine Einstellungen ge&auml;ndert';
+$TXT_ACCOUNT['SAVE_SETTINGS'] = 'Einstellungen speichern';
+$TXT_ACCOUNT['SAVE_EMAIL']    = 'Email speichern';
+$TXT_ACCOUNT['SAVE_PASSWORD'] = 'Passwort speichern';
 
-  This module is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+$TXT_ACCOUNT['HEADING_ERROR'] = 'Es ist ein Fehler aufgetreten';
+$TXT_ACCOUNT['GENERIC_ERROR_MESSAGE'] = 'Der Account wurde noch nicht bestätigt, ist bereits aktiv oder es wurden ungültige Daten übermittelt.';
+$TXT_ACCOUNT['CONTACT_ADMINISTRATOR'] = 'Bitte wenden Sie sich für weitere Unterstützung ggf. an den Administrator der Website.';
 
- -----------------------------------------------------------------------------------------
-  DEUTSCHE SPRACHDATEI FUER DAS PREFERENCES MODUL
- -----------------------------------------------------------------------------------------
-	UPDATE HISTORY:
-	Werner von der Decken; 17.05.2008
-	 + erstes release der Deutschen Sprachdatei
- -----------------------------------------------------------------------------------------
-**/
-// Array fuer alle sprachabhaengigen Textausgaben im Front- und Backend
-// Hinweis: Verwende nachfolgende Namenskonvention für die Sprachausgabe des Moduls: $MOD_MODULE_DIRECTORY
-$MOD_PREFERENCE = array(
-	'PLEASE_SELECT' => 'bitte w&auml;hlen',
-	'DETAILS_SAVED'	=> 'allgemeine Einstellungen ge&auml;ndert',
-	'SAVE_SETTINGS' => 'Einstellungen speichern',
-	'SAVE_EMAIL' => 'Email speichern',
-	'SAVE_PASSWORD' => 'Passwort speichern',
-);
+$MESSAGE['DISPLAY_NAME_EMPTY'] = 'Das Feld "Angezeigter Name" darf nicht leer sein.';
 
-?>
+$TEXT['REGISTER_THANKYOU'] = 'Vielen Dank für Ihre Registrierung.';
+$TEXT['REGISTER_CHECK_MAIL_ACTIVATION_USER'] = 'Bitte rufen Sie nun Ihre E-Mail ab und klicken Sie auf den Bestätigungslink, der Ihnen soeben per E-Mail zugesendet wurde.';
+$TEXT['REGISTER_GENEREC_EMAIL_NOT_RECIEVED'] = 'Falls Sie die E-Mail noch nicht erhalten haben, warten Sie bitte noch einige Minuten bzw. prüfen Sie, ob die E-Mail irrtümlich als Spam behandelt wurde.';
+$TEXT['REGISTER_LOGIN_SENT_TO_USER'] = 'Ihre Zugangsdaten wurden soeben an die angegebene E-Mail-Adresse gesendet.';
+$TEXT['REGISTER_USER_ACTIVATED'] = 'Der Benutzeraccount wurde freigeschaltet. Die Anmeldedaten wurden an die angegebene E-Mail-Adresse versendet.';
+$TEXT['REGISTER_ACTIVATION_PENDING'] = 'Bitte haben Sie noch etwas Geduld. Sie erhalten Ihre Zugangsdaten per E-Mail, sobald die eingegebenen Daten von uns geprüft und freigeschaltet wurden.';
+
+
+/////////////////////////////////////////////////////////////////////////
+//    Override language strings found in [WB_URL]/languages/DE.php     //
+/////////////////////////////////////////////////////////////////////////
+$MENU['PREFERENCES'] = 'Mein Profil';
+$TEXT['ACCOUNT_SIGNUP'] = 'Registrierung';
+$TEXT['SIGNUP'] = 'Registrierung';
