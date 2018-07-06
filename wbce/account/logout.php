@@ -16,7 +16,7 @@
  *
  */
 
-require_once realpath('../config.php');
+require("../config.php");
 
 if(isset($_COOKIE['REMEMBER_KEY'])) {
 	setcookie('REMEMBER_KEY', '', time()-3600, '/');

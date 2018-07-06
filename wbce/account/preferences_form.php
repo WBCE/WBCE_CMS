@@ -17,115 +17,181 @@
  */
 
 // prevent this file from being accesses directly
-defined('WB_PATH')or exit("Cannot access this file directly");
-
-// check if user authenticated
+if (defined('WB_PATH') == false) {exit("Cannot access this file directly");}
+$sCallingScript = $_SERVER['SCRIPT_NAME'];
+$_SESSION['HTTP_REFERER'] = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $sCallingScript;
 if ($wb->is_authenticated() === false) {
-	// User needs to login first
+// User needs to login first
     header("Location: " . WB_URL . "/account/login.php?redirect=" . $wb->link);
     exit(0);
 }
 
-// get referer link for use with [cancel] button
-$sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $_SERVER['SCRIPT_NAME'];
-$sFTAN = $wb->getFTAN();
-$user_time = true;
-
-
-// load Language Files 
-foreach (account_getLanguageFiles() as $sLangFile) require_once $sLangFile;
-
-// load UTF-8 functions
+// load module default language file (EN)
+require_once WB_PATH . '/account/languages/EN.php';
+// check for user defined language file, load it and override EN-Settings with
+if (file_exists(WB_PATH . '/account/languages/' . LANGUAGE . '.php')) {
+    require_once WB_PATH . '/account/languages/' . LANGUAGE . '.php';
+}
 require_once WB_PATH . '/framework/functions-utf8.php';
-
+echo '<style type="text/css">';
+include WB_PATH . '/account/frontend.css';
+echo "\n</style>\n";
+$ftan = $wb->getFTAN();
+$user_time = true;
+require ADMIN_PATH . '/interface/timezones.php';
+require ADMIN_PATH . '/interface/date_formats.php';
+require ADMIN_PATH . '/interface/time_formats.php';
 $error = array();
 $success = array();
+$template = new Template(WB_PATH . '/account', 'remove');
 
 switch ($wb->get_post('action')) {
     case 'details':
-        require_once WB_PATH . '/account/check_details.php';
+        require_once WB_PATH . '/account/details.php';
         break;
     case 'email':
-        require_once WB_PATH . '/account/check_email.php';
+        require_once WB_PATH . '/account/email.php';
         break;
     case 'password':
-        require_once WB_PATH . '/account/check_password.php';
+        require_once WB_PATH . '/account/password.php';
         break;
     default:
         // do nothing
 }
 
-// get user's display_name and email from database
-$sSql = "SELECT `display_name`, `email` FROM `{TP}users` WHERE user_id = '" . $wb->get_user_id() . "'";
-$rSet = $database->query($sSql);
+// show template
+$template->set_file('page', 'template.php');
+$template->set_block('page', 'main_block', 'main');
+// get existing values from database
+$sql = "SELECT display_name,email,language FROM " . TABLE_PREFIX . "users WHERE user_id = '" . $wb->get_user_id() . "'";
+$rowset = $database->query($sql);
 if ($database->is_error()) {
     $error[] = $database->get_error();
 }
 
-$aSet = $rSet->fetchRow();
-$sDisplayName = $aSet['display_name'];
-$sEmail       = $aSet['email'];
+$row = $rowset->fetchRow();
+// insert values into form
+$template->set_var('DISPLAY_NAME', $row['display_name']);
+$template->set_var('EMAIL', $row['email']);
 
-// collect languages array
-$aLanguages = array();
-if ($rLang = $database->query("SELECT * FROM `{TP}addons` WHERE `type` = 'language' ORDER BY `directory`")) {
-    while ($rec = $rLang->fetchRow(MYSQL_ASSOC)){
-		$sLC = $rec['directory'];
-        $aLanguages[$sLC]['CODE']     = $sLC;
-        $aLanguages[$sLC]['NAME']     = $rec['name'];
-        $aLanguages[$sLC]['FLAG']     = WB_URL.'/languages/'.(empty($sLC)) ? 'none' : strtolower($sLC);
-        $aLanguages[$sLC]['SELECTED'] = LANGUAGE == $sLC ? true : false;
+// read available languages from table addons and assign it to the template
+$sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
+$sql .= 'WHERE `type` = \'language\' ORDER BY `directory`';
+if ($res_lang = $database->query($sql) )
+{
+    $template->set_block('main_block', 'language_list_block', 'language_list');
+    while ($rec_lang = $res_lang->fetchRow() )
+    {
+        $langIcons = (empty($rec_lang['directory'])) ? 'none' : strtolower($rec_lang['directory']);
+        $template->set_var('CODE', $rec_lang['directory']);
+        $template->set_var('NAME', $rec_lang['name']);
+        $template->set_var('FLAG', WB_URL.'/languages/'.$langIcons);
+        $template->set_var('SELECTED', ($row['language'] == $rec_lang['directory'] ? ' selected="selected"' : '') );
+        $template->parse('language_list', 'language_list_block', true);
+    }
+}
+// Insert default timezone values
+$template->set_block('main_block', 'timezone_list_block', 'timezone_list');
+foreach ($TIMEZONES as $hour_offset => $title) {
+    $template->set_var('VALUE', $hour_offset);
+    $template->set_var('NAME', $title);
+    if ($wb->get_timezone() == $hour_offset * 3600) {
+        $template->set_var('SELECTED', 'selected="selected"');
+    } else {
+        $template->set_var('SELECTED', '');
+    }
+    $template->parse('timezone_list', 'timezone_list_block', true);
+}
+
+// Insert date format list
+$template->set_block('main_block', 'date_format_list_block', 'date_format_list');
+foreach ($DATE_FORMATS as $format => $title) {
+    $format = str_replace('|', ' ', $format); // Add's white-spaces (not able to be stored in array key)
+    if ($format != 'system_default') {
+        $template->set_var('VALUE', $format);
+    } else {
+        $template->set_var('VALUE', '');
+    }
+    $template->set_var('NAME', $title);
+    if (DATE_FORMAT == $format and !isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
+        $template->set_var('SELECTED', 'selected="selected"');
+    } elseif ($format == 'system_default' and isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
+        $template->set_var('SELECTED', 'selected="selected"');
+    } else {
+        $template->set_var('SELECTED', '');
+    }
+    $template->parse('date_format_list', 'date_format_list_block', true);
+}
+
+// Insert time format list
+$template->set_block('main_block', 'time_format_list_block', 'time_format_list');
+foreach ($TIME_FORMATS as $format => $title) {
+    $format = str_replace('|', ' ', $format); // Add's white-spaces (not able to be stored in array key)
+    if ($format != 'system_default') {
+        $template->set_var('VALUE', $format);
+    } else {
+        $template->set_var('VALUE', '');
+    }
+    $template->set_var('NAME', $title);
+    if (TIME_FORMAT == $format and !isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {
+        $template->set_var('SELECTED', 'selected="selected"');
+    } elseif ($format == 'system_default' and isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {
+        $template->set_var('SELECTED', 'selected="selected"');
+    } else {
+        $template->set_var('SELECTED', '');
+    }
+    $template->parse('time_format_list', 'time_format_list_block', true);
+}
+// Insert language headings
+$template->set_var(array(
+    'FTAN' => $ftan,
+    'HEADING_MY_SETTINGS' => $HEADING['MY_SETTINGS'],
+    'HEADING_MY_EMAIL' => $HEADING['MY_EMAIL'],
+    'HEADING_MY_PASSWORD' => $HEADING['MY_PASSWORD'],
+)
+);
+// Insert language text and messages
+$template->set_var(array(
+    'HTTP_REFERER' => $_SESSION['HTTP_REFERER'],
+    'TEXT_SAVE' => $TEXT['SAVE'],
+    'TEXT_RESET' => $TEXT['RESET'],
+    'TEXT_CANCEL' => $TEXT['CANCEL'],
+    'TEXT_DISPLAY_NAME' => $TEXT['DISPLAY_NAME'],
+    'TEXT_EMAIL' => $TEXT['EMAIL'],
+    'TEXT_LANGUAGE' => $TEXT['LANGUAGE'],
+    'TEXT_TIMEZONE' => $TEXT['TIMEZONE'],
+    'TEXT_DATE_FORMAT' => $TEXT['DATE_FORMAT'],
+    'TEXT_TIME_FORMAT' => $TEXT['TIME_FORMAT'],
+    'TEXT_CURRENT_PASSWORD' => $TEXT['CURRENT_PASSWORD'],
+    'TEXT_NEW_PASSWORD' => $TEXT['NEW_PASSWORD'],
+    'TEXT_RETYPE_NEW_PASSWORD' => $TEXT['RETYPE_NEW_PASSWORD'],
+)
+);
+
+// Insert module releated language text and messages
+$template->set_var(array(
+    'MOD_PREFERENCE_PLEASE_SELECT' => $MOD_PREFERENCE['PLEASE_SELECT'],
+    'MOD_PREFERENCE_SAVE_SETTINGS' => $MOD_PREFERENCE['SAVE_SETTINGS'],
+    'MOD_PREFERENCE_SAVE_EMAIL' => $MOD_PREFERENCE['SAVE_EMAIL'],
+    'MOD_PREFERENCE_SAVE_PASSWORD' => $MOD_PREFERENCE['SAVE_PASSWORD'],
+)
+);
+// Insert error and/or success messages
+$template->set_block('main_block', 'error_block', 'error_list');
+if (sizeof($error) > 0) {
+    foreach ($error as $value) {
+        $template->set_var('ERROR_VALUE', $value);
+        $template->parse('error_list', 'error_block', true);
     }
 }
 
-// collect time zones array
-require ADMIN_PATH . '/interface/timezones.php';
-$aTimeZones = array();
-$i = 0;
-foreach ($TIMEZONES as $hour_offset => $title) {
-    $aTimeZones[$i]['VALUE']    = $hour_offset;
-    $aTimeZones[$i]['NAME']     = isset($title) ? $title : '';
-    $aTimeZones[$i]['SELECTED'] = ($wb->get_timezone() == $hour_offset * 3600) ? true : false;
-	$i++;
+$template->set_block('main_block', 'success_block', 'success_list');
+if (sizeof($success) != 0) {
+    foreach ($success as $value) {
+        $template->set_var('SUCCESS_VALUE', $value);
+        $template->parse('success_list', 'success_block', true);
+    }
 }
-
-// collect date format array
-require ADMIN_PATH . '/interface/date_formats.php';
-$aDateFormats = array();
-$i = 0;
-foreach ($DATE_FORMATS as $format => $title) {
-    $format = str_replace('|', ' ', $format); // Add's white-spaces (not able to be stored in array key)
-    
-    $aDateFormats[$i]['VALUE'] = ($format != 'system_default') ? $format : '';
-    $aDateFormats[$i]['NAME']  = $title;	
-
-	$aDateFormats[$i]['SELECTED'] = false;
-    if (DATE_FORMAT == $format and !isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
-        $aDateFormats[$i]['SELECTED'] = true;
-    } elseif ($format == 'system_default' and isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
-        $aDateFormats[$i]['SELECTED'] = true;
-    } 
-	$i++;
-}
-
-// collect time format array
-require ADMIN_PATH . '/interface/time_formats.php';
-$aTimeFormats = array();
-$i = 0;
-foreach ($TIME_FORMATS as $format => $title) {
-    $format = str_replace('|', ' ', $format); // Add's white-spaces (not able to be stored in array key)
-	
-	$aTimeFormats[$i]['VALUE'] = ($format != 'system_default') ? $format : '';
-    $aTimeFormats[$i]['NAME']  = $title;	
-
-	$aTimeFormats[$i]['SELECTED'] = false;
-    if (DATE_FORMAT == $format and !isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {
-        $aTimeFormats[$i]['SELECTED'] = true;
-    } elseif ($format == 'system_default' and isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {
-        $aTimeFormats[$i]['SELECTED'] = true;
-    } 
-	$i++;
-}
-
-// Get the template file for preferences
-include account_getTemplate('form_preferences');
+// Parse template for preferences form
+$template->parse('main', 'main_block', false);
+$template->pparse('output', 'page');

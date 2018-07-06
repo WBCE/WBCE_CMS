@@ -1,30 +1,34 @@
 <?php
-/////////////////////////////////////////////////////////////////////////
-//                   LANGUAGE STRINGS FOR 'account'                    //
-/////////////////////////////////////////////////////////////////////////
+/**
+  Module developed for the Open Source Content Management System Website Baker (http://websitebaker.org)
+  Copyright (C) 2008, ISTeam, Werner von der Decken
+  Contact me: wkl(at)isteam.de, http://isteam.de
 
-$TXT_ACCOUNT['PLEASE_SELECT'] = 'select';
-$TXT_ACCOUNT['DETAILS_SAVED'] = 'details successfully saved';
-$TXT_ACCOUNT['SAVE_SETTINGS'] = 'save details';
-$TXT_ACCOUNT['SAVE_EMAIL']    = 'save email';
-$TXT_ACCOUNT['SAVE_PASSWORD'] = 'save password';
+  This module is free software. You can redistribute it and/or modify it
+  under the terms of the GNU General Public License  - version 2 or later,
+  as published by the Free Software Foundation: http://www.gnu.org/licenses/gpl.html.
 
-$TXT_ACCOUNT['HEADING_ERROR'] = 'Error';
-$TXT_ACCOUNT['GENERIC_ERROR_MESSAGE'] = 'The account has not been confirmed yet, is already activated or invalid data was submitted.';
-$TXT_ACCOUNT['CONTACT_ADMINISTRATOR'] = 'If necessary, please contact the website administrator for further assistance.';
+  This module is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-$MESSAGE['DISPLAY_NAME_EMPTY'] = 'Please enter a value for "Display Name".';
+ -----------------------------------------------------------------------------------------
+  ENGLISH LANGUAGE FILE FOR THE PREFERENCES MODULE
+ -----------------------------------------------------------------------------------------
+	UPDATE HISTORY:
+	Werner von der Decken; 17.05.2008
+	 + initial release of the English language file
+ -----------------------------------------------------------------------------------------
+**/
+// array for all language dependen text outputs in the front- and backend
+// Note: stick to the naming convention: $MOD_MODULE_DIRECTORY
+$MOD_PREFERENCE = array(
+	'PLEASE_SELECT' => 'please select',
+	'DETAILS_SAVED'	=> 'details successfully saved',
+	'SAVE_SETTINGS' => 'save details',
+	'SAVE_EMAIL'    => 'save email',
+	'SAVE_PASSWORD' => 'save password',
+);
 
-$TEXT['REGISTER_THANKYOU'] = 'Thank you for registering on our website.';
-$TEXT['REGISTER_CHECK_MAIL_ACTIVATION_USER'] = 'Please check your emails now and click on the confirmation link in the email we just have sent to you.';
-$TEXT['REGISTER_GENEREC_EMAIL_NOT_RECIEVED'] =' If you did not recieve the email, please wait some minutes and/or look into your spam folder too.';
-$TEXT['REGISTER_LOGIN_SENT_TO_USER'] = 'Your login data was just sent to your email address.';
-$TEXT['REGISTER_USER_ACTIVATED'] = 'The account has been activated. The login data was sent to the corresponding email address.';
-$TEXT['REGISTER_ACTIVATION_PENDING'] = 'Please be patient. You will recieve an email with your login data when we have approved and activated your account.';
-
-
-/////////////////////////////////////////////////////////////////////////
-//    Override language strings found in [WB_URL]/languages/EN.php     //
-/////////////////////////////////////////////////////////////////////////
-$TEXT['ACCOUNT_SIGNUP'] = 'Account Sign-Up';
-$TEXT['SIGNUP'] = 'Sign-up';
+?>
