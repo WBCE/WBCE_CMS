@@ -24,40 +24,41 @@ if (!$wb->checkFTAN()) {
 }
 
 // Get entered values
-	$iMinPassLength = 6;
-	$sCurrentPassword = $wb->get_post('current_password');
-	$sCurrentPassword = (is_null($sCurrentPassword) ? '' : $sCurrentPassword);
-	$sNewPassword = $wb->get_post('new_password');
-	$sNewPassword = is_null($sNewPassword) ? '' : $sNewPassword;
+	$iMinPassLength      = 6;
+	$sCurrentPassword    = $wb->get_post('current_password');
+	$sCurrentPassword    = (is_null($sCurrentPassword) ? '' : $sCurrentPassword);
+	$sNewPassword        = $wb->get_post('new_password');
+	$sNewPassword        = is_null($sNewPassword) ? '' : $sNewPassword;
 	$sNewPasswordRetyped = $wb->get_post('new_password2');
-	$sNewPasswordRetyped= is_null($sNewPasswordRetyped) ? '' : $sNewPasswordRetyped;
-// Check existing password
-	$sql  = 'SELECT `password` ';
-	$sql .= 'FROM `'.TABLE_PREFIX.'users` ';
-	$sql .= 'WHERE `user_id` = '.$wb->get_user_id();
-// Validate values
-	if (md5($sCurrentPassword) != $database->get_one($sql)) {
+	$sNewPasswordRetyped = is_null($sNewPasswordRetyped) ? '' : $sNewPasswordRetyped;
+	
+	// Check existing password
+	$sSql  = 'SELECT `password` FROM `{TP}users` WHERE `user_id` = '.$wb->get_user_id();
+	
+	// Validate values
+	if (md5($sCurrentPassword) != $database->get_one($sSql)) {
 		$error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
-	}else {
+	} else {
 		if(strlen($sNewPassword) < $iMinPassLength) {
 			$error[] = $MESSAGE['USERS_PASSWORD_TOO_SHORT'];
-		}else {
+		} else {
 			if($sNewPassword != $sNewPasswordRetyped) {
 				$error[] = $MESSAGE['USERS_PASSWORD_MISMATCH'];
-			}else {
+			} else {
 				$pattern = '/[^'.$wb->password_chars.']/';
 				if (preg_match($pattern, $sNewPassword)) {
 					$error[] = $MESSAGE['PREFERENCES_INVALID_CHARS'];
-				}else {
-// generate new password hash
+				} else {
+					// generate new password hash
 					$sPwHashNew = md5($sNewPassword);
-// Update the database
-					$sql  = 'UPDATE `'.TABLE_PREFIX.'users` ';
-					$sql .= 'SET `password`=\''.$sPwHashNew.'\' ';
-					$sql .= 'WHERE `user_id`='.$wb->get_user_id();
-					if ($database->query($sql)) {
+					$aUpdate = array(
+						'user_id' => $wb->get_user_id(),
+						'password' => $sPwHashNew
+					);
+					// Update the database
+					if ($database->updateRow('{TP}users', 'user_id', $aUpdate)) {
 						$success[] = $MESSAGE['PREFERENCES_PASSWORD_CHANGED'];
-					}else {
+					} else {
 						$error[] = $database->get_error();
 					}
 				}

@@ -15,115 +15,105 @@
  *
  */
 
-// Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
-// Check if the user has already submitted the form, otherwise show it
-$sCallingScript = $_SERVER['SCRIPT_NAME'];
-$_SESSION['HTTP_REFERER'] =  isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $sCallingScript;
+defined('WB_PATH') or die("Cannot access this file directly");
+
+require_once __DIR__ .'/functions/functions.php';
+
+$sLC     = defined('LANGUAGE') ? LANGUAGE : defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN';
 $message = $MESSAGE['FORGOT_PASS_NO_DATA'];
-$errMsg ='';
-if(isset($_POST['email']) && $_POST['email'] != "" )
-{
-	$email = strip_tags($_POST['email']);
-	if($admin->validate_email($email) == false)
-    {
+$errMsg  ='';
+$sEmail  = '';
+
+if(isset($_POST['email']) && $_POST['email'] != "" ) {
+	$sEmail = strip_tags($wb->get_post('email'));
+	if($admin->validate_email($sEmail) == false) {
 		$errMsg = $MESSAGE['USERS_INVALID_EMAIL'];
-		$email = '';
+		$sEmail  = '';
 	} else {
-// Check if the email exists in the database
-	$sql  = 'SELECT `user_id`,`username`,`display_name`,`email`,`last_reset`,`password` '.
-	        'FROM `'.TABLE_PREFIX.'users` '.
-	        'WHERE `email`=\''.$wb->add_slashes($_POST['email']).'\'';
-	if(($results = $database->query($sql)))
-	{
-		if(($results_array = $results->fetchRow()))
-		{ // Get the id, username, email, and last_reset from the above db query
-		// Check if the password has been reset in the last 2 hours
-			if( (time() - (int)$results_array['last_reset']) < (2 * 3600) ) {
-			// Tell the user that their password cannot be reset more than once per hour
-				$errMsg = $MESSAGE['FORGOT_PASS_ALREADY_RESET'];
-			} else {
-				require_once(WB_PATH.'/framework/PasswordHash.php');
-				$pwh = new PasswordHash(0, true);
-				$old_pass = $results_array['password'];
-			// Generate a random password then update the database with it
-				$new_pass = $pwh->NewPassword();
-				$sql = 'UPDATE `'.TABLE_PREFIX.'users` '.
-				       'SET `password`=\''.$pwh->HashPassword($new_pass, true).'\', '.
-				           '`last_reset`='.time().' '.
-				       'WHERE `user_id`='.(int)$results_array['user_id'];
-				unset($pwh); // destroy $pwh-Object
-				if($database->query($sql))
-				{ // Setup email to send
-					$mail_to = $email;
-					$mail_subject = $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'];
-				// Replace placeholders from language variable with values
-					$search = array('{LOGIN_DISPLAY_NAME}', '{LOGIN_WEBSITE_TITLE}', '{LOGIN_NAME}', '{LOGIN_PASSWORD}');
-					$replace = array($results_array['display_name'], WEBSITE_TITLE, $results_array['username'], $new_pass);
-					$mail_message = str_replace($search, $replace, $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT']);
-				// Try sending the email
-					if($wb->mail(SERVER_EMAIL,$mail_to,$mail_subject,$mail_message)) {
-						$message = $MESSAGE['FORGOT_PASS_PASSWORD_RESET'];
-						$display_form = false;
-					}else { // snd mail failed, rollback
-						$sql = 'UPDATE `'.TABLE_PREFIX.'users` '.
-						       'SET `password`=\''.$old_pass.'\' '.
-						       'WHERE `user_id`='.(int)$results_array['user_id'];
-						$database->query($sql);
-						$errMsg = $MESSAGE['FORGOT_PASS_CANNOT_EMAIL'];
-					}
-				}else { // Error updating database
-					$errMsg = $MESSAGE['RECORD_MODIFIED_FAILED'];
-					if(DEBUG) {
-						$message .= '<br />'.$database->get_error();
-						$message .= '<br />'.$sql;
+		// Check if the email exists in the database
+		$sSql  = "SELECT * FROM `{TP}users`	WHERE `email`='".$sEmail."'";
+	
+		if(($rRow = $database->query($sSql)))	{
+			if(($aUser = $rRow->fetchRow(MYSQL_ASSOC))) {
+				if(($aUser['signup_confirmcode'] == '') === false){
+					header("Location: ".WB_URL."/account/signup_continue_page.php?switch=wrong_inputs");	
+					exit(0); // break up the script here
+				}
+				$iUserID = (int) $aUser['user_id'];
+				// Get the id, username, email, and last_reset from the above db query
+				
+				// Check if the password has been reset in the last 2 hours
+				if( ( time() - intval($aUser['last_reset']) ) < (2 * 3600) ) {
+					// Tell the user that their password cannot be reset more than once per hour
+					$errMsg = $MESSAGE['FORGOT_PASS_ALREADY_RESET'];
+				} else {
+					// current password
+					$sCurrentPw = $aUser['password'];
+					
+					// generate new password 
+					$sPassword   = account_GenerateRandomPassword();
+					$md5password = md5($sPassword);
+					
+					// update the new password in the database
+					$aUpdateUser = array(
+						'user_id'    => $iUserID,
+						'password'   => $md5password,
+						'last_reset' => time(),
+					);
+					
+					if($database->updateRow('{TP}users', 'user_id', $aUpdateUser)){ 						
+										
+						$aTokenReplace = array(
+							'LOGIN_DISPLAY_NAME'  => $aUser['display_name'], 
+							'LOGIN_NAME'          => $aUser['username'], 
+							'LOGIN_WEBSITE_TITLE' => WEBSITE_TITLE, 
+							'LOGIN_PASSWORD'      => $sPassword,							
+							'LOGIN_URL'           => defined('LOGIN_URL') ? LOGIN_URL : WB_URL.'/account/login.php'
+						);					
+						
+						// prepare E-Mail with login details to send to the prospect
+						$sOnScreenSwitch    = 'forgot_login_details_sent';
+						$sEmailTemplateName = 'resend_forgot_login_details';	
+						$sMailTo            = $sEmail;
+						
+						if ( account_sendEmail($sMailTo, $aTokenReplace, $sEmailTemplateName) == true ) {
+							header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=".$sOnScreenSwitch);							
+						} else {
+							$aUpdateUser = array(
+								'user_id'    => $aUser['user_id'],
+								'password'   => $sCurrentPw
+							);			
+							$database->updateRow('{TP}users', 'user_id', $aUpdateUser);
+							header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&from=resend_forgot_pass");							
+						}
+						
+					} else { 
+						// Error updating database
+						$errMsg = $MESSAGE['RECORD_MODIFIED_FAILED'];
+						if(DEBUG) {
+							$message .= '<br />'.$database->get_error();
+							$message .= '<br />'.$sSql;
+						}
 					}
 				}
+			} else { // no record found - Email doesn't exist, so tell the user
+				$errMsg = $MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND'];
 			}
-		}else { // no record found - Email doesn't exist, so tell the user
-			$errMsg = $MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND'];
-		}
-	} else { // Query failed
-		$errMsg = 'SystemError:: Database query failed!';
-		if(DEBUG) {
-			$errMsg .= '<br />'.$database->get_error();
-			$errMsg .= '<br />'.$sql;
+		} else { // Query failed
+			$errMsg = 'SystemError:: Database query failed!';
+			if(DEBUG) {
+				$errMsg .= '<br />'.$database->get_error();
+				$errMsg .= '<br />'.$sSql;
+			}
 		}
 	}
-	}
-} else {
-	$email = '';
-}
+} 
 
-if( ($errMsg=='') && ($message != '')) {
-	// $message = $MESSAGE['FORGOT_PASS_NO_DATA'];
-	$message_color = '000000';
-} else {
-	$message = $errMsg;
-	$message_color = 'ff0000';
-}
-?>
-<div style="margin: 1em auto;">
-	<button type="button" value="cancel" onClick="javascript: window.location = '<?php print $_SESSION['HTTP_REFERER'] ?>';"><?php print $TEXT['CANCEL'] ?></button>
-</div>
-<h1 style="text-align: center;"><?php echo $MENU['FORGOT']; ?></h1>
-<form name="forgot_pass" action="<?php echo WB_URL.'/account/forgot.php'; ?>" method="post">
-	<input type="hidden" name="url" value="{URL}" />
-		<table summary="" cellpadding="5" cellspacing="0" border="0" align="center" width="500">
-		<tr>
-			<td height="40" align="center" style="color: #<?php echo $message_color; ?>;" colspan="3">
-			<strong><?php echo $message; ?></strong>
-			</td>
-		</tr>
-<?php if(!isset($display_form) OR $display_form != false) { ?>
-		<tr>
-			<td height="10" colspan="2"></td>
-		</tr>
-		<tr>
-			<td width="165" height="30" align="right"><?php echo $TEXT['EMAIL']; ?>:</td>
-			<td><input type="text" maxlength="255" name="email" value="<?php echo $email; ?>" style="width: 180px;" /></td>
-			<td><input type="submit" name="submit" value="<?php echo $TEXT['SEND_DETAILS']; ?>" style="width: 180px; font-size: 10px; color: #003366; border: 1px solid #336699; background-color: #DDDDDD; padding: 3px; text-transform: uppercase;" /></td>
-		</tr>
-<?php } ?>
-		</table>
-</form>
+$email = $sEmail;
+$sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $_SERVER['SCRIPT_NAME'];
+
+// load Language Files 
+foreach (account_getLanguageFiles() as $sLangFile) require_once $sLangFile;
+
+// Get the template file for forgot
+include account_getTemplate('form_forgot_login_details');
