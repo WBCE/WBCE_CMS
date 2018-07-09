@@ -236,6 +236,16 @@ $filesRemove['2'] = array(
     '[MODULES]/pagecloner/template.html'
 );
 
+// files removed with 1.3.2
+$filesRemove['3'] = array(
+    '[ACCOUNT]/details.php',
+    '[ACCOUNT]/email.php',
+    '[ACCOUNT]/frontend.css',
+    '[ACCOUNT]/password.php',
+    '[ACCOUNT]/signup2.php',
+    '[ACCOUNT]/template.php'
+);
+
 // check existing tables
 $all_tables = check_wb_tables();
 
