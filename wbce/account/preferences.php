@@ -1,31 +1,21 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        frontend
- * @package         account
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: preferences.php 1508 2011-09-07 18:51:47Z Luisehahne $
- * @filesource		$HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/account/preferences.php $
- * @lastmodified    $Date: 2011-09-07 20:51:47 +0200 (Mi, 07. Sep 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
-require_once('../config.php');
+require_once realpath('../config.php');
+require_once __DIR__ .'/functions/functions.php';
 
 if(!FRONTEND_LOGIN) {
-	if(INTRO_PAGE) {
-		header('Location: '.WB_URL.PAGES_DIRECTORY.'/index.php');
-		exit(0);
-	} else {
-		header('Location: '.WB_URL.'/index.php');
-		exit(0);
-	}
+	header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
+	exit(0);
 }
 
 $wb_inst = new wb();
@@ -52,5 +42,7 @@ define('MODULE', '');
 define('VISIBILITY', 'public');
 
 define('PAGE_CONTENT', WB_PATH.'/account/preferences_form.php');
+
+
 // Include the index (wrapper) file
 require(WB_PATH.'/index.php');
