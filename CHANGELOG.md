@@ -5,6 +5,180 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2018-07-09:** Christoph Bleiweis [[566961f9](https://github.com/WBCE/WBCE_CMS/commit/566961f914344cd6ffce540c6eeb5af5f075619a)]
+   > remove old account files
+     these files are not needed by the new accountmanagement
+
+ * **2018-07-09:** instantflorian [[bd252380](https://github.com/WBCE/WBCE_CMS/commit/bd2523800e5b7cce71ff28c69c0f5a27fe34c40e)]
+   > Account patch by stefanek
+     optional double-opt-in / optional account activation by admin / email on
+     registration to admin / template-based output / GDPR confirmation
+     checkbox
+
+ * **2018-07-06:** instantflorian [[6e15ae45](https://github.com/WBCE/WBCE_CMS/commit/6e15ae45589beea3164a3540c405d186361312bc)]
+   > Revert "Account patch by stefanek"
+     This reverts commit a0c8757f858af19b2f054c97707c5d820cca7ab5.
+
+ * **2018-07-06:** instantflorian [[a0c8757f](https://github.com/WBCE/WBCE_CMS/commit/a0c8757f858af19b2f054c97707c5d820cca7ab5)]
+   > Account patch by stefanek
+     double opt-in / optional account activation by admin / template-based
+     output / no more table design
+
+ * **2018-07-06:** instantflorian [[914f18a2](https://github.com/WBCE/WBCE_CMS/commit/914f18a2dfb7ccd8fba17396330a55935e69033c)]
+   > Revert "Account patch by stefankek"
+     This reverts commit 7782dbbab92e4e93bd5781091cd800a038e7c78e.
+
+ * **2018-07-06:** instantflorian [[7782dbba](https://github.com/WBCE/WBCE_CMS/commit/7782dbbab92e4e93bd5781091cd800a038e7c78e)]
+   > Account patch by stefankek
+     double opt-in / activation / template system / no more table design
+
+ * **2018-07-05:** Christoph Bleiweis [[ef8455c2](https://github.com/WBCE/WBCE_CMS/commit/ef8455c22bcd824f7882a55605b68c10fa982db8)]
+   > CKE 4.10.0 Standard Edition
+
+ * **2018-07-05:** instantflorian [[169baeb6](https://github.com/WBCE/WBCE_CMS/commit/169baeb6f6ab97230a0b799fd62f0fd7ac9a3b4d)]
+   > Removed input button styling from default tpls
+     since it caused design issues in frontend login / register forms
+
+ * **2018-06-23:** instantflorian [[18b849bb](https://github.com/WBCE/WBCE_CMS/commit/18b849bb4ef2a138b67c750a9a02796eec6ef0a3)]
+   > Remove topics frontend.css check, update version
+
+ * **2018-06-21:** Christoph Bleiweis [[c0fd1e9d](https://github.com/WBCE/WBCE_CMS/commit/c0fd1e9df8800468822b9d5dcffec264d6bdbad8)]
+   > cleaned up dashboard functions
+
+ * **2018-06-21:** instantflorian [[a461f582](https://github.com/WBCE/WBCE_CMS/commit/a461f582ef90e345b00fbef8bf2bee186ea13d0f)]
+   > Fix for Garbage Collection
+     hopefully complete now
+
+ * **2018-06-21:** instantflorian [[62144e9c](https://github.com/WBCE/WBCE_CMS/commit/62144e9ca64b24d1ebf075efef867b93bbfa4413)]
+   > Revert "Fix for Garbage Collection"
+     This reverts commit 8e72ad111458df19bd599822bfba272a1ea799ee.
+
+ * **2018-06-21:** instantflorian [[8e72ad11](https://github.com/WBCE/WBCE_CMS/commit/8e72ad111458df19bd599822bfba272a1ea799ee)]
+   > Fix for Garbage Collection
+     Clean no longer used session data, thx to webbird
+
+ * **2018-06-20:** Christoph Bleiweis [[8c6c6e68](https://github.com/WBCE/WBCE_CMS/commit/8c6c6e68300c3c30ba2abdff4a6eba39fb1463c3)]
+   > Twig 1.35.3
+
+ * **2018-06-18:** Bianka Martinovic [[bcbecf51](https://github.com/WBCE/WBCE_CMS/commit/bcbecf51d83518cde7dc558349be5495b1206bd9)]
+   > Update index.php
+     fix: do not switch from https to http
+ * **2018-06-18:** Bianka Martinovic [[4a8fdbbd](https://github.com/WBCE/WBCE_CMS/commit/4a8fdbbd4a00c94b4930bfb472e8bc8a99fe0e75)]
+   > Update pclzip.lib.php
+     fixed: deprecated message
+     fixed: non numeric value message
+ * **2018-06-15:** Bianka Martinovic [[d8bc301e](https://github.com/WBCE/WBCE_CMS/commit/d8bc301e5b8b0b4dc44e885e57c222f69ca4176c)]
+   > fix for #333
+
+ * **2018-06-15:** Bianka Martinovic [[454688f6](https://github.com/WBCE/WBCE_CMS/commit/454688f65917239bf0b39fb9394a9f850bcd7dd8)]
+   > fix for #332
+
+ * **2018-06-15:** Bianka Martinovic [[0ffd3e4a](https://github.com/WBCE/WBCE_CMS/commit/0ffd3e4a792d2b1096b9d1824bf2af7b70d2fc53)]
+   > fix for #332
+
+ * **2018-06-15:** Bianka Martinovic [[532d5841](https://github.com/WBCE/WBCE_CMS/commit/532d5841c8b1283858f5fab61d1407b856b9a115)]
+   > fix for #320
+
+ * **2018-06-15:** Bianka Martinovic [[5288fcb1](https://github.com/WBCE/WBCE_CMS/commit/5288fcb17ac21713a769221aaf783d8f7b4ee8e0)]
+   > Update class.admin.php
+     Fix: object $wb overriden by $admin if more than one $admin instance is created
+ * **2018-04-12:** NorHei [[49d615dd](https://github.com/WBCE/WBCE_CMS/commit/49d615ddf7e042c03416699b9996bdaa3f2703f0)]
+   > Update Script make IPv6 compatible IP field
+     Change IP field in users table to varchar 50
+ * **2018-04-12:** NorHei [[7aa35f37](https://github.com/WBCE/WBCE_CMS/commit/7aa35f37c7e4b665b5a8beb2a402776880150e7e)]
+   > install Struct  ipv6 comtatible IP field
+     Just added to its lenght
+ * **2018-04-06:** Christoph Bleiweis [[57e3c383](https://github.com/WBCE/WBCE_CMS/commit/57e3c383ca34619115b7aa1fc3436a5dbe854b2d)]
+   > some BE-Themes translations
+
+ * **2018-03-27:** Christoph Bleiweis [[c6fa572d](https://github.com/WBCE/WBCE_CMS/commit/c6fa572dd2b61fb6d5d3cb338c449fc96f5abba7)]
+   > remove old sm functions (#336)
+     Old SM functions from the SM2 module removed, the old parameters are not working properly.
+ * **2018-03-21:** Christoph Bleiweis [[d3b5e09d](https://github.com/WBCE/WBCE_CMS/commit/d3b5e09da6a0def324a9516e671396cc4b22d873)]
+   > CKE 4.9.0 Standard Edition
+
+ * **2018-03-15:** Christoph Bleiweis [[c5531beb](https://github.com/WBCE/WBCE_CMS/commit/c5531beb8de92d87ae7dfed85b7ab38dc23e45cc)]
+   > fix for shown placeholders
+     fixes #322
+     
+     Thanks to @rjgamer
+
+ * **2018-03-09:** Christoph Bleiweis [[ed045749](https://github.com/WBCE/WBCE_CMS/commit/ed045749e0b1f11caa83f69b85a5f9bc824397ad)]
+   > MiniForm 0.12
+     fix #324
+
+ * **2018-03-09:** Christoph Bleiweis [[a5f7df7a](https://github.com/WBCE/WBCE_CMS/commit/a5f7df7a3d183e604df153a3d35edb2dd8f179f7)]
+   > CKE 4.8.0.1 Standard Edition
+
+ * **2018-03-09:** Christoph Bleiweis [[e8b11552](https://github.com/WBCE/WBCE_CMS/commit/e8b115529817cc38e85a6e3006d9eb209b5a94c8)]
+   > Fixes for CSS include error and minor bugs
+     - correction of arguements for (not) generating inline styles in
+     view.php
+     - alt-Tags for images in view.list.php
+     - fix for undefined variable notice in modify_settings.php
+
+ * **2018-03-09:** Christoph Bleiweis [[604ac89a](https://github.com/WBCE/WBCE_CMS/commit/604ac89a04b1d49816697a25021387d5ca2f39d1)]
+   > Twig 1.35.2
+
+ * **2018-02-18:** instantflorian [[723c21da](https://github.com/WBCE/WBCE_CMS/commit/723c21da8cbd436d9236483c27284a7f6fd1bc64)]
+   > Revert "Load jquery UI in BE themes"
+     This reverts commit 018b950455fe83bcc4427d98ca2abb87f9cf7970.
+
+ * **2018-02-18:** instantflorian [[01753a26](https://github.com/WBCE/WBCE_CMS/commit/01753a264d157eae5c33ec553bd77433577271dc)]
+   > Revert "Preparation for media manager replacement"
+     This reverts commit 399bbdaa27e9464dde08471c7419c4fe931c5b4c.
+
+ * **2018-02-17:** instantflorian [[399bbdaa](https://github.com/WBCE/WBCE_CMS/commit/399bbdaa27e9464dde08471c7419c4fe931c5b4c)]
+   > Preparation for media manager replacement
+     currently commented out
+
+ * **2018-02-17:** instantflorian [[018b9504](https://github.com/WBCE/WBCE_CMS/commit/018b950455fe83bcc4427d98ca2abb87f9cf7970)]
+   > Load jquery UI in BE themes
+     and a small fix regarding the intro page edit window
+
+ * **2018-02-13:** Jonathan Nessier [[3deeff21](https://github.com/WBCE/WBCE_CMS/commit/3deeff21a8be183057cfcb8141f35471e6fdf650)]
+   > Refactored autoload (#331)
+     Refactored. __autoload() is deprecated in PHP 7.2. 
+     Refactored autoload requires PHP 5.4 or newer.
+ * **2018-02-13:** Jonathan Nessier [[7b717b82](https://github.com/WBCE/WBCE_CMS/commit/7b717b8256e9a866fa9d5814f5582dc69ee6d99f)]
+   > Refactored create_function() (#329)
+     Refactored. create_function() is deprecated in PHP 7.2
+ * **2018-02-13:** Jonathan Nessier [[1c6fe13f](https://github.com/WBCE/WBCE_CMS/commit/1c6fe13f973f9f1cc66bb6e2bb344c5c5e345f89)]
+   > Refactored each() (#330)
+     Refactored. each() is deprecated in PHP 7.2
+ * **2018-02-12:** Christoph Bleiweis [[6e7a1cdf](https://github.com/WBCE/WBCE_CMS/commit/6e7a1cdff3767e30867b6cc9501abe4917ab420c)]
+   > fix for unnecessary elements in droplets
+     closes #323 and restore the default view but this brings the no droplet bug back
+     
+     In this case its better to have a rare bug than a destroyed UI
+
+ * **2018-02-12:** Christoph Bleiweis [[967a4bb3](https://github.com/WBCE/WBCE_CMS/commit/967a4bb3ee64db056d9c13729fe4deb3dba3dfc1)]
+   > one more small fix
+     see: https://forum.wbce.org/viewtopic.php?pid=16221#p16221
+
+ * **2018-02-12:** instantflorian [[365200d3](https://github.com/WBCE/WBCE_CMS/commit/365200d3c36306429d7f8bd4b405cdee146eed10)]
+   > Fix for newer Apache
+     thanks to norhei
+
+ * **2018-02-05:** instantflorian [[93473415](https://github.com/WBCE/WBCE_CMS/commit/934734157db0f6eeb51fe1b5b39a94c873beba56)]
+   > Missing line
+     Fix for previous commit
+
+ * **2018-01-29:** instantflorian [[222440a2](https://github.com/WBCE/WBCE_CMS/commit/222440a26d647f3ac9197f1516c4c644e4dc78b2)]
+   > Merge pull request #328 from rjgamer/patch-8
+     Tweaked for better performance
+ * **2018-01-29:** Jonathan Nessier [[7eff1280](https://github.com/WBCE/WBCE_CMS/commit/7eff1280a92b7d6fe0e4c256cce17743f82feee0)]
+   > Update template.inc
+
+ * **2018-01-29:** Jonathan Nessier [[df6bed8d](https://github.com/WBCE/WBCE_CMS/commit/df6bed8db5949cf99dd5bc2c094a08d924a30eb1)]
+   > Tweaked for better performance
+     Replaced while/each to foreach and preg_replace with str_replace where possible. Now the template engine can handle variables with larger strings with a faster processing time.
+ * **2018-01-26:** instantflorian [[e15d18b9](https://github.com/WBCE/WBCE_CMS/commit/e15d18b9748ea6b48b09d4b910eea646b8ba8c96)]
+   > Minor fixes
+
+ * **2017-12-11:** Christoph Bleiweis [[d892d3e3](https://github.com/WBCE/WBCE_CMS/commit/d892d3e371ec55ecba2c8038778e781009e65b7c)]
+   > update changelog
+
  * **2017-12-11:** Christoph Bleiweis [[d308c822](https://github.com/WBCE/WBCE_CMS/commit/d308c8220ba891fe823213827899491e50a13c95)]
    > update version
 
