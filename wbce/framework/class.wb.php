@@ -340,7 +340,7 @@ class wb extends SecureForm
     {
         if (function_exists('idn_to_ascii')) {
             /* use pear if available */
-            $email = idn_to_ascii($email);
+            $email = @idn_to_ascii($email);
         } else {
             require_once WB_PATH . '/include/idna_convert/idna_convert.class.php';
             $IDN = new idna_convert();
