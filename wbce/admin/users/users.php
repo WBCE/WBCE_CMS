@@ -17,23 +17,20 @@ require_once WB_PATH . '/framework/class.admin.php';
 $action = 'cancel';
 // Set parameter 'action' as alternative to javascript mechanism
 $action = (isset($_POST['modify']) ? 'modify' : $action);
+$action = (isset($_GET['modify'])  ? 'modify' : $action);
 $action = (isset($_POST['delete']) ? 'delete' : $action);
 
 switch ($action) {
     case 'modify':
         // Print header
-        $admin = new admin('Access', 'users_modify');
-        $user_id = intval($admin->checkIDKEY('user_id', 0, $_SERVER['REQUEST_METHOD']));
-        // Check if user id is a valid number and doesnt equal 1
+        $admin = new admin('Access', 'users_modify');		
+        $user_id = $admin->checkIDKEY('user_id', 0, $_SERVER['REQUEST_METHOD']);
+        // Check if user id is a valid number and doesn't equal 0
         if ($user_id == 0) {
             $admin->print_error($MESSAGE['GENERIC_FORGOT_OPTIONS']);
         }
-        if (($user_id < 2)) {
-            // if($admin_header) { $admin->print_header(); }
-            $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
-        }
         // Get existing values
-        $results = $database->query("SELECT * FROM `" . TABLE_PREFIX . "users` WHERE `user_id` = '" . $user_id . "'");
+        $results = $database->query("SELECT * FROM `{TP}users` WHERE `user_id` = '" . $user_id . "'");
         $user = $results->fetchRow();
 
         // Setup template object, parse vars to it, then parse it
@@ -42,17 +39,18 @@ switch ($action) {
         // $template->debug = true;
         $template->set_file('page', 'users_form.htt');
         $template->set_block('page', 'main_block', 'main');
-        $template->set_var(array(
-            'ACTION_URL' => ADMIN_URL . '/users/save.php',
-            'SUBMIT_TITLE' => $TEXT['SAVE'],
-            'USER_ID' => $user['user_id'],
-            'USERNAME' => $user['username'],
-            'DISPLAY_NAME' => $user['display_name'],
-            'EMAIL' => $user['email'],
-            'ADMIN_URL' => ADMIN_URL,
-            'WB_URL' => WB_URL,
-            'THEME_URL' => THEME_URL,
-        )
+        $template->set_var(
+			array(
+				'ACTION_URL' => ADMIN_URL . '/users/save.php',
+				'SUBMIT_TITLE' => $TEXT['SAVE'],
+				'USER_ID' => $user['user_id'],
+				'USERNAME' => $user['username'],
+				'DISPLAY_NAME' => $user['display_name'],
+				'EMAIL' => $user['email'],
+				'ADMIN_URL' => ADMIN_URL,
+				'WB_URL' => WB_URL,
+				'THEME_URL' => THEME_URL,
+			)
         );
 
         $template->set_var('FTAN', $admin->getFTAN());
@@ -63,7 +61,7 @@ switch ($action) {
         }
         // Add groups to list
         $template->set_block('main_block', 'group_list_block', 'group_list');
-        $results = $database->query("SELECT group_id, name FROM " . TABLE_PREFIX . "groups WHERE group_id != '1' ORDER BY name");
+        $results = $database->query("SELECT group_id, name FROM {TP}groups WHERE group_id != '1' ORDER BY name");
         if ($results->numRows() > 0) {
             $template->set_var('ID', '');
             $template->set_var('NAME', $TEXT['PLEASE_SELECT'] . '...');
@@ -186,9 +184,9 @@ switch ($action) {
         $sql .= 'WHERE `user_id` = ' . $user_id . '';
         if (($iDeleteUser = $database->get_one($sql)) == 1) {
             // Delete the user
-            $database->query("UPDATE `" . TABLE_PREFIX . "users` SET `active` = 0 WHERE `user_id` = '" . $user_id . "' ");
+            $database->query("UPDATE `{TP}users` SET `active` = 0 WHERE `user_id` = '" . $user_id . "' ");
         } else {
-            $database->query("DELETE FROM `" . TABLE_PREFIX . "users` WHERE `user_id` = " . $user_id);
+            $database->query("DELETE FROM `{TP}users` WHERE `user_id` = " . $user_id);
         }
 
         if ($database->is_error()) {

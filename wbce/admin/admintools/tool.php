@@ -39,10 +39,13 @@ if (!isset($_SESSION['MODULE_PERMISSIONS'])) $toolCheck=false;
 // Check if tool is installed but only if user is loged in 
 
 if ($toolCheck === true) {
-    $sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
+    /*$sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
         'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' '.
         'AND `directory`=\''.$database->escapeString($toolDir).'\' '.
-        'AND `directory` NOT IN(\''.(implode("','",$_SESSION['MODULE_PERMISSIONS'])).'\') ';
+        'AND `directory` NOT IN(\''.(implode("','",$_SESSION['MODULE_PERMISSIONS'])).'\') '; */
+	 $sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
+        'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' '.
+        'AND `directory`=\''.$database->escapeString($toolDir).'\'';	
     if(!($toolName = $database->get_one($sql)))  $toolCheck=false;
 }
 
