@@ -126,18 +126,23 @@ $target = $page['target'];
 		mitems['-1']=[' ','0'];
 		<?php
 		foreach($links AS $pid=>$link) {
+			$foundAnchors = false;
 			$str="mitems['$pid']=[";
 			$str.="' ',";
 			$str.="'0',";
-			if(is_array($targets) && is_array($targets[$pid])) {
-				foreach($targets[$pid] AS $value) {
+			if(@is_array($targets) && @is_array($targets[$pid])) {
+				$foundAnchors=true;								
+				foreach($targets[$pid] AS $value) {									    
+					$value=str_replace("'","\'",$value);				
 					$str.="'#$value',";
 					$str.="'$value',";
 				}
 				$str=rtrim($str, ',');
 				$str.="];\n";
 			}
+			if ($foundAnchors) {
 			echo $str;
+			}
 		}
 		?>
 		d.options.length=0;
