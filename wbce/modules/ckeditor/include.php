@@ -36,7 +36,8 @@ function show_wysiwyg_editor(
     $height='350px', 
     $toolbar = false
     ) {
-	global $database,$admin,$section_id;
+	global $database;
+	$oApp = isset($GLOBALS['admin']) ? $GLOBALS['admin'] : $GLOBALS['wb'];
 
 	$modAbsPath = str_replace('\\','/',dirname(__FILE__));
 	$ckeAbsPath = $modAbsPath.'/ckeditor/';
@@ -70,14 +71,14 @@ function show_wysiwyg_editor(
 	$ckeditor = new CKEditorPlus( $ckeRelPath );
 
 	$temp = '';
-	if (isset($admin->page_id)) {
-		$query = "SELECT `template` from `".TABLE_PREFIX."pages` where `page_id`='".(int)$page_id."'";
+	if (isset($oApp->page_id)) {
+		$query = "SELECT `template` from `{TP}pages` where `page_id`='".(int)$oApp->page_id."'";
 		$temp = $database->get_one( $query );
 	}
 	$templateFolder = ($temp == "") ? DEFAULT_TEMPLATE : $temp;
 	$ckeditor->setTemplatePath($templateFolder);
 
-	/**	
+	/**
      * Looking for the styles
      */
 	$ckeditor->resolve_path(
@@ -108,7 +109,6 @@ function show_wysiwyg_editor(
      * The Uploader has to be called, too
      */
 	$ckeditor->config['uploader'] = false; // disabled for security reasons
-    
 	if($ckeditor->config['uploader']==true) {
 		$uploadPath = $ckeditor->basePath.'filemanager/connectors/php/upload.php?Type=';
 		$ckeditor->config['filebrowserUploadUrl'] = $uploadPath.'File';
