@@ -5,6 +5,33 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2018-07-26:** Christoph Bleiweis [[19651072](https://github.com/WBCE/WBCE_CMS/commit/196510728c2918c2dbd39364302994bf29f8fa33)]
+   > small CKE include update
+     thanks to stefanek
+
+ * **2018-07-25:** instantflorian [[0aa4c6dd](https://github.com/WBCE/WBCE_CMS/commit/0aa4c6dd0c6654c705c1a192e286d430519ffa56)]
+   > Pages with no sections and inverted commas won't break menu link anchor selection any longer
+     Sometimes I really do have enlightend moments 8-)
+
+ * **2018-07-25:** instantflorian [[17d6a749](https://github.com/WBCE/WBCE_CMS/commit/17d6a7494f9bfd945feb9215763081c7772bf235)]
+   > Quick fix for #340
+     Just suppressing an annoying depreciated warning, should be fixed
+     properly lateron
+
+ * **2018-07-25:** instantflorian [[551ce1f3](https://github.com/WBCE/WBCE_CMS/commit/551ce1f3bbbbfb6a86698c16f4c18401f8ef127f)]
+   > Fix for #342, Patch for user form
+     The patch for users.php was created by @WebDesignWorx  and allows to
+     send get and post requests (secured with a token) to the form.
+
+ * **2018-07-14:** Christoph Bleiweis [[bef786be](https://github.com/WBCE/WBCE_CMS/commit/bef786bef8d1af71b8b5e0e7ef919f79571c8c42)]
+   > Twig 1.35.4
+
+ * **2018-07-10:** instantflorian [[6a8dfe75](https://github.com/WBCE/WBCE_CMS/commit/6a8dfe75ac32623c51027286e24070f437ba5b8e)]
+   > Forgot to update topics/info.php
+
+ * **2018-07-09:** instantflorian [[0514e28f](https://github.com/WBCE/WBCE_CMS/commit/0514e28f988ed4d3474ffcc7032fab3c90bdc3bf)]
+   > Update changelog
+
  * **2018-07-09:** Christoph Bleiweis [[566961f9](https://github.com/WBCE/WBCE_CMS/commit/566961f914344cd6ffce540c6eeb5af5f075619a)]
    > remove old account files
      these files are not needed by the new accountmanagement
