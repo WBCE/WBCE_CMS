@@ -17,7 +17,7 @@ require_once(WB_PATH.'/framework/class.admin.php');
 require_once(WB_PATH.'/framework/functions.php');
 require_once(WB_PATH.'/framework/class.order.php');
 
-// create admin object depending on platform (admin tools were moved out of settings with WB 2.7)
+// create admin object
 $admin = new admin('admintools', 'admintools');
 
 // First get the selected page
@@ -131,7 +131,7 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 		}
 		
 		// copy module settings per section
-  	$query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%mod_".$module."%'";
+  	$query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%mod_".$module."%' AND TABLE_SCHEMA='".DB_NAME."'";
   	$res = $database->query($query);
   	while ($row = $res->fetchRow()) {
   		// there must be a section_id column at least
@@ -142,14 +142,14 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 	  // some manual corrections that can not be automatically detected
 		if ($module=='miniform') {
 			// delete the form submissions which are also copied
-			$query = "DELETE FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id` = ".$section_id;
+			$query = "DELETE FROM `".TABLE_PREFIX."mod_miniform_data` WHERE `section_id` = ".$section_id;
 			$database->query($query);
 		} elseif ($module=='mpform') {
 			// delete the form submissions which are also copied
-			$query = "DELETE FROM ".TABLE_PREFIX."mod_mpform_submissions WHERE `section_id` = ".$section_id;
+			$query = "DELETE FROM `".TABLE_PREFIX."mod_mpform_submissions` WHERE `section_id` = ".$section_id;
 			$database->query($query);
 			// update refererence to result table
-			$query = "UPDATE ".TABLE_PREFIX."mod_mpform_settings SET `tbl_suffix` = ".$section_id." WHERE `section_id` = ".$section_id;
+			$query = "UPDATE `".TABLE_PREFIX."mod_mpform_settings` SET `tbl_suffix` = ".$section_id." WHERE `section_id` = ".$section_id;
 			$database->query($query);
 	    // new results table
       $results = TABLE_PREFIX."mod_mpform_results_".$section_id;
@@ -160,7 +160,7 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
   		. ' PRIMARY KEY ( `session_id` ) '
   		. ' )';
   		$database->query($s);
-  		$query = "SELECT field_id FROM ".TABLE_PREFIX."mod_mpform_fields WHERE `section_id` = ".$section_id;
+  		$query = "SELECT `field_id` FROM `".TABLE_PREFIX."mod_mpform_fields` WHERE `section_id` = ".$section_id;
   		$ids = $database->query($query);
       while ($fid = $ids->fetchRow()) {
         // Insert new column into database
@@ -169,7 +169,7 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
       }
     } elseif ($module=='form') {
 			// delete the form submissions which are also copied
-			$query = "DELETE FROM ".TABLE_PREFIX."mod_form_submissions WHERE `section_id` = ".$section_id;
+			$query = "DELETE FROM `".TABLE_PREFIX."mod_form_submissions` WHERE `section_id` = ".$section_id;
 			$database->query($query);
     } elseif ($module=='minigallery') {
 			// copy images
@@ -202,13 +202,13 @@ function clone_subs($pagetoclone,$parent,$copy_title,$visibility) {
 
 function clone_lines($tablename, $pagetoclone, $page_id, $from_section, $section_id, $database) {
 	// we want to copy settings too, so delete default entries made by add function
-	$query = "DELETE FROM $tablename WHERE `section_id` = ".$section_id;
+	$query = "DELETE FROM `$tablename` WHERE `section_id` = ".$section_id;
 	$database->query($query);
 	// is there a page_id ?
-  $query = $database->query("DESCRIBE $tablename `page_id`");
+  $query = $database->query("DESCRIBE `$tablename` `page_id`");
 	$setPageId = $query->numRows() ? "`page_id` = $page_id," : "";
 
-	$query = "SHOW COLUMNS FROM $tablename WHERE extra = 'auto_increment'";
+	$query = "SHOW COLUMNS FROM `$tablename` WHERE `extra` = 'auto_increment'";
 	$colautoinc = $database->get_one($query);
 	$autoinc = $colautoinc ? ", `$colautoinc` = NULL" : "";
 	
