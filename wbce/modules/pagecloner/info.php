@@ -13,7 +13,7 @@
 $module_directory = 'pagecloner';
 $module_name = 'Page Cloner';
 $module_function = 'tool';
-$module_version = '1.0.2';
+$module_version = '1.0.3';
 $module_platform = '2.8.x';
 $module_author = 'John Maats, PCWacht, Dietrich Roland Pehlke, Stephan Kuehn, vBoedefeld, WebBird, Colinax';
 $module_license = 'GNU General Public License';
@@ -23,6 +23,10 @@ $module_guid = '25bfa866-2ee3-4731-8f44-f49f01c8294a';
 
 /**
  * Version history
+ *
+ * v1.0.3 (WebBird, 10.08.2018)
+ *        - Fix: Problem with more than one WBCE installation into same mySQL instance
+ *        - fixed some DB statements (added quotes)
  *
  * v1.0.2 (Colinax, 24.05.2017)
  *        - Page Cloner uses now Theme icons and not longer Admin icons
