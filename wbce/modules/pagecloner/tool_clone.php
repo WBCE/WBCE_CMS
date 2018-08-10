@@ -22,27 +22,16 @@ $query = "SELECT * FROM `".TABLE_PREFIX."pages` WHERE `page_id` = '$pagetodo'";
 $get_pagetodo = $database->query($query);   
 $is_pagetodo = $get_pagetodo->fetchRow();
 
-// check website baker platform (with WB 2.7, Admin-Tools were moved out of settings dialogue)
-$admintool_link = ADMIN_URL .'/settings/index.php?advanced=yes#administration_tools"';
-$pageclone_link = ADMIN_URL .'/settings/tool.php?tool=pagecloner';
-if(file_exists(ADMIN_PATH .'/admintools/tool.php')) {
-	$admintool_link = ADMIN_URL .'/admintools/index.php';
-	$pageclone_link = ADMIN_URL .'/admintools/tool.php?tool=pagecloner';
-}
+$admintool_link = ADMIN_URL .'/admintools/index.php';
+$pageclone_link = ADMIN_URL .'/admintools/tool.php?tool=pagecloner';
 
 // redirect to pageclone main page if no valid page was specified
 if ($pagetodo < 1 || !$is_pagetodo) {
 	die(header('Location: '.$pageclone_link));
 } 
 
-// create admin object depending on platform (admin tools were moved out of settings with WB 2.7)
-if(file_exists(ADMIN_PATH .'/admintools/tool.php')) {
-	// since Website Baker 2.7
-	$admin = new admin('admintools', 'admintools');
-} else {
-	// Website Baker prior to 2.7
-	$admin = new admin('Settings', 'settings_advanced');
-}
+// create admin object
+$admin = new admin('admintools', 'admintools');
 
 // Load Language file
 if(LANGUAGE_LOADED) {
@@ -70,7 +59,7 @@ $template->set_block('page', 'main_block', 'main');
 $database = new database();
 function parent_list($parent) {
 	global $admin, $database, $template;
-	$query = "SELECT * FROM ".TABLE_PREFIX."pages WHERE parent = '$parent' AND visibility!='deleted' ORDER BY position ASC";
+	$query = "SELECT * FROM `".TABLE_PREFIX."pages` WHERE `parent` = '$parent' AND `visibility`!='deleted' ORDER BY `position` ASC";
 	$get_pages = $database->query($query);
 	while($page = $get_pages->fetchRow()) {
 		// Stop users from adding pages with a level of more than the set page level limit
