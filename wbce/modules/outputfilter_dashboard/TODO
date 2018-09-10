@@ -1,0 +1,7 @@
+TODO list for future releases
+=============================
+- review if the default values of the settings (e.g. auto place holders switched off are ok to go)
+- when shipped as core-module, block uninstall of the dashboard
+
+- maybe include more example filters one time
+- change template engine from phplib to pure php (or Twig maybe?)

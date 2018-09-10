@@ -233,7 +233,10 @@ class admin extends wb
             $allOutput = ob_get_clean ();
 
             // OPF dashboard
-            // is it installed ?            
+            // is it installed ?
+            if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
+               require_once(WB_PATH .'/modules/outputfilter_dashboard/functions.php');
+            }
             if(function_exists('opf_controller')) { 
                 // then apply backend filter  
                 $allOutput = opf_controller('backend', $allOutput);

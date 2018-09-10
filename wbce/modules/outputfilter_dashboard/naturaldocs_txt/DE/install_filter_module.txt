@@ -1,0 +1,110 @@
+Header: Modul-Filter schreiben (de)
+
+Topic: Einen Filter als Teil eines Moduls installieren
+
+Ist der Filter Teil eines normalen Modules, sind lediglich die Dateien install.php und uninstall.php
+des Modules entsprechend um Aufrufe von <opf_register_filter()> und <opf_unregister_filter()> zu erg&auml;nzen,
+und eine Datei mit der Filter-Funktion hinzuzuf&uuml;gen.
+
+Zus&auml;tzlich k&ouml;nnen (und sollten) Sie WebsiteBakers Precheck-System benutzen,
+um zu pr&uuml;fen ob Outputfilter-Dashboard installiert ist.
+Das Installationsskript sollte auch nach der Installation ein weiteres Mal ausf&uuml;hrbar sein.
+Eventuell einzuf&uuml;gende Tabellen sollten daher auf ihre Existenz bepr&uuml;ft werden:
+        > CREATE TABLE ... IF NOT EXISTS
+
+
+install.php:
+        ><?php
+        >
+        >// normal content from install-file here
+        >// ...
+        >
+        >// check whether outputfilter-module is installed
+        >if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
+        >  require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
+        >  // install filter
+        >  //---Searchengine-Highlighter-Filter-------------------------------------------
+        >  //=============================================================================
+        >  opf_register_filter(array(
+        >      'name' => 'Searchengine Highlighter',
+        >      'type' => OPF_TYPE_PAGE_LAST,
+        >      'file' => '{SYSVAR:WB_PATH}/modules/searchengine_highlight/filter.php',
+        >      'funcname' => 'opff_searchengine_highlight',
+        >      'desc' => "Google-Search-Highlighter",
+        >      'active' => 1,
+        >      'allowedit' => 0
+        >  ));
+        >}
+        >
+        >// rest of install-file here
+        >// ...
+        >
+
+        Standardm&auml;&szlig;ig werden neu installierte Filter ans Ende gestellt, aber Sie k&ouml;nnen die Position des Filters nachdem es registriert ist mit der Funktion <opf_move_up_before> beeinflussen.
+
+uninstall.php:
+        ><?php
+        >
+        >// normal content from uninstall-file here
+        >// ...
+        >
+        >// check whether outputfilter-module is installed {
+        >if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
+        >  require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
+        >  // un-install filter
+        >  opf_unregister_filter('Searchengine Highlighter');
+        >}
+        >
+        >// rest of uninstall-file here
+        >// ...
+
+
+filter.php:
+        Diese Datei enth&auml;lt die Filter-Funktion.
+        See <The Filter-Function itself>.
+        ><?php
+        >if(!defined('WB_PATH')) die(header('Location: ../../index.php'));
+        >
+        >function opff_searchengine_highlight(&$content, $page_id, $section_id, $module, $wb) {
+        >        // function code here
+        >
+        >        return(TRUE);
+        >}
+
+
+Topic: precheck.php
+        &Uuml;berpr&uuml;fen Sie vor der installation, ob Outputfilter-Dashboard installiert ist.
+        F&uuml;gen Sie dazu Ihrem Modul eine Datei !precheck.php! mit dem folgenden Inhalt hinzu
+        ><?php
+        >// prevent this file from being accessed directly
+        >if(!defined('WB_PATH')) die(header('Location: ../index.php'));
+        >
+        >$PRECHECK = array();
+        >$PRECHECK['WB_VERSION'] = array('VERSION'=>'2.8', 'OPERATOR'=>'>=');
+        >$PRECHECK['WB_ADDONS'] = array(
+        >        // Outputfilter-Dashboard must be installed
+        >        'outputfilter_dashboard'=>array('VERSION'=>'1.3.2', 'OPERATOR'=>'>=')
+        >);
+
+        Passen Sie die vorausgesetzte Version von Outputfilter-Dashboard wie ben&ouml;tigt an.
+
+
+        Damit das Modul funktioniert, m&uuml;ssen Sie auch ein index.php und ein info.php file
+        anlegen wie f&uuml;r jedes andere regul&auml;re Modul auch
+
+index.php:
+        ><?php
+        >header('Location: ../../index.php');
+
+info.php:
+        ><?php
+        >
+        >$module_directory       = 'searchengine_highlight';
+        >$module_name            = 'Search Engine Highlighter';
+        >$module_function        = 'filter';
+        >$module_version         = '0.1';
+        >$module_platform        = '2.8.3';
+        >$module_author          = 'your name';
+        >$module_license         = 'e.g. GPL v3';
+        >$module_description     = 'This module helps you to highlight search engine hits';
+

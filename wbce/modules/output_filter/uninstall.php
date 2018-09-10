@@ -17,31 +17,10 @@
 //no direct file access
 if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
-// Commented out , cause of new OPF dashboard still needs those settings.  
+// this was never implemented in a useful manner (only partially, in dev-branches)
 Settings::Del('wb_suppress_old_opf');
-//frontend
-Settings::Del('opf_droplets');
-Settings::Del('opf_auto_placeholder'); 
-Settings::Del('opf_move_stuff');   
-Settings::Del('opf_replace_stuff');   
-Settings::Del('opf_css_to_head');
-Settings::Del('opf_email_filter');
-Settings::Del('opf_mailto_filter');
-Settings::Del('opf_js_mailto');
-Settings::Del('opf_at_replacement',"(at)");
-Settings::Del('opf_dot_replacement',"(dot)");
-Settings::Del('opf_wblink');
-Settings::Del('opf_short_url');
-Settings::Del('opf_sys_rel');
-Settings::Set("opf_remove_system_ph")    ;
 
-//backend
-Settings::Del('opf_droplets_be');
-Settings::Del('opf_auto_placeholder_be'); 
-Settings::Del('opf_move_stuff_be');   
-Settings::Del('opf_replace_stuff_be'); 
-Settings::Del('opf_css_to_head_be');
-Settings::Set("opf_remove_system_ph_be")    ;
+// Keep the settings for individual filters, because OpF Dashboard uses the same settings
 
 // deleting version too 
-Settings::Del("opf_version") ;
+Settings::Del("opf_version");

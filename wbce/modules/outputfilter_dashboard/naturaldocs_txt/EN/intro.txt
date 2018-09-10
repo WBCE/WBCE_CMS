@@ -1,0 +1,23 @@
+Header: Introduction (en)
+
+Group: Introduction
+
+Topic: Description
+        OutputFilters are small PHP programs, which are used on the page's output to alter it's
+        content. They may use PHP to alter the page's content directly, or just inject some
+        Javascript into the page to load.
+
+Topic: Patch
+        To make use of OutputfilterDashboard, two patches must applied to WB core-files.
+        See <Apply two patches> for more info.
+
+Topic: Admin-Tool
+        The Amdin-Tool is where to install, controll, delete or export filters.
+        See <Admin-Tool (en)>.
+
+Topic: Filters
+        See <Install Filters> on how to install filters.
+
+        To write your own filters, see <Create Inline-Filter (en)>, <Create Plugin-Filter (en)>,
+        <Create Module-Filter (en)>.
+

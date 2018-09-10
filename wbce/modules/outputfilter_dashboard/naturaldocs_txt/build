@@ -1,0 +1,18 @@
+#!/bin/bash
+
+mkdir -p Project
+cp naturaldocs_txt/Menu.txt Project/
+cp naturaldocs_txt/Languages.txt Project/
+cp naturaldocs_txt/styles/* Project/
+mkdir -p docs
+cp -a docs/javascript Project/
+naturaldocs -i naturaldocs_txt/ `find -name images -exec echo "-img " {} \; ` -s main -o HTML docs/ -p Project/
+cp -a Project/javascript docs/
+rm -rf Project
+cp -a naturaldocs_txt/images docs/files/
+cp -a naturaldocs_txt/styles docs/
+find  naturaldocs_txt -name images -exec rm -rf '{}' ';' 2>/dev/null
+find docs -type f -name '*.html' -exec sed -i 's/&amp;Auml;/\&Auml;/g;s/&amp;Ouml;/\&Ouml;/g;s/&amp;Uuml;/\&Uuml;/g;s/&amp;auml;/\&auml;/g;s/&amp;ouml;/\&ouml;/g;s/&amp;uuml;/\&uuml;/g;s/&amp;szlig;/\&szlig;/g;s/<blockquote><pre>/<blockquote><pre class="prettyprint">/g;s/%\([^%"]*\)%/<span class="mypriv_vartype">\1<\/span>/g;s/!\([^! -]*\)!/<span class="mypriv_var">\1<\/span>/g;s/ !\([^!]*\)!\./ <span class="mypriv_var">\1<\/span>./g;s/ !\([^!]*\)! / <span class="mypriv_var">\1<\/span> /g;s/;!\([^!-]*\)!&/;<span class="mypriv_var">\1<\/span>\&/g;' {} \; -print
+if [ -d ../src/javascript ] ; then
+  cp -a ../src/javascript docs/
+fi

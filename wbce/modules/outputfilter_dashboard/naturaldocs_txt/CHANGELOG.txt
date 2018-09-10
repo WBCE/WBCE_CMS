@@ -1,0 +1,719 @@
+
+Header: Version-History
+
+1.5:
+1.5.6 %(mrbaseman, 04 Nov 2018)%
+        - support a legacy module !opf_simple_backend! to switch between basic and advanced backend view
+	- avoid warning during installation when shipped as core module
+	- php 7.2 fixes
+	- add configurl button in the filter edit view, if applicable
+	- allow multiple uses of the same field type in extra fields
+	- change the logic when backend filtering shall be offered
+	- correctly start incrementing position of installed filters
+	- fix bug in !opf_filter_get_data()! to find index correctly 
+	- fix the logic for the backend filtering - module filtering not for inline filters
+	- print footer always when an exit() is issued in the backend tool
+
+1.5.5 %(mrbaseman, 5 Sep 2018)%
+        - fix uninstall.php in case MEDIA_DIRECTORY does not start with a slash
+	- fix ajax drag&drop which caused warning when issued after editing a filter
+	- fix: hand over !$OPF_TYPE_ASSIGNMENTS! correctly to opf_revert_type_consts
+	- only apply filter to backend when !backend! is selected - !ALL! is for frontend
+	- correctly apply filters for special pages like searchresults with !$pageid==0!
+	- fix css for checktree so that indentation works correctly
+	- bugfix: converting filter types between plugin and inline failed
+	- updated assignments of modules to the categories
+	- minor update of the help pages
+
+1.5.4 %(mrbaseman, 19 Apr 2017)%
+	- fix for opf_db functions when previous queries have triggered already an error
+
+1.5.3 %(mrbaseman, 7 Apr 2017)%
+        - added fallbacks in <opf_insert_frontend_files> in case the template lacks head
+        - improved debug messages for calls to <opf_is_registered>
+
+1.5.2 %(mrbaseman, 8 Mar 2017)%
+        - use !OPF_TYPE! constants when exporting filters
+
+1.5.1 %(mrbaseman, 25 Jan 2017)%
+        - allow arrays for !$ref_name! in <opf_move_up_before>
+	- switch to colon separator in ajax helper
+	- if !$ref_name! is ommited in <opf_move_up_before>, move !$name! up to the top
+        - update patch detection for WBCE and module filter replacement
+	- suppress warning when <opf_move_up_before> is called and !$ref_name! not found
+	- store active/inactive state not only inside opf but also as WBCE Settings value
+	- add additional hint upon an attempt to install a module filter as a plugin
+	- trigger upgrade/install of module filters
+	- in <opf_filter_is_active> take settings constants into account
+	- immediately reflect toggle of the active/inactive state in the dashboard
+
+1.5.0 %(mrbaseman, 29 Sept 2016)%
+        - fetch $page_id from constant !PAGE_ID! for all cases
+        - automagically initialize the global filter list
+	- allow to sort filters via drag&drop
+	- make exported filter human-readable
+	- improve processing of formatting of documentation 
+	- when exporting a filter create a filter.php file
+	- during export also insert placeholders introduced in version 1.4.4
+	- allow to convert between inline filters and plugin filters
+	- added <opf_move_up_before> to move filters up in the list during installation
+	- search for pre-existing module filters during installation of opf
+	- cleaned up backend_body.js
+	- support backend filtering, provided that the class "Tool" exists and the settings have been converted to modules (this relies on developments in the WBCE 2.0-dev Branch, so you might see the checkbox for the backend, but unless the backend is implemented as modules, most probably no filters are going to be applied) 
+	In case you have created a filter which screws up the backend completely, add the following line to your global !config.php! of your WBCE installation
+	> define('WB_OPF_BE_OFF', 'off');
+	The value doesn't really matter, just if the constant is defined, there will no filter be applied to the backend and you have access to the dashboard again and you can fix the filters.
+
+1.4:
+	*this version is a major re-engineering of the module with the goal to use it without PMF.*
+	Special thanks to all who have tested and especially to NorHei for fruitful discussions and for providing additional testing ressources.
+
+1.4.9 %(mrbaseman, 23 Mar 2016)%
+	- change cachecontrols filter type to page(last)
+	- realign code: wrap long lines and set tab width=4
+	- make help browser work without javascript
+	- fix css edit for filters that supply css files
+	- provide export download link when javascript is disabled
+	- allow to delete filters even without javascript
+	- added French and Italian language support
+
+1.4.8 %(mrbaseman, 21 Feb 2016)%
+	- remove unused code part from add_filter to fix array conversion warnings
+	- update plugin filters to use new placeholders introduced in 1.4.4
+	*in order to pick up this change you have to remove the example filters before upgrading OpF*
+	- update documentation: added a section which explains the use of the constants and placeholders 
+
+1.4.7 %(mrbaseman, 21 Feb 2016)%
+	- a couple of cosmetic bugfixes (correctly display Umlauts in filter list, replace German ss special char with ss in filter description, remove unused filter_id from template parsing, properly initialize TPL_EXTRA_FIELDS_BLOCK in edit_filter, fix for using global LANG inside method in WBCE)
+	- security fix: check ftan for upload
+	- several fixes for arrays as additional field (like in correct date example)
+	- fix css edit for filters that provide css
+
+1.4.6 %(mrbaseman, 18 Feb 2016)%
+        - add module icon for WBCE 1.2
+	- bugfix: do not allow moving up uppermost filter
+	- switch from FTANs to IDKEYs in many places of the backend 
+
+1.4.5 %(mrbaseman, 09 Feb 2016)%
+	- update documentation layout
+	- include example plugins again
+	- update patch check
+	- merge in Stefek's changes, thanks for your contribution and for your ideas you have contributed
+	- automatically remove naturaldocs sources during install
+	- various minor changes to make it working in upcoming wb-classic releases
+
+1.4.4 %(Stefek, 05 Feb 2016)%
+        - added the following tokens to apply instead of hardcoded pathes within OpF-Plugins:
+        >        {SYSVAR:WB_URL}   = will replace with the content of the Constant WB_URL
+        >        {SYSVAR:WB_PATH}  = will replace with the content of the Constant WB_PATH
+        >        {OPF:PLUGIN_URL}  = will replace with WB_URL.'/modules/outputfilter_dashboard/plugins/{your_plugin}'
+        >        {OPF:PLUGIN_PATH} = will replace with WB_PATH.'/modules/outputfilter_dashboard/plugins/{your_plugin}'			
+			
+        - added 2 CONSTANTS to work with OPF Plugins 
+        >        !OPF_PLUGINS_PATH!  
+        >        !OPF_PLUGINS_URL!
+                        the path and url to the plugins folder is very long and is being used extensivly in Filters,
+			therefore the constants are a convenient addition.
+                        The URL is 
+	> OPF_PLUGINS_URL = [ WB_URL.'/modules/'.basename(dirname(__FILE__)).'/plugins/' ] 
+				
+	
+1.4.3 %(mrbaseman, 03 Feb 2016)%
+        - fix ftan for sp5 and for singletab mode in earlier versions
+        - a couple of fixes for the additional fields loop
+        - correctly unregister from pmf
+
+1.4.2 %(mrbaseman, 29 Jan 2016)%
+        - add default value for %$opt% in opf_controller 
+
+1.4.1 %(mrbaseman, 26 Jan 2016)%
+	- fix headers/ftan issue for latest WBCE versions
+
+1.4.0 %(mrbaseman, 26 Jan 2016)%
+        - All references to PMF removed
+	- first release of the new series: removed dependencies from pmf
+	- use phplib templates and usual language files instead of the solutions of PMF
+	- removed cache functions which are disabled by default and for practical use anyway
+        - switched from tokens to ftan support
+	- update documentation (current patches and removed references to PMF from the documentation as well)
+
+
+1.3:
+1.3.4  %(thorn, 07 Aug 2010)%
+	- fixed a issue with the CSS-Editor: it may loss all data on save under special circumstances.
+	- fixed wrong usage of pmf_fetch_clean() after pmf has changed order of parameters in this function.
+	- fixed docu about Simple HTML Dom Parser
+	- added function opf_register_document_ready() to use jQuery's $(document).ready() to register JS in page's <head> section.
+	- changed opf_insert_frontend_files() to add additional JS before the closing </head> instead directly after <head>.
+
+
+
+2010-08-07  %(Thomas thorn Hornik)%
+
+	Released as 1.3.4
+
+2010-08-07  %(Thomas thorn Hornik)%
+
+	fixed a issue with the CSS-Editor: it may loss all data on save under special circumstances.
+
+2010-08-06  %(Thomas thorn Hornik)%
+
+	fixed wrong usage of pmf_fetch_clean() after pmf has changed order of parameters in this function.
+
+2010-08-05  %(Thomas thorn Hornik)%
+
+	fixed docu about Simple HTML Dom Parser
+
+2010-07-31  %(Thomas thorn Hornik)%
+
+	-added function opf_register_document_ready() to use jQuery's $(document).ready() to register JS in page's <head> section.
+	-changed opf_insert_frontend_files() to add additional JS before the closing </head> instead directly after <head>.
+
+2010-07-31  %(Thomas thorn Hornik)%
+
+	minor changes to precheck.php before release
+
+1.3.3  %(thorn, 31 Jul 2010)%
+	- require pmf 0.9.5
+	- Check versions of plugin-filter during upload, do not allow to overwrite newer versions by older ones.
+	- added documentation for usage of PHP Simple HTML DOM Parser
+	- documentation updated.
+	- minor issues fixed.
+
+
+2010-07-30  %(Thomas thorn Hornik)%
+
+	- release 1.3.3
+	- added documentation about PHP Simple HTML DOM Parser
+
+2010-07-29  %(Thomas thorn Hornik)%
+
+	check version of plugin-filter, do not allow to overwriter newer versions by older ones
+
+2010-07-29  %(Thomas thorn Hornik)%
+
+	added documentation
+
+2010-07-27  %(Thomas thorn Hornik)%
+
+	removed forgotten debug text
+
+2010-07-27  %(Thomas thorn Hornik)%
+
+	fixed wrong link in german documentation
+
+2010-07-25  %(Thomas thorn Hornik)%
+
+	released as 1.3.2
+
+1.3.2 %(thorn, 25 Jul 2010)%
+	- Plugin-Filters can have it's own plugin_uninstall.php now.
+	- additional_fields: added "label" as alias for "text" (the text used as label),
+	   and allow usage of an array for different languages.
+
+2010-07-25  %(Thomas thorn Hornik)%
+
+	plugin-filters can now have it's own plugin_uninstall.php file.
+
+2010-07-25  %(Thomas thorn Hornik)%
+
+	updated documentation
+
+2010-07-25  %(Thomas thorn Hornik)%
+
+	some changes to additional_fields
+
+1.3.1 %(thorn, stefek; 23 Jul 2010)%
+	- first public beta of this new version.
+
+2010-07-23  %(Thomas thorn Hornik)%
+
+	Made module ready for release - many changes to code and documentation.
+
+2010-07-17  %(Thomas thorn Hornik)%
+
+	updated documentation
+
+2010-07-04  %(Thomas thorn Hornik)%
+
+	Display a warning in case the patch to wb's core-files is not applied
+
+2010-07-02  %(Thomas thorn Hornik)%
+
+	added latest changed from stefek.
+
+2010-07-02  %(Thomas thorn Hornik)%
+
+	removed file debug_conf.php
+	docu regenerated
+
+2010-05-15  %(Thomas thorn Hornik)%
+
+	updated opf to match recent changes to pmf
+
+2010-05-07  %(Thomas thorn Hornik)%
+
+	changed opf to match latest version from pmf
+
+2010-05-03  %(Thomas thorn Hornik)%
+
+	fixed some issues from last revno
+
+2010-04-20  %(Thomas thorn Hornik)%
+
+	updated helper-scripts to match latest pmf
+
+2010-04-19  %(Thomas thorn Hornik)%
+
+	- use temp directory in wb/media/opf_plugins instead of /wb/temp/
+	- prevent old links to be re-activated using the browser's back-button
+	- updated docu
+
+2010-04-19  %(Thomas thorn Hornik)%
+
+	- updated to match latest version of pmf
+	- updated documentation
+	- moved function pmf_fetch_entry_language() to opf_fetch_entry_language()
+	- fixed uninstall.php
+
+
+1.3.0 %(thorn, stefek; 09 Apr 2010)%
+	- renamed module "outputfilter-dashboard", bumped version to 1.3.0
+	- many additions
+	- new layout/design by stefek
+	- prevent inline-filters from overwriting other filters
+	- changed name from Frontend-Filter to OutputFilter Dashboard (aka opf-dashboard, aka opf)
+	- added plugin-filters and filter-upload
+	- added export of installed filters
+	- usage of pmf's caching-system for filter and page data
+	- usage of "practical module functions" (pmf)
+	- usage of jquery
+
+2010-04-09  %(Thomas thorn Hornik)%
+
+	- prevent inline-filters from overwriting existing filters
+	- updated documentation
+
+2010-04-05  %(Thomas thorn Hornik)%
+
+	improved security
+
+2010-03-27  %(Thomas thorn Hornik)%
+
+	added missing index.php files
+
+2010-03-27  %(Thomas thorn Hornik)%
+
+	fixed some small issues
+
+2010-03-21  %(Thomas thorn Hornik)%
+
+	updated opf to match latest version of pmf
+
+2010-03-20  %(Thomas thorn Hornik)%
+
+	updated documentation
+
+2010-03-14  %(Thomas thorn Hornik)%
+
+	added NL language-file. removed old entries from DE language-file.
+
+2010-03-13  %(Thomas thorn Hornik)%
+
+	changed naturaldocs to allow creation of different docu for users/developers
+
+2010-03-11  %(Thomas thorn Hornik)%
+
+	added settings-table as example how to use pmf's settings-handling
+
+2010-02-28  %(Thomas thorn Hornik)%
+
+	added recent updates from stefek
+
+2010-02-28  %(Thomas thorn Hornik)%
+
+	updated path to documentation
+
+2010-02-28  %(Thomas thorn Hornik)%
+
+	updated documentation
+	split documenation into user and developer documentation
+
+2010-02-14  %(Thomas thorn Hornik)%
+
+	corrected wrong text in template
+
+2010-02-07  %(Thomas thorn Hornik)%
+
+	fixed various wrong usage of {{- instead of {{=
+
+2010-02-07  %(Thomas thorn Hornik)%
+
+	updated documentation
+
+2010-02-07  %(Thomas thorn Hornik)%
+
+	added function opf_controller() to simplify core-replacements
+
+2010-02-07  %(Thomas thorn Hornik)%
+
+	updated update_languages.php
+
+2010-02-07  root  <root@xen>
+
+	added help-button to templates/add_edit.htt
+
+2010-02-06  %(Thomas thorn Hornik)%
+
+	reverted and fixed changes from revno 69
+
+2010-02-06  %(Thomas thorn Hornik)%
+
+	added text for filter-function
+
+2010-02-06  %(Thomas thorn Hornik)%
+
+	added latest changes from stefek
+
+2010-02-06  %(Thomas thorn Hornik)%
+
+	moved code form dialog/jquery.dialog.js back to backend_body.js
+
+2010-02-06  %(Thomas thorn Hornik)%
+
+	removed function opf_get_desc(), replaced by pmf_fetch_entry_language()
+
+2010-02-06  %(Thomas thorn Hornik)%
+
+	added field "helppath" to register_filter(), to allow a helpfile for each filter
+	>opf_register_filter(array(
+	>'name' => ...
+	>...
+	>'helppath' => array(
+	>'EN'=>WB_URL.'/modules/outputfilter_dashboard/plugins/name/help_en.html',
+	>'DE'=>WB_URL.'/modules/outputfilter_dashboard/plugins/name/help_de.html'
+	>),
+	>...
+	>);
+
+2010-02-02  %(Thomas thorn Hornik)%
+
+	changed upload.php to check against plugin_info.php
+
+2010-01-31  %(Thomas thorn Hornik)%
+
+	changed upload.php to use pmf_upload_check()
+
+2010-01-24  %(Thomas thorn Hornik)%
+
+	Added latest CSS-update from stefek. Updated docu
+
+2010-01-24  %(Thomas thorn Hornik)%
+
+	changed link for documentation back to language-dependant target
+
+2010-01-24  %(Thomas thorn Hornik)%
+
+	fixed bug from revno 57
+
+2010-01-24  %(Thomas thorn Hornik)%
+
+	plugin-filter have to use plugin_info.php instead of info.php
+
+2010-01-24  %(Thomas thorn Hornik)%
+
+	added precheck.php
+
+2010-01-24  %(Thomas thorn Hornik)%
+
+	changed update_languages.php to sort list of files, to keep entries in language-files in same order
+
+2010-01-24  %(Thomas thorn Hornik)%
+
+	changed templates to convert quotes to entities in all variables
+
+2010-01-24  %(Thomas thorn Hornik)%
+
+	forced install-file to use MyISAM as DB-engine
+
+2010-01-20  %(Thomas thorn Hornik)%
+
+	added pmf_init()-calls to all functions
+
+2010-01-19  %(Thomas thorn Hornik)%
+
+	added argument media to opf_register_frontend_files()
+
+2010-01-17  %(Thomas thorn Hornik)%
+
+	fixed issues with template and opf_register_frontend_files()
+
+2010-01-17  %(Thomas thorn Hornik)%
+
+	fixed issue introduced by revno 51
+
+2010-01-17  %(Thomas thorn Hornik)%
+
+	updated docu
+
+2010-01-16  %(Thomas thorn Hornik)%
+
+	fixed issue: prevent export and delete to be launched by reload
+
+2010-01-15  %(Thomas thorn Hornik)%
+
+	updated scripts to latest versions from pmf
+
+2010-01-15  %(Thomas thorn Hornik)%
+
+	fixed issue introduced by revno 40
+
+2010-01-15  %(Thomas thorn Hornik)%
+
+	- changed function opf_register_frontend_files() to allow to put scripts in head or body.
+	- updated docu
+
+2010-01-09  %(Thomas thorn Hornik)%
+
+	- renamed Filter-Types to Module, Module (last), Page, Page (last)
+	- rearranged tool.htt
+	- added language strings
+	- added copyright-string to DE_pmf.php
+
+2010-01-09  %(Thomas thorn Hornik)%
+
+	updated backend.css with latest version from stefek
+
+2010-01-09  %(Thomas thorn Hornik)%
+
+	updated update_languages.php from latest pmf
+
+2010-01-09  %(Thomas thorn Hornik)%
+
+	updated language-file (missing in last changeset)
+
+2010-01-09  %(Thomas thorn Hornik)%
+
+	updated Documentation (partly)
+
+2010-01-09  %(Thomas thorn Hornik)%
+
+	added latest changes from Christan Stefan
+
+2010-01-08  %(Thomas thorn Hornik)%
+
+	updated backend_body.js to use minified js, rearranged file
+
+2010-01-08  %(Thomas thorn Hornik)%
+
+	fixed serious issue: pressing reload-button will redo last action
+
+2010-01-08  %(Thomas thorn Hornik)%
+
+	fixed various issues
+
+2010-01-07  %(Thomas thorn Hornik)%
+
+	fixed pmf_init() handling
+
+2010-01-07  %(Thomas thorn Hornik)%
+
+	fixed type from last revision
+
+2010-01-07  %(Thomas thorn Hornik)%
+
+	- added latest additions from Christian Stefan: layout-changes and new dialog code.
+	- updated code to work with new dialog.
+
+2010-01-07  %(Thomas thorn Hornik)%
+
+	fixed some issues with export-script
+
+2010-01-07  %(Thomas thorn Hornik)%
+
+	fixed page-select issue with new filters
+
+2010-01-07  %(Thomas thorn Hornik)%
+
+	updated language-file
+
+2010-01-07  %(Thomas thorn Hornik)%
+
+	removed second pages-tree. Put pages- and pages_parent-tree into a single tree
+
+2010-01-06  %(Thomas thorn Hornik)%
+
+	cleanup
+
+2010-01-06  %(Thomas thorn Hornik)%
+
+	fixed various issues in export.php
+
+2010-01-06  %(Thomas thorn Hornik)%
+
+	updated update_languages.php to newest version
+
+2010-01-06  %(Thomas thorn Hornik)%
+
+	- added export function
+
+2010-01-05  %(Thomas thorn Hornik)%
+
+	- added latest layout changes from stefek
+
+2010-01-05  %(Thomas thorn Hornik)%
+
+	added calles to pmf_tpl_destroy()
+
+2010-01-04  %(Thomas thorn Hornik)%
+
+	- added code to display message from plugin-upload
+
+2010-01-03  %(Thomas thorn Hornik)%
+
+	call to pmf_io_rmdir() added
+
+2010-01-03  %(Thomas thorn Hornik)%
+
+	added upload of plugin-filter. Needs some CSS-styling
+
+2010-01-03  %(Thomas thorn Hornik)%
+
+	more cleanup in css.htt
+
+2010-01-03  %(Thomas thorn Hornik)%
+
+	- updated template css.htt. Special template form <!--{{-->...<!--}}--> was removed from pmf.
+
+2010-01-03  %(Thomas thorn Hornik)%
+
+	- added code for "save" and "save and exit"-buttons
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	Added pmf_t() to some strings. Updated DE language-file
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	added design from stefek. Applied minor changes
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	- converted some images to 8bit
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	- updated css-editor-view to work with backend_body.js
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	removed unused type from additional_fields (representation of an array in a textarea)
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	- updated documentation
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	added filter for testing additional_fields
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	fixed issues with additional_fields
+
+2010-01-02  %(Thomas thorn Hornik)%
+
+	fixed .bztignore. Added missing files.
+
+2009-12-31  %(Thomas thorn Hornik)%
+
+	- added missing "<?php" to filter in install.php
+
+2009-12-31  %(Thomas thorn Hornik)%
+
+	- updated docu
+
+2009-12-31  %(Thomas thorn Hornik)%
+
+	- fixed opf_set_active(): mark cache obsolete
+	- updated debug_conf.php
+
+2009-12-31  %(Thomas thorn Hornik)%
+
+	- fixed many issues with quoted/unquoted html in output
+
+2009-12-29  %(Thomas thorn Hornik)%
+
+	- fixed tool-template to mark last added/edited filter in overview
+
+2009-12-29  %(Thomas thorn Hornik)%
+
+	- updated install.php/uninstall.php to register/unregister the module for use with pmf.
+
+2009-12-29  %(Thomas thorn Hornik)%
+
+	- changed link to docu. 
+
+2009-12-29  %(Thomas thorn Hornik)%
+
+	- updated docu
+
+2009-12-29  %(Thomas thorn Hornik)%
+
+	- removed old language-file
+	- clean-up
+	- fixed a bug in opf_register_filter()
+
+2009-12-29  %(Thomas thorn Hornik)%
+
+	- initial import
+
+
+
+1.2:
+1.2.2 %(thorn; 15 Nov 2009)%
+	- added new (english/german) documentation, removed old (german) one
+	- Store filter and page data in SESSION
+	- updated for use with WB2.8
+	- added module-category "form" for form,formx,mpform
+	- removed "Searchresult Highlighting" filter
+
+[some entries missing]
+
+1.1:
+1.1.0 %(thorn; 12 Jan, 2009)%
+        - opf_register_filter(): added 'additional_fields' and 'additional_fields_languages', to add additional config fields.
+          For Filters without own backend, which needs few config-elements.
+          Supported Field-Tags: "text", "textarea", "editarea", "select" (no multi-select) "radio", "checkbox".
+          Additional Field-Tags: "array", will convert arrays (simple arrays only) into pairs of text-fields.
+          "textarea" and "editarea" supports arrays (simple arrays only) [not recommended]
+
+1.0:
+1.0.7 %(thorn; 09 Jan, 2009)%
+        - opf_register_frontend_files(): added parameter iehack.
+          To add an IE-conditional e.g. '[if lt IE 7]', which will add <!--[if lt IE 7]><script ...></script><![endif]-->
+
+1.0.6 %(thorn; 02 Jan, 2009)%
+        - fixed some issue with allowedit and EditArea.
+
+1.0.5 %(thorn; 31 Dec, 2008)%
+        - added missing braces in opf_unregister_filter()
+        - changed "css editor" to use EditArea-Editor, too.
+
+1.0.4 %(thorn; 30 Dec, 2008)%
+        - changed "add filter" and "edit filter" to use the new EditArea-Editor, if available.
+
+1.0.3 %(thorn; 29 Dec, 2008)%
+        - added missig $wb in "Add filter" function-template
+        - CSS-Editor may fail on some servers, due to disabled escapeshellcmd()-function. Fixed.
+
+1.0.2 %(thorn; 27 Dec, 2008)%
+        - undo one fix from 1.00.01.
+        - fixed an issue with mangeled description (missing unserialize()-call in opf_save()).
+
+1.0.1 %(thorn; 27 Dec, 2008)%
+        - fixed two "call-time pass-by-reference"-issues. Thanks to Ralf(Berlin) to point this out.
+
+1.0.0 %(thorn; 26 Dec, 2008)%
+        - initial version
+
