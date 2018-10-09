@@ -113,7 +113,7 @@ if(empty($error) == false){ ?>
 		
 		<div class="buttonsRow">
 			<button type="reset" name="reset" value="reset" class="button" ><?=$TEXT['RESET'] ?></button>
-			<button type="submit" name="action" value="details" class="button" ><?=$TXT_ACCOUNT['SAVE_EMAIL'] ?></button>
+			<button type="submit" name="action" value="email" class="button" ><?=$TXT_ACCOUNT['SAVE_EMAIL'] ?></button>
 		</div>
 	</form>
 	
@@ -143,7 +143,7 @@ if(empty($error) == false){ ?>
 			
 		<div class="buttonsRow">
 			<button type="reset" name="reset" value="reset" class="button" ><?=$TEXT['RESET'] ?></button>
-			<button type="submit" name="action" value="details" class="button" ><?=$TXT_ACCOUNT['SAVE_PASSWORD'] ?></button>
+			<button type="submit" name="action" value="password" class="button" ><?=$TXT_ACCOUNT['SAVE_PASSWORD'] ?></button>
 		</div>
 	</form>
 	<div style="margin: 1em auto;">
