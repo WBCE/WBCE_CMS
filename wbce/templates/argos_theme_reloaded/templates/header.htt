@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="{LANGUAGE}">
 <head>
-<!--(PH) TITLE+ --><title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title><!--(PH) TITLEi -->
+<!--(PH) TITLE+ --><title>{WEBSITE_TITLE}&raquo;{TEXT_ADMINISTRATION}-{SECTION_NAME}</title><!--(PH) TITLE- -->
 <!--(PH) META DESC+ --><meta name="description" content="{TEXT_ADMINISTRATION}" /><!--(PH) META DESC- -->
 <!--(PH) META KEY+ --><meta name="keywords" content="{TEXT_ADMINISTRATION}" /><!--(PH) META KEY -->
 
