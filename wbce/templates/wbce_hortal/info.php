@@ -1,7 +1,7 @@
 <?php
 $template_directory = 'wbce_hortal';
 $template_name = 'Hortal (WBCE)';
-$template_version = '0.8';
+$template_version = '0.8.1';
 $template_platform = '1.x';
 $template_author = 'Chio Maisriml';
 $template_license = 'GNU General Public License. Photos: pexels.com';

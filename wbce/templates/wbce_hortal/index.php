@@ -1,27 +1,24 @@
 <?php
 /**
     @file /templates/wbce_hortal/index.php
-    @brief Die Index Datei enthält das eigentliche (PHP) Template 
+    @brief Die Index Datei enthält das eigentliche (PHP) Template
     
-    Die include.php enthält sämtliche PHP definitionen die dann in der index.php (Also genau hier!!!) in das 
-    in das eigentliche Template eingefügt werden. 
-    
+    Die include.php enthält PHP definitionen die dann in der index.php (Also genau hier!!!) 
+    in das eigentliche Template eingefügt werden.
 */
-//Das ist ein einzeiliger PHP-Kommentar. Er beginnt mit //
-/*Das ist ein mehrzeiliger PHP-Kommentar, Er beginnt mit /* und endet mit  */
-//Diese Kommentare helfen dir im folgenden, das Template zu verstehen.
 
+// Das ist ein einzeiliger PHP-Kommentar. Er beginnt mit //
+/* Das ist ein mehrzeiliger PHP-Kommentar, Er beginnt mit /* und endet mit  */
+// Diese Kommentare helfen dir im folgenden, das Template zu verstehen.
 
 //============================================================================================================
-// Ab hier beginnt das eigentliche Template. 
-//============================================================================================================
-
+// Ab hier beginnt das eigentliche Template.
 
 ?><!DOCTYPE html>
 <html lang="<?php echo strtolower(LANGUAGE); ?>">
 <head>
 <?php if(function_exists('simplepagehead')) {
-	simplepagehead('/', 1, 0, 0); 
+	simplepagehead('/', 1, 0, 0);
 } else { ?>
     <!--(PH) TITLE+ --><title><?php page_title(); ?></title><!--(PH) TITLE- -->
     <!--(PH) META DESC+ --><meta name="description" content="<?php page_description(); ?>" /><!--(PH) META DESC- -->
@@ -46,7 +43,7 @@
     <?php register_frontend_modfiles('js');?>
 <!--(PH) JS HEAD TOP- -->
 
-<!--(PH) CSS HEAD BTM+ -->  
+<!--(PH) CSS HEAD BTM+ -->
     <!--  CSS template spezifisch kann auch die vorherigen Definitionen überschreiben -->
     <link href="<?php echo TEMPLATE_DIR; ?>/editor.css<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo TEMPLATE_DIR; ?>/template.css<?php echo $refreshstring; ?>" rel="stylesheet" type="text/css" />
@@ -57,25 +54,36 @@
     <!-- CSS für den Slider -->
     <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/responsive-slider/responsiveslides.css" type="text/css" media="screen" />
 
-    <!-- hier könnte noch weiteres CSS einfgefügt werden -->     
+    <!-- hier könnte noch weiteres CSS einfgefügt werden -->
 <!--(PH) CSS HEAD BTM- -->
 
 <!--(PH) JS HEAD BTM+ -->
 <!--(PH) JS HEAD BTM- -->
-</head><?php 
+</head><?php
 /*============================================================================================================
-
-Head ist zuende Jetzt kommen wir zum </body>. 
+Head ist zuende Jetzt kommen wir zum </body>.
 Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetzt.
-
 ============================================================================================================ */
 ?><body class="body<?php echo $page_id; if ($isstartpage == true) {echo ' isstartpage'; } ?>">
 <!--(PH) JS BODY TOP+ -->
     <script>
-        // noetig fuer die Blaettern-Schalter siehe oben im PHP Teil
-        var menulinks = ['<?php echo $implodelinks ?>'];
-
-        //der folgende Code gibt den Link zu Quicksearch und zu cookie_permission.php an:
+        <?php
+        // Dieser Code ist noetig fuer die Blaettern-Schalter:
+        // Alle Menu-Link Seiten heraussuchen und beim Blaettern ueperspringen. Sonst bleibt man an ihnen haengen.
+        $theq = "SELECT page_id FROM ".TABLE_PREFIX."sections WHERE module = 'menu_link'";
+        $query = $database->query($theq);
+        $num = $query->numRows();
+        $menulinks = array();
+        if ($num > 0) {
+            while ($row = $query->fetchRow()) {
+                $page_id = (int) $row['page_id'];
+                $menulinks[] = $page_id;
+            }
+        }
+        echo ' var menulinks = ['.implode(',', $menulinks).']; '
+        ?>
+        
+        // Der folgende Code gibt den Link zu Quicksearch und zu cookie_permission.php an:
         var qsURL = "<?php echo TEMPLATE_DIR?>/quicksearch.php";
         var cookie_permission_url = "<?php echo TEMPLATE_DIR?>/inc/cookie_permission.php?lang=<?php echo LANGUAGE?>";
     </script>
@@ -84,7 +92,7 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
 <!--(PH) HTML BODY TOP+ -->
 <!--(PH) HTML BODY TOP- -->
 
-    <div class="bodybox">	
+    <div class="bodybox">
         <a style="display:none;" href="#beginContent">go to content</a>
         <div class="mobileheader">
             <div id="aprevnext2" class="aprevnext">
@@ -104,10 +112,9 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
                         <img src="<?php echo TEMPLATE_DIR; ?>/img/logo.png" alt="Homepage" />
                     </a>
                 </div><!-- logobox -->
-        
-        
+                
         <?php /*
-        Regel : Wenn $contentblock[10] Inhalt hat: diesen ausgeben. 	
+        Regel : Wenn $contentblock[10] Inhalt hat: diesen ausgeben.
         Ansonsten: Wenn das die Startseite ist, laden wir den responsive-slider
         Ansonsten: Einfach einen Bereich mit einem Bild
         */ ?>
@@ -122,8 +129,7 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
                 </div><!-- headerpic -->
             <?php endif;?>
         <?php endif; ?>
-        
-        
+            
             </div>
             <div class="menubox">
                 <!-- Das Suche-Feld laden wir einfach per include, wenn die Suche eingeschaltet ist: -->
@@ -134,7 +140,7 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
                     <div style="clear:both;"></div>
                 </div><!-- nav -->
             </div><!-- menuebox -->
-            <div style="clear:both;"></div>		
+            <div style="clear:both;"></div>
         </div><!-- headerbox -->
         <div id="headerbox_replace"></div>
         
@@ -144,9 +150,9 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
             <div id="leftmenu"><?php echo $menuside ?></div>
         <?php else : ?> 
             <div id="leftmenu"></div>
-            <div class="inner"><?php include('leftblock.php'); ?> 
+            <div class="inner"><?php include('leftblock.php'); ?>
             </div>
-        <?php endif; ?>	
+        <?php endif; ?>
         </div><!--end leftbox-->
         
         <div class="mainbox contentbox">
@@ -154,60 +160,60 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
                 <div id="aprevnext" class="aprevnext">
                     <span style="display:none;">Prev-Next</span>
                 </div>
-                <div class="innerbc">        
+                <div class="innerbc">
                     <!-- breadcrum navigation -->
                     <?php if (isset($breadcrumbs)) { echo $breadcrumbs; } ?>
                 </div><!-- innerbc -->
                 <div id="beginContent" style="clear:both;"></div>
             </div><!-- breadcrumbs -->
-        
+            
             <?php if ($contentblock[3]!= '') :?>
             <div class="widetop"><?php echo $contentblock[3] ?></div>
             <?php endif; ?>
             
             <?php
-            //So, was machen wir mit dem 2. Block:
-            //Do it simple, step by step:
+            // So, was machen wir mit dem 2. Block:
+            // Do it simple, step by step:
             if ($contentblock[2] == '') {
-                //No sidebar, so dont care:
+                // No sidebar, so dont care:
                 echo '<div role="main" class="maincontent contentwide">'.$contentblock[1].'</div>';
                 
             } else {
-                //There IS a sidebar:
+                // There IS a sidebar:
                 if ($block2mobile < 2) {
-                    //Move the sidebar to bottom (after maincontent) or hide. hiding: class sidebar'.$block2mobile
+                    // Move the sidebar to bottom (after maincontent) or hide. hiding: class sidebar'.$block2mobile
                     echo '<div  role="main" class="maincontent contentnarrow">'.$contentblock[1].'</div>';
-                    echo '<div class="sidebar sidebar'.$block2mobile.'" ><div role="complementary" class="inner">'.$contentblock[2].'</div><div style="clear:left; height:1px;"></div></div><!-- end sidebar -->';					
+                    echo '<div class="sidebar sidebar'.$block2mobile.'" ><div role="complementary" class="inner">'.$contentblock[2].'</div><div style="clear:left; height:1px;"></div></div><!-- end sidebar -->';
                 }
-            
+                
                 if ($block2mobile == 2) {
-                    //Move the sidebar to top:
-                    echo '<div class="sidebar sidebar'.$block2mobile.'"><div role="complementary" class="inner">'.$contentblock[2].'</div><div style="clear:left; height:1px;"></div></div><!-- end sidebar -->';	
+                    // Move the sidebar to top:
+                    echo '<div class="sidebar sidebar'.$block2mobile.'"><div role="complementary" class="inner">'.$contentblock[2].'</div><div style="clear:left; height:1px;"></div></div><!-- end sidebar -->';
                     echo '<div role="main" class="maincontent contentnarrow">'.$contentblock[1].'</div>';
                 }
                 
                 if ($block2mobile == 3) {
-                    //Show a switch
+                    // Show a switch
                     echo '<div role="main" class="maincontent contentnarrow">'.$contentblock[1].'</div>
                     <div id="sidebar" class="sidebar"><a id="closesidebarswitch" href="#" onclick="opensidebar();return false;"><img src="'.TEMPLATE_DIR.'/img/close.png" alt="Close Sidebar" title="Close Sidebar"></a><div role="complementary" class="inner">'.$contentblock[2].'</div><div style="clear:left; height:1px;"></div></div><!-- end sidebar -->
                     <a id="opensidebarswitch" href="#" onclick="opensidebar();return false;"><img src="'.TEMPLATE_DIR.'/img/opensidebar.png" alt="Open Sidebar" title="Open Sidebar"></a>';
-                }		
-            }			
+                }
+            }
             ?>
         
         </div><!-- end mainbox -->
         
         <?php if ($contentblock[4] != '') : ?>
-        <div class="widebottom"><?php $contentblock[4] ?></div> 
+        <div class="widebottom"><?php $contentblock[4] ?></div>
         <?php endif; ?>
-            
+        
         <div class="clearcontent"></div>
-
+        
     </div><!-- end bodybox -->
-
+    
     <div class="footerbox">
         <div class="left">
-        <!--LOGIN_URL, LOGOUT_URL,FORGOT_URL also die Loginbox anzeigen-->
+        <!-- LOGIN_URL, LOGOUT_URL,FORGOT_URL also die Loginbox anzeigen -->
         <?php if(FRONTEND_LOGIN) : ?>
             <div id="showlogin">
                 <a href="#" onclick="showloginbox(); return false;">
@@ -215,14 +221,14 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
                 </a>
                 <!-- Die eigentliche Loginbox wird wohl durch das Javascript gefüllt -->
                 <div id="login-box" style="display:none"></div>
-            </div><!-- showlogin --> 
+            </div><!-- showlogin -->
         <?php endif; ?>
-
+        
         <!-- Kleiner Button für den editieren Link -->
-        <?php if ($template_edit_link == true) : ?> 
+        <?php if ($template_edit_link == true) : ?>
             <a class="template_edit_link" href="<?php echo ADMIN_URL ?>/pages/modify.php?page_id=<?php echo PAGE_ID ?>" target="_blank">&nbsp;</a>
-        <?php endif; ?> 
-
+        <?php endif; ?>
+        
         </div><!-- left -->
         <div role="contentinfo" class="center">
             <a id="gototopswitch" href="#" onclick="gototop();return false;">
@@ -231,38 +237,34 @@ Im Body wird das meiste durch kurze Schnippsel direkt in den HTML-Code eingesetz
             <?php page_footer(); ?>
         </div><!-- center -->
     </div><!-- footer -->
-
+    
     <!-- Mobiles Menu Schalter am Ende der Seite ?? -->
     <a href="#" id="nav2close" class="toggleMenu">
         <span style="display:none;">Mobiler Menu</span>
     </a>
     <div id="nav2"></div>
 
-
 <!--(PH) HTML BODY BTM+ -->
-<?php 
-//Und das ist der Farbwaehler. Du kannst das loeschen, wenn du die Farben fixiert hast.
-if ($template_edit_link == true) {include 'colorset/colorpicker.inc.php';} 
+<?php
+// Und das ist der Farbwaehler. Du kannst das loeschen, wenn du die Farben fixiert hast.
+if ($template_edit_link == true) {include 'colorset/colorpicker.inc.php';}
 ?>
 <!--(PH) HTML BODY BTM- -->
-
 
 <!--(PH) JS BODY BTM+ -->
     <!-- Template speciffic JS -->
     <script type="text/javascript" src="<?php echo TEMPLATE_DIR;?>/template.js"></script>
     
-    <!-- register modfiles body , only JS may be here --> 
+    <!-- register modfiles body , only JS may be here -->
     <?php register_frontend_modfiles_body();?>
 <!--(PH) JS BODY BTM- -->
 
-
-
-<?php 
+<?php
     // Manche Module definieren ein og:image. Das ist das Bild, das Facebook anzeigt, wenn du eine Seite dort verlinkst.
-    // Erst hier am Ende sind alle Module durchgelaufen. Das Meta wird hier gesetzt , 
-    // und der move_stuff Filter sorgt dafür, das es nach oben kommt. 
-    // Eigentlich könnten die Module das jetzt selbst machen ohne die Konstante. 
-    // Ich zweifle auch daran , das das im Head schon richtig funktioniert hat . 
+    // Erst hier am Ende sind alle Module durchgelaufen. Das Meta wird hier gesetzt, 
+    // und der move_stuff Filter sorgt dafür, das es nach oben kommt.
+    // Eigentlich könnten die Module das jetzt selbst machen ohne die Konstante.
+    // Ich zweifle auch daran , das das im Head schon richtig funktioniert hat.
     if(defined('OG_IMAGE') AND OG_IMAGE != '') { 
         echo '
 <!--(MOVE) META HEAD- -->
