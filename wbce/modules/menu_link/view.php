@@ -1,60 +1,50 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        modules
- * @package         Menu Link
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: view.php 1420 2011-01-26 17:43:56Z Luisehahne $
- * @filesource		$HeadURL: http://svn.websitebaker2.org/branches/2.8.x/wb/modules/wysiwyg/modify.php $
- * @lastmodified    $Date: 2011-01-11 20:29:52 +0100 (Di, 11 Jan 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 // Must include code to stop this file being access directly
-if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
+defined('WB_PATH') or die("Cannot access this file directly");
 
-
-$this_page_id = PAGE_ID;
 
 // get target_page_id
-$sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_menu_link` WHERE `page_id` = '.(int)$this_page_id;
-$query_tpid = $database->query($sql);
-if($query_tpid->numRows() == 1)
-{
-	$res = $query_tpid->fetchRow();
-	$target_page_id = $res['target_page_id'];
-	$redirect_type = $res['redirect_type'];
-	$anchor = ($res['anchor'] != '0' ? '#'.(string)$res['anchor'] : '');
-	$extern = $res['extern'];
-	// set redirect-type
-	if($redirect_type == 301)
-	{
-		@header('HTTP/1.1 301 Moved Permanently');
-	}
-	if($target_page_id == -1)
-	{
-		if($extern != '')
-		{
-			$target_url = $extern.$anchor;
-			header('Location: '.$target_url);
+$sSql  = 'SELECT * FROM `{TP}mod_menu_link` WHERE `page_id` = '.(int)PAGE_ID;
+$rQueryPageData = $database->query($sSql);
+
+if ($rQueryPageData->numRows() == 1) {
+	$aPageData = $rQueryPageData->fetchRow(MYSQL_ASSOC); // generate assoc array from query
+
+	if ($aPageData['redirect_type'] == 301) {	
+		@header('HTTP/1.1 301 Moved Permanently');	// 301 redirect	
+	} 	
+	
+	if ($aPageData['target_page_id'] == "-1") {
+		if ($aPageData['extern'] != '') {
+			$sTargetUrl = $aPageData['extern'];
+			$sTargetUrl = str_replace('[WB_URL]', WB_URL, $sTargetUrl);
+			header('Location: '.$sTargetUrl);
 			exit;
 		}
-	}
-	else
-	{
+	} else {		
+		// generate anchor if anchor is set
+		$sAnchor = '';
+		if($aPageData['anchor'] != '0'){		
+			$iSectionID = (int) filter_var($aPageData['anchor'], FILTER_SANITIZE_NUMBER_INT);
+			$sAnchor = '#'.SEC_ANCHOR.$iSectionID;
+		}
+		
 		// get link of target-page
-		$sql  = 'SELECT `link` FROM `'.TABLE_PREFIX.'pages` WHERE `page_id` = '.$target_page_id;
-		$target_page_link = $database->get_one($sql);
-		if($target_page_link != null)
-		{
-			$target_url = WB_URL.PAGES_DIRECTORY.$target_page_link.PAGE_EXTENSION.$anchor;
-			header('Location: '.$target_url);
+		$sSql  = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$aPageData['target_page_id'];
+		if ($sTargetPageLink = $database->get_one($sSql)) {
+			$sTargetUrl = WB_URL.PAGES_DIRECTORY.$sTargetPageLink.PAGE_EXTENSION.$sAnchor;
+			header('Location: '.$sTargetUrl);
 			exit;
 		}
 	}

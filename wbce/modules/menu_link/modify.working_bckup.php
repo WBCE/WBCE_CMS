@@ -60,31 +60,105 @@ foreach($aLinks as $p) {
 }
 
 ?>
+<script language="JavaScript" type="text/javascript">
+/*<![CDATA[*/
+	function populate() {
+		o = document.getElementById('menu_link');
+		d = document.getElementById('page_target');
+		e = document.getElementById('extern');
+		if (!d){
+			return;
+		}
+		var mitems = new Array();
+		mitems['0']  = [' ','0'];
+		//mitems['-1'] = [' ','0'];
+<?php foreach($aLinks as $p) {
+			$sToJS  = "\t\tmitems['{$p['page_id']}']  = [";
+			$sToJS .= "' ',";
+			$sToJS .= "'0',";
+			if (is_array($aTargets) && is_array($aTargets[$p['page_id']])) {
+				foreach($aTargets[$p['page_id']] as $value) {
+					$aTmp1 = explode('[#'.SEC_ANCHOR, $value); 
+					$aTmp2 = explode(']', $aTmp1[1]); 
+					$sAnchor = SEC_ANCHOR.$aTmp2[0];
+					$sToJS .= "'".addslashes($value)."',";
+					$sToJS .= "'$sAnchor',";
+				}
+				$sToJS  = rtrim($sToJS, ',');
+				$sToJS .= "];".PHP_EOL;
+			}
+			echo $sToJS;
+		}
+		?>
+		d.options.length = 0;
+		cur = mitems[o.options[o.selectedIndex].value];
+		if (!cur){
+			return;
+		}
+		
+		d.options.length = cur.length / 2;
+		
+		j = 0;
+		for (var i=0; i < cur.length; i=i+2) {
+			d.options[j].text    = cur[i];
+			d.options[j++].value = cur[i+1];
+		}
+		
+
+		if (o.value == '-1') {
+			e.disabled = false;
+		} else {
+			e.disabled = true;
+		}
+	}
+	
+	$(function() {
+		$('#page_link_selection').hide(); 
+		$('#sec_anchor').hide(); 
+		$('#external').hide(); 
+		$('input:radio[name="linktype"]').change(function(){
+			if ($(this).is(':checked') && $(this).val() == 'int') {
+				$('#sec_anchor').show(); 
+				$('#page_link_selection').show(); 
+				$('#external').hide(); 
+				$('#extern').prop('disabled', false);
+			} else {
+				$('#sec_anchor').hide(); 
+				$('#page_link_selection').hide(); 
+				$('#external').show(); 
+				$('#extern').prop('disabled', false);
+			} 
+		});
+	
+		$('input:radio[name="linktype"]').trigger('change');
+	});
+/*]]>*/
+</script>
 <form name="menulink" action="<?=WB_URL ?>/modules/menu_link/save.php" method="post">
 	<input type="hidden" name="page_id" value="<?=$page_id ?>" />
 	<input type="hidden" name="section_id" value="<?=$section_id ?>" />
 	<?=$admin->getFTAN(); ?>
-	<table cellpadding="0" cellspacing="0" border="0" class="menuLinkTable">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 		<tr>
-			<th><?=$TEXT['LINK'].'-'.$TEXT['TYPE'] ?></th>
+			<td width="160"><?=$TEXT['LINK'].'-'.$TEXT['TYPE'] ?>:</td>
 			<td>
 				<input id="external_link" type="radio" name="linktype" value="ext" <?=($aData['target_page_id'] == '-1') ? 'checked' : ''?> /><label for="external_link"><?=$MOD_MENU_LINK['EXTERNAL_LINK']; ?></label>
 				<input id="internal_link" type="radio" name="linktype" value="int" <?=($aData['target_page_id'] == '-1') ? '' : 'checked'?> /><label for="internal_link"><?=$MOD_MENU_LINK['INTERNAL_LINK']; ?></label>
 			</td>
 		</tr>
 		<tr id="page_link_selection">
-			<th><?=$TEXT['PAGE']?></th>
+			<td width="160"><?=$TEXT['LINK'] ?>:</td>
 			<td><?php
 					$sel = ' selected="selected"'; 
 				?>
-				<select class="menuLink" name="menu_link" id="menu_link"  style="font-weight:bold;font-size:15px; min-width:350px;" style="width:250px;" >			
+				<select  style="font-weight:bold;font-size:15px; min-width:350px;" name="menu_link" id="menu_link" onchange="populate()" style="width:250px;" >			
 					<option value="0"<?= $aData['target_page_id'] == '0'  ? $sel : ''?>><?=$TEXT['PLEASE_SELECT']; ?> &hellip;</option>
 					<?php
 					foreach ($aLinks as $p){ 
 					?>
 							<option style="font-size:15px" value="<?=$p['page_id']?>" title="<?=$p['page_title'] ?>"
 							<?=($p['page_id'] == $aData['target_page_id']) ? ' selected' : ''?>
-							<?=($p['page_id'] == $page_id) ? ' disabled' : ''?>	data-right="<?=$p['page_id']?>" data-title="<?=$p['page_title']?>"						
+							<?=($p['page_id'] == $page_id) ? ' disabled' : ''?>	data-right="<?=$p['page_id']?>"						
 						><?=$p['menu_title']?></option>
 					<?php 
 					}					
@@ -94,15 +168,15 @@ foreach($aLinks as $p) {
 			</td>
 		</tr>
 		<tr id="external">
-			<th>URL:</th>
+			<td>URL:</td>
 			<td>
 				<input type="text" name="extern" id="extern" value="<?=$aData['extern']; ?>" style="width:80%;" <?php if ($aData['target_page_id'] != '-1') echo 'disabled="disabled"'; ?> />
 			</td>
 		</tr>
 		<tr id="sec_anchor">
-			<th><?=$TEXT['ANCHOR'] ?></th>
+			<td><?=$TEXT['ANCHOR'] ?>:</td>
 			<td>
-				<select class="menuLink" name="anchor" id="page_target" style="width:350px;" >
+				<select name="anchor" id="page_target" onfocus="populate()" style="width:350px;" >
 					<?php 
 						$sAnchor = $aData['anchor'] == '0' ? ' ':'[#'.$aData['anchor'].']';
 						if (strpos($aData['anchor'], SEC_ANCHOR) !== false){
@@ -122,9 +196,9 @@ foreach($aLinks as $p) {
 			$sTarget = $database->get_one("SELECT `target` FROM `{TP}pages` WHERE `page_id` = '$page_id'");
 		?>
 		<tr>
-			<th><?=$TEXT['TARGET'] ?></th>
+			<td><?=$TEXT['TARGET'] ?>:</td>
 			<td>
-				<select class="menuLink" name="target" style="width:350px;" >
+				<select name="target" style="width:350px;" >
 					<option value="_blank"<?php if ($sTarget == '_blank') echo ' selected="selected"'; ?>><?=$TEXT['NEW_WINDOW'] ?> (_blank)</option>
 					<option value="_self"<?php  if ($sTarget == '_self')  echo ' selected="selected"'; ?>><?=$TEXT['SAME_WINDOW'] ?> (_self)</option>
 					<option value="_top"<?php   if ($sTarget == '_top')   echo ' selected="selected"'; ?>><?=$TEXT['TOP_FRAME'] ?> (_top)</option>
@@ -132,9 +206,9 @@ foreach($aLinks as $p) {
 			</td>
 		</tr>
 		<tr>
-			<th><?=$MOD_MENU_LINK['R_TYPE'] ?></th>
+			<td><?=$MOD_MENU_LINK['R_TYPE'] ?>:</td>
 			<td>
-				<select class="menuLink" name="r_type" style="width:350px;" >
+				<select name="r_type" style="width:350px;" >
 					<option value="301"<?php if ($aData['redirect_type'] == '301') echo ' selected="selected"'; ?>>301</option>
 					<option value="302"<?php if ($aData['redirect_type'] == '302') echo ' selected="selected"'; ?>>302</option>
 				</select>
@@ -145,83 +219,12 @@ foreach($aLinks as $p) {
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 		<tr>
 			<td align="left">
-				<input type="submit" value="<?=$TEXT['SAVE'] ?>" class="button ico-save" style="width: 100px; margin-top: 5px;" />
+				<input type="submit" value="<?=$TEXT['SAVE'] ?>" style="width: 100px; margin-top: 5px;" />
 			</td>
 			<td align="right">
-				<input type="reset" value="<?=$TEXT['RESET'] ?>" class="button ico-reset"  style="width: 100px; margin-top: 5px;" />
-				<input type="button" value="<?=$TEXT['CANCEL'] ?>" class="button ico-cancel"  onclick="javascript: window.location = 'index.php';" style="width: 100px; margin-top: 5px;" />
+				<input type="reset" value="<?=$TEXT['RESET'] ?>" style="width: 100px; margin-top: 5px;" />
+				<input type="button" value="<?=$TEXT['CANCEL'] ?>" onclick="javascript: window.location = 'index.php';" style="width: 100px; margin-top: 5px;" />
 			</td>
 		</tr>
 	</table>
 </form>
-
-<?php 
-$sModDirUrl = str_replace(WB_PATH, WB_URL, __DIR__);
-?>
-<script src="<?=$sModDirUrl?>/selectator/fm.selectator.jquery.min.js"></script>
-<script type="text/javascript">
-$(function () {
-	$('#menu_link').selectator({
-		labels: {
-			search: '<?=$TEXT['SEARCH']?> ... [<?=$TEXT['PAGE']?>-ID, <?=$TEXT['MENU_TITLE']?>]'
-		},
-		searchFields: 'value text subtitle right',
-	});		
-	
-	var countries = { 
-	<?php foreach($aLinks as $p) {
-			$sToJS = "\t\t'{$p['page_id']}':{ '{$TEXT['PLEASE_SELECT']} ...':'0',";
-			
-			if (is_array($aTargets) && is_array($aTargets[$p['page_id']])) {
-				
-				foreach($aTargets[$p['page_id']] as $value) {
-					$aTmp1 = explode('[#'.SEC_ANCHOR, $value); 
-					$aTmp2 = explode(']', $aTmp1[1]); 
-					$sAnchor = SEC_ANCHOR.$aTmp2[0];
-					$sToJS .= "'".addslashes($value)."':";
-					$sToJS .= "'$sAnchor',";
-				}
-				$sToJS  = rtrim($sToJS, ',');
-				$sToJS .= "},".PHP_EOL;
-			}
-			$sToJS  .= "\t\t";
-			echo $sToJS;
-		}
-		?>
-	 };
-	
-	var $locations = $('#page_target');
-		
-	$('#menu_link').change(function () {
-		var country = $(this).val(), locs = countries[country] || [];
-		
-		var html = $.map(locs, function(id, name){
-			return '<option value="' + id + '"' + (id == "<?=$aData['anchor'] ?>" ? "selected" : "") +'>' + name + '</option>'
-		}).join('');
-		$locations.html(html);
-	});
-	
-	$('#menu_link').trigger("change");
-	$('.selectator_value_<?=$page_id?>').addClass('disabled-selection');
-
-	
-	$('#page_link_selection').hide(); 
-	$('#sec_anchor').hide(); 
-	$('#external').hide(); 
-	$('input:radio[name="linktype"]').change(function(){
-		if ($(this).is(':checked') && $(this).val() == 'int') {
-			$('#sec_anchor').show(); 
-			$('#page_link_selection').show(); 
-			$('#external').hide(); 
-			$('#extern').prop('disabled', false);
-		} else {
-			$('#sec_anchor').hide(); 
-			$('#page_link_selection').hide(); 
-			$('#external').show(); 
-			$('#extern').prop('disabled', false);
-		} 
-	});
-
-	$('input:radio[name="linktype"]').trigger('change');
-});
-</script>

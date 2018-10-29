@@ -16,6 +16,7 @@ $module_description = 'This module allows you to insert a link into the menu.';
 // Headings and text outputs
 $MOD_MENU_LINK['TEXT'] = 'Click HERE to go to the main page';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'External Link';
+$MOD_MENU_LINK['INTERNAL_LINK'] = 'Internal Link';
 $MOD_MENU_LINK['R_TYPE'] = 'Redirect-Type';
 
 

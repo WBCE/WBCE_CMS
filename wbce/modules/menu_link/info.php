@@ -10,11 +10,11 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$module_directory = 'menu_link';
-$module_name = 'Menu Link';
-$module_function = 'page';
-$module_version = '2.8';
-$module_platform = '2.8.x';
-$module_author = 'Ryan Djurovich, thorn';
-$module_license = 'GNU General Public License';
+$module_directory   = 'menu_link';
+$module_name        = 'Menu Link';
+$module_function    = 'page';
+$module_version     = '2.9.3';
+$module_platform    = '2.8.x';
+$module_author      = 'Ryan Djurovich, thorn, Christian M. Stefan';
+$module_license     = 'GNU General Public License';
 $module_description = 'This module allows you to insert a link into the menu.';

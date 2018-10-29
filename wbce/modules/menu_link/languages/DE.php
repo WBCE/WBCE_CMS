@@ -16,6 +16,7 @@ $module_description = 'Dieses Modul erm&ouml;glicht die Anzeige eines Links im S
 // Ueberschriften und Textausgaben
 $MOD_MENU_LINK['TEXT'] = 'Klicken Sie HIER um zur Startseite zu gelangen';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'Entfernte Adresse';
+$MOD_MENU_LINK['INTERNAL_LINK'] = 'Interner Link';
 $MOD_MENU_LINK['R_TYPE'] = 'Redirect-Typ';
 
 
