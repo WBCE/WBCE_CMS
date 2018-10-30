@@ -39,9 +39,6 @@
     <script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"></script>
     <script>window.jQuery.ui || document.write('<script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"><\/script>')</script>
 
-    <!--[if lt IE 7]><script type="text/javascript" src="{THEME_URL}/jquery/jquery-pngFix.js"></script><![endif]-->
-    <script src="{THEME_URL}/jquery/jquery-plugins.js" type="text/javascript"></script>
-
 	<script src="{THEME_URL}/jquery/autosize.min.js" type="text/javascript"></script>
 	<script src="{THEME_URL}/jquery/jquery.cookie.js" type="text/javascript"></script>
 	<script src="{THEME_URL}/jquery/jquery.easytabs.min.js" type="text/javascript"></script>
