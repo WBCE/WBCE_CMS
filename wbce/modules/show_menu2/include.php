@@ -29,24 +29,22 @@ define('SM2_CURRTREE',     0x0400); // bit 10
 define('SM2_SHOWHIDDEN',   0x0800); // bit 11
 define('SM2_XHTML_STRICT', 0x1000); // bit 12
 define('SM2_NO_TITLE',     0x2000); // bit 13
-
-define('_SM2_GROUP_1',  0x000F); // exactly one flag from group 1 is required
-
+define('_SM2_GROUP_1',     0x000F); // exactly one flag from group 1 is required
 // Include default formatter
 include_once("classes/sm2_formatter.php");
 
 function error_logs($error_str)
 {
-    $log_error = true;
-    if ( ! function_exists('error_log') )
-            $log_error = false;
+	$log_error = true;
+	if ( ! function_exists('error_log') )
+			$log_error = false;
 
-    $log_file = @ini_get('error_log');
-    if ( !empty($log_file) && ('syslog' != $log_file) && !@is_writable($log_file) )
-            $log_error = false;
+	$log_file = @ini_get('error_log');
+	if ( !empty($log_file) && ('syslog' != $log_file) && !@is_writable($log_file) )
+			$log_error = false;
 
-    if ( $log_error )
-            @error_log($error_str, 0);
+	if ( $log_error )
+			@error_log($error_str, 0);
 }
 
 function show_menu2(
@@ -159,9 +157,8 @@ function show_menu2(
         || !array_key_exists($aMenu, $GLOBALS['show_menu2_data'])
         
     )
-    {
+    {     
         global $database;
-        
         // create an array of all parents of the current page. As the page_trail
         // doesn't include the theoretical root element 0, we add it ourselves.
         $rgCurrParents = explode(",", '0,'.$wb->page['page_trail']);
@@ -317,7 +314,7 @@ function show_menu2(
        //echo "<pre>"; print_r($rgParent); echo "</pre>";
         unset($rgParent);
     }
-    /*
+	/*
     // Deactivated only display to max level, not sure if its a good idea
 
     // adjust $aMaxLevel to the level number of the final level that 
@@ -337,7 +334,8 @@ function show_menu2(
     else {  // SM2_START+N
         $aMaxLevel += $aStartLevel - SM2_START;
     }
-    */
+	*/
+	
     // generate the menu
     $retval = false; 
     
@@ -390,10 +388,13 @@ function show_menu2(
     if (($flags & SM2_NOCACHE) != 0) {
         unset($GLOBALS['show_menu2_data'][$aMenu]);
     }
-    
+    if(defined('SM2_CORRECT_MENU_LINKS') && true){
+        $retval = sm2_correct_menu_links($retval);  
+    }
+	
     return $retval;
-}
-
+} 
+	
 function show_breadcrumbs(
     $aMenu = 0,
     $aStart = SM2_ROOT,
@@ -645,7 +646,9 @@ function show_breadcrumbs(
     if (($flags & SM2_NOCACHE) != 0) {
         unset($GLOBALS['show_menu2_data'][$aMenu]);
     }
-    
+    if(defined('SM2_CORRECT_MENU_LINKS') && true){
+        $retval = sm2_correct_menu_links($retval);  
+    }
     return $retval;
 }
 
@@ -772,4 +775,56 @@ function sm2_recurse(
     if ($isListOpen) {
         $aFormatter->finishList();
     }
+}
+
+/**
+ * sm2_correct_menu_links()
+ * ======================================================================
+ *
+ * @author  Christian M. Stefan <stefek@designthings.de>
+ * @license GNU/GPL v.2 or any later
+ * ----------------------------------------------------------------------
+ *
+ * @param  string  $sMenu  the prepopulated menu string
+ * @return string          the menu string with correctly replaced URLs
+ * ----------------------------------------------------------------------
+ * 
+ */
+function sm2_correct_menu_links($sMenu){
+	if(defined('SM2_CORRECT_MENU_LINKS') && true){
+		global $database;
+		
+		$aMenuLinks = array();
+		$rMenuLinks = $database->query("SELECT * FROM `{TP}mod_menu_link`");
+		$i = 0; 
+		if($rMenuLinks->numRows() > 0) {
+			while($row = $rMenuLinks->fetchRow(MYSQL_ASSOC)) {		
+				//$aMenuLinks[$i] = $row;
+				if(!empty($row['target_page_id'])){
+					$aMenuLinks[$i]['replace_url'] = get_page_link($row['target_page_id']).''.PAGE_EXTENSION;			
+					if(!empty($row['anchor'])){
+						$aMenuLinks[$i]['replace_url'] .= '#'.str_replace('#', '', $row['anchor']);
+					}
+					$aMenuLinks[$i]['replace_url'] = WB_URL.PAGES_DIRECTORY.$aMenuLinks[$i]['replace_url'];
+				}
+				if(!empty($row['extern'])){					
+					$sTargetUrl = str_replace('[WB_URL]', WB_URL, $row['extern']);
+					$aMenuLinks[$i]['replace_url'] = $sTargetUrl;
+				}
+				if(isset($aMenuLinks[$i]['replace_url'])){
+					$aMenuLinks[$i]['pagetree_url'] = $database->get_one("SELECT `link` FROM `{TP}pages` WHERE `page_id` = ".$row['page_id']);
+					$aMenuLinks[$i]['pagetree_url'] = WB_URL.PAGES_DIRECTORY.$aMenuLinks[$i]['pagetree_url'].PAGE_EXTENSION;
+				}
+				$i++;
+			}
+		}
+		if(!empty($aMenuLinks)){
+			$aReplacements = array();
+			foreach($aMenuLinks as $k => $link){
+				$aReplacements[$link['pagetree_url']] = $link['replace_url'];
+			}
+			$sMenu = strtr($sMenu, $aReplacements);
+		}
+	}
+	return $sMenu;
 }
