@@ -32,7 +32,6 @@ var LANGUAGE = '{LANGUAGE}';
 <script src="{WB_URL}/include/jquery/jquery-include.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-migrate-min.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-ui-min.js" type="text/javascript"></script>
-<script type="text/javascript" src="{THEME_URL}/jquery/jquery-plugins.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/jqueryStickyElements/jquery.StickyElements.2.1.0.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/jqueryNiceFileInput/jquery.nicefileinput.min.js"></script>
 <script type="text/javascript" src="{THEME_URL}/jquery/theme.js"></script>
