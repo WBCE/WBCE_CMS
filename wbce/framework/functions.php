@@ -1268,3 +1268,21 @@ if (!function_exists('url_encode')) {
         return str_replace($entities, $replacements, rawurlencode($string));
     }
 }
+
+
+/**
+ * is_countable()
+ * ==============
+ * This function will be implemented in PHP since version 7.3.0
+ * This polyfill function will allow the use of this function
+ * also on environments with a PHP lower than 7.3.0
+ * see also: http://php.net/manual/en/function.is-countable.php
+ *
+ * @param   unspecified  $uVar The variable you want to check 
+ * @return  bool         true or false
+ */
+if (!function_exists('is_countable')) {
+    function is_countable($uVar) {
+        return (is_array($uVar) || $uVar instanceof Countable);
+    }
+}
