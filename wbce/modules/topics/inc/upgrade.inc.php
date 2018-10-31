@@ -64,20 +64,20 @@ if(!isset($settings_fetch['is_master_for'])){
 }
 
 //Create folders and copy example pics
-$picpath = WB_PATH.MEDIA_DIRECTORY.'/'.$mod_dir.'-pictures';
+$picpath = WB_PATH.MEDIA_DIRECTORY.'/'.$tablename.'-pictures';
 make_dir($picpath);
-$frompath = (WB_PATH.'/modules/'.$mod_dir.'/img/');
+$frompath = (WB_PATH.'/modules/'.$mod_dir.'/defaults/demopics/');
 if (!file_exists($picpath.'/1.jpg')) { copy($frompath.'1.jpg', $picpath.'/1.jpg') ; }
 if (!file_exists($picpath.'/2.jpg')) { copy($frompath.'2.jpg', $picpath.'/2.jpg') ; }
 if (!file_exists($picpath.'/3.jpg')) { copy($frompath.'3.jpg', $picpath.'/3.jpg') ; }
 
-$picpath = WB_PATH.MEDIA_DIRECTORY.'/'.$mod_dir.'-pictures/thumbs';
+$picpath = WB_PATH.MEDIA_DIRECTORY.'/'.$tablename.'-pictures/thumbs';
 make_dir($picpath);
 if (!file_exists($picpath.'/1.jpg')) { copy($frompath.'thumb1.jpg', $picpath.'/1.jpg') ; }
 if (!file_exists($picpath.'/2.jpg')) { copy($frompath.'thumb2.jpg', $picpath.'/2.jpg') ; }
 if (!file_exists($picpath.'/3.jpg')) { copy($frompath.'thumb3.jpg', $picpath.'/3.jpg') ; }
 
-$picpath = WB_PATH.MEDIA_DIRECTORY.'/'.$mod_dir.'-pictures/zoom';
+$picpath = WB_PATH.MEDIA_DIRECTORY.'/'.$tablename.'-pictures/zoom';
 make_dir($picpath);
 if (!file_exists($picpath.'/1.jpg')) { copy($frompath.'zoom1.jpg', $picpath.'/1.jpg') ; }
 if (!file_exists($picpath.'/2.jpg')) { copy($frompath.'zoom2.jpg', $picpath.'/2.jpg') ; }
@@ -87,7 +87,7 @@ if (!file_exists($picpath.'/3.jpg')) { copy($frompath.'zoom3.jpg', $picpath.'/3.
 $mpath = WB_PATH.'/modules/'.$mod_dir.'/';
 if (!file_exists($mpath.'module_settings.php')) { copy($mpath.'defaults/module_settings.default.php', $mpath.'module_settings.php') ; }
 if (!file_exists($mpath.'frontend.css')) { copy($mpath.'defaults/frontend.default.css', $mpath.'frontend.css') ; }
-if (!file_exists($mpath.'comment_frame.css')) { copy($mpath.'defaults/comment_frame.default.css', $mpath.'comment_frame.css') ; }
+//if (!file_exists($mpath.'comment_frame.css')) { copy($mpath.'defaults/comment_frame.default.css', $mpath.'comment_frame.css') ; }
 if (!file_exists($mpath.'frontend.js')) { copy($mpath.'defaults/frontend.default.js', $mpath.'frontend.js') ; }
 
 ?>
