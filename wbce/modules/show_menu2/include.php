@@ -94,8 +94,8 @@ function show_menu2(
     if (is_countable($wb->page)){       
         if (count($wb->page) == 0 && defined('REFERRER_ID') && REFERRER_ID > 0) {
             global $database;
-            $sql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = '.REFERRER_ID.'';
-            $result = $database->query($sql);
+            $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = '.REFERRER_ID.'';
+            $result = $database->query($sSql);
             if ($result->numRows() == 1) {
                 $wb->page = $result->fetchRow();
             }
@@ -190,12 +190,11 @@ function show_menu2(
         // are about to create it is cheaper for us to get everything we need
         // from the database once and create the menu from memory then make 
         // multiple calls to the database. 
-        $sql  = 'SELECT '.$fields.' FROM `{TP}pages` ';
-		$sql .= 'WHERE '.$wb->extra_where_sql.' '.$menuLimitSql.' ';
-		$sql .= 'ORDER BY `level` ASC, `position` ASC';
-        $sql = str_replace('hidden', 'IGNOREME', $sql); // we want the hidden pages
-       // echo "<br>$sql<br>";
-        $oRowset = $database->query($sql);
+        $sSql  = 'SELECT '.$fields.' FROM `{TP}pages` '
+                . 'WHERE '.$wb->extra_where_sql.' '.$menuLimitSql.' '
+		. 'ORDER BY `level` ASC, `position` ASC';
+        $sSql = str_replace('hidden', 'IGNOREME', $sSql); // we want the hidden pages
+        $oRowset = $database->query($sSql);
         if (is_object($oRowset) && $oRowset->numRows() > 0) {
             // create an in memory array of the database data based on the item's parent. 
             // The array stores all elements in the correct display order.
@@ -389,7 +388,7 @@ function show_menu2(
     if (($flags & SM2_NOCACHE) != 0) {
         unset($GLOBALS['show_menu2_data'][$aMenu]);
     }
-    if(defined('SM2_CORRECT_MENU_LINKS') && true){
+    if(defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true){
         $retval = sm2_correct_menu_links($retval);  
     }
 	
@@ -437,8 +436,8 @@ function show_breadcrumbs(
     if (is_countable($wb->page)){       
         if (count($wb->page) == 0 && defined('REFERRER_ID') && REFERRER_ID > 0) {
             global $database;
-            $sql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = '.REFERRER_ID.'';
-            $result = $database->query($sql);
+            $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = '.REFERRER_ID.'';
+            $result = $database->query($sSql);
             if ($result->numRows() == 1) {
                 $wb->page = $result->fetchRow();
             }
@@ -510,26 +509,22 @@ function show_breadcrumbs(
             $fields = '*';
         }
 
-        $sql  = 'SELECT '.$fields.' FROM `{TP}pages` ';
-        $sql .= 'WHERE '.$wb->extra_where_sql.' '.$menuLimitSql.' ';
-        $sql .= 'ORDER BY `level` ASC, `position` ASC';
-        $sql = str_replace('hidden', 'IGNOREME', $sql);
-        $oRowset = $database->query($sql);
+        $sSql  = 'SELECT '.$fields.' FROM `{TP}pages` '
+                . 'WHERE '.$wb->extra_where_sql.' '.$menuLimitSql.' '
+                . 'ORDER BY `level` ASC, `position` ASC';
+        $sSql = str_replace('hidden', 'IGNOREME', $sSql);
+        $oRowset = $database->query($sSql);
         if (is_object($oRowset) && $oRowset->numRows() > 0) {
             while ($page = $oRowset->fetchRow()) {
                 if ($page['visibility'] == 'hidden') {
                     $page['sm2_hide'] = true;
-                }
-                
-                else if (!$wb->page_is_active($page) && $page['link'] != $wb->default_link && !INTRO_PAGE) {
+                } elseif (!$wb->page_is_active($page) && $page['link'] != $wb->default_link && !INTRO_PAGE) {
                     continue;
-                }
-
-                else if (!$wb->page_is_visible($page) && $page['visibility'] != 'registered') {
+                } elseif (!$wb->page_is_visible($page) && $page['visibility'] != 'registered') {
                     continue;
                 }
                 
-				if(!isset($page['tooltip'])) { $page['tooltip'] = $page['page_title']; }
+		if(!isset($page['tooltip'])) { $page['tooltip'] = $page['page_title']; }
                 
                 $idx = $page['parent'];
                 if (!array_key_exists($idx, $rgParent)) {
@@ -539,8 +534,7 @@ function show_breadcrumbs(
                 if ($page['page_id'] == $CURR_PAGE_ID) {
                     $page['sm2_is_curr'] = true;
                     $page['sm2_on_curr_path'] = true;
-                    if ($flags & SM2_SHOWHIDDEN) 
-					{ 
+                    if ($flags & SM2_SHOWHIDDEN) { 
                         unset($page['sm2_hide']); 
                     }
                 }
@@ -551,9 +545,8 @@ function show_breadcrumbs(
                 if (in_array($page['page_id'], $rgCurrParents)) {
                     $page['sm2_is_parent'] = true;
                     $page['sm2_on_curr_path'] = true;
-                    if ($flags & SM2_SHOWHIDDEN) 
-					{
-						unset($page['sm2_hide']);
+                    if ($flags & SM2_SHOWHIDDEN) {
+                        unset($page['sm2_hide']);
                     }
                 }
                 
@@ -622,8 +615,7 @@ function show_breadcrumbs(
                 $sm2formatter = new SM2_Formatter();
             }
             $formatter = $sm2formatter;
-            $formatter->set($flags, $aItemOpen, $aItemClose, 
-                $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen);
+            $formatter->set($flags, $aItemOpen, $aItemClose, $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen);
         }
         
         $showAllLevel = $aStartLevel - 1;
@@ -637,7 +629,8 @@ function show_breadcrumbs(
             $GLOBALS['show_menu2_data'][$aMenu],
             $aStart,
             $aStartLevel, $showAllLevel, $aMaxLevel, $flags, 
-            $formatter);
+            $formatter
+        );
 
         $formatter->finalize();
         
@@ -649,7 +642,7 @@ function show_breadcrumbs(
     if (($flags & SM2_NOCACHE) != 0) {
         unset($GLOBALS['show_menu2_data'][$aMenu]);
     }
-    if(defined('SM2_CORRECT_MENU_LINKS') && true){
+    if(defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true){
         $retval = sm2_correct_menu_links($retval);  
     }
     return $retval;
