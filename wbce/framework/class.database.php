@@ -1,34 +1,30 @@
 <?php
 /**
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
  *
- * @category        framework
- * @package         database
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: class.database.php 1613 2012-02-16 12:12:17Z darkviper $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/framework/class.database.php $
- * @lastmodified    $Date: 2012-02-16 13:12:17 +0100 (Do, 16. Feb 2012) $
+ * @category   framework
+ * @package    database
+ * @copyright  Ryan Djurovich (2004-2009)
+ * @copyright  WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright  WBCE Project (2015-)
+ * @license    GNU GPL2 (or any later version)
  *
  */
  
-/*
-Database class
-This class will be used to interface between the database
-and the Website Baker code
+/**
+ * Class database
+ * ============== 
+ * This class will be used to interface with the database and the WBCE CMS code
  */
  
 //no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+if(count(get_included_files()) == 1) die(header("Location: ../index.php", TRUE, 301));
  
  
-// define the old mysql consts for Backward compatibility
-if (!defined('MYSQL_ASSOC')) {
-    define('MYSQL_ASSOC', 1);
-    define('MYSQL_NUM', 2);
-    define('MYSQL_BOTH', 3);
+// define the old mysql constants for backward compatibility
+if (!defined('MYSQL_CLIENT_COMPRESS')) {
     define('MYSQL_CLIENT_COMPRESS', 32);
     define('MYSQL_CLIENT_IGNORE_SPACE', 256);
     define('MYSQL_CLIENT_INTERACTIVE', 1024);
@@ -37,14 +33,14 @@ if (!defined('MYSQL_ASSOC')) {
 
 class database
 {
-
-    private $db_handle = null; // readonly from outside
-    private $db_name = '';
-    private $connected = false;
-    private $sCharset = '';
-    private $error = '';
+    private $db_handle  = null;    // readonly from outside
+    private $db_name    = '';
+    private $connected  = false;
+    private $sCharset   = '';
+    private $error      = '';
     private $error_type = '';
-    private $message = array();
+    private $message    = array();
+    private $_prefixes  = array(); 
 
     // Set DB_URL
     public function __construct($url = '')
@@ -53,9 +49,10 @@ class database
         if (!$this->connect()) {
             throw new DatabaseException($this->get_error());
         }
+        $this->_prefixes = $this->_tablePrefixes();
     }
 
-    // Connect to the database   DB_CHARSET
+    // Connect to the database DB_CHARSET
     public function connect()
     {
 
@@ -82,30 +79,70 @@ class database
         return $this->connected;
     }
     
+    /**
+     * delRow() (Delete row)
+     * =====================
+     *     
+     * Example usage: $database->delRow('{TP}mod_mymod', 'entry_id', '5');                  // single row
+     * Example usage: $database->delRow('{TP}mod_mymod', 'entry_id', array('3', '6', '9')); // multiple rows    
+     *
+     * @param  string  $table
+     * @param  string  $refKey  reference key (column)
+     * @param  unspec  $mRows   may be a string or integer OR an array of rows
+     *
+     * @return unspec  bool true on completion, otherwise error string
+    */
+    public function delRow($table, $refKey = '', $uRows){
+        $retVal = false;
+        if (!is_array($uRows)) {
+            $uRows = array($uRows);
+        }
+        if(!empty($uRows)){
+            foreach($uRows as $key){
+                $sqlRowCheck = sprintf("SELECT COUNT(*) FROM `%s` WHERE `%s` = '%s'", $table, $refKey, $key);            
+                if ($this->get_one($sqlRowCheck)) {            
+                    $strQuery = sprintf("DELETE FROM `%s` WHERE `%s` = '%s'", $table, $refKey, $key);
+                } 
+                if($this->query($strQuery)){                    
+                    $retVal = true; 
+                }else{ 
+                    $retVal = $this->get_error();
+                }
+            }
+        }
+        return $retVal;
+    }   
 
      /**
-     * Update row.
+     * updateRow() Update row
+     * ======================
+     *     
+     * Example usage: 
+     * $aUpdate = array(
+     *    'entry_id' => 5,
+     *    'name'     => 'Jane Doe',
+     *    'zip_code' => '23450-7',
+     * );
+     * $database->updateRow('{TP}mod_mymod', 'entry_id', $aUpdate);  
      *
-     * @param string $table
-     * @param string $primaryKey
+     * @param string $table     
+     * @param string $refKey reference key (column)
      * @param array  $data
      *
      * @return Result
-     *
-     * @throws DatabaseException
      */
-    function updateRow($table = '', $primaryKey = '', $data = array()){
+    function updateRow($table = '', $refKey = '', $data = array()){
         $retVal = false;
-        if (isset($data[$primaryKey])) {
+        if (isset($data[$refKey])) {
             $parameters = array();
             foreach ($data as $column => $value) {
                 $parameters[] = "`".trim($column)."` = '".$value."', ";             
             }
             $sValues = implode("", $parameters);
             $sValues = substr($sValues, 0, -2);
-            $sqlRowCheck = "SELECT COUNT(*) FROM `".$table."` WHERE `".$primaryKey."` = '".$data[$primaryKey]."'";
+            $sqlRowCheck = sprintf("SELECT COUNT(*) FROM `%s` WHERE `%s` = '%s'", $table, $refKey, $data[$refKey]);
             if ($this->get_one($sqlRowCheck)) {
-                $strQuery = sprintf("UPDATE `%s` SET %s WHERE `%s` = '%s'", $table, $sValues, $primaryKey, $data[$primaryKey]);
+                $strQuery = sprintf("UPDATE `%s` SET %s WHERE `%s` = '%s'", $table, $sValues, $refKey, $data[$refKey]);
             } else { 
                 $strQuery =  sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
             }
@@ -120,7 +157,15 @@ class database
     
     
     /**
-     * Insert row.
+     * insertRow() Insert row
+     * ======================
+     *     
+     * Example usage: 
+     * $aInsert = array(
+     *    'name'     => 'Jane Doe',
+     *    'zip_code' => '23450-7',
+     * );
+     * $database->updateRow('{TP}mod_mymod', $aInsert);  
      *
      * @param string $table
      * @param array  $data
@@ -146,21 +191,64 @@ class database
     }
     
     
+    
     /**
-     * Replace placeholder with table prefix.
+     * replaceTablePrefix() 
+     * =========================
+     * Replace DB table prefix placeholders/tokens
      *
      * @param string $statement
-     *
      * @return string
      */
     protected function replaceTablePrefix($statement)
     {
-        if(strpos($statement, '{T') !== false) {
-            $statement = str_replace(array('{TABLE_PREFIX}', '{TP}'), TABLE_PREFIX, $statement);
-        }
+        if(strpos($statement, '{') !== false) 
+            $statement = strtr($statement, $this->_prefixes);
+		
         return $statement;
     }   
+    /**
+     * _tablePrefixes() 
+     * =========================
+     * default Prefix tokens
+     *
+     * @return array 
+    */
+    private function _tablePrefixes()
+    {
+        return array(
+            '{TABLE_PREFIX}' => TABLE_PREFIX,
+            '{TP}'           => TABLE_PREFIX, // shorthand 
+        );
+        // More Prefixes can be added to this array using the public addPrefix() method
+    }
     
+    /**
+     * addPrefix() 
+     * =========================
+     *    
+     * Makes it possible to add additional DB table prefixes.
+     * You can simply add new prefix/placeholder pairs from 
+     * inside modules, plugins or what have you...
+     *    
+     * Example usage: $database->addPrefix('{DROPLETS_TABLE}', TABLE_PREFIX.'mod_droplets');
+     *
+     * @param  string  $sPrefixPH
+     * @param  string  $sValue
+     *
+     * @return bool    bool false if empty values given; otherwise adds to prefixes array
+    */
+    public function addPrefix($sPrefixPH = "", $sValue = "")
+    {
+        if ($sPrefixPH != "" && $sValue != "") {
+            $aNewSet = array(
+                $sPrefixPH => $sValue
+            );
+            $this->_prefixes += $aNewSet;
+        } else {
+            return false;
+        }
+    }
        
     // Disconnect from the database
     public function disconnect()
@@ -268,7 +356,7 @@ class database
     }
 
 /*
- * @param string $table_name: full name of the table (incl. TABLE_PREFIX)
+ * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
  * @param string $field_name: name of the field to seek for
  * @return bool: true if field exists
  */
@@ -282,7 +370,7 @@ class database
     }
 
 /*
- * @param string $table_name: full name of the table (incl. TABLE_PREFIX)
+ * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
  * @param string $index_name: name of the index to seek for
  * @return bool: true if field exists
  */
@@ -306,7 +394,7 @@ class database
         }
     }
 /*
- * @param string $table_name: full name of the table (incl. TABLE_PREFIX)
+ * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
  * @param string $field_name: name of the field to add
  * @param string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
  * @return bool: true if successful, otherwise false and error will be set
@@ -328,7 +416,7 @@ class database
     }
 
 /*
- * @param string $table_name: full name of the table (incl. TABLE_PREFIX)
+ * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
  * @param string $field_name: name of the field to add
  * @param string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
  * @return bool: true if successful, otherwise false and error will be set
@@ -346,7 +434,7 @@ class database
     }
 
 /*
- * @param string $table_name: full name of the table (incl. TABLE_PREFIX)
+ * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
  * @param string $field_name: name of the field to remove
  * @return bool: true if successful, otherwise false and error will be set
  */
@@ -362,7 +450,7 @@ class database
     }
 
 /*
- * @param string $table_name: full name of the table (incl. TABLE_PREFIX)
+ * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
  * @param string $index_name: name of the new index
  * @param string $field_list: comma seperated list of fields for this index
  * @param string $index_type: kind of index (UNIQUE, PRIMARY, '')
@@ -389,7 +477,7 @@ class database
     }
 
 /*
- * @param string $table_name: full name of the table (incl. TABLE_PREFIX)
+ * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
  * @param string $field_name: name of the field to remove
  * @return bool: true if successful, otherwise false and error will be set
  */
@@ -412,15 +500,22 @@ class database
  * @param string $sTblCollation
  * @return boolean true if import successful
  */
-    public function SqlImport($sSqlDump,
-        $sTablePrefix = '',
-        $bPreserve = true,
-        $sTblEngine = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
-        $sTblCollation = ' collate utf8_unicode_ci') {
+    public function SqlImport(
+        $sSqlDump,
+        $sTablePrefix  = '',
+        $bPreserve     = true,
+        $sTblEngine    = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
+        $sTblCollation = ' collate utf8_unicode_ci'
+    ) 
+    {
         $retval = true;
         $this->error = '';
-        $aSearch = array('{TP}','{TABLE_PREFIX}', '{TABLE_ENGINE}', '{TABLE_COLLATION}');
-        $aReplace = array($sTablePrefix,$sTablePrefix, $sTblEngine, $sTblCollation);
+        $aReplaceTokens = array(
+            '{TP}'              => $sTablePrefix,
+            '{TABLE_PREFIX}'    => $sTablePrefix, 
+            '{TABLE_ENGINE}'    => $sTblEngine, 
+            '{TABLE_COLLATION}' => $sTblCollation
+        );
         $sql = '';
         $aSql = file($sSqlDump);
         while (sizeof($aSql) > 0) {
@@ -428,7 +523,7 @@ class database
             if (!preg_match('/^[-\/]+.*/', $sSqlLine)) {
                 $sql = $sql . ' ' . $sSqlLine;
                 if ((substr($sql, -1, 1) == ';')) {
-                    $sql = trim(str_replace($aSearch, $aReplace, $sql));
+                    $sql = trim(strtr($sql, $aReplaceTokens));
                     if (!($bPreserve && preg_match('/^\s*DROP TABLE IF EXISTS/siU', $sql))) {
                         if (!$this->query($sql)) {
                             $retval = false;
@@ -464,10 +559,11 @@ class database
 
 } /// end of class database
 
-define('MYSQL_SEEK_FIRST', 0);
-define('MYSQL_SEEK_LAST', -1);
-define('MYSQLI_SEEK_FIRST', 0);
-define('MYSQLI_SEEK_LAST', -1);
+
+defined('MYSQL_SEEK_FIRST')  or define('MYSQL_SEEK_FIRST', 0);
+defined('MYSQL_SEEK_LAST')   or define('MYSQL_SEEK_LAST', -1);
+defined('MYSQLI_SEEK_FIRST') or define('MYSQLI_SEEK_FIRST', 0);
+defined('MYSQLI_SEEK_LAST')  or define('MYSQLI_SEEK_LAST', -1);
 
 class mysql
 {
@@ -525,45 +621,4 @@ class mysql
 
 } // end of class mysql
 
-class DatabaseException extends Exception
-{}
-
-/* this function is placed inside this file temporarely until a better place is found */
-/*  function to update a var/value-pair(s) in table ****************************
- *  nonexisting keys are inserted
- *  @param string $table: name of table to use (without prefix)
- *  @param mixed $key:    a array of key->value pairs to update
- *                        or a string with name of the key to update
- *  @param string $value: a sting with needed value, if $key is a string too
- *  @return bool:  true if any keys are updated, otherwise false
- */
-function db_update_key_value($table, $key, $value = '')
-{
-    global $database;
-    if (!is_array($key)) {
-        if (trim($key) != '') {
-            $key = array(trim($key) => trim($value));
-        } else {
-            $key = array();
-        }
-    }
-    $retval = true;
-    foreach ($key as $index => $val) {
-        $index = strtolower($index);
-        $sql = 'SELECT COUNT(`setting_id`) FROM `' . TABLE_PREFIX . $table . '` WHERE `name` = \'' . $index . '\' ';
-        if ($database->get_one($sql)) {
-            $sql = 'UPDATE ';
-            $sql_where = 'WHERE `name` = \'' . $index . '\'';
-        } else {
-            $sql = 'INSERT INTO ';
-            $sql_where = '';
-        }
-        $sql .= '`' . TABLE_PREFIX . $table . '` ';
-        $sql .= 'SET `name` = \'' . $index . '\', ';
-        $sql .= '`value` = \'' . $val . '\' ' . $sql_where;
-        if (!$database->query($sql)) {
-            $retval = false;
-        }
-    }
-    return $retval;
-}
+class DatabaseException extends Exception {}
