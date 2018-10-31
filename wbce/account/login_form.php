@@ -39,4 +39,4 @@ foreach (account_getLanguageFiles() as $sLangFile) require_once $sLangFile;
 // Get the template file for forgot_login_details
 include account_getTemplate('form_login');
 
-#wb_dump(get_included_files());
+#debug_dump(get_included_files());
