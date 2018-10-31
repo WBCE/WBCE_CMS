@@ -91,18 +91,7 @@ function show_menu2(
     // ourselves using the referrer ID as the current page
     // this is for the pageless pages search, preferences, login ....pageless pages suck
     $CURR_PAGE_ID = defined('REFERRER_ID') ? REFERRER_ID : PAGE_ID;
-    if (is_array($wb->page)){       
-        if (count($wb->page) == 0 && defined('REFERRER_ID') && REFERRER_ID > 0) {
-            global $database;
-            $sql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = '.REFERRER_ID.'';
-            $result = $database->query($sql);
-            if ($result->numRows() == 1) {
-                $wb->page = $result->fetchRow();
-            }
-            unset($result);
-        } 
-    }
-    if (is_array($wb->page)){       
+    if (is_countable($wb->page)){       
         if (count($wb->page) == 0 && defined('REFERRER_ID') && REFERRER_ID > 0) {
             global $database;
             $sql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = '.REFERRER_ID.'';
@@ -445,7 +434,7 @@ function show_breadcrumbs(
     }
     
     $CURR_PAGE_ID = defined('REFERRER_ID') ? REFERRER_ID : PAGE_ID;
-    if (is_array($wb->page)){       
+    if (is_countable($wb->page)){       
         if (count($wb->page) == 0 && defined('REFERRER_ID') && REFERRER_ID > 0) {
             global $database;
             $sql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = '.REFERRER_ID.'';
