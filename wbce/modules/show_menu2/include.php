@@ -192,7 +192,7 @@ function show_menu2(
         // multiple calls to the database. 
         $sSql  = 'SELECT '.$fields.' FROM `{TP}pages` '
                 . 'WHERE '.$wb->extra_where_sql.' '.$menuLimitSql.' '
-		. 'ORDER BY `level` ASC, `position` ASC';
+                . 'ORDER BY `level` ASC, `position` ASC';
         $sSql = str_replace('hidden', 'IGNOREME', $sSql); // we want the hidden pages
         $oRowset = $database->query($sSql);
         if (is_object($oRowset) && $oRowset->numRows() > 0) {
