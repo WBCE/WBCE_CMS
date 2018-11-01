@@ -11,9 +11,6 @@
  */
 
  
-
-require __DIR__ .'/wb_dump.function.php';
-
 // get a string between a [tag] your string [/tag]
 if(!function_exists('getStringBetweenTags')){
 	function getStringBetweenTags($sContent, $sTag){
@@ -117,20 +114,20 @@ if(!function_exists('renderAspHoneypots')){
 			// add some honeypot-fields
 			ob_start();	
 		?>
-			<div style="display:none;">
-				<input type="hidden" name="submitted_when" value="<?=$sTimeStamp ?>" />
-				<p class="nixhier">
-					<label for="email-address" title="Leave this field email-address blank">Email address:</label>
-					<input id="email-address" name="email-address" size="60" value="" />
-				</p>
-				<p class="nixhier">				
-					<label for="name" title="Leave this field name blank">Username (id):</label>
-					<input id="name" name="name" size="60" value="" /></p>
-				<p class="nixhier">
-					<label for="full_name" title="Leave this field full_name blank">Full Name:</label>
-					<input id="full_name" name="full_name" size="60" value="" />
-				</p>
-			</div>		
+<div style="display:none;">
+    <input type="hidden" name="submitted_when" value="<?=$sTimeStamp ?>" />
+    <p class="nixhier">
+        <label for="email-address" title="Leave this field email-address blank">Email address:</label>
+        <input id="email-address" name="email-address" size="60" value="" />
+    </p>
+    <p class="nixhier">				
+        <label for="name" title="Leave this field name blank">Username (id):</label>
+        <input id="name" name="name" size="60" value="" /></p>
+    <p class="nixhier">
+        <label for="full_name" title="Leave this field full_name blank">Full Name:</label>
+        <input id="full_name" name="full_name" size="60" value="" />
+    </p>
+</div>		
 		<?php 
 			$sASPFields = ob_get_clean();
 		} //end:ENABLED_ASP
