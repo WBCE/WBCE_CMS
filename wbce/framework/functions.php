@@ -773,7 +773,7 @@ function createFolderProtectFile($sAbsDir = '', $bMakeDir = true)
             // $admin->print_error($MESSAGE['MEDIA_DIR_EXISTS']);
             $retVal[] = basename($sAbsDir) . '::' . $MESSAGE['MEDIA_DIR_EXISTS'];
         }
-        if (!is_dir($sAbsDir) && !bMakeDir($sAbsDir)) {
+        if (!is_dir($sAbsDir) && !make_dir($sAbsDir)) {
             // $admin->print_error($MESSAGE['MEDIA_DIR_NOT_MADE']);
             $retVal[] = basename($sAbsDir) . '::' . $MESSAGE['MEDIA_DIR_NOT_MADE'];
         } else {
