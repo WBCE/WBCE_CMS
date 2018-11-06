@@ -23,7 +23,6 @@ if (LANGUAGE_LOADED) {
 }
 
 include __DIR__ .'/functions.pageTree.php';
-include __DIR__ .'/wb_dump.function.php';
 
 // get target page_id
 $sql_result = $database->query("SELECT * FROM `{TP}mod_menu_link` WHERE `section_id` = ".$section_id);
@@ -41,7 +40,7 @@ if ($query_page = $database->query("SELECT `page_id`, `menu_title` FROM `{TP}pag
 // Get list of targets
 $aTargets = array();
 $aLinks = pageTreeCombobox(nestedPagesArray(), $page_id);
-#wb_dump($aLinks);
+#debug_dump($aLinks);
 foreach($aLinks as $p) {
 	if ($query_section = $database->query("SELECT `section_id`, `namesection` FROM `{TP}sections` WHERE `page_id` = ".$p['page_id']." ORDER BY `position`")) {
 		while($section = $query_section->fetchRow(MYSQL_ASSOC)) {
