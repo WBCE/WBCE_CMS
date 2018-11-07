@@ -28,9 +28,9 @@ class WSession{
 
     // Define the name for a Sub array to store all information , 
     // so we do not interferre whith other implemented scripts in the $_SESSION var.  
-    public static $Store="WBCE";
-    public static $StorePerm="WBCE_Perm";
-    public static $Expire=7200; // PHP default value
+    public static $Store     = "WBCE";
+    public static $StorePerm = "WBCE_Perm";
+    public static $Expire    = 7200; // PHP default value
    
 
     public static function  Start(){
@@ -56,26 +56,22 @@ class WSession{
         ini_set( 'session.cookie_httponly', 1 );
         
         // Secure Cookies if we use https
-        if(WB_PROTOCOLL=="https"){ 
+        if(DOMAIN_PROTOCOLL == "https"){ 
             ini_set( 'session.cookie_secure', 1 );
         }
-        
-    
 
         // Start a session if needed 
         if (!self::IsStarted()) {
             // Session parameter
             session_name(APP_NAME . '-sid');
             session_set_cookie_params(0);
-       
             
-            session_start();
-            
+            session_start();            
             
             // Session identifier used by Secureform class , so we dont need to use session_id
             // and tokens stay valid if we just refresh session id
-            if (WSession::Get('SessionTokenIdentifier')==false) {
-                $rnd=new RandomGen();
+            if (WSession::Get('SessionTokenIdentifier') == false) {
+                $rnd = new RandomGen();
                 WSession::Set('SessionTokenIdentifier', $rnd->TextToken(32));
             }
             
@@ -85,7 +81,7 @@ class WSession{
 
         // make sure session never exeeds lifetime
        
-        $now=time();
+        $now = time();
         //echo "Now: $now <br>";
         //echo "discard_after:".$_SESSION['WB']['discard_after']."<br>";
         //echo "Secform timeout:".WB_SECFORM_TIMEOUT."<br>";
@@ -107,7 +103,7 @@ class WSession{
     }
 
     
-    public static function  ReStart($Kill=false){
+    public static function  ReStart($bKill = false){
     
         //delete all session variables
         $_SESSION = array();
@@ -120,7 +116,7 @@ class WSession{
         session_destroy();
     
         #if kill is set, end script here.
-        if ($Kill) {die('Scrip and session ended by function Session::ReStart($Kill=true) ');}
+        if ($bKill) {die('Scrip and session ended by function Session::ReStart($Kill=true) ');}
    
         # restarting
         self::Start(true);
@@ -155,7 +151,7 @@ class WSession{
         self::Set("SessionStarted", time());
         
         // regenerate permanent storage
-        $_SESSION[self::$StorePerm]=$SavePerm;
+        $_SESSION[self::$StorePerm] = $SavePerm;
         
         return false;
     }
@@ -167,8 +163,8 @@ class WSession{
     For now this is only for completeness
 
 */
-    public static function  RegenerateId($delete_old_session = false){
-        session_regenerate_id ($delete_old_session);
+    public static function  RegenerateId($bDeleteOldSession = false){
+        session_regenerate_id($bDeleteOldSession);
     }
     
 /**
@@ -187,12 +183,12 @@ class WSession{
 /**
     @brief Sets a value in the normal Session save space. 
 */
-    public static function  Set($sVar="", $Value=""){
+    public static function  Set($sVar = "", $Value = ""){
 
         if (empty($sVar)) return "No variable name set..!";
         if (!self::IsStarted()) return "no session running!";
 
-        $_SESSION[self::$Store][$sVar]=$Value;
+        $_SESSION[self::$Store][$sVar] = $Value;
 
     }
 
@@ -201,41 +197,41 @@ class WSession{
     
     e.g. Username can be stored here 
 */
-    public static function  SetPerm($sVar="", $Value=""){
+    public static function  SetPerm($sVar = "", $Value = ""){
 
         if (empty($sVar)) return "No variable name set..!";
         if (!self::IsStarted()) return "no session running!";
         
-        $_SESSION[self::$StorePerm][$sVar]=$Value;
+        $_SESSION[self::$StorePerm][$sVar] = $Value;
     }
 
 
 /**
     @brief Gets a value in the normal Session save space.
 */
-    public static function  Get($sVar="",$Default=false){
+    public static function  Get($sVar = "", $uDefault = false){
 
-        if (empty($sVar)) return $Default;
-        if (!self::IsStarted()) return $Default;
+        if (empty($sVar)) return $uDefault;
+        if (!self::IsStarted()) return $uDefault;
 
         if (isset($_SESSION[self::$Store][$sVar])) return $_SESSION[self::$Store][$sVar];
         // Fallback for old Vars 
         if (isset($_SESSION[$sVar])) return $_SESSION[$sVar];
 
-        return $Default;
+        return $uDefault;
     }
 
 /**
     @brief Gets a value in the permanent Session save space.
 */
-    public static function  GetPerm($sVar="",$Default=false){
+    public static function  GetPerm($sVar = "", $uDefault = false){
 
-        if (empty($sVar)) return $Default;
-        if (!self::IsStarted) return $Default;
+        if (empty($sVar)) return $uDefault;
+        if (!self::IsStarted) return $uDefault;
 
         if (isset($_SESSION[self::$StorePerm][$sVar])) return $_SESSION[self::$StorePerm][$sVar];
 
-        return $Default;
+        return $uDefault;
     }
 
 
@@ -289,17 +285,17 @@ class WSession{
         // All This to get a good , compatible installler 
         self::$Expire = ini_get("session.gc_maxlifetime");
         
-        if (Settings::Get ("wb_session_timeout") !==false){
-            self::$Expire = Settings::Get ("wb_session_timeout");
+        if (Settings::Get("wb_session_timeout") !==false){
+            self::$Expire = Settings::Get("wb_session_timeout");
         }
-        elseif (Settings::Get ("wb_secform_timeout") !==false){
-            self::$Expire = Settings::Get ("wb_secform_timeout");
+        elseif (Settings::Get("wb_secform_timeout") !==false){
+            self::$Expire = Settings::Get("wb_secform_timeout");
         }
-        if (Settings::GetDB ("wb_session_timeout") !==false){
-            self::$Expire = Settings::GetDb ("wb_session_timeout");
+        if (Settings::GetDB("wb_session_timeout") !==false){
+            self::$Expire = Settings::GetDb("wb_session_timeout");
         }
-        elseif (Settings::GetDB ("wb_secform_timeout") !==false){
-            self::$Expire = Settings::GetDb ("wb_secform_timeout");
+        elseif (Settings::GetDB("wb_secform_timeout") !==false){
+            self::$Expire = Settings::GetDb("wb_secform_timeout");
         }
 
     }  
@@ -313,37 +309,36 @@ class WSession{
     @return string Returns an html Overview of all Session Vars 
 */    
     public static function  Debug(){    
-        $aSession=array();
-        $aPerm=array();
-        $aGlobal=array();
-        $sOut="";
+        $aSession = array();
+        $aPerm    = array();
+        $aGlobal  = array();
+        $sOut     = "";
        
-        $aSession=$_SESSION[self::$Store];
-        $aPerm=$_SESSION[self::$StorePerm];
-        $aGlobal=$_SESSION;
+        $aSession = $_SESSION[self::$Store];
+        $aPerm    = $_SESSION[self::$StorePerm];
+        $aGlobal  = $_SESSION;
         unset ($aGlobal[self::$Store]);
         unset ($aGlobal[self::$StorePerm]);
         
         
         if (!empty($aSession)){
-            $sOut="<h3>WBCE Session</h3>";
+            $sOut = "<h3>WBCE Session</h3>";
             foreach ($aSession as $sKey=>$uValue){
-                $sOut="$sKey: $uValue<br>\n";
+                $sOut = "$sKey: $uValue<br>\n";
             }
         }
         if (!empty($aPerm)){
-            $sOut="<h3>WBCE Permanent Session</h3>";
+            $sOut = "<h3>WBCE Permanent Session</h3>";
             foreach ($aPerm as $sKey=>$uValue){
-                $sOut="$sKey: $uValue<br>\n";
+                $sOut = "$sKey: $uValue<br>\n";
             }
         }
         if (!empty($aGlobal)){
-            $sOut="<h3>Global session vars</h3>";
+            $sOut = "<h3>Global session vars</h3>";
             foreach ($aGlobal as $sKey=>$uValue){
-                $sOut="$sKey: $uValue<br>\n";
+                $sOut = "$sKey: $uValue<br>\n";
             }
         }
-    }
-    
+    }    
 
 }
