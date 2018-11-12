@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2018)
  * @category        opffilter
  * @package         OPF Droplets
- * @version         1.1.0
+ * @version         1.1.1
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -21,8 +21,8 @@
 /*
  *      CHANGELOG
  *
+ *      1.1.1   2018-11-12      - correctly set the where parameter
  *      1.1.0   2018-09-11      - merge WBCE 1.3.x: allow commenting out droplets
- *
  *      1.0.1   2017-04-11      - make install/upgrade work w/o classical output_filters
  *      1.0.0   2017-01-23      - turn classical outputfilter to an OpF filter module
  *
@@ -42,7 +42,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_droplets';
 $module_name            = 'OPF Droplets';
 $module_function        = 'opffilter';
-$module_version         = '1.1.0';
+$module_version         = '1.1.1';
 $module_platform        = 'WBCE 1.3.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

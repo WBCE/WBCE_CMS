@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2018)
  * @category        opffilter
  * @package         OPF Droplets
- * @version         1.1.0
+ * @version         1.1.1
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
