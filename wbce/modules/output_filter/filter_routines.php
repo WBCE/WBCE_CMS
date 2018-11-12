@@ -30,20 +30,23 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 /* ### filter type: execute droplets filter ################################# */
         if (OPF_DROPLETS){
             $sFile = $sFilterDirectory.'filterDroplets.php';
-		    if (file_exists($sFile)) {
-			    require_once $sFile;
-			    $content = doFilterDroplets($content, 'frontend');
-		    }
-	    }
+            if (file_exists($sFile)) {
+                require_once $sFile;
+                $content = doFilterDroplets($content, 'frontend');
+            }
+        }
                 
 /* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
 // deactivated vor this revision       
         if (OPF_AUTO_PLACEHOLDER){
-            if (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
+            if (class_exists('Insert')){
+                $content = I::addPlaceholdersToDom($content);
+                $content = I::doFilter($content); 
+            } elseif (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
                 require_once($sFilterDirectory.'filterGeneratePlaceholders.php');
                 $content = doFilterGeneratePlaceholders($content);
             }
-        }
+	}
 
         /* ### filter type: fill out placeholders for Javascript, CSS, Metas and Title  ################################# */
 // deactivated for this revision       
@@ -109,13 +112,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
                 require_once($sFilterDirectory.'filterRemoveSystemPh.php');
                 $content = doFilterRemoveSystemPh($content);
             }
-        }
-        
-
- 
-
-        
-        
+        }        
         
 /* ### end of filters ####################################################### */
         return $content;
@@ -137,20 +134,22 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 /* ### filter type: execute droplets filter for backend ################################# */
         if (OPF_DROPLETS_BE){
             $sFile = $sFilterDirectory.'filterDroplets.php';
-		    if (file_exists($sFile)) {
-			    require_once $sFile;
-			    $content = doFilterDroplets($content, 'backend');
-		    }
-	    }
-        
-/* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
-        if (OPF_AUTO_PLACEHOLDER_BE){
-            if (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
-                require_once($sFilterDirectory.'filterGeneratePlaceholders.php');
-                $content = doFilterGeneratePlaceholders($content);
+            if (file_exists($sFile)) {
+                require_once $sFile;
+                $content = doFilterDroplets($content, 'backend');
             }
         }
         
+/* ### filter type: Auto Add Placeholders for Javascript, CSS, Metas and Title   ################################# */ 
+        if (OPF_AUTO_PLACEHOLDER_BE){
+            if (class_exists('Insert')){
+                $content = I::addPlaceholdersToDom($content);
+                $content = I::doFilter($content);
+            } elseif (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
+                require_once($sFilterDirectory.'filterGeneratePlaceholders.php');
+                $content = doFilterGeneratePlaceholders($content);
+            }
+	}
 /* ### filter type: fill out placeholders for Javascript, CSS and new Metas   ################################# */
 // deactivated for this revision       
         if (OPF_MOVE_STUFF_BE){
