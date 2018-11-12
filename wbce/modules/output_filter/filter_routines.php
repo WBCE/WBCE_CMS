@@ -41,7 +41,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
         if (OPF_AUTO_PLACEHOLDER){
             if (class_exists('Insert')){
                 $content = I::addPlaceholdersToDom($content);
-                $content = I::doFilter($content);
+                $content = I::doFilter($content); 
             } elseif (file_exists($sFilterDirectory.'filterGeneratePlaceholders.php')) {
                 require_once($sFilterDirectory.'filterGeneratePlaceholders.php');
                 $content = doFilterGeneratePlaceholders($content);

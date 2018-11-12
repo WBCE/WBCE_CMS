@@ -31,8 +31,8 @@ function doFilterGeneratePlaceholders($sContent) {
     }
    
     // While working with jQuery and other JS Libraries it's important to have its  
-    //    CSS files added before the actual JS code. 
-    //    We have taken care of it using the proper order of placeholders.
+    // CSS files added before the actual JS code. 
+    // We have taken care of it using the proper order of placeholders/hooks.
     $aPlaceholders = array(
         'JS HEAD TOP' => array(
             "/<\s*meta[^>]*?charset.*?\/?\s*>/si",

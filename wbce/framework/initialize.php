@@ -17,11 +17,9 @@
  * in the main directory(webroot). 
  * 
  */
-
- 
  
 // no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php", TRUE, 301);
+if(count(get_included_files()) == 1) header("Location: ../index.php", TRUE, 301);
 
 // Stop execution if PHP version is too old
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
@@ -70,7 +68,25 @@ if ($aPreDb !== false && !empty($aPreDb)){
 $database = new database();
 
 
-// PRE_INIT MODULE
+// SYSTEM CONSTANTS
+//     
+// Now we start definig System constants if not already set
+// Lots of compatibility work here, please only use the WB_ constants in future stuff
+
+// first check if someone added crap in the config
+if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
+    die('Invalid admin-directory: ' . ADMIN_DIRECTORY);
+}
+
+defined('ADMIN_DIRECTORY')  or define('ADMIN_DIRECTORY', 'admin');
+defined('ADMIN_URL')        or define('ADMIN_URL',       WB_URL .'/'. ADMIN_DIRECTORY);
+defined('ADMIN_PATH')       or define('ADMIN_PATH',      WB_PATH .'/'. ADMIN_DIRECTORY);
+
+// Load framework functions before preinit files so we can use functions right away.  
+require_once(WB_PATH.'/framework/functions.php');
+
+
+// PRE_INIT MODULES
 //    
 // Pre init, modules may change everyting as almost nothing is already set here
 // Module may hook here to change Page_id Language or whatever. Even most System Constants.
@@ -88,46 +104,26 @@ if (($rSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE f
     }
 }
 
-
-// SYSTEM CONSTANTS
-//     
-// Now we start definig System constants if not already set
-// Lots of compatibility work here, please only use the WB_ constants in future stuff
-
-
-defined('WB_PATH')         or define('WB_PATH', dirname(__DIR__));
-
-// check if someone added crap in the config
-if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
-    die('Invalid admin-directory: ' . ADMIN_DIRECTORY);
-}
-
-defined('ADMIN_DIRECTORY')  or define('ADMIN_DIRECTORY', 'admin');
-defined('ADMIN_URL')        or define('ADMIN_URL',       WB_URL .'/'. ADMIN_DIRECTORY);
-defined('ADMIN_PATH')       or define('ADMIN_PATH',      WB_PATH .'/'. ADMIN_DIRECTORY);
-
-// WB_PROTOCOLL (This is a new Constant so no old variant)
-$protocoll="http";
-
+// define DOMAIN_PROTOCOLL constant
+$protocoll = "http";
 // $_SERVER['HTTPS'] alone is not reliable ... :-(
-//https://github.com/dmikusa-pivotal/cf-php-apache-buildpack/issues/6
+// https://github.com/dmikusa-pivotal/cf-php-apache-buildpack/issues/6
 if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
-    $protocoll="https";
+    $protocoll = "https";
 }
 if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == 443) {
-    $protocoll="https";
+    $protocoll = "https";
 }
 if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){
-    $protocoll="https";
+    $protocoll = "https";
 }
-define ("WB_PROTOCOLL", $protocoll);
+define("DOMAIN_PROTOCOLL", $protocoll);
 
 // MORE AUTOLOADER REGISTRATION
 // Registering additional classes that are needed by the core 
 
 // Registering class for idna conversion (needed for email-checks)
 WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
-
 WbAuto::AddFile("SecureForm", "/framework/SecureForm.php");
 
 // Auto Load the Insert and I Classes
@@ -142,29 +138,25 @@ Twig_Autoloader::register();
 require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
 
 // Create database class
-$database = new database();
-
-
+// $database = new database(); // why was the $database instance initiated twice?
+                               // let's run it a while and remove if it doesn't break 
+                               // the performance
 
 // SETUP SYSTEM CONSTANTS (GLOBAL SETTINGS)
 // We use Settings Class to fetch all Settings from DB 
-// Then we process all data into the dependent connstants. 
+// Then we process all data into the coresponding constants. 
 
-// Fetch all settings whith Settings class from framework 
-Settings::Setup();
+Settings::Setup(); // Fetch all settings whith Settings class from framework 
 
 // RESULTING CONSTANTS
 // some resulting constants need to be set manually
-
-// DO_NOT_TRACK (deprecated, not used and we remove this soon)
-define('DO_NOT_TRACK', (isset($_SERVER['HTTP_DNT'])));
 
 // Filemodes
 $string_file_mode = STRING_FILE_MODE;
 define('OCTAL_FILE_MODE',    (int) octdec($string_file_mode));
 define('WB_OCTAL_FILE_MODE', (int) octdec($string_file_mode));
 
-//Dirmodes
+// Dirmodes
 $string_dir_mode = STRING_DIR_MODE;
 define('OCTAL_DIR_MODE',    (int) octdec($string_dir_mode));
 define('WB_OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
@@ -211,7 +203,7 @@ date_default_timezone_set('UTC');
 //We then simply fallback to PHP default Session handling.
 
 // Init custom session handler 
-$hCustomSessionHandler= new DbSession();
+$hCustomSessionHandler = new DbSession();
 
 // Init  special Session handling and Start session.
 WSession::Start();
@@ -265,28 +257,28 @@ if (!defined("LANGUAGE")) {
 if (!file_exists(WB_PATH . '/languages/EN.php')) {
     exit('Error loading default language file (EN), please check configuration and file');
 } else {
+	// we always load EN language file
     require_once WB_PATH . '/languages/EN.php';
 }
 
-// Load Language file
-if (!file_exists(WB_PATH . '/languages/' . LANGUAGE . '.php')) {
-    exit('Error loading language file ' . LANGUAGE . ', please check configuration and file');
-} else {
-    require_once WB_PATH . '/languages/' . LANGUAGE . '.php';
-    define("LANGUAGE_LOADED", true);
+// Load LC language file if LANGUAGE != EN
+if(LANGUAGE != 'EN'){
+	$sLangFile = WB_PATH . '/languages/' . LANGUAGE . '.php';
+	if (file_exists($sLangFile)) require_once $sLangFile;
 }
-
-//include old languages format  only for compatibility only needed for some old modules
+// include old languages format  only for compatibility only needed for some old modules
 if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
     include WB_PATH . '/languages/old.format.inc.php';
 }
+define("LANGUAGE_LOADED", true);
 
-// define more Constants
-defined("THEME_URL")        or define('THEME_URL',       WB_URL .'/templates/'. DEFAULT_THEME);
-defined("THEME_PATH")       or define('THEME_PATH',      WB_PATH .'/templates/'. DEFAULT_THEME);
+// define more system constants
+defined("THEME_URL")        or define('THEME_URL',        WB_URL .'/templates/'. DEFAULT_THEME);
+defined("THEME_PATH")       or define('THEME_PATH',       WB_PATH .'/templates/'. DEFAULT_THEME);
 defined("EDIT_ONE_SECTION") or define('EDIT_ONE_SECTION', false);
 defined("EDITOR_WIDTH")     or define('EDITOR_WIDTH', 0);
-// TIMEZONE AND DATE/TIME FORMAT CONSTANTS
+
+// TIMEZONE and DATE/TIME FORMAT constants
 define('TIMEZONE',    isset($_SESSION['TIMEZONE'])    ? $_SESSION['TIMEZONE']    : DEFAULT_TIMEZONE);
 define('DATE_FORMAT', isset($_SESSION['DATE_FORMAT']) ? $_SESSION['DATE_FORMAT'] : DEFAULT_DATE_FORMAT);
 define('TIME_FORMAT', isset($_SESSION['TIME_FORMAT']) ? $_SESSION['TIME_FORMAT'] : DEFAULT_TIME_FORMAT);
@@ -295,16 +287,11 @@ define('TIME_FORMAT', isset($_SESSION['TIME_FORMAT']) ? $_SESSION['TIME_FORMAT']
 // Version should be available not only in admin section(BE)
 require_once ADMIN_PATH . '/interface/version.php';
 
-// FUNCTIONS.PHP
-// finally load framework Functions so we don't need to include this in almost every file  
-require_once(WB_PATH.'/framework/functions.php');
-
-
-
 // ////////////////////////////////////////////////////////////////////////////////
 //  HELPER FUNCTIONS
 //  Moved down here as they need to be removed/reworked sooner or later
 // ////////////////////////////////////////////////////////////////////////////////
+
 /**
  * @brief  sanitize $_SERVER['HTTP_REFERER']
  * @todo   Change WBCE so it uses the save referrer and no longer touches the basic referrer 

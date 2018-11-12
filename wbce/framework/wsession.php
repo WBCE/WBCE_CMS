@@ -96,8 +96,7 @@ class WSession{
         // ASP Still expects old placement of Session Var
         /// @todo Change ASP to use WSession::Get() then change setting session startet in Session class too.  
         if (!isset($_SESSION['session_started'])) 
-            $_SESSION['session_started'] = time();
-            
+            $_SESSION['session_started'] = time();            
         
         return false;
     }
@@ -136,9 +135,9 @@ class WSession{
         if (!self::IsStarted()) return "no session running!";
         
         // save permanent Data
-        $SavePerm=array();
+        $SavePerm = array();
         if (isset($_SESSION[self::$StorePerm])){
-            $SavePerm=$_SESSION[self::$StorePerm];
+            $SavePerm = $_SESSION[self::$StorePerm];
         }
         
         //delete all session variables

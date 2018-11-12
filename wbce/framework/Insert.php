@@ -1141,6 +1141,5 @@ class Insert {
         }
         return $sContent;
     }
-
 }
 // end of Class Insert
