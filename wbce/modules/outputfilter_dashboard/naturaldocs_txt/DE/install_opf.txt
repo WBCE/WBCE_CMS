@@ -1,0 +1,139 @@
+Header: OutputFilter-Dashboard Modul installieren (de)
+
+Group: Installation des OutputFilter-Dashboard Moduls
+
+Topic: Voraussetzungen
+
+        Website Baker 2.8 oder neuer.
+
+Topic: Vor der Installation
+
+
+        Vor der Installation von OutputFilter-Dashboard mu&szlig; das alte
+        Frontend-Filter-Admin Modul - wenn vorhanden - deinstalliert werden,
+        nicht zu verwechseln mit dem Frontend-Output-Filter!
+
+        (see deinstall_frontendfilter_de.png)
+
+        Bitte beachten Sie, das bei der deinstallation des Frontendfilters alle eingerichteten
+        Inline-Filter ebenfalls gel&ouml;scht werden. M&ouml;glicherweise wollen Sie diese Filter vor der
+        Deinstallation sichern, um sie in OutputFilter-Dashboard wieder einzurichten.
+        Sichern Sie die Funktion der Inline-Filter durch Copy&Paste, z.B. durch kopieren in einen
+        Texteditor. Richten Sie dann in OutputFilter-Dashboard den Filter wieder ein.
+
+        Nun m&uuml;ssen noch alle m&ouml;glicherweise installierte Filter-Module deinstalliert werden.
+
+Topic: Installation
+
+        Installieren Sie OutputFilter-Dashboard wie &uuml;blich.
+
+        (see install_module_de.png)
+
+Topic: Nach der Installation
+        *Website Baker ab Version 2.8.3 sp6 und Website Baker Community Edition ab WBCE 1.1 entalten bereits die Anpassungen um Outputfilter Dashboard zu verwenden. Im klassischen Website Baker muss das Outputfilter Dashboard explizit in den Einstellungen vom Frontend Output Filter aktiviert werden. Au&szlig;erdem funktionieren im klassischen Website Baker die Modulspezifischen Filter nicht ohne Core-Anpassungen. Daf&uuml;r ist nach wie vor die Anpassung der Datei wb/framework/frontend.functions.php (siehe unten) erforderlich.*
+
+        F&uuml;r &auml;ltere Versionen m&uuml;ssen noch zwei "Core"-Dateien angepa&szlig;t werden.
+
+        Der n&auml;chste Abschnitt erkl&auml;rt die notwendigen Schritte.
+
+
+Group: Core-Dateien ver&auml;ndern
+        Damit OutputFilter-Dashboard richtig funktioniert m&uuml;ssen zwei "Core"-Dateien angepa&szlig;t werden.
+
+Topic: wb/index.php
+
+        &Ouml;ffnen Sie die Datei !wb/index.php! mit Ihrem Texteditor, und suchen Sie die nachstehenden Zeilen (nah am Ende der Datei):
+
+                >// Collect general website settings
+                >$wb->get_website_settings();
+                >
+                >// Load functions available to templates, modules and code sections
+                >// also, set some aliases for backward compatibility
+
+        und *passen Sie diesen Zeilen wie folgt an* (f&uuml;gen Sie den mittleren Teil ein):
+
+                >// Collect general website settings
+                >$wb->get_website_settings();
+                >
+                >// Load OutputFilter functions
+                >if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
+                >        require_once(WB_PATH .'/modules/outputfilter_dashboard/functions.php');
+                >        opf_controller('init');
+                >}
+                >
+                >// Load functions available to templates, modules and code sections
+                >// also, set some aliases for backward compatibility
+
+
+        Dann suchen Sie diese Zeilen (am Ende der Datei):
+
+                >require(WB_PATH.'/templates/'.TEMPLATE.'/index.php');
+                >$output = ob_get_contents();
+                >if(ob_get_length() > 0) { ob_end_clean(); }
+                >
+                >// execute frontend output filters
+                >       if(file_exists(WB_PATH .'/modules/output_filter/index.php')) {
+                >               include_once(WB_PATH .'/modules/output_filter/index.php');
+
+        und *passen Sie diesen Zeilen wie folgt an* (f&uuml;gen Sie den mittleren Teil ein):
+
+                >require(WB_PATH.'/templates/'.TEMPLATE.'/index.php');
+                >$output = ob_get_contents();
+                >if(ob_get_length() > 0) { ob_end_clean(); }
+                >
+                >// apply outputfilter
+                >if(function_exists('opf_controller')) {
+                >   $output = opf_controller('page', $output);
+                >}
+                >
+                >// execute frontend output filters
+                >       if(file_exists(WB_PATH .'/modules/output_filter/index.php')) {
+                >               include_once(WB_PATH .'/modules/output_filter/index.php');
+
+
+Topic: wb/framework/frontend.functions.php
+
+        &Ouml;ffen Sie nun die Datei !wb/framework/frontend.functions.php!, und suchen Sie die nachstehenden Zeilen (ungef&auml;hr bei Zeile 312):
+
+                >     ob_start(); // fetch original content
+                >     require(WB_PATH.'/modules/'.$module.'/view.php');
+                >     $content = ob_get_clean();
+                > } else {
+                >     continue;
+                > }
+
+        und *passen Sie diesen Zeilen wie folgt an* (f&uuml;gen Sie den mittleren Teil ein):
+
+                >     ob_start(); // fetch original content
+                >     require(WB_PATH.'/modules/'.$module.'/view.php');
+                >     $content = ob_get_clean();
+                >     if(function_exists('opf_controller')) {
+                >       $content = opf_controller('section', $content, $module, $page_id, $section_id);
+                >    }
+                > } else {
+                >     continue;
+                > }
+
+        Dann suchen Sie diese Zeilen (ungef&auml;hr bei Zeile 328):
+
+                >  else {
+                >      require(PAGE_CONTENT);
+                >  }
+
+        und *ersetzen* Sie dies durch den folgenden Code-Block:
+
+                >  else {  // Searchresults! But also some special pages,
+                >           // e.g. guestbook (add entry), news (add comment) uses this
+                >              ob_start(); // fetch original content
+                >              require(PAGE_CONTENT);
+                >              $content = ob_get_contents();
+                >              ob_end_clean();
+                >              // Apply Filters
+                >              if(function_exists('opf_controller')) {
+                >                  $content = opf_controller('special', $content);
+                >              }
+                >              // Print Content
+                >              echo $content;
+                >  }
+
+

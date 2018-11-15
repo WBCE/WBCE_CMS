@@ -155,7 +155,7 @@ require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
 
 // database tables including in WB package
-$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_topics', 'mod_miniform','mod_wbstats_day');
+$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_topics', 'mod_miniform','mod_wbstats_day');
 /*
 $table_list = array (
 'settings','groups','addons','pages','sections','search','users',
@@ -173,6 +173,7 @@ $stepID = 1;
 
 // removes old folders
 $dirRemove = array(
+    '[MODULES]/output_filter/',
     '[ADMIN]/images/',
     '[ADMIN]/pages/page_tree/icons/',
     '[ADMIN]/themes/',
@@ -382,6 +383,28 @@ require_once WB_PATH . "/modules/droplets/" . $file_name;
 if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
 
 
+// OpF Dashboard
+if (!in_array("mod_outputfilter_dashboard", $all_tables)) {
+   echo "<br />Install OpF Dashboard<br />";
+   require_once WB_PATH . "/modules/outputfilter_dashboard/install.php";
+   Settings::Set('opf_show_advanced_backend',0,false);
+} else {
+   echo "<br />Upgrade  OpF Dashboard<br />";
+   require_once WB_PATH . "/modules/outputfilter_dashboard/upgrade.php";
+   Settings::Set('opf_show_advanced_backend',1,false);
+}
+
+// uninstall classical output filter module
+$file_name = WB_PATH . "/modules/output_filter/uninstall.php";
+if (file_exists($file_name)) {
+    echo "<br />Uninstall classical output_filter module<br />";
+    include_once ($file_name);
+    opf_io_rmdir(WB_PATH . "/modules/output_filter");
+}
+// Remove entry from DB
+$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = 'output_filter' AND type = 'module'");
+
+
 // Topics
 $drops = (!in_array("mod_topics", $all_tables)) ? "<br />Install Topics<br />" : "<br />Update Topics<br />";
 echo $drops;
@@ -419,12 +442,6 @@ if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();
 echo "<br />Update Captcha Controll<br />";
 $ccontroll= WB_PATH . "/modules/captcha_control/upgrade.php" ;
 if (is_file($ccontroll)) require_once $ccontroll;
-
-
-// Output Filter //
-echo "<br />Update Output Filter<br />";
-$outputfilter= WB_PATH . "/modules/output_filter/upgrade.php" ;
-require_once $outputfilter;
 
 
 /**********************************************************

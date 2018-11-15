@@ -334,7 +334,17 @@ if (!function_exists('page_content')) {
                 }                                  
             }
         } else {
-            require PAGE_CONTENT;
+                   // Searchresults! But also some special pages, e.g. guestbook (add entry), news (add comment) uses this
+                   ob_start(); // fetch original content
+                   require(PAGE_CONTENT);
+                   $content = ob_get_contents();
+                   ob_end_clean();
+                   // Apply Filters
+                   if(function_exists('opf_apply_filters')) {
+                       $content = opf_controller('special', $content);
+                   }
+                   // Print Content
+                   echo $content;
         }
     }
 }

@@ -45,6 +45,7 @@ if ($toolCheck === true) {
         'AND `directory` NOT IN(\''.(implode("','",$_SESSION['MODULE_PERMISSIONS'])).'\') '; */
 	 $sql = 'SELECT `name` FROM `'.TABLE_PREFIX.'addons` '.
         'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' '.
+	'AND `function` NOT LIKE \'%hidden%\' '. 
         'AND `directory`=\''.$database->escapeString($toolDir).'\'';	
     if(!($toolName = $database->get_one($sql)))  $toolCheck=false;
 }
@@ -77,7 +78,7 @@ if ($toolCheck) {
     else         $admin = new admin('admintools', 'admintools');
 
     // show title if not function 'save' is requested
-    if(!$doSave and !$noPage) {
+    if(!$doSave and !$noPage and !preg_match("/backend/", $module_function) ) {
         print '<h4><a href="'.ADMIN_URL.'/admintools/index.php" '.
               'title="'.$HEADING['ADMINISTRATION_TOOLS'].'">'.
                $HEADING['ADMINISTRATION_TOOLS'].'</a>'.
@@ -98,9 +99,33 @@ if ($toolCheck) {
     require(WB_PATH.'/modules/'.$toolDir.'/tool.php');
     echo '</div>';
 
-    // output footer if  we are not in no_page mode
-    if (!$noPage) $admin->print_footer();
+        // Fetch the Buffer for later filtering
+        $toolOutput = ob_get_clean ();
+        
+        // FILTER for OPF DASHBOARD just for this module(tool)
+        $file=WB_PATH . '/modules/outputfilter_dashboard/functions.php';
+        if (file_exists($file)) {
+            include_once ($file);
+        }
+        if(function_exists('opf_controller')) { 
+            $toolOutput = opf_controller('backend', $toolOutput, $toolDir)
+;
+        }
+        echo $toolOutput;
 
+	// output footer if  we are not in no_page mode
+        if (!$noPage) $admin->print_footer();
+        else {
+            // Fetch the Buffer for later filtering
+            $fullOutput = ob_get_clean ();
+
+            // FILTER for OPF DASHBOARD for whole page
+            if(function_exists('opf_controller')) {
+		$fullOutput = opf_controller('backend', $fullOutput);
+            }
+
+            echo $fullOutput;
+        }
 } else {
     // invalid module name requested, jump to index.php of admintools
     header('location: '.$returnToTools); exit;

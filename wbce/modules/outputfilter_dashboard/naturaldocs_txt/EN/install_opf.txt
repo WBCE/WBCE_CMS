@@ -1,0 +1,135 @@
+Header: Install OutputFilter-Dashboard (en)
+
+Group: How to install the OutputFilter-Dashboard module itself
+
+Topic: Requirements
+
+        Website Baker 2.8 or later.
+
+Topic: Before installation
+
+        You have to uninstall the old Frontend-Filter-Admin module first,
+        not to confuse with the Frontend-Output-Filter!
+
+        (see deinstall_frontendfilter_en.png)
+
+        You have to uninstall all possibly installed filter-modules, too.
+
+        Futhermore, you will loose all installed "inline-filter" (filters that was added per "Add Filter"-Button).
+        You may wish to backup those filters by copy&paste the filter-function to e.g. Notepad *before*
+        uninstalling. Then recreate those filters later on inside OutputFilter-Dashboard.
+
+Topic: Installation
+
+        Now install the module as usual.
+
+        (see install_module_en.png)
+
+Topic: After installation
+        *Website Baker Version 2.8.3 sp6 and later as well as Website Baker Community Edition Version WBCE 1.1 onwards already contain all the adaptions needed. In the classical Website Baker you have to active the Outputfilter Dashboard explicitly in the settings of the Frontend Output Filter. Furhtermore, module specific filters do not work out of the box in the classical Website Baker. To enable them, the modifications of wb/framework/frontend.functions.php (see below) are still required.*
+
+        For earlier versions you have to apply two patches to make this module work.
+
+        For deatails see the next section.
+
+
+Group: Apply two patches
+        To make the Filter work, you have to patch two core-files
+
+Topic: wb/index.php
+
+        First locate the lines (near the bottom of the file) that start with:
+
+                >// Collect general website settings
+                >$wb->get_website_settings();
+                >
+                >// Load functions available to templates, modules and code sections
+                >// also, set some aliases for backward compatibility
+
+        and *modify these lines as follows* (insert the middle part):
+
+
+                >// Collect general website settings
+                >$wb->get_website_settings();
+                >
+                >// Load OutputFilter functions
+                >if(file_exists(WB_PATH .'/modules/outputfilter_dashboard/functions.php')) {
+                >        require_once(WB_PATH .'/modules/outputfilter_dashboard/functions.php');
+                >        opf_controller('init');
+                >}
+                >
+                >// Load functions available to templates, modules and code sections
+                >// also, set some aliases for backward compatibility
+
+        Then locate the lines (at the bottom of the file):
+
+
+                >require(WB_PATH.'/templates/'.TEMPLATE.'/index.php');
+                >$output = ob_get_contents();
+                >if(ob_get_length() > 0) { ob_end_clean(); }
+                >
+                >// execute frontend output filters
+                >       if(file_exists(WB_PATH .'/modules/output_filter/index.php')) {
+                >               include_once(WB_PATH .'/modules/output_filter/index.php');
+
+        and *modify these lines as follows* (insert the middle part):
+
+                >require(WB_PATH.'/templates/'.TEMPLATE.'/index.php');
+                >$output = ob_get_contents();
+                >if(ob_get_length() > 0) { ob_end_clean(); }
+                >
+                >// apply outputfilter
+                >if(function_exists('opf_controller')) {
+                >   $output = opf_controller('page', $output);
+                >}
+                >
+                >// execute frontend output filters
+                >       if(file_exists(WB_PATH .'/modules/output_filter/index.php')) {
+                >               include_once(WB_PATH .'/modules/output_filter/index.php');
+
+
+Topic: wb/framework/frontend.functions.php
+
+        Open !wb/framework/frontend.functions.php!, locate the lines (around line 312):
+
+                >     ob_start(); // fetch original content
+                >     require(WB_PATH.'/modules/'.$module.'/view.php');
+                >     $content = ob_get_clean();
+                > } else {
+                >     continue;
+                > }
+
+        and *modify these lines as follows* (insert the middle part):
+
+                >     ob_start(); // fetch original content
+                >     require(WB_PATH.'/modules/'.$module.'/view.php');
+                >     $content = ob_get_clean();
+                >     if(function_exists('opf_controller')) {
+                >       $content = opf_controller('section', $content, $module, $page_id, $section_id);
+                >    }
+                > } else {
+                >     continue;
+                > }
+
+        finally locate the following lines (around line 328):
+
+                >  else {
+                >    require(PAGE_CONTENT);
+                >  }
+
+        and *replace by*:
+
+                >  else {  // Searchresults! But also some special pages,
+                >           // e.g. guestbook (add entry), news (add comment) uses this
+                >              ob_start(); // fetch original content
+                >              require(PAGE_CONTENT);
+                >              $content = ob_get_contents();
+                >              ob_end_clean();
+                >              // Apply Filters
+                >              if(function_exists('opf_controller')) {
+                >                  $content = opf_controller('special', $content);
+                >              }
+                >              // Print Content
+                >              echo $content;
+                >  }
+
