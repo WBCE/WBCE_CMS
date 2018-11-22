@@ -8,7 +8,7 @@ functions.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6
+ * @version         1.5.6.1
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -307,7 +307,7 @@ function opf_fetch_clean($val, $default=NULL, $type='int', $args=FALSE, $from_gp
   // strip slashes
   if($from_gpc && get_magic_quotes_gpc()) {
     if(is_array($val)) {
-      array_walk_recursive($val, create_function('&$v,$k','$v = stripslashes($v);'));
+      array_walk_recursive($val, function(&$v,$k) { $v = stripslashes($v); });
     } else
       $val = stripslashes($val);
   }

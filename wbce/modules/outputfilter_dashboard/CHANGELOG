@@ -2,6 +2,9 @@
 Header: Version-History
 
 1.5:
+1.5.6.1 %(mrbaseman, 22 Nov 2018)%
+        - starting with php 7.2 create_function is deprecated
+
 1.5.6 %(mrbaseman, 04 Nov 2018)%
         - support a legacy module !opf_simple_backend! to switch between basic and advanced backend view
         - avoid warning during installation when shipped as core module
