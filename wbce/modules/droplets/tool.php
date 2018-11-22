@@ -195,7 +195,7 @@ if(isset($_GET['do']))
                         'stat'  => $stat,
                         'count' => count($count),
                         'name'  => $file,
-                        'list'  => implode( ", ", array_map( create_function('$cnt', 'return $cnt["filename"];'), $count ) ),
+                        'list'  => implode( ", ", array_map( function($cnt) { return $cnt["filename"]; }, $count )),
                     );
                 }
             }
