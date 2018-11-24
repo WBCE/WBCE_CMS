@@ -10,6 +10,7 @@
         requires: 'dialog,fakeobjects',
         lang: 'de,en',
         icons: 'anchor,anchor-rtl,link,unlink',
+        
         onLoad: function() {
             // Add the CSS styles for anchor placeholders.
             var baseStyle = 'background:url(' + CKEDITOR.getUrl( this.path + 'icons/anchor.png' ) + ') no-repeat %1 center; border:1px dotted #00f;background-size:16px;';
@@ -783,5 +784,6 @@
          * @cfg {Boolean} [linkJavaScriptLinksAllowed=false]
          * @member CKEDITOR.config
          */
-        } );
+    } );
+    
 })();

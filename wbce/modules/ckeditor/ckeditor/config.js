@@ -3,8 +3,7 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-CKEDITOR.editorConfig = function( config )
-{
+CKEDITOR.editorConfig = function( config ) {
     /* Protect PHP code tags (<?...?>) so CKEditor will not break them when switching from Source to WYSIWYG.
      * Uncommenting this line doesn't mean the user will not be able to type PHP code in the source.
      * This kind of prevention must be done in the server side, so just leave this line as is. */

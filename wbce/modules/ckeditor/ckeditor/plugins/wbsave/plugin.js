@@ -19,7 +19,7 @@
                 ifrm.setAttribute("id", "dummy_iframe");
                 ifrm.setAttribute("name", "dummy_iframe");
                 $form.parentNode.appendChild(ifrm);
-                $("#dummy_iframe").load(function () {
+                $("#dummy_iframe").on("load", function (e) {
                     var reply = $("#dummy_iframe").contents().find(".content").html();
                     reply = reply.replace(/<input.*>/ig, "");
                     iBox.show(reply);
@@ -65,6 +65,7 @@
             CKEDITOR.scriptLoader.load(CKEDITOR.plugins.getPath("wbsave") + "ibox.js");
         }
     });
+    
 }());
 
 /**

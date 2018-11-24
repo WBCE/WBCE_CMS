@@ -134,6 +134,7 @@ CKEDITOR.dialog.add('ckawesomeDialog', function( editor ) {
             var dialog = this;
 
             var cka = editor.document.createElement( 'span' );
+
             var cka_size = dialog.getValueOf( 'options', 'textsize' );
             var cka_color = dialog.getValueOf( 'options', 'fontcolor' );
             var cka_class = "fa fa-fw " + dialog.getValueOf( 'options', 'ckawesomebox' );
@@ -141,7 +142,9 @@ CKEDITOR.dialog.add('ckawesomeDialog', function( editor ) {
             
             cka.setAttribute( 'class', cka_class );
             if ( cka_style ) cka.setAttribute( 'style', cka_style );
-            
+
+            cka.appendHtml("&nbsp;");
+
             editor.insertElement( cka );
         }
     };
