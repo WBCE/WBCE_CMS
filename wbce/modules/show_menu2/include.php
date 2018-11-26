@@ -388,9 +388,6 @@ function show_menu2(
     if (($flags & SM2_NOCACHE) != 0) {
         unset($GLOBALS['show_menu2_data'][$aMenu]);
     }
-    if(defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true){
-        $retval = sm2_correct_menu_links($retval);  
-    }
 	
     return $retval;
 } 
@@ -642,9 +639,7 @@ function show_breadcrumbs(
     if (($flags & SM2_NOCACHE) != 0) {
         unset($GLOBALS['show_menu2_data'][$aMenu]);
     }
-    if(defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true){
-        $retval = sm2_correct_menu_links($retval);  
-    }
+	
     return $retval;
 }
 
@@ -771,56 +766,4 @@ function sm2_recurse(
     if ($isListOpen) {
         $aFormatter->finishList();
     }
-}
-
-/**
- * sm2_correct_menu_links()
- * ======================================================================
- *
- * @author  Christian M. Stefan <stefek@designthings.de>
- * @license GNU/GPL v.2 or any later
- * ----------------------------------------------------------------------
- *
- * @param  string  $sMenu  the prepopulated menu string
- * @return string          the menu string with correctly replaced URLs
- * ----------------------------------------------------------------------
- * 
- */
-function sm2_correct_menu_links($sMenu){
-    if(defined('SM2_CORRECT_MENU_LINKS') && true){
-        global $database;
-
-        $aMenuLinks = array();
-        $rMenuLinks = $database->query("SELECT * FROM `{TP}mod_menu_link`");
-        $i = 0; 
-        if($rMenuLinks->numRows() > 0) {
-            while($row = $rMenuLinks->fetchRow(MYSQL_ASSOC)) {		
-                //$aMenuLinks[$i] = $row;
-                if(!empty($row['target_page_id'])){
-                    $aMenuLinks[$i]['replace_url'] = get_page_link($row['target_page_id']).''.PAGE_EXTENSION;			
-                    if(!empty($row['anchor'])){
-                            $aMenuLinks[$i]['replace_url'] .= '#'.str_replace('#', '', $row['anchor']);
-                    }
-                    $aMenuLinks[$i]['replace_url'] = WB_URL.PAGES_DIRECTORY.$aMenuLinks[$i]['replace_url'];
-                }
-                if(!empty($row['extern'])){					
-                    $sTargetUrl = str_replace('[WB_URL]', WB_URL, $row['extern']);
-                    $aMenuLinks[$i]['replace_url'] = $sTargetUrl;
-                }
-                if(isset($aMenuLinks[$i]['replace_url'])){
-                    $aMenuLinks[$i]['pagetree_url'] = $database->get_one("SELECT `link` FROM `{TP}pages` WHERE `page_id` = ".$row['page_id']);
-                    $aMenuLinks[$i]['pagetree_url'] = WB_URL.PAGES_DIRECTORY.$aMenuLinks[$i]['pagetree_url'].PAGE_EXTENSION;
-                }
-                $i++;
-            }
-        }
-        if(!empty($aMenuLinks)){
-            $aReplacements = array();
-            foreach($aMenuLinks as $k => $link){
-                    $aReplacements[$link['pagetree_url']] = $link['replace_url'];
-            }
-            $sMenu = strtr($sMenu, $aReplacements);
-        }
-    }
-    return $sMenu;
 }

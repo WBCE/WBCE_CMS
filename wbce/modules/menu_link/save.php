@@ -36,7 +36,7 @@ if(isset($_POST['menu_link'])) {
 		'target_page_id' => ($_POST['linktype'] == 'ext') ? '-1' : intval($admin->get_post('menu_link')), 	
 		'redirect_type'  => $admin->add_slashes($admin->get_post('r_type')), 	
 		'anchor'         => $admin->add_slashes($admin->get_post('anchor')),
-		'extern'         => isset($_POST['extern']) ? $admin->add_slashes($admin->get_post('extern')) : '', 	
+		'extern'         => isset($_POST['extern']) && $_POST['linktype'] == 'ext' ? $admin->add_slashes($admin->get_post('extern')) : '', 	
 	);	
 	$database->updateRow('{TP}mod_menu_link', 'page_id', $aUpdateModTable);
 
