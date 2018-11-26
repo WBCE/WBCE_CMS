@@ -68,7 +68,7 @@ while ($i < 3) {
 	$link = 'topic'.($i+1);
 	
 	$theq = "INSERT INTO ".TABLE_PREFIX."mod_".$mod_dir." SET section_id = '".$section_id."', page_id = '".$page_id."', posted_by = '1', active = '4', hascontent = '2'";
-	$theq .= ", posted_first = '".$t."', published_when = '".$t."', picture = '".($i+1).".jpg', link = '".$link."'";
+	$theq .= ", posted_first = '".$t."', published_when = '".$t."', picture = '".($i+1).".jpg', link = '".$link."', position = '".($i+1)."'";
 	$theq .= ", 
 	title = '".addslashes($title[$i])."', 
 	short_description = '".addslashes($short_description[$i])."', 

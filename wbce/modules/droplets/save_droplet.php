@@ -10,16 +10,16 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once '../../config.php';
-require_once dirname(__FILE__) . '/functions.inc.php';
+require_once ('../../config.php');
+require_once (dirname(__FILE__) . '/functions.inc.php');
 
 // Include WB admin wrapper script
 $admin = new admin('admintools', 'admintools');
-
+/*
 echo "<textarea style=\"width:100%;height:200px;color:#000;background-color:#fff;\">";
 print_r( $_POST );
 echo "</textarea>";
-
+*/
 // check permission
 if ( $admin->get_permission('admintools') == true )
 {

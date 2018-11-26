@@ -17,10 +17,12 @@ CKEDITOR.plugins.add('ckawesome', {
     
     init: function(editor) {
     	var config = editor.config;
-    	editor.fontawesomePath = config.fontawesomePath ? config.fontawesomePath : CKEDITOR.plugins.getPath('ckawesome') + 'fontawesome/css/font-awesome.min.css';
+    	editor.fontawesomePath = config.fontawesomePath ? config.fontawesomePath : '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 
     	CKEDITOR.document.appendStyleSheet(editor.fontawesomePath);
-    	editor.addContentsCss(editor.fontawesomePath);
+    	if( editor.addContentsCss ) {
+			editor.addContentsCss(editor.fontawesomePath);
+		}
     	
         CKEDITOR.dialog.add('ckawesomeDialog', this.path + 'dialogs/ckawesome.js');
         editor.addCommand( 'ckawesome', new CKEDITOR.dialogCommand( 'ckawesomeDialog', { allowedContent: 'span[class,style]{color,font-size}(*);' }));
