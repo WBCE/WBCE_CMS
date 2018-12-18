@@ -402,11 +402,9 @@ span.title {
 .pages-view td {
 	vertical-align: middle;
 	line-height: 2;
-}
-.pages-view tr {
-	background-color: #f0f0f0;
 	border-bottom: 1px solid #666;
 }
+
 .pages-view tr:hover {
 	background-color: #d5dde7;
 }

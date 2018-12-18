@@ -44,6 +44,10 @@ input#admin_tools {
 	margin-bottom: 10px;
 }
 
+.form_submit {
+	width:99%;
+}
+
 /* textarea width for code2 module */
 .CodeMirror { width: 100% !important; margin-top: 12px; margin-bottom: 6px;}
 

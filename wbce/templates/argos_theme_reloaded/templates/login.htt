@@ -27,7 +27,7 @@
 						<input type="hidden" name="url" value="{URL}">
 						<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}">
 						<input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" autocomplete="off">
-
+						<p class="center">{MESSAGE}</p>
 						<div class="fg5 label">{TEXT_USERNAME}:</div>
 						<div class="fg7">
 							<input type="text" maxlength="{MAX_USERNAME_LEN}" name="{USERNAME_FIELDNAME}" value="{USERNAME}">
@@ -55,10 +55,9 @@
 							{TEXT_HOME}
 						</a></p>
 				</div>
-			</div>
-		</section>
-	</div>
-
+			</div>	
+		</div>
+	</section>
 </body>
 </html>
 <!-- END mainBlock -->
