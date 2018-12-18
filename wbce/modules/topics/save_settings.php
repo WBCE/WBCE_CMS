@@ -41,7 +41,7 @@ $autoarchive = '0,0,0';
 if (isset($_POST['autoarchive_action'])) {$autoarchive_action = (int) $_POST['autoarchive_action'];} else {$autoarchive_action = 0;}
 if (isset($_POST['autoarchive_section'])) {$autoarchive_section = (int) $_POST['autoarchive_section'];} else {$autoarchive_section = 0;}
 if ($autoarchive_section > 0) {
-	$query_others = $database->query("SELECT page_id FROM ".TABLE_PREFIX."mod_topics_settings WHERE section_id = '".$autoarchive_section."'");
+	$query_others = $database->query("SELECT page_id FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id = '".$autoarchive_section."'");
 	if($query_others->numRows() == 1) { 
 		$others = $query_others->fetchRow();			
 		$autoarchive_page_id =  $others['page_id'];
@@ -169,7 +169,7 @@ if ($is_master_for != '') {
 	
 	$is_master_Arr = explode(',', $is_master_for);
 	if (is_numeric(trim($is_master_Arr[0]))) {
-		$theq = "SELECT section_id FROM ".TABLE_PREFIX."mod_topics_settings WHERE section_id IN (".$is_master_for.")";
+		$theq = "SELECT section_id FROM ".TABLE_PREFIX."mod_".$tablename."_settings WHERE section_id IN (".$is_master_for.")";
 		$query_others = $database->query($theq);
 		if(!$database->is_error()) {
 			$is_master_for = '';
