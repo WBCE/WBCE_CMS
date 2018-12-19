@@ -1002,7 +1002,7 @@ class Insert {
                 "\n<!--(PH) CSS HEAD BTM+ -->\n<!--(PH) CSS HEAD BTM- -->\n$0"
             ),
             'JS HEAD BTM' => array(
-                "#<\s*/\s~head\s*>#iU",
+                "#<\s*/\s*head\s*>#iU",
                 "\n<!--(PH) JS HEAD BTM+ -->\n<!--(PH) JS HEAD BTM- -->\n$0"
             ),
             'HTML BODY TOP' => array(
