@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2018)
  * @category        opffilter
  * @package         OPF Auto Placeholder
- * @version         1.2.1
+ * @version         1.2.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)

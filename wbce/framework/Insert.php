@@ -1014,7 +1014,7 @@ class Insert {
                 "$0\n<!--(PH) JS BODY TOP+ -->\n<!--(PH) JS BODY TOP- -->\n"
             ),
             'HTML BODY BTM' => array(
-                "#<\s*/\s~body\s*>#iU",
+                "#<\s*/\s*body\s*>#iU",
                 "\n<!--(PH) HTML BODY BTM+ -->\n<!--(PH) HTML BODY BTM- -->\n$0"
             ),
             'JS BODY BTM' => array(

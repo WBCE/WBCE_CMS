@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2018)
  * @category        opffilter
  * @package         OPF Auto Placeholder
- * @version         1.2.1
+ * @version         1.2.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -61,7 +61,7 @@ function opff_mod_opf_auto_placeholder (&$sContent, $page_id, $section_id, $modu
                     "\n<!--(PH) CSS HEAD BTM+ -->\n<!--(PH) CSS HEAD BTM- -->\n$0"
                 ),
                 'JS HEAD BTM' => array(
-                    "#<\s*/\s~head\s*>#iU",
+                    "#<\s*/\s*head\s*>#iU",
                     "\n<!--(PH) JS HEAD BTM+ -->\n<!--(PH) JS HEAD BTM- -->\n$0"
                 ),
                 'HTML BODY TOP' => array(
@@ -73,7 +73,7 @@ function opff_mod_opf_auto_placeholder (&$sContent, $page_id, $section_id, $modu
                     "$0\n<!--(PH) JS BODY TOP+ -->\n<!--(PH) JS BODY TOP- -->\n"
                 ),
                 'HTML BODY BTM' => array(
-                    "#<\s*/\s~body\s*>#iU",
+                    "#<\s*/\s*body\s*>#iU",
                     "\n<!--(PH) HTML BODY BTM+ -->\n<!--(PH) HTML BODY BTM- -->\n$0"
                 ),
                 'JS BODY BTM' => array(
