@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -942,7 +942,10 @@
 
 			// No center wrapper has been found.
 			else if ( name == 'figure' && el.hasClass( captionedClass ) ) {
-				image = el.getFirst( 'img' ) || el.getFirst( 'a' ).getFirst( 'img' );
+				image = el.find( function( child ) {
+					return child.name === 'img' &&
+						CKEDITOR.tools.array.indexOf( [ 'figure', 'a' ], child.parent.name ) !== -1;
+				}, true )[ 0 ];
 
 				// Upcast linked image like <a><img/></a>.
 			} else if ( isLinkedOrStandaloneImage( el ) ) {
