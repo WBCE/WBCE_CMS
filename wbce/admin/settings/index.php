@@ -20,8 +20,15 @@ if(isset($_GET['advanced']) && $_GET['advanced'] == 'yes') {
 }
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
 require_once(WB_PATH.'/framework/functions-utf8.php');
+
+
+if($database->get_one("SELECT COUNT(1) FROM `{TP}settings` WHERE `name` = 'wbmailer_smtp_secure'") == false){
+    $database->insertRow('{TP}settings', array('name' => 'wbmailer_smtp_secure'));
+}
+if($database->get_one("SELECT COUNT(1) FROM `{TP}settings` WHERE `name` = 'wbmailer_smtp_port'") == false){
+    $database->insertRow('{TP}settings', array('name' => 'wbmailer_smtp_port'));
+}
 
 // Setup template object, parse vars to it, then parse it
 // Create new template object
@@ -401,33 +408,70 @@ if($is_advanced)
     }
 
     // Work-out which wbmailer routine should be checked
-    $template->set_var(array(
-                'TEXT_WBMAILER_DEFAULT_SETTINGS_NOTICE' => $TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'],
-                'TEXT_WBMAILER_DEFAULT_SENDER_MAIL' => $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'],
-                'TEXT_WBMAILER_DEFAULT_SENDER_NAME' => $TEXT['WBMAILER_DEFAULT_SENDER_NAME'],
-                'TEXT_WBMAILER_NOTICE' => $TEXT['WBMAILER_NOTICE'],
-                'TEXT_WBMAILER_FUNCTION' => $TEXT['WBMAILER_FUNCTION'],
-                'TEXT_WBMAILER_SMTP_HOST' => $TEXT['WBMAILER_SMTP_HOST'],
-                'TEXT_WBMAILER_PHP' => $TEXT['WBMAILER_PHP'],
-                'TEXT_WBMAILER_SMTP' => $TEXT['WBMAILER_SMTP'],
-                'TEXT_WBMAILER_SMTP_AUTH' => $TEXT['WBMAILER_SMTP_AUTH'],
-                'TEXT_WBMAILER_SMTP_AUTH_NOTICE' => $TEXT['REQUIRED'].' '.$TEXT['WBMAILER_SMTP_AUTH'],
-                'TEXT_WBMAILER_SMTP_USERNAME' => $TEXT['WBMAILER_SMTP_USERNAME'],
-                'TEXT_WBMAILER_SMTP_PASSWORD' => $TEXT['WBMAILER_SMTP_PASSWORD'],
-                'SMTP_AUTH_SELECTED' => ' checked="checked"'
-                ));
-    if(WBMAILER_ROUTINE == 'phpmail')
-    {
+    $template->set_var(
+    array(
+            'TEXT_WBMAILER_DEFAULT_SETTINGS_NOTICE' => $TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'],
+            'TEXT_WBMAILER_DEFAULT_SENDER_MAIL'     => $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'],
+            'TEXT_WBMAILER_DEFAULT_SENDER_NAME'     => $TEXT['WBMAILER_DEFAULT_SENDER_NAME'],
+            'TEXT_WBMAILER_NOTICE'                  => $TEXT['WBMAILER_NOTICE'],
+            'TEXT_WBMAILER_FUNCTION'                => $TEXT['WBMAILER_FUNCTION'],
+            'TEXT_WBMAILER_SMTP_HOST'               => $TEXT['WBMAILER_SMTP_HOST'],
+            'TEXT_WBMAILER_PHP'                     => $TEXT['WBMAILER_PHP'],
+            'TEXT_WBMAILER_SMTP'                    => $TEXT['WBMAILER_SMTP'],
+            'TEXT_WBMAILER_SMTP_AUTH'               => $TEXT['WBMAILER_SMTP_AUTH'],
+            'TEXT_WBMAILER_SMTP_AUTH_NOTICE'        => $TEXT['WBMAILER_SMTP_AUTH_NOTICE'],
+            'TEXT_WBMAILER_SMTP_USERNAME'           => $TEXT['WBMAILER_SMTP_USERNAME'],
+            'TEXT_WBMAILER_SMTP_PASSWORD'           => $TEXT['WBMAILER_SMTP_PASSWORD'],
+            'SMTP_AUTH_SELECTED'                    => ' checked="checked"'
+        )
+    );
+    if (WBMAILER_ROUTINE == 'phpmail') {
         $template->set_var('PHPMAIL_SELECTED', ' checked="checked"');
         $template->set_var('SMTP_VISIBILITY', ' style="display: none;"');
         $template->set_var('SMTP_VISIBILITY_AUTH', '');
         // $template->set_var('SMTP_AUTH_SELECTED', '');
-    } elseif(WBMAILER_ROUTINE == 'smtp')
-    {
+    } elseif (WBMAILER_ROUTINE == 'smtp'){
         $template->set_var('SMTPMAIL_SELECTED', ' checked="checked"');
         $template->set_var('SMTP_VISIBILITY', '');
         $template->set_var('SMTP_VISIBILITY_AUTH', '');
     }
+    
+    
+    // SMTP PORT OPTIONS
+    $sSmtpPort = $database->get_one("SELECT `value` FROM `{TP}settings` WHERE `name` = 'wbmailer_smtp_port'");   
+    $aSmtpPorts = array('25', '465', '587', '2525');
+    $sOptions = '<option value="">'.$TEXT['PLEASE_SELECT'].'</option>';
+    foreach ($aSmtpPorts as $sItem){
+        $sSelected = ($sSmtpPort == $sItem) ? ' selected="selected"' : '';
+        $sOptions .= '<option value="'.$sItem.'" '.$sSelected.'>'.$sItem.'</option>';
+    }
+    $template->set_var('SMTP_PORT_OPTIONS', $sOptions);
+   
+    // SMTP SECURE OPTIONS
+    $sSmtpSecure = $database->get_one("SELECT `value` FROM `{TP}settings` WHERE `name` = 'wbmailer_smtp_secure'");
+    $aSmtpSecure = array(
+        'TLS' => 'TLS (Transport Layer Security)', 
+        'SSL' => 'SSL (Secure Sockets Layer)',
+    );
+    $sOptions = '<option value="">'.$TEXT['PLEASE_SELECT'].'</option>';
+    foreach ($aSmtpSecure as $sValue=>$sName){
+        $sSelected = ($sSmtpSecure == $sValue) ? ' selected="selected"' : '';
+        $sOptions .= '<option value="'.$sValue.'" '.$sSelected.'>'.$sName.'</option>';
+    }
+    $template->set_var('SMTP_SECURE_OPTIONS', $sOptions);
+    
+    // Check if there is a overriding Mail Settings array 
+    // and inform the user if true
+    $sOverrideHint = '';
+    $sConfigFile = WB_PATH . '/include/PHPMailer/config_mail.php';
+    if (is_readable($sConfigFile)) {
+        $aCfgOverride = include $sConfigFile;
+        if (is_array($aCfgOverride) && !empty($aCfgOverride)) {
+             $sOverrideHint = '<span style="color: red;">'.$HEADING['WBMAILER_CFG_OVERRIDE_HINT'].'</span>';
+        } 
+    }  
+    $template->set_var('TEXT_MAIL_SETTINGS_OVERRIDE_HINT', $sOverrideHint);
+    
 /* deprecated
     // Work-out if SMTP authentification should be checked
     if(WBMAILER_SMTP_AUTH)

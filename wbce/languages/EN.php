@@ -370,6 +370,8 @@ $TEXT['WBMAILER_SMTP_AUTH_NOTICE'] = 'only activate if your SMTP host requires a
 $TEXT['WBMAILER_SMTP_HOST'] = 'SMTP Host';
 $TEXT['WBMAILER_SMTP_PASSWORD'] = 'SMTP Password';
 $TEXT['WBMAILER_SMTP_USERNAME'] = 'SMTP Loginname';
+$HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the Mailer Settings below are being overriden by settings in the file <kbd>[WB_PATH]/include/PHPMailer/config_mail.php</kbd>.<br />'
+                                        . 'In order to use the Mailer Settings below you\'ll need to disable the array in named file.';
 $TEXT['WEBSITE'] = 'Website';
 $TEXT['WEBSITE_DESCRIPTION'] = 'Website Description';
 $TEXT['WEBSITE_FOOTER'] = 'Website Footer';

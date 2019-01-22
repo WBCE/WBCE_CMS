@@ -81,7 +81,6 @@ if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
 defined('ADMIN_DIRECTORY')  or define('ADMIN_DIRECTORY', 'admin');
 defined('ADMIN_URL')        or define('ADMIN_URL',       WB_URL .'/'. ADMIN_DIRECTORY);
 defined('ADMIN_PATH')       or define('ADMIN_PATH',      WB_PATH .'/'. ADMIN_DIRECTORY);
-
 // Load framework functions before preinit files so we can use functions right away.  
 require_once(WB_PATH.'/framework/functions.php');
 
@@ -127,20 +126,23 @@ WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
 WbAuto::AddFile("SecureForm", "/framework/SecureForm.php");
 
 // Auto Load the Insert and I Classes
-WbAuto::AddFile("Insert", "/framework/Insert.php");
-WbAuto::AddFile("I",      "/framework/I.php");
+WbAuto::AddFile("Insert",   "/framework/Insert.php");
+WbAuto::AddFile("I",        "/framework/I.php");
 
-// register TWIG autoloader ---
+// Auto Load Mailer Class (subclass of PHPMailer)
+WbAuto::AddFile("Mailer",   "/framework/Mailer.php");
+WbAuto::AddFile("wbmailer", "/framework/Mailer.php"); // fallback for older modules
+
+// Auto Load phpLib (the ancient Templating Engine)
+WbAuto::AddFile("Template", "/include/phplib/template.inc");
+
+// register TWIG autoloader (the contemporary Templating Engine)
 require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 // register PHPMailer autoloader ---
-require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
+// require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
 
-// Create database class
-// $database = new database(); // why was the $database instance initiated twice?
-                               // let's run it a while and remove if it doesn't break 
-                               // the performance
 
 // SETUP SYSTEM CONSTANTS (GLOBAL SETTINGS)
 // We use Settings Class to fetch all Settings from DB 
