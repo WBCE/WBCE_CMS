@@ -121,15 +121,29 @@ if (!function_exists('simplepagehead')) {
         echo "<title>$the_title</title>"; 
         if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) TITLE- -->"; 
         echo "\n";
+		
 		if (OPF_AUTO_PLACEHOLDER) echo '<!--(PH) META DESC+ -->'; 
-		echo '<meta name="description" content="'.$the_description."\"$endtag>"; 
+		echo '<meta name="description" content=""'."$endtag>";
 		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META DESC- -->"; 
 		echo "\n";
 		if (OPF_AUTO_PLACEHOLDER) echo '<!--(PH) META KEY+ -->'; 
-		echo '<meta name="keywords" content="'. $the_keywords ."\"$endtag>"; 
+		echo '<meta name="keywords" content=""'. "$endtag>";
 		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META KEY- -->"; 
 		echo "\n";
         
+		I::insertMetaTag(array (
+		   "setname" => "description",
+		   "name"    => "description",
+		   "content" => "$the_description"
+		));
+
+		I::insertMetaTag(array (
+		   "setname" => "keywords",
+		   "name"    => "keywords",
+		   "content" => "$the_keywords"
+		));
+
+
 		if ($favicon == 1) {              
             $tp = WB_PATH.'/templates/'.TEMPLATE;
             $iconInRoot = false;
