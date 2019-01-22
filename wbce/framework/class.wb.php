@@ -66,19 +66,16 @@ class wb extends SecureForm
         // directly output everyting and exit
         echo $this->sDirectOutput;
         exit;
-    }   
+    }  
     
-    
+    /** 
+     @brief check if one or more group_ids are in both group_lists
 
-    
-/** 
- @brief check if one or more group_ids are in both group_lists
- 
- @param mixed $groups_list1: an array or a coma seperated list of group-ids
- @param mixed $groups_list2: an array or a coma seperated list of group-ids
- @param array &$matches: an array-var whitch will return possible matches
- @return bool: true there is a match, otherwise false
-*/
+     @param mixed $groups_list1: an array or a coma seperated list of group-ids
+     @param mixed $groups_list2: an array or a coma seperated list of group-ids
+     @param array &$matches: an array-var whitch will return possible matches
+     @return bool: true there is a match, otherwise false
+    */
     public function is_group_match($groups_list1 = '', $groups_list2 = '', &$matches = null)
     {
         if ($groups_list1 == '') {return false;}
@@ -92,25 +89,30 @@ class wb extends SecureForm
         $matches = array_intersect($groups_list1, $groups_list2);
         return (sizeof($matches) != 0);
     }
-/**
- @brief check if current user is member of at least one of given groups
- 
- @param mixed $groups_list: an array or a coma seperated list of group-ids
- @return bool: true if current user is member of one of this groups, otherwise false
+    
+    /**
+     @brief check if current user is member of at least one of given groups
 
- ADMIN (uid=1) always is treated like a member of any groups
- */
+     @param mixed $groups_list: an array or a coma seperated list of group-ids
+     @return bool: true if current user is member of one of this groups, otherwise false
+
+     ADMIN (uid=1) always is treated like a member of any groups
+     */
     public function ami_group_member($groups_list = '')
     {
         if ($this->get_group_id() == 1) {return true;}
         return $this->is_group_match($groups_list, $this->get_groups_id());
     }
 
-    // Check whether a page is visible or not.
-    // This will check page-visibility and user- and group-rights.
-    /* page_is_visible() returns
-    false: if page-visibility is 'none' or 'deleted', or page-vis. is 'registered' or 'private' and user isn't allowed to see the page.
-    true: if page-visibility is 'public' or 'hidden', or page-vis. is 'registered' or 'private' and user _is_ allowed to see the page.
+    /**
+     * @brief  Check whether a page is visible or not.
+     *         This will check page-visibility and user- and group-rights.
+     * 
+     * @param  array $page
+     * @return boolean  false: if page-visibility is 'none' or 'deleted', or page-vis. is 'registered' 
+     *                         or 'private' and user isn't allowed to see the page.
+     *                   true: if page-visibility is 'public' or 'hidden', or page-vis. is 'registered' 
+     *                         or 'private' and user _is_ allowed to see the page.
      */
     public function page_is_visible($page)
     {
@@ -156,7 +158,13 @@ class wb extends SecureForm
         }
         return ($show_it);
     }
-    // Check if there is at least one active section on this page
+    
+    /**
+     * @brief  Check if there is at least one active section on this page.
+     * @global object $database
+     * @param  array $page
+     * @return boolean
+     */
     public function page_is_active($page)
     {
         global $database;
@@ -462,9 +470,9 @@ class wb extends SecureForm
         $subject =     preg_replace('/[\r\n]/', '', $subject);
 
         // create PHPMailer object and define default settings
-        $myMail = new wbmailer();
+        $myMail = new Mailer();
         
-        // set user defined from address
+        // set user defined FROM address
         if ($fromaddress != '') {
             if ($fromname != '') {
                 $myMail->FromName = $fromname;
