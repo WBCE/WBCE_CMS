@@ -31,6 +31,9 @@ if (!function_exists('simplepagehead')) {
 		$module['responsiveFG'] = array( "mod_responsiveFG_categories", "section_id", "cat_name", "description", "searchtext");
 		#$module['module_name'] = array('table_name', 'id_name', 'title_field_name', 'description_field_name');
 
+		$msTileColor    = '#ffc40d';
+		$pinnedTabColor = '#5bbad5';
+		$themeColor     = '#ffffff';
 
 
 		// Register outside object
@@ -158,14 +161,14 @@ if (!function_exists('simplepagehead')) {
 			if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) FAVICON- -->";
 
 			if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) APPLE TOUCH+ -->";
-			if (file_exists($tp.'/apple-touch-icon.png')) { echo '<link rel="apple-touch-icon" href="'.TEMPLATE_DIR.'/apple-touch-icon.png'."\"$endtag>\n";  }
-			if (file_exists($tp.'/apple-touch-icon-57x57.png')) {echo '<link rel="apple-touch-icon" sizes="57x57" href="'.TEMPLATE_DIR.'/apple-touch-icon-57x57.png'."\"$endtag>\n"; }
-			if (file_exists($tp.'/apple-touch-icon-72x72.png')) { echo '<link rel="apple-touch-icon" sizes="72x72" href="'.TEMPLATE_DIR.'/apple-touch-icon-72x72.png'."\"$endtag>\n"; }
-			if (file_exists($tp.'/apple-touch-icon-76x76.png')) { echo '<link rel="apple-touch-icon" sizes="76x76" href="'.TEMPLATE_DIR.'/apple-touch-icon-76x76.png'."\"$endtag>\n"; }
-			if (file_exists($tp.'/apple-touch-icon-114x114.png')) { echo '<link rel="apple-touch-icon" sizes="114x114" href="'.TEMPLATE_DIR.'/apple-touch-icon-114x114.png'."\"$endtag>\n"; }
-			if (file_exists($tp.'/apple-touch-icon-120x120.png')) { echo '<link rel="apple-touch-icon" sizes="120x120" href="'.TEMPLATE_DIR.'/apple-touch-icon-120x120.png'."\"$endtag>\n"; }
-			if (file_exists($tp.'/apple-touch-icon-144x144.png')) { echo '<link rel="apple-touch-icon" sizes="144x144" href="'.TEMPLATE_DIR.'/apple-touch-icon-144x144.png'."\"$endtag>\n"; }
-			if (file_exists($tp.'/apple-touch-icon-152x152.png')) { echo '<link rel="apple-touch-icon" sizes="152x152" href="'.TEMPLATE_DIR.'/apple-touch-icon-152x152.png'."\"$endtag>\n"; }
+			if (file_exists($tp."/apple-touch-icon.png")) { echo "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"".TEMPLATE_DIR."/apple-touch-icon.png\">\n";  }
+			if (file_exists($tp."/favicon-32x32.png")) { echo "	<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"".TEMPLATE_DIR."/favicon-32x32.png\">\n";  }
+			if (file_exists($tp."/favicon-16x16.png")) { echo "	<link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"".TEMPLATE_DIR."/favicon-16x16.png\">\n";  }
+			if (file_exists($tp."/site.webmanifest")) { echo "	<link rel=\"manifest\" href=\"".TEMPLATE_DIR."/site.webmanifest\">\n";  }
+			if (file_exists($tp."/safari-pinned-tab.svg")) { echo "	<link rel=\"mask-icon\" href=\"".TEMPLATE_DIR."/safari-pinned-tab.svg\" color=\"".$pinnedTabColor."\">\n";  }			
+			echo "	<meta name=\"msapplication-TileColor\" content=\"".$msTileColor."\">\n";  
+			if (file_exists($tp."/browserconfig.xml")) { echo "	<meta name=\"msapplication-config\" content=\"".TEMPLATE_DIR."/browserconfig.xml\">\n";  }
+			echo "	<meta name=\"theme-color\" content=\"".$themeColor."\">\n"; 
 			if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) APPLE TOUCH- -->";
 		}
 
