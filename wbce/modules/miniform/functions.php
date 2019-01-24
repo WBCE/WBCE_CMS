@@ -287,7 +287,9 @@ class mform {
 	
 		
 	function mail($fromaddress, $toaddress, $subject, $message, $fromname='', $replyto = '') {
-		require_once(WB_PATH."/framework/class.wbmailer.php");
+                if (!file_exists(WB_PATH."/framework/Mailer.php")){
+                    require_once(WB_PATH."/framework/class.wbmailer.php");
+                }
 		$toArray = explode(',',$toaddress);
 	
 		$myMail = new wbmailer();
@@ -301,7 +303,7 @@ class mform {
 		}
 		// define recepient and information to send out
 		
-		foreach ($toArray as $toAddr) {							// TO:
+		foreach ($toArray as $toAddr) {                                 // TO:
 			$myMail->AddAddress($toAddr);
 		}
 		$myMail->Subject = $subject;                          	// SUBJECT

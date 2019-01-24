@@ -617,6 +617,7 @@
 
     <section class="content-box" style="padding:0;" id="settings-wbmailer-settings">
         <p class="fg12 top bot desc">{TEXT_WBMAILER_DEFAULT_SETTINGS_NOTICE}</p>
+        <p class="fg12 top bot desc">{TEXT_MAIL_SETTINGS_OVERRIDE_HINT}</p>
         <hr class="fg12">
         <div class="row" style="padding-left:0;">
             <div class="fg3">{TEXT_WBMAILER_DEFAULT_SENDER_MAIL}:</div>
@@ -643,27 +644,55 @@
                 </label>
             </div>
         </div>
-        <section id="smtp-settings" {SMTP_VISIBILITY}>
+<section id="smtp-settings" {SMTP_VISIBILITY}>
             <hr class="fg12">
             <p class="fg12 desc bot">{TEXT_WBMAILER_NOTICE}</p>
             <hr class="fg12">
+			
             <div class="row" style="padding-left:0;">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_HOST}:</div>
                 <div class="fg9">
                     <input type="text" name="wbmailer_smtp_host" value="{WBMAILER_SMTP_HOST}">
                     <input type="hidden" name="wbmailer_smtp_auth" value="true">
                 </div>
+            </div>      
+            
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">SMTP Port:</div>
+                <div class="fg9">
+                    <select name="wbmailer_smtp_port" id="wbmailer_smtp_port" style="width: 255px;">
+                         {SMTP_PORT_OPTIONS}
+                    </select>
+                </div>
+            </div>	
+			
+			<div class="row" style="padding-left:0;">
+                <div class="fg3">{TEXT_WBMAILER_SMTP_AUTH}:</div>
+                <div class="fg9">
+                    <input type="checkbox" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="1" {SMTP_AUTH_SELECTED} style="width: 14px; " />
+                    <label for="wbmailer_smtp_auth">{TEXT_WBMAILER_SMTP_AUTH_NOTICE}</label>
+                </div>
             </div>
+            
+            <div class="row" style="padding-left:0;">
+                <div class="fg3">SMTP Secure:</div>
+                <div class="fg9">
+                     <select name="wbmailer_smtp_secure" id="wbmailer_smtp_secure" style="width: 255px;">                         
+                         {SMTP_SECURE_OPTIONS}
+                     </select>
+                </div>
+            </div>
+			
             <div class="row" style="padding-left:0;">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_USERNAME}:</div>
                 <div class="fg9">
-                    <input type="text" name="wbmailer_smtp_username" value="{WBMAILER_SMTP_USERNAME}">
+                    <input type="text" name="wbmailer_smtp_username" value="{WBMAILER_SMTP_USERNAME}" class="wdt250">
                 </div>
             </div>
             <div class="row" style="padding-left:0;">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_PASSWORD}:</div>
                 <div class="fg9">
-                    <input type="password" name="wbmailer_smtp_password" value="{WBMAILER_SMTP_PASSWORD}">
+                    <input type="password" name="wbmailer_smtp_password" value="{WBMAILER_SMTP_PASSWORD}" class="wdt250">
                 </div>
             </div>
         </section>

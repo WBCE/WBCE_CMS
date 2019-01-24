@@ -14,11 +14,7 @@
 // Must include code to stop this file being accessed directly
 if (defined('WB_PATH') == false) {die("Cannot access this file directly");}
 /* -------------------------------------------------------- */
-// Include PHPLIB template class
-require_once WB_PATH . "/include/phplib/template.inc";
 
-// Include new wbmailer class (subclass of PHPmailer)
-require_once WB_PATH . "/framework/class.wbmailer.php";
 
 class wb extends SecureForm
 {
@@ -36,8 +32,8 @@ class wb extends SecureForm
     
     
  /**
-    @brief  for easy output of JSON strings XML for ajax...... 
-    @param $sContent The content to pipe out 
+    @brief  for easy output of JSON strings XML or ajax...... 
+    @param  $sContent The content to pipe out 
     @return string echos out this string 
     
     If you want the whole page to be processed (for internal functionality or whatever)
@@ -70,19 +66,16 @@ class wb extends SecureForm
         // directly output everyting and exit
         echo $this->sDirectOutput;
         exit;
-    }   
+    }  
     
-    
+    /** 
+     @brief check if one or more group_ids are in both group_lists
 
-    
-/** 
- @brief check if one or more group_ids are in both group_lists
- 
- @param mixed $groups_list1: an array or a coma seperated list of group-ids
- @param mixed $groups_list2: an array or a coma seperated list of group-ids
- @param array &$matches: an array-var whitch will return possible matches
- @return bool: true there is a match, otherwise false
-*/
+     @param mixed $groups_list1: an array or a coma seperated list of group-ids
+     @param mixed $groups_list2: an array or a coma seperated list of group-ids
+     @param array &$matches: an array-var whitch will return possible matches
+     @return bool: true there is a match, otherwise false
+    */
     public function is_group_match($groups_list1 = '', $groups_list2 = '', &$matches = null)
     {
         if ($groups_list1 == '') {return false;}
@@ -96,25 +89,30 @@ class wb extends SecureForm
         $matches = array_intersect($groups_list1, $groups_list2);
         return (sizeof($matches) != 0);
     }
-/**
- @brief check if current user is member of at least one of given groups
- 
- @param mixed $groups_list: an array or a coma seperated list of group-ids
- @return bool: true if current user is member of one of this groups, otherwise false
+    
+    /**
+     @brief check if current user is member of at least one of given groups
 
- ADMIN (uid=1) always is treated like a member of any groups
- */
+     @param mixed $groups_list: an array or a coma seperated list of group-ids
+     @return bool: true if current user is member of one of this groups, otherwise false
+
+     ADMIN (uid=1) always is treated like a member of any groups
+     */
     public function ami_group_member($groups_list = '')
     {
         if ($this->get_group_id() == 1) {return true;}
         return $this->is_group_match($groups_list, $this->get_groups_id());
     }
 
-    // Check whether a page is visible or not.
-    // This will check page-visibility and user- and group-rights.
-    /* page_is_visible() returns
-    false: if page-visibility is 'none' or 'deleted', or page-vis. is 'registered' or 'private' and user isn't allowed to see the page.
-    true: if page-visibility is 'public' or 'hidden', or page-vis. is 'registered' or 'private' and user _is_ allowed to see the page.
+    /**
+     * @brief  Check whether a page is visible or not.
+     *         This will check page-visibility and user- and group-rights.
+     * 
+     * @param  array $page
+     * @return boolean  false: if page-visibility is 'none' or 'deleted', or page-vis. is 'registered' 
+     *                         or 'private' and user isn't allowed to see the page.
+     *                   true: if page-visibility is 'public' or 'hidden', or page-vis. is 'registered' 
+     *                         or 'private' and user _is_ allowed to see the page.
      */
     public function page_is_visible($page)
     {
@@ -160,15 +158,20 @@ class wb extends SecureForm
         }
         return ($show_it);
     }
-    // Check if there is at least one active section on this page
+    
+    /**
+     * @brief  Check if there is at least one active section on this page.
+     * @global object $database
+     * @param  array $page
+     * @return boolean
+     */
     public function page_is_active($page)
     {
         global $database;
         $has_active_sections = false;
-        $page_id = $page['page_id'];
+        $page_id = (int) $page['page_id'];
         $now = time();
-        $sql = 'SELECT `publ_start`, `publ_end` ';
-        $sql .= 'FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id`=' . (int) $page_id;
+        $sql = 'SELECT `publ_start`, `publ_end` FROM `{TP}sections` WHERE `page_id`='.$page_id;
         $query_sections = $database->query($sql);
         if ($query_sections->numRows() != 0) {
             while ($section = $query_sections->fetchRow()) {
@@ -445,42 +448,47 @@ class wb extends SecureForm
         
     }
 
-    // Validate send email
+    
+    /**
+     * @brief Validate and send a mail
+     * 
+     * @param string $fromaddress  // FROM:
+     * @param string $toaddress    // TO:
+     * @param string $subject      // SUBJECT 
+     * @param string $message      // The Message to be send
+     * @param string $fromname     // From Name
+     * @return boolean
+     */
     public function mail($fromaddress, $toaddress, $subject, $message, $fromname = '')
     {
-/*
-INTEGRATED OPEN SOURCE PHPMAILER CLASS FOR SMTP SUPPORT AND MORE
-SOME SERVICE PROVIDERS DO NOT SUPPORT SENDING MAIL VIA PHP AS IT DOES NOT PROVIDE SMTP AUTHENTICATION
-NEW WBMAILER CLASS IS ABLE TO SEND OUT MESSAGES USING SMTP WHICH RESOLVE THESE ISSUE (C. Sommer)
-
-NOTE:
-To use SMTP for sending out mails, you have to specify the SMTP host of your domain
-via the Settings panel in the backend of Website Baker
- */
+        // INTEGRATED OPEN SOURCE PHPMAILER CLASS FOR SMTP SUPPORT AND MORE.
+        // SOME SERVICE PROVIDERS DO NOT SUPPORT SENDING MAIL VIA PHP AS IT DOES NOT PROVIDE SMTP AUTHENTICATION.
+        // NEW WBMAILER CLASS IS ABLE TO SEND OUT MESSAGES USING SMTP WHICH RESOLVE THESE ISSUE. (C. Sommer)
 
         $fromaddress = preg_replace('/[\r\n]/', '', $fromaddress);
-        $toaddress = preg_replace('/[\r\n]/', '', $toaddress);
-        $subject = preg_replace('/[\r\n]/', '', $subject);
-        // $message_alt = $message;
-        // $message = preg_replace('/[\r\n]/', '<br \>', $message);
+        $toaddress =   preg_replace('/[\r\n]/', '', $toaddress);
+        $subject =     preg_replace('/[\r\n]/', '', $subject);
 
         // create PHPMailer object and define default settings
-        $myMail = new wbmailer();
-        // set user defined from address
+        $myMail = new Mailer();
+        
+        // set user defined FROM address
         if ($fromaddress != '') {
             if ($fromname != '') {
                 $myMail->FromName = $fromname;
             }
-                                               // FROM-NAME
-            $myMail->From = $fromaddress;      // FROM:
-            $myMail->AddReplyTo($fromaddress); // REPLY TO:
+            
+            $myMail->From = $fromaddress;        // FROM:
+            $myMail->AddReplyTo($fromaddress);   // REPLY TO:
         }
-                                                 // define recepient and information to send out
+        
+        // define recepient and information to send out
         $myMail->AddAddress($toaddress);         // TO:
         $myMail->Subject = $subject;             // SUBJECT
-        $myMail->Body = nl2br($message);         // CONTENT (HTML)
+        $myMail->Body =    nl2br($message);      // CONTENT (HTML)
         $myMail->AltBody = strip_tags($message); // CONTENT (TEXT)
-                                                 // check if there are any send mail errors, otherwise say successful
+
+        // check if there are any send mail errors and return accordingly
         if (!$myMail->Send()) {
             return false;
         } else {

@@ -150,8 +150,7 @@ $disallow_in_fields = array('pages_directory', 'media_directory', 'wb_version');
 $settings = array();
 $old_settings = array();
 // Query current settings in the db, then loop through them to get old values
-$sql = 'SELECT `name`, `value` FROM `' . TABLE_PREFIX . 'settings` '
-. 'ORDER BY `name`';
+$sql = "SELECT `name`, `value` FROM `{TP}settings` ORDER BY `name`";
 if ($res_settings = $database->query($sql)) {
     $passed = false;
     while ($setting = $res_settings->fetchRow()) {
@@ -190,10 +189,9 @@ if ($res_settings = $database->query($sql)) {
 
         if (!in_array($value, $disallow_in_fields) && (isset($_POST[$setting_name]) || $passed == true)) {
             $value = trim($admin->strip_magic($value));
-            $sql = 'UPDATE `' . TABLE_PREFIX . 'settings` '
-            . 'SET `value`=\'' . $database->escapeString($value) . '\' '
-            . 'WHERE `name`!=\'wb_version\' AND `name`=\'' . $setting_name . '\'';
-            if (!$database->query($sql)) {
+            $sSql = "UPDATE `{TP}settings` SET `value`='".$database->escapeString($value)."' "
+                    . "WHERE `name` != 'wb_version' AND `name`= '".$setting_name."'";
+            if (!$database->query($sSql)) {
                 $admin->print_error($database->get_error, $js_back);
                 break;
             }
@@ -202,7 +200,7 @@ if ($res_settings = $database->query($sql)) {
 }
 
 // Query current search settings in the db, then loop through them and update the db with the new value
-$sql = 'SELECT `name`, `value` FROM `' . TABLE_PREFIX . 'search` '
+$sql = 'SELECT `name`, `value` FROM `{TP}search` '
 . 'WHERE `extra`=\'\'';
 if (!($res_search = $database->query($sql))) {
     $admin->print_error($database->is_error(), $js_back);
@@ -219,10 +217,9 @@ while ($search_setting = $res_search->fetchRow()) {
     : $admin->get_post($post_name);
     if (isset($value)) {
         $value = $admin->add_slashes($value);
-        $sql = 'UPDATE `' . TABLE_PREFIX . 'search` '
-        . 'SET `value`=\'' . $value . '\' '
-        . 'WHERE `name`=\'' . $setting_name . '\' AND `extra`=\'\'';
-        if (!($database->query($sql))) {
+        $sSql = "UPDATE `{TP}search` SET `value`= '".$value. "' "
+                . "WHERE `name`='".$setting_name."' AND `extra`=''";
+        if (!($database->query($sSql))) {
             $admin->print_error($database->get_error, $js_back);
             break;
         }
