@@ -421,7 +421,7 @@ if($is_advanced)
             'TEXT_WBMAILER_SMTP_AUTH_NOTICE'        => $TEXT['WBMAILER_SMTP_AUTH_NOTICE'],
             'TEXT_WBMAILER_SMTP_USERNAME'           => $TEXT['WBMAILER_SMTP_USERNAME'],
             'TEXT_WBMAILER_SMTP_PASSWORD'           => $TEXT['WBMAILER_SMTP_PASSWORD'],
-            'HEADING_SEND_TESTMAIL'                 => $HEADING['SEND_TESTMAIL'],
+            'TEXT_BUTTON_SEND_TESTMAIL'             => $TEXT['BUTTON_SEND_TESTMAIL'],
             'TEXT_SEND_TESTMAIL'                    => $TEXT['SEND_TESTMAIL'],
             'SMTP_AUTH_SELECTED'                    => ' checked="checked"'
         )

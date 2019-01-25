@@ -781,22 +781,22 @@
 				</button>
 			</div>
 		</div>
+		</form>
+		<!--main. Needs to be placed here, no form in form possible-->		
+			<hr class="fg12">
+			<div class="fg9">
+			{TEXT_SEND_TESTMAIL}
+			</div>
+			<div class="fg3">
+			<form name="user" action="{ADMIN_URL}/settings/send_testmail.php" method="post">
+				{FTAN}
+				<input type="hidden" name="send_test_mail">
+				<input type="submit" name="submit" class="button" value="{TEXT_BUTTON_SEND_TESTMAIL}" />
+			</form>
+			</div>
 	</section>
 	</div> <!-- end #tab-container -->
-</form>
 
-<br />  
-<form name="user" action="{ADMIN_URL}/settings/send_testmail.php" method="post">
-    {FTAN}
-    <h2 class="page_titel" id="sendtestmail">{HEADING_SEND_TESTMAIL}: </h2>
-    <section class="content-box">
-        <p class="fg12 desc bot" style="padding-top:15px;">{TEXT_SEND_TESTMAIL}<br />       
-        <input type="hidden" name="send_test_mail"></p> 
-        <div class="row" style="padding-left: 30px;">
-            <input type="submit" name="submit" class="button" value="{HEADING_SEND_TESTMAIL}" />
-        </div>
-    </section>
-</form>
 <!-- END main_block -->
 
 <script>

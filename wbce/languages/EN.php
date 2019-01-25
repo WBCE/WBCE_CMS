@@ -370,12 +370,12 @@ $TEXT['WBMAILER_SMTP_AUTH_NOTICE'] = 'only activate if your SMTP host requires a
 $TEXT['WBMAILER_SMTP_HOST'] = 'SMTP Host';
 $TEXT['WBMAILER_SMTP_PASSWORD'] = 'SMTP Password';
 $TEXT['WBMAILER_SMTP_USERNAME'] = 'SMTP Loginname';
-$MESSAGE['TESTMAIL_SUCCESS'] = "Test mail was successfully sent to <kbd>%s</kbd>.";
-$MESSAGE['TESTMAIL_FAILURE'] = "Test mail couldn\'t be sent to <kbd>%s</kbd>.<br />Please check your Settings and try again.";
-$HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the Mailer Settings below are being overriden by settings in the file <kbd>[WB_PATH]/include/PHPMailer/config_mail.php</kbd>.<br />'
-                                        . 'In order to use the Mailer Settings below you\'ll need to disable the array in named file.';
-$HEADING['SEND_TESTMAIL'] = 'Send Test Email';
-$TEXT['SEND_TESTMAIL'] = 'Click "'.$HEADING['SEND_TESTMAIL'].'" to check if emails are delivering correctly.';
+$MESSAGE['TESTMAIL_SUCCESS'] = "The test email was sent to <kbd>%s</kbd>. Please check your inbox.";
+$MESSAGE['TESTMAIL_FAILURE'] = "The test email could not be sent to <kbd>%s</kbd>.<br />Please check your settings and try again.";
+$HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the mailer settings below are being overriden by settings in the file <kbd>[WB_PATH]/include/PHPMailer/config_mail.php</kbd>.<br />'
+                                        . 'In order to use the mailer settings below you\'ll need to disable the array in named file.';
+$TEXT['BUTTON_SEND_TESTMAIL'] = 'Check email configuration';
+$TEXT['SEND_TESTMAIL'] = 'To verify that the email settings are working properly, you can send a test email to the email adress above by clicking on the button. Please notice that you have to save the settings at first. ';
 $TEXT['WEBSITE'] = 'Website';
 $TEXT['WEBSITE_DESCRIPTION'] = 'Website Description';
 $TEXT['WEBSITE_FOOTER'] = 'Website Footer';
