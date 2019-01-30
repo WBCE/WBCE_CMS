@@ -31,7 +31,7 @@ if ($ok == false) { $autoarchive_action = 0; }
 // Query posts
 // Get total number of topics
 
-$theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE ".$sectionquery." AND ".$qactive.$query_extra;
+$theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE ".$sectionquery." AND ".$qactive.$query_extra." AND section_id > 0";
 //echo $theq;
 $query_total_num = $database->query($theq);
 $total_num = $query_total_num->numRows();
@@ -68,7 +68,7 @@ if ($previous_link.$next_link != '') {
 	
 //Finaly: Do the query:
 			
-$theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE ".$sectionquery." AND ". $qactive.$query_extra." ORDER BY ".$sort_topics_by.$limit_sql;
+$theq = "SELECT * FROM ".TABLE_PREFIX."mod_".$tablename." WHERE ".$sectionquery." AND ". $qactive.$query_extra." AND section_id > 0 ORDER BY ".$sort_topics_by.$limit_sql;
 $query_topics = $database->query($theq);
 $num_topics = $query_topics->numRows();
 

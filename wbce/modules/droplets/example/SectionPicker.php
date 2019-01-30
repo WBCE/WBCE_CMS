@@ -20,6 +20,7 @@ if( $sid ) {
 			} else { $_sFrontendCss = ''; }
             $section_id = $sid;
 			ob_start();
+			$admin = $wb;
 			require(WB_PATH.'/modules/'.$module.'/view.php');
 			$content = $_sFrontendCss.ob_get_clean();
 			$section_id = $oldSid; // restore old sectionID
