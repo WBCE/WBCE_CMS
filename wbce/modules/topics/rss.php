@@ -177,7 +177,7 @@ if ($use_counter) {
     $SQL = "SELECT COUNT(`md5_ip`) AS `callers`, SUM(`count`) AS `views` FROM `".TABLE_PREFIX."mod_topics_rss_count` WHERE `date`='{$old['date']}' AND `section_id`='{$old['section_id']}'";
     if (null == ($result = $database->query($SQL)))
       die(sprintf('[%s] %s', __LINE__, $database->get_error()));
-    if ($statistic = $result->fetchRow(MYSQL_ASSOC))
+    if (null === $statistic = $result->fetchRow(MYSQL_ASSOC))
       die(sprintf('[%s] %s', __LINE__, $database->get_error()));
     // insert the statistic into the statistic table
     $SQL = "INSERT INTO `".TABLE_PREFIX."mod_topics_rss_statistic` (`section_id`,`date`,`callers`,`views`) VALUES ('{$old['section_id']}','{$old['date']}','{$statistic['callers']}','{$statistic['views']}')";
