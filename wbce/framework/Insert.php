@@ -683,10 +683,10 @@ class Insert {
                 }
             }
             if (!empty($aCssSet['style'])) {
-                if (strpos('<style', $aCssSet['style']) !== false) {
+                if (preg_match('/\<style(.*?)?\>/i', $aCssSet['style'])) {
                     $sRetVal .= $aCssSet['style'] . PHP_EOL;
                 } else {
-                    $sRetVal .= "\t<style id=\"" . $sSetName . "\" type=\"text/css\" ";
+                    $sRetVal .= "\t<style id=\"css_" . $sSetName . "\" type=\"text/css\" ";
                     if (!empty($aCssSet['media'])) {
                         $sRetVal .= 'media="' . $aCssSet['media'] . '"';
                     }
@@ -740,14 +740,15 @@ class Insert {
             }
             if (!empty($rec['script'])) {
 
-                if (strpos('<script', $rec['script']) !== false) {
+                if (preg_match('/\<script(.*?)?\>/i', $rec['script'])) {
                     $sRetVal .= $rec['script'] . PHP_EOL;
                 } else {
-                    $sRetVal .= "\t" . '<script id="' . $sSetName . '"';
+                    $sRetVal .= "\t" . '<script id="js_' . $sSetName . '"';
                     if ($this->sRenderType != "html5") {
                         $sRetVal .= " type=\"text/javascript\"";
                     }
                     $sRetVal .= ">" . PHP_EOL;
+                    $sRetVal .= $rec['script'];
                     $sRetVal .= "\t</script>" . PHP_EOL;
                 }
             }
