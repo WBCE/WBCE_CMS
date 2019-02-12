@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * WBCE CMS
  * Way Better Content Editing.
@@ -11,7 +11,7 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+if(count(get_included_files())==1) die(header("Location: ../index.php", TRUE,301));
 
 // Define that this file has been loaded
 define('FUNCTIONS_FILE_LOADED', true);
@@ -1489,9 +1489,6 @@ function check_media_path($directory, $with_media_dir = true)
     }
 }
 
-/*
-
- */
 /**
  * @brief   The urlencode function and rawurlencode are mostly based on RFC 1738.
  *          However, since 2005 the current RFC in use for URIs standard is RFC 3986.
@@ -1583,151 +1580,140 @@ if (!function_exists('is_countable')) {
 // NOTE: This function will load only if  WB_DEBUG  constant is set to true 
 // otherwise another "empty return" function (below this one) will be load.
 
-if(defined('WB_DEBUG') && WB_DEBUG == true){
-    function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
-    {
-        $sRetVal = '';
-        
-        // get Type of variable
-        switch (true){
-            case is_object($mVar): $sType = 'object'; break;                
-            case is_array($mVar):  $sType = 'array';  break;                
-            case is_string($mVar): $sType = 'string'; break;                
-            case is_bool($mVar):   $sType = 'bool';   break;                
-            case is_int($mVar):    $sType = 'int';      break;                
-            case is_scalar($mVar): $sType = 'scalar'; break;                
-            default: $sType = 'unknown var type';         
-        }
-        
-        $sRetVal .=  '<fieldset class="debug_frame '.$sType.'">';
-        $sCountable = is_countable($mVar) ? ' <i>countable</i>' : '';
-        if($sHeading != ''){
-            $sRetVal .=  '<legend style="color: blue;"><span class="var-type">('.$sType.')'.$sCountable.' </span> '.$sHeading.':</legend>';
-        }
-        $sRetVal .=  '<pre>';
-        $sData    =  '';
-        if((is_array($mVar)) or (!is_array($mVar) && $mVar != '' && !is_bool($mVar) && !is_int($mVar))){
-            $func = ($bUse_var_dump == true) ? 'var_dump' : 'print_r';
-            ob_start();
-            $func($mVar);
-            $sData .= ob_get_clean();
-        } 
-        if ($mVar === TRUE) {
-            $sData .=  '<span class="keyname">true</span> <i class="str-length">(bool)</i>';
-        } elseif ($mVar === FALSE) {
-            $sData .=  '<span class="keyname">false</span> <i class="str-length">(bool)</i>';
-        } elseif ($mVar === NULL) {
-            $sData .=  '<span class="keyname">NULL</span>';
-        } elseif (is_int($mVar)) {
-            $sData .=  '<span class="keyname">'.$mVar.'</span> <i class="str-length">(int)</i>';
-        } 
-        
-        $sRetVal .=  $sData. PHP_EOL .'</pre></fieldset>';  
+function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
+{
+    $sRetVal = '';
 
-        // apply RegEx for colorization if the output is an Array or an Object            
-        $aRegEx = array(                
-            0 => array(
-                'find'    => "/\=\>\n/",
-                'replace' => '=><br><span class="tab"></span>',
-            ), 
-            1 => array(
-                'find'    => '/\=\>/',
-                'replace' => "<span class=\"arrow\">=></span>",
-            ),  
-            2 => array(
-                'find'    => '#(?<=\[)(.*?)(?=\])#',
-                'replace' => '<span class="keyname">$1</span>',
-            ),     
-            3 => array(
-                'find'    => '/\[/',
-                'replace' => '<div class="vert-spacer">&nbsp;</div>'
-                           . '<span class="tab"></span>'
-                           . '<span class="brackets">[</span>',
-            ),                 
-            4 => array(
-                'find'    => '/\]/',
-                'replace' => '<span class="brackets">]</span>',
-            ),          
-            5 => array(
-                'find'    => '/(string|array|int)(\()([1-9][0-9]*)(\))/',
-                'replace' => '<span class="var-type">$1</span>'
-                           . '<span class="brackets">$2</span>'
-                           . '<span class="str-length">$3</span>'
-                           . '<span class="brackets">$4</span>',
-            )
-        );
-        
-        $sRetVal = do_regex_array($aRegEx, $sRetVal);
-        
-        // provide stylesheet for the colorization
-        $sRetVal .= '
-        <!--(MOVE) CSS HEAD BTM- -->
-        <style type="text/css">
-        fieldset.debug_frame {
-            background: lightyellow; 
-            padding:6px; border: 
-            1px dotted grey;
-            
-        }
-        .debug_frame legend {
-            margin-top:6px;    
-            padding-top:6px; 
-            font-weight: 600; 
-            font-size: 120%;    
-            background: lightyellow; 
-            padding:6px;
-        }
-        .debug_frame pre {
-            font-family: monospace;    
-            color: #424f60;    
-            line-height: 90%;
-        }
-        .debug_frame span.arrow {
-            color:magenta; 
-            font-weight: 600; 
-            font-size: 85%; 
-            margin: 0.13em;
-        }
-        .debug_frame legend span.var-type {
-            color: magenta; 
-            font-weight: 600; 
-            font-size: 75%;
-        }
-        .debug_frame span.brackets {
-            color: #8696aa;
-        }
-        .debug_frame span.keyname {
-            color: #0047d6; 
-            font-size: 105%; 
-            margin: 0.04em;
-        }
-        .debug_frame span.tab {
-            margin-left: 1.5em;
-        }
-        .debug_frame div.vert-spacer {
-            display: inline-block; 
-            margin-top: 12px !important; 
-            margin-left: -30px !important;
-        }
-        .debug_frame span.var-type {    
-            color: green; 
-            margin: 3px;
-        }
-        .debug_frame .str-length {    
-            color: orange; 
-            margin: 1px;
-        }
-        </style>
-        <!--(END)-->';
-            
-        echo $sRetVal;
+    // get Type of variable
+    switch (true){
+        case is_object($mVar): $sType = 'object'; break;                
+        case is_array($mVar):  $sType = 'array';  break;                
+        case is_string($mVar): $sType = 'string'; break;                
+        case is_bool($mVar):   $sType = 'bool';   break;                
+        case is_int($mVar):    $sType = 'int';      break;                
+        case is_scalar($mVar): $sType = 'scalar'; break;                
+        default: $sType = 'unknown var type';         
     }
-} elseif (defined('WB_DEBUG') && WB_DEBUG == false || !defined('WB_DEBUG')){ 
-    function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
-    {
-        // return nothing if WB_DEBUG is false or undefined
-        return;
+
+    $sRetVal .=  '<fieldset class="debug_frame '.$sType.'">';
+    $sCountable = is_countable($mVar) ? ' <i>countable</i>' : '';
+    if($sHeading != ''){
+        $sRetVal .=  '<legend style="color: blue;"><span class="var-type">('.$sType.')'.$sCountable.' </span> '.$sHeading.':</legend>';
     }
+    $sRetVal .=  '<pre>';
+    $sData    =  '';
+    if((is_array($mVar)) or (!is_array($mVar) && $mVar != '' && !is_bool($mVar) && !is_int($mVar))){
+        $func = ($bUse_var_dump == true) ? 'var_dump' : 'print_r';
+        ob_start();
+        $func($mVar);
+        $sData .= ob_get_clean();
+    } 
+    if ($mVar === TRUE) {
+        $sData .=  '<span class="keyname">true</span> <i class="str-length">(bool)</i>';
+    } elseif ($mVar === FALSE) {
+        $sData .=  '<span class="keyname">false</span> <i class="str-length">(bool)</i>';
+    } elseif ($mVar === NULL) {
+        $sData .=  '<span class="keyname">NULL</span>';
+    } elseif (is_int($mVar)) {
+        $sData .=  '<span class="keyname">'.$mVar.'</span> <i class="str-length">(int)</i>';
+    } 
+
+    $sRetVal .=  $sData. PHP_EOL .'</pre></fieldset>';  
+
+    // apply RegEx for colorization if the output is an Array or an Object            
+    $aRegEx = array(                
+        0 => array(
+            'find'    => "/\=\>\n/",
+            'replace' => '=><br><span class="tab"></span>',
+        ), 
+        1 => array(
+            'find'    => '/\=\>/',
+            'replace' => "<span class=\"arrow\">=></span>",
+        ),  
+        2 => array(
+            'find'    => '#(?<=\[)(.*?)(?=\])#',
+            'replace' => '<span class="keyname">$1</span>',
+        ),     
+        3 => array(
+            'find'    => '/\[/',
+            'replace' => '<div class="vert-spacer">&nbsp;</div>'
+                       . '<span class="tab"></span>'
+                       . '<span class="brackets">[</span>',
+        ),                 
+        4 => array(
+            'find'    => '/\]/',
+            'replace' => '<span class="brackets">]</span>',
+        ),          
+        5 => array(
+            'find'    => '/(string|array|int)(\()([1-9][0-9]*)(\))/',
+            'replace' => '<span class="var-type">$1</span>'
+                       . '<span class="brackets">$2</span>'
+                       . '<span class="str-length">$3</span>'
+                       . '<span class="brackets">$4</span>',
+        )
+    );
+
+    $sRetVal = do_regex_array($aRegEx, $sRetVal);
+
+    // provide stylesheet for the colorization
+    $sToCss = '
+    fieldset.debug_frame {
+        background: lightyellow; 
+        padding:6px; border: 
+        1px dotted grey;
+
+    }
+    .debug_frame legend {
+        margin-top:6px;    
+        padding-top:6px; 
+        font-weight: 600; 
+        font-size: 120%;    
+        background: lightyellow; 
+        padding:6px;
+    }
+    .debug_frame pre {
+        font-family: monospace;    
+        color: #424f60;    
+        line-height: 90%;
+    }
+    .debug_frame span.arrow {
+        color:magenta; 
+        font-weight: 600; 
+        font-size: 85%; 
+        margin: 0.13em;
+    }
+    .debug_frame legend span.var-type {
+        color: magenta; 
+        font-weight: 600; 
+        font-size: 75%;
+    }
+    .debug_frame span.brackets {
+        color: #8696aa;
+    }
+    .debug_frame span.keyname {
+        color: #0047d6; 
+        font-size: 105%; 
+        margin: 0.04em;
+    }
+    .debug_frame span.tab {
+        margin-left: 1.5em;
+    }
+    .debug_frame div.vert-spacer {
+        display: inline-block; 
+        margin-top: 12px !important; 
+        margin-left: -30px !important;
+    }
+    .debug_frame span.var-type {    
+        color: green; 
+        margin: 3px;
+    }
+    .debug_frame .str-length {    
+        color: orange; 
+        margin: 1px;
+    }';
+    I::insertCssCode($sToCss, 'HEAD BTM+', 'debug_dump');
+
+    echo $sRetVal;
 }
 
 /**

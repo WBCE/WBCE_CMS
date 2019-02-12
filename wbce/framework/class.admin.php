@@ -18,9 +18,11 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 require_once ADMIN_PATH . '/interface/version.php';
 
 class admin extends wb
-{
-    // Authenticate user then auto print the header
-    public function __construct($section_name = '##skip##', $section_permission = 'start', $auto_header = true, $auto_auth = true, $operateBuffer=true)
+{	
+    /**
+     * @brief  Authenticate user then auto print the header
+     */
+    public function __construct($section_name = '##skip##', $section_permission = 'start', $auto_header = true, $auto_auth = true, $operateBuffer = true)
     {
         parent::__construct(SecureForm::BACKEND);
         if ($section_name != '##skip##') {
@@ -43,8 +45,7 @@ class admin extends wb
             }
 
             // Check if the backend language is also the selected language. If not, send headers again.
-            $sql = 'SELECT `language` FROM `' . TABLE_PREFIX . 'users` ';
-            $sql .= 'WHERE `user_id`=' . (int) $this->get_user_id();
+            $sql = 'SELECT `language` FROM `{TP}users` WHERE `user_id`=' . (int)$this->get_user_id();
             $user_language = $database->get_one($sql);
             $admin_folder = str_replace(WB_PATH, '', ADMIN_PATH);
             if ((LANGUAGE != $user_language) && file_exists(WB_PATH . '/languages/' . $user_language . '.php')
@@ -52,11 +53,12 @@ class admin extends wb
                 // check if page_id is set
                 $page_id_url = (isset($_GET['page_id'])) ? '&page_id=' . (int) $_GET['page_id'] : '';
                 $section_id_url = (isset($_GET['section_id'])) ? '&section_id=' . (int) $_GET['section_id'] : '';
+				$sHeaderLocation = $_SERVER['SCRIPT_NAME'] . '?lang=' . $user_language . $page_id_url . $section_id_url;
                 if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
                     // check if there is an query-string
-                    header('Location: ' . $_SERVER['SCRIPT_NAME'] . '?lang=' . $user_language . $page_id_url . $section_id_url . '&' . $_SERVER['QUERY_STRING']);
+                    header('Location: ' . $sHeaderLocation . '&' . $_SERVER['QUERY_STRING']);
                 } else {
-                    header('Location: ' . $_SERVER['SCRIPT_NAME'] . '?lang=' . $user_language . $page_id_url . $section_id_url);
+                    header('Location: ' . $sHeaderLocation);
                 }
                 exit();
             }
@@ -67,12 +69,18 @@ class admin extends wb
             }
         }
 
-        // i know this sucks but some old stuff really need this
-	    global $wb;
-            if(!is_object($wb)) $wb = $this;
+        // I know it's not the prettiest solution, but some old stuff really needs this for compatibility
+        global $wb;
+        if(!is_object($wb)) $wb = $this;
     }
-
-    // Print the admin header
+  
+    /**
+     * @brief   Print the admin header
+     *
+     * @param   string  $body_tags
+     * @param   bool    $operateBuffer
+     * @return  string  generate admin header based on the header template
+     */
     public function print_header($body_tags = '', $operateBuffer=true)
     {
         // this buffer is needed so we can later apply output filters to BE Output
@@ -85,8 +93,7 @@ class admin extends wb
         // Connect to database and get website title
         // $GLOBALS['FTAN'] = $this->getFTAN();
         $this->createFTAN();
-        $sql = 'SELECT `value` FROM `' . TABLE_PREFIX . 'settings` '
-        . 'WHERE `name`=\'website_title\'';
+        $sql = 'SELECT `value` FROM `{TP}settings` WHERE `name`=\'website_title\'';
         $get_title = $database->query($sql);
         $title = $get_title->fetchRow(MYSQLI_ASSOC);
         
@@ -105,23 +112,17 @@ class admin extends wb
         $view_url = WB_URL;
         if (isset($_GET['page_id'])) {
             // extract page link from the database
-            $sql = 'SELECT `link` FROM `' . TABLE_PREFIX . 'pages` '
-            . 'WHERE `page_id`=' . intval($_GET['page_id']);
+            $sql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id`=' . intval($_GET['page_id']);
             $result = @$database->query($sql);
             $row = @$result->fetchRow(MYSQLI_ASSOC);
             if ($row) {
                 $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
             }
-
         }
-
-        // Session Timeout possibly not Defined on Upgrade
-        if     ($sSessionTimeout=Settings::get("wb_session_timeout")) {}
-        elseif ($sSessionTimeout=Settings::get("wb_secform_timeout")) {}
-        else                                                          {$sSessionTimeout="7200";}
-
+		I::insertJsFile(WB_URL.'/include/SessionTimeout/SessionTimeout.js', "HEAD BTM+", 'SessionTimeout');
+		
         $header_template->set_var(array(
-            'WB_SESSION_TIMEOUT' => $sSessionTimeout,
+            'WB_SESSION_TIMEOUT' => $this->get_session_timeout(),
             'SECTION_NAME' => $MENU[strtoupper($this->section_name)],
             'BODY_TAGS' => $body_tags,
             'WEBSITE_TITLE' => ($title['value']),
@@ -195,8 +196,14 @@ class admin extends wb
         $header_template->parse('header', 'header_block', false);
         $header_template->pparse('output', 'page');
     }
-
-    // Print the admin footer
+	
+    /**
+     * @brief   Print the admin footer
+     *
+     * @param   bool    $activateJsAdmin
+     * @param   bool    $operateBuffer
+     * @return  string  generate admin footer based on the header template
+     */
     public function print_footer($activateJsAdmin = false, $operateBuffer=true)
     {
         // include the required file for Javascript admin
@@ -214,7 +221,7 @@ class admin extends wb
         // Session Timeout possibly not Defined on Upgrade
         if     ($sSessionTimeout=Settings::get("wb_session_timeout")) {}
         elseif ($sSessionTimeout=Settings::get("wb_secform_timeout")) {}
-        else                                                          {$sSessionTimeout="7200";}
+        else   {$sSessionTimeout="7200";}
         
         $footer_template->set_var(array(
             'WB_SESSION_TIMEOUT' => $sSessionTimeout,
@@ -222,8 +229,7 @@ class admin extends wb
             'ADMIN_URL' => ADMIN_URL,
             'THEME_URL' => THEME_URL,
             'PHP_VERSION' => substr(phpversion(),0,6),
-            'WBCE_VERSION' => WBCE_VERSION,
-            'BACKEND_BODY_MODULE_JS' => $this->register_backend_modfiles_body('js'),
+            'WBCE_VERSION' => WBCE_VERSION
         ));
         $footer_template->parse('header', 'footer_block', false);
         $footer_template->pparse('output', 'page');
@@ -264,8 +270,14 @@ class admin extends wb
             echo $allOutput;
         }
     }
-
-    // Return a system permission
+	
+    /**
+     * @brief   Return a system permission
+     *
+     * @param   string  $name  Name of the area in the backend
+     * @param   string  $type tpe of permission asked for (system|module|template)
+     * @return  bool    true or false depending on whether or not user has permission in the area
+     */
     public function get_permission($name, $type = 'system')
     {
         // Append to permission type
@@ -276,49 +288,60 @@ class admin extends wb
         } else {
             // Set system permissions var
             $system_permissions = $this->get_session('SYSTEM_PERMISSIONS');
-            // Set module permissions var
+            
+			// Set module permissions var
             $module_permissions = $this->get_session('MODULE_PERMISSIONS');
-            // Set template permissions var
+            
+			// Set template permissions var
             $template_permissions = $this->get_session('TEMPLATE_PERMISSIONS');
-            // Return true if system perm = 1
+            
+			// Return true if system perm = 1
             if (isset($$type) && is_array($$type) && is_numeric(array_search($name, $$type))) {
-                if ($type == 'system_permissions') {
-                    return true;
-                } else {
-                    return false;
-                }
+				return ($type == 'system_permissions') ? true : false;
             } else {
-                if ($type == 'system_permissions') {
-                    return false;
-                } else {
-                    return true;
-                }
+				return ($type == 'system_permissions') ? false : true;
             }
         }
     }
 
+    /**
+     * @brief   Get basic user details (`username`,`display_name`,`email`) as array
+     *
+     * @global  object  $database
+     * @param   int     $user_id
+     * @return  array   
+     */
     public function get_user_details($user_id)
     {
         global $database;
-        $retval = array('username' => 'unknown', 'display_name' => 'Unknown', 'email' => '');
-        $sql = 'SELECT `username`,`display_name`,`email` ';
-        $sql .= 'FROM `' . TABLE_PREFIX . 'users` ';
-        $sql .= 'WHERE `user_id`=' . (int) $user_id;
-        if (($resUsers = $database->query($sql))) {
+        $aRetVal = array(
+                'username'     => 'unknown', 
+                'display_name' => 'Unknown', 
+                'email'        => ''
+        );
+        $sSql = 'SELECT `username`,`display_name`,`email` FROM `{TP}users` WHERE `user_id`= %d';
+        if (($resUsers = $database->query(sprintf($sSql, $user_id)))) {
             if (($recUser = $resUsers->fetchRow(MYSQLI_ASSOC))) {
-                $retval = $recUser;
+                $aRetVal = $recUser;
             }
         }
-        return $retval;
+        return $aRetVal;
     }
 
-    //
+    /**
+     * @brief   get section details from `{TP}sections` database table
+     *
+     * @global  object  $database
+     * @global  array   $TEXT
+     * @param   int     $section_id
+     * @param   string  $backLink
+     * @return  array   assoc array with section details
+     */
     public function get_section_details($section_id, $backLink = 'index.php')
     {
         global $database, $TEXT;
-        $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'sections` ';
-        $sql .= 'WHERE `section_id`=' . intval($section_id);
-        if (($resSection = $database->query($sql))) {
+        $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`= %d';
+        if (($resSection = $database->query(sprintf($sSql, $section_id)))) {
             if (!($recSection = $resSection->fetchRow(MYSQLI_ASSOC))) {
                 $this->print_header();
                 $this->print_error($TEXT['SECTION'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
@@ -330,12 +353,20 @@ class admin extends wb
         return $recSection;
     }
 
+    /**
+     * @brief   get page details from `{TP}pages` database table
+     *
+     * @global  object  $database
+     * @global  array   $TEXT
+     * @param   int     $page_id
+     * @param   string  $backLink
+     * @return  array   assoc array with page details
+     */
     public function get_page_details($page_id, $backLink = 'index.php')
     {
         global $database, $TEXT;
-        $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` ';
-        $sql .= 'WHERE `page_id`=' . intval($page_id);
-        if (($resPages = $database->query($sql))) {
+        $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id`= %d';
+        if (($resPages = $database->query(sprintf($sSql, $page_id)))) {
             if (!($recPage = $resPages->fetchRow(MYSQLI_ASSOC))) {
                 $this->print_header();
                 $this->print_error($TEXT['PAGE'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
@@ -347,165 +378,76 @@ class admin extends wb
         return $recPage;
     }
 
+    /**
+     * @brief   Check if authenticated (logged in) user 
+     *          has permissions for specified page
+     *
+     * @global  object  $database
+     * @param   array   $page
+     * @param   string  $action (viewing|admin)
+     * @return  bool    true if user has given permissions 
+     */
     public function get_page_permission($page, $action = 'admin')
     {
-        if ($action != 'viewing') {$action = 'admin';}
+        if ($action != 'viewing') {
+			$action = 'admin';
+		}
         $action_groups = $action . '_groups';
-        $action_users = $action . '_users';
+        $action_users  = $action . '_users';
         $groups = $users = '0';
         if (is_array($page)) {
             $groups = $page[$action_groups];
-            $users = $page[$action_users];
+            $users  = $page[$action_users];
         } else {
             global $database;
-            $sql = 'SELECT `' . $action_groups . '`,`' . $action_users . '` ';
-            $sql .= 'FROM `' . TABLE_PREFIX . 'pages` ';
-            $sql .= 'WHERE `page_id`=' . (int) $page;
-            if (($res = $database->query($sql))) {
+            $sSql = 'SELECT `%s`,`%s` FROM `{TP}pages` WHERE `page_id`= %d';
+            if (($res = $database->query(sprintf($sSql, $action_groups, $action_users, $page['page_id'])))) {
                 if (($rec = $res->fetchRow(MYSQLI_ASSOC))) {
                     $groups = $rec[$action_groups];
-                    $users = $rec[$action_users];
+                    $users  = $rec[$action_users];
                 }
             }
         }
         return ($this->ami_group_member($groups) || $this->is_group_match($this->get_user_id(), $users));
     }
 
-    // Returns a system permission for a menu link
-    public function get_link_permission($title)
+    /**
+     * @brief   Returns a system permission for a specified backend area
+     *          
+     *
+     * @param   string  $sArea  This may be a backend area like start|addons|settings etc.
+     *                          or a specific module
+     * @return  bool    true if user has given permissions 
+     */
+    public function get_link_permission($sArea)
     {
-        $title = str_replace('_blank', '', $title);
-        $title = strtolower($title);
+        $sArea = str_replace('_blank', '', $sArea);
+        $sArea = strtolower($sArea);
         // Set system permissions var
-        $system_permissions = $this->get_session('SYSTEM_PERMISSIONS');
+        $aSystemPerms = $this->get_session('SYSTEM_PERMISSIONS');
         // Set module permissions var
-        $module_permissions = $this->get_session('MODULE_PERMISSIONS');
-        if ($title == 'start') {
+        $aModulePerms = $this->get_session('MODULE_PERMISSIONS');
+        if ($sArea == 'start') {
             return true;
         } else {
             // Return true if system perm = 1
-            if (is_numeric(array_search($title, $system_permissions))) {
+            if (is_numeric(array_search($sArea, $aSystemPerms))) {
                 return true;
             } else {
                 return false;
             }
         }
     }
-
-    // Function to add optional module Javascript or CSS stylesheets into the <body> section of the backend
-    public function register_backend_modfiles_body($file_id = "js")
+	
+    /**
+     * @brief   Function to add optional module JavaScript or CSS stylesheets 
+     *          into the <head> section of the backend          
+     *
+     * @param   string  $sModfileType  css|js|jquery|js_vars
+     * @return  void 
+     */
+    public function register_backend_modfiles($sModfileType = "css")
     {
-        // sanity check of parameter passed to the function
-        $file_id = strtolower($file_id);
-        if ($file_id !== "javascript" && $file_id !== "js") {
-            return;
-        }
-        global $database;
-        $body_links = "";
-        // define default baselink and filename for optional module javascript and stylesheet files
-        if ($file_id == "js") {
-            $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/backend_body.js" type="text/javascript"></script>';
-            $base_file = "backend_body.js";
-        }
-        // check if backend_body.js files needs to be included to the <body></body> section of the backend
-        if (isset($_GET['tool'])) {
-            // check if displayed page contains a installed admin tool
-            $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool']) . '\'';
-            $result = $database->query($sql);
-            if ($result->numRows()) {
-                // check if admin tool directory contains a backend_body.js file to include
-                $tool = $result->fetchRow(MYSQLI_ASSOC);
-                if (file_exists(WB_PATH . '/modules/' . $tool['directory'] . '/' . $base_file)) {
-                    // return link to the backend_body.js file
-                    return str_replace('{MODULE_DIRECTORY}', $tool['directory'], $base_link);
-                }
-            }
-        } elseif (isset($_GET['page_id']) || isset($_POST['page_id'])) {
-            // check if displayed page in the backend contains a page module
-            if (isset($_GET['page_id'])) {
-                $page_id = (int) $_GET['page_id'];
-            } else {
-                $page_id = (int) $_POST['page_id'];
-            }
-            // gather information for all models embedded on actual page
-            $sql = 'SELECT DISTINCT `module` FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id`=' . (int) $page_id;
-            $query_modules = $database->query($sql);
-            while ($row = $query_modules->fetchRow(MYSQLI_ASSOC)) {
-                // check if page module directory contains a backend_body.js file
-                if (file_exists(WB_PATH . '/modules/' . $row['module'] . '/' . $base_file)) {
-                    // create link with backend_body.js source for the current module
-                    $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link);
-                    // ensure that backend_body.js is only added once per module type
-                    if (strpos($body_links, $tmp_link) === false) {
-                        $body_links .= $tmp_link . "\n";
-                    }
-                }
-            }
-            // write out links with all external module javascript/CSS files, remove last line feed
-            return rtrim($body_links);
-        }
-    }
-
-    // Function to add optional module Javascript or CSS stylesheets into the <head> section of the backend
-    public function register_backend_modfiles($file_id = "css")
-    {
-        // sanity check of parameter passed to the function
-        $file_id = strtolower($file_id);
-        if ($file_id !== "css" && $file_id !== "javascript" && $file_id !== "js") {
-            return;
-        }
-
-        global $database;
-        // define default baselink and filename for optional module javascript and stylesheet files
-        $head_links = "";
-        if ($file_id == "css") {
-            $base_link = '<link href="' . WB_URL . '/modules/{MODULE_DIRECTORY}/backend.css"';
-            $base_link .= ' rel="stylesheet" type="text/css" media="screen" />';
-            $base_file = "backend.css";
-        } else {
-            $base_link = '<script src="' . WB_URL . '/modules/{MODULE_DIRECTORY}/backend.js" type="text/javascript"></script>';
-            $base_file = "backend.js";
-        }
-
-        // check if backend.js or backend.css files needs to be included to the <head></head> section of the backend
-        if (isset($_GET['tool'])) {
-            // check if displayed page contains a installed admin tool
-            $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` ';
-            $sql .= 'WHERE `type`=\'module\' AND `function` LIKE \'%tool%\' AND `directory`=\'' . $database->escapeString($_GET['tool'])  . '\'';
-            $result = $database->query($sql);
-            if ($result->numRows()) {
-                // check if admin tool directory contains a backend.js or backend.css file to include
-                $tool = $result->fetchRow(MYSQLI_ASSOC);
-                if (file_exists(WB_PATH . '/modules/' . $tool['directory'] . '/' . $base_file)) {
-                    // return link to the backend.js or backend.css file
-                    return str_replace("{MODULE_DIRECTORY}", $tool['directory'], $base_link);
-                }
-            }
-        } elseif (isset($_GET['page_id']) || isset($_POST['page_id'])) {
-            // check if displayed page in the backend contains a page module
-            if (isset($_GET['page_id'])) {
-                $page_id = (int) $_GET['page_id'];
-            } else {
-                $page_id = (int) $_POST['page_id'];
-            }
-
-            // gather information for all models embedded on actual page
-            $sql = 'SELECT `module` FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id`=' . (int) $page_id;
-            $query_modules = $database->query($sql);
-            while ($row = $query_modules->fetchRow(MYSQLI_ASSOC)) {
-                // check if page module directory contains a backend.js or backend.css file
-                if (file_exists(WB_PATH . '/modules/' . $row['module'] . '/' . $base_file)) {
-                    // create link with backend.js or backend.css source for the current module
-                    $tmp_link = str_replace("{MODULE_DIRECTORY}", $row['module'], $base_link);
-                    // ensure that backend.js or backend.css is only added once per module type
-                    if (strpos($head_links, $tmp_link) === false) {
-                        $head_links .= $tmp_link . "\n";
-                    }
-                }
-            }
-            // write out links with all external module javascript/CSS files, remove last line feed
-            return rtrim($head_links);
-        }
-    }
+        return $this->register_modfiles($sModfileType, "backend");
+    }	
 }
