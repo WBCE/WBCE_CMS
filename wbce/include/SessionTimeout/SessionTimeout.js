@@ -8,7 +8,7 @@ document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/';
 var upgradeTime = SESSION_TIMEOUT;
 
 var seconds = upgradeTime;
-function timer() {
+function timer() { 
 	var days        = Math.floor(seconds/24/60/60);
 	var hoursLeft   = Math.floor((seconds) - (days*86400));
 	var hours       = Math.floor(hoursLeft/3600);

@@ -82,7 +82,7 @@ if($page_type != '') {
 	
 	// Check and Load the needed YUI functions  //, all by Swen Uth
 	$YUI_ERROR             = false; // is there an Error
-	$YUI_PUT               = '';    // String with javascipt includes
+	$YUI_PUT               = '';    // String with javascipt includes 
 	$YUI_PUT_MISSING_Files = '';    // String with missing files
 	reset($js_yui_scripts);
 	foreach($js_yui_scripts as $script) {

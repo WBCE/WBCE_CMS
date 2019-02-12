@@ -640,7 +640,7 @@ class Insert {
 
         // none in this position
         if (!count($aData))
-            return $uDefault;
+            return $uDefault; 
 
         // Run the render loop; if src and script are set, both are rendered.
         $sRetVal = "";
@@ -662,7 +662,7 @@ class Insert {
     private function _processCss($sPosition = "HEAD BTM+", $uDefault = "") 
     {
         if (empty($this->_CssQueue))
-            return $uDefault;
+            return $uDefault; 
 
         // sort out the ones we want to show
         $aData = array();

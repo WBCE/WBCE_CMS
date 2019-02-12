@@ -41,4 +41,4 @@ $js_yui_scripts[] = $YUI_PATH.'/yahoo/yahoo'.$js_yui_min.'.js';
 $js_yui_scripts[] = $YUI_PATH.'/event/event'.$js_yui_min.'.js';
 $js_yui_scripts[] = $YUI_PATH.'/dom/dom'.$js_yui_min.'.js';
 $js_yui_scripts[] = $YUI_PATH.'/connection/connection'.$js_yui_min.'.js';
-$js_yui_scripts[] = $YUI_PATH.'/dragdrop/dragdrop'.$js_yui_min.'.js';
+$js_yui_scripts[] = $YUI_PATH.'/dragdrop/dragdrop'.$js_yui_min.'.js'; 

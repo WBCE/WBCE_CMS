@@ -790,7 +790,7 @@ class wb extends SecureForm
 	
     /**
      * @brief   This method registers the files and writes them 
-     *          to the DOM using the Insert Class methods
+     *          to the DOM using the Insert Class methods 
      *
      * @param   string  $sModfileType  css|js|jquery|js_vars
      * @param   string  $sEndPosition  frontend|backend

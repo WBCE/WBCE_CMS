@@ -1711,7 +1711,7 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
         color: orange; 
         margin: 1px;
     }';
-    I::insertCssCode($sToCss, 'HEAD BTM+', 'debug_dump');
+    I::insertCssCode($sToCss, 'HEAD BTM+', 'debug_dump'); 
 
     echo $sRetVal;
 }

@@ -350,7 +350,7 @@ class admin extends wb
             $this->print_header();
             $this->print_error($database->get_error(), $backLink, true);
         }
-        return $recSection;
+        return $recSection; 
     }
 
     /**

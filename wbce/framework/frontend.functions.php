@@ -143,7 +143,7 @@ if (!function_exists('get_menu_id')) {
      *         It returns the id if found otherwise it returns 0 (default menu id)
      *
      * @param  unspec $uMenu may be string or integer
-     * @return integer 
+     * @return integer
      */
     function get_menu_id ($uMenu) {
         if (is_int($uMenu) OR preg_match("/^[0-9]+$/is", $uMenu)){
