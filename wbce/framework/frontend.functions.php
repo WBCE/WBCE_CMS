@@ -16,8 +16,8 @@ if(count(get_included_files())==1) die(header("Location: ../index.php", TRUE, 30
 // since we are in the FRONTEND set WB_FRONTEND constant
 defined('WB_FRONTEND') or define('WB_FRONTEND', true);
 
-// compatibility mode for versions before 2.8.1
-// the news module still needs it
+// Compatibility mode for older versions.
+// (The News module still needs it for example.)
 if (isset($wb)) 
 	$admin = $wb;
 if (isset($wb->default_link)) 
@@ -31,6 +31,15 @@ if (isset($wb->page_keywords))
 if (isset($wb->link)) 
 	$page_link = $wb->link;
 
+
+// Load Snippet Type modules into the frontend
+$sSql = 'SELECT `directory` FROM `{TP}addons` WHERE function LIKE \'%snippet%\' ';
+if (($resSnippets = $database->query($sSql))) {
+    while ($rec = $resSnippets->fetchRow()) {
+        $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/include.php';
+        if (file_exists($sFile)) include $sFile;
+    }
+}
 
 // Frontend functions
 if (!function_exists('page_link')) {
