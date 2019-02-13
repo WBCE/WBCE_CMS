@@ -196,7 +196,7 @@ if (!function_exists('get_section_content')) {
      *
      * @global object  $database
      * @global object  $wb
-     *@global  array   $globals   several global vars
+     * @global array   $globals   several global vars
      * @global array   $TEXT
      * @global array   $MENU
      * @global array   $HEADING
