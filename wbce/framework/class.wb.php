@@ -757,10 +757,10 @@ class wb extends SecureForm
             $iPageTypePID = PAGE_ID;
         } 		
         if(!defined('PAGE_ID') && 
-            isset($_GET['page_id']) && 
+            isset($_REQUEST['page_id']) && 
             strposm($_SERVER['PHP_SELF'], array('pages/sections.php', 'pages/settings.php')) == false
         ){ 
-            $iPageTypePID = (int) $_GET['page_id'];
+            $iPageTypePID = (int) $_REQUEST['page_id'];
         } 
         if($iPageTypePID != NULL && !defined('WB_FRONTEND')) {
             // dev note: frontend modfiles for page type modules are being added 
@@ -847,11 +847,11 @@ class wb extends SecureForm
                 if(defined("PAGE_ID")){
                     $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . PAGE_ID . "';";
                 }	
-                if(isset($_GET['page_id']) && is_numeric($_GET['page_id'])){
+                if(isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])){
                     $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . (int) $_GET['page_id'] . "';";
                 }	
-                if(isset($_GET['section_id']) && is_numeric($_GET['section_id'])){
-                    $sJsSysvars .= "\n\t\tvar SECTION_ID   = '" . (int) $_GET['section_id'] . "';";
+                if(isset($_REQUEST['section_id']) && is_numeric($_REQUEST['section_id'])){
+                    $sJsSysvars .= "\n\t\tvar SECTION_ID   = '" . (int) $_REQUEST['section_id'] . "';";
                 }	
                 if(defined("TEMPLATE_DIR")){
                     $sJsSysvars .= "\n\t\tvar TEMPLATE_DIR = '" . TEMPLATE_DIR . "';";
@@ -902,5 +902,5 @@ class wb extends SecureForm
         }
         return $sSessionTimeout;
     }
-    
+ 
 }
