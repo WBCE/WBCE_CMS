@@ -848,7 +848,7 @@ class wb extends SecureForm
                     $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . PAGE_ID . "';";
                 }	
                 if(isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])){
-                    $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . (int) $_GET['page_id'] . "';";
+                    $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . (int) $_REQUEST['page_id'] . "';"; 
                 }	
                 if(isset($_REQUEST['section_id']) && is_numeric($_REQUEST['section_id'])){
                     $sJsSysvars .= "\n\t\tvar SECTION_ID   = '" . (int) $_REQUEST['section_id'] . "';";
