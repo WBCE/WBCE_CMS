@@ -801,7 +801,7 @@ class wb extends SecureForm
         $aToInsert = $this->collect_modfiles($sEndPosition);
         
         $sModfileType = strtolower($sModfileType);
-        switch (strtolower($sModfileType)) {
+        switch ($sModfileType) {
             case 'css': 
                 if(isset($aToInsert['css']) && is_array($aToInsert['css'])){
                     foreach($aToInsert['css'] as $sCssFile){
