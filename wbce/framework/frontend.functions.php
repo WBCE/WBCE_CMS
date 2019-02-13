@@ -169,7 +169,12 @@ if (!function_exists('get_menu_id')) {
 
 
 if (!function_exists('get_section_array')) {
-
+    /**
+     * @brief  Get Array with all the details of a section by using the section_id. 
+     *
+     * @param  integer $iSectionID
+     * @return array
+     */
     function get_section_array($iSectionID){
         $aSection = array();
         if(isset($iSectionID) && $iSectionID > 0){
@@ -183,7 +188,25 @@ if (!function_exists('get_section_array')) {
     }
 }
 
-if (!function_exists('get_section_content')) {	
+if (!function_exists('get_section_content')) {	    
+    /**
+     * @brief  Get the actual content of a single section based on its ID.
+     *         It's possible to also add the SEC_ANCHOR (if set in settings), 
+     *         and even to use a custom AnchorID if needed. 
+     *
+     * @global object  $database
+     * @global object  $wb
+     *@global  array   $globals   several global vars
+     * @global array   $TEXT
+     * @global array   $MENU
+     * @global array   $HEADING
+     * @global array   $MESSAGE
+     * 
+     * @param  integer $iSectionID
+     * @param  bool    $bUseSecAnchor
+     * @param  string  $sAnchorID
+     * @return array
+     */
     function get_section_content($iSectionID, $bUseSecAnchor = false, $sAnchorID = ""){
         $sContent = '';
         $aSection = get_section_array($iSectionID);
@@ -195,8 +218,13 @@ if (!function_exists('get_section_content')) {
             $page_id    = $iPageID = $aSection['page_id'];
             $section_id = $iSectionID;
             // we need those global vars to correctly operate the view.php
-            global $database, $wb, $TEXT, $MENU, $HEADING, $MESSAGE;
+            global $database, $wb, $globals, $TEXT, $MENU, $HEADING, $MESSAGE;
             $admin = $wb;
+            if (isset($globals) and is_array($globals)) {
+                foreach ($globals as $sGlobalName) {
+                    global $$sGlobalName;
+                }
+            }
             require $sModuleViewFile; // fetch content using the view.php
             $sContent = ob_get_clean();
 
@@ -205,7 +233,7 @@ if (!function_exists('get_section_content')) {
                 $sContent = opf_controller('section', $sContent, $aSection['module'], $iPageID, $iSectionID);
             }
             if($bUseSecAnchor == true || $sAnchorID != ''){
-                $sAnchorTPL = '<a class="section_anchor" id="%s" ></a>';
+                $sAnchorTPL = '<a class="section_anchor" id="%s"></a>';
                 if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
                     $sSecAnchor = sprintf($sAnchorTPL, SEC_ANCHOR . $aSection['section_id']);
                 }
@@ -217,10 +245,11 @@ if (!function_exists('get_section_content')) {
 
             $aToInsert = $GLOBALS['wb']->retrieve_modfiles_from_dir($aSection['module'], "frontend");
             foreach($aToInsert as $sModfileType=>$sFile){
+                $sModfileType = strtolower($sModfileType);
                 switch ($sModfileType) {
                     case 'css':     I::insertCssFile($sFile[0], 'HEAD TOP-'); break;					
-                    case 'js_head':	I::insertJsFile($sFile[0],  'HEAD BTM-'); break;					
-                    case 'js_body':	I::insertJsFile($sFile[0],  'BODY BTM-'); break;
+                    case 'js_head': I::insertJsFile($sFile[0],  'HEAD BTM-'); break;					
+                    case 'js_body': I::insertJsFile($sFile[0],  'BODY BTM-'); break;
                     default: break;
                 }
             }
@@ -228,24 +257,21 @@ if (!function_exists('get_section_content')) {
         return $sContent;
     }
 }
-echo get_section_content(8);
+
 if (!function_exists('block_contents')) {
     /**
-     *	@brief  This functions fetches the sections of a block as array.  
+     *	@brief  This functions fetches the sections of a templates layout block 
+     *          and retuns it as an array for further processing.  
      *
-     *	@global  array   $globals several global vars
      *	@global  object  $database
      *	@global  object  $wb
-     *	@global  array   $TEXT
-     *	@global  array   $MENU
-     *	@global  array   $HEADING
      *	@global  array   $MESSAGE
-     *	@global  string  $global_name
+     * 
      *	@param   unspec  $uBlock   Template layout block-name or block-id 
      *	@return  array   whole array of sections contained in a block
      */
     function block_contents($uBlock = 1){
-        global $globals, $database, $wb, $TEXT, $MENU, $HEADING, $MESSAGE;
+        global $database, $wb, $MESSAGE;
         $admin = $wb;
         $iBlockID =  is_numeric($uBlock) ? $uBlock : get_block_id($uBlock);
 
@@ -257,12 +283,7 @@ if (!function_exists('block_contents')) {
         if ($wb->page_no_active_sections == true) {
             echo $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'];
             return;
-        }
-        if (isset($globals) and is_array($globals)) {
-            foreach ($globals as $sGlobalName) {
-                global $$sGlobalName;
-            }
-        }
+        }        
 
         // Include page content
         if (!defined('PAGE_CONTENT')) {
