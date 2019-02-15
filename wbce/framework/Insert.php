@@ -83,12 +83,12 @@ class Insert {
 		
         if (defined('WB_RENDER')){
             $this->sRenderType = WB_RENDER;
-		}
+        }
         if (defined('WB_FRONTEND') && WB_FRONTEND == true){
-			$this->bUseCacheControl = $this->checkCacheControl();
-			$this->bShowFileIdInDOM = $this->showFileIdInDOM();
-		}
-	}
+            $this->bUseCacheControl = $this->checkCacheControl();
+            $this->bShowFileIdInDOM = $this->showFileIdInDOM();
+        }
+    }
 
     /**
      * @brief  Check if Cache Control is activated in the OutputFilter Dashboard
