@@ -15,8 +15,6 @@
  * @copyright http://www.gnu.org/licenses/lgpl.html (GNU LGPLv2 or any later) 
  */
 
-defined('INSERT_FRESH_FILES') or define('INSERT_FRESH_FILES', true);
-
 class Insert {
 
     /**
@@ -43,11 +41,32 @@ class Insert {
     /**
      * @var   string  $_TitleQueue
      */
-    private $_TitleQueue = NULL;
+    private $_TitleQueue = NULL;  
+
+    /**
+     * @brief Cache Control will add the Timestamp of the files last  
+     *        edit date after the file src or href like:
+     *        src="filename.js?1549992790"
+     *        This is very useful, because the browser will be caused
+     *        to always download the latest file from the server and
+     *        thus presenting always a up to date version to the visitor.
+     * 
+     * @var   bool  $bUseCacheControl
+     */
+    public $bUseCacheControl = true;    
+    
+    /**
+     * @brief determines whether or not file IDs should be inserted
+     *        into the <script>, <style> or <link> tags.
+     * 
+     * @var   bool  $bShowFileIdInDOM
+     */
+    public $bShowFileIdInDOM = true;
 
     /**
      * @brief Determines the prefered Rendering method  
      *        Possible values are "html", "xhtml", "html5"
+     * 
      * @var   string  $sRenderType
      */
     public $sRenderType = "html5";
@@ -59,12 +78,62 @@ class Insert {
     public $aUrlTokens = array();
 
     public function __construct() 
-    {
-        if (defined('WB_RENDER'))
-            $this->sRenderType = WB_RENDER;
+    {		
         $this->aUrlTokens = $this->replacementTokens();
-    }
+		
+        if (defined('WB_RENDER')){
+            $this->sRenderType = WB_RENDER;
+		}
+        if (defined('WB_FRONTEND') && WB_FRONTEND == true){
+			$this->bUseCacheControl = $this->checkCacheControl();
+			$this->bShowFileIdInDOM = $this->showFileIdInDOM();
+		}
+	}
 
+    /**
+     * @brief  Check if Cache Control is activated in the OutputFilter Dashboard
+     * 
+     * @return bool    true if activated
+     */
+    public function checkCacheControl() 
+    {
+        $bRetVal = false;
+        if(defined('WB_FRONTEND') && WB_FRONTEND == true){
+            if(function_exists('opf_filter_get_rel_pos')){	
+                $active = false;
+                $data = opf_filter_get_data('Cache Control');
+                if(!(in_array('all', $data['pages_parent']) || in_array(PAGE_ID, $data['pages_parent']))
+                  && !(in_array('all', $data['pages']) || in_array(PAGE_ID, $data['pages']))){					
+                    $bRetVal = false;
+                } else {
+                    $bRetVal = true;
+                }
+            }
+        }
+        return $bRetVal;
+    }
+	
+    /**
+     * @brief  Check if the file ID should be shown in the DOM
+     * 
+     *         If activated will insert the file ID into the 
+     *         <script>, <style> or <link> tag:
+     *         <script src="scripts/myfile.js" id="js_myfile__scripts"></script>
+     *
+     *         If deactivated won't insert the file ID:
+     *         <script src="scripts/myfile.js"></script>
+     * 
+     * @return bool 
+     */
+    public function showFileIdInDOM() 
+    {
+        $bRetVal = false;
+        if($this->sRenderType == "html5"){
+            $bRetVal = true;
+        }
+        return $bRetVal;
+    }
+	
     /**
      * @brief  Adds a string to the _TitleQueue. 
      *         Default behavior is to append the value to an existing value.
@@ -603,11 +672,11 @@ class Insert {
             } else {
                 foreach ($rec as $key => $val) {
                     if (in_array($key, array(
-                                'setname',
-                                'overwrite',
-                                'position'
-                            )))
-                        continue;
+                        'setname',
+                        'overwrite',
+                        'position'
+                    )))
+                    continue;
                     $sRetVal .= sprintf(' %s="%s"', $key, $val);
                 }
             }
@@ -670,13 +739,14 @@ class Insert {
             if ($rec['position'] == $sPosition)
                 $aData[$sSetName] = $rec;
 
-        $sTPL = "\t" . '<link rel="stylesheet" href="%s" type="text/css"%s id="%s"%s>' . PHP_EOL;
+        $sTPL = "\t" . '<link rel="stylesheet" href="%s" type="text/css"%s%s%s>' . PHP_EOL;
         $sRetVal = "";
         foreach ($aData as $sSetName => $aCssSet) {
+			$sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
             if (!empty($aCssSet['href'])) {
                 $sMedia = (!empty($aCssSet['media'])) ? 'media="' . $aCssSet['media'] . '"' : '';
                 $sClosing = ($this->sRenderType == "xhtml") ? '/' : '';
-                $sRetVal .= sprintf($sTPL, $aCssSet['href'], $sMedia, $sSetName, $sClosing);
+                $sRetVal .= sprintf($sTPL, $aCssSet['href'], $sMedia, $sFileID, $sClosing);
                 if (strpos($aCssSet['href'], '#missing') !== false) {
                     $sRetVal = str_replace('#missing#', '', $sRetVal);
                     $sRetVal = "<!-- Missing File was set: " . PHP_EOL . "\t" . $sRetVal . " -->";
@@ -685,12 +755,12 @@ class Insert {
             if (!empty($aCssSet['style'])) {
 				if (preg_match('/\<style(.*?)?\>/i', $aCssSet['style'])) {
                     $sRetVal .= $aCssSet['style'] . PHP_EOL;
-                } else {
+                } else {					
                     $sRetVal .= "\t<style type=\"text/css\" ";
                     if (!empty($aCssSet['media'])) {
                         $sRetVal .= 'media="' . $aCssSet['media'] . '"';
-                    }
-                    $sRetVal .= " id=\"" . $sSetName . "\">" . PHP_EOL;
+                    }					
+                    $sRetVal .= $sFileID . PHP_EOL;
                     $sRetVal .= $aCssSet['style'] . PHP_EOL;
                     $sRetVal .= "\t</style>" . PHP_EOL;
                 }
@@ -726,13 +796,15 @@ class Insert {
 
         $sTPL = "\t" . '<script ';
         $sTPL .= ($this->sRenderType != "html5" ? 'type="text/javascript" ' : '');
-        $sTPL .= 'src="%s" id="%s"></script>' . PHP_EOL;
+        $sTPL .= 'src="%s"%s></script>' . PHP_EOL;
 
         // Run the render loop if src and script are set , both a rendered.
         $sRetVal = "";
         foreach ($aData as $sSetName => $rec) {
+			$sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
             if (!empty($rec['src'])) {
-                $sRetVal .= sprintf($sTPL, $rec['src'], $sSetName);
+				
+                $sRetVal .= sprintf($sTPL, $rec['src'], $sFileID);
                 if (strpos($rec['src'], '#missing') !== FALSE) {
                     $sRetVal = str_replace('#missing#', '', $sRetVal);
                     $sRetVal = "<!-- Missing File was set: " . PHP_EOL . "\t" . $sRetVal . " -->";
@@ -747,7 +819,7 @@ class Insert {
                     if ($this->sRenderType != "html5") {
                         $sRetVal .= " type=\"text/javascript\"";
                     }
-                    $sRetVal .= ' id="' . $sSetName . '">' . PHP_EOL;
+                    $sRetVal .= $sFileID . '>' . PHP_EOL;
                     $sRetVal .= $rec['script'];
                     $sRetVal .= "\t</script>" . PHP_EOL;
                 }
@@ -806,10 +878,10 @@ class Insert {
         if (!isset($aData['setname']) || $aData['setname'] == '') {
             $sLoc = isset($aData['src']) ? $aData['src'] : (isset($aData['href']) ? $aData['href'] : '');
             $sSetName = ($sLoc != "") ? $sPfx.pathinfo($sLoc, PATHINFO_FILENAME) . '__' .
-                    basename(pathinfo($sLoc, PATHINFO_DIRNAME)) : uniqid();
-        } elseif (isset($aData['setname']) and $aData['setname'] != ""){
-			$sSetName = $sPfx.$aData['setname'];
-		}
+                    basename(pathinfo($sLoc, PATHINFO_DIRNAME)) : $sPfx.uniqid();
+        } elseif (isset($aData['setname']) && $aData['setname'] != ""){
+            $sSetName = $sPfx.$aData['setname'];
+        }
         return str_replace('.', '_', $sSetName);
     }
 
@@ -841,7 +913,7 @@ class Insert {
         if ($bAbsoluteInternalUrl) {
             $sFilePath = str_replace(WB_URL, WB_PATH, $sFileUrl);
             if (file_exists($sFilePath)) {
-                if (defined('INSERT_FRESH_FILES') && true) {
+                if ($this->bUseCacheControl == true) {
                     $sFileUrl = $sFileUrl . '?' . filemtime($sFilePath);
                 }
             } else {
@@ -870,7 +942,7 @@ class Insert {
      *          Using the static function I::addUrlToken(); you can add new 
      *          token pairs from inside modules, plugins or what have you...
      * 
-     * @return array
+     * @return  array
      */
     public function replacementTokens() 
     {
@@ -963,7 +1035,6 @@ class Insert {
                 }
                 if (strtolower($sPosition) != "all") {
                     foreach ($aQueue as $key => $aSubQueue) {
-                        //
                         if (is_array($aSubQueue) && !empty($aSubQueue)) {
                             foreach ($aSubQueue as $sSetName => $rec) {
                                 if (isset($rec['position']) && $rec['position'] == $sPosition) {
@@ -1152,4 +1223,3 @@ class Insert {
         return $sContent;
     }
 }
-// end of Class Insert
