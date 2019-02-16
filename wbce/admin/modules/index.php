@@ -23,11 +23,13 @@ $template->set_block('page', 'main_block', 'main');
 
 // Insert values into module list
 $template->set_block('main_block', 'module_list_block', 'module_list');
-$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' order by name");
+$result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' order by name");
 if($result->numRows() > 0) {
-    while ($addon = $result->fetchRow()) {
-        $template->set_var('VALUE', $addon['directory']);
-        $template->set_var('NAME', $addon['name']);
+    while ($aModule = $result->fetchRow(MYSQL_ASSOC)) {
+        
+        $aModule['name'] = $admin->get_module_name($aModule['directory'], true);
+        $template->set_var('VALUE', $aModule['directory']);
+        $template->set_var('NAME',  $aModule['name']);
         $template->parse('module_list', 'module_list_block', true);
     }
 }
@@ -39,8 +41,8 @@ $template->set_block('main_block', 'upgrade_list_block', 'upgrade_list');
 $template->set_block('main_block', 'uninstall_list_block', 'uninstall_list');
 $template->set_var(
     array(
-        'INSTALL_VISIBLE' => 'hide',
-        'UPGRADE_VISIBLE' => 'hide',
+        'INSTALL_VISIBLE'   => 'hide',
+        'UPGRADE_VISIBLE'   => 'hide',
         'UNINSTALL_VISIBLE' => 'hide'
     )
 );

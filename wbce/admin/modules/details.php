@@ -33,93 +33,63 @@ if(! ($file && $raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 
 }
 
 // Extract module folder from realpath for further usage inside script
-$file = basename($raw_dir);
+$sModDir = basename($raw_dir);
+
+// Get Module Data
+$rModule = $database->query(
+    "SELECT * FROM `{TP}addons` WHERE type = 'module' AND `directory` = '" . $database->escapeString($sModDir) . "'"
+);
+if($rModule->numRows() > 0) {
+	$aModule = $rModule->fetchRow(MYSQL_ASSOC);
+}
+
+// Collect the modules Type description.
+// Since we can now have hybride modules, a single module can have different functions/types
+// associated with it.
+$TEXT['INITIALIZE'] = isset($TEXT['INITIALIZE']) ? $TEXT['INITIALIZE'] : 'Initialize';
+$TEXT['PREINIT']    = isset($TEXT['PREINIT']) ? $TEXT['PREINIT'] : 'Preinit';
+$aModType = array();
+if (empty($aModule['function']))                      $aModType[] = $TEXT['UNKNOWN'];
+if (preg_match("/page/", $aModule['function']))       $aModType[] = $TEXT['PAGE'];
+if (preg_match("/wysiwyg/", $aModule['function']))    $aModType[] = $TEXT['WYSIWYG_EDITOR'];
+if (preg_match("/tool/", $aModule['function']))       $aModType[] = $TEXT['ADMINISTRATION_TOOL'];
+if (preg_match("/admin/", $aModule['function']))      $aModType[] = $TEXT['ADMIN'];
+if (preg_match("/snippet/", $aModule['function']))    $aModType[] = $TEXT['CODE_SNIPPET'];
+if (preg_match("/initialize/", $aModule['function'])) $aModType[] = $TEXT['INITIALIZE'];
+if (preg_match("/preinit/", $aModule['function']))    $aModType[] = $TEXT['PREINIT'];
+$sModuleType = implode($aModType,", ");
+
+// Get the module description or its translation if set in the language file of the module
+$aModule['description'] = $admin->get_module_description($sModDir);
+// Get the module name or its translation if set in the language file of the module
+$aModule['name'] = $admin->get_module_name($sModDir, true, ' <i>(%s)</i>');
 
 // Create new template object
 $template = new Template(dirname($admin->correct_theme_source('modules_details.htt')));
 $template->set_file('page', 'modules_details.htt');
 $template->set_block('page', 'main_block', 'main');
 
-// Insert values
-$file_escaped = $database->escapeString($file);
-$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' AND directory = '$file_escaped'");
-if($result->numRows() > 0) {
-	$module = $result->fetchRow();
-}
-
-// check if a module description exists for the displayed backend language
-$tool_description = false;
-if(function_exists('file_get_contents') && file_exists(WB_PATH.'/modules/'.$file.'/languages/'.LANGUAGE .'.php')) {
-	// read contents of the module language file into string
-	$data = @file_get_contents(WB_PATH .'/modules/' .$file .'/languages/' .LANGUAGE .'.php');
-	// use regular expressions to fetch the content of the variable from the string
-	$tool_description = get_variable_content('module_description', $data, false, false);
-	// replace optional placeholder {WB_URL} with value stored in config.php
-	if($tool_description !== false && strlen(trim($tool_description)) != 0) {
-		$tool_description = str_replace('{WB_URL}', WB_URL, $tool_description);
-	} else {
-		$tool_description = false;
-	}
-}
-if($tool_description !== false) {
-	// Override the module-description with correct desription in users language
-	$module['description'] = $tool_description;
-}
-
+// Hand over language strings and variables to template
 $template->set_var(
-	array(
-		'NAME' => $module['name'],
-		'AUTHOR' => $module['author'],
-		'DESCRIPTION' => $module['description'],
-		'VERSION' => $module['version'],
-		'DESIGNED_FOR' => $module['platform'],
-		'ADMIN_URL' => ADMIN_URL,
-		'WB_URL' => WB_URL,
-		'THEME_URL' => THEME_URL
-	)
-);
-
-$type_name = '';
-if (empty($module['function'])){
-    $type_name = $TEXT['UNKNOWN'];
-}
-if (preg_match("/page/", $module['function'])){
-    $type_name .= $TEXT['PAGE'].", ";
-}
-if (preg_match("/wysiwyg/", $module['function'])){
-    $type_name .= $TEXT['WYSIWYG_EDITOR'].", ";
-}
-if (preg_match("/tool/", $module['function'])){
-    $type_name .= $TEXT['ADMINISTRATION_TOOL'].", ";
-}
-if (preg_match("/admin/", $module['function'])){
-    $type_name .= $TEXT['ADMIN'].", ";
-}
-if (preg_match("/snippet/", $module['function'])){
-    $type_name .= $TEXT['CODE_SNIPPET'].", ";
-}
-if (preg_match("/initialize/", $module['function'])){
-    $type_name .= $TEXT['INITIALIZE'].", ";
-}
-if (preg_match("/preinit/", $module['function'])){
-    $type_name .= $TEXT['PREINIT'].", ";
-}
-
-$type_name= trim($type_name,", ");
-$template->set_var('TYPE', $type_name);
-
-// Insert language headings and text messages
-$template->set_var(
-	array(
-		'HEADING_MODULE_DETAILS' => $HEADING['MODULE_DETAILS'],
-		'TEXT_NAME' => $TEXT['NAME'],
-		'TEXT_TYPE' => $TEXT['TYPE'],
-		'TEXT_AUTHOR' => $TEXT['AUTHOR'],
-		'TEXT_VERSION' => $TEXT['VERSION'],
-		'TEXT_DESIGNED_FOR' => $TEXT['DESIGNED_FOR'],
-		'TEXT_DESCRIPTION' => $TEXT['DESCRIPTION'],
-		'TEXT_BACK' => $TEXT['BACK']
-	)
+    array( 
+        'TYPE'         => $sModuleType,
+        'NAME'         => $aModule['name'],
+        'AUTHOR'       => $aModule['author'],
+        'DESCRIPTION'  => $aModule['description'],
+        'VERSION'      => $aModule['version'],
+        'DESIGNED_FOR' => $aModule['platform'],
+        'ADMIN_URL'    => ADMIN_URL,
+        'WB_URL'       => WB_URL,
+        'THEME_URL'    => THEME_URL,
+        'TEXT_NAME'    => $TEXT['NAME'],
+        'TEXT_TYPE'    => $TEXT['TYPE'],
+        'TEXT_AUTHOR'  => $TEXT['AUTHOR'],
+        'TEXT_VERSION' => $TEXT['VERSION'],
+        'TEXT_DESIGNED_FOR'      => $TEXT['DESIGNED_FOR'],
+        'TEXT_DESCRIPTION'       => $TEXT['DESCRIPTION'],
+        'TEXT_BACK'              => $TEXT['BACK'],
+        'HEADING_MODULE_DETAILS' => $HEADING['MODULE_DETAILS']
+    )
 );
 
 // Parse module object

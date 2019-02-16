@@ -27,11 +27,12 @@
 */
 
 // Deutsche Modulbeschreibung
-$module_description 	= 'Admin-Tool um das Verhalten von CAPTCHA und ASP zu kontrollieren';
+$module_name        = 'CAPTCHA und Advanced Spam Protection (Fortgeschrittener Spam-Schutz)';
+$module_description = 'Admin-Tool um das Verhalten von CAPTCHA und ASP zu konfigurieren.';
 
 // Ueberschriften und Textausgaben
 $MOD_CAPTCHA_CONTROL['HEADING']           = 'Captcha- und ASP Steuerung';
-$MOD_CAPTCHA_CONTROL['HOWTO']             = 'Hiermit kann das Verhalten von "CAPTCHA" und "Advanced Spam Protection" (ASP) gesteuert werden. Damit ASP in einem Modul wirken kann, muss das verwendete Modul entsprechend angepasst sein.';
+$MOD_CAPTCHA_CONTROL['HOWTO']             = 'Hiermit kann das Verhalten von "CAPTCHA" und "Advanced Spam Protection" (ASP) konfiguriert werden. Damit ASP in einem Modul wirken kann, muss das verwendete Modul entsprechend angepasst sein.';
 
 // Text and captions of form elements
 $MOD_CAPTCHA_CONTROL['CAPTCHA_CONF']      = 'CAPTCHA-Einstellungen';

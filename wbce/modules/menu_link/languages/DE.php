@@ -11,6 +11,7 @@
  */
 
 // Deutsche Modulbeschreibung
+$module_name = 'Men&uuml;-Link'; 
 $module_description = 'Dieses Modul erm&ouml;glicht die Anzeige eines Links im Seitenmen&uuml;.';
 
 // Ueberschriften und Textausgaben

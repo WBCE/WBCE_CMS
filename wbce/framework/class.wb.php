@@ -848,7 +848,7 @@ class wb extends SecureForm
                     $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . PAGE_ID . "';";
                 }	
                 if(isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])){
-                    $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . (int) $_REQUEST['page_id'] . "';"; 
+                    $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . (int) $_REQUEST['page_id'] . "';";
                 }	
                 if(isset($_REQUEST['section_id']) && is_numeric($_REQUEST['section_id'])){
                     $sJsSysvars .= "\n\t\tvar SECTION_ID   = '" . (int) $_REQUEST['section_id'] . "';";
@@ -902,5 +902,84 @@ class wb extends SecureForm
         }
         return $sSessionTimeout;
     }
- 
+    
+    /**
+     * @brief   Get the module name from modules language file.
+     *          This method will display the module name based on
+     *          the language file if the $module_name variable 
+     *          is set in this file.
+     *          Optionally, the original module name can be put in 
+     *          parentheses (or other delimiters defined in $sHem)
+     *          if the $bShowOriginal parameter is set to true.
+     *
+     * @global  object  $database 
+     * @param   string  $sModDir
+     * @param   bool    $bShowOriginal
+     * @param   string  $sHem
+     * @return  string
+     */
+    public function get_module_name($sModDir = '', $bShowOriginal = false, $sHem = '  (%s)') {
+        $sRetVal = '';
+        if (function_exists('get_variable_content')) {
+            $sLanguageFile = WB_PATH . '/modules/' . $sModDir . '/languages/' . LANGUAGE . '.php';
+            if (file_exists($sLanguageFile)) {
+                // read contents of the modules language file into string
+                $sData = @file_get_contents($sLanguageFile);
+                if ($sModuleName = get_variable_content('module_name', $sData, true, false)) {
+                    $sRetVal = $sModuleName;
+                } 
+            }
+        }
+        if ($sRetVal == '' || $bShowOriginal == true) {
+            global $database;
+            // get original module name from the `{TP}addons` table
+            $sSql = "SELECT `name` FROM `{TP}addons` WHERE `directory` = '%s'";
+            $sOriginal = $database->get_one(sprintf($sSql, $sModDir));
+            if ($sRetVal == '' && $bShowOriginal == true) {
+                $sRetVal = $sOriginal;
+            } elseif ($sRetVal != '' && $bShowOriginal == true) {
+                $sRetVal = $sRetVal.sprintf($sHem, $sOriginal);
+            } else {
+                $sRetVal = $sOriginal;
+            }
+        }
+        return $sRetVal;
+    }    
+    
+    /**
+     * @brief   Get the module description from modules language file.
+     *          This method will display the module description based on
+     *          the language file if the $module_description variable 
+     *          is set in this file.
+     *          If no $module_description variable is set in the language
+     *          file, the `description` of the module will be retrieved
+     *          from the `{TP}addons` DB table.
+     *
+     * @global  object  $database
+     * @param   string  $sModDir
+     * @return  string
+     */
+    public function get_module_description($sModDir = '') {
+        $sRetVal = '';
+        if (function_exists('get_variable_content')) {
+            $sLanguageFile = WB_PATH . '/modules/' . $sModDir . '/languages/' . LANGUAGE . '.php';
+            if (file_exists($sLanguageFile)) {
+                // read contents of the modules language file into string
+                $sData = @file_get_contents($sLanguageFile);
+                if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
+                    $sRetVal = $sModuleDescription;
+                } 
+            }
+        }
+        if ($sRetVal == '') {
+            global $database;
+            // get original module description from the `{TP}addons` table
+            $sSql = "SELECT `description` FROM `{TP}addons` WHERE `directory` = '%s'";
+            if($sOriginal = $database->get_one(sprintf($sSql, $sModDir))){
+                $sRetVal = $sOriginal;
+            }
+        }
+        $sRetVal = str_replace('{WB_URL}', WB_URL, $sRetVal);
+        return $sRetVal;
+    }
 }
