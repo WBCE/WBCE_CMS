@@ -760,7 +760,7 @@ class Insert {
                     if (!empty($aCssSet['media'])) {
                         $sRetVal .= 'media="' . $aCssSet['media'] . '"';
                     }					
-                    $sRetVal .= $sFileID . PHP_EOL;
+                    $sRetVal .= $sFileID . '>' . PHP_EOL;
                     $sRetVal .= $aCssSet['style'] . PHP_EOL;
                     $sRetVal .= "\t</style>" . PHP_EOL;
                 }
