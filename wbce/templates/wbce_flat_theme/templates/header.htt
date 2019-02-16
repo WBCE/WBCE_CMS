@@ -21,12 +21,6 @@
 <!--(PH) CSS HEAD TOP- -->
 
 <!--(PH) JS HEAD TOP+ -->
-<script>
-var WB_URL = '{WB_URL}';
-var THEME_URL = '{THEME_URL}';
-var ADMIN_URL = '{ADMIN_URL}';
-var LANGUAGE = '{LANGUAGE}';
-</script>
 <script src="{WB_URL}/include/jquery/jquery-min.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-insert.js" type="text/javascript"></script>
 <script src="{WB_URL}/include/jquery/jquery-include.js" type="text/javascript"></script>
@@ -42,35 +36,7 @@ var LANGUAGE = '{LANGUAGE}';
 <!--(PH) CSS HEAD BTM- -->
 
 <!--(PH) JS HEAD BTM+ -->
-{BACKEND_MODULE_JS}
-<script>
-    var wbSessionTiomeout= {WB_SESSION_TIMEOUT};
-    var seconds = new Date().getTime() / 1000;
-    seconds = Math.round(seconds);
-    document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/';
-
-    var upgradeTime = {WB_SESSION_TIMEOUT};
-    var seconds = upgradeTime;
-    function timer() {
-        var days        = Math.floor(seconds/24/60/60);
-        var hoursLeft   = Math.floor((seconds) - (days*86400));
-        var hours       = Math.floor(hoursLeft/3600);
-        var minutesLeft = Math.floor((hoursLeft) - (hours*3600));
-        var minutes     = Math.floor(minutesLeft/60);
-        var remainingSeconds = seconds % 60;
-        if (remainingSeconds < 10) {
-            remainingSeconds = "0" + remainingSeconds; 
-        }
-        document.getElementById('countdown').innerHTML = hours + ":" + minutes + ":" + remainingSeconds;
-        if (seconds == 0) {
-            clearInterval(countdownTimer);
-            document.getElementById('countdown').innerHTML = "Completed";
-        } else {
-            seconds--;
-        }
-    }
-    var countdownTimer = setInterval('timer()', 1000);
-</script>
+{BACKEND_MODULE_JS} 
 <!--(PH) JS HEAD BTM- -->
 </head>
 <body>

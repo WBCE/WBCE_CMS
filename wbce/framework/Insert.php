@@ -15,8 +15,6 @@
  * @copyright http://www.gnu.org/licenses/lgpl.html (GNU LGPLv2 or any later) 
  */
 
-defined('INSERT_FRESH_FILES') or define('INSERT_FRESH_FILES', true);
-
 class Insert {
 
     /**
@@ -43,11 +41,32 @@ class Insert {
     /**
      * @var   string  $_TitleQueue
      */
-    private $_TitleQueue = NULL;
+    private $_TitleQueue = NULL;  
+
+    /**
+     * @brief Cache Control will add the Timestamp of the files last  
+     *        edit date after the file src or href like:
+     *        src="filename.js?1549992790"
+     *        This is very useful, because the browser will be caused
+     *        to always download the latest file from the server and
+     *        thus presenting always a up to date version to the visitor.
+     * 
+     * @var   bool  $bUseCacheControl
+     */
+    public $bUseCacheControl = true;    
+    
+    /**
+     * @brief determines whether or not file IDs should be inserted
+     *        into the <script>, <style> or <link> tags.
+     * 
+     * @var   bool  $bShowFileIdInDOM
+     */
+    public $bShowFileIdInDOM = true;
 
     /**
      * @brief Determines the prefered Rendering method  
      *        Possible values are "html", "xhtml", "html5"
+     * 
      * @var   string  $sRenderType
      */
     public $sRenderType = "html5";
@@ -59,19 +78,69 @@ class Insert {
     public $aUrlTokens = array();
 
     public function __construct() 
-    {
-        if (defined('WB_RENDER'))
-            $this->sRenderType = WB_RENDER;
+    {		
         $this->aUrlTokens = $this->replacementTokens();
+		
+        if (defined('WB_RENDER')){
+            $this->sRenderType = WB_RENDER;
+        }
+        if (defined('WB_FRONTEND') && WB_FRONTEND == true){
+            $this->bUseCacheControl = $this->checkCacheControl();
+            $this->bShowFileIdInDOM = $this->showFileIdInDOM();
+        }
     }
 
+    /**
+     * @brief  Check if Cache Control is activated in the OutputFilter Dashboard
+     * 
+     * @return bool    true if activated
+     */
+    public function checkCacheControl() 
+    {
+        $bRetVal = false;
+        if(defined('WB_FRONTEND') && WB_FRONTEND == true){
+            if(function_exists('opf_filter_get_rel_pos')){	
+                $active = false;
+                $data = opf_filter_get_data('Cache Control');
+                if(!(in_array('all', $data['pages_parent']) || in_array(PAGE_ID, $data['pages_parent']))
+                  && !(in_array('all', $data['pages']) || in_array(PAGE_ID, $data['pages']))){					
+                    $bRetVal = false;
+                } else {
+                    $bRetVal = true;
+                }
+            }
+        }
+        return $bRetVal;
+    }
+	
+    /**
+     * @brief  Check if the file ID should be shown in the DOM
+     * 
+     *         If activated will insert the file ID into the 
+     *         <script>, <style> or <link> tag:
+     *         <script src="scripts/myfile.js" id="js_myfile__scripts"></script>
+     *
+     *         If deactivated won't insert the file ID:
+     *         <script src="scripts/myfile.js"></script>
+     * 
+     * @return bool 
+     */
+    public function showFileIdInDOM() 
+    {
+        $bRetVal = false;
+        if($this->sRenderType == "html5"){
+            $bRetVal = true;
+        }
+        return $bRetVal;
+    }
+	
     /**
      * @brief  Adds a string to the _TitleQueue. 
      *         Default behavior is to append the value to an existing value.
      * 
      * @param  string    $sTitle
-     * @param  boolean   $bOverwrite If $bOverwrite is set to true the old value will                         
-     *                   be overwritten by the new value replaced. 
+     * @param  boolean   $bOverwrite  If $bOverwrite is set to true the old value will                         
+     *                                be overwritten by the new value replaced. 
      * @return boolean   false on sucess| string error message on failure
      */
     public function insertTitle($sTitle = "", $bOverwrite = false) 
@@ -170,9 +239,9 @@ class Insert {
     public function insertCssCode($sCode = '', $sDomPos = 'HEAD BTM+', $sID = '') 
     {
         return $this->addCss(array(
-                    'setname'  => $sID,
-                    'position' => $sDomPos,
-                    'style'    => $sCode,
+            'setname'  => $sID,
+            'position' => $sDomPos,
+            'style'    => $sCode,
         ));
     }
 
@@ -189,9 +258,9 @@ class Insert {
     public function insertJsCode($sCode = '', $sDomPos = 'HEAD BTM-', $sID = '') 
     {
         return $this->addJs(array(
-                    'setname'  => $sID,
-                    'position' => $sDomPos,
-                    'script'   => $sCode,
+            'setname'  => $sID,
+            'position' => $sDomPos,
+            'script'   => $sCode,
         ));
     }
 
@@ -208,9 +277,9 @@ class Insert {
     public function insertHtmlCode($sCode = '', $sDomPos = 'BODY TOP+', $sID = '') 
     {
         return $this->addHtml(array(
-                    'html'     => $sCode,
-                    'position' => $sDomPos,
-                    'setname'  => $sID,
+            'html'     => $sCode,
+            'position' => $sDomPos,
+            'setname'  => $sID,
         ));
     }
 
@@ -256,24 +325,24 @@ class Insert {
      * // xhtml: <meta http-equiv="content-type" content="text/html; charset=utf-8" />     
      * // html5: <meta charset="utf-8">  
      *     
-     * @param array $aData   This is always an array whith all atributes stored 
-     *                       as "key" => "value" see example above.
-     *                       All other parameters are simple piped to the meta output. 
-     *                       There are quite a few attributes that schould be used as 
-     *                       setname so other Scripts can interact whith those correctly:
+     * @param array $aMetaData   This is always an array whith all atributes stored 
+     *                           as "key" => "value" see example above.
+     *                           All other parameters are simple piped to the meta output. 
+     *                           There are quite a few attributes that schould be used as 
+     *                           setname so other Scripts can interact whith those correctly:
      * 
-     *                       --------------|-------------------------------------   
-     *                         setname     | function 
-     *                       --------------|-------------------------------------
-     *                         author      | name="author" content="Author Name"    
-     *                         description | name="description" ....    
-     *                         keywords    | name="keywords".....     
-     *                         date        | name="date"    
-     *                         robots      | name="robots"   
-     *                         charset     | charset="utf-8" for example   
-     *                         expires     | http-equiv="expires"   
-     *                         refresh     | http-equiv="refresh"
-     *                       --------------|-------------------------------------
+     *                           --------------|-------------------------------------   
+     *                             setname     | function 
+     *                           --------------|-------------------------------------
+     *                             author      | name="author" content="Author Name"    
+     *                             description | name="description" ....    
+     *                             keywords    | name="keywords".....     
+     *                             date        | name="date"    
+     *                             robots      | name="robots"   
+     *                             charset     | charset="utf-8" for example   
+     *                             expires     | http-equiv="expires"   
+     *                             refresh     | http-equiv="refresh"
+     *                           --------------|-------------------------------------
      * 
      * @return bool/string   Returns false on success, or an error message on failure.      
      */
@@ -438,8 +507,8 @@ class Insert {
      * ---------|----------|----------------------------------------------- 
      * 
      * 
-     * @param  array $aData     The array that defines an entry. 
-     * @return bool/string   Returns false on success, and an error message on failure. 
+     * @param  array $aFileData  The array that defines an entry. 
+     * @return bool/string       Returns false on success, and an error message on failure. 
      */
     public function addCss($aFileData) 
     {
@@ -518,8 +587,8 @@ class Insert {
      * ----------|----------|--------------------------------------------------
      * 
      * 
-     * @param  array $aData   The array that defines an entry.    
-     * @return bool/string    Returns false on success, and an error message on failure. 
+     * @param  array $aFileData   The array that defines an entry.    
+     * @return bool/string        Returns false on success, and an error message on failure. 
      */
     public function addJs($aFileData) 
     {
@@ -603,11 +672,11 @@ class Insert {
             } else {
                 foreach ($rec as $key => $val) {
                     if (in_array($key, array(
-                                'setname',
-                                'overwrite',
-                                'position'
-                            )))
-                        continue;
+                        'setname',
+                        'overwrite',
+                        'position'
+                    )))
+                    continue;
                     $sRetVal .= sprintf(' %s="%s"', $key, $val);
                 }
             }
@@ -640,7 +709,7 @@ class Insert {
 
         // none in this position
         if (!count($aData))
-            return $uDefault;
+            return $uDefault; 
 
         // Run the render loop; if src and script are set, both are rendered.
         $sRetVal = "";
@@ -662,7 +731,7 @@ class Insert {
     private function _processCss($sPosition = "HEAD BTM+", $uDefault = "") 
     {
         if (empty($this->_CssQueue))
-            return $uDefault;
+            return $uDefault; 
 
         // sort out the ones we want to show
         $aData = array();
@@ -670,27 +739,28 @@ class Insert {
             if ($rec['position'] == $sPosition)
                 $aData[$sSetName] = $rec;
 
-        $sTPL = "\t" . '<link rel="stylesheet" id="%s" href="%s" type="text/css"%s%s>' . PHP_EOL;
+        $sTPL = "\t" . '<link rel="stylesheet" href="%s" type="text/css"%s%s%s>' . PHP_EOL;
         $sRetVal = "";
         foreach ($aData as $sSetName => $aCssSet) {
+			$sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
             if (!empty($aCssSet['href'])) {
                 $sMedia = (!empty($aCssSet['media'])) ? 'media="' . $aCssSet['media'] . '"' : '';
                 $sClosing = ($this->sRenderType == "xhtml") ? '/' : '';
-                $sRetVal .= sprintf($sTPL, $sSetName, $aCssSet['href'], $sMedia, $sClosing);
+                $sRetVal .= sprintf($sTPL, $aCssSet['href'], $sMedia, $sFileID, $sClosing);
                 if (strpos($aCssSet['href'], '#missing') !== false) {
                     $sRetVal = str_replace('#missing#', '', $sRetVal);
                     $sRetVal = "<!-- Missing File was set: " . PHP_EOL . "\t" . $sRetVal . " -->";
                 }
             }
             if (!empty($aCssSet['style'])) {
-                if (preg_match('/\<style(.*?)?\>/i', $aCssSet['style'])) {
+				if (preg_match('/\<style(.*?)?\>/i', $aCssSet['style'])) {
                     $sRetVal .= $aCssSet['style'] . PHP_EOL;
-                } else {
-                    $sRetVal .= "\t<style id=\"css_" . $sSetName . "\" type=\"text/css\" ";
+                } else {					
+                    $sRetVal .= "\t<style type=\"text/css\" ";
                     if (!empty($aCssSet['media'])) {
                         $sRetVal .= 'media="' . $aCssSet['media'] . '"';
-                    }
-                    $sRetVal .= ">" . PHP_EOL;
+                    }					
+                    $sRetVal .= $sFileID . '>' . PHP_EOL;
                     $sRetVal .= $aCssSet['style'] . PHP_EOL;
                     $sRetVal .= "\t</style>" . PHP_EOL;
                 }
@@ -724,30 +794,32 @@ class Insert {
         if (!count($aData))
             return $uDefault;
 
-        $sTPL = "\t" . '<script id="%s" ';
+        $sTPL = "\t" . '<script ';
         $sTPL .= ($this->sRenderType != "html5" ? 'type="text/javascript" ' : '');
-        $sTPL .= 'src="%s"></script>' . PHP_EOL;
+        $sTPL .= 'src="%s"%s></script>' . PHP_EOL;
 
         // Run the render loop if src and script are set , both a rendered.
         $sRetVal = "";
         foreach ($aData as $sSetName => $rec) {
+			$sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
             if (!empty($rec['src'])) {
-                $sRetVal .= sprintf($sTPL, $sSetName, $rec['src']);
+				
+                $sRetVal .= sprintf($sTPL, $rec['src'], $sFileID);
                 if (strpos($rec['src'], '#missing') !== FALSE) {
                     $sRetVal = str_replace('#missing#', '', $sRetVal);
                     $sRetVal = "<!-- Missing File was set: " . PHP_EOL . "\t" . $sRetVal . " -->";
                 }
             }
-            if (!empty($rec['script'])) {
-
+            if (!empty($rec['script'])) {			
                 if (preg_match('/\<script(.*?)?\>/i', $rec['script'])) {
                     $sRetVal .= $rec['script'] . PHP_EOL;
                 } else {
-                    $sRetVal .= "\t" . '<script id="js_' . $sSetName . '"';
+					
+                    $sRetVal .= "\t" . '<script';
                     if ($this->sRenderType != "html5") {
                         $sRetVal .= " type=\"text/javascript\"";
                     }
-                    $sRetVal .= ">" . PHP_EOL;
+                    $sRetVal .= $sFileID . '>' . PHP_EOL;
                     $sRetVal .= $rec['script'];
                     $sRetVal .= "\t</script>" . PHP_EOL;
                 }
@@ -793,13 +865,22 @@ class Insert {
      * @return string
      */
     private function _computeFileID($aData) 
-    {
-        $sSetName = (isset($aData['setname']) and $aData['setname'] != "") ? $aData['setname'] : '';
-
-        if ($sSetName == '') {
+    { 
+        switch (true) {
+            case array_key_exists('src',    $aData): $sPfx = 'js_';     break;
+            case array_key_exists('href',   $aData): $sPfx = 'css_';    break;
+            case array_key_exists('script', $aData): $sPfx = 'script_'; break;
+            case array_key_exists('style',  $aData): $sPfx = 'style_';  break;
+            case array_key_exists('html',   $aData): $sPfx = 'html_';   break;
+            default: $sPfx = 'insert_';  break;
+        }
+		
+        if (!isset($aData['setname']) || $aData['setname'] == '') {
             $sLoc = isset($aData['src']) ? $aData['src'] : (isset($aData['href']) ? $aData['href'] : '');
-            $sSetName = ($sLoc != "") ? pathinfo($sLoc, PATHINFO_FILENAME) . '__' .
-                    basename(pathinfo($sLoc, PATHINFO_DIRNAME)) : uniqid();
+            $sSetName = ($sLoc != "") ? $sPfx.pathinfo($sLoc, PATHINFO_FILENAME) . '__' .
+                    basename(pathinfo($sLoc, PATHINFO_DIRNAME)) : $sPfx.uniqid();
+        } elseif (isset($aData['setname']) && $aData['setname'] != ""){
+            $sSetName = $sPfx.$aData['setname'];
         }
         return str_replace('.', '_', $sSetName);
     }
@@ -832,7 +913,7 @@ class Insert {
         if ($bAbsoluteInternalUrl) {
             $sFilePath = str_replace(WB_URL, WB_PATH, $sFileUrl);
             if (file_exists($sFilePath)) {
-                if (defined('INSERT_FRESH_FILES') && true) {
+                if ($this->bUseCacheControl == true) {
                     $sFileUrl = $sFileUrl . '?' . filemtime($sFilePath);
                 }
             } else {
@@ -861,7 +942,7 @@ class Insert {
      *          Using the static function I::addUrlToken(); you can add new 
      *          token pairs from inside modules, plugins or what have you...
      * 
-     * @return array
+     * @return  array
      */
     public function replacementTokens() 
     {
@@ -906,8 +987,8 @@ class Insert {
      * You can set a default return value if nothing is found. 
      * 
      * @param  string   $sSetName   If you want a single entry, specify it's $sSetName/ID 
-     *                              If empty, the whole JsQueue will be prepared for output
-     * 
+     *                              If empty, the whole JsQueue will be prepared for output  
+     * @param  string   $sQueue     What Queue do you want to get (js|css|html etc.)
      * @param  string   $sPosition  Will only work if $sSetName is not specified
      *                              Set this to only return Scripts whith a certain position set. 
      *                              Default position names can be found in docs to addJs().
@@ -954,7 +1035,6 @@ class Insert {
                 }
                 if (strtolower($sPosition) != "all") {
                     foreach ($aQueue as $key => $aSubQueue) {
-                        //
                         if (is_array($aSubQueue) && !empty($aSubQueue)) {
                             foreach ($aSubQueue as $sSetName => $rec) {
                                 if (isset($rec['position']) && $rec['position'] == $sPosition) {
@@ -1143,4 +1223,3 @@ class Insert {
         return $sContent;
     }
 }
-// end of Class Insert
