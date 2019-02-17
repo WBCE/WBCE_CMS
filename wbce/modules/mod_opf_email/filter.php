@@ -35,8 +35,6 @@ if(!defined('WB_PATH')) {
  * @param string $content
  * @return string
  */
-
-
 function doFilterEmail($content) {
 
     // check if required arguments are defined otherwise define
@@ -48,14 +46,16 @@ function doFilterEmail($content) {
     // If necessary (Both true) check if mdcr.js is added to the head of template
     // In not try to add it.
     if (Settings::Get('OPF_MAILTO_FILTER') and Settings::Get('OPF_JS_MAILTO')){
-    // test if js-decryption is installed(was needed as frontend functions where adding this too possibly we can remove this test)
+        // test if js-decryption is installed(was needed as frontend functions 
+        // where adding this too possibly we can remove this test)
         if( !preg_match('/<head.*<.*src=\".*\/mdcr.js.*>.*<\/head/siU', $content) ) {
             // try to insert js-decrypt into <head> if available
-            $script = str_replace('\\', '/',str_replace(WB_PATH,'', dirname(dirname(__FILE__))).'/js/mdcr.js');
-            if(is_readable(WB_PATH.$script)) {
-                $scriptLink = "\t".'<script src="'.WB_URL.$script.'" type="text/javascript"></script>'."\n\n";
+            $sJsFilePath = __DIR__ .'/js/mdcr.js';
+            if(file_exists($sJsFilePath)){
+                $sJsFileUrl = get_url_from_path($sJsFilePath); 
+                $sScriptTag = "\t".'<script src="'. $sJsFileUrl .'" type="text/javascript"></script>'."\n\n";
                 $regex = '/(.*)(<\s*?\/\s*?head\s*>.*)/isU';
-                $replace = '$1'.$scriptLink.'$2';
+                $replace = '$1'. $sScriptTag .'$2';
                 $content = preg_replace ($regex, $replace, $content);
             }
         }
@@ -130,6 +130,8 @@ function _cbDoExecuteFilter($match) {
                 $class_attr = empty($class_attr) ? '' : 'class="' . $class_attr[2] . '" ';
                 preg_match('/id\s*?=\s*?("|\')(.*?)\1/ix', $match[0], $id_attr);
                 $id_attr = empty($id_attr) ? '' : 'id="' . $id_attr[2] . '" ';
+                preg_match('/style\s*?=\s*?("|\')(.*?)\1/ix', $match[0], $style_attr);
+                $style_attr = empty($style_attr) ? '' : 'style="' . $style_attr[2] . '" ';
             // preprocess mailto link parts for further usage
                 $search = array('@', '.', '_', '-'); $replace = array('F', 'Z', 'X', 'K');
                 $email_address = str_replace($search, $replace, strtolower($match[2]));
@@ -148,7 +150,7 @@ function _cbDoExecuteFilter($match) {
                 }
                 $encrypted_email .= chr($shift + 97);
             // build the encrypted Javascript mailto link
-                $mailto_link  = "<a {$class_attr}{$id_attr}href=\"javascript:mdcr('$encrypted_email','$email_subject')\">" .$match[5] ."</a>";
+                $mailto_link  = "<a {$class_attr}{$id_attr}{$style_attr}href=\"javascript:mdcr('$encrypted_email','$email_subject')\">" .$match[5] ."</a>";
                 return $mailto_link;
             } else {
             /** DO NOT USE JAVASCRIPT ENCRYPTION FOR MAILTO LINKS **/
