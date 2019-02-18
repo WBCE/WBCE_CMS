@@ -41,7 +41,7 @@ $requestMethod = '_' . strtoupper($_SERVER['REQUEST_METHOD']);
 $module = ((isset(${$requestMethod}['module'])) ? ${$requestMethod}['module'] : 0);
 $action = ($module != '' ? 'add' : $action);
 $admin_header = true;
-$backlink = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id;
+$backlink = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id; 
 
 switch ($action) {
     case 'delete':

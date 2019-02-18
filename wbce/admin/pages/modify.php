@@ -33,7 +33,7 @@ if (!$admin->get_page_permission($page_id, 'admin')) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
-$sectionId = isset($_GET['wysiwyg']) ? htmlspecialchars($admin->get_get('wysiwyg')) : NULL;
+$sectionId = isset($_GET['wysiwyg']) ? htmlspecialchars($admin->get_get('wysiwyg')) : NULL; 
 
 // Get page details
 $results_array = $admin->get_page_details($page_id);
