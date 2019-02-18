@@ -633,13 +633,6 @@ Passwort: {LOGIN_PASSWORD}
 ----------------------------------------
 Diese E-Mail wurde automatisch erstellt&#33;&#10;';
 
-
-
-
-
-
-
-
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Ihre Anmeldedaten';
 $MESSAGE['SIGNUP_NO_EMAIL'] = 'Bitte geben Sie Ihre E-Mail-Adresse an';
 $MESSAGE['START_CURRENT_USER'] = 'Sie sind angemeldet als:';
@@ -665,7 +658,7 @@ $MESSAGE['USERS_EMAIL_TAKEN'] = 'Die angegebene E-Mail-Adresse wird bereits verw
 $MESSAGE['USERS_INVALID_EMAIL'] = 'Die angegebene E-Mail-Adresse ist ung&#252;ltig';
 $MESSAGE['USERS_NAME_INVALID_CHARS'] = 'Es wurden unzul&#228;ssige Zeichen f&#252;r den Benutzernamen verwendet';
 $MESSAGE['USERS_NO_GROUP'] = 'Es wurde keine Gruppe ausgew&#228;hlt';
-$MESSAGE['USERS_PASSWORD_MISMATCH'] = 'Das angegebene Passwort ist ung&#252;ltig';
+$MESSAGE['USERS_PASSWORD_MISMATCH'] = 'Die eingegebenen Passworte stimmen nicht &uuml;berein.';
 $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'Das eingegebene Passwort ist zu kurz';
 $MESSAGE['USERS_SAVED'] = 'Der Benutzer wurde erfolgreich gespeichert';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'Der angegebene Benutzername wird bereits verwendet';
@@ -690,4 +683,3 @@ $OVERVIEW['START'] = 'Backend-Einstiegsseite';
 $OVERVIEW['TEMPLATES'] = 'Vorlagen verwalten...';
 $OVERVIEW['USERS'] = 'Verwaltung von Benutzern, die sich anmelden d&#252;rfen...';
 $OVERVIEW['VIEW'] = 'Ansicht Ihrer Website in einem neuen Fenster...';
-
