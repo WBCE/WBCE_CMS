@@ -11,8 +11,8 @@
  * @license GNU GPL2 (or any later version)
  */
 // Create new admin object
-require('../../config.php');
-require_once(WB_PATH . '/framework/class.admin.php');
+require '../../config.php';
+require_once WB_PATH . '/framework/class.admin.php';
 
 $admin = new admin('Pages', 'pages_modify');
 
@@ -58,18 +58,18 @@ $oTemplate->set_block('page', 'main_block', 'main');
 $oTemplate->set_var('FTAN', $admin->getFTAN());
 
 $oTemplate->set_var(array(
-    'ADMIN_URL'     => ADMIN_URL,
-    'WB_URL'        => WB_URL,
-    'THEME_URL'     => THEME_URL,
-    'PAGE_ID'       => $results_array['page_id'],
-    'PAGE_IDKEY'    => $results_array['page_id'],
-    'PAGE_TITLE'    => $results_array['page_title'],
-    'MENU_TITLE'    => $results_array['menu_title'],
-    'MODIFIED_BY'   => $user['display_name'],
-    'MODIFIED_WHEN' => $modified_ts,
-    'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
+    'ADMIN_URL'            => ADMIN_URL,
+    'WB_URL'               => WB_URL,
+    'THEME_URL'            => THEME_URL,
+    'PAGE_ID'              => $results_array['page_id'],
+    'PAGE_IDKEY'           => $results_array['page_id'],
+    'PAGE_TITLE'           => $results_array['page_title'],
+    'MENU_TITLE'           => $results_array['menu_title'],
+    'MODIFIED_BY'          => $user['display_name'],
+    'MODIFIED_WHEN'        => $modified_ts,
     'MODIFIED_BY_USERNAME' => $user['username'],
     // Language Strings
+    'LAST_MODIFIED'        => $MESSAGE['PAGES_LAST_MODIFIED'],
     'TEXT_CURRENT_PAGE'    => $TEXT['CURRENT_PAGE'],
     'TEXT_CHANGE_SETTINGS' => $TEXT['CHANGE_SETTINGS'],
     'HEADING_MODIFY_PAGE'  => $HEADING['MODIFY_PAGE'],
@@ -86,7 +86,7 @@ if ($modified_ts == 'Unknown') {
 }
 
 // Work-out if we should show the "manage sections" link
-$sSql = "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id`=".$page_id." AND `module`='menu_link'";
+$sSql = "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = ".$page_id." AND `module` = 'menu_link'";
 $rQueryMenuLink = $database->get_one($sSql);
 
 $oTemplate->set_block('main_block', 'show_section_block', 'show_section');
@@ -169,7 +169,7 @@ if($rSections = $database->query($sSql)){
     }
 }
 
-// Parse and print header template
+// Parse and output template
 $oTemplate->parse('main', 'main_block', false);
 $oTemplate->pparse('output', 'page');
 
