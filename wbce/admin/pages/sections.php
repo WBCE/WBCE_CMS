@@ -51,7 +51,7 @@ switch ($action) {
         }
 
         $action = 'show';
-        $sSql = 'SELECT `module` FROM `{TP}sections` WHERE `section_id` = '.$section_id;
+        $sSql = "SELECT `module` FROM `{TP}sections` WHERE `section_id` = ".$section_id;
         if ((($sModDir = $database->get_one($sSql)) == $module) && ($section_id > 0)) {
             // Include the modules delete file if it exists
             $sDeleteFile = WB_PATH . '/modules/' . $sModDir . '/delete.php';
@@ -121,7 +121,7 @@ switch ($action) {
         if ($admin_header) 
             $admin->print_header();
         // Get perms
-        $sSql = 'SELECT `admin_groups`,`admin_users` FROM `{TP}pages` WHERE `page_id` = '.$page_id;
+        $sSql = "SELECT `admin_groups`,`admin_users` FROM `{TP}pages` WHERE `page_id` = ".$page_id;
         $results = $database->query($sSql);
 
         $results_array = $results->fetchRow();
@@ -188,51 +188,52 @@ switch ($action) {
 
         // Setup template object, parse vars to it, then parse it
         // Create new template object
-        $tpl = new Template(dirname($admin->correct_theme_source('pages_sections.htt')));
-        $tpl->set_file('page', 'pages_sections.htt');
+        $oTemplate = new Template(dirname($admin->correct_theme_source('pages_sections.htt')));
+        $oTemplate->set_file('page', 'pages_sections.htt');
         
-        $tpl->set_block('page',          'main_block',     'main');
-        $tpl->set_block('main_block',    'module_block',   'module_list');
-        $tpl->set_block('main_block',    'section_block',  'section_list');
-        $tpl->set_block('section_block', 'block_block',    'block_list');
-        $tpl->set_block('main_block',    'calendar_block', 'calendar_list');
+        $oTemplate->set_block('page',          'main_block',     'main');
+        $oTemplate->set_block('main_block',    'module_block',   'module_list');
+        $oTemplate->set_block('main_block',    'section_block',  'section_list');
+        $oTemplate->set_block('section_block', 'block_block',    'block_list');
+        $oTemplate->set_block('main_block',    'calendar_block', 'calendar_list');
 
         // set first defaults and messages
-        $tpl->set_var(
+        $oTemplate->set_var(
             array(
-                'FTAN' => $admin->getFTAN(),
-                'PAGE_ID' => $aPage['page_id'],
-                'PAGE_IDKEY' => $aPage['page_id'],
-                'TEXT_PAGE' => $TEXT['PAGE'],
-                'PAGE_TITLE' => ($aPage['page_title']),
-                'MENU_TITLE' => ($aPage['menu_title']),
-                'TEXT_CURRENT_PAGE' => $TEXT['CURRENT_PAGE'],
-                'HEADING_MANAGE_SECTIONS' => $HEADING['MANAGE_SECTIONS'],
-                'HEADING_MODIFY_PAGE' => $HEADING['MODIFY_PAGE'],
-                'TEXT_CHANGE_SETTINGS' => $TEXT['CHANGE_SETTINGS'],
-                'TEXT_ADD_SECTION' => $TEXT['ADD_SECTION'],
-                'TEXT_ID' => 'ID',
-                'TEXT_TYPE' => $TEXT['TYPE'],
-                'TEXT_BLOCK' => $TEXT['BLOCK'],
-                'TEXT_NAMESECTION' => $TEXT['SECTION'] . ' ' . $TEXT['NAME'],
-                'TEXT_PUBL_START_DATE' => $TEXT{'PUBL_START_DATE'},
-                'TEXT_PUBL_END_DATE' => $TEXT['PUBL_END_DATE'],
+                'ADMIN_URL'    => ADMIN_URL,
+                'WB_URL'       => WB_URL,
+                'THEME_URL'    => THEME_URL,
+                'FTAN'         => $admin->getFTAN(),
+                'MODIFIED_BY'  => $user['display_name'],
+                'PAGE_ID'      => $aPage['page_id'],
+                'PAGE_IDKEY'   => $aPage['page_id'],
+                'TEXT_PAGE'    => $TEXT['PAGE'],
+                'PAGE_TITLE'   => ($aPage['page_title']),
+                'MENU_TITLE'   => ($aPage['menu_title']),
+                'TEXT_ID'      => 'ID',
+                'TEXT_TYPE'    => $TEXT['TYPE'],
+                'TEXT_BLOCK'   => $TEXT['BLOCK'],
                 'TEXT_ACTIONS' => $TEXT['ACTIONS'],
-                'TEXT_BACK' => $TEXT['BACK'],
-                'MODIFIED_BY' => $user['display_name'],
-                'MODIFIED_BY_USERNAME' => $user['username'],
-                'MODIFIED_WHEN' => $modified_ts,
-                'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
-                'ADMIN_URL' => ADMIN_URL,
-                'WB_URL' => WB_URL,
-                'THEME_URL' => THEME_URL,
-                'VAR_PAGE_TITLE' => $aPage['page_title'],
-                'SETTINGS_LINK' => ADMIN_URL . '/pages/settings.php?page_id=' . $aPage['page_id'],
-                'MODIFY_LINK' => ADMIN_URL . '/pages/modify.php?page_id=' . $aPage['page_id'],
+                'TEXT_BACK'    => $TEXT['BACK'],
+                
+                'TEXT_CURRENT_PAGE'       => $TEXT['CURRENT_PAGE'],
+                'HEADING_MANAGE_SECTIONS' => $HEADING['MANAGE_SECTIONS'],
+                'HEADING_MODIFY_PAGE'     => $HEADING['MODIFY_PAGE'],
+                'TEXT_CHANGE_SETTINGS'    => $TEXT['CHANGE_SETTINGS'],
+                'TEXT_ADD_SECTION'        => $TEXT['ADD_SECTION'],
+                'TEXT_NAMESECTION'        => $TEXT['SECTION'] . ' ' . $TEXT['NAME'],
+                'TEXT_PUBL_START_DATE'    => $TEXT{'PUBL_START_DATE'},
+                'TEXT_PUBL_END_DATE'      => $TEXT['PUBL_END_DATE'],
+                'MODIFIED_BY_USERNAME'    => $user['username'],
+                'MODIFIED_WHEN'           => $modified_ts,
+                'LAST_MODIFIED'           => $MESSAGE['PAGES_LAST_MODIFIED'],
+                'VAR_PAGE_TITLE'          => $aPage['page_title'],
+                'SETTINGS_LINK'           => ADMIN_URL . '/pages/settings.php?page_id=' . $aPage['page_id'],
+                'MODIFY_LINK'             => ADMIN_URL . '/pages/modify.php?page_id=' . $aPage['page_id'],
             )
         );
 
-        $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id` = '.$page_id.' ORDER BY `position` ASC';
+        $sSql = "SELECT * FROM `{TP}sections` WHERE `page_id` = ".$page_id." ORDER BY `position` ASC";
         $rSections = $database->query($sSql);
 
         $num_sections = $rSections->numRows();
@@ -240,7 +241,7 @@ switch ($action) {
             while ($section = $rSections->fetchRow()) {
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
                     // Get the modules real name
-                    $sSql = 'SELECT `name` FROM `{TP}addons` WHERE `directory` = "'.$section['module'].'"';
+                    $sSql = "SELECT `name` FROM `{TP}addons` WHERE `directory` = '".$section['module']."'";
                     if (!$database->get_one($sSql) || !file_exists(WB_PATH . '/modules/' . $section['module'])) {
                         $edit_page = '<span class="module_disabled">' . $section['module'] . '</span>';
                     } else {
@@ -249,7 +250,7 @@ switch ($action) {
                     $sec_anchor = (defined('SEC_ANCHOR') && (SEC_ANCHOR != '') ? SEC_ANCHOR : '');
                     $edit_page_0 = '<a id="sid' . $section['section_id'] . '" href="' . ADMIN_URL . '/pages/modify.php?page_id=' . $aPage['page_id'];
                     $edit_page_1 = ($sec_anchor != '') ? '#' . $sec_anchor . $section['section_id'] . '">' : '">';
-                    $edit_page_1 .= $section['module'] . '</a>';
+                    $edit_page_1 .= $admin->get_module_name($section['module']) . '</a>';
                     if (SECTION_BLOCKS) {
                         if ($edit_page == '') {
                             if (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION) {
@@ -259,7 +260,7 @@ switch ($action) {
                             }
                         }
                         $input_attribute = 'input_normal';
-                        $tpl->set_var(
+                        $oTemplate->set_var(
                             array(
                                 'STYLE_DISPLAY_SECTION_BLOCK' => ' style="visibility:visible;"',
                                 'NAME_SIZE' => 300,
@@ -273,24 +274,24 @@ switch ($action) {
                             )
                         );
                         // Add block options to the section_list
-                        $tpl->clear_var('block_list');
+                        $oTemplate->clear_var('block_list');
                         foreach ($block as $number => $name) {
-                            $tpl->set_var('NAME', htmlentities(strip_tags($name)));
-                            $tpl->set_var('VALUE', $number);
-                            $tpl->set_var('SIZE', 1);
+                            $oTemplate->set_var('NAME', htmlentities(strip_tags($name)));
+                            $oTemplate->set_var('VALUE', $number);
+                            $oTemplate->set_var('SIZE', 1);
                             if ($section['block'] == $number) {
-                                $tpl->set_var('SELECTED', ' selected="selected"');
+                                $oTemplate->set_var('SELECTED', ' selected="selected"');
                             } else {
-                                $tpl->set_var('SELECTED', '');
+                                $oTemplate->set_var('SELECTED', '');
                             }
-                            $tpl->parse('block_list', 'block_block', true);
+                            $oTemplate->parse('block_list', 'block_block', true);
                         }
                     } else {
                         if ($edit_page == '') {
                             $edit_page = $edit_page_0 . '#wb_' . $edit_page_1;
                         }
                         $input_attribute = 'input_normal';
-                        $tpl->set_var(
+                        $oTemplate->set_var(
                             array(
                                 'STYLE_DISPLAY_SECTION_BLOCK' => ' style="visibility:hidden;"',
                                 'NAME_SIZE' => 300,
@@ -306,81 +307,84 @@ switch ($action) {
                         );
                     }
                     // named sections patch
-                    $tpl->set_var('NAMESECTION', $section['namesection']);
+                    $oTemplate->set_var('NAMESECTION', $section['namesection']);
                     // Insert icon and images
-                    $tpl->set_var(array(
-                        'CLOCK_16_PNG' => 'clock_16.png',
+                    $oTemplate->set_var(array(
+                        'CLOCK_16_PNG'     => 'clock_16.png',
                         'CLOCK_DEL_16_PNG' => 'clock_del_16.png',
-                        'DELETE_16_PNG' => 'delete_16.png',
+                        'DELETE_16_PNG'    => 'delete_16.png',
                     )
                     );
                     // set calendar start values
                     if ($section['publ_start'] == 0) {
-                        $tpl->set_var('VALUE_PUBL_START', '');
+                        $oTemplate->set_var('VALUE_PUBL_START', '');
                     } else {
-                        $tpl->set_var('VALUE_PUBL_START', date($jscal_format, $section['publ_start']));
+                        $oTemplate->set_var('VALUE_PUBL_START', date($jscal_format, $section['publ_start']));
                     }
                     // set calendar start values
                     if ($section['publ_end'] == 0) {
-                        $tpl->set_var('VALUE_PUBL_END', '');
+                        $oTemplate->set_var('VALUE_PUBL_END', '');
                     } else {
-                        $tpl->set_var('VALUE_PUBL_END', date($jscal_format, $section['publ_end']));
+                        $oTemplate->set_var('VALUE_PUBL_END', date($jscal_format, $section['publ_end']));
                     }
                     // Insert icons up and down
                     if ($section['position'] != 1) {
-                        $tpl->set_var(
+                        $oTemplate->set_var(
                             'VAR_MOVE_UP_URL',
                             '<a href="' . ADMIN_URL . '/pages/move_up.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '">
                             <img src="' . THEME_URL . '/images/up_16.png" alt="{TEXT_MOVE_UP}" />
                             </a>'
                         );
                     } else {
-                        $tpl->set_var('VAR_MOVE_UP_URL', '');
+                        $oTemplate->set_var('VAR_MOVE_UP_URL', '');
                     }
                     if ($section['position'] != $num_sections) {
-                        $tpl->set_var(
+                        $oTemplate->set_var(
                             'VAR_MOVE_DOWN_URL',
                             '<a href="' . ADMIN_URL . '/pages/move_down.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '">
                             <img src="' . THEME_URL . '/images/down_16.png" alt="{TEXT_MOVE_DOWN}" />
                             </a>'
                         );
                     } else {
-                        $tpl->set_var('VAR_MOVE_DOWN_URL', '');
+                        $oTemplate->set_var('VAR_MOVE_DOWN_URL', '');
                     }
                 } else {
                     continue;
                 }
 
-                $tpl->set_var(array(
-                    'DISPLAY_DEBUG'      => ' style="visibility="visible;"',
-                    'TEXT_SID'           => 'SID',
-                    'DEBUG_COLSPAN_SIZE' => 9,
-                )
+                $oTemplate->set_var(
+                    array(
+                        'DISPLAY_DEBUG'      => ' style="visibility="visible;"',
+                        'TEXT_SID'           => 'SID',
+                        'DEBUG_COLSPAN_SIZE' => 9,
+                    )
                 );
                 if ($debug) {
-                    $tpl->set_var(array(
-                        'DISPLAY_DEBUG' => ' style="visibility="visible;"',
-                        'TEXT_PID'      => 'PID',
-                        'TEXT_SID'      => 'SID',
-                        'POSITION'      => $section['position'],
-                    )
+                    $oTemplate->set_var(
+                        array(
+                            'DISPLAY_DEBUG' => ' style="visibility="visible;"',
+                            'TEXT_PID'      => 'PID',
+                            'TEXT_SID'      => 'SID',
+                            'POSITION'      => $section['position'],
+                        )
                     );
                 } else {
-                    $tpl->set_var(array(
-                        'DISPLAY_DEBUG' => ' style="display:none;"',
-                        'TEXT_PID'      => '',
-                        'POSITION'      => '',
-                    )
+                    $oTemplate->set_var(
+                        array(
+                            'DISPLAY_DEBUG' => ' style="display:none;"',
+                            'TEXT_PID'      => '',
+                            'POSITION'      => '',
+                        )
                     );
                 }
-                $tpl->parse('section_list', 'section_block', true);
+                $oTemplate->parse('section_list', 'section_block', true);
             }
         }
 
         // Now add the calendars -- remember to set the range to [1970, 2037] if the date is used as timestamp!
         // The loop is simply a copy from above.
-        $sSql = 'SELECT `section_id`,`module` FROM `{TP}sections` WHERE page_id = ' . $page_id . ' ';
-        $sSql .= 'ORDER BY `position` ASC';
+        $sSql = "SELECT `section_id`,`module` FROM `{TP}sections`   
+                    WHERE page_id = ".$page_id." ORDER BY `position` ASC";
         $rSections = $database->query($sSql);
 
         $num_sections = $rSections->numRows();
@@ -391,7 +395,7 @@ switch ($action) {
                 $module_name = $database->get_one($sSql);
 
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
-                    $tpl->set_var(array(
+                    $oTemplate->set_var(array(
                         'jscal_ifformat' => $jscal_ifformat,
                         'jscal_firstday' => $jscal_firstday,
                         'jscal_today'    => $jscal_today,
@@ -404,34 +408,34 @@ switch ($action) {
                         )
                     );
                 }
-                $tpl->parse('calendar_list', 'calendar_block', true);
+                $oTemplate->parse('calendar_list', 'calendar_block', true);
             }
         }
 
         // Work-out if we should show the "Add Section" form
       
-        $sSql = 'SELECT `section_id` FROM `{TP}sections` ';
-        $sSql .= 'WHERE `page_id` = ' . $page_id . ' AND `module` = "menu_link"';
+        $sSql = "SELECT `section_id` FROM `{TP}sections` WHERE `page_id` = ".$page_id." AND `module` = 'menu_link'";
         $rSections = $database->query($sSql);
         if ($rSections->numRows() == 0) {
             // Modules list
-            $sSql = 'SELECT `name`,`directory`,`type` FROM `{TP}addons` ';
-            $sSql .= 'WHERE `type` = "module" AND `function` = "page" AND `directory` != "menu_link" ';
-            $sSql .= 'ORDER BY `name`';
+            $sSql = "SELECT `name`,`directory`,`type` FROM `{TP}addons` 
+                        WHERE `type` = 'module' AND `function` = 'page' 
+                        AND `directory` != 'menu_link' 
+                        ORDER BY `name`";
             $rResult = $database->query($sSql);
             
             if ($rResult->numRows() > 0) {
                 while ($module = $rResult->fetchRow()) {
                     // Check if user is allowed to use this module   echo  $module['directory'],'<br />';
                     if (!is_numeric(array_search($module['directory'], $module_permissions))) {
-                        $tpl->set_var('VALUE', $module['directory']);
-                        $tpl->set_var('NAME', $admin->get_module_name($module['name']));
+                        $oTemplate->set_var('VALUE', $module['directory']);
+                        $oTemplate->set_var('NAME', $admin->get_module_name($module['directory']));
                         if ($module['directory'] == 'wysiwyg') {
-                            $tpl->set_var('SELECTED', ' selected="selected"');
+                            $oTemplate->set_var('SELECTED', ' selected="selected"');
                         } else {
-                            $tpl->set_var('SELECTED', '');
+                            $oTemplate->set_var('SELECTED', '');
                         }
-                        $tpl->parse('module_list', 'module_block', true);
+                        $oTemplate->parse('module_list', 'module_block', true);
                     } else {
                         continue;
                     }
@@ -439,7 +443,7 @@ switch ($action) {
             }
         }
         // Insert language text and messages
-        $tpl->set_var(
+        $oTemplate->set_var(
             array(
                 'TEXT_MANAGE_SECTIONS' => $HEADING['MANAGE_SECTIONS'],
                 'TEXT_ARE_YOU_SURE' => $TEXT['ARE_YOU_SURE'],
@@ -457,12 +461,11 @@ switch ($action) {
                 'MODIFIED_WHEN' => $modified_ts,
             )
         );
-        $tpl->parse('main', 'main_block', false);
-        $tpl->pparse('output', 'page');
+        $oTemplate->parse('main', 'main_block', false);
+        $oTemplate->pparse('output', 'page');
         // include the required file for Javascript admin
-        if (file_exists(WB_PATH . '/modules/jsadmin/jsadmin_backend_include.php')) {
-            include WB_PATH . '/modules/jsadmin/jsadmin_backend_include.php';
-        }
+        $sFile = WB_PATH . '/modules/jsadmin/jsadmin_backend_include.php';
+        if (file_exists($sFile)) include $sFile;
         break;
 }
 

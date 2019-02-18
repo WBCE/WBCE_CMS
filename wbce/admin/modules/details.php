@@ -28,8 +28,8 @@ $file = trim($admin->get_post('file'));
 $root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . 'modules');
 $raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $file);
 if(! ($file && $raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
-	// module file empty or outside WBCE module folder
-	$admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
+    // module file empty or outside WBCE module folder
+    $admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
 
 // Extract module folder from realpath for further usage inside script
@@ -40,14 +40,14 @@ $rModule = $database->query(
     "SELECT * FROM `{TP}addons` WHERE type = 'module' AND `directory` = '" . $database->escapeString($sModDir) . "'"
 );
 if($rModule->numRows() > 0) {
-	$aModule = $rModule->fetchRow(MYSQL_ASSOC);
+    $aModule = $rModule->fetchRow(MYSQL_ASSOC);
 }
 
 // Collect the modules Type description.
 // Since we can now have hybride modules, a single module can have different functions/types
 // associated with it.
 $TEXT['INITIALIZE'] = isset($TEXT['INITIALIZE']) ? $TEXT['INITIALIZE'] : 'Initialize';
-$TEXT['PREINIT']    = isset($TEXT['PREINIT']) ? $TEXT['PREINIT'] : 'Preinit';
+$TEXT['PREINIT']    = isset($TEXT['PREINIT'])    ? $TEXT['PREINIT']    : 'Preinit';
 $aModType = array();
 if (empty($aModule['function']))                      $aModType[] = $TEXT['UNKNOWN'];
 if (preg_match("/page/", $aModule['function']))       $aModType[] = $TEXT['PAGE'];
@@ -62,15 +62,15 @@ $sModuleType = implode($aModType,", ");
 // Get the module description or its translation if set in the language file of the module
 $aModule['description'] = $admin->get_module_description($sModDir);
 // Get the module name or its translation if set in the language file of the module
-$aModule['name'] = $admin->get_module_name($sModDir, true, ' <i>(%s)</i>');
+$aModule['name'] = $admin->get_module_name($sModDir, true, ' <i>[%s]</i>');
 
 // Create new template object
-$template = new Template(dirname($admin->correct_theme_source('modules_details.htt')));
-$template->set_file('page', 'modules_details.htt');
-$template->set_block('page', 'main_block', 'main');
+$oTemplate = new Template(dirname($admin->correct_theme_source('modules_details.htt')));
+$oTemplate->set_file('page', 'modules_details.htt');
+$oTemplate->set_block('page', 'main_block', 'main');
 
 // Hand over language strings and variables to template
-$template->set_var(
+$oTemplate->set_var(
     array( 
         'TYPE'         => $sModuleType,
         'NAME'         => $aModule['name'],
@@ -93,8 +93,8 @@ $template->set_var(
 );
 
 // Parse module object
-$template->parse('main', 'main_block', false);
-$template->pparse('output', 'page');
+$oTemplate->parse('main', 'main_block', false);
+$oTemplate->pparse('output', 'page');
 
 // Print admin footer
 $admin->print_footer();
