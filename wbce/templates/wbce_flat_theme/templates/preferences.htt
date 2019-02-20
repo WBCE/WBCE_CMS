@@ -64,9 +64,7 @@
         </div>
         <div class="row">
             <div class="fg3">{TEXT_NEW_PASSWORD}:</div>
-            <div class="fg9">
-                <input type="password" id="new_password_1" name="new_password_1" value="{EMPTY_STRING}" class="wdt250">
-            </div>
+            <div class="fg9">{INPUT_NEW_PASSWORD}</div>
         </div>
         <div class="row">
             <div class="fg3">{TEXT_RETYPE_NEW_PASSWORD}:</div>

@@ -21,6 +21,7 @@ class wb extends SecureForm
     public $sDirectOutput = '';
 
     public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:'; 
+    public $iPassMinLength = 6; 
 	
 	
 	
@@ -33,7 +34,89 @@ class wb extends SecureForm
         parent::__construct($mode);
     }
 
+    /**
+     * @brief  Check if the Password matches the needed pattern and length
+     *         and encode it correctly if true.
+     *         This method will return an error message if false.
+     * 
+     * @global array   $MESSAGE
+     * @param  string  $sPassword
+     * @param  string  $sNewPasswordRetyped
+     * @return mixed   may be array if error message 
+     *                 or string with the correctly encoded password
+     */
+    public function checkPasswordPattern($sPassword, $sNewPasswordRetyped = NULL) 
+    {        
+        global $MESSAGE;
+        $iMinPassLength = 6;
+        $bPasswordOk = false;
+        $aErrMsg = array();
+        if ($sPassword != '') {
+            $sPattern = '/[^'.$this->password_chars.']/';
+            if (preg_match($sPattern, $sPassword)) {
+                $aErrMsg[] = $MESSAGE['PREFERENCES_INVALID_CHARS'].'[1]';
+            } else {
+                $bPasswordOk = true;
+            }
+            if($sNewPasswordRetyped != NULL){
+                if($sPassword != $sNewPasswordRetyped) {
+                    //$bPasswordOk = false;
+                    $aErrMsg[] = $MESSAGE['USERS_PASSWORD_MISMATCH'].'[2]';
+                }
+            }
+            if (strlen($sPassword) < $iMinPassLength) {
+                //$bPasswordOk = false;
+                $aErrMsg[] = $MESSAGE['USERS_PASSWORD_TOO_SHORT'].'[3]';
+            }
+        }
+        
+        return (!empty($aErrMsg)) ? $aErrMsg : $this->doPasswordEncode($sPassword);
+    }
     
+    /**
+     * 
+     * @param string $sPassword
+     */
+    public function doPasswordEncode($sPassword) 
+    {
+        return  md5($sPassword);
+    }
+    
+    /**
+     * 
+     * @param string $sPassword
+     */
+    public function passwordField($sNameAttr = '') 
+    {
+        $sRetVal = '';
+        if($sNameAttr != ''){
+            $sRetVal = '<input type="password" id="'.$sNameAttr.'" name="'.$sNameAttr.'" value="" class="wdt250" autocomplete="new-password" />';
+            I::insertCssFile(WB_URL . '/include/password-strength-meter/password.min.css', 'HEAD BTM-', 'PwStrenght');
+            I::insertJsFile (WB_URL . '/include/password-strength-meter/password.min.js', 'HEAD BTM-', 'PwStrenght');
+            
+            // Get String Translations
+            $sLanguagesDir = WB_PATH . '/include/password-strength-meter/languages/';
+            $sLanguageFile = $sLanguagesDir.strtolower(LANGUAGE).'.js';
+            if (file_exists($sLanguageFile)) $sLangFile = get_url_from_path($sLanguageFile);
+            else                             $sLangFile = get_url_from_path( $sLanguagesDir.'/en.js');
+            I::insertJsFile($sLangFile, 'HEAD BTM-', 'PwStrenghtLang');
+            $sToJs = <<<_JsCode
+            jQuery(document).ready(function($) {
+                $('#$sNameAttr').password({
+                    minimumLength: $this->iPassMinLength,
+                    enterPass:  PwStrenghtLang.enterPass,
+                    shortPass:  PwStrenghtLang.shortPass,
+                    badPass:    PwStrenghtLang.badPass,
+                    goodPass:   PwStrenghtLang.goodPass,
+                    strongPass: PwStrenghtLang.strongPass
+                });
+            });
+
+_JsCode;
+            I::insertJsCode($sToJs, 'HEAD BTM-', 'PwStrenght');
+        }
+        return $sRetVal;
+    }
     
     /**
      * @brief  For easy output of JSON strings XML or Ajax...... 
@@ -51,7 +134,8 @@ class wb extends SecureForm
      * @param  $sContent The content to pipe out 
      *	@return string echos out this string 
      */
-    public function DirectOutput($sContent = false) {
+    public function DirectOutput($sContent = false) 
+    {
         
         // Move to class
         if (is_string($sContent)){

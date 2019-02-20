@@ -30,60 +30,61 @@ switch ($action) {
             $admin->print_error($MESSAGE['GENERIC_FORGOT_OPTIONS']);
         }
         // Get existing values
-        $results = $database->query("SELECT * FROM `{TP}users` WHERE `user_id` = '" . $user_id . "'");
-        $user = $results->fetchRow();
+        $results = $database->query("SELECT * FROM `{TP}users` WHERE `user_id` = " . $user_id);
+        $user = $results->fetchRow(MYSQL_ASSOC);
 
         // Setup template object, parse vars to it, then parse it
         // Create new template object
-        $template = new Template(dirname($admin->correct_theme_source('users_form.htt')));
-        // $template->debug = true;
-        $template->set_file('page', 'users_form.htt');
-        $template->set_block('page', 'main_block', 'main');
-        $template->set_var(
-			array(
-				'ACTION_URL' => ADMIN_URL . '/users/save.php',
-				'SUBMIT_TITLE' => $TEXT['SAVE'],
-				'USER_ID' => $user['user_id'],
-				'USERNAME' => $user['username'],
-				'DISPLAY_NAME' => $user['display_name'],
-				'EMAIL' => $user['email'],
-				'ADMIN_URL' => ADMIN_URL,
-				'WB_URL' => WB_URL,
-				'THEME_URL' => THEME_URL,
-			)
+        $oTemplate = new Template(dirname($admin->correct_theme_source('users_form.htt')));
+        $oTemplate->set_file('page', 'users_form.htt');
+        $oTemplate->set_block('page', 'main_block', 'main');
+        $oTemplate->set_var(
+            array(
+                'ACTION_URL'   => ADMIN_URL . '/users/save.php',
+                'SUBMIT_TITLE' => $TEXT['SAVE'],
+                'USER_ID'      => $user['user_id'],
+                'USERNAME'     => $user['username'],
+                'DISPLAY_NAME' => $user['display_name'],
+                'EMAIL'        => $user['email'],
+                'ADMIN_URL'    => ADMIN_URL,
+                'WB_URL'       => WB_URL,
+                'THEME_URL'    => THEME_URL,
+            )
         );
 
-        $template->set_var('FTAN', $admin->getFTAN());
+        $oTemplate->set_var('FTAN', $admin->getFTAN());
         if ($user['active'] == 1) {
-            $template->set_var('ACTIVE_CHECKED', ' checked="checked"');
+            $oTemplate->set_var('ACTIVE_CHECKED', ' checked="checked"');
+            $oTemplate->set_var('PASSWORD_REQ',   ' style="display:none;"');
         } else {
-            $template->set_var('DISABLED_CHECKED', ' checked="checked"');
+            $oTemplate->set_var('DISABLED_CHECKED', ' checked="checked"');
+            $oTemplate->set_var('PASSWORD_REQ', '');
         }
         // Add groups to list
-        $template->set_block('main_block', 'group_list_block', 'group_list');
+        $oTemplate->set_block('main_block', 'group_list_block', 'group_list');
         $results = $database->query("SELECT group_id, name FROM {TP}groups WHERE group_id != '1' ORDER BY name");
         if ($results->numRows() > 0) {
-            $template->set_var('ID', '');
-            $template->set_var('NAME', $TEXT['PLEASE_SELECT'] . '...');
-            $template->set_var('SELECTED', '');
-            $template->parse('group_list', 'group_list_block', true);
+            $oTemplate->set_var('ID', '');
+            $oTemplate->set_var('NAME', $TEXT['PLEASE_SELECT'] . '...');
+            $oTemplate->set_var('SELECTED', '');
+            $oTemplate->parse('group_list', 'group_list_block', true);
             while ($group = $results->fetchRow()) {
-                $template->set_var('ID', $group['group_id']);
-                $template->set_var('NAME', $group['name']);
+                $oTemplate->set_var('ID', $group['group_id']);
+                $oTemplate->set_var('NAME', $group['name']);
                 if (in_array($group['group_id'], explode(",", $user['groups_id']))) {
-                    $template->set_var('SELECTED', ' selected="selected"');
+                    $oTemplate->set_var('SELECTED', ' selected="selected"');
                 } else {
-                    $template->set_var('SELECTED', '');
+                    $oTemplate->set_var('SELECTED', '');
                 }
-                $template->parse('group_list', 'group_list_block', true);
+                $oTemplate->parse('group_list', 'group_list_block', true);
             }
         }
 
         // Only allow the user to add a user to the Administrators group if they belong to it
         if (in_array(1, $admin->get_groups_id())) {
-            $template->set_var('ID', '1');
+            $oTemplate->set_var('ID', '1');
             $users_groups = $admin->get_groups_name();
-            $template->set_var('NAME', $users_groups[1]);
+            $oTemplate->set_var('NAME', $users_groups[1]);
 
             $in_group = false;
             foreach ($admin->get_groups_id() as $cur_gid) {
@@ -93,17 +94,17 @@ switch ($action) {
             }
 
             if ($in_group) {
-                $template->set_var('SELECTED', ' selected="selected"');
+                $oTemplate->set_var('SELECTED', ' selected="selected"');
             } else {
-                $template->set_var('SELECTED', '');
+                $oTemplate->set_var('SELECTED', '');
             }
-            $template->parse('group_list', 'group_list_block', true);
+            $oTemplate->parse('group_list', 'group_list_block', true);
         } else {
             if ($results->numRows() == 0) {
-                $template->set_var('ID', '');
-                $template->set_var('NAME', $TEXT['NONE_FOUND']);
-                $template->set_var('SELECTED', ' selected="selected"');
-                $template->parse('group_list', 'group_list_block', true);
+                $oTemplate->set_var('ID', '');
+                $oTemplate->set_var('NAME', $TEXT['NONE_FOUND']);
+                $oTemplate->set_var('SELECTED', ' selected="selected"');
+                $oTemplate->parse('group_list', 'group_list_block', true);
             }
         }
 
@@ -121,49 +122,50 @@ switch ($action) {
 
         // Work-out if home folder should be shown
         if (!HOME_FOLDERS) {
-            $template->set_var('DISPLAY_HOME_FOLDERS', 'display:none;');
+            $oTemplate->set_var('DISPLAY_HOME_FOLDERS', 'display:none;');
         }
 
         // Include the WB functions file
         require_once WB_PATH . '/framework/functions.php';
 
         // Add media folders to home folder list
-        $template->set_block('main_block', 'folder_list_block', 'folder_list');
+        $oTemplate->set_block('main_block', 'folder_list_block', 'folder_list');
         foreach (directory_list(WB_PATH . MEDIA_DIRECTORY) as $name) {
-            $template->set_var('NAME', str_replace(WB_PATH, '', $name));
-            $template->set_var('FOLDER', str_replace(WB_PATH . MEDIA_DIRECTORY, '', $name));
+            $oTemplate->set_var('NAME', str_replace(WB_PATH, '', $name));
+            $oTemplate->set_var('FOLDER', str_replace(WB_PATH . MEDIA_DIRECTORY, '', $name));
             if ($user['home_folder'] == str_replace(WB_PATH . MEDIA_DIRECTORY, '', $name)) {
-                $template->set_var('SELECTED', ' selected="selected"');
+                $oTemplate->set_var('SELECTED', ' selected="selected"');
             } else {
-                $template->set_var('SELECTED', ' ');
+                $oTemplate->set_var('SELECTED', ' ');
             }
-            $template->parse('folder_list', 'folder_list_block', true);
+            $oTemplate->parse('folder_list', 'folder_list_block', true);
         }
-
         // Insert language text and messages
-        $template->set_var(array(
-            'TEXT_RESET' => $TEXT['RESET'],
-            'TEXT_CANCEL' => $TEXT['CANCEL'],
-            'TEXT_ACTIVE' => $TEXT['ACTIVE'],
-            'TEXT_DISABLED' => $TEXT['DISABLED'],
-            'TEXT_PLEASE_SELECT' => $TEXT['PLEASE_SELECT'],
-            'TEXT_USERNAME' => $TEXT['USERNAME'],
-            'TEXT_PASSWORD' => $TEXT['PASSWORD'],
-            'TEXT_RETYPE_PASSWORD' => $TEXT['RETYPE_PASSWORD'],
-            'TEXT_DISPLAY_NAME' => $TEXT['DISPLAY_NAME'],
-            'TEXT_EMAIL' => $TEXT['EMAIL'],
-            'TEXT_GROUP' => $TEXT['GROUP'],
-            'TEXT_NONE' => $TEXT['NONE'],
-            'TEXT_HOME_FOLDER' => $TEXT['HOME_FOLDER'],
-            'USERNAME_FIELDNAME' => $username_fieldname,
-            'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD'],
-            'HEADING_MODIFY_USER' => $HEADING['MODIFY_USER'],
-        )
+        $oTemplate->set_var(
+            array(
+                'TEXT_RESET'           => $TEXT['RESET'],
+                'TEXT_CANCEL'          => $TEXT['CANCEL'],
+                'TEXT_ACTIVE'          => $TEXT['ACTIVE'],
+                'TEXT_DISABLED'        => $TEXT['DISABLED'],
+                'TEXT_PLEASE_SELECT'   => $TEXT['PLEASE_SELECT'],
+                'TEXT_USERNAME'        => $TEXT['USERNAME'],
+                'TEXT_PASSWORD'        => $TEXT['PASSWORD'],
+                'TEXT_RETYPE_PASSWORD' => $TEXT['RETYPE_PASSWORD'],
+                'TEXT_DISPLAY_NAME'    => $TEXT['DISPLAY_NAME'],
+                'TEXT_EMAIL'           => $TEXT['EMAIL'],
+                'TEXT_GROUP'           => $TEXT['GROUP'],
+                'TEXT_NONE'            => $TEXT['NONE'],
+                'TEXT_HOME_FOLDER'     => $TEXT['HOME_FOLDER'],
+                'USERNAME_FIELDNAME'   => $username_fieldname,
+                'CHANGING_PASSWORD'    => $MESSAGE['USERS_CHANGING_PASSWORD'],
+                'HEADING_MODIFY_USER'  => $HEADING['MODIFY_USER'],
+                'INPUT_NEW_PASSWORD'   => $admin->passwordField('password')
+            )
         );
 
         // Parse template object
-        $template->parse('main', 'main_block', false);
-        $template->pparse('output', 'page');
+        $oTemplate->parse('main', 'main_block', false);
+        $oTemplate->pparse('output', 'page');
         // Print admin footer
         $admin->print_footer();
         break;
@@ -180,11 +182,10 @@ switch ($action) {
             // if($admin_header) { $admin->print_header(); }
             $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
         }
-        $sql = 'SELECT `active` FROM `' . TABLE_PREFIX . 'users` ';
-        $sql .= 'WHERE `user_id` = ' . $user_id . '';
-        if (($iDeleteUser = $database->get_one($sql)) == 1) {
+        $sSql = "SELECT `active` FROM `{TP}users` WHERE `user_id` = " . $user_id;
+        if (($iDeleteUser = $database->get_one($sSql)) == 1) {
             // Delete the user
-            $database->query("UPDATE `{TP}users` SET `active` = 0 WHERE `user_id` = '" . $user_id . "' ");
+            $database->query("UPDATE `{TP}users` SET `active` = 0 WHERE `user_id` = " . $user_id);
         } else {
             $database->query("DELETE FROM `{TP}users` WHERE `user_id` = " . $user_id);
         }
