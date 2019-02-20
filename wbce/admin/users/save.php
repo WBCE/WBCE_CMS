@@ -71,16 +71,9 @@ if($email != ""){
 }
 
 // Check if the email already exists
-$sSql = "SELECT `user_id` FROM `{TP}users` WHERE `emai`l = '".$email."' AND `user_id` <> ".$user_id;
-$results = $database->query($sSql);
-if($results->numRows() > 0)
-{
-    if(isset($MESSAGE['USERS_EMAIL_TAKEN']))
-    {
-        $admin->print_error($MESSAGE['USERS_EMAIL_TAKEN'], $js_back);
-    } else {
-        $admin->print_error($MESSAGE['USERS_INVALID_EMAIL'], $js_back);
-    }
+$sSql = "SELECT `user_id` FROM `{TP}users` WHERE `email` = '".$email."' AND `user_id` <> ".$user_id;
+if($database->get_one($sSql)) {
+    $admin->print_error($MESSAGE['USERS_EMAIL_TAKEN'], $js_back);
 }
 
 // Validate the Password
