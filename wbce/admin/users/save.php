@@ -104,11 +104,12 @@ if($sEncodedPassword != "")
     $aUpdate['password'] = $sEncodedPassword;
 
 // Update User record in the Database
-$database->updateRow('{TP}users', $aUpdate, 'user_id');
+$database->updateRow('{TP}users', 'user_id', $aUpdate);
 
 if($database->is_error()) {
     $admin->print_error($database->get_error(),$js_back);
 } else {
+    debug_dump($aUpdate);
     $admin->print_success($MESSAGE['USERS_SAVED']);
 }
 $admin->print_footer(); // Print admin footer
