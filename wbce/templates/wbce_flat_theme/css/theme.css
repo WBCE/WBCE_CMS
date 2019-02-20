@@ -26,6 +26,9 @@ body {
 .pdng {
     padding: 2%;
 }
+sup.req, .required {
+    color: red;
+}
 /*** html basics ******************************************************/
 a {
     color: #28609b;

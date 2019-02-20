@@ -10,42 +10,40 @@
     <input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
     <h3 id="header-add-user" class="fg12">Benutzer hinzufügen</h3>
     <div class="row">
-        <div class="fg3">{TEXT_USERNAME}:</div>
+        <div class="fg3">{TEXT_USERNAME}<sup class="req">*</sup>:</div>
         <div class="fg9">
-            <input type="text" name="{USERNAME_FIELDNAME}" maxlength="30" value="{USERNAME}" class="wdt200">
+            <input type="text" name="{USERNAME_FIELDNAME}" maxlength="30" value="{USERNAME}" class="wdt250" required>
         </div>
     </div>
     <div class="row">
-        <div class="fg3">{TEXT_PASSWORD}:</div>
-        <div class="fg9">
-            <input type="password" name="password" maxlength="30" class="wdt200">
-        </div>
+        <div class="fg3">{TEXT_PASSWORD}<sup class="req"{PASSWORD_REQ}>*</sup>:</div>
+        <div class="fg9">{INPUT_NEW_PASSWORD}</div>
     </div>
     <div class="row">
-        <div class="fg3">{TEXT_RETYPE_PASSWORD}:</div>
+        <div class="fg3">{TEXT_RETYPE_PASSWORD}<sup class="req"{PASSWORD_REQ}>*</sup>:</div>
         <div class="fg9">
-            <input type="password" name="password2" maxlength="30" class="wdt200">
+            <input type="password" name="password2" class="wdt250">
         </div>
     </div>
     <div class="row">
         <div class="fg9 push3 warning bot" style="{DISPLAY_EXTRA}"> {CHANGING_PASSWORD} </div>
     </div>
     <div class="row">
-        <div class="fg3">{TEXT_DISPLAY_NAME}:</div>
+        <div class="fg3">{TEXT_DISPLAY_NAME}<sup class="req">*</sup>:</div>
         <div class="fg9">
-            <input type="text" name="display_name" maxlength="255" value="{DISPLAY_NAME}" class="wdt200">
+            <input type="text" name="display_name" maxlength="255" value="{DISPLAY_NAME}" class="wdt250" required>
         </div>
     </div>
     <div class="row">
-        <div class="fg3">{TEXT_EMAIL}:</div>
+        <div class="fg3">{TEXT_EMAIL}<sup class="req">*</sup>:</div>
         <div class="fg9">
-            <input type="text" name="email" maxlength="255" value="{EMAIL}" class="wdt200">
+            <input type="text" name="email" maxlength="255" value="{EMAIL}" class="wdt250" required>
         </div>
     </div>
     <div class="row">
         <div class="fg3" style="{DISPLAY_HOME_FOLDERS}">{TEXT_HOME_FOLDER}:</div>
         <div class="fg9" style="{DISPLAY_HOME_FOLDERS}">
-            <select name="home_folder" class="wdt200">
+            <select name="home_folder" class="wdt250">
                 <option value="">{TEXT_NONE}</option>
                 <!-- BEGIN folder_list_block -->
                 <option value="{FOLDER}"{SELECTED}>{NAME}</option>
@@ -54,9 +52,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="fg3">{TEXT_GROUP}:</div>
+        <div class="fg3">{TEXT_GROUP}<sup class="req">*</sup>:</div>
         <div class="fg9">
-            <select name="groups[]" multiple class="wdt200">
+            <select name="groups[]" multiple class="wdt250" required>
                 <!-- BEGIN group_list_block -->
                 <option value="{ID}" {SELECTED}>{NAME}</option>
                 <!-- END group_list_block -->

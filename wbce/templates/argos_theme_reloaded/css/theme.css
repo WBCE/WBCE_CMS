@@ -193,7 +193,9 @@ select::-ms-expand {
 .lt-ie10 select {
     background-image: none;
 }
-
+sup.req, .required {
+    color: red;
+}
 /* than set some overall basics */
 /*
 input,
