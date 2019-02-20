@@ -17,9 +17,7 @@
     </div>
     <div class="row">
         <div class="fg3">{TEXT_PASSWORD}<sup class="req"{PASSWORD_REQ}>*</sup>:</div>
-        <div class="fg9">
-            {INPUT_NEW_PASSWORD}
-        </div>
+        <div class="fg9">{INPUT_NEW_PASSWORD}</div>
     </div>
     <div class="row">
         <div class="fg3">{TEXT_RETYPE_PASSWORD}<sup class="req"{PASSWORD_REQ}>*</sup>:</div>

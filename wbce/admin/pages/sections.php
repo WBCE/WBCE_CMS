@@ -107,7 +107,7 @@ switch ($action) {
                 require $sAddFile;
         } elseif ($database->is_error()) {
             if ($admin_header) 
-                $admin->print_header();
+                $admin->print_header(); 
             $admin->print_error($database->get_error());
         }
         break;

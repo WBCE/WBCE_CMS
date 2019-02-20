@@ -26,7 +26,7 @@ body {
 .pdng {
     padding: 2%;
 }
-sup.req, .required{
+sup.req, .required {
     color: red;
 }
 /*** html basics ******************************************************/

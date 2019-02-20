@@ -38,7 +38,7 @@ $oTemplate->set_var(
         'USER_STATUS'         => $iUserStatus, 
         'INPUT_NEW_PASSWORD'  => $admin->passwordField('password'), 
         'TEXT_USERS'          => $sUserTitle.' '.$TEXT['SHOW'] , 
-        'STATUS_ICON'         => ($iUserStatus==0) ? $UserStatusActive : $UserStatusInactive, 
+        'STATUS_ICON'         => ($iUserStatus == 0) ? $UserStatusActive : $UserStatusInactive, 
         'ADVANCED_SEARCH'     => $TEXT['ADVANCED_SEARCH'], 
         'QUICK_SEARCH_STRG_F' => $TEXT['QUICK_SEARCH_STRG_F'], 
     )

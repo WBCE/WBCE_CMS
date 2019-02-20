@@ -103,7 +103,7 @@ if ($rQueryMenuLink) {
 $oTemplate->set_block('main_block', 'section_module_block', 'section_module');
 // get template used for the displayed page (for displaying block details)
 if (SECTION_BLOCKS) {
-    $sSql = 'SELECT `template` FROM `{TP}pages` WHERE `page_id`=' . (int) $page_id;
+    $sSql = 'SELECT `template` FROM `{TP}pages` WHERE `page_id`= ' . $page_id;
     if (($sTemplate = $database->get_one($sSql)) !== null) {
         $sPageTemplate = ($sTemplate == '') ? DEFAULT_TEMPLATE : $sTemplate;
         // include template info.php file if exists

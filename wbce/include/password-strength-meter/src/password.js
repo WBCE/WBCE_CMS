@@ -22,7 +22,6 @@
       usernamePartialMatch: true,
       minimumLength: 4
     };
-
     options = $.extend({}, defaults, options);
 
     /**

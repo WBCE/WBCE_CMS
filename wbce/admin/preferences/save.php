@@ -167,7 +167,7 @@ function save_preferences(&$admin, &$database)
         }
     }
     if(is_countable($aErrMsg)){
-        $sRetVal = implode('<br />', $aErrMsg);
+        $sRetVal = implode('<br />', $aErrMsg); 
     }
     return $sRetVal;
 }

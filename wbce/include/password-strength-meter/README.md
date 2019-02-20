@@ -1,4 +1,4 @@
-Password Strength Meter plugin for jQuery
+Password Strength Meter plugin for jQuery 
 =========================================
 
 [![Build status][build svg]][build status]

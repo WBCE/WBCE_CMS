@@ -99,12 +99,13 @@ $aInsert = array(
     'timezone'     => -72000, 
     'language'     => DEFAULT_LANGUAGE
 );
-
 $database->insertRow('{TP}users', $aInsert);
-    if ($database->is_error()) {
-        $admin->print_error($database->get_error());
-    } else {
-        $admin->print_success($MESSAGE['USERS_ADDED']);
-    }
+
+if ($database->is_error()) {
+    $admin->print_error($database->get_error());
+} else {
+    $admin->print_success($MESSAGE['USERS_ADDED']);
+}
+
 // Print admin footer
 $admin->print_footer();
