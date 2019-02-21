@@ -21,7 +21,7 @@
   - A _configuration form_ for the whole registration process
 
 ## Issues and Improvements
-Should you find any issues or ways to improve the code or functionality of this area of the WBCE CMS, feel free to write a ticket on our (public GitHub repository)[GitHub-Repo].
+Should you find any issues or ways to improve the code or functionality of this area of the WBCE CMS, feel free to write a ticket on our [public GitHub repository][GitHub-Repo].
 ## Getting Help
 If you have any questions or need more help to get this functionality running on your installation, don't hesitate to visit the official [WBCE CMS Community Forum][WBCE-Forum].
 
