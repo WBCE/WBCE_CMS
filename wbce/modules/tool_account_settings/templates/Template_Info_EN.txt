@@ -1,0 +1,51 @@
+THIS IS THE FOLDER WITH ALL THE TEMPLATES USED ALONG WITH THE 
+ACCOUNT AND SIGN-UP FUNCTIONALITY IN THE FRONTEND OF WBCE CMS
+
+PLEASE NOTE: It's not recommended to edit those files directly!
+             If you do so, all your changes will be overwritten with the next system upgrade of your installation.
+
+
+If you want to change the layouts of this templates, it is RECOMMENDED to follow these steps:
+
+1) Go to the template directory of your active template 
+   (it's the one that is selected in the settings of your WBCE installation).
+
+2) create a directory with the name 'overrides', 
+   move into this directory and create another directory with the name 'account'
+   The structure of your template directory now should look like this:
+
+
+    [DEFAULT_TEMPLATE]
+        └─ overrides
+            └─ account
+
+
+3) Copy the files of folder [root]/modules/tool_account_settings/templates
+   and paste them into the [YOUR TEMPLATE DIR]/overrides/account direcory
+   The structure of your template directory now should look like this:   
+
+
+    [DEFAULT_TEMPLATE]
+        └─ overrides
+            └─ account
+                ├─ form_forgot_login_details.tpl.php
+                ├─ form_login.tpl.php
+                ├─ form_preferences.tpl.php
+                ├─ form_signup.tpl.php
+                ├─ index.php.php
+                ├─ msg_activation_link_sent.tpl.php
+                ├─ msg_forgot_login_details_sent.tpl.php
+                ├─ msg_login_details_just_sent.tpl.php
+                ├─ msg_manager_approval_feedback.tpl.php
+                ├─ msg_manager_confirm_new_signup.tpl.php
+                ├─ msg_wrong_inputs.tpl.php
+                └─ forms.css
+
+
+4) You can now change the layout of these files and the system will use these files instead of the ones
+   present in the [root]/modules/tool_account_settings/templates directory
+   and you prevent your layout changes from being overwritten with the next system upgrade. 
+
+PLEASE ALSO NOTE:
+   If you only want to change the layout of one of the template files, say for example the form_login.tpl.php
+   you would copy and paste only this file into the [YOUR TEMPLATE DIR]/overrides/account directory.

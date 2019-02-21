@@ -1,0 +1,459 @@
+/**
+ * cpForm 
+ * used for all settings forms in the backend. Primarly tables have been used
+ * for forms but tables don't allow for responsive layouts, so we move forward.
+ */
+
+div.cpForm {
+    width: 100%;
+}
+
+div.cpForm:before,
+div.cpForm:after {
+    content: "";
+    display: table
+}
+div.cpForm:after,
+div.cpForm .formRow:after {
+    clear: both
+}
+div.cpForm .formRow,
+div.cpForm .buttonsRow,
+div.cpForm .formDescription,
+div.cpForm .formHeading {
+    position: relative;
+    padding: .2em 0;
+    width: 100%;
+    display: table;
+}
+div.cpForm > .formHeading{
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-top: 0.4em;
+    color: #5B7CA3;
+}
+
+div.cpForm > .buttonsRow{
+    margin-top: 1em;
+}
+div.buttonsRow {
+    padding: .5em 0;
+    width: 100%;
+    display: table;
+}
+div.settingValue {
+    line-height: 1.2em;
+    width: 71%;
+}
+div.cpForm div.settingName,
+div.cpForm label.settingName {
+    width: 27%;
+    margin-top: .005em;
+    margin-right: 2px;
+}
+label.settingName:after,
+div.settingName label:after {
+    content: ':';
+}
+div.cpForm div.settingName,
+div.cpForm label.settingName,
+div.cpForm div.settingValue {
+    float: left
+}
+div.settingValue label {
+    padding-left: 4px;
+    padding-right: 8px;
+    cursor: pointer;
+}
+
+div.cpForm div.missingRequired {	
+    background-color: transparent;
+    background-image: linear-gradient(#fffbfb, #ffe5e5);
+    border-bottom: 1px solid #fe8282;
+}
+
+span.reqField{
+	color:#ee5555;
+	font-weight: bold;
+	padding-left: 2px;
+	font-size: 120%;
+}
+
+/**
+ * cpForm 
+ * input elements
+ */
+
+div.cpWrap input[type="file"],
+div.cpWrap input[type="email"],
+div.cpWrap input[type="text"],
+div.cpWrap input[type="password"],
+div.cpWrap textarea,
+div.cpWrap select, 
+.idLabel {
+    font-family: monospace, Courier, "Lucida Sans Typewriter", "Lucida Typewriter";
+    font-size: 1em;
+}
+input{
+    outline: 0 !important;
+}
+div.formRow input[type="file"],
+div.formRow input[type="email"],
+div.formRow input[type="text"],
+div.formRow input[type="password"],
+div.formRow textarea,
+div.formRow select {
+    margin: 0;
+    padding: .48em 0 .48em .4em;
+    width: 99%;
+    max-width: 99%;
+    outline: 0;
+}
+div.formRow select {
+    padding: 0;
+}
+div.formRow input.has-file-ext{
+    width: 85%;
+}
+div.settingValue textarea {
+    width: 99%;
+    min-height: 80px;
+}
+div.settingValue select {
+    padding: 0 .2em 0 .2em;
+}
+div.settingValue select option.selected-item{
+    font-weight: bold;
+}
+div.settingValue select option.disabled-item{
+    color: grey;
+}
+
+
+div.cpForm .buttonsRow {
+    position: relative;
+    text-align: left;
+}
+div.cpForm .buttonsRow * {} 
+div.buttonsRow .pos-right {
+    float: right;
+}
+
+/* Form Hints and Warnings */
+div.formHint, div.warningHint, div.recommendHint {
+    padding: .4em 0;
+    font-size: .9em;
+}
+div.warningHint {
+    color: #cc0033;
+}
+
+div.recommendHint {
+    color: #009933;
+}
+
+/**
+ * Buttons 
+ * we have several types of buttons: 
+   <input type="button">
+   <button>
+   and anchor (link) based buttons
+   the following css handles all the above types
+   Note: we use a jQuery Plugin in order to enframe input type buttons into
+         a div container we couldn't otherwise apply icons to all the buttons
+ */
+.button {
+    display: inline-block;
+    white-space: nowrap;
+    margin-top: 5px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+.button,
+.button:hover {
+    text-decoration: none;
+}
+
+.button:active,
+.button.sel,
+.button.sel:hover {
+    cursor: default;
+}
+.button:focus {
+    outline: 0;
+    background: #fafafa;
+}
+div.button input,
+div.button input:hover,
+div.button input:active,
+div.button input:focus {
+    cursor: pointer;
+    display: inline;
+}
+/**
+ * Buttons (grouped with a radius edge on start and end of buttons group)
+ */
+.button-group {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.button-group .button {
+    -webkit-border-radius: 0;
+    -moz-radius: 0;
+    border-radius: 0;
+    margin: -2px;
+    padding: 0 1em 0 1em;
+}
+.button-group .button:first-child {
+    -webkit-border-radius: 9px 0 0 9px;
+    -moz-border-radius: 9px 0 0 9px;
+    border-radius: 9px 0 0 9px;
+}
+.button-group .button:last-child {
+    -webkit-border-radius: 0 9px 9px 0;
+    -moz-border-radius: 0 9px 9px 0;
+    border-radius: 0 9px 9px 0;
+}
+
+/**
+ * list for checkboxes 
+ * (used with page permissions and other places)
+ */
+ul.operatorList{
+    list-style: none;
+}
+ul.operatorList li:first-child{
+    font-weight: bold;
+}
+
+
+
+hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 2px solid rgba(115, 127, 140, 0.25);
+    height: 0;
+    color: transparent;
+}
+
+.input-error{
+	color: red;
+	border: 1px solid red;
+}
+/* 
+ *  bootstrap like alert boxes
+ */
+/**
+ * We use these with the new MessageBox PHP class
+ * it is temporarily here until we figured out a better place for this CSS
+ * it may trigger conflicts with bootstrap based themes, but tests need be done
+ */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.alert h4 {
+    margin-top: 0;
+    color: inherit;
+}
+.alert .alert-link {
+    font-weight: bold;
+}
+.alert > p,
+.alert > ul {
+    margin-bottom: 0;
+}
+.alert > p + p {
+    margin-top: 5px;
+}
+.alert-dismissable,
+.alert-dismissible {
+    padding-right: 35px;
+}
+.alert-dismissable .close,
+.alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+}
+button.close{	
+    background-color: transparent;
+    cursor: pointer;
+    border:0;
+    margin-top: 0px;
+}
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+.alert-success hr {
+    border-top-color: #c9e2b3;
+}
+.alert-success .alert-link {
+    color: #2b542c;
+}
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+.alert-info hr {
+    border-top-color: #a6e1ec;
+}
+.alert-info .alert-link {
+    color: #245269;
+}
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+.alert-warning hr {
+    border-top-color: #f7e1b5;
+}
+.alert-warning .alert-link {
+    color: #66512c;
+}
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.alert-danger hr {
+    border-top-color: #e4b9c0;
+}
+.alert-danger .alert-link {
+    color: #843534;
+}
+.alert {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(0, 0, 0, .05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(0, 0, 0, .05);
+}
+.alert-success {
+    background-image: -webkit-linear-gradient(top, #dff0d8 0%, #c8e5bc 100%);
+    background-image: -o-linear-gradient(top, #dff0d8 0%, #c8e5bc 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#dff0d8), to(#c8e5bc));
+    background-image: linear-gradient(to bottom, #dff0d8 0%, #c8e5bc 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdff0d8', endColorstr='#ffc8e5bc', GradientType=0);
+    background-repeat: repeat-x;
+    border-color: #b2dba1;
+}
+.alert-info {
+    background-image: -webkit-linear-gradient(top, #d9edf7 0%, #b9def0 100%);
+    background-image: -o-linear-gradient(top, #d9edf7 0%, #b9def0 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#d9edf7), to(#b9def0));
+    background-image: linear-gradient(to bottom, #d9edf7 0%, #b9def0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9edf7', endColorstr='#ffb9def0', GradientType=0);
+    background-repeat: repeat-x;
+    border-color: #9acfea;
+}
+.alert-warning {
+    background-image: -webkit-linear-gradient(top, #fcf8e3 0%, #f8efc0 100%);
+    background-image: -o-linear-gradient(top, #fcf8e3 0%, #f8efc0 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#fcf8e3), to(#f8efc0));
+    background-image: linear-gradient(to bottom, #fcf8e3 0%, #f8efc0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffcf8e3', endColorstr='#fff8efc0', GradientType=0);
+    background-repeat: repeat-x;
+    border-color: #f5e79e;
+}
+.alert-danger {
+    background-image: -webkit-linear-gradient(top, #f2dede 0%, #e7c3c3 100%);
+    background-image: -o-linear-gradient(top, #f2dede 0%, #e7c3c3 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f2dede), to(#e7c3c3));
+    background-image: linear-gradient(to bottom, #f2dede 0%, #e7c3c3 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff2dede', endColorstr='#ffe7c3c3', GradientType=0);
+    background-repeat: repeat-x;
+    border-color: #dca7a7;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+
+/* Overrides for ugly default template styles */
+
+.buttonsRow input {
+	width:12em !important;
+}
+
+
+/* ################ */
+@media (max-width: 750px) 
+{
+    
+    div.cpForm{
+        clear: both;
+    }
+	
+    div.cpForm label.settingName,
+    div.cpForm div.settingName {
+        text-align:left;
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+    }
+	
+    div.cpForm label.settingValue {
+        display: inline;
+        width: 100%;
+        margin-bottom: 5px;
+
+    }
+	
+    div.formRow input[type="file"],
+    div.formRow input[type="email"],
+    div.formRow input[type="text"],
+    div.formRow input[type="password"],
+    div.formRow textarea,
+    div.formRow select,		
+    div.formRow .form-control  {		
+        width: 100%;
+        min-width: 300px !important;
+        display: inline-block;
+    }
+	
+    span.file-ext{
+        display: none;
+    }
+	
+    div.cpForm label.settingName, 
+    div.cpForm div.settingName, 
+    div.cpForm div.settingValue {
+        float: inherit;
+        width:100%;
+    }
+	
+    div.cpForm label.settingName,
+    div.cpForm div.settingName {
+        padding-top: 5px;
+    }
+	
+    div.cp-third, div.cp-two-thirds { 
+        width: 95%!important;
+        float: left;
+        padding: 12px 6px;
+    }
+    div.buttonsRow .pos-right {
+        float: none;
+    }
+}
+
+.pass-graybar {
+    width: 100% !important;
+    margin-bottom: 3px !important;
+}
+.pass-wrapper {
+    margin-bottom: 5px !important;
+}
