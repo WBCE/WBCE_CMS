@@ -19,10 +19,7 @@
  *
  */
 
-if(!defined('WB_URL')) {
-	header('Location: ../index.php');
-	exit(0);
-}
+defined('WB_URL') or header('Location: ../index.php');
 
 // Create array
 $TIMEZONES = array();
@@ -62,17 +59,40 @@ $TIMEZONES['12'] = 'GMT +12 Hours';
 $TIMEZONES['13'] = 'GMT +13 Hours';
 
 // Add "System Default" to list (if we need to)
-if(isset($user_time) && $user_time == true)
-{
-	if(isset($TEXT['SYSTEM_DEFAULT']))
-	{
-		$TIMEZONES['20'] = $TIMEZONES[$actual_timezone].' ('.$TEXT['SYSTEM_DEFAULT'].')';
-	} else {
-		$TIMEZONES['20'] = $TIMEZONES[$actual_timezone].' (System Default)';
-	}
+if(isset($user_time) && $user_time == true) {
+    $TIMEZONES['20'] = $TIMEZONES[$actual_timezone].' ('.$TEXT['SYSTEM_DEFAULT'].')';
 }
-
 // Reverse array so "System Default" is at the top
 $TIMEZONES = array_reverse($TIMEZONES, true);
 
-?>
+if(!function_exists('getTimeZonesArray')){
+    
+    /**
+     * @brief  Returns an array of timezones set up by the system
+     *         This function will return an array that can be used
+     *         to display all the timezones or in order to create a 
+     *         select box to choose from.
+     * 
+     * @param  array  $TIMEZONES
+     * @param  bool   $bShowCurrentDate
+     * @return array
+     */
+    function getTimeZonesArray($TIMEZONES, $bShowCurrentDate = true){
+        $oEngine = isset($GLOBALS['wb']) ? $GLOBALS['wb'] : $GLOBALS['admin'];
+        $aTimeZones = array();
+
+        $i = 0;    
+        foreach ($TIMEZONES as $sOffset => $sTitle) {
+            $aTimeZones[$i]['VALUE']    = $sOffset;
+            $aTimeZones[$i]['NAME']     = isset($sTitle) ? $sTitle : '';
+            if($bShowCurrentDate == true){
+                $sSecondsOffset = $sOffset * 60 * 60;
+                $aTimeZones[$i]['NAME'] .= ' ('. gmdate(TIME_FORMAT, (time() + $sSecondsOffset)).')';
+            }
+            $aTimeZones[$i]['NAME'] = str_replace(' Hours', 'h', $aTimeZones[$i]['NAME']);
+            $aTimeZones[$i]['SELECTED'] = ($oEngine->get_timezone() == $sOffset * 3600) ? true : false;
+            $i++;
+        }
+        return $aTimeZones;
+    }
+}
