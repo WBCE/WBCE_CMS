@@ -85,5 +85,6 @@ if(!function_exists('getDateFormatsArray')){
             } 
             $i++;
         }
+        return $aDateFormats;
     }
 }
