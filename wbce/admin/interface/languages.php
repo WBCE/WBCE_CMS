@@ -29,13 +29,14 @@ if(!function_exists('getDateFormatsArray')){
     function getLanguagesArray(){
         global $database;
         $aLanguages = array();
-        if ($rLang = $database->query("SELECT * FROM `{TP}addons` WHERE `type` = 'language' ORDER BY `directory`")) {
+        $sCurrLang  = isset($_SESSION['LANGUAGE']) ? $_SESSION['LANGUAGE'] : LANGUAGE;
+        if ($rLang = $database->query("SELECT `name`, `directory` FROM `{TP}addons` WHERE `type` = 'language' ORDER BY `name`")) {
             while ($rec = $rLang->fetchRow(MYSQL_ASSOC)){
                 $sLC = $rec['directory'];
                 $aLanguages[$sLC]['CODE']     = $sLC;
                 $aLanguages[$sLC]['NAME']     = $rec['name'];
                 $aLanguages[$sLC]['FLAG']     = WB_URL.'/languages/'.(empty($sLC)) ? 'none' : strtolower($sLC);
-                $aLanguages[$sLC]['SELECTED'] = LANGUAGE == $sLC ? true : false;
+                $aLanguages[$sLC]['SELECTED'] = $sCurrLang == $sLC ? true : false;
             }
         }
         return $aLanguages;

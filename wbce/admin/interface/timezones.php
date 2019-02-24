@@ -61,6 +61,7 @@ $TIMEZONES['13'] = 'GMT +13 Hours';
 // Add "System Default" to list (if we need to)
 if(isset($user_time) && $user_time == true) {
     $TIMEZONES['20'] = $TIMEZONES[$actual_timezone].' ('.$TEXT['SYSTEM_DEFAULT'].')';
+    $TIMEZONES['20'] = $TEXT['SYSTEM_DEFAULT'];
 }
 // Reverse array so "System Default" is at the top
 $TIMEZONES = array_reverse($TIMEZONES, true);
@@ -87,7 +88,7 @@ if(!function_exists('getTimeZonesArray')){
             $aTimeZones[$i]['NAME']     = isset($sTitle) ? $sTitle : '';
             if($bShowCurrentDate == true){
                 $sSecondsOffset = $sOffset * 60 * 60;
-                $aTimeZones[$i]['NAME'] .= ' ('. gmdate(TIME_FORMAT, (time() + $sSecondsOffset)).')';
+                $aTimeZones[$i]['NAME'] = ''. gmdate(TIME_FORMAT, (time() + $sSecondsOffset)).' ('.$aTimeZones[$i]['NAME'].')';
             }
             $aTimeZones[$i]['NAME'] = str_replace(' Hours', 'h', $aTimeZones[$i]['NAME']);
             $aTimeZones[$i]['SELECTED'] = ($oEngine->get_timezone() == $sOffset * 3600) ? true : false;
