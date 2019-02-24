@@ -10,23 +10,12 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once '../config.php';
-require_once WB_PATH .'/modules/tool_account_settings/functions.php';
-
-// Check if default langauge file exists
-$sLangFile = WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php';
-if (is_readable($sLangFile)) {
-    // Include default language file
-    require_once WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php';    
-    $load_language = false;
-} else {
-    // Language file is needed, break up if it doesn't exist
-    die(header('Location: ' . $sRedirect));    
-}
+require_once dirname(__DIR__) . ' /config.php';
+require_once __DIR__ . ' /init.php';
 
 // Check if FRONTEND_SIGNUP group constant is defined or USER_ID is in Session
 $iSignupGroupID = defined('FRONTEND_SIGNUP') ? (int) FRONTEND_SIGNUP : 0;
-$iUserID = isset($_SESSION['USER_ID']) ? (int) $_SESSION['USER_ID'] : 0;
+$iUserID        = isset($_SESSION['USER_ID']) ? (int) $_SESSION['USER_ID'] : 0;
 
 // Work out redirect_url (either root index.php or intro page in pages/index.php)
 $sRedirect = WB_URL . ((INTRO_PAGE) ? PAGES_DIRECTORY : '') . '/index.php';
@@ -57,7 +46,7 @@ define('LEVEL',       0);
 define('PAGE_TITLE',  $TEXT['SIGNUP']);
 define('MENU_TITLE',  $TEXT['SIGNUP']);
 define('VISIBILITY',  'public');
-define('PAGE_CONTENT', WB_PATH .'/modules/tool_account_settings/account/signup_form.php');
+define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/signup_form.php');
 
 // Setup wb object, skip header and skip permission checks
 $wb = new wb('Start', 'start', false, false);

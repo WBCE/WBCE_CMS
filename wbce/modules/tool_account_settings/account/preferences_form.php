@@ -12,118 +12,52 @@
 
 // prevent this file from being accesses directly
 defined('WB_PATH') or exit("Cannot access this file directly");
+foreach (account_getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
 // check if user authenticated
-if ($wb->is_authenticated() === false) {
-	// User needs to login first
-    header("Location: " . WB_URL . "/account/login.php?redirect=" . $wb->link);
-    exit(0);
-}
+//if ($wb->is_authenticated() === false) {
+//	// User needs to login first
+//    header("Location: " . WB_URL . "/account/login.php?redirect=" . $wb->link);
+//    exit(0);
+//}
 
 // get referer link for use with [cancel] button
 $sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $_SERVER['SCRIPT_NAME'];
 $sFTAN = $wb->getFTAN();
 $user_time = true;
 
-// load Language Files 
-foreach (account_getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
-// load UTF-8 functions
-require_once WB_PATH . '/framework/functions-utf8.php';
-
-$error   = array();
-$success = array();
-
-switch ($wb->get_post('action')) {
-    case 'details':
-        require_once __DIR__ . '/check_details.php';
-        break;
-    case 'email':
-        require_once __DIR__ . '/check_email.php';
-        break;
-    case 'password':
-        require_once __DIR__ . '/check_password.php';
-        break;
-    default:
-        // do nothing
+if(isset($_POST['action']) && $wb->get_post('action') == 'profile'){
+    require_once ACCOUNT_TOOL_PATH . '/account/check_preferences.php';
 }
 
-if (!empty($success)) {
-    $wb->print_success(implode('<br />', $success), WB_URL.'/account/preferences.php');
-}
 
-// Get user's display_name and email from database
-$sSql = "SELECT `display_name`, `email` FROM `{TP}users` WHERE `user_id` = '" . $wb->get_user_id() . "'";
-$rSet = $database->query($sSql);
-if ($database->is_error()) {
-    $error[] = $database->get_error();
-}
+// Get user's data array
+$sSql = "SELECT * FROM `{TP}users` WHERE `user_id` = ".$wb->get_user_id();
+$resUser = $database->query($sSql);
+$aUser   = $resUser->fetchRow(MYSQL_ASSOC);
 
-$aSet = $rSet->fetchRow();
-$sDisplayName = $aSet['display_name'];
-$sEmail       = $aSet['email'];
+$sDisplayName = $aUser['display_name'];
+$sEmail       = $aUser['email'];
 
-// Collect languages array
-$aLanguages = array();
-if ($rLang = $database->query("SELECT * FROM `{TP}addons` WHERE `type` = 'language' ORDER BY `directory`")) {
-    while ($rec = $rLang->fetchRow(MYSQL_ASSOC)){
-        $sLC = $rec['directory'];
-        $aLanguages[$sLC]['CODE']     = $sLC;
-        $aLanguages[$sLC]['NAME']     = $rec['name'];
-        $aLanguages[$sLC]['FLAG']     = WB_URL.'/languages/'.(empty($sLC)) ? 'none' : strtolower($sLC);
-        $aLanguages[$sLC]['SELECTED'] = LANGUAGE == $sLC ? true : false;
-    }
-}
 
-// Collect time zones array
-require ADMIN_PATH . '/interface/timezones.php';
-$aTimeZones = array();
-$i = 0;
-foreach ($TIMEZONES as $hour_offset => $sTitle) {
-    $aTimeZones[$i]['VALUE']    = $hour_offset;
-    $aTimeZones[$i]['NAME']     = isset($sTitle) ? $sTitle : '';
-    $aTimeZones[$i]['SELECTED'] = ($wb->get_timezone() == $hour_offset * 3600) ? true : false;
-    $i++;
-}
+// Get languages array
+require_once ADMIN_PATH . '/interface/languages.php';
+$aLanguages = getLanguagesArray();
+
+// Get time zones array
+require_once ADMIN_PATH . '/interface/timezones.php';
+$aTimeZones = getTimeZonesArray($TIMEZONES, true);
+
+// Get time format array
+require_once ADMIN_PATH . '/interface/time_formats.php';
+$aTimeFormats = getTimeFormatsArray($TIME_FORMATS);
 
 // Collect date format array
-require ADMIN_PATH . '/interface/date_formats.php';
-$aDateFormats = array();
-$i = 0;
-foreach ($DATE_FORMATS as $sFormat => $sTitle) {
-    $sFormat = str_replace('|', ' ', $sFormat); // Add's white-spaces (not able to be stored in array key)
-    
-    $aDateFormats[$i]['VALUE'] = ($sFormat != 'system_default') ? $sFormat : '';
-    $aDateFormats[$i]['NAME']  = $sTitle;	
+require_once ADMIN_PATH . '/interface/date_formats.php';
+$aDateFormats = getDateFormatsArray($DATE_FORMATS);
 
-    $aDateFormats[$i]['SELECTED'] = false;
-    if (DATE_FORMAT == $sFormat and !isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
-        $aDateFormats[$i]['SELECTED'] = true;
-    } elseif ($sFormat == 'system_default' and isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
-        $aDateFormats[$i]['SELECTED'] = true;
-    } 
-    $i++;
-}
-
-// Collect time format array
-require ADMIN_PATH . '/interface/time_formats.php';
-$aTimeFormats = array();
-$i = 0;
-foreach ($TIME_FORMATS as $sFormat => $sTitle) {
-    $sFormat = str_replace('|', ' ', $sFormat); // Add's white-spaces (not able to be stored in array key)
-	
-    $aTimeFormats[$i]['VALUE'] = ($sFormat != 'system_default') ? $sFormat : '';
-    $aTimeFormats[$i]['NAME']  = $sTitle;	
-
-	$aTimeFormats[$i]['SELECTED'] = false;
-    if (DATE_FORMAT == $sFormat and !isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {
-        $aTimeFormats[$i]['SELECTED'] = true;
-    } elseif ($sFormat == 'system_default' and isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {
-        $aTimeFormats[$i]['SELECTED'] = true;
-    } 
-    $i++;
-}
-
+// UserBase AdminTool Connector
 $sUserBaseForm = '';
 $sFile = WB_PATH.'/modules/UserBase/account/FrontendAccountConnector.php';
 if(file_exists($sFile)){
@@ -131,6 +65,14 @@ if(file_exists($sFile)){
     $oExtend = new FrontendAccountConnector;
     $sUserBaseForm = $oExtend->renderExtendForm($wb->get_user_id(), WB_URL . '/account/preferences.php');
 }
+
+// we need the utf8_fast_entities_to_umlauts() function in order to correctly display Umlauts
+require_once WB_PATH . '/framework/functions-utf8.php';
+
+$TEXT['NEED_CURRENT_PASSWORD'] = ucfirst($TEXT['NEED_CURRENT_PASSWORD']);
+$sMsg = json_encode(utf8_fast_entities_to_umlauts($TEXT['NEED_CURRENT_PASSWORD']));
+I::insertJsCode('var MSG_CONFIRM = ' . ($sMsg) . ';', 'BODY BTM-');
+I::insertJsFile(get_url_from_path(ACCOUNT_TOOL_PATH) . '/js/password_confirm.js', 'BODY BTM-');
 
 // Get the template file for preferences
 include account_getTemplate('form_preferences');

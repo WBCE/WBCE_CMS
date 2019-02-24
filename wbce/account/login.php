@@ -10,14 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once '../config.php';
-require_once WB_PATH .'/modules/tool_account_settings/functions.php';
-
-// Make sure the login is enabled
-if(!FRONTEND_LOGIN) {
-    header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
-    exit(0);
-}
+require_once dirname(__DIR__) . ' /config.php';
+require_once __DIR__ . ' /init.php';
 
 // Create new wb object
 $wb = new frontend();
@@ -65,7 +59,7 @@ define('LEVEL',       0);
 define('PAGE_TITLE',  $TEXT['PLEASE_LOGIN']);
 define('MENU_TITLE',  $TEXT['PLEASE_LOGIN']);
 define('VISIBILITY',  'public');
-define('PAGE_CONTENT', WB_PATH .'/modules/tool_account_settings/account/login_form.php');
+define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/login_form.php');
 
 // Include the index (wrapper) file
 require WB_PATH.'/index.php';

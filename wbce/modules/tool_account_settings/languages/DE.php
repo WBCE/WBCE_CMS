@@ -20,6 +20,7 @@ $module_description = 'Dieses AdminTool ist für die Einstellungen des Registrie
 
 // Überschriften und Ausgabetexte
 $TOOL_TXT['OVERVIEW_DESCRIPTION'] = 'Alle im System angemeldeten Benutzer.';
+$TOOL_TXT['PREFERENCES']          = 'Meine Einstellungen';
 
 $TOOL_TXT['HEADING']    = 'UserBase Admin-Tool';
 $TOOL_TXT['EDIT']       = 'User bearbeiten';
@@ -32,7 +33,7 @@ $TOOL_TXT['SAVE_PASSWORD'] = 'Passwort speichern';
 
 $TOOL_TXT['EXPORT']     = 'Export';
 $TOOL_TXT['CLOSE']      = "Schliessen";
-$TOOL_TXT['SAVE']       = "Speichern";
+$TOOL_TXT['SAVE_PREFERENCES'] = "Einstellungen speichern";
 $TOOL_TXT['USER_ID']    = 'User-ID';
 $TOOL_TXT['GROUP']      = 'Gruppe'; 
 $TOOL_TXT['GROUPS']     = 'Gruppen';
@@ -85,6 +86,5 @@ $TEXT['REGISTER_GDPR_PHRASE']                = 'Die Datenschutzerklärung habe i
 /////////////////////////////////////////////////////////////////////////
 //    Override language strings found in [WB_URL]/languages/DE.php     //
 /////////////////////////////////////////////////////////////////////////
-$MENU['PREFERENCES']    = 'Mein Profil';
 $TEXT['ACCOUNT_SIGNUP'] = 'Registrierung';
 $TEXT['SIGNUP']         = 'Registrierung';

@@ -11,7 +11,8 @@
  */
 
 require_once realpath('../../../config.php');
-require_once dirname(__DIR__) .' /functions.php';
+require_once dirname(__DIR__) . '/functions.php';
+
 $config = account_getConfig(); // get config from INI file
 
 $sAutoLanguage = (isset($_GET['lc']) ? $_GET['lc'] : 'EN'); 

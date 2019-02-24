@@ -12,7 +12,7 @@
 
 // stop this file from being accessed directly
 defined('WB_PATH') or die("Cannot access this file directly");
-require_once dirname(__DIR__) .' /functions.php';
+require_once dirname(__DIR__) . '/functions.php';
 
 // load Language Files 
 foreach (account_getLanguageFiles() as $sLangFile) require_once $sLangFile;

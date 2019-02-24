@@ -13,6 +13,7 @@
 
 $TOOL_TXT['OVERVIEW_DESCRIPTION'] = 'List of all the users registered to the system.';
 
+$TOOL_TXT['PREFERENCES'] = $MENU['PREFERENCES'];
 $TOOL_TXT['HEADING']    = 'UserBase Admin-Tool';
 $TOOL_TXT['EDIT']       = 'Edit user';
 $TOOL_TXT['DELETE']     = 'Delete user';
@@ -24,7 +25,7 @@ $TOOL_TXT['SAVE_PASSWORD'] = 'save password';
 
 $TOOL_TXT['EXPORT']     = 'Export';
 $TOOL_TXT['CLOSE']      = "Close";
-$TOOL_TXT['SAVE']       = "Save";
+$TOOL_TXT['SAVE_PREFERENCES'] = "Save";
 $TOOL_TXT['USER_ID']    = 'User-ID';
 $TOOL_TXT['GROUP']      = 'Group'; 
 $TOOL_TXT['GROUPS']     = 'Groups';

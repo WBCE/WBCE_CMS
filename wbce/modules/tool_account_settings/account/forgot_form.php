@@ -11,7 +11,7 @@
  */
 
 defined('WB_PATH') or die("Cannot access this file directly");
-require_once dirname(__DIR__) .' /functions.php';
+require_once dirname(__DIR__) . '/functions.php';
 
 $sLC     = defined('LANGUAGE') ? LANGUAGE : defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN';
 $message = $MESSAGE['FORGOT_PASS_NO_DATA'];
