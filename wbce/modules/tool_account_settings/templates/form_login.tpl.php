@@ -9,7 +9,7 @@ I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
  <p class="login-info"><?=$oLogin->message; ?></p><br />
 <?php } ?>
  
-<form class="login-box" action="<?=WB_URL ?>/account/login.php" method="post" autocomplete="off">
+<form class="login-box" action="<?=LOGIN_URL ?>" method="post" autocomplete="off">
     <input type="hidden" name="username_fieldname" value="<?=$sUsernameField; ?>" />
     <input type="hidden" name="password_fieldname" value="<?=$sPasswordField; ?>" />
     <input type="hidden" name="redirect" value="<?=$oLogin->redirect_url;?>" />
@@ -33,7 +33,7 @@ I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
         </div>
     </div>
 </form>
-<p><a href="<?=WB_URL; ?>/account/forgot.php"><?=$TEXT['FORGOTTEN_DETAILS']; ?></a></p>
+<p><a href="<?=FORGOT_URL ?>"><?=$TEXT['FORGOTTEN_DETAILS']; ?></a></p>
 <script type="text/javascript">
 	var ref = document.getElementById("<?=$sUsernameField; ?>");
 	if (ref) ref.focus();

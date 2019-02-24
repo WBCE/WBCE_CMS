@@ -36,7 +36,7 @@ define('MODULE', '');
 define('VISIBILITY', 'public');
 
 // set the page content include file
-define('PAGE_CONTENT', WB_PATH .'/modules/tool_account_settings/account/signup_switch.php');
+define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/signup_switch.php');
 	
 // disable auto authentication
 $auto_auth = false;

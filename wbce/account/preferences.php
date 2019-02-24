@@ -15,17 +15,9 @@ require_once __DIR__ . ' /init.php';
 
 $wb = new wb();
 if ($wb->is_authenticated()==false) {
-	header('Location: '.WB_URL.'/account/login.php');
-	exit(0);
+    header("Location: ". ACCOUNT_URL . "/login.php");
+    exit(0);
 }
-
-// load Language Files 
-//if(isset($_POST['action']) && $wb->get_post('action') == 'profile'){
-//    require_once ACCOUNT_TOOL_PATH . '/account/check_preferences.php';
-//}
-
-
-
 // Required page details
 $page_id = !empty($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0;
 $page_description = '';

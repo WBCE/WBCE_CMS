@@ -35,7 +35,7 @@ if(!FRONTEND_LOGIN) {
 }
 
 // Set the page content include file
-define('PAGE_CONTENT', WB_PATH .'/modules/tool_account_settings/account/forgot_form.php');
+define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/forgot_form.php');
 
 // Set auto authentication to false
 $auto_auth = false;

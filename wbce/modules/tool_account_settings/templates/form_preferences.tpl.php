@@ -16,7 +16,7 @@ if(empty($error) == false){ ?>
 } 
  
 if (!empty($success)) {
-    $wb->print_success(implode('<br />', $success), WB_URL.'/account/preferences.php');
+    $wb->print_success(implode('<br />', $success), PREFERENCES_URL);
 }
 ?>
 

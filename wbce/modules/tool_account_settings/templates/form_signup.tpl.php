@@ -18,7 +18,7 @@ I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
 } 
 ?>
 <div class="cpForm">
-	<form name="user" action="<?=WB_URL.'/account/signup.php'; ?>" method="post">
+	<form name="user" action="<?=SIGNUP_URL ?>" method="post">
 		<input type="hidden" name="signup_form_sent">
 		<?=$admin->getFTAN();    /* Important: keep this in template! */ ?>
 		<?=renderAspHoneypots(); /* Important: keep this in template! */ ?>

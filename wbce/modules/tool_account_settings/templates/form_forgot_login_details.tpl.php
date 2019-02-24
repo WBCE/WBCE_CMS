@@ -19,7 +19,7 @@ if( ($errMsg=='') && ($message != '')) {
 <br />			
 
 <?php if(!isset($display_form) OR $display_form != false) { ?>
-    <form  class="login-box" name="forgot_pass" action="<?=WB_URL.'/account/forgot.php'; ?>" method="post">
+    <form  class="login-box" name="forgot_pass" action="<?=FORGOT_URL ?>" method="post">
         <div class="cpForm">
             <div class="formRow">
                 <label class="settingName" for="display_name"><?=$TEXT['EMAIL']; ?></label>
@@ -34,7 +34,7 @@ if( ($errMsg=='') && ($message != '')) {
         </div>		
     </form>
 <?php } ?>
-<p><a href="<?=WB_URL; ?>/account/login.php"><?=$TEXT['NEED_TO_LOGIN']; ?></a></p>
+<p><a href="<?=LOGIN_URL ?>"><?=$TEXT['NEED_TO_LOGIN']; ?></a></p>
 <script type="text/javascript">
 	var ref = document.getElementById("email");
 	if (ref) ref.focus();
