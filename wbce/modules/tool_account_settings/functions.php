@@ -9,7 +9,7 @@
  * @license     see LICENSE.md of this package
  */
 
-defined('ACCOUNT_TOOL_PATH') or define('ACCOUNT_TOOL_PATH', WB_PATH .'/modules/tool_account_settings');
+
 
 if (!function_exists('renderAspHoneypots')){
     function renderAspHoneypots(){
@@ -73,14 +73,14 @@ if (!function_exists('validate_emails_from_csv')){
 
 function account_getConfig(){
     // default cfg file
-    $sUseCfg = WB_PATH .'/modules/tool_account_settings/account/Accounts.cfg.php'; // the original Accounts config file
+    $sUseCfg = ACCOUNT_TOOL_PATH . '/account/Accounts.cfg.php'; // the original Accounts config file
 
     // possible override files
     $aOverrides = array(
         // later files in this array will take precedence if they exist
         ACCOUNT_TOOL_PATH.'/account/Accounts.custom.cfg.php',
+        WB_PATH.'/modules/UserBase/account/Accounts.cfg.php',
         WB_PATH.'/templates/'.DEFAULT_TEMPLATE.'/overrides/account/Accounts.cfg.php',
-        WB_PATH.'/modules/UserBase/account/Accounts.cfg.php' 
     );
     foreach($aOverrides as $sCfgFile){
         if (file_exists($sCfgFile)){
@@ -163,22 +163,25 @@ function account_getSupportEmail() {
  * Returns an array of all possible language files, including overrides
  */
 function account_getLanguageFiles(){
-    $sLangDir = WB_PATH .'/modules/tool_account_settings/languages';
+    $sLangDir = ACCOUNT_TOOL_PATH . '/languages';
     $aFiles     = array();
     // we need EN array in all cases because other languages may have missing keys
     $aFiles[] = $sLangDir.'/EN.php';
+    // TOOL LANGUAGE FILES
     if (LANGUAGE != 'EN'){
         // override with default language if default language is not EN
-        $sLangFile = $sLangDir.'/'.DEFAULT_LANGUAGE.'.php';
+        $sLangFile = $sLangDir.'/'.LANGUAGE.'.php';
         if (is_readable($sLangFile)) $aFiles[] = $sLangFile;
     }
+    
+    // DEFAULT_TEMPLATE LANGUAGE FILES
     if (LANGUAGE == 'EN'){
-        // override with file from template only if language is EN
+        // override with file from DEFAULT_TEMPLATE only if language is EN
         $sFile = WB_PATH.'/templates/'.DEFAULT_TEMPLATE.'/overrides/account/languages/EN.php';
         if (is_readable($sFile))     $aFiles[] = $sFile;
     }
     if (LANGUAGE != 'EN'){
-        // override with LANGUAGE file from template
+        // override with LANGUAGE file from DEFAULT_TEMPLATE
         $sFile = WB_PATH.'/templates/'.DEFAULT_TEMPLATE.'/overrides/account/languages/'.LANGUAGE.'.php';
         if (is_readable($sFile))     $aFiles[] = $sFile;
     }

@@ -10,8 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once realpath('../config.php');
-require_once WB_PATH .'/modules/tool_account_settings/functions.php';
+require_once dirname(__DIR__) . ' /config.php';
+require_once __DIR__ . ' /init.php';
 
 $page_id = (!empty($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0);
 

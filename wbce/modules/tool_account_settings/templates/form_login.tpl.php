@@ -5,13 +5,10 @@ I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
 ?>
 
 <h1><?=$TEXT['LOGIN']; ?></h1>
-<p class="login-info">
-<?php 
-  if(isset($oLogin->message)) {
-    echo $oLogin->message; 
-  }
-?>
-</p>
+<?php if(isset($oLogin->message)) { ?>
+ <p class="login-info"><?=$oLogin->message; ?></p><br />
+<?php } ?>
+ 
 <form class="login-box" action="<?=WB_URL ?>/account/login.php" method="post" autocomplete="off">
 	<input type="hidden" name="username_fieldname" value="<?=$sUsernameField; ?>" />
 	<input type="hidden" name="password_fieldname" value="<?=$sPasswordField; ?>" />
@@ -32,7 +29,7 @@ I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
 		</div>
 			
 		<div class="buttonsRow">
-			<input type="submit" name="submit" value="<?=$TEXT['LOGIN']; ?>"  />
+			<input type="submit" name="submit" class="pos-right" value="<?=$TEXT['LOGIN']; ?>"  />
 		</div>
 	</div>
 </form>
