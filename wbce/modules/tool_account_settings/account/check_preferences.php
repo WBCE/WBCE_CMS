@@ -86,9 +86,6 @@ if(is_array($sEncPassword)){
         $_SESSION['HTTP_REFERER'] = ($_SESSION['LANGUAGE'] == LANGUAGE) ? $_SESSION['HTTP_REFERER'] : WB_URL;
         $_SESSION['HTTP_REFERER'] = PREFERENCES_URL.'?lang='.$_SESSION['LANGUAGE'];
         $_SESSION['CHECK_PREFERENCES'] = true;
-        $success[] = 'HTTP_REFERER = '.$_SESSION['HTTP_REFERER'];
-        $success[] = 'LANGUAGE = '.$_SESSION['LANGUAGE'];
-        $success[] = 'LANGUAGE CONST= '.LANGUAGE;
         
         // Update DATE_FORMAT 
         if($sDateFormat != '') {

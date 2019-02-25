@@ -15,26 +15,11 @@ if(empty($error) == false){ ?>
 <?php 
 }
 
-if(empty($success) == false){ ?>
-<div class="alert alert-success">
-    <?php foreach($success as $k=>$message){ ?>
-            <p id="<?=$k?>"><?=$message?></p>
-    <?php 
-    } 
-    ?>
-</div>
-<?php 
-} 
- 
 if (!empty($success)) {
-    debug_dump(PREFERENCES_URL, 'PREFERENCES_URL');
     $wb->print_success(implode('<br />', $success), WB_URL.'/account/preferences.php'); //."?lang=".$_SESSION['LANGUAGE']);
 }
 ?>
-
 <h1><?=$TOOL_TXT['PREFERENCES'] ?></h1>
-
-
 <?php 
 /** 
  * USER BASE Connector 
