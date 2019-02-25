@@ -14,23 +14,12 @@
 defined('WB_PATH') or exit("Cannot access this file directly");
 foreach (account_getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
-// check if user authenticated
-//if ($wb->is_authenticated() === false) {
-//	// User needs to login first
-//    header("Location: " . WB_URL . "/account/login.php?redirect=" . $wb->link);
-//    exit(0);
-//}
-
 // get referer link for use with [cancel] button
-$sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $_SERVER['SCRIPT_NAME'];
-$sFTAN = $wb->getFTAN();
-$user_time = true;
-
+#$sFTAN = $wb->getFTAN();
 
 if(isset($_POST['action']) && $wb->get_post('action') == 'profile'){
     require_once ACCOUNT_TOOL_PATH . '/account/check_preferences.php';
 }
-
 
 // Get user's data array
 $sSql = "SELECT * FROM `{TP}users` WHERE `user_id` = ".$wb->get_user_id();
@@ -40,12 +29,12 @@ $aUser   = $resUser->fetchRow(MYSQL_ASSOC);
 $sDisplayName = $aUser['display_name'];
 $sEmail       = $aUser['email'];
 
-
 // Get languages array
 require_once ADMIN_PATH . '/interface/languages.php';
 $aLanguages = getLanguagesArray();
 
 // Get time zones array
+$user_time = true;
 require_once ADMIN_PATH . '/interface/timezones.php';
 $aTimeZones = getTimeZonesArray($TIMEZONES, true);
 
@@ -63,7 +52,7 @@ $sFile = WB_PATH.'/modules/UserBase/account/FrontendAccountConnector.php';
 if(file_exists($sFile)){
     require_once $sFile;
     $oExtend = new FrontendAccountConnector;
-    $sUserBaseForm = $oExtend->renderExtendForm($wb->get_user_id(), WB_URL . '/account/preferences.php');
+    $sUserBaseForm = $oExtend->renderExtendForm($wb->get_user_id(), PREFERENCES_URL);
 }
 
 // we need the utf8_fast_entities_to_umlauts() function in order to correctly display Umlauts
@@ -75,4 +64,5 @@ I::insertJsCode('var MSG_CONFIRM = ' . ($sMsg) . ';', 'BODY BTM-');
 I::insertJsFile(get_url_from_path(ACCOUNT_TOOL_PATH) . '/js/password_confirm.js', 'BODY BTM-');
 
 // Get the template file for preferences
+$sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php';
 include account_getTemplate('form_preferences');

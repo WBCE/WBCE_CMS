@@ -30,7 +30,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
         if(($rRow = $database->query($sSql)))	{
             if(($aUser = $rRow->fetchRow(MYSQL_ASSOC))) {
                 if(($aUser['signup_confirmcode'] == '') === false){
-                    header("Location: ".WB_URL."/account/signup_continue_page.php?switch=wrong_inputs");	
+                    header("Location: ".ACCOUNT_URL."/signup_continue_page.php?switch=wrong_inputs");	
                     exit(0); // break up the script here
                 }
                 $iUserID = (int) $aUser['user_id'];
@@ -62,7 +62,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                             'LOGIN_NAME'          => $aUser['username'], 
                             'LOGIN_WEBSITE_TITLE' => WEBSITE_TITLE, 
                             'LOGIN_PASSWORD'      => $sNewPasswordRaw,							
-                            'LOGIN_URL'           => defined('LOGIN_URL') ? LOGIN_URL : WB_URL.'/account/login.php'
+                            'LOGIN_URL'           => ACCOUNT_URL . '/login.php'
                         );					
 
                         // prepare E-Mail with login details to send to the prospect
@@ -71,14 +71,14 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                         $sMailTo            = $sEmail;
 
                         if ( account_sendEmail($sMailTo, $aTokenReplace, $sEmailTemplateName) == true ) {
-                            header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=".$sOnScreenSwitch);							
+                            header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=".$sOnScreenSwitch);							
                         } else {
                             $aUpdateUser = array(
                                 'user_id'    => $aUser['user_id'],
                                 'password'   => $sCurrentPw
                             );			
                             $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
-                            header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&from=resend_forgot_pass");							
+                            header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&from=resend_forgot_pass");							
                         }
 
                     } else { 

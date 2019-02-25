@@ -32,7 +32,7 @@ $sConfirmTimeout = (string)(time() + 86400); // now + 24hours
 $sConfirmCode    = md5(md5($sUsername.$sConfirmTimeout).$sConfirmTimeout);
 
 if(isset($_GET['mng']) && $_GET['mng'] > intval(1)){
-    header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&excessive_manager_use");	
+    header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&excessive_manager_use");	
     exit(0);
 }
 if($iUserID = account_userIdFromConfirmcode($sConfirmationID)){
@@ -53,7 +53,7 @@ if($iUserID = account_userIdFromConfirmcode($sConfirmationID)){
     if(isset($_GET['mng']) && $_GET['mng'] == intval(1)){		
 
         if(account_checkConfirmSum($_GET['sum'], $iUserID) == false){	
-            header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&check_sum");	
+            header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&check_sum");	
             exit(0);
         }
 
@@ -79,14 +79,14 @@ if($iUserID = account_userIdFromConfirmcode($sConfirmationID)){
             'LOGIN_PASSWORD'      => $sNewPasswordRaw,
             'LOGIN_WEBSITE_TITLE' => WEBSITE_TITLE, 
             'SUPPORT_EMAIL'       => account_getSupportEmail(),
-            'LOGIN_URL'           => defined('LOGIN_URL') ? LOGIN_URL : WB_URL.'/account/login.php'
+            'LOGIN_URL'           => ACCOUNT_URL . '/login.php'
         );	
 
         // Try sending the 'welcome_login_info' Mail to User
         if ( account_sendEmail($aUser['email'], $aTokenReplace, 'welcome_login_info') ) {			
-            header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=manager_approval_feedback");			
+            header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=manager_approval_feedback");			
         } else {			
-            header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&err=");
+            header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&err=");
         }	
 
     } else {
@@ -97,7 +97,7 @@ if($iUserID = account_userIdFromConfirmcode($sConfirmationID)){
 
         $sConfirmTimeout  = (string)(time() + 86400); // now + 24hours
         $sConfirmCode     = md5(md5($sUsername.$sConfirmTimeout).$sConfirmTimeout);
-        $sConfirmationUrl = WB_URL.'/modules/tool_account_settings/account/confirm.php?id='.$sConfirmCode.'&lc='.$sLC;
+        $sConfirmationUrl = ACCOUNT_TOOL_PATH.'/account/confirm.php?id='.$sConfirmCode.'&lc='.$sLC;
         $sCheckSum        = substr(md5($sConfirmCode), 0, 10);
 
         $aTokenReplace = array( 
@@ -109,7 +109,7 @@ if($iUserID = account_userIdFromConfirmcode($sConfirmationID)){
             'SIGNUP_DATE'          => $sReadableDateTime,
             'LOGIN_EMAIL'          => $aUser['email'],
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout),
-            'LOGIN_URL'            => defined('LOGIN_URL') ? LOGIN_URL : WB_URL.'/account/login.php', 
+            'LOGIN_URL'            => ACCOUNT_URL.'/login.php', 
             'APPROVAL_LINK'        => account_genEmailLinkFromUri($sConfirmationUrl.'&mng=1&sum='.$sCheckSum), 
             'CONFIRMATION_LINK'    => account_genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.substr(md5($sCheckSum), 0, 10)),
         );
@@ -134,7 +134,7 @@ if($iUserID = account_userIdFromConfirmcode($sConfirmationID)){
             $sErrorMessage      = $MESSAGE['FORGOT_PASS_CANNOT_EMAIL'];	
 
             if ( account_sendEmail($sMailTo, $aTokenReplace, $sEmailTemplateName, $sEmailSubject) ) {			
-                header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=login_details_just_sent");				
+                header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=login_details_just_sent");				
             } else {
                 $wb->print_error($sErrorMessage, $js_back, false);				
             }	
@@ -149,7 +149,7 @@ if($iUserID = account_userIdFromConfirmcode($sConfirmationID)){
             $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
 
             if ( account_sendEmail(account_getAccountsManagerEmail(), $aTokenReplace, 'manager_approve_new_user') ) {			
-                header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=manager_confirm_new_signup");				
+                header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=manager_confirm_new_signup");				
             } else {
                 $wb->print_error($sErrorMessage, $js_back, false);				
             }
@@ -157,5 +157,5 @@ if($iUserID = account_userIdFromConfirmcode($sConfirmationID)){
     }
     
 } else {		
-    header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs");	
+    header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs");	
 }

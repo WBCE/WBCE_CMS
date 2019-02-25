@@ -146,7 +146,7 @@ if(isset($_POST['signup_form_sent'])){
         $database->insertRow('{TP}users', $aInsertUser);
 
         if ($database->is_error()) {		
-            header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs"); //&err=".$database->get_error());
+            header("Location: " . ACCOUNT_URL . "/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs"); //&err=".$database->get_error());
             exit(0);
         }				
 
@@ -161,7 +161,7 @@ if(isset($_POST['signup_form_sent'])){
         $sErrorMessage     = $TEXT['ERROR']; //$MESSAGE['GENERIC_ISSUE_MESSAGE'];	
         $sConfirmTimeout   = (string)(time() + 86400); // now + 24hours
         $sConfirmCode      = md5(md5($sUsername.$sConfirmTimeout).$sConfirmTimeout);
-        $sConfirmationUrl  = WB_URL.'/modules/tool_account_settings/account/confirm.php?id='.$sConfirmCode.'&lc='.$sLC;
+        $sConfirmationUrl  = ACCOUNT_TOOL_PATH . '/account/confirm.php?id='.$sConfirmCode.'&lc='.$sLC;
         $sCheckSum         = substr(md5($sConfirmCode), 0, 10);
 
         // Template token replacement array (will be added to down the code)
@@ -177,7 +177,7 @@ if(isset($_POST['signup_form_sent'])){
             'APPROVAL_LINK'        => account_genEmailLinkFromUri($sConfirmationUrl.'&mng=1&sum='.$sCheckSum),
             'CONFIRMATION_LINK'    => account_genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.substr(md5($sCheckSum), 0, 10)),
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout), 
-            'LOGIN_URL'            => defined('LOGIN_URL') ? LOGIN_URL : WB_URL.'/account/login.php'
+            'LOGIN_URL'            => ACCOUNT_URL . '/login.php'
         );	
 
         if ($config['signup_double_opt_in'] == 1){
@@ -223,9 +223,9 @@ if(isset($_POST['signup_form_sent'])){
         // Send prepared E-Mail
         // ///////////////////////////////
         if (account_sendEmail($sMailTo, $aTokenReplace, $sEmailTemplateName, $sEmailSubject) == true) {		
-            header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=".$sOnScreenSwitch);		
+            header("Location: ". ACCOUNT_URL ."/signup_continue_page.php?lc=".$sLC."&switch=".$sOnScreenSwitch);		
         } else {
-            header("Location: ".WB_URL."/account/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&sEmailTemplateName:".$sEmailTemplateName);		
+            header("Location: " . ACCOUNT_URL ."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&sEmailTemplateName:".$sEmailTemplateName);		
         } 
     }
 }

@@ -10,16 +10,20 @@
  * @license GNU GPL2 (or any later version)
  */
 
+
 require_once dirname(__DIR__) . ' /config.php';
 require_once __DIR__ . ' /init.php';
 
-$wb = new wb();
-if ($wb->is_authenticated()==false) {
-    header("Location: ". ACCOUNT_URL . "/login.php");
-    exit(0);
+$wb_inst = new wb();
+if ($wb_inst->is_authenticated()==false) {
+	header('Location: '.WB_URL.'/account/login.php');
+	exit(0);
 }
+
+
+    
 // Required page details
-$page_id = !empty($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0;
+$page_id = 0;
 $page_description = '';
 $page_keywords = '';
 define('TEMPLATE', account_getConfig()['preferences_template']);

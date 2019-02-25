@@ -9,5 +9,7 @@ if(!FRONTEND_LOGIN) {
     header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
     exit(0);
 }
-
+// Create new wb object
+$wb = new frontend();
+$wb->get_website_settings();
 

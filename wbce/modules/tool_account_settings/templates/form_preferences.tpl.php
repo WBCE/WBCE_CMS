@@ -13,10 +13,22 @@ if(empty($error) == false){ ?>
     ?>
 </div>
 <?php 
+}
+
+if(empty($success) == false){ ?>
+<div class="alert alert-success">
+    <?php foreach($success as $k=>$message){ ?>
+            <p id="<?=$k?>"><?=$message?></p>
+    <?php 
+    } 
+    ?>
+</div>
+<?php 
 } 
  
 if (!empty($success)) {
-    $wb->print_success(implode('<br />', $success), PREFERENCES_URL);
+    debug_dump(PREFERENCES_URL, 'PREFERENCES_URL');
+    $wb->print_success(implode('<br />', $success), WB_URL.'/account/preferences.php'); //."?lang=".$_SESSION['LANGUAGE']);
 }
 ?>
 
@@ -33,7 +45,7 @@ echo $sUserBaseForm;
 ?>
 <div class="cpForm">
     <form name="details" action="" method="post">
-        <?=$admin->getFTAN(); /* Important: keep this in template! */?>
+        <?=$wb->getFTAN(); /* Important: keep this in template! */?>
         <h3><?=$HEADING['MY_SETTINGS'] ?></h3>
 
         <div class="formRow">

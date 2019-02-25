@@ -13,9 +13,6 @@
 require_once dirname(__DIR__) . ' /config.php';
 require_once __DIR__ . ' /init.php';
 
-// Create new wb object
-$wb = new frontend();
-
 $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
 $sRedirect = strip_tags(isset(${$requestMethod}['redirect']) ? ${$requestMethod}['redirect'] : '');
 $sRedirect = ((isset($_SERVER['HTTP_REFERER']) && empty($sRedirect)) ?  $_SERVER['HTTP_REFERER'] : $sRedirect);
@@ -39,12 +36,12 @@ $oLogin = new Login(
         "MIN_PASSWORD_LEN"      => "3",
         "MAX_USERNAME_LEN"      => "30",
         "MAX_PASSWORD_LEN"      => "30",
-        "LOGIN_URL"             => ACCOUNT_URL . '/login.php'.(!empty($sRedirect) ? '?redirect=' .$_SESSION['HTTP_REFERER'] : ''),
+        "LOGIN_URL"             => LOGIN_URL.(!empty($sRedirect) ? '?redirect=' .$_SESSION['HTTP_REFERER'] : ''),
         "DEFAULT_URL"           => WB_URL.PAGES_DIRECTORY."/index.php",
         "TEMPLATE_DIR"          => realpath(WB_PATH.$wb->correct_theme_source('login.htt')),
         "TEMPLATE_FILE"         => "login.htt",
         "FRONTEND"              => true,
-        "FORGOTTEN_DETAILS_APP" => ACCOUNT_URL . '/forgot.php',
+        "FORGOTTEN_DETAILS_APP" => FORGOT_URL,
         "REDIRECT_URL"          => $sRedirect
     )
 );
