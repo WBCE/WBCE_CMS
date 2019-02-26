@@ -18,8 +18,7 @@ if (!$wb->checkFTAN()) {
     $wb->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], WB_URL);
 }
 
-$success = array();
-$error   = array();
+$oMsgBox = new MessageBox();
 
 $sCurrPassword = $wb->get_post('current_password');
 $sEncPassword  = $wb->checkPasswordPattern($sCurrPassword);
@@ -28,9 +27,9 @@ $sNewEmail     = $wb->get_post('email');
 // validate confirmation password
 $sSql  = "SELECT `user_id` FROM `{TP}users` WHERE `user_id` = %d AND `password` = '%s'";
 if(is_array($sEncPassword)){
-    $error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
+    $oMsgBox->error($MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT']);
 } elseif($database->get_one(sprintf($sSql, $wb->get_user_id(), $sEncPassword)) == false) {
-    $error[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
+    $oMsgBox->error($MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT']);
 } else { 
 
     // Get entered values
@@ -53,7 +52,7 @@ if(is_array($sEncPassword)){
 
     // Validate email format
     if(!$wb->validate_email($sNewEmail)) {
-        $error[] = $MESSAGE['USERS_INVALID_EMAIL'];
+        $oMsgBox->error($MESSAGE['USERS_INVALID_EMAIL']);
     } else {
         $aUpdate['email']   = $database->escapeString($sNewEmail);
     }
@@ -66,7 +65,7 @@ if(is_array($sEncPassword)){
     
         $checkPassword =  $wb->checkPasswordPattern($sNewPassword, $sRePassword);
         if (is_array($checkPassword)){
-            $error[] = $checkPassword[0];
+            $oMsgBox->error($checkPassword[0]);
         } else {
             // Add password to Update array
             $aUpdate['password'] = $checkPassword;
@@ -74,10 +73,10 @@ if(is_array($sEncPassword)){
     }
 
     // Update Data in Database
-    if(empty($error) && $database->updateRow('{TP}users', 'user_id', $aUpdate)) {
-        $success[] = $MESSAGE['PREFERENCES_DETAILS_SAVED'];
+    if($oMsgBox->hasErrors() == false && $database->updateRow('{TP}users', 'user_id', $aUpdate)) {
+        $oMsgBox->success('MESSAGE:PREFERENCES_DETAILS_SAVED');
         if(isset($aUpdate['password']))
-            $success[] = $MESSAGE['PREFERENCES_PASSWORD_CHANGED'];
+            $oMsgBox->success($MESSAGE['PREFERENCES_PASSWORD_CHANGED']);
 
         // update SESSION values
         $_SESSION['DISPLAY_NAME'] = $sDisplayName;
@@ -105,7 +104,9 @@ if(is_array($sEncPassword)){
             if(isset($_SESSION['TIME_FORMAT']))             unset($_SESSION['TIME_FORMAT']); 
         }
     } else {
-        $error[] = $database->get_error();
+        $oMsgBox->error($database->get_error());
     }
 }
 
+$oMsgBox->redirect(PREFERENCES_URL);
+$oMsgBox->display();

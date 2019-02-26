@@ -380,7 +380,8 @@ if (!function_exists('block_contents')) {
 
 if (!function_exists('page_content')) {
     /**
-     * @brief   return or echo all the sections of one block into the template		   
+     * @brief   print or return (e.g. into a variable for later use)
+     *          all the sections of one block into the template		   
      *	        It now alllows to enter block names as well as block numbers.
      *	        The second parameter lets the function return the result instead of printing it immediately.
      *
@@ -393,11 +394,11 @@ if (!function_exists('page_content')) {
      * @global  array   $MENU       | 
      * 
      * @param   unspec  $uBlock     Block ID or Block name
-     * @param   bool    $bUseEcho   echo the contents 
+     * @param   bool    $bPrint   echo the contents 
      *                              or set to 0 if you want to fetch the contents into a variable
      * @return string 
      */
-    function page_content($uBlock = 1, $bUseEcho = 1){		
+    function page_content($uBlock = 1, $bPrint = 1){		
         $iBlockID =  get_block_id($uBlock);
         $sRetVal = '';
         if (!defined('PAGE_CONTENT')) {
@@ -424,8 +425,8 @@ if (!function_exists('page_content')) {
             }
         }
         // echo or return
-        if($bUseEcho == 1) echo $sRetVal;	
-        else               return $sRetVal;
+        if($bPrint == 1) echo   $sRetVal;	
+        else             return $sRetVal;
     }
 }
 

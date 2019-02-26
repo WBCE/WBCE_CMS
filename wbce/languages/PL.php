@@ -41,10 +41,10 @@ $MENU['MODULES'] = 'Moduły';
 $MENU['PAGES'] = 'Strony';
 $MENU['PREFERENCES'] = 'Preferencje';
 $MENU['SETTINGS'] = 'Ustawienia';
-$MENU['START'] = 'Poczatek';
+$MENU['START'] = 'Początek';
 $MENU['TEMPLATES'] = 'Szablony';
 $MENU['USERS'] = 'Użytkownicy';
-$MENU['VIEW'] = 'Podglad';
+$MENU['VIEW'] = 'Podgląd';
 
 
 $TEXT['ACCOUNT_SIGNUP'] = 'Nowe konto';
@@ -200,13 +200,13 @@ $TEXT['MODIFY_CONTENT'] = 'Zmień zawartość';
 $TEXT['MODIFY_SETTINGS'] = 'Zmień ustawienia';
 $TEXT['MODULE_ORDER'] = 'Moduł- kolejność wyszukiwania';
 $TEXT['MODULE_PERMISSIONS'] = 'Uprawnienia do modułów';
-$TEXT['MORE'] = 'Wiecej';
-$TEXT['MOVE_DOWN'] = 'W dól';
+$TEXT['MORE'] = 'Więcej';
+$TEXT['MOVE_DOWN'] = 'W dół';
 $TEXT['MOVE_UP'] = 'Do góry';
 $TEXT['MULTIPLE_MENUS'] = 'Wielokrotne menu';
 $TEXT['MULTISELECT'] = 'Wybór wielokrotny';
 $TEXT['NAME'] = 'Nazwa';
-$TEXT['NEED_CURRENT_PASSWORD'] = 'potwierdż obecne hasło';
+$TEXT['NEED_CURRENT_PASSWORD'] = 'potwierdż obecnym hasłem';
 $TEXT['NEED_TO_LOGIN'] = 'Potrzebujesz się zalogować?';
 $TEXT['NEW_PASSWORD'] = 'Nowe hasło';
 $TEXT['NEW_WINDOW'] = 'Nowe okno';
@@ -235,7 +235,7 @@ $TEXT['PAGE_ICON'] = 'Obrazek strony';
 $TEXT['PAGE_ICON_DIR'] = 'Scieżka stron/obrazki menu';
 $TEXT['PAGE_LANGUAGES'] = 'Języki stron';
 $TEXT['PAGE_LEVEL_LIMIT'] = 'Limit poziomów stron';
-$TEXT['PAGE_SPACER'] = 'Odstep strony';
+$TEXT['PAGE_SPACER'] = 'Odstęp strony';
 $TEXT['PAGE_TITLE'] = 'Tytuł strony';
 $TEXT['PAGE_TRASH'] = 'Śmietnik stron';
 $TEXT['PARENT'] = 'Nadrzędny';
@@ -243,7 +243,7 @@ $TEXT['PASSWORD'] = 'Hasło';
 $TEXT['PATH'] = 'Scieżka';
 $TEXT['PHP_ERROR_LEVEL'] = 'Poziom raportowania błędów PHP';
 $TEXT['PLEASE_LOGIN'] = 'Podaj login';
-$TEXT['PLEASE_SELECT'] = 'Proszę wybrac';
+$TEXT['PLEASE_SELECT'] = 'Proszę wybrać';
 $TEXT['POST'] = 'Wiadomość';
 $TEXT['POSTS_PER_PAGE'] = 'Wiadomości na stronę';
 $TEXT['POST_FOOTER'] = 'Stopka wiadomości';
@@ -330,7 +330,7 @@ $TEXT['TITLE'] = 'Tytuł';
 $TEXT['TO'] = 'Do';
 $TEXT['TOP_FRAME'] = 'Glówna ramka';
 $TEXT['TRASH_EMPTIED'] = 'Śmietnik opróżniony';
-$TEXT['TXT_EDIT_CSS_FILE'] = 'Edycja CSS w polu tekstowym ponizej.';
+$TEXT['TXT_EDIT_CSS_FILE'] = 'Edycja CSS w polu tekstowym poniżej.';
 $TEXT['TYPE'] = 'Rodzaj';
 $TEXT['UNDER_CONSTRUCTION'] = 'W trakcie tworzenia';
 $TEXT['UNINSTALL'] = 'Odinstaluj';
@@ -399,7 +399,7 @@ $HEADING['ADD_HEADING'] = 'Dodaj naglówek';
 $HEADING['ADD_PAGE'] = 'Dodaj stronę';
 $HEADING['ADD_USER'] = 'Dodaj użytkownika';
 $HEADING['ADMINISTRATION_TOOLS'] = 'Narzędzia administracyjne';
-$HEADING['BROWSE_MEDIA'] = 'Przegladaj media';
+$HEADING['BROWSE_MEDIA'] = 'Przeglądaj media';
 $HEADING['CREATE_FOLDER'] = 'Utwórz folder';
 $HEADING['DEFAULT_SETTINGS'] = 'Ustawienia domyślne';
 $HEADING['DELETED_PAGES'] = 'Usunięte strony';
@@ -447,14 +447,14 @@ $MESSAGE['ADDON_MANUAL_INSTALLATION_WARNING'] = 'Uwaga istniejace wpisy modułu 
 $MESSAGE['ADDON_MANUAL_RELOAD_WARNING'] = 'Uwaga istniejace wpisy modułu moga zostac utracone w bazie danych.';
 $MESSAGE['ADDON_MODULES_RELOADED'] = 'Pomyślnie zainstalowano ponownie moduły';
 $MESSAGE['ADDON_OVERWRITE_NEWER_FILES'] = 'Zastap nowsze pliki';
-$MESSAGE['ADDON_PRECHECK_FAILED'] = 'Instalacja dodatku. Twój system nie spelnia wymogów niniejszego dodatku. Aby system pracowal z tym dodatkiem nalezy rozwiazac kwestie przedstawione ponizej.';
+$MESSAGE['ADDON_PRECHECK_FAILED'] = 'Instalacja dodatku. Twój system nie spelnia wymogów niniejszego dodatku. Aby system pracował z tym dodatkiem nalezy rozwiazac kwestie przedstawione poniżej.';
 $MESSAGE['ADDON_RELOAD'] = 'Aktualizacja bazy danych z informacjami dodatków (np. po FTP).';
 $MESSAGE['ADDON_TEMPLATES_RELOADED'] = 'Szablony zostały pomyślnie załadowane ponownie';
 $MESSAGE['ADMIN_INSUFFICIENT_PRIVELLIGES'] = 'Niewystarczające uprawnienia do oglądania tej strony.';
 $MESSAGE['FORGOT_PASS_ALREADY_RESET'] = 'Hasło można resetować tylko raz na godzine';
 $MESSAGE['FORGOT_PASS_CANNOT_EMAIL'] = 'Nie udalo się wysłac hasła, proszę się skontaktować z administratorem';
 $MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND'] = 'Wprowadzonego adresu e-mail nie ma w bazie danych';
-$MESSAGE['FORGOT_PASS_NO_DATA'] = 'Proszę wprowadzić ponizej swój adres e-mail';
+$MESSAGE['FORGOT_PASS_NO_DATA'] = 'Proszę wprowadzić poniżej swój adres e-mail';
 $MESSAGE['FORGOT_PASS_PASSWORD_RESET'] = 'Twoje hasło zostało przesłane na adres maila';
 $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'] = 'Niestety, nie ma aktywnej zawartości do wyświetlenia';
 $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'] = 'Niestety, nie masz uprawnień do oglądania tej strony.';
@@ -570,7 +570,7 @@ $MESSAGE['PREFERENCES_DETAILS_SAVED'] = 'Szczególy zostały zapisane';
 $MESSAGE['PREFERENCES_EMAIL_UPDATED'] = 'E-mail został zaktualizowany';
 $MESSAGE['PREFERENCES_INVALID_CHARS'] = 'Bląd. Hasło zawiera nieprawidłowe znaki';
 $MESSAGE['PREFERENCES_PASSWORD_CHANGED'] = 'Hasło zostało zmienione';
-$MESSAGE['RECORD_MODIFIED_FAILED'] = 'Zmiana tego rekordu nie powiodla się';
+$MESSAGE['RECORD_MODIFIED_FAILED'] = 'Zmiana tego rekordu nie powiodła się';
 $MESSAGE['RECORD_MODIFIED_SAVED'] = 'Zmiana rekordu została zaktualizowana pomyślnie.';
 $MESSAGE['RECORD_NEW_FAILED'] = 'Dodanie nowego rekordu się nie powiodlo.';
 $MESSAGE['RECORD_NEW_SAVED'] = 'Nowy rekord został dodany pomyślnie.';
@@ -594,16 +594,16 @@ Witaj {LOGIN_DISPLAY_NAME},
 
 Ten mail został wysłany ponieważ\'zapomiano hasła\' funkcja odzyskania twojego konta została uruchomiona.
 
-Szczególy twojego nowego konta \'{LOGIN_WEBSITE_TITLE}\' ponizej:
+Szczególy twojego nowego konta \'{LOGIN_WEBSITE_TITLE}\' poniżej:
 
 Loginname: {LOGIN_NAME}
 Hasło: {LOGIN_PASSWORD}
 
-Powyzej zostało podane twoje hasło.
+Powyżej zostało podane twoje hasło.
 Oznacza to, ze stare hasło nie bedzie już dzialac!
 
 Jesli masz pytania badz problemy z nowym loginem lub hasłem skontaktuj się z administratorem \'{LOGIN_WEBSITE_TITLE}\'.
-Aby uniknac nieoczekiwanych awarii proszę pamietac o czyszczeniu pamieci podrecznej cache przegladarki
+Aby uniknac nieoczekiwanych awarii proszę pamietac o czyszczeniu pamieci podrecznej cache przeglądarki
 
 Pozdrawiamy
 ------------------------------------
@@ -613,7 +613,7 @@ Hello {LOGIN_DISPLAY_NAME},
 
 Witamy \'{LOGIN_WEBSITE_TITLE}\'.
 
-Szczególy konta \'{LOGIN_WEBSITE_TITLE}\' ponizej:
+Szczególy konta \'{LOGIN_WEBSITE_TITLE}\' poniżej:
 Loginname: {LOGIN_NAME}
 Hasło: {LOGIN_PASSWORD}
 
@@ -667,5 +667,5 @@ $OVERVIEW['SETTINGS'] = 'Zmień ustawienia WBCE CMS...';
 $OVERVIEW['START'] = 'Panel administracyjny';
 $OVERVIEW['TEMPLATES'] = 'Zmień wygląd swojej strony za pomocą szablonów...';
 $OVERVIEW['USERS'] = 'Zarządzaj użytkownikami mogacymi logować się do WBCE CMS...';
-$OVERVIEW['VIEW'] = 'Podglad witryny w nowym oknie...';
+$OVERVIEW['VIEW'] = 'Podgląd witryny w nowym oknie...';
 
