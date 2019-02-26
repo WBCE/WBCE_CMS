@@ -95,7 +95,7 @@ class Frontend extends wb
         $sSql .= 'AND ((' . $now . '>=`publ_start` OR `publ_start`=0) ';
         $sSql .= 'AND (' . $now . '<=`publ_end` OR `publ_end`=0)) ';
         if (trim($this->sql_where_language) != '') {
-            $sql .= trim($this->sql_where_language) . ' ';
+            $sSql .= trim($this->sql_where_language) . ' ';
         }
         $sSql .= 'ORDER BY `p`.`position` ASC';
         $get_default = $database->query($sSql);
