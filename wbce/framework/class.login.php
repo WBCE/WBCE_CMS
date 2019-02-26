@@ -86,7 +86,7 @@ class Login extends Admin
             $this->username = $aUserData['username'];
             $this->password = $aUserData['password'];
             // Check if the user exists (authenticate them)
-            if ($this->authenticate()) {
+            if ($this->authenticate(true)) {
                 // Authentication successful
                 header("Location: " . $this->url);
                 exit(0);
@@ -105,7 +105,6 @@ class Login extends Admin
             $this->increase_attemps();
         } else {
             // Check if the user exists (authenticate them)
-            $this->password = $this->doPasswordEncode($this->password);
             if ($this->authenticate()) {
                 // Authentication successful
                 header("Location: " . $this->url);
@@ -125,16 +124,24 @@ class Login extends Admin
      * @global  object  $database
      * @return  int     ammount of grroups the user is member of
      */
-    public function authenticate()
+    public function authenticate($bRemembered=false)
     {
         global $database;
         $sLoginname = preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->username;
         
         // Get user information
-        $sSql = "SELECT * FROM `{TP}users` WHERE `username`='%s' AND `password`='%s' AND `active` = 1";
-        $resUsers  = $database->query(sprintf($sSql, $sLoginname, $this->password));
+        $sSql = "SELECT * FROM `{TP}users` WHERE `username`='%s' AND `active` = 1";
+	if($bRemembered) $sSql .= " AND `password` = '".$this->password."'";
+        $resUsers  = $database->query(sprintf($sSql, $sLoginname));
         $aUserData = $resUsers->fetchRow(MYSQL_ASSOC);
         $iNumRows = $resUsers->numRows();
+
+	// Check if password is correct
+        if ($iNumRows == 1 && !$bRemembered) {
+	    if ($this->doCheckPassword($aUserData['user_id'],$this->password)===false) {
+	        $iNumRows = 0;
+	    }
+	}
         if ($iNumRows == 1) {
             $iUserID = $aUserData['user_id'];
             $this->user_id = $iUserID;
@@ -148,6 +155,7 @@ class Login extends Admin
            
             // Run remember function if needed
             if ($this->remember == true) {
+	        $this->password = $aUserData['password'];
                 $this->remember($this->user_id);
             }
             

@@ -67,7 +67,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 			// update the new password in the database
 			$aUpdateUser = array(
 				'user_id'    => $aUser['user_id'],
-				'password'   => md5($sNewPw),
+				'password'   => $wb->doPasswordEncode($sNewPw),
 				'last_reset' => time(),
 			);			
 			$database->updateRow('{TP}users', 'user_id', $aUpdateUser);

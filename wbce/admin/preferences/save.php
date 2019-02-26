@@ -92,10 +92,10 @@ function save_preferences(&$admin, &$database)
     $sCurrentPassword = (is_null($sCurrentPassword) ? '' : $sCurrentPassword);
     $sNewPassword     = $admin->get_post('new_password_1');
     $sRePassword      = $admin->get_post('new_password_2');
+    $iUserID          = (int)$admin->get_user_id();
     
     // Check existing password
-    $sSql = "SELECT `password` FROM `{TP}users` WHERE `user_id` = ".$admin->get_user_id();
-    if ($admin->doPasswordEncode($sCurrentPassword) != $database->get_one($sSql)) {
+    if ($admin->doCheckPassword($iUserID,$sCurrentPassword)===false) {
         // access denied
         $aErrMsg[] = $MESSAGE['PREFERENCES_CURRENT_PASSWORD_INCORRECT'];
     } else {
@@ -112,7 +112,7 @@ function save_preferences(&$admin, &$database)
         // If no validation errors, try to update the database, otherwise return errormessages
         if (sizeof($aErrMsg) == 0) {
             $aUpdate = array(
-                'user_id'      => (int)$admin->get_user_id(),
+                'user_id'      => $iUserID,
                 'display_name' => $database->escapeString($display_name),
                 'language'     => $database->escapeString($language),
                 'timezone'     => $database->escapeString($timezone),

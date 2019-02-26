@@ -25,12 +25,12 @@ $aMsg    = array();
 $sCurrPassword = $oAccounts->get_post('current_password');
 $sEncPassword  = $oAccounts->checkPasswordPattern($sCurrPassword);
 $sNewEmail     = $oAccounts->get_post('email');
+$iUserID       = (int)$oAccounts->get_user_id();
 
 // validate confirmation password
-$sSql  = "SELECT `user_id` FROM `{TP}users` WHERE `user_id` = %d AND `password` = '%s'";
 if (is_array($sEncPassword)){
     $aMsg['error'][] = 'MESSAGE:PREFERENCES_CURRENT_PASSWORD_INCORRECT';
-} elseif ($database->get_one(sprintf($sSql, $oAccounts->get_user_id(), $sEncPassword)) == false) {
+} elseif ($oAccounts->doCheckPassword($iUserID,$sCurrPassword)===false) {
     $aMsg['error'][] = 'MESSAGE:PREFERENCES_CURRENT_PASSWORD_INCORRECT';
 } else { 
 

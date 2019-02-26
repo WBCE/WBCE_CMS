@@ -75,17 +75,62 @@ class Wb extends SecureForm
     }
     
     /**
+     * @brief  Check if the Password is the correct one for a given user.
+     *         This method will true if it matches, otherwise false false.
      * 
+     * @param int    $iUserID
      * @param string $sPassword
      */
-    public function doPasswordEncode($sPassword) 
+    public function doCheckPassword($iUserID, $sPassword)
     {
-        return  md5($sPassword);
+	global $database;
+
+	// Get the password hash from Database
+	$sDbPasswordHash = $database->get_one('SELECT `password` FROM `{TP}users` WHERE `user_id` = '.$iUserID.' AND `active` = 1');
+	if($sDbPasswordHash === null){
+	    // db lookup failed (wrong user id supplied?)
+	    return false;
+	}
+	if(strpos($sDbPasswordHash, '$') === false){
+	    // old md5 hash stored in db
+	    if($sDbPasswordHash === md5($sPassword)){
+	         // yes, it is the correct password, now update the db entry first
+		 $sNewHash = $database->escapeString($this->doPasswordEncode($sPassword));
+		 $database->query("UPDATE `{TP}users` SET `password` = '$sNewHash' WHERE `user_id` = " . $iUserID.' AND `active` = 1');
+		 // ignore any possible failure and continue with the authentication or whatever
+	         return true;
+	    } else {
+	         // wrong password
+	         return false;
+            }
+	    // should never reach this (see below)
+	    return false;
+	} else {
+	    return password_verify($sPassword, $sDbPasswordHash);
+	}
+	// should never reach this but it is good practice to return false
+	// in case anything goes wrong in future modifications of the code above...
+        return  false;
     }
     
     /**
      * 
      * @param string $sPassword
+     */
+    public function doPasswordEncode($sPassword)
+    {
+	if(function_exists('password_hash')) {
+            return  password_hash($sPassword, PASSWORD_DEFAULT);
+	} else { // fallback to old behavior, hopefully never needed
+	    md5($sPassword);
+	}
+    }
+
+    /**
+     * @brief  returns a password input field and prepares the insert queue
+     *         for the password strength meter
+     *
+     * @param string $sNameAttr
      */
     public function passwordField($sNameAttr = '') 
     {
