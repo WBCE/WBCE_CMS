@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once dirname(__DIR__) . ' /config.php';
+require_once dirname(__DIR__) . '/config.php';
 require_once __DIR__ . ' /init.php';
 
 // Check if FRONTEND_SIGNUP group constant is defined or USER_ID is in Session

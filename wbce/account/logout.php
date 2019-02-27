@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once dirname(__DIR__) . ' /config.php';
+require_once dirname(__DIR__) . '/config.php';
 
 if(isset($_COOKIE['REMEMBER_KEY'])) {
 	setcookie('REMEMBER_KEY', '', time()-3600, '/');

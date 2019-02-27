@@ -10,9 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once realpath('../config.php');
-require_once WB_PATH .'/modules/tool_account_settings/functions.php';
-
+require_once dirname(__DIR__) . '/config.php';
+require_once __DIR__ . ' /init.php';
 
 // include default language file
 require_once WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php';

@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once dirname(__DIR__) . ' /config.php';
+require_once dirname(__DIR__) . '/config.php';
 require_once __DIR__ . ' /init.php';
 
 $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
