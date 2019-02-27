@@ -6,16 +6,10 @@ I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
 
 
 <h1><?=$TEXT['SIGNUP']; ?></h1>
-<?php if(empty($errors) == false){ ?>
-<div class="alert alert-danger">
-	<?php foreach($errors as $k=>$error_message){ ?>
-		<p id="<?=$k?>"><?=$error_message?></p>
-	<?php 
-	} 
-	?>
-</div>
+<br />
 <?php 
-} 
+$oMsgBox = new MessageBox();
+$oMsgBox->display();
 ?>
 <div class="cpForm">
 	<form name="user" action="<?=SIGNUP_URL ?>" method="post">

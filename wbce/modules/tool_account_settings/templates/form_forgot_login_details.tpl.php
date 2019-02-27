@@ -3,21 +3,12 @@
 defined('WB_PATH') or die("Cannot access this file directly"); 
 I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
 
-if( ($errMsg=='') && ($message != '')) {
-	// $message = $MESSAGE['FORGOT_PASS_NO_DATA'];
-	$message_class = '';
-} else {
-	$message = $errMsg;
-	$message_class = 'alert alert-warning';
-}
+$oMsgBox = new MessageBox();
 ?>
 
 <h1><?=$MENU['FORGOT']; ?></h1>
 <br />
-<div class="<?=$message_class; ?>"><?=$message; ?>.</div>
-
-<br />			
-
+<?php $oMsgBox->display(); ?>
 <?php if(!isset($display_form) OR $display_form != false) { ?>
     <form  class="login-box" name="forgot_pass" action="<?=FORGOT_URL ?>" method="post">
         <div class="cpForm">

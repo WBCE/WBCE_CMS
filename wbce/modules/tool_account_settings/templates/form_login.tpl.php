@@ -5,9 +5,11 @@ I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
 ?>
 
 <h1><?=$TEXT['LOGIN']; ?></h1>
-<?php if(isset($oLogin->message)) { ?>
- <p class="login-info"><?=$oLogin->message; ?></p><br />
-<?php } ?>
+<br />
+<?php
+$oMsgBox = new MessageBox();
+$oMsgBox->display();
+?>
  
 <form class="login-box" action="<?=LOGIN_URL ?>" method="post" autocomplete="off">
     <input type="hidden" name="username_fieldname" value="<?=$sUsernameField; ?>" />

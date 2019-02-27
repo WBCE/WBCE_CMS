@@ -4,8 +4,9 @@ defined('WB_PATH') or die("Cannot access this file directly");
 I::insertCssFile(get_url_from_path(__DIR__).'/forms.css', 'HEAD BTM+');
 
 // do we have any Error Messages to display?
-$oMsgBox = new MessageBox();
-$oMsgBox->display();
+    $oMsgBox = new MessageBox();
+
+    $oMsgBox->display();
 ?>
 <h1><?=$TOOL_TXT['PREFERENCES'] ?></h1>
 <?php 

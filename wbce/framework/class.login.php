@@ -21,11 +21,17 @@ require_once WB_PATH . "/framework/class.admin.php";
 
 class Login extends Admin
 {
+    private $_oMsgBox = NULL;
     public function __construct($aConfig)
     {
         global $MESSAGE, $database;
         
         parent::__construct();
+        
+        $this->_oMsgBox = new MessageBox();
+        if(!defined('WB_FRONTEND')) {
+            $this->_oMsgBox->closeBtn = '';
+        }
         
         // Get configuration values and turn them into properties
         foreach($aConfig as $key => $value) {
@@ -84,18 +90,18 @@ class Login extends Admin
                 // Authentication successful
                 header("Location: " . $this->url);
                 exit(0);
-            } else {
-                $this->message = $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
+            } else {        
+                $this->_oMsgBox->error( $MESSAGE['LOGIN_AUTHENTICATION_FAILED'] );              
                 $this->increase_attemps();
             }
         } elseif ($this->username == '' && $this->password == '') {
-            $this->message = $MESSAGE['LOGIN_BOTH_BLANK'];
+            $this->_oMsgBox->info( $MESSAGE['LOGIN_BOTH_BLANK'], 0, 1 );
             $this->display_login();
         } elseif ($this->username == '') {
-            $this->message = $MESSAGE['LOGIN_USERNAME_BLANK'];
+            $this->_oMsgBox->error( $MESSAGE['LOGIN_USERNAME_BLANK'] );
             $this->increase_attemps();
         } elseif ($this->password == '') {
-            $this->message = $MESSAGE['LOGIN_PASSWORD_BLANK'];
+            $this->_oMsgBox->error( $MESSAGE['LOGIN_PASSWORD_BLANK'] );
             $this->increase_attemps();
         } else {
             // Check if the user exists (authenticate them)
@@ -105,7 +111,7 @@ class Login extends Admin
                 header("Location: " . $this->url);
                 exit(0);
             } else {
-                $this->message = $MESSAGE['LOGIN_AUTHENTICATION_FAILED'];
+                $this->_oMsgBox->error( $MESSAGE['LOGIN_AUTHENTICATION_FAILED'] );
                 $this->increase_attemps();
             }
         }
@@ -294,7 +300,8 @@ class Login extends Admin
                     'USERNAME'               => $this->username,
                     'USERNAME_FIELDNAME'     => $this->username_fieldname,
                     'PASSWORD_FIELDNAME'     => $this->password_fieldname,
-                    'MESSAGE'                => $this->message,
+                    //'MESSAGE'                => $this->message,
+                    'MESSAGE'                => $this->_oMsgBox->fetchDisplay(),
                     'INTERFACE_DIR_URL'      => ADMIN_URL . '/interface',
                     'MAX_USERNAME_LEN'       => $this->max_username_len,
                     'MAX_PASSWORD_LEN'       => $this->max_password_len,

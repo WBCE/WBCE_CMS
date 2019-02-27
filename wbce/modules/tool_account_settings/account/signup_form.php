@@ -31,6 +31,7 @@ $display_name_error = false;
 $email_error        = false; 
 $gdpr_error         = false; 
 
+$oMsgBox = new MessageBox();
 
 // Load Captcha if enabled
 if(ENABLED_CAPTCHA) {
@@ -86,7 +87,7 @@ if(isset($_POST['signup_form_sent'])){
         $email_error = true;
         $errors['SIGNUP_NO_EMAIL'] = $MESSAGE['SIGNUP_NO_EMAIL'];
     }
-    if (account_emailAlreadyTaken($sEmail) != false){
+    if (account_emailAlreadyTaken($email) != false){
         $email_error = true;
         $errors['USERS_EMAIL_TAKEN'] = $MESSAGE['USERS_EMAIL_TAKEN'];
     }
@@ -97,10 +98,9 @@ if(isset($_POST['signup_form_sent'])){
         $errors['GDPR_AGREEMENT_MISSING'] = $MESSAGE['GDPR_AGREEMENT_MANDATORY'];
     }
 
-    // Check captcha
     if (ENABLED_CAPTCHA) {
-        $aRplc = array('SERVER_EMAIL' => SERVER_EMAIL);
-        $sIncorrectCaptcha = replace_vars($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'], $aRplc);	
+        $sIncorrectCaptcha = strtr($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'], ['{SERVER_EMAIL}' => SERVER_EMAIL]);	
+        debug_dump($sIncorrectCaptcha);
         if (isset($_POST['captcha']) AND $_POST['captcha'] != ''){
             if (!isset($_POST['captcha']) OR !isset($_SESSION['captcha']) OR $_POST['captcha'] != $_SESSION['captcha']) {
                 $errors['IncorrectCaptcha'] = $sIncorrectCaptcha;
@@ -227,6 +227,11 @@ if(isset($_POST['signup_form_sent'])){
         } else {
             header("Location: " . ACCOUNT_URL ."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&sEmailTemplateName:".$sEmailTemplateName);		
         } 
+    } else {
+        foreach($errors as $key=>$sMsg){
+            $oMsgBox->error($sMsg);
+        }
+        unset($errors);
     }
 }
 

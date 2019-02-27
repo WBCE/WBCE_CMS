@@ -13,15 +13,14 @@
 defined('WB_PATH') or die("Cannot access this file directly");
 require_once dirname(__DIR__) . '/functions.php';
 
+$oMsgBox = new MessageBox();
 $sLC     = defined('LANGUAGE') ? LANGUAGE : defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN';
-$message = $MESSAGE['FORGOT_PASS_NO_DATA'];
-$errMsg  ='';
 $sEmail  = '';
 
 if(isset($_POST['email']) && $_POST['email'] != "" ) {
     $sEmail = strip_tags($wb->get_post('email'));
     if($admin->validate_email($sEmail) == false) {
-        $errMsg = $MESSAGE['USERS_INVALID_EMAIL'];
+        $oMsgBox->error($MESSAGE['USERS_INVALID_EMAIL']);
         $sEmail  = '';
     } else {
         // Check if the email exists in the database
@@ -39,7 +38,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                 // Check if the password has been reset in the last 2 hours
                 if( ( time() - intval($aUser['last_reset']) ) < (2 * 3600) ) {
                     // Tell the user that their password cannot be reset more than once per hour
-                    $errMsg = $MESSAGE['FORGOT_PASS_ALREADY_RESET'];
+                    $oMsgBox->error($MESSAGE['FORGOT_PASS_ALREADY_RESET']);
                 } else {
                     // current password
                     $sCurrentPw = $aUser['password'];
@@ -83,25 +82,27 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
 
                     } else { 
                         // Error updating database
-                        $errMsg = $MESSAGE['RECORD_MODIFIED_FAILED'];
-                        if(DEBUG) {
-                            $message .= '<br />'.$database->get_error().'<br />'.$sSql;
+                        $oMsgBox->error($MESSAGE['RECORD_MODIFIED_FAILED']);
+                        if(WB_DEBUG) {
+                            $oMsgBox->error($database->get_error().'<br />'.$sSql);
                         }
                     }
                 }
             } else { // no record found - Email doesn't exist, so tell the user
-                $errMsg = $MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND'];
+                $oMsgBox->error($MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND']);
             }
         } else { 
             // Query failed
-            $errMsg = 'SystemError:: Database query failed!';
-            if(DEBUG) {
-                $errMsg .= '<br />'.$database->get_error().'<br />'.$sSql;
+            if(WB_DEBUG) {
+                $oMsgBox->error('SystemError:: Database query failed!');
+                $oMsgBox->error($database->get_error().'<br />'.$sSql);
             }
         }
     }
 } 
-
+if($oMsgBox->hasErrors() == false ) {
+    $oMsgBox->info($MESSAGE['FORGOT_PASS_NO_DATA'], 0, 1);
+}
 $email = $sEmail;
 $sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $_SERVER['SCRIPT_NAME'];
 

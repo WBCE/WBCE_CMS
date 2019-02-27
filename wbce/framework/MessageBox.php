@@ -27,10 +27,10 @@ require_once WB_PATH . "/include/FlashMessages/src/FlashMessages.php"; // get pa
 class MessageBox extends FlashMessages {
 
 
-    public    $ShowMissingKeys = false;
+    public    $ShowMissingKeys = true;
     
 	
-    protected $closeBtn = '<button type="button" class="close" 
+    public    $closeBtn = '<button type="button" class="close" 
         data-dismiss="alert" 
         aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -46,7 +46,7 @@ class MessageBox extends FlashMessages {
     // 
     // $msg->display([$msg::SUCCESS, $msg::INFO, $msg::ERROR, $msg::WARNING])
     // 
-    protected $cssClassMap = [ 
+    public $cssClassMap = [ 
         self::INFO    => 'alert alert-info',
         self::SUCCESS => 'alert alert-success',
         self::WARNING => 'alert alert-warning',
@@ -54,10 +54,16 @@ class MessageBox extends FlashMessages {
     ];
 
 	
+    public $msgWrapper = "<div class='%s'>%s</div>\n"; 
+    
     // Each message gets wrapped in this
     // protected $msgWrapper = '<div class="%s"><h4>%s</h4>%s</div>'; 
     
 	
+     public function fetchDisplay($mTypes = null) {
+         return $this->display($mTypes = null, false);
+     }
+    
     /**
      * @brief  Display the flash messages
      * 
@@ -110,31 +116,58 @@ class MessageBox extends FlashMessages {
             }
             $this->clear($type);
         }
-		
-        // close button
-        $sToJs = <<<_JsCode
-    jQuery(document).ready(function($) {
-        $('.close').on( 'click', function( event ) {
-            $( event.target ).closest( '.dismissable' ).hide();
-        });
-_JsCode;
-                
-        $iTimer = defined('REDIRECT_TIMER') ? REDIRECT_TIMER : 0;
-        $iTimer = $iTimer > 10000 ? 10000 : $iTimer;
-        if($iTimer != -1){
-            // timer isn't off, apply the fade off timer
-            $sToJs .= <<<_JsCode
-        $('.dismissable').delay($iTimer).fadeOut('slow');
-_JsCode;
-        }
-        $sToJs .= "});";         
-        I::insertJsCode($sToJs, 'BODY BTM-', 'MessageBox');
 
         // Print everything to the screen (or return the data)
         if ($bPrint) echo   $sRetVal;
         else         return $sRetVal;
     }
     
+    /**
+     * Format a message
+     * 
+     * @param  array  $msgDataArray   Array of message data
+     * @param  string $type           The $msgType
+     * @return string                 The formatted message
+     * 
+     */
+    protected function formatMessage($msgDataArray, $type)
+    {
+        $msgType = isset($this->msgTypes[$type]) ? $type : $this->defaultType;
+        $cssClass = $this->msgCssClass . ' ' . $this->cssClassMap[$type];
+        $msgBefore = $this->msgBefore;
+
+        $sToJs  = "jQuery(document).ready(function($) {"; 
+        $sToJs .= "   
+        $('.close').on( 'click', function( event ) {
+            $( event.target ).closest( '.dismissable' ).hide();
+        });";
+        
+        // ERROR boxes are automatically set to "sticky"
+        if ($msgDataArray['sticky'] || $type == 'e') {
+            // If sticky then append the sticky CSS class
+            $cssClass .= ' ' . $this->stickyCssClass;            
+            $msgBefore = $this->closeBtn . $msgBefore; // add close button to the MsgBox
+
+        } else {
+            // If it's not sticky let it disappear using REDIRECT_TIMER 
+            $iTimer = defined('REDIRECT_TIMER') ? REDIRECT_TIMER : 0;
+            $iTimer = $iTimer > 10000 ? 10000 : $iTimer;
+            if($iTimer != -1){
+                // timer isn't off, apply the fade off timer
+                $sToJs .= "$('.dismissable').delay($iTimer).fadeOut('slow');";
+            }
+        }
+        $sToJs .= "});";       
+        I::insertJsCode($sToJs, 'BODY BTM-', 'MessageBox');
+        // Wrap the message if necessary
+        $formattedMessage = $msgBefore . $msgDataArray['message'] . $this->msgAfter; 
+
+        return sprintf(
+            $this->msgWrapper, 
+            $cssClass, 
+            $formattedMessage
+        );
+    }
     
     /**
      * @brief  redirect or window location, depending on 
@@ -167,6 +200,11 @@ _JsCode;
      * example:
      *     processTranslation('TEXT:ACTIVE');
      *     processTranslation('{TEXT:ACTIVE}');
+     * 
+     * May also contain numbers as in
+     *  'TEXT:LEVEL5'
+     * or
+     *  'MOD_7:CLOSE'
      *
      * 	@author   Christian M. Stefan <stefek@designthings.de>
      * 	@license  MIT, GNU/GPL v.2 and any higher
@@ -174,84 +212,51 @@ _JsCode;
      * 	@return   string Translated String
      */
     public function processTranslation($sStr) {
-        $sRetVal = $sStr;
-        if (strposm($sStr, ':') !== false) {
-            $aToks = array();
-            $aReplacements = array();
+        $sRetVal  = $sStr;
+        $sPattern = "/[A-Z0-9]:[A-Z0-9]/"; // ARRAY:KEY (uppercase on both sides of the semicolon)
+        if (preg_match($sPattern, $sStr)) {
+            
+            // Check if string contains curling brackets. 
+            // If so, it may contain several {ARRAY:KEY} occurances   
             if (strposm($sStr, '{') !== false) {
+                
+                $aToks = array();
+                $aReplacements = array();
+                
+                // Get all occurances of {ARRAY:KEY} into array
                 preg_match_all('/{(.*?)}/', $sStr, $out);
                 $aParts = array();
-                foreach ($out[0] as $sToken) {
+                foreach ($out[0] as $sToken) {                    
                     preg_match_all('/{(.*?)}/', $sToken, $out);
                     $aParts[] = explode(':', $out[1][0]);
-                    $aToks[] = $sToken;
+                    //$aToks[] = $sToken;
                 }
+                
+                // Translate strings of all occurances
                 foreach ($aParts as $aTmp) {
                     $aReplacements[] = $this->_translate($aTmp[0], $aTmp[1]);
                 }
+                // Replace the string with translations
                 $sRetVal = str_replace($aToks, $aReplacements, $sStr);
             } else {
+                // Single string using the ARRAY:KEY pattern
                 $aTmp    = explode(':', $sStr);
+                // Replace the string with translations
                 $sRetVal = $this->_translate($aTmp[0], $aTmp[1]);
                 
             } 
         }
         return $sRetVal;
     }
-    
-    public function processTranslationX($sStr) {
-        $sRetVal = $sStr;
-        if (strposm($sStr, ':')) {
-            
-            if (strposm($sStr, '{')) {
-                $aToks = array();
-                $aParts = array();
-                $aReplacements = array();
-			
-                preg_match_all('/{(.*?)}/', $sStr, $out);
-                foreach ($out[0] as $sToken) {
-                    preg_match_all('/{(.*?)}/', $sToken, $out);
-                    $aParts[] = explode(':', $out[1][0]);
-                    $aToks[]  = $sToken;
-                }
-                foreach ($aParts as $aTmp) {
-                        $aReplacements[] = $this->_translate($aTmp[0], $aTmp[1]);
-                }				
-                $sRetVal = str_replace($aToks, $aReplacements, $sStr);
-            } else {
-                    $aTmp[] = explode(':', $sStr);
-                    $sRetVal = $this->_translate($aTmp[0], $aTmp[1]);
-            }
-        }
-        return $sRetVal;
-    }
-	
-    private function _processTranslation($sStr) {
-        $sRetVal = '';
-        $sToken = '';		
-        if (strpos($sStr, ':') !== false) {
-            $aStrParts = explode(':', $sStr);
-            $sArrName  = $aStrParts[0];
-            $sToken    = $aStrParts[1];			
-        }elseif (strpos($sStr, '_') !== false) {
-            $aStrParts = explode('_', $sStr);
-            $sArrName = array_shift($aStrParts);
-            $sToken = implode('_', $aStrParts);
-        }
-        if($sToken != ''){
-            $sRetVal = $this->_translate($sArrName, $sToken);
-        }			
-        return $sRetVal;
-    }
 
     /**
-     * this private method is only used with processTranslation method
+     * This private method is only used with processTranslation method
      */
     private function _translate($sArrName, $sKey) {
         $sMissingKeyTPL = '<span style="color:purple">
         <b>Missing Translation: </b>
         <input style="width:450px" type="text" value="$%s[\'%s\']"></span>';
-
+        #debug_dump($sArrName, $sKey);
         if (is_array(@$GLOBALS[$sArrName])) {
             if (array_key_exists($sKey, $GLOBALS[$sArrName])) {
                 return $GLOBALS[$sArrName][$sKey];
@@ -270,41 +275,7 @@ _JsCode;
         }
     }
 	
-    /**
-     * Format a message
-     * 
-     * @param  array  $msgDataArray   Array of message data
-     * @param  string $type           The $msgType
-     * @return string                 The formatted message
-     * 
-    protected function formatMessage($msgDataArray, $type)
-    {
-     
-        $msgType = isset($this->msgTypes[$type]) ? $type : $this->defaultType;
-        $cssClass = $this->msgCssClass . ' ' . $this->cssClassMap[$type];
-        $msgBefore = $this->msgBefore;
-
-        // If sticky then append the sticky CSS class
-        if ($msgDataArray['sticky']) {
-            $cssClass .= ' ' . $this->stickyCssClass;
-
-        // If it's not sticky then add the close button
-        } else {
-            $msgBefore = $this->closeBtn . $msgBefore;
-        }
-
-        // Wrap the message if necessary
-        $formattedMessage = $msgBefore . $msgDataArray['message'] . $this->msgAfter; 
-
-        return sprintf(
-            $this->msgWrapper, 
-            $cssClass, 
-			$this->L_('TEXT:'.strtoupper($this->msgTypes[$type])),
-            $formattedMessage
-        );
-    }
-	
-     */
+    
 	
     public function L_($sStr){
         return $this->processTranslation($sStr);

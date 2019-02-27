@@ -18,12 +18,15 @@ require WB_PATH.'/languages/'.DEFAULT_LANGUAGE.'.php';
 require WB_PATH.'/framework/class.admin.php';
 $admin = new admin('Start', 'start', false, false);
 
+$oMsgBox = new MessageBox();
+$oMsgBox->closeBtn = '';
+
 // Check if the user has already submitted the form, otherwise show it
 if(isset($_POST['email']) AND $_POST['email'] != "") {
 	
 	$email = strip_tags($wb->get_post('email'));
 	if($admin->validate_email($email) == false) {
-		$message = $MESSAGE['USERS_INVALID_EMAIL'];
+		$oMsgBox->error($MESSAGE['USERS_INVALID_EMAIL']);
 		$email  = '';
 	}
 	
@@ -43,7 +46,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 		// Check if the password has been reset in the last 2 hours
 		if( ( time() - intval($aUser['last_reset']) ) < (2 * 3600) ) {
 			// Tell the user that their password cannot be reset more than once per hour
-			$message = $MESSAGE['FORGOT_PASS_ALREADY_RESET'];
+			$oMsgBox->error($MESSAGE['FORGOT_PASS_ALREADY_RESET']);
 			
 		} else {
 			
@@ -71,7 +74,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 			
 			if($database->is_error()) {
 				// Error updating database
-				$message = $database->get_error();
+				$oMsgBox->error($database->get_error());
 			} else {
 				// Setup email to send
 				$mail_to = $email;
@@ -93,7 +96,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 
 				// Try sending the email
 				if($admin->mail(SERVER_EMAIL, $mail_to, $mail_subject, $mail_message)) { 
-					$message = $MESSAGE['FORGOT_PASS_PASSWORD_RESET'];
+					$oMsgBox->error($MESSAGE['FORGOT_PASS_PASSWORD_RESET']);
 					$display_form = false;
 				} else {
 					$aUpdateUser = array(
@@ -101,7 +104,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 						'password'   => $sCurrentPw
 					);			
 					$database->updateRow('{TP}users', 'user_id', $aUpdateUser);
-					$message = $MESSAGE['FORGOT_PASS_CANNOT_EMAIL'];
+					$oMsgBox->error($MESSAGE['FORGOT_PASS_CANNOT_EMAIL']);
 				}
 			}
 		
@@ -109,7 +112,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 		
 	} else {
 		// Email doesn't exist, so tell the user
-		$message = $MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND'];
+		$oMsgBox->error($MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND']);
 		// and delete the wrong Email
 		$email = '';
 	}
@@ -118,13 +121,10 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 	$email = '';
 }
 
-if(!isset($message)) {
-	$message = $MESSAGE['FORGOT_PASS_NO_DATA'];
-	$message_color = '000000';
-} else {
-	$message_color = 'FF0000';
+if($oMsgBox->hasErrors() == false ) {
+    $oMsgBox->info($MESSAGE['FORGOT_PASS_NO_DATA'], 0, 1);
 }
-	
+
 // Create new phpLib Template object
 $template = new Template(dirname($admin->correct_theme_source('login_forgot.htt')));
 $template->set_file('page', 'login_forgot.htt');
@@ -132,8 +132,8 @@ $template->set_block('page', 'main_block', 'main');
 
 $aTemplateVars = array(
 	'SECTION_FORGOT'     => $MENU['FORGOT'],
-	'MESSAGE_COLOR'      => $message_color,
-	'MESSAGE'            => $message,
+	'MESSAGE_COLOR'      => '', //$message_color,
+	'MESSAGE'            => $oMsgBox->fetchDisplay(),
 	'WB_URL'             => WB_URL,
 	'ADMIN_URL'          => ADMIN_URL,
 	'THEME_URL'          => THEME_URL,

@@ -14,12 +14,12 @@
 defined('WB_PATH') or exit("Cannot access this file directly");
 foreach (account_getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
-// get referer link for use with [cancel] button
-#$sFTAN = $wb->getFTAN();
 
+// Check preferences data input, include external file
 if(isset($_POST['action']) && $wb->get_post('action') == 'profile'){
     require_once ACCOUNT_TOOL_PATH . '/account/check_preferences.php';
 }
+
 
 // Get user's data array
 $sSql = "SELECT * FROM `{TP}users` WHERE `user_id` = ".$wb->get_user_id();
@@ -63,6 +63,8 @@ $sMsg = json_encode(utf8_fast_entities_to_umlauts($TEXT['NEED_CURRENT_PASSWORD']
 I::insertJsCode('var MSG_CONFIRM = ' . ($sMsg) . ';', 'BODY BTM-');
 I::insertJsFile(get_url_from_path(ACCOUNT_TOOL_PATH) . '/js/password_confirm.js', 'BODY BTM-');
 
-// Get the template file for preferences
+// get referer link for use with [cancel] button
 $sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php';
+
+// Get the template file for preferences
 include account_getTemplate('form_preferences');
