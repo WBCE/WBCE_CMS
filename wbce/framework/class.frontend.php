@@ -56,10 +56,12 @@ class Frontend extends wb
     {
         parent::__construct(SecureForm::FRONTEND);
     }
+        
+   
 
     public function page_select()
     {
-        global $database, $page_id, $no_intro;
+        global $page_id, $no_intro;
         
          // We have a Maintainance situation print under construction if not in group admin
         if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE === true and !$this->ami_group_member('1'))
@@ -98,7 +100,7 @@ class Frontend extends wb
             $sSql .= trim($this->sql_where_language) . ' ';
         }
         $sSql .= 'ORDER BY `p`.`position` ASC';
-        $get_default = $database->query($sSql);
+        $get_default = $this->_oDb->query($sSql);
         $default_num_rows = $get_default->numRows();
         if (!isset($page_id) or !is_numeric($page_id)) {
             // Go to or show default page
@@ -134,11 +136,10 @@ class Frontend extends wb
 
     public function get_page_details()
     {
-        global $database;
         if ($this->page_id != 0) {
             // Query page details
             $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = ' . (int) $this->page_id;
-            $resPage = $database->query($sSql);
+            $resPage = $this->_oDb->query($sSql);
             
             // Make sure page was found in database otherwise print "Page not found" message
             if ($resPage->numRows() == 0) exit("Page not found");
@@ -292,6 +293,7 @@ class Frontend extends wb
             }
         }
     }
+    
 
     // Function to show the "Under Construction" page
     public function print_under_construction()

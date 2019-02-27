@@ -26,7 +26,7 @@ class admin extends wb
     {
         parent::__construct(SecureForm::BACKEND);
         if ($section_name != '##skip##') {
-            global $database, $MESSAGE;
+            global $MESSAGE;
             // Specify the current applications name
             $this->section_name = $section_name;
             $this->section_permission = $section_permission;
@@ -46,7 +46,7 @@ class admin extends wb
 
             // Check if the backend language is also the selected language. If not, send headers again.
             $sql = 'SELECT `language` FROM `{TP}users` WHERE `user_id`=' . (int)$this->get_user_id();
-            $user_language = $database->get_one($sql);
+            $user_language = $this->_oDb->get_one($sql);
             $admin_folder = str_replace(WB_PATH, '', ADMIN_PATH);
             if ((LANGUAGE != $user_language) && file_exists(WB_PATH . '/languages/' . $user_language . '.php')
                 && strpos($_SERVER['SCRIPT_NAME'], $admin_folder . '/') !== false) {
@@ -89,12 +89,12 @@ class admin extends wb
 	    }
         
         // Get vars from the language file
-        global $MENU, $MESSAGE, $TEXT, $database;
+        global $MENU, $MESSAGE, $TEXT;
         // Connect to database and get website title
         // $GLOBALS['FTAN'] = $this->getFTAN();
         $this->createFTAN();
         $sql = 'SELECT `value` FROM `{TP}settings` WHERE `name`=\'website_title\'';
-        $get_title = $database->query($sql);
+        $get_title = $this->_oDb->query($sql);
         $title = $get_title->fetchRow(MYSQLI_ASSOC);
         
         // Setup template object, parse vars to it, then parse it
@@ -113,7 +113,7 @@ class admin extends wb
         if (isset($_GET['page_id'])) {
             // extract page link from the database
             $sql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id`=' . intval($_GET['page_id']);
-            $result = @$database->query($sql);
+            $result = @$this->_oDb->query($sql);
             $row = @$result->fetchRow(MYSQLI_ASSOC);
             if ($row) {
                 $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
@@ -307,20 +307,18 @@ class admin extends wb
     /**
      * @brief   Get basic user details (`username`,`display_name`,`email`) as array
      *
-     * @global  object  $database
      * @param   int     $user_id
      * @return  array   
      */
     public function get_user_details($user_id)
     {
-        global $database;
         $aRetVal = array(
                 'username'     => 'unknown', 
                 'display_name' => 'Unknown', 
                 'email'        => ''
         );
         $sSql = 'SELECT `username`,`display_name`,`email` FROM `{TP}users` WHERE `user_id`= %d';
-        if (($resUsers = $database->query(sprintf($sSql, $user_id)))) {
+        if (($resUsers = $this->_oDb->query(sprintf($sSql, $user_id)))) {
             if (($recUser = $resUsers->fetchRow(MYSQLI_ASSOC))) {
                 $aRetVal = $recUser;
             }
@@ -331,7 +329,6 @@ class admin extends wb
     /**
      * @brief   get section details from `{TP}sections` database table
      *
-     * @global  object  $database
      * @global  array   $TEXT
      * @param   int     $section_id
      * @param   string  $backLink
@@ -339,16 +336,16 @@ class admin extends wb
      */
     public function get_section_details($section_id, $backLink = 'index.php')
     {
-        global $database, $TEXT;
+        global $TEXT;
         $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`= %d';
-        if (($resSection = $database->query(sprintf($sSql, $section_id)))) {
+        if (($resSection = $this->_oDb->query(sprintf($sSql, $section_id)))) {
             if (!($recSection = $resSection->fetchRow(MYSQLI_ASSOC))) {
                 $this->print_header();
                 $this->print_error($TEXT['SECTION'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
             }
         } else {
             $this->print_header();
-            $this->print_error($database->get_error(), $backLink, true);
+            $this->print_error($this->_oDb->get_error(), $backLink, true);
         }
         return $recSection; 
     }
@@ -356,7 +353,6 @@ class admin extends wb
     /**
      * @brief   get page details from `{TP}pages` database table
      *
-     * @global  object  $database
      * @global  array   $TEXT
      * @param   int     $page_id
      * @param   string  $backLink
@@ -364,16 +360,16 @@ class admin extends wb
      */
     public function get_page_details($page_id, $backLink = 'index.php')
     {
-        global $database, $TEXT;
+        global $TEXT;
         $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id`= %d';
-        if (($resPages = $database->query(sprintf($sSql, $page_id)))) {
+        if (($resPages = $this->_oDb->query(sprintf($sSql, $page_id)))) {
             if (!($recPage = $resPages->fetchRow(MYSQLI_ASSOC))) {
                 $this->print_header();
                 $this->print_error($TEXT['PAGE'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
             }
         } else {
             $this->print_header();
-            $this->print_error($database->get_error(), $backLink, true);
+            $this->print_error($this->_oDb->get_error(), $backLink, true);
         }
         return $recPage;
     }
@@ -382,7 +378,6 @@ class admin extends wb
      * @brief   Check if authenticated (logged in) user 
      *          has permissions for specified page
      *
-     * @global  object  $database
      * @param   array   $page
      * @param   string  $action (viewing|admin)
      * @return  bool    true if user has given permissions 
@@ -399,9 +394,8 @@ class admin extends wb
             $groups = $page[$action_groups];
             $users  = $page[$action_users];
         } else {
-            global $database;
             $sSql = 'SELECT `%s`,`%s` FROM `{TP}pages` WHERE `page_id`= %d';
-            if (($res = $database->query(sprintf($sSql, $action_groups, $action_users, $page['page_id'])))) {
+            if (($res = $this->_oDb->query(sprintf($sSql, $action_groups, $action_users, $page['page_id'])))) {
                 if (($rec = $res->fetchRow(MYSQLI_ASSOC))) {
                     $groups = $rec[$action_groups];
                     $users  = $rec[$action_users];

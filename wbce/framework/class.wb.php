@@ -18,12 +18,14 @@ defined('WB_PATH') or die("Access Denied");
 class wb extends SecureForm
 {
     // store a direct output 
-    public $sDirectOutput = '';
+    public $sDirectOutput  = '';
 
+    public $page_sections  = array();
     public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:'; 
     public $iPassMinLength = 6; 
 	
-	
+    protected  $_oDb = NULL; // Establish class Database object
+    
 	
     /**
      * @brief  General initialization function performed
@@ -32,6 +34,13 @@ class wb extends SecureForm
     public function __construct($mode = SecureForm::FRONTEND)
     {
         parent::__construct($mode);
+        $this->page_sections = $this->get_page_sections();
+        
+        // Establish class Database object for 
+        // use in this class and its extend 
+        // classes Admin, Wb & Frontend
+        // Introduced with WBCE 1.4.0 to save redundancy
+        $this->_oDb = $GLOBALS['database'];
     }
 
     /**
@@ -249,17 +258,15 @@ _JsCode;
     /**
      * @brief   Check if there is at least one active section on this page.
      * 
-     * @global  object $database
      * @param   array $page
      * @return  bool
      */
     public function page_is_active($page)
     {
-        global $database;
         $has_active_sections = false;
         $now = time();
         $sql = 'SELECT `publ_start`, `publ_end` FROM `{TP}sections` WHERE `page_id`='.(int) $page['page_id'];
-        $query_sections = $database->query($sql);
+        $query_sections = $this->_oDb->query($sql);
         if ($query_sections->numRows() != 0) {
             while ($section = $query_sections->fetchRow()) {
                 if ($now < $section['publ_end'] &&
@@ -819,13 +826,11 @@ _JsCode;
      *          to use (from snippets, page-type modules, tools etc.)
      *          and create a assoc array of all the modfiles to be inserted.
      *
-     * @global  object  $database
      * @param   string  $sEndPosition  frontend|backend
      * @return  array   modfiles collection as assoc array
      */	
     public function collect_modfiles($sEndPosition = 'frontend')
     {
-        global $database;
         $aToInsert = array();
 
         $sSql = ''; // start collecting the SQL Query
@@ -860,10 +865,10 @@ _JsCode;
             if($sSql != ''){
                     $sSql .= " UNION ALL ";
             }
-            $sSql .= "SELECT `directory` as 'module_name' FROM `{TP}addons` WHERE `function` LIKE '%tool%' AND `directory`= '".$database->escapeString($_GET['tool'])."'";	
+            $sSql .= "SELECT `directory` as 'module_name' FROM `{TP}addons` WHERE `function` LIKE '%tool%' AND `directory`= '".$this->_oDb->escapeString($_GET['tool'])."'";	
         }
         if($sSql != ''){
-            if (($resSnippets = $database->query($sSql))) {
+            if (($resSnippets = $this->_oDb->query($sSql))) {
                 while ($recSnippet = $resSnippets->fetchRow()) {	
                     $aToInsert = $this->retrieve_modfiles_from_dir($recSnippet['module_name'], $sEndPosition);
                 }
@@ -988,6 +993,52 @@ _JsCode;
     }
     
     /**
+     * introduced with WBCE 1.4.0
+     * (Will reduce a lot of redundand code, in FE and BE alike.)
+     * 
+     * @brief  Return an array of all the sections of the page
+     * 
+     * @global int $page_id
+     * @param  bool $bExcludeNonPublicised
+     * @return array
+     */
+    public function get_page_sections($iPageID = NULL, $bExcludeNonPublicised = false){
+        $aSections = array();
+        
+        if($iPageID == NULL){
+            global $page_id;
+            $iPageID = defined('PAGE_ID') ? PAGE_ID : $page_id;
+        } else {
+            $iPageID = (int) $iPageID;
+        }        
+        
+        if($iPageID > 0){
+            // Get all sections for this page
+            $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id`=%d ORDER BY `position`';
+            if ($rSections = $this->_oDb->query(sprintf($sSql, $iPageID))) {
+                while ($rec = $rSections->fetchRow(MYSQL_ASSOC)) {
+
+                    if($bExcludeNonPublicised == true){
+                        // skip sections that are not publicised
+                        $now = time();
+                        if (!(
+                                ($now <= $rec['publ_end'] || $rec['publ_end'] == 0) 
+                                        && 
+                                ($now >= $rec['publ_start'] || $rec['publ_start'] == 0)
+                            )) {
+                            continue;
+                        }
+                    }
+                    $aSections[$rec['section_id']] = $rec;
+               }
+            }
+        }
+        return $aSections;
+    }
+    
+    /**
+     * introduced with WBCE 1.4.0
+     * 
      * @brief   Get the module name from modules language file.
      *          This method will display the module name based on
      *          the language file if the $module_name variable 
@@ -996,7 +1047,6 @@ _JsCode;
      *          parentheses (or other delimiters defined in $sHem)
      *          if the $bShowOriginal parameter is set to true.
      *
-     * @global  object  $database 
      * @param   string  $sModDir
      * @param   bool    $bShowOriginal
      * @param   string  $sHem
@@ -1015,10 +1065,9 @@ _JsCode;
             }
         }
         if ($sRetVal == '' || $bShowOriginal == true) {
-            global $database;
             // get original module name from the `{TP}addons` table
             $sSql = "SELECT `name` FROM `{TP}addons` WHERE `directory` = '%s'";
-            $sOriginal = $database->get_one(sprintf($sSql, $sModDir));
+            $sOriginal = $this->_oDb->get_one(sprintf($sSql, $sModDir));
             if ($sRetVal == '' && $bShowOriginal == true) {
                 $sRetVal = $sOriginal;
             } elseif ($sRetVal != '' && $bShowOriginal == true) {
@@ -1031,6 +1080,8 @@ _JsCode;
     }    
     
     /**
+     * introduced with WBCE 1.4.0
+     * 
      * @brief   Get the module description from modules language file.
      *          This method will display the module description based on
      *          the language file if the $module_description variable 
@@ -1039,7 +1090,6 @@ _JsCode;
      *          file, the `description` of the module will be retrieved
      *          from the `{TP}addons` DB table.
      *
-     * @global  object  $database
      * @param   string  $sModDir
      * @return  string
      */
@@ -1056,10 +1106,9 @@ _JsCode;
             }
         }
         if ($sRetVal == '') {
-            global $database;
             // get original module description from the `{TP}addons` table
             $sSql = "SELECT `description` FROM `{TP}addons` WHERE `directory` = '%s'";
-            if($sOriginal = $database->get_one(sprintf($sSql, $sModDir))){
+            if($sOriginal = $this->_oDb->get_one(sprintf($sSql, $sModDir))){
                 $sRetVal = $sOriginal;
             }
         }
