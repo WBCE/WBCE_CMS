@@ -1610,7 +1610,7 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
     $sCloseBtn = '<button type="button" class="close"><span aria-hidden="true">&times;</span></button>';    
     $sCollapse = '<button type="button" class="collapse"><span aria-hidden="true">+</span></button>';
     $sRetVal .=  $sCloseBtn.$sCollapse.'</p>'; 
-    $sRetVal .=  '<pre>';
+    $sRetVal .=  '<div><pre>';
     $sData    =  '';
     if((is_array($mVar)) or (!is_array($mVar) && $mVar != '' && !is_bool($mVar) && !is_int($mVar))){
         $func = ($bUse_var_dump == true) ? 'var_dump' : 'print_r';
@@ -1630,10 +1630,11 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
     $sRetVal .=  $sData. PHP_EOL .'</pre>';
     
     $aBackTrace = debug_backtrace()[0];
-    $sRetVal .= '<p class="backtrace">called in file: <b>'
+    $sBackTrace = '<p class="backtrace">called in file: <b>'
             . str_replace(WB_PATH, 'WB_PATH ', $aBackTrace['file'])
             .'</b><br />on line: <b>'.$aBackTrace['line'].'</b></p>';  
-    $sRetVal .= '</fieldset>';  
+    $sRetVal .= $sBackTrace.'</div><div class="tog_bcktrc" style="display:none">'.
+            str_replace('<br />', ' ', $sBackTrace).'</div></fieldset>';  
 
     // apply RegEx for colorization if the output is an Array or an Object            
     $aRegEx = array(                
@@ -1652,8 +1653,7 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
         3 => array(
             'find'    => '/\[/',
             'replace' => '<div class="vert-spacer">&nbsp;</div>'
-                       . '<span class="tab"></span>'
-                       . '<span class="brackets">[</span>',
+                       . '<span class="tab"></span><span class="brackets">[</span>',
         ),                 
         4 => array(
             'find'    => '/\]/',
@@ -1661,10 +1661,8 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
         ),          
         5 => array(
             'find'    => '/(string|array|int)(\()([1-9][0-9]*)(\))/',
-            'replace' => '<span class="var-type">$1</span>'
-                       . '<span class="brackets">$2</span>'
-                       . '<span class="str-length">$3</span>'
-                       . '<span class="brackets">$4</span>',
+            'replace' => '<span class="var-type">$1</span><span class="brackets">$2</span>'
+                       . '<span class="str-length">$3</span><span class="brackets">$4</span>',
         )
     );
 
@@ -1685,6 +1683,7 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
             });            
             $('.collapse').on( 'click', function() {
                  $(this).parent().next().slideToggle('fast');
+                 $(this).parent().next().next().slideToggle('fast');
             }); 
         });";    
     I::insertJsCode($sToJs, 'BODY BTM-', 'debug_dump'); 
