@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * WBCE CMS
  * Way Better Content Editing.
@@ -11,7 +11,7 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php", TRUE,301));
+if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
 
 // Define that this file has been loaded
 define('FUNCTIONS_FILE_LOADED', true);
@@ -1489,6 +1489,9 @@ function check_media_path($directory, $with_media_dir = true)
     }
 }
 
+/*
+
+ */
 /**
  * @brief   The urlencode function and rawurlencode are mostly based on RFC 1738.
  *          However, since 2005 the current RFC in use for URIs standard is RFC 3986.
@@ -1550,18 +1553,21 @@ if (!function_exists('is_countable')) {
  *          a friendly colorized wrapper output
  *
  * Example usage:
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * $aRegEx = array(                
- *         0 => array(
- *            'find'    => "/\=\>\n/",
- *            'replace' => "=><br /><span class=\"tab\"></span>",
- *        ), 
- *        1 => array(
- *            'find'    => '/\=\>/',
- *            'replace' => "<span class=\"arrow\">=></span>",
- *        )
- *    );
- * $sRetVal = do_regex_array($aRegEx, $sRetVal);
+ * 
+ *     debug_dump(get_defined_constants());
+ *     // will output:
+ *     //   The entire array of defined constants
+ * 
+ *     $myArray = array('milk', 'honey', 'cinnamon');
+ *     debug_dump($myArray, 'my array');
+ *     // will output:
+ *          Array
+ *          (
+ *              [0] => milk
+ *              [1] => honey
+ *              [2] => cinnamon
+ *          )
+ * 
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * @author   Christian M. Stefan <stefek@designthings.de>
  * @license  http://www.gnu.org/licenses/gpl-2.0.html
@@ -1582,24 +1588,28 @@ if (!function_exists('is_countable')) {
 
 function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
 {
-    $sRetVal = '';
-
+    
     // get Type of variable
     switch (true){
         case is_object($mVar): $sType = 'object'; break;                
         case is_array($mVar):  $sType = 'array';  break;                
         case is_string($mVar): $sType = 'string'; break;                
         case is_bool($mVar):   $sType = 'bool';   break;                
-        case is_int($mVar):    $sType = 'int';      break;                
+        case is_int($mVar):    $sType = 'int';    break;                
         case is_scalar($mVar): $sType = 'scalar'; break;                
+        case ($mVar === NULL): $sType = 'NULL';   break;                
         default: $sType = 'unknown var type';         
     }
-
+    $sRetVal = '';
     $sRetVal .=  '<fieldset class="debug_frame '.$sType.'">';
+    $sRetVal .=  '<p class="heading">';
+    
     $sCountable = is_countable($mVar) ? ' <i>countable</i>' : '';
-    if($sHeading != ''){
-        $sRetVal .=  '<legend style="color: blue;"><span class="var-type">('.$sType.')'.$sCountable.' </span> '.$sHeading.':</legend>';
-    }
+    $sRetVal .=  '<span class="var-type">('.$sType.')'.$sCountable.' </span> '.$sHeading;
+         
+    $sCloseBtn = '<button type="button" class="close"><span aria-hidden="true">&times;</span></button>';    
+    $sCollapse = '<button type="button" class="collapse"><span aria-hidden="true">+</span></button>';
+    $sRetVal .=  $sCloseBtn.$sCollapse.'</p>'; 
     $sRetVal .=  '<pre>';
     $sData    =  '';
     if((is_array($mVar)) or (!is_array($mVar) && $mVar != '' && !is_bool($mVar) && !is_int($mVar))){
@@ -1617,8 +1627,13 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
     } elseif (is_int($mVar)) {
         $sData .=  '<span class="keyname">'.$mVar.'</span> <i class="str-length">(int)</i>';
     } 
-
-    $sRetVal .=  $sData. PHP_EOL .'</pre></fieldset>';  
+    $sRetVal .=  $sData. PHP_EOL .'</pre>';
+    
+    $aBackTrace = debug_backtrace()[0];
+    $sRetVal .= '<p class="backtrace">called in file: <b>'
+            . str_replace(WB_PATH, 'WB_PATH ', $aBackTrace['file'])
+            .'</b><br />on line: <b>'.$aBackTrace['line'].'</b></p>';  
+    $sRetVal .= '</fieldset>';  
 
     // apply RegEx for colorization if the output is an Array or an Object            
     $aRegEx = array(                
@@ -1656,65 +1671,27 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
     $sRetVal = do_regex_array($aRegEx, $sRetVal);
 
     // provide stylesheet for the colorization
-    $sToCss = '
-    fieldset.debug_frame {
-        background: lightyellow; 
-        padding:6px; border: 
-        1px dotted grey;
-
+    $sCssFile = '/templates/%s/css/debug_dump.css';
+    if(is_readable(WB_PATH.sprintf($sCssFile, DEFAULT_THEME))){
+        $sCssFile = WB_URL.sprintf($sCssFile, DEFAULT_THEME);
+    } else {
+        $sCssFile = WB_URL.sprintf($sCssFile, 'theme_fallbacks');
     }
-    .debug_frame legend {
-        margin-top:6px;    
-        padding-top:6px; 
-        font-weight: 600; 
-        font-size: 120%;    
-        background: lightyellow; 
-        padding:6px;
-    }
-    .debug_frame pre {
-        font-family: monospace;    
-        color: #424f60;    
-        line-height: 90%;
-    }
-    .debug_frame span.arrow {
-        color:magenta; 
-        font-weight: 600; 
-        font-size: 85%; 
-        margin: 0.13em;
-    }
-    .debug_frame legend span.var-type {
-        color: magenta; 
-        font-weight: 600; 
-        font-size: 75%;
-    }
-    .debug_frame span.brackets {
-        color: #8696aa;
-    }
-    .debug_frame span.keyname {
-        color: #0047d6; 
-        font-size: 105%; 
-        margin: 0.04em;
-    }
-    .debug_frame span.tab {
-        margin-left: 1.5em;
-    }
-    .debug_frame div.vert-spacer {
-        display: inline-block; 
-        margin-top: 12px !important; 
-        margin-left: -30px !important;
-    }
-    .debug_frame span.var-type {    
-        color: green; 
-        margin: 3px;
-    }
-    .debug_frame .str-length {    
-        color: orange; 
-        margin: 1px;
-    }';
-    I::insertCssCode($sToCss, 'HEAD BTM+', 'debug_dump'); 
+    I::insertCssFile($sCssFile, 'HEAD BTM-', 'debug_dump'); 
+    $sToJs  = "
+        jQuery(document).ready(function($) {
+            $('.debug_frame .close').on( 'click', function( event ) {
+                $( event.target ).closest( 'fieldset.debug_frame' ).slideToggle(150);
+            });            
+            $('.collapse').on( 'click', function() {
+                 $(this).parent().next().slideToggle('fast');
+            }); 
+        });";    
+    I::insertJsCode($sToJs, 'BODY BTM-', 'debug_dump'); 
 
     echo $sRetVal;
 }
+
 
 /**
  * @brief   With this function you can preg_replace 
