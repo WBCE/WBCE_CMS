@@ -423,7 +423,7 @@ a#frontendtitel:hover {
 	padding:0.5em;
 }
 
-/*
+
 .themebox .tb_header a, .themebox .tb_header span.tb_icon {
     position: relative;
     display: block;
@@ -433,7 +433,7 @@ a#frontendtitel:hover {
 }
 .themebox .tb_header a:before, .themebox .tb_header span.tb_icon:before {
     font-family: FontAwesome;
-    content: "\f19d";
+   /* content: "\f19d";*/
     display: block;
     position: absolute;
     left: 0;
@@ -446,14 +446,14 @@ a#frontendtitel:hover {
     color: #cbcfd8;
     transition: 0.5s;
 }
-*/
+
 .themebox .tb_content {
     position: relative;
     min-height: 120px;
     margin-left: 120px;
     padding: 24px 32px 36px 16px;
     color: #ffffff;
-	font-size:0.8rem;
+	font-size:0.8rem;	
 }
 
 @media screen and (max-width:800px) {
