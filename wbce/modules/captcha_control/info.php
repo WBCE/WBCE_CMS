@@ -16,3 +16,4 @@ $module_platform    = '1.1.0';
 $module_author      = 'Thorn, Luise Hahne, Norbert Heimsath';
 $module_license     = 'WTFPL';
 $module_description = 'Admin-Tool to control CAPTCHA and ASP';
+$module_icon        = 'fa fa-keyboard-o';
