@@ -24,7 +24,6 @@ class wb extends SecureForm
     public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:'; 
     public $iPassMinLength = 6; 
 	
-    protected  $_oDb = NULL; // Establish class Database object
     
 	
     /**
@@ -34,13 +33,6 @@ class wb extends SecureForm
     public function __construct($mode = SecureForm::FRONTEND)
     {
         parent::__construct($mode);
-        $this->page_sections = $this->get_page_sections();
-        
-        // Establish class Database object for 
-        // use in this class and its extend 
-        // classes Admin, Wb & Frontend
-        // Introduced with WBCE 1.4.0 to save redundancy
-        $this->_oDb = $GLOBALS['database'];
     }
 
     /**
@@ -1015,16 +1007,16 @@ _JsCode;
         if($iPageID > 0){
             // Get all sections for this page
             $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id`=%d ORDER BY `position`';
-            if ($rSections = $this->_oDb->query(sprintf($sSql, $iPageID))) {
-                while ($rec = $rSections->fetchRow(MYSQL_ASSOC)) {
+            if ($resSections = $this->_oDb->query(sprintf($sSql, $iPageID))) {
+                while ($rec = $resSections->fetchRow(MYSQL_ASSOC)) {
 
                     if($bExcludeNonPublicised == true){
                         // skip sections that are not publicised
-                        $now = time();
+                        $iNowTime = time();
                         if (!(
-                                ($now <= $rec['publ_end'] || $rec['publ_end'] == 0) 
+                                ($iNowTime <= $rec['publ_end'] || $rec['publ_end'] == 0) 
                                         && 
-                                ($now >= $rec['publ_start'] || $rec['publ_start'] == 0)
+                                ($iNowTime >= $rec['publ_start'] || $rec['publ_start'] == 0)
                             )) {
                             continue;
                         }
@@ -1035,6 +1027,8 @@ _JsCode;
         }
         return $aSections;
     }
+    
+
     
     /**
      * introduced with WBCE 1.4.0
@@ -1115,4 +1109,83 @@ _JsCode;
         $sRetVal = str_replace('{WB_URL}', WB_URL, $sRetVal);
         return $sRetVal;
     }
+}
+
+/**
+ * Return an array of all the sections of the page
+ * 
+ * @author Christian M. Stefan <stefek@designthings.de>
+ * 
+ * @param  bool $bExcludeNonPublicised
+ * @return array
+ */
+function get_page_sections($iPageID = NULL, $bExcludeNonPublicised = false){
+    global $database;
+    $aSections = array();
+
+    if($iPageID == NULL){
+        global $page_id;
+        $iPageID = defined('PAGE_ID') ? PAGE_ID : $page_id;
+    } else {
+        $iPageID = (int) $iPageID;
+    }        
+
+    if($iPageID > 0){
+        // Get all sections for this page
+        $sSql = 'SELECT * FROM `%ssections` WHERE `page_id`=%d ORDER BY `position`';
+        if ($resSections = $database->query(sprintf($sSql, TABLE_PREFIX, $iPageID))) {
+            while ($rec = $resSections->fetchRow(MYSQL_ASSOC)) {
+
+                if($bExcludeNonPublicised == true){
+                    // skip sections that are not publicised
+                    $iNowTime = time();
+                    if (!(
+                            ($iNowTime <= $rec['publ_end'] || $rec['publ_end'] == 0) 
+                                    && 
+                            ($iNowTime >= $rec['publ_start'] || $rec['publ_start'] == 0)
+                        )) {
+                        continue;
+                    }
+                }
+                $aSections[$rec['section_id']] = $rec;
+           }
+        }
+    }
+    return $aSections;
+}
+
+/**
+ * Check if a certain Module is on a certain page
+ * 
+ * @author Christian M. Stefan <stefek@designthings.de>
+ * 
+ * @global type $page_id
+ * 
+ * @param  string  $sModuleDir  This MUST be the modules directory name
+ * @param  int     $iPageID     If left empty, the current page will be checked
+ * @return boolean
+ */
+function is_module_on_page($sModuleDir = '', $iPageID = NULL){
+    
+    $bOnPage = false;
+    if($sModuleDir == ''){
+        trigger_error('The 1st argument $sModuleDir must be specified in '
+                .__FUNCTION__.'($sModuleDir = \'\', $iPageID = NULL)');
+        return $bOnPage;
+        
+    }
+    if($iPageID == NULL){
+        global $page_id;
+        $iPageID = defined('PAGE_ID') ? PAGE_ID : $page_id;
+    } else {
+        $iPageID = (int) $iPageID;
+    }   
+    
+    $aSections = get_page_sections($iPageID);
+    foreach ($aSections as $iSectionID => $aData) {
+       if ($aData['module'] === strtolower($sModuleDir)) {
+           $bOnPage = true;
+       }
+    }
+    return $bOnPage;
 }

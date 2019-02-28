@@ -71,11 +71,18 @@ class SecureForm
     private $_salt = '';
     private $_fingerprint = '';
     private $_serverdata = '';
+    
+    protected  $_oDb = ''; // Establish class Database object
 
     /* Construtor */
     protected function __construct($mode = self::FRONTEND)
     {
-
+        // Establish class Database object for 
+        // use in this class and its extend 
+        // classes Admin, Wb & Frontend
+        // Introduced with WBCE 1.4.0 to save redundancy
+        $this->_oDb = $GLOBALS['database'];
+        
         // GLOBAL CONFIGURATION, additional constants and stuff
 
         // Secret can contain anything its the base for the secret part of the hash
