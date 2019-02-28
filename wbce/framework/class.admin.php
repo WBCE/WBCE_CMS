@@ -121,6 +121,9 @@ class admin extends wb
         }
 		I::insertJsFile(WB_URL.'/include/SessionTimeout/SessionTimeout.js', "HEAD BTM+", 'SessionTimeout');
 		
+		$maintModeIndicator =(string)Settings::Get ("wb_maintainance_mode");
+		if ($maintModeIndicator) { $maintModeIndicator=' <span class="fa fa-wrench wbcemm"></span> '; } else { $maintModeIndicator=''; }  
+		
         $header_template->set_var(array(
             'WB_SESSION_TIMEOUT' => $this->get_session_timeout(),
             'SECTION_NAME' => $MENU[strtoupper($this->section_name)],
@@ -158,6 +161,7 @@ class admin extends wb
             'URL_HELP' => 'https://wbce.org/',
             'BACKEND_MODULE_CSS' => $this->register_backend_modfiles('css'), // adds backend.css
             'BACKEND_MODULE_JS' => $this->register_backend_modfiles('js'),   // adds backend.js
+			'MAINTAINANCEMODEINDICATOR' => $maintModeIndicator,
         )
         );
 
