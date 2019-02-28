@@ -92,25 +92,27 @@ class Insert {
 
     /**
      * @brief  Check if Cache Control is activated in the OutputFilter Dashboard
+     *         We want to know if we should append 
+     *         ?1550602594 (file creation TIMESTAMP)
+     *         to CSS and JS Files
      * 
      * @return bool    true if activated
      */
     public function checkCacheControl() 
     {
-        $bRetVal = false;
+        $bActive = false;
         if(defined('WB_FRONTEND') && WB_FRONTEND == true){
-            if(function_exists('opf_filter_get_rel_pos')){	
-                $active = false;
-                $data = opf_filter_get_data('Cache Control');
-                if(!(in_array('all', $data['pages_parent']) || in_array(PAGE_ID, $data['pages_parent']))
-                  && !(in_array('all', $data['pages']) || in_array(PAGE_ID, $data['pages']))){					
-                    $bRetVal = false;
+            if(function_exists('opf_filter_get_data')){	
+                $aFilter = opf_filter_get_data('Cache Control');
+                if(!(in_array('all', $aFilter['pages_parent']) || in_array(PAGE_ID, $aFilter['pages_parent']))
+                  && !(in_array('all', $aFilter['pages']) || in_array(PAGE_ID, $aFilter['pages']))){					
+                    $bActive = false;
                 } else {
-                    $bRetVal = true;
+                    $bActive = true;
                 }
             }
         }
-        return $bRetVal;
+        return $bActive;
     }
 	
     /**
