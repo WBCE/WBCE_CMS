@@ -75,7 +75,7 @@ div.calendar {
 .page_titel:before {
     box-sizing: border-box;
     font-family: FontAwesome;
-    content: "";
+    content: "\f04e";
     display: block;
     position: absolute;
     left: 0;
@@ -216,16 +216,16 @@ a#frontendtitel:hover {
     font-family: FontAwesome;
 }
 #pagetopmenu a#link_home:before {
-    content: "";
+    content: "\f015";
 }
 #pagetopmenu a#link_back:before {
-    content: "";
+    content: "\f0a8";
 }
 #pagetopmenu a#link_frontend:before {
-    content: "";
+    content: "\f108";
 }
 #pagetopmenu a#link_logout:before {
-    content: "";
+    content: "\f08b";
 }
 #pagetopmenu a#sidebararea_togglebutton {
     display: block;
@@ -244,7 +244,7 @@ a#frontendtitel:hover {
 #pagetopmenu a#sidebararea_togglebutton:before {
     font-family: FontAwesome;
     font-size: 26px;
-    content: "";
+    content: "\f0c9";
 }
 #pagetopmenu a#sidebararea_togglebutton:hover {
     color: #cbcfd8;
@@ -357,31 +357,31 @@ a#frontendtitel:hover {
 }
 /* symbol pages */
 #mainmenu ul li.pages a:before {
-    content: "";
+    content: "\f044";
 }
 /* symbol media */
 #mainmenu ul li.media a:before {
-    content: "";
+    content: "\f03e";
 }
 /* symbol addons */
 #mainmenu ul li.addons a:before {
-    content: "";
+    content: "\f1b3";
 }
 /* symbol (my personal login) settings = module preferences */
 #mainmenu ul li.preferences a:before {
-    content: "";
+    content: "\f007";
 }
 /* symbol options = module settings */
 #mainmenu ul li.settings a:before {
-    content: "";
+    content: "\f085";
 }
 /* symbol admin tools */
 #mainmenu ul li.admintools a:before {
-    content: "";
+    content: "\f19d";
 }
 /* symbol users = module access */
 #mainmenu ul li.access a:before {
-    content: "";
+    content: "\f0c0";
 }
 /* systembox: box with information about WBCE */
 #systeminfo {
@@ -412,8 +412,18 @@ a#frontendtitel:hover {
     top: 0;
     left: 0;
     width: 120px;
-    height: 100%;
+    height: 100%;	
 }
+
+.tb_header a:link, .tb_header a:visited {
+	color:#CBCFD8;
+	font-size:5em;
+	display:block;
+	text-align:center;
+	padding:0.5em;
+}
+
+/*
 .themebox .tb_header a, .themebox .tb_header span.tb_icon {
     position: relative;
     display: block;
@@ -423,7 +433,7 @@ a#frontendtitel:hover {
 }
 .themebox .tb_header a:before, .themebox .tb_header span.tb_icon:before {
     font-family: FontAwesome;
-    content: "";
+    content: "\f19d";
     display: block;
     position: absolute;
     left: 0;
@@ -436,13 +446,23 @@ a#frontendtitel:hover {
     color: #cbcfd8;
     transition: 0.5s;
 }
+*/
 .themebox .tb_content {
     position: relative;
     min-height: 120px;
     margin-left: 120px;
     padding: 24px 32px 36px 16px;
     color: #ffffff;
+	font-size:0.8rem;
 }
+
+@media screen and (max-width:800px) {
+	.themebox .tb_content {
+		margin-left:0;
+	}
+}
+
+
 .themebox .tb_content h1, .themebox .tb_content h2, .themebox .tb_content h3, .themebox .tb_content h4, .themebox .tb_content h5, .themebox .tb_content h6 {
     font-weight: normal;
     color: #ffffff;
@@ -497,7 +517,7 @@ a#frontendtitel:hover {
 .themebox .tb_footer a:before, .themebox .tb_footer span.tb_icon:before {
     font-family: FontAwesome;
     display: block;
-    content: "";
+    content: "\f00a";
     font-weight: normal;
     font-size: 15px;
     transition: all 1s;
@@ -620,10 +640,10 @@ a#frontendtitel:hover {
     line-height: 48px;
 }
 .dashboard .dashboard_information .label_icon.count_pages:before {
-    content: "";
+    content: "\f0c5";
 }
 .dashboard .dashboard_information .label_icon.last_modified:before {
-    content: "";
+    content: "\f073";
 }
 .dashboard:hover .tb_header a:before, .dashboard:hover .tb_header span.tb_icon:before {
     transform: rotate(0deg) scale(6) !important;
@@ -637,40 +657,40 @@ a#frontendtitel:hover {
 }
 /* individual icons and colors for startpage themeboxes */
 div.themebox#module_pages .tb_header a:before {
-    content: "";
+    content: "\f044";
 }
 div.themebox#module_media .tb_header a:before {
-    content: "";
+    content: "\f03e";
 }
 div.themebox#module_addons .tb_header a:before {
-    content: "";
+    content: "\f1b3";
 }
 div.themebox#module_preferences .tb_header a:before {
-    content: "";
+    content: "\f007";
 }
 div.themebox#module_settings .tb_header a:before {
-    content: "";
+    content: "\f085";
 }
-div.themebox#module_admintools .tb_header a:before, div.themebox.admintools_tool .tb_header a:before {
-    content: "";
+div.themebox#module_admintools .tb_header a:before {
+    content: "\f19d";
 }
 div.themebox#module_access .tb_header a:before {
-    content: "";
+    content: "\f0c0";
 }
 div.themebox#addons_modules .tb_header a:before {
-    content: "";
+    content: "\f1b3";
 }
 div.themebox#addons_templates .tb_header a:before {
-    content: "";
+    content: "\f1c5";
 }
 div.themebox#addons_languages .tb_header a:before {
-    content: "";
+    content: "\f024";
 }
 div.themebox#admin_users .tb_header a:before {
-    content: "";
+    content: "\f007";
 }
 div.themebox#admin_groups .tb_header a:before {
-    content: "";
+    content: "\f0c0";
 }
 /* Nice File Input */
 .NFI-wrapper {
@@ -689,7 +709,7 @@ div.themebox#admin_groups .tb_header a:before {
 }
 .NFI-button:before {
     font-family: fontAwesome;
-    content: "";
+    content: "\f115";
 }
 .NFI-button:hover {
     background-color: #46505f;
@@ -782,4 +802,12 @@ div.pages_list table tr:hover {
 
 .form_submit {
 	width:99%;
+}
+
+/* Maintainance Mode Indicator */
+.wbcemm {
+	color:#fff;
+    background-color:#ff9900;
+    padding:0.2em;
+    border-radius:50%;	
 }

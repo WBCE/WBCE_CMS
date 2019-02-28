@@ -63,7 +63,7 @@
 	<div id="header-top">
 		<h1 id="header" class="fg8">
 			<a href="{ADMIN_URL}" title="{TITLE_START}">
-			{WEBSITE_TITLE} - {TEXT_ADMINISTRATION}
+			{WEBSITE_TITLE} {MAINTAINANCEMODEINDICATOR} - {TEXT_ADMINISTRATION}
 			</a>
 		</h1>
 		<div id="top-menu" class="fg4 right">
