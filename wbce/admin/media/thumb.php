@@ -10,35 +10,32 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require('../../config.php');
-include_once('resize_img.php');
-
-// Include WBCE functions file (legacy for WBCE 1.1.x)
-require_once WB_PATH . '/framework/functions.php';
+require '../../config.php';
+include_once 'resize_img.php'; // ResizeImage Class
 
 // Check if an image is specified
 if (isset($_GET['img']) && isset($_GET['t'])) {
-	$image = addslashes($_GET['img']);
-	$type = (int) $_GET['t'];
-
-	// Ensure image is inside WBCE media folder
-	if (!check_media_path($image)) {
-		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], WB_URL, false);
-		die;
-	}
-
-	// Create a thumbnail for the specified image
-	$img_path = WB_PATH . MEDIA_DIRECTORY .$image;
-	$img = new RESIZEIMAGE($img_path);
-	if ($img->imgWidth) {
-		if ($type == 1) {
-			$img->resize_limitwh(100,100);
-		} elseif ($type == 2) {
-			$img->resize_limitwh(200,200);
-		}
-		$img->close();
-	} else {
-		header ("Content-type: image/jpeg");
-		readfile ( "nopreview.jpg" );
-	}
+    $sImage = addslashes($_GET['img']);
+    $iType = (int) $_GET['t'];
+    
+    // Ensure image is inside WBCE media folder
+    if (!check_media_path($sImage)) {
+        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], WB_URL, false);
+        die;
+    }
+    
+    // Create a thumbnail for the specified image
+    $sImgPath = WB_PATH . MEDIA_DIRECTORY .$sImage;
+    $oImgResizer = new ResizeImage($sImgPath);
+    if ($oImgResizer->imgWidth) {
+        if ($iType == 1) {
+            $oImgResizer->resize_limitwh(100,100);
+        } elseif ($iType == 2) {
+            $oImgResizer->resize_limitwh(200,200);
+        }
+        $oImgResizer->close();
+    } else {
+        header ("Content-type: image/jpeg");
+        readfile ( "nopreview.jpg" );
+    }
 }
