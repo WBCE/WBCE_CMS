@@ -83,8 +83,8 @@ class I {
      * @param  string  $sID
      * @return 
      */
-    public static function insertCssFile($uFileLoc = '', $sDomPos = 'HEAD BTM+', $sID = false) {
-        return I::getInstance()->insertCssFile($uFileLoc, $sDomPos, $sID);
+    public static function insertCssFile($uFileLoc = '', $sDomPos = 'HEAD BTM+', $sID = false, $sMedia = '')  {
+        return I::getInstance()->insertCssFile($uFileLoc, $sDomPos, $sID, $sMedia);
     }
 
     /**
@@ -97,8 +97,8 @@ class I {
      * @param  string  $sID
      * @return 
      */
-    public static function insertCssCode($sCode = '', $sDomPos = 'HEAD BTM+', $sID = false) {
-        return I::getInstance()->insertCssCode($sCode, $sDomPos, $sID);
+    public static function insertCssCode($sCode = '', $sDomPos = 'HEAD BTM+', $sID = false, $sMedia = '')  {
+        return I::getInstance()->insertCssCode($sCode, $sDomPos, $sID, $sMedia);
     }
 
     /**
@@ -328,8 +328,8 @@ function insertJsFile($uFileLoc = '', $sDomPos = 'HEAD BTM-', $sID = '') {
  * @param  string  $sName
  * @return 
  */
-function insertCssFile($uFileLoc = '', $sDomPos = 'HEAD BTM+', $sID = '') {
-    return I::insertCssFile($uFileLoc, $sDomPos, $sID);
+function insertCssFile($uFileLoc = '', $sDomPos = 'HEAD BTM+', $sID = '', $sMedia = '')  {
+    return I::insertCssFile($uFileLoc, $sDomPos, $sID, $sMedia);
 }
 
 /**

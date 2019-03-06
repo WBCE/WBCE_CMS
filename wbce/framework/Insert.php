@@ -202,7 +202,7 @@ class Insert {
      * @param  string  $sID
      * @return 
      */
-    public function insertCssFile($uFileLoc = '', $sDomPos = 'HEAD BTM+', $sID = false) 
+    public function insertCssFile($uFileLoc = '', $sDomPos = 'HEAD BTM+', $sID = false, $sMedia = '')  
     {
         if (!is_array($uFileLoc)) {
             // single file      
@@ -212,6 +212,7 @@ class Insert {
                     $aSetting['setname'] = $sID;
                 $aSetting['href']     = $uFileLoc;
                 $aSetting['position'] = $sDomPos;
+                $aSetting['media']    = $sMedia;
                 $this->addCSS($aSetting);
             } else {
                 return;
@@ -222,6 +223,7 @@ class Insert {
                 $aSetting = array();
                 $aSetting['href']     = $sLoc;
                 $aSetting['position'] = $sDomPos;
+                $aSetting['media']    = $sMedia;
                 $this->addCSS($aSetting);
             }
         }
@@ -238,12 +240,13 @@ class Insert {
      * @param  string  $sID
      * @return 
      */
-    public function insertCssCode($sCode = '', $sDomPos = 'HEAD BTM+', $sID = '') 
+    public function insertCssCode($sCode = '', $sDomPos = 'HEAD BTM-', $sID = false, $sMedia = '') 
     {
         return $this->addCss(array(
             'setname'  => $sID,
             'position' => $sDomPos,
             'style'    => $sCode,
+            'media'    => $sMedia
         ));
     }
 
@@ -649,7 +652,7 @@ class Insert {
     /**
      * @brief  Processes the _MetaQueue when using the doFilter Method.
      * 
-     * @param  string   $sPosition  Set this to only return Scripts whith a certain position set. 
+     * @param  string   $sDomPos  Set this to only return Scripts whith a certain position set. 
      * @param  unspec   $uDefault   Whatever you like as a returnvalue if the meta array is empty.
      * @retval string               All metas rendered are returned as a string.
      */
@@ -690,12 +693,12 @@ class Insert {
     /**
      * @brief  Processes the _HtmlQueue when using the doFilter Method.  
      *     
-     * @param  string    $sPosition  Set this to only return Scripts whith a certain position set.     
+     * @param  string    $sDomPos  Set this to only return Scripts whith a certain position set.     
      * @param  undefined $uDefault   Whatever you like as a returnvalue if the method does
      *                               not find any matching entry.    
      * @retval string/undefined      Returns the rendered Html for one position. 
      * */
-    private function _processHtml($sPosition = "BODY BTM-", $uDefault = "") 
+    private function _processHtml($sDomPos = "BODY BTM-", $uDefault = "") 
     {
 
         if (empty($this->_HtmlQueue))
@@ -705,7 +708,8 @@ class Insert {
         // sort out the ones we want to show
         $aData = array();
         foreach ($this->_HtmlQueue as $sSetName => $rec) {
-            if ($rec['position'] == $sPosition)
+            $sPos = $this->_correctDomPos($rec['position']);
+            if ($sPos == $sDomPos)
                 $aData[$sSetName] = $rec;
         }
 
@@ -725,26 +729,27 @@ class Insert {
     /**
      * @brief  Processes the _CssQueue when using the doFilter Method.
 
-     * @param  string $sPosition   Set this to only return Scripts whith a certain position set. 
-     * @param  unspec $uDefault    Whatever you like as a returnvalue if the method 
-     *                             does not find a matching entry.
-     * @retval string              Returns the rendered CSS definitions for one position.
+     * @param  string $sDomPos   Set this to only return Scripts whith a certain position set. 
+     * @param  unspec $uDefault  Whatever you like as a returnvalue if the method 
+     *                           does not find a matching entry.
+     * @retval string            Returns the rendered CSS definitions for one position.
      */
-    private function _processCss($sPosition = "HEAD BTM+", $uDefault = "") 
+    private function _processCss($sDomPos = "HEAD BTM+", $uDefault = "") 
     {
         if (empty($this->_CssQueue))
             return $uDefault; 
 
         // sort out the ones we want to show
         $aData = array();
-        foreach ($this->_CssQueue as $sSetName => $rec)
-            if ($rec['position'] == $sPosition)
+        foreach ($this->_CssQueue as $sSetName => $rec){
+            $sPos = $this->_correctDomPos($rec['position']);
+            if ($sPos == $sDomPos)
                 $aData[$sSetName] = $rec;
-
+        }
         $sTPL = "\t" . '<link rel="stylesheet" href="%s" type="text/css"%s%s%s>' . PHP_EOL;
         $sRetVal = "";
         foreach ($aData as $sSetName => $aCssSet) {
-			$sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
+            $sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
             if (!empty($aCssSet['href'])) {
                 $sMedia = (!empty($aCssSet['media'])) ? 'media="' . $aCssSet['media'] . '"' : '';
                 $sClosing = ($this->sRenderType == "xhtml") ? '/' : '';
@@ -755,7 +760,7 @@ class Insert {
                 }
             }
             if (!empty($aCssSet['style'])) {
-				if (preg_match('/\<style(.*?)?\>/i', $aCssSet['style'])) {
+                if (preg_match('/\<style(.*?)?\>/i', $aCssSet['style'])) {
                     $sRetVal .= $aCssSet['style'] . PHP_EOL;
                 } else {					
                     $sRetVal .= "\t<style type=\"text/css\" ";
@@ -771,26 +776,54 @@ class Insert {
         return $sRetVal;
     }
 
+    
+    
+    /**
+     * @brief  Make it possible to use shorter flags for $sDomPos
+     *         It's now also possible to use only 
+     *         HEAD TOP, HEAD BTM, HEAD, 
+     *         BODY TOP, BODY BTM, BODY
+     *         as flags
+     * 
+     * @param  string $sDomPos
+     * @return string // the corrected $sDomPos
+     */
+    private function _correctDomPos($sDomPos){
+        $sReplacements = array(
+            'HEAD TOP' => 'HEAD TOP-',
+            'HEAD BTM' => 'HEAD BTM-',
+            'HEAD'     => 'HEAD BTM-',
+            'BODY TOP' => 'BODY TOP-',
+            'BODY BTM' => 'BODY BTM-',
+            'BODY'     => 'BODY BTM-',
+        );
+        foreach($sReplacements as $old=>$new)
+            if($sDomPos == $old) return $new;
+            
+        return  $sDomPos;
+    }
+    
     /**
      * @brief Processes the _JsQueue when using the doFilter Method.
      * 
-     * @param  string $sPosition   Set this to only return Scripts whith a certain position set. 
+     * @param  string $sDomPos   Set this to only return Scripts whith a certain position set. 
      * @param  unspec $uDefault    Whatever you like as a returnvalue if the method 
      *                             does not find a matching entry.
      * @retval string              Returns the rendered Javascript definitions for one position.
      * 
      */
-    private function _processJs($sPosition = "HEAD BTM+", $uDefault = "") 
+    private function _processJs($sDomPos = "HEAD BTM-", $uDefault = "") 
     {
         if (empty($this->_JsQueue))
             return $uDefault;
 
         // sort out the ones we want to show
         $aData = array();
-        foreach ($this->_JsQueue as $sSetName => $rec)
-            if ($rec['position'] == $sPosition)
+        foreach ($this->_JsQueue as $sSetName => $rec){
+            $sPos = $this->_correctDomPos($rec['position']);
+            if ($sPos == $sDomPos)
                 $aData[$sSetName] = $rec;
-
+        }
 
         // none in this DOM position
         if (!count($aData))
@@ -948,14 +981,15 @@ class Insert {
      */
     public function replacementTokens() 
     {
+        $sTemplateUrl  = WB_URL . '/templates/';
+        $sTemplateUrl .= defined('TEMPLATE') ? TEMPLATE : Settings::Get("default_template");
         return array(
-            '{WB_URL}' => WB_URL,
-            '{MODULES}' => WB_URL . '/modules',
-            // below Tokens are accessible in Frontend only!
-            '{DEFAULT_TEMPLATE}' => WB_URL . '/templates/' . (defined('TEMPLATE') ? DEFAULT_TEMPLATE : ''),
-            '{TEMPLATE_URL}' => defined('TEMPLATE') ? TEMPLATE : ''
+            '{WB_URL}'           => WB_URL,
+            '{MODULES}'          => WB_URL . '/modules',
+            '{MEDIA_URL}'        => WB_URL . MEDIA_DIRECTORY,
+            '{DEFAULT_TEMPLATE}' => $sTemplateUrl,
         );
-        // More replacement Tokens can be added to this array using the addUrlToken method
+        // More replacement Tokens can be added to this array using the addUrlToken() method
     }
 
     /**
@@ -991,15 +1025,15 @@ class Insert {
      * @param  string   $sSetName   If you want a single entry, specify it's $sSetName/ID 
      *                              If empty, the whole JsQueue will be prepared for output  
      * @param  string   $sQueue     What Queue do you want to get (js|css|html etc.)
-     * @param  string   $sPosition  Will only work if $sSetName is not specified
+     * @param  string   $sDomPos  Will only work if $sSetName is not specified
      *                              Set this to only return Scripts whith a certain position set. 
      *                              Default position names can be found in docs to addJs().
-     *                              $sPosition="All" returns the full Js array.
+     *                              $sDomPos="All" returns the full Js array.
      * @param  unspec   $uDefault   You can define a special return var if the Js array is empty.
      * @retval array or unspecified Returns the single Entry or an Array depending on parameter 
      *                              settings or if nothing found whatever was specified in $uDefault
      */
-    public function getQueueArray($sSetName = "", $sQueue = "", $sPosition = "All", $uDefault = false) 
+    public function getQueueArray($sSetName = "", $sQueue = "", $sDomPos = "All", $uDefault = false) 
     {
         if ($sQueue != '') {
             $sQueue = '_' . ucfirst(strtolower($sQueue)) . 'Queue';
@@ -1024,7 +1058,7 @@ class Insert {
         if ($sSetName == "") {
             // return the whole $aQueue array if $sSetName isn't specified
             if ($sQueue != "_TitleQueue") {
-                if (strtolower($sPosition) == "all") {
+                if (strtolower($sDomPos) == "all") {
                     foreach ($aQueue as $key => $aSubQueue) {
 
                         //
@@ -1035,11 +1069,11 @@ class Insert {
                         }
                     }
                 }
-                if (strtolower($sPosition) != "all") {
+                if (strtolower($sDomPos) != "all") {
                     foreach ($aQueue as $key => $aSubQueue) {
                         if (is_array($aSubQueue) && !empty($aSubQueue)) {
                             foreach ($aSubQueue as $sSetName => $rec) {
-                                if (isset($rec['position']) && $rec['position'] == $sPosition) {
+                                if (isset($rec['position']) && $rec['position'] == $sDomPos) {
                                     $aRetVal[$key][$sSetName] = $rec;
                                 }
                             }
@@ -1155,7 +1189,7 @@ class Insert {
      */
     public function doFilter($sContent) 
     {
-        $aProcessReplace = array(); // array with values to be replaced ('TITLE', 'META DESC', 'META KEY')
+        $aProcessReplace = array();  // array with values to be replaced ('TITLE', 'META DESC', 'META KEY')
         $aProcessInsert  = array();  // array with values to be added to the corresponding Placeholder
         foreach (array_keys($this->placeholderArrays()) as $sPlacer) {
             if (in_array($sPlacer, array('TITLE', 'META DESC', 'META KEY'))) {
