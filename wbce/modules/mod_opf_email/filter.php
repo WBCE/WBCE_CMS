@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.7
+ * @version         1.0.9
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -46,13 +46,13 @@ function doFilterEmail($content) {
     // If necessary (Both true) check if mdcr.js is added to the head of template
     // In not try to add it.
     if (Settings::Get('OPF_MAILTO_FILTER') and Settings::Get('OPF_JS_MAILTO')){
-        // test if js-decryption is installed(was needed as frontend functions 
+        // test if js-decryption is installed(was needed as frontend functions
         // where adding this too possibly we can remove this test)
         if( !preg_match('/<head.*<.*src=\".*\/mdcr.js.*>.*<\/head/siU', $content) ) {
             // try to insert js-decrypt into <head> if available
             $sJsFilePath = __DIR__ .'/js/mdcr.js';
             if(file_exists($sJsFilePath)){
-                $sJsFileUrl = get_url_from_path($sJsFilePath); 
+                $sJsFileUrl = get_url_from_path($sJsFilePath);
                 $sScriptTag = "\t".'<script src="'. $sJsFileUrl .'" type="text/javascript"></script>'."\n\n";
                 $regex = '/(.*)(<\s*?\/\s*?head\s*>.*)/isU';
                 $replace = '$1'. $sScriptTag .'$2';

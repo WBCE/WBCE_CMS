@@ -8,9 +8,9 @@ languages/EN.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -46,11 +46,11 @@ languages/EN.php
 $module_description  = 'Admin-Tool to manage OutputFilter';
 $LANG['MOD_OPF']=array();
 
-$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST']  = 'A <em>&quot;Module-Type&quot;</em> or <em>&quot;Module-Type (last)&quot;</em> filter will be applied to every displayed sections of the selected modules in module-tree below.';
+$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST']  = 'A <em>&quot;Module-Type (fist)&quot;</em> or <em>&quot;Module-Type&quot;</em> or <em>&quot;Module-Type (last)&quot;</em> filter will be applied to every displayed sections of the selected modules in module-tree below.';
 
 $LANG['MOD_OPF']['TXT_MODULE_TREE'] = 'In the Module-tree below, select the modules to which the filter should be applied';
 
-$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'A <em>Page-Type</em> or <em>Page-Type (last)</em> Filter will be applied to every displayed page (including e.g. output from snippets and the template itself) as a whole.';
+$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'A <em>&quot;Page-Type (first)&quot;</em> <em>&quot;Page-Type&quot;</em> or <em>&quot;Page-Type (last)&quot;</em> or <em>&quot;Page-Type (final)&quot;</em> Filter will be applied to every displayed page (including e.g. output from snippets and the template itself) as a whole.';
 
 $LANG['MOD_OPF']['TXT_SUB_PAGES'] = 'Select or deselect Pages/Subpages below.<br />The filter will be applied to all selected pages along with all selected modules in the above &quot;module-tree&quot;';
 
@@ -178,13 +178,19 @@ $LANG['MOD_OPF']['TXT_INSERT_NAME'] = 'Insert a name here';
 
 $LANG['MOD_OPF']['TXT_INSERT_DESCRIPTION'] = 'Insert a description here';
 
+$LANG['MOD_OPF']['TXT_MODULE_FIRST'] = 'Module (first)';
+
 $LANG['MOD_OPF']['TXT_MODULE'] = 'Module';
 
 $LANG['MOD_OPF']['TXT_MODULE_LAST'] = 'Module (last)';
 
+$LANG['MOD_OPF']['TXT_PAGE_FIRST'] = 'Page (first)';
+
 $LANG['MOD_OPF']['TXT_PAGE'] = 'Page';
 
 $LANG['MOD_OPF']['TXT_PAGE_LAST'] = 'Page (last)';
+
+$LANG['MOD_OPF']['TXT_PAGE_FINAL'] = 'Page (final)';
 
 $LANG['MOD_OPF']['TXT_ALL_MODULES'] = 'All Modules';
 

@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.6
+ * @version         1.0.7
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -21,6 +21,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.0.7   2019-03-07      - reorder filters into new categories
  *      1.0.6   2018-10-07      - disable filter on installation
  *      1.0.5   2018-09-12      - merge changes of WBCE 1.3 into filter.php
  *      1.0.4   2017-04-11      - make install/upgrade work w/o classical output_filters
@@ -45,7 +46,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_sys_rel';
 $module_name            = 'OPF Sys Rel';
 $module_function        = 'opffilter';
-$module_version         = '1.0.6';
+$module_version         = '1.0.7';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

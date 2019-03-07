@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.6
+ * @version         1.0.7
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -35,14 +35,14 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        $upgrade_result=require(WB_PATH.'/modules/mod_opf_sys_rel/upgrade.php');
+        $upgrade_result=require_once(WB_PATH.'/modules/mod_opf_sys_rel/upgrade.php');
         if($upgrade_result==FALSE) return FALSE;
         if(opf_is_registered('Sys Rel')){ // filter already registered
             return TRUE;
         }
 
         // install filter
-        opf_register_filter(array(
+        return opf_register_filter(array(
             'name' => 'Sys Rel',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_sys_rel/filter.php',
@@ -51,11 +51,7 @@ if(defined('WB_URL'))
             'active' => (!class_exists('Settings') || (Settings::Get('opf_sys_rel', 0)==0))?0:1,
             'allowedit' => 0
         ));
-        opf_move_up_before(
-            'Sys Rel',
-            array(
-               'Remove System PH'
-            )
-        );
     }
 }
+
+return FALSE;

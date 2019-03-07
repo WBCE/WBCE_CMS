@@ -8,9 +8,9 @@ naturaldocs_txt/functions_outputfilter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -66,8 +66,8 @@ require_once(dirname(__FILE__).'/functions.php');
     Parameters:
         &$content - %(string)% The page's or section's Content, per reference!
         $page_id - %(int)% Actual Page ID.
-        $section_id - %(int)% Actual Section ID. For Filters of type !OPF_TYPE_PAGE! or !OPF_TYPE_PAGE_LAST! this is always !FALSE!.
-        $module - %(string)% Name of actual module (== !$module_directory! ). For Filters of type !OPF_TYPE_PAGE! or !OPF_TYPE_PAGE_LAST! this is always !FALSE!.
+        $section_id - %(int)% Actual Section ID. For Filters of type !OPF_TYPE_PAGE_FIRST!, !OPF_TYPE_PAGE! or !OPF_TYPE_PAGE_LAST! or !OPF_TYPE_PAGE_FINAL! this is always !FALSE!.
+        $module - %(string)% Name of actual module (== !$module_directory! ). For Filters of type !OPF_TYPE_PAGE_FIRST!, !OPF_TYPE_PAGE! or !OPF_TYPE_PAGE_LAST!  or !OPF_TYPE_PAGE_FINAL! this is always !FALSE!.
         $wb - %(object)% Instance of Class wb.
 
     Returns:
@@ -157,10 +157,13 @@ require_once(dirname(__FILE__).'/functions.php');
     type:
         Determines on which type of content the filter is applied to.
 
+    OPF_TYPE_SECTION_FIRST - Apply filter on section-content, but *before* all filters of type OPF_TYPE_SECTION.
     OPF_TYPE_SECTION - Apply filter on section-content.
     OPF_TYPE_SECTION_LAST - Like OPF_TYPE_SECTION, but applied *after* all filters of type OPF_TYPE_SECTION.
+    OPF_TYPE_PAGE_FIRST - Like OPF_TYPE_PAGE, but applied *before* all filters of type OPF_TYPE_PAGE.
     OPF_TYPE_PAGE - Apply filter on page-content, i.e. on all sections, snippets on that page, and the entire template, too.
     OPF_TYPE_PAGE_LAST - Like OPF_TYPE_PAGE, but applied *after* all filters of type OPF_TYPE_PAGE.
+    OPF_TYPE_PAGE_FINAL - Like OPF_TYPE_PAGE_LAST, but applied even *after* all filters of type OPF_TYPE_PAGE_LAST.
 
         Filter of type OPF_TYPE_SECTION are applied on section-content before the content gets inserted into the template.
 
@@ -258,7 +261,7 @@ require_once(dirname(__FILE__).'/functions.php');
         Using the latter form, there has to be at least an English ( !'EN'! ) entry.
     
     modules:
-        List of modules the filter (of type OPF_TYPE_SECTION or OPF_TYPE_SECTION_LAST ) is applied to.
+        List of modules the filter (of type OPF_TYPE_SECTION_FIRST, OPF_TYPE_SECTION or OPF_TYPE_SECTION_LAST ) is applied to.
         In the following two examples, the filter will be applied to all WYSIWYG- and News-sections.
         > 'modules' => 'wysiwyg,news'
         or
@@ -412,11 +415,13 @@ require_once(dirname(__FILE__).'/functions.php');
     style - (optional) For '!text!', '!textarea!', '!editarea!': add !width:! and/or !height:! attributes.
 */
 function opf_register_filter($filter, $serialized=FALSE) {
+
     $now = time();
     $sql_where = '';
     // get variables
     if($serialized)
         $filter = unserialize($filter);
+    $filter = opf_insert_sysvar($filter);
     if(isset($filter['id'])) $id = opf_fetch_clean( $filter['id'], 0, 'int'); else $id = 0; // id is set from opf_edit_filter() only
     if(isset($filter['type'])) $type = opf_fetch_clean( $filter['type'], '', 'string'); else $type = '';
     if(isset($filter['name'])) $name = opf_fetch_clean( $filter['name'], '', 'string'); else $name = '';
@@ -542,8 +547,7 @@ function opf_register_filter($filter, $serialized=FALSE) {
             return(FALSE);
     }
 
-    $fileCheck = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $file);
-    $fileCheck = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$plugin, $fileCheck);
+    $fileCheck = opf_replace_sysvar($file,$plugin);
     
     if(($fileCheck=='' && $func=='') || (($fileCheck!='' && $func!=''))) {
         trigger_error('File OR Function needed', E_USER_WARNING);
@@ -1282,9 +1286,8 @@ function opf_glue_extract(&$content, $extracts) {
 // used internal only by opf_filter_get_data()
 function opf_filter_get_name_current() {
     global $opf_FILTERS;
-        if(!(isset($opf_FILTERS) && is_array($opf_FILTERS))) {
-        trigger_error('opf_filter_get_name_current(): global Array not defined', E_USER_WARNING);
-        return(FALSE);
+    if(!(isset($opf_FILTERS) && is_array($opf_FILTERS))) {
+        opf_preload_filter_definitions(); 
     }
     foreach($opf_FILTERS as $key => $filter) {
         if($opf_FILTERS[$key]['current']==TRUE)
@@ -1355,9 +1358,6 @@ function opf_filter_get_name_current() {
 function opf_filter_get_data($name='') {
     global $opf_FILTERS;
     if(!(isset($opf_FILTERS) && is_array($opf_FILTERS))) {
-/*        trigger_error('opf_filter_get_data(): global Array not defined', E_USER_WARNING);
-        return(FALSE);
-*/
         opf_preload_filter_definitions(); 
     }
     $name = opf_check_name($name);
@@ -1388,7 +1388,7 @@ function opf_filter_get_data($name='') {
     Examples:
         (start code)
         if(opf_filter_get_rel_pos('Menu Linebreak')) {
-            // filter "Menu Linebreak" is installed and active
+            // filter "Menu Linebreak" is installed and active (but not the currend one)
         }
         (end)
 
@@ -1405,35 +1405,32 @@ function opf_filter_get_rel_pos($name) {
     global $opf_FILTERS; // global storage
     global $opf_MODULE, $opf_PAGEID; // set by opf_apply_filters()
     if(!(isset($opf_FILTERS) && is_array($opf_FILTERS))) {
-        trigger_error('opf_filter_get_rel_pos(): global Array not defined', E_USER_WARNING);
-        return(FALSE);
+        opf_preload_filter_definitions(); 
     }
     if(!isset($opf_MODULE)) $opf_MODULE = FALSE;
     if(!isset($opf_PAGEID)) $opf_PAGEID = FALSE;
+    if($opf_MODULE=='') $opf_MODULE = FALSE;
+    $name = opf_check_name($name);
+    if(!$name) return(FALSE);
     // get data from filter $name
     if(!($data = opf_filter_get_data($name)))
         return(FALSE);
     // active?
-    if($data['active']==FALSE) return(FALSE);
+    if(!opf_is_active($name)) return(FALSE);
     // check type, module, page
     if(opf_type_uses_sections($data['type'])) {
         if(!in_array($opf_MODULE, $data['modules']) && !in_array('all', $data['modules']))
             return(FALSE);
     }
-    if(!(in_array('all', $data['pages_parent']) || in_array($opf_PAGEID, $data['pages_parent']))
-      && !(in_array('all', $data['pages']) || in_array($opf_PAGEID, $data['pages'])))
-        return(FALSE);
-    // get data from current filter
-    $current = FALSE;
-    foreach($opf_FILTERS as $filter) {
-        if($filter['current']) {
-            $current = $filter;
-            break;
-        }
-    }
-    if(!$current) return(FALSE);
+                
+    if (!( ( ($opf_PAGEID == 'backend') && (in_array('backend', $data['pages']) || in_array('backend',$data['pages_parent'])) )
+      || ( ($opf_PAGEID != 'backend') && (in_array('all', $data['pages']) || in_array($opf_PAGEID, $data['pages'])) )
+      || ( ($opf_PAGEID != 'backend') && (in_array('all', $data['pages_parent']) || in_array($opf_PAGEID, $data['pages_parent'])) )
+      || ( ($opf_PAGEID == '0') && (in_array('all', $data['pages']) || in_array('all', $data['pages_parent']) || in_array('0', $data['pages_parent'])) )
+    ))  return(FALSE);
+                
     // 1: filter will be activated later, -1: filter was activated, 0: filter identical
-    if($data==$current)
+    if($data['current'])
         return(0);
     if($data['activated']==FALSE && $data['failed']==FALSE)
         return(1);
@@ -1467,8 +1464,7 @@ function opf_filter_get_rel_pos($name) {
 function opf_filter_exists($name, $verbose=FALSE) {
     global $opf_FILTERS;
     if(!(isset($opf_FILTERS) && is_array($opf_FILTERS))) {
-        trigger_error('opf_filter_exists(): global Array not defined', E_USER_WARNING);
-        return(FALSE);
+        opf_preload_filter_definitions(); 
     }
     if(!isset($opf_FILTERS[$name])) {
         if($verbose) trigger_error('opf_filter_exists(): '.htmlspecialchars($name,ENT_QUOTES).' not defined', E_USER_WARNING);
@@ -1502,9 +1498,8 @@ function opf_filter_exists($name, $verbose=FALSE) {
 */
 function opf_is_childpage($child, $parent) {
     global $opf_PAGECHILDS;
-    if(!(isset($opf_PAGECHILDS) && is_array($opf_PAGECHILDS))) {
-        trigger_error('opf_is_childpage(): global Array not defined', E_USER_WARNING);
-        return(FALSE);
+    if(!(isset($opf_FILTERS) && is_array($opf_FILTERS))) {
+        opf_preload_filter_definitions(); 
     }
     if($child==$parent) return(FALSE);
     if(isset($opf_PAGECHILDS[$parent])) {
@@ -1540,8 +1535,7 @@ function opf_filter_is_active($name) {
     if(opf_filter_get_rel_pos($name)===FALSE)
         return(FALSE);
     else 
-        // this check is more expensive but takes settings into account
-        opf_is_active($name);
+        return(TRUE);
 }
 
 
@@ -1568,8 +1562,7 @@ function opf_filter_is_active($name) {
 function opf_filter_get_additional_values() {
     global $opf_FILTERS;
     if(!(isset($opf_FILTERS) && is_array($opf_FILTERS))) {
-        trigger_error('opf_filter_get_additional_values(): global Array not defined', E_USER_WARNING);
-        return(FALSE);
+        opf_preload_filter_definitions(); 
     }
     $name = opf_filter_get_name_current();
     if($name)

@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF WB-Link
- * @version         1.0.1
+ * @version         1.0.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -21,6 +21,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.0.2   2019-03-07      - reorder filters into new categories
  *      1.0.1   2017-04-11      - make install/upgrade work w/o classical output_filters
  *      1.0.0   2017-01-23      - turn classical outputfilter to an OpF filter module
  *
@@ -40,7 +41,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_wblink';
 $module_name            = 'OPF WB-Link';
 $module_function        = 'opffilter';
-$module_version         = '1.0.1';
+$module_version         = '1.0.2';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

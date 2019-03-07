@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.6
+ * @version         1.0.7
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -85,5 +85,9 @@ if(!class_exists('Settings')) return FALSE;
 if (isset($data["sys_rel"]))       Settings::Set('opf_sys_rel',$data["sys_rel"], false);
 else                               Settings::Set('opf_sys_rel',0, false);
 
+if(opf_get_type('Sys Rel',FALSE) != OPF_TYPE_PAGE){
+    return opf_unregister_filter('Sys Rel')
+    && require(WB_PATH.'/modules/mod_opf_sys_rel/install.php');
+}
 
 return TRUE;

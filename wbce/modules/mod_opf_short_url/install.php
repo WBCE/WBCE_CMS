@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Short URL
- * @version         1.0.1
+ * @version         1.0.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -35,14 +35,14 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        $upgrade_result=require(WB_PATH.'/modules/mod_opf_short_url/upgrade.php');
+        $upgrade_result=require_once(WB_PATH.'/modules/mod_opf_short_url/upgrade.php');
         if($upgrade_result==FALSE) return FALSE;
         if(opf_is_registered('Short URL')){ // filter already registered
             return TRUE;
         }
 
         // install filter
-        opf_register_filter(array(
+        return opf_register_filter(array(
             'name' => 'Short URL',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_short_url/filter.php',
@@ -50,13 +50,12 @@ if(defined('WB_URL'))
             'desc' => "short url via filter (instead of a droplet)",
             'active' => (class_exists('Settings') && (Settings::Get('opf_short_url', 0)==0))?0:1,
             'allowedit' => 0
-        ));
-        opf_move_up_before(
+        ))
+        && opf_move_up_before(
             'Short URL',
-            array(
-               'Sys Rel',
-               'Remove System PH'
-            )
+            'Sys Rel'
         );
     }
 }
+
+return FALSE;

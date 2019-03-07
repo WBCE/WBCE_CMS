@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF WB-Link
- * @version         1.0.1
+ * @version         1.0.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -36,5 +36,10 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 if(!class_exists('Settings')) return FALSE;
 
 Settings::Set('opf_wblink',1, false);
+
+if(opf_get_type('WB-Link',FALSE) != OPF_TYPE_PAGE){
+    return opf_unregister_filter('WB-Link')
+    && require(WB_PATH.'/modules/mod_opf_wblink/install.php');
+}
 
 return TRUE;
