@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Remove System PH
- * @version         1.1.1
+ * @version         1.1.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -19,6 +19,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.1.2   2019-03-09      - bugfix in install/upgrade
  *      1.1.1   2019-03-07      - reorder filters into new categories
  *      1.1.0   2018-11-05      - remove any empty lines in the content
  *      1.0.1   2018-10-07      - during installation switch filter on by default
@@ -40,7 +41,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_remove_system_ph';
 $module_name            = 'OPF Remove System PH';
 $module_function        = 'opffilter';
-$module_version         = '1.1.1';
+$module_version         = '1.1.2';
 $module_platform        = 'WBCE 1.3.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

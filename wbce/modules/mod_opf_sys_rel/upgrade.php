@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.7
+ * @version         1.0.8
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -84,6 +84,8 @@ if(!class_exists('Settings')) return FALSE;
 
 if (isset($data["sys_rel"]))       Settings::Set('opf_sys_rel',$data["sys_rel"], false);
 else                               Settings::Set('opf_sys_rel',0, false);
+
+if(!opf_is_registered('Sys Rel')) return FALSE;
 
 if(opf_get_type('Sys Rel',FALSE) != OPF_TYPE_PAGE){
     return opf_unregister_filter('Sys Rel')

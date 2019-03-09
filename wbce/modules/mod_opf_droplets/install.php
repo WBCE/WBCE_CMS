@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Droplets
- * @version         1.1.2
+ * @version         1.1.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -35,11 +35,9 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        $upgrade_result=require_once(WB_PATH.'/modules/mod_opf_droplets/upgrade.php');
-        if($upgrade_result==FALSE) return FALSE;
-        if(opf_is_registered('Droplets')){ // filter already registered
-            return TRUE;
-        }
+        require_once(WB_PATH.'/modules/mod_opf_droplets/upgrade.php');
+
+        if(opf_is_registered('Droplets')) return TRUE; // filter already registered
 
         // install filter
         return opf_register_filter(array(
