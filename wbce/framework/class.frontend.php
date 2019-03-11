@@ -11,9 +11,9 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if(count(get_included_files())==1) header("Location: ../index.php", TRUE, 301);
 
-class Frontend extends wb
+class Frontend extends Wb
 {
     // defaults
     public $default_link; 
@@ -276,22 +276,7 @@ class Frontend extends wb
         }
         
         // define SHOW_MENU constant
-        defined('SHOW_MENU') or define('SHOW_MENU', true);        
-        
-        // Work-out if account menu constants should be set
-        if(!defined('ACCOUNT_PATH')){
-            if (FRONTEND_LOGIN) {
-                // Set login menu constants
-                defined('ACCOUNT_URL') or define('ACCOUNT_URL', WB_URL . '/account');
-                define('ACCOUNT_PATH',    str_replace(WB_URL, WB_PATH, ACCOUNT_URL));
-
-                define('LOGIN_URL',       ACCOUNT_URL . '/login.php');
-                define('LOGOUT_URL',      ACCOUNT_URL . '/logout.php');
-                define('FORGOT_URL',      ACCOUNT_URL . '/forgot.php');
-                define('PREFERENCES_URL', ACCOUNT_URL . '/preferences.php');
-                define('SIGNUP_URL',      ACCOUNT_URL . '/signup.php');
-            }
-        }
+        defined('SHOW_MENU') or define('SHOW_MENU', true);    
     }
     
 

@@ -1580,13 +1580,16 @@ if (!function_exists('is_countable')) {
  *                   comes from in the file(s)
  * @param    bool    $bUse_var_dump you can display as print_r or var_dump.
  *                   Default is print_r
+ * @param    unspec  When debug_dump is called from a Twig template using the
+ *                   {{ debug_dump() }} function, the name of the used template
+ *                   will be passed over this variable
  * @return   string  
  */
 
 // NOTE: This function will load only if  WB_DEBUG  constant is set to true 
 // otherwise another "empty return" function (below this one) will be load.
 
-function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
+function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = false)
 {
     
     // get Type of variable
@@ -1633,6 +1636,9 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false)
     $sBackTrace = '<p class="backtrace">called in file: <b>'
             . str_replace(WB_PATH, 'WB_PATH ', $aBackTrace['file'])
             .'</b><br />on line: <b>'.$aBackTrace['line'].'</b></p>';  
+    if($mTwig != false){
+        $sBackTrace = '<p class="backtrace">called in Twig template file: <b>'.$mTwig.'</b>';  
+    }
     $sRetVal .= $sBackTrace.'</div><div class="tog_bcktrc" style="display:none">'.
             str_replace('<br />', ' ', $sBackTrace).'</div></fieldset>';  
 

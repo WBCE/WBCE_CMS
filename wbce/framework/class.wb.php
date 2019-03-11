@@ -15,7 +15,7 @@
 defined('WB_PATH') or die("Access Denied");
 
 
-class wb extends SecureForm
+class Wb extends SecureForm
 {
     // store a direct output 
     public $sDirectOutput  = '';
@@ -133,7 +133,7 @@ _JsCode;
      *         DirectOutput is triggered once  before normal output is done. 
      *
      * @param  $sContent The content to pipe out 
-     *	@return string echos out this string 
+     * @return string echos out this string 
      */
     public function DirectOutput($sContent = false) 
     {
@@ -158,38 +158,40 @@ _JsCode;
     }  
     
     /** 
-     * @brief   Check if one or more group_ids are in both group_lists
+     * @brief   Check if one or more group_ids are in both group lists
      * 
-     * @param   unspec $groups_list1: an array or a coma seperated list of group-ids
-     * @param   unspec $groups_list2: an array or a coma seperated list of group-ids
+     * @param   unspec $mGroups_1: an array or a coma seperated list of group-ids
+     * @param   unspec $mGroups_2: an array or a coma seperated list of group-ids
      * @param   array  &$matches: an array-var whitch will return possible matches
      * @return  bool   true there is a match, otherwise false
      */
-    public function is_group_match($groups_list1 = '', $groups_list2 = '', &$matches = null)
+    public function is_group_match($mGroups_1 = '', $mGroups_2 = '', &$matches = null)
     {
-        if ($groups_list1 == '') {return false;}
-        if ($groups_list2 == '') {return false;}
-        if (!is_array($groups_list1)) {
-            $groups_list1 = explode(',', $groups_list1);
+        if ($mGroups_1 == '' || $mGroups_2 == '') return false;
+        if (!is_array($mGroups_1)) {
+            // it's either a single value or a CSV
+            $mGroups_1 = explode(',', $mGroups_1);
         }
-        if (!is_array($groups_list2)) {
-            $groups_list2 = explode(',', $groups_list2);
+        if (!is_array($mGroups_2)) {
+            // it's either a single value or a CSV
+            $mGroups_2 = explode(',', $mGroups_2);
         }
-        $matches = array_intersect($groups_list1, $groups_list2);
+        $matches = array_intersect($mGroups_1, $mGroups_2);
         return (sizeof($matches) != 0);
     }
     
     /**
+     * Am I Group Member (of the following groups)?
      * @brief   Check if current user is member of at least one of given groups
-     *          SuperAdmin (user_id = 1) is always member of ALL groups
+     *          NOTE: SuperAdmin (user_id = 1) is always member of ALL groups
      *
      * @param   unspec $groups_list  An array or a comma seperated list of group-ids
      * @return  bool   true: if current user is member of one of this groups, otherwise false
      */
-    public function ami_group_member($groups_list = '')
+    public function ami_group_member($mGroups = '')
     {
         if ($this->get_group_id() == 1) {return true;}
-        return $this->is_group_match($groups_list, $this->get_groups_id());
+        return $this->is_group_match($mGroups, $this->get_groups_id());
     }
 
     /**
@@ -284,16 +286,48 @@ _JsCode;
         return $retval;
     }
 
+     /**
+     * @brief   Check if the user is logged in
+     * 
+     * @return  bool
+     */       
+    public function isLoggedIn(){
+        $iSessionUserID = $this->get_session('USER_ID');
+        return ($iSessionUserID != NULL && $iSessionUserID != "" && is_numeric($iSessionUserID));
+
+    }  
+    
     /**
-     * @brief   Check whether the user is already authenticated (loged in)
+     * @brief   Check if the user is SuperAdmin(UserID = 1)
+     * 
+     * @return  bool
+     */ 
+    public function isSuperAdmin(){
+        return ($this->get_session('USER_ID') == 1);
+    }    
+    
+    /**
+     * @brief   Check if the user is Admin (GroupID = 1)
+     * 
+     * @return  bool
+     */ 
+    public function isAdmin(){
+        if($this->get_session('GROUP_ID') == 1) return true;
+        return (in_array(1, $this->get_groups_id()));
+    }
+    
+    /**
+     * @brief   Check if user is already authenticated (logged in)
+     *          since vers. 1.4 it should be prefered to use
+     *          the method isLoggedIn() instead. 
      * 
      * @return  bool
      */
     public function is_authenticated()
     {
-        return (isset($_SESSION['USER_ID']) && $_SESSION['USER_ID'] != "" &&  is_numeric($_SESSION['USER_ID']));
+        return $this->isLoggedIn();
     }
-
+    
     /**
      * @brief   Modified addslashes function which takes into account magic_quotes
      * 
@@ -469,7 +503,7 @@ _JsCode;
 	
     /**
      * @brief   Get the current users GROUP_NAMEs as CSV string.
-     *  NOTE: a user may be member in differend user groups.
+     *          NOTE: a user may be member in differend user groups.
      * 
      * @return  string
      */
@@ -480,7 +514,7 @@ _JsCode;
 
     /**
      * @brief   Get the current users GROUP_NAMEs as array.
-     * NOTE: a user may be member in differend user groups.
+     *          NOTE: a user may be member in differend user groups.
      * 
      * @return  array
      */
@@ -757,16 +791,14 @@ _JsCode;
         $sCurrentPath = rawurldecode($sCurrentPath);
         $sCurrentPath = realpath($sCurrentPath);
         $sBaseDir     = realpath($sBaseDir);
+        
         // $sBaseDir needs to exist in the $sCurrentPath
         $pos = stripos($sCurrentPath, $sBaseDir);
 
-        if ($pos === false) {
-            return false;
-        } elseif ($pos == 0) {
-            return $sCurrentPath;
-        } else {
-            return false;
-        }
+        if ($pos === false) return false;
+        elseif ($pos == 0)  return $sCurrentPath;
+        else                return false;
+        
     }
 	
     /**
