@@ -33,7 +33,7 @@ if(in_array($_GET['switch'], $aSwitches)){
     $aToTwig = array(
         'SUPPORT_EMAIL' => $oAccounts->getSupportEmail(),  
     );
-    $oAccounts->useTwigTemplate('msg_'.$sCurrentSwitch.'twig', $aToTwig);
+    $oAccounts->useTwigTemplate('msg_'.$sCurrentSwitch.'.twig', $aToTwig);
 } else {
     header("Location: ". WB_URL ."?switch=".$sCurrentSwitch."&lc=".$_GET['lc']);
 }
