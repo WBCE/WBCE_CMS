@@ -635,69 +635,74 @@ _JsCode;
      * @brief   Print a success message which then automatically redirects 
      *          the user to a specified page
      * 
-     * @global  array    $TEXT
-     * @param   string   $message   
-     * @param   string   $redirect  URL to the redirect page
-     * @return  string   Templated success modal
+     * @param   mixed    $uMsg          may be a single string or an array
+     * @param   string   $sRedirectUri  URI to the redirect page
+     * @return  string  
      */
-    public function print_success($message, $redirect = 'index.php')
+    public function print_success($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = false)
     {
-        global $TEXT;
-        if (is_array($message)) {
-            $message = implode('<br />', $message);
-        }
-        // fetch redirect timer for sucess messages from settings table
-        $redirect_timer = ((defined('REDIRECT_TIMER')) && (REDIRECT_TIMER <= 10000)) ? REDIRECT_TIMER : 0;
-        // add template variables
-        // Setup template object, parse vars to it, then parse it
-        $tpl = new Template(dirname($this->correct_theme_source('success.htt')));
-        $tpl->set_file('page', 'success.htt');
-        $tpl->set_block('page', 'main_block', 'main');
-        $tpl->set_block('main_block', 'show_redirect_block', 'show_redirect');
-        $tpl->set_var('MESSAGE', $message);
-        $tpl->set_var('REDIRECT', $redirect);
-        $tpl->set_var('REDIRECT_TIMER', $redirect_timer);
-        $tpl->set_var('NEXT', $TEXT['NEXT']);
-        $tpl->set_var('BACK', $TEXT['BACK']);
-        if ($redirect_timer == -1) {
-            $tpl->set_block('show_redirect', '');
-        } else {
-            $tpl->parse('show_redirect', 'show_redirect_block', true);
-        }
-        $tpl->parse('main', 'main_block', false);
-        $tpl->pparse('output', 'page');
-    }
-
+        $this->messageBox('success', $uMsg, $sRedirectUri, $bAutoFooter);
+    } 
+    
     /**
      * @brief   Print an error message with a "back" link/button to a specified page
      * 
-     * @global  array    $TEXT
-     * @param   string   $message   
-     * @param   string   $link  URL for the "back" link 
-     * @return  string   Templated error modal with a "back" link/button
+     * @param   mixed    $uMsg          may be a single string or an array  
+     * @param   string   $sRedirectUri  URI for the "back" link 
+     * @return  string   
      */
-    public function print_error($message, $link = 'index.php', $auto_footer = true)
+    public function print_error($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = true)
     {
-        global $TEXT;
-        if (is_array($message)) {
-            $message = implode('<br />', $message);
-        }
-        // Setup template object, parse vars to it, then parse it
-        $success_template = new Template(dirname($this->correct_theme_source('error.htt')));
-        $success_template->set_file('page', 'error.htt');
-        $success_template->set_block('page', 'main_block', 'main');
-        $success_template->set_var('MESSAGE', $message);
-        $success_template->set_var('LINK', $link);
-        $success_template->set_var('BACK', $TEXT['BACK']);
-        $success_template->parse('main', 'main_block', false);
-        $success_template->pparse('output', 'page');
-        if ($auto_footer == true) {
+        $this->messageBox('error', $uMsg, $sRedirectUri, $bAutoFooter);
+    } 
+   
+    /**
+     * since vers. 1.4.0
+     * @brief   Print a modal box 
+     * 
+     * @param   mixed    $uMsg          may be a single string or an array  
+     * @param   string   $sRedirectUri  URI for the redirect
+     * @return  string   
+     */
+    public function messageBox($sType='info', $uMsg, $sRedirectUri='index.php', $bAutoFooter=false, $bUseRedirect=true)
+    {
+        if (!is_array($uMsg)) $uMsg = array($uMsg); 
+        
+        // get correct redirect time
+        $iRedirectTime = (defined('REDIRECT_TIMER')) ? REDIRECT_TIMER : 0;
+        $iRedirectTime = ($iRedirectTime > 10000) ? 10000 : $iRedirectTime;
+
+        $aToTwig = array(
+            'MESSAGE_TYPE'  => $sType,
+            'MESSAGES'      => $uMsg,
+            'REDIRECT_URL'  => $sRedirectUri,
+            'REDIRECT_TIME' => $iRedirectTime,
+            'USE_REDIRECT'  => $bUseRedirect,
+        );
+        $this->getThemeTwigFile('message_box.twig', $aToTwig);
+        if ($bAutoFooter == true) {
             if (method_exists($this, "print_footer")) {
                 $this->print_footer();
             }
             exit();
-        }        
+        } 
     }
+
+    
+    public function getThemeTwigFile($sTplName = '', $aToTwig = array()){
+        global $TEXT;
+        $aTemplateLocs = array();
+        $aCheckDirs = array(
+            WB_PATH.'/templates/theme_fallbacks/templates/', 
+            THEME_PATH.'/templates/', 
+        );
+        foreach ($aCheckDirs as $dir) if(is_dir($dir))$aTemplateLocs[] = $dir;
+        $oTwig = getTwig($aTemplateLocs);
+        $oTemplate = $oTwig->loadTemplate($sTplName);
+        $oTemplate->display($aToTwig);	
+    }
+    
+    
     
     /**
      * @brief Validate and send a mail

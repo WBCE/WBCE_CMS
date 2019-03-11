@@ -70,7 +70,7 @@ h3 {
     border-bottom: 1px dotted #999;
 }
 /*** overall form elements ********************************************/
-input[type="text"], input[type="password"], input[type="email"], select, option, textarea, button {
+input[type="text"], input[type="password"], input[type="email"], select, option, textarea, button, a.button {
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
@@ -173,7 +173,7 @@ label {
     margin-right: 10px;
 }
 /* buttons */
-button, input[type="submit"], input[type="reset"], input[type="button"] {
+button, input[type="submit"], input[type="reset"], input[type="button"], a.button {
     border: 1px solid #999;
     background-color: #647086;
     color: #fff;
