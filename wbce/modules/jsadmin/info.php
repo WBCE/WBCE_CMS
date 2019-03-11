@@ -19,4 +19,4 @@ $module_author = 'Stepan Riha, Swen Uth';
 $module_license = 'BSD License';
 $module_description = 'Settings for the page tree and section management behaviour.';
 $module_icon        = 'fa fa-sitemap';
-
+$module_level       = 'core';
