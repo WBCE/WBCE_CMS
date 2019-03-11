@@ -10,22 +10,25 @@
  */
  
 // prevent this file from being accessed directly
-defined('WB_PATH') OR exit("Cannot access this file directly" . __FILE__);
+defined('WB_PATH') or exit("insufficient privileges" . __FILE__);
 
-// check if user is allowed to use admin-tools (to prevent this file to be called by an unauthorized user e.g. from a code-section)
+// check if user is allowed to use admin-tools (to prevent this file 
+// to be called by an unauthorized user e.g. from a code-section)
 if(!$admin->get_permission('admintools')) exit("insuficient privileges");
 
-//load functions
-require __DIR__ .'/functions.php';
+$oAccounts = new Accounts();
+
+// Load Language Files 
+foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
 // Load Language files
-if(LANGUAGE_LOADED) {
-    require_once __DIR__ .'/languages/EN.php';	
-    $sLangFile = __DIR__ .'/languages/'.LANGUAGE.'.php';
-    if(LANGUAGE != 'EN' && is_readable($sLangFile)) {
-        require_once $sLangFile;
-    }
-}
+//if(LANGUAGE_LOADED) {
+//    require_once __DIR__ .'/languages/EN.php';	
+//    $sLangFile = __DIR__ .'/languages/'.LANGUAGE.'.php';
+//    if(LANGUAGE != 'EN' && is_readable($sLangFile)) {
+//        require_once $sLangFile;
+//    }
+//}
 
 // load CSS Files if Backend Theme not ACPI Ready
 $sAcpiCheckfile = WB_PATH.'/templates/'.DEFAULT_THEME.'/ACPI_READY';

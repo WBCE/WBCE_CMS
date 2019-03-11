@@ -10,9 +10,10 @@
  */
  
 // prevent this file from being accessed directly
-defined('WB_PATH') OR exit("Cannot access this file directly" . __FILE__);
+defined('WB_PATH') or exit("insufficient privileges" . __FILE__);
 
-// check if user is allowed to use admin-tools (to prevent this file to be called by an unauthorized user e.g. from a code-section)
+// check if user is allowed to use admin-tools (to prevent this file 
+// to be called by an unauthorized user e.g. from a code-section)
 if(!$admin->get_permission('admintools')) exit("insuficient privileges");
 ?>
 <p><b><?=$TOOL_TXT['OVERVIEW_DESCRIPTION']; ?></b></p>
@@ -25,7 +26,7 @@ I::insertJsFile( $sPluginsURL."/jquery.tablesorter/jquery.tablesorter.widgets.js
 I::insertJsFile( $sPluginsURL."/jquery.tablesorter/tablesorter_accout_tool_settings.js", "BODY BTM-");
 
 // show all users?
-$aUsers = get_users_overview();
+$aUsers = $oAccounts->get_users_overview();
 if(!empty($aUsers)){
     $field_row_framer_none = true; // global var, used in field_row_framer() function		
 ?>
@@ -86,8 +87,18 @@ if(!empty($aUsers)){
                     // the onclick function above will force the window to reload and doing so will refresh all the IdKEY values
                 ?>
                     <td style="text-align:center;">
-                            <a class="button" href="<?=ADMIN_URL?>/users/users.php?user_id=<?=$admin->getIDKEY($rec['user_id'])?>&modify=1" <?=$JsOnClick?> title="<?=$TEXT['MODIFY'].' '.$TEXT['USER']?>" target="_bank">
+                        <?php if($rec['user_id'] == 1): 
+                                if($admin->isSuperAdmin()):
+                        ?>
+                                <a class="button" href="<?=ADMIN_URL?>/preferences/" <?=$JsOnClick?> title="<?=$TEXT['MODIFY']?>" target="_blank">
                                      &nbsp;<i class="fa fa-pencil-square-o "></i></a>
+                            <?php else: ?>
+                                nothing to click
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <a class="button" href="<?=ADMIN_URL?>/users/users.php?user_id=<?=$admin->getIDKEY($rec['user_id'])?>&modify=1" <?=$JsOnClick?> title="<?=$TEXT['MODIFY'].' '.$TEXT['USER']?>" target="_blank">
+                                     &nbsp;<i class="fa fa-pencil-square-o "></i></a>
+                        <?php endif; ?>
                     </td>
                 <?php endif; ?>
             </tr>
@@ -98,11 +109,10 @@ if(!empty($aUsers)){
 </table>
 <?php 
     $sToCss = "
-            .tablesorter thead .disabled {
-                display:none;
-            }
+        .tablesorter thead .disabled {
+            display:none;
+        }
     ";
     I::insertCssCode($sToCss, 'HEAD BTM-', 'tablesorter');
 
 } //endif
-?>

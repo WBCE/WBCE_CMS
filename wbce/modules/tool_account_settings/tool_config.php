@@ -10,7 +10,7 @@
  */
  
 // Direct access prevention
-defined('WB_PATH') OR die(header('Location: ../index.php'));
+defined('WB_PATH') or die(header('Location: ../index.php'));
 
 $sToCss = "
         .groupWrapper div.settingValue textarea {

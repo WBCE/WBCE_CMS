@@ -13,37 +13,38 @@
 // Must include code to stop this file being access directly
 defined('WB_PATH') or die("Cannot access this file directly"); 
 
+$oAccounts = new Accounts();
 // Check FTAN
-if (!$wb->checkFTAN()) {
-    $wb->print_error('MESSAGE:GENERIC_SECURITY_ACCESS', WB_URL);
+if (!$oAccounts->checkFTAN()) {
+    $oAccounts->print_error('MESSAGE:GENERIC_SECURITY_ACCESS', WB_URL);
 }
 
 $oMsgBox = new MessageBox();
-$aMsg = array();
+$aMsg    = array();
 
-$sCurrPassword = $wb->get_post('current_password');
-$sEncPassword  = $wb->checkPasswordPattern($sCurrPassword);
-$sNewEmail     = $wb->get_post('email');
+$sCurrPassword = $oAccounts->get_post('current_password');
+$sEncPassword  = $oAccounts->checkPasswordPattern($sCurrPassword);
+$sNewEmail     = $oAccounts->get_post('email');
 
 // validate confirmation password
 $sSql  = "SELECT `user_id` FROM `{TP}users` WHERE `user_id` = %d AND `password` = '%s'";
-if(is_array($sEncPassword)){
+if (is_array($sEncPassword)){
     $aMsg['error'][] = 'MESSAGE:PREFERENCES_CURRENT_PASSWORD_INCORRECT';
-} elseif($database->get_one(sprintf($sSql, $wb->get_user_id(), $sEncPassword)) == false) {
+} elseif ($database->get_one(sprintf($sSql, $oAccounts->get_user_id(), $sEncPassword)) == false) {
     $aMsg['error'][] = 'MESSAGE:PREFERENCES_CURRENT_PASSWORD_INCORRECT';
 } else { 
 
     // Get entered values
-    $sDisplayName  = $wb->add_slashes(strip_tags($wb->get_post('display_name')));
-    $sLC           = $wb->get_post('language');
+    $sDisplayName  = $oAccounts->add_slashes(strip_tags($oAccounts->get_post('display_name')));
+    $sLC           = $oAccounts->get_post('language');
     $sLanguage     = preg_match('/^[A-Z]{2}$/', $sLC) ? $sLC : 'EN';
-    $sTimezone     = is_numeric($wb->get_post('timezone')) ? $wb->get_post('timezone')*60*60 : 0;
-    $sDateFormat   = $wb->get_post('date_format');
-    $sTimeFormat   = $wb->get_post('time_format');
+    $sTimezone     = is_numeric($oAccounts->get_post('timezone')) ? $oAccounts->get_post('timezone')*60*60 : 0;
+    $sDateFormat   = $oAccounts->get_post('date_format');
+    $sTimeFormat   = $oAccounts->get_post('time_format');
 
     // Update user data
     $aUpdate = array(
-        'user_id'      => $wb->get_user_id(),
+        'user_id'      => $oAccounts->get_user_id(),
         'display_name' => $database->escapeString($sDisplayName),
         'language'     => $database->escapeString($sLanguage),
         'timezone'     => $database->escapeString($sTimezone),
@@ -52,19 +53,19 @@ if(is_array($sEncPassword)){
     );
 
     // Validate email format
-    if(!$wb->validate_email($sNewEmail)) {
+    if (!$oAccounts->validate_email($sNewEmail)) {
         $aMsg['error'][] = 'MESSAGE:USERS_INVALID_EMAIL';
     } else {
-        $aUpdate['email']   = $database->escapeString($sNewEmail);
+        $aUpdate['email'] = $database->escapeString($sNewEmail);
     }
 
     // Validate new password if entered
-    if($wb->get_post('new_password') != ''){
+    if ($oAccounts->get_post('new_password') != ''){
         
-        $sNewPassword      = $wb->get_post('new_password');
-        $sRePassword       = $wb->get_post('new_password2');
+        $sNewPassword = $oAccounts->get_post('new_password');
+        $sRePassword  = $oAccounts->get_post('new_password2');
     
-        $checkPassword =  $wb->checkPasswordPattern($sNewPassword, $sRePassword);
+        $checkPassword =  $oAccounts->checkPasswordPattern($sNewPassword, $sRePassword);
         if (is_array($checkPassword)){
             $aMsg['error'][] = $checkPassword[0];
         } else {
@@ -74,9 +75,9 @@ if(is_array($sEncPassword)){
     }
 
     // Update Data in Database
-    if($oMsgBox->hasErrors() == false && $database->updateRow('{TP}users', 'user_id', $aUpdate)) {
+    if (empty($aMsg['error']) && $database->updateRow('{TP}users', 'user_id', $aUpdate)) {
         $aMsg['success'][] = 'MESSAGE:PREFERENCES_DETAILS_SAVED';
-        if(isset($aUpdate['password']))
+        if (isset($aUpdate['password']))
             $aMsg['success'][] = 'MESSAGE:PREFERENCES_PASSWORD_CHANGED';
 
         // update SESSION values
@@ -88,32 +89,31 @@ if(is_array($sEncPassword)){
         $_SESSION['CHECK_PREFERENCES'] = true;
         
         // Update DATE_FORMAT 
-        if($sDateFormat != '') {
+        if ($sDateFormat != '') {
             $_SESSION['DATE_FORMAT'] = $sDateFormat;
-            if(isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) unset($_SESSION['USE_DEFAULT_DATE_FORMAT']); 
+            if (isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) unset($_SESSION['USE_DEFAULT_DATE_FORMAT']); 
         } else {
             $_SESSION['USE_DEFAULT_DATE_FORMAT'] = true;
-            if(isset($_SESSION['DATE_FORMAT']))             unset($_SESSION['DATE_FORMAT']); 
+            if (isset($_SESSION['DATE_FORMAT']))             unset($_SESSION['DATE_FORMAT']); 
         }
 
         // Update TIME_FORMAT 
-        if($sTimeFormat != '') {
+        if ($sTimeFormat != '') {
             $_SESSION['TIME_FORMAT'] = $sTimeFormat;
-            if(isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) unset($_SESSION['USE_DEFAULT_TIME_FORMAT']); 
+            if (isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) unset($_SESSION['USE_DEFAULT_TIME_FORMAT']); 
         } else {
             $_SESSION['USE_DEFAULT_TIME_FORMAT'] = true;
-            if(isset($_SESSION['TIME_FORMAT']))             unset($_SESSION['TIME_FORMAT']); 
+            if (isset($_SESSION['TIME_FORMAT']))             unset($_SESSION['TIME_FORMAT']); 
         }
     } else {
         $aMsg['error'][] = $database->get_error();
     }
 }
-if(!empty($aMsg)){
+if (!empty($aMsg)){
     foreach($aMsg as $sTypeName => $aTypeArr){
         foreach($aTypeArr as $sMsg){
             $oMsgBox->$sTypeName($sMsg);
         }
     }
 }
-#$oMsgBox->display();
 $oMsgBox->redirect(PREFERENCES_URL);

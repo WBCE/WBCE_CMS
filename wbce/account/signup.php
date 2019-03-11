@@ -11,10 +11,16 @@
  */
 
 require_once dirname(__DIR__) . '/config.php';
-require_once __DIR__ . ' /init.php';
+
+if(!FRONTEND_LOGIN) {
+    header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
+    exit(0);
+}
+$oAccounts = new Accounts();
+foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
 // Check if FRONTEND_SIGNUP group constant is defined or USER_ID is in Session
-$iSignupGroupID = defined('FRONTEND_SIGNUP') ? (int) FRONTEND_SIGNUP : 0;
+$iSignupGroupID = defined('FRONTEND_SIGNUP') ?  (int) FRONTEND_SIGNUP : 0;
 $iUserID        = isset($_SESSION['USER_ID']) ? (int) $_SESSION['USER_ID'] : 0;
 
 // Work out redirect_url (either root index.php or intro page in pages/index.php)
@@ -22,7 +28,7 @@ $sRedirect = WB_URL . ((INTRO_PAGE) ? PAGES_DIRECTORY : '') . '/index.php';
 
 // Do not show signup form if no FRONTEND_SIGNUP was defined or user already logged-in
 if ($iSignupGroupID === 0 || $iUserID != 0) {
-	die(header('Location: ' . $sRedirect));
+    die(header('Location: ' . $sRedirect));
 }
 
 // Check if form honeypot fields were filled out
@@ -38,7 +44,7 @@ if (ENABLED_ASP && isset($_POST['username']) && (
 }
 
 // Define Page Details
-define('TEMPLATE',    account_getConfig()['signup_template']);
+define('TEMPLATE',    $oAccounts->cfg['signup_template']);
 define('PAGE_ID',     (!empty($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0));
 define('ROOT_PARENT', 0);
 define('PARENT',      0);
@@ -46,10 +52,10 @@ define('LEVEL',       0);
 define('PAGE_TITLE',  $TEXT['SIGNUP']);
 define('MENU_TITLE',  $TEXT['SIGNUP']);
 define('VISIBILITY',  'public');
-define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/signup_form.php');
+define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/form_signup.php');
 
 // Setup wb object, skip header and skip permission checks
-$wb = new wb('Start', 'start', false, false);
+#$wb = new wb('Start', 'start', false, false);
 // disable auto authentication
 $auto_auth = false;
 

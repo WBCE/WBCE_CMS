@@ -12,11 +12,12 @@
 // prevent this file from being accessed directly
 defined('WB_PATH') or die(header('Location: ../index.php'));  
 
-$module_directory     = 'tool_account_settings';
-$module_name          = 'Account and Signups configuration';
-$module_function      = 'tool';
-$module_version       = '0.0.5';
-$module_platform      = '1.3.2'; // WBCE
-$module_author        = 'Christian M. Stefan (Stefek)';
-$module_license       = 'GNU General Public License';
-$module_description   = 'Allows to store extended information for users';
+$module_directory   = 'tool_account_settings';
+$module_name        = 'Account and Signups configuration';
+$module_function    = 'tool';
+$module_version     = '0.0.5';
+$module_platform    = '1.3.2'; // WBCE
+$module_author      = 'Christian M. Stefan (Stefek)';
+$module_icon        = 'fa fa-user-circle-o';
+$module_license     = 'GNU General Public License';
+$module_description = 'Set up the registration process (signup) and have an overview of all users registered to the system.';

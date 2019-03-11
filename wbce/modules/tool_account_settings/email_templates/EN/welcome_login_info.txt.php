@@ -10,9 +10,9 @@ Username: {{LOGIN_NAME}}
 Password: {{LOGIN_PASSWORD}}
 
 Click here to log in:
-{{LOGIN_URL}}
+<a href="{{LOGIN_URL}}">{{LOGIN_URL}}</a>
 
-If you have any question, please contact the <a href="mailto:{{SUPPORT_EMAIL}}">support</a>.
+If you have any questions, please contact the support: <a href="mailto:{{SUPPORT_EMAIL}}">{{SUPPORT_EMAIL}}</a>
 
 ------------------------------------------------------------------------------------------
 This email was generated automatically

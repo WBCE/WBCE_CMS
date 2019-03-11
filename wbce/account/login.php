@@ -11,7 +11,15 @@
  */
 
 require_once dirname(__DIR__) . '/config.php';
-require_once __DIR__ . ' /init.php';
+#require_once __DIR__ . ' /init.php';
+
+if(!FRONTEND_LOGIN) {
+    header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
+    exit(0);
+}
+
+$oAccounts = new Accounts();
+foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
 $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
 $sRedirect = strip_tags(isset(${$requestMethod}['redirect']) ? ${$requestMethod}['redirect'] : '');
@@ -19,7 +27,7 @@ $sRedirect = ((isset($_SERVER['HTTP_REFERER']) && empty($sRedirect)) ?  $_SERVER
 $sRedirect = ($sRedirect != '') ? $sRedirect : WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php';
 $_SESSION['HTTP_REFERER'] = str_replace(WB_URL,'',$sRedirect);
 
-if ($wb->is_authenticated() == true) {    
+if ($oAccounts->is_authenticated() == true) {    
     header('Location: ' . $sRedirect); // User already logged-in, redirect
     exit();
 }
@@ -28,7 +36,7 @@ if ($wb->is_authenticated() == true) {
 $oLogin = new Login(
     array(
         "MAX_ATTEMPS"           => "3",
-        "WARNING_URL"           => get_url_from_path($wb->correct_theme_source('warning.html')),
+        "WARNING_URL"           => get_url_from_path($oAccounts->correct_theme_source('warning.html')),
         "USERNAME_FIELDNAME"    => 'username',
         "PASSWORD_FIELDNAME"    => 'password',
         "REMEMBER_ME_OPTION"    => SMART_LOGIN,
@@ -38,7 +46,7 @@ $oLogin = new Login(
         "MAX_PASSWORD_LEN"      => "30",
         "LOGIN_URL"             => LOGIN_URL.(!empty($sRedirect) ? '?redirect=' .$_SESSION['HTTP_REFERER'] : ''),
         "DEFAULT_URL"           => WB_URL.PAGES_DIRECTORY."/index.php",
-        "TEMPLATE_DIR"          => realpath(WB_PATH.$wb->correct_theme_source('login.htt')),
+        "TEMPLATE_DIR"          => realpath(WB_PATH.$oAccounts->correct_theme_source('login.htt')),
         "TEMPLATE_FILE"         => "login.htt",
         "FRONTEND"              => true,
         "FORGOTTEN_DETAILS_APP" => FORGOT_URL,
@@ -48,7 +56,7 @@ $oLogin = new Login(
 $globals[] = 'oLogin'; // Set extra outsider var (used in the page_content() function
 
 // Define Page Details
-define('TEMPLATE',    account_getConfig()['login_template']);
+define('TEMPLATE',    $oAccounts->cfg['login_template']);
 define('PAGE_ID',     (!empty($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0));
 define('ROOT_PARENT', 0);
 define('PARENT',      0);
@@ -56,7 +64,7 @@ define('LEVEL',       0);
 define('PAGE_TITLE',  $TEXT['PLEASE_LOGIN']);
 define('MENU_TITLE',  $TEXT['PLEASE_LOGIN']);
 define('VISIBILITY',  'public');
-define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/login_form.php');
+define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/form_login.php');
 
 // Include the index (wrapper) file
 require WB_PATH.'/index.php';

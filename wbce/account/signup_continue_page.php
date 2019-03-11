@@ -11,20 +11,14 @@
  */
 
 require_once dirname(__DIR__) . '/config.php';
-require_once __DIR__ . ' /init.php';
-
-// include default language file
-require_once WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php';
-$load_language = false;
-
-// get config from INI file
-$config = account_getConfig();
+$oAccounts = new Accounts();
+foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
 // set required page details
 $page_id          = (isset($_SESSION['PAGE_ID']) && ($_SESSION['PAGE_ID'] != '') ? $_SESSION['PAGE_ID'] : 0);
 $page_description = '';
 $page_keywords    = '';
-define('TEMPLATE', $config['signup_template']);
+define('TEMPLATE', $oAccounts->cfg['signup_template']);
 define('PAGE_ID', $page_id);
 define('ROOT_PARENT', 0);
 define('PARENT', 0);

@@ -4,7 +4,7 @@ A new user has signed up on {{LOGIN_WEBSITE_TITLE}}.
 If the user should have access to the site according to the defined access rights of the signup group, the account has to be activated.
 
 The signup details read:
-Username:    {{LOGIN_NAME}}
+Login name:  {{LOGIN_NAME}}
 User ID:     {{USER_ID}}
 Email:       {{LOGIN_EMAIL}}
 Date:        {{SIGNUP_DATE}}

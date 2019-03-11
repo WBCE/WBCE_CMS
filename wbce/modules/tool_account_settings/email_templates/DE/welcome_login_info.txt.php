@@ -8,10 +8,10 @@ Benutzername: {{LOGIN_NAME}}
 Passwort: {{LOGIN_PASSWORD}}
 
 Hier geht es zum Log-In:
-{{LOGIN_URL}}
+<a href="{{LOGIN_URL}}">{{LOGIN_URL}}</a>
 
 
-Bei Fragen oder Problemen wenden Sie sich bitte an den <a href="mailto:{{SUPPORT_EMAIL}}">Support</a>.
+Bei Fragen oder Problemen wenden Sie sich bitte an den Support: <a href="mailto:{{SUPPORT_EMAIL}}">{{SUPPORT_EMAIL}}</a>
 
 -----------------------------------------------
 Diese E-Mail wurde automatisch erstellt.
