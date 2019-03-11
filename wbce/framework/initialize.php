@@ -120,18 +120,21 @@ define("DOMAIN_PROTOCOLL", $protocoll);
 
 // Registering class for idna conversion (needed for email-checks)
 WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
-WbAuto::AddFile("SecureForm", "/framework/SecureForm.php");
+WbAuto::AddFile("SecureForm",   "/framework/SecureForm.php");
 
 // Auto Load the Insert and I Classes
-WbAuto::AddFile("Insert",   "/framework/Insert.php");
-WbAuto::AddFile("I",        "/framework/I.php");
+WbAuto::AddFile("Insert", "/framework/Insert.php");
+WbAuto::AddFile("I",      "/framework/I.php");
 
 // Auto Load Mailer Class (subclass of PHPMailer)
 WbAuto::AddFile("Mailer",   "/framework/Mailer.php");
 WbAuto::AddFile("wbmailer", "/framework/Mailer.php"); // fallback for older modules
 
-// Auto FlashMessages and Message Class
-WbAuto::AddFile("MessageBox",    "/framework/MessageBox.php");    // child class
+// Auto Accounts Class
+WbAuto::AddFile("Accounts", "/framework/Accounts.php"); // child class
+
+// Auto MessageBox Class
+WbAuto::AddFile("MessageBox", "/framework/MessageBox.php"); // child class
 
 // Auto Load phpLib (the ancient Templating Engine)
 WbAuto::AddFile("Template", "/include/phplib/template.inc");
