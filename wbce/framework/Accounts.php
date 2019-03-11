@@ -30,36 +30,7 @@ class Accounts extends Frontend
         $this->cfg = $this->getConfig();
     }
 
-
-    /**
-     * $sCSV          the CSV string of emails or a single email address 
-     * $bMakeArray    if set to true will return an array rather than a CSV string
-     */
-    public function validate_emails_from_csv($sCSV, $bMakeArray = false){
-        $aRetVal = array(); // collect validated email addresses	
-        // check if is a CSV array of emails
-        if (strpos($sCSV, ',') !== false){
-            $sCSV = str_replace(' ', '', $sCSV);
-            $aTmp = explode(',', $sCSV);
-        } else {
-            // put single setting into array
-            $aTmp = array($sCSV);
-        }
-
-        // validate the array
-        foreach($aTmp as $sMailAddr){
-            if (filter_var($sMailAddr, FILTER_VALIDATE_EMAIL)){
-                $aRetVal[] = $sMailAddr;
-            }
-        }
-        if ($bMakeArray){
-            return $aRetVal;
-        } else {
-            return implode(',', $aRetVal);
-        }
-    }
-
-    public function getConfig(){
+   public function getConfig(){
         // default cfg file
         $sUseCfg = ACCOUNT_TOOL_PATH . '/account/Accounts.cfg.php'; // the original Accounts config file
 
@@ -122,7 +93,7 @@ class Accounts extends Frontend
         // ====================================================	
         $sSupportEmail = ''; // init Support E-Mail
         if (isset($aConfig['support_email']) && $aConfig['support_email'] != ''){
-            $sSupportEmail = validate_emails_from_csv($aConfig['support_email']);
+            $sSupportEmail = $this->validate_emails_from_csv($aConfig['support_email']);
         }
         if($sSupportEmail == ''){
             $sSupportEmail = $aConfig['accounts_manager_email'][0];
@@ -259,8 +230,6 @@ class Accounts extends Frontend
         }
         return $sRetVal;
     }
-
-
 
     public function sendChangeNotificationEmail($aTokenReplace, $sEmailSubject = ''){
         if($this->cfg['notify_on_user_changes'] == true){
@@ -502,47 +471,47 @@ class Accounts extends Frontend
     $sPryFunc = ob_get_clean();
         foreach ( $aUsers as $rec ) {
 
-                $iID = $rec['user_id'];
-                $aCollection[$iID]['language']    = $rec['language'];
-                $aCollection[$iID]['user_id']     = $rec['user_id'];
-                $aCollection[$iID]['username']    = $rec['display_name'].' <i>('.$rec['username'].')</i>';
-                $aCollection[$iID]['usernameCsv'] = $rec['display_name'].' ('.$rec['username'].')';
-                $aCollection[$iID]['email']       = $rec['email'];
-                $aCollection[$iID]['groups']      = $rec['user_groups'];
-                $aCollection[$iID]['actions']     = sprintf($sPryFunc, $rec['display_name'], $iID, $iID).' '; 
-                $aCollection[$iID]['login_when']  = $rec['login_when'];
-                $aCollection[$iID]['profile_url'] = sprintf(UB_TOOL_URI.'&amp;pos=detail&amp;id=%d&amp;action=edit', $iID);
-                $aCollection[$iID]['signup_timestamp'] = isset($rec['signup_timestamp']) ? $rec['signup_timestamp'] : '';
+            $iID = $rec['user_id'];
+            $aCollection[$iID]['language']    = $rec['language'];
+            $aCollection[$iID]['user_id']     = $rec['user_id'];
+            $aCollection[$iID]['username']    = $rec['display_name'].' <i>('.$rec['username'].')</i>';
+            $aCollection[$iID]['usernameCsv'] = $rec['display_name'].' ('.$rec['username'].')';
+            $aCollection[$iID]['email']       = $rec['email'];
+            $aCollection[$iID]['groups']      = $rec['user_groups'];
+            $aCollection[$iID]['actions']     = sprintf($sPryFunc, $rec['display_name'], $iID, $iID).' '; 
+            $aCollection[$iID]['login_when']  = $rec['login_when'];
+            $aCollection[$iID]['profile_url'] = sprintf(UB_TOOL_URI.'&amp;pos=detail&amp;id=%d&amp;action=edit', $iID);
+            $aCollection[$iID]['signup_timestamp'] = isset($rec['signup_timestamp']) ? $rec['signup_timestamp'] : '';
         }
         return $aCollection;
     }
 
-    public function renderAspHoneypots(){
-       $sASPFields = '';
-       if (ENABLED_ASP) { 
-           $sTimeStamp = time();
-           $_SESSION['submitted_when'] = $sTimeStamp;
-           // add some honeypot-fields
-           ob_start();	
-       ?>
-           <div style="display:none;">
-               <input type="hidden" name="submitted_when" value="<?=$sTimeStamp ?>" />
-               <p class="nixhier">
-                   <label for="email-address" title="Leave this field email-address blank">Email address:</label>
-                   <input id="email-address" name="email-address" size="60" value="" />
-               </p>
-               <p class="nixhier">				
-                   <label for="name" title="Leave this field name blank">Username (id):</label>
-                   <input id="name" name="name" size="60" value="" /></p>
-               <p class="nixhier">
-                   <label for="full_name" title="Leave this field full_name blank">Full Name:</label>
-                   <input id="full_name" name="full_name" size="60" value="" />
-               </p>
-           </div>		
-       <?php 
-           $sASPFields = ob_get_clean();
-       } //end:ENABLED_ASP
-       return $sASPFields;
-    }
     
+    /**
+     * $sCSV          the CSV string of emails or a single email address 
+     * $bMakeArray    if set to true will return an array rather than a CSV string
+     */
+    public function validate_emails_from_csv($sCSV, $bMakeArray = false){
+        $aRetVal = array(); // collect validated email addresses	
+        // check if is a CSV array of emails
+        if (strpos($sCSV, ',') !== false){
+            $sCSV = str_replace(' ', '', $sCSV);
+            $aTmp = explode(',', $sCSV);
+        } else {
+            // put single setting into array
+            $aTmp = array($sCSV);
+        }
+
+        // validate the array
+        foreach($aTmp as $sMailAddr){
+            if (filter_var($sMailAddr, FILTER_VALIDATE_EMAIL)){
+                $aRetVal[] = $sMailAddr;
+            }
+        }
+        if ($bMakeArray){
+            return $aRetVal;
+        } else {
+            return implode(',', $aRetVal);
+        }
+    }
 }
