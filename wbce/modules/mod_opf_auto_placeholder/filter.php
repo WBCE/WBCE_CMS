@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Auto Placeholder
- * @version         1.2.4
+ * @version         1.2.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -49,11 +49,11 @@ function opff_mod_opf_auto_placeholder (&$sContent, $page_id, $section_id, $modu
             //    We have taken care of it using the proper order of placeholders.
             $aPlaceholders = array(
                 'JS HEAD TOP' => array(
-                    "/<\s*meta[^>]*?charset.*?\/?\s*>/si",
+                    "/(.*?(<\s*meta[^>]*>))+/si",
                     "$0\n<!--(PH) JS HEAD TOP+ -->\n<!--(PH) JS HEAD TOP- -->\n"
                 ),
                 'CSS HEAD TOP' => array(
-                    "/<\s*meta[^>]*?charset.*?\/?\s*>/si",
+                    "/(.*?(<\s*meta[^>]*>))+/si",
                     "$0\n<!--(PH) CSS HEAD TOP+ -->\n<!--(PH) CSS HEAD TOP- -->\n"
                 ),
                 'CSS HEAD BTM' => array(
@@ -81,7 +81,7 @@ function opff_mod_opf_auto_placeholder (&$sContent, $page_id, $section_id, $modu
                     "\n<!--(PH) JS BODY BTM+ -->\n<!--(PH) JS BODY BTM- -->\n$0"
                 ),
                 'META HEAD' => array(
-                    "/<\s*meta[^>]*?charset.*?\/?\s*>/si",
+                    "/<\s*meta[^>]*>/si",
                     "\n<!--(PH) META HEAD+ -->\n<!--(PH) META HEAD- -->\n$0"
                 ),
                 'TITLE' => array(
@@ -89,11 +89,11 @@ function opff_mod_opf_auto_placeholder (&$sContent, $page_id, $section_id, $modu
                     "<!--(PH) TITLE+ -->$0<!--(PH) TITLE- -->"
                 ),
                 'META DESC' => array(
-                    "/<\s*meta[^>]*?\=\"description\".*?\/?\s*>/si",
+                    "/<\s*meta[^>]*?\=\"description\"[^>]*>/si",
                     "<!--(PH) META DESC+ -->$0<!--(PH) META DESC- -->"
                 ),
                 'META KEY' => array(
-                    "/<\s*meta[^>]*?\=\"keywords\".*?\/?\s*>/si",
+                    "/<\s*meta[^>]*?\=\"keywords\"[^>]*>/si",
                     "<!--(PH) META KEY+ -->$0<!--(PH) META KEY- -->"
                 )
             );
