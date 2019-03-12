@@ -173,25 +173,27 @@ if(isset($_POST['signup_form_sent'])){
             'LOGIN_WEBSITE_TITLE'  => WEBSITE_TITLE, 
             'SIGNUP_DATE'          => date("Y-m-d H:i:s", time()),
             'LOGIN_EMAIL'          => $email,
-            'SUPPORT_EMAIL'        => $oAccounts->getSupportEmail(),
+            'SUPPORT_EMAIL'        => $oAccounts->cfg['support_email'],
             'APPROVAL_LINK'        => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=1&sum='.$sCheckSum),
-            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.substr(md5($sCheckSum), 0, 10)),
+            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.$sCheckSum),
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout), 
             'LOGIN_URL'            => ACCOUNT_URL . '/login.php'
         );	
-
+        
+        // prepare DB updateRow array
+        $aUpdateUser = array(
+            'user_id'            => $iUserID,
+            'signup_confirmcode' => $sConfirmCode,
+            'signup_timeout'     => $sConfirmTimeout,
+            'signup_checksum'    => $sCheckSum,
+        );
+        
         if ($oAccounts->cfg['signup_double_opt_in'] == 1){
             // prepare E-Mail with ACTIVATION LINK to send to the prospect
             $sOnScreenSwitch    = 'activation_link_sent';
             $sEmailTemplateName = 'activation_link';	
             $sMailTo            = $email;
-
-            $aUpdateUser = array(
-                'user_id'            => $iUserID,
-                'signup_confirmcode' => $sConfirmCode,
-                'signup_timeout'     => $sConfirmTimeout,
-                'signup_checksum'    => $sCheckSum,
-            );
+          
             $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
         }
 
@@ -202,21 +204,17 @@ if(isset($_POST['signup_form_sent'])){
             $sMailTo            = $email;
 
             // Silently send E-Mail to AccountsManager to inform him about the new sign-up
-            $oAccounts->sendEmail($oAccounts->getAccountsManagerEmail(), $aTokenReplace, 'new_user_manager_info');
+            $oAccounts->sendEmail($oAccounts->cfg['accounts_manager_email'], $aTokenReplace, 'new_user_manager_info');
         }	
 
         if($oAccounts->cfg['signup_double_opt_in'] == 0 && $oAccounts->cfg['user_activated_on_signup'] == 0){
-            $aUpdateUser = array(
-                'user_id'            => $iUserID,
-                'signup_confirmcode' => $sConfirmCode,
-                'signup_timeout'     => $sConfirmTimeout,
-            );
+          
             $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
 
             // Prepare E-Mail with APPROVAL LINK to send to the AccountsManager
             $sOnScreenSwitch    = 'manager_confirm_new_signup';
             $sEmailTemplateName = 'manager_approve_new_user';
-            $sMailTo            = $oAccounts->getAccountsManagerEmail();
+            $sMailTo            = $oAccounts->cfg['accounts_manager_email'];
         }		
 
         // ///////////////////////////////
@@ -243,13 +241,13 @@ if(ENABLED_CAPTCHA) {
     ob_start(); call_captcha(); $show_captcha = ob_get_clean();
 }
 $aToTwig = array(
-    'USER_NAME'     => $username, 
-    'DISPLAY_NAME'  => $display_name, 
-    'EMAIL'         => $email, 
-    'GDPR_VALUE'    => $gdpr_check, 
-    'SHOW_CAPTCHA'  => $show_captcha, 
-    'ASP_HONEYPOTS' => $oAccounts->renderAspHoneypots(), 
-    'MESSAGE_BOX'   => $oMsgBox->fetchDisplay(), 
+    'USER_NAME'        => $username, 
+    'DISPLAY_NAME'     => $display_name, 
+    'EMAIL'            => $email, 
+    'GDPR_VALUE'       => $gdpr_check, 
+    'SHOW_CAPTCHA'     => $show_captcha, 
+    'ASP_HONEYPOTS'    => $oAccounts->renderAspHoneypots(), 
+    'MESSAGE_BOX'      => $oMsgBox->fetchDisplay(), 
     
     'USER_NAME_ERR'    => $username_error, 
     'DISPLAY_NAME_ERR' => $display_name_error, 

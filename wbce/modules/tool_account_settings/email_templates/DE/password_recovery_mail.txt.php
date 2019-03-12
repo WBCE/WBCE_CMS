@@ -11,6 +11,8 @@ Passwort: {{LOGIN_PASSWORD}}
 
 Das bisherige Passwort wurde durch das neue Passwort ersetzt.
 
+Hier geht es zum Log-In:
+<a href="{{LOGIN_URL}}">{{LOGIN_URL}}</a>
 
 -----------------------------------------------
 Diese E-Mail wurde automatisch erstellt.

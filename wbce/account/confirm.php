@@ -68,7 +68,7 @@ if($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)){
             'LOGIN_DISPLAY_NAME'  => $aUser['display_name'], 
             'LOGIN_PASSWORD'      => $sNewPasswordRaw,
             'LOGIN_WEBSITE_TITLE' => WEBSITE_TITLE, 
-            'SUPPORT_EMAIL'       => $oAccounts->getSupportEmail(),
+            'SUPPORT_EMAIL'       => $oAccounts->cfg['support_email'],
             'LOGIN_URL'           => ACCOUNT_URL . '/login.php'
         );	
 
@@ -101,7 +101,7 @@ if($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)){
             'LOGIN_EMAIL'          => $aUser['email'],
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout),
             'LOGIN_URL'            => ACCOUNT_URL.'/login.php', 
-            'SUPPORT_EMAIL'        => $oAccounts->getSupportEmail(),
+            'SUPPORT_EMAIL'        => $oAccounts->cfg['support_email'],
             'APPROVAL_LINK'        => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=1&sum='.$sCheckSum), 
             'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.substr(md5($sCheckSum), 0, 10)),
         );
@@ -119,7 +119,7 @@ if($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)){
             $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
 
             // Send email to AccountsManager so he is informed about the new registration
-            $oAccounts->sendEmail($oAccounts->getAccountsManagerEmail(), $aTokenReplace, 'new_user_manager_info');			
+            $oAccounts->sendEmail($oAccounts->cfg['accounts_manager_email'], $aTokenReplace, 'new_user_manager_info');			
 
             // Send email to user and provide him with his login details
             // Prepare vars for E-Mail to user
@@ -142,7 +142,7 @@ if($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)){
             );			
             $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
             
-            $checkSend = $oAccounts->sendEmail($oAccounts->getAccountsManagerEmail(), $aTokenReplace, 'manager_approve_new_user');
+            $checkSend = $oAccounts->sendEmail($oAccounts->cfg['accounts_manager_email'], $aTokenReplace, 'manager_approve_new_user');
             if ($checkSend === true) {			
                 header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=manager_confirm_new_signup");				
             } else {

@@ -11,6 +11,8 @@ Password: {{LOGIN_PASSWORD}}
 
 The old password has been replaced by the new one.
 
+Click here to log in:
+<a href="{{LOGIN_URL}}">{{LOGIN_URL}}</a>
 
 ------------------------------------------------------------------------------------------
 This email was generated automatically

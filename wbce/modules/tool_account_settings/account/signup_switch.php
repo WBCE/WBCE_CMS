@@ -31,7 +31,7 @@ $sCurrentSwitch = (string) $_GET['switch'];
 if(in_array($_GET['switch'], $aSwitches)){	
     // Get the Twig template based on switch
     $aToTwig = array(
-        'SUPPORT_EMAIL' => $oAccounts->getSupportEmail(),  
+        'SUPPORT_EMAIL' => $oAccounts->cfg['support_email'],  
     );
     $oAccounts->useTwigTemplate('msg_'.$sCurrentSwitch.'.twig', $aToTwig);
 } else {

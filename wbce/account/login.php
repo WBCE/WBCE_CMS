@@ -20,7 +20,6 @@ if(!FRONTEND_LOGIN) {
 
 $oAccounts = new Accounts();
 foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
-
 $requestMethod = '_'.strtoupper($_SERVER['REQUEST_METHOD']);
 $sRedirect = strip_tags(isset(${$requestMethod}['redirect']) ? ${$requestMethod}['redirect'] : '');
 $sRedirect = ((isset($_SERVER['HTTP_REFERER']) && empty($sRedirect)) ?  $_SERVER['HTTP_REFERER'] : $sRedirect);

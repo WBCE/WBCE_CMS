@@ -103,20 +103,6 @@ class Accounts extends Frontend
         return $aConfig;
     }
 
-
-    // "AccountsManager" here, in this case, is the one who is responsible for accounts, signups etc.
-    public function getAccountsManagerEmail()	{	
-        return $this->cfg['accounts_manager_email'];
-    }
-
-    // "AccountsManager" here, in this case, is the one who is responsible for accounts, signups etc.
-    public function getSupportEmail() {
-        if(isset($this->cfg['accounts_support_email']))
-             return $this->cfg['accounts_support_email'];
-        else return SERVER_EMAIL;
-    }
-
-
     /**
      * Returns an array of all possible language files, including overrides
      */

@@ -1105,13 +1105,14 @@ class Insert {
         // While working with jQuery and other JS Libraries it's important to have its  
         //    CSS files added before the actual JS code. 
         //    We have taken care of it using the proper order of placeholders.
+        
         $aPlaceholders = array(
             'JS HEAD TOP' => array(
-                "/<\s*meta[^>]*?charset.*?\/?\s*>/si",
+                "/(.*?(<\s*meta[^>]*>))+/si",
                 "$0\n<!--(PH) JS HEAD TOP+ -->\n<!--(PH) JS HEAD TOP- -->\n"
             ),
             'CSS HEAD TOP' => array(
-                "/<\s*meta[^>]*?charset.*?\/?\s*>/si",
+                "/(.*?(<\s*meta[^>]*>))+/si",
                 "$0\n<!--(PH) CSS HEAD TOP+ -->\n<!--(PH) CSS HEAD TOP- -->\n"
             ),
             'CSS HEAD BTM' => array(
@@ -1139,7 +1140,7 @@ class Insert {
                 "\n<!--(PH) JS BODY BTM+ -->\n<!--(PH) JS BODY BTM- -->\n$0"
             ),
             'META HEAD' => array(
-                "/<\s*meta[^>]*?charset.*?\/?\s*>/si",
+                "/<\s*meta[^>]*>/si",
                 "\n<!--(PH) META HEAD+ -->\n<!--(PH) META HEAD- -->\n$0"
             ),
             'TITLE' => array(
@@ -1147,11 +1148,11 @@ class Insert {
                 "<!--(PH) TITLE+ -->$0<!--(PH) TITLE- -->"
             ),
             'META DESC' => array(
-                "/<\s*meta[^>]*?\=\"description\".*?\/?\s*>/si",
+                "/<\s*meta[^>]*?\=\"description\"[^>]*>/si",
                 "<!--(PH) META DESC+ -->$0<!--(PH) META DESC- -->"
             ),
             'META KEY' => array(
-                "/<\s*meta[^>]*?\=\"keywords\".*?\/?\s*>/si",
+                "/<\s*meta[^>]*?\=\"keywords\"[^>]*>/si",
                 "<!--(PH) META KEY+ -->$0<!--(PH) META KEY- -->"
             )
         );
@@ -1257,5 +1258,6 @@ class Insert {
             );
         }
         return $sContent;
-    }
+    }    
+    
 }
