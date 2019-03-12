@@ -114,30 +114,33 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}settings` (
   `value` text{TABLE_COLLATION} NOT NULL,
   PRIMARY KEY (`setting_id`)
 ){TABLE_ENGINE};
--- --------------------------------------------------------
+-- --------------------------------------------------------------------
 --
--- Tabellenstruktur für Tabelle `users`
+-- Tabellenstruktur für Tabelle `users` (new fields since WBCE v.1.4.0)
 --
 DROP TABLE IF EXISTS `{TABLE_PREFIX}users`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL DEFAULT '0',
   `groups_id` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '0',
-  `active` int(11) NOT NULL DEFAULT '0',
   `username` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `display_name` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `language` varchar(5){TABLE_COLLATION} NOT NULL DEFAULT 'DE',
+  `email` text{TABLE_COLLATION} NOT NULL,
+  `signup_checksum` varchar(64){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `active` int(11) NOT NULL DEFAULT '0',
+  `gdpr_check` int(1) NOT NULL DEFAULT '0',               
   `password` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `remember_key` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `last_reset` int(11) NOT NULL DEFAULT '0',
-  `display_name` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
-  `email` text{TABLE_COLLATION} NOT NULL,
   `timezone` int(11) NOT NULL DEFAULT '0',
   `date_format` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `time_format` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
-  `language` varchar(5){TABLE_COLLATION} NOT NULL DEFAULT 'DE',
   `home_folder` text{TABLE_COLLATION} NOT NULL,
   `login_when` int(11) NOT NULL DEFAULT '0',
   `login_ip` varchar(50){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `signup_timestamp` int(11) NOT NULL DEFAULT '0',
+  `signup_timeout` int(11) NOT NULL DEFAULT '0',
+  `signup_confirmcode` varchar(64){TABLE_COLLATION} NOT NULL DEFAULT '',
   PRIMARY KEY (`user_id`)
 ){TABLE_ENGINE};
-
-

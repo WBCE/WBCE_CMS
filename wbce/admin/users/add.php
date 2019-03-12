@@ -88,16 +88,19 @@ if($sNewPassword != ''){
 
 // Insert User record into the Database
 $aInsert = array(
-    'group_id'     => $group_id,
-    'groups_id'    => $groups_id,
-    'active'       => $active,
-    'username'     => $username,
-    'password'     => $sEncodedPassword,
-    'display_name' => $display_name,
-    'home_folder'  => $home_folder,
-    'email'        => $email,
-    'timezone'     => -72000, 
-    'language'     => DEFAULT_LANGUAGE
+    'group_id'           => $group_id,
+    'groups_id'          => $groups_id,
+    'active'             => $active,
+    'username'           => $username,
+    'password'           => $sEncodedPassword,
+    'display_name'       => $display_name,
+    'home_folder'        => $home_folder,
+    'email'              => $email,
+    'timezone'           => -72000, 
+    'language'           => DEFAULT_LANGUAGE,
+    'signup_checksum'    => date("Y-m-d H:i:s", time()),
+    'signup_timestamp'   => time(),
+    'signup_confirmcode' => 'by admin uid: '.$admin->get_user_id(),
 );
 $database->insertRow('{TP}users', $aInsert);
 

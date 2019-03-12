@@ -101,14 +101,16 @@ if($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)){
             'LOGIN_EMAIL'          => $aUser['email'],
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout),
             'LOGIN_URL'            => ACCOUNT_URL.'/login.php', 
+            'SUPPORT_EMAIL'        => $oAccounts->getSupportEmail(),
             'APPROVAL_LINK'        => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=1&sum='.$sCheckSum), 
             'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.substr(md5($sCheckSum), 0, 10)),
         );
 
         if($oAccounts->cfg['user_activated_on_signup'] == 1) { 
+            $iGroupID = $database->get_one("SELECT `group_id` FROM `{TP}users` WHERE `user_id` = ".$iUserID);
             $aUpdateUser = array(
                 'user_id'            => $iUserID, 
-                'signup_confirmcode' => '', 
+                'signup_confirmcode' => 'signup gid: '.$iGroupID, 
                 'signup_timeout'     => 0,
                 'signup_checksum'    => $sReadableDateTime,
                 'password'           => $sNewPasswordEnc,

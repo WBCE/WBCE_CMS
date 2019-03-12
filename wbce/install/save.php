@@ -389,16 +389,19 @@ foreach($aSettings as $name=>$value){
 
 // add the Admin user Using md5 here should be not a a problem as password is rehashed on first login if possible
 $aAdminUser = array(
-    'user_id'      => 1,
-    'group_id'     => 1,
-    'groups_id'    => '1',
-    'active'       => '1',
-    'username'     => $admin_username,
-    'language'     => $default_language,
-    'password'     => md5($admin_password),
-    'email'        => $admin_email,
-    'timezone'     => $default_timezone,
-    'display_name' => 'Administrator'
+    'user_id'            => 1,
+    'group_id'           => 1,
+    'groups_id'          => '1',
+    'active'             => '1',
+    'username'           => $admin_username,
+    'language'           => $default_language,
+    'password'           => md5($admin_password),
+    'email'              => $admin_email,
+    'timezone'           => $default_timezone,
+    'display_name'       => 'Administrator',
+    'signup_checksum'    => date("Y-m-d H:i:s", time()),
+    'signup_timestamp'   => time(),
+    'signup_confirmcode' => 'install-script',
 );
 //print_r($aAdminUser);
 
