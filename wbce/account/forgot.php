@@ -15,12 +15,14 @@ if(!FRONTEND_LOGIN) {
     header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
     exit(0);
 }
+
+$oAccounts = new Accounts();
+
 if ($oAccounts->is_authenticated() == true) {    
     header('Location: ' . PREFERENCES_URL); // User already logged-in, redirect
     exit();
 }
 
-$oAccounts = new Accounts();
 foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
 // Required page details
