@@ -427,7 +427,6 @@ class Accounts extends Frontend
 
     public function get_users_overview($bExtendOnly = false){
         global $TEXT, $TOOL_TXT;
-        $sQueryUsers = ("SELECT `user_id` FROM `{TP}users`");
         $sJavaScriptArray = '';
         $aCollection = array();
         $aUsers = $this->get_userbase_array($bExtendOnly);
@@ -456,8 +455,9 @@ class Accounts extends Frontend
     <?php 
     $sPryFunc = ob_get_clean();
         foreach ( $aUsers as $rec ) {
-
             $iID = $rec['user_id'];
+            $aCollection[$iID]['active']      = $rec['active'];
+            $aCollection[$iID]['reg_method']  = $this->_getRegMethod($rec['signup_confirmcode']);
             $aCollection[$iID]['language']    = $rec['language'];
             $aCollection[$iID]['user_id']     = $rec['user_id'];
             $aCollection[$iID]['username']    = $rec['display_name'].' <i>('.$rec['username'].')</i>';
@@ -465,14 +465,31 @@ class Accounts extends Frontend
             $aCollection[$iID]['email']       = $rec['email'];
             $aCollection[$iID]['groups']      = $rec['user_groups'];
             $aCollection[$iID]['actions']     = sprintf($sPryFunc, $rec['display_name'], $iID, $iID).' '; 
-            $aCollection[$iID]['login_when']  = $rec['login_when'];
+            $aCollection[$iID]['login_when']  = ($rec['login_when'] != 0) ? $rec['login_when'] + TIMEZONE : '';
             $aCollection[$iID]['profile_url'] = sprintf(UB_TOOL_URI.'&amp;pos=detail&amp;id=%d&amp;action=edit', $iID);
-            $aCollection[$iID]['signup_timestamp'] = isset($rec['signup_timestamp']) ? $rec['signup_timestamp'] : '';
+            $aCollection[$iID]['signup_timestamp'] = ($rec['signup_timestamp'] != 0) ? $rec['signup_timestamp'] + TIMEZONE : '';
         }
         return $aCollection;
     }
 
-    
+    private function _getRegMethod($sConfirmCode){
+        $sRetVal = 'N/A';
+        if ($sConfirmCode == 'install-script'){
+            $sRetVal = 'on System Setup';
+        } elseif (strpos($sConfirmCode, 'by') !== false){
+            $iAdminID = (int) explode(': ', $sConfirmCode)[1];
+            if($iAdminID == 1){
+                $sRetVal = 'by SuperAdmin';
+            } else {
+                $sRetVal = 'by Admin (uID: '.$iAdminID.')';
+            }                              
+        } elseif (strpos($sConfirmCode, 'signup') !== false){
+            $iGroupID = (int) explode(': ', $sConfirmCode)[1]; 
+            $sGroup = $this->_oDb->get_one("SELECT `name` FROM `{TP}groups`WHERE `group_id` = ". $iGroupID);
+            $sRetVal = 'on Signup ('.$sGroup.')';
+        }
+        return $sRetVal;
+    }
     /**
      * $sCSV          the CSV string of emails or a single email address 
      * $bMakeArray    if set to true will return an array rather than a CSV string
@@ -500,4 +517,38 @@ class Accounts extends Frontend
             return implode(',', $aRetVal);
         }
     }
+}
+
+/**
+ * @brief  Build the Tab Navigation used in AdminTools 
+ *         and other parts of the Backend
+ *         
+ *         The provided array should consist of 
+ *         pos_parameter => array(LinkName, IconCode)
+ *         for each tab element
+ * 
+ *         example:
+ *         ====================================================================
+ *         array(
+ *             'tool_overview' => array($TOOL_TXT['OVERVIEW'], 'user-circle'),
+ *             'config'        => array($TOOL_TXT['CONFIG'], 'calendar'),
+ *         );
+ *  * 
+ * @param  array $aTabs
+ * @return array
+ */
+function renderToolTabs(array $aTabs){
+    $sPos = isset($_GET["pos"]) ? $_GET["pos"] : key($aTabs);
+    $aTabs = array_reverse($aTabs);
+    $aRetVal = array();
+    $i = 0;
+    foreach($aTabs as $sKey=>$aValues){
+        $aRetVal[$i]['pos']       = $sKey;   
+        $aRetVal[$i]['a_class']   = ($sPos == $sKey) ? ' sel' : '';   
+        $aRetVal[$i]['li_class']  = ($sPos == $sKey) ? ' class="actionSel"' : ''; 
+        $aRetVal[$i]['link_name'] = $aValues[0]; 
+        $aRetVal[$i]['icon']      = $aValues[1]; 
+        $i++;
+    }
+    return $aRetVal;
 }

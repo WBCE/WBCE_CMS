@@ -44,13 +44,15 @@ if (!function_exists('getTwig')) {
         $oTwig   = new Twig_Environment($oLoader, $aOptions);
 
         // VARS always present in all Twig Templates
-        $oTwig->addGlobal('FTAN',       $oEngine->getFTAN());
-        $oTwig->addGlobal('WB_URL',     WB_URL);
-        $oTwig->addGlobal('ADMIN_URL',  ADMIN_URL);
-        $oTwig->addGlobal('THEME_URL',  THEME_URL);
-        $oTwig->addGlobal('SEC_ANCHOR', SEC_ANCHOR);
-        $oTwig->addGlobal('LANGUAGE',   LANGUAGE);
-        $oTwig->addGlobal('MEDIA_URL',  WB_URL . MEDIA_DIRECTORY);
+        $oTwig->addGlobal('FTAN',         $oEngine->getFTAN());
+        $oTwig->addGlobal('WB_URL',       WB_URL);
+        $oTwig->addGlobal('ADMIN_URL',    ADMIN_URL);
+        $oTwig->addGlobal('THEME_URL',    THEME_URL);
+        $oTwig->addGlobal('SEC_ANCHOR',   SEC_ANCHOR);
+        $oTwig->addGlobal('LANGUAGE',     LANGUAGE);
+        $oTwig->addGlobal('MEDIA_URL',    WB_URL . MEDIA_DIRECTORY);
+        $oTwig->addGlobal('DATE_FORMAT',  DATE_FORMAT);
+        $oTwig->addGlobal('TIME_FORMAT',  TIME_FORMAT);
         if (defined('TEMPLATE_DIR')) {
             $oTwig->addGlobal('TEMPLATE_URL', TEMPLATE_DIR); // may come in handy in some layouts ;-)
         }
@@ -63,6 +65,7 @@ if (!function_exists('getTwig')) {
           // Constant ADMIN_TOOL_DIR does not exist in WB/WBCE
           // -----(figure out an alternative later)
         if(defined('ADMIN_TOOL_DIR') && is_string(ADMIN_TOOL_DIR) ){
+            $oTwig->addGlobal('TOOL_NAME', $GLOBALS['module_name']);
             $oTwig->addGlobal('TOOL_URI', ADMIN_URL.'/admintools/tool.php?tool='.ADMIN_TOOL_DIR);
             $oTwig->addGlobal('ADDON_URL', WB_URL.'/modules/'.ADMIN_TOOL_DIR);
         }

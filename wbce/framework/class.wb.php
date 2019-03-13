@@ -690,7 +690,6 @@ _JsCode;
 
     
     public function getThemeTwigFile($sTplName = '', $aToTwig = array()){
-        global $TEXT;
         $aTemplateLocs = array();
         $aCheckDirs = array(
             WB_PATH.'/templates/theme_fallbacks/templates/', 

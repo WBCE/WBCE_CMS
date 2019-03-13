@@ -34,7 +34,7 @@ class admin extends wb
             if ($auto_auth == true) {
                 // First check if the user is logged-in
                 if ($this->is_authenticated() == false) {
-                    header('Location: ' . ADMIN_URL . '/login/index.php');
+                    header('Location: ' . ADMIN_URL . '/login/');
                     exit(0);
                 }
 
@@ -163,14 +163,15 @@ class admin extends wb
 
         // Create the menu
         $menu = array(
-            array(ADMIN_URL . '/pages/index.php', '', $MENU['PAGES'], 'pages', 1),
-            array(ADMIN_URL . '/media/index.php', '', $MENU['MEDIA'], 'media', 1),
-            array(ADMIN_URL . '/addons/index.php', '', $MENU['ADDONS'], 'addons', 1),
-            array(ADMIN_URL . '/preferences/index.php', '', $MENU['PREFERENCES'], 'preferences', 0),
-            array(ADMIN_URL . '/settings/index.php', '', $MENU['SETTINGS'], 'settings', 1),
-            array(ADMIN_URL . '/admintools/index.php', '', $MENU['ADMINTOOLS'], 'admintools', 1),
-            array(ADMIN_URL . '/access/index.php', '', $MENU['ACCESS'], 'access', 1),
+            array(ADMIN_URL . '/pages/',       '', $MENU['PAGES'],       'pages', 1),
+            array(ADMIN_URL . '/media/',       '', $MENU['MEDIA'],       'media', 1),
+            array(ADMIN_URL . '/addons/',      '', $MENU['ADDONS'],      'addons', 1),
+            array(ADMIN_URL . '/preferences/', '', $MENU['PREFERENCES'], 'preferences', 0),
+            array(ADMIN_URL . '/settings/',    '', $MENU['SETTINGS'],    'settings', 1),
+            array(ADMIN_URL . '/admintools/',  '', $MENU['ADMINTOOLS'],  'admintools', 1),
+            array(ADMIN_URL . '/access/',      '', $MENU['ACCESS'],      'access', 1),
         );
+        
         $header_template->set_block('header_block', 'linkBlock', 'link');
         foreach ($menu as $menu_item) {
             $link = $menu_item[0];
@@ -289,17 +290,17 @@ class admin extends wb
             // Set system permissions var
             $system_permissions = $this->get_session('SYSTEM_PERMISSIONS');
             
-			// Set module permissions var
+            // Set module permissions var
             $module_permissions = $this->get_session('MODULE_PERMISSIONS');
             
-			// Set template permissions var
+            // Set template permissions var
             $template_permissions = $this->get_session('TEMPLATE_PERMISSIONS');
             
-			// Return true if system perm = 1
+            // Return true if system perm = 1
             if (isset($$type) && is_array($$type) && is_numeric(array_search($name, $$type))) {
-				return ($type == 'system_permissions') ? true : false;
+                return ($type == 'system_permissions') ? true : false;
             } else {
-				return ($type == 'system_permissions') ? false : true;
+                return ($type == 'system_permissions') ? false : true;
             }
         }
     }
@@ -313,9 +314,9 @@ class admin extends wb
     public function get_user_details($user_id)
     {
         $aRetVal = array(
-                'username'     => 'unknown', 
-                'display_name' => 'Unknown', 
-                'email'        => ''
+            'username'     => 'unknown', 
+            'display_name' => 'Unknown', 
+            'email'        => ''
         );
         $sSql = 'SELECT `username`,`display_name`,`email` FROM `{TP}users` WHERE `user_id`= %d';
         if (($resUsers = $this->_oDb->query(sprintf($sSql, $user_id)))) {
@@ -385,8 +386,8 @@ class admin extends wb
     public function get_page_permission($page, $action = 'admin')
     {
         if ($action != 'viewing') {
-			$action = 'admin';
-		}
+            $action = 'admin';
+        }
         $action_groups = $action . '_groups';
         $action_users  = $action . '_users';
         $groups = $users = '0';
