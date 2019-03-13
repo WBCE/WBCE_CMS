@@ -21,15 +21,6 @@ $oAccounts = new Accounts();
 // Load Language Files 
 foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
-// Load Language files
-//if(LANGUAGE_LOADED) {
-//    require_once __DIR__ .'/languages/EN.php';	
-//    $sLangFile = __DIR__ .'/languages/'.LANGUAGE.'.php';
-//    if(LANGUAGE != 'EN' && is_readable($sLangFile)) {
-//        require_once $sLangFile;
-//    }
-//}
-
 // load CSS Files if Backend Theme not ACPI Ready
 $sAcpiCheckfile = WB_PATH.'/templates/'.DEFAULT_THEME.'/ACPI_READY';
 if(!is_file($sAcpiCheckfile)){
@@ -51,11 +42,13 @@ switch ($sPos) {
     default:         $sFile = 'tool_overview'; break;
 }
 
-include __DIR__.'/theme/head.tpl.php'; 
+$aPositions = array(
+    'tool_overview' => array($TOOL_TXT['OVERVIEW'], 'th-list'),
+    'config'        => array($TOOL_TXT['CONFIG'], 'cog'),
+);
+$aTabs = renderToolTabs($aPositions);
 
-// include the correct file based on $_GET['pos']/$sPos
+// include the correct file based on $_GET['pos']
 $sFile = __DIR__ .'/'.$sFile.'.php';
 if(file_exists($sFile)) require $sFile;
 else echo 'file not found';
-
-include __DIR__.'/theme/foot.tpl.php'; 

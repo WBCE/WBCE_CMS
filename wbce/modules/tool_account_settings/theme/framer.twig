@@ -1,0 +1,24 @@
+<noscript>{{ L_('TOOL_TXT:NOSCRIPT_MESSAGE') }}</noscript>
+
+<div class="pane">
+    <div class="pageinfo">
+        <div class="pagetitle"></div>
+    </div>
+    <nav class="tabs">
+        <ul>
+            <li class="page-title">
+                <span>Admin-Tool: <strong>{{ TOOL_NAME }}</strong></span>
+            </li>
+        {% for tab in TABS %}
+            <li {{ tab.li_class }}>
+                
+                <a class="tabHelp tab{{ tab.a_class }}" href="{{ TOOL_URI }}&pos={{ tab.pos }}"><i class="fa fa-{{ tab.icon }}"></i> {{ tab.link_name }}</a>
+            </li>
+        {% endfor %}
+        </ul>					
+    </nav>  
+    <div class="editor-container">
+    {% block content %}
+    {% endblock %}
+    </div>
+</div>

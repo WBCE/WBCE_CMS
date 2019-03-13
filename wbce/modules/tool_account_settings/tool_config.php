@@ -36,32 +36,39 @@ I::insertJsCode("autosize(document.querySelectorAll('textarea'));", "BODY TOP-")
 // include the class by whichever way suitable for your project
 include_once(__DIR__.'/IniEditor/IniEditor.class.php'); 
 
-$sIniFile = __DIR__.'/account/Accounts.cfg.php';	
-echo '<h2>'.$TOOL_TXT['ACCOUNTS_CONFIG'].'</h2>';
+$sIniFile = __DIR__.'/account/Accounts.cfg.php';
 
 $oIniEditor = new IniEditor();      // initialize the class object		
 $oIniEditor->setIniFile($sIniFile); // set ini file path (use full path)		
-#$oIniEditor->bShowFileSrc = true; 		
-
 $oIniEditor->enableEdit(true);      // set to true to allow edit of the config file
 
-// We don't need the following settings of the INI Editor in this modul
+// set language directory if you want to translate the form fields	
+$oIniEditor->setLanguageDir(__DIR__.'/languages/_config'); 
+$TRANS_TEXT = $oIniEditor->getTransArray();
 
+#$oIniEditor->bShowFileSrc = true; 		
+
+// We don't need the following settings of the INI Editor in this modul
 #$oIniEditor->enableAdd(true);      // set to true to allow add of sections and fields in the config file
 #$oIniEditor->enableDelete(true);   // set to true to allow delete of fields in the config file	
 #$oIniEditor->enableMove(true);     // set to true to allow reordering if fields
 
 // set cancel URL. If not set no cancel button will appear.
 #$oIniEditor->setCancelUrl(ADMIN_URL.'/admintools/tool.php?tool='.$module_directory);
+// $oIniEditor->printForm();  
 
-
-// set language directory if you want to translate the form fields	
-$oIniEditor->setLanguageDir(__DIR__.'/languages/_config'); 
-$TRANS_TEXT = $oIniEditor->getTransArray();
-// $sForm      = $oIniEditor->getForm();  
-$oIniEditor->printForm(); 
+// $oIniEditor->printForm(); 
 
 // END: Set up of the iniConfigEditor
 // =============================|=============================|=============================|
-?>
-<div class="alert alert-info" style="margin-top:10px;"><?=$TRANS_TEXT['SIGNUP_CONFIG_EXPL']?></div>
+
+
+$aToTwig = array(
+    'TABS'                => $aTabs,
+    'CONFIG_FORM'         => $oIniEditor->getForm(),
+);    
+
+// prepare Twig Template
+$oTwig = getTwig(__DIR__ . '/theme/');
+$oTemplate = $oTwig->loadTemplate('tool_config.twig');
+$oTemplate->display($aToTwig);
