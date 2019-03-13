@@ -372,8 +372,8 @@ $TEXT['WBMAILER_SMTP_PASSWORD'] = 'SMTP-Passwort';
 $TEXT['WBMAILER_SMTP_USERNAME'] = 'SMTP-Loginname';
 $MESSAGE['TESTMAIL_SUCCESS'] = "Die Test-E-Mail wurde an <kbd>%s</kbd> versendet. Bitte Posteingang prüfen.";
 $MESSAGE['TESTMAIL_FAILURE'] = "Die Test-E-Mail konnte nicht versendet werden.<br />Bitte E-Mail-Einstellungen überprüfen und erneut versuchen.";
-$HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>BITTE BEACHTEN:</b> die unten aufgeführten '.$HEADING['WBMAILER_SETTINGS'].' werden momentan mit den Einstellungen aus der Datei <kbd>[WB_PATH]/include/PHPMailer/config_mail.php</kbd> überschrieben.<br />'
-                                        . 'Um die '.$HEADING['WBMAILER_SETTINGS'].' zu verwenden, die HIER DRUNTER aufgeführt sind, zu verwenden, sollte das Array in der genannten Datei .';
+$HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>BITTE BEACHTEN:</b> die unten aufgef&#252;hrten '.$HEADING['WBMAILER_SETTINGS'].' werden momentan mit den Einstellungen aus der Datei <kbd>[WB_PATH]/include/PHPMailer/config_mail.php</kbd> überschrieben.<br />'
+                                        . 'Um die HIER DRUNTER aufgef&#252;hrten '.$HEADING['WBMAILER_SETTINGS'].' zu verwenden m&#252;ssen die Einstellungen in der genannten Datei entfernt werden.';
 $TEXT['BUTTON_SEND_TESTMAIL'] = 'E-Mail-Konfiguration testen';
 $TEXT['SEND_TESTMAIL'] = 'Um zu prüfen, ob die E-Mail-Einstellungen korrekt sind, kann hier eine Test-E-Mail an die o.g. Adresse versendet werden. Bitte beachten, dass Änderungen an den Einstellungen zunächst gespeichert werden müssen. ';
 $TEXT['WEBSITE'] = 'Website';
