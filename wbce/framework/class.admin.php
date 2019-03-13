@@ -85,8 +85,8 @@ class admin extends wb
     {
         // this buffer is needed so we can later apply output filters to BE Output
         if ($operateBuffer){
-	        ob_start();
-	    }
+            ob_start();
+        }
         
         // Get vars from the language file
         global $MENU, $MESSAGE, $TEXT;
@@ -119,7 +119,10 @@ class admin extends wb
                 $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
             }
         }
-		I::insertJsFile(WB_URL.'/include/SessionTimeout/SessionTimeout.js', "HEAD BTM+", 'SessionTimeout');
+        I::insertJsFile(WB_URL.'/include/SessionTimeout/SessionTimeout.js', "HEAD BTM+", 'SessionTimeout');
+        
+        $sTempMMI = (string) Settings::Get("wb_maintainance_mode");
+        $sMaintModeIndict = ($sTempMMI) ? ' <span class="fa fa-wrench wbcemm"></span> ' : ''; 
 		
         $header_template->set_var(array(
             'WB_SESSION_TIMEOUT' => $this->get_session_timeout(),
@@ -158,6 +161,7 @@ class admin extends wb
             'URL_HELP' => 'https://wbce.org/',
             'BACKEND_MODULE_CSS' => $this->register_backend_modfiles('css'), // adds backend.css
             'BACKEND_MODULE_JS' => $this->register_backend_modfiles('js'),   // adds backend.js
+            'MAINTAINANCEMODEINDICATOR' => $sMaintModeIndict,
         )
         );
 
