@@ -15,15 +15,16 @@
 defined('WB_PATH') or die("Access Denied");
 
 
-class wb extends SecureForm
+class Wb extends SecureForm
 {
     // store a direct output 
-    public $sDirectOutput = '';
+    public $sDirectOutput  = '';
 
+    public $page_sections  = array();
     public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:'; 
     public $iPassMinLength = 6; 
 	
-	
+    
 	
     /**
      * @brief  General initialization function performed
@@ -132,7 +133,7 @@ _JsCode;
      *         DirectOutput is triggered once  before normal output is done. 
      *
      * @param  $sContent The content to pipe out 
-     *	@return string echos out this string 
+     * @return string echos out this string 
      */
     public function DirectOutput($sContent = false) 
     {
@@ -157,38 +158,40 @@ _JsCode;
     }  
     
     /** 
-     * @brief   Check if one or more group_ids are in both group_lists
+     * @brief   Check if one or more group_ids are in both group lists
      * 
-     * @param   unspec $groups_list1: an array or a coma seperated list of group-ids
-     * @param   unspec $groups_list2: an array or a coma seperated list of group-ids
+     * @param   unspec $mGroups_1: an array or a coma seperated list of group-ids
+     * @param   unspec $mGroups_2: an array or a coma seperated list of group-ids
      * @param   array  &$matches: an array-var whitch will return possible matches
      * @return  bool   true there is a match, otherwise false
      */
-    public function is_group_match($groups_list1 = '', $groups_list2 = '', &$matches = null)
+    public function is_group_match($mGroups_1 = '', $mGroups_2 = '', &$matches = null)
     {
-        if ($groups_list1 == '') {return false;}
-        if ($groups_list2 == '') {return false;}
-        if (!is_array($groups_list1)) {
-            $groups_list1 = explode(',', $groups_list1);
+        if ($mGroups_1 == '' || $mGroups_2 == '') return false;
+        if (!is_array($mGroups_1)) {
+            // it's either a single value or a CSV
+            $mGroups_1 = explode(',', $mGroups_1);
         }
-        if (!is_array($groups_list2)) {
-            $groups_list2 = explode(',', $groups_list2);
+        if (!is_array($mGroups_2)) {
+            // it's either a single value or a CSV
+            $mGroups_2 = explode(',', $mGroups_2);
         }
-        $matches = array_intersect($groups_list1, $groups_list2);
+        $matches = array_intersect($mGroups_1, $mGroups_2);
         return (sizeof($matches) != 0);
     }
     
     /**
+     * Am I Group Member (of the following groups)?
      * @brief   Check if current user is member of at least one of given groups
-     *          SuperAdmin (user_id = 1) is always member of ALL groups
+     *          NOTE: SuperAdmin (user_id = 1) is always member of ALL groups
      *
      * @param   unspec $groups_list  An array or a comma seperated list of group-ids
      * @return  bool   true: if current user is member of one of this groups, otherwise false
      */
-    public function ami_group_member($groups_list = '')
+    public function ami_group_member($mGroups = '')
     {
         if ($this->get_group_id() == 1) {return true;}
-        return $this->is_group_match($groups_list, $this->get_groups_id());
+        return $this->is_group_match($mGroups, $this->get_groups_id());
     }
 
     /**
@@ -249,17 +252,15 @@ _JsCode;
     /**
      * @brief   Check if there is at least one active section on this page.
      * 
-     * @global  object $database
      * @param   array $page
      * @return  bool
      */
     public function page_is_active($page)
     {
-        global $database;
         $has_active_sections = false;
         $now = time();
         $sql = 'SELECT `publ_start`, `publ_end` FROM `{TP}sections` WHERE `page_id`='.(int) $page['page_id'];
-        $query_sections = $database->query($sql);
+        $query_sections = $this->_oDb->query($sql);
         if ($query_sections->numRows() != 0) {
             while ($section = $query_sections->fetchRow()) {
                 if ($now < $section['publ_end'] &&
@@ -285,16 +286,48 @@ _JsCode;
         return $retval;
     }
 
+     /**
+     * @brief   Check if the user is logged in
+     * 
+     * @return  bool
+     */       
+    public function isLoggedIn(){
+        $iSessionUserID = $this->get_session('USER_ID');
+        return ($iSessionUserID != NULL && $iSessionUserID != "" && is_numeric($iSessionUserID));
+
+    }  
+    
     /**
-     * @brief   Check whether the user is already authenticated (loged in)
+     * @brief   Check if the user is SuperAdmin(UserID = 1)
+     * 
+     * @return  bool
+     */ 
+    public function isSuperAdmin(){
+        return ($this->get_session('USER_ID') == 1);
+    }    
+    
+    /**
+     * @brief   Check if the user is Admin (GroupID = 1)
+     * 
+     * @return  bool
+     */ 
+    public function isAdmin(){
+        if($this->get_session('GROUP_ID') == 1) return true;
+        return (in_array(1, $this->get_groups_id()));
+    }
+    
+    /**
+     * @brief   Check if user is already authenticated (logged in)
+     *          since vers. 1.4 it should be prefered to use
+     *          the method isLoggedIn() instead. 
      * 
      * @return  bool
      */
     public function is_authenticated()
     {
-        return (isset($_SESSION['USER_ID']) && $_SESSION['USER_ID'] != "" &&  is_numeric($_SESSION['USER_ID']));
+        return $this->isLoggedIn();
     }
-
+    
     /**
      * @brief   Modified addslashes function which takes into account magic_quotes
      * 
@@ -470,7 +503,7 @@ _JsCode;
 	
     /**
      * @brief   Get the current users GROUP_NAMEs as CSV string.
-     *  NOTE: a user may be member in differend user groups.
+     *          NOTE: a user may be member in differend user groups.
      * 
      * @return  string
      */
@@ -481,7 +514,7 @@ _JsCode;
 
     /**
      * @brief   Get the current users GROUP_NAMEs as array.
-     * NOTE: a user may be member in differend user groups.
+     *          NOTE: a user may be member in differend user groups.
      * 
      * @return  array
      */
@@ -602,69 +635,73 @@ _JsCode;
      * @brief   Print a success message which then automatically redirects 
      *          the user to a specified page
      * 
-     * @global  array    $TEXT
-     * @param   string   $message   
-     * @param   string   $redirect  URL to the redirect page
-     * @return  string   Templated success modal
+     * @param   mixed    $uMsg          may be a single string or an array
+     * @param   string   $sRedirectUri  URI to the redirect page
+     * @return  string  
      */
-    public function print_success($message, $redirect = 'index.php')
+    public function print_success($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = false)
     {
-        global $TEXT;
-        if (is_array($message)) {
-            $message = implode('<br />', $message);
-        }
-        // fetch redirect timer for sucess messages from settings table
-        $redirect_timer = ((defined('REDIRECT_TIMER')) && (REDIRECT_TIMER <= 10000)) ? REDIRECT_TIMER : 0;
-        // add template variables
-        // Setup template object, parse vars to it, then parse it
-        $tpl = new Template(dirname($this->correct_theme_source('success.htt')));
-        $tpl->set_file('page', 'success.htt');
-        $tpl->set_block('page', 'main_block', 'main');
-        $tpl->set_block('main_block', 'show_redirect_block', 'show_redirect');
-        $tpl->set_var('MESSAGE', $message);
-        $tpl->set_var('REDIRECT', $redirect);
-        $tpl->set_var('REDIRECT_TIMER', $redirect_timer);
-        $tpl->set_var('NEXT', $TEXT['NEXT']);
-        $tpl->set_var('BACK', $TEXT['BACK']);
-        if ($redirect_timer == -1) {
-            $tpl->set_block('show_redirect', '');
-        } else {
-            $tpl->parse('show_redirect', 'show_redirect_block', true);
-        }
-        $tpl->parse('main', 'main_block', false);
-        $tpl->pparse('output', 'page');
-    }
-
+        $this->messageBox('success', $uMsg, $sRedirectUri, $bAutoFooter);
+    } 
+    
     /**
      * @brief   Print an error message with a "back" link/button to a specified page
      * 
-     * @global  array    $TEXT
-     * @param   string   $message   
-     * @param   string   $link  URL for the "back" link 
-     * @return  string   Templated error modal with a "back" link/button
+     * @param   mixed    $uMsg          may be a single string or an array  
+     * @param   string   $sRedirectUri  URI for the "back" link 
+     * @return  string   
      */
-    public function print_error($message, $link = 'index.php', $auto_footer = true)
+    public function print_error($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = true)
     {
-        global $TEXT;
-        if (is_array($message)) {
-            $message = implode('<br />', $message);
-        }
-        // Setup template object, parse vars to it, then parse it
-        $success_template = new Template(dirname($this->correct_theme_source('error.htt')));
-        $success_template->set_file('page', 'error.htt');
-        $success_template->set_block('page', 'main_block', 'main');
-        $success_template->set_var('MESSAGE', $message);
-        $success_template->set_var('LINK', $link);
-        $success_template->set_var('BACK', $TEXT['BACK']);
-        $success_template->parse('main', 'main_block', false);
-        $success_template->pparse('output', 'page');
-        if ($auto_footer == true) {
+        $this->messageBox('error', $uMsg, $sRedirectUri, $bAutoFooter);
+    } 
+   
+    /**
+     * since vers. 1.4.0
+     * @brief   Print a modal box 
+     * 
+     * @param   mixed    $uMsg          may be a single string or an array  
+     * @param   string   $sRedirectUri  URI for the redirect
+     * @return  string   
+     */
+    public function messageBox($sType='info', $uMsg, $sRedirectUri='index.php', $bAutoFooter=false, $bUseRedirect=true)
+    {
+        if (!is_array($uMsg)) $uMsg = array($uMsg); 
+        
+        // get correct redirect time
+        $iRedirectTime = (defined('REDIRECT_TIMER')) ? REDIRECT_TIMER : 0;
+        $iRedirectTime = ($iRedirectTime > 10000) ? 10000 : $iRedirectTime;
+
+        $aToTwig = array(
+            'MESSAGE_TYPE'  => $sType,
+            'MESSAGES'      => $uMsg,
+            'REDIRECT_URL'  => $sRedirectUri,
+            'REDIRECT_TIME' => $iRedirectTime,
+            'USE_REDIRECT'  => $bUseRedirect,
+        );
+        $this->getThemeTwigFile('message_box.twig', $aToTwig);
+        if ($bAutoFooter == true) {
             if (method_exists($this, "print_footer")) {
                 $this->print_footer();
             }
             exit();
-        }        
+        } 
     }
+
+    
+    public function getThemeTwigFile($sTplName = '', $aToTwig = array()){
+        $aTemplateLocs = array();
+        $aCheckDirs = array(
+            WB_PATH.'/templates/theme_fallbacks/templates/', 
+            THEME_PATH.'/templates/', 
+        );
+        foreach ($aCheckDirs as $dir) if(is_dir($dir))$aTemplateLocs[] = $dir;
+        $oTwig = getTwig($aTemplateLocs);
+        $oTemplate = $oTwig->loadTemplate($sTplName);
+        $oTemplate->display($aToTwig);	
+    }
+    
+    
     
     /**
      * @brief Validate and send a mail
@@ -758,16 +795,14 @@ _JsCode;
         $sCurrentPath = rawurldecode($sCurrentPath);
         $sCurrentPath = realpath($sCurrentPath);
         $sBaseDir     = realpath($sBaseDir);
+        
         // $sBaseDir needs to exist in the $sCurrentPath
         $pos = stripos($sCurrentPath, $sBaseDir);
 
-        if ($pos === false) {
-            return false;
-        } elseif ($pos == 0) {
-            return $sCurrentPath;
-        } else {
-            return false;
-        }
+        if ($pos === false) return false;
+        elseif ($pos == 0)  return $sCurrentPath;
+        else                return false;
+        
     }
 	
     /**
@@ -819,13 +854,11 @@ _JsCode;
      *          to use (from snippets, page-type modules, tools etc.)
      *          and create a assoc array of all the modfiles to be inserted.
      *
-     * @global  object  $database
      * @param   string  $sEndPosition  frontend|backend
      * @return  array   modfiles collection as assoc array
      */	
     public function collect_modfiles($sEndPosition = 'frontend')
     {
-        global $database;
         $aToInsert = array();
 
         $sSql = ''; // start collecting the SQL Query
@@ -860,10 +893,10 @@ _JsCode;
             if($sSql != ''){
                     $sSql .= " UNION ALL ";
             }
-            $sSql .= "SELECT `directory` as 'module_name' FROM `{TP}addons` WHERE `function` LIKE '%tool%' AND `directory`= '".$database->escapeString($_GET['tool'])."'";	
+            $sSql .= "SELECT `directory` as 'module_name' FROM `{TP}addons` WHERE `function` LIKE '%tool%' AND `directory`= '".$this->_oDb->escapeString($_GET['tool'])."'";	
         }
         if($sSql != ''){
-            if (($resSnippets = $database->query($sSql))) {
+            if (($resSnippets = $this->_oDb->query($sSql))) {
                 while ($recSnippet = $resSnippets->fetchRow()) {	
                     $aToInsert = $this->retrieve_modfiles_from_dir($recSnippet['module_name'], $sEndPosition);
                 }
@@ -988,6 +1021,54 @@ _JsCode;
     }
     
     /**
+     * introduced with WBCE 1.4.0
+     * (Will reduce a lot of redundand code, in FE and BE alike.)
+     * 
+     * @brief  Return an array of all the sections of the page
+     * 
+     * @global int $page_id
+     * @param  bool $bExcludeNonPublicised
+     * @return array
+     */
+    public function get_page_sections($iPageID = NULL, $bExcludeNonPublicised = false){
+        $aSections = array();
+        
+        if($iPageID == NULL){
+            global $page_id;
+            $iPageID = defined('PAGE_ID') ? PAGE_ID : $page_id;
+        } else {
+            $iPageID = (int) $iPageID;
+        }        
+        
+        if($iPageID > 0){
+            // Get all sections for this page
+            $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id`=%d ORDER BY `position`';
+            if ($resSections = $this->_oDb->query(sprintf($sSql, $iPageID))) {
+                while ($rec = $resSections->fetchRow(MYSQL_ASSOC)) {
+
+                    if($bExcludeNonPublicised == true){
+                        // skip sections that are not publicised
+                        $iNowTime = time();
+                        if (!(
+                                ($iNowTime <= $rec['publ_end'] || $rec['publ_end'] == 0) 
+                                        && 
+                                ($iNowTime >= $rec['publ_start'] || $rec['publ_start'] == 0)
+                            )) {
+                            continue;
+                        }
+                    }
+                    $aSections[$rec['section_id']] = $rec;
+               }
+            }
+        }
+        return $aSections;
+    }
+    
+
+    
+    /**
+     * introduced with WBCE 1.4.0
+     * 
      * @brief   Get the module name from modules language file.
      *          This method will display the module name based on
      *          the language file if the $module_name variable 
@@ -996,7 +1077,6 @@ _JsCode;
      *          parentheses (or other delimiters defined in $sHem)
      *          if the $bShowOriginal parameter is set to true.
      *
-     * @global  object  $database 
      * @param   string  $sModDir
      * @param   bool    $bShowOriginal
      * @param   string  $sHem
@@ -1015,10 +1095,9 @@ _JsCode;
             }
         }
         if ($sRetVal == '' || $bShowOriginal == true) {
-            global $database;
             // get original module name from the `{TP}addons` table
             $sSql = "SELECT `name` FROM `{TP}addons` WHERE `directory` = '%s'";
-            $sOriginal = $database->get_one(sprintf($sSql, $sModDir));
+            $sOriginal = $this->_oDb->get_one(sprintf($sSql, $sModDir));
             if ($sRetVal == '' && $bShowOriginal == true) {
                 $sRetVal = $sOriginal;
             } elseif ($sRetVal != '' && $bShowOriginal == true) {
@@ -1031,6 +1110,8 @@ _JsCode;
     }    
     
     /**
+     * introduced with WBCE 1.4.0
+     * 
      * @brief   Get the module description from modules language file.
      *          This method will display the module description based on
      *          the language file if the $module_description variable 
@@ -1039,7 +1120,6 @@ _JsCode;
      *          file, the `description` of the module will be retrieved
      *          from the `{TP}addons` DB table.
      *
-     * @global  object  $database
      * @param   string  $sModDir
      * @return  string
      */
@@ -1056,14 +1136,92 @@ _JsCode;
             }
         }
         if ($sRetVal == '') {
-            global $database;
             // get original module description from the `{TP}addons` table
             $sSql = "SELECT `description` FROM `{TP}addons` WHERE `directory` = '%s'";
-            if($sOriginal = $database->get_one(sprintf($sSql, $sModDir))){
+            if($sOriginal = $this->_oDb->get_one(sprintf($sSql, $sModDir))){
                 $sRetVal = $sOriginal;
             }
         }
         $sRetVal = str_replace('{WB_URL}', WB_URL, $sRetVal);
         return $sRetVal;
     }
+}
+
+/**
+ * Return an array of all the sections of the page
+ * 
+ * @author Christian M. Stefan <stefek@designthings.de>
+ * 
+ * @param  bool $bExcludeNonPublicised
+ * @return array
+ */
+function get_page_sections($iPageID = NULL, $bExcludeNonPublicised = false){
+    global $database;
+    $aSections = array();
+
+    if($iPageID == NULL){
+        global $page_id;
+        $iPageID = defined('PAGE_ID') ? PAGE_ID : $page_id;
+    } else {
+        $iPageID = (int) $iPageID;
+    }        
+
+    if($iPageID > 0){
+        // Get all sections for this page
+        $sSql = 'SELECT * FROM `%ssections` WHERE `page_id`=%d ORDER BY `position`';
+        if ($resSections = $database->query(sprintf($sSql, TABLE_PREFIX, $iPageID))) {
+            while ($rec = $resSections->fetchRow(MYSQL_ASSOC)) {
+
+                if($bExcludeNonPublicised == true){
+                    // skip sections that are not publicised
+                    $iNowTime = time();
+                    if (!(
+                            ($iNowTime <= $rec['publ_end'] || $rec['publ_end'] == 0) 
+                                    && 
+                            ($iNowTime >= $rec['publ_start'] || $rec['publ_start'] == 0)
+                        )) {
+                        continue;
+                    }
+                }
+                $aSections[$rec['section_id']] = $rec;
+           }
+        }
+    }
+    return $aSections;
+}
+
+/**
+ * Check if a certain Module is on a certain page
+ * 
+ * @author Christian M. Stefan <stefek@designthings.de>
+ * 
+ * @global type $page_id
+ * 
+ * @param  string  $sModuleDir  This MUST be the modules directory name
+ * @param  int     $iPageID     If left empty, the current page will be checked
+ * @return boolean
+ */
+function is_module_on_page($sModuleDir = '', $iPageID = NULL){
+    
+    $bOnPage = false;
+    if($sModuleDir == ''){
+        trigger_error('The 1st argument $sModuleDir must be specified in '
+                .__FUNCTION__.'($sModuleDir = \'\', $iPageID = NULL)');
+        return $bOnPage;
+        
+    }
+    if($iPageID == NULL){
+        global $page_id;
+        $iPageID = defined('PAGE_ID') ? PAGE_ID : $page_id;
+    } else {
+        $iPageID = (int) $iPageID;
+    }   
+    
+    $aSections = get_page_sections($iPageID);
+    foreach ($aSections as $iSectionID => $aData) {
+       if ($aData['module'] === strtolower($sModuleDir)) {
+           $bOnPage = true;
+       }
+    }
+    return $bOnPage;
 }

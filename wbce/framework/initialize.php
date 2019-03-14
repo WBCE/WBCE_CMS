@@ -22,8 +22,11 @@
 if(count(get_included_files()) == 1) header("Location: ../index.php", TRUE, 301);
 
 // Stop execution if PHP version is too old
-if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-    die ('PHP ' . PHP_VERSION . ' found, but at least PHP 5.4.0 required !!');
+$sReqPhpVersion = '5.4.0';
+if (version_compare(PHP_VERSION, $sReqPhpVersion, '<')) {
+    $sMsg  = 'PHP ' . PHP_VERSION . ' running on this system, but at least PHP ' . $sReqPhpVersion . ' required!<br />';
+    $sMsg .= 'Please upgrade your PHP Version and try running WBCE CMS again.';
+    die($sMsg);
 }
 
 // Starting Output buffering 
@@ -61,12 +64,7 @@ if ($aPreDb !== false && !empty($aPreDb)){
 }
 
 // INITIALIZE DATABASE CLASS
-//
-// You can override this by using a predb module that registers another file as DB class. 
-// WbAuto::AddFile("database","/modules/predb_pdo_db/pdo_database.class.php");
-
 $database = new database();
-
 
 // SYSTEM CONSTANTS
 //     
@@ -88,16 +86,15 @@ require_once(WB_PATH.'/framework/functions.php');
 // PRE_INIT MODULES
 //    
 // Pre init, modules may change everyting as almost nothing is already set here
-// Module may hook here to change Page_id Language or whatever. Even most System Constants.
-// As DB is available here we reliy on installed modules. 
+// Module may hook here to change page_id, Language or whatever. Even most System Constants.
+// As DB is already available here we rely on installed modules. 
+// 
 // @todo check if we need to make more modifications to the core to get this fully running 
-// I am not sure ir preinit already allowed in 1.3 core 
-//
 // @todo check if we better use  MYSQL FIND_IN_SET (http://forum.wbce.org/viewtopic.php?id=84)
 
 // Query gives back false on failure
-if (($rSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE function LIKE '%preinit%'"))) {
-    while ($rec = $rSnippets->fetchRow()) {
+if (($resSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE function LIKE '%preinit%'"))) {
+    while ($rec = $resSnippets->fetchRow()) {
         $sModFilePath = dirname(__DIR__). '/modules/' . $rec['directory'] . '/preinit.php';
         if (file_exists($sModFilePath)) include $sModFilePath;
     }
@@ -123,73 +120,79 @@ define("DOMAIN_PROTOCOLL", $protocoll);
 
 // Registering class for idna conversion (needed for email-checks)
 WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
-WbAuto::AddFile("SecureForm", "/framework/SecureForm.php");
+WbAuto::AddFile("SecureForm",   "/framework/SecureForm.php");
 
 // Auto Load the Insert and I Classes
-WbAuto::AddFile("Insert",   "/framework/Insert.php");
-WbAuto::AddFile("I",        "/framework/I.php");
+WbAuto::AddFile("Insert", "/framework/Insert.php");
+WbAuto::AddFile("I",      "/framework/I.php");
 
 // Auto Load Mailer Class (subclass of PHPMailer)
 WbAuto::AddFile("Mailer",   "/framework/Mailer.php");
 WbAuto::AddFile("wbmailer", "/framework/Mailer.php"); // fallback for older modules
 
+// Auto Accounts Class
+WbAuto::AddFile("Accounts", "/framework/Accounts.php"); // child class
+
+// Auto MessageBox Class
+WbAuto::AddFile("MessageBox", "/framework/MessageBox.php"); // child class
+
 // Auto Load phpLib (the ancient Templating Engine)
 WbAuto::AddFile("Template", "/include/phplib/template.inc");
 
-// register TWIG autoloader (the contemporary Templating Engine)
-require WB_PATH . '/include/Sensio/Twig/lib/Twig/Autoloader.php';
-Twig_Autoloader::register();
-
-// register PHPMailer autoloader ---
-// require WB_PATH . '/include/phpmailer/PHPMailerAutoload.php';
-
+// Connect to Twig TE (the contemporary Templating Engine)
+require_once WB_PATH . '/include/Sensio/Twig/TwigConnect.php';
 
 // SETUP SYSTEM CONSTANTS (GLOBAL SETTINGS)
 // We use Settings Class to fetch all Settings from DB 
 // Then we process all data into the coresponding constants. 
-
 Settings::Setup(); // Fetch all settings whith Settings class from framework 
 
 // RESULTING CONSTANTS
-// some resulting constants need to be set manually
+// Some resulting constants need to be set manually
 
 // Filemodes
 $string_file_mode = STRING_FILE_MODE;
 define('OCTAL_FILE_MODE',    (int) octdec($string_file_mode));
 define('WB_OCTAL_FILE_MODE', (int) octdec($string_file_mode));
-
 // Dirmodes
 $string_dir_mode = STRING_DIR_MODE;
-define('OCTAL_DIR_MODE',    (int) octdec($string_dir_mode));
-define('WB_OCTAL_DIR_MODE', (int) octdec($string_dir_mode));
+define('OCTAL_DIR_MODE',     (int) octdec($string_dir_mode));
+define('WB_OCTAL_DIR_MODE',  (int) octdec($string_dir_mode));
 
 switch (true){
     case (WB_DEBUG === true):    
         // Debugging activated
         error_reporting(E_ALL); break; 
+    
     case (intval(ER_LEVEL) > 0): 
         //Historical compatibility stuff
         error_reporting(E_ALL); break;
+    
     case (ER_LEVEL=="-1"):       
         //Historical compatibility stuff
         error_reporting(E_ALL); break;
+    
     case (ER_LEVEL=="E0"):       
         // system default (php.ini)
         error_reporting(ini_get('error_reporting')); break; 
+    
     case (ER_LEVEL=="E1"):       
         // hide all errors and notices
         error_reporting(0); break;
+    
     case (ER_LEVEL=="E2"):       
         // show all errors and notices
         error_reporting(E_ALL); break;
+    
     case (ER_LEVEL=="E3"):       
         // show errors, no notices
         error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE); break;
+    
     default: 
         // system default (php.ini)
         error_reporting(ini_get('error_reporting'));
 }
-// adapt display_error directive in php.ini to reflect error_reporting level
+// Adapt display_error directive in php.ini to reflect error_reporting level
 ini_set('display_errors', (error_reporting() == 0) ? 0 : 1);
 
 // DEFAULT TIMEZONE
@@ -214,7 +217,6 @@ WSession::Start();
 // MODULES INITIALIZE.PHP
 // For now we put modules initialize.php here
 // Yes! All modules are now allowed to have a initialize.php. function='initialize'
-// From now on Twig may be a module :-)
 // You can even change the $page_id, or maybe the Language .
 // You can log users in or out and do what you like
 // Initialize Modules normaly do not distinguish between FE and BE 
@@ -229,25 +231,19 @@ if (($resSnippets = $database->query($sSql))) {
 
 // SANITIZE REFERER 
 // sanitize $_SERVER['HTTP_REFERER']
-// @todo Needs to be repaced ASAP. Currently it's the 
-// only way to have a halfway save refrerer string. 
+// @todo Needs to be repaced ASAP. 
+// Currently it's the only way to have a halfway save refrerer string. 
 SanitizeHttpReferer();
-
 
 // LANGUAGES
 // Only if no module already did this
 if (!defined("LANGUAGE")) {
     // Get users language
-    if (
-        isset($_GET['lang']) and
-        $_GET['lang'] != '' and
-        !is_numeric($_GET['lang']) and
-        strlen($_GET['lang']) == 2
-    ) {
-        define('LANGUAGE', strtoupper($_GET['lang']));
+    if (isset($_GET['lang']) && preg_match('/^[A-Z]{2}$/', $_GET['lang'])) {
+        define('LANGUAGE', $_GET['lang']);
         $_SESSION['LANGUAGE'] = LANGUAGE;
     } else {
-        if (isset($_SESSION['LANGUAGE']) and $_SESSION['LANGUAGE'] != '') {
+        if (isset($_SESSION['LANGUAGE']) && $_SESSION['LANGUAGE'] != '') {
             define('LANGUAGE', $_SESSION['LANGUAGE']);
         } else {
             define('LANGUAGE', DEFAULT_LANGUAGE);
@@ -255,18 +251,35 @@ if (!defined("LANGUAGE")) {
     }
 }
 
-// Load default language file so even incomplete languagefiles display at least the english text
+
+// Needed in account and Account AdminTool
+if(FRONTEND_LOGIN){
+    if (!defined('ACCOUNT_PATH')) {
+        // Set login menu constants
+        defined('ACCOUNT_URL') or define('ACCOUNT_URL', WB_URL . '/account');
+        define('ACCOUNT_PATH',    str_replace(WB_URL, WB_PATH, ACCOUNT_URL));
+
+        define('LOGIN_URL',       ACCOUNT_URL . '/login.php');
+        define('LOGOUT_URL',      ACCOUNT_URL . '/logout.php');
+        define('FORGOT_URL',      ACCOUNT_URL . '/forgot.php');
+        define('PREFERENCES_URL', ACCOUNT_URL . '/preferences.php');
+        define('SIGNUP_URL',      ACCOUNT_URL . '/signup.php');
+    }
+}
+
+
+// Load default language file so even incomplete language files display at least the english text
 if (!file_exists(WB_PATH . '/languages/EN.php')) {
     exit('Error loading default language file (EN), please check configuration and file');
 } else {
-	// we always load EN language file
+    // we always load EN language file
     require_once WB_PATH . '/languages/EN.php';
 }
 
 // Load LC language file if LANGUAGE != EN
 if(LANGUAGE != 'EN'){
-	$sLangFile = WB_PATH . '/languages/' . LANGUAGE . '.php';
-	if (file_exists($sLangFile)) require_once $sLangFile;
+    $sLangFile = WB_PATH . '/languages/' . LANGUAGE . '.php';
+    if (file_exists($sLangFile)) require_once $sLangFile;
 }
 // include old languages format  only for compatibility only needed for some old modules
 if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {

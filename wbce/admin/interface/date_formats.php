@@ -37,30 +37,54 @@ $actual_time = time()+ ((isset($user_time) && $user_time == true) ? TIMEZONE : D
 
 // Add values to list
 $DATE_FORMATS['l,|jS|F,|Y'] = gmdate('l, jS F, Y', $actual_time);
-$DATE_FORMATS['jS|F,|Y'] = gmdate('jS F, Y', $actual_time);
-$DATE_FORMATS['d|M|Y'] = gmdate('d M Y', $actual_time);
-$DATE_FORMATS['M|d|Y'] = gmdate('M d Y', $actual_time);
-$DATE_FORMATS['D|M|d,|Y'] = gmdate('D M d, Y', $actual_time);
-$DATE_FORMATS['d-m-Y'] = gmdate('d-m-Y', $actual_time).' (D-M-Y)';
-$DATE_FORMATS['m-d-Y'] = gmdate('m-d-Y', $actual_time).' (M-D-Y)';
-$DATE_FORMATS['d.m.Y'] = gmdate('d.m.Y', $actual_time).' (D.M.Y)';
-$DATE_FORMATS['m.d.Y'] = gmdate('m.d.Y', $actual_time).' (M.D.Y)';
-$DATE_FORMATS['d/m/Y'] = gmdate('d/m/Y', $actual_time).' (D/M/Y)';
-$DATE_FORMATS['m/d/Y'] = gmdate('m/d/Y', $actual_time).' (M/D/Y)';
-$DATE_FORMATS['j.n.Y'] = gmdate('j.n.Y', $actual_time).' (j.n.Y)';
+$DATE_FORMATS['jS|F,|Y']    = gmdate('jS F, Y',    $actual_time);
+$DATE_FORMATS['d|M|Y']      = gmdate('d M Y',      $actual_time);
+$DATE_FORMATS['M|d|Y']      = gmdate('M d Y',      $actual_time);
+$DATE_FORMATS['D|M|d,|Y']   = gmdate('D M d, Y',   $actual_time);
+$DATE_FORMATS['d-m-Y']      = gmdate('d-m-Y',      $actual_time).' (D-M-Y)';
+$DATE_FORMATS['m-d-Y']      = gmdate('m-d-Y',      $actual_time).' (M-D-Y)';
+$DATE_FORMATS['d.m.Y']      = gmdate('d.m.Y',      $actual_time).' (D.M.Y)';
+$DATE_FORMATS['m.d.Y']      = gmdate('m.d.Y',      $actual_time).' (M.D.Y)';
+$DATE_FORMATS['d/m/Y']      = gmdate('d/m/Y',      $actual_time).' (D/M/Y)';
+$DATE_FORMATS['m/d/Y']      = gmdate('m/d/Y',      $actual_time).' (M/D/Y)';
+$DATE_FORMATS['j.n.Y']      = gmdate('j.n.Y',      $actual_time).' (j.n.Y)';
 
 // Add "System Default" to list (if we need to)
-if(isset($user_time) && $user_time == true)
-{
-	if(isset($TEXT['SYSTEM_DEFAULT']))
-	{
-		$DATE_FORMATS['system_default'] = gmdate(DEFAULT_DATE_FORMAT, $actual_time).' ('.$TEXT['SYSTEM_DEFAULT'].')';
-	} else {
-		$DATE_FORMATS['system_default'] = gmdate(DEFAULT_DATE_FORMAT, $actual_time).' (System Default)';
-	}
+if(isset($user_time) && $user_time == true) {
+    $DATE_FORMATS['system_default'] = gmdate(DEFAULT_DATE_FORMAT, $actual_time).' ('.$TEXT['SYSTEM_DEFAULT'].')';
 }
 
 // Reverse array so "System Default" is at the top
 $DATE_FORMATS = array_reverse($DATE_FORMATS, true);
 
-?>
+if(!function_exists('getDateFormatsArray')){
+    
+    /**
+     * @brief  Returns an array of date formats set up by the system
+     *         This function will return an array that can be used
+     *         to display all the date formats or in order to create  
+     *         a select box to choose from.
+     * 
+     * @param  array  $DATE_FORMATS
+     * @return array
+     */
+    function getDateFormatsArray($DATE_FORMATS){
+        $aDateFormats = array();
+        $i = 0;
+        foreach ($DATE_FORMATS as $sFormat => $sTitle) {
+            $sFormat = str_replace('|', ' ', $sFormat); // Adds white-spaces (not able to be stored in array key)
+
+            $aDateFormats[$i]['VALUE'] = ($sFormat != 'system_default') ? $sFormat : '';
+            $aDateFormats[$i]['NAME']  = $sTitle;	
+
+            $aDateFormats[$i]['SELECTED'] = false;
+            if (DATE_FORMAT == $sFormat and !isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
+                $aDateFormats[$i]['SELECTED'] = true;
+            } elseif ($sFormat == 'system_default' and isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
+                $aDateFormats[$i]['SELECTED'] = true;
+            } 
+            $i++;
+        }
+        return $aDateFormats;
+    }
+}

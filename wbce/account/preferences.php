@@ -10,27 +10,21 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once realpath('../config.php');
-require_once __DIR__ .'/functions/functions.php';
 
-if(!FRONTEND_LOGIN) {
-	header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
-	exit(0);
+require_once dirname(__DIR__) . '/config.php';
+
+$oAccounts = new Accounts();
+if ($oAccounts->is_authenticated()==false) {
+    header('Location: '.WB_URL.'/account/login.php');
+    exit(0);
 }
-
-$wb_inst = new wb();
-if ($wb_inst->is_authenticated()==false) {
-	header('Location: '.WB_URL.'/account/login.php');
-	exit(0);
-}
-
-$page_id = !empty($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0;
-
+foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
+    
 // Required page details
-/* */
-// $page_id = 0;
+$page_id = 0;
 $page_description = '';
 $page_keywords = '';
+define('TEMPLATE', $oAccounts->cfg['preferences_template']);
 define('PAGE_ID', $page_id);
 define('ROOT_PARENT', 0);
 define('PARENT', 0);
@@ -41,8 +35,7 @@ define('MENU_TITLE', $MENU['PREFERENCES']);
 define('MODULE', '');
 define('VISIBILITY', 'public');
 
-define('PAGE_CONTENT', WB_PATH.'/account/preferences_form.php');
-
+define('PAGE_CONTENT', ACCOUNT_TOOL_PATH .'/account/form_preferences.php');
 
 // Include the index (wrapper) file
 require(WB_PATH.'/index.php');

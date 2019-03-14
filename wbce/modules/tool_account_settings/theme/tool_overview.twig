@@ -1,0 +1,67 @@
+{% extends "framer.twig" %}
+
+{% block content %}
+<p><b>{{ L_('TOOL_TXT:OVERVIEW_DESCRIPTION') }}</b></p>
+<div style="min-height:600px">
+<table class="tablesorter">
+    <thead>
+        <tr>			
+            <th style="width:20px;"><small title="{{ L_('TOOL_TXT:USER_ID') }}">ID</small></th>			
+            <th>{{ L_('TEXT:DISPLAY_NAME') }} <i>({{ L_('TEXT:USERNAME') }})</i></th>
+            <th style="width:20px;">{{ L_('TEXT:LANGUAGE') }}</th>
+            <th>{{ L_('TEXT:EMAIL') }}</th>
+            <th>{{ L_('TOOL_TXT:GROUPS') }}</th>
+            <th>{{ L_('TOOL_TXT:DATE_REGISTERED') }}</th>
+            <th>{{ L_('TOOL_TXT:LATEST_LOGIN') }}</th>
+            <th data-filter="false">{#{ L_('TEXT:ACTIVE') }#}</th>
+            {% if CAN_MODIFY_ACCOUNTS %}
+            <th data-sorter="false" data-filter="false"></th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for rec in USERLIST %}
+            <tr>
+                <td style="text-align:right;"><small>{{ rec['user_id'] }}</small></td>
+                <td>
+                    <b>{{ rec['username'] }}</b>
+                </td>
+                <td style="text-align:center;">
+                    <img src="{{ WB_URL }}/languages/{{ rec['language'] }}.png" /> <small>{{ rec['language'] }}</small>
+                </td>
+                <td><nobr><i class="fa fa-envelope-o" style="color: darkgrey;"></i><small> {{ rec['email'] }}</small></nobr></td>
+                <td>
+                     {% for group_name in rec['groups'] %}
+                        <nobr><span class="usergroup"><i class="fa fa-group" style="color: grey;"></i> {{ group_name }}</span></nobr>
+                     {% endfor %}
+                </td>
+                <td>
+                    <i class="fa fa-1x fa-calendar{% if rec['signup_timestamp'] == '' %}-o"  style="color: lightgrey;{% endif %}"></i>&nbsp;
+                    <small>{% if rec['signup_timestamp'] %}{{ rec['signup_timestamp']|date(DATE_FORMAT)}}{% else %}N/A{% endif %}</small><br />
+                    <small style="color: darkgrey;"><nobr>{{ rec['reg_method'] }}</nobr></small>
+                </td>
+                <td>
+                    <nobr><i class="fa fa-1x fa-calendar{% if rec['login_when'] == '' %}-o"  style="color: lightgrey;{% endif %}"></i> &nbsp;
+                    <small>{% if rec['login_when'] %}{{ rec['login_when']|date(DATE_FORMAT ~'  H:i')}}{% else %}N/A{% endif %}</small></nobr>
+                </td>
+                <td class="center">
+                    <i class="fa fa-1x fa-user-circle{% if rec['active'] %}-o{% endif %}" style="color:{% if rec['active'] %}#48BF40{% else %}#EDABAB{% endif %}"></i>
+                </td>
+                {% if CAN_MODIFY_ACCOUNTS %}
+                    <td style="text-align:center;" valign="top">
+                        {% if rec['user_id'] == 1 %}
+                            {% if IS_SUPERADMIN %}
+                            <a class="" href="{{ ADMIN_URL }}/preferences/" title="{{ L_('TEXT:MODIFY') }}" target="_blank"><i class="fa fa-pencil"></i></a>                                     
+                            {% else %}
+                            <!-- nothing to click -->  
+                            {% endif %}
+                        {% else %}
+                            <a class="" href="{{ ADMIN_URL }}/users/users.php?user_id={{ getIDKEY(rec['user_id']) }}&modify=1" {{JS_ONCLICK}} title="{{ L_('TEXT:MODIFY') }} {{ L_('TEXT:USER') }}" target="_blank"><i class="fa fa-pencil"></i></a>
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}        		        
+    </tbody>
+</table>    
+{% endblock %}

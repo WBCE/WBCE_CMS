@@ -10,17 +10,15 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require_once realpath('../config.php');
-
-
-// include default language file
-require_once WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php';
-$load_language = false;
+require_once dirname(__DIR__) . '/config.php';
+$oAccounts = new Accounts();
+foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
 // set required page details
 $page_id          = (isset($_SESSION['PAGE_ID']) && ($_SESSION['PAGE_ID'] != '') ? $_SESSION['PAGE_ID'] : 0);
 $page_description = '';
 $page_keywords    = '';
+define('TEMPLATE', $oAccounts->cfg['signup_template']);
 define('PAGE_ID', $page_id);
 define('ROOT_PARENT', 0);
 define('PARENT', 0);
@@ -31,7 +29,7 @@ define('MODULE', '');
 define('VISIBILITY', 'public');
 
 // set the page content include file
-define('PAGE_CONTENT', WB_PATH . '/account/signup_switch.php');
+define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/signup_switch.php');
 	
 // disable auto authentication
 $auto_auth = false;

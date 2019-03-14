@@ -260,8 +260,8 @@ if (!function_exists('get_section_content')) {
 
 if (!function_exists('block_contents')) {
     /**
-     *	@brief  This functions fetches the sections of a templates layout block 
-     *          and retuns it as an array for further processing.  
+     *	@brief   This functions fetches the sections of a templates layout block 
+     *           and retuns it as an array for further processing.  
      *
      *	@global  object  $database
      *	@global  object  $wb
@@ -271,7 +271,7 @@ if (!function_exists('block_contents')) {
      *	@return  array   whole array of sections contained in a block
      */
     function block_contents($uBlock = 1){
-        global $database, $wb, $MESSAGE;
+        global $database, $wb, $TEXT, $MESSAGE, $HEADING, $MENU;
         $admin = $wb;
         $iBlockID =  is_numeric($uBlock) ? $uBlock : get_block_id($uBlock);
 
@@ -380,16 +380,25 @@ if (!function_exists('block_contents')) {
 
 if (!function_exists('page_content')) {
     /**
-     * @brief   return or echo all the sections of one block into the template		   
+     * @brief   print or return (e.g. into a variable for later use)
+     *          all the sections of one block into the template		   
      *	        It now alllows to enter block names as well as block numbers.
      *	        The second parameter lets the function return the result instead of printing it immediately.
      *
-     * @param  unspec  $uBlock   Block ID or Block name
-     * @param  bool    $bEcho    echo the contents 
-     *                           or set to 0 if you want to fetch the contents into a variable
+     * @global  object  $wb         |   The global variables are 
+     * @global  object  $database   |   optional and will be used
+     * @global  array   $globals    |   only in case PAGE_CONTENT
+     * @global  array   $TEXT       |   (this are the special pages
+     * @global  array   $MESSAGE    |   like search, account etc.)
+     * @global  array   $HEADING    |   is defined.
+     * @global  array   $MENU       | 
+     * 
+     * @param   unspec  $uBlock     Block ID or Block name
+     * @param   bool    $bPrint   echo the contents 
+     *                              or set to 0 if you want to fetch the contents into a variable
      * @return string 
      */
-    function page_content($uBlock = 1, $bEcho = 1){		
+    function page_content($uBlock = 1, $bPrint = 1){		
         $iBlockID =  get_block_id($uBlock);
         $sRetVal = '';
         if (!defined('PAGE_CONTENT')) {
@@ -400,15 +409,24 @@ if (!function_exists('page_content')) {
                 }
             }
         } else {
-            ob_start();
-            require PAGE_CONTENT;
-            $sRetVal .= ob_get_clean();
+            // PAGE_CONTENT is defined 
+            // it will go into the block with ID = 1
+            if($iBlockID == 1){
+                ob_start();
+                global $wb, $database, $globals, $TEXT, $MESSAGE, $HEADING, $MENU;
+                $admin = $wb;
+                if (isset($globals) and is_array($globals)) {
+                    foreach ($globals as $sGlobalName) {
+                        global $$sGlobalName;
+                    }
+                }
+                require PAGE_CONTENT;
+                $sRetVal .= ob_get_clean();
+            }
         }
         // echo or return
-        if($bEcho == 1) 
-            echo $sRetVal;	
-        else 
-            return $sRetVal;
+        if($bPrint == 1) echo   $sRetVal;	
+        else             return $sRetVal;
     }
 }
 

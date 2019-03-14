@@ -1,0 +1,106 @@
+{{ insertCssFile( CURRENT_DIR ~ '/forms.css') }}
+{{ MESSAGE_BOX }}
+<h1>{{ L_('TOOL_TXT:PREFERENCES') }}</h1>
+<br />
+
+{#
+ * USER BASE Connector 
+ * this form is generated automatically  according  to  the
+ * configuration of the UserBase Admin-Tool (if installed).
+ #}
+{{ USERBASE_FORM }}
+<div class="cpForm">
+    <form name="details" action="{{ constant('PREFERENCES_URL') }}" method="post">        
+        {{ FTAN }} {# Important: keep FTAN token in template! #}
+        <h3>{{ L_('HEADING:MY_SETTINGS') }}</h3>
+
+        <div class="formRow">
+            <label class="settingName" for="display_name">{{ L_('TEXT:DISPLAY_NAME') }}</label>
+            <div class="settingValue">
+                <input type="text" id="display_name" name="display_name" value="{{ DISPLAY_NAME }}" />
+            </div>
+        </div>
+
+        <div class="formRow">
+            <label class="settingName" for="email">{{ L_('TEXT:EMAIL') }}</label>
+            <div class="settingValue">
+                <input type="text" id="email"  name="email" value="{{ EMAIL }}" />
+            </div>
+        </div>
+
+        <div class="formRow">
+            <label class="settingName" for="language">{{ L_('TEXT:LANGUAGE') }}</label>
+            <div class="settingValue">
+                <select name="language" id="language">
+                    <option value="" disabled>{{ L_('TOOL_TXT:PLEASE_SELECT') }}...</option>
+                    {% for lang in LANGUAGES %}
+                            <option value="{{ lang.CODE }}"{% if lang.SELECTED == true %} selected{% endif %} style="background: url({{ lang.FLAG }}.png) no-repeat center left; padding-left: 20px;">{{ lang.NAME }} ({{ lang.CODE }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="formRow">
+            <label class="settingName" for="timezone">{{ L_('TEXT:TIMEZONE') }}</label>
+            <div class="settingValue">
+                <select name="timezone" id="timezone">
+                    <option value="-20" disabled>{{ L_('TOOL_TXT:PLEASE_SELECT') }}...</option>
+                    {% for rec in TIME_ZONES %}
+                            <option value="{{ rec.VALUE }}"{% if rec.SELECTED == true %} selected{% endif %}{% if rec.SELECTED == true %} selected{% endif %}>{{ rec.NAME }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="formRow">
+            <label class="settingName" for="date_format">{{ L_('TEXT:DATE_FORMAT') }}</label>
+            <div class="settingValue">
+                <select id="date_format" name="date_format">
+                    <option value="" disabled>{{ L_('TOOL_TXT:PLEASE_SELECT') }}...</option>
+                    {% for rec in DATE_FORMATS %}
+                            <option value="{{ rec.VALUE }}"{% if rec.SELECTED == true %} selected{% endif %}{% if rec.SELECTED == true %} selected{% endif %}>{{ rec.NAME }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="formRow">
+            <label class="settingName" for="time_format">{{ L_('TEXT:TIME_FORMAT') }}</label>
+            <div class="settingValue">
+                <select name="time_format" id="time_format">
+                    <option value="" disabled>{{ L_('TOOL_TXT:PLEASE_SELECT') }}...</option>
+                    {% for rec in TIME_FORMATS %}
+                            <option value="{{ rec.VALUE }}"{% if rec.SELECTED == true %} selected{% endif %}{% if rec.SELECTED == true %} selected{% endif %}>{{ rec.NAME }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <h3>{{ L_('TEXT:NEW_PASSWORD') }}</h3>
+        <div class="formRow">
+            <label class="settingName" for="new_password">{{ L_('TEXT:NEW_PASSWORD') }}</label>
+            <div class="settingValue">{{ NEW_PASSWORD }}</div>
+        </div>
+
+        <div class="formRow">
+            <label class="settingName" for="new_password2">{{ L_('TEXT:RETYPE_NEW_PASSWORD') }}</label>
+                <div class="settingValue">
+                    <input type="password" name="new_password2"  id="new_password2" />
+                    <div class="formHint">{{ L_('MESSAGE:USERS_CHANGING_PASSWORD') }}.</div>
+                </div>
+        </div>
+        <br />
+        <div class="formRow">
+            <label class="settingName" for="current_password">{{ L_('TEXT:CURRENT_PASSWORD') }}</label>
+            <div class="settingValue">
+                <input type="password" name="current_password" id="current_password" />
+                <div class="formHint">{{ L_('TEXT:NEED_CURRENT_PASSWORD') }}.</div>
+            </div>
+        </div>
+
+        <div class="buttonsRow">
+            <button type="button" value="cancel" onClick="javascript: window.location = '{{ REFFERER_URL }}';">{{ L_('TEXT:CANCEL') }}</button>
+            <button type="reset" name="reset" value="reset" class="button" >{{ L_('TEXT:RESET') }}</button>
+            <button type="submit" id="submit" name="action" value="profile" class="button pos-right">{{ L_('TOOL_TXT:SAVE_PREFERENCES') }}</button>
+        </div>
+    </form>
+</div>

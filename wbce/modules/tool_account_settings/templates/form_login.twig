@@ -1,0 +1,36 @@
+{{ insertCssFile( CURRENT_DIR ~ '/forms.css') }}
+
+<h1>{{ L_('MENU:LOGIN') }}</h1>
+<br />
+{{ MESSAGE_BOX }}
+
+ 
+<form class="login-box" action="{{ constant("LOGIN_URL") }}" method="post" autocomplete="off">
+    <input type="hidden" name="username_fieldname" value="{{ USERNAME_FIELD }}" />
+    <input type="hidden" name="password_fieldname" value="{{ PASSWORD_FIELD }}" />
+    <input type="hidden" name="redirect" value="{{ REDIRECT_URL }}" />
+    <div class="cpForm">
+        <div class="formRow">
+            <label class="settingName" for="{{ USERNAME_FIELD }}">{{ L_('TEXT:USERNAME') }}</label>
+            <div class="settingValue">
+                <input type="text" id="{{ USERNAME_FIELD }}" name="{{ USERNAME_FIELD }}" />
+            </div>
+        </div>
+
+        <div class="formRow">
+            <label class="settingName" for="{{ PASSWORD_FIELD }}">{{ L_('TEXT:PASSWORD') }}</label>
+            <div class="settingValue">
+                <input type="password" id="{{ PASSWORD_FIELD }}" name="{{ PASSWORD_FIELD }}" />
+            </div>
+        </div>
+
+        <div class="buttonsRow">
+            <input type="submit" name="submit" class="pos-right" value="{{ L_('TEXT:LOGIN') }}"  />
+        </div>
+    </div>
+</form>
+<p><a href="<?=FORGOT_URL ?>">{{ L_('TEXT:FORGOTTEN_DETAILS') }}</a></p>
+<script type="text/javascript">
+	var ref = document.getElementById("{{ USERNAME_FIELD }}");
+	if (ref) ref.focus();
+</script>

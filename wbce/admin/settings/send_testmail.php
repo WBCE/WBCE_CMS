@@ -37,24 +37,25 @@ if (!$admin->checkFTAN()) {
 }
 
 // Let's prepare and send the test mail 
-require_once WB_PATH . '/account/functions/functions.php';
+require_once WB_PATH . '/account/init.php';
+require_once WB_PATH . '/modules/tool_account_settings/functions.php';
 $sEmailTemplateName = 'testmail';
 $sEmailSubject      = '';
 $aTokenReplace      = array( 
-	'LOGIN_WEBSITE_TITLE'          => WEBSITE_TITLE, 
-	'WBMAILER_DEFAULT_SENDERNAME'  => WBMAILER_DEFAULT_SENDERNAME, 
-	'SERVER_EMAIL'                 => SERVER_EMAIL, 
-	'WB_URL'                       => WB_URL, 
-	'DATE'                         => date("Y-m-d"), 
-	'TIME'                         => date("H:i:s"), 
+    'LOGIN_WEBSITE_TITLE'          => WEBSITE_TITLE, 
+    'WBMAILER_DEFAULT_SENDERNAME'  => WBMAILER_DEFAULT_SENDERNAME, 
+    'SERVER_EMAIL'                 => SERVER_EMAIL, 
+    'WB_URL'                       => WB_URL, 
+    'DATE'                         => date("d-m-Y"), 
+    'TIME'                         => date("H:i:s"), 
 );	
 
 // After check print the header
 $admin->print_header();
 
 if (account_sendEmail(SERVER_EMAIL, $aTokenReplace, $sEmailTemplateName) == true) {	                                                                   	
-	$admin->print_success(sprintf($MESSAGE['TESTMAIL_SUCCESS'], SERVER_EMAIL), $js_back);
+    $admin->print_success(sprintf($MESSAGE['TESTMAIL_SUCCESS'], SERVER_EMAIL), $js_back);
 } else {
-	$admin->print_error(sprintf($MESSAGE['TESTMAIL_FAILURE'], SERVER_EMAIL), $js_back);		
+    $admin->print_error(sprintf($MESSAGE['TESTMAIL_FAILURE'], SERVER_EMAIL), $js_back);		
 } 
 $admin->print_footer();

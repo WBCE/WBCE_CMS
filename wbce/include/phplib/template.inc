@@ -355,9 +355,11 @@ class Template
       $this->halt("set_block: unable to set block $varname.");
       return false;
     }
-*/
+*/  
     $str = preg_replace($reg, "{" . $name . "}", $str);
-    @$this->set_var($varname, $m[1][0]);
+    if(isset($m[1][0])){
+        $this->set_var($varname, $m[1][0]);
+    }
     $this->set_var($parent, $str);
     return true;
   }

@@ -26,7 +26,7 @@ class admin extends wb
     {
         parent::__construct(SecureForm::BACKEND);
         if ($section_name != '##skip##') {
-            global $database, $MESSAGE;
+            global $MESSAGE;
             // Specify the current applications name
             $this->section_name = $section_name;
             $this->section_permission = $section_permission;
@@ -34,7 +34,7 @@ class admin extends wb
             if ($auto_auth == true) {
                 // First check if the user is logged-in
                 if ($this->is_authenticated() == false) {
-                    header('Location: ' . ADMIN_URL . '/login/index.php');
+                    header('Location: ' . ADMIN_URL . '/login/');
                     exit(0);
                 }
 
@@ -46,7 +46,7 @@ class admin extends wb
 
             // Check if the backend language is also the selected language. If not, send headers again.
             $sql = 'SELECT `language` FROM `{TP}users` WHERE `user_id`=' . (int)$this->get_user_id();
-            $user_language = $database->get_one($sql);
+            $user_language = $this->_oDb->get_one($sql);
             $admin_folder = str_replace(WB_PATH, '', ADMIN_PATH);
             if ((LANGUAGE != $user_language) && file_exists(WB_PATH . '/languages/' . $user_language . '.php')
                 && strpos($_SERVER['SCRIPT_NAME'], $admin_folder . '/') !== false) {
@@ -85,16 +85,16 @@ class admin extends wb
     {
         // this buffer is needed so we can later apply output filters to BE Output
         if ($operateBuffer){
-	        ob_start();
-	    }
+            ob_start();
+        }
         
         // Get vars from the language file
-        global $MENU, $MESSAGE, $TEXT, $database;
+        global $MENU, $MESSAGE, $TEXT;
         // Connect to database and get website title
         // $GLOBALS['FTAN'] = $this->getFTAN();
         $this->createFTAN();
         $sql = 'SELECT `value` FROM `{TP}settings` WHERE `name`=\'website_title\'';
-        $get_title = $database->query($sql);
+        $get_title = $this->_oDb->query($sql);
         $title = $get_title->fetchRow(MYSQLI_ASSOC);
         
         // Setup template object, parse vars to it, then parse it
@@ -113,13 +113,16 @@ class admin extends wb
         if (isset($_GET['page_id'])) {
             // extract page link from the database
             $sql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id`=' . intval($_GET['page_id']);
-            $result = @$database->query($sql);
+            $result = @$this->_oDb->query($sql);
             $row = @$result->fetchRow(MYSQLI_ASSOC);
             if ($row) {
                 $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
             }
         }
-		I::insertJsFile(WB_URL.'/include/SessionTimeout/SessionTimeout.js', "HEAD BTM+", 'SessionTimeout');
+        I::insertJsFile(WB_URL.'/include/SessionTimeout/SessionTimeout.js', "HEAD BTM+", 'SessionTimeout');
+        
+        $sTempMMI = (string) Settings::Get("wb_maintainance_mode");
+        $sMaintModeIndict = ($sTempMMI) ? ' <span class="fa fa-wrench wbcemm"></span> ' : ''; 
 		
 		$maintModeIndicator =(string)Settings::Get ("wb_maintainance_mode");
 		if ($maintModeIndicator) { $maintModeIndicator=' <span class="fa fa-wrench wbcemm"></span> '; } else { $maintModeIndicator=''; }  
@@ -161,20 +164,21 @@ class admin extends wb
             'URL_HELP' => 'https://wbce.org/',
             'BACKEND_MODULE_CSS' => $this->register_backend_modfiles('css'), // adds backend.css
             'BACKEND_MODULE_JS' => $this->register_backend_modfiles('js'),   // adds backend.js
-			'MAINTAINANCEMODEINDICATOR' => $maintModeIndicator,
+			      'MAINTAINANCEMODEINDICATOR' => $maintModeIndicator,
         )
         );
 
         // Create the menu
         $menu = array(
-            array(ADMIN_URL . '/pages/index.php', '', $MENU['PAGES'], 'pages', 1),
-            array(ADMIN_URL . '/media/index.php', '', $MENU['MEDIA'], 'media', 1),
-            array(ADMIN_URL . '/addons/index.php', '', $MENU['ADDONS'], 'addons', 1),
-            array(ADMIN_URL . '/preferences/index.php', '', $MENU['PREFERENCES'], 'preferences', 0),
-            array(ADMIN_URL . '/settings/index.php', '', $MENU['SETTINGS'], 'settings', 1),
-            array(ADMIN_URL . '/admintools/index.php', '', $MENU['ADMINTOOLS'], 'admintools', 1),
-            array(ADMIN_URL . '/access/index.php', '', $MENU['ACCESS'], 'access', 1),
+            array(ADMIN_URL . '/pages/',       '', $MENU['PAGES'],       'pages', 1),
+            array(ADMIN_URL . '/media/',       '', $MENU['MEDIA'],       'media', 1),
+            array(ADMIN_URL . '/addons/',      '', $MENU['ADDONS'],      'addons', 1),
+            array(ADMIN_URL . '/preferences/', '', $MENU['PREFERENCES'], 'preferences', 0),
+            array(ADMIN_URL . '/settings/',    '', $MENU['SETTINGS'],    'settings', 1),
+            array(ADMIN_URL . '/admintools/',  '', $MENU['ADMINTOOLS'],  'admintools', 1),
+            array(ADMIN_URL . '/access/',      '', $MENU['ACCESS'],      'access', 1),
         );
+        
         $header_template->set_block('header_block', 'linkBlock', 'link');
         foreach ($menu as $menu_item) {
             $link = $menu_item[0];
@@ -293,17 +297,17 @@ class admin extends wb
             // Set system permissions var
             $system_permissions = $this->get_session('SYSTEM_PERMISSIONS');
             
-			// Set module permissions var
+            // Set module permissions var
             $module_permissions = $this->get_session('MODULE_PERMISSIONS');
             
-			// Set template permissions var
+            // Set template permissions var
             $template_permissions = $this->get_session('TEMPLATE_PERMISSIONS');
             
-			// Return true if system perm = 1
+            // Return true if system perm = 1
             if (isset($$type) && is_array($$type) && is_numeric(array_search($name, $$type))) {
-				return ($type == 'system_permissions') ? true : false;
+                return ($type == 'system_permissions') ? true : false;
             } else {
-				return ($type == 'system_permissions') ? false : true;
+                return ($type == 'system_permissions') ? false : true;
             }
         }
     }
@@ -311,20 +315,18 @@ class admin extends wb
     /**
      * @brief   Get basic user details (`username`,`display_name`,`email`) as array
      *
-     * @global  object  $database
      * @param   int     $user_id
      * @return  array   
      */
     public function get_user_details($user_id)
     {
-        global $database;
         $aRetVal = array(
-                'username'     => 'unknown', 
-                'display_name' => 'Unknown', 
-                'email'        => ''
+            'username'     => 'unknown', 
+            'display_name' => 'Unknown', 
+            'email'        => ''
         );
         $sSql = 'SELECT `username`,`display_name`,`email` FROM `{TP}users` WHERE `user_id`= %d';
-        if (($resUsers = $database->query(sprintf($sSql, $user_id)))) {
+        if (($resUsers = $this->_oDb->query(sprintf($sSql, $user_id)))) {
             if (($recUser = $resUsers->fetchRow(MYSQLI_ASSOC))) {
                 $aRetVal = $recUser;
             }
@@ -335,7 +337,6 @@ class admin extends wb
     /**
      * @brief   get section details from `{TP}sections` database table
      *
-     * @global  object  $database
      * @global  array   $TEXT
      * @param   int     $section_id
      * @param   string  $backLink
@@ -343,16 +344,16 @@ class admin extends wb
      */
     public function get_section_details($section_id, $backLink = 'index.php')
     {
-        global $database, $TEXT;
+        global $TEXT;
         $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`= %d';
-        if (($resSection = $database->query(sprintf($sSql, $section_id)))) {
+        if (($resSection = $this->_oDb->query(sprintf($sSql, $section_id)))) {
             if (!($recSection = $resSection->fetchRow(MYSQLI_ASSOC))) {
                 $this->print_header();
                 $this->print_error($TEXT['SECTION'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
             }
         } else {
             $this->print_header();
-            $this->print_error($database->get_error(), $backLink, true);
+            $this->print_error($this->_oDb->get_error(), $backLink, true);
         }
         return $recSection; 
     }
@@ -360,7 +361,6 @@ class admin extends wb
     /**
      * @brief   get page details from `{TP}pages` database table
      *
-     * @global  object  $database
      * @global  array   $TEXT
      * @param   int     $page_id
      * @param   string  $backLink
@@ -368,16 +368,16 @@ class admin extends wb
      */
     public function get_page_details($page_id, $backLink = 'index.php')
     {
-        global $database, $TEXT;
+        global $TEXT;
         $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id`= %d';
-        if (($resPages = $database->query(sprintf($sSql, $page_id)))) {
+        if (($resPages = $this->_oDb->query(sprintf($sSql, $page_id)))) {
             if (!($recPage = $resPages->fetchRow(MYSQLI_ASSOC))) {
                 $this->print_header();
                 $this->print_error($TEXT['PAGE'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
             }
         } else {
             $this->print_header();
-            $this->print_error($database->get_error(), $backLink, true);
+            $this->print_error($this->_oDb->get_error(), $backLink, true);
         }
         return $recPage;
     }
@@ -386,7 +386,6 @@ class admin extends wb
      * @brief   Check if authenticated (logged in) user 
      *          has permissions for specified page
      *
-     * @global  object  $database
      * @param   array   $page
      * @param   string  $action (viewing|admin)
      * @return  bool    true if user has given permissions 
@@ -394,8 +393,8 @@ class admin extends wb
     public function get_page_permission($page, $action = 'admin')
     {
         if ($action != 'viewing') {
-			$action = 'admin';
-		}
+            $action = 'admin';
+        }
         $action_groups = $action . '_groups';
         $action_users  = $action . '_users';
         $groups = $users = '0';
@@ -403,9 +402,8 @@ class admin extends wb
             $groups = $page[$action_groups];
             $users  = $page[$action_users];
         } else {
-            global $database;
             $sSql = 'SELECT `%s`,`%s` FROM `{TP}pages` WHERE `page_id`= %d';
-            if (($res = $database->query(sprintf($sSql, $action_groups, $action_users, $page['page_id'])))) {
+            if (($res = $this->_oDb->query(sprintf($sSql, $action_groups, $action_users, $page['page_id'])))) {
                 if (($rec = $res->fetchRow(MYSQLI_ASSOC))) {
                     $groups = $rec[$action_groups];
                     $users  = $rec[$action_users];

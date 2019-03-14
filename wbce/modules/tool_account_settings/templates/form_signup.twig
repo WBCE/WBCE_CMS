@@ -1,0 +1,55 @@
+
+{{ insertCssFile( CURRENT_DIR ~ '/forms.css') }}
+<h1>{{ L_('TEXT:SIGNUP') }}</h1>
+<br />
+{{ MESSAGE_BOX }}
+<div class="cpForm">
+    <form name="user" action="{{ constant("SIGNUP_URL") }}" method="post">
+        <input type="hidden" name="signup_form_sent">
+        {{ FTAN }}            {# Important: keep FTAN token in template! #}
+        {{ ASP_HONEYPOTS }}   {# Important: keep HONEYPOTS token in template! #}
+        <div class="formRow">
+            <label class="settingName" for="username">{{ L_('TEXT:USERNAME') }}</label>
+            <div class="settingValue">
+                <input type="text" id="username" name="username" maxlength="30" value="{{ USER_NAME }}"{% if USER_NAME_ERR %} class="input-error"{% endif %}/>
+            </div>
+        </div>
+
+        <div class="formRow">
+            <label class="settingName" for="display_name">{{ L_('TEXT:DISPLAY_NAME') }}</label>
+            <div class="settingValue">
+                <input type="text" id="display_name" name="display_name" maxlength="255" value="{{ DISPLAY_NAME }}"{% if DISPLAY_NAME_ERR %} class="input-error"{% endif %}/>
+            </div>
+        </div>
+
+        <div class="formRow">
+            <label class="settingName" for="email">{{ L_('TEXT:EMAIL') }}</label>
+            <div class="settingValue">
+                <input type="text" id="email" name="email" maxlength="255" value="{{ EMAIL }}"{% if EMAIL_ERR %} class="input-error"{% endif %}/>
+            </div>
+        </div>
+
+        <div class="formRow">
+                <div class="settingName" for="gdpr_check">
+                </div>
+                <div class="settingValue">
+                    <input type="checkbox" id="gdpr_check" name="gdpr_check" maxlength="255" value="1"{% if GDPR_ERR %} class="input-error"{% endif %}{% if GDPR_VALUE == 1 %} checked{% endif %} />
+                    {{ L_('TEXT:REGISTER_GDPR_PHRASE') }}
+                </div>
+        </div>
+
+        {% if SHOW_CAPTCHA %}
+            <div class="formRow">
+                <label class="settingName" for="field_title">{{ L_('TEXT:VERIFICATION') }}</label>
+                <div class="settingValue">
+                    {{ SHOW_CAPTCHA }}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="buttonsRow">
+            <input type="reset"  name="reset"  class="button" value="{{ L_('TEXT:RESET') }}" />
+            <input type="submit" name="submit" class="button pos-right" value="{{ L_('TEXT:SIGNUP') }}" />
+        </div>
+    </form>
+</div>

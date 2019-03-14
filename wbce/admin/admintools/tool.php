@@ -42,11 +42,11 @@ if (isset ($_POST['admin_tools']))
 // all ok go for display
 if ($toolCheck) {
 
-    // Defining some path for use in the actual admin tool
+    // Defining some path for use in the actual admin tool    
+    defined('ADMIN_TOOL_DIR') or define('ADMIN_TOOL_DIR', $toolDir);
     $modulePath   = WB_PATH."/modules/$toolDir/"; // we need this one later on too
     $languagePath = $modulePath.'languages/';
     $returnUrl    = ADMIN_URL."/admintools/tool.php?tool=$toolDir";
-
     //include info,php for additional infos
     include $modulePath."/info.php";
 

@@ -113,7 +113,7 @@ class database
         return $retVal;
     }   
 
-     /**
+    /**
      * updateRow() Update row
      * ======================
      *     
@@ -125,32 +125,49 @@ class database
      * );
      * $database->updateRow('{TP}mod_mymod', 'entry_id', $aUpdate);  
      *
-     * @param string $table     
-     * @param string $refKey reference key (column)
-     * @param array  $data
+     * @param  string $table     
+     * @param  unspec $refKey  reference key (column)
+     *                         since vers. 1.4.0 we can have more than one 
+     *                         column to check against in the WHERE clause. 
+     *                         Use CSV or array for this feature
+     * @param  array  $data
      *
-     * @return Result
+     * @return result
      */
-    function updateRow($table = '', $refKey = '', $data = array()){
+    public function updateRow($table = '', $refKey = '', $data = array()){
         $retVal = false;
-        if (isset($data[$refKey])) {
+        if ($table != '' && isset($refKey) && !empty($data)) {
+            
+            // Prepare WHERE clause
+            // check if $refKey is CSV-string and create an array if so
+            if(is_string($refKey) && strpos($refKey, ',') !== false) 
+                $refKey = explode(',', $refKey); 
+                        
+            $sWhere = ''; // init WHERE command
+            if(is_array($refKey)){ 
+                $aWhere = array();
+                foreach ($refKey as $column) {
+                    $column = trim($column);
+                    $aWhere[] = "`".trim($column)."` = '".$data[$column]."'";             
+                }
+                $sWhere = implode(' AND ', $aWhere);
+            } else {        
+                $sWhere = "`".trim($refKey)."` = '".$data[$refKey]."'"; 
+            }    
+            
+            // prepare data
             $parameters = array();
             foreach ($data as $column => $value) {
                 $parameters[] = "`".trim($column)."` = '".$value."', ";             
             }
             $sValues = implode("", $parameters);
             $sValues = substr($sValues, 0, -2);
-            $sqlRowCheck = sprintf("SELECT COUNT(*) FROM `%s` WHERE `%s` = '%s'", $table, $refKey, $data[$refKey]);
-            if ($this->get_one($sqlRowCheck)) {
-                $strQuery = sprintf("UPDATE `%s` SET %s WHERE `%s` = '%s'", $table, $sValues, $refKey, $data[$refKey]);
-            } else { 
-                $strQuery =  sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
-            }
-            if($this->query($strQuery)){                    
-                $retVal = true; 
-            }else{ 
-                $retVal = $this->get_error();
-            }
+            // check whether UPDATE or INSERT will be used
+            // (insert will be used in case record doesn't exist yet)
+            if ($this->get_one(sprintf("SELECT COUNT(*) FROM `%s` WHERE %s", $table, $sWhere)))
+                 $strQuery = sprintf("UPDATE `%s` SET %s WHERE %s", $table, $sValues, $sWhere);
+            else $strQuery = sprintf("INSERT INTO `%s` SET %s", $table, $sValues);            
+            $retVal = $this->query($strQuery) ? true : $this->get_error(); 
         }
         return $retVal;
     }
@@ -294,6 +311,18 @@ class database
         } else {
             return $result;
         }
+    }
+    
+    // Return queried array directly for immediate use
+    public function get_array($statement)
+    {
+        $aData = array();
+        if($resData = $this->query($statement)){
+            while($rec = $resData->fetchRow(MYSQLI_ASSOC)){
+                $aData[] = $rec;
+            }        
+        }
+        return $aData;
     }
 
     // Set the DB error

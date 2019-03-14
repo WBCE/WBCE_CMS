@@ -11,46 +11,60 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if(count(get_included_files())==1) header("Location: ../index.php", TRUE, 301);
 
-
-
-class frontend extends wb
+class Frontend extends Wb
 {
     // defaults
-    public $default_link, $default_page_id;
+    public $default_link; 
+    public $default_page_id;
+    
     // when multiple blocks are used, show home page blocks on
     // pages where no content is defined (search, login, ...)
     public $default_block_content = true;
 
     // page details
-    // page database row
     public $page;
-    public $page_id, $page_title, $menu_title, $parent, $root_parent, $level, $position, $visibility;
-    public $page_description, $page_keywords, $page_link;
+    public $page_id; 
+    public $page_title; 
+    public $menu_title; 
+    public $parent; 
+    public $root_parent; 
+    public $level; 
+    public $position; 
+    public $visibility;
+    public $page_description; 
+    public $page_keywords; 
+    public $page_link;
     public $page_trail = array();
 
     public $page_access_denied;
     public $page_no_active_sections;
 
     // website settings
-    public $website_title, $website_description, $website_keywords, $website_header, $website_footer;
+    public $website_title; 
+    public $website_description; 
+    public $website_keywords; 
+    public $website_header; 
+    public $website_footer;
 
-    // ugly database stuff
-    public $extra_where_sql, $sql_where_language;
+    // database query related
+    public $extra_where_sql; 
+    public $sql_where_language;
 
     public function __construct()
     {
         parent::__construct(SecureForm::FRONTEND);
     }
+        
+   
 
     public function page_select()
     {
         global $page_id, $no_intro;
-        global $database;
         
          // We have a Maintainance situation print under construction if not in group admin
-        if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE===true and !$this->ami_group_member('1'))
+        if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE === true and !$this->ami_group_member('1'))
             $this->print_under_construction();             
         
         
@@ -64,7 +78,8 @@ class frontend extends wb
                 $content = @fread($handle, filesize($filename));
                 @fclose($handle);
                 $this->preprocess($content);
-                header("Location: " . WB_URL . PAGES_DIRECTORY . "/intro" . PAGE_EXTENSION . ""); // send intro.php as header to allow parsing of php statements
+                // send intro.php as header to allow parsing of php statements
+                header("Location: " . WB_URL . PAGES_DIRECTORY . "/intro" . PAGE_EXTENSION . ""); 
                 echo ($content);
                 return false;
             }
@@ -75,25 +90,23 @@ class frontend extends wb
         }
         // Get default page
         // Check for a page id
-        $table_p = TABLE_PREFIX . 'pages';
-        $table_s = TABLE_PREFIX . 'sections';
         $now = time();
-        $sql = 'SELECT `p`.`page_id`, `link` ';
-        $sql .= 'FROM `' . $table_p . '` AS `p` INNER JOIN `' . $table_s . '` USING(`page_id`) ';
-        $sql .= 'WHERE `parent`=0 AND `visibility`=\'public\' ';
-        $sql .= 'AND ((' . $now . '>=`publ_start` OR `publ_start`=0) ';
-        $sql .= 'AND (' . $now . '<=`publ_end` OR `publ_end`=0)) ';
+        $sSql = 'SELECT `p`.`page_id`, `link` ';
+        $sSql .= 'FROM `{TP}pages` AS `p` INNER JOIN `{TP}sections` USING(`page_id`) ';
+        $sSql .= 'WHERE `parent`=0 AND `visibility`=\'public\' ';
+        $sSql .= 'AND ((' . $now . '>=`publ_start` OR `publ_start`=0) ';
+        $sSql .= 'AND (' . $now . '<=`publ_end` OR `publ_end`=0)) ';
         if (trim($this->sql_where_language) != '') {
-            $sql .= trim($this->sql_where_language) . ' ';
+            $sSql .= trim($this->sql_where_language) . ' ';
         }
-        $sql .= 'ORDER BY `p`.`position` ASC';
-        $get_default = $database->query($sql);
+        $sSql .= 'ORDER BY `p`.`position` ASC';
+        $get_default = $this->_oDb->query($sSql);
         $default_num_rows = $get_default->numRows();
         if (!isset($page_id) or !is_numeric($page_id)) {
             // Go to or show default page
             if ($default_num_rows > 0) {
-                $fetch_default = $get_default->fetchRow();
-                $this->default_link = $fetch_default['link'];
+                $fetch_default         = $get_default->fetchRow(MYSQLI_ASSOC);
+                $this->default_link    = $fetch_default['link'];
                 $this->default_page_id = $fetch_default['page_id'];
                 // Check if we should redirect or include page inline
                 if (HOMEPAGE_REDIRECTION) {
@@ -114,8 +127,8 @@ class frontend extends wb
         }
         // Get default page link
         if (!isset($fetch_default)) {
-            $fetch_default = $get_default->fetchRow();
-            $this->default_link = $fetch_default['link'];
+            $fetch_default         = $get_default->fetchRow(MYSQLI_ASSOC);
+            $this->default_link    = $fetch_default['link'];
             $this->default_page_id = $fetch_default['page_id'];
         }
         return true;
@@ -123,60 +136,62 @@ class frontend extends wb
 
     public function get_page_details()
     {
-        global $database;
         if ($this->page_id != 0) {
             // Query page details
-            $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id`=' . (int) $this->page_id;
-            $get_page = $database->query($sql);
-            // Make sure page was found in database
-            if ($get_page->numRows() == 0) {
-                // Print page not found message
-                exit("Page not found");
-            }
+            $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = ' . (int) $this->page_id;
+            $resPage = $this->_oDb->query($sSql);
+            
+            // Make sure page was found in database otherwise print "Page not found" message
+            if ($resPage->numRows() == 0) exit("Page not found");
+            
             // Fetch page details
-            $this->page = $get_page->fetchRow();
-            // Check if the page language is also the selected language. If not, send headers again.
+            $this->page = $resPage->fetchRow(MYSQLI_ASSOC);
+            
+            // Check if the page language is also the selected language. If not, send headers again.           
             if ($this->page['language'] != LANGUAGE) {
+                $sUri = $this->page_link($this->page['link']).'?lang=' . $this->page['language'];
                 if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
                     // check if there is an query-string
-                    header('Location: ' . $this->page_link($this->page['link']) . '?' . $_SERVER['QUERY_STRING'] . '&lang=' . $this->page['language']);
+                    header('Location: ' . $sUri . '&' . $_SERVER['QUERY_STRING']);
                 } else {
-                    header('Location: ' . $this->page_link($this->page['link']) . '?lang=' . $this->page['language']);
+                    header('Location: ' . $sUri);
                 }
                 exit();
-            }
+            } 
             // Begin code to set details as either variables of constants
-            // Page ID
-            if (!defined('PAGE_ID')) {define('PAGE_ID', $this->page['page_id']);}
-            // Page Title
-            if (!defined('PAGE_TITLE')) {define('PAGE_TITLE', $this->page['page_title']);}
+            defined('PAGE_ID')    or define('PAGE_ID',    $this->page['page_id']);
+            defined('PAGE_TITLE') or define('PAGE_TITLE', $this->page['page_title']);
             $this->page_title = PAGE_TITLE;
+            
             // Menu Title
-            $menu_title = $this->page['menu_title'];
-            if ($menu_title != '') {
-                if (!defined('MENU_TITLE')) {define('MENU_TITLE', $menu_title);}
-            } else {
-                if (!defined('MENU_TITLE')) {define('MENU_TITLE', PAGE_TITLE);}
-            }
+            $sMenuTitle = $this->page['menu_title'];
+            defined('MENU_TITLE') or define('MENU_TITLE', ($sMenuTitle != '') ? $sMenuTitle : PAGE_TITLE);
             $this->menu_title = MENU_TITLE;
+            
             // Page parent
-            if (!defined('PARENT')) {define('PARENT', $this->page['parent']);}
+            defined('PARENT') or define('PARENT', $this->page['parent']);
             $this->parent = $this->page['parent'];
-            // Page root parent
-            if (!defined('ROOT_PARENT')) {define('ROOT_PARENT', $this->page['root_parent']);}
+            
+            // Page root parent 
+            defined('ROOT_PARENT') or define('ROOT_PARENT', $this->page['root_parent']);
             $this->root_parent = $this->page['root_parent'];
+            
             // Page level
-            if (!defined('LEVEL')) {define('LEVEL', $this->page['level']);}
+            defined('LEVEL') or define('LEVEL', $this->page['level']);
             $this->level = $this->page['level'];
+            
             // Page position
             $this->level = $this->page['position'];
+            
             // Page visibility
-            if (!defined('VISIBILITY')) {define('VISIBILITY', $this->page['visibility']);}
+            defined('VISIBILITY') or define('VISIBILITY', $this->page['visibility']);
             $this->visibility = $this->page['visibility'];
+            
             // Page trail
             foreach (explode(',', $this->page['page_trail']) as $pid) {
                 $this->page_trail[$pid] = $pid;
             }
+            
             // Page description
             $this->page_description = $this->page['description'];
             if ($this->page_description != '') {
@@ -184,27 +199,27 @@ class frontend extends wb
             } else {
                 define('PAGE_DESCRIPTION', WEBSITE_DESCRIPTION);
             }
+            
             // Page keywords
             $this->page_keywords = $this->page['keywords'];
+            
             // Page link
             $this->link = $this->page_link($this->page['link']);
             $_SESSION['PAGE_ID'] = $this->page_id;
             $_SESSION['HTTP_REFERER'] = $this->link;
 
-            // End code to set details as either variables of constants
+            // End code to set details as either variables or constants
         }
 
         // Figure out what template to use
         if (!defined('TEMPLATE')) {
+            $sTemplate = DEFAULT_TEMPLATE;
             if (isset($this->page['template']) and $this->page['template'] != '') {
                 if (file_exists(WB_PATH . '/templates/' . $this->page['template'] . '/index.php')) {
-                    define('TEMPLATE', $this->page['template']);
-                } else {
-                    define('TEMPLATE', DEFAULT_TEMPLATE);
+                    $sTemplate = $this->page['template'];
                 }
-            } else {
-                define('TEMPLATE', DEFAULT_TEMPLATE);
             }
+            define('TEMPLATE', $sTemplate);
         }
         // Set the template dir
         define('TEMPLATE_DIR', WB_URL . '/templates/' . TEMPLATE);
@@ -212,7 +227,7 @@ class frontend extends wb
         // Check if user is allowed to view this page
         if ($this->page && $this->page_is_visible($this->page) == false) {
             if (VISIBILITY == 'deleted' or VISIBILITY == 'none') {
-                // User isnt allowed on this page so tell them
+                // User isn't allowed on this page so tell them
                 $this->page_access_denied = true;
             } elseif (VISIBILITY == 'private' or VISIBILITY == 'registered') {
                 // Check if the user is authenticated
@@ -235,222 +250,49 @@ class frontend extends wb
 
     public function get_website_settings()
     {
-        global $database;
-
-        // set visibility SQL code
-        // never show no-vis, hidden or deleted pages
-        $this->extra_where_sql = '`visibility`!=\'none\' AND `visibility`!=\'hidden\' AND `visibility`!=\'deleted\'';
+        // Set visibility SQL code
+        // Never show pages of visibility none, hidden or deleted
+        $this->extra_where_sql = "`visibility` != 'none' AND `visibility` != 'hidden' AND `visibility` != 'deleted'";
         // Set extra private sql code
         if ($this->is_authenticated() == false) {
             // if user is not authenticated, don't show private pages either
-            $this->extra_where_sql .= ' AND `visibility`!=\'private\'';
+            $this->extra_where_sql .= " AND `visibility` != 'private'";
             // and 'registered' without frontend login doesn't make much sense!
             if (FRONTEND_LOGIN == false) {
-                $this->extra_where_sql .= ' AND `visibility`!=\'registered\'';
+                $this->extra_where_sql .= " AND `visibility` != 'registered'";
             }
         }
         $this->extra_where_sql .= $this->sql_where_language;
 
         // Work-out if any possible in-line search boxes should be shown
-        if (SEARCH == 'public') {
-            define('SHOW_SEARCH', true);
-        } elseif (SEARCH == 'private' and VISIBILITY == 'private') {
-            define('SHOW_SEARCH', true);
-        } elseif (SEARCH == 'private' and $this->is_authenticated() == true) {
-            define('SHOW_SEARCH', true);
-        } elseif (SEARCH == 'registered' and $this->is_authenticated() == true) {
-            define('SHOW_SEARCH', true);
-        } else {
-            define('SHOW_SEARCH', false);
+        if(!defined('SHOW_SEARCH')){
+            $bShowSearch = false;
+            if     (SEARCH == 'public')                                          $bShowSearch = true;
+            elseif (SEARCH == 'private'    && VISIBILITY == 'private')           $bShowSearch = true;
+            elseif (SEARCH == 'private'    && $this->is_authenticated() == true) $bShowSearch = true;
+            elseif (SEARCH == 'registered' && $this->is_authenticated() == true) $bShowSearch = true;
+                        
+            define('SHOW_SEARCH', $bShowSearch);            
         }
-        // Work-out if menu should be shown
-        if (!defined('SHOW_MENU')) {
-            define('SHOW_MENU', true);
-        }
-        // Work-out if login menu constants should be set
-        if (FRONTEND_LOGIN) {
-            // Set login menu constants
-            define('LOGIN_URL', WB_URL . '/account/login.php');
-            define('LOGOUT_URL', WB_URL . '/account/logout.php');
-            define('FORGOT_URL', WB_URL . '/account/forgot.php');
-            define('PREFERENCES_URL', WB_URL . '/account/preferences.php');
-            define('SIGNUP_URL', WB_URL . '/account/signup.php');
-        }
+        
+        // define SHOW_MENU constant
+        defined('SHOW_MENU') or define('SHOW_MENU', true);    
     }
-
-/*
- * replace all "[wblink{page_id}]" with real links
- * @param string &$content : reference to global $content
- * @return void
- * @history 100216 17:00:00 optimise errorhandling, speed, SQL-strict
- */
-    public function preprocess(&$content)
-    {
-        global $database;
-        $replace_list = array();
-        $pattern = '/\[wblink([0-9]+)\]/isU';
-        if (preg_match_all($pattern, $content, $ids)) {
-            foreach ($ids[1] as $key => $page_id) {
-                $replace_list[$page_id] = $ids[0][$key];
-            }
-            foreach ($replace_list as $page_id => $tag) {
-                $sql = 'SELECT `link` FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . (int) $page_id;
-                $link = $database->get_one($sql);
-                if (!is_null($link)) {
-                    $link = $this->page_link($link);
-                    $content = str_replace($tag, $link, $content);
-                }
-            }
-        }
-    }
-
-/*
-function preprocess(&$content) {
-global $database;
-// Replace [wblink--PAGE_ID--] with real link
-$pattern = '/\[wblink(.+?)\]/s';
-preg_match_all($pattern,$content,$ids);
-foreach($ids[1] AS $page_id) {
-$pattern = '/\[wblink'.$page_id.'\]/s';
-// Get page link
-$get_link = $database->query("SELECT link FROM ".TABLE_PREFIX."pages WHERE page_id = '$page_id' LIMIT 1");
-$fetch_link = $get_link->fetchRow();
-$link = $this->page_link($fetch_link['link']);
-$content = preg_replace($pattern,$link,$content);
-}
-}
- */
-    public function menu()
-    {
-        global $wb;
-        if (!isset($wb->menu_number)) {
-            $wb->menu_number = 1;
-        }
-        if (!isset($wb->menu_start_level)) {
-            $wb->menu_start_level = 0;
-        }
-        if (!isset($wb->menu_recurse)) {
-            $wb->menu_recurse = -1;
-        }
-        if (!isset($wb->menu_collapse)) {
-            $wb->menu_collapse = true;
-        }
-        if (!isset($wb->menu_item_template)) {
-            $wb->menu_item_template = '<li><span[class]>[a] [menu_title] [/a]</span>';
-        }
-        if (!isset($wb->menu_item_footer)) {
-            $wb->menu_item_footer = '</li>';
-        }
-        if (!isset($wb->menu_header)) {
-            $wb->menu_header = '<ul>';
-        }
-        if (!isset($wb->menu_footer)) {
-            $wb->menu_footer = '</ul>';
-        }
-        if (!isset($wb->menu_default_class)) {
-            $wb->menu_default_class = ' class="menu_default"';
-        }
-        if (!isset($wb->menu_current_class)) {
-            $wb->menu_current_class = ' class="menu_current"';
-        }
-        if (!isset($wb->menu_parent)) {
-            $wb->menu_parent = 0;
-        }
-        $wb->show_menu();
-    }
-
-    public function show_menu()
-    {
-        global $database;
-        if ($this->menu_start_level > 0) {
-            $key_array = array_keys($this->page_trail);
-            if (isset($key_array[$this->menu_start_level - 1])) {
-                $real_start = $key_array[$this->menu_start_level - 1];
-                $this->menu_parent = $real_start;
-                $this->menu_start_level = 0;
-            } else {
-                return;
-            }
-        }
-        if ($this->menu_recurse == 0) {
-            return;
-        }
-
-        // Check if we should add menu number check to query
-        if ($this->menu_parent == 0) {
-            $menu_number = '`menu`=' . intval($this->menu_number);
-        } else {
-            $menu_number = '1';
-        }
-        // Query pages
-        $sql = 'SELECT `page_id`,`menu_title`,`page_title`,`link`,`target`,`level`,';
-        $sql .= '`visibility`,viewing_groups,viewing_users ';
-        $sql .= 'FROM `' . TABLE_PREFIX . 'pages` ';
-        $sql .= 'WHERE `parent`=' . (int) $this->menu_parent . ' AND ' . $menu_number . ' AND ' . $this->extra_where_sql . ' ';
-        $sql .= 'ORDER BY `position` ASC';
-        $query_menu = $database->query($sql);
-        // Check if there are any pages to show
-        if ($query_menu->numRows() > 0) {
-            // Print menu header
-            echo "\n" . $this->menu_header;
-            // Loop through pages
-            while ($page = $query_menu->fetchRow()) {
-                // check whether to show this menu-link
-                if ($this->page_is_active($page) == false && $page['link'] != $this->default_link && !INTRO_PAGE) {
-                    continue; // no active sections
-                }
-                if ($this->page_is_visible($page) == false) {
-                    if ($page['visibility'] != 'registered') // special case: page_to_visible() check wheter to show the page contents, but the menu should be visible allways
-                    {
-                        continue;
-                    }
-
-                }
-                // Create vars
-                $vars = array('[class]', '[a]', '[/a]', '[menu_title]', '[page_title]');
-                // Work-out class
-                if ($page['page_id'] == PAGE_ID) {
-                    $class = $this->menu_current_class;
-                } else {
-                    $class = $this->menu_default_class;
-                }
-                // Check if link is same as first page link, and if so change to WB URL
-                if ($page['link'] == $this->default_link and !INTRO_PAGE) {
-                    $link = WB_URL;
-                } else {
-                    $link = $this->page_link($page['link']);
-                }
-                // Create values
-                $values = array($class, '<a href="' . $link . '" target="' . $page['target'] . '" ' . $class . '>', '</a>', $page['menu_title'], $page['page_title']);
-                // Replace vars with value and print
-                echo "\n" . str_replace($vars, $values, $this->menu_item_template);
-                // Generate sub-menu
-                if ($this->menu_collapse == false or ($this->menu_collapse == true and isset($this->page_trail[$page['page_id']]))) {
-                    $this->menu_recurse--;
-                    $this->menu_parent = $page['page_id'];
-                    $this->show_menu();
-                }
-                echo "\n" . $this->menu_item_footer;
-            }
-            // Print menu footer
-            echo "\n" . $this->menu_footer;
-        }
-    }
+    
 
     // Function to show the "Under Construction" page
     public function print_under_construction()
     {
         global $MESSAGE;
         
-        //Header https://yoast.com/http-503-site-maintenance-seo/
-        $protocol = "HTTP/1.0";
+        $sProtocol = "HTTP/1.0";  //Header https://yoast.com/http-503-site-maintenance-seo/
         if ( "HTTP/1.1" == $_SERVER["SERVER_PROTOCOL"] ) $protocol = "HTTP/1.1";
 
-        header( "$protocol 503 Service Unavailable", true, 503 );
+        header( "$sProtocol 503 Service Unavailable", true, 503 );
         header( "Retry-After: 7200" ); //Searchengine revisits after 2 Hours 
         
         $Template=DEFAULT_TEMPLATE;
-        if (defined('TEMPLATE')) $Template=TEMPLATE;
+        if (defined('TEMPLATE')) $Template = TEMPLATE;
         
         $TemplatePath = WB_PATH.'/templates/'.$Template."/systemplates/maintainance.tpl.php";
         $DefaultPath  = WB_PATH."/templates/systemplates/maintainance.tpl.php";
@@ -459,5 +301,95 @@ $content = preg_replace($pattern,$link,$content);
         else                         include_once ($DefaultPath);
         
         exit;
+    }
+    
+    /**
+     * @brief  This method is used together with the AdminTool 
+     *         Captcha and Advanced-Spam-Protection (ASP) Control
+     * 
+     * @return string
+     */
+    public function renderAspHoneypots(){
+       $sASPFields = '';
+       if (ENABLED_ASP) { 
+           $sTimeStamp = time();
+           $_SESSION['submitted_when'] = $sTimeStamp;
+           // add some honeypot-fields
+           ob_start();	
+       ?>
+           <div style="display:none;">
+               <input type="hidden" name="submitted_when" value="<?=$sTimeStamp ?>" />
+               <p class="nixhier">
+                   <label for="email-address" title="Leave this field email-address blank">Email address:</label>
+                   <input id="email-address" name="email-address" size="60" value="" />
+               </p>
+               <p class="nixhier">				
+                   <label for="name" title="Leave this field name blank">Username (id):</label>
+                   <input id="name" name="name" size="60" value="" /></p>
+               <p class="nixhier">
+                   <label for="full_name" title="Leave this field full_name blank">Full Name:</label>
+                   <input id="full_name" name="full_name" size="60" value="" />
+               </p>
+           </div>		
+       <?php 
+           $sASPFields = ob_get_clean();
+       } //end:ENABLED_ASP
+       return $sASPFields;
+    }
+    
+    // Obsolete since the introduction of OpF Dashboard into the core
+    /**
+     * // public function preprocess(&$content)
+     * // this method is obsolete since [wblinkXXX] replacement is done
+     * // standardly in the OpF Dashboard since 1.4.0
+     */
+    public function preprocess($content = NULL)
+    {
+        // Return a note that this method is obsolete
+        if ($this->is_authenticated()) {
+            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) { 
+                // if Admin and WB_DEBUG on: display Notice to inform the developer
+                $caller = debug_backtrace()[0]; 
+                $sNotice  = "<br />The <i><b>".__FUNCTION__."</b> method</i> of <i>class <b>".__CLASS__."</b></i> is obsolete.";
+                $sNotice .= "<br /> There's no need to use it any longer.";
+                $sNotice .= "<br />Used in file <b>".$caller['file']."</b> on line <b>".$caller['line']."</b>";
+                trigger_error($sNotice);
+            }
+        }
+        return;        
+    }
+
+    // No longer supported since WBCE 1.4.0
+    public function menu()
+    {
+        // Return a note that this method is no longer supported
+        if ($this->is_authenticated()) {
+            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) { 
+                // if Admin and WB_DEBUG on: display Notice to inform the developer
+                $caller = debug_backtrace()[0]; 
+                $sNotice  = "<br />The <i><b>".__FUNCTION__."</b> method</i> of <i>class <b>".__CLASS__."</b></i> is obsolete.";
+                $sNotice .= "<br /> Please consider using the <b>show_menu2</b> function.";
+                $sNotice .= "<br />Used in file <b>".$caller['file']."</b> on line <b>".$caller['line']."</b>";
+                trigger_error($sNotice);
+            }
+        }
+        return;  
+    }
+    
+    // No longer supported since WBCE 1.4.0
+    public function show_menu()
+    {
+         // Return a note that this method is no longer supported
+        if ($this->is_authenticated()) {
+            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) { 
+                // if Admin and WB_DEBUG on: display Notice to inform the developer
+                $caller = debug_backtrace()[0]; 
+                $sNotice  = "<br />The <i><b>".__FUNCTION__."</b> method</i> of <i>class <b>".__CLASS__."</b></i> is obsolete.";
+                $sNotice .= "<br /> Please consider using the <b>show_menu2</b> function.";
+                $sNotice .= "<br />Used in file <b>".$caller['file']."</b> on line <b>".$caller['line']."</b>";
+                trigger_error($sNotice);
+            }
+        }
+        return;  
     }
 }
