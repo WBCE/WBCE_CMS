@@ -52,7 +52,7 @@
     <div id="branding-text">WBCE CMS</div>
     <div id="branding-logo"></div>
 </div>
-<a id="frontendtitel" href="{ADMIN_URL}" title="{TITLE_START}"> {WEBSITE_TITLE} - {TEXT_ADMINISTRATION} </a> </div>
+<a id="frontendtitel" href="{ADMIN_URL}" title="{TITLE_START}"> {WEBSITE_TITLE} {MAINTAINANCEMODEINDICATOR}- {TEXT_ADMINISTRATION} </a> </div>
 <!-- ENDE headerarea --> 
 
 <!-- ########## pagetopmenu ############################################### -->

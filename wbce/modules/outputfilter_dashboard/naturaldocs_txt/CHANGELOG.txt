@@ -2,9 +2,17 @@
 Header: Version-History
 
 1.5:
-1.5.6.1 %(mrbaseman, 22 Nov 2018)%
+1.5.7 %(mrbaseman, 07 Mar 2019)%
         - starting with php 7.2 create_function is deprecated
-
+	- use !{SYSVAR:WB_URL}!, !{SYSVAR:WB_PATH}!, !{OPF:PLUGIN_URL}!, and !{OPF:PLUGIN_PATH}! when storing to database
+	- if it exists, use !/temp! directory instead of media folder 
+	- introduce new filter types
+	>        OPF_TYPE_SECTION_FIRST: is executed before OPF_TYPE_SECTION
+        >        OPF_TYPE_PAGE_FIRST:    is executed before OPF_TYPE_PAGE
+        >        OPF_TYPE_PAGE_FINAL:    is ececuted after  OPF_TYPE_PAGE_LAST
+	- rewrite of !opf_filter_get_rel_pos()! it did not return reliable results
+	- introduce internal functions for sysvar replacements
+	
 1.5.6 %(mrbaseman, 04 Nov 2018)%
         - support a legacy module !opf_simple_backend! to switch between basic and advanced backend view
 	- avoid warning during installation when shipped as core module

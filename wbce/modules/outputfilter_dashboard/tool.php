@@ -8,9 +8,9 @@ tool.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -241,6 +241,7 @@ if($add && $doSave ){ //================================================ add ===
     if(!is_array($filters))$filters=array();
     $old_type = ''; // remember last type in foreach below, to draw a separator if type changed
     foreach($filters as $filter) {
+        $filter = opf_replace_sysvar($filter);
         // we need the next str_replace to allow \ ' " in the name for use with javascript
         $filter['name_js_quoted'] = str_replace(array('\\','&#039;','&quot;'), array('\\\\','\\&#039;','\\&quot;'), $filter['name']);
         $filter['desc'] =  opf_fetch_entry_language(unserialize($filter['desc']));
@@ -272,15 +273,11 @@ if($add && $doSave ){ //================================================ add ===
         }
         $filter['edit_link'] = "$ToolUrl&amp;id=$filter_id&amp;edit=1";
         if($filter['csspath']!='') {
-            $filter['csspath']     = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter['csspath']);
-            $filter['csspath']     = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$filter['plugin'], $filter['csspath']);
             $filter['css_link'] = "$ToolUrl&amp;id=$filter_id&amp;csspath=".urlencode($filter['csspath']);
         } else {
             $filter['css_link'] = '';
         }
         if($filter['helppath']) {
-            $filter['helppath'] = str_replace('{SYSVAR:WB_URL}', WB_URL, $filter['helppath']);
-            $filter['helppath'] = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$filter['plugin'], $filter['helppath']);
             $filter['helppath_onclick'] = "javascript: return opf_popup('{$filter['helppath']}');";
         } else {
             $filter['helppath_onclick'] = '';

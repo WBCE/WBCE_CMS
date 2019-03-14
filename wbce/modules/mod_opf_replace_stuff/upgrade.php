@@ -4,10 +4,10 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Replace Stuff
- * @version         1.0.1
+ * @version         1.0.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -34,5 +34,12 @@ if(!class_exists('Settings')) return FALSE;
 
 Settings::Set('opf_replace_stuff',1, false);
 Settings::Set('opf_replace_stuff'.'_be',1, false);
+
+if(!opf_is_registered('Replace Stuff')) return FALSE;
+
+if(opf_get_type('Replace Stuff',FALSE) != OPF_TYPE_PAGE_LAST){
+    return opf_unregister_filter('Replace Stuff')
+    && require(WB_PATH.'/modules/mod_opf_replace_stuff/install.php');
+}
 
 return TRUE;

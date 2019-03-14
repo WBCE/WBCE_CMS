@@ -4,10 +4,10 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Remove System PH
- * @version         1.1.0
+ * @version         1.1.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -33,16 +33,14 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        $upgrade_result=require(WB_PATH.'/modules/mod_opf_remove_system_ph/upgrade.php');
-        if($upgrade_result==FALSE) return FALSE;
-        if(opf_is_registered('Remove System PH')){ // filter already registered
-            return TRUE;
-        }
+        require_once(WB_PATH.'/modules/mod_opf_remove_system_ph/upgrade.php');
+
+        if(opf_is_registered('Remove System PH')) return TRUE; // filter already registered
 
         // install filter
-        opf_register_filter(array(
+        return opf_register_filter(array(
             'name' => 'Remove System PH',
-            'type' => OPF_TYPE_PAGE,
+            'type' => OPF_TYPE_PAGE_FINAL,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_remove_system_ph/filter.php',
             'funcname' => 'opff_mod_opf_remove_system_ph',
             'desc' => "remove system ph markers ",
@@ -52,3 +50,5 @@ if(defined('WB_URL'))
         ));
     }
 }
+
+return FALSE;

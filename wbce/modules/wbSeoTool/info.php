@@ -21,3 +21,4 @@ $module_platform    = '2.8.3';
 $module_author      = 'Christian M. Stefan <stefek@designthings.de>';
 $module_license     = 'GNU General Public License v.2';
 $module_description = 'This Admin-Tool provides some SEO handling help.';
+$module_icon        = 'fa fa-tasks';

@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.7
+ * @version         1.0.10
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -39,14 +39,12 @@ if(defined('WB_URL'))
             return require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
         }
 
-        $upgrade_result=require(WB_PATH.'/modules/mod_opf_email/upgrade.php');
-        if($upgrade_result==FALSE) return FALSE;
-        if(opf_is_registered('E-Mail')){ // filter already registered
-            return TRUE;
-        }
+        require_once(WB_PATH.'/modules/mod_opf_email/upgrade.php');
+
+        if(opf_is_registered('E-Mail')) return TRUE; // filter already registered
 
         // install filter
-        opf_register_filter(array(
+        return opf_register_filter(array(
             'name' => 'E-Mail',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_email/filter.php',
@@ -55,15 +53,16 @@ if(defined('WB_URL'))
             'active' => (!class_exists('Settings') || (Settings::Get('opf_email', 1)==1))?1:0,
             'allowedit' => 0,
             'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email'
-        ));
-        opf_move_up_before(
+        ))
+        && opf_move_up_before(
             'E-Mail',
             array(
                'WB-Link',
                'Short URL',
-               'Sys Rel',
-               'Remove System PH'
+               'Sys Rel'
             )
         );
     }
 }
+
+return FALSE;

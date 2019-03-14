@@ -88,6 +88,7 @@ if($sNewPassword != ''){
 
 // Insert User record into the Database
 $aInsert = array(
+
     'group_id'           => $group_id,
     'groups_id'          => $groups_id,
     'active'             => $active,

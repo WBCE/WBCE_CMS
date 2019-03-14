@@ -1102,8 +1102,8 @@ class Insert {
      */
     public function placeholderArrays() 
     {
-        // While working with jQuery and other JS Libraries it's important to have its  
-        //    CSS files added before the actual JS code. 
+        // While working with jQuery and other JS Libraries it's important to have its
+        //    CSS files added before the actual JS code.
         //    We have taken care of it using the proper order of placeholders.
         
         $aPlaceholders = array(

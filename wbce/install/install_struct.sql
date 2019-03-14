@@ -127,8 +127,10 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}users` (
   `display_name` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `language` varchar(5){TABLE_COLLATION} NOT NULL DEFAULT 'DE',
   `email` text{TABLE_COLLATION} NOT NULL,
+
   `signup_checksum` varchar(64){TABLE_COLLATION} NOT NULL DEFAULT '',
   `active` int(11) NOT NULL DEFAULT '0',
+
   `gdpr_check` int(1) NOT NULL DEFAULT '0',               
   `password` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `remember_key` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
@@ -141,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}users` (
   `login_ip` varchar(50){TABLE_COLLATION} NOT NULL DEFAULT '',
   `signup_timestamp` int(11) NOT NULL DEFAULT '0',
   `signup_timeout` int(11) NOT NULL DEFAULT '0',
+
   `signup_confirmcode` varchar(64){TABLE_COLLATION} NOT NULL DEFAULT '',
   PRIMARY KEY (`user_id`)
 ){TABLE_ENGINE};

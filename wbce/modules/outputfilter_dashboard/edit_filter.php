@@ -8,9 +8,9 @@ edit_filter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -66,6 +66,7 @@ if(!$admin->get_permission('admintools')) die(header('Location: ../../index.php'
 if(!$filters = opf_db_query( "SELECT * FROM `".TABLE_PREFIX."mod_outputfilter_dashboard` WHERE `id`=$id"))
     return;
 $filter = $filters[0];
+$filter = opf_replace_sysvar($filter);
 $types = opf_get_types();
 $name = $filter['name'];
 // update active/inactive state from Settings
@@ -78,8 +79,7 @@ $file = $filter['file'];
 $modules = unserialize($filter['modules']);
 $desc = opf_fetch_entry_language(unserialize($filter['desc']));
 $helppath = opf_fetch_entry_language(unserialize($filter['helppath']));
-$helppath = str_replace('{SYSVAR:WB_URL}', WB_URL, $helppath);
-$helppath = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$filter['plugin'], $helppath);
+$helppath = opf_insert_sysvar($helppath,$filter['plugin']);
 $func = $filter['func'];
 $funcname = $filter['funcname'];
 $pages_parent = unserialize($filter['pages_parent']);

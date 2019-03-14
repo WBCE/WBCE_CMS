@@ -1613,6 +1613,7 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = 
     $sCloseBtn = '<button type="button" class="close"><span aria-hidden="true">&times;</span></button>';    
     $sCollapse = '<button type="button" class="collapse"><span aria-hidden="true">+</span></button>';
     $sRetVal .=  $sCloseBtn.$sCollapse.'</p>'; 
+
     $sRetVal .=  '<div><pre>';
     $sData    =  '';
     if((is_array($mVar)) or (!is_array($mVar) && $mVar != '' && !is_bool($mVar) && !is_int($mVar))){
@@ -1633,6 +1634,7 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = 
     $sRetVal .=  $sData. PHP_EOL .'</pre>';
     
     $aBackTrace = debug_backtrace()[0];
+
     $sBackTrace = '<p class="backtrace">called in file: <b>'
             . str_replace(WB_PATH, 'WB_PATH ', $aBackTrace['file'])
             .'</b><br />on line: <b>'.$aBackTrace['line'].'</b></p>';  
@@ -1641,6 +1643,7 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = 
     }
     $sRetVal .= $sBackTrace.'</div><div class="tog_bcktrc" style="display:none">'.
             str_replace('<br />', ' ', $sBackTrace).'</div></fieldset>';  
+
 
     // apply RegEx for colorization if the output is an Array or an Object            
     $aRegEx = array(                
@@ -1689,7 +1692,9 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = 
             });            
             $('.collapse').on( 'click', function() {
                  $(this).parent().next().slideToggle('fast');
+
                  $(this).parent().next().next().slideToggle('fast');
+
             }); 
         });";    
     I::insertJsCode($sToJs, 'BODY BTM-', 'debug_dump'); 

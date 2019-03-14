@@ -8,9 +8,9 @@ functions.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -64,12 +64,17 @@ if(!defined('OPF_VERBOSE')){
 }
 
 
-// stupid way to keep filters in order (section --> section_last --> page --> page_last)
+// stupid way to keep filters in a defined order... well, it is historically like this...
 $OPF_TYPE_ASSIGNMENTS = array(
+    // 1 unused
+    'OPF_TYPE_SECTION_FIRST' =>'2section_first',
     'OPF_TYPE_SECTION' =>'3section',
+    // 4 unused
     'OPF_TYPE_SECTION_LAST' => '5section_last',
+    'OPF_TYPE_PAGE_FIRST' => '6page_first',
     'OPF_TYPE_PAGE' => '7page',
-    'OPF_TYPE_PAGE_LAST' => '8page_last'
+    'OPF_TYPE_PAGE_LAST' => '8page_last',
+    'OPF_TYPE_PAGE_FINAL' => '9page_final',
 );
 
 if(!defined('OPF_TYPE_SECTION')) {
@@ -94,9 +99,12 @@ require_once(dirname(__FILE__).'/functions_outputfilter.php');
 // functions that replace the former pmf calls
 
 if(!defined('OPF_FILELIST_DEPTH')) {
-  define('OPF_FILELIST_DEPTH', TRUE);
-  define('OPF_FILELIST_NODIRS', FALSE);
-  define('__OPF_UPLOAD_DIRNAME', dirname(__FILE__).'/.uploads/');
+    define('OPF_FILELIST_DEPTH', TRUE);
+    define('OPF_FILELIST_NODIRS', FALSE);
+    if(is_dir(WB_PATH.'/temp'))
+        define('__OPF_UPLOAD_DIRNAME', WB_PATH.'/temp/opf_uploads/');
+    else
+        define('__OPF_UPLOAD_DIRNAME', dirname(__FILE__).'/.uploads/');
 }
 
 // remove comments from the backend templates
@@ -577,28 +585,32 @@ function opf_correct_umlauts($arg) {
 function opf_get_types() {
 global $LANG;
     $types = array(
+        OPF_TYPE_SECTION_FIRST => $LANG['MOD_OPF']['TXT_MODULE_FIRST'], // filters that must be applied before all other ones
         OPF_TYPE_SECTION => $LANG['MOD_OPF']['TXT_MODULE'], // default! "normal" filters applied to modules, aka. sections
         OPF_TYPE_SECTION_LAST => $LANG['MOD_OPF']['TXT_MODULE_LAST'], // filters which have to be applied last (e.g. highlighting)
+        OPF_TYPE_PAGE_FIRST => $LANG['MOD_OPF']['TXT_PAGE_FIRST'], // filter applied to the whole page before all other page filters
         OPF_TYPE_PAGE => $LANG['MOD_OPF']['TXT_PAGE'], // filter applied to the whole page (head, content, menu, snippets, ...)
         OPF_TYPE_PAGE_LAST => $LANG['MOD_OPF']['TXT_PAGE_LAST'], // filter applied after all page-filters
+        OPF_TYPE_PAGE_FINAL => $LANG['MOD_OPF']['TXT_PAGE_FINAL'], // filter applied at the very end
     );
     return($types);
 }
 
 //
 function opf_type_uses_sections($type) {
-    if($type==OPF_TYPE_PAGE || $type==OPF_TYPE_PAGE_LAST)
+    if($type==OPF_TYPE_PAGE_FIRST || $type==OPF_TYPE_PAGE || $type==OPF_TYPE_PAGE_LAST || $type==OPF_TYPE_PAGE_FINAL)
         return(FALSE);
-    if($type==OPF_TYPE_SECTION || $type==OPF_TYPE_SECTION_LAST)
+    if($type==OPF_TYPE_SECTION_FIRST || $type==OPF_TYPE_SECTION || $type==OPF_TYPE_SECTION_LAST)
         return(TRUE);
     return(FALSE);
 }
+
 //
 function opf_type_uses_pages($type) {
-    if($type==OPF_TYPE_PAGE || $type==OPF_TYPE_PAGE_LAST)
-        return(FALSE);
-    if($type==OPF_TYPE_SECTION || $type==OPF_TYPE_SECTION_LAST)
+    if($type==OPF_TYPE_PAGE_FIRST || $type==OPF_TYPE_PAGE || $type==OPF_TYPE_PAGE_LAST || $type==OPF_TYPE_PAGE_FINAL)
         return(TRUE);
+    if($type==OPF_TYPE_SECTION_FIRST || $type==OPF_TYPE_SECTION || $type==OPF_TYPE_SECTION_LAST)
+        return(FALSE);
     return(FALSE);
 }
 
@@ -1093,6 +1105,35 @@ function opf_modules_categories($type='modules') {
     return(FALSE);
 }
 
+
+// replaces sysvar placeholders
+function opf_replace_sysvar($filter,$plugin='') {
+    if($plugin=='' && is_array($filter) && isset($filter['plugin']))
+        $plugin=$filter['plugin'];
+    if($plugin!='')
+        $filter = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$plugin, $filter);
+    $filter = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter);
+    if($plugin!='')
+        $filter = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter);
+    $filter = str_replace('{SYSVAR:WB_URL}', WB_URL, $filter);
+    return $filter;
+}
+
+
+// insert sysvar placeholders
+function opf_insert_sysvar($filter,$plugin='') {
+    if($plugin=='' && is_array($filter) && isset($filter['plugin']))
+        $plugin=$filter['plugin'];
+    if($plugin!='')
+          $filter = str_replace(OPF_PLUGINS_PATH.$plugin, '{OPF:PLUGIN_PATH}', $filter);
+    $filter = str_replace(WB_PATH, '{SYSVAR:WB_PATH}', $filter);
+    if($plugin!='')
+        $filter = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter);
+    $filter = str_replace(WB_URL, '{SYSVAR:WB_URL}', $filter);
+    return $filter;
+}
+
+
 // load all active filters into global array
 // will load _all_ filters
 function opf_preload_filter_definitions() {
@@ -1130,6 +1171,7 @@ function opf_preload_filter_definitions() {
     $filters = opf_select_filters();
     if(is_array($filters)) {
         foreach($filters as $filter) {
+            $filter = opf_replace_sysvar($filter);
             $filter['helppath'] = unserialize($filter['helppath']);
             $filter['desc'] = unserialize($filter['desc']);
             $filter['modules'] = unserialize($filter['modules']);
@@ -1161,8 +1203,8 @@ function opf_preload_filter_definitions() {
                 //if(!in_array($pid, $opf_PAGECHILDS[$p]))
                 // much more expensive than the array_unique()-calls below!
                     $opf_PAGECHILDS[$p][] = $pid;
+            }
         }
-    }
     }
     // clean $opf_PAGECHILDS -- this is much cheaper than the in_array()-calls above!
     $opf_PAGECHILDS_unique = array();
@@ -1180,8 +1222,7 @@ function opf_apply_filters(&$content, $type, $module, $page_id, $section_id, $wb
     $opf_PAGEID = $page_id;
     $opf_SECTIONID = $section_id;
     if(!(isset($opf_FILTERS) && is_array($opf_FILTERS))) {
-        trigger_error('global Array not defined', E_USER_WARNING);
-        return(FALSE);
+        opf_preload_filter_definitions();
     }
     foreach($opf_FILTERS as $key => $filter) {
         if(is_array($filter) && isset($filter['pages_parent'])) {
@@ -1193,9 +1234,8 @@ function opf_apply_filters(&$content, $type, $module, $page_id, $section_id, $wb
                   || ( ($page_id == '0') && (in_array('all', $filter['pages']) || in_array('all', $filter['pages_parent']) || in_array('0', $filter['pages_parent'])) )
                 )) {
 
+                $opf_FILTERS[$key]['current'] = TRUE;
                 if(!function_exists($filter['funcname'])) {
-                    $filter['file'] = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter['file']);
-                    $filter['file'] = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$filter['plugin'], $filter['file']);
                     if($filter['file'] && file_exists($filter['file'])) {
                         require_once($filter['file']);
                     } else {
@@ -1204,10 +1244,7 @@ function opf_apply_filters(&$content, $type, $module, $page_id, $section_id, $wb
                 }
                 if(function_exists($filter['funcname'])) {
                     $content_backup = $content;
-                    $opf_FILTERS[$key]['current'] = TRUE;
                     $res = call_user_func_array($filter['funcname'], array(&$content, $page_id, $section_id, $module, $wb));
-                    $opf_FILTERS[$key]['activated'] = TRUE;
-                    $opf_FILTERS[$key]['current'] = FALSE;
                     if($res===FALSE) {
                         $content = $content_backup; // filter failed and content maybe broken, restore old content
                         $opf_FILTERS[$key]['failed'] = TRUE;
@@ -1215,6 +1252,8 @@ function opf_apply_filters(&$content, $type, $module, $page_id, $section_id, $wb
                 } else {
                     trigger_error('failed to apply filter '.htmlspecialchars($filter['name']), E_USER_WARNING);
                 }
+                $opf_FILTERS[$key]['activated'] = TRUE;
+                $opf_FILTERS[$key]['current'] = FALSE;
             }
         }
     }
@@ -1242,13 +1281,11 @@ function opf_apply_get_modules($page_id) {
 function opf_insert_frontend_files(&$content) {
     global $opf_HEADER; // global storage for all entries
     if(!(isset($opf_HEADER) && is_array($opf_HEADER))) {
-        trigger_error('global Array opf_HEADER not defined', E_USER_WARNING);
-        return(FALSE);
+        opf_preload_filter_definitions();
     }
     global $opf_BODY; // global storage for all entries
     if(!(isset($opf_BODY) && is_array($opf_BODY))) {
-        trigger_error('global Array opf_BODY not defined', E_USER_WARNING);
-        return(FALSE);
+        opf_preload_filter_definitions();
     }
     if($opf_HEADER!=array()) {
         // put $opf_HEADER into <head></head>
@@ -1468,6 +1505,8 @@ function opf_css_save() {
     }
 
     $csspath = opf_db_query_vars( "SELECT `csspath` FROM ".TABLE_PREFIX."mod_outputfilter_dashboard WHERE `id`=%d", $id);
+    $plugin  = opf_db_query_vars( "SELECT `plugin` FROM ".TABLE_PREFIX."mod_outputfilter_dashboard WHERE `id`=%d", $id);
+    $csspath = opf_replace_sysvar($csspath,$plugin);
     if($csspath && file_exists($csspath) && is_writable($csspath)) {
         $fh = fopen($csspath, "wb");
         $bytes = fwrite($fh, $css);
@@ -1658,12 +1697,15 @@ function opf_controller($arg, $opt=null, $module='', $page_id=0, $section_id=0) 
         // moved this to above but keeping the option for explicit initialization
         break;
     case('page'):
+        opf_apply_filters($opt, OPF_TYPE_PAGE_FIRST, FALSE, $page_id, FALSE, $wb);
         opf_apply_filters($opt, OPF_TYPE_PAGE, FALSE, $page_id, FALSE, $wb);
         opf_apply_filters($opt, OPF_TYPE_PAGE_LAST, FALSE, $page_id, FALSE, $wb);
+        opf_apply_filters($opt, OPF_TYPE_PAGE_FINAL, FALSE, $page_id, FALSE, $wb);
         opf_insert_frontend_files($opt);
         return($opt);
         break;
     case('section'):
+        opf_apply_filters($opt, OPF_TYPE_SECTION_FIRST, $module, $page_id, $section_id, $wb);
         opf_apply_filters($opt, OPF_TYPE_SECTION, $module, $page_id, $section_id, $wb);
         opf_apply_filters($opt, OPF_TYPE_SECTION_LAST, $module, $page_id, $section_id, $wb);
         return($opt);
@@ -1671,9 +1713,12 @@ function opf_controller($arg, $opt=null, $module='', $page_id=0, $section_id=0) 
     case('backend'):
         if(!defined("WB_OPF_BE_OFF")){
             if($module==""){
+                opf_apply_filters($opt, OPF_TYPE_PAGE_FIRST, FALSE, 'backend', 0, $wb);
                 opf_apply_filters($opt, OPF_TYPE_PAGE, FALSE, 'backend', 0, $wb);
                 opf_apply_filters($opt, OPF_TYPE_PAGE_LAST, FALSE, 'backend', 0, $wb);
+                opf_apply_filters($opt, OPF_TYPE_PAGE_FINAL, FALSE, 'backend', 0, $wb);
             } else {
+                opf_apply_filters($opt, OPF_TYPE_SECTION_FIRST, $module, 'backend', 0, $wb);
                 opf_apply_filters($opt, OPF_TYPE_SECTION, $module, 'backend', 0, $wb);
                 opf_apply_filters($opt, OPF_TYPE_SECTION_LAST, $module, 'backend', 0, $wb);
             }
@@ -1682,6 +1727,7 @@ function opf_controller($arg, $opt=null, $module='', $page_id=0, $section_id=0) 
         break;
     case('special'):
         foreach(opf_apply_get_modules($page_id) as $module) {
+            opf_apply_filters($opt, OPF_TYPE_SECTION_FIRST, $module['module'], $page_id, $module['section_id'], $wb);
             opf_apply_filters($opt, OPF_TYPE_SECTION, $module['module'], $page_id, $module['section_id'], $wb);
             opf_apply_filters($opt, OPF_TYPE_SECTION_LAST, $module['module'], $page_id, $module['section_id'], $wb);
         }

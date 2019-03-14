@@ -4,10 +4,10 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Remove System PH
- * @version         1.1.0
+ * @version         1.1.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -34,5 +34,12 @@ if(!class_exists('Settings')) return FALSE;
 
 Settings::Set('opf_remove_system_ph',1, false);
 Settings::Set('opf_remove_system_ph'.'_be',1, false);
+
+if(!opf_is_registered('Remove System PH')) return FALSE;
+
+if(opf_get_type('Remove System PH',FALSE) != OPF_TYPE_PAGE_FINAL){
+    return opf_unregister_filter('Remove System PH')
+    && require(WB_PATH.'/modules/mod_opf_remove_system_ph/install.php');
+}
 
 return TRUE;

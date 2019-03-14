@@ -15,3 +15,4 @@ $module_platform = '1.1.0';
 $module_author = 'Complete rewrite of Secure Form Switcher by  Norbert Heimsath(heimsath.org)';
 $module_license = 'GPLv2 or any later';
 $module_description = 'This tool provides some additional security settings';
+$module_icon        = 'fa fa-lock';

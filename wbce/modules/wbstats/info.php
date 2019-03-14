@@ -21,4 +21,5 @@ $module_platform = '2.8.x';
 $module_author = 'Dev4me - Ruud Eisinga - www.dev4me.nl, Norbert Heimsath(heimsath.org)';
 $module_license = 'GNU General Public License';
 $module_description = 'Displays website statistics as an admintool';
+$module_icon        = 'fa fa-bar-chart';
 

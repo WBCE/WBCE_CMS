@@ -8,9 +8,9 @@ convert.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -103,11 +103,7 @@ unset($filter['additional_values'],
       $filter['pages'],
       $filter['pages_parent']);
 
-    $filter = str_replace(OPF_PLUGINS_PATH.$filter['plugin'], '{OPF:PLUGIN_PATH}', $filter);
-    $filter = str_replace(WB_PATH, '{SYSVAR:WB_PATH}', $filter);
-    $filter = str_replace(OPF_PLUGINS_URL.$filter['plugin'], '{OPF:PLUGIN_URL}', $filter);
-    $filter = str_replace(WB_URL, '{SYSVAR:WB_URL}', $filter);
-
+$filter = opf_replace_sysvar($filter);
 
 
 if($filter['plugin']!='' && !file_exists($plugin_dir.$filter['plugin'])) {
@@ -140,6 +136,7 @@ if($filter['plugin']!='') {
     }
 
     // create a plugin-filter
+    $filter = opf_insert_sysvar($filter);
     $filter['plugin'] = $plugin_name;
     // get human readable dump
     $filter_func = $filter['func'];

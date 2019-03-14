@@ -6,9 +6,9 @@ backend_body.js
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -794,7 +794,7 @@ if(typeof opf_use_checktrees!='undefined') {
 
 function modules_checktree_visibility() {
     i = document.outputfilter.type.selectedIndex;
-    if(document.outputfilter.type.options[i].value == '7page' || document.outputfilter.type.options[i].value == '8page_last') {
+    if(document.outputfilter.type.options[i].value == '6page_first' || document.outputfilter.type.options[i].value == '7page' || document.outputfilter.type.options[i].value == '8page_last' || document.outputfilter.type.options[i].value == '9page_final') {
         document.getElementById('OPF_ID_CHECKTREE').style.display = 'none';
         document.getElementById('OPF_ID_SEC_DESC').style.display = 'none';
         document.getElementById('OPF_ID_SEC_DESC_2').style.display = 'none';

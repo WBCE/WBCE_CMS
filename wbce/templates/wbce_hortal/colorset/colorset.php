@@ -1,5 +1,5 @@
 <?php
-header("Content-type: text/css", true);
+
 
 if (isset($_GET['f'])) {
 	$css_param = $_GET['f'];
@@ -36,7 +36,6 @@ foreach ($css_paramArrNew  as $f) {
 	$css = str_replace('[f'.$fnr.']', $f, $css);
 	$fnr++;
 }
-echo $css;
 
 
 $css_param = implode(',',$css_paramArrNew);
@@ -53,6 +52,6 @@ if (isset($_GET['do']) AND $_GET['do'] == "save" ) {
 	}
 }
 
-
-
+header("Content-type: text/css", true);
+echo $css;
 ?>

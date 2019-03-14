@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.6
+ * @version         1.0.8
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)

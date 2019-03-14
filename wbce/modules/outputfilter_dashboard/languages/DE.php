@@ -8,9 +8,9 @@ languages/DE.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -48,11 +48,11 @@ include((dirname(__FILE__))."/EN.php");
 // Deutsche Modulbeschreibung
 $module_description = "Admin-Tool um OutputFilter Dashboard zu verwalten";
 
-$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST']='Ein <em>"Modul-Typ&quot;</em> oder <em>&quot;Modul-Typ (Ende)&quot;</em> Filter wird auf alle Abschnitte angewendet, die in der Modultyp Baumansicht unten ausgew&auml;hlt sind.';
+$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST']='Ein <em>&quot;Modul-Typ (zuerst)&quot;</em> oder <em>&quot;Modul-Typ&quot;</em> oder <em>&quot;Modul-Typ (zuletzt)&quot;</em> Filter wird auf alle Abschnitte angewendet, die in der Modultyp Baumansicht unten ausgew&auml;hlt sind.';
 
 $LANG['MOD_OPF']['TXT_MODULE_TREE']='W&auml;len Sie im Modul-Baum unten die Module aus, auf die der Filter angewendet werden soll';
 
-$LANG['MOD_OPF']['TXT_TYPE_LAST']='Ein <em>Page-Type</em> oder <em>Page-Type (last)</em> Filter wird auf jede angezeigte Seite als ganzes angewendet (inclusive den output von z.B. snippets oder des Templates an sich).';
+$LANG['MOD_OPF']['TXT_TYPE_LAST']='Ein <em>&quot;Seiten-Typ (zuerst)&quot;</em> oder <em>&quot;Seiten-Typ&quot;</em> oder <em>&quot;Seiten-Typ (zuletzt)&quot;</em> oder <em>&quot;Seiten-Typ (final)&quot;</em> Filter wird auf jede angezeigte Seite als ganzes angewendet (inclusive den output von z.B. snippets oder des Templates an sich).';
 
 $LANG['MOD_OPF']['TXT_SUB_PAGES']='W&auml;hlen Sie unten (Unter-)Seiten aus.<br />Der Filter wird auf alle ausgew&auml;hlten Seiten, die die entsprechenden ausgew&auml;hlten Module aus dem obigen &quot;Modul-Baum&quot; enthalten, angewendet.';
 
@@ -180,13 +180,19 @@ $LANG['MOD_OPF']['TXT_INSERT_NAME'] = 'Hier Namen eingeben';
 
 $LANG['MOD_OPF']['TXT_INSERT_DESCRIPTION'] = 'Hier Beschreibung eingeben';
 
+$LANG['MOD_OPF']['TXT_MODULE_FIRST'] = 'Modul (zuerst)';
+
 $LANG['MOD_OPF']['TXT_MODULE'] = 'Modul';
 
 $LANG['MOD_OPF']['TXT_MODULE_LAST'] = 'Modul (zuletzt)';
 
+$LANG['MOD_OPF']['TXT_PAGE_FIRST'] = 'Seite (zuerst)';
+
 $LANG['MOD_OPF']['TXT_PAGE'] = 'Seite';
 
 $LANG['MOD_OPF']['TXT_PAGE_LAST'] = 'Seite (zuletzt)';
+
+$LANG['MOD_OPF']['TXT_PAGE_FINAL'] = 'Seite (final)';
 
 $LANG['MOD_OPF']['TXT_ALL_MODULES'] = 'Alle Module';
 

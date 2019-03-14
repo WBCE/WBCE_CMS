@@ -20,6 +20,7 @@ $module_license = 'GNU General Public License';
 $module_description = 'This addon allows you to clone a page or a complete tree with all page and sections.';
 $module_home = 'http://wbce.org';
 $module_guid = '25bfa866-2ee3-4731-8f44-f49f01c8294a';
+$module_icon        = 'fa fa-clone';
 
 /**
  * Version history

@@ -4,10 +4,10 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Move Stuff
- * @version         1.0.1
+ * @version         1.0.3
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -19,6 +19,8 @@
 /*
  *      CHANGELOG
  *
+ *      1.0.3   2019-03-09      - bugfix in install/upgrade
+ *      1.0.2   2019-03-07      - reorder filters into new categories
  *      1.0.1   2018-10-07      - during installation switch filter on by default
  *      1.0.0   2018-09-11      - turn classical outputfilter to an OpF filter module
  *
@@ -38,7 +40,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_move_stuff';
 $module_name            = 'OPF Move Stuff';
 $module_function        = 'opffilter';
-$module_version         = '1.0.1';
+$module_version         = '1.0.3';
 $module_platform        = 'WBCE 1.3.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

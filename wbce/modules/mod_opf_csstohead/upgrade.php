@@ -6,10 +6,10 @@
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF CSS to head
- * @version         1.0.3
+ * @version         1.0.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -36,5 +36,12 @@ if(!class_exists('Settings')) return FALSE;
 
 Settings::Set('opf_css_to_head',1, false);
 Settings::Set('opf_css_to_head'.'_be',0, false);
+
+if(!opf_is_registered('CSS to head')) return FALSE;
+
+if(opf_get_type('CSS to head',FALSE) != OPF_TYPE_PAGE){
+    return opf_unregister_filter('CSS to head')
+    && require(WB_PATH.'/modules/mod_opf_csstohead/install.php');
+}
 
 return TRUE;

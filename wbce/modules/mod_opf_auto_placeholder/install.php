@@ -4,10 +4,10 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2018)
+ * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Auto Placeholder
- * @version         1.2.2
+ * @version         1.2.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -33,16 +33,14 @@ if(defined('WB_URL'))
     if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
         require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
-        $upgrade_result=require(WB_PATH.'/modules/mod_opf_auto_placeholder/upgrade.php');
-        if($upgrade_result==FALSE) return FALSE;
-        if(opf_is_registered('Auto Placeholder')){ // filter already registered
-            return TRUE;
-        }
+        require_once(WB_PATH.'/modules/mod_opf_auto_placeholder/upgrade.php');
+
+        if(opf_is_registered('Auto Placeholder')) return TRUE; // filter already registered
 
         // install filter
-        opf_register_filter(array(
+        return opf_register_filter(array(
             'name' => 'Auto Placeholder',
-            'type' => OPF_TYPE_PAGE,
+            'type' => OPF_TYPE_PAGE_FIRST,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_auto_placeholder/filter.php',
             'funcname' => 'opff_mod_opf_auto_placeholder',
             'desc' => "Auto Add Placeholders for Javascript, CSS, Metas and Title",
@@ -50,18 +48,7 @@ if(defined('WB_URL'))
             'allowedit' => 0,
             'pages_parent' => 'all,backend'
         ));
-        opf_move_up_before(
-            'Auto Placeholder',
-            array(
-               'Move Stuff',
-               'Replace Stuff',
-               'CSS to head',
-               'E-Mail',
-               'WB-Link',
-               'Short URL',
-               'Sys Rel',
-               'Remove System PH'
-            )
-        );
     }
 }
+
+return FALSE;

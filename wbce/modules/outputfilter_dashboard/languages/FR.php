@@ -8,9 +8,9 @@ languages/FR.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -49,11 +49,11 @@ include((dirname(__FILE__))."/EN.php");
 $module_description = "Admin-Tool pour g&eacute;rir OutputFilter Dashboard";
 
 
-$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST'] = 'Un filtre de <em>&quot;type module&quot; </ em> ou <em> &quot;type module(dernier)&quot;</ em> sera appliqu&eacute; &agrave; chaque affich&eacute; sections des modules s&eacute;lectionn&eacute;s dans le module arbre ci-dessous.';
+$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST'] = 'Un filtre de <em> &quot;type module(avant)&quot;</ em> ou <em>&quot;type module&quot; </ em> ou <em> &quot;type module(dernier)&quot;</ em> sera appliqu&eacute; &agrave; chaque affich&eacute; sections des modules s&eacute;lectionn&eacute;s dans le module arbre ci-dessous.';
 
 $LANG['MOD_OPF']['TXT_MODULE_TREE'] = 'Dans le module arbre ci-dessous, s&eacute;lectionnez les modules &agrave; laquelle le filtre doit &ecirc;tre appliqu&eacute;';
 
-$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'Un filtre de <em>type page</ em> ou <em>type page (dernier)</ em> sera appliqu&eacute; &agrave; chaque page affich&eacute;e (y compris par exemple le resultat des extraits de code et le mod&egrave;le lui-m&ecirc;me) dans son ensemble.';
+$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'Un filtre de <em>&quot;type page (dernier)&quot;</ em> ou <em>&quot;type page&quot;</ em> ou <em>&quot;type page (dernier)&quot;</ em>  ou <em>&quot;type page (finale)&quot;</ em> sera appliqu&eacute; &agrave; chaque page affich&eacute;e (y compris par exemple le resultat des extraits de code et le mod&egrave;le lui-m&ecirc;me) dans son ensemble.';
 
 $LANG['MOD_OPF']['TXT_SUB_PAGES'] = 'Cochez ou d&eacute;cochez pages / subpages ci-dessous <br /> Le filtre sera appliqu&eacute; &agrave; toutes les pages s&eacute;lectionn&eacute;es ainsi que tous les modules s&eacute;lectionn&eacute;s dans le &quot;module arbre&quot; ci-dessus.' ;
 
@@ -186,13 +186,19 @@ $LANG['MOD_OPF']['TXT_INSERT_NAME'] = 'Ins&eacute;rer un nom ici';
 
 $LANG['MOD_OPF']['TXT_INSERT_DESCRIPTION'] = 'Ins&eacute;rer une description ici';
 
+$LANG['MOD_OPF']['TXT_MODULE_FIRST'] = 'Module (avant)';
+
 $LANG['MOD_OPF']['TXT_MODULE'] = 'Module';
 
 $LANG['MOD_OPF']['TXT_MODULE_LAST'] = 'Module (dernier)';
 
+$LANG['MOD_OPF']['TXT_PAGE_LAST'] = 'Page (avant)';
+
 $LANG['MOD_OPF']['TXT_PAGE'] = 'Page';
 
 $LANG['MOD_OPF']['TXT_PAGE_LAST'] = 'Page (derni&egrave;re)';
+
+$LANG['MOD_OPF']['TXT_PAGE_FINAL'] = 'Page (finale)';
 
 $LANG['MOD_OPF']['TXT_ALL_MODULES'] = 'Tous les modules';
 

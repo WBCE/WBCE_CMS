@@ -8,9 +8,9 @@ upload.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.6.1
+ * @version         1.5.7
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2018 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -36,6 +36,8 @@ upload.php
  *
  **/
 
+// This file will be included from tool.php
+
 
 // prevent this file from being accessed directly
 if(!defined('WB_PATH')) die(header('Location: ../index.php'));
@@ -53,11 +55,6 @@ if (!include(get_module_language_file($mod_dir))) return;
 // load outputfilter-functions
 require_once(dirname(__FILE__).'/functions.php');
 
-
-// This file will be included from tool.php
-
-// prevent this file from being accessed directly
-if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 // check if user is allowed to use admin-tools (to prevent this file to be called by an unauthorized user e.g. from a code-section)
 if(!$admin->get_permission('admintools')) die(header('Location: ../../index.php'));
 
@@ -79,8 +76,11 @@ require_once(WB_PATH.'/framework/functions.php');
 if (file_exists (WB_PATH.'/include/pclzip/pclzip.lib.php'))
    require_once(WB_PATH.'/include/pclzip/pclzip.lib.php');
 
-
 $temp_dir = WB_PATH.MEDIA_DIRECTORY.'/opf_plugins/';
+if(is_dir(WB_PATH.'/temp')){
+    $temp_dir = WB_PATH.'/temp/opf_plugins/';
+}
+if(!is_dir($temp_dir)) opf_io_mkdir($temp_dir);
 $temp_file = uniqid();
 $temp_unzip = $temp_dir.'opf_unzip/';
 $install_file = 'plugin_install.php';
