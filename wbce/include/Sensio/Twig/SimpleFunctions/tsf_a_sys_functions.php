@@ -1,5 +1,9 @@
 <?php
+defined('WB_PATH') or exit('sorry, no sufficient privileges.');
 
+/**
+ * insertJsFile  // Twig adaptation of the Insert class method
+ */
 $oTwig->addFunction(new Twig_SimpleFunction("insertJsFile", 
     function ($uFileLoc = '', $sDomPos = 'BODY BTM-', $sID = '') {
         if(!is_array($uFileLoc)){    
@@ -18,7 +22,7 @@ $oTwig->addFunction(new Twig_SimpleFunction("insertJsFile",
 ));
 
 /**
- * insertCssFile
+ * insertCssFile  // Twig adaptation of the Insert class method
  */
 $oTwig->addFunction(new Twig_SimpleFunction("insertCssFile", 
     function ($uFileLoc = '', $sDomPos = 'HEAD BTM-', $sID = '') {
@@ -36,10 +40,21 @@ $oTwig->addFunction(new Twig_SimpleFunction("insertCssFile",
         return;
     }
 ));
+
+// getIDKEY  // use IDKEYs in Twig Templates directly. No need to hand them over anymore.
+$oTwig->addFunction(new Twig_SimpleFunction("getIDKEY", 
+    function ($uID) {        
+        $oEngine = isset($GLOBALS['wb']) ? $GLOBALS['wb'] : $GLOBALS['admin']; 
+        return $oEngine->getIDKEY($uID);
+    }
+));
     
 /**
  * 	processTranslation / L_
- * 	-----------------------
+ * 	---------------------------------------------------------------------------
+ *  This function allows you to use any language string that is active on the 
+ *  page you're templating. No need to hand over long lists of lang strings
+ *  to the templates anymore as it was with the previously used Template Engine
  *
  * Correct format would be:
  *     L_('ARRAY:KEY'); or
@@ -54,7 +69,7 @@ $oTwig->addFunction(new Twig_SimpleFunction("insertCssFile",
  * 	@return string Translated String
  * */
 $oTwig->addFunction( new Twig_SimpleFunction("L_",
-    function ($sStr, $bShowMissing = false){
+    function ($sStr){
         $sRetVal = '';
         if(strpos($sStr, ':') !== false){
             $sStr = str_replace(' ', '', $sStr);
@@ -69,7 +84,9 @@ $oTwig->addFunction( new Twig_SimpleFunction("L_",
             if(is_array($GLOBALS[$arr]) && array_key_exists($key, $GLOBALS[$arr])){
                 $sRetVal = $GLOBALS[$arr][$key];
             }else{
-                $bShowMissing = true;
+                $bShowMissing = (defined('TWIG_SHOW_MISSING_LANG_STRINGS') && TWIG_SHOW_MISSING_LANG_STRINGS == true)
+                        ? true 
+                        : false;
                 if($bShowMissing){
                     $sRetVal = "<span style='color:purple'>";
                     $sRetVal .= (is_array($GLOBALS[$arr]) == false) ? 'Array '.$arr.' does not exist.<br>' : '';
@@ -85,4 +102,3 @@ $oTwig->addFunction( new Twig_SimpleFunction("L_",
         return $sRetVal;
     }
 ));
-
