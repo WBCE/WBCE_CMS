@@ -28,17 +28,16 @@ If you want to change the layouts of this templates, it is RECOMMENDED to follow
     [DEFAULT_TEMPLATE]
         └─ overrides
             └─ account
-                ├─ form_forgot_login_details.tpl.php
-                ├─ form_login.tpl.php
-                ├─ form_preferences.tpl.php
-                ├─ form_signup.tpl.php
-                ├─ index.php.php
-                ├─ msg_activation_link_sent.tpl.php
-                ├─ msg_forgot_login_details_sent.tpl.php
-                ├─ msg_login_details_just_sent.tpl.php
-                ├─ msg_manager_approval_feedback.tpl.php
-                ├─ msg_manager_confirm_new_signup.tpl.php
-                ├─ msg_wrong_inputs.tpl.php
+                ├─ form_forgot_login_details.twig
+                ├─ form_login.twig
+                ├─ form_preferences.twig
+                ├─ form_signup.twig
+                ├─ msg_activation_link_sent.twig
+                ├─ msg_forgot_login_details_sent.twig
+                ├─ msg_login_details_just_sent.twig
+                ├─ msg_manager_approval_feedback.twig
+                ├─ msg_manager_confirm_new_signup.twig
+                ├─ msg_wrong_inputs.twig
                 └─ forms.css
 
 
@@ -47,5 +46,5 @@ If you want to change the layouts of this templates, it is RECOMMENDED to follow
    and you prevent your layout changes from being overwritten with the next system upgrade. 
 
 PLEASE ALSO NOTE:
-   If you only want to change the layout of one of the template files, say for example the form_login.tpl.php
+   If you only want to change the layout of one of the template files, say for example the form_login.twig
    you would copy and paste only this file into the [YOUR TEMPLATE DIR]/overrides/account directory.

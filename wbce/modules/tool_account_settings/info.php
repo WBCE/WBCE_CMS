@@ -2,7 +2,7 @@
 /**
  * WBCE CMS AdminTool: tool_account_settings
  * 
- * @platform    WBCE CMS 1.3.2 and higher
+ * @platform    WBCE CMS 1.4.0 and higher
  * @package     modules/tool_account_settings
  * @author      Christian M. Stefan <stefek@designthings.de>
  * @copyright   Christian M. Stefan
@@ -19,5 +19,6 @@ $module_version     = '0.0.5';
 $module_platform    = '1.3.2'; // WBCE
 $module_author      = 'Christian M. Stefan (Stefek)';
 $module_icon        = 'fa fa-user-circle-o';
+$module_level       = 'core';
 $module_license     = 'GNU General Public License';
 $module_description = 'Set up the registration process (signup) and have an overview of all users registered to the system.';

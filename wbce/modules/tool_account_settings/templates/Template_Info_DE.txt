@@ -34,17 +34,16 @@ die folgenden Schritte empfohlen.
     [DEFAULT_TEMPLATE]
         └─ overrides
             └─ account
-                ├─ form_forgot_login_details.tpl.php
-                ├─ form_login.tpl.php
-                ├─ form_preferences.tpl.php
-                ├─ form_signup.tpl.php
-                ├─ index.php.php
-                ├─ msg_activation_link_sent.tpl.php
-                ├─ msg_forgot_login_details_sent.tpl.php
-                ├─ msg_login_details_just_sent.tpl.php
-                ├─ msg_manager_approval_feedback.tpl.php
-                ├─ msg_manager_confirm_new_signup.tpl.php
-                ├─ msg_wrong_inputs.tpl.php
+                ├─ form_forgot_login_details.twig
+                ├─ form_login.twig
+                ├─ form_preferences.twig
+                ├─ form_signup.twig
+                ├─ msg_activation_link_sent.twig
+                ├─ msg_forgot_login_details_sent.twig
+                ├─ msg_login_details_just_sent.twig
+                ├─ msg_manager_approval_feedback.twig
+                ├─ msg_manager_confirm_new_signup.twig
+                ├─ msg_wrong_inputs.twig
                 └─ forms.css
 
 4) Du kannst nun beginnen die Veränderungen am Layout nach Belieben vorzunehmen.
@@ -53,7 +52,7 @@ die folgenden Schritte empfohlen.
    nächsten System Upgrade überschrieben zu werden.
 
 BITTE EBENFALLS BEACHTEN:
-   Wenn nur ausgewählte Template-Dateien editiert werden sollen, z.B. form_login.tpl.php und form_signup.tpl.php
+   Wenn nur ausgewählte Template-Dateien editiert werden sollen, z.B. form_login.twig und form_signup.twig
    müssen auch NUR DIESE Dateien in den [YOUR TEMPLATE DIR]/overrides/account Ordner kopiert werden.
 
 
@@ -66,10 +65,10 @@ In der Regel würde es reichen, wenn die folgenden Template Dateien angepasst we
  [DEIN-TEMPLATE]
      └─ overrides
          └─ account
-             ├─ form_forgot_login_details.tpl.php
-             ├─ form_login.tpl.php
-             ├─ form_preferences.tpl.php
-             └─ form_signup.tpl.php
+             ├─ form_forgot_login_details.twig
+             ├─ form_login.twig
+             ├─ form_preferences.twig
+             └─ form_signup.twig
 
 Alle anderen Dateien sind generische Mitteilungen, aber es kann sein, dass man an einem speziellen 
 Template arbeitet, wo man auch das Layout dieser Mitteilungen steuern möchte.
