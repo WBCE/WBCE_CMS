@@ -19,9 +19,6 @@ defined('WB_PATH') or die(header('Location: ../index.php'));
 // Decide which config file to use.
 // We use a custom override file to protect the settings on upgrade.
 $sIniFile = __DIR__.'/account/Accounts.cfg.php';
-if(file_exists(__DIR__.'/account/Accounts_custom.cfg.php')){
-    $sIniFile = __DIR__.'/account/Accounts_custom.cfg.php';    
-}
 
 // include the class by whichever way suitable for your project
 include_once(__DIR__.'/IniEditor/IniEditor.class.php'); 

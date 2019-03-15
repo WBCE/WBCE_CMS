@@ -23,30 +23,28 @@ class Accounts extends Frontend
 {    
     public $sAccountAdminPath = '';
     public $cfg = array();
+    public $sCfgFile = '';
 
     public function __construct()
     {
         parent::__construct(SecureForm::FRONTEND);
+        $this->prepareConfigIniFile();
         $this->cfg = $this->getConfig();
     }
 
+   public function prepareConfigIniFile(){
+       $this->sCfgFile = ACCOUNT_TOOL_PATH . '/account/Accounts.cfg.php';
+       if(!file_exists($this->sCfgFile)){
+            rename(
+                ACCOUNT_TOOL_PATH . '/account/Accounts.cfg.NEW.php', 
+                $this->sCfgFile
+            );           
+       }
+   }
+   
    public function getConfig(){
-        // default cfg file
-        $sUseCfg = ACCOUNT_TOOL_PATH . '/account/Accounts.cfg.php'; // the original Accounts config file
 
-        // possible override files
-        $aOverrides = array(
-            // later files in this array will take precedence if they exist
-            ACCOUNT_TOOL_PATH.'/account/Accounts.custom.cfg.php',
-            WB_PATH.'/modules/UserBase/account/Accounts.cfg.php',
-            WB_PATH.'/templates/'.DEFAULT_TEMPLATE.'/overrides/account/Accounts.cfg.php',
-        );
-        foreach($aOverrides as $sCfgFile){
-            if (file_exists($sCfgFile)){
-                $sUseCfg = $sCfgFile;
-            }
-        }
-        $aConfig = parse_ini_file($sUseCfg, true)['Signup_Account_Settings'];
+        $aConfig = parse_ini_file($this->sCfgFile, true)['Signup_Account_Settings'];
 
         // work out if preferences.php and other areas should use own FE Template
         // ======================================================================	

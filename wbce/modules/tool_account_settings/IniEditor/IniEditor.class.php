@@ -62,12 +62,7 @@ class IniEditor {
     
     // set _custom Ini File name to protect overrides on system upgrade
     public function setToSaveFile() {
-        if(strpos($this->sIniFile, '_custom') !== false){
-            return $this->sIniFile;
-        } else {
-            $sFileNamePart = explode('.', $this->sIniFile)[0];
-            return str_replace($sFileNamePart, $sFileNamePart.'_custom', $this->sIniFile);
-        }
+        return $this->sIniFile;
     }
 
 
