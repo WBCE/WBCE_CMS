@@ -8,7 +8,7 @@
 [Signup_Account_Settings]
 signup_double_opt_in = 0     
 user_activated_on_signup = 1 
-use_html_email_templates = 1
+use_html_email_templates = 0
 accounts_manager_superadmin = 1
 accounts_manager_email = ""
 support_email = ""
