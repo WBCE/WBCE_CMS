@@ -268,11 +268,11 @@ if((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES) && $field_set && file_exists(WB
 {
     // workout field is set but module missing
     $TEXT['PAGE_CODE'] = empty($TEXT['PAGE_CODE']) ? 'Pagecode' : $TEXT['PAGE_CODE'];
-    $template->set_var( array(
-            'DISPLAY_CODE_PAGE_LIST' => ' id="multi_lingual"',
-            'TEXT_PAGE_CODE' => '<a href="'.WB_URL.'/modules/mod_multilingual/update_keys.php?page_id='.$page_id.'">'.$TEXT['PAGE_CODE'].'</a>'
-        )
-    );
+$template->set_var( array(
+    'DISPLAY_CODE_PAGE_LIST' => ' id="multi_lingual"',
+    'TEXT_PAGE_CODE' => $TEXT['PAGE_CODE'].'&nbsp;[<a href="'.WB_URL.'/modules/mod_multilingual/update_keys.php?page_id='.$page_id.'" onclick="return confirm(\''.$TEXT['ARE_YOU_SURE'].'\');"><span class="fa fa-trash"></span></a>]'
+    )
+);
 
     // Page_code list
    /*     $database = new database();  */
