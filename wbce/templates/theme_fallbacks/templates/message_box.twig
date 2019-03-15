@@ -12,7 +12,7 @@
             <script>setTimeout("location.href='{{ REDIRECT_URL }}'", {{ REDIRECT_TIMER }});</script>
         {% endif %}
 
-        {% if REDIRECT_TIME > 2500 %}
+        {% if REDIRECT_TIME > 750 %}
             <p><a href="{{ REDIRECT_URL }}" class="button">{{ L_('TEXT:BACK') }}</a></p>
         {% endif %}
     {% endif %}
