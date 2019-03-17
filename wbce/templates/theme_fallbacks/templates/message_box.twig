@@ -9,10 +9,10 @@
     
     {% if USE_REDIRECT  %}
         {% if REDIRECT_TIME != '-1' %}
-            <script>setTimeout("location.href='{{ REDIRECT_URL }}'", {{ REDIRECT_TIMER }});</script>
+            <script>setTimeout("location.href='{{ REDIRECT_URL }}'", {{ REDIRECT_TIME }});</script>
         {% endif %}
 
-        {% if REDIRECT_TIME > 750 %}
+        {% if REDIRECT_TIME > 1500 or REDIRECT_TIME == '-1' %}
             <p><a href="{{ REDIRECT_URL }}" class="button">{{ L_('TEXT:BACK') }}</a></p>
         {% endif %}
     {% endif %}

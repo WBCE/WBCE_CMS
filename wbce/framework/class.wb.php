@@ -724,7 +724,7 @@ _JsCode;
             'REDIRECT_TIME' => $iRedirectTime,
             'USE_REDIRECT'  => $bUseRedirect,
         );
-        $this->getThemeTwigFile('message_box.twig', $aToTwig);
+        $this->getThemeFile('message_box.twig', $aToTwig);
         if ($bAutoFooter == true) {
             if (method_exists($this, "print_footer")) {
                 $this->print_footer();
@@ -734,11 +734,11 @@ _JsCode;
     }
 
     
-    public function getThemeTwigFile($sTplName = '', $aToTwig = array()){
+    public function getThemeFile($sTplName = '', $aToTwig = array()){
         $aTemplateLocs = array();
         $aCheckDirs = array(
-            WB_PATH.'/templates/theme_fallbacks/templates/', 
             THEME_PATH.'/templates/', 
+            WB_PATH.'/templates/theme_fallbacks/templates/', 
         );
         foreach ($aCheckDirs as $dir) if(is_dir($dir))$aTemplateLocs[] = $dir;
         $oTwig = getTwig($aTemplateLocs);
