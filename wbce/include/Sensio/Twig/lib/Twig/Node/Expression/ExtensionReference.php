@@ -9,9 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Twig\Compiler;
-use Twig\Node\Expression\AbstractExpression;
-
 @trigger_error('The Twig_Node_Expression_ExtensionReference class is deprecated since version 1.23 and will be removed in 2.0.', E_USER_DEPRECATED);
 
 /**
@@ -21,14 +18,14 @@ use Twig\Node\Expression\AbstractExpression;
  *
  * @deprecated since 1.23 and will be removed in 2.0.
  */
-class Twig_Node_Expression_ExtensionReference extends AbstractExpression
+class Twig_Node_Expression_ExtensionReference extends Twig_Node_Expression
 {
     public function __construct($name, $lineno, $tag = null)
     {
         parent::__construct([], ['name' => $name], $lineno, $tag);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $compiler->raw(sprintf("\$this->env->getExtension('%s')", $this->getAttribute('name')));
     }

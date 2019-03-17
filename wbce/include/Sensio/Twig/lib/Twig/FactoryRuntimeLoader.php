@@ -1,11 +1,39 @@
 <?php
 
-use Twig\RuntimeLoader\FactoryRuntimeLoader;
+/*
+ * This file is part of Twig.
+ *
+ * (c) Fabien Potencier
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-class_exists('Twig\RuntimeLoader\FactoryRuntimeLoader');
+/**
+ * Lazy loads the runtime implementations for a Twig element.
+ *
+ * @author Robin Chalas <robin.chalas@gmail.com>
+ */
+class Twig_FactoryRuntimeLoader implements Twig_RuntimeLoaderInterface
+{
+    private $map;
 
-if (\false) {
-    class Twig_FactoryRuntimeLoader extends FactoryRuntimeLoader
+    /**
+     * @param array $map An array where keys are class names and values factory callables
+     */
+    public function __construct($map = [])
     {
+        $this->map = $map;
+    }
+
+    public function load($class)
+    {
+        if (isset($this->map[$class])) {
+            $runtimeFactory = $this->map[$class];
+
+            return $runtimeFactory();
+        }
     }
 }
+
+class_alias('Twig_FactoryRuntimeLoader', 'Twig\RuntimeLoader\FactoryRuntimeLoader', false);
