@@ -428,9 +428,10 @@ class Accounts extends Frontend
         $sJavaScriptArray = '';
         $aCollection = array();
         $aUsers = $this->get_userbase_array($bExtendOnly);
+        $sToolUri = ADMIN_URL . '/admintools/tool.php?tool=' . ADMIN_TOOL_DIR;
         ob_start();
     ?>
-    <a class="iconlink" href="<?=UB_TOOL_URI?>&amp;pos=detail&amp;id=%d&amp;action=delete">
+    <a class="iconlink" href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=delete">
             <img src="/delete_16.png" alt="<?=$TOOL_TXT['DELETE'] ?>">
     </a>
     <?php 
@@ -439,7 +440,7 @@ class Accounts extends Frontend
 
     ob_start();
     ?>
-    <a class="iconlink" href="<?=UB_TOOL_URI?>&amp;pos=detail&amp;id=%d&amp;action=edit">
+    <a class="iconlink" href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=edit">
             <img src="/modify.png" alt="<?=$TEXT['MODIFY'] ?>" />
     </a>
     <?php 
@@ -447,7 +448,7 @@ class Accounts extends Frontend
 
     ob_start();
     ?>
-    <a class="pry" title='<?=$TEXT['VIEW'];?> User "%s"' href="<?=UB_TOOL_URI?>&amp;pos=detail&amp;id=%d&amp;action=edit" rel="<?=UB_MOD_URL?>/pry_profile.php?id=%d&action=edit">
+    <a class="pry" title='<?=$TEXT['VIEW'];?> User "%s"' href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=edit" rel="<?=UB_MOD_URL?>/pry_profile.php?id=%d&action=edit">
             <i class="fa fa-1x fa-address-card"></i>
     </a>
     <?php 
@@ -464,7 +465,7 @@ class Accounts extends Frontend
             $aCollection[$iID]['groups']      = $rec['user_groups'];
             $aCollection[$iID]['actions']     = sprintf($sPryFunc, $rec['display_name'], $iID, $iID).' '; 
             $aCollection[$iID]['login_when']  = ($rec['login_when'] != 0) ? $rec['login_when'] + TIMEZONE : '';
-            $aCollection[$iID]['profile_url'] = sprintf(UB_TOOL_URI.'&amp;pos=detail&amp;id=%d&amp;action=edit', $iID);
+            $aCollection[$iID]['profile_url'] = sprintf($sToolUri.'&amp;pos=detail&amp;id=%d&amp;action=edit', $iID);
             $aCollection[$iID]['signup_timestamp'] = ($rec['signup_timestamp'] != 0) ? $rec['signup_timestamp'] + TIMEZONE : '';
         }
         return $aCollection;

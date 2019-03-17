@@ -17,7 +17,7 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 // Get WB version
 require_once ADMIN_PATH . '/interface/version.php';
 
-class admin extends wb
+class Admin extends Wb
 {	
     /**
      * @brief  Authenticate user then auto print the header
@@ -401,15 +401,17 @@ class admin extends wb
         if (is_array($page)) {
             $groups = $page[$action_groups];
             $users  = $page[$action_users];
+            $iPageID = $page['page_id'];
         } else {
+            $iPageID = $page;
             $sSql = 'SELECT `%s`,`%s` FROM `{TP}pages` WHERE `page_id`= %d';
-            if (($res = $this->_oDb->query(sprintf($sSql, $action_groups, $action_users, $page['page_id'])))) {
+            if (($res = $this->_oDb->query(sprintf($sSql, $action_groups, $action_users, $iPageID)))) {
                 if (($rec = $res->fetchRow(MYSQLI_ASSOC))) {
                     $groups = $rec[$action_groups];
                     $users  = $rec[$action_users];
                 }
             }
-        }
+        } 
         return ($this->ami_group_member($groups) || $this->is_group_match($this->get_user_id(), $users));
     }
 
