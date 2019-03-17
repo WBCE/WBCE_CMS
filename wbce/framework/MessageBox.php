@@ -133,6 +133,9 @@ class MessageBox extends FlashMessages {
         $msgType = isset($this->msgTypes[$type]) ? $type : $this->defaultType;
         $cssClass = $this->msgCssClass . ' ' . $this->cssClassMap[$type];
         $msgBefore = $this->msgBefore;
+        
+        $iTimer = defined('REDIRECT_TIMER') ? REDIRECT_TIMER : 0;
+        $iTimer = $iTimer > 10000 ? 10000 : $iTimer;
 
         $sToJs  = "jQuery(document).ready(function($) {"; 
         $sToJs .= "   
@@ -148,8 +151,6 @@ class MessageBox extends FlashMessages {
 
         } else {
             // If it's not sticky let it disappear using REDIRECT_TIMER 
-            $iTimer = defined('REDIRECT_TIMER') ? REDIRECT_TIMER : 0;
-            $iTimer = $iTimer > 10000 ? 10000 : $iTimer;
             if($iTimer != -1){
                 // timer isn't off, apply the fade off timer
                 $sToJs .= "$('.dismissable').delay($iTimer).fadeOut('slow');";
