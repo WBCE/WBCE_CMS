@@ -98,7 +98,7 @@ switch ($action) {
             'position' => (int) $position,
             'block'    => 1,
         );
-        if ($database->insertRow('{TP}section', $aInsert)) {
+        if ($database->insertRow('{TP}sections', $aInsert)) {
             // Get the section id
             $section_id = $database->get_one("SELECT LAST_INSERT_ID()");
             // Include the selected modules add file if it exists
