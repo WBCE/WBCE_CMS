@@ -22,8 +22,6 @@
  
 require_once WB_PATH . "/include/FlashMessages/src/FlashMessages.php"; // get parent class
 
-#WbAuto::AddFile("FlashMessages", "/framework/FlashMessages.php"); // parent class
-
 class MessageBox extends FlashMessages {
 
 
@@ -143,7 +141,7 @@ class MessageBox extends FlashMessages {
         });";
         
         // ERROR boxes are automatically set to "sticky"
-        if ($msgDataArray['sticky'] || $type == 'e') {
+        if ($msgDataArray['sticky'] || $msgType == 'e') {
             // If sticky then append the sticky CSS class
             $cssClass .= ' ' . $this->stickyCssClass;            
             $msgBefore = $this->closeBtn . $msgBefore; // add close button to the MsgBox
@@ -162,11 +160,34 @@ class MessageBox extends FlashMessages {
         // Wrap the message if necessary
         $formattedMessage = $msgBefore . $msgDataArray['message'] . $this->msgAfter; 
 
-        return sprintf(
-            $this->msgWrapper, 
-            $cssClass, 
-            $formattedMessage
-        );
+        if(defined('WB_FRONTEND')){
+            return sprintf(
+                $this->msgWrapper, 
+                $cssClass, 
+                $formattedMessage
+            );
+        } else {
+            $msgType = strtr($msgType, array(
+                'w' => 'warning',
+                'i' => 'info',
+                's' => 'success',
+                'e' => 'error',
+            ));
+            $aToTwig = array(
+                'MESSAGES'      => array($formattedMessage),
+                'REDIRECT_URL'  => '',
+                'REDIRECT_TIME' => $iTimer,
+                'USE_REDIRECT'  => false,
+                'MESSAGE_TYPE'  => $msgType
+            );       
+            ob_start(); 
+            global $TEXT;
+            $GLOBALS['admin']->getThemeFile('message_box.twig', $aToTwig);
+            $sTmp = ob_get_clean();
+            $sBox = str_replace ('alertbox_'.$msgType, 'alertbox_'.$msgType.' dismissable', $sTmp);
+            
+            return $sBox;
+        }
     }
     
     /**
