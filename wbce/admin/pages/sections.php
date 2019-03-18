@@ -434,9 +434,11 @@ switch ($action) {
         $sSql = "SELECT `section_id` FROM `{TP}sections` WHERE `page_id` = ".$page_id." AND `module` = 'menu_link'";
         $rSections = $database->query($sSql);
         if ($rSections->numRows() == 0) {
-            // Query for Modules that should appear in the dropdown menu
+            // Query for all the Modules which should appear in the dropdown menu
             $sWhereAnd = " AND `directory` != 'menu_link' ";
-            $sWhereAnd = "";
+            if(defined("MENU_LINK_TRANSFORMER") && MENU_LINK_TRANSFORMER == true){
+                $sWhereAnd = "";
+            }
             $sSql = "SELECT `name`,`directory`,`type` FROM `{TP}addons` 
                         WHERE `type` = 'module' AND `function` = 'page' 
                         ".$sWhereAnd." 
