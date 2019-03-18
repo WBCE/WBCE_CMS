@@ -13,10 +13,25 @@
 $module_directory = 'jsadmin';
 $module_name = 'Javascript Admin';
 $module_function = 'tool';
-$module_version = '1.4.0';
-$module_platform = '2.8.x';
+$module_version = '1.4.3';
+$module_platform = '1.4.0';
 $module_author = 'Stepan Riha, Swen Uth';
 $module_license = 'BSD License';
 $module_description = 'Settings for the page tree and section management behaviour.';
-$module_icon        = 'fa fa-sitemap';
-$module_level       = 'core';
+$module_icon = 'fa fa-sitemap';
+$module_level = 'core';
+
+/**
+ * Version history
+ *
+ * 1.4.3
+ *        - Add module_level core status
+ *        - Update module_platform 
+ *
+ * 1.4.2
+ *        - Add Admintool Icon
+ *
+ * 1.4.1
+ *        - Making use of Insert class
+ *
+ **/
