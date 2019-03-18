@@ -116,13 +116,14 @@ $template->set_var(array(
         );
 
 // Work-out if we should show the "manage sections" link
-$sql = 'SELECT COUNT(*) FROM `'.TABLE_PREFIX.'sections` WHERE `page_id`='.$page_id.' AND `module`="menu_link"';
-$sections_available = (intval($database->get_one($sql)) != 0);
-if ($sections_available)
-{
+$sSql = "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = ".$page_id." AND `module` = 'menu_link'";
+$bShowMenuLink = $database->get_one($sSql);
+if(defined("MENU_LINK_TRANSFORMER") && MENU_LINK_TRANSFORMER == true){
+    $bShowMenuLink = false;
+}
+if ($bShowMenuLink) {
     $template->set_var('DISPLAY_MANAGE_SECTIONS', 'display:none;');
-} elseif(MANAGE_SECTIONS == 'enabled')
-{
+} elseif(MANAGE_SECTIONS == 'enabled') {
     $template->set_var('TEXT_MANAGE_SECTIONS', $HEADING['MANAGE_SECTIONS']);
 } else {
     $template->set_var('DISPLAY_MANAGE_SECTIONS', 'display:none;');

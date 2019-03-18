@@ -51,6 +51,7 @@ $DATE_FORMATS['j.n.Y']      = gmdate('j.n.Y',      $actual_time).' (j.n.Y)';
 
 // Add "System Default" to list (if we need to)
 if(isset($user_time) && $user_time == true) {
+    global $TEXT;
     $DATE_FORMATS['system_default'] = gmdate(DEFAULT_DATE_FORMAT, $actual_time).' ('.$TEXT['SYSTEM_DEFAULT'].')';
 }
 

@@ -87,10 +87,12 @@ if ($modified_ts == 'Unknown') {
 
 // Work-out if we should show the "manage sections" link
 $sSql = "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = ".$page_id." AND `module` = 'menu_link'";
-$rQueryMenuLink = $database->get_one($sSql);
-
+$bShowMenuLink = $database->get_one($sSql);
+if(defined("MENU_LINK_TRANSFORMER") && MENU_LINK_TRANSFORMER == true){
+    $bShowMenuLink = false;
+}
 $oTemplate->set_block('main_block', 'show_section_block', 'show_section');
-if ($rQueryMenuLink) {
+if ($bShowMenuLink) {
     $oTemplate->set_block('show_section', '');
     $oTemplate->set_var('DISPLAY_MANAGE_SECTIONS', 'display:none;');
 } elseif (MANAGE_SECTIONS == 'enabled') {
