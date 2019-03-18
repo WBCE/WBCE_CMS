@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.10
+ * @version         1.1.0
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -32,7 +32,7 @@ if(!defined('WB_PATH')) {
 $PRECHECK = array();
 
 $PRECHECK['WBCE_VERSION'] = array(
-    'VERSION' => '1.3',
+    'VERSION' => '1.4',
     'OPERATOR' => '>='
 );
 

@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.10
+ * @version         1.1.0
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -43,24 +43,6 @@ function doFilterEmail($content) {
         Settings::Set('OPF_DOT_REPLACEMENT', "(dot)");
     }
 
-    // If necessary (Both true) check if mdcr.js is added to the head of template
-    // In not try to add it.
-    if (Settings::Get('OPF_MAILTO_FILTER') and Settings::Get('OPF_JS_MAILTO')){
-        // test if js-decryption is installed(was needed as frontend functions
-        // where adding this too possibly we can remove this test)
-        if( !preg_match('/<head.*<.*src=\".*\/mdcr.js.*>.*<\/head/siU', $content) ) {
-            // try to insert js-decrypt into <head> if available
-            $sJsFilePath = __DIR__ .'/js/mdcr.js';
-            if(file_exists($sJsFilePath)){
-                $sJsFileUrl = get_url_from_path($sJsFilePath);
-                $sScriptTag = "\t".'<script src="'. $sJsFileUrl .'" type="text/javascript"></script>'."\n\n";
-                $regex = '/(.*)(<\s*?\/\s*?head\s*>.*)/isU';
-                $replace = '$1'. $sScriptTag .'$2';
-                $content = preg_replace ($regex, $replace, $content);
-            }
-        }
-    }
-
     // Search for Maillinks
 
     // first search part to find all mailto email addresses
@@ -79,8 +61,17 @@ function doFilterEmail($content) {
 */
     // Do the actual work
     // find all email addresses embedded in the content and filter them using a callback function
-    $content = preg_replace_callback($pattern, '_cbDoExecuteFilter', $content);
-    return $content;
+
+    $new_content = preg_replace_callback($pattern, '_cbDoExecuteFilter', $content);
+
+    // If necessary (Both settings true) and email links have been found, include mdcr.js
+    if (Settings::Get('OPF_MAILTO_FILTER')
+        and Settings::Get('OPF_JS_MAILTO')
+        and ($content != $new_content)){
+        // use insert class to include the needed js file
+        I::insertJsFile(get_url_from_path(__DIR__ .'/js/mdcr.js', 'BODY BTM-'));
+    }
+    return $new_content;
 }
 
 

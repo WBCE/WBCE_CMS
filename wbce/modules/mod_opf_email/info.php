@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.0.10
+ * @version         1.1.0
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -21,6 +21,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.1.0   2019-03-18      - use insert class for inserting mdcr.js
  *      1.0.10  2019-03-09      - bugfix in install/upgrade
  *      1.0.9   2019-03-07      - reorder filters into new categories
  *      1.0.8   2019-02-18      - Correct link to mcdr.js and add support for style attr in mailto links
@@ -49,7 +50,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_email';
 $module_name            = 'OPF E-Mail';
 $module_function        = 'tool';
-$module_version         = '1.0.10';
+$module_version         = '1.1.0';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';
