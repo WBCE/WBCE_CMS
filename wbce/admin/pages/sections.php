@@ -34,7 +34,14 @@ $page_id = intval((isset(${$requestMethod}['page_id'])) ? ${$requestMethod}['pag
 $action = ($page_id ? 'show' : $action);
 // Get section id if there is one
 $requestMethod = '_' . strtoupper($_SERVER['REQUEST_METHOD']);
-$section_id = ((isset(${$requestMethod}['section_id'])) ? (int) ${$requestMethod}['section_id'] : 0);
+$section_id = NULL;
+if (isset(${$requestMethod}['section_id'])){
+    if ((!($section_id = intval($admin->checkIDKEY('section_id', 0, $_SERVER['REQUEST_METHOD']))))) {
+        if ($admin_header)
+            $admin->print_header();
+        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $backlink);
+    }
+}
 $action = ($section_id ? 'delete' : $action);
 // Get module if there is one
 $requestMethod = '_' . strtoupper($_SERVER['REQUEST_METHOD']);
@@ -43,13 +50,9 @@ $action = ($module != '' ? 'add' : $action);
 $admin_header = true;
 $backlink = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id;
 
+        #debug_dump($section_id);
 switch ($action) {
     case 'delete':
-        if ((!($section_id = intval($admin->checkIDKEY('section_id', 0, $_SERVER['REQUEST_METHOD']))))) {
-            if ($admin_header) {$admin->print_header();}
-            $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $backlink);
-        }
-
         $action = 'show';
         $sSql = 'SELECT `module` FROM `{TP}sections` WHERE `section_id` = '.$section_id;
         if ((($sModDir = $database->get_one($sSql)) == $module) && ($section_id > 0)) {
@@ -67,7 +70,7 @@ switch ($action) {
                 $order = new order('{TP}sections', 'position', 'section_id', 'page_id');
                 $order->clean($page_id);
                 $format = $TEXT['SECTION'] . ' %d  %s %s ' . strtolower($TEXT['DELETED']);
-                $message = sprintf($format, $section_id, strtoupper($modulname), strtolower($TEXT['SUCCESS']));
+                $message = sprintf($format, $section_id, '', strtolower($TEXT['SUCCESS']));
                 if ($admin_header) 
                     $admin->print_header();
                 $admin_header = false;
@@ -75,7 +78,8 @@ switch ($action) {
                 $admin->print_success($message, $backlink);
             }
         } else {
-            if ($admin_header) {$admin->print_header();}
+            if ($admin_header) 
+                $admin->print_header();
             $admin->print_error($module . ' ' . strtolower($TEXT['NOT_FOUND']), $backlink);
         }
         break;
@@ -430,10 +434,12 @@ switch ($action) {
         $sSql = "SELECT `section_id` FROM `{TP}sections` WHERE `page_id` = ".$page_id." AND `module` = 'menu_link'";
         $rSections = $database->query($sSql);
         if ($rSections->numRows() == 0) {
-            // Modules list
+            // Query for Modules that should appear in the dropdown menu
+            $sWhereAnd = " AND `directory` != 'menu_link' ";
+            $sWhereAnd = "";
             $sSql = "SELECT `name`,`directory`,`type` FROM `{TP}addons` 
                         WHERE `type` = 'module' AND `function` = 'page' 
-                        AND `directory` != 'menu_link' 
+                        ".$sWhereAnd." 
                         ORDER BY `name`";
             $rResult = $database->query($sSql);
             
@@ -442,7 +448,7 @@ switch ($action) {
                     // Check if user is allowed to use this module   echo  $module['directory'],'<br />';
                     if (!is_numeric(array_search($module['directory'], $module_permissions))) {
                         $oTemplate->set_var('VALUE', $module['directory']);
-                        $oTemplate->set_var('NAME', $admin->get_module_name($module['name']));
+                        $oTemplate->set_var('NAME', $admin->get_module_name($module['directory']));
                         if ($module['directory'] == 'wysiwyg') {
                             $oTemplate->set_var('SELECTED', ' selected="selected"');
                         } else {
