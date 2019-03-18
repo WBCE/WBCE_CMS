@@ -13,9 +13,9 @@
 $module_directory = 'ckeditor';
 $module_name = 'CKEditor';
 $module_function = 'WYSIWYG';
-$module_version = '4.11.2';
+$module_version = '4.11.3';
 $module_platform = '1.0.0';
 $module_author = 'diverse, cwsoft, Norhei, Colinax';
 $module_license = 'GPL, LGPL and MPL';
-$module_description = 'includes CKEditor 4.11.2 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.';
+$module_description = 'includes CKEditor 4.11.3 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.';
 $module_home = 'http://www.wbce.org';

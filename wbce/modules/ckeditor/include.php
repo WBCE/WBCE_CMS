@@ -77,14 +77,14 @@ function show_wysiwyg_editor(
     $ckeditor->resolve_path(
         'contentsCss',
         $tplPath.'/wb_config/editor.css',
-        $ModPath.'/wb_config/editor.css'
+        $ModPath.'/ckeditor/contents.css'
     );
     
     /* Looking for the editor.styles at all ... */
     $ckeditor->resolve_path(
         'stylesSet',
         $tplPath.'/wb_config/editor.styles.js',
-        $ModPath.'/wb_config/editor.styles.js',
+        $ModPath.'/ckeditor/styles.js',
         'wb:'
     );
     
