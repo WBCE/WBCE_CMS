@@ -38,6 +38,7 @@ $TIME_FORMATS['H:i']   = gmdate('H:i', $actual_time);
 
 // Add "System Default" to list (if we need to)
 if(isset($user_time) AND $user_time == true) {
+    global $TEXT;
     $TIME_FORMATS['system_default'] = gmdate(DEFAULT_TIME_FORMAT, $actual_time).' ('.$TEXT['SYSTEM_DEFAULT'].')';
 }
 
