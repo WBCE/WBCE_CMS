@@ -10,11 +10,25 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$module_directory   = 'menu_link';
-$module_name        = 'Menu Link';
-$module_function    = 'page';
-$module_version     = '2.9.3';
-$module_platform    = '2.8.x';
-$module_author      = 'Ryan Djurovich, thorn, Christian M. Stefan';
-$module_license     = 'GNU General Public License';
+$module_directory = 'menu_link';
+$module_name = 'Menu Link';
+$module_function = 'page';
+$module_version = '2.9.5';
+$module_platform = '1.4.0';
+$module_author = 'Ryan Djurovich, thorn, Christian M. Stefan';
+$module_license = 'GNU General Public License';
 $module_description = 'This module allows you to insert a link into the menu.';
+$module_icon = 'fa fa-sitemap';
+$module_level = 'core';
+
+/**
+ * Version history
+ *
+ * 2.9.5
+ *        - Add module_level core status
+ *        - Update module_platform 
+ *
+ * 2.9.4
+ *        - Add module_name translation
+ *
+ **/
