@@ -1,40 +1,20 @@
 <?php
-/*
- Website Baker Project <http://www.websitebaker.org/>
- Copyright (C) 2004-2010, Ryan Djurovich
-
- Website Baker is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- Website Baker is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Website Baker; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-
-/*******************************************************************************\
- 
-  SiteMap module for Website Baker v2.7.x-2.8.x (http://www.websitebaker.org)
-  and WBCE (WebsiteBaker Community Edition) (http://www.wbce.org)
-  The Sitemap module provides the facility to add a sitemap of your website.
- 
-\*******************************************************************************/
+/**
+ * @category        modules
+ * @package         captcha_control
+ * @author          WBCE Project
+ * @copyright       Ryan Djurovich, Frank Schoep, Woudloper, Ruebenwurzel, Rob Smith, Mouring Kolhoff, Michael Milette, Dietrich Roland Pehlke, Christian M. Stefan (Stefanek) (last)
+ * @license         GPLv2 or any later
+ */
 
 $module_directory = 'sitemap';
 $module_name      = 'Sitemap';
 $module_function  = 'page';
-$module_version   = '4.0.4';
-$module_platform  = '2.5.x - 2.8.x';
+$module_version   = '4.0.6';
+$module_platform  = '1.4.0';
 $module_author    = 'Ryan Djurovich, Frank Schoep, Woudloper, Ruebenwurzel, Rob Smith, Mouring Kolhoff, Michael Milette, Dietrich Roland Pehlke, Christian M. Stefan (Stefanek) (last)';
 $module_license   = 'GNU General Public License';
 $module_description = 'This module allows you to easily create a sitemap. You can even work with additional layout settings for the sitemap. It also gives you the option to show hidden menu items if required';
-$module_home      = '';
 $module_guid      = '8B7C09E5-6246-4264-8959-8AA542D7BD6';
 
 
@@ -44,6 +24,12 @@ $module_guid      = '8B7C09E5-6246-4264-8959-8AA542D7BD6';
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	DEVELOPMENT HISTORY (Change Log):
 
+	v.4.0.6 Colinax		
+			Update module_platform
+    
+	v.4.0.5 Christian M. Stefan (Stefanek)		
+			clean up and use new DB functions
+    
 	v.4.0.4 2017-09-16 Christian M. Stefan (Stefanek)		
 		[c] mostly CSS file addition for the backend
 		[+]	added support for new CSS move to head functions
