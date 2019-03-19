@@ -240,12 +240,13 @@ if($add && $doSave ){ //================================================ add ===
     $filters = opf_select_filters();
     if(!is_array($filters))$filters=array();
     $old_type = ''; // remember last type in foreach below, to draw a separator if type changed
+    
     foreach($filters as $filter) {
         $filter = opf_replace_sysvar($filter);
         // we need the next str_replace to allow \ ' " in the name for use with javascript
         $filter['name_js_quoted'] = str_replace(array('\\','&#039;','&quot;'), array('\\\\','\\&#039;','\\&quot;'), $filter['name']);
         $filter['desc'] =  opf_fetch_entry_language(unserialize($filter['desc']));
-        $filter['helppath'] =  opf_fetch_entry_language(unserialize($filter['helppath']));
+        $filter['helppath'] = opf_get_helpfile_url($filter['helppath'], $filter['plugin']);
         $filter['desc'] = '<small>'.opf_correct_umlauts(htmlspecialchars(substr($filter['desc'], 0, 40))).'...</small>';
         // mark last added filter
         if($filter['id']==$id)

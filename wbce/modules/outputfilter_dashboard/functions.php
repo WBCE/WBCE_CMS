@@ -1823,3 +1823,20 @@ function opf_create_dirname($str){
        return $s;
 }
 
+// retrieve the helpfile URL from serialized `helppath` field
+function opf_get_helpfile_url($sSerialized, $sPluginName){
+    $sUrl = opf_fetch_entry_language(unserialize($sSerialized));
+    if(substr($sUrl, 0, 1) == '/'){
+        $sFilePath = $GLOBALS['database']->get_one(
+            "SELECT `file` FROM `".TABLE_PREFIX."mod_outputfilter_dashboard` 
+                WHERE `plugin` = '".$sPluginName."'"
+        );
+        $aReplacements = array(
+            '{OPF:PLUGIN_PATH}' => OPF_PLUGINS_URL.$sPluginName,
+            '{SYSVAR:WB_PATH}'  => WB_URL, // we need a URL to build the Link to helpfile
+            '/filter.php'       => '',     // remove
+        );
+        $sUrl = strtr($sFilePath, $aReplacements).$sUrl;        
+    }
+    return (string) $sUrl;
+}
