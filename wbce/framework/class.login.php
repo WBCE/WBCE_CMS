@@ -92,17 +92,17 @@ class Login extends Admin
                 exit(0);
             } else {        
                 $this->_oMsgBox->error( $MESSAGE['LOGIN_AUTHENTICATION_FAILED'] );              
-                $this->increase_attemps();
+                $this->increase_attempts();
             }
         } elseif ($this->username == '' && $this->password == '') {
             $this->_oMsgBox->info( $MESSAGE['LOGIN_BOTH_BLANK'], 0, 1 );
             $this->display_login();
         } elseif ($this->username == '') {
             $this->_oMsgBox->error( $MESSAGE['LOGIN_USERNAME_BLANK'] );
-            $this->increase_attemps();
+            $this->increase_attempts();
         } elseif ($this->password == '') {
             $this->_oMsgBox->error( $MESSAGE['LOGIN_PASSWORD_BLANK'] );
-            $this->increase_attemps();
+            $this->increase_attempts();
         } else {
             // Check if the user exists (authenticate them)
             if ($this->authenticate()) {
@@ -111,7 +111,7 @@ class Login extends Admin
                 exit(0);
             } else {
                 $this->_oMsgBox->error( $MESSAGE['LOGIN_AUTHENTICATION_FAILED'] );
-                $this->increase_attemps();
+                $this->increase_attempts();
             }
         }
     }
@@ -246,19 +246,87 @@ class Login extends Admin
         return $iNumRows;
     }
 
-    
+    /**
+     * @brief  get the client ip address from various php or environment variables
+     */ 
+    private function get_client_ip()
+    {
+        $ipaddress = ''; 
+	if ($_SERVER['HTTP_CLIENT_IP']) $ipaddress = $_SERVER['HTTP_CLIENT_IP']; 
+	else if($_SERVER['HTTP_X_FORWARDED_FOR']) $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR']; 
+	else if($_SERVER['HTTP_X_FORWARDED']) $ipaddress = $_SERVER['HTTP_X_FORWARDED']; 
+	else if($_SERVER['HTTP_FORWARDED_FOR']) $ipaddress = $_SERVER['HTTP_FORWARDED_FOR']; 
+	else if($_SERVER['HTTP_FORWARDED']) $ipaddress = $_SERVER['HTTP_FORWARDED']; 
+	else if($_SERVER['REMOTE_ADDR']) $ipaddress = $_SERVER['REMOTE_ADDR']; 
+	else if(getenv('HTTP_CLIENT_IP')) $ipaddress = getenv('HTTP_CLIENT_IP'); 
+	else if(getenv('HTTP_X_FORWARDED_FOR')) $ipaddress = getenv('HTTP_X_FORWARDED_FOR'); 
+	else if(getenv('HTTP_X_FORWARDED')) $ipaddress = getenv('HTTP_X_FORWARDED'); 
+	else if(getenv('HTTP_FORWARDED_FOR')) $ipaddress = getenv('HTTP_FORWARDED_FOR'); 
+	else if(getenv('HTTP_FORWARDED')) $ipaddress = getenv('HTTP_FORWARDED'); 
+	else if(getenv('REMOTE_ADDR')) $ipaddress = getenv('REMOTE_ADDR'); 
+	else $ipaddress = 'UNKNOWN';  
+	return $ipaddress; 
+    }
     
     /**
-     * @brief  Increase the count for login attemps
+     * @brief  Increase the count for login attempts
      */
-    public function increase_attemps()
+    public function increase_attempts($increment=1)
     {
-        if (!isset($_SESSION['ATTEMPS'])) {
-            $_SESSION['ATTEMPS'] = 0;
+        // we shall store them in the database and fetch them from there
+	// because an attacker can easily open plenty of new sessions
+	global $database;
+	
+	$client_ip = $database->escapeString($this->get_client_ip());
+	$attempts = 0;
+	$timestamp = 0;
+	
+	$sql = "SELECT `*` FROM `".TABLE_PREFIX."blocking` WHERE `source_ip` = '". $client_ip. "' LIMIT 1";
+	$check_query = $database->query($sql);
+
+	$now = time();
+
+	if($check_query->numRows() > 0) {
+	    $check_fetch = $check_query->fetchRow();
+	    $attempts = $check_fetch['attempts'] + $increment;
+	    $timestamp = $check_fetch['timestamp'];
+	} else {
+	    $timestamp = $now;
+	    $attempts = $increment;
+	    $sql = "INSERT INTO `".TABLE_PREFIX."blocking` SET `attempts` = '$attempts', `timestamp` = '$timestamp', `source_ip` = '$client_ip'";
+	    $database->query($sql);
+	}
+	
+	$interval = $now - $timestamp;
+	
+	if($interval > $this->time_frame + 2*pow(2,($attempts-$this->max_attempts))*$this->login_delay){
+	    // it's too long ago, forget the db entry and reset to the first attempt
+	    $attempts = $increment;
+	}
+	
+    	$timestamp = time();
+	
+	// update the database
+	$sql = "UPDATE `".TABLE_PREFIX."blocking` SET `attempts` = '$attempts', `timestamp` = '$timestamp' WHERE `source_ip` = '$client_ip'";
+	$database->query($sql);
+
+	if($interval > $this->time_frame + pow(2,($attempts-$this->max_attempts))*$this->login_delay && $attempts > $this->max_attempts){
+	    // it's too long ago, reduce at least to allow one more attempt
+	    $attempts = $this->max_attempts;
+	}
+	
+	// to clean up database from old entries, use the occasion and discard everything we have not seen for more than a week
+	$timestamp = $now - 7 * 24 * 3600;
+	$sql = "DELETE FROM `".TABLE_PREFIX."blocking` WHERE `timestamp` < '$timestamp'";
+	$database->query($sql);
+    
+        $_SESSION['ATTEMPTS'] = $attempts;
+
+        if ($this->get_session('ATTEMPTS') > $this->max_attempts) {
+            $this->warn();
         } else {
-            $_SESSION['ATTEMPS'] = $this->get_session('ATTEMPS') + 1;
-        }
-        $this->display_login();
+            $this->display_login();
+	}
     }
 
     
@@ -273,13 +341,13 @@ class Login extends Admin
     public function display_login()
     {
         // Get language vars
-        global $MESSAGE, $MENU, $TEXT;
-        
-        // If attemps more than allowed, warn the user
-        if ($this->get_session('ATTEMPS') > $this->max_attemps) {
-            $this->warn();
-        }
-        
+        global $MESSAGE, $MENU, $TEXT, $database;
+	
+	if(!isset($_SESSION['ATTEMPTS']) || ($this->get_session('ATTEMPTS') > $this->max_attempts)){
+	    $this->increase_attempts($increment=0);
+	    return;
+	}
+                
         // Show the login form
         if ($this->frontend != true) {
             // Setup template object, parse vars to it, then parse it
@@ -304,7 +372,7 @@ class Login extends Admin
                     'REVISION'               => REVISION,
                     'PAGES_DIRECTORY'        => PAGES_DIRECTORY,
                     'ACTION_URL'             => $this->login_url,
-                    'ATTEMPS'                => $this->get_session('ATTEMPS'),
+                    'ATTEMPTS'               => $this->get_session('ATTEMPTS'),
                     'USERNAME'               => $this->username,
                     'USERNAME_FIELDNAME'     => $this->username_fieldname,
                     'PASSWORD_FIELDNAME'     => $this->password_fieldname,
@@ -344,7 +412,7 @@ class Login extends Admin
 
     
     /**
-     * @brief    Warn user that they have had too many login attemps
+     * @brief    Warn user that they have had too many login attempts
      */
     public function warn()
     {

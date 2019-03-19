@@ -147,3 +147,14 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}users` (
   `signup_confirmcode` varchar(64){TABLE_COLLATION} NOT NULL DEFAULT '',
   PRIMARY KEY (`user_id`)
 ){TABLE_ENGINE};
+-- --------------------------------------------------------------------
+--
+-- Tabellenstruktur für Tabelle `blocking` (new table since WBCE v.1.4.0)
+--
+DROP TABLE IF EXISTS `{TABLE_PREFIX}blocking`;
+CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}blocking` (
+  `source_ip` varchar(50){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `timestamp` int(11) NOT NULL DEFAULT '0',
+  `attempts` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`source_ip`)
+){TABLE_ENGINE};

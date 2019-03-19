@@ -44,7 +44,9 @@ $WarnUrl = str_replace(WB_PATH,WB_URL,$admin->correct_theme_source('warning.html
 $ThemePath = dirname($admin->correct_theme_source('login.htt'));
 
 $thisApp = new Login( array(
-						'MAX_ATTEMPS' => "3",
+						'MAX_ATTEMPTS' => "3",
+						'TIMEFRAME' => "600",
+						'LOGIN_DELAY' => "60",
 						'WARNING_URL' => $WarnUrl,
 						'USERNAME_FIELDNAME' => $username_fieldname,
 						'PASSWORD_FIELDNAME' => $password_fieldname,

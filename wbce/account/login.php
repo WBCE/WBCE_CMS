@@ -34,7 +34,9 @@ if ($oAccounts->is_authenticated() == true) {
 // Create new Login object
 $oLogin = new Login(
     array(
-        "MAX_ATTEMPS"           => "3",
+        "MAX_ATTEMPTS"          => "3",
+	"TIMEFRAME"             => "600",
+	"LOGIN_DELAY"           => "60",
         "WARNING_URL"           => get_url_from_path($oAccounts->correct_theme_source('warning.html')),
         "USERNAME_FIELDNAME"    => 'username',
         "PASSWORD_FIELDNAME"    => 'password',

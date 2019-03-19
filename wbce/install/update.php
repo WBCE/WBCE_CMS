@@ -153,7 +153,7 @@ require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
 
 // database tables including in package
-$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_topics', 'mod_miniform','mod_wbstats_day', 'mod_menu_link');
+$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_topics', 'mod_miniform','mod_wbstats_day', 'mod_menu_link', 'blocking');
 /*
 $table_list = array (
     'settings','groups','addons','pages','sections','search','users', 'mod_captcha_control','mod_code','mod_droplets','mod_form_fields', 'mod_form_settings','mod_form_submissions',
@@ -450,8 +450,18 @@ if (file_exists($file_name)) {
     include_once ($file_name);
     opf_io_rmdir(WB_PATH . "/modules/output_filter");
 }
+
 // Remove entry from DB
 $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = 'output_filter' AND type = 'module'");
+
+// Create new core table(s)
+$database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."blocking` ("
+  . " `source_ip` varchar(50) NOT NULL DEFAULT '',"
+  . " `timestamp` int(11) NOT NULL DEFAULT '0',"
+  . " `attempts` int(11) NOT NULL DEFAULT '0',"
+  . " PRIMARY KEY (`source_ip`)"
+  . ")");
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
 // check again all tables, to get a new array
 if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
