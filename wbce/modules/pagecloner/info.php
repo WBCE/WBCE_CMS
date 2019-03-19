@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -13,17 +13,20 @@
 $module_directory = 'pagecloner';
 $module_name = 'Page Cloner';
 $module_function = 'tool';
-$module_version = '1.0.3';
-$module_platform = '2.8.x';
+$module_version = '1.0.4';
+$module_platform = '1.0.0';
 $module_author = 'John Maats, PCWacht, Dietrich Roland Pehlke, Stephan Kuehn, vBoedefeld, WebBird, Colinax';
 $module_license = 'GNU General Public License';
 $module_description = 'This addon allows you to clone a page or a complete tree with all page and sections.';
-$module_home = 'http://wbce.org';
+$module_home = 'https://wbce.org';
 $module_guid = '25bfa866-2ee3-4731-8f44-f49f01c8294a';
-$module_icon        = 'fa fa-clone';
+$module_icon = 'fa fa-clone';
 
 /**
  * Version history
+ *
+ * v1.0.4
+ *        - Add Admintool Icon
  *
  * v1.0.3 (WebBird, 10.08.2018)
  *        - Fix: Problem with more than one WBCE installation into same mySQL instance

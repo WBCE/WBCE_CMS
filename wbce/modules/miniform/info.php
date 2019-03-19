@@ -20,10 +20,19 @@
 $module_directory = 'miniform';
 $module_name = 'MiniForm';
 $module_function = 'page';
-$module_version = '0.12.0';
-$module_platform = '2.8.x';
+$module_version = '0.13.1';
+$module_platform = '1.4.0';
 $module_author = 'Ruud';
 $module_license = 'GNU General Public License';
 $module_description = 'This module allows you to create a quick and simple form without complicated settings.';
 
-?>
+/**
+ * Version history
+ *
+ * v0.13.1
+ *        - Update module_platform
+ *
+ * v0.13
+ *        - Implementation of PHPMailer v6.0.6
+ *
+ **/
