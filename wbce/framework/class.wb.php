@@ -855,41 +855,43 @@ _JsCode;
      *          and collect the modfiles in a array based on 
      *          modfile type (css|js_head|js_body)
      *
-     * @param   string $sModuleName
+     * @param   string $sModuleDir
      * @param   string $sEndPosition (frontend|backend)
      * @return  array
      */
-    public function retrieve_modfiles_from_dir($sModuleName, $sEndPosition = "frontend")
+    public function retrieve_modfiles_from_dir($sModuleDir, $sEndPosition = "frontend")
     {
         $aCollection = array();
-        $sModDir = '/modules/' . $sModuleName . '/';
-
+        $sModDir = '/modules/' . $sModuleDir . '/';
+       
+                
         // retrieve frontend.css and/or frontend.override.css if exists
         $sCssFile = $sModDir . $sEndPosition . '%s.css';
-        if(file_exists(sprintf(WB_PATH . $sCssFile, ''))){
-            $aCollection['css'][] = sprintf(WB_URL . $sCssFile, '');
-        }
+        
         if(file_exists(sprintf(WB_PATH . $sCssFile, '.override'))){
             $aCollection['css'][] = sprintf(WB_URL . $sCssFile, '.override');
+        }
+        if(file_exists(sprintf(WB_PATH . $sCssFile, ''))){
+            $aCollection['css'][] = sprintf(WB_URL . $sCssFile, '');
         }			
 
         // retrieve frontend.js and/or frontend.override.js if exists
         $sJsHeadFile = $sModDir . $sEndPosition . '%s.js';
-        if(file_exists(sprintf(WB_PATH . $sJsHeadFile, ''))){
-            $aCollection['js_head'][] = sprintf(WB_URL . $sJsHeadFile, '');
-        }
         if(file_exists(sprintf(WB_PATH . $sJsHeadFile, '.override'))){
             $aCollection['js_head'][] = sprintf(WB_URL . $sJsHeadFile, '.override');
+        }
+        if(file_exists(sprintf(WB_PATH . $sJsHeadFile, ''))){
+            $aCollection['js_head'][] = sprintf(WB_URL . $sJsHeadFile, '');
         }
 
         // retrieve frontend_body.js and/or frontend_body.override.js if exists
         $sJsBodyFile = $sModDir .  $sEndPosition . '_body%s.js';
-        if(file_exists(sprintf(WB_PATH . $sJsBodyFile, ''))){
-            $aCollection['js_body'][] = sprintf(WB_URL . $sJsBodyFile, '');
-        }
         if(file_exists(sprintf(WB_PATH . $sJsBodyFile, '.override'))){
             $aCollection['js_body'][] = sprintf(WB_URL . $sJsBodyFile, '.override');
         }
+        if(file_exists(sprintf(WB_PATH . $sJsBodyFile, ''))){
+            $aCollection['js_body'][] = sprintf(WB_URL . $sJsBodyFile, '');
+        } 
         return $aCollection;
     }
 	
@@ -910,7 +912,7 @@ _JsCode;
 
         // get snippet modfiles if in FRONTEND
         if(defined('WB_FRONTEND')){
-            $sSql .= "SELECT `directory` as 'module_name' FROM `{TP}addons` WHERE `function` LIKE '%snippet%'";
+            $sSql .= "SELECT `directory` as 'module_dir' FROM `{TP}addons` WHERE `function` LIKE '%snippet%'";
         }
 
         // check if we should use page-type module modfiles 
@@ -930,7 +932,7 @@ _JsCode;
             if($sSql != ''){
                 $sSql .= " UNION ALL ";
             }
-            $sSql .= "SELECT `module` as 'module_name' FROM `{TP}sections` WHERE `page_id` = ".$iPageTypePID;			
+            $sSql .= "SELECT `module` as 'module_dir' FROM `{TP}sections` WHERE `page_id` = ".$iPageTypePID;			
         }
 
         // if it's a tool, get its modfiles
@@ -938,15 +940,20 @@ _JsCode;
             if($sSql != ''){
                     $sSql .= " UNION ALL ";
             }
-            $sSql .= "SELECT `directory` as 'module_name' FROM `{TP}addons` WHERE `function` LIKE '%tool%' AND `directory`= '".$this->_oDb->escapeString($_GET['tool'])."'";	
+            $sSql .= "SELECT `directory` as 'module_dir' FROM `{TP}addons` WHERE `function` LIKE '%tool%' AND `directory`= '".$this->_oDb->escapeString($_GET['tool'])."'";	
         }
+        
         if($sSql != ''){
-            if (($resSnippets = $this->_oDb->query($sSql))) {
-                while ($recSnippet = $resSnippets->fetchRow()) {	
-                    $aToInsert = $this->retrieve_modfiles_from_dir($recSnippet['module_name'], $sEndPosition);
+            $aTmp = array();
+            if (($rAddons = $this->_oDb->query($sSql))) {
+                while ($rec = $rAddons->fetchRow(MYSQLI_ASSOC)) {	
+                    $aTmp[$rec['module_dir']] = $this->retrieve_modfiles_from_dir($rec['module_dir'], $sEndPosition);
                 }
+                foreach($aTmp as $sMod => $aType) 
+                    foreach($aType as $j=>$file)                   
+                        $aToInsert[$j][] = ($file[0]);
             }	
-        }			
+        }
         return $aToInsert;
     }
 	
