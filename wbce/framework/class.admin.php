@@ -170,13 +170,13 @@ class Admin extends Wb
 
         // Create the menu
         $menu = array(
-            array(ADMIN_URL . '/pages/',       '', $MENU['PAGES'],       'pages', 1),
-            array(ADMIN_URL . '/media/',       '', $MENU['MEDIA'],       'media', 1),
-            array(ADMIN_URL . '/addons/',      '', $MENU['ADDONS'],      'addons', 1),
-            array(ADMIN_URL . '/preferences/', '', $MENU['PREFERENCES'], 'preferences', 0),
-            array(ADMIN_URL . '/settings/',    '', $MENU['SETTINGS'],    'settings', 1),
-            array(ADMIN_URL . '/admintools/',  '', $MENU['ADMINTOOLS'],  'admintools', 1),
-            array(ADMIN_URL . '/access/',      '', $MENU['ACCESS'],      'access', 1),
+            array(ADMIN_URL . '/pages/index.php', '', $MENU['PAGES'],       'pages', 1),
+            array(ADMIN_URL . '/media/',          '', $MENU['MEDIA'],       'media', 1),
+            array(ADMIN_URL . '/addons/',         '', $MENU['ADDONS'],      'addons', 1),
+            array(ADMIN_URL . '/preferences/',    '', $MENU['PREFERENCES'], 'preferences', 0),
+            array(ADMIN_URL . '/settings/',       '', $MENU['SETTINGS'],    'settings', 1),
+            array(ADMIN_URL . '/admintools/',     '', $MENU['ADMINTOOLS'],  'admintools', 1),
+            array(ADMIN_URL . '/access/',         '', $MENU['ACCESS'],      'access', 1),
         );
         
         $header_template->set_block('header_block', 'linkBlock', 'link');
