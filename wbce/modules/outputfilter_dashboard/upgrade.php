@@ -96,7 +96,8 @@ $install_dir = dirname(__FILE__).'/plugins/';
 
 $plugins = array (
     'cachecontrol',
-    'correct_date_format'
+    'correct_date_format',
+    'http_to_https'
 );
 
 foreach($plugins as $plugin_dir){
