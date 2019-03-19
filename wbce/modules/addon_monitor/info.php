@@ -15,7 +15,7 @@
 $module_directory 		= 'addon_monitor';
 $module_name 			= 'Addon Monitor';
 $module_function 		= 'tool';
-$module_version 		= '0.6.5';
+$module_version 		= '0.6.4';
 $module_status          = 'stable';
 $module_platform 		= '1.0.0';
 $module_author 			= 'Christian M. Stefan (Stefek)';
@@ -24,9 +24,6 @@ $module_description 	= 'This AdminTool\'s entire purpose is to give you a handy 
 
 /**
  * Version history
- *
- * 0.6.5
- *        - Use own jquery instead of Google CDN in colorbox fallback
  *
  * 0.6.4
  *        - corrects the path to the flag icons
