@@ -78,8 +78,7 @@ $type = (array_key_exists($filter['type'],$types)?$filter['type']:key($types));
 $file = $filter['file'];
 $modules = unserialize($filter['modules']);
 $desc = opf_fetch_entry_language(unserialize($filter['desc']));
-$helppath = opf_fetch_entry_language(unserialize($filter['helppath']));
-$helppath = opf_insert_sysvar($helppath,$filter['plugin']);
+$helppath = opf_get_helpfile_url($filter['helppath'], $filter['plugin']);
 $func = $filter['func'];
 $funcname = $filter['funcname'];
 $pages_parent = unserialize($filter['pages_parent']);
@@ -97,7 +96,6 @@ foreach($types as $value=>$text){
     if($type==$value) $filter_type_options .= 'selected="selected"';
     $filter_type_options .= ">".opf_quotes($text)."</option>";
 }
-
 
 if($helppath) {
     $helppath_onclick = "javascript: return opf_popup('$helppath');";
