@@ -8,7 +8,7 @@ tool.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.7
+ * @version         1.5.8
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -240,13 +240,19 @@ if($add && $doSave ){ //================================================ add ===
     $filters = opf_select_filters();
     if(!is_array($filters))$filters=array();
     $old_type = ''; // remember last type in foreach below, to draw a separator if type changed
-    
     foreach($filters as $filter) {
+        $filter['helppath'] = unserialize($filter['helppath']);
+        $filter['desc'] = unserialize($filter['desc']);
+        $filter['modules'] = unserialize($filter['modules']);
+        $filter['pages'] = unserialize($filter['pages']);
+        $filter['pages_parent'] = unserialize($filter['pages_parent']);
+        $filter['additional_values'] = unserialize($filter['additional_values']);
         $filter = opf_replace_sysvar($filter);
+        $filter['helppath'] = opf_replace_sysvar($filter['helppath'],$filter['plugin']);
         // we need the next str_replace to allow \ ' " in the name for use with javascript
         $filter['name_js_quoted'] = str_replace(array('\\','&#039;','&quot;'), array('\\\\','\\&#039;','\\&quot;'), $filter['name']);
-        $filter['desc'] =  opf_fetch_entry_language(unserialize($filter['desc']));
-        $filter['helppath'] = opf_get_helpfile_url($filter['helppath'], $filter['plugin']);
+        $filter['desc'] =  opf_fetch_entry_language($filter['desc']);
+        $filter['helppath'] =  opf_fetch_entry_language($filter['helppath']);
         $filter['desc'] = '<small>'.opf_correct_umlauts(htmlspecialchars(substr($filter['desc'], 0, 40))).'...</small>';
         // mark last added filter
         if($filter['id']==$id)
@@ -279,7 +285,16 @@ if($add && $doSave ){ //================================================ add ===
             $filter['css_link'] = '';
         }
         if($filter['helppath']) {
-            $filter['helppath_onclick'] = "javascript: return opf_popup('{$filter['helppath']}');";
+            $filter['helppath_onclick'] = $filter['helppath'];
+            if(!preg_match('/^(https?:\/\/|\/)/', $filter['helppath_onclick'])) {
+                if(!empty($filter['plugin'])){ // relative paths in plugin filters
+                    $filter['helppath_onclick'] = OPF_PLUGINS_URL.$filter['plugin'].'/'.$filter['helppath_onclick'];
+                } else if(!empty($filter['file'])){ // the same for module filters
+                    $filter['helppath_onclick'] = preg_replace('/[^\/]*$/','',filter['file']).$filter['helppath_onclick'];
+                    $filter['helppath_onclick'] = str_replace(WB_PATH,WB_URL,$filter['helppath_onclick']);
+                }
+            }
+            $filter['helppath_onclick'] = "javascript: return opf_popup('{$filter['helppath_onclick']}');";
         } else {
             $filter['helppath_onclick'] = '';
         }

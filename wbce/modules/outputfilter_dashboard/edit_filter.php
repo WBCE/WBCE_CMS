@@ -8,7 +8,7 @@ edit_filter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.7
+ * @version         1.5.8
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -66,6 +66,14 @@ if(!$admin->get_permission('admintools')) die(header('Location: ../../index.php'
 if(!$filters = opf_db_query( "SELECT * FROM `".TABLE_PREFIX."mod_outputfilter_dashboard` WHERE `id`=$id"))
     return;
 $filter = $filters[0];
+$filter['modules'] = unserialize($filter['modules']);
+$filter['desc'] = unserialize($filter['desc']);
+$filter['helppath'] = unserialize($filter['helppath']);
+$filter['pages_parent'] = unserialize($filter['pages_parent']);
+$filter['pages'] = unserialize($filter['pages']);
+$filter['additional_values'] = unserialize($filter['additional_values']);
+$filter['additional_fields'] = unserialize($filter['additional_fields']);
+$filter['additional_fields_languages'] = unserialize($filter['additional_fields_languages']);
 $filter = opf_replace_sysvar($filter);
 $types = opf_get_types();
 $name = $filter['name'];
@@ -76,18 +84,19 @@ $userfunc = ($filter['userfunc']==1?1:0);
 $plugin = $filter['plugin'];
 $type = (array_key_exists($filter['type'],$types)?$filter['type']:key($types));
 $file = $filter['file'];
-$modules = unserialize($filter['modules']);
-$desc = opf_fetch_entry_language(unserialize($filter['desc']));
-$helppath = opf_get_helpfile_url($filter['helppath'], $filter['plugin']);
+$modules = $filter['modules'];
+$desc = opf_fetch_entry_language($filter['desc']);
+$helppath = opf_fetch_entry_language($filter['helppath']);
+$helppath = opf_insert_sysvar($helppath,$filter['plugin']);
 $func = $filter['func'];
 $funcname = $filter['funcname'];
-$pages_parent = unserialize($filter['pages_parent']);
-$pages = unserialize($filter['pages']);
+$pages_parent = $filter['pages_parent'];
+$pages = $filter['pages'];
 $allowedit = ($filter['allowedit']==1?1:0);
 $allowedittarget = ($filter['allowedittarget']==1?1:0);
-$additional_values = unserialize($filter['additional_values']);
-$additional_fields = unserialize($filter['additional_fields']);
-$additional_fields_languages = unserialize($filter['additional_fields_languages']);
+$additional_values = $filter['additional_values'];
+$additional_fields = $filter['additional_fields'];
+$additional_fields_languages = $filter['additional_fields_languages'];
 
 $filter_type_options='';
 
@@ -98,7 +107,16 @@ foreach($types as $value=>$text){
 }
 
 if($helppath) {
-    $helppath_onclick = "javascript: return opf_popup('$helppath');";
+    $helppath_onclick = $helppath;
+    if(!preg_match('/^(https?:\/\/|\/)/', $helppath_onclick)) {
+        if(!empty($plugin)){ // relative paths in plugin filters
+            $helppath_onclick = OPF_PLUGINS_URL.$plugin.'/'.$helppath_onclick;
+        } else if(!empty($file)){ // the same for module filters
+            $helppath_onclick = preg_replace('/[^\/]*$/','',file).$helppath_onclick;
+            $helppath_onclick = str_replace(WB_PATH,WB_URL,$helppath_onclick);
+        }
+    }
+    $helppath_onclick = "javascript: return opf_popup('$helppath_onclick');";
 } else {
     $helppath_onclick = '';
 }
@@ -213,7 +231,7 @@ array_merge($LANG['MOD_OPF'],
     'tpl_id' => $id,
     'tpl_filter_name' => $name,
     'tpl_filter_funcname' => $funcname,
-    'tpl_filter_file' => $file,
+    'tpl_filter_file' => opf_insert_sysvar($file,$plugin),
     'tpl_filter_description' => $desc,
     'tpl_filter_helppath_onclick' => $helppath_onclick,
     'tpl_filter_configurl_start' => ($filter['configurl'])?"":"<!--/*",

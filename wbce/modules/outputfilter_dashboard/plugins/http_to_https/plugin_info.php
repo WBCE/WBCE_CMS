@@ -14,7 +14,7 @@ the Free Software Foundation, either version 3 of the License, or
 
 opf automatic links is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -31,7 +31,7 @@ Header: Version-History
         - disable by default to avoid self-made problems by just installing it
 
 1.0.0 %(Martin Hecht (mrbaseman); Mar 18, 2019)%
-	- initial version
+        - initial version
 
 */
 

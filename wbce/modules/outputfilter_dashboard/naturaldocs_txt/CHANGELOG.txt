@@ -2,6 +2,13 @@
 Header: Version-History
 
 1.5:
+1.5.8 %(mrbaseman, 20 Mar 2019)%
+	- include http_to_https plugin
+	- support placeholders in helppath
+	- automatically install/update plugins from the plugins directory
+	- support relative path for helppath
+	- use placeholders in file path when editing a filter
+
 1.5.7 %(mrbaseman, 07 Mar 2019)%
         - starting with php 7.2 create_function is deprecated
 	- use !{SYSVAR:WB_URL}!, !{SYSVAR:WB_PATH}!, !{OPF:PLUGIN_URL}!, and !{OPF:PLUGIN_PATH}! when storing to database

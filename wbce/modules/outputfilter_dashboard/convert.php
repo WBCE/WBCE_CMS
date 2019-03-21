@@ -8,7 +8,7 @@ convert.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.7
+ * @version         1.5.8
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -114,8 +114,6 @@ if($filter['plugin']!='' && !file_exists($plugin_dir.$filter['plugin'])) {
 
 if($filter['plugin']!='') {
     $filter_file=$filter['file'];
-    $filter_file = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$filter['plugin'], $filter_file);
-    $filter_file = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter_file);
     if(file_exists($filter_file)){
         $filter['func']=file_get_contents($filter_file);
         $filter['userfunc']=1;

@@ -8,7 +8,7 @@ functions.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.7
+ * @version         1.5.8
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -1171,17 +1171,17 @@ function opf_preload_filter_definitions() {
     $filters = opf_select_filters();
     if(is_array($filters)) {
         foreach($filters as $filter) {
-            $filter = opf_replace_sysvar($filter);
             $filter['helppath'] = unserialize($filter['helppath']);
             $filter['desc'] = unserialize($filter['desc']);
             $filter['modules'] = unserialize($filter['modules']);
             $filter['pages'] = unserialize($filter['pages']);
             $filter['pages_parent'] = unserialize($filter['pages_parent']);
+            $filter['additional_values'] = unserialize($filter['additional_values']);
+            $filter = opf_replace_sysvar($filter);
             $filter['pages_parent'] = opf_update_pages_parent($filter['pages_parent']);
             $filter['current'] = FALSE;
             $filter['activated'] = FALSE;
             $filter['failed'] = FALSE;
-            $filter['additional_values'] = unserialize($filter['additional_values']);
             unset($filter['additional_fields']);
             unset($filter['additional_fields_languages']);
             $opf_FILTERS[$filter['name']] = $filter;
@@ -1823,20 +1823,3 @@ function opf_create_dirname($str){
        return $s;
 }
 
-// retrieve the helpfile URL from serialized `helppath` field
-function opf_get_helpfile_url($sSerialized, $sPluginName){
-    $sUrl = opf_fetch_entry_language(unserialize($sSerialized));
-    if(substr($sUrl, 0, 1) == '/'){
-        $sFilePath = $GLOBALS['database']->get_one(
-            "SELECT `file` FROM `".TABLE_PREFIX."mod_outputfilter_dashboard` 
-                WHERE `plugin` = '".$sPluginName."'"
-        );
-        $aReplacements = array(
-            '{OPF:PLUGIN_PATH}' => OPF_PLUGINS_URL.$sPluginName,
-            '{SYSVAR:WB_PATH}'  => WB_URL, // we need a URL to build the Link to helpfile
-            '/filter.php'       => '',     // remove
-        );
-        $sUrl = strtr($sFilePath, $aReplacements).$sUrl;        
-    }
-    return (string) $sUrl;
-}

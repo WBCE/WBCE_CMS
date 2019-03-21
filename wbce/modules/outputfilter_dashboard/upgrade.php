@@ -8,7 +8,7 @@ upgrade.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.7
+ * @version         1.5.8
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -88,24 +88,13 @@ opf_db_run_query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_outputfilter_dashboa
 
 opf_io_rmdir(dirname(__FILE__).'/naturaldocs_txt');
 
-// install or upgrade example plugins
 
-$install_file = '/plugin_install.php';
-$info_file = 'plugin_info.php';
-$install_dir = dirname(__FILE__).'/plugins/';
-
-$plugins = array (
-    'cachecontrol',
-    'correct_date_format',
-    'http_to_https'
-);
-
-foreach($plugins as $plugin_dir){
-    // run install-script
-    if(file_exists($install_dir.$plugin_dir.$install_file)) {
-        require($install_dir.$plugin_dir.$install_file);
-    }
+// run install scripts of plugin filters  - they should start upgrade if already installed
+foreach( preg_grep('/\/plugin_install.php/', opf_io_filelist(dirname(__FILE__).'/plugins/')) as $installer){
+    require($installer);
 }
+
+
 
 // Only block this if WBCE CMS installer is running, if this is an Upgrade or
 // Module install, we need this. But the installer registers the filter-modules later.
@@ -125,7 +114,24 @@ if(!defined('WB_INSTALLER')){
 $filters = opf_select_filters();
 if(is_array($filters)) {
     foreach($filters as $filter) {
+        $filter['modules'] = unserialize($filter['modules']);
+        $filter['desc'] = unserialize($filter['desc']);
+        $filter['helppath'] = unserialize($filter['helppath']);
+        $filter['pages_parent'] = unserialize($filter['pages_parent']);
+        $filter['pages'] = unserialize($filter['pages']);
+        $filter['additional_values'] = unserialize($filter['additional_values']);
+        $filter['additional_fields'] = unserialize($filter['additional_fields']);
+        $filter['additional_fields_languages'] = unserialize($filter['additional_fields_languages']);
         $filter = opf_insert_sysvar($filter);
+        $filter['helppath'] = opf_insert_sysvar($filter['helppath'],$filter['plugin']);
+        $filter['modules'] = serialize($filter['modules']);
+        $filter['desc'] = serialize($filter['desc']);
+        $filter['helppath'] = serialize($filter['helppath']);
+        $filter['pages_parent'] = serialize($filter['pages_parent']);
+        $filter['pages'] = serialize($filter['pages']);
+        $filter['additional_values'] = serialize($filter['additional_values']);
+        $filter['additional_fields'] = serialize($filter['additional_fields']);
+        $filter['additional_fields_languages'] = serialize($filter['additional_fields_languages']);
         $sSql = "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard` SET "
               . "`userfunc`='".addslashes($filter['userfunc'])."', "
               . "`plugin`='".addslashes($filter['plugin'])."', "
