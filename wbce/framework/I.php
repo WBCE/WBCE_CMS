@@ -282,7 +282,9 @@ class I {
      * @return  string  The filtered/replaced content.  
      */
     public static function doFilter($Content) {
-        return I::getInstance()->doFilter($Content);
+       $result = I::getInstance()->doFilter($Content);
+       I::$oInstance = NULL;
+       return $result;
     }
 
     /**
