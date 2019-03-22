@@ -277,7 +277,7 @@ class Login extends Admin
 	// because an attacker can easily open plenty of new sessions
 	global $database;
 	
-	$client_ip = $database->escapeString($this->get_client_ip());
+	$client_ip = md5($this->get_client_ip());
 	$attempts = 0;
 	$timestamp = 0;
 	
