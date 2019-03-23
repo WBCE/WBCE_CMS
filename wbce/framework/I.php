@@ -283,7 +283,7 @@ class I {
      */
     public static function doFilter($Content) {
        $result = I::getInstance()->doFilter($Content);
-       I::$oInstance = NULL;
+       #I::$oInstance = NULL;
        return $result;
     }
 
