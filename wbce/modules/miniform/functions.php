@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.12.0
- * @lastmodified    Januari 19, 2018
+ * @version         0.14.0
+ * @lastmodified    May 22, 2019
  *
  */
 
@@ -62,6 +62,7 @@ class mform {
 		if(!file_exists(dirname(__FILE__).'/templates/'.$name.'.htt')) return '';
 		$this->current = substr($name,5);
 		$tmp = file_get_contents(dirname(__FILE__).'/templates/'.$name.'.htt');
+		$var[] = "{REFERER}";			$value[] = @$_SESSION["REF"];
 		$var[] = "{URL}";				$value[] = ''; // $this->page(PAGE_ID);
 		$var[] = "{WB_URL}";			$value[] = WB_URL;
 		$var[] = "{WEBSITE_TITLE}";		$value[] = WEBSITE_TITLE;
@@ -287,9 +288,9 @@ class mform {
 	
 		
 	function mail($fromaddress, $toaddress, $subject, $message, $fromname='', $replyto = '') {
-                if (!file_exists(WB_PATH."/framework/Mailer.php")){
-                    require_once(WB_PATH."/framework/class.wbmailer.php");
-                }
+		if (!file_exists(WB_PATH."/framework/Mailer.php")){
+            require_once(WB_PATH."/framework/class.wbmailer.php");
+         }
 		$toArray = explode(',',$toaddress);
 	
 		$myMail = new wbmailer();
@@ -303,7 +304,7 @@ class mform {
 		}
 		// define recepient and information to send out
 		
-		foreach ($toArray as $toAddr) {                                 // TO:
+		foreach ($toArray as $toAddr) {							// TO:
 			$myMail->AddAddress($toAddr);
 		}
 		$myMail->Subject = $subject;                          	// SUBJECT

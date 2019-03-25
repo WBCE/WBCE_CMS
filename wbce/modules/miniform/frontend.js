@@ -32,6 +32,13 @@ if (window.jQuery) {
 				$form.off();
 				$form.on('submit',$form,function(event){
 					event.preventDefault(); 
+					/* fix for bug in Safari with empty file-upload fields */
+					$form.find( ':input[type="file"]' ).each( function( index, el ) {
+						if (el.value == '') {
+							$(this).prop('disabled', true);
+							console.log('/* safari bugfix */ disabled empty file upload field: '+el.name);
+						}
+					});	
 					var data = new FormData($form[0]);
 					data.append(initiator.name,initiator.value);
 					$.ajax({
@@ -40,12 +47,13 @@ if (window.jQuery) {
 						processData: false,
 						contentType: false,
 						beforeSend: function(){ $('.minispinner').fadeIn(10); },
-						cache: false
+						cache: false,
+						headers: { "cache-control": "no-cache" }
 					})
 					.done(function(data) {
 						$container.html(data);
 						$message = $container.find('.error, .ok');
-						console.log($message); 
+						//console.log($message); 
 						if($message.length && $message.isInViewport() == false ) {
 							$('html,body').animate({
 								scrollTop: $message.offset().top - topOffset

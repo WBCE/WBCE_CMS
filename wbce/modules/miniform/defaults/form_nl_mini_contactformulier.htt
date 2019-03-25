@@ -21,6 +21,14 @@
 					<textarea class="{BERICHT_ERROR}" cols="80" rows="10" id="bericht" name="mf_r_bericht">{BERICHT}</textarea>
 				</label>
 			</div>
+			
+			<div  class="full">
+				<label class="privacy" for="privacy">
+					<div class="grouping {PRIVACY_ERROR}">
+						<input type="checkbox" id="i-privacy1" {PRIVACY_AKKOORD} name="mf_r_privacy[]" value="Akkoord" /><label for="i-privacy1">Ik ga akkoord met de <a target="_blank" href="/privacy/">privacy verklaring</a> op deze website</label>
+					</div>
+				</label>
+			</div>		
 			<div class="full">
 				<button class="submit" name="Submit" type="submit">Verstuur</button>
 			</div> 
