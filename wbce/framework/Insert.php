@@ -1258,13 +1258,9 @@ class Insert {
                 1
             );
         }
-        unset(
-            $this->_JsQueue,
-            $this->_CssQueue,
-            $this->_HtmlQueue,
-            $this->_TitleQueue,
-            $this->_MetaQueue
-        );
+	$this->_JsQueue = array();
+	$this->_CssQueue = array();
+	$this->_HtmlQueue = array();
         return $sContent;
     }    
     
