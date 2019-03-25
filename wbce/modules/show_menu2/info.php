@@ -15,9 +15,9 @@ $module_name = 'show_menu2';
 $module_function = 'snippet';
 $module_version = '4.13.2';
 $module_platform = '1.4.0';
-$module_author = 'Brodie Thiesfield, Manuela v.d.Decken, NorbertHeimsath(heimsath.org)';
+$module_author = 'Brodie Thiesfield, Manuela v.d.Decken, Norbert Heimsath (heimsath.org)';
 $module_license = 'GNU General Public License v2';
-$module_description = 'A code snippet for the WBCE CMS providing a complete replacement for the builtin menu functions. See the <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> file or view <a href="https://sm2.wbce-cms.org/" target="_blank">sm2.wbce-cms.org</a>.';
+$module_description = 'A code snippet for the WBCE CMS providing menu functions. See the <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> file or view <a href="https://sm2.wbce-cms.org/" target="_blank">sm2.wbce-cms.org</a>.';
 $module_level = 'core';
 
 /**
@@ -26,6 +26,7 @@ $module_level = 'core';
  * 4.13.2
  *        - Add module_level core status
  *        - Update module_platform 
+ *		  - Update readme files
  *
  * 4.13.1
  *        - some fixes for previous changes
