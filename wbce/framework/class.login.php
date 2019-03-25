@@ -300,7 +300,7 @@ class Login extends Admin
 	
 	$interval = $now - $timestamp;
 	
-	if($interval > $this->time_frame + 2*pow(2,($attempts-$this->max_attempts))*$this->login_delay){
+	if($interval > $this->timeframe + 2*pow(2,($attempts-$this->max_attempts))*$this->login_delay){
 	    // it's too long ago, forget the db entry and reset to the first attempt
 	    $attempts = $increment;
 	}
@@ -311,7 +311,7 @@ class Login extends Admin
 	$sql = "UPDATE `".TABLE_PREFIX."blocking` SET `attempts` = '$attempts', `timestamp` = '$timestamp' WHERE `source_ip` = '$client_ip'";
 	$database->query($sql);
 
-	if($interval > $this->time_frame + pow(2,($attempts-$this->max_attempts))*$this->login_delay && $attempts > $this->max_attempts){
+	if($interval > $this->timeframe + pow(2,($attempts-$this->max_attempts))*$this->login_delay && $attempts > $this->max_attempts){
 	    // it's too long ago, reduce at least to allow one more attempt
 	    $attempts = $this->max_attempts;
 	}
