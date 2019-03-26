@@ -35,7 +35,6 @@ function opff_mod_opf_auto_placeholder (&$sContent, $page_id, $section_id, $modu
 
         if (class_exists('Insert')){
                 $sContent = I::addPlaceholdersToDom($sContent);
-                $sContent = I::doFilter($sContent);
         } else {
 
             // Template does not want placeholders to be populated on automatic?
