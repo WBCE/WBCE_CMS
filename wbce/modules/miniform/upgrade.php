@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.12.0
- * @lastmodified    Januari 19, 2018
+ * @version         0.14.0
+ * @lastmodified    May 22, 2019
  *
  */
 
@@ -48,7 +48,7 @@ if(file_exists($path.'new_frontend.css')) {
 		}
 	}
 }
-
+/*
 $files = scandir ( $path.'/defaults/');
 foreach ( $files as $file ) {
 	if ($file != "." && $file != "..") {
@@ -59,8 +59,4 @@ foreach ( $files as $file ) {
 		}
 	}
 }
-					
-					
-
-
-
+*/

@@ -16,6 +16,7 @@
 .miniform input[type="url"],
 .miniform textarea,
 .miniform button[type="submit"] {
+	font-weight: normal;
 	font-family: inherit;
 	font-size: inherit;
 }
@@ -33,7 +34,7 @@
 	padding:5px 0;
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid transparent;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     margin: 0 0 5px;
     width: 100%;
 }
@@ -55,7 +56,7 @@
 	color: #fff; 
 	font-weight: bold;
 	border:1px solid #ff4136;
-	border-radius: 5px; 
+	/* border-radius: 5px;  */
 	padding:5px; 
 	margin-bottom: 10px; 
 }
@@ -64,7 +65,7 @@
 	color: #fff; 
 	font-weight: bold;
 	border:1px solid #27ae60;
-	border-radius: 5px; 
+	/* border-radius: 5px;  */
 	padding:5px; 
 	margin-bottom: 10px; 
 }
@@ -108,7 +109,7 @@
 	border:1px solid #CCC;
 	margin:0 0 5px;
 	padding:5px;
-	border-radius:5px;
+	/* border-radius:5px; */
 	outline: 0 none;
 
 }
@@ -150,7 +151,7 @@
 	color:#FFF;
 	margin:0 0 5px;
 	padding:5px;
-	border-radius:5px;
+	/* border-radius:5px; */
 }
 .miniform button[type="submit"]:hover {
 	background: #b5bdc8;
@@ -181,3 +182,8 @@
 .captcha_table input[type="text"] {
 	width: 50px !important;
 }
+
+.miniform .privacy .grouping { border: 1px solid #ccc; }
+.miniform .privacy label { font-size: 80%; font-weight: 300; }
+.miniform .privacy .missing label {	color: #ff4136 !important; }
+.miniform .privacy .missing label a {color: #ff4136 !important; text-decoration: underline; font-weight: bold;}

@@ -248,28 +248,29 @@ class Login extends Admin
 
     /**
      * @brief  get the client ip address from various php or environment variables
-     */ 
+     */
     private function get_client_ip()
     {
-        $ipaddress = ''; 
-	if ($_SERVER['HTTP_CLIENT_IP']) $ipaddress = $_SERVER['HTTP_CLIENT_IP']; 
-	else if($_SERVER['HTTP_X_FORWARDED_FOR']) $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR']; 
-	else if($_SERVER['HTTP_X_FORWARDED']) $ipaddress = $_SERVER['HTTP_X_FORWARDED']; 
-	else if($_SERVER['HTTP_FORWARDED_FOR']) $ipaddress = $_SERVER['HTTP_FORWARDED_FOR']; 
-	else if($_SERVER['HTTP_FORWARDED']) $ipaddress = $_SERVER['HTTP_FORWARDED']; 
-	else if($_SERVER['REMOTE_ADDR']) $ipaddress = $_SERVER['REMOTE_ADDR']; 
-	else if(getenv('HTTP_CLIENT_IP')) $ipaddress = getenv('HTTP_CLIENT_IP'); 
-	else if(getenv('HTTP_X_FORWARDED_FOR')) $ipaddress = getenv('HTTP_X_FORWARDED_FOR'); 
-	else if(getenv('HTTP_X_FORWARDED')) $ipaddress = getenv('HTTP_X_FORWARDED'); 
-	else if(getenv('HTTP_FORWARDED_FOR')) $ipaddress = getenv('HTTP_FORWARDED_FOR'); 
-	else if(getenv('HTTP_FORWARDED')) $ipaddress = getenv('HTTP_FORWARDED'); 
-	else if(getenv('REMOTE_ADDR')) $ipaddress = getenv('REMOTE_ADDR'); 
-	else $ipaddress = 'UNKNOWN';  
-	return $ipaddress; 
+        $ipaddress = '';
+	if (isset($_SERVER['HTTP_CLIENT_IP']))           $ipaddress = $this->get_server('HTTP_CLIENT_IP');
+	else if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) $ipaddress = $this->get_server('HTTP_X_FORWARDED_FOR');
+	else if(isset($_SERVER['HTTP_X_FORWARDED']))     $ipaddress = $this->get_server('HTTP_X_FORWARDED');
+	else if(isset($_SERVER['HTTP_FORWARDED_FOR']))   $ipaddress = $this->get_server('HTTP_FORWARDED_FOR');
+	else if(isset($_SERVER['HTTP_FORWARDED']))       $ipaddress = $this->get_server('HTTP_FORWARDED');
+	else if(isset($_SERVER['REMOTE_ADDR']))          $ipaddress = $this->get_server('REMOTE_ADDR');
+	else if(getenv('HTTP_CLIENT_IP'))                $ipaddress = getenv('HTTP_CLIENT_IP');
+	else if(getenv('HTTP_X_FORWARDED_FOR'))          $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+	else if(getenv('HTTP_X_FORWARDED'))              $ipaddress = getenv('HTTP_X_FORWARDED');
+	else if(getenv('HTTP_FORWARDED_FOR'))            $ipaddress = getenv('HTTP_FORWARDED_FOR');
+	else if(getenv('HTTP_FORWARDED'))                $ipaddress = getenv('HTTP_FORWARDED');
+	else if(getenv('REMOTE_ADDR'))                   $ipaddress = getenv('REMOTE_ADDR');
+	else                                             $ipaddress = 'UNKNOWN';
+
+	return $ipaddress;
     }
-    
+
     /**
-     * @brief  Increase the count for login attempts
+   * @brief  Increase the count for login attempts
      */
     public function increase_attempts($increment=1)
     {
@@ -281,12 +282,12 @@ class Login extends Admin
 	$attempts = 0;
 	$timestamp = 0;
 	
-	$sql = "SELECT `*` FROM `".TABLE_PREFIX."blocking` WHERE `source_ip` = '". $client_ip. "' LIMIT 1";
+	$sql = "SELECT * FROM `".TABLE_PREFIX."blocking` WHERE `source_ip` = '". $client_ip. "' LIMIT 1";
 	$check_query = $database->query($sql);
 
 	$now = time();
 
-	if($check_query->numRows() > 0) {
+	if($check_query!=NULL && $check_query->numRows() > 0) {
 	    $check_fetch = $check_query->fetchRow();
 	    $attempts = $check_fetch['attempts'] + $increment;
 	    $timestamp = $check_fetch['timestamp'];
@@ -299,7 +300,7 @@ class Login extends Admin
 	
 	$interval = $now - $timestamp;
 	
-	if($interval > $this->time_frame + 2*pow(2,($attempts-$this->max_attempts))*$this->login_delay){
+	if($interval > $this->timeframe + 2*pow(2,($attempts-$this->max_attempts))*$this->login_delay){
 	    // it's too long ago, forget the db entry and reset to the first attempt
 	    $attempts = $increment;
 	}
@@ -310,7 +311,7 @@ class Login extends Admin
 	$sql = "UPDATE `".TABLE_PREFIX."blocking` SET `attempts` = '$attempts', `timestamp` = '$timestamp' WHERE `source_ip` = '$client_ip'";
 	$database->query($sql);
 
-	if($interval > $this->time_frame + pow(2,($attempts-$this->max_attempts))*$this->login_delay && $attempts > $this->max_attempts){
+	if($interval > $this->timeframe + pow(2,($attempts-$this->max_attempts))*$this->login_delay && $attempts > $this->max_attempts){
 	    // it's too long ago, reduce at least to allow one more attempt
 	    $attempts = $this->max_attempts;
 	}

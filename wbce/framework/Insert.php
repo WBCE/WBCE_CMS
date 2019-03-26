@@ -1237,7 +1237,7 @@ class Insert {
             $aTmp = explode(' ', trim($sPlaceholder));
             $sType = ucfirst(strtolower($aTmp[0]));
             $sType = str_replace(array('+', '-'), '', $sType);
-            if ($sType == "Title" && $this->_TitleQueue === NULL)
+            if ($sType == "Title" && isset($this->_TitleQueue) && $this->_TitleQueue === NULL)
                 continue;
             $_sProcessFunc = '_process' . $sType;
             $sDomPos = '';
@@ -1258,6 +1258,7 @@ class Insert {
                 1
             );
         }
+
 //        unset(
 //            $this->_JsQueue,
 //            $this->_CssQueue,
@@ -1265,6 +1266,7 @@ class Insert {
 //            $this->_TitleQueue,
 //            $this->_MetaQueue
 //        );
+
         return $sContent;
     }    
     

@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.12.0
- * @lastmodified    Januari 19, 2018
+ * @version         0.14.0
+ * @lastmodified    May 22, 2019
  *
  */
 
@@ -30,6 +30,7 @@ if(isset($_SESSION['lastform'])) {
 	unset($_SESSION['form']);
 	$_SESSION['no'.$section_id] = true;
 } 
+if(!isset($_SESSION["REF"])) $_SESSION["REF"] = defined('ORG_REFERER') ? ORG_REFERER : $_SERVER['HTTP_REFERER'];
 
 mb_internal_encoding(DEFAULT_CHARSET);
 
@@ -212,6 +213,7 @@ if($mf->myPost) {
 
 	// If parameters were given through _GET, reload the page without parameters
 	if($mf->fieldGetSeen) {
+		$_SESSION["REF"] = defined('ORG_REFERER') ? ORG_REFERER : $_SERVER['HTTP_REFERER'];
 		$page_link = $mf->page(PAGE_ID);
 		if(headers_sent()) {
 			echo '<script type="text/javascript">window.location = "'.$page_link.'"</script>';
@@ -310,7 +312,7 @@ $var[] = "{DATE}";$value[] = date( DATE_FORMAT , time()+TIMEZONE );
 $var[] = "{TIME}";$value[] = date( TIME_FORMAT , time()+TIMEZONE );
 $template = $mf->add_template($template, $var, $value);
 //clean unused fields in the template
-$template = preg_replace('#\{(.*?)\}#s', '', $template); 
+$template = preg_replace('#\{(?=\S)(.*?)\}#s', '', $template); 
 unset($var);
 unset($value);
 
