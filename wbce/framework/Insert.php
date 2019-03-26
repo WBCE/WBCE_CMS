@@ -1258,15 +1258,13 @@ class Insert {
                 1
             );
         }
-
-//        unset(
-//            $this->_JsQueue,
-//            $this->_CssQueue,
-//            $this->_HtmlQueue,
-//            $this->_TitleQueue,
-//            $this->_MetaQueue
-//        );
-
+        unset(
+            $this->_JsQueue,
+            $this->_CssQueue,
+            $this->_HtmlQueue,
+            $this->_TitleQueue,
+            $this->_MetaQueue
+        );
         return $sContent;
     }    
     
