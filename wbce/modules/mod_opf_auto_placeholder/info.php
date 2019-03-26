@@ -7,11 +7,11 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Auto Placeholder
- * @version         1.2.5
+ * @version         1.3.1
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.3.x
+ * @platform        WBCE 1.4.x
  * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
@@ -19,6 +19,8 @@
 /*
  *      CHANGELOG
  *
+ *      1.3.1   2019-03-26      - update requirements and remove older fallback
+ *      1.3.0   2019-03-26      - do not call I::doFilter (it is an extra filter)
  *      1.2.5   2019-03-11      - improved regular expressions
  *      1.2.4   2019-03-09      - bugfix in install/upgrade
  *      1.2.3   2019-03-07      - reorder filters into new categories
@@ -47,8 +49,8 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_auto_placeholder';
 $module_name            = 'OPF Auto Placeholder';
 $module_function        = 'opffilter';
-$module_version         = '1.2.5';
-$module_platform        = 'WBCE 1.3.x ';
+$module_version         = '1.3.1';
+$module_platform        = 'WBCE 1.4.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';
 $module_description     = 'Auto Add Placeholders for Javascript, CSS, Metas and Title';
