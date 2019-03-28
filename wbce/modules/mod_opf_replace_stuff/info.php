@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Replace Stuff
- * @version         1.0.3
+ * @version         1.0.4
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -19,6 +19,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.0.4   2019-03-28      - make description more meaningful
  *      1.0.3   2019-03-09      - bugfix in install/upgrade
  *      1.0.2   2019-03-07      - reorder filters into new categories
  *      1.0.1   1018-10-07      - during installation switch filter on by default
@@ -40,9 +41,9 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_replace_stuff';
 $module_name            = 'OPF Replace Stuff';
 $module_function        = 'opffilter';
-$module_version         = '1.0.3';
+$module_version         = '1.0.4';
 $module_platform        = 'WBCE 1.3.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';
-$module_description     = 'fill out placeholders for Javascript, CSS, Metas and Title ';
+$module_description     = 'replaces the areas marked by placeholders by the corresponding parts enclosed by replacement markers';
 $module_level           = 'core';

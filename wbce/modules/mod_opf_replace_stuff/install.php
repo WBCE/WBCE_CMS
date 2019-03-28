@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Replace Stuff
- * @version         1.0.3
+ * @version         1.0.4
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -43,7 +43,7 @@ if(defined('WB_URL'))
             'type' => OPF_TYPE_PAGE_LAST,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_replace_stuff/filter.php',
             'funcname' => 'opff_mod_opf_replace_stuff',
-            'desc' => "fill out placeholders for Javascript, CSS, Metas and Title ",
+            'desc' => "replaces the areas marked by placeholders by the corresponding parts enclosed by replacement markers",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_replace_stuff', 1)==1))?1:0,
             'allowedit' => 0,
             'pages_parent' => 'all,backend'
