@@ -352,7 +352,7 @@ foreach ($aSqlFiles as $sFileName){
     $sFile = dirname(__FILE__).'/'.$sFileName;
     $bPreserve = ($sFileName == "install_struct.sql") ? false : true;
     if (is_readable($sFile)) {
-        if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve, $bPreserve)) {
+        if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve)) {
             set_error(d('e23: ')."Unable to read import 'install/".$sFileName."'".d($database->get_error(),"",true));
         }
     } else {

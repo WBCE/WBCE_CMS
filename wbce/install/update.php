@@ -456,7 +456,7 @@ $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = 'output_f
 
 // Create new core table(s)
 $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."blocking` ("
-  . " `source_ip` varchar(50) NOT NULL DEFAULT '',"
+  . " `source_ip` varchar(50) collate utf8_unicode_ci NOT NULL DEFAULT '',"
   . " `timestamp` int(11) NOT NULL DEFAULT '0',"
   . " `attempts` int(11) NOT NULL DEFAULT '0',"
   . " PRIMARY KEY (`source_ip`)"
@@ -553,19 +553,31 @@ $table = TABLE_PREFIX."users";
 
 // set group_id to first group of groups_id
 $sql = "UPDATE $table SET `group_id` = CAST(groups_id AS SIGNED)";
-$query = $database->query($sql);
+$database->query($sql);
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
 // if admin, set group_id to 1
 $sql = "UPDATE $table SET `group_id` = 1 WHERE FIND_IN_SET('1', groups_id) > '0'";
-$query = $database->query($sql);
+$database->query($sql);
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
-// Alter Table so it can store 
+// Alter Table so it can store ipv6
 $sql="ALTER TABLE $table CHANGE `login_ip` `login_ip` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';";
-$query = $database->query($sql);
+$database->query($sql);
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
+// insert new fields
+$database->field_add($table, "signup_checksum", "varchar(64) collate utf8_unicode_ci NOT NULL DEFAULT ''");
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+
+$database->field_add($table, "signup_timestamp", "int(11) NOT NULL DEFAULT '0'");
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+
+$database->field_add($table, "signup_timeout", "int(11) NOT NULL DEFAULT '0'");
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+
+$database->field_add($table, "signup_confirmcode", "varchar(64) collate utf8_unicode_ci NOT NULL DEFAULT ''");
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
 /**********************************************************
 * Update search no results database filed to create
