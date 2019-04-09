@@ -153,7 +153,7 @@ require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
 
 // database tables including in package
-$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_topics', 'mod_miniform','mod_wbstats_day', 'mod_menu_link', 'blocking');
+$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_miniform','mod_wbstats_day', 'mod_menu_link', 'blocking');
 /*
 $table_list = array (
     'settings','groups','addons','pages','sections','search','users', 'mod_captcha_control','mod_code','mod_droplets','mod_form_fields', 'mod_form_settings','mod_form_submissions',
@@ -408,17 +408,6 @@ if (file_exists($file_name)) {
     }
 }
 
-// Topics
-$file_name = WB_PATH . "/modules/topics/info.php";
-if (file_exists($file_name)) {
-    if (!in_array("mod_topics", $all_tables)) {
-       echo "<br />Install Topics<br />";
-       require_once WB_PATH . "/modules/topics/install.php";
-    } else {
-       echo "<br />Update Topics<br />";
-       require_once WB_PATH . "/modules/topics/upgrade.php";
-    }
-}
 
 // Visitor statistics
 $file_name = WB_PATH . "/modules/wbstats/info.php";
