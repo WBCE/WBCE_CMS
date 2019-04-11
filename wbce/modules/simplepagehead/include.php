@@ -26,6 +26,7 @@ if (!function_exists('simplepagehead')) {
 		// To add other modules extend this list by adding new lines, e.g.:
 		// $module['module_name'] = array('table_name', 'id_name', 'title_field_name', 'description_field_name', 'keywords_field_name');
 		$module['news'] = array('mod_news_posts', 'post_id', 'title', 'content_short', '');
+		$module['news_img'] = array('mod_news_img_posts', 'post_id', 'title', 'content_short', '');
 		$module['bakery'] = array('mod_bakery_items', 'item_id', 'title', 'description', '');
 		$module['topics'] = array('mod_topics', 'topic_id', 'title', 'description', 'keywords');
 		$module['responsiveFG'] = array( "mod_responsiveFG_categories", "section_id", "cat_name", "description", "searchtext");

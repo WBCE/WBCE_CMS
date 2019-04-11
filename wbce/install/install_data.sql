@@ -23,7 +23,7 @@ INSERT INTO `{TABLE_PREFIX}search` (`search_id`, `name`, `value`, `extra`) VALUE
 (4, 'results_loop', '<dt><a href="[LINK]">[TITLE]</a></dt>\n<dd style="margin-bottom:1em"><div>[DESCRIPTION]</div>\n[EXCERPT]</dd>', ''),
 (5, 'results_footer', '</dl>', ''),
 (6, 'no_results', '<p>[TEXT_NO_RESULTS]</p>', ''),
-(7, 'module_order', 'wysiwyg,oneforall', ''),
+(7, 'module_order', 'wysiwyg,news_img', ''),
 (8, 'max_excerpt', '15', ''),
 (9, 'time_limit', '0', ''),
 (10, 'cfg_enable_old_search', 'true', ''),
