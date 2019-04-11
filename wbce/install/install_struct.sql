@@ -17,7 +17,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 --
 -- Tabellenstruktur für Tabelle `addons`
 --
-DROP TABLE IF EXISTS `{TABLE_PREFIX}addons`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}addons` (
   `addon_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
@@ -35,7 +34,6 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}addons` (
 --
 -- Tabellenstruktur für Tabelle `groups`
 --
-DROP TABLE IF EXISTS `{TABLE_PREFIX}groups`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}groups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
@@ -48,7 +46,6 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}groups` (
 --
 -- Tabellenstruktur für Tabelle `pages`
 --
-DROP TABLE IF EXISTS `{TABLE_PREFIX}pages`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}pages` (
   `page_id` int(11) NOT NULL AUTO_INCREMENT,
   `parent` int(11) NOT NULL DEFAULT '0',
@@ -79,7 +76,6 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}pages` (
 --
 -- Tabellenstruktur für Tabelle `search`
 --
-DROP TABLE IF EXISTS `{TABLE_PREFIX}search`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}search` (
   `search_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
@@ -91,7 +87,6 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}search` (
 --
 -- Tabellenstruktur für Tabelle `sections`
 --
-DROP TABLE IF EXISTS `{TABLE_PREFIX}sections`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}sections` (
   `section_id` int(11) NOT NULL AUTO_INCREMENT,
   `page_id` int(11) NOT NULL DEFAULT '0',
@@ -107,7 +102,6 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}sections` (
 --
 -- Tabellenstruktur für Tabelle `settings`
 --
-DROP TABLE IF EXISTS `{TABLE_PREFIX}settings`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}settings` (
   `setting_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
@@ -118,7 +112,6 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}settings` (
 --
 -- Tabellenstruktur für Tabelle `users` (new fields since WBCE v.1.4.0)
 --
-DROP TABLE IF EXISTS `{TABLE_PREFIX}users`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL DEFAULT '0',
@@ -151,7 +144,6 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}users` (
 --
 -- Tabellenstruktur für Tabelle `blocking` (new table since WBCE v.1.4.0)
 --
-DROP TABLE IF EXISTS `{TABLE_PREFIX}blocking`;
 CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}blocking` (
   `source_ip` varchar(50){TABLE_COLLATION} NOT NULL DEFAULT '',
   `timestamp` int(11) NOT NULL DEFAULT '0',
