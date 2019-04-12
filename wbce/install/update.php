@@ -152,7 +152,7 @@ require_once WB_PATH . '/framework/functions.php';
 require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
 
-// database tables including in package
+// database tables included in package
 $table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_miniform','mod_wbstats_day', 'mod_menu_link', 'blocking');
 /*
 $table_list = array (
@@ -352,6 +352,27 @@ exit();
                 <td><?php
 
 
+
+/*********************************************************************
+* First of all Create Database Tables required for the current version
+*/
+
+echo "Ensure the needed database tables are there<br />";
+$sFileName = 'install_struct.sql';
+$sFile = dirname(__FILE__).'/'.$sFileName;
+if (is_readable($sFile)) {
+    if (!$database->SqlImport($sFile, TABLE_PREFIX)) {
+	echo (__LINE__ .": Unable to read import 'install/".$sFileName."'".$database->get_error().'<br />');
+    }
+} else {
+    if(file_exists($sFile)){
+        echo (__LINE__ .": Unable to read file 'install/".$sFileName."'<br />");
+    }else{
+        echo (__LINE__ .": File 'install/".$sFileName."' doesn't exist!<br />");
+    }
+}
+
+
 /**********************************************************
 * Adding field default_theme to settings table
 */
@@ -443,20 +464,13 @@ if (file_exists($file_name)) {
 // Remove entry from DB
 $database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = 'output_filter' AND type = 'module'");
 
-// Create new core table(s)
-$database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."blocking` ("
-  . " `source_ip` varchar(50) collate utf8_unicode_ci NOT NULL DEFAULT '',"
-  . " `timestamp` int(11) NOT NULL DEFAULT '0',"
-  . " `attempts` int(11) NOT NULL DEFAULT '0',"
-  . " PRIMARY KEY (`source_ip`)"
-  . ")");
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+
 
 // check again all tables, to get a new array
 if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
 
 /**********************************************************
-* check tables comin with WBCE
+* check tables coming with WBCE
 */
 
 $check_text = 'total ';

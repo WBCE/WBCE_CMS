@@ -345,12 +345,13 @@ if (!defined('WB_INSTALL_PROCESS')) {
 Begin Create Database Tables
  *****************************/
 $aSqlFiles = array(
+    'install_prepare.sql',
     'install_struct.sql',
     'install_data.sql'
 );
 foreach ($aSqlFiles as $sFileName){
     $sFile = dirname(__FILE__).'/'.$sFileName;
-    $bPreserve = ($sFileName == "install_struct.sql") ? false : true;
+    $bPreserve = ($sFileName == "install_prepare.sql") ? false : true;
     if (is_readable($sFile)) {
         if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve)) {
             set_error(d('e23: ')."Unable to read import 'install/".$sFileName."'".d($database->get_error(),"",true));
