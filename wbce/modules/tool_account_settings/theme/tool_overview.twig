@@ -1,5 +1,4 @@
 {% extends "framer.twig" %}
-
 {% block content %}
 <p><b>{{ L_('TOOL_TXT:OVERVIEW_DESCRIPTION') }}</b></p>
 <div style="min-height:600px">
@@ -31,8 +30,8 @@
                 </td>
                 <td><nobr><i class="fa fa-envelope-o" style="color: darkgrey;"></i><small> {{ rec['email'] }}</small></nobr></td>
                 <td>
-                     {% for group_name in rec['groups'] %}
-                        <nobr><span class="usergroup"><i class="fa fa-group" style="color: grey;"></i> {{ group_name }}</span></nobr>
+                     {% for key, group_name in rec['groups'] %}
+                        <nobr><span class="usergroup" title="{{ L_('TEXT:GROUP')}}-ID: {{key}}"><i class="fa fa-group" style="color: grey;"></i> {{ group_name }} [{{key}}]</span></nobr>
                      {% endfor %}
                 </td>
                 <td>
