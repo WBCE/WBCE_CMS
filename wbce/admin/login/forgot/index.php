@@ -37,7 +37,7 @@ if(isset($_POST['email']) AND $_POST['email'] != "") {
 
 		// Get the id, username, email, and last_reset from the above db query
 		$aUser = $rRow->fetchRow();
-		if(($aUser['signup_confirmcode'] == '') === false){
+                if(strlen($aUser['signup_confirmcode']) > 25){
 			header("Location: ".WB_URL."/account/signup_continue_page.php?switch=wrong_inputs");	
 			exit(0); // break up the script here
 		}
