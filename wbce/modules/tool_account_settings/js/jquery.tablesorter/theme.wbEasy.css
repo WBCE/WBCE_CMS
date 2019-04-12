@@ -153,6 +153,10 @@
 	background-color: #ebf0fa;
 }
 
+.tablesorter-wbEasy tr.empha-row > td {
+	background-color: #ffdedc !important;
+}
+
 /* caption */
 .tablesorter-wbEasy > caption {
 	background-color: #fff;

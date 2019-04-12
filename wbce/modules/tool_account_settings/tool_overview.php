@@ -40,6 +40,7 @@ if(!empty($aUsers)){
         'CAN_MODIFY_ACCOUNTS' => (in_array('users_modify', $_SESSION['SYSTEM_PERMISSIONS'])),
         'JS_ONCLICK'          => ' onclick="javascript: setTimeout(function(){location.reload();}, 1000);return true;" ',
         'USERLIST'            => $oAccounts->get_users_overview(),
+        'GET'                 => $_GET
     );    
     
     // prepare Twig Template
