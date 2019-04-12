@@ -142,6 +142,7 @@ if(isset($_POST['signup_form_sent'])){
             'gdpr_check'       => intval(1),
             'signup_checksum'  => date("Y-m-d H:i:s", time()),
             'signup_timestamp' => time(),
+            'signup_confirmcode' => 'signup gid: '.$sGroupsID,
         ); 	 		
         $database->insertRow('{TP}users', $aInsertUser);
 

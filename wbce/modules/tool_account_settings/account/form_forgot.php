@@ -13,7 +13,6 @@
 defined('WB_PATH') or die("Cannot access this file directly");
 
 $oAccounts = new Accounts();
-$oAccounts->sendEmail('illuandmoore@yahoo.de', array(), 'resend_forgot_login_details', '$sEmailSubject');
 $oMsgBox   = new MessageBox();
 
 $sLC       = defined('LANGUAGE') ? LANGUAGE : defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN';
@@ -28,9 +27,9 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
         // Check if the email exists in the database
         $sSql  = "SELECT * FROM `{TP}users` WHERE `email`='".$sEmail."'";
 
-        if(($rRow = $database->query($sSql)))	{
-            if(($aUser = $rRow->fetchRow(MYSQL_ASSOC))) {
-                if(($aUser['signup_confirmcode'] == '') === false){
+        if(($rRow = $database->query($sSql))){
+            if($aUser = $rRow->fetchRow(MYSQL_ASSOC)) {
+                if(strlen($aUser['signup_confirmcode']) > 25){
                     header("Location: ".ACCOUNT_URL."/signup_continue_page.php?switch=wrong_inputs");	
                     exit(0); // break up the script here
                 }
@@ -60,7 +59,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
 
                     $sOnScreenSwitch    = 'forgot_login_details_sent';
                     $sEmailTemplateName = 'password_recovery_mail';	
-                    $sEmailSubject     = '';							
+                    $sEmailSubject      = '';							
                     $sMailTo            = $sEmail;
 
                     $checkSend = $oAccounts->sendEmail($sMailTo, $aTokenReplace, $sEmailTemplateName, $sEmailSubject);

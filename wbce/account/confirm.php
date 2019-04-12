@@ -53,7 +53,7 @@ if($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)){
 
         $aUpdateUser = array(
             'user_id'            => $iUserID, 
-            'signup_confirmcode' => '', 
+            'signup_confirmcode' => 'signup gid: '.FRONTEND_SIGNUP, 
             'signup_timeout'     => 0,
             'signup_checksum'    => $sReadableDateTime,
             'password'           => $sNewPasswordEnc,
