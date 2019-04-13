@@ -109,9 +109,9 @@ if (is_array($sEncPassword)){
         // notify_on_user_changes 
         if($oAccounts->cfg['notify_on_user_changes'] == true){
             $aTokenReplace = array(
-                'BACKEND_VIEW_LINK' => ADMIN_URL.'admintools/tool.php?tool=tool_account_settings&user_id='.$aUpdate['user_id'],
+                'BACKEND_VIEW_LINK' => ADMIN_URL.'/admintools/tool.php?tool=tool_account_settings&user_id='.$aUpdate['user_id'],
                 'USER_DISPLAY_NAME' => $aUpdate['display_name'],
-                'USER_LOGIN_NAME'   => $oAccounts->_oDb->get_one("SELECT `login_name` FROM `{TP}users` WHERE `user_id` = ".$aUpdate['user_id'])
+                'USER_LOGIN_NAME'   => $database->get_one("SELECT `username` FROM `{TP}users` WHERE `user_id` = ".$aUpdate['user_id'])
             );
             $oAccounts->sendChangeNotificationEmail($aTokenReplace);
         }
