@@ -700,7 +700,7 @@ function getAccessFilePath($iPageID){
     if ($iParentID == '0') {
         $sFilePath = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($sDbLink).PAGE_EXTENSION;
     } else {
-        $sParentLink = $database->get_one('SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$aPage['parent']); 
+        $sParentLink = $database->get_one('SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$iParentID); 
         $sFilePath = WB_PATH.PAGES_DIRECTORY.$sParentLink.'/'.page_filename($sDbLink).PAGE_EXTENSION;
     }
     return $sFilePath;
