@@ -149,6 +149,7 @@ switch ($action) {
             'TEXT_ADVANCED' => $TEXT['ADVANCED'],
             'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD'],
             'HEADING_MODIFY_GROUP' => $HEADING['MODIFY_GROUP'],
+			 'TEXT_CANCEL'          => $TEXT['CANCEL'],
         ));
 
         // Parse template object
