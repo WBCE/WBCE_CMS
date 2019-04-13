@@ -12,36 +12,28 @@
 
 // Get page id
 if(!isset($_GET['page_id']) OR !is_numeric($_GET['page_id'])) {
-	header("Location: index.php");
-	exit(0);
+    header("Location: index.php");
+    exit(0);
 } else {
-	$page_id = $_GET['page_id'];
+    $page_id = $_GET['page_id'];
 }
 
 // Create new admin object and print admin header
-require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+require '../../config.php';
 $admin = new admin('Pages', 'pages_delete');
 
-// Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
 
-// Get perms
-$results = $database->query("SELECT admin_groups,admin_users FROM ".TABLE_PREFIX."pages WHERE page_id = '$page_id'");
-$results_array = $results->fetchRow();
-
-// Find out more about the page
-$query = "SELECT * FROM ".TABLE_PREFIX."pages WHERE page_id = '$page_id'";
-$results = $database->query($query);
+// Get Page Data from Database
+$resPage = $database->query("SELECT * FROM `{TP}pages` WHERE `page_id` = ".$page_id);
 if($database->is_error()) {
-	$admin->print_error($database->get_error());
+    $admin->print_error($database->get_error());
 }
-if($results->numRows() == 0) {
-	$admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
+if($resPage->numRows() == 0) {
+    $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }
-$results_array = $results->fetchRow();
-$old_admin_groups = explode(',', str_replace('_', '', $results_array['admin_groups']));
-$old_admin_users = explode(',', str_replace('_', '', $results_array['admin_users']));
+$aPage = $resPage->fetchRow(MYSQLI_ASSOC);
+$old_admin_groups = explode(',', str_replace('_', '', $aPage['admin_groups']));
+$old_admin_users  = explode(',', str_replace('_', '', $aPage['admin_users']));
 
 $in_old_group = FALSE;
 foreach($admin->get_groups_id() as $cur_gid){
@@ -50,47 +42,48 @@ foreach($admin->get_groups_id() as $cur_gid){
     }
 }
 if((!$in_old_group) AND !is_numeric(array_search($admin->get_user_id(), $old_admin_users))) {
-	$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
-$visibility = $results_array['visibility'];
+$visibility = $aPage['visibility'];
 
 if(PAGE_TRASH) {
-	if($visibility == 'deleted') {	
-		// Function to change all child pages visibility to deleted
-		function restore_subs($parent = 0) {
-			global $database;
-			// Query pages
-			$query_menu = $database->query("SELECT page_id FROM ".TABLE_PREFIX."pages WHERE parent = '$parent' ORDER BY position ASC");
-			// Check if there are any pages to show
-			if($query_menu->numRows() > 0) {
-				// Loop through pages
-				while($page = $query_menu->fetchRow()) {
-					// Update the page visibility to 'deleted'
-					$database->query("UPDATE ".TABLE_PREFIX."pages SET visibility = 'public' WHERE page_id = '".$page['page_id']."' LIMIT 1");
-					// Run this function again for all sub-pages
-					restore_subs($page['page_id']);
-				}
-			}
-		}
-		
-		// Update the page visibility to 'deleted'
-		$database->query("UPDATE ".TABLE_PREFIX."pages SET visibility = 'public' WHERE page_id = '$page_id.' LIMIT 1");
-		
-		// Run trash subs for this page
-		restore_subs($page_id);
-		
-	}
+    if($visibility == 'deleted') {
+        // Update the page visibility to 'deleted'
+        $database->query("UPDATE `{TP}pages` SET `visibility` = 'public' WHERE `page_id` = '$page_id.' LIMIT 1");
+        // Run trash subs for this page
+        restore_subs($page_id);
+    }
+}
+
+$sFilePath = getAccessFilePath($page_id);
+if (!file_exists($sFilePath)) {
+    create_access_file($sFilePath, $page_id, $aPage['level']);
 }
 
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
-	$admin->print_error($database->get_error());
+    $admin->print_error($database->get_error());
 } else {
-	$admin->print_success($MESSAGE['PAGES_RESTORED']);
+    $admin->print_success($MESSAGE['PAGES_RESTORED']);
 }
 
 // Print admin footer
 $admin->print_footer();
 
-?>
+// Function to change all child pages visibility to deleted
+function restore_subs($parent = 0) {
+    global $database;
+    // Query pages
+    $query_menu = $database->query("SELECT `page_id` FROM `{TP}pages` WHERE `parent` = '".$parent."' ORDER BY `position` ASC");
+    // Check if there are any pages to show
+    if($query_menu->numRows() > 0) {
+        // Loop through pages
+        while($page = $query_menu->fetchRow()) {
+            // Update the page visibility to 'deleted'
+            $database->query("UPDATE `{TP}pages` SET `visibility` = 'public' WHERE `page_id` = '".$page['page_id']."' LIMIT 1");
+            // Run this function again for all sub-pages
+            restore_subs($page['page_id']);
+        }
+    }
+}
