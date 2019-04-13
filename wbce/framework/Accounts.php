@@ -217,7 +217,7 @@ class Accounts extends Frontend
 
     public function sendChangeNotificationEmail($aTokenReplace, $sEmailSubject = ''){
         if($this->cfg['notify_on_user_changes'] == true){
-            $mMailTo = $this->getAccountsManagerEmail();
+            $mMailTo = $this->cfg['accounts_manager_email'];
             $sEmailTemplateName = 'notify_on_changes';
             $sFromName = 'AccountsManagement';
             if($sEmailSubject == ''){
@@ -516,6 +516,7 @@ class Accounts extends Frontend
             return implode(',', $aRetVal);
         }
     }
+    
 }
 
 /**

@@ -151,6 +151,8 @@ if($result->numRows() > 0) {
 // Insert language text and messages
 $template->set_var(
     array(
+        'HEADING_ADD_GROUP' => $HEADING['ADD_GROUP'],
+        'TEXT_CANCEL'        => $TEXT['CANCEL'],
         'TEXT_RESET' => $TEXT['RESET'],
         'TEXT_ACTIVE' => $TEXT['ACTIVE'],
         'TEXT_DISABLED' => $TEXT['DISABLED'],
