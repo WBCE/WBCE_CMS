@@ -694,8 +694,9 @@ function page_filename($sStr)
  * @return string
  */
 function getAccessFilePath($iPageID){
-    $iParentID = $GLOBALS['database']->get_one("SELECT `parent` FROM `{TP}pages` WHERE `page_id` = ".$iPageID);
-    $sDbLink   = $GLOBALS['database']->get_one("SELECT `link` FROM `{TP}pages` WHERE `page_id` = ".$iPageID);
+    global $database;
+    $iParentID = $database->get_one("SELECT `parent` FROM `{TP}pages` WHERE `page_id` = ".$iPageID);
+    $sDbLink   = $database->get_one("SELECT `link` FROM `{TP}pages` WHERE `page_id` = ".$iPageID);
     if ($iParentID == '0') {
         $sFilePath = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($sDbLink).PAGE_EXTENSION;
     } else {
