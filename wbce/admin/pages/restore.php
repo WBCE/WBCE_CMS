@@ -49,8 +49,14 @@ $visibility = $aPage['visibility'];
 
 if(PAGE_TRASH) {
     if($visibility == 'deleted') {
-        // Update the page visibility to 'deleted'
-        $database->query("UPDATE `{TP}pages` SET `visibility` = 'public' WHERE `page_id` = '$page_id.' LIMIT 1");
+        // Reset the visibility to its previous status
+        $sNewVisibility = $aPage['visibility_backup'] != '' ? $aPage['visibility_backup'] : 'public';
+        $database->updateRow('{TP}pages', 'page_id', array(
+                'visibility' => $sNewVisibility,
+                'page_id'    => $page_id
+            )
+        );
+                                                
         // Run trash subs for this page
         restore_subs($page_id);
     }
@@ -75,15 +81,25 @@ $admin->print_footer();
 function restore_subs($parent = 0) {
     global $database;
     // Query pages
-    $query_menu = $database->query("SELECT `page_id` FROM `{TP}pages` WHERE `parent` = '".$parent."' ORDER BY `position` ASC");
+    $query_menu = $database->query(
+        "SELECT `page_id`, `visibility_backup` 
+            FROM `{TP}pages` WHERE `parent` = '".$parent."' 
+            ORDER BY `position` ASC"
+    );
     // Check if there are any pages to show
     if($query_menu->numRows() > 0) {
         // Loop through pages
-        while($page = $query_menu->fetchRow()) {
-            // Update the page visibility to 'deleted'
-            $database->query("UPDATE `{TP}pages` SET `visibility` = 'public' WHERE `page_id` = '".$page['page_id']."' LIMIT 1");
+        while($row = $query_menu->fetchRow()) {
+            // Reset the visibility to its previous status
+            $sNewVisibility = $row['visibility_backup'] != '' ? $row['visibility_backup'] : 'public';
+            $database->updateRow('{TP}pages', 'page_id', array(
+                    'visibility' => $sNewVisibility,
+                    'page_id'    => $row['page_id']
+                )
+            );
+                                                
             // Run this function again for all sub-pages
-            restore_subs($page['page_id']);
+            restore_subs($row['page_id']);
         }
     }
 }
