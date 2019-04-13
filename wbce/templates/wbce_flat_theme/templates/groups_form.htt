@@ -1,7 +1,7 @@
 <!-- BEGIN main_block -->
 
-<h2 class="page_titel" id="header-modify-group" style="{DISPLAY_EXTRA}"> Benutzerverwaltung &raquo; {HEADING_MODIFY_GROUP}
-    <div class="headline-link"> <i class="fa fa-reply"></i> <a href="index.php">Abbrechen</a> </div>
+<h2 class="page_titel" id="header-modify-group" style="{DISPLAY_EXTRA}"> {ACCESS} &raquo; {HEADING_MODIFY_GROUP}
+    <div class="headline-link"> <i class="fa fa-reply"></i> <a href="index.php">{TEXT_CANCEL}</a> </div>
 </h2>
 
 <div class="fg12 content-box" style="width: 100%;margin: 0;">
@@ -9,7 +9,7 @@
         {FTAN}
         <input type="hidden" name="advanced" value="{ADVANCED}">
         <input type="hidden" name="group_id" value="{GROUP_ID}">
-        <h3 class="fg12" id="header-add-group">Gruppe hinzufügen</h3>
+        <h3 class="fg12" id="header-add-group">{HEADING_ADD_GROUP}</h3>
         <div class="row">
             <div class="fg3">{TEXT_NAME}:</div>
             <div class="fg9">

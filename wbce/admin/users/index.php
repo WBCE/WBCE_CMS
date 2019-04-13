@@ -128,6 +128,8 @@ $oTemplate->set_file('page', 'users_form.htt');
 $oTemplate->set_block('page', 'main_block', 'main');
 
 $oTemplate->set_var(array(
+        'HEADING_ADD_USER'   => $HEADING['ADD_USER'],
+        'TEXT_CANCEL'        => $TEXT['CANCEL'],
         'DISPLAY_EXTRA'      => 'display:none;', 
         'ACTIVE_CHECKED'     => ' checked="checked"', 
         'ACTION_URL'         => ADMIN_URL.'/users/add.php', 

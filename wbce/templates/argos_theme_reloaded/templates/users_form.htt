@@ -1,7 +1,7 @@
 
 <!-- BEGIN main_block -->
 <h2 id="header-modify-user" style="{DISPLAY_EXTRA}">
-	Benutzerverwaltung &raquo; {HEADING_MODIFY_USER}
+	{ACCESS} &raquo; {HEADING_MODIFY_USER}
 	<div class="headline-link">
 		<i class="fa fa-reply"></i>
 		<a href="index.php">{TEXT_CANCEL}</a>
@@ -13,7 +13,7 @@
 	<input type="hidden" name="user_id" value="{USER_ID}" />
 	<input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
 
-	<h3 id="header-add-user" class="fg12">Benutzer hinzufügen</h3>
+	<h3 id="header-add-user" class="fg12">{HEADING_ADD_USER}</h3>
 
 	<div class="row">
 		<div class="fg3">{TEXT_USERNAME}<sup class="req">*</sup>:</div>
