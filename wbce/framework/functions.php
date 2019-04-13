@@ -16,6 +16,15 @@ if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301)
 // Define that this file has been loaded
 define('FUNCTIONS_FILE_LOADED', true);
 
+// needs to be moved to the INSTALL & UPGRADE SCRIPT
+if($database->field_exists('{TP}pages', 'visibility_backup') == false) {
+    $database->query(
+        "ALTER TABLE `{TP}pages` 
+            ADD `visibility_backup` VARCHAR(30) NOT NULL 
+            AFTER `visibility`"
+    );
+}
+
 /**
  * @brief   recursively remove a non empty directory and all its contents
  * 

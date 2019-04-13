@@ -48,6 +48,14 @@ if (PAGE_TRASH != 'disabled' AND $visibility != 'deleted') {
     // Page trash is enabled and page has not yet been deleted
     // Update the page visibility to 'deleted'
     $database->query("UPDATE `{TP}pages` SET `visibility` = 'deleted' WHERE `page_id` = '$page_id.' LIMIT 1");   
+    
+    // Update the page visibility to 'deleted'					
+    $database->updateRow('{TP}pages', 'page_id', array(
+            'page_id'           => $page_id,
+            'visibility'        => 'deleted',
+            'visibility_backup' => $aPage['visibility']
+    ));	
+                                        
     trash_subs($page_id); // Run trash subs for this page
 } else {
     // Really dump the page
@@ -74,13 +82,21 @@ $admin->print_footer();
 function trash_subs($iParentID = 0) {
     global $database;
     // Query pages
-    $rChildPages = $database->query("SELECT `page_id` FROM `{TP}pages` WHERE `parent` = '$iParentID' ORDER BY `position` ASC");
+    $rChildPages = $database->query(
+        "SELECT `page_id`, `visibility` FROM `{TP}pages` 
+            WHERE `parent` = '$iParentID' 
+            ORDER BY `position` ASC"
+    );
     // Check if there are any pages to show
     if ($rChildPages->numRows() > 0) {
         // Loop through pages
         while($row = $rChildPages->fetchRow()) {
-            // Update the page visibility to 'deleted'
-            $database->query("UPDATE `{TP}pages` SET `visibility` = 'deleted' WHERE `page_id` = '".$row['page_id']."' LIMIT 1");
+            // Update the page visibility to 'deleted'					
+            $database->updateRow('{TP}pages', 'page_id', array(
+                'page_id'           => $row['page_id'],
+                'visibility'        => 'deleted',
+                'visibility_backup' => $row['visibility']
+            ));	
             // Run this function again for all sub-pages
             trash_subs($row['page_id']);
         }
