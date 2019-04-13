@@ -374,10 +374,10 @@ function parent_list($parent)
 
     while($page = $get_pages->fetchRow())
     {
-        if($admin->page_is_visible($page)==false)
+        /*if($admin->page_is_visible($page)==false)
         {
           continue;
-        }
+        } */
 
         // if parent = 0 set flag_icon
         $template->set_var('FLAG_ROOT_ICON',' none ');
