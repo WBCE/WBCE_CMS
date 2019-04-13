@@ -24,7 +24,6 @@ if (!$admin->get_page_permission($page_id,'admin')) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
-defined('PAGES_DIR_PATH') or define('PAGES_DIR_PATH', WB_PATH.PAGES_DIRECTORY);
 
 // Find out more about the page
 $resPage = $database->query("SELECT * FROM {TP}pages WHERE page_id = '$page_id'");
@@ -39,7 +38,6 @@ $aPage      = $resPage->fetchRow(MYSQLI_ASSOC);
 $visibility = $aPage['visibility'];
 
 $sFilePath = getAccessFilePath($page_id);
-debug_dump($sFilePath);
 if (file_exists($sFilePath)) {
     unlink($sFilePath);
 }
@@ -87,17 +85,4 @@ function trash_subs($iParentID = 0) {
             trash_subs($row['page_id']);
         }
     }
-}
-
-// get the path of pages access file
-function getAccessFilePath($iPageID){
-    $iParentID = $GLOBALS['database']->get_one("SELECT `parent` FROM `{TP}pages` WHERE `page_id` = ".$iPageID);
-    $sDbLink  = $GLOBALS['database']->get_one("SELECT `link` FROM `{TP}pages` WHERE `page_id` = ".$iPageID);
-    if ($iParentID == '0') {
-        $sFilePath = PAGES_DIR_PATH.'/'.page_filename($sDbLink).PAGE_EXTENSION;
-    } else {
-        $sParentLink = $database->get_one('SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$aPage['parent']); 
-        $sFilePath = PAGES_DIR_PATH.$sParentLink.'/'.page_filename($sDbLink).PAGE_EXTENSION;
-    }
-    return $sFilePath;
 }

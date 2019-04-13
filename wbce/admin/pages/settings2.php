@@ -26,7 +26,6 @@ if (!isset($_POST['page_id']) || !is_numeric($_POST['page_id'])) {
 
 $pagetree_url = ADMIN_URL.'/pages/index.php';
 $target_url   = ADMIN_URL.'/pages/settings.php?page_id='.$page_id;
-defined('PAGES_DIR_PATH') or define('PAGES_DIR_PATH', WB_PATH.PAGES_DIRECTORY);
 
 if (!$admin->checkFTAN()) {
     $admin->print_header();
@@ -127,14 +126,14 @@ if ($parent == '0') {
     // rename menu titles: index && intro to prevent clashes with intro page feature and WB core file /pages/index.php
     if ($link == '/index' || $link == '/intro') {
         $link .= '_' .$page_id;
-        $filename = PAGES_DIR_PATH.'/'.page_filename($the_link).'_'.$page_id .PAGE_EXTENSION;
+        $filename = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($the_link).'_'.$page_id .PAGE_EXTENSION;
     } else {
-        $filename = PAGES_DIR_PATH.'/'.page_filename($the_link).PAGE_EXTENSION;
+        $filename = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($the_link).PAGE_EXTENSION;
     }
 } else {
     $sParentLink = $database->get_one('SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$parent); 
-    $filename = PAGES_DIR_PATH.$sParentLink.'/'.page_filename($the_link).PAGE_EXTENSION;
-    make_dir(PAGES_DIR_PATH.$sParentLink);
+    $filename = WB_PATH.PAGES_DIRECTORY.$sParentLink.'/'.page_filename($the_link).PAGE_EXTENSION;
+    make_dir(WB_PATH.PAGES_DIRECTORY.$sParentLink);
     $link = $sParentLink.'/'.page_filename($the_link);
 
 }
@@ -194,16 +193,16 @@ if ($parent != $old_parent) {
 /* BEGIN page "access file" code */
 
 // Create a new file in the /pages dir if title changed
-if (!is_writable(PAGES_DIR_PATH.'/')) {
+if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/')) {
     $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
 } else {
-    $sOldFilename = PAGES_DIR_PATH.$old_link.PAGE_EXTENSION;
-    $sOldDirname  = PAGES_DIR_PATH.$old_link.'/';
+    $sOldFilename = WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION;
+    $sOldDirname  = WB_PATH.PAGES_DIRECTORY.$old_link.'/';
     if($visibility != 'none'){
         // First check if we need to create a new file
         if (($old_link != $link) || (!file_exists($sOldFilename))) {
             // Delete old file
-            $sOldFilename = PAGES_DIR_PATH.$old_link.PAGE_EXTENSION;
+            $sOldFilename = WB_PATH.PAGES_DIRECTORY.$old_link.PAGE_EXTENSION;
             if (file_exists($sOldFilename)) {
                 unlink($sOldFilename);
             }
@@ -211,7 +210,7 @@ if (!is_writable(PAGES_DIR_PATH.'/')) {
             create_access_file($filename, $page_id, $level);
             // Move a directory for this page
             if (file_exists($sOldDirname) && is_dir($sOldDirname)) {
-                rename($sOldDirname, PAGES_DIR_PATH.$link.'/');
+                rename($sOldDirname, WB_PATH.PAGES_DIRECTORY.$link.'/');
             }
             // Update any pages that had the old link with the new one
             $old_link_len = strlen($old_link);
@@ -241,11 +240,11 @@ if (!is_writable(PAGES_DIR_PATH.'/')) {
                                 LIMIT 1"
                         );
                         // Re-write the access file for this page
-                        $old_subpage_file = PAGES_DIR_PATH.$new_sub_link.PAGE_EXTENSION;
+                        $old_subpage_file = WB_PATH.PAGES_DIRECTORY.$new_sub_link.PAGE_EXTENSION;
                         if (file_exists($old_subpage_file)) {
                             unlink($old_subpage_file);
                         }
-                        $sAccessFileUrl = PAGES_DIR_PATH.$new_sub_link.PAGE_EXTENSION;
+                        $sAccessFileUrl = WB_PATH.PAGES_DIRECTORY.$new_sub_link.PAGE_EXTENSION;
                         create_access_file($sAccessFileUrl, $sub['page_id'], $new_sub_level);
                     }
                 }
