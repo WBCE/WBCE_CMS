@@ -158,7 +158,8 @@ switch ($action) {
                 'TEXT_HOME_FOLDER'     => $TEXT['HOME_FOLDER'],
                 'USERNAME_FIELDNAME'   => $username_fieldname,
                 'CHANGING_PASSWORD'    => $MESSAGE['USERS_CHANGING_PASSWORD'],
-                'HEADING_MODIFY_USER'  => $HEADING['MODIFY_USER'],
+                'HEADING_MODIFY_USER'  => $HEADING['MODIFY_USER'],				
+				'HEADING_ADD_USER'     => $TEXT['HEADING_ADD_USER'],
                 'INPUT_NEW_PASSWORD'   => $admin->passwordField('password')
             )
         );

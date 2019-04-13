@@ -84,7 +84,7 @@
 <script>
 	$(document).ready(function(){
 		if ($('#header-modify-user').css('display') != 'none') {
-			$('#header-add-user').html('Benutzer ändern');
+			$('#header-add-user').html('{HEADING_MODIFY_USER}');
 		}
 	});
 </script>

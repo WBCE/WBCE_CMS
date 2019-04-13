@@ -330,7 +330,7 @@
 <script>
 	$(document).ready(function(){
 		if ($('#header-modify-group').css('display') != 'none') {
-			$('#header-add-group').html('Gruppe ändern');
+			$('#header-add-group').html('{HEADING_MODIFY_GROUP}');
 		}
 	});
 </script>
