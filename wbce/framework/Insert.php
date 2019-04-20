@@ -727,7 +727,7 @@ class Insert {
         return $sRetVal;
     }
 
-    /**
+     /**
      * @brief  Processes the _CssQueue when using the doFilter Method.
 
      * @param  string $sDomPos   Set this to only return Scripts whith a certain position set. 
@@ -749,27 +749,28 @@ class Insert {
         }
         $sTPL = "\t" . '<link rel="stylesheet" href="%s" type="text/css"%s%s%s>' . PHP_EOL;
         $sRetVal = "";
-        foreach ($aData as $sSetName => $aCssSet) {
+        foreach ($aData as $sSetName => $rec) {
             $sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
-            if (!empty($aCssSet['href'])) {
-                $sMedia = (!empty($aCssSet['media'])) ? 'media="' . $aCssSet['media'] . '"' : '';
+            if (!empty($rec['href'])) {
+                $sMedia = (!empty($rec['media'])) ? 'media="' . $rec['media'] . '"' : '';
                 $sClosing = ($this->sRenderType == "xhtml") ? '/' : '';
-                $sRetVal .= sprintf($sTPL, $aCssSet['href'], $sMedia, $sFileID, $sClosing);
-                if (strpos($aCssSet['href'], '#missing') !== false) {
-                    $sRetVal = str_replace('#missing#', '', $sRetVal);
-                    $sRetVal = "<!-- Missing File was set: " . PHP_EOL . "\t" . $sRetVal . " -->";
-                }
+                
+				if (strpos($rec['href'], '#missing') !== FALSE) {
+					continue;
+                } else {					
+					$sRetVal .= sprintf($sTPL, $rec['href'], $sMedia, $sFileID, $sClosing);
+				}				
             }
-            if (!empty($aCssSet['style'])) {
-                if (preg_match('/\<style(.*?)?\>/i', $aCssSet['style'])) {
-                    $sRetVal .= $aCssSet['style'] . PHP_EOL;
+            if (!empty($rec['style'])) {
+                if (preg_match('/\<style(.*?)?\>/i', $rec['style'])) {
+                    $sRetVal .= $rec['style'] . PHP_EOL;
                 } else {					
                     $sRetVal .= "\t<style type=\"text/css\" ";
-                    if (!empty($aCssSet['media'])) {
-                        $sRetVal .= 'media="' . $aCssSet['media'] . '"';
+                    if (!empty($rec['media'])) {
+                        $sRetVal .= 'media="' . $rec['media'] . '"';
                     }					
                     $sRetVal .= $sFileID . '>' . PHP_EOL;
-                    $sRetVal .= $aCssSet['style'] . PHP_EOL;
+                    $sRetVal .= $rec['style'] . PHP_EOL;
                     $sRetVal .= "\t</style>" . PHP_EOL;
                 }
             }
@@ -836,15 +837,15 @@ class Insert {
 
         // Run the render loop if src and script are set , both a rendered.
         $sRetVal = "";
+		
         foreach ($aData as $sSetName => $rec) {
 			$sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
             if (!empty($rec['src'])) {
-				
-                $sRetVal .= sprintf($sTPL, $rec['src'], $sFileID);
                 if (strpos($rec['src'], '#missing') !== FALSE) {
-                    $sRetVal = str_replace('#missing#', '', $sRetVal);
-                    $sRetVal = "<!-- Missing File was set: " . PHP_EOL . "\t" . $sRetVal . " -->";
-                }
+					continue;
+                } else {					
+					$sRetVal .= sprintf($sTPL, $rec['src'], $sFileID);
+				}
             }
             if (!empty($rec['script'])) {			
                 if (preg_match('/\<script(.*?)?\>/i', $rec['script'])) {
@@ -942,7 +943,7 @@ class Insert {
         $sUrlHost = isset($aUrlParts["host"]) ? $aUrlParts["host"] : '';
         $bAbsoluteInternalUrl = (strpos($sFileUrl, WB_URL) !== false);
 
-        $sErrorLog = "\t\tconsole.error('Class Insert report: File \"" . $sFileUrl . "\" can not be found')";
+        $sErrorLog = "\t\t/* Class Insert */\n\t\tconsole.error('Class Insert report: File \"" . $sFileUrl . "\" can not be found')\n";
 
         // check if internal file exists and append filemtime 
         // in order to always load the freshest (most recent) version of the file
@@ -953,10 +954,10 @@ class Insert {
                     $sFileUrl = $sFileUrl . '?' . filemtime($sFilePath);
                 }
             } else {
+                $sFileUrl = $sFileUrl;
                 $this->addJs(array(
                     'script' => $sErrorLog
                 ));
-                $sFileUrl = '#missing#' . $sFileUrl;
             }
         } elseif (!$bAbsoluteInternalUrl && $sUrlHost != '') {
             $aUrlParts = parse_url($sFileUrl);
@@ -1261,4 +1262,4 @@ class Insert {
         return $sContent;
     }    
     
-}
+} 
