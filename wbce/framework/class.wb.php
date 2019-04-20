@@ -983,7 +983,7 @@ _JsCode;
             case 'jquery':		
                 if($sModfileType != 'js_sysvars'){
                     $aJqueryFiles = array();
-                    if ($sModfileType == 'jquery' and file_exists(WB_PATH . '/include/jquery/jquery-min.js')) {
+                    if ($sModfileType == 'jquery') {
                         $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-min.js';
                         $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-insert.js';
                         $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-include.js';
@@ -992,8 +992,8 @@ _JsCode;
                         // workout to insert ui.css and theme 
                         $sFile = WB_URL . '/modules/jquery/jquery_theme.js';
                         $aJqueryFiles[] = file_exists(str_replace(WB_URL, WB_PATH, $sFile))
-                        ? $sFile
-                        : WB_URL . '/include/jquery/jquery_theme.js';
+							? $sFile
+							: WB_URL . '/include/jquery/jquery_theme.js';
                         // workout to insert plugins functions, set in templatedir
                         $sFile = TEMPLATE_DIR . '/jquery_frontend.js';
                         if(file_exists(str_replace(WB_URL, WB_PATH, $sFile))){
@@ -1001,7 +1001,7 @@ _JsCode;
                         }
                     }
                     foreach($aJqueryFiles as $sJsFile){
-                        I::insertJsFile($aJqueryFiles, 'HEAD TOP-');
+                        I::insertJsFile($sJsFile, 'HEAD TOP-');
                     }
                 }
                 break;
@@ -1276,4 +1276,4 @@ function is_module_on_page($sModuleDir = '', $iPageID = NULL){
        }
     }
     return $bOnPage;
-}
+} 
