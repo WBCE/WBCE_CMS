@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Auto Placeholder
- * @version         1.3.1
+ * @version         1.3.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -34,6 +34,8 @@ if(!class_exists('Settings')) return FALSE;
 
 Settings::Set('opf_auto_placeholder',1, false);
 Settings::Set('opf_auto_placeholder'.'_be',1, false);
+
+include_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
 if(!opf_is_registered('Auto Placeholder')) return FALSE;
 

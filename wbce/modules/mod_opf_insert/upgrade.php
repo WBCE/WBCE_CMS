@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Insert
- * @version         1.0.5
+ * @version         1.0.6
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -34,6 +34,8 @@ if(!class_exists('Settings')) return FALSE;
 
 Settings::Set('opf_insert',1, false);
 Settings::Set('opf_insert'.'_be',1, false);
+
+include_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
 if(!opf_is_registered('Insert')) return FALSE;
 

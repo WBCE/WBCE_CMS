@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.1.0
+ * @version         1.1.1
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -96,6 +96,8 @@ if (isset($data["dot_replacement"])) Settings::Set('opf_dot_replacement',$data["
 else                                 Settings::Set('opf_dot_replacement',"(dot)", false);
 
 Settings::Set('opf_email',1, false);
+
+include_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
 
 if(!opf_is_registered('E-Mail')) return FALSE;
 

@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Short URL
- * @version         1.0.3
+ * @version         1.0.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -36,9 +36,11 @@ if(!class_exists('Settings')) return FALSE;
 
 Settings::Set('opf_short_url',0, false);
 
+include_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
+
 if(!opf_is_registered('Short URL')) return FALSE;
 
-if(opf_get_type('Short URL',FALSE) != OPF_TYPE_PAGE){
+if(opf_get_type('Short URL',FALSE) != OPF_TYPE_PAGE_LAST){
     return opf_unregister_filter('Short URL')
     && require(WB_PATH.'/modules/mod_opf_short_url/install.php');
 }

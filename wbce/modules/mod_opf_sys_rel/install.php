@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.8
+ * @version         1.0.10
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -42,7 +42,7 @@ if(defined('WB_URL'))
         // install filter
         return opf_register_filter(array(
             'name' => 'Sys Rel',
-            'type' => OPF_TYPE_PAGE,
+            'type' => OPF_TYPE_PAGE_LAST,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_sys_rel/filter.php',
             'funcname' => 'opff_mod_opf_sys_rel',
             'desc' => "turn full qualified URLs to relative URLs",

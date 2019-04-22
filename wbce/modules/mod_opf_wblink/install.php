@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF WB-Link
- * @version         1.0.3
+ * @version         1.0.4
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -48,14 +48,7 @@ if(defined('WB_URL'))
             'desc' => "change internal wblinkxx into real URLs",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_wblink', 1)==1))?1:0,
             'allowedit' => 0
-        ))
-        && opf_move_up_before(
-            'WB-Link',
-            array(
-               'Short URL',
-               'Sys Rel'
-            )
-        );
+        ));
     }
 }
 

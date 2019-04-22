@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Short URL
- * @version         1.0.3
+ * @version         1.0.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -42,7 +42,7 @@ if(defined('WB_URL'))
         // install filter
         return opf_register_filter(array(
             'name' => 'Short URL',
-            'type' => OPF_TYPE_PAGE,
+            'type' => OPF_TYPE_PAGE_LAST,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_short_url/filter.php',
             'funcname' => 'opff_mod_opf_short_url',
             'desc' => "short url via filter (instead of a droplet)",

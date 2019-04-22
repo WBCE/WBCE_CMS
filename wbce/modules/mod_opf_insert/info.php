@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Insert
- * @version         1.0.5
+ * @version         1.0.6
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -19,6 +19,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.0.6   2019-04-22      - include opf functions in upgrade script
  *      1.0.5   2019-03-26      - update requirements
  *      1.0.4   2019-03-22      - change filter type to page (last)
  *      1.0.3   2019-03-09      - bugfix in install/upgrade
@@ -42,7 +43,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_insert';
 $module_name            = 'OPF Insert';
 $module_function        = 'opffilter';
-$module_version         = '1.0.5';
+$module_version         = '1.0.6';
 $module_platform        = 'WBCE 1.4.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';
