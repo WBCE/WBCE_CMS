@@ -8,42 +8,42 @@
 <body>
 <h1><img src="../img/droplets_logo.png" alt="Droplets"></h1>
 <hr>
-<p>Droplets are small chunks of php code (just like the code module) that can be included in your template or any other content section.</p>
-<p>Including a droplet is done by encapsulating the droplet name in double brackets.</p>
-<p>If you want to use the droplet &quot;ModifiedWhen&quot; (to show the last modified date and time of the current page) you only need to add <b>[[ModifiedWhen]]</b> to your template or WYSIWYG contentpage.</p>
+<p>Droplets are small chunks of php code (just like the code2 module) that can be included in your template or any other content section.</p>
+<p>Including a droplet is done by encapsulating the droplet name in double square brackets.</p>
+<p>I.e. if you want to use the droplet &quot;ModifiedWhen&quot; (to show the last modified date and time of the current page) you only need to add <b>[[ModifiedWhen]]</b> to your template or WYSIWYG contentpage.</p>
 <p>You are encouraged to create your own droplets and share them with the community.</p>
 <h2>Installation</h2>
 <hr>
-<p>Droplets are installed as a admin tool. The installation is done using the normal &quot;Add module&quot; page in the WB backend.</p>
-<p>When the installation is successfull, there is a new tool added to the Admin-Tools menu.</p>
-<p>Clicking the tool will display the current installed droplets, and a button to create your own.</p>
+<p>The Droplets management tool is installed as an admin tool. The installation is done using the usual &quot;Add module&quot; page in the WBCE backend.</p>
+<p>When the installation is successfull, there is a new tool added to the Admin-Tools overview.</p>
+<p>Clicking the tool will display the current installed droplets, and buttons to create new droplets or import existing ones.</p>
 <h2>Getting Droplets</h2>
 <hr>
-<p>A fast growing number of Droplets are available for use, you can use the <a href="http://www.websitebakers.com/pages/droplets/official-library.php" target="_blank">Official Droplets Library</a> in the AMASP project website, or you can search the WB Forum.</p>
+<p>Some ready-made Droplets are available at the <a href="https://addons.wbce.org/pages/droplets.php" target="_blank">WBCE AOR</a>.</p>
 <h2>Coding Droplets</h2>
 <hr>
-<p>Droplets run in PHP mode, no <span style="color: #ff0000; ">&lt;?php</span> or <span style="color: #ff0000; ">?&gt;</span> is allowed in the code! If any of these tags are found in the code they will be removed. Your code will not run as expected.</p>
+<p>Droplets run in PHP mode, so <span style="color: #ff0000; ">&lt;?php</span> or <span style="color: #ff0000; ">?&gt;</span> is neither necessary nor allowed in the code! If any of these tags are found in the code they will be removed. Your code will not run as expected.</p>
 <p>The droplet code can NOT echo or print data to the output stream directly. The Droplet name is replaced by the return value of the PHP code.<br />
  Example: [[HelloWorld]]</p>
 <br>
 <p><span style="color: #ff0000;">Wrong code:</span> echo &quot;Hello World&quot;;</p>
 <p><span style="color: #339966;">Correct code:</span> return &quot;Hello World&quot;;</p>
 <br>
-<p>Since version 0.3 Droplets can modify the complete page content.</p>
+<p>Droplets can modify the complete page content.</p>
 <p>When the Droplet is called, an extra variable ($wb_page_data) is made available.</p>
 <p>This variable holds all the content of your current generated webpage.</p>
 <p>You can modify any part of this content simply by replacing it in the variable. There is no need to return this variable, the Droplet code will process changed content automatically.</p>
 <br>
-<p>Since version 0.3 Droplets will check the PHP code you have saved for validity.</p>
+<p>Droplets will check the PHP code you have saved for validity.</p>
 <p>When the code will not execute correctly a red flashing icon will apear in the backend Droplets list.</p>
 <p>The standard blue icon is no guarantee that the Droplets does what you would expect it to do, it will just tell you if the code is valid PHP code.</p>
 <br>
-<p>Since version 0.3 Droplets you do not need to return any data. When you end your code with</p>
+<p>Droplets do not need to return any data. When you end your code with</p>
 <pre>return true;</pre>
 <p>there will not be an errormessage. The processed Droplet tag will be removed.</p>
-<h2>PHP color coding</h2>
+<h2>Getting help</h2>
 <hr>
-<p>The Droplets edit page is ready to use the EditArea module. This module creates a color coded editor for PHP code.</p>
 <br>
+<p>If you run into issues with Droplets, have a look at the <a href="https://forum.wbce.org/viewforum.php?id=36" target="_blank">WBCE Forum</a>.</p>
 </body>
 </html>
