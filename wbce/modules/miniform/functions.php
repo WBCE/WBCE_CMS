@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.14.0
- * @lastmodified    May 22, 2019
+ * @version         0.15.0
+ * @lastmodified    April 30, 2019
  *
  */
 
@@ -188,6 +188,7 @@ class mform {
 		$val = '';
 		if ($data[$id_field] <= 0) {
 			foreach ( $data as $key => $value ) {
+				$value = $this->escapeString($value);
 				if ($key != $id_field) {
 					$set .= $set ? ',`'.$key.'`':'`'.$key.'`';
 					$val .= $val ? ",'$value'" : "'$value'";
@@ -199,6 +200,7 @@ class mform {
 		} else {
 			$id = $data[$id_field];
 			foreach ( $data as $key => $value ) {
+				$value = $this->escapeString($value);
 				if ($key != $id_field) {
 					$set .= $set ? ',':'';
 					$set .= "`$key`='$value'";
@@ -288,9 +290,9 @@ class mform {
 	
 		
 	function mail($fromaddress, $toaddress, $subject, $message, $fromname='', $replyto = '') {
-		if (!file_exists(WB_PATH."/framework/Mailer.php")){
-            require_once(WB_PATH."/framework/class.wbmailer.php");
-         }
+		if (!class_exists('wbmailer')){
+			require_once(WB_PATH."/framework/class.wbmailer.php");
+		}
 		$toArray = explode(',',$toaddress);
 	
 		$myMail = new wbmailer();
@@ -388,6 +390,15 @@ class mform {
 		return sprintf('%04X%04X%04X%04X%04X%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 	}
 	
+	function escapeString($string) {
+		global $database;
+		if(is_object($database->DbHandle)) {
+			$rval = $database->escapeString($string);
+		} else {
+			$rval = mysql_real_escape_string($string);
+		}
+		return $rval;
+	}	
 	
 } //end class
 

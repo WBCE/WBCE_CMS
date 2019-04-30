@@ -1,4 +1,4 @@
-<div class="miniform">
+﻿<div class="miniform">
 	<div class="{MESSAGE_CLASS}">{STATUSMESSAGE}</div>
 	<div class="{FORM_CLASS}">
 		<h2>Kontaktformular</h2>

@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.14.0
- * @lastmodified    May 22, 2019
+ * @version         0.15.0
+ * @lastmodified    April 30, 2019
  *
  */
 
@@ -243,9 +243,9 @@ if($mf->myPost) {
 				$emailmessage = $mf->add_template($emailmessage, '{MAILMESSAGE}', $email_field_data);
 				$confirm_message = $mf->add_template($confirm_message, '{GUID}', $data['guid']);
 				$confirm_message = $mf->add_template($confirm_message, '{MAILMESSAGE}', $email_field_data);
-				//$emailmessage = preg_replace('#\{[A-Za-z_][A-Za-z_0-9.,-\/\\ ]*?\}#s', '', $emailmessage); 
+				$emailmessage = preg_replace('#\{(?=\S)(.*?)\}#s', '', $emailmessage); 
 				$_SESSION['lastform'] = $emailmessage;
-				$data['data'] = addslashes($emailmessage); 
+				$data['data'] = $emailmessage; 
 				$data['submitted_when'] = time();
 				if(!$no_store) $mf->update_record('mod_miniform_data', 'message_id', $data );
 				// send message by mail

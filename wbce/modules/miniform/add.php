@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.14.0
- * @lastmodified    May 22, 2019
+ * @version         0.15.0
+ * @lastmodified    April 30, 2019
  *
  */
 

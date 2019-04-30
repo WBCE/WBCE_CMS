@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.14.0
- * @lastmodified    May 22, 2019
+ * @version         0.15.0
+ * @lastmodified    April 30, 2019
  *
  */
 
@@ -122,16 +122,12 @@ $(function() {
 		<tr><td><?php echo $MF['TEXT_CONFIRM_USER'] ?>: </td><td><input type="hidden" name="confirm_user" value="0" /><input type="checkbox" id="cs" name="confirm_user" value="1" <?php echo $cu_checked ?> /></td></tr>
 		<tr class="cs" <?php echo $cs_display ?>><td><?php echo $MF['TEXT_CONFIRM_SUBJ'] ?>: </td><td><input class="mf-input wide" size="50" type="text" name="confirm_subject" value="<?php echo $settings['confirm_subject'] ?>" /></td></tr>
 		<tr><td><?php echo $MF['TEXT_SUCCESS'] ?>: </td><td>		
-				<select  class="mf-input wide" name="successpage" />
+				<select  class="mf-input wide" name="successpage" style="font-family:'Courier New',Courier,monospace;font-size:12px;" />
 				<option value="0"<?php echo $settings['successpage']=='0' ? $sel : '' ?>><?php echo $MF['TEXT_NOPAGE'] ?></option>
 				<?php foreach($links AS $li) {
 					$option_link = explode('|',$li);
-					  $disabled = $option_link[0] == $page_id ? ' disabled':'';
-					  $link_out = $option_link[1];
-					  if (strlen($link_out) > 50) {
-						$link_out = substr($link_out,0,10).'...'.substr($link_out,-40);
-					  }
-					  echo "<option $disabled value=\"".$option_link[0]."\" ".($settings['successpage']==$option_link[0] ? $sel : '').">$link_out</option>\n";
+					$disabled = $option_link[0] == $page_id ? ' disabled':'';
+					echo "<option $disabled value=\"".$option_link[0]."\" ".($settings['successpage']==$option_link[0] ? $sel : '').">$option_link[1]</option>\n";
 				} ?>
 				</select>
 		</td></tr>
