@@ -1,0 +1,143 @@
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../font/opensans-bold-webfont.woff2') format('woff2'),
+         url('../font/opensans-bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../font/opensans-bolditalic-webfont.woff2') format('woff2'),
+         url('../font/opensans-bolditalic-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../font/opensans-italic-webfont.woff2') format('woff2'),
+         url('../font/opensans-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../font/opensans-regular-webfont.woff2') format('woff2'),
+         url('../font/opensans-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+	overflow-y:scroll;
+}
+
+header .line,
+section .line,
+footer .line {
+	background-color:#fff;
+	padding:0 !important;
+}
+
+.logo {
+	padding:2rem;
+}
+
+nav,
+.top-nav li ul li a {
+	background-color:#145374;
+}
+
+.top-nav li a{
+	padding:0.5rem 1rem;
+}
+
+.top-nav ul li:first-child a {
+	padding-left:1.75rem;
+}
+
+.aside-nav-noresponsee ul {
+	margin:0;
+	padding:0;	
+}
+
+.aside-nav-noresponsee li {
+	list-style-type:none;	
+}
+
+.aside-nav-noresponsee li a:link,
+.aside-nav-noresponsee li a:visited {
+	display:block;
+	padding:0.3rem 0.5rem;
+	background-color:#eee;
+}
+
+.aside-nav-noresponsee li ul li a:link {
+	padding-left:2.5rem;
+}
+
+.aside-nav-noresponsee li a:hover,
+.aside-nav-noresponsee li ul li.menu-current a {
+	background-color:#ddd;
+}
+
+.wbcesuche {
+	padding:0.5rem 1.5rem;
+}
+
+.wbcesuche input[type=text] {
+	background-color:transparent;
+	border:0;
+	border-bottom:1px solid #fff;
+	color:#fff;
+	
+}
+
+.wbcesuche input[type=submit] {
+	font-family:sli;
+	border:0;
+	background-color:transparent;
+	color:#fff;
+}
+
+h1, h2, h3, h4, h5 {
+	color:#385170;
+}
+
+
+h1#contentstart {
+	margin-top:-0.5rem;
+}
+
+
+.maincontent a:link, 
+.maincontent a:visited {
+	color:#145374;
+	text-decoration:underline;
+}
+
+.maincontent a:hover, 
+.maincontent a:visited:hover,
+footer a:hover,
+footer a:visited:hover {
+	color:#5588a3;
+}
+
+
+hr {
+	margin:0.5rem 0;
+}
+
+.back-to-top {
+	position:fixed;
+	bottom:20px;
+	right:20px;	
+}
+
+a.back-to-top, footer a:link, footer a:visited {
+	color:#145374;
+	border:0;
+	padding:0 1em;
+}

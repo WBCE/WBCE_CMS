@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.0.4.1
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Erstellungszeit: 14. Aug 2014 um 10:47
--- Server Version: 5.5.32
--- PHP-Version: 5.4.19
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 --
 -- Daten für Tabelle `groups`
@@ -42,13 +33,13 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (4, 'website_footer', ''),
 (5, 'wysiwyg_style', 'font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;'),
 (6, 'er_level', 'E0'),
-(7, 'sec_anchor', 'wb_'),
-(8, 'default_date_format', 'M d Y'),
-(9, 'default_time_format', 'g:i A'),
+(7, 'sec_anchor', 'wbce_'),
+(8, 'default_date_format', 'd.m.Y'),
+(9, 'default_time_format', 'H:i'),
 (10, 'redirect_timer', '1500'),
 (11, 'home_folders', 'true'),
 (12, 'warn_page_leave', '1'),
-(13, 'default_template', 'wbce_vertal'),
+(13, 'default_template', 'wbce_zonta'),
 (14, 'default_theme', 'wbce_flat_theme'),
 (15, 'default_charset', 'utf-8'),
 (16, 'multiple_menus', 'true'),
