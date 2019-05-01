@@ -254,8 +254,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 			  $("#main-nav").sticky({ topSpacing: 0 });
 			});
 		}
-		$( '.chevron li:has(ul)' ).doubleTapToGo();
-		$( '.aside li:has(ul)' ).doubleTapToGoX();
+		$( '.chevron li:has(ul)' ).doubleTapToGo();		
 		
       </script>
    </body>
