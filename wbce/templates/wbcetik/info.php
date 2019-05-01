@@ -1,7 +1,7 @@
 <?php
 
-$template_directory = 'wbce_tika';
-$template_name = 'WBCE Tika';
+$template_directory = 'wbcetik';
+$template_name = 'WBCETik';
 $template_version = '1.0';
 $template_platform = '1.4';
 $template_author = 'Florian Meerwinck';

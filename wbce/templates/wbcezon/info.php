@@ -1,7 +1,7 @@
 <?php
 
-$template_directory = 'wbce_zonta';
-$template_name = 'WBCE Zonta';
+$template_directory = 'wbcezon';
+$template_name = 'WBCEZon';
 $template_version = '1.0';
 $template_platform = '1.4';
 $template_author = 'Florian Meerwinck';
