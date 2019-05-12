@@ -369,13 +369,6 @@ if (!function_exists('block_contents')) {
                     if(function_exists('opf_apply_filters')) {
                         $sContent = opf_controller('section', $sContent, $aSection['module'], $iPageID, $iSectionID);
                     }
-                    if($bUseSecAnchor == true ){
-                        $sAnchorTPL = '<a class="section_anchor" id="%s"></a>';
-                        if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
-                            $sSecAnchor = sprintf($sAnchorTPL, SEC_ANCHOR . $aSection['section_id']);
-                        }
-                        $sContent = $sSecAnchor.$sContent;
-                    }
 
                     $aToInsert = $GLOBALS['wb']->retrieve_modfiles_from_dir($aSection['module'], "frontend");
                     foreach($aToInsert as $sModfileType=>$sFile){
