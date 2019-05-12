@@ -20,10 +20,10 @@ CKEDITOR.editorConfig = function( config ) {
 };
 
 CKEDITOR.on('instanceReady', function (ev) {
-ev.editor.dataProcessor.htmlFilter.addRules( {
+    ev.editor.dataProcessor.htmlFilter.addRules( {
         elements: {
             $: function (element) {
-                // Remove width and height style rules from images
+                // Output dimensions of images as width and height
                 if (element.name == 'img') {
                     var style = element.attributes.style;
                     if (style) {
@@ -33,8 +33,14 @@ ev.editor.dataProcessor.htmlFilter.addRules( {
                         // Get the height from the style.
                         match = /(?:^|\s)height\s*:\s*(\d+)px/i.exec(style);
                         var height = match && match[1];
-                        if (width) { element.attributes.style = element.attributes.style.replace(/(?:^|\s)width\s*:\s*(\d+)px;?/i, ''); }
-                        if (height) { element.attributes.style = element.attributes.style.replace(/(?:^|\s)height\s*:\s*(\d+)px;?/i, ''); }
+                        if (width) {
+                            element.attributes.style = element.attributes.style.replace(/(?:^|\s)width\s*:\s*(\d+)px;?/i, '');
+                            element.attributes.width = width;
+                        }
+                        if (height) {
+                            element.attributes.style = element.attributes.style.replace(/(?:^|\s)height\s*:\s*(\d+)px;?/i, '');
+                            element.attributes.height = height;
+                        }
                     }
                 }
                 if (!element.attributes.style)

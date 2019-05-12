@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -13,9 +13,9 @@
 $module_directory = 'ckeditor';
 $module_name = 'CKEditor';
 $module_function = 'WYSIWYG';
-$module_version = '4.11.3';
+$module_version = '4.11.4';
 $module_platform = '1.0.0';
 $module_author = 'diverse, cwsoft, Norhei, Colinax';
 $module_license = 'GPL, LGPL and MPL';
-$module_description = 'includes CKEditor 4.11.3 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.';
-$module_home = 'http://www.wbce.org';
+$module_description = 'includes CKEditor 4.11.4 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.';
+$module_home = 'https://www.wbce.org';
