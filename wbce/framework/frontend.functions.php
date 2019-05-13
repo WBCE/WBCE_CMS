@@ -188,6 +188,7 @@ if (!function_exists('get_section_array')) {
     }
 }
 
+
 if (!function_exists('get_section_content')) {	    
     /**
      * @brief  Get the actual content of a single section based on its ID.
@@ -257,6 +258,7 @@ if (!function_exists('get_section_content')) {
         return $sContent;
     }
 }
+
 
 if (!function_exists('block_contents')) {
     /**
@@ -336,10 +338,54 @@ if (!function_exists('block_contents')) {
                     )) {
                     continue;
                 }
-                $sContent = get_section_content($aSection['section_id']);
+		
+		/**
+		 * here again the same as get_section_content() but we should
+		 * include the code here explicitly so that variables used by
+		 * the sections stay available for the next iteration of the loop
+		 */
+
+                $sContent = '';
+                $aSection = get_section_array($iSectionID);
+
+                // check if module exists
+                $sModuleViewFile = WB_PATH . '/modules/' . $aSection['module'] . '/view.php';
+                if (is_readable($sModuleViewFile)) {
+                    ob_start(); 
+                    $page_id    = $iPageID = $aSection['page_id'];
+                    $section_id = $iSectionID;
+                    // we need those global vars to correctly operate the view.php
+                    global $database, $wb, $globals, $TEXT, $MENU, $HEADING, $MESSAGE;
+                    $admin = $wb;
+                    if (isset($globals) and is_array($globals)) {
+                        foreach ($globals as $sGlobalName) {
+                            global $$sGlobalName;
+                        }
+                    }
+                    require $sModuleViewFile; // fetch content using the view.php
+                    $sContent = ob_get_clean();
+
+                    // use OPF hook
+                    if(function_exists('opf_apply_filters')) {
+                        $sContent = opf_controller('section', $sContent, $aSection['module'], $iPageID, $iSectionID);
+                    }
+
+                    $aToInsert = $GLOBALS['wb']->retrieve_modfiles_from_dir($aSection['module'], "frontend");
+                    foreach($aToInsert as $sModfileType=>$sFile){
+                        $sModfileType = strtolower($sModfileType);
+                        switch ($sModfileType) {
+                            case 'css':     I::insertCssFile($sFile[0], 'HEAD TOP-'); break;
+                            case 'js_head': I::insertJsFile($sFile[0],  'HEAD BTM-'); break;
+                            case 'js_body': I::insertJsFile($sFile[0],  'BODY BTM-'); break;
+                            default: break;
+                        }
+                    }
+                }
+
                 if($sContent == '') {
                     continue;
-                }
+                }		
+		
                 $sec_anchor = '';
                 if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
                     $sec_anchor = '<a class="section_anchor" id="' . SEC_ANCHOR . $aSection['section_id'] . '" ></a>';
