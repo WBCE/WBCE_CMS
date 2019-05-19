@@ -10,7 +10,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/components.css">
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/icons.css">
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/responsee.css">
-	  <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/tika.css">
+	  <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/wbcetik.css">
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/owl-carousel/owl.carousel.css">
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/owl-carousel/owl.theme.css"> 
      
@@ -172,14 +172,16 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 						echo '<div class="s-12">'.$block[3].'</div>';						
 					}
 					
-					if ($block[2] != '') { ?>			
-						<article class="s-12 m-9">
-							<h1 id="contentstart"><?php echo PAGE_TITLE;?></h1>						
-							<?php echo $block[1]; ?>			
-						</article>
-						<aside class="s-12 m-3">
-							<?php echo $block[2]; ?>	
-						</aside>
+					if ($block[2] != '') { ?>	
+						<div class="margin">
+							<article class="s-12 m-9">
+								<h1 id="contentstart"><?php echo PAGE_TITLE;?></h1>						
+								<?php echo $block[1]; ?>			
+							</article>
+							<aside class="s-12 m-3">
+								<?php echo $block[2]; ?>	
+							</aside>
+						</div>
 					<?php } else { ?>
 						<article class="s-12">
 							<h1  id="contentstart"><?php echo PAGE_TITLE;?></h1>

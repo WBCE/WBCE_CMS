@@ -10,7 +10,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/components.css">
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/icons.css">
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/responsee.css">
-	  <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/zonta.css">
+	  <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/css/wbcezon.css">
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/owl-carousel/owl.carousel.css">
       <link rel="stylesheet" href="<?php echo TEMPLATE_DIR; ?>/owl-carousel/owl.theme.css"> 
      
@@ -23,7 +23,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 		register_frontend_modfiles('js');
 		
 		// Navigationen erzeugen (Hauptmenü, seitliches Menü mit Links zu den Unterseiten der jeweils ausgewählten Seite. Das seitliche Menü erscheint nicht in der Mobilansicht.
-		// create navigation menus - main menu and side menu with child pages of the current page. The aside navigation does not appear on smartphone displays.
+		// create navigation menus - main menu and aside menu with child pages of the current page. The aside navigation does not appear on smartphone displays.
 		$mainnav = show_menu2(
 			$aMenu          = 1,
 			$aStart         = SM2_ROOT,
@@ -41,7 +41,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 			$aMenu          = 0,
 			$aStart         = SM2_ROOT+1,
 			$aMaxLevel      = SM2_CURR+1, 
-			$aOptions       = SM2_BUFFER,
+			$aOptions       = SM2_SIBLING|SM2_BUFFER,
 			$aItemOpen      = '<li class="[class]"><a href="[url]" class="[class]" target="[target]">[menu_title]</a>',
 			$aItemClose     = '</li>',
 			$aMenuOpen      = '<ul>',
@@ -51,7 +51,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 		  );	
 		  
 		  // Login, Logout, Profil und Seite-bearbeiten-Icons erzeugen (erscheinen im Footer). Seite bearbeiten-Link erscheint nur bei Administratoren (https://forum.wbce.org/viewtopic.php?pid=23417#p23417)
-		  // create login, logout, profile and edit page-icons which will apper in the footer. By default, only members of the administrator group (group-ID 1) see the edit link
+		  // create login, logout, profile and edit page-icons which will appear in the footer. By default, only members of the administrator group (group-ID 1) see the edit link
 		  if (FRONTEND_LOGIN) {
 			  if (is_numeric($wb->get_session('USER_ID'))) {
 				  $loginlink = '<a href="'.LOGOUT_URL.'"><i class="icon-sli-logout"  aria-hidden="true"></i></a><a href="'.PREFERENCES_URL.'"><i class="icon-sli-user"  aria-hidden="true"></i></a>';
@@ -190,14 +190,16 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 						echo '<div class="s-12">'.$block[3].'</div>';						
 					}
 					
-					if ($block[2] != '') { ?>			
-						<article class="s-12 m-9">
-							<h1 id="contentstart"><?php echo PAGE_TITLE;?></h1>						
-							<?php echo $block[1]; ?>			
-						</article>
-						<aside class="s-12 m-3">
-							<?php echo $block[2]; ?>	
-						</aside>
+					if ($block[2] != '') { ?>
+						<div class="margin">
+							<article class="s-12 m-9">
+								<h1 id="contentstart"><?php echo PAGE_TITLE;?></h1>						
+								<?php echo $block[1]; ?>			
+							</article>
+							<aside class="s-12 m-3">
+								<?php echo $block[2]; ?>	
+							</aside>
+						</div>
 					<?php } else { ?>
 						<article class="s-12">
 							<h1  id="contentstart"><?php echo PAGE_TITLE;?></h1>

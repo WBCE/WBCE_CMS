@@ -72,6 +72,7 @@ nav,
 	display:block;
 	padding:0.3rem 0.5rem;
 	background-color:#eee;
+	color:#145374;
 }
 
 .aside-nav-noresponsee li ul li a:link {
@@ -81,6 +82,7 @@ nav,
 .aside-nav-noresponsee li a:hover,
 .aside-nav-noresponsee li ul li.menu-current a {
 	background-color:#ddd;
+	color:#5588a3;
 }
 
 .wbcesuche {
