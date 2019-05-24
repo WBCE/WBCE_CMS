@@ -1,6 +1,6 @@
 {{ insertCssFile( CURRENT_DIR ~ '/forms.css') }}
 {{ MESSAGE_BOX }}
-<h1>{{ L_('MENU:FORGOT') }}</h1>
+<h2>{{ L_('MENU:FORGOT') }}</h2>
 <br />
 
 <form  class="login-box" name="forgot_pass" action="{{ constant("FORGOT_URL") }}" method="post">
@@ -13,7 +13,7 @@
         </div>
 
         <div class="buttonsRow">
-            <input type="submit" name="submit" class="pos-right" value="{{ L_('TEXT:SEND_DETAILS') }}" />
+            <button type="submit" name="submit" class="button pos-right">{{ L_('TEXT:SEND_DETAILS') }}</button>
         </div>		
     </div>		
 </form>
