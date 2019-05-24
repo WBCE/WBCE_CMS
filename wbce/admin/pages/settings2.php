@@ -211,13 +211,14 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/'))
             unlink($old_filename);
         }
         // Create access file
-        create_access_file($filename, $page_id, $level);
+        create_access_file($filename,$page_id,$level);
         // Move a directory for this page
         if (file_exists(WB_PATH.PAGES_DIRECTORY.$old_link.'/') && is_dir(WB_PATH.PAGES_DIRECTORY.$old_link.'/')) {
             rename(WB_PATH.PAGES_DIRECTORY.$old_link.'/', WB_PATH.PAGES_DIRECTORY.$link.'/');
         }
         // Update any pages that had the old link with the new one
         $old_link_len = strlen($old_link);
+        $sql = '';
         $query_subs = $database->query(
             "SELECT page_id, link, level 
                 FROM `{TP}pages`
@@ -235,12 +236,7 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/'))
                     // Work out level
                     $new_sub_level = level_count($sub['page_id']);
                     // Update level and link
-                    $database->query(
-                        "UPDATE `{TP}pages`
-                            SET `link = '$new_sub_link', `level` = '$new_sub_level' 
-                            WHERE `page_id` = '".$sub['page_id']."'
-                            LIMIT 1"
-                    );
+                    $database->query("UPDATE {TP}pages SET link = '$new_sub_link', level = '$new_sub_level' WHERE page_id = '".$sub['page_id']."' LIMIT 1");
                     // Re-write the access file for this page
                     $old_subpage_file = WB_PATH.PAGES_DIRECTORY.$new_sub_link.PAGE_EXTENSION;
                     if (file_exists($old_subpage_file)) {
