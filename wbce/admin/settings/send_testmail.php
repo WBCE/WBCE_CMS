@@ -37,8 +37,7 @@ if (!$admin->checkFTAN()) {
 }
 
 // Let's prepare and send the test mail 
-require_once WB_PATH . '/account/init.php';
-require_once WB_PATH . '/modules/tool_account_settings/functions.php';
+$oAccounts = new Accounts();
 $sEmailTemplateName = 'testmail';
 $sEmailSubject      = '';
 $aTokenReplace      = array( 
@@ -53,7 +52,7 @@ $aTokenReplace      = array(
 // After check print the header
 $admin->print_header();
 
-if (account_sendEmail(SERVER_EMAIL, $aTokenReplace, $sEmailTemplateName) == true) {	                                                                   	
+if ($oAccounts->sendEmail(SERVER_EMAIL, $aTokenReplace, $sEmailTemplateName) == true) {	                                                                   	
     $admin->print_success(sprintf($MESSAGE['TESTMAIL_SUCCESS'], SERVER_EMAIL), $js_back);
 } else {
     $admin->print_error(sprintf($MESSAGE['TESTMAIL_FAILURE'], SERVER_EMAIL), $js_back);		
