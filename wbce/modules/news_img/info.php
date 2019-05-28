@@ -16,14 +16,33 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '3.7.16';
+$module_version     = '4.0.0';
 $module_platform    = '2.8.x';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
-
 /**
+ * v4.0.0  - 2019-05-28 
+ *         - Martin Hecht
+ *           + make drag&drop work again on WB 2.12
+ *           + hide the move-up/move-down arrows again when drag&drop works 
+ *             (i.e. when js could be loaded)
+ *           + handle IDKEYs for recent WB versions (#44)
+ *           + reorganize inclusion of framework functions
+ *           + also, remove the framework fallback functions again from functions.inc.php
+ *           + and include the framework/functions.php there instead.
+ *           + include fallbacks for framework functions for interoperability (fixes #45)
+ *           + specify maximum gallery image size in kilobytes (#41)
+ *           + minor corrections to the Dutch language support, thanks to Ruud Eisinga, Dev4me
+ *         - Florian Meerwinck
+ *           + Sanitize group title
+ *           + Update jquery.dm-uploader.css
+ *           + Show Select File Button also in AR BE Theme, thx to Bernd
+ *           + Use FA icons, UI optimizations
+ *           + group actions as select
+ *           + fix for update script (#40)
+ *
  * v3.7.16 - 2019-05-22 
  *         - Martin Hecht
  *           + allow importing settings from other nwi sections  (#35)
