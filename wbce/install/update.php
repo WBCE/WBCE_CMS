@@ -442,6 +442,18 @@ if (file_exists($file_name)) {
     }
 }
 
+// News with Images
+$file_name = WB_PATH . "/modules/news_img/info.php";
+if (file_exists($file_name)) {
+    if (!in_array("mod_news_img", $all_tables)) {
+       echo "<br />Install News with Images<br />";
+       require_once WB_PATH . "/modules/news_img/install.php";
+    } else {
+       echo "<br />Update News with Images<br />";
+       require_once WB_PATH . "/modules/news_img/upgrade.php";
+    }
+}
+
 // OpF Dashboard
 if (!in_array("mod_outputfilter_dashboard", $all_tables)) {
    echo "<br />Install OpF Dashboard<br />";
@@ -858,7 +870,7 @@ if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFA
                     <?php
                         if (defined('ADMIN_URL')) {
                             echo '<form action="' . ADMIN_URL . '/">';
-                            echo '&nbsp;<input type="submit" value="Kick me to the Backend" />';
+                            echo '&nbsp;<input type="submit" value="Login to the Backend" />';
                             echo '</form>';
                         }
                         // Finally, destroy the session.

@@ -1,0 +1,28 @@
+.masonry-grid-item { width: 200px; }
+.masonry-grid-item--width2 { width: 400px; }
+.masonry-grid {
+  background: #DDD;
+}
+
+/* clear fix */
+.masonry-grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- .masonry-grid-item ---- */
+
+.masonry-grid-sizer,
+.masonry-grid-item {
+  width: 33.333%;
+}
+
+.masonry-grid-item {
+  float: left;
+}
+
+.masonry-grid-item img {
+  display: block;
+  width: 100%;
+}

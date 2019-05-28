@@ -1,0 +1,173 @@
+@import url('font-awesome/css/font-awesome.min.css');
+
+.mod_news_img table{width:100%}
+.mod_news_img th, .mod_news_img td{padding:2px 5px;text-align:left;}
+.mod_news_img table.striped tr:nth-child(odd){background-color:#ececec}
+.mod_news_img table.striped tr:nth-child(even){background-color:#fff}
+.mod_news_img table img.preview{height:50px;max-height:50px;}
+.mod_news_img th {background-color:#ccc;}
+
+.dragdrop_handle {
+    background-color: #ccc;
+    background-image: url("images/dd_grip.gif");
+    background-position: right center;
+    cursor: move;
+    padding: 0;
+    width: 20px !important;
+    border-style: solid;
+    border-width: 2px 2px 3px;
+    border-color: #cad2d9 #bac5ce
+}
+
+.setting_name{vertical-align:top;width:20%;}
+.setting_value{vertical-align:top;width:80%;}
+.setting_value input[type="text"],.setting_value select{width:98%}
+
+.mod_news_img_arrow,
+.mod_news_img_icon{display:inline-block;min-width:24px;overflow:hidden}
+
+.resize_defaults {
+	cursor:pointer;
+}
+
+.mod_img_news_add,
+.mod_img_news_add_group,
+.mod_img_news_options,
+.mod_news_img_help {
+	padding:0.25em 1em !important;
+	margin-right:1em !important;
+}
+
+.mod_img_news_add_group,
+.mod_img_news_options,
+.mod_news_img_help {
+	float:right;
+}
+
+.mod_news_post_tools {
+	text-align:right;
+	padding:1em 0;
+}
+
+.mod_news_post_tools input[type="submit"] {
+	margin-left:1em;
+	padding:0.2em 0.5em;
+	min-height:auto;
+}
+
+
+/* 
+  The definitions below provide the style for the edit CSS button 
+  Required CSS class name: input.mod_moduledirectory_edit_css
+*/
+input.mod_news_img_edit_css {
+ 
+  padding: 2px;
+  margin: -20px auto;
+  float: right;
+}		
+
+/* post images */
+.xbtooltip {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid grey;
+        padding: 3px;
+}
+.xbtooltip img {
+        width: 200px;
+}
+.img_list {
+        width: 80px;
+}
+
+
+.jsadmin_drag {
+    cursor: move;
+}
+
+.jsadmin_drag a,
+.jsadmin_drag input,
+.jsadmin_drag select {
+    cursor: pointer;
+}
+
+
+
+/*
+item row hover onmouseover
+*/
+tr.frow_hover { background-color: #f5f8dc }
+
+/*-----------------------------------------------------------*/
+#dragableResult  {
+    color: #000;
+    font-size: 8px;
+    font-family: Courier;
+    background-color: #e0fbcf;
+    margin-top: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 5px 5px 5px 20%;
+    border: dashed 1px #19861a
+}
+#dragableTable ul {
+    background-color: #fff;
+    padding:0 ! important
+}
+
+#dragableTable ul li, #firstgroup  {
+    margin:0 ! important;
+    padding:0 ! important;
+}
+#dragableTable li, #firstgroup {
+    list-style: none;
+    margin-top: 3px;
+    width: 100%;
+    padding: 2px;
+    color:#fff;
+    border-bottom: 1px dotted #999999;
+    background-color: #E0ECBE;
+}
+
+#dragableTable li .sortgroup td,
+#firstgroup {
+    background-color: #eee;
+    font-size: 14px;
+}
+#dragableTable li.sortgroup {
+    margin-top:10px;
+}
+#dragableTable hr {
+    line-height:4px;
+}
+
+.nwi-active {color:darkgreen !important;}
+.nwi-inactive {color:firebrick !important; }
+.nwi-disabled {color:#ccc !important; }
+.nwi-disabled:hover {cursor:not-allowed;}
+.nwi-delete {color:red !important; }
+
+#fotos {
+    float:left;
+}
+
+#fotos input {
+    margin: 2px;
+}
+
+#fotoshow {
+    float:right;
+    width:60%;
+}
+#fotoshow table{
+    border:1px solid grey;
+    padding:2px;
+    border-spacing:0;
+}
+#fotoshow table tbody tr td {
+    border-bottom:1px solid grey;
+   padding: 2px;
+}
+#fotoshow table tbody tr:last-child td {border-bottom:0}
