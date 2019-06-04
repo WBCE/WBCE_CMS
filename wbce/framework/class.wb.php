@@ -974,7 +974,7 @@ _JsCode;
             case 'css': 
                 if(isset($aToInsert['css']) && is_array($aToInsert['css'])){
                     foreach($aToInsert['css'] as $sCssFile){
-                        I::insertCssFile($sCssFile, 'HEAD TOP-');
+                        I::insertCssFile($sCssFile, 'HEAD MODFILES');
                     }
                 }
                 break;
@@ -1001,14 +1001,13 @@ _JsCode;
                         }
                     }
                     foreach($aJqueryFiles as $sJsFile){
-                        I::insertJsFile($sJsFile, 'HEAD TOP-');
+                        I::insertJsFile($sJsFile, 'HEAD MODFILES');
                     }
                 }
                 break;
             case 'js':
                 // insert system vars to be ready for all JS code
-                $sJsSysvars  = "\t\tvar URL          = '" . WB_URL . "';";
-                $sJsSysvars .= "\n\t\tvar WB_URL       = '" . WB_URL . "';";
+                $sJsSysvars  = "\t\tvar URL = WB_URL = '" . WB_URL . "';";
 
                 if(defined("LANGUAGE")){
                     $sJsSysvars .= "\n\t\tvar LANGUAGE     = '" . strtolower(LANGUAGE) . "';";
@@ -1039,7 +1038,7 @@ _JsCode;
                 // insert js files to head
                 if(isset($aToInsert['js_head']) && is_array($aToInsert['js_head'])){
                     foreach($aToInsert['js_head'] as $sJsFile){
-                        I::insertJsFile($sJsFile, 'HEAD BTM-');
+                        I::insertJsFile($sJsFile, 'HEAD MODFILES');
                     }
                 }
 
