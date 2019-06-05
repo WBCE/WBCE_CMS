@@ -248,9 +248,9 @@ if (!function_exists('get_section_content')) {
             foreach($aToInsert as $sModfileType=>$sFile){
                 $sModfileType = strtolower($sModfileType);
                 switch ($sModfileType) {
-                    case 'css':     I::insertCssFile($sFile[0], 'HEAD TOP-'); break;					
-                    case 'js_head': I::insertJsFile($sFile[0],  'HEAD BTM-'); break;					
-                    case 'js_body': I::insertJsFile($sFile[0],  'BODY BTM-'); break;
+                    case 'css':     I::insertCssFile($sFile[0], 'HEAD MODFILES'); break;
+                    case 'js_head': I::insertJsFile($sFile[0],  'HEAD MODFILES'); break;
+                    case 'js_body': I::insertJsFile($sFile[0],  'BODY MODFILES'); break;
                     default: break;
                 }
             }
@@ -374,9 +374,9 @@ if (!function_exists('block_contents')) {
                     foreach($aToInsert as $sModfileType=>$sFile){
                         $sModfileType = strtolower($sModfileType);
                         switch ($sModfileType) {
-                            case 'css':     I::insertCssFile($sFile[0], 'HEAD TOP-'); break;
-                            case 'js_head': I::insertJsFile($sFile[0],  'HEAD BTM-'); break;
-                            case 'js_body': I::insertJsFile($sFile[0],  'BODY BTM-'); break;
+                            case 'css':     I::insertCssFile($sFile[0], 'HEAD MODFILES'); break;
+                            case 'js_head': I::insertJsFile($sFile[0],  'HEAD MODFILES'); break;
+                            case 'js_body': I::insertJsFile($sFile[0],  'BODY MODFILES'); break;
                             default: break;
                         }
                     }
@@ -535,7 +535,10 @@ if (!function_exists('page_footer')) {
 
 // Function to add optional module Javascript or CSS stylesheets into the <head> section of the frontend
 if (!function_exists('register_frontend_modfiles')) {
-    function register_frontend_modfiles($sModfileType = "css"){        
+    function register_frontend_modfiles($sModfileType = "css"){ 
+        if($sModfileType != 'jquery'){
+            echo '<!--(PH) '. strtoupper($sModfileType).' HEAD MODFILES -->'.PHP_EOL;
+        }
         return $GLOBALS['wb']->register_modfiles($sModfileType, "frontend");
     }
 }

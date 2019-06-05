@@ -1139,7 +1139,7 @@ class Insert {
             ),
             'JS BODY BTM' => array(
                 "#<\s*/\s*body\s*>#iU",
-                "\n<!--(PH) JS BODY BTM+ -->\n<!--(PH) JS BODY BTM- -->\n$0"
+                "\n<!--(PH) JS BODY BTM+ -->\n<!--(PH) JS BODY MODFILES -->\n<!--(PH) JS BODY BTM- -->\n$0"
             ),
             'META HEAD' => array(
                 "/<\s*meta[^>]*>/si",
@@ -1194,6 +1194,7 @@ class Insert {
     {
         $aProcessReplace = array();  // array with values to be replaced ('TITLE', 'META DESC', 'META KEY')
         $aProcessInsert  = array();  // array with values to be added to the corresponding Placeholder
+        
         foreach (array_keys($this->placeholderArrays()) as $sPlacer) {
             if (in_array($sPlacer, array('TITLE', 'META DESC', 'META KEY'))) {
                 $aProcessReplace[] = $sPlacer;
@@ -1202,7 +1203,12 @@ class Insert {
                 $aProcessInsert[] = $sPlacer . '-';
             }
         }
-
+        $aProcessInsert = array_merge($aProcessInsert, array(
+            'CSS HEAD MODFILES',
+            'JS HEAD MODFILES',
+            'JS BODY MODFILES'
+        ));
+        
         // iterate through the array and insert the entries to their corresponding PlaceHolders
         foreach ($aProcessInsert as $sPlaceholder) {
 
@@ -1221,10 +1227,10 @@ class Insert {
             }
 
             // add before or after the placeholder?
-            if (strpos($sDomPos, '+') !== false)
-                $sInsert = $sToPlaceHolder . $this->$_sProcessFunc($sDomPos); // at beginning of the block ["+"]
-            else
+            if (strpos($sDomPos, '-') !== false)
                 $sInsert = $this->$_sProcessFunc($sDomPos) . $sToPlaceHolder; // at the end of the block ["-"]
+            else
+                $sInsert = $sToPlaceHolder . $this->$_sProcessFunc($sDomPos); // at beginning of the block ["+"]
 
             $sContent = preg_replace(
                 '/' . preg_quote($sToPlaceHolder) . '/s', 

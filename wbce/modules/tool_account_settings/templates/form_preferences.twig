@@ -1,6 +1,6 @@
 {{ insertCssFile( CURRENT_DIR ~ '/forms.css') }}
 {{ MESSAGE_BOX }}
-<h1>{{ L_('TOOL_TXT:PREFERENCES') }}</h1>
+<h2>{{ L_('TOOL_TXT:PREFERENCES') }}</h2>
 <br />
 
 {#
@@ -98,8 +98,8 @@
         </div>
 
         <div class="buttonsRow">
-            <button type="button" value="cancel" onClick="javascript: window.location = '{{ REFFERER_URL }}';">{{ L_('TEXT:CANCEL') }}</button>
-            <button type="reset" name="reset" value="reset" class="button" >{{ L_('TEXT:RESET') }}</button>
+            <button type="button" value="cancel" onClick="javascript: window.location = '{{ REFFERER_URL }}';" class="button">{{ L_('TEXT:CANCEL') }}</button>
+            <button type="reset" name="reset" value="reset" class="button">{{ L_('TEXT:RESET') }}</button>
             <button type="submit" id="submit" name="action" value="profile" class="button pos-right">{{ L_('TOOL_TXT:SAVE_PREFERENCES') }}</button>
         </div>
     </form>

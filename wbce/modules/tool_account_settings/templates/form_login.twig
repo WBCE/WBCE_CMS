@@ -1,6 +1,6 @@
 {{ insertCssFile( CURRENT_DIR ~ '/forms.css') }}
 
-<h1>{{ L_('MENU:LOGIN') }}</h1>
+<h2>{{ L_('MENU:LOGIN') }}</h2>
 <br />
 {{ MESSAGE_BOX }}
 
@@ -25,7 +25,7 @@
         </div>
 
         <div class="buttonsRow">
-            <input type="submit" name="submit" class="pos-right" value="{{ L_('TEXT:LOGIN') }}"  />
+            <button type="submit" name="submit" class="button pos-right">{{ L_('TEXT:LOGIN') }}</button>
         </div>
     </div>
 </form>

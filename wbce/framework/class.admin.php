@@ -162,9 +162,9 @@ class Admin extends Wb
             'LOGGED_IN_AS' => $TEXT['LOGGED_IN'],
             'URL_VIEW' => $view_url,
             'URL_HELP' => 'https://wbce.org/',
-            'BACKEND_MODULE_CSS' => $this->register_backend_modfiles('css'), // adds backend.css
-            'BACKEND_MODULE_JS' => $this->register_backend_modfiles('js'),   // adds backend.js
-			      'MAINTAINANCEMODEINDICATOR' => $maintModeIndicator,
+            'BACKEND_MODULE_CSS'        => $this->register_backend_modfiles('css'), // adds backend.css
+            'BACKEND_MODULE_JS'         => $this->register_backend_modfiles('js'),  // adds backend.js
+            'MAINTAINANCEMODEINDICATOR' => $maintModeIndicator,
         )
         );
 
@@ -452,6 +452,7 @@ class Admin extends Wb
      */
     public function register_backend_modfiles($sModfileType = "css")
     {
-        return $this->register_modfiles($sModfileType, "backend");
+        return '<!--(PH) '. strtoupper($sModfileType).' HEAD MODFILES -->'.PHP_EOL.
+        $this->register_modfiles($sModfileType, "backend");
     }	
 }
