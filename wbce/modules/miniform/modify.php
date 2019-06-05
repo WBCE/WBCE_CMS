@@ -107,10 +107,10 @@ $(function() {
 </script>
 <?php if (isset($_GET['mt'])) {
 	include dirname(__FILE__).'/modify_template.php';
-	exit();
-} ?>
+} else {
+?>
 
-<form action="<?php echo WB_URL ?>/modules/miniform/save.php" method="post"  >
+    <form action="<?php echo WB_URL ?>/modules/miniform/save.php" method="post"  >
 	<input type="hidden" name="page_id" value="<?php echo $page_id ?>" />
 	<input type="hidden" name="section_id" value="<?php echo $section_id ?>" />
 	<table class="settable" id="mfsettings-<?php echo $section_id ?>" cellpadding="3" cellspacing="3" border="0">
@@ -143,22 +143,24 @@ $(function() {
 			<td colspan="2" align="right"><input type="button" value="<?php echo $MF['TEXT_CANCEL'] ?>" onclick="javascript: window.location = 'index.php';" style="width: 120px; margin-top: 5px;" /></td>
 		</tr>
 	</table>
-</form>
-<?php 
-$sub = $mform->get_history($section_id,50);
-?>
-<table class='msgtable msgt<?php echo $section_id ?>' cellpadding="3" border="0" style="margin-top:25px;">
-<tr><th colspan="3"><?php echo $MF['RECEIVED'] ?></th></tr>
-<tr>
+    </form>
+    <?php 
+    $sub = $mform->get_history($section_id,50);
+    ?>
+    <table class='msgtable msgt<?php echo $section_id ?>' cellpadding="3" border="0" style="margin-top:25px;">
+    <tr><th colspan="3"><?php echo $MF['RECEIVED'] ?></th></tr>
+    <tr>
 	<td ><?php echo $MF['MSGID'] ?> - <?php echo $MF['TIMESTAMP'] ?></td>
 	<td class="small"><?php echo $MF['REMOVE'] ?> </td>
-</tr>
-<?php	
+    </tr>
+    <?php	
 	foreach ($sub as $msg) {
 		echo "<tr >
 				<td style='cursor:pointer' class='line'>".$msg['message_id']." - ".date(DATE_FORMAT.' - '.TIME_FORMAT,$msg['submitted_when']+TIMEZONE)."<div class='msg'>".($msg['data'])."</div></td>
 				<td><a href='".$delete_url.$msg['message_id']."'>X</a></td>
 			</tr>";
 	}
-?>
-</table>
+    ?>
+    </table>
+    <?php 
+}
