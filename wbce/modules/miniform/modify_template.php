@@ -111,5 +111,5 @@ if ($_action == 'save') {
 	<?php 
 }
 // Print admin footer
-$admin->print_footer();
+#$admin->print_footer();
 
