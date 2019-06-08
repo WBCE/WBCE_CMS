@@ -3,9 +3,9 @@
 
 ![Screenshot of WBCE Backend](https://forum.wbce.org/wbce_cms_13_dashboard_600x367.jpg)
 
-## Requirements
-  - about 20 MB webspace
-  - PHP 5.4.0 or newer
+## Minimum requirements
+  - about 25 MB webspace
+  - PHP 5.6.30 (released 19 Jan 2017) or newer
   - mySQL 5.0 or newer
   - mode_rewrite for `even nicer` URLs (optional)
 
