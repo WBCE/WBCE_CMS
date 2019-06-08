@@ -61,7 +61,7 @@ class Insert {
      * 
      * @var   bool  $bShowFileIdInDOM
      */
-    public $bShowFileIdInDOM = true;
+    public $bShowFileIdInDOM = false;
 
     /**
      * @brief Determines the prefered Rendering method  
@@ -131,8 +131,11 @@ class Insert {
     public function showFileIdInDOM() 
     {
         $bRetVal = false;
-        if($this->sRenderType == "html5"){
-            $bRetVal = true;
+        if(isset($_SESSION['USER_ID'])){
+            $iUserID = $_SESSION['USER_ID'];
+            if(($iUserID != NULL && $iUserID != "" && is_numeric($iUserID))){
+                $bRetVal = true;
+            }
         }
         return $bRetVal;
     }
@@ -755,11 +758,11 @@ class Insert {
                 $sMedia = (!empty($rec['media'])) ? 'media="' . $rec['media'] . '"' : '';
                 $sClosing = ($this->sRenderType == "xhtml") ? '/' : '';
                 
-				if (strpos($rec['href'], '#missing') !== FALSE) {
-					continue;
+                if (strpos($rec['href'], '#missing') !== FALSE) {
+                    continue;
                 } else {					
-					$sRetVal .= sprintf($sTPL, $rec['href'], $sMedia, $sFileID, $sClosing);
-				}				
+                    $sRetVal .= sprintf($sTPL, $rec['href'], $sMedia, $sFileID, $sClosing);
+                }				
             }
             if (!empty($rec['style'])) {
                 if (preg_match('/\<style(.*?)?\>/i', $rec['style'])) {
@@ -842,10 +845,10 @@ class Insert {
 			$sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
             if (!empty($rec['src'])) {
                 if (strpos($rec['src'], '#missing') !== FALSE) {
-					continue;
+                    continue;
                 } else {					
-					$sRetVal .= sprintf($sTPL, $rec['src'], $sFileID);
-				}
+                    $sRetVal .= sprintf($sTPL, $rec['src'], $sFileID);
+                }
             }
             if (!empty($rec['script'])) {			
                 if (preg_match('/\<script(.*?)?\>/i', $rec['script'])) {
@@ -895,8 +898,8 @@ class Insert {
 
     /**
      * @brief   Compute and return the FileID based on setname/id setting. 
-      If not set function will computer the ID based on Fileloc.
-      If no Fileloc set, a unique ID will be generated using the uniqid(function)
+     *          If not set function will compute the ID based on Fileloc.
+     *          If no Fileloc set, a unique ID will be generated using the uniqid(function)
      * 
      * @param  array $aData
      * @return string
@@ -1062,8 +1065,6 @@ class Insert {
             if ($sQueue != "_TitleQueue") {
                 if (strtolower($sDomPos) == "all") {
                     foreach ($aQueue as $key => $aSubQueue) {
-
-                        //
                         if (is_array($aSubQueue) && !empty($aSubQueue)) {
                             foreach ($aSubQueue as $sSetName => $rec) {
                                 $aRetVal[$sQueue][$key][$sSetName] = $rec;
