@@ -62,7 +62,7 @@ $template->set_block('main_block', 'show_search_block',           'show_search')
 $template->set_block('main_block', 'show_redirect_timer_block',   'show_redirect_timer');
 
 // Query current settings in the db, then loop through them and print them
-$query = "SELECT * FROM ".TABLE_PREFIX."settings";
+$query = "SELECT * FROM `{TP}settings`";
 $results = $database->query($query);
 while($setting = $results->fetchRow())
 {
@@ -94,7 +94,7 @@ if($is_advanced)
     $template->set_var('ADVANCED_LINK', 'index.php?advanced=yes');
 }
 
-    $query = "SELECT * FROM ".TABLE_PREFIX."search WHERE extra = ''";
+    $query = "SELECT * FROM `{TP}search` WHERE extra = ''";
     $results = $database->query($query);
 
     // Query current settings in the db, then loop through them and print them
@@ -153,7 +153,7 @@ if($is_advanced)
                      ));
 
     // Insert language values
-    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'language' ORDER BY directory");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'language' ORDER BY directory");
     if($result->numRows() > 0)
     {
         while($addon = $result->fetchRow()) {
@@ -235,7 +235,7 @@ if($is_advanced)
     }
 
     // Insert templates
-    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function != 'theme' ORDER BY name");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND function != 'theme' ORDER BY name");
     if($result->numRows() > 0) {
         while($addon = $result->fetchRow()) {
             $template->set_var('FILE', $addon['directory']);
@@ -247,7 +247,7 @@ if($is_advanced)
     }
 
     // Insert backend theme
-    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function = 'theme' ORDER BY name");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND function = 'theme' ORDER BY name");
     if($result->numRows() > 0) {
         while($addon = $result->fetchRow()) {
             $template->set_var('FILE', $addon['directory']);
@@ -266,7 +266,7 @@ if($is_advanced)
     $selected = (!defined('WYSIWYG_EDITOR') || $file == WYSIWYG_EDITOR) ? ' selected="selected"' : '';
     $template->set_var('SELECTED', $selected);
     $template->parse('editor_list', 'editor_list_block', true);
-    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' AND function LIKE '%wysiwyg%' ORDER BY name");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' AND function LIKE '%wysiwyg%' ORDER BY name");
     if($result->numRows() > 0)
     {
         while($addon = $result->fetchRow())
@@ -290,7 +290,7 @@ if($is_advanced)
         ));
     $template->parse('search_template_list', 'search_template_list_block', true);
 
-    $result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND function = 'template' ORDER BY name");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND function = 'template' ORDER BY name");
     if($result->numRows() > 0)
     {
         while($addon = $result->fetchRow())
@@ -399,8 +399,7 @@ if($is_advanced)
     }
 
     // Work-out if manage sections feature is enabled
-    if(MANAGE_SECTIONS)
-    {
+    if(MANAGE_SECTIONS) {
         $template->set_var('MANAGE_SECTIONS_ENABLED', ' checked="checked"');
     } else {
         $template->set_var('MANAGE_SECTIONS_DISABLED', ' checked="checked"');
@@ -408,7 +407,7 @@ if($is_advanced)
 
     // Work-out which wbmailer routine should be checked
     $template->set_var(
-    array(
+        array(
             'TEXT_WBMAILER_DEFAULT_SETTINGS_NOTICE' => $TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'],
             'TEXT_WBMAILER_DEFAULT_SENDER_MAIL'     => $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'],
             'TEXT_WBMAILER_DEFAULT_SENDER_NAME'     => $TEXT['WBMAILER_DEFAULT_SENDER_NAME'],
@@ -423,19 +422,25 @@ if($is_advanced)
             'TEXT_WBMAILER_SMTP_PASSWORD'           => $TEXT['WBMAILER_SMTP_PASSWORD'],
             'TEXT_BUTTON_SEND_TESTMAIL'             => $TEXT['BUTTON_SEND_TESTMAIL'],
             'TEXT_SEND_TESTMAIL'                    => $TEXT['SEND_TESTMAIL'],
-            'SMTP_AUTH_SELECTED'                    => ' checked="checked"'
         )
     );
     if (WBMAILER_ROUTINE == 'phpmail') {
         $template->set_var('PHPMAIL_SELECTED', ' checked="checked"');
         $template->set_var('SMTP_VISIBILITY', ' style="display: none;"');
         $template->set_var('SMTP_VISIBILITY_AUTH', '');
-        // $template->set_var('SMTP_AUTH_SELECTED', '');
+        $template->set_var('SMTP_AUTH_SELECTED', '');
     } elseif (WBMAILER_ROUTINE == 'smtp'){
         $template->set_var('SMTPMAIL_SELECTED', ' checked="checked"');
         $template->set_var('SMTP_VISIBILITY', '');
         $template->set_var('SMTP_VISIBILITY_AUTH', '');
+        // SMTP AUTH
+        $sSmtpAuth = $database->get_one("SELECT `value` FROM `{TP}settings` WHERE `name` = 'wbmailer_smtp_auth'"); 
+        $template->set_var(
+            'SMTP_AUTH_SELECTED', 
+            $sSmtpAuth == 1 ? ' checked="checked"' : ''
+        );
     }
+    
     
     
     // SMTP PORT OPTIONS
@@ -472,23 +477,7 @@ if($is_advanced)
         } 
     }  
     $template->set_var('TEXT_MAIL_SETTINGS_OVERRIDE_HINT', $sOverrideHint);
-    
-/* deprecated
-    // Work-out if SMTP authentification should be checked
-    if(WBMAILER_SMTP_AUTH)
-    {
-        $template->set_var('SMTP_AUTH_SELECTED', ' checked="checked"');
-        if(WBMAILER_ROUTINE == 'smtp')
-        {
-            $template->set_var('SMTP_VISIBILITY_AUTH', '');
 
-        } else {
-            $template->set_var('SMTP_VISIBILITY_AUTH', ' style="display: none;"');
-        }
-    } else {
-        $template->set_var('SMTP_VISIBILITY_AUTH', ' style="display: none;"');
-    }
-*/
     // Work-out if intro feature is enabled
     if(INTRO_PAGE)
     {
@@ -620,18 +609,18 @@ if($is_advanced)
     }
 
     $template->set_var(array(
-                        'PAGES_DIRECTORY' => PAGES_DIRECTORY,
-                        'MEDIA_DIRECTORY' => MEDIA_DIRECTORY,
-                        'PAGE_EXTENSION' => PAGE_EXTENSION,
-                        'PAGE_SPACER' => PAGE_SPACER,
-                        'TABLE_PREFIX' => TABLE_PREFIX
-                     ));
+        'PAGES_DIRECTORY' => PAGES_DIRECTORY,
+        'MEDIA_DIRECTORY' => MEDIA_DIRECTORY,
+        'PAGE_EXTENSION' => PAGE_EXTENSION,
+        'PAGE_SPACER' => PAGE_SPACER,
+        'TABLE_PREFIX' => TABLE_PREFIX
+     ));
 
     // Insert Server Email value into template
     $template->set_var('SERVER_EMAIL', SERVER_EMAIL);
 
     // Insert groups into signup list
-    $results = $database->query("SELECT group_id, name FROM ".TABLE_PREFIX."groups WHERE group_id != '1'");
+    $results = $database->query("SELECT group_id, name FROM `{TP}groups` WHERE group_id != '1'");
     if($results->numRows() > 0)
     {
         while($group = $results->fetchRow())
@@ -654,14 +643,14 @@ if($is_advanced)
 
     // Insert language headings
     $template->set_var(array(
-                    'HEADING_GENERAL_SETTINGS' => $HEADING['GENERAL_SETTINGS'],
-                    'HEADING_DEFAULT_SETTINGS' => $HEADING['DEFAULT_SETTINGS'],
-                    'HEADING_SEARCH_SETTINGS' => $HEADING['SEARCH_SETTINGS'],
-                    'HEADING_SERVER_SETTINGS' => $HEADING['SERVER_SETTINGS'],
-                    'HEADING_WBMAILER_SETTINGS' => $HEADING['WBMAILER_SETTINGS'],
-                    'HEADING_ADMINISTRATION_TOOLS' => $HEADING['ADMINISTRATION_TOOLS']
-                    )
-            );
+            'HEADING_GENERAL_SETTINGS' => $HEADING['GENERAL_SETTINGS'],
+            'HEADING_DEFAULT_SETTINGS' => $HEADING['DEFAULT_SETTINGS'],
+            'HEADING_SEARCH_SETTINGS' => $HEADING['SEARCH_SETTINGS'],
+            'HEADING_SERVER_SETTINGS' => $HEADING['SERVER_SETTINGS'],
+            'HEADING_WBMAILER_SETTINGS' => $HEADING['WBMAILER_SETTINGS'],
+            'HEADING_ADMINISTRATION_TOOLS' => $HEADING['ADMINISTRATION_TOOLS']
+        )
+    );
     // Insert language text and messages
     $template->set_var(array(
                     'TEXT_WEBSITE_TITLE' => $TEXT['WEBSITE_TITLE'],
@@ -759,7 +748,7 @@ if($is_advanced)
 {
     $template->parse('show_page_level_limit', 'show_page_level_limit_block', true);
     $template->parse('show_checkbox_1',       'show_checkbox_1_block', true);
-     $template->parse('show_checkbox_2',       'show_checkbox_2_block', true);
+    $template->parse('show_checkbox_2',       'show_checkbox_2_block', true);
     $template->parse('show_checkbox_3',       'show_checkbox_3_block', true);
     $template->parse('show_php_error_level',  'show_php_error_level_block', true);
     $template->parse('show_charset',          'show_charset_block', true);

@@ -2,7 +2,6 @@
 
 <form name="settings" action="save.php" method="post">
     <input type="hidden" name="advanced" value="{ADVANCED}">
-    <input type="hidden" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="true">
     {FTAN}
 
     <!-- GENERAL SETTINGS ****************************************** -->
@@ -653,7 +652,6 @@
                 <div class="fg3">{TEXT_WBMAILER_SMTP_HOST}:</div>
                 <div class="fg9">
                     <input type="text" name="wbmailer_smtp_host" value="{WBMAILER_SMTP_HOST}">
-                    <input type="hidden" name="wbmailer_smtp_auth" value="true">
                 </div>
             </div>      
             
@@ -666,9 +664,9 @@
                 </div>
             </div>	
 			
-			<div class="row" style="padding-left:0;">
+            <div class="row" style="padding-left:0;">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_AUTH}:</div>
-                <div class="fg9">
+                <div class="fg9">aaa
                     <input type="checkbox" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="1" {SMTP_AUTH_SELECTED} style="width: 14px; " />
                     <label for="wbmailer_smtp_auth">{TEXT_WBMAILER_SMTP_AUTH_NOTICE}</label>
                 </div>

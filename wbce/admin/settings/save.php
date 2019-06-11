@@ -174,8 +174,7 @@ if ($res_settings = $database->query($sql)) {
             case 'pages_directory':
                 break;
             case 'wbmailer_smtp_auth':
-                // $value = isset($_POST[$setting_name]) ? $_POST[$setting_name] : '' ;
-                $value = true;
+                $value = isset($_POST[$setting_name]) ? $_POST[$setting_name] : 0 ;
                 $passed = true;
                 break;
             default:
@@ -200,8 +199,7 @@ if ($res_settings = $database->query($sql)) {
 }
 
 // Query current search settings in the db, then loop through them and update the db with the new value
-$sql = 'SELECT `name`, `value` FROM `{TP}search` '
-. 'WHERE `extra`=\'\'';
+$sql = "SELECT `name`, `value` FROM `{TP}search` WHERE `extra`= ''";
 if (!($res_search = $database->query($sql))) {
     $admin->print_error($database->is_error(), $js_back);
 }
