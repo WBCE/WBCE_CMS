@@ -213,6 +213,7 @@ if(function_exists('edit_module_css'))
 			<select name="gallery" style="width: 98%;" onfocus="this.setAttribute('PrvSelectedValue',this.value);" onchange="if(confirm('<?php echo $MOD_NEWS_IMG['GALLERY_WARNING']?>')==false){ this.value=this.getAttribute('PrvSelectedValue');return false; }" >     
                     <option value="fotorama"<?php if($fetch_content['gallery']=='fotorama'): ?> selected="selected"<?php endif; ?>>Fotorama</option>
                     <option value="masonry"<?php if($fetch_content['gallery']=='masonry'): ?> selected="selected"<?php endif; ?>>Masonry</option>
+					<option value="none"<?php if($fetch_content['gallery']=='none'): ?> selected="selected"<?php endif; ?>><?php echo $MOD_NEWS_IMG['NONE'] ?></option>
                 </select>
 			</td>
 		</tr>
