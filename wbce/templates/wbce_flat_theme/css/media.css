@@ -1,119 +1,31 @@
 @import url('font/opensans.css');
 /*** basics ***********************************************************/
-body, td, th, input, textarea {
-    font-family: open_sans, Arial, Helvetica, sans-serif;
-    font-size: 13px;
-}
-body {
-    background-color: #fff;
-    margin: 0;
-}
-hr {
-    margin: 0;
-    color: #036;
-    height: 1px;
-}
-a:link, a:visited, a:active {
-    color: #036;
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: none;
-    color: #369;
-}
-.hide {
-    display: none;
-}
-.red {
-    color: firebrick !important;
-}
+body, td, th, input, textarea { font-family: open_sans, Arial, Helvetica, sans-serif; font-size: 16px; }
+hr { margin: 0; color: #036; height: 1px; }
+a:link { color: #036; text-decoration: none; }
+a:hover, a:visited, a:active { color: #369; }
+.hide { display: none; }
+.red { color: firebrick !important; }
 /*** table header *****************************************************/
-#header {
-    width: 100%;
-    border-collapse: collapse;
-}
-#header tr {
-    background-color: #ccc;
-}
-#header td {
-    height: 34px;
-    padding: 0 4px;
-}
-#header #uplink {
-    width: 30px;
-}
-#header #header-text span {
-    font-weight: bold;
-    display: inline-block;
-    margin-left: 10px;
-}
+#header { width: 100%; border-collapse: collapse; background-color: #ccc; }
+#header td { height: 34px; padding: 0 4px; }
+#header #uplink { width: 30px; }
+#header #header-text span { font-weight: bold; margin-left: 10px; }
 /*** file-list ********************************************************/
-#list {
-    width: 100%;
-    border-collapse: collapse;
-}
-#list .image {
-    width: 100px;
-}
-#list .filename {
-}
-#list .details {
-    width: 140px;
-}
-#list .rename {
-    width: 20px;
-}
-#list .delete {
-    width: 20px;
-}
-#list td {
-/*height: 50px;*/
-}
-#list tr:nth-child(even) {
-    background-color: #eee;
-}
+#list { width: 100%; border-collapse: collapse; }
+#list .image { width: 100px; }
+#list .filename {}
+#list .details { width: 140px; }
+#list .rename { width: 20px; }
+#list .delete { width: 20px; }
+#list td {}
+#list tr:nth-child(even) { background-color: #eee; }
 /*** media rename *****************************************************/
-.content-box {
-    margin-bottom: 10px;
-    border: 1px solid #999;
-    background-color: #fdfdfd;/*padding: 10px 0 0 0 ;*/
-}
-input[type="text"], button[type="submit"] {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    background-image: none;
-    background: transparent;
-    border: none;
-    padding: 0;
-}
-input[type="text"] {
-    border: 1px solid #999;
-    background-color: #eee;
-    padding: 4px;
-    width: 150px;
-}
-input[type="text"]:focus, input[type="text"]:hover {
-    border: 1px solid #647086;
-}
-input[type="checkbox"] {
-    cursor: pointer;
-    margin-right: 5px;
-}
-label {
-    cursor: pointer;
-    vertical-align: -2px;
-}
-button[type="submit"], button[type="button"] {
-    border: 1px solid #999;
-    background-color: #647086;
-    color: #fff;
-    padding: 5px;
-    width: 150px;
-}
-.ok, .success {
-    border: 1px solid #008000;
-    background-color: #bbf8bb;
-    padding: 5px;
-    margin-bottom: 10px;
-}
+.content-box { margin-bottom: 10px; border: 1px solid #999; background-color: #fdfdfd; padding: 10px; }
+input[type="text"], button[type="submit"] { appearance: none; background-image: none; background: transparent; border: none; padding: 0; }
+input[type="text"] { border: 1px solid #999; background-color: #eee; padding: 4px; width: 150px; }
+input[type="text"]:focus, input[type="text"]:hover { border: 1px solid #647086; }
+input[type="checkbox"] { cursor: pointer; margin-right: 5px; }
+label { cursor: pointer; vertical-align: -2px; }
+button[type="submit"], button[type="button"] { border: 1px solid #999; background-color: #647086; color: #fff; padding: 5px; width: 150px; }
+.ok, .success { border: 1px solid #008000; background-color: #bbf8bb; padding: 5px; margin-bottom: 10px; }

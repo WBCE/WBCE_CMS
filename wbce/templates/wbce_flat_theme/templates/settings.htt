@@ -9,32 +9,32 @@
         <div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-general-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-general-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
     </h2>
 
-    <section class="content-box" style="padding:0;" id="settings-general-settings">
-        <div class="row top" style="padding-left:0;">
+    <section class="content-box" id="settings-general-settings">
+        <div class="row top">
             <div class="fg3">{TEXT_WEBSITE_TITLE}:</div>
             <div class="fg9">
                 <input type="text" name="website_title" value="{WEBSITE_TITLE}" class="wdt300" id="website_title">
                 <span class="title-counter"></span> {TEXT_CHARACTERS} [<span class="title-remain"></span> {TEXT_REMAINING}] </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_WEBSITE_DESCRIPTION}:</div>
             <div class="fg9">
                 <textarea name="website_description" id="website_description" class="wdt300">{WEBSITE_DESCRIPTION}</textarea>
                 <span class="desc-counter"></span> {TEXT_CHARACTERS} [<span class="desc-remain"></span> {TEXT_REMAINING}] </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_WEBSITE_KEYWORDS}:</div>
             <div class="fg9">
                 <textarea name="website_keywords" class="wdt300">{WEBSITE_KEYWORDS}</textarea>
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_WEBSITE_HEADER}:</div>
             <div class="fg9">
                 <textarea name="website_header" class="wdt300">{WEBSITE_HEADER}</textarea>
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_WEBSITE_FOOTER}:</div>
             <div class="fg9">
                 <textarea name="website_footer" class="wdt300">{WEBSITE_FOOTER}</textarea>
@@ -43,7 +43,7 @@
 
         <!-- BEGIN show_page_level_limit_block -->
         <section {DISPLAY_ADVANCED}>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_PAGE_LEVEL_LIMIT}:</div>
                 <div class="fg9">
                     <select name="page_level_limit">
@@ -56,7 +56,7 @@
         </section>
         <!-- END show_page_level_limit_block -->
 
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_PAGE_TRASH}:</div>
             <div class="fg9">
                 <label>
@@ -69,7 +69,7 @@
                 </label>
             </div>
         </div>
-        <div class="row" style="padding-left:0; {DISPLAY_PAGE_TRASH_SEPARATE}">
+        <div class="row" style="{DISPLAY_PAGE_TRASH_SEPARATE}">
             <div class="fg3">{}:</div>
             <div class="fg9">
                 <label>
@@ -81,7 +81,7 @@
 
         <!-- BEGIN show_checkbox_1_block -->
         <section {DISPLAY_ADVANCED}>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_PAGE_LANGUAGES}:</div>
                 <div class="fg9">
                     <label>
@@ -94,7 +94,7 @@
                     </label>
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_MULTIPLE_MENUS}:</div>
                 <div class="fg9">
                     <label>
@@ -110,7 +110,7 @@
         </section>
         <!-- END show_checkbox_1_block -->
 
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_HOME_FOLDERS}:</div>
             <div class="fg9">
                 <label>
@@ -126,7 +126,7 @@
 
         <!-- BEGIN show_checkbox_2_block -->
         <section {DISPLAY_ADVANCED}>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_MANAGE_SECTIONS}:</div>
                 <div class="fg9">
                     <label>
@@ -139,7 +139,7 @@
                     </label>
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_SECTION_BLOCKS}:</div>
                 <div class="fg9">
                     <label>
@@ -155,7 +155,7 @@
         </section>
         <!-- END show_checkbox_2_block -->
 
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_INTRO_PAGE}:</div>
             <div class="fg9">
                 <label>
@@ -171,7 +171,7 @@
 
         <!-- BEGIN show_checkbox_3_block -->
         <section {DISPLAY_ADVANCED}>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_HOMEPAGE_REDIRECTION}:</div>
                 <div class="fg9">
                     <label>
@@ -184,7 +184,7 @@
                     </label>
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_SMART_LOGIN}:</div>
                 <div class="fg9">
                     <label>
@@ -200,7 +200,7 @@
         </section>
         <!-- END show_checkbox_3_block -->
 
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_LOGIN}:</div>
             <div class="fg9">
                 <label>
@@ -216,7 +216,7 @@
 
         <!-- BEGIN show_redirect_timer_block -->
         <section {DISPLAY_ADVANCED}>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_REDIRECT_AFTER}:</div>
                 <div class="fg9">
                     <input type="text" name="redirect_timer" value="{REDIRECT_TIMER}" class="wdt50">
@@ -225,7 +225,7 @@
         </section>
         <!-- END show_redirect_timer_block -->
 
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_SIGNUP}:</div>
             <div class="fg9">
                 <select name="frontend_signup" class="wdt250">
@@ -239,7 +239,7 @@
 
         <!-- BEGIN show_php_error_level_block -->
         <section {DISPLAY_ADVANCED}>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_PHP_ERROR_LEVEL}:</div>
                 <div class="fg9">
                     <select name="er_level" class="wdt250">
@@ -256,7 +256,7 @@
         <!-- BEGIN show_wysiwyg_block -->
         <section {DISPLAY_ADVANCED}>
             <!-- needed for what ?!? -->
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_WYSIWYG_EDITOR}:</div>
                 <div class="fg9">
                     <select name="wysiwyg_editor" class="wdt250">
@@ -270,7 +270,7 @@
         <!-- END show_wysiwyg_block -->
 
         <hr class="fg12">
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg9 push3">
                 <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
             </div>
@@ -282,8 +282,8 @@
         <div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-default-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-default-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
     </h2>
 
-    <section class="content-box" style="padding:0;" id="settings-default-settings">
-        <div class="row top" style="padding-left:0;">
+    <section class="content-box" id="settings-default-settings">
+        <div class="row top">
             <div class="fg3">{TEXT_LANGUAGE}:</div>
             <div class="fg9">
                 <select name="default_language" class="wdt250">
@@ -296,7 +296,7 @@
 
         <!-- BEGIN show_charset_block -->
         <section {DISPLAY_ADVANCED}>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_CHARSET}:</div>
                 <div class="fg9">
                     <select name="default_charset" class="wdt250">
@@ -310,7 +310,7 @@
         </section>
         <!-- END show_charset_block -->
 
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_TIMEZONE}:</div>
             <div class="fg9">
                 <select name="default_timezone" class="wdt250">
@@ -321,7 +321,7 @@
                 </select>
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_DATE_FORMAT}:</div>
             <div class="fg9">
                 <select name="default_date_format" class="wdt250">
@@ -332,7 +332,7 @@
                 </select>
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_TIME_FORMAT}:</div>
             <div class="fg9">
                 <select name="default_time_format" class="wdt250">
@@ -343,7 +343,7 @@
                 </select>
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_TEMPLATE}:</div>
             <div class="fg9">
                 <select name="default_template" class="wdt250">
@@ -353,7 +353,7 @@
                 </select>
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_THEME}:</div>
             <div class="fg9">
                 <select name="default_theme" class="wdt250">
@@ -364,7 +364,7 @@
             </div>
         </div>
         <hr class="fg12">
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg9 push3">
                 <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
             </div>
@@ -376,8 +376,8 @@
         <div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
     </h2>
 
-    <section class="content-box" style="padding:0;" id="settings-search-settings">
-        <div class="row top" style="padding-left:0;">
+    <section class="content-box" id="settings-search-settings">
+        <div class="row top">
             <div class="fg3">{TEXT_VISIBILITY}:</div>
             <div class="fg9">
                 <select name="search" class="wdt250">
@@ -388,7 +388,7 @@
                 </select>
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_TEMPLATE}:</div>
             <div class="fg9">
                 <select name="search_template" class="wdt250">
@@ -401,55 +401,55 @@
 
         <!-- BEGIN show_search_block -->
         <section {DISPLAY_ADVANCED}>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_HEADER}:</div>
                 <div class="fg9">
                     <textarea name="search_header" class="tabbed code wdt500">{SEARCH_HEADER}</textarea>
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_RESULTS_HEADER}:</div>
                 <div class="fg9">
                     <textarea name="search_results_header" class="tabbed code wdt500">{SEARCH_RESULTS_HEADER}</textarea>
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_RESULTS_LOOP}:</div>
                 <div class="fg9">
                     <textarea name="search_results_loop" class="tabbed code wdt500">{SEARCH_RESULTS_LOOP}</textarea>
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_RESULTS_FOOTER}:</div>
                 <div class="fg9">
                     <textarea name="search_results_footer" class="tabbed code wdt500">{SEARCH_RESULTS_FOOTER}</textarea>
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_NO_RESULTS}:</div>
                 <div class="fg9">
                     <input type="text" name="search_no_results" value="{SEARCH_NO_RESULTS}" class="code wdt500">
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_FOOTER}:</div>
                 <div class="fg9">
                     <textarea name="search_footer" class="tabbed code wdt500">{SEARCH_FOOTER}</textarea>
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_MODULE_ORDER}:</div>
                 <div class="fg9">
                     <input type="text" name="search_module_order" class="wdt500" value="{SEARCH_MODULE_ORDER}">
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_MAX_EXCERPT}:</div>
                 <div class="fg9">
                     <input type="text" name="search_max_excerpt" value="{SEARCH_MAX_EXCERPT}" class="wdt50">
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_TIME_LIMIT}:</div>
                 <div class="fg9">
                     <input type="text" name="search_time_limit" value="{SEARCH_TIME_LIMIT}" class="wdt50">
@@ -459,7 +459,7 @@
         <!-- END show_search_block -->
 
         <hr class="fg12">
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg9 push3">
                 <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
             </div>
@@ -471,8 +471,8 @@
 		<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
     </h2>
 
-    <section class="content-box" style="padding:0;" id="settings-server-settings">
-        <div class="row top" style="padding-left:0;">
+    <section class="content-box" id="settings-server-settings">
+        <div class="row top">
             <div class="fg3">{TEXT_SERVER_OPERATING_SYSTEM}:</div>
             <div class="fg9">
                 <label id="os-linux-label">
@@ -487,10 +487,10 @@
             </div>
         </div>
         <!-- BEGIN show_access_block -->
-		<section id="file-perms" class="row top" style="padding-left:0;" {DISPLAY_ADVANCED}>
+		<section id="file-perms" class="row top" {DISPLAY_ADVANCED}>
             <div class="fg3">{TEXT_FILESYSTEM_PERMISSIONS}:</div>
-            <div class="fg4" style="border-bottom: 1px dotted #999;"> <b>{TEXT_FILES}: <span id="string-file-mode">{STRING_FILE_MODE}</span></b> </div>
-            <div class="fg4" style="border-bottom: 1px dotted #999;"> <b>{TEXT_DIRECTORIES}: <span id="string-dir-mode">{STRING_DIR_MODE}</span></b> </div>
+            <div class="fg4"> <b>{TEXT_FILES}: <span id="string-file-mode">{STRING_FILE_MODE}</span></b> </div>
+            <div class="fg4"> <b>{TEXT_DIRECTORIES}: <span id="string-dir-mode">{STRING_DIR_MODE}</span></b> </div>
             <div class="clearfix"></div>
             <div class="fg1 push4 fg-center">{TEXT_USER}:</div>
             <div class="fg1 fg-center">{TEXT_GROUP}:</div>
@@ -561,50 +561,50 @@
         </section>
  		<!-- END show_access_block -->
 
-       <div class="row top" style="padding-left:0;">
+       <div class="row top">
             <div class="fg3">{TEXT_PAGES_DIRECTORY}:</div>
             <div class="fg9">
                 <input type="text" name="pages_directory" value="{PAGES_DIRECTORY}" class="wdt250">
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_MEDIA_DIRECTORY}:</div>
             <div class="fg9">
                 <input type="text" name="media_directory" value="{MEDIA_DIRECTORY}" class="wdt250">
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_PAGE_EXTENSION}:</div>
             <div class="fg9">
                 <input type="text" name="page_extension" value="{PAGE_EXTENSION}" class="wdt250">
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_PAGE_SPACER}:</div>
             <div class="fg9">
                 <input type="text" name="page_spacer" value="{PAGE_SPACER}" class="wdt250">
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_RENAME_FILES_ON_UPLOAD}:</div>
             <div class="fg9">
                 <input type="text" name="rename_files_on_upload" value="{RENAME_FILES_ON_UPLOAD}" class="wdt500">
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_SESSION_IDENTIFIER}:</div>
             <div class="fg9">
                 <input type="text" name="app_name" value="{APP_NAME}" class="wdt250">
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_SEC_ANCHOR}:</div>
             <div class="fg9">
                 <input type="text" name="sec_anchor" value="{SEC_ANCHOR}" class="wdt250">
             </div>
         </div>
         <hr class="fg12">
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg9 push3">
                 <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
             </div>
@@ -614,23 +614,23 @@
     <!-- MAILER SETTINGS ****************************************** -->
     <h2 class="page_titel"> {HEADING_WBMAILER_SETTINGS} </h2>
 
-    <section class="content-box" style="padding:0;" id="settings-wbmailer-settings">
+    <section class="content-box" id="settings-wbmailer-settings">
         <p class="fg12 top bot desc">{TEXT_WBMAILER_DEFAULT_SETTINGS_NOTICE}</p>
         <p class="fg12 top bot desc">{TEXT_MAIL_SETTINGS_OVERRIDE_HINT}</p>
         <hr class="fg12">
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_WBMAILER_DEFAULT_SENDER_MAIL}:</div>
             <div class="fg9">
                 <input type="text" name="server_email" value="{SERVER_EMAIL}" class="wdt250">
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_WBMAILER_DEFAULT_SENDER_NAME}:<br>{WBMAILER_DEFAULT_SENDERNAME}</div>
             <div class="fg9">
                 <input type="text" name="wbmailer_default_sendername" value="{WBMAILER_DEFAULT_SENDERNAME}" class="wdt250">
             </div>
         </div>
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg3">{TEXT_WBMAILER_FUNCTION}:</div>
             <div class="fg9">
                 <label>
@@ -647,58 +647,53 @@
             <hr class="fg12">
             <p class="fg12 desc bot">{TEXT_WBMAILER_NOTICE}</p>
             <hr class="fg12">
-			
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_HOST}:</div>
                 <div class="fg9">
-                    <input type="text" name="wbmailer_smtp_host" value="{WBMAILER_SMTP_HOST}">
+                    <input type="text" name="wbmailer_smtp_host" value="{WBMAILER_SMTP_HOST}" class="wdt250">
                 </div>
-            </div>      
-            
-            <div class="row" style="padding-left:0;">
+            </div>
+            <div class="row">
                 <div class="fg3">SMTP Port:</div>
                 <div class="fg9">
-                    <select name="wbmailer_smtp_port" id="wbmailer_smtp_port" style="width: 255px;">
+                    <select name="wbmailer_smtp_port" id="wbmailer_smtp_port" class="wdt250">
                          {SMTP_PORT_OPTIONS}
                     </select>
                 </div>
             </div>	
-			
-            <div class="row" style="padding-left:0;">
+			<div class="row">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_AUTH}:</div>
-                <div class="fg9">aaa
-                    <input type="checkbox" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="1" {SMTP_AUTH_SELECTED} style="width: 14px; " />
+                <div class="fg9">
+                    <input type="checkbox" name="use_wbmailer_smtp_auth" id="use_wbmailer_smtp_auth" value="1" {SMTP_AUTH_SELECTED} />
                     <label for="wbmailer_smtp_auth">{TEXT_WBMAILER_SMTP_AUTH_NOTICE}</label>
                 </div>
             </div>
-            
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">SMTP Secure:</div>
                 <div class="fg9">
-                     <select name="wbmailer_smtp_secure" id="wbmailer_smtp_secure" style="width: 255px;">                         
+                     <select name="wbmailer_smtp_secure" id="wbmailer_smtp_secure" class="wdt250">                         
                          {SMTP_SECURE_OPTIONS}
                      </select>
                 </div>
             </div>
-			
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_USERNAME}:</div>
                 <div class="fg9">
                     <input type="text" name="wbmailer_smtp_username" value="{WBMAILER_SMTP_USERNAME}" class="wdt250">
                 </div>
             </div>
-            <div class="row" style="padding-left:0;">
+            <div class="row">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_PASSWORD}:</div>
                 <div class="fg9">
                     <input type="password" name="wbmailer_smtp_password" value="{WBMAILER_SMTP_PASSWORD}" class="wdt250">
                 </div>
             </div>
-         </section>   
+        </section>
         <hr class="fg12">
-        <div class="row" style="padding-left:0;">
+        <div class="row">
             <div class="fg9 push3">
                 <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
-            </div>		
+			</div>
 		</form> <!--main. Needs to be placed here, no form in form possible-->		
 			<hr class="fg12">
 			<div class="fg9">

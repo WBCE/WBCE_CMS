@@ -4,7 +4,7 @@
 
 <ul>
     <!-- BEGIN users_block -->
-    <div id="admin_users" class="content-box themebox" {DISPLAY_USERS}>
+    <div id="admin_users" class="themebox" {DISPLAY_USERS}>
         <div class="tb_header"> <a href="{ADMIN_URL}/users/index.php"></a> </div>
         <div class="tb_content_outer">
             <div class="tb_content"> <a class="tb_titel" href="{ADMIN_URL}/users/index.php">{USERS}</a> {USERS_OVERVIEW} </div>
@@ -18,7 +18,7 @@
     <!-- END users_block -->
     
     <!-- BEGIN groups_block -->
-    <div id="admin_groups" class="content-box themebox" {DISPLAY_GROUPS}>
+    <div id="admin_groups" class="themebox" {DISPLAY_GROUPS}>
         <div class="tb_header"> <a href="{ADMIN_URL}/groups/index.php"></a> </div>
         <div class="tb_content_outer">
             <div class="tb_content"> <a class="tb_titel" href="{ADMIN_URL}/groups/index.php">{GROUPS}</a> {GROUPS_OVERVIEW} </div>

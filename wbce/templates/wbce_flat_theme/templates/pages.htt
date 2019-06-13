@@ -5,7 +5,7 @@
         <h2 class="page_titel card-header">{TEXT_PAGES}</h2>
         <div class="content-box card-body">{PAGE_TREE}</div>			 
     </div>
-    <div class="fg4" style="margin: 0;">
+    <div class="fg4">
         <div class="card {DISPLAY_ADD}">
             <h2 class="page_titel card-header">{HEADING_ADD_PAGE}</h2>
             <div class="content-box card-body">
@@ -28,7 +28,7 @@
                             <label for="selectParent">{TEXT_PARENT}</label>
                             <select id="selectParent" name="parent" class="form-control">
                                 <!-- BEGIN page_list_block2 -->
-                                <option value="{ID}" {DISABLED} style="background: {FLAG_ROOT_ICON} no-repeat center left; padding-left: 20px;">{TITLE}</option>
+                                <option value="{ID}" {DISABLED}>{TITLE}</option>
                                 <!-- END page_list_block2 -->
                             </select>
                         </div>

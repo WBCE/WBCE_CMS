@@ -5,45 +5,18 @@
 <head>
 <meta charset="{CHARSET}">
 <title>Set Parameter</title>
+
 <style>
-body, td {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    margin:0;
-}
-table {
-    width: 100%;
-}
-td {
-    padding: 6px;
-    vertical-align: middle;
-}
-input {
-    vertical-align: middle;
-}
-input[type="text"] {
-    width: 50px;
-    border: 1px solid #999;
-    background-color: #eee;
-    height: 26px;
-    text-align: right;
-    padding: 0 5px;
-}
-input[type="text"]:hover, input[type="text"]:focus {
-    border: 1px solid #647086;
-}
-button {
-    border: 1px solid #999;
-    background-color: #647086;
-    color: #fff;
-    height: 28px;
-    width: 150px;
-    cursor: pointer;
-}
-button:hover {
-    opacity: 0.85;
-}
+body, td { font-family: Arial, Helvetica, sans-serif; margin:0; }
+table { width: 100%; }
+td { padding: 6px; vertical-align: middle; }
+input { vertical-align: middle; }
+input[type="text"] { width: 50px; border: 1px solid #999; background-color: #eee; height: 26px; text-align: right; padding: 0 5px; }
+input[type="text"]:hover, input[type="text"]:focus { border: 1px solid #647086; }
+button { border: 1px solid #999; background-color: #647086; color: #fff; height: 28px; width: 150px; cursor: pointer; }
+button:hover { opacity: 0.85; }
 </style>
+
 <script>
 /*
 $(document).ready(function(){
@@ -56,6 +29,7 @@ $(document).ready(function(){
 */
 </script>
 </head>
+
 <body>
 <table>
     <tr style="background-color: #ddd;">
@@ -79,8 +53,9 @@ $(document).ready(function(){
                 {ADMIN_ONLY}
             </label></td>
         </tr>
-        
+
         <!-- BEGIN list_block -->
+
         <tr style="background-color: #{ROW_BG_COLOR};">
             <td>{PATH_NAME}</td>
             <td>{WIDTH}
@@ -89,8 +64,9 @@ $(document).ready(function(){
                 <input type="text" name="{FIELD_NAME_H}" value="{CUR_HEIGHT}">
             </td>
         </tr>
+
         <!-- END list_block -->
-        
+
         <tr>
             <td><button type="submit" name="save"> {SAVE_TEXT} </button></td>
             <td style="text-align:right;"><button type="button" id="cancel-setparam" onclick="location.href = 'browse.php';"> {BACK} </button></td>
@@ -101,3 +77,4 @@ $(document).ready(function(){
 </html>
 
 <!-- END main_block -->
+

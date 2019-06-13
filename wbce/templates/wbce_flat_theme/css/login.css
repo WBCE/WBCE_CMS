@@ -1,178 +1,26 @@
 @import url('font/opensans.css');
-*, *:before, *:after {
-    box-sizing: inherit;
+*, *:before, *:after { box-sizing: inherit; font-family: open_sans, sans-serif !important; }
+html { font-size: 16px; height: 100%; color: #f3f3f3; }
+body { height: 100%; box-sizing: border-box; background-color: #647087; }
+a { text-decoration: underline; color: #f3f3f3; }
+a:hover { text-decoration: none; }
+.page_login_header { height: 216px; background-color: #323741; }
+.page_login_logo { position: absolute; right: 70px; top: 90px; height: 180px; padding-right: 170px; padding-top: 70px; text-align: right; font-size: 48px; background: url("../images/logo.png") no-repeat right top; }
+.page_login_slogan { position: absolute; right: 240px; top: 220px; font-size: 20px; text-align: right; font-weight: bold; color: #323741; }
+.page_login_form { margin: 180px auto 0; max-width: 500px; text-align: center; padding: 16px; }
+.page_login_fieldelement { display: inline-block; width: 100%; }
+.page_login input { width: 100%; padding: 8px 5px; margin-top: 3px; text-align: center; }
+.page_login input[type='submit'] { display: inline-block; max-width: 300px; border: none; color: #f3f3f3; background-color: #25588f; }
+.page_login input[type="submit"]:hover { background-color: #225183; }
+.page_login_link { font-size: 13px; }
+.login_license { font-size: 11px; }
+@media (max-width:550px) {
+.page_login_logo { background: none; padding-right: 0; right: 10px; }
+.page_login_slogan { position: relative; right: auto; text-align: center; }
+.page_login_form { margin: 90px auto 0; }
 }
-html {
-    font-size: 14px;
-    line-height: 24px;
-    font-family: open_sans, sans-serif;
-    color: #ffffff;
-}
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body {
-    background-color: #647087;
-}
-a {
-    color: #adb5c3;
-}
-p {
-    margin: 0;
-}
-a:hover {
-    color: #909aad;
-}
-#page_login_header {
-    position: relative;
-    height: 30%;
-    background-color: #323741;
-}
-#page_login_logo {
-    position: absolute;
-    right: 70px;
-    bottom: -50px;
-    height: 180px;
-    padding-right: 170px;
-    padding-top: 70px;
-    text-align: right;
-    font-size: 48px;
-    line-height: 50px;
-    background: url("../images/wblogo_large.png") no-repeat right top;
-}
-#page_login_slogan {
-    position: absolute;
-    right: 240px;
-    bottom: -30px;
-    font-size: 20px;
-    line-height: 24px;
-    text-align: right;
-    color: #46505f;
-    font-weight: bold;
-}
-.login_license {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    font-size: 11px;
-    text-align: center;
-}
-div#page_login_form {
-    margin-top: 200px;
-    margin-left: 100px;
-}
-div#page_login_form span {
-    display: inline-block;
-}
-span.page_login_fieldname {
-    width: 120px;
-}
-span.page_login_fieldelement {
-    width: 350px;
-}
-#page_login input[type='text'], #page_login input[type='password'] {
-    width: 98%;
-    padding: 8px 5px;
-}
-#page_login input[type='checkbox'] {
-    margin-left: 125px;
-}
-#page_login input[type='submit'] {
-    display: inline-block;
-    width: 290px;
-    margin-left: 125px;
-    padding: 8px 0;
-    color: #ffffff;
-    background-color: #25588f;
-}
-#page_login input[type="submit"]:hover {
-    background-color: #225183;
-}
-a#page_login_homelink {
-    display: inline-block;
-    position: relative;
-    margin-left: 10px;
-}
-a#page_login_homelink:after {
-    content: "";
-    font-family: FontAwesome;
-    display: inline-block;
-    position: relative;
-    left: 0;
-    bottom: 0;
-    padding: 5px 11px;
-    font-weight: normal;
-    color: #ffffff;
-    background-color: #45a246;
-}
-a:hover#page_login_homelink:after {
-    background-color: #3d903e;
-}
-a#page_login_forgottenlink {
-    margin-left: 125px;
-    font-weight: normal;
-}
-button, .wb_button, div.button_advanced_settings a, a.wb_button, div.button_advanced_settings a, input[type='button'], input[type='submit'], input[type='reset'] {
-    box-sizing: border-box !important;
-    display: inline-block;
-    margin-top: 12px;
-    padding: 4px 16px;
-    font-weight: normal;
-    text-decoration: none;
-    color: #ffffff;
-    background-color: #505b6d;
-    border: none;
-}
-@media (max-height:700px) {
-.login_license {
-    margin-top: 4%;
-    font-size: 11px;
-    text-align: center;
-    position: inherit;
-    padding: 0 2%;
-}
-}
-@media (max-width:600px) {
-div#page_login_form {
-    margin-top: 100px;
-    margin-left: 20px;
-}
-#page_login_logo {
-    right: 7px;
-}
-#page_login_slogan {
-    right: 177px;
-}
-}
-@media (max-width:493px) {
-#page_login input[type='submit'] {
-    margin-left: 0;
-}
-a#page_login_forgottenlink {
-    display: inherit;
-    margin: 10px 0;
-}
-#page_login_logo {
-    right: 5px;
-    background: transparent;
-    padding: 0 0 0 0;
-    height: 100px;
-}
-#page_login_slogan {
-    position: absolute;
-    right: 5px;
-    bottom: -25px;
-}
-}
-@media (max-width:400px) {
-span.page_login_fieldelement {
-    width: 100%;
-}
-#page_login input[type='submit'] {
-    width: 100%;
-    width: calc(100% - 60px);
-}
+@media (max-width:550px) and (max-height:650px) {
+.page_login_header { height: 150px; }
+.page_login_logo { top: 30px; }
+.page_login_slogan { top: 150px; }
 }

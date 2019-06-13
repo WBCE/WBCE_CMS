@@ -107,11 +107,6 @@ $(document).ready(function() {
 		$(this).html(tb_replacestring);
 	}); // ENDE special remove commas from themeboxes
     
-	// enable special stylings for file input fields
-	$("input[type=file]").nicefileinput({
-		label : ''
-	});
-    
 	/*** enable tabs in textareas (class "tabbed") ********************/
 	$(document).delegate('.tabbed', 'keydown', function (e) {
 		var keyCode = e.keyCode || e.which;

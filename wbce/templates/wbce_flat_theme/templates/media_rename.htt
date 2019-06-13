@@ -28,22 +28,22 @@ $(document).ready(function(){
     <input type="hidden" name="dir" value="{DIR}">
     <input type="hidden" name="old_name" value="{FILENAME}">
     <input type="hidden" name="id" value="{FILE_ID}">
-    <section class="content-box" style="padding: 10px; display: inline-block; margin: 0 10px;">
-        <div class="fg12">{TEXT_RENAME} <b>'{FILENAME}'</b> {TEXT_TO}:</div>
-        <div class="fg12">
-            <input type="text" name="name" id="rename-name" style="width: 89%;">
-            <input type="text" name="extension" style="width: 9%;" value="{EXTENSION}" class="{DISPlAY_EXTENSION}">
+    <section class="content-box">
+        <div>{TEXT_RENAME} <b>'{FILENAME}'</b> {TEXT_TO}:</div>
+        <br />
+        <div>
+            <input type="text" name="name" id="rename-name" style="width: 88%;">
+            <input type="text" name="extension" style="width: 8%;" value="{EXTENSION}" class="{DISPlAY_EXTENSION}">
         </div>
-        <div class="fg12">
+        <div>
             <label>
                 <input type="checkbox" name="overwrite" id="overwrite" value="yes">
                 {TEXT_OVERWRITE_EXISTING} {TYPE}
             </label>
         </div>
-        <div class="fg2">
+        <br />
+        <div>
             <button type="submit" name="submit"> <i class="fa fa-fw fa-check"></i> {TEXT_RENAME} </button>
-        </div>
-        <div class="fg2" style="text-align: right;">
             <button type="button" name="cancel" id="cancel-rename"> <i class="fa fa-fw fa-reply"></i> {TEXT_CANCEL} </button>
         </div>
     </section>

@@ -6,7 +6,7 @@
 
 <div id="page_addons"> 
     <!-- BEGIN modules_block -->
-    <div id="addons_modules" class="content-box themebox" {DISPLAY_MODULES}>
+    <div id="addons_modules" class="themebox" {DISPLAY_MODULES}>
         <div class="tb_header"> <a href="{ADMIN_URL}/modules/index.php"></a> </div>
         <div class="tb_content_outer">
             <div class="tb_content"> <a class="tb_titel" href="{ADMIN_URL}/modules/index.php">{MODULES}</a> {MODULES_OVERVIEW} </div>
@@ -21,7 +21,7 @@
 </div>
 <div id="page_addons"> 
     <!-- BEGIN templates_block -->
-    <div id="addons_templates" class="content-box themebox" {DISPLAY_TEMPLATES}>
+    <div id="addons_templates" class="themebox" {DISPLAY_TEMPLATES}>
         <div class="tb_header"> <a href="{ADMIN_URL}/templates/index.php"></a> </div>
         <div class="tb_content_outer">
             <div class="tb_content"> <a class="tb_titel" href="{ADMIN_URL}/templates/index.php">{TEMPLATES}</a> {TEMPLATES_OVERVIEW} </div>
@@ -36,7 +36,7 @@
 </div>
 <div id="page_addons"> 
     <!-- BEGIN languages_block -->
-    <div id="addons_languages" class="content-box themebox" {DISPLAY_LANGUAGES}>
+    <div id="addons_languages" class="themebox" {DISPLAY_LANGUAGES}>
         <div class="tb_header"> <a href="{ADMIN_URL}/languages/index.php"></a> </div>
         <div class="tb_content_outer">
             <div class="tb_content"> <a class="tb_titel" href="{ADMIN_URL}/languages/index.php">{LANGUAGES}</a> {LANGUAGES_OVERVIEW} </div>
@@ -51,14 +51,14 @@
 </div>
 
 <!-- BEGIN reload_block -->
-<div id="addons_reload" class="content-box themebox" {DISPLAY_RELOAD}>
+<div id="addons_reload" class="themebox" {DISPLAY_RELOAD}>
     <div class="tb_header"> <span class="tb_icon"></span> </div>
     <div class="tb_content_outer">
         <div class="tb_content">
             <h2 class="page_titel">{TXT_ADMIN_SETTINGS}</h2>
             <form action="{RELOAD_URL}" method="post">
                 {FTAN}
-                {MESSAGE_RELOAD_ADDONS} <br style="margin-bottom: 0.5em" />
+                {MESSAGE_RELOAD_ADDONS} <br/>
                 <input {DISPLAY_MODULES} type="checkbox" name="reload_modules" id="reload_modules" value="true" />
                 <label {DISPLAY_MODULES} for="reload_modules">{MODULES}</label>
                 <input {DISPLAY_TEMPLATES} type="checkbox" name="reload_templates" id="reload_templates" value="true" />

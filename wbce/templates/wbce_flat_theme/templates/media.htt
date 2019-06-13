@@ -1,10 +1,12 @@
 <!-- BEGIN main_block -->
 
+<h2 class="page_titel">Media</h2>
+
 <div class="lazyfix">
     <!-- left frame - file browser -->
     <section class="fg8" id="media-browser">
-        <h2 class="page_titel">{HEADING_BROWSE_MEDIA}</h2>
         <section class="fg12 content-box">
+            <h3>{HEADING_BROWSE_MEDIA}</h3>
             <div class="fg12 {DISPLAY_SETTINGS}" id="media-tools" style="text-align: right; margin-bottom: 5px; margin-top: 10px; padding: 0 10px;"> <i class="fa fa-gears"></i>&nbsp; <a href="setparameter.php" target="browse">{CHANGE_SETTINGS}</a> &nbsp;&nbsp;|&nbsp;&nbsp; <i class="fa fa-refresh"></i>&nbsp; <a href="browse.php?dir={CURRENT_DIR}" target="browse">{TEXT_RELOAD}</a> </div>
             <div class="fg12">
                 <iframe id="browse-frame" name="browse" width="100%" height="650" src="browse.php" scrolling="yes" frameborder="0"></iframe>
@@ -14,8 +16,8 @@
     <!-- right frame - upload & folder handling -->
     <section id="media-upload" class="fg4 {DISPLAY_UPLOAD}">
     <div class="fg12">
-        <h2 class="page_titel">{HEADING_UPLOAD_FILES}</h2>
         <section class="content-box pdng">
+            <h3>{HEADING_UPLOAD_FILES}</h3>
             <form name="upload" action="upload.php" method="post" enctype="multipart/form-data">
                 {FTAN}
                 <div style="margin-top: 5px;">{TEXT_TARGET_FOLDER}:</div>
@@ -83,8 +85,8 @@
         </section>
     </div>
     <div class="fg12">
-        <h2 class="page_titel">{HEADING_CREATE_FOLDER}</h2>
         <section id="media-folder" class="content-box pdng {DISPLAY_CREATE}">
+            <h3>{HEADING_CREATE_FOLDER}</h3>
             <form name="create" action="create.php" method="post">
                 {FTAN}
                 <div style="margin-top: 5px;">{TEXT_NAME}:</div>

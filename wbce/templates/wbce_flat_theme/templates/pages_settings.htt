@@ -7,13 +7,16 @@
         <div class="headline-link"> <a href="{ADMIN_URL}/pages/modify.php?page_id={PAGE_IDKEY}"> <i class="fa fa-edit"></i> {TEXT_MODIFY_PAGE} </a> <span style="{DISPLAY_MANAGE_SECTIONS}">&nbsp;&nbsp;|&nbsp;&nbsp;</span> <a href="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" style="{DISPLAY_MANAGE_SECTIONS}"> <i class="fa fa-bars"></i> {TEXT_MANAGE_SECTIONS} </a> </div>
     </h2>
 
-    <header class="fg12 subheader">
-        <div style="float: left;"> {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
-            PageID: <b>{PAGE_ID}</b> </div>
-        <div style="float: right; text-align: right; color: #999;" class="{DISPLAY_MODIFIED}"> <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i> </div>
-    </header>
-    <section class="fg12 content-box" style="width: 100%;margin: 0;">
-        <form name="settings" action="settings2.php" method="post" style="margin-top: 15px;">
+    <h2 class="subheader">
+        <span>
+            {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b>
+        </span>
+        <span class="{DISPLAY_MODIFIED}">
+            <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
+        </span>
+    </h2>
+    <section class="fg12 content-box">
+        <form name="settings" action="settings2.php" method="post">
             {FTAN}
             <input type="hidden" name="page_id" value="{PAGE_ID}">
             <section class="fg7">
@@ -33,7 +36,7 @@
                     <div class="fg4">{TEXT_FILENAME}:</div>
                     <div class="fg8">
                         <input type="text" name="link" value="{LINK_VALUE}" class="wdt250">
-                        <span style="vertical-align: -5px;">&nbsp;{PAGE_EXTENSION}</span> </div>
+                        <span>&nbsp;{PAGE_EXTENSION}</span> </div>
                 </div>
                 <div class="row">
                     <div class="fg4">{TEXT_PARENT}:</div>
@@ -84,7 +87,7 @@
                     <div class="fg4">{TEXT_TEMPLATE}:</div>
                     <div class="fg8">
                         <select name="template" class="wdt250">
-                            <option value="" style="border-bottom:1px solid #666;">{TEXT_SYSTEM_DEFAULT}</option>
+                            <option value="">{TEXT_SYSTEM_DEFAULT}</option>
                             <!-- BEGIN template_list_block -->
                             <option value="{VALUE}" {SELECTED}>{NAME}</option>
                             <!-- END template_list_block -->
@@ -136,10 +139,10 @@
             </section>
             <section class="fg5">
                 <div class="fg12">
-                    <div style="margin-bottom:5px;">{TEXT_ADMINISTRATORS}:</div>
+                    <div>{TEXT_ADMINISTRATORS}:</div>
                     <ul>
                         <!-- BEGIN group_list_block -->
-                        <li style="margin-bottom:5px;">
+                        <li>
                             <input type="checkbox" name="admin_groups[]" id="admin_group_{ID}" value="{ID}" {CHECKED} {DISABLED}>
                             <label for="admin_group_{TOGGLE}">{NAME}</label>
                         </li>
@@ -149,7 +152,7 @@
                 <div class="fg12" id="allowed_viewers" style="{DISPLAY_VIEWERS}"> {TEXT_ALLOWED_VIEWERS}:
                     <ul>
                         <!-- BEGIN group_list_block2 -->
-                        <li style="margin-bottom:5px;">
+                        <li>
                             <input type="checkbox" name="viewing_groups[]" id="viewing_group_{ID}" value="{ID}" {CHECKED} {DISABLED}>
                             <label for="viewing_group_{TOGGLE}">{NAME}</label>
                         </li>

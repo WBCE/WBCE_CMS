@@ -1,48 +1,46 @@
-<!-- BEGIN mainBlock -->
+<!-- BEGIN main_block -->
 
 <!DOCTYPE html>
 <html lang="{LANGUAGE}">
 <head>
 <title>{TEXT_LOGIN}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="content-type" content="text/html; charset={CHARSET}" />
 <meta http-equiv="content-language" content="{LANGUAGE}" />
 <meta name="description" content="{TEXT_LOGIN}" />
 <meta name="keywords" content="{TEXT_LOGIN}" />
 <link rel="stylesheet" href="{THEME_URL}/css/normalize.css" />
 <link rel="stylesheet" href="{THEME_URL}/css/login.css" />
-<link rel="stylesheet" href="{WB_URL}/include/font-awesome/css/font-awesome.min.css" />
 <script type="text/javascript" src="{WB_URL}/include/jquery/jquery-min.js"></script>
 </head>
-<body id="page_login" onload="document.login.{USERNAME_FIELDNAME}.focus();">
-<div id="page_login_header">
-    <div id="page_login_logo"> WBCE CMS</div>
-    <div id="page_login_slogan"> Way Better Content Editing. </div>
+<body class="page_login" onload="document.login.{USERNAME_FIELDNAME}.focus();">
+
+<div class="page_login_header">
+    <div class="page_login_logo">WBCE CMS</div>
+    <div class="page_login_slogan">Way Better Content Editing.</div>
 </div>
+
 <!-- BEGIN loginform -->
-<div id="page_login_form">
+<div class="page_login_form">
     <p>{MESSAGE}</p>
-    <br />
     <form name="login" class="login" action="{ACTION_URL}" method="post" autocomplete="off">
         <input type="hidden" name="url" value="{URL}" />
         <input type="hidden" name="username_fieldname" value="{USERNAME_FIELDNAME}" />
         <input type="hidden" name="password_fieldname" value="{PASSWORD_FIELDNAME}" />
-        <div id="page_login-fields"> <span class="page_login_fieldname">{TEXT_USERNAME}:</span> <span class="page_login_fieldelement">
-            <input type="text" name="{USERNAME_FIELDNAME}" value="{USERNAME}" />
-            </span> <br/>
-            <span class="page_login_fieldname">{TEXT_PASSWORD}:</span> <span class="page_login_fieldelement">
-            <input type="password" name="{PASSWORD_FIELDNAME}" autocomplete="off" />
-            </span> <br/>
-            <input type="submit" name="submit" value="{TEXT_LOGIN}"  />
-            <a id="page_login_homelink" href="{WB_URL}/"></a> <br/>
-            <a id="page_login_forgottenlink" href="{FORGOTTEN_DETAILS_APP}">{TEXT_FORGOTTEN_DETAILS}</a> </div>
+        <div class="page_login-fields">
+            <span class="page_login_fieldelement"><input placeholder="{TEXT_USERNAME}" type="text" name="{USERNAME_FIELDNAME}" value="{USERNAME}" /></span>
+            <br/>
+            <span class="page_login_fieldelement"><input placeholder="{TEXT_PASSWORD}" type="password" name="{PASSWORD_FIELDNAME}" autocomplete="off" /></span>
+            <br/>
+            <p><input type="submit" name="submit" value="{TEXT_LOGIN}" /></p>
+            <p><a class="page_login_link" href="{FORGOTTEN_DETAILS_APP}">{TEXT_FORGOTTEN_DETAILS}</a></p>
+        </div>
     </form>
+    <p class="login_license"><!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. --><a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" title="GNU General Public License">GNU General Public License</a></p>
 </div>
 <!-- ENDE loginform -->
-<div class="login_license"> 
-    <!-- Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. -->
-    <a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" title="GNU General Public License">GNU General Public License</a><br />
-</div>
+
 </body>
 </html>
 
-<!-- END mainBlock -->
+<!-- END main_block -->

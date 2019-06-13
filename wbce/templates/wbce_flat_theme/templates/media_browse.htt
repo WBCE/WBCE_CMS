@@ -17,18 +17,14 @@ function confirm_link(message, url) {
 }
 
 $(document).ready(function() {
-
     // hide the uplink on highest level (media folder)
     var folder = $('#header-text span').html();
     if (folder == '{MEDIA_DIRECTORY}') {
         $('#uplink a').hide();
     }
-
     $('#media-tools').show();
-
     // adapt the folders in parent frame
     parent.document.create.target.value = '{MEDIA_DIRECTORY}{CURRENT_DIR}'; parent.document.upload.target.value = '{MEDIA_DIRECTORY}{CURRENT_DIR}';
-
 });
 </script>
 </head>

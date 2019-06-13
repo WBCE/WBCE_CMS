@@ -8,15 +8,18 @@
         <div class="headline-link"> <a href="{ADMIN_URL}/pages/modify.php?page_id={PAGE_IDKEY}"> <i class="fa fa-edit"></i> {HEADING_MODIFY_PAGE} </a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="{ADMIN_URL}/pages/settings.php?page_id={PAGE_IDKEY}" style="{DISPLAY_MANAGE_SECTIONS}"> <i class="fa fa-cog"></i> {TEXT_CHANGE_SETTINGS} </a> </div>
     </h2>
 
-    <header class="fg12 subheader">
-        <div style="float: left;"> {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp;
-            PageID: <b>{PAGE_ID}</b> </div>
-        <div style="float: right; text-align: right; color:#999;" class="{DISPLAY_MODIFIED}"> <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i> </div>
-    </header>
-    <section class="fg12 content-box" style="width: 100%;margin: 0;">
+    <h2 class="subheader">
+        <span>
+            {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b>
+        </span>
+        <span class="{DISPLAY_MODIFIED}">
+            <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
+        </span>
+    </h2>
+    <section class="fg12 content-box">
         <form name="section_properties" action="{ADMIN_URL}/pages/sections_save.php?page_id={PAGE_IDKEY}" method="post">
             {FTAN}
-            <div class="fg12" style="margin-top: 10px;">
+            <div class="fg12">
                 <table>
                     <tr class="sections-list-header">
                         <td class="header-list-type">{TEXT_TYPE}</td>
@@ -24,6 +27,8 @@
                         <td class="header_list_namesection">{TEXT_NAMESECTION}</td>
                         <td class="header_list_pubdate_start">{TEXT_PUBL_START_DATE}</td>
                         <td class="header_list_pubdate_end">{TEXT_PUBL_END_DATE}</td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
                         <td class="header_list_sections_actions"><i class="fa fa-lg fa-trash"></i></td>
                         <td class="header-list-section-id">ID</td>
                         <td {DISPLAY_DEBUG}>{TEXT_PID}</td>
@@ -66,8 +71,8 @@
     <div class="clearfix"></div>
     <h2 class="page_titel">{TEXT_ADD_SECTION}</h2>
     
-    <section class="fg12 content-box" style="width: 100%;margin: 0;">
-        <form name="add" action="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" method="post" class="fg12" style="margin-top: 10px;">
+    <section class="fg12 content-box">
+        <form name="add" action="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" method="post" class="fg12">
             {FTAN}
             <input type="hidden" name="page_id" value="{PAGE_IDKEY}">
             <select name="module" class="wdt200">

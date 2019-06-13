@@ -8,14 +8,14 @@
         </div>
     </h2>
 
-    <header class="fg12 subheader">
-        <div style="float: left;">
+    <h2 class="subheader">
+        <span>
             {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b>
-        </div>
-        <div style="float: right; text-align: right;" class="{DISPLAY_MODIFIED}">
+        </span>
+        <span class="{DISPLAY_MODIFIED}">
             <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
-        </div>
-    </header>
+        </span>
+    </h2>
 </section>
 <div class="clearfix"></div>
 

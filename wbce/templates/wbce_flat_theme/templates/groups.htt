@@ -4,7 +4,7 @@
     <div class="headline-link"> <i class="fa fa-user"></i> <a href="{ADMIN_URL}/users/index.php">{TEXT_MANAGE_USERS}</a> </div>
 </h2>
 
-<form name="groups" action="groups.php" method="post" class="content-box" style="display: inline-block; width: 100%;">
+<form name="groups" action="groups.php" method="post" class="content-box">
     {FTAN}
     <h3 class="fg12">{HEADING_MODIFY_DELETE_GROUP}</h3>
     <div class="fg6">
