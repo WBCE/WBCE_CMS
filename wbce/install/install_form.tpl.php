@@ -226,11 +226,11 @@ function change_os(type) {
                 </tr>
                 <tr>
                     <td class="name">Password:</td>
-                    <td class="value"><input <?php echo field_error('admin_password');?> type="password" tabindex="14" name="admin_password" value="<?php echo $sAdminPassword ?>" /></td>
+                    <td class="value"><input <?php echo field_error('admin_password');?> type="password" tabindex="14" name="admin_password" minlength="6" value="<?php echo $sAdminPassword ?>" /></td>
                 </tr>
                 <tr>
                     <td class="name">Repeat Password:</td>
-                    <td class="value"><input <?php echo field_error('admin_repassword');?> type="password" tabindex="15" name="admin_repassword" value="<?php echo $sAdminRepassword ?>" /></td>
+                    <td class="value"><input <?php echo field_error('admin_repassword');?> type="password" tabindex="15" name="admin_repassword" minlength="6" value="<?php echo $sAdminRepassword ?>" /></td>
                 </tr>
             </tbody>
         </table>
