@@ -16,7 +16,7 @@
 #}
 
 // Find out if the user was view advanced options or not
-$advanced = ($_POST['advanced'] == 'yes') ? '?advanced=yes' : '';
+$advanced = (isset($_POST['advanced']) && $_POST['advanced'] == 'yes') ? '?advanced=yes' : '';
 
 // Print admin header
 require '../../config.php';
