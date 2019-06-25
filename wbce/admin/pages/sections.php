@@ -440,7 +440,7 @@ switch ($action) {
                 $sWhereAnd = "";
             }
             $sSql = "SELECT `name`,`directory`,`type` FROM `{TP}addons` 
-                        WHERE `type` = 'module' AND `function` = 'page' 
+                        WHERE `type` = 'module' AND `function` LIKE '%page%'
                         ".$sWhereAnd." 
                         ORDER BY `name`";
             $rResult = $database->query($sSql);
