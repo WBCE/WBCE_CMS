@@ -5,6 +5,1078 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2019-06-28:** Colinax [[49bf99cb](https://github.com/WBCE/WBCE_CMS/commit/49bf99cbfc6d1b51d810dd4b63c6cf8aea61cb5d)]
+   > Update version.php
+     for upcoming beta release
+
+ * **2019-06-28:** instantflorian [[43e50837](https://github.com/WBCE/WBCE_CMS/commit/43e50837b1407837f0c3a95aae9885799ee65288)]
+   > some minor BE theme issues
+
+ * **2019-06-28:** instantflorian [[c7484e42](https://github.com/WBCE/WBCE_CMS/commit/c7484e42a0a4fa5b1dbacdf5d91b877827ff0a99)]
+   > Resolve issue with image sizes
+
+ * **2019-06-28:** Colinax [[b4959ae7](https://github.com/WBCE/WBCE_CMS/commit/b4959ae782a55c6f511256b71bd2f38dc849f9f5)]
+   > CKEditor 4.12.0
+
+ * **2019-06-25:** Stefek [[49af5f45](https://github.com/WBCE/WBCE_CMS/commit/49af5f45a74692b619a694a20c1df1262c973839)]
+   > Show page type modules with mixed function types (hybrides) in the drop-down selection
+     Modules can have several function types and act as hybrides. For example:
+     `$module_function  = 'page, preinit';`
+     or
+     `$module_function  = 'page, tool';`
+     Up until now these modules have been shown in the selection underneath the PageTree (on page creation) but not below the sections (on section creation).
+ * **2019-06-13:** Colinax [[1ad42f8e](https://github.com/WBCE/WBCE_CMS/commit/1ad42f8e8fd02d3d4cf32f1b61836c7d1f34befc)]
+   > fix for advanced mode notice
+
+ * **2019-06-13:** Colinax [[b036a5b5](https://github.com/WBCE/WBCE_CMS/commit/b036a5b51102279ef2965a213f555d62582f4a2a)]
+   > WBCE Flat Theme 1.7
+
+ * **2019-06-13:** Colinax [[5ae20372](https://github.com/WBCE/WBCE_CMS/commit/5ae203726b88fb50e680a0935893fa4afefa72cb)]
+   > add minlength for account password
+     during installation for a better error handling in frontend
+
+ * **2019-06-12:** instantflorian [[627e8a33](https://github.com/WBCE/WBCE_CMS/commit/627e8a33e4154dcd61b3c8333b465da6a77a0026)]
+   > Update NWI to v. 4.0.1
+
+ * **2019-06-11:** Stefek [[2944c9e1](https://github.com/WBCE/WBCE_CMS/commit/2944c9e178fa1de890ffa408ddbd7b0d297e271f)]
+   > handle settings issue with multiple id's with the same value (#427)
+     * standardize <button> design throughout layout
+     change <h1> to <h2> as some templates generate H1 tags based on page/menu title
+     
+     * handle issue #420
+     
+     * handle issue #420
+     
+     * adding new insert placeholders
+     <!--(PH) CSS HEAD MODFILES -->
+     <!--(PH) JS HEAD MODFILES -->
+     <!--(PH) JS BODY MODFILES -->
+     
+     * adding new insert placeholders to the backend
+     <!--(PH) CSS HEAD MODFILES -->
+     <!--(PH) JS HEAD MODFILES -->
+     
+     * Bug fix for MiniForm module
+     
+     * Class Insert: show script and style id only when logged in.
+     
+     * handle settings issue with multiple id's with the same value
+     `wbmailer_smtp_auth`
+
+ * **2019-06-10:** Martin Hecht [[8209a506](https://github.com/WBCE/WBCE_CMS/commit/8209a5062aadb448ebb38f5ebf6feecc4e57f73f)]
+   > Fix for #343: Installer accepts too many kinds of characters for admin password
+     quick solution: Just copy the checks from the wb class into the installer script
+     It could be done nicer, and a password-strength indicator would be nice, too,
+     but this can be done in another commit, for a later release maybe... we will see
+
+ * **2019-06-10:** Colinax [[e72ce3e0](https://github.com/WBCE/WBCE_CMS/commit/e72ce3e045cbc24beb0cbe5b4cf2596850bdfe9c)]
+   > Installer fix min. PHP_VERSION
+
+ * **2019-06-08:** Colinax [[be932fde](https://github.com/WBCE/WBCE_CMS/commit/be932fde6aeec10d06d54d9723aa4f217d6a407d)]
+   > bump PHP_VERSION ...
+     ... to PHP 5.6.30 (released 19 Jan 2017)
+
+ * **2019-06-08:** Stefek [[79420d28](https://github.com/WBCE/WBCE_CMS/commit/79420d2886d3d4477ce42cfa34c6b81928c648dd)]
+   >  Class Insert: show script and style id only when logged in (#426)
+
+ * **2019-06-06:** Stefek [[57e5e14c](https://github.com/WBCE/WBCE_CMS/commit/57e5e14cbe3dedaab7e2a9fd92ee5133b4c6a5b1)]
+   >  Bug fix for MiniForm module (#425)
+     * standardize <button> design throughout layout
+     change <h1> to <h2> as some templates generate H1 tags based on page/menu title
+     
+     * handle issue #420
+     
+     * handle issue #420
+     
+     * adding new insert placeholders
+     <!--(PH) CSS HEAD MODFILES -->
+     <!--(PH) JS HEAD MODFILES -->
+     <!--(PH) JS BODY MODFILES -->
+     
+     * adding new insert placeholders to the backend
+     <!--(PH) CSS HEAD MODFILES -->
+     <!--(PH) JS HEAD MODFILES -->
+     
+     * Bug fix for MiniForm module
+
+ * **2019-06-05:** Stefek [[8955c1bc](https://github.com/WBCE/WBCE_CMS/commit/8955c1bcf3082e8f85728f27ed87f7184d7f2a5c)]
+   > adding new insert placeholders (#424)
+     * standardize <button> design throughout layout
+     change <h1> to <h2> as some templates generate H1 tags based on page/menu title
+     
+     * handle issue #420
+     
+     * handle issue #420
+     
+     * adding new insert placeholders
+     <!--(PH) CSS HEAD MODFILES -->
+     <!--(PH) JS HEAD MODFILES -->
+     <!--(PH) JS BODY MODFILES -->
+     
+     * adding new insert placeholders to the backend
+     <!--(PH) CSS HEAD MODFILES -->
+     <!--(PH) JS HEAD MODFILES -->
+
+ * **2019-05-28:** Martin Hecht [[38d259cf](https://github.com/WBCE/WBCE_CMS/commit/38d259cfb962d87a44c59e780ca76cc6027af2df)]
+   > update version of news with images to the final 4.0 and complete the changelog
+
+ * **2019-05-28:** instantflorian [[4bb4da65](https://github.com/WBCE/WBCE_CMS/commit/4bb4da65dc263b4b42ad187808b7647908364f8e)]
+   > Include news with images in core
+
+ * **2019-05-25:** instantflorian [[fc34f834](https://github.com/WBCE/WBCE_CMS/commit/fc34f8347d2718b4442e5889bf655239a7134c91)]
+   > Missing email templates
+
+ * **2019-05-25:** Stefek [[87408cb7](https://github.com/WBCE/WBCE_CMS/commit/87408cb70fcdae71007fdf7d12b540d35c3f90e3)]
+   > Handle issue #421
+
+ * **2019-05-24:** instantflorian [[d9e2603b](https://github.com/WBCE/WBCE_CMS/commit/d9e2603b0f0ff8195e5b0d157197f9b59234d83b)]
+   > Fix for #420
+
+ * **2019-05-22:** instantflorian [[8b3fd2c0](https://github.com/WBCE/WBCE_CMS/commit/8b3fd2c0953bbd1ad55ba180aed44fb7afae9bc6)]
+   > Error in default templates due to renaming
+
+ * **2019-05-19:** instantflorian [[4883a939](https://github.com/WBCE/WBCE_CMS/commit/4883a939399318c9ed5f3ecb5be57c0eb6756a28)]
+   > Minor approvements to default tpls
+
+ * **2019-05-13:** Martin Hecht [[510140ef](https://github.com/WBCE/WBCE_CMS/commit/510140ef9433b96fd93b5c11b95aa3742ffaf2f3)]
+   >  proposed fix for #417  (#418)
+     * proposed fix for #417
+     
+     * keep get_section_content() that is used in the new section picker droplet
+     
+     * avoid notice about undefined variable bUseSecAnchor
+
+ * **2019-05-12:** Colinax [[58308bc6](https://github.com/WBCE/WBCE_CMS/commit/58308bc6375adf3dceca0e2e1421763e1afb9e9e)]
+   > CKEditor 4.11.4
+
+ * **2019-05-12:** Colinax [[c4e0d607](https://github.com/WBCE/WBCE_CMS/commit/c4e0d607221d6713bb3189f63e8ce6d0ceb646ea)]
+   > select2 4.0.7
+
+ * **2019-05-01:** instantflorian [[6456ae5d](https://github.com/WBCE/WBCE_CMS/commit/6456ae5d2e8fd55bda0d796082b43dfb13c30889)]
+   > remove wrong line
+
+ * **2019-05-01:** instantflorian [[f3d9f707](https://github.com/WBCE/WBCE_CMS/commit/f3d9f7073c2f16c441a36d2b76b06f66941b9089)]
+   > Rename Tpls to avoid any legal issues
+
+ * **2019-04-30:** instantflorian [[4d01bb01](https://github.com/WBCE/WBCE_CMS/commit/4d01bb01ceb91b683538576c8cca5eb03f70cefc)]
+   > Change default templates
+
+ * **2019-04-30:** instantflorian [[79a52f1c](https://github.com/WBCE/WBCE_CMS/commit/79a52f1c16f12ab778f1c1f758230a197df0e96a)]
+   > Update miniform to 0.15
+
+ * **2019-04-26:** instantflorian [[22e89fbf](https://github.com/WBCE/WBCE_CMS/commit/22e89fbf8df44b39990732671f6c20d2713a470f)]
+   > Update readme.html
+
+ * **2019-04-22:** Martin Hecht [[cb9c9e77](https://github.com/WBCE/WBCE_CMS/commit/cb9c9e77a645e74ecb8350eff1ad1ec76e990f8b)]
+   > update output filters
+     * include opf functions in upgrade script so that it can be run manually
+     * reorder filters: move sys_rel and short_URL to page (last)
+
+ * **2019-04-20:** Stefek [[1d48c35e](https://github.com/WBCE/WBCE_CMS/commit/1d48c35e4efc33b019d2476ba25d04852f4acaa3)]
+   > class Insert corrections (#416)
+     * remove comment output in DOM when files are missing
+     
+     * correction for jquery inclusion
+
+ * **2019-04-13:** instantflorian [[30a9997d](https://github.com/WBCE/WBCE_CMS/commit/30a9997d716ed2498d863b39d76cc1c736153d22)]
+   > Missing translation
+
+ * **2019-04-13:** instantflorian [[61f05114](https://github.com/WBCE/WBCE_CMS/commit/61f0511485ddcd7044da422fb5a7d1d846e72356)]
+   > Some missing translations
+
+ * **2019-04-13:** instantflorian [[a31fc56e](https://github.com/WBCE/WBCE_CMS/commit/a31fc56e7341ccaced87aac69b9cf9f80d217b56)]
+   >  Implement feature to remember visibility status of pages
+     ... when a page is temporarily deleted
+
+ * **2019-04-13:** instantflorian [[6a324223](https://github.com/WBCE/WBCE_CMS/commit/6a3242231b58eec1714d1773e8a2626601a0f8b3)]
+   > Deleted/non-visible pages should not loose their childpages
+
+ * **2019-04-13:** Stefek [[239e1135](https://github.com/WBCE/WBCE_CMS/commit/239e11356daf5b2e5e04a39d0213f243bb936786)]
+   >  Delete access files when visibility changed to 'none' (#413)
+     * Fix for Issue #408
+     
+     * Add Group ID in overview of Accounts Tool
+     
+     * Modify on user changes (Tool Account Settings)
+     
+     * Modify on user changes (Tool Account Settings) (corrections)
+     
+     * Fix issue reported by user losttrip
+     https://forum.wbce.org/viewtopic.php?id=2762
+     
+     * Delete access files when visibility changed to 'none'
+     or when page moved to trash
+     
+     * Delete access files when visibility changed to 'none'
+     or when page moved to trash
+     
+     * Delete access files when visibility changed to 'none'
+     or when page moved to trash
+     
+     * Delete access files when visibility changed to 'none'
+     or when page moved to trash
+
+ * **2019-04-13:** Stefek [[470f8618](https://github.com/WBCE/WBCE_CMS/commit/470f861847a9c707a3869c1b95788f17055a15ef)]
+   > Modify on user changes (Tool Account Settings) (#412)
+     * Fix for Issue #408
+     
+     * Add Group ID in overview of Accounts Tool
+     
+     * Modify on user changes (Tool Account Settings)
+     
+     * Modify on user changes (Tool Account Settings) (corrections)
+     
+     * Fix issue reported by user losttrip
+     https://forum.wbce.org/viewtopic.php?id=2762
+
+ * **2019-04-12:** Stefek [[211e5348](https://github.com/WBCE/WBCE_CMS/commit/211e53487838be05bf882fe246c4376dff061d62)]
+   > Add Group ID in overview of Accounts Tool (#411)
+     * Fix for Issue #408
+     
+     * Add Group ID in overview of Accounts Tool
+
+ * **2019-04-12:** Martin Hecht [[14cd2eae](https://github.com/WBCE/WBCE_CMS/commit/14cd2eae908dd7660d1dd95a7151a60cacd9a894)]
+   > ensure that the database tables are created during update process (#409)
+     under some conditions it may have happened that not all tables were created correctly, so we explicitly call the statements directly from the update script.
+     Note that we still keep the mechanism in dbsession: it also alters tables if the encoding is not the preferred one.
+     We also keep the checks on the required tables in the update script in case anything went wrong with creating the tables.
+     The 'drop table' statements are moved into a separate file, just as a precautious measure not to lose data in case someone changes the call to the sql import in the future and makes a silly mistake. Not to have the drops in the same file is really an easy change and it can prevent us and our users from so much trouble.
+ * **2019-04-12:** Stefek [[6a47f2c5](https://github.com/WBCE/WBCE_CMS/commit/6a47f2c5ff1200ee367b4fe52feffe0476a52663)]
+   > Fix for Issue #408 (#410)
+
+ * **2019-04-11:** instantflorian [[4dd13306](https://github.com/WBCE/WBCE_CMS/commit/4dd133067ebdb1eb2f6f0467a049bf9bab2ddd10)]
+   > Preparations for new News module
+
+ * **2019-04-09:** instantflorian [[f0128716](https://github.com/WBCE/WBCE_CMS/commit/f01287161306d4e9a97c0157cf3dfed0ee19f012)]
+   > Remove Topics from Core
+     abandoned/orphan module
+
+ * **2019-04-09:** Martin Hecht [[c79fb457](https://github.com/WBCE/WBCE_CMS/commit/c79fb457aeb173c23e39c009c07ae6aa82d5e6a3)]
+   > insert new fields into {TP}users during update (#407)
+
+ * **2019-03-28:** Martin Hecht [[23c17f0f](https://github.com/WBCE/WBCE_CMS/commit/23c17f0fb69e8f57dabd566e92916c5026ac5392)]
+   > make descriptions of filter modules more meaningful
+
+ * **2019-03-26:** Martin Hecht [[7e659cfb](https://github.com/WBCE/WBCE_CMS/commit/7e659cfbfcdf918c489cc5ba309f267deedc50c8)]
+   > clean up filter modules that make use of the insert class
+
+ * **2019-03-26:** instantflorian [[5413bf5d](https://github.com/WBCE/WBCE_CMS/commit/5413bf5d4ee693c566655d713cc8ff101ea71e88)]
+   > Handling Issue #402
+     Manual sync with webdesignworx' master
+
+ * **2019-03-26:** instantflorian [[af762990](https://github.com/WBCE/WBCE_CMS/commit/af762990070ba0d01c5bc53e27e7b2a7a59e3945)]
+   > Revert "Revert "Insert class: do not discard title and meta queue (#402)""
+     This reverts commit 6e3706b10415baec539ce878240704ffcc340006.
+
+ * **2019-03-26:** instantflorian [[956291c2](https://github.com/WBCE/WBCE_CMS/commit/956291c24aa455ba74f10c67d5c6be92d3cab95c)]
+   > Revert "Handling issue #402 (Meta Tags Are Missing #402) (#403)"
+     This reverts commit 76c1f46cf679ff181ba694a8eb2c5d5fc43f17bb.
+
+ * **2019-03-26:** Stefek [[76c1f46c](https://github.com/WBCE/WBCE_CMS/commit/76c1f46cf679ff181ba694a8eb2c5d5fc43f17bb)]
+   > Handling issue #402 (Meta Tags Are Missing #402) (#403)
+     * Add Colorbox to the list of OpF Dashboard Filters
+     
+     * Allow Insert class to be used several times (enhancement)
+     
+     * Allow Insert class to be used several times (enhancement)
+     
+     * Handling issue #402
+     (Meta Tags Are Missing #402)
+
+ * **2019-03-26:** instantflorian [[6e3706b1](https://github.com/WBCE/WBCE_CMS/commit/6e3706b10415baec539ce878240704ffcc340006)]
+   > Revert "Insert class: do not discard title and meta queue (#402)"
+     This reverts commit 9749cdc4569368cdeb171294c26f71a61bdcfbb1.
+
+ * **2019-03-25:** Martin Hecht [[9749cdc4](https://github.com/WBCE/WBCE_CMS/commit/9749cdc4569368cdeb171294c26f71a61bdcfbb1)]
+   > Insert class: do not discard title and meta queue (#402)
+
+ * **2019-03-25:** instantflorian [[363a9267](https://github.com/WBCE/WBCE_CMS/commit/363a92677a8c00fdfa9072f81af972590cbe2132)]
+   > Small changes to SM2 readme
+
+ * **2019-03-25:** instantflorian [[7a5aabd3](https://github.com/WBCE/WBCE_CMS/commit/7a5aabd35eee3f2a5094b2e0668f020a0cc63741)]
+   > Update Miniform
+     - update to miniform 0.14 (published 19/03/22)
+     - applying PHPmailer related change to functions.php
+     - small UI optimization to modify.php
+
+ * **2019-03-25:** Martin Hecht [[1a7b3503](https://github.com/WBCE/WBCE_CMS/commit/1a7b35032f1aa809138415b08bc940e8a8cfe3d1)]
+   > avoid notices on login screen - fix for #401
+
+ * **2019-03-23:** Martin Hecht [[3474d3d4](https://github.com/WBCE/WBCE_CMS/commit/3474d3d430d8ec044ff40c045f9e5aa9f1696008)]
+   > some improvements for the new brute force protection
+
+ * **2019-03-23:** Stefek [[285aab04](https://github.com/WBCE/WBCE_CMS/commit/285aab044ca769ec7366fad63e2b3c9863f70ee4)]
+   > New Colorbox plugin & Insert class enhancements (#400)
+     * Add Colorbox to the list of OpF Dashboard Filters
+     
+     * Allow Insert class to be used several times 
+
+ * **2019-03-22:** Martin Hecht [[537fb829](https://github.com/WBCE/WBCE_CMS/commit/537fb829b7979929c577da01ebd288a62760cf62)]
+   > store source_ip in blocking table as a hash
+
+ * **2019-03-22:** Martin Hecht [[551bc7e1](https://github.com/WBCE/WBCE_CMS/commit/551bc7e1b378e1e97e4b4c0e46c6ea7e394743c4)]
+   > allow Insert class to be used several times
+
+ * **2019-03-22:** Martin Hecht [[69ecbcef](https://github.com/WBCE/WBCE_CMS/commit/69ecbcefbcc9ad2749dfee6d386bc386adc1a5d2)]
+   > add mod_opf_insert
+
+ * **2019-03-21:** Martin Hecht [[968ffba3](https://github.com/WBCE/WBCE_CMS/commit/968ffba35cd14df94b8303e0d13efdbe8e6cfbe1)]
+   > updated OpF Dashboard to 1.5.8
+
+ * **2019-03-19:** Martin Hecht [[4e44c753](https://github.com/WBCE/WBCE_CMS/commit/4e44c753158aa064b603263c6ff2aab3f8997ae1)]
+   > implement better brute force protection
+     we allow 3 failures from a single client ip now. After that we block
+     for an increasing time span with each wrong attempt. We store that in the
+     database because an attacker could easily spawn many sessions, so the session
+     is not a good place to keep track of this. After the blocking time is over
+     we allow another login attempt, but if it fails, we further increase the
+     blocking time. After twice the blocking time we reset the attempts.
+     Also, banned ips are cleared from the database after one week, hoping
+     that brute force attacks are stopped by authorities in this time frame.
+
+ * **2019-03-19:** Colinax [[b3379d17](https://github.com/WBCE/WBCE_CMS/commit/b3379d173090bd6fb84ecb0183db37124138cac8)]
+   > module versioning corrected (#397)
+     module versioning corrected to reflect the previous changes
+     removes obsoled user_search module, its replaced by Account and Signups configuration tool
+ * **2019-03-19:** Stefek [[ad71998e](https://github.com/WBCE/WBCE_CMS/commit/ad71998eaa973fccce84e9e0dd04dc082567a731)]
+   > several issues handled (#398)
+     * Set tool_account_settings AdminTool level to 'core'
+     Make use of Insert Methods throughout the tool_account_settings module
+     Make use of newly introduced MsgBox class
+     
+     * Change the way config ini is handled in tool_account_settings
+     
+     * Change the way config ini is handled in tool_account_settings
+     
+     * Change redirect behaviour in message_box
+     
+     * Handle REDIRECT_TIME issue in messages
+     Rename newly introduced method from getTwigThemeFile to getThemeFile
+     
+     * Handle: Warning: Illegal offset 'page_id' in... issue
+     This issue appeared when deleting a page.
+     
+     * Handle issue with undefined Constant
+     (This was only visible using the error log files)
+     
+     * Use standard alertboxes in BE when used with the MessageBox class
+     
+     * Handle $iTimer issue in MessageBox
+     
+     * include templates include.php file correctly
+     
+     * handle issue with adding sections
+     
+     * handle issue with missing $TEXT array in some places resulting in a NOTICE
+     
+     * Implement MENU_LINK_TRANSFORMER feature
+     
+     * Implement MENU_LINK_TRANSFORMER feature
+     
+     * Add simpler way to add help files to OpF Plugins
+     
+     * Insert all modfiles (this was a bug that didn't come to view 'till now)
+     
+     * Add simpler way to add help files to OpF Plugins (part 2)
+     
+     * Prevent NOTICEs in case OpF Plugin "Cache Control" is not present on installation
+     
+     * Handle JS Admin Tool issues
+     
+     * Revert a line to make Drag/Drop work in PageTree again
+
+ * **2019-03-19:** Martin Hecht [[3d97165a](https://github.com/WBCE/WBCE_CMS/commit/3d97165aa784f2c8f543310c7de14743307feba1)]
+   > forgot to register new opf filter plugin during install and upgrade
+
+ * **2019-03-18:** Martin Hecht [[127c7fec](https://github.com/WBCE/WBCE_CMS/commit/127c7fecb7dade3e78662955d4d6c614d7ac404b)]
+   > add http to https plugin filter in opf dashboard
+
+ * **2019-03-18:** Martin Hecht [[ec4f2925](https://github.com/WBCE/WBCE_CMS/commit/ec4f2925276f6312cbbd537a039d5419a80ab251)]
+   > mod_opf_email updated to 1.1.0: use insert class to insert mdcr.js
+
+ * **2019-03-18:** Colinax [[d2c5d3d4](https://github.com/WBCE/WBCE_CMS/commit/d2c5d3d4d113d496edfff02181fbedc2936e35e3)]
+   > CKEditor 4.11.3
+
+ * **2019-03-18:** Stefek [[223f067f](https://github.com/WBCE/WBCE_CMS/commit/223f067f20aaf35df9c221c15e22ea3524eb1c7c)]
+   > Implement MENU_LINK_TRANSFORMER feature (#396)
+     * Set tool_account_settings AdminTool level to 'core'
+     Make use of Insert Methods throughout the tool_account_settings module
+     Make use of newly introduced MsgBox class
+     
+     * Change the way config ini is handled in tool_account_settings
+     
+     * Change the way config ini is handled in tool_account_settings
+     
+     * Change redirect behaviour in message_box
+     
+     * Handle REDIRECT_TIME issue in messages
+     Rename newly introduced method from getTwigThemeFile to getThemeFile
+     
+     * Handle: Warning: Illegal offset 'page_id' in... issue
+     This issue appeared when deleting a page.
+     
+     * Handle issue with undefined Constant
+     (This was only visible using the error log files)
+     
+     * Use standard alertboxes in BE when used with the MessageBox class
+     
+     * Handle $iTimer issue in MessageBox
+     
+     * include templates include.php file correctly
+     
+     * handle issue with adding sections
+     
+     * handle issue with missing $TEXT array in some places resulting in a NOTICE
+     
+     * Implement MENU_LINK_TRANSFORMER feature
+     
+     * Implement MENU_LINK_TRANSFORMER feature
+
+ * **2019-03-17:** Stefek [[7923df64](https://github.com/WBCE/WBCE_CMS/commit/7923df64b336143c4462d4421400f4fd92321c2b)]
+   > Change redirect behaviour in message_box (#395)
+     * Set tool_account_settings AdminTool level to 'core'
+     Make use of Insert Methods throughout the tool_account_settings module
+     Make use of newly introduced MsgBox class
+     
+     * Change the way config ini is handled in tool_account_settings
+     
+     * Change the way config ini is handled in tool_account_settings
+     
+     * Change redirect behaviour in message_box
+     
+     * Handle REDIRECT_TIME issue in messages
+     Rename newly introduced method from getTwigThemeFile to getThemeFile
+     
+     * Handle: Warning: Illegal offset 'page_id' in... issue
+     This issue appeared when deleting a page.
+     
+     * Handle issue with undefined Constant
+     (This was only visible using the error log files)
+     
+     * Use standard alertboxes in BE when used with the MessageBox class
+     
+     * Handle $iTimer issue in MessageBox
+     
+     * include templates include.php file correctly
+     
+     * handle issue with adding sections
+
+ * **2019-03-17:** Colinax [[1ce5e152](https://github.com/WBCE/WBCE_CMS/commit/1ce5e1527e64775f51aa23fec7919abfbb24dfbd)]
+   > Revert "Twig 1.38.3-Dev"
+     This reverts commit a576fb86220782c89f9aedd6d6a1d05c2274fd7d.
+
+ * **2019-03-16:** Colinax [[c9653895](https://github.com/WBCE/WBCE_CMS/commit/c96538955d74af4f44e394712beea150fa1e7694)]
+   > PHPMailer 6.0.7
+
+ * **2019-03-16:** Colinax [[a576fb86](https://github.com/WBCE/WBCE_CMS/commit/a576fb86220782c89f9aedd6d6a1d05c2274fd7d)]
+   > Twig 1.38.3-Dev
+
+ * **2019-03-15:** Stefek [[d80a5846](https://github.com/WBCE/WBCE_CMS/commit/d80a5846507da3b78bfd6b790e51c6faffc4569a)]
+   > Changes to tool_account_settings AdminTool (#394)
+     * Set tool_account_settings AdminTool level to 'core'
+     Make use of Insert Methods throughout the tool_account_settings module
+     Make use of newly introduced MsgBox class
+     
+     * Change the way config ini is handled in tool_account_settings
+     
+     * Change the way config ini is handled in tool_account_settings
+
+ * **2019-03-15:** instantflorian [[7a2a90eb](https://github.com/WBCE/WBCE_CMS/commit/7a2a90eb64da29424e49507ecf115bb627794d59)]
+   > Better Implementation of Multilingual
+     Reset needs to be confirmed now
+
+ * **2019-02-26:** Martin Hecht [[df2dd944](https://github.com/WBCE/WBCE_CMS/commit/df2dd94481099a6052da1615a725d93b78ab62e5)]
+   > implement improved password hashes
+     the orignal commit is rebased and squashed with the following two ones:
+     * few bugfixes for the new password hashes implementation
+     * fix another syntax error for the previous two commits
+     * update preferences in account settings tool
+
+ * **2019-03-14:** instantflorian [[7deb470e](https://github.com/WBCE/WBCE_CMS/commit/7deb470edd19596b254ecc2eb99b98c6e85f153d)]
+   > Fix Issue with Account Admin Tool and remove unnecessary files
+     Manual merge of
+     
+     https://github.com/WebDesignWorx/WBCE_CMS/commit/8deaac74074f00c98395c833c9b7ac50617f5455
+     
+     https://github.com/WebDesignWorx/WBCE_CMS/commit/f953dcee5677ca5a9b43e8ee4a7f19a24ff7657d
+     
+     https://github.com/WebDesignWorx/WBCE_CMS/commit/3c24c4e34a82779f7e1570ac66be321ab4cc3495
+     
+     https://github.com/WebDesignWorx/WBCE_CMS/commit/1d0cd374c941345357ec9d9b7aa8c0ec2a15d1dd
+
+ * **2019-03-14:** Stefek [[622f42f8](https://github.com/WBCE/WBCE_CMS/commit/622f42f8065b50e53879f9bd4f90c201805a412a)]
+   > Introducing new AdminTool for Accounts & Signup Mngmt (#393)
+     * Implement Password Strenght Checker for more convenience
+     
+     * Implement Password Strenght Checker for more convenience
+     
+     * Implement Password Strenght Checker for more convenience
+     
+     * Implement Password Strenght Checker for more convenience
+     
+     * Implement Password Strenght Checker for more convenience
+     
+     * Preparation for Tool Account Settings, delete obsolete /account/ directory
+     
+     * Handle an issue to do with the page_content function, reported in the forum by Florian
+     
+     * Rework class Login in order to implement the new $wb->doEncodePassword method. Also general clean up of the code and use of previously implemented new $database methods.
+     
+     * Introducing the AdminTool `Account and Signups configuration`
+     
+     * Typo in README.md
+     
+     * Typo in README.md
+     
+     * Add array building functions to admin/interface/ arrays...
+     We will save a lot of redundancy in the core and in modules providing these functions right in these files.
+     
+     * Add array building functions to admin/interface/ arrays...
+     We will save a lot of redundancy in the core and in modules providing these functions right in these files.
+     
+     * Add array building functions to admin/interface/ arrays...
+     We will save a lot of redundancy in the core and in modules providing these functions right in these files.
+     (Minor changes to the functions.)
+     
+     * tool_account_settings Delete obsolete files and replace with a single one
+     
+     * /account/ and /module/tool_account_settings Reworked files
+     
+     * /account/ and /module/tool_account_settings Reworked files
+     
+     * /account/ and /module/tool_account_settings Reworked files
+     
+     * Correcting some language strings
+     
+     * /account/ and /module/tool_account_settings Reworked files
+     
+     * Handle issue with WB_DEBUG constant and clean up old code
+     
+     * Handle some issues with class Frontend
+     ... added constants for ACCOUNT_URL and ACCOUNT_PATH for convenience
+     ... set 2 methods to no longer supported $wb->menu() and $wb->show_menu()
+     ... set the $wb->preprocess method to obsolete 
+     
+     If user is Admin and WB_DEBUG is turned on, he will receive a notice what to do in each case for the obsolete methods when in use.
+     
+     * Rework Account Tool and /account/ files
+     
+     * Rework Account Tool and /account/ files
+     
+     * implement class MessageBox using FlashMessages
+     
+     * /account/ and Account AdminTool related changes
+     
+     * handle typo in class.wb.php
+     
+     * handle ``Undefined offset: 0`` in PhpLib TE
+     
+     * Apply MessageBox to Login, Retrieve Password, Sign Up and Preferences
+     also the Login and Retrieve Password forms in the /admin/login area
+     
+     * Correct broken path
+     
+     * Get rid of global $database use in class Wb and its extend classes
+     (Admin and Frontend). Use of protected property $_oDb instead.
+     
+     * Improvements on the class Insert
+     
+     * Move protected Database object to class SecureForm instead of class Wb
+     
+     * Handle "phantom bug" in MEDIA which was reported by Florian
+     
+     * Improve translations of some strings
+     
+     * insert WBCE CMS header to file account/init.php
+     
+     * function debug_dump() -> separate CSS from function code
+     
+     * Correct broken path for sending test mail mechanism
+     
+     * Update Class ResizeImage (MEDIA) for future PHP versions compatibility
+     
+     * Improvements on the updateRow() method and adding new method get_array()
+     
+     * Add projection attr to insertCssCode() and insertCssFile() methods
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed template file from AccountTool
+     
+     * Delete no longer needed file from AccountTool
+     
+     * Delete no longer needed file from AccountTool
+     
+     * Delete no longer needed file from AccountTool
+     
+     * Delete no longer needed file from AccountTool
+     
+     * Delete no longer needed file from AccountTool
+     
+     * Delete no longer needed file from /account dir
+     
+     * Delete no longer needed file from AccountTool
+     
+     * Remove unneeded debug output
+     
+     * Implement TwigConnect for much simpler deployment of Twig templates
+     
+     * Rework Account and Account Tool
+     
+     * remove signup_switch.php
+     
+     * Improve some core elements
+     
+     * Implement Accounts class
+     
+     * handle issue with signup_switch.php
+     
+     * Set class Accounts on autoload
+     
+     * Change print_success and print_error methods to work with TwigTE
+     
+     * Change correct issue with class Accounts
+     
+     * Implement the use of `confirmation_code` to save account creation date for use in Accounts Admin Tool
+     
+     * Correct wrong constant in forgot.php template
+     
+     * Correct wrong constant in forgot.php template
+     
+     * Redirect user to preferences when logged in and trying to go to account/forgot.php
+     
+     * Redirect user to preferences when logged in and trying to go to account/forgot.php
+     
+     * Handle support_email issues
+     
+     * minor changes to classes and functions
+     
+     * Change backend templates of AccountTool to Twig instead of plain PHP
+     
+     * Small change in DE launguage file
+     
+     * New Placeholder for Maintainance Mode Indication
+
+ * **2019-03-12:** Martin Hecht [[45d4f271](https://github.com/WBCE/WBCE_CMS/commit/45d4f271d03565407fabee81f8648ee7345951a7)]
+   > improved regular expressions for Insert class and fallback in mod_opf_auto_placeholder (#391)
+
+ * **2019-03-11:** Stefek [[2f132e0d](https://github.com/WBCE/WBCE_CMS/commit/2f132e0df35db5718fc51582beafc4ac2a356279)]
+   > prevent jsadmin from being accidentally uninstalled via backend (#390)
+
+ * **2019-03-09:** Martin Hecht [[ace1a3ea](https://github.com/WBCE/WBCE_CMS/commit/ace1a3ead0fd553b0a795b47059121eb8c990d13)]
+   > fix problems with install script of filter modules
+     the previous commit has introduced a problem with the filter modules.
+     The upgrade went smoothly and caused reordering of the filter categories,
+     but the installation got broken.
+
+ * **2019-03-07:** Martin Hecht [[3632dff7](https://github.com/WBCE/WBCE_CMS/commit/3632dff7d89ef243c07b3eec24db6bb7b4a37d6b)]
+   > update opf dashboard and sort filters into newly introduced groups
+
+ * **2019-02-28:** instantflorian [[1f544913](https://github.com/WBCE/WBCE_CMS/commit/1f54491397f0a3c990ef9a28dc14055fffda31da)]
+   > Fix for missing images issue in media browser
+
+ * **2019-02-28:** instantflorian [[85d2e974](https://github.com/WBCE/WBCE_CMS/commit/85d2e974afd4b68c908324bef6e0077b9c8d815e)]
+   > Missing Icons on Dashboard
+     Whoops, commented out too much
+
+ * **2019-02-28:** Stefek [[f92ba014](https://github.com/WBCE/WBCE_CMS/commit/f92ba01479c2dcef752d00e3079b10ef4cc1f425)]
+   > Add DB columns to `{TP}users` (#389)
+     For proper use of the _Account and Signups configuration_ Tool (tool_account_settings) which will be implemented with WBCE CMS v. 1.4.0
+ * **2019-02-28:** instantflorian [[7abb549a](https://github.com/WBCE/WBCE_CMS/commit/7abb549aee289e62e0538871633b2e003aeaebaf)]
+   > Fix for Colorpicker
+
+ * **2019-02-28:** instantflorian [[ba263f1f](https://github.com/WBCE/WBCE_CMS/commit/ba263f1f922c1d5e5ca136e7cb32967f934f9e2a)]
+   > Icons for admintools
+
+ * **2019-02-28:** instantflorian [[c8d4b0de](https://github.com/WBCE/WBCE_CMS/commit/c8d4b0de64a24036bb30b169531487774e2ccbe4)]
+   > Show Maintainance Mode in Backend, Optimizations on Flat Theme
+     Entities of Font-Awesome icons instead of symbol itself in
+     themeextend.css; two column display and corresponding icon on admintools
+     overview
+
+ * **2019-02-28:** instantflorian [[58fdf4b9](https://github.com/WBCE/WBCE_CMS/commit/58fdf4b9368a29c08e857fb808d3079737ef4d50)]
+   > New Placeholder for Maintainance Mode Indication
+
+ * **2019-02-24:** Colinax [[f9b93cd6](https://github.com/WBCE/WBCE_CMS/commit/f9b93cd61dc6935532ee113a53237442ab3c7e22)]
+   > Update update.php
+
+ * **2019-02-20:** Stefek [[081d5689](https://github.com/WBCE/WBCE_CMS/commit/081d5689f91712792cf0f5f26cf531207b40286e)]
+   >  Implement Password Strenght Checker for more convenience (#388)
+     * Implement Password Strenght Checker for more convenience
+     
+     * Implement Password Strenght Checker for more convenience
+     
+     * Implement Password Strenght Checker for more convenience
+     
+     * Implement Password Strenght Checker for more convenience
+     
+     * Implement Password Strenght Checker for more convenience
+
+ * **2019-02-18:** Stefek [[cfaf4784](https://github.com/WBCE/WBCE_CMS/commit/cfaf478452ae27e09ec03b45020a9773819cb92f)]
+   > Introduce new feature for $module_name translation (#383)
+     * Introduce feature for $module_name translation
+     
+     * Correct link to mcdr.js and add support for style attr in mailto links
+     
+     * Introduce new feature for $module_name translation (Part 2)
+
+ * **2019-02-16:** Stefek [[0a240bde](https://github.com/WBCE/WBCE_CMS/commit/0a240bded7292ca066ed085fafe5fed6a979a2d5)]
+   > Making use of newly implemented Insert Class in core (#382)
+     * Send Test Email implementation
+     
+     * Send Test Email implementation
+     
+     * Making use of newly implemented Insert Class in core
+     
+     * Making use of newly implemented Insert Class in core
+     
+     * Making use of newly implemented Insert Class in core
+     
+     * Making use of newly implemented Insert Class in core
+     
+     * Making use of newly implemented Insert Class in core
+     
+     * Making use of newly implemented Insert Class in core
+     
+     * Making use of newly implemented Insert Class in core
+     
+     * Implement switch for Cache Control
+     
+     Implement switch for Cache Control using the advanced OutputFilter Dashboard
+     
+     * Implement switch for Cache Control
+     
+     Implement switch for Cache Control using the advanced OutputFilter Dashboard
+     
+     * Implement switch for Cache Control
+     
+     add missing closing '>' for style blocks
+
+ * **2019-02-08:** Stefek [[0da35f20](https://github.com/WBCE/WBCE_CMS/commit/0da35f20e32418d0576020fc2c1dbe1bbb061794)]
+   > handle Class Insert issue (#381)
+     Handle Class Insert issue which prevented JS and CSS code blocks from displaying correctly
+ * **2019-02-07:** Stefek [[8b850e36](https://github.com/WBCE/WBCE_CMS/commit/8b850e36ef5e0d5906973c7f3c3d00c3d5e85505)]
+   > Update install_data.sql (#379)
+     Add new setting records (wbmailer_smtp_secure and wbmailer_smtp_port)
+ * **2019-01-30:** instantflorian [[83d560c8](https://github.com/WBCE/WBCE_CMS/commit/83d560c841d7de37bafc8f6742e09b0d41aa8c11)]
+   > Some fixes around topics
+     Forgot this one
+
+ * **2019-01-30:** instantflorian [[2c0eb21b](https://github.com/WBCE/WBCE_CMS/commit/2c0eb21bffb2e5b7dd2a99543e34a7b081f23bdf)]
+   > Some fixes around topics
+     https://github.com/WBCE/WBCE_CMS/pull/378
+
+ * **2019-01-25:** instantflorian [[f799bebb](https://github.com/WBCE/WBCE_CMS/commit/f799bebbfead7d4d197e1b27f3d6bc27d9cd28c7)]
+   > Testmail UI adjustments
+     Include send button into email configuration block, minor changes to
+     wording
+
+ * **2019-01-25:** Stefek [[b2949cbe](https://github.com/WBCE/WBCE_CMS/commit/b2949cbedc25ed50491a4223c4f9da41b41adc18)]
+   > Send Test Email implementation (#377)
+
+ * **2019-01-24:** instantflorian [[d2ce5125](https://github.com/WBCE/WBCE_CMS/commit/d2ce51259b2479bccd0034036cd9654ef9eaf549)]
+   > Merge pull request #375 from WebDesignWorx/master
+      Implementation of PHPMailer v6.0.6
+ * **2019-01-23:** instantflorian [[a61dc678](https://github.com/WBCE/WBCE_CMS/commit/a61dc678a21867e10e1fe76219099ee6fa0d494b)]
+   > Updated Touchicon integration
+     Removal of outdated icon sizes, new icons according to
+     realfavicongenerator.net
+
+ * **2019-01-23:** Martin Hecht [[c506269c](https://github.com/WBCE/WBCE_CMS/commit/c506269c57e19eeb50002f99d7c583fcb8e4e962)]
+   > simplepagehead uses insert class (#373)
+     With the Insert class, the page description and keywords are removed
+     from the page content when the auto placeholders are inserted.
+     The insert class assumes that it receives this information in its queue
+     in order to insert it. Therefore, simplepagehead has to use the insert
+     class and hand over keywords and description instead of inserting this
+     information in the earlier stage.
+     
+     * use the Insert class for the keywords and description in simplepagehead
+     * fixed indentation in include.php of simplepagehead
+
+ * **2019-01-23:** WebDesignWorx [[92af0cf0](https://github.com/WBCE/WBCE_CMS/commit/92af0cf00f6139b22850353b6bc9260e5a245d92)]
+   > Implementation of PHPMailer v6.0.6
+
+ * **2019-01-23:** WebDesignWorx [[fffa5f83](https://github.com/WBCE/WBCE_CMS/commit/fffa5f83545e0ad6d6dd7c9d9a0da44fd5f8d9cd)]
+   > Implementation of PHPMailer v6.0.6
+
+ * **2019-01-23:** WebDesignWorx [[34619e64](https://github.com/WBCE/WBCE_CMS/commit/34619e6421d3413480e39fd2045389818a57fe2c)]
+   > Implementation of PHPMailer v6.0.6
+
+ * **2019-01-22:** WebDesignWorx [[3a962cc1](https://github.com/WBCE/WBCE_CMS/commit/3a962cc1db91bd8091867c83df9921e392cc8823)]
+   > Implementation of PHPMailer v6.0.6
+
+ * **2019-01-19:** Colinax [[354d05fe](https://github.com/WBCE/WBCE_CMS/commit/354d05fe0090c49d4fce1d705e41c3ba145f74b2)]
+   > CKEditor 4.11.2
+
+ * **2019-01-19:** Colinax [[e6cb645b](https://github.com/WBCE/WBCE_CMS/commit/e6cb645b024840942091f31872098ad818840c8b)]
+   > Twig 1.37.1
+
+ * **2018-12-20:** Martin Hecht [[27db5404](https://github.com/WBCE/WBCE_CMS/commit/27db540467f5cef4cdb261597eb704ef2e274212)]
+   > some more regex fixes with auto placeholders
+
+ * **2018-12-20:** Martin Hecht [[9047a117](https://github.com/WBCE/WBCE_CMS/commit/9047a1175574b0f126d91c13a1077541e8f962d0)]
+   > fix typo in Insert class for JS HEAD BTM place holder
+
+ * **2018-12-18:** instantflorian [[4d381032](https://github.com/WBCE/WBCE_CMS/commit/4d3810326652b41addd8280f4d5347d32b643e6e)]
+   > Forgotten hard coded module name
+     Some settings were not saved when module was renamed
+
+ * **2018-12-18:** instantflorian [[d0945c4c](https://github.com/WBCE/WBCE_CMS/commit/d0945c4c4e53662285434a0042f8072d3fd030d7)]
+   > Use own jquery instead of Google CDN in colorbox fallback
+
+ * **2018-12-18:** instantflorian [[0bf820b1](https://github.com/WBCE/WBCE_CMS/commit/0bf820b1f6c7725a9ef6e3ffcc5af8b635f369b8)]
+   > Some fixes for BE themes
+     Missing lines in pages list in AR, missing message in AR login page, fix
+     for too small input field for intro page in both themes
+
+ * **2018-12-16:** Colinax [[b948fcc4](https://github.com/WBCE/WBCE_CMS/commit/b948fcc46015dcf5f7aa912e5d24db90cf1197c0)]
+   > update version.php
+     to avoid version problems
+
+ * **2018-12-16:** Christoph Bleiweis [[fdd02532](https://github.com/WBCE/WBCE_CMS/commit/fdd0253267edb58f6ebfb7152e565d057aa4cd30)]
+   > Twig 1.36.0
+
+ * **2018-12-16:** Christoph Bleiweis [[0fc83a03](https://github.com/WBCE/WBCE_CMS/commit/0fc83a03edcf2a2f0cc9448714cfc13890c11319)]
+   > remove legacy jquery file
+
+ * **2018-11-26:** instantflorian [[4dcebab5](https://github.com/WBCE/WBCE_CMS/commit/4dcebab5b14ad56d4ad0a9ffe4b74bc81bad82a7)]
+   > Merge pull request #372 from WebDesignWorx/master
+     Handle issues with SM2_CORRECT_MENU_LINKS
+ * **2018-11-26:** Stefek [[59ab387c](https://github.com/WBCE/WBCE_CMS/commit/59ab387c650fe2c562bf06aec3e4236e425282f5)]
+   > Update sm2_formatter.php
+
+ * **2018-11-26:** Stefek [[d27961ce](https://github.com/WBCE/WBCE_CMS/commit/d27961ce2c555e12c656830e04d08c68245da400)]
+   > Update include.php
+
+ * **2018-11-26:** Stefek [[7fc9b0d2](https://github.com/WBCE/WBCE_CMS/commit/7fc9b0d264b48e5e1bebb38b322660d034c20e8f)]
+   > Update save.php
+
+ * **2018-11-24:** Stefek [[ac98fab8](https://github.com/WBCE/WBCE_CMS/commit/ac98fab83edcc684249c94ba3dff14670dee41c9)]
+   > handling of PHP > 7.0.0. compatibility issues (#371)
+     * handling of PHP > 7.0.0. compatibility issues
+     
+     replace create_function() function as it is deprecated in newer PHP versions.
+ * **2018-11-24:** Christoph Bleiweis [[cf3e5373](https://github.com/WBCE/WBCE_CMS/commit/cf3e53730f418d300ad50813bfda586e87dde249)]
+   > CKEditor 4.11.1
+
+ * **2018-11-24:** Christoph Bleiweis [[25a844b8](https://github.com/WBCE/WBCE_CMS/commit/25a844b88d372f8f71abd4c8079b97d8139f56f7)]
+   > phpmailer 5.2.27
+
+ * **2018-11-22:** Martin Hecht [[390db9c6](https://github.com/WBCE/WBCE_CMS/commit/390db9c6cdcef213765adda9210dff81a2612b05)]
+   > OpF Dashboard: replace call to deprecated create_function
+
+ * **2018-11-15:** Martin Hecht [[8a4a8b7e](https://github.com/WBCE/WBCE_CMS/commit/8a4a8b7ed6fdd4a1f48589479a154606f47f6d6f)]
+   > Opf integration (#345)
+     * merge opf stuff from 2.x-dev branch
+     
+     update opf_simple_backend: merge changes from 1.3.x branch
+     
+     rebuild opf_simple_backend
+     
+     remove classical output_filter from tree since it has been replaced by filter modules
+     
+     backport of a few things to get backend filtering working
+     
+     introduce hidden modules (backport from 2.x-dev)
+     
+     bugfixes in admin/admintools/tool.php and remove mod_opf_relurl (duplicate of mod_opf_sysrel)
+     
+     fix usage of FRONTEND value in language file within mod_opf_email
+     
+     don't throw away settings when uninstalling classical output_filter
+     
+     update OpF Dashboard to 1.5.6 with integration of opf_simple_backend
+     
+     update opf_simple_backend: finally integrated with opf dashboard
+     
+     mod_opf_email: do not uses undefined template parameter
+     
+     avoid warning of OpF during installation
+     
+     during WBCE update drop database entry for classical output_filter module
+     
+     during WBCE update keep advanced view if OpF dashboard was already installed
+     
+     remove mdcr.js from opf_simple_backend - it is in mod_opf_email
+     
+     bugfixes for frontend
+     
+     - in frontend.functions.php there was a line break too much inside a comment
+     - in mod_opf_move_suff and mod_opf_remove_system_ph there was one closing brace missing
+     
+     OpF fix for php 7.2: before using count() verify that the argument is an array
+     
+     replace email stuff in opf_simple_backend by link to mod_opf_email
+     
+     in outputfilter_dashboard add a button to the configurl in the edit view
+     
+     opf_simple_backend: saving filters after editing by mistake also used to trigger switching to basic view
+     
+     opf: allow multiple uses of the same field type in extra fields
+     
+     address most of the points mentioned in the forum
+     
+     remove an obsolete brace in mod_opf_email
+     
+     update inactive/active logic in mod_opf_email
+     
+     a few more changes in how the filter modules are activated during installation
+     
+     fix logic for previous commit in mod_opf_sys_rel
+     
+     make upgrade scripts of mod_opf* consistent with installers
+     
+     fix opf_simple_backend and a small update for the dashboard
+     
+     the simple backend did only save the settings when changing to the advanced view at the same time
+     enable backend filtering for pages when wbce-version >= 1.3.0
+     
+     several fixes for opf dashboard and filter modules:
+     
+     - added $MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES']
+     - corrected the movement of all filters to their correct position in the install scripts
+     - switch filters on/off as the standard setting used to be in the 1.3.x branch
+     - once more fix the mechanism to show/hide the advanced filter backend
+     - opf: correctly start incrementing position of installed filters
+     
+     update opf and simple backend
+     
+     in the backend use opf-intrinsic functions for filter update if possible in order to keep settings and filter table consistently
+     in opf dashboard: fix a bug in opf_filter_get_data and check for array indices correctly
+     
+     opf filters: correctly take into account settings in the filters
+     
+     dashboard: an attempt to correct the backend filtering logic, update changelog
+     
+     make backend filtering working with opf_dashboard
+     
+     in mod_opf_auto_placeholder support insert class if available
+     
+     mod_opf_remove_system_ph: remove any empty lines in the output
+     
+     update mod_opf_auto_placeholder to version 1.2.1:
+     - merge updated filter function as fallback when insert class is unavailable
+     
+     in mod_opf_droplets correctly set the where parameter
+
+ * **2018-11-12:** Stefek [[60d2b805](https://github.com/WBCE/WBCE_CMS/commit/60d2b8059bb3a40a06a2ad33b741842dc692900e)]
+   >  Implementation of class Insert and all necessary components (#370)
+     * Implementation of class Insert and its facade class I
+ * **2018-11-06:** Stefek [[8e9007b5](https://github.com/WBCE/WBCE_CMS/commit/8e9007b5e25b54a52b84cacb6236bf9370136b8d)]
+   > Handle issue #366 (#368)
+
+ * **2018-11-06:** Stefek [[311b4bef](https://github.com/WBCE/WBCE_CMS/commit/311b4bef6994752005db3bd8162c54c8901bff8d)]
+   > handle typo in framework/functions.php (#367)
+
+ * **2018-11-03:** Christoph Bleiweis [[63bec86b](https://github.com/WBCE/WBCE_CMS/commit/63bec86b2e8890b13684dbb6ab483c764af3e181)]
+   > Obsolete file deletion (#365)
+     * obsolete file deletion (#363) (#362) (#361)
+     
+     this files has become obsolete
+ * **2018-11-03:** Stefek [[70a229f0](https://github.com/WBCE/WBCE_CMS/commit/70a229f05e45ae0be1bada1c3e5d86ce7929dae5)]
+   > Add comments to all the functions in functions.php (#364)
+     All the functions in this file got their own comments.
+     Also some more clean up for better readybility of code.
+ * **2018-11-01:** Stefek [[aa3a0074](https://github.com/WBCE/WBCE_CMS/commit/aa3a0074d889460ca9249e34e8318195b8a15122)]
+   > Making use of lately included DB functions & clean up (#360)
+     Applying new functions and clean up
+
+ * **2018-10-31:** Colinax [[825e3979](https://github.com/WBCE/WBCE_CMS/commit/825e39794853cecc52503bc722f2eed8256582be)]
+   > Fix path in Topics upgrade.inc.php
+
+ * **2018-10-31:** Stefek [[c84d4435](https://github.com/WBCE/WBCE_CMS/commit/c84d4435d4472aea3670478659af9dc3d9fa975b)]
+   >  SM2_CORRECT_MENU_LINKS check corrected (#359)
+     SM2_CORRECT_MENU_LINKS check corrected
+     
+     some minor syntax changes in SELECT queries etc..
+ * **2018-10-31:** Stefek [[86294785](https://github.com/WBCE/WBCE_CMS/commit/86294785f2bdf521b8379194f0e5f5efe9124a86)]
+   > Class Database (#356)
+     In this revision several addition have been made:
+     - Add a new method *delRow()* that goes along with the  *insertRow()* and *updateRow()* methods.
+     - Add the possibility to set own *{TABLE_PREFIX_TOKENS}* from within own code (i.e. modules, admin-tools etc.).
+     - Add examples/comments to recently added methods (including *insertRow()* and *updateRow()*) 
+       as these methods should be used more readily but are not know very well 'till now.
+     - remove temporary precuderal function *db_update_key_value()* as it isn't used at all within the whole CMS and we have new methods taking care of the same functionality.
+ * **2018-10-31:** Stefek [[e1d1f999](https://github.com/WBCE/WBCE_CMS/commit/e1d1f999848252e4230efb7333fdbc36bfec164a)]
+   > apply is_countable() instead of is_array() (#358)
+     Since we now have the is_countable() polyfill function, let's apply it right away
+ * **2018-10-31:** Stefek [[d020645a](https://github.com/WBCE/WBCE_CMS/commit/d020645a178a53685a8ab33462ab12582f8e2a11)]
+   > Replace URLs generated by the menu_link module with real URLs. (#355)
+     Adds the functionality to replace referer URLs that are generated by the menu_link module with real, direkt URLs.
+     
+     Temporarily you need to set a constant inside the config.php in order to turn this feature ON.
+     The constant is in config.php 
+     `define('SM2_CORRECT_MENU_LINKS', true);`
+     
+     Also a *PHP 7.2.* issue was handled, thanks for reporting to User neelix and instantflorian for the code.
+ * **2018-10-31:** Stefek [[a01a528d](https://github.com/WBCE/WBCE_CMS/commit/a01a528dcb0599fe13724b6d5f80f9584cc60665)]
+   > add function is_countable() as a polyfill for environments with PHP < 7.3.0 (#357)
+     After this issue came up in this thread:
+     https://forum.wbce.org/viewtopic.php?pid=20226#p20226
+     I decided to implement this function into functions.php so it's ready to go, as checking with is_array() won't always do.
+     
+     This function will be implemented in PHP since version 7.3.0.
+     This polyfill function will allow the use of this function also on environments with a PHP lower than 7.3.0
+     see also: http://php.net/manual/en/function.is-countable.php
+ * **2018-10-30:** Colinax [[ca56f3f1](https://github.com/WBCE/WBCE_CMS/commit/ca56f3f10f26e2a96779b493984427cef38f9934)]
+   > small Flat theme clean up
+
+ * **2018-10-30:** Colinax [[2bd1498b](https://github.com/WBCE/WBCE_CMS/commit/2bd1498b39dcd1e2b4849f9bd61a972b6fb5b726)]
+   > small AR theme clean up
+
+ * **2018-10-29:** Colinax [[a52adcaf](https://github.com/WBCE/WBCE_CMS/commit/a52adcafd1a42d08fbe1b7d11c8d8ddbb621f1f9)]
+   > Update menu_link
+
+ * **2018-10-29:** Colinax [[8d73d966](https://github.com/WBCE/WBCE_CMS/commit/8d73d9667cc2a2108ff0c7dfc0c39402ebae89f2)]
+   > Update normalize.css
+     ... for a better modern browser support
+
+ * **2018-10-29:** Christoph Bleiweis [[11243d99](https://github.com/WBCE/WBCE_CMS/commit/11243d995189c44ccd0c1f85c6c488d34b45c787)]
+   > Fix placeholder behavior (#351)
+     * Remove empty lines after (PH/Placeholders) removal (#350)
+     
+     There remain ugly empty lines within the HTML output after the (PH) Placeholders are removed.
+     This additional RegEx will handle it and speed up the HTML rendtionion a little bit also ;-)
+     
+     * Update AR header.htt - fix for Placeholder (#349)
+     
+     * Update Flat header.htt - fix for Placeholder (#348)
+
+ * **2018-10-29:** Colinax [[cc3d2533](https://github.com/WBCE/WBCE_CMS/commit/cc3d25337cf43903c02f954f8081aaa3c5c881f5)]
+   > mobile-nav fix for wbce_hortal
+
+ * **2018-10-09:** instantflorian [[e3e14946](https://github.com/WBCE/WBCE_CMS/commit/e3e149463fc449e4d635e5dbf0d72670c236cd6b)]
+   > Fix for issue when admin dir was renamed
+
+ * **2018-08-10:** Bianka Martinovic [[f9931de5](https://github.com/WBCE/WBCE_CMS/commit/f9931de50c2c55959b5c562acb8e49d6b18aa012)]
+   > Update tool_clone.php
+     removed some old WB stuff; added quotes to DB statements
+ * **2018-08-10:** Bianka Martinovic [[7ec32b74](https://github.com/WBCE/WBCE_CMS/commit/7ec32b74b1eb0115428d4294f4ed2ca6b93c6c46)]
+   > Update info.php
+
+ * **2018-08-10:** Bianka Martinovic [[55e681ab](https://github.com/WBCE/WBCE_CMS/commit/55e681aba15133b633884406ba93adca13b1de47)]
+   > Update tool_doclone.php
+     hopefully fixed db statements
+ * **2018-08-04:** instantflorian [[996a80d3](https://github.com/WBCE/WBCE_CMS/commit/996a80d3d703c72d8acb84789d98c600737005ea)]
+   > Update changelog
+
  * **2018-07-26:** Christoph Bleiweis [[19651072](https://github.com/WBCE/WBCE_CMS/commit/196510728c2918c2dbd39364302994bf29f8fa33)]
    > small CKE include update
      thanks to stefanek
