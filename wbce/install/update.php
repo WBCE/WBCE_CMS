@@ -168,18 +168,24 @@ $stepID = 1;
 
 // removes old folders
 $dirRemove = array(
-    '[INCLUDE]/phpmailer/',
-    '[MODULES]/output_filter/',
+    '[ACCOUNT]/email_templates/',
+    '[ACCOUNT]/functions/',
+    '[ACCOUNT]/languages/',
+    '[ACCOUNT]/templates/',
     '[ADMIN]/images/',
     '[ADMIN]/pages/page_tree/icons/',
     '[ADMIN]/themes/',
+    '[INCLUDE]/phpmailer/',
+    '[MODULES]/output_filter/',
+    '[MODULES]/user_search/',
     '[TEMPLATE]/advancedThemeWbFlat/',
     '[TEMPLATE]/argos_theme/',
     '[TEMPLATE]/argos_theme_classic/',
     '[TEMPLATE]/argos_theme_reloaded/images/flags/',
     '[TEMPLATE]/beesign_theme_ce/',
     '[TEMPLATE]/DefaultTheme/',
-    '[TEMPLATE]/wb_theme/'
+    '[TEMPLATE]/wb_theme/',
+    '[TEMPLATE]/wbce_flat_theme/jquery/jqueryNiceFileInput/'
 );
 
 // files removed with 1.1 or before
@@ -241,7 +247,24 @@ $filesRemove['2'] = array(
 
 // files removed with 1.4
 $filesRemove['3'] = array(
-    '[FRAMEWORK]/class.wbmailer.php'
+    '[ACCOUNT]/signup_form.inc.php',
+    '[ACCOUNT]/signup_form.php',
+    '[ACCOUNT]/signup_switch.php',
+    '[ACCOUNT]/Accounts.cfg.php',
+    '[ACCOUNT]/check_details.php',
+    '[ACCOUNT]/check_email.php',
+    '[ACCOUNT]/check_password.php',
+    '[ACCOUNT]/forgot_form.php',
+    '[ACCOUNT]/login_form.php',
+    '[ACCOUNT]/preferences_form.php',
+    '[FRAMEWORK]/class.wbmailer.php',
+    '[FRAMEWORK]/PasswordHash.php',
+    '[INCLUDE]/jquery/jquery-min.legacy.js',
+    '[TEMPLATE]/wbce_flat_theme/css/themeextended.css',
+    '[TEMPLATE]/wbce_flat_theme/images/preloader_blue.gif',
+    '[TEMPLATE]/wbce_flat_theme/images/preloader_red.gif',
+    '[TEMPLATE]/wbce_flat_theme/images/wblogo.png',
+    '[TEMPLATE]/wbce_flat_theme/images/wblogo_large.png'
 );
 
 // check existing tables
