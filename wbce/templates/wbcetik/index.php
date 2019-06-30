@@ -159,7 +159,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 							<form class="wbcesuche" name="search" action="<?php echo WB_URL; ?>/search/index.php" method="get">
 								<input type="hidden" name="referrer" value="<?php echo defined('REFERRER_ID') ? REFERRER_ID : PAGE_ID; ?>" />
 								<input type="text" name="string" class="search" placeholder="<?php echo $TEXT['SEARCH']; ?>" />
-								<input type="submit" name="wb_search" value="&#xe090" />
+								<input type="submit" name="wb_search" value="&#xe090;" />
 							</form>
 					   
 					   <?php } ?>
@@ -174,11 +174,11 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 					
 					if ($block[2] != '') { ?>	
 						<div class="margin">
-							<article class="s-12 m-9">
-								<h1 id="contentstart"><?php echo PAGE_TITLE;?></h1>						
+							<article class="s-12 l-9">
+								<h1 id="contentstart"><?php echo PAGE_TITLE;?>fff</h1>						
 								<?php echo $block[1]; ?>			
 							</article>
-							<aside class="s-12 m-3">
+							<aside class="s-12 l-3">
 								<?php echo $block[2]; ?>	
 							</aside>
 						</div>

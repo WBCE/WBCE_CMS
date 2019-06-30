@@ -138,10 +138,10 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
       <!-- HEADER -->
       <header>
          <div class="line">           
-               <div class="s-12 m-3">
+               <div class="s-12 l-3">
                   <a href="<?php echo WB_URL; ?>"><img class="logo center" src="<?php echo $logo; ?>" alt=""></a>
                </div>
-			   <div class="s-12 m-9">
+			   <div class="s-12 l-9">
 					<div id="header-carousel" class="owl-carousel owl-theme">
 					   <?php foreach($pics as $pic) {						   
 						   echo $picPre.$pic.$picPost;
@@ -154,16 +154,16 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
          <div class="line">
             <nav class="margin-bottom" id="main-nav">               
 			    <?php if (SHOW_SEARCH) { ?>
-               <div class="hide-s m-3">                  
+               <div class="hide-s l-3">                  
 					<form class="wbcesuche" name="search" action="<?php echo WB_URL; ?>/search/index.php" method="get">
 						<input type="hidden" name="referrer" value="<?php echo defined('REFERRER_ID') ? REFERRER_ID : PAGE_ID; ?>" />
 						<input type="text" name="string" class="search" placeholder="<?php echo $TEXT['SEARCH']; ?>" />
-						<input type="submit" name="wb_search" value="&#xe090" />
+						<input type="submit" name="wb_search" value="&#xe090;" />
 					</form>
                </div>
 			   <?php } ?>
 			   <p class="nav-text">Navigation</p>
-               <div class="top-nav s-12 m-9">
+               <div class="top-nav s-12 l-9">
                   <?php echo $mainnav; ?>
                </div>
 			  
@@ -192,11 +192,11 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 					
 					if ($block[2] != '') { ?>
 						<div class="margin">
-							<article class="s-12 m-9">
+							<article class="s-12 l-9">
 								<h1 id="contentstart"><?php echo PAGE_TITLE;?></h1>						
 								<?php echo $block[1]; ?>			
 							</article>
-							<aside class="s-12 m-3">
+							<aside class="s-12 l-3">
 								<?php echo $block[2]; ?>	
 							</aside>
 						</div>
