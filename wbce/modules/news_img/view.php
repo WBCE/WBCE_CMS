@@ -332,20 +332,21 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                     '[TEXT_READ_MORE]',
                     '[SHOW_READ_MORE]',
                     '[GROUP_IMAGE_URL]',
-					'[CONTENT_LONG]'
+					'[CONTENT_LONG]',
+					'[POST_ID]'
                 );
 
                 if (isset($users[$uid]['username']) and $users[$uid]['username'] != '') {
                     if (($post_long_len < 9) && ($anz_post_img < 1)) {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], '', 'hidden',$group_image_url,$long);
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], '', 'hidden',$group_image_url,$long,$post['post_id']);
                     } else {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], $MOD_NEWS_IMG['TEXT_READ_MORE'], 'visible',$group_image_url,$long);
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'], $MOD_NEWS_IMG['TEXT_READ_MORE'], 'visible',$group_image_url,$long,$post['post_id']);
                     }
                 } else {
                     if (($post_long_len < 9) && ($anz_post_img < 1)) {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', '','hidden',$group_image_url,'');
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;', $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', '','hidden',$group_image_url,'',$post['post_id']);
                     } else {
-                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', $MOD_NEWS_IMG['TEXT_READ_MORE'],'visible',$group_image_url,'');
+                        $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $short, $post_link, $post_date, $post_time, $create_date, $create_time, $publ_date, $publ_time, '', '', '', '', $MOD_NEWS_IMG['TEXT_READ_MORE'],'visible',$group_image_url,'',$post['post_id']);
                     }
                 }
                 echo str_replace($vars, $values, $setting_post_loop);
@@ -464,13 +465,13 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
 				$wb->preprocess($post_short);
 				$post_long = ($post['content_long']);
 				$wb->preprocess($post_long);
-                $vars = array('[PAGE_TITLE]', '[GROUP_ID]', '[GROUP_TITLE]', '[GROUP_IMAGE]', '[DISPLAY_GROUP]', '[DISPLAY_IMAGE]', '[TITLE]', '[IMAGE]', '[SHORT]', '[BACK]', '[TEXT_BACK]', '[TEXT_LAST_CHANGED]', '[MODI_DATE]', '[TEXT_AT]', '[MODI_TIME]', '[CREATED_DATE]', '[CREATED_TIME]', '[PUBLISHED_DATE]', '[PUBLISHED_TIME]', '[TEXT_POSTED_BY]', '[TEXT_ON]', '[USER_ID]', '[USERNAME]', '[DISPLAY_NAME]', '[EMAIL]','[CONTENT_LONG]');
+                $vars = array('[PAGE_TITLE]', '[GROUP_ID]', '[GROUP_TITLE]', '[GROUP_IMAGE]', '[DISPLAY_GROUP]', '[DISPLAY_IMAGE]', '[TITLE]', '[IMAGE]', '[SHORT]', '[BACK]', '[TEXT_BACK]', '[TEXT_LAST_CHANGED]', '[MODI_DATE]', '[TEXT_AT]', '[MODI_TIME]', '[CREATED_DATE]', '[CREATED_TIME]', '[PUBLISHED_DATE]', '[PUBLISHED_TIME]', '[TEXT_POSTED_BY]', '[TEXT_ON]', '[USER_ID]', '[USERNAME]', '[DISPLAY_NAME]', '[EMAIL]','[CONTENT_LONG]','[POST_ID]');
                
                 
                 if (isset($users[$uid]['username']) and $users[$uid]['username'] != '') {
-                    $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS_IMG['TEXT_BACK'], $MOD_NEWS_IMG['TEXT_LAST_CHANGED'],$post_date, $MOD_NEWS_IMG['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS_IMG['TEXT_POSTED_BY'], $MOD_NEWS_IMG['TEXT_ON'], $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'],$post_long);
+                    $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS_IMG['TEXT_BACK'], $MOD_NEWS_IMG['TEXT_LAST_CHANGED'],$post_date, $MOD_NEWS_IMG['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS_IMG['TEXT_POSTED_BY'], $MOD_NEWS_IMG['TEXT_ON'], $uid, $users[$uid]['username'], $users[$uid]['display_name'], $users[$uid]['email'],$post_long,$post['post_id']);
                 } else {
-                    $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS_IMG['TEXT_BACK'], $MOD_NEWS_IMG['TEXT_LAST_CHANGED'], $post_date, $MOD_NEWS_IMG['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS_IMG['TEXT_POSTED_BY'], $MOD_NEWS_IMG['TEXT_ON'], '', '', '', '',$post_long);
+                    $values = array(PAGE_TITLE, $group_id, $group_title, $group_image, $display_group, $display_image, $post['title'], $post_img, $post_short, $page_link, $MOD_NEWS_IMG['TEXT_BACK'], $MOD_NEWS_IMG['TEXT_LAST_CHANGED'], $post_date, $MOD_NEWS_IMG['TEXT_AT'], $post_time, $create_date, $create_time, $publ_date, $publ_time, $MOD_NEWS_IMG['TEXT_POSTED_BY'], $MOD_NEWS_IMG['TEXT_ON'], '', '', '', '',$post_long,$post['post_id']);
                 }
 
                 
