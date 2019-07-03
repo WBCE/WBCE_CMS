@@ -7,13 +7,8 @@
         <div class="headline-link"> <a href="{ADMIN_URL}/pages/modify.php?page_id={PAGE_IDKEY}"> <i class="fa fa-edit"></i> {TEXT_MODIFY_PAGE} </a> <span style="{DISPLAY_MANAGE_SECTIONS}">&nbsp;&nbsp;|&nbsp;&nbsp;</span> <a href="{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}" style="{DISPLAY_MANAGE_SECTIONS}"> <i class="fa fa-bars"></i> {TEXT_MANAGE_SECTIONS} </a> </div>
     </h2>
 
-    <h2 class="subheader">
-        <span>
-            {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b>
-        </span>
-        <span class="{DISPLAY_MODIFIED}">
-            <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
-        </span>
+    <h2 class="{DISPLAY_MODIFIED}">
+        {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b> &nbsp;&nbsp;|&nbsp;&nbsp; <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
     </h2>
     <section class="fg12 content-box">
         <form name="settings" action="settings2.php" method="post">

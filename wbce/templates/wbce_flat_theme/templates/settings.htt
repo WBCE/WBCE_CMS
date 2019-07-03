@@ -13,31 +13,31 @@
         <div class="row top">
             <div class="fg3">{TEXT_WEBSITE_TITLE}:</div>
             <div class="fg9">
-                <input type="text" name="website_title" value="{WEBSITE_TITLE}" class="wdt300" id="website_title">
+                <input type="text" name="website_title" value="{WEBSITE_TITLE}" class="wdt500" id="website_title">
                 <span class="title-counter"></span> {TEXT_CHARACTERS} [<span class="title-remain"></span> {TEXT_REMAINING}] </div>
         </div>
         <div class="row">
             <div class="fg3">{TEXT_WEBSITE_DESCRIPTION}:</div>
             <div class="fg9">
-                <textarea name="website_description" id="website_description" class="wdt300">{WEBSITE_DESCRIPTION}</textarea>
+                <textarea name="website_description" id="website_description" class="wdt500" rows="3" cols="50">{WEBSITE_DESCRIPTION}</textarea>
                 <span class="desc-counter"></span> {TEXT_CHARACTERS} [<span class="desc-remain"></span> {TEXT_REMAINING}] </div>
         </div>
         <div class="row">
             <div class="fg3">{TEXT_WEBSITE_KEYWORDS}:</div>
             <div class="fg9">
-                <textarea name="website_keywords" class="wdt300">{WEBSITE_KEYWORDS}</textarea>
+                <textarea name="website_keywords" class="wdt500" rows="3" cols="50">{WEBSITE_KEYWORDS}</textarea>
             </div>
         </div>
         <div class="row">
             <div class="fg3">{TEXT_WEBSITE_HEADER}:</div>
             <div class="fg9">
-                <textarea name="website_header" class="wdt300">{WEBSITE_HEADER}</textarea>
+                <textarea name="website_header" class="wdt500" rows="3" cols="50">{WEBSITE_HEADER}</textarea>
             </div>
         </div>
         <div class="row">
             <div class="fg3">{TEXT_WEBSITE_FOOTER}:</div>
             <div class="fg9">
-                <textarea name="website_footer" class="wdt300">{WEBSITE_FOOTER}</textarea>
+                <textarea name="website_footer" class="wdt500" rows="3" cols="50">{WEBSITE_FOOTER}</textarea>
             </div>
         </div>
 
