@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Droplets
- * @version         1.1.4
+ * @version         1.1.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -46,7 +46,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_droplets';
 $module_name            = 'OPF Droplets';
 $module_function        = 'opffilter';
-$module_version         = '1.1.4';
+$module_version         = '1.1.5';
 $module_platform        = 'WBCE 1.3.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';
