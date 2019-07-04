@@ -69,5 +69,6 @@ CKEDITOR.plugins.setLang('wblink', 'en', {
 	selectNews: 'Please select a news-item',
 	selectTopics: 'Please select a topics-item',
 	selectBakery: 'Please select a bakery-item',
+	selectNewsWithImages: 'Please select a NWI-item',
 	noNews: 'no news page selected'
 });

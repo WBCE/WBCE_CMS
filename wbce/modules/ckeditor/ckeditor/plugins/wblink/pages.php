@@ -94,6 +94,24 @@ echo $PagesTitleSelectBox .= " );\n";
 $wblink_allowed_chars = "/[^ a-zA-Z0-9_äöüÄÖÜß!\"§$%&\/\(\)\[\]=\{\}\?\*#~+-;:,\.\'\`@€|]/";
 $NewsItemsSelectBox = "var NewsItemsSelectBox = new Array();";
 $ModuleList = "var ModuleList = new Array();";
+
+$newsImgSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'news_img'");
+while($section = $newsImgSections->fetchRow())
+{
+	$newsImg = $database->query("SELECT title, link, page_id, post_id FROM ".TABLE_PREFIX."mod_news_img_posts WHERE active=1 AND section_id = ".$section['section_id']);
+	$ModuleList .= "ModuleList[".$section['page_id']."] = 'NewsWithImages';";
+	$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
+	while($item = $newsImg->fetchRow())
+    {
+        $item['title'] = preg_replace($wblink_allowed_chars , "" , $item['title']);
+        if ($wb284) {
+			$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '[wblink".$item['page_id'].'?addon=news_img&item='.$item['post_id']."]');";
+        } else {
+			$NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY.(addslashes($item['link'])).PAGE_EXTENSION."');";
+        }
+	}
+}
+
 $newsSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'news'");
 while($section = $newsSections->fetchRow())
 {

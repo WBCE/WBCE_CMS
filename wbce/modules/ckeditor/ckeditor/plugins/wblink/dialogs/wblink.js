@@ -232,7 +232,7 @@ CKEDITOR.dialog.add( 'wblink', function( editor ) {
 						id: 'protocol',
 						type: 'select',
 						label: commonLang.protocol,
-						'default': 'http://',
+						'default': 'https://',
 						items: [
 							// Force 'ltr' for protocol names in BIDI. (#5433)
 							[ 'http://\u200E', 'http://' ],
