@@ -60,7 +60,7 @@ function opff_mod_opf_droplets (&$content, $page_id, $section_id, $module, $wb) 
 
                 // load filter function
                if(function_exists('evalDroplets')) {
-                   $content = evalDroplets($content, (($page_id == 'backend') ? 'backend' : 'frontend'));
+                   $content = evalDroplets($content, (($page_id === 'backend') ? 'backend' : 'frontend'));
                }
         }
     }
