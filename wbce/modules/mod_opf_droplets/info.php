@@ -21,6 +21,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.1.5   2019-07-04      - bugfix: make droplets work in search results again
  *      1.1.4   2019-04-22      - include opf functions in upgrade script
  *      1.1.3   2019-03-09      - bugfix in install/upgrade
  *      1.1.2   2019-03-07      - reorder filters into new categories
