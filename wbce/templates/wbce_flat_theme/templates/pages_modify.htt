@@ -8,13 +8,8 @@
         </div>
     </h2>
 
-    <h2 class="subheader">
-        <span>
-            {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b>
-        </span>
-        <span class="{DISPLAY_MODIFIED}">
-            <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
-        </span>
+    <h2 class="{DISPLAY_MODIFIED}">
+        {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b> &nbsp;&nbsp;|&nbsp;&nbsp; <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
     </h2>
 </section>
 <div class="clearfix"></div>

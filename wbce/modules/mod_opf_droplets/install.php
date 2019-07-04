@@ -48,7 +48,7 @@ if(defined('WB_URL'))
             'desc' => "insert droplets into html output",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_droplets', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all,backend'
+            'pages_parent' => 'all,backend,0'
         ))
         && opf_move_up_before('Droplets');  // move up to the top
      }

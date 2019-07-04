@@ -8,13 +8,8 @@
         <div class="headline-link"> <a href="{ADMIN_URL}/pages/modify.php?page_id={PAGE_IDKEY}"> <i class="fa fa-edit"></i> {HEADING_MODIFY_PAGE} </a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="{ADMIN_URL}/pages/settings.php?page_id={PAGE_IDKEY}" style="{DISPLAY_MANAGE_SECTIONS}"> <i class="fa fa-cog"></i> {TEXT_CHANGE_SETTINGS} </a> </div>
     </h2>
 
-    <h2 class="subheader">
-        <span>
-            {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b>
-        </span>
-        <span class="{DISPLAY_MODIFIED}">
-            <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
-        </span>
+    <h2 class="{DISPLAY_MODIFIED}">
+        {TEXT_CURRENT_PAGE}: <b>{PAGE_TITLE}</b> &nbsp;&nbsp;|&nbsp;&nbsp; PageID: <b>{PAGE_ID}</b> &nbsp;&nbsp;|&nbsp;&nbsp; <i>{LAST_MODIFIED}: {MODIFIED_BY} ({MODIFIED_BY_USERNAME}) - {MODIFIED_WHEN}</i>
     </h2>
     <section class="fg12 content-box">
         <form name="section_properties" action="{ADMIN_URL}/pages/sections_save.php?page_id={PAGE_IDKEY}" method="post">
