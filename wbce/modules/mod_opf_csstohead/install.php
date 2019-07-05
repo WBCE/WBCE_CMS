@@ -49,7 +49,7 @@ if(defined('WB_URL'))
             'desc' => "moves css definitions from the body section into head",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_css_to_head', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all'
+            'pages_parent' => 'all,0'
         ))
         && opf_move_up_before(
             'CSS to head',

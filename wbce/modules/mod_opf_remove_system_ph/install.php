@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'desc' => "remove system placeholder markers ",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_remove_system_ph', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all,backend'
+            'pages_parent' => 'all,backend,0'
         ));
     }
 }

@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'desc' => "move sections enclosed by move markers to the areas denoted by the corresponding place holders",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_move_stuff', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all,backend'
+            'pages_parent' => 'all,backend,0'
         ))
         && opf_move_up_before(
             'Move Stuff',

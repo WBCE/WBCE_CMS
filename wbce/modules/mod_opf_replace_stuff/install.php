@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'desc' => "replaces the areas marked by placeholders by the corresponding parts enclosed by replacement markers",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_replace_stuff', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all,backend'
+            'pages_parent' => 'all,backend,0'
         ))
         && opf_move_up_before(
             'Replace Stuff',

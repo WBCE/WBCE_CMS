@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'desc' => "fill out placeholders for Javascript, CSS, Metas and Title",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_insert', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all,backend'
+            'pages_parent' => 'all,backend,0'
         ))
         && opf_move_up_before('Insert');
     }
