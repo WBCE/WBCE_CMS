@@ -13,7 +13,7 @@
 $module_directory = 'ckeditor';
 $module_name = 'CKEditor';
 $module_function = 'WYSIWYG';
-$module_version = '4.12.0';
+$module_version = '4.12.0.1';
 $module_platform = '1.0.0';
 $module_author = 'diverse, cwsoft, Norhei, Colinax';
 $module_license = 'GPL, LGPL and MPL';
