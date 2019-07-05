@@ -22,12 +22,12 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 		register_frontend_modfiles('jquery');
 		register_frontend_modfiles('js');
 		
-		// Navigation erzeugen 
-		// create navigation menu 
+		// Navigation erzeugen. Das Auf-/Zuklappscript kommt mit mehr als zwei Ebenen nicht klar, deshalb die Begrenzung bei $aMaxLevel. Mehr Infos zu show_menu2 auf https://sm2.wbce-cms.org 
+		// create navigation menu. The menu item toggler can handle max. 2 levels, so we have to set the $aMaxLevel to this value. For more information about show_menu2 visit https://sm2.wbce-cms.org 
 		$mainnav = show_menu2(
 			$aMenu          = 1,
 			$aStart         = SM2_ROOT,
-			$aMaxLevel      = SM2_ALL,
+			$aMaxLevel      = SM2_START+2,
 			$aOptions       = SM2_ALL|SM2_PRETTY|SM2_BUFFER,
 			$aItemOpen      = '<li><a href="[url]" class="[class]" target="[target]">[menu_title]</a>',
 			$aItemClose     = '</li>',
@@ -121,8 +121,35 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 		
 		
 	 ?>
+	 
+	 <? /*
+	 Der folgende noscript-Block überschreibt einige Style-Anweisungen, damit bei ausgeschaltetem JavaScript zumindest das Standard-Headerbild erscheint. Da das Ein-/Ausblenden von untergeordneten Navigationspunkten ebenfalls nur funktioniert, wenn JS aktiviert ist, werden diese hier auf immer sichtbar gesetzt, um auch ohne JS die Erreichbarkeit der Seiten zu gewährleisten.
+	 
+	 The following noscript block overwrites some style definitions to display at least the default header image (instead of the slider) if JavaScript is disabled. Furthermore, the navigation toggler relies on JavaScript. To make sure that all pages in the navigation are also accessable without JavaScript, the navigation ul gets an auto height, the relative positioning is resetted and its overflow is set explicitly to visible. 
+	 */
+	 ?>
+	 
+	 <noscript>
+		<style type="text/css">
+			.aside-nav li>ul {
+				height: auto;	
+				position: auto;	
+				overflow: visible;
+			}
+			
+			#header-carousel {
+				background-image:url(<?php echo $pics[0]; ?>);
+				display:block;
+			}
+		</style>
+	 </noscript>
      
    </head>
+   <?php /* 
+   Die Klasse size-1140 setzt die Content-Breite auf max. 1140 Pixel. Andere Werte: 960, 1280 und 1520.
+   The class size-1140 sets the maximum content width to 1140 pixels. Other valid classes are: size-960, size-1280 and size-1520.
+   */ ?>
+   
    <body class="size-1140">
       <!-- HEADER -->
       <header>
@@ -132,7 +159,12 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
                </div>
 			   <div class="s-12 m-9">
 					<div id="header-carousel" class="owl-carousel owl-theme">
-					   <?php foreach($pics as $pic) {						   
+					   <?php 
+					   /* In Zeile 93ff wurde ein Array (eine spezielle Art von Variable) für die Slider-Bilder generiert. Die in dieser Variable gespeicherten Werte werden hier nun abgerufen und mit dem ebenfalls oben definierten Präfix und Suffix ausgegeben. Aus dem so erzeugten HTML generiert das Script owl-carousel, das am Ende der Seite dann aufgerufen wird, die Slideshow.
+					   
+					   In line 93ff. an array (a special kind of variable) was generated to hold the slideshow images. Here comes the output: the values of this variable plus a prefix and a suffix as defined above. From the generated HTML the owl carosl script called at the footer of the page will build a slideshow.
+					   */
+					   foreach($pics as $pic) {						   
 						   echo $picPre.$pic.$picPost;
 						} ?>
 					  
@@ -147,11 +179,16 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
          <div class="line">
             <div class="box">
                <div class="margin">
-			    <!-- ASIDE NAV -->
+			    <!-- ASIDE NAV AND OPTIONAL CONTENT BLOCK-->
                   <div class="s-12 m-3">                     
                      <div class="aside-nav minimize-on-small">
                          <p class="aside-nav-text">Navigation</p>               
-						<?php echo $mainnav; ?>               					   
+						<?php echo $mainnav; ?>
+						
+						 <?php if ($block[5]!='') {
+						 echo $block[5];
+						 } ?>
+						
                      </div>					 
 					 
 					 <?php if (SHOW_SEARCH) { ?>
@@ -175,7 +212,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 					if ($block[2] != '') { ?>	
 						<div class="margin">
 							<article class="s-12 l-9">
-								<h1 id="contentstart"><?php echo PAGE_TITLE;?>fff</h1>						
+								<h1 id="contentstart"><?php echo PAGE_TITLE;?></h1>						
 								<?php echo $block[1]; ?>			
 							</article>
 							<aside class="s-12 l-3">
@@ -237,5 +274,6 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 		$( '.chevron li:has(ul)' ).doubleTapToGoX();
 		
       </script>
+	  
    </body>
 </html>

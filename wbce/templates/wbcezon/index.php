@@ -154,7 +154,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
          <div class="line">
             <nav class="margin-bottom" id="main-nav">               
 			    <?php if (SHOW_SEARCH) { ?>
-               <div class="hide-s l-3">                  
+               <div class="hide-s m-12 l-3">                  
 					<form class="wbcesuche" name="search" action="<?php echo WB_URL; ?>/search/index.php" method="get">
 						<input type="hidden" name="referrer" value="<?php echo defined('REFERRER_ID') ? REFERRER_ID : PAGE_ID; ?>" />
 						<input type="text" name="string" class="search" placeholder="<?php echo $TEXT['SEARCH']; ?>" />
@@ -163,7 +163,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
                </div>
 			   <?php } ?>
 			   <p class="nav-text">Navigation</p>
-               <div class="top-nav s-12 l-9">
+               <div class="top-nav s-12 m-12 l-9">
                   <?php echo $mainnav; ?>
                </div>
 			  
@@ -177,14 +177,17 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
             <div class="box">
                <div class="margin">
 			    <!-- ASIDE NAV -->
-                  <div class="hide-s m-3">                     
+                  <div class="hide-s m-12 l-3">                     
                      <div class="aside-nav-noresponsee">
                         <?php echo $asidenav; ?>						
                      </div>
+					 <?php if ($block[5]!='') {
+						 echo $block[5];
+					 } ?>
 					 &nbsp;
                   </div>
 				  <!-- MAIN CONTENT AND OPTIONAL BLOCKS -->
-				  <div class="s-12 m-9 maincontent">                  				  
+				  <div class="s-12 l-9 maincontent">                  				  
 					<?php 														
 					if ($block[3] !='') {											
 						echo '<div class="s-12">'.$block[3].'</div>';						
@@ -222,8 +225,8 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 				<?php 
 				$footerwidth = '';
 				if (WEBSITE_FOOTER!='') { 
-					$footerwidth = 'm-6';
-					echo '<div class="s-12 m-6">'.WEBSITE_FOOTER.'</div>';
+					$footerwidth = 'l-6';
+					echo '<div class="s-12 l-6">'.WEBSITE_FOOTER.'</div>';
 				} ?>
 				<div class="s-12 <?php echo $footerwidth; ?> text-right">				
 				  <?php echo $loginlink; ?>

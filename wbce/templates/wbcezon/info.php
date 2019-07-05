@@ -14,8 +14,19 @@ $block[1] = 'Inhalt';
 $block[2] = 'Seitenspalte';
 $block[3] = 'Breiter Inhalt oben';
 $block[4] = 'Breiter Inhalt unten';
+$block[5] = 'Linke Spalte (nur Desktop/Tablet)';
 $block[99] = 'nicht zeigen';
 
 $menu[1] = 'Navigation';
 $menu[99] = 'nicht in Nav.';
+
+if (LANGUAGE!="DE") {
+	$block[1] = 'Content';
+	$block[2] = 'Aside';
+	$block[3] = 'Big Content Top';
+	$block[4] = 'Big Content Bottom';
+	$block[5] = 'Left Column (Desktop/Tablet only)';
+	$block[99] = 'No Output';	
+	$menu[99] = 'Not in Nav.';
+}
 

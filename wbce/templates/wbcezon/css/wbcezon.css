@@ -30,33 +30,85 @@
     font-style: normal;
 }
 
+
+/* ------------------------------------- general / allgemein ----------------------------- */
+
 html {
 	overflow-y:scroll;
 }
 
-header .line,
-section .line,
-footer .line {
-	background-color:#fff;
-	padding:0 !important;
+body {
+	background: none repeat scroll 0 0 #eeeeee;
+	font-size: 18px;
+	font-family: "Open Sans", Arial, sans-serif;
+	color: #444;
 }
 
-.logo {
-	padding:2rem;
+
+h1, h2, h3, h4, h5, h6 {
+	color: #314B68;
+	font-weight: normal;
+	line-height: 1.3;
+	margin: 0.5rem 0;
 }
 
-nav,
-.top-nav li ul li a {
-	background-color:#145374;
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.1rem;}
+h6 { font-size: 0.9rem; }
+
+a, a:link, a:visited, a:hover, a:active {
+	text-decoration: none;
+	color: #617D9B;
+	transition: color 0.20s linear 0s;
+	-o-transition: color 0.20s linear 0s;
+	-ms-transition: color 0.20s linear 0s;
+	-moz-transition: color 0.20s linear 0s;
+	-webkit-transition: color 0.20s linear 0s;
 }
 
-.top-nav li a{
-	padding:0.5rem 1rem;
+a:hover {
+	color: #90AAC0;
 }
 
-.top-nav ul li:first-child a {
-	padding-left:1.75rem;
+
+p, li, dl, blockquote, table, kbd {
+	font-size: 1rem;
+	line-height: 1.6;
 }
+
+hr {
+	border: 0;
+	border-top: 1px solid #e5e5e5;
+	clear: both;
+	height: 0;
+	margin: 0.5rem auto;
+}
+
+/* ------------------------------------------- top nav styles-------------------------------------------*/
+
+nav {	background: #314B68; }
+
+.top-nav ul ul { background-color: #314B68; }
+.top-nav li a { padding:0.5rem 1rem; color: #fff; }
+.top-nav li ul li a { background-color:  #314B68; }
+.top-nav li a:hover, .aside-nav li a:hover { background-color: #90AAC0; }
+.top-nav .active-item a { background: #546F8D; }
+
+@media screen and (max-width:768px) {
+	.top-nav li a {	background: none repeat scroll 0 0 #1c3849;	}
+	.top-nav li a { color: #fff;}
+	.top-nav li a:hover { background: none repeat scroll 0 0 #314B68; color: #fff; 	}
+	.top-nav li ul li a { background: none repeat scroll 0 0 #2b4c61;	}
+	.top-nav li ul li ul li a { background: none repeat scroll 0 0 #456274;	}
+	.nav-text { color: #fff; }
+	
+}
+
+/* ------------------------------------------- aside nav styles-------------------------------------------*/
+
 
 .aside-nav-noresponsee ul {
 	margin:0;
@@ -72,7 +124,7 @@ nav,
 	display:block;
 	padding:0.3rem 0.5rem;
 	background-color:#eee;
-	color:#145374;
+	color:#314B68;
 }
 
 .aside-nav-noresponsee li ul li a:link {
@@ -84,6 +136,26 @@ nav,
 	background-color:#ddd;
 	color:#5588a3;
 }
+
+
+/* -------------------------------------------- parts / Bereiche ---------------------------------- */
+
+
+
+
+
+header .line,
+section .line,
+footer .line {
+	background-color:#fff;
+	padding:0 !important;
+}
+
+.logo {
+	padding:2rem;
+}
+
+
 
 .wbcesuche {
 	padding:0.5rem 1.5rem;
@@ -104,33 +176,19 @@ nav,
 	color:#fff;
 }
 
-h1, h2, h3, h4, h5 {
-	color:#385170;
-}
-
 
 h1#contentstart {
 	margin-top:-0.5rem;
 }
 
-
-.maincontent a:link, 
-.maincontent a:visited {
-	color:#145374;
-	text-decoration:underline;
+.maincontent p, .maincontent li {
+	padding-bottom:0.5em;
 }
 
-.maincontent a:hover, 
-.maincontent a:visited:hover,
-footer a:hover,
-footer a:visited:hover {
-	color:#5588a3;
+.maincontent li ul, .maincontent li ol {
+	padding-top:0.5em;
 }
 
-
-hr {
-	margin:0.5rem 0;
-}
 
 .back-to-top {
 	position:fixed;
@@ -139,7 +197,36 @@ hr {
 }
 
 a.back-to-top, footer a:link, footer a:visited {
-	color:#145374;
 	border:0;
 	padding:0 1em;
+}
+
+@media screen and (max-width:768px) {
+	.wbcesuche {
+		text-align:center;
+	}
+}
+
+
+/* --------------------------- pics ------------------------------------ */
+img.picfull {width:100%; height:auto;}
+
+@media screen and (min-width:640px) {
+img.pic2left, img.pic3left, img.pic4left { margin: 0 1em 1em 0; height:auto; }
+
+img.pic2right, img.pic3right,  img.pic4right { margin: 0 0 1em 1em; height:auto; }
+
+img.pic2left {float:left; max-width:49%;}
+img.pic2right {float:right; max-width:49%; }
+
+img.pic3left {float:left; max-width:32%;}
+img.pic3right {float:right; max-width:32%;}
+
+img.pic4left {float:left; max-width:24%;}
+img.pic4right {float:right; max-width:24%; }
+}
+
+@media screen and (max-width:640px) {
+	img.pic2left, img.pic3left, img.pic4left,
+	img.pic2right, img.pic3right,  img.pic4right { margin: 1em 0; width:100%; float:none; height:auto; }
 }
