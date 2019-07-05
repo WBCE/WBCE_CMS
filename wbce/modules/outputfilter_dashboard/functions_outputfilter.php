@@ -8,7 +8,7 @@ functions_outputfilter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.8
+ * @version         1.5.9
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -482,6 +482,7 @@ function opf_register_filter($filter, $serialized=FALSE) {
     if($userfunc) $allowedit = 1;
     $modules = serialize($modules);
     if(!is_array($pages)) $pages = explode(',', $pages);
+    $pages_parent = str_replace('search', '0', $pages_parent);
     if(!is_array($pages_parent)) $pages_parent = explode(',', $pages_parent);
     if(empty($pages) && empty($pages_parent)) {
         $pages = array('9999999');

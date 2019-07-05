@@ -6,7 +6,7 @@ templates/add_edit.htt
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.8
+ * @version         1.5.9
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -147,8 +147,10 @@ templates/add_edit.htt
 <script type="text/javascript">
 var opf_use_checktrees = true;
 </script>
-<!--/* activate EditArea */-->
-<script type="text/javascript" src="{WB_URL}/include/editarea/edit_area_full.js"></script>
+<!--/* activate EditArea if either $func is not empty or $tpl_list_editarea contains any fields:
+    <script type="text/javascript" src="'.WB_URL.'/include/editarea/edit_area_full.js"></script>
+*/-->
+{tpl_edit_area}
 <script type="text/javascript">
 <!--/*  // if $func <> "" insert:
     var opf_editarea = "editable"; // or "" if !$editable

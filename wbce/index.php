@@ -73,11 +73,6 @@ $sContent = ob_get_clean();
 // Append the PRe output  so filter can handle it    
 $sContent = $sContent.$sPreOutput;   
 
-// Process $wb->DirectOutput (the variable) if set. 
-// This ends the script here and regular content is not put out.
-// But still all modules and template scripts are finished at this point.  
-$wb->DirectOutput();
-
 // Load OPF Dashboard OutputFilter functions
 $sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.php';
 if (is_readable($sOpfFile)) {
@@ -88,20 +83,11 @@ if (is_readable($sOpfFile)) {
     }
 }
 
+// Process $wb->DirectOutput (the variable) if set. 
+// This ends the script here and regular content is not put out.
+// But still all modules and template scripts are finished at this point.  
+$wb->DirectOutput();
 
-// Execute old frontend output filters or not
-// Sooner or later this is going to be removed as we don't need two OPF systems 
-// So if the module is removed , this goes inactive. 
-if (!defined("WB_SUPPRESS_OLD_OPF") or  WB_SUPPRESS_OLD_OPF === false){
-    $sOldOpfPath = WB_PATH . '/modules/output_filter/filter_routines.php';
-    if (file_exists($sOldOpfPath)) {
-        require_once $sOldOpfPath;
-        // module correctly loaded 
-        if (function_exists('executeFrontendOutputFilter')) {
-            $sContent = executeFrontendOutputFilter($sContent);
-        }
-    }
-}
 
 // Now, send complete page content to the browser
 echo $sContent;

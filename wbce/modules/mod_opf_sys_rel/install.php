@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Sys Rel
- * @version         1.0.10
+ * @version         1.0.11
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -47,7 +47,8 @@ if(defined('WB_URL'))
             'funcname' => 'opff_mod_opf_sys_rel',
             'desc' => "turn full qualified URLs to relative URLs",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_sys_rel', 0)==0))?0:1,
-            'allowedit' => 0
+            'allowedit' => 0,
+            'pages_parent' => 'all,search'
         ));
     }
 }

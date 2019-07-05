@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Insert
- * @version         1.0.6
+ * @version         1.0.7
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'desc' => "fill out placeholders for Javascript, CSS, Metas and Title",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_insert', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all,backend,0'
+            'pages_parent' => 'all,backend,search'
         ))
         && opf_move_up_before('Insert');
     }

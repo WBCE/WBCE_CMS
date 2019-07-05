@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.1.1
+ * @version         1.1.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -52,7 +52,8 @@ if(defined('WB_URL'))
             'desc' => "protect email addresses in text, mailto links, and javascript",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_email', 1)==1))?1:0,
             'allowedit' => 0,
-            'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email'
+            'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email',
+            'pages_parent' => 'all,search'
         ))
         && opf_move_up_before(
             'E-Mail',

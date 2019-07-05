@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Remove System PH
- * @version         1.1.4
+ * @version         1.1.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -46,7 +46,7 @@ if(defined('WB_URL'))
             'desc' => "remove system placeholder markers ",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_remove_system_ph', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all,backend,0'
+            'pages_parent' => 'all,backend,search'
         ));
     }
 }

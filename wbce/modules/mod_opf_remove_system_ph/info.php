@@ -7,7 +7,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Remove System PH
- * @version         1.1.4
+ * @version         1.1.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -19,6 +19,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.1.5   2019-07-05      - by default enable filter on searchresults
  *      1.1.4   2019-04-22      - include opf functions in upgrade script
  *      1.1.3   2019-03-28      - make description more meaningful
  *      1.1.2   2019-03-09      - bugfix in install/upgrade
@@ -43,7 +44,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_remove_system_ph';
 $module_name            = 'OPF Remove System PH';
 $module_function        = 'opffilter';
-$module_version         = '1.1.4';
+$module_version         = '1.1.5';
 $module_platform        = 'WBCE 1.3.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.1.1
+ * @version         1.1.2
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -21,6 +21,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.1.2   2019-07-05      - by default enable filter on searchresults
  *      1.1.1   2019-04-22      - include opf functions in upgrade script
  *      1.1.0   2019-03-18      - use insert class for inserting mdcr.js
  *      1.0.10  2019-03-09      - bugfix in install/upgrade
@@ -51,7 +52,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_email';
 $module_name            = 'OPF E-Mail';
 $module_function        = 'tool';
-$module_version         = '1.1.1';
+$module_version         = '1.1.2';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

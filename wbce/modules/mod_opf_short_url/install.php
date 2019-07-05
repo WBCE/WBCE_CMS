@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Short URL
- * @version         1.0.5
+ * @version         1.0.6
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -47,7 +47,8 @@ if(defined('WB_URL'))
             'funcname' => 'opff_mod_opf_short_url',
             'desc' => "short url via filter (instead of a droplet)",
             'active' => (class_exists('Settings') && (Settings::Get('opf_short_url', 0)==0))?0:1,
-            'allowedit' => 0
+            'allowedit' => 0,
+            'pages_parent' => 'all,search'
         ))
         && opf_move_up_before(
             'Short URL',

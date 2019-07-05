@@ -2,6 +2,10 @@
 Header: Version-History
 
 1.5:
+1.5.9 %(mrbaseman, 5 Jul 2019)%
+        - include edit_area.js only on pages where an editarea exists
+        - allow 'search' in pages_parent for specifying searchresults
+
 1.5.8 %(mrbaseman, 20 Mar 2019)%
         - include http_to_https plugin
         - support placeholders in helppath

@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Short URL
- * @version         1.0.5
+ * @version         1.0.6
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -21,6 +21,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.0.6   2019-07-05      - by default enable filter on searchresults
  *      1.0.5   2019-04-22      - moved to page (last) category
  *      1.0.4   2019-04-22      - include opf functions in upgrade script
  *      1.0.3   2019-03-09      - bugfix in install/upgrade
@@ -44,7 +45,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_short_url';
 $module_name            = 'OPF Short URL';
 $module_function        = 'opffilter';
-$module_version         = '1.0.5';
+$module_version         = '1.0.6';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

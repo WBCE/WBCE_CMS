@@ -8,7 +8,7 @@ add_filter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.8
+ * @version         1.5.9
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -134,6 +134,7 @@ array_merge($LANG['MOD_OPF'],
     'tpl_funcname' => $funcname,
     'tpl_func' => $func,
     'tpl_cancel_onclick' => opf_quotes('javascript: window.location = \''.ADMIN_URL.'/admintools/tool.php?tool='.basename(dirname(__FILE__)).'\';'),
+    'tpl_edit_area' => (($func <> "")?'<script type="text/javascript" src="'.WB_URL.'/include/editarea/edit_area_full.js"></script>':""),
     'tpl_allowedit' => (($func <> "")?("var opf_editarea = ".($allowedit?'"editable"':'""').";"):""),
     'tpl_list_editarea' => "",
     'tpl_list_growfield' => $list_growfield,

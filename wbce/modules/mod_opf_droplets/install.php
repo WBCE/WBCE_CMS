@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2019)
  * @category        opffilter
  * @package         OPF Droplets
- * @version         1.1.5
+ * @version         1.1.6
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -48,7 +48,7 @@ if(defined('WB_URL'))
             'desc' => "insert droplets into html output",
             'active' => (!class_exists('Settings') || (Settings::Get('opf_droplets', 1)==1))?1:0,
             'allowedit' => 0,
-            'pages_parent' => 'all,backend,0'
+            'pages_parent' => 'all,backend,search'
         ))
         && opf_move_up_before('Droplets');  // move up to the top
      }
