@@ -10,7 +10,7 @@
  * @author    Norbert Heimsath for the WBCE Project
  *            Initial code and work on both classes (I and Insert).
  * @author    Christian M. Stefan <stefek@designthings.de>
- *            adaptation and code expansion for WBCE 1.3.x
+ *            adaptation and code expansion for WBCE 1.4
  * 
  * @copyright http://www.gnu.org/licenses/lgpl.html (GNU LGPLv2 or any later) 
  */
@@ -981,12 +981,15 @@ class Insert {
     {
         $sTemplateUrl  = WB_URL . '/templates/';
         $sTemplateUrl .= defined('TEMPLATE') ? TEMPLATE : Settings::Get("default_template");
-        return array(
+        $aRetVal =  array(
             '{WB_URL}'           => WB_URL,
             '{MODULES}'          => WB_URL . '/modules',
-            '{MEDIA_URL}'        => WB_URL . MEDIA_DIRECTORY,
             '{DEFAULT_TEMPLATE}' => $sTemplateUrl,
         );
+        if(defined('MEDIA_DIRECTORY')){            
+            $aRetVal['{MEDIA_URL}'] = WB_URL . MEDIA_DIRECTORY;
+        }
+        return $aRetVal;
         // More replacement Tokens can be added to this array using the addUrlToken() method
     }
 
