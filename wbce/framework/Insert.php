@@ -101,16 +101,9 @@ class Insert {
     public function checkCacheControl() 
     {
         $bActive = false;
-        if(defined('WB_FRONTEND') && WB_FRONTEND == true){
-            if(function_exists('opf_filter_get_data')){	
-                if($aFilter = opf_filter_get_data('Cache Control')){
-                    if(!(in_array('all', $aFilter['pages_parent']) || in_array(PAGE_ID, $aFilter['pages_parent']))
-                      && !(in_array('all', $aFilter['pages']) || in_array(PAGE_ID, $aFilter['pages']))){					
-                        $bActive = false;
-                    } else {
-                        $bActive = true;
-                    }
-                }
+        if(function_exists('opf_filter_get_data')){	
+            if($aFilter = opf_filter_get_data('Cache Control')){
+                $bActive = (bool) $aFilter['active'];
             }
         }
         return $bActive;
