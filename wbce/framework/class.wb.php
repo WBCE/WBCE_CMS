@@ -1143,6 +1143,19 @@ _JsCode;
                 if ($sModuleName = get_variable_content('module_name', $sData, true, false)) {
                     $sRetVal = $sModuleName;
                 } 
+				if ($this->section_name == 'admintools' && $sToolName = get_variable_content('tool_name', $sData, true, false)) {
+                    $sRetVal = $sToolName;
+                } 
+				if($sRetVal == ''){
+					$sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
+					$sData = @file_get_contents($sInfoFile);
+					if ($sModuleName = get_variable_content('module_name', $sData, true, false)) {
+						$sRetVal = $sModuleName;
+					} 
+					if ($this->section_name == 'admintools' && $sToolName = get_variable_content('tool_name', $sData, true, false)) {
+						$sRetVal = $sToolName;
+					} 
+				}
             }
         }
         if ($sRetVal == '' || $bShowOriginal == true) {
@@ -1174,7 +1187,7 @@ _JsCode;
      * @param   string  $sModDir
      * @return  string
      */
-    public function get_module_description($sModDir = '') {
+    public function get_module_description($sModDir = '', $isTool = false) {
         $sRetVal = '';
         if (function_exists('get_variable_content')) {
             $sLanguageFile = WB_PATH . '/modules/' . $sModDir . '/languages/' . LANGUAGE . '.php';
@@ -1184,6 +1197,19 @@ _JsCode;
                 if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
                     $sRetVal = $sModuleDescription;
                 } 
+                if ($this->section_name == 'admintools' && $sToolDescription = get_variable_content('tool_description', $sData, true, false)) {
+                    $sRetVal = $sToolDescription;
+                } 
+				if($sRetVal == ''){
+					$sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
+					$sData = @file_get_contents($sInfoFile);
+					if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
+						$sRetVal = $sModuleDescription;
+					} 
+					if ($this->section_name == 'admintools' && $sToolDescription = get_variable_content('tool_description', $sData, true, false)) {
+						$sRetVal = $sToolDescription;
+					} 
+				}
             }
         }
         if ($sRetVal == '') {
