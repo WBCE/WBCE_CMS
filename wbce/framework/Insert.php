@@ -10,7 +10,7 @@
  * @author    Norbert Heimsath for the WBCE Project
  *            Initial code and work on both classes (I and Insert).
  * @author    Christian M. Stefan <stefek@designthings.de>
- *            adaptation and code expansion for WBCE 1.3.x
+ *            adaptation and code expansion for WBCE 1.4
  * 
  * @copyright http://www.gnu.org/licenses/lgpl.html (GNU LGPLv2 or any later) 
  */
@@ -101,16 +101,9 @@ class Insert {
     public function checkCacheControl() 
     {
         $bActive = false;
-        if(defined('WB_FRONTEND') && WB_FRONTEND == true){
-            if(function_exists('opf_filter_get_data')){	
-                if($aFilter = opf_filter_get_data('Cache Control')){
-                    if(!(in_array('all', $aFilter['pages_parent']) || in_array(PAGE_ID, $aFilter['pages_parent']))
-                      && !(in_array('all', $aFilter['pages']) || in_array(PAGE_ID, $aFilter['pages']))){					
-                        $bActive = false;
-                    } else {
-                        $bActive = true;
-                    }
-                }
+        if(function_exists('opf_filter_get_data')){	
+            if($aFilter = opf_filter_get_data('Cache Control')){
+                $bActive = (bool) $aFilter['active'];
             }
         }
         return $bActive;
@@ -988,12 +981,15 @@ class Insert {
     {
         $sTemplateUrl  = WB_URL . '/templates/';
         $sTemplateUrl .= defined('TEMPLATE') ? TEMPLATE : Settings::Get("default_template");
-        return array(
+        $aRetVal =  array(
             '{WB_URL}'           => WB_URL,
             '{MODULES}'          => WB_URL . '/modules',
-            '{MEDIA_URL}'        => WB_URL . MEDIA_DIRECTORY,
             '{DEFAULT_TEMPLATE}' => $sTemplateUrl,
         );
+        if(defined('MEDIA_DIRECTORY')){            
+            $aRetVal['{MEDIA_URL}'] = WB_URL . MEDIA_DIRECTORY;
+        }
+        return $aRetVal;
         // More replacement Tokens can be added to this array using the addUrlToken() method
     }
 
