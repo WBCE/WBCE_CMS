@@ -1133,7 +1133,7 @@ _JsCode;
      * @param   string  $sHem
      * @return  string
      */
-    public function get_module_name($sModDir = '', $bShowOriginal = false, $sHem = '  (%s)') {
+    public function get_module_name($sModDir = '', $bShowOriginal = false, $sHem = '  (%s)', $isTool = false) {
         $sRetVal = '';
         if (function_exists('get_variable_content')) {
             $sLanguageFile = WB_PATH . '/modules/' . $sModDir . '/languages/' . LANGUAGE . '.php';
@@ -1146,6 +1146,7 @@ _JsCode;
 				if ($this->section_name == 'admintools' && $sToolName = get_variable_content('tool_name', $sData, true, false)) {
                     $sRetVal = $sToolName;
                 } 
+				$isTool = isset($isTool) ? $isTool : $this->section_name == 'admintools';
 				if($sRetVal == ''){
 					$sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
 					$sData = @file_get_contents($sInfoFile);
@@ -1197,7 +1198,8 @@ _JsCode;
                 if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
                     $sRetVal = $sModuleDescription;
                 } 
-                if ($this->section_name == 'admintools' && $sToolDescription = get_variable_content('tool_description', $sData, true, false)) {
+				$isTool = isset($isTool) ? $isTool : $this->section_name == 'admintools';
+                if ($isTool && $sToolDescription = get_variable_content('tool_description', $sData, true, false)) {
                     $sRetVal = $sToolDescription;
                 } 
 				if($sRetVal == ''){
@@ -1206,7 +1208,7 @@ _JsCode;
 					if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
 						$sRetVal = $sModuleDescription;
 					} 
-					if ($this->section_name == 'admintools' && $sToolDescription = get_variable_content('tool_description', $sData, true, false)) {
+					if ($isTool && $sToolDescription = get_variable_content('tool_description', $sData, true, false)) {
 						$sRetVal = $sToolDescription;
 					} 
 				}
