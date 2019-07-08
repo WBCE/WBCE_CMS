@@ -216,9 +216,8 @@ class Admin extends Wb
     {
         // include the required file for Javascript admin
         if ($activateJsAdmin != false) {
-            if (file_exists(WB_PATH . '/modules/jsadmin/jsadmin_backend_include.php')) {
-                @include_once WB_PATH . '/modules/jsadmin/jsadmin_backend_include.php';
-            }
+			$sJsAdminFile = WB_PATH . '/modules/jsadmin/jsadmin_backend_include.php';
+            if (file_exists($sJsAdminFile)) @include_once $sJsAdminFile;
         }
 
         // Setup template object, parse vars to it, then parse it
@@ -233,10 +232,10 @@ class Admin extends Wb
         
         $footer_template->set_var(array(
             'WB_SESSION_TIMEOUT' => $sSessionTimeout,
-            'WB_URL' => WB_URL,
-            'ADMIN_URL' => ADMIN_URL,
-            'THEME_URL' => THEME_URL,
-            'PHP_VERSION' => substr(phpversion(),0,6),
+            'WB_URL'       => WB_URL,
+            'ADMIN_URL'    => ADMIN_URL,
+            'THEME_URL'    => THEME_URL,
+            'PHP_VERSION'  => substr(phpversion(),0,6),
             'WBCE_VERSION' => WBCE_VERSION
         ));
         $footer_template->parse('header', 'footer_block', false);
