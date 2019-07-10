@@ -1131,32 +1131,35 @@ _JsCode;
      * @param   string  $sModDir
      * @param   bool    $bShowOriginal
      * @param   string  $sHem
+     * @param   string  $sModType   ('page', 'tool', 'snippet' ...))
      * @return  string
      */
-    public function get_module_name($sModDir = '', $bShowOriginal = false, $sHem = '  (%s)', $isTool = false) {
+    public function get_module_name($sModDir = '', $bShowOriginal = false, $sHem = '  (%s)', $sModType = 'page') {
         $sRetVal = '';
         if (function_exists('get_variable_content')) {
             $sLanguageFile = WB_PATH . '/modules/' . $sModDir . '/languages/' . LANGUAGE . '.php';
             if (file_exists($sLanguageFile)) {
                 // read contents of the modules language file into string
-                $sData = @file_get_contents($sLanguageFile);
-                if ($sModuleName = get_variable_content('module_name', $sData, true, false)) {
-                    $sRetVal = $sModuleName;
+                $sData = @file_get_contents($sLanguageFile); 
+                if($this->section_name == 'admintools' || $sModType == 'tool'){
+                    $sModType = 'tool';
+                }
+                if ($sModName = get_variable_content('module_name', $sData, true, false)) {
+                    $sRetVal = $sModName;
                 } 
-				if ($this->section_name == 'admintools' && $sToolName = get_variable_content('tool_name', $sData, true, false)) {
-                    $sRetVal = $sToolName;
+                if ($sModType != 'page' && $sModName = get_variable_content($sModType.'_name', $sData, true, false)) {
+                    $sRetVal = $sModName;
                 } 
-				$isTool = isset($isTool) ? $isTool : $this->section_name == 'admintools';
-				if($sRetVal == ''){
-					$sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
-					$sData = @file_get_contents($sInfoFile);
-					if ($sModuleName = get_variable_content('module_name', $sData, true, false)) {
-						$sRetVal = $sModuleName;
-					} 
-					if ($this->section_name == 'admintools' && $sToolName = get_variable_content('tool_name', $sData, true, false)) {
-						$sRetVal = $sToolName;
-					} 
-				}
+                if($sRetVal == ''){
+                    $sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
+                    $sData = @file_get_contents($sInfoFile);
+                    if ($sModName = get_variable_content('module_name', $sData, true, false)) {
+                        $sRetVal = $sModName;
+                    } 
+                    if ($sModType != 'page' && $sModName = get_variable_content($sModType.'_name', $sData, true, false)) {
+                        $sRetVal = $sModName;
+                    } 
+                }
             }
         }
         if ($sRetVal == '' || $bShowOriginal == true) {
@@ -1186,9 +1189,10 @@ _JsCode;
      *          from the `{TP}addons` DB table.
      *
      * @param   string  $sModDir
+     * @param   string  $sModType   ('page', 'tool', 'snippet' ...)
      * @return  string
      */
-    public function get_module_description($sModDir = '', $isTool = false) {
+    public function get_module_description($sModDir = '', $sModType = 'page') {
         $sRetVal = '';
         if (function_exists('get_variable_content')) {
             $sLanguageFile = WB_PATH . '/modules/' . $sModDir . '/languages/' . LANGUAGE . '.php';
@@ -1198,20 +1202,22 @@ _JsCode;
                 if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
                     $sRetVal = $sModuleDescription;
                 } 
-				$isTool = isset($isTool) ? $isTool : $this->section_name == 'admintools';
-                if ($isTool && $sToolDescription = get_variable_content('tool_description', $sData, true, false)) {
+		if($this->section_name == 'admintools' || $sModType == 'tool'){
+                    $sModType = 'tool';
+                }
+                if ($sModType != 'page' && $sToolDescription = get_variable_content($sModType.'_description', $sData, true, false)) {
                     $sRetVal = $sToolDescription;
                 } 
-				if($sRetVal == ''){
-					$sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
-					$sData = @file_get_contents($sInfoFile);
-					if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
-						$sRetVal = $sModuleDescription;
-					} 
-					if ($isTool && $sToolDescription = get_variable_content('tool_description', $sData, true, false)) {
-						$sRetVal = $sToolDescription;
-					} 
-				}
+                    if($sRetVal == ''){
+                        $sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
+                        $sData = @file_get_contents($sInfoFile);
+                        if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
+                            $sRetVal = $sModuleDescription;
+                        } 
+                        if ($sModType != 'page' && $sToolDescription = get_variable_content($sModType.'_description', $sData, true, false)) {
+                            $sRetVal = $sToolDescription;
+                        } 
+                    }
             }
         }
         if ($sRetVal == '') {
