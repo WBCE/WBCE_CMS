@@ -27,6 +27,9 @@ if(!defined('WB_PATH')) die(header('Location: ../../index.php'));
 /*
 Header: Version-History
 
+1.0.5 %(mrbaseman; 11 Jul, 2019)%
+        - activate by default in backend
+
 1.0.4 %(mrbaseman; 21 Feb, 2016)%
         - change filter type to page (last)
 
@@ -45,7 +48,7 @@ Header: Version-History
 
 $plugin_directory   = 'cachecontrol';
 $plugin_name        = 'Cache Control';
-$plugin_version     = '1.0.4';
+$plugin_version     = '1.0.5';
 $plugin_status      = 'beta';
 $plugin_platform    = '2.8';
 $plugin_author      = 'thorn, mrbaseman';

@@ -33,7 +33,7 @@ opf_register_filter(array(
                 'EN' => "Prevent Browsers from delivering outdated files (css, js) from it's cache.\nKeep care that this filter is called last!",
                 'DE' => "Verhindert, dass Browser veralterte CSS- oder JS-Dateien aus ihrem Cache ausliefern.\nAchten Sie darauf, dass dieser Filter als letzter aufgerufen wird!"
         ),
-        'modules' => 'all',
+        'modules' => 'all,backend',
         'plugin' => 'cachecontrol',
         'active' => 1,
         'allowedit' => 0,
