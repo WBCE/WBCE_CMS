@@ -56,6 +56,7 @@ $MOD_NEWS_IMG['DEACTIVATE_POST'] = "Beitrag deaktivieren";
 $MOD_NEWS_IMG['MANAGE_POSTS'] = "Beitr&auml;ge verwalten";
 $MOD_NEWS_IMG['ACTIVATE'] = "aktivieren";
 $MOD_NEWS_IMG['DEACTIVATE'] = "deaktivieren";
+$MOD_NEWS_IMG['NONE'] = "keine";
 
 //image settings
 $MOD_NEWS_IMG['CROP'] = 'Beschneiden';

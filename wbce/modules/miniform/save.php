@@ -14,9 +14,9 @@
  */
 
 require('../../config.php');
+$update_when_modified = true; 
 require_once (WB_PATH.'/framework/functions.php');
 require(WB_PATH.'/modules/admin.php');
-$update_when_modified = true; 
 
 if(isset($_POST['section_id'])) {
 	$email = $admin->add_slashes(strip_tags($_POST['email']));

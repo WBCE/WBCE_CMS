@@ -58,6 +58,7 @@ $MOD_NEWS_IMG['DEACTIVATE_POST'] = "deactiveren bericht";
 $MOD_NEWS_IMG['MANAGE_POSTS'] = "beheer berichten";
 $MOD_NEWS_IMG['ACTIVATE'] = "activeren";
 $MOD_NEWS_IMG['DEACTIVATE'] = "deactiveren";
+$MOD_NEWS_IMG['NONE'] = "Geen";
 
 // afbeeldingsinstellingen 
 $MOD_NEWS_IMG ['CROP'] = 'Bijsnijden';

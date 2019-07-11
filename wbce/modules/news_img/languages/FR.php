@@ -56,6 +56,7 @@ $MOD_NEWS_IMG['DEACTIVATE_POST'] = "d&eacute;sactiver le post";
 $MOD_NEWS_IMG['MANAGE_POSTS'] = "G&eaucte;rer les post";
 $MOD_NEWS_IMG['ACTIVATE'] = "activer";
 $MOD_NEWS_IMG['DEACTIVATE'] = "d&eacute;sactiver";
+$MOD_NEWS_IMG['NONE'] = "Aucun";
 
 // parametres d'image
 $MOD_NEWS_IMG['CROP'] = 'Recadrage';

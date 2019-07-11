@@ -10,7 +10,7 @@
 <meta name="description" content="{TEXT_LOGIN}" />
 <meta name="keywords" content="{TEXT_LOGIN}" />
 <link rel="stylesheet" href="{THEME_URL}/css/normalize.css" />
-<link rel="stylesheet" href="{THEME_URL}/css/login.css" />
+<link rel="stylesheet" href="{THEME_URL}/css/login.css?121212" />
 <script type="text/javascript" src="{WB_URL}/include/jquery/jquery-min.js"></script>
 </head>
 <body class="page_login" onload="document.login.{USERNAME_FIELDNAME}.focus();">

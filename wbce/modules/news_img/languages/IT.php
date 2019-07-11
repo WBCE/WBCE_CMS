@@ -56,6 +56,7 @@ $MOD_NEWS_IMG['DEACTIVATE_POST'] = "disattiva post";
 $MOD_NEWS_IMG['MANAGE_POSTS'] = "gestici i post";
 $MOD_NEWS_IMG['ACTIVATE'] = "activate";
 $MOD_NEWS_IMG['DEACTIVATE'] = "disattiva";
+$MOD_NEWS_IMG['NONE'] = "no";
 
 // impostazioni dell'immagine 
 $MOD_NEWS_IMG['CROP'] = 'Ritaglia';
