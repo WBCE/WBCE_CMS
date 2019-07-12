@@ -4,6 +4,9 @@
  * Google Site Map
  * @author Karelkin Vladislav
  * @copyright 2007/2013 GPL
+ 
+ Version 1.8.7 20190712 (Florian)
+ - Add News with images
 
  Version 1.8.6 20160215 (Ruud)
  - set Shorturl default to false. (was true by accident)
@@ -79,7 +82,7 @@
 
 // Set configuration values
 
-$sitemap_version = '1.8.6';
+$sitemap_version = '1.8.7';
 
 // Debug information on / off
 $debug               = false;
@@ -107,6 +110,13 @@ $page_frequency      = "weekly";	// Update frequency of your pages.
 $news_priority       = "0.7";		// News posts of the last 4 weeks
 $news_old_priority   = "0.5";		// News posts older than 4 weeks
 $news_frequency      = "weekly";  	// News posts update frequency
+
+// NWI Module
+$nwi_priority       = "0.7";		// News posts of the last 4 weeks
+$nwi_old_priority   = "0.5";		// News posts older than 4 weeks
+$nwi_frequency      = "weekly";  	// News posts update frequency
+
+
 
 // Bakery Module
 $bakery_priority     = "0.5";		//
@@ -348,6 +358,38 @@ if (in_array('news', $modules)) {
 	}
 }
 
+// News with images (NWI)
+if (in_array('news_img', $modules)) {
+	$sql = "SELECT `section_id`, `link`, `posted_when`, `published_when`
+			FROM `".TABLE_PREFIX."mod_news_img_posts`
+			WHERE `active` = '1'
+				AND (`published_when` = '0' OR `published_when` <= $ts)
+				AND (`published_until` = '0' OR `published_until` >= $ts)";
+	$rs_nwi = $database->query($sql);
+	if ($rs_nwi->numRows() > 0) {
+		while ($nwi = $rs_nwi->fetchRow()) {
+			if (!in_array($nwi['section_id'], $public)) continue;
+			$checked = check_link($nwi['link'], $exclude);
+			if ($checked === true) {
+				$link     = htmlspecialchars($wb->page_link($nwi['link']));
+				$lastweek = time() - (4 * 7 * 24 * 60 * 60);
+				if ($nwi['posted_when'] < $lastweek) {
+					$nwi_priority = $nwi_old_priority;
+				}
+				if ((version_compare(WB_VERSION, '2.7.0') <= 0) && $nwi['published_when'] > 0){
+					$lastmod = gmdate("Y-m-d", $nwi['published_when']+TIMEZONE);
+				} else {
+					$lastmod = gmdate("Y-m-d", $nwi['posted_when']+TIMEZONE);
+				}
+				output_xml($link, $lastmod, $nwi_frequency, $nwi_priority);
+				$counter++;
+			}
+			else {
+				$debug_info[] = $checked;
+			}
+		}
+	}
+}
 
 // Bakery
 if (in_array('bakery', $modules)) {
