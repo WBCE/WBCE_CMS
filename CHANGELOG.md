@@ -5,6 +5,89 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2019-07-13:** instantflorian [[36366627](https://github.com/WBCE/WBCE_CMS/commit/3636662745191fe880a702462ae8373f1068e139)]
+   > Update version.php
+
+ * **2019-07-12:** instantflorian [[879b7637](https://github.com/WBCE/WBCE_CMS/commit/879b763795bc8375fd3e1753bed9322cbc550828)]
+   > Add NWI in google_sitemap.php
+
+ * **2019-07-11:** instantflorian [[8c08e97c](https://github.com/WBCE/WBCE_CMS/commit/8c08e97c509636e4c69553a6a238baf9ce06567a)]
+   > Misc minor fixes
+     missing translations in NWI, fix for #430, avoid caching of login page stylesheet
+
+ * **2019-07-11:** Martin Hecht [[32e4946b](https://github.com/WBCE/WBCE_CMS/commit/32e4946b262d7c9e183748c55e456e57a3243798)]
+   > activate cachecontrol by default in backend
+
+ * **2019-07-10:** Stefek [[854751c5](https://github.com/WBCE/WBCE_CMS/commit/854751c5f7f47576b70dcfc560c1c05add42bbbf)]
+   > allow distinct NAME + DESCRIPTION in Hybride Modules
+     This is a last correction to this feature, now allowing for disctinct  NAME + DESCRIPTION for other module types aswell
+ * **2019-07-08:** Stefek [[eecf289d](https://github.com/WBCE/WBCE_CMS/commit/eecf289dd6c79b41cedacb1ba36f900dfca65322)]
+   > allow distinct NAME + DESCRIPTION for AdminTool Part in Hybride Modules
+     small correction to previous commit
+ * **2019-07-08:** Stefek [[8c61167f](https://github.com/WBCE/WBCE_CMS/commit/8c61167fbe1d66b7e5c4424c67345cb20a195e54)]
+   > allow distinct NAME + DESCRIPTION for AdminTool Part in Hybride Modules
+
+ * **2019-07-08:** Stefek [[a0055073](https://github.com/WBCE/WBCE_CMS/commit/a0055073424a9a5ac3f21a4a529261863a148b41)]
+   > allow distinct NAME + DESCRIPTION for AdminTool Part in Hybride Modules
+
+ * **2019-07-08:** Stefek [[5c7290e4](https://github.com/WBCE/WBCE_CMS/commit/5c7290e42c96cafc653aed4d11045f78b6fdf90c)]
+   > Handle "Cache Control" issue reported internally by colinax, florian (#431)
+     * Handle "Cache Control" issue reported internally by colinax, florian
+     
+     * Handle issue w/ MEDIA_DIRECTORY constant  that came up in error-logs
+
+ * **2019-07-06:** Colinax [[87773720](https://github.com/WBCE/WBCE_CMS/commit/8777372067b79f56ffb94d73603fc2aabf69896c)]
+   > CKEditor 4.12.0.1
+
+ * **2019-07-05:** Martin Hecht [[eea86e41](https://github.com/WBCE/WBCE_CMS/commit/eea86e41e94d4fbc7906a88dc331ad850c2c68cd)]
+   > update OpF Dashboard and filters:
+     Dashboard:
+             - include edit_area.js only on pages where an editarea exists
+             - allow 'search' in pages_parent for specifying searchresults
+     Filters:
+     	- use that feature in the install.php of those filters
+
+ * **2019-07-05:** instantflorian [[843cc005](https://github.com/WBCE/WBCE_CMS/commit/843cc005c504f2684a04eabc3ba3dbc8dac50948)]
+   > activate filters on search results by default
+
+ * **2019-07-05:** instantflorian [[ac90d27f](https://github.com/WBCE/WBCE_CMS/commit/ac90d27fdc27bf19fc9d211b56d94039cdb57970)]
+   > Template optimizations/corrections
+
+ * **2019-07-04:** instantflorian [[efcf3d9f](https://github.com/WBCE/WBCE_CMS/commit/efcf3d9f3933734aca821f94fbd90ade1704a778)]
+   > Add NWI to CKE Link selection, set default Link protocol to https
+
+ * **2019-07-04:** Martin Hecht [[03d97900](https://github.com/WBCE/WBCE_CMS/commit/03d97900946ef60ba65169a73d7dda9a1f29ae0d)]
+   > update version number in mod_opf_droplets
+
+ * **2019-07-04:** Martin Hecht [[f679d2b7](https://github.com/WBCE/WBCE_CMS/commit/f679d2b7142a585d50f3ae99fe4e85bda06f7a2c)]
+   > Merge branch 'master' of ssh://github.com/wbce/WBCE_cms
+
+ * **2019-07-04:** Martin Hecht [[5a5f5ebc](https://github.com/WBCE/WBCE_CMS/commit/5a5f5ebc42c8706b8fe20d0febeb61ca584f9a35)]
+   > make droplets work again in search results
+
+ * **2019-07-04:** instantflorian [[ce39e33e](https://github.com/WBCE/WBCE_CMS/commit/ce39e33e052cdd9ac7fe5526d42489ff2f44ac3d)]
+   > Fixes for #428
+
+ * **2019-07-03:** Colinax [[199a8a6d](https://github.com/WBCE/WBCE_CMS/commit/199a8a6d3ecf2c338c9864ba427af9df71ecd67e)]
+   > fixes small design issue
+     fixes #429
+
+ * **2019-07-01:** instantflorian [[d752c6ef](https://github.com/WBCE/WBCE_CMS/commit/d752c6efd3f7826b118c3be9560a7d6a080254fb)]
+   > Add placeholder POST_ID in NWI
+
+ * **2019-06-30:** instantflorian [[b57fdbbf](https://github.com/WBCE/WBCE_CMS/commit/b57fdbbf281204ae60d8a31ab66382e066425d87)]
+   > Minor fixes
+     Missing semicolon, better smartphone block handling (thanks to Chio)
+
+ * **2019-06-29:** Colinax [[69c5fbfd](https://github.com/WBCE/WBCE_CMS/commit/69c5fbfd86d358206958e0fa86e87397e19b46ed)]
+   > Update deprecated or removed file list
+
+ * **2019-06-29:** Colinax [[7f94b8c5](https://github.com/WBCE/WBCE_CMS/commit/7f94b8c56ce67cbe420f70749f91247f7581b16b)]
+   > Flat Theme PageTree fix
+
+ * **2019-06-29:** instantflorian [[b66aeabb](https://github.com/WBCE/WBCE_CMS/commit/b66aeabbc03012739a5348a9e51a656d465be2b6)]
+   > Update CHANGELOG.md
+
  * **2019-06-28:** Colinax [[49bf99cb](https://github.com/WBCE/WBCE_CMS/commit/49bf99cbfc6d1b51d810dd4b63c6cf8aea61cb5d)]
    > Update version.php
      for upcoming beta release
