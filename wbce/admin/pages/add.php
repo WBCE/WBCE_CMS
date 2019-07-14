@@ -11,8 +11,8 @@
  */
 
 // Create new admin object and print admin header
-require('../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+require '../../config.php';
+require_once WB_PATH.'/framework/class.admin.php';
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Pages', 'pages_add', false);
 if (!$admin->checkFTAN())
@@ -22,7 +22,7 @@ if (!$admin->checkFTAN())
 }
 
 // Include the WB functions file
-require_once(WB_PATH.'/framework/functions.php');
+require_once WB_PATH.'/framework/functions.php';
 
 // Get values
 $title = $admin->get_post_escaped('title');
@@ -137,7 +137,7 @@ if (
 }
 
 // Include the ordering class
-require(WB_PATH.'/framework/class.order.php');
+require WB_PATH.'/framework/class.order.php';
 $order = new order(TABLE_PREFIX.'pages', 'position', 'page_id', 'parent');
 // First clean order
 $order->clean($parent);
@@ -155,29 +155,31 @@ if ($query_parent->numRows() > 0) {
     $language = DEFAULT_LANGUAGE;
 }
 
+
 // Insert page into pages table
-$sql = 'INSERT INTO `'.TABLE_PREFIX.'pages` '
-     . 'SET `parent`='.$parent.', '
-     .     '`link` = \'\', '
-     .     '`description`=\'\', '
-     .     '`keywords`=\'\', '
-     .     '`page_trail`=\'\', '
-     .     '`admin_users`=\'\', '
-     .     '`viewing_users`=\'\', '
-     .     '`target`=\'_top\', '
-     .     '`page_title`=\''.$title.'\', '
-     .     '`menu_title`=\''.$title.'\', '
-     .     '`template`=\''.$template.'\', '
-     .     '`visibility`=\''.$visibility.'\', '
-     .     '`position`='.$position.', '
-     .     '`menu`=1, '
-     .     '`language`=\''.$language.'\', '
-     .     '`searching`=1, '
-     .     '`modified_when`='.time().', '
-     .     '`modified_by`='.$admin->get_user_id().', '
-     .     '`admin_groups`=\''.$admin_groups.'\', '
-     .     '`viewing_groups`=\''.$viewing_groups.'\'';
-if (!$database->query($sql)) {
+$aInsert = array(
+    'link'              => '', 
+    'description'       => '', 
+    'keywords'          => '', 
+    'page_trail'        => '', 
+    'admin_users'       => '', 
+    'viewing_users'     => '', 
+    'target'            => '_top', 
+    'page_title'        => $title,
+    'menu_title'        => $title, 
+    'template'          => $template, 
+    'visibility'        => $visibility, 
+    'visibility_backup' => '', 
+    'position'          => $position, 
+    'menu'              => 1, 
+    'language'          => $language, 
+    'searching'         => 1, 
+    'modified_when'     => time(), 
+    'modified_by'       => $admin->get_user_id(), 
+    'admin_groups'      => $admin_groups, 
+    'viewing_groups'    => $viewing_groups
+);
+if (!$database->insertRow('{TP}pages', $aInsert)) {
     $admin->print_error($database->get_error());
 }
 // Get the new page id
@@ -189,34 +191,35 @@ $root_parent = root_parent($page_id);
 // Work out page trail
 $page_trail = get_page_trail($page_id);
 // Update page with new level and link
-$sql  = 'UPDATE `'.TABLE_PREFIX.'pages` SET ';
-$sql .= '`root_parent` = '.$root_parent.', ';
-$sql .= '`level` = '.$level.', ';
-$sql .= '`link` = "'.$link.'", ';
-$sql .= '`page_trail` = "'.$page_trail.'"';
-$sql .= (defined('PAGE_LANGUAGES') && PAGE_LANGUAGES)
-         && $field_set
-         && ($language == DEFAULT_LANGUAGE)
-         && (file_exists(WB_PATH.'/modules/mod_multilingual/update_keys.php')
-         )
-         ? ', `page_code` = '.(int)$page_id.' ' : ' ';
-$sql .= 'WHERE `page_id` = '.$page_id;
-if (!$database->query($sql)) {
+$aUpdate = array(
+    'page_id'     => $page_id,
+    'root_parent' => $root_parent,
+    'level'       => $level,
+    'link'        => $link,
+    'page_trail'  => $page_trail,
+);
+if((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES)
+    && $field_set
+    && ($language == DEFAULT_LANGUAGE)
+    && (file_exists(WB_PATH.'/modules/mod_multilingual/update_keys.php')
+    )){
+    $aUpdate['page_code'] = (int)$page_id;
+}
+if (!$database->updateRow('{TP}pages', 'page_id', $aUpdate)) {
     $admin->print_error($database->get_error());
 }
+
 // Create a new file in the /pages dir
 create_access_file($filename, $page_id, $level);
 
-// add position 1 to new page
-$position = 1;
-
 // Add new record into the sections table
-$sql = 'INSERT INTO `'.TABLE_PREFIX.'sections` '
-     . 'SET `page_id`='.$page_id.', '
-     .     '`position`='.$position.', '
-     .     '`module`=\''.$module.'\', '
-     .     '`block`=1';
-if (!$database->query($sql)) {
+$aSection = array(
+    'page_id'  => $page_id,
+    'position' => 1,
+    'block'    => 1,
+    'module'   => $module,
+);
+if (!$database->insertRow('{TP}sections', $aSection)) {
     $admin->print_error($database->get_error());
 }
 // Get the section id
@@ -224,9 +227,9 @@ if (!($section_id = $database->getLastInsertId())) {
     $admin->print_error($database->get_error());
 }
 // Include the selected modules add file if it exists
-if(file_exists(WB_PATH.'/modules/'.$module.'/add.php')) {
-    require(WB_PATH.'/modules/'.$module.'/add.php');
+$sModuleAddFile = WB_PATH.'/modules/'.$module.'/add.php';
+if(file_exists($sModuleAddFile)) {
+    require $sModuleAddFile;
 }
 $admin->print_success($MESSAGE['PAGES_ADDED'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
-// Print admin footer
-$admin->print_footer();
+$admin->print_footer(); // Print admin footer
