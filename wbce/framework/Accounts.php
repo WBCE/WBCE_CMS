@@ -447,7 +447,7 @@ class Accounts extends Frontend
         $sLinkEdit = ob_get_clean();
 
         $sPryFunc = '';
-        if(defined('UB_MOD_URL')){
+        if (defined('UB_MOD_URL')){
             ob_start();
             ?>
             <a class="pry" title='<?=$TEXT['VIEW'];?> User "%s"' href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=edit" rel="<?=UB_MOD_URL?>/pry_profile.php?id=%d&action=edit">
