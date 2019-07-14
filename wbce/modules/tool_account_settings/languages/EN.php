@@ -13,7 +13,7 @@
 
 $TOOL_TXT['OVERVIEW_DESCRIPTION'] = 'List of all the users registered to the system.';
 
-$TOOL_TXT['PREFERENCES'] = $MENU['PREFERENCES'];
+$TOOL_TXT['PREFERENCES'] = 'My Preferences';
 $TOOL_TXT['HEADING']    = 'UserBase Admin-Tool';
 $TOOL_TXT['EDIT']       = 'Edit user';
 $TOOL_TXT['DELETE']     = 'Delete user';

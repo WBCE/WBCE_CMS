@@ -430,29 +430,33 @@ class Accounts extends Frontend
         $aUsers = $this->get_userbase_array($bExtendOnly);
         $sToolUri = ADMIN_URL . '/admintools/tool.php?tool=' . ADMIN_TOOL_DIR;
         ob_start();
-    ?>
-    <a class="iconlink" href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=delete">
-            <img src="/delete_16.png" alt="<?=$TOOL_TXT['DELETE'] ?>">
-    </a>
-    <?php 
-    $sLinkDelete = ob_get_clean();
+        ?>
+        <a class="iconlink" href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=delete">
+                <img src="/delete_16.png" alt="<?=$TOOL_TXT['DELETE'] ?>">
+        </a>
+        <?php 
+        $sLinkDelete = ob_get_clean();
 
 
-    ob_start();
-    ?>
-    <a class="iconlink" href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=edit">
-            <img src="/modify.png" alt="<?=$TEXT['MODIFY'] ?>" />
-    </a>
-    <?php 
-    $sLinkEdit = ob_get_clean();
+        ob_start();
+        ?>
+        <a class="iconlink" href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=edit">
+                <img src="/modify.png" alt="<?=$TEXT['MODIFY'] ?>" />
+        </a>
+        <?php 
+        $sLinkEdit = ob_get_clean();
 
-    ob_start();
-    ?>
-    <a class="pry" title='<?=$TEXT['VIEW'];?> User "%s"' href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=edit" rel="<?=UB_MOD_URL?>/pry_profile.php?id=%d&action=edit">
-            <i class="fa fa-1x fa-address-card"></i>
-    </a>
-    <?php 
-    $sPryFunc = ob_get_clean();
+        $sPryFunc = '';
+        if (defined('UB_MOD_URL')){
+            ob_start();
+            ?>
+            <a class="pry" title='<?=$TEXT['VIEW'];?> User "%s"' href="<?=$sToolUri?>&amp;pos=detail&amp;id=%d&amp;action=edit" rel="<?=UB_MOD_URL?>/pry_profile.php?id=%d&action=edit">
+                    <i class="fa fa-1x fa-address-card"></i>
+            </a>
+            <?php 
+            $sPryFunc = ob_get_clean();
+        }
+        
         foreach ( $aUsers as $rec ) {
             $iID = $rec['user_id'];
             $aCollection[$iID]['active']      = $rec['active'];
