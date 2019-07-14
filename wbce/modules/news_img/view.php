@@ -289,10 +289,10 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
 
                 // Replace [wblink--PAGE_ID--] with real link
                 $short = ($post['content_short']);
-                $wb->preprocess($short);
+                //$wb->preprocess($short);
 				
 				$long = ($post['content_long']);
-                $wb->preprocess($long);
+                //$wb->preprocess($long);
                 
                 if ($post['image'] != "") {
                     $post_img = "<img src='".WB_URL.MEDIA_DIRECTORY.'/.news_img/'.$post['post_id'].'/'.$post['image']."' alt='".$post['title']."' />";
@@ -462,9 +462,9 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
                 }
 				
 				$post_short=$post['content_short'];
-				$wb->preprocess($post_short);
+				//$wb->preprocess($post_short);
 				$post_long = ($post['content_long']);
-				$wb->preprocess($post_long);
+				//$wb->preprocess($post_long);
                 $vars = array('[PAGE_TITLE]', '[GROUP_ID]', '[GROUP_TITLE]', '[GROUP_IMAGE]', '[DISPLAY_GROUP]', '[DISPLAY_IMAGE]', '[TITLE]', '[IMAGE]', '[SHORT]', '[BACK]', '[TEXT_BACK]', '[TEXT_LAST_CHANGED]', '[MODI_DATE]', '[TEXT_AT]', '[MODI_TIME]', '[CREATED_DATE]', '[CREATED_TIME]', '[PUBLISHED_DATE]', '[PUBLISHED_TIME]', '[TEXT_POSTED_BY]', '[TEXT_ON]', '[USER_ID]', '[USERNAME]', '[DISPLAY_NAME]', '[EMAIL]','[CONTENT_LONG]','[POST_ID]');
                
                 
@@ -497,7 +497,7 @@ if (!defined('POST_ID') or !is_numeric(POST_ID)) {
         }
 
         // Replace [wblink--PAGE_ID--] with real link
-        $wb->preprocess($post_long);
+        //$wb->preprocess($post_long);
         // echo post
         echo str_replace(
             array('[IMAGES]','[CONTENT]','[SHORT]','[CONTENT_LONG]'),
