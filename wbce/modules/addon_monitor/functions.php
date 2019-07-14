@@ -30,7 +30,7 @@ if(!function_exists('getModulesArray')){
 			FROM ".TABLE_PREFIX."addons a 
 				LEFT JOIN ".TABLE_PREFIX."sections s 
 				ON a.directory = s.module 
-			WHERE function = 'page' OR function = 'snippet' OR function = 'tool' OR function = 'wysiwyg'"
+			WHERE function LIKE '%page%' OR function LIKE '%snippet%' OR function LIKE '%tool%' OR function LIKE '%wysiwyg%'"
 		);
 
 		if($oAddons = $database->query($sQueryAddons)){			
