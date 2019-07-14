@@ -6,7 +6,7 @@
  * 
  * 
  * @platform    CMS WebsiteBaker 2.8.x
- * @package     WB CMS Functions by Stefek
+ * @package     WBCE CMS Functions by Stefek
  * @author      Christian M. Stefan (Stefek)
  * @copyright   Christian M. Stefan
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
@@ -20,13 +20,13 @@ if(!function_exists('pagesArray')){
 	/**
 	 * Get the full array of all WebsiteBaker CMS Pages at once.
 	 *
-	 * <p>This function will return the Array of all WB Pages and
+	 * <p>This function will return the Array of all WBCE Pages and
 	 * you can then decide how to process this array further
 	 * usually it will be processed by the template engine TWIG
 	 * but any other TE or even plain PHP may be used</p>
 	 *
 	 * constants used:
-	 *	WB internal constants: TABLE_PREFIX, PAGE_TRASH, PAGE_EXTENSION, PAGES_DIRECTORY, MANAGE_SECTIONS
+	 *	WBCE internal constants: TABLE_PREFIX, PAGE_TRASH, PAGE_EXTENSION, PAGES_DIRECTORY, MANAGE_SECTIONS
 	 *  other constants: REWRITE_URL (optional; for optional use of rewrite_url)
 	 *
 	 * @author    Christian M. Stefan (Stefek)
