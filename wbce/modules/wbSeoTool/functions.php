@@ -20,13 +20,13 @@ if(!function_exists('pagesArray')){
 	/**
 	 * Get the full array of all WebsiteBaker CMS Pages at once.
 	 *
-	 * <p>This function will return the Array of all WB Pages and
+	 * <p>This function will return the Array of all WBCE Pages and
 	 * you can then decide how to process this array further
 	 * usually it will be processed by the template engine TWIG
 	 * but any other TE or even plain PHP may be used</p>
 	 *
 	 * constants used:
-	 *	WB internal constants: TABLE_PREFIX, PAGE_TRASH, PAGE_EXTENSION, PAGES_DIRECTORY, MANAGE_SECTIONS
+	 *	WBCE internal constants: TABLE_PREFIX, PAGE_TRASH, PAGE_EXTENSION, PAGES_DIRECTORY, MANAGE_SECTIONS
 	 *  other constants: REWRITE_URL (optional; for optional use of rewrite_url)
 	 *
 	 * @author    Christian M. Stefan (Stefek)
@@ -44,29 +44,37 @@ if(!function_exists('pagesArray')){
 		$sProcessRewriteUrl = '';
 		$bRewriteUrlExists = FALSE;
 		if(defined("REWRITE_URL") == TRUE && REWRITE_URL != ''){
-			$oCheckDbTable = $database->query("SHOW COLUMNS FROM `".TABLE_PREFIX."pages` LIKE '".REWRITE_URL."'");
+			$oCheckDbTable = $database->query("SHOW COLUMNS FROM `{TP}pages` LIKE '".REWRITE_URL."'");
 			$bRewriteUrlExists = $oCheckDbTable->numRows() > 0 ? TRUE : FALSE;
 			$sProcessRewriteUrl = ($bRewriteUrlExists == TRUE) ? ' p.`'.REWRITE_URL.'`,' : '';	
 		}
-		$sQuery = 'SELECT  s.`module`, MAX(s.`publ_start` + s.`publ_end`) published, p.`link`, '
-		     .        '(SELECT MAX(`position`) FROM `'. TABLE_PREFIX .'pages` WHERE `parent`=p.`parent`) siblings, '
+                
+                $sRunningMySqlVersion = $database->get_one("SELECT VERSION()");
+                $bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
+                $sQueryModule = ( $bMYSQL_57 === true) ? "ANY_VALUE(s.`module`)" : "s.`module`";
+                
+		$sQuery = 'SELECT '.$sQueryModule.', MAX(s.`publ_start` + s.`publ_end`) published, p.`link`, '
+		     .        '(SELECT MAX(`position`) FROM `{TP}pages` WHERE `parent`=p.`parent`) siblings, '
 		     .        'p.`position`, p.`page_id`, p.`parent`, p.`level`, p.`language`, p.`admin_groups`, '
 		     .    (($bRewriteUrlExists == TRUE ) ? 'p.`'.REWRITE_URL.'`, ' : '' ) .''
 		     .        'p.`admin_users`, p.`viewing_groups`, p.`viewing_users`, p.`visibility`, '
 		     .        'p.`menu_title`, p.`page_title`, p.`page_trail`'.$sProcessSeo.''		            
-		     . 'FROM `'. TABLE_PREFIX .'pages` p '
-		     .    'INNER JOIN `'. TABLE_PREFIX .'sections` s '
+		     . 'FROM `{TP}pages` p '
+		     .    'INNER JOIN `{TP}sections` s '
 		     .    'ON p.`page_id`=s.`page_id` '
 		     . $sUseTrash.' '
 		     . 'GROUP BY p.`page_id` '
 		     . 'ORDER BY p.`position` ASC';
-			 
+		 
 		$oPages = $database->query($sQuery);
-		
+                
 		$aPages = array();
 		$refs = array();	
 		// create $aPages[] Array
 		while($page = $oPages->fetchRow(MYSQL_ASSOC)) {
+                        if (isset($page["ANY_VALUE(s.`module`)"])){
+                            $page["module"] = $page["ANY_VALUE(s.`module`)"];
+                        }
 			$thisref = &$refs[ $page['page_id'] ];
 			$thisref['page_id']        = $page['page_id'];
 			$thisref['pageIDKEY']      = (method_exists($admin, "getIDKEY")) ? $admin->getIDKEY($page['page_id']) : $page['page_id'];
@@ -94,7 +102,7 @@ if(!function_exists('pagesArray')){
 
 			// Admin Groups (get user permissions)
 			$admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
-			$admin_users = explode(',', str_replace('_', '', $page['admin_users']));
+			$admin_users  = explode(',', str_replace('_', '', $page['admin_users']));
 			$in_group = FALSE;
 			foreach($admin->get_groups_id() as $cur_gid) {
 				if (in_array($cur_gid, $admin_groups)) 	$in_group = TRUE;
@@ -114,7 +122,7 @@ if(!function_exists('pagesArray')){
 					$thisref['can_modify'] = FALSE; 
 				}
 			}
-			$thisref['canManageSections'] = (MANAGE_SECTIONS == 'enabled' && $admin->get_permission('pages_modify') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;
+			$thisref['canManageSections']  = (MANAGE_SECTIONS == 'enabled' && $admin->get_permission('pages_modify') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;
 			$thisref['page_movable']       = ($admin->get_permission('pages_settings') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;
 			$thisref['page_movable']       = ($thisref['page_movable'] && $thisref['siblings'] != 1) ? TRUE : FALSE;
 			$thisref['canMoveUP']          = ($thisref['page_movable'] && $thisref['position'] != 1) ? TRUE : FALSE;
@@ -149,45 +157,6 @@ if(!function_exists('pagesArray')){
 		return $aPages;
 	}
 }
-if(!function_exists('debug_dump')){
-	/**
-	 * This is a simple function to show var_dump or print_r output
-	 * in a predefined wrapper
-	 *
-	 * @author    Christian M. Stefan (Stefek)
-	 * @license   http://www.gnu.org/licenses/gpl-2.0.html
-	 * @param     mixed (string | array)
-	 * @param     string
-	 * @param     bool
-	 *
-	 * @return    string
-	 **/
-	function debug_dump($mVar = '', $sHeading='', $bShowWithVarDump = false){
-		echo '<pre style="background: lightyellow; padding:6px; margin:4px; border: 1px dotted red;">';
-			if('' != $sHeading){
-				echo '<b style="color: blue;">'.$sHeading.':</b><hr />';
-			}
-			if($bShowWithVarDump){
-				if(is_array($mVar)){
-					var_dump($mVar);
-				}elseif(!is_array($mVar) && '' != $mVar){
-					var_dump($mVar);
-				}else{		
-					echo '<i>~ (empty) ~</i>';
-				}
-			}else{
-				if(is_array($mVar)){
-					print_r($mVar);
-				}elseif(!is_array($mVar) && '' != $mVar){
-					echo($mVar);
-				}else{		
-					echo '<i>~ (empty) ~</i>';
-				}
-			}
-		echo '</pre>';	
-	}
-}
-
 
 if (!function_exists('get_language_array')) 
 {	
