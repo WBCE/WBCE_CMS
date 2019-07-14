@@ -110,9 +110,9 @@ if($saveSettings) {
     $checked  = ' checked="checked" ';
 
     // get settings from DB , as constant may not be set yet.
-	$useFP=(string)Settings::Get ("wb_secform_usefp");
-    if ($useFP=="true") $useFP=$checked;
-    else                $useFP='';  
+    $useFP = Settings::Get ("wb_secform_usefp");
+    if ($useFP == true) $useFP = $checked;
+    else                $useFP = '';  
     
     $ipOctets   = (string)Settings::Get ("fingerprint_with_ip_octets");
     $tokenName  = Settings::Get ("wb_secform_tokenname");
@@ -124,4 +124,3 @@ if($saveSettings) {
     include($modulePath."templates/sfs.tpl.php");
     
 }
- 
