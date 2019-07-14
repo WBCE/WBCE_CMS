@@ -20,13 +20,13 @@ if(!function_exists('pagesArray')){
 	/**
 	 * Get the full array of all WebsiteBaker CMS Pages at once.
 	 *
-	 * <p>This function will return the Array of all WBCE Pages and
+	 * <p>This function will return the Array of all WB Pages and
 	 * you can then decide how to process this array further
 	 * usually it will be processed by the template engine TWIG
 	 * but any other TE or even plain PHP may be used</p>
 	 *
 	 * constants used:
-	 *	WBCE internal constants: TABLE_PREFIX, PAGE_TRASH, PAGE_EXTENSION, PAGES_DIRECTORY, MANAGE_SECTIONS
+	 *	WB internal constants: TABLE_PREFIX, PAGE_TRASH, PAGE_EXTENSION, PAGES_DIRECTORY, MANAGE_SECTIONS
 	 *  other constants: REWRITE_URL (optional; for optional use of rewrite_url)
 	 *
 	 * @author    Christian M. Stefan (Stefek)
@@ -51,7 +51,7 @@ if(!function_exists('pagesArray')){
                 
                 $sRunningMySqlVersion = $database->get_one("SELECT VERSION()");
                 $bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
-                $sQueryModule = ( $bMYSQL_57 === true) ? "ANY_VALUE(s.`module`)" : "s.`module`";
+                $sQueryModule = ( $bMySql_57 === true) ? "ANY_VALUE(s.`module`)" : "s.`module`";
                 
 		$sQuery = 'SELECT '.$sQueryModule.', MAX(s.`publ_start` + s.`publ_end`) published, p.`link`, '
 		     .        '(SELECT MAX(`position`) FROM `{TP}pages` WHERE `parent`=p.`parent`) siblings, '
