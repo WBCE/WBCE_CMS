@@ -71,14 +71,15 @@ $database = new database();
 // Now we start definig System constants if not already set
 // Lots of compatibility work here, please only use the WB_ constants in future stuff
 
+defined('ADMIN_DIRECTORY')  or define('ADMIN_DIRECTORY', 'admin');
+defined('ADMIN_URL')        or define('ADMIN_URL',       WB_URL .'/'. ADMIN_DIRECTORY);
+defined('ADMIN_PATH')       or define('ADMIN_PATH',      WB_PATH .'/'. ADMIN_DIRECTORY);
+
 // first check if someone added crap in the config
 if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
     die('Invalid admin-directory: ' . ADMIN_DIRECTORY);
 }
 
-defined('ADMIN_DIRECTORY')  or define('ADMIN_DIRECTORY', 'admin');
-defined('ADMIN_URL')        or define('ADMIN_URL',       WB_URL .'/'. ADMIN_DIRECTORY);
-defined('ADMIN_PATH')       or define('ADMIN_PATH',      WB_PATH .'/'. ADMIN_DIRECTORY);
 // Load framework functions before preinit files so we can use functions right away.  
 require_once(WB_PATH.'/framework/functions.php');
 
