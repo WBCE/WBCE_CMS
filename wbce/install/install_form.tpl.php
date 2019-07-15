@@ -246,10 +246,10 @@ function change_os(type) {
                 </tr>
                 <tr valign="top">
                     <td><p class="center">
-                            <?php if ($installFlag == true): ?>
-                            <input type="submit" tabindex="16" name="install" value="Install WBCE CMS" />
+                            <?php if ($installFlag == false): ?>
+                            <input type="submit" disabled="disabled" tabindex="16" name="install" value="Check your Settings in Step 1 and reload with F5" />
                             <?php else :?>
-                            <input type="submit" tabindex="16" name="restart" value="Check your Settings in Step 1" onclick="javascript: window.location = '<?php print $_SERVER['SCRIPT_NAME']?>';" />
+                            <input type="submit" tabindex="16" name="install" value="Install WBCE CMS" />
                             <?php endif; //install flag ?>
                         </p></td>
                 </tr>
