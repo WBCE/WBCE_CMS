@@ -59,3 +59,6 @@ opf_register_filter(
 	)
     )
 );
+
+// set inactive by default if the module is already installed
+if(is_dir(WB_PATH.'/modules/colorbox')) opf_set_active('jQ ColorBox',0);
