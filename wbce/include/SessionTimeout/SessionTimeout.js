@@ -1,29 +1,46 @@
 /**
  * Handle Session Timeout and display remaining session time
  */
+document.cookie = 'WBCELastConnectJS='+Math.round(new Date().getTime() / 1000).toString()+'; expires=0; path=/';
 
-var seconds = new Date().getTime() / 1000;
-seconds = Math.round(seconds);
-document.cookie = 'WBCELastConnectJS='+seconds.toString()+'; expires=0; path=/';
-var upgradeTime = SESSION_TIMEOUT;
+// Wait until DOM is loaded
+document.addEventListener("DOMContentLoaded", function(e) { 
 
-var seconds = upgradeTime;
-function timer() { 
-	var days        = Math.floor(seconds/24/60/60);
-	var hoursLeft   = Math.floor((seconds) - (days*86400));
-	var hours       = Math.floor(hoursLeft/3600);
-	var minutesLeft = Math.floor((hoursLeft) - (hours*3600));
-	var minutes     = Math.floor(minutesLeft/60);
-	var remainingSeconds = seconds % 60;
-	if (remainingSeconds < 10) {
-		remainingSeconds = '0' + remainingSeconds; 
+	let ttl = SESSION_TIMEOUT,
+		countdownEl = document.getElementById('countdown');
+
+	countdownEl.innerHTML = '0:00:00';
+
+	if (countdownEl) {
+		
+		function timer() { 
+
+			let days = Math.floor(ttl/24/60/60),
+				hoursLeft = Math.floor((ttl) - (days*86400)),
+				hours = Math.floor(hoursLeft/3600),
+				minutesLeft = Math.floor((hoursLeft) - (hours*3600)),
+				minutes = Math.floor(minutesLeft/60),
+				seconds = Math.floor(ttl % 60);
+			
+			if (seconds < 10) {
+				seconds = '0' + seconds; 
+			}
+			if (minutes < 10) {
+				minutes = '0' + minutes; 
+			}
+			
+			countdownEl.innerHTML = hours + ':' + minutes + ':' + seconds;
+			
+			if (ttl == 0) {
+				clearInterval(timerInterval);
+				countdownEl.innerHTML = 'Completed';
+			} else {
+				ttl--;
+			}
+			
+			return timer;
+		}
+		
+		let timerInterval = setInterval(timer(), 1000);
 	}
-	document.getElementById('countdown').innerHTML = hours + ':' + minutes + ':' + remainingSeconds;
-	if (seconds == 0) {
-		clearInterval(countdownTimer);
-		document.getElementById('countdown').innerHTML = 'Completed';
-	} else {
-		seconds--;
-	}
-}
-var countdownTimer = setInterval('timer()', 1000);
+});
