@@ -135,13 +135,6 @@ if (!function_exists('simplepagehead')) {
 		if (OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META KEY- -->";
 		echo "\n";
 
-		if (OPF_AUTO_PLACEHOLDER){
-		    echo "<!--(PH) JS HEAD TOP+ -->\n";
-		    echo "<!--(PH) JS HEAD TOP- -->\n";
-		    echo "<!--(PH) CSS HEAD TOP+ -->\n";
-		    echo "<!--(PH) CSS HEAD TOP- -->\n";
-		}
-
 		I::insertMetaTag(array (
 		   "setname" => "description",
 		   "name"    => "description",
@@ -192,6 +185,13 @@ if (!function_exists('simplepagehead')) {
 		if ($notoolbartag == 1) {echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n"; }
 
 		if($metaend AND OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META HEAD- -->\n";
+
+		if (OPF_AUTO_PLACEHOLDER){
+		    echo "<!--(PH) JS HEAD TOP+ -->\n";
+		    echo "<!--(PH) JS HEAD TOP- -->\n";
+		    echo "<!--(PH) CSS HEAD TOP+ -->\n";
+		    echo "<!--(PH) CSS HEAD TOP- -->\n";
+		}
 	}
 }
 
