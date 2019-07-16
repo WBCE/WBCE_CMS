@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", function(e) {
 	let ttl = SESSION_TIMEOUT,
 		countdownEl = document.getElementById('countdown');
 
-	countdownEl.innerHTML = '0:00:00';
-
 	if (countdownEl) {
+				
+		countdownEl.innerHTML = '0:00:00';
 		
 		function timer() { 
 
