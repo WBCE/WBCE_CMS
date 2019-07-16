@@ -161,7 +161,7 @@ function save_preferences(&$admin, &$database)
                 }
             } else {
                 ob_start();
-                debug_dump($aUpdate);
+                //debug_dump($aUpdate);
                 $aErrMsg[] = ob_get_clean().' invalid database UPDATE call in '.__FILE__.'::'.__FUNCTION__.' before line '.__LINE__;
             }
         }
