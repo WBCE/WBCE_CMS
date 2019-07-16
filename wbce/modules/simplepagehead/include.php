@@ -187,10 +187,10 @@ if (!function_exists('simplepagehead')) {
 		if($metaend AND OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META HEAD- -->\n";
 
 		if (OPF_AUTO_PLACEHOLDER){
-		    echo "<!--(PH) JS HEAD TOP+ -->\n";
-		    echo "<!--(PH) JS HEAD TOP- -->\n";
 		    echo "<!--(PH) CSS HEAD TOP+ -->\n";
 		    echo "<!--(PH) CSS HEAD TOP- -->\n";
+		    echo "<!--(PH) JS HEAD TOP+ -->\n";
+		    echo "<!--(PH) JS HEAD TOP- -->\n";
 		}
 	}
 }
