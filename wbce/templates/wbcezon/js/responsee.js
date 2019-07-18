@@ -465,7 +465,7 @@ $(document).ready(function(){
 	// Der Button wird ausgeblendet
 	$(".back-to-top").hide();
 	
-	// Funktion für das Scroll-Verhalten
+	// Funktion fÃ¼r das Scroll-Verhalten
 	$(function () {
 		$(window).scroll(function () {
 			if ($(this).scrollTop() > 100) { // Wenn 100 Pixel gescrolled wurde
