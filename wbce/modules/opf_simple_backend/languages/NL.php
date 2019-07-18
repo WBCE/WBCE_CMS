@@ -26,24 +26,29 @@ if(!defined('WB_PATH')) {
 
 
 // Module description
-$module_description = 'A tool to configure the basic output filter of WB(CE)';
+$module_description = 'Een tool om de basis outputfilters van het WBCE CMS te configureren';
 
 // Headings and text outputs
-$OPF['HEADING']                         = 'Beheersinstellingen: Output Filter';
-$OPF['HOWTO']                           = 'Hier kan je de uitvoer filteren met onderstaande opties.<p style="line-height:1.5em;"><strong>Tip: </strong>Mailto links kunnen gecodeerd worden door een Javascript functie. Om van deze optie gebruik te kunnen maken moet je de PHP code <code style="background:#FFA;color:#900;">&lt;?php register_frontend_modfiles(\'js\');?&gt;</code> in de &lt;head&gt; sectie van het index.php bestand van je template plaatsen. Zonder deze aanpassing zal enkel het @ teken in het mailto deel vervangen worden.</p>';
-$OPF['WARNING']                         = '';
+$OPF['HEADING'] = 'Opties: Output Filter';
+$OPF['HOWTO'] = 'Met de onderstaande opties kunt u de outputfilters configureren.';
+$OPF['WARNING'] = '';
 
 // Text and captions of form elements
-$OPF['BASIC_CONF']                      = 'Configuratie';
-$OPF['SYS_REL'] = 'Frontendoutput with  relative Urls';
-$OPF['ENABLED']                         = 'Aan';
-$OPF['DISABLED']                        = 'Uit';
+$OPF['BASIC_CONF'] = 'Basis configuratie';
+$OPF['SYS_REL'] = 'Frontend output met relatieve URLs';
+$OPF['ENABLED'] = 'Ingeschakeld';
+$OPF['DISABLED'] = 'Uitgeschakeld';
 
-$OPF['REPLACEMENT_CONF']        = 'Vervang E-mail tekens';
+$OPF['REPLACEMENT_CONF']= 'Email vervangingen';
 
-$OPF['DROPLETS'] = 'Droplets filter';
-$OPF['WBLINK'] = 'WB-Link Filter';
-$OPF['INSERT'] = 'CSS, JS, Meta Insert Filter';
-$OPF['SHORT_URL'] = 'Use short url filter';
-$OPF['CSS_TO_HEAD'] = 'Use CSS to head';
+$OPF['DROPLETS'] = 'Droplets filter (zonder deze zullen droplets niet werken)';
+$OPF['WBLINK'] = 'WB-Link Filter (vervang [wblinkXX] met de URL van de pagina)';
+$OPF['AUTO_PLACEHOLDER'] = 'Voeg placeholder toe voor het verplaatsen van JS, CSS en meer';
+$OPF['MOVE_STUFF'] = 'CSS, JS, zullen verplaatst worden naar de placeholder';
+$OPF['REPLACE_STUFF'] = 'Vervang title, keywords of description door modules';
+$OPF['SHORT_URL'] = 'Gebruik short url filter (geen /pages, geen .php - htaccess moet worden voorbereid)';
+$OPF['CSS_TO_HEAD'] = 'Verplaats inline CSS naar &lt;head&gt;';
+$OPF['REMOVE_SYSTEM_PH'] = 'Verwijder placesholders(PH) gegenereerd door core filters';
+
+
 
