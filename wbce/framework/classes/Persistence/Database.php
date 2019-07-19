@@ -530,7 +530,7 @@ class Database
                     $sets[] = $column . ' = ?';
                 }
             }
-            
+
             $parameters[] = $data[$primaryKey];
 
             $sql = 'UPDATE ' . $table . ' SET ' . implode(', ', $sets) . ' WHERE ' . $primaryKey . ' = ?';
@@ -557,13 +557,13 @@ class Database
     public function insertRow($table, array $data)
     {
         $parameters = [];
+        $values = [];
 
         $columns = array_keys($data);
-        $values = array_map(function ($value) use ($parameters) {
+        foreach ($data as $value) {
             $parameters[] = $value;
-
-            return '?';
-        }, $data);
+            $values[] = '?';
+        };
 
         $sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $values) . ')';
 

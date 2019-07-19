@@ -72,15 +72,22 @@ class Result
     /**
      * Fetch row.
      *
-     * @param int $fetchStyle
+     * @param int $fetchStyle PDO fetch style
      *
      * @return mixed
      */
     public function fetchRow($fetchStyle = PDO::FETCH_BOTH)
     {
-        $this->fetchStyle = $fetchStyle;
+        // Replace of MYSQLI-fetch types
+        if ($fetchStyle === MYSQLI_ASSOC) {
+            $this->fetchStyle = PDO::FETCH_ASSOC;
+        } else if ($fetchStyle === MYSQLI_BOTH) {
+            $this->fetchStyle = PDO::FETCH_BOTH;
+        } else {
+            $this->fetchStyle = $fetchStyle;
+        }
 
-        return $this->statement->fetch($fetchStyle);
+        return $this->statement->fetch($this->fetchStyle);
     }
 
     /**
