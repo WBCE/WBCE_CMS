@@ -107,7 +107,7 @@ class Database
                 $this->host = DB_HOST;
 
                 if (defined('DB_PORT')) {
-                    $this->host . ':' . DB_PORT;
+                    $this->host .= ':' . DB_PORT;
                 }
             }
 
