@@ -243,6 +243,12 @@ class mform {
 		return $result;
 	}
 	
+	function count_messages($section_id) {
+		global $database;
+		$res = $database->query("SELECT message_id FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id` = '$section_id'");
+		return ($res) ? $res->numRows() : 0;
+	}
+	
 	function build_pagelist($parent, $this_page) {
 		global $database, $links;
 		$iterated_parents = array(); // keep count of already iterated parents to prevent duplicates

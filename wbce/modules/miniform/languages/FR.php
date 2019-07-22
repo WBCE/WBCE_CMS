@@ -34,6 +34,8 @@ $MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';
 $MF['TEXT_EMAILFROM']    = 'Email Sender';
 $MF['TEXT_CONFIRM_USER'] = 'Confirmation à l\'utilisateur authentifié';
 $MF['TEXT_CONFIRM_SUBJ'] = 'Sujet de confirmation';
+$MF['TEXT_SHOW_MORE']    = 'Show more';
+$MF['TEXT_SHOW_X_MORE']  = 'Show %d more';
 
 $MF['MANAGE'] = 'Modifier template';
 $MF['SUBJECT'] = 'Nouveau message Site ';
@@ -45,7 +47,7 @@ $MF['INVALID'] = 'Invalid filetype, upload not accepted!';
 $MF['SENDERROR'] = 'Error sending the form!';
 
 $MF['HISTORY'] = 'Afficher historique';
-$MF['RECEIVED'] = 'Messages recus (50 derniers)';
+$MF['RECEIVED'] = 'Messages recus';
 $MF['MSGID'] = 'ID';
 $MF['TIMESTAMP'] = 'Horodatage';
 $MF['REMOVE'] = 'Supprimmer';

@@ -13,12 +13,44 @@
  *
  */
 
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 
-require_once(WB_PATH.'/include/editarea/wb_wrapper_edit_area.php');
-require_once(WB_PATH.'/framework/module.functions.php');
+require_once __DIR__.'/../../config.php';
+
+$sLangPath = WB_PATH.'/modules/miniform/languages';
+require_once($sLangPath.'/EN.php');
+if(LANGUAGE != 'EN'){
+	if(file_exists($sLangPath.'/'.LANGUAGE.'.php')) {
+		require_once($sLangPath.'/'.LANGUAGE.'.php');
+	}
+}
+
+// Include WB admin wrapper script
+require WB_PATH.'/modules/admin.php';
+$section_id = $admin->checkIDKEY('section_id', 0, 'GET');
+if (!$section_id){
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
+	 .' (IDKEY) '.__FILE__.':'.__LINE__,
+         ADMIN_URL.'/pages/index.php');
+    $admin->print_footer();
+    exit();
+}
+
+$query = "SELECT * FROM ".TABLE_PREFIX."mod_miniform WHERE section_id = '$section_id'";
+$get_settings = $database->query($query);
+$settings = $get_settings->fetchRow();
+$remote = $settings['remote_id'];
+
+
+
+require_once WB_PATH.'/include/editarea/wb_wrapper_edit_area.php';
+require_once WB_PATH.'/framework/module.functions.php';
+
 $backlink = ADMIN_URL.'/pages/modify.php?page_id='.(int)$page_id;
+$manage_url = WB_URL.'/modules/miniform/modify_template.php?page_id='.$page_id.'&section_id='.$admin->getIDKEY($section_id).'&mt=1&name=';
 
+
+require_once __DIR__ . '/functions.php';
+$mform = new mForm();
 $nwdata = '';
 if(isset($_POST['remote'])) {
 	$tmpremote = $_POST['remote'];
@@ -64,25 +96,25 @@ if ($_action == 'save') {
 	if($nwdata) $data = $nwdata;
 	echo (function_exists('registerEditArea')) ? registerEditArea('code_area', 'html') : 'none';
 	?>
-	<form name="edit_module_file" action="<?php echo $manage_url.$template;?>" method="post" style="margin: 0;">
-			<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
-			<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+	<form name="edit_module_file" action="<?=$manage_url.$template;?>" method="post" style="margin: 0;">
+			<input type="hidden" name="page_id" value="<?=$page_id; ?>" />
+			<input type="hidden" name="section_id" value="<?=$section_id; ?>" />
 			<input type="hidden" name="action" value="save" />
-			<span class="sleft"><?php echo $MF['SAVEAS']; ?>: </span><input required type="text" class="mf-input" name="name" value="<?php echo $template; ?>" />
-			<span style="float:right"><a class="mf-button" href="http://miniform.dev4me.nl/template-help/basic-structure/" target="_blank"><?php echo $MF['HELP']; ?></a></span>
-			<span style="float:right"><a class="mf-button" href="http://miniform.dev4me.nl/form-creator/<?php echo $remote ? '?load='.$remote:''; ?>" target="_blank"><?php echo $MF['TPL_GEN']; ?></a></span>
-			<span style="float:right"><a class="doremote mf-button" href="#" ><?php echo $MF['DOREMOTE']; ?></a></span>
+			<span class="sleft"><?=$MF['SAVEAS']; ?>: </span><input required type="text" class="mf-input" name="name" value="<?=$template; ?>" />
+			<span style="float:right"><a class="mf-button" href="http://miniform.dev4me.nl/template-help/basic-structure/" target="_blank"><?=$MF['HELP']; ?></a></span>
+			<span style="float:right"><a class="mf-button" href="http://miniform.dev4me.nl/form-creator/<?=$remote ? '?load='.$remote:''; ?>" target="_blank"><?=$MF['TPL_GEN']; ?></a></span>
+			<span style="float:right"><a class="doremote mf-button" href="#" ><?=$MF['DOREMOTE']; ?></a></span>
 			<div class="mf_editor">
 			<br><br>
-			<textarea id="code_area" name="template_data" cols="100" rows="25" wrap="VIRTUAL" style="margin:2px;width:100%;"><?php echo htmlspecialchars($data); ?></textarea>
+			<textarea id="code_area" name="template_data" cols="100" rows="25" wrap="VIRTUAL" style="margin:2px;width:100%;"><?=htmlspecialchars($data); ?></textarea>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				<tr>
 					<td class="left">
-					<input name="save" type="submit" value="<?php echo $TEXT['SAVE'];?>" style="width: 100px; margin-top: 5px;" />
+					<input name="save" type="submit" value="<?=$TEXT['SAVE'];?>" style="width: 100px; margin-top: 5px;" />
 					</td>
 					<td class="right">
-					<input type="button" value="<?php echo $TEXT['CANCEL']; ?>"
-							onclick="javascript: window.location = '<?php echo ADMIN_URL;?>/pages/modify.php?page_id=<?php echo $page_id; ?>';"
+					<input type="button" value="<?=$TEXT['CANCEL']; ?>"
+							onclick="javascript: window.location = '<?=ADMIN_URL;?>/pages/modify.php?page_id=<?=$page_id; ?>';"
 							style="width: 100px; margin-top: 5px;" />
 					</td>
 				</tr>
@@ -91,25 +123,36 @@ if ($_action == 'save') {
 	</form>
 	<div class="mf_remote" style="display:none;">
 		<br><br>
-		<form name="load_remote" action="<?php echo $manage_url.$template;?>" method="post" > 
-			<input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
-			<input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
-			<span class="sleft"><?php echo $MF['REMOTE']; ?>: </span><input type="text" class="mf-input" name="remote" value="<?php echo $remote; ?>" />
-			<input class="mf-button" name="load" type="submit" value="<?php echo $MF['LOAD'];?>" style="width: 100px; margin-top: 5px;" />
-			<input class="mf-button" type="button" value="<?php echo $TEXT['CANCEL']; ?>"
-								onclick="javascript: window.location = '<?php echo ADMIN_URL;?>/pages/modify.php?page_id=<?php echo $page_id; ?>';"
+		<form name="load_remote" action="<?=$manage_url.$template;?>" method="post" > 
+			<input type="hidden" name="page_id" value="<?=$page_id; ?>" />
+			<input type="hidden" name="section_id" value="<?=$section_id; ?>" />
+			<span class="sleft"><?=$MF['REMOTE']; ?>: </span><input type="text" class="mf-input" name="remote" value="<?=$remote; ?>" />
+			<input class="mf-button" name="load" type="submit" value="<?=$MF['LOAD'];?>" style="width: 100px; margin-top: 5px;" />
+			<input class="mf-button" type="button" value="<?=$TEXT['CANCEL']; ?>"
+								onclick="javascript: window.location = '<?=ADMIN_URL;?>/pages/modify.php?page_id=<?=$page_id; ?>';"
 								style="width: 100px; margin-top: 5px;" />
 
 			
 		</form>
 		<?php if($remote) { ?>
 		<br>
-		<span class="sleft">&nbsp;</span><a class="mf-button" href="http://miniform.dev4me.nl/form-creator/?load=<?php echo $remote ?>" target="_blank"><?php echo $MF['EDITREMOTE'];?></a><br>
+		<span class="sleft">&nbsp;</span><a class="mf-button" href="http://miniform.dev4me.nl/form-creator/?load=<?=$remote ?>" target="_blank"><?=$MF['EDITREMOTE'];?></a><br>
 		<?php } ?>
 
 	</div>
 	<?php 
 }
-// Print admin footer
-#$admin->print_footer();
+?>
+<script>
+$(function() {
+	
+	$(".doremote").click(function(){
+		$(".mf_editor").toggle();
+		$(".mf_remote").toggle();
+	});
+
+});
+</script>
+<?php
+$admin->print_footer();
 

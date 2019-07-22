@@ -40,7 +40,6 @@ span.sleft {
 a.mf-button,
 .mf-button {
 	font-weight: 400;
-	display: inline-block;
 	border: 1px solid #666;
 	background: #777 !important;
 	color: #fff;
@@ -100,3 +99,59 @@ a.mf-button:hover,
 	margin-bottom: 10px;
 }
 
+
+
+/**/
+.icon, .del_icon{
+    font-weight: bold;
+    font-size: 125%;
+    color: #5d88ab;
+}
+a.del_icon {
+    font-size: 175%;
+    color: #ca1a56;
+}
+
+/* 
+    messages table
+*/
+table.mf_messages a,table.mf_messages a:hover   {    
+    text-decoration: none;
+}
+table.mf_messages  {
+    border: 1px solid #BFC9DF;
+}
+table.mf_messages thead th {
+    text-align: left;
+    font-size: 120%;
+    padding-left: 5px;
+    background-color: #d0dbe4;
+}
+table.mf_messages tr td {
+    border-bottom: 1px solid #BFC9DF;
+}
+table.mf_messages tr.even td, table.mf_messages tr.odd td {
+    padding: 0 7px; 
+    background-color: #fff;
+}
+table.mf_messages tr.odd td {
+    background-color: #EDF4F9;
+}
+table.mf_messages div table table {
+    width: 100% !important;
+}
+table.mf_messages tr.msg_text {
+	display:none;
+}
+
+.msg-open{
+	background-color: #dde4ea!important;
+}
+
+.load-more{
+	cursor: pointer;
+    padding: 2px 8px;
+    background-color: #b0cde4;
+    color: #406479;
+    border: 1px solid #406479;
+}

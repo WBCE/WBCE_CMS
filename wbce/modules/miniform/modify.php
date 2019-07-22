@@ -14,13 +14,14 @@
  */
 
 
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
-if(!file_exists(WB_PATH.'/modules/miniform/languages/'.LANGUAGE.'.php')) {
-	require_once(WB_PATH.'/modules/miniform/languages/EN.php');
-} else {
-	require_once(WB_PATH.'/modules/miniform/languages/'.LANGUAGE.'.php');
+$sLangPath = __DIR__ . '/languages';
+require_once($sLangPath.'/EN.php');
+if(LANGUAGE != 'EN'){
+	if(file_exists($sLangPath.'/'.LANGUAGE.'.php')) {
+		require_once($sLangPath.'/'.LANGUAGE.'.php');
+	}
 }
-require_once ('functions.php');
+require_once  __DIR__ . '/functions.php';
 
 if(file_exists(WB_PATH.'/modules/miniform/new_frontend.css') && !file_exists(WB_PATH.'/modules/miniform/frontend.css') ) {
 	$path = WB_PATH.'/modules/miniform/';
@@ -36,50 +37,47 @@ if(file_exists(WB_PATH.'/modules/miniform/new_frontend.css')) {
 	}
 }
 $mform = new mForm();
-$d = 0;
 
+$d = 0;
 if(isset($_GET['delete'])) {
 	$d = intval($_GET['delete']);
 	$mform->delete_record($d);
 }
 if (!isset($links)) {
 	$links = array();
-	$mform->build_pagelist(0,$page_id);
+	$mform->build_pagelist(0, $page_id);
 }
+
 $sel = ' selected';
 
 $query = "SELECT * FROM ".TABLE_PREFIX."mod_miniform WHERE section_id = '$section_id'";
 $get_settings = $database->query($query);
 $settings = $get_settings->fetchRow();
-if(!$settings['email']) $settings['email'] = SERVER_EMAIL;
-if(!$settings['emailfrom']) $settings['emailfrom'] = SERVER_EMAIL;
-if(!$settings['subject']) $settings['subject'] = $MF['SUBJECT'];
+if(!$settings['email'])           $settings['email'] = SERVER_EMAIL;
+if(!$settings['emailfrom'])       $settings['emailfrom'] = SERVER_EMAIL;
+if(!$settings['subject'])         $settings['subject'] = $MF['SUBJECT'];
 if(!$settings['confirm_subject']) $settings['confirm_subject'] = $MF['SUBJECT'];
 $remote = $settings['remote_id'];
 
-$manage_url = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id.'&mt=1&name=';
-$delete_url = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id.'&delete=';
+$manage_url = WB_URL.'/modules/miniform/modify_template.php?page_id='.$page_id.'&section_id='.$admin->getIDKEY($section_id).'&mt=1&name=';
 
-$cu_checked = $settings['confirm_user'] ? 'checked': '';
-$cs_display = $settings['confirm_user'] ? '' : 'style="display:none;"';
+$cu_checked       = $settings['confirm_user'] ? 'checked': '';
+$cs_display       = $settings['confirm_user'] ? '' : 'style="display:none;"';
 $no_store_checked = $settings['no_store'] ? 'checked': '';
-$ajax_checked = $settings['use_ajax'] ? 'checked': '';
-$rc_checked = $settings['use_recaptcha'] ? 'checked': '';
-$rc_display = $settings['use_recaptcha'] ? '' : 'style="display:none;"';
+$ajax_checked     = $settings['use_ajax'] ? 'checked': '';
+$rc_checked       = $settings['use_recaptcha'] ? 'checked': '';
+$rc_display       = $settings['use_recaptcha'] ? '' : 'style="display:none;"';
+
+$number_load = 7; // how many messages should be loaded?
 ?>
 <script>
 $(function() {
-	<?php if (!$d) { ?> $(".msgtable").hide(); <?php } ?>
-	$(".msgtable .msg").hide(); 
-	$(".msgt<?php echo $section_id ?> td.line").click(function(e){
+	$(".msgt<?=$section_id ?> td.line").click(function(e){
 		e.preventDefault();
 		$(this).children(".msg").slideToggle();
 		console.log("click");
     });
-	$(".recved<?php echo $section_id ?>").click(function(e){
-		e.preventDefault();
-		$(".msgt<?php echo $section_id ?>").toggle();
-	});
+	
 	$(".doremote").click(function(){
 		$(".mf_editor").toggle();
 		$(".mf_remote").toggle();
@@ -87,7 +85,7 @@ $(function() {
 	
     $("select.templates").on("change", function() {
         var link = $(this).parent().find("a.manage");
-        link.attr("href", "<?php echo $manage_url ?>" + $(this).val());
+        link.attr("href", "<?=$manage_url ?>" + $(this).val());
     });
 	$('#rc').click(function() {
 		if( $(this).is(':checked')) {
@@ -105,62 +103,141 @@ $(function() {
 	}); 
 });
 </script>
-<?php if (isset($_GET['mt'])) {
-	include dirname(__FILE__).'/modify_template.php';
-} else {
-?>
 
-    <form action="<?php echo WB_URL ?>/modules/miniform/save.php" method="post"  >
-	<input type="hidden" name="page_id" value="<?php echo $page_id ?>" />
-	<input type="hidden" name="section_id" value="<?php echo $section_id ?>" />
-	<table class="settable" id="mfsettings-<?php echo $section_id ?>" cellpadding="3" cellspacing="3" border="0">
-		<tr><td colspan="2"><h2><?php echo $MF['MINIFORM'] ?> - <?php echo $MF['SETTINGS'] ?></h2></td><td><a style="float:right" href="#" class="recved<?php echo $section_id ?> mf-button"><?php echo $MF['HISTORY'] ?></a></td></tr>
-		<tr><td class="small"><?php echo $MF['TEXT_FORM'] ?>: </td><td><?php echo $mform->getSelectTemplate($settings['template']) ?>  <a class="manage mf-button" href="<?php echo $manage_url.$settings['template']?>"><?php echo $MF['MANAGE'] ?></a></td></tr>
-		<tr><td><?php echo $MF['TEXT_EMAILFROM'] ?>: </td><td><input class="mf-input wide" size="50" type="text" name="emailfrom" value="<?php echo $settings['emailfrom'] ?>" /></td></tr>
-		<tr><td><?php echo $MF['TEXT_EMAIL'] ?>: </td><td><input class="mf-input wide" size="50" type="text" name="email" value="<?php echo $settings['email'] ?>" /></td></tr>
-		<tr><td><?php echo $MF['TEXT_SUBJECT'] ?>: </td><td><input class="mf-input wide" size="50" type="text" name="subject" value="<?php echo $settings['subject'] ?>" /></td></tr>
-		<tr><td><?php echo $MF['TEXT_CONFIRM_USER'] ?>: </td><td><input type="hidden" name="confirm_user" value="0" /><input type="checkbox" id="cs" name="confirm_user" value="1" <?php echo $cu_checked ?> /></td></tr>
-		<tr class="cs" <?php echo $cs_display ?>><td><?php echo $MF['TEXT_CONFIRM_SUBJ'] ?>: </td><td><input class="mf-input wide" size="50" type="text" name="confirm_subject" value="<?php echo $settings['confirm_subject'] ?>" /></td></tr>
-		<tr><td><?php echo $MF['TEXT_SUCCESS'] ?>: </td><td>		
+    <form action="<?=WB_URL ?>/modules/miniform/save.php" method="post"  >
+	<input type="hidden" name="page_id" value="<?=$page_id ?>" />
+	<input type="hidden" name="section_id" value="<?=$section_id ?>" />
+	<table class="settable" id="mfsettings-<?=$section_id ?>" cellpadding="3" cellspacing="3" border="0">
+		<tr>
+			<td colspan="3"><h2><?=$MF['MINIFORM'] ?> - <?=$MF['SETTINGS'] ?></h2></td>
+		</tr>
+		<tr>
+			<td class="small"><?=$MF['TEXT_FORM'] ?>: </td>
+			<td><?=$mform->getSelectTemplate($settings['template']) ?>  
+				<a class="manage mf-button" href="<?=$manage_url.$settings['template']?>"><?=$MF['MANAGE'] ?></a>
+			</td>
+		</tr>
+		<tr>
+			<td><?=$MF['TEXT_EMAILFROM'] ?>: </td>
+			<td><input class="mf-input wide" size="50" type="text" name="emailfrom" value="<?=$settings['emailfrom'] ?>" /></td>
+		</tr>
+		<tr>
+			<td><?=$MF['TEXT_EMAIL'] ?>: </td>
+			<td><input class="mf-input wide" size="50" type="text" name="email" value="<?=$settings['email'] ?>" /></td>
+		</tr>
+		<tr>
+			<td><?=$MF['TEXT_SUBJECT'] ?>: </td>
+			<td><input class="mf-input wide" size="50" type="text" name="subject" value="<?=$settings['subject'] ?>" /></td>
+		</tr>
+		<tr>
+			<td><?=$MF['TEXT_CONFIRM_USER'] ?>: </td>
+			<td>
+				<input type="hidden" name="confirm_user" value="0" />
+				<input type="checkbox" id="cs" name="confirm_user" value="1" <?=$cu_checked ?> />
+			</td>
+		</tr>
+		<tr class="cs" <?=$cs_display ?>>
+			<td><?=$MF['TEXT_CONFIRM_SUBJ'] ?>: </td>
+			<td>
+				<input class="mf-input wide" size="50" type="text" name="confirm_subject" value="<?=$settings['confirm_subject'] ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td><?=$MF['TEXT_SUCCESS'] ?>: </td>
+			<td>		
 				<select  class="mf-input wide" name="successpage" style="font-family:'Courier New',Courier,monospace;font-size:12px;" />
-				<option value="0"<?php echo $settings['successpage']=='0' ? $sel : '' ?>><?php echo $MF['TEXT_NOPAGE'] ?></option>
+				<option value="0"<?=$settings['successpage']=='0' ? $sel : '' ?>><?=$MF['TEXT_NOPAGE'] ?></option>
 				<?php foreach($links AS $li) {
 					$option_link = explode('|',$li);
 					$disabled = $option_link[0] == $page_id ? ' disabled':'';
 					echo "<option $disabled value=\"".$option_link[0]."\" ".($settings['successpage']==$option_link[0] ? $sel : '').">$option_link[1]</option>\n";
 				} ?>
 				</select>
-		</td></tr>
-
-		<tr><td><?php echo $MF['TEXT_NO_STORE'] ?>: </td><td><input type="hidden" name="no_store" value="0" /><input type="checkbox"  name="no_store" value="1" <?php echo $no_store_checked ?> /></td></tr>
-		<tr><td><?php echo $MF['TEXT_AJAX'] ?>: </td><td><input type="hidden" name="use_ajax" value="0" /><input type="checkbox"  name="use_ajax" value="1" <?php echo $ajax_checked ?> /></td></tr>
-		<tr><td><?php echo $MF['TEXT_RECAPTCHA'] ?>: </td><td><input type="hidden" name="use_recaptcha" value="0" /><input type="checkbox" id="rc" name="use_recaptcha" value="1" <?php echo $rc_checked ?> /></td></tr>
-		<tr class="rc" <?php echo $rc_display ?>><td><?php echo $MF['TEXT_RCKEY'] ?>: </td><td><input class="mf-input wide" type="text" name="recaptcha_key" value="<?php echo $settings['recaptcha_key'] ?>" /> - <a href="https://www.google.com/recaptcha/admin" target="_blank">get Google reCaptcha keys</a></td></tr>
-		<tr class="rc" <?php echo $rc_display ?>><td><?php echo $MF['TEXT_RCSECRET'] ?>: </td><td><input class="mf-input wide" type="text" name="recaptcha_secret" value="<?php echo $settings['recaptcha_secret'] ?>" /></td></tr>
+			</td>
+		</tr>
 
 		<tr>
-			<td><input type="submit" value="<?php echo $MF['TEXT_SAVE'] ?>" style="width: 120px; margin-top: 5px;" /></td>
-			<td colspan="2" align="right"><input type="button" value="<?php echo $MF['TEXT_CANCEL'] ?>" onclick="javascript: window.location = 'index.php';" style="width: 120px; margin-top: 5px;" /></td>
+			<td><?=$MF['TEXT_NO_STORE'] ?>: </td>
+			<td>
+				<input type="hidden" name="no_store" value="0" />
+				<input type="checkbox"  name="no_store" value="1" <?=$no_store_checked ?> />
+			</td>
+		</tr>
+		<tr>
+			<td><?=$MF['TEXT_AJAX'] ?>: </td>
+			<td>
+				<input type="hidden" name="use_ajax" value="0" />
+				<input type="checkbox"  name="use_ajax" value="1" <?=$ajax_checked ?> />
+			</td>
+		</tr>
+		<tr>
+			<td><?=$MF['TEXT_RECAPTCHA'] ?>: </td>
+			<td>
+				<input type="hidden" name="use_recaptcha" value="0" />
+				<input type="checkbox" id="rc" name="use_recaptcha" value="1" <?=$rc_checked ?> />
+			</td>
+		</tr>
+		<tr class="rc" <?=$rc_display ?>>
+			<td><?=$MF['TEXT_RCKEY'] ?>: </td>
+			<td>
+				<input class="mf-input wide" type="text" name="recaptcha_key" value="<?=$settings['recaptcha_key'] ?>" /> - <a href="https://www.google.com/recaptcha/admin" target="_blank">get Google reCaptcha keys</a>
+			</td>
+		</tr>
+		<tr class="rc" <?=$rc_display ?>>
+			<td><?=$MF['TEXT_RCSECRET'] ?>: </td>
+			<td><input class="mf-input wide" type="text" name="recaptcha_secret" value="<?=$settings['recaptcha_secret'] ?>" /></td>
+		</tr>
+		<tr>
+			<td><input type="submit" value="<?=$MF['TEXT_SAVE'] ?>" style="width: 120px; margin-top: 5px;" /></td>
+			<td colspan="2" align="right">
+				<input type="button" value="<?=$MF['TEXT_CANCEL'] ?>" onclick="javascript: window.location = 'index.php';" style="width: 120px; margin-top: 5px;" />
+			</td>
 		</tr>
 	</table>
     </form>
-    <?php 
-    $sub = $mform->get_history($section_id,50);
-    ?>
-    <table class='msgtable msgt<?php echo $section_id ?>' cellpadding="3" border="0" style="margin-top:25px;">
-    <tr><th colspan="3"><?php echo $MF['RECEIVED'] ?></th></tr>
-    <tr>
-	<td ><?php echo $MF['MSGID'] ?> - <?php echo $MF['TIMESTAMP'] ?></td>
-	<td class="small"><?php echo $MF['REMOVE'] ?> </td>
-    </tr>
-    <?php	
-	foreach ($sub as $msg) {
-		echo "<tr >
-				<td style='cursor:pointer' class='line'>".$msg['message_id']." - ".date(DATE_FORMAT.' - '.TIME_FORMAT,$msg['submitted_when']+TIMEZONE)."<div class='msg'>".($msg['data'])."</div></td>
-				<td><a href='".$delete_url.$msg['message_id']."'>X</a></td>
-			</tr>";
+	
+	<?php 
+	$show_messages = false;
+	// write/read SESSION to determine whether or not the Submission list should be shown
+	if(isset($_GET['show_messages']) && in_array($_GET['show_messages'], array(1,0))){
+		// provide it in a way that multiple miniform sections can store their unique toggle state
+		if($_GET['section_id'] == $section_id){	
+			$_SESSION['show_mf_messages'.$section_id] = $_GET['show_messages'];
+		}
 	}
-    ?>
-    </table>
-    <?php 
-}
+	if(isset($_SESSION['show_mf_messages'.$section_id])){
+		$show_messages = $_SESSION['show_mf_messages'.$section_id];
+	}
+	$TEXT['TOGGLE_VIEW'] = $TEXT['SHOW'];
+	$toggle = 1;
+	if($show_messages == 1){
+		$TEXT['TOGGLE_VIEW'] = $TEXT['HIDE'];	
+		$toggle = 0;			
+	}			
+	$sLink = ADMIN_URL."/pages/modify.php?page_id=%d&section_id=%d&show_messages=%d#mf_msgs_%s";
+	$sLink = sprintf($sLink, $page_id, $section_id, $toggle, $section_id);
+		
+	$msg_count = $mform->count_messages($section_id);
+	$count_txt = ($msg_count) > 0 ? $msg_count : '<i>'.strtolower($TEXT['NONE_FOUND']).'</i>';
+	?>
+	<table id="mf_msgs_<?=$section_id ?>" class="mf_messages" cellpadding="2" cellspacing="0" border="0" width="100%">
+		<thead>
+			<tr>
+				<th colspan="2"><?=$MF['RECEIVED'] ?> (<?=$count_txt?>)</th>
+				<th colspan="1">
+					<?php if($msg_count > 0) { ?>
+						<a style="float:right; font-size: 14px;" class="mf-button" href="<?=$sLink?>"><?=$TEXT['TOGGLE_VIEW']?></a>
+					<?php }	?>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+
+	<?php if($show_messages){ 		
+		$delete_url = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&section_id='.$section_id.'&delete=';
+		include __DIR__ .'/messages_loop.php';
+	} ?>
+	</tbody>
+</table>
+	
+<br>

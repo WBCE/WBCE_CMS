@@ -34,6 +34,8 @@ $MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';
 $MF['TEXT_EMAILFROM'] = 'Email afzender';
 $MF['TEXT_CONFIRM_USER'] = 'Bevestiging naar ingelogde gebruiker';
 $MF['TEXT_CONFIRM_SUBJ'] = 'Bevestiging Onderwerp';
+$MF['TEXT_SHOW_MORE']    = 'Show more';
+$MF['TEXT_SHOW_X_MORE']  = 'Show %d more';
 
 
 $MF['MANAGE'] = 'Bewerk template';
@@ -44,7 +46,7 @@ $MF['INVALID'] = 'Ongeldig bestandstype, bestand niet geaccepteerd!';
 $MF['SENDERROR'] = 'Fout bij het verzenden!';
 
 $MF['HISTORY'] = 'Bekijk eerdere inzendingen';
-$MF['RECEIVED'] = 'Inzendingen (Laatste 50)';
+$MF['RECEIVED'] = 'Inzendingen';
 $MF['MSGID'] = 'ID';
 $MF['TIMESTAMP'] = 'Datum / Tijd';
 $MF['REMOVE'] = 'Verwijderen';

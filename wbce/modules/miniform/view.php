@@ -160,7 +160,7 @@ if($mf->myPost) {
 		elseif($type!='-' && substr($key,0,3)=='mf_' ) $prevdata .= '<input type="hidden" name="'.$key.'" value="'.$post.'" />'."\n\t";
 		if($mf->error) {
 			$message .= $mf->error.'<br/>';
-			$message_class = "error";
+			$message_class = "error  alert alert-danger";
 			$all_required = false;
 			$mf->error = '';
 		}
@@ -254,7 +254,7 @@ if($mf->myPost) {
 						$useremail = $wb->get_email();
 						if(!$mf->mail ($emailfrom, $useremail, $confirm_subject, $confirm_message, WBMAILER_DEFAULT_SENDERNAME)) {
 							$message .= $MF['SENDERROR']."<br>".$mf->error;
-							$message_class = "error";
+							$message_class = "error  alert alert-danger";
 						}
 					}
 					unset($_SESSION['form']);
@@ -267,11 +267,11 @@ if($mf->myPost) {
 						}
 					}
 					$message .= $MF['THANKYOU'];
-					$message_class = "ok";
+					$message_class = "ok alert alert-success";
 					$form_class = "hidden";
 				} else {
 					$message .= $MF['SENDERROR']."<br>".$mf->error;
-					$message_class = "error";
+					$message_class = "error  alert alert-danger";
 				}
 			} else {
 				$template = $next_template;
@@ -279,7 +279,7 @@ if($mf->myPost) {
 			}
 		} elseif ($mf->dataPosted)  {
 				$message .= $MF['NOTALL'];
-				$message_class = "error";
+				$message_class = "error  alert alert-danger";
 				$prevdata .= '<input type="hidden" name="__current" value="'.$mf->current.'" />'."\n\t";
 		}
 	}

@@ -31,9 +31,11 @@ $MF['TEXT_RECAPTCHA'] = 'Use reCaptcha';
 $MF['TEXT_RCKEY'] = 'reCaptcha Site key';
 $MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';
 
-$MF['TEXT_EMAILFROM'] = 'Email Sender';
+$MF['TEXT_EMAILFROM']    = 'Email Sender';
 $MF['TEXT_CONFIRM_USER'] = 'Confirmation to authenticated user';
 $MF['TEXT_CONFIRM_SUBJ'] = 'Confirmation subject';
+$MF['TEXT_SHOW_MORE']    = 'Show more';
+$MF['TEXT_SHOW_X_MORE']  = 'Show %d more';
 
 $MF['MANAGE'] = 'Modify template';
 $MF['SUBJECT'] = 'Form sent by the website';
@@ -43,7 +45,7 @@ $MF['INVALID'] = 'Invalid filetype, upload not accepted!';
 $MF['SENDERROR'] = 'Error sending the form!';
 
 $MF['HISTORY'] = 'Show history';
-$MF['RECEIVED'] = 'Received messages (last 50)';
+$MF['RECEIVED'] = 'Received messages';
 $MF['MSGID'] = 'ID';
 $MF['TIMESTAMP'] = 'Timestamp';
 $MF['REMOVE'] = 'Delete';
@@ -59,3 +61,6 @@ $MF['LOAD'] = 'Load';
 $MF['LOADING'] = 'Loading remote template';
 $MF['LOADERROR'] = 'Loading failed!';
 $MF['LOADSUCCESS'] = 'Remote template successfully loaded! Don\'t forget to save!';
+
+$MF['GO_TO_SECTION'] = 'Go to section';
+$MF['LATEST_MESSAGE'] = 'Latest message';

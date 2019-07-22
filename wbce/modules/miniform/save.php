@@ -14,8 +14,8 @@
  */
 
 require('../../config.php');
-$update_when_modified = true; 
 require_once (WB_PATH.'/framework/functions.php');
+$update_when_modified = true; 
 require(WB_PATH.'/modules/admin.php');
 
 if(isset($_POST['section_id'])) {

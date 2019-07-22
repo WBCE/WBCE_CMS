@@ -34,6 +34,8 @@ $MF['TEXT_RCSECRET'] = 'reCaptcha Secret key';
 $MF['TEXT_EMAILFROM']    = 'E-Mail-Absender';
 $MF['TEXT_CONFIRM_USER'] = 'Bestätigung an authentifizierten Benutzer';
 $MF['TEXT_CONFIRM_SUBJ'] = 'Bestätigungs Betreff';
+$MF['TEXT_SHOW_MORE']    = 'Mehr anzeigen';
+$MF['TEXT_SHOW_X_MORE']  = '%d weitere anzeigen';
 
 $MF['MANAGE'] = 'Template anpassen';
 $MF['SUBJECT'] = 'Formular &uuml;ber die Website verschickt';
@@ -43,7 +45,7 @@ $MF['INVALID'] = 'Ung&uuml;ltiger Dateityp, Upload verworfen!';
 $MF['SENDERROR'] = 'Fehler beim Versand des Formulars!';
 
 $MF['HISTORY'] = 'Historie anzeigen';
-$MF['RECEIVED'] = 'Empfangene Nachrichten (letzte 50)';
+$MF['RECEIVED'] = 'Empfangene Nachrichten';
 $MF['MSGID'] = 'ID';
 $MF['TIMESTAMP'] = 'Zeitstempel (Timestamp)';
 $MF['REMOVE'] = 'L&ouml;schen';
@@ -59,3 +61,6 @@ $MF['LOAD'] = 'Laden';
 $MF['LOADING'] = 'Template wird geladen';
 $MF['LOADERROR'] = 'Das Template konnte nicht geladen werden!';
 $MF['LOADSUCCESS'] = 'Das Template wurde  erfolgreich geladen. Bitte speichern, um es zu &uuml;bernehmen!';
+
+$MF['GO_TO_SECTION'] = 'Zum MiniForm Abschnitt springen';
+$MF['LATEST_MESSAGE'] = 'Letzte Nachricht';
