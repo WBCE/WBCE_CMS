@@ -158,6 +158,7 @@ if ($query_parent->numRows() > 0) {
 
 // Insert page into pages table
 $aInsert = array(
+    'parent'            => $parent, 
     'link'              => '', 
     'description'       => '', 
     'keywords'          => '', 
