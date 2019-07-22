@@ -5,6 +5,96 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2019-07-22:** instantflorian [[4799eb13](https://github.com/WBCE/WBCE_CMS/commit/4799eb1349631c09441b0ad4dc9a7f5e5c1df19e)]
+   > Update version.php
+
+ * **2019-07-22:** instantflorian [[c10d984e](https://github.com/WBCE/WBCE_CMS/commit/c10d984ea8b997d54e9567a29574a4053053261a)]
+   > Update miniform to 0.21
+
+ * **2019-07-22:** Stefek [[112b7c1b](https://github.com/WBCE/WBCE_CMS/commit/112b7c1b796be79eb26111871dd2fad7dc4f2514)]
+   > add missing `parent` value
+     missed that one last time... ;-)
+ * **2019-07-18:** instantflorian [[37552d32](https://github.com/WBCE/WBCE_CMS/commit/37552d32067741ee6ff531d760c1f65cad910959)]
+   > Update NL.php
+     by dev4me.com
+
+ * **2019-07-18:** instantflorian [[c46e8183](https://github.com/WBCE/WBCE_CMS/commit/c46e8183e9df7d0c5afae542fc5dc8a2eef5df5f)]
+   > convert some files to utf-8
+
+ * **2019-07-18:** Colinax [[9b370a84](https://github.com/WBCE/WBCE_CMS/commit/9b370a84e07f92ff3f427398b79ba4d3e67ec000)]
+   > Update version.php
+
+ * **2019-07-17:** Martin Hecht [[dc01a5e1](https://github.com/WBCE/WBCE_CMS/commit/dc01a5e1a49600d59dbdfe59f817d5fb4316093f)]
+   > again a correction: move css up before js placeholder
+
+ * **2019-07-16:** Martin Hecht [[2b8de560](https://github.com/WBCE/WBCE_CMS/commit/2b8de5604578febad3b691b21c055657dd1f0538)]
+   > move the newly inserted placeholders a bit down
+
+ * **2019-07-16:** Martin Hecht [[54bb7160](https://github.com/WBCE/WBCE_CMS/commit/54bb71608dbf8d0afbb475fd33d465eaff510f99)]
+   > insert js and css head top placeholders via simplepagehead()
+
+ * **2019-07-16:** Jonathan Nessier [[f6fb6399](https://github.com/WBCE/WBCE_CMS/commit/f6fb63992764bcefc2c8486b38c72d6263e39ab9)]
+   >  Improved timeout handling for a better performance (#438)
+     * Improved timeout handling for a better performance
+     
+     Tested with Flat and Fraggy. Now the time will be displayed asap after page load.
+     
+     * Moved check whether element exists
+
+ * **2019-07-16:** instantflorian [[04318e96](https://github.com/WBCE/WBCE_CMS/commit/04318e96721bbc110288ee10f40a0494c1633b6f)]
+   > Remove debug output
+
+ * **2019-07-15:** Martin Hecht [[6ce1f13a](https://github.com/WBCE/WBCE_CMS/commit/6ce1f13a019edbeab0774bdcaa522e15b7d3dd96)]
+   > remove colorbox module now that we have the colorbox output filter plugin
+
+ * **2019-07-15:** Martin Hecht [[0f0171c0](https://github.com/WBCE/WBCE_CMS/commit/0f0171c0c9ece7ab5cb619d4a1f1cdf0de89ae76)]
+   > colorbox: deactivate opf filter plugin if the corresponding module is installed
+
+ * **2019-07-15:** Martin Hecht [[4d31039b](https://github.com/WBCE/WBCE_CMS/commit/4d31039b32a0619fd985c66fd21eab45995a4fc8)]
+   > activate cachecontrol filter plugin for searchresults and (bugfix:) the backend
+
+ * **2019-07-15:** Colinax [[bba0a5e2](https://github.com/WBCE/WBCE_CMS/commit/bba0a5e23840992710c2bc85e2f0ab3bbc28a4e7)]
+   > corrected behavior of installFlag #392
+
+ * **2019-07-15:** instantflorian [[502f4c2e](https://github.com/WBCE/WBCE_CMS/commit/502f4c2e59bbc19fae870aca6a6fdcbe90de5506)]
+   > Fix for #436
+
+ * **2019-07-15:** Colinax [[daa59690](https://github.com/WBCE/WBCE_CMS/commit/daa59690fe7424dfaa61d97d465f595109a66fd0)]
+   > Delete class.wbmailer.php
+
+ * **2019-07-14:** Stefek [[641303f3](https://github.com/WBCE/WBCE_CMS/commit/641303f3955cd3e36d5ce4447c09f49f3beb0441)]
+   > Update tool.php
+
+ * **2019-07-14:** Martin Hecht [[7613d851](https://github.com/WBCE/WBCE_CMS/commit/7613d8516cb11c90b9e6b321a777dafa4fb33214)]
+   > skip $wb->preprocess in NWI
+
+ * **2019-07-14:** Stefek [[2f085920](https://github.com/WBCE/WBCE_CMS/commit/2f0859206dfd6c4b3141f26a78ff696de06d320b)]
+   > Handle MySQL >= 5.7.0 issue, reported by user `kant`
+     2 more typos handled
+ * **2019-07-14:** Stefek [[000e7332](https://github.com/WBCE/WBCE_CMS/commit/000e733230ca4d31c66bfb756c43e0318a81ca49)]
+   > Handle MySQL >= 5.7.0 issue, reported by user `kant`
+
+ * **2019-07-14:** Stefek [[7ce40736](https://github.com/WBCE/WBCE_CMS/commit/7ce40736cd157e58b10259f39ab355f809815313)]
+   > Update functions.php
+
+ * **2019-07-14:** Stefek [[7cf8533e](https://github.com/WBCE/WBCE_CMS/commit/7cf8533ed254a7a66e2eb2fb6b96752da8e67e2b)]
+   > handle issue w\ visibility_backup column
+     handle issue w\ visibility_backup column  reported by user `kant`
+     make use of newly added insertRow and updateRow methods of Class database
+ * **2019-07-14:** Stefek [[0a654b7c](https://github.com/WBCE/WBCE_CMS/commit/0a654b7ce295b31491a7da37a488dbd97ff635e8)]
+   > Handling issues reported by user `kant` (#433)
+     * Handle issue w/ UB_MOD_URL constant reported by user `kant`
+     
+     * Handle issue w/ UB_MOD_URL constant reported by user `kant`
+     
+     * Handle issue w/ missing $MENU array reported by user `kant`
+     
+     * Allow Hybrid Modules to show up in AddonMonitor Tool
+     handling an issue reported by user `kant`
+
+ * **2019-07-13:** instantflorian [[0ae3da1e](https://github.com/WBCE/WBCE_CMS/commit/0ae3da1e625b8803f0243dff404a2d6835cc966c)]
+   > Update CHANGELOG.md
+
  * **2019-07-13:** instantflorian [[36366627](https://github.com/WBCE/WBCE_CMS/commit/3636662745191fe880a702462ae8373f1068e139)]
    > Update version.php
 
