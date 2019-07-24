@@ -73,6 +73,17 @@ a:hover {
 	color: #90AAC0;
 }
 
+/* some space for anchor links to avoid being hidden by the stick nav
+Padding für Sprungmarken, damit diese nicht von der sticky-Navigation überlagert werden
+http://darktef.github.io/posts/2017-03-offset-html-anchors-for-fixed-header-with-css */
+
+
+:target {
+  display: block;
+  position: relative;
+  top: -120px; 
+  visibility: hidden;
+}
 
 p, li, dl, blockquote, table, kbd {
 	font-size: 1rem;
