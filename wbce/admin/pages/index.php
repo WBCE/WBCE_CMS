@@ -152,7 +152,7 @@ parent_list(0);
 $module_permissions = $_SESSION['MODULE_PERMISSIONS'];
 // Modules list
 $template->set_block('main_block', 'module_list_block', 'module_list');
-$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' AND function LIKE '%page%' order by name");
+$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' AND `function` LIKE '%page%' order by name");
 if($result->numRows() > 0) {
     while ($module = $result->fetchRow()) {
         // Check if user is allowed to use this module

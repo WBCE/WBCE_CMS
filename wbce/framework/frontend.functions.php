@@ -33,7 +33,7 @@ if (isset($wb->link))
 
 
 // Load Snippet Type modules into the frontend
-$sSql = 'SELECT `directory` FROM `{TP}addons` WHERE function LIKE \'%snippet%\' ';
+$sSql = 'SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE \'%snippet%\' ';
 if (($resSnippets = $database->query($sSql))) {
     while ($rec = $resSnippets->fetchRow()) {
         $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/include.php';
