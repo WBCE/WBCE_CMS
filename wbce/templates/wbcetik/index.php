@@ -29,7 +29,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 			$aStart         = SM2_ROOT,
 			$aMaxLevel      = SM2_START+2,
 			$aOptions       = SM2_ALL|SM2_PRETTY|SM2_BUFFER,
-			$aItemOpen      = '<li><a href="[url]" class="[class]" target="[target]">[menu_title]</a>',
+			$aItemOpen      = '<li class="[class]"><a href="[url]" target="[target]">[menu_title]</a>',
 			$aItemClose     = '</li>',
 			$aMenuOpen      = '<ul>',
 			$aMenuClose     = '</ul>',
@@ -271,7 +271,16 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
         });
 		
 	
-		$( '.chevron li:has(ul)' ).doubleTapToGoX();
+		$(document).ready(function () {
+			$('.chevron li').children('ul').hide();
+			$('.chevron li.menu-parent').children('ul').show();
+			$('.chevron li').click(function () {
+				if ($(this).children('ul,p').is(':hidden') == true) {
+				$(this).children('ul,p').slideDown('slow');
+				return false
+				}
+			})
+		});		
 		
       </script>
 	  
