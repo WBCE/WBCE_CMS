@@ -10,6 +10,9 @@ if(!defined('NWI_USE_SECOND_BLOCK')){
    define('NWI_USE_SECOND_BLOCK',true);
 }
 
+global $allowed_suffixes;
+$allowed_suffixes = array('jpg','jpeg','gif','png');
+
 // load module language file
 $lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
 require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang);
