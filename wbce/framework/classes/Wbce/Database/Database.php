@@ -1,13 +1,17 @@
 <?php
 
-namespace Persistence;
+namespace Wbce\Database;
 
 use PDO;
 use PDOStatement;
+use Wbce\Database\QueryBuilder\Query\DeleteQuery;
+use Wbce\Database\QueryBuilder\Query\InsertQuery;
+use Wbce\Database\QueryBuilder\Query\SelectQuery;
+use Wbce\Database\QueryBuilder\Query\UpdateQuery;
+use Wbce\Database\QueryBuilder\QueryBuilder;
 
 class Database
 {
-
     /**
      * Error message.
      *
@@ -65,10 +69,15 @@ class Database
     protected $dsn;
 
     /**
-     * Table prefix
+     * Table prefixes.
+     *
      * @var string
      */
-    protected $tablePrefix = '';
+    protected $tablePrefixes = [
+        '{tp}' => '',
+        '{TP}' => '',
+        '{TABLE_PREFIX}' => '',
+    ];
 
     /**
      * PDO connection.
@@ -78,12 +87,17 @@ class Database
     protected $pdo;
 
     /**
-     * Database runtime options
+     * @var QueryBuilder
+     */
+    protected $queryBuilder;
+
+    /**
      * @var array
      */
     protected $options = [
-        'throwExceptions' => true,
-        'triggerDeprecatedError' => true
+        'throwExceptions' => false,
+        'triggerDeprecatedError' => false,
+        'autoConnect' => true,
     ];
 
     /**
@@ -96,6 +110,7 @@ class Database
     public function __construct(array $options = [])
     {
         $this->options = array_merge($this->options, $options);
+
         if (defined('DB_DSN') && strlen(DB_DSN) > 0) {
             $this->dsn = DB_DSN;
         } else {
@@ -113,8 +128,8 @@ class Database
 
             if (defined('DB_NAME')) {
                 $this->dbname = DB_NAME;
-            } else if ($this->options['throwExceptions']) {
-                throw new DatabaseException('Database name (DB_NAME) not defined');
+            } elseif ($this->options['throwExceptions']) {
+                throw new DatabaseException('DB_NAME as named constant not defined');
             }
 
             if (defined('DB_USERNAME')) {
@@ -130,19 +145,23 @@ class Database
             }
 
             if (defined('TABLE_PREFIX')) {
-                $this->tablePrefix = TABLE_PREFIX;
+                $this->tablePrefixes = [
+                    '{tp}' => TABLE_PREFIX,
+                    '{TP}' => TABLE_PREFIX,
+                    '{TABLE_PREFIX}' => TABLE_PREFIX,
+                ];
             }
         }
 
-        $this->connect();
+        if ($this->options['autoConnect']) {
+            $this->connect();
+        }
     }
 
     /**
      * Connect to database.
-     *
-     * @return bool
      */
-    public function connect()
+    public function connect(): void
     {
         $options = [
             PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL,
@@ -155,25 +174,99 @@ class Database
             $this->pdo->exec('SET NAMES ' . $this->charset);
         }
 
-        if ($this->driver === 'mysql') {
+        if ('mysql' === $this->driver) {
             $this->pdo->exec('SET @@sql_mode=""');
         }
 
-        return true;
+        $this->queryBuilder = new QueryBuilder($this->pdo);
     }
 
     /**
-     * Trigger deprecated error
+     * Create SELECT query.
      *
-     * @param string $message
+     * @param string $table Name of table
+     * @param array $columns Name of columns to select
      *
-     * @return void
+     * @return SelectQuery
      */
-    protected function triggerDeprecatedError(string $message)
+    public function selectFrom(string $table, array $columns = []): SelectQuery
     {
-        if ($this->options['triggerDeprecatedError']) {
-            trigger_error($message, E_USER_DEPRECATED);
+        $table = $this->replaceTablePrefixes($table);
+
+        return $this->queryBuilder->selectFrom($table, $columns);
+    }
+
+    /**
+     * Create DELETE query.
+     *
+     * @param string $table Name of table
+     *
+     * @return DeleteQuery
+     */
+    public function deleteFrom(string $table): DeleteQuery
+    {
+        $table = $this->replaceTablePrefixes($table);
+
+        return $this->queryBuilder->deleteFrom($table);
+    }
+
+    /**
+     * Create INSERT query.
+     *
+     * @param string $table Name of table
+     * @param array $values Values as associative array (column => value)
+     *
+     * @return InsertQuery
+     */
+    public function insertInto(string $table, array $values = []): InsertQuery
+    {
+        $table = $this->replaceTablePrefixes($table);
+
+        return $this->queryBuilder->insertInto($table, $values);
+    }
+
+    /**
+     * Create UPDATE query.
+     *
+     * @param string $table Name of table
+     * @param array $set Values as associative array (column => value)
+     *
+     * @return UpdateQuery
+     */
+    public function update(string $table, array $set = []): UpdateQuery
+    {
+        $table = $this->replaceTablePrefixes($table);
+
+        return $this->queryBuilder->update($table, $set);
+    }
+
+    /**
+     * Replace table prefixes.
+     *
+     * @param string $query SQL query
+     *
+     * @return string
+     */
+    protected function replaceTablePrefixes(string $query): string
+    {
+        foreach ($this->tablePrefixes as $placeholder => $value) {
+            $query = str_replace($placeholder, $value, $query);
         }
+
+        return $query;
+    }
+
+    /**
+     * Add prefix.
+     *
+     * @example $database->addPrefix('{DROPLETS_TABLE}', TABLE_PREFIX.'mod_droplets');
+     *
+     * @param string $placeholder Placeholder of the prefix
+     * @param string $value Value of the prefix
+     */
+    public function addPrefix(string $placeholder, string $value): void
+    {
+        $this->tablePrefixes[$placeholder] = $value;
     }
 
     /**
@@ -181,7 +274,7 @@ class Database
      *
      * @return bool
      */
-    public function disconnect()
+    public function disconnect(): bool
     {
         $this->pdo = null;
 
@@ -193,9 +286,9 @@ class Database
      *
      * @param string $query SQL query
      *
-     * @return Result
+     * @return Result|null
      */
-    public function query(string $query)
+    public function query(string $query): ?Result
     {
         $query = $this->replaceTablePrefixes($query);
         $statement = $this->pdo->query($query);
@@ -209,26 +302,14 @@ class Database
     }
 
     /**
-     * Replace table prefixes
-     *
-     * @param string $query SQL query
-     *
-     * @return string
-     */
-    protected function replaceTablePrefixes(string $query): string
-    {
-        return str_replace(['{tp}', '{TP}', '{TABLE_PREFIX}'], $this->tablePrefix, $query);
-    }
-
-    /**
      * Execute prepared query.
      *
      * @param string $query SQL query
      * @param array $parameters Query parameters
      *
-     * @return Result
+     * @return Result|null
      */
-    public function preparedQuery($query, array $parameters = [])
+    public function preparedQuery($query, array $parameters = []): ?Result
     {
         $query = $this->replaceTablePrefixes($query);
         $statement = $this->pdo->prepare($query);
@@ -269,7 +350,7 @@ class Database
      */
     public function hasError(): bool
     {
-        return ($this->getError());
+        return $this->getError();
     }
 
     /**
@@ -289,7 +370,7 @@ class Database
      *
      * @throws DatabaseException
      */
-    public function setError($message = null)
+    protected function setError($message = null): void
     {
         if (!is_string($message)) {
             $errorInfo = $this->pdo->errorInfo();
@@ -338,7 +419,7 @@ class Database
      *
      * @return string
      */
-    public function quote($string)
+    public function quote($string): string
     {
         return trim($this->pdo->quote($string), '\'');
     }
@@ -362,9 +443,9 @@ class Database
      *
      * @return string
      */
-    public function getTableEngine($table)
+    public function getTableEngine(string $table): string
     {
-        if ($this->driver === 'mysql') {
+        if ('mysql' === $this->driver) {
             $result = $this->preparedQuery('SHOW TABLE STATUS LIKE :table', [
                 'table' => $table,
             ]);
@@ -489,8 +570,10 @@ class Database
 
             if (strlen($sql) > 0) {
                 $sql = str_replace(['{tp}', '{TABLE_PREFIX}', '{TABLE_ENGINE}', '{TABLE_COLLATION}'], [
-                    $tablePrefix, $tablePrefix, $tableEngine, $tableCollation
+                    $tablePrefix, $tablePrefix, $tableEngine, $tableCollation,
                 ], $sql);
+
+                $sql = $this->replaceTablePrefixes($sql);
 
                 if ($preserve) {
                     $sql = preg_replace('/(.*DROP\sTABLE\sIF\sEXISTS.*)/', '', $sql);
@@ -554,7 +637,7 @@ class Database
      *
      * @return Result
      */
-    public function insertRow($table, array $data)
+    public function insertRow(string $table, array $data)
     {
         $parameters = [];
         $values = [];
@@ -563,7 +646,7 @@ class Database
         foreach ($data as $value) {
             $parameters[] = $value;
             $values[] = '?';
-        };
+        }
 
         $sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $values) . ')';
 
@@ -577,7 +660,7 @@ class Database
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         switch ($name) {
             case 'db_handle':
@@ -601,7 +684,7 @@ class Database
      *
      * @return mixed
      */
-    public function __call($name, array $args)
+    public function __call(string $name, array $args)
     {
         switch ($name) {
             case 'get_one':
@@ -640,6 +723,18 @@ class Database
                 $this->triggerDeprecatedError('The method name ' . $name . '(\$sSqlDump, \$sTablePrefix, \$bPreserve, \$sTblEngine, \$sTblCollation) is deprecated, use the method import((\$dumpFile, \$tablePrefix, \$preserve, \$tableEngine, \$tableCollation)) instead');
 
                 return call_user_func_array([$this, 'import'], $args);
+        }
+    }
+
+    /**
+     * Trigger deprecated error.
+     *
+     * @param string $message
+     */
+    protected function triggerDeprecatedError(string $message)
+    {
+        if ($this->options['triggerDeprecatedError']) {
+            trigger_error($message, E_USER_DEPRECATED);
         }
     }
 }

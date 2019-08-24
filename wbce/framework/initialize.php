@@ -19,6 +19,8 @@
  */
  
 // no direct file access
+use Wbce\Database\Database;
+
 if(count(get_included_files()) == 1) header("Location: ../index.php", TRUE, 301);
 
 // Stop execution if PHP version is too old
@@ -63,8 +65,11 @@ if ($aPreDb !== false && !empty($aPreDb)){
         if (file_exists($sModule."/predb.php")) require_once ($sModule."/predb.php");
 }
 
+// Register framework classes
+WbAuto::AddDir(WB_PATH . '/framework/classes');
+
 // INITIALIZE DATABASE CLASS
-$database = new database();
+$database = new Database();
 
 // SYSTEM CONSTANTS
 //     
