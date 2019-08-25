@@ -11,6 +11,9 @@
  */
 
 // needed by class secureform
+use Wbce\Database\Database;
+use Wbce\Database\DatabaseException;
+
 if (!defined("WB_SECFORM_TIMEOUT"))  define ("WB_SECFORM_TIMEOUT",  '7200') ;
 
 // Define Debug and installer
@@ -344,24 +347,22 @@ define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 require ADMIN_PATH . '/interface/version.php';
 
+// initialize the system
+require_once WB_PATH . '/framework/class.autoload.php';
 
-// Try connecting to database This time whith our Classes
-if (!file_exists(WB_PATH . '/framework/class.database.php')) {
-    set_error(d('e21: ').'It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!',"",true);
-}
-include WB_PATH . '/framework/class.database.php';
+// Register framework classes
+WbAuto::AddDir(WB_PATH . '/framework/classes');
+
+// INITIALIZE DATABASE CLASS
 try {
-    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-        $database = new Database();
-    } else {
-        $database = new database();
-    }
-} catch (Exception $e) {
+    $database = new Database([
+        'throwExceptions' => true,
+    ]);
+} catch (Throwable $e) {
     $sMsg = d('e22: ').'Database host name, username and/or password incorrect.'. d('<br />MySQL Error:<br />')
-    . d($e->getMessage());
+        . d($e->getMessage());
     set_error($sMsg,"",true);
 }
-
 
 // Cant remember what this was for , but it was important
 if (!defined('WB_INSTALL_PROCESS')) {
