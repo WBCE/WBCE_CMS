@@ -257,11 +257,13 @@ if (isset($aMatches[1])) {
     $pdoPort = ';port='.$database_port;
 }
 
+$database_charset = 'utf8';
+
 // Lets See if we are able to connect to DB.  No DB class needed for this on first.
 // I dont want any files Written before we know the content is worth it
 try {
     $dbtest = new pdo(
-        'mysql:host='.$database_host.$pdoPort';dbname='.$database_name,
+        'mysql:host='.$database_host.$pdoPort.';dbname='.$database_name,
         $database_username,
         $database_password,
         [
