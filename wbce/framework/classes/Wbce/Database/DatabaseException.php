@@ -1,6 +1,6 @@
 <?php
 
-namespace Persistence;
+namespace Wbce\Database;
 
 use RuntimeException;
 

@@ -11,11 +11,15 @@
  */
 
 // needed by class secureform
+use Wbce\Database\Database;
+use Wbce\Database\DatabaseException;
+use Wbce\Loader;
+
 if (!defined("WB_SECFORM_TIMEOUT"))  define ("WB_SECFORM_TIMEOUT",  '7200') ;
 
 // Define Debug and installer
 if (!defined("WB_DEBUG"))             define ("WB_DEBUG",  true) ;
-if (!defined("WB_INSTALLER"))         define ("WB_INSTALLER",  true) ; 
+if (!defined("WB_INSTALLER"))         define ("WB_INSTALLER",  true) ;
 
 $_SESSION['ERROR_FIELD']=array();
 
@@ -222,7 +226,7 @@ if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
         	set_error(d('e20: ').'The password you entered was too short', 'admin_password');
         	$IsError=true;
             }
-	}	    
+	}
     }
 }
 
@@ -238,52 +242,34 @@ if ($IsError){
 
 
 // extract port if available
+$pdoPort = '';
 if (isset($database_port)) {unset($database_port);}
 $aMatches = preg_split('/:/s', $database_host, -1, PREG_SPLIT_NO_EMPTY);
 if (isset($aMatches[1])) {
     $database_host = $aMatches[0];
     $database_port = (int) $aMatches[1];
+	
+    // PDO fix  http://php.net/manual/de/pdo.connections.php#82591
+    if ($database_host === 'localhost' && $database_port !== 3306) {
+        $database_host = '127.0.0.1';
+    }
+	
+    $pdoPort = ';port='.$database_port;
 }
-
-
-// PDO fix  http://php.net/manual/de/pdo.connections.php#82591
-if ($database_host=="localhost")
-    $database_host="127.0.0.1";
-$sPdoPort="";
-if (isset($database_port))
-    $sPdoPort=";port=".(string)$database_port;
-
 
 $database_charset = 'utf8';
 
 // Lets See if we are able to connect to DB.  No DB class needed for this on first.
 // I dont want any files Written before we know the content is worth it
-
 try {
-    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-        $dbtest = new pdo(
-            "mysql: host=$database_host $sPdoPort;dbname=$database_name",
-            $database_username,
-            $database_password,
-            array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-        );
-    } else {
-        if (isset($database_port))
-            $dbtest = new mysqli(
-                $database_host,
-                $database_username,
-                $database_password,
-                $database_name,
-                $database_port
-            );
-        else
-            $dbtest = new mysqli(
-                $database_host,
-                $database_username,
-                $database_password,
-                $database_name
-            );
-    }
+    $dbtest = new pdo(
+        'mysql:host='.$database_host.$pdoPort.';dbname='.$database_name,
+        $database_username,
+        $database_password,
+        [
+	    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+	]
+    );
 }
 catch (Exception $e) {
     $sMsg = d('e29: ').'Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
@@ -344,24 +330,24 @@ define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 require ADMIN_PATH . '/interface/version.php';
 
+// INITIALIZE CLASS AUTOLOADER
+require_once WB_PATH . '/framework/classes/Wbce/Loader.php';
 
-// Try connecting to database This time whith our Classes
-if (!file_exists(WB_PATH . '/framework/class.database.php')) {
-    set_error(d('e21: ').'It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!',"",true);
-}
-include WB_PATH . '/framework/class.database.php';
+$loader = new Loader([], [
+    WB_PATH . '/framework/',
+    WB_PATH . '/framework/classes'
+], true);
+
+// INITIALIZE DATABASE CLASS
 try {
-    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-        $database = new Database();
-    } else {
-        $database = new database();
-    }
-} catch (Exception $e) {
+    $database = new Database([
+        'throwExceptions' => true,
+    ]);
+} catch (Throwable $e) {
     $sMsg = d('e22: ').'Database host name, username and/or password incorrect.'. d('<br />MySQL Error:<br />')
-    . d($e->getMessage());
+        . d($e->getMessage());
     set_error($sMsg,"",true);
 }
-
 
 // Cant remember what this was for , but it was important
 if (!defined('WB_INSTALL_PROCESS')) {
