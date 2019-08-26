@@ -254,9 +254,7 @@ if (isset($aMatches[1])) {
         $database_host = '127.0.0.1';
     }
 	
-    if (isset($database_port)) {
-        $pdoPort = ';port='.$database_port;
-    }
+    $pdoPort = ';port='.$database_port;
 }
 
 // Lets See if we are able to connect to DB.  No DB class needed for this on first.
