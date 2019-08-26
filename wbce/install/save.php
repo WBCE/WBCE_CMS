@@ -13,12 +13,13 @@
 // needed by class secureform
 use Wbce\Database\Database;
 use Wbce\Database\DatabaseException;
+use Wbce\Loader;
 
 if (!defined("WB_SECFORM_TIMEOUT"))  define ("WB_SECFORM_TIMEOUT",  '7200') ;
 
 // Define Debug and installer
 if (!defined("WB_DEBUG"))             define ("WB_DEBUG",  true) ;
-if (!defined("WB_INSTALLER"))         define ("WB_INSTALLER",  true) ; 
+if (!defined("WB_INSTALLER"))         define ("WB_INSTALLER",  true) ;
 
 $_SESSION['ERROR_FIELD']=array();
 
@@ -225,7 +226,7 @@ if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
         	set_error(d('e20: ').'The password you entered was too short', 'admin_password');
         	$IsError=true;
             }
-	}	    
+	}
     }
 }
 
@@ -347,11 +348,13 @@ define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 require ADMIN_PATH . '/interface/version.php';
 
-// initialize the system
-require_once WB_PATH . '/framework/class.autoload.php';
+// INITIALIZE CLASS AUTOLOADER
+require_once WB_PATH . '/framework/classes/Wbce/Loader.php';
 
-// Register framework classes
-WbAuto::AddDir(WB_PATH . '/framework/classes');
+$loader = new Loader([], [
+    WB_PATH . '/framework/',
+    WB_PATH . '/framework/classes'
+], true);
 
 // INITIALIZE DATABASE CLASS
 try {
