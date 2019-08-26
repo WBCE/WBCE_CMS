@@ -242,52 +242,34 @@ if ($IsError){
 
 
 // extract port if available
+$pdoPort = '';
 if (isset($database_port)) {unset($database_port);}
 $aMatches = preg_split('/:/s', $database_host, -1, PREG_SPLIT_NO_EMPTY);
 if (isset($aMatches[1])) {
     $database_host = $aMatches[0];
     $database_port = (int) $aMatches[1];
+	
+    // PDO fix  http://php.net/manual/de/pdo.connections.php#82591
+    if ($database_host === 'localhost' && $database_port !== 3306) {
+        $database_host = '127.0.0.1';
+    }
+	
+    if (isset($database_port)) {
+        $pdoPort = ';port='.$database_port;
+    }
 }
-
-
-// PDO fix  http://php.net/manual/de/pdo.connections.php#82591
-if ($database_host=="localhost")
-    $database_host="127.0.0.1";
-$sPdoPort="";
-if (isset($database_port))
-    $sPdoPort=";port=".(string)$database_port;
-
-
-$database_charset = 'utf8';
 
 // Lets See if we are able to connect to DB.  No DB class needed for this on first.
 // I dont want any files Written before we know the content is worth it
-
 try {
-    if(extension_loaded ('PDO' ) AND extension_loaded('pdo_mysql')){
-        $dbtest = new pdo(
-            "mysql: host=$database_host $sPdoPort;dbname=$database_name",
-            $database_username,
-            $database_password,
-            array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-        );
-    } else {
-        if (isset($database_port))
-            $dbtest = new mysqli(
-                $database_host,
-                $database_username,
-                $database_password,
-                $database_name,
-                $database_port
-            );
-        else
-            $dbtest = new mysqli(
-                $database_host,
-                $database_username,
-                $database_password,
-                $database_name
-            );
-    }
+    $dbtest = new pdo(
+        'mysql:host='.$database_host.$pdoPort';dbname='.$database_name,
+        $database_username,
+        $database_password,
+        [
+	    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+	]
+    );
 }
 catch (Exception $e) {
     $sMsg = d('e29: ').'Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
