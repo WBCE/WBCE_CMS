@@ -45,7 +45,7 @@ $template->set_var('PAGE_TREE', $pageTreeOutput);
 // Insert values into the add page form
 
 // Group list 1
-$query = "SELECT * FROM ".TABLE_PREFIX."groups";
+$query = "SELECT * FROM `".TABLE_PREFIX."groups`";
 $get_groups = $database->query($query);
 $template->set_block('main_block', 'group_list_block', 'group_list');
 // Insert admin group and current group first
