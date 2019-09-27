@@ -92,7 +92,7 @@ while ($section = $newsImgSections->fetchRow()) {
     $newsImg = $database->query("SELECT title, link, post_id FROM ".TABLE_PREFIX."mod_news_img_posts WHERE active=1 AND section_id = ".$section['section_id']);
     $ModuleList .= "ModuleList[".$section['page_id']."] = 'NewsWithImages';";
     $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
-    while ($item = $newsImg->fetchRow()) {
+    while ($newsImg && $item = $newsImg->fetchRow()) {
         $item['title'] = preg_replace($wblink_allowed_chars, "", $item['title']);
         $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY.(addslashes($item['link'])).PAGE_EXTENSION."');";
     }
@@ -103,7 +103,7 @@ while ($section = $newsSections->fetchRow()) {
     $news = $database->query("SELECT title, link, page_id, post_id FROM ".TABLE_PREFIX."mod_news_posts WHERE active=1 AND section_id = ".$section['section_id']);
     $ModuleList .= "ModuleList[".$section['page_id']."] = 'News';";
     $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
-    while ($item = $news->fetchRow()) {
+    while ($news && $item = $news->fetchRow()) {
         $item['title'] = preg_replace($wblink_allowed_chars, "", $item['title']);
         $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY.(addslashes($item['link'])).PAGE_EXTENSION."');";
     }
@@ -114,7 +114,7 @@ while ($section = $topicsSections->fetchRow()) {
     $topics = $database->query("SELECT title, link, page_id, topic_id FROM ".TABLE_PREFIX."mod_topics WHERE active > 0 AND section_id = ".$section['section_id']);
     $ModuleList .= "ModuleList[".$section['page_id']."] = 'Topics';";
     $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
-    while ($item = $topics->fetchRow()) {
+    while ($topics && $item = $topics->fetchRow()) {
         $item['title'] = preg_replace($wblink_allowed_chars, "", $item['title']);
         $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY."/topics/".(addslashes($item['link'])).PAGE_EXTENSION."');";
     }
@@ -125,7 +125,7 @@ while ($section = $bakerySections->fetchRow()) {
     $bakery = $database->query("SELECT title, link, page_id, item_id FROM ".TABLE_PREFIX."mod_bakery_items WHERE active=1 AND section_id = ".$section['section_id']);
     $ModuleList .= "ModuleList[".$section['page_id']."] = 'Bakery';";
     $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
-    while ($item = $bakery->fetchRow()) {
+    while ($bakery && $item = $bakery->fetchRow()) {
         $item['title'] = preg_replace($wblink_allowed_chars, "", $item['title']);
         $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY.(addslashes($item['link'])).PAGE_EXTENSION."');";
     }
