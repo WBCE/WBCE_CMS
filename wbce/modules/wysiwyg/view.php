@@ -28,4 +28,4 @@ $sql = 'SELECT `content` FROM `'.TABLE_PREFIX.'mod_wysiwyg` WHERE `section_id`='
 if( ($content = $database->get_one($sql)) ) {
 	$content = str_replace('{SYSVAR:MEDIA_REL}', $sMediaUrl, $content );
 }
-echo $content;
+echo html_entity_decode($content, ENT_HTML5);
