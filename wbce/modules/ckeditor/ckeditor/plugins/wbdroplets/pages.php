@@ -1,4 +1,4 @@
-<?PHP
+<?php
 header('Content-type: application/javascript');
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Cache-Control: post-check=0, pre-check=0, false');
@@ -14,8 +14,8 @@ header('Pragma: no-cache');
         new Array( name, link )...
     );
 
-    DropletSelectBox will loaded as select options
-    to wbdroplets plugin.
+	DropletSelectBox will loaded as select options to wbdroplets plugin.
+
 */
 
 // Include the config file
@@ -25,18 +25,14 @@ require('../../../../../config.php');
 require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
-if(!function_exists('cleanup'))
-{
-	function cleanup ($string) 
-    {
+if (!function_exists('cleanup')) {
+	function cleanup($string) {
 		global $database;
 		// if magic quotes on
-		if (get_magic_quotes_gpc())
-		{
+		if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
 		}
-		if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')) 
-        {
+		if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')) {
 			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
 		} else {
 			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
@@ -52,10 +48,8 @@ $array = array();
 	$sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_droplets` ';
 	$sql .= 'WHERE `active`=1 ';
 	$sql .= 'ORDER BY `name` ASC';
-	if($resRec = $database->query($sql))
-	{
-		while( !false == ($droplet = $resRec->fetchRow() ) )
-		{
+	if ($resRec = $database->query($sql)) {
+		while (!false == ($droplet = $resRec->fetchRow())) {
 			$title = cleanup($droplet['name']);
 			$desc = cleanup($droplet['description']);
 			$comments = cleanup($droplet['comments']);
@@ -65,7 +59,7 @@ $array = array();
 	        $usage .=  "new Array( '".$title."', '".$comments."'), ";
 		}
 	}
-	
+
 $DropletSelectBox = substr($DropletSelectBox,0,-2);
 $description = substr($description,0,-2);
 $usage = substr($usage,0,-2);

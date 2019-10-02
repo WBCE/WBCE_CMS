@@ -15,8 +15,7 @@ header('Pragma: no-cache');
         new Array( name, link )...
     );
 
-    InternPagesSelectBox will loaded as select options
-    to internpage plugin.
+    InternPagesSelectBox will loaded as select options to internpage plugin.
 */
 
 // Include the config file
@@ -27,8 +26,7 @@ require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
 if (!function_exists('cleanup')) {
-    function cleanup($string)
-    {
+    function cleanup($string) {
         global $database;
         // if magic quotes on
         if (get_magic_quotes_gpc()) {
@@ -46,8 +44,7 @@ $InternPagesSelectBox = "var InternPagesSelectBox = new Array( ";
 $PagesTitleSelectBox = "var PagesTitleSelectBox = new Array( ";
 
 // Function to generate page list
-function getPageTree($parent)
-{
+function getPageTree($parent) {
     global $admin, $database,$InternPagesSelectBox,$PagesTitleSelectBox;
     $sql  = 'SELECT * FROM `'.TABLE_PREFIX.'pages` ';
     $sql .= 'WHERE `parent`= '.(int)$parent.' ';
