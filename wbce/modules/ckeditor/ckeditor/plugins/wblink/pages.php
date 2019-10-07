@@ -86,7 +86,7 @@ $ModuleList = "var ModuleList = new Array();";
 
 $newsImgSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'news_img'");
 while ($section = $newsImgSections->fetchRow()) {
-    $newsImg = $database->query("SELECT title, link, post_id FROM ".TABLE_PREFIX."mod_news_img_posts WHERE active=1 AND section_id = ".$section['section_id']);
+    $newsImg = $database->query("SELECT `title`, `link`, `post_id` FROM ".TABLE_PREFIX."mod_news_img_posts WHERE active=1 AND section_id=".$section['section_id']);
     $ModuleList .= "ModuleList[".$section['page_id']."] = 'NewsWithImages';";
     $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
     while ($newsImg && $item = $newsImg->fetchRow()) {
@@ -97,7 +97,7 @@ while ($section = $newsImgSections->fetchRow()) {
 
 $newsSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'news'");
 while ($section = $newsSections->fetchRow()) {
-    $news = $database->query("SELECT title, link, page_id, post_id FROM ".TABLE_PREFIX."mod_news_posts WHERE active=1 AND section_id = ".$section['section_id']);
+    $news = $database->query("SELECT `title`, `link`, `page_id`, `post_id` FROM ".TABLE_PREFIX."mod_news_posts WHERE active=1 AND section_id=".$section['section_id']);
     $ModuleList .= "ModuleList[".$section['page_id']."] = 'News';";
     $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
     while ($news && $item = $news->fetchRow()) {
@@ -108,7 +108,7 @@ while ($section = $newsSections->fetchRow()) {
 
 $topicsSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'topics'");
 while ($section = $topicsSections->fetchRow()) {
-    $topics = $database->query("SELECT title, link, page_id, topic_id FROM ".TABLE_PREFIX."mod_topics WHERE active > 0 AND section_id = ".$section['section_id']);
+    $topics = $database->query("SELECT `title`, `link`, `page_id`, `topic_id` FROM ".TABLE_PREFIX."mod_topics WHERE active>0 AND section_id=".$section['section_id']);
     $ModuleList .= "ModuleList[".$section['page_id']."] = 'Topics';";
     $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
     while ($topics && $item = $topics->fetchRow()) {
@@ -119,7 +119,7 @@ while ($section = $topicsSections->fetchRow()) {
 
 $bakerySections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'bakery'");
 while ($section = $bakerySections->fetchRow()) {
-    $bakery = $database->query("SELECT title, link, page_id, item_id FROM ".TABLE_PREFIX."mod_bakery_items WHERE active=1 AND section_id = ".$section['section_id']);
+    $bakery = $database->query("SELECT `title`, `link`, `page_id`, `item_id` FROM ".TABLE_PREFIX."mod_bakery_items WHERE active=1 AND section_id=".$section['section_id']);
     $ModuleList .= "ModuleList[".$section['page_id']."] = 'Bakery';";
     $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
     while ($bakery && $item = $bakery->fetchRow()) {
