@@ -39,6 +39,7 @@ if (!$admin->checkFTAN())
 $admin->print_header();
 
 
+
 // Get POST values from submitted form
 $page_title     = remove_droplet_brackets($admin->get_post_escaped('page_title'));
 $menu_title     = remove_droplet_brackets($admin->get_post_escaped('menu_title'));
@@ -56,6 +57,7 @@ $language       = strtoupper($admin->get_post('language'));
 $language       = (preg_match('/^[A-Z]{2}$/', $language) ? $language : DEFAULT_LANGUAGE);
 $menu           = intval($admin->get_post('menu')); // fix secunia 2010-91-3
 $visibility     = $admin->get_post_escaped('visibility');
+$target			= $admin->get_post_escaped('saveandback');
 if (!in_array($visibility, array('public', 'private', 'registered', 'hidden', 'none'))) {
     // fix secunia 2010-93-3
     $visibility = 'public';
@@ -70,6 +72,9 @@ if ($menu_title == '' || substr($menu_title,0,1)=='.') {
 if ($the_link == '' || substr($the_link,0,1)=='.'){
     $admin->print_error($MESSAGE['PAGES_BLANK_LINK_TITLE']);
 }
+
+
+
 
 // Get existing perms
 // $database = new database();
@@ -186,6 +191,8 @@ $database->updateRow('{TP}pages', 'page_id', $aUpdate);
 
 
 $target_url = ADMIN_URL.'/pages/settings.php?page_id='.$page_id;
+if ($target=='saveandback') {	$target_url = ADMIN_URL.'/pages/index.php';	}
+
 if ($database->is_error()){
     $admin->print_error($database->get_error(), $target_url );
 }
@@ -193,6 +200,7 @@ if ($database->is_error()){
 if ($parent != $old_parent) {
     $order->clean($old_parent);
 }
+
 
 
 /* BEGIN page "access file" code */
@@ -252,11 +260,12 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/'))
 // Fix sub-pages page trail
 fix_page_trail($page_id,$root_parent);
 
+
 // Check if there is a db error, otherwise say successful
 if ($database->is_error()) {
     $admin->print_error($database->get_error(), $target_url );
 } else {
-    $admin->print_success($MESSAGE['PAGES_SAVED_SETTINGS'], $target_url );
+    $admin->print_success($MESSAGE['PAGES_SAVED_SETTINGS'], $target_url );	
 }
 // Print admin footer
 $admin->print_footer();

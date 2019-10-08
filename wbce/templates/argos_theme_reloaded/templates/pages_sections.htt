@@ -103,9 +103,14 @@
 			<hr class="fg12 top">
 
 			<div class="fg12">
-				<button type="submit" name="save" style="float: left;">
-					<i class="fa fa-fw fa-save"></i>
-					{TEXT_SAVE}
+<button type="submit" name="save" style="float: left;">
+	<i class="fa fa-fw fa-save"></i>
+	{TEXT_SAVE}
+</button>
+				&nbsp;&nbsp;				
+				<button type="submit" value="saveandback" name="saveandback"> 
+					<i class="fa fa-fw fa-check"></i> 
+					{TEXT_SAVE} &amp;  {TEXT_BACK}  
 				</button>
 				<button type="button" onclick="location.href = 'index.php';" style="float: right;">
 					<i class="fa fa-fw fa-reply"></i>

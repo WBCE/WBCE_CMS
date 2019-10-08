@@ -124,11 +124,20 @@ if($query_sections->numRows() > 0) {
 		}
 	}
 }
+
+$target	= $admin->get_post_escaped('saveandback');
+
+if ($target=='saveandback') {	
+	$target_url = ADMIN_URL.'/pages/index.php';	
+} else {
+	$target_url = ADMIN_URL.'/pages/sections.php?page_id='.$page_id;
+}
+
 // Check for error or print success message
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/sections.php?page_id='.$page_id );
+	$admin->print_error($database->get_error(),$target_url  );
 } else {
-	$admin->print_success($MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'], ADMIN_URL.'/pages/sections.php?page_id='.$page_id );
+	$admin->print_success($MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'], $target_url );
 }
 
 // Print admin footer

@@ -213,6 +213,10 @@
 					<i class="fa fa-fw fa-save"></i>
 					{TEXT_SAVE}
 				</button>
+				<button type="submit" name="saveandback" value="saveandback">
+					<i class="fa fa-fw fa-save"></i>
+					{TEXT_SAVE} &amp; {TEXT_BACK}
+				</button>
 			</div>
 			<div class="fg6 right">
 				<button type="button" onclick="location.href = 'index.php';">
