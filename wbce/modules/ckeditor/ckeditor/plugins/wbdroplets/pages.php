@@ -28,10 +28,6 @@ $admin = new admin('Pages', 'pages_modify', false);
 if (!function_exists('cleanup')) {
 	function cleanup($string) {
 		global $database;
-		// if magic quotes on
-		if (get_magic_quotes_gpc()) {
-			$string = stripslashes($string);
-		}
 		if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')) {
 			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
 		} else {

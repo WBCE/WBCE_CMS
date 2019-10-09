@@ -1,3 +1,7 @@
+/*
+ Copyright (c) 2017-2019, Blackdevelop.com - http://blackdevelop.com/io/ckawesome/
+ Licence under GNU GPL v3
+*/
 
 CKEDITOR.dialog.add('ckawesomeDialog', function( editor ) {
 	function getCKAwesomeIcons(selectList ){
@@ -53,19 +57,19 @@ CKEDITOR.dialog.add('ckawesomeDialog', function( editor ) {
 	};
 	
     return {
-        title: 'Insert CKAwesome',
+        title: editor.lang.ckawesome.insCKA,
         minWidth: 200,
         minHeight: 200,
 
         contents: [
             {
                 id: 'options',
-                label: 'Basic Settings',
+                label: editor.lang.ckawesome.BasSet,
                 elements: [
                     {
 					    type: 'select',
 					    id: 'ckawesomebox',
-					    label: 'Select font Awesome',
+					    label: editor.lang.ckawesome.SelCKA,
 					    validate: CKEDITOR.dialog.validate.notEmpty( "Font Awesome field cannot be empty." ),
 					    items: [[ editor.lang.common.notSet, '' ]],
 					    onLoad: function () {
@@ -81,7 +85,7 @@ CKEDITOR.dialog.add('ckawesomeDialog', function( editor ) {
                     {
                         type: 'select',
                         id: 'textsize',
-                        label: 'Select  size',
+                        label: editor.lang.ckawesome.SelSiz,
                         items: [[ editor.lang.common.notSet, '' ]],
                         onLoad: function (widget) {
                         	getSelectionOptions(this, 8, 1, 42);
@@ -95,7 +99,7 @@ CKEDITOR.dialog.add('ckawesomeDialog', function( editor ) {
                             {
                                 id: 'fontcolor',
                                 type: 'text',
-                                label: 'Select color',
+                                label: editor.lang.ckawesome.SelCol,
                                 onChange: function( element ) {
                                 	var idEl = $('#' +this.getInputElement().getAttribute('id'));
                                 	idEl.css("background-color", idEl.val());
@@ -113,7 +117,7 @@ CKEDITOR.dialog.add('ckawesomeDialog', function( editor ) {
                                 type: "button",
                                 id: "fontcolorChooser",
                                 "class": "colorChooser",
-                                label: "Color",
+                                label: editor.lang.ckawesome.DefCol,
                                 style: "margin-left: 8px",
                                 onLoad: function () {
                                     this.getElement().getParent().setStyle("vertical-align", "bottom")
@@ -149,4 +153,3 @@ CKEDITOR.dialog.add('ckawesomeDialog', function( editor ) {
         }
     };
 });
-
