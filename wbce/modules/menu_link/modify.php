@@ -104,7 +104,7 @@ foreach($aLinks as $p) {
 				<select class="menuLink" name="anchor" id="page_target" style="width:350px;" >
 					<?php 
 						$sAnchor = $aData['anchor'] == '0' ? ' ':'[#'.$aData['anchor'].']';
-						if (strpos($aData['anchor'], SEC_ANCHOR) !== false){
+						if ((SEC_ANCHOR!="") && (strpos($aData['anchor'], SEC_ANCHOR) !== false)){
 							$aTmp1 = explode(SEC_ANCHOR, $aData['anchor']); 
 							$iSectionID = $aTmp1[1]; 
 							if ($sNameSection = $database->get_one("SELECT `namesection` FROM `{TP}sections` WHERE `section_id`=".$iSectionID)){						
