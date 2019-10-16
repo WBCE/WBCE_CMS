@@ -25,6 +25,7 @@ $sMediaUrl = WB_URL.MEDIA_DIRECTORY;
 $sql = 'SELECT `content` FROM `'.TABLE_PREFIX.'mod_wysiwyg` WHERE `section_id`='.(int)$section_id;
 if ( ($content = $database->get_one($sql)) ) {
     $content = (str_replace('{SYSVAR:MEDIA_REL}', $sMediaUrl, $content));
+    $content = htmlspecialchars($content);
 }else {
 	$content = '';
 }
