@@ -357,9 +357,13 @@ class Insert {
 
         $sSetName = $this->_computeFileID($aMetaData);
 
-        // check for setnames that are alreasdy set if overwrite === false
+        // check for setnames that are already set if overwrite === false
         if (isset($aMetaData['overwrite']) and $aMetaData['overwrite'] === false and isset($this->_MetaQueue[$sSetName]))
             $aErrors[] = "Cannot add Meta, setname already in use!";
+
+        // check for setnames that are already set if append !== false
+        if (isset($aMetaData['append']) and $aMetaData['append'] !== false and isset($this->_MetaQueue[$sSetName]) and isset($this->_MetaQueue[$sSetName]['content']))
+            $aMetaData['content'] = $this->_MetaQueue[$sSetName]['content'].$aMetaData['append'].$aMetaData['content'];
 
         // maybe the entry has the setsave flag
         if (isset($this->_MetaQueue[$sSetName]) and ! empty($this->_MetaQueue[$sSetName]['setsave']))
@@ -676,7 +680,8 @@ class Insert {
                     if (in_array($key, array(
                         'setname',
                         'overwrite',
-                        'position'
+                        'position',
+                        'append'
                     )))
                     continue;
                     $sRetVal .= sprintf(' %s="%s"', $key, $val);
