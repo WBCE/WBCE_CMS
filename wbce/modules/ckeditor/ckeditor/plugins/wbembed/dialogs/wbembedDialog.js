@@ -66,7 +66,7 @@ CKEDITOR.dialog.add('wbembedDialog', function (editor) {
                         div_container.append(iframe);
                         editor.insertElement(div_container);
                     } else if (resizetype == 'noresize') {
-                        var iframe = new CKEDITOR.dom.element.createFromHtml('<iframe frameborder="0" width="560" height="349" src="' + url + '" allowfullscreen></iframe>');
+                        var iframe = new CKEDITOR.dom.element.createFromHtml('<iframe width="560" height="349" src="' + url + '" allowfullscreen></iframe>');
                         div_container.append(iframe);
                         editor.insertElement(div_container);
                     } else {
