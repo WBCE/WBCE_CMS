@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 /* <![CDATA[ */
 /*
 */
@@ -6,15 +7,18 @@
     margin: 0;
     padding: 0;
 }
+
 html {
     font-size: 14px;
     font-family: Arial, Verdana, Helvetica, sans-serif;
     overflow: -moz-scrollbars-vertical;
     overflow-x: auto;
 }
+
 body {
     background: url('background.png') repeat-x #647087;
 }
+
 div.body {
     width: 60em;
     margin: 2em auto;
@@ -22,32 +26,39 @@ div.body {
     border: solid 1px #305c8d;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 2px 2px 15px -2px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 15px -2px rgba(0, 0, 0, 0.75);
 }
+
 .header tr {
     background: #a9c9ea;
 }
+
 .header img {
     margin: 0.7em 1em;
     height: 50px;
     float: left;
 }
+
 .header h1 {
     margin: 1em;
     font-size: 150%;
     float: right;
     color: #000080;
 }
+
 div.content {
     margin-top: 20px;
 }
+
 .version {
     margin: 0 0 3em;
     text-align: center;
 }
+
 .grey {
     color: #666666;
 }
+
 table {
     border-collapse: collapse;
     background-color: #f8f8ff;
@@ -57,29 +68,33 @@ table {
     border-width: 1px 2px 2px 1px;
     border-color: #a3baca;
 }
-table > thead {
+
+table>thead {
     background-color: #f2f1ff;
 }
-table > thead > tr {
-}
-table > thead > tr > th {
+
+table>thead>tr>th {
     font-size: 1.125em;
     padding: 0.525em 0.2em;
     text-align: left;
     border-bottom: 1px groove #7E7171;
 }
-table > thead > tr > td {
+
+table>thead>tr>td {
     color: #555758;
     font-size: 1em;
     padding: 1.2em 1em;
 }
-table > tbody {
+
+table>tbody {
     display: block;
     padding: 1em;
 }
-table > tbody > tr > td {
+
+table>tbody>tr>td {
     width: 19%;
 }
+
 td.name {
     width: 180px;
     padding: 6px 0;
@@ -87,18 +102,22 @@ td.name {
     font-size: 90%;
     float: left;
 }
+
 td.value {
     width: 65%;
     white-space: nowrap;
 }
+
 h2.step-row {
     margin: 0;
     display: inline;
 }
+
 form {
     margin: 0;
     display: initial;
 }
+
 select {
     padding: 5px;
     border: solid 1px #a3baca;
@@ -106,18 +125,23 @@ select {
     margin: 1px 0;
     width: 100%;
 }
+
 input {
     padding: 5px;
     border: solid 1px #a3baca;
     font-size: 12px;
     margin: 1px 0;
 }
+
 input:hover {
     border-style: inset;
 }
-input:focus, select:focus {
+
+input:focus,
+select:focus {
     background: #fdf8e8;
 }
+
 input[type="submit"] {
     font-weight: bold;
     text-transform: uppercase;
@@ -125,31 +149,44 @@ input[type="submit"] {
     margin: 1em 0;
     cursor: pointer;
 }
-input[type="text"], input[type="password"], input[type="email"] {
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
     width: 100%;
 }
+
 pre {
     white-space: normal;
     background-color: #ffffff;
     padding: 1em;
 
 }
+
 h2 {
     color: #000080;
     font-size: 1.3em;
     margin: 10px 0 5px;
 }
-a, a:link, a:visited, a:active {
+
+a,
+a:link,
+a:visited,
+a:active {
     color: #000080;
     text-decoration: underline;
 }
+
 a:focus {
     outline: none;
 }
+
 a:hover {
     text-decoration: none;
 }
-.warning, .error {
+
+.warning,
+.error {
     color: #800000;
     background-color: #FFDBDB;
     margin: 5px 0;
@@ -157,30 +194,38 @@ a:hover {
     border: 1px solid #800000;
     font-size: 12px;
 }
+
 .bad {
     color: #800000;
     font-weight: bold;
 }
+
 .good {
     color: #008000;
     font-weight: bold;
 }
+
 .warn {
     color: #ca6800;
 }
+
 .hint {
     color: #464646;
     font-size: 0.85em;
 }
+
 .small {
     font-size: 0.85em;
 }
+
 .italic {
     font-style: italic;
 }
+
 .center {
     text-align: center;
 }
+
 .hide {
     display: none;
 }
