@@ -149,7 +149,8 @@ class Frontend extends Wb
             
             // Check if the page language is also the selected language. If not, send headers again.           
             if ($this->page['language'] != LANGUAGE) {
-                $sUri = $this->page_link($this->page['link']).'?lang=' . $this->page['language'];
+                $_SESSION['LANGUAGE'] = $this->page['language'];
+                $sUri = $this->page_link($this->page['link']);
                 if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
                     // check if there is an query-string
                     header('Location: ' . $sUri . '&' . $_SERVER['QUERY_STRING']);
