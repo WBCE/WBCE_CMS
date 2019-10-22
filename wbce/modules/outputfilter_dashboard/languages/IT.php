@@ -49,11 +49,11 @@ include((dirname(__FILE__))."/EN.php");
 $module_description = "Admin-Tool per gestire OutputFilter Dashboard";
 
 
-$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST'] = 'Un filtro di <em>&quot; tipo modulo (primo)&quot;</ em> o <em>&quot;tipo modulo&quot;</ em> o <em>&quot; tipo modulo (ultimo)&quot;</ em> verr&agrave; applicato ad ogni visualizzata sezioni dei moduli selezionati nel arbero moduli ci sotto.';
+$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST'] = 'Un filtro di <em>&quot; tipo modulo (primo)&quot;</em> o <em>&quot;tipo modulo&quot;</em> o <em>&quot; tipo modulo (ultimo)&quot;</em> verr&agrave; applicato ad ogni visualizzata sezioni dei moduli selezionati nel arbero moduli ci sotto.';
 
 $LANG['MOD_OPF']['TXT_MODULE_TREE'] = 'Nel albero modulo ci sotto, selezionare i moduli a cui deve essere applicato il filtro';
 
-$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'Un filtro di <em>&quot;tipo pagina (primo)&quot;</ em> o <em>&quot;tipo pagina&quot;</ em> o <em>&quot;tipo pagina (ultimo)&quot;</ em>o <em>&quot;tipo pagina (finale)&quot;</ em> verr&agrave; applicato ad ogni pagina visualizzata (tra cui ad esempio, il resultato  dei &quot;Code-Snippet&quot;  e il modello stesso) intera.';
+$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'Un filtro di <em>&quot;tipo pagina (primo)&quot;</em> o <em>&quot;tipo pagina&quot;</em> o <em>&quot;tipo pagina (ultimo)&quot;</em>o <em>&quot;tipo pagina (finale)&quot;</em> verr&agrave; applicato ad ogni pagina visualizzata (tra cui ad esempio, il resultato  dei &quot;Code-Snippet&quot;  e il modello stesso) intera.';
 
 $LANG['MOD_OPF']['TXT_SUB_PAGES'] = 'Selezionare o deselezionare le pagine / sottopagine sotto <br /> Il filtro sar&agrave; applicato a tutte le pagine selezionate insieme a tutti i moduli selezionati nel sopra &quot;albero moduli&quot;' ;
 
@@ -163,7 +163,7 @@ $LANG['MOD_OPF']['TXT_MOVE_DOWN'] = 'Sposta gi&ugrave;';
 
 $LANG['MOD_OPF']['TXT_DELETE_FILTER'] = 'Elimina filtro';
 
-$LANG['MOD_OPF']['TXT_SURE_TO_DELETE'] = 'Sei sicuro di voler eliminare il filtro <br /> <b> %s </ b>?';
+$LANG['MOD_OPF']['TXT_SURE_TO_DELETE'] = 'Sei sicuro di voler eliminare il filtro <br /> <b> %s </b>?';
 
 $LANG['MOD_OPF']['TXT_CONVERT_FILTER'] = 'trasformare il filtro in plugin';
 

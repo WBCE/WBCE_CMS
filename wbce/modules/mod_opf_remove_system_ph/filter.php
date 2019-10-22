@@ -36,8 +36,7 @@ function opff_mod_opf_remove_system_ph (&$content, $page_id, $section_id, $modul
         $content=preg_replace("/<!--\(PH\).*?-->/s" ,"", $content);
         // remove any empty lines in the content
         $content = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $content);
-
-        return(TRUE);
     }
+    return(TRUE);
 }
 
