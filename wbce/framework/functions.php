@@ -1149,11 +1149,11 @@ function delete_page($page_id)
         }
     }
     // delete page from pages and sections tables
-    $database->delRow('{TP}pages', 'page_id', $page_id);
+    $database->query('DELETE FROM `{TP}pages` WHERE `page_id` = ' . $page_id);
     if ($database->is_error()) {
         $admin->print_error($database->get_error());
     }
-    $database->delRow('{TP}sections', 'page_id', $page_id);
+    $database->query('DELETE FROM `{TP}sections` WHERE `page_id` = ' . $page_id);
     if ($database->is_error()) {
         $admin->print_error($database->get_error());
     }
