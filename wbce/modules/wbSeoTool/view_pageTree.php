@@ -28,31 +28,23 @@ if(file_exists($sFunctionsFile)){
 function exportPageTreeToTwig() {
 	global $_CONFIG, $HEADING, $TEXT, $TOOL_TEXT, $toolUrl;
 	/**
-	 * 		Create Twig template object and configure it
+	 *  Create Twig template object and configure it
 	 */
-	$oTwigLoader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/skel'); // tell Twig where templates will come from
-	$oTwig = new Twig_Environment($oTwigLoader, array(
-		'autoescape'       => false,
-		'cache'            => false,
-		'strict_variables' => false,
-		'debug'            => true,
-	));
-	$oTwig->addExtension(new Twig_Extension_Debug());	// load extension		
+        $oTwig = getTwig(__DIR__ . '/skel');	
 	$oTemplate = $oTwig->loadTemplate("pageTree.twig");	// load the template by name
 	
 	$oTwig->addGlobal('lang', array_merge($TEXT, $HEADING, $TOOL_TEXT)); 
-	$oTwig->addGlobal('WB_URL', WB_URL); 
 	$oTwig->addGlobal('ADDON_URL', "../../modules/".basename(dirname(__FILE__))); 
 	$oTwig->addGlobal('ICONS', "../../modules/".basename(dirname(__FILE__)).'/icons'); 
 	$oTwig->addGlobal('TOOL_URL', $toolUrl); 
 	if(defined("USE_FLAGS")){
-		$oTwig->addGlobal('USE_FLAGS', USE_FLAGS); 
+            $oTwig->addGlobal('USE_FLAGS', USE_FLAGS); 
 	}
 	if(defined("KEYWORDS_CONFIG")){
-		$oTwig->addGlobal('KEYWORDS_CONFIG', KEYWORDS_CONFIG); 
+            $oTwig->addGlobal('KEYWORDS_CONFIG', KEYWORDS_CONFIG); 
 	}
 	if(defined("REWRITE_URL")){
-		$oTwig->addGlobal('REWRITE_URL', REWRITE_URL); 
+            $oTwig->addGlobal('REWRITE_URL', REWRITE_URL); 
 	}
 	
 	// ouput Template
