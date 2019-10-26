@@ -7,36 +7,39 @@
  * @author          WebsiteBaker Project
  * @copyright       2004-2009, Ryan Djurovich
  * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
+ * @link            http://www.websitebaker2.org/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  *
  */
 
+defined('WB_PATH') or exit("Cannot access this file directly"); 
 if(LANGUAGE_LOADED) {
-	if(!file_exists(WB_PATH.'/modules/droplets/languages/'.LANGUAGE.'.php')) {
-		require_once WB_PATH.'/modules/droplets/languages/EN.php';
-	} else {
-		require_once WB_PATH.'/modules/droplets/languages/'.LANGUAGE.'.php';
-	}
+    $sLangPath = WB_PATH.'/modules/droplets/languages';
+    require_once($sLangPath.'/EN.php');
+    if(LANGUAGE != 'EN'){
+        if(file_exists($sFile = $sLangPath.'/'.LANGUAGE.'.php')) {
+            require_once($sFile);
+        }
+    }
 }
 
 
-    global $HEADING;
-    global $TEXT;
+global $HEADING;
+global $TEXT;
 
-    $twig = new Twig_Environment(new Twig_Loader_Filesystem(dirname(__FILE__) . '/templates'), array());
-    $twig->addGlobal('WB_URL', WB_URL);
-    $twig->addGlobal('ADMIN_URL', ADMIN_URL);
-    $twig->addGlobal('THEME_URL', THEME_URL);
-    $twig->addGlobal('HEADING',$HEADING);
-    $twig->addGlobal('TEXT',$TEXT);
-    $twig->addGlobal('DR_TEXT',$DR_TEXT);
-    $twig->addGlobal('admintool_link',ADMIN_URL . '/admintools/index.php');
-    $twig->addGlobal('module_edit_link',ADMIN_URL . '/admintools/tool.php?tool=droplets');
+$twig = getTwig(dirname(__FILE__) . '/templates');
+$twig->addGlobal('WB_URL', WB_URL);
+$twig->addGlobal('ADMIN_URL', ADMIN_URL);
+$twig->addGlobal('THEME_URL', THEME_URL);
+$twig->addGlobal('HEADING', $HEADING);
+$twig->addGlobal('TEXT', $TEXT);
+$twig->addGlobal('DR_TEXT', $DR_TEXT);
+$twig->addGlobal('admintool_link', ADMIN_URL . '/admintools/index.php');
+$twig->addGlobal('module_edit_link', ADMIN_URL . '/admintools/tool.php?tool=droplets');
 
-    include realpath( dirname(__FILE__).'/info.php' );
-    $twig->addGlobal('module_version',$module_version);
+include realpath( dirname(__FILE__).'/info.php' );
+$twig->addGlobal('module_version',$module_version);
 
 
 /**
@@ -52,8 +55,8 @@ function wbce_copy_droplet($droplet_id)
 
     // get droplet code
     $query_content = $database->query(sprintf(
-        "SELECT * FROM `%smod_droplets` WHERE `id` = '%s'",
-        TABLE_PREFIX, $droplet_id
+        "SELECT * FROM `{TP}mod_droplets` WHERE `id` = '%s'",
+        $droplet_id
     ));
 
     $fetch_content = $query_content->fetchRow(MYSQL_ASSOC);
@@ -64,23 +67,23 @@ function wbce_copy_droplet($droplet_id)
 
     // look for doubles
     $found = $database->query(sprintf(
-        "SELECT * FROM `%smod_droplets` WHERE `name`='%s'",
-         TABLE_PREFIX, $new_name
+        "SELECT * FROM `{TP}mod_droplets` WHERE `name`='%s'",
+         $new_name
     ));
     while( $found->numRows() > 0 )
     {
         $new_name = $name . "_" . $i;
         $found = $database->query(sprintf(
-            "SELECT * FROM `%smod_droplets` WHERE `name`='%s'",
-             TABLE_PREFIX, $new_name
+            "SELECT * FROM `{TP}mod_droplets` WHERE `name`='%s'",
+            $new_name
         ));
         $i++;
     }
 
     // add new droplet
     $result = $database->query(sprintf(
-        "INSERT INTO `%smod_droplets` VALUES ( NULL, '%s', '%s', '%s', '%s', '%s', 1, 0, 0, 0, '%s' )",
-        TABLE_PREFIX, $new_name, $code, $fetch_content['description'], time(),
+        "INSERT INTO `{TP}mod_droplets` VALUES ( NULL, '%s', '%s', '%s', '%s', '%s', 1, 0, 0, 0, '%s' )",
+        $new_name, $code, $fetch_content['description'], time(),
         $admin->get_user_id(),  $fetch_content['comments']
     ));
 
@@ -110,7 +113,7 @@ function wbce_copy_droplet($droplet_id)
  * @param  boolean $return_details - wether to return details about added files
  * @return string
  **/
-function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=false)
+function wbce_backup_droplets($list, $filename='backup-droplets', $return_details=false)
 {
     global $DR_TEXT, $MESSAGE;
 
@@ -234,8 +237,8 @@ function wbce_check_unique($name)
 {
 	global $database;
 	$query_droplets = $database->query(sprintf(
-        "SELECT `name`  FROM `%smod_droplets` WHERE `name` = '%s'",
-        TABLE_PREFIX, $name
+        "SELECT `name`  FROM `{TP}mod_droplets` WHERE `name` = '%s'",
+        $name
     ));
 	return ($query_droplets->numRows() == 1);
 }   // end function wbce_check_unique()
@@ -246,7 +249,7 @@ function wbce_check_unique($name)
  **/
 function wbce_delete_droplets()
 {
-    global $database,$admin,$MESSAGE;
+    global $database, $admin, $MESSAGE;
 
     $list = isset( $_POST['markeddroplet'] ) ? $_POST['markeddroplet'] : array();
     if ( ! is_array( $list ) ) { $list = array($list); }
@@ -258,8 +261,8 @@ function wbce_delete_droplets()
     $droplets = array();
     foreach ( $list as $id ) {
         $result = $database->query(sprintf(
-            "SELECT * FROM `%smod_droplets` WHERE id='%d'",
-            TABLE_PREFIX, $id
+            "SELECT * FROM `{TP}mod_droplets` WHERE id='%d'",
+            $id
         ));
         if ( $result->numRows() > 0 ) {
             $droplets[] = $result->fetchRow();
@@ -273,8 +276,8 @@ function wbce_delete_droplets()
     foreach(array_values($list) as $id)
     {
         $database->query(sprintf(
-            "DELETE FROM `%smod_droplets` WHERE id = '%d' LIMIT 1",
-            TABLE_PREFIX, $id
+            "DELETE FROM `{TP}mod_droplets` WHERE id = '%d' LIMIT 1",
+            $id
         ));
     }
 }   // end function wbce_delete_droplets()
@@ -289,7 +292,7 @@ function wbce_delete_droplets()
  * @param  boolean $return_details - wether to return details about added files
  * @return string            - result of wbce_export_droplets()
  **/
-function wbce_export_droplets($list,$filename='drop_export',$export_id=0,$return_details=false)
+function wbce_export_droplets($list, $filename='drop_export', $export_id=0, $return_details=false)
 {
     global $database, $admin, $MESSAGE;
 
@@ -309,7 +312,7 @@ function wbce_export_droplets($list,$filename='drop_export',$export_id=0,$return
     $droplets = array();
     foreach ( $list as $id ) {
         $result = $database->query(sprintf(
-            "SELECT * FROM `%smod_droplets` WHERE id='%d'",
+            "SELECT * FROM `{TP}mod_droplets` WHERE id='%d'",
             TABLE_PREFIX, $id
         ));
         if ( $result->numRows() > 0 ) {
@@ -430,9 +433,9 @@ function wbce_list_droplets()
 
     // if ($loggedin_user == '1') {
     if ($admin_user) {
-    	$query_droplets = $database->query(sprintf("SELECT * FROM `%smod_droplets` ORDER BY `name` ASC",TABLE_PREFIX));
+    	$query_droplets = $database->query("SELECT * FROM `{TP}mod_droplets` ORDER BY `name` ASC");
     } else {
-    	$query_droplets = $database->query(sprintf("SELECT * FROM `%smod_droplets` WHERE `admin_view` <> '1' ORDER BY `name` ASC",TABLE_PREFIX));
+    	$query_droplets = $database->query("SELECT * FROM `{TP}mod_droplets` WHERE `admin_view` <> '1' ORDER BY `name` ASC");
     }
 
     if($query_droplets->numRows() > 0)
@@ -443,8 +446,8 @@ function wbce_list_droplets()
             if(is_array($droplet) && isset($droplet['name']))
             {
                 $get_modified_user = $database->query(sprintf(
-                    "SELECT `display_name`, `username`, `user_id` FROM `%susers` WHERE `user_id` = '%d' LIMIT 1",
-                    TABLE_PREFIX, $droplet['modified_by']
+                    "SELECT `display_name`, `username`, `user_id` FROM `{TP}users` WHERE `user_id` = '%d' LIMIT 1",
+                    $droplet['modified_by']
                 ));
         		if($get_modified_user->numRows() > 0) {
         			$fetch_modified_user = $get_modified_user->fetchRow();
@@ -486,7 +489,7 @@ function wbce_list_droplets()
  * @param  string  $tplname
  * @param  boolean $return
  **/
-function wbce_twig_display($output,$tplname='tool',$return=false)
+function wbce_twig_display($output, $tplname='tool', $return=false)
 {
     global $twig;
     $tpl = $twig->loadTemplate($tplname.'.twig');
@@ -569,15 +572,15 @@ function wbce_unpack_and_import( $temp_file, $temp_unzip )
                     // Already in the DB?
                     $stmt  = 'INSERT';
                     $id    = NULL;
-                    $found = $database->get_one(sprintf("SELECT * FROM `%smod_droplets` WHERE name='%s'",TABLE_PREFIX,$name));
+                    $found = $database->get_one(sprintf("SELECT * FROM `{TP}mod_droplets` WHERE name='%s'", $name));
                     if ( $found && $found > 0 ) {
                         $stmt = 'REPLACE';
                         $id   = $found;
                     }
                     // execute
                     $result = $database->query(sprintf(
-                        "%s INTO `%smod_droplets` VALUES(" . ($id ? "'$id'" : 'NULL') . ",'%s','%s','%s','%s','%d',1,0,0,0,'%s')",
-                        $stmt, TABLE_PREFIX, $name, $code, $description, time(), $admin->get_user_id(), $usage
+                        "%s INTO `{TP}mod_droplets` VALUES(" . ($id ? "'$id'" : 'NULL') . ",'%s','%s','%s','%s','%d',1,0,0,0,'%s')",
+                        $stmt, $name, $code, $description, time(), $admin->get_user_id(), $usage
                     ));
                     if( ! $database->is_error() ) {
                         $count++;

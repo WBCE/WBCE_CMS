@@ -2,7 +2,7 @@
 
 $template_directory = 'wbcetik';
 $template_name = 'WBCETik';
-$template_version = '1.0';
+$template_version = '1.1';
 $template_platform = '1.4';
 $template_author = 'Florian Meerwinck';
 $template_license = 'MIT License';

@@ -235,7 +235,7 @@ if($is_advanced)
     }
 
     // Insert templates
-    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND function != 'theme' ORDER BY name");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND `function` != 'theme' ORDER BY name");
     if($result->numRows() > 0) {
         while($addon = $result->fetchRow()) {
             $template->set_var('FILE', $addon['directory']);
@@ -247,7 +247,7 @@ if($is_advanced)
     }
 
     // Insert backend theme
-    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND function = 'theme' ORDER BY name");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND `function` = 'theme' ORDER BY name");
     if($result->numRows() > 0) {
         while($addon = $result->fetchRow()) {
             $template->set_var('FILE', $addon['directory']);
@@ -266,7 +266,7 @@ if($is_advanced)
     $selected = (!defined('WYSIWYG_EDITOR') || $file == WYSIWYG_EDITOR) ? ' selected="selected"' : '';
     $template->set_var('SELECTED', $selected);
     $template->parse('editor_list', 'editor_list_block', true);
-    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' AND function LIKE '%wysiwyg%' ORDER BY name");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' AND `function` LIKE '%wysiwyg%' ORDER BY name");
     if($result->numRows() > 0)
     {
         while($addon = $result->fetchRow())
@@ -290,7 +290,7 @@ if($is_advanced)
         ));
     $template->parse('search_template_list', 'search_template_list_block', true);
 
-    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND function = 'template' ORDER BY name");
+    $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'template' AND `function` = 'template' ORDER BY name");
     if($result->numRows() > 0)
     {
         while($addon = $result->fetchRow())

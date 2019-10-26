@@ -13,7 +13,7 @@
 $module_directory = 'pagecloner';
 $module_name = 'Page Cloner';
 $module_function = 'tool';
-$module_version = '1.0.4';
+$module_version = '1.0.5';
 $module_platform = '1.0.0';
 $module_author = 'John Maats, PCWacht, Dietrich Roland Pehlke, Stephan Kuehn, vBoedefeld, WebBird, Colinax';
 $module_license = 'GNU General Public License';
@@ -24,6 +24,9 @@ $module_icon = 'fa fa-clone';
 
 /**
  * Version history
+ * v1.0.5
+ *        - Copies section names too (thanks to kleo)
+ *
  *
  * v1.0.4
  *        - Add Admintool Icon

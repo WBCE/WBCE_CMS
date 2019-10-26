@@ -8,7 +8,7 @@ naturaldocs_txt/functions_outputfilter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.9
+ * @version         1.5.10
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -615,8 +615,8 @@ function opf_register_filter($filter, $serialized=FALSE) {
         if(!$filter_installed) { // filter from edit. Fetch old values from DB
             $additional_fields_languages = $old['additional_fields_languages'];
             $additional_fields = $old['additional_fields'];
-        }
-    } else {
+        } else $additional_values = $old['additional_values'];
+     } else {
         $sql_action = 'INSERT INTO';
     }
     $res = opf_db_run_query( "$sql_action `".TABLE_PREFIX."mod_outputfilter_dashboard` SET

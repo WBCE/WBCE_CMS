@@ -135,7 +135,8 @@ class I {
      *    "setname" => "keywords_en",     
      *    "name"    => "keywords",    
      *    "content" => "This, That, Which, Something",
-     *    "lang"    => "en"    
+     *    "lang"    => "en",
+     *    "append"  => ", "
      * ));  
      * // <meta name="keywords" content="Dieses, Jenes, Welches, Irgendwas" lang="de" />  
      *   

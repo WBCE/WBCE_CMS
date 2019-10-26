@@ -4,9 +4,15 @@
  * Google Site Map
  * @author Karelkin Vladislav
  * @copyright 2007/2013 GPL
- 
- Version 1.8.7 20190712 (Florian)
+
+ Version 1.8.9 20190712 (Florian)
  - Add News with images
+
+ Version 1.8.8 20181204 (Ruud)
+ - fixed multiple sections not seen after pages scan
+
+ Version 1.8.7 20180529 (Ruud)
+ - added the $show_hidden variable. When set true hidden pages will be included.
 
  Version 1.8.6 20160215 (Ruud)
  - set Shorturl default to false. (was true by accident)
@@ -82,7 +88,7 @@
 
 // Set configuration values
 
-$sitemap_version = '1.8.7';
+$sitemap_version = '1.8.9';
 
 // Debug information on / off
 $debug               = false;
@@ -95,6 +101,8 @@ $shorturl			 = false;
 // Ban urls with unwanted words
 $exclude             = array();		// Array of unwanted words in the url
 									// eg. array("privat", "do-not-enter", "keep-away")
+// Show hidden pages
+$show_hidden         = false;
 
 
 // Priorities in sitemap should be 0.5 if not set. Google is happy when different priorities are set.
@@ -116,15 +124,13 @@ $nwi_priority       = "0.7";		// News posts of the last 4 weeks
 $nwi_old_priority   = "0.5";		// News posts older than 4 weeks
 $nwi_frequency      = "weekly";  	// News posts update frequency
 
-
-
 // Bakery Module
 $bakery_priority     = "0.5";		//
 $bakery_frequency    = "weekly";  	//
 
 // Catalog Module
 $catalogs_priority    = "0.5";		//
-$catalogs_frequency   = "weekly";  	//
+$catalogs_frequency   = "weekly";  	// 
 
 // Portfolio Module
 $portfolio_priority  = "0.5";		//
@@ -142,7 +148,6 @@ $showcase_frequency  = "weekly";  	//
 // OneForAll Module
 $oneforall_mod_names	= "oneforall";	// Names of the oneforall modules. Seperated by a comma.
 //$oneforall_mod_names	= "oneforall,projects,portfolio";	// Names of the oneforall modules. Seperated by a comma.
-
 $oneforall_priority    	= "0.5";		//
 $oneforall_frequency  	= "weekly";  	//
 
@@ -150,9 +155,6 @@ $oneforall_frequency  	= "weekly";  	//
 // -------------------------------------------------------------------------
 // END OF CONFIGURATION
 // -------------------------------------------------------------------------
-
-
-
 
 
 // Include config file
@@ -179,8 +181,6 @@ $modules    = array();
 $debug_info = array();
 
 
-
-
 // Functions
 // *********
 
@@ -205,7 +205,6 @@ function check_link($link, $exclude) {
 		$unwanted = "$link is already listed\n";
 		return $unwanted;
 	}
-
 	if (trim($link) === '') {
 		$unwanted = "Skipped empty link\n";
 		return $unwanted;
@@ -238,8 +237,6 @@ echo '
 }
 
 
-
-
 // Start with xml header output
 // ****************************
 
@@ -267,16 +264,15 @@ if ($debug) {
 }
 
 
-
 // Get public WB pages
 // *******************
-
+$visibility = $show_hidden ? "OR p.`visibility` = 'hidden'":"";
 // Get all pages from db except of the module menu_link
 $sql = "SELECT p.`link`, p.`modified_when`, p.`parent`, p.`position`, s.`section_id`, s.`module`
 		FROM `".TABLE_PREFIX."pages` p
 		JOIN `".TABLE_PREFIX."sections` s
 		ON p.`page_id` = s.`page_id`
-		WHERE (p.`visibility` = 'public')
+		WHERE (p.`visibility` = 'public' $visibility)
 			AND s.`module` != 'menu_link'
 			AND (s.`publ_start` = '0' OR s.`publ_start` <= $ts)
 			AND (s.`publ_end` = '0' OR s.`publ_end` >= $ts)
@@ -288,6 +284,8 @@ if ($result && $result->numRows() > 0) {
 	while ($page = $result->fetchRow()) {
 
 		$checked = check_link($page['link'], $exclude);
+		$public[]  = $page['section_id'];
+		$modules[] = $page['module'];
 
 		if ($checked === true) {
 			$link    = htmlspecialchars($wb->page_link($page['link']));
@@ -304,8 +302,6 @@ if ($result && $result->numRows() > 0) {
 			}
 			output_xml($link, $lastmod, $freq, $pri);
 			$counter++;
-			$public[]  = $page['section_id'];
-			$modules[] = $page['module'];
 		}
 		else {
 			$debug_info[] = $checked;
@@ -318,8 +314,6 @@ $modules = array_unique($modules);
 
 // Count pages excluding module pages
 $page_counter = $counter;
-
-
 
 
 // Get module pages of previously set modules
@@ -414,7 +408,6 @@ if (in_array('bakery', $modules)) {
 	}
 }
 
-
 // Catalog
 if (in_array('catalogs', $modules)) {
 	$sql = "SELECT `section_id`, `link`, `modified_when`
@@ -437,7 +430,6 @@ if (in_array('catalogs', $modules)) {
 		}
 	}
 }
-
 
 // Portfolio
 if (in_array('portfolio', $modules)) {
@@ -468,7 +460,6 @@ if (in_array('portfolio', $modules)) {
 	}
 }
 
-
 // Topics
 if (in_array($topics_mod_name, $modules)) {
 	require(WB_PATH.'/modules/'.$topics_mod_name.'/module_settings.php');
@@ -496,7 +487,6 @@ if (in_array($topics_mod_name, $modules)) {
 		}
 	}
 }
-
 
 // Showcase
 if (in_array('showcase', $modules)) {
@@ -577,8 +567,6 @@ if (in_array('xxxxxx', $modules)) {
 	}
 }
 */
-
-
 
 
 // Debug

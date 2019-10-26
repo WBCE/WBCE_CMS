@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -18,8 +18,8 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 // Set the language information
 $language_code = 'PL';
 $language_name = 'Polish'; // Polski
-$language_version = '2.8';
-$language_platform = '2.8.x';
+$language_version = '3.2';
+$language_platform = '1.3.0';
 $language_author = 'Marek Stepien;';
 $language_license = 'GNU General Public License';
 
@@ -59,6 +59,7 @@ $TEXT['ADMINISTRATION_TOOL'] = 'Narzędzie administracyjne';
 $TEXT['ADMINISTRATOR'] = 'Administrator';
 $TEXT['ADMINISTRATORS'] = 'Administratorzy';
 $TEXT['ADVANCED'] = 'Zaawansowane';
+$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
 $TEXT['ALLOWED_FILETYPES_ON_UPLOAD'] = 'Dozwolone pliki do uploadu';
 $TEXT['ALLOWED_VIEWERS'] = 'Dozwoleni obserwatorzy';
 $TEXT['ALLOW_MULTIPLE_SELECTIONS'] = 'Pozwól na wielokrotne wybory';
@@ -70,6 +71,7 @@ $TEXT['APP_NAME'] = 'Nazwa aplikacji';
 $TEXT['ARE_YOU_SURE'] = 'Czy aby na pewno?';
 $TEXT['AUTHOR'] = 'Autor';
 $TEXT['BACK'] = 'Wstecz';
+$TEXT['BACKEND'] = 'Backend';
 $TEXT['BACKUP'] = 'Kopia zapasowa';
 $TEXT['BACKUP_ALL_TABLES'] = 'Backup all tables in database';
 $TEXT['BACKUP_DATABASE'] = 'Kopia zapasowa bazy danych';
@@ -77,6 +79,7 @@ $TEXT['BACKUP_MEDIA'] = 'Kopia zapasowa mediów';
 $TEXT['BACKUP_WB_SPECIFIC'] = 'Kopia zapasowa tylko tabel WB_';
 $TEXT['BASIC'] = 'Podstawowe';
 $TEXT['BLOCK'] = 'Blokuj';
+$TEXT['BUTTON_SEND_TESTMAIL'] = 'Check email configuration';
 $TEXT['CALENDAR'] = 'Calentarz';
 $TEXT['CANCEL'] = 'Anuluj';
 $TEXT['CAN_DELETE_HIMSELF'] = 'Can delete himself';
@@ -85,6 +88,7 @@ $TEXT['CAP_EDIT_CSS'] = 'Edytuj CSS';
 $TEXT['CHANGE'] = 'Zmień;';
 $TEXT['CHANGES'] = 'Zmiany';
 $TEXT['CHANGE_SETTINGS'] = 'Zmień ustawienia';
+$TEXT['CHARACTERS'] = 'Characters';
 $TEXT['CHARSET'] = 'Kodowanie znaków';
 $TEXT['CHECKBOX_GROUP'] = 'Grupa pól zaznaczanych';
 $TEXT['CLOSE'] = 'Zamknij';
@@ -122,12 +126,17 @@ $TEXT['EMPTY_TRASH'] = 'Opróżnij śmietnik';
 $TEXT['ENABLED'] = 'Wlaczone';
 $TEXT['END'] = 'Koniec';
 $TEXT['ERROR'] = 'Bląd';
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Ustawienie domyślne systemu (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Nie wyświetlać jakichkolwiek notyfikacji (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Wyświetlać wszelkie notyfikacje (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Wyświetlać errors, nie wyświetlać notices';
 $TEXT['EXACT_MATCH'] = 'Dopasowanie dokładne';
 $TEXT['EXECUTE'] = 'Wykonaj';
 $TEXT['EXPAND'] = 'Rozwin';
 $TEXT['EXTENSION'] = 'Rozszerzenie';
 $TEXT['FIELD'] = 'Pole';
 $TEXT['FILE'] = 'plik';
+$TEXT['FILENAME'] = 'Nazwa pliku';
 $TEXT['FILES'] = 'pliki';
 $TEXT['FILESYSTEM_PERMISSIONS'] = 'Uprawnienia systemu plików';
 $TEXT['FILE_MODE'] = 'Tryb plików';
@@ -144,6 +153,8 @@ $TEXT['FUNCTION'] = 'Funkcja';
 $TEXT['GROUP'] = 'Grupa';
 $TEXT['HEADER'] = 'Nagłówek';
 $TEXT['HEADING'] = 'Nagłówek';
+$TEXT['HEADING_ADD_USER'] = 'Add User';
+$TEXT['HEADING_MODIFY_USER'] = 'Modify User';
 $TEXT['HEADING_CSS_FILE'] = 'Aktualny plik modułu: ';
 $TEXT['HEIGHT'] = 'Wysokość;';
 $TEXT['HIDDEN'] = 'Ukryty';
@@ -190,7 +201,6 @@ $TEXT['MAX_EXCERPT'] = 'Maksymalny fragment linii';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Maksymalna ilość zgłoszeń na godzinę';
 $TEXT['MEDIA_DIRECTORY'] = 'Katalog mediów';
 $TEXT['MENU'] = 'Menu';
-$TEXT['FILENAME'] = 'Nazwa pliku';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Tytuł menu';
@@ -256,6 +266,7 @@ $TEXT['PROFILES_EDIT'] = 'Zmień profil';
 $TEXT['PUBLIC'] = 'Publiczna';
 $TEXT['PUBL_END_DATE'] = 'Data zakończenia';
 $TEXT['PUBL_START_DATE'] = 'Data rozpoczęcia';
+$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
 $TEXT['RADIO_BUTTON_GROUP'] = 'Grupa pól przełączanych';
 $TEXT['READ'] = 'Odczytaj';
 $TEXT['READ_MORE'] = 'Czytaj dalej';
@@ -263,6 +274,7 @@ $TEXT['REDIRECT_AFTER'] = 'Przekierowanie po';
 $TEXT['REGISTERED'] = 'Zarejestrowany';
 $TEXT['REGISTERED_VIEWERS'] = 'Zarejestrowani obserwatorzy';
 $TEXT['RELOAD'] = 'Przeładuj, odswież';
+$TEXT['REMAINING'] = 'Remaining';
 $TEXT['REMEMBER_ME'] = 'Zapamietaj mnie';
 $TEXT['RENAME'] = 'Zmień nazwe';
 $TEXT['RENAME_FILES_ON_UPLOAD'] = 'No upload for this filetypes';
@@ -290,6 +302,7 @@ $TEXT['SECTION_BLOCKS'] = 'Bloki sekcji';
 $TEXT['SEC_ANCHOR'] = 'Przedrostek tabeli (prefix)';
 $TEXT['SELECT_BOX'] = 'Pole wyboru';
 $TEXT['SEND_DETAILS'] = 'Wyslij szczególy';
+$TEXT['SEND_TESTMAIL'] = 'To verify that the email settings are working properly, you can send a test email to the email adress above by clicking on the button. Please notice that you have to save the settings at first.';
 $TEXT['SEPARATE'] = 'Osobno';
 $TEXT['SEPERATOR'] = 'Separator';
 $TEXT['SERVER_EMAIL'] = 'E-mail serwera';
@@ -322,6 +335,14 @@ $TEXT['TEXT'] = 'Tekst';
 $TEXT['TEXTAREA'] = 'Obszar tekstowy';
 $TEXT['TEXTFIELD'] = 'Pole tekstowe';
 $TEXT['THEME'] = 'Szablon panelu administracji';
+$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
+$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
+$TEXT['THEME_CURRENT'] = 'current active theme';
+$TEXT['THEME_START_COPY'] = 'copy';
+$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
+$TEXT['THEME_SELECT_HTT'] = 'select templates';
+$TEXT['THEME_NOMORE_HTT'] = 'no more available';
+$TEXT['THEME_START_IMPORT'] = 'import';
 $TEXT['TIME'] = 'Czas';
 $TEXT['TIMEZONE'] = 'Strefa czasowa';
 $TEXT['TIME_FORMAT'] = 'Format czasu';
@@ -357,9 +378,9 @@ $TEXT['VIEW_DETAILS'] = 'Pokaz szczególy';
 $TEXT['VISIBILITY'] = 'Widoczność';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Domyślny mail nadawcy';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Domyślna nazwa nadawcy';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Określ domyślny adres odbiorcy "FROM" i nadawcy "SENDER". Zaleca się stosowanie ODBIORCY tak jak na przykladzie: <strong>admin@yourdomain.com</strong>. Niektórzy dostawcy maili (np. <em>mail.com</em>) moga odrzucic maile od ODBIORCY adresu takiego jak np <em>name@mail.com</em> ze wzgledu na potraktowanie tego jako spam.<br /><br /> Wartości domyślne sa używane tylko wtedy inne wartości sa określone przez WBCE CMS. Jesli twój serwer obsluguje <acronym title="Prosty protokól przesylania poczty">SMTP</acronym>, możesz skorzystac z tej funkcji.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Określ domyślny adres odbiorcy "FROM" i nadawcy "SENDER". Zaleca się stosowanie ODBIORCY tak jak na przykladzie: <strong>admin@yourdomain.com</strong>. Niektórzy dostawcy maili (np. <em>mail.com</em>) moga odrzucic maile od ODBIORCY adresu takiego jak np <em>name@mail.com</em> ze wzgledu na potraktowanie tego jako spam.<br /><br /> Wartości domyślne sa używane tylko wtedy inne wartości sa określone przez WBCE CMS.';
 $TEXT['WBMAILER_FUNCTION'] = 'Funkcja maila';
-$TEXT['WBMAILER_NOTICE'] = '<strong>Ustawienia poczty SMTP:</strong><br />The settings below are only required if you want to send mails via <acronym title="Simple mail transfer protocol">SMTP</acronym>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
+$TEXT['WBMAILER_NOTICE'] = '<strong>Ustawienia poczty SMTP:</strong><br />The settings below are only required if you want to send mails via <abbr title="Simple mail transfer protocol">SMTP</abbr>. If you do not know your SMTP host or you are not sure about the required settings, simply stay with the default mail routine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'mail PHP';
 $TEXT['WBMAILER_SMTP'] = 'SMTP';
 $TEXT['WBMAILER_SMTP_AUTH'] = 'Weryfikacja SMTP';
@@ -382,13 +403,6 @@ $TEXT['WRITE'] = 'Zapisz';
 $TEXT['WYSIWYG_EDITOR'] = 'Edytor WYSIWYG';
 $TEXT['WYSIWYG_STYLE'] = 'Styl WYSIWYG';
 $TEXT['YES'] = 'Tak';
-$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
-$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
-// PHP error levels (since WBCE 1.3.0)
-$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Ustawienie domyślne systemu (php.ini)';
-$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Nie wyświetlać jakichkolwiek notyfikacji (WWW)';
-$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Wyświetlać wszelkie notyfikacje (development)';
-$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Wyświetlać errors, nie wyświetlać notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Wymagania dodatku nie zostały spełnione';
@@ -436,13 +450,15 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Odinstaluj szablon';
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = 'Załaduj plik(i)';
 $HEADING['WBMAILER_SETTINGS'] = 'Ustawienia rozsylania maili';
+$HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the mailer settings below are being overriden by settings in the file <code>[WB_PATH]/include/PHPMailer/config_mail.php</code>.<br />'
+                                        . 'In order to use the mailer settings below you\'ll need to disable the array in named file.';
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Bląd podczas aktualizacji dodatku.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Pomyślnie zainstalowano ponownie pliki językowe';
 $MESSAGE['ADDON_MANUAL_FTP_LANGUAGE'] = '<strong>UWAGA!</strong> Ze wzgledów bezpieczeństwa przesłanie plików językowych do folderu /languages/ powinno odbyć się tylko przez FTP.';
 $MESSAGE['ADDON_MANUAL_FTP_WARNING'] = 'Uwaga istniejace wpisy modułu moga zostac utracone w bazie danych.';
-$MESSAGE['ADDON_MANUAL_INSTALLATION'] = 'Jesli moduły sa przesylane za pomocą protokolu FTP (nie polecane), to funkcje takie jak <tt>instalacja</tt>, <tt>aktualizacja</tt> lub <tt>odinstalowanie</tt> moga nie dzialac prawidłowo. <br /><br />';
+$MESSAGE['ADDON_MANUAL_INSTALLATION'] = 'Jesli moduły sa przesylane za pomocą protokolu FTP (nie polecane), to funkcje takie jak <code>instalacja</code>, <code>aktualizacja</code> lub <code>odinstalowanie</code> moga nie dzialac prawidłowo. <br /><br />';
 $MESSAGE['ADDON_MANUAL_INSTALLATION_WARNING'] = 'Uwaga istniejace wpisy modułu moga zostac utracone w bazie danych. Uzyj tej opcji tylko wtedy gdy masz problemy z przesłaniem przez FTP.';
 $MESSAGE['ADDON_MANUAL_RELOAD_WARNING'] = 'Uwaga istniejace wpisy modułu moga zostac utracone w bazie danych.';
 $MESSAGE['ADDON_MODULES_RELOADED'] = 'Pomyślnie zainstalowano ponownie moduły';
@@ -462,6 +478,7 @@ $MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'Już zainstalowany';
 $MESSAGE['GENERIC_BAD_PERMISSIONS'] = 'Nie moża zapisać do katalogu docelowego';
 $MESSAGE['GENERIC_BE_PATIENT'] = 'Prosimy o cierpliwość';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Nie można odinstalować';
+$MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES'] = 'Cannot uninstall core modules!';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE'] = 'Nie można odinstalować: wybrany plik jest obecnie używany';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'] = '<br /><br />{{type}} <b>{{type_name}}</b> nie może być odinstalowany, ponieważ jest używany przez {{pages}}:<br /><br />';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES'] = 'następujaca strona/następujace strony';
@@ -587,14 +604,15 @@ ID użytkownika: {LOGIN_ID}
 E-Mail: {LOGIN_EMAIL}
 Adres IP: {LOGIN_IP}
 Data rejestracji: {SIGNUP_DATE}
+
 ----------------------------------------
 Ta wiadomość została wygenerowana automatycznie.&#10;&#10;';
 $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Witaj {LOGIN_DISPLAY_NAME},
 
-Ten mail został wysłany ponieważ\'zapomiano hasła\' funkcja odzyskania twojego konta została uruchomiona.
+Ten mail został wysłany ponieważ zapomiano hasła funkcja odzyskania twojego konta została uruchomiona.
 
-Szczególy twojego nowego konta \'{LOGIN_WEBSITE_TITLE}\' poniżej:
+Szczególy twojego nowego konta {LOGIN_WEBSITE_TITLE} poniżej:
 
 Loginname: {LOGIN_NAME}
 Hasło: {LOGIN_PASSWORD}
@@ -605,22 +623,20 @@ Oznacza to, ze stare hasło nie bedzie już dzialac!
 Jesli masz pytania badz problemy z nowym loginem lub hasłem skontaktuj się z administratorem \'{LOGIN_WEBSITE_TITLE}\'.
 Aby uniknac nieoczekiwanych awarii proszę pamietac o czyszczeniu pamieci podrecznej cache przeglądarki
 
-Pozdrawiamy
 ------------------------------------
 Ta wiadomość została wygenerowana automatycznie.&#10;&#10;';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
-Witamy \'{LOGIN_WEBSITE_TITLE}\'.
+Witamy {LOGIN_WEBSITE_TITLE}.
 
-Szczególy konta \'{LOGIN_WEBSITE_TITLE}\' poniżej:
+Szczególy konta {LOGIN_WEBSITE_TITLE} poniżej:
 Loginname: {LOGIN_NAME}
 Hasło: {LOGIN_PASSWORD}
 
-Pozdrawiamy
-
 Prosba:
 Jesli otrzymales te wiadomość przez pomylke, usun ja niezwlocznie!
+
 -------------------------------------
 Ta wiadomość została wygenerowana automatycznie&#33;&#10;';
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Twoje dane logowania...';
@@ -630,6 +646,13 @@ $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Uwaga: katalog instalacyjny wciaz istnie
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
 $MESSAGE['START_WELCOME_MESSAGE'] = 'Witamy w panelu administracyjnym WBCE CMS';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Uwaga: aby zmienić szablon, nalezy przejsc do sekcji Ustawienia';
+$MESSAGE['TESTMAIL_SUCCESS'] = "The test email was sent to <code>%s</code>. Please check your inbox.";
+$MESSAGE['TESTMAIL_FAILURE'] = "The test email could not be sent to <code>%s</code>.<br />Please check your settings and try again.";
+$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
+$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
+$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
+$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
+$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 $MESSAGE['UPLOAD_ERR_OK'] = 'Wysłanie pliku/plików powiodło się';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
 $MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';

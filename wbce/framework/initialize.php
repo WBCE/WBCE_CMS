@@ -198,12 +198,13 @@ switch (true){
     case (ER_LEVEL=="E2"):
         // show all errors and notices
         error_reporting(E_ALL); break;
-
-    case (ER_LEVEL=="E3"):
+    
+    case (ER_LEVEL=="E3"):       
         // show only errors, nothing else
         error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE & ~E_WARNING); break;
+    
+    default: 
 
-    default:
         // system default (php.ini)
         error_reporting(ini_get('error_reporting'));
 }

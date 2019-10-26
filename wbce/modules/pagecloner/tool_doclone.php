@@ -119,7 +119,8 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 		$block = $is_section['block'];
 		$publ_start = $is_section['publ_start'];
 		$publ_end = $is_section['publ_end'];
-		$database->query("INSERT INTO `".TABLE_PREFIX."sections` (`page_id`,`position`,`module`,`block`,`publ_start`,`publ_end`) VALUES ('$page_id','$position', '$module','$block','$publ_start','$publ_end')");
+		$namesection = $is_section['namesection'];
+		$database->query("INSERT INTO `".TABLE_PREFIX."sections` (`page_id`,`position`,`module`,`block`,`publ_start`,`publ_end`,`namesection`) VALUES ('$page_id','$position', '$module','$block','$publ_start','$publ_end','$namesection')");
 	
 		// Get the section id
 		$section_id = $database->get_one("SELECT LAST_INSERT_ID()");

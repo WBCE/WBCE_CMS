@@ -127,7 +127,7 @@ if($admin->get_permission('groups_add') != true) {
 
 // Insert values into module list
 $template->set_block('main_block', 'module_list_block', 'module_list');
-$result = $database->query('SELECT * FROM `{TP}addons` WHERE `type` = "module" AND `function` = "page" ORDER BY `name`');
+$result = $database->query('SELECT * FROM `{TP}addons` WHERE `type` = "module" AND `function` LIKE "%page%" ORDER BY `name`');
 if($result->numRows() > 0) {
     while($addon = $result->fetchRow()) {
         $addon['name'] = $admin->get_module_name($addon['directory'], true, '&nbsp; <i>(%s)</i>');

@@ -45,7 +45,7 @@ $template->set_var('PAGE_TREE', $pageTreeOutput);
 // Insert values into the add page form
 
 // Group list 1
-$query = "SELECT * FROM ".TABLE_PREFIX."groups";
+$query = "SELECT * FROM `".TABLE_PREFIX."groups`";
 $get_groups = $database->query($query);
 $template->set_block('main_block', 'group_list_block', 'group_list');
 // Insert admin group and current group first
@@ -152,7 +152,7 @@ parent_list(0);
 $module_permissions = $_SESSION['MODULE_PERMISSIONS'];
 // Modules list
 $template->set_block('main_block', 'module_list_block', 'module_list');
-$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' AND function LIKE '%page%' order by name");
+$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'module' AND `function` LIKE '%page%' order by name");
 if($result->numRows() > 0) {
     while ($module = $result->fetchRow()) {
         // Check if user is allowed to use this module

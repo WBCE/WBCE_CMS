@@ -8,7 +8,7 @@ languages/FR.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.9
+ * @version         1.5.10
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
  * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
@@ -49,11 +49,11 @@ include((dirname(__FILE__))."/EN.php");
 $module_description = "Admin-Tool pour g&eacute;rir OutputFilter Dashboard";
 
 
-$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST'] = 'Un filtre de <em> &quot;type module(avant)&quot;</ em> ou <em>&quot;type module&quot; </ em> ou <em> &quot;type module(dernier)&quot;</ em> sera appliqu&eacute; &agrave; chaque affich&eacute; sections des modules s&eacute;lectionn&eacute;s dans le module arbre ci-dessous.';
+$LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST'] = 'Un filtre de <em> &quot;type module(avant)&quot;</em> ou <em>&quot;type module&quot; </em> ou <em> &quot;type module(dernier)&quot;</em> sera appliqu&eacute; &agrave; chaque affich&eacute; sections des modules s&eacute;lectionn&eacute;s dans le module arbre ci-dessous.';
 
 $LANG['MOD_OPF']['TXT_MODULE_TREE'] = 'Dans le module arbre ci-dessous, s&eacute;lectionnez les modules &agrave; laquelle le filtre doit &ecirc;tre appliqu&eacute;';
 
-$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'Un filtre de <em>&quot;type page (dernier)&quot;</ em> ou <em>&quot;type page&quot;</ em> ou <em>&quot;type page (dernier)&quot;</ em>  ou <em>&quot;type page (finale)&quot;</ em> sera appliqu&eacute; &agrave; chaque page affich&eacute;e (y compris par exemple le resultat des extraits de code et le mod&egrave;le lui-m&ecirc;me) dans son ensemble.';
+$LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'Un filtre de <em>&quot;type page (dernier)&quot;</em> ou <em>&quot;type page&quot;</em> ou <em>&quot;type page (dernier)&quot;</em>  ou <em>&quot;type page (finale)&quot;</em> sera appliqu&eacute; &agrave; chaque page affich&eacute;e (y compris par exemple le resultat des extraits de code et le mod&egrave;le lui-m&ecirc;me) dans son ensemble.';
 
 $LANG['MOD_OPF']['TXT_SUB_PAGES'] = 'Cochez ou d&eacute;cochez pages / subpages ci-dessous <br /> Le filtre sera appliqu&eacute; &agrave; toutes les pages s&eacute;lectionn&eacute;es ainsi que tous les modules s&eacute;lectionn&eacute;s dans le &quot;module arbre&quot; ci-dessus.' ;
 
@@ -163,14 +163,13 @@ $LANG['MOD_OPF']['TXT_MOVE_DOWN'] = 'D&eacute;placer vers le bas';
 
 $LANG['MOD_OPF']['TXT_DELETE_FILTER'] = 'Supprimer filtre';
 
-$LANG['MOD_OPF']['TXT_SURE_TO_DELETE'] = '&Ecirc;tes-vous s&ucirc;r de vouloir supprimer le filtre <br /> <b> %s </ b>?';
+$LANG['MOD_OPF']['TXT_SURE_TO_DELETE'] = '&Ecirc;tes-vous s&ucirc;r de vouloir supprimer le filtre <br /> <b> %s </b>?';
 
 $LANG['MOD_OPF']['TXT_CONVERT_FILTER'] = 'transformer filtre en plugin';
 
 $LANG['MOD_OPF']['TXT_SURE_TO_CONVERT'] = '&Ecirc;tes-vous s&ucirc;r de vouloir transformer le filtre <br /><b>%s</b><br />en plugin?';
 
 $LANG['MOD_OPF']['TXT_CONVERT_PLUGIN'] = 'transformer plugin en filtre inline';
-'Convert filter to inline';
 
 $LANG['MOD_OPF']['TXT_SURE_TO_INLINE'] = '&Ecirc;tes-vous s&ucirc;r de vouloir transformer le plugin <br /><b>%s</b><br />en inline filtre?';
 

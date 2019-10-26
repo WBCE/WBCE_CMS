@@ -69,13 +69,13 @@ if(isset($_FILES['image']['tmp_name']) AND $_FILES['image']['tmp_name'] != '')
 	$file4=substr($filename, -4, 4);
 	if(($file4 != '.jpg')and($file4 != '.JPG')and($file4 != '.png')and($file4 != '.PNG') and ($file4 !='jpeg') and ($file4 != 'JPEG'))
     {
-		$admin->print_error($MESSAGE['GENERIC']['FILE_TYPE'].' JPG (JPEG) or PNG a');
+		$admin->print_error($MESSAGE['GENERIC']['FILE_TYPES'].' JPG, JPEG, PNG', WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id));
 	} elseif(
 	(($_FILES['image']['type']) != 'image/jpeg' AND mime_content_type($_FILES['image']['tmp_name']) != 'image/jpg')
 	and
 	(($_FILES['image']['type']) != 'image/png' AND mime_content_type($_FILES['image']['tmp_name']) != 'image/png')
 	){
-		$admin->print_error($MESSAGE['GENERIC']['FILE_TYPE'].' JPG (JPEG) or PNG b');
+		$admin->print_error($MESSAGE['GENERIC']['FILE_TYPES'].' JPG, JPEG, PNG', WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id));
 	}
 	// Make sure the target directory exists
 	make_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img');

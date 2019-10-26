@@ -2,6 +2,9 @@
 Header: Version-History
 
 1.5:
+1.5.10 %(mrbaseman, 7 Oct 2019)%
+        - keep additional_values of plugin filters during upgrade
+
 1.5.9 %(mrbaseman, 11 Jul 2019)%
 	- include edit_area.js only on pages where an editarea exists
 	- allow 'search' in pages_parent for specifying searchresults

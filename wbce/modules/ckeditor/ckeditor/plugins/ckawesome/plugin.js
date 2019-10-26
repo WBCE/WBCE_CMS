@@ -1,17 +1,14 @@
-/**
- *   CKAwesome 
- *   =========
- *   http://blackdevelop.com/io/ckawesome/
- *   
- *   Copyright (C) 2017 by Blackdevelop.com
- *   Licence under GNU GPL v3.
- */
+/*
+ Copyright (c) 2017-2019, Blackdevelop.com - http://blackdevelop.com/io/ckawesome/
+ Licence under GNU GPL v3
+*/
 
 CKEDITOR.on('instanceReady',function () { CKEDITOR.document.appendStyleSheet(CKEDITOR.plugins.getPath('ckawesome') + 'resources/select2/select2.full.min.css');   });
 CKEDITOR.on('instanceReady',function () { CKEDITOR.document.appendStyleSheet(CKEDITOR.plugins.getPath('ckawesome') + 'dialogs/ckawesome.css');   });
 CKEDITOR.scriptLoader.load(CKEDITOR.plugins.getPath('ckawesome') + 'resources/select2/select2.full.min.js');
 CKEDITOR.dtd.$removeEmpty.span = 0;
 CKEDITOR.plugins.add('ckawesome', {
+    lang: "de,en",
     requires: 'colordialog',
     icons: 'ckawesome',
     
@@ -27,9 +24,9 @@ CKEDITOR.plugins.add('ckawesome', {
         CKEDITOR.dialog.add('ckawesomeDialog', this.path + 'dialogs/ckawesome.js');
         editor.addCommand( 'ckawesome', new CKEDITOR.dialogCommand( 'ckawesomeDialog', { allowedContent: 'span[class,style]{color,font-size}(*);' }));
         editor.ui.addButton( 'ckawesome', {
-              label: 'Insert CKAwesome',
-              command: 'ckawesome',
-              toolbar: 'insert',
+            label: editor.lang.ckawesome.CKAwes,
+            command: 'ckawesome',
+            toolbar: 'insert',
         });
     }
 });

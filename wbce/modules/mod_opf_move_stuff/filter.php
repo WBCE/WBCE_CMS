@@ -105,6 +105,6 @@ function opff_mod_opf_move_stuff (&$sContent, $page_id, $section_id, $module, $w
 
         }
 
-        return(TRUE);
     }
+    return(TRUE);
 }

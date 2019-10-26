@@ -157,10 +157,11 @@
             </section>
             <hr class="fg12">
             <div class="fg6">
-                <button type="submit" name="submit"> <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+                <button type="submit" name="submit">  <i class="fa fa-fw fa-save"></i> {TEXT_SAVE} </button>
+				 <button type="submit" value="saveandback" name="saveandback">  <i class="fa fa-fw fa-check"></i> {TEXT_SAVE} &amp;  {TEXT_BACK}  </button>
             </div>
             <div class="fg6 right">
-                <button type="button" onclick="location.href = 'index.php';"> <i class="fa fa-fw fa-reply"></i> {TEXT_BACK} </button>
+                <button type="button" onclick="location.href = 'index.php';"> {TEXT_BACK} </button>
             </div>
         </form>
     </section>

@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -18,8 +18,8 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 // Set the language information
 $language_code = 'HU';
 $language_name = 'Hungarian'; // Magyar
-$language_version = '2.8';
-$language_platform = '2.8.x';
+$language_version = '3.2';
+$language_platform = '1.3.0';
 $language_author = 'Zsolt + Robert';
 $language_license = 'GNU General Public License';
 
@@ -59,6 +59,7 @@ $TEXT['ADMINISTRATION_TOOL'] = 'Adminisztr&#225;ci&#243;s Eszk&#246;z';
 $TEXT['ADMINISTRATOR'] = 'Administrator';
 $TEXT['ADMINISTRATORS'] = 'Adminisztr&#225;torok';
 $TEXT['ADVANCED'] = 'B-?-&#166;&#237;tett';
+$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
 $TEXT['ALLOWED_FILETYPES_ON_UPLOAD'] = 'Allowed filetypes on upload';
 $TEXT['ALLOWED_VIEWERS'] = 'Enged&#233;lyezett l&#225;togat&#243;k';
 $TEXT['ALLOW_MULTIPLE_SELECTIONS'] = 'T&#246;bbet is kiv&#225;laszthat';
@@ -70,6 +71,7 @@ $TEXT['APP_NAME'] = 'Alkalmaz&#225;s Neve';
 $TEXT['ARE_YOU_SURE'] = 'Biztos hogy ezt akarja?';
 $TEXT['AUTHOR'] = 'Szerz&#231;';
 $TEXT['BACK'] = 'Vissza';
+$TEXT['BACKEND'] = 'Backend';
 $TEXT['BACKUP'] = 'Biztons&#225;gi Ment&#233;s';
 $TEXT['BACKUP_ALL_TABLES'] = 'Minden adatb&#225;zis t&#225;bla ment&#233;se';
 $TEXT['BACKUP_DATABASE'] = 'Adatb&#225;zis Ment&#233;se';
@@ -77,6 +79,7 @@ $TEXT['BACKUP_MEDIA'] = 'Biztons&#225;gi ment&#233;s M&#233;dia';
 $TEXT['BACKUP_WB_SPECIFIC'] = 'Csak WB specifikus adatb&#225;zis t&#225;bla ment&#233;se';
 $TEXT['BASIC'] = 'Alap';
 $TEXT['BLOCK'] = 'Blokk';
+$TEXT['BUTTON_SEND_TESTMAIL'] = 'Check email configuration';
 $TEXT['CALENDAR'] = 'Napt&#225;r';
 $TEXT['CANCEL'] = 'M&#233;gse';
 $TEXT['CAN_DELETE_HIMSELF'] = 'Can delete himself';
@@ -85,6 +88,7 @@ $TEXT['CAP_EDIT_CSS'] = 'CSS Szerkeszt&#233;se';
 $TEXT['CHANGE'] = 'M&#243;dos&#237;t';
 $TEXT['CHANGES'] = 'V&#225;toz&#225;sok';
 $TEXT['CHANGE_SETTINGS'] = 'Be&#225;ll&#237;t&#225;sok megv&#225;ltoztat&#225;sa';
+$TEXT['CHARACTERS'] = 'Characters';
 $TEXT['CHARSET'] = 'Karakterk&#233;szlet';
 $TEXT['CHECKBOX_GROUP'] = 'Jel&#246;l&#224;n&#233;gyzet csoport';
 $TEXT['CLOSE'] = 'Bez&#225;r';
@@ -122,12 +126,17 @@ $TEXT['EMPTY_TRASH'] = 'Kuka &#252;r&#237;t&#233;s';
 $TEXT['ENABLED'] = 'Enged&#233;lyezve';
 $TEXT['END'] = 'V&#233;ge';
 $TEXT['ERROR'] = 'Hiba';
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 $TEXT['EXACT_MATCH'] = 'Pontos egyez&#233;s';
 $TEXT['EXECUTE'] = 'V&#233;grehajt&#225;s';
 $TEXT['EXPAND'] = 'Kibont';
 $TEXT['EXTENSION'] = 'B-?-&#166;&#237;tm&#233;ny';
 $TEXT['FIELD'] = 'Mez&#231;';
 $TEXT['FILE'] = 'F&#225;jl';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['FILES'] = 'F&#225;jlok';
 $TEXT['FILESYSTEM_PERMISSIONS'] = 'File rendszer jogosults&#225;gok';
 $TEXT['FILE_MODE'] = 'File M&#243;d';
@@ -144,6 +153,8 @@ $TEXT['FUNCTION'] = 'Function';
 $TEXT['GROUP'] = 'Csoport';
 $TEXT['HEADER'] = 'Fejl&#233;c';
 $TEXT['HEADING'] = 'C&#237;msor';
+$TEXT['HEADING_ADD_USER'] = 'Add User';
+$TEXT['HEADING_MODIFY_USER'] = 'Modify User';
 $TEXT['HEADING_CSS_FILE'] = 'Aktu&#225;lis Modul F&#225;jl: ';
 $TEXT['HEIGHT'] = 'Magass&#225;g';
 $TEXT['HIDDEN'] = 'Rejtett';
@@ -190,7 +201,6 @@ $TEXT['MAX_EXCERPT'] = 'Maximum tal&#225;lat';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Max. bek&#252;ld&#233;s &#243;r&#225;nk&#233;nt';
 $TEXT['MEDIA_DIRECTORY'] = 'M&#233;dia k&#246;nyvt&#225;r';
 $TEXT['MENU'] = 'Men&#252;';
-$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-Icon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-Icon hover';
 $TEXT['MENU_TITLE'] = 'Menu C&#237;m';
@@ -256,6 +266,7 @@ $TEXT['PROFILES_EDIT'] = 'Change the profile';
 $TEXT['PUBLIC'] = 'Publikus';
 $TEXT['PUBL_END_DATE'] = 'Z&#225;r&#243; d&#225;tum';
 $TEXT['PUBL_START_DATE'] = 'Kezd&#224;d&#225;tum';
+$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
 $TEXT['RADIO_BUTTON_GROUP'] = 'V&#225;laszt&#243; gomb csoport';
 $TEXT['READ'] = 'Olr&#225;s';
 $TEXT['READ_MORE'] = '</br>Tov&#225;bb...</br>';
@@ -263,6 +274,7 @@ $TEXT['REDIRECT_AFTER'] = '&#180;ir&#225;ny&#237;t&#225;s';
 $TEXT['REGISTERED'] = 'Regisztr&#225;lva';
 $TEXT['REGISTERED_VIEWERS'] = 'Regisztr&#225;lt l&#225;togat&#243;k';
 $TEXT['RELOAD'] = '&#170;rat&#246;lt&#233;s';
+$TEXT['REMAINING'] = 'Remaining';
 $TEXT['REMEMBER_ME'] = 'Eml&#233;kezzen';
 $TEXT['RENAME'] = '&#180;nevez';
 $TEXT['RENAME_FILES_ON_UPLOAD'] = 'No upload for this filetypes';
@@ -290,6 +302,7 @@ $TEXT['SECTION_BLOCKS'] = 'Szakaszok';
 $TEXT['SEC_ANCHOR'] = 'Szekci&#243;-Horgony sz&#246;veg';
 $TEXT['SELECT_BOX'] = 'Jel&#246;l&#224;n&#233;gyzet';
 $TEXT['SEND_DETAILS'] = 'Jelsz&#243; elk&#252;ld&#233;se';
+$TEXT['SEND_TESTMAIL'] = 'To verify that the email settings are working properly, you can send a test email to the email adress above by clicking on the button. Please notice that you have to save the settings at first.';
 $TEXT['SEPARATE'] = 'K&#252;l&#246;n&#225;ll&#243;';
 $TEXT['SEPERATOR'] = 'Elv&#225;laszt&#243;';
 $TEXT['SERVER_EMAIL'] = 'Port&#225;l E-mail c&#237;me';
@@ -322,6 +335,14 @@ $TEXT['TEXT'] = 'Sz&#246;veg';
 $TEXT['TEXTAREA'] = 'Sz&#246;vegter&#252;let';
 $TEXT['TEXTFIELD'] = 'Sz&#246;vegmez&#231;';
 $TEXT['THEME'] = 'Admin T&#233;ma';
+$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
+$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
+$TEXT['THEME_CURRENT'] = 'current active theme';
+$TEXT['THEME_START_COPY'] = 'copy';
+$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
+$TEXT['THEME_SELECT_HTT'] = 'select templates';
+$TEXT['THEME_NOMORE_HTT'] = 'no more available';
+$TEXT['THEME_START_IMPORT'] = 'import';
 $TEXT['TIME'] = 'Id&#231;';
 $TEXT['TIMEZONE'] = 'Id-?-?&#243;na';
 $TEXT['TIME_FORMAT'] = 'Id&#224;form&#225;tum';
@@ -357,9 +378,9 @@ $TEXT['VIEW_DETAILS'] = 'Inf&#243;t megn&#233;z';
 $TEXT['VISIBILITY'] = 'Megjelen&#233;s';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'K&#252;ld&#224;email';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'K&#252;ld&#224;szem&#233;ly';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'K&#233;rlek add meg az alap&#233;rtelmezett "K&#252;ld&#224;email" c&#237;met &#233;s a "K&#252;ld&#224;szem&#233;ly" mez-?-?. Aj&#225;nlott az al&#225;bbi foszn&#225;lata: <strong>admin@tedomained.hu</strong>. N&#233;mely szolg&#225;ltat&#243; (e.g. <em>mail.com</em>) Visszautas&#237;thatja a leveleket az olyan k&#252;ld&#224;c&#237;mt-?-? mint <@mail.com</em> ez az&#233;rt van hogy megakad&#225;lyozz&#225;k a SPAM k&#252;ld&#233;st.<br /><br />Az alap&#233;rtelmezett &#233;rt&#233;kek csak akkor &#233;rv&#233;nyesek,ha nincs m&#225;s megadva aker-ben. Ha a szervered t&#225;mogatja <acronym title="Simple mail transfer protocol">SMTP</acronym>protokolt, akkor haszn&#225;lhatod ezt az opci&#243;t lev&#233;l k&#252;ld&#233;;hez.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'K&#233;rlek add meg az alap&#233;rtelmezett "K&#252;ld&#224;email" c&#237;met &#233;s a "K&#252;ld&#224;szem&#233;ly" mez-?-?. Aj&#225;nlott az al&#225;bbi foszn&#225;lata: <strong>admin@tedomained.hu</strong>. N&#233;mely szolg&#225;ltat&#243; (e.g. <em>mail.com</em>) Visszautas&#237;thatja a leveleket az olyan k&#252;ld&#224;c&#237;mt-?-? mint <@mail.com</em> ez az&#233;rt van hogy megakad&#225;lyozz&#225;k a SPAM k&#252;ld&#233;st.<br /><br />Az alap&#233;rtelmezett &#233;rt&#233;kek csak akkor &#233;rv&#233;nyesek,ha nincs m&#225;s megadva aker-ben.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mail Rutin';
-$TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Be&#225;ll&#237;t&#225;sok:</strong><br />Ezek a be&#225;ll&#237;t&#225;sok csak akkor sz&#252;ks&#233;gesek, ha emailt akarsz k&#252;ldeni <acro="Simple mail transfer protocol">SMTP</acronym> protokollon kereszt&#252;l. Ha nem tudod az SMTP kiszolg&#225;l&#243;dat, vagy nem vagy biztos a k&#246;vetlem&#233;nyekben, akkoszer-?-&#166;en maradj az alap be&#225;ll&#237;t&#225;sn&#225;l: PHP MAIL.';
+$TEXT['WBMAILER_NOTICE'] = '<strong>SMTP Mailer Be&#225;ll&#237;t&#225;sok:</strong><br />Ezek a be&#225;ll&#237;t&#225;sok csak akkor sz&#252;ks&#233;gesek, ha emailt akarsz k&#252;ldeni <abbr="Simple mail transfer protocol">SMTP</abbr> protokollon kereszt&#252;l. Ha nem tudod az SMTP kiszolg&#225;l&#243;dat, vagy nem vagy biztos a k&#246;vetlem&#233;nyekben, akkoszer-?-&#166;en maradj az alap be&#225;ll&#237;t&#225;sn&#225;l: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
 $TEXT['WBMAILER_SMTP'] = 'SMTP';
 $TEXT['WBMAILER_SMTP_AUTH'] = 'SMTP Azonos&#237;t&#225;s';
@@ -382,21 +403,6 @@ $TEXT['WRITE'] = 'g';
 $TEXT['WYSIWYG_EDITOR'] = 'WYSIWYG Szerkeszt&#231;';
 $TEXT['WYSIWYG_STYLE'] = 'WYSIWYG St&#237;lus';
 $TEXT['YES'] = 'Igen';
-$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
-$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
-$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
-$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
-$TEXT['THEME_CURRENT'] = 'current active theme';
-$TEXT['THEME_START_COPY'] = 'copy';
-$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
-$TEXT['THEME_SELECT_HTT'] = 'select templates';
-$TEXT['THEME_NOMORE_HTT'] = 'no more available';
-$TEXT['THEME_START_IMPORT'] = 'import';
-// PHP error levels (since WBCE 1.3.0)
-$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
-$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
-$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
-$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Kieg&#233;sz&#237;t&#224;k&#246;vetelm&#233;nyek nem megfelel-?-?k';
@@ -444,13 +450,15 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Sablon elt&#225;vol&#237;t&#225;s';
 $HEADING['UPGRADE_LANGUAGE'] = 'Language register/upgrading';
 $HEADING['UPLOAD_FILES'] = 'F&#225;jl(ok) felt&#246;lt&#233;se';
 $HEADING['WBMAILER_SETTINGS'] = 'Levelez&#224;Be&#225;ll&#237;t&#225;sok';
+$HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the mailer settings below are being overriden by settings in the file <code>[WB_PATH]/include/PHPMailer/config_mail.php</code>.<br />'
+                                        . 'In order to use the mailer settings below you\'ll need to disable the array in named file.';
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Languages reloaded successfully';
 $MESSAGE['ADDON_MANUAL_FTP_LANGUAGE'] = '<strong>ATTENTION!</strong> For safety reasons uploading languages files in the folder/languages/ only by FTP and use the Upgrade function for registering or updating.';
 $MESSAGE['ADDON_MANUAL_FTP_WARNING'] = 'Warning: Existing module database entries will get lost. ';
-$MESSAGE['ADDON_MANUAL_INSTALLATION'] = 'When modules are uploaded via FTP (not recommended), the module installation functions <tt>install</tt>, <tt>upgrade</tt> or <tt>uninstall</tt> will not be executed automatically. Those modules may not work correct or do not uninstall properly.<br /><br />You can execute the module functions manually for modules uploaded via FTP below.';
+$MESSAGE['ADDON_MANUAL_INSTALLATION'] = 'When modules are uploaded via FTP (not recommended), the module installation functions <code>install</code>, <code>upgrade</code> or <code>uninstall</code> will not be executed automatically. Those modules may not work correct or do not uninstall properly.<br /><br />You can execute the module functions manually for modules uploaded via FTP below.';
 $MESSAGE['ADDON_MANUAL_INSTALLATION_WARNING'] = 'Warning: Existing module database entries will get lost. Only use this option if you experience problems with modules uploaded via FTP.';
 $MESSAGE['ADDON_MANUAL_RELOAD_WARNING'] = 'Warning: Existing module database entries will get lost. ';
 $MESSAGE['ADDON_MODULES_RELOADED'] = 'Modules reloaded successfully';
@@ -470,6 +478,7 @@ $MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'M&#225;r telep&#237;tve';
 $MESSAGE['GENERIC_BAD_PERMISSIONS'] = 'A c&#233;l k&#246;nyvt&#225;r nem &#237;rhat&#243;';
 $MESSAGE['GENERIC_BE_PATIENT'] = 'Please be patient.';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Nem lehet elt&#225;vol&#237;tani';
+$MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES'] = 'Cannot uninstall core modules!';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE'] = 'Nem lehet elt&#225;volt&#237;tani! A file haszn&#225;latban van.';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'] = '<br /><br />{{type}} <b>{{type_name}}</b> nem lehet elt&#225;vol&#237;tani, mert m&#233;g haszn&#225;latban van a k&#246;v&#224;oldalon: {{pages}}.<br /><br />';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES'] = 'ez az oldal;ezek az oldalak';
@@ -595,14 +604,15 @@ UserId: {LOGIN_ID}
 E-Mail: {LOGIN_EMAIL}
 IP-Adress: {LOGIN_IP}
 Registration date: {SIGNUP_DATE}
+
 ----------------------------------------
-This message was automatic generated!&#10;&#10;';
+This message was automatic generated!';
 $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
-This mail was sent because the \'forgot password\' function has been applied to your account.
+This mail was sent because the forgot password function has been applied to your account.
 
-Your new \'{LOGIN_WEBSITE_TITLE}\' login details are:
+Your new {LOGIN_WEBSITE_TITLE} login details are:
 
 Loginname: {LOGIN_NAME}
 Password: {LOGIN_PASSWORD}
@@ -610,34 +620,39 @@ Password: {LOGIN_PASSWORD}
 Your password has been reset to the one above.
 This means that your old password will no longer work anymore!
 If you\'ve got any questions or problems within the new login-data
-you should contact the website-team or the admin of \'{LOGIN_WEBSITE_TITLE}\'.
+you should contact the website-team or the admin of {LOGIN_WEBSITE_TITLE}.
 Please remember to clean you browser-cache before using the new one to avoid unexpected fails.
 
-Regards
 ------------------------------------
-This message was automatic generated&#10;&#10;';
+This message was automatic generated';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
-Welcome to our \'{LOGIN_WEBSITE_TITLE}\'.
+Welcome to our {LOGIN_WEBSITE_TITLE}.
 
-Your \'{LOGIN_WEBSITE_TITLE}\' login details are:
+Your {LOGIN_WEBSITE_TITLE} login details are:
 Loginname: {LOGIN_NAME}
 Password: {LOGIN_PASSWORD}
 
-Regards
-
 Please:
 if you have received this message by an error, please delete it immediately!
+
 -------------------------------------
-This message was automatic generated&#33;&#10;';
-$MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Bejelentkez&#233;si r&#233;szletek...';
+This message was automatic generated!';
+$MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Your login details...';
 $MESSAGE['SIGNUP_NO_EMAIL'] = 'E-mail c&#237;met meg kell adnia';
 $MESSAGE['START_CURRENT_USER'] = 'Bejelentkezve mint:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Figyelmeztet&#233;s! A telep&#237;t&#233;si k&#246;nyvt&#225;r m&#233;g nem lett t&#246;r&#246;lve!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
 $MESSAGE['START_WELCOME_MESSAGE'] = '&#164;v a WBCE CMS Admin fel&#252;let&#233;n';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Figyelem: A sablon megv&#225;ltoztat&#225;s&#225;t a be&#225;ll&#237;t&#225;sokban teheti meg';
+$MESSAGE['TESTMAIL_SUCCESS'] = "The test email was sent to <code>%s</code>. Please check your inbox.";
+$MESSAGE['TESTMAIL_FAILURE'] = "The test email could not be sent to <code>%s</code>.<br />Please check your settings and try again.";
+$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
+$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
+$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
+$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
+$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
 $MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
@@ -661,11 +676,6 @@ $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'A be&#237;rt jelsz&#243; t&#250;l r&#246
 $MESSAGE['USERS_SAVED'] = 'Felhaszn&#225;l&#243; sikeresen mentve';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';
-$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
-$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
-$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
-$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
-$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
 
 $OVERVIEW['ADMINTOOLS'] = 'WBCE CMS adminisztr&#225;ci&#243;s eszk&#246;z&#246;k...';

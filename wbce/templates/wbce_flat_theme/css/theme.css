@@ -200,11 +200,9 @@ textarea.code,input.code { font-family:courier, monospace; color:#444; }
 .themebox .tb_content a.tb_titel { display:block; margin:0 0 12px -4px; padding:0 0 0 4px; background-color:transparent; color:#f3f3f3; transition:2s; }
 .themebox .tb_content a.tb_titel:hover { background-color:rgba(203,207,216,0.55); }
 .themebox .tb_footer { display:inline-block; position:absolute; right:0; bottom:0; width:30px; height:30px; }
-.themebox .tb_footer a,.themebox .tb_footer span.tb_icon { position:relative; display:block; color:#f3f3f3; }
+.themebox .tb_footer a,.themebox .tb_footer span.tb_icon { display:block; color:#f3f3f3; }
 .themebox .tb_footer a:before,.themebox .tb_footer span.tb_icon:before { font-family:FontAwesome; display:block; content:""; font-weight:400; font-size:15px; transition:all 1s; }
 .themebox:hover { background-color:#3c4150; }
-.themebox:hover .tb_header span,.themebox:hover .tb_header span.tb_icon { transform:rotate(-12deg) scale(1.8); top:5px; left:-35px; opacity:0.4; }
-.themebox:hover .tb_footer a:before,.themebox:hover .tb_footer span.tb_icon:before { transform:scale(1.5); }
 /* green color for themeboxes */ 
 .themebox.green,.dashboard { background-color:#4DB34E; }
 .themebox.green .tb_header a:before,.dashboard .tb_header a:before,.themebox.green .tb_header span.tb_icon:before,.dashboard .tb_header span.tb_icon:before { color:#f3f3f3; }
@@ -226,8 +224,6 @@ textarea.code,input.code { font-family:courier, monospace; color:#444; }
 .dashboard .dashboard_information .label_icon:before { font-family:FontAwesome; position:relative; font-size:30px; line-height:48px; }
 .dashboard .dashboard_information .label_icon.count_pages:before { content:""; }
 .dashboard .dashboard_information .label_icon.last_modified:before { content:""; }
-.dashboard:hover .tb_header a:before,.dashboard:hover .tb_header span.tb_icon:before { transform:rotate(0deg) scale(6)!important; top:100px!important; left:0!important; opacity:0.15!important; transition:1s!important; }
-.dashboard:hover .tb_content a.tb_titel:hover { background-color:transparent; }
 /* individual icons and colors for startpage themeboxes */ 
 div.themebox#module_pages .tb_header a:before { content:"\f044"; }
 div.themebox#module_media .tb_header a:before { content:"\f03e"; }

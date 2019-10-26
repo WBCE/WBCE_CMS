@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -18,8 +18,8 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 // Set the language information
 $language_code = 'NL';
 $language_name = 'Dutch'; // Nederlands
-$language_version = '2.8';
-$language_platform = '2.8.x';
+$language_version = '3.2';
+$language_platform = '1.3.0';
 $language_author = 'Bramus, CodeALot, Luckyluke, Argos';
 $language_license = 'GNU General Public License';
 
@@ -59,6 +59,7 @@ $TEXT['ADMINISTRATION_TOOL'] = 'Beheeropties';
 $TEXT['ADMINISTRATOR'] = 'Administrator';
 $TEXT['ADMINISTRATORS'] = 'Beheerders';
 $TEXT['ADVANCED'] = 'Geavanceerd';
+$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
 $TEXT['ALLOWED_FILETYPES_ON_UPLOAD'] = 'Toegestane upload-bestanden';
 $TEXT['ALLOWED_VIEWERS'] = 'Toegestane kijkers';
 $TEXT['ALLOW_MULTIPLE_SELECTIONS'] = 'Meerdere selecties toestaan';
@@ -70,6 +71,7 @@ $TEXT['APP_NAME'] = 'Applicatienaam';
 $TEXT['ARE_YOU_SURE'] = 'Weet u het zeker?';
 $TEXT['AUTHOR'] = 'Auteur';
 $TEXT['BACK'] = 'Terug';
+$TEXT['BACKEND'] = 'Backend';
 $TEXT['BACKUP'] = 'Backup maken';
 $TEXT['BACKUP_ALL_TABLES'] = 'Backup van alle tabellen in de database';
 $TEXT['BACKUP_DATABASE'] = 'Backup van de database maken';
@@ -77,6 +79,7 @@ $TEXT['BACKUP_MEDIA'] = 'Backup van de Media-map maken';
 $TEXT['BACKUP_WB_SPECIFIC'] = 'Backup van alleen WB-gerelateerde tabellen';
 $TEXT['BASIC'] = 'Basis';
 $TEXT['BLOCK'] = 'Blok';
+$TEXT['BUTTON_SEND_TESTMAIL'] = 'Check email configuration';
 $TEXT['CALENDAR'] = 'Kalender';
 $TEXT['CANCEL'] = 'Annuleren';
 $TEXT['CAN_DELETE_HIMSELF'] = 'Kan zichzelf verwijderen';
@@ -85,6 +88,7 @@ $TEXT['CAP_EDIT_CSS'] = 'Wijzig CSS';
 $TEXT['CHANGE'] = 'Verander';
 $TEXT['CHANGES'] = 'Veranderingen';
 $TEXT['CHANGE_SETTINGS'] = 'Wijzig instellingen';
+$TEXT['CHARACTERS'] = 'Characters';
 $TEXT['CHARSET'] = 'Tekenset';
 $TEXT['CHECKBOX_GROUP'] = 'Aankruisvakjes';
 $TEXT['CLOSE'] = 'Sluiten';
@@ -122,12 +126,17 @@ $TEXT['EMPTY_TRASH'] = 'Prullenbak legen';
 $TEXT['ENABLED'] = 'Aan';
 $TEXT['END'] = 'Einde';
 $TEXT['ERROR'] = 'Fout';
+$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
+$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
+$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
+$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 $TEXT['EXACT_MATCH'] = 'Exacte term';
 $TEXT['EXECUTE'] = 'Uitvoeren';
 $TEXT['EXPAND'] = 'Uitklappen';
 $TEXT['EXTENSION'] = 'Extensie';
 $TEXT['FIELD'] = 'Veld';
 $TEXT['FILE'] = 'Bestand';
+$TEXT['FILENAME'] = 'Filename';
 $TEXT['FILES'] = 'bestanden';
 $TEXT['FILESYSTEM_PERMISSIONS'] = 'Bestandssysteembevoegdheden';
 $TEXT['FILE_MODE'] = 'Bestandsmodus';
@@ -144,6 +153,8 @@ $TEXT['FUNCTION'] = 'Functie';
 $TEXT['GROUP'] = 'Groep';
 $TEXT['HEADER'] = 'Header';
 $TEXT['HEADING'] = 'Titel';
+$TEXT['HEADING_ADD_USER'] = 'Add User';
+$TEXT['HEADING_MODIFY_USER'] = 'Modify User';
 $TEXT['HEADING_CSS_FILE'] = 'Actuele modulebestand: ';
 $TEXT['HEIGHT'] = 'Hoogte';
 $TEXT['HIDDEN'] = 'Verborgen';
@@ -190,7 +201,6 @@ $TEXT['MAX_EXCERPT'] = 'Maximaal aantal gelijktijdige zoekacties';
 $TEXT['MAX_SUBMISSIONS_PER_HOUR'] = 'Maximaal aantal inzendingen per uur';
 $TEXT['MEDIA_DIRECTORY'] = 'Media-map';
 $TEXT['MENU'] = 'Menu';
-$TEXT['FILENAME'] = 'Filename';
 $TEXT['MENU_ICON_0'] = 'Menu-icoon normal';
 $TEXT['MENU_ICON_1'] = 'Menu-icoon hover';
 $TEXT['MENU_TITLE'] = 'Menutitel';
@@ -256,6 +266,7 @@ $TEXT['PROFILES_EDIT'] = 'Change the profile';
 $TEXT['PUBLIC'] = 'Iedereen';
 $TEXT['PUBL_END_DATE'] = 'Einddatum';
 $TEXT['PUBL_START_DATE'] = 'Startdatum';
+$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
 $TEXT['RADIO_BUTTON_GROUP'] = 'Radio buttons';
 $TEXT['READ'] = 'Lees';
 $TEXT['READ_MORE'] = 'Lees verder';
@@ -263,6 +274,7 @@ $TEXT['REDIRECT_AFTER'] = 'Omleiding na (sec.)';
 $TEXT['REGISTERED'] = 'Geregistreerd';
 $TEXT['REGISTERED_VIEWERS'] = 'Geregistreerde bezoekers';
 $TEXT['RELOAD'] = 'Vernieuwen';
+$TEXT['REMAINING'] = 'Remaining';
 $TEXT['REMEMBER_ME'] = 'Onthoud mijn gegevens.';
 $TEXT['RENAME'] = 'Hernoemen';
 $TEXT['RENAME_FILES_ON_UPLOAD'] = 'No upload for this filetypes';
@@ -290,6 +302,7 @@ $TEXT['SECTION_BLOCKS'] = 'Sectieblokken';
 $TEXT['SEC_ANCHOR'] = 'Sessie-voorvoegsel';
 $TEXT['SELECT_BOX'] = 'Selectiemenu';
 $TEXT['SEND_DETAILS'] = 'Stuur gegevens';
+$TEXT['SEND_TESTMAIL'] = 'To verify that the email settings are working properly, you can send a test email to the email adress above by clicking on the button. Please notice that you have to save the settings at first.';
 $TEXT['SEPARATE'] = 'Gescheiden';
 $TEXT['SEPERATOR'] = 'Scheidingsteken tussen opties (HTML toegestaan)';
 $TEXT['SERVER_EMAIL'] = 'Server e-mail';
@@ -322,6 +335,14 @@ $TEXT['TEXT'] = 'Tekst';
 $TEXT['TEXTAREA'] = 'Tekstveld';
 $TEXT['TEXTFIELD'] = 'Tekstregel';
 $TEXT['THEME'] = 'Thema Website-beheer';
+$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
+$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
+$TEXT['THEME_CURRENT'] = 'current active theme';
+$TEXT['THEME_START_COPY'] = 'copy';
+$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
+$TEXT['THEME_SELECT_HTT'] = 'select templates';
+$TEXT['THEME_NOMORE_HTT'] = 'no more available';
+$TEXT['THEME_START_IMPORT'] = 'import';
 $TEXT['TIME'] = 'Tijd';
 $TEXT['TIMEZONE'] = 'Tijdzone';
 $TEXT['TIME_FORMAT'] = 'Tijdweergave';
@@ -357,9 +378,9 @@ $TEXT['VIEW_DETAILS'] = 'Gegevens bekijken';
 $TEXT['VISIBILITY'] = 'Zichtbaarheid';
 $TEXT['WBMAILER_DEFAULT_SENDER_MAIL'] = 'Standaard afzendermailadres';
 $TEXT['WBMAILER_DEFAULT_SENDER_NAME'] = 'Standaard afzendernaam';
-$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Specificeer hieronder een standaard afzenderadres en afzendernaam. Het is aanbevolen om een afzenderadres als: <strong>admin@uwdomein.nl</strong> te gebruiken. Om verspreiding van spam tegen te gaan, kunnen sommige mailproviders (bijv. <em>mail.com</em>) mails verwerpen met een afzenderadres als <em>name@mail.com</em>, die verzonden worden vanaf een relay-server. Onderstaande standaardwaarden worden enkel gebruikt indien geen andere waarden gespecifieerd worden door WBCE CMS. Indien uw server <acronym title="Simple mail transfer protocol">SMTP</acronym> ondersteunt kunt u deze optie gebruiken voor het versturen van uitgaande mails.';
+$TEXT['WBMAILER_DEFAULT_SETTINGS_NOTICE'] = 'Specificeer hieronder een standaard afzenderadres en afzendernaam. Het is aanbevolen om een afzenderadres als: <strong>admin@uwdomein.nl</strong> te gebruiken. Om verspreiding van spam tegen te gaan, kunnen sommige mailproviders (bijv. <em>mail.com</em>) mails verwerpen met een afzenderadres als <em>name@mail.com</em>, die verzonden worden vanaf een relay-server. Onderstaande standaardwaarden worden enkel gebruikt indien geen andere waarden gespecifieerd worden door WBCE CMS.';
 $TEXT['WBMAILER_FUNCTION'] = 'Mailafhandeling';
-$TEXT['WBMAILER_NOTICE'] = '<strong>Instellingen SMTP Mailer:</strong><br />Onderstaande instellingen zijn alleen van toepassing indien u mails wilt verzenden via <acronym title="Simple mail transfer protocol">SMTP</acronym>. Indien u de naam of instellingen van de SMTP-server niet kent, selecteer dan bij de standaard mailroutine: PHP MAIL.';
+$TEXT['WBMAILER_NOTICE'] = '<strong>Instellingen SMTP Mailer:</strong><br />Onderstaande instellingen zijn alleen van toepassing indien u mails wilt verzenden via <abbr title="Simple mail transfer protocol">SMTP</abbr>. Indien u de naam of instellingen van de SMTP-server niet kent, selecteer dan bij de standaard mailroutine: PHP MAIL.';
 $TEXT['WBMAILER_PHP'] = 'PHP MAIL';
 $TEXT['WBMAILER_SMTP'] = 'SMTP';
 $TEXT['WBMAILER_SMTP_AUTH'] = 'SMTP-authenticatie';
@@ -382,21 +403,6 @@ $TEXT['WRITE'] = 'Schrijf';
 $TEXT['WYSIWYG_EDITOR'] = 'WYSIWYG-editor';
 $TEXT['WYSIWYG_STYLE'] = 'WYSIWYG-stijl';
 $TEXT['YES'] = 'Ja';
-$TEXT['ADVANCED_SEARCH'] = 'Advanced Search';
-$TEXT['QUICK_SEARCH_STRG_F'] = 'Press <b>Strg + f</b> for Quick search or use';
-$TEXT['THEME_COPY_CURRENT'] = 'Copy backend theme.';
-$TEXT['THEME_NEW_NAME'] = 'Name of the new Theme';
-$TEXT['THEME_CURRENT'] = 'current active theme';
-$TEXT['THEME_START_COPY'] = 'copy';
-$TEXT['THEME_IMPORT_HTT'] = 'Import additional templates';
-$TEXT['THEME_SELECT_HTT'] = 'select templates';
-$TEXT['THEME_NOMORE_HTT'] = 'no more available';
-$TEXT['THEME_START_IMPORT'] = 'import';
-// PHP error levels (since WBCE 1.3.0)
-$TEXT['ERR_USE_SYSTEM_DEFAULT'] = 'Use system default (php.ini)';
-$TEXT['ERR_HIDE_ERRORS_NOTICES'] = 'Hide all errors and notices (WWW)';
-$TEXT['ERR_SHOW_ERRORS_NOTICES'] = 'Show all errors and notices (development)';
-$TEXT['ERR_SHOW_ERRORS_HIDE_NOTICES'] = 'Show errors, hide notices';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Module voldoet niet aan de eisen';
@@ -444,13 +450,15 @@ $HEADING['UNINSTALL_TEMPLATE'] = 'Verwijderen template';
 $HEADING['UPGRADE_LANGUAGE'] = 'Upgraden/inschakelen taalbestand';
 $HEADING['UPLOAD_FILES'] = 'Uploaden bestanden';
 $HEADING['WBMAILER_SETTINGS'] = 'Mailer-instellingen';
+$HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the mailer settings below are being overriden by settings in the file <code>[WB_PATH]/include/PHPMailer/config_mail.php</code>.<br />'
+                                        . 'In order to use the mailer settings below you\'ll need to disable the array in named file.';
 
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Fout tijdens het updaten van de add-onbestanden.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Taalbestanden succesvol herladen';
 $MESSAGE['ADDON_MANUAL_FTP_LANGUAGE'] = '<strong>ATTENTIE!</strong> Om veiligheidsredenen dient u de taalbestanden in de folder /languages/ via FTP te uploaden en vervolgens de Upgrade-functie te gebruiken om ze aan het systeem toe te voegen.';
 $MESSAGE['ADDON_MANUAL_FTP_WARNING'] = 'Waarschuwing: bestaande module database-informatie zal verloren gaan! ';
-$MESSAGE['ADDON_MANUAL_INSTALLATION'] = 'When modules are uploaded via FTP (not recommended), the module installation functions <tt>install</tt>, <tt>upgrade</tt> or <tt>uninstall</tt> will not be executed automatically. Those modules may not work correct or do not uninstall properly.<br /><br />You can execute the module functions manually for modules uploaded via FTP below.';
+$MESSAGE['ADDON_MANUAL_INSTALLATION'] = 'When modules are uploaded via FTP (not recommended), the module installation functions <code>install</code>, <code>upgrade</code> or <code>uninstall</code> will not be executed automatically. Those modules may not work correct or do not uninstall properly.<br /><br />You can execute the module functions manually for modules uploaded via FTP below.';
 $MESSAGE['ADDON_MANUAL_INSTALLATION_WARNING'] = 'Waarschuwing: de bestaande module database-informatie zal verloren gaan! Gebruik deze optie alleen indien u ervaring heeft met modules die zijn geupload via FTP.';
 $MESSAGE['ADDON_MANUAL_RELOAD_WARNING'] = 'Waarschuwing: de bestaande module database-informatie zal verloren gaan! ';
 $MESSAGE['ADDON_MODULES_RELOADED'] = 'Modules succesvol herladen';
@@ -470,6 +478,7 @@ $MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'Is al ge&#239;nstalleerd';
 $MESSAGE['GENERIC_BAD_PERMISSIONS'] = 'Kan niet schrijven naar doelmap';
 $MESSAGE['GENERIC_BE_PATIENT'] = 'Please be patient.';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Kan niet de&#239;nstalleren';
+$MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES'] = 'Cannot uninstall core modules!';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE'] = 'Kan niet de&#239;nstalleren: het geselecteerde bestand is in gebruik';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'] = '<br /><br />De {{type}} <b>{{type_name}}</b> kan niet verwijderd worden omdat het in gebruik is op {{pages}}:<br /><br />';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES'] = 'volgende pagina;volgende pagina\'s';
@@ -592,17 +601,18 @@ Een nieuwe gebruiker heeft zich aangemeld.
 
 Loginname: {LOGIN_NAME}
 Gebruiker Id: {LOGIN_ID}
-E-mail: {LOGIN_EMAIL}
-IP-adres: {LOGIN_IP}
+E-Mail: {LOGIN_EMAIL}
+IP-Adress: {LOGIN_IP}
 Registratiedatum: {SIGNUP_DATE}
+
 ----------------------------------------
-Dit bericht is automatisch aangemaakt!&#10;&#10;';
+This message was automatic generated!';
 $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Beste {LOGIN_DISPLAY_NAME},
 
 deze mail is aan u verzonden omdat u de \'wachtwoord vergeten\' functie heeft gebruikt.
 
-Uw nieuwe \'{LOGIN_WEBSITE_TITLE}\' inloggegevens zijn:
+Uw nieuwe {LOGIN_WEBSITE_TITLE} inloggegevens zijn:
 
 Loginname: {LOGIN_NAME}
 Wachtwoord: {LOGIN_PASSWORD}
@@ -611,26 +621,24 @@ Let op: dit is een automatisch aangemaakt nieuw wachtwoord. Uw oude wachtwoord i
 
 Heeft u vragen of opmerkingen, neem dan contact op met de websitebeheerder.
 
-Het is aan te raden om uw browser-cache te legen voordat u het nieuwe wachtwoord gebruikt.
-
-Vriendelijke groet
+Het is aan te raden om uw browser-cache te legen voordat u het nieuwe wachtwoord gebruikt..
 
 ------------------------------------
-Dit bericht is automatisch aangemaakt!&#10;&#10;';
+This message was automatic generated';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Beste {LOGIN_DISPLAY_NAME},
 
-Welkom bij \'{LOGIN_WEBSITE_TITLE}\'.
+Welkom bij {LOGIN_WEBSITE_TITLE}.
 
-Uw \'{LOGIN_WEBSITE_TITLE}\' inloggegevens zijn:
-
+Uw {LOGIN_WEBSITE_TITLE} inloggegevens zijn:
 Loginname: {LOGIN_NAME}
 Wachtwoord: {LOGIN_PASSWORD}
 
-Vriendelijke groet
+Please:
+if you have received this message by an error, please delete it immediately!
 
 -------------------------------------
-Dit bericht is automatisch aangemaakt&#33;&#10;';
+This message was automatic generated!';
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Uw inloggegevens...';
 $MESSAGE['SIGNUP_NO_EMAIL'] = 'U moet een e-mailadres invullen';
 $MESSAGE['START_CURRENT_USER'] = 'U bent ingelogd als';
@@ -638,6 +646,13 @@ $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Waarschuwing, de installatiemap bestaat 
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
 $MESSAGE['START_WELCOME_MESSAGE'] = 'Welkom bij het websitebeheer';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Attentie: om de template aan te passen moet u naar de instellingensectie';
+$MESSAGE['TESTMAIL_SUCCESS'] = "The test email was sent to <code>%s</code>. Please check your inbox.";
+$MESSAGE['TESTMAIL_FAILURE'] = "The test email could not be sent to <code>%s</code>.<br />Please check your settings and try again.";
+$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
+$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
+$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
+$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
+$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 $MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
 $MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
@@ -661,11 +676,6 @@ $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'Het ingevoerde wachtwoord is te kort';
 $MESSAGE['USERS_SAVED'] = 'Gebruiker opgeslagen';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';
-$MESSAGE['THEME_COPY_CURRENT'] = 'Copy the current active theme and save it with a new name.';
-$MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
-$MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
-$MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
-$MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
 
 
 $OVERVIEW['ADMINTOOLS'] = 'Diverse extra beheerinstellingen.';
