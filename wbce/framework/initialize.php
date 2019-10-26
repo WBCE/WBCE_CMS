@@ -25,7 +25,7 @@ use Wbce\Loader;
 if(count(get_included_files()) == 1) header("Location: ../index.php", TRUE, 301);
 
 // Stop execution if PHP version is too old
-$sReqPhpVersion = '5.6.30';
+$sReqPhpVersion = '7.1.3';
 if (version_compare(PHP_VERSION, $sReqPhpVersion, '<')) {
     $sMsg  = 'PHP ' . PHP_VERSION . ' running on this system, but at least PHP ' . $sReqPhpVersion . ' required!<br />';
     $sMsg .= 'Please upgrade your PHP Version and try running WBCE CMS again.';
