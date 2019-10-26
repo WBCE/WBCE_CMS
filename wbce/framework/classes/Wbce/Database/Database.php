@@ -342,6 +342,24 @@ class Database
 
         return null;
     }
+        
+    /**
+     * Get result of the query as associative array.
+     *
+     * @param string $query SQL query
+     *
+     * @return array
+     */
+    public function getArray($query)
+    {
+        $aData = array();
+        if($resData = $this->query($query)){
+            while($rec = $resData->fetchRow(MYSQLI_ASSOC)){
+                $aData[] = $rec;
+            }        
+        }
+        return $aData;
+    }
 
     /**
      * Check whether error message exists.
@@ -691,6 +709,10 @@ class Database
                 $this->triggerDeprecatedError('The method name ' . $name . '(\$query) is deprecated, use the method getOne(\$query) instead');
 
                 return call_user_func_array([$this, 'getOne'], $args);
+            case 'get_array':
+                $this->triggerDeprecatedError('The method name ' . $name . '(\$query) is deprecated, use the method getOne(\$query) instead');
+
+                return call_user_func_array([$this, 'getArray'], $args);
             case 'is_error':
                 $this->triggerDeprecatedError('The method name ' . $name . '() is deprecated, use the method hasError() instead');
 
