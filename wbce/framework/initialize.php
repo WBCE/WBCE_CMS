@@ -155,7 +155,7 @@ $loader
     ->registerClassFile('Template', WB_PATH . '/include/phplib/template.inc');
 
 // Connect to Twig TE (the contemporary Templating Engine)
-require_once WB_PATH . '/include/Sensio/Twig/TwigConnect.php';
+require_once WB_PATH . '/include/Sensio/Twig1/TwigConnect.php';
 
 // SETUP SYSTEM CONSTANTS (GLOBAL SETTINGS)
 // We use Settings Class to fetch all Settings from DB

@@ -176,6 +176,7 @@ $dirRemove = array(
     '[ADMIN]/pages/page_tree/icons/',
     '[ADMIN]/themes/',
     '[INCLUDE]/phpmailer/',
+    '[INCLUDE]/Twig/',
     '[MODULES]/output_filter/',
     '[MODULES]/user_search/',
     '[TEMPLATE]/advancedThemeWbFlat/',
