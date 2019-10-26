@@ -742,6 +742,8 @@ _JsCode;
         );
         foreach ($aCheckDirs as $dir) if(is_dir($dir))$aTemplateLocs[] = $dir;
         $oTwig = getTwig($aTemplateLocs);
+        if(file_exists($sCheckFile = ADMIN_PATH.'/'.strstr($sTplName, '.', true).'/call_twig_functions.php')) 
+		include_once($sCheckFile);
         $oTemplate = $oTwig->loadTemplate($sTplName);
         $oTemplate->display($aToTwig);	
     }
