@@ -352,13 +352,10 @@ class Database
      */
     public function getArray($query)
     {
-        $aData = array();
-        if($resData = $this->query($query)){
-            while($rec = $resData->fetchRow(MYSQLI_ASSOC)){
-                $aData[] = $rec;
-            }        
-        }
-        return $aData;
+        $query = $this->replaceTablePrefixes($query);
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll();
     }
 
     /**
