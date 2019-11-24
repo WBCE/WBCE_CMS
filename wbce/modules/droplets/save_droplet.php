@@ -52,9 +52,9 @@ $aUpdate = array(
     'admin_view'    => (int) $admin->get_post('admin_view'),
     'admin_edit'    => (int) $admin->get_post('admin_edit'),
     'show_wysiwyg'  => (int) $admin->get_post('show_wysiwyg'),
-    'description'   => $admin->add_slashes($admin->get_post('description')),
+    'description'   => $admin->get_post('description'),
     'code'          => str_replace($tags, '', $admin->get_post('savecontent')),
-    'comments'      => $admin->add_slashes($admin->get_post('comments')),
+    'comments'      => $admin->get_post('comments'),
     'modified_when' => time(),
     'modified_by'   => (int) $admin->get_user_id()
 );
