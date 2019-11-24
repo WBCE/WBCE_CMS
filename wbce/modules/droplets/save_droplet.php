@@ -17,11 +17,6 @@ $sBackURL = ADMIN_URL.'/admintools/tool.php?tool=droplets';
 // Include WB admin wrapper script
 $admin = new admin('admintools', 'admintools');
 
-/*
-echo "<textarea style=\"width:100%;height:200px;color:#000;background-color:#fff;\">";
-print_r( $_POST );
-echo "</textarea>";
-*/
 
 // check permission
 if ( $admin->get_permission('admintools') == true ) {
@@ -52,13 +47,13 @@ if ($admin->get_post('title') == '') {
 $tags = array('<?php', '?'.'>' , '<?');
 $aUpdate = array(
     'id'            => $droplet_id,
-    'name'          => $admin->add_slashes($admin->get_post('title')),
+    'name'          => $admin->get_post('title'),
     'active'        => (int) $admin->get_post('active'),
     'admin_view'    => (int) $admin->get_post('admin_view'),
     'admin_edit'    => (int) $admin->get_post('admin_edit'),
     'show_wysiwyg'  => (int) $admin->get_post('show_wysiwyg'),
     'description'   => $admin->add_slashes($admin->get_post('description')),
-    'code'          => $admin->add_slashes(str_replace($tags, '', $_POST['savecontent'])),
+    'code'          => str_replace($tags, '', $admin->get_post('savecontent')),
     'comments'      => $admin->add_slashes($admin->get_post('comments')),
     'modified_when' => time(),
     'modified_by'   => (int) $admin->get_user_id()
