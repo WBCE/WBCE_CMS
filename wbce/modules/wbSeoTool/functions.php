@@ -49,6 +49,7 @@ if(!function_exists('pagesArray')){
 			$sProcessRewriteUrl = ($bRewriteUrlExists == TRUE) ? ' p.`'.REWRITE_URL.'`,' : '';	
 		}
                 
+                $bMySql_57 = false;
                 $sRunningMySqlVersion = $database->get_one("SELECT VERSION()");
 		if(version_compare($sRunningMySqlVersion, "10.0", "<" )) {
                 	$bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
