@@ -73,9 +73,6 @@ if ($the_link == '' || substr($the_link,0,1)=='.'){
     $admin->print_error($MESSAGE['PAGES_BLANK_LINK_TITLE']);
 }
 
-
-
-
 // Get existing perms
 // $database = new database();
 $sSql = 'SELECT `parent`,`link`,`position`,`admin_groups`,`admin_users` FROM `{TP}pages` WHERE `page_id`='.$page_id;
@@ -193,8 +190,8 @@ $database->updateRow('{TP}pages', 'page_id', $aUpdate);
 $target_url = ADMIN_URL.'/pages/settings.php?page_id='.$page_id;
 if ($buttontarget=='saveandback') {	$target_url = ADMIN_URL.'/pages/index.php';	}
 
-if ($database->is_error()){
-    $admin->print_error($database->get_error(), $target_url );
+if ($database->hasError()){
+    $admin->print_error($database->getError(), $target_url );
 }
 // Clean old order if needed
 if ($parent != $old_parent) {
@@ -260,10 +257,16 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/'))
 // Fix sub-pages page trail
 fix_page_trail($page_id,$root_parent);
 
+if($visibility == 'none'){    
+    if (file_exists($sFilePath = getAccessFilePath($page_id))){
+        debug_dump($sFilePath);
+        unlink($sFilePath);
+    }
+}
 
 // Check if there is a db error, otherwise say successful
-if ($database->is_error()) {
-    $admin->print_error($database->get_error(), $target_url );
+if ($database->hasError()) {
+    $admin->print_error($database->getError(), $target_url );
 } else {
     $admin->print_success($MESSAGE['PAGES_SAVED_SETTINGS'], $target_url );	
 }
