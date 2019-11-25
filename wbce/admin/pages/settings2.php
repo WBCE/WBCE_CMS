@@ -259,7 +259,6 @@ fix_page_trail($page_id,$root_parent);
 
 if($visibility == 'none'){    
     if (file_exists($sFilePath = getAccessFilePath($page_id))){
-        debug_dump($sFilePath);
         unlink($sFilePath);
     }
 }
