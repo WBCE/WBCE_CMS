@@ -104,7 +104,7 @@ function default_dir_mode($temp_dir)
 
 function add_slashes($input)
 {
-    if (get_magic_quotes_gpc() || (!is_string($input))) {
+    if (!is_string($input)) {
         return $input;
     }
     $output = addslashes($input);

@@ -313,7 +313,7 @@ function opf_fetch_clean($val, $default=NULL, $type='int', $args=FALSE, $from_gp
   }
   $args['default'] = $default;
   // strip slashes
-  if($from_gpc && get_magic_quotes_gpc()) {
+  if($from_gpc) {
     if(is_array($val)) {
       array_walk_recursive($val, function(&$v,$k) { $v = stripslashes($v); });
     } else
