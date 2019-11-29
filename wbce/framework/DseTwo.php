@@ -203,7 +203,7 @@ class DseTwo
         if (!$bCacheValid) {
             // skip this loop if valid cache is available
             $aResultFileList = array();
-            while (list(, $sFilename) = each($aNewFileList)) {
+	    foreach($aNewFileList as $sFilename){
                 // iterate all tables and search for filename
                 if ($this->_getMatch($sDirToSearch . '/' . $sFilename) !== false) {
                     if ($bRetunMode == self::RETURN_USED) {$aResultFileList[] = $sFilename;}
@@ -235,7 +235,7 @@ class DseTwo
         $result = 0;
         $sFilename = str_replace('_', '\_', $sFilename);
         $sSearch = '%' . str_replace('/', '_', $sFilename) . '%';
-        while (list(, $sQuery) = each($this->_Queries)) {
+	foreach($this->_Queries as $sQuery){
             $sql = sprintf($sQuery, $sSearch);
             if (($res = $this->_oDb->query($sql))) {
                 if (($result = intval($res->fetchRow(MYSQL_ASSOC))) > 0) {break;}
