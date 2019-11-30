@@ -404,15 +404,13 @@ _JsCode;
     }
 	
     /**
-     * @brief   Strip slashes from input string  
+     * @brief   a dummy function left over from gpc 
+     *          we keep it just in case modules rely on it even if it does nothing anymore
      * 
      * @param   string $input  
      * @return  string
      */
     function strip_magic($input) {
-    if ( is_string($input)) {
-            return stripslashes($input);
-        }
         return $input;
     }
     
