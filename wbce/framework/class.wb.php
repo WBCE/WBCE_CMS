@@ -374,21 +374,21 @@ _JsCode;
     }
     
     /**
-     * @brief   Modified addslashes function which takes into account magic_quotes
+     * @brief   Modified addslashes function
      * 
      * @param   string $input  
      * @return  string
      */
     public function add_slashes($input)
     {
-        if (get_magic_quotes_gpc() || (!is_string($input))) {
+        if (!is_string($input)) {
             return $input;
         }
         return addslashes($input);
     }
 
     /**
-     * @brief   The purpose of $this->strip_slashes() is to undo the effects of magic_quotes_gpc==ON	 
+     * @brief   The purpose of $this->strip_slashes() _was_ to undo the effects of magic_quotes_gpc==ON	 
      *          NOTE: this is _not_ the counterpart to $this->add_slashes() !
      *          Use stripslashes() to undo a preliminarily done $this->add_slashes()
      * 
@@ -397,22 +397,20 @@ _JsCode;
      */
     public function strip_slashes($input)
     {
-        if (!get_magic_quotes_gpc() || (!is_string($input))) {
+        if ( !is_string($input)) {
             return $input;
         }
         return stripslashes($input);
     }
 	
     /**
-     * @brief   Strip slashes from input string if get_magic_quotes_gpc() is ON 
+     * @brief   a dummy function left over from gpc 
+     *          we keep it just in case modules rely on it even if it does nothing anymore
      * 
      * @param   string $input  
      * @return  string
      */
     function strip_magic($input) {
-    if (get_magic_quotes_gpc() and is_string($input)) {
-            return stripslashes($input);
-        }
         return $input;
     }
     

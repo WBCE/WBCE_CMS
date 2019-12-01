@@ -202,7 +202,7 @@ if ($res_settings = $database->query($sql)) {
         }
 
         if (!in_array($value, $disallow_in_fields) && (isset($_POST[$setting_name]) || $passed == true)) {
-            $value = trim($admin->strip_magic($value));
+            $value = trim($value);
             $sSql = "UPDATE `{TP}settings` SET `value`='".$database->escapeString($value)."' "
                     . "WHERE `name` != 'wb_version' AND `name`= '".$setting_name."'";
             if (!$database->query($sSql)) {
