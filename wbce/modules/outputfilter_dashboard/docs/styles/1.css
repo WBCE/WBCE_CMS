@@ -17,7 +17,8 @@
 body {
     font: 10pt "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
     color: #000000;
-    margin: 0; padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .ContentPage,
@@ -25,6 +26,7 @@ body {
 .FramedMenuPage {
     background-color: #e4e4e4 !important
 }
+
 .FramedContentPage,
 .FramedIndexPage,
 .FramedSearchResultsPage,
@@ -32,29 +34,48 @@ body {
     background-color: #FFFFFF;
 }
 
-
 a:link,
-a:visited { text-decoration: none }
-a:hover {  text-decoration: underline }
-a:active {  text-decoration: underline }
-a  { color: #a00000; }
-a:active  { color: #a00000; }
+a:visited {
+    text-decoration: none
+}
 
-h4  {
+a:hover {
+    text-decoration: underline
+}
+
+a:active {
+    text-decoration: underline
+}
+
+a {
+    color: #a00000;
+}
+
+a:active {
+    color: #a00000;
+}
+
+h4 {
     color: #b32312;
     font-size: 15px !important;
     width: 90%;
     border-bottom:
-    1px solid
+        1px solid
 }
-td {
-    vertical-align: top }
 
-img  { color: #515d76; padding: 3px; border: outset 2px }
+td {
+    vertical-align: top
+}
+
+img {
+    color: #515d76;
+    padding: 3px;
+    border: outset 2px
+}
 
 p {
-    margin: 6px }
-
+    margin: 6px
+}
 
 /*  Can't use something like display: none or it won't break.  */
 .HB {
@@ -69,7 +90,6 @@ blockquote {
     overflow: auto;
 }
 
-
 .Firefox1 blockquote {
     padding-bottom: .5em;
 }
@@ -77,37 +97,38 @@ blockquote {
 /*  Turn off scrolling when printing.  */
 @media print {
     blockquote {
-    overflow: visible;
-}
-    .IE blockquote {
-    width: auto;
-}
-}
+        overflow: visible;
+    }
 
+    .IE blockquote {
+        width: auto;
+    }
+}
 
 /* ______MENU_______ */
-#Menu  {
-   font-size: 9pt;
-   background-image: url(../files/images/docu_logo.gif);
-   background-repeat: no-repeat;
-   background-position: 0 6px;
-   padding: 115px 0 0
+#Menu {
+    font-size: 9pt;
+    background-image: url(../files/images/docu_logo.gif);
+    background-repeat: no-repeat;
+    background-position: 0 6px;
+    padding: 115px 0 0
 }
+
 .ContentPage #Menu,
-.IndexPage #Menu  {
+.IndexPage #Menu {
     position: absolute;
     top: 0;
     left: 0;
     width: 31ex;
     overflow: hidden
 }
+
 .ContentPage .Firefox #Menu,
 .IndexPage .Firefox #Menu {
     width: 27ex;
 }
 
-
-.MTitle   {
+.MTitle {
     font-size: 16pt;
     font-variant: small-caps;
     font-weight: bold;
@@ -118,7 +139,7 @@ blockquote {
     border-bottom: 1px dotted #000000
 }
 
-.MSubTitle  {
+.MSubTitle {
     font-size: 9pt;
     font-variant: normal;
     font-weight: normal;
@@ -128,13 +149,16 @@ blockquote {
 
 .MEntry a:link,
 .MEntry a:hover,
-.MEntry a:visited  {
+.MEntry a:visited {
     color: #515d76;
     font-size: 14px !important;
     margin-right: 0
 }
-.MEntry a:active { color: #A00000; margin-right: 0 }
 
+.MEntry a:active {
+    color: #A00000;
+    margin-right: 0
+}
 
 div.MGroup {
     background-color: #f6f8ff;
@@ -145,9 +169,9 @@ div.MGroup {
 }
 
 .MGroup {
-   font-weight: bold;
-   margin: 1em 0 1em 10px;
-   padding: 0
+    font-weight: bold;
+    margin: 1em 0 1em 10px;
+    padding: 0
 }
 
 .MGroupContent {
@@ -162,38 +186,48 @@ div.MGroup {
     font-size: 13px !important;
     margin-right: 10px
 }
+
 .MGroup a:active {
     color: #A00000;
     margin-right: 10px
 }
-.MEntry .MFile a {
-   font-size: 12px !important;
-}
 
+.MEntry .MFile a {
+    font-size: 12px !important;
+}
 
 .MFile,
 .MText,
 .MLink,
-.MIndex  {margin: 0.25em 0; padding: 1px 17px 2px 10px }
+.MIndex {
+    margin: 0.25em 0;
+    padding: 1px 17px 2px 10px
+}
 
 .MText {
-font-size: 8pt; font-style: italic }
+    font-size: 8pt;
+    font-style: italic
+}
 
 .MLink {
-font-style: italic }
+    font-style: italic
+}
+
 /*SELECTED MENU ITEMS*/
-#MSelected   {
+#MSelected {
     color: #000000;
     background-color: #dae0ed;
     padding: 0
 }
+
 /*  Close off the left side when its in a group.  */
 div.MGroup #MSelected {
     padding-left: 9px;
     border-left-width: 1px;
     background-color: #dae0ed;
 }
-#MSelected  {
+
+#MSelected {
     background-color: #f6f8ff;
     margin-right: 5px;
     margin-left: 4px;
@@ -215,7 +249,7 @@ div.MGroup #MSelected {
     margin: .25em 0;
 }
 
-#MSearchField  {
+#MSearchField {
     color: #515d76;
     font: italic 9pt "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
     background-color: #fdf8e0;
@@ -223,16 +257,19 @@ div.MGroup #MSelected {
     width: 100%;
     border: solid 1px
 }
-    /* Only Opera gets it right. */
+
+/* Only Opera gets it right. */
 .Firefox #MSearchField,
 .IE #MSearchField,
 .Safari #MSearchField {
     width: 94%;
 }
+
 .Opera9 #MSearchField,
 .Konqueror #MSearchField {
     width: 97%;
 }
+
 .FramedMenuPage .Firefox #MSearchField,
 .FramedMenuPage .Safari #MSearchField,
 .FramedMenuPage .Konqueror #MSearchField {
@@ -241,12 +278,13 @@ div.MGroup #MSelected {
 
 /* Firefox doesn't do this right in frames without #MSearchPanel added on.
 It's presence doesn't hurt anything other browsers. */
-#MSearchPanel.MSearchPanelInactive:hover #MSearchField  {
+#MSearchPanel.MSearchPanelInactive:hover #MSearchField {
     background-color: #fdf8e0;
     padding: 1px 3px;
     border: solid 1px #515d76
 }
-.MSearchPanelActive #MSearchField  {
+
+.MSearchPanelActive #MSearchField {
     font-style: normal;
     background-color: #ffffff;
     padding: 1px 3px;
@@ -260,6 +298,7 @@ It's presence doesn't hurt anything other browsers. */
     padding: 0;
     border: 1px solid #C0C0C0;
 }
+
 .MSearchPanelActive #MSearchType,
 /*  As mentioned above, Firefox doesn't do this right in frames without #MSearchPanel added on. */
 #MSearchPanel.MSearchPanelInactive:hover #MSearchType,
@@ -267,6 +306,7 @@ It's presence doesn't hurt anything other browsers. */
     visibility: visible;
     color: #606060;
 }
+
 #MSearchType option#MSearchEverything {
     font-weight: bold;
 }
@@ -276,29 +316,33 @@ It's presence doesn't hurt anything other browsers. */
     margin-left: -1px;
 }
 
-
 iframe#MSearchResults {
     width: 60ex;
     height: 15em;
 }
+
 #MSearchResultsWindow {
     display: none;
     position: absolute;
-    left: 0; top: 0;
+    left: 0;
+    top: 0;
     border: 1px solid #000000;
     background-color: #E8E8E8;
 }
+
 #MSearchResultsWindowClose {
     font-weight: bold;
     font-size: 8pt;
     display: block;
     padding: 2px 5px;
 }
+
 #MSearchResultsWindowClose:link,
 #MSearchResultsWindowClose:visited {
     color: #000000;
     text-decoration: none;
 }
+
 #MSearchResultsWindowClose:active,
 #MSearchResultsWindowClose:hover {
     color: #800000;
@@ -306,38 +350,35 @@ iframe#MSearchResults {
     background-color: #F4F4F4;
 }
 
-
-
-
 #Content {
     padding-bottom: 15px;
 }
 
-.ContentPage #Content  {
+.ContentPage #Content {
     font-size: 9pt;
     background-color: #ffffff;
     margin: 10px 10px 0px 31ex;
     padding: 5px;
     border: solid 2px #3c4557
 }
+
 .ContentPage .Firefox #Content {
     margin-left: 27ex;
 }
-
-
 
 .CTopic {
     font-size: 10pt;
     margin-bottom: 3em;
 }
 
-h3.CTitle  {
+h3.CTitle {
     color: #3c4557;
     font-size: 12pt;
     border-style: solid;
     border-width: 0 0 2px;
     border-color: #a0a0a0 #a0a0a0 #515d76
 }
+
 .CTitle {
     margin: 0 15px .5em 15px
 }
@@ -357,7 +398,7 @@ h3.CTitle  {
 .CInterface .CTitle,
 .CDatabase .CTitle,
 .CDatabaseTable .CTitle,
-.CSection .CTitle  {
+.CSection .CTitle {
     color: #ffffff;
     font-size: 16pt;
     background-color: #5a6986;
@@ -379,13 +420,16 @@ h3.CTitle  {
     margin-right: 0
 }
 
-.CBody  { margin-right: 15px; margin-left: 45px }
-
+.CBody {
+    margin-right: 15px;
+    margin-left: 45px
+}
 
 .CToolTip {
     position: absolute;
     visibility: hidden;
-    left: 0; top: 0;
+    left: 0;
+    top: 0;
     background-color: #FFFFE0;
     padding: 5px;
     border-width: 1px 2px 2px 1px;
@@ -402,19 +446,23 @@ h3.CTitle  {
 .CToolTip blockquote {
     overflow: hidden;
 }
-    .IE6 .CToolTip blockquote {
+
+.IE6 .CToolTip blockquote {
     overflow: visible;
 }
 
 .CHeading {
-    font-weight: bold; font-size: 10pt;
+    font-weight: bold;
+    font-size: 10pt;
     margin: 1.5em 0 .5em 0;
 }
 
 .CBody pre {
-        color: #6c1111;
+    color: #6c1111;
     font: 10pt "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, monospace;
-    border-style: solid; border-width: 2px; border-color: #999 #ccc #dadada #999;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #999 #ccc #dadada #999;
     background-color: #fffcdd;
     margin: 0 0 1em 0;
 }
@@ -422,12 +470,14 @@ h3.CTitle  {
 .CBody ul {
     /*  I don't know why CBody's margin doesn't apply, but it's consistent across browsers so whatever.
          Reapply it here as padding.  */
-    padding-left: 15px; padding-right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
     margin: .5em 2ex .5em 2ex;
 }
 
 .CDescriptionList {
-    margin: .5em 2ex 0 2ex }
+    margin: .5em 2ex 0 2ex
+}
 
 .CDLEntry {
     font: 10pt "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, monospace;
@@ -437,17 +487,18 @@ h3.CTitle  {
 }
 
 .CDLDescription {
-    font-size: 10pt;  /*  For browsers that don't inherit correctly, like Opera 5.  */
+    font-size: 10pt;
+    /*  For browsers that don't inherit correctly, like Opera 5.  */
     padding-bottom: .5em;
     padding-left: 2ex
 }
-
 
 .CTopic img {
     text-align: center;
     display: block;
     margin: 1em auto;
 }
+
 .CImageCaption {
     font-variant: small-caps;
     font-size: 8pt;
@@ -461,14 +512,18 @@ h3.CTitle  {
     color: #808080;
     font-style: italic;
 }
+
 a.CImageLink:link,
 a.CImageLink:visited,
-a.CImageLink:hover { color: #808080 }
+a.CImageLink:hover {
+    color: #808080
+}
 
 .Prototype {
     font: 10pt "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, monospace;
     padding: 5px 3ex;
-    border-width: 1px; border-style: solid;
+    border-width: 1px;
+    border-style: solid;
     margin: 0 5ex 1.5em 5ex;
 }
 
@@ -481,9 +536,11 @@ a.CImageLink:hover { color: #808080 }
 .PTypePrefix {
     color: #8F8F8F;
 }
+
 .PTypePrefix {
     text-align: right;
 }
+
 .PAfterParameters {
     vertical-align: bottom;
 }
@@ -493,60 +550,102 @@ a.CImageLink:hover { color: #808080 }
 }
 
 .CFunction .Prototype {
-    background-color: #F4F4F4; border-color: #D0D0D0 }
+    background-color: #F4F4F4;
+    border-color: #D0D0D0
+}
+
 .CProperty .Prototype {
-    background-color: #F4F4FF; border-color: #C0C0E8 }
+    background-color: #F4F4FF;
+    border-color: #C0C0E8
+}
+
 .CVariable .Prototype {
-    background-color: #FFFFF0; border-color: #E0E0A0 }
+    background-color: #FFFFF0;
+    border-color: #E0E0A0
+}
 
 .CDatabaseIndex .Prototype,
 .CConstant .Prototype {
-    background-color: #D0D0D0; border-color: #000000 }
+    background-color: #D0D0D0;
+    border-color: #000000
+}
+
 .CType .Prototype,
 .CClass .Prototype,
 .CInterface .Prototype {
-    background-color: #FAF0F0; border-color: #E0B0B0;
+    background-color: #FAF0F0;
+    border-color: #E0B0B0;
 }
+
 .CDatabaseTrigger .Prototype,
 .CEvent .Prototype,
 .CDelegate .Prototype {
-    background-color: #F0FCF0; border-color: #B8E4B8 }
+    background-color: #F0FCF0;
+    border-color: #B8E4B8
+}
 
 .CToolTip .Prototype {
     margin: 0 0 .5em 0;
     white-space: nowrap;
 }
 
-
-
-
-.Summary  { margin: 1.5em 5ex 0 0 }
+.Summary {
+    margin: 1.5em 5ex 0 0
+}
 
 .STitle {
-    font-size: 12pt; font-weight: bold;
-    margin-bottom: .5em }
-
-.SBorder  {
-    background-color: #eaeaee;
-    padding: 15px; border:
-    dashed 1px #515d76
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: .5em
 }
+
+.SBorder {
+    background-color: #eaeaee;
+    padding: 15px;
+    border:
+        dashed 1px #515d76
+}
+
 .STable {
-    font-size: 9pt; width: 100% }
-.SEntry  { padding-left: 4px; width: 30% }
+    font-size: 9pt;
+    width: 100%
+}
+
+.SEntry {
+    padding-left: 4px;
+    width: 30%
+}
+
 .SDescription {
-    width: 70% }
+    width: 70%
+}
 
+.SMarked {
+    background-color: #fafcff
+}
 
-.SMarked   { background-color: #fafcff }
+.SEntry {
+    padding-bottom: .5ex;
+    padding-top: .5ex;
+}
 
-.SEntry { padding-bottom: .5ex; padding-top: .5ex; }
-.SDescription { padding-bottom: .5ex; padding-top: .5ex; }
-.SDescription a { color: #800000}
-.SDescription a:active { color: #A00000 }
+.SDescription {
+    padding-bottom: .5ex;
+    padding-top: .5ex;
+}
+
+.SDescription a {
+    color: #800000
+}
+
+.SDescription a:active {
+    color: #A00000
+}
 
 .SGroup td {
-    padding-top: .5em; padding-bottom: .25em }
+    padding-top: .5em;
+    padding-bottom: .25em
+}
 
 .SGroup .SEntry {
     font-weight: bold;
@@ -554,9 +653,13 @@ a.CImageLink:hover { color: #808080 }
     font-size: 120%
 }
 
-.SGroup .SEntry a { color: #800000 }
-.SGroup .SEntry a:active { color: #F00000 }
+.SGroup .SEntry a {
+    color: #800000
+}
 
+.SGroup .SEntry a:active {
+    color: #F00000
+}
 
 .SMain td,
 .SClass td,
@@ -571,7 +674,8 @@ a.CImageLink:hover { color: #808080 }
 .SDatabase td,
 .SDatabaseTable td,
 .SSection td {
-    padding-top: 1em }
+    padding-top: 1em
+}
 
 .SMain .SEntry,
 .SClass .SEntry,
@@ -585,20 +689,21 @@ a.CImageLink:hover { color: #808080 }
 .SClass .SEntry a,
 .SDatabase .SEntry a,
 .SDatabaseTable .SEntry a,
-.SSection .SEntry a { color: #000000 }
+.SSection .SEntry a {
+    color: #000000
+}
 
 .SMain .SEntry a:active,
 .SClass .SEntry a:active,
 .SDatabase .SEntry a:active,
 .SDatabaseTable .SEntry a:active,
-.SSection .SEntry a:active { color: #A00000 }
-
-
-
-
+.SSection .SEntry a:active {
+    color: #A00000
+}
 
 .ClassHierarchy {
-    margin: 0 15px 1em 15px }
+    margin: 0 15px 1em 15px
+}
 
 .CHEntry {
     border-width: 1px 2px 2px 1px;
@@ -612,7 +717,7 @@ a.CImageLink:hover { color: #808080 }
 }
 
 .Firefox .CHEntry {
-    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 .CHCurrent .CHEntry {
@@ -635,13 +740,10 @@ a.CImageLink:hover { color: #808080 }
 .CHEntry a:hover {
     color: #606060;
 }
+
 .CHEntry a:active {
     color: #800000;
 }
-
-
-
-
 
 #Index {
     background-color: #FFFFFF;
@@ -650,16 +752,18 @@ a.CImageLink:hover { color: #808080 }
 /*  As opposed to .PopupSearchResultsPage #Index */
 .IndexPage #Index,
 .FramedIndexPage #Index,
-.FramedSearchResultsPage #Index  { padding: 15px }
+.FramedSearchResultsPage #Index {
+    padding: 15px
+}
 
 .IndexPage #Index {
     border-width: 0 0 1px 1px;
     border-style: solid;
     border-color: #000000;
-    font-size: 9pt;  /* To make 27ex match the menu's 27ex. */
+    font-size: 9pt;
+    /* To make 27ex match the menu's 27ex. */
     margin-left: 27ex;
 }
-
 
 .IPageTitle {
     font-size: 20pt;
@@ -691,11 +795,13 @@ a.CImageLink:hover { color: #808080 }
 }
 
 .IHeading {
-    font-size: 16pt; font-weight: bold;
+    font-size: 16pt;
+    font-weight: bold;
     padding: 2.5em 0 .5em 0;
     text-align: center;
     width: 3.5ex;
 }
+
 #IFirstHeading {
     padding-top: 0;
 }
@@ -704,25 +810,31 @@ a.CImageLink:hover { color: #808080 }
     font-size: 10pt;
     padding-left: 1ex;
 }
-.PopupSearchResultsPage .IEntry  {
+
+.PopupSearchResultsPage .IEntry {
     font-size: 8pt;
     padding: 1px 5px;
 }
+
 .PopupSearchResultsPage .Opera9 .IEntry,
 .FramedSearchResultsPage .Opera9 .IEntry {
     text-align: left;
 }
+
 .FramedSearchResultsPage .IEntry {
     padding: 0;
 }
 
-    .ISubIndex {
-    padding-left: 3ex; padding-bottom: .5em }
-    .PopupSearchResultsPage .ISubIndex {
+.ISubIndex {
+    padding-left: 3ex;
+    padding-bottom: .5em
+}
+
+.PopupSearchResultsPage .ISubIndex {
     display: none;
 }
 
-    /*  While it may cause some entries to look like links when they aren't, I found it's much easier to read the
+/*  While it may cause some entries to look like links when they aren't, I found it's much easier to read the
      index if everything's the same color.  */
 .ISymbol {
     font-weight: bold;
@@ -739,10 +851,12 @@ a.CImageLink:hover { color: #808080 }
     border-left: 1px solid #E0E0E0;
     padding: 0 1px 0 2px;
 }
+
 .PopupSearchResultsPage .ISymbolPrefix,
 .FramedSearchResultsPage .ISymbolPrefix {
     color: #900000;
 }
+
 .PopupSearchResultsPage .ISymbolPrefix {
     font-size: 8pt;
 }
@@ -751,10 +865,12 @@ a.CImageLink:hover { color: #808080 }
 .FramedIndexPage #IFirstSymbolPrefix {
     border-top: 1px solid #E0E0E0;
 }
+
 .IndexPage #ILastSymbolPrefix,
 .FramedIndexPage #ILastSymbolPrefix {
     border-bottom: 1px solid #E0E0E0;
 }
+
 .IndexPage #IOnlySymbolPrefix,
 .FramedIndexPage #IOnlySymbolPrefix {
     border-top: 1px solid #E0E0E0;
@@ -771,6 +887,7 @@ a.IFile {
     font-size: 8pt;
     font-style: italic;
 }
+
 .FramedSearchResultsPage .SRStatus {
     font-size: 10pt;
     font-style: italic;
@@ -779,8 +896,6 @@ a.IFile {
 .SRResult {
     display: none;
 }
-
-
 
 #Footer,
 #Footer a:link,
@@ -792,23 +907,26 @@ a.IFile {
     margin-right: 10px;
 }
 
-.mypriv_var   {
+.mypriv_var {
     font: 10pt "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier,
-    monospace; font-weight: bold;
+        monospace;
+    font-weight: bold;
 }
+
 .mypriv_vartype {
     font: italic 10pt "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier,
-    monospace;  color: #808080;
+        monospace;
+    color: #808080;
 }
 
 @media print {
-  #Menu {
-    display: none;
-  }
-  .ContentPage #Content,
-  .ContentPage .Firefox #Content  {
-      margin-left: 0;
-      width: 800px
-  }
-}
+    #Menu {
+        display: none;
+    }
 
+    .ContentPage #Content,
+    .ContentPage .Firefox #Content {
+        margin-left: 0;
+        width: 800px
+    }
+}

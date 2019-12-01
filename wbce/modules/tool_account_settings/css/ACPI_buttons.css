@@ -8,21 +8,22 @@
    Note: we use a jQuery Plugin in order to enframe input type buttons into
          a div container we couldn't otherwise apply icons to all the buttons
  */
- div.buttonRow{
+div.buttonRow {
     margin-top: 10px;
 }
+
 div.buttonRow:after {
     content: "";
     display: table;
     clear: both;
 }
-a.button, 
-button.button, 
-div.button, 
-div.button input
-{
+
+a.button,
+button.button,
+div.button,
+div.button input {
     outline: 0 !important;
-    border:  0 !important;
+    border: 0 !important;
     font-weight: normal;
     text-indent: 0;
     border-spacing: 0;
@@ -30,25 +31,25 @@ div.button input
     text-decoration: none;
 }
 
-.button 
-{
+.button {
     padding: .16em .7em .17em .5em;
     display: inline-block;
     white-space: nowrap;
 }
+
 button.button {
     padding: 0.27em 1.0em;
 }
-.button, div.button input 
-{	
+
+.button,
+div.button input {
     color: #f2f2f2;
     background-color: #505b6d;
     cursor: pointer;
 }
 
 .button,
-.button:hover 
-{
+.button:hover {
     text-decoration: none;
 }
 
@@ -56,8 +57,7 @@ button.button {
 .button:active,
 .button:focus,
 .button.sel,
-.button.sel:hover 
-{
+.button.sel:hover {
     outline: 0 !important;
     color: #fff !important;
     background-color: #464E5E !important;
@@ -67,8 +67,7 @@ button.button {
 div.button input,
 div.button input:hover,
 div.button input:active,
-div.button input:focus 
-{
+div.button input:focus {
     padding: 0;
     margin: -1px;
     padding-top: -1px;
@@ -79,8 +78,7 @@ div.button:hover input,
 div.button:focus input,
 div.button input:hover,
 div.button input:active,
-div.button input:focus 
-{
+div.button input:focus {
     color: #fff !important;
     background-color: #464E5E !important;
     outline: 0 !important;
@@ -90,14 +88,15 @@ div.button input:focus
 .NFI-button {
     padding: 8px 16px;
 }
-input.NFI-filename{
+
+input.NFI-filename {
     width: auto !important;
 }
+
 /* 
 implement FontAwesome and ASCII icons to Buttons
 */
-.button:before
-{
+.button:before {
     font-family: FontAwesome;
     width: 1em;
     text-align: center;
@@ -107,25 +106,69 @@ implement FontAwesome and ASCII icons to Buttons
     pointer-events: none;
 }
 
-.ico-email:before         { content: "\f0e0";}
-.ico-add:before             { content: "\f0fe";}
+.ico-email:before {
+    content: "\f0e0";
+}
+
+.ico-add:before {
+    content: "\f0fe";
+}
+
 .ico-edit:before,
-.ico-modify:before       { content: "\f040";}
-.ico-delete:before       { content: "\f1f8";}
-.ico-cross:before         { content: "\2716";}
-.ico-settings:before   { content: "\f0ad";}
-.ico-download:before   { content: "\f019";}
-.ico-help:before           { content: "\f1cd";}
-.ico-sections:before   { content: "\f00b";}
-.ico-save:before           { content: "\f0c7";}
-.ico-reset:before         { content: "\f01e";}
-.ico-save-back:before { content: "\2714";}
-.ico-cancel:before       { content: "\2718";}
-.ico-dragdrop:before   { content: '\f256';} 
-.ico-back:before           { content: '\f104';} 
+.ico-modify:before {
+    content: "\f040";
+}
+
+.ico-delete:before {
+    content: "\f1f8";
+}
+
+.ico-cross:before {
+    content: "\2716";
+}
+
+.ico-settings:before {
+    content: "\f0ad";
+}
+
+.ico-download:before {
+    content: "\f019";
+}
+
+.ico-help:before {
+    content: "\f1cd";
+}
+
+.ico-sections:before {
+    content: "\f00b";
+}
+
+.ico-save:before {
+    content: "\f0c7";
+}
+
+.ico-reset:before {
+    content: "\f01e";
+}
+
+.ico-save-back:before {
+    content: "\2714";
+}
+
+.ico-cancel:before {
+    content: "\2718";
+}
+
+.ico-dragdrop:before {
+    content: '\f256';
+}
+
+.ico-back:before {
+    content: '\f104';
+}
 
 /**/
 tt {
-	background-color: #f9ecc5;
-	padding: 3px;
+    background-color: #f9ecc5;
+    padding: 3px;
 }
