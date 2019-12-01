@@ -1,37 +1,42 @@
 @font-face {
-    font-family: 'Noto';
-    src: url('../fonts/NotoSans-Regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'Noto';
+	src: url('../fonts/NotoSans-Regular-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
+
 @font-face {
-    font-family: 'Noto';
-    src: url('../fonts/NotoSans-Bold-webfont.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
+	font-family: 'Noto';
+	src: url('../fonts/NotoSans-Bold-webfont.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
 }
+
 @font-face {
-    font-family: 'Noto';
-    src: url('../fonts/NotoSans-Italic-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: italic;
+	font-family: 'Noto';
+	src: url('../fonts/NotoSans-Italic-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: italic;
 }
+
 @font-face {
-    font-family: 'Noto';
-    src: url('../fonts/NotoSans-BoldItalic-webfont.woff') format('woff');
-    font-weight: bold;
-    font-style: italic;
+	font-family: 'Noto';
+	src: url('../fonts/NotoSans-BoldItalic-webfont.woff') format('woff');
+	font-weight: bold;
+	font-style: italic;
 }
 
 html {
-	overflow :-moz-scrollbars-vertical; /* Force firefox to always show room for a vertical scrollbar */
+	overflow: -moz-scrollbars-vertical;
+	/* Force firefox to always show room for a vertical scrollbar */
 }
+
 body {
-    font-family: Noto, Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    color: #333;
-    background: url(../images/background.png) #f3f3f3 0 0 repeat-x;
-    margin: 0;
+	font-family: Noto, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #333;
+	background: url(../images/background.png) #f3f3f3 0 0 repeat-x;
+	margin: 0;
 }
 
 #container {
@@ -42,27 +47,29 @@ body {
 h1 {
 	font-size: 22px;
 	font-weight: bold;
-    color: #f9f9f9;
-    text-transform: uppercase;
-    height: 84px;
-    padding-top: 25px !important;
+	color: #f9f9f9;
+	text-transform: uppercase;
+	height: 84px;
+	padding-top: 25px !important;
 }
 
 .content-box {
-    border: 1px solid #999;
-    background-color: #fdfdfd;
-    margin-top: 50px;
+	border: 1px solid #999;
+	background-color: #fdfdfd;
+	margin-top: 50px;
 }
 
 .label {
 	text-align: right;
 	padding-top: 7px;
 }
+
 span {
 	display: inline-block;
 	padding-top: 7px;
 	padding-right: 3px;
 }
+
 input {
 	border: 1px solid #999;
 	background-color: #eee;
@@ -81,11 +88,12 @@ button {
 	background-color: #647086;
 	color: #fff;
 	/*height: 28px;*/
-	width:150px;
+	width: 150px;
 	padding: 5px;
 	text-transform: uppercase;
 	margin-bottom: 15px;
 }
+
 button:hover {
 	opacity: 0.85;
 }
@@ -98,20 +106,22 @@ hr {
 }
 
 a {
-	color :#28609b;
-	text-decoration :none;
-    font-family: Noto, Arial, Helvetica, sans-serif; /* Chromium */
-    font-size: 12px;
+	color: #28609b;
+	text-decoration: none;
+	font-family: Noto, Arial, Helvetica, sans-serif;
+	/* Chromium */
+	font-size: 12px;
 }
+
 a:hover {
-	text-decoration :underline;
+	text-decoration: underline;
 }
 
 .center {
 	text-align: center;
 }
 
-@media screen and (max-width: 36.5em ) {
+@media screen and (max-width: 36.5em) {
 	.label {
 		text-align: left;
 		padding-top: 0;
