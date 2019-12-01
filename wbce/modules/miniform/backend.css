@@ -1,16 +1,15 @@
-.settable, .msgtable {
+.settable,
+.msgtable {
 	width: 100%;
 }
 
-.msgtable tr{
+.msgtable tr {}
 
-}
-
-.msgtable tr{
+.msgtable tr {
 	background: #ddd;
 }
 
-.msgtable td{
+.msgtable td {
 	vertical-align: top;
 }
 
@@ -18,7 +17,6 @@
 	/* width: 190px; */
 	width: 290px;
 }
-
 
 .msgtable .small {
 	width: 100px;
@@ -37,6 +35,7 @@ span.sleft {
 	display: inline-block;
 	width: 150px;
 }
+
 a.mf-button,
 .mf-button {
 	font-weight: 400;
@@ -47,30 +46,32 @@ a.mf-button,
 	border-radius: 3px;
 	margin-right: 10px;
 	text-align: center;
-	-webkit-transition: background-color 200ms linear;
-    -ms-transition: background-color 200ms linear;
-    transition: background-color 200ms linear;
+	transition: background-color 200ms linear;
 }
+
 a.mf-button:hover,
 .mf-button:hover {
 	background: #aaa !important;
 }
 
 .mf-input {
-    padding: 5px;
-    width: 250px;
-    border: 1px solid #555;
-    border-radius: 2px;
-    margin-right: 7px;
+	padding: 5px;
+	width: 250px;
+	border: 1px solid #555;
+	border-radius: 2px;
+	margin-right: 7px;
 	height: auto !important;
 }
+
 .mf-input:focus {
-    border: 1px solid rgba(41, 128, 185,1.0);
-	box-shadow: 0 1px 0 hsla(210,65%,9%,.02) inset, 0 0 2px hsla(210,65%,9%,.1) inset, 0 1px 0 hsla(0,0%,100%,.2)
+	border: 1px solid rgba(41, 128, 185, 1.0);
+	box-shadow: 0 1px 0 hsla(210, 65%, 9%, .02) inset, 0 0 2px hsla(210, 65%, 9%, .1) inset, 0 1px 0 hsla(0, 0%, 100%, .2)
 }
+
 .mf-input.wide {
 	width: 500px;
 }
+
 .mf-loading {
 	font-weight: bold;
 	background: #ddd;
@@ -80,78 +81,89 @@ a.mf-button:hover,
 	border-radius: 3px;
 	margin-bottom: 10px;
 }
+
 .mf-error {
 	font-weight: bold;
-	background: rgba(192, 57, 43,0.7);
-	border: 2px solid rgba(192, 57, 43,1.0);
+	background: rgba(192, 57, 43, 0.7);
+	border: 2px solid rgba(192, 57, 43, 1.0);
 	color: #fff;
 	padding: 5px 15px;
-	border-radius: 3px;	
+	border-radius: 3px;
 	margin-bottom: 10px;
 }
+
 .mf-success {
 	font-weight: bold;
-	background: rgba(39, 174, 96,0.7);
-	border: 2px solid rgba(39, 174, 96,1.0);
+	background: rgba(39, 174, 96, 0.7);
+	border: 2px solid rgba(39, 174, 96, 1.0);
 	color: #fff;
 	padding: 5px 15px;
-	border-radius: 3px;	
+	border-radius: 3px;
 	margin-bottom: 10px;
 }
 
-
-
 /**/
-.icon, .del_icon{
-    font-weight: bold;
-    font-size: 125%;
-    color: #5d88ab;
+.icon,
+.del_icon {
+	font-weight: bold;
+	font-size: 125%;
+	color: #5d88ab;
 }
+
 a.del_icon {
-    font-size: 175%;
-    color: #ca1a56;
+	font-size: 175%;
+	color: #ca1a56;
 }
 
 /* 
     messages table
 */
-table.mf_messages a,table.mf_messages a:hover   {    
-    text-decoration: none;
+table.mf_messages a,
+table.mf_messages a:hover {
+	text-decoration: none;
 }
-table.mf_messages  {
-    border: 1px solid #BFC9DF;
+
+table.mf_messages {
+	border: 1px solid #BFC9DF;
 }
+
 table.mf_messages thead th {
-    text-align: left;
-    font-size: 120%;
-    padding-left: 5px;
-    background-color: #d0dbe4;
+	text-align: left;
+	font-size: 120%;
+	padding-left: 5px;
+	background-color: #d0dbe4;
 }
+
 table.mf_messages tr td {
-    border-bottom: 1px solid #BFC9DF;
+	border-bottom: 1px solid #BFC9DF;
 }
-table.mf_messages tr.even td, table.mf_messages tr.odd td {
-    padding: 0 7px; 
-    background-color: #fff;
-}
+
+table.mf_messages tr.even td,
 table.mf_messages tr.odd td {
-    background-color: #EDF4F9;
+	padding: 0 7px;
+	background-color: #fff;
 }
+
+table.mf_messages tr.odd td {
+	background-color: #EDF4F9;
+}
+
 table.mf_messages div table table {
-    width: 100% !important;
+	width: 100% !important;
 }
+
 table.mf_messages tr.msg_text {
-	display:none;
+	display: none;
 }
 
-.msg-open{
-	background-color: #dde4ea!important;
+.msg-open {
+	background-color: #dde4ea !important;
 }
 
-.load-more{
+.load-more {
 	cursor: pointer;
-    padding: 2px 8px;
-    background-color: #b0cde4;
-    color: #406479;
-    border: 1px solid #406479;
+	padding: 2px 8px;
+	background-color: #b0cde4;
+	color: #406479;
+	border: 1px solid #406479;
 }
