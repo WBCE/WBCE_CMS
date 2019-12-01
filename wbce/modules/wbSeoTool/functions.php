@@ -48,11 +48,14 @@ if(!function_exists('pagesArray')){
 			$bRewriteUrlExists = $oCheckDbTable->numRows() > 0 ? TRUE : FALSE;
 			$sProcessRewriteUrl = ($bRewriteUrlExists == TRUE) ? ' p.`'.REWRITE_URL.'`,' : '';	
 		}
-                
-                $sRunningMySqlVersion = $database->get_one("SELECT VERSION()");
-                $bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
-                $sQueryModule = ( $bMySql_57 === true) ? "ANY_VALUE(s.`module`)" : "s.`module`";
-                
+        
+		$bMySql_57 = false;
+		$sRunningMySqlVersion = $database->get_one("SELECT VERSION()");
+		if(version_compare($sRunningMySqlVersion, "10.0", "<" )) {
+			$bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
+		}
+		$sQueryModule = ( $bMySql_57 === true) ? "ANY_VALUE(s.`module`)" : "s.`module`";
+        
 		$sQuery = 'SELECT '.$sQueryModule.', MAX(s.`publ_start` + s.`publ_end`) published, p.`link`, '
 		     .        '(SELECT MAX(`position`) FROM `{TP}pages` WHERE `parent`=p.`parent`) siblings, '
 		     .        'p.`position`, p.`page_id`, p.`parent`, p.`level`, p.`language`, p.`admin_groups`, '
