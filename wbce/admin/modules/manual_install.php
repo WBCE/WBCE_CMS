@@ -12,20 +12,20 @@
 
 // Include required files
 require '../../config.php';
-require_once WB_PATH . '/framework/functions.php';	// for WBCE 1.1.x compatibility
+//require_once WB_PATH . '/framework/functions.php';	// for WBCE 1.1.x compatibility
 
-// limit advanced Module settings to users with access to admintools
-$admin = new admin('Admintools', 'admintools', false, false);
+
+// Setup admin object, skip header for FTAN validation and check section permissions
+$admin = new admin('Addons', 'modules_install', false, true);
 if ($admin->get_permission('admintools') == false) {
 	die(header('Location: index.php'));
 }
 
-// Setup admin object, skip header for FTAN validation and check section permissions
-$admin = new admin('Addons', 'modules_install', false, true);
 $js_back = ADMIN_URL . '/modules/index.php?advanced';
 if(! $admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
+    $admin->print_footer();
 }
 // Output admin backend header (this creates a new FTAN)
 $admin->print_header();
@@ -53,12 +53,12 @@ $mod_path = WB_PATH . '/modules/' . $file;
 if(file_exists($mod_path . '/' . $action . '.php')) {
     require $mod_path . '/' . $action . '.php';
 } else {
-    $admin->print_error($TEXT['NOT_FOUND'].': <tt>"'.htmlentities($file).'/'.$action.'.php"</tt> ', $js_back);
+    $admin->print_error($TEXT['NOT_FOUND'].': <code>"'.htmlentities($file).'/'.$action.'.php"</code> ', $js_back);
 }
 
 // load module info into database and output status message
 load_module($mod_path, false);
-$msg = $TEXT['EXECUTE'] . ': <tt>"' . htmlentities($file) . '/' . $action . '.php"</tt>';
+$msg = $TEXT['EXECUTE'] . ': <code>"' . htmlentities($file) . '/' . $action . '.php"</code>';
 
 switch ($action) {
     case 'install':
@@ -74,3 +74,4 @@ switch ($action) {
         $admin->print_success($msg, $js_back);
         break;
 }
+$admin->print_footer();
