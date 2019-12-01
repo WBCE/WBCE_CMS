@@ -516,7 +516,7 @@ if (sizeof($all_tables) !== sizeof($table_list)) {
     echo '<h4>Missing required tables. You can install them in backend->addons->modules->advanced. Then again run update.php</h4>';
     $result = array_diff($table_list, $all_tables);
     echo '<h4 class="warning"><br />';
-    while (list($key, $val) = each($result)) {
+    foreach($result as $val) {
         echo TABLE_PREFIX . $val . ' ' . $FAIL . '<br>';
     }
     echo '<br /></h4>';
