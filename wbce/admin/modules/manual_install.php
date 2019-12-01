@@ -53,12 +53,12 @@ $mod_path = WB_PATH . '/modules/' . $file;
 if(file_exists($mod_path . '/' . $action . '.php')) {
     require $mod_path . '/' . $action . '.php';
 } else {
-    $admin->print_error($TEXT['NOT_FOUND'].': <tt>"'.htmlentities($file).'/'.$action.'.php"</tt> ', $js_back);
+    $admin->print_error($TEXT['NOT_FOUND'].': <code>"'.htmlentities($file).'/'.$action.'.php"</code> ', $js_back);
 }
 
 // load module info into database and output status message
 load_module($mod_path, false);
-$msg = $TEXT['EXECUTE'] . ': <tt>"' . htmlentities($file) . '/' . $action . '.php"</tt>';
+$msg = $TEXT['EXECUTE'] . ': <code>"' . htmlentities($file) . '/' . $action . '.php"</code>';
 
 switch ($action) {
     case 'install':
