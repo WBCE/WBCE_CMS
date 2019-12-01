@@ -28,7 +28,21 @@ if ($rQueryPageData->numRows() == 1) {
 	if ($aPageData['target_page_id'] == "-1") {
 		if ($aPageData['extern'] != '') {
 			$sTargetUrl = $aPageData['extern'];
-			$sTargetUrl = str_replace('[WB_URL]', WB_URL, $sTargetUrl);
+                        if(strpos($sTargetUrl, '[WB_URL]') !== false){  
+                            $sTargetUrl = str_replace('[WB_URL]', WB_URL, $sTargetUrl);
+                        }
+                        
+                        // convert [wblinkXX] into proper URLs
+                        if(strpos($sTargetUrl, '[wblink') !== false){                           
+                            $iTargetPageID = sitemap_getBetween($sTargetUrl, '[wblink', ']');
+                            $sAnchor = '';
+                            
+                            // allow for manual anchors like: [wblink777]#myManualAnchor
+                            if(strpos($sTargetUrl, '#') !== false){
+                                $sAnchor = substr($sTargetUrl, strpos($sTargetUrl, "#"));
+                            } 
+                            $sTargetUrl = $wb->page_link($iTargetPageID).$sAnchor;
+                        }
 			header('Location: '.$sTargetUrl);
 			exit;
 		}
@@ -48,4 +62,13 @@ if ($rQueryPageData->numRows() == 1) {
 			exit;
 		}
 	}
+}
+
+function sitemap_getBetween($sContent, $sStart, $sEnd){
+    $arr = explode($sStart, $sContent);
+    if (isset($arr[1])){
+        $arr = explode($sEnd, $arr[1]);
+        return $arr[0];
+    }
+    return '';
 }
