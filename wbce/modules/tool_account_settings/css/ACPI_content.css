@@ -499,7 +499,6 @@ ul.operatorList li:first-child {
 
 .cpWrap>.cpTabs li .tab.sel {
     color: #29323d;
-    cursor: default;
     background: #fff;
     cursor: default;
 }

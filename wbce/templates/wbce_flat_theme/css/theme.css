@@ -629,7 +629,7 @@ table {
     border-style: solid;
     border-width: 1px;
     border-bottom: 0;
-    width: calc(100%+2px);
+    width: calc(100% + 2px);
 }
 
 .license {
