@@ -105,12 +105,21 @@ function show_menu2(
     // fix up the menu number to default to the menu number
     // of the current page if no menu has been supplied
     if ($aMenu == 0) {
-        $aMenu = $wb->page['menu'] == '' ? 1 : $wb->page['menu'];
+		if (is_array($wb->page)) {
+			$aMenu = $wb->page['menu'] == '' ? 1 : $wb->page['menu'];
+		} else {
+			$aMenu =1;
+		}
     } 
 
     // Set some of the $wb->page[] settings to defaults if not set
+	if (is_array($wb->page)) {
     $pageLevel  = $wb->page['level']  == '' ? 0 : $wb->page['level'];
     $pageParent = $wb->page['parent'] == '' ? 0 : $wb->page['parent'];
+	} else {
+		$pageLevel = 0;
+		$pageParent = 0;
+	}
     
     // adjust the start level and start page ID as necessary to
     // handle the special values that can be passed in as $aStart
@@ -162,9 +171,14 @@ function show_menu2(
         global $database;
         // create an array of all parents of the current page. As the page_trail
         // doesn't include the theoretical root element 0, we add it ourselves.
-        $rgCurrParents = explode(",", '0,'.$wb->page['page_trail']);
+		if (is_array($wb->page)) {
+        $rgCurrParents = explode(",", '0,'.$wb->page['page_trail']);		
         array_pop($rgCurrParents); // remove the current page
+		} else {
+			$rgCurrParents = array();
+		}
         $rgParent = array();
+		
 
         // if the caller wants all menus gathered together (e.g. for a sitemap)
         // then we don't limit our SQL query
@@ -667,7 +681,11 @@ function sm2_recurse(
     // parent and all entries for that parent are being displayed. We also 
     // need to check if any of the children need to be displayed too.
     $isListOpen = false;
-    $currentLevel = $wb->page['level'] == '' ? 0 : $wb->page['level'];
+	if (is_array($wb->page)) {
+		$currentLevel = $wb->page['level'] == '' ? 0 : $wb->page['level'];
+	} else {
+		$currentLevel = 0;
+	}
 
     // get the number of siblings skipping the hidden pages so we can pass 
     // this in and check if the item is first or last

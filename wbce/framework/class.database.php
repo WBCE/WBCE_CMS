@@ -303,7 +303,11 @@ class database
             return null;
         }
         $fetch_row = mysqli_fetch_array($q);
-        $result = $fetch_row[0];
+		if (is_array($fetch_row)) {
+			$result = $fetch_row[0];
+		} else {
+			$result='';
+		}
         $this->set_error(null);
         if (mysqli_error($this->db_handle)) {
             $this->set_error(mysqli_error($this->db_handle));

@@ -312,7 +312,7 @@ class Accounts extends Frontend
 
     public function getCorrectEmailTplPath($sEmailTemplateName, $bHtml = false){	
             // get the correct template for this mail
-            $sLC = defined('LANGUAGE') ? LANGUAGE : defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN';	
+            $sLC = defined('LANGUAGE') ? LANGUAGE : (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN');	
             $sDirPathCore     = ACCOUNT_TOOL_PATH.'/email_templates/';
             $sDirPathTemplate = WB_PATH.'/templates/'.DEFAULT_TEMPLATE.'/overrides/account/email_templates/';
             $sExtension = ($bHtml == true) ? '.tpl' : '.txt';

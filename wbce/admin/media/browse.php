@@ -213,17 +213,25 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 			$icon = '';
 			$tooltip = '';
 
-
-			if (!$pathsettings['global']['show_thumbs']) {
-				$info = @getimagesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name);
-				if ($info[0]) {
-					$imgdetail = fsize(filesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name)).'<br /> '.$info[0].' x '.$info[1].' px';
-					$icon = 'thumb.php?t=1&amp;img='.$directory.'/'.$name;
-					$tooltip = ShowTip('thumb.php?t=2&amp;img='.$directory.'/'.$name);
-				} else {
-					$imgdetail = fsize(filesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name));
-				}
+			if (!is_array($pathsettings)) {
+				$pathsettings = array();
+				$pathsettings['global']['show_thumbs'] = true;
 			}
+				if (!$pathsettings['global']['show_thumbs']) {
+					$info = @getimagesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name);
+					if (!is_array($info)) {
+						$info=array();
+						$info[0]=false;
+					}
+					if ($info[0]) {
+						$imgdetail = fsize(filesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name)).'<br /> '.$info[0].' x '.$info[1].' px';
+						$icon = 'thumb.php?t=1&amp;img='.$directory.'/'.$name;
+						$tooltip = ShowTip('thumb.php?t=2&amp;img='.$directory.'/'.$name);
+					} else {
+						$imgdetail = fsize(filesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name));
+					}
+				}
+			
 
 			$filetype_url = THEME_URL.'/images/files/'.$filetypeicon.'.png';
 			$template->set_var(array(
