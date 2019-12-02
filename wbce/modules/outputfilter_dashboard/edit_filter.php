@@ -154,7 +154,7 @@ if(!empty($additional_fields)) {
         // we use 'label' since v1.3.2, but keep 'text' for compatibility reasons
         if(isset($field['label'])) $field['text'] = $field['label'];
         if(is_string($field['text']))
-            $field['text'] = ($field['text']{0}=='['?$lang[trim($field['text'],'[]')]:$field['text']);
+            $field['text'] = ($field['text'][0]=='['?$lang[trim($field['text'],'[]')]:$field['text']);
         elseif(is_array($field['text'])) {
             if(isset($field['text'][LANGUAGE])) $field['text'] = $field['text'][LANGUAGE];
             else $field['text'] = $field['text']['EN'];
@@ -191,7 +191,7 @@ if(!empty($additional_fields)) {
                     $selected = 'selected="selected"';
                 else $selected = '';
                 if(is_string($str))
-                    $str = ($str{0}=='['?$lang[trim($str,'[]')]:$str);
+                    $str = ($str[0]=='['?$lang[trim($str,'[]')]:$str);
                 elseif(is_array($str)) {
                     if(isset($str[LANGUAGE])) $str = $str[LANGUAGE];
                     else $str = $str['EN'];
