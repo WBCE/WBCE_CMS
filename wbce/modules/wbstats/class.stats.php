@@ -6,10 +6,10 @@
  * @author          Ruud Eisinga - Dev4me
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
+ * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.1.11
- * @lastmodified    June 29, 2017 
+ * @version         0.2.1
+ * @lastmodified    November 15, 2019
  *
  */
 
@@ -45,8 +45,10 @@ class stats {
 		$this->time = $time;
 		$this->day   = date("Ymd",$time);
 		$this->month = date("Ym",$time);
-		$this->old_data = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - 48*60*60 ; // 48 hours
-		$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j")-7, date("Y"))); // 7 days
+		//$this->old_data = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - 48*60*60 ; // 48 hours
+		//$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 7, date("Y"))); // 7 days
+		$this->old_data = date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y"))); // 7 days
+		$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y"))); // 7 days
 		$this->reload = 3 * 60 * 60 ;
 		$this->online = $time - 5 * 60;
 		$this->cleanup();
@@ -100,18 +102,20 @@ class stats {
 		$result['avg_30'] = round($database->get_one ("SELECT AVG(user) from ".$table_day." WHERE `day`>='$from_day_30' AND `day`<='$to_day'"),2);
 
 		$today = date("Ymd",mktime(0, 0, 0, date("n"), date("j"), date("Y")));
-		$query = $database->query("SELECT user, view, bots FROM ".$table_day." where `day`='$today'");
+		$query = $database->query("SELECT user, view, bots, refspam FROM ".$table_day." where `day`='$today'");
 		$res = $query->fetchRow();
 		$result['today']= (int)$res['user'];
 		$result['ptoday']= (int)$res['view'];
 		$result['btoday']= (int)$res['bots'];
+		$result['rtoday']= (int)$res['refspam'];
 		
 		$yesterday = date("Ymd",mktime(0, 0, 0, date("n"), date("j"), date("Y")) - 24*60*60);
-		$query = $database->query("SELECT user, view, bots FROM ".$table_day." where `day`='$yesterday'");
+		$query = $database->query("SELECT user, view, bots, refspam FROM ".$table_day." where `day`='$yesterday'");
 		$res = $query->fetchRow();
 		$result['yesterday']= (int)$res['user'];
 		$result['pyesterday']= (int)$res['view'];
 		$result['byesterday']= (int)$res['bots'];
+		$result['ryesterday']= (int)$res['refspam'];
 
 		
 		
@@ -144,17 +148,17 @@ class stats {
 		return $result;
 	}
 	
-	function getVisitors() {
+	function getVisitors($top = 10) {
 		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $code2lang;
 		$result = array();
 
 		$totals = $database->get_one("SELECT sum(view) FROM ".$table_ref);
 		//top referers
 		$nr = 1;
-		$query = $database->query("SELECT referer, SUM(view) AS views from ".$table_ref." GROUP BY referer ORDER BY views DESC LIMIT 0, 10");
+		$query = $database->query("SELECT referer, SUM(view) AS views from ".$table_ref." WHERE `spam`='0' GROUP BY referer ORDER BY views DESC LIMIT 0, $top");
 		while($res = $query->fetchRow()) {
 			$referer = htmlspecialchars($res['referer']);
-			$short = (strlen($referer) > 35) ? substr($referer,0,30)."...": $referer;
+			$short = (strlen($referer) > 55) ? substr($referer,0,50)."...": $referer;
 			$views = $res['views'];
 			$percent = (100 / $totals) * $views;
 			$percent = ($percent < 0.1 ) ? round($percent,2) : round($percent,1);
@@ -169,10 +173,10 @@ class stats {
 
 		$totals = $database->get_one("SELECT sum(view) FROM ".$table_pages);
 		$nr = 1;
-		$query = $database->query("SELECT page, SUM(view) AS views from ".$table_pages." GROUP BY page ORDER BY views DESC LIMIT 0, 10");
+		$query = $database->query("SELECT page, SUM(view) AS views from ".$table_pages." GROUP BY page ORDER BY views DESC LIMIT 0, $top");
 		while($res = $query->fetchRow()) {
 			$page = htmlspecialchars($res['page']);
-			$short = (strlen($page) > 35) ? substr($page,0,30)."...": $page;
+			$short = (strlen($page) > 55) ? substr($page,0,50)."...": $page;
 			$views = $res['views'];
 			$percent = (100 / $totals) * $views;
 			$percent = ($percent < 0.1 ) ? round($percent,2) : round($percent,1);
@@ -187,10 +191,10 @@ class stats {
 
 		$totals = $database->get_one("SELECT sum(view) FROM ".$table_key);
 		$nr = 1;
-		$query = $database->query("SELECT keyword, SUM(view) AS views from ".$table_key." GROUP BY keyword ORDER BY views DESC LIMIT 0, 10");
+		$query = $database->query("SELECT keyword, SUM(view) AS views from ".$table_key." GROUP BY keyword ORDER BY views DESC LIMIT 0, $top");
 		while($res = $query->fetchRow()) {
 			$keyword = urldecode($res['keyword']);
-			$short = (strlen($keyword) > 35) ? substr($keyword,0,30)."...": $keyword;
+			$short = (strlen($keyword) > 55) ? substr($keyword,0,50)."...": $keyword;
 			$views = $res['views'];
 			$percent = (100 / $totals) * $views;
 			$percent = ($percent < 0.1 ) ? round($percent,2) : round($percent,1);
@@ -206,11 +210,11 @@ class stats {
 
 		$totals = $database->get_one("SELECT sum(view) FROM ".$table_lang);
 		$nr = 1;
-		$query = $database->query("SELECT language, SUM(view) AS views from ".$table_lang." GROUP BY language ORDER BY views DESC LIMIT 0, 10");
+		$query = $database->query("SELECT language, SUM(view) AS views from ".$table_lang." GROUP BY language ORDER BY views DESC LIMIT 0, $top");
 		while($res = $query->fetchRow()) {
 			$language=$res['language'];
 			if (array_key_exists($language,$code2lang)) $language=$code2lang[$language];
-			$short = (strlen($language) > 35) ? substr($language,0,30)."...": $language;
+			$short = (strlen($language) > 55) ? substr($language,0,50)."...": $language;
 			$views = $res['views'];
 			$percent = (100 / $totals) * $views;
 			$percent = ($percent < 0.1 ) ? round($percent,2) : round($percent,1);
@@ -222,6 +226,107 @@ class stats {
 			$result['language'][$nr]['width'] = $bar_width;
 			$nr++;
 		}
+		
+		// Entry pages
+		$totals = $database->get_one("SELECT count(*) FROM ".$table_ips);
+		$q = "SELECT page, COUNT(*) AS total FROM ".$table_ips." GROUP BY page ORDER BY total DESC LIMIT 0,$top";
+		$nr = 1;
+		$query = $database->query($q);
+		while($res = $query->fetchRow()) {
+			$views = $res['total'];
+			$page = $res['page'];
+			$percent = (100 / $totals) * $views;
+			$percent = ($percent < 0.1 ) ? round($percent,2) : round($percent,1);
+			$short = (strlen($page) > 55) ? substr($page,0,50)."...": $page;
+			$bar_width = round((100/$totals)*$views);
+			$result['entry'][$nr]['short'] = $short;
+			$result['entry'][$nr]['name'] = $page;
+			$result['entry'][$nr]['views'] = $views;
+			$result['entry'][$nr]['percent'] = $percent;
+			$result['entry'][$nr]['width'] = $bar_width;
+			$nr++;
+		}
+		// Exit pages
+		$q = "SELECT last_page as page, COUNT(*) AS total FROM ".$table_ips." WHERE last_page != '' GROUP BY last_page ORDER BY total DESC LIMIT 0,$top";
+		$nr = 1;
+		$query = $database->query($q);
+		while($res = $query->fetchRow()) {
+			$views = $res['total'];
+			$page = $res['page'];
+			$percent = (100 / $totals) * $views;
+			$percent = ($percent < 0.1 ) ? round($percent,2) : round($percent,1);
+			$short = (strlen($page) > 55) ? substr($page,0,50)."...": $page;
+			$bar_width = round((100/$totals)*$views);
+			$result['exit'][$nr]['short'] = $short;
+			$result['exit'][$nr]['name'] = $page;
+			$result['exit'][$nr]['views'] = $views;
+			$result['exit'][$nr]['percent'] = $percent;
+			$result['exit'][$nr]['width'] = $bar_width;
+			$nr++;
+		}
+
+		// aantal pagina's per bezoek
+		$q = "SELECT pages FROM ".$table_ips." ORDER BY pages DESC";
+		$query = $database->query($q);
+		
+		$result['pageviews'][1] = 0;
+		$result['pageviews'][2] = 0;
+		$result['pageviews'][3] = 0;
+		$result['pageviews'][4] = 0;
+		$result['pageviews'][5] = 0;
+		$result['pageviews'][7] = 0;
+		$result['pageviews'][10] = 0;
+		$result['pageviews'][15] = 0;
+		$result['pageviews'][20] = 0;
+		$result['pageviews'][25] = 0;
+		
+		while($res = $query->fetchRow()) {
+			$pages = $res['pages'];
+			switch (true) {
+				case ($pages >= 25): $result['pageviews'][25]++;break;
+				case ($pages >= 20): $result['pageviews'][20]++;break;
+				case ($pages >= 15): $result['pageviews'][15]++;break;
+				case ($pages >= 10): $result['pageviews'][10]++;break;
+				case ($pages >= 7) : $result['pageviews'][7]++;break;
+				case ($pages >= 5) : $result['pageviews'][5]++;break;
+				case ($pages == 4) : $result['pageviews'][4]++;break;
+				case ($pages == 3) : $result['pageviews'][3]++;break;
+				case ($pages == 2) : $result['pageviews'][2]++;break;
+				case ($pages == 1) : $result['pageviews'][1]++;break;
+			}
+		}	
+		
+		// tijd per bezoek
+		$q = "SELECT ROUND(`online` - `time`)  AS `length` FROM ".$table_ips." ORDER BY `length` DESC";
+		$query = $database->query($q);
+		
+		$result['seconds'][0] = 0;
+		$result['seconds'][10] = 0;
+		$result['seconds'][30] = 0;
+		$result['seconds'][60] = 0;
+		$result['seconds'][120] = 0;
+		$result['seconds'][240] = 0;
+		$result['seconds'][420] = 0;
+		$result['seconds'][600] = 0;
+		$result['seconds'][900] = 0;
+		$result['seconds'][1800] = 0;
+		
+		while($res = $query->fetchRow()) {
+			$length = (int)$res['length'];
+			switch (true) {
+				case ($length >= 1800): $result['seconds'][1800]++;break;
+				case ($length >= 900) : $result['seconds'][900]++;break;
+				case ($length >= 600) : $result['seconds'][600]++;break;
+				case ($length >= 420) : $result['seconds'][420]++;break;
+				case ($length >= 240) : $result['seconds'][240]++;break;
+				case ($length >= 120) : $result['seconds'][120]++;break;
+				case ($length >= 60)  : $result['seconds'][60]++;break;
+				case ($length >= 30)  : $result['seconds'][30]++;break;
+				case ($length >= 10)  : $result['seconds'][10]++;break;
+				case ($length >= 0)   : $result['seconds'][0]++;break;
+			}
+		}	
+		
 		return $result;
 	}
 
@@ -281,6 +386,14 @@ class stats {
 		return substr($day,0,4).'-'.substr($day,4,2).'-'.substr($day,-2);
 	}
 
+	function shuffle_assoc($list) {
+	  if (!is_array($list)) return $list;
+	  $keys = array_keys($list);
+	  shuffle($keys);
+	  $random = array();
+	  foreach ($keys as $key) $random[$key] = $list[$key];
+	  return $random;
+	} 
 	
 } // end class
 

@@ -1,5 +1,7 @@
 @import url("js/tip-twitter.css"); 
-
+#contentarea { /* create more space in WBCE backend */
+	max-width: 100%;
+}
 .sysmenu {
     clear: both;
 	margin:10px 1%;
@@ -20,7 +22,12 @@
 	text-decoration: none;
 	color: #fff;
 }
-
+.sysmenu.small a {
+	padding: 5px 10px  !important; 
+	background-color: #eee;
+	color:#333;
+	border-bottom: 4px solid #D25E59;
+}
 #container * {
 	box-sizing:border-box;
 	-webkit-box-sizing:border-box;
@@ -39,6 +46,10 @@
 	color:#222;
 	width: 100%;
 }
+#container table {
+	border-spacing: 1px;
+	border-collapse: separate;
+}
 #container h3 {
 	background-color:#303641;
 	color:#FFFFFF;
@@ -48,7 +59,7 @@
 	font-size:1.4em;
 }
 
-#container h3 span{
+#container h3 span.right{
 	position:absolute;
 	right:20px;
 }
@@ -68,7 +79,8 @@
 }
 
 #container td, #container th {
-	vertical-align: bottom;
+	/* vertical-align: bottom; */
+	background: #fff;
 }
 #container pre {
 	background: #eee;
@@ -129,6 +141,17 @@
 	cursor: pointer;
 	margin: 3px 0
 }
+.tbar {
+	margin: 3px 0;
+	text-align: center;
+	color: #333;
+	font-style: italic;
+	font-size: 80%;
+}
+.fbar {
+	margin: 3px 0;
+	text-align: center;
+}
 .bar:hover, .vbar:hover {
 	margin-right:1px;
 	z-index:1;
@@ -171,3 +194,28 @@ font-size: 12px;
     display:none;
 	z-index: 99;
 }
+.cloud-container {
+	text-align: center;
+	background: #fff;
+}
+.wordcloud {
+	padding: 10px 25px 15px 18px;
+	margin: 5px;
+	white-space: nowrap;
+	display: inline-block;
+}
+
+.hidden {
+	display:none;
+}
+
+/* https://github.com/dinoqqq/simple-popup */
+#simple-popup{position:fixed;top:0;bottom:0;left:0;right:0;z-index:100001}.simple-popup-content{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);max-height:80%;max-width:100%;z-index:100002;padding:30px 40px;overflow:auto}.simple-popup-content .closemodal{position:absolute;right:0;top:0}.simple-popup-content .closemodal::before{display:inline-block;text-align:center;content:"\00d7";font-size:40px;color:#d3d3d3;width:40px;line-height:40px}.simple-popup-content .closemodal:hover{cursor:hand;cursor:pointer}.simple-popup-content .closemodal:hover::before{color:grey}#simple-popup-backdrop,.simple-popup-backdrop-content{position:fixed;top:0;bottom:0;left:0;right:0;z-index:100000}#simple-popup,#simple-popup-backdrop,#simple-popup-backdrop.hide-it,#simple-popup.hide-it{-webkit-transition-property:opacity;-moz-transition-property:opacity;-ms-transition-property:opacity;-o-transition-property:opacity;transition-property:opacity}#simple-popup-backdrop.hide-it,#simple-popup.hide-it{opacity:0}#simple-popup,#simple-popup-backdrop{opacity:1}
+.simple-popup-content  { background: #eee !important; padding: 40px;}
+.simple-popup-content table { border-spacing: 2px; border-collapse: separate; }
+.simple-popup-content .hidden { display: table-row;}
+.simple-popup-content td { background: #fff; padding: 5px;}
+.simple-popup-content h3 { background-color:#303641; color:#FFFFFF;	padding:5px 15px;margin:0px;margin-bottom:10px;font-size:1.4em;}
+.simple-popup-content h3 span { display:none;} 
+.simple-popup-content .expand {cursor: default; }
+.tip-twitter { z-index: 990000; }

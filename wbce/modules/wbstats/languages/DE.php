@@ -6,10 +6,10 @@
  * @author          Ruud Eisinga - Dev4me
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         0.1.8
- * @lastmodified    October 22, 2014
+ * @platform        WebsiteBaker 2.8.x / WBCE 1.4
+ * @requirements    PHP 5.6 and higher
+ * @version         0.2.0
+ * @lastmodified    November 9, 2019
  *
  */
  
@@ -35,18 +35,23 @@ $WS = array (
         "TODAYVISITORS"	=> "Besucher",
         "TODAYPAGES"	=> "Seiten",
         "TODAYBOTS"		=> "Suchmaschinen Robots",
+		"TODAYREFSPAM" 		=> "Referer spammers",
         "YESTERVISITORS"	=> "Besucher",
         "YESTERPAGES"	=> "Seiten",
         "YESTERDAYBOTS"	=> "Suchmaschinen Robots",
+		"YESTERDAYREFSPAM" 	=> "Referer spammers",
         "CURRENTONLINE"	=> "Zur Zeit online",
         "BOUNCES"		=> "Besuche in den letzten 48 Stunden",
         "AVGPAGESVISIT"	=> "Seiten pro Besuch",
         "AVG7VISITS"	=> "Besucher pro Tag - 7 Tage",
         "AVG30VISITS"	=> "Besucher pro Tag - 30 Tage",
-        "REFTOP10"		=> "Top 10 - Referers",
-        "PAGETOP10"		=> "Top 10 - Seiten",
-        "KEYSTOP10"		=> "Top 10 - Keywords",
-        "LANGTOP10"		=> "Top 10 - Sprache",
+        "TOP"			=> "Top",
+        "REFTOP"		=> "Referers",
+        "PAGETOP"		=> "Seiten",
+        "KEYSTOP"		=> "Keywords",
+        "LANGTOP"		=> "Sprache",
+		"ENTRYTOP" 		=> "Eingangsseiten",
+		"EXITTOP" 		=> "Ausgangsseiten",
         "NUMBER"		=> "Nr.",
         "PERCENT"		=> "Prozent",
         "REFERER"		=> "Referer",
@@ -60,8 +65,32 @@ $WS = array (
         "PAGES"			=> "Seiten",
         "REQUESTS"		=> "Zugriffe",
         "AVGDAY"		=> "Tagesdurchschnitt",
-        "YEAR"			=> "Jahr"
+        "YEAR"			=> "Jahr",
+		"PAGES_CLOUD"	=> "Anzahl der Seiten pro Besuch",
+		"SECONDS_CLOUD"	=> "Dauer pro Besuch"
 );
+
+$pages_cloud[1] = "1 Seite";
+$pages_cloud[2] = "2 Seiten";
+$pages_cloud[3] = "3 Seiten";
+$pages_cloud[4] = "4 Seiten";
+$pages_cloud[5] = "5-6 Seiten";
+$pages_cloud[7] = "7-9 Seiten";
+$pages_cloud[10]= "10-14 Seiten";
+$pages_cloud[15]= "15-19 Seiten";
+$pages_cloud[20]= "20-24 Seiten";
+$pages_cloud[25]= "25+ Seiten";
+
+$second_cloud[0] = "0-9 Sekunden";
+$second_cloud[10] = "10-29 Sekunden";
+$second_cloud[30] = "30-59 Sekunden";
+$second_cloud[60] = "1-2 Minuten";
+$second_cloud[120] = "2-4 Minuten";
+$second_cloud[240] = "4-8 Minuten";
+$second_cloud[420] = "8-10 Minuten";
+$second_cloud[600] = "10-15 Minuten";
+$second_cloud[900] = "15-30 Minuten";
+$second_cloud[1800] = "30+ Minuten";
 
 $code2lang = array(
         'ar'=>'Arabisch',
@@ -105,7 +134,7 @@ $help = array(
 							Dies kann durch das Verschieben der Code-Zeilen, die mit &lt;script&gt; beginnen von der Datei footer.htt zur Datei header.htt korrigiert werden.<br/>
 							Beide Dateien findest du in im Ordner /templates/{dein_theme}/templates.<br/><br/>
 							<strong>Hinweis:</strong> Das Modul kann keine Statistiken zeigen, wenn JQuery nicht korrekt initialisiert wird.',
-		'donate'		=> 'Dieses Modul wurde von Dev4me programmiert und der WebsiteBaker-Community frei zur Verf&uuml;gung gestellt.<br/>Wenn Ihnen dieses Modul gef&auml;llt, w&uuml;rden wir uns &uuml;ber eine kleine Spende via PayPal freuen..'
+		'donate'		=> 'Dieses Modul wurde von Dev4me programmiert und der WebsiteBaker oder WBCE Community frei zur Verf&uuml;gung gestellt.<br/>Wenn Ihnen dieses Modul gef&auml;llt, w&uuml;rden wir uns &uuml;ber eine kleine Spende via PayPal freuen..'
 );
 
 ?>

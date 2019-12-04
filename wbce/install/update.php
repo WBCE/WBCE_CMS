@@ -465,6 +465,13 @@ if (file_exists($file_name)) {
     }
 }
 
+$file_name = WB_PATH . "/modules/errorlogger/info.php";
+if (file_exists($file_name)) {
+   echo "<br />Install Errorloger<br />";
+   require_once WB_PATH . "/modules/errorlogger/install.php";
+}
+
+
 // News with Images
 $file_name = WB_PATH . "/modules/news_img/info.php";
 if (file_exists($file_name)) {

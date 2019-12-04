@@ -6,10 +6,10 @@
  * @author          Ruud Eisinga - Dev4me
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
+ * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.1.11
- * @lastmodified    June 29, 2017 
+ * @version         0.2.0
+ * @lastmodified    November 9, 2019
  *
  */
  
@@ -35,18 +35,23 @@ $WS = array (
 	"TODAYVISITORS" 	=> "Bezoekers",
 	"TODAYPAGES" 		=> "Pagina's",
 	"TODAYBOTS" 		=> "Zoekmachinerobots",
+	"TODAYREFSPAM" 		=> "Referer spammers",
 	"YESTERVISITORS" 	=> "Bezoekers",
 	"YESTERPAGES" 		=> "Pagina's",
 	"YESTERDAYBOTS" 	=> "Zoekmachinerobots",
+	"YESTERDAYREFSPAM" 	=> "Referer spammers",
 	"CURRENTONLINE" 	=> "Momenteel online",
 	"BOUNCES" 			=> "Bounced bezoekers in de laatste 48 uur",
 	"AVGPAGESVISIT" 	=> "Pagina's per bezoek",
 	"AVG7VISITS" 		=> "Bezoekers per dag - laatste 7 dagen",
 	"AVG30VISITS" 		=> "Bezoekers per dag - laatste 30 dagen",
-	"REFTOP10" 			=> "Top 10 - Verwijzers",
-	"PAGETOP10" 		=> "Top 10 - Pagina's",
-	"KEYSTOP10" 		=> "Top 10 - Zoektermen",
-	"LANGTOP10" 		=> "Top 10 - Talen",
+	"TOP" 				=> "Top",
+	"REFTOP" 			=> "Verwijzers",
+	"PAGETOP" 			=> "Pagina's",
+	"KEYSTOP" 			=> "Zoektermen",
+	"LANGTOP" 			=> "Talen",
+	"ENTRYTOP" 			=> "Binnenkomst pagina's",
+	"EXITTOP" 			=> "Uitgang pagina's",
 	"NUMBER" 			=> "Nr.",
 	"PERCENT" 			=> "Procent",
 	"REFERER" 			=> "Verwijzer",
@@ -60,8 +65,33 @@ $WS = array (
 	"PAGES"				=> "Pagina's",
 	"REQUESTS"			=> "Paginaverzoeken",
 	"AVGDAY"			=> "Gemiddeld per dag",
-	"YEAR"				=> "Jaar"
+	"YEAR"				=> "Jaar",
+	"PAGES_CLOUD"		=> "Aantal pagina's per bezoek",
+	"SECONDS_CLOUD"		=> "Tijdsduur per bezoek"
 );
+
+$pages_cloud[] = "1 pagina";
+$pages_cloud[1] = "1 pagina";
+$pages_cloud[2] = "2 pagina's";
+$pages_cloud[3] = "3 pagina's";
+$pages_cloud[4] = "4 pagina's";
+$pages_cloud[5] = "5-6 pagina's";
+$pages_cloud[7] = "7-9 pagina's";
+$pages_cloud[10]= "10-14 pagina's";
+$pages_cloud[15]= "15-19 pagina's";
+$pages_cloud[20]= "20-24 pagina's";
+$pages_cloud[25]= "25+ pagina's";
+
+$second_cloud[0] = "0-9 seconden";
+$second_cloud[10] = "10-29 seconden";
+$second_cloud[30] = "30-59 seconden";
+$second_cloud[60] = "1-2 minuten";
+$second_cloud[120] = "2-4 minuten";
+$second_cloud[240] = "4-8 minuten";
+$second_cloud[420] = "8-10 minuten";
+$second_cloud[600] = "10-15 minuten";
+$second_cloud[900] = "15-30 minuten";
+$second_cloud[1800] = "30+ minuten";
 
 $code2lang = array(
 	'ar'=>'Arabisch',	
@@ -106,7 +136,7 @@ $help = array(
 						U moet dit veranderen door het verplaatsten van de regels die starten met &lt;script&gt; onderin het bestand <strong>footer.htt</strong> naar de &lt;head&gt; sectie van het bestand <strong>header.htt</strong>.<br/>
 						U vindt deze bestanden in de map /templates/{uw_thema}/templates/<br/><br/>
 						<strong>Let op:</strong> Deze admintool zal geen statistieken tonen als jQuery niet correct is ge&#239;nitialiseerd!',
-	'donate'		=> 'Deze module is gemaakt door Dev4me en is gratis beschikbaar voor de WebsiteBaker-gebruikers.<br/>Als u deze module waardeert kunt u via de knop hieronder een donatie via PayPal doen.'
+	'donate'		=> 'Deze module is gemaakt door Dev4me en is gratis beschikbaar voor de WebsiteBaker en/of WBCE gebruikers.<br/>Als u deze module waardeert kunt u via de knop hieronder een donatie via PayPal doen.'
 
 );
 

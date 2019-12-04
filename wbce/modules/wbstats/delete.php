@@ -12,7 +12,8 @@
  * @lastmodified    November 15, 2019
  *
  */
- 
-if (isset($_SERVER['HTTP_REFERER']) && !defined('ORG_REFERER')) {
-    define('ORG_REFERER',$_SERVER['HTTP_REFERER']);
-}
+
+// prevent this file from being accessed directly
+if(!defined('WB_PATH')) die(header('Location: index.php'));  
+
+?>
