@@ -470,7 +470,8 @@
     <h2 class="page_titel"> {HEADING_SERVER_SETTINGS}
 		<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
     </h2>
-
+	
+	<!-- BEGIN show_access_block -->
     <section class="content-box" id="settings-server-settings">
         <div class="row top">
             <div class="fg3">{TEXT_SERVER_OPERATING_SYSTEM}:</div>
@@ -486,7 +487,7 @@
                 <input type="hidden" name="world_writeable" value="">
             </div>
         </div>
-        <!-- BEGIN show_access_block -->
+        
 		<section id="file-perms" class="row top" {DISPLAY_ADVANCED}>
             <div class="fg3">{TEXT_FILESYSTEM_PERMISSIONS}:</div>
             <div class="fg4"> <b>{TEXT_FILES}: <span id="string-file-mode">{STRING_FILE_MODE}</span></b> </div>
@@ -557,8 +558,17 @@
             </div>
             <div class="fg1 fg-center">
                 <input type="checkbox" name="dir_o_e" id="dir_o_e" value="true"{DIR_O_E_CHECKED}>
+            </div>						
+        </div>
+		 </section>
+		<div class="row">
+            <div class="fg3">{TEXT_RENAME_FILES_ON_UPLOAD}:</div>
+            <div class="fg9">
+                <input type="text" name="rename_files_on_upload" value="{RENAME_FILES_ON_UPLOAD}" class="wdt500">
             </div>
-        </section>
+		</div>	
+       
+		
  		<!-- END show_access_block -->
 
        <div class="row top">
@@ -585,12 +595,7 @@
                 <input type="text" name="page_spacer" value="{PAGE_SPACER}" class="wdt250">
             </div>
         </div>
-        <div class="row">
-            <div class="fg3">{TEXT_RENAME_FILES_ON_UPLOAD}:</div>
-            <div class="fg9">
-                <input type="text" name="rename_files_on_upload" value="{RENAME_FILES_ON_UPLOAD}" class="wdt500">
-            </div>
-        </div>
+        
         <div class="row">
             <div class="fg3">{TEXT_SESSION_IDENTIFIER}:</div>
             <div class="fg9">

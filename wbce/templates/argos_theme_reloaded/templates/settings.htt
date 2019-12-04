@@ -616,6 +616,15 @@
 			<div class="fg1 fg-center"><input type="checkbox" name="dir_g_e" id="dir_g_e" value="true"{DIR_G_E_CHECKED}></div>
 			<div class="fg1 fg-center"><input type="checkbox" name="dir_o_e" id="dir_o_e" value="true"{DIR_O_E_CHECKED}></div>
 		</section>
+		
+		<div class="row" style="padding-left:0;">
+			<div class="fg3">{TEXT_RENAME_FILES_ON_UPLOAD}:</div>
+			<div class="fg9">
+				<input type="text" name="rename_files_on_upload" value="{RENAME_FILES_ON_UPLOAD}" class="wdt500">
+			</div>
+		</div>
+
+		
 		<!-- END show_access_block -->
 
 
@@ -647,13 +656,7 @@
 			</div>
 		</div>
 
-		<div class="row" style="padding-left:0;">
-			<div class="fg3">{TEXT_RENAME_FILES_ON_UPLOAD}:</div>
-			<div class="fg9">
-				<input type="text" name="rename_files_on_upload" value="{RENAME_FILES_ON_UPLOAD}" class="wdt500">
-			</div>
-		</div>
-
+		
 		<div class="row" style="padding-left:0;">
 			<div class="fg3">{TEXT_SESSION_IDENTIFIER}:</div>
 			<div class="fg9">

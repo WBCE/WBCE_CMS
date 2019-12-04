@@ -766,7 +766,7 @@ if($is_advanced)
     $template->set_block('show_search', '');
     $template->set_block('show_redirect_timer', '');
 }
-if($is_advanced && $admin->get_group_id()=='1')
+if($is_advanced && $admin->get_user_id()=='1')
 {
     $template->parse('show_access', 'show_access_block', true);
 }else {
