@@ -79,6 +79,7 @@ $oTemplate->set_var(
         'DESCRIPTION'  => $aModule['description'],
         'VERSION'      => $aModule['version'],
         'DESIGNED_FOR' => $aModule['platform'],
+		'LICENSE'	   => $aModule['license'],
         'ADMIN_URL'    => ADMIN_URL,
         'WB_URL'       => WB_URL,
         'THEME_URL'    => THEME_URL,
@@ -88,6 +89,7 @@ $oTemplate->set_var(
         'TEXT_VERSION' => $TEXT['VERSION'],
         'TEXT_DESIGNED_FOR'      => $TEXT['DESIGNED_FOR'],
         'TEXT_DESCRIPTION'       => $TEXT['DESCRIPTION'],
+		'TEXT_LICENSE' => $TEXT['LICENSE'],
         'TEXT_BACK'              => $TEXT['BACK'],
         'HEADING_MODULE_DETAILS' => $HEADING['MODULE_DETAILS']
     )

@@ -49,23 +49,25 @@ if($result->numRows() > 0) {
 }
 
 // check if a template description exists for the displayed backend language
-$tool_description = false;
+$template_description = false;
 if(function_exists('file_get_contents') && file_exists(WB_PATH.'/templates/'.$file.'/languages/'.LANGUAGE .'.php')) {
     // read contents of the template language file into string
     $data = @file_get_contents(WB_PATH .'/templates/' .$file .'/languages/' .LANGUAGE .'.php');
     // use regular expressions to fetch the content of the variable from the string
-    $tool_description = get_variable_content('template_description', $data, false, false);
-    // replace optional placeholder {WB_URL} with value stored in config.php
-    if($tool_description !== false && strlen(trim($tool_description)) != 0) {
-        $tool_description = str_replace('{WB_URL}', WB_URL, $tool_description);
+    $template_description = get_variable_content('template_description', $data, false, false);
+       
+   // replace optional placeholder {WB_URL} with value stored in config.php
+    if($template_description !== false && strlen(trim($template_description)) != 0) {
+        $template_description = str_replace('{WB_URL}', WB_URL, $template_description);
     } else {
-        $tool_description = false;
+        $template_description = false;
     }
 }
-if($tool_description !== false) {
+if($template_description !== false) {
     // Override the template-description with correct desription in users language
-    $row['description'] = $tool_description;
+    $row['description'] = $template_description;
 }
+
 
 $template->set_var(
     array(
@@ -75,6 +77,7 @@ $template->set_var(
         'DESCRIPTION' => $row['description'],
         'VERSION' => $row['version'],
         'DESIGNED_FOR' => $row['platform'],
+		'LICENSE' => $row['license'],
 
         // Headings
         'HEADING_TEMPLATE_DETAILS' => $HEADING['TEMPLATE_DETAILS'],
@@ -85,6 +88,7 @@ $template->set_var(
         'TEXT_VERSION' => $TEXT['VERSION'],
         'TEXT_DESIGNED_FOR' => $TEXT['DESIGNED_FOR'],
         'TEXT_DESCRIPTION' => $TEXT['DESCRIPTION'],
+		'TEXT_LICENSE' => $TEXT['LICENSE'],
         'TEXT_BACK' => $TEXT['BACK']
         )
 );

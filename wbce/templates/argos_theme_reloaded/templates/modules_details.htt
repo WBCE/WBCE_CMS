@@ -33,5 +33,9 @@
 
 	<div class="fg3 bold">{TEXT_DESCRIPTION}:</div>
 	<div class="fg9">{DESCRIPTION}</div>
+	
+	<hr class="fg12 nom">
+    <div class="fg3 bold">{TEXT_LICENSE}:</div>
+    <div class="fg9">{LICENSE}</div>
 </div>
 <!-- END main_block -->
