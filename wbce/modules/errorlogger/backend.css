@@ -1,14 +1,17 @@
 #contentarea {
 	max-width: 100%;
 }
-.adminModuleWrapper.legacy { /* fix for argos theme */
+
+.adminModuleWrapper.legacy {
+	/* fix for argos theme */
 	padding: 0;
 }
-table#legacy, 
+
+table#legacy,
 table#former_positioning_table {
 	table-layout: fixed;
 }
- 
+
 div.logviewWrapper {
 	overflow: scroll;
 	background: #fff;
@@ -22,9 +25,10 @@ div.logline {
 	/* font-family: monospace; */
 	font-size: 11px;
 	white-space: nowrap;
-	letter-spacing: 1.1px; 
+	letter-spacing: 1.1px;
 	margin-bottom: 1px;
 }
+
 div.logline.even {
 	background: #f3f3f3;
 }
@@ -35,6 +39,7 @@ div.logline.even {
 	background: #fff;
 	padding: 3px 10px;
 }
+
 .lvlink {
 	float: right;
 	font-size: 14px;
@@ -42,23 +47,40 @@ div.logline.even {
 	margin-left: 10px;
 }
 
-.newline {background: #fff7e1 !important;}
+.newline {
+	background: #fff7e1 !important;
+}
 
-.color .lognotice 	{color: #333333;}
-.color .logerror 	{color: #EA2027; font-weight:bold;}
-.color .logwarning	{color: #FF4400;}
-.color .logdeprecated {color: #C337F7;}
-.color .newline { background: #fff7e1 !important;}
+.color .lognotice {
+	color: #333333;
+}
 
+.color .logerror {
+	color: #EA2027;
+	font-weight: bold;
+}
+
+.color .logwarning {
+	color: #FF4400;
+}
+
+.color .logdeprecated {
+	color: #C337F7;
+}
+
+.color .newline {
+	background: #fff7e1 !important;
+}
 
 .errorlevel {
-	background-color:#e84118;
+	background-color: #e84118;
 	color: #fff;
 	padding: 10px;
 	margin-bottom: 10px;
 }
+
 .messagelevel {
-	background-color:#40739e;
+	background-color: #40739e;
 	color: #fff;
 	padding: 10px;
 	margin-bottom: 10px;
