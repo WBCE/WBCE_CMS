@@ -76,7 +76,7 @@
                 <select name="file" class="wdt250">
                     <option value="" selected>{TEXT_PLEASE_SELECT}...</option>
                     <!-- BEGIN install_list_block -->
-                    <option value="{VALUE}">{NAME}</option>
+                    <option value="{IVALUE}">{INAME}</option>
                     <!-- END install_list_block -->
                 </select>
                 <button type="submit" name="submit"> <i class="fa fa-fw fa-check"></i> {TEXT_EXECUTE} </button>
@@ -91,9 +91,9 @@
                 <input type="hidden" name="action" value="upgrade">
                 <select name="file" class="wdt250">
                     <option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-                    <!-- BEGIN install_list_block -->
-                    <option value="{VALUE}">{NAME}</option>
-                    <!-- END install_list_block -->
+                    <!-- BEGIN upgrade_list_block -->
+                    <option value="{UVALUE}">{UNAME}</option>
+                    <!-- END upgrade_list_block -->
                 </select>
                 <button type="submit" name="submit"> <i class="fa fa-fw fa-check"></i> {TEXT_EXECUTE} </button>
             </div>
@@ -107,9 +107,9 @@
                 <input type="hidden" name="action" value="uninstall">
                 <select name="file" class="wdt250">
                     <option value="" selected>{TEXT_PLEASE_SELECT}...</option>
-                    <!-- BEGIN install_list_block -->
-                    <option value="{VALUE}">{NAME}</option>
-                    <!-- END install_list_block -->
+                    <!-- BEGIN uninstall_list_block -->
+                    <option value="{XVALUE}">{XNAME}</option>
+                    <!-- END uninstall_list_block -->
                 </select>
                 <button type="submit" name="submit"> <i class="fa fa-fw fa-check"></i> {TEXT_EXECUTE} </button>
             </div>

@@ -15,6 +15,7 @@ require '../../config.php';
 
 // Setup admin object, print header and check section permissions
 $admin = new admin('Addons', 'modules', true, true);
+$moduleDirectories = array();
 
 // Create new template object
 $oTemplate = new Template(dirname($admin->correct_theme_source('modules.htt')));
@@ -26,7 +27,7 @@ $oTemplate->set_block('main_block', 'module_list_block', 'module_list');
 $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' order by name");
 if($result->numRows() > 0) {
     while ($aModule = $result->fetchRow(MYSQL_ASSOC)) {
-        
+        $moduleDirectories[] = WB_PATH.'/modules/'.$aModule['directory'];
         $aModule['name'] = $admin->get_module_name($aModule['directory'], true, ' <i>[%s]</i>');
         $oTemplate->set_var('VALUE', $aModule['directory']);
         $oTemplate->set_var('NAME',  $aModule['name']);
@@ -50,27 +51,27 @@ $oTemplate->set_var(
 $show_block = false;
 foreach ($module_files as $index => $path) {
     if (is_dir($path)) {
-        if (file_exists($path . '/install.php')) {
+        if (file_exists($path . '/install.php') && !in_array($path,$moduleDirectories)) {			
             $show_block = true;
             $oTemplate->set_var('INSTALL_VISIBLE', '');
-            $oTemplate->set_var('VALUE', basename($path));
-            $oTemplate->set_var('NAME', basename($path));
-            $oTemplate->parse('install_list', 'install_list_block', true);
+            $oTemplate->set_var('IVALUE', basename($path));
+            $oTemplate->set_var('INAME', basename($path));
+            $oTemplate->parse('install_list', 'install_list_block', true);			
         }
 
-        if (file_exists($path . '/upgrade.php')) {
+        if (file_exists($path . '/upgrade.php') && in_array($path,$moduleDirectories)) {
             $show_block = true;
             $oTemplate->set_var('UPGRADE_VISIBLE', '');
-            $oTemplate->set_var('VALUE', basename($path));
-            $oTemplate->set_var('NAME', basename($path));
+            $oTemplate->set_var('UVALUE', basename($path));
+            $oTemplate->set_var('UNAME', basename($path));
             $oTemplate->parse('upgrade_list', 'upgrade_list_block', true);
         }
 
         if (file_exists($path . '/uninstall.php')) {
             $show_block = true;
             $oTemplate->set_var('UNINSTALL_VISIBLE', '');
-            $oTemplate->set_var('VALUE', basename($path));
-            $oTemplate->set_var('NAME', basename($path));
+            $oTemplate->set_var('XVALUE', basename($path));
+            $oTemplate->set_var('XNAME', basename($path));
             $oTemplate->parse('uninstall_list', 'uninstall_list_block', true);
         }
 
