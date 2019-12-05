@@ -46,11 +46,11 @@ reset($content);
 while ($s = current($content)) {
                                              // get question
     $s = trim(rtrim(rtrim($s, "\n"), "\r")); // remove newline
-    if ($s == '' or $s{0} != '?') {
+    if ($s == '' or $s[0] != '?') {
         next($content);
         continue;
     }
-    if (isset($s{3}) && $s{3} == ':') {
+    if (isset($s[3]) && $s[3] == ':') {
         $lang = substr($s, 1, 2);
         $q = substr($s, 4);
     } else {
@@ -64,7 +64,7 @@ while ($s = current($content)) {
     // get answer
     $s = next($content);
     $s = trim(rtrim(rtrim($s, "\n"), "\r")); // remove newline
-    if (isset($s{0}) && $s{0} == '!') {
+    if (isset($s[0]) && $s[0] == '!') {
         $a = substr($s, 1);
         $qa[$lang][$q] = $a;
         next($content);

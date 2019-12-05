@@ -90,7 +90,7 @@ if (mt_rand(0, 2) == 0) {
     $y = mt_rand($height - 10, $height - 2);
     do {
         for ($i = 0; $i < strlen($text); $i++) {
-            $res = imagettftext($image, $ttfsize, $angle, $x, $y, $color, $ttf, $text{$i});
+            $res = imagettftext($image, $ttfsize, $angle, $x, $y, $color, $ttf, $text[$i]);
             $angle = mt_rand(-15, 15);
             $x = mt_rand($res[4], $res[4] + 10);
             $y = mt_rand($height - 15, $height - 5);

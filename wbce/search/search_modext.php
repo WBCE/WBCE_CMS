@@ -399,7 +399,7 @@ function list_files_dirs($dir, $depth = true, $files = array(), $dirs = array())
 {
     $dh = opendir($dir);
     while (($file = readdir($dh)) !== false) {
-        if ($file{0} == '.' || $file == '..') {
+        if ($file[0] == '.' || $file == '..') {
             continue;
         }
         if (is_dir($dir . '/' . $file)) {

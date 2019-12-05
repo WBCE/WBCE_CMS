@@ -238,7 +238,7 @@ switch ($action) {
                 'HEADING_MODIFY_PAGE'     => $HEADING['MODIFY_PAGE'],
                 'TEXT_CHANGE_SETTINGS'    => $TEXT['CHANGE_SETTINGS'],
                 'TEXT_NAMESECTION'        => $TEXT['SECTION'] . ' ' . $TEXT['NAME'],
-                'TEXT_PUBL_START_DATE'    => $TEXT{'PUBL_START_DATE'},
+                'TEXT_PUBL_START_DATE'    => $TEXT['PUBL_START_DATE'],
                 'TEXT_PUBL_END_DATE'      => $TEXT['PUBL_END_DATE'],
                 'LAST_MODIFIED'           => $MESSAGE['PAGES_LAST_MODIFIED'],
                 'VAR_PAGE_TITLE'          => $aPage['page_title'],
