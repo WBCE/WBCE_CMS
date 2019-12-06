@@ -35,7 +35,7 @@ $admin_groups = $admin->get_post('admin_groups');
 $viewing_groups = $admin->get_post('viewing_groups');
 
 // Work-out if we should check for existing page_code
-$field_set = $database->field_exists(TABLE_PREFIX.'pages', 'page_code');
+$field_set = $database->field_exists('{TP}pages', 'page_code');
 
 // add Admin to admin and viewing-groups
 $admin_groups[] = 1;
@@ -62,36 +62,29 @@ if (!$admin->get_permission($module, 'module'))
 }    
 
 // Validate data
-if($title == '' || substr($title,0,1)=='.')
+if ($title == '' || substr($title,0,1)=='.')
 {
     $admin->print_error($MESSAGE['PAGES_BLANK_PAGE_TITLE']);
 }
 
 // Check to see if page created has needed permissions
-if(!in_array(1, $admin->get_groups_id()))
-{
+if (!in_array(1, $admin->get_groups_id())){
     $admin_perm_ok = false;
-    foreach ($admin_groups as $adm_group)
-    {
-        if (in_array($adm_group, $admin->get_groups_id()))
-        {
+    foreach ($admin_groups as $adm_group){
+        if (in_array($adm_group, $admin->get_groups_id())){
             $admin_perm_ok = true;
         } 
     }
-    if ($admin_perm_ok == false)
-    {
+    if ($admin_perm_ok == false){
         $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
     }
     $admin_perm_ok = false;
-    foreach ($viewing_groups as $view_group)
-    {
-        if (in_array($view_group, $admin->get_groups_id()))
-        {
+    foreach ($viewing_groups as $view_group){
+        if (in_array($view_group, $admin->get_groups_id())){
             $admin_perm_ok = true;
         }
     }
-    if ($admin_perm_ok == false)
-    {
+    if ($admin_perm_ok == false){
         $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
     }
 }
@@ -100,12 +93,10 @@ $admin_groups = implode(',', $admin_groups);
 $viewing_groups = implode(',', $viewing_groups);
 
 // Work-out what the link and page filename should be
-if($parent == '0')
-{
+if ($parent == '0'){
     $link = '/'.page_filename($title);
     // rename menu titles: index && intro to prevent clashes with intro page feature and WB core file /pages/index.php
-    if($link == '/index' || $link == '/intro')
-    {
+    if ($link == '/index' || $link == '/intro'){
         $link .= '_0';
         $filename = WB_PATH .PAGES_DIRECTORY .'/' .page_filename($title) .'_0' .PAGE_EXTENSION;
     } else {
@@ -113,21 +104,16 @@ if($parent == '0')
     }
 } else {
     $parent_section = '';
-    $hSql = 'SELECT `link` FROM `'.TABLE_PREFIX.'pages` WHERE `page_id` = '.$parent;
-    $parent_section = $database->get_one($hSql);
-    
-    //echo "parentsection ".$parent_section."<br />";
+    $hSql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$parent;
+    $parent_section = $database->get_one($hSql);    
     $filename = WB_PATH.PAGES_DIRECTORY.$parent_section.'/'.page_filename($title).PAGE_EXTENSION;
     make_dir(WB_PATH.PAGES_DIRECTORY.$parent_section);
     $link = $parent_section.'/'.page_filename($title);
-    //echo "filename ".$filename."<br />";
-    //echo "link ".$link."<br />";
 }
 
 // Check if a page with same page filename exists
-$sql = 'SELECT `page_id` FROM `'.TABLE_PREFIX.'pages` '
-     . 'WHERE `link`=\''.$link.'\'';
-$get_same_page = $database->get_one($sql);
+$sSql = "SELECT `page_id` FROM `{TP}pages` WHERE `link`='".$link."'";
+$get_same_page = $database->get_one($sSql);
 if (
     $get_same_page OR
     file_exists(WB_PATH.PAGES_DIRECTORY.$link.PAGE_EXTENSION) OR
@@ -145,7 +131,7 @@ $order->clean($parent);
 $position = $order->get_new($parent);
 
 // Work-out if the page parent (if selected) has a seperate template or language to the default
-$query_parent = $database->query("SELECT template, language FROM ".TABLE_PREFIX."pages WHERE page_id = '$parent'");
+$query_parent = $database->query("SELECT `template`, `language` FROM `{TP}pages` WHERE `page_id` = ".$parent);
 if ($query_parent->numRows() > 0) {
     $fetch_parent = $query_parent->fetchRow();
     $template = $fetch_parent['template'];
@@ -199,7 +185,7 @@ $aUpdate = array(
     'link'        => $link,
     'page_trail'  => $page_trail,
 );
-if((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES)
+if ((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES)
     && $field_set
     && ($language == DEFAULT_LANGUAGE)
     && (file_exists(WB_PATH.'/modules/mod_multilingual/update_keys.php')
@@ -211,7 +197,9 @@ if (!$database->updateRow('{TP}pages', 'page_id', $aUpdate)) {
 }
 
 // Create a new file in the /pages dir
-create_access_file($filename, $page_id, $level);
+if ($visibility != 'none'){ 
+    create_access_file($filename, $page_id, $level);
+}
 
 // Add new record into the sections table
 $aSection = array(
@@ -228,8 +216,7 @@ if (!($section_id = $database->getLastInsertId())) {
     $admin->print_error($database->get_error());
 }
 // Include the selected modules add file if it exists
-$sModuleAddFile = WB_PATH.'/modules/'.$module.'/add.php';
-if(file_exists($sModuleAddFile)) {
+if (file_exists($sModuleAddFile = WB_PATH.'/modules/'.$module.'/add.php')) {
     require $sModuleAddFile;
 }
 $admin->print_success($MESSAGE['PAGES_ADDED'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);

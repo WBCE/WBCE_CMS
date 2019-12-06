@@ -73,9 +73,6 @@ if ($the_link == '' || substr($the_link,0,1)=='.'){
     $admin->print_error($MESSAGE['PAGES_BLANK_LINK_TITLE']);
 }
 
-
-
-
 // Get existing perms
 // $database = new database();
 $sSql = 'SELECT `parent`,`link`,`position`,`admin_groups`,`admin_users` FROM `{TP}pages` WHERE `page_id`='.$page_id;
@@ -260,6 +257,11 @@ if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/'))
 // Fix sub-pages page trail
 fix_page_trail($page_id,$root_parent);
 
+if($visibility == 'none'){    
+    if (file_exists($sFilePath = getAccessFilePath($page_id))){
+        unlink($sFilePath);
+    }
+}
 
 // Check if there is a db error, otherwise say successful
 if ($database->is_error()) {
