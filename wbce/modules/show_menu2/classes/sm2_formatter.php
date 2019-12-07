@@ -340,9 +340,11 @@ class SM2_Formatter
             }
             break;
         case '>=':
-            $ok = ($operand >= $aValue); 
+            $ok = ($operand >= $aValue);
+	    break; 
         case '>':
-            $ok = ($operand > $aValue); 
+            $ok = ($operand > $aValue);
+	    break; 
         }
         
         return $ok;
