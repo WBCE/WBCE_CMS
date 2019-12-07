@@ -1484,12 +1484,13 @@ function vars2globals_wrapper($aVarlistCSV)
     $retval = true;
     if ($aVarlistCSV != '') {
         if (!isset($GLOBALS['ErrorLog'])) {
-	    global $ErrorLog = new ErrorLog();
+	    global $ErrorLog;
+		$ErrorLog = new ErrorLog();
         }
         $aVars = explode(',', $aVarlistCSV);
         foreach ($aVars as $var) {
             if (isset($GLOBALS[$var])) {
-                global $ErrorLog->write(
+                $ErrorLog->write(
                     'variabe $' . $var . ' already defined in global space!!',
                     __FILE__, __FUNCTION__, __LINE__
                 );
