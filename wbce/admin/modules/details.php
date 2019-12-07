@@ -58,7 +58,7 @@ if (preg_match("/admin/", $aModule['function']))      $aModType[] = $TEXT['ADMIN
 if (preg_match("/snippet/", $aModule['function']))    $aModType[] = $TEXT['CODE_SNIPPET'];
 if (preg_match("/initialize/", $aModule['function'])) $aModType[] = $TEXT['INITIALIZE'];
 if (preg_match("/preinit/", $aModule['function']))    $aModType[] = $TEXT['PREINIT'];
-$sModuleType = implode($aModType,", ");
+$sModuleType = implode(", ", $aModType);
 
 // Get the module description or its translation if set in the language file of the module
 $aModule['description'] = $admin->get_module_description($sModDir);
