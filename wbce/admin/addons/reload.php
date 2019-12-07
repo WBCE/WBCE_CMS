@@ -117,5 +117,5 @@ foreach ($post_check as $key) {
 }
 
 // output success message
-$admin->print_success(implode($msg, '<br />'), $js_back);
+$admin->print_success(implode('<br />',$msg), $js_back);
 $admin->print_footer();
