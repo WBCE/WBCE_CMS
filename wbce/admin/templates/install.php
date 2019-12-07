@@ -91,18 +91,25 @@ if(! $_FILES['userfile']['error']) {
     switch ($error_code) {
         case UPLOAD_ERR_INI_SIZE:
             $key = 'UPLOAD_ERR_INI_SIZE';
+	    break;
         case UPLOAD_ERR_FORM_SIZE:
             $key = 'UPLOAD_ERR_FORM_SIZE';
+	    break;
         case UPLOAD_ERR_PARTIAL:
             $key = 'UPLOAD_ERR_PARTIAL';
+	    break;
         case UPLOAD_ERR_NO_FILE:
             $key = 'UPLOAD_ERR_NO_FILE';
+	    break;
         case UPLOAD_ERR_NO_TMP_DIR:
             $key = 'UPLOAD_ERR_NO_TMP_DIR';
+	    break;
         case UPLOAD_ERR_CANT_WRITE:
             $key = 'UPLOAD_ERR_CANT_WRITE';
+	    break;
         case UPLOAD_ERR_EXTENSION:
             $key = 'UPLOAD_ERR_EXTENSION';
+	    break;
         default:
             $key = 'UNKNOW_UPLOAD_ERROR';
     }

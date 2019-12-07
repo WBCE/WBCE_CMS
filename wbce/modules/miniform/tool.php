@@ -55,9 +55,6 @@ function timeago($iTimestamp) {
 			break;			
 			
 			case 'FR' :
-			break;			
-			
-			case 'FR' :
 			break;
 			
 			case 'PL' :

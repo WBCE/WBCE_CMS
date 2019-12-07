@@ -15,7 +15,7 @@ defined('WB_PATH') or die("Cannot access this file directly");
 $oAccounts = new Accounts();
 $oMsgBox   = new MessageBox();
 
-$sLC       = defined('LANGUAGE') ? LANGUAGE : defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN';
+$sLC       = defined('LANGUAGE') ? LANGUAGE : (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN');
 $sEmail    = '';
 
 if(isset($_POST['email']) && $_POST['email'] != "" ) {

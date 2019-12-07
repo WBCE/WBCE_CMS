@@ -118,7 +118,7 @@ if(isset($_POST['signup_form_sent'])){
     // ////////////////////////////////////////////////////////////////////////
 
     if (empty($errors) === true) {	
-        $sLC             = defined('LANGUAGE') ? LANGUAGE : defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN';
+        $sLC             = defined('LANGUAGE') ? LANGUAGE : (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN');
         $sOnScreenSwitch = '';	    
 
         // ///////////////////////////////////
