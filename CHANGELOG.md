@@ -5,6 +5,257 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2019-12-10:** Colinax [[75d6b7ee](https://github.com/WBCE/WBCE_CMS/commit/75d6b7eee77e6f7dde7f3a6397fb43db2760d0ca)]
+   > CKEditor 4.13.1
+
+ * **2019-12-10:** instantflorian [[76ee8a67](https://github.com/WBCE/WBCE_CMS/commit/76ee8a67876078b9b493785c01a51ceec0d46694)]
+   > #419 remove non-wanted access files
+     Seems to work now. Afaics we can just use the link value and add WB_PATH.PAGES_DIRECTORY and PAGE_EXTENSION. The former code generated an invalid value, therefore the accessfile was not unlinked.
+
+ * **2019-12-07:** Colinax [[7a8dc09b](https://github.com/WBCE/WBCE_CMS/commit/7a8dc09b7a5fb44185949d8834bcfe2ee5916724)]
+   > Twig 1.37.1
+
+ * **2019-12-07:** instantflorian [[21ff2d9b](https://github.com/WBCE/WBCE_CMS/commit/21ff2d9bc5fa2777a7196730094aed89fd18b61c)]
+   > Update reload.php
+     PHP 7.4 deprecated
+
+ * **2019-12-07:** instantflorian [[ddaccba5](https://github.com/WBCE/WBCE_CMS/commit/ddaccba583c58586e5aa3e71b563deb02c60953e)]
+   > Fix already defined issue
+
+ * **2019-12-07:** instantflorian [[2cc900fb](https://github.com/WBCE/WBCE_CMS/commit/2cc900fb0fab9de4ff9ac1d48363d7b7b7b09b6a)]
+   > Fix parse error
+
+ * **2019-12-07:** instantflorian [[10e1f733](https://github.com/WBCE/WBCE_CMS/commit/10e1f73313d33b8ae45d40ca133b490578deb758)]
+   > Merge branch 'development' of https://github.com/WBCE/WBCE_CMS into development
+
+ * **2019-12-07:** instantflorian [[0e773cca](https://github.com/WBCE/WBCE_CMS/commit/0e773cca3081d31777a40e890c7339285dfc2323)]
+   > Merge branch 'development' of https://github.com/WBCE/WBCE_CMS into development
+     Sorry, Github Desktop errors, Idk whats happening here
+
+ * **2019-12-07:** Martin Hecht [[0ce7057a](https://github.com/WBCE/WBCE_CMS/commit/0ce7057a5107fc8b8a760df2e68b450fd9240e27)]
+   > forgot to commit one file
+
+ * **2019-12-07:** Martin Hecht [[91272593](https://github.com/WBCE/WBCE_CMS/commit/912725934edc063f211d5a7c6ab667cd9a8a04a7)]
+   > fix findings of phpstorm
+     fix deprecations for php 7.4,
+     curly brace access
+     deprecated implode usage
+     dynamic method called as static
+     nested ternary operator usage
+     missing break statements inside of case
+     duplicate branch in switch
+
+ * **2019-12-06:** Colinax [[043fb7d6](https://github.com/WBCE/WBCE_CMS/commit/043fb7d6150f760b2ae9d0bfa8a7cb0d05130958)]
+   > Send HTTP status code 404 for pages with visibility none
+     fixes #419
+
+ * **2019-12-06:** Colinax [[f3c189f0](https://github.com/WBCE/WBCE_CMS/commit/f3c189f01b6bfef82eed43a43151581872f5b14b)]
+   > Send HTTP status code 404 for pages with visibility none
+     fixes #419
+
+ * **2019-12-05:** Martin Hecht [[dfa9abb3](https://github.com/WBCE/WBCE_CMS/commit/dfa9abb38c578100d0ec12afb97a25afaef6696f)]
+   > curly braces for array index are deprecated
+
+ * **2019-12-05:** instantflorian [[d17d1640](https://github.com/WBCE/WBCE_CMS/commit/d17d16407e4c24088c241ac7dc10a04714fa5a12)]
+   > #456 Update PHPMailer to 6.1.3
+
+ * **2019-12-05:** Colinax [[8d721d75](https://github.com/WBCE/WBCE_CMS/commit/8d721d759de78728d9569d0ca04dab5c803e2ebb)]
+   > Select2 4.0.12
+
+ * **2019-12-04:** Colinax [[f1cfe57e](https://github.com/WBCE/WBCE_CMS/commit/f1cfe57e7c615ecf4db190136f5fd33ed78e9be3)]
+   > serialize, fix and format css files
+
+ * **2019-12-04:** instantflorian [[642f673a](https://github.com/WBCE/WBCE_CMS/commit/642f673af5f9674398b3e8509d06189974830240)]
+   > #461 Show execute install only for not installed, execute upgrade only for installed modules
+
+ * **2019-12-04:** instantflorian [[a8058487](https://github.com/WBCE/WBCE_CMS/commit/a80584879bf80a3a29706dc0e0d458505135e7cf)]
+   > #442 Show module/template license
+
+ * **2019-12-04:** instantflorian [[90b74cdb](https://github.com/WBCE/WBCE_CMS/commit/90b74cdb93f560f39b849e9c8e9b411d810ab375)]
+   > #446 Hide file type input settings to all users exapt superadmin
+
+ * **2019-12-04:** instantflorian [[786c4209](https://github.com/WBCE/WBCE_CMS/commit/786c420909ad66c80d7a65400c39dd0550ead889)]
+   > Update Visitor Stats module, Add Errorlogger, update version
+
+ * **2019-12-02:** instantflorian [[a6379136](https://github.com/WBCE/WBCE_CMS/commit/a637913675aa5088166f4e2f4ee3414b8d01f632)]
+   > PHP 7.4 deprecated fix
+
+ * **2019-12-02:** instantflorian [[ddd62d84](https://github.com/WBCE/WBCE_CMS/commit/ddd62d8455cc1a230010d4e1831f958117201879)]
+   > PHP 7.4 deprecated fixes
+
+ * **2019-12-01:** Colinax [[15836d10](https://github.com/WBCE/WBCE_CMS/commit/15836d103416161059438b6c4a24d9126c2832cf)]
+   > serialize, fix and format css files
+
+ * **2019-12-01:** Colinax [[0ad40760](https://github.com/WBCE/WBCE_CMS/commit/0ad40760b76a76aa850dfbc0bc109bae54b02040)]
+   > fix syntax
+
+ * **2019-12-01:** Colinax [[e34c3260](https://github.com/WBCE/WBCE_CMS/commit/e34c326017ad6602c74fd9b4e6f180db90d4b44b)]
+   > add missing print_footer() and fix html tagy
+     add missing print_footer() in several backend instances and fix html tags
+
+ * **2019-12-01:** Colinax [[6d043c86](https://github.com/WBCE/WBCE_CMS/commit/6d043c8647d226d28c8b4fe0608cb144f9d3501d)]
+   > remove any occurrence of magic_quotes functions
+     set_magic_quotes_runtime, get_magic_quotes_gpc, set_magic_quotes_gpc...
+     were deprecated since php 5.3 and removed in 5.4. If at all, there were
+     dummy functions which didn't do anything at all and always returned false
+     
+     which hopefully fix  #468
+
+ * **2019-12-01:** Colinax [[0dff609c](https://github.com/WBCE/WBCE_CMS/commit/0dff609c445bd902e1ed4209284ceabbebc2a6e9)]
+   > avoid curly braces in the context of array/string indexes
+
+ * **2019-12-01:** Colinax [[acf2f8df](https://github.com/WBCE/WBCE_CMS/commit/acf2f8df7cf78dd3bae6b9e42fb756f533195e64)]
+   > use foreach instead of the deprecated each construct
+
+ * **2019-12-01:** Colinax [[97897e30](https://github.com/WBCE/WBCE_CMS/commit/97897e30a32ebf13ef790c64b4efda1af87ba5b6)]
+   > feature to rename intro.php to intro.backup.php
+      when intro page not in use anymore
+
+ * **2019-12-01:** Colinax [[7c0c9f64](https://github.com/WBCE/WBCE_CMS/commit/7c0c9f6437801add8a41484a93894504862da4b7)]
+   > allow for [wblinkXX] manual anchors in SiteMap module
+     like: [wblink777]#myManualAnchor
+
+ * **2019-12-01:** Colinax [[d30fcf80](https://github.com/WBCE/WBCE_CMS/commit/d30fcf80252cc70768602d06240217cda717ec6e)]
+   > Handle issue #465
+
+ * **2019-12-01:** Colinax [[3d89dc93](https://github.com/WBCE/WBCE_CMS/commit/3d89dc93ea0abc0e50ff86925507a65f1c8ee4a2)]
+   > correct instructions for custom Accounts templates
+
+ * **2019-12-01:** Colinax [[40e20c3a](https://github.com/WBCE/WBCE_CMS/commit/40e20c3a57ef2163161d8a1217e8e1d121faeb5b)]
+   > fix MySQL handling
+     Fixes #445
+     prevents executing on mariaDB
+
+ * **2019-12-01:** Colinax [[9dba20cd](https://github.com/WBCE/WBCE_CMS/commit/9dba20cd3ae3261e431ca82a0c632687b855abc6)]
+   > preprocess is deprecated
+
+ * **2019-10-25:** Stefek [[eb2c2294](https://github.com/WBCE/WBCE_CMS/commit/eb2c2294b7f69805fa89b42626812029478bc4d5)]
+   > Handle AdminTool issue when no miniforms yet
+     The MiniForm Overview AdminTool has generated a NOTICE when there have been created no MiniForm forms yet.
+     It's handled now and "none found" is displayed instead.
+ * **2019-10-25:** Colinax [[1238cb75](https://github.com/WBCE/WBCE_CMS/commit/1238cb7577f51c575deacfe19e05ef7cc94f8ecd)]
+   > fix syntax
+
+ * **2019-10-22:** Martin Hecht [[d4b4edf7](https://github.com/WBCE/WBCE_CMS/commit/d4b4edf7a4a1284557f9b709f6d30c46ed2c3bea)]
+   > fix a few defects found with phpstorm
+
+ * **2019-10-21:** Colinax [[86b80c03](https://github.com/WBCE/WBCE_CMS/commit/86b80c03fc8430652e3a8f392474b04a506f0d00)]
+   > Update language files
+     with HTML5 Tags, some cleanup, added missing vars
+
+ * **2019-10-20:** Colinax [[e0e27995](https://github.com/WBCE/WBCE_CMS/commit/e0e279955bfcc20086d03c4084cfbe878c608932)]
+   > Update language files
+     with HTML5 Tags
+
+ * **2019-10-20:** instantflorian [[02bfcfee](https://github.com/WBCE/WBCE_CMS/commit/02bfcfee2e490f5be5d38aa96535ed1d85ad4484)]
+   > Handling issue #454
+     (Seems as if the same code in groups.php is not used at all...?)
+ * **2019-10-20:** Colinax [[c0db121a](https://github.com/WBCE/WBCE_CMS/commit/c0db121a0dec272481e945f521c9eba60c558355)]
+   > no ?lang=XY in frontend
+
+ * **2019-10-19:** Colinax [[14845cf1](https://github.com/WBCE/WBCE_CMS/commit/14845cf143d878d278254130f9c0b374d71f0204)]
+   > Select2 4.0.11
+
+ * **2019-10-19:** Colinax [[b17172a4](https://github.com/WBCE/WBCE_CMS/commit/b17172a4923d0dab51e72d8320f2d35bad1e4d8a)]
+   > add correct HTML5 iFrame
+
+ * **2019-10-19:** Colinax [[a31899bf](https://github.com/WBCE/WBCE_CMS/commit/a31899bf558bb9c221dcaffd90a543ce7762d661)]
+   > some css corrections
+
+ * **2019-10-19:** Stefek [[d68c815d](https://github.com/WBCE/WBCE_CMS/commit/d68c815dd56fd3e1f0052236ccf625982c3bd252)]
+   > Handling Issue #454
+     This should solve the issue
+ * **2019-10-17:** Martin Hecht [[2213a410](https://github.com/WBCE/WBCE_CMS/commit/2213a410874a60eb6fb6911658bbdae54faec63a)]
+   > allow appending content to meta tags in insert class
+
+ * **2019-10-16:** Colinax [[110079c1](https://github.com/WBCE/WBCE_CMS/commit/110079c10a2795c901b62d6a95454c5ae04e381b)]
+   > fix missing htmlspecialchars
+     fixes #453 thanks to dev4me
+ * **2019-10-12:** Colinax [[035022a9](https://github.com/WBCE/WBCE_CMS/commit/035022a91acb4a18d9d98065a3a5bd3f2833e4b2)]
+   > fix warning on local TE
+     https://forum.wbce.org/viewtopic.php?id=3164
+
+ * **2019-10-12:** Colinax [[1dab3324](https://github.com/WBCE/WBCE_CMS/commit/1dab332482f3bd9fb111c04739b4f484244273ed)]
+   > fix resizing and remove animation
+
+ * **2019-10-09:** Colinax [[17b10524](https://github.com/WBCE/WBCE_CMS/commit/17b105242ff4ec90cb5251a9319f3c017fab1d01)]
+   > CKEditor 4.13.0.1
+
+ * **2019-10-08:** Martin Hecht [[3a4370aa](https://github.com/WBCE/WBCE_CMS/commit/3a4370aad366e57ce3ee66c617d8114d50370637)]
+   > update OpF Dashboard to version 1.5.10
+     this version addresses the following issue:
+     Filters that use additional fields did reset those values to the
+     default values upon each update of either the filter plugin or the
+     opf dashboard itself. With this special bugfix release the values
+     adjusted by the user are kept across updates.
+
+ * **2019-10-08:** instantflorian [[86d61c27](https://github.com/WBCE/WBCE_CMS/commit/86d61c2713157dfd78eb1586a5dca2004c70debe)]
+   > Update settings2.php
+     oops, duplicate variable name
+
+ * **2019-10-08:** instantflorian [[889075af](https://github.com/WBCE/WBCE_CMS/commit/889075af67002713aa5afa45296d2e704b5b397d)]
+   > Save & Go Back also on Page Settings and Manage Sections
+
+ * **2019-10-07:** Martin Hecht [[6ff9fcfd](https://github.com/WBCE/WBCE_CMS/commit/6ff9fcfd8717324fb4e5dcaa48e71836d54ccfd2)]
+   > better quoting in ckeditor/wblink
+     stricter sql settings would not find the items in these modules without proper quoting of the sql statements
+
+ * **2019-10-02:** Colinax [[b10bd110](https://github.com/WBCE/WBCE_CMS/commit/b10bd110e1a8063046188db62cbb31496fcedf0f)]
+   > Update view.php
+     php decodes already known entities, not the browser. For more information see: https://www.php.net/manual/en/function.html-entity-decode.php
+
+ * **2019-10-02:** Colinax [[876210c6](https://github.com/WBCE/WBCE_CMS/commit/876210c6de6849238a274a396133a4c0bfdba1a7)]
+   > CKEditor 4.13.0
+
+ * **2019-09-28:** Martin Hecht [[e15d482b](https://github.com/WBCE/WBCE_CMS/commit/e15d482b16549233f2456e3a565fa32a8e264f43)]
+   > fix an error in wblink plugin when fetchRow returns NULL
+
+ * **2019-09-24:** Colinax [[e97be858](https://github.com/WBCE/WBCE_CMS/commit/e97be858f19840bfad7c08d3a92338725f54c5af)]
+   > Select2 4.0.10
+
+ * **2019-09-19:** instantflorian [[c9d70a73](https://github.com/WBCE/WBCE_CMS/commit/c9d70a73dea1f09a89c645d86b76c9c2147f251a)]
+   > Merge branch 'master' of https://github.com/WBCE/WBCE_CMS
+
+ * **2019-09-19:** instantflorian [[d81667e3](https://github.com/WBCE/WBCE_CMS/commit/d81667e343d82a26ebb14b2f12de1e6bd203af77)]
+   > Correct Frontend form issue
+     thanks to user beichholz
+
+ * **2019-09-15:** Colinax [[a6c1cadc](https://github.com/WBCE/WBCE_CMS/commit/a6c1cadc45674daea1b38d0ac9ca5be3712862c3)]
+   > Update google_sitemap.php
+
+ * **2019-09-11:** instantflorian [[84de3916](https://github.com/WBCE/WBCE_CMS/commit/84de391684af2a0eb7c44321bbafb5df53c2d7ef)]
+   > Merge branch 'master' of https://github.com/WBCE/WBCE_CMS
+
+ * **2019-09-11:** instantflorian [[f0b9b752](https://github.com/WBCE/WBCE_CMS/commit/f0b9b7520e0b31ee6ee269a4576e51c91be933cd)]
+   > Fix for issue when no prefix is given
+
+ * **2019-08-26:** Colinax [[22dfdc12](https://github.com/WBCE/WBCE_CMS/commit/22dfdc12c7c6b20828378da28c1e172870aa59a5)]
+   > Update E3 error reporting
+
+ * **2019-08-22:** instantflorian [[7cf7b9a5](https://github.com/WBCE/WBCE_CMS/commit/7cf7b9a5c07118fc7e468ee01da089fe9fe1ba89)]
+   > Fix some image issues
+
+ * **2019-08-22:** instantflorian [[3903c8ab](https://github.com/WBCE/WBCE_CMS/commit/3903c8abbb55125dcd6b71ab7d78fbbb441c34f3)]
+   > Fix navigation issue
+
+ * **2019-08-14:** Bianka Martinovic [[3f51a11b](https://github.com/WBCE/WBCE_CMS/commit/3f51a11bc315a12c92f3c1a68edbedf180cdc527)]
+   > Update pages.php
+     * fix for upcoming NWI version (no more page_id column)
+     * removed all $wb284 special cases
+ * **2019-08-12:** instantflorian [[da210819](https://github.com/WBCE/WBCE_CMS/commit/da210819a3e3eecbb7ab211be9603019b0570acf)]
+   > Pagecloner clones section names too
+
+ * **2019-07-30:** instantflorian [[5d7937ad](https://github.com/WBCE/WBCE_CMS/commit/5d7937adadef033abae531fccb71dd226ecfac8e)]
+   > function column name in backticks
+     avoid issues on certain environments
+
+ * **2019-07-24:** instantflorian [[b980abaf](https://github.com/WBCE/WBCE_CMS/commit/b980abaf2943b14c8b75d4dade8420f3465ae9b7)]
+   > Small WBCEZon fixes
+     Too long block name / CSS hack for anchor links
+
+ * **2019-07-22:** instantflorian [[f29704a0](https://github.com/WBCE/WBCE_CMS/commit/f29704a0a45b6b740a1fdd9ad9c76bb12fdb3d78)]
+   > Update CHANGELOG.md
+
  * **2019-07-22:** instantflorian [[4799eb13](https://github.com/WBCE/WBCE_CMS/commit/4799eb1349631c09441b0ad4dc9a7f5e5c1df19e)]
    > Update version.php
 
