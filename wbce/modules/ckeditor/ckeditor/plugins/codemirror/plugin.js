@@ -10,7 +10,7 @@
     CKEDITOR.plugins.add("codemirror", {
         icons: "searchcode,autoformat,commentselectedrange,uncommentselectedrange,autocomplete", // %REMOVE_LINE_CORE%
         lang: "af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh", // %REMOVE_LINE_CORE%
-        version: "1.17.11",
+        version: "1.17.13",
         init: function (editor) {
             var rootPath = this.path,
                 defaultConfig = {
@@ -39,7 +39,17 @@
                     showUncommentButton: true,
                     styleActiveLine: true,
                     theme: "default",
-                    useBeautifyOnStart: false
+                    useBeautifyOnStart: false,
+                    hintOptions: null,
+                    extraKeys: {
+                        "Ctrl-Space":
+                            "autocomplete",
+                        "Ctrl-Q": function (codeMirror_Editor) {
+                            if (config.enableCodeFolding) {
+                                window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
+                            }
+                        }
+                    }
                 };
 
             // Get Config & Lang
@@ -156,16 +166,9 @@
                             showTrailingSpace: config.showTrailingSpace,
                             showCursorWhenSelecting: true,
                             styleActiveLine: config.styleActiveLine,
+                            hintOptions: config.hintOptions,
                             viewportMargin: Infinity,
-                            extraKeys: {
-                                "Ctrl-Space":
-	                                "autocomplete",
-                                "Ctrl-Q": function (codeMirror_Editor) {
-                                    if (config.enableCodeFolding) {
-                                        window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
-                                    }
-                                }
-                            },
+                            extraKeys: config.extraKeys,
                             foldGutter: true,
                             gutters: ["CodeMirror-linenumbbers", "CodeMirror-foldgutter"]
                         });
@@ -735,7 +738,7 @@
                 var scriptFiles = [rootPath + "js/codemirror.addons.min.js"];
 
                 switch (config.mode) {
-                    case 'handlebars':
+                    case "handlebars":
                     {
                         scriptFiles.push(rootPath + "js/codemirror.mode.handlebars.min.js");
                     }
@@ -873,16 +876,7 @@
                     }
                 }
 
-                var extraKeys = {
-	                "Ctrl-Space": "autocomplete",
-                    "Ctrl-Q": function(codeMirror_Editor) {
-                        if (config.enableCodeFolding) {
-                            window["foldFunc_" + editor.id](codeMirror_Editor, codeMirror_Editor.getCursor().line);
-                        }
-                    }
-                };
-
-                addCKEditorKeystrokes(extraKeys);
+                addCKEditorKeystrokes(config.extraKeys);
 
                 window["codemirror_" + editor.id] = CodeMirror.fromTextArea(sourceAreaElement.$, {
                     mode: config.mode === "handlebars" ? { name: "handlebars", base: "text/html" } : config.mode,
@@ -902,9 +896,9 @@
                     theme: config.theme,
                     showTrailingSpace: config.showTrailingSpace,
                     showCursorWhenSelecting: true,
+                    hintOptions: config.hintOptions,
                     styleActiveLine: config.styleActiveLine,
-                    //extraKeys: {"Ctrl-Space": "autocomplete"},
-                    extraKeys: extraKeys,
+                    extraKeys: config.extraKeys,
                     foldGutter: true,
                     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
                 });
