@@ -152,7 +152,7 @@ class Frontend extends Wb
                 $sUri = $this->page_link($this->page['link']);
                 if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
                     // check if there is an query-string
-                    header('Location: ' . $sUri . '&' . $_SERVER['QUERY_STRING']);
+                    header('Location: ' . $sUri . '?' . $_SERVER['QUERY_STRING']);
                 } else {
                     header('Location: ' . $sUri);
                 }
