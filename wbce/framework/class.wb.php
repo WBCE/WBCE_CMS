@@ -388,19 +388,15 @@ _JsCode;
     }
 
     /**
-     * @brief   The purpose of $this->strip_slashes() _was_ to undo the effects of magic_quotes_gpc==ON	 
-     *          NOTE: this is _not_ the counterpart to $this->add_slashes() !
-     *          Use stripslashes() to undo a preliminarily done $this->add_slashes()
+     * @brief   The purpose of $this->strip_slashes() _was_ in further time to undo the effects of magic_quotes_gpc==ON	 
+     * So actually, id did not change anything to $input if PHP >=5.4 - so this is just here for backward compatibility         
      * 
      * @param   string $input  
      * @return  string
      */
     public function strip_slashes($input)
     {
-        if ( !is_string($input)) {
-            return $input;
-        }
-        return stripslashes($input);
+      return $input;   
     }
 	
     /**
