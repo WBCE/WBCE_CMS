@@ -22,6 +22,7 @@ function opff_jq_colorbox(&$content, $page_id, $section_id, $module, $wb) {
     $chek['youtube']       = opf_find_class($content, 'youtube');
     $chek['colorbox']      = opf_find_class($content, 'colorbox');
     $chek['tp_editlink']   = opf_find_class($content, 'tp_editlink');
+	$chek['itemz_editlink']   = opf_find_class($content, 'itemz_editlink');
     
     $chek['cslide']        = opf_find_class($content, 'cslide',  'a', 'rel');
     $chek['cfade']         = opf_find_class($content, 'cfade',   'a', 'rel');
@@ -108,6 +109,14 @@ function opff_jq_colorbox(&$content, $page_id, $section_id, $module, $wb) {
     
     if ($chek['tp_editlink'] != false){
         $sToJs .= "$('.tp_editlink').colorbox({
+            loop:true, width:'90%', 
+            height:'90%', 
+            iframe:true
+        });\n\t"; 
+    }   
+	
+	if ($chek['itemz_editlink'] != false){
+        $sToJs .= "$('.itemz_editlink').colorbox({
             loop:true, width:'90%', 
             height:'90%', 
             iframe:true
