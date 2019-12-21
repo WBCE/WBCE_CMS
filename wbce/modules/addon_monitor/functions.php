@@ -30,7 +30,7 @@ if(!function_exists('getModulesArray')){
 			FROM ".TABLE_PREFIX."addons a 
 				LEFT JOIN ".TABLE_PREFIX."sections s 
 				ON a.directory = s.module 
-			WHERE function LIKE '%page%' OR function LIKE '%snippet%' OR function LIKE '%tool%' OR function LIKE '%wysiwyg%'"
+			WHERE `function` LIKE '%page%' OR `function` LIKE '%snippet%' OR `function` LIKE '%tool%' OR `function` LIKE '%wysiwyg%'"
 		);
 
 		if($oAddons = $database->query($sQueryAddons)){			
@@ -102,7 +102,7 @@ if(!function_exists('getTemplatesArray')){
 			FROM ".TABLE_PREFIX."addons a 
 				LEFT JOIN ".TABLE_PREFIX."pages p 
 				ON a.directory = p.template 
-			WHERE function = 'theme' OR function = 'template'
+			WHERE `function` = 'theme' OR `function` = 'template'
 			ORDER BY `function`, `name`"
 		);
 
