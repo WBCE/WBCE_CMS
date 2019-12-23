@@ -56,7 +56,7 @@ function build_page( &$admin, &$database )
             $oTemplate->set_var(
                 array(
                     'CODE'     => $rec_lang['directory'],
-                    'NAME'     => $rec_lang['name'],
+                    'NAME'     => '['.$rec_lang['directory'].'] '.$rec_lang['name'],
                     'FLAG'     => WB_URL.'/languages/'.$langIcons,
                     'SELECTED' => LANGUAGE == $rec_lang['directory'] ? ' selected="selected"' : ''               
                 )
