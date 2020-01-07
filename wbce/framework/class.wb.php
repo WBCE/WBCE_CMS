@@ -980,7 +980,7 @@ _JsCode;
                     if ($sModfileType == 'jquery') {
                         $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-min.js';
                         $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-insert.js';
-                        $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-include.js';
+                        //$aJqueryFiles[] = WB_URL . '/include/jquery/jquery-include.js';
                         $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-migrate-min.js';
 
                         // workout to insert ui.css and theme 

@@ -1,74 +1,71 @@
-/* Insert Script Plugin
+/*!
+ * InsertLoader 1.0
  *
- *
- * Copyright (c) 2008 Kevin Martin (http://synarchydesign.com/insert)
- * Licensed under the GPL license:
- * http://www.gnu.org/licenses/gpl.html
- *
+ * Copyright (c) 2016 Jonathan Nessier (https://www.neoflow.ch)
+ * Released under The MIT license (MIT)
  */
-jQuery.insert = function(file)
-{
-	var data	= [];
-	var data2	= [];
+var InsertLoader = (function () {
 
-	if (typeof file == 'object')
-	{
-		data = file;
-		file = data.src !== undefined ? data.src : false;
-		file = file === false && data.href !== undefined ? data.href : file;
-		file = file === false ? file2 : false;
-	}
+    this.load = function (urls, path) {
+        if (!path || typeof path === 'undefined' || (typeof path === 'string' && path.length)) {
+            if ($.isArray(urls)) {
+                return loadResources(urls, path);
+            } else if (typeof urls === 'string') {
+                return loadResource(urls, path);
+            }
+            throw new Error('Multiple URLs have to be in an array or only one URL has to be a string');
+        }
+        throw new Error('Path has to be a string or empty');
+    };
 
-	if (typeof file == 'string' && file.length)
-	{
-		var index	= file.lastIndexOf('.');
-		var index2	= file.replace('\\', '/').lastIndexOf('/') + 1;
-		var ext		= file.substring(index + 1, file.length);
-	}
+    var loadResource = function (url, path) {
+        if (typeof url === 'string' && url.length) {
 
-	switch(ext)
-	{
-		case 'js':
-			data2 = {
-				elm:	'script',
-				type:	'text/javascript',
-				src:	file
-			};
-		break;
+            var extension = url.substring(url.lastIndexOf('.') + 1, url.length),
+                    finalUrl = (path || '') + url + '?_=' + new Date().getTime(),
+                    $head = $('head');
 
-		case 'css':
-			data2 = {
-				elm:	'link',
-				rel:	'stylesheet',
-				type:	'text/css',
-				href:	file
-			};
-		break;
+            switch (extension) {
+                case 'php':
+                case 'js':
+                    $head.append($('<script>', {
+                        src: finalUrl
+                    }));
+                    break;
+                case 'css':
+                    $head.append($('<link>', {
+                        href: finalUrl,
+                        rel: 'stylesheet',
+                        type: 'test/css'
+                    }));
+                    break;
+                default:
+                    console.warn('URL is not linking to a CSS or JS file: ' + url);
+                    return false;
+            }
+            return true;
+        }
+        throw new Error('URL has to be a string');
+    };
 
-		default:
-			data2 = {elm: 'link'};
-		break;
-	}
+    var loadResources = function (urls, path) {
+        if ($.isArray(urls)) {
+            var result = true;
+            $.each(urls, function (i, url) {
+                if (!loadResource(url, path)) {
+                    result = false;
+                }
+            });
+            return result;
+        }
+        throw new Error('Multiple URLs have to be in an array');
+    };
 
-	data2.id = 'script-' + (typeof file == 'string' && file.length ?
-		file.substring(index2, index) : Math.round(Math.rand() * 100));
+    return {
+        load: load
+    };
+})();
 
-	for (var i in data)
-	{
-		data2[i] = data[i];
-	}
-
-	data	= data2;
-	var tag	= document.createElement(data.elm);
-
-	delete data.elm;
-
-	for (i in data)
-	{
-		tag.setAttribute(i, data[i]);
-	}
-
-	jQuery('head').append(tag);
-
-	return jQuery('#' + data.id);
+$.insert = function (urls, path) {
+    return InsertLoader.load(urls, path);
 };
