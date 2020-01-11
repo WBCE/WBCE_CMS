@@ -35,6 +35,8 @@ if(!function_exists('getModulesArray')){
 
 		if($oAddons = $database->query($sQueryAddons)){			
 			$sLanguageFileLocation = WB_PATH."/modules/%s/languages/".LANGUAGE.".php";
+			$mod_name = '';
+			$module_name = '';
 			// Loop through addons
 			while($aRec = $oAddons->fetchRow(MYSQL_ASSOC)){
 				// grab for page_id's and section_id's if Addon is a PAGE TYPE MODULE
