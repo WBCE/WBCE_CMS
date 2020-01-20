@@ -46,6 +46,9 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 				  $loginlink = '<a href="'.LOGOUT_URL.'"><i class="icon-sli-logout"  aria-hidden="true"></i></a><a href="'.PREFERENCES_URL.'"><i class="icon-sli-user"  aria-hidden="true"></i></a>';
 			  } else {	  
 				$loginlink = '<a href="'.LOGIN_URL.'"><i class="icon-sli-login"  aria-hidden="true"></i></a>';
+				if (FRONTEND_SIGNUP) {
+				  $loginlink .= ' <a href="'.SIGNUP_URL.'"><i class="icon-sli-user-follow"  aria-hidden="true"></i></a>';
+				}
 			  }			  
 		  } else {
 			  $loginlink = '';
