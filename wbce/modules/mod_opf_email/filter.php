@@ -46,18 +46,18 @@ function doFilterEmail($content) {
     // Search for Maillinks
 
     // first search part to find all mailto email addresses
-    $pattern = '#(<a[^<]*href\s*?=\s*?"\s*?mailto\s*?:\s*?)([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4})([^"]*?)"([^>]*>)(.*?)</a>';
+    $pattern = '#(<a[^<]*href\s*?=\s*?"\s*?mailto\s*?:\s*?)([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,25})([^"]*?)"([^>]*>)(.*?)</a>';
 
     // second part to find all non mailto email addresses
-    $pattern .= '|(value\s*=\s*"|\')??\b([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4})\b#i';
+    $pattern .= '|(value\s*=\s*"|\')??\b([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,25})\b#i';
 /*
     Patterns explained
     Sub 1:\b(<a.[^<]*href\s*?=\s*?"\s*?mailto\s*?:\s*?)         --> "<a id="yyy" class="xxx" href = " mailto :" ignoring white spaces
-    Sub 2:([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4})          --> the email address in the mailto: part of the mail link
+    Sub 2:([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,25})          --> the email address in the mailto: part of the mail link
     Sub 3:([^"]*?)"                                             --> possible ?Subject&cc... stuff attached to the mail address
     Sub 4:([^>]*>)                                              --> all class or id statements after the mailto but before closing ..>
     Sub 5:(.*?)</a>\b                                           --> the mailto text; all characters between >xxxxx</a>
-    Sub 6:|\b([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4})\b     --> email addresses which may appear in the text (require word boundaries)
+    Sub 6:|\b([A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,25})\b     --> email addresses which may appear in the text (require word boundaries)
 */
     // Do the actual work
     // find all email addresses embedded in the content and filter them using a callback function
@@ -104,7 +104,7 @@ function _cbDoExecuteFilter($match) {
         // 2.. mailto only (no JS), 3.. text mails + mailto (no JS), 6.. mailto only (JS), 7.. all filters active
             if(!Settings::Get('OPF_MAILTO_FILTER')) return $match[0];
             // check if last part of the a href link: >xxxx</a> contains a email address we need to filter
-            $pattern = '#[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}#i';
+            $pattern = '#[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,25}#i';
             if(preg_match_all($pattern, $match[5], $matches)) {
                 foreach($matches as $submatch) {
                     foreach($submatch as $value) {

@@ -186,7 +186,7 @@ if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
     set_error(d('e14: ').'Please enter an email for the Administrator account', 'admin_email');
     $IsError=true;
 } else {
-    if (preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i', $_POST['admin_email'])) {
+    if (preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,25})$/i', $_POST['admin_email'])) {
         $admin_email = $_POST['admin_email'];
     } else {
         set_error(d('e15: ').'Please enter a valid email address for the Administrator account', 'admin_email');
