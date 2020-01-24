@@ -412,6 +412,13 @@ if (defined("WB_SEESSION_TIMEOUT"))
 * Checking Core modules for installation status and install if necessary
 */
 
+// Sitemap
+$file_name = WB_PATH . "/modules/sitemap/info.php";
+if (file_exists($file_name)) {
+   echo "<br />Update Sitemap<br />";
+   require_once WB_PATH . "/modules/sitemap/upgrade.php";
+}
+
 // Captcha Controll
 $file_name = WB_PATH . "/modules/captcha_control/info.php";
 if (file_exists($file_name)) {
