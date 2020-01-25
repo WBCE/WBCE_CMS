@@ -45,7 +45,7 @@ Topic: Filter exportieren
 
         Benutzen Sie das "Exportieren"-Icon in der Filter-&Uuml;bersicht, um einen vorhandenen
         Inline- oder Plugin-Filter zu exportieren.
-        Modul-Filter k&ouml;nnen nicht exportiert werden, da sie Teil eines WebsiteBaker Modules
+        Modul-Filter k&ouml;nnen nicht exportiert werden, da sie Teil eines Modules
         sind.
 
         Inline-Filter werden beim exportieren automatisch in Plugin-Filter umgewandelt.

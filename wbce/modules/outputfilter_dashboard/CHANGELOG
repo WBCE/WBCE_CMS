@@ -2,6 +2,15 @@
 Header: Version-History
 
 1.5:
+1.5.11 %(mrbaseman, 9 Jan 2020)%
+        - remove gpc functions which have been deprecated since php 5.4
+        - replace curly braces for array index
+        - update style files
+        - minor update of correct_date_format plugin
+        - update formatting of help page
+        - add opf_controller mode !'insert'!
+        - update documentation
+
 1.5.10 %(mrbaseman, 7 Oct 2019)%
         - keep additional_values of plugin filters during upgrade
 

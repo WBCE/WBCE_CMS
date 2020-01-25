@@ -31,15 +31,15 @@ function opff_correct_date_format(&$content, $page_id, $section_id, $module, $wb
     $date_formats = $values['date_formats'];
 
     if(strpos(strtoupper(PHP_OS), 'WIN')===0) {
-		if (!defined('OPF_CDF_SYSTEM_BAD')) {
-			define('OPF_CDF_SYSTEM_BAD', TRUE);
-		}
-	} else {		
-			if (!defined('OPF_CDF_SYSTEM_BAD')) {
-				define('OPF_CDF_SYSTEM_BAD', FALSE);
-			}
-	}
-		
+                if (!defined('OPF_CDF_SYSTEM_BAD')) {
+                        define('OPF_CDF_SYSTEM_BAD', TRUE);
+                }
+        } else {
+                        if (!defined('OPF_CDF_SYSTEM_BAD')) {
+                                define('OPF_CDF_SYSTEM_BAD', FALSE);
+                        }
+        }
+
     $ext = '';
     $format = opff_cdf_get_date_format($date_formats);
     if(!$format) return(TRUE);
