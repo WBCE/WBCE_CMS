@@ -1233,6 +1233,9 @@ class Insert {
                 $sInsert = $this->$_sProcessFunc($sDomPos) . $sToPlaceHolder; // at the end of the block ["-"]
             else
                 $sInsert = $sToPlaceHolder . $this->$_sProcessFunc($sDomPos); // at beginning of the block ["+"]
+	
+	    // apply filters of type 'page' to the queue before we insert the content	
+	    // $sInsert = opf_controller('insert', $sInsert);
 
             $sContent = preg_replace(
                 '/' . preg_quote($sToPlaceHolder) . '/s', 
