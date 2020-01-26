@@ -10,7 +10,7 @@
 $module_directory = 'sitemap';
 $module_name      = 'Sitemap';
 $module_function  = 'page';
-$module_version   = '4.0.6';
+$module_version   = '4.0.7';
 $module_platform  = '1.4.0';
 $module_author    = 'Ryan Djurovich, Frank Schoep, Woudloper, Ruebenwurzel, Rob Smith, Mouring Kolhoff, Michael Milette, Dietrich Roland Pehlke, Christian M. Stefan (Stefanek) (last)';
 $module_license   = 'GNU General Public License';
@@ -24,6 +24,9 @@ $module_guid      = '8B7C09E5-6246-4264-8959-8AA542D7BD6';
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	DEVELOPMENT HISTORY (Change Log):
 
+	v.4.0.7 Colinax		
+			upgrade.php fixes a bug that prevents the module from being updated manually
+	
 	v.4.0.6 Colinax		
 			Update module_platform
     

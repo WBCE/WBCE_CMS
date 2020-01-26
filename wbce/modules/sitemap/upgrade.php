@@ -26,13 +26,6 @@ require_once(WB_PATH.'/framework/functions.php');
 $database = new database();
 
 $dbtable = TABLE_PREFIX.'mod_sitemap'; 
-// Version to be installed is the same or older than currently installed version
-if ($module_version >= $new_module_version) {
-	echo '<span class="bad">';
-	$admin->print_error($MESSAGE['GENERIC']['ALREADY_INSTALLED']);
-	echo '</span><br />';
-	return;
-}
 
 //
 // UPGRADE TO VERSION 4.0.0 or higher
