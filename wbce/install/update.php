@@ -148,6 +148,16 @@ define ("WB_SECFORM_TIMEOUT", 7200); // versions bevore 2.8.2 do not have this v
 
 @require_once '../config.php';
 
+if (isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confirmed') {
+
+	$mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+	if ($mysqli->connect_error) {
+		die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+	}
+	$result1 = $mysqli->query('DROP TABLE IF EXISTS `{TP}dbsessions`');
+}
+
+
 require_once WB_PATH . '/framework/functions.php';
 require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
@@ -868,6 +878,8 @@ if (($handle = opendir(WB_PATH . '/languages/'))) {
     closedir($handle);
 }
 echo '<br />Languages reloaded<br />';
+
+
 
 
 /**********************************************************
