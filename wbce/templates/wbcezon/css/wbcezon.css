@@ -152,7 +152,9 @@ nav {	background: #314B68; }
 /* -------------------------------------------- parts / Bereiche ---------------------------------- */
 
 
-
+.headerpic img {
+	display:block;
+}
 
 
 header .line,
@@ -187,6 +189,9 @@ footer .line {
 	color:#fff;
 }
 
+::placeholder {color:#fff;}
+:-ms-input-placeholder {color:#fff;}
+::-ms-input-placeholder  {color:#fff;}
 
 h1#contentstart {
 	margin-top:-0.5rem;

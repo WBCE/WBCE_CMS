@@ -182,6 +182,10 @@ footer .line {
 	padding:0 !important;
 }
 
+.headerpic img {
+	display:block;
+}
+
 .maincontent p, .maincontent li {
 	padding-bottom:0.5em;
 }

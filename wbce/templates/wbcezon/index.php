@@ -144,14 +144,19 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
                <div class="s-12 l-3">
                   <a href="<?php echo WB_URL; ?>"><img class="logo center" src="<?php echo $logo; ?>" alt=""></a>
                </div>
-			   <div class="s-12 l-9">
-					<div id="header-carousel" class="owl-carousel owl-theme">
-					   <?php foreach($pics as $pic) {						   
+			   <div class="s-12 l-9 headerpic">
+			   <?php if (sizeof($pics) > 1) {
+					// is there more than 1 picture? Then activate the slider
+					echo '<div id="header-carousel" class="owl-carousel owl-theme">';
+					    foreach($pics as $pic) {						   
 						   echo $picPre.$pic.$picPost;
-						} ?>
-					  
-					</div>
-			   </div>           
+						} 					  
+					echo '</div>';
+					} else {
+						// only one picture? No slider 
+						echo '<img src="'.$pics[0].'" alt="'.PAGE_TITLE.'" />';
+					}
+					?></div>           
          </div>
          <!-- TOP NAV -->  
          <div class="line">
@@ -251,7 +256,9 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
             loop: true,
             navText: ["&#xf007","&#xf006"],
             autoplay: true,
-            autoplayTimeout: 3000
+            autoplayTimeout: 3000,
+			animateIn: 'fadeIn',
+			animateOut: 'fadeOut'
           });
           
         });
