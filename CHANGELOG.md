@@ -5,6 +5,73 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2020-01-27:** instantflorian [[9ce1f238](https://github.com/WBCE/WBCE_CMS/commit/9ce1f23833e2342572d0190646d27ab8c111b5db)]
+   > Improvements to default templates
+     color of the search placeholder, no image swiping when only one picture
+
+ * **2020-01-27:** instantflorian [[3c73fe10](https://github.com/WBCE/WBCE_CMS/commit/3c73fe10940b05fae104adad2cdd5cb921711f22)]
+   > Update update.php
+     Add removal of unwanted {tp}dbsessions table
+
+ * **2020-01-26:** Colinax [[8488ffb7](https://github.com/WBCE/WBCE_CMS/commit/8488ffb77d341c05d03045c62761f6f3612be84d)]
+   > Sitemap v4.0.7
+
+ * **2020-01-26:** instantflorian [[a1292ac8](https://github.com/WBCE/WBCE_CMS/commit/a1292ac87d52ad3a01ea338c4aceb934c053c39b)]
+   > Update version.php
+
+ * **2020-01-25:** Colinax [[67c77c03](https://github.com/WBCE/WBCE_CMS/commit/67c77c03b77d7114f0c53d4a7b9b754b20af553a)]
+   > filter insert queues
+
+ * **2020-01-25:** Colinax [[037a6283](https://github.com/WBCE/WBCE_CMS/commit/037a6283cc830f21998e5af8d7d123ea2584efcd)]
+   > update opf dashboard
+
+ * **2020-01-24:** Colinax [[02796960](https://github.com/WBCE/WBCE_CMS/commit/02796960e2f51ae5316f886a631c107083cb304b)]
+   > add sitemap to update script
+
+ * **2020-01-20:** instantflorian [[3c4d512b](https://github.com/WBCE/WBCE_CMS/commit/3c4d512be7ae859d6b6094c8015811357de85aa5)]
+   > Accept/Recognize new TLD email addresses
+     #471
+
+ * **2020-01-20:** instantflorian [[721c0c25](https://github.com/WBCE/WBCE_CMS/commit/721c0c25f901b0b56cb3a0fb8e27d160b24c1ab2)]
+   > Fix frontend registration issues
+
+ * **2020-01-19:** Colinax [[e7090806](https://github.com/WBCE/WBCE_CMS/commit/e70908068d84598d65c8bae624d6d16e4ff2eea5)]
+   > PHPMailer 6.1.4
+
+ * **2020-01-11:** instantflorian [[fd34217b](https://github.com/WBCE/WBCE_CMS/commit/fd34217bab46f6618d2691b60d8f3840b05f0117)]
+   > Fix notices when OfA is installed
+     thanks to freesbee
+
+ * **2020-01-07:** instantflorian [[a4f06ca8](https://github.com/WBCE/WBCE_CMS/commit/a4f06ca8f2c749d3c0138936e872940a071b3c91)]
+   > Fix performance issues
+     jquery include seems not to be needed anywhere. The old jquery-include caused issues.
+
+ * **2020-01-07:** instantflorian [[16b89122](https://github.com/WBCE/WBCE_CMS/commit/16b89122d258886b30f1310ae618ad16e61338a4)]
+   > Fix deprecated issue
+
+ * **2019-12-23:** instantflorian [[65353407](https://github.com/WBCE/WBCE_CMS/commit/65353407a152b35fd1a3d577a438aca573ce3bc9)]
+   > Changes to language selection view in FE/BE
+     Put language abbrevations in front to make the ordering more transparent
+
+ * **2019-12-21:** instantflorian [[a6e5d7ae](https://github.com/WBCE/WBCE_CMS/commit/a6e5d7aea92404537d88b97fc6c87c93474b566c)]
+   > Fix issue with empty lists in Addon Monitor on PHP 7.4 / mySQL 8
+
+ * **2019-12-19:** instantflorian [[10329be1](https://github.com/WBCE/WBCE_CMS/commit/10329be159bf3e93b6624f90c8ba66cc9be5d840)]
+   > Fix issue with unwantend slash removal
+
+ * **2019-12-19:** instantflorian [[ed583f1f](https://github.com/WBCE/WBCE_CMS/commit/ed583f1f4828654040f8fb881e4c48b1121d1a9b)]
+   > Add Colorbox support for Itemz FE Edit
+
+ * **2019-12-13:** instantflorian [[d9d7ff19](https://github.com/WBCE/WBCE_CMS/commit/d9d7ff1957d4654fe91d4715785510d253a2691c)]
+   > Fix issue with parameters on multilang websites which use shortURL
+
+ * **2019-12-13:** instantflorian [[f5bdfa6c](https://github.com/WBCE/WBCE_CMS/commit/f5bdfa6c2555d688a811bcfc7823be69e51e7912)]
+   > Fix charset issue on certain circumstances
+     Restore old behaviour since the change afaik has no advabtages, but causes issues
+
+ * **2019-12-10:** instantflorian [[fd33f5b5](https://github.com/WBCE/WBCE_CMS/commit/fd33f5b5e1987500868c7801b19afcf6ffca3a8e)]
+   > Update CHANGELOG.md
+
  * **2019-12-10:** Colinax [[75d6b7ee](https://github.com/WBCE/WBCE_CMS/commit/75d6b7eee77e6f7dde7f3a6397fb43db2760d0ca)]
    > CKEditor 4.13.1
 
