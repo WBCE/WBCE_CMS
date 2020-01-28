@@ -1,21 +1,24 @@
 <?php
 /**
- * @category        modules
- * @package         captcha_control
- * @author          WBCE Project
- * @copyright       Ryan Djurovich, Frank Schoep, Woudloper, Ruebenwurzel, Rob Smith, Mouring Kolhoff, Michael Milette, Dietrich Roland Pehlke, Christian M. Stefan (Stefanek) (last)
- * @license         GPLv2 or any later
+ * WebsiteBaker Community Edition (WBCE)
+ * Way Better Content Editing.
+ * Visit http://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
-
+ 
 $module_directory = 'sitemap';
 $module_name      = 'Sitemap';
 $module_function  = 'page';
-$module_version   = '4.0.7';
+$module_version   = '4.0.8';
 $module_platform  = '1.4.0';
 $module_author    = 'Ryan Djurovich, Frank Schoep, Woudloper, Ruebenwurzel, Rob Smith, Mouring Kolhoff, Michael Milette, Dietrich Roland Pehlke, Christian M. Stefan (Stefanek) (last)';
 $module_license   = 'GNU General Public License';
 $module_description = 'This module allows you to easily create a sitemap. You can even work with additional layout settings for the sitemap. It also gives you the option to show hidden menu items if required';
-$module_guid      = '8B7C09E5-6246-4264-8959-8AA542D7BD6';
+
 
 
 
@@ -23,6 +26,9 @@ $module_guid      = '8B7C09E5-6246-4264-8959-8AA542D7BD6';
 [changelog]
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	DEVELOPMENT HISTORY (Change Log):
+
+	v.4.0.7 Florian		
+			fix upgrade.php (missing variable definitions), branding
 
 	v.4.0.7 Colinax		
 			upgrade.php fixes a bug that prevents the module from being updated manually

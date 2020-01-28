@@ -15,7 +15,7 @@ $module_description = 'This module allows you to easily create a sitemap. You ca
 
 
 // Other text
-$SMTEXT['MSETTINGS']		= 'Basisinstellingen';
+$SMTEXT['MSETTINGS']		= 'Instellingen';
 $SMTEXT['DISPLAY']			= 'Weergave';
 $SMTEXT['WHOLESITE']		= 'Gehele website';
 $SMTEXT['CHILDREN_CP']		= 'Onderliggende paginas';
