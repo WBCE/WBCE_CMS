@@ -36,7 +36,7 @@ var InsertLoader = (function () {
                     $head.append($('<link>', {
                         href: finalUrl,
                         rel: 'stylesheet',
-                        type: 'test/css'
+                        type: 'text/css'
                     }));
                     break;
                 default:
