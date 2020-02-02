@@ -5,6 +5,16 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2020-02-01:** instantflorian [[36e03cf2](https://github.com/WBCE/WBCE_CMS/commit/36e03cf2f226b6182f856e9f2c24a4374be38e02)]
+   > Fix typo in jquery-insert.js
+
+ * **2020-01-30:** Colinax [[da6f8a2e](https://github.com/WBCE/WBCE_CMS/commit/da6f8a2eca4b9d6fc904b35e4e9816412a2104cb)]
+   > replace normalize.css with a modern variant
+
+ * **2020-01-28:** instantflorian [[91913383](https://github.com/WBCE/WBCE_CMS/commit/9191338348ebe45d53d316d9bc62d90e9602bc01)]
+   > Update Sitemap module
+     Fix issue when updating, branding (copyleft comment), remove <p> around <ul> in default settings
+
  * **2020-01-27:** instantflorian [[9ce1f238](https://github.com/WBCE/WBCE_CMS/commit/9ce1f23833e2342572d0190646d27ab8c111b5db)]
    > Improvements to default templates
      color of the search placeholder, no image swiping when only one picture
