@@ -89,7 +89,7 @@ if ($advanced == '') {
 } else {
     $file_mode = STRING_FILE_MODE;
     $dir_mode = STRING_DIR_MODE;
-    if ($admin->get_group_id() == '1') {
+    if ($admin->get_user_id() == '1') {
         // Work-out the octal value for file mode
         $u = 0;
         if (isset($_POST['file_u_r']) && $_POST['file_u_r'] == 'true') {
