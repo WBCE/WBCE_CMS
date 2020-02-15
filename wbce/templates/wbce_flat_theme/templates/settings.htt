@@ -468,134 +468,16 @@
 
     <!-- SERVER SETTINGS ****************************************** -->
     <h2 class="page_titel"> {HEADING_SERVER_SETTINGS}
-		<div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-search-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-search-settings'; return false;"> {ADVANCED_BUTTON} </a> </div>
+        <div class="headline-link" {DISPLAY_ADVANCED_BUTTON}> <a href="#settings-server-settings" title="{MODE_SWITCH_WARNING}" onclick="window.location = '{ADVANCED_LINK}#settings-server-settings'; return false;"> {ADVANCED_BUTTON}</a> </div>
     </h2>
-	
-	<!-- BEGIN show_access_block -->
+
     <section class="content-box" id="settings-server-settings">
         <div class="row top">
-            <div class="fg3">{TEXT_SERVER_OPERATING_SYSTEM}:</div>
-            <div class="fg9">
-                <label id="os-linux-label">
-                    <input type="radio" name="operating_system" id="os-linux" value="linux" {LINUX_SELECTED}>
-                    {TEXT_LINUX_UNIX_BASED}
-                </label>
-                <label id="os-windows-label">
-                    <input type="radio" name="operating_system" id="os-windows" value="windows" {WINDOWS_SELECTED}>
-                    {TEXT_WINDOWS}
-                </label>
-                <input type="hidden" name="world_writeable" value="">
-            </div>
-        </div>
-        
-		<section id="file-perms" class="row top" {DISPLAY_ADVANCED}>
-            <div class="fg3">{TEXT_FILESYSTEM_PERMISSIONS}:</div>
-            <div class="fg4"> <b>{TEXT_FILES}: <span id="string-file-mode">{STRING_FILE_MODE}</span></b> </div>
-            <div class="fg4"> <b>{TEXT_DIRECTORIES}: <span id="string-dir-mode">{STRING_DIR_MODE}</span></b> </div>
-            <div class="clearfix"></div>
-            <div class="fg1 push4 fg-center">{TEXT_USER}:</div>
-            <div class="fg1 fg-center">{TEXT_GROUP}:</div>
-            <div class="fg1 fg-center">{TEXT_OTHERS}:</div>
-            <div class="fg1 push1 fg-center">{TEXT_USER}:</div>
-            <div class="fg1 fg-center">{TEXT_GROUP}:</div>
-            <div class="fg1 fg-center">{TEXT_OTHERS}:</div>
-            <div class="fg1 push3">{TEXT_READ}:</div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_u_r" id="file_u_r" value="true"{FILE_U_R_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_g_r" id="file_g_r" value="true"{FILE_G_R_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_o_r" id="file_o_r" value="true"{FILE_O_R_CHECKED}>
-            </div>
-            <div class="fg1">{TEXT_READ}:</div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_u_r" id="dir_u_r" value="true"{DIR_U_R_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_g_r" id="dir_g_r" value="true"{DIR_G_R_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_o_r" id="dir_o_r" value="true"{DIR_O_R_CHECKED}>
-            </div>
-            <div class="fg1 push3">{TEXT_WRITE}:</div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_u_w" id="file_u_w" value="true"{FILE_U_W_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_g_w" id="file_g_w" value="true"{FILE_G_W_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_o_w" id="file_o_w" value="true"{FILE_O_W_CHECKED}>
-            </div>
-            <div class="fg1">{TEXT_WRITE}:</div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_u_w" id="dir_u_w" value="true"{DIR_U_W_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_g_w" id="dir_g_w" value="true"{DIR_G_W_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_o_w" id="dir_o_w" value="true"{DIR_O_W_CHECKED}>
-            </div>
-            <div class="fg1 push3">{TEXT_EXECUTE}:</div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_u_e" id="file_u_e" value="true"{FILE_U_E_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_g_e" id="file_g_e" value="true"{FILE_G_E_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="file_o_e" id="file_o_e" value="true"{FILE_O_E_CHECKED}>
-            </div>
-            <div class="fg1">{TEXT_EXECUTE}:</div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_u_e" id="dir_u_e" value="true"{DIR_U_E_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_g_e" id="dir_g_e" value="true"{DIR_G_E_CHECKED}>
-            </div>
-            <div class="fg1 fg-center">
-                <input type="checkbox" name="dir_o_e" id="dir_o_e" value="true"{DIR_O_E_CHECKED}>
-            </div>						
-        </div>
-		 </section>
-		<div class="row">
-            <div class="fg3">{TEXT_RENAME_FILES_ON_UPLOAD}:</div>
-            <div class="fg9">
-                <input type="text" name="rename_files_on_upload" value="{RENAME_FILES_ON_UPLOAD}" class="wdt500">
-            </div>
-		</div>	
-       
-		
- 		<!-- END show_access_block -->
-
-       <div class="row top">
-            <div class="fg3">{TEXT_PAGES_DIRECTORY}:</div>
-            <div class="fg9">
-                <input type="text" name="pages_directory" value="{PAGES_DIRECTORY}" class="wdt250">
-            </div>
-        </div>
-        <div class="row">
-            <div class="fg3">{TEXT_MEDIA_DIRECTORY}:</div>
-            <div class="fg9">
-                <input type="text" name="media_directory" value="{MEDIA_DIRECTORY}" class="wdt250">
-            </div>
-        </div>
-        <div class="row">
-            <div class="fg3">{TEXT_PAGE_EXTENSION}:</div>
-            <div class="fg9">
-                <input type="text" name="page_extension" value="{PAGE_EXTENSION}" class="wdt250">
-            </div>
-        </div>
-        <div class="row">
             <div class="fg3">{TEXT_PAGE_SPACER}:</div>
             <div class="fg9">
                 <input type="text" name="page_spacer" value="{PAGE_SPACER}" class="wdt250">
             </div>
         </div>
-        
         <div class="row">
             <div class="fg3">{TEXT_SESSION_IDENTIFIER}:</div>
             <div class="fg9">
@@ -608,6 +490,124 @@
                 <input type="text" name="sec_anchor" value="{SEC_ANCHOR}" class="wdt250">
             </div>
         </div>
+
+        <!-- BEGIN show_access_block -->
+        <section {DISPLAY_ADVANCED}>
+            <div class="row">
+                <div class="fg3">{TEXT_PAGES_DIRECTORY}:</div>
+                <div class="fg9">
+                    <input type="text" name="pages_directory" value="{PAGES_DIRECTORY}" class="wdt250">
+                </div>
+            </div>
+            <div class="row">
+                <div class="fg3">{TEXT_MEDIA_DIRECTORY}:</div>
+                <div class="fg9">
+                    <input type="text" name="media_directory" value="{MEDIA_DIRECTORY}" class="wdt250">
+                </div>
+            </div>
+            <div class="row">
+                <div class="fg3">{TEXT_PAGE_EXTENSION}:</div>
+                <div class="fg9">
+                    <input type="text" name="page_extension" value="{PAGE_EXTENSION}" class="wdt250">
+                </div>
+            </div>
+            <div class="row">
+                <div class="fg3">{TEXT_RENAME_FILES_ON_UPLOAD}:</div>
+                <div class="fg9">
+                    <input type="text" name="rename_files_on_upload" value="{RENAME_FILES_ON_UPLOAD}" class="wdt500">
+                </div>
+            </div>
+            <div class="row">
+                <div class="fg3">{TEXT_SERVER_OPERATING_SYSTEM}:</div>
+                <div class="fg9">
+                    <label id="os-linux-label">
+                        <input type="radio" name="operating_system" id="os-linux" value="linux" {LINUX_SELECTED}>
+                        {TEXT_LINUX_UNIX_BASED}
+                    </label>
+                    <label id="os-windows-label">
+                        <input type="radio" name="operating_system" id="os-windows" value="windows" {WINDOWS_SELECTED}>
+                        {TEXT_WINDOWS}
+                    </label>
+                    <input type="hidden" name="world_writeable" value="">
+                </div>
+            </div>
+
+            <div id="file-perms" class="row top">
+                <div class="fg3">{TEXT_FILESYSTEM_PERMISSIONS}:</div>
+                <div class="fg4"> <b>{TEXT_FILES}: <span id="string-file-mode">{STRING_FILE_MODE}</span></b> </div>
+                <div class="fg4"> <b>{TEXT_DIRECTORIES}: <span id="string-dir-mode">{STRING_DIR_MODE}</span></b> </div>
+                <div class="clearfix"></div>
+                <div class="fg1 push4 fg-center">{TEXT_USER}:</div>
+                <div class="fg1 fg-center">{TEXT_GROUP}:</div>
+                <div class="fg1 fg-center">{TEXT_OTHERS}:</div>
+                <div class="fg1 push1 fg-center">{TEXT_USER}:</div>
+                <div class="fg1 fg-center">{TEXT_GROUP}:</div>
+                <div class="fg1 fg-center">{TEXT_OTHERS}:</div>
+                <div class="fg1 push3">{TEXT_READ}:</div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_u_r" id="file_u_r" value="true" {FILE_U_R_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_g_r" id="file_g_r" value="true" {FILE_G_R_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_o_r" id="file_o_r" value="true" {FILE_O_R_CHECKED}>
+                </div>
+                <div class="fg1">{TEXT_READ}:</div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_u_r" id="dir_u_r" value="true" {DIR_U_R_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_g_r" id="dir_g_r" value="true" {DIR_G_R_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_o_r" id="dir_o_r" value="true" {DIR_O_R_CHECKED}>
+                </div>
+                <div class="fg1 push3">{TEXT_WRITE}:</div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_u_w" id="file_u_w" value="true" {FILE_U_W_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_g_w" id="file_g_w" value="true" {FILE_G_W_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_o_w" id="file_o_w" value="true" {FILE_O_W_CHECKED}>
+                </div>
+                <div class="fg1">{TEXT_WRITE}:</div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_u_w" id="dir_u_w" value="true" {DIR_U_W_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_g_w" id="dir_g_w" value="true" {DIR_G_W_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_o_w" id="dir_o_w" value="true" {DIR_O_W_CHECKED}>
+                </div>
+                <div class="fg1 push3">{TEXT_EXECUTE}:</div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_u_e" id="file_u_e" value="true" {FILE_U_E_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_g_e" id="file_g_e" value="true" {FILE_G_E_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="file_o_e" id="file_o_e" value="true" {FILE_O_E_CHECKED}>
+                </div>
+                <div class="fg1">{TEXT_EXECUTE}:</div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_u_e" id="dir_u_e" value="true" {DIR_U_E_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_g_e" id="dir_g_e" value="true" {DIR_G_E_CHECKED}>
+                </div>
+                <div class="fg1 fg-center">
+                    <input type="checkbox" name="dir_o_e" id="dir_o_e" value="true" {DIR_O_E_CHECKED}>
+                </div>
+            </div>
+
+        </section>
+        <!-- END show_access_block -->
+
         <hr class="fg12">
         <div class="row">
             <div class="fg9 push3">
