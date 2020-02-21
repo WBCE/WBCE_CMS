@@ -70,5 +70,7 @@ CKEDITOR.plugins.setLang('wblink', 'de', {
 	selectTopics: 'Bitte einen Topics-Beitrag wählen',
 	selectBakery: 'Bitte einen Bakery-Artikel wählen',
 	selectNewsWithImages: 'Bitte einen NWI-Beitrag wählen',
-	noNews: 'Keine News Seite gewählt'
+	selectResponsiveFG: 'Bitte eine Galerie wählen',
+	noNews: 'Keine News Seite gewählt',
+	noRFG: 'Keine Galerie gewählt'
 });

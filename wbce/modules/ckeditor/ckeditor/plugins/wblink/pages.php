@@ -80,6 +80,17 @@ $wblink_allowed_chars = "/[^ a-zA-Z0-9_äöüÄÖÜß!\"§$%&\/\(\)\[\]=\{\}\?\*
 $NewsItemsSelectBox = "var NewsItemsSelectBox = new Array();";
 $ModuleList = "var ModuleList = new Array();";
 
+$responsiveFGSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'responsiveFG'");
+while ($section = $responsiveFGSections->fetchRow()) {
+    $responsiveFG = $database->query("SELECT `id`, `cat_path`, `categorie` FROM ".TABLE_PREFIX."mod_responsiveFG_categories WHERE active=1 AND is_empty=0 AND section_id=".$section['section_id']." ORDER BY `cat_path` ASC");
+    $ModuleList .= "ModuleList[".$section['page_id']."] = 'ResponsiveFG';";
+    $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
+    while ($responsiveFG && $item = $responsiveFG->fetchRow()) {
+        $item['categorie'] = preg_replace($wblink_allowed_chars, "", $item['categorie']);
+        $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['cat_path'])." - ".addslashes($item['categorie']))."', '[wblink".$section['page_id']."]?cat_id=".$item['id']."');";
+    }
+}
+
 $newsImgSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'news_img'");
 while ($section = $newsImgSections->fetchRow()) {
     $newsImg = $database->query("SELECT `title`, `link`, `post_id` FROM ".TABLE_PREFIX."mod_news_img_posts WHERE active=1 AND section_id=".$section['section_id']);
