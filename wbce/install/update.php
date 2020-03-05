@@ -410,7 +410,7 @@ if (is_readable($sFile)) {
 * Adding field default_theme to settings table
 */
 
-echo "Set default_theme<br />";
+echo "<br />Set default_theme<br />";
 Settings::Set('default_theme', $DEFAULT_THEME);
 if (defined("WB_SECFORM_TIMEOUT"))
     Settings::Set('wb_secform_timeout', '7200');
@@ -839,26 +839,25 @@ if (sizeof($dirRemove)) {
 * Reload all addons
 */ 
 
-// delete modules
-//$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'module'");
+// Truncate addons
+$database->query("TRUNCATE `".TABLE_PREFIX."addons`");
+echo 'Truncate addons table<br />';
+
 // Load all modules
 if (($handle = opendir(WB_PATH . '/modules/'))) {
     while (false !== ($file = readdir($handle))) {
-        if ($file != '' and substr($file, 0, 1) != '.' and $file != 'admin.php' and $file != 'index.php') {
+        if ($file != '' && substr($file, 0, 1) != '.' && $file != 'admin.php' && $file != 'index.php') {
             load_module(WB_PATH . '/modules/' . $file);
-            // upgrade_module($file, true);
         }
     }
     closedir($handle);
 }
-echo 'Modules reloaded<br />';
+echo '<br />Modules reloaded<br />';
 
-// delete templates
-$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'template'");
 // Load all templates
 if (($handle = opendir(WB_PATH . '/templates/'))) {
     while (false !== ($file = readdir($handle))) {
-        if ($file != '' and substr($file, 0, 1) != '.' and $file != 'index.php') {
+        if ($file != '' && substr($file, 0, 1) != '.' && $file != 'index.php') {
             load_template(WB_PATH . '/templates/' . $file);
         }
     }
@@ -866,20 +865,16 @@ if (($handle = opendir(WB_PATH . '/templates/'))) {
 }
 echo '<br />Templates reloaded<br />';
 
-// delete languages
-$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'language'");
 // Load all languages
 if (($handle = opendir(WB_PATH . '/languages/'))) {
     while (false !== ($file = readdir($handle))) {
-        if ($file != '' and substr($file, 0, 1) != '.' and $file != 'index.php') {
+        if ($file != '' && substr($file, 0, 1) != '.' && $file != 'index.php') {
             load_language(WB_PATH . '/languages/' . $file);
         }
     }
     closedir($handle);
 }
 echo '<br />Languages reloaded<br />';
-
-
 
 
 /**********************************************************
