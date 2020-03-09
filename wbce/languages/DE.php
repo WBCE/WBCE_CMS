@@ -677,6 +677,7 @@ $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'Das eingegebene Passwort ist zu kurz';
 $MESSAGE['USERS_SAVED'] = 'Der Benutzer wurde erfolgreich gespeichert';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'Der angegebene Benutzername wird bereits verwendet';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'Der eingegebene Benutzername ist zu kurz';
+$MESSAGE['INVALID_SESSION_NAME'] = 'Die angegebene Sitzungs-ID enthält ungültige Zeichen. Es dürfen nur Kleinbuchstaben, Zahlen und der Bindestrich verwendet werden';
 
 
 $OVERVIEW['ADMINTOOLS'] = 'Zugriff auf die Admin-Tools...';

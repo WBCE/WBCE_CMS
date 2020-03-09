@@ -677,6 +677,7 @@ $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'The password you entered was too short';
 $MESSAGE['USERS_SAVED'] = 'User saved successfully';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'The loginname you entered is already taken';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'The loginname you entered was too short';
+$MESSAGE['INVALID_SESSION_NAME'] = 'The session ID you entered contains invalid characters. Only small letters, numbers and a dash are allowed.';
 
 
 $OVERVIEW['ADMINTOOLS'] = 'Access the WBCE CMS administration tools...';

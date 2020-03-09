@@ -481,7 +481,7 @@
         <div class="row">
             <div class="fg3">{TEXT_SESSION_IDENTIFIER}:</div>
             <div class="fg9">
-                <input type="text" name="app_name" value="{APP_NAME}" class="wdt250">
+                <input type="text" name="app_name" value="{APP_NAME}" class="wdt250" autocomplete="new"  role="presentation">
             </div>
         </div>
         <div class="row">
