@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2017-2019, Blackdevelop.com - http://blackdevelop.com/io/ckawesome/
+ Copyright (c) 2017-2020, Blackdevelop.com - http://blackdevelop.com/io/ckawesome/
  Licence under GNU GPL v3
 */
 
