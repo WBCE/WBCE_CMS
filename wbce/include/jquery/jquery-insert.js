@@ -1,8 +1,7 @@
 /*!
- * InsertLoader 1.0
- *
- * Copyright (c) 2016 Jonathan Nessier (https://www.neoflow.ch)
- * Released under The MIT license (MIT)
+ * InsertLoader 1.0.1
+ * (c) 2016-2020 Jonathan Nessier, Neoflow
+ * Licensed under MIT (https://github.com/Neoflow/jQuery-InsertLoader/blob/master/LICENSE)
  */
 var InsertLoader = (function () {
 
@@ -22,8 +21,8 @@ var InsertLoader = (function () {
         if (typeof url === 'string' && url.length) {
 
             var extension = url.substring(url.lastIndexOf('.') + 1, url.length),
-                    finalUrl = (path || '') + url + '?_=' + new Date().getTime(),
-                    $head = $('head');
+                finalUrl = (path || '') + url + '?_=' + new Date().getTime(),
+                $head = $('head');
 
             switch (extension) {
                 case 'php':
