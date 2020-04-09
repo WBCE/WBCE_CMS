@@ -48,7 +48,7 @@ class Wb extends SecureForm
      */
     public function checkPasswordPattern($sPassword, $sNewPasswordRetyped = NULL) 
     {        
-        global $MESSAGE;
+        global $MESSAGE, $TEXT;
         $iMinPassLength = 6;
         $bPasswordOk = false;
         $aErrMsg = array();
@@ -64,10 +64,12 @@ class Wb extends SecureForm
                     //$bPasswordOk = false;
                     $aErrMsg[] = $MESSAGE['USERS_PASSWORD_MISMATCH'].'[2]';
                 }
+            } else {
+                 $aErrMsg[] = $TEXT['RETYPE_PASSWORD'].'[3]';
             }
             if (strlen($sPassword) < $iMinPassLength) {
                 //$bPasswordOk = false;
-                $aErrMsg[] = $MESSAGE['USERS_PASSWORD_TOO_SHORT'].'[3]';
+                $aErrMsg[] = $MESSAGE['USERS_PASSWORD_TOO_SHORT'].'[4]';
             }
         }
         
@@ -137,6 +139,7 @@ class Wb extends SecureForm
         $sRetVal = '';
         if($sNameAttr != ''){
             $sRetVal = '<input type="password" id="'.$sNameAttr.'" name="'.$sNameAttr.'" value="" class="wdt250" autocomplete="new-password" />';
+			$sRetVal .= '<div class="formHint">[min. 6 Zeichen/chars; erlaubt/allowed: a-z A-Z 0-9 _ - ! # * + @ $ : &]</div>';
             I::insertCssFile(WB_URL . '/include/password-strength-meter/password.min.css', 'HEAD BTM-', 'PwStrenght');
             I::insertJsFile (WB_URL . '/include/password-strength-meter/password.min.js', 'HEAD BTM-', 'PwStrenght');
             
