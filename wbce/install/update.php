@@ -150,7 +150,13 @@ define ("WB_SECFORM_TIMEOUT", 7200); // versions bevore 2.8.2 do not have this v
 
 if (isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confirmed') {
 
-	$mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    if (defined('DB_PORT')) {
+        $port = DB_PORT;
+    } else {
+        $port = ini_get('mysqli.default_port');
+    }
+    
+	$mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, $port);
 	if ($mysqli->connect_error) {
 		die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 	}
