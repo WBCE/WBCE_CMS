@@ -135,7 +135,7 @@ class Wb extends SecureForm
         $sRetVal = '';
         if($sNameAttr != ''){
             $sRetVal = '<input type="password" id="'.$sNameAttr.'" name="'.$sNameAttr.'" value="" class="wdt250" autocomplete="new-password" />';
-            $sRetVal .= '<div class="formHint">[aA0-9_-!#*+@$:&]</div>';
+            $sRetVal .= '<div class="formHint">[min. '.$this->iPassMinLength.' characters: '.str_replace('/', ' ', $this->password_chars).']</div>';
             I::insertCssFile(WB_URL . '/include/password-strength-meter/password.min.css', 'HEAD BTM-', 'PwStrenght');
             I::insertJsFile (WB_URL . '/include/password-strength-meter/password.min.js', 'BODY BTM-', 'PwStrenght');
             
