@@ -61,7 +61,7 @@ $TIMEZONES['13']   = 'GMT +13 Hours';
 
 // Add "System Default" to list (if we need to)
 if(isset($user_time) && $user_time == true) {
- //   $TIMEZONES['20'] = $TIMEZONES[$actual_timezone].' ('.$TEXT['SYSTEM_DEFAULT'].')';
+    $TIMEZONES['20'] = $TIMEZONES[$actual_timezone].' ('.$TEXT['SYSTEM_DEFAULT'].')';
 }
 // Reverse array so "System Default" is at the top
 $TIMEZONES = array_reverse($TIMEZONES, true);
