@@ -44,7 +44,7 @@
             <label class="settingName" for="timezone">{{ L_('TEXT:TIMEZONE') }}</label>
             <div class="settingValue">
                 <select name="timezone" id="timezone">
-                    <option value="-20" disabled>{{ L_('TOOL_TXT:PLEASE_SELECT') }}...</option>
+                    <option value="-20" selected disabled>{{ L_('TOOL_TXT:PLEASE_SELECT') }}...</option>
                     {% for rec in TIME_ZONES %}
                             <option value="{{ rec.VALUE }}"{% if rec.SELECTED == true %} selected{% endif %}{% if rec.SELECTED == true %} selected{% endif %}>{{ rec.NAME }}</option>
                     {% endfor %}

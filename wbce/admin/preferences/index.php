@@ -126,6 +126,7 @@ function build_page( &$admin, &$database )
             'TEXT_NEW_PASSWORD'          => $TEXT['NEW_PASSWORD'],
             'TEXT_RETYPE_NEW_PASSWORD'   => $TEXT['RETYPE_NEW_PASSWORD'],
             'TEXT_NEED_CURRENT_PASSWORD' => $TEXT['NEED_CURRENT_PASSWORD'],
+			'TEXT_PLEASE_SELECT'		 => $TEXT['PLEASE_SELECT'],
             'EMPTY_STRING'               => ''
         )
     );

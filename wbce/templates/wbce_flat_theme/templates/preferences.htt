@@ -30,6 +30,7 @@
             <div class="fg3">{TEXT_TIMEZONE}:</div>
             <div class="fg9">
                 <select name="timezone" id="timezone" class="wdt250">
+					 <option value="-20" selected disabled>{TEXT_PLEASE_SELECT}...</option>
                     <!-- BEGIN timezone_list_block -->
                     <option value="{VALUE}" {SELECTED}>{NAME}</option>
                     <!-- END timezone_list_block -->
