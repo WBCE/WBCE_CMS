@@ -24,6 +24,8 @@
 function build_page( &$admin, &$database )
 {
     global $HEADING, $TEXT;
+    
+    $user_time = true;
     include_once WB_PATH.'/framework/functions-utf8.php';
     
     // Setup template object, parse vars to it, then parse it
@@ -36,83 +38,61 @@ function build_page( &$admin, &$database )
     $sSql  = 'SELECT `display_name`, `username`, `email` FROM `{TP}users` WHERE `user_id` = %s';
     if ($res_user = $database->query(sprintf($sSql, (int)$admin->get_user_id()))){
         if ($rec_user = $res_user->fetchRow(MYSQL_ASSOC) ) {
-            $oTemplate->set_var(
-                array(
+            $oTemplate->set_var( array(
                     'DISPLAY_NAME' => $rec_user['display_name'],
                     'USERNAME'     => $rec_user['username'],
                     'EMAIL'        => $rec_user['email'],
                     'ADMIN_URL'    => ADMIN_URL               
-                )
-            ); 
+            )); 
         }
     }
     
-    // read available languages from table addons and assign it to the template
-    $sSql  = "SELECT * FROM `{TP}addons` WHERE `type` = 'language' ORDER BY `directory`";
-    if ($res_lang = $database->query($sSql)) {
-        $oTemplate->set_block('main_block', 'language_list_block', 'language_list');
-        while($rec_lang = $res_lang->fetchRow(MYSQL_ASSOC)){
-            $langIcons = (empty($rec_lang['directory'])) ? 'none' : strtolower($rec_lang['directory']);
-            $oTemplate->set_var(
-                array(
-                    'CODE'     => $rec_lang['directory'],
-                    'NAME'     => '['.$rec_lang['directory'].'] '.$rec_lang['name'],
-                    'FLAG'     => WB_URL.'/languages/'.$langIcons,
-                    'SELECTED' => LANGUAGE == $rec_lang['directory'] ? ' selected="selected"' : ''               
-                )
-            ); 
-            $oTemplate->parse('language_list', 'language_list_block', true);
-        }
+    // read available languages
+    require_once ADMIN_PATH . '/interface/languages.php';
+    $oTemplate->set_block('main_block', 'language_list_block', 'language_list');
+    foreach(getLanguagesArray() as $rec) {
+        $oTemplate->set_var( array(
+            'CODE' =>  $rec['CODE'],
+            'FLAG' =>  $rec['FLAG'],
+            'NAME' =>  $rec['NAME'],
+            'SELECTED' =>  ($rec['SELECTED'] == true) ? ' selected' : '',
+        ));
+        $oTemplate->parse('language_list', 'language_list_block', true);
     }
-    
+                                
     // Insert default timezone values
-    $user_time = true;
-    include_once ADMIN_PATH.'/interface/timezones.php';
+    include_once ADMIN_PATH.'/interface/timezones.php';    
     $oTemplate->set_block('main_block', 'timezone_list_block', 'timezone_list');
-    foreach($TIMEZONES as $hour_offset => $title){
-        $oTemplate->set_var(
-            array(
-                'VALUE'     => $hour_offset,
-                'NAME'      => $title,
-                'SELECTED'  => $admin->get_timezone() == ($hour_offset * 3600) ? ' selected="selected"' : ''
-            )
-        );
+    foreach(getTimeZonesArray($TIMEZONES, true) as $rec) {
+        $oTemplate->set_var( array(
+            'VALUE'    =>  $rec['VALUE'],
+            'NAME'     =>  $rec['NAME'],
+            'SELECTED' =>  ($rec['SELECTED'] == true) ? ' selected' : '',
+        ));
         $oTemplate->parse('timezone_list', 'timezone_list_block', true);
-    }
+    }    
     
     // Insert date format list
     include_once ADMIN_PATH.'/interface/date_formats.php';
     $oTemplate->set_block('main_block', 'date_format_list_block', 'date_format_list');
-    foreach ($DATE_FORMATS as $format => $title )
-    {
-        $format = str_replace('|', ' ', $format); // Add's white-spaces (not able to be stored in array key)
-        $oTemplate->set_var( 'VALUE', ($format != 'system_default' ? $format : 'system_default') );
-        $oTemplate->set_var( 'NAME',  $title );
-        if ((DATE_FORMAT == $format && !isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) ||
-            ('system_default' == $format && isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) )
-        {
-            $oTemplate->set_var('SELECTED', ' selected="selected"');
-        }else {
-            $oTemplate->set_var('SELECTED', '');
-        }
+    foreach (getDateFormatsArray($DATE_FORMATS) as $rec) {
+        $oTemplate->set_var( array(
+            'VALUE'    =>  $rec['VALUE'],
+            'NAME'     =>  $rec['NAME'],
+            'SELECTED' =>  ($rec['SELECTED'] == true) ? ' selected' : '',
+        ));
         $oTemplate->parse('date_format_list', 'date_format_list_block', true);
     }
     
     // Insert time format list
     include_once ADMIN_PATH.'/interface/time_formats.php';
     $oTemplate->set_block('main_block', 'time_format_list_block', 'time_format_list');
-    foreach ($TIME_FORMATS as $format => $title )
-    {
-        $format = str_replace('|', ' ', $format); // Add's white-spaces (not able to be stored in array key)
-        $oTemplate->set_var('VALUE', $format != 'system_default' ? $format : 'system_default' );
-        $oTemplate->set_var('NAME',  $title);
-        if ((TIME_FORMAT == $format && !isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) ||
-            ('system_default' == $format && isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) )
-        {
-            $oTemplate->set_var('SELECTED', ' selected="selected"');
-        } else {
-            $oTemplate->set_var('SELECTED', '');
-        }
+    foreach (getTimeFormatsArray($TIME_FORMATS) as $rec) {
+        $oTemplate->set_var( array(
+            'VALUE'    =>  $rec['VALUE'],
+            'NAME'     =>  $rec['NAME'],
+            'SELECTED' =>  ($rec['SELECTED'] == true) ? ' selected' : '',
+        ));
         $oTemplate->parse('time_format_list', 'time_format_list_block', true);
     }
 

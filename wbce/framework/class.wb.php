@@ -55,21 +55,17 @@ class Wb extends SecureForm
         if ($sPassword != '') {
             $sPattern = '/[^'.$this->password_chars.']/';
             if (preg_match($sPattern, $sPassword)) {
-                $aErrMsg[] = $MESSAGE['PREFERENCES_INVALID_CHARS'].'[1]';
-            } else {
-                $bPasswordOk = true;
-            }
-            if($sNewPasswordRetyped != NULL){
-                if($sPassword != $sNewPasswordRetyped) {
-                    //$bPasswordOk = false;
-                    $aErrMsg[] = $MESSAGE['USERS_PASSWORD_MISMATCH'].'[2]';
+                $aErrMsg[] = $MESSAGE['PREFERENCES_INVALID_CHARS'].' [1]';
+            } 
+            
+            if ($sNewPasswordRetyped !== NULL){
+                if(empty($sNewPasswordRetyped) || $sPassword != $sNewPasswordRetyped) {
+                    $aErrMsg[] = $MESSAGE['USERS_PASSWORD_MISMATCH'].' [3]';
                 }
-            } else {
-                 $aErrMsg[] = $TEXT['RETYPE_PASSWORD'].'[3]';
             }
+            
             if (strlen($sPassword) < $iMinPassLength) {
-                //$bPasswordOk = false;
-                $aErrMsg[] = $MESSAGE['USERS_PASSWORD_TOO_SHORT'].'[4]';
+                $aErrMsg[] = $MESSAGE['USERS_PASSWORD_TOO_SHORT'].' [4]';
             }
         }
         
@@ -139,9 +135,9 @@ class Wb extends SecureForm
         $sRetVal = '';
         if($sNameAttr != ''){
             $sRetVal = '<input type="password" id="'.$sNameAttr.'" name="'.$sNameAttr.'" value="" class="wdt250" autocomplete="new-password" />';
-			$sRetVal .= '<div class="formHint">[min. 6 Zeichen/chars; erlaubt/allowed: a-z A-Z 0-9 _ - ! # * + @ $ : &]</div>';
+            $sRetVal .= '<div class="formHint">[min. '.$this->iPassMinLength.' characters: '.str_replace('\\', ' ', $this->password_chars).']</div>';
             I::insertCssFile(WB_URL . '/include/password-strength-meter/password.min.css', 'HEAD BTM-', 'PwStrenght');
-            I::insertJsFile (WB_URL . '/include/password-strength-meter/password.min.js', 'HEAD BTM-', 'PwStrenght');
+            I::insertJsFile (WB_URL . '/include/password-strength-meter/password.min.js', 'BODY BTM-', 'PwStrenght');
             
             // Get String Translations
             $sLanguagesDir = WB_PATH . '/include/password-strength-meter/languages/';
@@ -151,6 +147,7 @@ class Wb extends SecureForm
             I::insertJsFile($sLangFile, 'HEAD BTM-', 'PwStrenghtLang');
             $sToJs = <<<_JsCode
             jQuery(document).ready(function($) {
+                $('#$sNameAttr').append('<b>tadada</b>');
                 $('#$sNameAttr').password({
                     minimumLength: $this->iPassMinLength,
                     enterPass:  PwStrenghtLang.enterPass,
@@ -162,7 +159,7 @@ class Wb extends SecureForm
             });
 
 _JsCode;
-            I::insertJsCode($sToJs, 'HEAD BTM-', 'PwStrenght');
+            I::insertJsCode($sToJs, 'BODY BTM-', 'PwStrenght');
         }
         return $sRetVal;
     }
