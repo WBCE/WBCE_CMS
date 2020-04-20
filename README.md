@@ -1,5 +1,5 @@
 # WBCE CMS
-[WBCE CMS](https://wbce.org) is a content management system which aims to combine security, a user friedly interface, search engine optimization and performance in the best way. It is shipped with useful modules for "usual" pages, news/blog like pages, contact forms and includes useful admin tools. A broad variety of modules for galleries, interaction and structured content etc. is available in the [WBCE Add-On Repository](https://addons.wbce.org) and can be installed easily.
+[WBCE CMS](https://wbce.org) is a versatile, user friendly content management system. It is shipped with some modules for simple text pages, news, contact forms and includes useful admin tools. A broad variety of modules for galleries, interaction and structured content etc. is available in the [WBCE Add-On Repository](https://addons.wbce.org) and can be installed easily.
 
 ![Screenshot of WBCE Backend](https://forum.wbce.org/wbce_cms_13_dashboard_600x367.jpg)
 
@@ -7,7 +7,8 @@
   - about 25 MB webspace
   - PHP 7.1.3 (released 16 Mar 2017) or newer
   - mySQL 5.0 or newer
-  - mode_rewrite for `even nicer` URLs (optional)
+  - GD Library / Exif / Imagemagick (if you use any Module with Image processing)
+  - mod_rewrite (if you use ShortURL)
 
 ## Links
   - [WBCE CMS Project Main Page](https://wbce.org)
@@ -16,7 +17,7 @@
   - [User Documentation](https://help.wbce-cms.org)
   - [GitHub Repository](https://github.com/WBCE/WBCE_CMS)
   - [Bugtracker](https://github.com/WBCE/WBCE_CMS/issues)
-  - [Commit History](https://github.com/WBCE/WBCE_CMS/commits/master)
+  - [Commit History](https://github.com/WBCE/WBCE_CMS/commits/development)
   - [Changelog](CHANGELOG.md)
   - [Installation](INSTALL.md)
 
