@@ -7,14 +7,15 @@
   - about 25 MB webspace
   - PHP 7.1.3 (released 16 Mar 2017) or newer
   - mySQL 5.0 or newer
-  - GD Library / Exif / Imagemagick (if you use any Module with Image processing)
+  - GD Library / Exif / Imagemagick (if you use any module with image processing)
   - mod_rewrite (if you use ShortURL)
 
 ## Links
   - [WBCE CMS Project Main Page](https://wbce.org)
   - [WBCE CMS english landing page](https://wbce-cms.org)
   - [User Forum](https://forum.wbce.org)
-  - [User Documentation](https://help.wbce-cms.org)
+  - [User Documentation EN](https://help.wbce-cms.org)
+  - [User Documentation DE](https://help.wbce.org)
   - [GitHub Repository](https://github.com/WBCE/WBCE_CMS)
   - [Bugtracker](https://github.com/WBCE/WBCE_CMS/issues)
   - [Commit History](https://github.com/WBCE/WBCE_CMS/commits/development)
