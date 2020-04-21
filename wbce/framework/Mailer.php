@@ -19,7 +19,7 @@ if (!defined('WB_PATH')) {
     throw new IllegalFileException();
 }
 
-date_default_timezone_set('Etc/UTC');
+date_default_timezone_set('UTC');
 
 // Include PHPMailer class
 $sPath = WB_PATH . "/include/PHPMailer/src";
