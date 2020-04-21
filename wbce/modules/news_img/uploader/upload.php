@@ -11,14 +11,15 @@ if (!($admin->is_authenticated() && $admin->get_permission('news_img', 'module')
     throw new RuntimeException('insuficcient rights');
 }
 
-if(!isset($_GET['post_id'])){
+if (!isset($_GET['post_id'])) {
     throw new RuntimeException('missing parameters');
 }
 
 $post_id = $admin->checkIDKEY('post_id', false, 'GET', true);
-if(defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) 
+if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
     $post_id = intval($_GET['post_id']);
-if(! is_numeric($post_id) || (intval($post_id)<=0)){
+}
+if (! is_numeric($post_id) || (intval($post_id)<=0)) {
     throw new RuntimeException('wrong parameter value');
 }
 
@@ -39,11 +40,11 @@ $iniset = ini_get('upload_max_filesize');
 $iniset = mod_nwi_return_bytes($iniset);
 
 $previewwidth = $previewheight = $thumbwidth = $thumbheight = '';
-if(substr_count($fetch_content['resize_preview'],'x')>0) {
-    list($previewwidth,$previewheight) = explode('x',$fetch_content['resize_preview'],2);
+if (substr_count($fetch_content['resize_preview'], 'x')>0) {
+    list($previewwidth, $previewheight) = explode('x', $fetch_content['resize_preview'], 2);
 }
-if(substr_count($fetch_content['imgthumbsize'],'x')>0) {
-    list($thumbwidth,$thumbheight) = explode('x',$fetch_content['imgthumbsize'],2);
+if (substr_count($fetch_content['imgthumbsize'], 'x')>0) {
+    list($thumbwidth, $thumbheight) = explode('x', $fetch_content['imgthumbsize'], 2);
 }
 
 $imageErrorMessage = '';
@@ -78,7 +79,7 @@ try {
     $imageErrorMessage = '';
 
     if (!defined('ORDERING_CLASS_LOADED')) {
-	require WB_PATH.'/framework/class.order.php';
+        require WB_PATH.'/framework/class.order.php';
     }
 
     $mod_nwi_file_dir .= "$post_id/";
@@ -90,22 +91,21 @@ try {
     // post images (gallery images)
     if (isset($_FILES["file"])) {
 
-	// make sure the folder exists
-	if(!is_dir($mod_nwi_file_dir)) {
+    // make sure the folder exists
+        if (!is_dir($mod_nwi_file_dir)) {
             mod_nwi_img_makedir($mod_nwi_file_dir);
-	}
-	// 2014-04-10 by BlackBird Webprogrammierung:
-	//            image position (order)
-	$picture = $_FILES["file"];
-        if (isset($picture['name']) && $picture['name'] && (strlen($picture['name']) > 3))
-        {
+        }
+        // 2014-04-10 by BlackBird Webprogrammierung:
+        //            image position (order)
+        $picture = $_FILES["file"];
+        if (isset($picture['name']) && $picture['name'] && (strlen($picture['name']) > 3)) {
             $pic_error = '';
             //change special characters
             $imagename = media_filename($picture['name']);
             //small characters
             $imagename = strtolower($imagename) ;
 
-            //            if file exists, find new name by adding a number
+            // if file exists, find new name by adding a number
             if (file_exists($mod_nwi_file_dir.$imagename)) {
                 $num = 1;
                 $f_name = pathinfo($mod_nwi_file_dir.$imagename, PATHINFO_FILENAME);
@@ -115,17 +115,17 @@ try {
                 }
                 $imagename = $f_name.'_'.$num.'.'.$suffix;
             }
-	    $filepath=$mod_nwi_file_dir.$imagename;
+            $filepath=$mod_nwi_file_dir.$imagename;
             // check
             if (empty($picture['size']) || $picture['size'] > $imagemaxsize) {
                 $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_LARGER_THAN'].mod_nwi_byte_convert($imagemaxsize).'<br />';
             } elseif (strlen($imagename) > '256') {
-                $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'1<br />';
+                $imageErrorMessage .= $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'].'<br />';
             } else {
                 // move to media folder
-                if(true===move_uploaded_file($picture['tmp_name'], $filepath)) {
+                if (true===move_uploaded_file($picture['tmp_name'], $filepath)) {
                     // resize image (if larger than max width and height)
-                    if (list($w, $h) = getimagesize($mod_nwi_file_dir.$imagename)) {
+                    if (extension_loaded('gd') && list($w, $h) = getimagesize($mod_nwi_file_dir.$imagename)) {
                         if ($w>$imagemaxwidth || $h>$imagemaxheight) {
                             if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_file_dir.$imagename, $imagemaxwidth, $imagemaxheight, $crop))) {
                                 $imageErrorMessage .= $pic_error.'<br />';
@@ -134,10 +134,13 @@ try {
                         }
                     }
                     // create thumb
-                    if (true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
+                    if (extension_loaded('gd') && true !== ($pic_error = @mod_nwi_image_resize($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename, $thumbwidth, $thumbheight, $crop))) {
                         $imageErrorMessage.=$pic_error.'<br />';
                         @unlink($mod_nwi_file_dir.$imagename); // delete image (cleanup)
                     } else {
+                        if(!extension_loaded('gd')) {
+                            copy($mod_nwi_file_dir.$imagename, $mod_nwi_thumb_dir.$imagename);
+                        }
                         //            image position
                         $order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
                         $position = $order->get_new($post_id);
@@ -150,8 +153,8 @@ try {
         }
     }
 
-    if($imageErrorMessage!=""){
-	throw new RuntimeException($imageErrorMessage);
+    if ($imageErrorMessage!="") {
+        throw new RuntimeException($imageErrorMessage);
     }
 
 
@@ -160,13 +163,12 @@ try {
         'status' => 'ok',
         'path' => $filepath
     ]);
-
 } catch (RuntimeException $e) {
-	// Something went wrong, send the err message as JSON
-	http_response_code(400);
+    // Something went wrong, send the err message as JSON
+    http_response_code(400);
 
-	echo json_encode([
-		'status' => 'error',
-		'message' => $e->getMessage()
-	]);
+    echo json_encode([
+        'status' => 'error',
+        'message' => $e->getMessage() . " LINE " . __LINE__
+    ]);
 }

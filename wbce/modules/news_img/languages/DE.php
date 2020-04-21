@@ -70,6 +70,7 @@ $MOD_NEWS_IMG['TEXT_CROP'] = 'Wenn das Seitenverh&auml;ltnis des Originals nicht
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Vorschl&auml;ge';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Anklicken um Gr&ouml;&szlig;e zu w&auml;hlen';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Gr&ouml;&szlig;e der Thumbnails';
+$MOD_NEWS_IMG['MISSING_GD'] = 'WICHTIGER HINWEIS: Die GD-Bibliothek fehlt, es wird nicht möglich sein, die Größe hochgeladener Bilder automatisch anzupassen!';
 
 // Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Dateien hier mit Drag &amp; Drop ablegen';

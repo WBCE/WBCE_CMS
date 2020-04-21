@@ -70,6 +70,7 @@ $MOD_NEWS_IMG['TEXT_CROP'] = 'Se a proporção do original não corresponder à 
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Tamanhos padrão';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Clique para escolher entre os padrões';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Tamanho da miniatura';
+$MOD_NEWS_IMG['MISSING_GD'] = 'IMPORTANT NOTE: The GD library is missing, it will not be possible to resize uploaded images automatically!';
 
 //Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Arraste &amp; solte arquivos aqui';

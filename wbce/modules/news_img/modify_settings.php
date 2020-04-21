@@ -266,6 +266,11 @@ if(function_exists('edit_module_css'))
                 <label for="crop_preview"><input type="checkbox" name="crop_preview" id="crop_preview"<?php if($fetch_content['crop_preview']=='Y'):?> checked="checked"<?php endif; ?> title="<?php echo $MOD_NEWS_IMG['TEXT_CROP'] ?>" /> <?php echo $MOD_NEWS_IMG['CROP'] ?></label><br />
                 <i><?php echo $MOD_NEWS_IMG['TEXT_CROP']; ?></i>
         </tr>
+<?php } else { ?>
+        <tr>
+            <td></td>
+            <td><span style="color:#c00"><?php echo $MOD_NEWS_IMG['MISSING_GD'] ?></span></td>
+        </tr>
 <?php } ?>
 	</table>
     	<table>

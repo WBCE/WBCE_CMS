@@ -72,6 +72,7 @@ $MOD_NEWS_IMG['TEXT_CROP'] = 'Als de beeldverhouding van het origineel niet over
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Standaardformaten';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Klik om uit de standaardinstellingen te kiezen';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail grootte';
+$MOD_NEWS_IMG['MISSING_GD'] = 'BELANGRIJKE OPMERKING: De GD-bibliotheek ontbreekt, het zal niet mogelijk zijn om geüploade afbeeldingen automatisch te verkleinen!';
 
 // Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Drag &amp; zet hier bestanden neer ';

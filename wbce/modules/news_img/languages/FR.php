@@ -70,6 +70,7 @@ $MOD_NEWS_IMG['TEXT_CROP'] = "Si le rapport de format de l'original ne correspon
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Tailles par d&eacute;faut';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Cliquez pour choisir parmi les param&egrave;tres par d&eacute;faut';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Taille de la vignette';
+$MOD_NEWS_IMG['MISSING_GD'] = 'NOTE IMPORTANTE : La bibliothèque GD est manquante, il ne sera pas possible de redimensionner automatiquement les images téléchargées !';
 
 // Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Glisser &amp; D&eacute;posez les fichiers ici';

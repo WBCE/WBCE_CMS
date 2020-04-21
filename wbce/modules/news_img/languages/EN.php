@@ -70,7 +70,7 @@ $MOD_NEWS_IMG['TEXT_CROP'] = 'If the aspect ratio of the original does not match
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Default sizes';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Click to choose from the defaults';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Thumbnail size';
-
+$MOD_NEWS_IMG['MISSING_GD'] = 'IMPORTANT NOTE: The GD library is missing, it will not be possible to resize uploaded images automatically!';
 
 //Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Drag &amp; drop files here';
