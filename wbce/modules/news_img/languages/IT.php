@@ -69,7 +69,8 @@ $MOD_NEWS_IMG['RESIZE_GALLERY_IMAGES_TO'] = "Ridimensiona le immagini della gall
 $MOD_NEWS_IMG['TEXT_CROP'] = "Se lo aspect ratio dell'originale non corrisponde allo aspect ratio specificato, la sovrapposizione del bordo pi&ugrave; lungo verr&agrave; troncata.";
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Dimensioni predefinite';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Fai clic per scegliere tra i valori predefiniti';
-$MOD_NEWS_IMG ['THUMB_SIZE'] = 'Dimensione anteprima';
+$MOD_NEWS_IMG['THUMB_SIZE'] = 'Dimensione anteprima';
+$MOD_NEWS_IMG['MISSING_GD'] = 'NOTA IMPORTANTE: La libreria GD è mancante, non sarà possibile ridimensionare automaticamente le immagini caricate!';
 
 // Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Trascina &amp; rilasciare i file qui';

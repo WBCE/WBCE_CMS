@@ -189,6 +189,7 @@ require(WB_PATH."/index.php");
  *    true - ok
  *    1    - image is smaller than new size
  *    2    - invalid type (unable to handle)
+ *    99   - GDLib missing
  *
  * @param $src    - image source
  * @param $dst    - save to
@@ -198,6 +199,9 @@ require(WB_PATH."/index.php");
  **/
 function mod_nwi_image_resize($src, $dst, $width, $height, $crop=0)
 {
+    if(!extension_loaded('gd')) {
+        return 99;
+    }
     //var_dump($src);
     if (!list($w, $h) = getimagesize($src)) {
         return 2;

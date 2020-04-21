@@ -92,12 +92,14 @@ if(isset($_FILES['image']['tmp_name']) AND $_FILES['image']['tmp_name'] != '')
     {
 		// Resize the image
 		$thumb_location = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb'.$group_id.'.jpg';
-        if (list($w, $h) = getimagesize($new_filename)) {
+        if (extension_loaded('gd') && list($w, $h) = getimagesize($new_filename)) {
             if ($w>$previewwidth || $h>$previewheight) {
                 mod_nwi_image_resize($new_filename, $thumb_location, $previewwidth, $previewheight, $fetch_settings['crop_preview']);
                 unlink($new_filename);
                 rename($thumb_location,$new_filename);
             }
+        } else {
+            copy($new_filename,$thumb_location);
         }
 	}
 }
