@@ -47,7 +47,7 @@ if(!defined('WB_URL')) {
 		$jscal_lang = 'en';
 	}
 	// today
-	$jscal_today = gmdate('Y/m/d H:i');
+	$jscal_today = date('Y/m/d H:i');
 	// first-day-of-week
 	$jscal_firstday = '1'; // monday
 	if(LANGUAGE=='EN')

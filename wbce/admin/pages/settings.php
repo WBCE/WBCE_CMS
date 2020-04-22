@@ -76,7 +76,7 @@ $user=$admin->get_user_details($results_array['modified_by']);
 // Convert the unix ts for modified_when to human a readable form
 if($results_array['modified_when'] != 0)
 {
-    $modified_ts = gmdate(TIME_FORMAT.', '.DATE_FORMAT, $results_array['modified_when']+TIMEZONE);
+    $modified_ts = date(TIME_FORMAT.', '.DATE_FORMAT, $results_array['modified_when']+TIMEZONE);
 } else {
     $modified_ts = 'Unknown';
 }

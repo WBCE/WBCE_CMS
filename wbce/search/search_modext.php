@@ -35,8 +35,8 @@ function get_page_modified($page_modified_when)
 {
     global $TEXT;
     if ($page_modified_when > 0) {
-        $date = gmdate(DATE_FORMAT, $page_modified_when + TIMEZONE);
-        $time = gmdate(TIME_FORMAT, $page_modified_when + TIMEZONE);
+        $date = date(DATE_FORMAT, $page_modified_when + TIMEZONE);
+        $time = date(TIME_FORMAT, $page_modified_when + TIMEZONE);
     } else {
         $date = $TEXT['UNKNOWN'] . ' ' . $TEXT['DATE'];
         $time = $TEXT['UNKNOWN'] . ' ' . $TEXT['TIME'];

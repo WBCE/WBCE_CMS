@@ -5,6 +5,9 @@
  * @author Karelkin Vladislav
  * @copyright 2007/2013 GPL
 
+ Version 1.8.10 20200421 (Colinax)
+ - replaced gmdate with date
+
  Version 1.8.9 20190712 (Florian)
  - Add News with images
 
@@ -289,7 +292,7 @@ if ($result && $result->numRows() > 0) {
 
 		if ($checked === true) {
 			$link    = htmlspecialchars($wb->page_link($page['link']));
-			$lastmod = gmdate("Y-m-d", $page['modified_when']+TIMEZONE);
+			$lastmod = date("Y-m-d", $page['modified_when']+TIMEZONE);
 			$freq    = $page_frequency;
 			$pri     = $page_priority;
 			if ($page['parent'] == 0) {
@@ -338,9 +341,9 @@ if (in_array('news', $modules)) {
 					$news_priority = $news_old_priority;
 				}
 				if ((version_compare(WB_VERSION, '2.7.0') <= 0) && $news['published_when'] > 0){
-					$lastmod = gmdate("Y-m-d", $news['published_when']+TIMEZONE);
+					$lastmod = date("Y-m-d", $news['published_when']+TIMEZONE);
 				} else {
-					$lastmod = gmdate("Y-m-d", $news['posted_when']+TIMEZONE);
+					$lastmod = date("Y-m-d", $news['posted_when']+TIMEZONE);
 				}
 				output_xml($link, $lastmod, $news_frequency, $news_priority);
 				$counter++;
@@ -371,9 +374,9 @@ if (in_array('news_img', $modules)) {
 					$nwi_priority = $nwi_old_priority;
 				}
 				if ((version_compare(WB_VERSION, '2.7.0') <= 0) && $nwi['published_when'] > 0){
-					$lastmod = gmdate("Y-m-d", $nwi['published_when']+TIMEZONE);
+					$lastmod = date("Y-m-d", $nwi['published_when']+TIMEZONE);
 				} else {
-					$lastmod = gmdate("Y-m-d", $nwi['posted_when']+TIMEZONE);
+					$lastmod = date("Y-m-d", $nwi['posted_when']+TIMEZONE);
 				}
 				output_xml($link, $lastmod, $nwi_frequency, $nwi_priority);
 				$counter++;
@@ -397,7 +400,7 @@ if (in_array('bakery', $modules)) {
 			$checked = check_link($bakery['link'], $exclude);
 			if ($checked === true) {
 				$link    = htmlspecialchars($wb->page_link($bakery['link']));
-				$lastmod = gmdate("Y-m-d", $bakery['modified_when']+TIMEZONE);
+				$lastmod = date("Y-m-d", $bakery['modified_when']+TIMEZONE);
 				output_xml($link, $lastmod, $bakery_frequency, $bakery_priority);
 				$counter++;
 			}
@@ -420,7 +423,7 @@ if (in_array('catalogs', $modules)) {
 			$checked = check_link($catalogs['link'], $exclude);
 			if ($checked === true) {
 				$link    = htmlspecialchars($wb->page_link($catalogs['link']));
-				$lastmod = gmdate("Y-m-d", $catalogs['modified_when']+TIMEZONE);
+				$lastmod = date("Y-m-d", $catalogs['modified_when']+TIMEZONE);
 				output_xml($link, $lastmod, $catalogs_frequency, $catalogs_priority);
 				$counter++;
 			}
@@ -449,7 +452,7 @@ if (in_array('portfolio', $modules)) {
 				$length  = strrpos($portfolio['link'], '/');
 				$link    = substr($portfolio['link'], 0, $length);
 				$link    = htmlspecialchars($wb->page_link($link)).'?item='.$portfolio['position'];
-				$lastmod = gmdate("Y-m-d", $portfolio['modified_when']+TIMEZONE);
+				$lastmod = date("Y-m-d", $portfolio['modified_when']+TIMEZONE);
 				output_xml($link, $lastmod, $portfolio_frequency, $portfolio_priority);
 				$counter++;
 			}
@@ -463,7 +466,7 @@ if (in_array('portfolio', $modules)) {
 // Topics
 if (in_array($topics_mod_name, $modules)) {
 	require(WB_PATH.'/modules/'.$topics_mod_name.'/module_settings.php');
-	$t = mktime ( (int) gmdate("H"), (int) gmdate("i"), (int) gmdate("s"), (int) gmdate("n"), (int) gmdate("j"), (int) gmdate("Y")) + DEFAULT_TIMEZONE;
+	$t = mktime ( (int) date("H"), (int) date("i"), (int) date("s"), (int) date("n"), (int) date("j"), (int) date("Y")) + DEFAULT_TIMEZONE;
 	$sql = "SELECT `section_id`, `link`, `posted_modified`
 			FROM `".TABLE_PREFIX."mod_".$topics_mod_name."`
 			WHERE (`active` > '3' OR `active` = '1')
@@ -477,7 +480,7 @@ if (in_array($topics_mod_name, $modules)) {
 			$checked = check_link($topics['link'], $exclude);
 			if ($checked === true) {
 				$link    = htmlspecialchars(WB_URL.$topics_directory.$topics['link'].PAGE_EXTENSION);
-				$lastmod = gmdate("Y-m-d", $topics['posted_modified']+TIMEZONE);
+				$lastmod = date("Y-m-d", $topics['posted_modified']+TIMEZONE);
 				output_xml($link, $lastmod, $topics_frequency, $topics_priority);
 				$counter++;
 			}
@@ -504,7 +507,7 @@ if (in_array('showcase', $modules)) {
 					$showcase['link'] = $path.$showcase['link'];
 			 	}
 				$link    = htmlspecialchars($wb->page_link($showcase['link']));
-				$lastmod = gmdate("Y-m-d", $showcase['modified_when']+TIMEZONE);
+				$lastmod = date("Y-m-d", $showcase['modified_when']+TIMEZONE);
 				output_xml($link, $lastmod, $showcase_frequency, $showcase_priority);
 				$counter++;
 			}
@@ -530,7 +533,7 @@ foreach ( $oneforall_mods as $oneforall_mod_name) {
 				$checked = check_link($page.$oneforall['link'], $exclude);
 				if ($checked === true) {
 					$link    = htmlspecialchars($wb->page_link($page.$oneforall['link']));
-					$lastmod = gmdate("Y-m-d", $oneforall['modified_when']+TIMEZONE);
+					$lastmod = date("Y-m-d", $oneforall['modified_when']+TIMEZONE);
 					output_xml($link, $lastmod, $oneforall_frequency, $oneforall_priority);
 					$counter++;
 				}
@@ -556,7 +559,7 @@ if (in_array('xxxxxx', $modules)) {
 			$checked = check_link(xxxxxx['link'], $exclude);
 			if ($checked === true) {
 				$link    = htmlspecialchars($wb->page_link($xxxxxx['link']));
-				$lastmod = gmdate("Y-m-d", $xxxxxx['modified_when']+TIMEZONE);
+				$lastmod = date("Y-m-d", $xxxxxx['modified_when']+TIMEZONE);
 				output_xml($link, $lastmod, $xxxxxx_frequency, $xxxxxx_priority);
 				$counter++;
 			}

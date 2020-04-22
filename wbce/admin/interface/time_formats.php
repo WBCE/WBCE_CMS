@@ -32,14 +32,14 @@ if(isset($user_time) && $user_time == true && TIMEZONE != '-72000'){
 
 // Create array
 $TIME_FORMATS = array();
-$TIME_FORMATS['g:i|A'] = gmdate('g:i A', $sShowTime);
-$TIME_FORMATS['g:i|a'] = gmdate('g:i a', $sShowTime);
-$TIME_FORMATS['H:i:s'] = gmdate('H:i:s', $sShowTime);
-$TIME_FORMATS['H:i']   = gmdate('H:i',   $sShowTime);
+$TIME_FORMATS['g:i|A'] = date('g:i A', $sShowTime);
+$TIME_FORMATS['g:i|a'] = date('g:i a', $sShowTime);
+$TIME_FORMATS['H:i:s'] = date('H:i:s', $sShowTime);
+$TIME_FORMATS['H:i']   = date('H:i',   $sShowTime);
 
 // Add "System Default" to list (if we need to)
 if(isset($user_time) AND $user_time == true) {
-    $TIME_FORMATS['system_default'] = gmdate(DEFAULT_TIME_FORMAT, $sShowTime).' ('.$TEXT['SYSTEM_DEFAULT'].')';
+    $TIME_FORMATS['system_default'] = date(DEFAULT_TIME_FORMAT, $sShowTime).' ('.$TEXT['SYSTEM_DEFAULT'].')';
 }
 
 // Reverse array so "System Default" is at the top

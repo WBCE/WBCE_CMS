@@ -701,8 +701,8 @@ if ($search_normal_string != '') {
                         if (!isset($page['modified_by'])) {$page['modified_by'] = 0;}
                         $vars = array('[LINK]', '[TITLE]', '[DESCRIPTION]', '[USERNAME]', '[DISPLAY_NAME]', '[DATE]', '[TIME]', '[TEXT_LAST_UPDATED_BY]', '[TEXT_ON]', '[EXCERPT]');
                         if ($page['modified_when'] > 0) {
-                            $date = gmdate(DATE_FORMAT, $page['modified_when'] + TIMEZONE);
-                            $time = gmdate(TIME_FORMAT, $page['modified_when'] + TIMEZONE);
+                            $date = date(DATE_FORMAT, $page['modified_when'] + TIMEZONE);
+                            $time = date(TIME_FORMAT, $page['modified_when'] + TIMEZONE);
                         } else {
                             $date = $TEXT['UNKNOWN'] . ' ' . $TEXT['DATE'];
                             $time = $TEXT['UNKNOWN'] . ' ' . $TEXT['TIME'];

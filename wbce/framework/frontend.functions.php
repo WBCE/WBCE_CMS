@@ -527,7 +527,7 @@ if (!function_exists('page_footer')) {
         global $starttime;
         $vars = array('[YEAR]', '[PROCESS_TIME]');
         $processtime = array_sum(explode(" ", microtime())) - $starttime;
-        $values = array(gmdate($date_format), $processtime);
+        $values = array(date($date_format), $processtime);
         echo str_replace($vars, $values, WEBSITE_FOOTER);
     }
 }

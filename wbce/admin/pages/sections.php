@@ -185,7 +185,7 @@ switch ($action) {
 
         // Convert the unix ts for modified_when to human a readable form
         if($aPage['modified_when'] != 0) {
-            $modified_ts = gmdate(TIME_FORMAT.', '.DATE_FORMAT, $aPage['modified_when']+TIMEZONE);
+            $modified_ts = date(TIME_FORMAT.', '.DATE_FORMAT, $aPage['modified_when']+TIMEZONE);
         } else {
             $modified_ts = 'Unknown';
         }

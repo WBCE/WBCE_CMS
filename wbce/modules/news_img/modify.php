@@ -159,8 +159,8 @@ $order->clean($section_id);
 		$icon='<span class="fa fa-fw fa-calendar-times-o nwi-inactive"></span>';
     }
 ?>
-                    <?php echo ( $start>0 ? gmdate(DATE_FORMAT.' '.TIME_FORMAT, $start+TIMEZONE) : '') ?></td>
-                <td><?php echo ( $end>0   ? gmdate(DATE_FORMAT.' '.TIME_FORMAT, $end+TIMEZONE)   : '') ?></td>
+                    <?php echo ( $start>0 ? date(DATE_FORMAT.' '.TIME_FORMAT, $start+TIMEZONE) : '') ?></td>
+                <td><?php echo ( $end>0   ? date(DATE_FORMAT.' '.TIME_FORMAT, $end+TIMEZONE)   : '') ?></td>
 				<td><?php echo $icon; ?></td>
 				<td>
 			

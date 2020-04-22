@@ -66,7 +66,7 @@ if($results->numRows() > 0) {
         if ($user['login_when'] == 0) {
             $lastlogin = '-';
         } else {
-            $lastlogin = gmdate(DATE_FORMAT." ".TIME_FORMAT, $user['login_when'] + TIMEZONE);
+            $lastlogin = date(DATE_FORMAT." ".TIME_FORMAT, $user['login_when'] + TIMEZONE);
         }
         if ($user['login_ip'] == 0) {
             $lastip="0.0.0.0";

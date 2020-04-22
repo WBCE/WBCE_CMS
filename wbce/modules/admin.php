@@ -91,7 +91,7 @@ if (isset($print_info_banner) && $print_info_banner == true) {
 
     // Convert the unix ts for modified_when to human a readable form
     if ($page['modified_when'] != 0) {
-        $modified_ts = gmdate(TIME_FORMAT . ', ' . DATE_FORMAT, $page['modified_when'] + TIMEZONE);
+        $modified_ts = date(TIME_FORMAT . ', ' . DATE_FORMAT, $page['modified_when'] + TIMEZONE);
     } else {
         $modified_ts = 'Unknown';
     }

@@ -36,23 +36,23 @@ $DATE_FORMATS = array();
 $actual_time = time()+ ((isset($user_time) && $user_time == true) ? TIMEZONE : DEFAULT_TIMEZONE);
 
 // Add values to list
-$DATE_FORMATS['l,|jS|F,|Y'] = gmdate('l, jS F, Y', $actual_time);
-$DATE_FORMATS['jS|F,|Y']    = gmdate('jS F, Y',    $actual_time);
-$DATE_FORMATS['d|M|Y']      = gmdate('d M Y',      $actual_time);
-$DATE_FORMATS['M|d|Y']      = gmdate('M d Y',      $actual_time);
-$DATE_FORMATS['D|M|d,|Y']   = gmdate('D M d, Y',   $actual_time);
-$DATE_FORMATS['d-m-Y']      = gmdate('d-m-Y',      $actual_time).' (D-M-Y)';
-$DATE_FORMATS['m-d-Y']      = gmdate('m-d-Y',      $actual_time).' (M-D-Y)';
-$DATE_FORMATS['d.m.Y']      = gmdate('d.m.Y',      $actual_time).' (D.M.Y)';
-$DATE_FORMATS['m.d.Y']      = gmdate('m.d.Y',      $actual_time).' (M.D.Y)';
-$DATE_FORMATS['d/m/Y']      = gmdate('d/m/Y',      $actual_time).' (D/M/Y)';
-$DATE_FORMATS['m/d/Y']      = gmdate('m/d/Y',      $actual_time).' (M/D/Y)';
-$DATE_FORMATS['j.n.Y']      = gmdate('j.n.Y',      $actual_time).' (j.n.Y)';
+$DATE_FORMATS['l,|jS|F,|Y'] = date('l, jS F, Y', $actual_time);
+$DATE_FORMATS['jS|F,|Y']    = date('jS F, Y',    $actual_time);
+$DATE_FORMATS['d|M|Y']      = date('d M Y',      $actual_time);
+$DATE_FORMATS['M|d|Y']      = date('M d Y',      $actual_time);
+$DATE_FORMATS['D|M|d,|Y']   = date('D M d, Y',   $actual_time);
+$DATE_FORMATS['d-m-Y']      = date('d-m-Y',      $actual_time).' (D-M-Y)';
+$DATE_FORMATS['m-d-Y']      = date('m-d-Y',      $actual_time).' (M-D-Y)';
+$DATE_FORMATS['d.m.Y']      = date('d.m.Y',      $actual_time).' (D.M.Y)';
+$DATE_FORMATS['m.d.Y']      = date('m.d.Y',      $actual_time).' (M.D.Y)';
+$DATE_FORMATS['d/m/Y']      = date('d/m/Y',      $actual_time).' (D/M/Y)';
+$DATE_FORMATS['m/d/Y']      = date('m/d/Y',      $actual_time).' (M/D/Y)';
+$DATE_FORMATS['j.n.Y']      = date('j.n.Y',      $actual_time).' (j.n.Y)';
 
 // Add "System Default" to list (if we need to)
 if(isset($user_time) && $user_time == true) {
     global $TEXT;
-    $DATE_FORMATS['system_default'] = gmdate(DEFAULT_DATE_FORMAT, $actual_time).' ('.$TEXT['SYSTEM_DEFAULT'].')';
+    $DATE_FORMATS['system_default'] = date(DEFAULT_DATE_FORMAT, $actual_time).' ('.$TEXT['SYSTEM_DEFAULT'].')';
 }
 
 // Reverse array so "System Default" is at the top

@@ -25,38 +25,32 @@ defined('WB_URL') or header('Location: ../index.php');
 $TIMEZONES = array();
 $actual_timezone = ( DEFAULT_TIMEZONE <> 0 ) ? DEFAULT_TIMEZONE/3600 : 0;
 
-$TIMEZONES['-12']  = 'GMT - 12 Hours';
-$TIMEZONES['-11']  = 'GMT -11 Hours';
-$TIMEZONES['-10']  = 'GMT -10 Hours';
-$TIMEZONES['-9']   = 'GMT -9 Hours';
-$TIMEZONES['-8']   = 'GMT -8 Hours';
-$TIMEZONES['-7']   = 'GMT -7 Hours';
-$TIMEZONES['-6']   = 'GMT -6 Hours';
-$TIMEZONES['-5']   = 'GMT -5 Hours';
-$TIMEZONES['-4']   = 'GMT -4 Hours';
-$TIMEZONES['-3.5'] = 'GMT -3.5 Hours';
-$TIMEZONES['-3']   = 'GMT -3 Hours';
-$TIMEZONES['-2']   = 'GMT -2 Hours';
-$TIMEZONES['-1']   = 'GMT -1 Hour';
-$TIMEZONES['0']    = 'GMT';
-$TIMEZONES['1']    = 'GMT +1 Hour';
-$TIMEZONES['2']    = 'GMT +2 Hours';
-$TIMEZONES['3']    = 'GMT +3 Hours';
-$TIMEZONES['3.5']  = 'GMT +3.5 Hours';
-$TIMEZONES['4']    = 'GMT +4 Hours';
-$TIMEZONES['4.5']  = 'GMT +4.5 Hours';
-$TIMEZONES['5']    = 'GMT +5 Hours';
-$TIMEZONES['5.5']  = 'GMT +5.5 Hours';
-$TIMEZONES['6']    = 'GMT +6 Hours';
-$TIMEZONES['6.5']  = 'GMT +6.5 Hours';
-$TIMEZONES['7']    = 'GMT +7 Hours';
-$TIMEZONES['8']    = 'GMT +8 Hours';
-$TIMEZONES['9']    = 'GMT +9 Hours';
-$TIMEZONES['9.5']  = 'GMT +9.5 Hours';
-$TIMEZONES['10']   = 'GMT +10 Hours';
-$TIMEZONES['11']   = 'GMT +11 Hours';
-$TIMEZONES['12']   = 'GMT +12 Hours';
-$TIMEZONES['13']   = 'GMT +13 Hours';
+$TIMEZONES['-12'] = 'UTC -12 Hours';
+$TIMEZONES['-11'] = 'UTC -11 Hours';
+$TIMEZONES['-10'] = 'UTC -10 Hours';
+$TIMEZONES['-9']  = 'UTC -9 Hours';
+$TIMEZONES['-8']  = 'UTC -8 Hours';
+$TIMEZONES['-7']  = 'UTC -7 Hours';
+$TIMEZONES['-6']  = 'UTC -6 Hours';
+$TIMEZONES['-5']  = 'UTC -5 Hours';
+$TIMEZONES['-4']  = 'UTC -4 Hours';
+$TIMEZONES['-3']  = 'UTC -3 Hours';
+$TIMEZONES['-2']  = 'UTC -2 Hours';
+$TIMEZONES['-1']  = 'UTC -1 Hours';
+$TIMEZONES['0']   = 'UTC';
+$TIMEZONES['1']   = 'UTC +1 Hours';
+$TIMEZONES['2']   = 'UTC +2 Hours';
+$TIMEZONES['3']   = 'UTC +3 Hours';
+$TIMEZONES['4']   = 'UTC +4 Hours';
+$TIMEZONES['5']   = 'UTC +5 Hours';
+$TIMEZONES['6']   = 'UTC +6 Hours';
+$TIMEZONES['7']   = 'UTC +7 Hours';
+$TIMEZONES['8']   = 'UTC +8 Hours';
+$TIMEZONES['9']   = 'UTC +9 Hours';
+$TIMEZONES['10']  = 'UTC +10 Hours';
+$TIMEZONES['11']  = 'UTC +11 Hours';
+$TIMEZONES['12']  = 'UTC +12 Hours';
+$TIMEZONES['13']  = 'UTC +13 Hours';
 
 
 // Add "System Default" to list (if we need to)
@@ -96,7 +90,7 @@ if(!function_exists('getTimeZonesArray')){
                 if($iOffset == 20){
                     $iTmpOffset = Settings::Get('default_timezone');
                 }
-                $aTimeZones[$i]['NAME'] = ''. gmdate(TIME_FORMAT, (time() + $iTmpOffset)).' ('.$aTimeZones[$i]['NAME'].')';
+                $aTimeZones[$i]['NAME'] = ''. date(TIME_FORMAT, (time() + $iTmpOffset)).' ('.$aTimeZones[$i]['NAME'].')';
             }
             $aTimeZones[$i]['NAME'] = str_replace(' Hours', 'h', $aTimeZones[$i]['NAME']);
             $aTimeZones[$i]['SELECTED'] = ($iTmpOffset === $iUsedTimezone) ? true : false;

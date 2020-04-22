@@ -120,7 +120,7 @@ class LogFile
     {
         array_unshift($message, (defined($_SESSION['USER_ID']) ? $_SESSION['USER_ID'] : 0));
         array_unshift($message, (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '#'));
-        array_unshift($message, gmdate(DATE_W3C));
+        array_unshift($message, date(DATE_W3C));
         if (isset($this->_log_path)) {
             if ($this->openLogFile()) {
                 if (fputcsv($this->_fh, $message, ',', '"') !== false) {

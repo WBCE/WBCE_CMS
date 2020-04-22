@@ -198,7 +198,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 			$size = filesize('../../'.MEDIA_DIRECTORY.$directory.'/'.$name);
 			$bytes = byte_convert($size);
 			$fdate = filemtime('../../'.MEDIA_DIRECTORY.$directory.'/'.$name);
-			$date = gmdate(DATE_FORMAT.' '.TIME_FORMAT, $fdate);
+			$date = date(DATE_FORMAT.' '.TIME_FORMAT, $fdate);
 			$filetypeicon = get_filetype_icon(WB_URL.MEDIA_DIRECTORY.$directory.'/'.$name);
 			$filetype = get_filetype(WB_URL.MEDIA_DIRECTORY.$directory.'/'.$name);
 
