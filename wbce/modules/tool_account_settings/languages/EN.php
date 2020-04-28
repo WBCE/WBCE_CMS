@@ -32,7 +32,7 @@ $TOOL_TXT['GROUPS']     = 'Groups';
 $TOOL_TXT['CONFIG']     = 'Configuration';
  
 $TOOL_TXT['OVERVIEW']   = 'Overview';
-$TOOL_TXT['USERLINK']   = 'Benutzer';
+$TOOL_TXT['USERLINK']   = 'User';
 $TOOL_TXT['ACTIVATE']   = 'Activate';
 $TOOL_TXT['DEACTIVATE'] = 'Deactivate';
 
