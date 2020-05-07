@@ -4,10 +4,10 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2019)
+ * @copyright       WBCE Project (2015-2020)
  * @category        opffilter
  * @package         OPF Remove System PH
- * @version         1.1.5
+ * @version         1.1.6
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -33,9 +33,7 @@ function opff_mod_opf_remove_system_ph (&$content, $page_id, $section_id, $modul
         || (Settings::Get('opf_remove_system_ph', true) && ($page_id != 'backend'))
         || (Settings::Get('opf_remove_system_ph'.'_be', true) && ($page_id == 'backend'))){
 
-        $content=preg_replace("/<!--\(PH\).*?-->/s" ,"", $content);
-        // remove any empty lines in the content
-        $content = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $content);
+        $content=preg_replace("/[\s\t]*<!--\(PH\).*?-->[\s\t]*[\r\n]?/s" ,"", $content);
     }
     return(TRUE);
 }

@@ -3,5 +3,8 @@
  * TODO-List
  * =========
  *
+ * - keep empty lines or remove them, depending on an internal filter setting
+ *
+ * ...apart from that...
  * Currently I have implemented all features which I find useful and
  * Im not aware of any bugs
