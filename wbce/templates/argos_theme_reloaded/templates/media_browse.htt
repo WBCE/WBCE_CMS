@@ -29,7 +29,7 @@
 
 		// adapt the folders in parent frame
 		parent.document.create.target.value = '{MEDIA_DIRECTORY}{CURRENT_DIR}'; parent.document.upload.target.value = '{MEDIA_DIRECTORY}{CURRENT_DIR}';
-
+		parent.document.querySelector('#media-tools a:last-child').href = 'browse.php?dir={CURRENT_DIR}';
 	});
 </script>
 </head>
