@@ -375,6 +375,7 @@ input[type="button"] {
 	padding: 5px;
 	text-transform: uppercase;
 	margin-bottom: 10px;
+	cursor: pointer;
 }
 
 button:hover,

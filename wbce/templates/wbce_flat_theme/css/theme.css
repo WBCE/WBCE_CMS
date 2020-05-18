@@ -789,6 +789,7 @@ a.button {
     min-height: 28px;
     padding: 5px;
     margin: 10px 0;
+	cursor: pointer;
 }
 
 button:hover,
