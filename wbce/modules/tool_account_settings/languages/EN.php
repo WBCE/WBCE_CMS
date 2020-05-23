@@ -32,7 +32,7 @@ $TOOL_TXT['GROUPS']     = 'Groups';
 $TOOL_TXT['CONFIG']     = 'Configuration';
  
 $TOOL_TXT['OVERVIEW']   = 'Overview';
-$TOOL_TXT['USERLINK']   = 'Benutzer';
+$TOOL_TXT['USERLINK']   = 'User';
 $TOOL_TXT['ACTIVATE']   = 'Activate';
 $TOOL_TXT['DEACTIVATE'] = 'Deactivate';
 
@@ -69,10 +69,10 @@ $MESSAGE['GDPR_AGREEMENT_MANDATORY'] = 'You need to agree upon storing and proce
 
 $TEXT['REGISTER_THANKYOU'] = 'Thank you for registering on our website.';
 $TEXT['REGISTER_CHECK_MAIL_ACTIVATION_USER'] = 'Please check your emails now and click on the confirmation link in the email we just have sent to you.';
-$TEXT['REGISTER_GENEREC_EMAIL_NOT_RECIEVED'] =' If you did not recieve the email, please wait some minutes and/or look into your spam folder too.';
+$TEXT['REGISTER_GENEREC_EMAIL_NOT_RECIEVED'] =' If you did not receive the email, please wait some minutes and/or look into your spam folder too.';
 $TEXT['REGISTER_LOGIN_SENT_TO_USER'] = 'Your login data was just sent to your email address.';
 $TEXT['REGISTER_USER_ACTIVATED'] = 'The account has been activated. The login data was sent to the corresponding email address.';
-$TEXT['REGISTER_ACTIVATION_PENDING'] = 'Please be patient. You will recieve an email with your login data when we have approved and activated your account.';
+$TEXT['REGISTER_ACTIVATION_PENDING'] = 'Please be patient. You will receive an email with your login data when we have approved and activated your account.';
 $TEXT['REGISTER_GDPR_PHRASE'] = 'I confirm that I have read and that I accept the privacy policy. I agree upon storing and processing of the supplied personal data.';
 
 
