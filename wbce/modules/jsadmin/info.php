@@ -13,7 +13,7 @@
 $module_directory = 'jsadmin';
 $module_name = 'Javascript Admin';
 $module_function = 'tool';
-$module_version = '1.4.3';
+$module_version = '1.4.4';
 $module_platform = '1.4.0';
 $module_author = 'Stepan Riha, Swen Uth';
 $module_license = 'BSD License';
@@ -24,9 +24,11 @@ $module_level = 'core';
 /**
  * Version history
  *
+ * 1.4.4 - fixes for MySQL-Strict (Bernd)
+ *
  * 1.4.3
  *        - Add module_level core status
- *        - Update module_platform 
+ *        - Update module_platform
  *
  * 1.4.2
  *        - Add Admintool Icon

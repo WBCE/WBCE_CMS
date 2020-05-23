@@ -54,7 +54,7 @@ $(document).ready(function()
 
 // --| drag&drop
 
-var MODULE_URL = WB_URL + '/admin/admintools/tool.php?tool=outputfilter_dashboard';
+var MODULE_URL = ADMIN_URL + '/admintools/tool.php?tool=outputfilter_dashboard';
 var ICONS = WB_URL + '/modules/outputfilter_dashboard/images';
 var AJAX_PLUGINS =  WB_URL + '/modules/outputfilter_dashboard/ajax';
 

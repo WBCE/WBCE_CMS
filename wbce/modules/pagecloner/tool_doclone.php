@@ -40,8 +40,8 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 	global $page_id, $section_id;
 	// Get page list from database
 	$query = "SELECT * FROM `".TABLE_PREFIX."pages` WHERE `page_id` = ".$pagetoclone;
-	$get_page = $database->query($query);	 
-	$is_page = $get_page->fetchRow( MYSQL_ASSOC ); 
+	$get_page = $database->query($query);
+	$is_page = $get_page->fetchRow( MYSQLI_ASSOC );
 
 	// Work-out what the link and page filename should be
 	if($parent == '0') {
@@ -58,7 +58,7 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 		$filename = WB_PATH.PAGES_DIRECTORY.'/'.$parent_section.page_filename($title).'.php';
 		make_dir(WB_PATH.PAGES_DIRECTORY.'/'.$parent_section);
 	}
-	
+
 	// Check if a page with same page filename exists
 	$get_same_page = $database->query("SELECT `page_id` FROM `".TABLE_PREFIX."pages` WHERE `link` = '$link'");
 	if($get_same_page->numRows() > 0 OR file_exists(WB_PATH.PAGES_DIRECTORY.$link.'.php') OR file_exists(WB_PATH.PAGES_DIRECTORY.$link.'/')) {
@@ -78,15 +78,15 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 	$order->clean($parent);
 	// Get new order
 	$position = $order->get_new($parent);
-	
+
 	// Insert page into pages table
 	$template = $is_page['template'];
 	$visibility = $visibility;
 	$admin_groups = $is_page['admin_groups'];
 	$viewing_groups = $is_page['viewing_groups'];
 	$query = "INSERT INTO `".TABLE_PREFIX."pages` "
-           . "(`page_title`,`menu_title`,`parent`,`template`,`target`,`position`,`visibility`,`searching`,`menu`,`language`,`admin_groups`,`viewing_groups`,`modified_when`,`modified_by`) VALUES ('"
-           . ($database->escapeString($page_title))."','".($database->escapeString($title))."','$parent','$template','_top','$position','$visibility','1','1','".DEFAULT_LANGUAGE."','$admin_groups','$viewing_groups','".time()."','".$admin->get_user_id()."')";
+           . "(`page_title`,`menu_title`,`parent`,`template`,`target`,`position`,`visibility`,`searching`,`menu`,`language`,`admin_groups`,`viewing_groups`,`modified_when`,`modified_by`,`link`,`description`,`keywords`,`page_trail`,`admin_users`,`viewing_users`,`visibility_backup`) VALUES ('"
+           . ($database->escapeString($page_title))."','".($database->escapeString($title))."','$parent','$template','_top','$position','$visibility','1','1','".DEFAULT_LANGUAGE."','$admin_groups','$viewing_groups','".time()."','".$admin->get_user_id()."','','','','','','','')";
 
 	$database->query($query);
 	if($database->is_error()) {
@@ -94,24 +94,24 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 	}
 	// Get the page id
 	$page_id = $database->get_one("SELECT LAST_INSERT_ID()");
-	
+
 	// Work out level
 	$level = level_count($page_id);
 	// Work out root parent
 	$root_parent = root_parent($page_id);
 	// Work out page trail
 	$page_trail = get_page_trail($page_id);
-	
+
 	// Update page with new level and link
 	$database->query("UPDATE `".TABLE_PREFIX."pages` SET `link` = '$link', `level` = '$level', `root_parent` = '$root_parent', `page_trail` = '$page_trail' WHERE `page_id` = '$page_id'");
-	
+
 	// Create a new file in the /pages dir
 	create_access_file($filename, $page_id, $level);
-	
+
 	// Make new sections, database
 	$query = "SELECT * FROM `".TABLE_PREFIX."sections` WHERE `page_id` = '$pagetoclone'";
-	$get_section = $database->query($query);	 
-	while (false != ($is_section=$get_section->fetchRow( MYSQL_ASSOC ))) {
+	$get_section = $database->query($query);
+	while (false != ($is_section=$get_section->fetchRow( MYSQLI_ASSOC ))) {
 		// Add new record into the sections table
 		$from_section = $is_section['section_id'];
 		$position = $is_section['position'];
@@ -121,16 +121,16 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 		$publ_end = $is_section['publ_end'];
 		$namesection = $is_section['namesection'];
 		$database->query("INSERT INTO `".TABLE_PREFIX."sections` (`page_id`,`position`,`module`,`block`,`publ_start`,`publ_end`,`namesection`) VALUES ('$page_id','$position', '$module','$block','$publ_start','$publ_end','$namesection')");
-	
+
 		// Get the section id
 		$section_id = $database->get_one("SELECT LAST_INSERT_ID()");
-	
-	  require(WB_PATH.'/modules/'.$module.'/info.php');	
+
+	  require(WB_PATH.'/modules/'.$module.'/info.php');
 		// Include the selected modules add file if it exists
 		if(file_exists(WB_PATH.'/modules/'.$module.'/add.php')) {
 			require(WB_PATH.'/modules/'.$module.'/add.php');
 		}
-		
+
 		// copy module settings per section
   	$query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%mod_".$module."%' AND TABLE_SCHEMA='".DB_NAME."'";
   	$res = $database->query($query);
@@ -179,20 +179,20 @@ function clone_page($title,$parent,$pagetoclone,$copy_title,$visibility) {
 			$dst = $mediaDir."/minigallery/$section_id";
 			recurse_copy($src, $dst);
     }
-					        
+
 	}
 	return $page_id;
 }
 
 function clone_subs($pagetoclone,$parent,$copy_title,$visibility) {
 	global $admin, $database;
-	
+
 	// Get page list from database
 	$query = "SELECT * FROM `".TABLE_PREFIX."pages` WHERE `parent` = ".$pagetoclone." AND `page_id` <> ".$parent;
 	$get_subpages = $database->query($query);
-	
+
 	if($get_subpages AND $get_subpages->numRows() > 0)	{
-		while(false != ($page = $get_subpages->fetchRow( MYSQL_ASSOC ))) {
+		while(false != ($page = $get_subpages->fetchRow( MYSQLI_ASSOC ))) {
 			#echo 'clonepage('.$page['page_title'].','.$parent.','.$page['page_id'].')<br>';
 			$newnew_page = clone_page($page['menu_title'],$parent,$page['page_id'],$copy_title,$visibility);
 			#echo 'clonesubs('.$page['page_id'].','.$newnew_page.','.$copy_title.','.$visibility.')<hr />';
@@ -206,16 +206,16 @@ function clone_lines($tablename, $pagetoclone, $page_id, $from_section, $section
 	$query = "DELETE FROM `$tablename` WHERE `section_id` = ".$section_id;
 	$database->query($query);
 	// is there a page_id ?
-  $query = $database->query("DESCRIBE `$tablename` `page_id`");
+	$query = $database->query("DESCRIBE `$tablename` `page_id`");
 	$setPageId = $query->numRows() ? "`page_id` = $page_id," : "";
-
 	$query = "SHOW COLUMNS FROM `$tablename` WHERE `extra` = 'auto_increment'";
 	$colautoinc = $database->get_one($query);
-	$autoinc = $colautoinc ? ", `$colautoinc` = NULL" : "";
-	
+	//$autoinc = $colautoinc ? ", `$colautoinc` = NULL" : "";
+	$autoinc = $colautoinc ? ", `$colautoinc` = 0" : "";
+
   $query1 = "CREATE TEMPORARY TABLE tmp SELECT * FROM `$tablename` WHERE `section_id` = ".$from_section;
   $query2 = "UPDATE tmp SET $setPageId `section_id` = $section_id $autoinc";
-  $query3 = "INSERT INTO `$tablename` SELECT * FROM tmp";	
+  $query3 = "INSERT INTO `$tablename` SELECT * FROM tmp";
 	$query4 = "DROP TEMPORARY TABLE IF EXISTS tmp";
 
 	for ($i = 1; $i < 5; $i++) {
@@ -223,20 +223,20 @@ function clone_lines($tablename, $pagetoclone, $page_id, $from_section, $section
 	}
 }
 
-function recurse_copy($src,$dst) { 
-  $dir = opendir($src); 
-  mkdir($dst); 
-  while( $file = readdir($dir)) { 
-    if (( $file != '.' ) && ( $file != '..' )) { 
-      if ( is_dir($src . '/' . $file) ) { 
-        recurse_copy($src . '/' . $file,$dst . '/' . $file); 
-      } else { 
-        copy($src . '/' . $file,$dst . '/' . $file); 
-      } 
-    } 
-  } 
-  closedir($dir); 
-} 
+function recurse_copy($src,$dst) {
+  $dir = opendir($src);
+  mkdir($dst);
+  while( $file = readdir($dir)) {
+    if (( $file != '.' ) && ( $file != '..' )) {
+      if ( is_dir($src . '/' . $file) ) {
+        recurse_copy($src . '/' . $file,$dst . '/' . $file);
+      } else {
+        copy($src . '/' . $file,$dst . '/' . $file);
+      }
+    }
+  }
+  closedir($dir);
+}
 
 // Clone selected page
 $new_page = clone_page($title,$parent,$pagetoclone,$copy_title,$visibility);
@@ -245,7 +245,7 @@ $new_page = clone_page($title,$parent,$pagetoclone,$copy_title,$visibility);
 if ($include_subs == '1') {
 	clone_subs($pagetoclone,$new_page,$copy_title,$visibility);
 }
-	
+
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
 	$admin->print_error($database->get_error(),'tool_clone.php?pagetoclone='.$pagetoclone);

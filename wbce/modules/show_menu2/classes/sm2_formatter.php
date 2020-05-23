@@ -10,8 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// This class is the default menu formatter for sm2. If desired, you can 
-// create your own formatter class and pass the object into show_menu2 
+// This class is the default menu formatter for sm2. If desired, you can
+// create your own formatter class and pass the object into show_menu2
 // as $aItemFormat.
 define('SM2_CONDITIONAL','if\s*\(([^\)]+)\)\s*{([^}]*)}\s*(?:else\s*{([^}]*)}\s*)?');
 define('SM2_COND_TERM','\s*(\w+)\s*(<|<=|==|=|=>|>|!=)\s*([\w\-]+)\s*');
@@ -25,7 +25,7 @@ class SM2_Formatter
     var $menuClose;
     var $topItemOpen;
     var $topMenuOpen;
-    
+
     var $isFirst;
     var $page;
     var $url;
@@ -37,16 +37,16 @@ class SM2_Formatter
     // output the data
     function output($aString) {
         if(defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true){
-            $aString = sm2_correct_menu_links($aString);  
+            $aString = sm2_correct_menu_links($aString);
         }
         if ($this->flags & SM2_BUFFER) {
             $this->output .= $aString;
         }
         else {
-            echo $aString;            
+            echo $aString;
         }
     }
-    
+
     // set the default values for all of our formatting items
     function set($aFlags, $aItemOpen, $aItemClose, $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen) {
         $this->flags        = $aFlags;
@@ -67,25 +67,25 @@ class SM2_Formatter
         }
     }
 
-    // start a menu     
+    // start a menu
     function startList(&$aPage, &$aUrl) {
         $currClass = '';
         $currItem = $this->menuOpen;
-        
+
         // use the top level menu open if this is the first menu
         if ($this->topMenuOpen) {
             $currItem = $this->topMenuOpen;
             $currClass .= ' menu-top';
             $this->topMenuOpen = false;
         }
-        
+
         // add the numbered menu class only if requested
         if (($this->flags & SM2_NUMCLASS) == SM2_NUMCLASS) {
             $currClass .= ' menu-'.$aPage['level'];
         }
-        
+
         $this->prettyLevel += 1;
-        
+
         // replace all keywords in the output
         if ($this->flags & SM2_PRETTY) {
             $this->output("\n".str_repeat(' ',$this->prettyLevel).
@@ -94,10 +94,10 @@ class SM2_Formatter
         else {
             $this->output($this->format($aPage, $aUrl, $currItem, $currClass));
         }
-        
+
         $this->prettyLevel += 3;
     }
-    
+
     // start an item within the menu
     function startItem(&$aPage, &$aUrl, $aCurrSib, $aSibCount) {
         // generate our class list
@@ -113,10 +113,10 @@ class SM2_Formatter
         // if item has child(ren) and is not topmost level
             $currClass .= ' menu-expand';
         }
-        if (array_key_exists('sm2_is_curr', $aPage)) { 
+        if (array_key_exists('sm2_is_curr', $aPage)) {
             $currClass .= ' menu-current';
         }
-        elseif (array_key_exists('sm2_is_parent', $aPage)) { 
+        elseif (array_key_exists('sm2_is_parent', $aPage)) {
             // not set if false, so existence = true
             $currClass .= ' menu-parent';
         }
@@ -151,26 +151,26 @@ class SM2_Formatter
         }
         $this->output($this->format($aPage, $aUrl, $currItem, $currClass, $aCurrSib, $aSibCount));
     }
-    
+
     // find and replace all keywords, setting the state variables first
-    function format(&$aPage, &$aUrl, &$aCurrItem, &$aCurrClass, 
-        $aCurrSib = 0, $aSibCount = 0) 
+    function format(&$aPage, &$aUrl, &$aCurrItem, &$aCurrClass,
+        $aCurrSib = 0, $aSibCount = 0)
     {
         $this->page      = &$aPage;
         $this->url       = &$aUrl;
         $this->currClass = trim($aCurrClass);
         $this->currSib   = $aCurrSib;
         $this->sibCount  = $aSibCount;
-        
+
         $item = $this->format2($aCurrItem);
-        
+
         unset($this->page);
         unset($this->url);
         unset($this->currClass);
-        
+
         return $item;
     }
-    
+
     // find and replace all keywords
     function format2(&$aCurrItem) {
         if (!is_string($aCurrItem)) return '';
@@ -184,7 +184,7 @@ class SM2_Formatter
             array($this, 'replace'),
             $aCurrItem);
     }
-    
+
     // replace the keywords
     function replace($aMatches) {
         $aMatch = $aMatches[1];
@@ -239,7 +239,7 @@ class SM2_Formatter
         }
         return $retval;
     }
-    
+
     // conditional replacement
     function replaceIf(&$aExpression, &$aIfValue, &$aElseValue) {
         // evaluate all of the tests in the conditional (we don't do short-circuit
@@ -265,7 +265,7 @@ class SM2_Formatter
                 $ok = $ok && $rgTests[$n+1];
             }
         }
-        
+
         // return the formatted expression if the test succeeded
         return $ok ? $this->format2($aIfValue) : $this->format2($aElseValue);
     }
@@ -273,7 +273,7 @@ class SM2_Formatter
     // conditional test
     function ifTest(&$aKey, &$aOperator, &$aValue) {
         global $wb;
-        
+
         // find the correct operand
         $operand = false;
         switch($aKey) {
@@ -281,7 +281,7 @@ class SM2_Formatter
             // we need to wrap the class names in spaces so we can test for a unique
             // class name that will not match prefixes or suffixes. Same must be done
             // for the value we are testing.
-            $operand = " $this->currClass "; 
+            $operand = " $this->currClass ";
             break;
         case 'target':
             $operand = $this->page['target'];
@@ -317,14 +317,14 @@ class SM2_Formatter
             return '';
         }
 
-        // do the test        
+        // do the test
         $ok = false;
-        switch ($aOperator) { 
+        switch ($aOperator) {
         case '<':
-            $ok = ($operand < $aValue); 
+            $ok = ($operand < $aValue);
             break;
         case '<=':
-            $ok = ($operand <= $aValue); 
+            $ok = ($operand <= $aValue);
             break;
         case '=':
         case '==':
@@ -333,7 +333,7 @@ class SM2_Formatter
                 $ok = strstr($operand, " $aValue ") !== FALSE;
             }
             else {
-                $ok = ($operand == $aValue); 
+                $ok = ($operand == $aValue);
             }
             if ($aOperator == '!=') {
                 $ok = !$ok;
@@ -341,15 +341,15 @@ class SM2_Formatter
             break;
         case '>=':
             $ok = ($operand >= $aValue);
-	    break; 
+	    break;
         case '>':
             $ok = ($operand > $aValue);
-	    break; 
+	    break;
         }
-        
+
         return $ok;
     }
-    
+
     // finish the current menu item
     function finishItem() {
         if ($this->flags & SM2_PRETTY) {
@@ -363,17 +363,17 @@ class SM2_Formatter
     // finish the current menu
     function finishList() {
         $this->prettyLevel -= 3;
-        
+
         if ($this->flags & SM2_PRETTY) {
             $this->output("\n".str_repeat(' ',$this->prettyLevel).$this->menuClose."\n");
         }
         else {
             $this->output($this->menuClose);
         }
-        
+
         $this->prettyLevel -= 1;
     }
-    
+
     // cleanup the state of the formatter after everything has been output
     function finalize() {
         if ($this->flags & SM2_PRETTY) {
@@ -398,7 +398,7 @@ class SM2_Formatter
  * @param  string  $sMenu  the prepopulated menu string
  * @return string          the menu string with correctly replaced URLs
  * ----------------------------------------------------------------------
- * 
+ *
  */
 function sm2_correct_menu_links($sMenu){
     if(defined('SM2_CORRECT_MENU_LINKS') && true){
@@ -406,18 +406,18 @@ function sm2_correct_menu_links($sMenu){
 
         $aMenuLinks = array();
         $rMenuLinks = $database->query("SELECT * FROM `{TP}mod_menu_link`");
-        $i = 0; 
+        $i = 0;
         if($rMenuLinks->numRows() > 0) {
-            while($row = $rMenuLinks->fetchRow(MYSQL_ASSOC)) {		
+            while($row = $rMenuLinks->fetchRow(MYSQLI_ASSOC)) {
                 //$aMenuLinks[$i] = $row;
                 if(!empty($row['target_page_id'])){
-                    $aMenuLinks[$i]['replace_url'] = get_page_link($row['target_page_id']).''.PAGE_EXTENSION;			
+                    $aMenuLinks[$i]['replace_url'] = get_page_link($row['target_page_id']).''.PAGE_EXTENSION;
                     if(!empty($row['anchor'])){
                             $aMenuLinks[$i]['replace_url'] .= '#'.str_replace('#', '', $row['anchor']);
                     }
                     $aMenuLinks[$i]['replace_url'] = WB_URL.PAGES_DIRECTORY.$aMenuLinks[$i]['replace_url'];
                 }
-                if(!empty($row['extern'])){					
+                if(!empty($row['extern'])){
                     $sTargetUrl = str_replace('[WB_URL]', WB_URL, $row['extern']);
                     $aMenuLinks[$i]['replace_url'] = $sTargetUrl;
                 }

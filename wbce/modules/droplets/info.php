@@ -13,7 +13,7 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '2.2.7';
+$module_version = '2.2.8';
 $module_platform = '1.4.0';
 $module_author = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax';
 $module_license = 'GNU General Public License';
@@ -26,9 +26,12 @@ $module_level = 'core';
 /**
  * Version history
  *
+ * v2.2.8
+ *        - MYSQL_ASSOC -> MYSQLI_ASSOC
+ *
  * v2.2.7
  *        - Add module_level core status
- *        - Update module_platform 
+ *        - Update module_platform
  *
  * v2.2.6
  *        - SectionPicker Droplet uses Insert class

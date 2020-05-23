@@ -13,7 +13,7 @@
 $module_directory = 'pagecloner';
 $module_name = 'Page Cloner';
 $module_function = 'tool';
-$module_version = '1.0.5';
+$module_version = '1.0.6';
 $module_platform = '1.0.0';
 $module_author = 'John Maats, PCWacht, Dietrich Roland Pehlke, Stephan Kuehn, vBoedefeld, WebBird, Colinax';
 $module_license = 'GNU General Public License';
@@ -24,6 +24,8 @@ $module_icon = 'fa fa-clone';
 
 /**
  * Version history
+ * v1.0.6 -  fixes for MySQL-Strict (Bernd)
+ *
  * v1.0.5
  *        - Copies section names too (thanks to kleo)
  *
@@ -45,7 +47,7 @@ $module_icon = 'fa fa-clone';
  *        - copy pics for minigallery (thx to florian: http://forum.wbce.org/viewtopic.php?pid=2137#p2137)
  *
  * v1.0.0 (03.11.2015)
- *        - try to copy modules in a generic way 
+ *        - try to copy modules in a generic way
  *
  *  v0.60 (WebBird; 06.07.2015)
  *        - fixed problem with mysql_real_escape_string() (deprecated)

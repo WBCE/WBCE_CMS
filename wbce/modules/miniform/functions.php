@@ -17,7 +17,7 @@
 if(defined('WB_PATH') == false) { die("Cannot access this file directly"); }
 
 class mform {
-	
+
 	public $templates = array();
 	public $attachements = array();
 	public $isArray = false;
@@ -33,7 +33,7 @@ class mform {
 		if(isset($_POST['miniform']) && $_POST['miniform'] != $section_id) $this->myPost = false;
 		$this->dataPosted = (isset($_POST) && is_array($_POST) && count($_POST) > 0)? true:false;;
 	}
-	
+
 	function getSelectTemplate($current = null) {
 		$listarray = $this->getTemplates();
 		$list = '<select class="templates mf-input" name="template">';
@@ -44,15 +44,15 @@ class mform {
 		$list .= '</select>';
 		return $list;
 	}
-	
-	
+
+
 	function getTemplates($pattern = '') {
 		if(!$pattern) $pattern = dirname(__FILE__).DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'form_*.htt';
         foreach(glob($pattern) as $filename) {
 			$name = substr( basename($filename,".htt") , 5);
 			$title = ucwords (str_replace(array("_","-")," ", $name));
 			$this->templates[$title] = substr( basename($filename,".htt") , 5);
-			
+
 		}
         return $this->templates;
     }
@@ -73,7 +73,7 @@ class mform {
 		$tmp = str_replace($var,$value,$tmp);
 		return $tmp;
 	}
-	
+
 	function get_upload_limit() {
 		$max_upload = (int)(ini_get('upload_max_filesize'));
 		$max_post = (int)(ini_get('post_max_size'));
@@ -81,7 +81,7 @@ class mform {
 		$upload_mb = min($max_upload, $max_post, $memory_limit);
 		return $upload_mb;
 	}
-	
+
 	function get_upload_whitelist($template) {
 		if(preg_match('/{WHITELIST (.*)}/i',$template,$name)) {
 			$this->upload_whitelist = strtolower($name[1]);
@@ -96,14 +96,14 @@ class mform {
 	function add_template($template, $var, $value) {
 		$tmp = str_ireplace($var,$value,$template);
 		return $tmp;
-	}	
-	
+	}
+
 	function page($pid = 0) {
 		global $database, $wb;
 		$link = $database->get_one("SELECT link FROM ".TABLE_PREFIX."pages WHERE `page_id` = '".$pid."'");
 		return $wb->page_link($link);
 	}
-	
+
 	function safe_get_post($postfield) {
 		global $MF;
 		$this->isArray = false;
@@ -140,13 +140,13 @@ class mform {
 		$val = preg_replace("/(\n)/","",$val);
 		return $val?$val:'';
 	}
-	
+
 	function stripslashes_deep($value) {
 		$value = is_array($value) ? array_map(array($this,'stripslashes_deep'), $value) : stripslashes($value);
 		return $value;
 	}
 
-	function captcha($section_id = 0) {	
+	function captcha($section_id = 0) {
 		require_once(WB_PATH.'/include/captcha/captcha.php');
 		ob_start();
 		call_captcha("all","",$section_id);
@@ -154,7 +154,7 @@ class mform {
 		ob_end_clean();
 		return $captcha;
 	}
-	
+
 	function reCaptcha($siteKey = null) {
 		$rval = '';
 		if($siteKey) {
@@ -163,7 +163,7 @@ class mform {
 		}
 		return $rval;
 	}
-	
+
 	function reCaptcha_check($secretKey = null) {
 		if($secretKey) {
 			if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
@@ -176,7 +176,7 @@ class mform {
 		}
 		return false;
 	}
-	
+
 	// Insert or Update table with posted fields in array
 	function update_record ( $table, $id_field, $data ) {
 		global $database;
@@ -213,7 +213,7 @@ class mform {
 		$result = array();
 		$res = $database->query("SELECT * FROM ".TABLE_PREFIX.$table." WHERE `$id_field` = '$id'");
 		if($res) {
-			while ($row = $res->fetchRow(MYSQL_ASSOC)) {
+			while ($row = $res->fetchRow(MYSQLI_ASSOC)) {
 				$result[] = $row;
 			}
 		}
@@ -232,27 +232,27 @@ class mform {
 		$result = array();
 		$res = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id` = '$id' order by message_id desc limit 0,$max ");
 		if($res) {
-			while ($row = $res->fetchRow(MYSQL_ASSOC)) {
+			while ($row = $res->fetchRow(MYSQLI_ASSOC)) {
 				$result[] = $row;
 			}
 		}
 		return $result;
 	}
-	
+
 	function count_messages($section_id) {
 		global $database;
 		$res = $database->query("SELECT message_id FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id` = '$section_id'");
 		return ($res) ? $res->numRows() : 0;
 	}
-	
+
 	function build_pagelist($parent, $this_page) {
 		global $database, $links;
 		$iterated_parents = array(); // keep count of already iterated parents to prevent duplicates
 
 		$table_pages = TABLE_PREFIX."pages";
-		if ( $query = $database->query("SELECT link, menu_title, page_title, page_id, level 
-			FROM ".$table_pages." 
-			WHERE parent = ".$parent." 
+		if ( $query = $database->query("SELECT link, menu_title, page_title, page_id, level
+			FROM ".$table_pages."
+			WHERE parent = ".$parent."
 			ORDER BY level, position ASC")) {
 			while($res = $query->fetchRow()) {
 				$links[$res['page_id']] = $res['page_id'].'|'.str_repeat("  -  ",$res['level']).$res['menu_title'].' ('.$res['page_title'].')';
@@ -263,9 +263,9 @@ class mform {
 			}
 		}
 	}
- 
-	
-	
+
+
+
 	//HTML Email funtionality
 	function mail_old_version ($to = NULL, $from = NULL, $subject = NULL, $html_message = NULL, $plain_message = NULL) {
 		if (!$to || !$from || !$subject || !$html_message) return false;
@@ -289,14 +289,14 @@ class mform {
 		$mailbody .= '--PHP-mixed-'.$random_hash.'--'.$lf;
 		return @mail( $to, $subject, $mailbody, $headers );
 	}
-	
-		
+
+
 	function mail($fromaddress, $toaddress, $subject, $message, $fromname='', $replyto = '') {
 		if (!class_exists('wbmailer')){
 			require_once(WB_PATH."/framework/class.wbmailer.php");
 		}
 		$toArray = explode(',',$toaddress);
-	
+
 		$myMail = new wbmailer();
 		// set user defined from address
 		if ($fromaddress!='') {
@@ -307,35 +307,35 @@ class mform {
 			$myMail->AddReplyTo($replyto);              	  	// REPLY TO:
 		}
 		// define recepient and information to send out
-		
+
 		foreach ($toArray as $toAddr) {							// TO:
 			$myMail->AddAddress($toAddr);
 		}
 		$myMail->Subject = $subject;                          	// SUBJECT
 		$myMail->Body = $message; 		                     	// CONTENT (HTML)
-		$textbody = strip_tags($message);  
-		$textbody = str_replace("\t","",$textbody);  
-		while (strpos($textbody,"\n\n\n") !== false) 
-			$textbody = str_replace("\n\n\n","\n\n",$textbody);  
-		while (strpos($textbody,"\r\n\r\n\r\n") !== false) 
-			$textbody = str_replace("\r\n\r\n\r\n","\r\n\r\n",$textbody);  
+		$textbody = strip_tags($message);
+		$textbody = str_replace("\t","",$textbody);
+		while (strpos($textbody,"\n\n\n") !== false)
+			$textbody = str_replace("\n\n\n","\n\n",$textbody);
+		while (strpos($textbody,"\r\n\r\n\r\n") !== false)
+			$textbody = str_replace("\r\n\r\n\r\n","\r\n\r\n",$textbody);
 		$myMail->AltBody = $textbody;			              	// CONTENT (TEXT)
-		
+
 		foreach($this->attachements as $filename => $file) {
 			$myMail->AddAttachment($file, $filename);
 		}
-		
+
  		/*
 		$myMail->SMTPAutoTLS = false; // tell phpmailer not to autouse TLS is not configured
 		*/
-		
+
 		$myMail->SMTPOptions = array( // allow self_signed ssl.
 			'ssl' => array(
 				'verify_peer' => false,
 				'verify_peer_name' => false,
 				'allow_self_signed' => true
 			)
-		); 
+		);
 		// check if there are any send mail errors, otherwise say successful
 		if (!$myMail->Send()) {
 			$this->error = $myMail->ErrorInfo;
@@ -344,10 +344,10 @@ class mform {
 			return true;
 		}
 	}
-	
-	
+
+
 	function remote_data($url = ''){
-	 
+
 		if (!function_exists('curl_init')){
 			die('Sorry cURL is not installed!');
 		}
@@ -370,13 +370,13 @@ class mform {
 		$res = $database->get_one($query);
 		if($res) $_SESSION['form'] = $this->unserialize($res);
 		return;
-		
+
 	}
-	
+
 	function serialize ($sObject) {
 		return serialize($sObject);
 	}
-	
+
 	function unserialize($sObject) {
 		$__ret = preg_replace_callback( '/s:([0-9]+):\"(.*?)\";/',
 			function ($matches) { return "s:".strlen($matches[2]).':"'.$matches[2].'";'; },
@@ -391,7 +391,7 @@ class mform {
 		}
 		return sprintf('%04X%04X%04X%04X%04X%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 	}
-	
+
 	function escapeString($string) {
 		global $database;
 		if(is_object($database->DbHandle)) {
@@ -400,14 +400,14 @@ class mform {
 			$rval = mysql_real_escape_string($string);
 		}
 		return $rval;
-	}	
-	
+	}
+
 } //end class
 
 function isAjaxRequest () {
 	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == "XMLHttpRequest") return true;
 	return false;
-								   
+
 }
 function sendOutput($data) {
 	if(isAjaxRequest()) {

@@ -102,7 +102,7 @@ if(isset($_GET['do']))
                 if(is_array($list) AND count($list)) {
                     $twig_data['info'] = wbce_export_droplets($list);
                 }
-            } 
+            }
             break;
         // ----- import -----
         case 'upload':
@@ -134,7 +134,7 @@ if(isset($_GET['do']))
                 "SELECT * FROM `%smod_droplets` WHERE `id` = '%d'",
                 TABLE_PREFIX, $droplet_id
             ));
-            $fetch_content = $query_content->fetchRow(MYSQL_ASSOC);
+            $fetch_content = $query_content->fetchRow(MYSQLI_ASSOC);
 
             $twig_data['content'] = wbce_twig_display(
                 array('data'=>$fetch_content),

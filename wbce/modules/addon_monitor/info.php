@@ -2,7 +2,7 @@
 $module_directory 		= 'addon_monitor';
 $module_name 			= 'Addon Monitor';
 $module_function 		= 'tool';
-$module_version 		= '0.6.6';
+$module_version 		= '0.6.7';
 $module_status          = 'stable';
 $module_platform 		= '1.0.0';
 $module_author 			= 'Christian M. Stefan (Stefek)';

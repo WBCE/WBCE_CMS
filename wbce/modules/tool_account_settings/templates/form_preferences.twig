@@ -34,7 +34,7 @@
                 <select name="language" id="language">
                     <option value="" disabled>{{ L_('TOOL_TXT:PLEASE_SELECT') }}...</option>
                     {% for lang in LANGUAGES %}
-                            <option value="{{ lang.CODE }}"{% if lang.SELECTED == true %} selected{% endif %} style="background: url({{ lang.FLAG }}.png) no-repeat center left; padding-left: 20px;">{{ lang.NAME }} ({{ lang.CODE }})</option>
+                            <option value="{{ lang.CODE }}"{% if lang.SELECTED == true %} selected{% endif %} style="background: url({{ lang.FLAG }}.png) no-repeat center left; padding-left: 20px;">[{{ lang.CODE }}]&nbsp;{{ lang.NAME }}</option>
                     {% endfor %}
                 </select>
             </div>

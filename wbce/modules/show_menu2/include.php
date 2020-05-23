@@ -35,7 +35,7 @@ include_once("classes/sm2_formatter.php");
 
 function error_logs($error_str)
 {
-	$log_error = (SM2_DEBUG AND SM2_DEBUG === true) ? true : false;
+	$log_error = true;
 	if ( ! function_exists('error_log') )
 			$log_error = false;
 

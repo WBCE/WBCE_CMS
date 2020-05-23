@@ -2,7 +2,7 @@
 
 <br />
 <button class="button" type="button" name="add_droplet" onclick="javascript: window.location = '{{ WB_URL }}/modules/droplets/add_droplet.php';">
-    {{ TEXT.ADD|raw }} {{ DR_TEXT.DROPLETS|raw }}
+    {{ TEXT.ADD|raw }}&nbsp;{{ DR_TEXT.DROPLETS|raw }}
 </button>
 <button class="button" type="button" name="upload_droplet" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;upload=1';">
     {{ DR_TEXT.UPLOAD|raw }}
@@ -11,9 +11,9 @@
     {{ DR_TEXT.BACKUP|raw }}
 </button>
 {% if backup_mgmt %}
-<button class="button" type="button" name="backup_mgmt" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups';">
+ <button class="button" type="button" name="backup_mgmt" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups';">
     {{ DR_TEXT.MANAGE_BACKUPS|raw }}
-</button>'
+</button>
 {% endif %}
 
 <a href="#" style="float:right" onclick="javascript: window.open('{{ WB_URL }}/modules/droplets/readme/{{ DR_TEXT.README|raw }}','helpwindow','width=700,height=550,directories=no,location=no,menubar=no,scrollbars=yes,status=no,toolbar=no,resizable=yes');">
