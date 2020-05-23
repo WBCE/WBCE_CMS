@@ -59,8 +59,8 @@ $aToTwig = array(
     
     'TIME_ZONES'    => getTimeZonesArray($TIMEZONES, true),
     'LANGUAGES'     => getLanguagesArray(),
-	'DATE_FORMATS'  => getTimeFormatsArray($DATE_FORMATS),
-    'TIME_FORMATS'  => getDateFormatsArray($TIME_FORMATS),
+	'DATE_FORMATS'  => getDateFormatsArray($DATE_FORMATS),
+    'TIME_FORMATS'  => getTimeFormatsArray($TIME_FORMATS),
     
     'NEW_PASSWORD'  => $wb->passwordField('new_password'),
     'REFFERER_URL'  => $sHttpReferer,
