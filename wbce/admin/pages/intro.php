@@ -31,9 +31,8 @@ if(file_exists($filename) && filesize($filename) > 0) {
 	$content = file_get_contents( ADMIN_PATH.'/pages/html.php' ) ;
 }
 
-require_once(WB_PATH . '/include/editarea/wb_wrapper_edit_area.php');
-$toolbar = 'search, fullscreen, |, undo, redo, |, select_font, syntax_selection,|,word_wrap, highlight, reset_highlight, |,charmap, |, help';
-echo registerEditArea ('content','php',true,'both',true,true,600,450,$toolbar);
+include_once WB_PATH . '/include/editarea/wb_wrapper_edit_area.php';
+echo registerEditArea ('content','html',true,'both',true,true,600,450,$toolbar = 'default');
 function show_wysiwyg_editor($name,$id,$content,$width,$height) {
 	echo '<textarea name="'.$name.'" id="'.$id.'" style="width: '.$width.'; height: '.$height.';">'.$content.'</textarea>';
 }

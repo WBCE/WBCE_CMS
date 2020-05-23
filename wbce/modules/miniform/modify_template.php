@@ -89,7 +89,7 @@ if ($_action == 'save') {
 	$data = '';
 	if (file_exists($filename)) $data = file_get_contents($filename) ;
 	if($nwdata) $data = $nwdata;
-	echo (function_exists('registerEditArea')) ? registerEditArea('code_area', 'html') : 'none';
+	echo registerEditArea ('code_area','html',true,'both',true,true,600,450,$toolbar = 'default');
 	?>
 	<form name="edit_module_file" action="<?=$manage_url.$template;?>" method="post" style="margin: 0;">
 			<input type="hidden" name="page_id" value="<?=$page_id; ?>" />

@@ -27,7 +27,7 @@ if (!isset($wysiwyg_editor_loaded)) {
     if (!defined('WYSIWYG_EDITOR') OR WYSIWYG_EDITOR == "none" OR !file_exists(WB_PATH . '/modules/' . WYSIWYG_EDITOR . '/include.php')) {
         function show_wysiwyg_editor($name, $id, $content, $width, $height) {
             include_once WB_PATH . '/include/editarea/wb_wrapper_edit_area.php';
-            echo registerEditArea ($name,'js',true,'both',true,true,600,450,'search, fullscreen, |, undo, redo, |, select_font,|, highlight, reset_highlight, |, help');
+            echo registerEditArea ($name,'html',true,'both',true,true,600,450,$toolbar = 'default');
             echo '<textarea name="' . $name . '" id="' . $id . '" style="width: ' . $width . '; height: ' . $height . ';">' . $content . '</textarea>';
         }
     } else {
