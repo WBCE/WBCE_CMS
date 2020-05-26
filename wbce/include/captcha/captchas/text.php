@@ -35,10 +35,11 @@ $_SESSION['captcha' . $sec_id] = rand(0, 99999);
 
 // get questions and answers
 $text_qa = '';
-$table = TABLE_PREFIX . 'mod_captcha_control';
-if ($query = $database->query("SELECT ct_text FROM $table")) {
+//$table = TABLE_PREFIX . 'mod_captcha_control';
+$table = TABLE_PREFIX . 'settings';
+if ($query = $database->query("SELECT value FROM $table WHERE name = 'ct_text'")) {
     $data = $query->fetchRow();
-    $text_qa = $data['ct_text'];
+    $text_qa = $data['value'];
 }
 $content = explode("\n", $text_qa);
 
