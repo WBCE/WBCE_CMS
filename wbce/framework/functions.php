@@ -1387,7 +1387,7 @@ function upgrade_module($sModDirname, $bUpgrade = false)
                 // Update in DB
                 $aUpdate = array(
                     'directory'   => $module_directory,
-                    'version'     => $module_version,
+                    'version'     => $new_module_version,
                     'description' => addslashes($module_description),
                     'platform'    => (!isset($module_platform) && isset($module_designed_for)) ? $module_designed_for : $module_platform,
                     'author'      => addslashes($module_author),
