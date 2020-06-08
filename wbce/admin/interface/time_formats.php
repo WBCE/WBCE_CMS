@@ -68,7 +68,9 @@ if(!function_exists('getTimeFormatsArray')){
             if( (TIME_FORMAT == $sFormat && !isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) ||
             ('system_default' == $sFormat && isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) ){
                 $aTimeFormats[$i]['SELECTED'] = true;
-            } 
+            } else {
+				$aTimeFormats[$i]['SELECTED'] = false;
+			}
             $i++;
         }
 
