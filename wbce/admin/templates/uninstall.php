@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -12,7 +12,7 @@
 
 // Include required files
 require '../../config.php';
-require_once WB_PATH . '/framework/functions.php';	        // WBCE 1.1.x compatibility
+require_once WB_PATH . '/framework/functions.php'; // WBCE 1.1.x compatibility
 
 // Setup admin object, skip header for FTAN validation and check section permissions
 $admin = new admin('Addons', 'templates_uninstall', false, true);
@@ -20,6 +20,7 @@ if(! $admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
+
 // Output admin backend header (this creates a new FTAN)
 $admin->print_header();
 
@@ -43,26 +44,20 @@ if (!function_exists("replace_all")) {
     }
 }
 
-/**
-*    Check if the template is the standard-template or still in use
-*/
-// check whether the template is used as default wb theme
+// Check if the theme is the default
 if($file == DEFAULT_THEME) {
     $temp = array ('name' => $file );
-    $msg = replace_all( $MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'], $temp );
+    $msg = replace_all( $MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_THEME'], $temp );
     $admin->print_error( $msg );
 }
 
+// Check if the template is the default or otherwise still in use
 if ($file == DEFAULT_TEMPLATE) {
     $temp = array ('name' => $file );
     $msg = replace_all( $MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'], $temp );
     $admin->print_error( $msg );
-
 } else {
-
-    /**
-     * Check if the template is still in use by a page ...
-     */
+    // Check if the template is still in use by a page ...
     $tpl_dir_escaped = $database->escapeString($file);
     $info = $database->query("SELECT page_id, page_title FROM ".TABLE_PREFIX."pages WHERE template='".$tpl_dir_escaped."' order by page_title");
 
@@ -72,9 +67,7 @@ if ($file == DEFAULT_TEMPLATE) {
         $temp = explode(";",$MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL_PAGES']);
         $add = $info->numRows() == 1 ? $temp[0] : $temp[1];
 
-        /**
-         * The template-string for displaying the Page-Titles ... in this case as a link
-         */
+        // The template-string for displaying the Page-Titles ... in this case as a link
         $page_template_str = "- <b><a href='../pages/settings.php?page_id={{id}}'>{{title}}</a></b><br />";
         $values = array ('type' => 'Template', 'type_name' => $file, 'pages' => $add);
         $msg = replace_all ( $msg_template_str,  $values );
