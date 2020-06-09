@@ -78,9 +78,9 @@ class Insert {
     public $aUrlTokens = array();
 
     public function __construct() 
-    {		
+    {
         $this->aUrlTokens = $this->replacementTokens();
-		
+
         if (defined('WB_RENDER')){
             $this->sRenderType = WB_RENDER;
         }
@@ -101,14 +101,14 @@ class Insert {
     public function checkCacheControl() 
     {
         $bActive = false;
-        if(function_exists('opf_filter_get_data')){	
+        if(function_exists('opf_filter_get_data')){
             if($aFilter = opf_filter_get_data('Cache Control')){
                 $bActive = (bool) $aFilter['active'];
             }
         }
         return $bActive;
     }
-	
+
     /**
      * @brief  Check if the file ID should be shown in the DOM
      * 
@@ -132,7 +132,7 @@ class Insert {
         }
         return $bRetVal;
     }
-	
+
     /**
      * @brief  Adds a string to the _TitleQueue. 
      *         Default behavior is to append the value to an existing value.
@@ -758,18 +758,18 @@ class Insert {
                 
                 if (strpos($rec['href'], '#missing') !== FALSE) {
                     continue;
-                } else {					
+                } else {
                     $sRetVal .= sprintf($sTPL, $rec['href'], $sMedia, $sFileID, $sClosing);
-                }				
+                }
             }
             if (!empty($rec['style'])) {
                 if (preg_match('/\<style(.*?)?\>/i', $rec['style'])) {
                     $sRetVal .= $rec['style'] . PHP_EOL;
-                } else {					
+                } else {
                     $sRetVal .= "\t<style type=\"text/css\" ";
                     if (!empty($rec['media'])) {
                         $sRetVal .= 'media="' . $rec['media'] . '"';
-                    }					
+                    }
                     $sRetVal .= $sFileID . '>' . PHP_EOL;
                     $sRetVal .= $rec['style'] . PHP_EOL;
                     $sRetVal .= "\t</style>" . PHP_EOL;
@@ -838,21 +838,20 @@ class Insert {
 
         // Run the render loop if src and script are set , both a rendered.
         $sRetVal = "";
-		
+
         foreach ($aData as $sSetName => $rec) {
-			$sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
+            $sFileID = ($this->bShowFileIdInDOM == true) ? ' id="'.$sSetName.'"' : '';
             if (!empty($rec['src'])) {
                 if (strpos($rec['src'], '#missing') !== FALSE) {
                     continue;
-                } else {					
+                } else {
                     $sRetVal .= sprintf($sTPL, $rec['src'], $sFileID);
                 }
             }
-            if (!empty($rec['script'])) {			
+            if (!empty($rec['script'])) {
                 if (preg_match('/\<script(.*?)?\>/i', $rec['script'])) {
                     $sRetVal .= $rec['script'] . PHP_EOL;
                 } else {
-					
                     $sRetVal .= "\t" . '<script';
                     if ($this->sRenderType != "html5") {
                         $sRetVal .= " type=\"text/javascript\"";
@@ -912,7 +911,7 @@ class Insert {
             case array_key_exists('html',   $aData): $sPfx = 'html_';   break;
             default: $sPfx = 'insert_';  break;
         }
-		
+
         if (!isset($aData['setname']) || $aData['setname'] == '') {
             $sLoc = isset($aData['src']) ? $aData['src'] : (isset($aData['href']) ? $aData['href'] : '');
             $sSetName = ($sLoc != "") ? $sPfx.pathinfo($sLoc, PATHINFO_FILENAME) . '__' .
@@ -1233,9 +1232,9 @@ class Insert {
                 $sInsert = $this->$_sProcessFunc($sDomPos) . $sToPlaceHolder; // at the end of the block ["-"]
             else
                 $sInsert = $sToPlaceHolder . $this->$_sProcessFunc($sDomPos); // at beginning of the block ["+"]
-	
-	    // apply filters of type 'page' to the queue before we insert the content	
-	    // $sInsert = opf_controller('insert', $sInsert);
+
+            // apply filters of type 'page' to the queue before we insert the content
+            $sInsert = opf_controller('insert', $sInsert);
 
             $sContent = preg_replace(
                 '/' . preg_quote($sToPlaceHolder) . '/s', 
