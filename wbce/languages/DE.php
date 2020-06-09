@@ -231,6 +231,7 @@ $TEXT['NOT_INSTALLED'] = 'nicht installiert';
 $TEXT['NO_IMAGE_SELECTED'] = 'Kein Bild ausgewählt';
 $TEXT['NO_RESULTS'] = 'Keine Ergebnisse';
 $TEXT['OF'] = 'von';
+$TEXT['OLDWBCE'] = '<b style="color:red">Ihre WBCE-Version ist veraltet! <a href="https://github.com/WBCE/WBCE_CMS/releases" target="_blank">WBCE Releases auf GitHub <i class="fa fa-external-link" aria-hidden="true"></i></a> Sie verwenden: WBCE </b>';
 $TEXT['ON'] = 'am';
 $TEXT['OPEN'] = 'öffnen';
 $TEXT['OPTION'] = 'Option';
