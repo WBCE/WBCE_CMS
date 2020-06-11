@@ -107,151 +107,163 @@ if (extension_loaded('gd') && function_exists('imagepng') && function_exists('im
 if (!function_exists('call_captcha')) {
     function call_captcha($action = 'all', $style = '', $sec_id = '')
     {
-        global $MOD_CAPTCHA;
-        $t = time();
-        $_SESSION['captcha_time'] = $t;
+		
+		$no_session_cookie=false;
+		if (defined('NO_SESSION_COOKIE')) {
+			$no_session_cookie = NO_SESSION_COOKIE;
+		}
+		if ($no_session_cookie==false) {
+		
+			global $MOD_CAPTCHA;
+			$t = time();
+			$_SESSION['captcha_time'] = $t;
 
-        // get width and height of captcha image for use in <iframe>
-        switch (CAPTCHA_TYPE) {
-        case 'calc_image':
-            $captcha_width = 160;
-            $captcha_height = 60;
-            break;
-        case 'calc_ttf_image':
-            $captcha_width = 175;
-            $captcha_height = 60;
-            break;
-        case 'ttf_image':
-            $captcha_width = 175;
-            $captcha_height = 60;
-            break;
-        case 'old_image':
-            $captcha_width = 160;
-            $captcha_height = 55;
-            break;
-        default:
-            $captcha_width = 250;
-            $captcha_height = 100;
-        }
+			// get width and height of captcha image for use in <iframe>
+			switch (CAPTCHA_TYPE) {
+			case 'calc_image':
+				$captcha_width = 160;
+				$captcha_height = 60;
+				break;
+			case 'calc_ttf_image':
+				$captcha_width = 175;
+				$captcha_height = 60;
+				break;
+			case 'ttf_image':
+				$captcha_width = 175;
+				$captcha_height = 60;
+				break;
+			case 'old_image':
+				$captcha_width = 160;
+				$captcha_height = 55;
+				break;
+			default:
+				$captcha_width = 250;
+				$captcha_height = 100;
+			}
 
-        if ($action == 'all') {
-            switch (CAPTCHA_TYPE) {
-            case 'text': // text-captcha
-                ?><table class="captcha_table"><tr>
-                    <td class="text_captcha">
-                        <?php include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';?>
-                    </td>
-                    <td></td>
-                    <td><input type="text" name="captcha" maxlength="50"  style="width:150px;" /></td>
-                    <td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'];?></td>
-                    </tr></table><?php
-break;
-            case 'calc_text': // calculation as text
-                ?><table class="captcha_table"><tr>
-                    <td class="text_captcha">
-                        <?php include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';?>
-                    </td>
-                    <td>&nbsp;=&nbsp;</td>
-                    <td><input type="text" name="captcha" maxlength="10"  style="width:30px;" /></td>
-                    <td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_RES'];?></td>
-                    </tr></table><?php
-break;
-            case 'calc_image':     // calculation with image (old captcha)
-            case 'calc_ttf_image': // calculation with varying background and ttf-font
-                ?><table class="captcha_table" style="font-size: 100%;"><tr>
-                    <td class="image_captcha">
-                        <?php echo "<iframe class=\"captcha_iframe\" width=\"$captcha_width\" height=\"$captcha_height\" style=\"overflow:hidden;border: 1px solid #999;\" name=\"captcha_iframe_$sec_id\" src=\"" . WB_URL . "/include/captcha/captcha.php?display_captcha_X986E21=1&amp;s=$sec_id";?>">
-                        <img src="<?php echo WB_URL . '/include/captcha/captchas/' . CAPTCHA_TYPE . ".php?t=$t&amp;s=$sec_id";?>" alt="Captcha" style="margin: auto;padding:  0;" />
-                        </iframe>
-                    </td>
-                    <td>&nbsp;=&nbsp;</td>
-                    <td><input type="text" name="captcha" maxlength="10" style="width:30px;" /></td>
-                    <td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_RES'];?></td>
-                    </tr></table><?php
-break;
-                              // normal images
-            case 'ttf_image': // captcha with varying background and ttf-font
-            case 'old_image': // old captcha
-                ?><table class="captcha_table"><tr>
-                    <td class="image_captcha">
-                        <?php echo "<iframe class=\"captcha_iframe\" width=\"$captcha_width\" height=\"$captcha_height\"  style=\"overflow:hidden;border: 1px solid #999;\" name=\"captcha_iframe_$sec_id\" src=\"" . WB_URL . "/include/captcha/captcha.php?display_captcha_X986E21=1&amp;s=$sec_id";?> " >
-                        <img src="<?php echo WB_URL . '/include/captcha/captchas/' . CAPTCHA_TYPE . ".php?t=$t&amp;s=$sec_id";?>" alt="Captcha" style="margin: auto;padding:  0;" />
-                        </iframe>
-                    </td>
-                    <td></td>
-                    <td><input type="text" name="captcha" maxlength="10" style="width:50px;" /></td>
-                    <td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'];?></td>
-                    </tr></table><?php
-break;
-            }
-        } elseif ($action == 'image') {
-            switch (CAPTCHA_TYPE) {
-            case 'text':      // text-captcha
-            case 'calc_text': // calculation as text
-                echo ($style ? "<span $style>" : '');
-                include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';
-                echo ($style ? '</span>' : '');
-                break;
-            case 'calc_image':     // calculation with image (old captcha)
-            case 'calc_ttf_image': // calculation with varying background and ttf-font
-            case 'ttf_image':      // captcha with varying background and ttf-font
-            case 'old_image':      // old captcha
-                echo "<img $style src=\"" . WB_URL . '/include/captcha/captchas/' . CAPTCHA_TYPE . ".php?t=$t&amp;s=$sec_id\" />";
-                break;
-            }
-        } elseif ($action == 'image_iframe') {
-            switch (CAPTCHA_TYPE) {
-            case 'text': // text-captcha
-                echo ($style ? "<span $style>" : '');
-                include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';
-                echo ($style ? '</span>' : '');
-                break;
-            case 'calc_text': // calculation as text
-                include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';
-                break;
-            case 'calc_image':     // calculation with image (old captcha)
-            case 'calc_ttf_image': // calculation with varying background and ttf-font
-            case 'ttf_image':      // captcha with varying background and ttf-font
-            case 'old_image':      // old captcha
-                ?>
-                    <?php echo "<iframe class=\"captcha_iframe\" width=\"$captcha_width\" height=\"$captcha_height\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\" name=\"captcha_iframe_$sec_id\" src=\"" . WB_URL . "/include/captcha/captcha.php?display_captcha_X986E21=1&amp;s=$sec_id";?>">
-                    <?php
-echo "<img $style alt=\"Captcha\" src=\"" . WB_URL . '/include/captcha/captchas/' . CAPTCHA_TYPE . ".php?t=$t\" />";
-                ?></iframe><?php
-break;
-            }
-        } elseif ($action == 'input') {
-            switch (CAPTCHA_TYPE) {
-            case 'text': // text-captcha
-                echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:150px;" maxlength="50"') . ' />';
-                break;
-            case 'calc_text':      // calculation as text
-            case 'calc_image':     // calculation with image (old captcha)
-            case 'calc_ttf_image': // calculation with varying background and ttf-font
-                echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:20px;" maxlength="10"') . ' />';
-                break;
-            case 'ttf_image': // captcha with varying background and ttf-font
-            case 'old_image': // old captcha
-                echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:50px;" maxlength="10"') . ' />';
-                break;
-            }
-        } elseif ($action == 'text') {
-            echo ($style ? "<span $style>" : '');
-            switch (CAPTCHA_TYPE) {
-            case 'text': // text-captcha
-                echo $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'];
-                break;
-            case 'calc_text':      // calculation as text
-            case 'calc_image':     // calculation with image (old captcha)
-            case 'calc_ttf_image': // calculation with varying background and ttf-font
-                echo $MOD_CAPTCHA['VERIFICATION_INFO_RES'];
-                break;
-            case 'ttf_image': // captcha with varying background and ttf-font
-            case 'old_image': // old captcha
-                echo $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'];
-                break;
-            }
-            echo ($style ? '</span>' : '');
-        }
+			if ($action == 'all') {
+				switch (CAPTCHA_TYPE) {
+				case 'text': // text-captcha
+					?><table class="captcha_table"><tr>
+						<td class="text_captcha">
+							<?php include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';?>
+						</td>
+						<td></td>
+						<td><input type="text" name="captcha" maxlength="50"  style="width:150px;" /></td>
+						<td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'];?></td>
+						</tr></table><?php
+	break;
+				case 'calc_text': // calculation as text
+					?><table class="captcha_table"><tr>
+						<td class="text_captcha">
+							<?php include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';?>
+						</td>
+						<td>&nbsp;=&nbsp;</td>
+						<td><input type="text" name="captcha" maxlength="10"  style="width:30px;" /></td>
+						<td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_RES'];?></td>
+						</tr></table><?php
+	break;
+				case 'calc_image':     // calculation with image (old captcha)
+				case 'calc_ttf_image': // calculation with varying background and ttf-font
+					?><table class="captcha_table" style="font-size: 100%;"><tr>
+						<td class="image_captcha">
+							<?php echo "<iframe class=\"captcha_iframe\" width=\"$captcha_width\" height=\"$captcha_height\" style=\"overflow:hidden;border: 1px solid #999;\" name=\"captcha_iframe_$sec_id\" src=\"" . WB_URL . "/include/captcha/captcha.php?display_captcha_X986E21=1&amp;s=$sec_id";?>">
+							<img src="<?php echo WB_URL . '/include/captcha/captchas/' . CAPTCHA_TYPE . ".php?t=$t&amp;s=$sec_id";?>" alt="Captcha" style="margin: auto;padding:  0;" />
+							</iframe>
+						</td>
+						<td>&nbsp;=&nbsp;</td>
+						<td><input type="text" name="captcha" maxlength="10" style="width:30px;" /></td>
+						<td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_RES'];?></td>
+						</tr></table><?php
+	break;
+								  // normal images
+				case 'ttf_image': // captcha with varying background and ttf-font
+				case 'old_image': // old captcha
+					?><table class="captcha_table"><tr>
+						<td class="image_captcha">
+							<?php echo "<iframe class=\"captcha_iframe\" width=\"$captcha_width\" height=\"$captcha_height\"  style=\"overflow:hidden;border: 1px solid #999;\" name=\"captcha_iframe_$sec_id\" src=\"" . WB_URL . "/include/captcha/captcha.php?display_captcha_X986E21=1&amp;s=$sec_id";?> " >
+							<img src="<?php echo WB_URL . '/include/captcha/captchas/' . CAPTCHA_TYPE . ".php?t=$t&amp;s=$sec_id";?>" alt="Captcha" style="margin: auto;padding:  0;" />
+							</iframe>
+						</td>
+						<td></td>
+						<td><input type="text" name="captcha" maxlength="10" style="width:50px;" /></td>
+						<td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'];?></td>
+						</tr></table><?php
+	break;
+				}
+			} elseif ($action == 'image') {
+				switch (CAPTCHA_TYPE) {
+				case 'text':      // text-captcha
+				case 'calc_text': // calculation as text
+					echo ($style ? "<span $style>" : '');
+					include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';
+					echo ($style ? '</span>' : '');
+					break;
+				case 'calc_image':     // calculation with image (old captcha)
+				case 'calc_ttf_image': // calculation with varying background and ttf-font
+				case 'ttf_image':      // captcha with varying background and ttf-font
+				case 'old_image':      // old captcha
+					echo "<img $style src=\"" . WB_URL . '/include/captcha/captchas/' . CAPTCHA_TYPE . ".php?t=$t&amp;s=$sec_id\" />";
+					break;
+				}
+			} elseif ($action == 'image_iframe') {
+				switch (CAPTCHA_TYPE) {
+				case 'text': // text-captcha
+					echo ($style ? "<span $style>" : '');
+					include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';
+					echo ($style ? '</span>' : '');
+					break;
+				case 'calc_text': // calculation as text
+					include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';
+					break;
+				case 'calc_image':     // calculation with image (old captcha)
+				case 'calc_ttf_image': // calculation with varying background and ttf-font
+				case 'ttf_image':      // captcha with varying background and ttf-font
+				case 'old_image':      // old captcha
+					?>
+						<?php echo "<iframe class=\"captcha_iframe\" width=\"$captcha_width\" height=\"$captcha_height\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\" name=\"captcha_iframe_$sec_id\" src=\"" . WB_URL . "/include/captcha/captcha.php?display_captcha_X986E21=1&amp;s=$sec_id";?>">
+						<?php
+	echo "<img $style alt=\"Captcha\" src=\"" . WB_URL . '/include/captcha/captchas/' . CAPTCHA_TYPE . ".php?t=$t\" />";
+					?></iframe><?php
+	break;
+				}
+			} elseif ($action == 'input') {
+				switch (CAPTCHA_TYPE) {
+				case 'text': // text-captcha
+					echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:150px;" maxlength="50"') . ' />';
+					break;
+				case 'calc_text':      // calculation as text
+				case 'calc_image':     // calculation with image (old captcha)
+				case 'calc_ttf_image': // calculation with varying background and ttf-font
+					echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:20px;" maxlength="10"') . ' />';
+					break;
+				case 'ttf_image': // captcha with varying background and ttf-font
+				case 'old_image': // old captcha
+					echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:50px;" maxlength="10"') . ' />';
+					break;
+				}
+			} elseif ($action == 'text') {
+				echo ($style ? "<span $style>" : '');
+				switch (CAPTCHA_TYPE) {
+				case 'text': // text-captcha
+					echo $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'];
+					break;
+				case 'calc_text':      // calculation as text
+				case 'calc_image':     // calculation with image (old captcha)
+				case 'calc_ttf_image': // calculation with varying background and ttf-font
+					echo $MOD_CAPTCHA['VERIFICATION_INFO_RES'];
+					break;
+				case 'ttf_image': // captcha with varying background and ttf-font
+				case 'old_image': // old captcha
+					echo $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'];
+					break;
+				}
+				echo ($style ? '</span>' : '');
+			}
+		/*hier*/
+		} else {
+		    echo '<br clear="all"/><div style="color:firebrick">ERROR: No session data available. Unable to verify form data!</div>';
+   	      }
+		
     }
 }

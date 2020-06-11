@@ -61,7 +61,20 @@ class WSession{
         }
 
         // Start a session if needed 
-        if (!self::IsStarted()) {
+		$no_session_cookie=false;
+		if (defined('NO_SESSION_COOKIE')) {
+			$no_session_cookie = NO_SESSION_COOKIE;
+		}
+					
+		if ($no_session_cookie==true) {		
+			$strCookiepagepattern = "@(modules\/|\/".ADMIN_DIRECTORY."\/)@";
+			$nrCookiepage = preg_match( $strCookiepagepattern, $_SERVER['REQUEST_URI'] );		
+		} else {
+			$nrCookiepage = 1;
+		}
+
+		if ($nrCookiepage == 1 && !self::IsStarted()) {
+        //if (!self::IsStarted()) {
             // Session parameter
             session_name(APP_NAME . '-sid');
             session_set_cookie_params(0);
