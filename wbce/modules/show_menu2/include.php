@@ -200,7 +200,6 @@ function show_menu2(
             $fields = '*';
         }
 
-        /*** EXPERIMENTAL *********************************************/
         //beforehand fetch the menu-link page ids
         $qML = "SELECT page_id FROM `{TP}mod_menu_link`";
         $oML = $database->query($qML);
@@ -210,7 +209,6 @@ function show_menu2(
 				$aML[] = $ml['page_id'];
 			}
 		}
-		/* ************************************************************/
 
         // we request all matching rows from the database for the menu that we
         // are about to create it is cheaper for us to get everything we need
@@ -242,13 +240,11 @@ function show_menu2(
                     continue;
                 }
 
-                /*** EXPERIMENTAL *************************************/
                 if (in_array($page['page_id'], $aML)) {
 					$page['sm2_is_menulink'] = true;
 				} else {
 					$page['sm2_is_menulink'] = false;
 				}
-				/******************************************************/
 
 				if(!isset($page['tooltip'])) { $page['tooltip'] = $page['page_title']; }
                 // ensure that we have an array entry in the table to add this to
