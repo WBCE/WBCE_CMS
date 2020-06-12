@@ -264,7 +264,10 @@ $oTemplate->set_block('main_block', 'group_list_block', 'group_list');
 $results = $database->query(
     "SELECT `group_id`, `name` FROM `{TP}groups` WHERE `group_id` != '1'"
 );
-$aSelectedGroups = explode(",", $aInsert['groups_id']);
+$aSelectedGroups = array();
+if (isset($aInsert['groups_id'])) {
+	$aSelectedGroups = explode(",", $aInsert['groups_id']);
+}
 if($results->numRows() > 0) {
     $oTemplate->set_var('ID', '');
     $oTemplate->set_var('NAME', $TEXT['PLEASE_SELECT'].'...');
