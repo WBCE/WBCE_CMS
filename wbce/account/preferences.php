@@ -13,6 +13,11 @@
 
 require_once dirname(__DIR__) . '/config.php';
 
+if(!FRONTEND_LOGIN) {
+	header('Location: '.WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php');
+	exit(0);
+}
+
 $oAccounts = new Accounts();
 if ($oAccounts->is_authenticated()==false) {
     header('Location: '.WB_URL.'/account/login.php');
