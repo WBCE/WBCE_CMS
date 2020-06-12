@@ -36,7 +36,8 @@ class SM2_Formatter
 
     // output the data
     function output($aString) {
-        if(defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true){
+		//echo $aString;
+        if(defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true && stristr($aString, 'sm2-is-menulink')){
             $aString = sm2_correct_menu_links($aString);
         }
         if ($this->flags & SM2_BUFFER) {
@@ -131,6 +132,13 @@ class SM2_Formatter
                 $currClass .= ' menu-child-'.($aPage['sm2_child_level']-1);
             }
         }
+
+        /*** EXPERIMENTAL *********************************************/
+        if (array_key_exists('sm2_is_menulink', $aPage) && $aPage['sm2_is_menulink'] === true) {
+            $currClass .= ' sm2-is-menulink';
+        }
+        /* ************************************************************/
+
         if ($aCurrSib == 1) {
             $currClass .= ' menu-first';
         }
