@@ -288,6 +288,17 @@ if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
 }
 define("LANGUAGE_LOADED", true);
 
+// simple template switcher
+if(isset($_GET['reset_template'])){
+	unset($_SESSION['wb_preview_tpl']);
+}
+if(isset($_GET['template']) || isset($_SESSION['wb_preview_tpl'])){
+	if(isset($_GET['template']) && is_string($_GET['template'])){
+		$_SESSION['wb_preview_tpl'] = $_GET['template'];
+	}
+	define('TEMPLATE', $_SESSION['wb_preview_tpl']);
+}
+
 // define more system constants
 defined("THEME_URL")        or define('THEME_URL',        WB_URL .'/templates/'. DEFAULT_THEME);
 defined("THEME_PATH")       or define('THEME_PATH',       WB_PATH .'/templates/'. DEFAULT_THEME);
