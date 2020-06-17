@@ -157,7 +157,7 @@ class Wb extends SecureForm
                 });
             });
             
-            _JsCode;
+_JsCode;
             I::insertJsCode($sToJs, 'HEAD BTM-', 'PwStrenght');
         }
         return $sRetVal;
