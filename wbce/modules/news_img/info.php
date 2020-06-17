@@ -16,13 +16,17 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '4.0.2';
+$module_version     = '4.0.3';
 $module_platform    = '1.3';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v4.0.3  - 2020-04-21
+ *         - Colinax
+ *           + Update version to prevent version conflicts
+ *
  * v4.0.2  - 2020-04-21
  *         - Bianka Martinovic
  *           + if GDLib is missing, a warning will be shown in the backend
