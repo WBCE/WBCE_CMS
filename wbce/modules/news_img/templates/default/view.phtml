@@ -1,0 +1,27 @@
+<div class="mod_nwi_<?php echo $view ?>">
+<?php
+    if(!defined('CAT_PATH')):
+?>
+    <!--(MOVE) CSS HEAD TOP- -->
+    <!-- NWI module design file -->
+    <link rel="stylesheet" href="<?php echo WB_URL ?>/modules/news_img/views/<?php echo $view ?>/frontend.css" />
+    <!--(END)-->
+<?php
+    endif;
+    if(!empty($tags_header)):
+?>
+    <div class="mod_nwi_tags_header">
+        <strong><?php echo $MOD_NEWS_IMG['TAG'] ?>:</strong> <?php echo $tags_header ?>
+        <a href="<?php echo $page_link ?>" style="float:right"><?php echo $MOD_NEWS_IMG['TEXT_RESET'] ?></a>
+    </div><br style="clear:both" />
+<?php
+    endif;
+    if(isset($tpl_data) && is_array($tpl_data) && count($tpl_data['rendered_posts'])>0):
+        echo $tpl_data['prev_next_header'];
+        echo implode("\n",$tpl_data['rendered_posts']);
+        echo $tpl_data['prev_next_footer'];
+    endif; if(isset($output)):
+        echo $output;
+    endif;
+?>
+</div>

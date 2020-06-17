@@ -1,0 +1,27 @@
+                    <select name="group">
+                        <option value="<?php echo urlencode(serialize(array('g'=>'','s'=>$section_id,'p'=>$page_id))); ?>">
+                            <?php echo $TEXT['NONE']." (".$MOD_NEWS_IMG['CURRENT_SECTION']." #".$section_id ?>)
+                        </option>
+<?php
+    if(isset($groups) && is_array($groups) && count($groups)>0):
+        foreach($groups as $pageID => $sects): // note: current page is on top
+            if($pageID != $page_id):
+                        // separator (next page)
+?>
+                        <option disabled="disabled">----- <?php echo $TEXT['PAGE'], " ", $pages[$pageID], " (", $pageID, ")" ?> -----</option>
+<?php
+            endif;
+            foreach($sects as $sectionID => $grps):
+                if($sectionID != $section_id):
+                    $id = urlencode(serialize(array('g'=>'','s'=>$sectionID,'p'=> $pageID)));
+?>
+                        <option value="<?php echo $id ?>"><?php echo $TEXT['NONE']." (".$TEXT['SECTION']." #".$sectionID ?>)</option>
+<?php
+                endif;
+                foreach($grps as $group):
+                    $id = urlencode(serialize(array('g' => intval($group['group_id']), 's' => $sectionID, 'p' => $pageID)));
+
+?>
+                        <option value="<?php echo $id ?>"<?php if ($post_data['group_id'] == $group['group_id']): ?> selected="selected"<?php endif; ?>><?php echo $group['title'].' ('.$TEXT['SECTION'].' #'.$section_id ?>)</option>
+<?php endforeach; endforeach; endforeach; endif; ?>
+                    </select>

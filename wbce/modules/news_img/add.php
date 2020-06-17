@@ -13,7 +13,7 @@
  *
  */
 
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
+if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 
 require_once __DIR__.'/functions.inc.php';
 
@@ -24,32 +24,46 @@ $post_loop = '<div class="mod_nwi_group">
     </div>
     <div class="mod_nwi_teasertext">
         <a href="[LINK]"><h3>[TITLE]</h3></a>
-        <div class="mod_nwi_metadata">[DISPLAY_NAME] | [PUBLISHED_DATE]</div>
+        <div class="mod_nwi_metadata">[TEXT_POSTED_BY] [DISPLAY_NAME] [TEXT_ON] [PUBLISHED_DATE] [TEXT_AT] [PUBLISHED_TIME] [TEXT_O_CLOCK] </div>
             <div class="mod_nwi_shorttext">
                 [SHORT]
             </div>
-            <span style="visibility:[SHOW_READ_MORE];"><a href="[LINK]">[TEXT_READ_MORE]</a></span>
+            <div class="mod_nwi_bottom">
+                <div class="mod_nwi_tags">[TAGS]</div>
+                <div class="mod_nwi_readmore" style="visibility:[SHOW_READ_MORE];"><a href="[LINK]">[TEXT_READ_MORE]</a></div>
+            </div>
         </div>
     </div>
     <div class="mod_nwi_spacer"><hr /></div>';
-$footer = '<table class="page-header" style="display: [DISPLAY_PREVIOUS_NEXT_LINKS]">
+$footer = '<table class="mod_nwi_table" style="visibility:[DISPLAY_PREVIOUS_NEXT_LINKS]">
 <tr>
-    <td class="page-left">[PREVIOUS_PAGE_LINK]</td>
-    <td class="page-center">[OF]</td>
-    <td class="page-right">[NEXT_PAGE_LINK]</td>
+    <td class="mod_nwi_table_left">[PREVIOUS_PAGE_LINK]</td>
+    <td class="mod_nwi_table_center">[OF]</td>
+    <td class="mod_nwi_table_right">[NEXT_PAGE_LINK]</td>
 </tr>
 </table>';
 $block2 = '';
-$post_header = addslashes('<h2>[TITLE]</h2>');
-$post_content = '[CONTENT]<br />
+$post_header = addslashes('<h2>[TITLE]</h2>
+<div class="mod_nwi_metadata">[TEXT_POSTED_BY] [DISPLAY_NAME] [TEXT_ON] [PUBLISHED_DATE] [TEXT_AT] [PUBLISHED_TIME] [TEXT_O_CLOCK] | [TEXT_LAST_CHANGED] [MODI_DATE] [TEXT_AT] [MODI_TIME] [TEXT_O_CLOCK]</div>');
+$post_content = '<div class="mod_nwi_content_short">
+  [IMAGE]
+  [CONTENT_SHORT]
+</div>
+<div class="mod_nwi_content_long">[CONTENT_LONG]</div>
 <div class="fotorama" data-keyboard="true" data-navposition="top" data-nav="thumbs">
 [IMAGES]
 </div>
 ';
-$image_loop = '<img src="[IMAGE]" data-caption="[DESCRIPTION]" />';
-$post_footer = '<div class="div_link">
-<a href="[BACK]">[TEXT_BACK]</a>
-</div>';
+$image_loop = '<img src="[IMAGE]" alt="[DESCRIPTION]" title="[DESCRIPTION]" data-caption="[DESCRIPTION]" />';
+$post_footer = ' <div class="mod_nwi_spacer"></div>
+<table class="mod_nwi_table" style="visibility: [DISPLAY_PREVIOUS_NEXT_LINKS]">
+<tr>
+    <td class="mod_nwi_table_left">[PREVIOUS_PAGE_LINK]</td>
+    <td class="mod_nwi_table_center"><a href="[BACK]">[TEXT_BACK]</a></td>
+    <td class="mod_nwi_table_right">[NEXT_PAGE_LINK]</td>
+</tr>
+</table>
+<div class="mod_nwi_tags">[TAGS]</div>';
 
 $resize_preview = '125x125';
 $iniset = ini_get('upload_max_filesize');
@@ -57,6 +71,6 @@ $iniset = mod_nwi_return_bytes($iniset);
 
 $database->query(
     "INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` ".
-    "(`section_id` ,`page_id` ,`header` ,`post_loop` ,`footer` ,`block2` ,`post_header` ,`post_content` ,`image_loop` ,`post_footer` ,`gallery` ,`imgthumbsize`,`resize_preview` ,`imgmaxwidth`,`imgmaxheight`,`imgmaxsize`) VALUES ".
-    "('$section_id','$page_id','$header','$post_loop','$footer','$block2','$post_header','$post_content','$image_loop','$post_footer','fotorama','100x100'     ,'$resize_preview','900'        ,'900'         ,'$iniset')"
+    "(`section_id` ,`header` ,`post_loop` ,`footer` ,`block2` ,`post_header` ,`post_content` ,`image_loop` ,`post_footer` ,`gallery` ,`imgthumbsize`,`resize_preview` ,`imgmaxwidth`,`imgmaxheight`,`imgmaxsize`) VALUES ".
+    "('$section_id','$header','$post_loop','$footer','$block2','$post_header','$post_content','$image_loop','$post_footer','fotorama','100x100'     ,'$resize_preview','900'        ,'900'         ,'$iniset')"
 );

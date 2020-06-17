@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
 <html lang="de-de" dir="ltr">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <head>
 <title>Readme</title>
 
 <style type="text/css">
 body {
 font-family:"Open Sans",Arial,sans-serif;
+font-size:0.8em;
 }
 
 h1 { font-size:1.8em; }
@@ -79,6 +81,7 @@ nav label:active { background: #ffffff; }
 }
 </style>
 
+
 </head>
 
 <body>
@@ -86,100 +89,142 @@ nav label:active { background: #ffffff; }
 <div class="tabbed">
    <input checked="checked" id="tab1" type="radio" name="tabs" />
    <input id="tab2" type="radio" name="tabs" />
-   <input id="tab3" type="radio" name="tabs" />
-   <input id="tab4" type="radio" name="tabs" />
-   <input id="tab5" type="radio" name="tabs" />
    <nav>
       <label for="tab1">DE</label>
-      <label for="tab2">EN</label>
-      <label for="tab3">FR</label>
-	  <label for="tab4">IT</label>
-	  <label for="tab5">NL</label>
+      <label for="tab2">EN</label> 
    </nav>
    
    <figure>
       <div class="tab1"> 
+
+  
 	  <h1>News with Images</h1>
-<p>News with images (kurz: NWI) ermöglicht das einfache Erstellen von News-Seiten bzw. -Beiträgen.
-Es basiert auf dem &quot;alten&quot; Newsmodul (3.5.12), wurde aber um verschiedene Funktionen erweitert:</p>
+	  
+<h2>Inhalt</h2>	  
+<ul>
+	<li><a href="#d1">Allgemein</a></li>
+	<li><a href="#d2">Download</a></li>
+	<li><a href="#d3">Lizenz</a></li>
+	<li><a href="#d4">Systemvoraussetzungen</a></li>
+	<li><a href="#d5">Installation/Update</a></li>
+	<li><a href="#d6">BeitrÃ¤ge erstellen/bearbeiten</a></li>
+	<li><a href="#d7">Einstellungen</a></li>
+	
+</ul>
+<h2 id="d1">Allgemein</h2>
+	  
+<p>News with images (kurz: NWI) ermÃ¶glicht das Erstellen von News-Seiten bzw. -BeitrÃ¤gen und bietet u.a. folgende Funktionen:</p>
 <ul>
 <li>Beitragsbild</li>
 <li>integrierte Bildergalerie (Masonry oder Fotorama)</li>
 <li>optionaler 2. Inhaltsbereich</li>
-<li>Sortieren von Beiträgen mit Drag &amp; Drop</li>
-<li>Verschieben/Kopieren von Beiträgen zwischen Gruppen und Abschnitten</li>
-<li>Import von Topics und &quot;klassischen&quot; News</li>
+<li>Sortieren von BeitrÃ¤gen mit Drag &amp; Drop</li>
+<li>Verschieben/Kopieren von BeitrÃ¤gen zwischen Gruppen und Abschnitten</li>
+<li>Import von BeitrÃ¤gen und Einstellungen aus dem Modul "Topics" sowie "News" ("klassisches Newsmodul" bis Version 3.5.12)</li>
 </ul>
-<p>Die rudimentäre und unsichere Kommentarfunktion aus dem alten Newsmodul ist entfallen, bei Bedarf kann diese Funktion mit entsprechenden Modulen (Global Comments/Easy Comments bzw. Reviews) integriert werden.</p>
-<h2>Download</h2>
-<p>Das Modul ist ab WBCE CMS 1.4 ein Coremodul und standardmäßig installiert. Darüber hinaus ist der Download im <a href="https://addons.wbce.org">WBCE CMS Add-On Repository</a> verfügbar.</p>
-<h2>Lizenz</h2>
+
+<h2 id="d2">Download</h2>
+<p>Das Modul ist ab WBCE CMS 1.4 ein Coremodul und standardmÃ¤ÃŸig installiert. DarÃ¼ber hinaus ist der Download im <a href="https://addons.wbce.org">WBCE CMS Add-On Repository</a> verfÃ¼gbar.</p>
+
+<h2 id="d3">Lizenz</h2>
 <p>NWI steht unter der <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License (GPL) v3.0</a>.</p>
-<h2>Systemvoraussetzungen</h2>
-<p>NWI erfordert keine besonderen Systemvoraussetzungen und funktioniert auch mit älteren WBCE-Versionen sowie WebsiteBaker. </p>
-<h2>Installation</h2>
+
+<h2 id="d4">Systemvoraussetzungen</h2>
+<p>NWI hat keine besonderen Systemvoraussetzungen. Wenn WBCE CMS funktioniert, sollte auch NWI laufen. </p>
+
+<h2 id="d5">Installation/Update</h2>
 <ol>
 <li>Sofern erforderlich, aktuelle Version aus dem  <a href="https://addons.wbce.org">AOR</a> herunterladen</li>
-<li>Wie jedes andere WBCE-Modul auch über Erweiterungen &gt; Module installieren</li>
+<li>Wie jedes andere WBCE-Modul auch Ã¼ber Erweiterungen &gt; Module installieren bzw. aktualisieren </li>
 </ol>
-<h2>Benutzung</h2>
-<h3>Loslegen und Schreiben</h3>
+
+<h2 id="d6">BeitrÃ¤ge erstellen und bearbeiten</h2>
+<h3 id="d61">Loslegen und Schreiben</h3>
+
 <ol>
-<li>Eine neue Seite mit &quot;News with Images&quot; anlegen</li>
-<li>Auf &quot;Beitrag verfassen&quot; klicken</li>
-<li>Überschrift und ggf. weitere Felder ausfüllen, ggf. Bilder auswählen. Die Funktion der Eingabefelder ist wohl selbsterklärend.</li>
-<li>Auf &quot;Speichern&quot; oder &quot;Speichern und zurück&quot; klicken</li>
-<li>Schritte 1. - 4. ein paar Mal wiederholen und sich das ganze im Frontend anschauen</li>
+<li>Ggfs. eine neue Seite mit &quot;News with Images&quot; anlegen</li>
+<li>Um einen neuen Beitrag zu erstellen, auf die SchaltflÃ¤che "Beitrag verfassen" klicken. Zum Bearbeiten des Inhalts eines vorhandenen Beitrags auf dessen Titel klicken.</li>
+<li>Ãœberschrift und ggf. weitere Felder ausfÃ¼llen, ggf. Bilder auswÃ¤hlen. Die Funktion der Eingabefelder ist wohl selbsterklÃ¤rend.</li>
+<li>Auf &quot;Speichern&quot; oder &quot;Speichern und zurÃ¼ck&quot; klicken</li>
+<li>Schritte 2. - 4. ein paar Mal wiederholen und sich das ganze im Frontend anschauen</li>
 </ol>
-<p>Grundsätzlich kann NWI mit anderen Modulen auf einer Seite bzw. in einem Block kombiniert werden, es kann dann aber wie bei jedem Modul, das eigene Detailseiten generiert, zu Ergebnissen kommen, die nicht dem Erwarteten/Erwünschten entsprechen.</p>
-<h3>Bilder im Beitrag</h3>
-<p>Für jeden Beitrag kann ein Beitragsbild hinterlegt werden, das auf der Übersichtsseite und ggfs. der Beitragsseite angezeigt wird. Darüber hinaus ist es möglich, beliebig viele Bilder zu einem Beitrag zu hinterlegen, die als Bildergalerie angezeigt werden. Die Galeriedarstellung erfolgt entweder als Fotorama-Galerie (Thumbnails, Bild über die gesamte Breite) oder als Masonry-Galerie (Bildermosaik). </p>
-<p>Welches Galeriescript verwendet wird, wird für alle Beiträge in den Einstellungen des jeweiligen Abschnitts festgelegt.</p>
-<p>Die Galeriebilder werden hochgeladen, sobald der Beitrag gespeichert wird, und können dann mit Bildunterschriften versehen, per Drag&amp;Drop umsortiert oder auch wieder gelöscht werden.</p>
-<p>Beim Upload von Dateien mit gleichen Namen wie bereits vorhandenen Bildern werden die vorhandenen Dateien nicht überschrieben, sondern bei den nachfolgenden Dateien wird eine fortlaufende Nummerierung ergänzt (bild.jpg, bild_1.jpg usw.)</p>
-<p>Die Verwaltung der Bilder erfolgt nur über den Beitrag, nicht über die WBCE-Medienverwaltung, da NWI sonst nicht &quot;weiß&quot;, wo welche Bilder hingehören/fehlen usw.</p>
-<h3>Gruppen</h3>
-<p>Beiträge können Gruppen zugeordnet werden. Dies hat einerseits Einfluss auf die Reihenfolge (die Beiträge werden erst nach Gruppe und dann nach einem weiteren anzugebenden Kriterium sortiert), und ermöglicht andererseits, themenspezifische Übersichtsseiten zu generieren. Diese können dann über die URL der NWI-Seite mit dem Parameter g?=GROUP_ID, also z.B. news.php?g=2 angesteuert werden.</p>
+<p>GrundsÃ¤tzlich kann NWI mit anderen Modulen auf einer Seite bzw. in einem Block kombiniert werden, es kann dann aber wie bei jedem Modul, das eigene Detailseiten generiert, zu Ergebnissen kommen, die nicht dem Erwarteten/ErwÃ¼nschten entsprechen.</p>
+
+<h3 id="d62">Bilder im Beitrag</h3>
+<p>FÃ¼r jeden Beitrag kann ein Beitragsbild hinterlegt werden, das auf der Ãœbersichtsseite und ggfs. der Beitragsseite angezeigt wird. DarÃ¼ber hinaus ist es mÃ¶glich, beliebig viele Bilder zu einem Beitrag zu hinterlegen, die als Bildergalerie angezeigt werden. Die Galeriedarstellung erfolgt entweder als Fotorama-Galerie (Thumbnails, Bild Ã¼ber die gesamte Breite) oder als Masonry-Galerie (Bildermosaik). </p>
+<p>Welches Galeriescript verwendet wird, wird fÃ¼r alle BeitrÃ¤ge in den Einstellungen des jeweiligen Abschnitts festgelegt.</p>
+<p>Die Galeriebilder werden hochgeladen, sobald der Beitrag gespeichert wird, und kÃ¶nnen dann mit Bildunterschriften versehen, per Drag&amp;Drop umsortiert oder auch wieder gelÃ¶scht werden.</p>
+<p>Beim Upload von Dateien mit gleichen Namen wie bereits vorhandenen Bildern werden die vorhandenen Dateien nicht Ã¼berschrieben, sondern bei den nachfolgenden Dateien wird eine fortlaufende Nummerierung ergÃ¤nzt (bild.jpg, bild_1.jpg usw.)</p>
+<p>Die Verwaltung der Bilder erfolgt nur Ã¼ber den Beitrag, nicht Ã¼ber die WBCE-Medienverwaltung, da NWI sonst nicht &quot;weiÃŸ&quot;, wo welche Bilder hingehÃ¶ren/fehlen usw.</p>
+
+<h3 id="d63">Gruppen</h3>
+<p>BeitrÃ¤ge kÃ¶nnen Gruppen zugeordnet werden. Dies hat einerseits Einfluss auf die Reihenfolge (die BeitrÃ¤ge werden erst nach Gruppe und dann nach einem weiteren anzugebenden Kriterium sortiert), und ermÃ¶glicht andererseits, themenspezifische Ãœbersichtsseiten zu generieren. Diese kÃ¶nnen dann Ã¼ber die URL der NWI-Seite mit dem Parameter g?=GROUP_ID, also z.B. news.php?g=2 angesteuert werden.</p>
 <p>Ein Beitrag kann immer nur einer Gruppe zugeordnet sein.</p>
-<p>Einzelne oder mehrere Beiträge können zwischen Gruppen kopiert und verschoben werden.</p>
-<h3>Importfunktion</h3>
-<p>So lange noch kein Beitrag im jeweiligen NWI-Abschnitt erstellt wurde, können Beiträge aus dem klassischem Newsmodul, anderen NWI-Abschnitten sowie Topics automatisch importiert werden.
-Die Seiteneinstellungen werden mit übernommen. Beim Import von Topics-Beiträgen sind aber noch manuelle Nacharbeiten erforderlich, sofern bei Topics die &quot;Additional Images&quot;-Funktion genutzt wurde.</p>
-<h3>Beiträge kopieren / verschieben</h3>
-<p>Aus der Beitragsübersicht im Backend heraus können einzelne, mehrere markierte oder alle (markierten) Beiträge innerhalb eines Abschnitts kopiert oder zwischen unterschiedlichen Abschnitten (auch auf unterschiedlichen Seiten) kopiert oder verschoben werden. Kopierte Beiträge sind stets zunächst im Frontend nicht sichtbar (Auswahl Aktiv: &quot;nein&quot;).</p>
-<h3>Beiträge löschen</h3>
-<p>Aus der Beitragsübersicht können einzelne, mehrere markierte oder alle (markierten) Beiträge gelöscht werden. Nach der Bestätigung der Rückfrage sind die betreffenden Beiträge unwiderruflich <strong>VERNICHTET</strong>, es gibt <strong>keinen</strong> Papierkorb!</p>
-<h2>Konfiguration</h2>
-<p>Alle Anpassungen, bis auf die Steuerung, ob ein 2. Block verwendet werden soll, lassen sich über das Backend bei den Moduleinstellungen vornehmen (erreichbar über die Schaltfläche &quot;Einstellungen&quot;).</p>
-<h3>Übersichtsseite</h3>
+<p>Einzelne oder mehrere BeitrÃ¤ge kÃ¶nnen von einer Gruppe in eine andere kopiert und verschoben werden.</p>
+
+<h3 id="d64">Stichworte</h3>
+<p>Diese Funktion steht nur zur VerfÃ¼gung, wenn bei den Einstellungen der "Expertenmodus" aktiviert wurde und Stichworte angelegt wurden.</p>
+<p>BeitrÃ¤ge kÃ¶nnen einem oder mehreren Stichworten zugeordnet werden. Diese Stichworte werden dann je nach Konfiguration im Frontend auf der BeitragsÃ¼bersicht und/oder der Detailansicht angezeigt und sind jeweils mit der Ãœbersicht aller BeitrÃ¤ge zu diesem Stichwort verlinkt.</p>
+<p>Stichworte aus der BeitragsÃ¼bersicht heraus zentral fÃ¼r alle BeitrÃ¤ge im Abschnitt zur VerfÃ¼gung gestellt (Reiter "Stichworte") und kÃ¶nnen dann in der Beitrags-Detailansicht ausgewÃ¤hlt werden.</p>
+<p>Globale Stichworte stehen in allen NWI-Abschnitten zur VerfÃ¼gung, also auch auf anderen Seiten des Auftritts.</p>
+<p>Nach dem Anlegen kÃ¶nnen Stichworte bearbeitet/geÃ¤ndert werden, ebenso ist es mÃ¶glich, diesen eigene Farben zuzuweisen.</p>
+
+<h3 id="d65">2. Block</h3>
+<p>Diese Funktion steht nur zur VerfÃ¼gung, wenn bei den Einstellungen der "Expertenmodus" aktiviert wurde und die Verwendung des 2. Blocks aktiviert ist.</p>
+<p>Sofern vom Template unterstÃ¼tzt, kÃ¶nnen Inhalte in einem zweiten Block (z.B. einer Randspalte) dargestellt werden. Dabei kann es sich entweder um bei den Einstellungen hinterlegte, wiederkehrende Inhalte handeln, beitragsspezifische Inhalte (Beitragsbild, AnreiÃŸertext o.Ã¤.) oder direkt im Beitrag hinterlegte Texte, die im Eingabefeld fÃ¼r den 2. Block eingetragen wurden.</p>
+
+<h3 id="d66">Importfunktion</h3>
+<p>So lange noch kein Beitrag im jeweiligen NWI-Abschnitt erstellt wurde, kÃ¶nnen BeitrÃ¤ge aus anderen NWI-Abschnitten, News 3.x sowie Topics automatisch importiert werden.
+Die Seiteneinstellungen werden mit Ã¼bernommen. Beim Import von Topics-BeitrÃ¤gen sind aber noch manuelle Nacharbeiten erforderlich, sofern bei Topics die &quot;Additional Images&quot;-Funktion genutzt wurde.</p>
+
+<h3 id="d67">BeitrÃ¤ge kopieren / verschieben</h3>
+<p>Aus der BeitragsÃ¼bersicht im Backend heraus kÃ¶nnen einzelne, mehrere markierte oder alle (markierten) BeitrÃ¤ge innerhalb eines Abschnitts kopiert oder zwischen unterschiedlichen Abschnitten (auch auf unterschiedlichen Seiten) kopiert oder verschoben werden. Kopierte BeitrÃ¤ge sind stets zunÃ¤chst im Frontend nicht sichtbar (Auswahl Aktiv: &quot;nein&quot;).</p>
+
+<h3  id="d68">BeitrÃ¤ge lÃ¶schen</h3>
+<p>Aus der BeitragsÃ¼bersicht kÃ¶nnen einzelne, mehrere markierte oder alle (markierten) BeitrÃ¤ge gelÃ¶scht werden. Nach der BestÃ¤tigung der RÃ¼ckfrage sind die betreffenden BeitrÃ¤ge unwiderruflich <strong>VERNICHTET</strong>, es gibt <strong>keinen</strong> Papierkorb!</p>
+
+
+<h2 id="d7">Einstellungen</h2>
+
+<h3 id="d71">Expertenmodus</h3>
+<p>Wird der "Expertenmodus" aktiviert, so stehen zusÃ¤tzliche Eingabefelder bei den Einstellungen (2. Block), in der BeitragsÃ¼bersicht (Stichworte) sowie Beitragsdetailansicht (Stichwortzuweisung, 2. Block) zur VerfÃ¼gung.</p>
+<p><strong>Achtung: </strong>Beim Wechsel zwischen aktiviertem und deaktivierten Expertenmodus erfolgt jeweils die RÃ¼ckkehr zur BeitragsÃ¼bersicht, andere Ã„nderungen an den Einstellungen werden dabei <strong>nicht</strong> gespeichert. </p>
+
+<h3 id="d72">Ãœbersichtsseite</h3>
 <ul>
-<li><strong>Sortierung</strong>: Festlegung der Reihenfolge der Beiträge (Benutzerdefiniert = manuelle Festlegung, Beiträge erscheinen so, wie sie im Backend angeordnet werden; Startdatum / Ablaufdatum / eingetragen (=Erstelldatum) / Eintrags-ID: jeweils absteigend nach entsprechendem Kriterium) </li>
-<li><strong>Nachrichten pro Seite</strong>: Auswahl, wie viele Einträge (Teaserbild/Text) pro Seite angezeigt werden sollen</li>
-<li><strong>Kopfzeile, Beitrag Schleife, Fußzeile</strong>: HTML-Code zur Formatierung der Anzeige</li>
-<li><strong>Vorschaubild Größe ändern auf</strong> Breite/Höhe des Bildes in Pixeln. Bei Änderungen erfolgt <strong>keine</strong> automatische Neuberechnung, es ist also sinnvoll, sich im voraus Gedanken über die gewünschte Größe zu machen und dann den Wert nicht mehr zu ändern.</li>
+<li><strong>Sortierung</strong>: Festlegung der Reihenfolge der BeitrÃ¤ge (Benutzerdefiniert = manuelle Festlegung, BeitrÃ¤ge erscheinen so, wie sie im Backend angeordnet werden; Startdatum / Ablaufdatum / eingetragen (=Erstelldatum) / Eintrags-ID: jeweils absteigend nach entsprechendem Kriterium) </li>
+<li><strong>Nachrichten pro Seite</strong>: Auswahl, wie viele EintrÃ¤ge (Teaserbild/Text) pro Seite angezeigt werden sollen</li>
+<li><strong>Kopfzeile, Beitrag Schleife, FuÃŸzeile</strong>: HTML-Code zur Formatierung der Anzeige</li>
+<li><strong>Vorschaubild GrÃ¶ÃŸe Ã¤ndern auf</strong> Breite/HÃ¶he des Bildes in Pixeln. Bei Ã„nderungen erfolgt <strong>keine</strong> automatische Neuberechnung, es ist also sinnvoll, sich im voraus Gedanken Ã¼ber die gewÃ¼nschte GrÃ¶ÃŸe zu machen und dann den Wert nicht mehr zu Ã¤ndern. <br />
+Das Beitragsbild steht <strong>nur</strong> in der angegebenen AuflÃ¶sung zur VerfÃ¼gung. Soll es in verschiedenen GrÃ¶ÃŸen (klein auf der Ãœbersichtsseite, grÃ¶ÃŸer auf der Beitragsseite) verwendet werden, die BildgrÃ¶ÃŸe auf den Wert fÃ¼r die grÃ¶ÃŸere Darstellung setzen und das Bild auf der Ãœbersichtsseite per CSS verkleinern.</li>
 </ul>
 <p>Erlaubte Platzhalter:</p>
-<h4>Kopfzeile/Fußzeile</h4>
+<h4 id="d721">Kopfzeile/FuÃŸzeile</h4>
 <ul>
-<li>[NEXT_PAGE_LINK] &quot;Nächste Seite&quot;, verlinkt zur nächsten Seite (bei Aufteilung der Übersichtsseite auf mehrere Seiten), </li>
-<li>[NEXT_LINK], &quot;Nächste&quot;, s.o.,</li>
+<li>[NEXT_PAGE_LINK] &quot;NÃ¤chste Seite&quot;, verlinkt zur nÃ¤chsten Seite (bei Aufteilung der Ãœbersichtsseite auf mehrere Seiten), </li>
+<li>[NEXT_LINK], &quot;NÃ¤chste&quot;, s.o.,</li>
 <li>[PREVIOUS_PAGE_LINK], &quot;Vorherige Seite&quot;, s.o., </li>
 <li>[PREVIOUS_LINK],&quot;Vorherige&quot;, s.o.,</li>
 <li>[OUT_OF], [OF], &quot;x von y&quot;,</li>
-<li>[DISPLAY_PREVIOUS_NEXT_LINKS] &quot;hidden&quot; / &quot;visible&quot;, je nach dem, ob Paginierung erforderlich ist
-<h4>Beitrag Schleife</h4></li>
-<li>[PAGE_TITLE] Überschrift der Seite,</li>
-<li>[GROUP_ID] ID der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe &quot;0&quot;</li>
-<li>[GROUP_TITLE] Titel der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe &quot;&quot;,</li>
-<li>[GROUP_IMAGE] Bild (&lt;img src.../&gt;) der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe &quot;&quot;,</li>
+<li>[DISPLAY_PREVIOUS_NEXT_LINKS] &quot;hidden&quot; / &quot;visible&quot;, je nach dem, ob Paginierung erforderlich ist</li>
+<li>[BACK] URL der News-Ãœbersichtsseite</li>
+<li>[TEXT_BACK] &quot;ZurÃ¼ck zur Ãœbersicht&quot;</li>
+</ul>
+
+<h4 id="d722">Beitrag Schleife</h4>
+<ul>
+<li>[PAGE_TITLE] Ãœberschrift der Seite,</li>
+<li>[GROUP_ID] ID der Gruppe, der der Beitrag zugeordnet ist, bei BeitrÃ¤gen ohne Gruppe &quot;0&quot;</li>
+<li>[GROUP_TITLE] Titel der Gruppe, der der Beitrag zugeordnet ist, bei BeitrÃ¤gen ohne Gruppe &quot;&quot;,</li>
+<li>[GROUP_IMAGE] Bild (&lt;img src.../&gt;) der Gruppe, der der Beitrag zugeordnet ist, bei BeitrÃ¤gen ohne Gruppe &quot;&quot;,</li>
 <li>[DISPLAY_GROUP] <em>inherit</em> oder <em>none</em>,</li>
 <li>[DISPLAY_IMAGE] <em>inherit</em> oder <em>none</em>,</li>
-<li>[TITLE] Titel (Überschrift) des Beitrags,</li>
+<li>[TITLE] Titel (Ãœberschrift) des Beitrags,</li>
 <li>[IMAGE] Beitragsbild (&lt;img src=... /&gt;),</li>
 <li>[SHORT] Kurztext,</li>
 <li>[LINK] Link zur Beitrags-Detailansicht,</li>
-<li>[MODI_DATE] Datum der letzten Änderung des Beitrags,</li>
-<li>[MODI_TIME] Zeitpunkt (Uhrzeit) der letzten Änderung des Beitrags,</li>
+<li>[MODI_DATE] Datum der letzten Ã„nderung des Beitrags,</li>
+<li>[MODI_TIME] Zeitpunkt (Uhrzeit) der letzten Ã„nderung des Beitrags,</li>
 <li>[CREATED_DATE] Datum, wann der Beitrag erstellt wurde,</li>
 <li>[CREATED_TIME] Uhrzeit, zu der der Beitrag erstellt wurde,</li>
 <li>[PUBLISHED_DATE] Startdatum,</li>
@@ -191,26 +236,28 @@ Die Seiteneinstellungen werden mit übernommen. Beim Import von Topics-Beiträgen 
 <li>[TEXT_READ_MORE] &quot;Details anzeigen&quot;,</li>
 <li>[SHOW_READ_MORE], <em>hidden</em> oder <em>visible</em>,</li>
 <li>[GROUP_IMAGE_URL] URL des Gruppen-Bildes,</li>
-<li>[CONTENT_LONG] Langtext</li>
+<li>[CONTENT_LONG] Langtext,</li>
+<li>[TAGS] Dem Beitrag zugeordnete Stichworte (Tags)</li>
 </ul>
-<h3>Beitragsansicht</h3>
+<h3 id="d73">Beitragsansicht</h3>
 <ul>
-<li><strong>Nachrichten-Kopfzeile, -Inhalt, -Fußzeile, Block 2</strong>: HTML-Code zur Formatierung der Anzeige</li>
+<li><strong>Nachrichten-Kopfzeile, -Inhalt, -FuÃŸzeile, Block 2</strong>: HTML-Code zur Formatierung der Anzeige</li>
 </ul>
 <p>Erlaubte Platzhalter:</p>
-<h4>Nachrichten-Kopfzeile, Nachrichten-Fußzeile, Block 2</h4>
+<h4 id="d731">Nachrichten-Kopfzeile, Nachrichten-FuÃŸzeile, Block 2</h4>
 <ul>
-<li>[PAGE_TITLE] Überschrift der Seite,</li>
-<li>[GROUP_ID] ID der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe &quot;0&quot;</li>
-<li>[GROUP_TITLE] Titel der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe &quot;&quot;,</li>
-<li>[GROUP_IMAGE] Bild (&lt;img src.../&gt;) der Gruppe, der der Beitrag zugeordnet ist, bei Beiträgen ohne Gruppe &quot;&quot;,</li>
+<li>[PAGE_TITLE] Ãœberschrift der Seite,</li>
+<li>[GROUP_ID] ID der Gruppe, der der Beitrag zugeordnet ist, bei BeitrÃ¤gen ohne Gruppe &quot;0&quot;</li>
+<li>[GROUP_TITLE] Titel der Gruppe, der der Beitrag zugeordnet ist, bei BeitrÃ¤gen ohne Gruppe &quot;&quot;,</li>
+<li>[GROUP_IMAGE] Bild (&lt;img src.../&gt;) der Gruppe, der der Beitrag zugeordnet ist, bei BeitrÃ¤gen ohne Gruppe &quot;&quot;,</li>
 <li>[DISPLAY_GROUP] <em>inherit</em> oder <em>none</em>,</li>
 <li>[DISPLAY_IMAGE] <em>inherit</em> oder <em>none</em>,</li>
-<li>[TITLE] Titel (Überschrift) des Beitrags,</li>
+<li>[TITLE] Titel (Ãœberschrift) des Beitrags,</li>
 <li>[IMAGE] Beitragsbild (&lt;img src=... /&gt;),</li>
-<li>[SHORT] Kurztext,</li>
-<li>[MODI_DATE] Datum der letzten Änderung des Beitrags,</li>
-<li>[MODI_TIME] Zeitpunkt (Uhrzeit) der letzten Änderung des Beitrags,</li>
+<li>[IMAGE_URL] URL des Beitragsbilds (https://example.com/media/.news_img/filename.jpg),</li>
+<li>[CONTENT_SHORT] Kurztext,</li>
+<li>[MODI_DATE] Datum der letzten Ã„nderung des Beitrags,</li>
+<li>[MODI_TIME] Zeitpunkt (Uhrzeit) der letzten Ã„nderung des Beitrags,</li>
 <li>[CREATED_DATE] Datum, wann der Beitrag erstellt wurde,</li>
 <li>[CREATED_TIME] Uhrzeit, zu der der Beitrag erstellt wurde,</li>
 <li>[PUBLISHED_DATE] Startdatum,</li>
@@ -218,91 +265,117 @@ Die Seiteneinstellungen werden mit übernommen. Beim Import von Topics-Beiträgen 
 <li>[USER_ID] ID des Erstellers des Beitrags,</li>
 <li>[USERNAME] Benutzername des Erstellers des Beitrags,</li>
 <li>[DISPLAY_NAME] Anzeigename des Erstellers des Beitrags,</li>
-<li>[EMAIL] Mailadresse des Erstellers des Beitrags</li>
+<li>[EMAIL] Mailadresse des Erstellers des Beitrags,</li>
+<li>[TAGS] Dem Beitrag zugeordnete Stichworte (Tags)</li>
 </ul>
-<h4>Nachrichten-Inhalt</h4>
+<h4 id="d732">Nachrichten-Inhalt</h4>
 <ul>
 <li>[CONTENT] kompletter Beitragsinhalt (SHORT+LONG) (HTML)<,/li>
 <li>[IMAGES] Bilder / Galerie-HTML,</li>
-<li>[SHORT] Kurztext,</li>
-<li>[CONTENT_LONG] Langtext </li>
+<li>[IMAGE_URL] URL des Beitragsbilds (https://example.com/media/.news_img/filename.jpg),</li>
+<li>[CONTENT_SHORT] Kurztext,</li>
+<li>[CONTENT_LONG] Langtext, </li>
+<li>[TAGS] Dem Beitrag zugeordnete Stichworte (Tags)</li>
 </ul>
-<h3>Galerie-/Bild-Einstellungen</h3>
+<h3 id="d74">Galerie-/Bild-Einstellungen</h3>
 <ul>
-<li><strong>Bildergalerie</strong>: Auswahl des zu verwendenden Galeriescripts. Bitte beachten, dass eventuell vorgenommene individuelle Anpassungen am Galeriecode im Feld Nachrichten-Inhalt bei einer Änderung verloren gehen.</li>
-<li><strong>Bild Schleife</strong>: HTML-Code für die Darstellung eines einzelnen Bildes, muss zum jeweiligen Galeriescript passen</li>
-<li><strong>Max. Bildgröße in Bytes</strong>: Dateigröße pro Bilddatei, warum das jetzt in Bytes und nicht in lesbareren KB oder MB angegeben werden muss, weiß ich gerade nicht</li>
-<li><strong>Galeriebilder / Thumbnailbilder Größe ändern auf Breite x Höhe</strong>: genau selbige. Bei Änderungen erfolgt <strong>keine</strong> automatische Neuberechnung, es ist also sinnvoll, sich im voraus Gedanken über die gewünschte Größe zu machen und dann den Wert nicht mehr zu ändern.</li>
-<li><strong>Beschneiden</strong>: Siehe Erläuterung auf der Seite.</li>
+<li><strong>Bildergalerie</strong>: Auswahl des zu verwendenden Galeriescripts. Bitte beachten, dass eventuell vorgenommene individuelle Anpassungen am Galeriecode im Feld Nachrichten-Inhalt bei einer Ã„nderung verloren gehen.</li>
+<li><strong>Bild Schleife</strong>: HTML-Code fÃ¼r die Darstellung eines einzelnen Bildes, muss zum jeweiligen Galeriescript passen</li>
+<li><strong>Max. BildgrÃ¶ÃŸe in Bytes</strong>: DateigrÃ¶ÃŸe pro Bilddatei, warum das jetzt in Bytes und nicht in lesbareren KB oder MB angegeben werden muss, weiÃŸ ich gerade nicht</li>
+<li><strong>Galeriebilder / Thumbnailbilder GrÃ¶ÃŸe Ã¤ndern auf Breite x HÃ¶he</strong>: genau selbige. Bei Ã„nderungen erfolgt <strong>keine</strong> automatische Neuberechnung, es ist also sinnvoll, sich im voraus Gedanken Ã¼ber die gewÃ¼nschte GrÃ¶ÃŸe zu machen und dann den Wert nicht mehr zu Ã¤ndern.</li>
+<li><strong>Beschneiden</strong>: Siehe ErlÃ¤uterung auf der Seite.</li>
 </ul>
-<h3>2. Block</h3>
-<p>Optional kann ein 2. Block angezeigt werden, sofern das Template dies unterstützt. </p>
-<ul>
-<li>Block 2 verwenden (Standard): Kein Eintrag bzw. Eintrag <em>define('NWI_USE_SECOND_BLOCK',true);</em> in der config.php im Root</li>
-<li>Block 2 nicht verwenden: Eintrag <em>define('NWI_USE_SECOND_BLOCK',false);</em> in der config.php im Root</li>
-</ul>
+<h3 id="d75">2. Block</h3>
+<p>Optional kann ein 2. Block angezeigt werden, sofern das Template dies unterstÃ¼tzt. In diesem wird dann entweder der hier hinterlegte Inhalt <strong>oder</strong> beim Beitrag hinterlegter Text angezeigt (beides gleichzeitig ist nicht vorgesehen). Das Eingabefeld wird nur angezeigt, wenn der 2. Block aktiviert ist.</p>
+
 	  </div> <!-- 1 -->
 	  <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
       <div class="tab2">
 <p><strong>This document has been translated automatically. Please notice that there might be some errors or non-exact matches to the actual wording used in the backend.</strong></p>
 <h1>News with Images</h1>
-<p>News with images (short: NWI) makes it easy to create news pages or posts.
-It is based on the &quot;old&quot; news module (3.5.12), but has been extended by several functions:</p>
+<p>News with images (short: NWI) makes it easy to create news pages or posts with several functions:</p>
 <ul>
 <li>Post picture</li>
 <li>integrated picture gallery (Masonry or Fotorama)</li>
 <li>optional 2nd content area</li>
 <li>Sort articles with drag &amp; drop</li>
 <li>Moving / copying posts between groups and sections</li>
-<li>Import of Topics and &quot;Classic&quot; News</li>
+<li>Import of entries from the WBCE/WebsiteBaker modules Topics and &quot;Classic&quot; News</li>
 </ul>
-<p>The rudimentary and insecure commentary function from the old news module has been dropped; if required, this function can be integrated with appropriate modules (Global Comments / Easy Comments or Reviews).</p>
+
 <h2>Download</h2>
 <p>The module is a core module as of WBCE CMS 1.4 and installed by default. In addition, the download is available in the [WBCE CMS Add-On Repository] (<a href="https://addons.wbce.org">https://addons.wbce.org</a>).</p>
+
 <h2>License</h2>
 <p>NWI is under [GNU General Public License (GPL) v3.0] (<a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a>).</p>
+
 <h2>System requirements</h2>
-<p>NWI does not require any special system requirements and also works with older WBCE versions as well as WebsiteBaker.</p>
+<p>There are no special requirements; if WBCE CMS is running fine, NWI should work too.</p>
+
 <h2>installation</h2>
 <ol>
 <li>If necessary, download the latest version from [AOR] (<a href="https://addons.wbce.org">https://addons.wbce.org</a>)</li>
-<li>Like any other WBCE module via extensions &amp; gt; Install modules</li>
+<li>Install/Update like any other WBCE module via add-ons &amp; gt; modules</li>
 </ol>
 <h2>Use</h2>
 <h3>Getting started and writing</h3>
 <ol>
 <li>Create a new page with &quot;News with Images&quot;</li>
-<li>Click on &quot;Add post&quot;</li>
+<li>Click on &quot;Add post&quot; to create a new post or on the headline of an existing post to edit it</li>
 <li>Fill out the heading and, if necessary, further fields, if necessary select images. The function of the input fields is probably self-explanatory.</li>
 <li>Click &quot;Save&quot; or &quot;Save and go back&quot;</li>
-<li>Repeat steps 1. - 4. a few times and look at the whole in the frontend</li>
+<li>Repeat steps 2. - 4. a few times and look at the whole in the frontend</li>
 </ol>
-<p>Basically, NWI can be combined with other modules on a page or in a block, but then it can, as with any module that generates its own detail pages, come to results that do not meet the expected / desirable.</p>
+<p>Basically, NWI can be combined with other modules on a page or in a block, but then it can, as with any module that generates its own detail pages, come to results that do not meet the expected / desirable results.</p>
 <h3>pictures in the post</h3>
 <p>For each post a preview image can be uploaded, which is shown on the overview page and if necessary the post page. In addition, it is possible to add any number of images to a post, which are displayed as a picture gallery. The gallery presentation is shown either as a Fotorama gallery (thumbnails, full-width image) or as a Masonry gallery (picture mosaic).</p>
 <p>Which gallery script is used is set for all posts in the settings of each section.</p>
 <p>The gallery images are uploaded as the post is saved, and can then be captioned, resorted, or deleted.</p>
 <p>When uploading files with the same name as already existing images, the existing files are not overwritten, but the following files are supplemented with consecutive numbering (bild.jpg, bild_1.jpg, etc.).</p>
 <p>The management of the pictures takes place only over the post page, not over the WBCE media administration, since NWI does not &quot;know&quot; otherwise, where which images belong / are missing etc.</p>
+
 <h3>Groups</h3>
 <p>Posts can be assigned to groups. On the one hand, this has an influence on the order (the posts are sorted according to the group and then according to a further criterion to be specified), and on the other hand, it is possible to generate topic-specific overview pages. These can then be accessed via the URL of the NWI page with the parameter g?=GROUP_ID, e.g. news.php?g=2.</p>
 <p>A post can be assigned to one group only.</p>
 <p>Single or multiple posts can be copied and moved between groups.</p>
+
+<h3>Tags</h3>
+<p>This function is only available if "expert mode" has been activated in the settings and tags have been created.</p>
+<p>Posts can be assigned to one or more tags. Depending on the configuration, these tags are then displayed in the front end on the article overview and / or the detailed view and are linked to the overview of all articles for this tag.</p>
+<p>Tags are made available centrally for all articles in the section from the article overview ("tags" tab) and can then be selected in the article detail view.</p>
+<p>Global tags are available in all NWI sections, e.g. also on other pages of the website.</p>
+<p>Once created, tags can be modified and it's also possible to define own colors for each tag.</p>
+
+<h3>2nd Block</h3>
+<p>This function is only available if "expert mode" has been activated in the settings and "Use second block" is chosen.</p>
+
+<p>If supported by the template, content can be displayed in a second block (e.g. an aside column). This can be either recurring content stored in the settings, post-specific content (post image, short  text, etc.) or texts stored directly in the post that were entered in the input field for the 2nd block.</p>
+
+
 <h3>import function</h3>
 <p>As long as no post has been made in the respective NWI section, posts from the classic news module, other NWI sections as well as topics can be imported automatically.
 The page settings of the source page are applied. When importing Topics posts, however, manual rework is still required, if the &quot;Additional Images&quot; function was used in Topics.</p>
+
 <h3>Copy / move posts</h3>
 <p>From the post overview in the backend, individual, multiple selected or all (marked) posts within a section can be copied or either copied or moved between different sections (even on different pages). Copied posts are always initially not visible in the frontend (Active selection: &quot;no&quot;).</p>
+
 <h3>Delete posts</h3>
 <p>You can delete single, multiple selected or all (selected) posts from the post overview. After confirming, the respective posts are irrevocable <strong> DESTROYED </strong>, there is <strong> no </strong> way to restore them!</p>
+
 <h2>configuration</h2>
-<p>All adjustments, except for whether a second block is to be used, can be made via the backend in the module settings (accessible via the &quot;Options&quot; button).</p>
+
+<h3>Expert mode</h3>
+<p>If "Expert mode" is activated, additional input fields are available in the settings (2nd block), in the post overview (tags) and in the detailed post view (tag assignment, 2nd block).</p>
+
+<p><strong>Attention:</strong> If you switch between activated and deactivated expert mode, you will be returned to the entry overview, other changes to the settings will <strong>not</strong> be saved.</p>
+
 <h3>overview page</h3>
 <ul>
 <li><strong> Order by </strong>: definition of the order of posts (custom = manual definition, posts appear as they are arranged in the backend, start date / expiry date / submitted (= creation date) / Submission ID: each descending order according to the corresponding criterion)</li>
 <li><strong> Posts per page </strong>: Selection of how many entries (teaser image / text) per page should be displayed</li>
 <li><strong> header, post loop, footer </strong>: HTML code to format the output</li>
-<li><strong> Resize preview image to </strong> Width / height of image in pixels. <strong> no </strong> automatic recalculation will take place if changes are made, so it makes sense to think in advance about the desired size and then not change the value again.</li>
+<li><strong> Resize preview image to </strong> Width / height of image in pixels. <strong> no </strong> automatic recalculation will take place if changes are made, so it makes sense to think in advance about the desired size and then not change the value again.<br />
+The image is only available in the specified resolution. If it is to be used in different sizes (small on the overview page, larger on the post page), set the image size to the value for the larger display and reduce the image on the overview page using CSS.</li>
 </ul>
 <p>Allowed placeholders:</p>
 <h4>Header / Footer</h4>
@@ -312,8 +385,13 @@ The page settings of the source page are applied. When importing Topics posts, h
 <li>[PREVIOUS_PAGE_LINK], &quot;Previous Page&quot;, s.o.,</li>
 <li>[PREVIOUS_LINK], &quot;Previous&quot;, s.o.,</li>
 <li>[OUT_OF], [OF], &quot;x of y&quot;,</li>
-<li>[DISPLAY_PREVIOUS_NEXT_LINKS] &quot;hidden&quot; / &quot;visible&quot;, depending on whether pagination is required
-<h4>post loop</h4></li>
+<li>[DISPLAY_PREVIOUS_NEXT_LINKS] &quot;hidden&quot; / &quot;visible&quot;, depending on whether pagination is required</li>
+<li>[BACK] URL of the news overview page</li>
+<li>[TEXT_BACK] &quot;back&quot;</li>
+</ul>
+
+<h4>post loop</h4>
+<ul>
 <li>[PAGE_TITLE] headline of the page,</li>
 <li>[GROUP_ID] ID of the group to which the post is assigned, for posts without group &quot;0&quot;</li>
 <li>[GROUP_TITLE] Title of the group to which the post is assigned, for posts without group &quot;&quot;,</li>
@@ -337,7 +415,8 @@ The page settings of the source page are applied. When importing Topics posts, h
 <li>[TEXT_READ_MORE] &quot;Show details&quot;,</li>
 <li>[SHOW_READ_MORE], <em> hidden </em> or <em> visible </em>,</li>
 <li>[GROUP_IMAGE_URL] URL of the group image,</li>
-<li>[CONTENT_LONG] long text</li>
+<li>[CONTENT_LONG] long text,</li>
+<li>[TAGS] The tags assigned to the post</li>
 </ul>
 <h3>post view</h3>
 <ul>
@@ -354,7 +433,8 @@ The page settings of the source page are applied. When importing Topics posts, h
 <li>[DISPLAY_IMAGE] <em> inherit </em> or <em> none </em>,</li>
 <li>[TITLE] title (heading) of the article,</li>
 <li>[IMAGE] post image (&lt;img src = ... /&gt;),</li>
-<li>[SHORT] short text,</li>
+<li>[IMAGE_URL] post image (http://www.example.com/media/.news_img/file.jpg),</li>
+<li>[CONTENT_SHORT] short text,</li>
 <li>[MODI_DATE] date of the last change of the post,</li>
 <li>[MODI_TIME] Time (time) of the last change of the post,</li>
 <li>[CREATED_DATE] Date when the post was created,</li>
@@ -364,14 +444,16 @@ The page settings of the source page are applied. When importing Topics posts, h
 <li>[USER_ID] ID of the creator of the post,</li>
 <li>[USERNAME] username of the creator of the post,</li>
 <li>[DISPLAY_NAME] Display name of the creator of the post,</li>
-<li>[EMAIL] Email address of the creator of the post</li>
+<li>[EMAIL] Email address of the creator of the post,</li>
+<li>[TAGS] The tags assigned to the post</li>
 </ul>
 <h4>news content</h4>
 <ul>
 <li>[CONTENT] complete post Content (short+long) (HTML),</li>
 <li>[IMAGES] Images / Gallery HTML,</li>
-<li>[SHORT] short text,</li>
-<li>[CONTENT_LONG] long text</li>
+<li>[CONTENT_SHORT] short text,</li>
+<li>[CONTENT_LONG] long text,</li>
+<li>[TAGS] The tags assigned to the post</li>
 </ul>
 <h3>Gallery / Picture Settings</h3>
 <ul>
@@ -383,452 +465,12 @@ The page settings of the source page are applied. When importing Topics posts, h
 </ul>
 <h3>2nd block</h3>
 <p>Optionally, a second block can be displayed if the template supports it.</p>
-<ul>
-<li>Use block 2 (default): No entry or entry <em> define ('NWI_USE_SECOND_BLOCK', true); </em> in the config.php in the root</li>
-<li>do not use block 2: entry <em> define ('NWI_USE_SECOND_BLOCK', false); </em> in the config.php in the root</li>
-</ul>	  
+
 	  </div> <!-- 2 -->
-	  <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
-      <div class="tab3"> 
-<p><strong>Ce document a été traduit automatiquement. Veuillez noter qu'il peut y avoir des erreurs ou des correspondances non exactes avec le libellé utilisé dans le backend.</strong></p>
-<h1>News with Images</h1>
-<p>Actualités avec images (en abrégé: NWI) facilite la création de pages de nouvelles ou de publications.
-Il est basé sur &quot;l'ancien&quot; module d'actualités (3.5.12), mais a été étendu de plusieurs fonctions:</p>
-<ul>
-<li>Poster une photo</li>
-<li>galerie d'images intégrée (maçonnerie ou Fotorama)</li>
-<li>2e zone de contenu facultative</li>
-<li>Trier les articles avec drag &amp; drop</li>
-<li>Déplacement / copie de publications entre groupes et sections</li>
-<li>Importation de sujets et d'actualités &quot;classiques&quot;</li>
-</ul>
-<p>La fonction de commentaire rudimentaire et peu sûr de l'ancien module de nouvelles a été abandonnée; Si nécessaire, cette fonction peut être intégrée aux modules appropriés (Global Comments / Easy Comments ou Reviews).</p>
-<h2>Télécharger</h2>
-<p>Le module est un module de base à partir de WBCE CMS 1.4 et installé par défaut. De plus, le téléchargement est disponible dans le [Référentiel de modules complémentaires WBCE CMS] (<a href="https://addons.wbce.org">https://addons.wbce.org</a>).</p>
-<h2>Licence</h2>
-<p>NWI est sous la [Licence publique générale GNU v3.0] (<a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a>).</p>
-<h2>Configuration requise</h2>
-<p>NWI ne nécessite aucune configuration système particulière et fonctionne également avec les anciennes versions de WBCE ainsi que WebsiteBaker.</p>
-<h2>installation</h2>
-<ol>
-<li>Si nécessaire, téléchargez la dernière version de [AOR] (<a href="https://addons.wbce.org">https://addons.wbce.org</a>)</li>
-<li>Comme tout autre module WBCE via les extensions &amp; gt; Installer des modules</li>
-</ol>
-<h2>Utilisation</h2>
-<h3>Mise en route et écriture</h3>
-<ol>
-<li>Créez une nouvelle page avec &quot;News with Images&quot;</li>
-<li>Cliquez sur &quot;Ajouter un message&quot;</li>
-<li>Remplissez le titre et, si nécessaire, d'autres champs, sélectionnez éventuellement des images. La fonction des champs de saisie est probablement explicite.</li>
-<li>Cliquez sur &quot;Enregistrer&quot; ou &quot;Enregistrer et revenir en arrière&quot;</li>
-<li>Répétez les étapes 1. - 4. à quelques reprises et regardez le tout dans le frontal</li>
-</ol>
-<p>En principe, NWI peut être combiné avec d'autres modules sur une page ou dans un bloc, mais il peut ensuite, comme tout module générant ses propres pages de détail, aboutir à des résultats qui ne répondent pas aux attentes / attentes.</p>
-<h3>images dans le post</h3>
-<p>Une image d'aperçu peut être téléchargée pour chaque article. Elle est affichée sur la page d'aperçu et, si nécessaire, sur la page d'envoi. En outre, il est possible d’ajouter un nombre quelconque d’images à une publication, qui sont affichées sous forme de galerie d’images. La présentation de la galerie est présentée sous forme de galerie Fotorama (vignettes, image en largeur) ou de galerie de maçonnerie (mosaïque).</p>
-<p>Le script de galerie utilisé est défini pour toutes les publications dans les paramètres de chaque section.</p>
-<p>Les images de la galerie sont téléchargées au fur et à mesure que la publication est enregistrée, et peuvent ensuite être sous-titrées, utilisées ou supprimées.</p>
-<p>Lors du téléchargement de fichiers portant le même nom que des images existantes, les fichiers existants ne sont pas écrasés, mais les fichiers suivants sont complétés par une numérotation consécutive (bild.jpg, bild_1.jpg, etc.).</p>
-<p>La gestion des images ne se fait que sur la page de publication, pas sur l'administration des médias de WBCE, car NWI ne &quot;sait&quot; pas sinon, à quelle image appartiennent ou sont manquantes, etc.</p>
-<h3>Groupes</h3>
-<p>Les messages peuvent être affectés à des groupes. Cela a d'une part une influence sur l'ordre (les articles sont triés en fonction du groupe, puis en fonction d'un critère supplémentaire à spécifier), et d'autre part, il est possible de générer des pages de synthèse par sujet. Celles-ci sont ensuite accessibles via l’URL de la page NWI avec le paramètre g? = GROUP_ID, par ex. news.php? g = 2.</p>
-<p>Une publication ne peut être attribuée qu'à un seul groupe.</p>
-<p>Un ou plusieurs messages peuvent être copiés et déplacés entre les groupes.</p>
-<h3>fonction d'importation</h3>
-<p>Tant qu'aucune publication n'a été publiée dans la section NWI respective, les publications du module d'actualités classique, les autres sections de NWI ainsi que les sujets peuvent être importés automatiquement.
-Les paramètres de page de la page source sont appliqués. Toutefois, lors de l’importation de publications Sujets, une retouche manuelle est toujours nécessaire si la fonction &quot;Images supplémentaires&quot; a été utilisée dans Sujets.</p>
-<h3>Copier / déplacer des messages</h3>
-<p>À partir de l’aperçu des publications dans le backend, vous pouvez copier les publications individuelles, les publications sélectionnées ou toutes (marquées) d’une section, ou les copier ou les déplacer d’une section à une autre (même sur des pages différentes). Les publications copiées sont toujours initialement invisibles dans le frontal (sélection active: &quot;non&quot;).</p>
-<h3>Supprimer les messages</h3>
-<p>Vous pouvez supprimer un, plusieurs ou tous les articles (sélectionnés) de l'aperçu des articles. Après confirmation, les messages respectifs sont irrévocables <strong> DETRUITS </strong>, il n'y a <strong> pas </strong> de moyen de les restaurer!</p>
-<h2>configuration</h2>
-<p>Tous les réglages, sauf si un deuxième bloc doit être utilisé ou non, peuvent être effectués via le backend dans les paramètres du module (accessibles via le bouton &quot;Options&quot;).</p>
-<h3>page d'aperçu</h3>
-<ul>
-<li><strong> Classer par </strong>: définition de l'ordre des publications (personnalisé = définition manuelle, les publications apparaissent telles qu'elles sont disposées dans le backend, date de début / date d'expiration / soumises (= date de création) / ID de soumission: chaque ordre décroissant selon au critère correspondant)</li>
-<li><strong> Messages par page </strong>: sélection du nombre d'entrées (image / texte teaser) par page à afficher</li>
-<li><strong> header, post loop, footer </strong>: code HTML pour formater la sortie</li>
-<li><strong> Redimensionner l'image d'aperçu à </strong> Largeur / hauteur de l'image en pixels. <strong> aucun </strong> recalcul automatique n'aura lieu si des modifications sont apportées, il est donc logique de penser à l'avance
-à propos de la taille souhaitée et puis ne changez pas la valeur à nouveau.</li>
-</ul>
-<p>Espaces réservés autorisés:</p>
-<h4>En-tête / Pied de page</h4>
-<ul>
-<li>[NEXT_PAGE_LINK] &quot;Page suivante&quot;, liée à la page suivante (si la page de présentation est divisée en plusieurs pages),</li>
-<li>[NEXT_LINK], &quot;Next&quot;, s.o.,</li>
-<li>[PREVIOUS_PAGE_LINK], &quot;Page précédente&quot;, s.o.,</li>
-<li>[PREVIOUS_LINK], &quot;Précédent&quot;, s.o.,</li>
-<li>[OUT_OF], [OF], &quot;x de y&quot;,</li>
-<li>[DISPLAY_PREVIOUS_NEXT_LINKS] &quot;hidden&quot; / &quot;visible&quot;, selon que la pagination est requise ou non
-<h4>post loop</h4></li>
-<li>[PAGE_TITLE] titre de la page,</li>
-<li>[GROUP_ID] ID du groupe auquel la publication est affectée, pour les publications sans groupe &quot;0&quot;</li>
-<li>[GROUP_TITLE] Titre du groupe auquel le poste est affecté, pour les postes sans groupe &quot;&quot;,</li>
-<li>[GROUP_IMAGE] Image (&amp; lt; img src ... / &amp; gt;) du groupe auquel le poste est affecté pour les postes sans groupe &quot;&quot;,</li>
-<li>[DISPLAY_GROUP] <em> hériter </em> ou <em> aucun </em>,</li>
-<li>[DISPLAY_IMAGE] <em> hériter </em> ou <em> aucun </em>,</li>
-<li>[TITLE] titre (titre) de l'article,</li>
-<li>[IMAGE] post image (&amp; lt; img src = ... / &amp; gt;),</li>
-<li>[SHORT] court texte,</li>
-<li>[LINK] Lien vers la vue détaillée de l'article,</li>
-<li>[MODI_DATE] date du dernier changement de post,</li>
-<li>[MODI_TIME] Heure (heure) du dernier changement de poste,</li>
-<li>[CREATED_DATE] Date de création de la publication,</li>
-<li>[CREATED_TIME] heure à laquelle le poste a été créé,</li>
-<li>date de début [PUBLISHED_DATE],</li>
-<li>[PUBLISHED_TIME] heure de début,</li>
-<li>[USER_ID] ID du créateur de la publication,</li>
-<li>[USERNAME] nom d'utilisateur du créateur de la publication,</li>
-<li>[DISPLAY_NAME] Nom complet du créateur de la publication,</li>
-<li>[EMAIL] Adresse email du créateur de la publication,</li>
-<li>[TEXT_READ_MORE] &quot;Afficher les détails&quot;,</li>
-<li>[SHOW_READ_MORE], <em> caché </em> ou <em> visible </em>,</li>
-<li>[GROUP_IMAGE_URL] URL de l'image du groupe,</li>
-<li>[CONTENT_LONG] longue texte</li>
-</ul>
-<h3>post view</h3>
-<ul>
-<li><strong> En-tête de message, Contenu, Pied de page, Bloc 2 </strong>: Code HTML pour formater le message.</li>
-</ul>
-<p>Espaces réservés autorisés:</p>
-<h4>En-tête de message, pied de message, bloc 2</h4>
-<ul>
-<li>[PAGE_TITLE] titre de la page,</li>
-<li>[GROUP_ID] ID du groupe auquel la publication est affectée, pour les publications sans groupe &quot;0&quot;</li>
-<li>[GROUP_TITLE] Titre du groupe auquel le poste est affecté, pour les postes sans groupe &quot;&quot;,</li>
-<li>[GROUP_IMAGE] Image (&amp; lt; img src ... / &amp; gt;) du groupe auquel le poste est affecté pour les postes sans groupe &quot;&quot;,</li>
-<li>[DISPLAY_GROUP] <em> hériter </em> ou <em> aucun </em>,</li>
-<li>[DISPLAY_IMAGE] <em> hériter </em> ou <em> aucun </em>,</li>
-<li>[TITRE] titre (titre) de l'article,</li>
-<li>[IMAGE] post image (&amp; lt; img src = ... / &amp; gt;),</li>
-<li>[SHORT] court texte,</li>
-<li>[MODI_DATE] date du dernier changement de post,</li>
-<li>[MODI_TIME] Heure (heure) du dernier changement de poste,</li>
-<li>[CREATED_DATE] Date de création de la publication,</li>
-<li>[CREATED_TIME] heure à laquelle le poste a été créé,</li>
-<li>date de début [PUBLISHED_DATE],</li>
-<li>[PUBLISHED_TIME] heure de début,</li>
-<li>[USER_ID] ID du créateur de la publication,</li>
-<li>[USERNAME] nom d'utilisateur du créateur de la publication,</li>
-<li>[DISPLAY_NAME] Nom complet du créateur de la publication,</li>
-<li>[EMAIL] Adresse email du créateur de la publication</li>
-</ul>
-<h4>contenu de nouvelles</h4>
-<ul>
-<li>[CONTENT] Toute contenu du message (HTML)</li>
-<li>[IMAGES] Images / Galerie HTML</li>
-<li>[SHORT]</li>
-<li>[CONTENT_LONG]</li>
-</ul>
-<h3>Paramètres Galerie / Image</h3>
-<ul>
-<li><strong> Galerie d'images </strong>: Sélection du script de galerie à utiliser. Veuillez noter que toute personnalisation apportée au code de la galerie dans le champ Contenu du message sera perdue en cas de modification.</li>
-<li><strong> Boucle d'image </strong>: le code HTML pour la représentation d'une seule image doit correspondre au script de galerie correspondant.</li>
-<li><strong> Max. Taille de l'image en octets </strong>: Taille de fichier par fichier image, pourquoi cela doit maintenant être spécifié en octets et non pas en Ko lisible ou Mo, je ne sais tout simplement pas</li>
-<li><strong> Redimensionner les images de la galerie à / Taille de la vignette largeur x hauteur </strong>: exactement pareil. <strong> Aucun </strong> recalcul automatique n'aura lieu si des modifications sont apportées. Il est donc logique de penser à l'avance à la taille souhaitée et de ne pas modifier à nouveau la valeur.</li>
-<li><strong> Recadrage </strong>: Voir l'explication à la page.</li>
-</ul>
-<h3>2e bloc</h3>
-<p>Un deuxième bloc peut éventuellement être affiché si le modèle le prend en charge.</p>
-<ul>
-<li>Utiliser le bloc 2 (par défaut): Aucune entrée ou entrée <em> define ('NWI_USE_SECOND_BLOCK', true); </em> dans le fichier config.php dans la racine</li>
-<li>ne pas utiliser le bloc 2: entrée <em> define ('NWI_USE_SECOND_BLOCK', false); </em> dans le fichier config.php dans la racine</li>
-</ul>	  
-	  </div> <!-- 3 -->
-	  <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
-	  <div class="tab4"> 
-<p><strong> Questo documento è stato tradotto automaticamente. Si prega di notare che potrebbero esserci alcuni errori o corrispondenze non esatte con la dicitura utilizzata nel back-end. </strong></p>
-<h1>News with Images</h1>
-<p>Le notizie con le immagini (abbreviazione: NWI) facilitano la creazione di pagine di notizie o post.
-Si basa sul modulo di notizie &quot;vecchio&quot; (3.5.12), ma è stato esteso da diverse funzioni:</p>
-<ul>
-<li>Invia foto</li>
-<li>Galleria di immagini integrate (Masonry o Fotorama)</li>
-<li>2 ° area di contenuto opzionale</li>
-<li>Ordina gli articoli con il drag &amp; drop</li>
-<li>Spostamento / copia di messaggi tra gruppi e sezioni</li>
-<li>Importazione di argomenti e notizie &quot;classiche&quot;</li>
-</ul>
-<p>La funzione di commento rudimentale e insicura del vecchio modulo di notizie è stata abbandonata; se necessario, questa funzione può essere integrata con moduli appropriati (Commenti globali / Commenti facili o Recensioni).</p>
-<h2>Scaricare</h2>
-<p>Il modulo è un modulo base di WBCE CMS 1.4 e installato di default. Inoltre, il download è disponibile nel [WBCE CMS Add-On Repository] (<a href="https://addons.wbce.org">https://addons.wbce.org</a>).</p>
-<h2>Licenza</h2>
-<p>NWI è sotto [GNU General Public License (GPL) v3.0] (<a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a>).</p>
-<h2>Requisiti di sistema</h2>
-<p>NWI non richiede requisiti di sistema speciali e funziona anche con versioni WBCE precedenti e WebsiteBaker.</p>
-<h2>installazione</h2>
-<ol>
-<li>Se necessario, scaricare l'ultima versione da [AOR] (<a href="https://addons.wbce.org">https://addons.wbce.org</a>)</li>
-<li>Come qualsiasi altro modulo WBCE tramite estensioni &amp; gt; Installa i moduli</li>
-</ol>
-<h2>Uso</h2>
-<h3>Iniziare e scrivere</h3>
-<ol>
-<li>Crea una nuova pagina con &quot;Notizie con immagini&quot;</li>
-<li>Fai clic su &quot;Aggiungi post&quot;</li>
-<li>Compilare l'intestazione e, se necessario, ulteriori campi, se necessario selezionare le immagini. La funzione dei campi di input è probabilmente auto-esplicativa.</li>
-<li>Fai clic su &quot;Salva&quot; o &quot;Salva e torna indietro&quot;</li>
-<li>Ripeti i passaggi da 1 a 4. alcune volte e guarda l'intero nel frontend</li>
-</ol>
-<p>Fondamentalmente, NWI può essere combinato con altri moduli su una pagina o in un blocco, ma poi può, come con qualsiasi modulo che genera le proprie pagine di dettaglio, arrivare a risultati che non soddisfano il previsto / desiderabile.</p>
-<h3>immagini nel post</h3>
-<p>Per ogni post è possibile caricare un'immagine di anteprima, che viene visualizzata nella pagina di riepilogo e, se necessario, nella pagina di post. Inoltre, è possibile aggiungere qualsiasi numero di immagini a un post, che vengono visualizzate come una galleria di immagini. La presentazione della galleria è mostrata come una galleria di Fotorama (miniature, immagine a tutta larghezza) o come galleria in muratura (mosaico di immagini).</p>
-<p>Quale script di galleria viene utilizzato è impostato per tutti i post nelle impostazioni di ciascuna sezione.</p>
-<p>Le immagini della galleria vengono caricate quando il post viene salvato e possono quindi essere didascalie, ricorsi o eliminati.</p>
-<p>Quando si caricano file con lo stesso nome di immagini già esistenti, i file esistenti non vengono sovrascritti, ma i seguenti file sono integrati con numerazione progressiva (bild.jpg, bild_1.jpg, ecc.).</p>
-<p>La gestione delle immagini avviene solo sulla pagina di posta, non sull'amministrazione dei media WBCE, dal momento che NWI non &quot;sa&quot; diversamente, dove le immagini appartengono / mancano ecc.</p>
-<h3>Gruppi</h3>
-<p>I post possono essere assegnati ai gruppi. Da un lato, ciò ha un'influenza sull'ordine (i post sono ordinati in base al gruppo e quindi secondo un ulteriore criterio da specificare), e dall'altro lato, è possibile generare pagine di panoramica specifiche dell'argomento. A questi si può accedere tramite l'URL della pagina NWI con il parametro g? = GROUP_ID, ad es. news.php? g = 2.</p>
-<p>Un post può essere assegnato a un solo gruppo.</p>
-<p>I post singoli o multipli possono essere copiati e spostati tra i gruppi.</p>
-<h3>funzione di importazione</h3>
-<p>Finché non è stato creato alcun post nella rispettiva sezione NWI, i post del modulo news classico, altre sezioni NWI e argomenti possono essere importati automaticamente.
-Vengono applicate le impostazioni della pagina della pagina di origine. Quando si importano i post degli argomenti, tuttavia, è ancora necessaria la rielaborazione manuale, se la funzione &quot;Immagini aggiuntive&quot; è stata utilizzata in Argomenti.</p>
-<h3>Copia / sposta post</h3>
-<p>Dalla panoramica dei post nel back-end, i singoli, i post selezionati o tutti (contrassegnati) all'interno di una sezione possono essere copiati o copiati o spostati tra diverse sezioni (anche su pagine diverse). I post copiati non sono sempre inizialmente visibili nel frontend (selezione attiva: &quot;no&quot;).</p>
-<h3>Elimina post</h3>
-<p>Puoi eliminare singoli, più selezionati o tutti i post (selezionati) dalla panoramica dei post. Dopo aver confermato, i rispettivi post sono irrevocabili <strong> DESTROYED </strong>, c'è <strong> no </strong> modo di ripristinarli!</p>
-<h2>configuration</h2>
-<p>Tutte le regolazioni, tranne che per l'utilizzo di un secondo blocco, possono essere effettuate tramite il back-end nelle impostazioni del modulo (accessibile tramite il pulsante &quot;Opzioni&quot;).</p>
-<h3>pagina panoramica</h3>
-<ul>
-<li><strong> Ordina per </strong>: definizione dell'ordine dei post (personalizzato = definizione manuale, i post appaiono come sono disposti nel back-end, data di inizio / data di scadenza / inviata (= data di creazione) / ID di presentazione: ogni ordine decrescente secondo al criterio corrispondente)</li>
-<li><strong> Post per pagina </strong>: selezione del numero di voci (immagine teaser / testo) per pagina da visualizzare</li>
-<li><strong> header, post loop, footer </strong>: codice HTML per formattare l'output</li>
-<li><strong> Resize anteprima immagine a </strong> Larghezza / altezza dell'immagine in pixel. <strong> no </strong> il ricalcolo automatico avverrà se vengono apportate modifiche, quindi è logico pensare in anticipo alla dimensione desiderata e quindi non cambiare di nuovo il valore.</li>
-</ul>
-<p>Segnaposti consentiti:</p>
-<h4>Intestazione / piè di pagina</h4>
-<ul>
-<li>[NEXT_PAGE_LINK] &quot;Pagina successiva&quot;, collegata alla pagina successiva (se la pagina panoramica è suddivisa su più pagine),</li>
-<li>[NEXT_LINK], &quot;Avanti&quot;, ad es.</li>
-<li>[PREVIOUS_PAGE_LINK], &quot;Pagina precedente&quot;, ad es.</li>
-<li>[PREVIOUS_LINK], &quot;Precedente&quot;, s.o.,</li>
-<li>[OUT_OF], [OF], &quot;x of y&quot;,</li>
-<li>[DISPLAY_PREVIOUS_NEXT_LINKS] &quot;nascosto&quot; / &quot;visibile&quot;, a seconda se è necessaria l'impaginazione
-<h4>post loop</h4></li>
-<li>[PAGE_TITLE] titolo della pagina,</li>
-<li>[GROUP_ID] ID del gruppo a cui è assegnato il post, per i post senza gruppo &quot;0&quot;</li>
-<li>[GROUP_TITLE] Titolo del gruppo a cui è assegnato il post, per i post senza gruppo &quot;&quot;,</li>
-<li>[GROUP_IMAGE] Immagine (&amp; lt; img src ... / &amp; gt;) del gruppo a cui è assegnato il post per i post senza gruppo &quot;&quot;,</li>
-<li>[DISPLAY_GROUP] <em> inherit </em> o <em> none </em>,</li>
-<li>[DISPLAY_IMAGE] <em> inherit </em> o <em> none </em>,</li>
-<li>titolo [TITLE] (titolo) dell'articolo,</li>
-<li>Immagine [IMAGE] post (&amp; lt; img src = ... / &amp; gt;),</li>
-<li>Breve testo [CORTO],</li>
-<li>[LINK] Link alla vista dettagli dell'articolo,</li>
-<li>[MODI_DATE] data dell'ultima modifica del post,</li>
-<li>[MODI_TIME] Ora (ora) dell'ultima modifica del post,</li>
-<li>[CREATED_DATE] Data in cui il post è stato creato,</li>
-<li>[CREATED_TIME] momento in cui è stato creato il post,</li>
-<li>[PUBLISHED_DATE] data di inizio,</li>
-<li>Ora di inizio [PUBLISHED_TIME],</li>
-<li>[USER_ID] ID del creatore del post,</li>
-<li>Nome utente [USERNAME] del creatore del post,</li>
-<li>[DISPLAY_NAME] Visualizza il nome del creatore del post,</li>
-<li>[EMAIL] Indirizzo email del creatore del post,</li>
-<li>[TEXT_READ_MORE] &quot;Mostra dettagli&quot;,</li>
-<li>[SHOW_READ_MORE], <em> nascosto </em> o <em> visibile </em>,</li>
-<li>[GROUP_IMAGE_URL] URL dell'immagine del gruppo</li>
-<li>[CONTENT_LONG]</li>
-</ul>
-<h3>visualizzazione post</h3>
-<ul>
-<li><strong> Intestazione messaggio, contenuto, piè di pagina, blocco 2 </strong>: codice HTML per la formattazione del messaggio</li>
-</ul>
-<p>Segnaposti consentiti:</p>
-<h4>Intestazione del messaggio, Piè di pagina del messaggio, Blocco 2</h4>
-<ul>
-<li>[PAGE_TITLE] titolo della pagina,</li>
-<li>[GROUP_ID] ID del gruppo a cui è assegnato il post, per i post senza gruppo &quot;0&quot;</li>
-<li>[GROUP_TITLE] Titolo del gruppo a cui è assegnato il post, per i post senza gruppo &quot;&quot;,</li>
-<li>[GROUP_IMAGE] Immagine (&amp; lt; img src ... / &amp; gt;) del gruppo a cui è assegnato il post per i post senza gruppo &quot;&quot;,</li>
-<li>[DISPLAY_GROUP] <em> inherit </em> o <em> none </em>,</li>
-<li>[DISPLAY_IMAGE] <em> inherit </em> o <em> none </em>,</li>
-<li>titolo [TITOLO] (titolo) dell'articolo,</li>
-<li>Immagine [IMAGE] post (&amp; lt; img src = ... / &amp; gt;),</li>
-<li>Breve testo [CORTO],</li>
-<li>[MODI_DATE] data dell'ultima modifica del post,</li>
-<li>[MODI_TIME] Ora (ora) dell'ultima modifica del post,</li>
-<li>[CREATED_DATE] Data in cui il post è stato creato,</li>
-<li>[CREATED_TIME] momento in cui è stato creato il post,</li>
-<li>[PUBLISHED_DATE] data di inizio,</li>
-<li>Ora di inizio [PUBLISHED_TIME],</li>
-<li>[USER_ID] ID del creatore del post,</li>
-<li>Nome utente [USERNAME] del creatore del post,</li>
-<li>[DISPLAY_NAME] Visualizza il nome del creatore del post,</li>
-<li>[EMAIL] Indirizzo email del creatore del post</li>
-</ul>
-<h4>contenuto di notizie</h4>
-<ul>
-<li>[CONTENT] Post contenuti (HTML)</li>
-<li>[IMAGES] Immagini / Galleria HTML</li>
-<li>[SHORT]</li>
-<li>[CONTENT_LONG]</li>
-</ul>
-<h3>Galleria / Impostazioni immagine</h3>
-<ul>
-<li><strong> Galleria immagini </strong>: selezione dello script della galleria da utilizzare. Si noti che eventuali personalizzazioni apportate al codice galleria nel campo Contenuto messaggio andranno perse in caso di modifica.</li>
-<li><strong> Loop immagine </strong>: il codice HTML per la rappresentazione di una singola immagine deve corrispondere al rispettivo script della galleria</li>
-<li><strong> Max. Dimensione immagine in byte </strong>: dimensione file per file immagine, perché ora deve essere specificata in byte e non in KB o MB leggibile, semplicemente non lo so</li>
-<li><strong> Ridimensiona le immagini della galleria in / Dimensioni miniatura larghezza x altezza </strong>: esattamente uguale. <strong> no </strong> il ricalcolo automatico avverrà se vengono apportate modifiche, quindi è logico pensare in anticipo alla dimensione desiderata e quindi non cambiare di nuovo il valore.</li>
-<li><strong> Ritaglia </strong>: vedere la spiegazione sulla pagina.</li>
-</ul>
-<h3>2 ° blocco</h3>
-<p>Facoltativamente, un secondo blocco può essere visualizzato se il modello lo supporta.</p>
-<ul>
-<li>Usa blocco 2 (predefinito): Nessuna voce o voce <em> define ('NWI_USE_SECOND_BLOCK', true); </em> nel config.php nella radice</li>
-<li>non utilizzare il blocco 2: entry <em> define ('NWI_USE_SECOND_BLOCK', false); </em> nel config.php nella radice</li>
-</ul>	  
-	  </div> <!-- 4 -->
-	  <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
-	  <div class="tab5"> 
-<p><strong> Dit document is automatisch vertaald. Let op: er kunnen enkele fouten of niet-exacte overeenkomsten zijn met de feitelijke bewoording die in de backend wordt gebruikt. </strong></p>
-<h1>News with Images</h1>
-<p>Nieuws met afbeeldingen (kort: NWI) maakt het eenvoudig om nieuwspagina's of berichten te maken.
-Het is gebaseerd op de &quot;oude&quot; nieuwsmodule (3.5.12), maar is uitgebreid met verschillende functies:</p>
-<ul>
-<li>Plaats foto</li>
-<li>geïntegreerde fotogalerij (metselwerk of Fotorama)</li>
-<li>optioneel 2e inhoudsgebied</li>
-<li>Sorteer artikelen met slepen &amp; neerzetten</li>
-<li>Verplaatsen / kopiëren van berichten tussen groepen en secties</li>
-<li>Import van onderwerpen en &quot;Classic&quot; Nieuws</li>
-</ul>
-<p>De rudimentaire en onzekere commentaarfunctie van de oude nieuwsmodule is weggelaten; indien nodig kan deze functie worden geïntegreerd met de juiste modules (algemene opmerkingen / eenvoudige opmerkingen of beoordelingen).</p>
-<h2>Download</h2>
-<p>De module is een kernmodule vanaf WBCE CMS 1.4 en wordt standaard geïnstalleerd. Bovendien is de download beschikbaar in de [WBCE CMS Add-on Repository] (<a href="https://addons.wbce.org">https://addons.wbce.org</a>).</p>
-<h2>Licentie</h2>
-<p>NWI valt onder [GNU General Public License (GPL) v3.0] (<a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a>).</p>
-<h2>Systeem vereisten</h2>
-<p>NWI vereist geen speciale systeemvereisten en werkt ook met oudere WBCE-versies en WebsiteBaker.</p>
-<h2>installatie</h2>
-<ol>
-<li>Download indien nodig de laatste versie van [AOR] (<a href="https://addons.wbce.org">https://addons.wbce.org</a>)</li>
-<li>Zoals elke andere WBCE-module via extensies &amp; gt; Installeer modules</li>
-</ol>
-<h2>Gebruik</h2>
-<h3>Aan de slag en schrijven</h3>
-<ol>
-<li>Maak een nieuwe pagina met &quot;Nieuws met afbeeldingen&quot;</li>
-<li>Klik op &quot;Bericht toevoegen&quot;</li>
-<li>Vul de kop en, indien nodig, verdere velden in, selecteer indien nodig afbeeldingen. De functie van de invoervelden is waarschijnlijk zelfverklarend.</li>
-<li>Klik op &quot;Opslaan&quot; of &quot;Opslaan en teruggaan&quot;</li>
-<li>Herhaal stap 1. - 4. een paar keer en bekijk het geheel in de frontend</li>
-</ol>
-<p>Kort gezegd kan NWI worden gecombineerd met andere modules op een pagina of in een blok, maar dan kan het, net als met elke module die zijn eigen detailpagina's genereert, resultaten bereiken die niet aan de verwachte / gewenste verwachtingen voldoen.</p>
-<h3>foto's in de post</h3>
-<p>Voor elk bericht kan een voorbeeldafbeelding worden geüpload, die wordt weergegeven op de overzichtspagina en indien nodig de berichtpagina. Bovendien is het mogelijk om een ??willekeurig aantal afbeeldingen aan een bericht toe te voegen, die worden weergegeven als een fotogalerij. De galerijpresentatie wordt weergegeven als een Fotorama-galerij (miniaturen, volledige breedte afbeelding) of als een maquette galerij (beeldmozaïek).</p>
-<p>Welk galerijscript wordt gebruikt, is ingesteld voor alle berichten in de instellingen van elke sectie.</p>
-<p>De galerijafbeeldingen worden geüpload terwijl het bericht wordt opgeslagen en kunnen vervolgens worden onderschriftt, gebruikt of verwijderd.</p>
-<p>Bij het uploaden van bestanden met dezelfde naam als bestaande afbeeldingen worden de bestaande bestanden niet overschreven, maar de volgende bestanden worden aangevuld met opeenvolgende nummering (bild.jpg, bild_1.jpg, etc.).</p>
-<p>Het beheer van de afbeeldingen vindt alleen plaats via de berichtpagina, niet via het WBCE-mediabeheer, aangezien NWI anders niet &quot;weet&quot; waar welke afbeeldingen horen / ontbreken enz.</p>
-<h3>Groepen</h3>
-<p>Posts kunnen aan groepen worden toegewezen. Dit heeft enerzijds invloed op de volgorde (de berichten worden gesorteerd op basis van de groep en vervolgens op basis van een nader te specificeren criterium), en aan de andere kant is het mogelijk om onderwerpspecifieke overzichtspagina's te genereren. Deze kunnen dan worden benaderd via de URL van de NWI-pagina met de parameter g? = GROUP_ID, b.v. news.php? G = 2.</p>
-<p>Een bericht kan slechts aan één groep worden toegewezen.</p>
-<p>Enkele of meerdere berichten kunnen worden gekopieerd en tussen groepen worden verplaatst.</p>
-<h3>importfunctie</h3>
-<p>Zolang er geen berichten in de betreffende NWI-sectie zijn geplaatst, berichten van de klassieke nieuwsmodule, kunnen andere NWI-secties evenals onderwerpen automatisch worden geïmporteerd.
-De pagina-instellingen van de bronpagina worden toegepast. Bij het importeren van Onderwerpen-berichten is handmatige herbewerking echter nog steeds vereist, als de functie &quot;Extra afbeeldingen&quot; werd gebruikt in Onderwerpen.</p>
-<h3>Berichten kopiëren / verplaatsen</h3>
-<p>Vanuit het postoverzicht in de backend kunnen afzonderlijke, meerdere geselecteerde of alle (gemarkeerde) berichten in een sectie worden gekopieerd of gekopieerd of verplaatst tussen verschillende secties (zelfs op verschillende pagina's). Gekopieerde berichten zijn altijd in eerste instantie niet zichtbaar in de frontend (actieve selectie: &quot;nee&quot;).</p>
-<h3>Berichten verwijderen</h3>
-<p>U kunt enkele, meerdere geselecteerde of alle (geselecteerde) berichten verwijderen uit het berichtoverzicht. Na bevestiging zijn de respectieve berichten onherroepelijk <strong> VERNIETIGD </strong>, er is <strong> geen </strong> manier om ze te herstellen!</p>
-<h2>configuratie</h2>
-<p>Alle aanpassingen, behalve of een tweede blok moet worden gebruikt, kunnen via de backend in de module-instellingen worden gemaakt (toegankelijk via de knop &quot;Opties&quot;).</p>
-<h3>overzichtspagina</h3>
-<ul>
-<li><strong> Bestelling op </strong>: definitie van de volgorde van berichten (aangepast = handmatige definitie, berichten verschijnen zoals ze zijn gerangschikt in de backend, startdatum / vervaldatum / ingediend (= aanmaakdatum) / Inzending-ID: elke aflopende volgorde volgens aan het overeenkomstige criterium)</li>
-<li><strong> Berichten per pagina </strong>: selectie van het aantal vermeldingen (teaserafbeelding / tekst) per pagina moet worden weergegeven</li>
-<li><strong> header, post loop, footer </strong>: HTML-code om de uitvoer te formatteren</li>
-<li><strong> Resize preview afbeelding tot </strong> Breedte / hoogte van de afbeelding in pixels. <strong> nee </strong> automatische herberekening vindt plaats als er wijzigingen worden aangebracht, dus is het logisch om van tevoren over de gewenste grootte na te denken en de waarde daarna niet opnieuw te wijzigen.</li>
-</ul>
-<p>Toegestane tijdelijke aanduidingen:</p>
-<h4>Koptekst / voettekst</h4>
-<ul>
-<li>[NEXT_PAGE_LINK] &quot;Volgende pagina&quot;, gekoppeld aan de volgende pagina (als de overzichtspagina over meerdere pagina's is verdeeld),</li>
-<li>[NEXT_LINK], &quot;Volgende&quot;, s.o.,</li>
-<li>[PREVIOUS_PAGE_LINK], &quot;Vorige pagina&quot;, s.o.,</li>
-<li>[PREVIOUS_LINK], &quot;Vorige&quot;, s.o.,</li>
-<li>[OUT_OF], [OF], &quot;x of y&quot;,</li>
-<li>[DISPLAY_PREVIOUS_NEXT_LINKS] &quot;hidden&quot; / &quot;visible&quot;, afhankelijk van of paginering vereist is
-<h4>na lus</h4></li>
-<li>[PAGE_TITLE] kop van de pagina,</li>
-<li>[GROUP_ID] ID van de groep waaraan het bericht is toegewezen, voor berichten zonder groep '0'</li>
-<li>[GROUP_TITLE] Titel van de groep waaraan het bericht is toegewezen, voor berichten zonder groep &quot;&quot;,</li>
-<li>[GROUP_IMAGE] Afbeelding (&amp; lt; img src ... / &amp; gt;) van de groep waaraan het bericht is toegewezen voor berichten zonder groep &quot;&quot;,</li>
-<li>[DISPLAY_GROUP] <em> erven </em> of <em> geen </em>,</li>
-<li>[DISPLAY_IMAGE] <em> erven </em> of <em> geen </em>,</li>
-<li>[TITLE] titel (kop) van het artikel,</li>
-<li>[IMAGE] post afbeelding (&amp; lt; img src = ... / &amp; gt;),</li>
-<li>[KORT] korte tekst,</li>
-<li>[LINK] Link naar de detailweergave van het artikel</li>
-<li>[MODI_DATE] datum van de laatste wijziging van de post,</li>
-<li>[MODI_TIME] Tijd (tijd) van de laatste wijziging van de post,</li>
-<li>[CREATED_DATE] Datum waarop het bericht is gemaakt,</li>
-<li>[CREATED_TIME] het tijdstip waarop het bericht is gemaakt,</li>
-<li>[PUBLISHED_DATE] startdatum,</li>
-<li>[PUBLISHED_TIME] starttijd,</li>
-<li>[USER_ID] ID van de maker van het bericht,</li>
-<li>[USERNAME] gebruikersnaam van de maker van het bericht,</li>
-<li>[DISPLAY_NAME] Weergavenaam van de maker van het bericht,</li>
-<li>[EMAIL] E-mailadres van de maker van het bericht,</li>
-<li>[TEXT_READ_MORE] &quot;Details tonen&quot;,</li>
-<li>[SHOW_READ_MORE], <em> hidden </em> of <em> visible </em>,</li>
-<li>[GROUP_IMAGE_URL] URL van de groepsafbeelding</li>
-<li>[CONTENT_LONG]</li>
-</ul>
-<h3>berichtweergave</h3>
-<ul>
-<li><strong> Berichtkop, inhoud, voettekst, blok 2 </strong>: HTML-code voor het indelen van het bericht</li>
-</ul>
-<p>Toegestane tijdelijke aanduidingen:</p>
-<h4>Berichtkop, berichtvoettekst, blok 2</h4>
-<ul>
-<li>[PAGE_TITLE] kop van de pagina,</li>
-<li>[GROUP_ID] ID van de groep waaraan het bericht is toegewezen, voor berichten zonder groep '0'</li>
-<li>[GROUP_TITLE] Titel van de groep waaraan het bericht is toegewezen, voor berichten zonder groep &quot;&quot;,</li>
-<li>[GROUP_IMAGE] Afbeelding (&amp; lt; img src ... / &amp; gt;) van de groep waaraan het bericht is toegewezen voor berichten zonder groep &quot;&quot;,</li>
-<li>[DISPLAY_GROUP] <em> erven </em> of <em> geen </em>,</li>
-<li>[DISPLAY_IMAGE] <em> erven </em> of <em> geen </em>,</li>
-<li>[TITLE] titel (kop) van het artikel,</li>
-<li>[IMAGE] post afbeelding (&amp; lt; img src = ... / &amp; gt;),</li>
-<li>[KORT] korte tekst,</li>
-<li>[MODI_DATE] datum van de laatste wijziging van de post,</li>
-<li>[MODI_TIME] Tijd (tijd) van de laatste wijziging van de post,</li>
-<li>[CREATED_DATE] Datum waarop het bericht is gemaakt,</li>
-<li>[CREATED_TIME] het tijdstip waarop het bericht is gemaakt,</li>
-<li>[PUBLISHED_DATE] startdatum,</li>
-<li>[PUBLISHED_TIME] starttijd,</li>
-<li>[USER_ID] ID van de maker van het bericht,</li>
-<li>[USERNAME] gebruikersnaam van de maker van het bericht,</li>
-<li>[DISPLAY_NAME] Weergavenaam van de maker van het bericht,</li>
-<li>[EMAIL] E-mailadres van de maker van het bericht</li>
-</ul>
-<h4>nieuwsinhoud</h4>
-<ul>
-<li>[CONTENT] Inhoud plaatsen (HTML)</li>
-<li>[IMAGES] Afbeeldingen / Galerij HTML</li>
-<li>[SHORT]</li>
-<li>[CONTENT_LONG]</li>
-</ul>
-<h3>Galerij / Beeldinstellingen</h3>
-<ul>
-<li><strong> Afbeeldingengalerij </strong>: selectie van het te gebruiken galerij-script. Houd er rekening mee dat eventuele aanpassingen aan de galerijcode in het veld Berichtinhoud verloren gaan in het geval van een wijziging.</li>
-<li><strong> Afbeelding herhalen </strong>: HTML-code voor de weergave van één afbeelding moet overeenkomen met het respectieve galerij-script</li>
-<li><strong> Max. Afbeeldingsgrootte in bytes </strong>: bestandsgrootte per afbeeldingsbestand, waarom dit nu moet worden opgegeven in bytes en niet in leesbare KB of MB, ik weet het gewoon niet</li>
-<li><strong> Het formaat van galerijafbeeldingen aanpassen aan / Grootte miniatuurbreedte x hoogte </strong>: exact hetzelfde. <strong> nee </strong> automatische herberekening vindt plaats als er wijzigingen worden aangebracht, dus is het logisch om van tevoren over de gewenste grootte na te denken en de waarde daarna niet opnieuw te wijzigen.</li>
-<li><strong> Uitsnijden </strong>: zie de uitleg op de pagina.</li>
-</ul>
-<h3>2e blok</h3>
-<p>Optioneel kan een tweede blok worden weergegeven als de sjabloon dit ondersteunt.</p>
-<ul>
-<li>Gebruik blok 2 (standaard): geen invoer of item <em> define ('NWI_USE_SECOND_BLOCK', true); </em> in de config.php in de root</li>
-<li>gebruik geen block 2: entry <em> define ('NWI_USE_SECOND_BLOCK', false); </em> in de config.php in de root</li>
-</ul>	  
-	  </div> <!-- 5 -->
+	
 	  <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
    </figure>
 </div>
+
 </body>
 </html>

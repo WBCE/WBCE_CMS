@@ -10,6 +10,9 @@
   min-height: 85px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
@@ -26,6 +29,7 @@
   border: solid transparent;
   width: 100%;
   opacity: 1;
+  filter: alpha(opacity=0);
   cursor: pointer;
 }
 

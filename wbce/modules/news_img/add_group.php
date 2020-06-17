@@ -17,7 +17,8 @@ require_once __DIR__.'/functions.inc.php';
 
 // Include WB admin wrapper script
 require(WB_PATH.'/modules/admin.php');
-$section_key = $admin->checkIDKEY('section_key', 0, 'GET');
+$request = (isset($_GET['section_key']) ? 'GET' : 'POST');
+$section_key = $admin->checkIDKEY('section_key', 0, $request);
 if (!$section_key || $section_key != $section_id){
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']
 	 .' (IDKEY) '.__FILE__.':'.__LINE__,
@@ -26,24 +27,43 @@ if (!$section_key || $section_key != $section_id){
     exit();
 }
 
-// Include the ordering class
-require(WB_PATH.'/framework/class.order.php');
-
 // Get new order
 $order = new order(TABLE_PREFIX.'mod_news_img_groups', 'position', 'group_id', 'section_id');
 $position = $order->get_new($section_id);
+$active = 1;
+
+if($admin->get_post('title') == '')
+{
+	$admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=g');
+    $admin->print_footer();
+    exit();
+}
+else
+{
+	$title = mod_nwi_escapeString($admin->get_post('title'));
+	$active = mod_nwi_escapeString($admin->get_post('active'));
+	$title = strip_tags($title);
+}
 
 // Insert new row into database
-$database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_groups` (`section_id`,`page_id`,`position`,`active`) VALUES ('$section_id','$page_id','$position','1')");
+$database->query(sprintf(
+    "INSERT INTO `%smod_news_img_groups` (`section_id`,`position`,`active`,`title`) " .
+    "VALUES ('$section_id','$position','$active','$title')",
+    TABLE_PREFIX
+));
 
 // Get the id
 $group_id = $database->get_one("SELECT LAST_INSERT_ID()");
 
-// Say that a new record has been added, then redirect to modify page
+$forward_url = WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id);
+if($request=='POST') {
+    $forward_url = ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=g';
+}
+
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=g');
 } else {
-	$admin->print_success($TEXT['SUCCESS'], WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id));
+	$admin->print_success($TEXT['SUCCESS'], $forward_url);
 }
 
 // Print admin footer

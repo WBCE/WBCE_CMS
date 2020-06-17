@@ -1,0 +1,127 @@
+#lightcase-content {
+
+  // Not type: error
+  html:not([data-lc-type=error]) & {
+    @media screen and (min-width: #{map-get($lightcase-settings, 'breakpoint')}) {
+      position: relative;
+      z-index: 1;
+
+      text-shadow: none;
+
+      background-color: #{map-get($lightcase-settings, 'case-background')};
+
+      -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      -o-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+
+      -webkit-backface-visibility: hidden;
+    }
+  }
+
+  // Type: image + video
+  html[data-lc-type=image] &,
+  html[data-lc-type=video] & {
+    @media screen and (min-width: #{map-get($lightcase-settings, 'breakpoint')}) {
+      background-color: #{map-get($lightcase-settings, 'case-background-media')};
+    }
+  }
+
+  // Only for type: inline, ajax, error
+  html[data-lc-type=inline] &,
+  html[data-lc-type=ajax] &,
+  html[data-lc-type=error] & {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+
+    @media screen and (max-width: #{map-get($lightcase-settings, 'breakpoint')-1}) {
+      @include clear(true);
+    }
+
+    .lightcase-contentInner {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -o-box-sizing: border-box;
+      box-sizing: border-box;
+
+      @media screen and (max-width: #{map-get($lightcase-settings, 'breakpoint')-1}) {
+        padding: 15px;
+
+        &, & > * {
+          width: 100% !important;
+          max-width: none !important;
+        }
+
+        // Set auto height to each element except iframes, because of that
+        // those cannot have a natural/native height and it must be especially defined.
+        & > *:not(iframe) {
+          height: auto !important;
+          max-height: none !important;
+        }
+      }
+    }
+  }
+
+  .lightcase-contentInner {
+    @media screen and (max-width: #{map-get($lightcase-settings, 'breakpoint')-1}) {
+      // For mobile (touch) devices
+      html.lightcase-isMobileDevice[data-lc-type=iframe] & iframe {
+        @include overflow();
+      }
+      // Type: image + video
+      html[data-lc-type=image] &,
+      html[data-lc-type=video] & {
+        @media screen and (min-width: #{map-get($lightcase-settings, 'breakpoint')}) {
+          line-height: 0.75;
+        }
+      }
+    }
+
+    html[data-lc-type=image] & {
+      position: relative;
+      overflow: hidden !important;
+    }
+
+    // Note: This is a very special wrap only added for few
+    // types of content, type 'inline' and 'ajax'.
+    .lightcase-inlineWrap {
+      // Only for type: inline, ajax error
+      html[data-lc-type=inline] &,
+      html[data-lc-type=ajax] &,
+      html[data-lc-type=error] & {
+        @media screen and (max-width: #{map-get($lightcase-settings, 'breakpoint')-1}) {
+         @include clear(true);
+        }
+      }
+
+      // Not type: error
+      html:not([data-lc-type=error]) & {
+        @media screen and (min-width: #{map-get($lightcase-settings, 'breakpoint')}) {
+          padding: 30px;
+
+          overflow: auto;
+
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          -o-box-sizing: border-box;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+
+  // Content - Extend with further selectors and colors in case you have
+  // elements like <ul>, <li>, <span> or other as part of content within lightcase.
+  h1, h2, h3, h4, h5, h6, p {
+    @media screen and (max-width: #{map-get($lightcase-settings, 'breakpoint')-1}) {
+      color: #{map-get($lightcase-settings, 'text-color-viewport-small')};
+    }
+
+    @media screen and (min-width: #{map-get($lightcase-settings, 'breakpoint')}) {
+      color: #{map-get($lightcase-settings, 'text-color-viewport-large')};
+    }
+  }
+
+}

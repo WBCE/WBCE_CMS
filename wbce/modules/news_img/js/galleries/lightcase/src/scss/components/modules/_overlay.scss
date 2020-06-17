@@ -1,0 +1,17 @@
+#lightcase-overlay {
+  display: none;
+  width: 100%;
+  min-height: 100%;
+
+  position: fixed;
+  z-index: 2000;
+  top: -9999px;
+  bottom: -9999px;
+  left: 0;
+
+  background: #{map-get($lightcase-settings, 'overlay-color')};
+
+  @media screen and (max-width: #{map-get($lightcase-settings, 'breakpoint')-1}) {
+    opacity: 1 !important;
+  }
+}

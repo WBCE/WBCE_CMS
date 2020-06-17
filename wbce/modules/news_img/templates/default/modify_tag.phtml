@@ -1,0 +1,39 @@
+<div class="mod_news_img">
+    <h2><?php echo $TEXT['MODIFY'].' '.$MOD_NEWS_IMG['TAG']; ?></h2>
+
+    <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_tag.php" method="post" enctype="multipart/form-data" style="margin: 0;">
+    <?php echo $FTAN; ?>
+    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+    <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+    <input type="hidden" name="tag_id" value="<?php echo $tag_id; ?>" />
+
+    <table>
+    <tr>
+    	<td class="setting_name"><?php echo $MOD_NEWS_IMG['TAG']; ?>:</td>
+    	<td class="setting_value">
+    		<input type="text" name="tag" value="<?php echo (htmlspecialchars($tag['tag'])); ?>" maxlength="255" />
+    	</td>
+    </tr>
+    <tr>
+    	<td class="setting_name"><?php echo $MOD_NEWS_IMG['TAG_COLOR']; ?>:</td>
+    	<td class="setting_value">
+    		<input type="text" name="tag_color" value="<?php echo (htmlspecialchars($tag['tag_color'])); ?>" maxlength="7" />
+    	</td>
+    </tr>
+    <tr>
+        <td>
+    		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" />
+    	</td>
+    	<td style="text-align:right">
+    		<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>&tab=s';" />
+    	</td>
+    </tr>
+    </table>
+    </form>
+    <script src='<?php echo WB_URL ?>/modules/news_img/js/spectrum.js'></script>
+    <script>
+    //<![CDATA[
+    $("input[name='tag_color']").spectrum({preferredFormat: "hex", allowEmpty: true, showInput: true });
+    //]]>
+    </script>
+</div>

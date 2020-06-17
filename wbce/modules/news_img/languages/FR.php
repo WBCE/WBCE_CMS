@@ -19,18 +19,22 @@ $module_description = "Module de cr&eacute;ation de nouvelles avec une image et 
 // Variables pour le backend
 $MOD_NEWS_IMG['ADD_GROUP'] = 'Ajouter un groupe';
 $MOD_NEWS_IMG['ADD_POST'] = 'Ajouter un message';
+$MOD_NEWS_IMG['ADD_TAG'] = 'Ajouter un mot clé';
 $MOD_NEWS_IMG['NEW_POST'] = 'Cr&eacute;er un nouveau message';
 $MOD_NEWS_IMG['COPY_POST'] = 'Copier le message';
 $MOD_NEWS_IMG['DELETEIMAGE'] = 'Supprimer cette image?';
 $MOD_NEWS_IMG['GALLERY_SETTINGS'] = "Param&egrave;tres de la galerie / de l'image";
 $MOD_NEWS_IMG['GALLERYIMAGES'] = 'Images de la galerie';
 $MOD_NEWS_IMG['GENERIC_IMAGE_ERROR'] = 'Probl&egrave;mes avec les images de publication et / ou de galerie. Veuillez v&eacute;rifier le nom du fichier, le type de fichier et la taille du fichier. ';
+$MOD_NEWS_IMG['GLOBAL'] = 'Mot clé global';
 $MOD_NEWS_IMG['GOBACK'] = 'Retour';
 $MOD_NEWS_IMG['IMAGE_FILENAME_ERROR'] = 'Le nom du fichier est trop long (maximum 256 caract&egrave;res autoris&eacute;s)';
 $MOD_NEWS_IMG['IMAGE_INVALID_TYPE'] = "Type d'image non support&eacute";
 $MOD_NEWS_IMG['IMAGE_LARGER_THAN'] = "L'image est trop grande, max. Taille: ";
 $MOD_NEWS_IMG['IMAGE_TOO_SMALL'] = "L'image est trop petite";
 $MOD_NEWS_IMG['IMAGEUPLOAD'] = 'T&eacute;l&eacute;charger des images';
+$MOD_NEWS_IMG['INFO_GLOBAL'] = "Les mots clés globaux s'appliquent à toutes les sections.";
+$MOD_NEWS_IMG['INFO_RELOAD_PAGE'] = "La page se recharge; toutes les modifications non enregistrées seront perdues!";
 $MOD_NEWS_IMG['OPTIONS'] = 'Options';
 $MOD_NEWS_IMG['ORDERBY'] = 'Trier par';
 $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] = 'Le param&egrave;tre &quot;custom&quot; permet le tri manuel des articles via les fl&egrave;ches haut / bas. ';
@@ -70,13 +74,15 @@ $MOD_NEWS_IMG['TEXT_CROP'] = "Si le rapport de format de l'original ne correspon
 $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Tailles par d&eacute;faut';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Cliquez pour choisir parmi les param&egrave;tres par d&eacute;faut';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Taille de la vignette';
-$MOD_NEWS_IMG['MISSING_GD'] = 'NOTE IMPORTANTE : La bibliothèque GD est manquante, il ne sera pas possible de redimensionner automatiquement les images téléchargées !';
 
 // Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Glisser &amp; D&eacute;posez les fichiers ici';
 $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Cliquez pour ajouter des fichiers';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Aucun fichier t&eacute;l&eacute;charg&eacute;.';
 $MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Enregistrez vos modifications pour afficher le t&eacute;l&eacute;chargement dans la galerie';
+
+
+$MOD_NEWS_IMG['TAGS_INFO'] = 'Pour utiliser des mots clés, modifiez une publication et sélectionnez les mots clés souhaités.';
 
 // Variables pour le frontend
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Page non trouvée';

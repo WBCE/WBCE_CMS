@@ -33,9 +33,9 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_posts` SET `group_id` = '
 $database->query("DELETE FROM `".TABLE_PREFIX."mod_news_img_groups` WHERE `group_id` = '$group_id'");
 // Check if there is a db error, otherwise say successful
 if($database->is_error()) {
-	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+	$admin->print_error($database->get_error(), ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=g');
 } else {
-	$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+	$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=g');
 }
 
 // Print admin footer

@@ -1,0 +1,339 @@
+﻿<div class="mod_news_img">
+    <div>
+        <input class="mod_news_img_help"  type="button" onclick="window.open('<?php echo WB_URL; ?>/modules/news_img/readme.html','readme','width=800,height=600,top=50,left=50')" name="help" value="Readme" />
+        <input class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS_IMG['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id; ?>&amp;section_key=<?php echo  $section_key; ?>';"  />
+    </div>
+    <div class="tabs">
+        <input type="radio" name="tabs" id="tab1"<?php if($curr_tab=='p'): ?> checked="checked"<?php endif; ?> />
+        <label for="tab1" class="tab">
+            <i class="fa fa-fw fa-clone"></i> <span><?php echo $MOD_NEWS_IMG['POSTS'] ?></span>
+        </label>
+        <input type="radio" name="tabs" id="tab2"<?php if($curr_tab=='g'): ?> checked="checked"<?php endif; ?> />
+        <label for="tab2" class="tab">
+            <i class="fa fa-fw fa-cubes"></i> <span><?php echo $MOD_NEWS_IMG['GROUPS'] ?></span>
+        </label>
+<?php if($settings['mode']=='advanced'): ?>
+        <input type="radio" name="tabs" id="tab3"<?php if($curr_tab=='s'): ?> checked="checked"<?php endif; ?> />
+        <label for="tab3" class="tab">
+            <i class="fa fa-fw fa-tags"></i> <span><?php echo $MOD_NEWS_IMG['TAGS'] ?></span>
+        </label>
+<?php endif; ?>
+
+        <div id="tab-content1" class="tab-content">
+<?php if(count($posts)>0): if(count($posts)>20): ?>
+            <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS_IMG['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id; ?>&amp;section_key=<?php echo  $section_key; ?>';"  />
+<?php endif; ?>
+            <div style="text-align:right;font-style:italic">
+                <?php echo $MOD_NEWS_IMG['ORDERBY'], ": <span class=\"\" title=\"", ( $settings['view_order']=='0' ? $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] : '') ,"\">", $lang_map[$settings['view_order']] ?></span>
+            </div>
+<?php endif; ?>
+            <form name="modify_<?php echo $section_id; ?>" action="<?php echo WB_URL; ?>/modules/news_img/manage_posts.php" method="post" enctype="multipart/form-data">
+                <?php echo $FTAN; ?>
+                <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+                <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+                <input type="hidden" name="savegoback" id="savegoback" value="" />
+<?php if(count($posts)>0): ?>
+                <div class="scrollable">
+                    <table class="striped dragdrop_form" id="mod_news_post_list">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th><?php echo $TEXT['TITLE'] ?></th>
+                                <th><?php echo $TEXT['GROUP'] ?></th>
+                                <th><?php echo $TEXT['ACTIVE'] ?></th>
+                                <th><?php echo $MOD_NEWS_IMG['TAGS'] ?></th>
+                                <th><?php echo $TEXT['PUBL_START_DATE']; ?></th>
+                                <th><?php echo $TEXT['PUBL_END_DATE']; ?></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th><input type="checkbox" name="manage_posts_all" id="<?php echo $section_id; ?>_all" value="all" onchange='javascript: var boxes = document.forms["modify_<?php echo $section_id; ?>"].elements[ "manage_posts[]" ]; for (var i=0, len=boxes.length; i<len; i++) { boxes[i].checked = this.checked;}' /></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+<?php foreach($posts as $post): ?>
+                            <tr id="post_id:<?php echo $post['id_key']; ?>">
+                                <td<?php if ($settings['view_order'] == 0): echo ' class="dragdrop_item"'; endif; ?>>&nbsp;</td>
+                                <td>
+                                    <a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['id_key']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
+                                        <span class="fa fa-fw fa-edit"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['id_key']; ?>">
+                                        <span title="Post ID <?php echo $post['post_id'] ?>"><?php echo $post['title']; ?></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <?php echo $post['group_title'] ?>
+                                </td>
+                                <td>
+                                    <a href="<?php echo WB_URL; ?>/modules/news_img/activate_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['id_key']; ?>&amp;value=<?php echo $post['active']!=0 ? '0':'1'; ?>');" title="<?php if ($post['active'] == 1): echo $MOD_NEWS_IMG['DEACTIVATE_POST']; else: echo $MOD_NEWS_IMG['ACTIVATE_POST']; endif;?>">
+<?php if ($post['active'] == 1): ?>
+                                    <span class="fa fa-fw fa-eye nwi-active"></span>
+<?php else: ?>
+                                    <span class="fa fa-fw fa-eye-slash nwi-inactive"></span>
+<?php endif; ?></a>
+                                </td>
+                                <td>
+                                    <?php echo $post['tags'] ?>
+                                </td>
+                                <td>
+                                    <?php echo $post['publishing_date'] ?>
+                                </td>
+                                <td>
+                                    <?php echo $post['publishing_end_date'] ?>
+                                </td>
+                                <td>
+                                    <?php echo $post['icon']; ?>
+                                </td>
+                                <td>
+<?php if (($post['position'] != $num_posts)&&($settings['view_order'] == 0)): ?>
+                                    <a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['id_key']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
+                                        <span class="fa fa-fw fa-arrow-circle-up mod_news_img_arrow"></span>
+                                    </a>
+<?php else: ?>
+                                    <span class="fa fa-fw fa-arrow-circle-up nwi-disabled mod_news_img_arrow"></span>
+<?php endif; ?>
+                                </td>
+                                <td>
+<?php  if (($post['position'] != 1)&&($settings['view_order'] == 0)): ?>
+                                    <a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['id_key']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
+                                        <span class="fa fa-fw fa-arrow-circle-down mod_news_img_arrow"></span>
+                                    </a>
+<?php else: ?>
+                                    <span class="fa fa-fw fa-arrow-circle-down nwi-disabled mod_news_img_arrow"></span>
+<?php endif; ?>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="manage_posts[]" value="<?php echo $post['post_id'] ?>" onchange='javascript: document.getElementById("<?php echo $section_id ?>_all").checked &= this.checked' />
+                                </td>
+                                <td>
+                                    <a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['id_key']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
+                                        <span class="fa fa-fw fa-close nwi-delete"></span>
+                                    </a>
+                                </td>
+                                <td<?php if ($settings['view_order'] == 0): ?> class="dragdrop_item"<?php endif; ?>>&nbsp;</td>
+                            </tr>
+<?php endforeach; ?>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <table>
+                    <tr style="background-color:transparent">
+                        <td colspan="3">
+                            <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS_IMG['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id; ?>&amp;section_key=<?php echo  $section_key; ?>';"  /></td>
+                        <td colspan="11">
+                            <div class="mod_news_post_tools"><?php echo $MOD_NEWS_IMG['ACTION']; ?>:
+                                <select name="action">
+                                    <option value="copy"><?php echo $MOD_NEWS_IMG['COPY']; ?></option>
+                                    <option value="copy_with_tags"><?php echo $MOD_NEWS_IMG['COPY_WITH_TAGS']; ?></option>
+                                    <option value="move"><?php echo $MOD_NEWS_IMG['MOVE']; ?></option>
+                                    <option value="move_with_tags"><?php echo $MOD_NEWS_IMG['MOVE_WITH_TAGS']; ?></option>
+                                    <option value="delete"><?php echo $MOD_NEWS_IMG['DELETE']; ?></option>
+                                    <option value="activate"><?php echo $MOD_NEWS_IMG['ACTIVATE']; ?></option>
+                                    <option value="deactivate"><?php echo $MOD_NEWS_IMG['DEACTIVATE']; ?></option>
+                                    <option value="tags"><?php echo $MOD_NEWS_IMG['ASSIGN_TAGS']; ?></option>
+                                    <option value="group"><?php echo $MOD_NEWS_IMG['ASSIGN_GROUP']; ?></option>
+                                </select>
+                                <input name="continue" type="submit" onclick="return checkActionAndPosts()" value="<?php echo $MOD_NEWS_IMG['CONTINUE']; ?>" />
+                             </div>
+                        </td>
+                    </tr>
+                </table>
+<?php else: ?>
+                <input type="button" class="mod_img_news_add" value="<?php echo $MOD_NEWS_IMG['ADD_POST']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/add_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id; ?>&amp;section_key=<?php echo  $section_key; ?>';"  />
+<?php endif; ?>
+            </form>
+
+            <script type="text/javascript">
+                var LOAD_DRAGDROP = true;
+                var ICONS = '<?php echo WB_URL."/modules/news_img/images" ?>';
+            </script>
+
+<?php if ($importable_sections>0): ?>
+            <h2><?php echo ucfirst($MOD_NEWS_IMG['IMPORT']).' '.$TEXT['SECTION']; ?></h2>
+            <form name="import" action="<?php echo WB_URL; ?>/modules/news_img/import.php" method="post" enctype="multipart/form-data">
+                <?php echo $FTAN; ?>
+                <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+                <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+                <table>
+                <tr>
+                    <td class="setting_name"><?php echo $MOD_NEWS_IMG['IMPORT']; ?>:</td>
+                    <td class="setting_value">
+                        <select name="source_id">
+<?php if(isset($nwi_sections) && is_array($nwi_sections) && count($nwi_sections)>0): ?>
+                            <option disabled value="0">[--- News with Images ---]</option>
+<?php foreach($nwi_sections as $source): if($source['section_id'] != $section_id): ?>
+                            <option value="<?php echo $source['section_id'] ?>"><?php echo $TEXT['SECTION'].' '.$source['section_id'] ?></option>
+<?php endif; endforeach; ?>
+<?php endif; if(isset($news_sections) && is_array($news_sections) && count($news_sections)>0): ?>
+                            <option disabled value="0">[--- (classical) News ---]</option>
+                            <?php foreach($news_sections as $source): ?>
+                            <option value="<?php echo $source['section_id'] ?>"><?php echo $TEXT['SECTION'].' '.$source['section_id'] ?></option>
+                            <?php endforeach; ?>
+<?php endif; if(isset($topics_sections) && is_array($topics_sections) && count($topics_sections)>0): foreach($topics_sections as $name => $topics ): if(count($topics)>0): ?>
+                            <option disabled value="0">[--- <?php echo $name ?> ---]</option>
+<?php foreach($topics as $source): ?>
+                            <option value="<?php echo $source['section_id'] ?>"><?php echo $TEXT['SECTION'].' '.$source['section_id'] ?></option>
+<?php endforeach; endif; endforeach; endif; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" />
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                </table>
+            </form>
+<?php endif; ?>
+        </div>
+
+        <div id="tab-content2" class="tab-content">
+            <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/add_group.php" method="post" enctype="multipart/form-data" style="margin: 0;">
+                <?php echo $FTAN; ?>
+                <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+                <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+                <input type="hidden" name="section_key" value="<?php echo $section_key; ?>" />
+                <input type="hidden" name="tab" value="g" />
+                <?php echo $TEXT['ADD'] ?>:
+                <input type="text" name="title" value="" maxlength="255" style="width:250px" />
+                <input type="checkbox" name="active" id="active_true" value="1" checked="checked" />
+                <label for="active_true"><?php echo strtolower($TEXT['ACTIVE']); ?></label>
+                <input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
+            </form>
+
+<?php if(isset($groups) && is_array($groups) && count($groups)>0): ?>
+            <table class="striped dragdrop_form">
+                <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th><?php echo $TEXT['TITLE'] ?></th>
+                            <th><?php echo $TEXT['ACTIVE'] ?></th>
+                            <th><?php echo $TEXT['IMAGE'] ?></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                <tbody>
+<?php foreach($groups as $group): ?>
+                    <tr id="group_id:<?php echo $group['id_key']; ?>">
+                        <td class="dragdrop_item">&nbsp;</td>
+                        <td style="width:20px">
+                            <a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['id_key']; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
+                                <span class="fa fa-fw fa-edit"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="<?php echo WB_URL; ?>/modules/news_img/modify_group.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['id_key']; ?>">
+                                <?php echo $group['title'].' (ID: '.$group['group_id'].')'; ?>
+                            </a>
+                        </td>
+                        <td style="width:150px">
+                            <span class="fa fa-fw <?php if ($group['active'] == 1): ?>fa-eye nwi-active<?php else: ?>fa-eye-slash nwi-inactive<?php endif; ?>"></span>
+                        </td>
+                        <td>
+                        <?php if(strlen($group['image'])>0): ?>
+                            <a href="javascript:void(0);" onmouseover="XBT(this, {id:'tt<?php echo $group['group_id'] ?>'})">
+                                <img style="max-height:20px" src="<?php echo $group['image']; ?>" alt="<?php echo $TEXT['IMAGE']; ?>" />
+                            </a>
+                            <div id="tt<?php echo $group['group_id'] ?>" class="xbtooltip">
+                                <img src="<?php echo $group['image'] ?>" />
+                            </div>
+                        <?php endif; ?>
+                        </td>
+                        <td style="width:20px">
+                            <?php if ($group['position'] != 1): ?>
+                            <a href="<?php echo WB_URL; ?>/modules/news_img/move_up.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['id_key']; ?>" title="<?php echo $TEXT['MOVE_UP']; ?>">
+                                <span class="fa fa-fw fa-arrow-circle-up mod_news_img_arrow"></span>
+                            </a>
+                            <?php endif; ?>
+                        </td>
+                        <td style="width:20px">
+                            <?php if ($group['position'] != $num_groups): ?>
+                            <a href="<?php echo WB_URL; ?>/modules/news_img/move_down.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;group_id=<?php echo $group['id_key']; ?>" title="<?php echo $TEXT['MOVE_DOWN']; ?>">
+                                <span class="fa fa-fw fa-arrow-circle-down mod_news_img_arrow"></span>
+                            </a>
+                        <?php endif; ?>
+                        </td>
+                        <td style="width:20px">
+                            <a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_group.php?page_id=<?php echo $page_id; ?>&amp;group_id=<?php echo $group['id_key']; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
+                                <span class="fa fa-fw fa-close nwi-delete"></span>
+                            </a>
+                        </td>
+                        <td class="dragdrop_item">&nbsp;</td>
+                    </tr>
+<?php endforeach; ?>
+                </tbody>
+            </table>
+<?php else: echo $TEXT['NONE_FOUND']; endif; ?>
+        </div> <!-- #tab-content2 -->
+
+<?php if($settings['mode']=='advanced'): ?>
+        <div id="tab-content3" class="tab-content">
+            <p><?php echo $MOD_NEWS_IMG['TAGS_INFO'] ?></p>
+
+            <form method="post" action="<?php echo WB_URL; ?>/modules/news_img/save_tag.php">
+                <?php echo $FTAN; ?>
+                <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+                <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+                <input type="text" name="new_tag" value="" maxlength="255" />
+                <input type="submit" class="mod_img_news_add" value="<?php echo $MOD_NEWS_IMG['ADD_TAG']; ?>" />
+<?php if(in_array(1, $admin->get_groups_id())): ?>
+                <input type="checkbox" name="global_tag" /> <span title="<?php echo $MOD_NEWS_IMG['INFO_GLOBAL'] ?>"><?php echo $MOD_NEWS_IMG['GLOBAL'] ?></span>
+<?php endif; ?>
+            </form><br />
+
+<?php if(isset($tags) && is_array($tags) && count($tags)>0): ?>
+            <table class="striped">
+                <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th><?php echo $MOD_NEWS_IMG['TAG'] ?></th>
+                            <th><?php echo $MOD_NEWS_IMG['TAG_COLOR'] ?></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                <tbody>
+<?php foreach($tags as $tag): $tag_id_key = (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) ? $tag['tag_id'] : $admin->getIDKEY($tag['tag_id']); ?>
+                    <tr>
+                        <td style="width:20px">
+                            <a href="<?php echo WB_URL; ?>/modules/news_img/modify_tag.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;tag_id=<?php echo $tag_id_key; ?>" title="<?php echo $TEXT['MODIFY']; ?>">
+                                <span class="fa fa-fw fa-edit"></span>
+                            </a>
+                        </td>
+                        <td style="width:20px">
+                            <?php if($tag['section_id']==0): ?>
+                                <span class="fa fa-fw fa-star" title="<?php echo $MOD_NEWS_IMG['GLOBAL'] ?>"></span>
+                            <?php endif; ?>
+                        </td>
+                        <td><?php echo $tag['tag'] ?></td>
+                        <td><span style="display:inline-block;width:50px;height:25px;<?php if(strlen($tag['tag_color'])>0): echo 'background-color:'.$tag['tag_color'];endif ?>"></span></td>
+                        <td style="width:20px">
+<?php if($tag['section_id']!=0 || in_array(1, $admin->get_groups_id())): ?>
+                            <a href="javascript: confirm_link('<?php echo $TEXT['ARE_YOU_SURE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/delete_tag.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;tag_id=<?php echo $tag_id_key; ?>');" title="<?php echo $TEXT['DELETE']; ?>">
+                                <span class="fa fa-fw fa-close nwi-delete"></span>
+                            </a>
+<?php endif; ?>
+                        </td>
+                    </tr>
+<?php endforeach; ?>
+                </tbody>
+            </table>
+<?php else: echo $TEXT['NONE_FOUND']; endif; ?>
+        </div> <!-- #tab-content3 -->
+<?php endif; ?>
+    </div>
+</div>
