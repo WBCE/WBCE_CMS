@@ -140,9 +140,9 @@ if(defined('WB_URL'))
         $database->query("INSERT INTO ".TABLE_PREFIX."search (name,value,extra) VALUES ('query_end', '$query_end_code', 'news_img')");
 
         // Insert blank row (there needs to be at least on row for the search to work)
-        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`,`page_id`) VALUES ('0', '0')");
-        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_groups` (`section_id`,`page_id`) VALUES ('0', '0')");
-        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`,`page_id`) VALUES ('0', '0')");
+        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_posts` (`section_id`) VALUES ('0')");
+        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_groups` (`section_id`) VALUES ('0')");
+        $database->query("INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` (`section_id`) VALUES ('0')");
     }
 
         // Make news post img files dir
