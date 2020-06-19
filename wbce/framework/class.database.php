@@ -76,7 +76,9 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
                 $this->db_name = DB_NAME;
                 $this->connected = true;
                 //added cause of problems whith mysql strict mode
-                mysqli_query($this->db_handle,"SET @@sql_mode=''");
+                if (!defined('USE_MYSQL_STRICT') || USE_MYSQL_STRICT === false) {
+                    mysqli_query($this->db_handle,"SET @@sql_mode=''");
+                }
             }
             return $this->connected;
         }

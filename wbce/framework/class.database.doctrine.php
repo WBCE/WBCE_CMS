@@ -151,7 +151,9 @@ class database
             $this->db_name = DB_NAME;
             $this->connected = true;
             //added cause of problems whith mysql strict mode
-            $this->db_handle->query("SET @@sql_mode=''");
+            if (!defined('USE_MYSQL_STRICT') || USE_MYSQL_STRICT === false) {
+                mysqli_query($this->db_handle,"SET @@sql_mode=''");
+            }
         } catch (\PDO\PDOException $e) {
             $this->connected = false;
             $this->error = $e->getMessage();
