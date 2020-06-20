@@ -76,7 +76,7 @@
         <div class="row">
             <div class="fg3">{TEXT_NEED_CURRENT_PASSWORD}:</div>
             <div class="fg9">
-                <input type="password" id="current_password" name="current_password" value="{EMPTY_STRING}" class="wdt250">
+                <input type="password" id="current_password" name="current_password" value="{EMPTY_STRING}" class="wdt250" required>
             </div>
         </div>
         <hr class="fg12">
