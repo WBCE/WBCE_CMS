@@ -5,6 +5,237 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2020-06-20:** Colinax [[a79ff016](https://github.com/WBCE/WBCE_CMS/commit/a79ff0164f578cac91ca2f4fa76c32e5221d9d24)]
+   > Update Version to 1.4.4-rc.1
+
+ * **2020-06-20:** Colinax [[fed9e7b7](https://github.com/WBCE/WBCE_CMS/commit/fed9e7b79870150a5caea6b94652f8e97ea1c741)]
+   > add Doctrine
+
+ * **2020-06-20:** Colinax [[c54c0cb7](https://github.com/WBCE/WBCE_CMS/commit/c54c0cb7c90f02404a646cf76a25da35c2773000)]
+   > timezone fixes (#482)
+
+ * **2020-06-20:** Colinax [[c85ac810](https://github.com/WBCE/WBCE_CMS/commit/c85ac810c9a7f91f128f90f9f27575f25a069da7)]
+   > remove non working please_select option
+
+ * **2020-06-20:** Colinax [[9d0379b9](https://github.com/WBCE/WBCE_CMS/commit/9d0379b96db6294f867a493e8c2398353f30fe53)]
+   > update theme versions
+
+ * **2020-06-20:** Colinax [[6f18629e](https://github.com/WBCE/WBCE_CMS/commit/6f18629e3d14d9a1ebc35a11cca3a2831abfba13)]
+   > add required to curr pw field
+
+ * **2020-06-19:** Colinax [[43ca7c1d](https://github.com/WBCE/WBCE_CMS/commit/43ca7c1db700e02e44b2c3377fb94db045fe5f29)]
+   > fix c&p issue
+
+ * **2020-06-19:** Colinax [[ab7332ce](https://github.com/WBCE/WBCE_CMS/commit/ab7332ce6770b2377eb21525606f7746f567fffc)]
+   > add use_mysql_strict switch
+
+ * **2020-06-18:** Colinax [[e60640f0](https://github.com/WBCE/WBCE_CMS/commit/e60640f08bd738657a0a8929fdc1373e64c7b1de)]
+   > CKEditor 4.14.1
+
+ * **2020-06-18:** Colinax [[1e053418](https://github.com/WBCE/WBCE_CMS/commit/1e0534186ab669b6fc16a9c683a5cb6b109a9c85)]
+   > Add possibility to use Doctrine
+
+ * **2020-06-18:** Colinax [[f6b731c3](https://github.com/WBCE/WBCE_CMS/commit/f6b731c36912a914d8eaa9df74f6e2fa07967fcc)]
+   > News with Images 5.0.4
+
+ * **2020-06-18:** Colinax [[1b5c9da2](https://github.com/WBCE/WBCE_CMS/commit/1b5c9da24dd45104237f79a267c36e37e771afeb)]
+   > fix parse error
+
+ * **2020-06-17:** Colinax [[9fd3b347](https://github.com/WBCE/WBCE_CMS/commit/9fd3b347eb0e2f82800b20eac9ca55e40f648efe)]
+   > Updated framework files
+
+ * **2020-06-17:** Colinax [[144e302f](https://github.com/WBCE/WBCE_CMS/commit/144e302fad29ff2c606f260165c973f323467f82)]
+   > News with Images 5.0.3
+
+ * **2020-06-17:** Colinax [[8d72d5da](https://github.com/WBCE/WBCE_CMS/commit/8d72d5da13fcf2ae194559fcd52cfd2f5f4fca6b)]
+   > sync version with NWI repo
+
+ * **2020-06-15:** Colinax [[baad9def](https://github.com/WBCE/WBCE_CMS/commit/baad9defc3150455cf6889624e611a1277323120)]
+   > Update README.md
+
+ * **2020-06-15:** Colinax [[5e530fcd](https://github.com/WBCE/WBCE_CMS/commit/5e530fcd49b07fef87e38bf9c31be7862c1ec6ae)]
+   > add Versioning-Scheme
+
+ * **2020-06-13:** Colinax [[ed1cee26](https://github.com/WBCE/WBCE_CMS/commit/ed1cee26d763bc764a06297dc7a5c8db71834a50)]
+   > add basic template switcher function
+     fixes #444
+
+ * **2020-06-12:** Colinax [[ccbc6758](https://github.com/WBCE/WBCE_CMS/commit/ccbc67589b677a6685dddd2f795ea9923ee9676e)]
+   > Sitemap 4.0.9
+
+ * **2020-06-12:** Colinax [[91108f1a](https://github.com/WBCE/WBCE_CMS/commit/91108f1a1b7e12469d1799f82a58fc96600a4450)]
+   > remove development comments
+
+ * **2020-06-12:** Colinax [[97f44f4a](https://github.com/WBCE/WBCE_CMS/commit/97f44f4acb39b0440d35460ad3661e03e527b59e)]
+   > add missing login prevention
+
+ * **2020-06-12:** instantflorian [[8067fba8](https://github.com/WBCE/WBCE_CMS/commit/8067fba8f3f090a7f036efbb23a345983883e790)]
+   > Fix performance issue with SM2 an SM2_CORRECT_MENU_LINKS
+
+ * **2020-06-12:** Colinax [[07f1d70b](https://github.com/WBCE/WBCE_CMS/commit/07f1d70b5713a40a92d604804b0737c5bc63d89f)]
+   > fix undefined variable notice
+
+ * **2020-06-11:** instantflorian [[3b46ee04](https://github.com/WBCE/WBCE_CMS/commit/3b46ee042a6f8074dae24b70940233ff0835d371)]
+   > Add select2 to users.htt
+
+ * **2020-06-11:** instantflorian [[6a29f8e0](https://github.com/WBCE/WBCE_CMS/commit/6a29f8e0abde94b13fb63cd7a8ad813e5e3de0c7)]
+   > Add option to deactivate FE Session Cookie
+
+ * **2020-06-09:** Colinax [[d0364320](https://github.com/WBCE/WBCE_CMS/commit/d0364320fa357734333fe5809e3a6dc7cc85355a)]
+   > enable new filter position
+
+ * **2020-06-09:** Colinax [[1f159471](https://github.com/WBCE/WBCE_CMS/commit/1f1594712b2d3920c624c54d395d04f9a441ce43)]
+   > add update notice
+
+ * **2020-06-09:** Colinax [[20f76f78](https://github.com/WBCE/WBCE_CMS/commit/20f76f78f0337e01b26ec3084f9968080cc85c10)]
+   > fix language var
+
+ * **2020-06-09:** Colinax [[82f6eed6](https://github.com/WBCE/WBCE_CMS/commit/82f6eed6558b0700dbdd21a47576b860093ccc96)]
+   > Fix TimeFormat Notice
+
+ * **2020-06-06:** Colinax [[4eb4a77a](https://github.com/WBCE/WBCE_CMS/commit/4eb4a77a9fa9e7eaa836109fcbf510e75450d911)]
+   > Select2 4.0.13
+
+ * **2020-06-05:** Colinax [[e5a33ba0](https://github.com/WBCE/WBCE_CMS/commit/e5a33ba0a8987c1dedc4fb057e7d343a3f7dca03)]
+   > PHPMailer 6.1.6
+
+ * **2020-05-28:** instantflorian [[ec2a396a](https://github.com/WBCE/WBCE_CMS/commit/ec2a396aedeebde036a7edb01c578c8d24041147)]
+   > #480
+
+ * **2020-05-26:** Colinax [[19f23efa](https://github.com/WBCE/WBCE_CMS/commit/19f23efa616e59d0236c271217bc6a7b03436a7e)]
+   > updated text captcha
+     fixes #479
+
+ * **2020-05-23:** Colinax [[9ffa1b91](https://github.com/WBCE/WBCE_CMS/commit/9ffa1b91bae45442d4ac56e3299226382d2463dc)]
+   > Update form_preferences.twig
+
+ * **2020-05-23:** Colinax [[945a88e9](https://github.com/WBCE/WBCE_CMS/commit/945a88e9e5288dfc066bdac3bad574c94bfef8a7)]
+   > fix Date and Time Format
+
+ * **2020-05-23:** Colinax [[28cdcbbd](https://github.com/WBCE/WBCE_CMS/commit/28cdcbbd99297681b1a276e56e281d61c0bfa292)]
+   > fix editarea content type ...
+     ... and set toolbar to default
+
+ * **2020-05-23:** Colinax [[d33386f8](https://github.com/WBCE/WBCE_CMS/commit/d33386f8f9ce3d6738307ecea7cf0b50cdc03864)]
+   > fix syntax
+
+ * **2020-05-23:** instantflorian [[b711c756](https://github.com/WBCE/WBCE_CMS/commit/b711c7568fa82114b2be65d76bb3ca0fb015555a)]
+   > Update EN.php
+
+ * **2020-05-23:** instantflorian [[6f1a066b](https://github.com/WBCE/WBCE_CMS/commit/6f1a066b30b550e25356c39f32ef17b197514ec6)]
+   > Update bundled modules
+
+ * **2020-05-18:** instantflorian [[9f497989](https://github.com/WBCE/WBCE_CMS/commit/9f497989547a53352ba85521626d8c4a3bbbf1e5)]
+   > cursor:pointer for buttons
+     thanks to freesbee
+
+ * **2020-05-07:** instantflorian [[703114bd](https://github.com/WBCE/WBCE_CMS/commit/703114bd62855f213cee7e8d9bbfe4b9bf2cdaf3)]
+   > path persistence on reload, thx to freesbee
+
+ * **2020-05-07:** instantflorian [[501346e8](https://github.com/WBCE/WBCE_CMS/commit/501346e8f6ab65822c6574b0f20f875e9243f1dd)]
+   > Update filter to avoid removal of wanted empty lines
+
+ * **2020-05-05:** instantflorian [[64c8d169](https://github.com/WBCE/WBCE_CMS/commit/64c8d16968030772056ce870a16e41ef1f9bde53)]
+   > Some language corrections provided by freesbee
+
+ * **2020-05-03:** instantflorian [[1deb8c72](https://github.com/WBCE/WBCE_CMS/commit/1deb8c72efe8256edecefaa6d1612b64a41b2c5d)]
+   > Update RU.php provided by kleo
+
+ * **2020-04-28:** instantflorian [[57370ce4](https://github.com/WBCE/WBCE_CMS/commit/57370ce49848503a8031a8adbda9a913632217fb)]
+   > Some more translations, provided by freesbee
+
+ * **2020-04-22:** Colinax [[e9f6aef4](https://github.com/WBCE/WBCE_CMS/commit/e9f6aef4b7dab6b2fd0ff2adfd76e07b6e51cad6)]
+   > switch from GMT to UTC
+
+ * **2020-04-21:** Colinax [[2566900c](https://github.com/WBCE/WBCE_CMS/commit/2566900c0dffc9ec294813a312f6899e64cf40d3)]
+   > PHPMailer 6.1.5
+
+ * **2020-04-21:** instantflorian [[8b4b3d38](https://github.com/WBCE/WBCE_CMS/commit/8b4b3d380bdf15b1fe39c1cdac0e23bb0ac9dea2)]
+   > Merge branch 'development' of https://github.com/WBCE/WBCE_CMS into development
+
+ * **2020-04-21:** instantflorian [[15b00cb3](https://github.com/WBCE/WBCE_CMS/commit/15b00cb387dec30520d3a59f4fd326866a88dabd)]
+   > Additional language files provided by freesbee
+
+ * **2020-04-21:** Colinax [[92053420](https://github.com/WBCE/WBCE_CMS/commit/920534208a4d515dd08bd913185f4e7bc0df0b17)]
+   > news_img v4.0.2
+
+ * **2020-04-21:** Colinax [[866367f0](https://github.com/WBCE/WBCE_CMS/commit/866367f0481f3e1b81fc8457cbb2c5f1c9b0029f)]
+   > fix phpmailer date_default_timezone_set
+     to be consistent with our core
+
+ * **2020-04-20:** instantflorian [[11469718](https://github.com/WBCE/WBCE_CMS/commit/11469718b8395810a2d0b90e8bb085e67a16f85f)]
+   > Create PT.php
+     provided by freesbee
+
+ * **2020-04-20:** instantflorian [[813b0a93](https://github.com/WBCE/WBCE_CMS/commit/813b0a938359d801bd9d31e767e71277ceb7dea8)]
+   > Remove spelling error, add link to german help
+
+ * **2020-04-20:** instantflorian [[34529ab0](https://github.com/WBCE/WBCE_CMS/commit/34529ab013bf42be7f58affa6f60bada62cdc80f)]
+   > Update System requirements
+
+ * **2020-04-15:** instantflorian [[34087ff8](https://github.com/WBCE/WBCE_CMS/commit/34087ff800d9fd61bdaf06006a1d9879b72d6ac4)]
+   > Revert "Fix Timezone issue with mallet"
+     This reverts commit af8477c31bb59a1514241a7b4ec239479cf0f4f5.
+
+ * **2020-04-15:** instantflorian [[af8477c3](https://github.com/WBCE/WBCE_CMS/commit/af8477c31bb59a1514241a7b4ec239479cf0f4f5)]
+   > Fix Timezone issue with mallet
+     Remove "Default Timezone" option from  selectbox (Revert commit if you dislike this solution)
+
+ * **2020-04-15:** Stefek [[e1b64624](https://github.com/WBCE/WBCE_CMS/commit/e1b64624bec524a1fabccf17b058cbd86d6ddb19)]
+   > TIMEZONES and PasswordField Behaviour (#478)
+     * debug PasswordField behaviour
+     
+     * debug TIMEZONES behaviour
+     
+     * debug PasswordField behaviour
+     
+     * debug PasswordField behaviour
+     
+     Co-authored-by: WebDesignWorx <stefek@designthings.de>
+ * **2020-04-13:** Colinax [[efece5a8](https://github.com/WBCE/WBCE_CMS/commit/efece5a832d972d22b463ed0eba71006c4db7d2d)]
+   > fix DB Port
+
+ * **2020-04-09:** instantflorian [[93a5f996](https://github.com/WBCE/WBCE_CMS/commit/93a5f996e40e0d7800bd19e91ffb6a735c8bcfb9)]
+   > #473 , #474
+
+ * **2020-04-04:** Colinax [[67e0b9e5](https://github.com/WBCE/WBCE_CMS/commit/67e0b9e5abf0206e1f934e3fdb4a0e53882e3d2a)]
+   > add better jquery-include
+
+ * **2020-03-18:** Colinax [[61226a09](https://github.com/WBCE/WBCE_CMS/commit/61226a092113ad048e23c4924892ac2517540c7e)]
+   > bump min. PHP_VERSION ...
+     ... to PHP 7.1.3 (released 16 Mar 2017)
+
+ * **2020-03-17:** Colinax [[7ed9c0f3](https://github.com/WBCE/WBCE_CMS/commit/7ed9c0f3e37b59439fe0700b3d0e31c87ca69851)]
+   > CKEditor 4.14.0
+
+ * **2020-03-09:** instantflorian [[d57a1be4](https://github.com/WBCE/WBCE_CMS/commit/d57a1be4c76493cdf7965cd35b9c2373852d7557)]
+   > Avoid unwanted/incorrect change of session ID
+
+ * **2020-03-05:** Colinax [[1bd686ca](https://github.com/WBCE/WBCE_CMS/commit/1bd686ca40432c8e0a8d383967f941e44eefdf93)]
+   > fix addon handling
+
+ * **2020-02-26:** Colinax [[d2655e2f](https://github.com/WBCE/WBCE_CMS/commit/d2655e2ff6e051f893da79dde52d99ce5c3a29e9)]
+   > add missing endtags
+
+ * **2020-02-21:** Colinax [[d377af5f](https://github.com/WBCE/WBCE_CMS/commit/d377af5fe979a789d180528000555c709a3f1c1e)]
+   > add ResponsiveFG to wblink
+
+ * **2020-02-17:** instantflorian [[1baddb4f](https://github.com/WBCE/WBCE_CMS/commit/1baddb4f42f26778373e9212c253b6205ed5807f)]
+   > Switch for SM2 error logging
+     Disable SM2 errorlogging by default to avoid flooding error log; to enable, add define('SM2_DEBUG',true) to config.php
+
+ * **2020-02-15:** Colinax [[1df14d06](https://github.com/WBCE/WBCE_CMS/commit/1df14d06fb61549d637823d295907cc9d9b9a087)]
+   > fix view of settings in flat theme
+
+ * **2020-02-14:** Colinax [[0df64c25](https://github.com/WBCE/WBCE_CMS/commit/0df64c25a9c00d5f2ed0c4fc99471192c9e2646c)]
+   > fix for wrong permissions
+
+ * **2020-02-02:** instantflorian [[2515d247](https://github.com/WBCE/WBCE_CMS/commit/2515d247af76829149caf4c9575cdd83a0745188)]
+   > Update CHANGELOG.md
+
+ * **2020-02-02:** instantflorian [[15e42a0d](https://github.com/WBCE/WBCE_CMS/commit/15e42a0df08d88db02b58cff40e594b27f16aaa7)]
+   > Update version.php
+
  * **2020-02-01:** instantflorian [[36e03cf2](https://github.com/WBCE/WBCE_CMS/commit/36e03cf2f226b6182f856e9f2c24a4374be38e02)]
    > Fix typo in jquery-insert.js
 
@@ -14,6 +245,9 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
  * **2020-01-28:** instantflorian [[91913383](https://github.com/WBCE/WBCE_CMS/commit/9191338348ebe45d53d316d9bc62d90e9602bc01)]
    > Update Sitemap module
      Fix issue when updating, branding (copyleft comment), remove <p> around <ul> in default settings
+
+ * **2020-01-28:** instantflorian [[64d35236](https://github.com/WBCE/WBCE_CMS/commit/64d3523657685be4729f1fca00b80f55e61c9245)]
+   > Update CHANGELOG.md
 
  * **2020-01-27:** instantflorian [[9ce1f238](https://github.com/WBCE/WBCE_CMS/commit/9ce1f23833e2342572d0190646d27ab8c111b5db)]
    > Improvements to default templates
