@@ -613,11 +613,20 @@ db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
 
 
 /**********************************************************
-* making sure group_id is set correct there was a big bug in original WB, fixed with WBCE 1.0.0
-* make IP field IPv6 compatible
+* Update users tables 
 */
 
 $table = TABLE_PREFIX."users";
+
+// Alter Table so it can store new default value
+$sql = "ALTER TABLE $table CHANGE `timezone` `timezone` VARCHAR(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';";
+$database->query($sql);
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+
+// override user timezone with default_timezone
+$sql = "UPDATE $table SET `timezone` = ''";
+$database->query($sql);
+echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
 // set group_id to first group of groups_id
 $sql = "UPDATE $table SET `group_id` = CAST(groups_id AS SIGNED)";
@@ -630,7 +639,7 @@ $database->query($sql);
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
 // Alter Table so it can store ipv6
-$sql="ALTER TABLE $table CHANGE `login_ip` `login_ip` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';";
+$sql = "ALTER TABLE $table CHANGE `login_ip` `login_ip` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';";
 $database->query($sql);
 echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
 
@@ -923,6 +932,10 @@ if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFA
                             echo '&nbsp;<input type="submit" value="Login to the Backend" />';
                             echo '</form>';
                         }
+
+                        // Truncate dbsessions
+                        $database->query("TRUNCATE `".TABLE_PREFIX."dbsessions`");
+
                         // Finally, destroy the session.
                         session_destroy();
                     ?>

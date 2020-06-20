@@ -610,16 +610,6 @@ _JsCode;
     }
     
     /**
-     * @brief   Get the current users TIMEZONE
-     *
-     * @return  string
-     */
-    public function get_timezone()
-    {
-        return (isset($_SESSION['USE_DEFAULT_TIMEZONE']) ? '-72000' : $_SESSION['TIMEZONE']);
-    }
-    
-    /**
      * @brief   Validate the supplied email address
      *
      * @param   string
