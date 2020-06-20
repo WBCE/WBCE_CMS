@@ -243,7 +243,6 @@
                 <div class="fg3">{TEXT_PHP_ERROR_LEVEL}:</div>
                 <div class="fg9">
                     <select name="er_level" class="wdt250">
-                        <option value="">{TEXT_PLEASE_SELECT}...</option>
                         <!-- BEGIN error_reporting_list_block -->
                         <option value="{VALUE}" {SELECTED}>{NAME}</option>
                         <!-- END error_reporting_list_block -->
@@ -300,7 +299,6 @@
                 <div class="fg3">{TEXT_CHARSET}:</div>
                 <div class="fg9">
                     <select name="default_charset" class="wdt250">
-                        <option value="">{TEXT_PLEASE_SELECT}...</option>
                         <!-- BEGIN charset_list_block -->
                         <option value="{VALUE}" {SELECTED}>{NAME}</option>
                         <!-- END charset_list_block -->
@@ -314,7 +312,6 @@
             <div class="fg3">{TEXT_TIMEZONE}:</div>
             <div class="fg9">
                 <select name="default_timezone" class="wdt250">
-                    <option value="0">{TEXT_PLEASE_SELECT}...</option>
                     <!-- BEGIN timezone_list_block -->
                     <option value="{VALUE}" {SELECTED}>{NAME}</option>
                     <!-- END timezone_list_block -->
@@ -325,7 +322,6 @@
             <div class="fg3">{TEXT_DATE_FORMAT}:</div>
             <div class="fg9">
                 <select name="default_date_format" class="wdt250">
-                    <option value="M d Y">{TEXT_PLEASE_SELECT}...</option>
                     <!-- BEGIN date_format_list_block -->
                     <option value="{VALUE}" {SELECTED}>{NAME}</option>
                     <!-- END date_format_list_block -->
@@ -336,7 +332,6 @@
             <div class="fg3">{TEXT_TIME_FORMAT}:</div>
             <div class="fg9">
                 <select name="default_time_format" class="wdt250">
-                    <option value="g:i A">{TEXT_PLEASE_SELECT}...</option>
                     <!-- BEGIN time_format_list_block -->
                     <option value="{VALUE}" {SELECTED}>{NAME}</option>
                     <!-- END time_format_list_block -->
