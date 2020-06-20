@@ -1,32 +1,23 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        admin
- * @package         interface
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: date_formats.php 1413 2011-01-23 17:08:31Z FrankH $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/interface/date_formats.php $
- * @lastmodified    $Date: 2011-01-23 18:08:31 +0100 (So, 23. Jan 2011) $
- *
- * Date format list file
- * This file is used to generate a list of date formats for the user to select
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 if(!defined('WB_URL')) {
-	header('Location: ../../../index.php');
-	exit(0);
+    header('Location: ../../../index.php');
+    exit(0);
 }
 
 // Define that this file is loaded
 if(!defined('DATE_FORMATS_LOADED')) {
-	define('DATE_FORMATS_LOADED', true);
+    define('DATE_FORMATS_LOADED', true);
 }
 
 // Create array
@@ -76,14 +67,14 @@ if(!function_exists('getDateFormatsArray')){
             $sFormat = str_replace('|', ' ', $sFormat); // Adds white-spaces (not able to be stored in array key)
 
             $aDateFormats[$i]['VALUE'] = ($sFormat != 'system_default') ? $sFormat : '';
-            $aDateFormats[$i]['NAME']  = $sTitle;	
+            $aDateFormats[$i]['NAME']  = $sTitle;
 
             $aDateFormats[$i]['SELECTED'] = false;
-            if (DATE_FORMAT == $sFormat and !isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
+            if (DATE_FORMAT == $sFormat && !isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
                 $aDateFormats[$i]['SELECTED'] = true;
-            } elseif ($sFormat == 'system_default' and isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
+            } elseif ($sFormat == 'system_default' && isset($_SESSION['USE_DEFAULT_DATE_FORMAT'])) {
                 $aDateFormats[$i]['SELECTED'] = true;
-            } 
+            }
             $i++;
         }
         return $aDateFormats;

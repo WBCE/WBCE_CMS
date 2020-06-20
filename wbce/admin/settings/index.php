@@ -169,19 +169,15 @@ if($is_advanced)
 
     // Insert default timezone values
     require(ADMIN_PATH.'/interface/timezones.php');
-    foreach($TIMEZONES AS $hour_offset => $title)
-    {
-        // Make sure we dont list "System Default" as we are setting this value!
-        if($hour_offset != '-20') {
-            $template->set_var('VALUE', $hour_offset);
-            $template->set_var('NAME', $title);
-            if(DEFAULT_TIMEZONE == $hour_offset*60*60) {
-                $template->set_var('SELECTED', ' selected="selected"');
-            } else {
-                $template->set_var('SELECTED', '');
-            }
-            $template->parse('timezone_list', 'timezone_list_block', true);
+    foreach($TIMEZONES AS $hour_offset => $title) {
+        $template->set_var('VALUE', $hour_offset);
+        $template->set_var('NAME', $title);
+        if(DEFAULT_TIMEZONE == $hour_offset*60*60) {
+            $template->set_var('SELECTED', ' selected="selected"');
+        } else {
+            $template->set_var('SELECTED', '');
         }
+        $template->parse('timezone_list', 'timezone_list_block', true);
     }
 
     // Insert default charset values

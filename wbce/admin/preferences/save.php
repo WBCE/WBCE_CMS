@@ -49,10 +49,9 @@ function save_preferences(&$admin, &$database)
     $language = strtoupper($admin->get_post('language'));
     $language = (preg_match('/^[A-Z]{2}$/', $language) ? $language : DEFAULT_LANGUAGE);
     
-    // timezone must be between -12 and +13  or -20 as system_default
+    // timezone must be between -12 and +13 or system_default
     $timezone = $admin->get_post('timezone');
-    $timezone = (is_numeric($timezone) ? $timezone : -20);
-    $timezone = ( ($timezone >= -12 && $timezone <= 13) ? $timezone : -20 ) * 3600;
+    $timezone = (is_numeric($timezone) ? $timezone * 3600 : '');
     
     // date_format must be a key from /interface/date_formats
     $date_format     = $admin->get_post('date_format');
@@ -154,10 +153,16 @@ function save_preferences(&$admin, &$database)
                     }
                 }
                 // Update timezone
-                if ($timezone != '-72000') {
-                    unset($_SESSION['USE_DEFAULT_TIMEZONE']);
+                if ($timezone !== '') {
+                    $_SESSION['TIMEZONE'] = $timezone;
+                    if (isset($_SESSION['USE_DEFAULT_TIMEZONE'])) { 
+                        unset($_SESSION['USE_DEFAULT_TIMEZONE']);                         
+                    }
                 } else {
                     $_SESSION['USE_DEFAULT_TIMEZONE'] = true;
+                    if (isset($_SESSION['TIMEZONE'])) { 
+                        unset($_SESSION['TIMEZONE']);                     
+                    }
                 }
             } else {
                 ob_start();

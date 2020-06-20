@@ -24,16 +24,16 @@
 function build_page( &$admin, &$database )
 {
     global $HEADING, $TEXT;
-    
+
     $user_time = true;
     include_once WB_PATH.'/framework/functions-utf8.php';
-    
+
     // Setup template object, parse vars to it, then parse it
     // Create new template object
     $oTemplate = new Template(dirname($admin->correct_theme_source('preferences.htt')));
     $oTemplate->set_file( 'page', 'preferences.htt' );
     $oTemplate->set_block( 'page', 'main_block', 'main' );
-    
+
     // read user-info from table users and assign it to template
     $sSql  = 'SELECT `display_name`, `username`, `email` FROM `{TP}users` WHERE `user_id` = %s';
     if ($res_user = $database->query(sprintf($sSql, (int)$admin->get_user_id()))){
@@ -42,13 +42,13 @@ function build_page( &$admin, &$database )
                     'DISPLAY_NAME' => $rec_user['display_name'],
                     'USERNAME'     => $rec_user['username'],
                     'EMAIL'        => $rec_user['email'],
-                    'ADMIN_URL'    => ADMIN_URL               
+                    'ADMIN_URL'    => ADMIN_URL
             )); 
         }
     }
-    
+
     // read available languages
-    require_once ADMIN_PATH . '/interface/languages.php';
+    require_once ADMIN_PATH. '/interface/languages.php';
     $oTemplate->set_block('main_block', 'language_list_block', 'language_list');
     foreach(getLanguagesArray() as $rec) {
         $oTemplate->set_var( array(
@@ -59,19 +59,19 @@ function build_page( &$admin, &$database )
         ));
         $oTemplate->parse('language_list', 'language_list_block', true);
     }
-                                
+
     // Insert default timezone values
     include_once ADMIN_PATH.'/interface/timezones.php';    
     $oTemplate->set_block('main_block', 'timezone_list_block', 'timezone_list');
-    foreach(getTimeZonesArray($TIMEZONES, true) as $rec) {
+    foreach(getTimeZonesArray($TIMEZONES) as $rec) {
         $oTemplate->set_var( array(
             'VALUE'    =>  $rec['VALUE'],
             'NAME'     =>  $rec['NAME'],
             'SELECTED' =>  ($rec['SELECTED'] == true) ? ' selected' : '',
         ));
         $oTemplate->parse('timezone_list', 'timezone_list_block', true);
-    }    
-    
+    }
+
     // Insert date format list
     include_once ADMIN_PATH.'/interface/date_formats.php';
     $oTemplate->set_block('main_block', 'date_format_list_block', 'date_format_list');
@@ -83,7 +83,7 @@ function build_page( &$admin, &$database )
         ));
         $oTemplate->parse('date_format_list', 'date_format_list_block', true);
     }
-    
+
     // Insert time format list
     include_once ADMIN_PATH.'/interface/time_formats.php';
     $oTemplate->set_block('main_block', 'time_format_list_block', 'time_format_list');
@@ -129,7 +129,7 @@ function build_page( &$admin, &$database )
             'EMPTY_STRING'               => ''
         )
     );
-    
+
     // Parse template for preferences form
     $oTemplate->parse('main', 'main_block', false);
     $output = $oTemplate->finish($oTemplate->parse('output', 'page'));

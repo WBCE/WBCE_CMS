@@ -167,7 +167,7 @@ class Login extends Admin
             }
             
             // Set timezone
-            if ($aUserData['timezone'] != '-72000') {
+            if ($aUserData['timezone'] != '') {
                 $_SESSION['TIMEZONE'] = $aUserData['timezone'];
             } else {
                 // Set a session var so apps can tell user is using default tz

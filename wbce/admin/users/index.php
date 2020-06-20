@@ -203,7 +203,6 @@ if(isset($_POST['submit'])){
         'display_name'       => $display_name,
         'home_folder'        => $home_folder,
         'email'              => $email,
-        'timezone'           => -72000, 
         'language'           => DEFAULT_LANGUAGE,
         'signup_checksum'    => date("Y-m-d H:i:s", time()),
         'signup_timestamp'   => time(),

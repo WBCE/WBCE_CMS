@@ -1,50 +1,45 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        admin
- * @package         interface
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: time_formats.php 1374 2011-01-10 12:21:47Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/admin/interface/time_formats.php $
- * @lastmodified    $Date: 2011-01-10 13:21:47 +0100 (Mo, 10. Jan 2011) $
- *
- * Time format list file
- * This file is used to generate a list of time formats for the user to select
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
-defined('WB_URL') or header('Location: ../../../index.php');
+if(!defined('WB_URL')) {
+    header('Location: ../../../index.php');
+    exit(0);
+}
 
 // Define that this file is loaded
-defined('TIME_FORMATS_LOADED') or define('TIME_FORMATS_LOADED', true);
-       
-// Get the current time (in the users timezone if required)
-$sShowTime = time() +  DEFAULT_TIMEZONE;
-if(isset($user_time) && $user_time == true && TIMEZONE != '-72000'){ 
-    $sShowTime = time() + TIMEZONE;  
+if(!defined('TIME_FORMATS_LOADED')) {
+    define('TIME_FORMATS_LOADED', true);
 }
 
 // Create array
 $TIME_FORMATS = array();
+
+// Get the current time (in the users timezone if required)
+$sShowTime = time()+ ((isset($user_time) && $user_time == true) ? TIMEZONE : DEFAULT_TIMEZONE);
+
+// Add values to list
 $TIME_FORMATS['g:i|A'] = date('g:i A', $sShowTime);
 $TIME_FORMATS['g:i|a'] = date('g:i a', $sShowTime);
 $TIME_FORMATS['H:i:s'] = date('H:i:s', $sShowTime);
 $TIME_FORMATS['H:i']   = date('H:i',   $sShowTime);
 
 // Add "System Default" to list (if we need to)
-if(isset($user_time) AND $user_time == true) {
+if(isset($user_time) && $user_time == true) {
+    global $TEXT;
     $TIME_FORMATS['system_default'] = date(DEFAULT_TIME_FORMAT, $sShowTime).' ('.$TEXT['SYSTEM_DEFAULT'].')';
 }
 
 // Reverse array so "System Default" is at the top
 $TIME_FORMATS = array_reverse($TIME_FORMATS, true);
-
 
 if(!function_exists('getTimeFormatsArray')){
     
@@ -57,24 +52,23 @@ if(!function_exists('getTimeFormatsArray')){
      * @param  array  $TIME_FORMATS
      * @return array
      */
-    function getTimeFormatsArray($TIME_FORMATS){    
+    function getTimeFormatsArray($TIME_FORMATS){
         $aTimeFormats = array();
         $i = 0;
         foreach ($TIME_FORMATS as $sFormat => $sTitle) {
             $sFormat = str_replace('|', ' ', $sFormat); // Adds white-spaces (not able to be stored in array key)
 
             $aTimeFormats[$i]['VALUE'] = ($sFormat != 'system_default') ? $sFormat : '';
-            $aTimeFormats[$i]['NAME']  = $sTitle;	            
-            if( (TIME_FORMAT == $sFormat && !isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) ||
-            ('system_default' == $sFormat && isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) ){
+            $aTimeFormats[$i]['NAME']  = $sTitle;
+
+            $aTimeFormats[$i]['SELECTED'] = false;
+            if (TIME_FORMAT == $sFormat && !isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {
                 $aTimeFormats[$i]['SELECTED'] = true;
-            } else {
-				$aTimeFormats[$i]['SELECTED'] = false;
-			}
+            } elseif ($sFormat == 'system_default' && isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {
+                $aTimeFormats[$i]['SELECTED'] = true;
+            }
             $i++;
         }
-
-        // debug_dump();
         return $aTimeFormats;
     }
 }
