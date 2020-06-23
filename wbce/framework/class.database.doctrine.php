@@ -240,26 +240,29 @@ class database
      * @param     string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
      * @param     string $field_name: name of the field to add
      * @param     string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
+	 * @param string set_error: decide whether an existing field should throw an error message or not 
      * @return    bool: true if successful, otherwise false and error will be set
      */
-    public function field_add(string $table_name, string $field_name, string $description) : bool
-    {
-        if (!$this->field_exists($table_name, $field_name)) {
-            // add new field into a table
-            $sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
-            try {
-                $query = $this->query($sql);
-            } catch ( \PDO\PDOException $e ) {
-                $this->set_error($e->getMessage());
-            }
-            if (!$this->is_error()) {
-                return ($this->field_exists($table_name, $field_name));
-            }
-        } else {
-            $this->set_error('field \'' . $field_name . '\' already exists');
-        }
-        return false;
-    }
+    public function field_add(string $table_name, string $field_name, string $description, bool $set_error = true) : bool
+	{
+		if (!$this->field_exists($table_name, $field_name)) {
+			// add new field into a table
+			$sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
+			try {
+				$query = $this->query($sql);
+			} catch ( \PDO\PDOException $e ) {
+				$this->set_error($e->getMessage());
+			}
+			if (!$this->is_error()) {
+				return ($this->field_exists($table_name, $field_name));
+			}
+		} else {
+			if ($set_error === true) {
+				$this->set_error('field \'' . $field_name . '\' already exists');
+			}
+		}
+		return false;
+	}
 
     /**
      * checks for a given field in the table

@@ -434,23 +434,26 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
         * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
         * @param string $field_name: name of the field to add
         * @param string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
+		* @param string set_error: decide whether an existing field should throw an error message or not 
         * @return bool: true if successful, otherwise false and error will be set
         */
-        public function field_add($table_name, $field_name, $description)
-        {
-            if (!$this->field_exists($table_name, $field_name)) {
-                // add new field into a table
-                $sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
-                $query = $this->query($sql);
-                $this->set_error(mysqli_error($this->db_handle));
-                if (!$this->is_error()) {
-                    return ($this->field_exists($table_name, $field_name)) ? true : false;
-                }
-            } else {
-                $this->set_error('field \'' . $field_name . '\' already exists');
-            }
-            return false;
-        }
+        public function field_add($table_name, $field_name, $description, $set_error = true)
+		{
+			if (!$this->field_exists($table_name, $field_name)) {
+				// add new field into a table
+				$sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
+				$query = $this->query($sql);
+				$this->set_error(mysqli_error($this->db_handle));
+				if (!$this->is_error()) {
+					return ($this->field_exists($table_name, $field_name)) ? true : false;
+				}
+			} else {
+				if ($set_error === true) {
+					$this->set_error('field \'' . $field_name . '\' already exists');
+				}
+			}
+			return false;
+		}
 
         /*
         * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
