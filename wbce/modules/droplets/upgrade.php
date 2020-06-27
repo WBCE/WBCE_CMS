@@ -21,6 +21,8 @@ if(!defined('WB_PATH')) {
 
 $table_name = TABLE_PREFIX .'mod_droplets';
 $description = 'INT NOT NULL default 0 ';
-$database->field_add($table_name,'show_wysiwyg',$description.'AFTER `active`' );
-$database->field_add($table_name,'admin_view',$description.'AFTER `active`' );
-$database->field_add($table_name,'admin_edit',$description.'AFTER `active`' );
+
+$database->field_add($table_name,'show_wysiwyg',$description.'AFTER `active`', false );
+$database->field_add($table_name,'admin_view',$description.'AFTER `active`', false );
+$database->field_add($table_name,'admin_edit',$description.'AFTER `active`', false );
+
