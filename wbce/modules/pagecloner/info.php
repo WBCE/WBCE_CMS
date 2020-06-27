@@ -13,7 +13,7 @@
 $module_directory = 'pagecloner';
 $module_name = 'Page Cloner';
 $module_function = 'tool';
-$module_version = '1.0.6';
+$module_version = '1.0.7';
 $module_platform = '1.0.0';
 $module_author = 'John Maats, PCWacht, Dietrich Roland Pehlke, Stephan Kuehn, vBoedefeld, WebBird, Colinax';
 $module_license = 'GNU General Public License';
@@ -24,14 +24,10 @@ $module_icon = 'fa fa-clone';
 
 /**
  * Version history
+ * v1.0.7 -  removed wrong redirect from "do nothing" upgrade.php (Bernd)
  * v1.0.6 -  fixes for MySQL-Strict (Bernd)
- *
- * v1.0.5
- *        - Copies section names too (thanks to kleo)
- *
- *
- * v1.0.4
- *        - Add Admintool Icon
+ * v1.0.5 - Copies section names too (thanks to kleo)
+ * v1.0.4 - Add Admintool Icon
  *
  * v1.0.3 (WebBird, 10.08.2018)
  *        - Fix: Problem with more than one WBCE installation into same mySQL instance
