@@ -31,7 +31,7 @@ class stats {
 	private $page;
 	private $keywords;
 	private $language;
-	
+
 	private $time;
 	private $day;
 	private $month;
@@ -39,7 +39,7 @@ class stats {
 	private $old_date;
 	private $reload;
 	private $online;
-	
+
 	function __construct() {
 		$time = time();
 		$this->time = $time;
@@ -86,15 +86,15 @@ class stats {
 				$result['online_title']  .= '</table>';
 				$result['online_title'] = htmlspecialchars($result['online_title']);
 			}
-		}		
+		}
 		$result['total']   = $database->get_one("SELECT count(id) from ".$table_ips);
 		if(!$result['total']) $result['total'] = 1;
 		$result['onepage'] = $database->get_one("SELECT count(id) from ".$table_ips." WHERE `online` = `time` ");
-		$result['bounced']  = round(($result['onepage']/$result['total'])*100,1);		
-		
+		$result['bounced']  = round(($result['onepage']/$result['total'])*100,1);
+
 		$from_day_7 = date("Ymd",$this->time - (7*24*60*60)); // 7 days
 		$from_day_30 = date("Ymd",$this->time -(30*24*60*60)); // 30 days
-		$to_day   = date("Ymd",$this->time - (24*60*60)); 
+		$to_day   = date("Ymd",$this->time - (24*60*60));
 		$query = $database->query("SELECT AVG(user) avgu, (sum(view)/sum(user)) pages FROM ".$table_day." WHERE `day`>='$from_day_7' AND `day`<='$to_day'");
 		$res = $query->fetchRow();
 		$result['avg_7'] = round($res['avgu'],2);
@@ -108,23 +108,23 @@ class stats {
 		$result['ptoday']= (int)$res['view'];
 		$result['btoday']= (int)$res['bots'];
 		$result['rtoday']= (int)$res['refspam'];
-		
+
 		$yesterday = date("Ymd",mktime(0, 0, 0, date("n"), date("j"), date("Y")) - 24*60*60);
 		$query = $database->query("SELECT user, view, bots, refspam FROM ".$table_day." where `day`='$yesterday'");
 		$res = $query->fetchRow();
-		$result['yesterday']= (int)$res['user'];
-		$result['pyesterday']= (int)$res['view'];
-		$result['byesterday']= (int)$res['bots'];
-		$result['ryesterday']= (int)$res['refspam'];
+		$result['yesterday']= (isset($res['user'])) ? (int)$res['user'] : 0;
+		$result['pyesterday']= (isset($res['view'])) ? (int)$res['view'] : 0;
+		$result['byesterday']= (isset($res['bots'])) ? (int)$res['bots'] : 0;
+		$result['ryesterday']= (isset($res['refspam'])) ? (int)$res['refspam'] : 0;
 
-		
-		
+
+
 		// last 24 hours
 		for($hour=23; $hour>=0; $hour--) {
 			$start = mktime(date("H")-$hour, 0, 0, date("n"), date("j"), date("Y")) ;
 			$end = mktime(date("H")-$hour, 59, 59, date("n"), date("j"), date("Y")) ;
 			$result['bar'][$hour]['data'] = $database->get_one("SELECT count(id) FROM ".$table_ips." WHERE `time`>='$start' AND `time`<=$end");
-			$result['bar'][$hour]['title'] = date("H:i",$start+TIMEZONE)." - ".date("G:i",$end+TIMEZONE);			
+			$result['bar'][$hour]['title'] = date("H:i",$start+TIMEZONE)." - ".date("G:i",$end+TIMEZONE);
 		}
 		// last 30 days
 		for($day=29; $day>=0; $day--) {
@@ -143,11 +143,11 @@ class stats {
 				$result['days'][$day]['title'] = date("Y-m-d", mktime(0, 0, 0, date("n"), date("j")-$day, date("Y")));
 			}
 		}
-		
-		
+
+
 		return $result;
 	}
-	
+
 	function getVisitors($top = 10) {
 		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $code2lang;
 		$result = array();
@@ -226,7 +226,7 @@ class stats {
 			$result['language'][$nr]['width'] = $bar_width;
 			$nr++;
 		}
-		
+
 		// Entry pages
 		$totals = $database->get_one("SELECT count(*) FROM ".$table_ips);
 		$q = "SELECT page, COUNT(*) AS total FROM ".$table_ips." GROUP BY page ORDER BY total DESC LIMIT 0,$top";
@@ -268,7 +268,7 @@ class stats {
 		// aantal pagina's per bezoek
 		$q = "SELECT pages FROM ".$table_ips." ORDER BY pages DESC";
 		$query = $database->query($q);
-		
+
 		$result['pageviews'][1] = 0;
 		$result['pageviews'][2] = 0;
 		$result['pageviews'][3] = 0;
@@ -279,7 +279,7 @@ class stats {
 		$result['pageviews'][15] = 0;
 		$result['pageviews'][20] = 0;
 		$result['pageviews'][25] = 0;
-		
+
 		while($res = $query->fetchRow()) {
 			$pages = $res['pages'];
 			switch (true) {
@@ -294,12 +294,12 @@ class stats {
 				case ($pages == 2) : $result['pageviews'][2]++;break;
 				case ($pages == 1) : $result['pageviews'][1]++;break;
 			}
-		}	
-		
+		}
+
 		// tijd per bezoek
 		$q = "SELECT ROUND(`online` - `time`)  AS `length` FROM ".$table_ips." ORDER BY `length` DESC";
 		$query = $database->query($q);
-		
+
 		$result['seconds'][0] = 0;
 		$result['seconds'][10] = 0;
 		$result['seconds'][30] = 0;
@@ -310,7 +310,7 @@ class stats {
 		$result['seconds'][600] = 0;
 		$result['seconds'][900] = 0;
 		$result['seconds'][1800] = 0;
-		
+
 		while($res = $query->fetchRow()) {
 			$length = (int)$res['length'];
 			switch (true) {
@@ -325,8 +325,8 @@ class stats {
 				case ($length >= 10)  : $result['seconds'][10]++;break;
 				case ($length >= 0)   : $result['seconds'][0]++;break;
 			}
-		}	
-		
+		}
+
 		return $result;
 	}
 
@@ -348,11 +348,11 @@ class stats {
 		$result['mvisitors'] = $res['users'];
 		$result['mvisits'] = $res['views'];
 		$result['maverage'] = round($res['avgusr'],2);
-	
+
 		$query = $database->query("SELECT LEFT(day,7) as month, sum(user) as user_month FROM ".$table_day." GROUP BY month ORDER BY user_month DESC LIMIT 1");
 		$res = $query->fetchRow();
 		$result['max_month'] = 0;
-		
+
 		for($month=1; $month<=12; $month++) {
 			$sel_month = date("Ym%",mktime(0, 0, 0, $month, 1, $show_year));
 			$users = $database->get_one("SELECT sum(user) FROM ".$table_day." WHERE day LIKE '$sel_month'");
@@ -360,7 +360,7 @@ class stats {
 			$result['month'][$month]['data'] = $users;
 			$result['month'][$month]['title'] = date("M-Y", mktime(0, 0, 0, $month, 1, $show_year));
 		}
-		
+
 		$month_days=date("t",mktime(0,0,0,$show_month,1,$show_year));
 		for($day=1; $day<=$month_days; $day++) {
 			$sel_day = date("Ymd",mktime(0, 0, 0, $show_month, $day, $show_year));
@@ -380,8 +380,8 @@ class stats {
 		}
 		return $result;
 	}
-		
-		
+
+
 	function mkDay($day) {
 		return substr($day,0,4).'-'.substr($day,4,2).'-'.substr($day,-2);
 	}
@@ -393,7 +393,7 @@ class stats {
 	  $random = array();
 	  foreach ($keys as $key) $random[$key] = $list[$key];
 	  return $random;
-	} 
-	
+	}
+
 } // end class
 

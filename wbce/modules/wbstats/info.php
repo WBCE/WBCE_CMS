@@ -15,7 +15,7 @@
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats';
-$module_version = '0.2.1.1';
+$module_version = '0.2.1.4';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -29,6 +29,8 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ * 0.2.1.4
+ *  - fixed updgrade.php for MySQL-Strict / Doctrine
  *
  * 0.2.1
  *	- added frontend view for WBCE
@@ -37,7 +39,7 @@ $module_icon = 'fa fa-bar-chart';
  *	- added entrypages, exitpages, time/pages cloud
  *
  * 0.1.12.3
- *	- Update module_platform 
+ *	- Update module_platform
  *
  * 0.1.12.2
  *	- Add Admintool Icon

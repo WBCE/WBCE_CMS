@@ -16,7 +16,6 @@
 *	Must include code to stop this file being access directly
 */
 if(defined('WB_PATH') == false) die("Cannot access this file directly");
-include (dirname(__FILE__).'/login.php');
 
 global $table_day,$table_ips,$table_pages,$table_ref,$table_key,$table_lang, $code2lang,$WS;
 $mpath = WB_PATH.'/modules/wbstats/';
@@ -35,7 +34,7 @@ $module_history_link = '?history';
   <a href="<?php echo $module_visitors_link  ?>"><?php echo $WS['MENU2'] ?></a>
   <a href="<?php echo $module_history_link  ?>"><?php echo $WS['MENU3'] ?></a>
 </div>
-<?php 
+<?php
 require_once($mpath.'class.stats.php');
 if (isset($_GET['overview'])) {
 	require ($mpath."overview.php");
