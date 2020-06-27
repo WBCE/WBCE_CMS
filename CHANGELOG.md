@@ -2,8 +2,28 @@
 This CHANGELOG was automatically created from a local WBCE Git repository.
 The changelog may therefore not be correct or up-to date.
 Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) repository for the most up to-date version.
-
 ## Auto generated Git commit history
+ * **2020-06-27:** Colinax [[892203ca](https://github.com/WBCE/WBCE_CMS/commit/892203ca5a4792555cf6bfe6fef6d5868ddfc59f)]
+   > Update Version to 1.4.4
+
+ * **2020-06-27:** Colinax [[2cf79bb4](https://github.com/WBCE/WBCE_CMS/commit/2cf79bb49134642e86671c545e647b6392f85773)]
+   > Droplets 2.2.9
+
+ * **2020-06-27:** Colinax [[27c8c844](https://github.com/WBCE/WBCE_CMS/commit/27c8c8440e39e6d87f2459f19800ae9427926655)]
+   > Visitor statistics 0.2.1.4
+
+ * **2020-06-27:** Colinax [[571e4666](https://github.com/WBCE/WBCE_CMS/commit/571e4666b5f89f398cd9f6cfd915e758340da472)]
+   > Page Cloner 1.0.7
+
+ * **2020-06-23:** Colinax [[e0b488e7](https://github.com/WBCE/WBCE_CMS/commit/e0b488e72608ee0caccd42dd9d1a78d83e26a525)]
+   > fix page_id
+
+ * **2020-06-23:** instantflorian [[e6b8c7ef](https://github.com/WBCE/WBCE_CMS/commit/e6b8c7ef363b65bd825fdd2b08ea7192edeae8b2)]
+   > Optional error message in ffunction field_add
+     error message on existing fields can be switched off (useful for update scripts). (Thanks to bernd)
+
+ * **2020-06-20:** Colinax [[5098bb1c](https://github.com/WBCE/WBCE_CMS/commit/5098bb1c32c2086aba20667919ce95313722e4ac)]
+   > Update CHANGELOG.md
 
  * **2020-06-20:** Colinax [[a79ff016](https://github.com/WBCE/WBCE_CMS/commit/a79ff0164f578cac91ca2f4fa76c32e5221d9d24)]
    > Update Version to 1.4.4-rc.1
