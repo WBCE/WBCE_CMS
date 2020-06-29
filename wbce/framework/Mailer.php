@@ -80,19 +80,18 @@ class Mailer extends PHPMailer {
             $oMailer->isSendmail();
         }
 
-        // set default sender 'From'
-        $oMailer->From = $aCfg['server_email'];
-
         // set default sender 'FromName'
         if ($oMailer->FromName == 'Root User') {
             if (isset($_SESSION['DISPLAY_NAME'])) {
                 // FROM NAME: display name of user logged in
-                $oMailer->set('FromName', $_SESSION['DISPLAY_NAME']);
+                $from_name = $_SESSION['DISPLAY_NAME'];
             } else {
                 // FROM NAME: set default name
-                $oMailer->set('FromName', $aCfg['default_sendername']); 
+                $from_name = $aCfg['default_sendername']; 
             }
         }
+
+        $oMailer->setFrom($aCfg['server_email'],$from_name );
 
         // ***************************
         //  set default mail formats      
