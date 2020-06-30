@@ -103,7 +103,7 @@ if(file_exists(WB_PATH.'/install/') || file_exists(WB_PATH.'/upgrade-script.php'
 }
 $template->set_var('DISPLAY_WARNING', 'display:none;');
 
-if (!defined('SHOW_UPDATE_INFO') || SHOW_UPDATE_INFO!=false) {
+if (function_exists('curl_version') && (!defined('SHOW_UPDATE_INFO') || SHOW_UPDATE_INFO!=false )) {
     include WB_PATH.'/include/GitHubApiClient/GitHubApiClient.php';
     $gitHubApiClient = new \Neoflow\GitHubApiClient();
     $response = json_decode($gitHubApiClient->call('/repos/WBCE/WBCE_CMS/releases/latest', [ CURLOPT_USERAGENT => 'WBCE_CMS' ]), true);
