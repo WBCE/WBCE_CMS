@@ -168,6 +168,7 @@ if ($static == true OR $static == false) {
     $parent = (trim($parent) == "") || ($parent < 1) ? 0 : $parent;
 
     // workout the menus we should include for display
+	$menus ='';
     $aMenus    = array();
     $aMenus[0] = 0;
     if (strpos($menus, ',') !== false) {
