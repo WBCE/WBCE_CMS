@@ -22,7 +22,8 @@
  * This is the File Manager Connector for PHP.
  */
 
-function GetFolders($resourceType, $currentFolder) {
+function GetFolders($resourceType, $currentFolder)
+{
     // Map the virtual path to the local server path.
     $sServerDir = ServerMapFolder($resourceType, $currentFolder, 'GetFolders');
     
@@ -52,7 +53,8 @@ function GetFolders($resourceType, $currentFolder) {
     echo "</Folders>";
 }
 
-function GetFoldersAndFiles($resourceType, $currentFolder) {
+function GetFoldersAndFiles($resourceType, $currentFolder)
+{
     // Map the virtual path to the local server path.
     $sServerDir = ServerMapFolder($resourceType, $currentFolder, 'GetFoldersAndFiles');
     
@@ -106,7 +108,8 @@ function GetFoldersAndFiles($resourceType, $currentFolder) {
     echo '</Files>';
 }
 
-function CreateFolder($resourceType, $currentFolder) {
+function CreateFolder($resourceType, $currentFolder)
+{
     if (!isset($_GET)) {
         global $_GET;
     }
@@ -117,7 +120,7 @@ function CreateFolder($resourceType, $currentFolder) {
         $sNewFolderName = $_GET['NewFolderName'];
         $sNewFolderName = SanitizeFolderName($sNewFolderName);
         
-        if (strpos($sNewFolderName, '..') !== FALSE) {
+        if (strpos($sNewFolderName, '..') !== false) {
             $sErrorNumber = '102'; // Invalid folder name.
         } else {
             // Map the virtual path to the local server path of the current folder.
@@ -153,7 +156,8 @@ function CreateFolder($resourceType, $currentFolder) {
 }
 
 // Notice the last paramter added to pass the CKEditor callback function
-function FileUpload($resourceType, $currentFolder, $sCommand, $CKEcallback = '') {
+function FileUpload($resourceType, $currentFolder, $sCommand, $CKEcallback = '')
+{
     if (!isset($_FILES)) {
         global $_FILES;
     }
@@ -247,5 +251,3 @@ function FileUpload($resourceType, $currentFolder, $sCommand, $CKEcallback = '')
     }
     exit;
 }
-
-?>

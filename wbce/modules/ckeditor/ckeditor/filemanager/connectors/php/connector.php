@@ -32,18 +32,19 @@ require('./commands.php');
 require('./phpcompat.php');
 
 if (!$Config['Enabled']) {
-	SendError(1, 'This connector is disabled. Please check the "editor/filemanager/connectors/php/config.php" file');
+    SendError(1, 'This connector is disabled. Please check the "editor/filemanager/connectors/php/config.php" file');
 }
 
 DoResponse();
 
-function DoResponse() {
+function DoResponse()
+{
     if (!isset($_GET)) {
         global $_GET;
     }
     if (!isset($_GET['Command']) || !isset($_GET['Type']) || !isset($_GET['CurrentFolder'])) {
-		return;
-	}
+        return;
+    }
     
     // Get the main request informaiton.
     $sCommand       = $_GET['Command'];
@@ -52,13 +53,13 @@ function DoResponse() {
     
     // Check if it is an allowed command
     if (!IsAllowedCommand($sCommand)) {
-		SendError(1, 'The "' . $sCommand . '" command isn\'t allowed');
-	}
+        SendError(1, 'The "' . $sCommand . '" command isn\'t allowed');
+    }
     
     // Check if it is an allowed type.
     if (!IsAllowedType($sResourceType)) {
-		SendError(1, 'Invalid type specified');
-	}
+        SendError(1, 'Invalid type specified');
+    }
     
     // File Upload doesn't have to Return XML, so it must be intercepted before anything.
     if ($sCommand == 'FileUpload') {
@@ -85,5 +86,3 @@ function DoResponse() {
     
     exit;
 }
-
-?>

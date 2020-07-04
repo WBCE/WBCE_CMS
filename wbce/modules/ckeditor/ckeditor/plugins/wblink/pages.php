@@ -26,7 +26,8 @@ require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
 if (!function_exists('cleanup')) {
-    function cleanup($string) {
+    function cleanup($string)
+    {
         global $database;
         if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')) {
             return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
@@ -40,7 +41,8 @@ $InternPagesSelectBox = "var InternPagesSelectBox = new Array( ";
 $PagesTitleSelectBox = "var PagesTitleSelectBox = new Array( ";
 
 // Function to generate page list
-function getPageTree($parent) {
+function getPageTree($parent)
+{
     global $admin, $database,$InternPagesSelectBox,$PagesTitleSelectBox;
     $sql  = 'SELECT * FROM `'.TABLE_PREFIX.'pages` ';
     $sql .= 'WHERE `parent`= '.(int)$parent.' ';

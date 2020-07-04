@@ -23,7 +23,8 @@
  * connector.
  */
 
-function SetXmlHeaders() {
+function SetXmlHeaders()
+{
     ob_end_clean();
     
     // Prevent the browser from caching the result.
@@ -41,7 +42,8 @@ function SetXmlHeaders() {
     header('Content-Type: text/xml; charset=utf-8');
 }
 
-function CreateXmlHeader($command, $resourceType, $currentFolder) {
+function CreateXmlHeader($command, $resourceType, $currentFolder)
+{
     SetXmlHeaders();
     
     // Create the XML document header.
@@ -56,11 +58,13 @@ function CreateXmlHeader($command, $resourceType, $currentFolder) {
     $GLOBALS['HeaderSent'] = true;
 }
 
-function CreateXmlFooter() {
+function CreateXmlFooter()
+{
     echo '</Connector>';
 }
 
-function SendError($number, $text) {
+function SendError($number, $text)
+{
     if ($_GET['Command'] == 'FileUpload') {
         SendUploadResults($number, "", "", $text);
     }
@@ -82,12 +86,11 @@ function SendError($number, $text) {
     exit;
 }
 
-function SendErrorNode($number, $text) {
+function SendErrorNode($number, $text)
+{
     if ($text) {
         echo '<Error number="' . $number . '" text="' . htmlspecialchars($text) . '" />';
     } else {
         echo '<Error number="' . $number . '" />';
     }
 }
-
-?>

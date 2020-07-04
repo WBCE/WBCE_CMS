@@ -22,17 +22,20 @@
  * Utility functions for the File Manager Connector for PHP.
  */
 
-function RemoveFromStart($sourceString, $charToRemove) {
+function RemoveFromStart($sourceString, $charToRemove)
+{
     $sPattern = '|^' . $charToRemove . '+|';
     return preg_replace($sPattern, '', $sourceString);
 }
 
-function RemoveFromEnd($sourceString, $charToRemove) {
+function RemoveFromEnd($sourceString, $charToRemove)
+{
     $sPattern = '|' . $charToRemove . '+$|';
     return preg_replace($sPattern, '', $sourceString);
 }
 
-function FindBadUtf8($string) {
+function FindBadUtf8($string)
+{
     $regex = '([\x00-\x7F]' . '|[\xC2-\xDF][\x80-\xBF]' . '|\xE0[\xA0-\xBF][\x80-\xBF]' . '|[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}' . '|\xED[\x80-\x9F][\x80-\xBF]' . '|\xF0[\x90-\xBF][\x80-\xBF]{2}' . '|[\xF1-\xF3][\x80-\xBF]{3}' . '|\xF4[\x80-\x8F][\x80-\xBF]{2}' . '|(.{1}))';
     
     while (preg_match('/' . $regex . '/S', $string, $matches)) {
@@ -44,7 +47,8 @@ function FindBadUtf8($string) {
     return false;
 }
 
-function ConvertToXmlAttribute($value) {
+function ConvertToXmlAttribute($value)
+{
     if (defined('PHP_OS')) {
         $os = PHP_OS;
     } else {
@@ -64,7 +68,8 @@ function ConvertToXmlAttribute($value) {
  * @param array $htmlExtensions
  * @return boolean
  */
-function IsHtmlExtension($ext, $htmlExtensions) {
+function IsHtmlExtension($ext, $htmlExtensions)
+{
     if (!$htmlExtensions || !is_array($htmlExtensions)) {
         return false;
     }
@@ -83,7 +88,8 @@ function IsHtmlExtension($ext, $htmlExtensions) {
  * @param string $filePath absolute path to file
  * @return boolean
  */
-function DetectHtml($filePath) {
+function DetectHtml($filePath)
+{
     $fp = @fopen($filePath, 'rb');
     
     //open_basedir restriction, see #1906
@@ -153,7 +159,8 @@ function DetectHtml($filePath) {
  * @param integer $detectionLevel 0 = none, 1 = use getimagesize for images, 2 = use DetectHtml for images
  * @return boolean
  */
-function IsImageValid($filePath, $extension) {
+function IsImageValid($filePath, $extension)
+{
     if (!@is_readable($filePath)) {
         return -1;
     }
@@ -166,16 +173,16 @@ function IsImageValid($filePath, $extension) {
         'swf',
         'psd',
         'bmp',
-		'iff',
-		'tiff',
-		'tif',
-		'swc',
-		'jpc',
-		'jp2',
-		'jpx',
-		'jb2',
-		'xbm',
-		'wbmp'
+        'iff',
+        'tiff',
+        'tif',
+        'swc',
+        'jpc',
+        'jp2',
+        'jpx',
+        'jb2',
+        'xbm',
+        'wbmp'
     );
     
     if (!in_array($extension, $imageCheckExtensions)) {
@@ -188,5 +195,3 @@ function IsImageValid($filePath, $extension) {
     
     return true;
 }
-
-?>

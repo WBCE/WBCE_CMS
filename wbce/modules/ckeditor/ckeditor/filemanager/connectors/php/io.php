@@ -21,11 +21,13 @@
  *
  * This is the File Manager Connector for PHP.
  */
-function CombinePaths($sBasePath, $sFolder) {
+function CombinePaths($sBasePath, $sFolder)
+{
     return RemoveFromEnd($sBasePath, '/') . '/' . RemoveFromStart($sFolder, '/');
 }
 
-function GetResourceTypePath($resourceType, $sCommand) {
+function GetResourceTypePath($resourceType, $sCommand)
+{
     global $Config;
     
     if ($sCommand == "QuickUpload") {
@@ -35,7 +37,8 @@ function GetResourceTypePath($resourceType, $sCommand) {
     }
 }
 
-function GetResourceTypeDirectory($resourceType, $sCommand) {
+function GetResourceTypeDirectory($resourceType, $sCommand)
+{
     global $Config;
     if ($sCommand == "QuickUpload") {
         if (strlen($Config['QuickUploadAbsolutePath'][$resourceType]) > 0) {
@@ -52,15 +55,18 @@ function GetResourceTypeDirectory($resourceType, $sCommand) {
     }
 }
 
-function GetUrlFromPath($resourceType, $folderPath, $sCommand) {
+function GetUrlFromPath($resourceType, $folderPath, $sCommand)
+{
     return CombinePaths(GetResourceTypePath($resourceType, $sCommand), $folderPath);
 }
 
-function RemoveExtension($fileName) {
+function RemoveExtension($fileName)
+{
     return substr($fileName, 0, strrpos($fileName, '.'));
 }
 
-function ServerMapFolder($resourceType, $folderPath, $sCommand) {
+function ServerMapFolder($resourceType, $folderPath, $sCommand)
+{
     // Get the resource type directory.
     $sResourceTypePath = GetResourceTypeDirectory($resourceType, $sCommand);
     
@@ -74,12 +80,14 @@ function ServerMapFolder($resourceType, $folderPath, $sCommand) {
     return CombinePaths($sResourceTypePath, $folderPath);
 }
 
-function GetParentFolder($folderPath) {
+function GetParentFolder($folderPath)
+{
     $sPattern = "-[/\\\\][^/\\\\]+[/\\\\]?$-";
     return preg_replace($sPattern, '', $folderPath);
 }
 
-function CreateServerFolder($folderPath, $lastFolder = null) {
+function CreateServerFolder($folderPath, $lastFolder = null)
+{
     global $Config;
     $sParent = GetParentFolder($folderPath);
     
@@ -134,7 +142,8 @@ function CreateServerFolder($folderPath, $lastFolder = null) {
     }
 }
 
-function GetRootPath() {
+function GetRootPath()
+{
     if (!isset($_SERVER)) {
         global $_SERVER;
     }
@@ -160,7 +169,8 @@ function GetRootPath() {
 
 // Emulate the asp Server.mapPath function.
 // given an url path return the physical directory that it corresponds to
-function Server_MapPath($path) {
+function Server_MapPath($path)
+{
     // This function is available only for Apache
     if (function_exists('apache_lookup_uri')) {
         $info = apache_lookup_uri($path);
@@ -172,7 +182,8 @@ function Server_MapPath($path) {
     return GetRootPath() . $path;
 }
 
-function IsAllowedExt($sExtension, $resourceType) {
+function IsAllowedExt($sExtension, $resourceType)
+{
     global $Config;
     // Get the allowed and denied extensions arrays.
     $arAllowed = $Config['AllowedExtensions'][$resourceType];
@@ -189,7 +200,8 @@ function IsAllowedExt($sExtension, $resourceType) {
     return true;
 }
 
-function IsAllowedType($resourceType) {
+function IsAllowedType($resourceType)
+{
     global $Config;
     if (!in_array($resourceType, $Config['ConfigAllowedTypes'])) {
         return false;
@@ -198,7 +210,8 @@ function IsAllowedType($resourceType) {
     return true;
 }
 
-function IsAllowedCommand($sCommand) {
+function IsAllowedCommand($sCommand)
+{
     global $Config;
     
     if (!in_array($sCommand, $Config['ConfigAllowedCommands'])) {
@@ -208,7 +221,8 @@ function IsAllowedCommand($sCommand) {
     return true;
 }
 
-function GetCurrentFolder() {
+function GetCurrentFolder()
+{
     if (!isset($_GET)) {
         global $_GET;
     }
@@ -240,7 +254,8 @@ function GetCurrentFolder() {
 }
 
 // Do a cleanup of the folder name to avoid possible problems
-function SanitizeFolderName($sNewFolderName) {
+function SanitizeFolderName($sNewFolderName)
+{
     $sNewFolderName = stripslashes($sNewFolderName);
     
     // Remove . \ / | : ? * " < >
@@ -250,7 +265,8 @@ function SanitizeFolderName($sNewFolderName) {
 }
 
 // Do a cleanup of the file name to avoid possible problems
-function SanitizeFileName($sNewFileName) {
+function SanitizeFileName($sNewFileName)
+{
     global $Config;
     
     $sNewFileName = stripslashes($sNewFileName);
@@ -267,7 +283,8 @@ function SanitizeFileName($sNewFileName) {
 }
 
 // This is the function that sends the results of the uploading process.
-function SendUploadResults($errorNumber, $fileUrl = '', $fileName = '', $customMsg = '') {
+function SendUploadResults($errorNumber, $fileUrl = '', $fileName = '', $customMsg = '')
+{
     // Minified version of the document.domain automatic fix script (#1919).
     // The original script can be found at _dev/domain_fix_template.js
     echo <<<EOF
@@ -290,7 +307,8 @@ EOF;
 }
 
 // This is the function that sends the results of the uploading process to CKE.
-function SendCKEditorResults($errorNumber, $CKECallback, $fileUrl, $fileName, $customMsg = '') {
+function SendCKEditorResults($errorNumber, $CKECallback, $fileUrl, $fileName, $customMsg = '')
+{
     // Minified version of the document.domain automatic fix script (#1919).
     // The original script can be found at _dev/domain_fix_template.js
     echo <<<EOF
@@ -332,5 +350,3 @@ EOF;
     
     echo '</script>';
 }
-
-?>
