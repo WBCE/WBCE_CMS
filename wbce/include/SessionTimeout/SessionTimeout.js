@@ -1,7 +1,7 @@
 /**
  * Handle Session Timeout and display remaining session time
  */
-document.cookie = 'WBCELastConnectJS='+Math.round(new Date().getTime() / 1000).toString()+'; expires=0; path=/';
+document.cookie = 'WBCELastConnectJS='+Math.round(new Date().getTime() / 1000).toString()+'; expires=0; SameSite=Lax; path=/';
 
 // Wait until DOM is loaded
 document.addEventListener("DOMContentLoaded", function(e) { 

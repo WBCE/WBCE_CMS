@@ -153,7 +153,7 @@ $.fn.stickyElements = function(options) {
 				//=> google chrome
 				//=> don't write name of domain, write '' instead
 				(myDomain == 'localhost') ? myDomain = '' : myDomain = myDomain;
-				document.cookie = cookieName + '=' + cookieSetString + ';domain=' + myDomain + ';path=/';
+				document.cookie = cookieName + '=' + cookieSetString + ';domain=' + myDomain + '; SameSite=Lax; path=/';
 
 			}else{
 
