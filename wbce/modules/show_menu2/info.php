@@ -13,7 +13,7 @@
 $module_directory = 'show_menu2';
 $module_name = 'show_menu2';
 $module_function = 'snippet';
-$module_version = '4.13.4';
+$module_version = '4.13.5';
 $module_platform = '1.4.0';
 $module_author = 'Brodie Thiesfield, Manuela v.d.Decken, Norbert Heimsath, Christian M. Stefan, Bernd Michna';
 $module_license = 'GNU General Public License v2';
@@ -22,6 +22,7 @@ $module_level = 'core';
 
 /**
  * Version history
+ * 4.13.5 - Restore SM2_DEBUG switch (Florian)
  * 4.13.4 - Fix performance issue with CORRECT_MENU_LINKS (Bernd)
  * 4.13.3 - MYSQL_ASSOC -> MYSQLI_ASSOC (Bernd)
  * 4.13.2
