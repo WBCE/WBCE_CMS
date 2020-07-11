@@ -498,7 +498,7 @@ if (file_exists($file_name)) {
 // News with Images
 $file_name = WB_PATH . "/modules/news_img/info.php";
 if (file_exists($file_name)) {
-    if (!in_array("mod_news_img", $all_tables)) {
+    if (!in_array("mod_news_img_posts", $all_tables)) {
        echo "<br />Install News with Images<br />";
        require_once WB_PATH . "/modules/news_img/install.php";
     } else {
