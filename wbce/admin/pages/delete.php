@@ -66,6 +66,10 @@ if (PAGE_TRASH != 'disabled' AND $visibility != 'deleted') {
     }
     // Delete page
     delete_page($page_id);
+	$sDirPath = str_replace(PAGE_EXTENSION, '', $sFilePath);
+    if (is_dir($sDirPath)) {
+        rm_full_dir($sDirPath);
+    }
 }    
 
 // Check if there is a db error, otherwise say successful
