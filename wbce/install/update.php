@@ -169,7 +169,7 @@ require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
 
 // database tables included in package
-$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_miniform','mod_wbstats_day', 'mod_menu_link', 'blocking');
+$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_miniform','mod_wbstats_day', 'mod_menu_link', 'blocking','mod_news_img_posts');
 /*
 $table_list = array (
     'settings','groups','addons','pages','sections','search','users', 'mod_captcha_control','mod_code','mod_droplets','mod_form_fields', 'mod_form_settings','mod_form_submissions',
@@ -285,7 +285,7 @@ $filesRemove['3'] = array(
 
 // check existing tables
 $all_tables = check_wb_tables();
-
+//print_r( $all_tables);
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
