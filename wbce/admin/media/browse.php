@@ -215,7 +215,7 @@ if($handle = opendir(WB_PATH.MEDIA_DIRECTORY.'/'.$directory)) {
 
 			if (!is_array($pathsettings)) {
 				$pathsettings = array();
-				$pathsettings['global']['show_thumbs'] = true;
+				$pathsettings['global']['show_thumbs'] = false; // this way images ARE shown m( m( m(
 			}
 				if (!$pathsettings['global']['show_thumbs']) {
 					$info = @getimagesize(WB_PATH.MEDIA_DIRECTORY.$directory.'/'.$name);
