@@ -76,7 +76,7 @@ if (isset($_POST['wbmailer_routine']) && ($_POST['wbmailer_routine'] == 'smtp'))
 
 }
 
-$pattern = '/^[a-z0-9-]*$/';
+$pattern = '/^[a-z0-9_-]*$/';
 if (false == preg_match($pattern, $_POST['app_name']) || $_POST['app_name']=='') {
 $admin->print_error($MESSAGE['INVALID_SESSION_NAME'], $js_back);
 }
