@@ -1,15 +1,15 @@
 <?php
 /**
- * Image Resizer. 
+ * Image Resizer.
  * This PHP script will resize the given image and can show on the fly or save as image file.
- * 
+ *
  * @author    Harish Chauhan
  * @copyright Freeware
- * 
+ *
  *
  */
 
-define("HAR_AUTO_NAME", 1);	
+define("HAR_AUTO_NAME", 1);
 class ResizeImage
 {
         var $imgFile   = "";
@@ -35,21 +35,21 @@ class ResizeImage
                         return false;
                 }
                 $this->type = array(
-                    1 => 'GIF', 
-                    2 => 'JPG', 
-                    3 => 'PNG', 
-                    4 => 'SWF', 
-                    5 => 'PSD', 
-                    6 => 'BMP', 
-                    7 => 'TIFF', 
-                    8 => 'TIFF', 
-                    9 => 'JPC', 
-                    10 => 'JP2', 
-                    11 => 'JPX', 
-                    12 => 'JB2', 
-                    13 => 'SWC', 
-                    14 => 'IFF', 
-                    15 => 'WBMP', 
+                    1 => 'GIF',
+                    2 => 'JPG',
+                    3 => 'PNG',
+                    4 => 'SWF',
+                    5 => 'PSD',
+                    6 => 'BMP',
+                    7 => 'TIFF',
+                    8 => 'TIFF',
+                    9 => 'JPC',
+                    10 => 'JP2',
+                    11 => 'JPX',
+                    12 => 'JB2',
+                    13 => 'SWC',
+                    14 => 'IFF',
+                    15 => 'WBMP',
                     16 => 'XBM'
                 );
                 if(!empty($imgFile))
@@ -58,7 +58,7 @@ class ResizeImage
         /**
          * Error occured while resizing the image.
          *
-         * @return String 
+         * @return String
          */
         public function error()
         {
@@ -77,7 +77,7 @@ class ResizeImage
                 return $this->_createImage();
         }
         /**
-         * 
+         *
          * @return void
          */
         public function close()
@@ -86,7 +86,7 @@ class ResizeImage
         }
         /**
          * Resize a image to given width and height and keep it's current width and height ratio
-         * 
+         *
          * @param Number $imgwidth
          * @param Numnber $imgheight
          * @param String $newfile
@@ -160,7 +160,7 @@ class ResizeImage
         /**
          * Get the image attributes
          * @access Private
-         * 		
+         *
          */
         private function _getImageInfo()
         {
@@ -169,7 +169,7 @@ class ResizeImage
         }
 
         /**
-         * Create the image resource 
+         * Create the image resource
          * @access Private
          * @return Boolean
          */
@@ -187,7 +187,7 @@ class ResizeImage
                 elseif($this->imgType=='PNG')
                 {
                         $this->_img=@imagecreatefrompng($this->imgFile);
-                }			
+                }
                 if(!$this->_img || !@is_resource($this->_img))
                 {
                         $this->_error="Error loading ".$this->imgFile;
@@ -198,7 +198,7 @@ class ResizeImage
 
         /**
          * Function is used to resize the image
-         * 
+         *
          * @access Private
          * @param Number $width
          * @param Number $height
@@ -215,7 +215,12 @@ class ResizeImage
                 $newimg=@imagecreatetruecolor($width,$height);
                 //imagecolortransparent( $newimg, imagecolorat( $newimg, 0, 0 ) );
 
-                if($this->imgType=='GIF' || $this->imgType=='PNG')
+                if($this->imgType=='PNG') {
+					$color = imagecolorallocatealpha($newimg, 0, 0, 0, 127);
+                    imagefill($newimg, 0, 0, $color);
+                    imagesavealpha($newimg, TRUE);
+				}
+                if($this->imgType=='GIF')
                 {
                         /** Code to keep transparency of image **/
                         $colorcount = imagecolorstotal($this->_img);
@@ -224,14 +229,14 @@ class ResizeImage
                         imagepalettecopy($newimg,$this->_img);
                         $transparentcolor = imagecolortransparent($this->_img);
                         imagefill($newimg,0,0,$transparentcolor);
-                        imagecolortransparent($newimg,$transparentcolor); 
+                        imagecolortransparent($newimg,$transparentcolor);
                 }
                 @imagecopyresampled ( $newimg, $this->_img, 0,0,0,0, $width, $height, $this->imgWidth,$this->imgHeight);
 
                 if($newfile===HAR_AUTO_NAME)
                 {
                         if(@preg_match("/\..*+$/",@basename($this->imgFile),$matches))
-                                $newfile=@substr_replace($this->imgFile,"_har",-@strlen($matches[0]),0);			
+                                $newfile=@substr_replace($this->imgFile,"_har",-@strlen($matches[0]),0);
                 }
                 elseif(!empty($newfile))
                 {

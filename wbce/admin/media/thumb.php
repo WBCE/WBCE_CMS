@@ -29,9 +29,9 @@ if (isset($_GET['img']) && isset($_GET['t'])) {
     $oImgResizer = new ResizeImage($sImgPath);
     if ($oImgResizer->imgWidth) {
         if ($iType == 1) {
-            $oImgResizer->resize_limitwh(100,100);
+            $oImgResizer->resize_limitwh(50,50);
         } elseif ($iType == 2) {
-            $oImgResizer->resize_limitwh(200,200);
+            $oImgResizer->resize_limitwh(300,300);
         }
         $oImgResizer->close();
     } else {
