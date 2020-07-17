@@ -170,7 +170,7 @@ if (!function_exists('simplepagehead')) {
 		}
 
 		if ($generator == 1) {echo '<meta name="generator" content="WBCE CMS; https://wbce.org"'."$endtag>\n";}
-		if ($notoolbartag == 1) {echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n"; }
+//		if ($notoolbartag == 1) {echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n"; }
 
 		if($metaend AND OPF_AUTO_PLACEHOLDER) echo "<!--(PH) META HEAD- -->\n";
 
