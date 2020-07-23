@@ -33,20 +33,6 @@ div.logline.even {
 	background: #f3f3f3;
 }
 
-.lvlink a {
-	color: #ff0000;
-	text-decoration: none;
-	background: #fff;
-	padding: 3px 10px;
-}
-
-.lvlink {
-	float: right;
-	font-size: 14px;
-	margin-right: 2px;
-	margin-left: 10px;
-}
-
 .newline {
 	background: #fff7e1 !important;
 }
@@ -84,4 +70,100 @@ div.logline.even {
 	color: #fff;
 	padding: 10px;
 	margin-bottom: 10px;
+}
+
+/**
+ * Table view, added by Stefanek
+ */
+
+.table-errlog {
+    border: 2px solid white; 
+    width: 100%;
+    min-width: 700px;
+    font-size:12px;
+}
+.table-errlog tr.odd td{
+    background-color: #f7f7f7!important;
+}
+.table-errlog td, .table-errlog th{
+    vertical-align: top;
+    padding:3px;
+    border: 1px solid lightgrey;
+    border-bottom: 2px solid lightgray;
+}.table-errlog th{
+    text-align: center;
+}
+.table-errlog td:nth-of-type(3){
+    text-align: right; 
+    white-space: nowrap;
+}    
+.table-errlog td:nth-of-type(1){ 
+    text-align: center;
+    width: 60px; 
+}
+.table-errlog tr.color-red td{
+    background-color: #f7eaea!important;
+}
+span.file{
+    font-family: courier;
+    font-size: 12.5px;
+    color: #0c33de;
+}
+
+div.tool-header{
+    display:block;
+    background:#f7f7f7;
+    padding: 3px;    
+}
+div.tool-header h2{
+    float:left;
+}
+
+.tool-header:after{
+    content: "";
+    display: table;
+    clear: both;
+}
+ul.header-links{
+    padding:6px;
+    list-style-type: none;
+    display: inline;
+    float:right;
+}
+ul.header-links li {    
+    display: inline;
+    font-size: 14px;
+    margin: 3px 2px;
+    line-height: 140%;
+}
+ul.header-links li a {
+    text-decoration: none;
+    background: #fff;
+    padding: 3px 7px;
+}
+li.reload-link{
+    color: #ff0000;
+}
+li.delete-link a{
+    color: #ff0000;
+}
+ul.header-links li.viewlink{
+    font-weight: bold;
+    font-size: 12px;
+    margin-left: 0px;
+}
+ul.header-links li.viewlink a{
+    padding: 3px 4px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    color: grey;
+}
+
+ul.header-links li.active a, ul.header-links li.viewlink a:hover{
+    -webkit-box-shadow: inset 1px 1px 4px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: inset 1px 1px 4px 0px rgba(0,0,0,0.2);
+    box-shadow: inset 1px 1px 4px 0px rgba(0,0,0,0.2);
+}
+ul.header-links li.active a{
+    background-color: #f2ffd6;
 }
