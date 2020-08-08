@@ -39,7 +39,7 @@ stickyFormatClass: 'stickyByClassColor'
 });
 ```
 
-### Erweitere Optionen
+### Erweiterte Optionen
 // pageModus
 // Standardmäßig sind nur die Elemente auf der spezifischen Seite sticky
 // Sollen Elemente Domain-Weit sticky gemacht werden erfolgt dies über die Option
