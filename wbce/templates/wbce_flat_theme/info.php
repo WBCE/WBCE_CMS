@@ -14,8 +14,8 @@
 $template_directory = 'wbce_flat_theme';
 $template_name = 'WBCE Flat Theme';
 $template_function = 'theme';
-$template_version = '1.7.2';
-$template_platform = '1.4.0';
+$template_version = '1.7.3';
+$template_platform = '1.4';
 $template_author = 'Colinax based on the work by Yetiie, BerndJM and rjgamer';
 $template_license = 'GNU General Public License';
 $template_license_terms = '-';

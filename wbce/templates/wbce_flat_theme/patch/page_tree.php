@@ -1,17 +1,19 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @copyright Christian M. Stefan (Stefek)
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  */
 
 // prevent this file from being accessed directly
-if (!defined('WB_PATH'))
+if (!defined('WB_PATH')) {
     die(header('Location: ../../index.php'));
+}
 
 // Include translation
 if (is_file(WB_PATH . '/templates/wbce_flat_theme/languages/' . LANGUAGE . '.php')) {
@@ -23,21 +25,19 @@ if (is_file(WB_PATH . '/templates/wbce_flat_theme/languages/' . LANGUAGE . '.php
 // Include functions
 require_once 'functions/renderPageTree.php';
 
-/**
- * do the DB query to grab for all pages first
- */
+// do the DB query to grab for all pages first
 $queryPages = $database->query("SELECT * FROM `" . TABLE_PREFIX . "pages` ORDER BY position ASC");
 $numberOfPages = $queryPages->numRows();
 
 $refs = array();
 $pages = array();
+
 // check if thorns wysiwyg history & draft is installed
 $use_working_copy = (file_exists(WB_PATH . '/modules/wysiwyg/manage_history.php')) ? true : false;
 
 // create $list[] Array
 while ($page = $queryPages->fetchRow()) {
     $thisref = &$refs[$page['page_id']];
-
     $thisref['parent'] = $page['parent'];
     $thisref['root_parent'] = $page['root_parent'];
     $thisref['menu_title'] = $page['menu_title'];
@@ -99,20 +99,20 @@ $pageLevelLimit = $settings['value'];
     $visibilityLegends = array('public', 'hidden', 'registered', 'private', 'none', 'deleted');
 
     ?>
-    <hr />
+    <hr/>
     <p class="h5"><?= $TEXT['VISIBILITY'] ?> (<?= $MENU['PAGES'] ?>)</p>
     <ul class="list-inline">
         <?php foreach ($visibilityLegends as $legend) { ?>
             <li class="list-inline-item">
                 <?php if ($legend === 'public') { ?>
                     <i class="fa fa-fw fa-eye"></i>
-                <?php } else if ($legend === 'private') { ?>
+                <?php } elseif ($legend === 'private') { ?>
                     <i class="fa fa-fw fa-eye-slash"></i>
-                <?php } else if ($legend === 'registered') { ?>
+                <?php } elseif ($legend === 'registered') { ?>
                     <i class="fa fa-fw fa-key"></i>
-                <?php } else if ($legend === 'hidden') { ?>
+                <?php } elseif ($legend === 'hidden') { ?>
                     <i class="fa fa-fw fa-lock"></i>
-                <?php } else if ($legend === 'deleted') { ?>
+                <?php } elseif ($legend === 'deleted') { ?>
                     <i class="fa fa-fw fa-trash-o"></i>
                 <?php } else { ?>
                     <i class="fa fa-fw fa-ban"></i>
@@ -121,5 +121,4 @@ $pageLevelLimit = $settings['value'];
             </li>
         <?php } ?>
     </ul>
-
 </div>

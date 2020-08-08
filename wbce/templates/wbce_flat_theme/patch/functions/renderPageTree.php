@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Render page tree
  * @param array $pages
@@ -7,12 +6,12 @@
  * @param int $levelLimit
  * @return string
  */
-function renderPageTree($pages, $level = 1, $levelLimit = 999) {
 
+function renderPageTree($pages, $level = 1, $levelLimit = 999)
+{
     global $admin, $database, $TEXT, $HEADING, $MESSAGE;
 
     $output = '';
-
     $numberOfSiblingPages = count($pages);
 
     foreach ($pages as $page) {
@@ -70,9 +69,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
             '{restoreURL}' => '../pages/restore.php?page_id=' . $page['page_id'],
         );
 
-        ob_start();
-
-        ?>
+        ob_start(); ?>
         <li class="p<?= $page['parent'] ?> <?= ($hasChildren ? 'has-children' : '') ?>">
             <table class="table">
                 <tr class="is-<?= $page['visibility'] ?>">
@@ -84,13 +81,13 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
                     <td class="visibility">
                         <?php if ($page['visibility'] === 'public') { ?>
                             <i class="fa fa-eye"></i>
-                        <?php } else if ($page['visibility'] === 'private') { ?>
+                        <?php } elseif ($page['visibility'] === 'private') { ?>
                             <i class="fa fa-eye-slash"></i>
-                        <?php } else if ($page['visibility'] === 'registered') { ?>
+                        <?php } elseif ($page['visibility'] === 'registered') { ?>
                             <i class="fa fa-key"></i>
-                        <?php } else if ($page['visibility'] === 'hidden') { ?>
+                        <?php } elseif ($page['visibility'] === 'hidden') { ?>
                             <i class="fa fa-lock"></i>
-                        <?php } else if ($page['visibility'] === 'deleted') { ?>
+                        <?php } elseif ($page['visibility'] === 'deleted') { ?>
                             <i class="fa fa-trash-o"></i>
                         <?php } else { ?>
                             <i class="fa fa-ban"></i>
@@ -107,15 +104,15 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
                             <a href="{modifyPageURL}" title="<?= $HEADING['MODIFY_PAGE'] ?>"><i class="fa fa-fw fa-pencil"></i></a>
                             <?php
                         }
-                        if ($page['visibility'] != 'deleted' && $canModifySettings) {
-
-                            ?>
+        if ($page['visibility'] != 'deleted' && $canModifySettings) {
+            ?>
                             <a href="{modifySettingsURL}" title="<?= $HEADING['MODIFY_PAGE_SETTINGS'] ?>"><i class="fa fa-fw fa-cog"></i></a>
-                        <?php } else if ($page['visibility'] == 'deleted') { ?>
+                        <?php
+        } elseif ($page['visibility'] == 'deleted') { ?>
                             <a href="{restoreURL}" title="<?= $TEXT['RESTORE'] ?>"><i class="fa fa-fw fa-recycle"></i></a>
                             <?php
                         }
-                        if (isset ($menu_link) && $menu_link == true) { ?>
+        if (isset($menu_link) && $menu_link == true) { ?>
                         <i class="fa fa-link"></i>
                         <?php } elseif ($canManageSections) { ?>
                             <a href="{modifySectionsURL}" title="<?= $HEADING['MANAGE_SECTIONS'] ?>"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
@@ -157,9 +154,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999) {
         </li>
         <?php
         $renderedListItem = ob_get_clean();
-
         $output .= str_replace(array_keys($placeholders), array_values($placeholders), $renderedListItem);
     }
-
     return $output;
 }
