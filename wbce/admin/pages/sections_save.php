@@ -105,12 +105,12 @@ if($query_sections->numRows() > 0) {
 				if(trim($_POST['start_date'.$section_id]) == '0' || trim($_POST['start_date'.$section_id]) == '') {
 					$publ_start = 0;
 				} else {
-					$publ_start = jscalendar_to_timestamp($_POST['start_date'.$section_id]);
+					$publ_start = jscalendar_to_timestamp($_POST['start_date'.$section_id],'','true');
 				}
 				if(trim($_POST['end_date'.$section_id]) == '0' || trim($_POST['end_date'.$section_id]) == '') {
 					$publ_end = 0;
 				} else {
-					$publ_end = jscalendar_to_timestamp($_POST['end_date'.$section_id], $publ_start);
+					$publ_end = jscalendar_to_timestamp($_POST['end_date'.$section_id], $publ_start,'true');
 				}
 				if($sql != '')
 					$sql .= ",";

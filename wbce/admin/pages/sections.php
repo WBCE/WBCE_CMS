@@ -340,13 +340,13 @@ switch ($action) {
                     if ($section['publ_start'] == 0) {
                         $oTemplate->set_var('VALUE_PUBL_START', '');
                     } else {
-                        $oTemplate->set_var('VALUE_PUBL_START', date($jscal_format, $section['publ_start']));
+                        $oTemplate->set_var('VALUE_PUBL_START', date($jscal_format, $section['publ_start']+TIMEZONE));
                     }
                     // set calendar start values
                     if ($section['publ_end'] == 0) {
                         $oTemplate->set_var('VALUE_PUBL_END', '');
                     } else {
-                        $oTemplate->set_var('VALUE_PUBL_END', date($jscal_format, $section['publ_end']));
+                        $oTemplate->set_var('VALUE_PUBL_END', date($jscal_format, $section['publ_end']+TIMEZONE));
                     }
                     // Insert icons up and down
                     if ($section['position'] != 1) {
