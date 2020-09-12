@@ -30,9 +30,9 @@ global $Config;
 $Config['Enabled'] = false;
 
 /**
- *    SECURITY PATCH FOR WEBSITEBAKER (doc)
- *    only enable PHP connector if user is authenticated to WB
- *    and has at least permissions to view the WB MEDIA folder
+ * SECURITY PATCH FOR WEBSITEBAKER (doc)
+ * only enable PHP connector if user is authenticated to WB
+ * and has at least permissions to view the WB MEDIA folder
  */
 // include WB config.php file and admin class
 require_once('../../../../../../config.php');
@@ -47,7 +47,7 @@ if (($admin->get_permission('media_view') === true)) {
     // user allowed to view MEDIA folder -> enable PHP connector
     $Config['Enabled']               = true;
     // allow actions to list folders and files
-    //$Config['ConfigAllowedCommands'] = array('GetFolders', 'GetFoldersAndFiles') ;
+    // $Config['ConfigAllowedCommands'] = array('GetFolders', 'GetFoldersAndFiles') ;
     $Config['ConfigAllowedCommands'] = array(
         'QuickUpload',
         'FileUpload',
@@ -86,9 +86,9 @@ $Config['ForceSingleExtension'] = true;
 $Config['SecureImageUploads'] = true;
 
 // What the user can do with this connector.
-//$Config['ConfigAllowedCommands'] = array('QuickUpload', 'FileUpload', 'GetFolders', 'GetFoldersAndFiles', 'CreateFolder') ;
+// $Config['ConfigAllowedCommands'] = array('QuickUpload', 'FileUpload', 'GetFolders', 'GetFoldersAndFiles', 'CreateFolder') ;
 
-/**
+/*
 Check WB permissions of the user/group for the MEDIA folder and
 enable only those FCKEditor commands the user has permissions for
 */
@@ -183,10 +183,9 @@ $Config['QuickUploadAbsolutePath']['Image']    = $Config['UserFilesAbsolutePath'
 into:
 $Config['QuickUploadPath']['Image']            = $Config['FileTypesPath']['Image'] ;
 $Config['QuickUploadAbsolutePath']['Image']     = $Config['FileTypesAbsolutePath']['Image'] ;
-
 */
 
-/**
+/*
 APPLY MORE RESTRICTIVE SETTINGS FOR WEBSITE BAKER
 + only allow file types:     only textfiles (no PHP, Javascript or HTML files per default)
 + only allows images type: bmp, gif, jpges, jpg and png

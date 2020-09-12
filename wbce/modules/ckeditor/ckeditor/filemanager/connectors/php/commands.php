@@ -164,11 +164,11 @@ function FileUpload($resourceType, $currentFolder, $sCommand, $CKEcallback = '')
     $sErrorNumber = '0';
     $sFileName    = '';
     
-    //PATCH to detect a quick file upload.
+    // PATCH to detect a quick file upload.
     if ((isset($_FILES['NewFile']) && !is_null($_FILES['NewFile']['tmp_name'])) || (isset($_FILES['upload']) && !is_null($_FILES['upload']['tmp_name']))) {
         global $Config;
         
-        //PATCH to detect a quick file upload.
+        // PATCH to detect a quick file upload.
         $oFile = isset($_FILES['NewFile']) ? $_FILES['NewFile'] : $_FILES['upload'];
         
         // Map the virtual path to the local server path.
@@ -224,11 +224,11 @@ function FileUpload($resourceType, $currentFolder, $sCommand, $CKEcallback = '')
             }
             
             if (file_exists($sFilePath)) {
-                //previous checks failed, try once again
+                // previous checks failed, try once again
                 if (isset($isImageValid) && $isImageValid === -1 && IsImageValid($sFilePath, $sExtension) === false) {
                     @unlink($sFilePath);
                     $sErrorNumber = '202';
-                } else if (isset($detectHtml) && $detectHtml === -1 && DetectHtml($sFilePath) === true) {
+                } elseif (isset($detectHtml) && $detectHtml === -1 && DetectHtml($sFilePath) === true) {
                     @unlink($sFilePath);
                     $sErrorNumber = '202';
                 }
@@ -246,7 +246,7 @@ function FileUpload($resourceType, $currentFolder, $sCommand, $CKEcallback = '')
     if ($CKEcallback == '') {
         SendUploadResults($sErrorNumber, $sFileUrl, $sFileName);
     } else {
-        //issue the CKEditor Callback
+        // issue the CKEditor Callback
         SendCKEditorResults($sErrorNumber, $CKEcallback, $sFileUrl, $sFileName);
     }
     exit;

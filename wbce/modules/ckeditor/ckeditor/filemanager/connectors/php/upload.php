@@ -58,5 +58,5 @@ if (!IsAllowedType($sType)) {
 // Get the CKEditor Callback
 $CKEcallback = $_GET['CKEditorFuncNum'];
 
-//pass it on to file upload function
+// pass it on to file upload function
 FileUpload($sType, $sCurrentFolder, $sCommand, $CKEcallback);

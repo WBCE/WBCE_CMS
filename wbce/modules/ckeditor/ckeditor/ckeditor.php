@@ -21,7 +21,6 @@ if (count(get_included_files()) == 1) {
  * brief CKEditor class that can be used to create editor
  * instances in PHP pages on server side.
  * @see http://ckeditor.com
- *
  * Sample usage:
  * @code
  * $CKEditor = new CKEditor();
@@ -33,18 +32,18 @@ class CKEditor
     /**
      * The version of %CKEditor.
      */
-    const version = '4.14.1';
+    const version = '4.15.0';
 
     /**
      * A constant string unique for each release of %CKEditor.
      */
-    const timestamp = 'K5H9';
+    const timestamp = 'K87C';
 
     /**
      * A string indicating the creation date of %CKEditor.
      * Do not change it unless you want to force browsers to not use previously cached version of %CKEditor.
      */
-    public $timestamp = "K5H9";
+    public $timestamp = "K87C";
 
     /**
      * URL to the %CKEditor installation directory (absolute or relative to document root).

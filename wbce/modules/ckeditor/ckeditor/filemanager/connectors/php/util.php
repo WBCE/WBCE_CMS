@@ -92,7 +92,7 @@ function DetectHtml($filePath)
 {
     $fp = @fopen($filePath, 'rb');
     
-    //open_basedir restriction, see #1906
+    // open_basedir restriction, see #1906
     if ($fp === false || !flock($fp, LOCK_SH)) {
         return -1;
     }
@@ -130,19 +130,19 @@ function DetectHtml($filePath)
         }
     }
     
-    //type = javascript
+    // type = javascript
     if (preg_match('!type\s*=\s*[\'"]?\s*(?:\w*/)?(?:ecma|java)!sim', $chunk)) {
         return true;
     }
     
-    //href = javascript
-    //src = javascript
-    //data = javascript
+    // href = javascript
+    // src = javascript
+    // data = javascript
     if (preg_match('!(?:href|src|data)\s*=\s*[\'"]?\s*(?:ecma|java)script:!sim', $chunk)) {
         return true;
     }
     
-    //url(javascript
+    // url(javascript
     if (preg_match('!url\s*\(\s*[\'"]?\s*(?:ecma|java)script:!sim', $chunk)) {
         return true;
     }
@@ -192,6 +192,5 @@ function IsImageValid($filePath, $extension)
     if (@getimagesize($filePath) === false) {
         return false;
     }
-    
     return true;
 }

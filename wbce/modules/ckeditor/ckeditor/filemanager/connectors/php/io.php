@@ -83,6 +83,7 @@ function ServerMapFolder($resourceType, $folderPath, $sCommand)
 function GetParentFolder($folderPath)
 {
     $sPattern = "-[/\\\\][^/\\\\]+[/\\\\]?$-";
+    
     return preg_replace($sPattern, '', $folderPath);
 }
 
@@ -98,7 +99,7 @@ function CreateServerFolder($folderPath, $lastFolder = null)
     
     // Check if the parent exists, or create it.
     if (!empty($sParent) && !file_exists($sParent)) {
-        //prevents agains infinite loop when we can't create root folder
+        // prevents agains infinite loop when we can't create root folder
         if (!is_null($lastFolder) && $lastFolder === $sParent) {
             return "Can't create $folderPath directory";
         }
@@ -163,7 +164,6 @@ function GetRootPath()
     if ($position === false || $position <> strlen($sRealPath) - strlen($sSelfPath)) {
         SendError(1, 'Sorry, can\'t map "UserFilesPath" to a physical path. You must set the "UserFilesAbsolutePath" value in "editor/filemanager/connectors/php/config.php".');
     }
-    
     return substr($sRealPath, 0, $position);
 }
 
@@ -196,7 +196,6 @@ function IsAllowedExt($sExtension, $resourceType)
     if (count($arDenied) > 0 && in_array($sExtension, $arDenied)) {
         return false;
     }
-    
     return true;
 }
 
@@ -206,7 +205,6 @@ function IsAllowedType($resourceType)
     if (!in_array($resourceType, $Config['ConfigAllowedTypes'])) {
         return false;
     }
-    
     return true;
 }
 
@@ -217,7 +215,6 @@ function IsAllowedCommand($sCommand)
     if (!in_array($sCommand, $Config['ConfigAllowedCommands'])) {
         return false;
     }
-    
     return true;
 }
 
@@ -249,7 +246,6 @@ function GetCurrentFolder()
     if (preg_match(",(/\.)|[[:cntrl:]]|(//)|(\\\\)|([\:\*\?\"\<\>\|]),", $sCurrentFolder)) {
         SendError(102, '');
     }
-    
     return $sCurrentFolder;
 }
 
@@ -340,7 +336,6 @@ EOF;
             $msg = 'Error on file upload. Error number: ' + $errorNumber;
             break;
     }
-    
     
     $rpl = array(
         '\\' => '\\\\',
