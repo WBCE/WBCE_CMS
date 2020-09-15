@@ -71,7 +71,7 @@ function change_os(type) {
                 </tr>
                 <tr>
                     <td >Server Default Charset</td>
-                    <td><span class="<?php echo $chrval?>"> <?php echo (($chrval == 'good') ? $e_adc.' OK' : $e_adc)?> </span></td>
+                    <td><span class="<?php echo $chrval?>"> <?php echo(($chrval == 'good') ? $e_adc.' OK' : $e_adc)?> </span></td>
                     <td>PHP Safe Mode</td>
                     <td><span class="<?php echo $sSaveModeClass?>"> <?php echo $sSaveModeText?> </span></td>
                 </tr>
@@ -90,32 +90,24 @@ function change_os(type) {
                 <tr>
                     <td><?php print $wb_root . $configFile?></td>
                     <td><?php echo $config?></td>
-                    <td><?php print $wb_root?>/log/</td>
-                    <td><?php echo $sDirLog ?></td>
+                    <td><?php print $wb_root?>/languages/</td>
+                    <td><?php echo $sDirLanguages ?></td>
                 </tr>
                 <tr>
                     <td><?php print $wb_root?>/pages/</td>
                     <td><?php echo $sDirPages ?></td>
-                    <td><?php print $wb_root?>/media/</td>
-                    <td><?php echo $sDirMedia ?></td>
-                </tr>
-                <tr>
                     <td><?php print $wb_root?>/templates/</td>
                     <td><?php echo $sDirTemplates ?></td>
+                </tr>
+                <tr>
+                    <td><?php print $wb_root?>/media/</td>
+                    <td><?php echo $sDirMedia ?></td>
                     <td><?php print $wb_root?>/modules/</td>
                     <td><?php echo $sDirModules ?></td>
                 </tr>
                 <tr>
-                    <td><?php print $wb_root?>/languages/</td>
-                    <td><?php echo $sDirLanguages ?></td>
                     <td><?php print $wb_root?>/temp/</td>
                     <td><?php echo $sDirTemp ?></td>
-                </tr>
-                <tr>
-                    <td><?php print $wb_root?>/config/</td>
-                    <td><?php echo $sDirConfig ?></td>
-                    <td><?php print $wb_root?>/var/</td>
-                    <td><?php echo $sDirVar ?></td>
                 </tr>
             </tbody>
         </table>
@@ -140,7 +132,10 @@ function change_os(type) {
                     <td class="name">Default Timezone:</td>
                     <td class="value"><select <?php echo field_error('default_timezone');?> tabindex="3" name="default_timezone">
                             <?php foreach ($aZones as $fOffset): ?>
-                            <option value="<?php echo (string)$fOffset ?>" <?php if (TzSelected($fOffset)) echo 'selected="selected"' ?> > <?php echo 'GMT ' . (($fOffset > 0) ? '+' : '') . (($fOffset == 0) ? '' : (string) $fOffset . ' Hours') ?> </option>
+                            <option value="<?php echo (string)$fOffset ?>" <?php if (TzSelected($fOffset)) {
+    echo 'selected="selected"';
+} ?> > 
+                            <?php echo 'GMT ' . (($fOffset > 0) ? '+' : '') . (($fOffset == 0) ? '' : (string) $fOffset . ' Hours') ?> </option>
                             <?php endforeach ; ?>
                         </select></td>
                 </tr>
@@ -148,10 +143,13 @@ function change_os(type) {
                     <td class="name">Default Language:</td>
                     <td class="value"><select <?php echo field_error('default_language');?> tabindex="4" name="default_language">
                             <?php foreach ($aAllowedLanguages as $sLangCode=>$Language): ?>
-                            <option value="<?php echo $sLangCode ?>" <?php if (LangSelected($sLangCode)) echo 'selected="selected"' ?> > <?php echo$Language ?> </option>
+                            <option value="<?php echo $sLangCode ?>" <?php if (LangSelected($sLangCode)) {
+    echo 'selected="selected"';
+} ?> > 
+                            <?php echo$Language ?> </option>
                             <?php endforeach ; ?>
                         </select>
-                        <?php //echo "<pre>";print_r($aAllowedLanguages);echo "</pre>";?></td>
+                        <?php // echo "<pre>";print_r($aAllowedLanguages);echo "</pre>";?></td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
@@ -250,7 +248,7 @@ function change_os(type) {
                             <input type="submit" disabled="disabled" tabindex="16" name="install" value="Check your Settings in Step 1 and reload with F5" />
                             <?php else :?>
                             <input type="submit" tabindex="16" name="install" value="Install WBCE CMS" />
-                            <?php endif; //install flag ?>
+                            <?php endif; // installFlag ?>
                         </p></td>
                 </tr>
             </tbody>

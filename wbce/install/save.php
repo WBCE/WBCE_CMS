@@ -11,11 +11,17 @@
  */
 
 // needed by class secureform
-if (!defined("WB_SECFORM_TIMEOUT"))  define ("WB_SECFORM_TIMEOUT",  '7200') ;
+if (!defined("WB_SECFORM_TIMEOUT")) {
+    define("WB_SECFORM_TIMEOUT", '7200') ;
+}
 
 // Define Debug and installer
-if (!defined("WB_DEBUG"))             define ("WB_DEBUG",  true) ;
-if (!defined("WB_INSTALLER"))         define ("WB_INSTALLER",  true) ; 
+if (!defined("WB_DEBUG")) {
+    define("WB_DEBUG", true) ;
+}
+if (!defined("WB_INSTALLER")) {
+    define("WB_INSTALLER", true) ;
+}
 
 $_SESSION['ERROR_FIELD']=array();
 
@@ -24,13 +30,13 @@ if (WB_DEBUG === true) {
     ini_set('display_errors', 1);
 }
 
-
 // Start a session
 if (!defined('SESSION_STARTED')) {
     session_name('wb-installer');
     session_start();
     define('SESSION_STARTED', true);
 }
+
 // get random-part for session_name()
 // Random name is for later sessions (more secure), not installer session
 list($usec, $sec) = explode(' ', microtime());
@@ -66,8 +72,10 @@ if (!isset($_POST['wb_url']) or $_POST['wb_url'] == '') {
 } else {
     $wb_url = $_POST['wb_url'];
 }
+
 // Remove any slashes at the end of the URL
 $wb_url = rtrim($wb_url, '\\/');
+
 // Get the default time zone
 if (!isset($_POST['default_timezone']) or !is_numeric($_POST['default_timezone'])) {
     set_error(d('e3: ').'Please select a valid default timezone', 'default_timezone');
@@ -115,7 +123,6 @@ if ($operating_system == 'windows') {
 }
 // End operating system specific code
 
-
 //echo "<pre>"; var_dump($_POST); echo "</pre>";
 
 // Begin database details code
@@ -134,6 +141,7 @@ if (!isset($_POST['database_username']) or $_POST['database_username'] == '') {
 } else {
     $database_username = $_POST['database_username'];
 }
+
 // Check if user has entered a database password
 if (!isset($_POST['database_password'])) {
     set_error(d('e9: ').'Please enter a database password', 'database_password');
@@ -141,6 +149,7 @@ if (!isset($_POST['database_password'])) {
 } else {
     $database_password = $_POST['database_password'];
 }
+
 // Check if user has entered a database name
 if (!isset($_POST['database_name']) or $_POST['database_name'] == '') {
     set_error(d('e10: ').'Please enter a database name', 'database_name');
@@ -154,6 +163,7 @@ if (!isset($_POST['database_name']) or $_POST['database_name'] == '') {
     }
     $database_name = $_POST['database_name'];
 }
+
 // Get table prefix
 if (preg_match('/[^a-z0-9_]+/', $_POST['table_prefix'])) {
     // contains invalid characters (only a-z, A-Z, 0-9 and _ allowed to avoid problems with table/field names)
@@ -181,6 +191,7 @@ if (!isset($_POST['admin_username']) or $_POST['admin_username'] == '') {
 } else {
     $admin_username = $_POST['admin_username'];
 }
+
 // Get admin email and validate it
 if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
     set_error(d('e14: ').'Please enter an email for the Administrator account', 'admin_email');
@@ -193,7 +204,6 @@ if (!isset($_POST['admin_email']) or $_POST['admin_email'] == '') {
         $IsError=true;
     }
 }
-
 
 // Get the two admin passwords entered, and check that they match
 if (!isset($_POST['admin_password']) or $_POST['admin_password'] == '') {
@@ -219,33 +229,31 @@ if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
         } else {
             $iMinPassLength = 6;
             if (strlen($admin_password) < $iMinPassLength) {
-        	set_error(d('e20: ').'The password you entered was too short', 'admin_password');
-        	$IsError=true;
+                set_error(d('e20: ').'The password you entered was too short', 'admin_password');
+                $IsError=true;
             }
-	}	    
+        }
     }
 }
 
-
 // If we got form errors
-if ($IsError){
-   // Redirect to first page again and exit
-   // To see debug output , just uncomment the Location header
-   //echo "<h4>Called Error</4>";
-   header('Location: index.php?sessions_checked=true');
-   exit;
+if ($IsError) {
+    // Redirect to first page again and exit
+    // To see debug output , just uncomment the Location header
+    //echo "<h4>Called Error</4>";
+    header('Location: index.php?sessions_checked=true');
+    exit;
 }
 
-
-
 // extract port if available
-if (isset($database_port)) {unset($database_port);}
+if (isset($database_port)) {
+    unset($database_port);
+}
 $aMatches = preg_split('/:/s', $database_host, -1, PREG_SPLIT_NO_EMPTY);
 if (isset($aMatches[1])) {
     $database_host = $aMatches[0];
     $database_port = (int) $aMatches[1];
 }
-
 
 $database_charset = 'utf8';
 
@@ -253,29 +261,28 @@ $database_charset = 'utf8';
 // I dont want any files Written before we know the content is worth it
 
 try {
-        if (!empty($database_port))
-            $dbtest = new mysqli(
-                $database_host,
-                $database_username,
-                $database_password,
-                $database_name,
-                $database_port
-            );
-        else
-            $dbtest = new mysqli(
-                $database_host,
-                $database_username,
-                $database_password,
-                $database_name
-            );
-}
-catch (Exception $e) {
+    if (!empty($database_port)) {
+        $dbtest = new mysqli(
+            $database_host,
+            $database_username,
+            $database_password,
+            $database_name,
+            $database_port
+        );
+    } else {
+        $dbtest = new mysqli(
+            $database_host,
+            $database_username,
+            $database_password,
+            $database_name
+        );
+    }
+} catch (Exception $e) {
     $sMsg = d('e29: ').'Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
         . $e->getMessage(). "Host: database_host, User: $database_username, Pass: $database_password, DB-Name: $database_name, Port: $database_port";
     // We end right here and dont collect any more errors
-    set_error($sMsg,"",true);
+    set_error($sMsg, "", true);
 }
-
 
 // End admin user details code
 
@@ -309,8 +316,9 @@ if (is_writable($config_filename)) {
     $sMsg = d('e20: ').'The configuration file <' . $config_filename . '> is missing or not writable.<br />'
     . 'Change its permissions so it is, then re-run step 4.';
 }
-if ($sMsg) {set_error($sMsg,"",true);} // if something gone wrong, break with message
-
+if ($sMsg) {
+    set_error($sMsg, "", true); // if something gone wrong, break with message
+}
 // include config file to set constants
 include_once $config_filename;
 
@@ -328,30 +336,23 @@ define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 require ADMIN_PATH . '/interface/version.php';
 
-
 // Try connecting to database This time whith our Classes
 if (!file_exists(WB_PATH . '/framework/class.database.php')) {
-    set_error(d('e21: ').'It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!',"",true);
+    set_error(d('e21: ').'It appears the Absolute path that you entered is incorrect or file \'class.database.php\' is missing!', "", true);
 }
 include WB_PATH . '/framework/class.database.php';
 try {
-        $database = new database();
-    
+    $database = new database();
 } catch (Exception $e) {
     $sMsg = d('e22: ').'Database host name, username and/or password incorrect.'. d('<br />MySQL Error:<br />')
     . d($e->getMessage());
-    set_error($sMsg,"",true);
+    set_error($sMsg, "", true);
 }
-
 
 // Cant remember what this was for , but it was important
 if (!defined('WB_INSTALL_PROCESS')) {
     define('WB_INSTALL_PROCESS', true);
 }
-
-
-
-
 
 /*****************************
 Begin Create Database Tables
@@ -361,22 +362,21 @@ $aSqlFiles = array(
     'install_struct.sql',
     'install_data.sql'
 );
-foreach ($aSqlFiles as $sFileName){
+foreach ($aSqlFiles as $sFileName) {
     $sFile = dirname(__FILE__).'/'.$sFileName;
     $bPreserve = ($sFileName == "install_prepare.sql") ? false : true;
     if (is_readable($sFile)) {
         if (!$database->SqlImport($sFile, TABLE_PREFIX, $bPreserve)) {
-            set_error(d('e23: ')."Unable to read import 'install/".$sFileName."'".d($database->get_error(),"",true));
+            set_error(d('e23: ')."Unable to read import 'install/".$sFileName."'".d($database->get_error(), "", true));
         }
     } else {
-        if(file_exists($sFile)){
-            set_error(d('e24: ')."Unable to read file 'install/".$sFileName."'","",true);
-        }else{
-            set_error(d('e25: ')."File 'install/".$sFileName."' doesn't exist!","",true);
+        if (file_exists($sFile)) {
+            set_error(d('e24: ')."Unable to read file 'install/".$sFileName."'", "", true);
+        } else {
+            set_error(d('e25: ')."File 'install/".$sFileName."' doesn't exist!", "", true);
         }
     }
 }
-
 
 // add settings from install input
 $aSettings = array(
@@ -396,7 +396,7 @@ $aSettings = array(
 );
 
 require_once WB_PATH.'/framework/class.settings.php';
-foreach($aSettings as $name=>$value){
+foreach ($aSettings as $name=>$value) {
     Settings::Set($name, $value);
 }
 
@@ -419,12 +419,14 @@ $aAdminUser = array(
 //print_r($aAdminUser);
 
 if (!($database->insertRow('{TP}users', $aAdminUser))) {
-    set_error(d('e26: ').'unable to write Administrator account into table \'users\'',"",true);
+    set_error(d('e26: ').'unable to write Administrator account into table \'users\'', "", true);
 }
 
 // Add  admin errors
-if ($IsError){header('Location: index.php?sessions_checked=true'); exit;}
-
+if ($IsError) {
+    header('Location: index.php?sessions_checked=true');
+    exit;
+}
 
 /**********************
 END OF TABLES IMPORT
@@ -449,12 +451,15 @@ class admin_dummy extends admin
 
 // Include WB functions file
 require_once WB_PATH . '/framework/functions.php';
+
 // Re-connect to the database, this time using in-build database class
 require_once WB_PATH . '/framework/class.login.php';
+
 // reconnect database if needed
 //if (!(isset($database) & ($database instanceof database))) {
 //    $database = new database();
 //}
+
 // Include the PclZip class file (thanks to
 require_once WB_PATH . '/include/pclzip/pclzip.lib.php';
 $admin = new admin_dummy('Start', '', false, false);
@@ -466,27 +471,25 @@ $dirs['languages'] = WB_PATH . '/languages/';
 
 //this one needs to go first, so module filter can use the installer.
 
-    load_module( $dirs['modules'] . 'outputfilter_dashboard',true);
+    load_module($dirs['modules'] . 'outputfilter_dashboard', true);
     if ($admin->error != '') {
-        set_error(d("e26a: /outputfilter_dashboard : ").$admin->error,"",true);
+        set_error(d("e26a: /outputfilter_dashboard : ").$admin->error, "", true);
     }
     if ($database->is_error()) {
-        set_error(d("e26b: /outputfilter_dashboard : ").$database->get_error(),"",true);
+        set_error(d("e26b: /outputfilter_dashboard : ").$database->get_error(), "", true);
     }
-
 
 // As some Module need to install Droplets we need Dropletss in next step
-    load_module( $dirs['modules'] . 'droplets',true);
+    load_module($dirs['modules'] . 'droplets', true);
     if ($admin->error != '') {
-        set_error(d("e26c: /droplets : ").$admin->error,"",true);
+        set_error(d("e26c: /droplets : ").$admin->error, "", true);
     }
     if ($database->is_error()) {
-        set_error(d("e26d: /droplets : ").$database->get_error(),"",true);
+        set_error(d("e26d: /droplets : ").$database->get_error(), "", true);
     }
 
 // Now we go and install all other modules
 foreach ($dirs as $type => $dir) {
-
     if ($handle = opendir($dir)) {
         while (false !== ($file = readdir($handle))) {
             if (
@@ -505,10 +508,10 @@ foreach ($dirs as $type => $dir) {
                     // See dummy class definition admin_dummy above
 
                     if ($admin->error != '') {
-                        set_error(d("e27: /$file : ").$admin->error,"",true);
+                        set_error(d("e27: /$file : ").$admin->error, "", true);
                     }
                     if ($database->is_error()) {
-                        set_error(d("e27a: /$file : ").$database->get_error(),"",true);
+                        set_error(d("e27a: /$file : ").$database->get_error(), "", true);
                     }
                 } elseif ($type == 'templates') {
                     load_template($dir . '/' . $file);
@@ -519,13 +522,11 @@ foreach ($dirs as $type => $dir) {
         }
         closedir($handle);
     }
-
 }
-
 
 // Check if there was a database error
 if ($database->is_error()) {
-    set_error(d('e28: ').$database->get_error(),"",true);
+    set_error(d('e28: ').$database->get_error(), "", true);
 }
 
 // Unset all of the session variables.
@@ -535,9 +536,14 @@ $_SESSION = array();
 // Note: This will destroy the session, and not just the session data!
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
+    setcookie(
+        session_name(),
+        '',
+        time() - 42000,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
     );
 }
 
