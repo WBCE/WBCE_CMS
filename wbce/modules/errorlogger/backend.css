@@ -1,75 +1,75 @@
 #contentarea {
-	max-width: 100%;
+    max-width: 100%;
 }
 
 .adminModuleWrapper.legacy {
-	/* fix for argos theme */
-	padding: 0;
+    /* fix for argos theme */
+    padding: 0;
 }
 
 table#legacy,
 table#former_positioning_table {
-	table-layout: fixed;
+    table-layout: fixed;
 }
 
 div.logviewWrapper {
-	overflow: scroll;
-	background: #fff;
-	max-height: calc(100vh - 320px);
-	padding: 10px;
-	width: 100%;
+    overflow: scroll;
+    background: #fff;
+    max-height: calc(100vh - 320px);
+    padding: 10px;
+    width: 100%;
 }
 
 div.logline {
-	padding: 1px 5px 1px 10px;
-	/* font-family: monospace; */
-	font-size: 11px;
-	white-space: nowrap;
-	letter-spacing: 1.1px;
-	margin-bottom: 1px;
+    padding: 1px 5px 1px 10px;
+    /* font-family: monospace; */
+    font-size: 11px;
+    white-space: nowrap;
+    letter-spacing: 1.1px;
+    margin-bottom: 1px;
 }
 
 div.logline.even {
-	background: #f3f3f3;
+    background: #f3f3f3;
 }
 
 .newline {
-	background: #fff7e1 !important;
+    background: #fff7e1 !important;
 }
 
 .color .lognotice {
-	color: #333333;
+    color: #333333;
 }
 
 .color .logerror {
-	color: #EA2027;
-	font-weight: bold;
+    color: #EA2027;
+    font-weight: bold;
 }
 
 .color .logwarning {
-	color: #FF4400;
+    color: #FF4400;
 }
 
 .color .logdeprecated {
-	color: #C337F7;
+    color: #C337F7;
 }
 
 .color .newline {
-	background: #fff7e1 !important;
+    background: #fff7e1 !important;
 }
 
 .errorlevel {
-	background-color: #e84118;
-	color: #fff;
-	padding: 10px;
-	margin-bottom: 10px;
+    background-color: #e84118;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .messagelevel {
-	background-color: #40739e;
-	color: #fff;
-	padding: 10px;
-	margin-bottom: 10px;
+    background-color: #40739e;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 /**
@@ -77,93 +77,112 @@ div.logline.even {
  */
 
 .table-errlog {
-    border: 2px solid white; 
+    border: 2px solid white;
     width: 100%;
     min-width: 700px;
-    font-size:12px;
+    font-size: 12px;
 }
-.table-errlog tr.odd td{
-    background-color: #f7f7f7!important;
+
+.table-errlog tr.odd td {
+    background-color: #f7f7f7 !important;
 }
-.table-errlog td, .table-errlog th{
+
+.table-errlog td,
+.table-errlog th {
     vertical-align: top;
-    padding:3px;
+    padding: 3px;
     border: 1px solid lightgrey;
     border-bottom: 2px solid lightgray;
-}.table-errlog th{
+}
+
+.table-errlog th {
     text-align: center;
 }
-.table-errlog td:nth-of-type(3){
-    text-align: right; 
+
+.table-errlog td:nth-of-type(3) {
+    text-align: right;
     white-space: nowrap;
-}    
-.table-errlog td:nth-of-type(1){ 
+}
+
+.table-errlog td:nth-of-type(1) {
     text-align: center;
-    width: 60px; 
+    width: 60px;
 }
-.table-errlog tr.color-red td{
-    background-color: #f7eaea!important;
+
+.table-errlog tr.color-red td {
+    background-color: #f7eaea !important;
 }
-span.file{
+
+span.file {
     font-family: courier;
     font-size: 12.5px;
     color: #0c33de;
 }
 
-div.tool-header{
-    display:block;
-    background:#f7f7f7;
-    padding: 3px;    
-}
-div.tool-header h2{
-    float:left;
+div.tool-header {
+    display: block;
+    background: #f7f7f7;
+    padding: 3px;
 }
 
-.tool-header:after{
+div.tool-header h2 {
+    float: left;
+}
+
+.tool-header:after {
     content: "";
     display: table;
     clear: both;
 }
-ul.header-links{
-    padding:6px;
+
+ul.header-links {
+    padding: 6px;
     list-style-type: none;
     display: inline;
-    float:right;
+    float: right;
 }
-ul.header-links li {    
+
+ul.header-links li {
     display: inline;
     font-size: 14px;
     margin: 3px 2px;
     line-height: 140%;
 }
+
 ul.header-links li a {
     text-decoration: none;
     background: #fff;
     padding: 3px 7px;
 }
-li.reload-link{
+
+li.reload-link {
     color: #ff0000;
 }
-li.delete-link a{
+
+li.delete-link a {
     color: #ff0000;
 }
-ul.header-links li.viewlink{
+
+ul.header-links li.viewlink {
     font-weight: bold;
     font-size: 12px;
     margin-left: 0px;
 }
-ul.header-links li.viewlink a{
+
+ul.header-links li.viewlink a {
     padding: 3px 4px;
     border-radius: 5px;
     border: 1px solid lightgray;
     color: grey;
 }
 
-ul.header-links li.active a, ul.header-links li.viewlink a:hover{
-    -webkit-box-shadow: inset 1px 1px 4px 0px rgba(0,0,0,0.2);
-    -moz-box-shadow: inset 1px 1px 4px 0px rgba(0,0,0,0.2);
-    box-shadow: inset 1px 1px 4px 0px rgba(0,0,0,0.2);
+ul.header-links li.active a,
+ul.header-links li.viewlink a:hover {
+    -webkit-box-shadow: inset 1px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 1px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 1px 1px 4px 0px rgba(0, 0, 0, 0.2);
 }
-ul.header-links li.active a{
+
+ul.header-links li.active a {
     background-color: #f2ffd6;
 }
