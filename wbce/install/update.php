@@ -185,7 +185,6 @@ $stepID = 1;
 $dirRemove = array(
     '[ROOT]/config/',
     '[ROOT]/log/',
-    '[ROOT]/var/',
     '[ACCOUNT]/email_templates/',
     '[ACCOUNT]/functions/',
     '[ACCOUNT]/languages/',

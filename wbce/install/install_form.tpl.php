@@ -106,6 +106,8 @@ function change_os(type) {
                     <td><?php echo $sDirModules ?></td>
                 </tr>
                 <tr>
+                    <td><?php print $wb_root?>/var/</td>
+                    <td><?php echo $sDirVar ?></td>
                     <td><?php print $wb_root?>/temp/</td>
                     <td><?php echo $sDirTemp ?></td>
                 </tr>

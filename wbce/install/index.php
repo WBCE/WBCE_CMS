@@ -208,6 +208,16 @@ if (is_writable('../languages/')) {
     $installFlag = false;
 }
 
+if (is_writable('../var/')) {
+    $sDirVar= '<span class="good">Writeable</span>';
+} elseif (!file_exists('../var/')) {
+    $sDirVar= '<span class="bad">Directory Not Found</span>';
+    $installFlag = false;
+} else {
+    $sDirVar= '<span class="bad">Unwriteable</span>';
+    $installFlag = false;
+}
+
 if (is_writable('../temp/')) {
     $sDirTemp= '<span class="good">Writeable</span>';
 } elseif (!file_exists('../temp/')) {
