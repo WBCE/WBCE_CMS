@@ -12,6 +12,7 @@
  *
  */
 
-    ini_set("display_errors", "off");
-    ini_set('log_errors', 0);
-    ini_set('error_reporting', E_ALL);	// Same as error_reporting(E_ALL);
+	ini_set ("display_errors", "off");
+	ini_set ('log_errors', 0);
+	ini_set ('error_reporting', E_ALL);	// Same as error_reporting(E_ALL);
+
