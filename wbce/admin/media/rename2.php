@@ -103,6 +103,9 @@ if($admin->get_post('name') == '') {
 // Extract new name and file extension from user input
 $new_name = media_filename($admin->get_post('name'));
 $extension = media_filename($admin->get_post('extension'));
+if (substr($extension,0,1)!='.') {
+	$extension='.'.$extension;
+}
 
 if($type == 'file' && ($extension == '' || $extension == '_')) {
 	$admin->print_error($MESSAGE['MEDIA_BLANK_EXTENSION'], "rename.php?dir=$directory&id=$file_id", false);
