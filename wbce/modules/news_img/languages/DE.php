@@ -13,10 +13,10 @@
  *
  */
 
-//Modul Description
+// Modul Description
 $module_description = 'Modul zum Erstellen von Newsbeitr&auml;gen mit optionalem Beitragsbild und Beitrags-Bildergalerie. Siehe README.md für weitere Informationen';
 
-//Variables for the backend
+// Variables for the backend
 $MOD_NEWS_IMG['ACTION'] = "Markierte Beiträge";
 $MOD_NEWS_IMG['ACTIVATE'] = "aktivieren";
 $MOD_NEWS_IMG['ACTIVATE_POST'] = "Beitrag aktivieren";
@@ -63,7 +63,6 @@ $MOD_NEWS_IMG['MOVE_WITH_TAGS'] = "verschieben (inkl. Stichworte)";
 $MOD_NEWS_IMG['NEW_POST'] = 'Neuen Beitrag verfassen';
 $MOD_NEWS_IMG['NEWEST_FIRST'] = 'neueste zuerst';
 $MOD_NEWS_IMG['NONE'] = "keine";
-$MOD_NEWS_IMG['NONE'] = "Keine";
 $MOD_NEWS_IMG['OPTIONS'] ='Einstellungen';
 $MOD_NEWS_IMG['OR'] = 'oder';
 $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] = 'Die Einstellung &quot;benutzerdefiniert&quot; erlaubt das manuelle Sortieren der Beitr&auml;ge &uuml;ber auf-/ab-Pfeile.';
@@ -90,8 +89,7 @@ $MOD_NEWS_IMG['USE_SECOND_BLOCK_HINT'] = 'Muss vom Template unterstützt werden'
 $MOD_NEWS_IMG['VIEW'] = 'Vorlage / Sicht';
 $MOD_NEWS_IMG['VIEW_INFO'] = 'Nach dem &Auml;ndern der Einstellung speichern; danach wird automatisch das Markup für Beitragsliste und -details angepasst.';
 
-
-//image settings
+// Image settings
 $MOD_NEWS_IMG['CROP'] = 'Beschneiden';
 $MOD_NEWS_IMG['GALLERY'] = 'Bildergalerie';
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'Nach dem &Auml;ndern der Galerie-Einstellung speichern; danach wird automatisch das Markup angepasst.';
@@ -110,18 +108,18 @@ $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Klicken, um Dateien hinzuzuf&uuml;gen';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Keine Dateien hochgeladen.';
 $MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Speichern Sie Ihre &Auml;nderungen, um den Upload in der Galerie anzuzeigen';
 
-//Variables for the frontend
+// Variables for the frontend
+$MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Seite nicht gefunden';
 $MOD_NEWS_IMG['TEXT_AT'] = 'um';
 $MOD_NEWS_IMG['TEXT_BACK'] = 'Zur&uuml;ck zur &Uuml;bersicht';
 $MOD_NEWS_IMG['TEXT_BY'] = 'von';
 $MOD_NEWS_IMG['TEXT_LAST_CHANGED'] = 'Zuletzt ge&auml;ndert am';
+$MOD_NEWS_IMG['TEXT_NEXT_POST'] = 'N&auml;chster Beitrag';
 $MOD_NEWS_IMG['TEXT_O_CLOCK'] = 'Uhr';
 $MOD_NEWS_IMG['TEXT_ON'] = 'am';
-$MOD_NEWS_IMG['TEXT_NEXT_POST'] = 'N&auml;chster Beitrag';
 $MOD_NEWS_IMG['TEXT_POSTED_BY'] = 'Ver&ouml;ffentlicht von';
 $MOD_NEWS_IMG['TEXT_PREV_POST'] = 'Voriger Beitrag';
 $MOD_NEWS_IMG['TEXT_READ_MORE'] = 'Weiterlesen...';
 $MOD_NEWS_IMG['TEXT_RESET'] = 'Zurücksetzen';
-$MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Seite nicht gefunden';
+$MOD_NEWS_IMG['TO'] = "zu";
 $MOD_NEWS_IMG['IMPORT'] = 'importieren';
-

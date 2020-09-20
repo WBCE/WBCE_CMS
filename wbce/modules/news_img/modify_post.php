@@ -138,7 +138,7 @@ while ($a=$assigned_tags->fetchRow()) {
 }
 
 // Create new order object and reorder
-$order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_{id');
+$order = new order(TABLE_PREFIX.'mod_news_img_img', 'position', 'id', 'post_id');
 $order->clean($post_id);
 
 // get images

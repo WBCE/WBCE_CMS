@@ -13,10 +13,10 @@
  *
  */
 
-//Modul Description
+// Modul Description
 $module_description = 'Módulo para criar itens de notícias com imagem e galeria de itens (opcional).';
 
-//Variables for the backend
+// Variables for the backend
 $MOD_NEWS_IMG['ACTION'] = 'Postagens marcadas';
 $MOD_NEWS_IMG['ACTIVATE'] = 'ativar';
 $MOD_NEWS_IMG['ACTIVATE_POST'] = 'ativar postagem';
@@ -64,11 +64,13 @@ $MOD_NEWS_IMG['NEW_POST'] = 'Criar nova postagem';
 $MOD_NEWS_IMG['NEWEST_FIRST'] = 'mais recente no topo';
 $MOD_NEWS_IMG['NONE'] = 'Nenhum';
 $MOD_NEWS_IMG['OPTIONS'] = 'Opções';
+$MOD_NEWS_IMG['OR'] = 'or'; //missing
 $MOD_NEWS_IMG['ORDER_CUSTOM_INFO'] = 'A configuração &quot;personalizado&quot; permite a classificação manual de artigos através das setas para cima / para baixo.';
 $MOD_NEWS_IMG['ORDERBY'] = 'Ordenar por';
 $MOD_NEWS_IMG['OVERVIEW_SETTINGS'] = 'Configurações da página Visão geral';
 $MOD_NEWS_IMG['POST_ACTIVE'] = 'A postagem está visível';
 $MOD_NEWS_IMG['POST_CONTENT'] = 'Publicar conteúdo';
+$MOD_NEWS_IMG['POST_INACTIVE'] = 'Post is not visible'; //missing
 $MOD_NEWS_IMG['POST_SETTINGS'] = 'Configurações de postagem';
 $MOD_NEWS_IMG['POSTED_BY'] = 'Postado por';
 $MOD_NEWS_IMG['POSTS'] = 'Postagens';
@@ -87,7 +89,7 @@ $MOD_NEWS_IMG['USE_SECOND_BLOCK_HINT'] = 'Deve ser suportado pelo modelo';
 $MOD_NEWS_IMG['VIEW'] = 'Apresentação / Visualização';
 $MOD_NEWS_IMG['VIEW_INFO'] = 'Depois de alterar a configuração, pressione salvar; as marcações para exibição de loop de postagem e detalhes da postagem serão ajustadas automaticamente.';
 
-//image settings
+// Image settings
 $MOD_NEWS_IMG['CROP'] = 'Colheita';
 $MOD_NEWS_IMG['GALLERY'] = 'Galeria de imagens';
 $MOD_NEWS_IMG['GALLERY_INFO'] = 'Depois de alterar a configuração da galeria, pressione salvar; a marcação para o loop da imagem será ajustada automaticamente.';
@@ -100,14 +102,13 @@ $MOD_NEWS_IMG['TEXT_DEFAULTS'] = 'Tamanhos padrão';
 $MOD_NEWS_IMG['TEXT_DEFAULTS_CLICK'] = 'Clique para escolher entre os padrões';
 $MOD_NEWS_IMG['THUMB_SIZE'] = 'Tamanho da miniatura';
 
-
-//Uploader
+// Uploader
 $MOD_NEWS_IMG['DRAG_N_DROP_HERE'] = 'Arraste &amp; solte arquivos aqui';
 $MOD_NEWS_IMG['CLICK_TO_ADD'] = 'Clique para adicionar arquivos';
 $MOD_NEWS_IMG['NO_FILES_UPLOADED'] = 'Nenhum arquivo enviado.';
 $MOD_NEWS_IMG['COMPLETE_MESSAGE'] = 'Salve suas alterações para mostrar o upload na galeria';
 
-//Variables for the frontend
+// Variables for the frontend
 $MOD_NEWS_IMG['PAGE_NOT_FOUND'] = 'Página não encontrada';
 $MOD_NEWS_IMG['TEXT_AT'] = 'às';
 $MOD_NEWS_IMG['TEXT_BACK'] = 'De volta';
