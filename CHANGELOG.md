@@ -2,7 +2,114 @@
 This CHANGELOG was automatically created from a local WBCE Git repository.
 The changelog may therefore not be correct or up-to date.
 Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) repository for the most up to-date version.
+
 ## Auto generated Git commit history
+
+ * **2020-09-20:** Colinax [[2e44be49](https://github.com/WBCE/WBCE_CMS/commit/2e44be49ccd5b64f9a78e23d0becbc915a4b9f05)]
+   > Update Version to 1.4.5-rc.1
+
+ * **2020-09-20:** Colinax [[d387af45](https://github.com/WBCE/WBCE_CMS/commit/d387af450adb909fc1438dffc8c11aa356c68892)]
+   > NWI 5.0.7
+
+ * **2020-09-16:** Colinax [[9f78ac04](https://github.com/WBCE/WBCE_CMS/commit/9f78ac0461b0c4efdfb38c00ae6a1d1a2ea2a336)]
+   > add var folder again
+
+ * **2020-09-16:** Colinax [[911efc3c](https://github.com/WBCE/WBCE_CMS/commit/911efc3c8de1068870bc2d01a3a5b17446231aef)]
+   > Revert "Errorlogger 1.2"
+     This reverts commit 1a379cb770c2927fab04e4d87e047a69b85f0a0b.
+
+ * **2020-09-16:** instantflorian [[462864b6](https://github.com/WBCE/WBCE_CMS/commit/462864b6fe5ca16aea882fe515cd1124381c1699)]
+   > Fix for #490
+
+ * **2020-09-15:** Colinax [[b269c810](https://github.com/WBCE/WBCE_CMS/commit/b269c810362629a6c8a929fec53f8eaa0f9c1983)]
+   > remove not needed folders
+
+ * **2020-09-15:** Colinax [[1a379cb7](https://github.com/WBCE/WBCE_CMS/commit/1a379cb770c2927fab04e4d87e047a69b85f0a0b)]
+   > Errorlogger 1.2
+
+ * **2020-09-15:** Colinax [[200f3acb](https://github.com/WBCE/WBCE_CMS/commit/200f3acb508716744679544494252816343c02e3)]
+   > update normalize.css
+
+ * **2020-09-12:** Colinax [[4da6ae60](https://github.com/WBCE/WBCE_CMS/commit/4da6ae60110cf279e53c5d17f50710cae3bc898a)]
+   > CKEditor 4.15.0
+
+ * **2020-08-30:** Colinax [[9a430c5f](https://github.com/WBCE/WBCE_CMS/commit/9a430c5f8bd779ec3ed2bb1a1fdcfbd81e07ccbd)]
+   > PHPMailer 6.1.7
+
+ * **2020-08-17:** instantflorian [[29cedddf](https://github.com/WBCE/WBCE_CMS/commit/29cedddf80038ccb72f359253e44fc7e1c4c1b98)]
+   > Minor fixes
+
+ * **2020-08-15:** Colinax [[96de0f97](https://github.com/WBCE/WBCE_CMS/commit/96de0f97945ca4d79cd4ce769a23f206a590ce22)]
+   > fix timestamp
+
+ * **2020-08-08:** Colinax [[08c6653d](https://github.com/WBCE/WBCE_CMS/commit/08c6653d64aedfb47d662d0558ae05dedf77b468)]
+   > fix typo
+
+ * **2020-08-08:** Colinax [[f03eb1fe](https://github.com/WBCE/WBCE_CMS/commit/f03eb1fe9558a91ebb87f1a0287b9fb79ccdfa8e)]
+   > cs fixer
+
+ * **2020-07-29:** instantflorian [[cd16689e](https://github.com/WBCE/WBCE_CMS/commit/cd16689e5c3af69f3d90cc0f47524887a0d413e9)]
+   > Add missing icon, thanks to kleo
+
+ * **2020-07-23:** instantflorian [[8e06436b](https://github.com/WBCE/WBCE_CMS/commit/8e06436b492d068ade206f56ff56ce2218b02da3)]
+   > Update Errorlogger to 1.1
+
+ * **2020-07-20:** instantflorian [[7b774574](https://github.com/WBCE/WBCE_CMS/commit/7b7745749ea8d5a1ef968aadfc15fe7cd2f234b7)]
+   > Link to fotorama.css in frontend.css of NWI is actually no longer needed
+
+ * **2020-07-18:** instantflorian [[2adaa092](https://github.com/WBCE/WBCE_CMS/commit/2adaa0927b11425fa9c8eed51d7af18ad9a78906)]
+   > Update info.php
+
+ * **2020-07-18:** instantflorian [[d47173f1](https://github.com/WBCE/WBCE_CMS/commit/d47173f1b00258c55fdb03c3a591e734d3d0f4ef)]
+   > Fix wrong link to fotorama
+
+ * **2020-07-17:** instantflorian [[574b4ee4](https://github.com/WBCE/WBCE_CMS/commit/574b4ee4a56992aca2cd7087b231d24d478cdf44)]
+   > Remove outdated notoolbar metatag
+
+ * **2020-07-13:** instantflorian [[d77e0f70](https://github.com/WBCE/WBCE_CMS/commit/d77e0f700153f0b3d5e7e5de04ad7f2fee068313)]
+   > Better picture previews (by bernd)
+
+ * **2020-07-13:** instantflorian [[cbb21be7](https://github.com/WBCE/WBCE_CMS/commit/cbb21be73e05004f83b2c7a8a337dfc99ee197b4)]
+   > Allow underscore
+
+ * **2020-07-12:** instantflorian [[733e5c4e](https://github.com/WBCE/WBCE_CMS/commit/733e5c4e1419bbacb300e2c86513ae9a3fd2d0b8)]
+   > Better support for Fraggy BE Theme
+
+ * **2020-07-12:** instantflorian [[4ca0e2e0](https://github.com/WBCE/WBCE_CMS/commit/4ca0e2e0eb05bc35783f6812450d766ac26d2af9)]
+   > Show thumbs by default
+
+ * **2020-07-11:** instantflorian [[c988fc02](https://github.com/WBCE/WBCE_CMS/commit/c988fc02f12e05398fd866d4e9c86687e0148d67)]
+   > Add NWI table to table list
+
+ * **2020-07-11:** instantflorian [[2dff12d8](https://github.com/WBCE/WBCE_CMS/commit/2dff12d8d9bc64b7794d0b21af02c9e0b58623c9)]
+   > Wrong check whether to install or update NWI
+
+ * **2020-07-11:** instantflorian [[66cd3faf](https://github.com/WBCE/WBCE_CMS/commit/66cd3faf4ea67524edcf5fca30e0bc8890464298)]
+   > Fix for #488 by @webdesignworx
+
+ * **2020-07-07:** instantflorian [[a9173a9a](https://github.com/WBCE/WBCE_CMS/commit/a9173a9a2db9ef67dd25b717edbfd45b88f07121)]
+   > Resore SM2_DEBUG switch
+
+ * **2020-07-06:** instantflorian [[3687759a](https://github.com/WBCE/WBCE_CMS/commit/3687759a076a96355d07d2c4152c1e860246b05e)]
+   > Fix Firefox Cookie Acceptance
+     See https://developer.mozilla.org/de/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+
+ * **2020-07-04:** Colinax [[4f52dd23](https://github.com/WBCE/WBCE_CMS/commit/4f52dd230abdd6afa217632666fccee80077c565)]
+   > CKEditor 4.14.1.1
+
+ * **2020-06-30:** instantflorian [[0cf4930f](https://github.com/WBCE/WBCE_CMS/commit/0cf4930fc93a696cb89aa13504378f271e7033bd)]
+   > Fix undefined notice
+
+ * **2020-06-30:** instantflorian [[87bdaab4](https://github.com/WBCE/WBCE_CMS/commit/87bdaab41135ba2b19e29b00f65bf0bad9d32d8a)]
+   > Fix for #485
+
+ * **2020-06-29:** instantflorian [[b593c089](https://github.com/WBCE/WBCE_CMS/commit/b593c089924f1628b6005ba18b4809ff46aacfda)]
+   > Fix Issue with Return-Path
+     thanks to digitalbricks
+
+ * **2020-06-27:** Colinax [[660c6991](https://github.com/WBCE/WBCE_CMS/commit/660c699158ed93fb32f9935cfe5bc88e0ac16c2e)]
+   > Update CHANGELOG.md
+
  * **2020-06-27:** Colinax [[892203ca](https://github.com/WBCE/WBCE_CMS/commit/892203ca5a4792555cf6bfe6fef6d5868ddfc59f)]
    > Update Version to 1.4.4
 
