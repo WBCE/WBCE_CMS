@@ -5,6 +5,12 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2020-09-27:** instantflorian [[b7c9510b](https://github.com/WBCE/WBCE_CMS/commit/b7c9510bc40d4e3ce36de482bc3d05dd7d1077ef)]
+   > Update version.php
+
+ * **2020-09-20:** Colinax [[0c3e4bc5](https://github.com/WBCE/WBCE_CMS/commit/0c3e4bc59bee6f5933383478eeef10315b03bda3)]
+   > Update CHANGELOG.md
+
  * **2020-09-20:** Colinax [[2e44be49](https://github.com/WBCE/WBCE_CMS/commit/2e44be49ccd5b64f9a78e23d0becbc915a4b9f05)]
    > Update Version to 1.4.5-rc.1
 
