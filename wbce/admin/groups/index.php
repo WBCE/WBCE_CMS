@@ -33,8 +33,8 @@ $template->set_var(array(
 );
 
 // Get existing groups from database (and get users in that group)
-$query = "SELECT g.group_id, CONCAT(name,' (',COUNT(u.group_id),')') AS name
-            FROM {TP}groups AS g LEFT JOIN {TP}users AS u
+$query = "SELECT g.group_id, CONCAT(`name`,' (',COUNT(u.group_id),')') AS `name`
+            FROM `{TP}groups` AS g LEFT JOIN `{TP}users` AS u
             ON (g.group_id = u.group_id
             OR FIND_IN_SET(g.group_id, u.groups_id) > '0')
             WHERE g.group_id != '1'
