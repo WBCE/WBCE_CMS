@@ -37,7 +37,7 @@ switch ($action) {
         }
 
         // Get existing values
-        $results = $database->query("SELECT * FROM " . TABLE_PREFIX . "groups WHERE group_id = '" . $group_id . "'");
+		$results = $database->query("SELECT * FROM `" . TABLE_PREFIX . "groups` WHERE `group_id` = '" . $group_id . "'");
         $group = $results->fetchRow();
         // Setup template object, parse vars to it, then parse it
         // Create new template object
