@@ -931,6 +931,9 @@ if (!defined('THEME_PATH')) {
                             echo '</form>';
                         }
 
+                        // make the session cookie to a first party cookie
+                        Settings::Set('app_name', 'phpsessid-'.$session_rand = mt_rand(1000, 9999));
+
                         // Truncate dbsessions
                         $database->query("TRUNCATE `".TABLE_PREFIX."dbsessions`");
 
