@@ -1,196 +1,93 @@
 <?php
 /**
-    @file mimeconvert.php
-    @brief File contains a small class to allow conversions from file extensions to mimetypes and vice versa.
+ * @file mimeconvert.php
+ * @brief File contains a small class to allow conversions from file extensions to mimetypes and vice versa.
+ *
+ * @author norbert Heimsath (heimsath.org)
+ * @copyright GPLv2 or any later version http://www.gnu.de/documents/gpl-2.0.en.html
+ * @version 1.2.0
+ *
+ * There is no separation of data and functionality, as i wanted it all to be just one file for easy import into projects.
+ * The file is documented in Doxygen format.
+ *
+ * A far more complex soloution can be found here:
+ * https://github.com/ralouphie/mimey
+ */
 
-    @author norbert Heimsath (heimsath.org) 
-    @copyright GPLv2 or any later version http://www.gnu.de/documents/gpl-2.0.en.html
-    @version 1.2.0 
-
-    There is no separation of data and functionality, as i wanted it all to be just one file for easy import into projects.
-    The file is documented in Doxygen format.  
-
-    A far more complex soloution can be found here:
-    https://github.com/ralouphie/mimey
-*/
 /**
-    @brief Small class to allow conversions from file extensions to mimetypes and vice versa.
- 
-    Using getters to have a smooth loot on the outside 
-
-    @code
-        getMimeToExtension();     // first only 
-        getMimeToExtensionAll();  // array containing all 
-        getExtensionToMime();     // first and only  
-    @endcode
- 
-
-    *Simple usage example* 
-    @code
-
-        <?php
-        // Its best to call this in console , for browser , replace \n whith <br>
-
-        // load the class
-        include "mimeconvert.php";
-
-        // Initialize
-        $oConvert=new mimeConvert;
-
-        echo "\nMime get all extensions:\n";
-        print_r ($oConvert->getMimeToExtensionAll('application/xv+xml'));
-
-        echo "\nMime get first extensions:\n";
-        echo  ($oConvert->getMimeToExtension('application/xv+xml'));
-
-        echo "\nGet mimetpe by extension:\n";
-        echo ($oConvert->getExtensionToMime ('jpg'));
-
-        echo "\n";
-
-    @endcode 
-
-    @notice If you use this in a kind of dowloadscript it may be a good idea to set all files you can not identify 
-            to a value of  "application/octet-stream". Same if you want to force downloading instead of display. 
-*/
-class mimeConvert {
-
-    /**
-        @brief Array to store the mime and file extension data
-
-        @var array $aExtensionsToMimes
-
-        By using a static var we avoid loading the data array over and over again 
-        when opening multiple instances as its contents never change.    
-    */
-    protected static $aExtensionsToMimes=array();
-
+ * @brief Small class to allow conversions from file extensions to mimetypes and vice versa.
+ *
+ * Using getters to have a smooth loot on the outside
+ *
+ * @code
+ * getMimeToExtension();     // first only
+ * getMimeToExtensionAll();  // array containing all
+ * getExtensionToMime();     // first and only
+ * @endcode
+ *Simple usage example*
+ * @code
+ *
+ * <?php
+ * // Its best to call this in console , for browser , replace \n whith <br>
+ *
+ * // load the class
+ * include "mimeconvert.php";
+ *
+ * // Initialize
+ * $oConvert=new mimeConvert;
+ *
+ * echo "\nMime get all extensions:\n";
+ * print_r ($oConvert->getMimeToExtensionAll('application/xv+xml'));
+ *
+ * echo "\nMime get first extensions:\n";
+ * echo  ($oConvert->getMimeToExtension('application/xv+xml'));
+ *
+ * echo "\nGet mimetpe by extension:\n";
+ * echo ($oConvert->getExtensionToMime ('jpg'));
+ *
+ * echo "\n";
+ *
+ * @endcode
+ *
+ * @notice If you use this in a kind of dowloadscript it may be a good idea to set all files you can not identify
+ * to a value of  "application/octet-stream". Same if you want to force downloading instead of display.
+ */
+class mimeConvert
+{
 
     /**
-        @brief Constructor loads the data arrays needed
+     * @brief Array to store the mime and file extension data
+     *
+     * @var array $aExtensionsToMimes
+     *
+     * By using a static var we avoid loading the data array over and over again
+     * when opening multiple instances as its contents never change.
+     */
+    protected static $aExtensionsToMimes = array();
 
-        Loads static into the class if not already loaded.  
-    */
-    public function __construct() {
-        
-        // load the basic array if not already loaded 
+
+    /**
+     * @brief Constructor loads the data arrays needed
+     *
+     * Loads static into the class if not already loaded.
+     */
+    public function __construct()
+    {
+
+        // load the basic array if not already loaded
         if (!count(self::$aExtensionsToMimes)) {
-            self::$aExtensionsToMimes=$this->fetchDataArray();
-        } 
-   
-    } 
-
-    /**
-        @brief Returns possible extensions for a certain mimetype.
-
-        If you use *$bOnlyFirst=true* you can use the method for direct conversion, 
-        but you need to keep in mind that only the first extension is returned.  
-
-        @param string $sMime The mimetype to get extensions for.  
-        @param boolean $bOnlyFirst Default is false, set to true to get only the first extension found. 
-     
-        @return boolean Returns false , if nothing is found.     
-        @return string Returns a sring if set to  $bOnlyFirst=true containing the file extension. 
-        @return array Returns an array of extensions found (Default behavior).  
-    */
-    protected function MimeToExtension ($sMime, $bOnlyFirst=true) {
-
-        // remove invalid chars, make it more error resistant.
-        $sMime= preg_replace ( '/[^a-z0-9\/\-\.\+]/i', '', $sMime ); 
-        $sMime= trim($sMime);
-        $sMime= strtolower($sMime);     
-        
-        // fetch result 
-        $aExtensions= array_keys (self::$aExtensionsToMimes, $sMime);
-        
-        // false on no result
-        if (empty($aExtensions))  return false;
-
-        // We only want first result
-        if ($bOnlyFirst) return $aExtensions[0];
-
-        // default , return an array 
-        return $aExtensions;
-        
-    }
-
-
-/**
-    @brief simplyfied function to fetch  Extension 
-     
-    @param string $sMime The mimetype to get extensions for.
-
-    @return boolean Returns false , if nothing is found.     
-    @return string Returns a sring if set to  $bOnlyFirst=true containing the file extension. 
-*/
-
-    public function getMimeToExtension($sMime){
-       return  $this->MimeToExtension ($sMime, $bOnlyFirst=true);
-    }
-
-
-/**
-    @brief Simplyfied function to fetch all extensions 
-     
-    @param string $sMime The mimetype to get extensions for.
-
-    @return boolean Returns false , if nothing is found.
-    @return array Returns an array of extensions found 
-*/
-
-    public function getMimeToExtensionAll($sMime){
-       return  $this->MimeToExtension ($sMime, $bOnlyFirst=false);
-    }
-
-/**
-    @brief Simplyfied function to fetch mimetype 
-     
-    @param string    $sExtension   The mimetype to get extensions for.
-
-    @return boolean  Returns false , if nothing is found.     
-    @return string   Returns a sring containing the file extension. 
-*/
-
-    public function getExtensionToMime($sExtension){
-       return  $this->ExtensionToMime ($sExtension);
-    }
-
-
-
-    /**
-        @brief Have a file extension (.doc|.gif|.jpg) and get it's corresponding mime type.
-
-        @param string $sExtension The extension to find a mimetype for. 
-
-        @return boolean Returns false , if nothing is found.
-        @return string The mimetype found for this file extension.  
-          
-    */
-    protected function ExtensionToMime ($sExtension) {
-        
-        // remove invalid chars, make it more error resistant.
-        $sExtension= preg_replace ( '/[^a-z0-9]/i', '', $sExtension ); 
-        $sExtension= trim($sExtension);
-        $sExtension= strtolower($sExtension);     
-
-        // just fetch the result from the array 
-        if (isset(self::$aExtensionsToMimes[$sExtension])) { 
-            return self::$aExtensionsToMimes[$sExtension];
+            self::$aExtensionsToMimes = $this->fetchDataArray();
         }
-
-        // nothing found 
-        return false;
     }
 
-
-
     /**
-        @brief Simply returns the mime<->xtension data as an array. 
-
-        @return array Returns the Data array.   
-    */
-    protected function fetchDataArray(){
-        $aDataArray= array (
+     * @brief Simply returns the mime<->xtension data as an array.
+     *
+     * @return array Returns the Data array.
+     */
+    protected function fetchDataArray()
+    {
+        $aDataArray = array(
             'ez' => 'application/andrew-inset',
             'aw' => 'application/applixware',
             'atom' => 'application/atom+xml',
@@ -1176,7 +1073,109 @@ class mimeConvert {
         );
         return $aDataArray;
     }
+
+    /**
+     * @brief simplyfied function to fetch  Extension
+     *
+     * @param string $sMime The mimetype to get extensions for.
+     *
+     * @return boolean Returns false , if nothing is found.
+     * @return string Returns a sring if set to  $bOnlyFirst=true containing the file extension.
+     */
+
+    public function getMimeToExtension($sMime)
+    {
+        return $this->MimeToExtension($sMime, $bOnlyFirst = true);
+    }
+
+    /**
+     * @brief Returns possible extensions for a certain mimetype.
+     *
+     * If you use *$bOnlyFirst=true* you can use the method for direct conversion,
+     * but you need to keep in mind that only the first extension is returned.
+     *
+     * @param string $sMime The mimetype to get extensions for.
+     * @param boolean $bOnlyFirst Default is false, set to true to get only the first extension found.
+     *
+     * @return boolean Returns false , if nothing is found.
+     * @return string Returns a sring if set to  $bOnlyFirst=true containing the file extension.
+     * @return array Returns an array of extensions found (Default behavior).
+     */
+    protected function MimeToExtension($sMime, $bOnlyFirst = true)
+    {
+
+        // remove invalid chars, make it more error resistant.
+        $sMime = preg_replace('/[^a-z0-9\/\-\.\+]/i', '', $sMime);
+        $sMime = trim($sMime);
+        $sMime = strtolower($sMime);
+
+        // fetch result
+        $aExtensions = array_keys(self::$aExtensionsToMimes, $sMime);
+
+        // false on no result
+        if (empty($aExtensions)) {
+            return false;
+        }
+
+        // We only want first result
+        if ($bOnlyFirst) {
+            return $aExtensions[0];
+        }
+
+        // default , return an array
+        return $aExtensions;
+    }
+
+    /**
+     * @brief Simplyfied function to fetch all extensions
+     *
+     * @param string $sMime The mimetype to get extensions for.
+     *
+     * @return boolean Returns false , if nothing is found.
+     * @return array Returns an array of extensions found
+     */
+
+    public function getMimeToExtensionAll($sMime)
+    {
+        return $this->MimeToExtension($sMime, $bOnlyFirst = false);
+    }
+
+    /**
+     * @brief Simplyfied function to fetch mimetype
+     *
+     * @param string $sExtension The mimetype to get extensions for.
+     *
+     * @return boolean  Returns false , if nothing is found.
+     * @return string   Returns a sring containing the file extension.
+     */
+
+    public function getExtensionToMime($sExtension)
+    {
+        return $this->ExtensionToMime($sExtension);
+    }
+
+    /**
+     * @brief Have a file extension (.doc|.gif|.jpg) and get it's corresponding mime type.
+     *
+     * @param string $sExtension The extension to find a mimetype for.
+     *
+     * @return boolean Returns false , if nothing is found.
+     * @return string The mimetype found for this file extension.
+     */
+    protected function ExtensionToMime($sExtension)
+    {
+
+        // remove invalid chars, make it more error resistant.
+        $sExtension = preg_replace('/[^a-z0-9]/i', '', $sExtension);
+        $sExtension = trim($sExtension);
+        $sExtension = strtolower($sExtension);
+
+        // just fetch the result from the array
+        if (isset(self::$aExtensionsToMimes[$sExtension])) {
+            return self::$aExtensionsToMimes[$sExtension];
+        }
+
+        // nothing found
+        return false;
+    }
 }
-
-
-

@@ -1,17 +1,13 @@
 <?php
-
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
- * 
- * 
- * @category   framework
- * @package    Mailer | This class is being used for implementation of PHPMailer in the WBCE CMS
- * @copyright  Ryan Djurovich (2004-2009)
- * @copyright  WebsiteBaker Org. e.V. (2009-2015)
- * @copyright  WBCE Project (2015-)
- * @license    GNU GPL2 (or any later version)
+ * Visit https://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 if (!defined('WB_PATH')) {
@@ -32,9 +28,10 @@ require $sPath . '/POP3.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class Mailer extends PHPMailer {
-
-    function __construct($exceptions = false) {
+class Mailer extends PHPMailer
+{
+    public function __construct($exceptions = false)
+    {
         parent::__construct($exceptions);
 
         $aCfg = $this->_getMailerCfg();
@@ -49,20 +46,20 @@ class Mailer extends PHPMailer {
             $oMailer->IsMail(); // use PHP mail() function for outgoing mails send by the CMS
         } elseif (isset($aCfg['routine']) && $aCfg['routine'] == "smtp") {
             // use SMTP for all outgoing mails send by the CMS
-            $oMailer->isSMTP(); 
-            $oMailer->set('SMTPAuth', false);                  // enable SMTP authentication
-            $oMailer->set('Host', $aCfg['smtp_host']);         // Set the hostname of the mail server
-            $oMailer->set('Port', $aCfg['smtp_port']);         // Set the SMTP port number - likely to be 25, 465 or 587
+            $oMailer->isSMTP();
+            $oMailer->set('SMTPAuth', false); // enable SMTP authentication
+            $oMailer->set('Host', $aCfg['smtp_host']); // Set the hostname of the mail server
+            $oMailer->set('Port', $aCfg['smtp_port']); // Set the SMTP port number - likely to be 25, 465 or 587
             $oMailer->set('SMTPSecure', $aCfg['smtp_secure']); // Set the encryption system to use - ssl (deprecated) or tls
-            $oMailer->set('SMTPKeepAlive', false);             // SMTP connection will be close after each email sent
+            $oMailer->set('SMTPKeepAlive', false); // SMTP connection will be close after each email sent
             // check if SMTP authentification is required
             if (
-                $aCfg['smtp_auth'] == true 
-                && (mb_strlen($aCfg['smtp_username']) > 1) 
+                $aCfg['smtp_auth'] == true
+                && (mb_strlen($aCfg['smtp_username']) > 1)
                 && (mb_strlen($aCfg['smtp_password']) > 1)
             ) {
                 // use SMTP authentification
-                $oMailer->set('SMTPAuth', true);                   // enable SMTP authentication
+                $oMailer->set('SMTPAuth', true); // enable SMTP authentication
                 $oMailer->set('Username', $aCfg['smtp_username']); // set SMTP username
                 $oMailer->set('Password', $aCfg['smtp_password']); // set SMTP password
 
@@ -87,14 +84,14 @@ class Mailer extends PHPMailer {
                 $from_name = $_SESSION['DISPLAY_NAME'];
             } else {
                 // FROM NAME: set default name
-                $from_name = $aCfg['default_sendername']; 
+                $from_name = $aCfg['default_sendername'];
             }
         }
 
-        $oMailer->setFrom($aCfg['server_email'],$from_name );
+        $oMailer->setFrom($aCfg['server_email'], $from_name);
 
         // ***************************
-        //  set default mail formats      
+        //  set default mail formats
         // ***************************
         $oMailer->set('WordWrap', 80);
         $oMailer->set('Timeout', 30);
@@ -104,31 +101,32 @@ class Mailer extends PHPMailer {
     }
 
     /**
-     * @brief  Gather the Mailer data array. 
-     *         If there is an array in the WB_PATH.'/config_mail.php' 
-     *         file, this config will be prefered over the data from 
+     * @brief  Gather the Mailer data array.
+     *         If there is an array in the WB_PATH.'/config_mail.php'
+     *         file, this config will be prefered over the data from
      *         the database.
      *
      * @return array
      */
-    public function _getMailerCfg() {
+    public function _getMailerCfg()
+    {
         $aCfg = array(
-            'routine'            => 'phpmail',     // required (may be set to 'smtp')
-            'server_email'       => '',            // required
+            'routine' => 'phpmail', // required (may be set to 'smtp')
+            'server_email' => '', // required
             'default_sendername' => 'WBCE Mailer', // required
-            'smtp_host'          => '',            // required if SMPT
-            'smtp_secure'        => '',            // required if SMPT
-            'smtp_port'          => 25,            // required						
-            'smtp_auth'          => false,
-            'smtp_username'      => '',
-            'smtp_password'      => ''
+            'smtp_host' => '', // required if SMPT
+            'smtp_secure' => '', // required if SMPT
+            'smtp_port' => 25, // required
+            'smtp_auth' => false,
+            'smtp_username' => '',
+            'smtp_password' => ''
         );
 
         // ***********************************************************
         // Get mailer settings from file if file exists
         // WB_PATH/include/PHPMailer/config_mail.php file, if present
         // ***********************************************************
-        $aCfgOverride = array(); 
+        $aCfgOverride = array();
         $sConfigFile = WB_PATH . '/include/PHPMailer/config_mail.php';
         if (is_readable($sConfigFile)) {
             $aCfgOverride = include $sConfigFile;
@@ -136,13 +134,13 @@ class Mailer extends PHPMailer {
         if (is_array($aCfgOverride) && !empty($aCfgOverride)) {
             #$aCfg = array();
             $aCfg = $aCfgOverride;
-        } else {            
+        } else {
             // *******************************************************
             //  Get mailer settings from Database.
             // *******************************************************
-            //                        
+            //
             //  The following DB Fields will be retrieved from the DB:
-            //  
+            //
             //   'server_email',
             //   'wbmailer_routine',
             //   'wbmailer_default_sendername',
@@ -150,17 +148,17 @@ class Mailer extends PHPMailer {
             //   'wbmailer_smtp_auth',
             //   'wbmailer_smtp_username',
             //   'wbmailer_smtp_password',
-            //   
+            //
             //   New settings added with WBCE 1.3.4
             //   ----------------------------------
             //   'wbmailer_smtp_port',
             //   'wbmailer_smtp_secure',
             // *******************************************************
             $sSql = "SELECT * FROM `{TP}settings` "
-                    . "WHERE `name` LIKE ('wbmailer_%') OR `name` = 'server_email'";
+                . "WHERE `name` LIKE ('wbmailer_%') OR `name` = 'server_email'";
             $rData = $GLOBALS['database']->query($sSql);
 
-            while ($rec = $rData->fetchRow(MYSQL_ASSOC)) {
+            while ($rec = $rData->fetchRow(MYSQLI_ASSOC)) {
                 $sKey = str_replace('wbmailer_', '', $rec['name']);
                 $aCfg[$sKey] = $rec['value'];
 
@@ -169,7 +167,7 @@ class Mailer extends PHPMailer {
                         $this->setError('Server E-Mail is empty or not valid');
                     }
                 }
-                
+
                 if ($aCfg['routine'] == "smtp") {
                     switch ($rec['name']) {
                         case 'server_email':
@@ -185,7 +183,7 @@ class Mailer extends PHPMailer {
                             $aCfg['smtp_secure'] = strtolower($rec['value']);
                             break;
                         case 'wbmailer_smtp_auth':
-                            $aCfg['smtp_auth'] = (bool) $rec['value'];
+                            $aCfg['smtp_auth'] = (bool)$rec['value'];
                             break;
                         case 'wbmailer_smtp_username':
                             $aCfg['smtp_username'] = $rec['value'];
@@ -206,12 +204,12 @@ class Mailer extends PHPMailer {
     }
 
     /**
-     * @brief  Send messages using Sendmail. 
+     * @brief  Send messages using Sendmail.
      *         Will override isSendmail() in parent class.
      * @return void
      */
-    public function isSendmail() 
-    {        
+    public function isSendmail()
+    {
         $ini_sendmail_path = ini_get('sendmail_path');
         if (!preg_match('/sendmail$/i', $ini_sendmail_path)) {
             if ($this->exceptions) {

@@ -12,21 +12,19 @@
  * This class will be used to change the order of an item in a table
  * which contains a special order field (type must be integer)
  */
-/*******************************************************************************
+
+/**
  * abstract factory for application
  */
-/* -------------------------------------------------------- */
+
 // Must include code to stop this file being accessed directly
 if (!defined('WB_PATH')) {
     require_once dirname(__FILE__) . '/globalExceptionHandler.php';
     throw new IllegalFileException();
 }
-/* -------------------------------------------------------- */
-
 
 class order
 {
-
     const MOVE_UP = 0;
     const MOVE_DOWN = 1;
 
@@ -52,6 +50,18 @@ class order
         $this->_FieldId = $FieldId;
         $this->_FieldGroup = $FieldGroup;
     }
+
+    /**
+     * Move a row up
+     * @param string|int $id
+     * @return bool
+     */
+    public function move_up($id)
+    {
+        // Get current order
+        return $this->move($id, self::MOVE_UP);
+    }
+
     /**
      *
      * @param string|int $id
@@ -100,17 +110,6 @@ class order
     }
 
     /**
-     * Move a row up
-     * @param string|int $id
-     * @return bool
-     */
-    public function move_up($id)
-    {
-        // Get current order
-        return $this->move($id, self::MOVE_UP);
-    }
-
-    /**
      * Move a row down
      * @param string|int $id
      * @return bool
@@ -150,5 +149,4 @@ class order
         $sql .= 'ORDER BY `' . $this->_FieldOrder . '` ASC;';
         return $this->_DB->query($sql);
     }
-
 } // end of class

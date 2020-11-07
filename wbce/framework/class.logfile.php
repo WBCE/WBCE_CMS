@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * @category        event logging
  * @package         core
  * @author          Independend-Software-Team
@@ -23,12 +22,12 @@
  */
 class LogFile
 {
-
     private $_fh;            // file-handle for logfile
     private $_log_path;      // path to logfile
     private $_log_file;      // name of logfile
     private $_error = false; // store internal errors
-    /*
+
+    /**
      * class can not be instanciated standalone
      */
     protected function __construct($log_file)
@@ -36,17 +35,9 @@ class LogFile
         $this->_log_file = $log_file;
     }
 
-/*
- * open the logfile for append
- */
-    private function openLogFile()
-    {
-        $this->_fh = fopen($this->_log_path . $this->_log_file, 'ab');
-        return isset($this->_fh);
-    }
-/*
- * provide read-only properties
- */
+    /**
+     * open the logfile for append
+     */
     public function __get($property)
     {
         switch (strtolower($property)) {
@@ -57,23 +48,10 @@ class LogFile
                 return null;
         }
     }
-/*
- * flush and close logfile
- */
-    private function closeLogFile()
-    {
-        if (isset($this->_fh)) {
-            fflush($this->_fh);
-            fclose($this->_fh);
-            unset($this->_fh);
-        }
-    }
 
-/*
- * @param  string $logdir: directory to place the logfile
- * @return bool: true if directory is valid and writeable
- * @description:
- */
+    /**
+     * provide read-only properties
+     */
     public function setLogDir($logdir)
     {
         $this->_error = false;
@@ -112,10 +90,9 @@ class LogFile
         return $retval;
     }
 
-/*
- * @param string $line: preformatted message to write into the logfile
- * @return none: an error will throw a exception
- */
+    /**
+     * flush and close logfile
+     */
     protected function writeRaw($message)
     {
         array_unshift($message, (defined($_SESSION['USER_ID']) ? $_SESSION['USER_ID'] : 0));
@@ -136,14 +113,36 @@ class LogFile
         }
     }
 
-} // end of class
+    /**
+     * @param  string $logdir: directory to place the logfile
+     * @return bool: true if directory is valid and writeable
+     * @description:
+     */
+    private function openLogFile()
+    {
+        $this->_fh = fopen($this->_log_path . $this->_log_file, 'ab');
+        return isset($this->_fh);
+    }
 
-/*
- *  Errorlog handler
+    /**
+     * @param string $line: preformatted message to write into the logfile
+     * @return none: an error will throw a exception
+     */
+    private function closeLogFile()
+    {
+        if (isset($this->_fh)) {
+            fflush($this->_fh);
+            fclose($this->_fh);
+            unset($this->_fh);
+        }
+    }
+}
+
+/**
+ * Errorlog handler
  */
 class ErrorLog extends LogFile
 {
-
     private static $_instance;
 
     protected function __construct()
@@ -151,25 +150,6 @@ class ErrorLog extends LogFile
         parent::__construct('error.log');
     }
 
-    private function __clone()
-    {}
-
-    public static function handle()
-    {
-        if (!isset(self::$_instance)) {
-            $c = __CLASS__;
-            self::$_instance = new $c;
-        }
-        return self::$_instance;
-    }
-
-/*
- * @param string $message: message to write into the logfile
- * @param string $file: (optional) name of the file where the error occures
- * @param string $function: (optional) name of the function where the error occures
- * @param string $line: (optional) number of the line where the error occures
- * @return none: an error will throw a exception
- */
     public function write($message, $file = '#', $function = '#', $line = '#')
     {
         if (!is_array($message)) {
@@ -177,23 +157,6 @@ class ErrorLog extends LogFile
         }
         self::handle()->writeRaw($message);
     }
-} // end of class
-
-/*
- *  Accesslog handler
- */
-class AccessLog extends LogFile
-{
-
-    private static $_instance;
-
-    protected function __construct()
-    {
-        parent::__construct('access.log');
-    }
-
-    private function __clone()
-    {}
 
     public static function handle()
     {
@@ -204,10 +167,30 @@ class AccessLog extends LogFile
         return self::$_instance;
     }
 
-/*
- * @param string $message: message to write into the logfile
- * @return none: an error will throw a exception
+    /**
+     * @param string $message: message to write into the logfile
+     * @param string $file: (optional) name of the file where the error occures
+     * @param string $function: (optional) name of the function where the error occures
+     * @param string $line: (optional) number of the line where the error occures
+     * @return none: an error will throw a exception
+     */
+    private function __clone()
+    {
+    }
+} // end of class
+
+/**
+ * Accesslog handler
  */
+class AccessLog extends LogFile
+{
+    private static $_instance;
+
+    protected function __construct()
+    {
+        parent::__construct('access.log');
+    }
+
     public function write($message)
     {
         if (!is_array($message)) {
@@ -215,4 +198,21 @@ class AccessLog extends LogFile
         }
         self::handle()->writeRaw($message);
     }
-} // end of class
+
+    public static function handle()
+    {
+        if (!isset(self::$_instance)) {
+            $c = __CLASS__;
+            self::$_instance = new $c;
+        }
+        return self::$_instance;
+    }
+
+    /**
+     * @param string $message: message to write into the logfile
+     * @return none: an error will throw a exception
+     */
+    private function __clone()
+    {
+    }
+}

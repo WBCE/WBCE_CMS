@@ -13,17 +13,15 @@
  *                  this is a authorisised GPL-lizensed derivate from the original
  *                  ISTeasy class DseOne which is available under a cc-by-sa-3.0 license
  */
-/* -------------------------------------------------------- */
+
 // Must include code to stop this file being accessed directly
 if (!defined('WB_PATH')) {
     require_once dirname(__FILE__) . '/globalExceptionHandler.php';
     throw new IllegalFileException();
 }
-/* -------------------------------------------------------- */
 
 class DseTwo
 {
-
     const USE_ALL = 0;
     const USE_BLACKLIST = 1;
     const USE_WHITELIST = 2;
@@ -63,6 +61,7 @@ class DseTwo
     private $_TCacheFile = '';
     private $_DCachePrefix = '';
     private $_bUseCache = true;
+
     /**
      *
      * @param object $database global database object
@@ -75,6 +74,7 @@ class DseTwo
         $this->_DCachePrefix = 'Ie' . __CLASS__ . 'CacheDir';
         $this->_Queries = array();
     }
+
     /**
      *
      * @param string $name name of the property
@@ -85,15 +85,21 @@ class DseTwo
     {
         switch (strtolower($name)) {
             case 'db_handle':
-                if ($value) {$this->_db = $value;}
+                if ($value) {
+                    $this->_db = $value;
+                }
                 break;
 
             case 'db_name':
-                if ($value != '') {$this->_db_name = $value;}
+                if ($value != '') {
+                    $this->_db_name = $value;
+                }
                 break;
 
             case 'table_prefix':
-                if ($value != '') {$this->_TablePrefix = $value;}
+                if ($value != '') {
+                    $this->_TablePrefix = $value;
+                }
                 break;
 
             case 'base_dir':
@@ -133,9 +139,12 @@ class DseTwo
     {
         foreach ($this->_ControllListTypen as $type) {
             $cFile = $this->_CachePath . '/' . $this->_TCacheFile . $type;
-            if (file_exists($cFile)) {@unlink($cFile);}
+            if (file_exists($cFile)) {
+                @unlink($cFile);
+            }
         }
     }
+
     /**
      *
      * @param string $blacklist path/filename of the blacklist
@@ -160,6 +169,7 @@ class DseTwo
         }
         return (sizeof($this->_ControllList) > 0);
     }
+
     /**
      *
      * @param string $sDirToSearch directory to scan (relative to base_dir)
@@ -174,7 +184,9 @@ class DseTwo
         $sPathToSearch = $this->_BasePath . '/' . $sDirToSearch;
         $sCacheFile = $this->_DCachePrefix . $bRetunMode . urlencode('/' . $sDirToSearch);
         $sCacheFile = $this->_CachePath . '/' . $sCacheFile;
-        if (sizeof($this->_Queries) <= 0) {$this->_getTableQueries();}
+        if (sizeof($this->_Queries) <= 0) {
+            $this->_getTableQueries();
+        }
         // read fileList from directory
         try {
             foreach (new DirectoryIterator($sPathToSearch) as $fileinfo) {
@@ -186,7 +198,8 @@ class DseTwo
                     $aNewFileList[] = $fileinfo->getFilename();
                 }
             }
-        } catch (UnexpectedValueException $e) {}
+        } catch (UnexpectedValueException $e) {
+        }
         // make checksum of current directory
         $bCacheValid = false;
         if ($this->_bUseCache) {
@@ -203,12 +216,16 @@ class DseTwo
         if (!$bCacheValid) {
             // skip this loop if valid cache is available
             $aResultFileList = array();
-            foreach($aNewFileList as $sFilename){
+            foreach ($aNewFileList as $sFilename) {
                 // iterate all tables and search for filename
                 if ($this->_getMatch($sDirToSearch . '/' . $sFilename) !== false) {
-                    if ($bRetunMode == self::RETURN_USED) {$aResultFileList[] = $sFilename;}
+                    if ($bRetunMode == self::RETURN_USED) {
+                        $aResultFileList[] = $sFilename;
+                    }
                 } else {
-                    if ($bRetunMode == self::RETURN_UNUSED) {$aResultFileList[] = $sFilename;}
+                    if ($bRetunMode == self::RETURN_UNUSED) {
+                        $aResultFileList[] = $sFilename;
+                    }
                 }
             }
             // calculate new checksum
@@ -225,24 +242,7 @@ class DseTwo
         unset($aNewFileList);
         return $aResultFileList;
     }
-    /**
-     *
-     * @param <type> $sFilename
-     * @return bool true if file found in db
-     */
-    private function _getMatch($sFilename)
-    {
-        $result = 0;
-        $sFilename = str_replace('_', '\_', $sFilename);
-        $sSearch = '%' . str_replace('/', '_', $sFilename) . '%';
-        foreach($this->_Queries as $sQuery){
-            $sql = sprintf($sQuery, $sSearch);
-            if (($res = $this->_oDb->query($sql))) {
-                if (($result = intval($res->fetchRow(MYSQL_ASSOC))) > 0) {break;}
-            }
-        }
-        return ($result != 0);
-    }
+
     /**
      *
      */
@@ -259,7 +259,9 @@ class DseTwo
                 $this->_Queries = array();
             }
         }
-        if (sizeof($this->_Queries) > 0) {return;} // queries alreade loaded from cache
+        if (sizeof($this->_Queries) > 0) {
+            return;
+        } // queries alreade loaded from cache
         $TP = str_replace('_', '\_', $this->_TablePrefix);
         $sql = 'SELECT TABLE_NAME `table`, COLUMN_NAME `column` ';
         $sql .= 'FROM INFORMATION_SCHEMA.COLUMNS ';
@@ -273,7 +275,7 @@ class DseTwo
             $lastTable = '';
             $aOrStatements = array();
             $sPrefix = '';
-            while ($rec = $res->fetchRow(MYSQL_ASSOC)) {
+            while ($rec = $res->fetchRow(MYSQLI_ASSOC)) {
                 // loop through all found tables/fields
                 $sTableColumn = $rec['table'] . '.' . $rec['column'];
                 switch ($this->_ControllListTyp) {
@@ -327,4 +329,24 @@ class DseTwo
         }
     }
 
+    /**
+     *
+     * @param <type> $sFilename
+     * @return bool true if file found in db
+     */
+    private function _getMatch($sFilename)
+    {
+        $result = 0;
+        $sFilename = str_replace('_', '\_', $sFilename);
+        $sSearch = '%' . str_replace('/', '_', $sFilename) . '%';
+        foreach ($this->_Queries as $sQuery) {
+            $sql = sprintf($sQuery, $sSearch);
+            if (($res = $this->_oDb->query($sql))) {
+                if (($result = intval($res->fetchRow(MYSQLI_ASSOC))) > 0) {
+                    break;
+                }
+            }
+        }
+        return ($result != 0);
+    }
 }

@@ -15,7 +15,7 @@
  * ==============
  * This class will be used to interface with the database and the WBCE CMS code
  */
- 
+
 //no direct file access
 if (count(get_included_files()) == 1) {
     die(header("Location: ../index.php", true, 301));
@@ -23,7 +23,7 @@ if (count(get_included_files()) == 1) {
 
 use Doctrine\Common\ClassLoader;
 
-require dirname(__FILE__).'/../include/Doctrine/Common/ClassLoader.php';
+require dirname(__FILE__) . '/../include/Doctrine/Common/ClassLoader.php';
 
 // define the old mysql constants for backward compatibility
 if (!defined('MYSQL_CLIENT_COMPRESS')) {
@@ -35,29 +35,29 @@ if (!defined('MYSQL_CLIENT_COMPRESS')) {
 
 class database
 {
-    private static $obj  = null;
-    private $db_handle   = null;    // readonly from outside
-    private $db_name     = '';
-    private $connected   = false;
-    private $sCharset    = '';
-    private $error       = '';
-    private $error_type  = '';
-    private $message     = array();
-    private $_prefixes   = array();
+    private static $obj = null;
+    private $db_handle = null;    // readonly from outside
+    private $db_name = '';
+    private $connected = false;
+    private $sCharset = '';
+    private $error = '';
+    private $error_type = '';
+    private $message = array();
+    private $_prefixes = array();
     private $classLoader = null;
 
     /**
      * constructor
      *
      * @access    public
-     * @param     array   - optional options to be passed to connect()
+     * @param array   - optional options to be passed to connect()
      * @return    object
      **/
-    public function __construct(?array $opt=array())
+    public function __construct(?array $opt = array())
     {
         if (empty(self::$obj)) {
             if (!$this->classLoader) {
-                $this->classLoader = new ClassLoader('Doctrine', dirname(__FILE__).'/../include');
+                $this->classLoader = new ClassLoader('Doctrine', dirname(__FILE__) . '/../include');
                 $this->classLoader->register();
             }
             $this->_prefixes = $this->_tablePrefixes();
@@ -65,6 +65,65 @@ class database
         }
         return self::$obj;
     }   // end function __construct()
+
+    /**
+     * _tablePrefixes()
+     * =========================
+     * default Prefix tokens
+     * More Prefixes can be added using the public addPrefix() method
+     *
+     * @return array
+     */
+    private function _tablePrefixes()
+    {
+        return array(
+            '{TABLE_PREFIX}' => TABLE_PREFIX,
+            '{TP}' => TABLE_PREFIX, // shorthand
+        );
+    }   // end function __get()
+
+    /**
+     * establish a database connection; uses \Doctrine\DBAL\DriverManager
+     *
+     * @access    public
+     * @return    bool
+     **/
+    public function connect(): bool
+    {
+        $this->sCharset = strtolower(preg_replace('/[^a-z0-9]/i', '', (defined('DB_CHARSET') ? DB_CHARSET : '')));
+
+        if (defined('DB_PORT')) {
+            $port = DB_PORT;
+        } else {
+            $port = ini_get('mysqli.default_port');
+        }
+        // for debugging purposes
+        $config = new \Doctrine\DBAL\Configuration();
+        $config->setSQLLogger(new Doctrine\DBAL\Logging\DebugStack());
+        $connectionParams = array(
+            'charset' => $this->sCharset,
+            'driver' => 'pdo_mysql',
+            'dbname' => DB_NAME,
+            'host' => DB_HOST,
+            'password' => DB_PASSWORD,
+            'user' => DB_USERNAME,
+            'port' => $port,
+        );
+
+        try {
+            $this->db_handle = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+            $this->db_name = DB_NAME;
+            $this->connected = true;
+            //added cause of problems whith mysql strict mode
+            if (!defined('USE_MYSQL_STRICT') || USE_MYSQL_STRICT === false) {
+                $this->db_handle->query("SET @@sql_mode=''");
+            }
+        } catch (\PDO\PDOException $e) {
+            $this->connected = false;
+            $this->error = $e->getMessage();
+        }
+        return $this->connected;
+    }   // end function addPrefix()
 
     /**
      * default Getter for some properties
@@ -88,7 +147,7 @@ class database
                 break;
         }
         return $retval;
-    }   // end function __get()
+    }   // end function connect()
 
     /**
      * addPrefix()
@@ -100,12 +159,12 @@ class database
      *
      * Example usage: $database->addPrefix('{DROPLETS_TABLE}', TABLE_PREFIX.'mod_droplets');
      *
-     * @param  string  $sPrefixPH
-     * @param  string  $sValue
+     * @param string $sPrefixPH
+     * @param string $sValue
      *
      * @return bool    bool false if empty values given; otherwise adds to prefixes array
-    */
-    public function addPrefix(?string $sPrefixPH = "", ?string $sValue = "") : bool
+     */
+    public function addPrefix(?string $sPrefixPH = "", ?string $sValue = ""): bool
     {
         if ($sPrefixPH != "" && $sValue != "") {
             $aNewSet = array(
@@ -116,50 +175,7 @@ class database
         } else {
             return false;
         }
-    }   // end function addPrefix()
-
-    /**
-     * establish a database connection; uses \Doctrine\DBAL\DriverManager
-     *
-     * @access    public
-     * @return    bool
-     **/
-    public function connect() : bool
-    {
-        $this->sCharset = strtolower(preg_replace('/[^a-z0-9]/i', '', (defined('DB_CHARSET') ? DB_CHARSET : '')));
-
-        if (defined('DB_PORT')) {
-            $port = DB_PORT;
-        } else {
-            $port = ini_get('mysqli.default_port');
-        }
-        // for debugging purposes
-        $config = new \Doctrine\DBAL\Configuration();
-        $config->setSQLLogger(new Doctrine\DBAL\Logging\DebugStack());
-        $connectionParams = array(
-            'charset'  => $this->sCharset,
-            'driver'   => 'pdo_mysql',
-            'dbname'   => DB_NAME,
-            'host'     => DB_HOST,
-            'password' => DB_PASSWORD,
-            'user'     => DB_USERNAME,
-            'port'     => $port,
-        );
-
-        try {
-            $this->db_handle = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-            $this->db_name = DB_NAME;
-            $this->connected = true;
-            //added cause of problems whith mysql strict mode
-            if (!defined('USE_MYSQL_STRICT') || USE_MYSQL_STRICT === false) {
-                $this->db_handle->query("SET @@sql_mode=''");
-            }
-        } catch (\PDO\PDOException $e) {
-            $this->connected = false;
-            $this->error = $e->getMessage();
-        }
-        return $this->connected;
-    }   // end function connect()
+    }   // end function delRow()
 
     /**
      * delRow() (Delete row)
@@ -168,12 +184,12 @@ class database
      * Example usage: $database->delRow('{TP}mod_mymod', 'entry_id', '5');                  // single row
      * Example usage: $database->delRow('{TP}mod_mymod', 'entry_id', array('3', '6', '9')); // multiple rows
      *
-     * @param  string  $table
-     * @param  string  $refKey  reference key (column)
-     * @param  unspec  $mRows   may be a string or integer OR an array of rows
+     * @param string $table
+     * @param string $refKey reference key (column)
+     * @param unspec $mRows may be a string or integer OR an array of rows
      *
      * @return unspec  bool true on completion, otherwise error string
-    */
+     */
     public function delRow(string $table, ?string $refKey = '', $uRows)
     {
         $retVal = false;
@@ -194,7 +210,87 @@ class database
             }
         }
         return $retVal;
-    }   // end function delRow()
+    }   // end function disconnect()
+
+    /**
+     *
+     **/
+    public function get_one(string $statement)
+    {
+        $statement = $this->replaceTablePrefix($statement);
+        try {
+            $q = $this->db_handle->query($statement);
+
+            if (!empty($q) && is_object($q)) {
+                $r = $q->fetchColumn();
+                return (empty($r) ? null : $r);
+            }
+        } catch (\PDO\PDOException $e) {
+            $this->set_error($e->getMessage());
+            return null;
+        }
+    }   // end function escapeString()
+
+    /**
+     * replaceTablePrefix()
+     * =========================
+     * Replace DB table prefix placeholders/tokens
+     *
+     * @param string $statement
+     * @return string
+     */
+    protected function replaceTablePrefix($statement)
+    {
+        if (strpos($statement, '{') !== false) {
+            $statement = strtr($statement, $this->_prefixes);
+        }
+        return $statement;
+    }
+
+    /**
+     * execute database query
+     *
+     * @access   public
+     * @param string $statement
+     * @return   mixed     statement handle or null
+     **/
+    public function query(string $statement)
+    {
+        $statement = $this->replaceTablePrefix($statement);
+        try {
+            $stmt = $this->db_handle->query($statement);
+            return new WBCE_PDOStatementDecorator($stmt);
+        } catch (\PDO\PDOException $e) {
+            $this->set_error($e->getMessage());
+        } catch (\Exception $e) {
+            $this->set_error($e->getMessage());
+        }
+        return null;
+    }   // end function field_exists()
+
+    /**
+     * return last error
+     *
+     * @access    public
+     * @return    string
+     **/
+    public function get_error()
+    {
+        return $this->error;
+    }   // end function field_modify()
+
+    /**
+     * save error
+     *
+     * @access    public
+     * @param string $message
+     * @return    void
+     **/
+    public function set_error(?string $message = null)
+    {
+        $this->error = $message;
+        $this->error_type = 'unknown';
+    }   // end function field_remove()
 
     /**
      * disconnect
@@ -202,7 +298,7 @@ class database
      * @access    public
      * @return    bool
      **/
-    public function disconnect() : bool
+    public function disconnect(): bool
     {
         if ($this->connected == true) {
             $this->db_handle = null;
@@ -211,15 +307,15 @@ class database
         } else {
             return false;
         }
-    }   // end function disconnect()
-    
+    }   // end function get_array()
+
     /**
      * Escapes special characters in a string for use in an SQL statement
      *
-     * @param    string $unescaped_string
+     * @param string $unescaped_string
      * @return   string
      */
-    public function escapeString(?string $unescaped_string=null) : string
+    public function escapeString(?string $unescaped_string = null): string
     {
         if (!strlen($unescaped_string)) {
             return '';
@@ -231,109 +327,120 @@ class database
             return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $unescaped_string);
         }
         return $unescaped_string;
-    }   // end function escapeString()
+    }   // end function get_error()
 
     /**
      * adds a column to a table
      *
      * @access    public
-     * @param     string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-     * @param     string $field_name: name of the field to add
-     * @param     string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
-	 * @param string set_error: decide whether an existing field should throw an error message or not 
+     * @param string $table_name : full name of the table (incl. TABLE_PREFIX / {TP})
+     * @param string $field_name : name of the field to add
+     * @param string $description : describes the new field like ( INT NOT NULL DEFAULT '0')
+     * @param string set_error: decide whether an existing field should throw an error message or not
      * @return    bool: true if successful, otherwise false and error will be set
      */
-    public function field_add(string $table_name, string $field_name, string $description, bool $set_error = true) : bool
-	{
-		if (!$this->field_exists($table_name, $field_name)) {
-			// add new field into a table
-			$sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
-			try {
-				$query = $this->query($sql);
-			} catch ( \PDO\PDOException $e ) {
-				$this->set_error($e->getMessage());
-			}
-			if (!$this->is_error()) {
-				return ($this->field_exists($table_name, $field_name));
-			}
-		} else {
-			if ($set_error === true) {
-				$this->set_error('field \'' . $field_name . '\' already exists');
-			}
-		}
-		return false;
-	}
+    public function field_add(string $table_name, string $field_name, string $description, bool $set_error = true): bool
+    {
+        if (!$this->field_exists($table_name, $field_name)) {
+            // add new field into a table
+            $sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
+            try {
+                $query = $this->query($sql);
+            } catch (\PDO\PDOException $e) {
+                $this->set_error($e->getMessage());
+            }
+            if (!$this->is_error()) {
+                return ($this->field_exists($table_name, $field_name));
+            }
+        } else {
+            if ($set_error === true) {
+                $this->set_error('field \'' . $field_name . '\' already exists');
+            }
+        }
+        return false;
+    }   // end functino get_one()
 
     /**
      * checks for a given field in the table
      *
      * @access    public
-     * @param     string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-     * @param     string $field_name: name of the field to seek for
+     * @param string $table_name : full name of the table (incl. TABLE_PREFIX / {TP})
+     * @param string $field_name : name of the field to seek for
      * @return    bool: true if field exists
      **/
-    public function field_exists(string $table_name,string $field_name) : bool
+    public function field_exists(string $table_name, string $field_name): bool
     {
         $sql = "SHOW COLUMNS FROM `$table_name` LIKE '$field_name'";
         $result = $this->query($sql);
         if (!$result) {
             return false;
         }
-        return ($result->rowCount()>0);
-    }   // end function field_exists()
+        return ($result->rowCount() > 0);
+    }   // end function getLastInsertId()
+
+    /**
+     * check for error(s)
+     *
+     * @access    public
+     * @return    bool
+     **/
+    public function is_error(): bool
+    {
+        return (!empty($this->error));
+    }   // end function getTableEngine()
 
     /**
      * modifies a table column
      *
      * @access    public
-     * @param     string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-     * @param     string $field_name: name of the field to add
-     * @param     string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
+     * @param string $table_name : full name of the table (incl. TABLE_PREFIX / {TP})
+     * @param string $field_name : name of the field to add
+     * @param string $description : describes the new field like ( INT NOT NULL DEFAULT '0')
      * @return    bool: true if successful, otherwise false and error will be set
      */
-    public function field_modify(string $table_name, string $field_name, string $description) : bool
+    public function field_modify(string $table_name, string $field_name, string $description): bool
     {
         if ($this->field_exists($table_name, $field_name)) {
             // modify a existing field in a table
             $sql = 'ALTER TABLE `' . $table_name . '` MODIFY `' . $field_name . '` ' . $description;
             try {
                 $query = $this->query($sql);
-            } catch ( \PDO\PDOException $e ) {
+            } catch (\PDO\PDOException $e) {
                 $this->set_error($e->getMessage());
             }
         }
         return !$this->is_error();
-    }   // end function field_modify()
+    }   // end function index_add()
 
     /**
      * remove a table column
      *
      * @access    public
-     * @param     string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-     * @param     string $field_name: name of the field to remove
+     * @param string $table_name : full name of the table (incl. TABLE_PREFIX / {TP})
+     * @param string $field_name : name of the field to remove
      * @return    bool: true if successful, otherwise false and error will be set
      */
-    public function field_remove(string $table_name, string $field_name) : bool
+    public function field_remove(string $table_name, string $field_name): bool
     {
         if ($this->field_exists($table_name, $field_name)) {
             $sql = 'ALTER TABLE `' . $table_name . '` DROP `' . $field_name . '`';
             try {
                 $query = $this->query($sql);
-            } catch ( \PDO\PDOException $e ) {
+            } catch (\PDO\PDOException $e) {
                 $this->set_error($e->getMessage());
             }
         }
         return !$this->is_error();
-    }   // end function field_remove()
+    }   // end function index_exists()
 
     /**
      * Return queried array directly for immediate use
      *
      * @access    public
-     * @param     string     $statement
+     * @param string $statement
      * @return    array
      **/
-    public function get_array(string $statement) : array
+    public function get_array(string $statement): array
     {
         $aData = array();
         if ($resData = $this->query($statement)) {
@@ -342,37 +449,7 @@ class database
             }
         }
         return $aData;
-    }   // end function get_array()
-
-    /**
-     * return last error
-     *
-     * @access    public
-     * @return    string
-     **/
-    public function get_error()
-    {
-        return $this->error;
-    }   // end function get_error()
-
-    /**
-     *
-     **/
-    public function get_one(string $statement)
-    {
-        $statement = $this->replaceTablePrefix($statement);
-        try {
-            $q = $this->db_handle->query($statement);
-
-            if(!empty($q) && is_object($q)) {
-                $r = $q->fetchColumn();
-                return ( empty($r) ? null : $r );
-            }
-        } catch ( \PDO\PDOException $e ) {
-            $this->set_error($e->getMessage());
-            return null;
-        }
-    }   // end functino get_one()
+    }   // end function index_remove()
 
     /**
      * Last inserted Id
@@ -381,13 +458,13 @@ class database
     public function getLastInsertId()
     {
         return $this->db_handle->lastInsertId();
-    }   // end function getLastInsertId()
+    }   // end function insertRow()
 
     /**
      * returns the type of the engine used for requested table
      *
      * @access public
-     * @param  string $table name of the table, including prefix
+     * @param string $table name of the table, including prefix
      * @return boolean/string false on error, or name of the engine (myIsam/InnoDb)
      */
     public function getTableEngine(string $table)
@@ -403,18 +480,18 @@ class database
             }
         }
         return $retVal;
-    }   // end function getTableEngine()
+    }   // end function is_error()
 
     /**
      * adds an index to a table
      *
-     * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-     * @param string $index_name: name of the new index
-     * @param string $field_list: comma seperated list of fields for this index
-     * @param string $index_type: kind of index (UNIQUE, PRIMARY, '')
+     * @param string $table_name : full name of the table (incl. TABLE_PREFIX / {TP})
+     * @param string $index_name : name of the new index
+     * @param string $field_list : comma seperated list of fields for this index
+     * @param string $index_type : kind of index (UNIQUE, PRIMARY, '')
      * @return bool: true if successful, otherwise false and error will be set
      */
-    public function index_add(string $table_name, string $index_name, string $field_list, string $index_type = '') : bool
+    public function index_add(string $table_name, string $index_name, string $field_list, string $index_type = ''): bool
     {
         $retval = false;
         $field_list = str_replace(' ', '', $field_list);
@@ -434,18 +511,18 @@ class database
             }
         }
         return $retval;
-    }   // end function index_add()
+    }   // end function query()
 
     /**
      * checks if the given index (name) exists in the the table
      *
      * @access    public
-     * @param     string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-     * @param     string $index_name: name of the index to seek for
-     * @param     int    $number_fields
+     * @param string $table_name : full name of the table (incl. TABLE_PREFIX / {TP})
+     * @param string $index_name : name of the index to seek for
+     * @param int $number_fields
      * @return    bool: true if field exists
      **/
-    public function index_exists(string $table_name, string $index_name, $number_fields = 0) : bool
+    public function index_exists(string $table_name, string $index_name, $number_fields = 0): bool
     {
         $number_fields = intval($number_fields);
         $keys = 0;
@@ -462,16 +539,16 @@ class database
         } else {
             return ($keys == $number_fields);
         }
-    }   // end function index_exists()
+    }   // end function set_error()
 
     /**
      * remove an index from a table
      *
-     * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-     * @param string $field_name: name of the field to remove
+     * @param string $table_name : full name of the table (incl. TABLE_PREFIX / {TP})
+     * @param string $field_name : name of the field to remove
      * @return bool: true if successful, otherwise false and error will be set
      */
-    public function index_remove(string $table_name, string $index_name) : bool
+    public function index_remove(string $table_name, string $index_name): bool
     {
         $retval = false;
         if ($this->index_exists($table_name, $index_name)) {
@@ -480,7 +557,7 @@ class database
             $retval = $this->query($sql);
         }
         return $retval;
-    }   // end function index_remove()
+    }   // end function SqlImport()
 
     /**
      * insertRow() Insert row
@@ -494,16 +571,16 @@ class database
      * $database->updateRow('{TP}mod_mymod', $aInsert);
      *
      * @param string $table
-     * @param array  $data
+     * @param array $data
      *
      * @return Result
-    */
+     */
     public function insertRow(string $table, array $data)
     {
         $retVal = false;
         $parameters = array();
         foreach ($data as $column => $value) {
-            $parameters[] = "`".trim($column)."` = '".$value."', ";
+            $parameters[] = "`" . trim($column) . "` = '" . $value . "', ";
         }
         $sValues = implode("", $parameters);
         $sValues = substr($sValues, 0, -2);
@@ -514,52 +591,7 @@ class database
             $retVal = $this->get_error();
         }
         return $retVal;
-    }   // end function insertRow()
-
-    /**
-     * check for error(s)
-     *
-     * @access    public
-     * @return    bool
-     **/
-    public function is_error() : bool
-    {
-        return (!empty($this->error));
-    }   // end function is_error()
-
-    /**
-     * execute database query
-     *
-     * @access   public
-     * @param    string    $statement
-     * @return   mixed     statement handle or null
-     **/
-    public function query(string $statement)
-    {
-        $statement = $this->replaceTablePrefix($statement);
-        try {
-            $stmt = $this->db_handle->query($statement);
-            return new WBCE_PDOStatementDecorator($stmt);
-        } catch (\PDO\PDOException $e) {
-            $this->set_error($e->getMessage());
-        } catch (\Exception $e ) {
-            $this->set_error($e->getMessage());
-        }
-        return null;
-    }   // end function query()
-
-    /**
-     * save error
-     *
-     * @access    public
-     * @param     string    $message
-     * @return    void
-     **/
-    public function set_error(?string $message=null)
-    {
-        $this->error = $message;
-        $this->error_type = 'unknown';
-    }   // end function set_error()
+    }   // end function updateRow()
 
     /**
      * Import a standard *.sql dump file
@@ -572,17 +604,18 @@ class database
      */
     public function SqlImport(
         $sSqlDump,
-        $sTablePrefix  = '',
-        $bPreserve     = true,
-        $sTblEngine    = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
+        $sTablePrefix = '',
+        $bPreserve = true,
+        $sTblEngine = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
         $sTblCollation = ' collate utf8_unicode_ci'
-    ) {
+    )
+    {
         $retval = true;
         $this->error = '';
         $aReplaceTokens = array(
-            '{TP}'              => $sTablePrefix,
-            '{TABLE_PREFIX}'    => $sTablePrefix,
-            '{TABLE_ENGINE}'    => $sTblEngine,
+            '{TP}' => $sTablePrefix,
+            '{TABLE_PREFIX}' => $sTablePrefix,
+            '{TABLE_ENGINE}' => $sTblEngine,
             '{TABLE_COLLATION}' => $sTblCollation
         );
         $sql = '';
@@ -605,7 +638,7 @@ class database
             }
         }
         return $retval;
-    }   // end function SqlImport()
+    }   // end function replaceTablePrefix()
 
     /**
      * updateRow() Update row
@@ -619,12 +652,12 @@ class database
      * );
      * $database->updateRow('{TP}mod_mymod', 'entry_id', $aUpdate);
      *
-     * @param  string $table
-     * @param  unspec $refKey  reference key (column)
+     * @param string $table
+     * @param unspec $refKey reference key (column)
      *                         since vers. 1.4.0 we can have more than one
      *                         column to check against in the WHERE clause.
      *                         Use CSV or array for this feature
-     * @param  array  $data
+     * @param array $data
      *
      * @return result
      */
@@ -643,17 +676,17 @@ class database
                 $aWhere = array();
                 foreach ($refKey as $column) {
                     $column = trim($column);
-                    $aWhere[] = "`".trim($column)."` = '".$data[$column]."'";
+                    $aWhere[] = "`" . trim($column) . "` = '" . $data[$column] . "'";
                 }
                 $sWhere = implode(' AND ', $aWhere);
             } else {
-                $sWhere = "`".trim($refKey)."` = '".$data[$refKey]."'";
+                $sWhere = "`" . trim($refKey) . "` = '" . $data[$refKey] . "'";
             }
 
             // prepare data
             $parameters = array();
             foreach ($data as $column => $value) {
-                $parameters[] = "`".trim($column)."` = '".$value."', ";
+                $parameters[] = "`" . trim($column) . "` = '" . $value . "', ";
             }
             $sValues = implode("", $parameters);
             $sValues = substr($sValues, 0, -2);
@@ -667,40 +700,7 @@ class database
             $retVal = $this->query($strQuery) ? true : $this->get_error();
         }
         return $retVal;
-    }   // end function updateRow()
-
-    /**
-     * replaceTablePrefix()
-     * =========================
-     * Replace DB table prefix placeholders/tokens
-     *
-     * @param string $statement
-     * @return string
-     */
-    protected function replaceTablePrefix($statement)
-    {
-        if (strpos($statement, '{') !== false) {
-            $statement = strtr($statement, $this->_prefixes);
-        }
-        return $statement;
-    }   // end function replaceTablePrefix()
-
-    /**
-     * _tablePrefixes()
-     * =========================
-     * default Prefix tokens
-     * More Prefixes can be added using the public addPrefix() method
-     *
-     * @return array
-    */
-    private function _tablePrefixes()
-    {
-        return array(
-            '{TABLE_PREFIX}' => TABLE_PREFIX,
-            '{TP}'           => TABLE_PREFIX, // shorthand
-        );
     }
-
 } /// end of class database
 
 /**
@@ -709,24 +709,28 @@ class database
  **/
 class WBCE_PDOStatementDecorator
 {
-    private $pdo_stmt = NULL;
+    private $pdo_stmt = null;
+
     public function __construct($stmt)
     {
         $this->pdo_stmt = $stmt;
     }
+
     // route all other method calls directly to PDOStatement
     public function __call($method, $args)
     {
         return call_user_func_array(array($this->pdo_stmt, $method), $args);
     }
+
     public function numRows()
     {
         return $this->pdo_stmt->rowCount();
     }
-    public function fetchRow($type=\PDO::FETCH_BOTH)
+
+    public function fetchRow($type = \PDO::FETCH_BOTH)
     {
         // this is for backward compatibility
-        if(!defined('MYSQL_ASSOC') || $type===MYSQL_ASSOC) {
+        if (!defined('MYSQLI_ASSOC') || $type === MYSQLI_ASSOC) {
             $type = \PDO::FETCH_ASSOC;
         }
         return $this->pdo_stmt->fetch($type);

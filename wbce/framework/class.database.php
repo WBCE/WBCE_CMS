@@ -12,7 +12,7 @@
 
 /**
  * Class database
- * ============== 
+ * ==============
  * This class will be used to interface with the database and the WBCE CMS code
  */
 
@@ -27,22 +27,22 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
 
     // define the old mysql constants for backward compatibility
     if (!defined('MYSQL_CLIENT_COMPRESS')) {
-    define('MYSQL_CLIENT_COMPRESS', 32);
-    define('MYSQL_CLIENT_IGNORE_SPACE', 256);
-    define('MYSQL_CLIENT_INTERACTIVE', 1024);
-    define('MYSQL_CLIENT_SSL', 2048);
+        define('MYSQL_CLIENT_COMPRESS', 32);
+        define('MYSQL_CLIENT_IGNORE_SPACE', 256);
+        define('MYSQL_CLIENT_INTERACTIVE', 1024);
+        define('MYSQL_CLIENT_SSL', 2048);
     }
 
     class database
     {
-        private $db_handle  = null; // readonly from outside
-        private $db_name    = '';
-        private $connected  = false;
-        private $sCharset   = '';
-        private $error      = '';
+        private $db_handle = null; // readonly from outside
+        private $db_name = '';
+        private $connected = false;
+        private $sCharset = '';
+        private $error = '';
         private $error_type = '';
-        private $message    = array();
-        private $_prefixes  = array(); 
+        private $message = array();
+        private $_prefixes = array();
 
         // Set DB_URL
         public function __construct($url = '')
@@ -57,7 +57,6 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
         // Connect to the database DB_CHARSET
         public function connect()
         {
-
             $this->sCharset = strtolower(preg_replace('/[^a-z0-9]/i', '', (defined('DB_CHARSET') ? DB_CHARSET : '')));
 
             if (defined('DB_PORT')) {
@@ -77,7 +76,7 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
                 $this->connected = true;
                 //added cause of problems whith mysql strict mode
                 if (!defined('USE_MYSQL_STRICT') || USE_MYSQL_STRICT === false) {
-                    mysqli_query($this->db_handle,"SET @@sql_mode=''");
+                    mysqli_query($this->db_handle, "SET @@sql_mode=''");
                 }
             }
             return $this->connected;
@@ -90,25 +89,26 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
          * Example usage: $database->delRow('{TP}mod_mymod', 'entry_id', '5');                  // single row
          * Example usage: $database->delRow('{TP}mod_mymod', 'entry_id', array('3', '6', '9')); // multiple rows
          *
-         * @param  string  $table
-         * @param  string  $refKey  reference key (column)
-         * @param  unspec  $mRows   may be a string or integer OR an array of rows
+         * @param string $table
+         * @param string $refKey reference key (column)
+         * @param unspec $mRows may be a string or integer OR an array of rows
          *
          * @return unspec  bool true on completion, otherwise error string
-        */
-        public function delRow($table, $refKey = '', $uRows){
+         */
+        public function delRow($table, $refKey = '', $uRows)
+        {
             $retVal = false;
             if (!is_array($uRows)) {
                 $uRows = array($uRows);
             }
             if (!empty($uRows)) {
-                foreach($uRows as $key){
-                    $sqlRowCheck = sprintf("SELECT COUNT(*) FROM `%s` WHERE `%s` = '%s'", $table, $refKey, $key);            
+                foreach ($uRows as $key) {
+                    $sqlRowCheck = sprintf("SELECT COUNT(*) FROM `%s` WHERE `%s` = '%s'", $table, $refKey, $key);
                     if ($this->get_one($sqlRowCheck)) {
                         $strQuery = sprintf("DELETE FROM `%s` WHERE `%s` = '%s'", $table, $refKey, $key);
-                    } 
-                    if ($this->query($strQuery)){
-                        $retVal = true; 
+                    }
+                    if ($this->query($strQuery)) {
+                        $retVal = true;
                     } else {
                         $retVal = $this->get_error();
                     }
@@ -127,91 +127,95 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
          *    'name'     => 'Jane Doe',
          *    'zip_code' => '23450-7',
          * );
-         * $database->updateRow('{TP}mod_mymod', 'entry_id', $aUpdate);  
+         * $database->updateRow('{TP}mod_mymod', 'entry_id', $aUpdate);
          *
-         * @param  string $table
-         * @param  unspec $refKey  reference key (column)
+         * @param string $table
+         * @param unspec $refKey reference key (column)
          *                         since vers. 1.4.0 we can have more than one
          *                         column to check against in the WHERE clause.
          *                         Use CSV or array for this feature
-         * @param  array  $data
+         * @param array $data
          *
          * @return result
          */
-        public function updateRow($table = '', $refKey = '', $data = array()){
+        public function updateRow($table = '', $refKey = '', $data = array())
+        {
             $retVal = false;
             if ($table != '' && isset($refKey) && !empty($data)) {
-                
+
                 // Prepare WHERE clause
                 // check if $refKey is CSV-string and create an array if so
-                if (is_string($refKey) && strpos($refKey, ',') !== false) 
-                    $refKey = explode(',', $refKey); 
-                
+                if (is_string($refKey) && strpos($refKey, ',') !== false) {
+                    $refKey = explode(',', $refKey);
+                }
+
                 $sWhere = ''; // init WHERE command
-                if (is_array($refKey)) { 
+                if (is_array($refKey)) {
                     $aWhere = array();
                     foreach ($refKey as $column) {
                         $column = trim($column);
-                        $aWhere[] = "`".trim($column)."` = '".$data[$column]."'";            
+                        $aWhere[] = "`" . trim($column) . "` = '" . $data[$column] . "'";
                     }
                     $sWhere = implode(' AND ', $aWhere);
                 } else {
-                    $sWhere = "`".trim($refKey)."` = '".$data[$refKey]."'"; 
+                    $sWhere = "`" . trim($refKey) . "` = '" . $data[$refKey] . "'";
                 }
-                
+
                 // prepare data
                 $parameters = array();
                 foreach ($data as $column => $value) {
-                    $parameters[] = "`".trim($column)."` = '".$value."', ";            
+                    $parameters[] = "`" . trim($column) . "` = '" . $value . "', ";
                 }
                 $sValues = implode("", $parameters);
                 $sValues = substr($sValues, 0, -2);
                 // check whether UPDATE or INSERT will be used
                 // (insert will be used in case record doesn't exist yet)
-                if ($this->get_one(sprintf("SELECT COUNT(*) FROM `%s` WHERE %s", $table, $sWhere)))
+                if ($this->get_one(sprintf("SELECT COUNT(*) FROM `%s` WHERE %s", $table, $sWhere))) {
                     $strQuery = sprintf("UPDATE `%s` SET %s WHERE %s", $table, $sValues, $sWhere);
-                else $strQuery = sprintf("INSERT INTO `%s` SET %s", $table, $sValues);            
-                $retVal = $this->query($strQuery) ? true : $this->get_error(); 
+                } else {
+                    $strQuery = sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
+                }
+                $retVal = $this->query($strQuery) ? true : $this->get_error();
             }
             return $retVal;
         }
-        
+
         /**
          * insertRow() Insert row
          * ======================
-         *    
+         *
          * Example usage:
          * $aInsert = array(
          *    'name'     => 'Jane Doe',
          *    'zip_code' => '23450-7',
          * );
-         * $database->updateRow('{TP}mod_mymod', $aInsert);  
+         * $database->updateRow('{TP}mod_mymod', $aInsert);
          *
          * @param string $table
-         * @param array  $data
+         * @param array $data
          *
          * @return Result
-        */
+         */
         public function insertRow($table, array $data)
         {
             $retVal = false;
             $parameters = array();
             foreach ($data as $column => $value) {
-                $parameters[] = "`".trim($column)."` = '".$value."', ";            
+                $parameters[] = "`" . trim($column) . "` = '" . $value . "', ";
             }
             $sValues = implode("", $parameters);
             $sValues = substr($sValues, 0, -2);
-            $strQuery =  sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
-            if($this->query($strQuery)){                    
-                $retVal = true; 
-            }else{ 
+            $strQuery = sprintf("INSERT INTO `%s` SET %s", $table, $sValues);
+            if ($this->query($strQuery)) {
+                $retVal = true;
+            } else {
                 $retVal = $this->get_error();
             }
             return $retVal;
         }
 
         /**
-         * replaceTablePrefix() 
+         * replaceTablePrefix()
          * =========================
          * Replace DB table prefix placeholders/tokens
          *
@@ -220,30 +224,31 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
          */
         protected function replaceTablePrefix($statement)
         {
-            if(strpos($statement, '{') !== false) 
+            if (strpos($statement, '{') !== false) {
                 $statement = strtr($statement, $this->_prefixes);
-            
+            }
+
             return $statement;
         }
 
         /**
-         * _tablePrefixes() 
+         * _tablePrefixes()
          * =========================
          * default Prefix tokens
          *
-         * @return array 
-        */
+         * @return array
+         */
         private function _tablePrefixes()
         {
             return array(
                 '{TABLE_PREFIX}' => TABLE_PREFIX,
-                '{TP}'           => TABLE_PREFIX, // shorthand 
+                '{TP}' => TABLE_PREFIX, // shorthand
             );
             // More Prefixes can be added to this array using the public addPrefix() method
         }
-        
+
         /**
-         * addPrefix() 
+         * addPrefix()
          * =========================
          *
          * Makes it possible to add additional DB table prefixes.
@@ -252,11 +257,11 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
          *
          * Example usage: $database->addPrefix('{DROPLETS_TABLE}', TABLE_PREFIX.'mod_droplets');
          *
-         * @param  string  $sPrefixPH
-         * @param  string  $sValue
+         * @param string $sPrefixPH
+         * @param string $sValue
          *
          * @return bool    bool false if empty values given; otherwise adds to prefixes array
-        */
+         */
         public function addPrefix($sPrefixPH = "", $sValue = "")
         {
             if ($sPrefixPH != "" && $sValue != "") {
@@ -268,7 +273,7 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
                 return false;
             }
         }
-        
+
         // Disconnect from the database
         public function disconnect()
         {
@@ -307,7 +312,7 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
             if (is_array($fetch_row)) {
                 $result = $fetch_row[0];
             } else {
-                $result='';
+                $result = '';
             }
             $this->set_error(null);
             if (mysqli_error($this->db_handle)) {
@@ -322,8 +327,8 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
         public function get_array($statement)
         {
             $aData = array();
-            if($resData = $this->query($statement)){
-                while($rec = $resData->fetchRow(MYSQLI_ASSOC)) {
+            if ($resData = $this->query($statement)) {
+                while ($rec = $resData->fetchRow(MYSQLI_ASSOC)) {
                     $aData[] = $rec;
                 }
             }
@@ -398,10 +403,12 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
         */
         public function field_exists($table_name, $field_name)
         {
-            $sql="SHOW COLUMNS FROM `$table_name` LIKE '$field_name'";
+            $sql = "SHOW COLUMNS FROM `$table_name` LIKE '$field_name'";
             $result = $this->query($sql);
-            if (!$result) return false;
-            $exists = ($result->numRows())?true:false;
+            if (!$result) {
+                return false;
+            }
+            $exists = ($result->numRows()) ? true : false;
             return $exists;
         }
 
@@ -421,7 +428,6 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
                         $keys++;
                     }
                 }
-
             }
             if ($number_fields == 0) {
                 return ($keys != $number_fields);
@@ -434,26 +440,26 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
         * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
         * @param string $field_name: name of the field to add
         * @param string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
-		* @param string set_error: decide whether an existing field should throw an error message or not 
+        * @param string set_error: decide whether an existing field should throw an error message or not
         * @return bool: true if successful, otherwise false and error will be set
         */
         public function field_add($table_name, $field_name, $description, $set_error = true)
-		{
-			if (!$this->field_exists($table_name, $field_name)) {
-				// add new field into a table
-				$sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
-				$query = $this->query($sql);
-				$this->set_error(mysqli_error($this->db_handle));
-				if (!$this->is_error()) {
-					return ($this->field_exists($table_name, $field_name)) ? true : false;
-				}
-			} else {
-				if ($set_error === true) {
-					$this->set_error('field \'' . $field_name . '\' already exists');
-				}
-			}
-			return false;
-		}
+        {
+            if (!$this->field_exists($table_name, $field_name)) {
+                // add new field into a table
+                $sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
+                $query = $this->query($sql);
+                $this->set_error(mysqli_error($this->db_handle));
+                if (!$this->is_error()) {
+                    return ($this->field_exists($table_name, $field_name)) ? true : false;
+                }
+            } else {
+                if ($set_error === true) {
+                    $this->set_error('field \'' . $field_name . '\' already exists');
+                }
+            }
+            return false;
+        }
 
         /*
         * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
@@ -510,17 +516,19 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
                 if ($this->query($sql)) {
                     $sql = 'ALTER TABLE `' . $table_name . '` ';
                     $sql .= 'ADD ' . $index_type . ' `' . $index_name . '` ( ' . $field_list . ' ); ';
-                    if ($this->query($sql)) {$retval = true;}
+                    if ($this->query($sql)) {
+                        $retval = true;
+                    }
                 }
             }
             return $retval;
         }
 
-    /*
-    * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-    * @param string $field_name: name of the field to remove
-    * @return bool: true if successful, otherwise false and error will be set
-    */
+        /*
+        * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
+        * @param string $field_name: name of the field to remove
+        * @return bool: true if successful, otherwise false and error will be set
+        */
         public function index_remove($table_name, $index_name)
         {
             $retval = false;
@@ -543,18 +551,18 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
          */
         public function SqlImport(
             $sSqlDump,
-            $sTablePrefix  = '',
-            $bPreserve     = true,
-            $sTblEngine    = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
+            $sTablePrefix = '',
+            $bPreserve = true,
+            $sTblEngine = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
             $sTblCollation = ' collate utf8_unicode_ci'
-        ) 
+        )
         {
             $retval = true;
             $this->error = '';
             $aReplaceTokens = array(
-                '{TP}'              => $sTablePrefix,
-                '{TABLE_PREFIX}'    => $sTablePrefix,
-                '{TABLE_ENGINE}'    => $sTblEngine,
+                '{TP}' => $sTablePrefix,
+                '{TABLE_PREFIX}' => $sTablePrefix,
+                '{TABLE_ENGINE}' => $sTblEngine,
                 '{TABLE_COLLATION}' => $sTblCollation
             );
             $sql = '';
@@ -597,17 +605,15 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
             }
             return $retVal;
         }
-
     } /// end of class database
 
-    defined('MYSQL_SEEK_FIRST')  or define('MYSQL_SEEK_FIRST', 0);
-    defined('MYSQL_SEEK_LAST')   or define('MYSQL_SEEK_LAST', -1);
+    defined('MYSQL_SEEK_FIRST') or define('MYSQL_SEEK_FIRST', 0);
+    defined('MYSQL_SEEK_LAST') or define('MYSQL_SEEK_LAST', -1);
     defined('MYSQLI_SEEK_FIRST') or define('MYSQLI_SEEK_FIRST', 0);
-    defined('MYSQLI_SEEK_LAST')  or define('MYSQLI_SEEK_LAST', -1);
+    defined('MYSQLI_SEEK_LAST') or define('MYSQLI_SEEK_LAST', -1);
 
     class mysql
     {
-
         private $db_handle = null;
         private $result = null;
         private $error = '';
@@ -658,11 +664,9 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
                 return null;
             }
         }
-
     } // end of class mysql
 
     class DatabaseException extends Exception
     {
     }
-
 }

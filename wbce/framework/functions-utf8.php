@@ -1,25 +1,13 @@
 <?php
-// $Id: functions-utf8.php 1499 2011-08-12 11:21:25Z DarkViper $
-
-/*
-
-WebsiteBaker Project <http://websitebaker.org/>
-Copyright (C) Ryan Djurovich
-
-Website Baker is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-Website Baker is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Website Baker; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+/**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 /*
@@ -60,7 +48,9 @@ if (!defined('UTF8_MBSTRING')) {
     }
 }
 
-if (UTF8_MBSTRING) {mb_internal_encoding('UTF-8');}
+if (UTF8_MBSTRING) {
+    mb_internal_encoding('UTF-8');
+}
 
 require_once WB_PATH . '/framework/charsets_table.php';
 
@@ -76,7 +66,6 @@ function utf8_isASCII($str)
     } else {
         return true;
     }
-
 }
 
 /*
@@ -91,28 +80,22 @@ function utf8_check($Str)
         $b = ord($Str[$i]);
         if ($b < 0x80) {
             continue;
-        }
-        # 0bbbbbbb
+        } # 0bbbbbbb
         elseif (($b & 0xE0) == 0xC0) {
             $n = 1;
-        }
-        # 110bbbbb
+        } # 110bbbbb
         elseif (($b & 0xF0) == 0xE0) {
             $n = 2;
-        }
-        # 1110bbbb
+        } # 1110bbbb
         elseif (($b & 0xF8) == 0xF0) {
             $n = 3;
-        }
-        # 11110bbb
+        } # 11110bbb
         elseif (($b & 0xFC) == 0xF8) {
             $n = 4;
-        }
-        # 111110bb
+        } # 111110bb
         elseif (($b & 0xFE) == 0xFC) {
             $n = 5;
-        }
-        # 1111110b
+        } # 1111110b
         else {
             return false;
         }
@@ -122,7 +105,6 @@ function utf8_check($Str)
             if ((++$i == strlen($Str)) || ((ord($Str[$i]) & 0xC0) != 0x80)) {
                 return false;
             }
-
         }
     }
     return true;
@@ -186,12 +168,14 @@ function utf8_fast_entities_to_umlauts($str)
         // Work-around: convert all umlauts to entities first ("ö&ouml;"->"&ouml;&ouml;"), then all entities to umlauts ("&ouml;&ouml;"->"öö")
         return (mb_convert_encoding(mb_convert_encoding($str, 'HTML-ENTITIES', 'UTF-8'), 'UTF-8', 'HTML-ENTITIES'));
     } else {
-        global $named_entities;global $numbered_entities;
+        global $named_entities;
+        global $numbered_entities;
         $str = str_replace($named_entities, $numbered_entities, $str);
         $str = preg_replace("/&#([0-9]+);/e", "code_to_utf8($1)", $str);
     }
     return ($str);
 }
+
 // support-function for utf8_fast_entities_to_umlauts()
 function code_to_utf8($num)
 {
@@ -217,7 +201,8 @@ function utf8_fast_umlauts_to_entities($string, $named_entities = true)
     if (UTF8_MBSTRING) {
         return (mb_convert_encoding($string, 'HTML-ENTITIES', 'UTF-8'));
     } else {
-        global $named_entities;global $numbered_entities;
+        global $named_entities;
+        global $numbered_entities;
         $new = "";
         $i = 0;
         $len = strlen($string);
@@ -248,7 +233,6 @@ function utf8_fast_umlauts_to_entities($string, $named_entities = true)
         if ($named_entities) {
             $string = str_replace($numbered_entities, $named_entities, $string);
         }
-
     }
     return ($string);
 }
@@ -275,7 +259,9 @@ function charset_to_utf8($str, $charset_in = DEFAULT_CHARSET, $decode_entities =
 {
     global $iso_8859_2_to_utf8, $iso_8859_3_to_utf8, $iso_8859_4_to_utf8, $iso_8859_5_to_utf8, $iso_8859_6_to_utf8, $iso_8859_7_to_utf8, $iso_8859_8_to_utf8, $iso_8859_9_to_utf8, $iso_8859_10_to_utf8, $iso_8859_11_to_utf8;
     $charset_in = strtoupper($charset_in);
-    if ($charset_in == "") {$charset_in = 'UTF-8';}
+    if ($charset_in == "") {
+        $charset_in = 'UTF-8';
+    }
     $wrong_ISO8859 = false;
     $converted = false;
 
@@ -293,44 +279,53 @@ function charset_to_utf8($str, $charset_in = DEFAULT_CHARSET, $decode_entities =
         // we have utf-8. Just replace HTML-entities and return
         if ($decode_entities && preg_match('/&[#0-9a-zA-Z]+;/', $str)) {
             return (utf8_fast_entities_to_umlauts($str));
-        } else // nothing to do
-        {
+        } else { // nothing to do
             return ($str);
         }
-
     }
 
     // Convert $str to utf8
     if (substr($charset_in, 0, 8) == 'ISO-8859') {
         switch ($charset_in) {
-        case 'ISO-8859-1':$str = utf8_encode($str);
-            break;
-        case 'ISO-8859-2':$str = strtr($str, $iso_8859_2_to_utf8);
-            break;
-        case 'ISO-8859-3':$str = strtr($str, $iso_8859_3_to_utf8);
-            break;
-        case 'ISO-8859-4':$str = strtr($str, $iso_8859_4_to_utf8);
-            break;
-        case 'ISO-8859-5':$str = strtr($str, $iso_8859_5_to_utf8);
-            break;
-        case 'ISO-8859-6':$str = strtr($str, $iso_8859_6_to_utf8);
-            break;
-        case 'ISO-8859-7':$str = strtr($str, $iso_8859_7_to_utf8);
-            break;
-        case 'ISO-8859-8':$str = strtr($str, $iso_8859_8_to_utf8);
-            break;
-        case 'ISO-8859-9':$str = strtr($str, $iso_8859_9_to_utf8);
-            break;
-        case 'ISO-8859-10':$str = strtr($str, $iso_8859_10_to_utf8);
-            break;
-        case 'ISO-8859-11':$str = strtr($str, $iso_8859_11_to_utf8);
-            break;
-        default:$wrong_ISO8859 = true;
+            case 'ISO-8859-1':
+                $str = utf8_encode($str);
+                break;
+            case 'ISO-8859-2':
+                $str = strtr($str, $iso_8859_2_to_utf8);
+                break;
+            case 'ISO-8859-3':
+                $str = strtr($str, $iso_8859_3_to_utf8);
+                break;
+            case 'ISO-8859-4':
+                $str = strtr($str, $iso_8859_4_to_utf8);
+                break;
+            case 'ISO-8859-5':
+                $str = strtr($str, $iso_8859_5_to_utf8);
+                break;
+            case 'ISO-8859-6':
+                $str = strtr($str, $iso_8859_6_to_utf8);
+                break;
+            case 'ISO-8859-7':
+                $str = strtr($str, $iso_8859_7_to_utf8);
+                break;
+            case 'ISO-8859-8':
+                $str = strtr($str, $iso_8859_8_to_utf8);
+                break;
+            case 'ISO-8859-9':
+                $str = strtr($str, $iso_8859_9_to_utf8);
+                break;
+            case 'ISO-8859-10':
+                $str = strtr($str, $iso_8859_10_to_utf8);
+                break;
+            case 'ISO-8859-11':
+                $str = strtr($str, $iso_8859_11_to_utf8);
+                break;
+            default:
+                $wrong_ISO8859 = true;
         }
         if (!$wrong_ISO8859) {
             $converted = true;
         }
-
     }
     if (!$converted && UTF8_MBSTRING && $charset_in != 'GB2312') {
         // $charset is neither UTF-8 nor a known ISO-8859...
@@ -410,34 +405,45 @@ function utf8_to_charset($str, $charset_out = DEFAULT_CHARSET)
     // Convert $str to $charset_out
     if (substr($charset_out, 0, 8) == 'ISO-8859') {
         switch ($charset_out) {
-        case 'ISO-8859-1':$str = utf8_decode($str);
-            break;
-        case 'ISO-8859-2':$str = strtr($str, $utf8_to_iso_8859_2);
-            break;
-        case 'ISO-8859-3':$str = strtr($str, $utf8_to_iso_8859_3);
-            break;
-        case 'ISO-8859-4':$str = strtr($str, $utf8_to_iso_8859_4);
-            break;
-        case 'ISO-8859-5':$str = strtr($str, $utf8_to_iso_8859_5);
-            break;
-        case 'ISO-8859-6':$str = strtr($str, $utf8_to_iso_8859_6);
-            break;
-        case 'ISO-8859-7':$str = strtr($str, $utf8_to_iso_8859_7);
-            break;
-        case 'ISO-8859-8':$str = strtr($str, $utf8_to_iso_8859_8);
-            break;
-        case 'ISO-8859-9':$str = strtr($str, $utf8_to_iso_8859_9);
-            break;
-        case 'ISO-8859-10':$str = strtr($str, $utf8_to_iso_8859_10);
-            break;
-        case 'ISO-8859-11':$str = strtr($str, $utf8_to_iso_8859_11);
-            break;
-        default:$wrong_ISO8859 = true;
+            case 'ISO-8859-1':
+                $str = utf8_decode($str);
+                break;
+            case 'ISO-8859-2':
+                $str = strtr($str, $utf8_to_iso_8859_2);
+                break;
+            case 'ISO-8859-3':
+                $str = strtr($str, $utf8_to_iso_8859_3);
+                break;
+            case 'ISO-8859-4':
+                $str = strtr($str, $utf8_to_iso_8859_4);
+                break;
+            case 'ISO-8859-5':
+                $str = strtr($str, $utf8_to_iso_8859_5);
+                break;
+            case 'ISO-8859-6':
+                $str = strtr($str, $utf8_to_iso_8859_6);
+                break;
+            case 'ISO-8859-7':
+                $str = strtr($str, $utf8_to_iso_8859_7);
+                break;
+            case 'ISO-8859-8':
+                $str = strtr($str, $utf8_to_iso_8859_8);
+                break;
+            case 'ISO-8859-9':
+                $str = strtr($str, $utf8_to_iso_8859_9);
+                break;
+            case 'ISO-8859-10':
+                $str = strtr($str, $utf8_to_iso_8859_10);
+                break;
+            case 'ISO-8859-11':
+                $str = strtr($str, $utf8_to_iso_8859_11);
+                break;
+            default:
+                $wrong_ISO8859 = true;
         }
         if (!$wrong_ISO8859) {
             $converted = true;
         }
-
     }
     if (!$converted && UTF8_MBSTRING && $charset_out != 'GB2312') {
         // $charset is neither UTF-8 nor a known ISO-8859...
@@ -496,9 +502,9 @@ function entities_to_7bit($str)
     if (version_compare(PHP_VERSION, '5.3', '<')) {
         $str = preg_replace('/&#([0-9]+);/e', "dechex('$1')", $str);
     } else {
-        $str = preg_replace_callback('/&#([0-9]+);/', function($aMatches) {
-			return dechex($aMatches[1]);
-		}, $str);
+        $str = preg_replace_callback('/&#([0-9]+);/', function ($aMatches) {
+            return dechex($aMatches[1]);
+        }, $str);
     }
     // maybe there are some &gt; &lt; &apos; &quot; &amp; &nbsp; left, replace them too
     $str = str_replace(array('&gt;', '&lt;', '&apos;', '\'', '&quot;', '&amp;'), '', $str);

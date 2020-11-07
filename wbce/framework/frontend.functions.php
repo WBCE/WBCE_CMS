@@ -11,25 +11,33 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php", TRUE, 301));
+if (count(get_included_files()) == 1) {
+    die(header("Location: ../index.php", true, 301));
+}
 
 // since we are in the FRONTEND set WB_FRONTEND constant
 defined('WB_FRONTEND') or define('WB_FRONTEND', true);
 
 // Compatibility mode for older versions.
 // (The News module still needs it for example.)
-if (isset($wb)) 
-	$admin = $wb;
-if (isset($wb->default_link)) 
-	$default_link = $wb->default_link;
-if (isset($wb->page_trail)) 
-	$page_trail = $wb->page_trail;
-if (isset($wb->page_description)) 
-	$page_description = $wb->page_description;
-if (isset($wb->page_keywords)) 
-	$page_keywords = $wb->page_keywords;
-if (isset($wb->link)) 
-	$page_link = $wb->link;
+if (isset($wb)) {
+    $admin = $wb;
+}
+if (isset($wb->default_link)) {
+    $default_link = $wb->default_link;
+}
+if (isset($wb->page_trail)) {
+    $page_trail = $wb->page_trail;
+}
+if (isset($wb->page_description)) {
+    $page_description = $wb->page_description;
+}
+if (isset($wb->page_keywords)) {
+    $page_keywords = $wb->page_keywords;
+}
+if (isset($wb->link)) {
+    $page_link = $wb->link;
+}
 
 
 // Load Snippet Type modules into the frontend
@@ -37,7 +45,9 @@ $sSql = 'SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE \'%snippet%\
 if (($resSnippets = $database->query($sSql))) {
     while ($rec = $resSnippets->fetchRow()) {
         $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/include.php';
-        if (file_exists($sFile)) include $sFile;
+        if (file_exists($sFile)) {
+            include $sFile;
+        }
     }
 }
 
@@ -45,13 +55,13 @@ if (($resSnippets = $database->query($sSql))) {
 if (!function_exists('page_link')) {
 
     /**
-     * @brief   Generate full page_link based on the 
+     * @brief   Generate full page_link based on the
      *          `link` content from the `{TP}pages` table
-     * 
-     * @param   unspec $uLinkId  
+     *
+     * @param unspec $uLinkId
      * @return  string
      */
-    function page_link($uLinkId = NULL)
+    function page_link($uLinkId = null)
     {
         return $GLOBALS['wb']->page_link($link);
     }
@@ -60,10 +70,10 @@ if (!function_exists('page_link')) {
 if (!function_exists('get_page_link')) {
     /**
      * @brief  get `link` entry from database `{TP}pages` table using page_id
-     * 
-     * @global object $database
-     * @param  int $id
+     *
+     * @param int $id
      * @return string
+     * @global object $database
      */
     function get_page_link($page_id)
     {
@@ -78,20 +88,22 @@ if (!function_exists('search_highlight')) {
      *
      * @staticvar  bool    $string_ul_umlaut
      * @staticvar  bool    $string_ul_regex
-     * @param      string  $foo
-     * @param      array   $arr_string
+     * @param string $foo
+     * @param array $arr_string
      * @return     string
      */
     function search_highlight($foo = '', $arr_string = array())
     {
         require_once WB_PATH . '/framework/functions.php';
         static $string_ul_umlaut = false;
-        static $string_ul_regex  = false;
+        static $string_ul_regex = false;
         if ($string_ul_umlaut === false || $string_ul_regex === false) {
             require WB_PATH . '/search/search_convert.php';
         }
         $foo = entities_to_umlauts($foo, 'UTF-8');
-        array_walk($arr_string, function(&$v, $k){ $v = preg_quote($v, '\'~\''); });
+        array_walk($arr_string, function (&$v, $k) {
+            $v = preg_quote($v, '\'~\'');
+        });
         $search_string = implode("|", $arr_string);
         $string = str_replace($string_ul_umlaut, $string_ul_regex, $search_string);
         // the highlighting
@@ -123,46 +135,50 @@ if (!function_exists('search_highlight')) {
 
 if (!function_exists('get_block_id')) {
     /**
-     * @brief  Function to extract Block ID from Blockname 
+     * @brief  Function to extract Block ID from Blockname
      *         If fed whith an integer or numeric string it simply returns this as an integer.
      *         If fed whith a string it tries to find this string in the $block[] array of the current template.
      *         It returns the id if found otherwise it returns 1 (default template block)
      *
-     * @param  unspec $uMenu may be string or integer
+     * @param unspec $uMenu may be string or integer
      * @return int
      */
-    function get_block_id ($uBlock) {
-        if (is_int($uBlock) OR preg_match("/^[0-9]+$/is", $uBlock)){
+    function get_block_id($uBlock)
+    {
+        if (is_int($uBlock) or preg_match("/^[0-9]+$/is", $uBlock)) {
             return (int)$uBlock;
-		} else {
-            require (WB_PATH."/templates/".TEMPLATE."/info.php");
-            if ($key = array_search($uBlock, $block))
-                return (int) $key ;
-            else 
+        } else {
+            require(WB_PATH . "/templates/" . TEMPLATE . "/info.php");
+            if ($key = array_search($uBlock, $block)) {
+                return (int)$key;
+            } else {
                 return 1;
+            }
         }
     }
 }
 
 if (!function_exists('get_menu_id')) {
     /**
-     * @brief  Function to extract Menu ID from Menuname 
+     * @brief  Function to extract Menu ID from Menuname
      *         If fed whith an integer or numeric string it simply returns this as an integer.
      *         If fed whith a string it tries to find this string in the $menu[] array of the current template.
      *         It returns the id if found otherwise it returns 0 (default menu id)
      *
-     * @param  unspec $uMenu may be string or integer
+     * @param unspec $uMenu may be string or integer
      * @return integer
      */
-    function get_menu_id ($uMenu) {
-        if (is_int($uMenu) OR preg_match("/^[0-9]+$/is", $uMenu)){
+    function get_menu_id($uMenu)
+    {
+        if (is_int($uMenu) or preg_match("/^[0-9]+$/is", $uMenu)) {
             return (int)$uMenu;
-		} else {
-            require (WB_PATH."/templates/".TEMPLATE."/info.php");
-            if ($key = array_search($uMenu, $menu))
-                return (int) $key ;
-            else 
+        } else {
+            require(WB_PATH . "/templates/" . TEMPLATE . "/info.php");
+            if ($key = array_search($uMenu, $menu)) {
+                return (int)$key;
+            } else {
                 return 0;
+            }
         }
     }
 }
@@ -170,53 +186,55 @@ if (!function_exists('get_menu_id')) {
 
 if (!function_exists('get_section_array')) {
     /**
-     * @brief  Get Array with all the details of a section by using the section_id. 
+     * @brief  Get Array with all the details of a section by using the section_id.
      *
-     * @param  integer $iSectionID
+     * @param integer $iSectionID
      * @return array
      */
-    function get_section_array($iSectionID){
+    function get_section_array($iSectionID)
+    {
         $aSection = array();
-        if(isset($iSectionID) && $iSectionID > 0){
-            global $database;			
+        if (isset($iSectionID) && $iSectionID > 0) {
+            global $database;
             $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`=%d';
-            if($rSections = $database->query(sprintf($sSql, (int) $iSectionID))){
-                $aSection  = $rSections->fetchRow(MYSQL_ASSOC);
+            if ($rSections = $database->query(sprintf($sSql, (int)$iSectionID))) {
+                $aSection = $rSections->fetchRow(MYSQLI_ASSOC);
             }
-        }		
-        return $aSection; 
+        }
+        return $aSection;
     }
 }
 
 
-if (!function_exists('get_section_content')) {	    
+if (!function_exists('get_section_content')) {
     /**
      * @brief  Get the actual content of a single section based on its ID.
-     *         It's possible to also add the SEC_ANCHOR (if set in settings), 
-     *         and even to use a custom AnchorID if needed. 
+     *         It's possible to also add the SEC_ANCHOR (if set in settings),
+     *         and even to use a custom AnchorID if needed.
      *
-     * @global object  $database
-     * @global object  $wb
-     * @global array   $globals   several global vars
-     * @global array   $TEXT
-     * @global array   $MENU
-     * @global array   $HEADING
-     * @global array   $MESSAGE
-     * 
-     * @param  integer $iSectionID
-     * @param  bool    $bUseSecAnchor
-     * @param  string  $sAnchorID
+     * @param integer $iSectionID
+     * @param bool $bUseSecAnchor
+     * @param string $sAnchorID
      * @return array
+     * @global object $database
+     * @global object $wb
+     * @global array $globals several global vars
+     * @global array $TEXT
+     * @global array $MENU
+     * @global array $HEADING
+     * @global array $MESSAGE
+     *
      */
-    function get_section_content($iSectionID, $bUseSecAnchor = false, $sAnchorID = ""){
+    function get_section_content($iSectionID, $bUseSecAnchor = false, $sAnchorID = "")
+    {
         $sContent = '';
         $aSection = get_section_array($iSectionID);
 
         // check if module exists
         $sModuleViewFile = WB_PATH . '/modules/' . $aSection['module'] . '/view.php';
         if (is_readable($sModuleViewFile)) {
-            ob_start(); 
-            $page_id    = $iPageID = $aSection['page_id'];
+            ob_start();
+            $page_id = $iPageID = $aSection['page_id'];
             $section_id = $iSectionID;
             // we need those global vars to correctly operate the view.php
             global $database, $wb, $globals, $TEXT, $MENU, $HEADING, $MESSAGE;
@@ -230,28 +248,35 @@ if (!function_exists('get_section_content')) {
             $sContent = ob_get_clean();
 
             // use OPF hook
-            if(function_exists('opf_apply_filters')) {
+            if (function_exists('opf_apply_filters')) {
                 $sContent = opf_controller('section', $sContent, $aSection['module'], $iPageID, $iSectionID);
             }
-            if($bUseSecAnchor == true || $sAnchorID != ''){
+            if ($bUseSecAnchor == true || $sAnchorID != '') {
                 $sAnchorTPL = '<a class="section_anchor" id="%s"></a>';
                 if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
                     $sSecAnchor = sprintf($sAnchorTPL, SEC_ANCHOR . $aSection['section_id']);
                 }
-                if($sAnchorID != ''){
+                if ($sAnchorID != '') {
                     $sSecAnchor = sprintf($sAnchorTPL, $sAnchorID);
                 }
-                $sContent = $sSecAnchor.$sContent;
+                $sContent = $sSecAnchor . $sContent;
             }
 
             $aToInsert = $GLOBALS['wb']->retrieve_modfiles_from_dir($aSection['module'], "frontend");
-            foreach($aToInsert as $sModfileType=>$sFile){
+            foreach ($aToInsert as $sModfileType => $sFile) {
                 $sModfileType = strtolower($sModfileType);
                 switch ($sModfileType) {
-                    case 'css':     I::insertCssFile($sFile[0], 'HEAD MODFILES'); break;
-                    case 'js_head': I::insertJsFile($sFile[0],  'HEAD MODFILES'); break;
-                    case 'js_body': I::insertJsFile($sFile[0],  'BODY MODFILES'); break;
-                    default: break;
+                    case 'css':
+                        I::insertCssFile($sFile[0], 'HEAD MODFILES');
+                        break;
+                    case 'js_head':
+                        I::insertJsFile($sFile[0], 'HEAD MODFILES');
+                        break;
+                    case 'js_body':
+                        I::insertJsFile($sFile[0], 'BODY MODFILES');
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -262,20 +287,21 @@ if (!function_exists('get_section_content')) {
 
 if (!function_exists('block_contents')) {
     /**
-     *	@brief   This functions fetches the sections of a templates layout block 
-     *           and retuns it as an array for further processing.  
+     * @brief   This functions fetches the sections of a templates layout block
+     *           and retuns it as an array for further processing.
      *
-     *	@global  object  $database
-     *	@global  object  $wb
-     *	@global  array   $MESSAGE
-     * 
-     *	@param   unspec  $uBlock   Template layout block-name or block-id 
-     *	@return  array   whole array of sections contained in a block
+     * @param unspec $uBlock Template layout block-name or block-id
+     * @return  array   whole array of sections contained in a block
+     * @global  array $MESSAGE
+     *
+     * @global  object $database
+     * @global  object $wb
      */
-    function block_contents($uBlock = 1){
+    function block_contents($uBlock = 1)
+    {
         global $database, $wb, $TEXT, $MESSAGE, $HEADING, $MENU;
         $admin = $wb;
-        $iBlockID =  is_numeric($uBlock) ? $uBlock : get_block_id($uBlock);
+        $iBlockID = is_numeric($uBlock) ? $uBlock : get_block_id($uBlock);
 
         $aBlockSections = array();
         if ($wb->page_access_denied == true) {
@@ -285,7 +311,7 @@ if (!function_exists('block_contents')) {
         if ($wb->page_no_active_sections == true) {
             echo $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'];
             return;
-        }        
+        }
 
         // Include page content
         if (!defined('PAGE_CONTENT')) {
@@ -325,25 +351,25 @@ if (!function_exists('block_contents')) {
             }
 
             // Loop through sections
-            while ($row = $rSections->fetchRow(MYSQL_ASSOC)) {
+            while ($row = $rSections->fetchRow(MYSQLI_ASSOC)) {
                 $iSectionID = $row['section_id'];
                 $aSection = get_section_array($iSectionID);
 
                 // skip this section if it is out of publication date
                 $now = time();
                 if (!(
-                        ($now <= $aSection['publ_end'] || $aSection['publ_end'] == 0) 
-                                && 
-                        ($now >= $aSection['publ_start'] || $aSection['publ_start'] == 0)
-                    )) {
+                    ($now <= $aSection['publ_end'] || $aSection['publ_end'] == 0)
+                    &&
+                    ($now >= $aSection['publ_start'] || $aSection['publ_start'] == 0)
+                )) {
                     continue;
                 }
-		
-		/**
-		 * here again the same as get_section_content() but we should
-		 * include the code here explicitly so that variables used by
-		 * the sections stay available for the next iteration of the loop
-		 */
+
+                /**
+                 * here again the same as get_section_content() but we should
+                 * include the code here explicitly so that variables used by
+                 * the sections stay available for the next iteration of the loop
+                 */
 
                 $sContent = '';
                 $aSection = get_section_array($iSectionID);
@@ -351,8 +377,8 @@ if (!function_exists('block_contents')) {
                 // check if module exists
                 $sModuleViewFile = WB_PATH . '/modules/' . $aSection['module'] . '/view.php';
                 if (is_readable($sModuleViewFile)) {
-                    ob_start(); 
-                    $page_id    = $iPageID = $aSection['page_id'];
+                    ob_start();
+                    $page_id = $iPageID = $aSection['page_id'];
                     $section_id = $iSectionID;
                     // we need those global vars to correctly operate the view.php
                     global $database, $wb, $globals, $TEXT, $MENU, $HEADING, $MESSAGE;
@@ -366,26 +392,33 @@ if (!function_exists('block_contents')) {
                     $sContent = ob_get_clean();
 
                     // use OPF hook
-                    if(function_exists('opf_apply_filters')) {
+                    if (function_exists('opf_apply_filters')) {
                         $sContent = opf_controller('section', $sContent, $aSection['module'], $iPageID, $iSectionID);
                     }
 
                     $aToInsert = $GLOBALS['wb']->retrieve_modfiles_from_dir($aSection['module'], "frontend");
-                    foreach($aToInsert as $sModfileType=>$sFile){
+                    foreach ($aToInsert as $sModfileType => $sFile) {
                         $sModfileType = strtolower($sModfileType);
                         switch ($sModfileType) {
-                            case 'css':     I::insertCssFile($sFile[0], 'HEAD MODFILES'); break;
-                            case 'js_head': I::insertJsFile($sFile[0],  'HEAD MODFILES'); break;
-                            case 'js_body': I::insertJsFile($sFile[0],  'BODY MODFILES'); break;
-                            default: break;
+                            case 'css':
+                                I::insertCssFile($sFile[0], 'HEAD MODFILES');
+                                break;
+                            case 'js_head':
+                                I::insertJsFile($sFile[0], 'HEAD MODFILES');
+                                break;
+                            case 'js_body':
+                                I::insertJsFile($sFile[0], 'BODY MODFILES');
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }
 
-                if($sContent == '') {
+                if ($sContent == '') {
                     continue;
-                }		
-		
+                }
+
                 $sec_anchor = '';
                 if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
                     $sec_anchor = '<a class="section_anchor" id="' . SEC_ANCHOR . $aSection['section_id'] . '" ></a>';
@@ -394,26 +427,26 @@ if (!function_exists('block_contents')) {
                 if (isset($_GET['searchresult']) && is_numeric($_GET['searchresult']) && !isset($_GET['nohighlight']) && isset($_GET['sstring']) && !empty($_GET['sstring'])) {
                     $arr_string = explode(" ", $_GET['sstring']);
                     if ($_GET['searchresult'] == 2) {
-                            // exact match
-                            $arr_string[0] = str_replace("_", " ", $arr_string[0]);
+                        // exact match
+                        $arr_string[0] = str_replace("_", " ", $arr_string[0]);
                     }
                     $aBlockSections[]['content'] = search_highlight($sContent, $arr_string);
                 } else {
                     // OPF Hook, Apply Filters
-                    if(function_exists('opf_apply_filters')) {
-                       $sContent = opf_controller('special', $sContent);
+                    if (function_exists('opf_apply_filters')) {
+                        $sContent = opf_controller('special', $sContent);
                     }
-                    $aBlockSections[$iSectionID]['position']     = $aSection['position'];
-                    $aBlockSections[$iSectionID]['section_id']   = $aSection['section_id'];
-                    $aBlockSections[$iSectionID]['module']       = $aSection['module'];
+                    $aBlockSections[$iSectionID]['position'] = $aSection['position'];
+                    $aBlockSections[$iSectionID]['section_id'] = $aSection['section_id'];
+                    $aBlockSections[$iSectionID]['module'] = $aSection['module'];
                     $aBlockSections[$iSectionID]['section_name'] = $aSection['namesection'];
-                    $aBlockSections[$iSectionID]['evenodd']      = ($aSection['position'] %2 == 1) ? 'even' : 'odd';
-                    if($sec_anchor != ''){
+                    $aBlockSections[$iSectionID]['evenodd'] = ($aSection['position'] % 2 == 1) ? 'even' : 'odd';
+                    if ($sec_anchor != '') {
                         $aBlockSections[$iSectionID]['content'] = PHP_EOL . $sec_anchor . PHP_EOL . $sContent;
                     } else {
                         $aBlockSections[$iSectionID]['content'] = $sContent;
                     }
-                }                                  
+                }
             }
         } else {
             ob_start();
@@ -427,37 +460,38 @@ if (!function_exists('block_contents')) {
 if (!function_exists('page_content')) {
     /**
      * @brief   print or return (e.g. into a variable for later use)
-     *          all the sections of one block into the template		   
-     *	        It now alllows to enter block names as well as block numbers.
-     *	        The second parameter lets the function return the result instead of printing it immediately.
+     *          all the sections of one block into the template
+     *            It now alllows to enter block names as well as block numbers.
+     *            The second parameter lets the function return the result instead of printing it immediately.
      *
-     * @global  object  $wb         |   The global variables are 
-     * @global  object  $database   |   optional and will be used
-     * @global  array   $globals    |   only in case PAGE_CONTENT
-     * @global  array   $TEXT       |   (this are the special pages
-     * @global  array   $MESSAGE    |   like search, account etc.)
-     * @global  array   $HEADING    |   is defined.
-     * @global  array   $MENU       | 
-     * 
-     * @param   unspec  $uBlock     Block ID or Block name
-     * @param   bool    $bPrint   echo the contents 
+     * @param unspec $uBlock Block ID or Block name
+     * @param bool $bPrint echo the contents
      *                              or set to 0 if you want to fetch the contents into a variable
-     * @return string 
+     * @return string
+     * @global  object $wb |   The global variables are
+     * @global  object $database |   optional and will be used
+     * @global  array $globals |   only in case PAGE_CONTENT
+     * @global  array $TEXT |   (this are the special pages
+     * @global  array $MESSAGE |   like search, account etc.)
+     * @global  array $HEADING |   is defined.
+     * @global  array $MENU |
+     *
      */
-    function page_content($uBlock = 1, $bPrint = 1){		
-        $iBlockID =  get_block_id($uBlock);
+    function page_content($uBlock = 1, $bPrint = 1)
+    {
+        $iBlockID = get_block_id($uBlock);
         $sRetVal = '';
         if (!defined('PAGE_CONTENT')) {
             $aSections = block_contents($iBlockID);
-            if(!empty($aSections)) {
-                foreach($aSections as $section){
+            if (!empty($aSections)) {
+                foreach ($aSections as $section) {
                     $sRetVal .= $section['content'];
                 }
             }
         } else {
-            // PAGE_CONTENT is defined 
+            // PAGE_CONTENT is defined
             // it will go into the block with ID = 1
-            if($iBlockID == 1){
+            if ($iBlockID == 1) {
                 ob_start();
                 global $wb, $database, $globals, $TEXT, $MESSAGE, $HEADING, $MENU;
                 $admin = $wb;
@@ -471,8 +505,11 @@ if (!function_exists('page_content')) {
             }
         }
         // echo or return
-        if($bPrint == 1) echo   $sRetVal;	
-        else             return $sRetVal;
+        if ($bPrint == 1) {
+            echo $sRetVal;
+        } else {
+            return $sRetVal;
+        }
     }
 }
 
@@ -535,9 +572,10 @@ if (!function_exists('page_footer')) {
 
 // Function to add optional module Javascript or CSS stylesheets into the <head> section of the frontend
 if (!function_exists('register_frontend_modfiles')) {
-    function register_frontend_modfiles($sModfileType = "css"){ 
-        if($sModfileType != 'jquery'){
-            echo '<!--(PH) '. strtoupper($sModfileType).' HEAD MODFILES -->'.PHP_EOL;
+    function register_frontend_modfiles($sModfileType = "css")
+    {
+        if ($sModfileType != 'jquery') {
+            echo '<!--(PH) ' . strtoupper($sModfileType) . ' HEAD MODFILES -->' . PHP_EOL;
         }
         return $GLOBALS['wb']->register_modfiles($sModfileType, "frontend");
     }
@@ -545,7 +583,8 @@ if (!function_exists('register_frontend_modfiles')) {
 
 // Function to add optional module Javascript into the <body> section of the frontend
 if (!function_exists('register_frontend_modfiles_body')) {
-    function register_frontend_modfiles_body($sModfileType = "js"){
+    function register_frontend_modfiles_body($sModfileType = "js")
+    {
         return;
     }
 }
