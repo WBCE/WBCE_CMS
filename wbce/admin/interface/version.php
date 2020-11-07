@@ -15,26 +15,26 @@
 /////////////////////////////////////////
 
 define('NEW_WBCE_VERSION', '1.4.5'); // NEW_WBCE_VERSION
-define('NEW_WBCE_TAG',     '1.4.5'); // NEW_WBCE_TAG
+define('NEW_WBCE_TAG', '1.4.5'); // NEW_WBCE_TAG
 
 defined('WBCE_VERSION') or define('WBCE_VERSION', NEW_WBCE_VERSION); // WBCE_VERSION
-defined('WBCE_TAG')     or define('WBCE_TAG',     NEW_WBCE_TAG);     // WBCE_TAG
+defined('WBCE_TAG') or define('WBCE_TAG', NEW_WBCE_TAG);     // WBCE_TAG
 
 
 /////////////////////////////////////////
 //   Legacy: WB-classic
 /////////////////////////////////////////
 
-defined('VERSION')  or define('VERSION',  '2.8.3'); // VERSION
+defined('VERSION') or define('VERSION', '2.8.3'); // VERSION
 defined('REVISION') or define('REVISION', '1641');  // REVISION
-defined('SP')       or define('SP',       'SP4');   // SP
+defined('SP') or define('SP', 'SP4');   // SP
 
 
 /////////////////////////////////////////
 //   WBCE Semantic Versioning
 /////////////////////////////////////////
 
-// WBCE uses Semantic Versioning (http://semver.org) called SemVer in the following text. 
+// WBCE uses Semantic Versioning (http://semver.org) called SemVer in the following text.
 // For core development using SemVer is mandatory for modules development this is recommended.
 
 // Specification and Options

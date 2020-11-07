@@ -10,13 +10,13 @@
  * @license GNU GPL2 (or any later version)
  */
 
-if(!defined('WB_URL')) {
+if (!defined('WB_URL')) {
     header('Location: ../../../index.php');
     exit(0);
 }
 
 // Define that this file is loaded
-if(!defined('TIME_FORMATS_LOADED')) {
+if (!defined('TIME_FORMATS_LOADED')) {
     define('TIME_FORMATS_LOADED', true);
 }
 
@@ -24,42 +24,43 @@ if(!defined('TIME_FORMATS_LOADED')) {
 $TIME_FORMATS = array();
 
 // Get the current time (in the users timezone if required)
-$sShowTime = time()+ ((isset($user_time) && $user_time == true) ? TIMEZONE : DEFAULT_TIMEZONE);
+$sShowTime = time() + ((isset($user_time) && $user_time == true) ? TIMEZONE : DEFAULT_TIMEZONE);
 
 // Add values to list
 $TIME_FORMATS['g:i|A'] = date('g:i A', $sShowTime);
 $TIME_FORMATS['g:i|a'] = date('g:i a', $sShowTime);
 $TIME_FORMATS['H:i:s'] = date('H:i:s', $sShowTime);
-$TIME_FORMATS['H:i']   = date('H:i',   $sShowTime);
+$TIME_FORMATS['H:i'] = date('H:i', $sShowTime);
 
 // Add "System Default" to list (if we need to)
-if(isset($user_time) && $user_time == true) {
+if (isset($user_time) && $user_time == true) {
     global $TEXT;
-    $TIME_FORMATS['system_default'] = date(DEFAULT_TIME_FORMAT, $sShowTime).' ('.$TEXT['SYSTEM_DEFAULT'].')';
+    $TIME_FORMATS['system_default'] = date(DEFAULT_TIME_FORMAT, $sShowTime) . ' (' . $TEXT['SYSTEM_DEFAULT'] . ')';
 }
 
 // Reverse array so "System Default" is at the top
 $TIME_FORMATS = array_reverse($TIME_FORMATS, true);
 
-if(!function_exists('getTimeFormatsArray')){
-    
+if (!function_exists('getTimeFormatsArray')) {
+
     /**
      * @brief  Returns an array of time formats set up by the system
      *         This function will return an array that can be used
-     *         to display all the time formats or in order to create  
+     *         to display all the time formats or in order to create
      *         a select box to choose from.
-     * 
-     * @param  array  $TIME_FORMATS
+     *
+     * @param array $TIME_FORMATS
      * @return array
      */
-    function getTimeFormatsArray($TIME_FORMATS){
+    function getTimeFormatsArray($TIME_FORMATS)
+    {
         $aTimeFormats = array();
         $i = 0;
         foreach ($TIME_FORMATS as $sFormat => $sTitle) {
             $sFormat = str_replace('|', ' ', $sFormat); // Adds white-spaces (not able to be stored in array key)
 
             $aTimeFormats[$i]['VALUE'] = ($sFormat != 'system_default') ? $sFormat : '';
-            $aTimeFormats[$i]['NAME']  = $sTitle;
+            $aTimeFormats[$i]['NAME'] = $sTitle;
 
             $aTimeFormats[$i]['SELECTED'] = false;
             if (TIME_FORMAT == $sFormat && !isset($_SESSION['USE_DEFAULT_TIME_FORMAT'])) {

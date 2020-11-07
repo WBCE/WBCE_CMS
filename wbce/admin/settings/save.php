@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -51,21 +51,20 @@ if (isset($_POST['server_email'])) {
 
 // rename pages/intro.php into intro.backup.php when intro page is disabled
 // so that intro.php is not accessible from search engine results anymore
-if (isset($_POST['intro_page'])){
-    $sLoc = WB_PATH.PAGES_DIRECTORY;
+if (isset($_POST['intro_page'])) {
+    $sLoc = WB_PATH . PAGES_DIRECTORY;
     if ($_POST['intro_page'] == 'true') {
-        if(file_exists($sLoc.'/intro.backup'.PAGE_EXTENSION)){
-            rename($sLoc.'/intro.backup'.PAGE_EXTENSION, $sLoc.'/intro'.PAGE_EXTENSION);
+        if (file_exists($sLoc . '/intro.backup' . PAGE_EXTENSION)) {
+            rename($sLoc . '/intro.backup' . PAGE_EXTENSION, $sLoc . '/intro' . PAGE_EXTENSION);
         }
     } elseif ($_POST['intro_page'] == 'false') {
-        if(file_exists($sLoc.'/intro'.PAGE_EXTENSION)){
-            rename($sLoc.'/intro'.PAGE_EXTENSION, $sLoc.'/intro.backup'.PAGE_EXTENSION);
-        }       
+        if (file_exists($sLoc . '/intro' . PAGE_EXTENSION)) {
+            rename($sLoc . '/intro' . PAGE_EXTENSION, $sLoc . '/intro.backup' . PAGE_EXTENSION);
+        }
     }
 }
-  
-if (isset($_POST['wbmailer_routine']) && ($_POST['wbmailer_routine'] == 'smtp')) {
 
+if (isset($_POST['wbmailer_routine']) && ($_POST['wbmailer_routine'] == 'smtp')) {
     $checkSmtpHost = (isset($_POST['wbmailer_smtp_host']) && ($_POST['wbmailer_smtp_host'] == '') ? false : true);
     $checkSmtpUser = (isset($_POST['wbmailer_smtp_username']) && ($_POST['wbmailer_smtp_username'] == '') ? false : true);
     $checkSmtpPassword = (isset($_POST['wbmailer_smtp_password']) && ($_POST['wbmailer_smtp_password'] == '') ? false : true);
@@ -73,12 +72,11 @@ if (isset($_POST['wbmailer_routine']) && ($_POST['wbmailer_routine'] == 'smtp'))
         $admin->print_error($TEXT['REQUIRED'] . ' ' . $TEXT['WBMAILER_SMTP_AUTH'] .
             '<br /><strong>' . $MESSAGE['GENERIC_FILL_IN_ALL'] . '</strong>', $js_back);
     }
-
 }
 
 $pattern = '/^[a-z0-9_-]*$/';
-if (false == preg_match($pattern, $_POST['app_name']) || $_POST['app_name']=='') {
-$admin->print_error($MESSAGE['INVALID_SESSION_NAME'], $js_back);
+if (false == preg_match($pattern, $_POST['app_name']) || $_POST['app_name'] == '') {
+    $admin->print_error($MESSAGE['INVALID_SESSION_NAME'], $js_back);
 }
 
 
@@ -195,7 +193,7 @@ if ($res_settings = $database->query($sql)) {
             case 'pages_directory':
                 break;
             case 'wbmailer_smtp_auth':
-                $value = isset($_POST[$setting_name]) ? $_POST[$setting_name] : 0 ;
+                $value = isset($_POST[$setting_name]) ? $_POST[$setting_name] : 0;
                 $passed = true;
                 break;
             default:
@@ -209,8 +207,8 @@ if ($res_settings = $database->query($sql)) {
 
         if (!in_array($value, $disallow_in_fields) && (isset($_POST[$setting_name]) || $passed == true)) {
             $value = trim($value);
-            $sSql = "UPDATE `{TP}settings` SET `value`='".$database->escapeString($value)."' "
-                    . "WHERE `name` != 'wb_version' AND `name`= '".$setting_name."'";
+            $sSql = "UPDATE `{TP}settings` SET `value`='" . $database->escapeString($value) . "' "
+                . "WHERE `name` != 'wb_version' AND `name`= '" . $setting_name . "'";
             if (!$database->query($sSql)) {
                 $admin->print_error($database->get_error, $js_back);
                 break;
@@ -232,12 +230,12 @@ while ($search_setting = $res_search->fetchRow()) {
     // hold old value if post is empty
     // check search template
     $value = (($admin->get_post($post_name) == '') && ($setting_name != 'template'))
-    ? $old_value
-    : $admin->get_post($post_name);
+        ? $old_value
+        : $admin->get_post($post_name);
     if (isset($value)) {
         $value = $admin->add_slashes($value);
-        $sSql = "UPDATE `{TP}search` SET `value`= '".$value. "' "
-                . "WHERE `name`='".$setting_name."' AND `extra`=''";
+        $sSql = "UPDATE `{TP}search` SET `value`= '" . $value . "' "
+            . "WHERE `name`='" . $setting_name . "' AND `extra`=''";
         if (!($database->query($sSql))) {
             $admin->print_error($database->get_error, $js_back);
             break;

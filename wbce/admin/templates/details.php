@@ -12,11 +12,11 @@
 
 // Include required files
 require '../../config.php';
-require_once WB_PATH . '/framework/functions.php';	// for WBCE 1.1.x compatibility
+require_once WB_PATH . '/framework/functions.php';    // for WBCE 1.1.x compatibility
 
 // Setup admin object, skip header for FTAN validation and check section permissions
 $admin = new admin('Addons', 'templates_view', false, true);
-if(! $admin->checkFTAN()) {
+if (!$admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
@@ -27,9 +27,9 @@ $admin->print_header();
 $file = trim($admin->get_post('file'));
 $root_dir = realpath(WB_PATH . DIRECTORY_SEPARATOR . 'templates');
 $raw_dir = realpath($root_dir . DIRECTORY_SEPARATOR . $file);
-if(! ($file && $raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
-	// template file empty or outside WBCE templates folder
-	$admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
+if (!($file && $raw_dir && is_dir($raw_dir) && (strpos($raw_dir, $root_dir) === 0))) {
+    // template file empty or outside WBCE templates folder
+    $admin->print_error($MESSAGE['GENERIC_NOT_INSTALLED']);
 }
 
 // Extract template folder from realpath for further usage inside script
@@ -43,27 +43,27 @@ $template->set_var('FTAN', $admin->getFTAN());
 
 // Insert values
 $file_escaped = $database->escapeString($file);
-$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' AND directory = '$file_escaped'");
-if($result->numRows() > 0) {
+$result = $database->query("SELECT * FROM " . TABLE_PREFIX . "addons WHERE type = 'template' AND directory = '$file_escaped'");
+if ($result->numRows() > 0) {
     $row = $result->fetchRow();
 }
 
 // check if a template description exists for the displayed backend language
 $template_description = false;
-if(function_exists('file_get_contents') && file_exists(WB_PATH.'/templates/'.$file.'/languages/'.LANGUAGE .'.php')) {
+if (function_exists('file_get_contents') && file_exists(WB_PATH . '/templates/' . $file . '/languages/' . LANGUAGE . '.php')) {
     // read contents of the template language file into string
-    $data = @file_get_contents(WB_PATH .'/templates/' .$file .'/languages/' .LANGUAGE .'.php');
+    $data = @file_get_contents(WB_PATH . '/templates/' . $file . '/languages/' . LANGUAGE . '.php');
     // use regular expressions to fetch the content of the variable from the string
     $template_description = get_variable_content('template_description', $data, false, false);
-       
-   // replace optional placeholder {WB_URL} with value stored in config.php
-    if($template_description !== false && strlen(trim($template_description)) != 0) {
+
+    // replace optional placeholder {WB_URL} with value stored in config.php
+    if ($template_description !== false && strlen(trim($template_description)) != 0) {
         $template_description = str_replace('{WB_URL}', WB_URL, $template_description);
     } else {
         $template_description = false;
     }
 }
-if($template_description !== false) {
+if ($template_description !== false) {
     // Override the template-description with correct desription in users language
     $row['description'] = $template_description;
 }
@@ -77,7 +77,7 @@ $template->set_var(
         'DESCRIPTION' => $row['description'],
         'VERSION' => $row['version'],
         'DESIGNED_FOR' => $row['platform'],
-		'LICENSE' => $row['license'],
+        'LICENSE' => $row['license'],
 
         // Headings
         'HEADING_TEMPLATE_DETAILS' => $HEADING['TEMPLATE_DETAILS'],
@@ -88,9 +88,9 @@ $template->set_var(
         'TEXT_VERSION' => $TEXT['VERSION'],
         'TEXT_DESIGNED_FOR' => $TEXT['DESIGNED_FOR'],
         'TEXT_DESCRIPTION' => $TEXT['DESCRIPTION'],
-		'TEXT_LICENSE' => $TEXT['LICENSE'],
+        'TEXT_LICENSE' => $TEXT['LICENSE'],
         'TEXT_BACK' => $TEXT['BACK']
-        )
+    )
 );
 
 // Parse template object
