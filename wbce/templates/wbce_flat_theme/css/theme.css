@@ -1178,7 +1178,7 @@ input.code {
     vertical-align: bottom !important;
 }
 
-.dashboard .dashboard_information table.positioning td+td {
+.dashboard .dashboard_information table.positioning td + td {
     text-align: right;
 }
 

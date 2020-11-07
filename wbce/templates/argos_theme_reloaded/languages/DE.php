@@ -11,7 +11,7 @@
  */
 
 //Modul Description
-$template_description 	= 'Erweitertes Backend-Theme f&uuml;r WBCE 1.x';
+$template_description = 'Erweitertes Backend-Theme f&uuml;r WBCE 1.x';
 
 //Texts
 $TEXT['ADMIN_ONLY'] = 'diese Optionen nur Administratoren zug&auml;nglich machen';

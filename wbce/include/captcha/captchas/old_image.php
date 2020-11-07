@@ -33,7 +33,7 @@ if (!isset($_SESSION['captcha_time'])) {
 //unset($_SESSION['captcha_time']);
 
 // Captcha
-srand((double) microtime() * 100000);
+srand((double)microtime() * 100000);
 $sec_id = '';
 if (isset($_GET['s'])) {
     $sec_id = $_GET['s'];
@@ -51,7 +51,7 @@ $white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
 $gray = imagecolorallocate($image, 0xC0, 0xC0, 0xC0);
 $darkgray = imagecolorallocate($image, 0x50, 0x50, 0x50);
 
-srand((double) microtime() * 1000000);
+srand((double)microtime() * 1000000);
 for ($i = 0; $i < 30; $i++) {
     $x1 = rand(0, $w);
     $y1 = rand(0, $h);

@@ -17,8 +17,8 @@ $oAccounts = new Accounts();
 $sAutoLanguage = (isset($_GET['lc']) ? $_GET['lc'] : 'EN');
 defined('LANGUAGE') or define('LANGUAGE', $sAutoLanguage);
 
-$sConfirmTimeout = (string) (time() + 86400); // now + 24hours
-$sConfirmCode    = md5(md5($sUsername . $sConfirmTimeout) . $sConfirmTimeout);
+$sConfirmTimeout = (string)(time() + 86400); // now + 24hours
+$sConfirmCode = md5(md5($sUsername . $sConfirmTimeout) . $sConfirmTimeout);
 
 if (isset($_GET['mng']) && $_GET['mng'] > intval(1)) {
     header("Location: " . ACCOUNT_URL . "/signup_continue_page.php?lc=" . $sLC . "&switch=wrong_inputs&excessive_manager_use");
@@ -52,24 +52,24 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
         //  Send mail to user with his login details
 
         $aUpdateUser = array(
-            'user_id'            => $iUserID,
+            'user_id' => $iUserID,
             'signup_confirmcode' => 'signup gid: ' . FRONTEND_SIGNUP,
-            'signup_timeout'     => 0,
-            'signup_checksum'    => $sReadableDateTime,
-            'password'           => $sNewPasswordEnc,
-            'active'             => 1,
+            'signup_timeout' => 0,
+            'signup_checksum' => $sReadableDateTime,
+            'password' => $sNewPasswordEnc,
+            'active' => 1,
         );
         $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
 
         // Create Token Replacement Array
         $aTokenReplace = array(
-            'USER_ID'             => $iUserID,
-            'LOGIN_NAME'          => $aUser['username'],
-            'LOGIN_DISPLAY_NAME'  => $aUser['display_name'],
-            'LOGIN_PASSWORD'      => $sNewPasswordRaw,
+            'USER_ID' => $iUserID,
+            'LOGIN_NAME' => $aUser['username'],
+            'LOGIN_DISPLAY_NAME' => $aUser['display_name'],
+            'LOGIN_PASSWORD' => $sNewPasswordRaw,
             'LOGIN_WEBSITE_TITLE' => WEBSITE_TITLE,
-            'SUPPORT_EMAIL'       => $oAccounts->cfg['support_email'],
-            'LOGIN_URL'           => ACCOUNT_URL . '/login.php',
+            'SUPPORT_EMAIL' => $oAccounts->cfg['support_email'],
+            'LOGIN_URL' => ACCOUNT_URL . '/login.php',
         );
 
         // Try sending the 'welcome_login_info' Mail to User
@@ -80,40 +80,40 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
             header("Location: " . ACCOUNT_URL . "/signup_continue_page.php?lc=" . $sLC . "&switch=wrong_inputs&mail_err=" . $checkSend);
         }
     } else {
-        $sMailFrom        = SERVER_EMAIL;
-        $sMailTo          = $aUser['email'];
-        $sEmailSubject    = '';
-        $sErrorMessage    = $MESSAGE['GENERIC_ISSUE_MESSAGE'];
+        $sMailFrom = SERVER_EMAIL;
+        $sMailTo = $aUser['email'];
+        $sEmailSubject = '';
+        $sErrorMessage = $MESSAGE['GENERIC_ISSUE_MESSAGE'];
 
-        $sConfirmTimeout  = (string) (time() + 86400); // now + 24hours
-        $sConfirmCode     = md5(md5($sUsername . $sConfirmTimeout) . $sConfirmTimeout);
+        $sConfirmTimeout = (string)(time() + 86400); // now + 24hours
+        $sConfirmCode = md5(md5($sUsername . $sConfirmTimeout) . $sConfirmTimeout);
         $sConfirmationUrl = ACCOUNT_URL . '/confirm.php?id=' . $sConfirmCode . '&lc=' . $sLC;
-        $sCheckSum        = substr(md5($sConfirmCode), 0, 10);
+        $sCheckSum = substr(md5($sConfirmCode), 0, 10);
 
         $aTokenReplace = array(
-            'USER_ID'              => $iUserID,
-            'LOGIN_NAME'           => $aUser['username'],
-            'LOGIN_DISPLAY_NAME'   => $aUser['display_name'],
-            'LOGIN_PASSWORD'       => $sNewPasswordRaw,
-            'LOGIN_WEBSITE_TITLE'  => WEBSITE_TITLE,
-            'SIGNUP_DATE'          => $sReadableDateTime,
-            'LOGIN_EMAIL'          => $aUser['email'],
+            'USER_ID' => $iUserID,
+            'LOGIN_NAME' => $aUser['username'],
+            'LOGIN_DISPLAY_NAME' => $aUser['display_name'],
+            'LOGIN_PASSWORD' => $sNewPasswordRaw,
+            'LOGIN_WEBSITE_TITLE' => WEBSITE_TITLE,
+            'SIGNUP_DATE' => $sReadableDateTime,
+            'LOGIN_EMAIL' => $aUser['email'],
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout),
-            'LOGIN_URL'            => ACCOUNT_URL . '/login.php',
-            'SUPPORT_EMAIL'        => $oAccounts->cfg['support_email'],
-            'APPROVAL_LINK'        => $oAccounts->genEmailLinkFromUri($sConfirmationUrl . '&mng=1&sum=' . $sCheckSum),
-            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl . '&mng=0&sum=' . substr(md5($sCheckSum), 0, 10)),
+            'LOGIN_URL' => ACCOUNT_URL . '/login.php',
+            'SUPPORT_EMAIL' => $oAccounts->cfg['support_email'],
+            'APPROVAL_LINK' => $oAccounts->genEmailLinkFromUri($sConfirmationUrl . '&mng=1&sum=' . $sCheckSum),
+            'CONFIRMATION_LINK' => $oAccounts->genEmailLinkFromUri($sConfirmationUrl . '&mng=0&sum=' . substr(md5($sCheckSum), 0, 10)),
         );
 
         if ($oAccounts->cfg['user_activated_on_signup'] == 1) {
-            $iGroupID    = $database->get_one("SELECT `group_id` FROM `{TP}users` WHERE `user_id` = " . $iUserID);
+            $iGroupID = $database->get_one("SELECT `group_id` FROM `{TP}users` WHERE `user_id` = " . $iUserID);
             $aUpdateUser = array(
-                'user_id'            => $iUserID,
+                'user_id' => $iUserID,
                 'signup_confirmcode' => 'signup gid: ' . $iGroupID,
-                'signup_timeout'     => 0,
-                'signup_checksum'    => $sReadableDateTime,
-                'password'           => $sNewPasswordEnc,
-                'active'             => 1,
+                'signup_timeout' => 0,
+                'signup_checksum' => $sReadableDateTime,
+                'password' => $sNewPasswordEnc,
+                'active' => 1,
             );
             $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
 
@@ -123,7 +123,7 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
             // Send email to user and provide him with his login details
             // Prepare vars for E-Mail to user
             $sEmailTemplateName = 'welcome_login_info';
-            $sErrorMessage      = $MESSAGE['FORGOT_PASS_CANNOT_EMAIL'];
+            $sErrorMessage = $MESSAGE['FORGOT_PASS_CANNOT_EMAIL'];
 
             $checkSend = $oAccounts->sendEmail($sMailTo, $aTokenReplace, $sEmailTemplateName, $sEmailSubject);
             if ($checkSend === true) {
@@ -134,10 +134,10 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
         } else {
             // Send email to AccountsManager so he can confirm new user
             $aUpdateUser = array(
-                'user_id'            => $iUserID,
+                'user_id' => $iUserID,
                 'signup_confirmcode' => $sConfirmCode,
-                'signup_timeout'     => $sConfirmTimeout,
-                'signup_checksum'    => $sCheckSum,
+                'signup_timeout' => $sConfirmTimeout,
+                'signup_checksum' => $sCheckSum,
             );
             $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
 

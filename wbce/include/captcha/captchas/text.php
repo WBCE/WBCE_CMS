@@ -24,13 +24,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 // Must include code to stop this file being accessed directly
-if (defined('WB_PATH') == false) {exit("Cannot access this file directly");}
+if (defined('WB_PATH') == false) {
+    exit("Cannot access this file directly");
+}
 
 global $database;
 $name = 'text';
 $file = WB_PATH . "/temp/.captcha_$name.php";
 
-srand((double) microtime() * 100000);
+srand((double)microtime() * 100000);
 $_SESSION['captcha' . $sec_id] = rand(0, 99999);
 
 // get questions and answers
@@ -45,7 +47,7 @@ $content = explode("\n", $text_qa);
 
 reset($content);
 while ($s = current($content)) {
-                                             // get question
+    // get question
     $s = trim(rtrim(rtrim($s, "\n"), "\r")); // remove newline
     if ($s == '' or $s[0] != '?') {
         next($content);

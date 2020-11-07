@@ -1,29 +1,29 @@
 @font-face {
-	font-family: 'Noto';
-	src: url('../fonts/NotoSans-Regular-webfont.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
+    font-family: 'Noto';
+    src: url('../fonts/NotoSans-Regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-	font-family: 'Noto';
-	src: url('../fonts/NotoSans-Bold-webfont.woff') format('woff');
-	font-weight: bold;
-	font-style: normal;
+    font-family: 'Noto';
+    src: url('../fonts/NotoSans-Bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
 }
 
 @font-face {
-	font-family: 'Noto';
-	src: url('../fonts/NotoSans-Italic-webfont.woff') format('woff');
-	font-weight: normal;
-	font-style: italic;
+    font-family: 'Noto';
+    src: url('../fonts/NotoSans-Italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
 }
 
 @font-face {
-	font-family: 'Noto';
-	src: url('../fonts/NotoSans-BoldItalic-webfont.woff') format('woff');
-	font-weight: bold;
-	font-style: italic;
+    font-family: 'Noto';
+    src: url('../fonts/NotoSans-BoldItalic-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
 }
 
 /*** basics ***********************************************************/
@@ -32,153 +32,154 @@ td,
 th,
 input,
 textarea {
-	font-family: Noto, Arial, Helvetica, sans-serif;
-	font-size: 13px;
+    font-family: Noto, Arial, Helvetica, sans-serif;
+    font-size: 13px;
 }
 
 body {
-	background-color: #fff;
-	margin: 0;
+    background-color: #fff;
+    margin: 0;
 }
 
 hr {
-	margin: 0;
-	color: #036;
-	height: 1px;
+    margin: 0;
+    color: #036;
+    height: 1px;
 }
 
 a:link,
 a:visited,
 a:active {
-	color: #036;
-	text-decoration: none;
+    color: #036;
+    text-decoration: none;
 }
 
 a:hover {
-	text-decoration: none;
-	color: #369;
+    text-decoration: none;
+    color: #369;
 }
 
 .hide {
-	display: none;
+    display: none;
 }
 
 .red {
-	color: firebrick !important;
+    color: firebrick !important;
 }
 
 /*** table header *****************************************************/
 #header {
-	width: 100%;
-	border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 #header tr {
-	background-color: #ccc;
+    background-color: #ccc;
 }
 
 #header td {
-	height: 34px;
-	padding: 0 4px;
+    height: 34px;
+    padding: 0 4px;
 }
 
 #header #uplink {
-	width: 30px;
+    width: 30px;
 }
 
 #header #header-text span {
-	font-weight: bold;
-	display: inline-block;
-	margin-left: 10px;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 10px;
 }
 
 /*** file-list ********************************************************/
 #list {
-	width: 100%;
-	border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 #list .image {
-	width: 60px;
+    width: 60px;
 }
 
-#list .filename {}
+#list .filename {
+}
 
 #list .details {
-	width: 140px;
+    width: 140px;
 }
 
 #list .rename {
-	width: 20px;
+    width: 20px;
 }
 
 #list .delete {
-	width: 20px;
+    width: 20px;
 }
 
 #list td {
-	/*height: 50px;*/
+    /*height: 50px;*/
 }
 
 #list tr:nth-child(even) {
-	background-color: #eee;
+    background-color: #eee;
 }
 
 /*** media rename *****************************************************/
 .content-box {
-	margin-bottom: 10px;
-	border: 1px solid #999;
-	background-color: #fdfdfd;
-	/*padding: 10px 0 0 0 ;*/
+    margin-bottom: 10px;
+    border: 1px solid #999;
+    background-color: #fdfdfd;
+    /*padding: 10px 0 0 0 ;*/
 }
 
 input[type="text"],
 button[type="submit"] {
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	appearance: none;
-	background-image: none;
-	background: transparent;
-	border: none;
-	padding: 0;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: none;
+    background: transparent;
+    border: none;
+    padding: 0;
 }
 
 input[type="text"] {
-	border: 1px solid #999;
-	background-color: #eee;
-	padding: 4px;
-	width: 150px;
+    border: 1px solid #999;
+    background-color: #eee;
+    padding: 4px;
+    width: 150px;
 }
 
 input[type="text"]:focus,
 input[type="text"]:hover {
-	border: 1px solid #647086;
+    border: 1px solid #647086;
 }
 
 input[type="checkbox"] {
-	cursor: pointer;
-	margin-right: 5px;
+    cursor: pointer;
+    margin-right: 5px;
 }
 
 label {
-	cursor: pointer;
-	vertical-align: -2px;
+    cursor: pointer;
+    vertical-align: -2px;
 }
 
 button[type="submit"],
 button[type="button"] {
-	border: 1px solid #999;
-	background-color: #647086;
-	color: #fff;
-	padding: 5px;
-	width: 150px;
-	text-transform: uppercase;
+    border: 1px solid #999;
+    background-color: #647086;
+    color: #fff;
+    padding: 5px;
+    width: 150px;
+    text-transform: uppercase;
 }
 
 .ok,
 .success {
-	border: 1px solid #008000;
-	background-color: #bbf8bb;
-	padding: 5px;
-	margin-bottom: 10px;
+    border: 1px solid #008000;
+    background-color: #bbf8bb;
+    padding: 5px;
+    margin-bottom: 10px;
 }

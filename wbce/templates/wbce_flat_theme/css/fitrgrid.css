@@ -51,7 +51,7 @@
     position: relative;
 }
 
-.fg-no-gutter>[class*="fg"] {
+.fg-no-gutter > [class*="fg"] {
     margin-bottom: 0;
     padding: 0;
 }
@@ -66,7 +66,7 @@
     padding: 0;
 }
 
-.fg-wide>[class*="fg"] {
+.fg-wide > [class*="fg"] {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -213,7 +213,7 @@
         margin-bottom: 0;
     }
 
-    .fg-no-gutter>[class*="fg"] {
+    .fg-no-gutter > [class*="fg"] {
         margin: 0;
         padding: 0;
         float: left;

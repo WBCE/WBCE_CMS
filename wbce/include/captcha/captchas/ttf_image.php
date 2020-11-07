@@ -38,15 +38,23 @@ $t_fonts = file_list(WB_PATH . '/include/captcha/fonts');
 $t_bgs = file_list(WB_PATH . '/include/captcha/backgrounds');
 $fonts = array();
 $bgs = array();
-foreach ($t_fonts as $file) {if (preg_match('/\.ttf/', $file)) {$fonts[] = $file;}}
-foreach ($t_bgs as $file) {if (preg_match('/\.png/', $file)) {$bgs[] = $file;}}
+foreach ($t_fonts as $file) {
+    if (preg_match('/\.ttf/', $file)) {
+        $fonts[] = $file;
+    }
+}
+foreach ($t_bgs as $file) {
+    if (preg_match('/\.png/', $file)) {
+        $bgs[] = $file;
+    }
+}
 
 // make random string
 if (!function_exists('randomString')) {
     function randomString($len)
     {
         list($usec, $sec) = explode(' ', microtime());
-        mt_srand((float) $sec + ((float) $usec * 100000));
+        mt_srand((float)$sec + ((float)$usec * 100000));
         //$possible="ABCDEFGHJKLMNPRSTUVWXYZabcdefghkmnpqrstuvwxyz23456789";
         $possible = "abdfhkrsvwxz23456789";
         $str = "";
@@ -77,7 +85,7 @@ $reload = ImageCreateFromPNG(WB_PATH . '/include/captcha/reload_140_40.png'); //
 if (mt_rand(0, 2) == 0) {
     // 1 out of 3
 
-                                      // draw each character individualy
+    // draw each character individualy
     $image = ImageCreateFromPNG($bg); // background image
     $grey = mt_rand(0, 50);
     $color = ImageColorAllocate($image, $grey, $grey, $grey); // font-color

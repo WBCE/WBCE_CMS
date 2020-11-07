@@ -17,13 +17,13 @@ if (isset($_COOKIE['REMEMBER_KEY'])) {
 }
 
 // unset the session data
-$_SESSION['USER_ID']            = null;
-$_SESSION['GROUP_ID']           = null;
-$_SESSION['GROUPS_ID']          = null;
-$_SESSION['USERNAME']           = null;
-$_SESSION['PAGE_PERMISSIONS']   = null;
+$_SESSION['USER_ID'] = null;
+$_SESSION['GROUP_ID'] = null;
+$_SESSION['GROUPS_ID'] = null;
+$_SESSION['USERNAME'] = null;
+$_SESSION['PAGE_PERMISSIONS'] = null;
 $_SESSION['SYSTEM_PERMISSIONS'] = null;
-$_SESSION                       = array();
+$_SESSION = array();
 session_unset();
 unset($_COOKIE[session_name()]);
 session_destroy();

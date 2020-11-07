@@ -29,9 +29,9 @@ foreach ($oAccounts->getLanguageFiles() as $sLangFile) {
 }
 
 // Required page details
-$page_id          = (isset($_SESSION['PAGE_ID']) && is_numeric($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0);
+$page_id = (isset($_SESSION['PAGE_ID']) && is_numeric($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0);
 $page_description = '';
-$page_keywords    = '';
+$page_keywords = '';
 define('TEMPLATE', $oAccounts->cfg['preferences_template']);
 define('PAGE_ID', $page_id);
 define('ROOT_PARENT', 0);

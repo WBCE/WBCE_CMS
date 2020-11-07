@@ -37,27 +37,28 @@ if ($bLoggedIn) {
 
     // Count of total pages
     $sql = 'SELECT COUNT(*) FROM `' . TABLE_PREFIX . 'pages`';
-    $iCountPages = (int) $database->get_one($sql);
+    $iCountPages = (int)$database->get_one($sql);
 
     // Date last updated
     $sql = 'SELECT MAX(`modified_when`) FROM `' . TABLE_PREFIX . 'pages`';
-    $iLastModifiedDate = (int) $database->get_one($sql); // (unix-timestamp)
+    $iLastModifiedDate = (int)$database->get_one($sql); // (unix-timestamp)
 
     // ### html output for dashboard information
     // ### --> use prepared php-vars to show dashboard content
     // ###############################################################################################
     ?>
 
-<a class="db_blocklink" href="<?php echo ADMIN_URL . '/pages/index.php'; ?>">
-<div class="row fg-no-gutter">
-	<div class="fg2"><span class="label_icon count_pages"></span></div>
-	<div class="fg10"><?php echo $TEXT['TOTAL']; ?>: <?php echo $iCountPages; ?></div>
-</div>
-<div class="row">
-  <div class="fg2"><span class="label_icon last_modified"></span></div>
-  <div class="fg10"><?php echo $TEXT['LAST_UPDATE']; ?>:    <?php echo date('Y-m-d', $iLastModifiedDate); ?></div>
-</div> 
-</a>
-<?php
+    <a class="db_blocklink" href="<?php echo ADMIN_URL . '/pages/index.php'; ?>">
+        <div class="row fg-no-gutter">
+            <div class="fg2"><span class="label_icon count_pages"></span></div>
+            <div class="fg10"><?php echo $TEXT['TOTAL']; ?>: <?php echo $iCountPages; ?></div>
+        </div>
+        <div class="row">
+            <div class="fg2"><span class="label_icon last_modified"></span></div>
+            <div class="fg10"><?php echo $TEXT['LAST_UPDATE']; ?>
+                : <?php echo date('Y-m-d', $iLastModifiedDate); ?></div>
+        </div>
+    </a>
+    <?php
 } // endif ($bLoggedIn)
 ?>

@@ -1,19 +1,13 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        frontend
- * @package         search
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: index.php 1386 2011-01-16 09:56:53Z Luisehahne $
- * @filesource        $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/search/index.php $
- * @lastmodified    $Date: 2011-01-16 10:56:53 +0100 (So, 16. Jan 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 // Include the config file
@@ -43,7 +37,7 @@ if ($template != '') {
 }
 unset($template);
 
-//Get the referrer page ID if it exists
+// Get the referrer page ID if it exists
 if (isset($_REQUEST['referrer']) && is_numeric($_REQUEST['referrer']) && intval($_REQUEST['referrer']) > 0) {
     define('REFERRER_ID', intval($_REQUEST['referrer']));
 } else {

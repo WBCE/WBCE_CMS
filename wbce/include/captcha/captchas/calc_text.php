@@ -24,38 +24,40 @@
 */
 
 // Must include code to stop this file being accessed directly
-if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
-
-if(!file_exists(WB_PATH.'/modules/captcha_control/languages/'.LANGUAGE .'.php')) {
-	// no module language file exists for the language set by the user, include default module language file EN.php
-	require_once(WB_PATH.'/modules/captcha_control/languages/EN.php');
-} else {
-	// a module language file exists for the language defined by the user, load it
-	require_once(WB_PATH.'/modules/captcha_control/languages/'.LANGUAGE .'.php');
+if (defined('WB_PATH') == false) {
+    exit("Cannot access this file directly");
 }
 
-$_SESSION['captcha'.$sec_id] = '';
-mt_srand((double)microtime()*1000000);
-$n = mt_rand(1,3);
+if (!file_exists(WB_PATH . '/modules/captcha_control/languages/' . LANGUAGE . '.php')) {
+    // no module language file exists for the language set by the user, include default module language file EN.php
+    require_once(WB_PATH . '/modules/captcha_control/languages/EN.php');
+} else {
+    // a module language file exists for the language defined by the user, load it
+    require_once(WB_PATH . '/modules/captcha_control/languages/' . LANGUAGE . '.php');
+}
+
+$_SESSION['captcha' . $sec_id] = '';
+mt_srand((double)microtime() * 1000000);
+$n = mt_rand(1, 3);
 switch ($n) {
-	case 1:
-		$x = mt_rand(1,9);
-		$y = mt_rand(1,9);
-		$_SESSION['captcha'.$sec_id] = $x + $y;
-		$cap = "$x {$MOD_CAPTCHA['ADDITION']} $y"; 
-		break; 
-	case 2:
-		$x = mt_rand(10,20);
-		$y = mt_rand(1,9);
-		$_SESSION['captcha'.$sec_id] = $x - $y; 
-		$cap = "$x {$MOD_CAPTCHA['SUBTRAKTION']} $y"; 
-		break;
-	case 3:
-		$x = mt_rand(2,10);
-		$y = mt_rand(2,5);
-		$_SESSION['captcha'.$sec_id] = $x * $y; 
-		$cap = "$x {$MOD_CAPTCHA['MULTIPLIKATION']} $y"; 
-		break;
+    case 1:
+        $x = mt_rand(1, 9);
+        $y = mt_rand(1, 9);
+        $_SESSION['captcha' . $sec_id] = $x + $y;
+        $cap = "$x {$MOD_CAPTCHA['ADDITION']} $y";
+        break;
+    case 2:
+        $x = mt_rand(10, 20);
+        $y = mt_rand(1, 9);
+        $_SESSION['captcha' . $sec_id] = $x - $y;
+        $cap = "$x {$MOD_CAPTCHA['SUBTRAKTION']} $y";
+        break;
+    case 3:
+        $x = mt_rand(2, 10);
+        $y = mt_rand(2, 5);
+        $_SESSION['captcha' . $sec_id] = $x * $y;
+        $cap = "$x {$MOD_CAPTCHA['MULTIPLIKATION']} $y";
+        break;
 }
 echo $cap;
 ?>

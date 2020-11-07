@@ -24,8 +24,8 @@ foreach ($oAccounts->getLanguageFiles() as $sLangFile) {
 }
 
 // Check if FRONTEND_SIGNUP group constant is defined or USER_ID is in Session
-$iSignupGroupID = defined('FRONTEND_SIGNUP') ? (int) FRONTEND_SIGNUP : 0;
-$iUserID        = isset($_SESSION['USER_ID']) ? (int) $_SESSION['USER_ID'] : 0;
+$iSignupGroupID = defined('FRONTEND_SIGNUP') ? (int)FRONTEND_SIGNUP : 0;
+$iUserID = isset($_SESSION['USER_ID']) ? (int)$_SESSION['USER_ID'] : 0;
 
 // Work out redirect_url (either root index.php or intro page in pages/index.php)
 $sRedirect = WB_URL . ((INTRO_PAGE) ? PAGES_DIRECTORY : '') . '/index.php';
@@ -37,15 +37,15 @@ if ($iSignupGroupID === 0 || $iUserID != 0) {
 
 // Check if form honeypot fields were filled out
 if (ENABLED_ASP && isset($_POST['username']) && (
-    (!isset($_POST['submitted_when']) or !isset($_SESSION['submitted_when'])) or
-    ($_POST['submitted_when'] != $_SESSION['submitted_when']) or (!isset($_POST['email-address']) or
-    $_POST['email-address']) or (!isset($_POST['name']) or $_POST['name']) or (!isset($_POST['full_name']) or $_POST['full_name'])
-)) {
+        (!isset($_POST['submitted_when']) or !isset($_SESSION['submitted_when'])) or
+        ($_POST['submitted_when'] != $_SESSION['submitted_when']) or (!isset($_POST['email-address']) or
+            $_POST['email-address']) or (!isset($_POST['name']) or $_POST['name']) or (!isset($_POST['full_name']) or $_POST['full_name'])
+    )) {
     die(header('Location: ' . $sRedirect));
 }
 
 // Required page details
-$page_id          = (isset($_SESSION['PAGE_ID']) && is_numeric($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0);
+$page_id = (isset($_SESSION['PAGE_ID']) && is_numeric($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0);
 define('TEMPLATE', $oAccounts->cfg['signup_template']);
 define('PAGE_ID', $page_id);
 define('ROOT_PARENT', 0);

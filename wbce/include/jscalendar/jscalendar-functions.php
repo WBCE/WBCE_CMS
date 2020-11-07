@@ -16,12 +16,12 @@ if (!defined('WB_URL')) {
 
 // convert string from jscalendar to timestamp.
 // converts dd.mm.yyyy and mm/dd/yyyy, with or without time.
-// strtotime() may fails with e.g. "dd.mm.yyyy" and PHP4
-function jscalendar_to_timestamp($str, $offset='', $timeshift='')
+// strtotime() may fails with e.g. "dd.mm.yyyy"
+function jscalendar_to_timestamp($str, $offset = '', $timeshift = '')
 {
     $str = trim($str);
     if ($str == '0' || $str == '') {
-        return('0');
+        return ('0');
     }
     if ($offset == '0') {
         $offset = '';
@@ -36,17 +36,17 @@ function jscalendar_to_timestamp($str, $offset='', $timeshift='')
         $str = preg_replace('#^(\d{1,2})/(\d{1,2})/(\d{2}(\d{2})?)#', '$3-$1-$2', $str);
     }
     // use strtotime()
-    if ($timeshift=='') {
-        if ($offset!='') {
-            return(strtotime($str, $offset));
+    if ($timeshift == '') {
+        if ($offset != '') {
+            return (strtotime($str, $offset));
         } else {
-            return(strtotime($str));
+            return (strtotime($str));
         }
     } else {
-        if ($offset!='') {
-            return(strtotime($str, $offset)-TIMEZONE);
+        if ($offset != '') {
+            return (strtotime($str, $offset) - TIMEZONE);
         } else {
-            return(strtotime($str)-TIMEZONE);
+            return (strtotime($str) - TIMEZONE);
         }
     }
 }

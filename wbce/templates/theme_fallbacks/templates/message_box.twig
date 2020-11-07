@@ -1,13 +1,13 @@
 {% if MESSAGE_TYPE == 'success' %}
-    
-<div class="top alertbox_success msg-box fg12">
-    <i class=" fa fa-2x fa-check signal"></i>
-    
-    {% for msg in MESSAGES %}
-    <p>{{ msg }}</p>
-    {% endfor %}
-    
-    {% if USE_REDIRECT  %}
+
+    <div class="top alertbox_success msg-box fg12">
+        <i class=" fa fa-2x fa-check signal"></i>
+
+        {% for msg in MESSAGES %}
+            <p>{{ msg }}</p>
+        {% endfor %}
+
+        {% if USE_REDIRECT %}
         {% if REDIRECT_TIME != '-1' %}
             <script>setTimeout("location.href='{{ REDIRECT_URL }}'", {{ REDIRECT_TIME }});</script>
         {% endif %}
@@ -15,21 +15,21 @@
         {% if REDIRECT_TIME > 1500 or REDIRECT_TIME == '-1' %}
             <p><a href="{{ REDIRECT_URL }}" class="button">{{ L_('TEXT:BACK') }}</a></p>
         {% endif %}
-    {% endif %}
-</div>
+        {% endif %}
+    </div>
 
 {% elseif MESSAGE_TYPE == 'error' %}
 
-<div class="top alertbox_error fg12 error-box"> 
-    <i class=" fa fa-2x fa-warning signal"></i>
-    
-    {% for msg in MESSAGES %}
-    <p>{{ msg }}</p>
-    {% endfor %}
-    
-    {% if USE_REDIRECT  %}
+    <div class="top alertbox_error fg12 error-box">
+        <i class=" fa fa-2x fa-warning signal"></i>
+
+        {% for msg in MESSAGES %}
+            <p>{{ msg }}</p>
+        {% endfor %}
+
+        {% if USE_REDIRECT %}
             <p><a href="{{ REDIRECT_URL }}" class="button">{{ L_('TEXT:BACK') }}</a></p>
-    {% endif %}
-</div>
-    
+        {% endif %}
+    </div>
+
 {% endif %}

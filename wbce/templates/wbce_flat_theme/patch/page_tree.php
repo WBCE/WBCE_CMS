@@ -65,7 +65,8 @@ $pageLevelLimit = $settings['value'];
 <div class="jsadmin"></div>
 <div class="pages_list" style="display: none;">
     <div>
-        <a href="#" class="btn-collapse"><i class="fa fa-fw fa-folder"></i><?= $TEXT['COLLAPSE_ALL'] ?></a> / <a href="#" class="btn-expand"><i class="fa fa-fw fa-folder-open"></i><?= $TEXT['EXPAND_ALL'] ?></a>
+        <a href="#" class="btn-collapse"><i class="fa fa-fw fa-folder"></i><?= $TEXT['COLLAPSE_ALL'] ?></a> / <a
+                href="#" class="btn-expand"><i class="fa fa-fw fa-folder-open"></i><?= $TEXT['EXPAND_ALL'] ?></a>
     </div>
     <table id="pageListHeader" class="table" <?= (count($pages) === 0 ? 'style="display:none;"' : '') ?>>
         <thead>
