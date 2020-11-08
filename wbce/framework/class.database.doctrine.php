@@ -730,7 +730,7 @@ class WBCE_PDOStatementDecorator
     public function fetchRow($type = \PDO::FETCH_BOTH)
     {
         // this is for backward compatibility
-        if (!defined('MYSQLI_ASSOC') || $type === MYSQLI_ASSOC) {
+        if (!defined('MYSQL_ASSOC') || $type === MYSQL_ASSOC) {
             $type = \PDO::FETCH_ASSOC;
         }
         return $this->pdo_stmt->fetch($type);
