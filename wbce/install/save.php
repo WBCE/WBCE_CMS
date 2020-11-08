@@ -291,7 +291,7 @@ $config_filename = dirname(dirname(__FILE__)) . '/config.php';
 $config_content
 = '<?php' . PHP_EOL
 . PHP_EOL
-. 'define(\'DB_TYPE\', \'mysql\');' . PHP_EOL
+. 'define(\'DB_TYPE\', \'mysqli\');' . PHP_EOL
 . 'define(\'DB_HOST\', \'' . $database_host . '\');' . PHP_EOL
 . (isset($database_port) ? 'define(\'DB_PORT\', \'' . $database_port . '\');' . PHP_EOL : '')
 . 'define(\'DB_NAME\', \'' . $database_name . '\');' . PHP_EOL
@@ -344,7 +344,7 @@ include WB_PATH . '/framework/class.database.php';
 try {
     $database = new database();
 } catch (Exception $e) {
-    $sMsg = d('e22: ') . 'Database host name, username and/or password incorrect.' . d('<br />MySQL Error:<br />')
+    $sMsg = d('e22: ') . 'Database host name, username and/or password incorrect.' . d('<br />Error:<br />')
         . d($e->getMessage());
     set_error($sMsg, "", true);
 }
