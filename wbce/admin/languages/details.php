@@ -12,7 +12,7 @@
 
 // Include required files
 require '../../config.php';
-require_once WB_PATH . '/framework/functions.php'; // for WBCE 1.1.x compatibility
+require_once WB_PATH . '/framework/functions.php';
 
 // Setup admin object, skip header for FTAN validation and check section permissions
 $admin = new admin('Addons', 'languages_view', false, true);

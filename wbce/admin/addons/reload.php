@@ -12,7 +12,7 @@
 
 // Include required files
 require '../../config.php';
-require_once WB_PATH . '/framework/functions.php';    // for WBCE 1.1.x compatibility
+require_once WB_PATH . '/framework/functions.php';
 
 // limit advanced Addon settings to users with access to admintools
 $admin = new admin('Admintools', 'admintools', false, false);

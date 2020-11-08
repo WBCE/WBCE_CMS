@@ -60,8 +60,8 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 // Include required files
 require '../../config.php';
 require_once WB_PATH . '/framework/addon.precheck.inc.php';
-require_once WB_PATH . '/framework/functions.php';            // WBCE 1.1.x compatibility
-require_once WB_PATH . '/include/pclzip/pclzip.lib.php';    // WBCE 1.1.x compatibility
+require_once WB_PATH . '/framework/functions.php';
+require_once WB_PATH . '/include/pclzip/pclzip.lib.php';
 
 // Setup admin object, skip header for FTAN validation and check section permissions
 $admin = new admin('Addons', 'templates_install', false, true);
