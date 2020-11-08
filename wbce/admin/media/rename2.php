@@ -14,9 +14,6 @@
 require('../../config.php');
 $admin = new admin('Media', 'media_rename', false);
 
-// Include WBCE functions file (legacy for WBCE 1.1.x)
-require_once WB_PATH . '/framework/functions.php';
-
 // Get current dir (relative to media)
 $requestMethod = '_' . strtoupper($_SERVER['REQUEST_METHOD']);
 $directory = (isset(${$requestMethod}['dir'])) ? ${$requestMethod}['dir'] : '';
@@ -29,7 +26,7 @@ if (!check_media_path($directory)) {
     die;
 }
 
-// include functions.php (backwards compatibility with WBCE 1.x)
+// include functions.php
 require_once WB_PATH . '/framework/functions.php';
 
 // Get the temp id
