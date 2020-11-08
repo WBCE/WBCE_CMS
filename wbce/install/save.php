@@ -278,7 +278,7 @@ try {
         );
     }
 } catch (Exception $e) {
-    $sMsg = d('e29: ') . 'Cannot connect to Database. Check host name, username, DB name and password.<br />MySQL Error:<br />'
+    $sMsg = d('e29: ') . 'Cannot connect to Database. Check host name, username, DB name and password.<br />Error:<br />'
         . $e->getMessage() . "Host: database_host, User: $database_username, Pass: $database_password, DB-Name: $database_name, Port: $database_port";
     // We end right here and dont collect any more errors
     set_error($sMsg, "", true);

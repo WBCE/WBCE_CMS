@@ -180,7 +180,7 @@ function change_os(type) {
             <thead>
                 <tr>
                     <th class="step-row"> <h2 class="step-row">Step 3</h2>
-                        &nbsp;Please enter your MySQL database server details below... </th>
+                        &nbsp;Please enter your database server details below... </th>
                 </tr>
             </thead>
             <tbody>
