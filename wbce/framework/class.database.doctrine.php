@@ -251,22 +251,26 @@ class database
      * execute database query
      *
      * @access   public
-     * @param string $statement
+     * @param    string    $statement
      * @return   mixed     statement handle or null
      **/
     public function query(string $statement)
     {
         $statement = $this->replaceTablePrefix($statement);
+        $funcname = 'query';
+        if(method_exists($this->db_handle,'executeQuery')) {
+            $funcname = 'executeQuery';
+        }
         try {
-            $stmt = $this->db_handle->query($statement);
+            $stmt = $this->db_handle->$funcname($statement);
             return new WBCE_PDOStatementDecorator($stmt);
         } catch (\PDO\PDOException $e) {
             $this->set_error($e->getMessage());
-        } catch (\Exception $e) {
+        } catch (\Exception $e ) {
             $this->set_error($e->getMessage());
         }
         return null;
-    }   // end function field_exists()
+    }   // end function query()
 
     /**
      * return last error
