@@ -101,8 +101,8 @@ function show_wysiwyg_editor($name, $id, $content, $width = '100%', $height = '3
     /**
      * Call the filebrowser
      */
-    if (file_exists('../../modules/el_finder/tool.php') && (!defined('SHOW_ELFINDER') || SHOW_ELFINDER!=false)) {
-        $ckeditor->config['filebrowserBrowseUrl'] = $url['path'] . '/modules/el_finder/ef/elfinder_cke.php';
+    if (file_exists('../../modules/elfinder/tool.php') && (!defined('SHOW_ELFINDER') || SHOW_ELFINDER!=false)) {
+        $ckeditor->config['filebrowserBrowseUrl'] = $url['path'] . '/modules/elfinder/ef/elfinder_cke.php';
     } else {
         $connectorPath                                 = $ckeditor->basePath . 'filemanager/connectors/php/connector.php';
         $ckeditor->config['filebrowserBrowseUrl']      = $ckeditor->basePath . 'filemanager/browser/default/browser.html?Connector=' . $connectorPath;

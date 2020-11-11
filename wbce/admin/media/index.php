@@ -15,10 +15,10 @@ require('../../config.php');
 require_once(WB_PATH . '/framework/class.admin.php');
 $admin = new admin('Media', 'media');
 
-if (file_exists('../../modules/el_finder/tool.php') && (!defined('SHOW_ELFINDER') || SHOW_ELFINDER != false)) {
+if (file_exists('../../modules/elfinder/tool.php') && (!defined('SHOW_ELFINDER') || SHOW_ELFINDER != false)) {
     $noPage = false;
-    $modulePath = WB_PATH . '/modules/el_finder/';
-    include('../../modules/el_finder/tool.php');
+    $modulePath = WB_PATH . '/modules/elfinder/';
+    include('../../modules/elfinder/tool.php');
 } else {
     $starttime = explode(" ", microtime());
     $starttime = $starttime[0] + $starttime[1];
