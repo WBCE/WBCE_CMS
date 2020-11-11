@@ -1,26 +1,8 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license. For more information, see
- * <http://www.doctrine-project.org>.
- */
-
 namespace Doctrine\Common\Util;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 
 /**
  * Static class containing most used debug methods.
@@ -31,6 +13,8 @@ use Doctrine\Common\Persistence\Proxy;
  * @author Jonathan Wage <jonwage@gmail.com>
  * @author Roman Borschel <roman@code-factory.org>
  * @author Giorgio Sironi <piccoloprincipeazzurro@gmail.com>
+ *
+ * @deprecated The Debug class is deprecated, please use symfony/var-dumper instead.
  */
 final class Debug
 {
@@ -44,7 +28,7 @@ final class Debug
     /**
      * Prints a dump of the public, protected and private properties of $var.
      *
-     * @link http://xdebug.org/
+     * @link https://xdebug.org/
      *
      * @param mixed   $var       The variable to dump.
      * @param integer $maxDepth  The maximum nesting level for object properties.
@@ -94,13 +78,13 @@ final class Debug
     public static function export($var, $maxDepth)
     {
         $return = null;
-        $isObj = is_object($var);
+        $isObj  = is_object($var);
 
         if ($var instanceof Collection) {
             $var = $var->toArray();
         }
 
-        if (! $maxDepth) {
+        if ( ! $maxDepth) {
             return is_object($var) ? get_class($var)
                 : (is_array($var) ? 'Array(' . count($var) . ')' : $var);
         }
@@ -115,15 +99,15 @@ final class Debug
             return $return;
         }
 
-        if (! $isObj) {
+        if ( ! $isObj) {
             return $var;
         }
 
-        $return = new \stdclass();
+        $return = new \stdClass();
         if ($var instanceof \DateTimeInterface) {
             $return->__CLASS__ = get_class($var);
-            $return->date = $var->format('c');
-            $return->timezone = $var->getTimezone()->getName();
+            $return->date      = $var->format('c');
+            $return->timezone  = $var->getTimezone()->getName();
 
             return $return;
         }
@@ -131,7 +115,7 @@ final class Debug
         $return->__CLASS__ = ClassUtils::getClass($var);
 
         if ($var instanceof Proxy) {
-            $return->__IS_PROXY__ = true;
+            $return->__IS_PROXY__          = true;
             $return->__PROXY_INITIALIZED__ = $var->__isInitialized();
         }
 
@@ -144,41 +128,27 @@ final class Debug
 
     /**
      * Fill the $return variable with class attributes
+     * Based on obj2array function from {@see https://secure.php.net/manual/en/function.get-object-vars.php#47075}
      *
      * @param object   $var
-     * @param stdClass $return
+     * @param \stdClass $return
      * @param int      $maxDepth
      *
      * @return mixed
      */
     private static function fillReturnWithClassAttributes($var, \stdClass $return, $maxDepth)
     {
-        $reflClass = ClassUtils::newReflectionObject($var);
-        $parsedAttributes = array();
-        do {
-            $currentClassName = $reflClass->getName();
+        $clone = (array) $var;
 
-            foreach ($reflClass->getProperties() as $reflProperty) {
-                $attributeKey = $reflProperty->isPrivate() ? $currentClassName . '#' : '';
-                $attributeKey .= $reflProperty->getName();
-
-                if (isset($parsedAttributes[$attributeKey])) {
-                    continue;
-                }
-
-                $parsedAttributes[$attributeKey] = true;
-
-                $name =
-                      $reflProperty->getName()
-                    . ($return->__CLASS__ !== $currentClassName || $reflProperty->isPrivate() ? ':' . $currentClassName : '')
-                    . ($reflProperty->isPrivate() ? ':private' : '')
-                    . ($reflProperty->isProtected() ? ':protected' : '')
-                ;
-
-                $reflProperty->setAccessible(true);
-                $return->$name = self::export($reflProperty->getValue($var), $maxDepth - 1);
+        foreach (array_keys($clone) as $key) {
+            $aux  = explode("\0", $key);
+            $name = end($aux);
+            if ($aux[0] === '') {
+                $name .= ':' . ($aux[1] === '*' ? 'protected' : $aux[1] . ':private');
             }
-        } while ($reflClass = $reflClass->getParentClass());
+            $return->$name = self::export($clone[$key], $maxDepth - 1);
+            ;
+        }
 
         return $return;
     }
