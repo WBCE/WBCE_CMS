@@ -38,14 +38,14 @@ if(!function_exists('getModulesArray')){
 			$mod_name = '';
 			$module_name = '';
 			// Loop through addons
-			while($aRec = $oAddons->fetchRow(MYSQLI_ASSOC)){
+			while($aRec = $oAddons->fetchRow()){
 				// grab for page_id's and section_id's if Addon is a PAGE TYPE MODULE
 				if($aRec['function'] == 'page'){
 					++$aAddons['count_pagemodules'];
 					if($aRec['active'] == 'Y'){
 						$sQueryActiveSections = ("SELECT `section_id`, `page_id` FROM `".TABLE_PREFIX."sections` WHERE `module` = '".$aRec['directory']."'");
 						if($oActiveSections = $database->query($sQueryActiveSections)){
-							while($aSections = $oActiveSections->fetchRow(MYSQLI_ASSOC)){
+							while($aSections = $oActiveSections->fetchRow()){
 								$aRec['active_sections'][$aSections['section_id']] = $aSections['page_id'];
 							}
 						}
@@ -110,7 +110,7 @@ if(!function_exists('getTemplatesArray')){
 
 		if($oAddons = $database->query($sQueryAddons)){
 			// Loop through addons
-			while($aRec = $oAddons->fetchRow(MYSQLI_ASSOC)){
+			while($aRec = $oAddons->fetchRow()){
 				// grab for page_id's Addon is used on different pages
 				if($aRec['function'] == 'template'){
 					++$aAddons['count_pagetemplates'];
@@ -118,7 +118,7 @@ if(!function_exists('getTemplatesArray')){
 					if($aRec['active'] == 'Y'){
 						$sQueryActiveSections = ("SELECT `page_id` FROM `".TABLE_PREFIX."pages` WHERE `template` = '".$aRec['directory']."'");
 						if($oActiveSections = $database->query($sQueryActiveSections)){
-							while($aSections = $oActiveSections->fetchRow(MYSQLI_ASSOC)){
+							while($aSections = $oActiveSections->fetchRow()){
 								$aRec['active_pages'][] = $aSections['page_id'];
 							}
 						}
@@ -155,12 +155,12 @@ if(!function_exists('getLanguagesArray')){
 
 		if($oAddons = $database->query($sQueryAddons)){
 			// Loop through addons
-			while($aRec = $oAddons->fetchRow(MYSQLI_ASSOC)){
+			while($aRec = $oAddons->fetchRow()){
 				// grab for page_id's if Addon is used on different pages
 				if($aRec['active'] == 'Y'){
 					$sQueryActiveSections = ("SELECT `page_id` FROM `".TABLE_PREFIX."pages` WHERE `language` = '".$aRec['directory']."'");
 					if($oActiveSections = $database->query($sQueryActiveSections)){
-						while($aSections = $oActiveSections->fetchRow(MYSQLI_ASSOC)){
+						while($aSections = $oActiveSections->fetchRow()){
 							$aRec['active_pages'][] = $aSections['page_id'];
 						}
 					}

@@ -35,14 +35,14 @@ $sAddonDir = $module_directory;
 /**
  * Create Twig template object and configure it
  */
-$oTwigLoader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/skel'); // tell Twig where the template will come from
-$oTwig = new Twig_Environment($oTwigLoader, array(
+$oTwigLoader = new \Twig\Loader\FilesystemLoader(dirname(__FILE__) . '/skel'); // tell Twig where the template will come from
+$oTwig = new \Twig\Environment($oTwigLoader, array(
 	'autoescape'       => false,
 	'cache'            => false,
 	'strict_variables' => false,
 	'debug'            => true
 ));
-$oTwig->addExtension(new Twig_Extension_Debug());	// load extension	
+$oTwig->addExtension(new \Twig\Extension\DebugExtension());	// load extension
 // SET SOME GLOBALS FOR USE ALONG WITH TWIG-TEMPLATES
 $oTwig->addGlobal('WB_URL', WB_URL); 
 $oTwig->addGlobal('ICONS_DIR', '../../modules/'.$sAddonDir.'/icons'); 
@@ -70,7 +70,7 @@ $sActiveLanguages = '';
 			$sActiveModules = 'current_tab';		
 		break;
 	}	
-$oTemplate = $oTwig->loadTemplate('monitor_' . $sMonitorCase . '.twig');	// load the template by name
+$oTemplate = $oTwig->load('monitor_' . $sMonitorCase . '.twig');	// load the template by name
 
 $sToolUrl = ADMIN_URL.'/admintools/tool.php?tool='.$sAddonDir;
 ?>
