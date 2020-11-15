@@ -14,7 +14,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 // get CAPTCHA and ASP settings from old table
 $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'mod_captcha_control`';
-if (($get_settings = $database->query($sql)) && ($setting = $get_settings->fetchRow(MYSQLI_ASSOC))) {
+if (($get_settings = $database->query($sql)) && ($setting = $get_settings->fetchRow())) {
     // fetching settings from old table
     Settings::Set ("enabled_captcha", (($setting['enabled_captcha'] == '1') ? true : false));
     Settings::Set ("enabled_asp", (($setting['enabled_asp'] == '1') ? true : false));

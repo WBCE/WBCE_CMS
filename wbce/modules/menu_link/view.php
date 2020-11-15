@@ -19,7 +19,7 @@ $sSql  = 'SELECT * FROM `{TP}mod_menu_link` WHERE `page_id` = '.(int)PAGE_ID;
 $rQueryPageData = $database->query($sSql);
 
 if ($rQueryPageData->numRows() == 1) {
-	$aPageData = $rQueryPageData->fetchRow(MYSQLI_ASSOC); // generate assoc array from query
+	$aPageData = $rQueryPageData->fetchRow(); // generate array from query
 
 	if ($aPageData['redirect_type'] == 301) {
 		@header('HTTP/1.1 301 Moved Permanently');	// 301 redirect

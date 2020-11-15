@@ -213,7 +213,7 @@ class mform {
 		$result = array();
 		$res = $database->query("SELECT * FROM ".TABLE_PREFIX.$table." WHERE `$id_field` = '$id'");
 		if($res) {
-			while ($row = $res->fetchRow(MYSQLI_ASSOC)) {
+			while ($row = $res->fetchRow()) {
 				$result[] = $row;
 			}
 		}
@@ -232,7 +232,7 @@ class mform {
 		$result = array();
 		$res = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id` = '$id' order by message_id desc limit 0,$max ");
 		if($res) {
-			while ($row = $res->fetchRow(MYSQLI_ASSOC)) {
+			while ($row = $res->fetchRow()) {
 				$result[] = $row;
 			}
 		}

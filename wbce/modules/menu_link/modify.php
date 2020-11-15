@@ -26,14 +26,14 @@ include __DIR__ .'/functions.pageTree.php';
 
 // get target page_id
 $sql_result = $database->query("SELECT * FROM `{TP}mod_menu_link` WHERE `section_id` = ".$section_id);
-$aData      = $sql_result->fetchRow(MYSQLI_ASSOC);
+$aData      = $sql_result->fetchRow();
 
 // Get list of all visible pages and build a page-tree
 // get list of all page_ids and page_titles
 global $aMenulinkTitles;
 $aMenulinkTitles = array();
 if ($query_page = $database->query("SELECT `page_id`, `menu_title` FROM `{TP}pages`")) {
-	while($page = $query_page->fetchRow(MYSQLI_ASSOC))
+	while($page = $query_page->fetchRow())
 		$aMenulinkTitles[$page['page_id']] = $page['menu_title'];
 }
 
@@ -43,7 +43,7 @@ $aLinks = pageTreeCombobox(nestedPagesArray(), $page_id);
 #debug_dump($aLinks);
 foreach($aLinks as $p) {
 	if ($query_section = $database->query("SELECT `section_id`, `namesection` FROM `{TP}sections` WHERE `page_id` = ".$p['page_id']." ORDER BY `position`")) {
-		while($section = $query_section->fetchRow(MYSQLI_ASSOC)) {
+		while($section = $query_section->fetchRow()) {
 			// get section-anchor
 			if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
 				if (isset($section['namesection'])) {

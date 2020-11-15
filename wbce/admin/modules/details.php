@@ -41,7 +41,7 @@ $rModule = $database->query(
     "SELECT * FROM `{TP}addons` WHERE type = 'module' AND `directory` = '" . $database->escapeString($sModDir) . "'"
 );
 if ($rModule->numRows() > 0) {
-    $aModule = $rModule->fetchRow(MYSQLI_ASSOC);
+    $aModule = $rModule->fetchRow();
 }
 
 // Collect the modules Type description.

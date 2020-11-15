@@ -31,7 +31,7 @@ function build_page(&$admin, &$database)
     // read user-info from table users and assign it to template
     $sSql = 'SELECT `display_name`, `username`, `email` FROM `{TP}users` WHERE `user_id` = %s';
     if ($res_user = $database->query(sprintf($sSql, (int)$admin->get_user_id()))) {
-        if ($rec_user = $res_user->fetchRow(MYSQLI_ASSOC)) {
+        if ($rec_user = $res_user->fetchRow()) {
             $oTemplate->set_var(array(
                 'DISPLAY_NAME' => $rec_user['display_name'],
                 'USERNAME' => $rec_user['username'],

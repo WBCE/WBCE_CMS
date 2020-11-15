@@ -994,7 +994,7 @@ _JsCode;
         if ($sSql != '') {
             $aTmp = array();
             if (($rAddons = $this->_oDb->query($sSql))) {
-                while ($rec = $rAddons->fetchRow(MYSQLI_ASSOC)) {
+                while ($rec = $rAddons->fetchRow()) {
                     $aTmp[$rec['module_dir']] = $this->retrieve_modfiles_from_dir($rec['module_dir'], $sEndPosition);
                 }
                 foreach ($aTmp as $sMod => $aType) {
@@ -1092,7 +1092,7 @@ _JsCode;
             // Get all sections for this page
             $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id`=%d ORDER BY `position`';
             if ($resSections = $this->_oDb->query(sprintf($sSql, $iPageID))) {
-                while ($rec = $resSections->fetchRow(MYSQLI_ASSOC)) {
+                while ($rec = $resSections->fetchRow()) {
                     if ($bExcludeNonPublicised == true) {
                         // skip sections that are not publicised
                         $iNowTime = time();
@@ -1248,7 +1248,7 @@ function get_page_sections($iPageID = null, $bExcludeNonPublicised = false)
         // Get all sections for this page
         $sSql = 'SELECT * FROM `%ssections` WHERE `page_id`=%d ORDER BY `position`';
         if ($resSections = $database->query(sprintf($sSql, TABLE_PREFIX, $iPageID))) {
-            while ($rec = $resSections->fetchRow(MYSQLI_ASSOC)) {
+            while ($rec = $resSections->fetchRow()) {
                 if ($bExcludeNonPublicised == true) {
                     // skip sections that are not publicised
                     $iNowTime = time();

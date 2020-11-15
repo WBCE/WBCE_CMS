@@ -132,7 +132,7 @@ class Admin extends Wb
         $this->createFTAN();
         $sql = 'SELECT `value` FROM `{TP}settings` WHERE `name`=\'website_title\'';
         $get_title = $this->_oDb->query($sql);
-        $title = $get_title->fetchRow(MYSQLI_ASSOC);
+        $title = $get_title->fetchRow();
 
         // Setup template object, parse vars to it, then parse it
         $header_template = new Template(dirname($this->correct_theme_source('header.htt')));
@@ -151,7 +151,7 @@ class Admin extends Wb
             // extract page link from the database
             $sql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id`=' . intval($_GET['page_id']);
             $result = @$this->_oDb->query($sql);
-            $row = @$result->fetchRow(MYSQLI_ASSOC);
+            $row = @$result->fetchRow();
             if ($row) {
                 $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
             }
@@ -380,7 +380,7 @@ class Admin extends Wb
         );
         $sSql = 'SELECT `username`,`display_name`,`email` FROM `{TP}users` WHERE `user_id`= %d';
         if (($resUsers = $this->_oDb->query(sprintf($sSql, $user_id)))) {
-            if (($recUser = $resUsers->fetchRow(MYSQLI_ASSOC))) {
+            if (($recUser = $resUsers->fetchRow())) {
                 $aRetVal = $recUser;
             }
         }
@@ -400,7 +400,7 @@ class Admin extends Wb
         global $TEXT;
         $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`= %d';
         if (($resSection = $this->_oDb->query(sprintf($sSql, $section_id)))) {
-            if (!($recSection = $resSection->fetchRow(MYSQLI_ASSOC))) {
+            if (!($recSection = $resSection->fetchRow())) {
                 $this->print_header();
                 $this->print_error($TEXT['SECTION'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
             }
@@ -424,7 +424,7 @@ class Admin extends Wb
         global $TEXT;
         $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id`= %d';
         if (($resPages = $this->_oDb->query(sprintf($sSql, $page_id)))) {
-            if (!($recPage = $resPages->fetchRow(MYSQLI_ASSOC))) {
+            if (!($recPage = $resPages->fetchRow())) {
                 $this->print_header();
                 $this->print_error($TEXT['PAGE'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
             }
@@ -459,7 +459,7 @@ class Admin extends Wb
             $iPageID = $page;
             $sSql = 'SELECT `%s`,`%s` FROM `{TP}pages` WHERE `page_id`= %d';
             if (($res = $this->_oDb->query(sprintf($sSql, $action_groups, $action_users, $iPageID)))) {
-                if (($rec = $res->fetchRow(MYSQLI_ASSOC))) {
+                if (($rec = $res->fetchRow())) {
                     $groups = $rec[$action_groups];
                     $users = $rec[$action_users];
                 }

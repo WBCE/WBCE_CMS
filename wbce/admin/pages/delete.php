@@ -34,7 +34,7 @@ if ($resPage->numRows() == 0) {
     $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }
 
-$aPage = $resPage->fetchRow(MYSQLI_ASSOC);
+$aPage = $resPage->fetchRow();
 $visibility = $aPage['visibility'];
 
 $sFilePath = getAccessFilePath($page_id);
