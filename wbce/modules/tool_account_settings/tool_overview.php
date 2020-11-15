@@ -45,7 +45,7 @@ if(!empty($aUsers)){
     
     // prepare Twig Template
     $oTwig = getTwig(__DIR__ . '/theme/');
-    $oTemplate = $oTwig->loadTemplate('tool_overview.twig');
+    $oTemplate = $oTwig->load('tool_overview.twig');
     $oTemplate->display($aToTwig);
 
 } 

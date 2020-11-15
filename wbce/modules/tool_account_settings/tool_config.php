@@ -54,5 +54,5 @@ $aToTwig = array(
 
 // prepare Twig Template
 $oTwig = getTwig(__DIR__ . '/theme/');
-$oTemplate = $oTwig->loadTemplate('tool_config.twig');
+$oTemplate = $oTwig->load('tool_config.twig');
 $oTemplate->display($aToTwig);
