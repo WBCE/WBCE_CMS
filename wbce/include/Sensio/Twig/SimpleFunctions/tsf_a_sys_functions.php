@@ -4,7 +4,7 @@ defined('WB_PATH') or exit('sorry, no sufficient privileges.');
 /**
  * insertJsFile  // Twig adaptation of the Insert class method
  */
-$oTwig->addFunction(new Twig_SimpleFunction("insertJsFile", 
+$oTwig->addFunction(new \Twig\TwigFunction("insertJsFile", 
     function ($uFileLoc = '', $sDomPos = 'BODY BTM-', $sID = '') {
         if(!is_array($uFileLoc)){    
            if ($uFileLoc != '') {
@@ -24,7 +24,7 @@ $oTwig->addFunction(new Twig_SimpleFunction("insertJsFile",
 /**
  * insertCssFile  // Twig adaptation of the Insert class method
  */
-$oTwig->addFunction(new Twig_SimpleFunction("insertCssFile", 
+$oTwig->addFunction(new \Twig\TwigFunction("insertCssFile", 
     function ($uFileLoc = '', $sDomPos = 'HEAD BTM-', $sID = '') {
         if(!is_array($uFileLoc)){        
             if ($uFileLoc != '') {
@@ -42,7 +42,7 @@ $oTwig->addFunction(new Twig_SimpleFunction("insertCssFile",
 ));
 
 // getIDKEY  // use IDKEYs in Twig Templates directly. No need to hand them over anymore.
-$oTwig->addFunction(new Twig_SimpleFunction("getIDKEY", 
+$oTwig->addFunction(new \Twig\TwigFunction("getIDKEY", 
     function ($uID) {        
         $oEngine = isset($GLOBALS['wb']) ? $GLOBALS['wb'] : $GLOBALS['admin']; 
         return $oEngine->getIDKEY($uID);
@@ -68,7 +68,7 @@ $oTwig->addFunction(new Twig_SimpleFunction("getIDKEY",
  * 	@param  bool	
  * 	@return string Translated String
  * */
-$oTwig->addFunction( new Twig_SimpleFunction("L_",
+$oTwig->addFunction( new \Twig\TwigFunction("L_",
     function ($sStr){
         $sRetVal = '';
         if(strpos($sStr, ':') !== false){

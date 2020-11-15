@@ -3,7 +3,7 @@
 /**
      * make use of Aldus' x_c_date class for date translations and user defined formatting
    
-    $oTwig->addFunction(new Twig_SimpleFunction("date_formatter", 
+    $oTwig->addFunction(new \Twig\TwigFunction("date_formatter", 
         function ($sDate, $sFormat = '%d. %B %Y') {
             # H:\WbPortable\root\wb284Test\modules\outputfilter_dashboard\plugins\x_c_date_opf\index.php
             # http://forum.websitebaker.org/index.php?topic=10786.0

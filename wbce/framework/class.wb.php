@@ -728,7 +728,7 @@ _JsCode;
             }
         }
         $oTwig = getTwig($aTemplateLocs);
-        $oTemplate = $oTwig->loadTemplate($sTplName);
+        $oTemplate = $oTwig->load($sTplName);
         $oTemplate->display($aToTwig);
     }
 
