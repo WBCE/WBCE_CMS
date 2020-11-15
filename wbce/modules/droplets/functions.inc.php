@@ -25,7 +25,7 @@ if(LANGUAGE_LOADED) {
     global $HEADING;
     global $TEXT;
 
-    $twig = new Twig_Environment(new Twig_Loader_Filesystem(dirname(__FILE__) . '/templates'), array());
+    $twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(dirname(__FILE__) . '/templates'), array());
     $twig->addGlobal('WB_URL', WB_URL);
     $twig->addGlobal('ADMIN_URL', ADMIN_URL);
     $twig->addGlobal('THEME_URL', THEME_URL);
@@ -56,7 +56,7 @@ function wbce_copy_droplet($droplet_id)
         TABLE_PREFIX, $droplet_id
     ));
 
-    $fetch_content = $query_content->fetchRow(MYSQLI_ASSOC);
+    $fetch_content = $query_content->fetchRow();
     $code          = addslashes(str_replace($tags, '', $fetch_content['code']));
     $new_name      = $fetch_content['name'] . "_copy";
     $name          = $new_name;
@@ -438,7 +438,7 @@ function wbce_list_droplets()
     if($query_droplets->numRows() > 0)
     {
         $list = array();
-        while ($droplet = $query_droplets->fetchRow(MYSQLI_ASSOC))
+        while ($droplet = $query_droplets->fetchRow())
         {
             if(is_array($droplet) && isset($droplet['name']))
             {
@@ -489,7 +489,7 @@ function wbce_list_droplets()
 function wbce_twig_display($output,$tplname='tool',$return=false)
 {
     global $twig;
-    $tpl = $twig->loadTemplate($tplname.'.twig');
+    $tpl = $twig->load($tplname.'.twig');
     if($return)
     {
         return $tpl->render($output);
