@@ -25,8 +25,14 @@ $module_icon        = 'fa fa-tasks';
 
 /**
  * Version history
+ * 
+ * 0.7.0 - Bianka Martinovic ("WebBird")
+ *       - fix issues with changed twig version and PHP 8
+ * 
+ * 0.6.2 - Bernd
+ *       - MYSQL_ASSOC -> MYSQLI_ASSOC
  *
- * 0.6.1
- *        - Add Admintool Icon
+ * 0.6.1 - colinax
+ *       - Add Admintool Icon
  *
  **/
