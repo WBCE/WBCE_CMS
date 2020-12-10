@@ -1,6 +1,6 @@
 # Doctrine DBAL
 
-Doctrine DBAL 2.12.0; includes Doctrine Common 3.0.2 and EventManager 1.1.1
+Doctrine DBAL 2.12.1; includes Doctrine Common 3.0.3 and EventManager 1.1.1
 
 ## Website
 
