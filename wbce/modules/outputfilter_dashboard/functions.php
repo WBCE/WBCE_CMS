@@ -1100,15 +1100,27 @@ function opf_modules_categories($type='modules') {
 
 
 // replaces sysvar placeholders
-function opf_replace_sysvar($filter,$plugin='') {
-    if($plugin=='' && is_array($filter) && isset($filter['plugin']))
+function opf_replace_sysvar($filter, $plugin='')
+{
+    if(empty($filter)) {
+        return array();
+    }
+    if ($plugin=='' && is_array($filter) && isset($filter['plugin'])) {
         $plugin=$filter['plugin'];
-    if($plugin!='')
-        $filter = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$plugin, $filter);
-    $filter = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter);
-    if($plugin!='')
-        $filter = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter);
-    $filter = str_replace('{SYSVAR:WB_URL}', WB_URL, $filter);
+    }
+    $filter_as_string = json_encode($filter);
+    if ($plugin!='') {
+        #$filter = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$plugin, $filter);
+        $filter_as_string = str_replace('{OPF:PLUGIN_PATH}', str_replace(array('//','\\/','\\'),'/',OPF_PLUGINS_PATH.$plugin), $filter_as_string);
+    }
+    #$filter = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter);
+    $filter_as_string = str_replace('{SYSVAR:WB_PATH}', str_replace(array('//','\\/','\\'),'/',WB_PATH), $filter_as_string);
+    if ($plugin!='') {
+        #$filter = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter);
+        $filter_as_string = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter_as_string);
+    }
+    $filter_as_string = str_replace('{SYSVAR:WB_URL}', WB_URL, $filter_as_string);
+    $filter = json_decode($filter_as_string,true);
     return $filter;
 }
 
