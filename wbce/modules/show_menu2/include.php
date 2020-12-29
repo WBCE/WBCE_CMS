@@ -205,7 +205,7 @@ function show_menu2(
         $oML = $database->query($qML);
         $aML = [];
 		if (is_object($oML) && $oML->numRows() > 0) {
-			while ($ml =$oML->fetchRow()) {
+			while ($ml =$oML->fetchRow(MYSQLI_ASSOC)) {
 				$aML[] = $ml['page_id'];
 			}
 		}

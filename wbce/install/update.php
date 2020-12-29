@@ -91,7 +91,7 @@ function mysqlCheckTables($dbName)
         if (stristr($row[0], $table_prefix) && in_array($tmp, $table_list)) {
             $sql = "CHECK TABLE " . $dbName . '.' . $row[0];
             $analyze = $database->query($sql);
-            $rowFetch = $analyze->fetchRow();
+            $rowFetch = $analyze->fetchRow(MYSQLI_ASSOC);
             $data[$x]['Op'] = $rowFetch["Op"];
             $data[$x]['Msg_type'] = $rowFetch["Msg_type"];
             $msgColor = '<span class="error">';
