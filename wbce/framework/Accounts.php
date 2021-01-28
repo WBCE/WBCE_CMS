@@ -201,7 +201,7 @@ class Accounts extends Frontend
         $sSql = "SELECT * FROM `{TP}users` WHERE `user_id` = " . intval($iUserID);
 
         if ($rQuery = $database->query($sSql)) {
-            $aConfig = $rQuery->fetchRow(MYSQLI_ASSOC);
+            $aConfig = $rQuery->fetchRow();
         }
 
         return $aConfig;
@@ -507,7 +507,7 @@ class Accounts extends Frontend
         $aUsers = array();
         if ($res = $GLOBALS['database']->query($sQueryUsers)) {
             for ($i = 0; $i < $res->numRows(); $i++) {
-                $aUsers[$i] = $res->fetchRow(MYSQLI_ASSOC);
+                $aUsers[$i] = $res->fetchRow();
 
                 // make array of groups_id => group_name
                 $aUsers[$i]['groups_id'] = str_replace(' ', '', $aUsers[$i]['groups_id']);

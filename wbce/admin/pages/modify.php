@@ -123,7 +123,7 @@ $sWhereClause = (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION && is_numeric($
     : 'WHERE `page_id` = ' . (int)$page_id;
 $sSql = 'SELECT * FROM `{TP}sections` ' . $sWhereClause . ' ORDER BY position ASC';
 if ($rSections = $database->query($sSql)) {
-    while ($section = $rSections->fetchRow(MYSQLI_ASSOC)) {
+    while ($section = $rSections->fetchRow()) {
         $section_id = $section['section_id'];
         $module = $section['module'];
 

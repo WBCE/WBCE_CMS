@@ -413,7 +413,7 @@ function sm2_correct_menu_links($sMenu){
         $rMenuLinks = $database->query("SELECT * FROM `{TP}mod_menu_link`");
         $i = 0;
         if($rMenuLinks->numRows() > 0) {
-            while($row = $rMenuLinks->fetchRow(MYSQLI_ASSOC)) {
+            while($row = $rMenuLinks->fetchRow()) {
                 //$aMenuLinks[$i] = $row;
                 if(!empty($row['target_page_id'])){
                     $aMenuLinks[$i]['replace_url'] = get_page_link($row['target_page_id']).''.PAGE_EXTENSION;

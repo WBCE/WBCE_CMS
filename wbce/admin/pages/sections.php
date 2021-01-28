@@ -138,7 +138,7 @@ switch ($action) {
         $sSql = 'SELECT `admin_groups`,`admin_users` FROM `{TP}pages` WHERE `page_id` = ' . $page_id;
         $results = $database->query($sSql);
 
-        $results_array = $results->fetchRow(MYSQLI_ASSOC);
+        $results_array = $results->fetchRow();
         $old_admin_groups = explode(',', $results_array['admin_groups']);
         $old_admin_users = explode(',', $results_array['admin_users']);
         $in_old_group = false;
@@ -163,7 +163,7 @@ switch ($action) {
             // $admin->print_header();
             $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
         }
-        $aPage = $rPageDetails->fetchRow(MYSQLI_ASSOC);
+        $aPage = $rPageDetails->fetchRow();
 
         // Set module permissions
         $module_permissions = $_SESSION['MODULE_PERMISSIONS'];
@@ -262,7 +262,7 @@ switch ($action) {
 
         $iSectionsCount = $rSections->numRows();
         if ($iSectionsCount > 0) {
-            while ($section = $rSections->fetchRow(MYSQLI_ASSOC)) {
+            while ($section = $rSections->fetchRow()) {
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
                     // Get the modules real name
                     $sLinkEditSection = '';
@@ -422,7 +422,7 @@ switch ($action) {
 
         $iSectionsCount = $rSections->numRows();
         if ($iSectionsCount > 0) {
-            while ($section = $rSections->fetchRow(MYSQLI_ASSOC)) {
+            while ($section = $rSections->fetchRow()) {
                 // Get the modules real name
                 $sSql = 'SELECT `name` FROM `{TP}addons` WHERE `directory` = "' . $section['module'] . '"';
                 $module_name = $database->get_one($sSql);
@@ -463,7 +463,7 @@ switch ($action) {
             $rResult = $database->query($sSql);
 
             if ($rResult->numRows() > 0) {
-                while ($module = $rResult->fetchRow(MYSQLI_ASSOC)) {
+                while ($module = $rResult->fetchRow()) {
                     // Check if user is allowed to use this module   echo  $module['directory'],'<br />';
                     if (!is_numeric(array_search($module['directory'], $module_permissions))) {
                         $oTemplate->set_var('VALUE', $module['directory']);

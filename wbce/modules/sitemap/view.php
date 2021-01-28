@@ -53,7 +53,7 @@ if (!function_exists("sitemap")) {
         $oML = $database->query($qML);
         $aML = [];
 		if (is_object($oML) && $oML->numRows() > 0) {
-			while ($ml =$oML->fetchRow(MYSQLI_ASSOC)) {
+			while ($ml =$oML->fetchRow()) {
 				$aML[] = $ml['page_id'];
 			}
 		}

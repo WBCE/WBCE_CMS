@@ -49,7 +49,7 @@ function nestedPagesArray($iParent = 0) {
 	if(isPageCodeUsed()){
 		$aQueryKeys[] = 'page_code';
 	}
-	while($p = $oPages->fetchRow(MYSQLI_ASSOC)) {
+	while($p = $oPages->fetchRow()) {
 		$thisref = &$refs[ $p['page_id'] ];
 		foreach ($aQueryKeys as $key){
 			$thisref[$key] = $p[$key];

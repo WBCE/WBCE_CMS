@@ -28,7 +28,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
         $sSql  = "SELECT * FROM `{TP}users` WHERE `email`='".$sEmail."'";
 
         if(($rRow = $database->query($sSql))){
-            if($aUser = $rRow->fetchRow(MYSQLI_ASSOC)) {
+            if($aUser = $rRow->fetchRow()) {
                 if(strlen($aUser['signup_confirmcode']) > 25){
                     header("Location: ".ACCOUNT_URL."/signup_continue_page.php?switch=wrong_inputs");
                     exit(0); // break up the script here

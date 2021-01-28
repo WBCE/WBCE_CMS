@@ -35,7 +35,7 @@ $rTools = $database->query(
      order by name"
 );
 if ($rTools->numRows() > 0) {
-    while ($tool = $rTools->fetchRow(MYSQLI_ASSOC)) {
+    while ($tool = $rTools->fetchRow()) {
         $tool_icon = false;
         $data = @file_get_contents(WB_PATH . '/modules/' . $tool['directory'] . '/info.php');
         $tool_icon = get_variable_content('module_icon', $data, true, false);

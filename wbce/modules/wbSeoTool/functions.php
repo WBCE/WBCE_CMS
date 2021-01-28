@@ -74,7 +74,7 @@ if(!function_exists('pagesArray')){
 		$aPages = array();
 		$refs = array();
 		// create $aPages[] Array
-		while($page = $oPages->fetchRow(MYSQLI_ASSOC)) {
+		while($page = $oPages->fetchRow()) {
                         if (isset($page["ANY_VALUE(s.`module`)"])){
                             $page["module"] = $page["ANY_VALUE(s.`module`)"];
                         }

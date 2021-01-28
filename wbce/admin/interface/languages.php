@@ -30,7 +30,7 @@ if (!function_exists('getDateFormatsArray')) {
         $aLanguages = array();
         $sCurrLang = LANGUAGE;
         if ($rLang = $database->query("SELECT `name`, `directory` FROM `{TP}addons` WHERE `type` = 'language' ORDER BY `name`")) {
-            while ($aLang = $rLang->fetchRow(MYSQLI_ASSOC)) {
+            while ($aLang = $rLang->fetchRow()) {
                 $sLC = $aLang['directory'];
                 $aLanguages[$sLC]['CODE'] = $sLC;
                 $aLanguages[$sLC]['NAME'] = $aLang['name'];
