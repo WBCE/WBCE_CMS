@@ -82,7 +82,7 @@ $goto = ADMIN_URL.'/pages/modify.php?page_id='.$page_id;
 if($database->is_error()) {
 	$admin->print_error($database->get_error(), $js_back);
 } else {
-	$admin->print_success($MESSAGE['PAGES']['SAVED'], $goto);
+	$admin->print_success($MESSAGE['PAGES_SAVED'], $goto);
 }
 
 // Print admin footer

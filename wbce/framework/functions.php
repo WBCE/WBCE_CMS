@@ -502,7 +502,7 @@ function root_parent($page_id)
     global $database;
     // Get page details
     $rQueryPage = $database->query('SELECT `parent`, `level` FROM `{TP}pages` WHERE `page_id`=' . (int)$page_id);
-    $aPageData = $rQueryPage->fetchRow();
+    $aPageData = $rQueryPage->fetchRow(MYSQLI_ASSOC);
     if ($aPageData['level'] == 1) {
         return $aPageData['parent'];
     } elseif ($aPageData['parent'] == 0) {
@@ -1138,7 +1138,7 @@ function delete_page($page_id)
     if ($results->numRows() == 0) {
         $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
     }
-    $aData = $results->fetchRow();
+    $aData = $results->fetchRow(MYSQLI_ASSOC);
     $parent = $aData['parent'];
     $level = $aData['level'];
     $link = $aData['link'];
@@ -1148,7 +1148,7 @@ function delete_page($page_id)
     $sSql = "SELECT `section_id`, `module` FROM `{TP}sections` WHERE `page_id`=" . $page_id;
     $query_sections = $database->query($sSql);
     if ($query_sections->numRows() > 0) {
-        while ($section = $query_sections->fetchRow()) {
+        while ($section = $query_sections->fetchRow(MYSQLI_ASSOC)) {
             // Set section id
             $section_id = $section['section_id'];
             // Include the modules delete file if it exists

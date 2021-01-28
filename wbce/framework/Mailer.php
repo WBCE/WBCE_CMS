@@ -158,7 +158,7 @@ class Mailer extends PHPMailer
                 . "WHERE `name` LIKE ('wbmailer_%') OR `name` = 'server_email'";
             $rData = $GLOBALS['database']->query($sSql);
 
-            while ($rec = $rData->fetchRow()) {
+            while ($rec = $rData->fetchRow(MYSQLI_ASSOC)) {
                 $sKey = str_replace('wbmailer_', '', $rec['name']);
                 $aCfg[$sKey] = $rec['value'];
 

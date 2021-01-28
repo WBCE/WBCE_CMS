@@ -374,7 +374,7 @@ class Settings
         if (($get_settings = $database->query($sql))) {
             $x = 0; //counter for debug
 
-            while ($setting = $get_settings->fetchRow()) {
+            while ($setting = $get_settings->fetchRow(MYSQLI_ASSOC)) {
                 $setting_name = strtoupper($setting['name']);
                 $setting_value = $setting['value'];
                 if ($setting_value == 'bfalseb') {
@@ -424,7 +424,7 @@ class Settings
         if (($get_settings = $database->query($sql))) {
             $out = "<h3>All Settings in DB </h3>";
 
-            while ($setting = $get_settings->fetchRow()) {
+            while ($setting = $get_settings->fetchRow(MYSQLI_ASSOC)) {
                 $setting_name = strtoupper($setting['name']);
                 $setting_value = $setting['value'];
                 $setting_value = htmlentities($setting_value);

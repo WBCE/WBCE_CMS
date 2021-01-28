@@ -105,7 +105,7 @@ class Frontend extends Wb
         if (!isset($page_id) or !is_numeric($page_id)) {
             // Go to or show default page
             if ($default_num_rows > 0) {
-                $fetch_default = $get_default->fetchRow();
+                $fetch_default = $get_default->fetchRow(MYSQLI_ASSOC);
                 $this->default_link = $fetch_default['link'];
                 $this->default_page_id = $fetch_default['page_id'];
                 // Check if we should redirect or include page inline
@@ -127,7 +127,7 @@ class Frontend extends Wb
         }
         // Get default page link
         if (!isset($fetch_default)) {
-            $fetch_default = $get_default->fetchRow();
+            $fetch_default = $get_default->fetchRow(MYSQLI_ASSOC);
             $this->default_link = $fetch_default['link'];
             $this->default_page_id = $fetch_default['page_id'];
         }
@@ -176,7 +176,7 @@ class Frontend extends Wb
             }
 
             // Fetch page details
-            $this->page = $resPage->fetchRow();
+            $this->page = $resPage->fetchRow(MYSQLI_ASSOC);
 
             // Check if the page language is also the selected language. If not, send headers again.
             if ($this->page['language'] != LANGUAGE) {

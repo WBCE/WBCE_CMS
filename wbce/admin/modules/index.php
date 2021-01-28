@@ -26,7 +26,7 @@ $oTemplate->set_block('page', 'main_block', 'main');
 $oTemplate->set_block('main_block', 'module_list_block', 'module_list');
 $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' order by name");
 if ($result->numRows() > 0) {
-    while ($aModule = $result->fetchRow()) {
+    while ($aModule = $result->fetchRow(MYSQLI_ASSOC)) {
         $moduleDirectories[] = WB_PATH . '/modules/' . $aModule['directory'];
         $aModule['name'] = $admin->get_module_name($aModule['directory'], true, ' <i>[%s]</i>');
         $oTemplate->set_var('VALUE', $aModule['directory']);

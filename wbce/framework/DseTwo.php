@@ -275,7 +275,7 @@ class DseTwo
             $lastTable = '';
             $aOrStatements = array();
             $sPrefix = '';
-            while ($rec = $res->fetchRow()) {
+            while ($rec = $res->fetchRow(MYSQLI_ASSOC)) {
                 // loop through all found tables/fields
                 $sTableColumn = $rec['table'] . '.' . $rec['column'];
                 switch ($this->_ControllListTyp) {
@@ -342,7 +342,7 @@ class DseTwo
         foreach ($this->_Queries as $sQuery) {
             $sql = sprintf($sQuery, $sSearch);
             if (($res = $this->_oDb->query($sql))) {
-                if (($result = intval($res->fetchRow())) > 0) {
+                if (($result = intval($res->fetchRow(MYSQLI_ASSOC))) > 0) {
                     break;
                 }
             }

@@ -83,7 +83,7 @@ class Login extends Admin
             // User has been "remembered" Get the users password
             $sSql = "SELECT * FROM `{TP}users` 'WHERE `user_id`= %d";
             $resUser = $database->query(sprintf($sSql, $this->get_safe_remember_key()));
-            $aUserData = $resUser->fetchRow();
+            $aUserData = $resUser->fetchRow(MYSQLI_ASSOC);
             $this->username = $aUserData['username'];
             $this->password = $aUserData['password'];
             // Check if the user exists (authenticate them)
@@ -190,7 +190,7 @@ class Login extends Admin
             $sSql .= " AND `password` = '" . $this->password . "'";
         }
         $resUsers = $database->query(sprintf($sSql, $sLoginname));
-        $aUserData = $resUsers->fetchRow();
+        $aUserData = $resUsers->fetchRow(MYSQLI_ASSOC);
         $iNumRows = $resUsers->numRows();
 
         // Check if password is correct
@@ -256,7 +256,7 @@ class Login extends Admin
             foreach (explode(",", $this->get_session('GROUPS_ID')) as $iCurrGroupID) {
                 $sSql = "SELECT * FROM `{TP}groups` WHERE `group_id` = %d";
                 $resGroup = $database->query(sprintf($sSql, $iCurrGroupID));
-                $aGroup = $resGroup->fetchRow();
+                $aGroup = $resGroup->fetchRow(MYSQLI_ASSOC);
                 $_SESSION['GROUP_NAME'][$iCurrGroupID] = $aGroup['name'];
                 // Set system permissions
                 if ($aGroup['system_permissions'] != '') {

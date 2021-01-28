@@ -328,7 +328,7 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
         {
             $aData = array();
             if ($resData = $this->query($statement)) {
-                while ($rec = $resData->fetchRow()) {
+                while ($rec = $resData->fetchRow(MYSQLI_ASSOC)) {
                     $aData[] = $rec;
                 }
             }
@@ -599,7 +599,7 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
             $engineValue = (version_compare($mysqlVersion, '5.0') < 0) ? 'Type' : 'Engine';
             $sql = "SHOW TABLE STATUS FROM " . $this->db_name . " LIKE '" . $table . "'";
             if (($result = $this->query($sql))) {
-                if (($row = $result->fetchRow())) {
+                if (($row = $result->fetchRow(MYSQLI_ASSOC))) {
                     $retVal = $row[$engineValue];
                 }
             }

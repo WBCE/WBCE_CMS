@@ -31,7 +31,7 @@ if ($database->is_error()) {
 if ($resPage->numRows() == 0) {
     $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }
-$aPage = $resPage->fetchRow();
+$aPage = $resPage->fetchRow(MYSQLI_ASSOC);
 $old_admin_groups = explode(',', str_replace('_', '', $aPage['admin_groups']));
 $old_admin_users = explode(',', str_replace('_', '', $aPage['admin_users']));
 
