@@ -34,7 +34,7 @@ if(!empty($_POST["message_id"])){
     if($number_loaded > 0){
 
 		$aToJson['success'] = true;
-        while($msg = $query->fetchRow()){
+        while($msg = $query->fetchRow(MYSQLI_ASSOC)){
 			$msg_id = $msg['message_id'];
 			$aToJson['message'] = $msg_id ;
 			$aToJson['data'][$msg_id]['message_id'] = $msg_id;

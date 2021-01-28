@@ -198,7 +198,7 @@ if (!function_exists('get_section_array')) {
             global $database;
             $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`=%d';
             if ($rSections = $database->query(sprintf($sSql, (int)$iSectionID))) {
-                $aSection = $rSections->fetchRow();
+                $aSection = $rSections->fetchRow(MYSQLI_ASSOC);
             }
         }
         return $aSection;
@@ -351,7 +351,7 @@ if (!function_exists('block_contents')) {
             }
 
             // Loop through sections
-            while ($row = $rSections->fetchRow()) {
+            while ($row = $rSections->fetchRow(MYSQLI_ASSOC)) {
                 $iSectionID = $row['section_id'];
                 $aSection = get_section_array($iSectionID);
 

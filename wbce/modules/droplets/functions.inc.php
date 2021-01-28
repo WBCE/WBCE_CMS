@@ -56,7 +56,7 @@ function wbce_copy_droplet($droplet_id)
         TABLE_PREFIX, $droplet_id
     ));
 
-    $fetch_content = $query_content->fetchRow();
+    $fetch_content = $query_content->fetchRow(MYSQLI_ASSOC);
     $code          = addslashes(str_replace($tags, '', $fetch_content['code']));
     $new_name      = $fetch_content['name'] . "_copy";
     $name          = $new_name;
@@ -438,7 +438,7 @@ function wbce_list_droplets()
     if($query_droplets->numRows() > 0)
     {
         $list = array();
-        while ($droplet = $query_droplets->fetchRow())
+        while ($droplet = $query_droplets->fetchRow(MYSQLI_ASSOC))
         {
             if(is_array($droplet) && isset($droplet['name']))
             {

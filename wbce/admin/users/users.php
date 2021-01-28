@@ -31,7 +31,7 @@ switch ($action) {
         }
         // Get existing values
         $results = $database->query("SELECT * FROM `{TP}users` WHERE `user_id` = " . $user_id);
-        $user = $results->fetchRow();
+        $user = $results->fetchRow(MYSQLI_ASSOC);
 
         // Setup template object, parse vars to it, then parse it
         // Create new template object
