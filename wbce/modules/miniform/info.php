@@ -11,9 +11,10 @@
  * @version         0.21.0
  * @lastmodified    July 22, 2019
  *
+ * v0.23 - fix for missing captcha in linked forms					  (Ruud)
  * v0.22 - MYSQL_ASSOC -> MYSQLI_ASSOC								  (Bernd)
  * v0.21 - Move 'modify template' to separate page.                   (Stefanek)
- * v0.20 - Handles a bug with save file reported by user colinax.      (Stefanek)
+ * v0.20 - Handles a bug with save file reported by user colinax.     (Stefanek)
  * v0.19 - Implement AdminTool functionality (WBCE CMS only).         (Stefanek)
  * v0.18 - Small correction in Ajax delete function.                  (Stefanek)
  *         Added support for Bootstrap alerts.                        (Stefanek)
@@ -32,8 +33,8 @@
 $module_directory = 'miniform';
 $module_name = 'MiniForm';
 $module_function = 'page';
-$module_version = '0.22.0';
-$module_platform = '2.8.x';
+$module_version = '0.23.0';
+$module_platform = '1.4.x';
 $module_author = 'Ruud / Dev4me';
 $module_license = 'GNU General Public License';
 $module_description = 'This module allows you to create a quick and simple form without complicated settings.';

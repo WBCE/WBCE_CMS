@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x
  * @requirements    PHP 5.6 and higher
- * @version         0.15.0
- * @lastmodified    April 30, 2019
+ * @version         0.15.2
+ * @lastmodified    Januari 29, 2021
  *
  */
 
@@ -99,14 +99,13 @@ $recaptcha_secret = $settings['recaptcha_secret'];
 if(!$recaptcha_key || !$recaptcha_secret) $use_recaptcha = false;
 
 $use_asp = ( strpos($template,"{ASPFIELDS}")==false ) ? false : true;
-$captcha_class = $use_captcha ? "":"hidden";
-$captcha = "";
 $asp = "";
 $all_required = true;
 $next_required = true;
 $aspdetect = false;
 
 if ($use_captcha && $mf->dataPosted && $mf->myPost) {
+	if(isset($_POST['captcha'.$section_id])) $_POST['captcha'] = $_POST['captcha'.$section_id];  // Fixing undocumented change in WB2.12.2
 	if($use_recaptcha) {
 		if($mf->reCaptcha_check($recaptcha_secret) === false) {
 			$var[] = "{CAPTCHA_ERROR}"; $value[] = " missing";
@@ -126,6 +125,11 @@ if ($use_captcha && $mf->dataPosted && $mf->myPost) {
 	}
 }			
 
+if(isset($next_template) && $next_template) {
+	$use_captcha = ( strpos($next_template,"{CAPTCHA}")==false ) ? false : true;
+}
+$captcha_class = $use_captcha ? "":"hidden";
+$captcha = "";											 
 
 if($mf->myPost) {
 
@@ -160,7 +164,7 @@ if($mf->myPost) {
 		elseif($type!='-' && substr($key,0,3)=='mf_' ) $prevdata .= '<input type="hidden" name="'.$key.'" value="'.$post.'" />'."\n\t";
 		if($mf->error) {
 			$message .= $mf->error.'<br/>';
-			$message_class = "error  alert alert-danger";
+			$message_class = "error alert alert-danger";
 			$all_required = false;
 			$mf->error = '';
 		}
@@ -254,7 +258,7 @@ if($mf->myPost) {
 						$useremail = $wb->get_email();
 						if(!$mf->mail ($emailfrom, $useremail, $confirm_subject, $confirm_message, WBMAILER_DEFAULT_SENDERNAME)) {
 							$message .= $MF['SENDERROR']."<br>".$mf->error;
-							$message_class = "error  alert alert-danger";
+							$message_class = "error alert alert-danger";
 						}
 					}
 					unset($_SESSION['form']);
@@ -271,7 +275,7 @@ if($mf->myPost) {
 					$form_class = "hidden";
 				} else {
 					$message .= $MF['SENDERROR']."<br>".$mf->error;
-					$message_class = "error  alert alert-danger";
+					$message_class = "error alert alert-danger";
 				}
 			} else {
 				$template = $next_template;
@@ -279,7 +283,7 @@ if($mf->myPost) {
 			}
 		} elseif ($mf->dataPosted)  {
 				$message .= $MF['NOTALL'];
-				$message_class = "error  alert alert-danger";
+				$message_class = "error alert alert-danger";
 				$prevdata .= '<input type="hidden" name="__current" value="'.$mf->current.'" />'."\n\t";
 		}
 	}
