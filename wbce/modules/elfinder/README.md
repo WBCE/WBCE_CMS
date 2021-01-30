@@ -1,4 +1,5 @@
 # elFinder
+![elFinder FileManager for WBCE](https://github.com/Colinax/elfinder/blob/master/templates/elfinder.jpg "elFinder FileManager for WBCE")
 
 ## What is elFinder?
 

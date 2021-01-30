@@ -13,7 +13,7 @@
 $module_directory = 'elfinder';
 $module_name = 'elFinder';
 $module_function = 'tool';
-$module_version = '1.0.1';
+$module_version = '1.0.2';
 $module_platform = '1.4.0';
 $module_author = 'WBCE';
 $module_license	= 'Modul under GPL, elFinder under BSD';
