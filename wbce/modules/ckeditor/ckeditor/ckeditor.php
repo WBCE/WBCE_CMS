@@ -32,18 +32,18 @@ class CKEditor
     /**
      * The version of %CKEditor.
      */
-    const version = '4.15.0';
+    const version = '4.16.0';
 
     /**
      * A constant string unique for each release of %CKEditor.
      */
-    const timestamp = 'K87C';
+    const timestamp = 'L0QD';
 
     /**
      * A string indicating the creation date of %CKEditor.
      * Do not change it unless you want to force browsers to not use previously cached version of %CKEditor.
      */
-    public $timestamp = "K87C";
+    public $timestamp = "L0QD";
 
     /**
      * URL to the %CKEditor installation directory (absolute or relative to document root).

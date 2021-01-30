@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -489,7 +489,7 @@
 		$: function( editor, colorData, clickFn ) {
 			this.$ = new CKEDITOR.dom.element( 'td' );
 
-			this.color = colorData.color;
+			this.color = CKEDITOR.tools._isValidColorFormat( colorData.color ) ? colorData.color : '';
 			this.clickFn = clickFn;
 			this.label = colorData.label || ColorBox.colorNames( editor )[ this.color ] || this.color;
 

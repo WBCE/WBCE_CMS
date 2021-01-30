@@ -12,10 +12,10 @@
 
 $module_directory = 'ckeditor';
 $module_name = 'CKEditor';
-$module_function = 'WYSIWYG';
-$module_version = '4.15.0';
+$module_function = 'WYSIWYG,snippet';
+$module_version = '4.16.0';
 $module_platform = '1.4.0';
 $module_author = 'diverse, cwsoft, Norhei, Colinax';
 $module_license = 'GPL, LGPL and MPL';
-$module_description = 'includes CKEditor 4.15.0 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.';
+$module_description = 'includes CKEditor 4.16.0 Standard Package and some other Plugins, CKE allows editing content and can be integrated in frontend and backend modules.';
 $module_home = 'https://www.wbce.org';
