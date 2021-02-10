@@ -55,8 +55,8 @@ class counter {
 		$this->month = date("Ym",$time);
 		//$this->old_data = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - 48*60*60 ; // 48 hours
 		//$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j")-7, date("Y"))); // 7 days
-		$this->old_data = date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y"))); // 7 days
-		$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y"))); // 7 days
+		$this->old_data = strtotime(date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y")))); // 90 days
+		$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y"))); // 90 days
 		$this->reload = 3 * 60 * 60 ;
 		$this->online = $time - 3 * 60;
 
