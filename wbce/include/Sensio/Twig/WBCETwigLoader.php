@@ -124,7 +124,7 @@ if (!function_exists('getTwig')) {
         foreach (glob(__DIR__ . "/SimpleFunctions/tsf_*.php") as $sFile) include $sFile;
 
         // Load external Twig_SimpleFunction files from modules which have the 'twig_extend' marker set
-        $sSql = 'SELECT `directory` FROM `{TP}addons` WHERE function LIKE \'%twig_extend%\' ';
+        $sSql = 'SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE \'%twig_extend%\' ';
         if (($aExtends = $GLOBALS['database']->get_array($sSql))) {
             foreach ($aExtends as $rec) {
                 $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/TwigFunctions.php';

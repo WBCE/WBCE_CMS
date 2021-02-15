@@ -94,7 +94,7 @@ require_once(WB_PATH . '/framework/functions.php');
 // @todo check if we better use  MYSQL FIND_IN_SET (http://forum.wbce.org/viewtopic.php?id=84)
 
 // Query gives back false on failure
-if (($resSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE function LIKE '%preinit%'"))) {
+if (($resSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE '%preinit%'"))) {
     while ($rec = $resSnippets->fetchRow()) {
         $sModFilePath = dirname(__DIR__) . '/modules/' . $rec['directory'] . '/preinit.php';
         if (file_exists($sModFilePath)) {
