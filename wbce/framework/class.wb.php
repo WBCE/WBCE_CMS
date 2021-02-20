@@ -676,7 +676,7 @@ _JsCode;
      */
     public function print_success($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = false)
     {
-        $this->messageBox('success', $uMsg, $sRedirectUri, $bAutoFooter);
+        $this->messageBox($uMsg, 'success', $sRedirectUri, $bAutoFooter);
     }
 
     /**
@@ -687,7 +687,7 @@ _JsCode;
      * @param string $sRedirectUri URI for the redirect
      * @return  string
      */
-    public function messageBox($sType = 'info', $uMsg, $sRedirectUri = 'index.php', $bAutoFooter = false, $bUseRedirect = true)
+    public function messageBox($uMsg, $sType = 'info', $sRedirectUri = 'index.php', $bAutoFooter = false, $bUseRedirect = true)
     {
         if (!is_array($uMsg)) {
             $uMsg = array(
@@ -741,7 +741,7 @@ _JsCode;
      */
     public function print_error($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = true)
     {
-        $this->messageBox('error', $uMsg, $sRedirectUri, $bAutoFooter);
+        $this->messageBox($uMsg, 'error', $sRedirectUri, $bAutoFooter);
     }
 
     /**
