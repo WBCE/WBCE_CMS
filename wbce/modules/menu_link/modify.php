@@ -136,6 +136,7 @@ foreach($aLinks as $p) {
 				<select class="menuLink" name="r_type" style="width:350px;" >
 					<option value="301"<?php if ($aData['redirect_type'] == '301') echo ' selected="selected"'; ?>>301</option>
 					<option value="302"<?php if ($aData['redirect_type'] == '302') echo ' selected="selected"'; ?>>302</option>
+					<option value="200"<?php if ($aData['redirect_type'] == '200') echo ' selected="selected"'; ?>>200</option>
 				</select>
 			</td>
 		</tr>

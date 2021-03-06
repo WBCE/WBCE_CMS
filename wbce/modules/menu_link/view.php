@@ -47,19 +47,28 @@ if ($rQueryPageData->numRows() == 1) {
 			exit;
 		}
 	} else {
-		// generate anchor if anchor is set
-		$sAnchor = '';
-		if($aPageData['anchor'] != '0'){
-			$iSectionID = (int) filter_var($aPageData['anchor'], FILTER_SANITIZE_NUMBER_INT);
-			$sAnchor = '#'.SEC_ANCHOR.$iSectionID;
-		}
+		if ($aPageData['redirect_type'] == 200) {
+			global $wb;
+			global $page_id;
+			$page_id = intval($aPageData['target_page_id']);
+			$wb->page_id = $page_id;
+			page_content(1);
+			// we keep the updated page_id for the second block
+		} else {
+			// generate anchor if anchor is set
+			$sAnchor = '';
+			if($aPageData['anchor'] != '0'){
+				$iSectionID = (int) filter_var($aPageData['anchor'], FILTER_SANITIZE_NUMBER_INT);
+				$sAnchor = '#'.SEC_ANCHOR.$iSectionID;
+			}
 
-		// get link of target-page
-		$sSql  = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$aPageData['target_page_id'];
-		if ($sTargetPageLink = $database->get_one($sSql)) {
-			$sTargetUrl = WB_URL.PAGES_DIRECTORY.$sTargetPageLink.PAGE_EXTENSION.$sAnchor;
-			header('Location: '.$sTargetUrl);
-			exit;
+			// get link of target-page
+			$sSql  = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$aPageData['target_page_id'];
+			if ($sTargetPageLink = $database->get_one($sSql)) {
+				$sTargetUrl = WB_URL.PAGES_DIRECTORY.$sTargetPageLink.PAGE_EXTENSION.$sAnchor;
+				header('Location: '.$sTargetUrl);
+				exit;
+			}
 		}
 	}
 }
