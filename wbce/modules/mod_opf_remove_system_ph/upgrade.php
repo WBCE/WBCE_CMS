@@ -4,7 +4,7 @@
  * Way Better Content Editing.
  * Visit http://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2020)
+ * @copyright       WBCE Project (2015-2021)
  * @category        opffilter
  * @package         OPF Remove System PH
  * @version         1.1.6

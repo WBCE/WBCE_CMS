@@ -2,6 +2,12 @@
 Header: Version-History
 
 1.5:
+1.5.13 %(bianka, Nov 2020)%
+	- support php 8 with a new implementation of opf_replace_sysvar
+
+1.5.12 %(bernd, 16 May 2020)%
+               - fixed hardcodet admin-dir in backend_body.js
+
 1.5.11 %(mrbaseman, 9 Jan 2020)%
         - remove gpc functions which have been deprecated since php 5.4
 	- replace curly braces for array index
