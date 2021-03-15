@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2021)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.1.4
+ * @version         1.1.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -21,6 +21,7 @@
 /*
  *      CHANGELOG
  *
+ *      1.1.5   2021-03-15      - support title attribute (benvo)
  *      1.1.4   2020-01-20      - Accept/Recognize new TLD email addresses (florian)
  *      1.1.3   2019-12-19      - remove obsolete strip_slashes
  *      1.1.2   2019-07-05      - by default enable filter on searchresults
@@ -54,7 +55,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_email';
 $module_name            = 'OPF E-Mail';
 $module_function        = 'tool';
-$module_version         = '1.1.4';
+$module_version         = '1.1.5';
 $module_platform        = 'WBCE 1.2.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

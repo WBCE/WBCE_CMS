@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2021)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.1.4
+ * @version         1.1.5
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -119,6 +119,9 @@ function _cbDoExecuteFilter($match) {
             // extract possible class and id attribute from ahref link
                 preg_match('/class\s*?=\s*?("|\')(.*?)\1/ix', $match[0], $class_attr);
                 $class_attr = empty($class_attr) ? '' : 'class="' . $class_attr[2] . '" ';
+                preg_match('/title\s*?=\s*?("|\')(.*?)\1/ix', $match[0], $title_attr);
+                $title_attr = empty($title_attr) ? '' : 'title="' . $title_attr[2] . '" ';
+
                 preg_match('/id\s*?=\s*?("|\')(.*?)\1/ix', $match[0], $id_attr);
                 $id_attr = empty($id_attr) ? '' : 'id="' . $id_attr[2] . '" ';
                 preg_match('/style\s*?=\s*?("|\')(.*?)\1/ix', $match[0], $style_attr);
@@ -141,7 +144,7 @@ function _cbDoExecuteFilter($match) {
                 }
                 $encrypted_email .= chr($shift + 97);
             // build the encrypted Javascript mailto link
-                $mailto_link  = "<a {$class_attr}{$id_attr}{$style_attr}href=\"javascript:mdcr('$encrypted_email','$email_subject')\">" .$match[5] ."</a>";
+                $mailto_link  = "<a {$class_attr}{$title_attr}{$id_attr}{$style_attr}href=\"javascript:mdcr('$encrypted_email','$email_subject')\">" .$match[5] ."</a>";
                 return $mailto_link;
             } else {
             /** DO NOT USE JAVASCRIPT ENCRYPTION FOR MAILTO LINKS **/
