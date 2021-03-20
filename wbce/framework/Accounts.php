@@ -221,7 +221,7 @@ class Accounts extends Frontend
         }
         $oTwig = getTwig($aTemplateLocs);
         $oTwig->addGlobal('CURRENT_DIR', get_url_from_path(dirname($this->getTemplate($sTplName))));
-        $oTemplate = $oTwig->loadTemplate($sTplName);
+        $oTemplate = $oTwig->load($sTplName);
         $oTemplate->display($aToTwig);
     }
 
