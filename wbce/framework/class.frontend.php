@@ -182,12 +182,16 @@ class Frontend extends Wb
             if ($this->page['language'] != LANGUAGE) {
                 $_SESSION['LANGUAGE'] = $this->page['language'];
                 $sUri = $this->page_link($this->page['link']);
-                if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
-                    // check if there is an query-string
-                    header('Location: ' . $sUri . '?' . $_SERVER['QUERY_STRING']);
-                } else {
-                    header('Location: ' . $sUri);
-                }
+                $qstr='';
+				if (isset($_SERVER['QUERY_STRING'])) { $qstr=$_SERVER['QUERY_STRING']; }
+				parse_str($qstr, $param);
+				unset($param['_wb']);
+				$qstr=http_build_query($param);
+				if ($qstr!='') {
+					header('Location: ' . $sUri . '?' . $qstr);
+				} else {
+					header('Location: ' . $sUri );
+				}
                 exit();
             }
             // Begin code to set details as either variables of constants
