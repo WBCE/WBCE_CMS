@@ -1006,6 +1006,9 @@ function mod_nwi_posts_getall(int $section_id, bool $is_backend, string $query_e
         if (count($filter_posts)>0) {
             $filter = " AND `t1`.`post_id` IN (".implode(',', array_values($filter_posts)).") ";
         }
+		 else {
+			$filter = " AND `t1`.`post_id` = '-999'";
+		}
     }
 
     $prev_dir = ($direction=='DESC'?'ASC':'DESC');
@@ -1243,6 +1246,7 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
         $settings['footer']
     );
 
+	if (empty($list)) {$list[]='Nichts gefunden';}
     return array(
         'rendered_posts' => $list,
         'prev_next_footer' => $prev_next_footer,
