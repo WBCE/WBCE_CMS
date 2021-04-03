@@ -5,6 +5,226 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2021-04-03:** Colinax [[57795f8b](https://github.com/WBCE/WBCE_CMS/commit/57795f8b1239632d0a916f22c51d9f3f3a00978e)]
+   > fix  ckeditor deprecated notice
+
+ * **2021-04-03:** Colinax [[94692f88](https://github.com/WBCE/WBCE_CMS/commit/94692f883e87c7b739e4ec8644182b3c84478c74)]
+   > add Deprecations to Doctrine
+
+ * **2021-04-03:** Colinax [[53b29f98](https://github.com/WBCE/WBCE_CMS/commit/53b29f98f3d921fc4c0fafa54300aca1436b70f3)]
+   > Update Doctrine DBAL & Common
+
+ * **2021-04-03:** Colinax [[b10e4065](https://github.com/WBCE/WBCE_CMS/commit/b10e4065b06088b24cb119ecf73e7a7c24fbbff3)]
+   > Twig 3.3.0
+
+ * **2021-04-03:** Colinax [[644743c1](https://github.com/WBCE/WBCE_CMS/commit/644743c13dc3f86d1116afa5fc9af444fe8626d9)]
+   > PHPMailer 6.4.0
+
+ * **2021-03-31:** instantflorian [[c282dd0b](https://github.com/WBCE/WBCE_CMS/commit/c282dd0b5719d3b94da45d9c2ae35c1b82054c1f)]
+   > Small NWI optimizations
+
+ * **2021-03-22:** instantflorian [[91fb97b8](https://github.com/WBCE/WBCE_CMS/commit/91fb97b89a373448b3587b4be85439ee93423c50)]
+   > Remove unwanted _wb parameter
+     Special case for multilingual pages which use shortURL
+
+ * **2021-03-20:** instantflorian [[223afb2b](https://github.com/WBCE/WBCE_CMS/commit/223afb2b162be4c76485fd82fd63998ca98ba21e)]
+   > loadTemplate -> load
+
+ * **2021-03-15:** Martin Hecht [[ad6d16fa](https://github.com/WBCE/WBCE_CMS/commit/ad6d16fadbe0e7cdea12112885b0dc682b68b350)]
+   > mod_opf_email: support title attribute in mailto: links
+
+ * **2021-03-08:** Martin Hecht [[02a479e6](https://github.com/WBCE/WBCE_CMS/commit/02a479e6285651ace4ed0865fce144d15cc49a17)]
+   > update output filters and dashboard (mainly the version, changelog etc.)
+
+ * **2021-03-06:** Martin Hecht [[b762ed02](https://github.com/WBCE/WBCE_CMS/commit/b762ed0266c79927b01d430372dc61e79197663f)]
+   > menu_link: add redirection type "200"
+     In fact, do not redirect the browser to this page but change the page_id
+     under the hood and start processing that page. This is similar to the
+     section picker, but not only for a single section but for the whole
+     page.
+     
+     This is useful for large websites where one page may fit into several
+     categories, and you want to show it at several places in the menu.
+     The other redirect types let the browser jump into a different path of
+     the page_tree. This one just adds a new page with the same content
+     elsewhere.
+
+ * **2021-02-20:** Colinax [[c68bb319](https://github.com/WBCE/WBCE_CMS/commit/c68bb319b9f520bfacc46c232a92526840368d73)]
+   > fix deprecated notice
+
+ * **2021-02-15:** instantflorian [[bd0c2840](https://github.com/WBCE/WBCE_CMS/commit/bd0c28401f8efd3012bd743924c6c6647bd3d0a4)]
+   > Add missing ` in SQL queries
+     ...which cause trouble on mysql 8.x
+
+ * **2021-02-10:** instantflorian [[30815a9a](https://github.com/WBCE/WBCE_CMS/commit/30815a9ad8b964581e276627cf7de79333f4e17f)]
+   > Fix for wbstats database cleanup
+     keep only data not older than 90days
+
+ * **2021-01-31:** Colinax [[7214eeab](https://github.com/WBCE/WBCE_CMS/commit/7214eeaba2d2f6afbcab577dcca1045c31e9fc81)]
+   > elFinder 1.0.2
+
+ * **2021-01-30:** Colinax [[5af42b18](https://github.com/WBCE/WBCE_CMS/commit/5af42b18b37667aea9ba5bdd55dcbfcb357dfdb1)]
+   > CKEditor 4.16.0
+
+ * **2021-01-29:** instantflorian [[61f73233](https://github.com/WBCE/WBCE_CMS/commit/61f732331f761835c4198b4bc9efc8f723e0c0c0)]
+   > Fix for missing captcha in linked forms
+
+ * **2021-01-28:** instantflorian [[ac18bdf3](https://github.com/WBCE/WBCE_CMS/commit/ac18bdf34e53c1e120586c46725a06e073b2fdba)]
+   > Revert "Revert "Merge branch 'development' of https://github.com/WBCE/WBCE_CMS into development""
+     This reverts commit 9478508b132602dbd75f97dbc569f7d739fe7339.
+
+ * **2021-01-28:** instantflorian [[9478508b](https://github.com/WBCE/WBCE_CMS/commit/9478508b132602dbd75f97dbc569f7d739fe7339)]
+   > Revert "Merge branch 'development' of https://github.com/WBCE/WBCE_CMS into development"
+     This reverts commit ce522ecdc41930810c0389aae3dda6b51cafdbc7, reversing
+     changes made to b03570755f8c12be0cc1cca768434bdaca44ec08.
+
+ * **2021-01-28:** instantflorian [[ce522ecd](https://github.com/WBCE/WBCE_CMS/commit/ce522ecdc41930810c0389aae3dda6b51cafdbc7)]
+   > Merge branch 'development' of https://github.com/WBCE/WBCE_CMS into development
+
+ * **2021-01-28:** instantflorian [[b0357075](https://github.com/WBCE/WBCE_CMS/commit/b03570755f8c12be0cc1cca768434bdaca44ec08)]
+   > Fix Typo in Miniform
+
+ * **2021-01-16:** Colinax [[82d208fd](https://github.com/WBCE/WBCE_CMS/commit/82d208fd86ebe41eef4894f7392c5e7f4345e4f5)]
+   > small fixes for "page saved" message
+
+ * **2020-12-29:** Colinax [[bfc8c2db](https://github.com/WBCE/WBCE_CMS/commit/bfc8c2db61f3d5a27295377e5fe22999d488f0f2)]
+   > fix replaces sysvar placeholders
+
+ * **2020-12-29:** Colinax [[b152e383](https://github.com/WBCE/WBCE_CMS/commit/b152e3839abd50884519ac1749b24c1456056eb8)]
+   >  Revert "remove MYSQLI_ASSOC"
+
+ * **2020-12-29:** Colinax [[3c70917c](https://github.com/WBCE/WBCE_CMS/commit/3c70917cb95561ffebdc0763f90fa47cfbbdf0a4)]
+   > Revert "remove MYSQLI_ASSOC"
+     This reverts commit d5fa1c6988edba0ecd90581365c51564d5152477.
+
+ * **2020-12-10:** Colinax [[675459b0](https://github.com/WBCE/WBCE_CMS/commit/675459b09f96aa9171be066b1d78cd1be9c846e5)]
+   > Update Doctrine DBAL & Common
+
+ * **2020-11-27:** Colinax [[ed1f6eed](https://github.com/WBCE/WBCE_CMS/commit/ed1f6eed583f559c263561d528dce08c3bde72cd)]
+   > PHPMailer 6.2.0
+
+ * **2020-11-23:** instantflorian [[8912913d](https://github.com/WBCE/WBCE_CMS/commit/8912913df5a46ed5516a1d25a7607aef1761636c)]
+   > Add Greek language (thx to spyrou)
+
+ * **2020-11-23:** instantflorian [[1ebabebd](https://github.com/WBCE/WBCE_CMS/commit/1ebabebd836a8537b9799066a15e40e6171b6512)]
+   > Update WBCETwigLoader.php
+
+ * **2020-11-19:** Bianka Martinovic [[2324bbe3](https://github.com/WBCE/WBCE_CMS/commit/2324bbe31df7c852b204e6827e41bd8cf4840a85)]
+   > Update class.database.doctrine.php
+
+ * **2020-11-16:** Colinax [[1edc4369](https://github.com/WBCE/WBCE_CMS/commit/1edc43696696abc40a9b5b36647f1a25133480c5)]
+   > Argos Theme Reloaded 2.1.2
+
+ * **2020-11-16:** Colinax [[28aa894c](https://github.com/WBCE/WBCE_CMS/commit/28aa894cb4daf83d9fbfa72c2762e038b291d4da)]
+   > WBCE Flat Theme 1.7.4
+     fixes #491
+
+ * **2020-11-15:** Colinax [[d5fa1c69](https://github.com/WBCE/WBCE_CMS/commit/d5fa1c6988edba0ecd90581365c51564d5152477)]
+   > remove MYSQLI_ASSOC
+
+ * **2020-11-15:** Colinax [[e1d60c4c](https://github.com/WBCE/WBCE_CMS/commit/e1d60c4c24a59cd88757303f090c397c8da23cd1)]
+   > remove old twig files
+
+ * **2020-11-15:** Colinax [[a107e860](https://github.com/WBCE/WBCE_CMS/commit/a107e860fc8eb7b3d8e91c7aef575bd37f7c8b3f)]
+   > Update version.php
+
+ * **2020-11-15:** Colinax [[6de7239b](https://github.com/WBCE/WBCE_CMS/commit/6de7239bfdfe85c78a3f0a77b0297575ba1685be)]
+   > tool_account_settings 0.7.0
+
+ * **2020-11-15:** Colinax [[301e94f5](https://github.com/WBCE/WBCE_CMS/commit/301e94f57f2f3d51c9b9c32c333734d8f1baf827)]
+   > wbSeoTool 0.7.0
+
+ * **2020-11-15:** Colinax [[7d2cc049](https://github.com/WBCE/WBCE_CMS/commit/7d2cc0491649e9aea230c52e12c794f80d4a349c)]
+   > droplets 2.3.0
+
+ * **2020-11-15:** Colinax [[fb4259da](https://github.com/WBCE/WBCE_CMS/commit/fb4259dadb5d2f155b6ce2bcf282c9bb59a6735a)]
+   > addon_monitor 0.7.0
+
+ * **2020-11-15:** Colinax [[b9011cd9](https://github.com/WBCE/WBCE_CMS/commit/b9011cd90fb316be739755418923547de764b97a)]
+   > add Twig 3.1.1
+
+ * **2020-11-11:** Colinax [[7ec1f2d8](https://github.com/WBCE/WBCE_CMS/commit/7ec1f2d85b638e20585b4db3b0119fc87764bd64)]
+   > add elfinder
+
+ * **2020-11-11:** Colinax [[1be80ec3](https://github.com/WBCE/WBCE_CMS/commit/1be80ec3d50fc6c2e17b1f9c097f8a4f69429a26)]
+   > fix elfinder integration
+
+ * **2020-11-11:** Colinax [[49cff457](https://github.com/WBCE/WBCE_CMS/commit/49cff45784ea7f73c0dff3a07b4201b58238a1ec)]
+   > Update Doctrine to latest version
+     and increase the PHP version to meet the requirements
+
+ * **2020-11-10:** Bianka Martinovic [[43a2bce8](https://github.com/WBCE/WBCE_CMS/commit/43a2bce8a8455e01081d51c22ef532f27fb13a6a)]
+   > Update class.database.doctrine.php
+     Berücksichtigung der als "deprecated" markierten Funktion query() in Doctrine DBAL (abwärtskompatibel)
+ * **2020-11-08:** Colinax [[1de57997](https://github.com/WBCE/WBCE_CMS/commit/1de57997de68ad7a2778f14a36740443b13b378b)]
+   > remove unneeded comments
+
+ * **2020-11-08:** Colinax [[5320d30e](https://github.com/WBCE/WBCE_CMS/commit/5320d30edabf4adf2a94cdf4cac7139172181d9b)]
+   > fix wording and change DB_TYPE to mysqli
+
+ * **2020-11-08:** Colinax [[33e66df1](https://github.com/WBCE/WBCE_CMS/commit/33e66df1b9abd6fe23bd91a6604d9370ad2f0575)]
+   > fix wording
+
+ * **2020-11-08:** Colinax [[264779c4](https://github.com/WBCE/WBCE_CMS/commit/264779c4ffb8fb041a10f0aa68713880f2e96dc8)]
+   > fix double loaded functions file
+
+ * **2020-11-08:** Colinax [[48490527](https://github.com/WBCE/WBCE_CMS/commit/4849052765297cf3623d2239d5dcdaf037ce26c1)]
+   > fix unwanted change
+
+ * **2020-11-08:** Colinax [[794e970f](https://github.com/WBCE/WBCE_CMS/commit/794e970faf8e1c8986b4861295f6f4ee02cc6ac4)]
+   > cs fixer
+     and replaced MYSQL_ASSOC with MYSQLI_ASSOC
+
+ * **2020-11-08:** Colinax [[5c476399](https://github.com/WBCE/WBCE_CMS/commit/5c4763999fb051c4c139b5e2546d49a01e0c5cd2)]
+   > cs fixer
+     and replaced MYSQL_ASSOC with MYSQLI_ASSOC
+
+ * **2020-11-08:** Colinax [[92c13b97](https://github.com/WBCE/WBCE_CMS/commit/92c13b97065491b89507b72516f16392f0060956)]
+   > cs fixer
+
+ * **2020-11-07:** Colinax [[6b1a4a9b](https://github.com/WBCE/WBCE_CMS/commit/6b1a4a9b5832a6a3580637eea3a14cf2d1b49ca0)]
+   > add option for elFinder in ckeditor
+
+ * **2020-11-07:** Colinax [[0f21ba1a](https://github.com/WBCE/WBCE_CMS/commit/0f21ba1a198d5fdc212516e8e9b7ee2bb96b9b7f)]
+   > remove pagecloner
+
+ * **2020-11-07:** Colinax [[2fbae699](https://github.com/WBCE/WBCE_CMS/commit/2fbae699994d60408d6a0dbbc761686d055ab6be)]
+   > add option for elFinder
+     and run cs fixer
+
+ * **2020-11-07:** Colinax [[cda6f6d5](https://github.com/WBCE/WBCE_CMS/commit/cda6f6d5544ad47e8415c1a0189871f68da72858)]
+   > fix pages_add
+     https://forum.wbce.org/viewtopic.php?id=3956 and run cs fixer
+
+ * **2020-11-07:** Colinax [[d9a99e18](https://github.com/WBCE/WBCE_CMS/commit/d9a99e1892473f82c8ad5d34748404bdd9f2ba19)]
+   > remove dead trash.php functions
+
+ * **2020-11-07:** Colinax [[f3fc1ed6](https://github.com/WBCE/WBCE_CMS/commit/f3fc1ed65921befa2018b6473d1cfa9e50b4b1cb)]
+   > remove dead if wb_theme
+     and run cs fixer
+
+ * **2020-11-03:** instantflorian [[efa20932](https://github.com/WBCE/WBCE_CMS/commit/efa20932fd013ebfcd042e391423c41e3dfd30e1)]
+   > Change preferences form behavior
+     disabled submit button is imho too confusing
+
+ * **2020-10-24:** Colinax [[3092264f](https://github.com/WBCE/WBCE_CMS/commit/3092264f7b0f33c06a020cfaf0ac2583fe8ac543)]
+   > fix session cookie classification
+
+ * **2020-10-24:** Colinax [[66e4992b](https://github.com/WBCE/WBCE_CMS/commit/66e4992b39fe94ff80fe34b268c042646b83d291)]
+   > PHPMailer 6.1.8
+
+ * **2020-10-24:** Colinax [[d32a5b94](https://github.com/WBCE/WBCE_CMS/commit/d32a5b94d6aad7f5d58c4707054359e077ad95dd)]
+   > fix session cookie name
+
+ * **2020-10-22:** instantflorian [[013285b2](https://github.com/WBCE/WBCE_CMS/commit/013285b27f3eb27cfae31e3da085b1ae8461d0b1)]
+   > Add backticks for mysql8 compatibility
+
+ * **2020-10-20:** instantflorian [[5269a88e](https://github.com/WBCE/WBCE_CMS/commit/5269a88e2e16819deb6e6645fb6708064e5a1f4d)]
+   > Add backticks for mysql8 compatibility
+
+ * **2020-09-27:** instantflorian [[57209f1d](https://github.com/WBCE/WBCE_CMS/commit/57209f1d48898ed249261de9a227ada1a0817ef5)]
+   > Update CHANGELOG.md
+
  * **2020-09-27:** instantflorian [[b7c9510b](https://github.com/WBCE/WBCE_CMS/commit/b7c9510bc40d4e3ce36de482bc3d05dd7d1077ef)]
    > Update version.php
 
