@@ -10,6 +10,8 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
+use ReflectionType;
+use ReflectionUnionType;
 
 use function array_combine;
 use function array_diff;
@@ -543,12 +545,17 @@ EOT
     private function generateMagicSet(ClassMetadata $class)
     {
         $lazyPublicProperties = $this->getLazyLoadedPublicPropertiesNames($class);
-        $hasParentSet         = $class->getReflectionClass()->hasMethod('__set');
+        $reflectionClass      = $class->getReflectionClass();
+        $hasParentSet         = false;
+        $inheritDoc           = '';
         $parametersString     = '$name, $value';
         $returnTypeHint       = null;
 
-        if ($hasParentSet) {
-            $methodReflection = $class->getReflectionClass()->getMethod('__set');
+        if ($reflectionClass->hasMethod('__set')) {
+            $hasParentSet     = true;
+            $inheritDoc       = '{@inheritDoc}';
+            $methodReflection = $reflectionClass->getMethod('__set');
+
             $parametersString = $this->buildParametersString($methodReflection->getParameters(), ['name', 'value']);
             $returnTypeHint   = $this->getMethodReturnType($methodReflection);
         }
@@ -557,18 +564,16 @@ EOT
             return '';
         }
 
-        $inheritDoc = $hasParentSet ? '{@inheritDoc}' : '';
-        $magicSet   = sprintf(<<<'EOT'
+        $magicSet = <<<EOT
     /**
-     * %s
-     * @param string $name
-     * @param mixed  $value
+     * $inheritDoc
+     * @param string \$name
+     * @param mixed  \$value
      */
-    public function __set(%s)%s
+    public function __set($parametersString)$returnTypeHint
     {
 
-EOT
-            , $inheritDoc, $parametersString, $returnTypeHint);
+EOT;
 
         if (! empty($lazyPublicProperties)) {
             $magicSet .= <<<'EOT'
@@ -587,9 +592,20 @@ EOT;
         if ($hasParentSet) {
             $magicSet .= <<<'EOT'
         $this->__initializer__ && $this->__initializer__->__invoke($this, '__set', [$name, $value]);
+EOT;
+
+            if ($returnTypeHint === ': void') {
+                $magicSet .= <<<'EOT'
+
+        parent::__set($name, $value);
+        return;
+EOT;
+            } else {
+                $magicSet .= <<<'EOT'
 
         return parent::__set($name, $value);
 EOT;
+            }
         } else {
             $magicSet .= '        $this->$name = $value;';
         }
@@ -889,6 +905,8 @@ EOT;
      *                              EntityManager will be used by this factory.
      *
      * @return string
+     *
+     * @psalm-param class-string $className
      */
     public function getProxyFileName($className, $baseDirectory = null)
     {
@@ -1039,7 +1057,11 @@ EOT;
             return null;
         }
 
-        return $this->formatType($parameter->getType(), $parameter->getDeclaringFunction(), $parameter);
+        $declaringFunction = $parameter->getDeclaringFunction();
+
+        assert($declaringFunction instanceof ReflectionMethod);
+
+        return $this->formatType($parameter->getType(), $declaringFunction, $parameter);
     }
 
     /**
@@ -1108,12 +1130,27 @@ EOT;
      * @return string
      */
     private function formatType(
-        ReflectionNamedType $type,
+        ReflectionType $type,
         ReflectionMethod $method,
         ?ReflectionParameter $parameter = null
     ) {
+        if ($type instanceof ReflectionUnionType) {
+            return implode('|', array_map(
+                function (ReflectionType $unionedType) use ($method, $parameter) {
+                    return $this->formatType($unionedType, $method, $parameter);
+                },
+                $type->getTypes()
+            ));
+        }
+
+        assert($type instanceof ReflectionNamedType);
+
         $name      = $type->getName();
         $nameLower = strtolower($name);
+
+        if ($nameLower === 'static') {
+            $name = 'static';
+        }
 
         if ($nameLower === 'self') {
             $name = $method->getDeclaringClass()->getName();
@@ -1123,7 +1160,7 @@ EOT;
             $name = $method->getDeclaringClass()->getParentClass()->getName();
         }
 
-        if (! $type->isBuiltin() && ! class_exists($name) && ! interface_exists($name)) {
+        if (! $type->isBuiltin() && ! class_exists($name) && ! interface_exists($name) && $name !== 'static') {
             if ($parameter !== null) {
                 throw UnexpectedValueException::invalidParameterTypeHint(
                     $method->getDeclaringClass()->getName(),
@@ -1138,12 +1175,13 @@ EOT;
             );
         }
 
-        if (! $type->isBuiltin()) {
+        if (! $type->isBuiltin() && $name !== 'static') {
             $name = '\\' . $name;
         }
 
         if (
             $type->allowsNull()
+            && ! in_array($name, ['mixed', 'null'], true)
             && ($parameter === null || ! $parameter->isDefaultValueAvailable() || $parameter->getDefaultValue() !== null)
         ) {
             $name = '?' . $name;

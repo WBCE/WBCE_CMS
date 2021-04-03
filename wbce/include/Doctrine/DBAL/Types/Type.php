@@ -5,6 +5,7 @@ namespace Doctrine\DBAL\Types;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\Deprecations\Deprecation;
 
 use function array_map;
 use function get_class;
@@ -173,6 +174,12 @@ abstract class Type
      */
     public function getDefaultLength(AbstractPlatform $platform)
     {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/3255',
+            'Type::getDefaultLength() is deprecated, use AbstractPlatform directly.'
+        );
+
         return null;
     }
 
@@ -195,9 +202,6 @@ abstract class Type
      */
     abstract public function getName();
 
-    /**
-     * @internal This method is only to be used within DBAL for forward compatibility purposes. Do not use directly.
-     */
     final public static function getTypeRegistry(): TypeRegistry
     {
         if (self::$typeRegistry === null) {
@@ -311,6 +315,12 @@ abstract class Type
      */
     public function __toString()
     {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/3258',
+            'Type::__toString() is deprecated, use Type::getName() or get_class($type) instead.'
+        );
+
         $type     = static::class;
         $position = strrpos($type, '\\');
 

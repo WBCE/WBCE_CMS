@@ -26,6 +26,7 @@ use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\TransactionIsolationLevel;
 use Doctrine\DBAL\Types;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\Deprecations\Deprecation;
 use InvalidArgumentException;
 use UnexpectedValueException;
 
@@ -54,9 +55,6 @@ use function strlen;
 use function strpos;
 use function strtolower;
 use function strtoupper;
-use function trigger_error;
-
-use const E_USER_DEPRECATED;
 
 /**
  * Base class for all DatabasePlatforms. The DatabasePlatforms are the central
@@ -142,7 +140,7 @@ abstract class AbstractPlatform
      */
     protected $doctrineTypeComments;
 
-    /** @var EventManager */
+    /** @var EventManager|null */
     protected $_eventManager;
 
     /**
@@ -169,7 +167,7 @@ abstract class AbstractPlatform
     /**
      * Gets the EventManager used by the Platform.
      *
-     * @return EventManager
+     * @return EventManager|null
      */
     public function getEventManager()
     {
@@ -301,12 +299,14 @@ abstract class AbstractPlatform
 
         if ($column['length'] > $maxLength) {
             if ($maxLength > 0) {
-                @trigger_error(sprintf(
+                Deprecation::trigger(
+                    'doctrine/dbal',
+                    'https://github.com/doctrine/dbal/issues/3187',
                     'Binary column length %d is greater than supported by the platform (%d).'
                     . ' Reduce the column length or use a BLOB column instead.',
                     $column['length'],
                     $maxLength
-                ), E_USER_DEPRECATED);
+                );
             }
 
             return $this->getBlobTypeDeclarationSQL($column);
@@ -2670,6 +2670,12 @@ abstract class AbstractPlatform
      */
     public function prefersSequences()
     {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/4229',
+            'AbstractPlatform::prefersSequences() is deprecated without replacement and removed in DBAL 3.0'
+        );
+
         return false;
     }
 
@@ -3241,6 +3247,12 @@ abstract class AbstractPlatform
      */
     public function supportsForeignKeyOnUpdate()
     {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/4229',
+            'AbstractPlatform::supportsForeignKeyOnUpdate() is deprecated without replacement and removed in DBAL 3.0'
+        );
+
         return $this->supportsForeignKeyConstraints();
     }
 
@@ -3496,6 +3508,13 @@ abstract class AbstractPlatform
      */
     public function getSQLResultCasing($column)
     {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/4229',
+            'AbstractPlatform::getSQLResultCasing is deprecated without replacement and removed in DBAL 3.' .
+            'Use Portability\Connection with PORTABILITY_FIX_CASE to get portable result cases.'
+        );
+
         return $column;
     }
 
@@ -3511,6 +3530,12 @@ abstract class AbstractPlatform
      */
     public function fixSchemaElementName($schemaElementName)
     {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/4132',
+            'AbstractPlatform::fixSchemaElementName is deprecated with no replacement and removed in DBAL 3.0'
+        );
+
         return $schemaElementName;
     }
 
@@ -3635,6 +3660,8 @@ abstract class AbstractPlatform
      * @return string
      *
      * @throws Exception If not supported on this platform.
+     *
+     * @psalm-return class-string<KeywordList>
      */
     protected function getReservedKeywordsClass()
     {

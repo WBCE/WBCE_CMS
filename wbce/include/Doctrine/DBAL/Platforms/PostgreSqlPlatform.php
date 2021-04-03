@@ -14,6 +14,7 @@ use Doctrine\DBAL\Types\BinaryType;
 use Doctrine\DBAL\Types\BlobType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\Deprecations\Deprecation;
 use UnexpectedValueException;
 
 use function array_diff;
@@ -215,6 +216,12 @@ class PostgreSqlPlatform extends AbstractPlatform
      */
     public function prefersSequences()
     {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/4229',
+            'AbstractPlatform::prefersSequences() is deprecated without replacement and removed in DBAL 3.0'
+        );
+
         return true;
     }
 
@@ -905,12 +912,15 @@ SQL
 
         return $this->doConvertBooleans(
             $item,
-            static function ($boolean) {
-                if ($boolean === null) {
+            /**
+             * @param mixed $value
+             */
+            static function ($value) {
+                if ($value === null) {
                     return 'NULL';
                 }
 
-                return $boolean === true ? 'true' : 'false';
+                return $value === true ? 'true' : 'false';
             }
         );
     }
@@ -926,8 +936,11 @@ SQL
 
         return $this->doConvertBooleans(
             $item,
-            static function ($boolean) {
-                return $boolean === null ? null : (int) $boolean;
+            /**
+             * @param mixed $value
+             */
+            static function ($value) {
+                return $value === null ? null : (int) $value;
             }
         );
     }
