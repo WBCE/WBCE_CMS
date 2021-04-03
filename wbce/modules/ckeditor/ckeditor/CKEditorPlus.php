@@ -104,7 +104,7 @@ class CKEditorPlus extends CKEditor
      * @param string Optional file-default-path if it not exists
      * @param string Optional a path_addition, e.g. "wb:"
      */
-    public function resolve_path($key = "", $aPath, $aPath_default, $path_addition = "")
+    public function resolve_path($aPath, $aPath_default, $key = "", $path_addition = "")
     {
         $temp = WB_PATH . $aPath;
         if (true === file_exists($temp)) {

@@ -83,18 +83,18 @@ function show_wysiwyg_editor($name, $id, $content, $width = '100%', $height = '3
      * Looking for the styles
      */
     $ckeditor->resolve_path(
-        'contentsCss',
         $tplPath.'/wb_config/editor.css',
-        $ModPath.'/ckeditor/contents.css'
+        $ModPath.'/ckeditor/contents.css',
+        'contentsCss'
     );
 
     /**
      * Looking for the editor.styles at all ...
      */
     $ckeditor->resolve_path(
-        'stylesSet',
         $tplPath.'/wb_config/editor.styles.js',
         $ModPath.'/ckeditor/styles.js',
+        'stylesSet',
         'wb:'
     );
 
