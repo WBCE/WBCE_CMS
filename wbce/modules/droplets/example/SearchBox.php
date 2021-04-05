@@ -8,6 +8,7 @@ $j = "onfocus=\"if(this.value=='$msg'){this.value='';this.style.color='#000';}el
 if(SHOW_SEARCH) { 
 	$return_value  = '<div class="searchbox">';
 	$return_value  .= '<form action="'.WB_URL.'/search/index'.PAGE_EXTENSION.'" method="get" name="search" class="searchform" id="search">';
+	$return_value  .= '<input type="hidden" name="referrer" value="'.PAGE_ID.'" />';
 	$return_value  .= '<input style="color:#b3b3b3;" type="text" name="string" size="25" class="textbox" value="'.$msg.'" '.$j.'  />&nbsp;';
 	$return_value  .= '</form>';
 	$return_value  .= '</div>';
