@@ -180,7 +180,7 @@ switch (true) {
 
     case (ER_LEVEL == "E0"):
         // system default (php.ini)
-        error_reporting(ini_get('error_reporting'));
+         error_reporting((int)ini_get('error_reporting'));
         break;
 
     case (ER_LEVEL == "E1"):
