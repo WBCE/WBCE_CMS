@@ -95,7 +95,7 @@ if (defined('USE_DOCTRINE') && USE_DOCTRINE === true) {
          *
          * @return unspec  bool true on completion, otherwise error string
          */
-        public function delRow($table, $uRows, $refKey = '')
+        public function delRow($table, $refKey = '', $uRows = null)
         {
             $retVal = false;
             if (!is_array($uRows)) {
