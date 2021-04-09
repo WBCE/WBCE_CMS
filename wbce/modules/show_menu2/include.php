@@ -36,7 +36,7 @@ include_once("classes/sm2_formatter.php");
 function sm2_error_logs($error_str)
 {
     $log_error = (SM2_DEBUG and SM2_DEBUG === true) ? true : false;
-    if (! function_exists('error_log')) {
+    if (!function_exists('error_log')) {
         $log_error = false;
     }
 
@@ -156,13 +156,13 @@ function show_menu2(
         ) {
         global $database;
         // create an array of all parents of the current page. As the page_trail
-        // doesn't include the theoretical root element 0, we add it ourselves.		
+        // doesn't include the theoretical root element 0, we add it ourselves.
         if (isset($wb->page['page_trail'])) {
-        $rgCurrParents = explode(",", '0,'.$wb->page['page_trail']);
-        array_pop($rgCurrParents); // remove the current page
-		} else {
-			$rgCurrParents = array('0');
-		}
+            $rgCurrParents = explode(",", '0,'.$wb->page['page_trail']);
+            array_pop($rgCurrParents); // remove the current page
+        } else {
+            $rgCurrParents = array('0');
+        }
         
         $rgParent = array();
 
