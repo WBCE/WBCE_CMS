@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -15,16 +15,15 @@
 //
 if (!function_exists("sitemap")) {
     function sitemap(
-            $level_header,
-            $smloop,
-            $level_footer,
-            $show_hidden,
-            $menus,
-            $parent = 0,
-            $to_depth = 0,
-            $curr_level = 0
-    )
-    {
+        $level_header,
+        $smloop,
+        $level_footer,
+        $show_hidden,
+        $menus,
+        $parent = 0,
+        $to_depth = 0,
+        $curr_level = 0
+    ) {
         global $database;
 
         // visibility
@@ -46,17 +45,17 @@ if (!function_exists("sitemap")) {
             }
         }
         // Query pages
-        $query_menu = $database->query("SELECT * FROM `{TP}pages` WHERE ".$where_sql." AND `parent` = '".$parent."' " . $sWhereMenus . " ORDER BY `position` ASC");
+        $query_menu = $database->query("SELECT * FROM `{TP}pages` WHERE ".$where_sql." AND `parent` = '".$parent."' '.$sWhereMenus.' ORDER BY `position` ASC");
 
-		//beforehand fetch the menu-link page ids
+        //beforehand fetch the menu-link page ids
         $qML = "SELECT page_id FROM `{TP}mod_menu_link`";
         $oML = $database->query($qML);
         $aML = [];
-		if (is_object($oML) && $oML->numRows() > 0) {
-			while ($ml =$oML->fetchRow(MYSQLI_ASSOC)) {
-				$aML[] = $ml['page_id'];
-			}
-		}
+        if (is_object($oML) && $oML->numRows() > 0) {
+            while ($ml =$oML->fetchRow(MYSQLI_ASSOC)) {
+                $aML[] = $ml['page_id'];
+            }
+        }
 
         //
         // start collecting the output string
@@ -64,7 +63,6 @@ if (!function_exists("sitemap")) {
         $sOutput = "";
         // Check if there are any pages to show
         if ($query_menu->numRows() > 0) {
-
             $curr_level++;
             $sOutput .= str_replace('[LEVEL]', $curr_level - 1, $level_header); // include level header to output
 
@@ -76,12 +74,12 @@ if (!function_exists("sitemap")) {
                 $query_user = $database->query($userquery);
                 $user       = $query_user->fetchRow();
 
-				// handle correct menu links
-				if (defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true && in_array($page['page_id'], $aML)) {
-					$this_page_link = sm2_correct_menu_links(page_link($page['link']));
-				} else {
-					$this_page_link = page_link($page['link']);
-				}
+                // handle correct menu links
+                if (defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true && in_array($page['page_id'], $aML)) {
+                    $this_page_link = sm2_correct_menu_links(page_link($page['link']));
+                } else {
+                    $this_page_link = page_link($page['link']);
+                }
 
                 $aReplacements = array(
                     '[PAGE_ID]'       => $page['page_id'],
@@ -132,12 +130,12 @@ extract($settings);
 // Start collecting the final output
 //
 $sOutput = $header;
-if ($static == true OR $static == false) {
+if ($static == true or $static == false) {
 
     // Set private sql extra code
     $private_sql       = "";
     $private_where_sql = "visibility = 'public'";
-    if (FRONTEND_LOGIN == 'enabled' AND is_numeric($admin->get_session('USER_ID'))) {
+    if (FRONTEND_LOGIN == 'enabled' and is_numeric($admin->get_session('USER_ID'))) {
         $private_sql       = ",viewing_groups,viewing_users";
         $private_where_sql = "visibility != 'none'";
     }
@@ -168,7 +166,7 @@ if ($static == true OR $static == false) {
     $parent = (trim($parent) == "") || ($parent < 1) ? 0 : $parent;
 
     // workout the menus we should include for display
-	$menus ='';
+    $menus ='';
     $aMenus    = array();
     $aMenus[0] = 0;
     if (strpos($menus, ',') !== false) {
