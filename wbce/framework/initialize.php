@@ -231,7 +231,7 @@ WSession::Start();
 // You can log users in or out and do what you like
 // Initialize Modules normaly do not distinguish between FE and BE
 
-$sSql = "SELECT `directory` FROM `{TP}addons` WHERE  function LIKE '%initialize%'";
+$sSql = "SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE '%initialize%'";
 if (($resSnippets = $database->query($sSql))) {
     while ($rec = $resSnippets->fetchRow()) {
         $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/initialize.php';
