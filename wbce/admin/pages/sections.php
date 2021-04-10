@@ -48,8 +48,8 @@ if (isset(${$requestMethod}['section_id'])) {
 $action = ($section_id ? 'delete' : $action);
 // Get module if there is one
 $requestMethod = '_' . strtoupper($_SERVER['REQUEST_METHOD']);
-$module = ((isset(${$requestMethod}['module'])) ? ${$requestMethod}['module'] : 0);
-$action = ($module != '' ? 'add' : $action);
+$module = ((isset(${$requestMethod}['module'])) ? ${$requestMethod}['module'] : '');
+$action = (!empty($module) ? 'add' : $action);
 $admin_header = true;
 $backlink = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id;
 
@@ -58,7 +58,7 @@ switch ($action) {
     case 'delete':
         $action = 'show';
         $sSql = 'SELECT `module` FROM `{TP}sections` WHERE `section_id` = ' . $section_id;
-        if ((($sModDir = $database->get_one($sSql)) == $module) && ($section_id > 0)) {
+        if (($sModDir = $database->get_one($sSql)) && ($section_id > 0)) {
             // Include the modules delete file if it exists
             $sDeleteFile = WB_PATH . '/modules/' . $sModDir . '/delete.php';
             if (file_exists($sDeleteFile)) {
