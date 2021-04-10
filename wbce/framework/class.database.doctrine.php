@@ -232,29 +232,29 @@ class database
      * @param     string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
      * @param     string $field_name: name of the field to add
      * @param     string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
-	 * @param string set_error: decide whether an existing field should throw an error message or not 
+     * @param string set_error: decide whether an existing field should throw an error message or not
      * @return    bool: true if successful, otherwise false and error will be set
      */
     public function field_add(string $table_name, string $field_name, string $description, bool $set_error = true) : bool
-	{
-		if (!$this->field_exists($table_name, $field_name)) {
-			// add new field into a table
-			$sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
-			try {
-				$query = $this->query($sql);
-			} catch ( \PDO\PDOException $e ) {
-				$this->set_error($e->getMessage());
-			}
-			if (!$this->is_error()) {
-				return ($this->field_exists($table_name, $field_name));
-			}
-		} else {
-			if ($set_error === true) {
-				$this->set_error('field \'' . $field_name . '\' already exists');
-			}
-		}
-		return false;
-	}
+    {
+        if (!$this->field_exists($table_name, $field_name)) {
+            // add new field into a table
+            $sql = 'ALTER TABLE `' . $table_name . '` ADD ' . $field_name . ' ' . $description . ' ';
+            try {
+                $query = $this->query($sql);
+            } catch (\PDO\PDOException $e) {
+                $this->set_error($e->getMessage());
+            }
+            if (!$this->is_error()) {
+                return ($this->field_exists($table_name, $field_name));
+            }
+        } else {
+            if ($set_error === true) {
+                $this->set_error('field \'' . $field_name . '\' already exists');
+            }
+        }
+        return false;
+    }
 
     /**
      * checks for a given field in the table
@@ -264,7 +264,7 @@ class database
      * @param     string $field_name: name of the field to seek for
      * @return    bool: true if field exists
      **/
-    public function field_exists(string $table_name,string $field_name) : bool
+    public function field_exists(string $table_name, string $field_name) : bool
     {
         $sql = "SHOW COLUMNS FROM `$table_name` LIKE '$field_name'";
         $result = $this->query($sql);
@@ -290,7 +290,7 @@ class database
             $sql = 'ALTER TABLE `' . $table_name . '` MODIFY `' . $field_name . '` ' . $description;
             try {
                 $query = $this->query($sql);
-            } catch ( \PDO\PDOException $e ) {
+            } catch (\PDO\PDOException $e) {
                 $this->set_error($e->getMessage());
             }
         }
@@ -311,7 +311,7 @@ class database
             $sql = 'ALTER TABLE `' . $table_name . '` DROP `' . $field_name . '`';
             try {
                 $query = $this->query($sql);
-            } catch ( \PDO\PDOException $e ) {
+            } catch (\PDO\PDOException $e) {
                 $this->set_error($e->getMessage());
             }
         }
@@ -356,11 +356,11 @@ class database
         try {
             $q = $this->db_handle->query($statement);
 
-            if(!empty($q) && is_object($q)) {
+            if (!empty($q) && is_object($q)) {
                 $r = $q->fetchColumn();
-                return ( empty($r) ? null : $r );
+                return (empty($r) ? null : $r);
             }
-        } catch ( \PDO\PDOException $e ) {
+        } catch (\PDO\PDOException $e) {
             $this->set_error($e->getMessage());
             return null;
         }
@@ -530,7 +530,7 @@ class database
     {
         $statement = $this->replaceTablePrefix($statement);
         $funcname = 'query';
-        if(method_exists($this->db_handle,'executeQuery')) {
+        if (method_exists($this->db_handle, 'executeQuery')) {
             $funcname = 'executeQuery';
         }
         try {
@@ -538,7 +538,7 @@ class database
             return new WBCE_PDOStatementDecorator($stmt);
         } catch (\PDO\PDOException $e) {
             $this->set_error($e->getMessage());
-        } catch (\Exception $e ) {
+        } catch (\Exception $e) {
             $this->set_error($e->getMessage());
         }
         return null;
@@ -719,8 +719,18 @@ class WBCE_PDOStatementDecorator
     {
         return $this->pdo_stmt->rowCount();
     }
-    public function fetchRow($type=\PDO::FETCH_ASSOC)
+    public function fetchRow($type=\PDO::FETCH_BOTH)
     {
+        if (extension_loaded("mysqli")) {
+            switch ($type) {
+                case 1:	$type = 2; // ASSOC
+                            break;
+                case 2:	$type = 3; // NUM
+                            break;
+                case 3:	$type =	4; // BOTH
+                            break;
+            }
+        }
         return $this->pdo_stmt->fetch($type);
     }
 }
