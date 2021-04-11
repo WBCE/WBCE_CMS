@@ -37,7 +37,7 @@ $file = basename($raw_dir);
 
 // Helper function
 if (!function_exists("replace_all")) {
-    function replace_all($aStr = "", &$aArray)
+    function replace_all(&$aArray, $aStr = "")
     {
         foreach ($aArray as $k => $v) {
             $aStr = str_replace("{{" . $k . "}}", $v, $aStr);
@@ -62,7 +62,7 @@ if ($info->numRows() > 0) {
      */
     $page_template_str = "- <b><a href='../pages/sections.php?page_id={{id}}'>{{title}}</a></b><br />";
     $values = array('type' => 'Modul', 'type_name' => $file, 'pages' => $add);
-    $msg = replace_all($msg_template_str, $values);
+    $msg = replace_all($values, $msg_template_str);
 
     $page_names = "";
     while ($data = $info->fetchRow()) {
@@ -72,7 +72,7 @@ if ($info->numRows() > 0) {
             'id' => $data['page_id'],
             'title' => $temp_title['page_title']
         );
-        $page_names .= replace_all($page_template_str, $page_info);
+        $page_names .= replace_all($page_info, $page_template_str);
     }
 
     // Print error-message and exit

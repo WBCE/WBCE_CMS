@@ -38,7 +38,7 @@ $file = basename($raw_dir);
 
 // Helper function
 if (!function_exists("replace_all")) {
-    function replace_all($aStr = "", &$aArray)
+    function replace_all(&$aArray, $aStr = "")
     {
         foreach ($aArray as $k => $v) {
             $aStr = str_replace("{{" . $k . "}}", $v, $aStr);
@@ -50,14 +50,14 @@ if (!function_exists("replace_all")) {
 // Check if the theme is the default
 if ($file == DEFAULT_THEME) {
     $temp = array('name' => $file);
-    $msg = replace_all($MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_THEME'], $temp);
+    $msg = replace_all($temp, $MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_THEME']);
     $admin->print_error($msg);
 }
 
 // Check if the template is the default or otherwise still in use
 if ($file == DEFAULT_TEMPLATE) {
     $temp = array('name' => $file);
-    $msg = replace_all($MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE'], $temp);
+    $msg = replace_all($temp, $MESSAGE['GENERIC_CANNOT_UNINSTALL_IS_DEFAULT_TEMPLATE']);
     $admin->print_error($msg);
 } else {
     // Check if the template is still in use by a page ...
@@ -73,7 +73,7 @@ if ($file == DEFAULT_TEMPLATE) {
         // The template-string for displaying the Page-Titles ... in this case as a link
         $page_template_str = "- <b><a href='../pages/settings.php?page_id={{id}}'>{{title}}</a></b><br />";
         $values = array('type' => 'Template', 'type_name' => $file, 'pages' => $add);
-        $msg = replace_all($msg_template_str, $values);
+        $msg = replace_all($values, $msg_template_str);
 
         $page_names = "";
         while ($data = $info->fetchRow()) {
@@ -81,7 +81,7 @@ if ($file == DEFAULT_TEMPLATE) {
                 'id' => $data['page_id'],
                 'title' => $data['page_title']
             );
-            $page_names .= replace_all($page_template_str, $page_info);
+            $page_names .= replace_all($page_info, $page_template_str);
         }
 
         // Print error-message and exit
