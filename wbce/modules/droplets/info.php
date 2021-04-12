@@ -13,7 +13,7 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '2.3.0';
+$module_version = '2.3.1';
 $module_platform = '1.4.0';
 $module_author = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax';
 $module_license = 'GNU General Public License';
@@ -25,14 +25,18 @@ $module_level = 'core';
 
 /**
  * Version history
+ * v2.3.1 - Colinax
+ *        - add mp4video Droplet 
+ *        - removed some old Droplet
+ *
  * v2.3.0 - Bianka Martinovic ("WebBird")
  *        - fix issues with changed twig version and PHP 8
- * 
+ *
  * v2.2.9 - Bernd
  *        - fixed upgrade.php regarding MySQL-Strict / Doctrine (Bernd)
  *
  * v2.2.8 - Bernd
- *        -  MYSQL_ASSOC -> MYSQLI_ASSOC
+ *        - MYSQL_ASSOC -> MYSQLI_ASSOC
  *
  * v2.2.7 - colinax
  *        - Add module_level core status
@@ -67,11 +71,11 @@ $module_level = 'core';
  *        - Remove deprecated HTML Tags in functions.inc.php
  *        - Updated jquery.tablesorter.js - https://github.com/Mottie/tablesorter
  *
- * v2.0.2 - cwsoft & colinax
+ * v2.0.2 - cwsoft
  *        - fixed fatal error in case Droplet code syntax was invalid)
- *        - see https://github.com/WBCE/WBCE_CMS/issues/216 
+ *        - see https://github.com/WBCE/WBCE_CMS/issues/216
  *
- * v2.0.1 - norhei & colinax
+ * v2.0.1 - norhei
  *        - see https://github.com/WBCE/WBCE_CMS/commit/f6e69206e22a6aa277b02b6c6887554a0da6371b
  *
  * v2.0.0 - Bianka Martinovic ("WebBird")
