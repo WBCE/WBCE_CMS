@@ -302,14 +302,24 @@ if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
 define("LANGUAGE_LOADED", true);
 
 // simple template switcher
-if (isset($_GET['reset_template'])) {
-    unset($_SESSION['wb_preview_tpl']);
-}
-if (isset($_GET['template']) || isset($_SESSION['wb_preview_tpl'])) {
-    if (isset($_GET['template']) && is_string($_GET['template'])) {
-        $_SESSION['wb_preview_tpl'] = $_GET['template'];
+if (defined('TEMPLATE_SWITCHER') && TEMPLATE_SWITCHER == true) {
+    if (isset($_GET['reset_template'])) {
+        unset($_SESSION['wb_preview_tpl']);
     }
-    define('TEMPLATE', $_SESSION['wb_preview_tpl']);
+    if (isset($_SESSION['wb_preview_tpl']) && !file_exists(WB_PATH.'/templates/'.$_SESSION['wb_preview_tpl'].'/info.php')) {
+        unset($_SESSION['wb_preview_tpl']);		
+    }
+    if (isset($_GET['template'])) {
+        $core_preview_template = preg_replace("/(\.\.\/)/","", $_GET['template']);
+        if (isset($_GET['template']) && is_string($core_preview_template) && file_exists(WB_PATH.'/templates/'.$core_preview_template.'/info.php')) {
+            $_SESSION['wb_preview_tpl'] = $core_preview_template;
+            define('TEMPLATE', $_SESSION['wb_preview_tpl']);
+        }    
+    } elseif (isset($_SESSION['wb_preview_tpl'])) {
+        if (is_string($_SESSION['wb_preview_tpl']) && file_exists(WB_PATH.'/templates/'.$_SESSION['wb_preview_tpl'].'/info.php')) {            
+            define('TEMPLATE', $_SESSION['wb_preview_tpl']);
+        }    
+    }
 }
 
 // define more system constants
