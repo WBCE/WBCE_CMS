@@ -6,10 +6,10 @@ templates/tool.htt
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.13
+ * @version         1.5.14
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
+ * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
@@ -138,7 +138,7 @@ templates/tool.htt
 Copyright &copy; 2009-2010, Thomas 'thorn' Hornik <a title="thorn@nettest.thekk.de" href="mailto:thorn@nettest.thekk.de">thorn@nettest.thekk.de</a><br />
 Copyright &copy; 2010-2015, Christian M. Stefan (Stefek) <a title="stefek@designthings.de" href="mailto:stefek@designthings.de">stefek@designthings.de</a><br />
 Copyright &copy; 2016, Martin Hecht (mrbaseman) <a title="mrbaseman@gmx.de" href="mailto:mrbaseman@gmx.de">mrbaseman@gmx.de</a><br />
-<a href="https://github.com/WebsiteBaker-modules/outputfilter_dashboard" target="_blank" title="{TXT_VISIT_PROJECTS_WEBSITE}">
+<a href="https://github.com/mrbaseman/outputfilter_dashboard" target="_blank" title="{TXT_VISIT_PROJECTS_WEBSITE}">
         <img src="{IMAGE_URL}/a_blank.png" alt="" />Project Website</a></p>
     <p><a href="{tpl_tool_url}" onclick="{tpl_help_onclick}" title="{TXT_HELP_BROWSER}">
         <img src="{IMAGE_URL}/help_big.png" alt="[?]" /></a>
