@@ -104,25 +104,7 @@ if (defined('WB_FRONTEND') && WB_FRONTEND == true) {
         /**
          * Call the filebrowser
          */
-        if (file_exists('../../modules/elfinder/tool.php') && (!defined('SHOW_ELFINDER') || SHOW_ELFINDER!=false)) {
-            $ckeditor->config['filebrowserBrowseUrl'] = $url['path'] . '/modules/elfinder/ef/elfinder_cke.php';
-        } else {
-            $connectorPath                                 = $ckeditor->basePath . 'filemanager/connectors/php/connector.php';
-            $ckeditor->config['filebrowserBrowseUrl']      = $ckeditor->basePath . 'filemanager/browser/default/browser.html?Connector=' . $connectorPath;
-            $ckeditor->config['filebrowserImageBrowseUrl'] = $ckeditor->basePath . 'filemanager/browser/default/browser.html?Type=Image&Connector=' . $connectorPath;
-            $ckeditor->config['filebrowserFlashBrowseUrl'] = $ckeditor->basePath . 'filemanager/browser/default/browser.html?Type=Flash&Connector=' . $connectorPath;
-    
-            /**
-             * The Uploader has to be called, too.
-             */
-            $ckeditor->config['uploader'] = false; // disabled for security reasons
-            if ($ckeditor->config['uploader'] == true) {
-                $uploadPath                                    = $ckeditor->basePath . 'filemanager/connectors/php/upload.php?Type=';
-                $ckeditor->config['filebrowserUploadUrl']      = $uploadPath . 'File';
-                $ckeditor->config['filebrowserImageUploadUrl'] = $uploadPath . 'Image';
-                $ckeditor->config['filebrowserFlashUploadUrl'] = $uploadPath . 'Flash';
-            }
-        }
+        $ckeditor->config['filebrowserBrowseUrl'] = $url['path'] . '/modules/elfinder/ef/elfinder_cke.php';
     
         /**
          * Define all extra CKEditor plugins here
