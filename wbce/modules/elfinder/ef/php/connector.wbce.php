@@ -127,8 +127,8 @@ if (($admin->get_permission('media_view') === true)) {
                 array(
                     'alias' => "Home (" . $_SESSION['HOME_FOLDER'] . ")",
                     'driver' => 'LocalFileSystem',
-                    'path' => WB_PATH . '/media/' . $_SESSION['HOME_FOLDER'],
-                    'URL' => WB_URL . '/media/' . $_SESSION['HOME_FOLDER'],
+                    'path' => WB_PATH . '/media' . $_SESSION['HOME_FOLDER'],
+                    'URL' => WB_URL . '/media' . $_SESSION['HOME_FOLDER'],
                     'quarantine' => WB_PATH . '/var/modules/elfinder/.quarantine',
                     'tmbPath' => WB_PATH . '/var/modules/elfinder/.tmb',
                     'tmbURL' => WB_URL . '/var/modules/elfinder/.tmb',
