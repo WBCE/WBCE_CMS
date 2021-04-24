@@ -110,6 +110,8 @@ if (($admin->get_permission('media_view') === true)) {
                     ),
 
                     'disabled' => array( // Very limited access to main folder when user has a homedir set
+                        'hide',
+                        'empty',
                         'netmount',
                         'help',
                         'preference',
@@ -147,15 +149,12 @@ if (($admin->get_permission('media_view') === true)) {
                     ),
 
                     'disabled' => array(
-                        'info',
+                        'hide',
+                        'empty',
                         'netmount',
                         'help',
                         'preference',
                         'mkfile',
-                        'rm',
-                        'cut',
-                        'copy',
-                        'paste',
                         'edit'
                     )
                 )
