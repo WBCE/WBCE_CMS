@@ -180,20 +180,21 @@ class Frontend extends Wb
 
             // Check if the page language is also the selected language. If not, send headers again.
             if ($this->page['language'] != LANGUAGE) {
-                $_SESSION['LANGUAGE'] = $this->page['language'];
-                $sUri = $this->page_link($this->page['link']);
-                $qstr='';
-				if (isset($_SERVER['QUERY_STRING'])) { $qstr=$_SERVER['QUERY_STRING']; }
-				parse_str($qstr, $param);
-				unset($param['_wb']);
-				$qstr=http_build_query($param);
-				if ($qstr!='') {
-					header('Location: ' . $sUri . '?' . $qstr);
-				} else {
-					header('Location: ' . $sUri );
-				}
-                exit();
+                if (defined('OLD_REDIRECT') && OLD_REDIRECT != false) {
+                    $sUri = $this->page_link($this->page['link']).'?lang=' . $this->page['language'];
+                    if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
+                        // check if there is an query-string
+                        header('Location: ' . $sUri . '&' . $_SERVER['QUERY_STRING']);
+                    } else {
+                        header('Location: ' . $sUri);
+                    }
+                    exit();
+                } else {
+                    $_SESSION['LANGUAGE'] = $this->page['language'];
+                    header("Refresh:0");
+                }
             }
+
             // Begin code to set details as either variables of constants
             defined('PAGE_ID') or define('PAGE_ID', $this->page['page_id']);
             defined('PAGE_TITLE') or define('PAGE_TITLE', $this->page['page_title']);
