@@ -176,7 +176,6 @@ $dirRemove = array(
     '[ADMIN]/pages/page_tree/icons/',
     '[ADMIN]/themes/',
     '[INCLUDE]/phpmailer/',
-    '[INCLUDE]/Twig/',
     '[MODULES]/output_filter/',
     '[MODULES]/user_search/',
     '[TEMPLATE]/advancedThemeWbFlat/',
@@ -517,7 +516,7 @@ if (sizeof($all_tables) !== sizeof($table_list)) {
     echo '<h4>Missing required tables. You can install them in backend->addons->modules->advanced. Then again run update.php</h4>';
     $result = array_diff($table_list, $all_tables);
     echo '<h4 class="warning"><br />';
-    foreach($result as $val) {
+    while (list($key, $val) = each($result)) {
         echo TABLE_PREFIX . $val . ' ' . $FAIL . '<br>';
     }
     echo '<br /></h4>';

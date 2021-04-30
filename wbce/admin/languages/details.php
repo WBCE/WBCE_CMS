@@ -19,7 +19,6 @@ $admin = new admin('Addons', 'languages_view', false, true);
 if(! $admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
-    $admin->print_footer();
 }
 // Output admin backend header (this creates a new FTAN)
 $admin->print_header();

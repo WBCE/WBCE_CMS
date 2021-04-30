@@ -39,7 +39,11 @@ $bBackLink = isset($_POST['pagetree']);
 // Update the mod_wysiwygs table with the contents
 if(isset($_POST['content'.$section_id])) {
     $content = $_POST['content'.$section_id];
-    $searchfor = '@(<[^>]*=\s*")('.preg_quote($sMediaUrl).')([^">]*".*>)@siU';
+	if(ini_get('magic_quotes_gpc')==true)
+	{
+		$content = $admin->strip_slashes($_POST['content'.$section_id]);
+	}
+	$searchfor = '@(<[^>]*=\s*")('.preg_quote($sMediaUrl).')([^">]*".*>)@siU';
     $content = preg_replace($searchfor, '$1{SYSVAR:MEDIA_REL}$3', $content);
     $text = strip_tags($content);
 	$sql = 'UPDATE `'.TABLE_PREFIX.'mod_wysiwyg` '

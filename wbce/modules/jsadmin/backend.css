@@ -19,9 +19,7 @@ body.jsadmin_failure td.content {
 	cursor: move;
 }
 
-.jsadmin_drag a,
-.jsadmin_drag input,
-.jsadmin_drag select {
+.jsadmin_drag a, .jsadmin_drag input, .jsadmin_drag select {
 	cursor: pointer;
 }
 

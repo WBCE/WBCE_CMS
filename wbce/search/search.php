@@ -207,7 +207,7 @@ if (isset($_REQUEST['string'])) {
     } else {
         $string = (string)$_REQUEST['string'];
     }
-    // strip the slashes
+    // redo possible magic quotes
     $string = $wb->strip_slashes($string);
     $string = preg_replace('/\s+/', ' ', $string);
     $string = trim($string);

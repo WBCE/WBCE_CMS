@@ -28,11 +28,11 @@ $aFromString = explode ( "-",$_POST['id']);
 $sDbField    = $aFromString[0];
 $iPageId     = intval($aFromString[1]);
 //sanitize new value to update
-$sNewValue = str_replace(array("[[", "]]", "\n", "\t"), '', htmlspecialchars($admin->get_post('value')));
+$sNewValue = str_replace(array("[[", "]]", "\n", "\t"), '', htmlspecialchars($admin->add_slashes($admin->get_post('value'))));
 $aCheckPagesFields = array('page_title', 'description', 'keywords');
 
 //	GET TOOL SETTINGS FROM DB (Json Array)
-$jsonSettings = $database->get_one("SELECT `settings_json` FROM `{TP}mod_page_seo_tool`");
+$jsonSettings = $database->get_one("SELECT `settings_json` FROM `".TABLE_PREFIX."mod_page_seo_tool`");
 $aSettings = json_decode($jsonSettings, TRUE);
 
 if(!defined('REWRITE_URL') && $aSettings['rewriteUrl']['use'] == TRUE ){
@@ -43,10 +43,10 @@ if(!defined('REWRITE_URL') && $aSettings['rewriteUrl']['use'] == TRUE ){
 // UPDATE the DB Field
  if(isset($_POST['value']) && in_array($sDbField, $aCheckPagesFields)){
 	// Update page settings in the pages table
-	$sUpdateQuery  = 'UPDATE `{TP}pages` SET `'.$sDbField.'` = "'.$sNewValue.'" WHERE `page_id` = '.$iPageId;
+	$sUpdateQuery  = 'UPDATE `'.TABLE_PREFIX.'pages` SET `'.$sDbField.'` = "'.$sNewValue.'" WHERE `page_id` = '.$iPageId;
 	$database->query($sUpdateQuery);
 }
-if($database->hasError() == FALSE) {
+if($database->is_error() == FALSE) {
 	echo $sNewValue;
 }
 exit;

@@ -77,6 +77,7 @@ class Frontend extends Wb
                 $handle = @fopen($filename, "r");
                 $content = @fread($handle, filesize($filename));
                 @fclose($handle);
+                $this->preprocess($content);
                 // send intro.php as header to allow parsing of php statements
                 header("Location: " . WB_URL . PAGES_DIRECTORY . "/intro" . PAGE_EXTENSION . ""); 
                 echo ($content);

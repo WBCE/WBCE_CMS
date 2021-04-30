@@ -12,35 +12,29 @@
 	border: 1px solid #D9D9D9;
 	padding: 10px;
 }
-
-.btn {
+.btn{
 	font-size: 10px;
 	padding: 3px;
 }
-
-.h3-label {
+.h3-label{
 	font-size: 80%;
 	font-weight: normal;
 	margin-right: 20px;
 }
-
-.config-container {
+.config-container{
 	width: 80%;
 	margin-left: 50px;
 	display: block;
 }
-
 textarea.form-control {
 	width: 100%;
 	display: inline-block;
 }
-
 .form-group.vector {
 	display: inline-block;
 	width: 100%;
 	vertical-align: top;
 }
-
 .editor-container fieldset {
 	margin-top: 15px;
 	margin-bottom: 15px;
@@ -49,20 +43,19 @@ textarea.form-control {
 }
 
 .editor-container legend {
-	margin-bottom: 25px;
-	font-weight: bold;
-	font-size: 16px;
-	width: 100%;
-	border-bottom: #ebedf3 2px solid;
-	padding-bottom: 6px;
-	padding-left: 6px;
+        margin-bottom: 25px;
+        font-weight: bold;
+        font-size: 16px;
+        width: 100%;
+        border-bottom: #ebedf3 2px solid;
+        padding-bottom: 6px;
+        padding-left: 6px;
 }
 
 input.btn.btn-success {
 	font-size: 16px;
 	padding: 10px;
 }
-
 input.form-control[type="checkbox"] {
 	height: 20px;
 	margin-top: 0;
@@ -70,46 +63,39 @@ input.form-control[type="checkbox"] {
 	width: 20px;
 	vertical-align: middle;
 }
-
 .remove-btn {
 	margin-right: 15px;
 }
-
-.down-arr,
-.up-arr {
+.down-arr, .up-arr {
 	margin-right: 5px;
 }
-
 label.array_key {
 	margin-top: 10px;
 }
-
 .form-group span:nth-child(1) .col-md-10 label.array_key {
 	margin-top: 0px;
 }
 
 input.move-input {
-	width: 20px;
-	float: left;
-	display: inline;
-	background: #D9D9D9;
-	border: 3px dotted #888;
-	margin-right: 5px;
-	display: none !important;
+        width: 20px;
+        float: left;
+        display: inline;
+        background: #D9D9D9;
+        border: 3px dotted #888;
+        margin-right: 5px;
+        display:none!important;
 }
-
 input.move-input:focus {
-	background: #00c4ff;
+        background: #00c4ff;
 }
 
 .editor-container div.settingValue textarea {
-	padding: 0.3em;
-	vertical-align: top;
-	width: 100%;
-	min-height: 0.6em;
+        padding: 0.3em;
+        vertical-align: top;
+        width: 100%;
+        min-height: 0.6em;
 }
-
 .editor-container div.settingValue textarea:focus {
-	outline-style: solid;
-	outline-width: 2px;
+        outline-style: solid;
+        outline-width: 2px;
 }

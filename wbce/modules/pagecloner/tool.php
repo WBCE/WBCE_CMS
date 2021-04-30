@@ -94,7 +94,8 @@ function make_list($parent, $editable_pages) {
 <ul id="p<?php echo $parent; ?>" <?php if($parent != 0) { echo 'class="page_list"'; } ?>>
  <?php	
 	// Get page list from database
-	$query = "SELECT * FROM ".TABLE_PREFIX."pages WHERE parent = '$parent' AND visibility != 'deleted' ORDER BY position ASC";
+	$database = new database();
+		$query = "SELECT * FROM ".TABLE_PREFIX."pages WHERE parent = '$parent' AND visibility != 'deleted' ORDER BY position ASC";
 
 	$get_pages = $database->query($query);
 	

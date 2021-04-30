@@ -35,7 +35,16 @@ $sAddonDir = $module_directory;
 /**
  * Create Twig template object and configure it
  */
-$oTwig = getTwig(__DIR__ . '/skel');
+$oTwigLoader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/skel'); // tell Twig where the template will come from
+$oTwig = new Twig_Environment($oTwigLoader, array(
+	'autoescape'       => false,
+	'cache'            => false,
+	'strict_variables' => false,
+	'debug'            => true
+));
+$oTwig->addExtension(new Twig_Extension_Debug());	// load extension	
+// SET SOME GLOBALS FOR USE ALONG WITH TWIG-TEMPLATES
+$oTwig->addGlobal('WB_URL', WB_URL); 
 $oTwig->addGlobal('ICONS_DIR', '../../modules/'.$sAddonDir.'/icons'); 
 
 $aOuptut = array();

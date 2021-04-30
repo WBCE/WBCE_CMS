@@ -11,7 +11,6 @@
 	border: #cdcdcd 1px solid;
 	border-width: 1px 0 0 1px;
 }
-
 .tablesorter-wbEasy th,
 .tablesorter-wbEasy td {
 	border: #cdcdcd 1px solid;
@@ -29,14 +28,12 @@
 	padding: 4px;
 	text-shadow: 0 1px 0 rgba(204, 204, 204, 0.7);
 }
-
 .tablesorter-wbEasy tbody td,
 .tablesorter-wbEasy tfoot th,
 .tablesorter-wbEasy tfoot td {
 	padding: 4px;
 	vertical-align: top;
 }
-
 .tablesorter-wbEasy .header,
 .tablesorter-wbEasy .tablesorter-header {
 	/* black (unsorted) double arrow */
@@ -51,7 +48,6 @@
 	white-space: normal;
 	cursor: pointer;
 }
-
 .tablesorter-wbEasy .headerSortUp,
 .tablesorter-wbEasy .tablesorter-headerSortUp,
 .tablesorter-wbEasy .tablesorter-headerAsc {
@@ -63,7 +59,6 @@
 	/* image */
 	/* background-image: url(images/black-asc.gif); */
 }
-
 .tablesorter-wbEasy .headerSortDown,
 .tablesorter-wbEasy .tablesorter-headerSortDown,
 .tablesorter-wbEasy .tablesorter-headerDesc {
@@ -75,7 +70,6 @@
 	/* image */
 	/* background-image: url(images/black-desc.gif); */
 }
-
 .tablesorter-wbEasy thead .sorter-false {
 	background-image: none;
 	cursor: default;
@@ -103,21 +97,20 @@
  you'll need to add additional lines for
  rows with more than 2 child rows
  */
-.tablesorter-wbEasy tbody>tr.hover>td,
-.tablesorter-wbEasy tbody>tr:hover>td,
-.tablesorter-wbEasy tbody>tr:hover+tr.tablesorter-childRow>td,
-.tablesorter-wbEasy tbody>tr:hover+tr.tablesorter-childRow+tr.tablesorter-childRow>td,
-.tablesorter-wbEasy tbody>tr.even.hover>td,
-.tablesorter-wbEasy tbody>tr.even:hover>td,
-.tablesorter-wbEasy tbody>tr.even:hover+tr.tablesorter-childRow>td,
-.tablesorter-wbEasy tbody>tr.even:hover+tr.tablesorter-childRow+tr.tablesorter-childRow>td {
+.tablesorter-wbEasy tbody > tr.hover > td,
+.tablesorter-wbEasy tbody > tr:hover > td,
+.tablesorter-wbEasy tbody > tr:hover + tr.tablesorter-childRow > td,
+.tablesorter-wbEasy tbody > tr:hover + tr.tablesorter-childRow + tr.tablesorter-childRow > td,
+.tablesorter-wbEasy tbody > tr.even.hover > td,
+.tablesorter-wbEasy tbody > tr.even:hover > td,
+.tablesorter-wbEasy tbody > tr.even:hover + tr.tablesorter-childRow > td,
+.tablesorter-wbEasy tbody > tr.even:hover + tr.tablesorter-childRow + tr.tablesorter-childRow > td {
 	background-color: #d3f5c0;
 }
-
-.tablesorter-wbEasy tbody>tr.odd.hover>td,
-.tablesorter-wbEasy tbody>tr.odd:hover>td,
-.tablesorter-wbEasy tbody>tr.odd:hover+tr.tablesorter-childRow>td,
-.tablesorter-wbEasy tbody>tr.odd:hover+tr.tablesorter-childRow+tr.tablesorter-childRow>td {
+.tablesorter-wbEasy tbody > tr.odd.hover > td,
+.tablesorter-wbEasy tbody > tr.odd:hover > td,
+.tablesorter-wbEasy tbody > tr.odd:hover + tr.tablesorter-childRow > td,
+.tablesorter-wbEasy tbody > tr.odd:hover + tr.tablesorter-childRow + tr.tablesorter-childRow > td {
 	background-color: #c3eaad;
 }
 
@@ -130,11 +123,10 @@
 }
 
 /* Zebra Widget - row alternating colors */
-.tablesorter-wbEasy tbody tr.odd>td {
+.tablesorter-wbEasy tbody tr.odd > td {
 	background-color: #f3f5f8;
 }
-
-.tablesorter-wbEasy tbody tr.even>td {
+.tablesorter-wbEasy tbody tr.even > td {
 	background-color: #fff;
 }
 
@@ -143,35 +135,30 @@
 .tablesorter-wbEasy tr.odd td.primary {
 	background-color: #99b3e6;
 }
-
 .tablesorter-wbEasy tr.even td.primary {
 	background-color: #c2d1f0;
 }
-
 .tablesorter-wbEasy td.secondary,
 .tablesorter-wbEasy tr.odd td.secondary {
 	background-color: #c2d1f0;
 }
-
 .tablesorter-wbEasy tr.even td.secondary {
 	background-color: #d6e0f5;
 }
-
 .tablesorter-wbEasy td.tertiary,
 .tablesorter-wbEasy tr.odd td.tertiary {
 	background-color: #d6e0f5;
 }
-
 .tablesorter-wbEasy tr.even td.tertiary {
 	background-color: #ebf0fa;
 }
 
-.tablesorter-wbEasy tr.empha-row>td {
+.tablesorter-wbEasy tr.empha-row > td {
 	background-color: #ffdedc !important;
 }
 
 /* caption */
-.tablesorter-wbEasy>caption {
+.tablesorter-wbEasy > caption {
 	background-color: #fff;
 }
 
@@ -179,21 +166,21 @@
 .tablesorter-wbEasy .tablesorter-filter-row {
 	background-color: #eee;
 }
-
 .tablesorter-wbEasy .tablesorter-filter-row td {
 	background-color: #eee;
 	line-height: normal;
-	/* center the input */
-	text-align: center;
+	text-align: center; /* center the input */
+	-webkit-transition: line-height 0.1s ease;
+	-moz-transition: line-height 0.1s ease;
+	-o-transition: line-height 0.1s ease;
 	transition: line-height 0.1s ease;
 }
-
 /* optional disabled input styling */
 .tablesorter-wbEasy .tablesorter-filter-row .disabled {
 	opacity: 0.5;
+	filter: alpha(opacity=50);
 	cursor: not-allowed;
 }
-
 /* hidden filter row */
 .tablesorter-wbEasy .tablesorter-filter-row.hideme td {
 	/*** *********************************************** ***/
@@ -205,7 +192,6 @@
 	line-height: 0;
 	cursor: pointer;
 }
-
 .tablesorter-wbEasy .tablesorter-filter-row.hideme * {
 	height: 1px;
 	min-height: 0;
@@ -214,8 +200,8 @@
 	margin: 0;
 	/* don't use visibility: hidden because it disables tabbing */
 	opacity: 0;
+	filter: alpha(opacity=0);
 }
-
 /* filters */
 .tablesorter-wbEasy input.tablesorter-filter,
 .tablesorter-wbEasy select.tablesorter-filter {
@@ -226,10 +212,14 @@
 	background-color: #fff;
 	border: 1px solid #bbb;
 	color: #333;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	-webkit-transition: height 0.1s ease;
+	-moz-transition: height 0.1s ease;
+	-o-transition: height 0.1s ease;
 	transition: height 0.1s ease;
 }
-
 /* rows hidden by filtering (needed for child rows) */
 .tablesorter .filtered {
 	display: none;

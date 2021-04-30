@@ -11,58 +11,50 @@
 
  * The main initialization file for WBCE CMS.
  * Takes care of the set up (initialization) of variables and constants,
- * the autoloader class, sessions and settings.
- *
- * Usualy this is included by loading the config.php
- * in the main directory(webroot).
- *
+ * the autoloader class, sessions and settings. 
+ * 
+ * Usualy this is included by loading the config.php 
+ * in the main directory(webroot). 
+ * 
  */
-
+ 
 // no direct file access
-use Wbce\Database\Database;
-use Wbce\Loader;
-
 if(count(get_included_files()) == 1) header("Location: ../index.php", TRUE, 301);
 
 // Stop execution if PHP version is too old
-$sReqPhpVersion = '7.1.3';
+$sReqPhpVersion = '5.6.30';
 if (version_compare(PHP_VERSION, $sReqPhpVersion, '<')) {
     $sMsg  = 'PHP ' . PHP_VERSION . ' running on this system, but at least PHP ' . $sReqPhpVersion . ' required!<br />';
     $sMsg .= 'Please upgrade your PHP Version and try running WBCE CMS again.';
     die($sMsg);
 }
 
-// Starting Output buffering
+// Starting Output buffering 
 ob_start();
 
 // SOME EARLY CONSTANT HANDLING
-// The absolute minimum needed for autoloader and DB
+// The absolute minimum needed for autoloader and DB 
 
 // WB_DEBUG can be overwritten via WBCE config.php (if enabled, max. PHP error output is shown)
 defined('WB_DEBUG')    or define('WB_DEBUG', false);
-// define WB_PATH as it isn't yet defined, installer issue whith missing wbpath
+// define WB_PATH as it isn't yet defined, installer issue whith missing wbpath 
 defined("WB_PATH")     or define("WB_PATH", dirname(__DIR__));
 // compatibility fix for old modules, sooner or later better replace the old constants from old mysql driver.
-// But for now
+// But for now 
 defined("MYSQL_BOTH")  or define('MYSQL_BOTH',  MYSQLI_BOTH);
 defined("MYSQL_NUM")   or define('MYSQL_NUM',   MYSQLI_NUM);
 defined("MYSQL_ASSOC") or define('MYSQL_ASSOC', MYSQLI_ASSOC);
 
-// INITIALIZE CLASS AUTOLOADER
-require_once WB_PATH . '/framework/classes/Wbce/Loader.php';
-
-$loader = new Loader([], [
-    WB_PATH . '/framework',
-    WB_PATH . '/framework/classes'
-], true);
+// INITIALIZE AUTOLOADER
+require_once dirname(__FILE__)."/class.autoload.php";
 
 // PREDB MODULES LOADED HERE
-//
+// 
 // load all predb.php files form module folders that start whith predb_
 // These are especially for registering classes that override classes from the main framework
-// For example a DB class that uses PDO instead of MYSQLI.
+// For example a DB class that uses PDO instead of MYSQLI. 
 // This one Loads modules even if they are not installed in the DB.
-//
+// 
 // load all predb.php files form folders that start whith predb_
 $aPreDb = array();
 $aPreDb = glob(dirname(__DIR__)."/modules/predb_*");
@@ -72,10 +64,10 @@ if ($aPreDb !== false && !empty($aPreDb)){
 }
 
 // INITIALIZE DATABASE CLASS
-$database = new Database();
+$database = new database();
 
 // SYSTEM CONSTANTS
-//
+//     
 // Now we start definig System constants if not already set
 // Lots of compatibility work here, please only use the WB_ constants in future stuff
 
@@ -88,17 +80,17 @@ if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
     die('Invalid admin-directory: ' . ADMIN_DIRECTORY);
 }
 
-// Load framework functions before preinit files so we can use functions right away.
+// Load framework functions before preinit files so we can use functions right away.  
 require_once(WB_PATH.'/framework/functions.php');
 
 
 // PRE_INIT MODULES
-//
+//    
 // Pre init, modules may change everyting as almost nothing is already set here
 // Module may hook here to change page_id, Language or whatever. Even most System Constants.
-// As DB is already available here we rely on installed modules.
-//
-// @todo check if we need to make more modifications to the core to get this fully running
+// As DB is already available here we rely on installed modules. 
+// 
+// @todo check if we need to make more modifications to the core to get this fully running 
 // @todo check if we better use  MYSQL FIND_IN_SET (http://forum.wbce.org/viewtopic.php?id=84)
 
 // Query gives back false on failure
@@ -125,42 +117,36 @@ if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){
 define("DOMAIN_PROTOCOLL", $protocoll);
 
 // MORE AUTOLOADER REGISTRATION
-// Registering additional classes that are needed by the core
+// Registering additional classes that are needed by the core 
 
-// Register idna conversion and SecureForm classes (needed for email-checks)
-$loader
-    ->registerClassFile('idna_convert', WB_PATH . '/include/idna_convert/idna_convert.class.php')
-    ->registerClassFile('SecureForm', WB_PATH . '/framework/SecureForm.php');
+// Registering class for idna conversion (needed for email-checks)
+WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
+WbAuto::AddFile("SecureForm",   "/framework/SecureForm.php");
 
-// Register Insert classes
-$loader
-    ->registerClassFile('Insert', WB_PATH . '/framework/Insert.php')
-    ->registerClassFile('I', WB_PATH . '/framework/I.php');
+// Auto Load the Insert and I Classes
+WbAuto::AddFile("Insert", "/framework/Insert.php");
+WbAuto::AddFile("I",      "/framework/I.php");
 
-// Register Mailer classes
-$loader
-    ->registerClassFile('Mailer', WB_PATH . '/framework/Mailer.php')
-    ->registerClassFile('wbmailer', WB_PATH . '/framework/Mailer.php'); // fallback for older modules
+// Auto Load Mailer Class (subclass of PHPMailer)
+WbAuto::AddFile("Mailer",   "/framework/Mailer.php");
+WbAuto::AddFile("wbmailer", "/framework/Mailer.php"); // fallback for older modules
 
-// Register Auto Accounts class
-$loader
-    ->registerClassFile('Accounts', WB_PATH . '/framework/Accounts.php'); // child class
+// Auto Accounts Class
+WbAuto::AddFile("Accounts", "/framework/Accounts.php"); // child class
 
-// Register MessageBox class
-$loader
-    ->registerClassFile('MessageBox', WB_PATH . '/framework/MessageBox.php'); // child class
+// Auto MessageBox Class
+WbAuto::AddFile("MessageBox", "/framework/MessageBox.php"); // child class
 
-// Register phpLib class (the ancient Templating Engine)
-$loader
-    ->registerClassFile('Template', WB_PATH . '/include/phplib/template.inc');
+// Auto Load phpLib (the ancient Templating Engine)
+WbAuto::AddFile("Template", "/include/phplib/template.inc");
 
 // Connect to Twig TE (the contemporary Templating Engine)
-require_once WB_PATH . '/include/Sensio/Twig1/TwigConnect.php';
+require_once WB_PATH . '/include/Sensio/Twig/TwigConnect.php';
 
 // SETUP SYSTEM CONSTANTS (GLOBAL SETTINGS)
-// We use Settings Class to fetch all Settings from DB
-// Then we process all data into the coresponding constants.
-Settings::Setup(); // Fetch all settings whith Settings class from framework
+// We use Settings Class to fetch all Settings from DB 
+// Then we process all data into the coresponding constants. 
+Settings::Setup(); // Fetch all settings whith Settings class from framework 
 
 // RESULTING CONSTANTS
 // Some resulting constants need to be set manually
@@ -175,27 +161,27 @@ define('OCTAL_DIR_MODE',     (int) octdec($string_dir_mode));
 define('WB_OCTAL_DIR_MODE',  (int) octdec($string_dir_mode));
 
 switch (true){
-    case (WB_DEBUG === true):
+    case (WB_DEBUG === true):    
         // Debugging activated
-        error_reporting(E_ALL); break;
-
-    case (intval(ER_LEVEL) > 0):
+        error_reporting(E_ALL); break; 
+    
+    case (intval(ER_LEVEL) > 0): 
         //Historical compatibility stuff
         error_reporting(E_ALL); break;
-
-    case (ER_LEVEL=="-1"):
+    
+    case (ER_LEVEL=="-1"):       
         //Historical compatibility stuff
         error_reporting(E_ALL); break;
-
-    case (ER_LEVEL=="E0"):
+    
+    case (ER_LEVEL=="E0"):       
         // system default (php.ini)
-        error_reporting(ini_get('error_reporting')); break;
-
-    case (ER_LEVEL=="E1"):
+        error_reporting(ini_get('error_reporting')); break; 
+    
+    case (ER_LEVEL=="E1"):       
         // hide all errors and notices
         error_reporting(0); break;
-
-    case (ER_LEVEL=="E2"):
+    
+    case (ER_LEVEL=="E2"):       
         // show all errors and notices
         error_reporting(E_ALL); break;
     
@@ -204,7 +190,6 @@ switch (true){
         error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE & ~E_WARNING); break;
     
     default: 
-
         // system default (php.ini)
         error_reporting(ini_get('error_reporting'));
 }
@@ -212,8 +197,8 @@ switch (true){
 ini_set('display_errors', (error_reporting() == 0) ? 0 : 1);
 
 // DEFAULT TIMEZONE
-// @todo this needs to be replaced by a real locale handling
-// same for the timeformatstuff somewhat below.
+// @todo this needs to be replaced by a real locale handling 
+// same for the timeformatstuff somewhat below. 
 date_default_timezone_set('UTC');
 
 
@@ -223,7 +208,7 @@ date_default_timezone_set('UTC');
 //As session table possibly not installed, it may not run whith installer and upgradescript
 //We then simply fallback to PHP default Session handling.
 
-// Init custom session handler
+// Init custom session handler 
 $hCustomSessionHandler = new DbSession();
 
 // Init  special Session handling and Start session.
@@ -235,8 +220,8 @@ WSession::Start();
 // Yes! All modules are now allowed to have a initialize.php. function='initialize'
 // You can even change the $page_id, or maybe the Language .
 // You can log users in or out and do what you like
-// Initialize Modules normaly do not distinguish between FE and BE
-
+// Initialize Modules normaly do not distinguish between FE and BE 
+        
 $sSql = "SELECT `directory` FROM `{TP}addons` WHERE  function LIKE '%initialize%'";
 if (($resSnippets = $database->query($sSql))) {
     while ($rec = $resSnippets->fetchRow()) {
@@ -245,10 +230,10 @@ if (($resSnippets = $database->query($sSql))) {
     }
 }
 
-// SANITIZE REFERER
+// SANITIZE REFERER 
 // sanitize $_SERVER['HTTP_REFERER']
-// @todo Needs to be repaced ASAP.
-// Currently it's the only way to have a halfway save refrerer string.
+// @todo Needs to be repaced ASAP. 
+// Currently it's the only way to have a halfway save refrerer string. 
 SanitizeHttpReferer();
 
 // LANGUAGES
@@ -314,7 +299,7 @@ define('TIMEZONE',    isset($_SESSION['TIMEZONE'])    ? $_SESSION['TIMEZONE']   
 define('DATE_FORMAT', isset($_SESSION['DATE_FORMAT']) ? $_SESSION['DATE_FORMAT'] : DEFAULT_DATE_FORMAT);
 define('TIME_FORMAT', isset($_SESSION['TIME_FORMAT']) ? $_SESSION['TIME_FORMAT'] : DEFAULT_TIME_FORMAT);
 
-// FETCH WBCE VERSION
+// FETCH WBCE VERSION 
 // Version should be available not only in admin section(BE)
 require_once ADMIN_PATH . '/interface/version.php';
 
@@ -325,7 +310,7 @@ require_once ADMIN_PATH . '/interface/version.php';
 
 /**
  * @brief  sanitize $_SERVER['HTTP_REFERER']
- * @todo   Change WBCE so it uses the save referrer and no longer touches the basic referrer
+ * @todo   Change WBCE so it uses the save referrer and no longer touches the basic referrer 
  */
 function SanitizeHttpReferer()
 {

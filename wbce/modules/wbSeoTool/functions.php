@@ -49,11 +49,8 @@ if(!function_exists('pagesArray')){
 			$sProcessRewriteUrl = ($bRewriteUrlExists == TRUE) ? ' p.`'.REWRITE_URL.'`,' : '';	
 		}
                 
-                $bMySql_57 = false;
                 $sRunningMySqlVersion = $database->get_one("SELECT VERSION()");
-		if(version_compare($sRunningMySqlVersion, "10.0", "<" )) {
-                	$bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
-		}
+                $bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
                 $sQueryModule = ( $bMySql_57 === true) ? "ANY_VALUE(s.`module`)" : "s.`module`";
                 
 		$sQuery = 'SELECT '.$sQueryModule.', MAX(s.`publ_start` + s.`publ_end`) published, p.`link`, '

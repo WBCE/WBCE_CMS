@@ -18,8 +18,7 @@ require_once WB_PATH . '/framework/functions.php';	// for WBCE 1.1.x compatibili
 $admin = new admin('Addons', 'modules_view', false, true);
 if(! $admin->checkFTAN()) {
     $admin->print_header();
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);    
-    $admin->print_footer();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 // Output admin backend header (this creates a new FTAN)
 $admin->print_header();

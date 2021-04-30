@@ -282,7 +282,7 @@ ob_start();
 	    <tbody>
 			<tr>
 				<td style="width:330px;padding:3px"><small><?php echo $TEXT['VISIBILITY'];?></small> / <?php echo $TEXT['MENU_TITLE'];?>:</td>
-				<td style="text-align:left;width:330px;"><code> &lt;title&gt;</code> (<?php echo $TEXT['PAGE_TITLE'];?>):</td>
+				<td style="text-align:left;width:330px;"><tt> &lt;title&gt;</tt> (<?php echo $TEXT['PAGE_TITLE'];?>):</td>
 				<td class="header_list_page_id" style="text-align:left;"><small>PageID:</small></td>		
 				<td class=""><?php echo $TEXT['MODIFY'];?>:</td>
 				<td class=""><?php echo $TEXT['ACTIONS'];?>:</td>				

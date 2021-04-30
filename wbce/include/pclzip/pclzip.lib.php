@@ -199,6 +199,11 @@ class PclZip
     public $error_code = 1;
     public $error_string = '';
 
+    // ----- Current status of the magic_quotes_runtime
+    // This value store the php configuration for magic_quotes
+    // The class can then disable the magic_quotes and reset it after
+    public $magic_quotes_status;
+
     // --------------------------------------------------------------------------------
     // Function : PclZip()
     // Description :
@@ -218,6 +223,7 @@ class PclZip
         // ----- Set the attributes
         $this->zipname             = $p_zipname;
         $this->zip_fd              = 0;
+        $this->magic_quotes_status = -1;
 
         // ----- Return
         return;
@@ -1015,13 +1021,20 @@ class PclZip
             }
         }
 
+        // ----- Magic quotes trick
+        $this->privDisableMagicQuotes();
+
         // ----- Call the delete fct
         $v_list = array();
         if (($v_result = $this->privDeleteByRule($v_list, $v_options)) != 1) {
+            $this->privSwapBackMagicQuotes();
             unset($v_list);
 
             return (0);
         }
+
+        // ----- Magic quotes trick
+        $this->privSwapBackMagicQuotes();
 
         // ----- Return
         return $v_list;
@@ -1064,8 +1077,12 @@ class PclZip
         // ----- Reset the error handler
         $this->privErrorReset();
 
+        // ----- Magic quotes trick
+        $this->privDisableMagicQuotes();
+
         // ----- Check archive
         if (!$this->privCheckFormat()) {
+            $this->privSwapBackMagicQuotes();
 
             return (0);
         }
@@ -1080,6 +1097,7 @@ class PclZip
         if (@is_file($this->zipname)) {
             // ----- Open the zip file
             if (($this->zip_fd = @fopen($this->zipname, 'rb')) == 0) {
+                $this->privSwapBackMagicQuotes();
 
                 // ----- Error log
                 PclZip::privErrorLog(PCLZIP_ERR_READ_OPEN_FAIL, 'Unable to open archive \'' . $this->zipname . '\' in binary read mode');
@@ -1091,6 +1109,7 @@ class PclZip
             // ----- Read the central directory informations
             $v_central_dir = array();
             if (($v_result = $this->privReadEndCentralDir($v_central_dir)) != 1) {
+                $this->privSwapBackMagicQuotes();
 
                 return 0;
             }
@@ -1103,6 +1122,9 @@ class PclZip
             $v_prop['nb']      = $v_central_dir['entries'];
             $v_prop['status']  = 'ok';
         }
+
+        // ----- Magic quotes trick
+        $this->privSwapBackMagicQuotes();
 
         // ----- Return
         return $v_prop;
@@ -2056,6 +2078,9 @@ class PclZip
         $v_result      = 1;
         $v_list_detail = array();
 
+        // ----- Magic quotes trick
+        $this->privDisableMagicQuotes();
+
         // ----- Open the file in write mode
         if (($v_result = $this->privOpenFd('wb')) != 1) {
             // ----- Return
@@ -2067,6 +2092,9 @@ class PclZip
 
         // ----- Close
         $this->privCloseFd();
+
+        // ----- Magic quotes trick
+        $this->privSwapBackMagicQuotes();
 
         // ----- Return
         return $v_result;
@@ -2093,8 +2121,13 @@ class PclZip
             // ----- Return
             return $v_result;
         }
+        // ----- Magic quotes trick
+        $this->privDisableMagicQuotes();
+
         // ----- Open the zip file
         if (($v_result = $this->privOpenFd('rb')) != 1) {
+            // ----- Magic quotes trick
+            $this->privSwapBackMagicQuotes();
 
             // ----- Return
             return $v_result;
@@ -2104,6 +2137,7 @@ class PclZip
         $v_central_dir = array();
         if (($v_result = $this->privReadEndCentralDir($v_central_dir)) != 1) {
             $this->privCloseFd();
+            $this->privSwapBackMagicQuotes();
 
             return $v_result;
         }
@@ -2117,6 +2151,7 @@ class PclZip
         // ----- Open the temporary file in write mode
         if (($v_zip_temp_fd = @fopen($v_zip_temp_name, 'wb')) == 0) {
             $this->privCloseFd();
+            $this->privSwapBackMagicQuotes();
 
             PclZip::privErrorLog(PCLZIP_ERR_READ_OPEN_FAIL, 'Unable to open temporary file \'' . $v_zip_temp_name . '\' in binary write mode');
 
@@ -2147,6 +2182,7 @@ class PclZip
             fclose($v_zip_temp_fd);
             $this->privCloseFd();
             @unlink($v_zip_temp_name);
+            $this->privSwapBackMagicQuotes();
 
             // ----- Return
             return $v_result;
@@ -2172,6 +2208,7 @@ class PclZip
                     fclose($v_zip_temp_fd);
                     $this->privCloseFd();
                     @unlink($v_zip_temp_name);
+                    $this->privSwapBackMagicQuotes();
 
                     // ----- Return
                     return $v_result;
@@ -2202,6 +2239,7 @@ class PclZip
         if (($v_result = $this->privWriteCentralHeader($v_count + $v_central_dir['entries'], $v_size, $v_offset, $v_comment)) != 1) {
             // ----- Reset the file list
             unset($v_header_list);
+            $this->privSwapBackMagicQuotes();
 
             // ----- Return
             return $v_result;
@@ -2217,6 +2255,9 @@ class PclZip
 
         // ----- Close the temporary file
         @fclose($v_zip_temp_fd);
+
+        // ----- Magic quotes trick
+        $this->privSwapBackMagicQuotes();
 
         // ----- Delete the zip file
         // TBC : I should test the result ...
@@ -2995,8 +3036,13 @@ class PclZip
     {
         $v_result = 1;
 
+        // ----- Magic quotes trick
+        $this->privDisableMagicQuotes();
+
         // ----- Open the zip file
         if (($this->zip_fd = @fopen($this->zipname, 'rb')) == 0) {
+            // ----- Magic quotes trick
+            $this->privSwapBackMagicQuotes();
 
             // ----- Error log
             PclZip::privErrorLog(PCLZIP_ERR_READ_OPEN_FAIL, 'Unable to open archive \'' . $this->zipname . '\' in binary read mode');
@@ -3008,6 +3054,7 @@ class PclZip
         // ----- Read the central directory informations
         $v_central_dir = array();
         if (($v_result = $this->privReadEndCentralDir($v_central_dir)) != 1) {
+            $this->privSwapBackMagicQuotes();
 
             return $v_result;
         }
@@ -3015,6 +3062,7 @@ class PclZip
         // ----- Go to beginning of Central Dir
         @rewind($this->zip_fd);
         if (@fseek($this->zip_fd, $v_central_dir['offset'])) {
+            $this->privSwapBackMagicQuotes();
 
             // ----- Error log
             PclZip::privErrorLog(PCLZIP_ERR_INVALID_ARCHIVE_ZIP, 'Invalid archive size');
@@ -3027,6 +3075,7 @@ class PclZip
         for ($i = 0; $i < $v_central_dir['entries']; $i++) {
             // ----- Read the file header
             if (($v_result = $this->privReadCentralFileHeader($v_header)) != 1) {
+                $this->privSwapBackMagicQuotes();
 
                 return $v_result;
             }
@@ -3039,6 +3088,9 @@ class PclZip
 
         // ----- Close the zip file
         $this->privCloseFd();
+
+        // ----- Magic quotes trick
+        $this->privSwapBackMagicQuotes();
 
         // ----- Return
         return $v_result;
@@ -3107,6 +3159,9 @@ class PclZip
     {
         $v_result = 1;
 
+        // ----- Magic quotes trick
+        $this->privDisableMagicQuotes();
+
         // ----- Check the path
         if (($p_path == "") || ((substr($p_path, 0, 1) != "/") && (substr($p_path, 0, 3) != "../") && (substr($p_path, 1, 2) != ":/"))) {
             $p_path = "./" . $p_path;
@@ -3128,6 +3183,7 @@ class PclZip
 
         // ----- Open the zip file
         if (($v_result = $this->privOpenFd('rb')) != 1) {
+            $this->privSwapBackMagicQuotes();
 
             return $v_result;
         }
@@ -3137,6 +3193,7 @@ class PclZip
         if (($v_result = $this->privReadEndCentralDir($v_central_dir)) != 1) {
             // ----- Close the zip file
             $this->privCloseFd();
+            $this->privSwapBackMagicQuotes();
 
             return $v_result;
         }
@@ -3153,6 +3210,7 @@ class PclZip
             if (@fseek($this->zip_fd, $v_pos_entry)) {
                 // ----- Close the zip file
                 $this->privCloseFd();
+                $this->privSwapBackMagicQuotes();
 
                 // ----- Error log
                 PclZip::privErrorLog(PCLZIP_ERR_INVALID_ARCHIVE_ZIP, 'Invalid archive size');
@@ -3166,6 +3224,7 @@ class PclZip
             if (($v_result = $this->privReadCentralFileHeader($v_header)) != 1) {
                 // ----- Close the zip file
                 $this->privCloseFd();
+                $this->privSwapBackMagicQuotes();
 
                 return $v_result;
             }
@@ -3247,6 +3306,8 @@ class PclZip
                 // ----- Look for PCLZIP_OPT_STOP_ON_ERROR
                 if ((isset($p_options[PCLZIP_OPT_STOP_ON_ERROR])) && ($p_options[PCLZIP_OPT_STOP_ON_ERROR] === true)) {
 
+                    $this->privSwapBackMagicQuotes();
+
                     PclZip::privErrorLog(PCLZIP_ERR_UNSUPPORTED_COMPRESSION, "Filename '" . $v_header['stored_filename'] . "' is " . "compressed by an unsupported compression " . "method (" . $v_header['compression'] . ") ");
 
                     return PclZip::errorCode();
@@ -3260,6 +3321,8 @@ class PclZip
                 // ----- Look for PCLZIP_OPT_STOP_ON_ERROR
                 if ((isset($p_options[PCLZIP_OPT_STOP_ON_ERROR])) && ($p_options[PCLZIP_OPT_STOP_ON_ERROR] === true)) {
 
+                    $this->privSwapBackMagicQuotes();
+
                     PclZip::privErrorLog(PCLZIP_ERR_UNSUPPORTED_ENCRYPTION, "Unsupported encryption for " . " filename '" . $v_header['stored_filename'] . "'");
 
                     return PclZip::errorCode();
@@ -3271,6 +3334,7 @@ class PclZip
                 $v_result = $this->privConvertHeader2FileInfo($v_header, $p_file_list[$v_nb_extracted++]);
                 if ($v_result != 1) {
                     $this->privCloseFd();
+                    $this->privSwapBackMagicQuotes();
 
                     return $v_result;
                 }
@@ -3286,6 +3350,8 @@ class PclZip
                 if (@fseek($this->zip_fd, $v_header['offset'])) {
                     // ----- Close the zip file
                     $this->privCloseFd();
+
+                    $this->privSwapBackMagicQuotes();
 
                     // ----- Error log
                     PclZip::privErrorLog(PCLZIP_ERR_INVALID_ARCHIVE_ZIP, 'Invalid archive size');
@@ -3303,6 +3369,7 @@ class PclZip
                     $v_result1 = $this->privExtractFileAsString($v_header, $v_string, $p_options);
                     if ($v_result1 < 1) {
                         $this->privCloseFd();
+                        $this->privSwapBackMagicQuotes();
 
                         return $v_result1;
                     }
@@ -3311,6 +3378,7 @@ class PclZip
                     if (($v_result = $this->privConvertHeader2FileInfo($v_header, $p_file_list[$v_nb_extracted])) != 1) {
                         // ----- Close the zip file
                         $this->privCloseFd();
+                        $this->privSwapBackMagicQuotes();
 
                         return $v_result;
                     }
@@ -3332,6 +3400,7 @@ class PclZip
                     $v_result1 = $this->privExtractFileInOutput($v_header, $p_options);
                     if ($v_result1 < 1) {
                         $this->privCloseFd();
+                        $this->privSwapBackMagicQuotes();
 
                         return $v_result1;
                     }
@@ -3339,6 +3408,7 @@ class PclZip
                     // ----- Get the only interesting attributes
                     if (($v_result = $this->privConvertHeader2FileInfo($v_header, $p_file_list[$v_nb_extracted++])) != 1) {
                         $this->privCloseFd();
+                        $this->privSwapBackMagicQuotes();
 
                         return $v_result;
                     }
@@ -3354,6 +3424,7 @@ class PclZip
                     $v_result1 = $this->privExtractFile($v_header, $p_path, $p_remove_path, $p_remove_all_path, $p_options);
                     if ($v_result1 < 1) {
                         $this->privCloseFd();
+                        $this->privSwapBackMagicQuotes();
 
                         return $v_result1;
                     }
@@ -3362,6 +3433,7 @@ class PclZip
                     if (($v_result = $this->privConvertHeader2FileInfo($v_header, $p_file_list[$v_nb_extracted++])) != 1) {
                         // ----- Close the zip file
                         $this->privCloseFd();
+                        $this->privSwapBackMagicQuotes();
 
                         return $v_result;
                     }
@@ -3376,6 +3448,7 @@ class PclZip
 
         // ----- Close the zip file
         $this->privCloseFd();
+        $this->privSwapBackMagicQuotes();
 
         // ----- Return
         return $v_result;
@@ -4984,6 +5057,69 @@ class PclZip
             $this->error_code   = 0;
             $this->error_string = '';
         }
+    }
+    // --------------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------------
+    // Function : privDisableMagicQuotes()
+    // Description :
+    // Parameters :
+    // Return Values :
+    // --------------------------------------------------------------------------------
+    public function privDisableMagicQuotes()
+    {
+        $v_result = 1;
+
+        // ----- Look if function exists
+        if ((!function_exists("get_magic_quotes_runtime")) || (!function_exists("set_magic_quotes_runtime"))) {
+            return $v_result;
+        }
+
+        // ----- Look if already done
+        if ($this->magic_quotes_status != -1) {
+            return $v_result;
+        }
+
+        // ----- Get and memorize the magic_quote value
+        $this->magic_quotes_status = @get_magic_quotes_runtime();
+
+        // ----- Disable magic_quotes
+        if ($this->magic_quotes_status == 1) {
+            @set_magic_quotes_runtime(0);
+        }
+
+        // ----- Return
+        return $v_result;
+    }
+    // --------------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------------
+    // Function : privSwapBackMagicQuotes()
+    // Description :
+    // Parameters :
+    // Return Values :
+    // --------------------------------------------------------------------------------
+    public function privSwapBackMagicQuotes()
+    {
+        $v_result = 1;
+
+        // ----- Look if function exists
+        if ((!function_exists("get_magic_quotes_runtime")) || (!function_exists("set_magic_quotes_runtime"))) {
+            return $v_result;
+        }
+
+        // ----- Look if something to do
+        if ($this->magic_quotes_status != -1) {
+            return $v_result;
+        }
+
+        // ----- Swap back magic_quotes
+        if ($this->magic_quotes_status == 1) {
+            @set_magic_quotes_runtime($this->magic_quotes_status);
+        }
+
+        // ----- Return
+        return $v_result;
     }
     // --------------------------------------------------------------------------------
 }

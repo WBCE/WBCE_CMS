@@ -664,7 +664,7 @@
 			<div class="row">
                 <div class="fg3">{TEXT_WBMAILER_SMTP_AUTH}:</div>
                 <div class="fg9">
-                    <input type="checkbox" name="wbmailer_smtp_auth" id="wbmailer_smtp_auth" value="1" {SMTP_AUTH_SELECTED} />
+                    <input type="checkbox" name="use_wbmailer_smtp_auth" id="use_wbmailer_smtp_auth" value="1" {SMTP_AUTH_SELECTED} />
                     <label for="wbmailer_smtp_auth">{TEXT_WBMAILER_SMTP_AUTH_NOTICE}</label>
                 </div>
             </div>

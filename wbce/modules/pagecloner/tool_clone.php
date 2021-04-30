@@ -56,6 +56,7 @@ $template->set_file('page', 'template.php');
 $template->set_block('page', 'main_block', 'main');
 
 // Parent page list
+$database = new database();
 function parent_list($parent) {
 	global $admin, $database, $template;
 	$query = "SELECT * FROM `".TABLE_PREFIX."pages` WHERE `parent` = '$parent' AND `visibility`!='deleted' ORDER BY `position` ASC";

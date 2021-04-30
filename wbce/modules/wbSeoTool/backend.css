@@ -13,7 +13,7 @@
 @import url("css/pageTree.css");
 
 blockquote.infobox {
-    color: #444444;
+	color: #444444;
     font-size: 90%;
     background-color: #EBF7D7;
     margin-top: 8px;
@@ -21,26 +21,26 @@ blockquote.infobox {
     padding: 5px;
     width: 38%;
     border: solid 1px #BFDB92;
-    width: 90%;
-    text-align: right;
+	width:90%;
+	text-align: right;
 }
 
 /*
 --------------| settings Table
 */
-table.settings_table {
-    width: 99%;
+
+table.settings_table    {
+	width: 99%;
     margin-bottom: 8px;
-    border-spacing: 0;
+	border-spacing: 0;
     padding: 0;
     border: solid 1px #A9B6C9;
-    box-shadow: 0 0 3px rgba(0, 0, 0, .55);
+	box-shadow: 0 0 3px rgba(0,0,0,.55);
 }
-
-.settings_table caption {
+.settings_table caption	   { 
     background-color: #A9B6C9;
     background-image: url("css/box_bg.png");
-    background-position: 0 -8px;
+	background-position: 0 -8px;
     background-repeat: repeat-x;
     border: 1px none #A9B6C9;
     color: #FFFFFF !important;
@@ -53,10 +53,8 @@ table.settings_table {
     padding-top: 3px;
     text-align: left;
 }
-
-.settings_table tr td,
-.settings_table tr th {
-    background-attachment: scroll;
+.settings_table tr td, .settings_table tr th        { 
+	background-attachment: scroll;
     background-image: url("css/box_bg.png");
     background-position: 0 -40px;
     background-repeat: repeat-x;
@@ -65,25 +63,20 @@ table.settings_table {
     margin: 0;
     padding: 4px;
 }
-
-.settings_table tr.row_a td,
-.settings_table tr.row_a th {
-    background-color: #e0eef8;
-    background-image: none;
-    background-position: 0 -36px;
-    border-top: 1px solid #e0e0e0;
-    border-bottom: 1px solid #999
+.settings_table tr.row_a td, .settings_table tr.row_a th     { 
+	background-color: #e0eef8; 
+	background-image: none; 
+	background-position: 0 -36px; 
+	border-top: 1px solid #e0e0e0; 
+	border-bottom: 1px solid #999 
 }
-
-.settings_table tr.row_b td,
-.settings_table tr.row_b th {
-    background-color: #f6faff;
-    background-image: none;
-    background-position: 0 -36px;
-    border-top: 1px solid #e0e0e0;
-    border-bottom: 1px solid #999
+.settings_table tr.row_b td, .settings_table tr.row_b th     { 
+	background-color: #f6faff; 
+	background-image: none; 
+	background-position: 0 -36px; 
+	border-top: 1px solid #e0e0e0; 
+	border-bottom: 1px solid #999 
 }
-
 .settings_table th {
     color: #515d76;
     font-weight: bold;
@@ -94,21 +87,21 @@ table.settings_table {
     width: 180px !important;
     vertical-align: top;
 }
-
 /*table foot*/
 .settings_table tfoot td,
 .settings_table tfoot th,
-.tfoot td {
-    background-color: #e0eef8;
-    background-image: none;
-    background-position: 0 -50px;
-    padding: 5px;
-    border-top: 2px solid #fff;
-    border-bottom: 2px solid #fff
+.tfoot td { 
+	background-color: #e0eef8; 
+	background-image: none; 
+	background-position: 0 -50px; 
+	padding: 5px; 
+	border-top: 2px solid #fff; 
+	border-bottom: 2px solid #fff 
 }
-
 /*Child Tables*/
 .settings_table table td,
-.settings_table table th {
-    background-image: none
+.settings_table table th
+  { 
+	background-image: none 
 }
+

@@ -84,5 +84,5 @@ $sFile = dirname(__FILE__).'/'.$sFileName.'.php';
 if(file_exists($sFile)) {
 	require_once($sFile);
 } else {
-	echo "file <code>{$sFileName}.php</code> not found";
+	echo "file <tt>{$sFileName}.php</tt> not found";
 }

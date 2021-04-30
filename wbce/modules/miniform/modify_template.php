@@ -75,7 +75,12 @@ $_action = (isset($_POST['action']) ? $_POST['action'] : '');
 $_action = ($_action != 'save' ? 'edit' : 'save');
 if ($_action == 'save') {
 	$template = $admin->add_slashes($_POST['name']);
-	$data = $_POST['template_data'];
+	if (get_magic_quotes_gpc()) {
+		$data = stripslashes($_POST['template_data']);
+	}
+	else {
+		$data = $_POST['template_data'];
+	}
 	$filename = dirname(__FILE__).'/templates/form_'.$template.'.htt';
 	if (false !== file_put_contents($filename,$data)) {
 		$admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);

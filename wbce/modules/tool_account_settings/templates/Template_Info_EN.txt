@@ -11,15 +11,13 @@ If you want to change the layouts of this templates, it is RECOMMENDED to follow
    (it's the one that is selected in the settings of your WBCE installation).
 
 2) create a directory with the name 'overrides', 
-   move into this directory and create another directory with the name 'account',
-   lastly, create yet another directory within it named 'templates'
+   move into this directory and create another directory with the name 'account'
    The structure of your template directory now should look like this:
 
 
     [DEFAULT_TEMPLATE]
         └─ overrides
             └─ account
-                └─ templates
 
 
 3) Copy the files of folder [root]/modules/tool_account_settings/templates
@@ -30,18 +28,17 @@ If you want to change the layouts of this templates, it is RECOMMENDED to follow
     [DEFAULT_TEMPLATE]
         └─ overrides
             └─ account
-                └─ templates
-                    ├─ form_forgot_login_details.twig
-                    ├─ form_login.twig
-                    ├─ form_preferences.twig
-                    ├─ form_signup.twig
-                    ├─ msg_activation_link_sent.twig
-                    ├─ msg_forgot_login_details_sent.twig
-                    ├─ msg_login_details_just_sent.twig
-                    ├─ msg_manager_approval_feedback.twig
-                    ├─ msg_manager_confirm_new_signup.twig
-                    ├─ msg_wrong_inputs.twig
-                    └─ forms.css
+                ├─ form_forgot_login_details.twig
+                ├─ form_login.twig
+                ├─ form_preferences.twig
+                ├─ form_signup.twig
+                ├─ msg_activation_link_sent.twig
+                ├─ msg_forgot_login_details_sent.twig
+                ├─ msg_login_details_just_sent.twig
+                ├─ msg_manager_approval_feedback.twig
+                ├─ msg_manager_confirm_new_signup.twig
+                ├─ msg_wrong_inputs.twig
+                └─ forms.css
 
 
 4) You can now change the layout of these files and the system will use these files instead of the ones

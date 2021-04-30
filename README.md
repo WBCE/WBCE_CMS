@@ -5,7 +5,7 @@
 
 ## Minimum requirements
   - about 25 MB webspace
-  - PHP 7.1.3 (released 16 Mar 2017) or newer
+  - PHP 5.6.30 (released 19 Jan 2017) or newer
   - mySQL 5.0 or newer
   - mode_rewrite for `even nicer` URLs (optional)
 

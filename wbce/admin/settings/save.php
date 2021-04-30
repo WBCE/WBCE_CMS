@@ -49,21 +49,6 @@ if (isset($_POST['server_email'])) {
     }
 }
 
-// rename pages/intro.php into intro.backup.php when intro page is disabled
-// so that intro.php is not accessible from search engine results anymore
-if (isset($_POST['intro_page'])){
-    $sLoc = WB_PATH.PAGES_DIRECTORY;
-    if ($_POST['intro_page'] == 'true') {
-        if(file_exists($sLoc.'/intro.backup'.PAGE_EXTENSION)){
-            rename($sLoc.'/intro.backup'.PAGE_EXTENSION, $sLoc.'/intro'.PAGE_EXTENSION);
-        }
-    } elseif ($_POST['intro_page'] == 'false') {
-        if(file_exists($sLoc.'/intro'.PAGE_EXTENSION)){
-            rename($sLoc.'/intro'.PAGE_EXTENSION, $sLoc.'/intro.backup'.PAGE_EXTENSION);
-        }       
-    }
-}
-  
 if (isset($_POST['wbmailer_routine']) && ($_POST['wbmailer_routine'] == 'smtp')) {
 
     $checkSmtpHost = (isset($_POST['wbmailer_smtp_host']) && ($_POST['wbmailer_smtp_host'] == '') ? false : true);
@@ -202,7 +187,7 @@ if ($res_settings = $database->query($sql)) {
         }
 
         if (!in_array($value, $disallow_in_fields) && (isset($_POST[$setting_name]) || $passed == true)) {
-            $value = trim($value);
+            $value = trim($admin->strip_magic($value));
             $sSql = "UPDATE `{TP}settings` SET `value`='".$database->escapeString($value)."' "
                     . "WHERE `name` != 'wb_version' AND `name`= '".$setting_name."'";
             if (!$database->query($sSql)) {

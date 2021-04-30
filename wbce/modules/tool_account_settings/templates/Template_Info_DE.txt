@@ -17,15 +17,13 @@ die folgenden Schritte empfohlen.
 
 2) Erstelle darin ein Verzeichnis mit dem Namen 'overrides', 
    jetzt, innerhalb des neu erstellten Verzeichnisses, erstelle 
-   ein weiteres Verzeichnis mit dem Namen 'account', 
-   und schließlich darin ein Verzeichnis mit dem Namen 'templates'.
+   ein weiteres Verzeichnis mit dem Namen 'account'.
    Die Ordnerstruktur des Template-Verzeichnisses sollte nun wie folgt aussehen:
 
 
     [DEFAULT_TEMPLATE]
         └─ overrides
             └─ account
-                └─ templates
 
 
 3) Kopiere nun die Dateien aus dem Verzeichnis [root]/modules/tool_account_settings/templates
@@ -36,18 +34,17 @@ die folgenden Schritte empfohlen.
     [DEFAULT_TEMPLATE]
         └─ overrides
             └─ account
-                └─ templates
-                    ├─ form_forgot_login_details.twig
-                    ├─ form_login.twig
-                    ├─ form_preferences.twig
-                    ├─ form_signup.twig
-                    ├─ msg_activation_link_sent.twig
-                    ├─ msg_forgot_login_details_sent.twig
-                    ├─ msg_login_details_just_sent.twig
-                    ├─ msg_manager_approval_feedback.twig
-                    ├─ msg_manager_confirm_new_signup.twig
-                    ├─ msg_wrong_inputs.twig
-                    └─ forms.css
+                ├─ form_forgot_login_details.twig
+                ├─ form_login.twig
+                ├─ form_preferences.twig
+                ├─ form_signup.twig
+                ├─ msg_activation_link_sent.twig
+                ├─ msg_forgot_login_details_sent.twig
+                ├─ msg_login_details_just_sent.twig
+                ├─ msg_manager_approval_feedback.twig
+                ├─ msg_manager_confirm_new_signup.twig
+                ├─ msg_wrong_inputs.twig
+                └─ forms.css
 
 4) Du kannst nun beginnen die Veränderungen am Layout nach Belieben vorzunehmen.
    Sobald das System diese Dateien vorfindet, wird es diese verwenden.

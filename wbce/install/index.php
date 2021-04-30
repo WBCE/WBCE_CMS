@@ -89,7 +89,7 @@ $e_adc=$e_adc."";
 ////////////////////////////////////////////
 
 // No install button if Version failes
-if (version_compare(PHP_VERSION, '7.1.3', '>=')) {
+if (version_compare(PHP_VERSION, '5.6.30', '>=')) {
     $sPhpVersion="good";
 }
 else {

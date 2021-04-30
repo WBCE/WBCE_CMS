@@ -226,16 +226,16 @@ function utf8_fast_umlauts_to_entities($string, $named_entities = true)
         }
 
         do {
-            if (ord($string[$i]) <= 127) {
-                $ud = $string[$i++];
-            } elseif (ord($string[$i]) <= 223) {
-                $ud = (ord($string[$i++]) - 192) * 64 + (ord($string[$i++]) - 128);
-            } elseif (ord($string[$i]) <= 239) {
-                $ud = (ord($string[$i++]) - 224) * 4096 + (ord($string[$i++]) - 128) * 64 + (ord($string[$i++]) - 128);
-            } elseif (ord($string[$i]) <= 247) {
-                $ud = (ord($string[$i++]) - 240) * 262144 + (ord($string[$i++]) - 128) * 4096 + (ord($string[$i++]) - 128) * 64 + (ord($string[$i++]) - 128);
+            if (ord($string{$i}) <= 127) {
+                $ud = $string{$i++};
+            } elseif (ord($string{$i}) <= 223) {
+                $ud = (ord($string{$i++}) - 192) * 64 + (ord($string{$i++}) - 128);
+            } elseif (ord($string{$i}) <= 239) {
+                $ud = (ord($string{$i++}) - 224) * 4096 + (ord($string{$i++}) - 128) * 64 + (ord($string{$i++}) - 128);
+            } elseif (ord($string{$i}) <= 247) {
+                $ud = (ord($string{$i++}) - 240) * 262144 + (ord($string{$i++}) - 128) * 4096 + (ord($string{$i++}) - 128) * 64 + (ord($string{$i++}) - 128);
             } else {
-                $ud = ord($string[$i++]);
+                $ud = ord($string{$i++});
             }
             // error!
             if ($ud > 127) {
