@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -17,13 +17,13 @@ require_once WB_PATH . '/framework/class.admin.php';
 $action = 'cancel';
 // Set parameter 'action' as alternative to javascript mechanism
 $action = (isset($_POST['modify']) ? 'modify' : $action);
-$action = (isset($_GET['modify'])  ? 'modify' : $action);
+$action = (isset($_GET['modify']) ? 'modify' : $action);
 $action = (isset($_POST['delete']) ? 'delete' : $action);
 
 switch ($action) {
     case 'modify':
         // Print header
-        $admin = new admin('Access', 'users_modify');		
+        $admin = new admin('Access', 'users_modify');
         $user_id = $admin->checkIDKEY('user_id', 0, $_SERVER['REQUEST_METHOD']);
         // Check if user id is a valid number and doesn't equal 0
         if ($user_id == 0) {
@@ -31,7 +31,7 @@ switch ($action) {
         }
         // Get existing values
         $results = $database->query("SELECT * FROM `{TP}users` WHERE `user_id` = " . $user_id);
-        $user = $results->fetchRow(MYSQL_ASSOC);
+        $user = $results->fetchRow(MYSQLI_ASSOC);
 
         // Setup template object, parse vars to it, then parse it
         // Create new template object
@@ -40,22 +40,22 @@ switch ($action) {
         $oTemplate->set_block('page', 'main_block', 'main');
         $oTemplate->set_var(
             array(
-                'ACTION_URL'   => ADMIN_URL . '/users/save.php',
+                'ACTION_URL' => ADMIN_URL . '/users/save.php',
                 'SUBMIT_TITLE' => $TEXT['SAVE'],
-                'USER_ID'      => $user['user_id'],
-                'USERNAME'     => $user['username'],
+                'USER_ID' => $user['user_id'],
+                'USERNAME' => $user['username'],
                 'DISPLAY_NAME' => $user['display_name'],
-                'EMAIL'        => $user['email'],
-                'ADMIN_URL'    => ADMIN_URL,
-                'WB_URL'       => WB_URL,
-                'THEME_URL'    => THEME_URL,
+                'EMAIL' => $user['email'],
+                'ADMIN_URL' => ADMIN_URL,
+                'WB_URL' => WB_URL,
+                'THEME_URL' => THEME_URL,
             )
         );
 
         $oTemplate->set_var('FTAN', $admin->getFTAN());
         if ($user['active'] == 1) {
             $oTemplate->set_var('ACTIVE_CHECKED', ' checked="checked"');
-            $oTemplate->set_var('PASSWORD_REQ',   ' style="display:none;"');
+            $oTemplate->set_var('PASSWORD_REQ', ' style="display:none;"');
         } else {
             $oTemplate->set_var('DISABLED_CHECKED', ' checked="checked"');
             $oTemplate->set_var('PASSWORD_REQ', '');
@@ -111,7 +111,7 @@ switch ($action) {
         // Generate username field name
         $username_fieldname = 'username_';
         $salt = "abchefghjkmnpqrstuvwxyz0123456789";
-        srand((double) microtime() * 1000000);
+        srand((double)microtime() * 1000000);
         $i = 0;
         while ($i <= 7) {
             $num = rand() % 33;
@@ -143,24 +143,24 @@ switch ($action) {
         // Insert language text and messages
         $oTemplate->set_var(
             array(
-                'TEXT_RESET'           => $TEXT['RESET'],
-                'TEXT_CANCEL'          => $TEXT['CANCEL'],
-                'TEXT_ACTIVE'          => $TEXT['ACTIVE'],
-                'TEXT_DISABLED'        => $TEXT['DISABLED'],
-                'TEXT_PLEASE_SELECT'   => $TEXT['PLEASE_SELECT'],
-                'TEXT_USERNAME'        => $TEXT['USERNAME'],
-                'TEXT_PASSWORD'        => $TEXT['PASSWORD'],
+                'TEXT_RESET' => $TEXT['RESET'],
+                'TEXT_CANCEL' => $TEXT['CANCEL'],
+                'TEXT_ACTIVE' => $TEXT['ACTIVE'],
+                'TEXT_DISABLED' => $TEXT['DISABLED'],
+                'TEXT_PLEASE_SELECT' => $TEXT['PLEASE_SELECT'],
+                'TEXT_USERNAME' => $TEXT['USERNAME'],
+                'TEXT_PASSWORD' => $TEXT['PASSWORD'],
                 'TEXT_RETYPE_PASSWORD' => $TEXT['RETYPE_PASSWORD'],
-                'TEXT_DISPLAY_NAME'    => $TEXT['DISPLAY_NAME'],
-                'TEXT_EMAIL'           => $TEXT['EMAIL'],
-                'TEXT_GROUP'           => $TEXT['GROUP'],
-                'TEXT_NONE'            => $TEXT['NONE'],
-                'TEXT_HOME_FOLDER'     => $TEXT['HOME_FOLDER'],
-                'USERNAME_FIELDNAME'   => $username_fieldname,
-                'CHANGING_PASSWORD'    => $MESSAGE['USERS_CHANGING_PASSWORD'],
-                'HEADING_MODIFY_USER'  => $HEADING['MODIFY_USER'],				
-				'HEADING_ADD_USER'     => $TEXT['HEADING_ADD_USER'],
-                'INPUT_NEW_PASSWORD'   => $admin->passwordField('password')
+                'TEXT_DISPLAY_NAME' => $TEXT['DISPLAY_NAME'],
+                'TEXT_EMAIL' => $TEXT['EMAIL'],
+                'TEXT_GROUP' => $TEXT['GROUP'],
+                'TEXT_NONE' => $TEXT['NONE'],
+                'TEXT_HOME_FOLDER' => $TEXT['HOME_FOLDER'],
+                'USERNAME_FIELDNAME' => $username_fieldname,
+                'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD'],
+                'HEADING_MODIFY_USER' => $HEADING['MODIFY_USER'],
+                'HEADING_ADD_USER' => $TEXT['HEADING_ADD_USER'],
+                'INPUT_NEW_PASSWORD' => $admin->passwordField('password')
             )
         );
 

@@ -1,15 +1,15 @@
 <?php
-
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  */
+
 // Create new admin object
 require '../../config.php';
 require_once WB_PATH . '/framework/class.admin.php';
@@ -21,7 +21,7 @@ if (!isset($_REQUEST['page_id']) || !is_numeric($_REQUEST['page_id'])) {
     header("Location: index.php");
     exit(0);
 } else {
-    $page_id = (int) $_REQUEST['page_id'];
+    $page_id = (int)$_REQUEST['page_id'];
 }
 
 if (!$page_id || !is_numeric($page_id)) { // double check doesn't hurt ;D
@@ -33,7 +33,7 @@ if (!$admin->get_page_permission($page_id, 'admin')) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
-$sectionId = isset($_GET['wysiwyg']) ? htmlspecialchars($admin->get_get('wysiwyg')) : NULL;
+$sectionId = isset($_GET['wysiwyg']) ? htmlspecialchars($admin->get_get('wysiwyg')) : null;
 
 // Get page details
 $results_array = $admin->get_page_details($page_id);
@@ -48,7 +48,7 @@ $modified_ts = ($results_array['modified_when'] != 0) ? $modified_ts = date(TIME
 // Setup template object, parse vars to it, then parse it
 // Create new template object
 $oTemplate = new Template(dirname($admin->correct_theme_source('pages_modify.htt')));
-						
+
 // Disable removing of unknown vars to prevent the deleting of JavaScript arrays [] or {}
 $oTemplate->set_unknowns('keep');
 
@@ -58,21 +58,21 @@ $oTemplate->set_block('page', 'main_block', 'main');
 $oTemplate->set_var('FTAN', $admin->getFTAN());
 
 $oTemplate->set_var(array(
-    'ADMIN_URL'            => ADMIN_URL,
-    'WB_URL'               => WB_URL,
-    'THEME_URL'            => THEME_URL,
-    'PAGE_ID'              => $results_array['page_id'],
-    'PAGE_IDKEY'           => $results_array['page_id'],
-    'PAGE_TITLE'           => $results_array['page_title'],
-    'MENU_TITLE'           => $results_array['menu_title'],
-    'MODIFIED_BY'          => $user['display_name'],
-    'MODIFIED_WHEN'        => $modified_ts,
+    'ADMIN_URL' => ADMIN_URL,
+    'WB_URL' => WB_URL,
+    'THEME_URL' => THEME_URL,
+    'PAGE_ID' => $results_array['page_id'],
+    'PAGE_IDKEY' => $results_array['page_id'],
+    'PAGE_TITLE' => $results_array['page_title'],
+    'MENU_TITLE' => $results_array['menu_title'],
+    'MODIFIED_BY' => $user['display_name'],
+    'MODIFIED_WHEN' => $modified_ts,
     'MODIFIED_BY_USERNAME' => $user['username'],
     // Language Strings
-    'LAST_MODIFIED'        => $MESSAGE['PAGES_LAST_MODIFIED'],
-    'TEXT_CURRENT_PAGE'    => $TEXT['CURRENT_PAGE'],
+    'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
+    'TEXT_CURRENT_PAGE' => $TEXT['CURRENT_PAGE'],
     'TEXT_CHANGE_SETTINGS' => $TEXT['CHANGE_SETTINGS'],
-    'HEADING_MODIFY_PAGE'  => $HEADING['MODIFY_PAGE'],
+    'HEADING_MODIFY_PAGE' => $HEADING['MODIFY_PAGE'],
     'TEXT_MANAGE_SECTIONS' => $HEADING['MANAGE_SECTIONS'],
 ));
 
@@ -86,9 +86,9 @@ if ($modified_ts == 'Unknown') {
 }
 
 // Work-out if we should show the "manage sections" link
-$sSql = "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = ".$page_id." AND `module` = 'menu_link'";
+$sSql = "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = " . $page_id . " AND `module` = 'menu_link'";
 $bShowMenuLink = $database->get_one($sSql);
-if(defined("MENU_LINK_TRANSFORMER") && MENU_LINK_TRANSFORMER == true){
+if (defined("MENU_LINK_TRANSFORMER") && MENU_LINK_TRANSFORMER == true) {
     $bShowMenuLink = false;
 }
 $oTemplate->set_block('main_block', 'show_section_block', 'show_section');
@@ -110,19 +110,20 @@ if (SECTION_BLOCKS) {
         $sPageTemplate = ($sTemplate == '') ? DEFAULT_TEMPLATE : $sTemplate;
         // include template info.php file if exists
         $sFile = WB_PATH . '/templates/' . $sPageTemplate . '/info.php';
-        if (is_readable($sFile)) include_once $sFile;
+        if (is_readable($sFile)) {
+            include_once $sFile;
+        }
     }
 }
 
 // Get sections for this page
 // workout for EDIT_ONE_SECTION for faster pageloading
-$sWhereClause = (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION && is_numeric($sectionId)) 
-        ? 'WHERE `section_id` = ' . (int) $sectionId 
-        : 'WHERE `page_id` = ' . (int) $page_id;
-$sSql = 'SELECT * FROM `{TP}sections` '.$sWhereClause.' ORDER BY position ASC';
-if($rSections = $database->query($sSql)){
-	
-    while ($section = $rSections->fetchRow(MYSQL_ASSOC)) {
+$sWhereClause = (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION && is_numeric($sectionId))
+    ? 'WHERE `section_id` = ' . (int)$sectionId
+    : 'WHERE `page_id` = ' . (int)$page_id;
+$sSql = 'SELECT * FROM `{TP}sections` ' . $sWhereClause . ' ORDER BY position ASC';
+if ($rSections = $database->query($sSql)) {
+    while ($section = $rSections->fetchRow(MYSQLI_ASSOC)) {
         $section_id = $section['section_id'];
         $module = $section['module'];
 
@@ -136,7 +137,7 @@ if($rSections = $database->query($sSql)){
                 if (isset($block[$section['block']]) && trim(strip_tags(($block[$section['block']]))) != '') {
                     $sBlockName = htmlentities(strip_tags($block[$section['block']]));
                 } else {
-                    $sBlockName = '#' . (int) $section['block'];
+                    $sBlockName = '#' . (int)$section['block'];
                     if ($section['block'] == 1) {
                         $sBlockName = $TEXT['MAIN'];
                     }
@@ -150,22 +151,22 @@ if($rSections = $database->query($sSql)){
                 // Set template vars
                 $oTemplate->set_var(
                     array(
-                        'SECTION_ANCHOR' => $sSectionAnchor, 
-                        'TEXT_BLOCK'     => $TEXT['BLOCK'], 
-                        'BLOCK_NAME'     => $sBlockName, 
-                        'SECTION_ID'     => $section['section_id'], 
-                        'SECTION_MODULE' => $admin->get_module_name($section['module']), 
-                        'SECTION_BLOCK'  => $section['block'], 
-                        'SECTION_NAME'   => $section['namesection'], 
+                        'SECTION_ANCHOR' => $sSectionAnchor,
+                        'TEXT_BLOCK' => $TEXT['BLOCK'],
+                        'BLOCK_NAME' => $sBlockName,
+                        'SECTION_ID' => $section['section_id'],
+                        'SECTION_MODULE' => $admin->get_module_name($section['module']),
+                        'SECTION_BLOCK' => $section['block'],
+                        'SECTION_NAME' => $section['namesection'],
                     )
                 );
 
-                // Set section modify output as template var				
+                // Set section modify output as template var
                 ob_start();
                 require $sModifyFile;
                 $oTemplate->set_var('SECTION_MODIFY_OUTPUT', ob_get_clean());
                 // Parse section module
-                $oTemplate->parse('section_module', 'section_module_block', true);			
+                $oTemplate->parse('section_module', 'section_module_block', true);
             }
         }
     }

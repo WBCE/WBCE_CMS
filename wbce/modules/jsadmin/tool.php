@@ -27,11 +27,11 @@ if(isset($_POST['save_settings']))  {
 
 	// Include functions file
 	require_once(WB_PATH.'/framework/functions.php');
-	save_setting('mod_jsadmin_persist_order', isset($_POST['persist_order']));
-	save_setting('mod_jsadmin_ajax_order_pages', isset($_POST['ajax_order_pages']));
-	save_setting('mod_jsadmin_ajax_order_sections', isset($_POST['ajax_order_sections']));
+	save_setting('mod_jsadmin_persist_order', (isset($_POST['persist_order'])) ? 1 : 0);
+	save_setting('mod_jsadmin_ajax_order_pages', (isset($_POST['ajax_order_pages'])) ? 1 : 0);
+	save_setting('mod_jsadmin_ajax_order_sections', (isset($_POST['ajax_order_sections'])) ? 1 : 0);
 	// check if there is a database error, otherwise say successful
-	
+
 	if($database->is_error()) {
 		$admin->print_error($database->get_error(), $js_back);
 	} else {
@@ -39,7 +39,7 @@ if(isset($_POST['save_settings']))  {
 	}
 
 } else {
-    
+
 
     // Display form
             $persist_order = get_setting('mod_jsadmin_persist_order', true) ? 'checked="checked"' : '';
@@ -62,8 +62,8 @@ if(isset($_POST['save_settings']))  {
                 <td><label for="ajax_order_pages"><?php echo $MOD_JSADMIN['TXT_AJAX_ORDER_PAGES_B']; ?></label></td>
             </tr>
             <tr>
-                    <td width="20"><input type="checkbox" name="ajax_order_sections" id="ajax_order_sections" value="true" <?php echo $ajax_order_sections; ?>/></td>
-                    <td><label for="ajax_order_sections"><?php echo $MOD_JSADMIN['TXT_AJAX_ORDER_SECTIONS_B']; ?></label></td>
+                <td width="20"><input type="checkbox" name="ajax_order_sections" id="ajax_order_sections" value="true" <?php echo $ajax_order_sections; ?>/></td>
+                <td><label for="ajax_order_sections"><?php echo $MOD_JSADMIN['TXT_AJAX_ORDER_SECTIONS_B']; ?></label></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -72,6 +72,6 @@ if(isset($_POST['save_settings']))  {
                 </td>
             </tr>
         </table>
-    </form> 
-    <?php 
+    </form>
+    <?php
 }

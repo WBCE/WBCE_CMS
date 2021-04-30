@@ -2,6 +2,25 @@
 Header: Version-History
 
 1.5:
+1.5.14 %(mrbaseman, 23 Apr 2021)%
+	- fix a typo for the handling of 'helppath', thanks to florian
+	- new implementation of !opf_insert_sysvar! similar to the changes made in version 1.5.13
+
+1.5.13 %(bianka, Nov 2020)%
+	- support php 8 with a new implementation of !opf_replace_sysvar!
+
+1.5.12 %(bernd, 16 May 2020)%
+        - fixed hardcodet admin-dir in backend_body.js
+
+1.5.11 %(mrbaseman, 9 Jan 2020)%
+        - remove gpc functions which have been deprecated since php 5.4
+	- replace curly braces for array index
+	- update style files
+	- minor update of correct_date_format plugin
+	- update formatting of help page
+	- add opf_controller mode !'insert'!
+	- update documentation
+
 1.5.10 %(mrbaseman, 7 Oct 2019)%
         - keep additional_values of plugin filters during upgrade
 

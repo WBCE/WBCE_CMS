@@ -79,16 +79,18 @@
         <div class="formRow">
             <label class="settingName" for="new_password">{{ L_('TEXT:NEW_PASSWORD') }}</label>
             <div class="settingValue">{{ NEW_PASSWORD }}</div>
-        </div>
+        </div>		
 
         <div class="formRow">
             <label class="settingName" for="new_password2">{{ L_('TEXT:RETYPE_NEW_PASSWORD') }}</label>
                 <div class="settingValue">
-                    <input type="password" name="new_password2"  id="new_password2" />
-                    <div class="formHint">{{ L_('MESSAGE:USERS_CHANGING_PASSWORD') }}.</div>
+                    <input type="password" name="new_password2"  id="new_password2" />                    
                 </div>
         </div>
         <br />
+		
+		<div class="alert alert-info">{{ L_('TEXT:NEED_CURRENT_PASSWORD') }}!</div>
+		
         <div class="formRow">
             <label class="settingName" for="current_password">{{ L_('TEXT:CURRENT_PASSWORD') }}</label>
             <div class="settingValue">

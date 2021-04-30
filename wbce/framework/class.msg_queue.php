@@ -20,17 +20,6 @@ class msgQueue
         $this->_error = array();
         $this->_success = array();
     }
-    private function __clone()
-    {throw new Exception('cloning Class ' . __CLASS__ . ' is illegal');}
-
-    public static function handle()
-    {
-        if (!isset(self::$_instance)) {
-            $c = __CLASS__;
-            self::$_instance = new $c;
-        }
-        return self::$_instance;
-    }
 
     public static function add($message = '', $type = false)
     {
@@ -39,6 +28,15 @@ class msgQueue
         } else {
             self::handle()->_error[] = $message;
         }
+    }
+
+    public static function handle()
+    {
+        if (!isset(self::$_instance)) {
+            $c = __CLASS__;
+            self::$_instance = new $c;
+        }
+        return self::$_instance;
     }
 
     public static function clear()
@@ -72,6 +70,11 @@ class msgQueue
                 return self::handle()->_success;
             }
         }
+    }
+
+    private function __clone()
+    {
+        throw new Exception('cloning Class ' . __CLASS__ . ' is illegal');
     }
 
 }

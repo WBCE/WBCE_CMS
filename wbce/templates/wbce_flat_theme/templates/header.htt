@@ -90,7 +90,7 @@
 <!-- ################### Up from here: Original Code from original template ########### -->
 
 <!-- senseless positioning-table: needed for old modules which base on class td.content -->
-<div class="row">
+<div class="row" style="overflow:visible">
 <div class="fg12">
 <table id="former_positioning_table">
 <tr>

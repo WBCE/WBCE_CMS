@@ -77,10 +77,6 @@ try {
 
     $imageErrorMessage = '';
 
-    if (!defined('ORDERING_CLASS_LOADED')) {
-	require WB_PATH.'/framework/class.order.php';
-    }
-
     $mod_nwi_file_dir .= "$post_id/";
     $mod_nwi_thumb_dir = $mod_nwi_file_dir . "thumb/";
 

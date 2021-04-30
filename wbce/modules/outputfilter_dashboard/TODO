@@ -1,4 +1,5 @@
 TODO list for future releases
 =============================
+
 - maybe include more example filters one time
 - change template engine from phplib to pure php (or Twig maybe?)

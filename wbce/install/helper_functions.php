@@ -1,21 +1,21 @@
 <?php
 /**
-    @file 
-    @brief  this file contains the functions used by installer and save script. 
-    
-    I moved the functions here to have  more clean files 
-*/
+ * @file
+ * @brief  this file contains the functions used by installer and save script.
+ *
+ * I moved the functions here to have more clean files
+ */
 
 // Function to set error
-// Stores errors to Session 
+// Stores errors to Session
 // Returns to Installer form if  there are invalid Values
-function set_error($message, $field_name = '', $now=false) 
+function set_error($message, $field_name = '', $now = false)
 {
     if (isset($message) and $message != '') {
-        
+
         // Copy values entered into session so user doesn't have to re-enter everything
         save_user_data();
-        
+
         // Set the message
         $_SESSION['message'][] = $message;
         // Set the element(s) to highlight
@@ -24,15 +24,14 @@ function set_error($message, $field_name = '', $now=false)
         }
         // Specify that session support is enabled
         $_SESSION['session_support'] = '<span class="good">Enabled</span>';
-        
-        // There was a request for immediate redirect 
-        if ($now===true) {
-            header('Location: index.php?sessions_checked=true'); 
+
+        // There was a request for immediate redirect
+        if ($now === true) {
+            header('Location: index.php?sessions_checked=true');
             exit;
         }
     }
 }
-
 
 // Copy values entered into session so user doesn't have to re-enter everything
 function save_user_data()
@@ -47,7 +46,7 @@ function save_user_data()
         } else {
             $_SESSION['operating_system'] = $_POST['operating_system'];
         }
-        if (isset($_POST['world_writeable']) AND $_POST['world_writeable']=="true") {
+        if (isset($_POST['world_writeable']) and $_POST['world_writeable'] == "true") {
             $_SESSION['world_writeable'] = "true";
         } else {
             $_SESSION['world_writeable'] = "false";
@@ -70,12 +69,10 @@ function save_user_data()
     }
 }
 
-
-
 // Function to workout what the default permissions are for files created by the webserver
 function default_file_mode($temp_dir)
 {
-    if (version_compare(PHP_VERSION, '5.6.30', '>=') && is_writable($temp_dir)) {
+    if (is_writable($temp_dir)) {
         $filename = $temp_dir . '/test_permissions.txt';
         $handle = fopen($filename, 'w');
         fwrite($handle, 'This file is to get the default file permissions');
@@ -91,7 +88,7 @@ function default_file_mode($temp_dir)
 // Function to workout what the default permissions are for directories created by the webserver
 function default_dir_mode($temp_dir)
 {
-    if (version_compare(PHP_VERSION, '5.6.30', '>=') && is_writable($temp_dir)) {
+    if (is_writable($temp_dir)) {
         $dirname = $temp_dir . '/test_permissions/';
         mkdir($dirname);
         $default_dir_mode = '0' . substr(sprintf('%o', fileperms($dirname)), -3);
@@ -104,13 +101,12 @@ function default_dir_mode($temp_dir)
 
 function add_slashes($input)
 {
-    if (get_magic_quotes_gpc() || (!is_string($input))) {
+    if (!is_string($input)) {
         return $input;
     }
     $output = addslashes($input);
     return $output;
 }
-
 
 // Function to highlight input fields which contain wrong/missing data
 function field_error($field_name = '')
@@ -125,9 +121,11 @@ function field_error($field_name = '')
 }
 
 // returns content only if WB_DEBUG is true
-function d($s){
-    if (defined("WB_DEBUG") and WB_DEBUG===true)
+function d($s)
+{
+    if (defined("WB_DEBUG") and WB_DEBUG === true) {
         return $s;
-    else 
-        return ''; 
+    } else {
+        return '';
+    }
 }

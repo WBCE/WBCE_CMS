@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -15,6 +15,7 @@ require '../../config.php';
 
 // Setup admin object, print header and check section permissions
 $admin = new admin('Addons', 'modules', true, true);
+$moduleDirectories = array();
 
 // Create new template object
 $oTemplate = new Template(dirname($admin->correct_theme_source('modules.htt')));
@@ -24,12 +25,12 @@ $oTemplate->set_block('page', 'main_block', 'main');
 // Insert values into module list
 $oTemplate->set_block('main_block', 'module_list_block', 'module_list');
 $result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' order by name");
-if($result->numRows() > 0) {
-    while ($aModule = $result->fetchRow(MYSQL_ASSOC)) {
-        
+if ($result->numRows() > 0) {
+    while ($aModule = $result->fetchRow(MYSQLI_ASSOC)) {
+        $moduleDirectories[] = WB_PATH . '/modules/' . $aModule['directory'];
         $aModule['name'] = $admin->get_module_name($aModule['directory'], true, ' <i>[%s]</i>');
         $oTemplate->set_var('VALUE', $aModule['directory']);
-        $oTemplate->set_var('NAME',  $aModule['name']);
+        $oTemplate->set_var('NAME', $aModule['name']);
         $oTemplate->parse('module_list', 'module_list_block', true);
     }
 }
@@ -41,8 +42,8 @@ $oTemplate->set_block('main_block', 'upgrade_list_block', 'upgrade_list');
 $oTemplate->set_block('main_block', 'uninstall_list_block', 'uninstall_list');
 $oTemplate->set_var(
     array(
-        'INSTALL_VISIBLE'   => 'hide',
-        'UPGRADE_VISIBLE'   => 'hide',
+        'INSTALL_VISIBLE' => 'hide',
+        'UPGRADE_VISIBLE' => 'hide',
         'UNINSTALL_VISIBLE' => 'hide'
     )
 );
@@ -50,47 +51,46 @@ $oTemplate->set_var(
 $show_block = false;
 foreach ($module_files as $index => $path) {
     if (is_dir($path)) {
-        if (file_exists($path . '/install.php')) {
+        if (file_exists($path . '/install.php') && !in_array($path, $moduleDirectories)) {
             $show_block = true;
             $oTemplate->set_var('INSTALL_VISIBLE', '');
-            $oTemplate->set_var('VALUE', basename($path));
-            $oTemplate->set_var('NAME', basename($path));
+            $oTemplate->set_var('IVALUE', basename($path));
+            $oTemplate->set_var('INAME', basename($path));
             $oTemplate->parse('install_list', 'install_list_block', true);
         }
 
-        if (file_exists($path . '/upgrade.php')) {
+        if (file_exists($path . '/upgrade.php') && in_array($path, $moduleDirectories)) {
             $show_block = true;
             $oTemplate->set_var('UPGRADE_VISIBLE', '');
-            $oTemplate->set_var('VALUE', basename($path));
-            $oTemplate->set_var('NAME', basename($path));
+            $oTemplate->set_var('UVALUE', basename($path));
+            $oTemplate->set_var('UNAME', basename($path));
             $oTemplate->parse('upgrade_list', 'upgrade_list_block', true);
         }
 
         if (file_exists($path . '/uninstall.php')) {
             $show_block = true;
             $oTemplate->set_var('UNINSTALL_VISIBLE', '');
-            $oTemplate->set_var('VALUE', basename($path));
-            $oTemplate->set_var('NAME', basename($path));
+            $oTemplate->set_var('XVALUE', basename($path));
+            $oTemplate->set_var('XNAME', basename($path));
             $oTemplate->parse('uninstall_list', 'uninstall_list_block', true);
         }
-
     } else {
         unset($module_files[$index]);
     }
 }
 
 // Insert permissions values
-if($admin->get_permission('modules_install') != true) {
+if ($admin->get_permission('modules_install') != true) {
     $oTemplate->set_var('DISPLAY_INSTALL', 'hide');
 }
-if($admin->get_permission('modules_uninstall') != true) {
+if ($admin->get_permission('modules_uninstall') != true) {
     $oTemplate->set_var('DISPLAY_UNINSTALL', 'hide');
 }
-if($admin->get_permission('modules_view') != true) {
+if ($admin->get_permission('modules_view') != true) {
     $oTemplate->set_var('DISPLAY_LIST', 'hide');
 }
 // only show block if there is something to show
-if(!$show_block || count($module_files) == 0 || !isset($_GET['advanced']) || $admin->get_permission('admintools') != true) {
+if (!$show_block || count($module_files) == 0 || !isset($_GET['advanced']) || $admin->get_permission('admintools') != true) {
     $oTemplate->set_var('DISPLAY_MANUAL_INSTALL', 'hide');
 }
 
@@ -98,17 +98,17 @@ if(!$show_block || count($module_files) == 0 || !isset($_GET['advanced']) || $ad
 $oTemplate->set_var(
     array(
         // Headings
-        'HEADING_INSTALL_MODULE'      => $HEADING['INSTALL_MODULE'],
-        'HEADING_UNINSTALL_MODULE'    => $HEADING['UNINSTALL_MODULE'],
-        'OVERWRITE_NEWER_FILES'       => $MESSAGE['ADDON_OVERWRITE_NEWER_FILES'],
-        'HEADING_MODULE_DETAILS'      => $HEADING['MODULE_DETAILS'],
+        'HEADING_INSTALL_MODULE' => $HEADING['INSTALL_MODULE'],
+        'HEADING_UNINSTALL_MODULE' => $HEADING['UNINSTALL_MODULE'],
+        'OVERWRITE_NEWER_FILES' => $MESSAGE['ADDON_OVERWRITE_NEWER_FILES'],
+        'HEADING_MODULE_DETAILS' => $HEADING['MODULE_DETAILS'],
         'HEADING_INVOKE_MODULE_FILES' => $HEADING['INVOKE_MODULE_FILES'],
 
         // URLs
         'ADMIN_URL' => ADMIN_URL,
-        'WB_URL'    => WB_URL,
+        'WB_URL' => WB_URL,
         'THEME_URL' => THEME_URL,
-        'FTAN'      => $admin->getFTAN(),
+        'FTAN' => $admin->getFTAN(),
 
         // Text messages
         'URL_TEMPLATES' => $admin->get_permission('templates') ?

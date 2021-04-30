@@ -6,10 +6,10 @@
  * @author          Ruud Eisinga - Dev4me
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
+ * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.1.11
- * @lastmodified    June 29, 2017 
+ * @version         0.2.1
+ * @lastmodified    November 15, 2019
  *
  */
 
@@ -28,6 +28,7 @@ class counter {
 	private $referer;
 	private $host;
 	private $referer_host;
+	private $referer_spam= 0;
 	private $page;
 	private $keywords;
 	private $language;
@@ -52,8 +53,10 @@ class counter {
 		$this->time = $time;
 		$this->day   = date("Ymd",$time);
 		$this->month = date("Ym",$time);
-		$this->old_data = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - 48*60*60 ; // 48 hours
-		$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j")-7, date("Y"))); // 7 days
+		//$this->old_data = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - 48*60*60 ; // 48 hours
+		//$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j")-7, date("Y"))); // 7 days
+		$this->old_data = strtotime(date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y")))); // 90 days
+		$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y"))); // 90 days
 		$this->reload = 3 * 60 * 60 ;
 		$this->online = $time - 3 * 60;
 
@@ -73,7 +76,7 @@ class counter {
 		if ($this->newUser()) {
 			if($this->referer_host && stristr($this->host, $this->referer_host) === false) {
 				if(!$id = $database->get_one("SELECT `id` from ".$table_ref." WHERE `referer`='".$this->referer_host."' AND day='".$this->day."'") ) {
-					$database->query("INSERT INTO ".$table_ref." (`day`, `referer`, `view`) VALUES ('".$this->day."', '".$this->referer_host."', '1')");
+					$database->query("INSERT INTO ".$table_ref." (`day`, `referer`, `view`, `spam`) VALUES ('".$this->day."', '".$this->referer_host."', '1','".$this->referer_spam."' )");
 				} else { 
 					$database->query("UPDATE ".$table_ref." SET `view`=`view`+1 where `id`='$id'");
 				}
@@ -104,7 +107,10 @@ class counter {
 	}
 	function getHosts() {
 		global $referer;
-		$this->ip = md5($_SERVER['REMOTE_ADDR']); 
+		$fp = $_SERVER['REMOTE_ADDR']; 
+		if(isset($_SERVER['HTTP_USER_AGENT'])) $fp .= $_SERVER['HTTP_USER_AGENT'];
+		if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) $fp .= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+		$this->ip = md5($fp); 
         if (defined( 'ORG_REFERER' )) {
             $this->referer = ORG_REFERER;
 		} elseif (isset($referer)) {
@@ -142,16 +148,23 @@ class counter {
 		global $database, $table_day, $table_ips;
 		$session = ""; //session_id();
 		$timeout = time() - $this->reload;
+		$loggedin = isset($_SESSION['USER_ID']) ? ", `loggedin`='1'":"";
 		if($this->isBot()) {
 			$database->query("UPDATE ".$table_day." SET `bots`=`bots`+1 WHERE `day`='".$this->day."'");
 			$this->page = ''; //prevent pagecounting
 			return false;
+		} elseif($this->isRefererSpam()) {
+			$database->query("UPDATE ".$table_day." SET `refspam`=`refspam`+1 WHERE `day`='".$this->day."'");
+			$this->page = ''; //prevent pagecounting
+			$this->keywords = ''; //prevent pagecounting
+			$this->language = ''; //prevent pagecounting
+			return true;
 		} elseif(!$id = $database->get_one("SELECT `id` FROM ".$table_ips." WHERE `ip`='".$this->ip."' AND `time` > '$timeout' ORDER BY `id` DESC LIMIT 1")) {
-			$database->query("INSERT INTO ".$table_ips." (ip, time, online,page) VALUES ('".$this->ip."', '".$this->time."', '".$this->time."', '".$this->page."')");
+			$database->query("INSERT INTO ".$table_ips." (ip, time, online,page,last_page,pages) VALUES ('".$this->ip."', '".$this->time."', '".$this->time."', '".$this->page."', '".$this->page."','1')");
 			$database->query("UPDATE ".$table_day." SET `user`=`user`+1, `view`=`view`+1 WHERE `day`='".$this->day."'");
 			return true;
 		} else {
-			$database->query("UPDATE ".$table_ips." SET `online`='".$this->time."', `page`='".$this->page."' WHERE `id`='$id'");
+			$database->query("UPDATE ".$table_ips." SET `online`='".$this->time."', `last_page`='".$this->page."', `pages`=`pages`+1 $loggedin WHERE `id`='$id'");
 			$database->query("UPDATE ".$table_day." SET `view`=`view`+1 WHERE `day`='".$this->day."'");
 			return false;
 		}
@@ -170,6 +183,18 @@ class counter {
 		return false; 
 	}
 	
+	function isRefererSpam() {
+		if(!$this->referer_host) return false;
+		require('referers.php');
+		foreach($spamReferers as $spammer) { 
+			if(stripos($this->referer_host, $spammer) !== false) { 
+				$this->referer_spam = '1';
+				return true; 
+			} 
+		} 
+		return false; 
+		
+	}
 	function escapeString($string) {	
 		global $database;
 		if(is_object($database->DbHandle)) { 

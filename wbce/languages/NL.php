@@ -181,6 +181,7 @@ $TEXT['LANGUAGE'] = 'Taal';
 $TEXT['LAST_UPDATED_BY'] = 'Laatste wijzigingen door';
 $TEXT['LENGTH'] = 'Lengte';
 $TEXT['LEVEL'] = 'Niveau';
+$TEXT['LICENSE'] = 'License';
 $TEXT['LINK'] = 'Link';
 $TEXT['LINUX_UNIX_BASED'] = 'Linux/Unix';
 $TEXT['LIST_OPTIONS'] = 'Lijstopties';

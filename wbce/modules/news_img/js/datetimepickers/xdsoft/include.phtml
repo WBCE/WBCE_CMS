@@ -1,0 +1,24 @@
+    <script src="<?php echo WB_URL; ?>/modules/news_img/js/datetimepickers/xdsoft/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            jQuery.datetimepicker.setLocale('<?php echo strtolower(LANGUAGE); ?>');
+
+            $('#publishdate').datetimepicker({
+                timepicker:true,
+                format:'<?php echo $jscal_format ?> H:i',
+                step:5
+            });
+            $('#publishdate_trigger').click(function(){
+                $('#publishdate').datetimepicker('show'); //support hide,show and destroy command
+            });
+
+            $('#enddate').datetimepicker({
+                timepicker:true,
+                format:'<?php echo $jscal_format ?> H:i',
+                step:5
+            });
+            $('#enddate_trigger').click(function(){
+                $('#enddate').datetimepicker('show'); //support hide,show and destroy command
+            });
+        });
+    </script>

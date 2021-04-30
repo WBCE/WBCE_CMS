@@ -4,100 +4,102 @@
  * Way Better Content Editing.
  * Visit https://wbce.org to learn more and to join the community.
  *
- * @copyright  Ryan Djurovich (2004-2009)
- * @copyright  WebsiteBaker Org. e.V. (2009-2015)
- * @copyright  WBCE Project (2015-)
- * @license   GNU GPL2 (or any later version)
-
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
+ *
  * The main initialization file for WBCE CMS.
  * Takes care of the set up (initialization) of variables and constants,
- * the autoloader class, sessions and settings. 
- * 
- * Usualy this is included by loading the config.php 
- * in the main directory(webroot). 
- * 
+ * the autoloader class, sessions and settings.
+ *
+ * Usualy this is included by loading the config.php
+ * in the main directory(webroot).
+ *
  */
- 
+
 // no direct file access
-if(count(get_included_files()) == 1) header("Location: ../index.php", TRUE, 301);
+if (count(get_included_files()) == 1) {
+    header("Location: ../index.php", true, 301);
+}
 
 // Stop execution if PHP version is too old
-$sReqPhpVersion = '5.6.30';
+$sReqPhpVersion = '7.3.0';
 if (version_compare(PHP_VERSION, $sReqPhpVersion, '<')) {
-    $sMsg  = 'PHP ' . PHP_VERSION . ' running on this system, but at least PHP ' . $sReqPhpVersion . ' required!<br />';
+    $sMsg = 'PHP ' . PHP_VERSION . ' running on this system, but at least PHP ' . $sReqPhpVersion . ' required!<br />';
     $sMsg .= 'Please upgrade your PHP Version and try running WBCE CMS again.';
     die($sMsg);
 }
 
-// Starting Output buffering 
+// Starting Output buffering
 ob_start();
 
 // SOME EARLY CONSTANT HANDLING
-// The absolute minimum needed for autoloader and DB 
+// The absolute minimum needed for autoloader and DB
 
 // WB_DEBUG can be overwritten via WBCE config.php (if enabled, max. PHP error output is shown)
-defined('WB_DEBUG')    or define('WB_DEBUG', false);
-// define WB_PATH as it isn't yet defined, installer issue whith missing wbpath 
-defined("WB_PATH")     or define("WB_PATH", dirname(__DIR__));
-// compatibility fix for old modules, sooner or later better replace the old constants from old mysql driver.
-// But for now 
-defined("MYSQL_BOTH")  or define('MYSQL_BOTH',  MYSQLI_BOTH);
-defined("MYSQL_NUM")   or define('MYSQL_NUM',   MYSQLI_NUM);
-defined("MYSQL_ASSOC") or define('MYSQL_ASSOC', MYSQLI_ASSOC);
+defined('WB_DEBUG') or define('WB_DEBUG', false);
+// define WB_PATH as it isn't yet defined, installer issue whith missing wbpath
+defined("WB_PATH") or define("WB_PATH", dirname(__DIR__));
 
 // INITIALIZE AUTOLOADER
-require_once dirname(__FILE__)."/class.autoload.php";
+require_once dirname(__FILE__) . "/class.autoload.php";
 
 // PREDB MODULES LOADED HERE
-// 
+//
 // load all predb.php files form module folders that start whith predb_
 // These are especially for registering classes that override classes from the main framework
-// For example a DB class that uses PDO instead of MYSQLI. 
+// For example a DB class that uses PDO instead of MYSQLI.
 // This one Loads modules even if they are not installed in the DB.
-// 
+//
 // load all predb.php files form folders that start whith predb_
 $aPreDb = array();
-$aPreDb = glob(dirname(__DIR__)."/modules/predb_*");
-if ($aPreDb !== false && !empty($aPreDb)){
-    foreach ($aPreDb as $sModule)
-        if (file_exists($sModule."/predb.php")) require_once ($sModule."/predb.php");
+$aPreDb = glob(dirname(__DIR__) . "/modules/predb_*");
+if ($aPreDb !== false && !empty($aPreDb)) {
+    foreach ($aPreDb as $sModule) {
+        if (file_exists($sModule . "/predb.php")) {
+            require_once($sModule . "/predb.php");
+        }
+    }
 }
 
 // INITIALIZE DATABASE CLASS
 $database = new database();
 
 // SYSTEM CONSTANTS
-//     
+//
 // Now we start definig System constants if not already set
 // Lots of compatibility work here, please only use the WB_ constants in future stuff
 
-defined('ADMIN_DIRECTORY')  or define('ADMIN_DIRECTORY', 'admin');
-defined('ADMIN_URL')        or define('ADMIN_URL',       WB_URL .'/'. ADMIN_DIRECTORY);
-defined('ADMIN_PATH')       or define('ADMIN_PATH',      WB_PATH .'/'. ADMIN_DIRECTORY);
+defined('ADMIN_DIRECTORY') or define('ADMIN_DIRECTORY', 'admin');
+defined('ADMIN_URL') or define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
+defined('ADMIN_PATH') or define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 
 // first check if someone added crap in the config
 if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
     die('Invalid admin-directory: ' . ADMIN_DIRECTORY);
 }
 
-// Load framework functions before preinit files so we can use functions right away.  
-require_once(WB_PATH.'/framework/functions.php');
+// Load framework functions before preinit files so we can use functions right away.
+require_once(WB_PATH . '/framework/functions.php');
 
 
 // PRE_INIT MODULES
-//    
+//
 // Pre init, modules may change everyting as almost nothing is already set here
 // Module may hook here to change page_id, Language or whatever. Even most System Constants.
-// As DB is already available here we rely on installed modules. 
-// 
-// @todo check if we need to make more modifications to the core to get this fully running 
+// As DB is already available here we rely on installed modules.
+//
+// @todo check if we need to make more modifications to the core to get this fully running
 // @todo check if we better use  MYSQL FIND_IN_SET (http://forum.wbce.org/viewtopic.php?id=84)
 
 // Query gives back false on failure
-if (($resSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE function LIKE '%preinit%'"))) {
+if (($resSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE '%preinit%'"))) {
     while ($rec = $resSnippets->fetchRow()) {
-        $sModFilePath = dirname(__DIR__). '/modules/' . $rec['directory'] . '/preinit.php';
-        if (file_exists($sModFilePath)) include $sModFilePath;
+        $sModFilePath = dirname(__DIR__) . '/modules/' . $rec['directory'] . '/preinit.php';
+        if (file_exists($sModFilePath)) {
+            include $sModFilePath;
+        }
     }
 }
 
@@ -105,30 +107,30 @@ if (($resSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE
 $protocoll = "http";
 // $_SERVER['HTTPS'] alone is not reliable ... :-(
 // https://github.com/dmikusa-pivotal/cf-php-apache-buildpack/issues/6
-if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
     $protocoll = "https";
 }
 if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == 443) {
     $protocoll = "https";
 }
-if(isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS']!="off"){
+if (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS'] != "off") {
     $protocoll = "https";
 }
 define("DOMAIN_PROTOCOLL", $protocoll);
 
 // MORE AUTOLOADER REGISTRATION
-// Registering additional classes that are needed by the core 
+// Registering additional classes that are needed by the core
 
 // Registering class for idna conversion (needed for email-checks)
 WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
-WbAuto::AddFile("SecureForm",   "/framework/SecureForm.php");
+WbAuto::AddFile("SecureForm", "/framework/SecureForm.php");
 
 // Auto Load the Insert and I Classes
 WbAuto::AddFile("Insert", "/framework/Insert.php");
-WbAuto::AddFile("I",      "/framework/I.php");
+WbAuto::AddFile("I", "/framework/I.php");
 
 // Auto Load Mailer Class (subclass of PHPMailer)
-WbAuto::AddFile("Mailer",   "/framework/Mailer.php");
+WbAuto::AddFile("Mailer", "/framework/Mailer.php");
 WbAuto::AddFile("wbmailer", "/framework/Mailer.php"); // fallback for older modules
 
 // Auto Accounts Class
@@ -141,55 +143,62 @@ WbAuto::AddFile("MessageBox", "/framework/MessageBox.php"); // child class
 WbAuto::AddFile("Template", "/include/phplib/template.inc");
 
 // Connect to Twig TE (the contemporary Templating Engine)
-require_once WB_PATH . '/include/Sensio/Twig/TwigConnect.php';
+require_once WB_PATH . '/include/Sensio/Twig/WBCETwigLoader.php';
 
 // SETUP SYSTEM CONSTANTS (GLOBAL SETTINGS)
-// We use Settings Class to fetch all Settings from DB 
-// Then we process all data into the coresponding constants. 
-Settings::Setup(); // Fetch all settings whith Settings class from framework 
+// We use Settings Class to fetch all Settings from DB
+// Then we process all data into the coresponding constants.
+Settings::Setup(); // Fetch all settings whith Settings class from framework
 
 // RESULTING CONSTANTS
 // Some resulting constants need to be set manually
 
 // Filemodes
 $string_file_mode = STRING_FILE_MODE;
-define('OCTAL_FILE_MODE',    (int) octdec($string_file_mode));
-define('WB_OCTAL_FILE_MODE', (int) octdec($string_file_mode));
+define('OCTAL_FILE_MODE', (int)octdec($string_file_mode));
+define('WB_OCTAL_FILE_MODE', (int)octdec($string_file_mode));
 // Dirmodes
 $string_dir_mode = STRING_DIR_MODE;
-define('OCTAL_DIR_MODE',     (int) octdec($string_dir_mode));
-define('WB_OCTAL_DIR_MODE',  (int) octdec($string_dir_mode));
+define('OCTAL_DIR_MODE', (int)octdec($string_dir_mode));
+define('WB_OCTAL_DIR_MODE', (int)octdec($string_dir_mode));
 
-switch (true){
-    case (WB_DEBUG === true):    
+switch (true) {
+    case (WB_DEBUG === true):
         // Debugging activated
-        error_reporting(E_ALL); break; 
-    
-    case (intval(ER_LEVEL) > 0): 
+        error_reporting(E_ALL);
+        break;
+
+    case (intval(ER_LEVEL) > 0):
         //Historical compatibility stuff
-        error_reporting(E_ALL); break;
-    
-    case (ER_LEVEL=="-1"):       
+        error_reporting(E_ALL);
+        break;
+
+    case (ER_LEVEL == "-1"):
         //Historical compatibility stuff
-        error_reporting(E_ALL); break;
-    
-    case (ER_LEVEL=="E0"):       
+        error_reporting(E_ALL);
+        break;
+
+    case (ER_LEVEL == "E0"):
         // system default (php.ini)
-        error_reporting(ini_get('error_reporting')); break; 
-    
-    case (ER_LEVEL=="E1"):       
+         error_reporting((int)ini_get('error_reporting'));
+        break;
+
+    case (ER_LEVEL == "E1"):
         // hide all errors and notices
-        error_reporting(0); break;
-    
-    case (ER_LEVEL=="E2"):       
+        error_reporting(0);
+        break;
+
+    case (ER_LEVEL == "E2"):
         // show all errors and notices
-        error_reporting(E_ALL); break;
-    
-    case (ER_LEVEL=="E3"):       
+        error_reporting(E_ALL);
+        break;
+
+    case (ER_LEVEL == "E3"):
         // show only errors, nothing else
-        error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE & ~E_WARNING); break;
-    
-    default: 
+        error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE & ~E_WARNING);
+        break;
+
+    default:
         // system default (php.ini)
         error_reporting(ini_get('error_reporting'));
 }
@@ -197,8 +206,8 @@ switch (true){
 ini_set('display_errors', (error_reporting() == 0) ? 0 : 1);
 
 // DEFAULT TIMEZONE
-// @todo this needs to be replaced by a real locale handling 
-// same for the timeformatstuff somewhat below. 
+// @todo this needs to be replaced by a real locale handling
+// same for the timeformatstuff somewhat below.
 date_default_timezone_set('UTC');
 
 
@@ -208,7 +217,7 @@ date_default_timezone_set('UTC');
 //As session table possibly not installed, it may not run whith installer and upgradescript
 //We then simply fallback to PHP default Session handling.
 
-// Init custom session handler 
+// Init custom session handler
 $hCustomSessionHandler = new DbSession();
 
 // Init  special Session handling and Start session.
@@ -220,20 +229,22 @@ WSession::Start();
 // Yes! All modules are now allowed to have a initialize.php. function='initialize'
 // You can even change the $page_id, or maybe the Language .
 // You can log users in or out and do what you like
-// Initialize Modules normaly do not distinguish between FE and BE 
-        
-$sSql = "SELECT `directory` FROM `{TP}addons` WHERE  function LIKE '%initialize%'";
+// Initialize Modules normaly do not distinguish between FE and BE
+
+$sSql = "SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE '%initialize%'";
 if (($resSnippets = $database->query($sSql))) {
     while ($rec = $resSnippets->fetchRow()) {
         $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/initialize.php';
-        if (file_exists($sFile)) include $sFile;
+        if (file_exists($sFile)) {
+            include $sFile;
+        }
     }
 }
 
-// SANITIZE REFERER 
+// SANITIZE REFERER
 // sanitize $_SERVER['HTTP_REFERER']
-// @todo Needs to be repaced ASAP. 
-// Currently it's the only way to have a halfway save refrerer string. 
+// @todo Needs to be repaced ASAP.
+// Currently it's the only way to have a halfway save refrerer string.
 SanitizeHttpReferer();
 
 // LANGUAGES
@@ -254,17 +265,17 @@ if (!defined("LANGUAGE")) {
 
 
 // Needed in account and Account AdminTool
-if(FRONTEND_LOGIN){
+if (FRONTEND_LOGIN) {
     if (!defined('ACCOUNT_PATH')) {
         // Set login menu constants
         defined('ACCOUNT_URL') or define('ACCOUNT_URL', WB_URL . '/account');
-        define('ACCOUNT_PATH',    str_replace(WB_URL, WB_PATH, ACCOUNT_URL));
+        define('ACCOUNT_PATH', str_replace(WB_URL, WB_PATH, ACCOUNT_URL));
 
-        define('LOGIN_URL',       ACCOUNT_URL . '/login.php');
-        define('LOGOUT_URL',      ACCOUNT_URL . '/logout.php');
-        define('FORGOT_URL',      ACCOUNT_URL . '/forgot.php');
+        define('LOGIN_URL', ACCOUNT_URL . '/login.php');
+        define('LOGOUT_URL', ACCOUNT_URL . '/logout.php');
+        define('FORGOT_URL', ACCOUNT_URL . '/forgot.php');
         define('PREFERENCES_URL', ACCOUNT_URL . '/preferences.php');
-        define('SIGNUP_URL',      ACCOUNT_URL . '/signup.php');
+        define('SIGNUP_URL', ACCOUNT_URL . '/signup.php');
     }
 }
 
@@ -278,9 +289,11 @@ if (!file_exists(WB_PATH . '/languages/EN.php')) {
 }
 
 // Load LC language file if LANGUAGE != EN
-if(LANGUAGE != 'EN'){
+if (LANGUAGE != 'EN') {
     $sLangFile = WB_PATH . '/languages/' . LANGUAGE . '.php';
-    if (file_exists($sLangFile)) require_once $sLangFile;
+    if (file_exists($sLangFile)) {
+        require_once $sLangFile;
+    }
 }
 // include old languages format  only for compatibility only needed for some old modules
 if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
@@ -288,18 +301,39 @@ if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
 }
 define("LANGUAGE_LOADED", true);
 
+// simple template switcher
+if (defined('TEMPLATE_SWITCHER') && TEMPLATE_SWITCHER == true) {
+    if (isset($_GET['reset_template'])) {
+        unset($_SESSION['wb_preview_tpl']);
+    }
+    if (isset($_SESSION['wb_preview_tpl']) && !file_exists(WB_PATH.'/templates/'.$_SESSION['wb_preview_tpl'].'/info.php')) {
+        unset($_SESSION['wb_preview_tpl']);		
+    }
+    if (isset($_GET['template'])) {
+        $core_preview_template = preg_replace("/(\.\.\/)/","", $_GET['template']);
+        if (isset($_GET['template']) && is_string($core_preview_template) && file_exists(WB_PATH.'/templates/'.$core_preview_template.'/info.php')) {
+            $_SESSION['wb_preview_tpl'] = $core_preview_template;
+            define('TEMPLATE', $_SESSION['wb_preview_tpl']);
+        }    
+    } elseif (isset($_SESSION['wb_preview_tpl'])) {
+        if (is_string($_SESSION['wb_preview_tpl']) && file_exists(WB_PATH.'/templates/'.$_SESSION['wb_preview_tpl'].'/info.php')) {            
+            define('TEMPLATE', $_SESSION['wb_preview_tpl']);
+        }    
+    }
+}
+
 // define more system constants
-defined("THEME_URL")        or define('THEME_URL',        WB_URL .'/templates/'. DEFAULT_THEME);
-defined("THEME_PATH")       or define('THEME_PATH',       WB_PATH .'/templates/'. DEFAULT_THEME);
+defined("THEME_URL") or define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
+defined("THEME_PATH") or define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
 defined("EDIT_ONE_SECTION") or define('EDIT_ONE_SECTION', false);
-defined("EDITOR_WIDTH")     or define('EDITOR_WIDTH', 0);
+defined("EDITOR_WIDTH") or define('EDITOR_WIDTH', 0);
 
 // TIMEZONE and DATE/TIME FORMAT constants
-define('TIMEZONE',    isset($_SESSION['TIMEZONE'])    ? $_SESSION['TIMEZONE']    : DEFAULT_TIMEZONE);
+define('TIMEZONE', isset($_SESSION['TIMEZONE']) ? $_SESSION['TIMEZONE'] : DEFAULT_TIMEZONE);
 define('DATE_FORMAT', isset($_SESSION['DATE_FORMAT']) ? $_SESSION['DATE_FORMAT'] : DEFAULT_DATE_FORMAT);
 define('TIME_FORMAT', isset($_SESSION['TIME_FORMAT']) ? $_SESSION['TIME_FORMAT'] : DEFAULT_TIME_FORMAT);
 
-// FETCH WBCE VERSION 
+// FETCH WBCE VERSION
 // Version should be available not only in admin section(BE)
 require_once ADMIN_PATH . '/interface/version.php';
 
@@ -310,7 +344,7 @@ require_once ADMIN_PATH . '/interface/version.php';
 
 /**
  * @brief  sanitize $_SERVER['HTTP_REFERER']
- * @todo   Change WBCE so it uses the save referrer and no longer touches the basic referrer 
+ * @todo   Change WBCE so it uses the save referrer and no longer touches the basic referrer
  */
 function SanitizeHttpReferer()
 {

@@ -6,10 +6,10 @@
  * @author          Ruud Eisinga - Dev4me
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
+ * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.1.11
- * @lastmodified    June 29, 2017 
+ * @version         0.2.1
+ * @lastmodified    November 15, 2019
  *
  */
 
@@ -30,6 +30,7 @@ $database->query("CREATE TABLE `$table_day` (
 	`user` int(10) NOT NULL default '0',
 	`view` int(10) NOT NULL default '0',
 	`bots` int(10) NOT NULL default '0',
+	`refspam` int(10) NOT NULL default '0',
 	PRIMARY KEY  (`id`),
 	INDEX `day` (`day`)
 	)"
@@ -42,7 +43,9 @@ $database->query("CREATE TABLE `$table_ips` (
 	`session` varchar(64) NOT NULL default '',
 	`time` int(20) NOT NULL default '0',
 	`online` int(20) NOT NULL default '0',
-	`page` varchar(255) NOT NULL default '',
+	`page` varchar(512) NOT NULL default '',
+	`last_page` varchar(512) NOT NULL default '',
+	`pages` int(11) NOT NULL default '0',
 	`loggedin` int(1) NOT NULL default '0',
 	PRIMARY KEY  (`id`)
 	)"
@@ -64,6 +67,7 @@ $database->query("CREATE TABLE `$table_ref` (
 	`day` varchar(8) NOT NULL default '',
 	`referer` varchar(255) NOT NULL default '',
 	`view` int(10) NOT NULL default '0',
+	`spam` int(10) NOT NULL default '0',
 	PRIMARY KEY  (`id`)
 	)"
 );
@@ -87,3 +91,4 @@ $database->query("CREATE TABLE `$table_lang` (
 	)"
 );
 
+?>

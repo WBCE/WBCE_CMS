@@ -1,13 +1,10 @@
-/* 
-	A couple styles to make the demo page look good
- */
-
+/* A couple styles to make the demo page look good */
 .dm-uploader {
 	border: 0.25rem dashed #A5A5C7;
 	text-align: center;
 }
+
 .dm-uploader.active {
 	border-color: red;
-
 	border-style: solid;
 }

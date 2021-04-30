@@ -40,7 +40,7 @@ $MF['TEXT_SHOW_X_MORE']  = '%d weitere anzeigen';
 $MF['MANAGE'] = 'Template anpassen';
 $MF['SUBJECT'] = 'Formular &uuml;ber die Website verschickt';
 $MF['THANKYOU'] = 'Vielen Dank f&uuml;r das Ausf&uuml;llen des Formulars. Wir werden Sie schnellstm&ouml;glich kontaktieren.';
-$MF['NOTALL'] = 'Bitte f&uuml;llen Sie alle erfolderlichen Felder aus.';
+$MF['NOTALL'] = 'Bitte f&uuml;llen Sie alle erforderlichen Felder aus.';
 $MF['INVALID'] = 'Ung&uuml;ltiger Dateityp, Upload verworfen!';
 $MF['SENDERROR'] = 'Fehler beim Versand des Formulars!';
 

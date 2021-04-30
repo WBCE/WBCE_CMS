@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
  For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 
@@ -8,48 +8,45 @@ CKEDITOR.dialog.add('wbembedDialog', function (editor) {
         title: editor.lang.wbembed.title,
         minWidth: 400,
         minHeight: 80,
-        contents: [
-            {
-                id: 'tab-basic',
-                label: 'Basic Settings',
-                elements: [
-                    {
-                        type: 'html',
-                        html: '<p>' + editor.lang.wbembed.onlytxt + '</p>'
-                    },
-                    {
-                        type: 'text',
-                        id: 'url_video',
-                        label: 'URL (ex: https://www.youtube.com/watch?v=EOIvnRUa3ik)',
-                        validate: CKEDITOR.dialog.validate.notEmpty(editor.lang.wbembed.validatetxt)
-                    },
-                    {
-                        type: 'text',
-                        id: 'css_class',
-                        label: editor.lang.wbembed.input_css
-                    },
-                    {
-                        type: 'select',
-                        id: 'resizeType',
-                        label: editor.lang.wbembed.resizeType,
-                        'default': 'responsive',
-                        items: [
-                            [editor.lang.wbembed.responsive, 'responsive'],
-                            [editor.lang.wbembed.noresize, 'noresize'],
-                            [editor.lang.wbembed.custom, 'custom']
-                        ],
-                        onChange: function(e) {
-                            /* console.log(e.data.value); */
-                        }
+        contents: [{
+            id: 'tab-basic',
+            label: 'Basic Settings',
+            elements: [{
+                    type: 'html',
+                    html: '<p>' + editor.lang.wbembed.onlytxt + '</p>'
+                },
+                {
+                    type: 'text',
+                    id: 'url_video',
+                    label: 'URL (ex: https://www.youtube.com/watch?v=EOIvnRUa3ik)',
+                    validate: CKEDITOR.dialog.validate.notEmpty(editor.lang.wbembed.validatetxt)
+                },
+                {
+                    type: 'text',
+                    id: 'css_class',
+                    label: editor.lang.wbembed.input_css
+                },
+                {
+                    type: 'select',
+                    id: 'resizeType',
+                    label: editor.lang.wbembed.resizeType,
+                    'default': 'responsive',
+                    items: [
+                        [editor.lang.wbembed.responsive, 'responsive'],
+                        [editor.lang.wbembed.noresize, 'noresize'],
+                        [editor.lang.wbembed.custom, 'custom']
+                    ],
+                    onChange: function (e) {
+                        /* console.log(e.data.value); */
                     }
-                ]
-            }
-        ],
+                }
+            ]
+        }],
         onOk: function () {
             var
-            dialog = this,
-            div_container = new CKEDITOR.dom.element('div'),
-            css = 'embeddedContent';
+                dialog = this,
+                div_container = new CKEDITOR.dom.element('div'),
+                css = 'embeddedContent';
             // Set custom css class name
             if (dialog.getValueOf('tab-basic', 'css_class').length > 0) {
                 css = dialog.getValueOf('tab-basic', 'css_class');
@@ -61,20 +58,20 @@ CKEDITOR.dialog.add('wbembedDialog', function (editor) {
             // Create iframe with specific url
             if (url.length > 1) {
                 var resizetype = dialog.getValueOf('tab-basic', 'resizeType');
-                     if (resizetype == "custom") {
-                        var iframe = new CKEDITOR.dom.element.createFromHtml('<iframe src="' + url + '" allowfullscreen></iframe>');
-                        div_container.append(iframe);
-                        editor.insertElement(div_container);
-                    } else if (resizetype == 'noresize') {
-                        var iframe = new CKEDITOR.dom.element.createFromHtml('<iframe width="560" height="349" src="' + url + '" allowfullscreen></iframe>');
-                        div_container.append(iframe);
-                        editor.insertElement(div_container);
-                    } else {
-                        var iframe = new CKEDITOR.dom.element.createFromHtml('<iframe src="' + url + '" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen></iframe>');
-                        div_container.setAttribute("style", "left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.2493%;");
-                        div_container.append(iframe);
-                        editor.insertElement(div_container);
-                    }
+                if (resizetype == "custom") {
+                    var iframe = new CKEDITOR.dom.element.createFromHtml('<iframe loading="lazy" src="' + url + '" allowfullscreen></iframe>');
+                    div_container.append(iframe);
+                    editor.insertElement(div_container);
+                } else if (resizetype == 'noresize') {
+                    var iframe = new CKEDITOR.dom.element.createFromHtml('<iframe loading="lazy" width="560" height="349" src="' + url + '" allowfullscreen></iframe>');
+                    div_container.append(iframe);
+                    editor.insertElement(div_container);
+                } else {
+                    var iframe = new CKEDITOR.dom.element.createFromHtml('<iframe loading="lazy" src="' + url + '" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen></iframe>');
+                    div_container.setAttribute("style", "left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.2493%;");
+                    div_container.append(iframe);
+                    editor.insertElement(div_container);
+                }
             }
         }
     };
@@ -106,8 +103,8 @@ function detect(url) {
     if (url.indexOf('dailymotion') > 0) {
         // if this is a playlist (jukebox)
         if (url.indexOf('/playlist/') > 0) {
-           id = url.substring(url.lastIndexOf('/playlist/') + 10, url.indexOf("/1#video="));
-           console.log(id);
+            id = url.substring(url.lastIndexOf('/playlist/') + 10, url.indexOf("/1#video="));
+            console.log(id);
             return embed_url = 'https://www.dailymotion.com/widget/jukebox?list[]=%2Fplaylist%2F' + id + '%2F1&&autoplay=0&mute=0';
         } else {
             id = getId(url);

@@ -1,0 +1,84 @@
+<div class="mod_news_img">
+
+    <h2><?php echo $MOD_NEWS_IMG['MANAGE_POSTS']; ?></h2>
+    <form name="manage" action="<?php echo WB_URL; ?>/modules/news_img/manage_posts.php" method="post" enctype="multipart/form-data">
+<?php echo $FTAN; ?>
+    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+    <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+    <input type="hidden" name="action" value="<?php echo $action ?>" />
+    <table>
+        <tbody>
+            <tr>
+                <td colspan="2">
+                    <h3><?php
+    switch($action) {
+        case "delete":
+            echo $TEXT['DELETE'].' '.$TEXT['POST'].":<br />";
+            break;
+        case "tags":
+            echo $MOD_NEWS_IMG['ASSIGN_TAGS'].":<br />";
+            break;
+        case "group":
+            echo $MOD_NEWS_IMG['ASSIGN_GROUP'].":<br />";
+            break;
+        default:
+            echo ucfirst($MOD_NEWS_IMG[strtoupper($action)]).":<br />";
+            break;
+    }
+?></h3>
+                    <ul>
+<?php
+    foreach($posts as $pid => $title):
+        if(is_numeric($pid)):
+            echo "<li><input type=\"checkbox\" name=\"manage_posts[]\" value=\"$pid\" checked=\"checked\" /> ID #$pid - $title</li>";
+        endif;
+    endforeach;
+?></ul>
+                </td>
+            </tr>
+
+<?php if($action=='tags'): ?>
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr>
+                <td colspan="2">
+                    <ul>
+<?php foreach($tags as $tag): ?>
+                        <li><input type="checkbox" name="tags[]" value="<?php echo $tag['tag_id'] ?>" /> <?php echo $tag['tag'] ?></li>
+<?php endforeach; ?>
+                    </ul>
+                </td>
+            </tr>
+<?php endif; if($action=='group'): ?>
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr>
+                <td class="setting_name"><?php echo $MOD_NEWS_IMG['GROUP'] ?>:</td>
+                <td class="setting_value">
+<?php include __DIR__.'/group_select.phtml'; ?>
+                </td>
+            </tr>
+<?php endif; if(in_array($action,array('move','move_with_tags','copy','copy_with_tags'))):
+?>
+            <tr>
+                <td class="setting_name"><?php echo $MOD_NEWS_IMG[strtoupper($action)].' '.$MOD_NEWS_IMG['TO'].' ('.$TEXT['GROUP'].')'; ?>:</td>
+                <td class="setting_value">
+<?php include __DIR__.'/group_select.phtml'; ?>
+                </td>
+            </tr>
+<?php endif; ?>
+            <tr>
+                <td colspan="2" style="padding-top:25px">
+                    <strong><?php echo $TEXT['ARE_YOU_SURE']; ?></strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input name="exec" type="submit" value="OK" />
+                </td>
+                <td style="text-align:right">
+                    <input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

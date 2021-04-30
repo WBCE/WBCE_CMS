@@ -1,18 +1,15 @@
 <?php
 /**
- * @category        WebsiteBaker
- * @package         WebsiteBaker_core
- * @author          Werner v.d.Decken
- * @copyright       WebsiteBaker.org e.V.
- * @link            http://websitebaker2.org
- * @license         http://www.gnu.org/licenses/gpl.html
- * @version         $Id: class.order.php 1487 2011-08-10 13:20:15Z DarkViper $
- * @filesource        $HeadURL: http://svn.websitebaker2.org/branches/2.8.x/wb/framework/class.order.php $
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * Global exception-handler
- * This module will activate a global exception handler to catch all thrown exceptions
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
+
 /**
  * define several default exceptions directly to prevent from extra loading requests
  */
@@ -33,7 +30,6 @@ class IllegalFileException extends LogicException
 } // end of class
 
 /**
- *
  * @param Exception $e
  */
 function globalExceptionHandler($e)
@@ -53,7 +49,8 @@ function globalExceptionHandler($e)
         echo $out;
     }
 }
-/*
+
+/**
  * now activate the new defined handler
  */
 set_exception_handler('globalExceptionHandler');

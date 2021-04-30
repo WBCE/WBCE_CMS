@@ -15,14 +15,12 @@
 		<button type="button" id="user-status" name="status" title="{TEXT_USERS}" value="{USER_STATUS}" class="status {DISPLAY_MODIFY} fa fa-user-times red" ></button>
 		<span>{HEADING_MODIFY_DELETE_USER}</span>
 	</h3>
-	<div id="user-list" class="fg12">
-		<!-- BEGIN list_block -->
-		<label>
-			<input type="radio" name="user_id" value="{VALUE}" {STATUS}>
-			{NAME}
-		</label>
-		<br>
-		<!-- END list_block -->
+	<div id="user-list-new" class="fg12 bot">
+        <select name="user_id">
+			<!-- BEGIN list_block -->
+			<option value="{VALUE}" {STATUS}>{NAME}</option>
+			<!-- END list_block -->
+        </select>
 	</div>
 	<div class="fg6">
 		<button type="submit" name="modify" value="{TEXT_MODIFY}" class="{DISPLAY_MODIFY}">
@@ -38,6 +36,23 @@
 	</div>
 </form>
 
+<link href="{WB_URL}/include/select2/css/select2.min.css" rel="stylesheet">
+<style type="text/css">
+	.select2-selection {
+		border: 1px solid #999 !important;
+		background-color: #eee !important;
+		border-radius: 0 !important;
+	}
+	.select2-selection:hover, .select2-selection:focus{
+		border: 1px solid #647086 !important;
+	}
+	.select2-container--default .select2-results__option--highlighted[aria-selected] {
+		background-color: #ccc !important;
+		color: #000 !important;
+	}
+</style>
+
+<script src="{WB_URL}/include/select2/js/select2.js"></script>
 <script>
 	$(document).ready(function(){
 		$("#user-status").click(function() {
@@ -51,6 +66,9 @@
 			$('#user-type').removeClass('red').addClass('green');
 		}
 	});
+
+	$('select').select2();
+
 </script>
 
 <!-- END main_block -->

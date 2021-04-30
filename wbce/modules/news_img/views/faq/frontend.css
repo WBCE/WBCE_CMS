@@ -1,0 +1,190 @@
+/*** default layout ****/
+.mod_nwi_faq {}
+
+.mod_nwi_faq a {
+  text-decoration: none
+}
+
+/*** tags ***/
+.mod_nwi_faq .mod_nwi_tags {
+  margin-top: 25px;
+}
+
+.mod_nwi_faq .mod_nwi_tag {
+  display: inline-block;
+  background-color: #ccc;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.mod_nwi_faq .mod_nwi_tag {
+  background-color: #5ec79e;
+}
+
+.mod_nwi_faq .mod_nwi_tag:nth-of-type(1) {
+  background-color: #887dc2;
+}
+
+.mod_nwi_faq .mod_nwi_tag:nth-of-type(3) {
+  background-color: #49627E;
+}
+
+.mod_nwi_faq .mod_nwi_tag:nth-of-type(2) {
+  background-color: #FFEA97;
+}
+
+.mod_nwi_faq .mod_nwi_tag a {
+  color: #fff;
+}
+
+/*** list page ***/
+.mod_nwi_faq .mod_nwi_teaserpic {
+  float: left;
+  margin-right: 15px;
+}
+
+.mod_nwi_faq .mod_nwi_teaserpic img {
+  border: 25px solid transparent;
+  border-radius: 50%;
+}
+
+.mod_nwi_faq .mod_nwi_metadata {
+  font-size: 75%;
+  font-style: italic;
+}
+
+.mod_nwi_faq .left-block {
+  background-color: #314B68;
+  float: left;
+  color: #fff;
+  padding: 5px;
+  width: 150px;
+  height: 100px;
+  position: relative;
+}
+
+.mod_nwi_faq .left-block span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  height: 50%;
+  padding: 0 8px;
+}
+
+.mod_nwi_faq .left-block:after {
+  display: block;
+  content: "";
+  border: 50px solid #314B68;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  margin-left: 145px;
+  margin-top: -5px;
+}
+
+.mod_nwi_faq .mod_nwi_content_short {
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 15px;
+  overflow: hidden;
+  min-height: 100px;
+  font-size: .9em;
+}
+
+.mod_nwi_faq .mod_nwi_content_short img {
+  float: left;
+  margin-right: 15px;
+}
+
+.mod_nwi_faq .mod_nwi_table,
+.mod_nwi_faq .mod_nwi_table tbody {
+  width: 100%
+}
+
+.mod_nwi_faq .mod_nwi_table td.mod_nwi_table_left,
+.mod_nwi_faq .mod_nwi_table td.mod_nwi_table_center,
+.mod_nwi_faq .mod_nwi_table td.mod_nwi_table_right {
+  width: 33.33%;
+}
+
+.mod_nwi_faq td.mod_nwi_table_left a:before {
+  content: "\0000AB";
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.mod_nwi_faq td.mod_nwi_table_right a:after {
+  content: " \0000BB"
+}
+
+.mod_nwi_faq td.mod_nwi_table_center {
+  text-align: center;
+}
+
+.mod_nwi_faq td.mod_nwi_table_center a:before {
+  content: "\00005E";
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.mod_nwi_faq td.mod_nwi_table_center a:after {
+  content: " \00005E";
+}
+
+.mod_nwi_faq td.mod_nwi_table_right {
+  text-align: right;
+}
+
+.mod_nwi_faq .mod_nwi_tags_header {
+  margin-bottom: 25px;
+}
+
+.mod_nwi_faq .mod_nwi_group {
+  width: 100%;
+  clear: both;
+  margin-top: 15px;
+}
+
+.mod_nwi_faq .mod_nwi_teasertext {}
+
+.mod_nwi_faq .mod_nwi_teasertext h3 {
+  margin: 0 0 0.25em 0;
+  padding: 0;
+}
+
+.mod_nwi_faq .mod_nwi_grouppic {
+  float: right;
+}
+
+.mod_nwi_faq .mod_nwi_grouppic img {
+  width: 150px;
+  height: 150px;
+}
+
+.mod_nwi_faq .mod_nwi_shorttext {
+  padding: 0.5em 0;
+}
+
+.mod_nwi_faq .mod_nwi_spacer {
+  padding: 1em 0;
+  clear: both;
+}
+
+.mod_nwi_faq .mod_nwi_bottom {
+  padding: 0.5em 0;
+}
+
+.mod_nwi_faq div.mod_nwi_readmore {
+  float: right;
+}
+
+.mod_nwi_faq div.mod_nwi_readmore a {
+  display: inline-block;
+  background-color: #314B68;
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 3px;
+}

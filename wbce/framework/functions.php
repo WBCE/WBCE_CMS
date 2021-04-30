@@ -11,13 +11,15 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+if (count(get_included_files()) == 1) {
+    die(header("Location: ../index.php", true, 301));
+}
 
 // Define that this file has been loaded
 define('FUNCTIONS_FILE_LOADED', true);
 
 // needs to be moved to the INSTALL & UPGRADE SCRIPT
-if($database->field_exists('{TP}pages', 'visibility_backup') == false) {
+if ($database->field_exists('{TP}pages', 'visibility_backup') == false) {
     $database->query(
         "ALTER TABLE `{TP}pages` 
             ADD `visibility_backup` VARCHAR(30) NOT NULL 
@@ -27,17 +29,16 @@ if($database->field_exists('{TP}pages', 'visibility_backup') == false) {
 
 /**
  * @brief   recursively remove a non empty directory and all its contents
- * 
- * @param   string $sDirPath  Full path to the directory
- * @param   bool   $empty     true if you want the folder just emptied, but not deleted
- *                            false, or just simply leave it out, the given directory 
+ *
+ * @param string $sDirPath Full path to the directory
+ * @param bool $empty true if you want the folder just emptied, but not deleted
+ *                            false, or just simply leave it out, the given directory
  *                            will be deleted, as well
  * @return  bool list of ro-dirs
  * @from    http://www.php.net/manual/de/function.rmdir.php#98499
  */
 function rm_full_dir($sDirPath, $empty = false)
 {
-
     if (substr($sDirPath, -1) == "/") {
         $sDirPath = substr($sDirPath, 0, -1);
     }
@@ -76,20 +77,20 @@ function rm_full_dir($sDirPath, $empty = false)
 
 /**
  * @brief   returns a recursive list (array) of all subdirectories from a given directory
- * 
+ *
  * example:
  *  /srv/www/httpdocs/wb/media/a/b/c/
  *  /srv/www/httpdocs/wb/media/a/b/d/
- * directory_list('/srv/www/httpdocs/wb/media/') 
+ * directory_list('/srv/www/httpdocs/wb/media/')
  * will return:
  *  /a
  *  /a/b
  *  /a/b/c
  *  /a/b/d
- * 
- * @param   string  $sDirPath     Full path to the directory
+ *
+ * @param string $sDirPath Full path to the directory
  *                                from this dir the recursion will start
- * @param   bool    $show_hidden  if set to TRUE also hidden dirs (.dir) will be shown
+ * @param bool $show_hidden if set to TRUE also hidden dirs (.dir) will be shown
  * @return  array
  */
 function directory_list($sDirPath, $show_hidden = false)
@@ -97,10 +98,13 @@ function directory_list($sDirPath, $show_hidden = false)
     $result_list = array();
     if (is_dir($sDirPath)) {
         $dir = dir($sDirPath); // Open the directory
-        while (false !== $entry = $dir->read()) // loop through the directory
-        {
-            if ($entry == '.' || $entry == '..') {continue;} // Skip pointers
-            if ($entry[0] == '.' && $show_hidden == false) {continue;} // Skip hidden files
+        while (false !== $entry = $dir->read()) { // loop through the directory
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            } // Skip pointers
+            if ($entry[0] == '.' && $show_hidden == false) {
+                continue;
+            } // Skip hidden files
             if (is_dir("$sDirPath/$entry")) {
                 // Add dir and contents to list
                 $result_list = array_merge($result_list, directory_list($sDirPath . '/' . $entry));
@@ -119,9 +123,9 @@ function directory_list($sDirPath, $show_hidden = false)
 
 /**
  * @brief Function to open a directory and add to a dir list
- * 
- * @param   string  $sDirPath  Full path to the directory
- * @param   string  $file_mode   
+ *
+ * @param string $sDirPath Full path to the directory
+ * @param string $file_mode
  * @return  ?
  */
 function chmod_directory_contents($sDirPath, $file_mode)
@@ -133,7 +137,9 @@ function chmod_directory_contents($sDirPath, $file_mode)
         $dir = dir($sDirPath);
         while (false !== $entry = $dir->read()) {
             // Skip pointers
-            if ($entry[0] == '.') {continue;}
+            if ($entry[0] == '.') {
+                continue;
+            }
             // Chmod the sub-dirs contents
             if (is_dir("$sDirPath/$entry")) {
                 chmod_directory_contents($sDirPath . '/' . $entry, $file_mode);
@@ -147,15 +153,15 @@ function chmod_directory_contents($sDirPath, $file_mode)
 }
 
 /**
- * @brief   Scan a given directory for dirs and files. 
- * 
- * usage: 
+ * @brief   Scan a given directory for dirs and files.
+ *
+ * usage:
  * scan_current_dir ($root = '' );
  *
- * @param  string $root    Set a absolute rootpath as string. 
+ * @param string $root Set a absolute rootpath as string.
  *                         If root is empty the current path will be scan.
- * @param  string $search  Set a search pattern for files, 
- *                         If set to empty, search brings all files. * 
+ * @param string $search Set a search pattern for files,
+ *                         If set to empty, search brings all files. *
  * @return array  returns a natsort array with keys 'path' and 'filename'
  *
  */
@@ -196,10 +202,10 @@ if (!function_exists('scan_current_dir')) {
 /**
  * @brief   Function to open a directory and add to a file list
  *
- * @param   string $sDirPath     Full path to the directory 
- * @param   array  $skip  
- * @param   bool   $show_hidden
- * @return  array  
+ * @param string $sDirPath Full path to the directory
+ * @param array $skip
+ * @param bool $show_hidden
+ * @return  array
  *
  */
 function file_list($sDirPath, $skip = array(), $show_hidden = false)
@@ -207,11 +213,16 @@ function file_list($sDirPath, $skip = array(), $show_hidden = false)
     $result_list = array();
     if (is_dir($sDirPath)) {
         $dir = dir($sDirPath); // Open the directory
-        while (false !== ($entry = $dir->read())) // loop through the directory
-        {
-            if ($entry == '.' || $entry == '..')              continue; // Skip pointers
-            if ($entry[0] == '.' && $show_hidden == false)    continue; // Skip hidden files
-            if (sizeof($skip) > 0 && in_array($entry, $skip)) continue; // Check if we to skip anything else
+        while (false !== ($entry = $dir->read())) { // loop through the directory
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            } // Skip pointers
+            if ($entry[0] == '.' && $show_hidden == false) {
+                continue;
+            } // Skip hidden files
+            if (sizeof($skip) > 0 && in_array($entry, $skip)) {
+                continue;
+            } // Check if we to skip anything else
             if (is_file($sDirPath . '/' . $entry)) {
                 // Add files to list
                 $result_list[] = $sDirPath . '/' . $entry;
@@ -228,9 +239,8 @@ function file_list($sDirPath, $skip = array(), $show_hidden = false)
 }
 
 /**
- * @brief   
-
- * @return  array  
+ * @brief
+ * @return  array
  */
 function get_home_folders()
 {
@@ -274,6 +284,7 @@ function get_home_folders()
             }
             return $home_folders;
         }
+
         $home_folders = remove_home_subs('/', $home_folders);
     }
     return $home_folders;
@@ -281,10 +292,10 @@ function get_home_folders()
 
 
 /**
- * @brief  returns a list of directories beyound /wb/media 
+ * @brief  returns a list of directories beyound /wb/media
  *         which are ReadOnly for current user
- * 
- * @param  object &$wb: $wb from frontend or $admin from backend
+ *
+ * @param object &$wb : $wb from frontend or $admin from backend
  * @return array: list of ro-dirs
  */
 function media_dirs_ro(&$wb)
@@ -302,16 +313,16 @@ function media_dirs_ro(&$wb)
         $allow_list[] = $wb->get_home_folder();
     }
     $curr_groups = $wb->get_groups_id(); // get groups of current user
-    
+
     // if current user is in admin-group
-    if (($admin_key = array_search('1', $curr_groups)) !== false) {        
+    if (($admin_key = array_search('1', $curr_groups)) !== false) {
         unset($curr_groups[$admin_key]); // remove admin-group from list
-    
+
         // search for all users where the current user is admin from
         foreach ($curr_groups as $group) {
             $sSql = 'SELECT `home_folder` FROM `{TP}users` '
-                    . 'WHERE (FIND_IN_SET(\'' . $group . '\', `groups_id`) > 0) '
-                    . 'AND `home_folder` <> \'\' AND `user_id` <> ' . $wb->get_user_id();
+                . 'WHERE (FIND_IN_SET(\'' . $group . '\', `groups_id`) > 0) '
+                . 'AND `home_folder` <> \'\' AND `user_id` <> ' . $wb->get_user_id();
             if (($res_hf = $database->query($sSql)) != null) {
                 while ($rec_hf = $res_hf->fetchrow()) {
                     $allow_list[] = $rec_hf['home_folder'];
@@ -332,16 +343,16 @@ function media_dirs_ro(&$wb)
         }
     }
     $full_list = array_diff($full_list, $array);
-    $tmp       = array();
+    $tmp = array();
     $full_list = array_merge($tmp, $full_list);
     return $full_list;
 }
 
 /**
- * @brief  returns a list of directories beyound /wb/media 
+ * @brief  returns a list of directories beyound /wb/media
  *         which are ReadWrite for current user
- * 
- * @param  object &$wb $wb from frontend or $admin from backend
+ *
+ * @param object &$wb $wb from frontend or $admin from backend
  * @return array  list of rw-dirs
  */
 function media_dirs_rw(&$wb)
@@ -370,8 +381,8 @@ function media_dirs_rw(&$wb)
         // search for all users where the current user is admin from
         foreach ($curr_groups as $group) {
             $sSql = 'SELECT `home_folder` FROM `{TP}users` '
-                    . 'WHERE (FIND_IN_SET(\'' . $group . '\', `groups_id`) > 0) '
-                    . 'AND `home_folder` <> \'\' AND `user_id` <> '.$wb->get_user_id();
+                . 'WHERE (FIND_IN_SET(\'' . $group . '\', `groups_id`) > 0) '
+                . 'AND `home_folder` <> \'\' AND `user_id` <> ' . $wb->get_user_id();
             if (($res_hf = $database->query($sSql)) != null) {
                 while ($rec_hf = $res_hf->fetchrow()) {
                     $allow_list[] = $rec_hf['home_folder'];
@@ -392,8 +403,8 @@ function media_dirs_rw(&$wb)
             $x++;
         }
     }
-    $tmp       = array();
-    $array     = array_unique($array);
+    $tmp = array();
+    $array = array_unique($array);
     $full_list = array_merge($tmp, $array);
     unset($array);
     unset($allow_list);
@@ -402,10 +413,10 @@ function media_dirs_rw(&$wb)
 
 /**
  * @brief   Function to create directories
- * 
- * @param   string  $dir_name
- * @param   string  $dir_mode
- * @param   bool    $recursive
+ *
+ * @param string $dir_name
+ * @param string $dir_mode
+ * @param bool $recursive
  * @return  bool
  */
 function make_dir($dir_name, $dir_mode = OCTAL_DIR_MODE, $recursive = true)
@@ -422,8 +433,8 @@ function make_dir($dir_name, $dir_mode = OCTAL_DIR_MODE, $recursive = true)
 
 /**
  * @brief   Function to chmod files and directories
- * 
- * @param   string  $name
+ *
+ * @param string $name
  * @return  bool
  */
 function change_mode($name)
@@ -450,31 +461,30 @@ function change_mode($name)
 
 /**
  * @brief   Function to figure out if a parent of a specific page_id exists
- * 
- * @param   int     $page_id
+ *
+ * @param int $page_id
  * @return  unspec  If parent isn't 0 its ID will be returned
  */
 function is_parent($page_id)
 {
-    $parent = $GLOBALS['database']->get_one('SELECT `parent` FROM `{TP}pages` WHERE `page_id` = '.(int)$page_id);
+    $parent = $GLOBALS['database']->get_one('SELECT `parent` FROM `{TP}pages` WHERE `page_id` = ' . (int)$page_id);
     return (is_null($parent)) ? false : $parent;
-        
 }
 
 /**
  * @brief   Function to work out the level of a specific page
- * 
- * @param   int   $page_id
+ *
+ * @param int $page_id
  * @return  int   The level of the page
  */
 function level_count($page_id)
 {
     global $database;
     // Get page parent
-    $iParentID = $database->get_one('SELECT `parent` FROM `{TP}pages` WHERE `page_id` = '.(int)$page_id);
+    $iParentID = $database->get_one('SELECT `parent` FROM `{TP}pages` WHERE `page_id` = ' . (int)$page_id);
     if ($iParentID > 0) {
         // Get the level of the parent
-        $iLevel = $database->get_one('SELECT `level` FROM `{TP}pages` WHERE `page_id` = '.$iParentID);
+        $iLevel = $database->get_one('SELECT `level` FROM `{TP}pages` WHERE `page_id` = ' . $iParentID);
         return $iLevel + 1;
     } else {
         return 0;
@@ -483,16 +493,16 @@ function level_count($page_id)
 
 /**
  * @brief   Function to work out root parent
- * 
- * @param   int     $page_id
- * @return  unspec  int or array 
+ *
+ * @param int $page_id
+ * @return  unspec  int or array
  */
 function root_parent($page_id)
 {
     global $database;
     // Get page details
-    $rQueryPage = $database->query('SELECT `parent`, `level` FROM `{TP}pages` WHERE `page_id`='.(int)$page_id);
-    $aPageData = $rQueryPage->fetchRow(MYSQL_ASSOC);
+    $rQueryPage = $database->query('SELECT `parent`, `level` FROM `{TP}pages` WHERE `page_id`=' . (int)$page_id);
+    $aPageData = $rQueryPage->fetchRow(MYSQLI_ASSOC);
     if ($aPageData['level'] == 1) {
         return $aPageData['parent'];
     } elseif ($aPageData['parent'] == 0) {
@@ -506,31 +516,31 @@ function root_parent($page_id)
 
 /**
  * @brief   Function to get page title
- * 
- * @param   int     $page_id
+ *
+ * @param int $page_id
  * @return  string  The page title
  */
 function get_page_title($page_id)
 {
-    return $GLOBALS['database']->get_one('SELECT `page_title` FROM `{TP}pages` WHERE `page_id`='.(int)$page_id);
+    return $GLOBALS['database']->get_one('SELECT `page_title` FROM `{TP}pages` WHERE `page_id`=' . (int)$page_id);
 }
 
 /**
  * @brief   Function to get a pages menu title
- * 
- * @param   int     $page_id
+ *
+ * @param int $page_id
  * @return  string  The menu title
  */
 function get_menu_title($page_id)
 {
-    return $GLOBALS['database']->get_one('SELECT `menu_title` FROM `{TP}pages` WHERE `page_id`='.(int)$page_id);
+    return $GLOBALS['database']->get_one('SELECT `menu_title` FROM `{TP}pages` WHERE `page_id`=' . (int)$page_id);
 }
 
 /**
  * @brief   Function to get all parent page titles
- * 
- * @param   int     $iParentID
- * @return  array 
+ *
+ * @param int $iParentID
+ * @return  array
  */
 function get_parent_titles($iParentID)
 {
@@ -544,9 +554,9 @@ function get_parent_titles($iParentID)
 
 /**
  * @brief   Function to get all parent page id's
- * 
- * @param   int     $iParentID
- * @return  array 
+ *
+ * @param int $iParentID
+ * @return  array
  */
 function get_parent_ids($iParentID)
 {
@@ -560,9 +570,9 @@ function get_parent_ids($iParentID)
 
 /**
  * @brief   Function to genereate page trail
- * 
- * @param   int     $page_id
- * @return  array 
+ *
+ * @param int $page_id
+ * @return  array
  */
 function get_page_trail($page_id)
 {
@@ -571,15 +581,15 @@ function get_page_trail($page_id)
 
 /**
  * @brief   Function to get all sub pages id's
- * 
- * @param   int     $iParentID
- * @param   array   $aSubs
- * @return  array 
+ *
+ * @param int $iParentID
+ * @param array $aSubs
+ * @return  array
  */
 function get_subs($iParentID, array $aSubs)
 {
     global $database;
-    $sSql = 'SELECT `page_id` FROM `{TP}pages` WHERE `parent` = '.(int)$iParentID;
+    $sSql = 'SELECT `page_id` FROM `{TP}pages` WHERE `parent` = ' . (int)$iParentID;
     if (($query = $database->query($sSql))) {
         while ($fetch = $query->fetchRow()) {
             $aSubs[] = $fetch['page_id'];
@@ -595,9 +605,9 @@ function get_subs($iParentID, array $aSubs)
 /**
  * @brief   Function as replacement for php's htmlspecialchars()
  *          Will not mangle HTML-entities
- * 
- * @param   string     $sStr
- * @return  string 
+ *
+ * @param string $sStr
+ * @return  string
  */
 function my_htmlspecialchars($sStr)
 {
@@ -611,10 +621,10 @@ function my_htmlspecialchars($sStr)
  * @brief   Convert a string from mixed html-entities/umlauts to pure $charset_out-umlauts
  *          Will replace all numeric and named entities except &gt; &lt; &apos; &quot; &#039; &nbsp;
  *          In case of error the returned string is unchanged, and a message is emitted.
- * 
- * @param   string     $sStr
- * @param   string     $charset_out
- * @return  string 
+ *
+ * @param string $sStr
+ * @param string $charset_out
+ * @return  string
  */
 function entities_to_umlauts($sStr, $charset_out = DEFAULT_CHARSET)
 {
@@ -625,10 +635,10 @@ function entities_to_umlauts($sStr, $charset_out = DEFAULT_CHARSET)
 /**
  * @brief   Will convert a string in $charset_in encoding to a pure ASCII string with HTML-entities.
  *          In case of error the returned string is unchanged, and a message is emitted.
- * 
- * @param   string     $sStr
- * @param   string     $charset_in
- * @return  string 
+ *
+ * @param string $sStr
+ * @param string $charset_in
+ * @return  string
  */
 function umlauts_to_entities($sStr, $charset_in = DEFAULT_CHARSET)
 {
@@ -638,9 +648,9 @@ function umlauts_to_entities($sStr, $charset_in = DEFAULT_CHARSET)
 
 /**
  * @brief   Function to convert a page title to a page filename
- * 
- * @param   string     $sStr
- * @return  string 
+ *
+ * @param string $sStr
+ * @return  string
  */
 function page_filename($sStr)
 {
@@ -648,38 +658,38 @@ function page_filename($sStr)
     $sStr = entities_to_7bit($sStr);
     // Now remove all bad characters
     $aBadChars = array(
-        '\'', 
-        '"', 
-        '`', 
-        '!', 
-        '@', 
-        '#', 
-        '$', 
-        '%', 
-        '^', 
-        '&', 
-        '*', 
-        '=', 
-        '+', 
-        '|', 
-        '/', 
-        '\\', 
-        ';', 
-        ':', 
-        ',', 
-        '?', 
-        '[', 
-        ']', 
-        '<', 
-        '>', 
+        '\'',
+        '"',
+        '`',
+        '!',
+        '@',
+        '#',
+        '$',
+        '%',
+        '^',
+        '&',
+        '*',
+        '=',
+        '+',
+        '|',
+        '/',
+        '\\',
+        ';',
+        ':',
+        ',',
+        '?',
+        '[',
+        ']',
+        '<',
+        '>',
         '{', // in page_filename only
         '}', // in page_filename only
         '(', // in page_filename only
         ')', // in page_filename only
-        
-    //   '~', // in media only
-    //   '<', // in media only
-    //   '>'  // in media only
+
+        //   '~', // in media only
+        //   '<', // in media only
+        //   '>'  // in media only
     );
     $sStr = str_replace($aBadChars, '', $sStr);
     // replace multiple dots in filename to single dot and (multiple) dots at the end of the filename to nothing
@@ -698,28 +708,23 @@ function page_filename($sStr)
 
 /**
  * @brief  Get the path of pages access file
- * 
- * @param  int $iPageID
+ *
+ * @param int $iPageID
  * @return string
  */
-function getAccessFilePath($iPageID){
+function getAccessFilePath($iPageID)
+{
     global $database;
-    $iParentID = $database->get_one("SELECT `parent` FROM `{TP}pages` WHERE `page_id` = ".$iPageID);
-    $sDbLink   = $database->get_one("SELECT `link` FROM `{TP}pages` WHERE `page_id` = ".$iPageID);
-    if ($iParentID == '0') {
-        $sFilePath = WB_PATH.PAGES_DIRECTORY.'/'.page_filename($sDbLink).PAGE_EXTENSION;
-    } else {
-        $sParentLink = $database->get_one('SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$iParentID); 
-        $sFilePath = WB_PATH.PAGES_DIRECTORY.$sParentLink.'/'.page_filename($sDbLink).PAGE_EXTENSION;
-    }
+    $sDbLink = $database->get_one("SELECT `link` FROM `{TP}pages` WHERE `page_id` = " . $iPageID);
+    $sFilePath = WB_PATH . PAGES_DIRECTORY . $sDbLink . PAGE_EXTENSION;
     return $sFilePath;
 }
 
 /**
  * @brief   Function to convert a desired media filename to a clean mediafilename
- * 
- * @param   string     $sStr
- * @return  string 
+ *
+ * @param string $sStr
+ * @return  string
  */
 function media_filename($sStr)
 {
@@ -727,35 +732,35 @@ function media_filename($sStr)
     $sStr = entities_to_7bit($sStr);
     // Now remove all bad characters
     $aBadChars = array(
-        '\'', 
-        '"', 
-        '`', 
-        '!', 
-        '@', 
-        '#', 
-        '$', 
-        '%', 
-        '^', 
-        '&', 
-        '*', 
-        '=', 
-        '+', 
-        '|', 
-        '/', 
-        '\\', 
-        ';', 
-        ':', 
-        ',', 
-        '?', 
-        '[', 
-        ']', 
-        '<', 
-        '>', 
-    //  '{', // in page_filename only
-    //  '}', // in page_filename only
-    //  '(', // in page_filename only
-    //  ')', // in page_filename only
-        
+        '\'',
+        '"',
+        '`',
+        '!',
+        '@',
+        '#',
+        '$',
+        '%',
+        '^',
+        '&',
+        '*',
+        '=',
+        '+',
+        '|',
+        '/',
+        '\\',
+        ';',
+        ':',
+        ',',
+        '?',
+        '[',
+        ']',
+        '<',
+        '>',
+        //  '{', // in page_filename only
+        //  '}', // in page_filename only
+        //  '(', // in page_filename only
+        //  ')', // in page_filename only
+
         '~', // in media only
         '<', // in media only
         '>'  // in media only
@@ -771,9 +776,9 @@ function media_filename($sStr)
 
 /**
  * @brief   Function to work out a page link
- * 
- * @param   string     $sStr
- * @return  string 
+ *
+ * @param string $sStr
+ * @return  string
  */
 if (!function_exists('page_link')) {
     function page_link($sLink)
@@ -784,17 +789,19 @@ if (!function_exists('page_link')) {
 
 /**
  * @brief   Create a new directory and/or protected file in the given directory
- * 
- * @param   string    $sAbsDir
- * @param   bool      $bMakeDir
- * @return  
+ *
+ * @param string $sAbsDir
+ * @param bool $bMakeDir
+ * @return
  */
 function createFolderProtectFile($sAbsDir = '', $bMakeDir = true)
 {
     global $admin, $MESSAGE;
     $retVal = array();
     $wb_path = rtrim(str_replace('\/\\', '/', WB_PATH), '/');
-    if (($sAbsDir == '') || ($sAbsDir == $wb_path)) {return $retVal;}
+    if (($sAbsDir == '') || ($sAbsDir == $wb_path)) {
+        return $retVal;
+    }
 
     if ($bMakeDir == true) {
         // Check to see if the folder already exists
@@ -818,15 +825,15 @@ function createFolderProtectFile($sAbsDir = '', $bMakeDir = true)
 
         $sResponse = $_SERVER['SERVER_PROTOCOL'] . ' 301 Moved Permanently';
         $sContent =
-        '<?php' . "\n" .
-        '// *** This file is generated by WBCE v' . WBCE_VERSION . "\n" .
-        '// *** Creation date: ' . date('c') . "\n" .
-        '// *** Do not modify this file manually' . "\n" .
-        '// *** WBCE will rebuild this file from time to time!!' . "\n" .
-        '// *************************************************' . "\n" .
-        "\t" . 'header(\'' . $sResponse . '\');' . "\n" .
-        "\t" . 'header(\'Location: '.$sIndexTrail.'index.php\');'."\n".
-        '// *************************************************' . "\n";
+            '<?php' . "\n" .
+            '// *** This file is generated by WBCE v' . WBCE_VERSION . "\n" .
+            '// *** Creation date: ' . date('c') . "\n" .
+            '// *** Do not modify this file manually' . "\n" .
+            '// *** WBCE will rebuild this file from time to time!!' . "\n" .
+            '// *************************************************' . "\n" .
+            "\t" . 'header(\'' . $sResponse . '\');' . "\n" .
+            "\t" . 'header(\'Location: ' . $sIndexTrail . 'index.php\');' . "\n" .
+            '// *************************************************' . "\n";
         $sFilename = $sAbsDir . '/index.php';
 
         // write content into file
@@ -845,10 +852,10 @@ function createFolderProtectFile($sAbsDir = '', $bMakeDir = true)
 }
 
 /**
- * @brief   automatically rebuild a protect index.php file 
- * 
- * @param   string    $sDir
- * @return  
+ * @brief   automatically rebuild a protect index.php file
+ *
+ * @param string $sDir
+ * @return
  */
 function rebuildFolderProtectFile($sDir = '')
 {
@@ -874,11 +881,11 @@ function rebuildFolderProtectFile($sDir = '')
 
 /**
  * @brief   Create a new index.php file in the pages directory
- * 
- * @param   string  $sFilename
- * @param   int     $page_id
- * @param   int     $iLevel
- * @return  
+ *
+ * @param string $sFilename
+ * @param int $page_id
+ * @param int $iLevel
+ * @return
  */
 function create_access_file($sFilename, $page_id, $iLevel)
 {
@@ -907,15 +914,15 @@ function create_access_file($sFilename, $page_id, $iLevel)
         $sIndexTrail .= '../';
     }
     $sContent =
-    '<?php' . "\n" .
-    '// *** This file is generated by WBCE v' . WBCE_VERSION . "\n" .
-    '// *** Creation date: ' . date('c') . "\n" .
-    '// *** Do not modify this file manually' . "\n" .
-    '// *** WBCE will rebuild this file from time to time!!' . "\n" .
-    '// *************************************************' . "\n" .
-    "\t" . '$page_id    = ' . (int) $page_id . ';' . "\n" .
-    "\t" . 'require(\'' . $sIndexTrail . 'index.php\');' . "\n" .
-    '// *************************************************' . "\n";
+        '<?php' . "\n" .
+        '// *** This file is generated by WBCE v' . WBCE_VERSION . "\n" .
+        '// *** Creation date: ' . date('c') . "\n" .
+        '// *** Do not modify this file manually' . "\n" .
+        '// *** WBCE will rebuild this file from time to time!!' . "\n" .
+        '// *************************************************' . "\n" .
+        "\t" . '$page_id    = ' . (int)$page_id . ';' . "\n" .
+        "\t" . 'require(\'' . $sIndexTrail . 'index.php\');' . "\n" .
+        '// *************************************************' . "\n";
 
     if (($handle = fopen($sFilename, 'w'))) {
         fwrite($handle, $sContent);
@@ -930,36 +937,36 @@ function create_access_file($sFilename, $page_id, $iLevel)
 
 /**
  * @brief   Work out a file mime-type (if the in-built PHP one is not enabled)
- * 
- * @param   string  $sFilename
+ *
+ * @param string $sFilename
  * @return  string  The corresponding mime-type
  */
 if (!function_exists('mime_content_type')) {
     function mime_content_type($sFilename)
     {
         $aMimeTypes = array(
-            'txt'  => 'text/plain',
-            'htm'  => 'text/html',
+            'txt' => 'text/plain',
+            'htm' => 'text/html',
             'html' => 'text/html',
-            'php'  => 'text/html',
-            'css'  => 'text/css',
-            'js'   => 'application/javascript',
+            'php' => 'text/html',
+            'css' => 'text/css',
+            'js' => 'application/javascript',
             'json' => 'application/json',
-            'xml'  => 'application/xml',
-            'swf'  => 'application/x-shockwave-flash',
-            'flv'  => 'video/x-flv',
+            'xml' => 'application/xml',
+            'swf' => 'application/x-shockwave-flash',
+            'flv' => 'video/x-flv',
 
             // images
-            'png'  => 'image/png',
-            'jpe'  => 'image/jpeg',
+            'png' => 'image/png',
+            'jpe' => 'image/jpeg',
             'jpeg' => 'image/jpeg',
-            'jpg'  => 'image/jpeg',
-            'gif'  => 'image/gif',
-            'bmp'  => 'image/bmp',
-            'ico'  => 'image/vnd.microsoft.icon',
+            'jpg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'bmp' => 'image/bmp',
+            'ico' => 'image/vnd.microsoft.icon',
             'tiff' => 'image/tiff',
-            'tif'  => 'image/tiff',
-            'svg'  => 'image/svg+xml',
+            'tif' => 'image/tiff',
+            'svg' => 'image/svg+xml',
             'svgz' => 'image/svg+xml',
 
             // archives
@@ -972,15 +979,15 @@ if (!function_exists('mime_content_type')) {
             // audio/video
             'mp3' => 'audio/mpeg',
             'mp4' => 'audio/mpeg',
-            'qt'  => 'video/quicktime',
+            'qt' => 'video/quicktime',
             'mov' => 'video/quicktime',
 
             // adobe
             'pdf' => 'application/pdf',
             'psd' => 'image/vnd.adobe.photoshop',
-            'ai'  => 'application/postscript',
+            'ai' => 'application/postscript',
             'eps' => 'application/postscript',
-            'ps'  => 'application/postscript',
+            'ps' => 'application/postscript',
 
             // ms office
             'doc' => 'application/msword',
@@ -992,7 +999,7 @@ if (!function_exists('mime_content_type')) {
             'odt' => 'application/vnd.oasis.opendocument.text',
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
         );
-		
+
         $aTemp = explode('.', $sFilename);
         $ext = strtolower(array_pop($aTemp));
         if (array_key_exists($ext, $aMimeTypes)) {
@@ -1010,10 +1017,10 @@ if (!function_exists('mime_content_type')) {
 
 /**
  * @brief   Generate a thumbnail from an image
- * 
- * @param   string  $source
- * @param   string  $destination
- * @param   int     $size
+ *
+ * @param string $source
+ * @param string $destination
+ * @param int $size
  * @return  bool
  */
 function make_thumb($source, $destination, $size)
@@ -1052,18 +1059,18 @@ function make_thumb($source, $destination, $size)
 /**
  * @brief  Function to work-out a single part of an octal permission value
  *
- * @param  mixed    $octal_value  an octal value as string (i.e. '0777') 
+ * @param mixed $octal_value an octal value as string (i.e. '0777')
  *                                or real octal integer (i.e. 0777 | 777)
- * @param  string   $who          char or string for whom the permission 
+ * @param string $who char or string for whom the permission
  *                                is asked( U[ser] / G[roup] / O[thers] )
- * @param  string   $action       char or string with the requested 
+ * @param string $action char or string with the requested
  *                                action( r[ead..] / w[rite..] / e|x[ecute..] )
  * @return boolean
  */
 function extract_permission($octal_value, $who, $action)
 {
     // Make sure that all arguments are set and $octal_value is a real octal-integer
-    if (($who == '') || ($action == '') || (preg_match('/[^0-7]/', (string) $octal_value))) {
+    if (($who == '') || ($action == '') || (preg_match('/[^0-7]/', (string)$octal_value))) {
         return false; // invalid argument, so return false
     }
     // convert $octal_value into a decimal-integer to be sure having a valid value
@@ -1095,9 +1102,11 @@ function extract_permission($octal_value, $who, $action)
         case 'u':
         case 'U':
             $action_mask <<= 3; // shift left 3 bits
+        // no break
         case 'g':
         case 'G':
             $action_mask <<= 3; // shift left 3 bits
+        // no break
         case 'o':
         case 'O':
             /* NOP */
@@ -1109,37 +1118,37 @@ function extract_permission($octal_value, $who, $action)
 }
 
 /**
- * @brief   Function to delete a page from pageTree, from DB 
+ * @brief   Function to delete a page from pageTree, from DB
  *          and its physical php file from pages directory
- * 
- * @param   int     $page_id
- * @return  
+ *
+ * @param int $page_id
+ * @return
  */
 function delete_page($page_id)
 {
     global $admin, $database, $MESSAGE;
     // Find out more about the page
     $sSql = 'SELECT `page_id`, `menu_title`, `page_title`, `level`, '
-            . '`link`, `parent`, `modified_by`, `modified_when` '
-            . 'FROM `{TP}pages` WHERE `page_id`=' . $page_id;
+        . '`link`, `parent`, `modified_by`, `modified_when` '
+        . 'FROM `{TP}pages` WHERE `page_id`=' . $page_id;
     $results = $database->query($sSql);
     if ($database->is_error()) {
-		$admin->print_error($database->get_error());
-	}
+        $admin->print_error($database->get_error());
+    }
     if ($results->numRows() == 0) {
-		$admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
-	}
-    $aData = $results->fetchRow(MYSQL_ASSOC);
-    $parent     = $aData['parent'];
-    $level      = $aData['level'];
-    $link       = $aData['link'];
+        $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
+    }
+    $aData = $results->fetchRow(MYSQLI_ASSOC);
+    $parent = $aData['parent'];
+    $level = $aData['level'];
+    $link = $aData['link'];
     $page_title = $aData['page_title'];
     $menu_title = $aData['menu_title'];
     // Get the sections that belong to the page
-    $sSql = "SELECT `section_id`, `module` FROM `{TP}sections` WHERE `page_id`=".$page_id;
+    $sSql = "SELECT `section_id`, `module` FROM `{TP}sections` WHERE `page_id`=" . $page_id;
     $query_sections = $database->query($sSql);
     if ($query_sections->numRows() > 0) {
-        while ($section = $query_sections->fetchRow(MYSQL_ASSOC)) {
+        while ($section = $query_sections->fetchRow(MYSQLI_ASSOC)) {
             // Set section id
             $section_id = $section['section_id'];
             // Include the modules delete file if it exists
@@ -1181,9 +1190,9 @@ function delete_page($page_id)
 
 /**
  * @brief   ...
- * 
- * @param   string  $sFilePath  name of the file to read
- * @param   int     $size       number of maximum bytes to read (0 = complete file)
+ *
+ * @param string $sFilePath name of the file to read
+ * @param int $size number of maximum bytes to read (0 = complete file)
  * @return  unspec  The content as string, false on error
  */
 function getFilePart($sFilePath, $size = 0)
@@ -1206,9 +1215,9 @@ function getFilePart($sFilePath, $size = 0)
 /**
  * @brief  replace Placeholder-Tokens with values in a string
  *
- * @param  string  $sString   string with Placeholder-Tokens
- * @param  array   $aReplace  values to replace vars placeholder
- * @param  string  $sHem      The delimiters on both sides that are being used
+ * @param string $sString string with Placeholder-Tokens
+ * @param array $aReplace values to replace vars placeholder
+ * @param string $sHem The delimiters on both sides that are being used
  *                            in PH-Tokens: '[%s]' or '{%s}'. Default is: '{{%s}}'
  * @return string  The string with replaced Placeholder Tokens
  */
@@ -1225,98 +1234,99 @@ function replace_vars($sString = '', &$aReplace = array(), $sHem = '{{%s}}')
 /**
  * @brief  Load module into DB
  *
- * @param  string  $sModulePath   
- * @param  bool    $bInstall     
- * @return 
+ * @param string $sModulePath
+ * @param bool $bInstall
+ * @return
  */
 function load_module($sModulePath, $bInstall = false)
 {
     global $database, $admin, $MESSAGE;
     $retVal = array();
-    if(is_dir($sModulePath) && file_exists($sModulePath.'/info.php'))
-    {
-        require($sModulePath.'/info.php');
-        if(isset($module_name))
-        {
-            if(!isset($module_license)) { $module_license = 'GNU General Public License'; }
-            if(!isset($module_platform) && isset($module_designed_for)) { $module_platform = $module_designed_for; }
-            if(!isset($module_function) && isset($module_type)) { $module_function = $module_type; }
+    if (is_dir($sModulePath) && file_exists($sModulePath . '/info.php')) {
+        require($sModulePath . '/info.php');
+        if (isset($module_name)) {
+            if (!isset($module_license)) {
+                $module_license = 'GNU General Public License';
+            }
+            if (!isset($module_platform) && isset($module_designed_for)) {
+                $module_platform = $module_designed_for;
+            }
+            if (!isset($module_function) && isset($module_type)) {
+                $module_function = $module_type;
+            }
             $module_function = strtolower($module_function);
-            $aData = array( 
-                'directory'   => $database->escapeString($module_directory),
-                'name'        => $database->escapeString($module_name),
+            $aData = array(
+                'directory' => $database->escapeString($module_directory),
+                'name' => $database->escapeString($module_name),
                 'description' => $database->escapeString($module_description),
-                'type'        => 'module', 
-                'function'    => $database->escapeString($module_function),
-                'version'     => $database->escapeString($module_version),
-                'platform'    => $database->escapeString($module_platform),
-                'author'      => $database->escapeString($module_author),
-                'license'     => $database->escapeString($module_license),
+                'type' => 'module',
+                'function' => $database->escapeString($module_function),
+                'version' => $database->escapeString($module_version),
+                'platform' => $database->escapeString($module_platform),
+                'author' => $database->escapeString($module_author),
+                'license' => $database->escapeString($module_license),
             );
             // Check that it doesn't already exist
-            $sSqlwhere = "WHERE `type`='module' AND `directory`='".$module_directory."'";
-            $sSqlCheck  = 'SELECT COUNT(*) FROM `{TP}addons` '.$sSqlwhere;
-            if( $database->get_one($sSqlCheck) ) {
+            $sSqlwhere = "WHERE `type`='module' AND `directory`='" . $module_directory . "'";
+            $sSqlCheck = 'SELECT COUNT(*) FROM `{TP}addons` ' . $sSqlwhere;
+            if ($database->get_one($sSqlCheck)) {
                 $retVal[] = $database->updateRow('{TP}addons', 'directory', $aData);
-            }else{
+            } else {
                 $retVal[] = $database->insertRow('{TP}addons', $aData);
             }
             // Run installation script
-            if($bInstall == true) {
-                if(file_exists($sModulePath.'/install.php')) {
-                    require($sModulePath.'/install.php');
-                        $retVal[] = isset($msg)?:'Info '.$module_name;
+            if ($bInstall == true) {
+                if (file_exists($sModulePath . '/install.php')) {
+                    require($sModulePath . '/install.php');
+                    $retVal[] = isset($msg) ?: 'Info ' . $module_name;
                 }
             }
         }
     }
-	return $retVal;
+    return $retVal;
 }
 
 /**
  * @brief  Load template into DB
  *
- * @param  string  $sTemplatePath   
- * @return 
+ * @param string $sTemplatePath
+ * @return
  */
 function load_template($sTemplatePath)
 {
     global $database, $admin;
     $retVal = false;
-    if(is_dir($sTemplatePath) && file_exists($sTemplatePath.'/info.php'))
-    {
-        require($sTemplatePath.'/info.php');
-        if(isset($template_name))
-        {
-            if(!isset($template_license)) {
-              $template_license = 'GNU General Public License';
+    if (is_dir($sTemplatePath) && file_exists($sTemplatePath . '/info.php')) {
+        require($sTemplatePath . '/info.php');
+        if (isset($template_name)) {
+            if (!isset($template_license)) {
+                $template_license = 'GNU General Public License';
             }
-            if(!isset($template_platform) && isset($template_designed_for)) {
-              $template_platform = $template_designed_for;
+            if (!isset($template_platform) && isset($template_designed_for)) {
+                $template_platform = $template_designed_for;
             }
-            if(!isset($template_function)) {
-              $template_function = 'template';
+            if (!isset($template_function)) {
+                $template_function = 'template';
             }
-            $aData = array( 
-                'directory'   => $database->escapeString($template_directory),
-                'name'        => $database->escapeString($template_name),
+            $aData = array(
+                'directory' => $database->escapeString($template_directory),
+                'name' => $database->escapeString($template_name),
                 'description' => $database->escapeString($template_description),
-                'type'        => 'template',
-                'function'    => $database->escapeString($template_function),
-                'version'     => $database->escapeString($template_version),
-                'platform'    => $database->escapeString($template_platform),
-                'author'      => $database->escapeString($template_author),
-                'license'     => $database->escapeString($template_license)
+                'type' => 'template',
+                'function' => $database->escapeString($template_function),
+                'version' => $database->escapeString($template_version),
+                'platform' => $database->escapeString($template_platform),
+                'author' => $database->escapeString($template_author),
+                'license' => $database->escapeString($template_license)
             );
             // Check that it doesn't already exist
-            $sSqlwhere = "WHERE `type`='template' AND `directory`='".$template_directory."'";
-            $sSqlCheck  = 'SELECT COUNT(*) FROM `{TP}addons` '.$sSqlwhere;
-            if( $database->get_one($sSqlCheck) ) {
+            $sSqlwhere = "WHERE `type`='template' AND `directory`='" . $template_directory . "'";
+            $sSqlCheck = 'SELECT COUNT(*) FROM `{TP}addons` ' . $sSqlwhere;
+            if ($database->get_one($sSqlCheck)) {
                 $retVal = $database->updateRow('{TP}addons', 'directory', $aData);
-            }else{
+            } else {
                 $retVal = $database->insertRow('{TP}addons', $aData);
             }
-            
         }
     }
     return $retVal;
@@ -1326,46 +1336,48 @@ function load_template($sTemplatePath)
 /**
  * @brief  Load language into DB
  *
- * @param  string  $sFilePath  
+ * @param string $sFilePath
  * @return array
  */
 function load_language($sFilePath)
 {
     global $database, $admin;
     $retVal = false;
-    if (file_exists($sFilePath) && preg_match('#^([A-Z]{2}.php)#', basename($sFilePath)))
-    {
+    if (file_exists($sFilePath) && preg_match('#^([A-Z]{2}.php)#', basename($sFilePath))) {
         // require($sFilePath);  it's to large
         // read contents of the template language file into string
-        $data = @file_get_contents(WB_PATH.'/languages/'.str_replace('.php','',basename($sFilePath)).'.php');
+        $data = @file_get_contents(WB_PATH . '/languages/' . str_replace('.php', '', basename($sFilePath)) . '.php');
         // use regular expressions to fetch the content of the variable from the string
-        $language_name        = get_variable_content('language_name', $data, false, false);
-        $language_code        = preg_replace('/^.*([a-zA-Z]{2})\.php$/si', '\1', $sFilePath);
-        $language_author      = get_variable_content('language_author',   $data, false, false);
-        $language_version     = get_variable_content('language_version',  $data, false, false);
-        $language_platform    = get_variable_content('language_platform', $data, false, false);
+        $language_name = get_variable_content('language_name', $data, false, false);
+        $language_code = preg_replace('/^.*([a-zA-Z]{2})\.php$/si', '\1', $sFilePath);
+        $language_author = get_variable_content('language_author', $data, false, false);
+        $language_version = get_variable_content('language_version', $data, false, false);
+        $language_platform = get_variable_content('language_platform', $data, false, false);
         $language_description = get_variable_content('language_platform', $data, false, false);
-        if(isset($language_name))
-        {
-            if(!isset($language_license)) { $language_license = 'GNU General Public License'; }
-            if(!isset($language_platform) && isset($language_designed_for)) { $language_platform = $language_designed_for; }
-            
-            $aData = array( 
-                'directory'   => $language_code,
-                'name'        => $database->escapeString($language_name),
-                'type'        =>'language',
-                'version'     => $database->escapeString($language_version),
-                'platform'    => $database->escapeString($language_platform),
-                'author'      => $database->escapeString($language_author),
+        if (isset($language_name)) {
+            if (!isset($language_license)) {
+                $language_license = 'GNU General Public License';
+            }
+            if (!isset($language_platform) && isset($language_designed_for)) {
+                $language_platform = $language_designed_for;
+            }
+
+            $aData = array(
+                'directory' => $language_code,
+                'name' => $database->escapeString($language_name),
+                'type' => 'language',
+                'version' => $database->escapeString($language_version),
+                'platform' => $database->escapeString($language_platform),
+                'author' => $database->escapeString($language_author),
                 'description' => '',
-                'license'     => $database->escapeString($language_license)
+                'license' => $database->escapeString($language_license)
             );
             // Check that it doesn't already exist
-            $sSqlwhere = "WHERE `type`='language' AND `directory`='".$language_code."'";
-            $sSqlCheck  = 'SELECT COUNT(*) FROM `{TP}addons` '.$sSqlwhere;
-            if( $database->get_one($sSqlCheck) ) {
+            $sSqlwhere = "WHERE `type`='language' AND `directory`='" . $language_code . "'";
+            $sSqlCheck = 'SELECT COUNT(*) FROM `{TP}addons` ' . $sSqlwhere;
+            if ($database->get_one($sSqlCheck)) {
                 $retVal = $database->updateRow('{TP}addons', 'directory', $aData);
-            }else{
+            } else {
                 $retVal = $database->insertRow('{TP}addons', $aData);
             }
         }
@@ -1376,9 +1388,9 @@ function load_language($sFilePath)
 /**
  * @brief  Upgrade Module Data in DB
  *
- * @param  string  $sModDirname 
- * @param  bool    $bUpgrade     
- * @return 
+ * @param string $sModDirname
+ * @param bool $bUpgrade
+ * @return
  */
 function upgrade_module($sModDirname, $bUpgrade = false)
 {
@@ -1386,19 +1398,19 @@ function upgrade_module($sModDirname, $bUpgrade = false)
     $sModulePath = WB_PATH . '/modules/' . $sModDirname;
     if (file_exists($sModulePath . '/info.php')) {
         require $sModulePath . '/info.php';
-        if (isset($module_name)) {			
+        if (isset($module_name)) {
             // Check that the module does already exist
-            $sCheckSql = "SELECT COUNT(*) FROM `{TP}addons` WHERE `directory`='". $sModDirname ."'";
+            $sCheckSql = "SELECT COUNT(*) FROM `{TP}addons` WHERE `directory`='" . $sModDirname . "'";
             if ($database->get_one($sCheckSql)) {
                 // Update in DB
                 $aUpdate = array(
-                    'directory'   => $module_directory,
-                    'version'     => $module_version,
+                    'directory' => $module_directory,
+                    'version' => $new_module_version,
                     'description' => addslashes($module_description),
-                    'platform'    => (!isset($module_platform) && isset($module_designed_for)) ? $module_designed_for : $module_platform,
-                    'author'      => addslashes($module_author),
-                    'license'     => addslashes((!isset($module_license)) ? 'GNU General Public License' : $module_license),
-                    'function'    => strtolower((!isset($module_function) && isset($module_type)) ? $module_type : $module_function),
+                    'platform' => (!isset($module_platform) && isset($module_designed_for)) ? $module_designed_for : $module_platform,
+                    'author' => addslashes($module_author),
+                    'license' => addslashes((!isset($module_license)) ? 'GNU General Public License' : $module_license),
+                    'function' => strtolower((!isset($module_function) && isset($module_type)) ? $module_type : $module_function),
                 );
                 $database->updateRow('{TP}addons', 'directory', $aUpdate);
                 if ($database->is_error()) {
@@ -1418,10 +1430,10 @@ function upgrade_module($sModDirname, $bUpgrade = false)
 /**
  * @brief  Extracts the content of a string variable from a string (save alternative to including files)
  *
- * @param  string  $search                The variable to be looked for 
- * @param  string  $data                  The string to look inside for the variable
- * @param  bool    $striptags             Should tags be stripped from variable content?
- * @param  bool    $convert_to_entities   Should content be converted using htmlentities?
+ * @param string $search The variable to be looked for
+ * @param string $data The string to look inside for the variable
+ * @param bool $striptags Should tags be stripped from variable content?
+ * @param bool $convert_to_entities Should content be converted using htmlentities?
  * @return unspec  string if the var was found, false if not
  */
 function get_variable_content($search, $data, $striptags = true, $convert_to_entities = true)
@@ -1444,8 +1456,8 @@ function get_variable_content($search, $data, $striptags = true, $convert_to_ent
 /**
  * @brief  get the version of specified Addon based on DB entry or info.php file
  *
- * @param  string  $sAddonDirname  like saved in addons.directory
- * @param  bool    $bSource        true reads from database, false from info.php
+ * @param string $sAddonDirname like saved in addons.directory
+ * @param bool $bSource true reads from database, false from info.php
  * @return string  the version as string, if not found returns null
  */
 
@@ -1467,28 +1479,35 @@ function get_module_version($sAddonDirname, $bSource = true)
     }
     return $sAddonVersion;
 }
+
 // deprecated alias of the above function (get_module_version)
 function get_modul_version($sAddonDirname, $bSource = true)
 {
-	return get_module_version($sAddonDirname, $bSource);
+    return get_module_version($sAddonDirname, $bSource);
 }
 
 /**
  * @brief  ...
  *
- * @param   string  $aVarlistCSV: comma seperated list of varnames to move into global space
+ * @param string $aVarlistCSV : comma seperated list of varnames to move into global space
  * @return  bool    false if one of the vars already exists in global space (error added to msgQueue)
  */
 function vars2globals_wrapper($aVarlistCSV)
 {
     $retval = true;
     if ($aVarlistCSV != '') {
+        if (!isset($GLOBALS['ErrorLog'])) {
+            global $ErrorLog;
+            $ErrorLog = new ErrorLog();
+        }
         $aVars = explode(',', $aVarlistCSV);
         foreach ($aVars as $var) {
             if (isset($GLOBALS[$var])) {
-                ErrorLog::write(
+                $ErrorLog->write(
                     'variabe $' . $var . ' already defined in global space!!',
-                    __FILE__, __FUNCTION__, __LINE__
+                    __FILE__,
+                    __FUNCTION__,
+                    __LINE__
                 );
                 $retval = false;
             } else {
@@ -1501,9 +1520,9 @@ function vars2globals_wrapper($aVarlistCSV)
 
 /**
  * @brief   Filter directory traversal more thoroughly, thanks to hal 9000
- * 
- * @param   string  $dir             directory relative to MEDIA_DIRECTORY
- * @param   bool    $with_media_dir  true when to include MEDIA_DIRECTORY
+ *
+ * @param string $dir directory relative to MEDIA_DIRECTORY
+ * @param bool $with_media_dir true when to include MEDIA_DIRECTORY
  * @return  false if directory traversal detected or real path if not
  */
 function check_media_path($directory, $with_media_dir = true)
@@ -1525,8 +1544,8 @@ function check_media_path($directory, $with_media_dir = true)
  * @brief   The urlencode function and rawurlencode are mostly based on RFC 1738.
  *          However, since 2005 the current RFC in use for URIs standard is RFC 3986.
  *          Here is a function to encode URLs according to RFC 3986.
- * 
- * @param   string  $sStr
+ *
+ * @param string $sStr
  * @return  string
  */
 if (!function_exists('url_encode')) {
@@ -1534,24 +1553,24 @@ if (!function_exists('url_encode')) {
     {
         $sStr = html_entity_decode($sStr, ENT_QUOTES, 'UTF-8');
         $aReplacements = array(
-            '%21' => "!", 
-            '%2A' => "*", 
-            '%27' => "'", 
-            '%28' => "(", 
-            '%29' => ")", 
-            '%3B' => ";", 
-            '%3A' => ":", 
-            '%40' => "@", 
-            '%26' => "&", 
-            '%3D' => "=", 
-            '%2B' => "+", 
-            '%24' => "$", 
-            '%2C' => ",", 
-            '%2F' => "/", 
-            '%3F' => "?", 
-            '%25' => "%", 
-            '%23' => "#", 
-            '%5B' => "[", 
+            '%21' => "!",
+            '%2A' => "*",
+            '%27' => "'",
+            '%28' => "(",
+            '%29' => ")",
+            '%3B' => ";",
+            '%3A' => ":",
+            '%40' => "@",
+            '%26' => "&",
+            '%3D' => "=",
+            '%2B' => "+",
+            '%24' => "$",
+            '%2C' => ",",
+            '%2F' => "/",
+            '%3F' => "?",
+            '%25' => "%",
+            '%23' => "#",
+            '%5B' => "[",
             '%5D' => "]",
         );
         return strtr(rawurlencode($sStr), $aReplacements);
@@ -1565,11 +1584,11 @@ if (!function_exists('url_encode')) {
  *          also on environments with a PHP lower than 7.3.0
  *          see also: http://php.net/manual/en/function.is-countable.php
  *
- * @param   unspecified  $uVar The variable you want to check 
+ * @param unspecified $uVar The variable you want to check
  * @return  bool         true or false
  */
 if (!function_exists('is_countable')) {
-    function is_countable($uVar) 
+    function is_countable($uVar)
     {
         return (is_array($uVar) || $uVar instanceof Countable);
     }
@@ -1577,16 +1596,16 @@ if (!function_exists('is_countable')) {
 
 /**
  * @brief   This function displays structured information about a variable
- *          or other expression that includes its type and value. 
- *          It does the same as PHP print_r or var_dump, but does so in 
+ *          or other expression that includes its type and value.
+ *          It does the same as PHP print_r or var_dump, but does so in
  *          a friendly colorized wrapper output
  *
  * Example usage:
- * 
+ *
  *     debug_dump(get_defined_constants());
  *     // will output:
  *     //   The entire array of defined constants
- * 
+ *
  *     $myArray = array('milk', 'honey', 'cinnamon');
  *     debug_dump($myArray, 'my array');
  *     // will output:
@@ -1596,111 +1615,126 @@ if (!function_exists('is_countable')) {
  *              [1] => honey
  *              [2] => cinnamon
  *          )
- * 
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * @author   Christian M. Stefan <stefek@designthings.de>
- * @license  http://www.gnu.org/licenses/gpl-2.0.html
  *
- * @param    unspec  $uVar could be any type of input, a string, 
-                     int, bool, object, array, what have you...
- * @param    string  $sHeading  A heading you want to show above the 
- *                   output. You can also use __LINE__ when using this 
- *                   function several times, so you know where the output 
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * @param unspec $uVar could be any type of input, a string,
+ * int, bool, object, array, what have you...
+ * @param string $sHeading A heading you want to show above the
+ *                   output. You can also use __LINE__ when using this
+ *                   function several times, so you know where the output
  *                   comes from in the file(s)
- * @param    bool    $bUse_var_dump you can display as print_r or var_dump.
+ * @param bool $bUse_var_dump you can display as print_r or var_dump.
  *                   Default is print_r
- * @param    unspec  When debug_dump is called from a Twig template using the
+ * @param unspec  When debug_dump is called from a Twig template using the
  *                   {{ debug_dump() }} function, the name of the used template
  *                   will be passed over this variable
- * @return   string  
+ * @return   string
+ * @license  http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @author   Christian M. Stefan <stefek@designthings.de>
  */
 
-// NOTE: This function will load only if  WB_DEBUG  constant is set to true 
+// NOTE: This function will load only if  WB_DEBUG  constant is set to true
 // otherwise another "empty return" function (below this one) will be load.
 
-function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = false)
+function debug_dump($mVar = '', $sHeading = '', $bUse_var_dump = false, $mTwig = false)
 {
-    
+
     // get Type of variable
-    switch (true){
-        case is_object($mVar): $sType = 'object'; break;                
-        case is_array($mVar):  $sType = 'array';  break;                
-        case is_string($mVar): $sType = 'string'; break;                
-        case is_bool($mVar):   $sType = 'bool';   break;                
-        case is_int($mVar):    $sType = 'int';    break;                
-        case is_scalar($mVar): $sType = 'scalar'; break;                
-        case ($mVar === NULL): $sType = 'NULL';   break;                
-        default: $sType = 'unknown var type';         
+    switch (true) {
+        case is_object($mVar):
+            $sType = 'object';
+            break;
+        case is_array($mVar):
+            $sType = 'array';
+            break;
+        case is_string($mVar):
+            $sType = 'string';
+            break;
+        case is_bool($mVar):
+            $sType = 'bool';
+            break;
+        case is_int($mVar):
+            $sType = 'int';
+            break;
+        case is_scalar($mVar):
+            $sType = 'scalar';
+            break;
+        case ($mVar === null):
+            $sType = 'NULL';
+            break;
+        default:
+            $sType = 'unknown var type';
     }
     $sRetVal = '';
-    $sRetVal .=  '<fieldset class="debug_frame '.$sType.'">';
-    $sRetVal .=  '<p class="heading">';
-    
-    $sCountable = is_countable($mVar) ? ' <i>countable</i>' : '';
-    $sRetVal .=  '<span class="var-type">('.$sType.')'.$sCountable.' </span> '.$sHeading;
-         
-    $sCloseBtn = '<button type="button" class="close"><span aria-hidden="true">&times;</span></button>';    
-    $sCollapse = '<button type="button" class="collapse"><span aria-hidden="true">+</span></button>';
-    $sRetVal .=  $sCloseBtn.$sCollapse.'</p>'; 
+    $sRetVal .= '<fieldset class="debug_frame ' . $sType . '">';
+    $sRetVal .= '<p class="heading">';
 
-    $sRetVal .=  '<div><pre>';
-    $sData    =  '';
-    if((is_array($mVar)) or (!is_array($mVar) && $mVar != '' && !is_bool($mVar) && !is_int($mVar))){
+    $sCountable = is_countable($mVar) ? ' <i>countable</i>' : '';
+    $sRetVal .= '<span class="var-type">(' . $sType . ')' . $sCountable . ' </span> ' . $sHeading;
+
+    $sCloseBtn = '<button type="button" class="close"><span aria-hidden="true">&times;</span></button>';
+    $sCollapse = '<button type="button" class="collapse"><span aria-hidden="true">+</span></button>';
+    $sRetVal .= $sCloseBtn . $sCollapse . '</p>';
+
+    $sRetVal .= '<div><pre>';
+    $sData = '';
+    if ((is_array($mVar)) or (!is_array($mVar) && $mVar != '' && !is_bool($mVar) && !is_int($mVar))) {
         $func = ($bUse_var_dump == true) ? 'var_dump' : 'print_r';
         ob_start();
         $func($mVar);
         $sData .= ob_get_clean();
-    } 
-    if ($mVar === TRUE) {
-        $sData .=  '<span class="keyname">true</span> <i class="str-length">(bool)</i>';
-    } elseif ($mVar === FALSE) {
-        $sData .=  '<span class="keyname">false</span> <i class="str-length">(bool)</i>';
-    } elseif ($mVar === NULL) {
-        $sData .=  '<span class="keyname">NULL</span>';
+    }
+    if ($mVar === true) {
+        $sData .= '<span class="keyname">true</span> <i class="str-length">(bool)</i>';
+    } elseif ($mVar === false) {
+        $sData .= '<span class="keyname">false</span> <i class="str-length">(bool)</i>';
+    } elseif ($mVar === null) {
+        $sData .= '<span class="keyname">NULL</span>';
     } elseif (is_int($mVar)) {
-        $sData .=  '<span class="keyname">'.$mVar.'</span> <i class="str-length">(int)</i>';
-    } 
-    $sRetVal .=  $sData. PHP_EOL .'</pre>';
-    
+        $sData .= '<span class="keyname">' . $mVar . '</span> <i class="str-length">(int)</i>';
+    }
+    $sRetVal .= $sData . PHP_EOL . '</pre>';
+
     $aBackTrace = debug_backtrace()[0];
 
     $sBackTrace = '<p class="backtrace">called in file: <b>'
-            . str_replace(WB_PATH, 'WB_PATH ', $aBackTrace['file'])
-            .'</b><br />on line: <b>'.$aBackTrace['line'].'</b></p>';  
-    if($mTwig != false){
-        $sBackTrace = '<p class="backtrace">called in Twig template file: <b>'.$mTwig.'</b>';  
+        . str_replace(WB_PATH, 'WB_PATH ', $aBackTrace['file'])
+        . '</b><br />on line: <b>' . $aBackTrace['line'] . '</b></p>';
+    if ($mTwig != false) {
+        $sBackTrace = '<p class="backtrace">called in Twig template file: <b>' . $mTwig . '</b>';
     }
-    $sRetVal .= $sBackTrace.'</div><div class="tog_bcktrc" style="display:none">'.
-            str_replace('<br />', ' ', $sBackTrace).'</div></fieldset>';  
+    $sRetVal .= $sBackTrace . '</div><div class="tog_bcktrc" style="display:none">' .
+        str_replace('<br />', ' ', $sBackTrace) . '</div></fieldset>';
 
 
-    // apply RegEx for colorization if the output is an Array or an Object            
-    $aRegEx = array(                
+    // apply RegEx for colorization if the output is an Array or an Object
+    $aRegEx = array(
         0 => array(
-            'find'    => "/\=\>\n/",
+            'find' => "/\=\>\n/",
             'replace' => '=><br><span class="tab"></span>',
-        ), 
+        ),
         1 => array(
-            'find'    => '/\=\>/',
+            'find' => '/\=\>/',
             'replace' => "<span class=\"arrow\">=></span>",
-        ),  
+        ),
         2 => array(
-            'find'    => '#(?<=\[)(.*?)(?=\])#',
+            'find' => '#(?<=\[)(.*?)(?=\])#',
             'replace' => '<span class="keyname">$1</span>',
-        ),     
+        ),
         3 => array(
-            'find'    => '/\[/',
+            'find' => '/\[/',
             'replace' => '<div class="vert-spacer">&nbsp;</div>'
-                       . '<span class="tab"></span><span class="brackets">[</span>',
-        ),                 
+                . '<span class="tab"></span><span class="brackets">[</span>',
+        ),
         4 => array(
-            'find'    => '/\]/',
+            'find' => '/\]/',
             'replace' => '<span class="brackets">]</span>',
-        ),          
+        ),
         5 => array(
-            'find'    => '/(string|array|int)(\()([1-9][0-9]*)(\))/',
+            'find' => '/(string|array|int)(\()([1-9][0-9]*)(\))/',
             'replace' => '<span class="var-type">$1</span><span class="brackets">$2</span>'
-                       . '<span class="str-length">$3</span><span class="brackets">$4</span>',
+                . '<span class="str-length">$3</span><span class="brackets">$4</span>',
         )
     );
 
@@ -1708,13 +1742,13 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = 
 
     // provide stylesheet for the colorization
     $sCssFile = '/templates/%s/css/debug_dump.css';
-    if(is_readable(WB_PATH.sprintf($sCssFile, DEFAULT_THEME))){
-        $sCssFile = WB_URL.sprintf($sCssFile, DEFAULT_THEME);
+    if (is_readable(WB_PATH . sprintf($sCssFile, DEFAULT_THEME))) {
+        $sCssFile = WB_URL . sprintf($sCssFile, DEFAULT_THEME);
     } else {
-        $sCssFile = WB_URL.sprintf($sCssFile, 'theme_fallbacks');
+        $sCssFile = WB_URL . sprintf($sCssFile, 'theme_fallbacks');
     }
-    I::insertCssFile($sCssFile, 'HEAD BTM-', 'debug_dump'); 
-    $sToJs  = "
+    I::insertCssFile($sCssFile, 'HEAD BTM-', 'debug_dump');
+    $sToJs = "
         jQuery(document).ready(function($) {
             $('.debug_frame .close').on( 'click', function( event ) {
                 $( event.target ).closest( 'fieldset.debug_frame' ).slideToggle(150);
@@ -1725,24 +1759,24 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = 
                  $(this).parent().next().next().slideToggle('fast');
 
             }); 
-        });";    
-    I::insertJsCode($sToJs, 'BODY BTM-', 'debug_dump'); 
+        });";
+    I::insertJsCode($sToJs, 'BODY BTM-', 'debug_dump');
 
     echo $sRetVal;
 }
 
 
 /**
- * @brief   With this function you can preg_replace 
+ * @brief   With this function you can preg_replace
  *          an array of RegEx commands on a string
  *
  * Example usage:
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * $aRegEx = array(                
+ * $aRegEx = array(
  *        0 => array(
  *            'find'    => "/\=\>\n/",
  *            'replace' => "=><br /><span class=\"tab\"></span>",
- *        ), 
+ *        ),
  *        1 => array(
  *            'find'    => '/\=\>/',
  *            'replace' => "<span class=\"arrow\">=></span>",
@@ -1751,18 +1785,20 @@ function debug_dump($mVar = '', $sHeading ='', $bUse_var_dump = false, $mTwig = 
  * $sRetVal = do_regex_array($aRegEx, $sRetVal);
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * @author   Christian M. Stefan <stefek@designthings.de>
+ * @param array $aRegEx The array containing RegEx commands
+ * @param string $sStr The string you want to process
+ * @return  string  The processed string
  * @license  http://www.gnu.org/licenses/gpl-2.0.html
  *
- * @param   array   $aRegEx The array containing RegEx commands
- * @param   string  $sStr   The string you want to process
- * @return  string  The processed string
+ * @author   Christian M. Stefan <stefek@designthings.de>
  */
 function do_regex_array($aRegEx, &$sStr)
-{            
-    if(is_array($aRegEx))
-        foreach($aRegEx as $regex)
-            $sStr = preg_replace($regex['find'], $regex['replace'], $sStr); 
+{
+    if (is_array($aRegEx)) {
+        foreach ($aRegEx as $regex) {
+            $sStr = preg_replace($regex['find'], $regex['replace'], $sStr);
+        }
+    }
     return $sStr;
 }
 
@@ -1777,7 +1813,7 @@ function do_regex_array($aRegEx, &$sStr)
  * // will return: http://www.domain.tld/modules/mymodule
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
- * @param   string  $sPath   The path to be translated
+ * @param string $sPath The path to be translated
  * @return  string  The translated string
  */
 function get_url_from_path($sPath)
@@ -1788,35 +1824,37 @@ function get_url_from_path($sPath)
 /**
  * @brief   Get a string between a [tagname] your string [/tagname]
  *
- * @param   string  $sContent The String on wich the process has to be done
- * @param   string  $sTagname The tag name being used
+ * @param string $sContent The String on wich the process has to be done
+ * @param string $sTagname The tag name being used
  * @return  string
  */
 function get_string_between_tags($sContent, $sTagname)
 {
-    if(strpos($sContent, $sTagname.']') !== false){       
+    if (strpos($sContent, $sTagname . ']') !== false) {
         $sRegEx = "#[\s*?$sTagname\b[^>]*](.*?)[/$sTagname\b[^>]*]#s";
-        if(preg_match($sRegEx, $sContent, $aMatches)){
-                return $aMatches[1];
+        if (preg_match($sRegEx, $sContent, $aMatches)) {
+            return $aMatches[1];
         }
     }
     return;
 }
 
 /**
- * @brief   A variant of strpos() with the distinction that it can take an 
+ * @brief   A variant of strpos() with the distinction that it can take an
  *          array of values as needle to match against the haystack;
  *          the needle can be both, an array or a string
  *
- * @param   string  $sHaystack  the string to be checked
- * @param   unspec  $uNeedle    can be array or single string
+ * @param string $sHaystack the string to be checked
+ * @param unspec $uNeedle can be array or single string
  * @return  bool
  */
 function strposm($sHaystack, $uNeedle)
 {
-    if (!is_array($uNeedle)) $uNeedle = array($uNeedle);
-    foreach($uNeedle as $lookup) {
-        if (($pos = strpos($sHaystack, $lookup))!== false){
+    if (!is_array($uNeedle)) {
+        $uNeedle = array($uNeedle);
+    }
+    foreach ($uNeedle as $lookup) {
+        if (($pos = strpos($sHaystack, $lookup)) !== false) {
             return $pos;
         }
     }

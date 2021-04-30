@@ -38,8 +38,16 @@ $t_fonts = file_list(WB_PATH . '/include/captcha/fonts');
 $t_bgs = file_list(WB_PATH . '/include/captcha/backgrounds');
 $fonts = array();
 $bgs = array();
-foreach ($t_fonts as $file) {if (preg_match('/\.ttf/', $file)) {$fonts[] = $file;}}
-foreach ($t_bgs as $file) {if (preg_match('/\.png/', $file)) {$bgs[] = $file;}}
+foreach ($t_fonts as $file) {
+    if (preg_match('/\.ttf/', $file)) {
+        $fonts[] = $file;
+    }
+}
+foreach ($t_bgs as $file) {
+    if (preg_match('/\.png/', $file)) {
+        $bgs[] = $file;
+    }
+}
 
 // Captcha
 $sec_id = '';
@@ -48,27 +56,27 @@ if (isset($_GET['s'])) {
 }
 
 $_SESSION['captcha' . $sec_id] = '';
-mt_srand((double) microtime() * 1000000);
+mt_srand((double)microtime() * 1000000);
 $n = mt_rand(1, 3);
 switch ($n) {
-case 1:
-    $x = mt_rand(1, 9);
-    $y = mt_rand(1, 9);
-    $_SESSION['captcha' . $sec_id] = $x + $y;
-    $cap = "$x+$y";
-    break;
-case 2:
-    $x = mt_rand(10, 20);
-    $y = mt_rand(1, 9);
-    $_SESSION['captcha' . $sec_id] = $x - $y;
-    $cap = "$x-$y";
-    break;
-case 3:
-    $x = mt_rand(2, 10);
-    $y = mt_rand(2, 5);
-    $_SESSION['captcha' . $sec_id] = $x * $y;
-    $cap = "$x*$y";
-    break;
+    case 1:
+        $x = mt_rand(1, 9);
+        $y = mt_rand(1, 9);
+        $_SESSION['captcha' . $sec_id] = $x + $y;
+        $cap = "$x+$y";
+        break;
+    case 2:
+        $x = mt_rand(10, 20);
+        $y = mt_rand(1, 9);
+        $_SESSION['captcha' . $sec_id] = $x - $y;
+        $cap = "$x-$y";
+        break;
+    case 3:
+        $x = mt_rand(2, 10);
+        $y = mt_rand(2, 5);
+        $_SESSION['captcha' . $sec_id] = $x * $y;
+        $cap = "$x*$y";
+        break;
 }
 $text = $cap;
 
@@ -84,7 +92,7 @@ $reload = ImageCreateFromPNG(WB_PATH . '/include/captcha/reload_140_40.png'); //
 if (mt_rand(0, 2) == 0) {
     // 1 out of 3
 
-                                      // draw each character individualy
+    // draw each character individualy
     $image = ImageCreateFromPNG($bg); // background image
     $grey = mt_rand(0, 50);
     $color = ImageColorAllocate($image, $grey, $grey, $grey); // font-color
@@ -97,7 +105,7 @@ if (mt_rand(0, 2) == 0) {
     $y = mt_rand($height - 10, $height - 2);
     do {
         for ($i = 0; $i < strlen($text); $i++) {
-            $res = imagettftext($image, $ttfsize, $angle, $x, $y, $color, $ttf, $text{$i});
+            $res = imagettftext($image, $ttfsize, $angle, $x, $y, $color, $ttf, $text[$i]);
             $angle = mt_rand(-10, 10);
             $x = mt_rand($res[4], $res[4] + 10);
             $y = mt_rand($height - 12, $height - 7);

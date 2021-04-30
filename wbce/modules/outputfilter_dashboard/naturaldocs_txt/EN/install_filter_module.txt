@@ -6,7 +6,7 @@ To add a filter to a module, just add calls to <opf_register_filter()> and
 <opf_unregister_filter()> to that module's !install.php! and !uninstall.php!,
 and add a file with the filter-function to use.
 
-Additionally you may use WebsiteBaker's precheck-system to check that
+Additionally you may use the precheck-system of the module management to check that
 Outputfilter-Dashboard is installed.
 The install script should also cope with being run again after the module has already been installed.
 Possible insert statements for additinoal tables should therefore check if they already exist.

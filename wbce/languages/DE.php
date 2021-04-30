@@ -18,8 +18,8 @@ if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($
 // Set the language information
 $language_code = 'DE';
 $language_name = 'German'; // Deutsch
-$language_version = '3.2';
-$language_platform = '1.3.0';
+$language_version = '3.3';
+$language_platform = '1.4.0';
 $language_author = 'Stefan Braunewell, Matthias Gallas, Florian Meerwinck';
 $language_license = 'GNU General Public License';
 
@@ -76,7 +76,7 @@ $TEXT['BACKUP'] = 'Sichern';
 $TEXT['BACKUP_ALL_TABLES'] = 'komplette Datenbank sichern';
 $TEXT['BACKUP_DATABASE'] = 'Datenbank sichern';
 $TEXT['BACKUP_MEDIA'] = 'Dateien sichern';
-$TEXT['BACKUP_WB_SPECIFIC'] = 'nur WBCE-Tabellen sichern';
+$TEXT['BACKUP_WB_SPECIFIC'] = 'nur Tabellen dieser Website sichern';
 $TEXT['BASIC'] = 'Einfach';
 $TEXT['BLOCK'] = 'Block';
 $TEXT['BUTTON_SEND_TESTMAIL'] = 'E-Mail-Konfiguration testen';
@@ -181,6 +181,7 @@ $TEXT['LANGUAGE'] = 'Sprache';
 $TEXT['LAST_UPDATED_BY'] = 'zuletzt geändert von';
 $TEXT['LENGTH'] = 'Länge';
 $TEXT['LEVEL'] = 'Ebene';
+$TEXT['LICENSE'] = 'Lizenz';
 $TEXT['LINK'] = 'Link';
 $TEXT['LINUX_UNIX_BASED'] = 'Linux/Unix-basierend';
 $TEXT['LIST_OPTIONS'] = 'Auswahlliste';
@@ -216,7 +217,7 @@ $TEXT['MOVE_UP'] = 'Aufwärts verschieben';
 $TEXT['MULTIPLE_MENUS'] = 'Mehrere Menüs';
 $TEXT['MULTISELECT'] = 'Mehrfachauswahl';
 $TEXT['NAME'] = 'Name';
-$TEXT['NEED_CURRENT_PASSWORD'] = 'mit aktuellem Passwort bestätigen';
+$TEXT['NEED_CURRENT_PASSWORD'] = 'Bitte vor dem Absenden des Formulars die Änderungen mit dem aktuellem Passwort bestätigen';
 $TEXT['NEED_TO_LOGIN'] = 'Wollen Sie sich anmelden?';
 $TEXT['NEW_PASSWORD'] = 'Neues Passwort';
 $TEXT['NEW_WINDOW'] = 'Neues Fenster';
@@ -230,6 +231,7 @@ $TEXT['NOT_INSTALLED'] = 'nicht installiert';
 $TEXT['NO_IMAGE_SELECTED'] = 'Kein Bild ausgewählt';
 $TEXT['NO_RESULTS'] = 'Keine Ergebnisse';
 $TEXT['OF'] = 'von';
+$TEXT['OLDWBCE'] = '<b style="color:red">Ihre WBCE-Version ist veraltet! <a href="https://github.com/WBCE/WBCE_CMS/releases" target="_blank">WBCE Releases auf GitHub <i class="fa fa-external-link" aria-hidden="true"></i></a> Sie verwenden: WBCE </b>';
 $TEXT['ON'] = 'am';
 $TEXT['OPEN'] = 'öffnen';
 $TEXT['OPTION'] = 'Option';
@@ -239,7 +241,7 @@ $TEXT['OVERWRITE_EXISTING'] = 'Überschreibe gleichnamige';
 $TEXT['PAGE'] = 'Seite';
 $TEXT['PAGES_DIRECTORY'] = 'Seitenverzeichnis';
 $TEXT['PAGES_PERMISSION'] = 'Seitenberechtigung';
-$TEXT['PAGES_PERMISSIONS'] = 'Seitenerechtigungen';
+$TEXT['PAGES_PERMISSIONS'] = 'Seitenberechtigungen';
 $TEXT['PAGE_EXTENSION'] = 'Dateiendungen';
 $TEXT['PAGE_ICON'] = 'Seitenbild';
 $TEXT['PAGE_ICON_DIR'] = 'Verzeichnis für Seiten-/Menübilder';
@@ -618,24 +620,22 @@ Benutzername: {LOGIN_NAME}
 Passwort: {LOGIN_PASSWORD}
 
 Das bisherige Passwort wurde durch das neue Passwort ersetzt.
-Dass bedeutet dass das alte nicht mehr gültig ist.
 Sollten Sie Fragen oder Probleme mit den neuen Login Daten haben
-sollten Sie das Webseiten-Team oder den Administrator von {LOGIN_WEBSITE_TITLE} kontaktieren.
-Denken Sie daran den Browser Cache zu löschen bevor Sie das neue Paswort verwenden, um unerwartete Probleme zu vermeiden.
+kontaktieren Sie bitte das Webseiten-Team oder den Administrator von {LOGIN_WEBSITE_TITLE}.
 
 ----------------------------------------
 Diese E-Mail wurde automatisch erstellt!';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Hallo {LOGIN_DISPLAY_NAME},
 
-Herzlich willkommen bei {LOGIN_WEBSITE_TITLE}
+Herzlich Willkommen bei {LOGIN_WEBSITE_TITLE}
 
 Ihre Anmeldedaten für {LOGIN_WEBSITE_TITLE} lauten:
 Benutzername: {LOGIN_NAME}
 Passwort: {LOGIN_PASSWORD}
 
 Hinweis:
-Sollten Sie diese Nachricht ohne ihr zutun bekommen haben, bitten wir Sie diese Nachricht zu löschen.
+Sollten Sie diese Nachricht ohne Ihr Zutun bekommen haben, können Sie diese Nachricht einfach löschen.
 
 ----------------------------------------
 Diese E-Mail wurde automatisch erstellt!';
@@ -676,6 +676,7 @@ $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'Das eingegebene Passwort ist zu kurz';
 $MESSAGE['USERS_SAVED'] = 'Der Benutzer wurde erfolgreich gespeichert';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'Der angegebene Benutzername wird bereits verwendet';
 $MESSAGE['USERS_USERNAME_TOO_SHORT'] = 'Der eingegebene Benutzername ist zu kurz';
+$MESSAGE['INVALID_SESSION_NAME'] = 'Die angegebene Sitzungs-ID enthält ungültige Zeichen. Es dürfen nur Kleinbuchstaben, Zahlen, Unter- und Bindestrich verwendet werden';
 
 
 $OVERVIEW['ADMINTOOLS'] = 'Zugriff auf die Admin-Tools...';

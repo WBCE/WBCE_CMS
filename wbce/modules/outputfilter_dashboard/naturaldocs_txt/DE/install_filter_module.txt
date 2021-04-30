@@ -6,7 +6,7 @@ Ist der Filter Teil eines normalen Modules, sind lediglich die Dateien install.p
 des Modules entsprechend um Aufrufe von <opf_register_filter()> und <opf_unregister_filter()> zu erg&auml;nzen,
 und eine Datei mit der Filter-Funktion hinzuzuf&uuml;gen.
 
-Zus&auml;tzlich k&ouml;nnen (und sollten) Sie WebsiteBakers Precheck-System benutzen,
+Zus&auml;tzlich k&ouml;nnen (und sollten) Sie das Precheck-System der Modulverwaltung benutzen,
 um zu pr&uuml;fen ob Outputfilter-Dashboard installiert ist.
 Das Installationsskript sollte auch nach der Installation ein weiteres Mal ausf&uuml;hrbar sein.
 Eventuell einzuf&uuml;gende Tabellen sollten daher auf ihre Existenz bepr&uuml;ft werden:

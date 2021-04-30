@@ -24,9 +24,9 @@ $template->set_var('FTAN', $admin->getFTAN());
 
 // Insert values into template list
 $template->set_block('main_block', 'template_list_block', 'template_list');
-$result = $database->query("SELECT * FROM ".TABLE_PREFIX."addons WHERE type = 'template' order by name");
-if($result->numRows() > 0) {
-    while($addon = $result->fetchRow()) {
+$result = $database->query("SELECT * FROM " . TABLE_PREFIX . "addons WHERE type = 'template' order by name");
+if ($result->numRows() > 0) {
+    while ($addon = $result->fetchRow()) {
         $template->set_var('VALUE', $addon['directory']);
         $template->set_var('NAME', $addon['name']);
         $template->parse('template_list', 'template_list_block', true);
@@ -34,13 +34,13 @@ if($result->numRows() > 0) {
 }
 
 // Insert permissions values
-if($admin->get_permission('templates_install') != true) {
+if ($admin->get_permission('templates_install') != true) {
     $template->set_var('DISPLAY_INSTALL', 'hide');
 }
-if($admin->get_permission('templates_uninstall') != true) {
+if ($admin->get_permission('templates_uninstall') != true) {
     $template->set_var('DISPLAY_UNINSTALL', 'hide');
 }
-if($admin->get_permission('templates_view') != true) {
+if ($admin->get_permission('templates_view') != true) {
     $template->set_var('DISPLAY_LIST', 'hide');
 }
 

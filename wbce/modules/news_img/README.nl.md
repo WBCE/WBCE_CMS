@@ -4,16 +4,16 @@
 Nieuws met afbeeldingen (kort: NWI) maakt het eenvoudig om nieuwspagina's of berichten te maken.
 Het is gebaseerd op de "oude" nieuwsmodule (3.5.12), maar is uitgebreid met verschillende functies:
 - Plaats foto
-- geïntegreerde fotogalerij (metselwerk of Fotorama)
+- geÃ¯ntegreerde fotogalerij (metselwerk of Fotorama)
 - optioneel 2e inhoudsgebied
 - Sorteer artikelen met slepen & neerzetten
-- Verplaatsen / kopiëren van berichten tussen groepen en secties
+- Verplaatsen / kopiÃ«ren van berichten tussen groepen en secties
 - Import van onderwerpen en "Classic" Nieuws
 
-De rudimentaire en onzekere commentaarfunctie van de oude nieuwsmodule is weggelaten; indien nodig kan deze functie worden geïntegreerd met de juiste modules (algemene opmerkingen / eenvoudige opmerkingen of beoordelingen).
+De rudimentaire en onzekere commentaarfunctie van de oude nieuwsmodule is weggelaten; indien nodig kan deze functie worden geÃ¯ntegreerd met de juiste modules (algemene opmerkingen / eenvoudige opmerkingen of beoordelingen).
 
 ## Download
-De module is een kernmodule vanaf WBCE CMS 1.4 en wordt standaard geïnstalleerd. Bovendien is de download beschikbaar in de [WBCE CMS Add-on Repository] (https://addons.wbce.org).
+De module is een kernmodule vanaf WBCE CMS 1.4 en wordt standaard geÃ¯nstalleerd. Bovendien is de download beschikbaar in de [WBCE CMS Add-on Repository] (https://addons.wbce.org).
 
 ## Licentie
 NWI valt onder [GNU General Public License (GPL) v3.0] (http://www.gnu.org/licenses/gpl-3.0.html).
@@ -38,11 +38,11 @@ NWI vereist geen speciale systeemvereisten en werkt ook met oudere WBCE-versies 
 Kort gezegd kan NWI worden gecombineerd met andere modules op een pagina of in een blok, maar dan kan het, net als met elke module die zijn eigen detailpagina's genereert, resultaten bereiken die niet aan de verwachte / gewenste verwachtingen voldoen.
 
 ### foto's in de post
-Voor elk bericht kan een voorbeeldafbeelding worden geüpload, die wordt weergegeven op de overzichtspagina en indien nodig de berichtpagina. Bovendien is het mogelijk om een ??willekeurig aantal afbeeldingen aan een bericht toe te voegen, die worden weergegeven als een fotogalerij. De galerijpresentatie wordt weergegeven als een Fotorama-galerij (miniaturen, volledige breedte afbeelding) of als een maquette galerij (beeldmozaïek).
+Voor elk bericht kan een voorbeeldafbeelding worden geÃ¼pload, die wordt weergegeven op de overzichtspagina en indien nodig de berichtpagina. Bovendien is het mogelijk om een ??willekeurig aantal afbeeldingen aan een bericht toe te voegen, die worden weergegeven als een fotogalerij. De galerijpresentatie wordt weergegeven als een Fotorama-galerij (miniaturen, volledige breedte afbeelding) of als een maquette galerij (beeldmozaÃ¯ek).
 
 Welk galerijscript wordt gebruikt, is ingesteld voor alle berichten in de instellingen van elke sectie.
 
-De galerijafbeeldingen worden geüpload terwijl het bericht wordt opgeslagen en kunnen vervolgens worden onderschriftt, gebruikt of verwijderd.
+De galerijafbeeldingen worden geÃ¼pload terwijl het bericht wordt opgeslagen en kunnen vervolgens worden onderschriftt, gebruikt of verwijderd.
 
 Bij het uploaden van bestanden met dezelfde naam als bestaande afbeeldingen worden de bestaande bestanden niet overschreven, maar de volgende bestanden worden aangevuld met opeenvolgende nummering (bild.jpg, bild_1.jpg, etc.).
 
@@ -51,15 +51,15 @@ Het beheer van de afbeeldingen vindt alleen plaats via de berichtpagina, niet vi
 ### Groepen
 Posts kunnen aan groepen worden toegewezen. Dit heeft enerzijds invloed op de volgorde (de berichten worden gesorteerd op basis van de groep en vervolgens op basis van een nader te specificeren criterium), en aan de andere kant is het mogelijk om onderwerpspecifieke overzichtspagina's te genereren. Deze kunnen dan worden benaderd via de URL van de NWI-pagina met de parameter g? = GROUP_ID, b.v. news.php? G = 2.
 
-Een bericht kan slechts aan één groep worden toegewezen.
+Een bericht kan slechts aan Ã©Ã©n groep worden toegewezen.
 
 Enkele of meerdere berichten kunnen worden gekopieerd en tussen groepen worden verplaatst.
 
 ### importfunctie
-Zolang er geen berichten in de betreffende NWI-sectie zijn geplaatst, berichten van de klassieke nieuwsmodule, kunnen andere NWI-secties evenals onderwerpen automatisch worden geïmporteerd.
+Zolang er geen berichten in de betreffende NWI-sectie zijn geplaatst, berichten van de klassieke nieuwsmodule, kunnen andere NWI-secties evenals onderwerpen automatisch worden geÃ¯mporteerd.
 De pagina-instellingen van de bronpagina worden toegepast. Bij het importeren van Onderwerpen-berichten is handmatige herbewerking echter nog steeds vereist, als de functie "Extra afbeeldingen" werd gebruikt in Onderwerpen.
 
-### Berichten kopiëren / verplaatsen
+### Berichten kopiÃ«ren / verplaatsen
 Vanuit het postoverzicht in de backend kunnen afzonderlijke, meerdere geselecteerde of alle (gemarkeerde) berichten in een sectie worden gekopieerd of gekopieerd of verplaatst tussen verschillende secties (zelfs op verschillende pagina's). Gekopieerde berichten zijn altijd in eerste instantie niet zichtbaar in de frontend (actieve selectie: "nee").
 
 ### Berichten verwijderen
@@ -82,6 +82,8 @@ Toegestane tijdelijke aanduidingen:
 - [PREVIOUS_LINK], "Vorige", s.o.,
 - [OUT_OF], [OF], "x of y",
 - [DISPLAY_PREVIOUS_NEXT_LINKS] "hidden" / "visible", afhankelijk van of paginering vereist is
+- [BACK] URL van de overzichtspagina
+- [TEXT_BACK] "Terug"
 #### na lus
 - [PAGE_TITLE] kop van de pagina,
 - [GROUP_ID] ID van de groep waaraan het bericht is toegewezen, voor berichten zonder groep '0'
@@ -138,7 +140,7 @@ Toegestane tijdelijke aanduidingen:
 
 ### Galerij / Beeldinstellingen
 - ** Afbeeldingengalerij **: selectie van het te gebruiken galerij-script. Houd er rekening mee dat eventuele aanpassingen aan de galerijcode in het veld Berichtinhoud verloren gaan in het geval van een wijziging.
-- ** Afbeelding herhalen **: HTML-code voor de weergave van één afbeelding moet overeenkomen met het respectieve galerij-script
+- ** Afbeelding herhalen **: HTML-code voor de weergave van Ã©Ã©n afbeelding moet overeenkomen met het respectieve galerij-script
 - ** Max. Afbeeldingsgrootte in bytes **: bestandsgrootte per afbeeldingsbestand, waarom dit nu moet worden opgegeven in bytes en niet in leesbare KB of MB, ik weet het gewoon niet
 - ** Het formaat van galerijafbeeldingen aanpassen aan / Grootte miniatuurbreedte x hoogte **: exact hetzelfde. ** nee ** automatische herberekening vindt plaats als er wijzigingen worden aangebracht, dus is het logisch om van tevoren over de gewenste grootte na te denken en de waarde daarna niet opnieuw te wijzigen.
 - ** Uitsnijden **: zie de uitleg op de pagina.

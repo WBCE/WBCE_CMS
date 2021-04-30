@@ -1,10 +1,9 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category  core
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
@@ -43,11 +42,12 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) die(header("Location: ../index.php",TRUE,301));
+if (count(get_included_files()) == 1) die(header("Location: ../index.php", TRUE, 301));
 
-/*
-Class WB extends this class, so all this functions are avainable in class WB
-*/
+/**
+ * Class WB extends this class, so all this functions are avainable in class WB
+ */
+
 class SecureForm
 {
 
@@ -64,7 +64,7 @@ class SecureForm
     private $_page_uid = "";
     private $_page_id = "";
 
-    //additional private data
+    // additional private data
     private $_FTAN = '';
     private $_IDKEYs = array('0' => '0');
     private $_idkey_name = '';
@@ -72,9 +72,10 @@ class SecureForm
     private $_fingerprint = '';
     private $_serverdata = '';
     
-    protected  $_oDb = ''; // Establish class Database object
+    protected $_oDb = ''; // Establish class Database object
 
     /* Construtor */
+
     protected function __construct($mode = self::FRONTEND)
     {
         // Establish class Database object for 
@@ -82,7 +83,7 @@ class SecureForm
         // classes Admin, Wb & Frontend
         // Introduced with WBCE 1.4.0 to save redundancy
         $this->_oDb = $GLOBALS['database'];
-        
+
         // GLOBAL CONFIGURATION, additional constants and stuff
 
         // Secret can contain anything its the base for the secret part of the hash
@@ -136,37 +137,88 @@ class SecureForm
         }
     }
 
-    private function _generate_secret()
+    private function _validate_alalnum($input)
     {
 
-        $secret = $this->_secret;
-        $secrettime = $this->_secrettime;
-
-                                                               // create a different secret every day
-        $TimeSeed = floor(time() / $secrettime) * $secrettime; //round(floor) time() to whole days
-        $DomainSeed = $_SERVER['SERVER_NAME'];                 // generate a numerical from server name.
-
-        $Seed = $TimeSeed . $DomainSeed;
-        $secret .= md5($Seed); //
-
-        $secret .= $this->_secret . $this->_serverdata . session_id();
-        if ($this->_usefingerprint) {$secret .= $this->_browser_fingerprint;}
-
-        return $secret;
-    }
-
-    private function _generate_salt()
-    {
-
-        if (function_exists('microtime')) {
-            list($usec, $sec) = explode(" ", microtime());
-            $salt = (string) ((float) $usec + (float) $sec);
-        } else {
-            $salt = (string) time();
+        # alphanumerical string that starts whith a letter charakter
+        if (preg_match('/^[a-zA-Z][0-9a-zA-Z]+$/u', $input)) {
+            return false;
         }
-        $salt = (string) rand(10000, 99999) . $salt . (string) rand(10000, 99999);
-        return md5($salt);
+
+        return "The given input is not an alphanumeric string.";
     }
+
+    private function _is04($input)
+    {
+
+        # integer value between 0-4
+        if (preg_match('/^[0-4]$/', $input)) {
+            return false;
+        }
+
+        return "The given input is not an integer between 0-4.";
+    }
+
+    private function _browser_fingerprint($encode = true, $fpsalt = "My Fingerprint: ")
+    {
+
+        $fingerprint = $fpsalt;
+
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $fingerprint .= $_SERVER['HTTP_USER_AGENT'];
+        }
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $fingerprint .= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        }
+        //if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])){ $fingerprint .= $_SERVER['HTTP_ACCEPT_ENCODING'];}
+        if (isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
+            $fingerprint .= $_SERVER['HTTP_ACCEPT_CHARSET'];
+        }
+
+        $fingerprint .= $this->_getip($this->_useipblocks);
+
+        if ($encode) {
+            $fingerprint = md5($fingerprint);
+        }
+
+        return $fingerprint;
+    }
+
+    private function _getip($ipblocks = 4)
+    {
+
+        $ip = "";    //Ip address result
+        $cutip = ""; //Ip address cut to limit
+
+        # mabe user is behind a Proxy but we need his real ip address if we got a nice Proxyserver,
+        # it sends us the "HTTP_X_FORWARDED_FOR" Header. Sometimes there is more than one Proxy.
+        # !!!!!! THIS PART WAS NEVER TESTED BECAUSE I ONLY GOT A DIRECT INTERNET CONNECTION !!!!!!
+        # long2ip(ip2long($lastip)) makes sure we got nothing else than an ip into our script ;-)
+        # !!!!! WARNING the 'HTTP_X_FORWARDED_FOR' Part is NOT TESTED Too MUCH!!!!!
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $iplist = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $lastip = array_pop($iplist);
+            $ip .= long2ip(ip2long($lastip));
+        } /* If theres no other supported info we just use REMOTE_ADDR
+        If we have a fiendly proxy supporting  HTTP_X_FORWARDED_FOR its ok to use the full address.
+        But if there is no HTTP_X_FORWARDED_FOR we can  not be sure if its a proxy or whatever, so we use the
+        blocklimit for IP address.
+         */
+        else {
+            $ip = long2ip(ip2long($_SERVER['REMOTE_ADDR']));
+
+            # ipblocks used here defines how many blocks of the ip adress are checked xxx.xxx.xxx.xxx
+            $blocks = explode('.', $ip);
+            for ($i = 0; $i < $ipblocks; $i++) {
+                $cutip .= $blocks[$i] . '.';
+            }
+            $ip = substr($cutip, 0, -1);
+        }
+
+        return $ip;
+    }
+
+    // fake funktion , just exits to avoid error message
 
     private function _generate_fingerprint()
     {
@@ -181,7 +233,9 @@ class SecureForm
 
         if (($clientIp != '') && ($usedOctets > 0)) {
             $ip = explode('.', $clientIp);
-            while (sizeof($ip) > $usedOctets) {array_pop($ip);}
+            while (sizeof($ip) > $usedOctets) {
+                array_pop($ip);
+            }
             $clientIp = implode('.', $ip);
         } else {
             $clientIp = 19;
@@ -191,6 +245,16 @@ class SecureForm
 
         return md5($fingerprint);
     }
+
+    /*
+     * creates selfsigning Formular transactionnumbers for unique use
+     * @access public
+     * @param bool $asTAG: true returns a complete prepared, hidden HTML-Input-Tag (default)
+     *                     false returns an GET argument 'key=value'
+     * @return mixed:      string
+     *
+     * requirements: an active session must not be available but it makes no sense whithout :-)
+     */
 
     private function _generate_serverdata()
     {
@@ -204,7 +268,9 @@ class SecureForm
 
         if (($serverIp != '') && ($usedOctets > 0)) {
             $ip = explode('.', $serverIp);
-            while (sizeof($ip) > $usedOctets) {array_pop($ip);}
+            while (sizeof($ip) > $usedOctets) {
+                array_pop($ip);
+            }
             $serverdata .= implode('.', $ip);
         } else {
             $serverdata .= '7';
@@ -217,19 +283,73 @@ class SecureForm
         return $serverdata;
     }
 
-    // fake funktion , just exits to avoid error message
-    final protected function createFTAN()
-    {}
+    /*
+     * checks received form-transactionnumbers against itself
+     * @access public
+     * @param string $mode: requestmethode POST(default) or GET
+     * @return bool:    true if numbers matches against stored ones
+     *
+     * requirements: no active session must be available but it makes no sense whithout.
+     * this check will prevent from multiple sending a form. history.back() also will never work
+     */
+
+    private function _generate_secret()
+    {
+
+        $secret = $this->_secret;
+        $secrettime = $this->_secrettime;
+
+        // create a different secret every day
+        $TimeSeed = floor(time() / $secrettime) * $secrettime; //round(floor) time() to whole days
+        $DomainSeed = $_SERVER['SERVER_NAME'];                 // generate a numerical from server name.
+
+        $Seed = $TimeSeed . $DomainSeed;
+        $secret .= md5($Seed); //
+
+        $secret .= $this->_secret . $this->_serverdata . session_id();
+        if ($this->_usefingerprint) {
+            $secret .= $this->_browser_fingerprint;
+        }
+
+        return $secret;
+    }
 
     /*
-     * creates selfsigning Formular transactionnumbers for unique use
+     * save values in session and returns a ID-key
      * @access public
-     * @param bool $asTAG: true returns a complete prepared, hidden HTML-Input-Tag (default)
-     *                     false returns an GET argument 'key=value'
-     * @return mixed:      string
+     * @param mixed $value: the value for witch a key shall be generated and memorized
+     * @return string:      a MD5-Key to use instead of the real value
      *
-     * requirements: an active session must not be available but it makes no sense whithout :-)
+     * @requirements: an active session must be available
+     * @description: IDKEY can handle string/numeric/array - vars. Each key is a
      */
+
+    private function _generate_salt()
+    {
+
+        if (function_exists('microtime')) {
+            list($usec, $sec) = explode(" ", microtime());
+            $salt = (string)((float)$usec + (float)$sec);
+        } else {
+            $salt = (string)time();
+        }
+        $salt = (string)rand(10000, 99999) . $salt . (string)rand(10000, 99999);
+        return md5($salt);
+    }
+
+    /*
+     * search for key in session and returns the original value
+     * @access public
+     * @param string $fieldname: name of the POST/GET-Field containing the key or hex-key itself
+     * @param mixed $default: returnvalue if key not exist (default 0)
+     * @param string $request: requestmethode can be POST or GET or '' (default POST)
+     * @return mixed: the original value (string, numeric, array) or DEFAULT if request fails
+     *
+     * @requirements: an active session must be available
+     * @description: each IDKEY can be checked only once. Unused Keys stay in list until the
+     *               session is destroyed.
+     */
+
     final public function getFTAN($as_tag = true)
     {
 
@@ -249,15 +369,8 @@ class SecureForm
         return $this->_tokenname . '=' . $signed;
     }
 
-    /*
-     * checks received form-transactionnumbers against itself
-     * @access public
-     * @param string $mode: requestmethode POST(default) or GET
-     * @return bool:    true if numbers matches against stored ones
-     *
-     * requirements: no active session must be available but it makes no sense whithout.
-     * this check will prevent from multiple sending a form. history.back() also will never work
-     */
+    //helper function
+
     final public function checkFTAN($mode = 'POST')
     {
 
@@ -275,7 +388,7 @@ class SecureForm
 
         if (count($parts) == 2) {
             list($token, $hash) = $parts;
-            if ($hash == sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier'))) ) {
+            if ($hash == sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')))) {
                 $isok = true;
             }
         }
@@ -283,15 +396,8 @@ class SecureForm
         return $isok;
     }
 
-    /*
-     * save values in session and returns a ID-key
-     * @access public
-     * @param mixed $value: the value for witch a key shall be generated and memorized
-     * @return string:      a MD5-Key to use instead of the real value
-     *
-     * @requirements: an active session must be available
-     * @description: IDKEY can handle string/numeric/array - vars. Each key is a
-     */
+    //helper function
+
     public function getIDKEY($value)
     {
 
@@ -311,9 +417,7 @@ class SecureForm
             $_SESSION[$this->_idkey_name][$key]['value'] = $value;
             $_SESSION[$this->_idkey_name][$key]['time'] = time();
             $_SESSION[$this->_idkey_name][$key]['page'] = $this->_page_uid;
-        }
-
-        // if key already exist, try again, dont store as it already been stored
+        } // if key already exist, try again, dont store as it already been stored
         else {
             $key = $this->getIDKEY($value);
         }
@@ -321,18 +425,6 @@ class SecureForm
         return $key;
     }
 
-    /*
-     * search for key in session and returns the original value
-     * @access public
-     * @param string $fieldname: name of the POST/GET-Field containing the key or hex-key itself
-     * @param mixed $default: returnvalue if key not exist (default 0)
-     * @param string $request: requestmethode can be POST or GET or '' (default POST)
-     * @return mixed: the original value (string, numeric, array) or DEFAULT if request fails
-     *
-     * @requirements: an active session must be available
-     * @description: each IDKEY can be checked only once. Unused Keys stay in list until the
-     *               session is destroyed.
-     */
     public function checkIDKEY($fieldname, $default = 0, $request = 'POST', $ajax = false)
     {
 
@@ -343,14 +435,14 @@ class SecureForm
         // set returnvalue to default
         $return_value = $default;
         switch (strtoupper($request)) {
-        case 'POST':
-            $key = isset($_POST[$fieldname]) ? $_POST[$fieldname] : $fieldname;
-            break;
-        case 'GET':
-            $key = isset($_GET[$fieldname]) ? $_GET[$fieldname] : $fieldname;
-            break;
-        default:
-            $key = $fieldname;
+            case 'POST':
+                $key = isset($_POST[$fieldname]) ? $_POST[$fieldname] : $fieldname;
+                break;
+            case 'GET':
+                $key = isset($_GET[$fieldname]) ? $_GET[$fieldname] : $fieldname;
+                break;
+            default:
+                $key = $fieldname;
         }
 
         // key always must match the generated ones
@@ -378,7 +470,37 @@ class SecureForm
         return $return_value;
     }
 
-    //helper function
+    // ADDITIONAL FUNCTIONS needed cause the original ones lack some functionality
+    // all are Copyright Norbert Heimsath, heimsath.org
+    // released under GPLv3  http://www.gnu.org/licenses/gpl.html
+
+    /*
+    Made because ctype_ gives strange results using mb Strings
+     */
+
+    /* @access public
+     * @return void
+     *
+     * @requirements: an active session must be available
+     * @description: remove all entries from IDKEY-Array
+     *
+     */
+    public function clearIDKEY()
+    {
+
+        $this->_IDKEYs = array('0' => '0');
+    }
+
+    //returns false on match and an error if no match
+
+    final protected function createFTAN()
+    {
+    }
+
+    /*
+    Just a function to get User ip even if hes behind a proxy
+     */
+
     private function _timedout($var)
     {
         // First element after a logout is 0 not sure why???....
@@ -395,7 +517,10 @@ class SecureForm
         return true;
     }
 
-    //helper function
+    /*
+    Creates a basic Browser Fingerprint for securing the session and forms.
+     */
+
     private function _fpages($var)
     {
         if ($var['page'] == $this->_page_id) {
@@ -403,106 +528,6 @@ class SecureForm
         }
 
         return true;
-    }
-
-    /* @access public
-     * @return void
-     *
-     * @requirements: an active session must be available
-     * @description: remove all entries from IDKEY-Array
-     *
-     */
-    public function clearIDKEY()
-    {
-
-        $this->_IDKEYs = array('0' => '0');
-    }
-
-    // ADDITIONAL FUNCTIONS needed cause the original ones lack some functionality
-    // all are Copyright Norbert Heimsath, heimsath.org
-    // released under GPLv3  http://www.gnu.org/licenses/gpl.html
-
-    /*
-    Made because ctype_ gives strange results using mb Strings
-     */
-    private function _validate_alalnum($input)
-    {
-
-        # alphanumerical string that starts whith a letter charakter
-        if (preg_match('/^[a-zA-Z][0-9a-zA-Z]+$/u', $input)) {
-            return false;
-        }
-
-        return "The given input is not an alphanumeric string.";
-    }
-
-    //returns false on match and an error if no match
-    private function _is04($input)
-    {
-
-        # integer value between 0-4
-        if (preg_match('/^[0-4]$/', $input)) {return false;}
-
-        return "The given input is not an integer between 0-4.";
-    }
-
-    /*
-    Just a function to get User ip even if hes behind a proxy
-     */
-    private function _getip($ipblocks = 4)
-    {
-
-        $ip = "";    //Ip address result
-        $cutip = ""; //Ip address cut to limit
-
-        # mabe user is behind a Proxy but we need his real ip address if we got a nice Proxyserver,
-        # it sends us the "HTTP_X_FORWARDED_FOR" Header. Sometimes there is more than one Proxy.
-        # !!!!!! THIS PART WAS NEVER TESTED BECAUSE I ONLY GOT A DIRECT INTERNET CONNECTION !!!!!!
-        # long2ip(ip2long($lastip)) makes sure we got nothing else than an ip into our script ;-)
-        # !!!!! WARNING the 'HTTP_X_FORWARDED_FOR' Part is NOT TESTED Too MUCH!!!!!
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $iplist = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            $lastip = array_pop($iplist);
-            $ip .= long2ip(ip2long($lastip));
-        }
-
-        /* If theres no other supported info we just use REMOTE_ADDR
-        If we have a fiendly proxy supporting  HTTP_X_FORWARDED_FOR its ok to use the full address.
-        But if there is no HTTP_X_FORWARDED_FOR we can  not be sure if its a proxy or whatever, so we use the
-        blocklimit for IP address.
-         */
-        else {
-            $ip = long2ip(ip2long($_SERVER['REMOTE_ADDR']));
-
-            # ipblocks used here defines how many blocks of the ip adress are checked xxx.xxx.xxx.xxx
-            $blocks = explode('.', $ip);
-            for ($i = 0; $i < $ipblocks; $i++) {
-                $cutip .= $blocks[$i] . '.';
-            }
-            $ip = substr($cutip, 0, -1);
-        }
-
-        return $ip;
-    }
-
-    /*
-    Creates a basic Browser Fingerprint for securing the session and forms.
-     */
-    private function _browser_fingerprint($encode = true, $fpsalt = "My Fingerprint: ")
-    {
-
-        $fingerprint = $fpsalt;
-
-        if (isset($_SERVER['HTTP_USER_AGENT'])) {$fingerprint .= $_SERVER['HTTP_USER_AGENT'];}
-        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {$fingerprint .= $_SERVER['HTTP_ACCEPT_LANGUAGE'];}
-        //if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])){ $fingerprint .= $_SERVER['HTTP_ACCEPT_ENCODING'];}
-        if (isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {$fingerprint .= $_SERVER['HTTP_ACCEPT_CHARSET'];}
-
-        $fingerprint .= $this->_getip($this->_useipblocks);
-
-        if ($encode) {$fingerprint = md5($fingerprint);}
-
-        return $fingerprint;
     }
 
     //

@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -11,13 +11,17 @@
  */
 
 require_once dirname(__DIR__) . '/config.php';
-$oAccounts = new Accounts();
-foreach ($oAccounts->getLanguageFiles() as $sLangFile) require_once $sLangFile;
 
-// set required page details
-$page_id          = (isset($_SESSION['PAGE_ID']) && ($_SESSION['PAGE_ID'] != '') ? $_SESSION['PAGE_ID'] : 0);
+$oAccounts = new Accounts();
+
+foreach ($oAccounts->getLanguageFiles() as $sLangFile) {
+    require_once $sLangFile;
+}
+
+// Required page details
+$page_id = (isset($_SESSION['PAGE_ID']) && is_numeric($_SESSION['PAGE_ID']) ? $_SESSION['PAGE_ID'] : 0);
 $page_description = '';
-$page_keywords    = '';
+$page_keywords = '';
 define('TEMPLATE', $oAccounts->cfg['signup_template']);
 define('PAGE_ID', $page_id);
 define('ROOT_PARENT', 0);
@@ -27,10 +31,8 @@ define('PAGE_TITLE', $TEXT['SIGNUP']);
 define('MENU_TITLE', $TEXT['SIGNUP']);
 define('MODULE', '');
 define('VISIBILITY', 'public');
-
-// set the page content include file
 define('PAGE_CONTENT', ACCOUNT_TOOL_PATH . '/account/signup_switch.php');
-	
+
 // disable auto authentication
 $auto_auth = false;
 

@@ -4,12 +4,14 @@ Group: Installation des OutputFilter-Dashboard Moduls
 
 Topic: Voraussetzungen
 
-        Website Baker 2.8 oder neuer.
+        Website Baker 2.8 oder neuer oder WBCE
+
+        WBCE ab 1.4 enth&auml;lt OutputFilter-Dashboard bereits als Core-Modul
 
 Topic: Vor der Installation
 
 
-        Vor der Installation von OutputFilter-Dashboard mu&szlig; das alte
+        Vor der Installation von OutputFilter-Dashboard mu&szlig; das uralte
         Frontend-Filter-Admin Modul - wenn vorhanden - deinstalliert werden,
         nicht zu verwechseln mit dem Frontend-Output-Filter!
 
@@ -30,7 +32,7 @@ Topic: Installation
         (see install_module_de.png)
 
 Topic: Nach der Installation
-        *Website Baker ab Version 2.8.3 sp6 und Website Baker Community Edition ab WBCE 1.1 entalten bereits die Anpassungen um Outputfilter Dashboard zu verwenden. Im klassischen Website Baker muss das Outputfilter Dashboard explizit in den Einstellungen vom Frontend Output Filter aktiviert werden. Au&szlig;erdem funktionieren im klassischen Website Baker die Modulspezifischen Filter nicht ohne Core-Anpassungen. Daf&uuml;r ist nach wie vor die Anpassung der Datei wb/framework/frontend.functions.php (siehe unten) erforderlich.*
+        *Website Baker ab Version 2.8.3 sp6 und WBCE ab Version 1.1 entalten bereits die Anpassungen um Outputfilter Dashboard zu verwenden.* *Im klassischen Website Baker muss das Outputfilter Dashboard explizit in den Einstellungen vom Frontend Output Filter aktiviert werden.* *Au&szlig;erdem funktionieren im klassischen Website Baker die Modulspezifischen Filter nicht ohne Core-Anpassungen.* *Daf&uuml;r ist nach wie vor die Anpassung der Datei wb/framework/frontend.functions.php (siehe unten) erforderlich.*
 
         F&uuml;r &auml;ltere Versionen m&uuml;ssen noch zwei "Core"-Dateien angepa&szlig;t werden.
 

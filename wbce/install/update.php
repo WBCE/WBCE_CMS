@@ -10,15 +10,15 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/*
-////////////////////////////////////////////////////////////
-Functions Section
-This needs to stay up here !!!
-////////////////////////////////////////////////////////////
-*/
+/*****************************
+ * Functions Section
+ * This needs to stay up here !!!
+ *****************************/
 
-if (!defined("WB_UPGRADE_SCRIPT"))define ("WB_UPGRADE_SCRIPT", true) ;
- 
+if (!defined("WB_UPGRADE_SCRIPT")) {
+    define("WB_UPGRADE_SCRIPT", true);
+}
+
 // function to extract var/value-pair from DB
 function db_get_key_value($table, $key)
 {
@@ -31,7 +31,9 @@ function db_get_key_value($table, $key)
 // function to add a var/value-pair into settings-table
 function db_add_key_value($key, $value)
 {
-    global $database;global $OK;global $FAIL;
+    global $database;
+    global $OK;
+    global $FAIL;
     $table = TABLE_PREFIX . 'settings';
     $query = $database->query("SELECT value FROM $table WHERE name = '$key' LIMIT 1");
     if ($query->numRows() > 0) {
@@ -39,7 +41,7 @@ function db_add_key_value($key, $value)
         return true;
     } else {
         $database->query("INSERT INTO $table (name,value) VALUES ('$key', '$value')");
-        echo ($database->is_error() ? $database->get_error() . '<br />' : '');
+        echo($database->is_error() ? $database->get_error() . '<br />' : '');
         $query = $database->query("SELECT value FROM $table WHERE name = '$key' LIMIT 1");
         if ($query->numRows() > 0) {
             echo "$key: $OK.<br />";
@@ -54,15 +56,17 @@ function db_add_key_value($key, $value)
 // function to add a new field into a table
 function db_add_field($field, $table, $desc)
 {
-    global $database;global $OK;global $FAIL;
+    global $database;
+    global $OK;
+    global $FAIL;
     $table = TABLE_PREFIX . $table;
     $query = $database->query("DESCRIBE $table '$field'");
     if ($query->numRows() == 0) {
         // add field
         $query = $database->query("ALTER TABLE $table ADD $field $desc");
-        echo ($database->is_error() ? $database->get_error() . '<br />' : '');
+        echo($database->is_error() ? $database->get_error() . '<br />' : '');
         $query = $database->query("DESCRIBE $table '$field'");
-        echo ($database->is_error() ? $database->get_error() . '<br />' : '');
+        echo($database->is_error() ? $database->get_error() . '<br />' : '');
         if ($query->numRows() > 0) {
             echo "'$field' added. $OK.<br />";
         } else {
@@ -122,7 +126,8 @@ function check_wb_tables()
     return $all_tables;
 }
 
-/* display a status message on the screen
+/**
+ * display a status message on the screen
  * @param string $message: the message to show
  * @param string $class:   kind of message as a css-class
  * @param string $element: witch HTML-tag use to cover the message
@@ -137,29 +142,36 @@ function status_msg($message, $class = 'grey', $element = 'span')
     echo $msg;
 }
 
-/*
-////////////////////////////////////////////////////////////
-Functions Section END
-////////////////////////////////////////////////////////////
-*/
+/*****************************
+ * Functions Section END
+ *****************************/
 
 // include required scripts and setup admin object
-define ("WB_SECFORM_TIMEOUT", 7200); // versions bevore 2.8.2 do not have this value set so its needed
+define("WB_SECFORM_TIMEOUT", 7200); // versions bevore 2.8.2 do not have this value set so its needed
 
 @require_once '../config.php';
+
+if (isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confirmed') {
+    if (defined('DB_PORT')) {
+        $port = DB_PORT;
+    } else {
+        $port = ini_get('mysqli.default_port');
+    }
+
+    $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, $port);
+    if ($mysqli->connect_error) {
+        die('Error : (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
+    }
+    $result1 = $mysqli->query('DROP TABLE IF EXISTS `{TP}dbsessions`');
+}
+
 
 require_once WB_PATH . '/framework/functions.php';
 require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Addons', 'modules', false, false);
 
 // database tables included in package
-$table_list = array('settings', 'groups', 'addons', 'pages', 'sections', 'search', 'users', 'mod_droplets', 'mod_outputfilter_dashboard', 'mod_miniform','mod_wbstats_day', 'mod_menu_link', 'blocking');
-/*
-$table_list = array (
-    'settings','groups','addons','pages','sections','search','users', 'mod_captcha_control','mod_code','mod_droplets','mod_form_fields', 'mod_form_settings','mod_form_submissions',
-    'mod_jsadmin','mod_menu_link', 'mod_news_comments','mod_news_groups','mod_news_posts','mod_news_settings', 'mod_output_filter','mod_wrapper','mod_wysiwyg'
-);
-*/
+$table_list = array('addons', 'blocking', 'groups', 'pages', 'search', 'sections', 'settings', 'users', 'mod_droplets', 'mod_menu_link', 'mod_miniform', 'mod_news_img_posts', 'mod_outputfilter_dashboard', 'mod_sitemap', 'mod_wbstats_day');
 
 $OK = ' <span class="good">OK</span> ';
 $FAIL = ' <span class="error">FAILED</span> ';
@@ -168,6 +180,8 @@ $stepID = 1;
 
 // removes old folders
 $dirRemove = array(
+    '[ROOT]/config/',
+    '[ROOT]/log/',
     '[ACCOUNT]/email_templates/',
     '[ACCOUNT]/functions/',
     '[ACCOUNT]/languages/',
@@ -176,7 +190,12 @@ $dirRemove = array(
     '[ADMIN]/pages/page_tree/icons/',
     '[ADMIN]/themes/',
     '[INCLUDE]/phpmailer/',
+    '[INCLUDE]/Sensio/Twig/lib/',
+    '[MODULES]/ckeditor/ckeditor/filemanager/',
+    '[MODULES]/ckeditordev/ckeditor/filemanager/',
+    '[MODULES]/el_finder/',
     '[MODULES]/output_filter/',
+    '[MODULES]/pagecloner/',
     '[MODULES]/user_search/',
     '[TEMPLATE]/advancedThemeWbFlat/',
     '[TEMPLATE]/argos_theme/',
@@ -188,32 +207,50 @@ $dirRemove = array(
     '[TEMPLATE]/wbce_flat_theme/jquery/jqueryNiceFileInput/'
 );
 
-// files removed with 1.1 or before
+// files removed
 $filesRemove['0'] = array(
+    '[ROOT]/config.php.new',
+    '[ROOT]/htaccess.txt',
+    '[ACCOUNT]/Accounts.cfg.php',
+    '[ACCOUNT]/check_details.php',
+    '[ACCOUNT]/check_email.php',
+    '[ACCOUNT]/check_password.php',
+    '[ACCOUNT]/details.php',
+    '[ACCOUNT]/email.php',
+    '[ACCOUNT]/forgot_form.php',
+    '[ACCOUNT]/frontend.css',
+    '[ACCOUNT]/login_form.php',
+    '[ACCOUNT]/password.php',
+    '[ACCOUNT]/preferences_form.php',
+    '[ACCOUNT]/signup_form.inc.php',
+    '[ACCOUNT]/signup_form.php',
+    '[ACCOUNT]/signup_switch.php',
+    '[ACCOUNT]/signup2.php',
+    '[ACCOUNT]/template.html',
+    '[ACCOUNT]/template.php',
+    '[ADMIN]/media/browse.php',
+    '[ADMIN]/media/create.php',
+    '[ADMIN]/media/delete.php',
+    '[ADMIN]/media/dse.php',
+    '[ADMIN]/media/MediaBlackList',
+    '[ADMIN]/media/MediaWhiteList',
+    '[ADMIN]/media/nopreview.jpg',
+    '[ADMIN]/media/overlib.js',
+    '[ADMIN]/media/parameters.php',
+    '[ADMIN]/media/rename.php',
+    '[ADMIN]/media/rename2.php',
+    '[ADMIN]/media/resize_img.php',
+    '[ADMIN]/media/setparameter.php',
+    '[ADMIN]/media/thumb.php',
+    '[ADMIN]/media/upload.php',
     '[ADMIN]/preferences/details.php',
     '[ADMIN]/preferences/email.php',
     '[ADMIN]/preferences/password.php',
+    '[FRAMEWORK]/class.wbmailer.php',
+    '[FRAMEWORK]/PasswordHash.php',
     '[FRAMEWORK]/SecureForm.mtab.php',
-    '[MODULES]/SecureFormSwitcher/FTAN_SUPPORTED',
-    '[MODULES]/SecureFormSwitcher/files/SecureForm.mtab.php',
-    '[MODULES]/SecureFormSwitcher/htt/help.png',
-    '[MODULES]/SecureFormSwitcher/htt/switchform.htt',
-    '[MODULES]/SecureFormSwitcher/language_load.php',
-    '[MODULES]/captcha_control/FTAN_SUPPORTED',
-    '[MODULES]/captcha_control/install_struct.sql'
-);
-
-// files removed with 1.2
-$filesRemove['1'] = array(
-    '[INCLUDE]/jquery/MIT-LICENSE.txt',
+    '[INCLUDE]Sensio/Twig/TwigConnect.php',
     '[INCLUDE]/jquery/GPL-LICENSE.txt',
-    '[INCLUDE]/jquery/version.txt',
-    '[INCLUDE]/jquery/jquery-pngFix.js',
-    '[INCLUDE]/jquery/jquery-min132.js',
-    '[INCLUDE]/jquery/jquery-min161.js',
-    '[INCLUDE]/jquery/jquery-min164.js',
-    '[INCLUDE]/jquery/jquery-min170.js',
-    '[INCLUDE]/jquery/jquery-ui.css',
     '[INCLUDE]/jquery/images/ui-anim_basic_16x16.gif',
     '[INCLUDE]/jquery/images/ui-bg_flat_0_aaaaaa_40x100.png',
     '[INCLUDE]/jquery/images/ui-bg_flat_75_ffffff_40x100.png',
@@ -227,39 +264,24 @@ $filesRemove['1'] = array(
     '[INCLUDE]/jquery/images/ui-icons_2e83ff_256x240.png',
     '[INCLUDE]/jquery/images/ui-icons_454545_256x240.png',
     '[INCLUDE]/jquery/images/ui-icons_888888_256x240.png',
-    '[INCLUDE]/jquery/images/ui-icons_cd0a0a_256x240.png'
-);
-
-// files removed with 1.3.x
-$filesRemove['2'] = array(
-    '[ROOT]/config.php.new',
-    '[ROOT]/htaccess.txt',
-    '[ACCOUNT]/template.html',
-    '[LANGUAGES]/SE.php',
-    '[MODULES]/pagecloner/template.html',
-    '[ACCOUNT]/details.php',
-    '[ACCOUNT]/email.php',
-    '[ACCOUNT]/frontend.css',
-    '[ACCOUNT]/password.php',
-    '[ACCOUNT]/signup2.php',
-    '[ACCOUNT]/template.php'
-);
-
-// files removed with 1.4
-$filesRemove['3'] = array(
-    '[ACCOUNT]/signup_form.inc.php',
-    '[ACCOUNT]/signup_form.php',
-    '[ACCOUNT]/signup_switch.php',
-    '[ACCOUNT]/Accounts.cfg.php',
-    '[ACCOUNT]/check_details.php',
-    '[ACCOUNT]/check_email.php',
-    '[ACCOUNT]/check_password.php',
-    '[ACCOUNT]/forgot_form.php',
-    '[ACCOUNT]/login_form.php',
-    '[ACCOUNT]/preferences_form.php',
-    '[FRAMEWORK]/class.wbmailer.php',
-    '[FRAMEWORK]/PasswordHash.php',
+    '[INCLUDE]/jquery/images/ui-icons_cd0a0a_256x240.png',
     '[INCLUDE]/jquery/jquery-min.legacy.js',
+    '[INCLUDE]/jquery/jquery-min132.js',
+    '[INCLUDE]/jquery/jquery-min161.js',
+    '[INCLUDE]/jquery/jquery-min164.js',
+    '[INCLUDE]/jquery/jquery-min170.js',
+    '[INCLUDE]/jquery/jquery-pngFix.js',
+    '[INCLUDE]/jquery/jquery-ui.css',
+    '[INCLUDE]/jquery/MIT-LICENSE.txt',
+    '[INCLUDE]/jquery/version.txt',
+    '[LANGUAGES]/SE.php',
+    '[MODULES]/captcha_control/FTAN_SUPPORTED',
+    '[MODULES]/captcha_control/install_struct.sql',
+    '[MODULES]/SecureFormSwitcher/files/SecureForm.mtab.php',
+    '[MODULES]/SecureFormSwitcher/FTAN_SUPPORTED',
+    '[MODULES]/SecureFormSwitcher/htt/help.png',
+    '[MODULES]/SecureFormSwitcher/htt/switchform.htt',
+    '[MODULES]/SecureFormSwitcher/language_load.php',
     '[TEMPLATE]/wbce_flat_theme/css/themeextended.css',
     '[TEMPLATE]/wbce_flat_theme/images/preloader_blue.gif',
     '[TEMPLATE]/wbce_flat_theme/images/preloader_red.gif',
@@ -269,34 +291,34 @@ $filesRemove['3'] = array(
 
 // check existing tables
 $all_tables = check_wb_tables();
-
+// print_r( $all_tables);
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8"/>
 <title>WBCE CMS Update Script</title>
-<link href="normalize.css" rel="stylesheet" type="text/css" />
-<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+<link href="normalize.css" rel="stylesheet" type="text/css"/>
+<link href="stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="body">
     <table class="header">
         <tbody>
             <tr>
-                <td><img class="logo" src="logo.png" alt="WBCE CMS Logo" />&nbsp;<h1>Welcome to the Update Script</h1></td>
+                <td><img class="logo" src="logo.png" alt="WBCE CMS Logo"/>&nbsp;<h1>Welcome to the Update Script</h1></td>
             </tr>
         </tbody>
     </table>
-    <table class="step1" >
+    <table class="step1">
         <thead>
             <tr>
                 <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Backup your files !!'; ?> </th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><?php
+        <tr>
+            <td><?php
 // extract previous WBCE version from DB (if exists)
 $old_wbce_version = array(
     'VERSION' => db_get_key_value('settings', 'wbce_version'),
@@ -311,10 +333,12 @@ $old_wb_version = array(
 );
 
 // check if we update from WBCE or WB-classic
-    if (!is_null($old_wbce_version['VERSION'])) {
+if (!is_null($old_wbce_version['VERSION'])) {
+
     // we update from an older WBCE version
     $oldVersion = 'WBCE v' . $old_wbce_version['VERSION'] . ' (' . $old_wbce_version['TAG'] . ')';
 } else {
+
     // we update from WB-classic, make sure that WB-classic is 2.7 or higher
     if (version_compare($old_wb_version['VERSION'], '2.7', '<')) {
         status_msg('<br />WebsiteBaker version below 2.7 can´t be updated to WBCE.<br />Please update your WB version to 2.7 before upgrading to WBCE in a second step!', 'warning', 'div');
@@ -328,43 +352,50 @@ $old_wb_version = array(
 $newVersion = 'WBCE v' . NEW_WBCE_VERSION . ' (' . NEW_WBCE_TAG . ')';
 
 // set addition settings if not exists, otherwise update will be breaks
-if (!defined('WB_SP')) {define('WB_SP', '');}
-if (!defined('WB_REVISION')) {define('WB_REVISION', '');}
+if (!defined('WB_SP')) {
+    define('WB_SP', '');
+}
+if (!defined('WB_REVISION')) {
+    define('WB_REVISION', '');
+}
 
 ?>
-<p>This script updates <strong> <?php echo $oldVersion;?></strong> to <strong> <?php echo $newVersion?> </strong>.</p>
+<p>This script updates <strong> <?php echo $oldVersion; ?></strong> to
+<strong> <?php echo $newVersion ?> </strong>.</p>
 <?php
 
 // Check if disclaimer was accepted
 if (!(isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] == 'confirmed')) {
 ?>
 
-<br /><p>The update script modifies the existing database to reflect the changes introduced with the new version.</p>
-<p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>MySQL database</strong> before proceeding.</p><br />
+<br/><p>The update script modifies the existing database to reflect the changes introduced with the new version.</p>
+<p>It is highly recommended to <strong>create a manual backup</strong> of the entire <strong>/pages folder</strong> and the <strong>database</strong> before proceeding.</p><br/>
 
-<form name="send" action="<?php echo $_SERVER['SCRIPT_NAME'];?>" method="post">
+<form name="send" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="post">
     <pre>DISCLAIMER: The WBCE update script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. One needs to confirm that a manual backup of the /pages folder (including all files and subfolders contained in it) and backup of the entire WBCE database was created before you can proceed.</pre>
-    <br />
-    <input name="backup_confirmed" type="checkbox" value="confirmed" />
-    &nbsp;I confirm that a manual backup of the /pages folder and the MySQL database was created. <br />
+    <br/>
+    <input name="backup_confirmed" type="checkbox" value="confirmed"/>
+    &nbsp;I confirm that a manual backup of the /pages folder and the database was created.
+    <br/>
 
     <div class="warning">
-    <p>You need to confirm that you have created a manual backup of the /pages directory and the MySQL database before you can proceed.</p>
-    </div><br />
+        <p>You need to confirm that you have created a manual backup of the /pages directory and the database before you can proceed.</p>
+    </div>
+    <br/>
     <p class="center">
-        <input name="send" type="submit" value="Start update script" />
+        <input name="send" type="submit" value="Start update script"/>
     </p>
 </form>
-<br />
+<br/>
 <?php
 echo '</td></tr></tbody></table></div></body></html>';
 exit();
 }
-?></td>
+                ?></td>
             </tr>
         </tbody>
     </table>
-    <table class="step2" >
+    <table class="step2">
         <thead>
             <tr>
                 <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Updating database entries and modules'; ?> </th>
@@ -374,69 +405,74 @@ exit();
             <tr>
                 <td><?php
 
-
-
-/*********************************************************************
-* First of all Create Database Tables required for the current version
-*/
+/**********************************************************
+ * First of all Create Database Tables required for the current version
+ */
 
 echo "Ensure the needed database tables are there<br />";
 $sFileName = 'install_struct.sql';
-$sFile = dirname(__FILE__).'/'.$sFileName;
+$sFile = dirname(__FILE__) . '/' . $sFileName;
 if (is_readable($sFile)) {
     if (!$database->SqlImport($sFile, TABLE_PREFIX)) {
-	echo (__LINE__ .": Unable to read import 'install/".$sFileName."'".$database->get_error().'<br />');
+        echo(__LINE__ . ": Unable to read import 'install/" . $sFileName . "'" . $database->get_error() . '<br />');
     }
 } else {
-    if(file_exists($sFile)){
-        echo (__LINE__ .": Unable to read file 'install/".$sFileName."'<br />");
-    }else{
-        echo (__LINE__ .": File 'install/".$sFileName."' doesn't exist!<br />");
+    if (file_exists($sFile)) {
+        echo(__LINE__ . ": Unable to read file 'install/" . $sFileName . "'<br />");
+    } else {
+        echo(__LINE__ . ": File 'install/" . $sFileName . "' doesn't exist!<br />");
     }
 }
 
-
 /**********************************************************
-* Adding field default_theme to settings table
-*/
+ * Adding field default_theme to settings table
+ */
 
-echo "Set default_theme<br />";
+echo "<br />Set default_theme<br />";
 Settings::Set('default_theme', $DEFAULT_THEME);
-if (defined("WB_SECFORM_TIMEOUT"))
+if (defined("WB_SECFORM_TIMEOUT")) {
     Settings::Set('wb_secform_timeout', '7200');
-if (defined("WB_SEESSION_TIMEOUT"))
+}
+if (defined("WB_SEESSION_TIMEOUT")) {
     Settings::Set('wb_session_timeout', Settings::GetDb('wb_secform_timeout'));
-
+}
 
 /**********************************************************
-* Checking Core modules for installation status and install if necessary
-*/
+ * Checking Core modules for installation status and install if necessary
+ */
 
 // Captcha Controll
 $file_name = WB_PATH . "/modules/captcha_control/info.php";
 if (file_exists($file_name)) {
-   echo "<br />Update Captcha Controll<br />";
-   require_once WB_PATH . "/modules/captcha_control/upgrade.php";
+    echo "<br />Update Captcha Controll<br />";
+    require_once WB_PATH . "/modules/captcha_control/upgrade.php";
 }
 
 // Droplets
 if (!in_array("mod_droplets", $all_tables)) {
-   echo "<br />Install Droplets<br />";
-   require_once WB_PATH . "/modules/droplets/install.php";
+    echo "<br />Install Droplets<br />";
+    require_once WB_PATH . "/modules/droplets/install.php";
 } else {
-   echo "<br />Update Droplets<br />";
-   require_once WB_PATH . "/modules/droplets/upgrade.php";
+    echo "<br />Update Droplets<br />";
+    require_once WB_PATH . "/modules/droplets/upgrade.php";
+}
+
+// Errorloger
+$file_name = WB_PATH . "/modules/errorlogger/info.php";
+if (file_exists($file_name)) {
+    echo "<br />Install Errorloger<br />";
+    require_once WB_PATH . "/modules/errorlogger/install.php";
 }
 
 // Menu Link
 $file_name = WB_PATH . "/modules/menu_link/info.php";
 if (file_exists($file_name)) {
     if (!in_array("mod_menu_link", $all_tables)) {
-       echo "<br />Install Menu Link<br />";
-       require_once WB_PATH . "/modules/menu_link/install.php";
+        echo "<br />Install Menu Link<br />";
+        require_once WB_PATH . "/modules/menu_link/install.php";
     } else {
-       echo "<br />Update Menu Link<br />";
-       require_once WB_PATH . "/modules/menu_link/upgrade.php";
+        echo "<br />Update Menu Link<br />";
+        require_once WB_PATH . "/modules/menu_link/upgrade.php";
     }
 }
 
@@ -444,69 +480,75 @@ if (file_exists($file_name)) {
 $file_name = WB_PATH . "/modules/miniform/info.php";
 if (file_exists($file_name)) {
     if (!in_array("mod_miniform", $all_tables)) {
-       echo "<br />Install MiniForm<br />";
-       require_once WB_PATH . "/modules/miniform/install.php";
+        echo "<br />Install MiniForm<br />";
+        require_once WB_PATH . "/modules/miniform/install.php";
     } else {
-       echo "<br />Update MiniForm<br />";
-       require_once WB_PATH . "/modules/miniform/upgrade.php";
-    }
-}
-
-
-// Visitor statistics
-$file_name = WB_PATH . "/modules/wbstats/info.php";
-if (file_exists($file_name)) {
-    if (!in_array("mod_wbstats_day", $all_tables)) {
-       echo "<br />Install Visitor statistics<br />";
-       require_once WB_PATH . "/modules/wbstats/install.php";
-    } else {
-       echo "<br />Update Visitor statistics<br />";
-       require_once WB_PATH . "/modules/wbstats/upgrade.php";
+        echo "<br />Update MiniForm<br />";
+        require_once WB_PATH . "/modules/miniform/upgrade.php";
     }
 }
 
 // News with Images
 $file_name = WB_PATH . "/modules/news_img/info.php";
 if (file_exists($file_name)) {
-    if (!in_array("mod_news_img", $all_tables)) {
-       echo "<br />Install News with Images<br />";
-       require_once WB_PATH . "/modules/news_img/install.php";
+    if (!in_array("mod_news_img_posts", $all_tables)) {
+        echo "<br />Install News with Images<br />";
+        require_once WB_PATH . "/modules/news_img/install.php";
     } else {
-       echo "<br />Update News with Images<br />";
-       require_once WB_PATH . "/modules/news_img/upgrade.php";
+        echo "<br />Update News with Images<br />";
+        require_once WB_PATH . "/modules/news_img/upgrade.php";
     }
 }
 
 // OpF Dashboard
 if (!in_array("mod_outputfilter_dashboard", $all_tables)) {
-   echo "<br />Install OpF Dashboard<br />";
-   require_once WB_PATH . "/modules/outputfilter_dashboard/install.php";
-   Settings::Set('opf_show_advanced_backend',0,false);
+    echo "<br />Install OpF Dashboard<br />";
+    require_once WB_PATH . "/modules/outputfilter_dashboard/install.php";
+    Settings::Set('opf_show_advanced_backend', 0, false);
 } else {
-   echo "<br />Update OpF Dashboard<br />";
-   require_once WB_PATH . "/modules/outputfilter_dashboard/upgrade.php";
-   Settings::Set('opf_show_advanced_backend',1,false);
+    echo "<br />Update OpF Dashboard<br />";
+    require_once WB_PATH . "/modules/outputfilter_dashboard/upgrade.php";
+    Settings::Set('opf_show_advanced_backend', 1, false);
 }
-
 // uninstall classical output filter module
 $file_name = WB_PATH . "/modules/output_filter/uninstall.php";
 if (file_exists($file_name)) {
     echo "<br />Uninstall classical output_filter module<br />";
-    include_once ($file_name);
+    include_once($file_name);
     opf_io_rmdir(WB_PATH . "/modules/output_filter");
 }
-
 // Remove entry from DB
-$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE directory = 'output_filter' AND type = 'module'");
+$database->query("DELETE FROM " . TABLE_PREFIX . "addons WHERE directory = 'output_filter' AND type = 'module'");
 
+// Sitemap
+if (!in_array("mod_sitemap", $all_tables)) {
+    echo "<br />Install Sitemap<br />";
+    require_once WB_PATH . "/modules/sitemap/install.php";
+} else {
+    echo "<br />Update Sitemap<br />";
+    require_once WB_PATH . "/modules/sitemap/upgrade.php";
+}
 
+// Visitor statistics
+$file_name = WB_PATH . "/modules/wbstats/info.php";
+if (file_exists($file_name)) {
+    if (!in_array("mod_wbstats_day", $all_tables)) {
+        echo "<br />Install Visitor statistics<br />";
+        require_once WB_PATH . "/modules/wbstats/install.php";
+    } else {
+        echo "<br />Update Visitor statistics<br />";
+        require_once WB_PATH . "/modules/wbstats/upgrade.php";
+    }
+}
 
 // check again all tables, to get a new array
-if (sizeof($all_tables) < sizeof($table_list)) {$all_tables = check_wb_tables();}
+if (sizeof($all_tables) < sizeof($table_list)) {
+    $all_tables = check_wb_tables();
+}
 
 /**********************************************************
-* check tables coming with WBCE
-*/
+ * check tables coming with WBCE
+ */
 
 $check_text = 'total ';
 // $check_tables = mysqlCheckTables( DB_NAME ) ;
@@ -516,7 +558,7 @@ if (sizeof($all_tables) !== sizeof($table_list)) {
     echo '<h4>Missing required tables. You can install them in backend->addons->modules->advanced. Then again run update.php</h4>';
     $result = array_diff($table_list, $all_tables);
     echo '<h4 class="warning"><br />';
-    while (list($key, $val) = each($result)) {
+    foreach ($result as $val) {
         echo TABLE_PREFIX . $val . ' ' . $FAIL . '<br>';
     }
     echo '<br /></h4>';
@@ -532,46 +574,44 @@ if (sizeof($all_tables) !== sizeof($table_list)) {
     exit();
 }
 
-
 /**********************************************************
-* Adding or removing Settings
-*/
+ * Adding or removing Settings
+ */
 
 echo "<br />Update errorlevel<br />";
-Settings::Set('er_level','E3');
+Settings::Set('er_level', 'E3');
 
 echo "<br />Update rename_files_on_upload<br />";
-Settings::Set('rename_files_on_upload','ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk', false);
+Settings::Set('rename_files_on_upload', 'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk', false);
 
 echo "<br />Add Settings for PHPmailer<br />";
-Settings::Set('wbmailer_smtp_secure','', false);
-Settings::Set('wbmailer_smtp_port','', false);
+Settings::Set('wbmailer_smtp_secure', '', false);
+Settings::Set('wbmailer_smtp_port', '', false);
 
 echo "<br />Add sec_anchor<br />";
-Settings::Set('sec_anchor','wb_', false);
+Settings::Set('sec_anchor', 'wb_', false);
 
 echo "<br />Add redirect timer<br />";
-Settings::Set('redirect_timer','1500', false);
+Settings::Set('redirect_timer', '1500', false);
 
 echo "<br />Add mediasettings<br />";
-Settings::Set('mediasettings','', false);
+Settings::Set('mediasettings', '', false);
 
 echo "<br />Add Secureform Settings<br />";
 // Settings::Set ("wb_maintainance_mode", false, false);
-Settings::Set ("wb_secform_secret", "5609bnefg93jmgi99igjefg", false);
-Settings::Set ("wb_secform_secrettime", '86400', false);
-Settings::Set ("wb_secform_timeout", '7200', false);
-Settings::Set ("wb_secform_tokenname", 'formtoken', false);
-Settings::Set ("wb_secform_usefp", false, false);
+Settings::Set("wb_secform_secret", "5609bnefg93jmgi99igjefg", false);
+Settings::Set("wb_secform_secrettime", '86400', false);
+Settings::Set("wb_secform_timeout", '7200', false);
+Settings::Set("wb_secform_tokenname", 'formtoken', false);
+Settings::Set("wb_secform_usefp", false, false);
 Settings::Set('fingerprint_with_ip_octets', '0', false);
 
 echo "<br />Remove Secureform selector<br />";
 Settings::Del('secure_form_module'); // No longer needed as Singletab is removed
 
-
 /**********************************************************
-* Adding DB Fields
-*/
+ * Adding DB Fields
+ */
 
 // Add field "redirect_type" to table "mod_menu_link"
 echo "<br />Add field redirect_type to mod_menu_link table<br />";
@@ -581,46 +621,54 @@ db_add_field('redirect_type', 'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER
 echo "<br />Add field namesection to sections table<br />";
 db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
 
-
 /**********************************************************
-* making sure group_id is set correct there was a big bug in original WB, fixed with WBCE 1.0.0
-* make IP field IPv6 compatible
-*/
+ * Update users tables
+ */
 
-$table = TABLE_PREFIX."users";
+$table = TABLE_PREFIX . "users";
+
+// Alter Table so it can store new default value
+$sql = "ALTER TABLE $table CHANGE `timezone` `timezone` VARCHAR(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';";
+$database->query($sql);
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
+
+// override user timezone with default_timezone
+$sql = "UPDATE $table SET `timezone` = ''";
+$database->query($sql);
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
 // set group_id to first group of groups_id
 $sql = "UPDATE $table SET `group_id` = CAST(groups_id AS SIGNED)";
 $database->query($sql);
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
 // if admin, set group_id to 1
 $sql = "UPDATE $table SET `group_id` = 1 WHERE FIND_IN_SET('1', groups_id) > '0'";
 $database->query($sql);
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
 // Alter Table so it can store ipv6
-$sql="ALTER TABLE $table CHANGE `login_ip` `login_ip` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';";
+$sql = "ALTER TABLE $table CHANGE `login_ip` `login_ip` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';";
 $database->query($sql);
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
 // insert new fields
 $database->field_add($table, "signup_checksum", "varchar(64) collate utf8_unicode_ci NOT NULL DEFAULT ''");
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
 $database->field_add($table, "signup_timestamp", "int(11) NOT NULL DEFAULT '0'");
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
 $database->field_add($table, "signup_timeout", "int(11) NOT NULL DEFAULT '0'");
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
 $database->field_add($table, "signup_confirmcode", "varchar(64) collate utf8_unicode_ci NOT NULL DEFAULT ''");
-echo ($database->is_error() ? __LINE__ .': '.$database->get_error().'<br />' : '');
+echo($database->is_error() ? __LINE__ . ': ' . $database->get_error() . '<br />' : '');
 
 /**********************************************************
-* Update search no results database filed to create
-* valid XHTML if search is empty
-*/
+ * Update search no results database filed to create
+ * valid XHTML if search is empty
+ */
 
 if (version_compare(WB_VERSION, '2.8', '<')) {
     echo "<br />Updating database field `no_results` of search table: ";
@@ -631,10 +679,9 @@ if (version_compare(WB_VERSION, '2.8', '<')) {
     echo ($database->query($sql)) ? ' $OK<br />' : ' $FAIL<br />';
 }
 
-
 /**********************************************************
-* update media folder index protect files
-*/
+ * update media folder index protect files
+ */
 
 $dir = (WB_PATH . MEDIA_DIRECTORY);
 echo '<br />Update ' . MEDIA_DIRECTORY . '/ index.php protect files<br />';
@@ -646,10 +693,9 @@ if (sizeof($array)) {
     print implode('<br />', $array);
 }
 
-
 /**********************************************************
-* update posts folder index protect files
-*/
+ * update posts folder index protect files
+ */
 
 $sPostsPath = WB_PATH . PAGES_DIRECTORY . '/posts';
 echo 'Update /posts/ index.php protect files<br />';
@@ -661,11 +707,11 @@ if (sizeof($array)) {
     print implode('<br /><br />', $array);
 }
 
-?></td>
+                ?></td>
             </tr>
         </tbody>
     </table>
-    <table class="step3" >
+    <table class="step3">
         <thead>
             <tr>
                 <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Remove deprecated and old files and folders'; ?> </th>
@@ -675,9 +721,9 @@ if (sizeof($array)) {
             <tr>
                 <td><?php
 
-/* *****************************************************************************
-* check for deprecated or never needed files
-*/
+/**********************************************************
+ * check for deprecated or never needed files
+ */
 
 if (sizeof($filesRemove)) {
     echo 'Removing files<br />';
@@ -736,10 +782,9 @@ foreach ($filesRemove as $filesId) {
     }
 }
 
-
 /**********************************************************
-* check for deprecated or never needed directories
-*/
+ * check for deprecated or never needed directories
+ */
 
 if (sizeof($dirRemove)) {
     echo '<br />Removing folders';
@@ -783,14 +828,14 @@ if (sizeof($dirRemove)) {
         }
     }
     if ($msg != '') {
-    $msg = '<br /><br />Following files are deprecated, outdated or a security risk and can not be removed automatically.<br /><br />Please delete them using FTP and restart update script!<br /><br />' . $msg . '<br />';
-    status_msg($msg, 'error warning', 'div');
-    echo '<p class="error"><strong>WARNING: The update script failed ...</strong></p>';
-    echo '<form action="' . $_SERVER['SCRIPT_NAME'] . '">';
-    echo '&nbsp;<input name="send" type="submit" value="Restart update script" />';
-    echo '</form>';
-    echo '<</td></tr></tbody></table></div></body></html>';
-    exit;
+        $msg = '<br /><br />Following files are deprecated, outdated or a security risk and can not be removed automatically.<br /><br />Please delete them using FTP and restart update script!<br /><br />' . $msg . '<br />';
+        status_msg($msg, 'error warning', 'div');
+        echo '<p class="error"><strong>WARNING: The update script failed ...</strong></p>';
+        echo '<form action="' . $_SERVER['SCRIPT_NAME'] . '">';
+        echo '&nbsp;<input name="send" type="submit" value="Restart update script" />';
+        echo '</form>';
+        echo '<</td></tr></tbody></table></div></body></html>';
+        exit;
     }
 }
 
@@ -799,7 +844,7 @@ if (sizeof($dirRemove)) {
             </tr>
         </tbody>
     </table>
-    <table class="step4" >
+    <table class="step4">
         <thead>
             <tr>
                 <th class="step-row"> <?php echo '<h2 class="step-row">Step ' . ($stepID++) . '</h2> &nbsp;Reload all addons database entry (no update)'; ?> </th>
@@ -810,31 +855,29 @@ if (sizeof($dirRemove)) {
                 <td>
                     <?php
 
-
 /**********************************************************
-* Reload all addons
-*/ 
+ * Reload all addons
+ */
 
-// delete modules
-//$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'module'");
+// Truncate addons
+$database->query("TRUNCATE `" . TABLE_PREFIX . "addons`");
+echo 'Truncate addons table<br />';
+
 // Load all modules
 if (($handle = opendir(WB_PATH . '/modules/'))) {
     while (false !== ($file = readdir($handle))) {
-        if ($file != '' and substr($file, 0, 1) != '.' and $file != 'admin.php' and $file != 'index.php') {
+        if ($file != '' && substr($file, 0, 1) != '.' && $file != 'admin.php' && $file != 'index.php') {
             load_module(WB_PATH . '/modules/' . $file);
-            // upgrade_module($file, true);
         }
     }
     closedir($handle);
 }
-echo 'Modules reloaded<br />';
+echo '<br />Modules reloaded<br />';
 
-// delete templates
-$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'template'");
 // Load all templates
 if (($handle = opendir(WB_PATH . '/templates/'))) {
     while (false !== ($file = readdir($handle))) {
-        if ($file != '' and substr($file, 0, 1) != '.' and $file != 'index.php') {
+        if ($file != '' && substr($file, 0, 1) != '.' && $file != 'index.php') {
             load_template(WB_PATH . '/templates/' . $file);
         }
     }
@@ -842,12 +885,10 @@ if (($handle = opendir(WB_PATH . '/templates/'))) {
 }
 echo '<br />Templates reloaded<br />';
 
-// delete languages
-$database->query("DELETE FROM ".TABLE_PREFIX."addons WHERE type = 'language'");
 // Load all languages
 if (($handle = opendir(WB_PATH . '/languages/'))) {
     while (false !== ($file = readdir($handle))) {
-        if ($file != '' and substr($file, 0, 1) != '.' and $file != 'index.php') {
+        if ($file != '' && substr($file, 0, 1) != '.' && $file != 'index.php') {
             load_language(WB_PATH . '/languages/' . $file);
         }
     }
@@ -855,25 +896,27 @@ if (($handle = opendir(WB_PATH . '/languages/'))) {
 }
 echo '<br />Languages reloaded<br />';
 
-
 /**********************************************************
-* Set Version to new Version
-*/
+ * Set Version to new Version
+ */
 
 echo '<br />Update database version number to ' . NEW_WBCE_VERSION . ' (Tag: ' . NEW_WBCE_TAG . ')';
-Settings::Set('wbce_version',NEW_WBCE_VERSION);
-Settings::Set('wbce_tag',NEW_WBCE_TAG);
-Settings::Set('wb_version',VERSION);    // Legacy: WB-classic
-Settings::Set('wb_revision',REVISION);  // Legacy: WB-classic
-Settings::Set('wb_sp',SP);              // Legacy: WB-classic
-
+Settings::Set('wbce_version', NEW_WBCE_VERSION);
+Settings::Set('wbce_tag', NEW_WBCE_TAG);
+Settings::Set('wb_version', VERSION); // Legacy: WB-classic
+Settings::Set('wb_revision', REVISION); // Legacy: WB-classic
+Settings::Set('wb_sp', SP); // Legacy: WB-classic
 
 /**********************************************************
-* End of update script only some output stuff down here
-*/
+ * End of update script only some output stuff down here
+ */
 
-if (!defined('DEFAULT_THEME')) {define('DEFAULT_THEME', $DEFAULT_THEME);}
-if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);}
+if (!defined('DEFAULT_THEME')) {
+    define('DEFAULT_THEME', $DEFAULT_THEME);
+}
+if (!defined('THEME_PATH')) {
+    define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
+}
 
                     ?>
                 </td>
@@ -883,7 +926,7 @@ if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFA
     <table class="step5">
         <thead>
             <tr>
-                <th class="step-row"> Congratulations: The update script is finished ... </th>
+                <th class="step-row"> Congratulations: The update script is finished ...</th>
             </tr>
         </thead>
         <tbody>
@@ -896,6 +939,13 @@ if (!defined('THEME_PATH')) {define('THEME_PATH', WB_PATH . '/templates/' . DEFA
                             echo '&nbsp;<input type="submit" value="Login to the Backend" />';
                             echo '</form>';
                         }
+
+                        // make the session cookie to a first party cookie
+                        Settings::Set('app_name', 'phpsessid-' . $session_rand = mt_rand(1000, 9999));
+
+                        // Truncate dbsessions
+                        $database->query("TRUNCATE `" . TABLE_PREFIX . "dbsessions`");
+
                         // Finally, destroy the session.
                         session_destroy();
                     ?>

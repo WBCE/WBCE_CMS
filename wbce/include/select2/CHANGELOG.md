@@ -1,5 +1,36 @@
 # Change Log
 
+## 4.0.13
+
+### New features / improvements
+
+* Trigger `input` event before `change` events (#4649)
+* Feed back the keypress code that was responsible for the 'close' event (#5513)
+* Only trigger `selection:update` once on DOM change events (#5734)
+
+### Bug fixes
+
+* Prevent opening of disabled elements (#5751)
+
+### Documentation
+
+* Fix "edit this page" links in docs (#5689)
+
+### Miscellaneous
+
+* Registered Select2 on Open Collective (#5700, #5721, #5741)
+
+## 4.0.12
+
+### Bug fixes
+
+* Fixes incorrect offset when using the Shadow DOM and styling the `<html>` element (#5682)
+
+### Miscellaneous
+
+* Replace cdnjs with jsDelivr in the documentation (#5687)
+* Fix incorrect provider for the automated NPM deployment (#5686)
+
 ## 4.0.11
 
 ### Bug fixes

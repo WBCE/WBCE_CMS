@@ -1,0 +1,62 @@
+<div class="mod_news_img">
+    <h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$TEXT['GROUP']; ?></h2>
+    <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_group.php" method="post" enctype="multipart/form-data" style="margin: 0;">
+    <?php echo $FTAN; ?>
+    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+    <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+    <input type="hidden" name="group_id" value="<?php echo $group_id; ?>" />
+    <table>
+    <tr>
+    	<td style="width:80px"><?php echo $TEXT['TITLE']; ?>:</td>
+    	<td colspan="2">
+    		<input type="text" name="title" value="<?php echo (htmlspecialchars($group['title'])); ?>" style="width: 98%;" maxlength="255" />
+    	</td>
+    </tr>
+    <tr>
+    	<td><?php echo $TEXT['ACTIVE']; ?>:</td>
+    	<td colspan="2">
+    		<input type="radio" name="active" id="active_true" value="1" <?php if($group['active'] == 1) { echo ' checked="checked"'; } ?> />
+    		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
+    		<?php echo $TEXT['YES']; ?>
+    		</a>
+    		-
+    		<input type="radio" name="active" id="active_false" value="0" <?php if($group['active'] == 0) { echo ' checked="checked"'; } ?> />
+    		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
+    		<?php echo $TEXT['NO']; ?>
+    		</a>
+    	</td>
+    </tr>
+
+    <tr>
+    	<td><?php echo $TEXT['IMAGE']; ?>:</td>
+<?php if(file_exists(WB_PATH.MEDIA_DIRECTORY.'/.news_img/image'.$group_id.'.jpg')): ?>
+        <td>
+            <a href="javascript:void(0);" onmouseover="XBT(this, {id:'tt<?php echo $group_id ?>'})">
+                <img class="preview" src="<?php echo WB_URL.MEDIA_DIRECTORY; ?>/.news_img/image<?php echo $group_id; ?>.jpg" alt="<?php echo $TEXT['IMAGE']; ?>" />
+            </a>
+            <div id="tt<?php echo $group_id ?>" class="xbtooltip">
+                <img src="<?php echo WB_URL.MEDIA_DIRECTORY; ?>/.news_img/image<?php echo $group_id; ?>.jpg" />
+            </div>
+    		<input type="checkbox" name="delete_image" id="delete_image" value="true" />
+    		<label for="delete_image"><?php echo $TEXT['DELETE'] ?></label>
+    	</td>
+<?php else: ?>
+    	<td colspan="2">
+    		<input type="file" name="image" />
+    	</td>
+<?php endif; ?>
+    </tr>
+    </table><br /><br />
+
+    <table>
+    <tr>
+    	<td>
+    		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width:100px;margin-top:5px;" />
+    	</td>
+    	<td style="text-align:right">
+    		<input type="button" value="<?php echo $TEXT['CANCEL']; ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" />
+    	</td>
+    </tr>
+    </table>
+    </form>
+</div>

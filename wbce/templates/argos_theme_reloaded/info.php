@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -14,8 +14,8 @@
 $template_directory = 'argos_theme_reloaded';
 $template_name = 'Argos Theme Reloaded';
 $template_function = 'theme';
-$template_version = '2.1.0';
-$template_platform = '1.x';
+$template_version = '2.1.2';
+$template_platform = '1.4.0';
 $template_author = 'Bernd Michna (BerndJM / WWnW) based on the work by Jurgen Nijhuis (Argos Media) & Ruud Eisinga';
 $template_license = '<a href="http://www.wtfpl.net/">WTFPL</a>';
 $template_license_terms = '-';

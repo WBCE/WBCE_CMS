@@ -1,23 +1,19 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        frontend
- * @package         search
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2011, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 5.2.2 and higher
- * @version         $Id: search.php 1442 2011-04-15 19:44:20Z Luisehahne $
- * @filesource        $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/search/search.php $
- * @lastmodified    $Date: 2011-04-15 21:44:20 +0200 (Fr, 15. Apr 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 // no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
+if (count(get_included_files()) == 1) {
+    header("Location: ../index.php", true, 301);
+}
 
 // Check if search is enabled
 if (SHOW_SEARCH != true) {
@@ -43,36 +39,91 @@ $fetch_results_loop = $query->fetchRow();
 $query = $database->query("SELECT value FROM $table WHERE name = 'no_results' LIMIT 1");
 $fetch_no_results = $query->fetchRow();
 $query = $database->query("SELECT value FROM $table WHERE name = 'module_order' LIMIT 1");
-if ($query->numRows() > 0) {$res = $query->fetchRow();} else { $res['value'] = 'faqbaker,manual,wysiwyg';}
+if ($query->numRows() > 0) {
+    $res = $query->fetchRow();
+} else {
+    $res['value'] = 'faqbaker,manual,wysiwyg';
+}
 $search_module_order = $res['value'];
 $query = $database->query("SELECT value FROM $table WHERE name = 'max_excerpt' LIMIT 1");
-if ($query->numRows() > 0) {$res = $query->fetchRow();} else { $res['value'] = '15';}
-$search_max_excerpt = (int) ($res['value']);
-if (!is_numeric($search_max_excerpt)) {$search_max_excerpt = 15;}
+if ($query->numRows() > 0) {
+    $res = $query->fetchRow();
+} else {
+    $res['value'] = '15';
+}
+$search_max_excerpt = (int)($res['value']);
+if (!is_numeric($search_max_excerpt)) {
+    $search_max_excerpt = 15;
+}
 $query = $database->query("SELECT value FROM $table WHERE name = 'cfg_show_description' LIMIT 1");
-if ($query->numRows() > 0) {$res = $query->fetchRow();} else { $res['value'] = 'true';}
-if ($res['value'] == 'false') {$cfg_show_description = false;} else { $cfg_show_description = true;}
+if ($query->numRows() > 0) {
+    $res = $query->fetchRow();
+} else {
+    $res['value'] = 'true';
+}
+if ($res['value'] == 'false') {
+    $cfg_show_description = false;
+} else {
+    $cfg_show_description = true;
+}
 $query = $database->query("SELECT value FROM $table WHERE name = 'cfg_search_description' LIMIT 1");
-if ($query->numRows() > 0) {$res = $query->fetchRow();} else { $res['value'] = 'true';}
-if ($res['value'] == 'false') {$cfg_search_description = false;} else { $cfg_search_description = true;}
+if ($query->numRows() > 0) {
+    $res = $query->fetchRow();
+} else {
+    $res['value'] = 'true';
+}
+if ($res['value'] == 'false') {
+    $cfg_search_description = false;
+} else {
+    $cfg_search_description = true;
+}
 $query = $database->query("SELECT value FROM $table WHERE name = 'cfg_search_keywords' LIMIT 1");
-if ($query->numRows() > 0) {$res = $query->fetchRow();} else { $res['value'] = 'true';}
-if ($res['value'] == 'false') {$cfg_search_keywords = false;} else { $cfg_search_keywords = true;}
+if ($query->numRows() > 0) {
+    $res = $query->fetchRow();
+} else {
+    $res['value'] = 'true';
+}
+if ($res['value'] == 'false') {
+    $cfg_search_keywords = false;
+} else {
+    $cfg_search_keywords = true;
+}
 $query = $database->query("SELECT value FROM $table WHERE name = 'cfg_enable_old_search' LIMIT 1");
-if ($query->numRows() > 0) {$res = $query->fetchRow();} else { $res['value'] = 'true';}
-if ($res['value'] == 'false') {$cfg_enable_old_search = false;} else { $cfg_enable_old_search = true;}
+if ($query->numRows() > 0) {
+    $res = $query->fetchRow();
+} else {
+    $res['value'] = 'true';
+}
+if ($res['value'] == 'false') {
+    $cfg_enable_old_search = false;
+} else {
+    $cfg_enable_old_search = true;
+}
 $query = $database->query("SELECT value FROM $table WHERE name = 'cfg_enable_flush' LIMIT 1");
-if ($query->numRows() > 0) {$res = $query->fetchRow();} else { $res['value'] = 'false';}
-if ($res['value'] == 'false') {$cfg_enable_flush = false;} else { $cfg_enable_flush = true;}
+if ($query->numRows() > 0) {
+    $res = $query->fetchRow();
+} else {
+    $res['value'] = 'false';
+}
+if ($res['value'] == 'false') {
+    $cfg_enable_flush = false;
+} else {
+    $cfg_enable_flush = true;
+}
 $query = $database->query("SELECT value FROM $table WHERE name = 'time_limit' LIMIT 1"); // time-limit per module
-if ($query->numRows() > 0) {$res = $query->fetchRow();} else { $res['value'] = '0';}
-$search_time_limit = (int) ($res['value']);
+if ($query->numRows() > 0) {
+    $res = $query->fetchRow();
+} else {
+    $res['value'] = '0';
+}
+$search_time_limit = (int)($res['value']);
 if ($search_time_limit < 1) {
     $search_time_limit = 0;
 }
 
 // search-module-extension: get helper-functions
 require_once WB_PATH . '/search/search_modext.php';
+
 // search-module-extension: Get "search.php" for each module, if present
 // looks in modules/module/ and modules/module_searchext/
 $search_funcs = array();
@@ -119,7 +170,6 @@ if (isset($_REQUEST['search_lang'])) {
     if (!preg_match('~^[A-Z]{2}$~', $search_lang)) {
         $search_lang = LANGUAGE;
     }
-
 } else {
     $search_lang = LANGUAGE;
 }
@@ -127,7 +177,8 @@ if (isset($_REQUEST['search_lang'])) {
 // Get the path to search into. Normally left blank
 // ATTN: since wb2.7.1 the path is evaluated as SQL: LIKE "/path%" - which will find "/path.php", "/path/info.php", ...; But not "/de/path.php"
 // Add a '%' in front of each path to get SQL: LIKE "%/path%"
-/* possible values:
+/**
+ *  possible values:
  * - a single path: "/en/" - search only pages whose link contains 'path' ("/en/machinery/bender-x09")
  * - a single path not to search into: "-/help" - search all, exclude /help...
  * - a bunch of alternative pathes: "/en/,%/machinery/,/docs/" - alternatives paths, seperated by comma
@@ -189,7 +240,6 @@ if (isset($_REQUEST['match'])) {
     } else {
         $match = 'all';
     }
-
 } else {
     $match = 'all';
 }
@@ -207,7 +257,7 @@ if (isset($_REQUEST['string'])) {
     } else {
         $string = (string)$_REQUEST['string'];
     }
-    // redo possible magic quotes
+    // strip the slashes
     $string = $wb->strip_slashes($string);
     $string = preg_replace('/\s+/', ' ', $string);
     $string = trim($string);
@@ -294,12 +344,13 @@ $vars = array('[TEXT_NO_RESULTS]');
 $values = array($TEXT['NO_RESULTS']);
 $search_no_results = str_replace($vars, $values, ($fetch_no_results['value']));
 
-/*
+/**
  * Start of output
  */
 
 // Show search header
 echo $search_header;
+
 // Show search results_header
 echo $search_results_header;
 
@@ -349,10 +400,10 @@ if ($search_normal_string != '') {
         'page_link' => '',
         'page_modified_when' => 0,
         'page_modified_by' => 0,
-        'users' => $users,                                 // array of known user-id/user-name
-        'search_words' => $search_words,                   // array of strings, prepared for regex
-        'search_match' => $match,                          // match-type
-        'search_url_array' => $search_url_array,           // array of strings from the original search-string. ATTN: strings are not quoted!
+        'users' => $users, // array of known user-id/user-name
+        'search_words' => $search_words, // array of strings, prepared for regex
+        'search_match' => $match, // match-type
+        'search_url_array' => $search_url_array, // array of strings from the original search-string. ATTN: strings are not quoted!
         'search_entities_array' => $search_entities_array, // entities
         'results_loop_string' => $fetch_results_loop['value'],
         'default_max_excerpt' => $search_max_excerpt,
@@ -362,7 +413,7 @@ if ($search_normal_string != '') {
     foreach ($search_funcs['__before'] as $func) {
         $uf_res = call_user_func($func, $search_func_vars);
     }
-                             // now call module-based $search_funcs[]
+    // now call module-based $search_funcs[]
     $seen_pages = array();   // seen pages per module.
     $pages_listed = array(); // seen pages.
     if ($search_max_excerpt != 0) {
@@ -410,7 +461,7 @@ if ($search_normal_string != '') {
                         'users' => $users,
                         'search_words' => $search_words, // needed for preg_match
                         'search_match' => $match,
-                        'search_url_array' => $search_url_array,           // needed for url-string only
+                        'search_url_array' => $search_url_array, // needed for url-string only
                         'search_entities_array' => $search_entities_array, // entities
                         'results_loop_string' => $fetch_results_loop['value'],
                         'default_max_excerpt' => $search_max_excerpt,
@@ -451,21 +502,21 @@ if ($search_normal_string != '') {
         'page_link' => '',
         'page_modified_when' => 0,
         'page_modified_by' => 0,
-        'users' => $users,                                 // array of known user-id/user-name
-        'search_words' => $search_words,                   // array of strings, prepared for regex
-        'search_match' => $match,                          // match-type
-        'search_url_array' => $search_url_array,           // array of strings from the original search-string. ATTN: strings are not quoted!
+        'users' => $users, // array of known user-id/user-name
+        'search_words' => $search_words, // array of strings, prepared for regex
+        'search_match' => $match, // match-type
+        'search_url_array' => $search_url_array, // array of strings from the original search-string. ATTN: strings are not quoted!
         'search_entities_array' => $search_entities_array, // entities
         'results_loop_string' => $fetch_results_loop['value'],
         'default_max_excerpt' => $search_max_excerpt,
         'time_limit' => $search_time_limit, // time-limit in secs
-        'search_path' => $search_path,      // see docu
+        'search_path' => $search_path, // see docu
     );
     foreach ($search_funcs['__after'] as $func) {
         $uf_res = call_user_func($func, $search_func_vars);
     }
 
-                          // Search page details only, such as description, keywords, etc, but only of unseen pages.
+    // Search page details only, such as description, keywords, etc, but only of unseen pages.
     $max_excerpt_num = 0; // we don't want excerpt here
     $divider = ".";
     $table = TABLE_PREFIX . "pages";
@@ -493,7 +544,7 @@ if ($search_normal_string != '') {
                 'users' => $users,
                 'search_words' => $search_words, // needed for preg_match_all
                 'search_match' => $match,
-                'search_url_array' => $search_url_array,           // needed for url-string only
+                'search_url_array' => $search_url_array, // needed for url-string only
                 'search_entities_array' => $search_entities_array, // entities
                 'results_loop_string' => $fetch_results_loop['value'],
                 'default_max_excerpt' => $max_excerpt_num,
@@ -512,9 +563,9 @@ if ($search_normal_string != '') {
                 continue;
             }
             $text = $func_vars['page_title'] . $divider
-            . $func_vars['page_menu_title'] . $divider
-            . ($cfg_search_description ? $func_vars['page_description'] : "") . $divider
-            . ($cfg_search_keywords ? $func_vars['page_keywords'] : "") . $divider;
+                . $func_vars['page_menu_title'] . $divider
+                . ($cfg_search_description ? $func_vars['page_description'] : "") . $divider
+                . ($cfg_search_keywords ? $func_vars['page_keywords'] : "") . $divider;
             $mod_vars = array(
                 'page_link' => $func_vars['page_link'],
                 'page_link_target' => "",
@@ -573,8 +624,7 @@ if ($search_normal_string != '') {
         // this is the old (wb <= 2.6.7) search-function
         $search_path_SQL = str_replace(' link ', ' ' . TABLE_PREFIX . 'pages.link ', $search_path_SQL);
         foreach ($sorted_modules as $module) {
-            if (isset($seen_pages[$module['value']]) && count($seen_pages[$module['value']]) > 0) // skip modules handled by new search-func
-            {
+            if (isset($seen_pages[$module['value']]) && count($seen_pages[$module['value']]) > 0) { // skip modules handled by new search-func
                 continue;
             }
 
@@ -671,11 +721,11 @@ if ($search_normal_string != '') {
                                 }
                                 if ($visibility == 'private') {
                                     if ($admin->page_is_visible(array(
-                                        'page_id' => $page[$fields['page_id']],
-                                        'visibility' => $visibility,
-                                        'viewing_groups' => $viewing_groups,
-                                        'viewing_users' => $viewing_users,
-                                    )) == false) {
+                                            'page_id' => $page[$fields['page_id']],
+                                            'visibility' => $visibility,
+                                            'viewing_groups' => $viewing_groups,
+                                            'viewing_users' => $viewing_users,
+                                        )) == false) {
                                         continue;
                                     }
                                 }
@@ -696,13 +746,19 @@ if ($search_normal_string != '') {
                             $link = $link . "?searchresult=2&amp;sstring=" . urlencode($sstring);
                         }
                         // Set vars to be replaced by values
-                        if (!isset($page['description'])) {$page['description'] = "";}
-                        if (!isset($page['modified_when'])) {$page['modified_when'] = 0;}
-                        if (!isset($page['modified_by'])) {$page['modified_by'] = 0;}
+                        if (!isset($page['description'])) {
+                            $page['description'] = "";
+                        }
+                        if (!isset($page['modified_when'])) {
+                            $page['modified_when'] = 0;
+                        }
+                        if (!isset($page['modified_by'])) {
+                            $page['modified_by'] = 0;
+                        }
                         $vars = array('[LINK]', '[TITLE]', '[DESCRIPTION]', '[USERNAME]', '[DISPLAY_NAME]', '[DATE]', '[TIME]', '[TEXT_LAST_UPDATED_BY]', '[TEXT_ON]', '[EXCERPT]');
                         if ($page['modified_when'] > 0) {
-                            $date = gmdate(DATE_FORMAT, $page['modified_when'] + TIMEZONE);
-                            $time = gmdate(TIME_FORMAT, $page['modified_when'] + TIMEZONE);
+                            $date = date(DATE_FORMAT, $page['modified_when'] + TIMEZONE);
+                            $time = date(TIME_FORMAT, $page['modified_when'] + TIMEZONE);
                         } else {
                             $date = $TEXT['UNKNOWN'] . ' ' . $TEXT['DATE'];
                             $time = $TEXT['UNKNOWN'] . ' ' . $TEXT['TIME'];
@@ -733,5 +789,6 @@ if ($search_normal_string != '') {
 
 // Show search results_footer
 echo $search_results_footer;
+
 // Show search footer
 echo $search_footer;

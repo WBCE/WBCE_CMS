@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -10,14 +10,11 @@
  * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
 // Must include code to stop this file being accessed directly
-if(!defined('WB_PATH')) {
-
-	require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-	throw new IllegalFileException();
+if (!defined('WB_PATH')) {
+    require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
+    throw new IllegalFileException();
 }
-/* -------------------------------------------------------- */
 
 global $module_version;
 
@@ -26,51 +23,46 @@ require_once dirname(__FILE__).'/functions.inc.php';
 // removes empty entries from the table; this may happen if someone adds a
 // droplet but does not save any changes
 if (!$admin->get_get("do")) {
-    $database->query(sprintf("DELETE FROM `%smod_droplets` WHERE name=''",TABLE_PREFIX));
+    $database->query(sprintf("DELETE FROM `%smod_droplets` WHERE name=''", TABLE_PREFIX));
 }
 
 
 $twig_data = array(
-    'FTAN' => (method_exists($admin,'getFTAN') ? $admin->getFTAN() : '')
+    'FTAN' => (method_exists($admin, 'getFTAN') ? $admin->getFTAN() : '')
 );
 
 // if there are exports, there will be an additional button, so check it out
-$backup_files = wbce_find_backups( WB_PATH.'/modules/droplets/export/' );
-$backup_mgmt  = NULL;
-if ( count( $backup_files ) > 0 ) {
+$backup_files = wbce_find_backups(WB_PATH.'/modules/droplets/export/');
+$backup_mgmt  = null;
+if (count($backup_files) > 0) {
     $twig_data['backup_mgmt'] = true;
 }
 
 // convert some keys into actions
-foreach(array_values(array('export','upload','delete')) as $key)
-{
-    if(isset($_REQUEST[$key]))
-    {
+foreach (array_values(array('export','upload','delete')) as $key) {
+    if (isset($_REQUEST[$key])) {
         $_GET['do'] = $key;
         break;
     }
 }
 
 // ----- duplicate -----
-if ( isset($_GET['copy']) )
-{
+if (isset($_GET['copy'])) {
     $id = $_GET['copy'];
-    if ( is_numeric($id) ) {
+    if (is_numeric($id)) {
         wbce_copy_droplet($id);
     }
 }
 // ----- recover from backup -----
-elseif ( isset($_GET['recover']) && file_exists( WB_PATH.'/modules/droplets/export/'.$_GET['recover'] ) )
-{
-    $result = wbce_unpack_and_import( WB_PATH.'/modules/droplets/export/'.$_GET['recover'], WB_PATH.'/temp/unzip/' );
+elseif (isset($_GET['recover']) && file_exists(WB_PATH.'/modules/droplets/export/'.$_GET['recover'])) {
+    $result = wbce_unpack_and_import(WB_PATH.'/modules/droplets/export/'.$_GET['recover'], WB_PATH.'/temp/unzip/');
     // show errors
-    if ( isset( $result['errors'] ) && is_array( $result['errors'] ) && count( $result['errors'] ) > 0 ) {
+    if (isset($result['errors']) && is_array($result['errors']) && count($result['errors']) > 0) {
         $twig_data['content']
             = '<div style="border: 1px solid #f00; padding: 5px; color: #f00; font-weight: bold;">'
             . $DR_TEXT['IMPORT_ERRORS']
             . "<br />\n";
-        foreach ( $result['errors'] as $droplet => $error )
-        {
+        foreach ($result['errors'] as $droplet => $error) {
             $twig_data['content']
                 .= 'Droplet: ' . $droplet . '<br />'
                 .  '<span style="padding-left: 15px">'
@@ -79,7 +71,7 @@ elseif ( isset($_GET['recover']) && file_exists( WB_PATH.'/modules/droplets/expo
         }
         $twig_data['content'] .= "</div>\n";
     } else {
-        $new = isset( $result['imported'] ) ? $result['imported'] : array();
+        $new = isset($result['imported']) ? $result['imported'] : array();
         $twig_data['content']
             = '<div class="drok">'
             . $result['count']
@@ -91,18 +83,16 @@ elseif ( isset($_GET['recover']) && file_exists( WB_PATH.'/modules/droplets/expo
 }
 
 // action
-if(isset($_GET['do']))
-{
-    switch($_GET['do'])
-    {
+if (isset($_GET['do'])) {
+    switch ($_GET['do']) {
         // ----- export -----
         case 'export':
-            if (!empty($_REQUEST['markeddroplet'])){
+            if (!empty($_REQUEST['markeddroplet'])) {
                 $list = $_REQUEST['markeddroplet'];
-                if(is_array($list) AND count($list)) {
+                if (is_array($list) and count($list)) {
                     $twig_data['info'] = wbce_export_droplets($list);
                 }
-            } 
+            }
             break;
         // ----- import -----
         case 'upload':
@@ -112,8 +102,7 @@ if(isset($_GET['do']))
 
         // ----- delete -----
         case 'delete':
-           if(isset($_GET['droplet_id']) && ! isset($_POST['markeddroplet']))
-           {
+           if (isset($_GET['droplet_id']) && ! isset($_POST['markeddroplet'])) {
                $_POST['markeddroplet'] = array($_GET['droplet_id']);
            }
            wbce_delete_droplets();
@@ -122,7 +111,7 @@ if(isset($_GET['do']))
         // ----- modify droplet -----
         case 'modify':
             include_once WB_PATH . '/include/editarea/wb_wrapper_edit_area.php';
-            echo registerEditArea ('contentedit','php',true,'both',true,true,600,450,'search, fullscreen, |, undo, redo, |, select_font,|, highlight, reset_highlight, |, help');
+            echo registerEditArea('contentedit', 'php', true, 'both', true, true, 600, 450, $toolbar = 'default');
 
             $modified_when     = time();
             $modified_by       = $admin->get_user_id();
@@ -132,9 +121,10 @@ if(isset($_GET['do']))
             // Get header and footer
             $query_content = $database->query(sprintf(
                 "SELECT * FROM `%smod_droplets` WHERE `id` = '%d'",
-                TABLE_PREFIX, $droplet_id
+                TABLE_PREFIX,
+                $droplet_id
             ));
-            $fetch_content = $query_content->fetchRow(MYSQL_ASSOC);
+            $fetch_content = $query_content->fetchRow(MYSQLI_ASSOC);
 
             $twig_data['content'] = wbce_twig_display(
                 array('data'=>$fetch_content),
@@ -147,11 +137,10 @@ if(isset($_GET['do']))
         case 'backup_droplets':
             $query_droplets = $database->query(sprintf(
                 "SELECT * FROM `%smod_droplets`",
-                 TABLE_PREFIX
+                TABLE_PREFIX
             ));
             $list = array();
-            while ( $droplet = $query_droplets->fetchRow() )
-            {
+            while ($droplet = $query_droplets->fetchRow()) {
                 $list[] = $droplet;
             }
             // backup
@@ -161,29 +150,26 @@ if(isset($_GET['do']))
 
         // ----- manage backups -----
         case 'manage_backups':
-	require_once( WB_PATH . '/include/pclzip/pclzip.lib.php' );
-            $backup_files = wbce_find_backups( WB_PATH.'/modules/droplets/export/' );
+            require_once(WB_PATH . '/include/pclzip/pclzip.lib.php');
+            $backup_files = wbce_find_backups(WB_PATH.'/modules/droplets/export/');
             // file to delete?
-            if ( isset( $_GET['del'] ) ) {
-                if ( $_GET['del'] !== 'all' ) {
-                    if ( file_exists( WB_PATH.'/modules/droplets/export/'.$_GET['del'] ) ) {
-                        unlink( WB_PATH.'/modules/droplets/export/'.$_GET['del'] );
+            if (isset($_GET['del'])) {
+                if ($_GET['del'] !== 'all') {
+                    if (file_exists(WB_PATH.'/modules/droplets/export/'.$_GET['del'])) {
+                        unlink(WB_PATH.'/modules/droplets/export/'.$_GET['del']);
                     }
-                }
-                else {
-                    foreach ( $backup_files as $file ) {
-                        unlink( WB_PATH.'/modules/droplets/export/'.$file );
+                } else {
+                    foreach ($backup_files as $file) {
+                        unlink(WB_PATH.'/modules/droplets/export/'.$file);
                     }
                 }
             }
-            $backup_files = wbce_find_backups( WB_PATH.'/modules/droplets/export/' );
+            $backup_files = wbce_find_backups(WB_PATH.'/modules/droplets/export/');
             $data = array();
-            if ( count( $backup_files ) > 0 )
-            {
+            if (count($backup_files) > 0) {
                 // sort by name
                 sort($backup_files);
-                foreach( $backup_files as $i => $file )
-                {
+                foreach ($backup_files as $i => $file) {
                     // stat
                     $stat  = stat(WB_PATH.'/modules/droplets/export/'.$file);
                     // get zip contents
@@ -195,18 +181,19 @@ if(isset($_GET['do']))
                         'stat'  => $stat,
                         'count' => count($count),
                         'name'  => $file,
-                        'list'  => implode( ", ", array_map( function($cnt) { return $cnt["filename"]; }, $count )),
+                        'list'  => implode(", ", array_map(function ($cnt) {
+                            return $cnt["filename"];
+                        }, $count)),
                     );
                 }
             }
-            $twig_data['content'] = wbce_twig_display(array('backup_files'=>$data),'backups',true);
+            $twig_data['content'] = wbce_twig_display(array('backup_files'=>$data), 'backups', true);
             $twig_data['more_header_links'] = $DR_TEXT['MANAGE_BACKUPS'];
             break;
     }
 }
 
-if(! isset($twig_data['content']))
-{
+if (! isset($twig_data['content'])) {
     $twig_data['droplets'] = wbce_list_droplets();
 }
 

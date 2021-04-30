@@ -15,7 +15,7 @@ defined('WB_PATH') or die("Cannot access this file directly");
 $oAccounts = new Accounts();
 $oMsgBox   = new MessageBox();
 
-$sLC       = defined('LANGUAGE') ? LANGUAGE : defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN';
+$sLC       = defined('LANGUAGE') ? LANGUAGE : (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN');
 $sEmail    = '';
 
 if(isset($_POST['email']) && $_POST['email'] != "" ) {
@@ -28,9 +28,9 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
         $sSql  = "SELECT * FROM `{TP}users` WHERE `email`='".$sEmail."'";
 
         if(($rRow = $database->query($sSql))){
-            if($aUser = $rRow->fetchRow(MYSQL_ASSOC)) {
+            if($aUser = $rRow->fetchRow(MYSQLI_ASSOC)) {
                 if(strlen($aUser['signup_confirmcode']) > 25){
-                    header("Location: ".ACCOUNT_URL."/signup_continue_page.php?switch=wrong_inputs");	
+                    header("Location: ".ACCOUNT_URL."/signup_continue_page.php?switch=wrong_inputs");
                     exit(0); // break up the script here
                 }
                 $iUserID = (int) $aUser['user_id'];
@@ -44,26 +44,26 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                     // current password
                     $sCurrentPw = $aUser['password'];
 
-                    // generate new password 
+                    // generate new password
                     $sNewPasswordRaw = $oAccounts->GenerateRandomPassword();
                     $sNewPasswordEnc = $oAccounts->doPasswordEncode($sNewPasswordRaw);
-                    
+
                     // prepare E-Mail with login details to send to the user via email
                     $aTokenReplace = array(
-                        'LOGIN_DISPLAY_NAME'  => $aUser['display_name'], 
-                        'LOGIN_NAME'          => $aUser['username'], 
-                        'LOGIN_WEBSITE_TITLE' => WEBSITE_TITLE, 
-                        'LOGIN_PASSWORD'      => $sNewPasswordRaw,							
+                        'LOGIN_DISPLAY_NAME'  => $aUser['display_name'],
+                        'LOGIN_NAME'          => $aUser['username'],
+                        'LOGIN_WEBSITE_TITLE' => WEBSITE_TITLE,
+                        'LOGIN_PASSWORD'      => $sNewPasswordRaw,
                         'LOGIN_URL'           => ACCOUNT_URL . '/login.php'
-                    );					
+                    );
 
                     $sOnScreenSwitch    = 'forgot_login_details_sent';
-                    $sEmailTemplateName = 'password_recovery_mail';	
-                    $sEmailSubject      = '';							
+                    $sEmailTemplateName = 'password_recovery_mail';
+                    $sEmailSubject      = '';
                     $sMailTo            = $sEmail;
 
                     $checkSend = $oAccounts->sendEmail($sMailTo, $aTokenReplace, $sEmailTemplateName, $sEmailSubject);
-                    if ($checkSend === true) {                       
+                    if ($checkSend === true) {
                         // update the new password in the database
                         $aUpdateUser = array(
                             'user_id'    => $iUserID,
@@ -71,32 +71,32 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                             'last_reset' => time(),
                         );
 
-                        if($database->updateRow('{TP}users', 'user_id', $aUpdateUser)){ 
-                            header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=".$sOnScreenSwitch."&email=".$sMailTo);							
+                        if($database->updateRow('{TP}users', 'user_id', $aUpdateUser)){
+                            header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=".$sOnScreenSwitch."&email=".$sMailTo);
                             exit(0);
-                        } else { 
+                        } else {
                             // Error updating database
                             $oMsgBox->error($MESSAGE['RECORD_MODIFIED_FAILED']);
                             if(WB_DEBUG) {
                                 $oMsgBox->error($database->get_error().'<br />'.$sSql);
                             }
                         }
-                        
+
                     } else {
                         // tell user: WRONG INPUTS
                         $aUpdateUser = array(
                             'user_id'    => $aUser['user_id'],
                             'password'   => $sCurrentPw
-                        );			
+                        );
                         $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
-                        header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&from=resend_forgot_pass&mail_err=".$checkSend);							
+                        header("Location: ".ACCOUNT_URL."/signup_continue_page.php?lc=".$sLC."&switch=wrong_inputs&from=resend_forgot_pass&mail_err=".$checkSend);
                         exit(0);
-                    }                        
+                    }
                 }
             } else { // no record found - Email doesn't exist, so tell the user
                 $oMsgBox->error($MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND']);
             }
-        } else { 
+        } else {
             // Query failed
             if(WB_DEBUG) {
                 $oMsgBox->error('SystemError:: Database query failed!');
@@ -104,7 +104,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
             }
         }
     }
-} 
+}
 if($oMsgBox->hasErrors() == false ) {
     $oMsgBox->info($MESSAGE['FORGOT_PASS_NO_DATA'], 0, 1);
 }
@@ -113,7 +113,7 @@ $sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $
 
 // Get the template file for forgot_login_details
 $aToTwig = array(
-    'EMAIL'         => $email, 
-    'MESSAGE_BOX'   => $oMsgBox->fetchDisplay(), 
+    'EMAIL'         => $email,
+    'MESSAGE_BOX'   => $oMsgBox->fetchDisplay(),
 );
 $oAccounts->useTwigTemplate('form_forgot.twig', $aToTwig);

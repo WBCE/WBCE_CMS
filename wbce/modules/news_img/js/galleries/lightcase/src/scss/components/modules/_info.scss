@@ -1,0 +1,55 @@
+#lightcase-info {
+  // You can change to position "static" or "relative" instead, but consider
+  // that this height will be integrated and calculated
+  // to the maximum height additionally to the image height.
+  position: absolute;
+
+  padding-top: 15px;
+
+  #lightcase-title,
+  #lightcase-caption {
+    margin: 0;
+    padding: 0;
+
+    line-height: 1.5;
+    font-weight: normal;
+    text-overflow: ellipsis;
+  }
+
+  #lightcase-title {
+    font-size: #{map-get($lightcase-settings, 'title-font-size')};
+    color: #{map-get($lightcase-settings, 'title-color')};
+
+    @media screen and (max-width: #{map-get($lightcase-settings, 'breakpoint')-1}) {
+      position: fixed;
+      top: 10px;
+      left: 0;
+      max-width: 87.5%;
+      padding: 5px 15px;
+      background: #{map-get($lightcase-settings, 'overlay-color')};
+    }
+  }
+
+  #lightcase-caption {
+    clear: both;
+    font-size: #{map-get($lightcase-settings, 'caption-font-size')};
+    color: #{map-get($lightcase-settings, 'caption-color')};
+  }
+
+  #lightcase-sequenceInfo {
+    font-size: #{map-get($lightcase-settings, 'sequenceInfo-font-size')};
+    color: #{map-get($lightcase-settings, 'sequenceInfo-color')};
+  }
+
+  @media screen and (max-width: #{map-get($lightcase-settings, 'breakpoint')-1}) {
+    .lightcase-fullScreenMode & {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    // Not type: image, video, flash or error
+    html:not([data-lc-type=image]):not([data-lc-type=video]):not([data-lc-type=flash]):not([data-lc-type=error]) & {
+        position: static;
+    }
+  }
+}

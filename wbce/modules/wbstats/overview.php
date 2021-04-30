@@ -6,10 +6,10 @@
  * @author          Ruud Eisinga - Dev4me
  * @link			http://www.dev4me.nl/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
+ * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.1.11
- * @lastmodified    June 29, 2017 
+ * @version         0.2.1
+ * @lastmodified    November 15, 2019
  *
  */
  
@@ -23,12 +23,12 @@ function AutoRefresh( t ) {
 	setTimeout("location.reload(true);", t);
 }
 AutoRefresh(5*60000);
-$('.visitors').live("click", function(e) { 
+$(document).on("click", '.visitors', function(e) { 
 	e.preventDefault();
 	$('tr#pags').hide(); 
 	$('tr#visits').show(); 
 });
-$('.pags').live("click",function(e) {
+$(document).on("click",'.pags', function(e) {
 	e.preventDefault();
 	$('tr#visits').hide(); 
 	$('tr#pags').show(); 
@@ -43,61 +43,64 @@ $('.pags').live("click",function(e) {
 			<td colspan="2"><h4><?php echo $WS['TOTALS'] ?></h4></td>
 		</tr>
 		<tr valign="top">
-			<td ><strong><?php echo $WS['TOTALVISITORS'] ?></strong></td><td width="10%"><?php echo $r['visitors'] ?></td>
+			<td ><?php echo $WS['TOTALVISITORS'] ?></td><td width="10%"><?php echo $r['visitors'] ?></td>
 		</tr>
 		<tr valign="top">
-			<td ><strong><?php echo $WS['TOTALPAGES'] ?></strong></td><td width="10%"><?php echo $r['visits'] ?></td>
+			<td ><?php echo $WS['TOTALPAGES'] ?></td><td width="10%"><?php echo $r['visits'] ?></td>
 		</tr>
 		<tr valign="top">
 			<td colspan="2"><h4><?php echo $WS['LIVE'] ?></h4></td>
 		</tr>
 		<tr valign="top">
-			<td><span<?php if($r['online_title']) { echo ' class="expandunder underline" title="'.$r['online_title'].'"'; } ?>><strong><?php echo $WS['CURRENTONLINE'] ?></span></strong></td><td><?php echo $r['online'] ?></td>
+			<td><span<?php if($r['online_title']) { echo ' class="expandunder underline" title="'.$r['online_title'].'"'; } ?>><?php echo $WS['CURRENTONLINE'] ?></span></td><td><?php echo $r['online'] ?></td>
 		</tr>
 		<tr valign="top">
 			<td colspan="2"><h4><?php echo $WS['TODAY'] ?></h4></td>
 		</tr>
 		<tr valign="top">
-			<td><strong><?php echo $WS['TODAYVISITORS'] ?></strong></td><td><?php echo $r['today'] ?></td>
+			<td><?php echo $WS['TODAYVISITORS'] ?></td><td><?php echo $r['today'] ?></td>
 		</tr>
 		<tr valign="top">
-			<td><strong><?php echo $WS['TODAYPAGES'] ?></strong></td><td><?php echo $r['ptoday'] ?></td>
+			<td><?php echo $WS['TODAYPAGES'] ?></td><td><?php echo $r['ptoday'] ?></td>
 		</tr>	
 		<tr valign="top">
-			<td><strong><?php echo $WS['TODAYBOTS'] ?></strong></td><td><?php echo $r['btoday'] ?></td>
+			<td><?php echo $WS['TODAYBOTS'] ?></td><td><?php echo $r['btoday'] ?></td>
+		</tr>
+		<tr valign="top">
+			<td><?php echo $WS['TODAYREFSPAM'] ?></td><td><?php echo $r['rtoday'] ?></td>
 		</tr>
 		<tr valign="top">
 			<td colspan="2"><h4><?php echo $WS['YESTERDAY'] ?></h4></td>
 		</tr>
 		<tr valign="top">
-			<td><strong><?php echo $WS['YESTERVISITORS'] ?></strong></td><td><?php echo $r['yesterday'] ?></td>
+			<td><?php echo $WS['YESTERVISITORS'] ?></td><td><?php echo $r['yesterday'] ?></td>
 		</tr>
 		<tr valign="top">
-			<td><strong><?php echo $WS['YESTERPAGES'] ?></strong></td><td><?php echo $r['pyesterday'] ?></td>
+			<td><?php echo $WS['YESTERPAGES'] ?></td><td><?php echo $r['pyesterday'] ?></td>
 		</tr>	
 		<tr valign="top">
-			<td><strong><?php echo $WS['YESTERDAYBOTS'] ?></strong></td><td><?php echo $r['byesterday'] ?></td>
+			<td><?php echo $WS['YESTERDAYBOTS'] ?></td><td><?php echo $r['byesterday'] ?></td>
 		</tr>
 		<tr valign="top">
-			<td>&nbsp;</td><td>&nbsp;</td>
+			<td><?php echo $WS['YESTERDAYREFSPAM'] ?></td><td><?php echo $r['ryesterday'] ?></td>
 		</tr>
 		<tr valign="top">
 			<td colspan="2"><h4><?php echo $WS['MISC'] ?></h4></td>
 		</tr>
 		<tr valign="top">
-			<td><strong><?php echo $WS['BOUNCES'] ?></strong></td><td><?php echo $r['bounced'] ?>%</td>
+			<td><?php echo $WS['BOUNCES'] ?></td><td><?php echo $r['bounced'] ?>%</td>
 		</tr>
 		<tr valign="top">
 			<td colspan="2"><h4><?php echo $WS['AVERAGES'] ?></h4></td>
 		</tr>
 		<tr valign="top">
-			<td><strong><?php echo $WS['AVGPAGESVISIT'] ?></strong></td><td><?php echo $r['page_user'] ?></td>
+			<td><?php echo $WS['AVGPAGESVISIT'] ?></td><td><?php echo $r['page_user'] ?></td>
 		</tr>
 		<tr valign="top">
-			<td><strong><?php echo $WS['AVG7VISITS'] ?></strong></td><td><?php echo $r['avg_7'] ?></td>
+			<td><?php echo $WS['AVG7VISITS'] ?></td><td><?php echo $r['avg_7'] ?></td>
 		</tr>
 		<tr valign="top">
-			<td><strong><?php echo $WS['AVG30VISITS'] ?></strong></td><td><?php echo $r['avg_30'] ?></td>
+			<td><?php echo $WS['AVG30VISITS'] ?></td><td><?php echo $r['avg_30'] ?></td>
 		</tr>
     </table>
 </div>
@@ -131,10 +134,10 @@ $('.pags').live("click",function(e) {
 
 <div class="middle  h250">
 	<h3><?php echo $WS['LAST30'] ?>
-		<span>
+		<span class="right">
 		<a href="" class="visitors"><?php echo $WS['VISITORS'] ?></a> | 
 		<a href="" class="pags"><?php echo $WS['PAGES'] ?></a>
-	</span>
+		</span>
 	</h3>
 	<table  height="230" width="100%" cellpadding="0" cellspacing="0" align="right">
 		<tr id="visits" valign="bottom" height="210">

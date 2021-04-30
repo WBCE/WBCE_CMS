@@ -1,25 +1,17 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        backend
- * @package         modules
- * @author          WebsiteBaker Project
- * @copyright       Ryan Djurovich
- * @copyright       WebsiteBaker Org. e.V.
- * @link            http://websitebaker.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.3
- * @requirements    PHP 5.3.6 and higher
- * @version         $Id: admin.php 1625 2012-02-29 00:50:57Z Luisehahne $
- * @filesource      $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/branches/2.8.x/wb/modules/admin.php $
- * @lastmodified    $Date: 2012-02-29 01:50:57 +0100 (Mi, 29. Feb 2012) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
-/* -------------------------------------------------------- */
 // Must include code to stop this file being accessed directly
-if (defined('WB_PATH') == false) {die("Cannot access this file directly");}
-/* -------------------------------------------------------- */
+if (!defined('WB_PATH')) { die("Cannot access this file directly"); }
 
 // Get page id
 $requestMethod = '_' . strtoupper($_SERVER['REQUEST_METHOD']);
@@ -36,18 +28,22 @@ if (($section_id == 0) && isset($section_required)) {
     header("Location: $section_required");
     exit(0);
 }
+
 // be sure is is numeric
 $page_id = intval($page_id);
 $section_id = intval($section_id);
+
 // Create js back link
 // $js_back = 'javascript: history.go(-1);';
 $js_back = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id;
+
 // Create new admin object, you can set the next variable in your module
 // to print with or without header, default is with header
 // it is recommed to set the variable before including the /modules/admin.php
 $admin_header = (!isset($admin_header)) ? true : $admin_header;
 require_once WB_PATH . '/framework/class.admin.php';
 $admin = new admin('Pages', 'pages_modify', (bool) $admin_header);
+
 // this catches XSS in these params, too
 if (!$page_id && !$section_id) {
     $admin->print_error('Invalid arguments passed - script stopped.');
@@ -91,7 +87,7 @@ if (isset($print_info_banner) && $print_info_banner == true) {
 
     // Convert the unix ts for modified_when to human a readable form
     if ($page['modified_when'] != 0) {
-        $modified_ts = gmdate(TIME_FORMAT . ', ' . DATE_FORMAT, $page['modified_when'] + TIMEZONE);
+        $modified_ts = date(TIME_FORMAT . ', ' . DATE_FORMAT, $page['modified_when'] + TIMEZONE);
     } else {
         $modified_ts = 'Unknown';
     }
@@ -112,21 +108,20 @@ if (isset($print_info_banner) && $print_info_banner == true) {
         'MENU_TITLE' => ($page['menu_title']),
         'ADMIN_URL' => ADMIN_URL,
         'WB_URL' => WB_URL,
-        'THEME_URL' => THEME_URL,
+        'THEME_URL' => THEME_URL
     ));
 
     $template->set_var(array(
         'MODIFIED_BY' => $user['display_name'],
         'MODIFIED_BY_USERNAME' => $user['username'],
         'MODIFIED_WHEN' => $modified_ts,
-        'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED'],
+        'LAST_MODIFIED' => $MESSAGE['PAGES_LAST_MODIFIED']
     ));
 
     $template->set_block('main_block', 'show_modify_block', 'show_modify');
     if ($modified_ts == 'Unknown') {
         $template->set_block('show_modify', '');
         $template->set_var('CLASS_DISPLAY_MODIFIED', 'hide');
-
     } else {
         $template->set_var('CLASS_DISPLAY_MODIFIED', '');
         $template->parse('show_modify', 'show_modify_block', true);
@@ -141,23 +136,19 @@ if (isset($print_info_banner) && $print_info_banner == true) {
     if ($query_sections->numRows() > 0) {
         $template->set_block('show_section', '');
         $template->set_var('DISPLAY_MANAGE_SECTIONS', 'display:none;');
-
     } elseif (MANAGE_SECTIONS == 'enabled') {
-
         $template->set_var('TEXT_MANAGE_SECTIONS', $HEADING['MANAGE_SECTIONS']);
         $template->parse('show_section', 'show_section_block', true);
-
     } else {
         $template->set_block('show_section', '');
         $template->set_var('DISPLAY_MANAGE_SECTIONS', 'display:none;');
-
     }
 
     // Insert language TEXT
     $template->set_var(array(
         'TEXT_CURRENT_PAGE' => $TEXT['CURRENT_PAGE'],
         'TEXT_CHANGE_SETTINGS' => $TEXT['CHANGE_SETTINGS'],
-        'HEADING_MODIFY_PAGE' => $HEADING['MODIFY_PAGE'],
+        'HEADING_MODIFY_PAGE' => $HEADING['MODIFY_PAGE']
     ));
 
     // Parse and print header template
@@ -176,15 +167,11 @@ if (isset($print_info_banner) && $print_info_banner == true) {
                 $block_name = '#' . (int) $section['block'];
             }
         }
-
         $sec_anchor = (defined('SEC_ANCHOR') && (SEC_ANCHOR != '') ? 'id="' . SEC_ANCHOR . $section['section_id'] . '"' : '');
-        $sSectionInfoLine = '<div class="section-info" ' . $sec_anchor . ' ><b>' . $TEXT['BLOCK']
-        . ': </b>' . $block_name . ' (' . $section['block'] . ') <b> Modul: </b>'
-        . $section['module'] . '<b>  ID: </b>' . $section_id . '</div>' . PHP_EOL;
+        $sSectionInfoLine = '<div class="section-info" ' . $sec_anchor . ' ><b>' . $TEXT['BLOCK'] . ': </b>' . $block_name . ' (' . $section['block'] . ') <b> Modul: </b>' . $section['module'] . '<b>  ID: </b>' . $section_id . '</div>' . PHP_EOL;
         echo $sSectionInfoLine;
     }
-
-} //
+}
 
 // Work-out if the developer wants us to update the timestamp for when the page was last modified
 if (isset($update_when_modified) && $update_when_modified == true) {

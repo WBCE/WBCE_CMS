@@ -1,20 +1,20 @@
 /*
- Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
  For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 
 (function () {
     "use strict";
-    
+
     var wbsaveCmd = {
         readOnly: 1,
-        
+
         exec: function (editor) {
             if (editor.fire("save")) {
-                
+
                 var $form = editor.element.$.form,
                     ifrm = document.createElement("iframe");
-                
+
                 ifrm.setAttribute("style", "display: none;");
                 ifrm.setAttribute("id", "dummy_iframe");
                 ifrm.setAttribute("name", "dummy_iframe");
@@ -27,7 +27,7 @@
                     $form.target = "";
                 });
                 $form.target = "dummy_iframe";
-                
+
                 if ($form) {
                     try {
                         $form.submit();
@@ -43,12 +43,12 @@
             }
         }
     };
-    
+
     CKEDITOR.plugins.add("wbsave", {
         lang: "de,en",
         icons: "wbsave",
         hidpi: true,
-        
+
         init: function (editor) {
             if (editor.elementMode !== CKEDITOR.ELEMENT_MODE_REPLACE) {
                 return;
@@ -65,7 +65,7 @@
             CKEDITOR.scriptLoader.load(CKEDITOR.plugins.getPath("wbsave") + "ibox.js");
         }
     });
-    
+
 }());
 
 /**

@@ -1,41 +1,6 @@
-@import url(./js/fotorama/fotorama.css);
+
+
 /*** Don't remove the class nixhier, this is required for ASP ***/
 .nixhier {
-	display:none;
+	display: none;
 }
-.mod_nwi_default {
-}
-.mod_nwi_default .mod_nwi_group {
-  width:100%;
-  clear:both;
-}
-.mod_nwi_default .mod_nwi_teaserpic {
-  float:left;  
-}
-.mod_nwi_default .mod_nwi_grouppic {
-  float:right;
-}
-.mod_nwi_default .mod_nwi_grouppic img {
-  width:150px;
-  height:150px;
-}
-.mod_nwi_default .mod_nwi_teaserpic img {
-  max-width:80%;
-  height:auto;
-}
-.mod_nwi_default .mod_nwi_teasertext {  
-  display: table;
-}
-.mod_nwi_default .mod_nwi_teasertext h3 {
-  margin:0 0 0.25em 0;
-  padding:0;
-}
-.mod_nwi_default .mod_nwi_metadata {
-  font-size:75%;
-}
-.mod_nwi_default .mod_nwi_shorttext {
-  padding:0.5em 0;
-}
-.mod_nwi_default .mod_nwi_spacer {
-  padding:1em 0;
-}		

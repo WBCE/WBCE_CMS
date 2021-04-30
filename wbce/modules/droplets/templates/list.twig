@@ -2,7 +2,7 @@
 
 <br />
 <button class="button" type="button" name="add_droplet" onclick="javascript: window.location = '{{ WB_URL }}/modules/droplets/add_droplet.php';">
-    {{ TEXT.ADD|raw }} {{ DR_TEXT.DROPLETS|raw }}
+    {{ TEXT.ADD|raw }}&nbsp;{{ DR_TEXT.DROPLETS|raw }}
 </button>
 <button class="button" type="button" name="upload_droplet" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;upload=1';">
     {{ DR_TEXT.UPLOAD|raw }}
@@ -11,9 +11,9 @@
     {{ DR_TEXT.BACKUP|raw }}
 </button>
 {% if backup_mgmt %}
-<button class="button" type="button" name="backup_mgmt" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups';">
+ <button class="button" type="button" name="backup_mgmt" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups';">
     {{ DR_TEXT.MANAGE_BACKUPS|raw }}
-</button>'
+</button>
 {% endif %}
 
 <a href="#" style="float:right" onclick="javascript: window.open('{{ WB_URL }}/modules/droplets/readme/{{ DR_TEXT.README|raw }}','helpwindow','width=700,height=550,directories=no,location=no,menubar=no,scrollbars=yes,status=no,toolbar=no,resizable=yes');">
@@ -28,10 +28,10 @@
 
 <form method="post" action="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets">
 {{ FTAN|raw }}
-<table class="droplets row_a tablesorter" id="myTable">
+<table class="droplets row_a tablesorter" border="0" id="myTable">
 	<thead>
 		<tr>
-			<th width="15%"></th>
+			<th width="10%"></th>
 			<th width="20%">{{ TEXT.NAME|raw }}</th>
 			<th width="55%">{{ TEXT.DESCRIPTION|raw }}</th>
 			<th width="7%">{{ TEXT.ACTIVE|raw }}</th>
@@ -43,25 +43,25 @@
 {% for item in droplets %}
 {% if loop.last %}{% set num_droplets = loop.index %}{% endif %}
    	    <tr class="row_{% if loop.index % 2 %}b{% endif %}">
-			<td>
+			<td style="white-space:nowrap;">
                 <input type="checkbox" name="markeddroplet[]" id="markeddroplet[]" value="{{ item.id }}" />
 				<a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}" title="{{ TEXT.MODIFY|raw }}">
-					<img src="{{ THEME_URL }}/images/modify_16.png" border="0" alt="Modify" />
+					<span class="fa fa-fw fa-edit"></span>
 				</a>
 				<a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;copy={{ item.id }}" title="{{ DR_TEXT.DUPLICATE|raw }}">
-                    <img src="{{ THEME_URL }}/images/add_child.png" alt="" />
+                    <span class="fa fa-fw fa-copy"></span>
                 </a>
-                <a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}" class="tooltip">
-                    <img src="{{ WB_URL }}/modules/droplets/img/info.png" alt="" />{{ item.comments|raw }}
+                <a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}"  title="{{ item.comments|striptags|raw }}">
+                    <span class="fa fa-fw fa-info-circle"></span>
                 </a>
                 {% if item.valid_code and item.unique %}
-                    <img src="{{ WB_URL }}/modules/droplets/img/droplet.png" border="0" title="valid" alt="valid" />
+                    <span class="fa fa-fw fa-check"></span>
                 {% else %}
-                    <img src="{{ WB_URL }}/modules/droplets/img/invalid.gif" border="0" title="invalid" alt="invalid" />
+                    <span class="fa fa-fw fa-warning" style="color:red"></span>
                 {% endif %}
 			</td>
 			<td>
-                {{ item.name }}
+                <a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}" title="{{ TEXT.MODIFY|raw }}">{{ item.name }}</a>
 			</td>
 			<td>
 				<small>{{ item.description|raw }}</small>
@@ -71,7 +71,7 @@
 			</td>
 			<td>
 				<a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=delete&amp;droplet_id={{ item.id }}');" title="{{ TEXT.DELETE|raw }}">
-					<img src="{{ THEME_URL }}/images/delete_16.png" border="0" alt="X" />
+					<span class="fa fa-fw fa-trash"></span>
 				</a>
 			</td>
 		</tr>

@@ -14,7 +14,7 @@ header('Pragma: no-cache');
         new Array( name, link )...
     );
 
-	DropletSelectBox will loaded as select options to wbdroplets plugin.
+    DropletSelectBox will loaded as select options to wbdroplets plugin.
 
 */
 
@@ -26,14 +26,15 @@ require_once(WB_PATH.'/framework/class.admin.php');
 $admin = new admin('Pages', 'pages_modify', false);
 
 if (!function_exists('cleanup')) {
-	function cleanup($string) {
-		global $database;
-		if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')) {
-			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
-		} else {
-			return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
+    function cleanup($string)
+    {
+        global $database;
+        if (is_object($database->db_handle) && (get_class($database->db_handle) === 'mysqli')) {
+            return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
+        } else {
+            return preg_replace("/\r?\n/", "\\n", $database->escapeString($string));
         }
-	} // end function cleanup
+    } // end function cleanup
 }
 
 $DropletSelectBox = "var DropletSelectBox = new Array( ";
@@ -41,24 +42,24 @@ $description = "var DropletInfoBox = new Array( ";
 $usage = "var DropletUsageBox = new Array( ";
 
 $array = array();
-	$sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_droplets` ';
-	$sql .= 'WHERE `active`=1 ';
-	$sql .= 'ORDER BY `name` ASC';
-	if ($resRec = $database->query($sql)) {
-		while (!false == ($droplet = $resRec->fetchRow())) {
-			$title = cleanup($droplet['name']);
-			$desc = cleanup($droplet['description']);
-			$comments = cleanup($droplet['comments']);
+    $sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_droplets` ';
+    $sql .= 'WHERE `active`=1 ';
+    $sql .= 'ORDER BY `name` ASC';
+    if ($resRec = $database->query($sql)) {
+        while (!false == ($droplet = $resRec->fetchRow())) {
+            $title = cleanup($droplet['name']);
+            $desc = cleanup($droplet['description']);
+            $comments = cleanup($droplet['comments']);
             
-	        $DropletSelectBox .=  "new Array( '".$title."', '".$droplet['name']."'), ";
-	        $description .=  "new Array( '".$title."', '".$desc."'), ";
-	        $usage .=  "new Array( '".$title."', '".$comments."'), ";
-		}
-	}
+            $DropletSelectBox .=  "new Array( '".$title."', '".$droplet['name']."'), ";
+            $description .=  "new Array( '".$title."', '".$desc."'), ";
+            $usage .=  "new Array( '".$title."', '".$comments."'), ";
+        }
+    }
 
-$DropletSelectBox = substr($DropletSelectBox,0,-2);
-$description = substr($description,0,-2);
-$usage = substr($usage,0,-2);
+$DropletSelectBox = substr($DropletSelectBox, 0, -2);
+$description = substr($description, 0, -2);
+$usage = substr($usage, 0, -2);
 
 echo $DropletSelectBox .= " );\n";
 echo $description .= " );\n";

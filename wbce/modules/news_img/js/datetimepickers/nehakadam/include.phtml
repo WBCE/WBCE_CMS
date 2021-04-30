@@ -1,0 +1,29 @@
+    <script src="<?php echo WB_URL; ?>/modules/news_img/js/datetimepickers/nehakadam/DateTimePicker.min.js"></script>
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="<?php echo WB_URL; ?>/modules/news_img/js/datetimepickers/nehakadam/DateTimePicker-ltie9.css" />
+    <script type="text/javascript" src="<?php echo WB_URL; ?>/modules/news_img/js/datetimepickers/nehakadam/DateTimePicker-ltie9.js"></script>
+    <![endif]-->
+    <!-- For i18n Support -->
+    <script type="text/javascript" src="<?php echo WB_URL; ?>/modules/news_img/js/datetimepickers/nehakadam/DateTimePicker-i18n.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('#dtBox_<?php echo $section_id ?>_1,#dtBox_<?php echo $section_id ?>_2').DateTimePicker({
+                language: '<?php echo strtolower(LANGUAGE); ?>',
+                mode: "datetime",
+                addEventHandlers: function()
+				{
+					var dtPickerObj = this;
+					$("#publishdate_trigger").click(function(e)
+					{
+						e.stopPropagation();
+						dtPickerObj.showDateTimePicker($("#publishdate"));
+					});
+                    $("#enddate_trigger").click(function(e)
+					{
+						e.stopPropagation();
+						dtPickerObj.showDateTimePicker($("#enddate"));
+					});
+                }
+            });
+        });
+    </script>

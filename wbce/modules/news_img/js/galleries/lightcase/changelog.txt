@@ -1,0 +1,201 @@
+2018/03/11 - v2.5.0
+Feature: Implementation of new hooks and new setting to stop lightcase process before showing loaded content
+
+2018/02/27 - v2.4.4
+Cleanup: Updated version number
+
+2018/02/27 - v2.4.3
+Feature: New parameter for function resize to pass dimensions
+Feature: Support touch events for jQuery version 3.x
+
+2017/11/24 - v2.4.2
+Feature: New argument for resize function to start the inTransition afterwards
+Bugfix: Fix error inside _calculateDimensions when $object is not defined
+
+2017/11/23 - v2.4.1
+Bugfix: Fix resize issue with maxWidth
+Bugfix: Issue #128: Improved _getFileUrlSuffix function to get the suffix of files from external urls
+Bugfix: Issue #116: add X-Ajax-Location check
+
+2017/04/09 - v2.4.0
+Feature: Improve external video resize handling using a new setting 'fixedRatio'
+Feature: Add compiled css file without breakpoint
+Bugfix: Fix couple of browser issues with several content types
+Feature: Issue #69 - Autodetect the right video format supported by the browser
+Feature: Issue #96 - Allow more possibilities to define transitions
+Bugfix: Issue #122 - Improve dimension handling using forceWidth and forceHeight
+Bugfix: Fix fade in issue with inner content
+Feature: Issue #114 - Possibility to initialize lightcase collections with different tag attribute values
+
+2016/12/20 - v2.3.6
+Hotfix: Fix scroll position after scrolling lightcase content on mobile
+
+2016/12/20 - v2.3.5
+Bugfix: Issue #98 - Fix bug with internal matchMedia function call
+Bugfix: Issue #97 - Closing Lightcase on mobile forces site to top of page
+Feature: Support for jQuery version 3.x.x
+Feature: Issue #84 - Add the option to override all the configurations from within the HTML
+Bugfix: Issue #50 - Iframe is not scrolling on all iDevices
+Feature: Issue #48 - Added new option slideshowAutostart
+
+2015/12/29 - v2.3.4
+Bugfix: Issue #47 - Fixed wrong break statement which crashed in transition
+
+2015/12/25 - v2.3.3
+Bugfix: Fixed forceWidth and forceHeight option
+Feature: Issue #46 - Font path configurable with scss settings
+Bugfix: Issue #45 - All labels as lightcase settings
+Bugfix: Issue #43 - Images not loaded when desktop browser view is zoomed out
+
+2015/11/21 - v2.3.2
+Bugfix: Issue #38 - Fixed main path in package.json
+WIP: open() no longer a public method
+Bugfix: Issue #37 - Added border-box to contentInner
+Bugfix: Issue #32 - Access origin link object and perform with data
+
+2015/11/17 - v2.3.1
+Bugfix: Fixed navigation bug on last item in a sequence
+
+2015/11/15 - v2.3.0
+Added: bower manifest file
+Feature: Viewport and density support
+Cleanup: Set lightcase into private scope
+Cleanup: Implemented strict mode
+Feature: SASS implementation
+
+2015/10/28 - v2.2.0
+Feature: Prefixed name for all attributes for more uniqueness
+Feature: Possibility to use categories with collections
+Feature: lightcase.origin represents the called link object
+Bugfix: Issue #32 - Make object this accessible within hook functions
+
+2015/09/29 - v2.1.2
+Bugfix: Issue #26 - Captions on mobile devices
+Bugfix: Issue #25 - navigateEndless when useKeys is true
+Cleanup: Remove BOM from package.json
+
+2015/07/12 - v2.1.1
+Feature: Added bower configuration file
+Bugfix: Issue #22 - DisableShrink property doesn't work, case of image type affects type of overlay
+Bugfix: Disabled text decoration for icon links
+Bugfix: Optimized nav icon position
+Bugfix: Issue #19 - Cleanup removes all key bindings on the page
+Bugfix: Issue #17 - While closing in midst of loading next image
+
+2015/04/25 - v2.1.0
+Feature: Added new option 'attr' used for initializing collections
+Feature: Added new hook calls 'onClose' and 'onCleanup'
+Bugfix: Issue #14 - Jump to top issue on mobile
+Bugfix: Issue #12 - $case is not defined
+
+2015/03/21 - v2.0.3
+Bugfix: Decreased vulnerability in side effects for text colors
+Feature: Added new option 'href' overriding attribute
+Feature: Updated lightcase font with a new loading icon
+
+2015/02/23 - v2.0.2
+Bugfix: Fixed icon wobble for webkit
+Bugfix: Defined line-height on each icon to prevent from style inheritance
+Feature: Improved use of format json with type ajax
+
+2015/02/11 - v2.0.1
+Added: Minified source of lightcase.js
+Bugfix: Fixed loading animation wobble in mozilla firefox
+Bugfix: Optimized loading spin icon
+
+2015/02/09 - v2.0.0
+Feature: Implemeted breakpoint related styles
+Feature: Major style improvements
+Feature: Switched from sprites to icon font
+Bugfix: Fixed performance issues
+Feature: Add title and caption to options
+
+2014/12/22 - v1.6.0
+Feature: Improved hook implementation
+Update: jQuery touch events from v1.3.1 to v1.4.5
+
+2014/11/02 - v1.5.4
+Feature: Slight style improvments (font size)
+Feature: Returned the object within init
+Cleanup: Outdent inline comments
+Cleanup: Space before braces for anonymous function
+Cleanup: Changed comma position
+
+2014/10/11 - v1.5.3
+Added: package.json file
+Fixed: Incorrect css property
+
+2014/04/28 - v1.5.2
+Fixed: CSS3 transition timing issue in Firefox
+
+2014/04/21 - v1.5.1
+Feature: Changed default speed value
+Feature: Improved and transition 'elastic' look and feel
+
+2014/03/08 - v1.5.0
+Feature: New hook function on initialization
+Feature: Advanced usage of type ajax
+Feature: Implemented WAI-ARIA standard for dialog boxes
+Bugfix: Code quality improvements
+
+2013/09/10 - v1.4.4
+Fixed: Cross effects when using multiple class names with option 'classPrefix'
+Removed: Replaced option 'id' and 'tempIdPrefix' with 'idPrefix'
+
+2013/09/01 - v1.4.3
+Bugfix: Fixed the 'elastic' inTransition in Google Chrome 29.0.1547.62 m
+
+2013/06/30 - v1.4.2
+Added: Option 'type' for forcing data type
+
+2013/06/19 - v1.4.1
+Removed: noConflict call
+
+2013/06/02 - v1.4.0
+Feature: New effects like 'scrollTop', 'scrollHorizontal' and more
+Feature: Option 'swipe'
+Feature: Additional options 'transitionIn' and 'transitionOut'
+Feature: Option 'cssTransitions' for enabing/disabling transitions with css
+Feature: Option 'typeMapping'
+Added: Design adjustments
+Added: All effects as CSS3 transitions with javascript fallbacks
+
+2013/05/12 - v1.3.2
+Removed: The modified jQuery.browser object
+Removed: Flash object tag and classid for a simpler browser handling
+Bugfix: Fixed the ignored mobileMatchExpression property
+
+2013/05/11 - v1.3.1
+Bugfix: Fixed too soon appearing play/pause button if opened in fullscreen mode
+
+2013/05/11 - v1.3.0
+Feature: Fullscreen mode for mobile devices
+Added: jQuery mobile touch events
+Added: Class name prefixes for all lightcase objects
+Bugfix: Improved dimension calculation for inline, ajax and flash objects
+
+2013/04/28 - v1.2.0
+Feature: Live resize
+Feature: Navigation improvements
+Bugfix: Scrollbar was behind the next link and therefore not clickable
+Bugfix: Prevent from error if no swipe events are defined
+
+2013/03/14 - v1.1.5
+Bugfix: Issue #1 - Support jQuery 1.9.1
+
+2013/02/01 - v1.1.4
+Added: HTML5 valid data-rel
+
+2012/09/30 - v1.1.3
+Added: New player icons
+Bugfix: Stopped slideshow if swiped
+
+2012/07/11 - v1.1.2
+Bugfix: Error message if url is invalid
+Bugfix: Prevent duplicated id's
+Added: Option 'disableShrink'
+Added: Lightcase cache
+Feature: Possibility to force width and height for default content
+
+2012/05/13 - v1.0.1
+Initial release

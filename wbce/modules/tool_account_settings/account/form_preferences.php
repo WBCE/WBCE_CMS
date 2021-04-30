@@ -40,7 +40,7 @@ require_once WB_PATH . '/framework/functions-utf8.php';
 $TEXT['NEED_CURRENT_PASSWORD'] = ucfirst($TEXT['NEED_CURRENT_PASSWORD']);
 $sMsg = json_encode(utf8_fast_entities_to_umlauts($TEXT['NEED_CURRENT_PASSWORD']));
 I::insertJsCode('var MSG_CONFIRM = ' . ($sMsg) . ';', 'BODY BTM-');
-I::insertJsFile(get_url_from_path(ACCOUNT_TOOL_PATH) . '/js/password_confirm.js', 'BODY BTM-');
+//I::insertJsFile(get_url_from_path(ACCOUNT_TOOL_PATH) . '/js/password_confirm.js', 'BODY BTM-');
 
 // get referer link for use with [cancel] button
 $sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : WB_URL.((INTRO_PAGE) ? PAGES_DIRECTORY : '').'/index.php';
@@ -59,8 +59,8 @@ $aToTwig = array(
     
     'TIME_ZONES'    => getTimeZonesArray($TIMEZONES, true),
     'LANGUAGES'     => getLanguagesArray(),
-	'DATE_FORMATS'  => getTimeFormatsArray($DATE_FORMATS),
-    'TIME_FORMATS'  => getDateFormatsArray($TIME_FORMATS),
+	'DATE_FORMATS'  => getDateFormatsArray($DATE_FORMATS),
+    'TIME_FORMATS'  => getTimeFormatsArray($TIME_FORMATS),
     
     'NEW_PASSWORD'  => $wb->passwordField('new_password'),
     'REFFERER_URL'  => $sHttpReferer,

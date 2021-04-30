@@ -13,7 +13,7 @@
 $module_directory = 'menu_link';
 $module_name = 'Menu Link';
 $module_function = 'page';
-$module_version = '2.9.5';
+$module_version = '2.9.6';
 $module_platform = '1.4.0';
 $module_author = 'Ryan Djurovich, thorn, Christian M. Stefan';
 $module_license = 'GNU General Public License';
@@ -24,9 +24,12 @@ $module_level = 'core';
 /**
  * Version history
  *
+ * 2.9.6
+ *        - MYSQL_ASSOC -> MYSQLI_ASSOC
+ *
  * 2.9.5
  *        - Add module_level core status
- *        - Update module_platform 
+ *        - Update module_platform
  *
  * 2.9.4
  *        - Add module_name translation

@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -37,7 +37,7 @@ switch ($action) {
         }
 
         // Get existing values
-        $results = $database->query("SELECT * FROM " . TABLE_PREFIX . "groups WHERE group_id = '" . $group_id . "'");
+        $results = $database->query("SELECT * FROM `" . TABLE_PREFIX . "groups` WHERE `group_id` = '" . $group_id . "'");
         $group = $results->fetchRow();
         // Setup template object, parse vars to it, then parse it
         // Create new template object
@@ -149,7 +149,7 @@ switch ($action) {
             'TEXT_ADVANCED' => $TEXT['ADVANCED'],
             'CHANGING_PASSWORD' => $MESSAGE['USERS_CHANGING_PASSWORD'],
             'HEADING_MODIFY_GROUP' => $HEADING['MODIFY_GROUP'],
-			 'TEXT_CANCEL'          => $TEXT['CANCEL'],
+            'TEXT_CANCEL' => $TEXT['CANCEL'],
         ));
 
         // Parse template object

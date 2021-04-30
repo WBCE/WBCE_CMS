@@ -1,42 +1,38 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        module
- * @package         droplet
- * @author          Bianka (WebBird)
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2010, Website Baker Org. e.V.
- * @link			http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
-if(LANGUAGE_LOADED) {
-	if(!file_exists(WB_PATH.'/modules/droplets/languages/'.LANGUAGE.'.php')) {
-		require_once WB_PATH.'/modules/droplets/languages/EN.php';
-	} else {
-		require_once WB_PATH.'/modules/droplets/languages/'.LANGUAGE.'.php';
-	}
+if (LANGUAGE_LOADED) {
+    if (!file_exists(WB_PATH.'/modules/droplets/languages/'.LANGUAGE.'.php')) {
+        require_once WB_PATH.'/modules/droplets/languages/EN.php';
+    } else {
+        require_once WB_PATH.'/modules/droplets/languages/'.LANGUAGE.'.php';
+    }
 }
-
 
     global $HEADING;
     global $TEXT;
 
-    $twig = new Twig_Environment(new Twig_Loader_Filesystem(dirname(__FILE__) . '/templates'), array());
+    $twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader(dirname(__FILE__) . '/templates'), array());
     $twig->addGlobal('WB_URL', WB_URL);
     $twig->addGlobal('ADMIN_URL', ADMIN_URL);
     $twig->addGlobal('THEME_URL', THEME_URL);
-    $twig->addGlobal('HEADING',$HEADING);
-    $twig->addGlobal('TEXT',$TEXT);
-    $twig->addGlobal('DR_TEXT',$DR_TEXT);
-    $twig->addGlobal('admintool_link',ADMIN_URL . '/admintools/index.php');
-    $twig->addGlobal('module_edit_link',ADMIN_URL . '/admintools/tool.php?tool=droplets');
+    $twig->addGlobal('HEADING', $HEADING);
+    $twig->addGlobal('TEXT', $TEXT);
+    $twig->addGlobal('DR_TEXT', $DR_TEXT);
+    $twig->addGlobal('admintool_link', ADMIN_URL . '/admintools/index.php');
+    $twig->addGlobal('module_edit_link', ADMIN_URL . '/admintools/tool.php?tool=droplets');
 
-    include realpath( dirname(__FILE__).'/info.php' );
-    $twig->addGlobal('module_version',$module_version);
+    include realpath(dirname(__FILE__).'/info.php');
+    $twig->addGlobal('module_version', $module_version);
 
 
 /**
@@ -53,10 +49,11 @@ function wbce_copy_droplet($droplet_id)
     // get droplet code
     $query_content = $database->query(sprintf(
         "SELECT * FROM `%smod_droplets` WHERE `id` = '%s'",
-        TABLE_PREFIX, $droplet_id
+        TABLE_PREFIX,
+        $droplet_id
     ));
 
-    $fetch_content = $query_content->fetchRow(MYSQL_ASSOC);
+    $fetch_content = $query_content->fetchRow(MYSQLI_ASSOC);
     $code          = addslashes(str_replace($tags, '', $fetch_content['code']));
     $new_name      = $fetch_content['name'] . "_copy";
     $name          = $new_name;
@@ -65,14 +62,15 @@ function wbce_copy_droplet($droplet_id)
     // look for doubles
     $found = $database->query(sprintf(
         "SELECT * FROM `%smod_droplets` WHERE `name`='%s'",
-         TABLE_PREFIX, $new_name
+        TABLE_PREFIX,
+        $new_name
     ));
-    while( $found->numRows() > 0 )
-    {
+    while ($found->numRows() > 0) {
         $new_name = $name . "_" . $i;
         $found = $database->query(sprintf(
             "SELECT * FROM `%smod_droplets` WHERE `name`='%s'",
-             TABLE_PREFIX, $new_name
+            TABLE_PREFIX,
+            $new_name
         ));
         $i++;
     }
@@ -80,12 +78,16 @@ function wbce_copy_droplet($droplet_id)
     // add new droplet
     $result = $database->query(sprintf(
         "INSERT INTO `%smod_droplets` VALUES ( NULL, '%s', '%s', '%s', '%s', '%s', 1, 0, 0, 0, '%s' )",
-        TABLE_PREFIX, $new_name, $code, $fetch_content['description'], time(),
-        $admin->get_user_id(),  $fetch_content['comments']
+        TABLE_PREFIX,
+        $new_name,
+        $code,
+        $fetch_content['description'],
+        time(),
+        $admin->get_user_id(),
+        $fetch_content['comments']
     ));
 
-    if( ! $database->is_error() )
-    {
+    if (! $database->is_error()) {
         $new_id = $database->get_one("SELECT LAST_INSERT_ID()");
         // Added PCWacht - javascript redirect... since headers are already sent
         $url = ADMIN_URL . '/admintools/tool.php?tool=droplets&do=modify&droplet_id='.$new_id;
@@ -94,10 +96,9 @@ function wbce_copy_droplet($droplet_id)
         echo '</script>';
         echo '<noscript>';
         echo '<meta http-equiv="refresh" content="0;url='.$url.'" />';
-        echo '</noscript>'; 
+        echo '</noscript>';
         exit;
-    }
-    else {
+    } else {
         echo "ERROR: ", $database->get_error();
     }
 }   // end function wbce_copy_droplet()
@@ -110,24 +111,22 @@ function wbce_copy_droplet($droplet_id)
  * @param  boolean $return_details - wether to return details about added files
  * @return string
  **/
-function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=false)
+function wbce_backup_droplets($list, $filename='backup-droplets', $return_details=false)
 {
     global $DR_TEXT, $MESSAGE;
 
-    if(!$list || !is_array($list) || !count($list)) { return false; }
+    if (!$list || !is_array($list) || !count($list)) {
+        return false;
+    }
 
     // create temporary directory for exported files
     $temp_dir = WB_PATH . '/temp/droplets/';
 
-    //  make sure it's empty
-    if(is_dir($temp_dir))
-    {
-        rm_full_dir($temp_dir,true);
-    }
-    else
-    {
-        if(!@mkdir($temp_dir,OCTAL_DIR_MODE))
-        {
+    // make sure it's empty
+    if (is_dir($temp_dir)) {
+        rm_full_dir($temp_dir, true);
+    } else {
+        if (!@mkdir($temp_dir, OCTAL_DIR_MODE)) {
             $err = error_get_last();
             return '<div class="alertbox error">'.
                    $MESSAGE['MEDIA_DIR_NOT_MADE'].': '.
@@ -140,33 +139,29 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
     $result  = '';
 
     // write file for each droplet in the list
-    foreach(array_values($list) as $droplet)
-    {
+    foreach (array_values($list) as $droplet) {
         $sFile = $temp_dir . $droplet['name'] . '.php';
-        $fh    = fopen( $sFile, 'w' );
-        if(!is_resource($fh))
-        {
+        $fh    = fopen($sFile, 'w');
+        if (!is_resource($fh)) {
             return '<div class="alertbox error">'.
                    $DR_TEXT['PACK_ERROR'].
                    '</div>';
+        } else {
+            $details[] = $DR_TEXT['SAVING'] . ': ' . $sFile;
+            fwrite($fh, '//:' . $droplet['description'] . "\n");
+            fwrite($fh, '//:' . str_replace("\n", " ", $droplet['comments']) . "\n");
+            fwrite($fh, $droplet['code']);
+            fclose($fh);
         }
-        else
-        {
-        $details[] = $DR_TEXT['SAVING'] . ': ' . $sFile;
-        fwrite( $fh, '//:' . $droplet['description'] . "\n" );
-        fwrite( $fh, '//:' . str_replace("\n"," ",$droplet['comments']) . "\n" );
-        fwrite( $fh, $droplet['code'] );
-        fclose( $fh );
-    }
     }
 
     // add current date to filename
-    $filename .= '_' . date( 'Y-m-d-His' );
+    $filename .= '_' . date('Y-m-d-His');
 
     // while there's an existing file, add a number to the filename
-    if ( file_exists( WB_PATH.'/temp/'.$filename.'.zip' ) ) {
+    if (file_exists(WB_PATH.'/temp/'.$filename.'.zip')) {
         $n = 1;
-        while( file_exists( WB_PATH.'/temp/'.$filename.'_'.$n.'.zip' ) ) {
+        while (file_exists(WB_PATH.'/temp/'.$filename.'_'.$n.'.zip')) {
             $n++;
         }
         $filename .= '_'.$n;
@@ -175,23 +170,20 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
     $details[]  = '<br />' . $DR_TEXT['CREATE_ARCHIVE'] . ': '. $filename;
     $temp_file = WB_PATH.'/modules/droplets/export/'.$filename.'.zip';
 
-    require_once( WB_PATH . '/include/pclzip/pclzip.lib.php' );
-    $archive   = new PclZip( $temp_file );
-    $file_list = $archive->create( $temp_dir, PCLZIP_OPT_REMOVE_ALL_PATH );
-    if ( $file_list == 0 )
-    {
+    require_once(WB_PATH . '/include/pclzip/pclzip.lib.php');
+    $archive   = new PclZip($temp_file);
+    $file_list = $archive->create($temp_dir, PCLZIP_OPT_REMOVE_ALL_PATH);
+    if ($file_list == 0) {
         $result  = $DR_TEXT['PACK_ERROR'] . ': '. $archive->errorInfo(true);
-    }
-    else
-    {
-        $result  = $DR_TEXT['BACKUP_CREATED'].' - <a href="' . WB_URL . str_replace(WB_PATH,'',$temp_file) . '">Download</a>';
+    } else {
+        $result  = $DR_TEXT['BACKUP_CREATED'].' - <a href="' . WB_URL . str_replace(WB_PATH, '', $temp_file) . '">Download</a>';
     }
 
     // remove the temporary folder
     rm_full_dir($temp_dir);
 
     return '<div class="alertbox success">'.$result.'</div>'
-         . ( $return_details ? '<div style="font-size:smaller;color:#aaa;">'.implode('<br />',$details).'</div>' : '' );
+         . ($return_details ? '<div style="font-size:smaller;color:#aaa;">'.implode('<br />', $details).'</div>' : '');
 }
 
 /**
@@ -232,12 +224,13 @@ function wbce_check_syntax($code)
  **/
 function wbce_check_unique($name)
 {
-	global $database;
-	$query_droplets = $database->query(sprintf(
+    global $database;
+    $query_droplets = $database->query(sprintf(
         "SELECT `name`  FROM `%smod_droplets` WHERE `name` = '%s'",
-        TABLE_PREFIX, $name
+        TABLE_PREFIX,
+        $name
     ));
-	return ($query_droplets->numRows() == 1);
+    return ($query_droplets->numRows() == 1);
 }   // end function wbce_check_unique()
 
 /**
@@ -248,33 +241,36 @@ function wbce_delete_droplets()
 {
     global $database,$admin,$MESSAGE;
 
-    $list = isset( $_POST['markeddroplet'] ) ? $_POST['markeddroplet'] : array();
-    if ( ! is_array( $list ) ) { $list = array($list); }
-    if ( count( $list ) < 1 ) {
+    $list = isset($_POST['markeddroplet']) ? $_POST['markeddroplet'] : array();
+    if (! is_array($list)) {
+        $list = array($list);
+    }
+    if (count($list) < 1) {
         return false;
     }
 
     // get the droplet(s) data
     $droplets = array();
-    foreach ( $list as $id ) {
+    foreach ($list as $id) {
         $result = $database->query(sprintf(
             "SELECT * FROM `%smod_droplets` WHERE id='%d'",
-            TABLE_PREFIX, $id
+            TABLE_PREFIX,
+            $id
         ));
-        if ( $result->numRows() > 0 ) {
+        if ($result->numRows() > 0) {
             $droplets[] = $result->fetchRow();
         }
     }
 
     // create a backup
-    wbce_backup_droplets( $droplets, 'drop_delete' );
+    wbce_backup_droplets($droplets, 'drop_delete');
 
     // delete
-    foreach(array_values($list) as $id)
-    {
+    foreach (array_values($list) as $id) {
         $database->query(sprintf(
             "DELETE FROM `%smod_droplets` WHERE id = '%d' LIMIT 1",
-            TABLE_PREFIX, $id
+            TABLE_PREFIX,
+            $id
         ));
     }
 }   // end function wbce_delete_droplets()
@@ -289,42 +285,44 @@ function wbce_delete_droplets()
  * @param  boolean $return_details - wether to return details about added files
  * @return string            - result of wbce_export_droplets()
  **/
-function wbce_export_droplets($list,$filename='drop_export',$export_id=0,$return_details=false)
+function wbce_export_droplets($list, $filename='drop_export', $export_id=0, $return_details=false)
 {
     global $database, $admin, $MESSAGE;
 
-    $name = NULL;
+    $name = null;
 
-    if ($export_id<>0) $list=$export_id;
+    if ($export_id<>0) {
+        $list=$export_id;
+    }
 
-    if ( ! is_array($list) ) {
+    if (! is_array($list)) {
         $list = array($list);
     }
 
-    if ( count( $list ) < 1 AND $export_id==0) {
+    if (count($list) < 1 and $export_id==0) {
         return '<div class="drfail">Please mark some Droplets first!</div>';
     }
 
     // get the droplet(s) data
     $droplets = array();
-    foreach ( $list as $id ) {
+    foreach ($list as $id) {
         $result = $database->query(sprintf(
             "SELECT * FROM `%smod_droplets` WHERE id='%d'",
-            TABLE_PREFIX, $id
+            TABLE_PREFIX,
+            $id
         ));
-        if ( $result->numRows() > 0 ) {
+        if ($result->numRows() > 0) {
             $droplets[] = $result->fetchRow();
         }
     }
 
     // if there's only a single droplet to export, name the zip-file after this droplet
-    if ( count( $list ) === 1 ) {
+    if (count($list) === 1) {
         $filename = 'droplet_'.$droplets[0]['name'];
     }
 
     // save
-    return wbce_backup_droplets($droplets,$filename,$return_details);
-
+    return wbce_backup_droplets($droplets, $filename, $return_details);
 }   // end function wbce_export_droplets()
 
 /**
@@ -333,14 +331,13 @@ function wbce_export_droplets($list,$filename='drop_export',$export_id=0,$return
  * @param  string $dir
  * @return array
  **/
-function wbce_find_backups( $dir ) {
+function wbce_find_backups($dir)
+{
     $files = array();
-    if ( $dh = opendir($dir) ) {
-        while ( false !== ( $file = readdir($dh) ) )
-        {
-            if ( $file != "." && $file != ".." )
-            {
-                if ( preg_match( '/\.zip$/i', $file ) ) {
+    if ($dh = opendir($dir)) {
+        while (false !== ($file = readdir($dh))) {
+            if ($file != "." && $file != "..") {
+                if (preg_match('/\.zip$/i', $file)) {
                     $files[] = $file;
                 }
             }
@@ -355,15 +352,13 @@ function wbce_find_backups( $dir ) {
 function wbce_handle_upload()
 {
     global $DR_TEXT, $TEXT, $database, $admin;
-    if ( isset( $_POST['cancel'] ) )
-    {
+    if (isset($_POST['cancel'])) {
         return;
     }
 
     $return = '';
 
-    if ( isset( $_FILES['userfile'] ) && isset( $_FILES['userfile']['name'] ) )
-    {
+    if (isset($_FILES['userfile']) && isset($_FILES['userfile']['name'])) {
         // Set temp vars
         $temp_dir   = WB_PATH.'/temp/';
         $temp_file  = $temp_dir . $_FILES['userfile']['name'];
@@ -371,29 +366,25 @@ function wbce_handle_upload()
         $errors     = array();
 
         // Try to upload the file to the temp dir
-        if( ! move_uploaded_file( $_FILES['userfile']['tmp_name'], $temp_file ) )
-        {
+        if (! move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
             echo $DR_TEXT['Upload failed'];
-       	    return;
+            return;
         }
 
-        $result = wbce_unpack_and_import( $temp_file, $temp_unzip );
+        $result = wbce_unpack_and_import($temp_file, $temp_unzip);
 
         // Delete the temp zip file
-        if( file_exists( $temp_file) )
-        {
-            unlink( $temp_file );
+        if (file_exists($temp_file)) {
+            unlink($temp_file);
         }
         rm_full_dir($temp_unzip);
 
         // show errors
-        if ( isset( $result['errors'] ) && is_array( $result['errors'] ) && count( $result['errors'] ) > 0 )
-        {
+        if (isset($result['errors']) && is_array($result['errors']) && count($result['errors']) > 0) {
             $return = '<div style="border: 1px solid #f00; padding: 5px; color: #f00; font-weight: bold;">'
                     . $DR_TEXT['IMPORT_ERRORS']
                     . "<br />\n";
-            foreach ( $result['errors'] as $droplet => $error )
-            {
+            foreach ($result['errors'] as $droplet => $error) {
                 $return .= 'Droplet: ' . $droplet . '<br />'
                         .  '<span style="padding-left: 15px">'
                         .  $error
@@ -406,7 +397,7 @@ function wbce_handle_upload()
                 . $result['count'] . " " . $DR_TEXT['IMPORTED']
                 . '</div><br /><br />';
     }
-    $return .= wbce_twig_display(array(),'upload',true);
+    $return .= wbce_twig_display(array(), 'upload', true);
     return $return;
 }   // end function wbce_handle_upload()
 
@@ -422,55 +413,50 @@ function wbce_list_droplets()
     // Get userid for showing admin only droplets or not
     $loggedin_user  = ($admin->ami_group_member('1') ? 1 : $admin->get_user_id());
     $loggedin_group = $admin->get_groups_id();
-    if ( version_compare(WB_VERSION, '2.8.2', '>=') && WB_VERSION<> "2.8.x" ) {
-          $admin_user     = ( ($admin->get_home_folder() == '') && ($admin->ami_group_member('1') ) || ($loggedin_user == '1'));
+    if (version_compare(WB_VERSION, '2.8.2', '>=') && WB_VERSION<> "2.8.x") {
+        $admin_user     = (($admin->get_home_folder() == '') && ($admin->ami_group_member('1')) || ($loggedin_user == '1'));
     } else {
-          $admin_user     = $loggedin_user;
+        $admin_user     = $loggedin_user;
     }
 
     // if ($loggedin_user == '1') {
     if ($admin_user) {
-    	$query_droplets = $database->query(sprintf("SELECT * FROM `%smod_droplets` ORDER BY `name` ASC",TABLE_PREFIX));
+        $query_droplets = $database->query(sprintf("SELECT * FROM `%smod_droplets` ORDER BY `name` ASC", TABLE_PREFIX));
     } else {
-    	$query_droplets = $database->query(sprintf("SELECT * FROM `%smod_droplets` WHERE `admin_view` <> '1' ORDER BY `name` ASC",TABLE_PREFIX));
+        $query_droplets = $database->query(sprintf("SELECT * FROM `%smod_droplets` WHERE `admin_view` <> '1' ORDER BY `name` ASC", TABLE_PREFIX));
     }
 
-    if($query_droplets->numRows() > 0)
-    {
+    if ($query_droplets->numRows() > 0) {
         $list = array();
-        while ($droplet = $query_droplets->fetchRow(MYSQL_ASSOC))
-        {
-            if(is_array($droplet) && isset($droplet['name']))
-            {
+        while ($droplet = $query_droplets->fetchRow(MYSQLI_ASSOC)) {
+            if (is_array($droplet) && isset($droplet['name'])) {
                 $get_modified_user = $database->query(sprintf(
                     "SELECT `display_name`, `username`, `user_id` FROM `%susers` WHERE `user_id` = '%d' LIMIT 1",
-                    TABLE_PREFIX, $droplet['modified_by']
+                    TABLE_PREFIX,
+                    $droplet['modified_by']
                 ));
-        		if($get_modified_user->numRows() > 0) {
-        			$fetch_modified_user = $get_modified_user->fetchRow();
-        			$modified_user   = $fetch_modified_user['username'];
-        			$modified_userid = $fetch_modified_user['user_id'];
-        		} else {
-        			$modified_user   = $TEXT['UNKNOWN'];
-        			$modified_userid = 0;
-        		}
-        		$comments = str_replace(array("\r\n", "\n", "\r"), '<br />', $droplet['comments']);
-        		if (!strpos($comments,"[["))
-                {
+                if ($get_modified_user->numRows() > 0) {
+                    $fetch_modified_user = $get_modified_user->fetchRow();
+                    $modified_user   = $fetch_modified_user['username'];
+                    $modified_userid = $fetch_modified_user['user_id'];
+                } else {
+                    $modified_user   = $TEXT['UNKNOWN'];
+                    $modified_userid = 0;
+                }
+                $comments = str_replace(array("\r\n", "\n", "\r"), '<br />', $droplet['comments']);
+                if (!strpos($comments, "[[")) {
                     $comments = "Use: [[".$droplet['name']."]]<br />".$comments;
                 }
-        		$comments   = str_replace(array("[[", "]]"), array('<b>[[',']]</b>'), $comments);
-        		$droplet['valid_code'] = wbce_check_syntax($droplet['code']);
-        		if (!$droplet['valid_code'] === true)
-                {
+                $comments   = str_replace(array("[[", "]]"), array('<b>[[',']]</b>'), $comments);
+                $droplet['valid_code'] = wbce_check_syntax($droplet['code']);
+                if (!$droplet['valid_code'] === true) {
                     $comments = '<span style="color: #ff0000;"><strong>'.$DR_TEXT['INVALIDCODE'].'</strong></span><br /><br />'.$comments;
                 }
-        		$droplet['unique'] = wbce_check_unique($droplet['name']);
-        		if ($droplet['unique'] === false)
-                {
+                $droplet['unique'] = wbce_check_unique($droplet['name']);
+                if ($droplet['unique'] === false) {
                     $comments = '<span style="color: #ff0000;"><strong>'.$DR_TEXT['NOTUNIQUE'].'</strong></span><br /><br />'.$comments;
                 }
-        		$comments = '<span>'.$comments.'</span>';
+                $comments = '<span>'.$comments.'</span>';
                 $droplet['comments'] = $comments;
                 $list[] = $droplet;
             }
@@ -486,12 +472,11 @@ function wbce_list_droplets()
  * @param  string  $tplname
  * @param  boolean $return
  **/
-function wbce_twig_display($output,$tplname='tool',$return=false)
+function wbce_twig_display($output, $tplname='tool', $return=false)
 {
     global $twig;
-    $tpl = $twig->loadTemplate($tplname.'.twig');
-    if($return)
-    {
+    $tpl = $twig->load($tplname.'.twig');
+    if ($return) {
         return $tpl->render($output);
     }
     $tpl->display($output);
@@ -503,9 +488,8 @@ function wbce_twig_display($output,$tplname='tool',$return=false)
  * @param  string  $temp_file
  * @param  string  $temp_unzip
  **/
-function wbce_unpack_and_import( $temp_file, $temp_unzip )
+function wbce_unpack_and_import($temp_file, $temp_unzip)
 {
-
     global $admin, $database;
 
     // Include the PclZip class file
@@ -519,71 +503,69 @@ function wbce_unpack_and_import( $temp_file, $temp_unzip )
 
     // now, open all *.php files and search for the header;
     // an exported droplet starts with "//:"
-    if ( $dh = opendir($temp_unzip) ) {
-        while ( false !== ( $file = readdir($dh) ) )
-        {
-            if ( $file != "." && $file != ".." )
-            {
-                if ( preg_match( '/^(.*)\.php$/i', $file, $name_match ) )
-                {
+    if ($dh = opendir($temp_unzip)) {
+        while (false !== ($file = readdir($dh))) {
+            if ($file != "." && $file != "..") {
+                if (preg_match('/^(.*)\.php$/i', $file, $name_match)) {
                     // Name of the Droplet = Filename
                     $name  = $name_match[1];
                     // Slurp file contents
-                    $lines = file( $temp_unzip.'/'.$file );
+                    $lines = file($temp_unzip.'/'.$file);
                     // check the number of lines: more than 3!
-                    if(!(count($lines) > 3))
-                    {
+                    if (!(count($lines) > 3)) {
                         // try to resolve by reading the file again
-                        if(!(count($lines) > 1))
-                        {
+                        if (!(count($lines) > 1)) {
                             ini_set('auto_detect_line_endings', true);
-                            $lines = file( $temp_unzip.'/'.$file );
-                        }
-                        else
-                        {
+                            $lines = file($temp_unzip.'/'.$file);
+                        } else {
                             $errors[$name] = 'Invalid file, unable to import!';
                             continue;
                         }
                         // still failing -> break!
-                        if(!(count($lines) > 3))
-                        {
+                        if (!(count($lines) > 3)) {
                             $errors[$name] = 'Invalid file, unable to import!';
                             continue;
                         }
                     }
                     // First line: Description
                     $description = "";
-                    if ( preg_match( '#^//\:(.*)$#', $lines[0], $match ) ) {
+                    if (preg_match('#^//\:(.*)$#', $lines[0], $match)) {
                         $description = $match[1];
                     }
                     // Second line: Usage instructions
                     $usage = "";
-                    if ( preg_match( '#^//\:(.*)$#', $lines[1], $match ) ) {
-                        $usage       = addslashes( $match[1] );
+                    if (preg_match('#^//\:(.*)$#', $lines[1], $match)) {
+                        $usage       = addslashes($match[1]);
                     }
                     // Remaining: Droplet code
-                    $code = implode( '', array_slice( $lines, 2 ) );
+                    $code = implode('', array_slice($lines, 2));
                     // replace 'evil' chars in code
                     $tags = array('<?php', '?'.'>' , '<?');
                     $code = addslashes(str_replace($tags, '', $code));
                     // Already in the DB?
                     $stmt  = 'INSERT';
-                    $id    = NULL;
-                    $found = $database->get_one(sprintf("SELECT * FROM `%smod_droplets` WHERE name='%s'",TABLE_PREFIX,$name));
-                    if ( $found && $found > 0 ) {
+                    $id    = null;
+                    $found = $database->get_one(sprintf("SELECT * FROM `%smod_droplets` WHERE name='%s'", TABLE_PREFIX, $name));
+                    if ($found && $found > 0) {
                         $stmt = 'REPLACE';
                         $id   = $found;
                     }
                     // execute
                     $result = $database->query(sprintf(
                         "%s INTO `%smod_droplets` VALUES(" . ($id ? "'$id'" : 'NULL') . ",'%s','%s','%s','%s','%d',1,0,0,0,'%s')",
-                        $stmt, TABLE_PREFIX, $name, $code, $description, time(), $admin->get_user_id(), $usage
+                        $stmt,
+                        TABLE_PREFIX,
+                        $name,
+                        $code,
+                        $description,
+                        time(),
+                        $admin->get_user_id(),
+                        $usage
                     ));
-                    if( ! $database->is_error() ) {
+                    if (! $database->is_error()) {
                         $count++;
                         $imports[$name] = 1;
-                    }
-                    else {
+                    } else {
                         $errors[$name] = $database->get_error();
                     }
                 }
@@ -593,5 +575,4 @@ function wbce_unpack_and_import( $temp_file, $temp_unzip )
     }
 
     return array( 'count' => $count, 'errors' => $errors, 'imported' => $imports );
-
 }   // end function wbce_unpack_and_import()

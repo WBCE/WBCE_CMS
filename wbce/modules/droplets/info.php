@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -13,7 +13,7 @@
 $module_directory = 'droplets';
 $module_name = 'Droplets';
 $module_function = 'tool';
-$module_version = '2.2.7';
+$module_version = '2.3.1';
 $module_platform = '1.4.0';
 $module_author = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax';
 $module_license = 'GNU General Public License';
@@ -25,15 +25,27 @@ $module_level = 'core';
 
 /**
  * Version history
+ * v2.3.1 - Colinax
+ *        - add mp4video Droplet 
+ *        - removed some old Droplet
  *
- * v2.2.7
+ * v2.3.0 - Bianka Martinovic ("WebBird")
+ *        - fix issues with changed twig version and PHP 8
+ *
+ * v2.2.9 - Bernd
+ *        - fixed upgrade.php regarding MySQL-Strict / Doctrine (Bernd)
+ *
+ * v2.2.8 - Bernd
+ *        - MYSQL_ASSOC -> MYSQLI_ASSOC
+ *
+ * v2.2.7 - colinax
  *        - Add module_level core status
- *        - Update module_platform 
+ *        - Update module_platform
  *
- * v2.2.6
+ * v2.2.6 - Stefanek
  *        - SectionPicker Droplet uses Insert class
  *
- * v2.2.5
+ * v2.2.5 - florian
  *        - small fixes
  *
  * v2.2.4 - norhei
@@ -59,36 +71,14 @@ $module_level = 'core';
  *        - Remove deprecated HTML Tags in functions.inc.php
  *        - Updated jquery.tablesorter.js - https://github.com/Mottie/tablesorter
  *
- * v2.0.2 - cwsoft & colinax
+ * v2.0.2 - cwsoft
  *        - fixed fatal error in case Droplet code syntax was invalid)
- *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/216
+ *        - see https://github.com/WBCE/WBCE_CMS/issues/216
  *
- * v2.0.1 - norhei & colinax
- *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/commit/f6e69206e22a6aa277b02b6c6887554a0da6371b
+ * v2.0.1 - norhei
+ *        - see https://github.com/WBCE/WBCE_CMS/commit/f6e69206e22a6aa277b02b6c6887554a0da6371b
  *
  * v2.0.0 - Bianka Martinovic ("WebBird")
- *        - see https://github.com/WBCE/WebsiteBaker_CommunityEdition/issues/92
+ *        - see https://github.com/WBCE/WBCE_CMS/issues/92
  *
- * v1.75 - Bianka Martinovic ("WebBird")
- *       - fixed "Undefined variable: imports" issue
- *       - fixed "Undefined offset: 0 in ./modules/droplets/install.php" issue
- *
- * v1.74 - Bianka Martinovic ("WebBird")
- *       - added shorturl droplet to installation
- *       - fixed little layout issue with Flat Theme
- *
- * v1.73 - Bianka Martinovic ("WebBird")
- *       - added 'false' to all occurances of "new admin()"; thnx to "Martin Hecht"
- *
- * v1.72 - Bianka Martinovic ("WebBird")
- *       - fix for WB 2.8.3 (some intval() too much...)
- *
- * v1.71 - Bianka Martinovic ("WebBird")
- * 		 - added some minor changes from Droplets 1.2.0 which is part of WB 2.8.3 bundle
- *
- * v1.70 - Bianka Martinovic ("WebBird")
- *		 - no longer uses jQueryAdmin or LibraryAdmin;
- *         tablesorter jQuery plugin included directly;
- *         please note that you will have to ensure that jquery is loaded!
- *
- **/
+ */

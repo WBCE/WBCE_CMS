@@ -1,0 +1,277 @@
+<link href="uploader/css/jquery.dm-uploader.css" rel="stylesheet">
+<link href="uploader/styles.css" rel="stylesheet">
+<div class="mod_news_img">
+    <script src="<?php echo WB_URL; ?>/modules/news_img/js/jquery.furl.js"></script>
+
+    <h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$TEXT['POST']; ?></h2>
+    <div class="jsadmin jcalendar hide"></div>
+    <form name="modify" action="<?php echo WB_URL; ?>/modules/news_img/save_post.php" method="post" enctype="multipart/form-data">
+    <?php echo $FTAN; ?>
+    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>" />
+    <input type="hidden" name="page_id" value="<?php echo $page_id; ?>" />
+    <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
+    <input type="hidden" name="savegoback" id="savegoback" value="" />
+
+    <table>
+        <tbody>
+            <tr>
+            	<td class="setting_name"><?php echo $TEXT['TITLE']; ?>:</td>
+            	<td class="setting_value">
+            		<input type="text" name="title" id="title<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($post_data['title'])); ?>" maxlength="255" />
+            	</td>
+            </tr>
+            <tr<?php if($settings['mode']!='advanced'): ?> style="display:none"<?php endif; ?>>
+            	<td class="setting_name"><?php echo $MOD_NEWS_IMG['LINK']; ?>:</td>
+            	<td class="setting_value">
+            		<?php echo $linkbase ?>/<input type="text" name="link" id="link<?php echo $page_id ?>" value="<?php echo(htmlspecialchars($link)); ?>" maxlength="255" style="width:80%" /><?php echo PAGE_SPACER.$post_id.PAGE_EXTENSION ?>
+            	</td>
+            </tr>
+            <tr>
+            	<td class="setting_name"><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
+            	<td>
+<?php if ($post_data['image'] != ""): ?>
+                    <img class="img_list" style="float:left;margin-right:15px" src="<?php echo WB_URL.MEDIA_DIRECTORY."/.news_img/".$post_data['image'] ?>" /> <?php echo $post_data['image'] ?><br />
+                    <a class="btn" href="javascript:confirm_link('<?php echo $TEXT['ARE_YOU_SURE'], '\n', $MOD_NEWS_IMG['INFO_RELOAD_PAGE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id ?>&section_id=<?php echo $section_id ?>&post_id=<?php echo $post_id_key ?>&post_img=<?php echo $post_data['image'] ?>');">
+                        <i class="fa fa-fw fa-trash"></i> <?php echo $TEXT['DELETE'] ?>
+                    </a>
+                    <input type="hidden" name="previewimage" value="<?php echo $post_data['image'] ?>" />
+<?php else: ?>
+                    <?php echo $MOD_NEWS_IMG['UPLOAD'] ?> <input type="file" name="postfoto" accept="image/*" />
+<?php if(isset($allimg) && is_array($allimg) && count($allimg)>0): ?>
+                    <?php echo $MOD_NEWS_IMG['OR'] ?>:
+                    <select name="mediafile" id="mediafile">
+                        <option value="" selected="selected"><?php echo $MOD_NEWS_IMG['CHOOSE_EXISTING'] ?></option>
+                    <?php foreach($allimg as $img): ?>
+                        <option value="<?php echo $img['id'] ?>"><?php echo $img['picname'] ?></option>
+                    <?php endforeach; ?>
+                    </select><br />
+<?php endif; endif; ?>
+        		</td>
+            </tr>
+            <tr>
+                <td class="setting_name"><?php echo $TEXT['GROUP']; ?>:</td>
+                <td class="setting_value">
+<?php include __DIR__.'/group_select.phtml'; ?>
+                </td>
+            </tr>
+            <tr>
+            	<td class="setting_name"><?php echo $TEXT['ACTIVE']; ?>:</td>
+            	<td class="setting_value">
+            		<input type="radio" name="active" id="active_true" value="1" <?php if ($post_data['active'] == 1): echo ' checked="checked"'; endif; ?> />
+            		<a href="#" onclick="javascript: document.getElementById('active_true').checked = true;">
+            		<?php echo $TEXT['YES']; ?>
+            		</a>
+            		&nbsp;
+            		<input type="radio" name="active" id="active_false" value="0" <?php if ($post_data['active'] == 0): echo ' checked="checked"'; endif; ?> />
+            		<a href="#" onclick="javascript: document.getElementById('active_false').checked = true;">
+            		<?php echo $TEXT['NO']; ?>
+            		</a>
+            	</td>
+            </tr>
+            <tr>
+            	<td class="setting_name"><?php echo $TEXT['PUBL_START_DATE']; ?>:</td>
+            	<td class="setting_value">
+            	    <input type="text" id="publishdate" name="publishdate" data-field="datetime" value="<?php echo $post_data['publishing_date']; ?>" style="width:33%;" />
+                    <img src="<?php echo THEME_URL ?>/images/clock_16.png" id="publishdate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
+                	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.publishdate.value=''" />
+                    <div id="dtBox_<?php echo $section_id ?>_1"></div>
+            	</td>
+            </tr>
+            <tr>
+            	<td class="setting_name"><?php echo $TEXT['PUBL_END_DATE']; ?>:</td>
+            	<td class="setting_value">
+            	    <input type="text" id="enddate" name="enddate" data-field="datetime" value="<?php echo $post_data['publishing_end_date'] ; ?>" style="width:33%;" />
+                	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="enddate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
+                	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />
+                    <div id="dtBox_<?php echo $section_id ?>_2"></div>
+            	</td>
+<?php if($settings['mode']=='advanced' && isset($tags) && is_array($tags) && count($tags)>0): ?>
+            <tr>
+            	<td class="setting_name"><?php echo $MOD_NEWS_IMG['TAGS']; ?>:</td>
+            	<td class="setting_value">
+            		<div class="mod_news_img_taglist">
+            		<?php foreach($tags as $t): ?>
+                        <div class="mod_news_img_tag">
+                            <input type="checkbox" name="tags[]" id="<?php echo $t['tag_id'] ?>" value="<?php echo $t['tag_id'] ?>"<?php if(array_key_exists($t['tag_id'],$assigned)): echo " checked='checked'"; endif; ?> />
+                            <label class="mod_nwi_tag" for="<?php echo $t['tag_id'] ?>"><?php echo $t['tag'] ?></label>
+                            <?php if($t['section_id']==0): ?>
+                                <span class="fa fa-fw fa-star" title="<?php echo $MOD_NEWS_IMG['GLOBAL'] ?>"></span>
+                            <?php endif; ?>
+                        </div>
+            		<?php endforeach; ?>
+        			</div>
+            	</td>
+            </tr>
+<?php endif; ?>
+        </tbody>
+    </table><hr />
+
+    <table>
+        <tbody>
+        <tr>
+        	<td valign="top"><?php echo $TEXT['SHORT']; ?>:</td>
+        </tr>
+        <tr>
+        	<td>
+        	<?php
+            show_wysiwyg_editor("short", "short", htmlspecialchars($post_data['content_short']), "100%", "150px");
+            ?>
+        	</td>
+        </tr>
+        <tr>
+        	<td valign="top"><?php echo $TEXT['LONG']; ?>:</td>
+        </tr>
+        <tr>
+        	<td>
+<?php
+    show_wysiwyg_editor("long", "long", htmlspecialchars($post_data['content_long']), "100%", "350px");
+?>
+        	</td>
+        </tr>
+<?php if($settings['use_second_block']=='Y'): ?>
+        <tr>
+        	<td valign="top"><?php echo $TEXT['BLOCK']; ?> 2:</td>
+        </tr>
+        <tr>
+        	<td>
+<?php
+        show_wysiwyg_editor("block2", "block2", htmlspecialchars($post_data['content_block2']), "100%", "350px");
+?>
+        	</td>
+        </tr>
+<?php endif;?>
+        </tbody>
+    </table>
+
+    <div id="fotoshow"><a name="fs"></a>
+    <h3><?php echo $MOD_NEWS_IMG['GALLERYIMAGES'] ?></h3>
+<?php if(isset($images) && is_array($images) && count($images)>0): $i=1; ?>
+    <table class="dragdrop_form">
+        <tbody>
+<?php foreach($images as $image): ?>
+            <tr id="img_id:<?php echo $image['id_key'] ?>">
+	            <td class="dragdrop_item">&nbsp;</td>
+                <td><?php echo $image['up'].$image['down'] ?></td>
+                <td>
+                    <a href="javascript:void(0);" onmouseover="XBT(this, {id:'tt<?php echo $i ?>'})">
+                        <img class="img_list" src="<?php echo WB_URL.MEDIA_DIRECTORY ?>/.news_img/<?php echo $post_id ?>/thumb/<?php echo $image["picname"] ?>" />
+                    </a>
+                    <div id="tt<?php echo $i ?>" class="xbtooltip">
+                        <img src="<?php echo WB_URL.MEDIA_DIRECTORY ?>/.news_img/<?php echo $post_id ?>/<?php echo $image["picname"] ?>" />
+                    </div>
+                </td>
+                <td>
+                    <?php echo $image["picname"] ?><br />
+                    <input type="text" name="picdesc[<?php echo $image['id'] ?>]" value="<?php echo htmlspecialchars($image["picdesc"]) ?>">
+                </td>
+                <td>
+                    <a onclick="return confirm('<?php echo $MOD_NEWS_IMG['DELETEIMAGE'] ?>')" href="<?php echo WB_URL ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id ?>&section_id=<?php echo $section_id ?>&post_id=<?php echo $post_id_key ?>&img_id=<?php echo $image['id_key'] ?>#fs">
+                        <img src="<?php echo THEME_URL ?>/images/delete_16.png" />
+                    </a>
+                </td>
+                <td class="dragdrop_item">&nbsp;</td>
+            </tr>
+<?php $i++; endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+    </div>
+
+    <noscript>
+    <!-- Formular -->
+    <div id="fotos"><h3><?php echo $MOD_NEWS_IMG['IMAGEUPLOAD']?></h3>
+          <input type="file" name="foto[]" accept="image/*" />  <br />
+          <input type="file" name="foto[]" accept="image/*" />  <br />
+          <input type="file" name="foto[]" accept="image/*" />  <br />
+          <input type="file" name="foto[]" accept="image/*" />   <br />
+          <input type="file" name="foto[]" accept="image/*" />   <br />
+          <input type="file" name="foto[]" accept="image/*" />   <br />
+    </div>
+    </noscript>
+
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+
+          <!-- Our markup, the important part here! -->
+          <div id="drag-and-drop-zone" class="dm-uploader p-5">
+            <h3 class="mb-5 mt-5 text-muted"><?php echo $MOD_NEWS_IMG['DRAG_N_DROP_HERE']; ?></h3>
+
+            <div class="btn btn-primary btn-block mb-5">
+                <input type="file" title=<?php echo "'".$MOD_NEWS_IMG['CLICK_TO_ADD']."'"; ?> />
+            </div>
+          </div><!-- /uploader -->
+
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <div class="card h-100">
+            <ul class="list-unstyled p-2 d-flex flex-column col" id="files">
+              <li class="text-muted text-center empty"><?php echo $MOD_NEWS_IMG['NO_FILES_UPLOADED']; ?></li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- /file list -->
+
+      <div class="row">
+        <div class="col-12">
+           <div class="card h-100">
+            <ul class="list-group list-group-flush" id="status">
+            </ul>
+          </div>
+        </div>
+      </div> <!-- /status messages -->
+
+    </main> <!-- /container -->
+
+    <table>
+    <tr>
+    	<td align="left">
+    		<input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
+    		<input name="save" type="submit" onclick="document.getElementById('savegoback').value='1'" value="<?php echo $MOD_NEWS_IMG['SAVEGOBACK']; ?>" style="width: 200px; margin-top: 5px;" />
+    	</td>
+    	<td align="right">
+    		<input type="button" value="<?php echo $MOD_NEWS_IMG['GOBACK'] ?>" onclick="javascript: window.location = '<?php echo ADMIN_URL; ?>/pages/modify.php?page_id=<?php echo $page_id; ?>';" style="width: 100px; margin-top: 5px;" />
+    	</td>
+    </tr>
+    </table>
+    </form>
+
+
+<script type="text/javascript">
+    var NWI_UPLOAD_URL = "<?php echo WB_URL."/modules/news_img/uploader/upload.php?post_id=$post_id_key"; ?>";
+    var NWI_COMPLETE_MESSAGE = "<?php echo $MOD_NEWS_IMG['COMPLETE_MESSAGE']; ?>";
+    var NWI_IMAGE_MAX_SIZE = "<?php echo $imgmaxsize;?>";
+</script>
+
+    <script src="<?php echo WB_URL."/modules/news_img/uploader/js/jquery.dm-uploader.js"; ?>"></script>
+    <script src="<?php echo WB_URL."/modules/news_img/uploader/ui.js"; ?>"></script>
+    <script src="<?php echo WB_URL."/modules/news_img/uploader/config.js"; ?>"></script>
+
+    <!-- File item template -->
+    <script type="text/html" id="files-template">
+      <li class="media">
+        <div class="media-body mb-1">
+          <p class="mb-2">
+            <strong>%%filename%%</strong> - Status: <span class="text-muted">Waiting</span>
+          </p>
+          <div class="progress mb-2">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+              role="progressbar"
+              style="width: 0%"
+              aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+          <hr class="mt-1 mb-1" />
+        </div>
+      </li>
+    </script>
+
+    <!-- Status item template -->
+    <script type="text/html" id="status-template">
+      <li class="list-group-item"><strong>%%message%%</strong></li>
+    </script>
+
+    <script type="text/javascript">
+        $('#title<?php echo $page_id ?>').furl({id:'link<?php echo $page_id ?>', seperate: '<?php echo PAGE_SPACER ?>' });
+    </script>
+</div>

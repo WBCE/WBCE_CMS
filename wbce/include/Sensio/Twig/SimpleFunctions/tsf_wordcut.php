@@ -3,7 +3,7 @@
 /**
  * conversion of wordwrap2 from the WB News module
  */
-$oTwig->addFunction(new Twig_SimpleFunction("wordcut", 
+$oTwig->addFunction(new \Twig\TwigFunction("wordcut", 
    function ($sStr, $iLength = 200, $sBreak = '\n', $bCut = true) {
        $sTmp = strip_tags($sStr);
        // consider start position if short content starts with <p> or <div>
@@ -18,7 +18,7 @@ $oTwig->addFunction(new Twig_SimpleFunction("wordcut",
    }
 ));   
 
-$oTwig->addFunction(new Twig_SimpleFunction("debug_dump", 
+$oTwig->addFunction(new \Twig\TwigFunction("debug_dump", 
    function ($mVar = '', $sCaption = '', $bVarDump = false) use ($oTwig) {
        return debug_dump($mVar, $sCaption, $bVarDump, $oTwig->getCompiler()->getFilename());
    }

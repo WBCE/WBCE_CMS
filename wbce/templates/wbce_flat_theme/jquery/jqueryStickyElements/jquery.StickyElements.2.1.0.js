@@ -18,152 +18,152 @@
 	
  *	################################################################################# */
 
-$.fn.stickyElements = function(options) {
+$.fn.stickyElements = function (options) {
 
-	// Vorgabewerte
-	options = $.extend({
+    // Vorgabewerte
+    options = $.extend({
 
-		// Method to trigger an element as sticky. Possible Values:
-		// visibility (Standard): triggers (and checks) the state if element is visible (open/closed) --> easy trigger open/closed boxes)
-		// class: triggers a class which marks the state of the element 
-		stickyMethod: 'visibility',
+        // Method to trigger an element as sticky. Possible Values:
+        // visibility (Standard): triggers (and checks) the state if element is visible (open/closed) --> easy trigger open/closed boxes)
+        // class: triggers a class which marks the state of the element
+        stickyMethod: 'visibility',
 
-		// ONLY if stickyMethod = class
-		// name of class for the state of the element (i.e. boxOpen, colorBlue, ...)
-		stickyFormatClass: '',
+        // ONLY if stickyMethod = class
+        // name of class for the state of the element (i.e. boxOpen, colorBlue, ...)
+        stickyFormatClass: '',
 
-		// Page Modus
-		// singlePage (Standard): stickyElements works on the specific page on a domain
-		// domainWide: stickyElements is sticky for same elements on different pages off the domain
-		pageModus: 'singlePage'
+        // Page Modus
+        // singlePage (Standard): stickyElements works on the specific page on a domain
+        // domainWide: stickyElements is sticky for same elements on different pages off the domain
+        pageModus: 'singlePage'
 
-	}, options);
+    }, options);
 
-	// Prevent Condition
-	// prevent from running in method class when no stickyFormatClass is defined
-	if(  (options.stickyMethod == 'class')  &&   (options.stickyFormatClass == '')  ) {
-		// do nothting
-	}else{
-		// execute the jq module for this call
-		// ... ... ... code below:
+    // Prevent Condition
+    // prevent from running in method class when no stickyFormatClass is defined
+    if ((options.stickyMethod == 'class') && (options.stickyFormatClass == '')) {
+        // do nothting
+    } else {
+        // execute the jq module for this call
+        // ... ... ... code below:
 
-		// Cookie: Name bilden
-		// mit Identifyer --> mehrere Aufrufe auf einer Seite
-		var cookieIdentifier = $(this).selector;
-		cookieIdentifier = escape(cookieIdentifier);
-		cookieIdentifier = cookieIdentifier.replace('.', '_');
-		var cookieName = 'stElem__' + cookieIdentifier;
+        // Cookie: Name bilden
+        // mit Identifyer --> mehrere Aufrufe auf einer Seite
+        var cookieIdentifier = $(this).selector;
+        cookieIdentifier = escape(cookieIdentifier);
+        cookieIdentifier = cookieIdentifier.replace('.', '_');
+        var cookieName = 'stElem__' + cookieIdentifier;
 
-		// IDs für die zu beobachtenden Elemente (= Selector) Speichern 
-		// --> Verfügbarkeit in nachfolgender Funktion $(window).bind(... function...)
-		var $selectedElements = $(this);
+        // IDs für die zu beobachtenden Elemente (= Selector) Speichern
+        // --> Verfügbarkeit in nachfolgender Funktion $(window).bind(... function...)
+        var $selectedElements = $(this);
 
-		// Bestehenden Cookie auslesen
-		var cookieValue = '';
-		var cookieGetString = '';
-		cookieGetString = document.cookie;
-		if( cookieGetString.length != 0 ) {
-			cookieGetString = unescape(cookieGetString);
-			var arrCookie = cookieGetString.match( new RegExp(cookieName + '=([^;]*)', 'g') )
-			if(  arrCookie != null  ){
-				cookieValue=RegExp.$1;
-			}	
-		}	
+        // Bestehenden Cookie auslesen
+        var cookieValue = '';
+        var cookieGetString = '';
+        cookieGetString = document.cookie;
+        if (cookieGetString.length != 0) {
+            cookieGetString = unescape(cookieGetString);
+            var arrCookie = cookieGetString.match(new RegExp(cookieName + '=([^;]*)', 'g'))
+            if (arrCookie != null) {
+                cookieValue = RegExp.$1;
+            }
+        }
 
-		// Letzten Zustand der Boxen rekonstruieren
-		if(cookieValue.length != 0){
+        // Letzten Zustand der Boxen rekonstruieren
+        if (cookieValue.length != 0) {
 
-			// Array erstellen: IDs der offenen Boxen 
+            // Array erstellen: IDs der offenen Boxen
 
-			// letztes Delimiter-Zeichen (hier: #) entfernen da sonst Extra-Array-Element
-			cookieValue = cookieValue.substring(0,cookieValue.length-1);
-			var arrayElementValues = cookieValue.split('#');
+            // letztes Delimiter-Zeichen (hier: #) entfernen da sonst Extra-Array-Element
+            cookieValue = cookieValue.substring(0, cookieValue.length - 1);
+            var arrayElementValues = cookieValue.split('#');
 
-			// Je Cookie-ID: Jedes offene Fenster wiederherstellen
-			$.each(arrayElementValues, function(index, idValueString ) {
+            // Je Cookie-ID: Jedes offene Fenster wiederherstellen
+            $.each(arrayElementValues, function (index, idValueString) {
 
-				//ID bereitstellen
-				var regExpId = /\[id:(.*?)\]/;
-				var cookieVal = idValueString.match(regExpId);
-				var elementID = cookieVal[1];
+                //ID bereitstellen
+                var regExpId = /\[id:(.*?)\]/;
+                var cookieVal = idValueString.match(regExpId);
+                var elementID = cookieVal[1];
 
-				// CSS-Wert bereitstellen
-				var regExpId = /\[value:(.*?)\]/;
-				var cookieVal = idValueString.match(regExpId);
-				var cssProperty = cookieVal[1];
+                // CSS-Wert bereitstellen
+                var regExpId = /\[value:(.*?)\]/;
+                var cookieVal = idValueString.match(regExpId);
+                var cssProperty = cookieVal[1];
 
-				// Werte Zuweisen
+                // Werte Zuweisen
 
-				// method: visibility --> get value for display from string an set it to element
-				if(options.stickyMethod == 'visibility'){
+                // method: visibility --> get value for display from string an set it to element
+                if (options.stickyMethod == 'visibility') {
 
-					$selectedElements.eq(elementID).css('display', cssProperty);
+                    $selectedElements.eq(elementID).css('display', cssProperty);
 
-				// method: class --> get Information for stickyFormatClass from cookie and (if class is defined) set it to element
-				}else if(options.stickyMethod == 'class'){
-					if(cssProperty != 'noClass'){
-						$selectedElements.eq(elementID).addClass(options.stickyFormatClass);
-					}
-				}
+                    // method: class --> get Information for stickyFormatClass from cookie and (if class is defined) set it to element
+                } else if (options.stickyMethod == 'class') {
+                    if (cssProperty != 'noClass') {
+                        $selectedElements.eq(elementID).addClass(options.stickyFormatClass);
+                    }
+                }
 
-			});
-		}
+            });
+        }
 
-		// Beim Neuladen oder Verlassen der Seite
-		// --> Zustände der Boxen (offen/geschlossen) ermitteln 	
-		$(window).bind('beforeunload', function(){
+        // Beim Neuladen oder Verlassen der Seite
+        // --> Zustände der Boxen (offen/geschlossen) ermitteln
+        $(window).bind('beforeunload', function () {
 
             var BoxenIdValueString = '';
-			$selectedElements.each(function(){
+            $selectedElements.each(function () {
 
                 // method: visibility --> check if element is open/closed (by visibility) and store it to cookie string
-				if(options.stickyMethod == 'visibility'){
+                if (options.stickyMethod == 'visibility') {
 
-                    var elementId = $($selectedElements).index( this );
-					var elementSichtbar = $(this).is(':visible');
-					if(elementSichtbar){
-						BoxenIdValueString = BoxenIdValueString + '[id:' + elementId + '][value:block]' + '#';
-					}else{
-						BoxenIdValueString = BoxenIdValueString + '[id:' + elementId + '][value:none]' + '#';
-					}		
+                    var elementId = $($selectedElements).index(this);
+                    var elementSichtbar = $(this).is(':visible');
+                    if (elementSichtbar) {
+                        BoxenIdValueString = BoxenIdValueString + '[id:' + elementId + '][value:block]' + '#';
+                    } else {
+                        BoxenIdValueString = BoxenIdValueString + '[id:' + elementId + '][value:none]' + '#';
+                    }
 
-				// method: class --> check it element has the given class and  store it to cookie string
-				}else if(options.stickyMethod == 'class'){
+                    // method: class --> check it element has the given class and  store it to cookie string
+                } else if (options.stickyMethod == 'class') {
 
-					var elementId = $($selectedElements).index( this );
-					var elementStickyClassExists = $(this).hasClass(options.stickyFormatClass);
-					if(elementStickyClassExists){
-						BoxenIdValueString = BoxenIdValueString + '[id:' + elementId + '][value:' + options.stickyFormatClass + ']' + '#';
-					}else{
-						BoxenIdValueString = BoxenIdValueString + '[id:' + elementId + '][value:noClass]' + '#';
-					}		
-				}
-			});
+                    var elementId = $($selectedElements).index(this);
+                    var elementStickyClassExists = $(this).hasClass(options.stickyFormatClass);
+                    if (elementStickyClassExists) {
+                        BoxenIdValueString = BoxenIdValueString + '[id:' + elementId + '][value:' + options.stickyFormatClass + ']' + '#';
+                    } else {
+                        BoxenIdValueString = BoxenIdValueString + '[id:' + elementId + '][value:noClass]' + '#';
+                    }
+                }
+            });
 
-			// set cookie
-			var cookieSetString = escape(BoxenIdValueString);
+            // set cookie
+            var cookieSetString = escape(BoxenIdValueString);
 
-			// 
-			if(	options.pageModus == 'domainWide'){
+            //
+            if (options.pageModus == 'domainWide') {
 
-				// pageModus=domainWide --> set cookie to the the domain
-				var myDomain = document.domain;
+                // pageModus=domainWide --> set cookie to the the domain
+                var myDomain = document.domain;
 
-				// Special for working on local webserver-installation width local host
-				//=> google chrome
-				//=> don't write name of domain, write '' instead
-				(myDomain == 'localhost') ? myDomain = '' : myDomain = myDomain;
-				document.cookie = cookieName + '=' + cookieSetString + ';domain=' + myDomain + ';path=/';
+                // Special for working on local webserver-installation width local host
+                //=> google chrome
+                //=> don't write name of domain, write '' instead
+                (myDomain == 'localhost') ? myDomain = '' : myDomain = myDomain;
+                document.cookie = cookieName + '=' + cookieSetString + ';domain=' + myDomain + '; SameSite=Lax; path=/';
 
-			}else{
+            } else {
 
-				// Every other case: standard
-				// pageModus=singlePage --> set cookie to the specific page of the domain
-				document.cookie = cookieName + '=' + cookieSetString;
+                // Every other case: standard
+                // pageModus=singlePage --> set cookie to the specific page of the domain
+                document.cookie = cookieName + '=' + cookieSetString;
 
-			}
+            }
 
-		});
+        });
 
     } // END prevent condition --> do not run on method class when stickyFormatClass not defined
 };

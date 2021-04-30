@@ -8,18 +8,18 @@ functions.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.10
+ * @version         1.5.14
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x
+ * @platform        WebsiteBaker 2.8.x or WBCE
  * @requirements    PHP 5.4 and higher
  *
- * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
+ * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -312,13 +312,6 @@ function opf_fetch_clean($val, $default=NULL, $type='int', $args=FALSE, $from_gp
       $args['allownull'] = FALSE;
   }
   $args['default'] = $default;
-  // strip slashes
-  if($from_gpc && get_magic_quotes_gpc()) {
-    if(is_array($val)) {
-      array_walk_recursive($val, function(&$v,$k) { $v = stripslashes($v); });
-    } else
-      $val = stripslashes($val);
-  }
   // apply filters
   if(!is_array($type))
     $type = array($type);
@@ -1107,15 +1100,27 @@ function opf_modules_categories($type='modules') {
 
 
 // replaces sysvar placeholders
-function opf_replace_sysvar($filter,$plugin='') {
-    if($plugin=='' && is_array($filter) && isset($filter['plugin']))
+function opf_replace_sysvar($filter, $plugin='')
+{
+    if(empty($filter)) {
+        return array();
+    }
+    if ($plugin=='' && is_array($filter) && isset($filter['plugin'])) {
         $plugin=$filter['plugin'];
-    if($plugin!='')
-        $filter = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$plugin, $filter);
-    $filter = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter);
-    if($plugin!='')
-        $filter = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter);
-    $filter = str_replace('{SYSVAR:WB_URL}', WB_URL, $filter);
+    }
+    $filter_as_string = json_encode($filter);
+    if ($plugin!='') {
+        #$filter = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$plugin, $filter);
+        $filter_as_string = str_replace('{OPF:PLUGIN_PATH}', str_replace(array('//','\\/','\\'),'/',OPF_PLUGINS_PATH.$plugin), $filter_as_string);
+    }
+    #$filter = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter);
+    $filter_as_string = str_replace('{SYSVAR:WB_PATH}', str_replace(array('//','\\/','\\'),'/',WB_PATH), $filter_as_string);
+    if ($plugin!='') {
+        #$filter = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter);
+        $filter_as_string = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter_as_string);
+    }
+    $filter_as_string = str_replace('{SYSVAR:WB_URL}', WB_URL, $filter_as_string);
+    $filter = json_decode($filter_as_string,true);
     return $filter;
 }
 
@@ -1124,12 +1129,19 @@ function opf_replace_sysvar($filter,$plugin='') {
 function opf_insert_sysvar($filter,$plugin='') {
     if($plugin=='' && is_array($filter) && isset($filter['plugin']))
         $plugin=$filter['plugin'];
-    if($plugin!='')
-          $filter = str_replace(OPF_PLUGINS_PATH.$plugin, '{OPF:PLUGIN_PATH}', $filter);
-    $filter = str_replace(WB_PATH, '{SYSVAR:WB_PATH}', $filter);
-    if($plugin!='')
-        $filter = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter);
-    $filter = str_replace(WB_URL, '{SYSVAR:WB_URL}', $filter);
+    $filter_as_string = json_encode($filter);
+    if($plugin!='') {
+        #$filter = str_replace(OPF_PLUGINS_PATH.$plugin, '{OPF:PLUGIN_PATH}', $filter);
+        $filter_as_string = str_replace(OPF_PLUGINS_PATH.$plugin, '{OPF:PLUGIN_PATH}', $filter_as_string);
+    }
+    #$filter = str_replace(WB_PATH, '{SYSVAR:WB_PATH}', $filter);
+    $filter_as_string = str_replace(WB_PATH, '{SYSVAR:WB_PATH}', $filter_as_string);
+    if($plugin!='') {
+        #$filter = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter);
+        $filter_as_string = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter_as_string);
+    }
+    $filter_as_string = str_replace(WB_URL, '{SYSVAR:WB_URL}', $filter_as_string);
+    $filter = json_decode($filter_as_string,true);
     return $filter;
 }
 
@@ -1702,6 +1714,10 @@ function opf_controller($arg, $opt=null, $module='', $page_id=0, $section_id=0) 
         opf_apply_filters($opt, OPF_TYPE_PAGE_LAST, FALSE, $page_id, FALSE, $wb);
         opf_apply_filters($opt, OPF_TYPE_PAGE_FINAL, FALSE, $page_id, FALSE, $wb);
         opf_insert_frontend_files($opt);
+        return($opt);
+        break;
+    case('insert'):
+        opf_apply_filters($opt, OPF_TYPE_PAGE, FALSE, $page_id, FALSE, $wb);
         return($opt);
         break;
     case('section'):

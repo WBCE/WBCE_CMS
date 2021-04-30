@@ -46,9 +46,6 @@ if (!$id){
     exit();
 }
 
-// Include the ordering class
-require WB_PATH.'/framework/class.order.php';
-
 // Create new order object an reorder
 $order = new order($table, 'position', $id_field, 'section_id');
 if($order->move_down($id)) {

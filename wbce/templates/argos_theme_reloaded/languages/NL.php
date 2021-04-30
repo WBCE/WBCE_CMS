@@ -11,7 +11,7 @@
  */
 
 //Modul Description
-$template_description 	= 'Advanced Backend-Theme for WBCE 1.x';
+$template_description = 'Advanced Backend-Theme for WBCE 1.x';
 
 //Texts
 $TEXT['ADMIN_ONLY'] = 'Instellingen alleen beschikbaar voor administrator';

@@ -46,6 +46,9 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 				  $loginlink = '<a href="'.LOGOUT_URL.'"><i class="icon-sli-logout"  aria-hidden="true"></i></a><a href="'.PREFERENCES_URL.'"><i class="icon-sli-user"  aria-hidden="true"></i></a>';
 			  } else {	  
 				$loginlink = '<a href="'.LOGIN_URL.'"><i class="icon-sli-login"  aria-hidden="true"></i></a>';
+				if (FRONTEND_SIGNUP) {
+				  $loginlink .= ' <a href="'.SIGNUP_URL.'"><i class="icon-sli-user-follow"  aria-hidden="true"></i></a>';
+				}
 			  }			  
 		  } else {
 			  $loginlink = '';
@@ -157,18 +160,21 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
                <div class="s-12 m-3">
                   <a href="<?php echo WB_URL; ?>"><img class="logo center" src="<?php echo $logo; ?>" alt=""></a>
                </div>
-			   <div class="s-12 m-9">
-					<div id="header-carousel" class="owl-carousel owl-theme">
-					   <?php 
-					   /* In Zeile 93ff wurde ein Array (eine spezielle Art von Variable) für die Slider-Bilder generiert. Die in dieser Variable gespeicherten Werte werden hier nun abgerufen und mit dem ebenfalls oben definierten Präfix und Suffix ausgegeben. Aus dem so erzeugten HTML generiert das Script owl-carousel, das am Ende der Seite dann aufgerufen wird, die Slideshow.
+			   <div class="s-12 m-9 headerpic">
+			   <?php if (sizeof($pics) > 1) {
+					/* In Zeile 93ff wurde ein Array (eine spezielle Art von Variable) für die Slider-Bilder generiert. Die in dieser Variable gespeicherten Werte werden hier nun abgerufen und mit dem ebenfalls oben definierten Präfix und Suffix ausgegeben. Aus dem so erzeugten HTML generiert das Script owl-carousel, das am Ende der Seite dann aufgerufen wird, die Slideshow.
 					   
-					   In line 93ff. an array (a special kind of variable) was generated to hold the slideshow images. Here comes the output: the values of this variable plus a prefix and a suffix as defined above. From the generated HTML the owl carosl script called at the footer of the page will build a slideshow.
-					   */
-					   foreach($pics as $pic) {						   
+					   In line 93ff. an array (a special kind of variable) was generated to hold the slideshow images. Here comes the output: the values of this variable plus a prefix and a suffix as defined above. From the generated HTML the owl carousel script called at the footer of the page will build a slideshow. */
+					echo '<div id="header-carousel" class="owl-carousel owl-theme">';
+					    foreach($pics as $pic) {						   
 						   echo $picPre.$pic.$picPost;
-						} ?>
-					  
-					</div>
+						} 					  
+					echo '</div>';
+					} else {
+						// only one picture? No slider 
+						echo '<img src="'.$pics[0].'" alt="'.PAGE_TITLE.'" />';
+					}
+					?>
 			   </div>           
          </div>
          
@@ -265,7 +271,9 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
             loop: true,
             navText: ["&#xf007","&#xf006"],
             autoplay: true,
-            autoplayTimeout: 3000
+            autoplayTimeout: 3000,
+			animateIn: 'fadeIn',
+			animateOut: 'fadeOut'
           });
           
         });

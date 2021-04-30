@@ -1,0 +1,14 @@
+// Styles and overrides for all elements out of the lightcase scope
+.lightcase-open {
+
+  body {
+    overflow: hidden;
+
+    // For mobile (touch) devices
+    .lightcase-isMobileDevice & {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+}

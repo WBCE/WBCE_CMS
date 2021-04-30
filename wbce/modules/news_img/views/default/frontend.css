@@ -1,0 +1,130 @@
+/*** default layout ****/
+.mod_nwi_default {}
+
+.mod_nwi_default .mod_nwi_content_short img {
+  float: left;
+  margin-right: 15px;
+}
+
+.mod_nwi_default .mod_nwi_content_short {
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 15px auto;
+  overflow: hidden;
+}
+
+.mod_nwi_default td.page-left,
+.mod_nwi_default td.page-center,
+.mod_nwi_default td.page-right {
+  width: 33.33%;
+}
+
+.mod_nwi_default td.page-center,
+td.mod_nwi_table_center {
+  text-align: center;
+}
+
+.mod_nwi_default td.page-right,
+.mod_nwi_table_right {
+  text-align: right;
+}
+
+.mod_nwi_default .mod_nwi_tags_header {
+  margin-bottom: 25px;
+}
+
+.mod_nwi_default .mod_nwi_group {
+  width: 100%;
+  clear: both;
+  margin-top: 15px;
+}
+
+.mod_nwi_default .mod_nwi_teaserpic {
+  float: left;
+}
+
+.mod_nwi_default .mod_nwi_teaserpic img {
+  max-width: 80%;
+  height: auto;
+}
+
+.mod_nwi_default .mod_nwi_teasertext {
+  display: table;
+}
+
+.mod_nwi_default .mod_nwi_teasertext h3 {
+  margin: 0 0 0.25em 0;
+  padding: 0;
+}
+
+.mod_nwi_default .mod_nwi_grouppic {
+  float: right;
+}
+
+.mod_nwi_default .mod_nwi_grouppic img {
+  width: 150px;
+  height: 150px;
+}
+
+.mod_nwi_default .mod_nwi_metadata {
+  font-size: 75%;
+  font-style: italic;
+}
+
+.mod_nwi_default .mod_nwi_shorttext {
+  padding: 0.5em 0;
+}
+
+.mod_nwi_default .mod_nwi_spacer {
+  padding: 1em 0;
+  clear: both;
+}
+
+.mod_nwi_default .mod_nwi_bottom {
+  padding: 0.5em 0;
+}
+
+.mod_nwi_default .mod_nwi_tags {
+  margin-top: 25px;
+}
+
+.mod_nwi_default .mod_nwi_tag {
+  display: inline-block;
+  background-color: #ccc;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.mod_nwi_default .mod_nwi_tag {
+  background-color: #9BA9B9;
+  color: #fff;
+}
+
+.mod_nwi_default .mod_nwi_tag:nth-of-type(1) {
+  background-color: #314B68;
+}
+
+.mod_nwi_default .mod_nwi_tag:nth-of-type(2) {
+  background-color: #49627E;
+}
+
+.mod_nwi_default .mod_nwi_tag:nth-of-type(3) {
+  background-color: #6F839A;
+}
+
+.mod_nwi_default .mod_nwi_tag a {
+  color: #fff;
+}
+
+.mod_nwi_default div.mod_nwi_readmore {
+  float: right;
+}
+
+.mod_nwi_default div.mod_nwi_readmore a {
+  display: inline-block;
+  background-color: #314B68;
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 3px;
+}

@@ -1,19 +1,13 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @category        frontend
- * @package         search
- * @author          WebsiteBaker Project
- * @copyright       2004-2009, Ryan Djurovich
- * @copyright       2009-2010, Website Baker Org. e.V.
- * @link            http://www.websitebaker2.org/
- * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WebsiteBaker 2.8.x
- * @requirements    PHP 4.3.4 and higher
- * @version         $Id: search_modext.php 1451 2011-05-29 18:58:51Z Luisehahne $
- * @filesource        $HeadURL: svn://isteam.dynxs.de/wb_svn/wb280/tags/2.8.3/wb/search/search_modext.php $
- * @lastmodified    $Date: 2011-05-29 20:58:51 +0200 (So, 29. Mai 2011) $
- *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 
 // make the url-string for highlighting
@@ -35,8 +29,8 @@ function get_page_modified($page_modified_when)
 {
     global $TEXT;
     if ($page_modified_when > 0) {
-        $date = gmdate(DATE_FORMAT, $page_modified_when + TIMEZONE);
-        $time = gmdate(TIME_FORMAT, $page_modified_when + TIMEZONE);
+        $date = date(DATE_FORMAT, $page_modified_when + TIMEZONE);
+        $time = date(TIME_FORMAT, $page_modified_when + TIMEZONE);
     } else {
         $date = $TEXT['UNKNOWN'] . ' ' . $TEXT['DATE'];
         $time = $TEXT['UNKNOWN'] . ' ' . $TEXT['TIME'];
@@ -109,8 +103,7 @@ function get_excerpts($text, $search_words, $max_excerpt_num)
         }
         // set endpos at first punctuation after word
         $match = substr($text, $startpos + 1, $endpos - $startpos);
-        if (!preg_match('/\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\./', $match)) // skip excerpts with email-addresses
-        {
+        if (!preg_match('/\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\./', $match)) { // skip excerpts with email-addresses
             $excerpt_array[] = trim($match);
         }
 
@@ -119,7 +112,6 @@ function get_excerpts($text, $search_words, $max_excerpt_num)
             if (count($excerpt_array) >= $max_excerpt_num) {
                 break;
             }
-
         }
         // restart at last endpos
         $startpos = $endpos;
@@ -171,7 +163,7 @@ function make_url_target($page_link_target, $text, $search_words)
         preg_match('/' . $word . '/i', $text, $match, PREG_OFFSET_CAPTURE);
         if ($match && is_array($match[0])) {
             $x = $match[0][1]; // position of first match
-                               // is there an anchor nearby?
+            // is there an anchor nearby?
             if (preg_match_all('/<\s*(?:a[^>]+?name|[^>]+?id)\s*=\s*"([^"]+)"/i', substr($text, 0, $x), $match)) {
                 $page_link_target = '#' . $match[1][count($match[1]) - 1];
             }
@@ -211,7 +203,8 @@ function print_excerpt($page_link, $page_link_target, $page_title, $page_descrip
     print_excerpt2($mod_vars, $func_vars);
 }
 
-/* These functions can be used in module-supplied search_funcs
+/**
+ * These functions can be used in module-supplied search_funcs
  * -----------------------------------------------------------
  * print_excerpt2() - the main-function to use in all search_funcs
  * print_excerpt() - wrapper for compatibility-reason. Use print_excerpt2() instead.
@@ -276,45 +269,47 @@ function print_excerpt2($mod_vars, $func_vars)
         $mod_ext_charset = '';
     }
 
-    if ($mod_text == "") // nothing to do
-    {return false;}
+    if ($mod_text == "") { // nothing to do
+        return false;
+    }
 
-    if ($mod_no_highlight) // no highlighting
-    { $mod_page_link_target = "&amp;nohighlight=1" . $mod_page_link_target;}
+    if ($mod_no_highlight) { // no highlighting
+        $mod_page_link_target = "&amp;nohighlight=1" . $mod_page_link_target;
+    }
     // clean the text:
     $mod_text = preg_replace('#<(br|dt|/dd|/?(?:h[1-6]|tr|table|p|li|ul|pre|code|div|hr))[^>]*>#i', '.', $mod_text);
     $mod_text = preg_replace('#<(!--.*--|style.*</style|script.*</script)>#iU', ' ', $mod_text);
-    $mod_text = preg_replace('#\[\[.*?\]\]#', '', $mod_text); //Filter droplets from the page data
-                                                              // strip_tags() is called below
+    $mod_text = preg_replace('#\[\[.*?\]\]#', '', $mod_text); // Filter droplets from the page data
+    // strip_tags() is called below
     if ($mod_ext_charset != '') {
         // data from external database may have a different charset
         require_once WB_PATH . '/framework/functions-utf8.php';
         switch ($mod_ext_charset) {
-        case 'latin1':
-        case 'cp1252':
-            $mod_text = charset_to_utf8($mod_text, 'CP1252');
-            break;
-        case 'cp1251':
-            $mod_text = charset_to_utf8($mod_text, 'CP1251');
-            break;
-        case 'latin2':
-            $mod_text = charset_to_utf8($mod_text, 'ISO-8859-2');
-            break;
-        case 'hebrew':
-            $mod_text = charset_to_utf8($mod_text, 'ISO-8859-8');
-            break;
-        case 'greek':
-            $mod_text = charset_to_utf8($mod_text, 'ISO-8859-7');
-            break;
-        case 'latin5':
-            $mod_text = charset_to_utf8($mod_text, 'ISO-8859-9');
-            break;
-        case 'latin7':
-            $mod_text = charset_to_utf8($mod_text, 'ISO-8859-13');
-            break;
-        case 'utf8':
-        default:
-            $mod_text = charset_to_utf8($mod_text, 'UTF-8');
+            case 'latin1':
+            case 'cp1252':
+                $mod_text = charset_to_utf8($mod_text, 'CP1252');
+                break;
+            case 'cp1251':
+                $mod_text = charset_to_utf8($mod_text, 'CP1251');
+                break;
+            case 'latin2':
+                $mod_text = charset_to_utf8($mod_text, 'ISO-8859-2');
+                break;
+            case 'hebrew':
+                $mod_text = charset_to_utf8($mod_text, 'ISO-8859-8');
+                break;
+            case 'greek':
+                $mod_text = charset_to_utf8($mod_text, 'ISO-8859-7');
+                break;
+            case 'latin5':
+                $mod_text = charset_to_utf8($mod_text, 'ISO-8859-9');
+                break;
+            case 'latin7':
+                $mod_text = charset_to_utf8($mod_text, 'ISO-8859-13');
+                break;
+            case 'utf8':
+            default:
+                $mod_text = charset_to_utf8($mod_text, 'UTF-8');
         }
     } else {
         $mod_text = entities_to_umlauts($mod_text, 'UTF-8');
@@ -328,7 +323,6 @@ function print_excerpt2($mod_vars, $func_vars)
         if (!is_all_matched($mod_text, $func_search_words)) {
             return false;
         }
-
     } elseif (!is_any_matched($mod_text, $func_search_words)) {
         return false;
     }
@@ -359,7 +353,6 @@ function print_excerpt2($mod_vars, $func_vars)
         } else {
             $excerpt = '<table class="excerpt_thumb" width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="110" valign="top"><a href="' . $link . '"><img src="' . WB_URL . '/' . MEDIA_DIRECTORY . $mod_pic_link . '" alt="" /></a></td><td>' . $excerpt . '</td></tr></tbody></table>';
         }
-
     }
 
     // print-out the excerpt
@@ -399,7 +392,7 @@ function list_files_dirs($dir, $depth = true, $files = array(), $dirs = array())
 {
     $dh = opendir($dir);
     while (($file = readdir($dh)) !== false) {
-        if ($file{0} == '.' || $file == '..') {
+        if ($file[0] == '.' || $file == '..') {
             continue;
         }
         if (is_dir($dir . '/' . $file)) {
@@ -458,23 +451,23 @@ function search_make_sql_part($words, $match, $columns)
         $lowers = array('utf8' => "\xc3\xa1", 'iso' => "\xe1");
         $uppers = array('utf8' => "\xc3\x81", 'iso' => "\xc1");
         switch (DEFAULT_CHARSET) {
-        case 'utf-8':
-            $lo = $lowers['utf8'];
-            $up = $uppers['utf8'];
-            break;
-        case 'iso-8859-1':
-        case 'iso-8859-2':
-        case 'iso-8859-3':
-        case 'iso-8859-4':
-        case 'iso-8859-5':
-        case 'iso-8859-7':
-        case 'iso-8859-9':
-        case 'iso-8859-10':
-            $lo = $lowers['iso'];
-            $up = $uppers['iso'];
-            break;
-        default:
-            $checked = 'check failed'; // we can't handle arabic,hebrew,thai
+            case 'utf-8':
+                $lo = $lowers['utf8'];
+                $up = $uppers['utf8'];
+                break;
+            case 'iso-8859-1':
+            case 'iso-8859-2':
+            case 'iso-8859-3':
+            case 'iso-8859-4':
+            case 'iso-8859-5':
+            case 'iso-8859-7':
+            case 'iso-8859-9':
+            case 'iso-8859-10':
+                $lo = $lowers['iso'];
+                $up = $uppers['iso'];
+                break;
+            default:
+                $checked = 'check failed'; // we can't handle arabic,hebrew,thai
         }
         if ($checked === true && $query = $database->query("SELECT UPPER('$lo')='$up'")) {
             $res = $query->fetchRow();
@@ -484,7 +477,6 @@ function search_make_sql_part($words, $match, $columns)
         } else {
             $checked = 'check failed';
         }
-
     }
 
     require_once WB_PATH . '/framework/functions-utf8.php';
@@ -511,7 +503,6 @@ function search_make_sql_part($words, $match, $columns)
             for ($x = 0; $x < $altnum; $x++) {
                 $w_alts[$x] = strtr($w, $search_table_sql_local[$x]);
             }
-
         } else {
             $w_alts[0] = $w;
         }

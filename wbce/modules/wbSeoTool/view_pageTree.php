@@ -30,15 +30,14 @@ function exportPageTreeToTwig() {
 	/**
 	 * 		Create Twig template object and configure it
 	 */
-	$oTwigLoader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/skel'); // tell Twig where templates will come from
-	$oTwig = new Twig_Environment($oTwigLoader, array(
+	$oTwigLoader = new \Twig\Loader\FilesystemLoader(dirname(__FILE__) . '/skel'); // tell Twig where templates will come from
+	$oTwig = new \Twig\Environment($oTwigLoader, array(
 		'autoescape'       => false,
 		'cache'            => false,
 		'strict_variables' => false,
 		'debug'            => true,
 	));
-	$oTwig->addExtension(new Twig_Extension_Debug());	// load extension		
-	$oTemplate = $oTwig->loadTemplate("pageTree.twig");	// load the template by name
+	$oTwig->addExtension(new \Twig\Extension\DebugExtension());	// load extension		
 	
 	$oTwig->addGlobal('lang', array_merge($TEXT, $HEADING, $TOOL_TEXT)); 
 	$oTwig->addGlobal('WB_URL', WB_URL); 
@@ -54,7 +53,9 @@ function exportPageTreeToTwig() {
 	if(defined("REWRITE_URL")){
 		$oTwig->addGlobal('REWRITE_URL', REWRITE_URL); 
 	}
-	
+
+	$oTemplate = $oTwig->load("pageTree.twig");	// load the template by name
+
 	// ouput Template
 	$oTemplate->display(
 		array('pages' => pagesArray(TRUE))

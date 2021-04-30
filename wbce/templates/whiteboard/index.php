@@ -10,7 +10,7 @@
  * @license GNU GPL2 (or any later version)
  */
 
-if(!defined('WB_URL')) { 
+if (!defined('WB_URL')) {
     die(header('Location: ../index.php'));
 }
 

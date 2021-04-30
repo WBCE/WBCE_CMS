@@ -46,7 +46,7 @@ Format: 1.51
 # --------------------------------------------------------------------------
 
 Title: OutputFilter - Dashboard
-SubTitle: A Website Baker Module
+SubTitle: A WB(CE) Module
 
 Group: Admintool {
 

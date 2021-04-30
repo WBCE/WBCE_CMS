@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -11,30 +11,32 @@
  */
 
 //no direct file access
-if(count(get_included_files())==1) header("Location: ../index.php", TRUE, 301);
+if (count(get_included_files()) == 1) {
+    header("Location: ../index.php", true, 301);
+}
 
 class Frontend extends Wb
 {
     // defaults
-    public $default_link; 
+    public $default_link;
     public $default_page_id;
-    
+
     // when multiple blocks are used, show home page blocks on
     // pages where no content is defined (search, login, ...)
     public $default_block_content = true;
 
     // page details
     public $page;
-    public $page_id; 
-    public $page_title; 
-    public $menu_title; 
-    public $parent; 
-    public $root_parent; 
-    public $level; 
-    public $position; 
+    public $page_id;
+    public $page_title;
+    public $menu_title;
+    public $parent;
+    public $root_parent;
+    public $level;
+    public $position;
     public $visibility;
-    public $page_description; 
-    public $page_keywords; 
+    public $page_description;
+    public $page_keywords;
     public $page_link;
     public $page_trail = array();
 
@@ -42,32 +44,31 @@ class Frontend extends Wb
     public $page_no_active_sections;
 
     // website settings
-    public $website_title; 
-    public $website_description; 
-    public $website_keywords; 
-    public $website_header; 
+    public $website_title;
+    public $website_description;
+    public $website_keywords;
+    public $website_header;
     public $website_footer;
 
     // database query related
-    public $extra_where_sql; 
+    public $extra_where_sql;
     public $sql_where_language;
 
     public function __construct()
     {
         parent::__construct(SecureForm::FRONTEND);
     }
-        
-   
+
 
     public function page_select()
     {
         global $page_id, $no_intro;
-        
-         // We have a Maintainance situation print under construction if not in group admin
-        if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE === true and !$this->ami_group_member('1'))
-            $this->print_under_construction();             
-        
-        
+
+        // We have a Maintainance situation print under construction if not in group admin
+        if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE === true and !$this->ami_group_member('1')) {
+            $this->print_under_construction();
+        }
+
         // We have no page id and are supposed to show the intro page
         if ((INTRO_PAGE and !isset($no_intro)) and (!isset($page_id) or !is_numeric($page_id))) {
             // Since we have no page id check if we should go to intro page or default page
@@ -77,10 +78,9 @@ class Frontend extends Wb
                 $handle = @fopen($filename, "r");
                 $content = @fread($handle, filesize($filename));
                 @fclose($handle);
-                $this->preprocess($content);
                 // send intro.php as header to allow parsing of php statements
-                header("Location: " . WB_URL . PAGES_DIRECTORY . "/intro" . PAGE_EXTENSION . ""); 
-                echo ($content);
+                header("Location: " . WB_URL . PAGES_DIRECTORY . "/intro" . PAGE_EXTENSION . "");
+                echo($content);
                 return false;
             }
         }
@@ -105,8 +105,8 @@ class Frontend extends Wb
         if (!isset($page_id) or !is_numeric($page_id)) {
             // Go to or show default page
             if ($default_num_rows > 0) {
-                $fetch_default         = $get_default->fetchRow(MYSQLI_ASSOC);
-                $this->default_link    = $fetch_default['link'];
+                $fetch_default = $get_default->fetchRow(MYSQLI_ASSOC);
+                $this->default_link = $fetch_default['link'];
                 $this->default_page_id = $fetch_default['page_id'];
                 // Check if we should redirect or include page inline
                 if (HOMEPAGE_REDIRECTION) {
@@ -127,72 +127,108 @@ class Frontend extends Wb
         }
         // Get default page link
         if (!isset($fetch_default)) {
-            $fetch_default         = $get_default->fetchRow(MYSQLI_ASSOC);
-            $this->default_link    = $fetch_default['link'];
+            $fetch_default = $get_default->fetchRow(MYSQLI_ASSOC);
+            $this->default_link = $fetch_default['link'];
             $this->default_page_id = $fetch_default['page_id'];
         }
         return true;
+    }
+
+    public function print_under_construction()
+    {
+        global $MESSAGE;
+
+        $sProtocol = "HTTP/1.0";  //Header https://yoast.com/http-503-site-maintenance-seo/
+        if ("HTTP/1.1" == $_SERVER["SERVER_PROTOCOL"]) {
+            $protocol = "HTTP/1.1";
+        }
+
+        header("$sProtocol 503 Service Unavailable", true, 503);
+        header("Retry-After: 7200"); //Searchengine revisits after 2 Hours
+
+        $Template = DEFAULT_TEMPLATE;
+        if (defined('TEMPLATE')) {
+            $Template = TEMPLATE;
+        }
+
+        $TemplatePath = WB_PATH . '/templates/' . $Template . "/systemplates/maintainance.tpl.php";
+        $DefaultPath = WB_PATH . "/templates/systemplates/maintainance.tpl.php";
+
+        if (is_file($TemplatePath)) {
+            include_once($TemplatePath);
+        } else {
+            include_once($DefaultPath);
+        }
+
+        exit;
     }
 
     public function get_page_details()
     {
         if ($this->page_id != 0) {
             // Query page details
-            $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = ' . (int) $this->page_id;
+            $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = ' . (int)$this->page_id;
             $resPage = $this->_oDb->query($sSql);
-            
+
             // Make sure page was found in database otherwise print "Page not found" message
-            if ($resPage->numRows() == 0) exit("Page not found");
-            
+            if ($resPage->numRows() == 0) {
+                exit("Page not found");
+            }
+
             // Fetch page details
             $this->page = $resPage->fetchRow(MYSQLI_ASSOC);
-            
-            // Check if the page language is also the selected language. If not, send headers again.           
+
+            // Check if the page language is also the selected language. If not, send headers again.
             if ($this->page['language'] != LANGUAGE) {
-                $_SESSION['LANGUAGE'] = $this->page['language'];
-                $sUri = $this->page_link($this->page['link']);
-                if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
-                    // check if there is an query-string
-                    header('Location: ' . $sUri . '&' . $_SERVER['QUERY_STRING']);
+                if (defined('OLD_REDIRECT') && OLD_REDIRECT != false) {
+                    $sUri = $this->page_link($this->page['link']).'?lang=' . $this->page['language'];
+                    if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
+                        // check if there is an query-string
+                        header('Location: ' . $sUri . '&' . $_SERVER['QUERY_STRING']);
+                    } else {
+                        header('Location: ' . $sUri);
+                    }
+                    exit();
                 } else {
-                    header('Location: ' . $sUri);
+                    $_SESSION['LANGUAGE'] = $this->page['language'];
+                    header("Refresh:0");
                 }
-                exit();
-            } 
+            }
+
             // Begin code to set details as either variables of constants
-            defined('PAGE_ID')    or define('PAGE_ID',    $this->page['page_id']);
+            defined('PAGE_ID') or define('PAGE_ID', $this->page['page_id']);
             defined('PAGE_TITLE') or define('PAGE_TITLE', $this->page['page_title']);
             $this->page_title = PAGE_TITLE;
-            
+
             // Menu Title
             $sMenuTitle = $this->page['menu_title'];
             defined('MENU_TITLE') or define('MENU_TITLE', ($sMenuTitle != '') ? $sMenuTitle : PAGE_TITLE);
             $this->menu_title = MENU_TITLE;
-            
+
             // Page parent
             defined('PARENT') or define('PARENT', $this->page['parent']);
             $this->parent = $this->page['parent'];
-            
-            // Page root parent 
+
+            // Page root parent
             defined('ROOT_PARENT') or define('ROOT_PARENT', $this->page['root_parent']);
             $this->root_parent = $this->page['root_parent'];
-            
+
             // Page level
             defined('LEVEL') or define('LEVEL', $this->page['level']);
             $this->level = $this->page['level'];
-            
+
             // Page position
             $this->level = $this->page['position'];
-            
+
             // Page visibility
             defined('VISIBILITY') or define('VISIBILITY', $this->page['visibility']);
             $this->visibility = $this->page['visibility'];
-            
+
             // Page trail
             foreach (explode(',', $this->page['page_trail']) as $pid) {
                 $this->page_trail[$pid] = $pid;
             }
-            
+
             // Page description
             $this->page_description = $this->page['description'];
             if ($this->page_description != '') {
@@ -200,10 +236,10 @@ class Frontend extends Wb
             } else {
                 define('PAGE_DESCRIPTION', WEBSITE_DESCRIPTION);
             }
-            
+
             // Page keywords
             $this->page_keywords = $this->page['keywords'];
-            
+
             // Page link
             $this->link = $this->page_link($this->page['link']);
             $_SESSION['PAGE_ID'] = $this->page_id;
@@ -240,7 +276,6 @@ class Frontend extends Wb
                     // User isnt allowed on this page so tell them
                     $this->page_access_denied = true;
                 }
-
             }
         }
         // check if there is at least one active section
@@ -248,6 +283,9 @@ class Frontend extends Wb
             $this->page_no_active_sections = true;
         }
     }
+
+
+    // Function to show the "Under Construction" page
 
     public function get_website_settings()
     {
@@ -266,98 +304,80 @@ class Frontend extends Wb
         $this->extra_where_sql .= $this->sql_where_language;
 
         // Work-out if any possible in-line search boxes should be shown
-        if(!defined('SHOW_SEARCH')){
+        if (!defined('SHOW_SEARCH')) {
             $bShowSearch = false;
-            if     (SEARCH == 'public')                                          $bShowSearch = true;
-            elseif (SEARCH == 'private'    && VISIBILITY == 'private')           $bShowSearch = true;
-            elseif (SEARCH == 'private'    && $this->is_authenticated() == true) $bShowSearch = true;
-            elseif (SEARCH == 'registered' && $this->is_authenticated() == true) $bShowSearch = true;
-                        
-            define('SHOW_SEARCH', $bShowSearch);            
+            if (SEARCH == 'public') {
+                $bShowSearch = true;
+            } elseif (SEARCH == 'private' && VISIBILITY == 'private') {
+                $bShowSearch = true;
+            } elseif (SEARCH == 'private' && $this->is_authenticated() == true) {
+                $bShowSearch = true;
+            } elseif (SEARCH == 'registered' && $this->is_authenticated() == true) {
+                $bShowSearch = true;
+            }
+
+            define('SHOW_SEARCH', $bShowSearch);
         }
-        
+
         // define SHOW_MENU constant
-        defined('SHOW_MENU') or define('SHOW_MENU', true);    
+        defined('SHOW_MENU') or define('SHOW_MENU', true);
     }
-    
 
-    // Function to show the "Under Construction" page
-    public function print_under_construction()
-    {
-        global $MESSAGE;
-        
-        $sProtocol = "HTTP/1.0";  //Header https://yoast.com/http-503-site-maintenance-seo/
-        if ( "HTTP/1.1" == $_SERVER["SERVER_PROTOCOL"] ) $protocol = "HTTP/1.1";
-
-        header( "$sProtocol 503 Service Unavailable", true, 503 );
-        header( "Retry-After: 7200" ); //Searchengine revisits after 2 Hours 
-        
-        $Template=DEFAULT_TEMPLATE;
-        if (defined('TEMPLATE')) $Template = TEMPLATE;
-        
-        $TemplatePath = WB_PATH.'/templates/'.$Template."/systemplates/maintainance.tpl.php";
-        $DefaultPath  = WB_PATH."/templates/systemplates/maintainance.tpl.php";
-        
-        if (is_file($TemplatePath))  include_once ($TemplatePath); 
-        else                         include_once ($DefaultPath);
-        
-        exit;
-    }
-    
     /**
-     * @brief  This method is used together with the AdminTool 
+     * @brief  This method is used together with the AdminTool
      *         Captcha and Advanced-Spam-Protection (ASP) Control
-     * 
+     *
      * @return string
      */
-    public function renderAspHoneypots(){
-       $sASPFields = '';
-       if (ENABLED_ASP) { 
-           $sTimeStamp = time();
-           $_SESSION['submitted_when'] = $sTimeStamp;
-           // add some honeypot-fields
-           ob_start();	
-       ?>
-           <div style="display:none;">
-               <input type="hidden" name="submitted_when" value="<?=$sTimeStamp ?>" />
-               <p class="nixhier">
-                   <label for="email-address" title="Leave this field email-address blank">Email address:</label>
-                   <input id="email-address" name="email-address" size="60" value="" />
-               </p>
-               <p class="nixhier">				
-                   <label for="name" title="Leave this field name blank">Username (id):</label>
-                   <input id="name" name="name" size="60" value="" /></p>
-               <p class="nixhier">
-                   <label for="full_name" title="Leave this field full_name blank">Full Name:</label>
-                   <input id="full_name" name="full_name" size="60" value="" />
-               </p>
-           </div>		
-       <?php 
-           $sASPFields = ob_get_clean();
-       } //end:ENABLED_ASP
-       return $sASPFields;
+    public function renderAspHoneypots()
+    {
+        $sASPFields = '';
+        if (ENABLED_ASP) {
+            $sTimeStamp = time();
+            $_SESSION['submitted_when'] = $sTimeStamp;
+            // add some honeypot-fields
+            ob_start(); ?>
+            <div style="display:none;">
+                <input type="hidden" name="submitted_when" value="<?= $sTimeStamp ?>"/>
+                <p class="nixhier">
+                    <label for="email-address" title="Leave this field email-address blank">Email address:</label>
+                    <input id="email-address" name="email-address" size="60" value=""/>
+                </p>
+                <p class="nixhier">
+                    <label for="name" title="Leave this field name blank">Username (id):</label>
+                    <input id="name" name="name" size="60" value=""/></p>
+                <p class="nixhier">
+                    <label for="full_name" title="Leave this field full_name blank">Full Name:</label>
+                    <input id="full_name" name="full_name" size="60" value=""/>
+                </p>
+            </div>
+            <?php
+            $sASPFields = ob_get_clean();
+        } //end:ENABLED_ASP
+        return $sASPFields;
     }
-    
+
     // Obsolete since the introduction of OpF Dashboard into the core
+
     /**
      * // public function preprocess(&$content)
      * // this method is obsolete since [wblinkXXX] replacement is done
      * // standardly in the OpF Dashboard since 1.4.0
      */
-    public function preprocess($content = NULL)
+    public function preprocess($content = null)
     {
         // Return a note that this method is obsolete
         if ($this->is_authenticated()) {
-            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) { 
+            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) {
                 // if Admin and WB_DEBUG on: display Notice to inform the developer
-                $caller = debug_backtrace()[0]; 
-                $sNotice  = "<br />The <i><b>".__FUNCTION__."</b> method</i> of <i>class <b>".__CLASS__."</b></i> is obsolete.";
+                $caller = debug_backtrace()[0];
+                $sNotice = "<br />The <i><b>" . __FUNCTION__ . "</b> method</i> of <i>class <b>" . __CLASS__ . "</b></i> is obsolete.";
                 $sNotice .= "<br /> There's no need to use it any longer.";
-                $sNotice .= "<br />Used in file <b>".$caller['file']."</b> on line <b>".$caller['line']."</b>";
+                $sNotice .= "<br />Used in file <b>" . $caller['file'] . "</b> on line <b>" . $caller['line'] . "</b>";
                 trigger_error($sNotice);
             }
         }
-        return;        
+        return;
     }
 
     // No longer supported since WBCE 1.4.0
@@ -365,32 +385,49 @@ class Frontend extends Wb
     {
         // Return a note that this method is no longer supported
         if ($this->is_authenticated()) {
-            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) { 
+            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) {
                 // if Admin and WB_DEBUG on: display Notice to inform the developer
-                $caller = debug_backtrace()[0]; 
-                $sNotice  = "<br />The <i><b>".__FUNCTION__."</b> method</i> of <i>class <b>".__CLASS__."</b></i> is obsolete.";
+                $caller = debug_backtrace()[0];
+                $sNotice = "<br />The <i><b>" . __FUNCTION__ . "</b> method</i> of <i>class <b>" . __CLASS__ . "</b></i> is obsolete.";
                 $sNotice .= "<br /> Please consider using the <b>show_menu2</b> function.";
-                $sNotice .= "<br />Used in file <b>".$caller['file']."</b> on line <b>".$caller['line']."</b>";
+                $sNotice .= "<br />Used in file <b>" . $caller['file'] . "</b> on line <b>" . $caller['line'] . "</b>";
                 trigger_error($sNotice);
             }
         }
-        return;  
+        return;
     }
-    
+
     // No longer supported since WBCE 1.4.0
     public function show_menu()
     {
-         // Return a note that this method is no longer supported
+        // Return a note that this method is no longer supported
         if ($this->is_authenticated()) {
-            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) { 
+            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) {
                 // if Admin and WB_DEBUG on: display Notice to inform the developer
-                $caller = debug_backtrace()[0]; 
-                $sNotice  = "<br />The <i><b>".__FUNCTION__."</b> method</i> of <i>class <b>".__CLASS__."</b></i> is obsolete.";
+                $caller = debug_backtrace()[0];
+                $sNotice = "<br />The <i><b>" . __FUNCTION__ . "</b> method</i> of <i>class <b>" . __CLASS__ . "</b></i> is obsolete.";
                 $sNotice .= "<br /> Please consider using the <b>show_menu2</b> function.";
-                $sNotice .= "<br />Used in file <b>".$caller['file']."</b> on line <b>".$caller['line']."</b>";
+                $sNotice .= "<br />Used in file <b>" . $caller['file'] . "</b> on line <b>" . $caller['line'] . "</b>";
                 trigger_error($sNotice);
             }
         }
-        return;  
+        return;
+    }
+
+    // No longer supported since WBCE 1.5.0
+    public function show_breadcrumbs()
+    {
+        // Return a note that this method is no longer supported
+        if ($this->is_authenticated()) {
+            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) {
+                // if Admin and WB_DEBUG on: display Notice to inform the developer
+                $caller = debug_backtrace()[0];
+                $sNotice = "<br />The <i><b>" . __FUNCTION__ . "</b> method</i> of <i>class <b>" . __CLASS__ . "</b></i> is obsolete.";
+                $sNotice .= "<br /> Please consider using the <b>show_menu2</b> function.";
+                $sNotice .= "<br />Used in file <b>" . $caller['file'] . "</b> on line <b>" . $caller['line'] . "</b>";
+                trigger_error($sNotice);
+            }
+        }
+        return;
     }
 }

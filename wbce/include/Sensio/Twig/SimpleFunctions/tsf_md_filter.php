@@ -1,6 +1,6 @@
 <?php
 
-  $oTwig->addFunction(new Twig_SimpleFunction("md_filter", 
+  $oTwig->addFunction(new \Twig\TwigFunction("md_filter", 
         function ($sStr) {
             $sStr = preg_replace('#\*{2}(.*?)\*{2}#', '<b>$1</b>', $sStr);
             $sStr = preg_replace('#\*{1}(.*?)\*{1}#', '<i>$1</i>', $sStr);

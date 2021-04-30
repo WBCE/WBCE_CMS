@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
  For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 
@@ -70,5 +70,7 @@ CKEDITOR.plugins.setLang('wblink', 'de', {
 	selectTopics: 'Bitte einen Topics-Beitrag wählen',
 	selectBakery: 'Bitte einen Bakery-Artikel wählen',
 	selectNewsWithImages: 'Bitte einen NWI-Beitrag wählen',
-	noNews: 'Keine News Seite gewählt'
+	selectResponsiveFG: 'Bitte eine Galerie wählen',
+	noNews: 'Keine News Seite gewählt',
+	noRFG: 'Keine Galerie gewählt'
 });

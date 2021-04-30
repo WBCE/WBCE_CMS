@@ -1,0 +1,15 @@
+@import url("backend.css");
+
+.middle.h265 {
+	min-height: 370px;
+}
+
+#container table {
+	table-layout: fixed;
+}
+
+#container table tr td,
+#container table tr th {
+	padding: 0;
+	width: auto;
+}

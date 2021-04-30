@@ -6,18 +6,18 @@ backend.css
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.10
+ * @version         1.5.14
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2019 Martin Hecht (mrbaseman)
- * @link            https://github.com/WebsiteBaker-modules/outputfilter_dashboard
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x
+ * @platform        WebsiteBaker 2.8.x or WBCE
  * @requirements    PHP 5.4 and higher
  *
- * This file is part of OutputFilter-Dashboard, a module for Website Baker CMS.
+ * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
  * OutputFilter-Dashboard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,14 +34,21 @@ backend.css
  *
  **/
 
-.hideupload  { display: none }
-.filters-table a  { font-weight: bold }
+.hideupload {
+    display: none
+}
+
+.filters-table a {
+    font-weight: bold
+}
+
 .filters-table thead td,
 .filters-table caption {
     color: #fff !important;
     font-weight: bold;
     background-color: #515d76
 }
+
 .filters-table caption {
     font-size: 14px;
     font-weight: bold;
@@ -50,21 +57,25 @@ backend.css
     padding-left: 10px;
     height: 22px
 }
+
 table.filters-table {
     border: solid 1px #515d76;
-    margin-bottom: 8px ;
+    margin-bottom: 8px;
     background-color: #e0fbcf;
 }
-.filters-table th, b {
-   color: #515d76;
-   font-weight: bold;
-   background-repeat: repeat-x;
-   background-attachment: scroll;
-   background-position: 0 0;
-   text-align: right;
-   width: 180px !important;
-   vertical-align: top
+
+.filters-table th,
+b {
+    color: #515d76;
+    font-weight: bold;
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    background-position: 0 0;
+    text-align: right;
+    width: 180px !important;
+    vertical-align: top
 }
+
 /*table foot*/
 .filters-table tfoot td,
 .filters-table tfoot th {
@@ -75,17 +86,19 @@ table.filters-table {
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff
 }
+
 /*rows*/
 .row_a td,
 .row_a th,
 .row_a {
     background: #fafafb url(templates/images/box_bg.png) repeat-x 0 -2px;
-    border-bottom: 1px solid #becadb ;
+    border-bottom: 1px solid #becadb;
 }
+
 .row_b td,
 .row_b th {
     background: #fafafb url(templates/images/box_bg.png) repeat-x 0 12px;
-    border-bottom: 1px solid #becadb ;
+    border-bottom: 1px solid #becadb;
 }
 
 .filters-table .row_a td,
@@ -97,23 +110,28 @@ table.filters-table {
 /*
 ------------------| dashboard-rows
 */
-tr.inactive td, tr.inactive a  {color: #999}
+tr.inactive td,
+tr.inactive a {
+    color: #999
+}
+
 /*last-modified row*/
-tr.last-modified   {
+tr.last-modified {
     font-weight: bold;
     background-color: rgb(235, 250, 237) !important;
     background-image: none !important
 }
-td.row-separator  {
-   border-top: 2px solid #515d76
+
+td.row-separator {
+    border-top: 2px solid #515d76
 }
 
 div#upload-panel {
-   background: rgb(250, 250, 251) url(templates/images/box_bg.png) repeat-x 0 -2px;
-   text-align: center;
-   margin-bottom: 6px;
-   padding: 6px;
-   border: solid 1px #515d76
+    background: rgb(250, 250, 251) url(templates/images/box_bg.png) repeat-x 0 -2px;
+    text-align: center;
+    margin-bottom: 6px;
+    padding: 6px;
+    border: solid 1px #515d76
 }
 
 /*special customization*/
@@ -129,18 +147,20 @@ input:focus {
     border-width: 2px;
     border-color: #999 #ccc #dadada #999
 }
+
 textarea:focus,
-input:focus  {
+input:focus {
     background-color: #fffcdd
 }
+
 /*READONLY*/
 input[type=text][readonly],
 textarea[readonly],
 select[disabled],
-div.disabled  {
-   color: #4b4545;
-   background-color: #f4f4f4;
-   border: inset 2px #999
+div.disabled {
+    color: #4b4545;
+    background-color: #f4f4f4;
+    border: inset 2px #999
 }
 
 
@@ -149,6 +169,7 @@ button {
     padding: 2px 7px 2px 5px;
     min-width: 150px
 }
+
 button img {
     margin-right: 4px;
     margin-bottom: -2px;
@@ -160,26 +181,32 @@ button img {
     text-align: right;
     margin: 0
 }
+
 /*let js-onclick images act like links*/
 img.link {
     cursor: pointer
 }
+
 img.info {
     cursor: help
 }
-span.arrow  /*used in arrays*/ {
-   color: #515d76;
-   font-size: large
+
+/*used in arrays*/
+span.arrow {
+    color: #515d76;
+    font-size: large
 }
 
 a:hover {
     text-decoration: none
 }
+
 h2 {
     color: #516182;
     font-family: Verdana, Arial;
     letter-spacing: 1px
 }
+
 a:focus {
     outline: none;
 }
@@ -199,18 +226,20 @@ tr.warning td {
     padding: 2px;
     border: solid 1px
 }
+
 .notification,
-tr.notification td     {
+tr.notification td {
     color: #360 !important;
     font-size: 11px;
     background-color: rgb(235, 250, 237) !important;
-    background-color: rgba(235, 250, 237,0.5) !important;
+    background-color: rgba(235, 250, 237, 0.5) !important;
     background-image: none !important;
-    margin-top: 2px; margin-right: 2px;
+    margin-top: 2px;
+    margin-right: 2px;
     margin-bottom: 2px;
     padding: 2px;
-    border: solid 1px }
-
+    border: solid 1px
+}
 
 /*
 ----------------------------------| check-tree (see backend_body.js)
@@ -225,55 +254,67 @@ div.checktreestylearea {
     width: 97%;
     border: dashed 1px #515d76
 }
+
 ul.checktreestyle,
 ul.checktreestyle * {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
+
 ul.checktreestyle img.arrow {
     border: 0;
     width: 20px;
 }
+
 ul.checktreestyle li {
     margin: 0 0 6px 0;
 }
+
 ul.checktreestyle li ul {
     margin: 5px 0 0 20px;
 }
-ul.checktreestyle label  {
-   cursor: pointer
+
+ul.checktreestyle label {
+    cursor: pointer
 }
-ul.checktreestyle label.hover  {
-   color: #961c1c;
-   background-color: #f8f8f8
+
+ul.checktreestyle label.hover {
+    color: #961c1c;
+    background-color: #f8f8f8
 }
+
 ul.checktreestyle li .arrow {
     height: 18px;
     cursor: pointer;
     float: left;
     background: transparent no-repeat 0 4px;
 }
-ul.checktreestyle li .collapsed  {
+
+ul.checktreestyle li .collapsed {
     width: 20px;
     background-image: url(templates/images/collapsed.png);
     background-position: 0 0
 }
-ul.checktreestyle li .expanded  {
+
+ul.checktreestyle li .expanded {
     width: 20px;
     background-image: url(templates/images/expanded.png);
     background-position: 0 0
 }
-ul.checktreestyle li .checkbox  {
+
+ul.checktreestyle li .checkbox {
     background: url(templates/images/unchecked.png) no-repeat 2px -3px;
     cursor: pointer;
     width: 20px;
     height: 18px;
     float: left
 }
+
 ul.checktreestyle li .checked {
     background-image: url(templates/images/checked.png);
 }
+
 ul.checktreestyle li .half_checked {
     background-image: url(templates/images/marker.png);
 }
@@ -282,28 +323,32 @@ ul.checktreestyle li .half_checked {
 ----------------------------------| activity
 */
 .activity {
-   display: inline;
-   font-size: 18px;
-   line-height: 18px;
-   cursor: pointer;
-   cursor: hand;
+    display: inline;
+    font-size: 18px;
+    line-height: 18px;
+    cursor: pointer;
 }
+
 .activity img {
-   vertical-align: middle;
-   width: 16px;
-   height: 16px;
-   background: transparent url(templates/images/activity.png) no-repeat;
-   background-position: 0px 0px;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    background: transparent url(templates/images/activity.png) no-repeat;
+    background-position: 0px 0px;
 }
-.activity-checked img{
-   background-position: 0px -17px;
+
+.activity-checked img {
+    background-position: 0px -17px;
 }
-.activity-disabled img{
-   background-position: 0px -32px;
+
+.activity-disabled img {
+    background-position: 0px -32px;
 }
-.activity-checked .activity-disabled img{
-   background-position: 0px -48px;
+
+.activity-checked .activity-disabled img {
+    background-position: 0px -48px;
 }
+
 /*
 ----------------------------------| drag&drop
 */
@@ -329,4 +374,3 @@ ul.checktreestyle li .half_checked {
 ul.jsadmin_drag_area {
     border: solid 1px #99f;
 }
-

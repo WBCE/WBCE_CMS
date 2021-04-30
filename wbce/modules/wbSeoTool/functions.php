@@ -3,8 +3,8 @@
  * WebsiteBaker CMS Functions
  *
  * functions.php
- * 
- * 
+ *
+ *
  * @platform    CMS WebsiteBaker 2.8.x
  * @package     WBCE CMS Functions by Stefek
  * @author      Christian M. Stefan (Stefek)
@@ -16,7 +16,7 @@
 if(!defined('WB_PATH')) exit("Cannot access this file directly ".__FILE__);
 
 if(!function_exists('pagesArray')){
-	
+
 	/**
 	 * Get the full array of all WebsiteBaker CMS Pages at once.
 	 *
@@ -40,38 +40,41 @@ if(!function_exists('pagesArray')){
 		global $database, $admin;
 		// prepare SQL Query, build the query string first
 		$sUseTrash = (PAGE_TRASH != 'inline') ? " WHERE `visibility` <> 'deleted'" : '';
-		$sProcessSeo = ($bProcessSeo == TRUE) ? ', p.`description`, p.`keywords` ' : ' ';	
+		$sProcessSeo = ($bProcessSeo == TRUE) ? ', p.`description`, p.`keywords` ' : ' ';
 		$sProcessRewriteUrl = '';
 		$bRewriteUrlExists = FALSE;
 		if(defined("REWRITE_URL") == TRUE && REWRITE_URL != ''){
 			$oCheckDbTable = $database->query("SHOW COLUMNS FROM `{TP}pages` LIKE '".REWRITE_URL."'");
 			$bRewriteUrlExists = $oCheckDbTable->numRows() > 0 ? TRUE : FALSE;
-			$sProcessRewriteUrl = ($bRewriteUrlExists == TRUE) ? ' p.`'.REWRITE_URL.'`,' : '';	
+			$sProcessRewriteUrl = ($bRewriteUrlExists == TRUE) ? ' p.`'.REWRITE_URL.'`,' : '';
 		}
-                
-                $sRunningMySqlVersion = $database->get_one("SELECT VERSION()");
-                $bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
-                $sQueryModule = ( $bMySql_57 === true) ? "ANY_VALUE(s.`module`)" : "s.`module`";
-                
+
+		$bMySql_57 = false;
+		$sRunningMySqlVersion = $database->get_one("SELECT VERSION()");
+		if(version_compare($sRunningMySqlVersion, "10.0", "<" )) {
+			$bMySql_57 = version_compare( $sRunningMySqlVersion, "5.7.0", ">=");
+		}
+		$sQueryModule = ( $bMySql_57 === true) ? "ANY_VALUE(s.`module`)" : "s.`module`";
+
 		$sQuery = 'SELECT '.$sQueryModule.', MAX(s.`publ_start` + s.`publ_end`) published, p.`link`, '
 		     .        '(SELECT MAX(`position`) FROM `{TP}pages` WHERE `parent`=p.`parent`) siblings, '
 		     .        'p.`position`, p.`page_id`, p.`parent`, p.`level`, p.`language`, p.`admin_groups`, '
 		     .    (($bRewriteUrlExists == TRUE ) ? 'p.`'.REWRITE_URL.'`, ' : '' ) .''
 		     .        'p.`admin_users`, p.`viewing_groups`, p.`viewing_users`, p.`visibility`, '
-		     .        'p.`menu_title`, p.`page_title`, p.`page_trail`'.$sProcessSeo.''		            
+		     .        'p.`menu_title`, p.`page_title`, p.`page_trail`'.$sProcessSeo.''
 		     . 'FROM `{TP}pages` p '
 		     .    'INNER JOIN `{TP}sections` s '
 		     .    'ON p.`page_id`=s.`page_id` '
 		     . $sUseTrash.' '
 		     . 'GROUP BY p.`page_id` '
 		     . 'ORDER BY p.`position` ASC';
-		 
+
 		$oPages = $database->query($sQuery);
-                
+
 		$aPages = array();
-		$refs = array();	
+		$refs = array();
 		// create $aPages[] Array
-		while($page = $oPages->fetchRow(MYSQL_ASSOC)) {
+		while($page = $oPages->fetchRow(MYSQLI_ASSOC)) {
                         if (isset($page["ANY_VALUE(s.`module`)"])){
                             $page["module"] = $page["ANY_VALUE(s.`module`)"];
                         }
@@ -90,15 +93,15 @@ if(!function_exists('pagesArray')){
 			$thisref['admin_groups']   = $page['admin_groups'];
 			$thisref['admin_users']    = $page['admin_users'];
 			$thisref['position']       = $page['position'];
-			if($bProcessSeo == TRUE) {				
+			if($bProcessSeo == TRUE) {
 				$thisref['description']  = $page['description'];
 				$thisref['keywords']     = $page['keywords'];
 			}
-			if(($bRewriteUrlExists == TRUE)) {				
+			if(($bRewriteUrlExists == TRUE)) {
 				$thisref[REWRITE_URL]  = $page[REWRITE_URL];
 			}
 			$thisref['frontend_link']  = PAGES_DIRECTORY . $page['link'] . PAGE_EXTENSION;
-			$thisref['modify_page_url']= '../pages/modify.php?page_id='.$page['page_id'];	
+			$thisref['modify_page_url']= '../pages/modify.php?page_id='.$page['page_id'];
 
 			// Admin Groups (get user permissions)
 			$admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
@@ -106,49 +109,49 @@ if(!function_exists('pagesArray')){
 			$in_group = FALSE;
 			foreach($admin->get_groups_id() as $cur_gid) {
 				if (in_array($cur_gid, $admin_groups)) 	$in_group = TRUE;
-			}			
+			}
 			// check modify permissions
 			$thisref['can_modify'] = FALSE;
-			if(($in_group) || is_numeric(array_search($admin->get_user_id(), $admin_users))){				
+			if(($in_group) || is_numeric(array_search($admin->get_user_id(), $admin_users))){
 				if($page['visibility'] == 'deleted'){
-					$thisref['can_modify'] = (PAGE_TRASH == 'inline') ? TRUE : FALSE;	
-				} elseif ($page['visibility'] != 'deleted') {	
-					$thisref['can_modify'] = TRUE; 
-				} 
-			} else { 
-				if ($page['visibility'] == 'private') {	
-					continue; 
-				} else { 
-					$thisref['can_modify'] = FALSE; 
+					$thisref['can_modify'] = (PAGE_TRASH == 'inline') ? TRUE : FALSE;
+				} elseif ($page['visibility'] != 'deleted') {
+					$thisref['can_modify'] = TRUE;
+				}
+			} else {
+				if ($page['visibility'] == 'private') {
+					continue;
+				} else {
+					$thisref['can_modify'] = FALSE;
 				}
 			}
 			$thisref['canManageSections']  = (MANAGE_SECTIONS == 'enabled' && $admin->get_permission('pages_modify') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;
 			$thisref['page_movable']       = ($admin->get_permission('pages_settings') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;
 			$thisref['page_movable']       = ($thisref['page_movable'] && $thisref['siblings'] != 1) ? TRUE : FALSE;
 			$thisref['canMoveUP']          = ($thisref['page_movable'] && $thisref['position'] != 1) ? TRUE : FALSE;
-			$thisref['canMoveDOWN']        = ($thisref['page_movable'] && $thisref['position'] != $thisref['siblings']) ? TRUE : FALSE;	
+			$thisref['canMoveDOWN']        = ($thisref['page_movable'] && $thisref['position'] != $thisref['siblings']) ? TRUE : FALSE;
 			$thisref['canDeleteAndModify'] = ($admin->get_permission('pages_delete') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;
 			$thisref['canAddChild']        = ($admin->get_permission('pages_add')) == (TRUE && $thisref['can_modify'] == TRUE) && ($thisref['visibility'] != 'deleted') ? TRUE : FALSE;
 			$thisref['canModifyPage']      = ($admin->get_permission('pages_modify') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;
-			$thisref['canModifySettings']  = ($admin->get_permission('pages_settings') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;	
+			$thisref['canModifySettings']  = ($admin->get_permission('pages_settings') == TRUE && $thisref['can_modify'] == TRUE) ? TRUE : FALSE;
 			$thisref['modifySettingsURL']  = '../pages/settings.php?page_id='.$page['page_id'];
 			$thisref['restoreURL']         = '../pages/restore.php?page_id='.$page['page_id'];
-			
+
 			# sectionICON
 			$thisref['sectionICON'] = "noclock_16.png";
 			if($page['published'] != 0){
 				$thisref['sectionICON'] = ($admin->page_is_active($thisref)) ? "clock_16.png" : "clock_red_16.png";
-			}		
+			}
 			if($page['module'] == 'menu_link') {
 				$thisref['sectionICON'] =  "menu_link_16.png";
 				$thisref['menu_link'] =  TRUE;
-			}	
-			if ($thisref['canManageSections'] == TRUE){ 
+			}
+			if ($thisref['canManageSections'] == TRUE){
 				$thisref['sectionsURL'] = '../pages/sections.php?page_id='.$thisref['page_id'];
-			}		
-			
-			if ($page['parent'] == 0) {	
-				$aPages[ $page['page_id'] ] = &$thisref;				
+			}
+
+			if ($page['parent'] == 0) {
+				$aPages[ $page['page_id'] ] = &$thisref;
 			} else {
 				$refs[ $page['parent'] ]['children'][ $page['page_id'] ] = &$thisref;
 			}
@@ -158,8 +161,8 @@ if(!function_exists('pagesArray')){
 	}
 }
 
-if (!function_exists('get_language_array')) 
-{	
+if (!function_exists('get_language_array'))
+{
 	/**
 	 * This experimental function will return a multilingual array
 	 *
@@ -168,9 +171,9 @@ if (!function_exists('get_language_array'))
 	 *
 	 * @return    array
 	 **/
-	 
+
 	 // (EXPERIMENTAL) THIS FUNCTION AIN'T USED AS OF THIS VERSION AND MAY NEVER BE.
-	function get_language_array() 
+	function get_language_array()
 	{
 		$aLanguage = array();
 		$sLoc = dirname(__FILE__) . '/languages';
@@ -183,7 +186,7 @@ if (!function_exists('get_language_array'))
 				$aLanguage = array_merge($aLanguage, parse_ini_file($sLoc . '/'.LANGUAGE.'.ini'));
 			if(is_readable($sLoc . '/'.LANGUAGE.'_custom.ini'))
 				$aLanguage = array_merge($aLanguage, parse_ini_file($sLoc . '/'.LANGUAGE.'_custom.ini'));
-		}	
+		}
 		return $aLanguage;
 	}
 }

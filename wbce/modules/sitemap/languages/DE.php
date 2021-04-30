@@ -11,12 +11,12 @@
  */
 
 // German Modul description
-$module_description = 'This module allows you to easily create a sitemap. You can even work with additional layout settings for the sitemap. It also gives you the option to show hidden menu items if required';
+$module_description = 'Mit diesem Modul kann eine Sitemap erstellt werden, wobei die Darstellung weitreichend angepasst werden kann.';
 
 
 // Other text
-$SMTEXT['MSETTINGS']		= 'Grundeinstellungen';
-$SMTEXT['DISPLAY']			= 'Anzeigenart';
+$SMTEXT['MSETTINGS']		= 'Optionen';
+$SMTEXT['DISPLAY']			= 'Anzeigeart';
 $SMTEXT['WHOLESITE']		= 'alle Seiten';
 $SMTEXT['CHILDREN_CP']		= 'Unterseiten dieser Seite';
 $SMTEXT['HIDDEN_CHILDREN_CP']		= 'Versteckte Unterseiten dieser Seite';
