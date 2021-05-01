@@ -1,11 +1,9 @@
 # elFinder
-![elFinder FileManager for WBCE](https://github.com/Colinax/elfinder/blob/master/templates/elfinder.jpg "elFinder FileManager for WBCE")
+![elFinder FileManager for WBCE](https://github.com/WBCE/WBCE_CMS/blob/main/wbce/modules/elfinder/templates/elfinder.jpg "elFinder FileManager for WBCE")
 
 ## What is elFinder?
 
 [elFinder](https://github.com/Studio-42/elFinder) is an open-source file manager for web, written in JavaScript using jQuery UI. Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
-
-
 
 ## Was ist elFinder?
 
