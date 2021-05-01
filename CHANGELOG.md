@@ -5,6 +5,206 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2021-05-01:** Colinax [[f574764b](https://github.com/WBCE/WBCE_CMS/commit/f574764bf98c5c8f132138c49f8fb80395eab4a4)]
+   > Update README.md
+
+ * **2021-05-01:** Colinax [[2ca5a5c8](https://github.com/WBCE/WBCE_CMS/commit/2ca5a5c82e21c0eda9decd9d4979cce4e5cc89e8)]
+   > set min. PHP_VERSION ...
+     ... to PHP 7.2.5 (released 26 Apr 2018)
+
+ * **2021-05-01:** Colinax [[3d8cb02a](https://github.com/WBCE/WBCE_CMS/commit/3d8cb02a1bafe290dfa6de082186eeb0828230f0)]
+   > Update .gitignore
+
+ * **2021-04-30:** Martin Hecht [[de066694](https://github.com/WBCE/WBCE_CMS/commit/de066694af0ebf1da7f323d36fecce0039634140)]
+   > Merge branch 'development'
+
+ * **2021-04-30:** Martin Hecht [[abe1511b](https://github.com/WBCE/WBCE_CMS/commit/abe1511b3058389045a62588272cdc3e34ad7009)]
+   > Revert "fix html tags"
+     This reverts commit 2ec360925774ce0245432b32009658614343e770.
+     
+     Revert "fix syntax"
+     
+     This reverts commit 75d9ae36c189b5e42f2bdfc1f0d54e249bba61d7.
+     
+     Revert "serialize, fix and format css files"
+     
+     This reverts commit 94b3e3f9e39a4862c2a9a0881b764e6f356bb879.
+     
+     Revert "serialize, fix and format css files"
+     
+     This reverts commit 1c368fec9edc29465ef8ddcf3069ccb02041ac30.
+     
+     Revert "corrections for ce161e7 which hopefully fix #468"
+     
+     This reverts commit 4a4a55afe04594a78b324ba1996b2f58cc775316.
+     
+     Revert "avoid curly braces in the context of array/string indexes"
+     
+     This reverts commit eeba2bb7bbe4f2ed93452e16855af5faf56329c9.
+     
+     Revert "use foreach instead of the deprecated each construct"
+     
+     This reverts commit 89a83379e92d661d0dc96f76f3ce69ab61aa8d7d.
+     
+     Revert "remove any occurrence of magic_quotes functions"
+     
+     This reverts commit ce161e7b1910bda5971e777d5e02b88eea0b7023.
+     
+     Revert "fix issue #419 (remove obsolete debug data)"
+     
+     This reverts commit c033cb98af151ec100461dd8eb7c0f1b5b9c94b2.
+     
+     Revert "fix issue #419 (Part 2/2)"
+     
+     This reverts commit f4df4e9fc6fdfd604b27e826743e183ab7fd13ab.
+     
+     Revert "fix issue #419 (Part 1/2)"
+     
+     This reverts commit 13909339cc351711deb48a3bbefa57f001af7cd5.
+     
+     Revert "feature to rename intro.php to intro.backup.php"
+     
+     This reverts commit 1ab68478b387e0ccc4138db106ed9749c9d5670e.
+     
+     Revert "fix issue with slashes in Droplets Tool"
+     
+     This reverts commit 03adb7b5e8c11fcf1cf8b25a0090cc8afb77bad4.
+     
+     Revert "fix slash problem with wbSeoTool"
+     
+     This reverts commit c508276136e6d70fc8e99f812681ab5dcffdae9e.
+     
+     Revert "fix slash problem in Droplets"
+     
+     This reverts commit 574fd8bd8bf4d95c0ce232e4ad94f79c63793a1f.
+     
+     Revert "Hanlde issue #462 (#467)"
+     
+     This reverts commit 9bcd21754937fbbb3d0a359f34d2b68a100935b1.
+     
+     Revert "fix MySQL handling"
+     
+     This reverts commit 5d2b2a3b10259daad7872ecb8b99205ad5a41c07.
+     
+     Revert "rewrite getArray based on PDOs internal methods"
+     
+     This reverts commit dbc416818d85f04c10642ee358d3e14e7316b998.
+     
+     Revert "handle issue with saving droplets"
+     
+     This reverts commit c2637f00496760f1572c8b7b0c625e2d7af9d207.
+     
+     Revert "preprocess is deprecated"
+     
+     This reverts commit 0577e7835f4d9929c19ae067a333927f1f6d8284.
+     
+     Revert "Small adjustments for Twig and class Database (#459)"
+     
+     This reverts commit 03f1f58edf37a52310e988d97f23b8d66b649c00.
+     
+     Revert "bump min. PHP_VERSION ..."
+     
+     This reverts commit fb31e34196f56c9a3b0fe67d184b71c5296081f3.
+     
+     Revert "remove obsolete database loading"
+     
+     This reverts commit 0ed6dd3f7bbd70221504a65d5a47d4f469d6ef94.
+     
+     Revert "updated Twig handling"
+     
+     This reverts commit 4fac47c9f0e736c7f5c710a13f02131ca3002f11.
+     
+     Revert "add new Twig"
+     
+     This reverts commit 77fee1328f1015355d6a86efa71bc1b3212587ec.
+     
+     Revert "remove old Twig"
+     
+     This reverts commit 779c388df01cc0451eee526201f4e2f68ab94e8c.
+     
+     Revert "remove obsolete database loading"
+     
+     This reverts commit 5512ec01503ff658b4cd0da1831c1abb494ae0ec.
+     
+     Revert "PDO (#458)"
+     
+     This reverts commit cd6a7141726e2ad07e90e24177efe2cbb4a98f15.
+     
+     Revert "Prepare for Twig 1.42.3 (droplets Tool)"
+     
+     This reverts commit 3e21db12395ac053a35f7374303d7587dd3244be.
+
+ * **2021-04-26:** Colinax [[1ff00c42](https://github.com/WBCE/WBCE_CMS/commit/1ff00c423bc24e9f533c2951bc6bc574e377cdf2)]
+   > fix frontend language redirect
+
+ * **2021-04-24:** Colinax [[41f4703c](https://github.com/WBCE/WBCE_CMS/commit/41f4703c90ed5982ed6273fa90ccc2ad1037d502)]
+   > Update elFinder disabled Features
+
+ * **2021-04-24:** Colinax [[8aa1cf1a](https://github.com/WBCE/WBCE_CMS/commit/8aa1cf1a58a4c70fb77a80906eb8ebea61dda021)]
+   > fix double //
+
+ * **2021-04-23:** Martin Hecht [[96c9c603](https://github.com/WBCE/WBCE_CMS/commit/96c9c603843c7398642484646ec8ca83012f3643)]
+   > update version of opf dashboard
+     this is a dummy commit which purely updates metadata like version
+     number, changelog, and other metadata
+
+ * **2021-04-23:** Colinax [[ca0006f3](https://github.com/WBCE/WBCE_CMS/commit/ca0006f385b00ee07c2f76c75fdd781a186117d5)]
+   > switch to new FM and remove the older ones
+
+ * **2021-04-20:** Colinax [[a7cf5087](https://github.com/WBCE/WBCE_CMS/commit/a7cf5087db758321dc792a417de57849bd73ece2)]
+   > Update simple template switcher
+
+ * **2021-04-12:** Colinax [[3eede176](https://github.com/WBCE/WBCE_CMS/commit/3eede176005da06559e48ded465769a326e60cfb)]
+   > Droplets 2.3.1
+
+ * **2021-04-11:** instantflorian [[3f8d83d4](https://github.com/WBCE/WBCE_CMS/commit/3f8d83d4dea2c5d70354c58ac6198e0eda76846a)]
+   > Fix PHP 8 Notices, thx to Bernd
+
+ * **2021-04-10:** Colinax [[b200a0f5](https://github.com/WBCE/WBCE_CMS/commit/b200a0f5e34dd96bc306c45c23ea87d6105dd9f4)]
+   > fix String to Number Comparison
+
+ * **2021-04-10:** Colinax [[4bb6c029](https://github.com/WBCE/WBCE_CMS/commit/4bb6c029baa9b77610da8b5cf0ecf4c4d3b07a99)]
+   > fix database query
+
+ * **2021-04-10:** Colinax [[3fcd9c02](https://github.com/WBCE/WBCE_CMS/commit/3fcd9c0256fd02fd608d7c35482ce748250e7954)]
+   > Add missing ` in SQL queries
+     ...which cause trouble on mysql 8.x
+
+ * **2021-04-10:** Colinax [[731bbab8](https://github.com/WBCE/WBCE_CMS/commit/731bbab84621b2e4a5999727fc7a4184d02d7f0f)]
+   > fix doctrine mysqli handling
+
+ * **2021-04-10:** Colinax [[b47fb2ad](https://github.com/WBCE/WBCE_CMS/commit/b47fb2ad81f99b3b19f502c7354c863d759cfc95)]
+   > Update CKEditor
+
+ * **2021-04-09:** Colinax [[a1375d07](https://github.com/WBCE/WBCE_CMS/commit/a1375d0711e862516ad8bd768d8aa4bdcdbe6ad6)]
+   > cs fixer
+
+ * **2021-04-07:** Martin Hecht [[f9795d03](https://github.com/WBCE/WBCE_CMS/commit/f9795d03915e78f1cae6c9bb2bac688571d2dd3e)]
+   > opf dashboard: two fixes for installation with php8
+            - fix a typo for the handling of 'helppath', thanks to florian
+            - new implementation of !opf_insert_sysvar! similar to the changes made
+     	 in version 1.5.13
+
+ * **2021-04-06:** instantflorian [[a00db2a0](https://github.com/WBCE/WBCE_CMS/commit/a00db2a01f505090440561e36891d942751d2911)]
+   > Update class.database.php
+
+ * **2021-04-06:** instantflorian [[c44e6d6a](https://github.com/WBCE/WBCE_CMS/commit/c44e6d6acee389fec011c67705a5d82d1c814164)]
+   > PHP 8 and strange configuration issue fixes
+     thanks to colinax and bernd
+
+ * **2021-04-06:** Colinax [[681752e0](https://github.com/WBCE/WBCE_CMS/commit/681752e00c95adf7b0c3980f47e737552631db31)]
+   > add show_breadcrumbs notice
+
+ * **2021-04-06:** instantflorian [[8b0ff725](https://github.com/WBCE/WBCE_CMS/commit/8b0ff7254a41272d7184665b77522e08e469dae8)]
+   > Update show_menu2()
+     Fix for #496
+
+ * **2021-04-05:** instantflorian [[92e515dc](https://github.com/WBCE/WBCE_CMS/commit/92e515dc75f460a9447ce5ac7be023a54495b45c)]
+   > Add referrerer param to searchbox droplet
+
+ * **2021-04-03:** Colinax [[b9427b37](https://github.com/WBCE/WBCE_CMS/commit/b9427b378dfa2c68a69c9a0a1c7ed20ace2755db)]
+   > Update CHANGELOG.md
+
  * **2021-04-03:** Colinax [[57795f8b](https://github.com/WBCE/WBCE_CMS/commit/57795f8b1239632d0a916f22c51d9f3f3a00978e)]
    > fix  ckeditor deprecated notice
 
@@ -793,6 +993,109 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
  * **2019-12-01:** Colinax [[9dba20cd](https://github.com/WBCE/WBCE_CMS/commit/9dba20cd3ae3261e431ca82a0c632687b855abc6)]
    > preprocess is deprecated
 
+ * **2019-12-01:** Colinax [[2ec36092](https://github.com/WBCE/WBCE_CMS/commit/2ec360925774ce0245432b32009658614343e770)]
+   > fix html tags
+
+ * **2019-12-01:** Colinax [[75d9ae36](https://github.com/WBCE/WBCE_CMS/commit/75d9ae36c189b5e42f2bdfc1f0d54e249bba61d7)]
+   > fix syntax
+
+ * **2019-12-01:** Colinax [[94b3e3f9](https://github.com/WBCE/WBCE_CMS/commit/94b3e3f9e39a4862c2a9a0881b764e6f356bb879)]
+   > serialize, fix and format css files
+
+ * **2019-12-01:** Colinax [[1c368fec](https://github.com/WBCE/WBCE_CMS/commit/1c368fec9edc29465ef8ddcf3069ccb02041ac30)]
+   > serialize, fix and format css files
+
+ * **2019-11-30:** Martin Hecht [[4a4a55af](https://github.com/WBCE/WBCE_CMS/commit/4a4a55afe04594a78b324ba1996b2f58cc775316)]
+   > corrections for ce161e7 which hopefully fix #468
+
+ * **2019-11-29:** Martin Hecht [[eeba2bb7](https://github.com/WBCE/WBCE_CMS/commit/eeba2bb7bbe4f2ed93452e16855af5faf56329c9)]
+   > avoid curly braces in the context of array/string indexes
+
+ * **2019-11-29:** Martin Hecht [[89a83379](https://github.com/WBCE/WBCE_CMS/commit/89a83379e92d661d0dc96f76f3ce69ab61aa8d7d)]
+   > use foreach instead of the deprecated each construct
+
+ * **2019-11-29:** Martin Hecht [[ce161e7b](https://github.com/WBCE/WBCE_CMS/commit/ce161e7b1910bda5971e777d5e02b88eea0b7023)]
+   > remove any occurrence of magic_quotes functions
+     set_magic_quotes_runtime, get_magic_quotes_gpc, set_magic_quotes_gpc...
+     were deprecated since php 5.3 and removed in 5.4. If at all, there were
+     dummy functions which didn't do anything at all and always returned false
+
+ * **2019-11-25:** Stefek [[c033cb98](https://github.com/WBCE/WBCE_CMS/commit/c033cb98af151ec100461dd8eb7c0f1b5b9c94b2)]
+   > fix issue #419 (remove obsolete debug data)
+
+ * **2019-11-25:** Stefek [[f4df4e9f](https://github.com/WBCE/WBCE_CMS/commit/f4df4e9fc6fdfd604b27e826743e183ab7fd13ab)]
+   > fix issue #419 (Part 2/2)
+
+ * **2019-11-25:** Stefek [[13909339](https://github.com/WBCE/WBCE_CMS/commit/13909339cc351711deb48a3bbefa57f001af7cd5)]
+   > fix issue #419 (Part 1/2)
+
+ * **2019-11-25:** Stefek [[1ab68478](https://github.com/WBCE/WBCE_CMS/commit/1ab68478b387e0ccc4138db106ed9749c9d5670e)]
+   > feature to rename intro.php to intro.backup.php
+      when intro page not in use anymore.
+ * **2019-11-24:** Stefek [[03adb7b5](https://github.com/WBCE/WBCE_CMS/commit/03adb7b5e8c11fcf1cf8b25a0090cc8afb77bad4)]
+   > fix issue with slashes in Droplets Tool
+
+ * **2019-11-24:** Stefek [[c5082761](https://github.com/WBCE/WBCE_CMS/commit/c508276136e6d70fc8e99f812681ab5dcffdae9e)]
+   > fix slash problem with wbSeoTool
+
+ * **2019-11-24:** Stefek [[574fd8bd](https://github.com/WBCE/WBCE_CMS/commit/574fd8bd8bf4d95c0ce232e4ad94f79c63793a1f)]
+   > fix slash problem in Droplets
+
+ * **2019-11-24:** Stefek [[9bcd2175](https://github.com/WBCE/WBCE_CMS/commit/9bcd21754937fbbb3d0a359f34d2b68a100935b1)]
+   > Hanlde issue #462 (#467)
+     * initialize missing variable
+     
+     * allow for [wblinkXX] manual anchors in SiteMap module
+     like: [wblink777]#myManualAnchor
+     
+     * Handle issue #465
+     
+     * correct instructions for custom Accounts templates
+
+ * **2019-10-30:** Colinax [[5d2b2a3b](https://github.com/WBCE/WBCE_CMS/commit/5d2b2a3b10259daad7872ecb8b99205ad5a41c07)]
+   > fix MySQL handling
+     Fixes #445 
+     prevents executing on mariaDB
+ * **2019-10-28:** Stefek [[dbc41681](https://github.com/WBCE/WBCE_CMS/commit/dbc416818d85f04c10642ee358d3e14e7316b998)]
+   > rewrite getArray based on PDOs internal methods
+     The previous version of this method was a quick&dirty (temporary) copy/paste fix.
+ * **2019-10-27:** Stefek [[c2637f00](https://github.com/WBCE/WBCE_CMS/commit/c2637f00496760f1572c8b7b0c625e2d7af9d207)]
+   > handle issue with saving droplets
+
+ * **2019-10-27:** Colinax [[0577e783](https://github.com/WBCE/WBCE_CMS/commit/0577e7835f4d9929c19ae067a333927f1f6d8284)]
+   > preprocess is deprecated
+
+ * **2019-10-27:** Stefek [[03f1f58e](https://github.com/WBCE/WBCE_CMS/commit/03f1f58edf37a52310e988d97f23b8d66b649c00)]
+   > Small adjustments for Twig and class Database (#459)
+     * re-implement getArray method that got lost when changing to PDO
+     * adjust Twig implementation in modules
+     * add missing print_footer() in several backend instances
+
+ * **2019-10-26:** Colinax [[fb31e341](https://github.com/WBCE/WBCE_CMS/commit/fb31e34196f56c9a3b0fe67d184b71c5296081f3)]
+   > bump min. PHP_VERSION ...
+     ... to PHP 7.1.3 (released 16 Mar 2017)
+
+ * **2019-10-26:** Colinax [[0ed6dd3f](https://github.com/WBCE/WBCE_CMS/commit/0ed6dd3f7bbd70221504a65d5a47d4f469d6ef94)]
+   > remove obsolete database loading
+
+ * **2019-10-26:** Colinax [[4fac47c9](https://github.com/WBCE/WBCE_CMS/commit/4fac47c9f0e736c7f5c710a13f02131ca3002f11)]
+   > updated Twig handling
+
+ * **2019-10-26:** Colinax [[77fee132](https://github.com/WBCE/WBCE_CMS/commit/77fee1328f1015355d6a86efa71bc1b3212587ec)]
+   > add new Twig
+
+ * **2019-10-26:** Colinax [[779c388d](https://github.com/WBCE/WBCE_CMS/commit/779c388df01cc0451eee526201f4e2f68ab94e8c)]
+   > remove old Twig
+
+ * **2019-10-26:** Colinax [[5512ec01](https://github.com/WBCE/WBCE_CMS/commit/5512ec01503ff658b4cd0da1831c1abb494ae0ec)]
+   > remove obsolete database loading
+
+ * **2019-10-26:** Colinax [[cd6a7141](https://github.com/WBCE/WBCE_CMS/commit/cd6a7141726e2ad07e90e24177efe2cbb4a98f15)]
+   > PDO (#458)
+
+ * **2019-10-26:** Stefek [[3e21db12](https://github.com/WBCE/WBCE_CMS/commit/3e21db12395ac053a35f7374303d7587dd3244be)]
+   > Prepare for Twig 1.42.3 (droplets Tool)
+     Prepare for Twig 1.42.3
  * **2019-10-25:** Stefek [[eb2c2294](https://github.com/WBCE/WBCE_CMS/commit/eb2c2294b7f69805fa89b42626812029478bc4d5)]
    > Handle AdminTool issue when no miniforms yet
      The MiniForm Overview AdminTool has generated a NOTICE when there have been created no MiniForm forms yet.
