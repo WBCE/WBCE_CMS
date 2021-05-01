@@ -5,7 +5,7 @@
 
 ## Minimum requirements
   - about 25 MB webspace
-  - PHP 7.3.0 (released 06 Dec 2018) or newer
+  - PHP 7.2.5 (released 26 Apr 2018) or newer
   - mySQL or MariaDB
   - GD Library / Exif / Imagemagick (if you use any module with image processing)
   - mod_rewrite (if you use ShortURL)
@@ -18,8 +18,8 @@
   - [User Documentation DE](https://help.wbce.org)
   - [GitHub Repository](https://github.com/WBCE/WBCE_CMS)
   - [Bugtracker](https://github.com/WBCE/WBCE_CMS/issues)
-  - [Commit History](https://github.com/WBCE/WBCE_CMS/commits/development)
-  - [Versioning-Scheme](https://github.com/WBCE/WBCE_CMS/blob/development/wbce/admin/interface/version.php)
+  - [Commit History](https://github.com/WBCE/WBCE_CMS/commits/main)
+  - [Versioning-Scheme](https://github.com/WBCE/WBCE_CMS/blob/main/wbce/admin/interface/version.php)
   - [Changelog](CHANGELOG.md)
   - [Installation](INSTALL.md)
 
