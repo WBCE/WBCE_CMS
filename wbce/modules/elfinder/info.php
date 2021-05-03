@@ -13,7 +13,7 @@
 $module_directory = 'elfinder';
 $module_name = 'elFinder';
 $module_function = 'tool';
-$module_version = '1.0.3';
+$module_version = '1.0.4';
 $module_platform = '1.5.0';
 $module_author = 'WBCE';
 $module_license = 'Modul under GPL, elFinder under BSD';
@@ -23,6 +23,8 @@ $module_level = 'core';
 
 /**
  * Version history
+ *
+ * 1.0.4 - granulated permission setting according to user group configuration
  *
  * 1.0.3 - add module_level core status
  *

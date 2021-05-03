@@ -78,6 +78,33 @@ function access($attr, $path, $data, $volume, $isDir, $relpath)
 
 $admin = new admin('Media', 'media_view', false, false);
 if (($admin->get_permission('media_view') === true)) {
+	
+	// initialize vars for 'disabled' array. By default, the options are allowed, so set empty strings.
+	$noup = '';
+	$norn = '';
+	$norm = '';
+	$nomk = '';
+	$nopa = '';
+	$noco = '';
+	$nodu = '';
+	$noex = '';
+	$nore = '';
+	
+	// if user is not allowed to upload files, file operations and image resize is not allowed either.
+	if (($admin->get_permission('media_upload') === false)) { 
+		$noup = 'upload'; 
+		$nopa = 'paste';
+		$noco = 'copy';
+		$nodu = 'duplicate';
+		$noex = 'extract';
+		$nore = 'resize';
+	}
+	
+	// if needed, disallow file renaming, directory deleting and directory creating.
+	if (($admin->get_permission('media_rename') === false)) { $norn = 'rename'; }	
+	if (($admin->get_permission('media_delete') === false)) { $norm = 'rm'; }
+	if (($admin->get_permission('media_create') === false)) { $nomk = 'mkdir'; }
+	
 
     // Set the parameters for connecting to elFinder
     if (empty($_SESSION['HOME_FOLDER'])) {
@@ -109,14 +136,23 @@ if (($admin->get_permission('media_view') === true)) {
                         )
                     ),
 
-                    'disabled' => array( // Very limited access to main folder when user has a homedir set
+                    'disabled' => array( // Set default and optional values for disabled options.
                         'hide',
                         'empty',
                         'netmount',
                         'help',
                         'preference',
                         'mkfile',
-                        'edit'
+                        'edit',
+						$noup,
+						$norn,
+						$norm,
+						$nomk,
+						$nopa,
+						$noco,
+						$nodu,
+						$noex,
+						$nore						
                     )
                 )
             )
@@ -148,15 +184,24 @@ if (($admin->get_permission('media_view') === true)) {
                         )
                     ),
 
-                    'disabled' => array(
+                    'disabled' => array( // Set default and optional values for disabled options.
                         'hide',
                         'empty',
                         'netmount',
                         'help',
                         'preference',
                         'mkfile',
-                        'edit'
-                    )
+                        'edit',
+						$noup,
+						$norn,
+						$norm,
+						$nomk,
+						$nopa,
+						$noco,
+						$nodu,
+						$noex,
+						$nore
+					)					
                 )
             )
         );
