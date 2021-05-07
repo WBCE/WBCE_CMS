@@ -14,7 +14,7 @@
 $template_directory = 'argos_theme_reloaded';
 $template_name = 'Argos Theme Reloaded';
 $template_function = 'theme';
-$template_version = '2.1.2';
+$template_version = '2.1.3';
 $template_platform = '1.4.0';
 $template_author = 'Bernd Michna (BerndJM / WWnW) based on the work by Jurgen Nijhuis (Argos Media) & Ruud Eisinga';
 $template_license = '<a href="http://www.wtfpl.net/">WTFPL</a>';

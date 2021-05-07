@@ -1,4 +1,7 @@
 <!-- BEGIN main_block -->
+
+<div class="alertbox" style="{DISPLAY_WARNING};"> {WARNING} </div>
+
 <ul class="top">
 	<li class="fg6 section" style="{DISPLAY_PAGES}">
 		<div class="fg2 graphic">

@@ -763,6 +763,7 @@ a.tooltip {
 }
 
 /*** inline warning/info/... text *************************************/
+.alertbox,
 .warning {
     background-color: #fee;
     border: 1px solid firebrick;
