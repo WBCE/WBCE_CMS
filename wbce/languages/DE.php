@@ -644,6 +644,7 @@ $MESSAGE['SIGNUP_NO_EMAIL'] = 'Bitte geben Sie Ihre E-Mail-Adresse an';
 $MESSAGE['START_CURRENT_USER'] = 'Sie sind angemeldet als:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Das Installations-Verzeichnis "/install" existiert noch! Dies stellt ein Sicherheitsrisiko dar. Bitte löschen.';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Bitte die Datei "upgrade-script.php" löschen.';
+$MESSAGE['START_WBCE_NOT_CLEAN'] = 'Die Integritätsprüfung ist fehlgeschlagen, bitte wenden Sie sich an den Administrator oder an das WBCE Forum';
 $MESSAGE['START_WELCOME_MESSAGE'] = 'Willkommen im Backend Ihrer Website';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Bitte beachten Sie: Um ein neu installiertes Template zu verwenden, müssen Sie dieses bei den "Grundeinstellungen" bzw. "Seiteneinstellungen" auswählen';
 $MESSAGE['TESTMAIL_SUCCESS'] = "Die Test-E-Mail wurde an <code>%s</code> versendet. Bitte Posteingang prüfen.";

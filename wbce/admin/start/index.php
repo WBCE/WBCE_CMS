@@ -89,8 +89,6 @@ if ($admin->get_permission('admintools') != true) {
     $template->set_var('DISPLAY_ADMINTOOLS', 'display:none;');
 }
 
-$msg .= (file_exists(WB_PATH . '/install/')) ? $MESSAGE['START_INSTALL_DIR_EXISTS'] : '';
-
 // Check if installation directory still exists and delete the files
 if (file_exists(WB_PATH . '/install/') || file_exists(WB_PATH . '/upgrade-script.php')) {
     if (!function_exists('rm_full_dir')) {
@@ -103,7 +101,20 @@ if (file_exists(WB_PATH . '/install/') || file_exists(WB_PATH . '/upgrade-script
         rm_full_dir(WB_PATH . '/install/');
     }
 }
-$template->set_var('DISPLAY_WARNING', 'display:none;');
+
+if ($admin->get_group_id() == 1) {
+    if (file_exists(WB_PATH . '/install/')) {
+        $template->set_var('DISPLAY_WARNING', 'display:block;');
+        $template->set_var('WARNING', $MESSAGE['START_INSTALL_DIR_EXISTS']);
+    } elseif (file_exists(WB_PATH . '/modules/SimpleCommandDispatcher.inc.php')|| file_exists(WB_PATH . '/framework/Login.php')) {
+        $template->set_var('DISPLAY_WARNING', 'display:block;');
+        $template->set_var('WARNING', $MESSAGE['START_WBCE_NOT_CLEAN']);
+    } else {
+        $template->set_var('DISPLAY_WARNING', 'display:none;');
+    }
+} else {
+    $template->set_var('DISPLAY_WARNING', 'display:none;');
+}
 
 if (function_exists('curl_version') && (!defined('SHOW_UPDATE_INFO') || SHOW_UPDATE_INFO != false)) {
     include WB_PATH . '/include/GitHubApiClient/GitHubApiClient.php';

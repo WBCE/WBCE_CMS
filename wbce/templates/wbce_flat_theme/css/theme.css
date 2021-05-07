@@ -688,13 +688,6 @@ table {
     color: #0f5d0f;
 }
 
-.error-box {
-    text-align: center;
-    background-color: #fee;
-    border: 1px solid #c00;
-    color: #c00;
-}
-
 .signal {
     position: absolute;
     left: 15px;
@@ -725,8 +718,9 @@ table {
     cursor: pointer;
 }
 
-.warning {
-    padding: 5px;
+.alertbox, .warning, .error-box {
+    padding: 10px;
+    margin-bottom: 20px;
     background-color: #fee;
     border: 1px solid #c00;
     color: #c00;
