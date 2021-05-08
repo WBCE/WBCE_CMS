@@ -1,6 +1,6 @@
 <!-- BEGIN main_block -->
 
-<div class="alertbox" style="{DISPLAY_WARNING};"> {WARNING} </div>
+<div class="alertbox fg12" style="{DISPLAY_WARNING};"> {WARNING} </div>
 
 <ul class="top">
 	<li class="fg6 section" style="{DISPLAY_PAGES}">
