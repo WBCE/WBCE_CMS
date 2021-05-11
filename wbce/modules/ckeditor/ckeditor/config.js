@@ -8,8 +8,6 @@ CKEDITOR.editorConfig = function( config ) {
      * Uncommenting this line doesn't mean the user will not be able to type PHP code in the source.
      * This kind of prevention must be done in the server side, so just leave this line as is. */
     config.protectedSource.push(/<\?[\s\S]*?\?>/g); // PHP Code
-    config.protectedSource.push(/<a[\s\S]*?\/a>/gi); // <a> tags
-    config.protectedSource.push(/<i[\s\S]*?\/i>/gi); // <i> tags
 
     //disable ckes Advanced Content Filter (ACF) to avoid wblinks to be filtered?
     config.allowedContent = true;
