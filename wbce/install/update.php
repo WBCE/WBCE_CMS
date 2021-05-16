@@ -193,6 +193,7 @@ $dirRemove = array(
     '[INCLUDE]/Sensio/Twig/lib/',
     '[MODULES]/ckeditor/ckeditor/filemanager/',
     '[MODULES]/ckeditordev/ckeditor/filemanager/',
+    '[MODULES]/ckeditor_dev/',
     '[MODULES]/el_finder/',
     '[MODULES]/output_filter/',
     '[MODULES]/pagecloner/',
