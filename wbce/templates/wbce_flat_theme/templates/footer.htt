@@ -21,6 +21,16 @@
 <!--(PH) JS BODY BTM+ -->
 {BACKEND_BODY_MODULE_JS}
 <!--(PH) JS BODY BTM- -->
+<script>
+// detect Drag & Drop activation
+if (typeof JsAdmin.DD !== 'undefined') {
+    // DnD is active, so hide the arrow buttons
+	$('.manual_sorting').hide();	
+} else {
+    // DnD is inactive, so change the crosshair cursor to default one
+	$('#page-sections tr').css('cursor', 'default');
+}
+</script>
 </body>
 </html>
 
