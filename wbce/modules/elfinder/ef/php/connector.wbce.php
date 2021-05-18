@@ -122,8 +122,8 @@ if (($admin->get_permission('media_view') === true)) {
                 // Items volume
                 array(
                     'driver' => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
-                    'path' => WB_PATH . '/media/', // path to files (REQUIRED)
-                    'URL' => WB_URL . '/media/', // URL to files (REQUIRED)
+                    'path' => WB_PATH . MEDIA_DIRECTORY.'/', // path to files (REQUIRED)
+                    'URL' => WB_URL . MEDIA_DIRECTORY.'/', // URL to files (REQUIRED)
                     'quarantine' => WB_PATH . '/var/modules/elfinder/.quarantine', // Temporary directory for archive file extracting.
                     'tmbPath' => WB_PATH . '/var/modules/elfinder/.tmb', // Tumbnail Directory
                     'tmbURL' => WB_URL . '/var/modules/elfinder/.tmb', // Tumbnail Directory
@@ -170,8 +170,8 @@ if (($admin->get_permission('media_view') === true)) {
                 array(
                     'alias' => "Home (" . $_SESSION['HOME_FOLDER'] . ")",
                     'driver' => 'LocalFileSystem',
-                    'path' => WB_PATH . '/media' . $_SESSION['HOME_FOLDER'],
-                    'URL' => WB_URL . '/media' . $_SESSION['HOME_FOLDER'],
+                    'path' => WB_PATH . MEDIA_DIRECTORY. '/' . $_SESSION['HOME_FOLDER'],
+                    'URL' => WB_URL . MEDIA_DIRECTORY. '/' . $_SESSION['HOME_FOLDER'],
                     'quarantine' => WB_PATH . '/var/modules/elfinder/.quarantine',
                     'tmbPath' => WB_PATH . '/var/modules/elfinder/.tmb',
                     'tmbURL' => WB_URL . '/var/modules/elfinder/.tmb',
