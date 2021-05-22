@@ -5,6 +5,74 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2021-05-22:** Colinax [[6f04f73b](https://github.com/WBCE/WBCE_CMS/commit/6f04f73b23b69efe16cfe899b6034f192a1cfe6f)]
+   > bump WBCE Version
+
+ * **2021-05-22:** Colinax [[a42ffcbd](https://github.com/WBCE/WBCE_CMS/commit/a42ffcbd5ad471d91e279c7dfc3e611f9e21a782)]
+   > bump elFinder version
+
+ * **2021-05-22:** Colinax [[c955116a](https://github.com/WBCE/WBCE_CMS/commit/c955116ad992c2cabf06483f00d532588413203b)]
+   > CKEditor 4.16.1
+
+ * **2021-05-22:** instantflorian [[2f962f24](https://github.com/WBCE/WBCE_CMS/commit/2f962f2460f8740c8a4f51b1e587c3803b49d277)]
+   > Revert "Show buttons for manual section sorting if needed"
+     This reverts commit c66b75cd5bccf86683558784d22b1cce4c962cc1.
+
+ * **2021-05-18:** instantflorian [[8f9f03b5](https://github.com/WBCE/WBCE_CMS/commit/8f9f03b544e1ad44891f30c07f1482e043a8f5cd)]
+   > Remove miniform templates
+     ...to avoid unwanted overwriting of customized miniform templates on updates! (The default templates are in the "defaults" directory and (hopefully) will be copied to the template directory during install.)
+
+ * **2021-05-18:** instantflorian [[c66b75cd](https://github.com/WBCE/WBCE_CMS/commit/c66b75cd5bccf86683558784d22b1cce4c962cc1)]
+   > Show buttons for manual section sorting if needed
+
+ * **2021-05-18:** instantflorian [[b2de728a](https://github.com/WBCE/WBCE_CMS/commit/b2de728a8554367a18e1e3a97bf77492d54c33fa)]
+   > Fix for #504
+
+ * **2021-05-16:** Colinax [[7be546b1](https://github.com/WBCE/WBCE_CMS/commit/7be546b11db0b9215745576ff906b8da6d132026)]
+   > remove old ckeditor_dev
+
+ * **2021-05-11:** Colinax [[f97fd6b4](https://github.com/WBCE/WBCE_CMS/commit/f97fd6b48971c76c7a0c9250878f8ab551c160eb)]
+   > fix protectedSource Issue
+
+ * **2021-05-10:** instantflorian [[69901459](https://github.com/WBCE/WBCE_CMS/commit/69901459b6a3a3a88b2bb6f713c3ab94415ab3b2)]
+   > correct spelling
+
+ * **2021-05-08:** Colinax [[5afa1043](https://github.com/WBCE/WBCE_CMS/commit/5afa1043e5d410fc7f30bbc35675c884c5abddf7)]
+   > fix alertbox width
+
+ * **2021-05-07:** Colinax [[bd4625db](https://github.com/WBCE/WBCE_CMS/commit/bd4625dbdba5ba96b4bb928c1b49d6e543f6cda5)]
+   > add warning message to AR
+
+ * **2021-05-07:** Colinax [[36b1f2e1](https://github.com/WBCE/WBCE_CMS/commit/36b1f2e185412fb03eec1e521b1c9db4ab2e10b3)]
+   > fix warning message
+
+ * **2021-05-06:** Colinax [[337ff32d](https://github.com/WBCE/WBCE_CMS/commit/337ff32d3618e9e1ad28b0a091d85efea8be0c93)]
+   > CKEditor 4.16.0.2
+
+ * **2021-05-03:** Colinax [[18cf6c4f](https://github.com/WBCE/WBCE_CMS/commit/18cf6c4f2f97bed59ca874a8aa99692b18c4cefa)]
+   > cs fixer
+
+ * **2021-05-03:** instantflorian [[1ca1e6a4](https://github.com/WBCE/WBCE_CMS/commit/1ca1e6a45bd5487640f217b417e4dd298c87d81f)]
+   > elFinder enhanced permission setting
+
+ * **2021-05-02:** Colinax [[1cbedbfa](https://github.com/WBCE/WBCE_CMS/commit/1cbedbfa835d3a93ad2445fcdef1c5dcc00a2a80)]
+   > Update elFinder Readme
+
+ * **2021-05-01:** Colinax [[d6c71ab3](https://github.com/WBCE/WBCE_CMS/commit/d6c71ab30998aabb6ab7a56e165d485e5a3cf320)]
+   > DBAL 2.13.1
+
+ * **2021-05-01:** Colinax [[fb436479](https://github.com/WBCE/WBCE_CMS/commit/fb436479bfab7756044579cee32810e730f143af)]
+   > PHPMailer 6.4.1
+
+ * **2021-05-01:** Colinax [[91829016](https://github.com/WBCE/WBCE_CMS/commit/9182901668fefebe5b6a62cbbac3aecdc9647257)]
+   > Update INSTALL.md
+
+ * **2021-05-01:** Colinax [[f6456cea](https://github.com/WBCE/WBCE_CMS/commit/f6456cea99a77ff8f889d307bff9a6ac6a019c83)]
+   > bump WBCE Version
+
+ * **2021-05-01:** Colinax [[d6a1cbb3](https://github.com/WBCE/WBCE_CMS/commit/d6a1cbb3af14ea6357db4f20f40ce2afe1cc534c)]
+   > Update CHANGELOG.md
+
  * **2021-05-01:** Colinax [[f574764b](https://github.com/WBCE/WBCE_CMS/commit/f574764bf98c5c8f132138c49f8fb80395eab4a4)]
    > Update README.md
 
