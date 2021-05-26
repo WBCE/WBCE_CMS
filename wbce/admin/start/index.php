@@ -116,6 +116,8 @@ if ($admin->get_group_id() == 1) {
     $template->set_var('DISPLAY_WARNING', 'display:none;');
 }
 
+$wbce_latest_release ='';
+
 if (function_exists('curl_version') && (!defined('SHOW_UPDATE_INFO') || SHOW_UPDATE_INFO != false)) {
     include WB_PATH . '/include/GitHubApiClient/GitHubApiClient.php';
     $gitHubApiClient = new \Neoflow\GitHubApiClient();
