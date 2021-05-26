@@ -15,7 +15,7 @@
 $module_directory   = 'wbSeoTool';
 $module_name        = 'SEO Tool';
 $module_function    = 'tool';
-$module_version     = '0.6.2';
+$module_version     = '0.7.1';
 $module_status      = 'Stable';
 $module_platform    = '2.8.3';
 $module_author      = 'Christian M. Stefan <stefek@designthings.de>';
@@ -25,10 +25,13 @@ $module_icon        = 'fa fa-tasks';
 
 /**
  * Version history
- * 
+ *
+ * 0.7.1 - colinax
+ *       - fix versioning bug
+ *
  * 0.7.0 - Bianka Martinovic ("WebBird")
  *       - fix issues with changed twig version and PHP 8
- * 
+ *
  * 0.6.2 - Bernd
  *       - MYSQL_ASSOC -> MYSQLI_ASSOC
  *
