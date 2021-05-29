@@ -1,7 +1,8 @@
+# tablesorter_filter
 This tablesorterFilter plugin extends the jQuery TableSorter plugin (http://tablesorter.com), written by Christian Bach, and provides the ability to search the table and filter the results.
 
-USAGE / EXAMPLE
-
+## USAGE / EXAMPLE
+```
 <script type="text/javascript">
     jQuery(document).ready(function() {
         $("#myTable")
@@ -39,9 +40,9 @@ Search: <input name="filter" id="filter-box" value="" maxlength="30" size="30" t
 </tr>
 </tbody>
 </table>
+```
 
-
-CONFIGURATION
+## CONFIGURATION
 
 tablesorterFilter takes up to six parameters:
 
@@ -62,12 +63,11 @@ Example: "include -exclude" will filter for all rows which do contain the (parti
 You may filter programmatically: $("#filter-box").trigger("keyup").
 
 
-REQUIREMENTS
+## REQUIREMENTS
 
 jQuery version 1.2.1 or higher and a slightly modified jquery.tablesorter.js version 2.0.3.  Both are included in this repo.
 
 
-LICENSE
+## LICENSE
 
 tablesorter_filter is (c) 2008 Justin Britten (justinbritten at gmail dot com) and is dual licensed under the MIT and GPL licenses.
-
