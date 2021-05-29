@@ -13,7 +13,7 @@
  *
  */
 
-defined('WB_PATH') OR die(header('Location: ../index.php'));
+defined('WB_PATH') or die(header('Location: ../index.php'));
 
 $table_day   = TABLE_PREFIX .'mod_wbstats_day';
 $table_ips   = TABLE_PREFIX .'mod_wbstats_ips';
@@ -28,6 +28,3 @@ $database->query("DROP TABLE IF EXISTS `$table_pages`");
 $database->query("DROP TABLE IF EXISTS `$table_ref`");
 $database->query("DROP TABLE IF EXISTS `$table_key`");
 $database->query("DROP TABLE IF EXISTS `$table_lang`");
-
-
-?>

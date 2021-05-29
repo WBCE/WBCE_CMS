@@ -14,5 +14,5 @@
  */
  
 if (isset($_SERVER['HTTP_REFERER']) && !defined('ORG_REFERER')) {
-    define('ORG_REFERER',$_SERVER['HTTP_REFERER']);
+    define('ORG_REFERER', $_SERVER['HTTP_REFERER']);
 }

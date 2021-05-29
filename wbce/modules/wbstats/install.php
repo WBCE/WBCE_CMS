@@ -13,7 +13,7 @@
  *
  */
 
-defined('WB_PATH') OR die(header('Location: ../index.php'));
+defined('WB_PATH') or die(header('Location: ../index.php'));
 
 $table_day   = TABLE_PREFIX .'mod_wbstats_day';
 $table_ips   = TABLE_PREFIX .'mod_wbstats_ips';
@@ -24,7 +24,8 @@ $table_lang  = TABLE_PREFIX .'mod_wbstats_lang';
 
 
 $database->query("DROP TABLE IF EXISTS `$table_day`");
-$database->query("CREATE TABLE `$table_day` (
+$database->query(
+    "CREATE TABLE `$table_day` (
   	`id` int(11) NOT NULL auto_increment,
 	`day` varchar(8) NOT NULL default '',
 	`user` int(10) NOT NULL default '0',
@@ -37,7 +38,8 @@ $database->query("CREATE TABLE `$table_day` (
 );
 
 $database->query("DROP TABLE IF EXISTS `$table_ips`");
-$database->query("CREATE TABLE `$table_ips` (
+$database->query(
+    "CREATE TABLE `$table_ips` (
 	`id` int(11) NOT NULL auto_increment,
 	`ip` varchar(32) NOT NULL default '',
 	`session` varchar(64) NOT NULL default '',
@@ -52,7 +54,8 @@ $database->query("CREATE TABLE `$table_ips` (
 );
 
 $database->query("DROP TABLE IF EXISTS `$table_pages`");
-$database->query("CREATE TABLE `$table_pages` (
+$database->query(
+    "CREATE TABLE `$table_pages` (
 	`id` int(11) NOT NULL auto_increment,
 	`day` varchar(8) NOT NULL default '',
 	`page` varchar(255) NOT NULL default '',
@@ -62,7 +65,8 @@ $database->query("CREATE TABLE `$table_pages` (
 );
 
 $database->query("DROP TABLE IF EXISTS `$table_ref`");
-$database->query("CREATE TABLE `$table_ref` (
+$database->query(
+    "CREATE TABLE `$table_ref` (
 	`id` int(11) NOT NULL auto_increment,
 	`day` varchar(8) NOT NULL default '',
 	`referer` varchar(255) NOT NULL default '',
@@ -73,7 +77,8 @@ $database->query("CREATE TABLE `$table_ref` (
 );
 
 $database->query("DROP TABLE IF EXISTS `$table_key`");
-$database->query("CREATE TABLE `$table_key` (
+$database->query(
+    "CREATE TABLE `$table_key` (
 	`id` int(11) NOT NULL auto_increment,
 	`day` varchar(8) NOT NULL default '',
 	`keyword` varchar(255) NOT NULL default '',
@@ -82,7 +87,8 @@ $database->query("CREATE TABLE `$table_key` (
 	)"
 );
 $database->query("DROP TABLE IF EXISTS `$table_lang`");
-$database->query("CREATE TABLE `$table_lang` (
+$database->query(
+    "CREATE TABLE `$table_lang` (
 	`id` int(11) NOT NULL auto_increment,
 	`day` varchar(8) NOT NULL default '',
 	`language` varchar(2) NOT NULL default '',
@@ -90,5 +96,3 @@ $database->query("CREATE TABLE `$table_lang` (
 	PRIMARY KEY  (`id`)
 	)"
 );
-
-?>

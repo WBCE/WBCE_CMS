@@ -19,6 +19,5 @@
 // Add to the /config.php, just before the initialize line
 // $referer = $_SERVER['HTTP_REFERER'];
 
-require_once ( 'class.count.php');
+require_once('class.count.php');
 new counter();
-?>

@@ -13,7 +13,7 @@
  *
  */
 
-defined('WB_PATH') OR die(header('Location: ../index.php'));
+defined('WB_PATH') or die(header('Location: ../index.php'));
 
 //Referers that are used for referer-spamming
 $spamReferers = array(
@@ -1105,4 +1105,4 @@ $spamReferers = array(
 'zelena-mriya.com.ua',
 'zoominfo.com',
 'zvetki.ru',
-); 
+);

@@ -13,10 +13,10 @@
  *
  */
 
-defined('WB_PATH') OR die(header('Location: ../index.php'));
+defined('WB_PATH') or die(header('Location: ../index.php'));
 
 $lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
-require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang );
+require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang);
 require_once('class.stats.php');
 
 $admintool_url = ADMIN_URL .'/admintools/index.php';
@@ -28,25 +28,25 @@ $module_help_link = ADMIN_URL .'/admintools/tool.php?tool=wbstats&help';
 
 
 
-require_once ("head.php");
+require_once("head.php");
 if (isset($_GET['overview'])) {
-	require ("overview.php");
-	return;
+    require("overview.php");
+    return;
 }
 if (isset($_GET['visitors'])) {
-	require ("visitors.php");
-	return;
+    require("visitors.php");
+    return;
 }
 if (isset($_GET['history'])) {
-	require ("history.php");
-	return;
+    require("history.php");
+    return;
 }
 if (isset($_GET['help'])) {
-	require ("help.php");
-	return;
+    require("help.php");
+    return;
 }
 if (!$check = $database->get_one("SELECT sum(user) visitors FROM ".$table_day)) {
-	require ("help.php");
-	return;
+    require("help.php");
+    return;
 }
-require_once ("overview.php");
+require_once("overview.php");
