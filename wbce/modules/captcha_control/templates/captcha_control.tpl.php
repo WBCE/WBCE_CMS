@@ -1,13 +1,15 @@
 <?php
 /**
- * @category        modules
- * @package         Captcha Control
- * @author          WBCE Project
- * @copyright       Thorn, Luise Hahne, Norbert Heimsath
- * @license         GPLv2 or any later
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @license GNU GPL2 (or any later version)
  */
 ?>
-
 
 <h2><?php echo $MOD_CAPTCHA_CONTROL['HEADING'] ?></h2>
 <p><?php echo $MOD_CAPTCHA_CONTROL['HOWTO'] ?></p>
@@ -64,4 +66,3 @@
     <input type="submit" name="save_settings" style="margin-top:10px; width:140px;" value="<?php echo $TEXT['SAVE']; ?>" />
     <input type="submit" name="admin_tools" id="admin_tools" value="<?php echo $HEADING['ADMINISTRATION_TOOLS']; ?>" />
 </form>
-
