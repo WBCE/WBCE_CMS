@@ -12,7 +12,13 @@
  *
  */
 
-	ini_set ("display_errors", "off");
-	ini_set ('log_errors', 0);
-	ini_set ('error_reporting', E_ALL);	// Same as error_reporting(E_ALL);
+/**
+ * preinit.php is used to activate the errorhandler
+ *
+ * initialize.php is used to set the errorlevel to E_ALL regardless the WB setting
+ *
+ */
 
+ini_set("display_errors", "off");
+ini_set('log_errors', 0);
+ini_set('error_reporting', E_ALL);	// Same as error_reporting(E_ALL);

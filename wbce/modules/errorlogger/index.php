@@ -13,5 +13,3 @@
  */
 
 header('Location: ../../index.php');
-
-?>
