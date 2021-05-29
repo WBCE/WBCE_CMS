@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -15,11 +15,13 @@ defined('WB_PATH') or die('Cannot access this file directly');
 
 // Load Language Array
 if (LANGUAGE_LOADED) {
-	include __DIR__ .'/languages/EN.php';
-	if (LANGUAGE != 'EN'){
-		$sLangFile = __DIR__.'/languages/'.LANGUAGE.'.php';
-		if (is_readable($sLangFile)) include $sLangFile;
-	}
+    include __DIR__ .'/languages/EN.php';
+    if (LANGUAGE != 'EN') {
+        $sLangFile = __DIR__.'/languages/'.LANGUAGE.'.php';
+        if (is_readable($sLangFile)) {
+            include $sLangFile;
+        }
+    }
 }
 
 include __DIR__ .'/functions.pageTree.php';
@@ -33,29 +35,30 @@ $aData      = $sql_result->fetchRow(MYSQLI_ASSOC);
 global $aMenulinkTitles;
 $aMenulinkTitles = array();
 if ($query_page = $database->query("SELECT `page_id`, `menu_title` FROM `{TP}pages`")) {
-	while($page = $query_page->fetchRow(MYSQLI_ASSOC))
-		$aMenulinkTitles[$page['page_id']] = $page['menu_title'];
+    while ($page = $query_page->fetchRow(MYSQLI_ASSOC)) {
+        $aMenulinkTitles[$page['page_id']] = $page['menu_title'];
+    }
 }
 
 // Get list of targets
 $aTargets = array();
 $aLinks = pageTreeCombobox(nestedPagesArray(), $page_id);
 #debug_dump($aLinks);
-foreach($aLinks as $p) {
-	if ($query_section = $database->query("SELECT `section_id`, `namesection` FROM `{TP}sections` WHERE `page_id` = ".$p['page_id']." ORDER BY `position`")) {
-		while($section = $query_section->fetchRow(MYSQLI_ASSOC)) {
-			// get section-anchor
-			if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
-				if (isset($section['namesection'])) {
-					$aTargets[$p['page_id']][] = "[#".SEC_ANCHOR.$section['section_id']."]  ".$section['namesection'];
-					continue;
-				}
-				$aTargets[$p['page_id']][] = '[#'.SEC_ANCHOR.$section['section_id'].'] ';
-			} else {
-				$aTargets[$p['page_id']] = array();
-			}
-		}
-	}
+foreach ($aLinks as $p) {
+    if ($query_section = $database->query("SELECT `section_id`, `namesection` FROM `{TP}sections` WHERE `page_id` = ".$p['page_id']." ORDER BY `position`")) {
+        while ($section = $query_section->fetchRow(MYSQLI_ASSOC)) {
+            // get section-anchor
+            if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
+                if (isset($section['namesection'])) {
+                    $aTargets[$p['page_id']][] = "[#".SEC_ANCHOR.$section['section_id']."]  ".$section['namesection'];
+                    continue;
+                }
+                $aTargets[$p['page_id']][] = '[#'.SEC_ANCHOR.$section['section_id'].'] ';
+            } else {
+                $aTargets[$p['page_id']] = array();
+            }
+        }
+    }
 }
 
 ?>
@@ -74,20 +77,20 @@ foreach($aLinks as $p) {
 		<tr id="page_link_selection">
 			<th><?=$TEXT['PAGE']?></th>
 			<td><?php
-					$sel = ' selected="selected"';
-				?>
+                    $sel = ' selected="selected"';
+                ?>
 				<select class="menuLink" name="menu_link" id="menu_link"  style="font-weight:bold;font-size:15px; min-width:350px;" style="width:250px;" >
 					<option value="0"<?= $aData['target_page_id'] == '0'  ? $sel : ''?>><?=$TEXT['PLEASE_SELECT']; ?> &hellip;</option>
 					<?php
-					foreach ($aLinks as $p){
-					?>
+                    foreach ($aLinks as $p) {
+                        ?>
 							<option style="font-size:15px" value="<?=$p['page_id']?>" title="<?=$p['page_title'] ?>"
 							<?=($p['page_id'] == $aData['target_page_id']) ? ' selected' : ''?>
 							<?=($p['page_id'] == $page_id) ? ' disabled' : ''?>	data-right="<?=$p['page_id']?>" data-title="<?=$p['page_title']?>"
 						><?=$p['menu_title']?></option>
 					<?php
-					}
-					?>
+                    }
+                    ?>
 				</select>
 				&nbsp;
 			</td>
@@ -95,7 +98,9 @@ foreach($aLinks as $p) {
 		<tr id="external">
 			<th>URL:</th>
 			<td>
-				<input type="text" name="extern" id="extern" value="<?=$aData['extern']; ?>" style="width:80%;" <?php if ($aData['target_page_id'] != '-1') echo 'disabled="disabled"'; ?> />
+				<input type="text" name="extern" id="extern" value="<?=$aData['extern']; ?>" style="width:80%;" <?php if ($aData['target_page_id'] != '-1') {
+                        echo 'disabled="disabled"';
+                    } ?> />
 			</td>
 		</tr>
 		<tr id="sec_anchor">
@@ -103,30 +108,30 @@ foreach($aLinks as $p) {
 			<td>
 				<select class="menuLink" name="anchor" id="page_target" style="width:350px;" >
 					<?php
-						$sAnchor = $aData['anchor'] == '0' ? ' ':'[#'.$aData['anchor'].']';
-						if ((SEC_ANCHOR!="") && (strpos($aData['anchor'], SEC_ANCHOR) !== false)){
-							$aTmp1 = explode(SEC_ANCHOR, $aData['anchor']);
-							$iSectionID = $aTmp1[1];
-							if ($sNameSection = $database->get_one("SELECT `namesection` FROM `{TP}sections` WHERE `section_id`=".$iSectionID)){
-								$sAnchor = $sAnchor.' '.$sNameSection;
-							}
-						}
-					?>
+                        $sAnchor = $aData['anchor'] == '0' ? ' ':'[#'.$aData['anchor'].']';
+                        if ((SEC_ANCHOR!="") && (strpos($aData['anchor'], SEC_ANCHOR) !== false)) {
+                            $aTmp1 = explode(SEC_ANCHOR, $aData['anchor']);
+                            $iSectionID = $aTmp1[1];
+                            if ($sNameSection = $database->get_one("SELECT `namesection` FROM `{TP}sections` WHERE `section_id`=".$iSectionID)) {
+                                $sAnchor = $sAnchor.' '.$sNameSection;
+                            }
+                        }
+                    ?>
 					<option value="<?=$aData['anchor'] ?>" selected="selected"><?=$sAnchor ?></option>
 				</select>
 			</td>
 		</tr>
 		<?php
-			// get target-window for actual page
-			$sTarget = $database->get_one("SELECT `target` FROM `{TP}pages` WHERE `page_id` = '$page_id'");
-		?>
+            // get target-window for actual page
+            $sTarget = $database->get_one("SELECT `target` FROM `{TP}pages` WHERE `page_id` = '$page_id'");
+        ?>
 		<tr>
 			<th><?=$TEXT['TARGET'] ?></th>
 			<td>
 				<select class="menuLink" name="target" style="width:350px;" >
-					<option value="_blank"<?php if ($sTarget == '_blank') echo ' selected="selected"'; ?>><?=$TEXT['NEW_WINDOW'] ?> (_blank)</option>
-					<option value="_self"<?php  if ($sTarget == '_self')  echo ' selected="selected"'; ?>><?=$TEXT['SAME_WINDOW'] ?> (_self)</option>
-					<option value="_top"<?php   if ($sTarget == '_top')   echo ' selected="selected"'; ?>><?=$TEXT['TOP_FRAME'] ?> (_top)</option>
+					<option value="_blank"<?php if ($sTarget == '_blank') { echo ' selected="selected"'; } ?>><?=$TEXT['NEW_WINDOW'] ?> (_blank)</option>
+					<option value="_self"<?php  if ($sTarget == '_self') { echo ' selected="selected"'; } ?>><?=$TEXT['SAME_WINDOW'] ?> (_self)</option>
+					<option value="_top"<?php   if ($sTarget == '_top') { echo ' selected="selected"'; } ?>><?=$TEXT['TOP_FRAME'] ?> (_top)</option>
 				</select>
 			</td>
 		</tr>
@@ -134,9 +139,9 @@ foreach($aLinks as $p) {
 			<th><?=$MOD_MENU_LINK['R_TYPE'] ?></th>
 			<td>
 				<select class="menuLink" name="r_type" style="width:350px;" >
-					<option value="301"<?php if ($aData['redirect_type'] == '301') echo ' selected="selected"'; ?>>301</option>
-					<option value="302"<?php if ($aData['redirect_type'] == '302') echo ' selected="selected"'; ?>>302</option>
-					<option value="200"<?php if ($aData['redirect_type'] == '200') echo ' selected="selected"'; ?>>200</option>
+					<option value="301"<?php if ($aData['redirect_type'] == '301') { echo ' selected="selected"'; } ?>>301</option>
+					<option value="302"<?php if ($aData['redirect_type'] == '302') { echo ' selected="selected"'; } ?>>302</option>
+					<option value="200"<?php if ($aData['redirect_type'] == '200') { echo ' selected="selected"'; } ?>>200</option>
 				</select>
 			</td>
 		</tr>
@@ -169,25 +174,24 @@ $(function () {
 	});
 
 	var countries = {
-	<?php foreach($aLinks as $p) {
-			$sToJS = "\t\t'{$p['page_id']}':{ '{$TEXT['PLEASE_SELECT']} ...':'0',";
+	<?php foreach ($aLinks as $p) {
+    $sToJS = "\t\t'{$p['page_id']}':{ '{$TEXT['PLEASE_SELECT']} ...':'0',";
 
-			if (is_array($aTargets) && is_array($aTargets[$p['page_id']])) {
-
-				foreach($aTargets[$p['page_id']] as $value) {
-					$aTmp1 = explode('[#'.SEC_ANCHOR, $value);
-					$aTmp2 = explode(']', $aTmp1[1]);
-					$sAnchor = SEC_ANCHOR.$aTmp2[0];
-					$sToJS .= "'".addslashes($value)."':";
-					$sToJS .= "'$sAnchor',";
-				}
-				$sToJS  = rtrim($sToJS, ',');
-				$sToJS .= "},".PHP_EOL;
-			}
-			$sToJS  .= "\t\t";
-			echo $sToJS;
-		}
-		?>
+    if (is_array($aTargets) && is_array($aTargets[$p['page_id']])) {
+        foreach ($aTargets[$p['page_id']] as $value) {
+            $aTmp1 = explode('[#'.SEC_ANCHOR, $value);
+            $aTmp2 = explode(']', $aTmp1[1]);
+            $sAnchor = SEC_ANCHOR.$aTmp2[0];
+            $sToJS .= "'".addslashes($value)."':";
+            $sToJS .= "'$sAnchor',";
+        }
+        $sToJS  = rtrim($sToJS, ',');
+        $sToJS .= "},".PHP_EOL;
+    }
+    $sToJS  .= "\t\t";
+    echo $sToJS;
+}
+        ?>
 	 };
 
 	var $locations = $('#page_target');

@@ -17,5 +17,3 @@ $module_description = 'This module allows you to insert a link into the menu.';
 $MOD_MENU_LINK['TEXT'] = 'Klik HER for at f&Atilde;&yen; til hovedsiden';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'Eksternt link';
 $MOD_MENU_LINK['R_TYPE'] = 'Redirect-type';
-
-

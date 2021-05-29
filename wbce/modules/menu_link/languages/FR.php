@@ -16,5 +16,3 @@ $module_description = 'This module allows you to insert a link into the menu.';
 // Headings and text outputs
 $MOD_MENU_LINK['TEXT'] = 'Cliquez ICI pour retourn&eacute; &agrave; la page principale';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'Lien externe';
-
-

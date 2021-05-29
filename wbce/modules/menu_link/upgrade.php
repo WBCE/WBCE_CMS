@@ -1,8 +1,8 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -15,12 +15,12 @@ defined('WB_PATH') or die('Cannot access this file directly');
 
 $msg = '';
 $sTable = '{TP}mod_menu_link';
-if(($sOldType = $database->getTableEngine($sTable))) {
-	if(('myisam' != strtolower($sOldType))) {
-		if(!$database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ')) {
-			$msg = $database->get_error();
-		}
-	}
+if (($sOldType = $database->getTableEngine($sTable))) {
+    if (('myisam' != strtolower($sOldType))) {
+        if (!$database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ')) {
+            $msg = $database->get_error();
+        }
+    }
 } else {
-	$msg = $database->get_error();
+    $msg = $database->get_error();
 }
