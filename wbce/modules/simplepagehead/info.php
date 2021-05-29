@@ -13,7 +13,7 @@
 $module_directory = 'simplepagehead';
 $module_name = 'SimplePageHead';
 $module_function = 'snippet';
-$module_version = '0.72';
+$module_version = '0.8.0';
 $module_platform = '1.4.0';
 $module_author = 'Chio, with a litte help from thorn. Extended for use with other modules by Christoph Marti. Updated by Florian Meerwinck for WBCE';
 $module_license = 'GNU General Public License';
@@ -23,14 +23,19 @@ $module_level = 'core';
 /**
  * Version history
  *
- * 0.72
- *        - Add module_level core status
- *        - Update module_platform 
+ * 0.8.0 - cs fixed files
+ *       - fixed Versioning
+ *       - updated Readme
  *
- * 0.71
- *        - Updated Touchicon integration
+ * 0.7.4 - disable outdated notoolbar metatag
  *
- * 0.70
- *        - Making use of Insert class
+ * 0.7.3 - add missing endtags
+ *
+ * 0.7.2 - Add module_level core status
+ *       - Update module_platform
+ *
+ * 0.7.1 - Updated Touchicon integration
+ *
+ * 0.7.0 - Making use of Insert class
  *
  **/
