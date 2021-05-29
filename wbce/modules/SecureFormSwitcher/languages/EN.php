@@ -10,7 +10,7 @@
 //Module description
 $module_description = 'This module offers a few additional security settings.';
 
-$SFS['HEADER'] =      'More Security settings .';
+$SFS['HEADER'] = 'More Security settings .';
 $SFS['DESCRIPTION'] = 'Here we have a few additional security settings';
 
 // Backend variables
@@ -49,5 +49,3 @@ $SFS['TIMEOUT_ERR'] = "Timeout not saved : Only 0-9 and between 1 to 5 character
 $SFS['USEFP'] = 'Fingerprinting';
 $SFS['USEFP_TTIP'] = '<em>Help</em>Require OS and browser for every TAN-validation additionally to the IP-address.';
 $SFS['USEFP_Err'] = "";
-
-

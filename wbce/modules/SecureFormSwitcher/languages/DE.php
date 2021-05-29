@@ -10,7 +10,7 @@
 //Module description
 $module_description = 'Einige Zusatzeinstellungen f&uuml;r  die Sicherheit';
 
-$SFS['HEADER'] =      'Extra Sicherheitseinstellungen ';
+$SFS['HEADER'] = 'Extra Sicherheitseinstellungen ';
 $SFS['DESCRIPTION'] = 'Hier k&ouml;nnen Sie weitere  Sicherheitseistellungen vornehmen';
 
 // Backend variables
@@ -49,5 +49,3 @@ $SFS['TIMEOUT_ERR'] = 'Timeout darf nur Zahlen enthalten und max. 5 Stellen lang
 $SFS['USEFP'] = 'Fingerprinting';
 $SFS['USEFP_TTIP'] = '<em>Hilfe</em>Zus&auml;tzlich zur IP-Adresse wird Betriebssystem und Browser zu jeder TAN-Validierung hinzugezogen.';
 $SFS['USEFP_Err'] = '';
-
-
