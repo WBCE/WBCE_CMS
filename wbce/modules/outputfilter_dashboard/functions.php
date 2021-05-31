@@ -8,7 +8,7 @@ functions.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.14
+ * @version         1.5.15
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
@@ -1257,8 +1257,9 @@ function opf_apply_filters(&$content, $type, $module, $page_id, $section_id, $wb
                 if(function_exists($filter['funcname'])) {
                     $content_backup = $content;
                     $res = call_user_func_array($filter['funcname'], array(&$content, $page_id, $section_id, $module, $wb));
-                    if($content === "" || $content === null || $res === FALSE) {
+                    if($content === "" || $content === null || $res===FALSE) {
                         $content = $content_backup; // filter failed and content maybe broken, restore old content
+                        trigger_error('output filter failed: returned empty content');
                         $opf_FILTERS[$key]['failed'] = TRUE;
                     }
                 } else {
