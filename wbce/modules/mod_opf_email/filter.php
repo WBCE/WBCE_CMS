@@ -9,7 +9,7 @@
  * @copyright       WBCE Project (2015-2021)
  * @category        tool
  * @package         OPF E-Mail
- * @version         1.1.5
+ * @version         1.1.6
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -143,8 +143,12 @@ function _cbDoExecuteFilter($match) {
                     }
                 }
                 $encrypted_email .= chr($shift + 97);
-            // build the encrypted Javascript mailto link
-                $mailto_link  = "<a {$class_attr}{$title_attr}{$id_attr}{$style_attr}href=\"javascript:mdcr('$encrypted_email','$email_subject')\">" .$match[5] ."</a>";
+                // build the encrypted Javascript mailto link
+                if (strpos($class_attr,'fa-') == false) {
+                  $mailto_link  = "<a {$class_attr}{$title_attr}{$id_attr}{$style_attr}href="javascript:mdcr('$encrypted_email','$email_subject')">" .$match[5] ."</a>";
+                } else {
+                  $mailto_link  = "<a {$title_attr}{$id_attr}{$style_attr}href="javascript:mdcr('$encrypted_email','$email_subject')">" .$match[5] ."</a>";
+                }
                 return $mailto_link;
             } else {
             /** DO NOT USE JAVASCRIPT ENCRYPTION FOR MAILTO LINKS **/
