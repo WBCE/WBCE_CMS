@@ -1257,7 +1257,7 @@ function opf_apply_filters(&$content, $type, $module, $page_id, $section_id, $wb
                 if(function_exists($filter['funcname'])) {
                     $content_backup = $content;
                     $res = call_user_func_array($filter['funcname'], array(&$content, $page_id, $section_id, $module, $wb));
-                    if($res===FALSE) {
+                    if($content === "" || $content === null || $res === FALSE) {
                         $content = $content_backup; // filter failed and content maybe broken, restore old content
                         $opf_FILTERS[$key]['failed'] = TRUE;
                     }
