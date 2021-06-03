@@ -13,9 +13,9 @@
 $module_directory = 'show_menu2';
 $module_name = 'show_menu2';
 $module_function = 'snippet';
-$module_version = '4.14.0';
+$module_version = '4.14.1';
 $module_platform = '1.4.0';
-$module_author = 'Brodie Thiesfield, Manuela v.d.Decken, Norbert Heimsath, Christian M. Stefan, Bernd Michna';
+$module_author = 'diverse, WBCE Dev Team';
 $module_license = 'GNU General Public License v2';
 $module_description = 'A code snippet for the WBCE CMS providing menu functions. See the <a href="' .WB_URL .'/modules/show_menu2/README.en.txt" target="_blank">readme</a> file or view <a href="https://sm2.wbce-cms.org/" target="_blank">sm2.wbce-cms.org</a>.';
 $module_level = 'core';

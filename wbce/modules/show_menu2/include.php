@@ -378,7 +378,8 @@ function show_menu2(
             $showAllLevel,
             $aMaxLevel,
             $flags,
-            $formatter);
+            $formatter
+        );
 
         $formatter->finalize();
 
@@ -406,9 +407,8 @@ function show_breadcrumbs(
     $aMenuClose = '',
     $aTopItemOpen = false,
     $aTopMenuOpen = false
-    )
-{
-    return show_menu2( $aMenu, $aStart, $aMaxLevel, $aOptions, $aItemOpen, $aItemClose, $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen );
+) {
+    return show_menu2($aMenu, $aStart, $aMaxLevel, $aOptions, $aItemOpen, $aItemClose, $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen);
 }
 
 function sm2_mark_children(&$rgParent, $aStart, $aChildLevel)

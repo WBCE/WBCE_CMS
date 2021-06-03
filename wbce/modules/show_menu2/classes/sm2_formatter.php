@@ -17,25 +17,25 @@ define('SM2_CONDITIONAL', 'if\s*\(([^\)]+)\)\s*{([^}]*)}\s*(?:else\s*{([^}]*)}\s
 define('SM2_COND_TERM', '\s*(\w+)\s*(<|<=|==|=|=>|>|!=)\s*([\w\-]+)\s*');
 class SM2_Formatter
 {
-    var $output;
-    var $flags;
-    var $itemOpen;
-    var $itemClose;
-    var $menuOpen;
-    var $menuClose;
-    var $topItemOpen;
-    var $topMenuOpen;
+    public $output;
+    public $flags;
+    public $itemOpen;
+    public $itemClose;
+    public $menuOpen;
+    public $menuClose;
+    public $topItemOpen;
+    public $topMenuOpen;
 
-    var $isFirst;
-    var $page;
-    var $url;
-    var $currSib;
-    var $sibCount;
-    var $currClass;
-    var $prettyLevel;
+    public $isFirst;
+    public $page;
+    public $url;
+    public $currSib;
+    public $sibCount;
+    public $currClass;
+    public $prettyLevel;
 
     // output the data
-    function output($aString)
+    public function output($aString)
     {
         if (defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true && stristr($aString, 'sm2-is-menulink')) {
             $aString = sm2_correct_menu_links($aString);
@@ -48,7 +48,7 @@ class SM2_Formatter
     }
 
     // set the default values for all of our formatting items
-    function set($aFlags, $aItemOpen, $aItemClose, $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen)
+    public function set($aFlags, $aItemOpen, $aItemClose, $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen)
     {
         $this->flags        = $aFlags;
         $this->itemOpen     = is_string($aItemOpen)    ? $aItemOpen    : '[li][a][menu_title]</a>';
@@ -60,7 +60,7 @@ class SM2_Formatter
     }
 
     // initialize the state of the formatter before anything is output
-    function initialize()
+    public function initialize()
     {
         $this->output = '';
         $this->prettyLevel = 0;
@@ -70,7 +70,7 @@ class SM2_Formatter
     }
 
     // start a menu
-    function startList(&$aPage, &$aUrl)
+    public function startList(&$aPage, &$aUrl)
     {
         $currClass = '';
         $currItem = $this->menuOpen;
@@ -101,7 +101,7 @@ class SM2_Formatter
     }
 
     // start an item within the menu
-    function startItem(&$aPage, &$aUrl, $aCurrSib, $aSibCount)
+    public function startItem(&$aPage, &$aUrl, $aCurrSib, $aSibCount)
     {
         // generate our class list
         $currClass = '';
@@ -158,7 +158,7 @@ class SM2_Formatter
     }
 
     // find and replace all keywords, setting the state variables first
-    function format(
+    public function format(
         &$aPage,
         &$aUrl,
         &$aCurrItem,
@@ -182,7 +182,7 @@ class SM2_Formatter
     }
 
     // find and replace all keywords
-    function format2(&$aCurrItem)
+    public function format2(&$aCurrItem)
     {
         if (!is_string($aCurrItem)) {
             return '';
@@ -200,7 +200,7 @@ class SM2_Formatter
     }
 
     // replace the keywords
-    function replace($aMatches)
+    public function replace($aMatches)
     {
         $aMatch = $aMatches[1];
         $retval = '['.$aMatch.'=UNKNOWN]';
@@ -255,7 +255,7 @@ class SM2_Formatter
     }
 
     // conditional replacement
-    function replaceIf(&$aExpression, &$aIfValue, &$aElseValue)
+    public function replaceIf(&$aExpression, &$aIfValue, &$aElseValue)
     {
         // evaluate all of the tests in the conditional (we don't do short-circuit
         // evaluation) and replace the string test with the boolean result
@@ -284,7 +284,7 @@ class SM2_Formatter
     }
 
     // conditional test
-    function ifTest(&$aKey, &$aOperator, &$aValue)
+    public function ifTest(&$aKey, &$aOperator, &$aValue)
     {
         global $wb;
 
@@ -366,7 +366,7 @@ class SM2_Formatter
     }
 
     // finish the current menu item
-    function finishItem()
+    public function finishItem()
     {
         if ($this->flags & SM2_PRETTY) {
             $this->output(str_repeat(' ', $this->prettyLevel).$this->itemClose);
@@ -376,7 +376,7 @@ class SM2_Formatter
     }
 
     // finish the current menu
-    function finishList()
+    public function finishList()
     {
         $this->prettyLevel -= 3;
 
@@ -390,7 +390,7 @@ class SM2_Formatter
     }
 
     // cleanup the state of the formatter after everything has been output
-    function finalize()
+    public function finalize()
     {
         if ($this->flags & SM2_PRETTY) {
             $this->output("\n");
@@ -398,7 +398,7 @@ class SM2_Formatter
     }
 
     // return the output
-    function getOutput()
+    public function getOutput()
     {
         return $this->output;
     }
