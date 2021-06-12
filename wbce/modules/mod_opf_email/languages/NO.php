@@ -1,54 +1,53 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @copyright       Ryan Djurovich (2004-2009)
- * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2021)
- * @category        tool
- * @package         OPF E-Mail
- * @version         1.1.6
- * @authors         Martin Hecht (mrbaseman)
- * @link            https://forum.wbce.org/viewtopic.php?id=176
- * @license         GNU GPL2 (or any later version)
- * @platform        WBCE 1.2.x
- * @requirements    OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
+ * @copyright    Ryan Djurovich (2004-2009)
+ * @copyright    WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright    WBCE Project (2015-)
+ * @category     tool
+ * @package      OPF E-Mail
+ * @version      1.1.7
+ * @authors      Martin Hecht (mrbaseman)
+ * @link         https://forum.wbce.org/viewtopic.php?id=176
+ * @license      GNU GPL2 (or any later version)
+ * @platform     WBCE 1.x
+ * @requirements OutputFilter Dashboard 1.5.x and PHP 5.4 or higher
  *
  **/
 
-
 /* -------------------------------------------------------- */
 // Must include code to stop this file being accessed directly
-if(!defined('WB_PATH')) {
-        // Stop this file being access directly
-        if(!headers_sent()) header("Location: ../index.php",TRUE,301);
-        die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
+if (!defined('WB_PATH')) {
+    // Stop this file being access directly
+    if (!headers_sent()) {
+        header("Location: ../index.php", true, 301);
+    }
+    die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
 }
 /* -------------------------------------------------------- */
-
 
 // Module description
 $module_description = 'A tool to configure the basic output filter of WB(CE)';
 
 // Headings and text outputs
 $OPF['HEADING'] = 'Valg: Filtrering av ut data';
-$OPF['HOWTO']   = 'Du kan gj&oslash;re innstillinger for utdatafitreringen i valgene nedenfor.<p style="line-height:1.5em;"><strong>Tips: </strong>Mailto linker kan krypteres av en Javascript funksjon. For &aring; f&aring; benyttet denne funksjonen, m&aring; det legges til f&oslash;lgende PHP kode <code style="background:#FFA;color:#900;">&lt;?php register_frontend_modfiles(\'js\');?&gt;</code> inn i &lt;head&gt; seksjonen i index.php p&aring; design malen din. Uten denne modifikasjonen, vil kun @ karakterer i mailto linker bli erstattet.</p>';
+$OPF['HOWTO'] = 'Du kan gj&oslash;re innstillinger for utdatafitreringen i valgene nedenfor.<p style="line-height:1.5em;"><strong>Tips: </strong>Mailto linker kan krypteres av en Javascript funksjon. For &aring; f&aring; benyttet denne funksjonen, m&aring; det legges til f&oslash;lgende PHP kode <code style="background:#FFA;color:#900;">&lt;?php register_frontend_modfiles(\'js\');?&gt;</code> inn i &lt;head&gt; seksjonen i index.php p&aring; design malen din. Uten denne modifikasjonen, vil kun @ karakterer i mailto linker bli erstattet.</p>';
 $OPF['WARNING'] = '';
 
 // Text and captions of form elements
-$OPF['BASIC_CONF']      = 'Enkel Epost konfigurasjon';
+$OPF['BASIC_CONF'] = 'Enkel Epost konfigurasjon';
 $OPF['SYS_REL'] = 'Frontendoutput with relative Urls';
-$OPF['EMAIL_FILTER']    = 'Filtrer Epost adresser i tekst';
-$OPF['MAILTO_FILTER']   = 'Filtrer Epost adresser i mailto linker';
+$OPF['EMAIL_FILTER'] = 'Filtrer Epost adresser i tekst';
+$OPF['MAILTO_FILTER'] = 'Filtrer Epost adresser i mailto linker';
 $OPF['ENABLED'] = 'P&aring;sl&aring;tt';
-$OPF['DISABLED']        = 'Avsl&aring;tt';
+$OPF['DISABLED'] = 'Avsl&aring;tt';
 
 $OPF['REPLACEMENT_CONF']= 'Endringe i Epost adresser';
 $OPF['AT_REPLACEMENT']  = 'Bytt "@" med';
 $OPF['DOT_REPLACEMENT'] = 'Bytt "." med';
-
 
 $OPF['ALL_ON_OFF'] = 'Enable/Disable all old Outputfilter';
 $OPF['DROPLETS'] = 'Droplets filter';
