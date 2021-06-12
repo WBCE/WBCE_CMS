@@ -1,4 +1,3 @@
-  
 <?php
 /**
  * WBCE CMS
@@ -10,6 +9,6 @@
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  */
- 
+
 // Module description
 $module_description = 'Dateimanager elFinder als Admin-Tool';
