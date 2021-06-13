@@ -6,7 +6,7 @@
 ## Minimum requirements
   - about 25 MB webspace
   - PHP 7.2.5 (released 26 Apr 2018) or newer
-  - mySQL (5.x) or MariaDB (10.x)
+  - mySQL or MariaDB database
   - GD Library / Exif / Imagemagick (if you use any module with image processing)
   - mod_rewrite (if you use ShortURL)
 
