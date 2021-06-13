@@ -1,12 +1,12 @@
 # WBCE CMS
 [WBCE CMS](https://wbce.org) is a versatile, user friendly content management system. It is shipped with some modules for simple text pages, news, contact forms and includes useful admin tools. A broad variety of modules for galleries, interaction and structured content etc. is available in the [WBCE Add-On Repository](https://addons.wbce.org) and can be installed easily.
 
-![Screenshot of WBCE Backend](https://forum.wbce.org/wbce_cms_13_dashboard_600x367.jpg)
+![Screenshot of WBCE Backend](https://wbce.org/screenshot-github-wbce-start-en.jpg)
 
 ## Minimum requirements
   - about 25 MB webspace
   - PHP 7.2.5 (released 26 Apr 2018) or newer
-  - mySQL or MariaDB
+  - mySQL (5.x) or MariaDB (10.x)
   - GD Library / Exif / Imagemagick (if you use any module with image processing)
   - mod_rewrite (if you use ShortURL)
 
