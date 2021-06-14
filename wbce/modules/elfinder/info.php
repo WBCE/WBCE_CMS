@@ -13,7 +13,7 @@
 $module_directory = 'elfinder';
 $module_name = 'elFinder';
 $module_function = 'tool';
-$module_version = '1.1.0';
+$module_version = '1.1.1';
 $module_platform = '1.5.0';
 $module_author = 'WBCE';
 $module_license = 'Modul under GPL, elFinder under BSD';
@@ -24,8 +24,8 @@ $module_level = 'core';
 /**
  * Version history
  * 
+ * 1.1.1 - updated elFinder to 2.1.59
  * 1.1.0 - updated elFinder to 2.1.58
- *
  * 1.0.5 - fix media directory path
  *       - WBCE 1.5.0 release version
  * 1.0.4 - granulated permission setting according to user group configuration
