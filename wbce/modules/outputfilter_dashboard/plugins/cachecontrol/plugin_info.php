@@ -22,10 +22,15 @@ along with opf cache control. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-if(!defined('WB_PATH')) die(header('Location: ../../index.php'));
+if (!defined('WB_PATH')) {
+    die(header('Location: ../../index.php'));
+}
 
 /*
 Header: Version-History
+
+1.0.7 %(mrbaseman; 1 Jul, 2021)%
+        - check for file existence, first
 
 1.0.6 %(mrbaseman; 15 Jul, 2019)%
         - use by default in search results, too
@@ -52,10 +57,9 @@ Header: Version-History
 
 $plugin_directory   = 'cachecontrol';
 $plugin_name        = 'Cache Control';
-$plugin_version     = '1.0.6';
+$plugin_version     = '1.0.7';
 $plugin_status      = 'beta';
 $plugin_platform    = '2.8';
 $plugin_author      = 'thorn, mrbaseman';
 $plugin_license     = 'GNU General Public License, Version 3 or later';
 $plugin_description = 'Filter to automatically prevent browsers from delivering outdated files (css,js) from cache';
-

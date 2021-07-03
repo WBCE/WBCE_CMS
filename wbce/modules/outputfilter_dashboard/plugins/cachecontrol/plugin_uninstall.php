@@ -22,6 +22,8 @@ along with opf cache control. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-if(!defined('WB_PATH')) die(header('Location: ../../index.php'));
+if (!defined('WB_PATH')) {
+    die(header('Location: ../../index.php'));
+}
 
 // nothing to do, yet.
