@@ -1,6 +1,6 @@
 # Doctrine
  
-DBAL 2.13.1,
+DBAL 2.13.2,
 Common 3.1.2,
 EventManager 1.1.1,
 Deprecations 0.5.3
