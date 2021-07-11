@@ -789,11 +789,17 @@ function mod_nwi_post_get($post_id)
 {
     global $database,$section_id;
     list($order_by,$direction) = mod_nwi_get_order($section_id);
+	if (isset($_GET['g'])) {
+		$query_group = ' AND `group_id` = '.intval($_GET['g']).' ';
+	} else {
+		$query_group = '';
+	}
+		
     $prev_dir = ($direction=='DESC'?'ASC':'DESC');
     $sql = sprintf(
         "SELECT `t1`.*, " .
-        "  (SELECT `link` FROM `%smod_news_img_posts` AS `t2` WHERE `t2`.`$order_by` > `t1`.`$order_by` AND `section_id`=$section_id AND `active`=1 ORDER BY `$order_by` $prev_dir LIMIT 1 ) as `prev_link`, ".
-        "  (SELECT `link` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` < `t1`.`$order_by` AND `section_id`=$section_id AND `active`=1 ORDER BY `$order_by` $direction LIMIT 1 ) as `next_link` " .
+        "  (SELECT `link` FROM `%smod_news_img_posts` AS `t2` WHERE `t2`.`$order_by` > `t1`.`$order_by` AND `section_id`=$section_id AND `active`=1 $query_group ORDER BY `$order_by` $prev_dir LIMIT 1 ) as `prev_link`, ".
+        "  (SELECT `link` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` < `t1`.`$order_by` AND `section_id`=$section_id AND `active`=1 $query_group ORDER BY `$order_by` $direction LIMIT 1 ) as `next_link` " .
         "FROM `%smod_news_img_posts` AS `t1` " .
         "WHERE `post_id`=%d",
         TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $post_id
@@ -1321,8 +1327,8 @@ function mod_nwi_post_process($post,$section_id,$users)
             $delim = '?';
         }
         $post['post_link'] .= $delim.'g='.$_GET['g'];
-        $post['next_link'] = (strlen($post['next_link'])>0 ? $delim.'g='.$_GET['g'] : null);
-        $post['prev_link'] = (strlen($post['prev_link'])>0 ? $delim.'g='.$_GET['g'] : null);
+        $post['next_link'] = (strlen($post['next_link'])>0 ? $post['next_link'].'?g='.$_GET['g'] : null);
+		$post['prev_link'] = (strlen($post['prev_link'])>0 ? $post['prev_link'].'?g='.$_GET['g'] : null);
     }
 
     // publishing date
