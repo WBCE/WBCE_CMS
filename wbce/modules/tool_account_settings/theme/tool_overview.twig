@@ -41,7 +41,7 @@
                 </td>
                 <td>
                     <nobr><i class="fa fa-1x fa-calendar{% if rec['login_when'] == '' %}-o"  style="color: lightgrey;{% endif %}"></i> &nbsp;
-                    <small>{% if rec['login_when'] %}{{ rec['login_when']|date(DATE_FORMAT ~'  H:i')}}{% else %}N/A{% endif %}</small></nobr>
+                    <small>{% if rec['login_when'] %}{{ rec['login_when']|date(DATE_FORMAT ~' '~  TIME_FORMAT)}}{% else %}N/A{% endif %}</small></nobr>
                 </td>
                 <td class="center">
                     <i class="fa fa-1x fa-user-circle{% if rec['active'] %}-o{% endif %}" style="color:{% if rec['active'] %}#48BF40{% else %}#EDABAB{% endif %}"></i>
