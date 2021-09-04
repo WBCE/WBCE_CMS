@@ -414,20 +414,4 @@ class Frontend extends Wb
         return;
     }
 
-    // No longer supported since WBCE 1.5.0
-    public function show_breadcrumbs()
-    {
-        // Return a note that this method is no longer supported
-        if ($this->is_authenticated()) {
-            if ($this->ami_group_member('1') && defined('WB_DEBUG') && WB_DEBUG == true) {
-                // if Admin and WB_DEBUG on: display Notice to inform the developer
-                $caller = debug_backtrace()[0];
-                $sNotice = "<br />The <i><b>" . __FUNCTION__ . "</b> method</i> of <i>class <b>" . __CLASS__ . "</b></i> is obsolete.";
-                $sNotice .= "<br /> Please consider using the <b>show_menu2</b> function.";
-                $sNotice .= "<br />Used in file <b>" . $caller['file'] . "</b> on line <b>" . $caller['line'] . "</b>";
-                trigger_error($sNotice);
-            }
-        }
-        return;
-    }
 }
