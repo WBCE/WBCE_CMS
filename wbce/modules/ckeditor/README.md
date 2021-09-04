@@ -56,4 +56,4 @@ How can I customize the CKEditor for WBCE?
 
 To customize, copy the the default files into the folder _yourInstallation/templates/_yourDefaultTemplate/ and rename it, your changes only apply to your template.
 Or create a wb_config folder in _yourInstallation/templates/ and copy the default files into this folder and rename it, all changes apply to all templates.
-If youe need code examples or how these files schould look like, see the files [here](https://github.com/Colinax/CKEditor/tree/archive/wb_config).
+If youe need code examples or how these files schould look like, see example files [here](https://github.com/Colinax/CKEditor/tree/developer/wb_config).
