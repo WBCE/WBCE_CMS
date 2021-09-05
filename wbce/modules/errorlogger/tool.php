@@ -134,7 +134,7 @@ if ($view == '0' or $view == '1') {
     }
 } else {
     $aLines = log_to_array($res);
-    if (count($aLines) > 1) {
+    if (count($aLines) >= 1) {	
         ?>
     <table class="table-errlog">
         <tr>
@@ -175,7 +175,7 @@ if ($view == '0' or $view == '1') {
     </table>
     <?php
     } else {
-        echo 'Great news. No errors reported';
+        echo 'Great news. No errors reported?';
     }
 }
 ?>
@@ -190,8 +190,12 @@ function log_to_array($aLines)
         foreach ($arr as $parts) {
             $arr2[] = explode(']', $parts);
         }
+		if(!empty($arr2) && isset($arr2[1][0])){
+			$sType = @$arr2[1][0];
+		} else {
+			continue;
+		}
         $aDateTime = explode('T', $arr2[0][0]);
-        $sType = @$arr2[1][0];
         $sColor = 'inherit';
         if ($sType == 'Exception') {
             $sColor = 'red';
@@ -205,12 +209,14 @@ function log_to_array($aLines)
             'time'      => trim(str_replace('+00:00', '', @$aDateTime[1])),
             'type'      => $sType,
             'primary'   => str_replace(':', '', @$arr2[1][1]),
-            'p_line'    => @$arr2[2][0],
-            'secondary' => trim(str_replace(['from', ':'], '', @$arr2[2][1])),
+            'p_line'    => isset($arr2[2]) ? $arr2[2][0] : '',            
+			'secondary' => trim(str_replace(['from', ':'], '', @$arr2[2][1])),
             's_line'    => @$arr2[3][0],
             'msg'       => trim(@$arr2[3][1]),
         );
+		
     }
     return $aRetVal;
+	debug_dump($aRetVal);
 }
 $_SESSION['lastview'] = date('c');

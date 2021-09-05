@@ -20,7 +20,7 @@ if (defined('WB_PATH') == false) {
 $module_directory   = 'errorlogger';
 $module_name        = 'Errorlog viewer';
 $module_function    = 'tool,preinit,initialize';
-$module_version     = '1.1.1';
+$module_version     = '1.1.2';
 $module_platform    = '1.4.x';
 $module_author      = 'Ruud Eisinga - Dev4me';
 $module_license	    = 'GNU General Public License';
@@ -32,7 +32,10 @@ $module_icon        = 'fa fa-tasks';
 /**
  * DEVELOPMENT HISTORY (Change Log):
  *
-  * v.1.1.1 2021-05-29 Colinax
+ * v.1.1.2 2021-09-05 stefanek
+ *      [!] fix for issue 508 (empty log creates issues itself)
+ *
+ * v.1.1.1 2021-05-29 Colinax
  *      [+] add upgrade.php
  *      [c] cs fixed files
  *
