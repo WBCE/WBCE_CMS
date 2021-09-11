@@ -451,20 +451,23 @@ if (file_exists($file_name)) {
     require_once WB_PATH . "/modules/captcha_control/upgrade.php";
 }
 
-// Droplets
-if (!in_array("mod_droplets", $all_tables)) {
-    echo "<br />Install Droplets<br />";
-    require_once WB_PATH . "/modules/droplets/install.php";
-} else {
-    echo "<br />Update Droplets<br />";
-    require_once WB_PATH . "/modules/droplets/upgrade.php";
-}
-
 // Errorloger
 $file_name = WB_PATH . "/modules/errorlogger/info.php";
 if (file_exists($file_name)) {
     echo "<br />Install Errorloger<br />";
     require_once WB_PATH . "/modules/errorlogger/install.php";
+}
+
+// Droplets
+$file_name = WB_PATH . "/modules/droplets/info.php";
+if (file_exists($file_name)) {
+    if (!in_array("mod_droplets", $all_tables)) {
+        echo "<br />Install Droplets<br />";
+        require_once WB_PATH . "/modules/droplets/install.php";
+    } else {
+        echo "<br />Update Droplets<br />";
+        require_once WB_PATH . "/modules/droplets/upgrade.php";
+    }
 }
 
 // Menu Link
@@ -504,32 +507,38 @@ if (file_exists($file_name)) {
 }
 
 // OpF Dashboard
-if (!in_array("mod_outputfilter_dashboard", $all_tables)) {
-    echo "<br />Install OpF Dashboard<br />";
-    require_once WB_PATH . "/modules/outputfilter_dashboard/install.php";
-    Settings::Set('opf_show_advanced_backend', 0, false);
-} else {
-    echo "<br />Update OpF Dashboard<br />";
-    require_once WB_PATH . "/modules/outputfilter_dashboard/upgrade.php";
-    Settings::Set('opf_show_advanced_backend', 1, false);
-}
-// uninstall classical output filter module
-$file_name = WB_PATH . "/modules/output_filter/uninstall.php";
+$file_name = WB_PATH . "/modules/outputfilter_dashboard/info.php";
 if (file_exists($file_name)) {
-    echo "<br />Uninstall classical output_filter module<br />";
-    include_once($file_name);
-    opf_io_rmdir(WB_PATH . "/modules/output_filter");
+    if (!in_array("mod_outputfilter_dashboard", $all_tables)) {
+        echo "<br />Install OpF Dashboard<br />";
+        require_once WB_PATH . "/modules/outputfilter_dashboard/install.php";
+        Settings::Set('opf_show_advanced_backend', 0, false);
+    } else {
+        echo "<br />Update OpF Dashboard<br />";
+        require_once WB_PATH . "/modules/outputfilter_dashboard/upgrade.php";
+        Settings::Set('opf_show_advanced_backend', 1, false);
+    }
+    // uninstall classical output filter module
+    $classic_opf = WB_PATH . "/modules/output_filter/uninstall.php";
+    if (file_exists($classic_opf)) {
+        echo "<br />Uninstall classical output_filter module<br />";
+        include_once($classic_opf);
+        opf_io_rmdir(WB_PATH . "/modules/output_filter");
+    }
+    // Remove entry from DB
+    $database->query("DELETE FROM " . TABLE_PREFIX . "addons WHERE directory = 'output_filter' AND type = 'module'");
 }
-// Remove entry from DB
-$database->query("DELETE FROM " . TABLE_PREFIX . "addons WHERE directory = 'output_filter' AND type = 'module'");
 
 // Sitemap
-if (!in_array("mod_sitemap", $all_tables)) {
-    echo "<br />Install Sitemap<br />";
-    require_once WB_PATH . "/modules/sitemap/install.php";
-} else {
-    echo "<br />Update Sitemap<br />";
-    require_once WB_PATH . "/modules/sitemap/upgrade.php";
+$file_name = WB_PATH . "/modules/sitemap/info.php";
+if (file_exists($file_name)) {
+    if (!in_array("mod_sitemap", $all_tables)) {
+        echo "<br />Install Sitemap<br />";
+        require_once WB_PATH . "/modules/sitemap/install.php";
+    } else {
+        echo "<br />Update Sitemap<br />";
+        require_once WB_PATH . "/modules/sitemap/upgrade.php";
+    }
 }
 
 // Visitor statistics
