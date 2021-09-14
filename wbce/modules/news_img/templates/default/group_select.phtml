@@ -22,6 +22,6 @@
                     $id = urlencode(serialize(array('g' => intval($group['group_id']), 's' => $sectionID, 'p' => $pageID)));
 
 ?>
-                        <option value="<?php echo $id ?>"<?php if ($post_data['group_id'] == $group['group_id']): ?> selected="selected"<?php endif; ?>><?php echo $group['title'].' ('.$TEXT['SECTION'].' #'.$section_id ?>)</option>
+                        <option value="<?php echo $id ?>"<?php if ($post_data['group_id'] == $group['group_id']): ?> selected="selected"<?php endif; ?>><?php echo $group['title'].' ('.$TEXT['SECTION'].' #'.$sectionID ?>)</option>
 <?php endforeach; endforeach; endforeach; endif; ?>
                     </select>
