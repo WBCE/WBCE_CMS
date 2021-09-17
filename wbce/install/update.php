@@ -516,6 +516,7 @@ if (file_exists($file_name)) {
     } else {
         echo "<br />Update OpF Dashboard<br />";
         require_once WB_PATH . "/modules/outputfilter_dashboard/upgrade.php";
+        require_once WB_PATH . "/modules/outputfilter_dashboard/install.php";
         Settings::Set('opf_show_advanced_backend', 1, false);
     }
     // uninstall classical output filter module
