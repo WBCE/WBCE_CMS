@@ -13,7 +13,7 @@
 $module_directory = 'elfinder';
 $module_name = 'elFinder';
 $module_function = 'tool';
-$module_version = '1.1.2';
+$module_version = '1.1.3';
 $module_platform = '1.5.0';
 $module_author = 'WBCE';
 $module_license = 'Modul under GPL, elFinder under BSD';
@@ -24,6 +24,7 @@ $module_level = 'core';
 /**
  * Version history
  *
+ * 1.1.3 - uses Material-Theme Gray as default
  * 1.1.2 - elFinder uses window hight
  *       - small code clean up
  * 1.1.1 - updated elFinder to 2.1.59
