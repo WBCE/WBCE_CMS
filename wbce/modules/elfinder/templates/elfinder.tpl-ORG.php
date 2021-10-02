@@ -1,4 +1,3 @@
-<?php require_once '../../../config.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,36 +8,25 @@
 	<style>body { margin: 0; }</style>
 
 	<!-- Require JS (REQUIRED) -->
-	<script data-main="./main.wbce_cke.js" src="./js/require.min.js"></script>
+	<script data-main="../../modules/elfinder/ef/main.wbce.js" src="../../modules/elfinder/ef/js/require.min.js">
+	</script>
 
 	<!-- elFinder Basic Auth JS -->
 	<!-- <script src="js/elfinderBasicAuth.js"></script>  -->
 
 	<!-- elFinder initialization (REQUIRED) -->
+
 	<script>
 		define('elFinderConfig', {
 			// elFinder options (REQUIRED)
 			// Documentation for client options:
 			// https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
 			defaultOpts: {
-				url: 'php/connector.wbce.php' // or connector.maximal.php : connector URL (REQUIRED)
+				url: '../../modules/elfinder/ef/php/connector.wbce.php', // or connector.maximal.php : connector URL (REQUIRED)
 			},
 			managers: {
 				// 'DOM Element ID': { /* elFinder options of this DOM Element */ }
-				'elfinder': {
-					getFileCallback: function (file, fm) {
-						window.opener.CKEDITOR.tools.callFunction((function () {
-							var reParam = new RegExp('(?:[\?&]|&amp;)CKEditorFuncNum=([^&]+)', 'i');
-							var match = window.location.search.match(reParam);
-							return (match && match.length > 1) ? match[1] : '';
-						})(), fm.convAbsUrl(file.url));
-						fm.destroy();
-						window.close();
-					},
-					height: '100%' // optional
-						,
-					resizable: false // optional
-				}
+				'elfinder': {}
 			}
 		});
 	</script>
@@ -46,6 +34,5 @@
 <body>
 	<!-- Element where elFinder will be created (REQUIRED) -->
 	<div id="elfinder"></div>
-	<link rel="stylesheet" type="text/css" media="screen" href="themes/material/css/theme-gray.css">
 </body>
 </html>

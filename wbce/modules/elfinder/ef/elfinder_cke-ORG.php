@@ -21,7 +21,7 @@
 			// Documentation for client options:
 			// https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
 			defaultOpts: {
-				url: 'php/connector.wbce.php' // or connector.maximal.php : connector URL (REQUIRED)
+				url: 'php/connector.wbce.php', // or connector.maximal.php : connector URL (REQUIRED)
 			},
 			managers: {
 				// 'DOM Element ID': { /* elFinder options of this DOM Element */ }
@@ -46,6 +46,5 @@
 <body>
 	<!-- Element where elFinder will be created (REQUIRED) -->
 	<div id="elfinder"></div>
-	<link rel="stylesheet" type="text/css" media="screen" href="themes/material/css/theme-gray.css">
 </body>
 </html>
