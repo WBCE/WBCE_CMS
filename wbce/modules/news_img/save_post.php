@@ -61,7 +61,7 @@ if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
     if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
     	    $post_id_key = $id;
     }
-    $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id_key);
+    $admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_post.php?page_id='.$page_id.'&section_id='.$section_id.'&post_id='.$post_id_key);
 } else {
     $settings = mod_nwi_settings_get($section_id);
     $title = mod_nwi_escapeString($admin->get_post('title'));
@@ -119,7 +119,7 @@ if (substr_compare($post_link, $post_id, -(strlen($post_id)), strlen($post_id))!
 make_dir(WB_PATH.PAGES_DIRECTORY.'/posts/');
 $file_create_time = '';
 if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
-    $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
+    $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
 } elseif (($old_link != $post_link) or !file_exists(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION) or $page_id != $old_page_id or $section_id != $old_section_id) {
     // We need to create a new file
     // First, delete old file if it exists

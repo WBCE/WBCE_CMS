@@ -34,7 +34,7 @@ $active = 1;
 
 if($admin->get_post('title') == '')
 {
-	$admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=g');
+	$admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=g');
     $admin->print_footer();
     exit();
 }

@@ -1,0 +1,20 @@
+.mod_nwi_grid_wrapper {
+  display: grid;
+  grid-gap: 2em 1em;
+}
+.mod_nwi_grid_2columns {
+  grid-template-columns: 1fr 1fr;
+}
+.mod_nwi_grid_3columns {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.mod_nwi_grid_4columns {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.mod_nwi_grid_5columns {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.mod_nwi_grid_box {
+  padding: 20px;
+}

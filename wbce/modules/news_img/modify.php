@@ -139,6 +139,7 @@ if (isset($_REQUEST['tab']) && in_array($_REQUEST['tab'], array('g','s'))) {
 
 // existing tags
 $tags = mod_nwi_get_tags($section_id);
+$tags = mod_nwi_tag_sort($tags, 'tag', 'asc', true);
 
 // settings
 $settings = mod_nwi_settings_get($section_id);

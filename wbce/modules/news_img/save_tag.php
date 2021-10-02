@@ -35,7 +35,7 @@ if (!$admin->checkFTAN()){
 // Validate all fields
 if($admin->get_post('new_tag') == '' && $admin->get_post('tag_id') == '')
 {
-	$admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=s');
+	$admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id.'&tab=s');
     $admin->print_footer();
     exit();
 }

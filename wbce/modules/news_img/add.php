@@ -17,6 +17,7 @@ if(!defined('WB_PATH')) { exit("Cannot access this file directly"); }
 
 require_once __DIR__.'/functions.inc.php';
 
+
 $header = ''."\n";
 $post_loop = '<div class="mod_nwi_group">
     <div class="mod_nwi_teaserpic">
@@ -68,6 +69,15 @@ $post_footer = ' <div class="mod_nwi_spacer"></div>
 $resize_preview = '125x125';
 $iniset = ini_get('upload_max_filesize');
 $iniset = mod_nwi_return_bytes($iniset);
+
+if (file_exists(__DIR__.'/views/default/config.php')) {
+	require_once __DIR__.'/views/default/config.php';
+} 
+
+if (file_exists(__DIR__.'/views/default/config.private.php')) {
+	require_once __DIR__.'/views/default/config.private.php';
+} 
+
 
 $database->query(
     "INSERT INTO `".TABLE_PREFIX."mod_news_img_settings` ".

@@ -8,7 +8,7 @@
  * @copyright       2009-2010, Website Baker Org. e.V.
  * @copyright       2019-, WBCE Community
  * @link            https://www.wbce.org/
- * @license         http://www.gnu.org/licenses/gpl.html
+ * @license         https://www.gnu.org/licenses/gpl.html
  * @platform        WBCE
  *
  */
@@ -16,13 +16,26 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.8';
+$module_version     = '5.0.10';
 $module_platform    = '1.4';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ *
+ * v5.0.10 - 2021-10-02
+ *         - Florian
+ *           ! fixed deleted tags are still in database
+ *           * added Sort tags ascending
+ *
+ * v5.0.9  - 2021-09-19
+ *         - Florian
+ *           ! remove image database changes for unfinished image handling from upgrade.php
+ *           ! Post images can be either deleted or replaced now (w/o deleting the old image file)
+ *           ! Remove unnecessary sorting option PostID
+ *           * improved view management: views/default/config.private.php -> views/default/config.php -> add.php
+ *
  * v5.0.8  - 2021-07-11
  *         - Florian
  *           * better prev/next navigation when group is selected
@@ -34,7 +47,7 @@ $module_description = 'This page type is designed for making a news page with Im
  *           ! fixed post_id
  * v5.0.6  - 2020-07-20
  *         - Florian
- *           !! Remove unnecessary link to frotorama.css from frontend.css
+ *           ! Remove unnecessary link to frotorama.css from frontend.css
  * v5.0.5  - 2020-07-18
  *         - Florian
  *           ! fix wrong likn to fotorama.css (reported by klawin)

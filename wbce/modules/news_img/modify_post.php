@@ -128,6 +128,8 @@ if(strlen(PAGE_SPACER)) {
 }
 $assigned = array();
 $tags = mod_nwi_get_tags($section_id);
+$tags = mod_nwi_tag_sort($tags, 'tag', 'asc', true);
+
 $assigned_tags = $database->query(sprintf(
     "SELECT * FROM `%smod_news_img_tags_posts` WHERE `post_id`=%d",
     TABLE_PREFIX, $post_id

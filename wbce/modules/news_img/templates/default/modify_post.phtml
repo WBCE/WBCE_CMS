@@ -29,23 +29,17 @@
             <tr>
             	<td class="setting_name"><?php echo $MOD_NEWS_IMG['PREVIEWIMAGE']; ?>:</td>
             	<td>
-<?php if ($post_data['image'] != ""): ?>
+					<?php if ($post_data['image']!='') { ?>
                     <img class="img_list" style="float:left;margin-right:15px" src="<?php echo WB_URL.MEDIA_DIRECTORY."/.news_img/".$post_data['image'] ?>" /> <?php echo $post_data['image'] ?><br />
                     <a class="btn" href="javascript:confirm_link('<?php echo $TEXT['ARE_YOU_SURE'], '\n', $MOD_NEWS_IMG['INFO_RELOAD_PAGE']; ?>', '<?php echo WB_URL; ?>/modules/news_img/modify_post.php?page_id=<?php echo $page_id ?>&section_id=<?php echo $section_id ?>&post_id=<?php echo $post_id_key ?>&post_img=<?php echo $post_data['image'] ?>');">
                         <i class="fa fa-fw fa-trash"></i> <?php echo $TEXT['DELETE'] ?>
                     </a>
-                    <input type="hidden" name="previewimage" value="<?php echo $post_data['image'] ?>" />
-<?php else: ?>
-                    <?php echo $MOD_NEWS_IMG['UPLOAD'] ?> <input type="file" name="postfoto" accept="image/*" />
-<?php if(isset($allimg) && is_array($allimg) && count($allimg)>0): ?>
-                    <?php echo $MOD_NEWS_IMG['OR'] ?>:
-                    <select name="mediafile" id="mediafile">
-                        <option value="" selected="selected"><?php echo $MOD_NEWS_IMG['CHOOSE_EXISTING'] ?></option>
-                    <?php foreach($allimg as $img): ?>
-                        <option value="<?php echo $img['id'] ?>"><?php echo $img['picname'] ?></option>
-                    <?php endforeach; ?>
-                    </select><br />
-<?php endif; endif; ?>
+					<br clear="all"/>
+					<?php } ?>
+                    <input type="hidden" name="previewimage" value="<?php echo $post_data['image'] ?>" />					
+                    <?php echo $MOD_NEWS_IMG['UPLOAD'] ?>:<br />
+					<input type="file" name="postfoto" accept="image/*" />
+
         		</td>
             </tr>
             <tr>

@@ -15,7 +15,7 @@
 
 if(defined('WB_URL'))
 {
-    $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_posts` ( '
+    $mod_news = 'CREATE TABLE IF NOT EXISTS `%smod_news_img_posts` ( '
                      . '`post_id` INT NOT NULL AUTO_INCREMENT,'
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
                      . '`group_id` INT NOT NULL DEFAULT \'0\','
@@ -32,20 +32,20 @@ if(defined('WB_URL'))
                      . '`posted_when` INT NOT NULL DEFAULT \'0\','
                      . '`posted_by` INT NOT NULL DEFAULT \'0\','
                      . 'PRIMARY KEY (post_id)'
-                     . ' )';
-    $database->query($mod_news);
+                     . ' )  ENGINE=InnoDB;';
+    $database->query(sprintf($mod_news,TABLE_PREFIX));
     
-    $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_groups` ( '
+    $mod_news = 'CREATE TABLE IF NOT EXISTS `%smod_news_img_groups` ( '
                      . '`group_id` INT NOT NULL AUTO_INCREMENT,'
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
                      . '`active` INT NOT NULL DEFAULT \'0\','
                      . '`position` INT NOT NULL DEFAULT \'0\','
                      . '`title` VARCHAR(255) NOT NULL DEFAULT \'\','
                      . 'PRIMARY KEY (group_id)'
-                . ' )';
-    $database->query($mod_news);
+                . ' )  ENGINE=InnoDB;';
+    $database->query(sprintf($mod_news,TABLE_PREFIX));
 
-    $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_settings` ( '
+    $mod_news = 'CREATE TABLE IF NOT EXISTS `%smod_news_img_settings` ( '
                      . '`section_id` INT NOT NULL DEFAULT \'0\','
                      . '`header` TEXT NOT NULL ,'
                      . '`post_loop` TEXT NOT NULL ,'
@@ -68,25 +68,40 @@ if(defined('WB_URL'))
                      . '`view` VARCHAR(50) NOT NULL DEFAULT \'default\', '
 	                 . '`mode` VARCHAR(50) NULL DEFAULT \'default\', '
                      . 'PRIMARY KEY (section_id)'
-                . ' )';
-    $database->query($mod_news);
+                . ' )  ENGINE=InnoDB;';
+    $database->query(sprintf($mod_news,TABLE_PREFIX));
         
-    $mod_news = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_news_img_img` ( '
+    $mod_news = 'CREATE TABLE IF NOT EXISTS `%smod_news_img_img` ( '
                  . '`id` INT NOT NULL AUTO_INCREMENT,'
                  . '`picname` VARCHAR(255) NOT NULL DEFAULT \'\','
                  . '`picdesc` VARCHAR(255) NOT NULL DEFAULT \'\','
                  . '`post_id` INT NOT NULL DEFAULT \'0\','
                  . '`position` INT(11) NOT NULL DEFAULT \'0\','
                  . 'PRIMARY KEY (id)'
-                 . ' )';
-    $database->query($mod_news);
+                 . ' )  ENGINE=InnoDB;';
+    $database->query(sprintf($mod_news,TABLE_PREFIX));
+
+    $mod_news = "CREATE TABLE IF NOT EXISTS `%smod_news_img_posts_img` (
+          `post_id` int(11) NOT NULL,
+          `pic_id` int(11) NOT NULL,
+          `position` int(11) NOT NULL,
+          UNIQUE KEY `post_id_pic_id` (`post_id`,`pic_id`),
+          KEY `FK_%smod_news_img_posts_img_%smod_news_img_img` (`pic_id`),
+          CONSTRAINT `FK_%smod_news_img_posts_img_%smod_news_img_img` FOREIGN KEY (`pic_id`) REFERENCES `%smod_news_img_img` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+          CONSTRAINT `FK_%smod_news_img_posts_img_%smod_news_img_posts` FOREIGN KEY (`post_id`) REFERENCES `%smod_news_img_posts` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
+        ) ENGINE=InnoDB;";
+
+    $database->query(sprintf(
+        $mod_news,
+        TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
+    ));
 
     $database->query(sprintf("CREATE TABLE IF NOT EXISTS `%smod_news_img_tags` (
           `tag_id` int(11) NOT NULL AUTO_INCREMENT,
           `tag` varchar(255) NOT NULL,
           `tag_color` VARCHAR(7) NULL DEFAULT NULL,
           PRIMARY KEY (`tag_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+        ) ENGINE=InnoDB;",
         TABLE_PREFIX
     ));
 
@@ -94,7 +109,7 @@ if(defined('WB_URL'))
           `post_id` int(11) NOT NULL,
           `tag_id` int(11) NOT NULL,
           UNIQUE KEY `post_id_tag_id` (`post_id`,`tag_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+        ) ENGINE=InnoDB;",
         TABLE_PREFIX
     ));
 
@@ -102,7 +117,7 @@ if(defined('WB_URL'))
     	`section_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
     	`tag_id` INT(11) UNSIGNED NOT NULL,
     	UNIQUE INDEX `section_id_tag_id` (`section_id`, `tag_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
+        ) ENGINE=InnoDB;",
         TABLE_PREFIX
     ));
         

@@ -108,7 +108,7 @@ require(WB_PATH."/index.php");
             'ALTER TABLE `%smod_news_img_img` ADD `position` INT(11) NOT NULL DEFAULT \'0\' AFTER `post_id`',
             TABLE_PREFIX
         ));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // 2018-11-28 by BlackBird Webprogrammierung:
     //            new image resize settings (leaving the old column untouched)
@@ -117,7 +117,7 @@ require(WB_PATH."/index.php");
             'ALTER TABLE `%smod_news_img_settings` ADD `resize_preview` VARCHAR(50) NULL AFTER `resize`, ADD `crop_preview` CHAR(1) NOT NULL DEFAULT \'N\' AFTER `resize_preview`',
             TABLE_PREFIX
         ));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // 2019-04-12 by BlackBird Webprogrammierung:
     //            custom markup for post content and image loop
@@ -126,7 +126,7 @@ require(WB_PATH."/index.php");
             'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `post_content` TEXT NOT NULL AFTER `post_header`, ADD COLUMN `image_loop` TEXT NOT NULL AFTER `post_content`',
             TABLE_PREFIX
         ));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // 2019-04-12 by BlackBird Webprogrammierung:
     //            custom markup for post content and image loop
@@ -135,7 +135,7 @@ require(WB_PATH."/index.php");
             'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `gallery` TEXT NOT NULL AFTER `use_captcha`',
             TABLE_PREFIX
         ));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // 2019-04-12 by Martin Hecht:
     //            add second block
@@ -144,7 +144,7 @@ require(WB_PATH."/index.php");
             'ALTER TABLE `%smod_news_img_posts` ADD COLUMN `content_block2` TEXT NOT NULL AFTER `content_long`',
             TABLE_PREFIX
         ));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // 2019-05-02 by Martin Hecht:
     //            add second block in settings
@@ -153,7 +153,7 @@ require(WB_PATH."/index.php");
             'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `block2` TEXT NOT NULL AFTER `footer`',
             TABLE_PREFIX
         ));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // 2019-04-13 by Martin Hecht:
     //            add view order
@@ -162,7 +162,7 @@ require(WB_PATH."/index.php");
             'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `view_order` INT NOT NULL DEFAULT \'0\' AFTER `post_loop`',
             TABLE_PREFIX
         ));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // 2019-04-18 Bianka Martinovic
     //            remove all commenting settings and table
@@ -170,98 +170,51 @@ require(WB_PATH."/index.php");
 
     try {
         $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_posts` DROP COLUMN `commenting`");
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     try {
         $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` DROP COLUMN `comments_page`, DROP COLUMN `comments_header`, DROP COLUMN `comments_loop`, DROP COLUMN `comments_footer`, DROP COLUMN `commenting`, DROP COLUMN `use_captcha`, DROP COLUMN `resize`");
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     try {
         $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` ADD COLUMN `imgthumbsize` VARCHAR(50) NULL DEFAULT NULL AFTER `gallery`, ADD COLUMN `imgmaxwidth` VARCHAR(50) NULL DEFAULT NULL AFTER `imgthumbsize`, ADD COLUMN `imgmaxheight` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxwidth`, ADD COLUMN `imgmaxsize` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxheight`");
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // 2019-04-18 Bianka Martinovic
     //            rename columns (from German to neutral) in mod_news_img_img table
     //            add permalink column to mod_news_img_posts table
     try {
         $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_img` CHANGE COLUMN `bildname` `picname` VARCHAR(255) NOT NULL DEFAULT '' AFTER `id`, CHANGE COLUMN `bildbeschreibung` `picdesc` VARCHAR(255) NOT NULL DEFAULT '' AFTER `picname`");
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     // ----- v5.0 --------------------------------------------------------------
 
     try {
         $database->query(sprintf("ALTER TABLE `%smod_news_img_posts` DROP COLUMN `page_id`",TABLE_PREFIX));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     try {
         $database->query(sprintf("ALTER TABLE `%smod_news_img_groups` DROP COLUMN `page_id`",TABLE_PREFIX));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     try {
         $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` DROP COLUMN `page_id`",TABLE_PREFIX));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     try {
         $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `use_second_block` CHAR(1) NOT NULL DEFAULT 'N' AFTER `imgmaxsize`",TABLE_PREFIX));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     try {
         $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `view` VARCHAR(50) NOT NULL DEFAULT 'default' AFTER `use_second_block`",TABLE_PREFIX));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
     try {
         $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `mode` VARCHAR(50) NULL DEFAULT 'default' AFTER `view`", TABLE_PREFIX));
-    } catch(\PDOException $e) {}
+    } catch(\Exception $e) {}
 
-    // 2019-07-05 Bianka Martinovic
-    //            add new table that links images to posts
-    $database->query(sprintf(
-        "CREATE TABLE IF NOT EXISTS `%smod_news_img_posts_img` (
-          `post_id` int(11) NOT NULL,
-          `pic_id` int(11) NOT NULL,
-          `position` int(11) NOT NULL,
-          UNIQUE KEY `post_id_pic_id` (`post_id`,`pic_id`),
-          KEY `FK_%smod_news_img_posts_img_%smod_news_img_img` (`pic_id`),
-          CONSTRAINT `FK_%smod_news_img_posts_img_%smod_news_img_img` FOREIGN KEY (`pic_id`) REFERENCES `%smod_news_img_img` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-          CONSTRAINT `FK_%smod_news_img_posts_img_%smod_news_img_posts` FOREIGN KEY (`post_id`) REFERENCES `%smod_news_img_posts` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;",
-        TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
-    ));
-
-    // 2019-07-05 Bianka Martinovic
-    //            retrieve old data from img-table
-    $q = $database->query(sprintf(
-        'SELECT `id`, `post_id`, `position` FROM `%smod_news_img_img`',
-        TABLE_PREFIX
-    ));
-    $old_data = array();
-    if (!empty($q) && $q->numRows() > 0) {
-        while($row = $q->fetchRow()) {
-            $old_data[$row['id']] = $row;
-        }
-    }
-
-    // 2019-07-05 Bianka Martinovic
-    //            insert data into new table
-    if(is_array($old_data) && count($old_data)>0) {
-        foreach($old_data as $pic_id => $item) {
-            $database->query(sprintf(
-                "INSERT IGNORE INTO `%smod_news_img_posts_img` ".
-                "( `post_id`, `pic_id`, `position` ) ".
-                "VALUES( %d, %d, %d )",
-                TABLE_PREFIX, intval($item['post_id']), intval($pic_id), intval($item['position'])
-            ));
-        }
-    }
-
-    // 2019-07-05 Bianka Martinovic
-    //            remove (moved) columns from img-table
-    try {
-        $database->query(sprintf(
-            'ALTER TABLE `%smod_news_img_img DROP COLUMN `post_id`, DROP COLUMN `position`',
-            TABLE_PREFIX
-        ));
-    } catch(\PDOException $e) {}
+   
+	
 
     // 2019-07-05 Bianka Martinovic
     //            add database tables for tags

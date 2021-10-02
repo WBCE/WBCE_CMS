@@ -47,7 +47,7 @@ if (!defined('CAT_PATH')) {
 
 // Validate all fields
 if ($admin->get_post('title') == '') {
-    $admin->print_error($MESSAGE['GENERIC']['FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id).'&tab=g');
+    $admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], WB_URL.'/modules/news_img/modify_group.php?page_id='.$page_id.'&section_id='.$section_id.'&group_id='.$admin->getIDKEY($group_id).'&tab=g');
     $admin->print_footer();
     exit();
 } else {
@@ -69,7 +69,7 @@ if (isset($_FILES['image']['tmp_name']) && $_FILES['image']['tmp_name'] != '') {
     $suffix   = strtolower(pathinfo($filename,PATHINFO_EXTENSION));
     $new_filename = WB_PATH.MEDIA_DIRECTORY.'/.news_img/image'.$group_id.'.'.$suffix;
     if(!in_array($suffix,$allowed_suffixes)) {
-        $admin->print_error($MESSAGE['GENERIC']['FILE_TYPE'].' JPG (JPEG), GIF or PNG');
+        $admin->print_error($MESSAGE['GENERIC_FILE_TYPE'].' JPG (JPEG), GIF or PNG');
     }
     // Make sure the target directory exists
     make_dir(WB_PATH.MEDIA_DIRECTORY.'/.news_img');

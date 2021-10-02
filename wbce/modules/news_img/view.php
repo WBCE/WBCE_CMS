@@ -78,7 +78,7 @@ $page_keywords = array();
 if (defined('POST_ID') && is_numeric(POST_ID)) {
 
     if(!$page_link) {
-        exit($MESSAGE['PAGES']['NOT_FOUND']);
+        exit($MESSAGE['PAGES_NOT_FOUND']);
     }
 
     // for functions that use global $section_id

@@ -64,6 +64,10 @@ if(in_array('0',$sections)) {
         "DELETE FROM `%smod_news_img_tags_sections` WHERE `section_id`=%d AND `tag_id`=%d",
         TABLE_PREFIX, intval($section_id), $tag_id
     ));
+	 $database->query(sprintf(
+        "DELETE FROM `%smod_news_img_tags` WHERE `tag_id`=$tag_id",
+        TABLE_PREFIX
+    ));
 }
 
 // Check if there is a db error, otherwise say successful

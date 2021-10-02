@@ -294,7 +294,7 @@ if ($module_type == "news_img") {
             make_dir(WB_PATH.PAGES_DIRECTORY.'/posts/');
             $file_create_time = '';
             if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
-                $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
+                $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
             } else {
                 // Specify the filename
                 $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
@@ -501,7 +501,7 @@ if ($module_type == "news_img") {
                     make_dir(WB_PATH.PAGES_DIRECTORY.'/posts/');
                     $file_create_time = '';
                     if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
-                        $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
+                        $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
                     } else {
                         // Specify the filename
                         $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
@@ -744,7 +744,7 @@ if ($module_type == "news_img") {
             make_dir(WB_PATH.PAGES_DIRECTORY.'/posts/');
             $file_create_time = '';
             if (!is_writable(WB_PATH.PAGES_DIRECTORY.'/posts/')) {
-                $admin->print_error($MESSAGE['PAGES']['CANNOT_CREATE_ACCESS_FILE']);
+                $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
             } else {
                 // Specify the filename
                 $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;

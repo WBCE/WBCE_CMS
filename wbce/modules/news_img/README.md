@@ -31,7 +31,7 @@ NWI steht unter der [GNU General Public License (GPL) v3.0](http://www.gnu.org/l
 
 ### Loslegen und Schreiben
 
-1.  Ggfs. eine neue Seite mit "News with Images" anlegen
+1.  Ggfs. eine neue Seite mit "News with Images" anlegen (Von der Funktionsweise ist es vorgehen, dass pro Seite nur ein "News with Images" Abschnitt vorhanden sein soll).
 2.  Um einen neuen Beitrag zu erstellen, auf die Schaltfläche "Beitrag verfassen" klicken. Zum Bearbeiten des Inhalts eines vorhandenen Beitrags auf dessen Titel klicken.
 3.  Überschrift und ggf. weitere Felder ausfüllen, ggf. Bilder auswählen. Die Funktion der Eingabefelder ist wohl selbsterklärend.
 4.  Auf "Speichern" oder "Speichern und zurück" klicken

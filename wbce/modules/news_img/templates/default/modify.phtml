@@ -206,8 +206,8 @@
                 <input type="hidden" name="tab" value="g" />
                 <?php echo $TEXT['ADD'] ?>:
                 <input type="text" name="title" value="" maxlength="255" style="width:250px" />
-                <input type="checkbox" name="active" id="active_true" value="1" checked="checked" />
-                <label for="active_true"><?php echo strtolower($TEXT['ACTIVE']); ?></label>
+                <!--<input type="checkbox" name="active" id="active_true" value="1" checked="checked" />
+                <label for="active_true"><?php echo strtolower($TEXT['ACTIVE']); ?></label>-->
                 <input name="save" type="submit" value="<?php echo $TEXT['SAVE']; ?>" style="width: 100px; margin-top: 5px;" />
             </form>
 
@@ -218,7 +218,7 @@
                             <th></th>
                             <th></th>
                             <th><?php echo $TEXT['TITLE'] ?></th>
-                            <th><?php echo $TEXT['ACTIVE'] ?></th>
+                            <!--<th><?php echo $TEXT['ACTIVE'] ?></th>-->
                             <th><?php echo $TEXT['IMAGE'] ?></th>
                             <th></th>
                             <th></th>
@@ -240,9 +240,11 @@
                                 <?php echo $group['title'].' (ID: '.$group['group_id'].')'; ?>
                             </a>
                         </td>
+<!--
                         <td style="width:150px">
                             <span class="fa fa-fw <?php if ($group['active'] == 1): ?>fa-eye nwi-active<?php else: ?>fa-eye-slash nwi-inactive<?php endif; ?>"></span>
                         </td>
+-->
                         <td>
                         <?php if(strlen($group['image'])>0): ?>
                             <a href="javascript:void(0);" onmouseover="XBT(this, {id:'tt<?php echo $group['group_id'] ?>'})">
