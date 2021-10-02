@@ -179,8 +179,7 @@ $DEFAULT_THEME = 'wbce_flat_theme';
 $stepID = 1;
 
 // removes old folders
-$dirRemove = array(
-    '[ROOT]/config/',
+$dirRemove = array(    
     '[ROOT]/log/',
     '[ACCOUNT]/email_templates/',
     '[ACCOUNT]/functions/',
