@@ -16,13 +16,17 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.10';
+$module_version     = '5.0.11';
 $module_platform    = '1.4';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ *
+ * v5.0.11 - 2021-10-09
+ *         - Florian
+ *           * added HREF placeholder
  *
  * v5.0.10 - 2021-10-02
  *         - Florian

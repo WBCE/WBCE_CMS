@@ -1955,6 +1955,7 @@ function mod_nwi_replacements()
 		'IMAGE_URL',					// URL of preview image without <img src>
         'IMAGES',                       // gallery images
         'LINK',                         // "read more" link
+		'HREF',							// link to post detail including href=""
         'MODI_DATE',                    // post modification date
         'MODI_TIME',                    // post modification time
         'NEXT_LINK',                    // next link
@@ -2264,9 +2265,11 @@ function mod_nwi_get_news_items($options=array())
             // gallery images - wichtig für link "weiterlesen"  SHOW_READ_MORE
             $images = mod_nwi_img_get_by_post($post['post_id'],false);
             $anz_post_img = count($images);
+			$post_href_link = 'href="'. $post['post_link'].'"';
             // no "read more" link if no long content
             if ( (strlen($post['content_long']) < 9) && ($anz_post_img < 1)) {
                 $post['post_link'] = '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;';
+				$post_href_link = '';
             }
             $posts[] = mod_nwi_post_process($post, $post['section_id'], $users);
         }
