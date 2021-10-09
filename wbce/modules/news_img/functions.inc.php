@@ -1204,9 +1204,11 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
         // gallery images - wichtig für link "weiterlesen"  SHOW_READ_MORE
         $images = mod_nwi_img_get_by_post($post['post_id'],false);
         $anz_post_img = count($images);
+		$post_href_link = 'href="'. $post['post_link'].'"';
         // no "read more" link if no long content
         if ( (strlen($post['content_long']) < 9) && ($anz_post_img < 1)) {
             $post['post_link'] = '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;';
+			$post_href_link ='';
         }
 
         // set replacements for current line
@@ -1219,6 +1221,7 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
                 'IMAGE'           => $post['post_img'],
                 'SHORT'           => $post['content_short'],
                 'LINK'            => $post['post_link'],
+				'HREF'			  => $post_href_link,
                 'MODI_DATE'       => $post['post_date'],
                 'MODI_TIME'       => $post['post_time'],
                 'TAGS'            => implode(" ", $tags),

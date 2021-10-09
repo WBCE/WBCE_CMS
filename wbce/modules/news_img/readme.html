@@ -149,6 +149,7 @@ nav label:active { background: #ffffff; }
 <li>Schritte 2. - 4. ein paar Mal wiederholen und sich das ganze im Frontend anschauen</li>
 </ol>
 <p>Grundsätzlich kann NWI mit anderen Modulen auf einer Seite bzw. in einem Block kombiniert werden, es kann dann aber wie bei jedem Modul, das eigene Detailseiten generiert, zu Ergebnissen kommen, die nicht dem Erwarteten/Erwünschten entsprechen.</p>
+<p>Es wird dringend empfohlen, nicht mehrere NWI-Abschnitte auf derselben Seite (Page) zu verwenden.</p>
 
 <h3 id="d62">Bilder im Beitrag</h3>
 <p>Für jeden Beitrag kann ein Beitragsbild hinterlegt werden, das auf der Übersichtsseite und ggfs. der Beitragsseite angezeigt wird. Darüber hinaus ist es möglich, beliebig viele Bilder zu einem Beitrag zu hinterlegen, die als Bildergalerie angezeigt werden. Die Galeriedarstellung erfolgt entweder als Fotorama-Galerie (Thumbnails, Bild über die gesamte Breite) oder als Masonry-Galerie (Bildermosaik). </p>
@@ -156,6 +157,7 @@ nav label:active { background: #ffffff; }
 <p>Die Galeriebilder werden hochgeladen, sobald der Beitrag gespeichert wird, und können dann mit Bildunterschriften versehen, per Drag&amp;Drop umsortiert oder auch wieder gelöscht werden.</p>
 <p>Beim Upload von Dateien mit gleichen Namen wie bereits vorhandenen Bildern werden die vorhandenen Dateien nicht überschrieben, sondern bei den nachfolgenden Dateien wird eine fortlaufende Nummerierung ergänzt (bild.jpg, bild_1.jpg usw.)</p>
 <p>Die Verwaltung der Bilder erfolgt nur über den Beitrag, nicht über die WBCE-Medienverwaltung, da NWI sonst nicht &quot;weiß&quot;, wo welche Bilder hingehören/fehlen usw.</p>
+<p>Das Beitragsbild liegt nur in der Größe vor, die bei den Moduleinstellungen hinterlegt wurde. Werden unterschiedlich große Darstellungen gewünscht, so ist die Maximalgröße bei den Einstellungen zu hinterlegen und die kleinere Darstellung über CSS-Formatierung zu realisieren.</p>
 
 <h3 id="d63">Gruppen</h3>
 <p>Beiträge können Gruppen zugeordnet werden. Dies hat einerseits Einfluss auf die Reihenfolge (die Beiträge werden erst nach Gruppe und dann nach einem weiteren anzugebenden Kriterium sortiert), und ermöglicht andererseits, themenspezifische Übersichtsseiten zu generieren. Diese können dann über die URL der NWI-Seite mit dem Parameter g?=GROUP_ID, also z.B. news.php?g=2 angesteuert werden.</p>
@@ -172,6 +174,7 @@ nav label:active { background: #ffffff; }
 <h3 id="d65">2. Block</h3>
 <p>Diese Funktion steht nur zur Verfügung, wenn bei den Einstellungen der "Expertenmodus" aktiviert wurde und die Verwendung des 2. Blocks aktiviert ist.</p>
 <p>Sofern vom Template unterstützt, können Inhalte in einem zweiten Block (z.B. einer Randspalte) dargestellt werden. Dabei kann es sich entweder um bei den Einstellungen hinterlegte, wiederkehrende Inhalte handeln, beitragsspezifische Inhalte (Beitragsbild, Anreißertext o.ä.) oder direkt im Beitrag hinterlegte Texte, die im Eingabefeld für den 2. Block eingetragen wurden.</p>
+<p>Achtung: wird der zweite Block deaktiviert, oder vom Experten- in den Standardmodus gewechselt, gehen die Einstellungen für diesen Block verloren.</p>
 
 <h3 id="d66">Importfunktion</h3>
 <p>So lange noch kein Beitrag im jeweiligen NWI-Abschnitt erstellt wurde, können Beiträge aus anderen NWI-Abschnitten, News 3.x sowie Topics automatisch importiert werden.
@@ -223,6 +226,7 @@ Das Beitragsbild steht <strong>nur</strong> in der angegebenen Auflösung zur Ve
 <li>[IMAGE] Beitragsbild (&lt;img src=... /&gt;),</li>
 <li>[SHORT] Kurztext,</li>
 <li>[LINK] Link zur Beitrags-Detailansicht,</li>
+<li>[HREF] gibt den Link zum Beitrag inkl. href="" aus, also z.B. <code>href="beitrag.php"</code>. Gibt es keinen Langtext und keine Galerie, wird nichts ausgegeben. Mit <code>&lt;a [HREF]&gt; ... &lt;/a&gt;</code> ist es dann möglich, den jeweiligen Beitragslink nur dann klickbar zu machen, wenn es auch tatsächlich einen Langtext und/oder eine Galerie gibt.</li>
 <li>[MODI_DATE] Datum der letzten Änderung des Beitrags,</li>
 <li>[MODI_TIME] Zeitpunkt (Uhrzeit) der letzten Änderung des Beitrags,</li>
 <li>[CREATED_DATE] Datum, wann der Beitrag erstellt wurde,</li>
@@ -327,12 +331,15 @@ Das Beitragsbild steht <strong>nur</strong> in der angegebenen Auflösung zur Ve
 <li>Repeat steps 2. - 4. a few times and look at the whole in the frontend</li>
 </ol>
 <p>Basically, NWI can be combined with other modules on a page or in a block, but then it can, as with any module that generates its own detail pages, come to results that do not meet the expected / desirable results.</p>
-<h3>pictures in the post</h3>
+<p>It is strongly recommended to use only one NWI section per page.</p>
+
+<h3>Pictures in the post</h3>
 <p>For each post a preview image can be uploaded, which is shown on the overview page and if necessary the post page. In addition, it is possible to add any number of images to a post, which are displayed as a picture gallery. The gallery presentation is shown either as a Fotorama gallery (thumbnails, full-width image) or as a Masonry gallery (picture mosaic).</p>
 <p>Which gallery script is used is set for all posts in the settings of each section.</p>
 <p>The gallery images are uploaded as the post is saved, and can then be captioned, resorted, or deleted.</p>
 <p>When uploading files with the same name as already existing images, the existing files are not overwritten, but the following files are supplemented with consecutive numbering (bild.jpg, bild_1.jpg, etc.).</p>
 <p>The management of the pictures takes place only over the post page, not over the WBCE media administration, since NWI does not &quot;know&quot; otherwise, where which images belong / are missing etc.</p>
+
 
 <h3>Groups</h3>
 <p>Posts can be assigned to groups. On the one hand, this has an influence on the order (the posts are sorted according to the group and then according to a further criterion to be specified), and on the other hand, it is possible to generate topic-specific overview pages. These can then be accessed via the URL of the NWI page with the parameter g?=GROUP_ID, e.g. news.php?g=2.</p>
@@ -402,6 +409,7 @@ The image is only available in the specified resolution. If it is to be used in 
 <li>[IMAGE] post image (&lt;img src = ... /&gt;),</li>
 <li>[SHORT] short text,</li>
 <li>[LINK] Link to the article detail view,</li>
+<li>[HREF] Link to the detail view including href="" (i.e. <code>href="example-post.php"</code>). If no long content or gallery exists, this placeholder will return an empty string. Depending on the page settings (using <code>&lt;a [HREF]&gt; ... &lt;/a&gt;</code>) links to the detail view are only clickable if some displayable content exists.</li>
 <li>[MODI_DATE] date of the last change of the post,</li>
 <li>[MODI_TIME] Time (time) of the last change of the post,</li>
 <li>[CREATED_DATE] Date when the post was created,</li>
