@@ -5,6 +5,187 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2021-10-09:** instantflorian [[58d6800e](https://github.com/WBCE/WBCE_CMS/commit/58d6800e101e89bf247849f8c756d9d6fa922852)]
+   > Add HREF placeholder
+     missed a second appearance (where is this used anyway?), increase version
+
+ * **2021-10-09:** instantflorian [[f1fda146](https://github.com/WBCE/WBCE_CMS/commit/f1fda146a027647734056797e4aefd3108b1494b)]
+   > Add new NWI placeholder [HREF]
+
+ * **2021-10-06:** Martin Hecht [[899cbf92](https://github.com/WBCE/WBCE_CMS/commit/899cbf92cca8c407252c5b6a2d7911e1add6181a)]
+   > Revert "quickfix for opf bug"
+     This reverts commit 878f42d620208c745a9bb22f8d735ca15c17eaee.
+     
+     The "bug" (that absolute paths were used) was fixed in opf dashboard
+     version 1.5.7. Running the update of any version later than this
+     eliminates all occurrences of the absolute paths in the database.
+     The prerequisite: those paths are still correct. When migrating
+     an older installation to a different server may require to edit
+     the paths and urls manually - or you upgrade first and migrate the
+     installation afterwards to a new hoster.
+     
+     If there should still be cases in which the mechanism doesn't work,
+     the workaround is to uninstall and re-install opf dashboard,
+     which requires to comment out this line in its info.php like this:
+     // $module_level       = 'core';
+
+ * **2021-10-02:** instantflorian [[95087cef](https://github.com/WBCE/WBCE_CMS/commit/95087cefdaaab09243e8c73bad69954570cc1858)]
+   > Update update.php
+     Removing the config folder causes issues if this folder is coincidentally used by other applications. So better leave it in place since it does not hurt.
+
+ * **2021-10-02:** Colinax [[5b3944cc](https://github.com/WBCE/WBCE_CMS/commit/5b3944cc1d555410bd99b4a19d418e9582c793ce)]
+   > Merge branch 'main' of https://github.com/WBCE/WBCE_CMS into main
+
+ * **2021-10-02:** Colinax [[04fa7fdd](https://github.com/WBCE/WBCE_CMS/commit/04fa7fdd7edf76317fde3bce0c3fea15e7436a8d)]
+   > elFinder 1.1.3
+
+ * **2021-10-02:** instantflorian [[3a9721e0](https://github.com/WBCE/WBCE_CMS/commit/3a9721e03da0f3b413dc4728202274663527ac1f)]
+   > Update version
+
+ * **2021-10-02:** instantflorian [[9d9d2bca](https://github.com/WBCE/WBCE_CMS/commit/9d9d2bcaaac3364ce14d81eca82abb44d201644c)]
+   > Material Theme gray for elFinder
+     thx to mastermind
+
+ * **2021-10-02:** Colinax [[16a66c37](https://github.com/WBCE/WBCE_CMS/commit/16a66c37c4326b4430983ea7b6a821a2a51cbd9b)]
+   > NWI 5.0.10
+
+ * **2021-09-18:** Colinax [[2d172b27](https://github.com/WBCE/WBCE_CMS/commit/2d172b27e0f33a39ba3c47d49ad7b7f1486e943f)]
+   > remove some placeholder icons to support modern browser behavior
+
+ * **2021-09-17:** Colinax [[878f42d6](https://github.com/WBCE/WBCE_CMS/commit/878f42d620208c745a9bb22f8d735ca15c17eaee)]
+   > quickfix for opf bug
+
+ * **2021-09-17:** Colinax [[0c7122bc](https://github.com/WBCE/WBCE_CMS/commit/0c7122bcb9bd9ac25009cb7bbe044b4a2d8a14a6)]
+   > Twig 3.3.3
+
+ * **2021-09-14:** instantflorian [[ea8461d1](https://github.com/WBCE/WBCE_CMS/commit/ea8461d14b2c6009b0d5f2bd2a01202b57dd919d)]
+   > Wrong section Id output in NWI
+
+ * **2021-09-11:** Colinax [[7d3e73c6](https://github.com/WBCE/WBCE_CMS/commit/7d3e73c62913d26159ed4864eb9217e6e119dfa5)]
+   > define CKEditor language
+
+ * **2021-09-11:** Colinax [[7b55cbd3](https://github.com/WBCE/WBCE_CMS/commit/7b55cbd3619827f22bfce5499608d95ffbe68184)]
+   > Update update.php
+
+ * **2021-09-11:** instantflorian [[257972d6](https://github.com/WBCE/WBCE_CMS/commit/257972d6c1391dba8110a643018a9973787e6c0d)]
+   > Update EN.php
+
+ * **2021-09-11:** instantflorian [[751419a6](https://github.com/WBCE/WBCE_CMS/commit/751419a614331c5ab03804263b58553983a3c065)]
+   > Merge branch 'main' of https://github.com/WBCE/WBCE_CMS into main
+
+ * **2021-09-11:** instantflorian [[bedcf975](https://github.com/WBCE/WBCE_CMS/commit/bedcf975639aaf392ff6648f58e2e34743252e0a)]
+   > Remove unnecessary/wrong CSS file link
+
+ * **2021-09-05:** Colinax [[d837c8b7](https://github.com/WBCE/WBCE_CMS/commit/d837c8b7995402cc60cdac42ca9bde0d13d45a8d)]
+   > remove @ operator
+
+ * **2021-09-05:** instantflorian [[28b11f56](https://github.com/WBCE/WBCE_CMS/commit/28b11f561810a3ca4d50a864aece050435821c72)]
+   > Fix PHP 8 issue
+     See #508
+
+ * **2021-09-04:** Colinax [[5af82c18](https://github.com/WBCE/WBCE_CMS/commit/5af82c18793c75e8bef1853bdac07b20df85d8fc)]
+   > elFinder 1.1.2
+
+ * **2021-09-04:** Colinax [[4a506782](https://github.com/WBCE/WBCE_CMS/commit/4a50678250217f99ed50914138536a6fb25cebc8)]
+   > remove obsolete warning
+
+ * **2021-09-04:** Colinax [[c3081013](https://github.com/WBCE/WBCE_CMS/commit/c3081013afbde9b76a9c7f8ccf2aaf54ec04a23c)]
+   > CKEditor 4.16.2
+
+ * **2021-08-27:** instantflorian [[284db98c](https://github.com/WBCE/WBCE_CMS/commit/284db98c086c1fba95b02060376b79b71f688eaf)]
+   > Use user time format in list
+
+ * **2021-08-24:** Colinax [[f0559a35](https://github.com/WBCE/WBCE_CMS/commit/f0559a35c5270d2054f2cd4f1bc60fdf9c1c509d)]
+   > PHPMailer 6.5.1
+
+ * **2021-07-28:** Colinax [[3e0276f1](https://github.com/WBCE/WBCE_CMS/commit/3e0276f17eefc48524be96171ec53a77089da723)]
+   > remove Doctrine
+
+ * **2021-07-22:** Colinax [[3bf26a10](https://github.com/WBCE/WBCE_CMS/commit/3bf26a104865d5c5602e0a9199f810963f3fc4f4)]
+   > php8 fix not defined notice
+
+ * **2021-07-11:** instantflorian [[bcda0ba8](https://github.com/WBCE/WBCE_CMS/commit/bcda0ba866ed78e9a96ade476936b3675995054f)]
+   > Update NWI version file
+
+ * **2021-07-11:** instantflorian [[09c6113d](https://github.com/WBCE/WBCE_CMS/commit/09c6113df9806316b13373adf2a163c260173da7)]
+   > Improve prev/next function (group filter)
+
+ * **2021-07-03:** Colinax [[74214738](https://github.com/WBCE/WBCE_CMS/commit/7421473808d28b8a4ebd9f2eefafcd2aec91e24e)]
+   > DBAL 2.13.2
+
+ * **2021-07-03:** Colinax [[cf4c03f9](https://github.com/WBCE/WBCE_CMS/commit/cf4c03f9fbda63c55fb6a905687644a0f3044bc6)]
+   > Cache Control 1.0.7
+
+ * **2021-06-14:** Colinax [[2d8b9708](https://github.com/WBCE/WBCE_CMS/commit/2d8b97085dc37fe3c2d7d102dd41776b084151a7)]
+   > elFinder 1.1.1
+
+ * **2021-06-13:** instantflorian [[570d0d67](https://github.com/WBCE/WBCE_CMS/commit/570d0d67b6895170fbba486ef06a24cae27db495)]
+   > Update README.md
+
+ * **2021-06-13:** instantflorian [[c9cf9dc8](https://github.com/WBCE/WBCE_CMS/commit/c9cf9dc8b580bdb35863aa3b4f0233eab5b896c7)]
+   > Update screenshot
+
+ * **2021-06-12:** Colinax [[4823061d](https://github.com/WBCE/WBCE_CMS/commit/4823061da9e1dade72e32eed4369a3efb87ffb4a)]
+   > elFinder 1.1.0
+
+ * **2021-06-12:** Colinax [[c465d814](https://github.com/WBCE/WBCE_CMS/commit/c465d814eb5a212572293278ab2487cbcbb17201)]
+   > OPF E-Mail 1.1.7
+
+ * **2021-06-03:** Colinax [[e07382e5](https://github.com/WBCE/WBCE_CMS/commit/e07382e5c7967ec752108becc9ff4f81dedc8ceb)]
+   > show_menu2 4.14.1
+
+ * **2021-06-02:** Martin Hecht [[f28b149d](https://github.com/WBCE/WBCE_CMS/commit/f28b149d09c1ee2905a194c8324cbbd9142027a1)]
+   > reduce show_breadcrumbs function to a simple wrapper
+
+ * **2021-06-01:** Martin Hecht [[bdf64298](https://github.com/WBCE/WBCE_CMS/commit/bdf642985f66fc7d68bf24e804fa6a8fd8935c15)]
+   > restore parts of show_menu2/include.php
+     a larger section (e.g. including the show_breadcrumbs function
+     got lost somehow
+
+ * **2021-05-31:** Martin Hecht [[df78f357](https://github.com/WBCE/WBCE_CMS/commit/df78f357318358436e2e95d0798884309b50a2c8)]
+   > opf dashboard: update to 1.5.15
+     add logging a notice when filter fails
+
+ * **2021-05-31:** Martin Hecht [[907404dd](https://github.com/WBCE/WBCE_CMS/commit/907404dd8119bf19141cee7d337a8795479b10c6)]
+   > update mod_opf_email to 1.1.6
+
+ * **2021-05-31:** Per Göttlicher [[6b508fac](https://github.com/WBCE/WBCE_CMS/commit/6b508facd9371107ace8fd922eaa79ca56fe0b02)]
+   > Implemented fix for issue #506 (#507)
+
+ * **2021-05-29:** Colinax [[07ace095](https://github.com/WBCE/WBCE_CMS/commit/07ace0955cb61a605e65108f7501a39c4d44fe07)]
+   > Visitor statistics 0.2.2
+
+ * **2021-05-29:** Colinax [[34d5f326](https://github.com/WBCE/WBCE_CMS/commit/34d5f3262fb521b1a2ad6e490cae76947656d66f)]
+   > SimplePageHead 0.8.0
+
+ * **2021-05-29:** Colinax [[597d5eda](https://github.com/WBCE/WBCE_CMS/commit/597d5eda5ed5f22e9189b9d8aaa1e3ce7a6dfb2d)]
+   > Menu Link 2.9.8
+
+ * **2021-05-29:** Colinax [[270f5f3b](https://github.com/WBCE/WBCE_CMS/commit/270f5f3b3b897f63bc2989fef317da094ed645a8)]
+   > Errorlog viewer 1.1.1
+
+ * **2021-05-29:** Colinax [[780e31a1](https://github.com/WBCE/WBCE_CMS/commit/780e31a1d3c8538acedd308c7f9a65d477ff6eea)]
+   > Captcha Control 2.0.4
+
+ * **2021-05-29:** Colinax [[55ca6d07](https://github.com/WBCE/WBCE_CMS/commit/55ca6d07861851478222eb766a2b06a7add2718b)]
+   > Addon Monitor 0.7.1
+
+ * **2021-05-29:** Colinax [[8abc040b](https://github.com/WBCE/WBCE_CMS/commit/8abc040b4ee840df9d35b2b76455975214d1abab)]
+   > SecureFormSwitcher 1.3.3
+
+ * **2021-05-29:** Colinax [[fb2dc710](https://github.com/WBCE/WBCE_CMS/commit/fb2dc710770309657bc4e4b1368aa568651cb122)]
+   > Sitemap 4.0.10
+
+ * **2021-05-26:** Colinax [[8a9d43a4](https://github.com/WBCE/WBCE_CMS/commit/8a9d43a41023debf82e132db8fa87dcee34f12e5)]
+   > SEO Tool 0.7.1
+
+ * **2021-05-26:** Colinax [[de027351](https://github.com/WBCE/WBCE_CMS/commit/de027351a7ea4a00be6b6c7fd8e48b18bc6b1657)]
+   > fix php notice
+     fixes #505
+
+ * **2021-05-22:** Colinax [[62a7cea1](https://github.com/WBCE/WBCE_CMS/commit/62a7cea180b005c337b4f7a83c5318f5783b981f)]
+   > Update CHANGELOG.md
+
  * **2021-05-22:** Colinax [[6f04f73b](https://github.com/WBCE/WBCE_CMS/commit/6f04f73b23b69efe16cfe899b6034f192a1cfe6f)]
    > bump WBCE Version
 
