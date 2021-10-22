@@ -77,6 +77,7 @@ class Mailer extends PHPMailer
             $oMailer->isSendmail();
         }
 
+		$from_name ='';
         // set default sender 'FromName'
         if ($oMailer->FromName == 'Root User') {
             if (isset($_SESSION['DISPLAY_NAME'])) {
