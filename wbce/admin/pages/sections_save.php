@@ -91,7 +91,6 @@ if ($query_sections->numRows() > 0) {
             $sql = '';
             $publ_start = 0;
             $publ_end = 0;
-            $dst = date("I") ? " DST" : ""; // daylight saving time?
             if (isset($_POST['block' . $section_id]) && $_POST['block' . $section_id] != '') {
                 $sql = "block = '" . intval($_POST['block' . $section_id]) . "'";
             }
