@@ -435,7 +435,7 @@ Settings::Set('default_theme', $DEFAULT_THEME);
 if (defined("WB_SECFORM_TIMEOUT")) {
     Settings::Set('wb_secform_timeout', '7200');
 }
-if (defined("WB_SEESSION_TIMEOUT")) {
+if (defined("WB_SESSION_TIMEOUT")) {
     Settings::Set('wb_session_timeout', Settings::GetDb('wb_secform_timeout'));
 }
 
