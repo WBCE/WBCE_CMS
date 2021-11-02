@@ -39,7 +39,7 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
     $sNewPasswordRaw = $oAccounts->GenerateRandomPassword();
     $sNewPasswordEnc = $oAccounts->doPasswordEncode($sNewPasswordRaw);
 
-    $sReadableDateTime = date("Y-m-d H:i:s", time());
+    $sReadableDateTime = date("Y-m-d H:i:s", time() + DEFAULT_TIMEZONE);
 
     if (isset($_GET['mng']) && $_GET['mng'] == intval(1)) {
         if ($oAccounts->checkConfirmSum($_GET['sum'], $iUserID) == false) {

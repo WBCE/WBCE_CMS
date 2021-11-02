@@ -45,8 +45,8 @@ $aTokenReplace = array(
     'WBMAILER_DEFAULT_SENDERNAME' => WBMAILER_DEFAULT_SENDERNAME,
     'SERVER_EMAIL' => SERVER_EMAIL,
     'WB_URL' => WB_URL,
-    'DATE' => date("d-m-Y"),
-    'TIME' => date("H:i:s"),
+    'DATE' => date("d-m-Y", time() + DEFAULT_TIMEZONE),
+    'TIME' => date("H:i:s", time() + DEFAULT_TIMEZONE),
 );
 
 // After check print the header
