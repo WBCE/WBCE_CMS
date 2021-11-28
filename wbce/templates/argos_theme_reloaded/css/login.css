@@ -121,6 +121,15 @@ a:hover {
     text-align: center;
 }
 
+.captcha_table {
+	display:inline-block;
+	margin:auto;
+}
+
+.error {
+	color:firebrick;
+}
+
 @media screen and (max-width: 36.5em) {
     .label {
         text-align: left;

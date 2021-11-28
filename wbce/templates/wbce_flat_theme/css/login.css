@@ -87,11 +87,17 @@ a:hover {
 }
 
 .page_login_link {
-    font-size: 13px;
+    display: block;
+    margin: 50px 0;
 }
 
 .login_license {
     font-size: 11px;
+}
+
+.captcha_table {
+    display: inline-block;
+    margin: auto;
 }
 
 @media (max-width: 550px) {

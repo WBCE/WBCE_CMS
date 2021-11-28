@@ -1,7 +1,7 @@
 {{ insertCssFile( CURRENT_DIR ~ '/forms.css') }}
+
+<p>{{ L_('MENU:FORGOT') }}</p>
 {{ MESSAGE_BOX }}
-<h2>{{ L_('MENU:FORGOT') }}</h2>
-<br />
 
 <form  class="login-box" name="forgot_pass" action="{{ constant("FORGOT_URL") }}" method="post">
     <div class="cpForm">
@@ -11,7 +11,9 @@
                 <input type="text" maxlength="255" name="email" id="email" value="{{ EMAIL }}" />
             </div>
         </div>
-
+		<div class="formRow">
+		{{CAPTCHA}}
+		</div>
         <div class="buttonsRow">
             <button type="submit" name="submit" class="button pos-right">{{ L_('TEXT:SEND_DETAILS') }}</button>
         </div>		

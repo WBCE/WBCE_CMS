@@ -11,7 +11,7 @@
 	<link href="{THEME_URL}/css/login.css" rel="stylesheet" type="text/css">
 </head>
 
-<body onload="document.forgot_pass.email.focus();">
+<body onload="document.login.email.focus();">
 
 	<div id="container">
 		<header class="fg-center">
@@ -27,7 +27,7 @@
 						<input type="hidden" name="url" value="{URL}">
 
 						<div class="fg12 center">
-							<p>{MESSAGE}:</p>
+							<div class="error">{MESSAGE}</div>
 						</div>
 
 						<hr class="fg12" style="margin-bottom: 15px;">
@@ -35,6 +35,10 @@
 						<div class="fg12 center">
 							<span>{TEXT_EMAIL}:</span>
 							<input type="text" name="email" value="{EMAIL}">
+						</div>
+
+						<div class="fg12 center">
+							{CAPTCHA}
 						</div>
 
 						<div class="fg12 center">

@@ -28,6 +28,7 @@
         <div class="page_login-fields">
             <span class="page_login_fieldelement"><input placeholder="E-Mail" type="text" maxlength="255" name="email" value="{EMAIL}" /></span>
             <br/>
+            {CAPTCHA}
             <p><input type="submit" name="submit" value="{TEXT_SEND_DETAILS}" /></p>
             <p><a class="page_login_link" href="{LOGIN_URL}">{TEXT_NEED_TO_LOGIN}</a></p>
         </div>
