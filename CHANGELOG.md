@@ -5,6 +5,45 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2021-11-30:** instantflorian [[ae022104](https://github.com/WBCE/WBCE_CMS/commit/ae02210402be409137e13a017481ed307b65c620)]
+   > Update versions of modules and templates
+
+ * **2021-11-28:** Colinax [[0554ed3a](https://github.com/WBCE/WBCE_CMS/commit/0554ed3a0c0ebfbe9f8eca6e234a755a769bd908)]
+   > PHPMailer 6.5.3
+
+ * **2021-11-28:** Colinax [[245ae4b7](https://github.com/WBCE/WBCE_CMS/commit/245ae4b7076b8825e440d8bce9e5ae82c402ae11)]
+   > Twig 3.3.4
+
+ * **2021-11-28:** Colinax [[a7811abf](https://github.com/WBCE/WBCE_CMS/commit/a7811abf10c7ab297e5186a4acec70dc7a04bd99)]
+   > Create SECURITY.md
+
+ * **2021-11-28:** instantflorian [[ba39c830](https://github.com/WBCE/WBCE_CMS/commit/ba39c830f7fa29b27186f09991535775c1381bb8)]
+   > update version, small fix to EN.php
+
+ * **2021-11-28:** Colinax [[2faf85a0](https://github.com/WBCE/WBCE_CMS/commit/2faf85a067b84e23081043c2123b0a8383ad09ff)]
+   > CKEditor 4.17.1
+
+ * **2021-11-28:** Colinax [[6ca63f0c](https://github.com/WBCE/WBCE_CMS/commit/6ca63f0cad5f0cd606fdb69a372f09b7d238f1d7)]
+   > add captcha for login forgot (thanks to @maxway2021)
+
+ * **2021-11-02:** Colinax [[a3573571](https://github.com/WBCE/WBCE_CMS/commit/a3573571c131f2bd30be44cdd6ec5643e6e1ef1a)]
+   > fix some timezone issues
+
+ * **2021-10-29:** Colinax [[ea6eeda1](https://github.com/WBCE/WBCE_CMS/commit/ea6eeda1059d6825ac55fa2d0fb5524651805a06)]
+   > remove not needed DST check
+
+ * **2021-10-29:** Colinax [[9045030c](https://github.com/WBCE/WBCE_CMS/commit/9045030cc697a0f092bd826357f48de2511f60ca)]
+   > fix a small typo
+
+ * **2021-10-29:** Colinax [[5b754a76](https://github.com/WBCE/WBCE_CMS/commit/5b754a76eed50df294b5d3fe3166a4bf2060b505)]
+   > remove doctrine from class.database
+
+ * **2021-10-22:** instantflorian [[c180d8f8](https://github.com/WBCE/WBCE_CMS/commit/c180d8f8cdd5806633f02cd83d443e726dda93d5)]
+   > #513
+
+ * **2021-10-09:** instantflorian [[5b63ddf2](https://github.com/WBCE/WBCE_CMS/commit/5b63ddf2fa73b7daf50c425c0f15eadba819049f)]
+   > Update CHANGELOG.md
+
  * **2021-10-09:** instantflorian [[58d6800e](https://github.com/WBCE/WBCE_CMS/commit/58d6800e101e89bf247849f8c756d9d6fa922852)]
    > Add HREF placeholder
      missed a second appearance (where is this used anyway?), increase version
