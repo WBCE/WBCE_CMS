@@ -15,7 +15,7 @@ defined('WB_PATH') or die(header('Location: ../index.php'));
 $module_directory   = 'tool_account_settings';
 $module_name        = 'Account and Signups configuration';
 $module_function    = 'tool';
-$module_version     = '0.7.0';
+$module_version     = '0.7.1';
 $module_platform    = '1.4.0';
 $module_author      = 'Christian M. Stefan (Stefek)';
 $module_icon        = 'fa fa-user-circle-o';
