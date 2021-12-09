@@ -12,7 +12,7 @@
         version: "1.18.1",
         init: function (editor) {
             var command = editor.addCommand("codemirrorAbout", new CKEDITOR.dialogCommand("codemirrorAboutDialog"));
-            command.modes = { wysiwyg: 1, source: 1 };
+            command.modes = { wysiwyg: 0, source: 1 };
 
             CKEDITOR.dialog.add('codemirrorAboutDialog', this.path + 'dialogs/codemirrorAbout.js');
 
