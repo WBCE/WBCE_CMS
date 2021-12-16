@@ -7,166 +7,141 @@ use RuntimeException;
 class GitHubApiClient
 {
     /**
-     * @var string
-     */
-    protected $repoPath;
-
-    /**
-     * @var int
-     */
-    protected $options = [
-        'apiUrl' => 'https://api.github.com',
-        'cache' => true,
-        'cacheLifetime' => 300, // 300 seconds (5 minutes)
-        'cacheDirectory' => null,
-        'curl' => [],
-    ];
-
-    /**
-     * Default cURL options.
+     * Default options
      *
      * @var array
      */
-    protected $curlOptions = [
-        CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_SSL_VERIFYHOST => 0,
-        CURLOPT_SSL_VERIFYPEER => 0,
-        CURLOPT_FOLLOWLOCATION => 1,
+    protected $options = [
+        'api' => [
+            'baseUrl' => 'https://api.github.com',
+        ],
+        'cache' => [
+            'lifetime' => 300, // 300 seconds (5 minutes)
+            'directory' => null,
+        ],
+        'curl' => [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_ACCEPT_ENCODING => 'application/vnd.github.v3+json'
+        ],
     ];
 
     /**
      * Constructor.
      *
-     * @param array $options Client options
+     * @param string $identifier GitHub username, or the name of your application/project
+     * @param array $options Custom options
      */
-    public function __construct($options = [])
+    public function __construct(string $identifier, array $options = [])
     {
-        $this->options['cacheDirectory'] = sys_get_temp_dir();
+        $this->options['cache']['directory'] = sys_get_temp_dir();
+        $this->options['response']['contentCallback'] = function (string $content) {
+            return json_decode($content, true);
+        };
 
-        $this->options = array_merge($this->options, $options);
+        $this->options['curl'][CURLOPT_USERAGENT] = $identifier;
 
-        if (isset($options['curl'])) {
-            $this->curlOptions = $this->curlOptions += $options['curl'];
-        }
+        $this->options = array_replace_recursive($this->options, $options);
     }
 
     /**
-     * Call GitHub API.
+     * Send GET request to GitHub API.
      *
-     * @param string $urlPath Additional API url path
-     * @param array $curlOptions Additional cURL options
-     * @param bool $cache Set FALSE to prevent to cache the response content
+     * @param string $urlPath GitHub API path without base URL
      *
-     * @return string
+     * @return array
      */
-    public function call($urlPath = '', $curlOptions = [], $cache = true)
+    public function get(string $urlPath): array
     {
-        return $this->send($this->options['apiUrl'] . $urlPath, $curlOptions, $cache);
+        $url = $this->options['api']['baseUrl'] . $urlPath;
+
+        return $this->send($url);
     }
 
     /**
-     * Build and send HTTP request.
+     * Send HTTP request.
      *
      * @param string $url Request url
-     * @param array $curlOptions Additional cURL options
-     * @param bool $cache Set FALSE to prevent to cache the response content
      *
-     * @return string
+     * @return array
      *
      * @throws RuntimeException
      */
-    public function send($url = '', $curlOptions = [], $cache = true)
+    protected function send(string $url): array
     {
-        if (!$cache || !$this->options['cache'] || !$this->isCached($url)) {
-            // Get cURL resource
+        $cache = $this->getCache($url);
+
+        if (!is_array($cache)) {
+            $this->options['curl'][CURLOPT_URL] = $url;
+
             $ch = curl_init();
 
-            // Set destination url
-            $this->curlOptions[CURLOPT_URL] = $url;
+            curl_setopt_array($ch, $this->options['curl']);
 
-            // Merge and set cURL options
-            curl_setopt_array($ch, $this->options['curl'] + $this->curlOptions + $curlOptions);
+            $content = curl_exec($ch);
 
-            // Send cURL request and get response and HTTP code
-            $response = curl_exec($ch);
-
-            // Check whether request was successful
-            if (false === $response) {
-                throw new RuntimeException('Connection error. ' . curl_error($ch));
+            if (false === $content) {
+                throw new RuntimeException('Sending request to GitHub API failed. ' . curl_error($ch));
             }
 
-            // Close cURL request to clear up resources
+            $response = [
+                'header' => curl_getinfo($ch),
+                'content' => json_decode($content, true)
+            ];
+
             curl_close($ch);
 
-            // Set cache
-            if ($cache) {
-                $this->setCache($url, $response);
-            }
+            $this->setCache($url, $response);
 
             return $response;
-        } else {
-            return $this->getCache($url);
         }
+
+        return $cache;
     }
 
     /**
-     * Create cache filename based on API url.
+     * Create cache file name.
      *
-     * @param string $url GitHub API url
+     * @param string $url Requested URL
      *
      * @return string
      */
-    protected function createCacheFilename($url)
+    protected function createCacheFileName(string $url): string
     {
-        return $this->options['cacheDirectory'] . DIRECTORY_SEPARATOR . 'githubapiclient-' . hash('crc32', $url) . '.json';
+        return $this->options['cache']['directory'] . DIRECTORY_SEPARATOR . 'github-api-client-' . hash('crc32', $url) . '.json';
     }
 
     /**
-     * Cache response based on API url.
+     * Set cache of response content.
      *
-     * @param string $url GitHub API url
-     * @param string $data GitHub API response
-     *
-     * @return self
+     * @param string $url Requested URL
+     * @param array $response Response
      */
-    protected function setCache($url, $data)
+    protected function setCache(string $url, array $response): void
     {
-        $cacheFilename = $this->createCacheFilename($url);
-        file_put_contents($cacheFilename, $data);
-
-        return $this;
+        $cacheFilename = $this->createCacheFileName($url);
+        file_put_contents($cacheFilename, json_encode($response));
     }
 
     /**
-     * Get cache based on API url.
+     * Get cache of response content.
      *
-     * @param string $url GitHub API url
+     * @param string $url Requested URL
      *
-     * @return string
+     * @return array|null
      */
-    protected function getCache($url)
+    protected function getCache(string $url): ?array
     {
-        $cacheFilename = $this->createCacheFilename($url);
+        $cacheFilename = $this->createCacheFileName($url);
         if (is_file($cacheFilename)) {
-            if (filemtime($cacheFilename) > (time() - $this->options['cacheLifetime'])) {
-                return file_get_contents($cacheFilename);
-            } else {
-                unlink($cacheFilename);
+            if (filemtime($cacheFilename) > (time() - $this->options['cache']['lifetime'])) {
+                return json_decode(file_get_contents($cacheFilename), true);
             }
+            unlink($cacheFilename);
         }
 
-        return '';
-    }
-
-    /**
-     * Check whether a cache based on API url exists.
-     *
-     * @param string $url GitHub API url
-     *
-     * @return bool
-     */
-    protected function isCached($url)
-    {
-        return (bool)$this->getCache($url);
+        return null;
     }
 }
