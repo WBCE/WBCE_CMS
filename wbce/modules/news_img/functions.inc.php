@@ -1056,12 +1056,13 @@ function mod_nwi_posts_getall(int $section_id, bool $is_backend, string $query_e
     $sql = sprintf(
         "SELECT " .
         "  *, " .
+        "  (SELECT `position`       FROM `%smod_news_img_groups`     AS `t4` WHERE `t4`.`group_id`=`t1`.`group_id`) as `gposition`, " .
         "  (SELECT COUNT(`post_id`) FROM `%smod_news_img_tags_posts` AS `t2` WHERE `t2`.`post_id`=`t1`.`post_id`) as `tags`, " .
         "  (SELECT `post_id` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` > `t1`.`$order_by` AND `section_id`='$section_id' $active ORDER BY `$order_by` $direction LIMIT 1 ) as `next`, ".
         "  (SELECT `post_id` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` < `t1`.`$order_by` AND `section_id`='$section_id' $active ORDER BY `$order_by` $prev_dir LIMIT 1 ) as `prev` " .
         "FROM `%smod_news_img_posts` AS `t1` WHERE `section_id`='$section_id' $filter ".
-        "$query_extra ORDER BY `$order_by` $direction $limit",
-        TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
+        "$query_extra ORDER BY gposition ASC, `$order_by` $direction $limit",
+        TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
     );
 
     $query_posts = $database->query($sql);

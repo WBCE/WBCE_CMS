@@ -30,10 +30,11 @@
         			<td class="setting_value">
         				<select name="view_order" style="width: 98%;">
         					<?php
-        					echo '<option value="0"'.(($settings['view_order'] == 0)?' selected="selected"':'').'>'.$TEXT['CUSTOM'].'</option>';
-        					echo '<option value="1"'.(($settings['view_order'] == 1)?' selected="selected"':'').'>'.$TEXT['PUBL_START_DATE'].' ('.$MOD_NEWS_IMG['DESCENDING'].' = '.$MOD_NEWS_IMG['NEWEST_FIRST'].')</option>';
-        					echo '<option value="2"'.(($settings['view_order'] == 2)?' selected="selected"':'').'>'.$TEXT['PUBL_END_DATE'].' ('.$MOD_NEWS_IMG['DESCENDING'].' = '.$MOD_NEWS_IMG['FIRST_EXPIRING_LAST'].')</option>';
-        					echo '<option value="3"'.(($settings['view_order'] == 3)?' selected="selected"':'').'>'.$TEXT['SUBMITTED'].' ('.$MOD_NEWS_IMG['DESCENDING'].' = '.$MOD_NEWS_IMG['NEWEST_FIRST'].')</option>';        					
+						echo '<option value="0"'.(($settings['view_order'] == 0)?' selected="selected"':'').'>'.$TEXT['CUSTOM'].'</option>';
+						echo '<option value="1"'.(($settings['view_order'] == 1)?' selected="selected"':'').'>'.$TEXT['PUBL_START_DATE'].' ('.$MOD_NEWS_IMG['DESCENDING'].' = '.$MOD_NEWS_IMG['NEWEST_FIRST'].')</option>';
+						echo '<option value="2"'.(($settings['view_order'] == 2)?' selected="selected"':'').'>'.$TEXT['PUBL_END_DATE'].' ('.$MOD_NEWS_IMG['DESCENDING'].' = '.$MOD_NEWS_IMG['FIRST_EXPIRING_LAST'].')</option>';
+						echo '<option value="3"'.(($settings['view_order'] == 3)?' selected="selected"':'').'>'.$TEXT['SUBMITTED'].' ('.$MOD_NEWS_IMG['DESCENDING'].' = '.$MOD_NEWS_IMG['NEWEST_FIRST'].')</option>';
+						echo '<option value="4"'.(($settings['view_order'] == 4)?' selected="selected"':'').'>'.$TEXT['SUBMISSION_ID'].' ('.$MOD_NEWS_IMG['DESCENDING'].' = '.$MOD_NEWS_IMG['NEWEST_FIRST'].')</option>';
         					?>
         				</select>
         			</td>
