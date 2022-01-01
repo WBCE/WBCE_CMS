@@ -175,7 +175,12 @@ $table_list = array('addons', 'blocking', 'groups', 'pages', 'search', 'sections
 
 $OK = ' <span class="good">OK</span> ';
 $FAIL = ' <span class="error">FAILED</span> ';
-$DEFAULT_THEME = 'wbce_flat_theme';
+$aDefaultThemes = ['wbce_flat_theme', 'argos_theme_reloaded', 'fraggy-backend-theme'];
+if (in_array(Settings::Get('default_theme'), $aDefaultThemes)) {
+	$DEFAULT_THEME = Settings::Get('default_theme');
+} else {
+	$DEFAULT_THEME = 'wbce_flat_theme';
+}
 $stepID = 1;
 
 // removes old folders
