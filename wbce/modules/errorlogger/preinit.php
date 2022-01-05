@@ -7,8 +7,8 @@
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WBCE 1.4+
- * @version         1.0
- * @lastmodified    November 12, 2019
+ * @version         1.1.3
+ * @lastmodified    Jan 5, 2022
  *
  */
 
@@ -22,8 +22,11 @@
 if (!defined('WB_PATH')) {
     die("Go");
 }
-
-$errorLogFilename = WB_PATH.'/var/logs/php_error.log.php';
+$logDir = WB_PATH.'/var/logs';
+if (!is_dir($logDir)) {
+	mkdir($logDir, 0777, true);
+}
+$errorLogFilename = $logDir . '/php_error.log.php';
 if (!file_exists($errorLogFilename)) {
     $sTmp = '<?php die(\'No access\'); ?>created: ['.date('c').']'.PHP_EOL;
     file_put_contents($errorLogFilename, $sTmp, FILE_APPEND);
@@ -49,6 +52,9 @@ class WBCE_Error
         if (0 == error_reporting()) { // Error reporting is currently turned off or suppressed with @
             return;
         }
+		if (4437 == error_reporting()) { // Error reporting is suppressed with @ php 8
+            return;
+        }																				
         
         //if($errno == E_DEPRECATED) return;
         //if($errno == E_USER_DEPRECATED) return;

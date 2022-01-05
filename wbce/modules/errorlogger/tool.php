@@ -7,8 +7,8 @@
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WBCE 1.4+
- * @version         1.0
- * @lastmodified    November 12, 2019
+ * @version         1.1.3
+ * @lastmodified    Jan 5, 2022
  *
  */
 
@@ -195,6 +195,10 @@ function log_to_array($aLines)
         } else {
             continue;
         }
+		if (!isset($arr2[3])) {
+			$arr2[3][0] = '';
+			$arr2[3][1] = '';
+		}
         $aDateTime = explode('T', $arr2[0][0]);
         $sColor = 'inherit';
         if ($sType == 'Exception') {
@@ -210,7 +214,7 @@ function log_to_array($aLines)
             'type'      => $sType,
             'primary'   => str_replace(':', '', $arr2[1][1]),
             'p_line'    => isset($arr2[2]) ? $arr2[2][0] : '',
-            'secondary' => trim(str_replace(['from', ':'], '', $arr2[2][1])),
+            'secondary' => isset($arr2[2][1]) ? trim(str_replace(['from', ':'], '', $arr2[2][1])):'',
             's_line'    => $arr2[3][0],
             'msg'       => trim($arr2[3][1]),
         );

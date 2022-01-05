@@ -7,8 +7,8 @@
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WBCE 1.4+
- * @version         1.0
- * @lastmodified    November 12, 2019
+ * @version         1.1.3
+ * @lastmodified    Jan 5, 2022
  *
  */
 
@@ -20,7 +20,7 @@ if (defined('WB_PATH') == false) {
 $module_directory   = 'errorlogger';
 $module_name        = 'Errorlog viewer';
 $module_function    = 'tool,preinit,initialize';
-$module_version     = '1.1.2';
+$module_version     = '1.1.3';
 $module_platform    = '1.4.x';
 $module_author      = 'Ruud Eisinga - Dev4me';
 $module_license	    = 'GNU General Public License';
@@ -31,6 +31,11 @@ $module_icon        = 'fa fa-tasks';
 
 /**
  * DEVELOPMENT HISTORY (Change Log):
+ *
+ * v.1.1.3 2022-01-04 ruud / dev4me
+ *		[!] fix for notices that should be suppressed by @ in php8+
+ *		[!] fix for tableview generating errors on some loglines
+ *		[!] fix for deleted /var/logs/ directory
  *
  * v.1.1.2 2021-09-05 stefanek
  *      [!] fix for issue 508 (empty log creates issues itself)
