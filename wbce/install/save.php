@@ -40,7 +40,7 @@ if (!defined('SESSION_STARTED')) {
 // get random-part for session_name()
 // Random name is for later sessions (more secure), not installer session
 list($usec, $sec) = explode(' ', microtime());
-srand((float)$sec + ((float)$usec * 100000));
+srand((int)$sec + ((int)$usec * 100000));
 $session_rand = rand(1000, 9999);
 
 // Some default settings
