@@ -42,10 +42,12 @@ if (!function_exists("sitemap")) {
                 foreach ($menus as $rec) {
                     $sWhereMenus .= " OR `menu` =" . $rec;
                 }
-            }
+            }			
         }
         // Query pages
-        $query_menu = $database->query("SELECT * FROM `{TP}pages` WHERE ".$where_sql." AND `parent` = '".$parent."' '.$sWhereMenus.' ORDER BY `position` ASC");
+		$qp = "SELECT * FROM `{TP}pages` WHERE ".$where_sql." AND `parent` = '".$parent."' ".$sWhereMenus." ORDER BY `position` ASC";
+		//debug_dump($qp);
+        $query_menu = $database->query($qp);
 
         //beforehand fetch the menu-link page ids
         $qML = "SELECT page_id FROM `{TP}mod_menu_link`";
@@ -119,10 +121,11 @@ if (!function_exists("sitemap")) {
 // Get settings
 $get_settings             = $database->query("SELECT * FROM `{TP}mod_sitemap` WHERE `section_id` = " . $section_id);
 $settings                 = $get_settings->fetchRow();
+$menus 					  = stripslashes($settings['menus']);
 $settings['header']       = stripslashes($settings['header']);
 $settings['smloop']       = stripslashes($settings['sitemaploop']);
 $settings['footer']       = stripslashes($settings['footer']);
-$settings['level_footer'] = stripslashes($settings['level_footer']);
+$settings['level_header'] = stripslashes($settings['level_header']);
 $settings['level_footer'] = stripslashes($settings['level_footer']);
 extract($settings);
 
@@ -149,7 +152,7 @@ if ($static == true or $static == false) {
 
         case 3: // value 3 means start at parent of current page
             global $database;
-            $query_parent_id = $database->query("SELECT `parent` FROM `{TP}pages`WHERE page_id=" . $page_id);
+            $query_parent_id = $database->query("SELECT `parent` FROM `{TP}pages` WHERE page_id=" . $page_id);
             if ($query_parent_id->numRows() > 0) {
                 $parentrow = $query_parent_id->fetchRow();
                 $parent    = $parentrow['parent'];
@@ -166,7 +169,7 @@ if ($static == true or $static == false) {
     $parent = (trim($parent) == "") || ($parent < 1) ? 0 : $parent;
 
     // workout the menus we should include for display
-    $menus ='';
+    if (!isset($menus)) { $menus = ''; }
     $aMenus    = array();
     $aMenus[0] = 0;
     if (strpos($menus, ',') !== false) {
