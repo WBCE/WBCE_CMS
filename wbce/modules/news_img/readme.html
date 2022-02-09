@@ -226,7 +226,9 @@ Das Beitragsbild steht <strong>nur</strong> in der angegebenen Auflösung zur Ve
 <li>[IMAGE] Beitragsbild (&lt;img src=... /&gt;),</li>
 <li>[SHORT] Kurztext,</li>
 <li>[LINK] Link zur Beitrags-Detailansicht,</li>
-<li>[HREF] gibt den Link zum Beitrag inkl. href="" aus, also z.B. <code>href="beitrag.php"</code>. Gibt es keinen Langtext und keine Galerie, wird nichts ausgegeben. Mit <code>&lt;a [HREF]&gt; ... &lt;/a&gt;</code> ist es dann möglich, den jeweiligen Beitragslink nur dann klickbar zu machen, wenn es auch tatsächlich einen Langtext und/oder eine Galerie gibt.</li>
+<li>[HREF] gibt den Link zum Beitrag inkl. href="" aus, also z.B. <code>href="beitrag.php"</code>. Gibt es keinen Langtext und keine Galerie, wird nichts ausgegeben. Mit <code>&lt;a [HREF]&gt; ... &lt;/a&gt;</code> ist es dann möglich, den jeweiligen Beitragslink nur dann klickbar zu machen, wenn es auch tatsächlich einen Langtext und/oder eine Galerie gibt,</li>
+<li>[AOPEN] Der komplette &lt;a href="beitrag.php"&gt; Tag, wenn es Langtext oder Galeriebilder gibt, sonst leer,</li>
+<li>[ACLOSE] Der schließende &lt;/a&gt; - Tag zu [AOPEN],</li>
 <li>[MODI_DATE] Datum der letzten Änderung des Beitrags,</li>
 <li>[MODI_TIME] Zeitpunkt (Uhrzeit) der letzten Änderung des Beitrags,</li>
 <li>[CREATED_DATE] Datum, wann der Beitrag erstellt wurde,</li>
@@ -409,7 +411,9 @@ The image is only available in the specified resolution. If it is to be used in 
 <li>[IMAGE] post image (&lt;img src = ... /&gt;),</li>
 <li>[SHORT] short text,</li>
 <li>[LINK] Link to the article detail view,</li>
-<li>[HREF] Link to the detail view including href="" (i.e. <code>href="example-post.php"</code>). If no long content or gallery exists, this placeholder will return an empty string. Depending on the page settings (using <code>&lt;a [HREF]&gt; ... &lt;/a&gt;</code>) links to the detail view are only clickable if some displayable content exists.</li>
+<li>[HREF] Link to the detail view including href="" (i.e. <code>href="example-post.php"</code>). If no long content or gallery exists, this placeholder will return an empty string. Depending on the page settings (using <code>&lt;a [HREF]&gt; ... &lt;/a&gt;</code>) links to the detail view are only clickable if some displayable content exists,</li>
+<li>[AOPEN]The whole &lt;a href="beitrag.php"&gt; tag, if long text or gallery images exist, otherwise empty,</li>
+<li>[ACLOSE] the closing &lt;/a&gt; tag to [AOPEN],</li>
 <li>[MODI_DATE] date of the last change of the post,</li>
 <li>[MODI_TIME] Time (time) of the last change of the post,</li>
 <li>[CREATED_DATE] Date when the post was created,</li>

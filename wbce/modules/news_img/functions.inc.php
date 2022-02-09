@@ -16,7 +16,7 @@ if(file_exists($lang)) {
 }
 
 global $allowed_suffixes;
-$allowed_suffixes = array('jpg','jpeg','gif','png');
+$allowed_suffixes = array('jpg','jpeg','gif','png','webp');
 
 $mod_nwi_file_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/';
 $mod_nwi_thumb_dir = WB_PATH.MEDIA_DIRECTORY.'/.news_img/thumb/';
@@ -101,7 +101,7 @@ function mod_nwi_get_groups(int $section_id) : array
                 $group['id_key'] = $group['group_id'];
             }
                 $group['image'] = '';
-            foreach(array_values(array('png','jpg','jpeg','gif')) as $suffix) {
+            foreach(array_values(array('png','jpg','jpeg','gif','webp')) as $suffix) {
                 if (file_exists(WB_PATH.MEDIA_DIRECTORY.'/.news_img/image'.$group['group_id'].'.'.$suffix)) {
                     $group['image'] = WB_URL.MEDIA_DIRECTORY.'/.news_img/image'.$group['group_id'].'.'.$suffix;
                 }
@@ -1206,10 +1206,14 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
         $images = mod_nwi_img_get_by_post($post['post_id'],false);
         $anz_post_img = count($images);
 		$post_href_link = 'href="'. $post['post_link'].'"';
+		$post_a_open_tag = '<a '.$post_href_link.'>';
+		$post_a_close_tag = '</a>';
         // no "read more" link if no long content
         if ( (strlen($post['content_long']) < 9) && ($anz_post_img < 1)) {
             $post['post_link'] = '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;';
 			$post_href_link ='';
+			$post_a_open_tag ='';
+			$post_a_close_tag ='';
         }
 
         // set replacements for current line
@@ -1223,6 +1227,8 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
                 'SHORT'           => $post['content_short'],
                 'LINK'            => $post['post_link'],
 				'HREF'			  => $post_href_link,
+				'AOPEN'			  => $post_a_open_tag,
+				'ACLOSE'		  => $post_a_close_tag,	
                 'MODI_DATE'       => $post['post_date'],
                 'MODI_TIME'       => $post['post_time'],
                 'TAGS'            => implode(" ", $tags),
@@ -1889,6 +1895,17 @@ function mod_nwi_image_resize($src, $dst, $width, $height, $crop=0)
                 }
             }
             break;
+		case 'webp':
+            if(!function_exists('imagecreatefromwebp')) {
+                return 2;
+            } else {
+                try{
+                    $img = imagecreatefromwebp($src);
+                } catch (\Exception $e) {
+                    return 2;
+                }
+            }
+            break;	
         default: return 2;
     }
 
@@ -1927,6 +1944,7 @@ function mod_nwi_image_resize($src, $dst, $width, $height, $crop=0)
         case 'gif': imagegif($new, $dst); break;
         case 'jpg': imagejpeg($new, $dst); break;
         case 'png': imagepng($new, $dst); break;
+		case 'webp': imagewebp($new, $dst); break;
     }
     return true;
 }
@@ -1957,6 +1975,8 @@ function mod_nwi_replacements()
         'IMAGES',                       // gallery images
         'LINK',                         // "read more" link
 		'HREF',							// link to post detail including href=""
+		'AOPEN',						// complete <a href=""> if long text or gallery exists
+		'ACLOSE',						// closing </a> if long text or gallery exists
         'MODI_DATE',                    // post modification date
         'MODI_TIME',                    // post modification time
         'NEXT_LINK',                    // next link
@@ -2267,10 +2287,14 @@ function mod_nwi_get_news_items($options=array())
             $images = mod_nwi_img_get_by_post($post['post_id'],false);
             $anz_post_img = count($images);
 			$post_href_link = 'href="'. $post['post_link'].'"';
+			$post_a_open_tag = '<a '.$post_href_link.'>';
+			$post_a_close_tag = '</a>';
             // no "read more" link if no long content
             if ( (strlen($post['content_long']) < 9) && ($anz_post_img < 1)) {
                 $post['post_link'] = '#" onclick="javascript:void(0);return false;" style="cursor:no-drop;';
 				$post_href_link = '';
+				$post_a_open_tag ='';
+				$post_a_close_tag ='';
             }
             $posts[] = mod_nwi_post_process($post, $post['section_id'], $users);
         }

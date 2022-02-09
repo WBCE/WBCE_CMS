@@ -16,7 +16,7 @@
 
 if(defined('WB_URL'))
 {
-    function nwi_create_new_post($filename, $filetime=NULL, $content )
+    function nwi_create_new_post($filename, $filetime=NULL, $content='' )
     {
         global $page_id, $section_id, $post_id;
     	// The depth of the page directory in the directory hierarchy
