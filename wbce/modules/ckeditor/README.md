@@ -2,7 +2,7 @@
 
 The popular editor for WBCE CMS
 
-***CKEditor 4.16.1 and higher require WBCE 1.5 !***
+***CKEditor 4.16.1 and higher require WBCE 1.5.x !***
 
 ## FAQ: Customize CKEditor
 
