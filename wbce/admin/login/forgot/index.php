@@ -22,22 +22,29 @@ require_once(WB_PATH.'/include/captcha/captcha.php');
 $oMsgBox = new MessageBox();
 $oMsgBox->closeBtn = '';
 
+$nocookie = false;
+if (defined('NO_SESSION_COOKIE')) {
+	$nocookie = NO_SESSION_COOKIE;
+}
+
+
 // Check if the user has already submitted the form, otherwise show it
 if (isset($_POST['email']) && $_POST['email'] != "" ) {
     $email = strip_tags($wb->get_post('email'));
-    if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
-        $ccheck = time(); $ccheck1 = time();
-        if(isset($_SESSION['captchaloginforgot'])) $ccheck1 = $_SESSION['captchaloginforgot'];
-        if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
-        if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
-            $oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
-            $email = '';
-        }
-    } else {
-        $oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
-        $email = '';
-    }
-    
+	if ($nocookie == false) {			
+		if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
+			$ccheck = time(); $ccheck1 = time();
+			if(isset($_SESSION['captchaloginforgot'])) $ccheck1 = $_SESSION['captchaloginforgot'];
+			if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
+			if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
+				$oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
+				$email = '';
+			}
+		} else {
+			$oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
+			$email = '';
+		}
+	}
    
     
     if ($email != '') {
@@ -142,11 +149,14 @@ $template = new Template(dirname($admin->correct_theme_source('login_forgot.htt'
 $template->set_file('page', 'login_forgot.htt');
 $template->set_block('page', 'main_block', 'main');
 
-ob_start();
-call_captcha("all","",'loginforgot');
-$captcha = ob_get_contents();
-ob_end_clean();
-
+if ($nocookie == false) {			
+	ob_start();
+	call_captcha("all","",'loginforgot');
+	$captcha = ob_get_contents();
+	ob_end_clean();
+} else {
+	$captcha = '';
+}
 
 
 $aTemplateVars = array(
