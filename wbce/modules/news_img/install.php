@@ -221,13 +221,17 @@ header('Location: ../');
     // install the droplet(s)
     if(!defined('CAT_PATH')) {
         try {
+            // workaround for problem with global $module_directory overwritten
+            // by functions.inc.php here
+            $orig_module_dir = $module_directory;
             include __DIR__.'/droplets.functions.php';
-			$sDropletFile = __DIR__.'/droplets/getNewsItems.php';
-			if(is_readable($sDropletFile)){
-				if(importDropletFromFile($sDropletFile)){
-					echo 'Droplet <b>getNewsItems</b> installed successfully.<br>';
-				}
-			}
+            $sDropletFile = __DIR__.'/droplets/getNewsItems.php';
+            if(is_readable($sDropletFile)){
+                if(importDropletFromFile($sDropletFile)){
+                    echo 'Droplet <b>getNewsItems</b> installed successfully.<br>';
+                }
+            }
+            $module_directory = $orig_module_dir;
         } catch ( \Exception $e ) {}
     } else {
         CAT_Helper_Droplet::installDroplet(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip');

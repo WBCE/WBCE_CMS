@@ -278,10 +278,14 @@ require(WB_PATH."/index.php");
     // install the droplet(s)
     if(!defined('CAT_PATH')) {
         try {
-        include WB_PATH.'/modules/droplets/functions.inc.php';
-        make_dir(WB_PATH.'/temp/unzip');
-        wbce_unpack_and_import(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip', WB_PATH . '/temp/unzip/');
-        rm_full_dir(WB_PATH.'/temp/unzip');
+            // workaround for problem with global $module_directory overwritten
+            // by functions.inc.php here
+            $orig_module_dir = $module_directory;
+            include WB_PATH.'/modules/droplets/functions.inc.php';
+            make_dir(WB_PATH.'/temp/unzip');
+            wbce_unpack_and_import(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip', WB_PATH . '/temp/unzip/');
+            rm_full_dir(WB_PATH.'/temp/unzip');
+            $module_directory = $orig_module_dir;
         } catch ( \Exception $e ) {}
     } else {
         CAT_Helper_Droplet::installDroplet(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip');

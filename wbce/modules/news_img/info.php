@@ -16,7 +16,7 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.14';
+$module_version     = '5.0.15';
 $module_platform    = '1.4';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
@@ -24,13 +24,17 @@ $module_description = 'This page type is designed for making a news page with Im
 
 /**
  *
+ * v5.0.15 - 2022-03-05
+ *         - webbird
+ *           ! fixed upgrade changes wrong version number
+ *
  * v5.0.14 - 2022-02-08
- *			- florian
- *			* Add [AOPEN] [ACLOSE] placeholders + webp compatibility
+ *         - florian
+ *           * Add [AOPEN] [ACLOSE] placeholders + webp compatibility
  *
  * v5.0.13 - 2021-12-25
- *			- gchriz
- *			* Add missing option 4 and make "order news by group" working
+ *         - gchriz
+ *           * Add missing option 4 and make "order news by group" working
  *
  * v5.0.12 - 2021-12-10
  *         - Florian
@@ -61,12 +65,15 @@ $module_description = 'This page type is designed for making a news page with Im
  *           ! fixed languages files
  *           ! fixed import script
  *           ! fixed post_id
+ *
  * v5.0.6  - 2020-07-20
  *         - Florian
  *           ! Remove unnecessary link to frotorama.css from frontend.css
+ *
  * v5.0.5  - 2020-07-18
  *         - Florian
  *           ! fix wrong likn to fotorama.css (reported by klawin)
+ *
  * v5.0.4  - 2020-06-18
  *         - Colinax
  *           ! fix error in install.php
