@@ -22,6 +22,8 @@ require_once WB_PATH . "/framework/class.admin.php";
 class Login extends Admin
 {
     private $_oMsgBox = null;
+    private $username;
+    private $password;
 
     public function __construct($aConfig)
     {
@@ -51,28 +53,31 @@ class Login extends Admin
             $sUsername = 'username';
             $sPassword = 'password';
         }
-        $this->username = htmlspecialchars(strtolower($this->get_post($sUsername)), ENT_QUOTES);
-        $this->password = $this->get_post($sPassword);
 
-        // Figure out if the "remember me" option has been checked
-        if ($this->get_post('remember') == 'true') {
-            $this->remember = $this->get_post('remember');
-        } else {
-            $this->remember = false;
+        // this makes only sense if a username is provided
+        if(filter_input(INPUT_POST, $sUsername)) {
+            $this->username = htmlspecialchars(strtolower($this->get_post($sUsername)), ENT_QUOTES);
+            $this->password = $this->get_post($sPassword);
+
+            // Figure out if the "remember me" option has been checked
+            if ($this->get_post('remember') == 'true') {
+                $this->remember = $this->get_post('remember');
+            } else {
+                $this->remember = false;
+            }
+
+            // Get the length of the supplied username and password
+            if ($this->get_post($sUsername) != '') {
+                $this->username_len = strlen($this->username);
+                $this->password_len = strlen($this->password);
+            }
         }
-
-        // Get the length of the supplied username and password
-        if ($this->get_post($sUsername) != '') {
-            $this->username_len = strlen($this->username);
-            $this->password_len = strlen($this->password);
-        }
-
         // If the url is blank, set it to the default url
         $this->url = $this->get_post('url');
         if ($this->redirect_url != '') {
             $this->url = $this->redirect_url;
         }
-        if (strlen($this->url) < 2) {
+        if (empty($this->url)) {
             $this->url = $aConfig['DEFAULT_URL'];
         }
         if ($this->is_authenticated() == true) {

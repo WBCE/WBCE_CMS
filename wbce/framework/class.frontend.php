@@ -52,7 +52,7 @@ class Frontend extends Wb
 
     // database query related
     public $extra_where_sql;
-    public $sql_where_language;
+    public $sql_where_language = '';
 
     public function __construct()
     {

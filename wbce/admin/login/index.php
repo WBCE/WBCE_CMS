@@ -17,16 +17,9 @@ if (defined('SMART_LOGIN') and SMART_LOGIN == 'enabled') {
     // Generate username field name
     $username_fieldname = 'username_';
     $password_fieldname = 'password_';
-    $salt = "abchefghjkmnpqrstuvwxyz0123456789";
-    srand((double)microtime() * 1000000);
-    $i = 0;
-    while ($i <= 7) {
-        $num = rand() % 33;
-        $tmp = substr($salt, $num, 1);
-        $username_fieldname = $username_fieldname . $tmp;
-        $password_fieldname = $password_fieldname . $tmp;
-        $i++;
-    }
+    $tmp = sprintf('%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+    $username_fieldname = $username_fieldname . $tmp;
+    $password_fieldname = $password_fieldname . $tmp;
 } else {
     $username_fieldname = 'username';
     $password_fieldname = 'password';

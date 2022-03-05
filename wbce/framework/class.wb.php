@@ -270,9 +270,15 @@ _JsCode;
      *
      * @return  array
      */
-    public function get_groups_id()
+    public function get_groups_id() : array
     {
-        return explode(",", $this->get_session('GROUPS_ID'));
+        $session_groups = $this->get_session('GROUPS_ID');
+        $groups = (
+            (!empty($session_groups))
+            ? explode(",", $session_groups)
+            : []
+        );
+        return $groups;
     }
 
     /**
