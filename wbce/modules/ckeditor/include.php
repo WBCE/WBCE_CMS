@@ -115,7 +115,7 @@ if (defined('WB_FRONTEND') && WB_FRONTEND == true) {
          * Define all extra CKEditor plugins here
          */
         $ckeditor->config['extraPlugins']    = 'ckawesome,codemirror,textselection,wbdroplets,wbembed,wblink,wbsave,wbshybutton,autolink,colorbutton,copyformatting,font,indentblock,justify,lineutils,panelbutton,textmatch,widgetselection';
-        $ckeditor->config['removePlugins']   = 'wsc,save,pastetext,pastefromword';
+        $ckeditor->config['removePlugins']   = 'save,pastetext,pastefromword';
         $ckeditor->config['removeButtons']   = 'Font,Cut,Copy,Paste';
         $ckeditor->config['fontawesomePath'] = WB_URL . '/include/font-awesome/css/font-awesome.min.css';
 
