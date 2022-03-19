@@ -184,7 +184,7 @@ if (in_array(Settings::Get('default_theme'), $aDefaultThemes)) {
 $stepID = 1;
 
 // removes old folders
-$dirRemove = array(    
+$dirRemove = array(
     '[ROOT]/log/',
     '[ACCOUNT]/email_templates/',
     '[ACCOUNT]/functions/',
@@ -197,7 +197,13 @@ $dirRemove = array(
     '[INCLUDE]/phpmailer/',
     '[INCLUDE]/Sensio/Twig/lib/',
     '[MODULES]/ckeditor/ckeditor/filemanager/',
+    '[MODULES]/ckeditor/ckeditor/plugins/wsc/',
+    '[MODULES]/ckeditor/ckeditor/plugins/flash/',
+    '[MODULES]/ckeditor/ckeditor/plugins/oembed/',
     '[MODULES]/ckeditordev/ckeditor/filemanager/',
+    '[MODULES]/ckeditordev/ckeditor/plugins/wsc/',
+    '[MODULES]/ckeditordev/ckeditor/plugins/flash/',
+    '[MODULES]/ckeditordev/ckeditor/plugins/oembed/',
     '[MODULES]/ckeditor_dev/',
     '[MODULES]/el_finder/',
     '[MODULES]/output_filter/',
