@@ -534,9 +534,9 @@ class Template
 
     // quote the replacement strings to prevent bogus stripping of special chars
     reset($this->varvals);
-	foreach ($this->varvals as $k => $v) {
-		 $varvals_quoted[$k] = str_replace(array('\\\\', '$'), array('\\\\\\\\', '\$'), $v);
-	}
+    foreach ($this->varvals as $k => $v) {
+        $varvals_quoted[$k] = str_replace(array('\\\\', '$'), array('\\\\\\\\', '\$'), ($v??''));
+    }
 
     $str = $this->get_var($varname);
 
