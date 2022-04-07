@@ -380,6 +380,9 @@ class database
      */
     public function escapeString($unescaped_string)
     {
+        if(empty($unescaped_string)) {
+            return '';
+        }
         return mysqli_real_escape_string($this->db_handle, $unescaped_string);
     }
 
