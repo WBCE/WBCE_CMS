@@ -4,28 +4,30 @@
  * @category        admintools
  * @package         wbstats
  * @author          Ruud Eisinga - Dev4me
- * @link			http://www.dev4me.nl/
+ * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.1
- * @lastmodified    November 15, 2019
+ * @version         0.2.2
+ * @lastmodified    December 9, 2020
  *
  */
-
-// Must include code to stop this file being access directly
-if (defined('WB_PATH') == false) {
-    die("Cannot access this file directly");
-}
+ 
+/**
+*	Must include code to stop this file being access directly
+*/
+if(defined('WB_PATH') == false) die("Cannot access this file directly");
+include (dirname(__FILE__).'/login.php');
 
 global $table_day,$table_ips,$table_pages,$table_ref,$table_key,$table_lang, $code2lang,$WS;
 $mpath = WB_PATH.'/modules/wbstats/';
 $lang = $mpath . '/languages/' . LANGUAGE . '.php';
-require_once(!file_exists($lang) ? $mpath . '/languages/EN.php' : $lang);
+require_once(!file_exists($lang) ? $mpath . '/languages/EN.php' : $lang );
 
 $module_overview_link = '?overview';
 $module_visitors_link = '?visitors';
 $module_history_link = '?history';
+$module_live_link = '?live';
 ?>
 <script type="text/javascript" src="<?php echo WB_URL ?>/modules/wbstats/backend.js"></script>
 <script type="text/javascript" src="<?php echo WB_URL ?>/modules/wbstats/js/jquery.poshytip.js"></script>
@@ -34,20 +36,26 @@ $module_history_link = '?history';
   <a href="<?php echo $module_overview_link  ?>"><?php echo $WS['MENU1'] ?></a>
   <a href="<?php echo $module_visitors_link  ?>"><?php echo $WS['MENU2'] ?></a>
   <a href="<?php echo $module_history_link  ?>"><?php echo $WS['MENU3'] ?></a>
+  <a href="<?php echo $module_live_link  ?>"><?php echo $WS['MENU4'] ?></a>
 </div>
-<?php
+<?php 
 require_once($mpath.'class.stats.php');
 if (isset($_GET['overview'])) {
-    require($mpath."overview.php");
-    return;
+	require ($mpath."overview.php");
+	return;
 }
 if (isset($_GET['visitors'])) {
-    require($mpath."visitors.php");
-    return;
+	require ($mpath."visitors.php");
+	return;
 }
 if (isset($_GET['history'])) {
-    require($mpath."history.php");
-    return;
+	require ($mpath."history.php");
+	return;
 }
-require_once($mpath."overview.php");
+if (isset($_GET['live'])) {
+	require ($mpath."live.php");
+	return;
+}
+
+require_once ($mpath."overview.php");
 ?>

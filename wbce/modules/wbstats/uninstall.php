@@ -4,16 +4,16 @@
  * @category        admintools
  * @package         wbstats
  * @author          Ruud Eisinga - Dev4me
- * @link			http://www.dev4me.nl/
+ * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.1
- * @lastmodified    November 15, 2019
+ * @version         0.2.2
+ * @lastmodified    December 9, 2020
  *
  */
-
-defined('WB_PATH') or die(header('Location: ../index.php'));
+ 
+defined('WB_PATH') OR die(header('Location: ../index.php'));
 
 $table_day   = TABLE_PREFIX .'mod_wbstats_day';
 $table_ips   = TABLE_PREFIX .'mod_wbstats_ips';
@@ -28,3 +28,6 @@ $database->query("DROP TABLE IF EXISTS `$table_pages`");
 $database->query("DROP TABLE IF EXISTS `$table_ref`");
 $database->query("DROP TABLE IF EXISTS `$table_key`");
 $database->query("DROP TABLE IF EXISTS `$table_lang`");
+
+
+?>

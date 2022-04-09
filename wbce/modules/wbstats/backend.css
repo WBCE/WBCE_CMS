@@ -240,6 +240,36 @@
 	display: none;
 }
 
+#live .res {
+	width: 100%;
+	padding: 15px;
+	font-size: 12px;
+}
+
+#live .res td {
+	padding: 5px 10px;
+	white-space: nowrap;
+}
+
+#live .res td:nth-child(4) {
+	width: 100%;
+	text-align: left;
+}
+
+#live .res td:nth-child(5) {
+	text-align: center;
+}
+
+#live .res tr.even td {
+	background: #eee;
+}
+
+#live .res tr:first-child td {
+	font-weight: 900;
+	background: #303641 !important;
+	color: #fff;
+}
+
 /* https://github.com/dinoqqq/simple-popup */
 #simple-popup {
 	position: fixed;

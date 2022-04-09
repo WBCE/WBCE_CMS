@@ -4,30 +4,30 @@
  * @category        admintools
  * @package         wbstats
  * @author          Ruud Eisinga - Dev4me
- * @link			http://www.dev4me.nl/
+ * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.1
- * @lastmodified    November 15, 2019
+ * @version         0.2.2
+ * @lastmodified    December 9, 2020
  *
  */
 
-defined('WB_PATH') or die(header('Location: ../index.php'));
+defined('WB_PATH') OR die(header('Location: ../index.php'));
 ?>
 <div class="full" style="height:auto;">
 	<h3><?php echo $help['installhead'] ?></h3>
 	<?php echo $help['installbody'] ?>
 	<br/><pre>include (WB_PATH.'/modules/wbstats/count.php');</pre><br/>
-	<?php if (!defined('ORG_REFERER')) { ?>
-	<?php if (defined('WB_VERSION') && version_compare(WB_VERSION, '2.10.0', '<')) { ?>
+	<?php if (!defined('ORG_REFERER') ) { ?>
+	<?php if (defined('WB_VERSION') && version_compare(WB_VERSION,'2.10.0','<')) { ?>
 	<br/>
 	<h3><?php echo $help['refererhead'] ?></h3>
 	<?php echo $help['refererbody'] ?>
 	<br/><pre>$referer = $_SERVER['HTTP_REFERER'];</pre><br/>
 	<?php } ?>
 	<?php } ?>
-	<?php if (!defined('WB_VERSION') || version_compare(WB_VERSION, '2.8.2', '<')) { ?>
+	<?php if (!defined('WB_VERSION') || version_compare(WB_VERSION,'2.8.2','<')) { ?>
 	<br/>
 	<h3><?php echo $help['jqueryhead'] ?></h3>
 	<?php echo $help['jquerybody'] ?><br/>

@@ -4,16 +4,16 @@
  * @category        admintools
  * @package         wbstats
  * @author          Ruud Eisinga - Dev4me
- * @link			http://www.dev4me.nl/
+ * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.1
- * @lastmodified    November 15, 2019
+ * @version         0.2.2
+ * @lastmodified    December 9, 2020
  *
  */
 
-defined('WB_PATH') or die(header('Location: ../index.php'));
+defined('WB_PATH') OR die(header('Location: ../index.php'));
 
 //Referers that are used for referer-spamming
 $spamReferers = array(
@@ -1105,4 +1105,4 @@ $spamReferers = array(
 'zelena-mriya.com.ua',
 'zoominfo.com',
 'zvetki.ru',
-);
+); 
