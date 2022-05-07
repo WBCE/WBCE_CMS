@@ -1,19 +1,16 @@
-@charset "UTF-8";
 /*!
- * elFinder-Material-Theme (Gray) v2.1.11 (https://github.com/RobiNN1/elFinder-Material-Theme)
- * Copyright 2016-2021 Róbert Kelčák {RobiNN}
+ * elFinder-Material-Theme (Gray) v2.1.14 (https://github.com/RobiNN1/elFinder-Material-Theme)
+ * Copyright 2016-2022 Róbert Kelčák
  * Licensed under MIT (https://github.com/RobiNN1/elFinder-Material-Theme/blob/master/LICENSE)
  */
-@import url("../font/font.css");
-
 .elfinder {
   color: #546e7a;
-  font-family: open_sans, sans-serif;
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 .elfinder.ui-widget.ui-widget-content {
-  font-family: open_sans, sans-serif;
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
   border-radius: 0;
   border: 0;
@@ -36,18 +33,18 @@
  */
 @-webkit-keyframes progress-animation {
   from {
-	background-position: 1rem 0;
+    background-position: 1rem 0;
   }
   to {
-	background-position: 0 0;
+    background-position: 0 0;
   }
 }
 @keyframes progress-animation {
   from {
-	background-position: 1rem 0;
+    background-position: 1rem 0;
   }
   to {
-	background-position: 0 0;
+    background-position: 0 0;
   }
 }
 .elfinder-notify-progressbar {
@@ -59,6 +56,7 @@
 }
 .elfinder-notify-progress,
 .elfinder-resize-spinner {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-size: 1rem 1rem;
   -webkit-animation: progress-animation 1s linear infinite;
@@ -92,14 +90,14 @@
   background-color: #ff9800;
 }
 .elfinder-toast-msg {
-  font-family: open_sans, sans-serif;
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
   font-size: 17px;
 }
 /**
  * For Ace Editor
  */
 #ace_settingsmenu {
-  font-family: open_sans, sans-serif;
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
   box-shadow: 0 1px 30px rgba(0, 0, 0, 0.6) !important;
   background-color: #1d2736 !important;
   color: #e6e6e6 !important;
@@ -138,8 +136,8 @@
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   @font-face {
-	font-family: material;
-	src: url("../icons/material.svg?91804974#material") format("svg");
+    font-family: material;
+    src: url("../icons/material.svg?91804974#material") format("svg");
   }
 }
 .elfinder .ui-icon,
@@ -610,7 +608,9 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 .elfinder-quicklook-navbar-icon {
   background: transparent;
   font: normal normal normal 14px/1 material;
-  font-size: 32px;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
   color: #fff;
 }
 .elfinder-quicklook-titlebar-icon {
@@ -764,16 +764,16 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 }
 .elfinder-drag-helper-move .elfinder-drag-helper-icon-status {
   -webkit-transform: rotate(180deg);
-	  -ms-transform: rotate(180deg);
-		  transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg);
 }
 .elfinder-drag-helper-move .elfinder-drag-helper-icon-status:before {
   content: '\e854';
 }
 .elfinder-drag-helper-plus .elfinder-drag-helper-icon-status {
   -webkit-transform: rotate(90deg);
-	  -ms-transform: rotate(90deg);
-		  transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg);
 }
 .elfinder-drag-helper-plus .elfinder-drag-helper-icon-status:before {
   content: '\e84c';
@@ -781,6 +781,9 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 /**
  * MIME Types
  */
+.elfinder-cwd-view-list td .elfinder-cwd-icon {
+  background-image: url("../images/icons-small.svg");
+}
 .elfinder-cwd-icon {
   background: url("../images/icons-big.svg") 0 0 no-repeat;
   border-radius: 0;
@@ -1215,7 +1218,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 }
 .elfinder-cwd table tr {
   border: 0 !important;
-  height: 40px;
 }
 .elfinder-cwd table tr.ui-state-default,
 .elfinder-cwd table tr.ui-widget-content .ui-state-default {
@@ -1308,8 +1310,8 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   position: relative !important;
   display: block !important;
   -webkit-transform: translateX(-50%);
-	  -ms-transform: translateX(-50%);
-		  transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
   max-width: 52px;
   color: #fff;
 }
@@ -1320,20 +1322,20 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 .elfinder-cwd-size1 .elfinder-cwd-icon.elfinder-cwd-bgurl:before {
   top: 53px;
   -webkit-transform: scale(1.32) translateX(-50%);
-	  -ms-transform: scale(1.32) translateX(-50%);
-		  transform: scale(1.32) translateX(-50%);
+      -ms-transform: scale(1.32) translateX(-50%);
+          transform: scale(1.32) translateX(-50%);
 }
 .elfinder-cwd-size2 .elfinder-cwd-icon.elfinder-cwd-bgurl:before {
   top: 74px;
   -webkit-transform: scale(1.53) translateX(-50%);
-	  -ms-transform: scale(1.53) translateX(-50%);
-		  transform: scale(1.53) translateX(-50%);
+      -ms-transform: scale(1.53) translateX(-50%);
+          transform: scale(1.53) translateX(-50%);
 }
 .elfinder-cwd-size3 .elfinder-cwd-icon.elfinder-cwd-bgurl:before {
   top: 87px;
   -webkit-transform: scale(2.22) translateX(-50%);
-	  -ms-transform: scale(2.22) translateX(-50%);
-		  transform: scale(2.22) translateX(-50%);
+      -ms-transform: scale(2.22) translateX(-50%);
+          transform: scale(2.22) translateX(-50%);
 }
 /**
  * Status Bar
@@ -1343,6 +1345,7 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   border-radius: 0;
   border: 0;
   color: #cfd2d4;
+  padding-top: 5px;
 }
 .elfinder-path,
 .elfinder-stat-size {
@@ -1392,8 +1395,8 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   border-top-width: 0;
   border-left-width: 0;
   -webkit-transform: rotate(45deg);
-	  -ms-transform: rotate(45deg);
-		  transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
 }
 /**
  * Buttons
@@ -1582,7 +1585,7 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   color: #f1f1f1;
 }
 .elfinder .ui-widget-content {
-  font-family: open_sans, sans-serif;
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
   color: #546e7a;
 }
 .elfinder-upload-dialog-wrapper .elfinder-upload-dirselect {
@@ -1656,6 +1659,9 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   background: #232323;
   border-radius: 2px;
 }
+.elfinder-quicklook-navbar {
+  height: 27px;
+}
 .elfinder-quicklook-titlebar {
   background: inherit;
 }
@@ -1687,31 +1693,3 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 .elfinder-mobile .elfinder-quicklook-titlebar-icon .ui-icon.elfinder-icon-full {
   background-image: none;
 }
-
-/* changed MK ---------------------------------------------------------------- */
-
-.elfinder-cwd-view-list td .elfinder-cwd-icon {
-  background-image: url("../images/icons-small.svg");
-  width: 28px;
-  height: 28px;
-  margin-top: -14px;
-}
-.elfinder-ltr .elfinder-cwd-view-list .elfinder-cwd-filename {
-	padding-left: 34px !important;
-}
-.elfinder-cwd table tr:nth-child(odd) {
-	background-color: #fff;
-}
-
-/* common selected background/color */
-.elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename.ui-state-hover,
-.elfinder-cwd table td.ui-state-hover,
-.elfinder-button-menu .ui-state-hover {
-	background: #3875d7;
-	color: #fff;
-}
-
-.elfinder-cwd table tr:nth-child(odd).ui-state-hover {
-	color: blue !important;
-}
-

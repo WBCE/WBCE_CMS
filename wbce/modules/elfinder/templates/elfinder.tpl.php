@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <title>Media Management</title>
     <style>body { margin: 0; }</style>
-    <link rel="stylesheet" type="text/css" media="screen" href="../../modules/elfinder/ef/themes/material/css/theme-gray.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../../modules/elfinder/ef/themes/material/css/theme-gray.min.css">
     <script data-main="../../modules/elfinder/ef/main.wbce.js" src="../../modules/elfinder/ef/js/require.min.js"></script>
     <script>
         define('elFinderConfig', {
