@@ -23,6 +23,3 @@ Settings::Del("asp_session_min_age");
 Settings::Del("asp_view_min_age");
 Settings::Del("asp_input_min_age");
 Settings::Del("ct_text");
-
-$table = TABLE_PREFIX .'mod_captcha_control';
-$database->query("DROP TABLE `$table`");

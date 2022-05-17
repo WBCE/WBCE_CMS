@@ -13,7 +13,7 @@
 $module_directory = 'captcha_control';
 $module_name = 'Captcha and Advanced-Spam-Protection (ASP) Control';
 $module_function = 'tool';
-$module_version = '2.0.4';
+$module_version = '2.0.5';
 $module_platform = '1.4.0';
 $module_author = 'Thorn, Luise Hahne, Norbert Heimsath';
 $module_license = 'WTFPL';
@@ -23,6 +23,8 @@ $module_level = 'core';
 
 /**
  * Version history
+ * 
+ * 2.0.5 - php 8.1 fixes
  * 
  * 2.0.4 - cs fixed files
  *
