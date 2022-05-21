@@ -25,8 +25,8 @@ $TIMEZONES = array();
 
 // time in seconds
 global $actual_timezone;
-$actual_timezone = (TIMEZONE <> 0) ? TIMEZONE / 3600 : 0;
-$default_timezone = (DEFAULT_TIMEZONE <> 0) ? DEFAULT_TIMEZONE / 3600 : 0;
+$actual_timezone = ((int)TIMEZONE <> 0) ? (int)TIMEZONE / 3600 : 0;
+$default_timezone = ((int)DEFAULT_TIMEZONE <> 0) ? (int)DEFAULT_TIMEZONE / 3600 : 0;
 
 // Add values to list
 $TIMEZONES['-12'] = 'UTC -12 Hours';
