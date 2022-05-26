@@ -9,7 +9,7 @@
 (function() {
     CKEDITOR.plugins.add("codemirror", {
         lang: "af,ar,bg,bn,bs,ca,cs,cy,da,de,el,en-au,en-ca,en-gb,en,eo,es,et,eu,fa,fi,fo,fr-ca,fr,gl,gu,he,hi,hr,hu,is,it,ja,ka,km,ko,ku,lt,lv,mk,mn,ms,nb,nl,no,pl,pt-br,pt,ro,ru,sk,sl,sr-latn,sr,sv,th,tr,ug,uk,vi,zh-cn,zh", // %REMOVE_LINE_CORE%
-        version: "1.18.2",
+        version: "1.18.3",
         init: function (editor) {
             var command = editor.addCommand("codemirrorAbout", new CKEDITOR.dialogCommand("codemirrorAboutDialog"));
             command.modes = { wysiwyg: 0, source: 1 };
@@ -914,9 +914,17 @@
 
                     for (var i in ckeditorKeystrokes) {
                         var key = getCodeMirrorKey(i);
-						if (key !== null && key !== 'Enter') {
-                            (function (command) {
-                                editorExtraKeys[key] = function () {
+                        if (key !== null &&
+                            key !== 'Enter' &&
+                            key !== 'Ctrl-B' &&
+                            key !== 'Ctrl-I' &&
+                            key !== 'Ctrl-U' &&
+                            key !== 'Ctrl-Y' &&
+                            key !== 'Ctrl-Z' &&
+                            key !== 'Ctrl-C' &&
+                            key !== 'Ctrl-V') {
+                            (function(command) {
+                                editorExtraKeys[key] = function() {
                                     editor.execCommand(command);
                                 }
                             })(ckeditorKeystrokes[i]);
