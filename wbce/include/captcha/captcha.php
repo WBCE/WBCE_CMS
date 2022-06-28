@@ -149,7 +149,7 @@ if (!function_exists('call_captcha')) {
 							<?php include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';?>
 						</td>
 						<td></td>
-						<td><input type="text" name="captcha" maxlength="50"  style="width:150px;" /></td>
+						<td><input type="text" name="captcha" maxlength="50"  /></td>
 						<td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'];?></td>
 						</tr></table><?php
 	break;
@@ -159,7 +159,7 @@ if (!function_exists('call_captcha')) {
 							<?php include WB_PATH . '/include/captcha/captchas/' . CAPTCHA_TYPE . '.php';?>
 						</td>
 						<td>&nbsp;=&nbsp;</td>
-						<td><input type="text" name="captcha" maxlength="10"  style="width:30px;" /></td>
+						<td><input type="text" name="captcha" maxlength="10"  /></td>
 						<td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_RES'];?></td>
 						</tr></table><?php
 	break;
@@ -172,7 +172,7 @@ if (!function_exists('call_captcha')) {
 							</iframe>
 						</td>
 						<td>&nbsp;=&nbsp;</td>
-						<td><input type="text" name="captcha" maxlength="10" style="width:30px;" /></td>
+						<td><input type="text" name="captcha" maxlength="10" /></td>
 						<td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_RES'];?></td>
 						</tr></table><?php
 	break;
@@ -186,7 +186,7 @@ if (!function_exists('call_captcha')) {
 							</iframe>
 						</td>
 						<td></td>
-						<td><input type="text" name="captcha" maxlength="10" style="width:50px;" /></td>
+						<td><input type="text" name="captcha" maxlength="10"  /></td>
 						<td class="captcha_expl"><?php echo $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'];?></td>
 						</tr></table><?php
 	break;
@@ -230,16 +230,16 @@ if (!function_exists('call_captcha')) {
 			} elseif ($action == 'input') {
 				switch (CAPTCHA_TYPE) {
 				case 'text': // text-captcha
-					echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:150px;" maxlength="50"') . ' />';
+					echo '<input type="text" name="captcha" ' . ($style ? $style : ' maxlength="50"') . ' />';
 					break;
 				case 'calc_text':      // calculation as text
 				case 'calc_image':     // calculation with image (old captcha)
 				case 'calc_ttf_image': // calculation with varying background and ttf-font
-					echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:20px;" maxlength="10"') . ' />';
+					echo '<input type="text" name="captcha" ' . ($style ? $style : ' maxlength="10"') . ' />';
 					break;
 				case 'ttf_image': // captcha with varying background and ttf-font
 				case 'old_image': // old captcha
-					echo '<input type="text" name="captcha" ' . ($style ? $style : 'style="width:50px;" maxlength="10"') . ' />';
+					echo '<input type="text" name="captcha" ' . ($style ? $style : ' maxlength="10"') . ' />';
 					break;
 				}
 			} elseif ($action == 'text') {

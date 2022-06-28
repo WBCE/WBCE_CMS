@@ -54,7 +54,7 @@ if (!function_exists('randomString')) {
     function randomString($len)
     {
         list($usec, $sec) = explode(' ', microtime());
-        mt_srand((float)$sec + ((float)$usec * 100000));
+        mt_srand((int)$sec + ((int)$usec * 100000));
         //$possible="ABCDEFGHJKLMNPRSTUVWXYZabcdefghkmnpqrstuvwxyz23456789";
         $possible = "abdfhkrsvwxz23456789";
         $str = "";

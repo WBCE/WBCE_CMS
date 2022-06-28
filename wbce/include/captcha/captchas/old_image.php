@@ -33,7 +33,7 @@ if (!isset($_SESSION['captcha_time'])) {
 //unset($_SESSION['captcha_time']);
 
 // Captcha
-srand((double)microtime() * 100000);
+srand((int)microtime() * 100000);
 $sec_id = '';
 if (isset($_GET['s'])) {
     $sec_id = $_GET['s'];
