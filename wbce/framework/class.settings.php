@@ -348,7 +348,7 @@ class Settings
             return "Setting not set";
         } else {
             unset(self::$aSettings[$name]);
-            $sql = "DELETE FROM `{TP}settings WHERE `name` = '$name'";
+            $sql = "DELETE FROM `{TP}settings` WHERE `name` = '$name'";
             $database->query($sql);
         }
         return false;
