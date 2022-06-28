@@ -136,9 +136,13 @@ class mform {
 			$val = join(" | ",$val);
 			$this->isArray = true;
 		}
-		$val = htmlspecialchars($val);
-		$val = preg_replace("/(\n)/","",$val);
-		return $val?$val:'';
+		if (isset($val)) {
+			$val = htmlspecialchars($val);
+			$val = preg_replace("/(\n)/","",$val);
+			return $val;
+		} else {
+			return '';
+		}
 	}
 
 	function stripslashes_deep($value) {
