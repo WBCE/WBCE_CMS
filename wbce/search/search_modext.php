@@ -79,7 +79,7 @@ function is_any_matched($text, $search_words)
 // collects the matches from text in excerpt_array
 function get_excerpts($text, $search_words, $max_excerpt_num)
 {
-    $excerpt_array = false;
+    $excerpt_array = array();
     $word = '(' . implode('|', $search_words) . ')';
     // start-sign: .!?; + INVERTED EXCLAMATION MARK - INVERTED QUESTION MARK - DOUBLE EXCLAMATION MARK - INTERROBANG - EXCLAMATION QUESTION MARK - QUESTION EXCLAMATION MARK - DOUBLE QUESTION MARK - HALFWIDTH IDEOGRAPHIC FULL STOP - IDEOGRAPHIC FULL STOP - IDEOGRAPHIC COMMA
     $p_start = ".!?;" . "\xC2\xA1" . "\xC2\xBF" . "\xE2\x80\xBC" . "\xE2\x80\xBD" . "\xE2\x81\x89" . "\xE2\x81\x88" . "\xE2\x81\x87" . "\xEF\xBD\xA1" . "\xE3\x80\x82" . "\xE3\x80\x81";
