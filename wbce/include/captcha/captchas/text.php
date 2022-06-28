@@ -32,7 +32,7 @@ global $database;
 $name = 'text';
 $file = WB_PATH . "/temp/.captcha_$name.php";
 
-srand((double)microtime() * 100000);
+srand((int)microtime() * 100000);
 $_SESSION['captcha' . $sec_id] = rand(0, 99999);
 
 // get questions and answers
