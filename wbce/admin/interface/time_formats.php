@@ -24,7 +24,7 @@ if (!defined('TIME_FORMATS_LOADED')) {
 $TIME_FORMATS = array();
 
 // Get the current time (in the users timezone if required)
-$sShowTime = time() + ((isset($user_time) && $user_time == true) ? TIMEZONE : DEFAULT_TIMEZONE);
+$sShowTime = time() + ((isset($user_time) && $user_time == true) ? (int)TIMEZONE : (int)DEFAULT_TIMEZONE);
 
 // Add values to list
 $TIME_FORMATS['g:i|A'] = date('g:i A', $sShowTime);

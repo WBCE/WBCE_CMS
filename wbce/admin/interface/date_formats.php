@@ -24,7 +24,7 @@ if (!defined('DATE_FORMATS_LOADED')) {
 $DATE_FORMATS = array();
 
 // Get the current time (in the users timezone if required)
-$actual_time = time() + ((isset($user_time) && $user_time == true) ? TIMEZONE : DEFAULT_TIMEZONE);
+$actual_time = time() + ((isset($user_time) && $user_time == true) ? (int)TIMEZONE : (int)DEFAULT_TIMEZONE);
 
 // Add values to list
 $DATE_FORMATS['l,|jS|F,|Y'] = date('l, jS F, Y', $actual_time);
