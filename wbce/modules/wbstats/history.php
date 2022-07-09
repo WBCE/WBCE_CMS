@@ -1,15 +1,15 @@
 <?php
 /**
  *
- * @category        admintools
+ * @category        admintool
  * @package         wbstats
- * @author          Ruud Eisinga - Dev4me
+ * @author          Ruud Eisinga - dev4me.com
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.2
- * @lastmodified    December 9, 2020
+ * @version         0.2.5
+ * @lastmodified    July 7, 2022
  *
  */
 
@@ -21,12 +21,9 @@ else {$show_month=date("n",$time);}
 if (isset($_GET["y"]) && is_numeric($_GET["y"]) && $_GET["y"] >= 2010 && $_GET["y"] <= 2100 ) {$show_year = $_GET["y"];} 
 else {$show_year=date("Y",$time);}
 
-
-$stats = new stats();
 $r = $stats->getHistory($show_month,$show_year);
-//print_r($r);
 ?>
-
+<div class="history">
   <div class="middle">
     <h3><?php echo $WS['HISTORY'] ?></h3>
 
@@ -70,7 +67,7 @@ $r = $stats->getHistory($show_month,$show_year);
 	echo "<span><a href=\"$module_history_link&m=$back_month&y=$back_year\"><</a>&nbsp;<a href=\"$module_history_link&m=$next_month&y=$next_year\">></a></span>";
 	?>
 	</h3>
-	<table height="200" width="100%" cellpadding="0" cellspacing="0" align="right">
+	<table class="graph" height="200" width="100%" cellpadding="0" cellspacing="0" align="right">
 	<tr valign="bottom" height="180">
 
 	<?php
@@ -105,7 +102,7 @@ $r = $stats->getHistory($show_month,$show_year);
 	echo "<span><a href=\"$module_history_link&m=$back_month&y=$back_year\"><</a>&nbsp;<a href=\"$module_history_link&m=$next_month&y=$next_year\">></a></span>";
 	?>
 	</h3>
-	<table height="230" width="100%" cellpadding="0" cellspacing="0" align="right">
+	<table class="graph" height="230" width="100%" cellpadding="0" cellspacing="0" align="right">
 	<tr valign="bottom" height="210">
 	<?php
 	$max = 1;
@@ -130,6 +127,6 @@ $r = $stats->getHistory($show_month,$show_year);
 	<td colspan="6" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 19, $show_year)); ?></td>
 	<td colspan="7" class="timeline"><?PHP echo date("j.M",mktime(0, 0, 0, $show_month, 25, $show_year)); ?></td>
 	</tr></table>
-  </div>
   <div style="clear:both"></div>
+  </div>
 </div>

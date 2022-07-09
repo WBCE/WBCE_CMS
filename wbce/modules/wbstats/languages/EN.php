@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.2
- * @lastmodified    December 9, 2020
+ * @version         0.2.4
+ * @lastmodified    Februari 11, 2021
  *
  */
  
@@ -20,7 +20,10 @@ $WS = array (
 	"MENU2" 			=> "Visitors",
 	"MENU3" 			=> "History",
 	"MENU4" 			=> "Live",
-	"MENU5" 			=> "Help",
+	"MENU5" 			=> "Config",
+	"MENU6" 			=> "Help",
+	"MENU7" 			=> "Logbook",
+	"MENU8" 			=> "Campaigns",
 	"GENERAL" 			=> "Counters",
 	"LAST24" 			=> "Last 24 hours",
 	"LAST30" 			=> "Last 30 days",
@@ -52,18 +55,22 @@ $WS = array (
 	"LANGTOP" 		=> "Languages",
 	"ENTRYTOP" 		=> "Entry pages",
 	"EXITTOP" 		=> "Exit pages",
+	"LOCTOP" 			=> "Locations",
+	"BROWSERTOP" 		=> "Browsers",
+	"OSTOP" 			=> "OS",
 	"NUMBER" 			=> "Number",
 	"PERCENT" 			=> "Percent",
 	"REFERER" 			=> "Referer",
-	"PAGES" 			=> "Page",
+	"PAGE" 				=> "Page",
 	"KEYWORDS" 			=> "Keywords",
 	"LANGUAGES" 		=> "Language",
+	"LOCATIONS" 		=> "Locations",
 	"HISTORY" 			=> "History",
 	"TOTALSINCE"		=> "Total since",
 	"SELECTED"			=> "Selected date",
 	"VISITORS"			=> "Visitors",
 	"PAGES"				=> "Pages",
-	"REQUESTS"				=> "Requests",
+	"REQUESTS"			=> "Requests",
 	"AVGDAY"			=> "Average per day",
 	"YEAR"				=> "Year",
 	"PAGES_CLOUD"		=> "Number of pages per visit",
@@ -73,7 +80,12 @@ $WS = array (
 	"LIVE_PAGE" 		=> "Current page",
 	"LIVE_PAGES" 		=> "Number of pages",
 	"LIVE_LAST" 		=> "Last action",
-	"LIVE_ONLINE" 		=> "Time online"	
+	"LIVE_ONLINE" 		=> "Time online",
+	"LOCATION"			=> "Location",
+	"BROWSER"			=> "Browser",
+	"OS"			=> "OS",
+	"IGNORES" 			=> "List of ignored IP addresses",
+	"MYIP" 				=> "Current IP address"
 );
 
 $pages_cloud[1] = "1 page";

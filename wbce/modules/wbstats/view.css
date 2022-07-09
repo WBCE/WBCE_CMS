@@ -1,0 +1,21 @@
+#container.frontend {
+	font-family: arial, sans-serif;
+	font-size: 14px;
+}
+.frontend th, .frontend td {
+	padding: 5px 10px;
+	font-family: arial, sans-serif;
+	font-size: 14px;
+}
+#container.frontend td h3,
+#container.frontend td h4 {
+	margin:-5px -10px;
+}
+
+.middle.h265{
+	min-height: 370px;
+}
+/* if bootstrap is uses, set 95% screenwidth - remove if it breaks the website */
+.container {
+	width: 95vw;
+}

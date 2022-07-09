@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.2
- * @lastmodified    December 9, 2020
+ * @version         0.2.4
+ * @lastmodified    Februari 11, 2021
  *
  */
  
@@ -21,7 +21,10 @@ $WS = array (
 	"MENU2" 			=> "Bezoekers",
 	"MENU3" 			=> "Geschiedenis",
 	"MENU4" 			=> "Live bezoekers",
-	"MENU5" 			=> "Help",
+	"MENU5" 			=> "Configuratie",
+	"MENU6" 			=> "Help",
+	"MENU7" 			=> "Logboek",
+	"MENU8" 			=> "Campagnes",
 	"GENERAL" 			=> "Tellers",
 	"LAST24" 			=> "Laatste 24 uur",
 	"LAST30" 			=> "Laatste 30 dagen",
@@ -53,12 +56,16 @@ $WS = array (
 	"LANGTOP" 			=> "Talen",
 	"ENTRYTOP" 			=> "Binnenkomst pagina's",
 	"EXITTOP" 			=> "Uitgang pagina's",
+	"LOCTOP" 			=> "Locaties",
+	"BROWSERTOP" 		=> "Browsers",
+	"OSTOP" 			=> "OS",
 	"NUMBER" 			=> "Nr.",
 	"PERCENT" 			=> "Procent",
 	"REFERER" 			=> "Verwijzer",
-	"PAGES" 			=> "Pagina",
+	"PAGE" 				=> "Pagina",
 	"KEYWORDS" 			=> "Zoekterm",
 	"LANGUAGES" 		=> "Taal",
+	"LOCATIONS" 		=> "Locaties",
 	"HISTORY" 			=> "Geschiedenis",
 	"TOTALSINCE"		=> "Totaal sinds",
 	"SELECTED"			=> "Geselecteerde maand",
@@ -74,7 +81,12 @@ $WS = array (
 	"LIVE_PAGE"			=> "Huidige pagina",
 	"LIVE_PAGES"		=> "Aantal pagina's",
 	"LIVE_LAST"			=> "Laatste actie",
-	"LIVE_ONLINE"		=> "Tijd online"
+	"LIVE_ONLINE"		=> "Tijd online",
+	"LOCATION"			=> "Locatie",
+	"BROWSER"			=> "Browser",
+	"OS"				=> "OS",
+	"IGNORES" 			=> "Lijst van IP adressen die genegeerd worden",
+	"MYIP" 				=> "Huidige IP adres"
 );
 		
 $pages_cloud[] = "1 pagina";

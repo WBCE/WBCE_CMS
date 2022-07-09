@@ -1,21 +1,21 @@
 <?php
 /**
  *
- * @category        admintools
+ * @category        admintool
  * @package         wbstats
- * @author          Ruud Eisinga - Dev4me
+ * @author          Ruud Eisinga - dev4me.com
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.2
- * @lastmodified    December 9, 2020
+ * @version         0.2.5
+ * @lastmodified    July 7, 2022
  *
  */
 
 $module_directory = 'wbstats';
-$module_name = 'Visitor statistics - WBstats';
-$module_version = '0.2.2';
+$module_name = 'Visitor statistics - WBstats - by Dev4me';
+$module_version = '0.2.5.0';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -29,6 +29,24 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5
+ * - showing 404 status when recent 404 module is used
+ * - better bot detection (calls without browser language are fake and not counted)
+ * - improved logbook history
+ * - added UTM campaign recording
+ * - added GCLID and FBCLID detection (logged as campaign data)
+ * - fixed issue with viewing searchkeys
+ * - fixed issue mysql 5.7+ (setting ONLY_FULL_GROUP_BY)
+ * - fixed several php 8.1 "deprecated" issues
+ *
+ * 0.2.4
+ * - fixed updgrade.php for MySQL-Strict / Doctrine
+ * - fixed table cleanup routines
+ * - added  logbook visitory history
+ *
+ * 0.2.3
+ * - added the option to ignore specified IP adressess
  *
  * 0.2.2
  * - fixed small bug in upgrade script when used in complete CMS upgrades

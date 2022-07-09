@@ -19,6 +19,16 @@ $(function(){
 		alignY: 'bottom',
 		fade: true,
 		slide: false
+	});	
+	$('.expandright').poshytip({
+		className: 'tip-twitter',
+		alignTo: 'target',
+		showTimeout: 1,
+		offsetX: 15,
+		alignX: 'right',
+		alignY: 'center',
+		fade: true,
+		slide: false
 	});
 	$(".bar").each(function() { $.data(this, "realHeight", $(this).height()); }).css({ height: "1px" }).each(function() { $(this).animate({ height: $(this).data("realHeight") }, 1000); });
 	
@@ -28,6 +38,14 @@ $(function(){
 		$(this).simplePopup({ width: '1200px', type: "html", htmlSelector: sec ,afterOpen: function() {
 			$('.simple-popup-content .expand').each(function (index, value){ $(this).html(value.title); value.title='';});
         } });
+	});
+	$('.copyip').on('click',function(e) {
+		e.preventDefault();
+		var ip = $(this).data('ip');
+		$('#ips').val(function(i, text) {
+			if(text) ip = '\n'+ip;
+			return text + ip;
+		});
 	});
 }); 
 function OnBeforeUnLoad () { document.getElementById('loading').style.display = 'block'; }

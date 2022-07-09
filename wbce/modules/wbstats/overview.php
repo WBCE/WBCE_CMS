@@ -1,21 +1,20 @@
 <?php
 /**
  *
- * @category        admintools
+ * @category        admintool
  * @package         wbstats
- * @author          Ruud Eisinga - Dev4me
+ * @author          Ruud Eisinga - dev4me.com
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.2
- * @lastmodified    December 9, 2020
+ * @version         0.2.5
+ * @lastmodified    July 7, 2022
  *
  */
- 
-defined('WB_PATH') OR die(header('Location: ../index.php'));
 
-$stats = new stats();
+
+defined('WB_PATH') OR die(header('Location: ../index.php'));
 $r = $stats->getStats();
 ?>
 <script type="text/javascript">
@@ -107,7 +106,7 @@ $(document).on("click",'.pags', function(e) {
 
 <div class="middle h250">
 	<h3><?php echo $WS['LAST24'] ?></h3>
-	<table height="230" width="100%" cellpadding="0" cellspacing="0" align="right">
+	<table class="graph" height="230" width="100%" cellpadding="0" cellspacing="0" align="right">
 		<tr valign="bottom" height="210">
 		<?php
 			$max = 1;
@@ -139,7 +138,7 @@ $(document).on("click",'.pags', function(e) {
 		<a href="" class="pags"><?php echo $WS['PAGES'] ?></a>
 		</span>
 	</h3>
-	<table  height="230" width="100%" cellpadding="0" cellspacing="0" align="right">
+	<table class="graph"  height="230" width="100%" cellpadding="0" cellspacing="0" align="right">
 		<tr id="visits" valign="bottom" height="210">
 		<?php
 			$max = 1;

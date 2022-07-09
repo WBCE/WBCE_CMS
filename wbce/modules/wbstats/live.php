@@ -1,21 +1,20 @@
 <?php
 /**
  *
- * @category        admintools
+ * @category        admintool
  * @package         wbstats
- * @author          Ruud Eisinga - Dev4me
+ * @author          Ruud Eisinga - dev4me.com
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.2
- * @lastmodified    December 9, 2020
+ * @version         0.2.5
+ * @lastmodified    July 7, 2022
  *
  */
- 
-defined('WB_PATH') OR die(header('Location: ../index.php'));
 
-$stats = new stats();
+
+defined('WB_PATH') OR die(header('Location: ../index.php'));
 $r = $stats->getLive();
 ?>
 <script type="text/javascript">
@@ -27,9 +26,11 @@ function getLive() {
 		$.each(data, function() {
 			var tbl_row = "";
 			$.each(this, function(k , v) {
-				tbl_row += "<td class=\""+k+"\">"+v+"</td>";
+				if(k!='vis') {
+					tbl_row += "<td class=\""+k+"\">"+v+"</td>";
+				}
 			});
-			tbl_body += "<tr class=\""+( odd_even ? "odd" : "even")+"\">"+tbl_row+"</tr>";
+			tbl_body += "<tr class=\""+( odd_even ? "odd" : "even")+" "+this['vis']+"\">"+tbl_row+"</tr>";
 			odd_even = !odd_even;               
 		});
 		$(".res").html(tbl_body);
@@ -38,5 +39,5 @@ function getLive() {
 var refreshId = setInterval(getLive, 5000);
 getLive();
 </script>
-<div id="live"><table class="res"></table></div>
+<div class="full"><div id="live"><table class="res"></table></div></div>
 

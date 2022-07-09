@@ -1,23 +1,25 @@
 <?php
 /**
  *
- * @category        admintools
+ * @category        admintool
  * @package         wbstats
- * @author          Ruud Eisinga - Dev4me
+ * @author          Ruud Eisinga - dev4me.com
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.2
- * @lastmodified    December 9, 2020
+ * @version         0.2.5
+ * @lastmodified    July 7, 2022
  *
  */
 
+
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 $top = 10;
-$stats = new stats();
 $r = $stats->getVisitors(100);
-
+//echo '<pre>';
+//print_r($r);
+//die();
 ?>
 <div class="sysmenu small">
   <a href="#" class="pop" data-sec="pages"><?php echo $WS['PAGETOP']  ?></a>
@@ -26,6 +28,9 @@ $r = $stats->getVisitors(100);
   <a href="#" class="pop" data-sec="referer"><?php echo $WS['REFTOP'] ?></a>
   <a href="#" class="pop" data-sec="keys"><?php echo $WS['KEYSTOP']  ?></a>
   <a href="#" class="pop" data-sec="lang"><?php echo $WS['LANGTOP']  ?></a>
+  <a href="#" class="pop" data-sec="location"><?php echo $WS['LOCTOP']  ?></a>
+  <a href="#" class="pop" data-sec="browser"><?php echo $WS['BROWSERTOP']  ?></a>
+  <a href="#" class="pop" data-sec="os"><?php echo $WS['OSTOP']  ?></a>
 </div>
 
 <div class="middle h265" id="referer">
@@ -44,7 +49,7 @@ $r = $stats->getVisitors(100);
 				?>
 		<tr<?=$display?>>
 			<td class="fbar"><?php echo $key ?></td>
-			<td><div class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></div></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['short'] ?></div></td>
 			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
 		</tr>
@@ -68,7 +73,7 @@ $r = $stats->getVisitors(100);
 				?>
 		<tr<?=$display?>>
 			<td class="fbar"><?php echo $key ?></td>
-			<td><div class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></div></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['short'] ?></div></td>
 			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['REQUESTS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
 		</tr>
@@ -93,7 +98,7 @@ $r = $stats->getVisitors(100);
 				?>
 		<tr<?=$display?>>
 			<td class="fbar"><?php echo $key ?></td>
-			<td><div class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></div></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['short'] ?></div></td>
 			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
 		</tr>
@@ -117,7 +122,7 @@ $r = $stats->getVisitors(100);
 				?>
 		<tr<?=$display?>>
 			<td class="fbar"><?php echo $key ?></td>
-			<td><div class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></div></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['short'] ?></div></td>
 			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
 		</tr>
@@ -143,7 +148,7 @@ $r = $stats->getVisitors(100);
 				?>
 		<tr<?=$display?>>
 			<td class="fbar"><?php echo $key ?></td>
-			<td><div class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></div></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['short'] ?></div></td>
 			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
 		</tr>
@@ -166,7 +171,78 @@ $r = $stats->getVisitors(100);
 				?>
 		<tr<?=$display?>>
 			<td class="fbar"><?php echo $key ?></td>
-			<td><div class="expand" title="<?php echo $data['name'] ?>"><?php echo $data['short'] ?></div></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['short'] ?></div></td>
+			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
+			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
+		</tr>
+		<?php }} ?>
+	</table>
+</div>
+<div class="third h265" id="location">
+    <h3><span><?php echo $WS['TOP'].' '.$top.' - ' ?></span><?php echo $WS['LOCTOP'] ?></h3>
+	<table width="100%" border="0" cellpadding="3" cellspacing="0">
+		<tr>
+			<td class="fbar" width="30"><strong><?php echo $WS['NUMBER'] ?></strong></td>
+			<td ><strong><?php echo $WS['LOCATION'] ?></strong></td>
+			<td width="70"><strong><?php echo $WS['PERCENT'] ?></strong></td>
+			<td class="tbar" width="40"><strong>##</strong></td>
+		</tr>
+		<?php if(isset($r['location']) && is_array($r['location'])) {
+			$counter = 1;
+			foreach($r['location'] as $key => $data) {
+				$display = $counter++ > $top ? ' class="hidden"':'';
+				?>
+		<tr<?=$display?>>
+			<td class="fbar"><?php echo $key ?></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['name'] ?></div></td>
+			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
+			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
+		</tr>
+		<?php }} ?>
+	</table>
+</div>
+
+<div class="third h265" id="browser">
+    <h3><span><?php echo $WS['TOP'].' '.$top.' - ' ?></span><?php echo $WS['BROWSERTOP'] ?></h3>
+	<table width="100%" border="0" cellpadding="3" cellspacing="0">
+		<tr>
+			<td class="fbar" width="30"><strong><?php echo $WS['NUMBER'] ?></strong></td>
+			<td ><strong><?php echo $WS['BROWSER'] ?></strong></td>
+			<td width="70"><strong><?php echo $WS['PERCENT'] ?></strong></td>
+			<td class="tbar" width="40"><strong>##</strong></td>
+		</tr>
+		<?php if(isset($r['browser']) && is_array($r['browser'])) {
+			$counter = 1;
+			foreach($r['browser'] as $key => $data) {
+				$display = $counter++ > $top ? ' class="hidden"':'';
+				?>
+		<tr<?=$display?>>
+			<td class="fbar"><?php echo $key ?></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['name'] ?></div></td>
+			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
+			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
+		</tr>
+		<?php }} ?>
+	</table>
+</div>
+
+<div class="third h265" id="os">
+    <h3><span><?php echo $WS['TOP'].' '.$top.' - ' ?></span><?php echo $WS['OSTOP'] ?></h3>
+	<table width="100%" border="0" cellpadding="3" cellspacing="0">
+		<tr>
+			<td class="fbar" width="30"><strong><?php echo $WS['NUMBER'] ?></strong></td>
+			<td ><strong><?php echo $WS['OS'] ?></strong></td>
+			<td width="70"><strong><?php echo $WS['PERCENT'] ?></strong></td>
+			<td class="tbar" width="40"><strong>##</strong></td>
+		</tr>
+		<?php if(isset($r['os']) && is_array($r['os'])) {
+			$counter = 1;
+			foreach($r['os'] as $key => $data) {
+				$display = $counter++ > $top ? ' class="hidden"':'';
+				?>
+		<tr<?=$display?>>
+			<td class="fbar"><?php echo $key ?></td>
+			<td><div class="expand" title="<?php echo htmlspecialchars($data['name']) ?>"><?php echo $data['name'] ?></div></td>
 			<td nowrap><div class="vbar" style="width:<?php echo $data['width'] ?>px;" title="<?php echo $data['views'] ?> <?php echo $WS['VISITORS'] ?>" >&nbsp;<?php echo $data['percent'] ?>%</div></td>
 			<td nowrap><div class="tbar"><?php echo $data['views'] ?></div></td>
 		</tr>
