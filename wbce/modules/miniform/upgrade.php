@@ -20,7 +20,7 @@ if(!defined('WB_PATH')) die(header('Location: index.php'));
 function _db_add_field($field, $table, $desc) {
 	global $database;
 	$table = TABLE_PREFIX.$table;
-	$query = $database->query("DESCRIBE $table '$field'");
+	$query = $database->query("DESCRIBE $table $field");
 	if(!$query || $query->numRows() == 0) { // add field
 		$query = $database->query("ALTER TABLE $table ADD $field $desc");
 	}
