@@ -20,10 +20,12 @@ date_default_timezone_set('UTC');
 // Include PHPMailer class
 $sPath = WB_PATH . "/include/PHPMailer/src";
 require $sPath . '/Exception.php';
+require $sPath . '/OAuthTokenProvider.php';
 require $sPath . '/OAuth.php';
 require $sPath . '/PHPMailer.php';
 require $sPath . '/SMTP.php';
 require $sPath . '/POP3.php';
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
