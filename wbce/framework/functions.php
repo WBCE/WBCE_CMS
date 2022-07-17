@@ -1223,7 +1223,7 @@ function getFilePart($sFilePath, $size = 0)
  */
 function replace_vars($sString = '', &$aReplace = array(), $sHem = '{{%s}}')
 {
-    if (!empty($aReplace)) {
+    if (!empty($aReplace) && $sString!=null) {
         foreach ($aReplace as $sKey => $sValue) {
             $sString = str_replace(sprintf($sHem, $sKey), $sValue, $sString);
         }
