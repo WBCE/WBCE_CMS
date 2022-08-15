@@ -16,13 +16,16 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.15';
+$module_version     = '5.0.16';
 $module_platform    = '1.4';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v5.0.16 - 2022-08-15
+ *         - florian         
+ *         ! PHP 8.1 fixes    
  *
  * v5.0.15 - 2022-03-05
  *         - webbird

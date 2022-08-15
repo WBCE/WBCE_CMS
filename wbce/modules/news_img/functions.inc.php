@@ -1472,7 +1472,7 @@ function mod_nwi_img_get_by_post(int $post_id, bool $render)
         TABLE_PREFIX,intval($post_id)
     ));
 	
-	$thumbsizeraw = explode('x',$settings['imgthumbsize']);
+	$thumbsizeraw = explode('x',(string)$settings['imgthumbsize']);
 
     $images = array();
     if (!empty($query_img) && $query_img->numRows() > 0) {

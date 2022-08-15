@@ -111,16 +111,16 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
             'LINK'            => $post['post_link'],
             'MODI_DATE'       => $post['post_date'],
             'MODI_TIME'       => $post['post_time'],
-            'PAGE_TITLE'      => (strlen($page['page_title']) ? $page['page_title'] : $page['menu_title']),
+            'PAGE_TITLE'      => (strlen((string)$page['page_title']) ? $page['page_title'] : $page['menu_title']),
             'TAGS'            => implode(" ", $tags),
             'CONTENT'         => $post['content_short'].$post['content_long'],
             'BACK'            => $page_link,
             'PREVIOUS_PAGE_LINK'
-                => (strlen($post['prev_link'])>0 ? '<a href="'.$post['prev_link'].'">'.$MOD_NEWS_IMG['TEXT_PREV_POST'].'</a>' : null),
+                => (strlen((string)$post['prev_link'])>0 ? '<a href="'.$post['prev_link'].'">'.$MOD_NEWS_IMG['TEXT_PREV_POST'].'</a>' : null),
             'NEXT_PAGE_LINK'
-                => (strlen($post['next_link'])>0 ? '<a href="'.$post['next_link'].'">'.$MOD_NEWS_IMG['TEXT_NEXT_POST'].'</a>' : null),
+                => (strlen((string)$post['next_link'])>0 ? '<a href="'.$post['next_link'].'">'.$MOD_NEWS_IMG['TEXT_NEXT_POST'].'</a>' : null),
             'DISPLAY_PREVIOUS_NEXT_LINKS'
-                => ((strlen($post['prev_link'])>0 || strlen($post['next_link'])>0) ? 'visible' : 'hidden'),
+                => (strlen((string)($post['prev_link'])>0 || strlen((string)$post['next_link'])>0) ? 'visible' : 'hidden'),
         )
     );
 
