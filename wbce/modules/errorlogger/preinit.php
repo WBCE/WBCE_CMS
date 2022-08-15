@@ -6,9 +6,9 @@
  * @author          Ruud Eisinga - www.dev4me.com
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WBCE 1.4+
- * @version         1.1.3
- * @lastmodified    Jan 5, 2022
+ * @platform        WBCE 1.4+ / WB2.10+
+ * @version         1.1.4.1
+ * @lastmodified    July 30, 2022
  *
  */
 
@@ -22,6 +22,8 @@
 if (!defined('WB_PATH')) {
     die("Go");
 }
+
+
 $logDir = WB_PATH.'/var/logs';
 if (!is_dir($logDir)) {
 	mkdir($logDir, 0777, true);
@@ -35,16 +37,19 @@ if (!file_exists($errorLogFilename)) {
 class WBCE_Error
 {
     private $errorLogFilename;
+	private $url;
 
     public function __construct($errorLogFilename)
     {
         ini_set("display_errors", "off");
         ini_set('log_errors', 0);
         ini_set('error_log', $errorLogFilename);
+		error_reporting(E_ALL);
         $this->errorLogFilename = $errorLogFilename;
         set_error_handler(array($this, 'scriptError'));
         set_exception_handler(array($this, 'exceptionError'));
         //register_shutdown_function(array($this, 'shutdown'));
+		 $this->url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
 
     public function scriptError($errno, $errstr, $errfile, $errline)
@@ -86,6 +91,7 @@ class WBCE_Error
                 $str_err[$x]['function'] = '';
             }
         }
+		
         $out = date('c').' '.'['.$errseverity.'] '.str_replace(dirname(dirname(__DIR__)), '', $errfile).':['.$errline.'] '
             . ' from '.str_replace(dirname(dirname(__DIR__)), '', $str_err[$x]['file']).':['.$str_err[$x]['line'].'] '
             . (@$str_err[$x]['class'] ? $str_err[$x]['class'].$str_err[$x]['type'] : '').$str_err[$x]['function'].' '
@@ -107,6 +113,12 @@ class WBCE_Error
     
     private function writeError($out)
     {
+		if($this->url) {
+			$preout = date('c').' '.'[Visitor Request] '.$this->url.PHP_EOL;
+			file_put_contents($this->errorLogFilename, $preout, FILE_APPEND);
+			$this->url = '';
+		}
+		
         file_put_contents($this->errorLogFilename, $out, FILE_APPEND);
     }
 }

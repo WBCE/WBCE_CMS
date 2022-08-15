@@ -8,14 +8,14 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.5
- * @lastmodified    July 7, 2022
+ * @version         0.2.5.1
+ * @lastmodified    August 12, 2022
  *
  */
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.0';
+$module_version = '0.2.5.1';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -29,6 +29,9 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.1
+ * - fixed security issue
  *
  * 0.2.5
  * - showing 404 status when recent 404 module is used

@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.5
- * @lastmodified    July 7, 2022
+ * @version         0.2.5.1
+ * @lastmodified    August 12, 2022
  *
  */
 
@@ -65,9 +65,11 @@ $(document).on("click",'.pags', function(e) {
 		<tr valign="top">
 			<td><?php echo $WS['TODAYBOTS'] ?></td><td><?php echo $r['btoday'] ?></td>
 		</tr>
-		<tr valign="top">
+		<?php if($r['rtoday']) { ?>
+			<tr valign="top">
 			<td><?php echo $WS['TODAYREFSPAM'] ?></td><td><?php echo $r['rtoday'] ?></td>
 		</tr>
+		<?php }?>
 		<tr valign="top">
 			<td colspan="2"><h4><?php echo $WS['YESTERDAY'] ?></h4></td>
 		</tr>
@@ -80,9 +82,11 @@ $(document).on("click",'.pags', function(e) {
 		<tr valign="top">
 			<td><?php echo $WS['YESTERDAYBOTS'] ?></td><td><?php echo $r['byesterday'] ?></td>
 		</tr>
+		<?php if($r['ryesterday']) { ?>
 		<tr valign="top">
 			<td><?php echo $WS['YESTERDAYREFSPAM'] ?></td><td><?php echo $r['ryesterday'] ?></td>
 		</tr>
+		<?php }?>
 		<tr valign="top">
 			<td colspan="2"><h4><?php echo $WS['MISC'] ?></h4></td>
 		</tr>

@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.5
- * @lastmodified    July 7, 2022
+ * @version         0.2.5.1
+ * @lastmodified    August 12, 2022
  *
  */
 
@@ -197,12 +197,20 @@ class counter {
 	}
 	
 	function getRealUserIp(){
+		$ip = '';
 		switch(true){
-			case (!empty($_SERVER['HTTP_X_REAL_IP'])) : return $_SERVER['HTTP_X_REAL_IP'];
-			case (!empty($_SERVER['HTTP_CLIENT_IP'])) : return $_SERVER['HTTP_CLIENT_IP'];
-			case (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) : return $_SERVER['HTTP_X_FORWARDED_FOR'];
-			default : return $_SERVER['REMOTE_ADDR'];
+			case (!empty($_SERVER['HTTP_X_REAL_IP'])) : $ip = $_SERVER['HTTP_X_REAL_IP']; break;
+			case (!empty($_SERVER['HTTP_CLIENT_IP'])) : $ip = $_SERVER['HTTP_CLIENT_IP']; break;
+			case (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) : $ip = $_SERVER['HTTP_X_FORWARDED_FOR']; break;
+			default : $ip = $_SERVER['REMOTE_ADDR'];
 		}
+		if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+			return $ip;
+		}
+		if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+			return $ip;
+		}
+		return '0.0.0.0';
 	}
 	
 	function getKeywords () {
@@ -372,6 +380,7 @@ class counter {
 	function isIgnored() {
 		global $database, $table_ips;
 		$ip = $this->getRealUserIp(); // $_SERVER['REMOTE_ADDR'];
+		$ip = $this->escapeString($ip);
 		$r = $database->get_one("SELECT `ip` from ".$table_ips." WHERE `ip` = '$ip' AND `session`='ignore'");
 		return $r == $ip;		
 	}

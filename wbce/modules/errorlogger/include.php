@@ -12,7 +12,6 @@
  *
  */
 
-// Must include code to stop this file being access directly
-if (defined('WB_PATH') == false) {
-    die("Cannot access this file directly");
-}
+
+include __DIR__ . '/initialize.php';
+include __DIR__ . '/preinit.php';

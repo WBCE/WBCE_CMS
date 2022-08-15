@@ -6,9 +6,9 @@
  * @author          Ruud Eisinga - www.dev4me.com
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WBCE 1.4+
- * @version         1.1.3
- * @lastmodified    Jan 5, 2022
+ * @platform        WBCE 1.4+ / WB2.10+
+ * @version         1.1.4.1
+ * @lastmodified    July 30, 2022
  *
  */
 
@@ -44,7 +44,7 @@ if (isset($_GET['color'])) {
         setcookie($cookie, '2', time() + (86400 * 365));
         $_COOKIE[$cookie] = '2';
     } else {
-        setcookie($cookie, null, 1);
+        setcookie($cookie, '0', 1);
         unset($_COOKIE[$cookie]);
     }
 }
@@ -129,6 +129,9 @@ if ($view == '0' or $view == '1') {
         }
         if (strpos($line, "Deprecated]")!== false) {
             $type = " logdeprecated";
+        }        
+		if (strpos($line, "Visitor Request]")!== false) {
+            $type = " usedurl";
         }
         echo '<div class="logline '.$row.$type.'">'.$line.'</div>';
     }
@@ -146,7 +149,7 @@ if ($view == '0' or $view == '1') {
     <?php foreach ($aLines as $rec) {
             $row = $row == "odd" ? "even" : "odd"; ?>
         <tr class="<?=$row?> color-<?=$rec['color']?>">
-            <td>
+            <td style="white-space: nowrap;">
                 <?=$rec['date']?> <b><?=$rec['time']?></b>
             </td>    
             <td style="font-weight:bold;color: <?=$rec['color']?>;text-align: center;">
@@ -154,6 +157,10 @@ if ($view == '0' or $view == '1') {
             </td> 
             <?php if ($rec['type'] == 'Exception'): ?>
                 <td colspan="2" style="text-align:left; color: red;">
+                    <?=$rec['primary']?>
+                </td>
+            <?php elseif ($rec['type'] == 'Visitor Request'): ?>
+                <td colspan="2" style="text-align:left; color: #355ff9;">
                     <?=$rec['primary']?>
                 </td>
             <?php else: ?>
@@ -195,12 +202,11 @@ function log_to_array($aLines)
         } else {
             continue;
         }
-		if (!isset($arr2[3])) {
-			$arr2[3][0] = '';
-			$arr2[3][1] = '';
-		}
         $aDateTime = explode('T', $arr2[0][0]);
         $sColor = 'inherit';
+        if ($sType == 'Visitor Request') {
+            $sColor = '#355ff9';
+        }
         if ($sType == 'Exception') {
             $sColor = 'red';
         }
@@ -212,11 +218,11 @@ function log_to_array($aLines)
             'date'      => $aDateTime[0],
             'time'      => trim(str_replace('+00:00', '', $aDateTime[1])),
             'type'      => $sType,
-            'primary'   => str_replace(':', '', $arr2[1][1]),
-            'p_line'    => isset($arr2[2]) ? $arr2[2][0] : '',
+            'primary'   => isset($arr2[1][1]) ? $arr2[1][1]:'',
+            'p_line'    => isset($arr2[2][0]) ? $arr2[2][0] : '?',
             'secondary' => isset($arr2[2][1]) ? trim(str_replace(['from', ':'], '', $arr2[2][1])):'',
-            's_line'    => $arr2[3][0],
-            'msg'       => trim($arr2[3][1]),
+            's_line'    => isset($arr2[3][0]) ? $arr2[3][0] :'?',
+            'msg'       => isset($arr2[3][1]) ? trim($arr2[3][1]) : '??',
         );
     }
     return $aRetVal;

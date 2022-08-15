@@ -58,6 +58,10 @@ div.logline.even {
     background: #fff7e1 !important;
 }
 
+.color .usedurl {
+	color: #355ff9;
+}
+
 .errorlevel {
     background-color: #e84118;
     color: #fff;
