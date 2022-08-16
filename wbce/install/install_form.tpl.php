@@ -64,7 +64,7 @@ function change_os(type) {
                 </tr>
                 <?php endif;?>
                 <tr>
-                    <td >PHP Version >= 7.2.5</td>
+                    <td >PHP Version >= 7.4.14</td>
                     <td><span class="<?php echo $sPhpVersion?>"> <?php echo PHP_VERSION;?> </span></td>
                     <td >PHP Session Support</td>
                     <td><span class="<?php echo $sSessionSupportClass?>"> <?php echo $sSessionSupportText?> </span></td>

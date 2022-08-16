@@ -91,7 +91,7 @@ $e_adc = $e_adc . "";
  *****************************/
 
 // No install button if Version failes
-if (version_compare(PHP_VERSION, '7.2.5', '>=')) {
+if (version_compare(PHP_VERSION, '7.4.14', '>=')) {
     $sPhpVersion = "good";
 } else {
     $sPhpVersion = "bad";

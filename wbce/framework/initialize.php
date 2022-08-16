@@ -24,7 +24,7 @@ if (count(get_included_files()) == 1) {
 }
 
 // Stop execution if PHP version is too old
-$sReqPhpVersion = '7.2.5';
+$sReqPhpVersion = '7.4.14';
 if (version_compare(PHP_VERSION, $sReqPhpVersion, '<')) {
     $sMsg = 'PHP ' . PHP_VERSION . ' running on this system, but at least PHP ' . $sReqPhpVersion . ' required!<br />';
     $sMsg .= 'Please upgrade your PHP Version and try running WBCE CMS again.';
