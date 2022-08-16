@@ -119,16 +119,14 @@ if ($admin->get_group_id() == 1) {
 $wbce_latest_release ='';
 
 if (function_exists('curl_version') && (!defined('SHOW_UPDATE_INFO') || SHOW_UPDATE_INFO != false)) {
-    if (version_compare(phpversion(), '7.3.0', '>=')) {
-        include WB_PATH . '/include/GitHubApiClient/GitHubApiClient.php';
-        $gitHubApiClient = new \Neoflow\GitHubApiClient('Neoflow');
-        $response = $gitHubApiClient->get('/repos/WBCE/WBCE_CMS/releases/latest');
-        if ($response['header']['http_code'] === 200) {
-            $wbce_latest_release = $response['content']['tag_name'];
-            if ($wbce_latest_release > NEW_WBCE_VERSION) {
-                echo $TEXT['OLDWBCE'];
-                echo '<b style="color:red">' . NEW_WBCE_VERSION . '</b><br>';
-            }
+    include WB_PATH . '/include/GitHubApiClient/GitHubApiClient.php';
+    $gitHubApiClient = new \Neoflow\GitHubApiClient('Neoflow');
+    $response = $gitHubApiClient->get('/repos/WBCE/WBCE_CMS/releases/latest');
+    if ($response['header']['http_code'] === 200) {
+        $wbce_latest_release = $response['content']['tag_name'];
+        if ($wbce_latest_release > NEW_WBCE_VERSION) {
+            echo $TEXT['OLDWBCE'];
+            echo '<b style="color:red">' . NEW_WBCE_VERSION . '</b><br>';
         }
     }
 }
