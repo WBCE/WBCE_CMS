@@ -56,6 +56,7 @@ if (!function_exists('simplepagehead')) {
             $section = $sections_query->fetchRow();
 
             // Check if the module is added to the module list
+			if (!isset($section)) { $section['module'] = 'dummy';}
             $module_name = $section['module'];
             if (array_key_exists($module_name, $module)) {
 
