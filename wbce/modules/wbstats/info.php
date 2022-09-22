@@ -15,7 +15,7 @@
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.1';
+$module_version = '0.2.5.2';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -29,6 +29,9 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.2
+ * fixed MySQL 5.7 issues
  *
  * 0.2.5.1
  * - fixed security issue

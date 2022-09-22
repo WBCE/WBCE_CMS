@@ -63,7 +63,7 @@ $database->query("CREATE TABLE `$table_ips` (
 	`referer` varchar(64) NOT NULL default '',
 	`ua` varchar(255) NOT NULL default '',
 	PRIMARY KEY  (`id`),
-	INDEX `time` (`time`) ,
+	INDEX `time` (`time`),
 	INDEX `ip` (`ip`, `online`),
 	INDEX `online` (`online`)
 	)"
@@ -113,10 +113,10 @@ $database->query("DROP TABLE IF EXISTS `$table_brw`");
 $database->query("CREATE TABLE `$table_brw` (
 	`id` int(11) NOT NULL auto_increment,
 	`day` varchar(8) NOT NULL default '',
-	`agent` varchar(255) NOT NULL default '',
-	`browser` varchar(255) NOT NULL default '',
-	`version` varchar(255) NOT NULL default '',
-	`os` varchar(255) NOT NULL default '',
+	`agent` varchar(100) NOT NULL default '',
+	`browser` varchar(50) NOT NULL default '',
+	`version` varchar(50) NOT NULL default '',
+	`os` varchar(100) NOT NULL default '',
 	`view` INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY  (`id`),
 	INDEX `browser_version` (`browser`, `version`),

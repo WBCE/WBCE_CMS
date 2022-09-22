@@ -40,10 +40,9 @@ _wbs_db_add_field("last_status", "mod_wbstats_ips", "varchar(10) NOT NULL defaul
 
 
 $database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_ips` MODIFY `ip` VARCHAR(32)");
-//$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_ips` ADD INDEX `ip` (`ip`)");
-$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_ips` DROP INDEX IF EXISTS `time`, ADD INDEX `time` (`time`)");
-$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_ips` DROP INDEX IF EXISTS `online`, ADD INDEX `online` (`online`)");
-$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_ips` DROP INDEX IF EXISTS `ip`, ADD INDEX `ip` (`ip`, `online`) USING BTREE;");
+$database->index_add(TABLE_PREFIX."mod_wbstats_ips","time","time");
+$database->index_add(TABLE_PREFIX."mod_wbstats_ips","online","online");
+$database->index_add(TABLE_PREFIX."mod_wbstats_ips","ip","ip,online");
 
 $database->query("UPDATE `".TABLE_PREFIX."mod_wbstats_ips` SET `location`=`session` WHERE `session`!='ignore' and `session`!='' and `location`=''");
 
