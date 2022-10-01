@@ -5,6 +5,172 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
 
 ## Auto generated Git commit history
 
+ * **2022-09-29:** Colinax [[6d4c6a29](https://github.com/WBCE/WBCE_CMS/commit/6d4c6a290622570e0c1a99598ac01203f37b82cb)]
+   > CKEditor 4.20.0
+     includes CKEditor 4.19.1
+
+ * **2022-09-22:** instantflorian [[2b010406](https://github.com/WBCE/WBCE_CMS/commit/2b01040601eb266b4d51c9840c74ce9602e9545a)]
+   > some mysql / PHP 8.1 related fixes for Visitor statistics
+
+ * **2022-09-08:** Colinax [[cf475ef5](https://github.com/WBCE/WBCE_CMS/commit/cf475ef53f357c674cfae233d394359cca85f062)]
+   > PHPMailer 6.6.4
+
+ * **2022-09-05:** instantflorian [[4e436ff1](https://github.com/WBCE/WBCE_CMS/commit/4e436ff19c44bf9785d7db04b667500fc6674559)]
+   > Awful PHP 8.1 fix for SPH
+
+ * **2022-08-16:** Colinax [[88c48ce9](https://github.com/WBCE/WBCE_CMS/commit/88c48ce99f78cff1f4bfefea0332548dfa0d8789)]
+   > update php version
+
+ * **2022-08-16:** Colinax [[23c84691](https://github.com/WBCE/WBCE_CMS/commit/23c84691d0c4fe2ed830df2d041e90e67e2e003a)]
+   > remove version_compare
+
+ * **2022-08-15:** instantflorian [[1f01b931](https://github.com/WBCE/WBCE_CMS/commit/1f01b9310905059cf33f8112f916e2a34c610009)]
+   > Updates for Errorlogger (1.1.4.1) & Wbstats (0.2.5.1)
+
+ * **2022-08-15:** instantflorian [[60f2a3f9](https://github.com/WBCE/WBCE_CMS/commit/60f2a3f9f88c7b8039a5372869ff0a5d5839ccc9)]
+   > PHP 8.1 fixes
+
+ * **2022-07-23:** instantflorian [[16c5fbce](https://github.com/WBCE/WBCE_CMS/commit/16c5fbce72502049c9abb485865261d66e4cfc23)]
+   > Use email validation from class admin
+     further check was outdated (issues with new TLDs)
+
+ * **2022-07-17:** instantflorian [[82c90a1f](https://github.com/WBCE/WBCE_CMS/commit/82c90a1f2cef20f84bacfc62a2960f58e53e65ab)]
+   > Fix PHP 8.1 deprecation
+
+ * **2022-07-17:** instantflorian [[490c379a](https://github.com/WBCE/WBCE_CMS/commit/490c379a16deb33ea310dfd69c2dfe4b3dc062a0)]
+   > Fix PHPMailer OAuth Exception
+
+ * **2022-07-15:** instantflorian [[74e68787](https://github.com/WBCE/WBCE_CMS/commit/74e6878700ef51b362c04b4a027c51a5e69491b3)]
+   > Fix update issues
+
+ * **2022-07-09:** Colinax [[50dac569](https://github.com/WBCE/WBCE_CMS/commit/50dac569649b880eced1ecb9dbc5fba879a94ebd)]
+   > Visitor statistics 0.2.5
+
+ * **2022-06-28:** instantflorian [[7eafcfad](https://github.com/WBCE/WBCE_CMS/commit/7eafcfad772a8306f1b3cdd15b5300a2b3096127)]
+   > Missing backtick
+
+ * **2022-06-28:** instantflorian [[de172cab](https://github.com/WBCE/WBCE_CMS/commit/de172cabf3bbfc6d2deecf28756884ba0fb0cab9)]
+   > PHP 8.1 fix
+     implicit conversion to int loses precision
+
+ * **2022-06-28:** instantflorian [[30b78246](https://github.com/WBCE/WBCE_CMS/commit/30b7824640bb8e4f0dc699d3fc5b89a75d277061)]
+   > PHP 8.1 fixes (...looses precision) / remove inline style
+
+ * **2022-06-28:** instantflorian [[f87fb688](https://github.com/WBCE/WBCE_CMS/commit/f87fb688e5efc3a53ccc74fe99805bae302592fc)]
+   > PHP 8.1 fix (deprecated auto-vivification of arrays)
+
+ * **2022-06-28:** instantflorian [[aabda258](https://github.com/WBCE/WBCE_CMS/commit/aabda2580b15b2435e845bd54c63bd01c377a6e1)]
+   > PHP 8.1 compatibility fix
+
+ * **2022-06-28:** instantflorian [[09662b06](https://github.com/WBCE/WBCE_CMS/commit/09662b06c04f5011e2f4ff1050bda50461c547ad)]
+   > Removal of OAuthTokenProvider (causes Exception)
+
+ * **2022-06-28:** instantflorian [[666b40fa](https://github.com/WBCE/WBCE_CMS/commit/666b40fa1d53fee304a4bbbda57e080add2bb11e)]
+   > Fix string/int issues, update version
+
+ * **2022-06-15:** Colinax [[5223145d](https://github.com/WBCE/WBCE_CMS/commit/5223145db774ac1d2bb38206797d36ef13f3b503)]
+   > PHPMailer 6.6.2
+
+ * **2022-06-15:** Colinax [[7885fd75](https://github.com/WBCE/WBCE_CMS/commit/7885fd75ff97883e1d409bb45a57f9a6229ca2c7)]
+   > Twig 3.4.1
+
+ * **2022-05-26:** Colinax [[8a7f4f92](https://github.com/WBCE/WBCE_CMS/commit/8a7f4f925d2af189423249f45cf902eddf6b28c1)]
+   > CKEditor 4.19.0
+
+ * **2022-05-21:** instantflorian [[d2ba7969](https://github.com/WBCE/WBCE_CMS/commit/d2ba79697a90a79ca29f9afdba7d6c5b60dee05c)]
+   > Fix PHP 8.1 string/int issue
+
+ * **2022-05-17:** Colinax [[cc1831ce](https://github.com/WBCE/WBCE_CMS/commit/cc1831ce87793eb50c29a0e4c6e70181738e2e37)]
+   > CaptchaControl 2.0.5
+
+ * **2022-05-12:** instantflorian [[59036e85](https://github.com/WBCE/WBCE_CMS/commit/59036e85ae55d6f735e883e10d0ff5526bf9d905)]
+   > Session ID syntax check only if necessary
+
+ * **2022-05-07:** Colinax [[455f9ccc](https://github.com/WBCE/WBCE_CMS/commit/455f9ccc6b65c54a632984aa26126b804f700052)]
+   > elFinder 1.1.5
+
+ * **2022-05-07:** Colinax [[68a813d9](https://github.com/WBCE/WBCE_CMS/commit/68a813d9044212487756316b9b5df01925dd87b3)]
+   > modern-normalize v1.1.0
+
+ * **2022-04-09:** Colinax [[cc8c8520](https://github.com/WBCE/WBCE_CMS/commit/cc8c85200c521e130bc4c0be6b2e3b987ccc9eb3)]
+   > Update Visitor statistics
+
+ * **2022-04-09:** Colinax [[c7ccd082](https://github.com/WBCE/WBCE_CMS/commit/c7ccd082e69116e1bf73141a76052f4ebf119c92)]
+   > Update charsets_table.php
+
+ * **2022-04-09:** Colinax [[c3337de1](https://github.com/WBCE/WBCE_CMS/commit/c3337de18465ad857025775c9dd4a4705c34cc8d)]
+   > Twig 3.3.10
+
+ * **2022-04-07:** Bianka Martinovic [[44a90bb2](https://github.com/WBCE/WBCE_CMS/commit/44a90bb24c18c1987ae5d62945928bb4b9d39523)]
+   > Update class.database.php
+     Fix for PHP 8.1
+ * **2022-04-07:** Bianka Martinovic [[9220007b](https://github.com/WBCE/WBCE_CMS/commit/9220007b93b9f4598e2c6661edbf582bf1291c74)]
+   > Update template.inc
+     Fix for issue with PHP 8.1
+ * **2022-03-19:** Colinax [[67d3cf74](https://github.com/WBCE/WBCE_CMS/commit/67d3cf74b4596cb74337a5f9c3ae0e402b65dfce)]
+   > remove old cke plugins
+
+ * **2022-03-19:** Colinax [[4a6e4a51](https://github.com/WBCE/WBCE_CMS/commit/4a6e4a5145021fabe8f53fb93a2e9ff1248fbe12)]
+   > CKEditor 4.18.0
+
+ * **2022-03-18:** Colinax [[f94dc2d1](https://github.com/WBCE/WBCE_CMS/commit/f94dc2d1eae6db55ea0e5a2bbafb97700288494c)]
+   > elFinder 1.1.4
+
+ * **2022-03-05:** Colinax [[34e23780](https://github.com/WBCE/WBCE_CMS/commit/34e2378054a86dd3a06b74e0ad4733ad2e61c581)]
+   > some php 8.1 fixes
+
+ * **2022-03-05:** Colinax [[99958be1](https://github.com/WBCE/WBCE_CMS/commit/99958be1e929f9c0321773e6120c9ce6fe42e7bc)]
+   > NWI 5.0.15
+
+ * **2022-03-01:** instantflorian [[c3ac6b2e](https://github.com/WBCE/WBCE_CMS/commit/c3ac6b2e099052cfa85a1ea96edd09bf68b9efd6)]
+   > Update index.php
+     Fix for #517
+
+ * **2022-02-27:** Colinax [[19862b4c](https://github.com/WBCE/WBCE_CMS/commit/19862b4c0f5d4914ca7ac6b5167e65634e18fdd3)]
+   > Twig 3.3.8
+
+ * **2022-02-26:** Colinax [[e189e2de](https://github.com/WBCE/WBCE_CMS/commit/e189e2defcee3c765944d593b80ee2ab1ff0e69d)]
+   > PHPMailer 6.5.4
+
+ * **2022-02-20:** Colinax [[2a7f807d](https://github.com/WBCE/WBCE_CMS/commit/2a7f807dc8bf5d027598c0fe6339ea84e72b817a)]
+   > CKEditor 4.17.2
+
+ * **2022-02-09:** instantflorian [[578b4ee1](https://github.com/WBCE/WBCE_CMS/commit/578b4ee15a88f1d10f145201135d4d86b9025d8e)]
+   > NWI: Add [AOPEN] [ACLOSE] placeholders + webp compatibility
+
+ * **2022-02-08:** instantflorian [[e14067a5](https://github.com/WBCE/WBCE_CMS/commit/e14067a51e3c3c4884f30747a5493f3570ae5beb)]
+   > Fix issues with sitemap module
+     thx to bear
+
+ * **2022-01-08:** Colinax [[c96d8b83](https://github.com/WBCE/WBCE_CMS/commit/c96d8b830f846ff14c44a87105d5d8c7eabb5a40)]
+   > fix a small php 8.1 notice
+
+ * **2022-01-05:** instantflorian [[6414fcf9](https://github.com/WBCE/WBCE_CMS/commit/6414fcf9839aa49a84890f7485cc47b2515b194d)]
+   > Update errorlogger
+
+ * **2022-01-01:** Colinax [[314b6016](https://github.com/WBCE/WBCE_CMS/commit/314b60162af14d7798c30ea3fe67c963126163bd)]
+   > update DEFAULT_THEME handling
+
+ * **2021-12-27:** instantflorian [[ce1d92cb](https://github.com/WBCE/WBCE_CMS/commit/ce1d92cb1af1278e219a0f76588e2c7555596ac9)]
+   > Update NWI to 5.0.13
+     group sorting fix by gchriz
+
+ * **2021-12-16:** Colinax [[b4c16707](https://github.com/WBCE/WBCE_CMS/commit/b4c167075326f7f748341eb2398b4ded3ffc430b)]
+   > Update GitHubApiClient to latest version
+
+ * **2021-12-10:** instantflorian [[1f4eec02](https://github.com/WBCE/WBCE_CMS/commit/1f4eec02bd56a5bfa8ac18e002d89020d0668426)]
+   > update NWI - rss.php
+     use section_id (is no required as parameter too) for sql query instead of page_id since page_id is no longer stored in news_img_post table
+
+ * **2021-12-09:** Colinax [[a8a31521](https://github.com/WBCE/WBCE_CMS/commit/a8a31521fe424cd98a96b64a19464dd45585dc00)]
+   > fix codemirror about icon
+
+ * **2021-12-08:** instantflorian [[98454113](https://github.com/WBCE/WBCE_CMS/commit/984541132350f9e4155c953c84f2fe986731e142)]
+   > Update README.md
+
+ * **2021-11-30:** instantflorian [[254d2306](https://github.com/WBCE/WBCE_CMS/commit/254d23069f25b5d2d64b974f5bfafc980d23a73d)]
+   > Update CHANGELOG.md
+
  * **2021-11-30:** instantflorian [[ae022104](https://github.com/WBCE/WBCE_CMS/commit/ae02210402be409137e13a017481ed307b65c620)]
    > Update versions of modules and templates
 
@@ -24,7 +190,7 @@ Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) reposit
    > CKEditor 4.17.1
 
  * **2021-11-28:** Colinax [[6ca63f0c](https://github.com/WBCE/WBCE_CMS/commit/6ca63f0cad5f0cd606fdb69a372f09b7d238f1d7)]
-   > add captcha for login forgot (thanks to @maxway2021)
+   > add captcha for login forgot
 
  * **2021-11-02:** Colinax [[a3573571](https://github.com/WBCE/WBCE_CMS/commit/a3573571c131f2bd30be44cdd6ec5643e6e1ef1a)]
    > fix some timezone issues
