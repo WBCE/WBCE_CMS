@@ -39,7 +39,7 @@ if (isset($_GET['s'])) {
 }
 
 $_SESSION['captcha' . $sec_id] = '';
-mt_srand((double) microtime() * 1000000);
+
 $n = mt_rand(1, 3);
 switch ($n) {
 case 1:

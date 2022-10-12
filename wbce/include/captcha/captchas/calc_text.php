@@ -37,7 +37,7 @@ if (!file_exists(WB_PATH . '/modules/captcha_control/languages/' . LANGUAGE . '.
 }
 
 $_SESSION['captcha' . $sec_id] = '';
-mt_srand((int)microtime() * 1000000);
+
 $n = mt_rand(1, 3);
 switch ($n) {
     case 1:
