@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.5.1
- * @lastmodified    August 12, 2022
+ * @version         0.2.5.3
+ * @lastmodified    October17, 2022
  *
  */
 
@@ -38,8 +38,8 @@ _wbs_db_add_field("ua", "mod_wbstats_ips", "varchar(255) NOT NULL default '' AFT
 _wbs_db_add_field("last_status", "mod_wbstats_ips", "varchar(10) NOT NULL default '' AFTER `last_page`");
 
 
-
 $database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_ips` MODIFY `ip` VARCHAR(32)");
+
 $database->index_add(TABLE_PREFIX."mod_wbstats_ips","time","time");
 $database->index_add(TABLE_PREFIX."mod_wbstats_ips","online","online");
 $database->index_add(TABLE_PREFIX."mod_wbstats_ips","ip","ip,online");
@@ -49,16 +49,26 @@ $database->query("UPDATE `".TABLE_PREFIX."mod_wbstats_ips` SET `location`=`sessi
 $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_wbstats_browser` (
 	`id` int(11) NOT NULL auto_increment,
 	`day` varchar(8) NOT NULL default '',
-	`agent` varchar(255) NOT NULL default '',
-	`browser` varchar(255) NOT NULL default '',
-	`version` varchar(255) NOT NULL default '',
-	`os` varchar(255) NOT NULL default '',
+	`agent` varchar(200) NOT NULL default '',
+	`browser` varchar(50) NOT NULL default '',
+	`version` varchar(50) NOT NULL default '',
+	`os` varchar(100) NOT NULL default '',
 	`view` INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY  (`id`),
 	INDEX `browser_version` (`browser`, `version`),
 	INDEX `os` (`os`)	
 	)"
 );
+
+/* for existing table, modify fieldslengths and reindex */
+$database->query("ALTER IGNORE TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `agent` VARCHAR(200)");
+$database->query("ALTER IGNORE TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `browser` VARCHAR(50)");
+$database->query("ALTER IGNORE TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `version` VARCHAR(50)");
+$database->query("ALTER IGNORE TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `os` VARCHAR(100)");
+$database->index_add(TABLE_PREFIX."mod_wbstats_browser","browser","browser,version");
+$database->index_add(TABLE_PREFIX."mod_wbstats_browser","os","os");
+
+
 $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_wbstats_hist`  (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`timestamp` INT(11) NOT NULL DEFAULT '0',

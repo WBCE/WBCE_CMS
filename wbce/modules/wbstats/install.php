@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.5.1
- * @lastmodified    August 12, 2022
+ * @version         0.2.5.3
+ * @lastmodified    October17, 2022
  *
  */
 
@@ -113,7 +113,7 @@ $database->query("DROP TABLE IF EXISTS `$table_brw`");
 $database->query("CREATE TABLE `$table_brw` (
 	`id` int(11) NOT NULL auto_increment,
 	`day` varchar(8) NOT NULL default '',
-	`agent` varchar(100) NOT NULL default '',
+	`agent` varchar(200) NOT NULL default '',
 	`browser` varchar(50) NOT NULL default '',
 	`version` varchar(50) NOT NULL default '',
 	`os` varchar(100) NOT NULL default '',

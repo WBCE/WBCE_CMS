@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 5.6 and higher
- * @version         0.2.5.1
- * @lastmodified    August 12, 2022
+ * @version         0.2.5.3
+ * @lastmodified    October17, 2022
  *
  */
 
@@ -299,7 +299,7 @@ class counter {
 			$this->language = ''; //prevent pagecounting
 			return true;
 		} elseif(!$id = $database->get_one("SELECT `id` FROM ".$table_ips." WHERE `ip`='".$this->ip."' AND `session`='".$this->session."' AND `time` > '$timeout' ORDER BY `id` DESC LIMIT 1")) {
-			$city = $this->getCountryCode();
+			$city = $database->escapeString($this->getCountryCode());
 			$database->query("INSERT INTO ".$table_ips." (`ip`,`session`, `location`, `time`, `online`,`page`,`last_page`,`pages`,`language`,`os`,`browser`,`referer`,`ua`) VALUES 
 				('".$this->ip."', '".$this->session."', '".$city."', '".$this->time."', '".$this->time."', '".$this->page."', '".$this->page."','1','".$this->language."', '".$this->os."', '".$this->browser." (".$this->browser_version.")','".$this->referer_host."','".$this->agent."')");
 			$database->query("UPDATE ".$table_day." SET `user`=`user`+1, `view`=`view`+1 WHERE `day`='".$this->day."'");
@@ -324,6 +324,7 @@ class counter {
 				$country_code 	= $ipdata['geoplugin_countryCode'];
 				$city 			= $ipdata['geoplugin_city'];
 				if($country_code) $city = $city.' ('.$country_code.')';
+				$city = $database->escapeString($city);
 				$database->query("INSERT INTO ".$table_loc." (`ip`,`location`,`timestamp`) VALUES ('".$ipkey."','".$city."','".time()."') ");
 			}
 		} else {
