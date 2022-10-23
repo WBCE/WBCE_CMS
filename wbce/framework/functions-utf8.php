@@ -490,7 +490,7 @@ function entities_to_7bit($str)
     }
 
     // replace some specials
-    $str = utf8_stripspecials($str, '_');
+    $str = utf8_stripspecials($str, PAGE_SPACER);
     // translate non-ASCII characters to ASCII
     $str = utf8_romanize($str);
     // missed some? - Many UTF-8-chars can't be romanized
