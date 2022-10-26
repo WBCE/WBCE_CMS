@@ -903,7 +903,11 @@ _JsCode;
                 break;
             case 'js':
                 // insert system vars to be ready for all JS code
-                $sJsSysvars = "\t\tvar URL = WB_URL = '" . WB_URL . "';";
+				if (defined("URL_VAR_COMPATIBILITY_MODE") && URL_VAR_COMPATIBILITY_MODE==true) {
+					$sJsSysvars = "\t\tvar URL = WB_URL = '" . WB_URL . "';";
+				} else {
+					$sJsSysvars = "\t\tvar WB_URL = '" . WB_URL . "';";
+				}
 
                 if (defined("LANGUAGE")) {
                     $sJsSysvars .= "\n\t\tvar LANGUAGE     = '" . strtolower(LANGUAGE) . "';";
