@@ -410,8 +410,13 @@ class Login extends Admin
      */
     private function get_client_ip()
     {
-        $ipaddress = '';
-        if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+	$ipaddress = '';
+	// for security reasons first check remote_addr which is more difficult to fake:
+	if (isset($_SERVER['REMOTE_ADDR'])) {
+	    $ipaddress = $this->get_server('REMOTE_ADDR');
+	} elseif (getenv('REMOTE_ADDR')) {
+	    $ipaddress = getenv('REMOTE_ADDR');
+	} elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
             $ipaddress = $this->get_server('HTTP_CLIENT_IP');
         } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ipaddress = $this->get_server('HTTP_X_FORWARDED_FOR');
@@ -421,8 +426,6 @@ class Login extends Admin
             $ipaddress = $this->get_server('HTTP_FORWARDED_FOR');
         } elseif (isset($_SERVER['HTTP_FORWARDED'])) {
             $ipaddress = $this->get_server('HTTP_FORWARDED');
-        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
-            $ipaddress = $this->get_server('REMOTE_ADDR');
         } elseif (getenv('HTTP_CLIENT_IP')) {
             $ipaddress = getenv('HTTP_CLIENT_IP');
         } elseif (getenv('HTTP_X_FORWARDED_FOR')) {
@@ -433,8 +436,6 @@ class Login extends Admin
             $ipaddress = getenv('HTTP_FORWARDED_FOR');
         } elseif (getenv('HTTP_FORWARDED')) {
             $ipaddress = getenv('HTTP_FORWARDED');
-        } elseif (getenv('REMOTE_ADDR')) {
-            $ipaddress = getenv('REMOTE_ADDR');
         } else {
             $ipaddress = 'UNKNOWN';
         }
