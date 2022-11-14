@@ -501,7 +501,7 @@ class database
     * @param string $index_type: kind of index (UNIQUE, PRIMARY, '')
     * @return bool: true if successful, otherwise false and error will be set
     */
-    public function index_add($table_name, $index_name, $field_list, $index_type = '')
+    public function xxindex_add($table_name, $index_name, $field_list, $index_type = '')
     {
         $retval = false;
         $field_list = str_replace(' ', '', $field_list);
@@ -521,6 +521,28 @@ class database
             }
         }
         return $retval;
+    }
+	
+	public function index_add($table_name, $index_name, $field_list, $index_type = 'KEY')
+    {
+       $retval = false;
+       $field_list = explode(',', (str_replace(' ', '', $field_list)));
+       $number_fields = sizeof($field_list);
+       $field_list = '`'.implode('`,`', $field_list).'`';
+       $index_name = (($index_type == 'PRIMARY') ? $index_type : $index_name);
+       if ( $this->index_exists($table_name, $index_name, $number_fields) ||
+            $this->index_exists($table_name, $index_name))
+       {
+           $sql  = 'ALTER TABLE `'.$table_name.'` ';
+           $sql .= 'DROP INDEX `'.$index_name.'`';
+           if (!$this->query($sql)) { return false; }
+       }
+       $sql  = 'ALTER TABLE `'.$table_name.'` ';
+       $sql .= 'ADD '.$index_type.' ';
+       $sql .= (($index_type == 'PRIMARY') ? 'KEY ' : '`'.$index_name.'` ');
+       $sql .= '( '.$field_list.' ); ';
+       if ($this->query($sql)) { $retval = true; }
+       return $retval;
     }
 
     /*
