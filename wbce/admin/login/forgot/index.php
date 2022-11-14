@@ -75,11 +75,11 @@ if (isset($_POST['email']) && $_POST['email'] != "" ) {
 
                 // Generate a random password then update the database with it
                 $sNewPw = '';
-                $salt = "abchefghjkmnpqrstuvwxyz0123456789";
-                srand((double)microtime() * 1000000);
-                $i = 0;
-                while ($i <= 7) {
-                    $num = rand() % 33;
+                 $salt = "abcdefghjklmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!_-:#*+$@&";
+			   // srand((double)microtime() * 1000000);
+				$i = 0;
+				while ($i <= 10) {
+					$num = rand(0,70);
                     $tmp = substr($salt, $num, 1);
                     $sNewPw = $sNewPw . $tmp;
                     $i++;

@@ -437,14 +437,14 @@ class Accounts extends Frontend
     public function GenerateRandomPassword()
     {
         $sPassword = '';
-        $salt = "abchefghjkmnpqrstuvwxyz0123456789";
-        srand((double)microtime() * 1000000);
+        $salt = "abcdefghjklmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!_-:#*+$@&";
+       // srand((double)microtime() * 1000000);
         $i = 0;
-        while ($i <= 7) {
-            $num = rand() % 33;
+        while ($i <= 10) {
+            $num = rand(0,70);
             $tmp = substr($salt, $num, 1);
             $sPassword = $sPassword . $tmp;
-            $i++;
+            $i++;			
         }
         return $sPassword;
     }
