@@ -58,6 +58,12 @@ if(!defined('CAT_PATH')) {
 // get settings
 $settings = mod_nwi_settings_get($source_id>0?$source_id:$section_id);
 
+// Check if user has permission to modify the page settings
+if (!$admin->isAdmin() && $settings['show_settings_only_admins'] == 'Y') {
+	$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], ADMIN_URL.'/pages/modify.php?page_id='.$page_id);
+}
+
+
 // extract width and height
 $previewwidth = $previewheight = $thumbwidth = $thumbheight = '';
 if (substr_count($settings['resize_preview'], 'x')>0) {

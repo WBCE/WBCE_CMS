@@ -25,6 +25,13 @@
                 <tr><th colspan="2"><?php echo $MOD_NEWS_IMG['OVERVIEW_SETTINGS']?></th></tr>
             </thead>
             <tbody>
+				<tr>
+				<td class="setting_name" colspan="2"><?php echo $MOD_NEWS_IMG['SHOW_SETTINGS_ONLY_ADMINS']; ?>:
+				
+				<input type="checkbox" name="show_settings_only_admins" VALUE="Y"<?php if($settings['show_settings_only_admins']=='Y'): ?> checked="checked"<?php endif; ?> />
+                        <?php echo $TEXT['YES'] ?>
+				</td>
+				</tr>
         		<tr>
         			<td class="setting_name"><?php echo $MOD_NEWS_IMG['ORDERBY']; ?>:</td>
         			<td class="setting_value">

@@ -69,6 +69,7 @@ $post_footer = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_fo
 $posts_per_page = mod_nwi_escapeString($_POST['posts_per_page']);
 $gallery = mod_nwi_escapeString($_POST['gallery']);
 $use_second_block = ( (isset($_POST['use_second_block']) && $_POST['use_second_block']=='Y') ? 'Y' : 'N');
+$show_settings_only_admins = ( (isset($_POST['show_settings_only_admins']) && $_POST['show_settings_only_admins']=='Y') ? 'Y' : 'N');
 
 // expert mode
 if(isset($settings['mode']) && $settings['mode']=='advanced') {
@@ -170,6 +171,7 @@ $database->query(
     . " `imgmaxheight`='$gal_img_resize_height',"
     . " `imgthumbsize`='$thumbsize',"
     . " `use_second_block`='$use_second_block',"
+	. " `show_settings_only_admins`='$show_settings_only_admins',"
     . " `view`='$view'"
     . " WHERE `section_id` = '$section_id'"
 );

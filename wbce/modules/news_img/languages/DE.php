@@ -77,6 +77,7 @@ $MOD_NEWS_IMG['POSTS'] = 'Beiträge';
 $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Beitragsbild';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Speichern und Zur&uuml;ck';
 $MOD_NEWS_IMG['SETTINGS'] = 'News Einstellungen';
+$MOD_NEWS_IMG['SHOW_SETTINGS_ONLY_ADMINS'] = 'Einstellungen können nur Admins sehen/bearbeiten';
 $MOD_NEWS_IMG['TAG'] = 'Stichwort';
 $MOD_NEWS_IMG['TAG_COLOR'] = 'Farbe';
 $MOD_NEWS_IMG['TAG_EXISTS'] = 'Stichwort existiert bereits';

@@ -77,6 +77,7 @@ $MOD_NEWS_IMG['POSTS'] = 'Posts'; //missing
 $MOD_NEWS_IMG['PREVIEWIMAGE'] = 'Anteprima immagine';
 $MOD_NEWS_IMG['SAVEGOBACK'] = 'Salva e torna indietro';
 $MOD_NEWS_IMG['SETTINGS'] = 'Impostazioni Notizie';
+$MOD_NEWS_IMG['SHOW_SETTINGS_ONLY_ADMINS'] = 'Settings can be seen/modified by admins only'; //missing
 $MOD_NEWS_IMG['TAG'] = 'Tag'; //missing
 $MOD_NEWS_IMG['TAG_COLOR'] = 'Tag color'; //missing
 $MOD_NEWS_IMG['TAG_EXISTS'] = 'Tag exists'; //missing

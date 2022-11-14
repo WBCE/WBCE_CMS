@@ -213,7 +213,10 @@ require(WB_PATH."/index.php");
         $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `mode` VARCHAR(50) NULL DEFAULT 'default' AFTER `view`", TABLE_PREFIX));
     } catch(\Exception $e) {}
 
-   
+    try {
+        $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `show_settings_only_admins` CHAR(1) NOT NULL DEFAULT 'N' AFTER `use_second_block`",TABLE_PREFIX));
+    } catch(\Exception $e) {}
+
 	
 
     // 2019-07-05 Bianka Martinovic

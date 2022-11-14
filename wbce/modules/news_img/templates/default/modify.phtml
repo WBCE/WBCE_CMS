@@ -1,7 +1,9 @@
 ﻿<div class="mod_news_img">
     <div>
         <input class="mod_news_img_help"  type="button" onclick="window.open('<?php echo WB_URL; ?>/modules/news_img/readme.html','readme','width=800,height=600,top=50,left=50')" name="help" value="Readme" />
-        <input class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS_IMG['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id; ?>&amp;section_key=<?php echo  $section_key; ?>';"  />
+       <?php if($settings['show_settings_only_admins']!='Y' || $admin->isAdmin()): ?>
+	   <input class="mod_img_news_options" type="button" value="<?php echo $MOD_NEWS_IMG['OPTIONS']; ?>" onclick="javascript: window.location = '<?php echo WB_URL; ?>/modules/news_img/modify_settings.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo  $section_id; ?>&amp;section_key=<?php echo  $section_key; ?>';"  />
+	   <?php endif; ?>
     </div>
     <div class="tabs">
         <input type="radio" name="tabs" id="tab1"<?php if($curr_tab=='p'): ?> checked="checked"<?php endif; ?> />
