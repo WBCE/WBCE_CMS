@@ -19,7 +19,7 @@ class Wb extends SecureForm
     public $sDirectOutput = '';
 
     public $page_sections = array();
-    public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:';
+    public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:\.';
     public $iPassMinLength = 6;
 
     /**
