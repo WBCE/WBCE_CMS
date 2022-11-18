@@ -288,11 +288,11 @@ class database
         $statement = $this->replaceTablePrefix($statement);
         $mysql->query($statement);
         $this->set_error($mysql->error());
-        if ($mysql->error()) {
-            return null;
-        } else {
+        #if ($mysql->error()) {
+        #    return null;
+        #} else {
             return $mysql;
-        }
+        #}
     }
 
     // Gets the first column of the first row
@@ -501,28 +501,8 @@ class database
     * @param string $index_type: kind of index (UNIQUE, PRIMARY, '')
     * @return bool: true if successful, otherwise false and error will be set
     */
-    public function xxindex_add($table_name, $index_name, $field_list, $index_type = '')
-    {
-        $retval = false;
-        $field_list = str_replace(' ', '', $field_list);
-        $field_list = explode(',', $field_list);
-        $number_fields = sizeof($field_list);
-        $field_list = '`' . implode('`,`', $field_list) . '`';
-        if ($this->index_exists($table_name, $index_name, $number_fields) ||
-            $this->index_exists($table_name, $index_name)) {
-            $sql = 'ALTER TABLE `' . $table_name . '` ';
-            $sql .= 'DROP INDEX `' . $index_name . '`';
-            if ($this->query($sql)) {
-                $sql = 'ALTER TABLE `' . $table_name . '` ';
-                $sql .= 'ADD ' . $index_type . ' `' . $index_name . '` ( ' . $field_list . ' ); ';
-                if ($this->query($sql)) {
-                    $retval = true;
-                }
-            }
-        }
-        return $retval;
-    }
-	
+
+
 	public function index_add($table_name, $index_name, $field_list, $index_type = 'KEY')
     {
        $retval = false;
@@ -638,24 +618,41 @@ class mysql
     private $db_handle = null;
     private $result = null;
     private $error = '';
+    private $stmt = null;
 
     public function __construct($handle)
     {
         $this->db_handle = $handle;
     }
 
+    public function getLastStatement()
+    {
+        return $this->stmt;
+    }
+
     // Run a query
     public function query($statement)
     {
-        $this->result = mysqli_query($this->db_handle, $statement);
-        $this->error = mysqli_error($this->db_handle);
+        $stmt = $statement;
+        try {
+            $this->result = mysqli_query($this->db_handle, $statement);
+            $this->error = mysqli_error($this->db_handle);
+        } catch ( Exception $e ) {
+            $this->error = $e->getMessage();
+            error_log($e->getMessage(),0);
+            error_log($statement,0);
+        }
         return $this->result;
     }
 
     // Fetch num rows
     public function numRows()
     {
-        return mysqli_num_rows($this->result);
+        if(is_object($this->result) && $this->result instanceof mysqli_result) {
+            return mysqli_num_rows($this->result);
+        } else {
+            return 0;
+        }
     }
 
     // Fetch row  $typ = MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH
