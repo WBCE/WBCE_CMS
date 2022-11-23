@@ -312,7 +312,7 @@ if ($admin->get_permission('users_add') != true) {
 // Generate username field name
 $username_fieldname = 'username_';
 $salt = "abchefghjkmnpqrstuvwxyz0123456789";
-srand((double)microtime() * 1000000);
+
 $i = 0;
 while ($i <= 7) {
     $num = rand() % 33;

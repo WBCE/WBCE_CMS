@@ -356,7 +356,7 @@ class SecureForm
         $secret = $this->_secret;
         $timeout = time() + $this->_timeout;
 
-        // mt_srand(hexdec(crc32(microtime()));
+      
         $token = dechex(mt_rand());
         $hash = sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')));
         $signed = $token . '-' . $hash;

@@ -42,7 +42,7 @@ if (extension_loaded('gd') and function_exists('imageCreateFromJpeg') and isset(
     $gray = imagecolorallocate($image, 0xC0, 0xC0, 0xC0);
     $darkgray = imagecolorallocate($image, 0x50, 0x50, 0x50);
 
-    srand((double)microtime() * 1000000);
+   
 
     for ($i = 0; $i < 30; $i++) {
         $x1 = rand(0, 120);

@@ -438,7 +438,6 @@ class Accounts extends Frontend
     {
         $sPassword = '';
         $salt = "abcdefghjklmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!_-:#*+$@&";
-       // srand((double)microtime() * 1000000);
         $i = 0;
         while ($i <= 10) {
             $num = rand(0,70);

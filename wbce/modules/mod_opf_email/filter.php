@@ -136,7 +136,6 @@ function _cbDoExecuteFilter($match)
                 $email_address = str_replace($search, $replace, strtolower($match[2]));
                 $email_subject = rawurlencode(html_entity_decode($match[3]));
                 // create a random encryption key for the Caesar cipher
-                mt_srand((double)microtime()*1000000);  // (PHP < 4.2.0)
                 $shift = mt_rand(1, 25);
                 // encrypt the email using an adapted Caesar cipher
                 $encrypted_email = "";
