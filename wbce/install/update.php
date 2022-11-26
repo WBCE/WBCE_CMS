@@ -954,6 +954,17 @@ if (!defined('THEME_PATH')) {
         <tbody>
             <tr>
                 <td>
+<?php
+$file_name = WB_PATH . "/modules/colorbox/info.php";
+if (file_exists($file_name)) {
+    echo '<p style="margin:10px 0">[EN] <strong>Notice:</strong> Colorbox snippet detected. After loggin in to WBCE CMS, please update the Colorbox snippet to version 1.6.5, <a href="https://addons.wbce.org/pages/addons.php?do=item&item=32" target="_blank">available from the WBCE Add-On repository</a> (make sure existing files will be overwritten).</p> <p style="margin:10px 0">[DE] <strong>Hinweis:</strong> Colorbox-Snippet entdeckt. Nach der Anmeldung an WBCE CMS bitte das Colorbox-Snippet auf Version 1.6.5 aus dem <a href="https://addons.wbce.org/pages/addons.php?do=item&item=32" target="_blank">WBCE Add-On-Verzeichnis</a> aktualisieren (vorhandene Dateien überschreiben).</p>';    
+}
+$file_name = WB_PATH . "/modules/cookieconsent/settings/settings.js";
+if (file_exists($file_name)) {
+    echo '<p style="margin:10px 0">[EN] <strong>Notice:</strong> Old version of the Cookie Consent module detected. After loggin in to WBCE CMS, please uninstall the module and install Cookie Consent 2.4.3  <a href="https://addons.wbce.org/pages/addons.php?do=item&item=88" target="_blank">available from the WBCE Add-On repository</a> (or replace it with a more timely consent banner solution).</p> <p style="margin:10px 0">[DE] <strong>Hinweis:</strong> Alte Version des Cookie-Consent-Snippets entdeckt. Nach der Anmeldung an WBCE CMS bitte zunächst das alte Cookie-Consent-Modul deinstallieren und Version 2.4.3 aus dem <a href="https://addons.wbce.org/pages/addons.php?do=item&item=88" target="_blank">WBCE Add-On-Verzeichnis</a> installieren (oder durch ein beliebiges anderes zeitgemäßes Consent-Script ersetzen).</p>';    
+}
+?>				
+				
                     <p>Please Login in the Backend to check your Website</p>
                     <?php
                         if (defined('ADMIN_URL')) {
