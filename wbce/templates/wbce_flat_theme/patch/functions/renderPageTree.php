@@ -72,7 +72,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999)
         ob_start(); ?>
         <li class="p<?= $page['parent'] ?> <?= ($hasChildren ? 'has-children' : '') ?>">
             <table class="table">
-                <tr class="is-<?= $page['visibility'] ?>">
+                <tr>
                     <td class="toggle">
                         <?php if ($hasChildren) { ?>
                             <a href="#" data-id="p{PAGE_ID}"><i class="fa fa-fw fa-folder-open"></i></a>
