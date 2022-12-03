@@ -1,7 +1,111 @@
 # Changelog WBCE CMS
-This CHANGELOG was automatically created from a local WBCE Git repository.
+* Commits on Dec 2, 2022
+    > avoid timezone setting issues
+    instantflorian committed Dec 2, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/68d9c46
+* Commits on Dec 1, 2022
+    > Remove unnecessary CSS class
+    Causes trouble with Firefox Plugin "Facebook Container"
+    instantflorian committed Dec 1, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/f6a1e35
+* Commits on Nov 29, 2022
+    > Do not delete pagecloner on update
+    instantflorian committed Nov 29, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/a0a0070
+* Commits on Nov 26, 2022
+    > Detect old modules
+    These modules cause problems due to #520 changes,
+     so users get a reminder to update/remove the old colorbox and consent snippet
+    instantflorian committed Nov 26, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/6853b2e
+* Commits on Nov 23, 2022
+    > remove srand / mt_srand
+    instantflorian committed Nov 23, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/45459b0
+* Commits on Nov 18, 2022
+    > Better DB error handling, remove old index_add function
+    instantflorian committed Nov 18, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/c857fff
+* Commits on Nov 15, 2022
+    > Allow dot in pw
+    #526
+    instantflorian committed Nov 15, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/fe505fa
+    > Auto-generate stronger passwords
+    instantflorian committed Nov 15, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/6ef4f4a
+* Commits on Nov 14, 2022
+    > Better index_add function
+    addressing indexing issues
+    Thanks to Ruud / dev4me.com
+    instantflorian committed Nov 14, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/99afd2a
+	
+    > Non-numeric timezone value caused exception
+    instantflorian committed Nov 14, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/ab3031d
+	
+    > NWI settings for admins only (optional)
+    Addresses issue #525 - new option to restrict access to NWI settings only to the administrators group,
+     to which only trustworthy users should belong.
+    instantflorian committed Nov 14, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/26b9c1a
+	
+* Commits on Nov 13, 2022
+    > fix for #524
+    usually,
+     ip addresses with multiple failed login attempts should be
+    blocked. An attacker could bypass this by sending an X-forwarded-for
+    header and change that IP with each attempt. Since REMMOTE_ADDR
+    is harder to fake we should first check that one and only if that one is
+    not set for some reason,
+     rely on other variables.
+    
+    mrbaseman committed Nov 13, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/d394ba3
+* Commits on Oct 26, 2022
+    > Introduce new constant to fix issue #520, update version
+    instantflorian committed Oct 26, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/7320043
+* Commits on Oct 23, 2022
+    > Remove hardcoded underscore, fix for #519
+    instantflorian committed Oct 23, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/22a52e1
+* Commits on Oct 22, 2022
+    > wbstats 0.2.5.3
+    Colinax committed Oct 22, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/3323471
+* Commits on Oct 12, 2022
+    > Captcha was not correct initialized
+    instantflorian committed Oct 12, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/3308bdc
+* Commits on Oct 1, 2022
+    > Update CHANGELOG.md
+    instantflorian committed Oct 1, 2022
+    
+https://github.com/WBCE/WBCE_CMS/commit/44ab26c
+
+
+This part of the CHANGELOG was automatically created from a local WBCE Git repository.
 The changelog may therefore not be correct or up-to date.
 Please visit the [WBCE Github](https://github.com/WBCE/WBCE_CMS/commits) repository for the most up to-date version.
+
 
 ## Auto generated Git commit history
 
