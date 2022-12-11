@@ -598,7 +598,7 @@ class database
         $retVal = false;
         $mysqlVersion = mysqli_get_server_info($this->db_handle);
         $engineValue = (version_compare($mysqlVersion, '5.0') < 0) ? 'Type' : 'Engine';
-        $sql = "SHOW TABLE STATUS FROM " . $this->db_name . " LIKE '" . $table . "'";
+        $sql = "SHOW TABLE STATUS FROM `" . $this->db_name . "` LIKE '" . $table . "'";
         if (($result = $this->query($sql))) {
             if (($row = $result->fetchRow(MYSQLI_ASSOC))) {
                 $retVal = $row[$engineValue];
