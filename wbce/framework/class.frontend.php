@@ -94,8 +94,8 @@ class Frontend extends Wb
         $sSql = 'SELECT `p`.`page_id`, `link` ';
         $sSql .= 'FROM `{TP}pages` AS `p` INNER JOIN `{TP}sections` USING(`page_id`) ';
         $sSql .= 'WHERE `parent`=0 AND `visibility`=\'public\' ';
-        $sSql .= 'AND ((' . $now . '>=`publ_start` OR `publ_start`=0) ';
-        $sSql .= 'AND (' . $now . '<=`publ_end` OR `publ_end`=0)) ';
+        $sSql .= 'AND ((' . $now . '>=`publ_start` OR `publ_start`=0 OR `publ_start`=\'\') ';
+        $sSql .= 'AND (' . $now . '<=`publ_end` OR `publ_end`=0 OR `publ_end`=\'\')) ';
         if (trim($this->sql_where_language) != '') {
             $sSql .= trim($this->sql_where_language) . ' ';
         }

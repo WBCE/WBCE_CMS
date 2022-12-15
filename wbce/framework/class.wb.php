@@ -395,7 +395,7 @@ _JsCode;
         $query_sections = $this->_oDb->query($sql);
         if ($query_sections->numRows() != 0) {
             while ($section = $query_sections->fetchRow()) {
-                if ($now < $section['publ_end'] && ($now > $section['publ_start'] || $section['publ_start'] == 0) || $now > $section['publ_start'] && $section['publ_end'] == 0) {
+                if ($now < $section['publ_end'] && ($now > $section['publ_start'] || (int)$section['publ_start'] == 0) || $now > $section['publ_start'] && (int)$section['publ_end'] == 0) {
                     $has_active_sections = true;
                     break;
                 }

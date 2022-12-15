@@ -358,9 +358,9 @@ if (!function_exists('block_contents')) {
                 // skip this section if it is out of publication date
                 $now = time();
                 if (!(
-                    ($now <= $aSection['publ_end'] || $aSection['publ_end'] == 0)
+                    ($now <= $aSection['publ_end'] || (int)$aSection['publ_end'] == 0)
                     &&
-                    ($now >= $aSection['publ_start'] || $aSection['publ_start'] == 0)
+                    ($now >= $aSection['publ_start'] || (int)$aSection['publ_start'] == 0)
                 )) {
                     continue;
                 }

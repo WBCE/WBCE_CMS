@@ -195,7 +195,7 @@ switch ($action) {
 
         // Convert the unix ts for modified_when to human a readable form
         if ($aPage['modified_when'] != 0) {
-            $modified_ts = date(TIME_FORMAT . ', ' . DATE_FORMAT, $aPage['modified_when'] + TIMEZONE);
+            $modified_ts = date(TIME_FORMAT . ', ' . DATE_FORMAT, $aPage['modified_when'] + (int)TIMEZONE);
         } else {
             $modified_ts = 'Unknown';
         }
@@ -350,16 +350,16 @@ switch ($action) {
                         )
                     );
                     // set calendar start values
-                    if ($section['publ_start'] == 0) {
+                    if ((int)$section['publ_start'] == 0) {
                         $oTemplate->set_var('VALUE_PUBL_START', '');
                     } else {
-                        $oTemplate->set_var('VALUE_PUBL_START', date($jscal_format, $section['publ_start'] + TIMEZONE));
+                        $oTemplate->set_var('VALUE_PUBL_START', date($jscal_format, (int)$section['publ_start'] + (int)TIMEZONE));
                     }
                     // set calendar start values
-                    if ($section['publ_end'] == 0) {
+                    if ((int)$section['publ_end'] == 0) {
                         $oTemplate->set_var('VALUE_PUBL_END', '');
                     } else {
-                        $oTemplate->set_var('VALUE_PUBL_END', date($jscal_format, $section['publ_end'] + TIMEZONE));
+                        $oTemplate->set_var('VALUE_PUBL_END', date($jscal_format, (int)$section['publ_end'] + (int)TIMEZONE));
                     }
                     // Insert icons up and down
                     if ($section['position'] != 1) {
