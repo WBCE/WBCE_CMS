@@ -90,7 +90,7 @@ if (!function_exists('getTwig')) {
           // Constant ADMIN_TOOL_DIR does not exist in WB/WBCE
           // -----(figure out an alternative later)
         if(defined('ADMIN_TOOL_DIR') && is_string(ADMIN_TOOL_DIR) ){
-            $oTwig->addGlobal('TOOL_NAME', $GLOBALS['module_name']);
+            $oTwig->addGlobal('TOOL_NAME', $oEngine->get_module_name(ADMIN_TOOL_DIR));
             $oTwig->addGlobal('TOOL_URI', ADMIN_URL.'/admintools/tool.php?tool='.ADMIN_TOOL_DIR);
             $oTwig->addGlobal('ADDON_URL', WB_URL.'/modules/'.ADMIN_TOOL_DIR);
         }
