@@ -22,12 +22,38 @@ require_once WB_PATH . "/framework/class.admin.php";
 class Login extends Admin
 {
     private $_oMsgBox = null;
+    private $user_id;
     private $username;
     private $password;
+    
+    public  $frontend;
+    public  $template_file;
+    public  $template_dir;
+    public  $url;
+    public  $default_url;
+    public  $login_url;
+    public  $login_delay;
+    public  $timeframe;
+    public  $max_attempts;
+    public  $warning_url;
+    public  $redirect_url;
+    public  $remember;
+    public  $password_len;
+    public  $min_password_len;
+    public  $max_password_len;
+    public  $username_len;
+    public  $min_username_len;
+    public  $max_username_len;
+    public  $remember_me_option;
+    public  $password_fieldname;
+    public  $username_fieldname;
+    public  $forgotten_details_app;
+    public  $users_table;
+    public  $groups_table;
 
     public function __construct($aConfig)
     {
-        global $MESSAGE, $database;
+        global $MESSAGE;
 
         parent::__construct();
 
@@ -87,8 +113,7 @@ class Login extends Admin
         } elseif ($this->is_remembered() == true) {
             // User has been "remembered" Get the users password
             $sSql = "SELECT * FROM `{TP}users` 'WHERE `user_id`= %d";
-            $resUser = $database->query(sprintf($sSql, $this->get_safe_remember_key()));
-            $aUserData = $resUser->fetchRow(MYSQLI_ASSOC);
+            $aUserData = $this->_oDb->get_array(sprintf($sSql, $this->get_safe_remember_key()));
             $this->username = $aUserData['username'];
             $this->password = $aUserData['password'];
             // Check if the user exists (authenticate them)
@@ -126,14 +151,13 @@ class Login extends Admin
     {
         return false;
 
-        // global $database;
         // // add if get_safe_remember_key not empty
         // if(isset($_COOKIE['REMEMBER_KEY']) && ($_COOKIE['REMEMBER_KEY'] != '') && ($this->get_safe_remember_key() <> '')){
         //        // Check if the remember key is correct
-        //        // $database = new database();
+        //        // $this->_oDb = new database();
         //        $sql = "SELECT `user_id` FROM `{TP}users` WHERE `remember_key` = '";
         //        $sql .= $this->get_safe_remember_key() . "' LIMIT 1";
-        //        $check_query = $database->query($sql);
+        //        $check_query = $this->_oDb->query($sql);
         //
         //        if($check_query->numRows() > 0) {
         //            $check_fetch = $check_query->fetchRow();
@@ -182,11 +206,9 @@ class Login extends Admin
      *          and write into the database the last login time
      *
      * @return  int     ammount of grroups the user is member of
-     * @global  object $database
      */
     public function authenticate($bRemembered = false)
     {
-        global $database;
         $sLoginname = preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->username;
 
         // Get user information
@@ -194,7 +216,7 @@ class Login extends Admin
         if ($bRemembered) {
             $sSql .= " AND `password` = '" . $this->password . "'";
         }
-        $resUsers = $database->query(sprintf($sSql, $sLoginname));
+        $resUsers = $this->_oDb->query(sprintf($sSql, $sLoginname));
         $aUserData = $resUsers->fetchRow(MYSQLI_ASSOC);
         $iNumRows = $resUsers->numRows();
 
@@ -260,7 +282,7 @@ class Login extends Admin
             $bFirstGroup = true;
             foreach (explode(",", $this->get_session('GROUPS_ID')) as $iCurrGroupID) {
                 $sSql = "SELECT * FROM `{TP}groups` WHERE `group_id` = %d";
-                $resGroup = $database->query(sprintf($sSql, $iCurrGroupID));
+                $resGroup = $this->_oDb->query(sprintf($sSql, $iCurrGroupID));
                 $aGroup = $resGroup->fetchRow(MYSQLI_ASSOC);
                 $_SESSION['GROUP_NAME'][$iCurrGroupID] = $aGroup['name'];
                 // Set system permissions
@@ -292,7 +314,7 @@ class Login extends Admin
                 'login_when' => time(),
                 'login_ip' => $_SERVER['REMOTE_ADDR']
             );
-            $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
+            $this->_oDb->updateRow('{TP}users', 'user_id', $aUpdateUser);
         } else {
             $iNumRows = 0;
         }
@@ -304,7 +326,6 @@ class Login extends Admin
     {
         return true;
 
-        // global $database;
         // $remember_key = '';
         // // Generate user id to append to the remember key
         // $length = 11-strlen($iUserID);
@@ -326,9 +347,9 @@ class Login extends Admin
         // }
         // $remember_key = $remember_key;
         // // Update the remember key in the db
-        // // $database = new database();
-        // $database->query("UPDATE ".$this->users_table." SET remember_key = '$remember_key' WHERE user_id = '$iUserID' LIMIT 1");
-        // if($database->is_error()) {
+        // // $this->_oDb = new database();
+        // $this->_oDb->query("UPDATE ".$this->users_table." SET remember_key = '$remember_key' WHERE user_id = '$iUserID' LIMIT 1");
+        // if($this->_oDb->is_error()) {
         //    return false;
         // } else {
         //    // Workout options for the cookie
@@ -351,14 +372,13 @@ class Login extends Admin
     {
         // we shall store them in the database and fetch them from there
         // because an attacker can easily open plenty of new sessions
-        global $database;
 
         $client_ip = md5($this->get_client_ip());
         $attempts = 0;
         $timestamp = 0;
 
         $sql = "SELECT * FROM `" . TABLE_PREFIX . "blocking` WHERE `source_ip` = '" . $client_ip . "' LIMIT 1";
-        $check_query = $database->query($sql);
+        $check_query = $this->_oDb->query($sql);
 
         $now = time();
 
@@ -370,7 +390,7 @@ class Login extends Admin
             $timestamp = $now;
             $attempts = $increment;
             $sql = "INSERT INTO `" . TABLE_PREFIX . "blocking` SET `attempts` = '$attempts', `timestamp` = '$timestamp', `source_ip` = '$client_ip'";
-            $database->query($sql);
+            $this->_oDb->query($sql);
         }
 
         $interval = $now - $timestamp;
@@ -384,7 +404,7 @@ class Login extends Admin
 
         // update the database
         $sql = "UPDATE `" . TABLE_PREFIX . "blocking` SET `attempts` = '$attempts', `timestamp` = '$timestamp' WHERE `source_ip` = '$client_ip'";
-        $database->query($sql);
+        $this->_oDb->query($sql);
 
         if ($interval > $this->timeframe + pow(2, ($attempts - $this->max_attempts)) * $this->login_delay && $attempts > $this->max_attempts) {
             // it's too long ago, reduce at least to allow one more attempt
@@ -394,7 +414,7 @@ class Login extends Admin
         // to clean up database from old entries, use the occasion and discard everything we have not seen for more than a week
         $timestamp = $now - 7 * 24 * 3600;
         $sql = "DELETE FROM `" . TABLE_PREFIX . "blocking` WHERE `timestamp` < '$timestamp'";
-        $database->query($sql);
+        $this->_oDb->query($sql);
 
         $_SESSION['ATTEMPTS'] = $attempts;
 
@@ -471,7 +491,7 @@ class Login extends Admin
     public function display_login()
     {
         // Get language vars
-        global $MESSAGE, $MENU, $TEXT, $database;
+        global $MESSAGE, $MENU, $TEXT;
 
         if (!isset($_SESSION['ATTEMPTS']) || ($this->get_session('ATTEMPTS') > $this->max_attempts)) {
             $this->increase_attempts($increment = 0);
@@ -512,7 +532,6 @@ class Login extends Admin
                 'USERNAME' => $this->username,
                 'USERNAME_FIELDNAME' => $this->username_fieldname,
                 'PASSWORD_FIELDNAME' => $this->password_fieldname,
-                //'MESSAGE' => $this->message,
                 'MESSAGE' => $this->_oMsgBox->fetchDisplay(),
                 'INTERFACE_DIR_URL' => ADMIN_URL . '/interface',
                 'MAX_USERNAME_LEN' => $this->max_username_len,
