@@ -69,10 +69,12 @@ class SecureForm
     private $_IDKEYs = array('0' => '0');
     private $_idkey_name = '';
     private $_salt = '';
-    private $_fingerprint = '';
     private $_serverdata = '';
-    
-    protected $_oDb = ''; // Establish class Database object
+    private $_fingerprint = '';
+    private $_browser_fingerprint = '';
+            
+    // Establish class Database object
+    protected $_oDb = NULL; 
 
     /* Construtor */
 
