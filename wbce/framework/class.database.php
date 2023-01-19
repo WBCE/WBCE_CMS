@@ -31,17 +31,44 @@ if (!defined('MYSQL_CLIENT_COMPRESS')) {
 
 class database
 {
+    /**
+     * @var $db_handle - DB connection handle (returned from mysqli_connect())
+     **/
     private $db_handle = null; // readonly from outside
+    /**
+     * @var $db_name - DB name (DB_NAME in config.php)
+     **/
     private $db_name = '';
+    /**
+     * @var $connected - wether a connection is established
+     **/
     private $connected = false;
+    /**
+     * @var sCharset - DB_CHARSET in config.php; defaults to empty value
+     **/
     private $sCharset = '';
+    /**
+     * @var $error - last DB error message (set by function set_error())
+     **/
     private $error = '';
+    /**
+     * @var $error_type - set by function set_error() which always sets 'unknown'
+     **/
     private $error_type = '';
+    /**
+     * @var $message - never used (?)
+     **/
     private $message = array();
+    /**
+     * @var $_prefixes - array of known prefixes (at least DB_PREFIX from config)
+     **/
     private $_prefixes = array();
 
-    // Set DB_URL
-    public function __construct($url = '')
+    /**
+     * constructor
+     * @return object
+     **/
+    public function __construct()
     {
         // Connect to database
         if (!$this->connect()) {
@@ -50,7 +77,15 @@ class database
         $this->_prefixes = $this->_tablePrefixes();
     }
 
-    // Connect to the database DB_CHARSET
+    /**
+     * establish DB connection
+     * + sets $this->db_handle to mysqli_connect() result
+     * + sets $this->connected
+     * + sets $this->error if connection error occurs
+     * + sets DB charset using 'SET NAMES' if DB_CHARSET is present in config
+     * + disables strict mode if USE_MYSQL_STRICT is not present in config
+     * @return bool (connection established or not)
+     **/
     public function connect()
     {
         $this->sCharset = strtolower(preg_replace('/[^a-z0-9]/i', '', (defined('DB_CHARSET') ? DB_CHARSET : '')));
@@ -270,7 +305,10 @@ class database
         }
     }
 
-    // Disconnect from the database
+    /**
+     * Disconnect from the database
+     * @return bool
+     **/
     public function disconnect()
     {
         if ($this->connected == true) {
@@ -281,70 +319,104 @@ class database
         }
     }
 
-    // Run a query
+    /**
+     * Run a query
+     * @param string $statement
+     * @return new mysql instance
+     **/
     public function query($statement)
     {
         $mysql = new mysql($this->db_handle);
-        $statement = $this->replaceTablePrefix($statement);
-        $mysql->query($statement);
-        $this->set_error($mysql->error());
-        #if ($mysql->error()) {
-        #    return null;
-        #} else {
-            return $mysql;
-        #}
+        $statement_final = $this->replaceTablePrefix($statement);
+        $mysql->query($statement_final);
+        if ($mysql->error()) {
+            trigger_error(sprintf('STATEMENT: %s',preg_replace('/\s+/', ' ',$statement)));
+            $this->set_error($mysql->error());
+        }
+        return $mysql;
     }
 
-    // Gets the first column of the first row
+    /**
+     * Gets the first column of the first row
+     * @param string $statement
+     * @return mixed (query result or null)
+     **/
     public function get_one($statement)
     {
         $statement = $this->replaceTablePrefix($statement);
-        $q = mysqli_query($this->db_handle, $statement);
-        if ($q === false) {
-            $this->set_error(mysqli_error($this->db_handle));
+        try {
+            $q = mysqli_query($this->db_handle, $statement);
+            if ($q === false) {
+                $this->set_error(mysqli_error($this->db_handle));
+                return null;
+            }
+            $fetch_row = mysqli_fetch_array($q);
+            if (is_array($fetch_row)) {
+                $result = $fetch_row[0];
+            } else {
+                $result = '';
+            }
+            $this->set_error(null);
+            if (mysqli_error($this->db_handle)) {
+                $this->set_error(mysqli_error($this->db_handle));
+                return null;
+            } else {
+                return $result;
+            }
+        } catch (\Exception $e) {
+            trigger_error(sprintf('EXCEPTION: %s',mysqli_error($this->db_handle)));
+            trigger_error(sprintf('STATEMENT: %s',preg_replace('/\s+/', ' ',$statement)));
+            $this->set_error(sprintf('EXCEPTION: %s',mysqli_error($this->db_handle)));
             return null;
-        }
-        $fetch_row = mysqli_fetch_array($q);
-        if (is_array($fetch_row)) {
-            $result = $fetch_row[0];
-        } else {
-            $result = '';
-        }
-        $this->set_error(null);
-        if (mysqli_error($this->db_handle)) {
-            $this->set_error(mysqli_error($this->db_handle));
-            return null;
-        } else {
-            return $result;
         }
     }
 
-    // Return queried array directly for immediate use
+    /**
+     * Return queried array directly for immediate use
+     * @param string $statement
+     * @return array
+     **/
     public function get_array($statement)
     {
         $aData = array();
-        if ($resData = $this->query($statement)) {
-            while ($rec = $resData->fetchRow(MYSQLI_ASSOC)) {
-                $aData[] = $rec;
+        try {
+            if ($resData = $this->query($statement)) {
+                while ($rec = $resData->fetchRow(MYSQLI_ASSOC)) {
+                    $aData[] = $rec;
+                }
             }
+        } catch (\Exception $e) {
+            trigger_error(sprintf('EXCEPTION: %s',mysqli_error($this->db_handle)));
+            trigger_error(sprintf('STATEMENT: %s',preg_replace('/\s+/', ' ',$statement)));
+            $this->set_error(sprintf('EXCEPTION: %s',mysqli_error($this->db_handle)));
         }
         return $aData;
     }
 
-    // Set the DB error
+    /**
+     * save the DB error
+     * @param string $message
+     * @return void
+     **/
     public function set_error($message = null)
     {
         $this->error = $message;
         $this->error_type = 'unknown';
     }
 
-    // Return true if there was an error
+    /**
+     * Return true if there was an error
+     * @return bool
+     **/
     public function is_error()
     {
         return (!empty($this->error)) ? true : false;
     }
 
-    // Return the error
+    /**
+     * Return the (last) error
+     * @return string
+     **/
     public function get_error()
     {
         return $this->error;
@@ -395,7 +467,7 @@ class database
         return mysqli_insert_id($this->db_handle);
     }
 
-    /*
+    /**
     * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
     * @param string $field_name: name of the field to seek for
     * @return bool: true if field exists
@@ -411,7 +483,7 @@ class database
         return $exists;
     }
 
-    /*
+    /**
     * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
     * @param string $index_name: name of the index to seek for
     * @return bool: true if field exists
@@ -435,7 +507,7 @@ class database
         }
     }
 
-    /*
+    /**
     * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
     * @param string $field_name: name of the field to add
     * @param string $description: describes the new field like ( INT NOT NULL DEFAULT '0')
@@ -494,15 +566,16 @@ class database
         return $retval;
     }
 
-    /*
-    * @param string $table_name: full name of the table (incl. TABLE_PREFIX / {TP})
-    * @param string $index_name: name of the new index
-    * @param string $field_list: comma seperated list of fields for this index
-    * @param string $index_type: kind of index (UNIQUE, PRIMARY, '')
-    * @return bool: true if successful, otherwise false and error will be set
-    */
+    
 
-
+    /**
+     * add index to table; will overwrite index with same name
+     * @param string $table_name
+     * @param string $index_name
+     * @param string $field_list
+     * @param string $index_type
+     * @return bool
+     **/
 	public function index_add($table_name, $index_name, $field_list, $index_type = 'KEY')
     {
        $retval = false;
