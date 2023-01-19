@@ -21,6 +21,10 @@ require_once ADMIN_PATH . '/interface/version.php';
 
 class Admin extends Wb
 {
+    
+    public $section_name = '';
+    public $section_permission = '';
+    
     /**
      * @brief  Authenticate user then auto print the header
      */
