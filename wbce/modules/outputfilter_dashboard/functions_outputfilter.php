@@ -1093,7 +1093,7 @@ function opf_add_class(&$content, $class, $tag) {
 function opf_add_class_to_class(&$content, $class, $present_class, $tag='') {
     if(!is_string($content)) { trigger_error('opf_add_class_to_class(): content is not a string', E_USER_WARNING); return(FALSE); }
     if($tag!='') $tag .= ' ';
-    $res = preg_replace("~(<${tag}[^<>]*class\s*=\s*\"[^\"<>]*$present_class)([^\"<>]*\")~iU",'$1 '.$class.'$2',$content);
+    $res = preg_replace("~(<{$tag}[^<>]*class\s*=\s*\"[^\"<>]*$present_class)([^\"<>]*\")~iU",'$1 '.$class.'$2',$content);
     if($res===NULL)
         return(FALSE);
     $content = $res;
@@ -1129,7 +1129,7 @@ function opf_add_class_to_attr(&$content, $class, $attr, $value, $tag='') {
     if($attr=='class')
         return(opf_add_class_to_class($content, $class, $value, $tag));
     if(!is_string($content)) { trigger_error('opf_add_class_to_attr(): content is not a string', E_USER_WARNING); return(FALSE); }
-    $res = preg_replace("~<(${tag}[^ ]*?)(?:([^<>]*)(?:class\s*=\s*\"([^\"]*)\")?([^<>]*$attr\s*=\s*\"\s*$value\s*\"[^<>]*)(?(3)|class\s*=\s*\"([^\"]*)\")([^<>]*)|([^<>]*$attr\s*=\s*\"\s*$value\s*\"[^<>]*))>~iU", '<$1 class="$3$5 '.$class.'" $4 $2$6$7>', $content);
+    $res = preg_replace("~<({$tag}[^ ]*?)(?:([^<>]*)(?:class\s*=\s*\"([^\"]*)\")?([^<>]*$attr\s*=\s*\"\s*$value\s*\"[^<>]*)(?(3)|class\s*=\s*\"([^\"]*)\")([^<>]*)|([^<>]*$attr\s*=\s*\"\s*$value\s*\"[^<>]*))>~iU", '<$1 class="$3$5 '.$class.'" $4 $2$6$7>', $content);
     if($res===NULL)
         return(FALSE);
     $content = $res;
@@ -1597,5 +1597,3 @@ function opf_filter_get_additional_values() {
 function opf_filter_name_to_setting($name) {
     return "opf_" . preg_replace('/[^a-z_]/','', str_replace(' ','_', strtolower($name)));
 }
-
-
