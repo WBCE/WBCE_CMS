@@ -195,11 +195,12 @@ function code_to_utf8($num)
  * faster replacement for utf8_umlauts_to_entities()
  * not all features of utf8_umlauts_to_entities() --> utf8_tohtml() are supported!
  * @author thorn
+ * PHP 8.2 fix found at https://github.com/FriendsOfREDAXO/mblock/pull/156/commits/ce53b41e3ff9014dd54ee5864f8548bfb317c039
  */
 function utf8_fast_umlauts_to_entities($string, $named_entities = true)
 {
-    if (UTF8_MBSTRING) {
-        return (mb_convert_encoding($string, 'HTML-ENTITIES', 'UTF-8'));
+    if (UTF8_MBSTRING) {		
+		  return (htmlspecialchars_decode(iconv('UTF-8', 'ISO-8859-1', htmlentities($string, ENT_COMPAT, 'UTF-8')), ENT_QUOTES));
     } else {
         global $named_entities;
         global $numbered_entities;
