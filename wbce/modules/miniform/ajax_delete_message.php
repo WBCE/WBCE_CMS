@@ -15,10 +15,10 @@ $aJsonRespond['success'] = FALSE;
         // require config for Core Constants
         require '../../config.php';
         // retrieve Data from ajax data string
-        $sDbRecordTable = TABLE_PREFIX."mod_".$_POST['DB_RECORD_TABLE'];
-        $sDbColumn      = $_POST['DB_COLUMN'];
-        $iRecordID      = $_POST['iRecordID'];
-        $sModuleDIR     = $_POST['MODULE'];
+        $sDbRecordTable = TABLE_PREFIX."mod_".addslashes($_POST['DB_RECORD_TABLE']);
+        $sDbColumn      = addslashes($_POST['DB_COLUMN']);
+        $iRecordID      = addslashes($_POST['iRecordID']);
+        $sModuleDIR     = addslashes($_POST['MODULE']);
 
         require_once(WB_PATH.'/framework/class.admin.php');
         $admin = new admin('Modules', 'module_view', FALSE, FALSE);
