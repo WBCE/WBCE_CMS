@@ -94,7 +94,7 @@ if (!function_exists("sitemap")) {
                     '[DESCRIPTION]'   => stripslashes($page['description']),
                     '[KEYWORDS]'      => stripslashes($page['keywords']),
                     '[TARGET]'        => $page['target'],
-                    '[MODIFIED_BY]'   => $user['display_name'],
+                    '[MODIFIED_BY]'   => isset($user['display_name']) ? $user['display_name'] : '',
                     '[MODIFIED_DATE]' => date(DATE_FORMAT, $page['modified_when']),
                     '[MODIFIED_TIME]' => date(TIME_FORMAT, $page['modified_when']),
                     '[MODIFIED_WHEN]' => "[MODIFIED_DATE] [MODIFIED_TIME]"
