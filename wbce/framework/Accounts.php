@@ -409,6 +409,7 @@ class Accounts extends Frontend
         global $database;
         $retVal = false;
         if (preg_match('/[0-9a-f]{32}/i', $sConfirmCode)) {
+			$sConfirmCode = addslashes($sConfirmCode);
             $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `signup_confirmcode` = '" . $sConfirmCode . "'";
             $retVal = $database->get_one($sSql);
         }
