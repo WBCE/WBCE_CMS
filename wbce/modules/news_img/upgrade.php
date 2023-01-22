@@ -102,121 +102,152 @@ require(WB_PATH."/index.php");
     // ----- update database ---------------------------------------------------
 
     // 2014-04-10 by BlackBird Webprogrammierung:
-    //            image position
-    try {
-        $database->query(sprintf(
-            'ALTER TABLE `%smod_news_img_img` ADD `position` INT(11) NOT NULL DEFAULT \'0\' AFTER `post_id`',
-            TABLE_PREFIX
-        ));
-    } catch(\Exception $e) {}
+    //   
+	if (!$database->field_exists('{TP}mod_news_img_img','position')) {
+		try {		
+			$database->query(sprintf(
+				'ALTER TABLE `%smod_news_img_img` ADD `position` INT(11) NOT NULL DEFAULT \'0\' AFTER `post_id`',
+				TABLE_PREFIX
+			));
+		} catch(\Exception $e) {}
+	}
 
     // 2018-11-28 by BlackBird Webprogrammierung:
     //            new image resize settings (leaving the old column untouched)
-    try {
-        $database->query(sprintf(
-            'ALTER TABLE `%smod_news_img_settings` ADD `resize_preview` VARCHAR(50) NULL AFTER `resize`, ADD `crop_preview` CHAR(1) NOT NULL DEFAULT \'N\' AFTER `resize_preview`',
-            TABLE_PREFIX
-        ));
-    } catch(\Exception $e) {}
+	if (!$database->field_exists('{TP}mod_news_img_settings','resize_preview')) {
+		try {
+			$database->query(sprintf(
+				'ALTER TABLE `%smod_news_img_settings` ADD `resize_preview` VARCHAR(50) NULL AFTER `resize`, ADD `crop_preview` CHAR(1) NOT NULL DEFAULT \'N\' AFTER `resize_preview`',
+				TABLE_PREFIX
+			));
+		} catch(\Exception $e) {}
+	}
 
     // 2019-04-12 by BlackBird Webprogrammierung:
     //            custom markup for post content and image loop
-    try {
-        $database->query(sprintf(
-            'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `post_content` TEXT NOT NULL AFTER `post_header`, ADD COLUMN `image_loop` TEXT NOT NULL AFTER `post_content`',
-            TABLE_PREFIX
-        ));
-    } catch(\Exception $e) {}
+	if (!$database->field_exists('{TP}mod_news_img_settings','post_content')) {
+		try {
+			$database->query(sprintf(
+				'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `post_content` TEXT NOT NULL AFTER `post_header`, ADD COLUMN `image_loop` TEXT NOT NULL AFTER `post_content`',
+				TABLE_PREFIX
+			));
+		} catch(\Exception $e) {}
+	}
 
     // 2019-04-12 by BlackBird Webprogrammierung:
     //            custom markup for post content and image loop
-    try {
-        $database->query(sprintf(
-            'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `gallery` TEXT NOT NULL AFTER `use_captcha`',
-            TABLE_PREFIX
-        ));
-    } catch(\Exception $e) {}
+	if (!$database->field_exists('{TP}mod_news_img_settings','gallery')) {
+		try {
+			$database->query(sprintf(
+				'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `gallery` TEXT NOT NULL AFTER `use_captcha`',
+				TABLE_PREFIX
+			));
+		} catch(\Exception $e) {}
+	}
 
     // 2019-04-12 by Martin Hecht:
     //            add second block
-    try {
-        $database->query(sprintf(
-            'ALTER TABLE `%smod_news_img_posts` ADD COLUMN `content_block2` TEXT NOT NULL AFTER `content_long`',
-            TABLE_PREFIX
-        ));
-    } catch(\Exception $e) {}
+	if (!$database->field_exists('{TP}mod_news_img_posts','content_block2')) {
+		try {
+			$database->query(sprintf(
+				'ALTER TABLE `%smod_news_img_posts` ADD COLUMN `content_block2` TEXT NOT NULL AFTER `content_long`',
+				TABLE_PREFIX
+			));
+		} catch(\Exception $e) {}
+	}
 
     // 2019-05-02 by Martin Hecht:
     //            add second block in settings
-    try {
-        $database->query(sprintf(
-            'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `block2` TEXT NOT NULL AFTER `footer`',
-            TABLE_PREFIX
-        ));
-    } catch(\Exception $e) {}
+	if (!$database->field_exists('{TP}mod_news_img_settings','block2')) {
+		try {
+			$database->query(sprintf(
+				'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `block2` TEXT NOT NULL AFTER `footer`',
+				TABLE_PREFIX
+			));
+		} catch(\Exception $e) {}
+	}
 
     // 2019-04-13 by Martin Hecht:
     //            add view order
-    try {
-        $database->query(sprintf(
-            'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `view_order` INT NOT NULL DEFAULT \'0\' AFTER `post_loop`',
-            TABLE_PREFIX
-        ));
-    } catch(\Exception $e) {}
+	if (!$database->field_exists('{TP}mod_news_img_settings','view_order')) {
+		try {
+			$database->query(sprintf(
+				'ALTER TABLE `%smod_news_img_settings` ADD COLUMN `view_order` INT NOT NULL DEFAULT \'0\' AFTER `post_loop`',
+				TABLE_PREFIX
+			));
+		} catch(\Exception $e) {}
+	}
 
     // 2019-04-18 Bianka Martinovic
     //            remove all commenting settings and table
-    $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_comments`");
+	// removed by florian on 2023/01/22 - I don't think this table exists anywhere in the wild
+	
+	//	$database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_news_img_comments`");
+	
 
-    try {
-        $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_posts` DROP COLUMN `commenting`");
-    } catch(\Exception $e) {}
+	if ($database->field_exists('{TP}mod_news_img_posts','commenting')) {
+		try {
+			$database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_posts` DROP COLUMN `commenting`");
+		} catch(\Exception $e) {}
+	}
 
-    try {
-        $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` DROP COLUMN `comments_page`, DROP COLUMN `comments_header`, DROP COLUMN `comments_loop`, DROP COLUMN `comments_footer`, DROP COLUMN `commenting`, DROP COLUMN `use_captcha`, DROP COLUMN `resize`");
-    } catch(\Exception $e) {}
+	if ($database->field_exists('{TP}mod_news_img_settings','comments_page')) { // if the this field exists, the others exist probably too.
+		try {
+			$database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` DROP COLUMN `comments_page`, DROP COLUMN `comments_header`, DROP COLUMN `comments_loop`, DROP COLUMN `comments_footer`, DROP COLUMN `commenting`, DROP COLUMN `use_captcha`, DROP COLUMN `resize`");
+		} catch(\Exception $e) {}
+	}
 
-    try {
-        $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` ADD COLUMN `imgthumbsize` VARCHAR(50) NULL DEFAULT NULL AFTER `gallery`, ADD COLUMN `imgmaxwidth` VARCHAR(50) NULL DEFAULT NULL AFTER `imgthumbsize`, ADD COLUMN `imgmaxheight` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxwidth`, ADD COLUMN `imgmaxsize` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxheight`");
-    } catch(\Exception $e) {}
+	if (!$database->field_exists('{TP}mod_news_img_settings','imgthumbsize')) { // if the this field does not exist, the others won't exist probably neither.
+		try {
+			$database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_settings` ADD COLUMN `imgthumbsize` VARCHAR(50) NULL DEFAULT NULL AFTER `gallery`, ADD COLUMN `imgmaxwidth` VARCHAR(50) NULL DEFAULT NULL AFTER `imgthumbsize`, ADD COLUMN `imgmaxheight` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxwidth`, ADD COLUMN `imgmaxsize` VARCHAR(50) NULL DEFAULT NULL AFTER `imgmaxheight`");
+		} catch(\Exception $e) {}
+	}
 
     // 2019-04-18 Bianka Martinovic
     //            rename columns (from German to neutral) in mod_news_img_img table
     //            add permalink column to mod_news_img_posts table
-    try {
-        $database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_img` CHANGE COLUMN `bildname` `picname` VARCHAR(255) NOT NULL DEFAULT '' AFTER `id`, CHANGE COLUMN `bildbeschreibung` `picdesc` VARCHAR(255) NOT NULL DEFAULT '' AFTER `picname`");
-    } catch(\Exception $e) {}
+	
+	if ($database->field_exists('{TP}mod_news_img_img','bildname')) { // if the this field exists, the others exist probably too.
+		try {
+			$database->query("ALTER TABLE `".TABLE_PREFIX."mod_news_img_img` CHANGE COLUMN `bildname` `picname` VARCHAR(255) NOT NULL DEFAULT '' AFTER `id`, CHANGE COLUMN `bildbeschreibung` `picdesc` VARCHAR(255) NOT NULL DEFAULT '' AFTER `picname`");
+		} catch(\Exception $e) {}
+	}
 
     // ----- v5.0 --------------------------------------------------------------
 
-    try {
-        $database->query(sprintf("ALTER TABLE `%smod_news_img_posts` DROP COLUMN `page_id`",TABLE_PREFIX));
-    } catch(\Exception $e) {}
+	if ($database->field_exists('{TP}mod_news_img_posts','page_id')) { // if the this field exists, the others exist probably too.
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_posts` DROP COLUMN `page_id`",TABLE_PREFIX));
+		} catch(\Exception $e) {}
 
-    try {
-        $database->query(sprintf("ALTER TABLE `%smod_news_img_groups` DROP COLUMN `page_id`",TABLE_PREFIX));
-    } catch(\Exception $e) {}
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_groups` DROP COLUMN `page_id`",TABLE_PREFIX));
+		} catch(\Exception $e) {}
 
-    try {
-        $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` DROP COLUMN `page_id`",TABLE_PREFIX));
-    } catch(\Exception $e) {}
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_settings` DROP COLUMN `page_id`",TABLE_PREFIX));
+		} catch(\Exception $e) {}
+	}
+	
+	if (!$database->field_exists('{TP}mod_news_img_settings','use_second_block')) { // if the this field exists, the others exist probably too.
 
-    try {
-        $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `use_second_block` CHAR(1) NOT NULL DEFAULT 'N' AFTER `imgmaxsize`",TABLE_PREFIX));
-    } catch(\Exception $e) {}
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `use_second_block` CHAR(1) NOT NULL DEFAULT 'N' AFTER `imgmaxsize`",TABLE_PREFIX));
+		} catch(\Exception $e) {}
 
-    try {
-        $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `view` VARCHAR(50) NOT NULL DEFAULT 'default' AFTER `use_second_block`",TABLE_PREFIX));
-    } catch(\Exception $e) {}
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `view` VARCHAR(50) NOT NULL DEFAULT 'default' AFTER `use_second_block`",TABLE_PREFIX));
+		} catch(\Exception $e) {}
 
-    try {
-        $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `mode` VARCHAR(50) NULL DEFAULT 'default' AFTER `view`", TABLE_PREFIX));
-    } catch(\Exception $e) {}
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `mode` VARCHAR(50) NULL DEFAULT 'default' AFTER `view`", TABLE_PREFIX));
+		} catch(\Exception $e) {}
 
-    try {
-        $database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `show_settings_only_admins` CHAR(1) NOT NULL DEFAULT 'N' AFTER `use_second_block`",TABLE_PREFIX));
-    } catch(\Exception $e) {}
-
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `show_settings_only_admins` CHAR(1) NOT NULL DEFAULT 'N' AFTER `use_second_block`",TABLE_PREFIX));
+		} catch(\Exception $e) {}
+		
+	}
 	
 
     // 2019-07-05 Bianka Martinovic
