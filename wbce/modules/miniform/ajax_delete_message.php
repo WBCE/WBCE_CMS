@@ -48,9 +48,9 @@ $aJsonRespond['success'] = FALSE;
                 }
 				
                 // Clean up ordering after deletion
-                require(WB_PATH.'/framework/class.order.php');
-                $order = new order($sDbRecordTable, 'position', $sDbColumn, 'section_id');
-                $order->clean($_POST['iSectionID']);
+               // require(WB_PATH.'/framework/class.order.php');
+              //  $order = new order($sDbRecordTable, 'position', $sDbColumn, 'section_id');
+               // $order->clean($_POST['iSectionID']);
             }
             else{
                 $aJsonRespond['message'] = "can't delete from list";
