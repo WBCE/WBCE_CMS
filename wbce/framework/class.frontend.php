@@ -37,7 +37,7 @@ class Frontend extends Wb
     public $visibility;
     public $page_description;
     public $page_keywords;
-    public $page_link;
+    public $link;
     public $page_trail = array();
 
     public $page_access_denied;
