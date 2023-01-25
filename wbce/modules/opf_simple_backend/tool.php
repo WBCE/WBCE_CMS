@@ -101,7 +101,7 @@ $errmsg="";
 
 if($doSave) {
     // take over post - arguments
-    if($data['show_advanced_backend'] == 0){ // classical view, take all values from post - arguments
+    if($data['show_advanced_backend'] != 1){ // classical view, take all values from post - arguments
 
         //frontend
         $data['droplets']         = (int)(intval(isset($_POST['droplets']) ? $_POST['droplets'] : 0) != 0);
@@ -137,7 +137,7 @@ if($doSave) {
         // all filters
 
 
-        if(Settings::Get('opf_show_advanced_backend',0)==0){
+        if(Settings::Get('opf_show_advanced_backend',0)!=1){
 
             if(file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')){
                 require_once(WB_PATH.'/modules/outputfilter_dashboard/functions.php');
@@ -196,7 +196,7 @@ if($doSave) {
         }
 }
 
-if ( Settings::Get('opf_show_advanced_backend',0)==0){
+if ( Settings::Get('opf_show_advanced_backend',0)!=1){
   include(WB_PATH."/modules/opf_simple_backend/templates/output_filter.tpl.php");
 }
 
