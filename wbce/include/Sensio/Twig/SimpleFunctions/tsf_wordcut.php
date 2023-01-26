@@ -14,7 +14,7 @@ $oTwig->addFunction(new \Twig\TwigFunction("wordcut",
        $sOut = str_replace(htmlentities($sBreak), $sBreak, $sOut); //put back the break
        // return the first line
        $aTmp = explode($sBreak, $sOut);
-       return $aTmp[0] . (strlen($aTmp[0]) > $iLength ? '... ' : '');
+       return $aTmp[0] . (strlen($aTmp[0]) > $iLength ? '&hellip;' : '');
    }
 ));   
 
@@ -23,3 +23,21 @@ $oTwig->addFunction(new \Twig\TwigFunction("debug_dump",
        return debug_dump($mVar, $sCaption, $bVarDump);
    }
 ));   
+
+$oTwig->addFunction(new \Twig\TwigFunction("uniqid", 
+    function ($sPrefix="") { 
+        return uniqid($sPrefix); 
+   }
+));   
+
+$oTwig->addFunction(new \Twig\TwigFunction("CodeMirror", 
+    function ($id_attr="code", $syntax = 'js', $options = []) {         
+        if(function_exists('registerCodeMirror')){
+            return registerCodeMirror($id_attr, $syntax, $options);
+            // see /modules/CodeMirror_Config/initialize.php
+            // to access all possible options
+        } else {
+            return;
+        }
+    }
+));
