@@ -806,7 +806,7 @@ _JsCode;
      */
     public function correct_theme_source($sThemeFile = 'start.htt')
     {
-        $sSysThemeFile = WB_PATH . '/templates/default_theme/templates/' . $sThemeFile;
+        $sSysThemeFile = WB_PATH . '/templates/theme_fallbacks/templates/' . $sThemeFile;
         $sOverrideFile = THEME_PATH . '/templates/' . $sThemeFile;
         if (file_exists($sOverrideFile)) {
             return $sOverrideFile;
