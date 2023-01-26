@@ -1,0 +1,28 @@
+.cmc-panel {
+    background: #f7f7f7;
+    padding: 3px 7px;
+    font-size: 0.995em;
+}
+.cmc-panel.cmc-top, .cmc-panel.cmc-after-top {
+    border-bottom: 1px solid #ddd;
+}
+.cmc-panel.cmc-bottom, .cmc-panel.cmc-before-bottom {
+    border-top: 1px solid #ddd;
+}
+.cmc-panel .border {
+    border: 1px solid #f7f7f7;
+}
+.cmc-panel .add-panel {
+    background: orange;
+    padding: 3px 6px;
+    color: white !important; 
+    border-radius: 3px;
+}
+.cmc-panel .add-panel, .cmc-panel .remove-panel {
+    cursor: pointer;
+}
+.cmc-panel .remove-panel {
+    float: right;
+    color: #A21313;
+}
+  

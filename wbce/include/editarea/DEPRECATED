@@ -1,0 +1,15 @@
+EditArea has been designated as DEPRECATED 
+for use with WBCE and any of its modules.
+
+EditArea hasn't been maintained in years and is causing problems with newer
+browsers.
+Therefore the Dev Team of WBCE decided to move away from EditArea and switch 
+to CodeMirror, a syntax highlighter and code editor that is still actively
+developed and very well documented.
+
+It's highly discouraged to use this WBCE EditArea implementation in modules
+and it will be removed completely from the /include/ folder in one of the
+upcoming WBCE releases.
+
+For CodeMirror implementation look into the code of
+/modules/CodeMirror_Config/initialize.php
