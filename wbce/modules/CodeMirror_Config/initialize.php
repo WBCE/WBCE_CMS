@@ -106,7 +106,7 @@ if (!function_exists('registerCodeMirror')) {
             I::insertJsFile ($sModUrl.'addon/scroll/simplescrollbars.js',  'BODY');
             I::insertCssFile($sModUrl.'addon/scroll/simplescrollbars.css');
         }
-        I::insertJsFile($aCodeMirrorFiles, 'BODY');
+        I::insertJsFile($aCodeMirrorFiles, 'BODY TOP+');
         I::insertCssFile($sModUrl.'lib/codemirror.css', 'HEAD TOP+');
         I::insertCssFile($sModUrl.'addon/fold/foldgutter.css', 'HEAD TOP+');
         I::insertCssFile($sModUrl.'theme/'.$sTheme.'.css', 'HEAD');
@@ -278,17 +278,23 @@ if (!function_exists('getEditAreaSyntax')) {
 if (!function_exists('list_files_from_dir')) {
     /**
      * Return a list (array) of files from a specific directory
-     * @author  Christian M. Stefan
-     * @version 0.0.1 
-     * @date    10.01.2023
+     * @author   Christian M. Stefan (Stefek)
+     * @version  0.0.1 
+     * @date     10.01.2023
      * 
-     * @param   string $sDirPath // Location of the files to be listed
-     * @param   mixed  $mType // String or Array
-     *                          string: css, js, php, twig . . . 
-     *                          array: ['css', 'twig'] ...
-     * @return array
+     * @param    string $sDirPath   // Location of the files to be listed
+     * @param    mixed  $mType      // may be String or Array
+     *                                  string: css, js, php, twig . . . 
+     *                                  array: ['css', 'twig'] ...
+     * @param    bool   $bGroup     // whether to group the list by file type
+     * @return   array
      */
-    function list_files_from_dir($sDirPath = "", $mType = "", $bGroupByType = false){
+    function list_files_from_dir(
+            string $sDirPath = "", 
+            mixed  $mType = "", 
+            bool   $bGroup = false
+        ) :array 
+    {
         $aList = [];
         
         if($sDirPath == '' or $mType == ''){
@@ -303,7 +309,7 @@ if (!function_exists('list_files_from_dir')) {
             $iExtLen = strlen($sExt);
             foreach(scandir($sDirPath) as $k => $file){
                 if(substr($file, -$iExtLen) != $sExt) continue;
-                if($bGroupByType)
+                if($bGroup)
                     $aList[$sType][] = $file;
                 else 
                     $aList[] = $file;
