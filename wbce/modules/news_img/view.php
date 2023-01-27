@@ -163,7 +163,8 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
         },
         $settings['post_header'].$settings['post_content'].$settings['post_footer']
     );
-
+	$output=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$output);
+	
     // include gallery template
     if (strlen($settings['gallery'])) {
         include __DIR__.'/js/galleries/'.$settings['gallery'].'/include.tpl';

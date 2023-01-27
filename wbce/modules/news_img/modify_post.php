@@ -40,6 +40,9 @@ if (defined('WB_VERSION') && (version_compare(WB_VERSION, '2.8.3', '>'))) {
 
 // get post
 $post_data = mod_nwi_post_get($post_id);
+$post_data['content_short']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_short']);
+$post_data['content_long']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_long']);
+$post_data['content_block2']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post_data['content_block2']);
 
 // ----- delete previewimage ---------------------------------------------------
 if (isset($_GET['post_img'])) {

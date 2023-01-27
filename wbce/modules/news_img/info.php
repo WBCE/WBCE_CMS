@@ -16,13 +16,17 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.17';
+$module_version     = '5.0.18';
 $module_platform    = '1.4';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v5.0.18 - 2023/01/27
+ *         - florian
+ *         ! fix issue with non-replacement of {SYSVAR:MEDIA_REL}
+ *
  * v5.0.17 - 2022-11-14
  *         - florian         
  *         * add option to show settings only admins

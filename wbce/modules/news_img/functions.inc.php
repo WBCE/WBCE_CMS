@@ -1215,6 +1215,9 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
 			$post_a_open_tag ='';
 			$post_a_close_tag ='';
         }
+		$post['content_short']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post['content_short']);
+		$post['content_long']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post['content_long']);	
+		$post['content_block2']=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$post['content_block2']);	
 
         // set replacements for current line
         $replacements = array_merge(
