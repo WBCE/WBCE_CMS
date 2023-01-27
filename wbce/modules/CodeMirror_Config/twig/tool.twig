@@ -1,0 +1,72 @@
+{% extends "_framer.twig" %}
+{% block content %}  
+
+<div class="cpForm">
+    <form name="cmc_settings" action="{{ returnUrl }}" method="post">
+        {{ FTAN }}
+        <div class="formRow">
+            <div class="settingName">Theme</div>
+            <div class="settingValue">
+                <select id="select" name="theme" onchange="selectTheme()">			
+                    <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
+                    {% for p in aThemeFiles|reverse %}
+                        {% set name = p|split('.')[0] %}
+                        {% set sel = (name == cfg.theme) ? " selected" : "" %}
+                        <option style="font-size:15px" value="{{ name }}" {{ sel }}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+                
+        <div class="formRow fullValue">        
+            <div class="settingName">
+                <label for="trans" >Code</label></div>
+            <div class="settingValue">                
+                <textarea id="code" name="code">{{ cmc_code_sample }}</textarea>
+                <div class="formHint pos-right" style="color: gray">
+                    {% if LANGUAGE == 'DE' %}
+                    <b>Hinweis:</b> Drücken Sie [F11] um in den Vollbildmodus zu kommen.
+                    {% else %}
+                    <b>Hint:</b> Please press [F11] to enter full-screen mode. 
+                    {% endif %}
+                </div>
+            </div>
+        </div> 
+        
+        <div class="formRow">
+            <div class="settingName">
+                <label>Font {{ L_('TEXT:NAME') }}</label>
+            </div>            
+            <div class="settingValue">
+                <select id="font_sel" name="font" onchange="selectFontFamily(this)">			
+                    <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
+                    {% for p in aFontFiles %}
+                        {% set name = p|split('.')[0] %}
+                        {% set sel = (name == cfg.font) ? " selected" : "" %}
+                        <option value="{{ name }}"{{ sel }}>{{ name }}</option>
+                    {% endfor %}
+                </select>                
+            </div>
+        </div>	
+        <div class="formRow">
+            <div class="settingName">
+                <label>Font {{ L_('TEXT:SIZE') }}</label>
+            </div>            
+            <div class="settingValue">
+                <select id="font_size" name="font_size" onchange="selectFontSize(this)">			
+                    <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
+                    {% for p in aFontSizes %}
+                        {% set sel = (p == cfg.font_size) ? " selected" : "" %}
+                        <option value="{{ p }}"{{ sel }}>{{ p }}px</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>	
+        
+        <div class="buttonsRow">
+            <button type="submit" name="save_settings" class="button ico-save pos-right">{{ L_('TEXT:SAVE') }}</button>
+        </div>
+    </form>
+</div>
+    
+{% endblock %}

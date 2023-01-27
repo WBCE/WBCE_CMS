@@ -1,0 +1,747 @@
+/**
+ * This is the default cp_content.css file which handles the default 
+ * CSS settings for the Content Area of the Admin Control Panel 
+ */
+label.required:before{
+    content: '*';
+    color: red;
+    font-size: 90%;
+    position: relative;
+    top: -0.3em;
+    padding-right: 0.1em;
+}
+.cpWrap {
+    position: relative;
+    margin: 14px 0;
+    padding: 12px 20px;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.cp-half {
+    width: 48% !important;
+    float: left;
+    margin-left: 5px;
+}
+
+.cp-third {
+    width: 32% !important;
+    float: left;
+    margin-left: 5px;
+}
+
+.cp-two-thirds {
+    width: 65% !important;
+    float: left;
+    margin-left: 5px;
+}
+
+.cpWrap div.cpPageinfo {
+    display: block;
+    width: 100%;
+    padding-bottom: 30px;
+}
+
+.pos-right {
+    float: right;
+}
+
+.cpWrap div.cpPageinfo:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.cpWrap div.cpPagetitle,
+.cpWrap div.cpLastchange {
+    display: block;
+    float: right;
+    text-align: right;
+    font-size: .8em;
+    line-height: 1em;
+}
+
+.cpWrap div.cpPagetitle {
+    display: block;
+    float: left;
+    text-align: left;
+    font-size: 1em;
+}
+
+.cpWrap .idLabel {
+    color: #414c64;
+    line-height: 1.5em;
+    background-color: #E1E9F5;
+    padding: 0px 4px;
+    border-radius: 6px 3px 3px 6px;
+    /* border: 1px #CDD9EA solid; */
+    /* box-shadow: inset 2px 1px 2px rgba(166,186,216,0.5); */
+}
+
+.cpWrap h2 {
+    margin-bottom: 10px;
+}
+
+.pi-page-title {
+    line-height: 30px;
+}
+
+/**
+ * cpForm 
+ * used for all settings forms in the backend. Primarly tables have been used
+ * for forms but tables don't allow for responsive layouts, so we move forward.
+ */
+div.cpForm {
+    width: 100%;
+}
+
+div.cpForm:before,
+div.cpForm:after {
+    content: "";
+    display: table
+}
+
+div.cpForm section {
+    border-bottom: 1px solid #90bfdb;
+    padding-bottom: 0;
+}
+div.cpForm:after,
+div.cpForm .settingName {
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+}
+div.cpForm .formRow:after {
+    clear: both
+}
+div.cpForm .formRow:nth-of-type(odd) {
+background-color:#f7fcff;
+}
+    
+div.cpForm .formRow:nth-of-type(even) {
+background-color:#fff;
+}
+div.cpForm .formRow{
+    background: rgb(255,255,255);
+    background-image: linear-gradient(180deg, rgba(255,255,255,1) 97%, rgba(255,255,255,1) 100%);
+    border-bottom: 1px solid #F3F3F3;
+}
+div.cpForm .formRow,
+div.cpForm .buttonsRow,
+div.cpForm .formDescription,
+div.cpForm .formHeading {
+    position: relative;
+    padding: .5em 1.2em;
+    width: 100%;
+    display: table;
+}
+tr.even td{
+    background-color: #fff!important;
+}
+tr.odd td{
+    background-color: #f2faff!important;
+}
+div.cpForm .formHeading {
+    border-top: 0.11em solid #90bfdb;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #5B7CA3;
+}
+
+div.cpForm>.buttonsRow {
+    margin-top: 1em;
+}
+
+div.buttonsRow {
+    background-color: #f2faff;
+    padding: .5em 0;
+    width: 100%;
+    display: table;
+}
+
+div.settingValue {
+    line-height: 1.2em;
+    width: 78%;
+}
+
+div.cpForm div.settingName,
+div.cpForm label.settingName {
+    width: 20%;
+    margin-top: .005em;
+    margin-right: 2px;
+}
+
+div.cpForm div.fullValue .settingValue{    
+    width: 100%;
+    padding-right: 28px;
+}
+div.cpForm div.fullValue .settingName{  
+    text-align: left;
+    width: 100%;
+}
+
+label.settingName:after,
+div.settingName label:after {
+    content: ':';
+}
+
+div.cpForm div.settingName,
+div.cpForm label.settingName,
+div.cpForm div.settingValue {
+    float: left
+}
+
+div.settingValue label {
+/*    padding-left: 4px;*/
+    padding-right: 8px;
+    cursor: pointer;
+}
+
+/**
+ * cpForm 
+ * input elements
+ */
+div.cpWrap input[type="file"],
+div.cpWrap input[type="email"],
+div.cpWrap input[type="text"],
+div.cpWrap input[type="password"],
+div.cpWrap textarea,
+div.cpWrap select,
+.idLabel {
+    font-family: monospace, Courier, "Lucida Sans Typewriter", "Lucida Typewriter";
+    font-size: 1em;
+}
+
+input {
+    outline: 0 !important;
+}
+
+div.formRow input[type="file"],
+div.formRow input[type="email"],
+div.formRow input[type="text"],
+div.formRow input[type="password"],
+div.formRow textarea,
+div.formRow select {
+    margin: 0;
+    padding: .48em 0 .48em .4em;
+    width: 99%;
+    outline: 0;
+}
+
+div.formRow select {
+    padding: 0;
+}
+
+div.formRow input.has-file-ext {
+    width: 85%;
+}
+
+div.formRow label {
+    font-weight: bold;
+}
+
+div.settingValue textarea {
+    width: 99%;
+    min-height: 80px;
+}
+
+div.settingValue select {
+    padding: 0 .2em 0 .2em;
+}
+
+div.settingValue select option.selected-item {
+    font-weight: bold;
+}
+
+div.settingValue select option.disabled-item {
+    color: grey;
+}
+
+div.cpForm .buttonsRow {
+    position: relative;
+    text-align: left;
+}
+
+div.cpForm .buttonsRow * {}
+
+div.buttonsRow .pos-right {
+    float: right;
+}
+
+/* Form Hints and Warnings */
+div.formHint,
+div.warningHint,
+div.recommendHint {
+    padding: .4em 0;
+    font-size: .9em;
+}
+
+div.warningHint {
+    color: #cc0033;
+}
+
+div.recommendHint {
+    color: #009933;
+}
+
+tr.hilite td{
+    background-color: #e1ffd2!important;
+}
+tr.hilite.odd td{
+    background-color: #d5f9c3!important;
+}
+
+/**
+ * Buttons 
+ * we have several types of buttons: 
+   <input type="button">
+   <button>
+   and anchor (link) based buttons
+   the following css handles all the above types
+   Note: we use a jQuery Plugin in order to enframe input type buttons into
+         a div container we couldn't otherwise apply icons to all the buttons
+ */
+.button {
+    display: inline-block;
+    white-space: nowrap;
+    margin-top: 5px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+.button,
+.button:hover {
+    text-decoration: none;
+}
+
+.button:active,
+.button.sel,
+.button.sel:hover {
+    cursor: default;
+}
+
+.button:focus {
+    outline: 0;
+    background: #fafafa;
+}
+
+div.button input,
+div.button input:hover,
+div.button input:active,
+div.button input:focus {
+    cursor: pointer;
+    display: inline;
+}
+
+/**
+ * Buttons (grouped with a radius edge on start and end of buttons group)
+ */
+.button-group {
+    border-radius: 5px;
+}
+
+.button-group .button {
+    border-radius: 0;
+    margin: -2px;
+    padding: 0 1em 0 1em;
+}
+
+.button-group .button:first-child {
+    border-radius: 9px 0 0 9px;
+}
+
+.button-group .button:last-child {
+    border-radius: 0 9px 9px 0;
+}
+
+/**
+ * list for checkboxes 
+ * (used with page permissions and other places)
+ */
+ul.operatorList {
+    list-style: none;
+}
+
+ul.operatorList li:first-child {
+    font-weight: bold;
+}
+
+/**
+ * cpTabs
+ * used in backend pages module and several other backend/admin tools;
+ * generates a tabbed content area and the tabs itself
+ */
+.cpWrap>.cpTabs {
+    margin: -24px -24px 24px;
+    padding: 0 11px 0;
+    overflow: hidden;
+    border-top: 2px solid #8A94AA;
+    background-color: #ACB4C4;
+}
+
+.cpWrap>.cpTabs:after {
+    content: '.';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.cpTabs .tab,
+.cpTabs span {
+    display: block;
+    padding: 9px 10px;
+    color: #fff;
+    white-space: nowrap;
+}
+.pane>.tabs li a{
+    text-decoration: none !important;
+}
+
+.pane>.tabs li a:hover{
+    text-shadow: rgba(88,183,240,0) 0px 0px 5px, #C9E4FF 0px 0px 10px;
+}
+
+.cpTabs span {
+    display: block;
+    padding: 9px 0 0 14px;
+    font-size: 16px;
+    white-space: inherit;
+}
+
+.cpTabs .tab:hover {
+    text-decoration: none;
+    color: #0d78f2;
+}
+
+.cpWrap>.cpTabs ul {
+    padding: 0;
+}
+
+.cpWrap>.cpTabs li {
+    display: inline;
+    float: right;
+    font-size: 13px;
+}
+
+.cpWrap>.cpTabs li a {
+    font-weight: normal;
+    color: #fff;
+}
+
+.cpWrap>.cpTabs li a.sel {}
+
+.cpWrap>.cpTabs li a.sel:before {
+    font-weight: normal;
+}
+
+.cpWrap>.cpTabs li a:not(.sel):hover {
+    color: #fff;
+    text-decoration: underline
+}
+
+.cpWrap>.cpTabs li .tab.sel {
+    color: #29323d;
+    background: #fff;
+    cursor: default;
+}
+
+.cpSecLabel {
+    background-color: #c5cbd9;
+    border-top: 1px solid #5373B4;
+    border-left: 1px solid #5373B4;
+    border-right: 1px solid #C4CFE5;
+    border-bottom: 1px solid #C4CFE5;
+    text-shadow: none;
+    color: #303641;
+    margin: 2px 1px;
+    padding: 0px 5px;
+    border-radius: 3px;
+    font-size: .8em;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/**
+ *  Section Pane
+ *  Used for single sections in [root]/pages/modify.php
+ */
+div.cpSectionpane {
+    margin: 16px -14px 0;
+    padding: 2px 10px 10px;
+    border: 2px solid #dfe1e8;
+    display: block;
+    background-color: #fff;
+}
+
+div.cpSectioninfo>.si-section-id {}
+
+div.cpSectioninfo>.si-block-id {
+    float: right;
+}
+
+div.cpSectioninfo:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+div.cpSectioninfo {
+    background-color: #e5e8f0;
+    margin: -2px -10px 12px;
+    padding: 4px 5px 4px 10px;
+    border-bottom: 2px solid #dfe1e8;
+    display: block;
+}
+
+/**
+ * misc elements
+ */
+var,
+kbd {
+    color: #a63f23;
+    font-family: monospace !important;
+    font-style: normal;
+}
+
+pre.code {
+    background-color: #FFFAD8;
+    border: 1px dashed orange;
+    text-align: left;
+    color: brown;
+    font-size: 16px;
+}
+
+hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 2px solid rgba(115, 127, 140, 0.25);
+    height: 0;
+    color: transparent;
+}
+
+/* 
+ *  bootstrap like alert boxes
+ */
+/**
+ * We use these with the new MessageBox PHP class
+ * it is temporarily here until we figured out a better place for this CSS
+ * it may trigger conflicts with bootstrap based themes, but tests need be done
+ */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert h4 {
+    margin-top: 0;
+    color: inherit;
+}
+
+.alert .alert-link {
+    font-weight: bold;
+}
+
+.alert>p,
+.alert>ul {
+    margin-bottom: 0;
+}
+
+.alert>p+p {
+    margin-top: 5px;
+}
+
+.alert-dismissable,
+.alert-dismissible {
+    padding-right: 35px;
+}
+
+.alert-dismissable .close,
+.alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+}
+
+button.close {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    margin-top: 0px;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-success hr {
+    border-top-color: #c9e2b3;
+}
+
+.alert-success .alert-link {
+    color: #2b542c;
+}
+
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-info hr {
+    border-top-color: #a6e1ec;
+}
+
+.alert-info .alert-link {
+    color: #245269;
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.alert-warning hr {
+    border-top-color: #f7e1b5;
+}
+
+.alert-warning .alert-link {
+    color: #66512c;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert-danger hr {
+    border-top-color: #e4b9c0;
+}
+
+.alert-danger .alert-link {
+    color: #843534;
+}
+
+.alert {
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.alert-success {
+    background-image: linear-gradient(to bottom, #dff0d8 0%, #c8e5bc 100%);
+    background-repeat: repeat-x;
+    border-color: #b2dba1;
+}
+
+.alert-info {
+    background-image: linear-gradient(to bottom, #d9edf7 0%, #b9def0 100%);
+    background-repeat: repeat-x;
+    border-color: #9acfea;
+}
+
+.alert-warning {
+    background-image: linear-gradient(to bottom, #fcf8e3 0%, #f8efc0 100%);
+    background-repeat: repeat-x;
+    border-color: #f5e79e;
+}
+
+.alert-danger {
+    background-image: linear-gradient(to bottom, #f2dede 0%, #e7c3c3 100%);
+    background-repeat: repeat-x;
+    border-color: #dca7a7;
+}
+
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .2;
+}
+
+/* ################ */
+@media (max-width: 750px) {
+    .cpWrap div.cpLastchange {
+        display: block;
+        float: left;
+        text-align: left;
+        font-size: .8em;
+        line-height: 1.9em;
+    }
+
+    div.cpForm {
+        clear: both;
+    }
+
+    div.cpForm label.settingName,
+    div.cpForm div.settingName {
+        text-align: left;
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+    }
+
+    div.cpForm label.settingValue {
+        display: inline;
+        width: 100%;
+        margin-bottom: 5px;
+
+    }
+
+    div.formRow input[type="file"],
+    div.formRow input[type="email"],
+    div.formRow input[type="text"],
+    div.formRow input[type="password"],
+    div.formRow textarea,
+    div.formRow select,
+    div.formRow .form-control {
+        width: 100%;
+        min-width: 300px !important;
+        display: inline-block;
+    }
+
+    span.file-ext {
+        display: none;
+    }
+
+    div.cpForm label.settingName,
+    div.cpForm div.settingName,
+    div.cpForm div.settingValue {
+        float: inherit;
+        width: 100%;
+    }
+
+    div.cpForm label.settingName,
+    div.cpForm div.settingName {
+        padding-top: 5px;
+    }
+
+    div.cp-third,
+    div.cp-two-thirds {
+        width: 95% !important;
+        float: left;
+        padding: 12px 6px;
+    }
+
+    div.buttonsRow .pos-right {
+        float: none;
+    }
+}
+
+

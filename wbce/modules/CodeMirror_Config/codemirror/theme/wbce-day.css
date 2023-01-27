@@ -1,0 +1,66 @@
+/*
+  MDN-LIKE Theme - Mozilla
+  Ported to CodeMirror by Peter Kroon <plakroon@gmail.com>
+  Report bugs/issues here: https://github.com/codemirror/CodeMirror/issues
+  GitHub: @peterkroon
+
+  The wbce-day theme is inspired on the displayed code examples at: https://developer.mozilla.org/en-US/docs/Web/CSS/animation
+
+*/
+
+.cm-s-wbce-day .CodeMirror-gutters { 
+    background: #f0f2f5;
+    border-left: 6px solid rgb(122 140 167);
+    color: #333;
+}
+
+cm-s-wbce-day.CodeMirror {background: #E8F1F9;}
+.cm-s-wbce-day .cm-header {color: blue;}
+.cm-s-wbce-day .cm-quote {color: #090;}
+.cm-negative {color: #d44;}
+.cm-positive {color: #292;}
+.cm-header, .cm-strong {font-weight: bold;}
+.cm-em {font-style: italic;}
+.cm-link {text-decoration: underline;}
+.cm-strikethrough {text-decoration: line-through;}
+
+.cm-s-wbce-day .cm-keyword {color: #ae00e7;}
+.cm-s-wbce-day .cm-atom {color: #3113ff;}
+.cm-s-wbce-day .cm-number {color: #164;}
+.cm-s-wbce-day .cm-def {color: #00f;}
+.cm-s-wbce-day .cm-variable{color: #215685;}
+.cm-s-wbce-day .cm-punctuation{}
+.cm-s-wbce-day .cm-property {color: #8daa00 !important;}
+.cm-s-wbce-day .cm-operator {}
+.cm-s-wbce-day .cm-variable-2 {color: #05a;}
+.cm-s-wbce-day .cm-variable-3 {color: #085;}
+.cm-s-wbce-day .cm-comment {color: #d68839; font-style: italic; font-size: 97%;}
+.cm-s-wbce-day .cm-string {color: #a11;}
+.cm-s-wbce-day .cm-string-2 {color: #f50;}
+.cm-s-wbce-day .cm-meta {color: #555;}
+.cm-s-wbce-day .cm-qualifier {color: #555;}
+.cm-s-wbce-day .cm-builtin {color: #30a;}
+.cm-s-wbce-day .cm-bracket {color: #997;}
+.cm-s-wbce-day .cm-tag {color: #170;}
+.cm-s-wbce-day .cm-attribute {color: #00c;}
+.cm-s-wbce-day .cm-hr {color: #999;}
+.cm-s-wbce-day .cm-link {color: #00c;}
+
+div.cm-s-wbce-day .CodeMirror-activeline-background { background: #efefff; }
+div.cm-s-wbce-day span.CodeMirror-matchingbracket { outline:1px solid grey; color: inherit; }
+
+.cm-s-wbce-day.CodeMirror { 
+    background-color: #f8fbff;
+    
+}
+.CodeMirror-guttermarker-subtle {
+    color: #ee84e5;
+}
+div .CodeMirror  {
+    box-shadow: inset 0 1px 8px #bec3cd;    
+    border-top: 2px solid #c7d8f3;
+    border-bottom: 2px solid #c7d8f3;
+     border-radius: 4px;
+}
+.cm-scroller { overflow: auto; min-height: 150px }
+
