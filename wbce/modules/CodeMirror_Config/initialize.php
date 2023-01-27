@@ -68,7 +68,7 @@ if (!function_exists('registerCodeMirror')) {
         $cfg = array_merge($defaults, $options);
         foreach($cfg as $k => $v) {
             if (! array_key_exists($k, $defaults)) {
-                unset($cfg[$key]);
+                unset($cfg[$k]);
             }
         }
                 
@@ -133,11 +133,7 @@ if (!function_exists('registerCodeMirror')) {
             .CodeMirror {
                 font-family: ".$sFont.";
                 font-size:   ".$sFontSize."px;
-                line-height: ".$cfg['lineHeight'].";";
-        if($cfg['bgColor'] != ''){
-            $sCss .= "background-color: ".$cfg['bgColor']."!important".PHP_EOL;
-        }
-                    
+                line-height: ".$cfg['lineHeight'].";";                    
         $sCss .= "    }";     
         I::insertCssCode($sCss, 'HEAD TOP+');
             
