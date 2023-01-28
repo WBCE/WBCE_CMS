@@ -73,7 +73,7 @@
                                     <?php echo $post['group_title'] ?>
                                 </td>
                                 <td>
-                                    <a href="<?php echo WB_URL; ?>/modules/news_img/activate_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['id_key']; ?>&amp;value=<?php echo $post['active']!=0 ? '0':'1'; ?>');" title="<?php if ($post['active'] == 1): echo $MOD_NEWS_IMG['DEACTIVATE_POST']; else: echo $MOD_NEWS_IMG['ACTIVATE_POST']; endif;?>">
+                                    <a href="<?php echo WB_URL; ?>/modules/news_img/activate_post.php?page_id=<?php echo $page_id; ?>&amp;section_id=<?php echo $section_id; ?>&amp;post_id=<?php echo $post['id_key']; ?>&amp;value=<?php echo $post['active']!=0 ? '0':'1'; ?>" title="<?php if ($post['active'] == 1): echo $MOD_NEWS_IMG['DEACTIVATE_POST']; else: echo $MOD_NEWS_IMG['ACTIVATE_POST']; endif;?>">
 <?php if ($post['active'] == 1): ?>
                                     <span class="fa fa-fw fa-eye nwi-active"></span>
 <?php else: ?>
