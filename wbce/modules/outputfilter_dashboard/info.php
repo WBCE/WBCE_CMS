@@ -41,7 +41,7 @@ info.php
 $module_directory   = 'outputfilter_dashboard';
 $module_name        = 'Output Filter Dashboard';
 $module_function    = 'tool';
-$module_version     = '1.5.15';
+$module_version     = '1.6.2';
 $module_platform    = 'WebsiteBaker 2.8.x or WBCE';
 $module_author      = 'Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>';
 $module_license     = 'GNU General Public License, Version 3';

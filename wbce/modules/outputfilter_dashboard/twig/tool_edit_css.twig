@@ -1,0 +1,31 @@
+<h2>{{ L_('L:TXT_OUTPUTFILTER') }}</h2>
+<form name="edit_css" class="modify_settings" action="{{ tpl_save_url }}" method="post">
+    {{ FTAN }}
+    <input type="hidden" name="id" value="{{ tpl_id }}" />
+    <input type="hidden" name="csspath" value="{{ tpl_csspath }}" />
+    <input type="hidden" name="save_settings" value="save_settings"/>
+
+    <div>
+        <table class="row_a filters-table" cellpadding="2" cellspacing="0" border="0" align="center" width="100%">
+            <caption>{{ L_('L:TXT_EDITCSS') }}:</caption>
+            <tr>
+                <td colspan="2">
+                    <textarea id="css" name="css"  cols="65" rows="60" style="width: 99%; height: 500px;">{{ tpl_css }}</textarea>
+                    <br>
+                </td>
+            </tr>
+            <tfoot>
+                <tr>
+                    <td align="left">
+                        <button type="submit" name="submit_return""><img src="{{ IMAGE_URL }}/save.gif"> {{ L_('L:TXT_SAVE') }}</button>
+                        <button type="submit" name="submit_exit""><img src="{{ IMAGE_URL }}/ok.gif"> {{ L_('L:TXT_SAVE_AND_CLOSE') }}</button>
+                    </td>
+                    <td align="right">
+                        <button type="button" onclick="{{ tpl_cancel_onclick }}""><img src="{{ IMAGE_URL }}/exit.png"> {{ L_('L:TXT_EXIT') }}</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</form>
+{{ CodeMirror('css', 'css', {'readOnly': true, 'height': 650 }) }}

@@ -33,7 +33,10 @@ backend.css
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
+.outputfilter_dashboard h1{
+    font-size: 1.5em;
+    color: #556c87;
+}
 .hideupload {
     display: none
 }
@@ -48,6 +51,28 @@ backend.css
     font-weight: bold;
     background-color: #515d76
 }
+.filters-table thead td {
+    font-size: 1em;
+    color: whitesmoke;
+    border-top: 2px solid #556C87;
+    background-image: linear-gradient(#677D96, #859AB2);
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 5%);
+    border-top: 1px solid #becadb;
+    border-bottom: 1px solid #becadb;
+}
+
+table.filters-table tbody tr.sticky td {
+    line-height: 30px;
+    font-weight: 600;
+    color: white;
+    background-color: #a3baca!important;
+    border-top: 2px solid #556C87;
+    background-image: linear-gradient(#a3baca, #859AB2);
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 5%);
+    text-shadow: outset 0 -1px 0 rgba(0, 0, 0, 0.05);
+    
+}
+
 
 .filters-table caption {
     font-size: 14px;
@@ -59,9 +84,9 @@ backend.css
 }
 
 table.filters-table {
-    border: solid 1px #515d76;
+    border: solid 2px #7f93aa;
     margin-bottom: 8px;
-    background-color: #e0fbcf;
+    background-color: #ebf7ff;
 }
 
 .filters-table th,
@@ -79,7 +104,7 @@ b {
 /*table foot*/
 .filters-table tfoot td,
 .filters-table tfoot th {
-    background-color: #e0eef8;
+    background-color: #b3c9d7;
     background-image: none;
     background-position: 0 -50px;
     padding: 5px;
@@ -88,21 +113,21 @@ b {
 }
 
 /*rows*/
-.row_a td,
+.filters-table td,
 .row_a th,
 .row_a {
-    background: #fafafb url(templates/images/box_bg.png) repeat-x 0 -2px;
+    background: #ffffff;
     border-bottom: 1px solid #becadb;
 }
 
 .row_b td,
 .row_b th {
-    background: #fafafb url(templates/images/box_bg.png) repeat-x 0 12px;
+    background: #fafafb;
     border-bottom: 1px solid #becadb;
 }
 
-.filters-table .row_a td,
-.filters-table .row_b td,
+.filters-table td,
+.filters-table td,
 .filters-table .last-modified td {
     line-height: 36px;
 }
@@ -110,16 +135,14 @@ b {
 /*
 ------------------| dashboard-rows
 */
-tr.inactive td,
-tr.inactive a {
-    color: #999
+tr.inactive td{
+    opacity: 0.65;
 }
 
+
 /*last-modified row*/
-tr.last-modified {
-    font-weight: bold;
-    background-color: rgb(235, 250, 237) !important;
-    background-image: none !important
+tr.last-modified td{
+    background-color: #e9f6de;
 }
 
 td.row-separator {
@@ -127,7 +150,7 @@ td.row-separator {
 }
 
 div#upload-panel {
-    background: rgb(250, 250, 251) url(templates/images/box_bg.png) repeat-x 0 -2px;
+    background: rgb(250, 250, 251);
     text-align: center;
     margin-bottom: 6px;
     padding: 6px;
@@ -227,8 +250,7 @@ tr.warning td {
     border: solid 1px
 }
 
-.notification,
-tr.notification td {
+.notification, tr.notification td {
     color: #360 !important;
     font-size: 11px;
     background-color: rgb(235, 250, 237) !important;
@@ -237,29 +259,34 @@ tr.notification td {
     margin-top: 2px;
     margin-right: 2px;
     margin-bottom: 2px;
-    padding: 2px;
-    border: solid 1px
+    padding: 6px 7px;
+    line-height: 17px;
+    width: 99%;
+    border: solid 1px;
 }
 
 /*
 ----------------------------------| check-tree (see backend_body.js)
 */
+
 div.checktreestylearea {
     font-size: 12px;
     background-color: #fff;
-    margin-top: 5px;
+    margin-top: -3px;
     margin-right: 5px;
     margin-bottom: 5px;
-    padding: 10px 5px;
-    width: 97%;
-    border: dashed 1px #515d76
+    padding: 0px 5px 7px;
+    width: 99%;
+    border: dashed 1px #515d76;
 }
 
 ul.checktreestyle,
 ul.checktreestyle * {
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin: 0;   
+    margin-top: 6px;
+    line-height: 26px;
 }
 
 ul.checktreestyle img.arrow {
@@ -268,11 +295,11 @@ ul.checktreestyle img.arrow {
 }
 
 ul.checktreestyle li {
-    margin: 0 0 6px 0;
+    margin: 0;
 }
 
 ul.checktreestyle li ul {
-    margin: 5px 0 0 20px;
+    margin: 0 0 0 20px;
 }
 
 ul.checktreestyle label {
@@ -293,18 +320,18 @@ ul.checktreestyle li .arrow {
 
 ul.checktreestyle li .collapsed {
     width: 20px;
-    background-image: url(templates/images/collapsed.png);
+    background-image: url(images/collapsed.png);
     background-position: 0 0
 }
 
 ul.checktreestyle li .expanded {
     width: 20px;
-    background-image: url(templates/images/expanded.png);
+    background-image: url(images/expanded.png);
     background-position: 0 0
 }
 
 ul.checktreestyle li .checkbox {
-    background: url(templates/images/unchecked.png) no-repeat 2px -3px;
+    background: url(images/unchecked.png) no-repeat 2px -3px;
     cursor: pointer;
     width: 20px;
     height: 18px;
@@ -312,11 +339,11 @@ ul.checktreestyle li .checkbox {
 }
 
 ul.checktreestyle li .checked {
-    background-image: url(templates/images/checked.png);
+    background-image: url(images/checked.png);
 }
 
 ul.checktreestyle li .half_checked {
-    background-image: url(templates/images/marker.png);
+    background-image: url(images/marker.png);
 }
 
 /*
@@ -333,7 +360,7 @@ ul.checktreestyle li .half_checked {
     vertical-align: middle;
     width: 16px;
     height: 16px;
-    background: transparent url(templates/images/activity.png) no-repeat;
+    background: transparent url(images/activity.png) no-repeat;
     background-position: 0px 0px;
 }
 
@@ -352,15 +379,21 @@ ul.checktreestyle li .half_checked {
 /*
 ----------------------------------| drag&drop
 */
-.dragdrop_handle {
+/*.dragdrop_handle {
     cursor: move;
     padding: 0;
     width: 20px !important;
     border-style: solid;
     border-width: 2px 2px 3px;
     border-color: #cad2d9 #bac5ce
+}*/
+.dragdrop_handle { 
+    width: 25px; 
+    background-image: url("images/drag_indicator.svg") !important; 
+    background-position: right center !important;
+    background-repeat: no-repeat !important; 
+    cursor: move; 
 }
-
 .jsadmin_drag {
     cursor: move;
 }
@@ -374,3 +407,247 @@ ul.checktreestyle li .half_checked {
 ul.jsadmin_drag_area {
     border: solid 1px #99f;
 }
+
+/*
+
+	The following CSS declarations needed for proper work with Drag&Drop
+	
+*/
+
+
+/*
+item row hover onmouseover
+*/
+tr.frow_hover   { background-color: #f5f8dc }
+
+/*
+--------------| Drag& Drop specifics
+*/
+.downloadGalleryResult      { font-size: 8px; font-family: Courier; text-align: center }
+/*
+.dragdrop_download_gallery   { background-color: #d5dde7; width: 15px }
+*/
+
+
+
+.move_up, .move_down { width: 16px !important }
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  margin-left: 3px;
+}
+.switch input{ display:none }
+ .slider-red {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #897070;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider-red:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;box-shadow: 2px 2px 10px rgb(0 0 0 / 20%);
+}
+
+input:checked + .slider-red {
+    background-color: #BCE954; /* green*/
+}
+
+input:focus + .slider-red {
+  box-shadow: 0 0 1px #FE2712;
+}
+
+input:checked + .slider-red:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider-red.round {
+  border-radius: 12px;
+}
+
+.slider-red.round:before {
+  border-radius: 50%;
+}
+
+/**
+ * https://codepen.io/oobleck/pen/MYjdbx
+ * The switch widget!
+ * Usage:
+ *   <input type="checkbox" switch[="type"] id="toggleSwitch" />
+ *   <label for="toggleSwitch" data-on-label="On" data-off-label="Off"></label>
+ */
+input[switch] {
+  display: none;
+}
+input[switch] + label {
+    margin-left:3px;
+  font-size: 1em;
+  line-height: 1;
+  width: 2.8rem;
+  height: 1.4rem;
+  background-color: #ddd;
+  background-image: none;
+  border-radius: 2rem;
+  padding: 0.19rem;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2) inset;
+  font-family: inherit;
+  transition: all 0.25s ease-in-out;
+}
+input[switch] + label:before {
+  /* Label */
+  text-transform: uppercase;
+  color: #b7b7b7;
+  content: attr(data-off-label);
+  display: block;
+  font-family: inherit;
+  font-family: FontAwesome, inherit;
+  font-weight: 500;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  position: absolute;
+  right: 0.38rem;
+  margin: 0.2166666667rem;
+  top: 0;
+  text-align: center;
+  min-width: 1.005rem;
+  overflow: hidden;
+  transition: all 0.25s ease-in-out;
+}
+input[switch] + label:after {
+  /* Slider */
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  background-color: #f7f7f7;
+  box-shadow: none;
+  border-radius: 2rem;
+  height: 1.005rem;
+  width: 1.005rem;
+  transition: all 0.25s ease-in-out;
+}
+input[switch]:checked + label {
+  background-color: lightblue;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.2));
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3) inset;
+}
+input[switch]:checked + label:before {
+  color: #fff;
+  content: attr(data-on-label);
+  right: auto;
+  left: 0.20rem;
+}
+input[switch]:checked + label:after {
+  left: 1.6rem;
+  background-color: #f7f7f7;
+  box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.3);
+}
+
+input[switch=bool] + label {
+  background-color: #a09191; /* grey #ee6562;*/
+      box-shadow: 1px 1px 10px rgb(0 0 0 / 50%) inset;
+}
+input[switch=bool] + label:before {
+  color: #fff !important;
+}
+input[switch=bool]:checked + label {
+  background-color: #BCE954;
+}
+input[switch=bool]:checked + label:before {
+  color: #fff !important;
+}
+/**
+    labeled 
+    when `attr(data-on-label)` is used
+*/
+input[switch] + label.labeled{
+    width: 7rem;
+}
+input[switch]:checked + label.labeled:before {
+    left: 0.5rem;
+}
+input[switch]:checked + label.labeled:after{
+    left: 5.68rem
+}
+input[switch=bool]:checked + label.labeled {
+  background-color: #a9d249;
+}
+input[switch=bool] + label.labeled {
+  background-color: #b8b1b2;
+}
+
+.low-opac label{
+    opacity: 0.5;
+}
+.row-on-delete td{
+    background-color: #ffe0e0;
+    font-weight: 800;
+}
+.row-on-delete td:nth-child(2){    
+    color: #c81e1e;    
+    text-decoration: line-through;
+}
+.row-on-delete td:nth-child(3){   
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: .95em;
+    text-align: right;
+    padding-right: 10px;
+}
+.row-on-delete td:last-child{
+    text-align: right;
+}
+
+
+/**
+ *  inline prompt buttons 
+ */
+.btn-inline {
+        margin: 3px 4px 3px 0px;
+	text-decoration: none;
+	color: white !important;
+        font-weight: normal !important;
+        padding: 0px 5px;  
+        font-size: 12px;
+        line-height: 1.6;
+	display: inline-block;
+	position: relative;
+	border: 1px solid rgba(0,0,0,0.21);
+	border-bottom: 3px solid rgba(0,0,0,0.21);
+	border-radius: 6px;
+	text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+
+.btn-inline.red{ 
+	background: rgba(250,90,90,1);    
+        background: linear-gradient(#ff8383 0%, #e85151 100%);
+}
+.btn-inline.red:active   {background: #E35252;}
+
+.btn-inline.green {
+	background: rgba(130,200,160,1);
+        background: linear-gradient(to bottom, #b2d660 0%, #95b44a 100%);
+}
+.btn-inline.green:active {background: #8baf37;}

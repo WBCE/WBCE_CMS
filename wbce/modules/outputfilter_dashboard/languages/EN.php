@@ -44,7 +44,6 @@ languages/EN.php
 
 // English module description
 $module_description  = 'Admin-Tool to manage OutputFilter';
-$LANG['MOD_OPF']=array();
 
 $LANG['MOD_OPF']['TXT_MODULE_TYPE_LAST']  = 'A <em>&quot;Module-Type (fist)&quot;</em> or <em>&quot;Module-Type&quot;</em> or <em>&quot;Module-Type (last)&quot;</em> filter will be applied to every displayed sections of the selected modules in module-tree below.';
 
@@ -55,6 +54,8 @@ $LANG['MOD_OPF']['TXT_TYPE_LAST'] = 'A <em>&quot;Page-Type (first)&quot;</em> <e
 $LANG['MOD_OPF']['TXT_SUB_PAGES'] = 'Select or deselect Pages/Subpages below.<br />The filter will be applied to all selected pages along with all selected modules in the above &quot;module-tree&quot;';
 
 $LANG['MOD_OPF']['TXT_FILTER_FUNC'] = 'Enter the filter-function below.';
+
+$LANG['MOD_OPF']['TXT_DELETE_FILTER_X'] = 'Really delete filter "%s"?';
 
 $LANG['MOD_OPF']['TXT_FILTER_CONF'] = 'Filter configuration';
 
@@ -76,7 +77,7 @@ $LANG['MOD_OPF']['TXT_FILTER_OUTPUT_SETTINGS'] = 'Filter Output-Settings (Pages/
 
 $LANG['MOD_OPF']['TXT_TYPE'] = 'Type';
 
-$LANG['MOD_OPF']['TXT_FILTER_MODULES'] = 'Apply filter to these modules';
+$LANG['MOD_OPF']['TXT_FILTER_MODULES'] = 'Apply filter to these section modules';
 
 $LANG['MOD_OPF']['TXT_FILTER_PAGES'] = 'Apply filter to these pages';
 
@@ -114,7 +115,7 @@ $LANG['MOD_OPF']['TXT_DOWNLOAD_FAILED'] = 'Download Failed';
 
 $LANG['MOD_OPF']['TXT_UPLOAD_SUCCESS'] = 'Upload Successful';
 
-$LANG['MOD_OPF']['TXT_OUTPUTFILTER_DASHBOARD'] = 'OutputFilter - Dashboard';
+$LANG['MOD_OPF']['TXT_OUTPUTFILTER_DASHBOARD'] = 'OutputFilter Dashboard';
 
 $LANG['MOD_OPF']['TXT_PATCH_COREFILES'] = 'You need to patch two core-files to make this AdminTool work. <a href = "%s">Please read documentation</a>';
 
@@ -160,7 +161,7 @@ $LANG['MOD_OPF']['TXT_MOVE_DOWN'] = 'Move down';
 
 $LANG['MOD_OPF']['TXT_DELETE_FILTER'] = 'Delete Filter';
 
-$LANG['MOD_OPF']['TXT_SURE_TO_DELETE'] = 'Are you sure you want to delete the following filter<br /><b>%s</b>?';
+$LANG['MOD_OPF']['TXT_SURE_TO_DELETE'] = 'Are you sure you want to delete the filter \'<b>%s</b>\'?';
 
 $LANG['MOD_OPF']['TXT_CONVERT_FILTER'] = 'Convert filter to plugin';
 
