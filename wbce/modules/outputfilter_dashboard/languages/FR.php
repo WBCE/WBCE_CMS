@@ -42,9 +42,6 @@ languages/FR.php
  -----------------------------------------------------------------------------------------
 */
 
-// include English file so that all strings have at least a default value
-include((dirname(__FILE__))."/EN.php");
-
 // description francais
 $module_description = "Admin-Tool pour g&eacute;rir OutputFilter Dashboard";
 

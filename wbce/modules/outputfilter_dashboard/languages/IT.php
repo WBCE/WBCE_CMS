@@ -42,9 +42,6 @@ languages/IT.php
  -----------------------------------------------------------------------------------------
 */
 
-// include English file so that all strings have at least a default value
-include((dirname(__FILE__))."/EN.php");
-
 // Descrizione italiano
 $module_description = "Admin-Tool per gestire OutputFilter Dashboard";
 
@@ -117,7 +114,7 @@ $LANG['MOD_OPF']['TXT_DOWNLOAD_FAILED'] = 'download non riuscito';
 
 $LANG['MOD_OPF']['TXT_UPLOAD_SUCCESS'] = 'Carica di successo';
 
-$LANG['MOD_OPF']['TXT_OUTPUTFILTER_DASHBOARD'] = 'Output Filter - Dashboard';
+$LANG['MOD_OPF']['TXT_OUTPUTFILTER_DASHBOARD'] = 'OutputFilter Dashboard';
 
 $LANG['MOD_OPF']['TXT_PATCH_COREFILES'] = '&Egrave; necessario correggere due file core per fare funzionando questo AdminTool. <a href = "%s"> Si prega di leggere la documentazione</a> ';
 

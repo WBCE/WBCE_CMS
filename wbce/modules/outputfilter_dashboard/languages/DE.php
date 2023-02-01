@@ -42,9 +42,6 @@ languages/DE.php
  -----------------------------------------------------------------------------------------
 */
 
-// include English file so that all strings have at least a default value
-include((dirname(__FILE__))."/EN.php");
-
 // Deutsche Modulbeschreibung
 $module_description = "Admin-Tool um OutputFilter Dashboard zu verwalten";
 
@@ -78,7 +75,7 @@ $LANG['MOD_OPF']['TXT_FILTER_OUTPUT_SETTINGS'] = 'Filter Ausgabeeinstellungen (S
 
 $LANG['MOD_OPF']['TXT_TYPE'] = 'Typ';
 
-$LANG['MOD_OPF']['TXT_FILTER_MODULES'] = 'Filter auf diese Module anwenden';
+$LANG['MOD_OPF']['TXT_FILTER_MODULES'] = 'Filter auf diese Section-Module anwenden';
 
 $LANG['MOD_OPF']['TXT_FILTER_PAGES'] = 'Filter auf diese Seiten anwenden';
 
@@ -116,7 +113,7 @@ $LANG['MOD_OPF']['TXT_DOWNLOAD_FAILED'] = 'Download fehlgeschlagen';
 
 $LANG['MOD_OPF']['TXT_UPLOAD_SUCCESS']  = 'Upload erfolgreich';
 
-$LANG['MOD_OPF']['TXT_OUTPUTFILTER_DASHBOARD'] = 'OutputFilter - Dashboard';
+$LANG['MOD_OPF']['TXT_OUTPUTFILTER_DASHBOARD'] = 'OutputFilter Dashboard';
 
 $LANG['MOD_OPF']['TXT_PATCH_COREFILES'] = 'Damit dieses AdminTool funktioniert m&uuml;ssen noch zwei Dateien ver&auml;ndert werden. <a href="%s">Bitte lesen Sie die Dokumentation</a>';
 
@@ -162,7 +159,7 @@ $LANG['MOD_OPF']['TXT_MOVE_DOWN'] = 'Abw&auml;rts';
 
 $LANG['MOD_OPF']['TXT_DELETE_FILTER'] = 'Filter l&ouml;schen';
 
-$LANG['MOD_OPF']['TXT_SURE_TO_DELETE'] = 'Wollen Sie den folgenden Filter wirklich l&ouml;schen<br /><b>%s</b>?';
+$LANG['MOD_OPF']['TXT_SURE_TO_DELETE'] = "Wollen Sie den Filter &raquo;<b>%s</b>&laquo; wirklich l&ouml;schen?";
 
 $LANG['MOD_OPF']['TXT_CONVERT_FILTER'] = 'Filter in Plugin konvertieren';
 

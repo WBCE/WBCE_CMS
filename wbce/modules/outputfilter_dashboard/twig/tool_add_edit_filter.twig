@@ -173,11 +173,7 @@
         <tr>
             <td colspan="2"><textarea id="func" name="func"  cols="65" rows="6" style="width: 98%; height: 400px;">{{ func }}</textarea></td>
         </tr>
-    {% endif %}
-
-
-
-    {% if file %}
+    {% elseif file %}
         <tr>
             <th>{{ L_('L:TXT_FILTER_FILE') }}:</th>
             <td><code style="font-size:.95em;color: grey;">{{ file_loc_readonly }}</code>

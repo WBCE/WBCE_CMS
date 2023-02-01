@@ -66,6 +66,8 @@ $old_type = ''; // remember last type in foreach loop below,
 
 // loop through fliters and process their values
 foreach($filters as $filter) {    
+    
+    $filter_id = $filter['id'];
     $sFilterUri = $ToolUrl.'&amp;id='.$filter_id.'&amp;';
     $filter['helppath']          = unserialize($filter['helppath']);
     $filter['desc']              = unserialize($filter['desc']);
@@ -92,7 +94,6 @@ foreach($filters as $filter) {
         $filter['last_touched'] = TRUE;
     }                       
 
-    $filter_id = $filter['id'];
     // line to separate filter-types
     $filter['sep_line'] = FALSE;
     if ($old_type!=$filter['type']) {

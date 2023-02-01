@@ -55,15 +55,13 @@ $(document).ready(function()
 // --| drag&drop
 
 var MODULE_URL = ADMIN_URL + '/admintools/tool.php?tool=outputfilter_dashboard';
-var ICONS = WB_URL + '/modules/outputfilter_dashboard/images';
+var ICONS = IMAGE_URL;
 var AJAX_PLUGINS =  WB_URL + '/modules/outputfilter_dashboard/ajax';
 
 
 $(function() {
-        // Load external ajax_dragdrop file
-    if($('.dragdrop_form').length > 0){
-        $.insert(AJAX_PLUGINS +"/ajax_dragdrop.js");
-    }
+    // Load external ajax_dragdrop file
+    $.insert(AJAX_PLUGINS +"/ajax.js");
 });
 
 /*
@@ -786,7 +784,7 @@ if(typeof opf_use_checktrees!='undefined') {
     $("ul.tree2").checkTree_my({labelAction: "check", allChildrenMarksParentChecked: "yes", checkedMarksChildrenChecked: "yes"});
 
     //modules_checktree_visibility();
-    $("input[class=activity]").checkbox({ cls:"activity", empty: WB_URL+"/modules/outputfilter_dashboard/templates/images/empty.gif"});
+    $("input[class=activity]").checkbox({ cls:"activity", empty: IMAGE_URL + "/empty.gif"});
 
 }
 
@@ -850,6 +848,3 @@ if(typeof document.outputfilter!='undefined') {
         document.getElementById('OPF_ID_PAGECHECKTREE').style.display = '';
     }
 }
-
-
-
