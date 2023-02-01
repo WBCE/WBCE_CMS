@@ -42,10 +42,6 @@ languages/NO.php
  -----------------------------------------------------------------------------------------
 */
 
-// include English file so that all strings have at least a default value
-include((dirname(__FILE__))."/EN.php");
-
-
 $LANG['MOD_OPF']['TXT_DESCRIPTION'] =  'Beskrivelse';
 
 $LANG['MOD_OPF']['TXT_HELP'] = 'Hjelp';

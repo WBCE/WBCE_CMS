@@ -36,56 +36,27 @@ css.php
  *
  **/
 
-// prevent this file from being accessed directly
-if(!defined('WB_PATH')) die(header('Location: ../index.php'));
-
-// obtain module directory
-$mod_dir = basename(dirname(__FILE__));
-require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
-
-// include module.functions.php
-include_once(WB_PATH . '/framework/module.functions.php');
-
-// include the module language file depending on the backend language of the current user
-if (!include(get_module_language_file($mod_dir))) return;
-
-// load outputfilter-functions
-require_once(dirname(__FILE__).'/functions.php');
-
 // This file will be included from tool.php
 
-// check if user is allowed to use admin-tools (to prevent this file to be called by an unauthorized user e.g. from a code-section)
-if(!$admin->get_permission('admintools')) die(header('Location: ../../index.php'));
+// prevent this file from being accessed directly
+defined('WB_PATH') or die(header('Location: ../index.php'));
+// Authorization: check if user is allowed to use Admin-Tools 
+$admin->get_permission('admintools') or die(header('Location: ../../index.php'));
 
 // get content of csspath
-$css = '';
-if(file_exists($csspath) && is_readable($csspath)) // csspath has to be local, file_exists() and is_readable() can't handle remote files
-    $css = file_get_contents($csspath);
+$sCssCode = '';
+if(file_exists($csspath) && is_readable($csspath)) {
+    $sCssCode = file_get_contents($csspath);
+}
 
-// template
-$tpl = new Template(WB_PATH.'/modules/outputfilter_dashboard');
-$tpl->set_file('page', "templates/css.htt");
-
-
-// fill template vars
-$tpl->set_var(
-array_merge($LANG['MOD_OPF'],
-    array(
-    'tpl_save_url' => opf_quotes("$ToolUrl&amp;id=$id&amp;css_save=1"),
-    'FTAN' => $ftan,
-    'tpl_id' => opf_quotes($id),
-    'tpl_csspath' => opf_quotes($csspath),
-    'tpl_css' => opf_quotes($css),
+$aToTwig = array(
+    'tpl_css'            => opf_quotes($sCssCode),
+    'tpl_id'             => opf_quotes($id),
+    'tpl_csspath'        => opf_quotes($csspath),
     'tpl_cancel_onclick' => opf_quotes("javascript: window.location = '$ToolUrl'"),
-    'WB_URL' => WB_URL,
-    'MOD_URL' => WB_URL.'/modules/'.$module_directory,
-    'IMAGE_URL' => WB_URL.'/modules/'.$module_directory.'/templates/images'
+    'tpl_save_url'       => opf_quotes("$ToolUrl&amp;id=$id&amp;css_save=1"),
 
-)));
+);
 
-// output template
-$tpl->set_unknowns('keep');
-$tpl->set_block('page', 'main_block', 'main');
-$tpl->parse('main', 'main_block', false);
-print opf_filter_Comments($tpl->parse('output', 'main', false));
-
+$oTemplate = $oTwig->load('tool_edit_css.twig');
+$oTemplate->display($aToTwig);    

@@ -107,8 +107,40 @@ if(!defined('OPF_FILELIST_DEPTH')) {
         define('__OPF_UPLOAD_DIRNAME', dirname(__FILE__).'/.uploads/');
 }
 
-// remove comments from the backend templates
+/**
+ * Shorten htmlspecialchars ENT_QUOTES
+ * @param  string $sStr
+ * @return string
+ */
+function quote_chars($sStr){
+    return htmlspecialchars($sStr, ENT_QUOTES);
+}
 
+function truncate_string($sStr="", $iMaxChars = 110){
+    return strlen($sStr) > $iMaxChars 
+        ? substr($sStr,0,$iMaxChars).' &hellip;' // truncate and add ellipsis
+        : $sStr;                                 // return string as is
+}
+/**
+ * @brief  Get the Link to the Help if provided
+ * @param  int $iFilterId
+ * @return string
+ */
+function opf_get_helppath(int $iFilterId) : string
+{
+    if($iFilterId == 0) return '';
+    $sQry = "SELECT `helppath`, `plugin` FROM `{TP}mod_outputfilter_dashboard` WHERE `id` = ".$iFilterId;
+    $arr  = $GLOBALS['database']->get_array($sQry)[0];
+    if (empty($arr) || $arr['helppath'] == 'a:0:{}') return '';
+    
+    $sTmpPath   = opf_fetch_entry_language(unserialize($arr['helppath']));
+    $sHelppath  = opf_replace_sysvar($sTmpPath, $arr['plugin']);
+    if($sHelppath != '')
+        $sFinalHelppath = "javascript: return opf_popup('$sHelppath');";
+    return $sFinalHelppath;
+}
+
+// remove comments from the backend templates
 function opf_filter_Comments($content) {
     $pattern = '/(?:<!--\/\*.*?\*\/-->)/si';
     while(preg_match($pattern,$content,$matches)==1)
@@ -125,10 +157,154 @@ function opf_quotes($var) {
   return str_replace(array('"', "'"), array('&quot;','&#039;'), $var);
 }
 
+/**
+ * 
+ * @global obj   $database
+ * @param  int   $iFilterId
+ * @return array ExtraFields of an OpF Filter
+ */
+function opf_get_extrafields_array(int $iFilterId): array {
+    $aExtraFields = [];
+    global $database;
+    if (!$filter = $database->get_array(
+        "SELECT 
+            `additional_values`, 
+            `additional_fields`, 
+            `additional_fields_languages`
+            FROM `{TP}mod_outputfilter_dashboard` WHERE `id`=". $iFilterId
+        )[0]
+    ){
+        return $aExtraFields;
+    }
+    
+    $aFields  = unserialize($filter['additional_fields']);
+    if (!is_array($aFields)) {
+        return $aExtraFields;
+    }    
+    $aValues  = unserialize($filter['additional_values']);
+    
+    $aLangs   = unserialize($filter['additional_fields_languages']);    
+    // additional_languages
+    if (empty($aLangs)) {
+        $lang = [];
+    } else {
+        // get language-strings
+        if (isset($aLangs[LANGUAGE])) {
+            $lang = $aLangs[LANGUAGE];
+        } elseif (isset($aLangs['EN'])) {
+            $lang = $aLangs['EN'];
+        } else {
+            $lang = reset($aLangs); // get first language-strings
+        }
+    }
 
+    $i = 0;
+    $aGrowFields = [];
+    $aEditareas  = [];
+    $aCodeAreas  = [];
+    foreach ($aFields as $f) {
+        // we use 'label' since v1.3.2, but keep 'text' for compatibility reasons
+        if (isset($f['label']))
+            $f['text'] = $f['label'];
+
+        if (is_string($f['text']))
+            $f['text'] = ($f['text'][0] == '[' ? $lang[trim($f['text'], '[]')] : $f['text']);
+        elseif (is_array($f['text'])) {
+            if (isset($f['text'][LANGUAGE]))
+                $f['text'] = $f['text'][LANGUAGE];
+            else
+                $f['text'] = $f['text']['EN'];
+        }
+
+        $f['style'] = '';
+        if (isset($f['style'])) {
+            $f['style'] = 'style="' . $f['style'] . '"';
+        }
+
+        // switch for the different additional field types
+        switch ($f['type']) {
+
+            case 'text':
+                if (isset($aValues[$f['variable']])) {
+                    $f['value'] = quote_chars($aValues[$f['variable']]);
+                }
+                break;
+
+            case 'textarea': // supports use of array (simple one), too. See Docu.
+            case 'editarea':
+                $f['id'] = uniqid('ea');
+                $f['value'] = quote_chars($aValues[$f['variable']]);
+                if ($f['type'] == 'textarea') {
+                    $aGrowFields[] = $f['id'];
+                }
+                if ($f['type'] == 'editarea') {
+                    $aCodeAreas[] = $f['id'];
+                }
+                break;
+
+            case 'checkbox':
+                $f['checked'] = '';
+                if (isset($aValues[$f['variable']]) && $aValues[$f['variable']]) {
+                    $f['checked'] = 'checked';
+                }
+                break;
+
+            case 'radio':
+                $f['checked'] = '';
+                if (isset($aValues[$f['variable']]) && $aValues[$f['variable']] == $f['value']) {
+                    $f['checked'] = 'checked';
+                }
+                break;
+
+            case 'select':
+                $f['options'] = '';
+                foreach ($f['value'] as $v => $str) {
+                    $selected = ($aValues[$f['variable']] == $v) ? ' selected' : '';
+                    if (is_string($str)) {
+                        $str = ($str[0] == '[' ? $lang[trim($str, '[]')] : $str);
+                    } elseif (is_array($str)) {
+                        if (isset($str[LANGUAGE])) {
+                            $str = $str[LANGUAGE];
+                        } else {
+                            $str = $str['EN'];
+                        }
+                    }
+                    $f['options'] .= '<option value="' . quote_chars($v) . '"' . $selected . '>';
+                    $f['options'] .= quote_chars($str);
+                    $f['options'] .= '</option>';
+                }
+                break;
+
+            case 'array':
+                foreach ($aValues[$f['variable']] as $k => $v) {
+                    $f['values'][quote_chars($k)] = quote_chars($v);
+                }
+                break;
+        }
+        $aExtraFields[$i++] = $f;
+    }
+    return $aExtraFields;
+}
+
+/**
+ * @brief  Get a select box of all the types
+ * @param  string $sSelected
+ * @return string
+ */
+function opf_get_types_select(string $sSelected = '7page') : string
+{
+    $sTypeOptions = '';
+    foreach(opf_get_types() as $value => $label){
+        $sTypeOptions .= '<option value="'.$value.'"';
+        if ($sSelected == $value) {
+            $sTypeOptions .= ' selected';
+        }
+        $sTypeOptions .= ">".opf_quotes($label)."</option>";
+    }
+    return $sTypeOptions;
+}
 
 // functions for db-query, but here using the database-class now.
-
 function opf_db_query($q_str) {
   if (!$q_str) return NULL;
   global $database;
@@ -259,7 +435,7 @@ function __opf_fetch_clean_int(&$val, $k, $args) {
 }
 function __opf_fetch_clean_string(&$val, $k, $args) {
   if(is_string($val) || is_numeric($val))
-    $val = htmlspecialchars((string)$val, ENT_QUOTES);
+    $val = quote_chars((string)$val);
   elseif($args['allowbool'] && ($val===TRUE || $val===FALSE))
     ;
   elseif($args['allownull'] && $val===NULL)
@@ -300,8 +476,11 @@ function __opf_fetch_clean_unchanged(&$val, $k, $args) {
 // clean up variables and do some checking on types etc.
 
 function opf_fetch_clean($val, $default=NULL, $type='int', $args=FALSE, $from_gpc=FALSE) {
-  if(!isset($val))
-    return($default);
+    global $LANG;
+  if(!isset($val)){
+        trigger_error('$val empty');
+        return($default);
+  }
   // check $args
   if($args===FALSE || !is_array($args))
     $args = array('allowbool'=>FALSE, 'allownull'=>FALSE);
@@ -579,12 +758,12 @@ function opf_get_types() {
 global $LANG;
     $types = array(
         OPF_TYPE_SECTION_FIRST => $LANG['MOD_OPF']['TXT_MODULE_FIRST'], // filters that must be applied before all other ones
-        OPF_TYPE_SECTION => $LANG['MOD_OPF']['TXT_MODULE'], // default! "normal" filters applied to modules, aka. sections
-        OPF_TYPE_SECTION_LAST => $LANG['MOD_OPF']['TXT_MODULE_LAST'], // filters which have to be applied last (e.g. highlighting)
-        OPF_TYPE_PAGE_FIRST => $LANG['MOD_OPF']['TXT_PAGE_FIRST'], // filter applied to the whole page before all other page filters
-        OPF_TYPE_PAGE => $LANG['MOD_OPF']['TXT_PAGE'], // filter applied to the whole page (head, content, menu, snippets, ...)
-        OPF_TYPE_PAGE_LAST => $LANG['MOD_OPF']['TXT_PAGE_LAST'], // filter applied after all page-filters
-        OPF_TYPE_PAGE_FINAL => $LANG['MOD_OPF']['TXT_PAGE_FINAL'], // filter applied at the very end
+        OPF_TYPE_SECTION       => $LANG['MOD_OPF']['TXT_MODULE'], // default! "normal" filters applied to modules, aka. sections
+        OPF_TYPE_SECTION_LAST  => $LANG['MOD_OPF']['TXT_MODULE_LAST'], // filters which have to be applied last (e.g. highlighting)
+        OPF_TYPE_PAGE_FIRST    => $LANG['MOD_OPF']['TXT_PAGE_FIRST'], // filter applied to the whole page before all other page filters
+        OPF_TYPE_PAGE          => $LANG['MOD_OPF']['TXT_PAGE'], // filter applied to the whole page (head, content, menu, snippets, ...)
+        OPF_TYPE_PAGE_LAST     => $LANG['MOD_OPF']['TXT_PAGE_LAST'], // filter applied after all page-filters
+        OPF_TYPE_PAGE_FINAL    => $LANG['MOD_OPF']['TXT_PAGE_FINAL'], // filter applied at the very end
     );
     return($types);
 }
@@ -610,7 +789,7 @@ function opf_type_uses_pages($type) {
 // fetches real $name if $name is id
 function opf_check_name($name) {
     if(is_numeric($name)) {
-        if(!$name = opf_db_query_vars( "SELECT `name` FROM `".TABLE_PREFIX."mod_outputfilter_dashboard` WHERE `id`=%d", $name))
+        if(!$name = opf_db_query_vars( "SELECT `name` FROM `{TP}mod_outputfilter_dashboard` WHERE `id`=%d", $name))
             return(FALSE);
     }
     return($name);
@@ -620,10 +799,10 @@ function opf_check_name($name) {
 function opf_select_filters($type='') {
     if($type=='') {
         $res = opf_db_query(
-            "SELECT * FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+            "SELECT * FROM `{TP}mod_outputfilter_dashboard`"
             . " ORDER BY `type`,`position` ASC");
     } else {
-        $res = opf_db_query( "SELECT * FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+        $res = opf_db_query( "SELECT * FROM `{TP}mod_outputfilter_dashboard`"
          . " WHERE `type`='%s' ORDER BY `position` ASC", $type);
     }
     if(!$res)
@@ -632,7 +811,7 @@ function opf_select_filters($type='') {
 }
 
 function opf_get_data($id) {
-    $res = opf_db_query( "SELECT * FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+    $res = opf_db_query( "SELECT * FROM `{TP}mod_outputfilter_dashboard`"
      . " WHERE `id`=%d", $id);
     if($res) return($res[0]);
     else return($res);
@@ -643,7 +822,7 @@ function opf_get_position_max($type) {
     return(
        opf_db_query_vars(
            "SELECT MAX(`position`) "
-           . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+           . " FROM `{TP}mod_outputfilter_dashboard`"
            . " WHERE `type`='%s'", $type
         )
     );
@@ -654,7 +833,7 @@ function opf_get_position_min($type) {
     return(
         opf_db_query_vars(
             "SELECT MIN(`position`)"
-            . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+            . " FROM `{TP}mod_outputfilter_dashboard`"
             . " WHERE `type`='%s'", $type
         )
     );
@@ -669,7 +848,7 @@ function opf_get_position($name, $verbose=OPF_VERBOSE) {
         return(
            opf_db_query_vars(
               "SELECT `position`"
-              . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+              . " FROM `{TP}mod_outputfilter_dashboard`"
               . " WHERE `name`='%s'", $name
            )
        );
@@ -687,7 +866,7 @@ function opf_get_type($name,$verbose=OPF_VERBOSE) {
         return(
            opf_db_query_vars(
               "SELECT `type`"
-               . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+               . " FROM `{TP}mod_outputfilter_dashboard`"
                . " WHERE `name`='%s'", $name
            )
         );
@@ -704,7 +883,7 @@ function opf_is_registered($name, $verbose=FALSE) {
     if(
        opf_db_query_vars(
           "SELECT TRUE FROM"
-             . " `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+             . " `{TP}mod_outputfilter_dashboard`"
              . " WHERE `name`='%s'", $name
        )
     ) return(TRUE);
@@ -721,7 +900,7 @@ function opf_is_active($name) {
         if(
            opf_db_query_vars(
               "SELECT `active`"
-              . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+              . " FROM `{TP}mod_outputfilter_dashboard`"
               . " WHERE `name`='%s'", $name
            )
         ) {
@@ -773,7 +952,7 @@ function opf_set_active($name, $active=1) {
         }
         return(
            opf_db_run_query(
-               "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+               "UPDATE `{TP}mod_outputfilter_dashboard`"
                . " SET `active`='%s'"
                . " WHERE `name`='%s'", $active, $name
            )
@@ -792,25 +971,25 @@ function opf_switch_position($type, $pos1, $pos2) {
         return(FALSE);
     $name1 = opf_db_query_vars(
        "SELECT `name`"
-       . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+       . " FROM `{TP}mod_outputfilter_dashboard`"
        . " WHERE `type`='%s'"
        . " AND `position`=%d", $type, $pos1
     );
     $name2 = opf_db_query_vars(
         "SELECT `name`"
-        . " FROM `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+        . " FROM `{TP}mod_outputfilter_dashboard`"
         . " WHERE `type`='%s'"
         . " AND `position`=%d", $type, $pos2
     );
     if($name1===FALSE || $name2===FALSE)
         return(FALSE);
     $res1 = opf_db_run_query(
-        "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+        "UPDATE `{TP}mod_outputfilter_dashboard`"
         . " SET `position`=%d"
         . " WHERE `name`='%s'", $pos2, $name1
     );
     $res2 = opf_db_run_query(
-        "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard`"
+        "UPDATE `{TP}mod_outputfilter_dashboard`"
         . " SET `position`=%d"
         . " WHERE `name`='%s'", $pos1, $name2
     );
@@ -869,7 +1048,7 @@ function opf_list_target_modules($sorted=FALSE) { // read from table wb_addons
     if(!$modules
        = opf_db_query(
           "SELECT *"
-          . " FROM  `".TABLE_PREFIX."addons`"
+          . " FROM  `{TP}addons`"
           . opf_get_module_query()
           . " ORDER BY `name`"
         )
@@ -1126,9 +1305,10 @@ function opf_replace_sysvar($filter, $plugin='')
 
 
 // insert sysvar placeholders
-function opf_insert_sysvar($filter,$plugin='') {
-    if($plugin=='' && is_array($filter) && isset($filter['plugin']))
-        $plugin=$filter['plugin'];
+function opf_insert_sysvar($filter, $plugin='') {
+    if($plugin =='' && is_array($filter) && isset($filter['plugin'])){
+        $plugin = $filter['plugin'];
+    }
     $filter_as_string = json_encode($filter);
     if($plugin!='') {
         #$filter = str_replace(OPF_PLUGINS_PATH.$plugin, '{OPF:PLUGIN_PATH}', $filter);
@@ -1139,7 +1319,7 @@ function opf_insert_sysvar($filter,$plugin='') {
     if($plugin!='') {
         #$filter = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter);
         $filter_as_string = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter_as_string);
-    }
+    } 
     $filter_as_string = str_replace(WB_URL, '{SYSVAR:WB_URL}', $filter_as_string);
     $filter = json_decode($filter_as_string,true);
     return $filter;
@@ -1169,7 +1349,7 @@ function opf_preload_filter_definitions() {
     $pages
        = opf_db_query(
            "SELECT *"
-           . " FROM `".TABLE_PREFIX."pages`"
+           . " FROM `{TP}pages`"
            . " ORDER BY `level`,`position` ASC"
         );
     if(!is_array($pages)) $pages=array();
@@ -1277,7 +1457,7 @@ function opf_apply_get_modules($page_id) {
     // determine page_id and module
     $modules = array();
     if($page_id) { // maybe guestbook or news
-        if(!$modules = opf_db_query( "SELECT `module`,`section_id` FROM ".TABLE_PREFIX."sections WHERE `page_id`=%d", $page_id))
+        if(!$modules = opf_db_query( "SELECT `module`,`section_id` FROM {TP}sections WHERE `page_id`=%d", $page_id))
             $modules = array();
     } else { // search or account
         if(strpos($_SERVER['PHP_SELF'], '/search/index.php')!==FALSE)
@@ -1368,7 +1548,7 @@ array
 function opf_list_page_hierarchy() {
     // fetch all pages from DB
     $pages_all = array();
-    $pages = opf_db_query( "SELECT * FROM ".TABLE_PREFIX."pages ORDER BY `level`,`position` ASC");
+    $pages = opf_db_query( "SELECT * FROM {TP}pages ORDER BY `level`,`position` ASC");
     if(!is_array($pages))
         $pages = array();
     foreach($pages as $page) {
@@ -1459,6 +1639,7 @@ global $LANG;
 
 //
 function opf_update_pages_parent($pages_parent) {
+    if(!is_array($pages_parent)) return;
     global $opf_PAGECHILDS;
     if(!(isset($opf_PAGECHILDS) && is_array($opf_PAGECHILDS))) {
         opf_preload_filter_definitions();
@@ -1517,8 +1698,8 @@ function opf_css_save() {
         return NULL;
     }
 
-    $csspath = opf_db_query_vars( "SELECT `csspath` FROM ".TABLE_PREFIX."mod_outputfilter_dashboard WHERE `id`=%d", $id);
-    $plugin  = opf_db_query_vars( "SELECT `plugin` FROM ".TABLE_PREFIX."mod_outputfilter_dashboard WHERE `id`=%d", $id);
+    $csspath = opf_db_query_vars( "SELECT `csspath` FROM {TP}mod_outputfilter_dashboard WHERE `id`=%d", $id);
+    $plugin  = opf_db_query_vars( "SELECT `plugin` FROM {TP}mod_outputfilter_dashboard WHERE `id`=%d", $id);
     $csspath = opf_replace_sysvar($csspath,$plugin);
     if($csspath && file_exists($csspath) && is_writable($csspath)) {
         $fh = fopen($csspath, "wb");
@@ -1557,7 +1738,7 @@ function opf_save() {
     $func = trim($func);
     $name = trim($name);
     $funcname = trim($funcname);
-    $type = (array_key_exists($type,$types)?$type:key($types));
+    $type = (array_key_exists($type, $types) ? $type : key($types));
     $file = '';
     $additional_values = serialize('');
 
@@ -1574,12 +1755,12 @@ function opf_save() {
 
     // add additional data
     $filter_old = array();
-    if($id>0 && opf_db_query_vars(
-        "SELECT TRUE FROM ".TABLE_PREFIX."mod_outputfilter_dashboard"
+    if($id > 0 && opf_db_query_vars(
+        "SELECT TRUE FROM {TP}mod_outputfilter_dashboard"
            . " WHERE `id`=%d", $id)) {
         // comes from edit, so fetch old data from DB
         $filter_old = opf_db_query( "SELECT *"
-            . " FROM ".TABLE_PREFIX."mod_outputfilter_dashboard"
+            . " FROM {TP}mod_outputfilter_dashboard"
             . " WHERE `id`=%d", $id);
         if(!empty($filter_old)){
              $filter_old = $filter_old[0];
@@ -1602,7 +1783,7 @@ function opf_save() {
         $helppath = array();
     }
     // do we have to handle additional data?
-    if($id>0 && !empty($filter_old)) { // comes from edit, so check additional_fields
+    if($id > 0 && !empty($filter_old)) { // comes from edit, so check additional_fields
         $additional_fields = unserialize($filter_old['additional_fields']);
         if(!empty($additional_fields)) {
             $additional_values = array();
@@ -1634,8 +1815,8 @@ function opf_save() {
         }
     }
     // use old values if we come from edit and allowedit is 0
-    if($id>0 && !empty($filter_old)) {
-        if($allowedit==0) {
+    if($id > 0 && !empty($filter_old)) {
+        if($allowedit == 0) {
             $name = $filter_old['name'];
             $funcname = $filter_old['funcname'];
             $func = $filter_old['func'];
@@ -1654,11 +1835,14 @@ function opf_save() {
         }
     }
 
-    // prevent inline-filters from overwriting a different filter with same name
-    if($id==0) { // we come from add-filter
+    if($id==0) { 
+        // we come from add-filter
+        // prevent inline-filters from overwriting 
+        // a different filter with same name
         while(opf_is_registered($name))
             $name .= mt_rand(0,9);
-    } else { // we come from edit-filter: allow to overwrite old one (same $id)
+    } else { 
+        // we come from edit-filter: allow to overwrite old one (same $id)
         if(opf_check_name($id)!=$name) {
             while(opf_is_registered($name))
                 $name .= mt_rand(0,9);
@@ -1667,25 +1851,25 @@ function opf_save() {
 
     // register or update filter
     $res = opf_register_filter(array(
-        'id' => $id,
-        'type' => $type,
-        'name' => $name,
-        'func' => $func,
-        'file' => $file,
-        'funcname' => $funcname,
-        'modules' => $modules,
-        'pages' => $pages,
+        'id'        => $id,
+        'type'      => $type,
+        'name'      => $name,
+        'func'      => $func,
+        'file'      => $file,
+        'funcname'  => $funcname,
+        'modules'   => $modules,
+        'pages'     => $pages,
         'pages_parent' => $pages_parent,
-        'desc' => $desc,
-        'userfunc' => $userfunc,
-        'plugin' => $plugin,
-        'active' => $active,
+        'desc'      => $desc,
+        'userfunc'  => $userfunc,
+        'plugin'    => $plugin,
+        'active'    => $active,
         'allowedit' => $allowedit,
         'allowedittarget' => $allowedittarget,
         'configurl' => $configurl,
-        'csspath' => $csspath,
-        'helppath' => $helppath,
-        'force' => TRUE,
+        'csspath'   => $csspath,
+        'helppath'  => $helppath,
+        'force'     => TRUE,
         'filter_installed' => FALSE, // keep this on FALSE
         'additional_values' => $additional_values
     ));

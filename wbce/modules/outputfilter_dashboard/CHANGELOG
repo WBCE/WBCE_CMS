@@ -1,6 +1,19 @@
 
 Header: Version-History
 
+1.6:
+1.6.2  %(Stefek, 31 Jan 2023)%
+        - change the delete mechanism to a jquery/ajax based inline confirm prompt
+
+1.6.1  %(Stefek, 27 Jan 2023)%
+        - change status activation mechanism to a checkbox jquery/ajax based switch
+
+1.6.0  %(Stefek, 25 Jan 2023)%
+        - Change the Template Engine to Twig (remove phpLib TE templates).
+        - Improve (simplify) the look of the list of filters.
+        - Small change to the page and module tree layout (height adjustment).
+        - remove JS page reload after ajax drag&drop of filters.
+
 1.5:
 1.5.15 %(mrbaseman, 31 May 2021)%
         - fail-safe fix for filter function, thanks to Atlasfreak
@@ -14,7 +27,7 @@ Header: Version-History
         - support php 8 with a new implementation of !opf_replace_sysvar!
 
 1.5.12 %(bernd, 16 May 2020)%
-        - fixed hardcodet admin-dir in backend_body.js
+        - fixed hardcoded admin-dir in backend_body.js
 
 1.5.11 %(mrbaseman, 9 Jan 2020)%
         - remove gpc functions which have been deprecated since php 5.4

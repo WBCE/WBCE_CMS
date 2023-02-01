@@ -80,16 +80,17 @@ if(!isset($_POST['action']) || !isset($_POST['id']) )
         }
 
         foreach ($aRows as $recID) {
-            $id = $admin->checkIDKEY($recID,0,'key',true);
+            $id = $admin->checkIDKEY($recID, 0, 'POST', true);
             $filter = opf_get_data($id);
             $type = $filter['type'];
             // now we sanitize array
-            $qstring ="UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard`"
-               . " SET `position` = '".$i[$type]."'"
-               . " WHERE `id` = ".intval($id)." ";
-            if(!opf_db_run_query($qstring)) {
+            $aUpdate = [
+                'id'       => intval($id),
+                'position' => $i[$type],
+            ];
+            if(!$database->updateRow('{TP}mod_outputfilter_dashboard', 'id', $aUpdate)) {
                 $aJsonRespond['success'] = false;
-                $aJsonRespond['message'] = 'db query failed: '.opf_db_get_error();
+                $aJsonRespond['message'] = 'db query failed: '.$database->get_error();
                 $aJsonRespond['icon'] = 'cancel.gif';
                 exit(json_encode($aJsonRespond));
             }
@@ -99,9 +100,8 @@ if(!isset($_POST['action']) || !isset($_POST['id']) )
         $aJsonRespond['message'] = 'wrong arguments "$action"';
         exit(json_encode($aJsonRespond));
     }
-
     $aJsonRespond['icon'] = 'dialog-close.gif';
-    $aJsonRespond['message'] = 'seems everything is fine';
+    $aJsonRespond['message'] = 'Filter was moved properly:';
     $aJsonRespond['success'] = true;
     exit(json_encode($aJsonRespond));
 }

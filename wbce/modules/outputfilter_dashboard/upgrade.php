@@ -65,25 +65,23 @@ require_once(dirname(__FILE__)."/functions.php");
 
 if(is_dir(WB_PATH.'/temp')){
     opf_io_mkdir(WB_PATH.'/temp/opf_plugins');
-} else {
-    opf_io_mkdir(WB_PATH.MEDIA_DIRECTORY.'/opf_plugins');
-}
+} 
 
 opf_io_unlink($mod_dir.'/debug_config.php');
 opf_io_unlink($mod_dir.'/config_init.php');
 opf_io_unlink($mod_dir.'/precheck.php');
 
-if(file_exists(WB_PATH.'/modules/practical_module_functions/pmf.php')){
-    // load Practical Module Functions
-    include_once(WB_PATH.'/modules/practical_module_functions/pmf.php');
-    $opf = pmf_init(0, basename(dirname(__FILE__)));
+//if(file_exists(WB_PATH.'/modules/practical_module_functions/pmf.php')){
+//    // load Practical Module Functions
+//    include_once(WB_PATH.'/modules/practical_module_functions/pmf.php');
+//    $opf = pmf_init(0, basename(dirname(__FILE__)));
+//
+//    // unregister this module since we do not use pmf anymore
+//    pmf_mod_unregister($opf, basename(dirname(__FILE__)));
+//
+//}
 
-    // unregister this module since we do not use pmf anymore
-    pmf_mod_unregister($opf, basename(dirname(__FILE__)));
-
-}
-
-opf_db_run_query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_outputfilter_dashboard_settings`");
+opf_db_run_query("DROP TABLE IF EXISTS `{TP}mod_outputfilter_dashboard_settings`");
 
 
 opf_io_rmdir(dirname(__FILE__).'/naturaldocs_txt');
@@ -132,7 +130,7 @@ if(is_array($filters)) {
         $filter['additional_values'] = serialize($filter['additional_values']);
         $filter['additional_fields'] = serialize($filter['additional_fields']);
         $filter['additional_fields_languages'] = serialize($filter['additional_fields_languages']);
-        $sSql = "UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard` SET "
+        $sSql = "UPDATE `{TP}mod_outputfilter_dashboard` SET "
               . "`userfunc`='".addslashes($filter['userfunc'])."', "
               . "`plugin`='".addslashes($filter['plugin'])."', "
               . "`file`='".addslashes($filter['file'])."', "
@@ -150,4 +148,13 @@ if(is_array($filters)) {
     }
 }
 
+// Stefek, upgrade since 1.6.0
 
+# templates were reworked to Twig TE and are located in /twig/
+rm_full_dir(__DIR__ . '/templates/'); 
+
+# these files were renamed to be grouped with tool.php
+opf_io_unlink(__DIR__.'/add_filter.php');        // new name: tool_add_filter.php
+opf_io_unlink(__DIR__.'/edit_filter.php');       // new name: tool_edit_filter.php
+opf_io_unlink(__DIR__.'/css.php');               // new name: tool_edit_css.php
+opf_io_unlink(__DIR__.'/ajax/ajax_dragdrop.js'); // new name: ajax.js
