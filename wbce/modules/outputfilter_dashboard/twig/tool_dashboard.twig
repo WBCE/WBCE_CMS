@@ -1,0 +1,193 @@
+<h1>{{ L_('L:TXT_OUTPUTFILTER_DASHBOARD') }}</h1>
+<noscript>
+    <style type="text/css">.hideupload {display:block;}</style>
+    <div class="warning">{{ L_('L:TXT_ACTIVATE_JS') }}</div>
+</noscript>
+
+<table cellpadding="0" cellspacing="0"  width="100%" style="margin-top:10px;margin-bottom:10px">
+    <tr>
+        <td align="left">
+            <form action="{{ tpl_add_onclick }}" method="POST">
+                <input type="hidden" name="save_settings" value="save_settings"/>
+                {{ FTAN }}
+                <button type="submit" title="{{ L_('L:TXT_ADD_FILTER') }}"><i class="fa fa-code"></i>&nbsp; {{ L_('L:TXT_NEW_INLINEFILTER') }}</button>
+                <button type="button" id="show-upload" class="show-upload" title="{{ L_('L:TXT_UPLOAD_FILTER') }}"><i class="fa fa-upload"></i>&nbsp; {{ L_('L:TXT_UPLOAD_PLUGIN_FILTER') }}</button>
+            </form>
+        </td>
+        <td align="right" valign="top"> &nbsp;
+            <a href="{{ tpl_help_url }}" onclick="{{ tpl_help_onclick }}" target="help" title="{{ L_('L:TXT_HELP_BROWSER') }}">
+                <img src="{{ IMAGE_URL }}/help.png" alt="[?]" /> {{ L_('L:TXT_HELP') }}
+            </a>
+            &nbsp;
+            <a href="javascript:(showDialog('About',document.getElementById('about').innerHTML,'message', 450, 400, false, false, true, 1));" title="{{ L_('L:TXT_ABOUT') }}">
+                <img src="{{ IMAGE_URL }}/info.gif" alt="[i]" /> {{ L_('L:TXT_ABOUT') }}
+            </a>
+        </td>
+    </tr>
+</table>
+
+<div id="upload-panel" {{ tpl_hide_upload }}>
+    <form enctype="multipart/form-data" action="{{ TOOL_URI }}" method="POST">
+    <input type="hidden" name="save_settings" value="save_settings">
+        {{ FTAN }}
+        <b>{{ L_('L:TXT_UPLOAD_FILTER_PLUGIN') }}:</b>
+        <input name="filterplugin" type="file" size="60" />
+        <button type="submit" title="{{ L_('L:TXT_INSTALL_PLUGIN_FILTER') }}">{{ L_('L:TXT_UPLOAD') }}</button>
+    </form>
+    <p id="close-panel"><img class="link" src="{{ IMAGE_URL }}/close.png" alt="[x]" title="close panel" /></p>
+</div>
+
+<form name="outputfilter" id="outputfilter" method="post">
+    <input type="hidden" name="save_settings" value="save_settings">
+    {{ FTAN }} 
+    <table id="dashboard" class="dragdrop_form filters-table"  cellspacing="0"  style="border-collapse: collapse;width:100%">
+        <thead>
+            <tr>
+                <td style="width:5%">&nbsp;</td>
+                <td>{{ L_('L:TXT_FILTER_NAME') }}</td>
+                <td style="width:3%">&nbsp;</td>
+                <td style="">{{ L_('L:TXT_DESCRIPTION') }}</td>
+                <td style="width:3%" align="center">{{ L_('L:TXT_TYPE') }}</td>
+                <td colspan="5" style="width:20%" align="right">{{ L_('L:TXT_ACTIONS') }}</td>
+               <td style="width:2.5%">&nbsp;</td>
+            </tr>
+        </thead>
+        <tbody>
+            
+        {# Filter List #}        
+        {% for f in filters %}
+            {% set IDKEY = getIDKEY(f.filter_id) %}
+            {% if f.type_sep_line %}
+            </tbody> 
+                     
+            <tbody class="{{ f.type_id }}">
+                <tr class="sticky"><td colspan="11">&nbsp;{{ f.type_name }}</td></tr>
+            </tbody>   
+            <tbody class="{{ f.type_id }}">
+                <tr style="line-height: 0;"><td colspan="13"style="line-height: 0;"></td></tr>
+            {% endif %}
+        <tr class="{{ f.additional_class }} {{ f.filter_active }}" id="{{ f.filter_id }}" data-idkey="id_{{ IDKEY }}">
+            <td align="center" class="status">
+                <input type="checkbox" id="switch_{{ f.filter_id }}" switch="bool" {% if f.filter_active == 'active' %} checked{% endif %} /><label for="switch_{{ f.filter_id }}"></label>
+            </td>
+            <td>
+                <a href="{{ f.editlink }}" title="{{ L_('L:TXT_EDIT_FILTER') }}"><nobr>{{ f.filter_name }}</nobr></a>
+            </td>
+
+            <td>&nbsp;</td>
+            <td><p style="font-size:.9em; color: #4c4c4c;line-height: 14px">{{ wordcut(f.filter_desc, 125 ) }}</p></td>
+            <td align="center">
+                    <img src="{{ IMAGE_URL }}/{{ f.type }}.png" title="{{ f.type_title }}"  alt="{{ f.tpl_filter_type }}"/>
+            </td>
+            <td>
+                {% if f.helppath_onclick %}
+                    <a href="{{ TOOL_URI }}" onclick="{{ f.helppath_onclick }}" title="{{ L_('L:TXT_FILTER_HELP') }}"><img src="{{ IMAGE_URL }}/help.png" alt="[?]"  /></a>
+                {% endif %}
+            </td>
+            <td>
+                {% if f.config_url %}
+                    <a href="{{ f.config_url }}" title="{{ L_('L:TXT_CONFIG_FILTER') }}"><img src="{{ IMAGE_URL }}/config.png" alt="[{{ L_('L:TXT_CONFIG_FILTER') }}]"  /></a>
+                {% endif %}
+            </td>
+            <td>
+                {% if f.css_link %}
+                    <a href="{{ f.css_link }}" title="{{ L_('L:TXT_EDITCSS') }}"><img src="{{ IMAGE_URL }}/css_script.gif" alt="[css]"  /></a>
+                {% endif %}
+            </td>
+            <td>
+                {% if f.deletable %}
+                    <a href="javascript:void(0)" class="delete-item" title="{{ L_('TEXT:DELETE') }}" data-question="{{ L_('L:TXT_SURE_TO_DELETE') }}" data-delete="{{ L_('TEXT:DELETE') }}" data-cancel="{{ L_('TEXT:CANCEL') }}">
+                    <img src="{{ IMAGE_URL }}/delete_16.png" alt="[x]" /></a>
+                {% endif %}
+            </td>
+            <td>
+                {% if f.filter_export_link %}
+                    <a href="{{ f.filter_export_link }}" title="{{ L_('L:TXT_EXPORT_FILTER') }}">
+                    <img src="{{ IMAGE_URL }}/export_16.png" alt="=>>" /></a>
+                {% endif %}
+            </td>
+            <td style="width:2%" class="dragdrop_item">&nbsp;</td>
+        </tr>
+        
+        {% endfor %}
+        </tbody>        
+        <tfoot>
+            <tr>
+                <td colspan="11" style="border: none;">{#{ filters|length }#}</td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
+
+
+        
+<!--/*  ABOUT BOX  */-->
+<div id="about" style="display:none;">
+    <h2>OutputFilter Dashboard - AdminTool</h2>
+    <img src="{{ IMAGE_URL }}/opf-dashboard-logo.gif" alt="" />
+    <p>
+Copyright &copy; 2009-2010, Thomas 'thorn' Hornik <a title="thorn@nettest.thekk.de" href="mailto:thorn@nettest.thekk.de">thorn@nettest.thekk.de</a><br />
+Copyright &copy; 2010-2023, Christian M. Stefan (Stefek) <a title="stefek@designthings.de" href="mailto:stefek@designthings.de">stefek@designthings.de</a><br />
+Copyright &copy; 2016, Martin Hecht (mrbaseman) <a title="mrbaseman@gmx.de" href="mailto:mrbaseman@gmx.de">mrbaseman@gmx.de</a><br />
+<a href="https://github.com/mrbaseman/outputfilter_dashboard" target="_blank" title="{{ L_('L:TXT_VISIT_PROJECTS_WEBSITE') }}">
+        <img src="{{ IMAGE_URL }}/a_blank.png" alt="" />Project Website</a></p>
+    <p><a href="{{ TOOL_URI }}" onclick="{{ tpl_help_onclick }}" title="{{ L_('L:TXT_HELP_BROWSER') }}">
+        <img src="{{ IMAGE_URL }}/help_big.png" alt="[?]" /></a>
+    </p><br />
+    <img style="float:left; padding:5px;" src="{{ ADDON_URL }}/docs/files/images/GPL3.png" alt="GNU GPL Vers.3" />
+    <p style="text-align: justify; color:rgb(79, 79, 79);"><small><b>OutputFilter-Dashboard</b> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version. <br /><b>OutputFilter-Dashboard</b> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU General Public License</a> for more details.</small></p>
+<br />
+</div>
+    
+<script type="text/javascript">
+    /* <![CDATA[ */
+        var ADDON_URL = '{{ ADDON_URL }}';
+        var LOAD_DRAGDROP = true;
+        var ICONS = WB_URL + '/modules/outputfilter_dashboard/dialog/images';
+        var LOAD_CLUETIP = true;
+    /* ]]> */
+</script>
+
+<!-- END main_block -->
+
+{% if tpl_export_message != '' %}
+<!-- BEGIN export_block -->
+<script type="text/javascript"><!--
+    var opf_message_show = 1;
+    var opf_message_title = '{{ tpl_export_success }}';
+    var opf_message_text = '{{ tpl_export_message }}';
+    var opf_message_type = '{{ tpl_export_message_type }}';
+    var opf_message_button1 = '{{ tpl_export_button1 }}';
+    var opf_message_button2 = {{ tpl_export_button2 }};
+    var opf_message_action2 = '{{ tpl_export_action2 }}';
+// --></script>
+<noscript>
+  <div>
+     <p class="warning"><strong>
+     <important>{{ tpl_export_success }}:</important><br/>
+     {{ tpl_export_message }}
+     <a href={{ tpl_export_url }}>download</a>
+     </strong></p>
+  </div>
+</noscript>
+<!-- END export_block -->
+{% endif %}
+
+{% if tpl_upload_message != '' %}
+<!-- BEGIN upload_block -->
+<script type="text/javascript"><!--
+    var opf_message_show = 1;
+    var opf_message_title = '{{ tpl_upload_success }}';
+    var opf_message_text = '{{ tpl_upload_message }}';
+    var opf_message_type = '{{ tpl_upload_message_type }}';
+    var opf_message_button1 = '{{ L_('L:TXT_OK') }}';
+    var opf_message_button2 = null;
+    var opf_message_action2 = 0;
+// --></script>
+<!-- END upload_block -->
+{% endif %}
