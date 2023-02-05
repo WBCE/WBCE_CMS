@@ -174,7 +174,7 @@ class counter {
 		if (substr($this->host,0,4) == "www.") $this->host=substr($this->host,4);
 		if($this->referer) {
 			$this->referer_host = parse_url($this->referer, PHP_URL_HOST); // Referrer Host
-			if (substr($this->referer_host,0,4) == "www.") $this->referer_host=substr($this->referer_host,4);
+			if ($this->referer_host && substr($this->referer_host,0,4) == "www.") $this->referer_host=substr($this->referer_host,4);
 		}
 		$this->referer = $this->escapeString($this->referer);
 		$this->page = $this->escapeString($this->page);
