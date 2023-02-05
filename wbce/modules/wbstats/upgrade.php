@@ -61,10 +61,10 @@ $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_wbstats_browse
 );
 
 /* for existing table, modify fieldslengths and reindex */
-$database->query("ALTER IGNORE TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `agent` VARCHAR(200)");
-$database->query("ALTER IGNORE TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `browser` VARCHAR(50)");
-$database->query("ALTER IGNORE TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `version` VARCHAR(50)");
-$database->query("ALTER IGNORE TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `os` VARCHAR(100)");
+$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `agent` VARCHAR(200)");
+$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `browser` VARCHAR(50)");
+$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `version` VARCHAR(50)");
+$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_browser` MODIFY `os` VARCHAR(100)");
 $database->index_add(TABLE_PREFIX."mod_wbstats_browser","browser","browser,version");
 $database->index_add(TABLE_PREFIX."mod_wbstats_browser","os","os");
 
