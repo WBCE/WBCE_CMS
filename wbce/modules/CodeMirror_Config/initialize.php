@@ -289,12 +289,7 @@ if (!function_exists('list_files_from_dir')) {
      * @param    bool   $bGroup     // whether to group the list by file type
      * @return   array
      */
-    function list_files_from_dir(
-            string $sDirPath = "", 
-            mixed  $mType = "", 
-            bool   $bGroup = false
-        ) :array 
-    {
+    function list_files_from_dir($sDirPath = "", $mType = "", $bGroup = false) {
         $aList = [];
         
         if($sDirPath == '' or $mType == ''){
