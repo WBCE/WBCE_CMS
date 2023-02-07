@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * Visit http://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -12,24 +12,30 @@
 
 require_once '../../config.php';
 
-$admin = new admin('admintools', 'admintools');
-if ($admin->get_permission('admintools') == true) {
+$admin = new admin( 'admintools', 'admintools');
+if ( $admin->get_permission( 'admintools' ) == true )
+{
     $admintool_link   = ADMIN_URL . '/admintools/index.php';
     $module_edit_link = ADMIN_URL . '/admintools/tool.php?tool=droplets';
     $modified_when    = time();
-    $modified_by      = intval($admin->get_user_id());
+    $modified_by      = intval( $admin->get_user_id() );
 
     $query = 'INSERT INTO `%smod_droplets` SET `name`="", `code`="", `description`="", `comments`="", `active`=1, `modified_when`="%s", `modified_by`="%s"';
-    $database->query(sprintf($query, TABLE_PREFIX, $modified_when, $modified_by));
+    $database->query(sprintf($query,TABLE_PREFIX,$modified_when,$modified_by));
 
-    if ($database->is_error()) {
-        $admin->print_error($database->get_error(), $module_edit_link);
-    } else {
-        $droplet_id = intval($database->get_one("SELECT LAST_INSERT_ID()"));
-        $admin->print_success($TEXT['SUCCESS'], ADMIN_URL.'/admintools/tool.php?tool=droplets&do=modify&droplet_id=' . $droplet_id);
+    if($database->is_error())
+    {
+        $admin->print_error( $database->get_error(), $module_edit_link );
     }
-} else {
-    die(header('Location: '.WB_URL));
+    else
+    {
+        $droplet_id = intval( $database->get_one( "SELECT LAST_INSERT_ID()" ) );
+        $admin->print_success( $TEXT['SUCCESS'], ADMIN_URL.'/admintools/tool.php?tool=droplets&do=modify&droplet_id=' . $droplet_id );
+    }
+}
+else
+{
+    die( header('Location: '.WB_URL) );
 }
 
 // Print admin footer

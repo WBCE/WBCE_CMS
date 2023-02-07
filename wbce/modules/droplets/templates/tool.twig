@@ -1,5 +1,10 @@
-{% include 'header.twig' %}
+{% extends "_framer.twig" %}
+{% block content %} 
 {% if droplets %}
-{% include 'list.twig' %}
+    <div class="bcp-pane-inlay">
+    {% include 'list.twig' %}
+    </div>
 {% endif %}
 {{ content|raw }}
+
+{% endblock %} 

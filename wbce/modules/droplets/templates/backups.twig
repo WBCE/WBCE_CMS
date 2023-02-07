@@ -1,33 +1,70 @@
-<table class="droplets row_a" style="width: 100%;">
+<h2>{{ L_('DR_TEXT:MANAGE_BACKUPS') }}</h2>
+
+{% if backup_files %}
+<div class="text-center" style="padding:1rem;">
+<button class="button ico-zip" type="button"
+        name="backup_mgmt"
+        onclick="javascript: confirm_link('{{ L_('DR_TEXT:BACKUP') }}, {{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=backup_droplets');">
+        {{ L_('DR_TEXT:BACKUP') }}
+</button>
+</div>
+<table class="filters-table row_a" style="width: 100%;">
     <thead>
-    <tr class="row_b">
-        <th class="header">{{ TEXT.NAME|raw }}</th>
-        <th class="header">{{ TEXT.SIZE|raw }} (Byte)</th>
-        <th class="header">{{ TEXT.DATE|raw }}</th>
-        <th class="header">{{ TEXT.FILES|raw }}</th>
-        <th></th>
+    <tr class="tablesorter-headerRow">
+        <th style="">{{ L_('TEXT:NAME') }}</th>
+        <th style="width: 7%;text-align:center">{{ L_('TEXT:SIZE') }}</th>
+        <th style="text-align:center">{{ L_('TEXT:DATE') }}</th>
+        <th style="width: 25%;">{{ L_('TEXT:FILES') }}</th>
+        <th style="width: 7%;">{{ L_('TEXT:ACTIONS') }}</th>
     </tr>
     </thead>
     <tbody>
-    {% for file in backup_files %}
-    <tr>
-        <td>
-            <a href="#" title="{{ file.list }}"><img src="{{ WB_URL }}/modules/droplets/img/list.png" alt="" /> {{ file.name }}</a>
+    {% for index, file in backup_files %}
+    <tr class="{% if index%2 %}odd{% endif %}">
+        <td style="padding-left:10px;font-size: .9em;">
+            <i class="fa fa-file-zip-o">&nbsp;</i>
+            <a href="#" title="{{ file.list }}">{{ file.name }}</a>            
         </td>
-        <td>{{ file.stat.size }}</td>
-        <td>{{ file.stat.ctime|date('r') }}</td>
-        <td>{{ file.count }}</td>
+        <td style="text-align:center">{{ file.stat.size }} <small>Byte</small></td>
+        <td style="text-align:center">{{ file.stat.ctime|date(constant('DATE_FORMAT')) }} &nbsp; <small>{{ file.stat.ctime|date(constant('TIME_FORMAT')) }}</small></td>
+
+        <td>            
+            <ul class="togglehub">
+                <li class="toggle">
+                    <a href="javascript:void(0)" title="{{ L_('TEXT:SHOW') }}"><i class="fa fa-info-circle"></i> {{ file.count }} x Droplet{% if file.count > 1 %}s{% endif %}</a>
+                </li>
+                {% for droplet in file.list|split(', ') %}
+                    <li style="display:none;">&nbsp;<i class="fa fa-tint"></i> {{ droplet }}</li>
+                {% endfor %}
+                </ul>
+            </td>
         <td>
-            <a href="{{ WB_URL }}/modules/droplets/export/{{ file.name }}" title="Download"><img src="{{ WB_URL }}/modules/droplets/img/download.png" alt="Download" /></a>
-            <a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;recover={{ file.name }}');" title="Recover"><img src="{{ WB_URL }}/modules/droplets/img/import.png" alt="Recover" /></a>
-            <a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups&amp;del={{ file.name }}');" title="Delete"><img src="{{ THEME_URL }}/images/delete_16.png" alt="X" /></a>
+            <a href="{{ WB_URL }}/var/modules/droplets/export/{{ file.name }}" title="Download"><i class="fa fa-download">&nbsp;</i></a>
+            <a href="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;recover={{ file.name }}');" title="{{ L_('TEXT:RESTORE') }}"><i class="fa fa-mail-reply">&nbsp;</i></a>
+            <a href="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=manage_backups&amp;del={{ file.name }}');" title="{{ L_('TEXT:DELETE') }}"><i class="fa fa-trash text-red">&nbsp;</i></a>
         </td>
     </tr>
     {% endfor %}
 </table>
+{% else %}
+    <div class="alert alert-warning">{{ L_('TEXT:NONE_FOUND') }}</div>
+{% endif %}
 
-<button type="button"
-        name="backup_mgmt"
-        onclick="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups&amp;del=all');">
-        {{ DR_TEXT.DELETE_ALL|raw }}
-</button>
+<div class="cpForm">
+    <div class="buttonsRow">
+        <button class="button ico-back" type="button" data-redirect-location="{{ TOOL_URI }}">{{ L_('TEXT:BACK') }}</button>
+        <button class="button ico-delete pos-right" type="button"
+                name="backup_mgmt"
+                onclick="javascript: confirm_link('{{ L_('TEXT:ARE_YOU_SURE') }}', '{{ TOOL_URI }}&amp;do=manage_backups&amp;del=all');">
+                {{ L_('DR_TEXT:DELETE_ALL') }}
+        </button>
+    </div>
+</div>
+
+<script>
+$( document ).ready(function() {
+    $('li.toggle a').on('click', function() {
+      $(this).parent('li').siblings('li').toggle();
+    });
+});
+</script>

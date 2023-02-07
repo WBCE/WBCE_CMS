@@ -1,0 +1,43 @@
+<div class="pane">
+    <div class="pageinfo">        
+        <div class="cpLastchange">
+            {% if data.author %}
+                {{ L_('MESSAGE:PAGES_LAST_MODIFIED') }} <a href="" title="{{ data.author.login_name }} [user-id: {{ data.author.id }}]">{{ data.author.name }}</a>						
+                {% if data.modified_time %}, {{ data.modified_date }} - {{ data.modified_time }}{% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <nav class="tabs">
+        <ul>
+            <li class="page-title">
+                <span><strong>{{ TOOL_NAME }}</strong></span>
+            </li>
+        {% set position =  ''  %}
+        {% for tab in TABS|reverse %}
+            {% if tab.a_class == 'sel' %} 
+            {% set position =  tab.link_name  %}
+            {% endif %}
+            <li {{ tab.li_class }}>
+                <a class="tabHelp tab{{ tab.a_class }}" href="{{ ADMIN_URL }}/{{ tab.pos }}"><i class="fa fa-fw fa-{{ tab.icon }}"></i>&nbsp; {{ L_(tab.link_name) }}</a>
+            </li>
+        {% endfor %}
+        </ul>					
+    </nav> 
+    <div class="wrapBody">		
+        {{ MESSAGE_BOX }} 
+        <noscript>NO JAVASCRIPT</noscript> 
+        
+        {% block content %}{% endblock %}
+    </div>
+</div>
+    {#{ debug_dump(dump()) }#}
+        {{ position }}
+{% if droplets %}
+<div class="Inset" id="privacyPolicy">
+    <img src="{{ ADDON_URL }}/img/droplets_logo.png" style="max-width:250px"/>
+        <p style="margin:0"><strong>Version {{ module_version }}</strong></p>
+        <button type="button" 
+                data-redirect-location="http://addons.wbce.org/pages/droplets.php" 
+                data-new-window="true">{{ L_('DR_TEXT:DOWNLOAD') }}</button>
+</div>
+{% endif %}

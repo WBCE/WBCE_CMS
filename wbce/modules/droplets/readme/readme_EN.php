@@ -1,33 +1,35 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Droplets Help</title>
-<link href="readme.css" rel="stylesheet" type="text/css" media="screen" />
-</head>
-<body>
-<h1><img src="../img/droplets_logo.png" alt="Droplets"></h1>
-<hr>
+<section class="help">
+    <h1><img src="<?=get_url_from_path(dirname(__DIR__))?>/img/droplets_logo.png" alt="Droplets"></h1>
+    <div class="authors">
+        <p><span>Developed by</span></p>
+             <p><b>Original authors:</b> Ruud <a href="https://dev4me.com/">Dev4me</a> and John (PCWacht)<br>
+           <b>Subsequent development:</b> Bianka Martinovic (WebBird), cwsoft, NorHei, Bernd, <br>Colinax, Christian M. Stefan (Stefek)<br>
+        </p>
+    </div> 
+    
+<h2>Introduction</h2> 
 <p>Droplets are small chunks of php code (just like the code2 module) that can be included in your template or any other content section.</p>
+
+<h2>Including a droplet call</h2> 
 <p>Including a droplet is done by encapsulating the droplet name in double square brackets.</p>
-<p>I.e. if you want to use the droplet &quot;ModifiedWhen&quot; (to show the last modified date and time of the current page) you only need to add <b>[[ModifiedWhen]]</b> to your template or WYSIWYG contentpage.</p>
+<p>I.e. if you want to use the droplet &quot;ModifiedWhen&quot; (to show the last modified date and time of the current page) you only need to add:</p> 
+<pre>[[ModifiedWhen]] <i style="color: #f1b04d">    // a Droplet call</i></pre>
+<p>to your template or WYSIWYG contentpage.</p>
+
+<h2>Blocking the execution of a Droplet call</h2> 
+<p>If you want to block the execution of a Droplet (temporarily), place the # symbol between the opening square brackets, like this:</p>
+<pre>[<b>#</b>[ModifiedWhen]] <i style="color: #f1b04d">    // commenting a Droplet</i></pre>
+<p>This will make sure that the Droplet code is not executed and nothing is rendered. </p>
+
+
+<h2>Coding Droplets</h2> 
 <p>You are encouraged to create your own droplets and share them with the community.</p>
-<h2>Installation</h2>
-<hr>
-<p>The Droplets management tool is installed as an admin tool. The installation is done using the usual &quot;Add module&quot; page in the WBCE backend.</p>
-<p>When the installation is successfull, there is a new tool added to the Admin-Tools overview.</p>
-<p>Clicking the tool will display the current installed droplets, and buttons to create new droplets or import existing ones.</p>
-<h2>Getting Droplets</h2>
-<hr>
-<p>Some ready-made Droplets are available at the <a href="https://addons.wbce.org/pages/droplets.php" target="_blank">WBCE AOR</a>.</p>
-<h2>Coding Droplets</h2>
-<hr>
 <p>Droplets run in PHP mode, so <span style="color: #ff0000; ">&lt;?php</span> or <span style="color: #ff0000; ">?&gt;</span> is neither necessary nor allowed in the code! If any of these tags are found in the code they will be removed. Your code will not run as expected.</p>
 <p>The droplet code can NOT echo or print data to the output stream directly. The Droplet name is replaced by the return value of the PHP code.<br />
  Example: [[HelloWorld]]</p>
 <br>
-<p><span style="color: #ff0000;">Wrong code:</span> echo &quot;Hello World&quot;;</p>
-<p><span style="color: #339966;">Correct code:</span> return &quot;Hello World&quot;;</p>
+<p><span style="color: #ff0000;">Wrong code:</span><pre> echo &quot;Hello World&quot;;</pre></p>
+<p><span style="color: #339966;">Correct code:</span><pre> return &quot;Hello World&quot;;</pre></p>
 <br>
 <p>Droplets can modify the complete page content.</p>
 <p>When the Droplet is called, an extra variable ($wb_page_data) is made available.</p>
@@ -41,9 +43,7 @@
 <p>Droplets do not need to return any data. When you end your code with</p>
 <pre>return true;</pre>
 <p>there will not be an errormessage. The processed Droplet tag will be removed.</p>
-<h2>Getting help</h2>
-<hr>
-<br>
+
+<h2>Getting help</h2> 
 <p>If you run into issues with Droplets, have a look at the <a href="https://forum.wbce.org/viewforum.php?id=36" target="_blank">WBCE Forum</a>.</p>
-</body>
-</html>
+</section>
