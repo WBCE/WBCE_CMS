@@ -21,6 +21,7 @@
 /**
  *      CHANGELOG
  *
+ *      1.1.7   2023-02-7       - add improved obfuscation for emails (Stefek)
  *      1.1.7   2021-06-12      - fix fatal error in mailto links (colinax)
  *                              - cs fixed and formatted files (colinax)
  *      1.1.6   2021-05-31      - fix mailto links with font awesome (florian)
@@ -60,7 +61,7 @@ if (!defined('WB_PATH')) {
 $module_directory   = 'mod_opf_email';
 $module_name        = 'OPF E-Mail';
 $module_function    = 'tool';
-$module_version     = '1.1.7';
+$module_version     = '1.1.8';
 $module_platform    = 'WBCE 1.x';
 $module_author      = 'Martin Hecht (mrbaseman)';
 $module_license     = 'GNU GPL2 (or any later version)';

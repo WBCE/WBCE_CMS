@@ -34,7 +34,7 @@ $module_description = 'A tool to configure the basic output filter of WB(CE)';
 
 // Headings and text outputs
 $OPF['HEADING'] = 'Indstillinger: Output-filter';
-$OPF['HOWTO'] = 'Du kan konfigurere output-filteret med indstillingerne nedenfor.<p style="line-height:1.5em;"><strong>Tip: </strong>Mailadresser kan krypteres vedhj&Atilde;&brvbar;lp af en  Javascript-funktion. For at g&Atilde;�re brug af denne indstilling, skal du tilf&Atilde;�je PHP-koden <code style="background:#FFA;color:#900;"><?php register_frontend_modfiles(js);?></code> til <head> sektionnen af  index.php i din template (layout-skabelon). Uden denne &Atilde;&brvbar;ndring vil kun @-tegnet i email-adressen blive erstattet.</p>';
+$OPF['HOWTO'] = 'Du kan konfigurere output-filteret med indstillingerne nedenfor.'; 
 $OPF['WARNING'] = '';
 
 // Text and captions of form elements
