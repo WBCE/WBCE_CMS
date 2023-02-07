@@ -1,3 +1,5 @@
+{% extends "_framer.twig" %}
+{% block content %} 
 <h2>{{ L_('L:TXT_OUTPUTFILTER') }}</h2>
 <form name="edit_css" class="modify_settings" action="{{ tpl_save_url }}" method="post">
     {{ FTAN }}
@@ -28,4 +30,6 @@
         </table>
     </div>
 </form>
-{{ CodeMirror('css', 'css', {'readOnly': true, 'height': 650 }) }}
+{{ CodeMirror('css', 'css', {'readOnly': false, 'height': 650 }) }}
+
+{% endblock %}

@@ -34,29 +34,39 @@ backend_body.js
  *
  **/
 
-$(document).ready(function()
+var MODULE_URL = ADMIN_URL + '/admintools/tool.php?tool=outputfilter_dashboard';
+var ICONS = IMAGE_URL;
+var AJAX_PLUGINS =  WB_URL + '/modules/outputfilter_dashboard/ajax';
+$(document).ready(function ()
 {
-// ---| insert jQuery Dialogue CSS & JS Files
-    if($("#dashboard").length) {
-       $.insert(WB_URL+"/modules/outputfilter_dashboard/dialog/jquery.dialog.css");
-       $.insert(WB_URL+"/modules/outputfilter_dashboard/dialog/jquery.dialog.js");
-      }
-// ---| show upload area
-  $("button.show-upload").click(function() {
-    $("#upload-panel").slideToggle("fast");
-  });
+    // ---| insert jQuery Dialogue CSS & JS Files
+    if ($("#dashboard").length) {
+        $.insert(WB_URL + "/modules/outputfilter_dashboard/dialog/jquery.dialog.css");
+        $.insert(WB_URL + "/modules/outputfilter_dashboard/dialog/jquery.dialog.js");
+    }
+    // ---| show upload area
+    $("button.show-upload").click(function () {
+        $("#upload-panel").slideToggle("fast");
+    });
 
-// ---| show upload area
-  $("p#close-panel img").click(function() {
-    $("#upload-panel").slideToggle("fast");
-  });
+    // ---| show upload area
+    $("p#close-panel img").click(function () {
+        $("#upload-panel").slideToggle("fast");
+    });
+    
+    $('*[data-redirect-location]').on( "click", function () {        
+        var uri = $(this).data('redirect-location');
+        if ($(this).data('new-window')) {
+            window.open(uri, '_blank');
+        } else {            
+            window.location = uri;
+        }
+    });
 });
 
 // --| drag&drop
 
-var MODULE_URL = ADMIN_URL + '/admintools/tool.php?tool=outputfilter_dashboard';
-var ICONS = IMAGE_URL;
-var AJAX_PLUGINS =  WB_URL + '/modules/outputfilter_dashboard/ajax';
+
 
 
 $(function() {
@@ -90,7 +100,7 @@ Original copyright notice follows:
 /**
     Project: CheckTree jQuery Plugin
     Version: 0.22
-    Project Website: http://static.geewax.org/checktree/
+    Project Website: http://static.geewax.org/checktree/index.html
     Author: JJ Geewax <jj@geewax.org>
 
     License:

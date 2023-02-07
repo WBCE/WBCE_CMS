@@ -58,8 +58,8 @@ if(is_dir(WB_PATH.'/temp')){
 } else {
     opf_io_mkdir(WB_PATH.MEDIA_DIRECTORY.'/opf_plugins');
 }
-opf_db_run_query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_outputfilter_dashboard`");
-opf_db_run_query("CREATE TABLE `".TABLE_PREFIX."mod_outputfilter_dashboard` (
+opf_db_run_query("DROP TABLE IF EXISTS `{TP}mod_outputfilter_dashboard`");
+opf_db_run_query("CREATE TABLE {TP}mod_outputfilter_dashboard` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `userfunc` TINYINT NOT NULL DEFAULT '0',
     `position` INT NOT NULL DEFAULT '0',
@@ -107,3 +107,22 @@ if(!defined('WB_INSTALLER')){
         }
     }
 }
+
+//frontend
+Settings::Set('opf_droplets',1, false);
+Settings::Set('opf_auto_placeholder',1, false);
+Settings::Set('opf_move_stuff',1, false);
+Settings::Set('opf_replace_stuff',1, false);
+Settings::Set('opf_css_to_head',1, false);
+Settings::Set('opf_wblink',1, false);
+Settings::Set('opf_short_url',0, false);
+Settings::Set('opf_sys_rel',0, false);
+Settings::Set("opf_remove_system_ph", 1, false)  ;
+
+//backend
+Settings::Set('opf_droplets_be',1, false);
+Settings::Set('opf_auto_placeholder_be',1, false);
+Settings::Set('opf_move_stuff_be',1, false);
+Settings::Set('opf_replace_stuff_be',1, false);
+Settings::Set('opf_css_to_head_be',0);
+Settings::Set("opf_remove_system_ph_be", 1, false);
