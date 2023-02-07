@@ -62,21 +62,20 @@ function opff_droplets (&$content, $page_id, $section_id, $module, $wb) {
                     // the hash symbol will cause the droplet to be excluded from output
                     $content = preg_replace('/\[\#\[[^]]*]]/', '', $content);
                 }
+         
+                // load filter function
+                if(function_exists('evalDroplets')) {
+                   $content = evalDroplets(
+                           $content, 
+                           (($page_id === 'backend') ? 'backend' : 'frontend'));
+                }
                 
                 if (strpos($content, '[\[') !== false) {
                     // Replace escaped droplets and display them just like correct Droplet calls			
                     // example FE: [\[Lorem?blocks=6]]
                     // the backslash symbol will cause the droplet to be shown as is
-                    $content = preg_replace('/\[\\\\\[(\S+)]*]]/', '[\[${1}]]', $content); 					
+                    $content = preg_replace('/\[\\\\\[(\S+)]*]]/', '[[${1}]]', $content); 					
                 } 
-
-                
-                // load filter function
-               if(function_exists('evalDroplets')) {
-                   $content = evalDroplets(
-                           $content, 
-                           (($page_id === 'backend') ? 'backend' : 'frontend'));
-               }
         }
     }
     return(TRUE);
