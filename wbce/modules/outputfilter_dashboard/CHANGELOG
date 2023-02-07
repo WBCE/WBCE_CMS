@@ -2,6 +2,10 @@
 Header: Version-History
 
 1.6:
+1.6.3  %(Stefek, 04 Febr 2023)%
+        - add file `allways_active_array.php` that contains an array of the
+           filters that should never be disable (deactivated) 
+
 1.6.2  %(Stefek, 31 Jan 2023)%
         - change the delete mechanism to a jquery/ajax based inline confirm prompt
 

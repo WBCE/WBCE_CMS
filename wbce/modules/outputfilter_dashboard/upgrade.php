@@ -154,6 +154,7 @@ if(is_array($filters)) {
 rm_full_dir(__DIR__ . '/templates/'); 
 
 # these files were renamed to be grouped with tool.php
+opf_io_unlink(__DIR__.'/debug_conf.php');        // new name: no replacement
 opf_io_unlink(__DIR__.'/add_filter.php');        // new name: tool_add_filter.php
 opf_io_unlink(__DIR__.'/edit_filter.php');       // new name: tool_edit_filter.php
 opf_io_unlink(__DIR__.'/css.php');               // new name: tool_edit_css.php

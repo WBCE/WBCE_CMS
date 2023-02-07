@@ -1,0 +1,38 @@
+<div class="pane">
+    <div class="pageinfo">
+        <div style="float:right; margin: 0 12px;">            
+            <a href="{{ tpl_help_url }}" onclick="{{ tpl_help_onclick }}" target="help" title="{{ L_('L:TXT_HELP_BROWSER') }}">
+                <img src="{{ IMAGE_URL }}/help.png" alt="[?]" /> {{ L_('L:TXT_HELP') }}
+            </a>
+            &nbsp;
+            <a href="javascript:(showDialog('About',document.getElementById('about').innerHTML,'message', 450, 400, false, false, true, 1));" title="{{ L_('L:TXT_ABOUT') }}">
+                <img src="{{ IMAGE_URL }}/info.gif" alt="[i]" /> {{ L_('L:TXT_ABOUT') }}
+            </a>
+        </div>
+        <div class="cpLastchange">
+            {% if data.author %}
+                {{ L_('MESSAGE:PAGES_LAST_MODIFIED') }} <a href="" title="{{ data.author.login_name }} [user-id: {{ data.author.id }}]">{{ data.author.name }}</a>						
+                {% if data.modified_time %}, {{ data.modified_date }} - {{ data.modified_time }}{% endif %}
+            {% endif %}
+            
+        </div>
+    </div>
+    <nav class="tabs">
+        <ul>
+            <li class="page-title">
+                <span><strong>{{ TOOL_NAME }}</strong></span>
+            </li>
+        {% for tab in TABS|reverse %}
+            <li {{ tab.li_class }}>
+                <a class="tabHelp tab{{ tab.a_class }}" href="{{ tab.pos }}"><i class="fa fa-fw fa-{{ tab.icon }}"></i>&nbsp; {{ L_(tab.link_name) }}</a>
+            </li>
+        {% endfor %}
+        </ul>					
+    </nav> 
+    <div class="wrapBody">		
+        {{ MESSAGE_BOX }} 
+        <noscript>NO JAVASCRIPT</noscript> 
+        
+        {% block content %}{% endblock %}
+    </div>
+</div>

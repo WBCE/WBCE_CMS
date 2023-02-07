@@ -42,13 +42,6 @@ $ModDir  = basename(__DIR__);
 $ModUrl  = WB_URL."/modules/".$ModDir;
 $ToolUrl = $returnUrl;
 
-// Get language files. EN first (fallback)
-if (is_readable($langEN = __DIR__.'/language/EN.php'))
-    include $langEN;
-if (LANGUAGE != 'EN'){
-    if (is_readable($langFile = __DIR__.'/language/'.LANGUAGE.'.php')) 
-    include($langFile);
-}
 $L = $LANG['MOD_OPF']; // rename long hand array name to $L for easy access in templates
 
 // load outputfilter-functions
@@ -59,6 +52,12 @@ $ftan = $admin->getFTAN(); // set Form TransAction Number
 // remove all "filters" with no name
 $database->query("DELETE FROM `{TP}mod_outputfilter_dashboard` WHERE `name` = ''");
 
+$aCssFiles = [
+    get_url_from_path($admin->correct_theme_source('../css/ACPI_backend.css')),
+    get_url_from_path($admin->correct_theme_source('../css/ACPI_content.css')),
+    get_url_from_path($admin->correct_theme_source('../css/ACPI_buttons.css'))
+];
+I::insertCssFile($aCssFiles, 'HEAD TOP+');
 // start Twig object
 $sTwigPath = __DIR__ . '/twig/';
 $oTwig = getTwig($sTwigPath);
@@ -188,22 +187,5 @@ if ($add && $doSave )     { require __DIR__ . '/tool_add_filter.php'; }
 elseif ($id && $edit )    { require __DIR__ . '/tool_edit_filter.php'; }
 elseif ($id && $csspath ) { require __DIR__ . '/tool_edit_css.php'; }
 else {
-     
-    
-    $simple_backend = dirname(__DIR__) . "/opf_simple_backend/tool.php";
-    if (file_exists($simple_backend)) {
-        if (isset($_POST['show_advanced_backend']) || !Settings::Get('opf_show_advanced_backend', TRUE)) {
-            include($simple_backend);
-            if (!Settings::Get('opf_show_advanced_backend', TRUE)) {
-                // exit here, don't show the advanced dashboard
-                $admin->print_footer();  exit(0);
-            }
-        }
-        
-        require __DIR__ . '/tool_dashboard.php';    
-        $advanced_backend = dirname(__DIR__) . "/opf_simple_backend/advanced.php";
-        if (file_exists($advanced_backend) ){
-          include($advanced_backend);
-        }       
-    }
+    require __DIR__ . '/tool_dashboard.php';  
 }

@@ -63,12 +63,12 @@ if (!is_array($filters))
     $filters = array();
 $old_type = ''; // remember last type in foreach loop below, 
                 // to draw a separator in case type changed
-
 // loop through fliters and process their values
 foreach($filters as $filter) {    
     
     $filter_id = $filter['id'];
     $sFilterUri = $ToolUrl.'&amp;id='.$filter_id.'&amp;';
+    $filter['funcname']          = $filter['funcname'];
     $filter['helppath']          = unserialize($filter['helppath']);
     $filter['desc']              = unserialize($filter['desc']);
     $filter['modules']           = unserialize($filter['modules']);
@@ -92,7 +92,9 @@ foreach($filters as $filter) {
     $filter['last_touched'] = FALSE;
     if ($filter['id'] == $id){
         $filter['last_touched'] = TRUE;
-    }                       
+    } if (isset($_GET['last']) && $_GET['last'] == $filter['id']) {
+        $filter['last_touched'] = TRUE;        
+    }                      
 
     // line to separate filter-types
     $filter['sep_line'] = FALSE;
@@ -135,6 +137,7 @@ foreach($filters as $filter) {
     $filter['type_id'] = $filter['type'];
     $filter['type'] = $types[$filter['type_id']];
     
+    
     $aFilters[] = $filter;
 }
 
@@ -159,12 +162,14 @@ $aToTwig += array(
     'tpl_tool_url'            => opf_quotes($ToolUrl)
 );
    
+$arr_allways_active = include __DIR__ . '/allways_active_array.php';
 $aAllFilters = [];
 foreach($aFilters as $filter){        
     $aSingleFilter = array(
         'filter_id'        => $filter['id'],
         'filter_name'      => opf_quotes($filter['name']),
         'filter_desc'      => opf_quotes($filter['desc']),
+        'funcname'         => $filter['funcname'],
         'type_id'          => $filter['type_id'],
         'type'             => ($filter['plugin']!='') ? "plugin" :(($filter['userfunc']) ? "inline" : "extension"),     
         'type_sep_line'    => ($filter['sep_line']),
@@ -178,6 +183,8 @@ foreach($aFilters as $filter){
         'css_link'         => opf_quotes($filter['css_link']),
         'deletable'        => ($filter['userfunc'] || $filter['plugin']), // 1 : 0
         'filter_export_link'=> opf_quotes($filter['export_link']),
+        'check_disabled'   => (in_array($filter['funcname'], $arr_allways_active)) ? 'disabled' : ''
+
         
     );
     $aAllFilters[] = $aSingleFilter;

@@ -1,10 +1,12 @@
-<h1>{{ L_('L:TXT_OUTPUTFILTER_DASHBOARD') }}</h1>
+{% extends "_framer.twig" %}
+{% block content %} 
+    
 <noscript>
     <style type="text/css">.hideupload {display:block;}</style>
     <div class="warning">{{ L_('L:TXT_ACTIVATE_JS') }}</div>
 </noscript>
 
-<table cellpadding="0" cellspacing="0"  width="100%" style="margin-top:10px;margin-bottom:10px">
+<table cellpadding="0" cellspacing="0"  width="100%" style="margin:10px">
     <tr>
         <td align="left">
             <form action="{{ tpl_add_onclick }}" method="POST">
@@ -13,15 +15,6 @@
                 <button type="submit" title="{{ L_('L:TXT_ADD_FILTER') }}"><i class="fa fa-code"></i>&nbsp; {{ L_('L:TXT_NEW_INLINEFILTER') }}</button>
                 <button type="button" id="show-upload" class="show-upload" title="{{ L_('L:TXT_UPLOAD_FILTER') }}"><i class="fa fa-upload"></i>&nbsp; {{ L_('L:TXT_UPLOAD_PLUGIN_FILTER') }}</button>
             </form>
-        </td>
-        <td align="right" valign="top"> &nbsp;
-            <a href="{{ tpl_help_url }}" onclick="{{ tpl_help_onclick }}" target="help" title="{{ L_('L:TXT_HELP_BROWSER') }}">
-                <img src="{{ IMAGE_URL }}/help.png" alt="[?]" /> {{ L_('L:TXT_HELP') }}
-            </a>
-            &nbsp;
-            <a href="javascript:(showDialog('About',document.getElementById('about').innerHTML,'message', 450, 400, false, false, true, 1));" title="{{ L_('L:TXT_ABOUT') }}">
-                <img src="{{ IMAGE_URL }}/info.gif" alt="[i]" /> {{ L_('L:TXT_ABOUT') }}
-            </a>
         </td>
     </tr>
 </table>
@@ -54,24 +47,24 @@
         </thead>
         <tbody>
             
-        {# Filter List #}        
-        {% for f in filters %}
-            {% set IDKEY = getIDKEY(f.filter_id) %}
-            {% if f.type_sep_line %}
-            </tbody> 
-                     
-            <tbody class="{{ f.type_id }}">
-                <tr class="sticky"><td colspan="11">&nbsp;{{ f.type_name }}</td></tr>
-            </tbody>   
-            <tbody class="{{ f.type_id }}">
-                <tr style="line-height: 0;"><td colspan="13"style="line-height: 0;"></td></tr>
-            {% endif %}
+    {# Filter List #}        
+    {% for f in filters %}
+        {% set IDKEY = getIDKEY(f.filter_id) %}
+        {% if f.type_sep_line %}
+        </tbody> 
+
+        <tbody class="{{ f.type_id }}">
+            <tr class="sticky"><td colspan="11">&nbsp;{{ f.type_name }}</td></tr>
+        </tbody>   
+        <tbody class="{{ f.type_id }}">
+            <tr style="line-height: 0;"><td colspan="13"style="line-height: 0;"></td></tr>
+        {% endif %}
         <tr class="{{ f.additional_class }} {{ f.filter_active }}" id="{{ f.filter_id }}" data-idkey="id_{{ IDKEY }}">
             <td align="center" class="status">
-                <input type="checkbox" id="switch_{{ f.filter_id }}" switch="bool" {% if f.filter_active == 'active' %} checked{% endif %} /><label for="switch_{{ f.filter_id }}"></label>
+                <input type="checkbox" id="switch_{{ f.filter_id }}" switch="bool" {% if f.filter_active == 'active' %} checked{% endif %} {{ f.check_disabled }}/><label for="switch_{{ f.filter_id }}"></label>
             </td>
             <td>
-                <a href="{{ f.editlink }}" title="{{ L_('L:TXT_EDIT_FILTER') }}"><nobr>{{ f.filter_name }}</nobr></a>
+                <a href="{{ f.editlink }}" title="{{ L_('L:TXT_EDIT_FILTER') }}"><nobr data-funcname="{{ f.funcname }}">{{ f.filter_name }}</nobr></a>
             </td>
 
             <td>&nbsp;</td>
@@ -106,7 +99,7 @@
                     <img src="{{ IMAGE_URL }}/export_16.png" alt="=>>" /></a>
                 {% endif %}
             </td>
-            <td style="width:2%" class="dragdrop_item">&nbsp;</td>
+            <td class="dragdrop_item">&nbsp;</td>
         </tr>
         
         {% endfor %}
@@ -191,3 +184,5 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://ww
 // --></script>
 <!-- END upload_block -->
 {% endif %}
+
+{% endblock %}
