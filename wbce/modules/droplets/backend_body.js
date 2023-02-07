@@ -2,15 +2,29 @@ if ( typeof jQuery != 'undefined' ) {
 jQuery(document).ready(function($) {
   if ( typeof $.tablesorter != 'undefined' ) {
     $("#myTable").tablesorter({
+        textExtraction: function(node) {
+            var attr = $(node).attr('data-sort-timestamp');
+            if (typeof attr !== 'undefined' && attr !== false) {
+                return attr;
+            }
+            return $(node).text(); 
+        } ,
         headers: {
           0: {sorter: false},
           4: {sorter: false}
-        },
-        widgets: ['zebra'],
-        widgetZebra: {
-            css: ['row_b','row_a']
         }
     });
   }
+  
+    $('*[data-redirect-location]').on( "click", function () {        
+        var uri = $(this).data('redirect-location');
+        if ($(this).data('new-window')) {
+            window.open(uri, '_blank');
+        } else {            
+            window.location = uri;
+        }
+    });
 });
 }
+
+

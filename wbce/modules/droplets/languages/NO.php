@@ -2,12 +2,17 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * Visit http://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
+ */
+ 
+/*
+ * Norwegian Language file 
+ * Translated by Odd Egil Hansen (oeh)
  */
 
 $module_description = 'Dette verkt&oslash;yet lar deg administrere "Droplettene" dine.';
@@ -21,7 +26,7 @@ $DR_TEXT['DEL_INFO'] = '(Please note: A backup will be created automatically.)';
 $DR_TEXT['DELETE_ALL'] = 'Slett alle';
 $DR_TEXT['DELETED'] = 'Droplet(s) deleted. Please note: A backup was created before deleting.';
 $DR_TEXT['DOWNLOAD'] = 'Download more Droplets';
-$DR_TEXT['DROPLETS'] = 'Droplet';
+$DR_TEXT['DROPLETS'] = 'Droplets';
 $DR_TEXT['DUPLICATE'] = 'Duplicate droplet';
 $DR_TEXT['EXPORT'] = 'Eksporter';
 $DR_TEXT['HELP'] = 'Hjelp / Les Meg';

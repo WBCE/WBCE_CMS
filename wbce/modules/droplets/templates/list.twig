@@ -1,94 +1,101 @@
-<script type="text/javascript" src="{{ WB_URL }}/modules/droplets/js/jquery.tablesorter.js"></script>
-
-<br />
-<button class="button" type="button" name="add_droplet" onclick="javascript: window.location = '{{ WB_URL }}/modules/droplets/add_droplet.php';">
-    {{ TEXT.ADD|raw }}&nbsp;{{ DR_TEXT.DROPLETS|raw }}
-</button>
-<button class="button" type="button" name="upload_droplet" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;upload=1';">
-    {{ DR_TEXT.UPLOAD|raw }}
-</button>
-<button class="button" type="button" name="backup" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=backup_droplets'">
-    {{ DR_TEXT.BACKUP|raw }}
-</button>
-{% if backup_mgmt %}
- <button class="button" type="button" name="backup_mgmt" onclick="javascript: window.location = '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=manage_backups';">
-    {{ DR_TEXT.MANAGE_BACKUPS|raw }}
-</button>
-{% endif %}
-
-<a href="#" style="float:right" onclick="javascript: window.open('{{ WB_URL }}/modules/droplets/readme/{{ DR_TEXT.README|raw }}','helpwindow','width=700,height=550,directories=no,location=no,menubar=no,scrollbars=yes,status=no,toolbar=no,resizable=yes');">
-	<img src="{{ WB_URL }}/modules/droplets/img/help.png" alt="{{ DR_TEXT.HELP|raw }}" />
-</a>
-
-<br />
-
-{% if info %}
-{{ info|raw }}
-{% endif %}
-
-<form method="post" action="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets">
-{{ FTAN|raw }}
-<table class="droplets row_a tablesorter" border="0" id="myTable">
+{% if info %}{{ info }}{% endif %}
+<script>
+    var DROPLETS_SHOW_DATE = {% if show_date %}{{ show_date }}{% else %}0{% endif %};
+</script>
+<div style="padding:10px 15px 0;">
+    <a class="button" href="{{ MODULE_DIR }}/add_droplet.php"><i class="fa fa-fw fa-tint"></i>{{ L_('DR_TEXT:ADD_DROPLET') }}</a>
+</div>
+<form method="post" action="{{ TOOL_URI }}">
+    {{ FTAN }}
+    <table class="droplets row_a tablesorter filters-table" id="myTable">
 	<thead>
-		<tr>
-			<th width="10%"></th>
-			<th width="20%">{{ TEXT.NAME|raw }}</th>
-			<th width="55%">{{ TEXT.DESCRIPTION|raw }}</th>
-			<th width="7%">{{ TEXT.ACTIVE|raw }}</th>
-			<th width="3%"></th>
-		</tr>
+            <tr>
+                <th width="40"></th>
+                <th width="25%">{{ L_('TEXT:NAME') }}</th>
+                <th>{{ L_('TEXT:DESCRIPTION') }}</th>
+                {% if show_date %}
+                <th width="6%">{{ L_('TEXT:DATE') }}</th>
+                {% endif %}
+                <th width="6%">{{ L_('TEXT:ACTIVE') }}</th>
+                <th width="7%"></th>
+            </tr>
 	</thead>
 	<tbody>
-{% set num_droplets = "" %}
-{% for item in droplets %}
-{% if loop.last %}{% set num_droplets = loop.index %}{% endif %}
-   	    <tr class="row_{% if loop.index % 2 %}b{% endif %}">
-			<td style="white-space:nowrap;">
-                <input type="checkbox" name="markeddroplet[]" id="markeddroplet[]" value="{{ item.id }}" />
-				<a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}" title="{{ TEXT.MODIFY|raw }}">
-					<span class="fa fa-fw fa-edit"></span>
-				</a>
-				<a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;copy={{ item.id }}" title="{{ DR_TEXT.DUPLICATE|raw }}">
-                    <span class="fa fa-fw fa-copy"></span>
-                </a>
-                <a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}"  title="{{ item.comments|striptags|raw }}">
-                    <span class="fa fa-fw fa-info-circle"></span>
-                </a>
-                {% if item.valid_code and item.unique %}
-                    <span class="fa fa-fw fa-check"></span>
-                {% else %}
-                    <span class="fa fa-fw fa-warning" style="color:red"></span>
+        {% set num_droplets = "" %}
+        {% for item in droplets %}
+   	    <tr id="{{ item.id }}" class="{% if item.active == 0 %}inactive{% endif %}{% if item.name in hilite %} hilite{% endif %}" data-idkey="id_{{ getIDKEY(item.id) }}">
+                
+                <td style="white-space:nowrap">
+                    <label>
+                    <input type="checkbox" class="checker" name="markeddroplet[]" id="markeddroplet[]" value="{{ item.id }}" />
+                    {% if item.valid_code and item.unique %}
+                        <i class="fa fa-tint"></i>
+                    {% else %}
+                        <i class="fa fa-tint blinking text-danger" title="{{ L_('DR_TEXT:INVALIDCODE') }}!"></i>
+                    {% endif %}
+                    </label>
+                </td>
+                
+                <td style="white-space:nowrap" class="droplet-name">
+                    <a href="{{ TOOL_URI }}&amp;do=modify&amp;droplet_id={{ item.id }}" title="{{ L_('DR_TEXT:MODIFY_DROPLET') }}">
+                        <i class="fa fa-fw fa-edit"></i> {{ item.name }}
+                    </a>
+                </td>
+                
+                <td>
+                    <span class="show-droplet-code"><i class="fa fa-info-circle"></i> {{ item.description }}</span>          
+                    <div class="droplet-info" style="display:none;">
+                        <pre class="droplet-code">{{ item.comments }}</pre>
+                        {% set TIMESTAMP = item.modified_when + constant('TIMEZONE') %}
+                        <p class="droplet-code"><em>{{ L_('MESSAGE:PAGES_LAST_MODIFIED') }} {{ get_user_name(item.modified_by) }}, {{ TIMESTAMP|date(constant('DATE_FORMAT')~ ' ' ~constant('TIME_FORMAT')) }}</em></p>
+                    </div>
+                </td>
+                
+                {% if show_date %}
+                <td class="modify-date" data-sort-timestamp="{{ TIMESTAMP }}">                    
+                    {{ TIMESTAMP|date(constant('DATE_FORMAT')) }} 
+                </td>
                 {% endif %}
-			</td>
-			<td>
-                <a href="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=modify&amp;droplet_id={{ item.id }}" title="{{ TEXT.MODIFY|raw }}">{{ item.name }}</a>
-			</td>
-			<td>
-				<small>{{ item.description|raw }}</small>
-			</td>
-			<td>
-				<strong>{% if item.active == 1 %}<span style="color: green;">{{ TEXT.YES }}</span>{% else %}<span style="color: red;">{{ TEXT.NO }}</span>{% endif %}</strong>
-			</td>
-			<td>
-				<a href="javascript: confirm_link('{{ TEXT.ARE_YOU_SURE|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;do=delete&amp;droplet_id={{ item.id }}');" title="{{ TEXT.DELETE|raw }}">
-					<span class="fa fa-fw fa-trash"></span>
-				</a>
-			</td>
-		</tr>
+                <td class="status">                     
+                    <span style="display:none;">{% if item.active %}1{% else %}0{% endif %}</span>    
+                    <input type="checkbox" id="switch_{{ item.id }}" switch="bool" {% if item.active == 1 %}checked{% endif %}  /><label for="switch_{{ item.id }}"></label>
+                </td>
+                
+                <td style="white-space:nowrap; text-align: center;">
+                    <a href="javascript: confirm_link('{{ item.name }}: {{ L_('DR_TEXT:DUPLICATE') }}?', '{{ TOOL_URI }}&amp;copy={{ item.id }}');" title="{{ L_('DR_TEXT:DUPLICATE') }}">
+                        <i class="fa fa-fw fa-copy"></i>
+                    </a>                    
+                    <a href="javascript:void(0)" class="delete-item" 
+                       title="{{ L_('TEXT:DELETE') }}" 
+                       data-question="&raquo;<b>%s</b>&laquo; {{ L_('DR_TEXT:DROPLET_DELETE') }}" 
+                       data-delete="{{ L_('TEXT:DELETE') }}" 
+                       data-cancel="{{ L_('TEXT:CANCEL') }}"
+                       data-del-uri="{{ TOOL_URI }}&amp;do=delete&amp;droplet_id={{ item.id }}"
+                       >
+                        <i class="fa  fa-fw fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
 {% endfor %}
-    </tbody>
-    <tr class="">
-        <td colspan="5" style="text-align: right; border-top: 1px solid #000; border-bottom: 3px double #000;">{{ num_droplets }}</td>
-    </tr>
-</table><br />
-
-{{ DR_TEXT.MARKED }}:
-<input type="submit" class="button" name="export" id="export" value="{{ DR_TEXT.EXPORT|raw }}" />
-<input type="submit" class="button" name="delete" id="delete" value="{{ TEXT.DELETE|raw }}" onclick="javascript: alert('{{  DR_TEXT.DELETED|raw }}', '{{ ADMIN_URL }}/admintools/tool.php?tool=droplets');" />
-<span style="font-size:smaller">{{ DR_TEXT.DEL_INFO|raw }}</span>
-</form><br />
-
-<div style="text-align:center;background-color:#fff;border:1px solid #aaa;padding:15px;">
-    <strong>Droplets V{{ module_version }}</strong><br />
-    [ <a href="http://addons.wbce.org/pages/droplets.php" target="_blank">{{ DR_TEXT.DOWNLOAD|raw }}</a> ]
+        </tbody>
+    <tfoot>
+        <tr>     
+            <td colspan="2"><label style="font-weight:600"><input type="checkbox" id="checkAll" /> {{ droplets|length }} Droplets</label></td>
+            <td align="right" colspan="{% if show_date %}4{% else %}5{% endif %}">
+                <label style="font-weight:600">
+                    <input type="checkbox" id="show_date" {% if show_date %}checked{% endif %} data-uri="{{ TOOL_URI }}&amp;do=show_date&amp;val={% if show_date %}{{ show_date }}{% else %}0{% endif %}" /> {{ L_('DR_TEXT:SHOW_DATE') }}
+                </label>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+    
+<div class="row" id="operateChecked" style="display:none">
+    {{ L_('DR_TEXT:MARKED') }}:
+    <button type="submit" class="button ico-export" name="export" id="export">{{ L_('DR_TEXT:EXPORT') }}</button>
+    <button type="submit" class="button ico-delete" name="delete" id="delete" onclick="javascript: alert('{{ L_('DR_TEXT:DELETED') }}', '{{ TOOL_URI }}');">{{ L_('TEXT:DELETE') }}</button>
+    <span style="font-size:smaller">{{ L_('DR_TEXT:DEL_INFO') }}</span>
 </div>
+</form>
+
+

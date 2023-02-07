@@ -34,7 +34,7 @@ $module_description = 'A tool to configure the basic output filter of WB(CE)';
 
 // Headings and text outputs
 $OPF['HEADING'] = 'Options: Output Filter';
-$OPF['HOWTO'] = 'You can configure the output filtering with the options below.<p style="line-height:1.5em;"><strong>Tip: </strong>Mailto links can be encrypted by a Javascript function. To make use of this option, one needs to add the PHP code <code style="background:#FFA;color:#900;">&lt;?php register_frontend_modfiles(\'js\');?&gt;</code> into the &lt;head&gt; section of the index.php of your template. Without this modification, only the @ character in the mailto part will be replaced.</p>';
+$OPF['HOWTO'] = 'You can configure the output filtering with the options below.'; 
 $OPF['WARNING'] = '';
 
 // Text and captions of form elements

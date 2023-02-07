@@ -75,6 +75,49 @@ function doFilterEmail($content)
 }
 
 /**
+ * @brief  Obfuscate email address while keeping it in a human readable format.
+ *         This solution is based on: http://www.wbwip.com/wbw/emailencoder.html
+ * 
+ * @param  string  $str
+ * @return string
+ */
+function readable_obfuscation($str){
+    $arr = [
+        'a' => '&#97;',
+        'b' => '&#98;',
+        'c' => '&#99;',
+        'd' => '&#100;',
+        'e' => '&#101;',
+        'f' => '&#102;',
+        'g' => '&#103;',
+        'h' => '&#104;',
+        'i' => '&#105;',
+        'j' => '&#106;',
+        'k' => '&#107;',
+        'l' => '&#108;',
+        'm' => '&#109;',
+        'n' => '&#110;',
+        'o' => '&#111;',
+        'p' => '&#112;',
+        'q' => '&#113;',
+        'r' => '&#114;',
+        's' => '&#115;',
+        't' => '&#116;',
+        'u' => '&#117;',
+        'v' => '&#118;',
+        'w' => '&#119;',
+        'x' => '&#120;',
+        'y' => '&#121;',
+        'z' => '&#122;',
+        
+        // further obfuscate `@` and `.` for email harvesting bots 
+        '@' => '<span>&#64;</span>', 
+        '.' => '<span>&#46;</span>',
+    ];
+    return strtr($str, $arr);
+}
+
+/**
  * callback-function for function _doFilterEmail() to proceed search results
  * @param array results from preg_replace
  * @return string proceeded replacement string
@@ -98,7 +141,8 @@ function _cbDoExecuteFilter($match)
                 return $match[0];
             }
             // filtering of non mailto email addresses enabled
-            return str_replace($search, $replace, $match[0]);
+            $replacement = str_replace($search, $replace, $match[0]);
+            return readable_obfuscation($replacement);
         break;
 
         case 6:
@@ -114,6 +158,7 @@ function _cbDoExecuteFilter($match)
                     foreach ($submatch as $value) {
                         // replace all . and all @ in email address parts by (dot) and (at) strings
                         $match[5] = str_replace($value, str_replace($search, $replace, $value), $match[5]);
+                        $match[5] = readable_obfuscation($match[5]);
                     }
                 }
             }

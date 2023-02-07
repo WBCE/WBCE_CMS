@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * Visit http://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -12,6 +12,9 @@
 
 $module_description = 'This tool allows for managing your local Droplets.';
 
+$DR_TEXT['SHOW_DATE'] = 'Show date';
+$DR_TEXT['ADD_DROPLET'] = $TEXT['ADD'].' Droplet';
+$DR_TEXT['MODIFY_DROPLET'] = $TEXT['MODIFY'].' Droplet';
 $DR_TEXT['ADMIN_EDIT'] = 'Edit-Only';
 $DR_TEXT['ADMIN_VIEW'] = 'View-Only';
 $DR_TEXT['BACKUP'] = 'Backup Droplets (Zip)';
@@ -21,8 +24,9 @@ $DR_TEXT['DEL_INFO'] = '(Please note: A backup will be created automatically.)';
 $DR_TEXT['DELETE_ALL'] = 'Delete all';
 $DR_TEXT['DELETED'] = 'Droplet(s) deleted. Please note: A backup was created before deleting.';
 $DR_TEXT['DOWNLOAD'] = 'Download more Droplets';
-$DR_TEXT['DROPLETS'] = 'Droplet';
+$DR_TEXT['DROPLETS'] = 'Droplets';
 $DR_TEXT['DUPLICATE'] = 'Duplicate droplet';
+$DR_TEXT['DROPLET_DELETE'] = $TEXT['DELETE'].' Droplet?';
 $DR_TEXT['EXPORT'] = 'Export';
 $DR_TEXT['HELP'] = 'Help / Readme';
 $DR_TEXT['IMPORT_ERRORS'] = 'Import errors';

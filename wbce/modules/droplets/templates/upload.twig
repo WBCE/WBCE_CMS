@@ -1,22 +1,31 @@
-    <form method="post" action="{{ ADMIN_URL }}/admintools/tool.php?tool=droplets&amp;upload=1" enctype="multipart/form-data" name="upload">
-    {{ FTAN|raw }}
-      <fieldset class="fieldset">
-        <legend>{{ DR_TEXT.UPLOAD }}</legend>
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <input type="file" name="userfile" size="50" />
+<h2>{{ L_('DR_TEXT:UPLOAD') }}</h2>
+{% if result.imported %}
+    <div class="row">
+        <ol>
+        {% for item in result.imported %}
+            <li>Droplet: <b>{{ item }}</b></li>
+        {% endfor %}  
+        </ol>
+    </div>
+{% endif %}
+{% if result.errors %}
+    <div class="alert alert-danger">
+    {% for item in result.errors %}
+        <b>{{ item }}</b><br>
+    {% endfor %}  
+    </div>
+{% endif %}
+<div class="cpForm">  
+    <form method="post" action="{{ TOOL_URI }}&amp;upload=1" enctype="multipart/form-data" name="upload">
+        {{ FTAN }}
+        <div class="text-center" style="padding:1rem;">
+            <input type="file" name="userfile" size="50" />
                 <script type="text/javascript">document.upload.userfile.focus();</script>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <input type="submit" class="button" value="{{ DR_TEXT.UPLOAD }}" name="submit" />
-                <input type="submit" class="button" value="{{ TEXT.CANCEL }}" name="cancel" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </fieldset>
+        </div>    
+            
+        <div class="buttonsRow">
+            <button class="button ico-back" type="button" data-redirect-location="{{ TOOL_URI }}">{{ L_('TEXT:BACK') }}</button>
+            <button type="submit" name="submit" class="button ico-upload pos-right">{{ L_('DR_TEXT:UPLOAD') }}</button>
+        </div>
     </form>
+</div>

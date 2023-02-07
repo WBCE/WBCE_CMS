@@ -2,6 +2,18 @@ ul, li {
     list-style: none;
     margin: 0;
     padding: 0;
+}    
+.pane h2 {
+    margin: .4em .5em;
+}
+.pane h2 span{
+    font-weight: 400;
+}
+div.formRow .settingValue{
+    line-height: 1.9;
+}
+div.formRow .settingValue label{
+    font-weight:500 !important;
 }
 .setting_name {
     vertical-align: top;
@@ -14,13 +26,12 @@ thead {
     background-color: #c7d1db !important;
     height: 25px;
 }
-.row_om_out {
-    background: #ecf4f5;
-    border: outset 1px #a5b3b4;
+
+.card .pane>.tabs li.page-title{
+        margin-bottom: 0;
 }
-.row_om_over {
-    background: #ffffe0;
-    border: outset 1px #679b38;
+.card .pane>.tabs li.page-title{
+        margin-bottom: 1px;
 }
 a.tooltip span {
     display: none;
@@ -35,11 +46,7 @@ a.tooltip:hover span {
     background: #ffffff;
     color: #000000;
 }
-.button {
-    border: outset 1px #315e8d;
-    padding: 5px;
-    width: 15em;
-}
+
 div.drok, div.drfail {
     border: solid 1px #006600;
     color: #006600;
@@ -52,48 +59,43 @@ div.drfail {
 }
 table.droplets {
     width: 100%;
+    margin-top: 10px;
 }
 table.droplets th {
-    background-color: #e6EEEE;
     border: 1px solid #FFF;
     padding: 4px;
     font-size: 12px;
     font-weight: 900;
 }
+table.droplets td {
+    padding: 4px;
+    vertical-align: top;
+}
 table.droplets .newdroplet {
     background-color: #e6eeee !important;
 }
-table.droplets tr.odd td {
-    background-color: #fff !important;
-}
-table.droplets tr.even td {
-    background-color: #e6eeee !important;
-}
-table.tablesorter {
-    background-color: #CDCDCD;
-    margin: 10px 0 15px;
-    width: 100%;
-    text-align: left;
-    font-size: 12px;
-}
+
 table thead tr th, table.tablesorter tfoot tr th {
     background-color: #e6eeee;
     border: 1px solid #fff;
     padding: 4px;
     font-size: 12px;
 }
+
 .sorter-false {
     pointer-events: none;
     background: transparent !important;
-    background-color: #e6EEEE !important;
 }
 .tablesorter-headerUnSorted {
     background: transparent url(img/bg.gif) center right no-repeat;
     cursor: pointer;
 }
+table.tablesorter tbody td img{
+    margin-top: 5px;
+}
 table.tablesorter tbody td {
     color: #3D3D3D;
-    padding: 4px;
+    padding: 5px 3px;
     background-color: #FFF;
     vertical-align: top;
     font-size: 13px;
@@ -114,4 +116,372 @@ a.tooltip:hover span {
 }
 .alertbox {
     width: 94%;
+}
+.togglehub li:not(:first-of-type){
+    font-size: 85%;
+}
+a:hover, a:active, a:focus{
+    text-decoration: none;
+}
+#operateChecked{
+    padding:5px 15px;
+}
+
+
+
+.droplet-name a {
+    color: #5B7CA3;
+    font-weight: 800;
+    font-size: 110%;
+}
+
+
+table.filters-table thead tr.tablesorter-headerRow th {
+    text-align: left;
+    font-size: 1em;
+    line-height: 30px;
+    font-weight: 600;
+    color: white;
+    background-color: #8ba4c0!important;
+    border-top: 2px solid #a3baca;
+    box-shadow: inset 0 -5px 0 rgb(0 0 0 / 5%);
+    text-shadow: outset 0 -6px 0 rgba(0, 0, 0, 0.05);
+    
+}
+
+table.filters-table {
+    margin-bottom: 8px;
+    background-color: #ecf4f9;
+}
+
+
+/*table foot*/
+.filters-table tfoot td,
+.filters-table tfoot th {
+    background-color: #b9c8d8;
+    background-image: none;
+    background-position: 0 -50px;
+    padding: 5px;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff
+}
+
+/*rows*/
+.filters-table tr td:first-child{
+    padding-left: 8px;
+}
+.filters-table tr td{    
+    border-bottom: 1px solid #becadb;
+}
+.filters-table tr.even td,
+.filters-table tr.odd td{
+    background: #ffffff !important;
+}
+.filters-table tr:last-child td, 
+.filters-table tr:last-child th{
+    border: none;
+}
+
+
+.droplets .filters-table .fa{
+    font-size: 115%;
+} 
+/*
+------------------| dashboard-rows
+*/
+tr.inactive td{
+    opacity: 0.65;
+}
+
+
+/*last-modified row*/
+.filters-table tr.hilite td{
+    background-color: #e8fdd7 !important;
+}
+
+table.tablesorter tbody td.modify-date{
+    font-size: 85%;
+    color: darkgrey;
+}
+
+/**
+ * blinking droplet
+ */
+table.droplets .fa-tint{
+    font-size: 125%;
+}
+.text-danger {
+  color: #e6375e;
+}
+.blinking {
+  animation: blinker 1s step-end infinite;
+}
+.blinking {
+  animation: blinker 1s step-end infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+
+
+
+/**
+ HELP
+ */
+ .authors{
+    font-size: .85em;
+    text-align: center;
+    line-height: 1.5;
+    padding: 10px;
+    margin: 5px auto 25px;
+    width: 70%;
+    border: 1px dashed #b7d2e6;
+    background-color: #f6fbf8;
+ }
+ .authors span{
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+ }
+ 
+.help p {
+    margin: 0.2em 1.1em 0.4em ;
+}
+.help a {
+    color: #5B7CA3;
+    font-weight: 600;
+}
+.help img {
+    display: block;
+  margin: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  
+  width: 50%;
+}
+pre {
+    background: #fff8e0 none repeat scroll 0 0;
+    border: 1px dashed #DDDDDD;
+    color: #666666;
+    margin: 10px 18px;
+    padding: 5px 3px;
+    overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    /* width: 99%; */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+/**
+ * https://codepen.io/oobleck/pen/MYjdbx
+ * The switch widget!
+ * Usage:
+ *   <input type="checkbox" switch[="type"] id="toggleSwitch" />
+ *   <label for="toggleSwitch" data-on-label="On" data-off-label="Off"></label>
+ */
+input[switch] {
+  display: none;
+}
+input[switch] + label {
+    margin-left:3px;
+  font-size: 1em;
+  line-height: 1;
+  width: 2.8rem;
+  height: 1.4rem;
+  background-color: #ddd;
+  background-image: none;
+  border-radius: 2rem;
+  padding: 0.19rem;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2) inset;
+  font-family: inherit;
+  transition: all 0.25s ease-in-out;
+}
+input[switch] + label:before {
+  /* Label */
+  text-transform: uppercase;
+  color: #b7b7b7;
+  content: attr(data-off-label);
+  display: block;
+  font-family: inherit;
+  font-family: FontAwesome, inherit;
+  font-weight: 500;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  position: absolute;
+  right: 0.38rem;
+  margin: 0.2166666667rem;
+  top: 0;
+  text-align: center;
+  min-width: 1.005rem;
+  overflow: hidden;
+  transition: all 0.25s ease-in-out;
+}
+input[switch] + label:after {
+  /* Slider */
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  background-color: #f7f7f7;
+  box-shadow: none;
+  border-radius: 2rem;
+  height: 1.005rem;
+  width: 1.005rem;
+  transition: all 0.25s ease-in-out;
+}
+input[switch]:checked + label {
+  background-color: lightblue;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.2));
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3) inset;
+}
+input[switch]:checked + label:before {
+  color: #fff;
+  content: attr(data-on-label);
+  right: auto;
+  left: 0.20rem;
+}
+input[switch]:checked + label:after {
+  left: 1.6rem;
+  background-color: #f7f7f7;
+  box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.3);
+}
+
+input[switch=bool] + label {
+  background-color: #a09191; /* grey #ee6562;*/
+      box-shadow: 1px 1px 10px rgb(0 0 0 / 50%) inset;
+}
+input[switch=bool] + label:before {
+  color: #fff !important;
+}
+input[switch=bool]:checked + label {
+  background-color: #BCE954;
+}
+input[switch=bool]:checked + label:before {
+  color: #fff !important;
+}
+/**
+    labeled 
+    when `attr(data-on-label)` is used
+*/
+input[switch] + label.labeled{
+    width: 7rem;
+}
+input[switch]:checked + label.labeled:before {
+    left: 0.5rem;
+}
+input[switch]:checked + label.labeled:after{
+    left: 5.68rem
+}
+input[switch=bool]:checked + label.labeled {
+  background-color: #a9d249;
+}
+input[switch=bool] + label.labeled {
+  background-color: #b8b1b2;
+}
+
+.low-opac label{
+    opacity: 0.5;
+}
+table.tablesorter tbody tr.row-on-delete td{
+    background-color: #ffe0e0;
+}
+.row-on-delete td:nth-child(2){    
+    color: #c81e1e;    
+    text-decoration: line-through;
+}
+.row-on-delete td:nth-child(3){   
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: .95em;
+    text-align: right;
+    padding-right: 10px;
+}
+.row-on-delete td:last-child{
+    text-align: right;
+}
+/** 
+ * Inline confirm prompt buttons
+ */
+
+.btn-inline {
+        margin: 3px 4px 3px 0px;
+	text-decoration: none;
+	color: white !important;
+        font-weight: normal !important;
+        padding: 0px 5px;  
+        font-size: 12px;
+        line-height: 1.6;
+	display: inline-block;
+	position: relative;
+	border: 1px solid rgba(0,0,0,0.21);
+	border-bottom: 3px solid rgba(0,0,0,0.21);
+	border-radius: 6px;
+	text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+
+.btn-inline.red{ 
+	background: rgba(250,90,90,1);    
+        background: linear-gradient(#ff8383 0%, #e85151 100%);
+}
+.btn-inline.red:active   {
+    background: #E35252;
+}
+
+.btn-inline.green {
+	background: rgba(130,200,160,1);
+        background: linear-gradient(to bottom, #b2d660 0%, #95b44a 100%);
+}
+.btn-inline.green:active {background: #8baf37;}
+input[switch=bool]:checked:disabled + label {
+    background: #c0de7dbf;
+    cursor: not-allowed;
+}
+:root {
+	--base-font: 'Barlow', -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+	--headings-font: 'Barlow Condensed', -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+	--gray: #A3B0BF;
+	--gray-light: #dde2e7;
+	--gray-lighter: #e8ecef;
+	--magenta: #d6084f;
+	--magenta-alt: #AB0D42;
+	--magenta-focus: #e90956;
+	--magenta-active: #c30748;
+	--cyan: #367591;
+	--cyan-alt: #245C73;
+	--cyan-dark: #1b3b4a;
+	--cyan-darker: #0b191f;
+	--cyan-lighter: #edf0f2;
+	--cyan-light: #abd0e0;
+	--white: #f3f8fa;
+	--positive: #b6d608;
+	--positive-focus: #c6e909;
+	--positive-active: #a6c307;
+	--negative: #d62808;
+	--negative-focus: #e92c09;
+	--negative-active: #c32407;
+	--unit: 1.5rem;
+}
+
+.Inset {
+        text-align: center;
+            
+	border-radius: 8px;
+	padding: 8px;
+	background: #fff;
+}
+
+.Inset-title {
+	margin-top: calc(2 * var(--unit));
+	color: var(--cyan-dark);
+	text-align: center;
+	line-height: 1;
+	font-size: var(--unit);
 }

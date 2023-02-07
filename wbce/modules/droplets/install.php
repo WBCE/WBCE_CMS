@@ -18,26 +18,27 @@ if (!defined('WB_PATH')) {
 
 // global $admin;
 
-$msg = array();
-$sql  = 'DROP TABLE IF EXISTS `'.TABLE_PREFIX.'mod_droplets` ';
+$msg = [];
+$sql  = 'DROP TABLE IF EXISTS `{TP}mod_droplets`';
 if (!$database->query($sql)) {
     $msg[] = $database->get_error();
 }
 
-$sql  = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_droplets` ( ';
-$sql .= '`id` INT NOT NULL auto_increment, ';
-$sql .= '`name` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, ';
-$sql .= '`code` LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL , ';
-$sql .= '`description` TEXT  CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, ';
-$sql .= '`modified_when` INT NOT NULL default \'0\', ';
-$sql .= '`modified_by` INT NOT NULL default \'0\', ';
-$sql .= '`active` INT NOT NULL default \'0\', ';
-$sql .= '`admin_edit` INT NOT NULL default \'0\', ';
-$sql .= '`admin_view` INT NOT NULL default \'0\', ';
-$sql .= '`show_wysiwyg` INT NOT NULL default \'0\', ';
-$sql .= '`comments` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, ';
-$sql .= 'PRIMARY KEY ( `id` ) ';
-$sql .= ') ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
+$sql  = "CREATE TABLE IF NOT EXISTS `{TP}mod_droplets` ( 
+    `id`            INT NOT NULL auto_increment, 
+    `name`          VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, 
+    `code`          LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL , 
+    `description`   TEXT  CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, 
+    `modified_when` INT NOT NULL default '0', 
+    `modified_by`   INT NOT NULL default '0', 
+    `active`        INT NOT NULL default '0', 
+    `admin_edit`    INT NOT NULL default '0', 
+    `admin_view`    INT NOT NULL default '0', 
+    `show_wysiwyg`  INT NOT NULL default '0', 
+    `comments`      TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, 
+    PRIMARY KEY ( `id` ) 
+    ) 
+    ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 if (!$database->query($sql)) {
     $msg[] = $database->get_error();
 }
@@ -69,25 +70,53 @@ foreach ($names as $dropfile) {
             $comments = trim(substr($cArray[0], 3));
             array_shift($cArray);
         }
-        $droplet = implode("\n", $cArray);
-        $name = substr($dropfile, 0, -4);
-        $modified_when = time();
-        $modified_by = (method_exists($admin, 'get_user_id') && ($admin->get_user_id()!=null) ? $admin->get_user_id() : 1);
-        $sql  = 'INSERT INTO `'.TABLE_PREFIX.'mod_droplets` SET ';
-        $sql .= '`name` = \''.$name.'\', ';
-        $sql .= '`code` = \''.$droplet.'\', ';
-        $sql .= '`description` = \''.$description.'\', ';
-        $sql .= '`comments` = \''.$comments.'\', ';
-        $sql .= '`active` = 1, ';
-        $sql .= '`modified_when` = '.$modified_when.', ';
-        $sql .= '`modified_by` = '.$modified_by;
-        if (!$database->query($sql)) {
+        
+        $aDroplet = [
+            'name'        => substr($dropfile, 0, -4),
+            'code'        => implode("\n", $cArray),
+            'description' => $description,
+            'comments'    => $comments,
+            'active'      => 1,
+            'modified_when' => time(),
+            'modified_by' => (method_exists($admin, 'get_user_id') && ($admin->get_user_id()!=null) ? $admin->get_user_id() : 1),
+        ];
+        
+        if (!$database->insertRow('{TP}mod_droplets', $aDroplet)) {
             $msg[] = $database->get_error();
         }
         // do not output anything if this script is called during fresh installation
         // if (method_exists($admin, 'get_user_id')) echo "Droplet import: $name<br/>";
     }
 }
+
+// install OpF Filter 
+// check whether outputfilter-module is installed
+if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
+    require_once $sOpfFile;
+  
+    if(opf_is_registered('Droplets')){
+        // unregister old filter if already registered 
+        opf_unregister_filter('Droplets');
+        rm_full_dir(WB_PATH.'/modules/mod_opf_droplets');
+    }
+
+    // install filter
+    return opf_register_filter(array(
+        'name'     => 'Droplets',
+        'type'     => OPF_TYPE_PAGE,
+        'file'     => '{SYSVAR:WB_PATH}/modules/droplets/opf_filter_droplets.php',
+        'funcname' => 'opff_droplets',
+        'desc'     => "Filter that replaces Droplet calls in contents",
+        'active'   => 1,
+        'allowedit' => 0,
+        'pages_parent' => 'all, backend, search'
+    ))
+    && opf_move_up_before('Droplets');  // move up to the top
+        
+    Settings::Set('opf_droplets', 1, false);
+    Settings::Set('opf_droplets_be', 1, false);
+}
+
 
 function getDropletCodeFromFile($dropletfile)
 {

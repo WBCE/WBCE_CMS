@@ -2,7 +2,7 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * Visit http://wbce.org to learn more and to join the community.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
@@ -12,6 +12,9 @@
 
 $module_description = 'Mit Droplets kann PHP-Code in WYSIWYG-Abschnitten, Templates oder Modulen an beliebiger Stelle zur Verf&uuml;gung gestellt werden.';
 
+$DR_TEXT['SHOW_DATE'] = 'Datum anzeigen';
+$DR_TEXT['ADD_DROPLET'] = 'Neues Droplet hinzuf&uuml;gen';
+$DR_TEXT['MODIFY_DROPLET'] = 'Droplet bearbeiten';
 $DR_TEXT['ADMIN_EDIT'] = 'bearbeiten';
 $DR_TEXT['ADMIN_VIEW'] = 'ansehen';
 $DR_TEXT['BACKUP'] = 'Droplets sichern (Zip)';
@@ -21,8 +24,9 @@ $DR_TEXT['DEL_INFO'] = '(Hinweis: Beim L&ouml;schen wird vorher automatisch eine
 $DR_TEXT['DELETE_ALL'] = 'Alle l&ouml;schen';
 $DR_TEXT['DELETED'] = 'Droplet(s) gel&ouml;scht. Hinweis: Vor dem L&ouml;schen wurde eine Sicherung erstellt.';
 $DR_TEXT['DOWNLOAD'] = 'Weitere Droplets herunterladen';
-$DR_TEXT['DROPLETS'] = 'Droplet';
+$DR_TEXT['DROPLETS'] = 'Droplets';
 $DR_TEXT['DUPLICATE'] = 'Droplet duplizieren';
+$DR_TEXT['DROPLET_DELETE'] = 'Droplet löschen?';
 $DR_TEXT['EXPORT'] = 'Exportieren';
 $DR_TEXT['HELP'] = 'Hilfe';
 $DR_TEXT['IMPORT_ERRORS'] = 'Fehler beim Import';
