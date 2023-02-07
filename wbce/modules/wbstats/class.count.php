@@ -550,6 +550,7 @@ REGEX
 			$browser = 'MSIE';
 			$version = $rv_result;
 		} elseif( $browser == 'AppleWebKit' ) {
+			if ($platform==null) { $platform='';}
 			if( $platform == 'Android' ) {
 				$browser = 'Android Browser';
 			} elseif( strpos($platform, 'BB') === 0 ) {
