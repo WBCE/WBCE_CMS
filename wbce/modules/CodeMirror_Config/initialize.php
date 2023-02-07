@@ -185,7 +185,7 @@ function makePanel(where) {
   close = node.appendChild(document.createElement("a"));
   close.setAttribute("title", "Remove me!");
   close.setAttribute("class", "remove-panel");
-  close.textContent = "✖";
+  close.textContent = "âœ–";
   CodeMirror.on(close, "mousedown", function(e) {
     e.preventDefault()
     panels[node.id].clear();
@@ -251,9 +251,15 @@ if (!function_exists('getEditAreaSyntax')) {
                 break;
 
             case 'php':
-                $syntax = 'application/x-httpd-php-open';
-                I::insertJsFile($sModUrl.'clike/clike.js', 'BODY');
+            case 'phtml':
+                $syntax = 'application/x-httpd-php';
+                
                 I::insertJsFile($sModUrl.'php/php.js', 'BODY');
+                I::insertJsFile($sModUrl.'clike/clike.js', 'BODY');
+                I::insertJsFile($sModUrl.'htmlmixed/htmlmixed.js', 'BODY');                
+                I::insertJsFile($sModUrl.'xml/xml.js', 'BODY');
+                I::insertJsFile($sModUrl.'css/css.js', 'BODY');
+                I::insertJsFile($sModUrl.'javascript/javascript.js', 'BODY');
                 break;
 
             case 'ini':
