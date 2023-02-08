@@ -59,7 +59,7 @@ if(is_dir(WB_PATH.'/temp')){
     opf_io_mkdir(WB_PATH.MEDIA_DIRECTORY.'/opf_plugins');
 }
 opf_db_run_query("DROP TABLE IF EXISTS `{TP}mod_outputfilter_dashboard`");
-opf_db_run_query("CREATE TABLE {TP}mod_outputfilter_dashboard` (
+opf_db_run_query("CREATE TABLE {TP}mod_outputfilter_dashboard (
     `id` INT NOT NULL AUTO_INCREMENT,
     `userfunc` TINYINT NOT NULL DEFAULT '0',
     `position` INT NOT NULL DEFAULT '0',
@@ -85,7 +85,7 @@ opf_db_run_query("CREATE TABLE {TP}mod_outputfilter_dashboard` (
     PRIMARY KEY (`id`),
     UNIQUE (`name`),
     INDEX (`type`)
-) ENGINE = MYISAM");
+) ENGINE = InnoDB");
 
 opf_io_rmdir(dirname(__FILE__).'/naturaldocs_txt');
 
