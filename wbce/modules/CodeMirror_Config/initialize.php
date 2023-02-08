@@ -136,14 +136,13 @@ if (!function_exists('registerCodeMirror')) {
                 line-height: ".$cfg['lineHeight'].";";                    
         $sCss .= "    }";     
         I::insertCssCode($sCss, 'HEAD TOP+');
-            
         ob_start();
         ?>
 
 <script>
 
 var  <?=$id_attr?> = CodeMirror.fromTextArea(document.getElementById("<?=$id_attr?>"), {
-    mode: "<?=getEditAreaSyntax($syntax, $id_attr); ?>",
+    mode: <?=getEditAreaSyntax($syntax, $id_attr);?>,
     theme: "<?=$sTheme; ?>",
     lineNumbers: <?=($cfg['lineNumbers']) ? 'true':'false'; ?>,
     autoCloseTags: true,
@@ -220,7 +219,7 @@ if (!function_exists('getEditAreaSyntax')) {
             case 'htm':
             case 'html':
             case 'htt':
-                $syntax = 'text/html';
+                $syntax = '"text/html"';
                 I::insertJsFile($sModUrl.'../lib/beautify.min.js', 'BODY');
                 I::insertJsFile($sModUrl.'xml/xml.js', 'BODY');
                 I::insertJsFile($sModUrl.'css/css.js', 'BODY');
@@ -230,45 +229,59 @@ if (!function_exists('getEditAreaSyntax')) {
                 break;
 
             case 'twig':
-                $syntax = 'text/twig';
+                $syntax = '{name: "twig", base: "text/html"}';
                 I::insertJsFile($sModUrl.'twig/twig.js', 'BODY');
+                I::insertJsFile($sModUrl.'xml/xml.js', 'BODY');
+                I::insertJsFile($sModUrl.'../../codemirror/addon/mode/multiplex.js', 'BODY');                
                 break;
 
             case 'css':
-                $syntax = 'text/css';
+                $syntax = '"text/css"';
                 I::insertJsFile($sModUrl.'css/css.js', 'BODY');
                 break;
 
             case 'js':
             case 'javascript':
-                $syntax = 'text/javascript'; 
+                $syntax = '"text/javascript"'; 
                 I::insertJsFile($sModUrl.'javascript/javascript.js', 'BODY');
                 break;
 
             case 'xml':
-                $syntax = 'text/xml';
+                $syntax = '"text/xml"';
                 I::insertJsFile($sModUrl.'xml/xml.js', 'BODY');
                 break;
 
-            case 'php':
-                $syntax = 'application/x-httpd-php-open';
-                I::insertJsFile($sModUrl.'clike/clike.js', 'BODY');
+            
+            case 'x-php': // for droplets and php without <?php wrapping
+                $syntax = '"text/x-php"';                
                 I::insertJsFile($sModUrl.'php/php.js', 'BODY');
+                I::insertJsFile($sModUrl.'clike/clike.js', 'BODY');
+                break;
+            
+            case 'php': // for php files, uses mixed type with HTML, JS, CSS
+            case 'phtml':
+                $syntax = '"application/x-httpd-php"';
+                I::insertJsFile($sModUrl.'php/php.js', 'BODY');
+                I::insertJsFile($sModUrl.'clike/clike.js', 'BODY');
+                I::insertJsFile($sModUrl.'htmlmixed/htmlmixed.js', 'BODY');                
+                I::insertJsFile($sModUrl.'xml/xml.js', 'BODY');
+                I::insertJsFile($sModUrl.'css/css.js', 'BODY');
+                I::insertJsFile($sModUrl.'javascript/javascript.js', 'BODY');
                 break;
 
             case 'ini':
             case 'properties':
-                $syntax = 'text/x-properties';
+                $syntax = '"text/x-properties"';
                 I::insertJsFile($sModUrl.'properties/properties.js', 'BODY');
                 break;
 
             case 'sql':
-                $syntax = 'text/x-properties';
+                $syntax = '"text/x-properties"';
                 I::insertJsFile($sModUrl.'sql/sql.js', 'BODY');
                 break;
 
             default:
-                $syntax = 'text';
+                $syntax = '"text"';
                 break;
         }
         return $syntax;
