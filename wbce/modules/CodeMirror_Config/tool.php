@@ -42,7 +42,7 @@ if ($saveSettings) {
 
 // Get the Config from DB
 $aCfg = unserialize(Settings::Get("cmc_cfg", ""));
-registerEditArea('code', 'php');
+registerCodeMirror('code', 'x-php');
 
 // form data fill
 $aThemeFiles = list_files_from_dir($sThemeLoc, 'css');
