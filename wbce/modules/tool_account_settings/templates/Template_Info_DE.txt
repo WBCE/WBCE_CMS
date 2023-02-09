@@ -1,19 +1,19 @@
 DIES IST DAS VERZEICHNISS MIT ALLEN TEMPLATES DIE MIT DER ACCOUNTS UND 
-REGISTRIERUNG FUNKTIONALITÄT IM FRONTEND VON WBCE CMS ZUSAMMENHÄNGEN
+REGISTRIERUNG FUNKTIONALIT�T IM FRONTEND VON WBCE CMS ZUSAMMENH�NGEN
 
 
 BITTE BEACHTE: 
     Es ist nicht empfohlen irgendwelche dieser Template-Dateien direkt in diesem Verzeichnis zu editieren.
-    Wenn dies getan wird, werden alle gemachten Änderungen beim nächsten System upgrade überschrieben werden.
+    Wenn dies getan wird, werden alle gemachten �nderungen beim n�chsten System upgrade �berschrieben werden.
     Dies sollte unbedingt vermieden werden.
 
 
 If you want to change the layouts of this templates, it is RECOMMENDED to follow these steps:
-Wenn der Wunsch oder Bedarf besteht, das Layout dieser Templplates zu verändern, werden
+Wenn der Wunsch oder Bedarf besteht, das Layout dieser Templplates zu ver�ndern, werden
 die folgenden Schritte empfohlen.
 
 1) Gehe zu dem Template Verzeichnis des aktiven Templates
-   (Es ist jenes, das unter Grundeinstellungen im Backend ausgewählt wurde).
+   (Es ist jenes, das unter Grundeinstellungen im Backend ausgew�hlt wurde).
 
 2) Erstelle darin ein Verzeichnis mit dem Namen 'overrides', 
    jetzt, innerhalb des neu erstellten Verzeichnisses, erstelle 
@@ -23,55 +23,55 @@ die folgenden Schritte empfohlen.
 
 
     [DEFAULT_TEMPLATE]
-        └─ overrides
-            └─ account
-                └─ templates
+        ?? overrides
+            ?? account
+                ?? templates
 
 
 3) Kopiere nun die Dateien aus dem Verzeichnis [root]/modules/tool_account_settings/templates
-   und füge sie in den Ordner [YOUR TEMPLATE DIR]/overrides/account ein
+   und f�ge sie in den Ordner [YOUR TEMPLATE DIR]/overrides/account ein
    Die Ordnerstruktur des Template-Verzeichnisses sollte nun wie folgt aussehen:
 
 
     [DEFAULT_TEMPLATE]
-        └─ overrides
-            └─ account
-                └─ templates
-                    ├─ form_forgot_login_details.twig
-                    ├─ form_login.twig
-                    ├─ form_preferences.twig
-                    ├─ form_signup.twig
-                    ├─ msg_activation_link_sent.twig
-                    ├─ msg_forgot_login_details_sent.twig
-                    ├─ msg_login_details_just_sent.twig
-                    ├─ msg_manager_approval_feedback.twig
-                    ├─ msg_manager_confirm_new_signup.twig
-                    ├─ msg_wrong_inputs.twig
-                    └─ forms.css
+        ?? overrides
+            ?? account
+                ?? templates
+                    ?? form_forgot_login_details.twig
+                    ?? form_login.twig
+                    ?? form_preferences.twig
+                    ?? form_signup.twig
+                    ?? msg_activation_link_sent.twig
+                    ?? msg_forgot_login_details_sent.twig
+                    ?? msg_login_details_just_sent.twig
+                    ?? msg_manager_approval_feedback.twig
+                    ?? msg_manager_confirm_new_signup.twig
+                    ?? msg_wrong_inputs.twig
+                    ?? forms.css
 
-4) Du kannst nun beginnen die Veränderungen am Layout nach Belieben vorzunehmen.
+4) Du kannst nun beginnen die Ver�nderungen am Layout nach Belieben vorzunehmen.
    Sobald das System diese Dateien vorfindet, wird es diese verwenden.
    Und diese neu angelegten und editierten Dateien laufen nicht Gefahr, beim 
-   nächsten System Upgrade überschrieben zu werden.
+   n�chsten System Upgrade �berschrieben zu werden.
 
 BITTE EBENFALLS BEACHTEN:
-   Wenn nur ausgewählte Template-Dateien editiert werden sollen, z.B. form_login.twig und form_signup.twig
-   müssen auch NUR DIESE Dateien in den [YOUR TEMPLATE DIR]/overrides/account Ordner kopiert werden.
+   Wenn nur ausgew�hlte Template-Dateien editiert werden sollen, z.B. form_login.twig und form_signup.twig
+   m�ssen auch NUR DIESE Dateien in den [YOUR TEMPLATE DIR]/overrides/account Ordner kopiert werden.
 
 
 HINWEIS AN TEMPLATE DEVELOPER:
 ==============================
-Ab sofort kann man die Templates von vornherein mit den passenden Layouts für den Account und Registrierungs Bereich
+Ab sofort kann man die Templates von vornherein mit den passenden Layouts f�r den Account und Registrierungs Bereich
 ausstatten.
-Dazu müssen einfach die obigen Punkte (2) und (3) befolgt werden.
-In der Regel würde es reichen, wenn die folgenden Template Dateien angepasst werden
+Dazu m�ssen einfach die obigen Punkte (2) und (3) befolgt werden.
+In der Regel w�rde es reichen, wenn die folgenden Template Dateien angepasst werden
  [DEIN-TEMPLATE]
-     └─ overrides
-         └─ account
-             ├─ form_forgot_login_details.twig
-             ├─ form_login.twig
-             ├─ form_preferences.twig
-             └─ form_signup.twig
+     ?? overrides
+         ?? account
+             ?? form_forgot_login_details.twig
+             ?? form_login.twig
+             ?? form_preferences.twig
+             ?? form_signup.twig
 
 Alle anderen Dateien sind generische Mitteilungen, aber es kann sein, dass man an einem speziellen 
-Template arbeitet, wo man auch das Layout dieser Mitteilungen steuern möchte.
+Template arbeitet, wo man auch das Layout dieser Mitteilungen steuern m�chte.

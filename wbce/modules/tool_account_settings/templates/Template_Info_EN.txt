@@ -17,9 +17,9 @@ If you want to change the layouts of this templates, it is RECOMMENDED to follow
 
 
     [DEFAULT_TEMPLATE]
-        └─ overrides
-            └─ account
-                └─ templates
+        ?? overrides
+            ?? account
+                ?? templates
 
 
 3) Copy the files of folder [root]/modules/tool_account_settings/templates
@@ -28,20 +28,20 @@ If you want to change the layouts of this templates, it is RECOMMENDED to follow
 
 
     [DEFAULT_TEMPLATE]
-        └─ overrides
-            └─ account
-                └─ templates
-                    ├─ form_forgot_login_details.twig
-                    ├─ form_login.twig
-                    ├─ form_preferences.twig
-                    ├─ form_signup.twig
-                    ├─ msg_activation_link_sent.twig
-                    ├─ msg_forgot_login_details_sent.twig
-                    ├─ msg_login_details_just_sent.twig
-                    ├─ msg_manager_approval_feedback.twig
-                    ├─ msg_manager_confirm_new_signup.twig
-                    ├─ msg_wrong_inputs.twig
-                    └─ forms.css
+        ?? overrides
+            ?? account
+                ?? templates
+                    ?? form_forgot_login_details.twig
+                    ?? form_login.twig
+                    ?? form_preferences.twig
+                    ?? form_signup.twig
+                    ?? msg_activation_link_sent.twig
+                    ?? msg_forgot_login_details_sent.twig
+                    ?? msg_login_details_just_sent.twig
+                    ?? msg_manager_approval_feedback.twig
+                    ?? msg_manager_confirm_new_signup.twig
+                    ?? msg_wrong_inputs.twig
+                    ?? forms.css
 
 
 4) You can now change the layout of these files and the system will use these files instead of the ones
