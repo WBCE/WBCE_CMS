@@ -14,7 +14,7 @@ defined('WB_PATH') or die("This file can't be accessed directly!");
 
 // default settings
 $aCfg = array(
-    'theme'     => "wbce-night",
+    'theme'     => "wbce-day",
     'font'      => 'Proggy',
     'font_size' => '14'
 );

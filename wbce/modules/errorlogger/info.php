@@ -29,7 +29,7 @@ if(defined('WBCE_VERSION')) {
 $module_author      = 'Ruud Eisinga - Dev4me';
 $module_license	    = 'GNU General Public License';
 $module_description = 'Catch PHP warnings and errors into a logfile and view them using this tool.';
-$module_icon        = 'fa fa-tasks';
+$module_icon        = 'fa fa-bug';
 //$module_level       = 'core';
 
 /** 

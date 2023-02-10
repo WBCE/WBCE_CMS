@@ -36,7 +36,7 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (7, 'sec_anchor', 'wbce_'),
 (8, 'default_date_format', 'd.m.Y'),
 (9, 'default_time_format', 'H:i'),
-(10, 'redirect_timer', '1500'),
+(10, 'redirect_timer', '500'),
 (11, 'home_folders', 'true'),
 (12, 'warn_page_leave', '1'),
 (13, 'default_template', 'wbcezon'),
