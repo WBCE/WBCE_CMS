@@ -29,7 +29,11 @@
         </div>
     </div>
 </form>
-<p><a href="{{ constant('FORGOT_URL') }}">{{ L_('TEXT:FORGOTTEN_DETAILS') }}</a></p>
+<p><a href="{{ constant('FORGOT_URL') }}">{{ L_('TEXT:FORGOTTEN_DETAILS') }}</a> 
+{% if constant("FRONTEND_SIGNUP") %}
+   | <a href="{{ constant('SIGNUP_URL') }}">{{ L_('TEXT:SIGNUP') }}</a>
+{% endif %}
+</p>
 <script type="text/javascript">
 	var ref = document.getElementById("{{ USERNAME_FIELD }}");
 	if (ref) ref.focus();
