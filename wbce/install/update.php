@@ -453,6 +453,14 @@ if (defined("WB_SESSION_TIMEOUT")) {
  * Checking Core modules for installation status and install if necessary
  */
 
+// set config of CodeMirror_Config
+if(Settings::Set("cmc_cfg") == false){
+    if(is_readable($sFile = WB_PATH . "/modules/CodeMirror_Config/install.php")){
+        require_once $sFile;
+    }
+}
+
+
 // Captcha Controll
 $file_name = WB_PATH . "/modules/captcha_control/info.php";
 if (file_exists($file_name)) {
