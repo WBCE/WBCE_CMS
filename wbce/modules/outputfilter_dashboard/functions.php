@@ -2017,9 +2017,15 @@ function opf_escape_string($str){
 
 // create a directory name out of an arbitrary string
 function opf_create_dirname($str){
-    $s=strtolower(preg_replace(array('/\s\s*/','/[^a-zA-Z0-9_]/','/_*$/'), array('_','',''), $str));
-    if (strlen($s>63))
-       return substr(0,63,$s);
+    $s=strtolower(
+        preg_replace(
+            array('/\s\s*/','/[^a-zA-Z0-9_]/','/_*$/'), 
+            array('_','',''), 
+            $str
+        )
+    );
+    if (strlen($s > 63))
+       return substr($s, 0, 63);
     else
        return $s;
 }

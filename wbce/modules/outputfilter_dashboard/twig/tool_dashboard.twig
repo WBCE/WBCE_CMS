@@ -66,11 +66,17 @@
             <td>
                 <a href="{{ f.editlink }}" title="{{ L_('L:TXT_EDIT_FILTER') }}"><nobr data-funcname="{{ f.funcname }}">{{ f.filter_name }}</nobr></a>
             </td>
-
             <td>&nbsp;</td>
             <td><p style="font-size:.9em; color: #4c4c4c;line-height: 14px">{{ wordcut(f.filter_desc, 125 ) }}</p></td>
             <td align="center">
-                    <img src="{{ IMAGE_URL }}/{{ f.type }}.png" title="{{ f.type_title }}"  alt="{{ f.tpl_filter_type }}"/>
+                
+                {% if f.convert_link %}
+                    <a href="{{ f.convert_link }}" onclick="{{ f.filter_convert_query }}" title="{{ f.type_title|capitalize  }}">
+                {% endif %}
+                    <img src="{{ IMAGE_URL }}/{{ f.type }}.png" alt="{{ f.tpl_filter_type }}"/>
+                {% if f.convert_link %}
+                    </a>
+                {% endif %}
             </td>
             <td>
                 {% if f.helppath_onclick %}

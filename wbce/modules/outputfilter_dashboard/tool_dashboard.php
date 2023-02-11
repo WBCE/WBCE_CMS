@@ -183,7 +183,25 @@ foreach($aFilters as $filter){
         'css_link'         => opf_quotes($filter['css_link']),
         'deletable'        => ($filter['userfunc'] || $filter['plugin']), // 1 : 0
         'filter_export_link'=> opf_quotes($filter['export_link']),
-        'check_disabled'   => (in_array($filter['funcname'], $arr_allways_active)) ? 'disabled' : ''
+        'check_disabled'   => (in_array($filter['funcname'], $arr_allways_active)) ? 'disabled' : '',
+        'convert_link'     => $filter['convert_link'],
+        'filter_convert_query' => opf_quotes(
+                "opf_message('"
+                .(($filter['plugin']=='')
+                    ?$LANG['MOD_OPF']["TXT_CONVERT_FILTER"]
+                    :$LANG['MOD_OPF']["TXT_CONVERT_PLUGIN"])
+                ."', '"
+                .sprintf((($filter['plugin']=='')
+                    ?$LANG['MOD_OPF']['TXT_SURE_TO_CONVERT']
+                    :$LANG['MOD_OPF']['TXT_SURE_TO_INLINE']),$filter['name_js_quoted'])
+                ."', 'query', '"
+                .$LANG['MOD_OPF']["TXT_CANCEL"]
+                ."', '"
+                .$LANG['MOD_OPF']["TXT_OK"]
+                ."', '"
+                .opf_quotes($filter['convert_link'])
+                ."'); return false;"
+            ),
 
         
     );
