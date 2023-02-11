@@ -102,7 +102,9 @@ if(!defined('WB_INSTALLER')){
         if(strpos($installer,'outputfilter_dashboard')===FALSE){
             $contents = file_get_contents($installer);
             if(preg_match('/opf_register_filter/',$contents)){
-                require($installer);
+				if (strpos($installer,'droplets')==false) {
+                require($installer);				
+				}
             }
         }
     }
