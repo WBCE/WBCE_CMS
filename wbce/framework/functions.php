@@ -1308,6 +1308,9 @@ function load_template($sTemplatePath)
             if (!isset($template_function)) {
                 $template_function = 'template';
             }
+			if (!isset($template_description)) {
+                $template_description = 'no description available';
+            }
             $aData = array(
                 'directory' => $database->escapeString($template_directory),
                 'name' => $database->escapeString($template_name),
