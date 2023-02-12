@@ -1,23 +1,22 @@
 <?php
 
 /*
-add_filter.php
+tool_add_filter.php
 */
 
 /**
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.15
+ * @version         1.6.3
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
- * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
+ * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
- * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x or WBCE
- * @requirements    PHP 5.4 and higher
+ * @platform        WBCE 1.x
+ * @requirements    PHP 7.4 - 8.2
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -36,6 +35,7 @@ add_filter.php
  *
  **/
 
+
 ///////////////////////////////////////////////
 // This file will be included from tool.php  //
 ///////////////////////////////////////////////
@@ -43,7 +43,7 @@ add_filter.php
 // prevent this file from being accessed directly
 defined('WB_PATH') or die(header('Location: ../index.php'));
 
-// Authorization: check if user is allowed to use Admin-Tools 
+// Authorization: check if user is allowed to use Admin-Tools
 $admin->get_permission('admintools') or die(header('Location: ../../index.php'));
 
 $id = 0;
@@ -61,17 +61,17 @@ $aToTwig = array(
     'func'              => $func,
     'funcname'          => opf_quotes($function_name),
     'file'              => '',
-    'helppath'          => '',    
+    'helppath'          => '',
     'disabled_readonly' => '',
-    'active_checked'    => ' checked',       
+    'active_checked'    => ' checked',
     'filter_file_loc'   => '',
     'filter_config_url' => '',
-    'readOnly'          => false,  
+    'readOnly'          => false,
     'extra_fields'      => [],
-    'module_tree'       => opf_make_modules_checktree([], $type='tree', TRUE),  
-    'page_tree'         => opf_make_pages_parent_checktree([], ['all'], $type='tree'),  
+    'module_tree'       => opf_make_modules_checktree([], $type='tree', TRUE),
+    'page_tree'         => opf_make_pages_parent_checktree([], ['all'], $type='tree'),
     'filter_type_options' => opf_get_types_select(),
 );
-  
+
 $oTemplate = $oTwig->load('tool_add_edit_filter.twig');
-$oTemplate->display($aToTwig); 
+$oTemplate->display($aToTwig);

@@ -1,18 +1,22 @@
 <?php
+
+/*
+tool.php
+*/
+
 /**
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.15
+ * @version         1.6.3
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
- * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
+ * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
- * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x or WBCE
- * @requirements    PHP 5.4 and higher
+ * @platform        WBCE 1.x
+ * @requirements    PHP 7.4 - 8.2
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -34,7 +38,7 @@
 // prevent this file from being accessed directly
 defined('WB_PATH') or die(header('Location: ../index.php'));
 
-// Authorization: check if user is allowed to use Admin-Tools 
+// Authorization: check if user is allowed to use Admin-Tools
 $admin->get_permission('admintools') or die(header('Location: ../../index.php'));
 
 // set module vars
@@ -65,7 +69,7 @@ $sImageUrl = get_url_from_path(__DIR__).'/images';
 $oTwig->addGlobal('IMAGE_URL', $sImageUrl);
 I::insertJsCode(
     'var IMAGE_URL = "'.$sImageUrl.'";
-     var ADDON_URL = "'.$ModUrl.'";', 
+     var ADDON_URL = "'.$ModUrl.'";',
     'HEAD TOP+'
 );
 
@@ -101,13 +105,13 @@ $filtername = opf_fetch_post( 'name',     NULL, 'string');
 $func       = opf_fetch_post( 'func',     NULL, 'string');
 $funcname   = opf_fetch_post( 'funcname', NULL, 'string');
 
-  
+
 
 // check file upload
 $upload_message = '';
 $upload_ok      = ''; // both will be set in upload.php
 if (
-        isset($_FILES['filterplugin']) && $doSave 
+        isset($_FILES['filterplugin']) && $doSave
         && is_uploaded_file($_FILES['filterplugin']['tmp_name'])
     ) {
     include __DIR__.'/upload.php';
@@ -172,7 +176,7 @@ if ($css_save && $doSave) {
 }
 
 ///////////////////////////////////////////////////////////////////////////
-//  Now, determine what to do: 
+//  Now, determine what to do:
 //  add filter, edit filter, edit css, open help, show dashboard
 ///////////////////////////////////////////////////////////////////////////
 
@@ -187,5 +191,5 @@ if ($add && $doSave )     { require __DIR__ . '/tool_add_filter.php'; }
 elseif ($id && $edit )    { require __DIR__ . '/tool_edit_filter.php'; }
 elseif ($id && $csspath ) { require __DIR__ . '/tool_edit_css.php'; }
 else {
-    require __DIR__ . '/tool_dashboard.php';  
+    require __DIR__ . '/tool_dashboard.php';
 }

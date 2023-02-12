@@ -1,6 +1,6 @@
 <div class="pane">
     <div class="pageinfo">
-        <div style="float:right; margin: 0 12px;">            
+        <div style="float:right; margin: 0 12px;">
             <a href="{{ tpl_help_url }}" onclick="{{ tpl_help_onclick }}" target="help" title="{{ L_('L:TXT_HELP_BROWSER') }}">
                 <img src="{{ IMAGE_URL }}/help.png" alt="[?]" /> {{ L_('L:TXT_HELP') }}
             </a>
@@ -11,10 +11,10 @@
         </div>
         <div class="cpLastchange">
             {% if data.author %}
-                {{ L_('MESSAGE:PAGES_LAST_MODIFIED') }} <a href="" title="{{ data.author.login_name }} [user-id: {{ data.author.id }}]">{{ data.author.name }}</a>						
+                {{ L_('MESSAGE:PAGES_LAST_MODIFIED') }} <a href="" title="{{ data.author.login_name }} [user-id: {{ data.author.id }}]">{{ data.author.name }}</a>
                 {% if data.modified_time %}, {{ data.modified_date }} - {{ data.modified_time }}{% endif %}
             {% endif %}
-            
+
         </div>
     </div>
     <nav class="tabs">
@@ -27,12 +27,12 @@
                 <a class="tabHelp tab{{ tab.a_class }}" href="{{ tab.pos }}"><i class="fa fa-fw fa-{{ tab.icon }}"></i>&nbsp; {{ L_(tab.link_name) }}</a>
             </li>
         {% endfor %}
-        </ul>					
-    </nav> 
-    <div class="wrapBody">		
-        {{ MESSAGE_BOX }} 
-        <noscript>NO JAVASCRIPT</noscript> 
-        
+        </ul>
+    </nav>
+    <div class="wrapBody">
+        {{ MESSAGE_BOX }}
+        <noscript>NO JAVASCRIPT</noscript>
+
         {% block content %}{% endblock %}
     </div>
 </div>

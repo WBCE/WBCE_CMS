@@ -1,18 +1,22 @@
 <?php
+
+/*
+tool_dashboard.php
+*/
+
 /**
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.15
+ * @version         1.6.3
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
- * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
+ * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
- * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x or WBCE
- * @requirements    PHP 5.4 and higher
+ * @platform        WBCE 1.x
+ * @requirements    PHP 7.4 - 8.2
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -31,6 +35,7 @@
  *
  **/
 
+
 ///////////////////////////////////////////////
 // This file will be included from tool.php  //
 ///////////////////////////////////////////////
@@ -38,7 +43,7 @@
 // prevent this file from being accessed directly
 defined('WB_PATH') or die(header('Location: ../index.php'));
 
-// Authorization: check if user is allowed to use Admin-Tools 
+// Authorization: check if user is allowed to use Admin-Tools
 $admin->get_permission('admintools') or die(header('Location: ../../index.php'));
 
 // Include the ordering class
@@ -61,11 +66,11 @@ $types      = opf_get_types();
 $filters    = opf_select_filters();
 if (!is_array($filters))
     $filters = array();
-$old_type = ''; // remember last type in foreach loop below, 
+$old_type = ''; // remember last type in foreach loop below,
                 // to draw a separator in case type changed
 // loop through fliters and process their values
-foreach($filters as $filter) {    
-    
+foreach($filters as $filter) {
+
     $filter_id = $filter['id'];
     $sFilterUri = $ToolUrl.'&amp;id='.$filter_id.'&amp;';
     $filter['funcname']          = $filter['funcname'];
@@ -80,8 +85,8 @@ foreach($filters as $filter) {
 
     // we need the next str_replace to allow \ ' " in the name for use with javascript
     $filter['name_js_quoted'] = str_replace(
-        array('\\','&#039;','&quot;'), 
-        array('\\\\','\\&#039;','\\&quot;'), 
+        array('\\','&#039;','&quot;'),
+        array('\\\\','\\&#039;','\\&quot;'),
         $filter['name']
     );
     $sTmpDesc           =  opf_fetch_entry_language($filter['desc']);
@@ -93,15 +98,15 @@ foreach($filters as $filter) {
     if ($filter['id'] == $id){
         $filter['last_touched'] = TRUE;
     } if (isset($_GET['last']) && $_GET['last'] == $filter['id']) {
-        $filter['last_touched'] = TRUE;        
-    }                      
+        $filter['last_touched'] = TRUE;
+    }
 
     // line to separate filter-types
     $filter['sep_line'] = FALSE;
     if ($old_type!=$filter['type']) {
         $old_type = $filter['type'];
         $filter['sep_line'] = TRUE;
-    } 
+    }
     $filter['active'] = opf_is_active($filter['name']) || ( ($id == $filter['id']) && $active );
     $filter['edit_link'] = $sFilterUri.'edit=1';
 
@@ -109,7 +114,7 @@ foreach($filters as $filter) {
     $filter['css_link'] = '';
     if ($filter['csspath']!='') {
         $filter['css_link'] = $sFilterUri.'csspath='.urlencode($filter['csspath']);
-    } 
+    }
 
     // help path
     $filter['helppath_onclick'] = '';
@@ -124,7 +129,7 @@ foreach($filters as $filter) {
             }
         }
         $filter['helppath_onclick'] = "javascript: return opf_popup('{$filter['helppath_onclick']}');";
-    } 
+    }
 
     // ramaining dashboard links
     $filter['export_link'] = '';
@@ -132,12 +137,12 @@ foreach($filters as $filter) {
     if ($filter['userfunc'] || $filter['plugin']) {
         $filter['export_link'] = $sFilterUri.'export=1';
         $filter['convert_link'] = $sFilterUri.'convert=1';
-    } 
+    }
 
     $filter['type_id'] = $filter['type'];
     $filter['type'] = $types[$filter['type_id']];
-    
-    
+
+
     $aFilters[] = $filter;
 }
 
@@ -161,21 +166,21 @@ $aToTwig += array(
     'tpl_export_url'          => opf_quotes($export_url),
     'tpl_tool_url'            => opf_quotes($ToolUrl)
 );
-   
+
 $arr_allways_active = include __DIR__ . '/allways_active_array.php';
 $aAllFilters = [];
-foreach($aFilters as $filter){        
+foreach($aFilters as $filter){
     $aSingleFilter = array(
         'filter_id'        => $filter['id'],
         'filter_name'      => opf_quotes($filter['name']),
         'filter_desc'      => opf_quotes($filter['desc']),
         'funcname'         => $filter['funcname'],
         'type_id'          => $filter['type_id'],
-        'type'             => ($filter['plugin']!='') ? "plugin" :(($filter['userfunc']) ? "inline" : "extension"),     
+        'type'             => ($filter['plugin']!='') ? "plugin" :(($filter['userfunc']) ? "inline" : "extension"),
         'type_sep_line'    => ($filter['sep_line']),
         'type_title'       => ($filter['plugin']) ? $L["TXT_PLUGIN_FILTER"] : (($filter['userfunc']) ? $L["TXT_INLINE_FILTER"] : $L["TXT_MODULE_EXTENSION_FILTER"]),
         'type_name'        => opf_quotes($filter['type']),
-        'editlink'         => opf_quotes($filter['edit_link']),    
+        'editlink'         => opf_quotes($filter['edit_link']),
         'additional_class' => ($filter['last_touched'])? ' last-modified' : '',
         'filter_active'    => ($filter['active'] ? '' : 'in').'active',
         'helppath_onclick' => opf_quotes($filter['helppath_onclick']),
@@ -203,12 +208,12 @@ foreach($aFilters as $filter){
                 ."'); return false;"
             ),
 
-        
+
     );
     $aAllFilters[] = $aSingleFilter;
 }
 $aToTwig['filters'] = $aAllFilters;
 
-// render the output in Twig template    
+// render the output in Twig template
 $oTemplate = $oTwig->load('tool_dashboard.twig');
-$oTemplate->display($aToTwig);    
+$oTemplate->display($aToTwig);

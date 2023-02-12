@@ -4,7 +4,7 @@ Header: Version-History
 1.6:
 1.6.3  %(Stefek, 04 Febr 2023)%
         - add file `allways_active_array.php` that contains an array of the
-           filters that should never be disable (deactivated) 
+           filters that should never be disable (deactivated)
 
 1.6.2  %(Stefek, 31 Jan 2023)%
         - change the delete mechanism to a jquery/ajax based inline confirm prompt
@@ -19,6 +19,9 @@ Header: Version-History
         - remove JS page reload after ajax drag&drop of filters.
 
 1.5:
+1.5.16 %(mrbaseman, 1 Jul, 2021)%
+        - update cachecontrol plugin filter to version 1.0.7
+
 1.5.15 %(mrbaseman, 31 May 2021)%
         - fail-safe fix for filter function, thanks to Atlasfreak
         - add logging a notice when filter fails

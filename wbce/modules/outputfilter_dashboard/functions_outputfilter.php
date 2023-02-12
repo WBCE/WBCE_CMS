@@ -8,16 +8,15 @@ functions_outputfilter.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.15
+ * @version         1.6.3
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
- * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
+ * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
- * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x or WBCE
- * @requirements    PHP 5.4 and higher
+ * @platform        WBCE 1.x
+ * @requirements    PHP 7.4 - 8.2
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -39,6 +38,7 @@ functions_outputfilter.php
 /*
     File: Filter functions
 */
+
 
 // prevent this file from being accessed directly
 if(!defined('WB_PATH')) die(header('Location: ../index.php'));
@@ -550,10 +550,10 @@ function opf_register_filter($filter, $serialized=FALSE) {
 
     $fileCheck = opf_replace_sysvar($file, $plugin);
     if(is_array($fileCheck) && empty($fileCheck)) $fileCheck = '';
-    
+
     if(($fileCheck=='' && $func=='') or ($fileCheck != '' && $func != '')) {
         trigger_error(
-            'Function (: '.$func.') OR File (: '.$file.') needed', 
+            'Function (: '.$func.') OR File (: '.$file.') needed',
             E_USER_WARNING
         );
         if($force) { // store it nevertheless, but set it inactive
@@ -563,8 +563,8 @@ function opf_register_filter($filter, $serialized=FALSE) {
             return(FALSE);
         }
     }
-    
-    
+
+
     if($fileCheck && (!file_exists($fileCheck) || !is_file($fileCheck) || !is_readable($fileCheck))) {
         trigger_error("Can\'t read file ($file)", E_USER_WARNING);
         return(FALSE);

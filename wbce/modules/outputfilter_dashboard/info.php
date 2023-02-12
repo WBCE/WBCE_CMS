@@ -8,16 +8,15 @@ info.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.15
+ * @version         1.6.3
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
- * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
+ * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
- * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x or WBCE
- * @requirements    PHP 5.4 and higher
+ * @platform        WBCE 1.x
+ * @requirements    PHP 7.4 - 8.2
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -42,7 +41,7 @@ $module_directory   = 'outputfilter_dashboard';
 $module_name        = 'Output Filter Dashboard';
 $module_function    = 'tool';
 $module_version     = '1.6.3';
-$module_platform    = 'WebsiteBaker 2.8.x or WBCE';
+$module_platform    = 'WBCE 1.x';
 $module_author      = 'Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>';
 $module_license     = 'GNU General Public License, Version 3';
 $module_description = 'Admin-Tool to manage OutputFilter';

@@ -1,8 +1,8 @@
 {% extends "_framer.twig" %}
-{% block content %} 
+{% block content %}
 <!-- BEGIN main_block -->
 <div class="cpForm">
-    <div style="margin: 15px 26px;float:right;">        
+    <div style="margin: 15px 26px;float:right;">
         <input value="1" name="active" type="checkbox" id="i{{ filter_id }}" switch="bool" rel="{{ f.tpl_filter_id }}" {{ active_checked }} />
         <label for="i{{ filter_id }}" class="labeled" data-on-label="{{ L_('TEXT:ENABLED') }}" data-off-label="{{ L_('TEXT:DISABLED') }}">
         </label>
@@ -16,16 +16,16 @@
 
         <div class="settingName"><label>{{ L_('L:TXT_FILTER_NAME') }}</label></div>
         <div class="settingValue" style="margin-top: 4px;">
-            <input type="text" name="name" required value="{% if edit_filter %}{{ filter_name }}{% endif %}" {% if add_filter %} placeholder="{{ filter_name }}"{% endif %} size="40" {{ disabled_readonly }}  />            
-            
-                        
+            <input type="text" name="name" required value="{% if edit_filter %}{{ filter_name }}{% endif %}" {% if add_filter %} placeholder="{{ filter_name }}"{% endif %} size="40" {{ disabled_readonly }}  />
+
+
             {% if filter_config_url != '' %}
             <a href="{{ filter_config_url }}" title="{{ L_('L:TXT_CONFIG_FILTER') }}"><img src="{{ IMAGE_URL }}/config.png" alt="[{{ L_('L:TXT_CONFIG_FILTER') }}]" border="0" /></a>
             {% endif %}
             {{ tpl_filter_configurl_end }}
         </div>
     </div>
-        
+
     <div class="formRow">
 
         <div class="settingName">
@@ -39,7 +39,7 @@
         </div>
         <div class="settingValue" style="margin-top: 4px;">
             <textarea id="desc" name="desc" cols="65" style="width: 98%; height:auto" {{ disabled_readonly }}
-              {% if add_filter %} placeholder="{{ filter_desc }}"{% endif %}  
+              {% if add_filter %} placeholder="{{ filter_desc }}"{% endif %}
                       >{% if edit_filter %}{{ filter_desc }}{% endif %}</textarea>
         </div>
     </div>
@@ -53,10 +53,10 @@
             </select><br />
             <p style="display:none;" ID="OPF_ID_SEC_DESC" class="notification"><strong>{{ L_('L:TXT_MODULE_TYPE_LAST') }}</strong></p>
             <p style="display:none;" ID="OPF_ID_PAGE_DESC" class="notification"><strong>{{ L_('L:TXT_TYPE_LAST') }}</strong></p>
-       
+
         </div>
     </div>
-            
+
     <div class="formRow" style="display:none;" id="OPF_ID_CHECKTREE">
         <div class="settingName">
             <img src="{{ IMAGE_URL }}/modules_go.png" alt="" /><br>
@@ -67,12 +67,12 @@
             {{ module_tree }}
         </div>
     </div>
-        
+
     <div class="formRow" style="display:none;" id="OPF_ID_PAGECHECKTREE">
         <div class="settingName">
             <img src="{{ IMAGE_URL }}/pages_go.png" alt="" /><br />
             <label>{{ L_('L:TXT_FILTER_PAGES') }}</label>
-            
+
         </div>
         <div class="settingValue">
             <p class="notification" style="display:none;" ID="OPF_ID_PAGE_DESC_2">{{ L_('L:TXT_MODULE_TREE') }}:</p>
@@ -91,14 +91,14 @@
             <input type="text" name="funcname" value="{{ funcname }}" size="40" style="widht:50%;" {{ disabled_readonly }} />
         </div>
     </div>
-   
-{#  
-    Now display either the file-area (for installed filters) 
-    or the function-area (for inline-filters) 
+
+{#
+    Now display either the file-area (for installed filters)
+    or the function-area (for inline-filters)
 #}
-    
-{# 
-    Now display all optional configuration-fields for this filter. 
+
+{#
+    Now display all optional configuration-fields for this filter.
 #}
 {% for field in extra_fields %}
     {% if field.type == 'text' %}
@@ -110,11 +110,11 @@
             <div class="settingValue">
                 <input type="text" name="{{ field.name }}" value="{{ tpl_field_value }}" size="40" {{ tpl_field_style }} />
             </div>
-        </div>            
+        </div>
         <!-- END text_block -->
-        
-        
-    {% elseif field.type ==  'textarea' or field.type ==  'editarea' %}  
+
+
+    {% elseif field.type ==  'textarea' or field.type ==  'editarea' %}
         <!-- BEGIN textarea_block -->
         <div class="formRow">
             <div class="settingName">
@@ -125,7 +125,7 @@
             </div>
         </div>
         <!-- END textarea_block -->
-        
+
     {% elseif field.type ==  'checkbox' %}
         <!-- BEGIN checkbox_block -->
         <div class="formRow">
@@ -150,8 +150,8 @@
             </div>
         </div>
         <!-- END radio_block -->
-    
-    
+
+
     {% elseif field.type ==  'select' %}
         <!-- BEGIN select_block -->
         <div class="formRow">
@@ -165,8 +165,8 @@
             </div>
         </div>
         <!-- END select_block -->
-    
-    
+
+
     {% elseif field.type ==  'array' %}
         <!-- BEGIN array_row_block -->
         <div class="formRow">
@@ -190,9 +190,9 @@
             </div>
         </div>
         <!-- END array_row_block -->
-    {% endif %}  
+    {% endif %}
 {% endfor %}
-    
+
 
 {% if func %}
     <div class="formRow">
@@ -230,7 +230,7 @@
             <button type="submit" name="submit_exit" class="button ico-save-back">{{ L_('L:TXT_SAVE_AND_CLOSE') }}</button>
             <button class="button ico-back pos-right" type="button" data-redirect-location="{{ TOOL_URI }}&amp;last={{ filter_id }}#{{ filter_id }}">{{ L_('L:TXT_EXIT') }}</button>
         </div>
-    
+
     </form>
 </div>
 <script type="text/javascript">var opf_use_checktrees = true;</script>

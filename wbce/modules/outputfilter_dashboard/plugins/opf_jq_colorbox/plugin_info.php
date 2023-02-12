@@ -2,7 +2,7 @@
 
 /*
 /***************************************************************
- * Colorbox jQuery Plugin from 
+ * Colorbox jQuery Plugin from
  * http://www.jacklmoore.com/colorbox/
  *
  * @autor Martin Freudenreich (mr-fan) 10-01-09 (as Droplet)
@@ -12,7 +12,7 @@
  * @param theme=1 (1,2,3,4,5) Themes for the colorbox
  *
  * Load the JS and CSS Files for the colorbox jQuery Plugin!
- */ 
+ */
 
 $plugin_directory   = 'opf_jq_colorbox';
 $plugin_name        = 'opf_jq_colorbox';

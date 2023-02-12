@@ -1,6 +1,6 @@
 {% extends "_framer.twig" %}
-{% block content %} 
-    
+{% block content %}
+
 <noscript>
     <style type="text/css">.hideupload {display:block;}</style>
     <div class="warning">{{ L_('L:TXT_ACTIVATE_JS') }}</div>
@@ -32,7 +32,7 @@
 
 <form name="outputfilter" id="outputfilter" method="post">
     <input type="hidden" name="save_settings" value="save_settings">
-    {{ FTAN }} 
+    {{ FTAN }}
     <table id="dashboard" class="dragdrop_form filters-table"  cellspacing="0"  style="border-collapse: collapse;width:100%">
         <thead>
             <tr>
@@ -46,16 +46,16 @@
             </tr>
         </thead>
         <tbody>
-            
-    {# Filter List #}        
+
+    {# Filter List #}
     {% for f in filters %}
         {% set IDKEY = getIDKEY(f.filter_id) %}
         {% if f.type_sep_line %}
-        </tbody> 
+        </tbody>
 
         <tbody class="{{ f.type_id }}">
             <tr class="sticky"><td colspan="11">&nbsp;{{ f.type_name }}</td></tr>
-        </tbody>   
+        </tbody>
         <tbody class="{{ f.type_id }}">
             <tr style="line-height: 0;"><td colspan="13"style="line-height: 0;"></td></tr>
         {% endif %}
@@ -69,7 +69,7 @@
             <td>&nbsp;</td>
             <td><p style="font-size:.9em; color: #4c4c4c;line-height: 14px">{{ wordcut(f.filter_desc, 125 ) }}</p></td>
             <td align="center">
-                
+
                 {% if f.convert_link %}
                     <a href="{{ f.convert_link }}" onclick="{{ f.filter_convert_query }}" title="{{ f.type_title|capitalize  }}">
                 {% endif %}
@@ -107,9 +107,9 @@
             </td>
             <td class="dragdrop_item">&nbsp;</td>
         </tr>
-        
+
         {% endfor %}
-        </tbody>        
+        </tbody>
         <tfoot>
             <tr>
                 <td colspan="11" style="border: none;">{#{ filters|length }#}</td>
@@ -119,7 +119,7 @@
 </form>
 
 
-        
+
 <!--/*  ABOUT BOX  */-->
 <div id="about" style="display:none;">
     <h2>OutputFilter Dashboard - AdminTool</h2>
@@ -142,7 +142,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU General Public License</a> for more details.</small></p>
 <br />
 </div>
-    
+
 <script type="text/javascript">
     /* <![CDATA[ */
         var ADDON_URL = '{{ ADDON_URL }}';

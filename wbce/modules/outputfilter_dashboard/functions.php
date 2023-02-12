@@ -8,16 +8,15 @@ functions.php
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.15
+ * @version         1.6.3
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
- * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
+ * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
- * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x or WBCE
- * @requirements    PHP 5.4 and higher
+ * @platform        WBCE 1.x
+ * @requirements    PHP 7.4 - 8.2
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -35,7 +34,6 @@ functions.php
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 
 // prevent this file from being accessed directly
 if(!defined('WB_PATH')) die(header('Location: ../index.php'));
@@ -117,7 +115,7 @@ function quote_chars($sStr){
 }
 
 function truncate_string($sStr="", $iMaxChars = 110){
-    return strlen($sStr) > $iMaxChars 
+    return strlen($sStr) > $iMaxChars
         ? substr($sStr,0,$iMaxChars).' &hellip;' // truncate and add ellipsis
         : $sStr;                                 // return string as is
 }
@@ -132,7 +130,7 @@ function opf_get_helppath(int $iFilterId) : string
     $sQry = "SELECT `helppath`, `plugin` FROM `{TP}mod_outputfilter_dashboard` WHERE `id` = ".$iFilterId;
     $arr  = $GLOBALS['database']->get_array($sQry)[0];
     if (empty($arr) || $arr['helppath'] == 'a:0:{}') return '';
-    
+
     $sTmpPath   = opf_fetch_entry_language(unserialize($arr['helppath']));
     $sHelppath  = opf_replace_sysvar($sTmpPath, $arr['plugin']);
     if($sHelppath != '')
@@ -158,7 +156,7 @@ function opf_quotes($var) {
 }
 
 /**
- * 
+ *
  * @global obj   $database
  * @param  int   $iFilterId
  * @return array ExtraFields of an OpF Filter
@@ -167,23 +165,23 @@ function opf_get_extrafields_array(int $iFilterId): array {
     $aExtraFields = [];
     global $database;
     if (!$filter = $database->get_array(
-        "SELECT 
-            `additional_values`, 
-            `additional_fields`, 
+        "SELECT
+            `additional_values`,
+            `additional_fields`,
             `additional_fields_languages`
             FROM `{TP}mod_outputfilter_dashboard` WHERE `id`=". $iFilterId
         )[0]
     ){
         return $aExtraFields;
     }
-    
+
     $aFields  = unserialize($filter['additional_fields']);
     if (!is_array($aFields)) {
         return $aExtraFields;
-    }    
+    }
     $aValues  = unserialize($filter['additional_values']);
-    
-    $aLangs   = unserialize($filter['additional_fields_languages']);    
+
+    $aLangs   = unserialize($filter['additional_fields_languages']);
     // additional_languages
     if (empty($aLangs)) {
         $lang = [];
@@ -1319,7 +1317,7 @@ function opf_insert_sysvar($filter, $plugin='') {
     if($plugin!='') {
         #$filter = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter);
         $filter_as_string = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter_as_string);
-    } 
+    }
     $filter_as_string = str_replace(WB_URL, '{SYSVAR:WB_URL}', $filter_as_string);
     $filter = json_decode($filter_as_string,true);
     return $filter;
@@ -1835,13 +1833,13 @@ function opf_save() {
         }
     }
 
-    if($id==0) { 
+    if($id==0) {
         // we come from add-filter
-        // prevent inline-filters from overwriting 
+        // prevent inline-filters from overwriting
         // a different filter with same name
         while(opf_is_registered($name))
             $name .= mt_rand(0,9);
-    } else { 
+    } else {
         // we come from edit-filter: allow to overwrite old one (same $id)
         if(opf_check_name($id)!=$name) {
             while(opf_is_registered($name))
@@ -2019,8 +2017,8 @@ function opf_escape_string($str){
 function opf_create_dirname($str){
     $s=strtolower(
         preg_replace(
-            array('/\s\s*/','/[^a-zA-Z0-9_]/','/_*$/'), 
-            array('_','',''), 
+            array('/\s\s*/','/[^a-zA-Z0-9_]/','/_*$/'),
+            array('_','',''),
             $str
         )
     );

@@ -6,16 +6,15 @@ backend.css
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.5.15
+ * @version         1.6.3
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010 Christian M. Stefan (Stefek), 2021 Martin Hecht (mrbaseman)
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
- * @link            http://forum.websitebaker.org/index.php/topic,28926.0.html
+ * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
- * @link            http://addons.wbce.org/pages/addons.php?do=item&item=53
  * @license         GNU General Public License, Version 3
- * @platform        WebsiteBaker 2.8.x or WBCE
- * @requirements    PHP 5.4 and higher
+ * @platform        WBCE 1.x
+ * @requirements    PHP 7.4 - 8.2
  *
  * This file is part of OutputFilter-Dashboard, a module for WBCE and Website Baker CMS.
  *
@@ -33,6 +32,7 @@ backend.css
  * along with OutputFilter-Dashboard. If not, see <http://www.gnu.org/licenses/>.
  *
  **/
+
 .outputfilter_dashboard h1{
     font-size: 1.5em;
     color: #556c87;
@@ -65,10 +65,10 @@ div.settingValue{
 }
 
 table.filters-table tbody tr td:first-child,
-table.filters-table tbody tr.sticky td{    
+table.filters-table tbody tr.sticky td{
     padding-left: 6px;
 }
-table.filters-table tbody tr td:last-child{    
+table.filters-table tbody tr td:last-child{
     width: 3%;
     margin-right: 6px;
 }
@@ -82,7 +82,7 @@ table.filters-table tbody tr.sticky td {
     background-image: linear-gradient(#a3baca, #859AB2);
     box-shadow: inset 0 -1px 0 rgb(0 0 0 / 5%);
     text-shadow: outset 0 -1px 0 rgba(0, 0, 0, 0.05);
-    
+
 }
 
 
@@ -130,7 +130,7 @@ b {
     background: #ffffff;
     border-bottom: 1px solid #becadb;
 }
-.filters-table tr:last-child td, 
+.filters-table tr:last-child td,
 .filters-table tr:last-child th{
     border: none;
 }
@@ -296,7 +296,7 @@ ul.checktreestyle,
 ul.checktreestyle * {
     list-style-type: none;
     padding: 0;
-    margin: 0;   
+    margin: 0;
     margin-top: 6px;
     line-height: 26px;
 }
@@ -399,12 +399,12 @@ ul.checktreestyle li .half_checked {
     border-width: 2px 2px 3px;
     border-color: #cad2d9 #bac5ce
 }*/
-.dragdrop_handle { 
-    width: 25px; 
-    background-image: url("images/drag_indicator.svg") !important; 
+.dragdrop_handle {
+    width: 25px;
+    background-image: url("images/drag_indicator.svg") !important;
     background-position: right center !important;
-    background-repeat: no-repeat !important; 
-    cursor: move; 
+    background-repeat: no-repeat !important;
+    cursor: move;
 }
 .jsadmin_drag {
     cursor: move;
@@ -422,8 +422,8 @@ ul.jsadmin_drag_area {
 
 /*
 
-	The following CSS declarations needed for proper work with Drag&Drop
-	
+        The following CSS declarations needed for proper work with Drag&Drop
+
 */
 
 
@@ -591,7 +591,7 @@ input[switch=bool]:checked + label:before {
   color: #fff !important;
 }
 /**
-    labeled 
+    labeled
     when `attr(data-on-label)` is used
 */
 input[switch] + label.labeled{
@@ -623,11 +623,11 @@ input[switch=bool] + label.labeled {
     background-color: #ffe0e0;
     font-weight: 800;
 }
-.row-on-delete td:nth-child(2){    
-    color: #c81e1e;    
+.row-on-delete td:nth-child(2){
+    color: #c81e1e;
     text-decoration: line-through;
 }
-.row-on-delete td:nth-child(3){   
+.row-on-delete td:nth-child(3){
     font-weight: 400;
     line-height: 1.7;
     font-size: .95em;
@@ -644,28 +644,28 @@ input[switch=bool] + label.labeled {
  */
 .btn-inline {
         margin: 3px 4px 3px 0px;
-	text-decoration: none;
-	color: white !important;
+        text-decoration: none;
+        color: white !important;
         font-weight: normal !important;
-        padding: 0px 5px;  
+        padding: 0px 5px;
         font-size: 12px;
         line-height: 1.6;
-	display: inline-block;
-	position: relative;
-	border: 1px solid rgba(0,0,0,0.21);
-	border-bottom: 3px solid rgba(0,0,0,0.21);
-	border-radius: 6px;
-	text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+        display: inline-block;
+        position: relative;
+        border: 1px solid rgba(0,0,0,0.21);
+        border-bottom: 3px solid rgba(0,0,0,0.21);
+        border-radius: 6px;
+        text-shadow: 0 1px 0 rgba(0,0,0,0.15);
 }
 
-.btn-inline.red{ 
-	background: rgba(250,90,90,1);    
+.btn-inline.red{
+        background: rgba(250,90,90,1);
         background: linear-gradient(#ff8383 0%, #e85151 100%);
 }
 .btn-inline.red:active   {background: #E35252;}
 
 .btn-inline.green {
-	background: rgba(130,200,160,1);
+        background: rgba(130,200,160,1);
         background: linear-gradient(to bottom, #b2d660 0%, #95b44a 100%);
 }
 .btn-inline.green:active {background: #8baf37;}

@@ -544,6 +544,15 @@ if (file_exists($file_name)) {
     }
     // Remove entry from DB
     $database->query("DELETE FROM " . TABLE_PREFIX . "addons WHERE directory = 'output_filter' AND type = 'module'");
+    // uninstall opf simple backend
+    $opf_simple = WB_PATH . "/modules/opf_simple_backend/uninstall.php";
+    if (file_exists($opf_simple)) {
+        echo "<br />Uninstall Opf Simple Backend  module<br />";
+        include_once($opf_simple);
+        opf_io_rmdir(WB_PATH . "/modules/opf_simple_backend");
+    }
+    // Remove entry from DB
+    $database->query("DELETE FROM " . TABLE_PREFIX . "addons WHERE directory = 'opf_simple_backend' AND type = 'module'");
 }
 
 // Sitemap
