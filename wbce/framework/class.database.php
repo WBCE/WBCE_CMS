@@ -138,7 +138,7 @@ class database
                 if ($this->get_one($sqlRowCheck)) {
                     $strQuery = sprintf("DELETE FROM `%s` WHERE `%s` = '%s'", $table, $refKey, $key);
                 }
-                if ($this->query($strQuery)) {
+                if (isset($strQuery) && $this->query($strQuery)) {
                     $retVal = true;
                 } else {
                     $retVal = $this->get_error();
