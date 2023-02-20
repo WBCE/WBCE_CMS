@@ -45,8 +45,8 @@ if(ENABLED_CAPTCHA) {
 // ************************************************************************* //
 if(isset($_POST['signup_form_sent'])){
     // Get raw user inputs
-    $username     = strtolower(strip_tags($oAccounts->get_post('username')));
-    $display_name = strip_tags($oAccounts->get_post('display_name'));
+    $username     = remove_special_characters(strtolower(strip_tags($oAccounts->get_post('username'))));
+    $display_name = remove_special_characters(strip_tags($oAccounts->get_post('display_name')));
     $email        = $oAccounts->get_post('email');
     $gdpr_check   = $oAccounts->get_post('gdpr_check');
     $groups_id    = FRONTEND_SIGNUP;

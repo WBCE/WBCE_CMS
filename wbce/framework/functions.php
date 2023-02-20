@@ -1863,3 +1863,24 @@ function strposm($sHaystack, $uNeedle)
     }
     return false;
 }
+
+/**
+ * @brief   A rather simple function to remove dangerous
+ *          characters from a string.
+ *          At least it works!
+ *			https://www.geeksforgeeks.org/how-to-remove-special-character-from-string-in-php/
+ *
+ * @param string $sstr the string to be checked
+ * @return  string w/o defined chars
+ */
+
+
+function remove_special_characters($str) {
+ 
+  // Using str_replace() function
+  // to replace the word
+  $res = str_replace( array( '\'','"',',',';','<','>','%','&','$','\\','/' ), '', $str);
+
+  // Returning the result
+  return $res;
+  }

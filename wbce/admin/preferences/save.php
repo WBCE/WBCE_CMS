@@ -101,11 +101,15 @@ function save_preferences(&$admin, &$database)
                 $sPwHashNew = $checkPassword;
             }
         }
+		
+		
+		
+		
         // If no validation errors, try to update the database, otherwise return errormessages
         if (sizeof($aErrMsg) == 0) {
             $aUpdate = array(
                 'user_id' => $iUserID,
-                'display_name' => $database->escapeString($display_name),
+                'display_name' => remove_special_characters($database->escapeString($display_name)),
                 'language' => $database->escapeString($language),
                 'timezone' => $database->escapeString($timezone),
                 'date_format' => $database->escapeString($date_format),

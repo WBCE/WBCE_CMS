@@ -13,6 +13,8 @@
 // Must include code to stop this file being access directly
 defined('WB_PATH') or die("Cannot access this file directly"); 
 
+
+
 $oAccounts = new Accounts();
 // Check FTAN
 if (!$oAccounts->checkFTAN()) {
@@ -35,7 +37,7 @@ if (is_array($sEncPassword)){
 } else { 
 
     // Get entered values
-    $sDisplayName  = $oAccounts->add_slashes(strip_tags($oAccounts->get_post('display_name')));
+    $sDisplayName  = remove_special_characters($oAccounts->add_slashes(strip_tags($oAccounts->get_post('display_name'))));
     $sLC           = $oAccounts->get_post('language');
     $sLanguage     = preg_match('/^[A-Z]{2}$/', $sLC) ? $sLC : 'EN';
     $sTimezone     = is_numeric($oAccounts->get_post('timezone')) ? $oAccounts->get_post('timezone')*60*60 : 0;
