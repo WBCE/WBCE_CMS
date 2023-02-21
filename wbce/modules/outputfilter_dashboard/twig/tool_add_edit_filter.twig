@@ -2,16 +2,16 @@
 {% block content %}
 <!-- BEGIN main_block -->
 <div class="cpForm">
+<form name="outputfilter" class="modify_settings" action="{{ TOOL_URI }}" method="post">
+		<input type="hidden" name="id" value="{{ filter_id }}" />
+        <input type="hidden" name="save_settings" value="save_settings"/>
+        {{ FTAN }}
     <div style="margin: 15px 26px;float:right;">
-        <input value="1" name="active" type="checkbox" id="i{{ filter_id }}" switch="bool" rel="{{ f.tpl_filter_id }}" {{ active_checked }} />
+        <input value="1" name="active" type="checkbox" id="i{{ filter_id }}" switch="bool" rel="{{ filter_id }}" {{ active_checked }} />
         <label for="i{{ filter_id }}" class="labeled" data-on-label="{{ L_('TEXT:ENABLED') }}" data-off-label="{{ L_('TEXT:DISABLED') }}">
         </label>
     </div>
-    <h2>{{ L_('L:TXT_FILTER_CONF') }}</h2>
-    <form name="outputfilter" class="modify_settings" action="{{ TOOL_URI }}" method="post">
-        <input type="hidden" name="id" value="{{ filter_id }}" />
-        <input type="hidden" name="save_settings" value="save_settings"/>
-        {{ FTAN }}
+    <h2>{{ L_('L:TXT_FILTER_CONF') }}</h2>           
     <div class="formRow">
 
         <div class="settingName"><label>{{ L_('L:TXT_FILTER_NAME') }}</label></div>
@@ -108,7 +108,7 @@
                 <label>{{ field.text }}</label>
             </div>
             <div class="settingValue">
-                <input type="text" name="{{ field.name }}" value="{{ tpl_field_value }}" size="40" {{ tpl_field_style }} />
+                <input type="text" name="{{ field.name }}" value="{{ field.value }}" size="40" {{ field.style }} />
             </div>
         </div>
         <!-- END text_block -->
@@ -121,7 +121,7 @@
                 <label>{{ field.text }}</label>
             </div>
             <div class="settingValue">
-                <textarea id="{{ field_id }}" name="{{ field.name }}" cols="40" rows="5" {{ tpl_field_style }}>{{ tpl_field_value }}</textarea>
+                <textarea id="{{ field_id }}" name="{{ field.name }}" cols="40" rows="5" {{ field.style }}>{{ field.value }}</textarea>
             </div>
         </div>
         <!-- END textarea_block -->
@@ -133,7 +133,7 @@
                <label>{{ field.text }}</label>
             </div>
             <div class="settingValue">
-                <input type="checkbox" value="{{ tpl_field_value }}" name="{{ field.name }}" {{ tpl_field_checked }} />
+                <input type="checkbox" value="{{ field.value }}" name="{{ field.name }}" {{ field.checked }} />
             </div>
         </div>
         <!-- END checkbox_block -->
@@ -146,7 +146,7 @@
                <label>{{ field.text }}</label>
             </div>
             <div class="settingValue">
-                <input type="radio" value="{{ tpl_field_value }}" name="{{ field.name }}" {{ tpl_field_checked }} />
+                <input type="radio" value="{{ field.value }}" name="{{ field.name }}" {{ field.checked }} />
             </div>
         </div>
         <!-- END radio_block -->
