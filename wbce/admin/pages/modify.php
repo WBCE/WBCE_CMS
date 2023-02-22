@@ -156,6 +156,7 @@ if ($rSections = $database->query($sSql)) {
                         'BLOCK_NAME' => $sBlockName,
                         'SECTION_ID' => $section['section_id'],
                         'SECTION_MODULE' => $admin->get_module_name($section['module']),
+						'SECTION_MODULE_CLASS' => $section['module'],
                         'SECTION_BLOCK' => $section['block'],
                         'SECTION_NAME' => $section['namesection'],
                     )

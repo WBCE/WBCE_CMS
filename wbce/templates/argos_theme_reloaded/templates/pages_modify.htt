@@ -37,7 +37,7 @@
     <b>Name: </b>{SECTION_NAME}
 </div>
 
-<div class="pageModuleWrapper {SECTION_MODULE}">
+<div class="pageModuleWrapper {SECTION_MODULE_CLASS}">
     {SECTION_MODIFY_OUTPUT}
 </div>
 <!-- END section_module_block -->

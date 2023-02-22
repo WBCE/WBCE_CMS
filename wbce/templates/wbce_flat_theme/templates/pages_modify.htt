@@ -19,7 +19,7 @@
     <b>{TEXT_BLOCK}: </b>{BLOCK_NAME} <b>Modul: </b>{SECTION_MODULE} <b>ID: </b>{SECTION_ID} <b>Name: </b>{SECTION_NAME}
 </div>
 
-<div class="pageModuleWrapper {SECTION_MODULE}">
+<div class="pageModuleWrapper {SECTION_MODULE_CLASS}">
     {SECTION_MODIFY_OUTPUT}
 </div>
 <!-- END section_module_block -->
