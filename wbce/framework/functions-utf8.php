@@ -166,8 +166,8 @@ function utf8_fast_entities_to_umlauts($str)
         // we need two mb_convert_encoding()-calls - is this a bug?
         // mb_convert_encoding("ö&ouml;", 'UTF-8', 'HTML-ENTITIES'); // with string in utf-8-encoding doesn't work. Result: "Ã¶ö"
         // Work-around: convert all umlauts to entities first ("ö&ouml;"->"&ouml;&ouml;"), then all entities to umlauts ("&ouml;&ouml;"->"öö")
-        return (mb_convert_encoding(mb_convert_encoding($str, 'HTML-ENTITIES', 'UTF-8'), 'UTF-8', 'HTML-ENTITIES'));
-		//htmlentities($str);
+        //return (mb_convert_encoding(mb_convert_encoding($str, 'HTML-ENTITIES', 'UTF-8'), 'UTF-8', 'HTML-ENTITIES'));
+		htmlentities($str);
     } else {
         global $named_entities;
         global $numbered_entities;
