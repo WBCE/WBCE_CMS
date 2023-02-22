@@ -839,7 +839,6 @@ function createFolderProtectFile($sAbsDir = '', $bMakeDir = true)
         // write content into file
         if (is_writable($sFilename) || !file_exists($sFilename)) {
             if (file_put_contents($sFilename, $sContent)) {
-                // debug_dump('create => '.str_replace( $wb_path, '' ,$sFilename));
                 change_mode($sFilename, 'file');
             } else {
                 $retVal[] = $MESSAGE['GENERIC_BAD_PERMISSIONS'] . ' :: ' . $sFilename;
@@ -1308,7 +1307,7 @@ function load_template($sTemplatePath)
             if (!isset($template_function)) {
                 $template_function = 'template';
             }
-			if (!isset($template_description)) {
+            if (!isset($template_description)) {
                 $template_description = 'no description available';
             }
             $aData = array(
@@ -1650,9 +1649,16 @@ function debug_dump($mVar = '', $sHeading = '', $bUse_var_dump = false, $mTwig =
             break;
         case is_array($mVar):
             $sType = 'array';
+            array_walk_recursive($mVar, function (&$mVar) {
+                $mVar = htmlentities($mVar);
+            });
+            array_walk_recursive($mVar, function (&$mVar) {
+                $mVar = nl2br($mVar);
+            });
             break;
         case is_string($mVar):
-            $sType = 'string';
+            $sType = 'string';            
+            $mVar = htmlentities($mVar);
             break;
         case is_bool($mVar):
             $sType = 'bool';
@@ -1670,18 +1676,20 @@ function debug_dump($mVar = '', $sHeading = '', $bUse_var_dump = false, $mTwig =
             $sType = 'unknown var type';
     }
     $sRetVal = '';
-    $sRetVal .= '<fieldset class="debug_frame ' . $sType . '">';
-    $sRetVal .= '<p class="heading">';
+    $sRetVal .= '<fieldset class="debug_frame ' . $sType . '"';
+    $sRetVal .= ' style="background: #fffbd3; border: 3px solid #f6f4cc;">';
+    $sRetVal .= '<p class="heading" style="color: #1247d8; font-weight: 600;font-size: 120%;">';
 
     $sCountable = is_countable($mVar) ? ' <i>countable</i>' : '';
-    $sRetVal .= '<span class="var-type">(' . $sType . ')' . $sCountable . ' </span> ' . $sHeading;
+    $sRetVal .= '<span class="var-type" style="color: #ffa500;font-size: 85%;font-weight: normal;">(' . $sType . ')' . $sCountable . ' </span> ' . $sHeading;
+    
+    $sRetVal .= '<button type="button" class="dd-close jquery-only" style="visibility:hidden;">';
+    $sRetVal .= '<span aria-hidden="true">&times;</span></button>';    
+    $sRetVal .= '<input type="checkbox" class="dd-collapse jquery-only" checked style="visibility:hidden;">';
+    $sRetVal .= '</p>'; 
 
-    $sCloseBtn = '<button type="button" class="close"><span aria-hidden="true">&times;</span></button>';
-    $sCollapse = '<button type="button" class="collapse"><span aria-hidden="true">+</span></button>';
-    $sRetVal .= $sCloseBtn . $sCollapse . '</p>';
-
-    $sRetVal .= '<div><pre>';
-    $sData = '';
+    $sRetVal .=  '<div><pre style="color: #c01727; background: #fffeed;">';
+    $sData    =  '';
     if ((is_array($mVar)) or (!is_array($mVar) && $mVar != '' && !is_bool($mVar) && !is_int($mVar))) {
         $func = ($bUse_var_dump == true) ? 'var_dump' : 'print_r';
         ob_start();
@@ -1700,10 +1708,15 @@ function debug_dump($mVar = '', $sHeading = '', $bUse_var_dump = false, $mTwig =
     $sRetVal .= $sData . PHP_EOL . '</pre>';
 
     $aBackTrace = debug_backtrace()[0];
-
-    $sBackTrace = '<p class="backtrace">called in file: <b>'
-        . str_replace(WB_PATH, 'WB_PATH ', $aBackTrace['file'])
-        . '</b><br />on line: <b>' . $aBackTrace['line'] . '</b></p>';
+    if(strpos($aBackTrace['file'], 'SimpleFunctions')!== false && $mTwig == false){
+        $sBackTrace = '<p class="backtrace">Called from a Twig template. '
+            . 'Exact location can\'t be determined.</p>';
+    }else{
+        $sBackTrace = '<p class="backtrace">called in file: <b>'
+            . str_replace(WB_PATH, 'WB_PATH ', $aBackTrace['file'])
+            . '</b><br />on line: <b>' . $aBackTrace['line'] . '</b></p>';
+    }
+    
     if ($mTwig != false) {
         $sBackTrace = '<p class="backtrace">called in Twig template file: <b>' . $mTwig . '</b>';
     }
@@ -1727,7 +1740,7 @@ function debug_dump($mVar = '', $sHeading = '', $bUse_var_dump = false, $mTwig =
         ),
         3 => array(
             'find' => '/\[/',
-            'replace' => '<div class="vert-spacer">&nbsp;</div>'
+            'replace' => '<div class="vert-spacer" style="display: inline-block; margin: 12px 0 0 -13;">&nbsp;</div>'
                 . '<span class="tab"></span><span class="brackets">[</span>',
         ),
         4 => array(
@@ -1751,19 +1764,23 @@ function debug_dump($mVar = '', $sHeading = '', $bUse_var_dump = false, $mTwig =
         $sCssFile = WB_URL . sprintf($sCssFile, 'theme_fallbacks');
     }
     I::insertCssFile($sCssFile, 'HEAD BTM-', 'debug_dump');
-    $sToJs = "
+    $sToJs  = "
         jQuery(document).ready(function($) {
-            $('.debug_frame .close').on( 'click', function( event ) {
+            $('.jquery-only').css('visibility', 'visible');
+            $('.debug_frame .dd-close').on( 'click', function( event ) {
                 $( event.target ).closest( 'fieldset.debug_frame' ).slideToggle(150);
             });            
-            $('.collapse').on( 'click', function() {
-                 $(this).parent().next().slideToggle('fast');
-
-                 $(this).parent().next().next().slideToggle('fast');
-
+            $('.dd-collapse').on( 'click', function() {
+                var fieldset =  $(this).parent().parent();
+                if(fieldset.hasClass('dd-is-closed'))
+                        fieldset.removeClass('dd-is-closed');
+                else    fieldset.addClass('dd-is-closed');
+                $(this).parent().next().slideToggle('fast');
+                $(this).parent().next().next().slideToggle('fast');
             }); 
-        });";
-    I::insertJsCode($sToJs, 'BODY BTM-', 'debug_dump');
+        });";    
+    
+    I::insertJsCode($sToJs, 'BODY BTM-', 'debug_dump'); 
 
     echo $sRetVal;
 }
@@ -1863,24 +1880,3 @@ function strposm($sHaystack, $uNeedle)
     }
     return false;
 }
-
-/**
- * @brief   A rather simple function to remove dangerous
- *          characters from a string.
- *          At least it works!
- *			https://www.geeksforgeeks.org/how-to-remove-special-character-from-string-in-php/
- *
- * @param string $sstr the string to be checked
- * @return  string w/o defined chars
- */
-
-
-function remove_special_characters($str) {
- 
-  // Using str_replace() function
-  // to replace the word
-  $res = str_replace( array( '\'','"',',',';','<','>','%','&','$','\\','/' ), '', $str);
-
-  // Returning the result
-  return $res;
-  }
