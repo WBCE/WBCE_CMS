@@ -173,7 +173,7 @@ function utf8_fast_entities_to_umlauts($str)
         global $numbered_entities;
         $str = str_replace($named_entities, $numbered_entities, $str);
         $str = preg_replace("/&#([0-9]+);/e", "code_to_utf8($1)", $str);
-    }
+    }	
     return ($str);
 }
 
@@ -290,7 +290,7 @@ function charset_to_utf8($str, $charset_in = DEFAULT_CHARSET, $decode_entities =
     if (substr($charset_in, 0, 8) == 'ISO-8859') {
         switch ($charset_in) {
             case 'ISO-8859-1':
-                $str = utf8_encode($str);
+                $str = mb_convert_encoding($str, 'UTF-8', 'ISO-8859-1');
                 break;
             case 'ISO-8859-2':
                 $str = strtr($str, $iso_8859_2_to_utf8);
@@ -408,7 +408,7 @@ function utf8_to_charset($str, $charset_out = DEFAULT_CHARSET)
     if (substr($charset_out, 0, 8) == 'ISO-8859') {
         switch ($charset_out) {
             case 'ISO-8859-1':
-                $str = utf8_decode($str);
+                $str =  mb_convert_decoding($str, 'UTF-8', 'ISO-8859-1');
                 break;
             case 'ISO-8859-2':
                 $str = strtr($str, $utf8_to_iso_8859_2);
