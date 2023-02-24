@@ -161,13 +161,11 @@ function utf8_stripspecials($string, $repl = '', $additional = '')
 function utf8_fast_entities_to_umlauts($str)
 {
     if (UTF8_MBSTRING) {
-        // we need this for use with mb_convert_encoding
+        // I have no idea what I'm doing
         $str = str_replace(array('&amp;', '&gt;', '&lt;', '&quot;', '&#039;', '&nbsp;'), array('&amp;amp;', '&amp;gt;', '&amp;lt;', '&amp;quot;', '&amp;#39;', '&amp;nbsp;'), $str);
-        // we need two mb_convert_encoding()-calls - is this a bug?
-        // mb_convert_encoding("ö&ouml;", 'UTF-8', 'HTML-ENTITIES'); // with string in utf-8-encoding doesn't work. Result: "Ã¶ö"
-        // Work-around: convert all umlauts to entities first ("ö&ouml;"->"&ouml;&ouml;"), then all entities to umlauts ("&ouml;&ouml;"->"öö")
-        //return (mb_convert_encoding(mb_convert_encoding($str, 'HTML-ENTITIES', 'UTF-8'), 'UTF-8', 'HTML-ENTITIES'));
-		htmlentities($str);
+		$str = html_entity_decode($str);
+		
+		return $str;
     } else {
         global $named_entities;
         global $numbered_entities;
