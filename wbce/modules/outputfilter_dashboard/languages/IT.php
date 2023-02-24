@@ -234,7 +234,7 @@ $LANG['MOD_OPF']['TXT_NOT_A_FILTER'] = 'file caricato non &egrave; un plugin fil
 
 $LANG['MOD_OPF']['TXT_LOOKS_LIKE_MODULE'] = ' - sembra d&apos;essere un filtro di modulo. Installarlo tra le <a href=%s>Moduli</a>.';
 
-$LANG['MOD_OPF']['TXT_ALREADY_INSTALLED'] = 'una versione pi&ugrave; recente &egrave; gi&agrave; installata';
+$LANG['MOD_OPF']['TXT_NEWER_V_ALREADY_INSTALLED'] = 'una versione pi&ugrave; recente &egrave; gi&agrave; installata';
 
 $LANG['MOD_OPF']['TXT_UNZIP_FAILED'] = 'non &egrave; riuscito a decomprimere archivio';
 

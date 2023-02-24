@@ -27,7 +27,7 @@
         <input name="filterplugin" type="file" size="60" />
         <button type="submit" title="{{ L_('L:TXT_INSTALL_PLUGIN_FILTER') }}">{{ L_('L:TXT_UPLOAD') }}</button>
     </form>
-    <p id="close-panel"><img class="link" src="{{ IMAGE_URL }}/close.png" alt="[x]" title="close panel" /></p>
+    <p id="close-panel"><i class="fa fa-close"></i></p>
 </div>
 
 <form name="outputfilter" id="outputfilter" method="post">
@@ -56,7 +56,7 @@
         <tbody class="{{ f.type_id }}">
             <tr class="sticky"><td colspan="11">&nbsp;{{ f.type_name }}</td></tr>
         </tbody>
-        <tbody class="{{ f.type_id }}">
+        <tbody class="{{ f.type_id }}{% if hilite == f.type_id %} last-modified{% endif %}" id="{{ f.type_id }}">
             <tr style="line-height: 0;"><td colspan="13"style="line-height: 0;"></td></tr>
         {% endif %}
         <tr class="{{ f.additional_class }} {{ f.filter_active }}" id="{{ f.filter_id }}" data-idkey="id_{{ IDKEY }}">
@@ -67,42 +67,60 @@
                 <a href="{{ f.editlink }}" title="{{ L_('L:TXT_EDIT_FILTER') }}"><nobr data-funcname="{{ f.funcname }}">{{ f.filter_name }}</nobr></a>
             </td>
             <td>&nbsp;</td>
-            <td><p style="font-size:.9em; color: #4c4c4c;line-height: 14px">{{ wordcut(f.filter_desc, 125 ) }}</p></td>
-            <td align="center">
-
+            <td><p class="short-description">{{ f.filter_desc }}</p></td>
+            <td align="center" class="filter-type">
+                
+                {% set filter_type_icon %}
+                    {% if f.type == "plugin" %}
+                        <i class="fa fa-plug circle-icon"></i>
+                    {% elseif f.type == "extension" %}
+                        <i class="fa fa-puzzle-piece circle-icon"></i>
+                    {% else %}{# inline #}
+                        <i class="fa fa-code circle-icon"></i>
+                    {% endif %}                    
+                {% endset %}
+                
                 {% if f.convert_link %}
                     <a href="{{ f.convert_link }}" onclick="{{ f.filter_convert_query }}" title="{{ f.type_title|capitalize  }}">
                 {% endif %}
-                    <img src="{{ IMAGE_URL }}/{{ f.type }}.png" alt="{{ f.tpl_filter_type }}"/>
+                    {{ filter_type_icon }}
                 {% if f.convert_link %}
                     </a>
                 {% endif %}
             </td>
             <td>
                 {% if f.helppath_onclick %}
-                    <a href="{{ TOOL_URI }}" onclick="{{ f.helppath_onclick }}" title="{{ L_('L:TXT_FILTER_HELP') }}"><img src="{{ IMAGE_URL }}/help.png" alt="[?]"  /></a>
+                    <a href="{{ TOOL_URI }}" onclick="{{ f.helppath_onclick }}" title="{{ L_('L:TXT_FILTER_HELP') }}">
+                        <i class="fa fa-question-circle"></i>
+                    </a>
                 {% endif %}
             </td>
             <td>
                 {% if f.config_url %}
-                    <a href="{{ f.config_url }}" title="{{ L_('L:TXT_CONFIG_FILTER') }}"><img src="{{ IMAGE_URL }}/config.png" alt="[{{ L_('L:TXT_CONFIG_FILTER') }}]"  /></a>
+                    <a href="{{ f.config_url }}" title="{{ L_('L:TXT_CONFIG_FILTER') }}">
+                        <i class="fa fa-cog"></i>
+                    </a>
                 {% endif %}
             </td>
             <td>
                 {% if f.css_link %}
-                    <a href="{{ f.css_link }}" title="{{ L_('L:TXT_EDITCSS') }}"><img src="{{ IMAGE_URL }}/css_script.gif" alt="[css]"  /></a>
-                {% endif %}
-            </td>
-            <td>
-                {% if f.deletable %}
-                    <a href="javascript:void(0)" class="delete-item" title="{{ L_('TEXT:DELETE') }}" data-question="{{ L_('L:TXT_SURE_TO_DELETE') }}" data-delete="{{ L_('TEXT:DELETE') }}" data-cancel="{{ L_('TEXT:CANCEL') }}">
-                    <img src="{{ IMAGE_URL }}/delete_16.png" alt="[x]" /></a>
+                    <a href="{{ f.css_link }}" title="{{ L_('L:TXT_EDITCSS') }}">
+                        <i class="fa fa-file-text-o"></i>
+                    </a>
                 {% endif %}
             </td>
             <td>
                 {% if f.filter_export_link %}
                     <a href="{{ f.filter_export_link }}" title="{{ L_('L:TXT_EXPORT_FILTER') }}">
-                    <img src="{{ IMAGE_URL }}/export_16.png" alt="=>>" /></a>
+                        <i class="fa fa-cloud-download"></i>
+                    </a>
+                {% endif %}
+            </td>
+            <td>
+                {% if f.deletable %}
+                    <a href="javascript:void(0)" class="delete-item" title="{{ L_('TEXT:DELETE') }}" data-question="{{ L_('L:TXT_SURE_TO_DELETE') }}" data-delete="{{ L_('TEXT:DELETE') }}" data-cancel="{{ L_('TEXT:CANCEL') }}">
+                        <i class="fa fa-trash"></i>
+                    </a>
                 {% endif %}
             </td>
             <td class="dragdrop_item">&nbsp;</td>
@@ -125,11 +143,13 @@
     <h2>OutputFilter Dashboard - AdminTool</h2>
     <img src="{{ IMAGE_URL }}/opf-dashboard-logo.gif" alt="" />
     <p>
-Copyright &copy; 2009-2010, Thomas 'thorn' Hornik <a title="thorn@nettest.thekk.de" href="mailto:thorn@nettest.thekk.de">thorn@nettest.thekk.de</a><br />
-Copyright &copy; 2010-2023, Christian M. Stefan (Stefek) <a title="stefek@designthings.de" href="mailto:stefek@designthings.de">stefek@designthings.de</a><br />
-Copyright &copy; 2016, Martin Hecht (mrbaseman) <a title="mrbaseman@gmx.de" href="mailto:mrbaseman@gmx.de">mrbaseman@gmx.de</a><br />
-<a href="https://github.com/mrbaseman/outputfilter_dashboard" target="_blank" title="{{ L_('L:TXT_VISIT_PROJECTS_WEBSITE') }}">
-        <img src="{{ IMAGE_URL }}/a_blank.png" alt="" />Project Website</a></p>
+    Copyright &copy; 2009-2010, Thomas 'thorn' Hornik <a title="thorn@nettest.thekk.de" href="mailto:thorn@nettest.thekk.de">thorn@nettest.thekk.de</a><br />
+    Copyright &copy; 2010-2023, Christian M. Stefan (Stefek) <a title="stefek@designthings.de" href="mailto:stefek@designthings.de">stefek@designthings.de</a><br />
+    Copyright &copy; 2016, Martin Hecht (mrbaseman) <a title="mrbaseman@gmx.de" href="mailto:mrbaseman@gmx.de">mrbaseman@gmx.de</a><br />
+    <a href="https://github.com/mrbaseman/outputfilter_dashboard" target="_blank" title="{{ L_('L:TXT_VISIT_PROJECTS_WEBSITE') }}">
+            Project Website
+    </a>
+    </p>
     <p><a href="{{ TOOL_URI }}" onclick="{{ tpl_help_onclick }}" title="{{ L_('L:TXT_HELP_BROWSER') }}">
         <img src="{{ IMAGE_URL }}/help_big.png" alt="[?]" /></a>
     </p><br />

@@ -2,6 +2,10 @@
 Header: Version-History
 
 1.6:
+1.6.4  %(Stefek, 24 Febr 2023)%
+        - further cosmetic upgrade
+        - handling of several bugs pertaining to upload and deletion of plugins
+
 1.6.3  %(Stefek, 04 Febr 2023)%
         - add file `allways_active_array.php` that contains an array of the
            filters that should never be disable (deactivated)

@@ -72,7 +72,6 @@ if(!$upload_result['status']) {
 }
 $upload_id = $upload_result['result'];
 
-require_once(WB_PATH.'/framework/functions.php');
 if (file_exists (WB_PATH.'/include/pclzip/pclzip.lib.php'))
    require_once(WB_PATH.'/include/pclzip/pclzip.lib.php');
 
@@ -80,12 +79,14 @@ $temp_dir = WB_PATH.MEDIA_DIRECTORY.'/opf_plugins/';
 if(is_dir(WB_PATH.'/temp')){
     $temp_dir = WB_PATH.'/temp/opf_plugins/';
 }
-if(!is_dir($temp_dir)) opf_io_mkdir($temp_dir);
-$temp_file = uniqid();
-$temp_unzip = $temp_dir.'opf_unzip/';
+if(!is_dir($temp_dir)) 
+    opf_io_mkdir($temp_dir);
+
+$temp_file    = uniqid();
+$temp_unzip   = $temp_dir.'opf_unzip/';
 $install_file = 'plugin_install.php';
-$info_file = 'plugin_info.php';
-$install_dir = dirname(__FILE__).'/plugins/';
+$info_file    = 'plugin_info.php';
+$install_dir  = dirname(__FILE__).'/plugins/';
 
 $text_failed = $LANG['MOD_OPF']['TXT_FAILED_TO_UPLOAD'];
 
@@ -129,16 +130,29 @@ if(!$plugin_directory) {
     return;
 }
 
+// Plugin of the same name is already present in /plugins/ directory
 // Check version
 if(file_exists($install_dir.$plugin_directory)) {
+    $bUnlinkTemp = false;
+    
     $old_version =  opf_plugin_info_read($install_dir.$plugin_directory.'/'.$info_file, 'plugin_version');
     $new_version =  opf_plugin_info_read($temp_unzip.$info_file, 'plugin_version');
+    
     if(version_compare($old_version, $new_version, '>')) {
-        $upload_message = sprintf($text_failed, $LANG['MOD_OPF']['TXT_ALREADY_INSTALLED']);
+        $bUnlinkTemp = true;
+        $upload_message = sprintf($text_failed, $LANG['MOD_OPF']['TXT_NEWER_V_ALREADY_INSTALLED']);
+    }
+    if(version_compare($old_version, $new_version, '=')) {
+        $bUnlinkTemp = true;
+        $upload_message = sprintf($text_failed, $LANG['MOD_OPF']['TXT_SAME_V_ALREADY_INSTALLED']);
+    }
+    
+    if($bUnlinkTemp == true){
         opf_io_rmdir($temp_unzip);
         @unlink($temp_dir.$temp_file);
         return;
     }
+    
 }
 
 // Cleanup temp

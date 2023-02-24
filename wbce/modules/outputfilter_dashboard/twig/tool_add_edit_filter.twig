@@ -33,7 +33,8 @@
             {% if helppath != '' %}
             <p>
                 <a href="#" onclick="{{ helppath }}" title="{{ L_('L:TXT_FILTER_HELP') }}">
-                <img src="{{ IMAGE_URL }}/help.png" alt="{{ L_('L:TXT_HELP') }}" border="0" /></a>
+                    <i class="fa fa-question-circle"></i>
+                </a>
             </p>
             {% endif %}
         </div>
@@ -194,22 +195,12 @@
 {% endfor %}
 
 
-{% if func %}
-    <div class="formRow">
-        <div class="settingName">
-            <label></label>
-        </div>
-        <div class="settingValue">
-            <p class="notification">{{ L_('L:TXT_FILTER_FUNC') }}</p>
-        </div>
-    </div>
+{% if func %}    
 
-    <div class="formRow">
-        <div class="settingName">
-            <label></label>
-        </div>
+    <div class="formRow fullValue">   
+        <p class="notification">{{ L_('L:TXT_FILTER_FUNC') }}</p>
         <div class="settingValue">
-            <textarea id="func" name="func"  cols="65" rows="6" style="width: 98%; height: 400px;">{{ func }}</textarea>
+            <textarea id="func" name="func"  cols="65" rows="6" style="width: 100%; height: 400px;">{{ func }}</textarea>
         </div>
     </div>
 

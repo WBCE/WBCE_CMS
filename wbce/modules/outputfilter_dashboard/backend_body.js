@@ -62,12 +62,32 @@ $(document).ready(function ()
             window.location = uri;
         }
     });
+
+    // scroll to Last Modified Filter
+    // also: scroll to Type Section after deleting a plugin
+    if ($(".last-modified")[0]){
+        $('html, body').animate({
+            scrollTop: $('.last-modified').offset().top -250
+        }, 'slow');
+    }
+    
+    if ($(".short-description")[0]){
+        $.insert(AJAX_PLUGINS + "/jquery.collapser.min.js");
+        $('.short-description').collapser({
+            mode: 'chars',
+            ellipsis: ' &mldr; ',
+            showText: ' &#x25BC; ',
+            hideText: ' &#x25B2; ',
+            atStart: 'hide',
+            truncate: 130
+        });
+    }
+    
+    
+    
 });
 
 // --| drag&drop
-
-
-
 
 $(function() {
     // Load external ajax_dragdrop file

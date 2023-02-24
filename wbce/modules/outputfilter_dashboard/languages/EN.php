@@ -233,7 +233,8 @@ $LANG['MOD_OPF']['TXT_NOT_A_FILTER'] = 'uploaded file is not an OutputFilter Plu
 
 $LANG['MOD_OPF']['TXT_LOOKS_LIKE_MODULE'] = ' - it seems to be a module filter. Install it among the <a href=%s>Modules</a>.';
 
-$LANG['MOD_OPF']['TXT_ALREADY_INSTALLED'] = 'a newer version is already installed';
+$LANG['MOD_OPF']['TXT_NEWER_V_ALREADY_INSTALLED'] = 'a newer version is already installed';
+$LANG['MOD_OPF']['TXT_SAME_V_ALREADY_INSTALLED'] = 'this version is already installed';
 
 $LANG['MOD_OPF']['TXT_UNZIP_FAILED'] = 'failed to unzip archive';
 
