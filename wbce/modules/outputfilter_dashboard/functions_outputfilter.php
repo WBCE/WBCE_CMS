@@ -422,24 +422,24 @@ function opf_register_filter($filter, $serialized=FALSE) {
     if($serialized)
         $filter = unserialize($filter);
     $filter = opf_insert_sysvar($filter);
-    if(isset($filter['id'])) $id = opf_fetch_clean( $filter['id'], 0, 'int'); else $id = 0; // id is set from opf_edit_filter() only
-    if(isset($filter['type'])) $type = opf_fetch_clean( $filter['type'], '', 'string'); else $type = '';
-    if(isset($filter['name'])) $name = opf_fetch_clean( $filter['name'], '', 'string'); else $name = '';
-    if(isset($filter['file'])) $file = opf_fetch_clean( $filter['file'], '', 'string'); else $file = '';
-    if(isset($filter['func'])) $func = opf_fetch_clean( $filter['func'], '', 'unchanged'); else $func = '';
+    if(isset($filter['id']))        $id = opf_fetch_clean( $filter['id'], 0, 'int'); else $id = 0; // id is set from opf_edit_filter() only
+    if(isset($filter['type']))      $type = opf_fetch_clean( $filter['type'], '', 'string'); else $type = '';
+    if(isset($filter['name']))      $name = opf_fetch_clean( $filter['name'], '', 'string'); else $name = '';
+    if(isset($filter['file']))      $file = opf_fetch_clean( $filter['file'], '', 'string'); else $file = '';
+    if(isset($filter['func']))      $func = opf_fetch_clean( $filter['func'], '', 'unchanged'); else $func = '';
     if(isset($filter['funcname']))  $funcname = opf_fetch_clean( $filter['funcname'], '', 'string'); else $funcname = '';
-    if(isset($filter['userfunc'])) $userfunc = opf_fetch_clean( $filter['userfunc'], 0, 'int'); else $userfunc = 0;
-    if(isset($filter['plugin'])) $plugin = opf_fetch_clean( $filter['plugin'], '', 'string'); else $plugin = '';
-    if(isset($filter['active'])) $active = opf_fetch_clean( $filter['active'], 0, 'int'); else $active = 1;
+    if(isset($filter['userfunc']))  $userfunc = opf_fetch_clean( $filter['userfunc'], 0, 'int'); else $userfunc = 0;
+    if(isset($filter['plugin']))    $plugin = opf_fetch_clean( $filter['plugin'], '', 'string'); else $plugin = '';
+    if(isset($filter['active']))    $active = opf_fetch_clean( $filter['active'], 0, 'int'); else $active = 1;
     if(isset($filter['allowedit'])) $allowedit = opf_fetch_clean( $filter['allowedit'], 0, 'int'); else $allowedit = 0;
     if(isset($filter['allowedittarget'])) $allowedittarget = opf_fetch_clean( $filter['allowedittarget'], 0, 'int'); else $allowedittarget = 1;
     if(isset($filter['configurl'])) $configurl = opf_fetch_clean( $filter['configurl'], '', 'string'); else $configurl = '';
-    if(isset($filter['csspath'])) $csspath = opf_fetch_clean( $filter['csspath'], '', 'string'); else $csspath = '';
+    if(isset($filter['csspath']))   $csspath = opf_fetch_clean( $filter['csspath'], '', 'string'); else $csspath = '';
     if(isset($filter['force']) && $filter['force']) $force = TRUE; else $force = FALSE;
     if(isset($filter['filter_installed']) && !$filter['filter_installed']) $filter_installed = FALSE; else $filter_installed = TRUE;
-    if(isset($filter['modules'])) $modules = $filter['modules']; else $modules = array();
-    if(isset($filter['targets'])) $targets = $filter['targets']; else $targets = array(); // allow "targets" as alias for "modules"
-    if(isset($filter['pages'])) $pages = $filter['pages']; else $pages = array('all');
+    if(isset($filter['modules']))   $modules = $filter['modules']; else $modules = array();
+    if(isset($filter['targets']))   $targets = $filter['targets']; else $targets = array(); // allow "targets" as alias for "modules"
+    if(isset($filter['pages']))     $pages = $filter['pages']; else $pages = array('all');
     if(isset($filter['pages_parent'])) $pages_parent = $filter['pages_parent']; else $pages_parent = array('all');
     if(isset($filter['additional_fields_languages'])) $additional_fields_languages = $filter['additional_fields_languages']; // else unset
     if(isset($filter['additional_fields'])) $additional_fields = $filter['additional_fields']; // else unset

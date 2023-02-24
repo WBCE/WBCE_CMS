@@ -89,7 +89,6 @@ if(!isset($_POST['action']) || !isset($_POST['id']) )
             if(!opf_db_run_query($qstring)) {
                 $aJsonRespond['success'] = false;
                 $aJsonRespond['message'] = 'db query failed: '.opf_db_get_error();
-                $aJsonRespond['icon'] = 'cancel.gif';
                 exit(json_encode($aJsonRespond));
             }
             $i[$type]++;

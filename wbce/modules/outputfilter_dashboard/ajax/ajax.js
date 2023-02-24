@@ -133,8 +133,8 @@ $(document).ready(function() {
                 <td>` + FILTER_NAME + `</td>
                 <td colspan="4">` + MSG + `</td>
                 <td colspan="5" style="height: `+ height +`;">
-                    <a href="javascript:void(0);" id="reset" data-row="`+ sRowID +`" class="btn-inline red">` + sCANCEL + `</a>
                     <a href="javascript:void(0);" id="del" data-id="`+ ID +`" data-idkey="`+ IDKEY +`" class="btn-inline green">` + sDELETE + `</a>
+                    <a href="javascript:void(0);" id="reset" data-row="`+ sRowID +`" class="btn-inline red">` + sCANCEL + `</a>
                 </td>
             </tr>`;
 
@@ -155,8 +155,10 @@ $(document).on("click", "#del", function() {
     var ID    = $(this).data('id');
     var IDKEY = $(this).data('idkey');
     var DATASTRING = 'purpose=delete_row&idkey='+ IDKEY;
-
-
+    
+    var parentTbody = $("tr#"+ID).parent().attr('id');
+    window.location.href = MODULE_URL + "&hilite="+ parentTbody;
+    /*
     $.ajax({
         url: AJAX_PLUGINS + "/ajax_delete_row.php",
         type: "POST",
@@ -167,10 +169,11 @@ $(document).on("click", "#del", function() {
                 console.log('row ID: ' + ID + ' was removed successfully: ' + json_respond.message);
                 // let's make the row disappear
                 $("#" + ID).fadeOut(1250);
-                refreshPage ();
+                window.location.href = MODULE_URL + "";
             } else {
                 console.log('something went wrong: ' + json_respond.message);
             }
         }
     });
+     * */
 });

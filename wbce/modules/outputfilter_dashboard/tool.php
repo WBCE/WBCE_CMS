@@ -155,8 +155,9 @@ if ($id && $convert ) {
 
 if (($filtername || $funcname) && $doSave) {
     $tmp = opf_save();
-    if (is_numeric($tmp))
-        $id = $tmp; // overwrite $id
+    if (is_numeric($tmp)){
+        $id = $tmp; // get the $id    
+    }
     // in case we come from add/edit check if user pressed "save" instead of "save and exit"
     if (opf_fetch_post( 'submit_return', FALSE, 'exists'))
         $force_edit = TRUE;

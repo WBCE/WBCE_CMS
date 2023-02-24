@@ -237,7 +237,7 @@ $LANG['MOD_OPF']['TXT_NOT_A_FILTER'] = 'fichier t&eacute;l&eacute;charg&eacute; 
 
 $LANG['MOD_OPF']['TXT_LOOKS_LIKE_MODULE'] = ' - il semble d&apos;&ecirc;tre un filtre de module. Installez-l parmi les <a href=%s>Modules</a>.';
 
-$LANG['MOD_OPF']['TXT_ALREADY_INSTALLED'] = 'une version plus r&eacute;cente est d&eacute;j&agrave; install&eacute;e';
+$LANG['MOD_OPF']['TXT_NEWER_V_ALREADY_INSTALLED'] = 'une version plus r&eacute;cente est d&eacute;j&agrave; install&eacute;e';
 
 $LANG['MOD_OPF']['TXT_UNZIP_FAILED'] = 'n&apos;a pas r&eacute;ussi &agrave; d&eacute;compresser les archives';
 

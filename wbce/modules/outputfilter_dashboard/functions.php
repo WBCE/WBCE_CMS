@@ -612,77 +612,93 @@ function opf_io_chmod($name) {
 
 
 function __opf_upload_check_zip($upload) {
-  if (file_exists (WB_PATH.'/include/pclzip/pclzip.lib.php'))
-     require_once(WB_PATH.'/include/pclzip/pclzip.lib.php');
-  $archive = new PclZip($upload['tmp_name']);
-  if($archive->properties()==0)
-    return(FALSE);
-  else
-    return(TRUE);
+    if (file_exists($file = WB_PATH . '/include/pclzip/pclzip.lib.php'))
+        require_once $file;
+    $archive = new PclZip($upload['tmp_name']);
+    if ($archive->properties() == 0)
+        return(FALSE);
+    else
+        return(TRUE);
 }
 
-function opf_upload_check($field, $fileext=array('.jpg','.png','.gif'), $type='image', $maxsize=0) {
-  global $LANG;
-  if(!is_array($fileext)) $fileext = explode(',', $fileext);
-  // check for error
-  if(!isset($_FILES[$field]) || empty($_FILES[$field]['tmp_name'])) {
-    return(array('status' => FALSE,
-                 'result' => $LANG['MOD_OPF']['TXT_ERR_NO_UPLOAD']));
-  }
-  if($_FILES[$field]['error'] || !is_uploaded_file($_FILES[$field]['tmp_name'])) {
-    return(array('status' => FALSE,
-             'result' => sprintf($LANG['MOD_OPF']['TXT_ERR_PHP_ERR'],$_FILES[$field]['error'])));
-  }
-
-  // get cleaned filename
-  $filename = opf_clean_filename($_FILES[$field]['name']);
-
-  // check user-supplied args
-  if($maxsize>0 && $_FILES[$field]['size']>$maxsize) {
-    return(array('status' => FALSE,
-             'result' => sprintf($LANG['MOD_OPF']['TXT_ERR_UPLOAD_SIZE'], $maxsize)));
-  }
-  if(!empty($fileext)) {
-    $ext = '';
-    if(!is_array($fileext)) $fileext = array($fileext);
-    preg_match('~\.\w+$~D', $filename, $match);
-    if(isset($match[0])) $ext = strtolower($match[0]);
-    if(!in_array($ext, $fileext)) {
-    return(array('status' => FALSE,
-                 'result' => sprintf($LANG['MOD_OPF']['TXT_ERR_UPLOAD_EXT'], $fileext)));
+function opf_upload_check($field, $fileext = array('.jpg', '.png', '.gif'), $type = 'image', $maxsize = 0) {
+    global $LANG;
+    if (!is_array($fileext))
+        $fileext = explode(',', $fileext);
+    // check for error
+    if (!isset($_FILES[$field]) || empty($_FILES[$field]['tmp_name'])) {
+        return(array('status' => FALSE,
+            'result' => $LANG['MOD_OPF']['TXT_ERR_NO_UPLOAD']));
     }
-  }
-  if($type && is_string($type)) {
-    if(function_exists('__opf_upload_check_'.$type))
-      $filter = '__opf_upload_check_'.$type;
-    elseif(function_exists('opf_upload_usercheck_'.$type))
-      $filter = 'opf_upload_usercheck_'.$type;
-    else {
-      die(sprintf($LANG['MOD_OPF']['TXT_ERR_SECURITY_BREACH'],'opf_upload_check'));
+    if ($_FILES[$field]['error'] || !is_uploaded_file($_FILES[$field]['tmp_name'])) {
+        return(array('status' => FALSE,
+            'result' => sprintf($LANG['MOD_OPF']['TXT_ERR_PHP_ERR'], $_FILES[$field]['error'])));
     }
-    $res = $filter($_FILES[$field]);
-    if(!$res) {
-    return(array('status' => FALSE,
-                 'result' => sprintf($LANG['MOD_OPF']['TXT_ERR_UPLOAD_TYPE'], $type)));
-    }
-  } else {
-      die(sprintf($LANG['MOD_OPF']['TXT_ERR_SECURITY_BREACH'],'opf_upload_check'));
-  }
 
-  // store info in DB and move file
-  $section_id = 0;
-  $id = uniqid(mt_rand(100000000,999999999), TRUE);
-  opf_io_mkdir(__OPF_UPLOAD_DIRNAME);
-  $dest = __OPF_UPLOAD_DIRNAME.$id;
-  if(move_uploaded_file($_FILES[$field]['tmp_name'], $dest)) {
-    return(array('status' => TRUE,
-                 'result' => $id));
-  }
-  return(array( 'status' => FALSE,
-                'result' => $LANG['MOD_OPF']['TXT_ERR_UPLOAD_FAILED']));
+    // get cleaned filename
+    $filename = opf_clean_filename($_FILES[$field]['name']);
+
+    // check user-supplied args
+    if ($maxsize > 0 && $_FILES[$field]['size'] > $maxsize) {
+        return(array('status' => FALSE,
+            'result' => sprintf($LANG['MOD_OPF']['TXT_ERR_UPLOAD_SIZE'], $maxsize)));
+    }
+    if (!empty($fileext)) {
+        $ext = '';
+        if (!is_array($fileext))
+            $fileext = array($fileext);
+        preg_match('~\.\w+$~D', $filename, $match);
+        if (isset($match[0]))
+            $ext = strtolower($match[0]);
+        if (!in_array($ext, $fileext)) {
+            return(
+                    array(
+                        'status' => FALSE,
+                        'result' => sprintf($LANG['MOD_OPF']['TXT_ERR_UPLOAD_EXT'], $fileext)
+                    )
+                    );
+        }
+    }
+    if ($type && is_string($type)) {
+        if (function_exists('__opf_upload_check_' . $type))
+            $filter = '__opf_upload_check_' . $type;
+        elseif (function_exists('opf_upload_usercheck_' . $type))
+            $filter = 'opf_upload_usercheck_' . $type;
+        else {
+            die(sprintf($LANG['MOD_OPF']['TXT_ERR_SECURITY_BREACH'], 'opf_upload_check'));
+        }
+        $res = $filter($_FILES[$field]);
+        if (!$res) {
+            return(
+                    array(
+                        'status' => FALSE,
+                        'result' => sprintf($LANG['MOD_OPF']['TXT_ERR_UPLOAD_TYPE'], $type)
+                    )
+                    );
+        }
+    } else {
+        die(sprintf($LANG['MOD_OPF']['TXT_ERR_SECURITY_BREACH'], 'opf_upload_check'));
+    }
+
+    // store info in DB and move file
+    $section_id = 0;
+    $id = uniqid(mt_rand(100000000, 999999999), TRUE);
+    opf_io_mkdir(__OPF_UPLOAD_DIRNAME);
+    $dest = __OPF_UPLOAD_DIRNAME . $id;
+    if (move_uploaded_file($_FILES[$field]['tmp_name'], $dest)) {
+        return(
+                array(
+                    'status' => TRUE,
+                    'result' => $id
+                )
+                );
+    }
+    return(
+            array(
+                'status' => FALSE,
+                'result' => $LANG['MOD_OPF']['TXT_ERR_UPLOAD_FAILED'])
+            );
 }
-
-
 
 function opf_upload_move($id, $path, $name='') {
   if(empty($name)) {
@@ -1754,8 +1770,7 @@ function opf_save() {
     // add additional data
     $filter_old = array();
     if($id > 0 && opf_db_query_vars(
-        "SELECT TRUE FROM {TP}mod_outputfilter_dashboard"
-           . " WHERE `id`=%d", $id)) {
+        "SELECT TRUE FROM `{TP}mod_outputfilter_dashboard` WHERE `id`=%d", $id)) {
         // comes from edit, so fetch old data from DB
         $filter_old = opf_db_query( "SELECT *"
             . " FROM {TP}mod_outputfilter_dashboard"
@@ -1871,12 +1886,16 @@ function opf_save() {
         'filter_installed' => FALSE, // keep this on FALSE
         'additional_values' => $additional_values
     ));
-    if($res) {
-        if($id==0)
-            return($database->getLastInsertId());
-        else
-            return($id);
+    
+    if($res == TRUE) {
+        if($id==0){
+            $newInlineFilterId = $database->get_one("SELECT MAX(`id`) FROM `{TP}mod_outputfilter_dashboard`");
+            return $newInlineFilterId;
+        } else {
+            return $id;
+        }
     }
+    
     return($res);
 }
 

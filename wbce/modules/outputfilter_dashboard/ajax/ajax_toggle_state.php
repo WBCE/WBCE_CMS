@@ -77,7 +77,6 @@ if ($purpose == "toggle_status") {
         $aRspnd['success'] = false;
         $aRspnd['message'] = 'db query failed: '.$database->get_error();
         $aRspnd['message'] = 'id: '.$iId.' active: '.$iActive;
-        $aRspnd['icon'] = 'cancel.gif';
         exit(json_encode($aRspnd));
     } else {
         $aRspnd['message'] = ('id: #'.$iId.' status: '.$iActive);

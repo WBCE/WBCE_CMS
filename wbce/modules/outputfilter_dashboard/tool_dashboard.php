@@ -97,10 +97,10 @@ foreach($filters as $filter) {
     $filter['last_touched'] = FALSE;
     if ($filter['id'] == $id){
         $filter['last_touched'] = TRUE;
-    } if (isset($_GET['last']) && $_GET['last'] == $filter['id']) {
+    } 
+    if (isset($_GET['last']) && $_GET['last'] == $filter['id']) {
         $filter['last_touched'] = TRUE;
     }
-
     // line to separate filter-types
     $filter['sep_line'] = FALSE;
     if ($old_type!=$filter['type']) {
@@ -212,7 +212,9 @@ foreach($aFilters as $filter){
     );
     $aAllFilters[] = $aSingleFilter;
 }
+
 $aToTwig['filters'] = $aAllFilters;
+$aToTwig['hilite']  = (isset($_GET['hilite'])) ? $_GET['hilite'] : '';
 
 // render the output in Twig template
 $oTemplate = $oTwig->load('tool_dashboard.twig');

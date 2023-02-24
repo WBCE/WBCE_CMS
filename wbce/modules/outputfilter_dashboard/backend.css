@@ -129,6 +129,8 @@ b {
 .row_a {
     background: #ffffff;
     border-bottom: 1px solid #becadb;
+    vertical-align: top;
+    margin-top: 10px;
 }
 .filters-table tr:last-child td,
 .filters-table tr:last-child th{
@@ -387,7 +389,33 @@ ul.checktreestyle li .half_checked {
 .activity-checked .activity-disabled img {
     background-position: 0px -48px;
 }
-
+.short-description{
+    font-size:.9em; 
+    color: #4c4c4c;
+    line-height: 14px
+}
+.short-description a[data-ctrl]{    
+    color: #9fb5c7;
+}
+#dashboard i.fa{
+    font-size: 1rem;
+    color: #68849d;
+}
+#dashboard i.fa-trash {
+    color: #d54a4a;
+}
+#dashboard i.circle-icon {
+    font-size: 0.91rem;
+    color: whitesmoke;
+    padding:6px;
+    border-radius: 30%;
+    border: 1px solid #b8c2cd;
+    background-color: #a3baca!important;
+    background-image: linear-gradient(#a3baca, #859AB2);
+}
+.filter-type {
+    min-width: 64px;
+}
 /*
 ----------------------------------| drag&drop
 */
@@ -402,7 +430,7 @@ ul.checktreestyle li .half_checked {
 .dragdrop_handle {
     width: 25px;
     background-image: url("images/drag_indicator.svg") !important;
-    background-position: right center !important;
+    background-position: right 6px !important;
     background-repeat: no-repeat !important;
     cursor: move;
 }

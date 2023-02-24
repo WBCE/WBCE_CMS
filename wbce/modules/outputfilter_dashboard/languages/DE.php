@@ -233,7 +233,8 @@ $LANG['MOD_OPF']['TXT_NOT_A_FILTER'] = 'Hochgeladene Datei ist kein OutputFilter
 
 $LANG['MOD_OPF']['TXT_LOOKS_LIKE_MODULE'] = ' - es scheint ein Modulfilter zu sein. Installieren Sie es unter <a href=%s>Module</a>.';
 
-$LANG['MOD_OPF']['TXT_ALREADY_INSTALLED'] = 'Eine neuere Version ist bereits installiert';
+$LANG['MOD_OPF']['TXT_NEWER_V_ALREADY_INSTALLED'] = 'Eine neuere Version ist bereits installiert';
+$LANG['MOD_OPF']['TXT_SAME_V_ALREADY_INSTALLED']  = 'Diese Version ist bereits installiert';
 
 $LANG['MOD_OPF']['TXT_UNZIP_FAILED'] = 'Entpacken der Datei fehlgeschlagen';
 
