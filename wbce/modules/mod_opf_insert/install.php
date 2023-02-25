@@ -1,13 +1,13 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2019)
+ * @copyright       WBCE Project (2015-)
  * @category        opffilter
  * @package         OPF Insert
- * @version         1.0.7
+ * @version         1.0.8
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -43,7 +43,10 @@ if(defined('WB_URL'))
             'type' => OPF_TYPE_PAGE_LAST,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_insert/filter.php',
             'funcname' => 'opff_mod_opf_insert',
-            'desc' => "fill out placeholders for Javascript, CSS, Metas and Title",
+            'desc' => array(
+				'EN' => "fill out placeholders for Javascript, CSS, Metas and Title. See https://help.wbce.org/pages/de/module-programmieren/platzhalter-hooks.php for details.",
+				'DE' => "Fügt an den dafür vorgesehenen Stellen JavaScript, CSS und Metadaten ein. Siehe  https://help.wbce.org/pages/de/module-programmieren/platzhalter-hooks.php für Details."
+			),
             'active' => (!class_exists('Settings') || (Settings::Get('opf_insert', 1)==1))?1:0,
             'allowedit' => 0,
             'pages_parent' => 'all,backend,search'

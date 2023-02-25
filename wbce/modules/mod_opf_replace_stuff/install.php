@@ -1,13 +1,13 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2019)
+ * @copyright       WBCE Project (2015-)
  * @category        opffilter
- * @package         OPF Replace Stuff
- * @version         1.0.7
+ * @package         OPF Replace Contents
+ * @version         1.0.8
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -35,24 +35,25 @@ if(defined('WB_URL'))
 
         require_once(WB_PATH.'/modules/mod_opf_replace_stuff/upgrade.php');
 
-        if(opf_is_registered('Replace Stuff')) return TRUE; // filter already registered
+        if(opf_is_registered('Replace Contents')) return TRUE; // filter already registered
 
         // install filter
         return opf_register_filter(array(
-            'name' => 'Replace Stuff',
+            'name' => 'Replace Contents',
             'type' => OPF_TYPE_PAGE_LAST,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_replace_stuff/filter.php',
             'funcname' => 'opff_mod_opf_replace_stuff',
-            'desc' => "replaces the areas marked by placeholders by the corresponding parts enclosed by replacement markers",
+            'desc' => array(
+				'EN' => "This filter is needed to replace content or code. See https://help.wbce.org/pages/de/module-programmieren/platzhalter-hooks.php for details.",
+				'DE' => "Ersetzt entsprechend markierten Code. Siehe https://help.wbce.org/pages/de/module-programmieren/platzhalter-hooks.php  für Details."
+			),
             'active' => (!class_exists('Settings') || (Settings::Get('opf_replace_stuff', 1)==1))?1:0,
             'allowedit' => 0,
             'pages_parent' => 'all,backend,search'
         ))
         && opf_move_up_before(
-            'Replace Stuff',
-               'Cache Control',
-               'Sys Rel',
-               'Short URL'
+            'Replace Contents',
+               'Cache Control'               
         );
 
     }

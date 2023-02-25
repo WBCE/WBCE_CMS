@@ -1,13 +1,13 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2019)
+ * @copyright       WBCE Project (2015-)
  * @category        opffilter
  * @package         OPF Insert
- * @version         1.0.7
+ * @version         1.0.8
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -19,6 +19,7 @@
 /*
  *      CHANGELOG
  *
+ *		1.0.8	2023-02-25		- update description (florian)
  *      1.0.7   2019-07-05      - by default enable filter on searchresults
  *      1.0.6   2019-04-22      - include opf functions in upgrade script
  *      1.0.5   2019-03-26      - update requirements
@@ -44,7 +45,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_insert';
 $module_name            = 'OPF Insert';
 $module_function        = 'opffilter';
-$module_version         = '1.0.7';
+$module_version         = '1.0.8';
 $module_platform        = 'WBCE 1.4.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';

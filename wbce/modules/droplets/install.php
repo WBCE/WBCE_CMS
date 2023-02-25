@@ -106,7 +106,10 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
         'type'     => OPF_TYPE_PAGE,
         'file'     => '{SYSVAR:WB_PATH}/modules/droplets/opf_filter_droplets.php',
         'funcname' => 'opff_droplets',
-        'desc'     => "Filter that replaces Droplet calls in contents",
+        'desc' => array(
+				'EN' => "This filter is needed for the replacement of droplet calls (terms in double brackets) in the backend by the code which should be executed in the frontend output.",
+				'DE' => "Dieser Filter wird benötigt, um Droplet-Aufrufe im Backend (Ausdrücke in doppelten eckigen Klammern) im Frontend durch den jeweiligen auszuführenden Code zu ersetzen."
+			),
         'active'   => 1,
         'allowedit' => 0,
         'pages_parent' => 'all, backend, search'

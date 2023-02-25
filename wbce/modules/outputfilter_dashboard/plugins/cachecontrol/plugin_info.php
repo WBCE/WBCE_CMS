@@ -28,6 +28,8 @@ if (!defined('WB_PATH')) {
 
 /*
 Header: Version-History
+1.0.8 %(florian, 25 Feb, 2023)%
+        - Update description
 
 1.0.7 %(mrbaseman; 1 Jul, 2021)%
         - check for file existence, first
@@ -57,7 +59,7 @@ Header: Version-History
 
 $plugin_directory   = 'cachecontrol';
 $plugin_name        = 'Cache Control';
-$plugin_version     = '1.0.7';
+$plugin_version     = '1.0.8';
 $plugin_status      = 'beta';
 $plugin_platform    = '2.8';
 $plugin_author      = 'thorn, mrbaseman';

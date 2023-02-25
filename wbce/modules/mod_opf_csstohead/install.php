@@ -1,15 +1,15 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
  * @copyright       Ryan Djurovich (2004-2009)
  * @copyright       WebsiteBaker Org. e.V. (2009-2015)
- * @copyright       WBCE Project (2015-2019)
+ * @copyright       WBCE Project (2015-)
  * @category        opffilter
  * @package         OPF CSS to head
- * @version         1.0.7
+ * @version         1.0.8
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -46,7 +46,10 @@ if(defined('WB_URL'))
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_csstohead/filter.php',
             'funcname' => 'opff_mod_opf_csstohead',
-            'desc' => "moves css definitions from the body section into head",
+            'desc' => array(
+				'EN' => "moves css definitions from the body of a page into the head.",
+				'DE' => "Verschiebt CSS-Definitionen und -Links vom body in den head einer Seite."
+			),
             'active' => (!class_exists('Settings') || (Settings::Get('opf_css_to_head', 1)==1))?1:0,
             'allowedit' => 0,
             'pages_parent' => 'all,search'

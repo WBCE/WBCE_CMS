@@ -1,13 +1,13 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2021)
+ * @copyright       WBCE Project (2015-)
  * @category        opffilter
  * @package         OPF Remove System PH
- * @version         1.1.6
+ * @version         1.1.7
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -43,7 +43,10 @@ if(defined('WB_URL'))
             'type' => OPF_TYPE_PAGE_FINAL,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_remove_system_ph/filter.php',
             'funcname' => 'opff_mod_opf_remove_system_ph',
-            'desc' => "remove system placeholder markers ",
+            'desc' => array(
+				'EN' => "remove system placeholder markers (HTML comments as hooks) from the sourcecode of the finally generated page.",
+				'DE' => "Entfernt die System-Platzhalter (HTML-Kommentare als Hooks) aus dem Quellcode der fertig generierten Seite."
+			),
             'active' => (!class_exists('Settings') || (Settings::Get('opf_remove_system_ph', 1)==1))?1:0,
             'allowedit' => 0,
             'pages_parent' => 'all,backend,search'

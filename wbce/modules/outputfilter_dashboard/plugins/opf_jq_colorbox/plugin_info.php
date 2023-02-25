@@ -16,7 +16,7 @@
 
 $plugin_directory   = 'opf_jq_colorbox';
 $plugin_name        = 'opf_jq_colorbox';
-$plugin_version     = '0.5.1';
+$plugin_version     = '0.5.2';
 $module_status      = 'beta';
 $module_platform    = '1.4.0';
 $module_author      = 'Christian M. Stefan (Stefek)';

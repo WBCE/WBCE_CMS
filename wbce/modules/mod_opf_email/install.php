@@ -9,7 +9,7 @@
  * @copyright    WBCE Project (2015-)
  * @category     tool
  * @package      OPF E-Mail
- * @version      1.1.7
+ * @version      1.1.9
  * @authors      Martin Hecht (mrbaseman)
  * @link         https://forum.wbce.org/viewtopic.php?id=176
  * @license      GNU GPL2 (or any later version)
@@ -46,11 +46,14 @@ if (defined('WB_URL')) {
 
         // install filter
         return opf_register_filter(array(
-            'name' => 'E-Mail',
+            'name' => 'E-Mail Masking (E-mail)',
             'type' => OPF_TYPE_PAGE,
             'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_email/filter.php',
             'funcname' => 'opff_mod_opf_email',
-            'desc' => "protect email addresses in text, mailto links, and javascript",
+           'desc' => array(
+				'EN' => "Hides e-mail addresses from spambots by masking them with JavaScript and replacing . and @ by (dot) and (at). Can be configured via backend.",
+				'DE' => "Versteckt E-Mail-Adressen vor Spambots, indem diese mit Javascript maskiert werden und die Zeichen . und @ durch (dot) und (at) ersetzt werden. Kann über das Backend konfiguriert werden."
+			),
             'active' => (!class_exists('Settings') || (Settings::Get('opf_email', 1)==1))?1:0,
             'allowedit' => 0,
             'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email',

@@ -32,8 +32,8 @@ opf_register_filter(array(
         'file' =>  '{OPF:PLUGIN_PATH}/filter.php',
         'funcname' => 'opff_cachecontrol',
         'desc' => array(
-                'EN' => "Prevent Browsers from delivering outdated files (css, js) from it's cache.\nKeep care that this filter is called last!",
-                'DE' => "Verhindert, dass Browser veralterte CSS- oder JS-Dateien aus ihrem Cache ausliefern.\nAchten Sie darauf, dass dieser Filter als letzter aufgerufen wird!"
+                'EN' => "Prevent Browsers from delivering outdated files (css, js) from its cache by adding the timestamp of the files to their URLs as a parameter.\nMake sure that this filter is called last!",
+                'DE' => "Verhindert, dass Browser veraltete CSS- oder JS-Dateien aus ihrem Cache ausliefern, indem der Datei-Timestamp an deren URLs als Parameter angefügt wird.\nAchten Sie darauf, dass dieser Filter als letzter aufgerufen wird!"
         ),
         'plugin' => 'cachecontrol',
         'active' => 1,

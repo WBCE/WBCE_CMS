@@ -1,13 +1,13 @@
 <?php
 /**
- * WebsiteBaker Community Edition (WBCE)
+ * WBCE CMS
  * Way Better Content Editing.
- * Visit http://wbce.org to learn more and to join the community.
+ * Visit https://wbce.org to learn more and to join the community.
  *
- * @copyright       WBCE Project (2015-2021)
+ * @copyright       WBCE Project (2015-)
  * @category        opffilter
  * @package         OPF Remove System PH
- * @version         1.1.6
+ * @version         1.1.7
  * @authors         Martin Hecht (mrbaseman)
  * @link            https://forum.wbce.org/viewtopic.php?id=176
  * @license         GNU GPL2 (or any later version)
@@ -19,6 +19,7 @@
 /*
  *      CHANGELOG
  *
+ *		1.1.7	2023-02-25		- update description (florian)
  *      1.1.6   2020-05-06      - only remove empty lines resulting from replace
  *      1.1.5   2019-07-05      - by default enable filter on searchresults
  *      1.1.4   2019-04-22      - include opf functions in upgrade script
@@ -45,7 +46,7 @@ if(!defined('WB_PATH')) {
 $module_directory       = 'mod_opf_remove_system_ph';
 $module_name            = 'OPF Remove System PH';
 $module_function        = 'opffilter';
-$module_version         = '1.1.6';
+$module_version         = '1.1.7';
 $module_platform        = 'WBCE 1.3.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';
