@@ -35,23 +35,24 @@ if(defined('WB_URL'))
 
         require_once(WB_PATH.'/modules/mod_opf_insert/upgrade.php');
 
-        if(opf_is_registered('Insert')) return TRUE; // filter already registered
+        if(opf_is_registered('Class Insert Helper')) return TRUE; // filter already registered
 
         // install filter
-        return opf_register_filter(array(
-            'name' => 'Insert',
-            'type' => OPF_TYPE_PAGE_LAST,
-            'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_insert/filter.php',
-            'funcname' => 'opff_mod_opf_insert',
-            'desc' => array(
-				'EN' => "fill out placeholders for Javascript, CSS, Metas and Title. See https://help.wbce.org/pages/de/module-programmieren/platzhalter-hooks.php for details.",
-				'DE' => "Fügt an den dafür vorgesehenen Stellen JavaScript, CSS und Metadaten ein. Siehe  https://help.wbce.org/pages/de/module-programmieren/platzhalter-hooks.php für Details."
-			),
-            'active' => (!class_exists('Settings') || (Settings::Get('opf_insert', 1)==1))?1:0,
-            'allowedit' => 0,
-            'pages_parent' => 'all,backend,search'
-        ))
-        && opf_move_up_before('Insert');
+        return opf_register_filter(
+            [
+                'name' => 'Class Insert Helper',
+                'type' => OPF_TYPE_PAGE_LAST,
+                'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_insert/filter.php',
+                'funcname' => 'opff_mod_opf_insert',
+                'desc' => [
+                    'EN' => "This filter works in conjunction with Class Insert. Detail instructions will follow in a later iteration of WBCE CMS.",
+                    'DE' => "Dieser Filter arbeitet mit der Klasse Insert zusammen. Detailierte Beschreibungen folgen in einer der nächsten Versionen von WBCE CMS."
+                ],
+                'active' => (!class_exists('Settings') || (Settings::Get('opf_insert', 1)==1))?1:0,
+                'allowedit' => 0,
+                'pages_parent' => 'all,backend,search'
+            ]
+        );
     }
 }
 
