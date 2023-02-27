@@ -40,28 +40,26 @@ if (defined('WB_URL')) {
 
         require_once(WB_PATH.'/modules/mod_opf_email/upgrade.php');
 
-        if (opf_is_registered('E-Mail')) {
+        if (opf_is_registered('E-Mail Masking')) {
             return true;
         } // filter already registered
 
         // install filter
-        return opf_register_filter(array(
-            'name' => 'E-Mail Masking (E-mail)',
-            'type' => OPF_TYPE_PAGE,
-            'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_email/filter.php',
-            'funcname' => 'opff_mod_opf_email',
-           'desc' => array(
-				'EN' => "Hides e-mail addresses from spambots by masking them with JavaScript and replacing . and @ by (dot) and (at). Can be configured via backend.",
-				'DE' => "Versteckt E-Mail-Adressen vor Spambots, indem diese mit Javascript maskiert werden und die Zeichen . und @ durch (dot) und (at) ersetzt werden. Kann über das Backend konfiguriert werden."
-			),
-            'active' => (!class_exists('Settings') || (Settings::Get('opf_email', 1)==1))?1:0,
-            'allowedit' => 0,
-            'configurl' => ADMIN_URL.'/admintools/tool.php?tool=mod_opf_email',
-            'pages_parent' => 'all,search'
-        ))
-        && opf_move_up_before(
-            'E-Mail',
-            'WB-Link'
+        return opf_register_filter(
+            [
+                'name' => 'E-Mail Masking',
+                'type' => OPF_TYPE_PAGE,
+                'file' => '{SYSVAR:WB_PATH}/modules/mod_opf_email/filter.php',
+                'funcname' => 'opff_mod_opf_email',
+                'desc' => [
+                    'EN' => "Hides e-mail addresses from spambots by masking them with JavaScript and replacing . and @ by (dot) and (at). Can be configured via backend (see cog icon).",
+                    'DE' => "Versteckt E-Mail-Adressen vor Spambots, indem diese mit Javascript maskiert werden und die Zeichen . und @ durch (dot) und (at) ersetzt werden. Kann über das Backend konfiguriert werden (siehe Zahnrad-Icon)."
+                ],
+                'active' => (!class_exists('Settings') || (Settings::Get('opf_email', 1) == 1)) ? 1 : 0,
+                'allowedit' => 0,
+                'configurl' => ADMIN_URL . '/admintools/tool.php?tool=mod_opf_email',
+                'pages_parent' => 'all,search'
+            ]
         );
     }
 }
