@@ -32,7 +32,7 @@
             <label>{{ L_('L:TXT_DESCRIPTION') }}</label>
             {% if helppath != '' %}
             <p>
-                <a href="#" onclick="{{ helppath }}" title="{{ L_('L:TXT_FILTER_HELP') }}">
+                <a {{ helppath }} title="{{ L_('L:TXT_FILTER_HELP') }}">
                     <i class="fa fa-question-circle"></i>
                 </a>
             </p>

@@ -42,6 +42,9 @@ if(!defined('WB_PATH')) die(header('Location: ../index.php'));
 $mod_dir = basename(dirname(__FILE__));
 require(WB_PATH.'/modules/'.$mod_dir.'/info.php');
 
+$GLOBALS['database']->addPrefix('{TP_OPFD}', TABLE_PREFIX.'mod_outputfilter_dashboard');
+
+
 if(!defined('OPF_PLUGINS_PATH'))
     define('OPF_PLUGINS_PATH', dirname(__FILE__).'/plugins/');
 if(!defined('OPF_PLUGINS_URL'))
@@ -124,33 +127,74 @@ function truncate_string($sStr="", $iMaxChars = 110){
  * @param  int $iFilterId
  * @return string
  */
-function opf_get_helppath(int $iFilterId) : string
-{
+function opf_get_helppath(int $iFilterId) {
+    
     if($iFilterId == 0) return '';
-    $sQry = "SELECT `helppath`, `plugin` FROM `{TP}mod_outputfilter_dashboard` WHERE `id` = ".$iFilterId;
-    $arr  = $GLOBALS['database']->get_array($sQry)[0];
-    if (empty($arr) || $arr['helppath'] == 'a:0:{}') return '';
+    
+    $sRetVal = '';
+    $sQry = "SELECT `name`, `helppath`, `plugin`, `file` FROM `{TP_OPFD}` WHERE `id` = ".$iFilterId;
+    $filter  = $GLOBALS['database']->get_array($sQry)[0];
+    
+    // is there a helppath at all?
+    if (empty($filter) || $filter['helppath'] == 'a:0:{}'){        
+        // no, there isn't
+        $sRetVal = '';
+    } else {
+        // yes, there is
+        
+        // get the correct language of helppath
+        $sTmpPath   = opf_fetch_entry_language(unserialize($filter['helppath']));
+        // replace sysvars 
+        $sHelppath  = opf_replace_sysvar($sTmpPath, $filter['plugin']);
+        
+        if(strpos($sHelppath, '(md)')!== FALSE){
+            // helppath contains the str '(link)', this indicates
+            // we're dealing with an external link
+            $sReplaced = str_replace('(md)', '', $sHelppath);
+            $sTrimmed  = trim($sReplaced);
+            $sRetVal = opf_md_link($sTrimmed); 
+        }
+        if(strpos($sHelppath, '(link)')!== FALSE){
+            // helppath contains the str '(link)', this indicates
+            // we're dealing with an external link
+            $sReplaced = str_replace('(link)', '', $sHelppath);
+            $sTrimmed  = trim($sReplaced);
+            $sRetVal = ' href='.$sTrimmed.' target="_blank" '; 
+        } 
+        
+    }
+    
+    // Check for README.md files
+    // NOTE: if one of these files exists, they will take 
+    //  precendece over previously set ones.
+    if(file_exists(OPF_PLUGINS_PATH.$filter['plugin'].'/README.md')){
+        $sRetVal = opf_md_link(OPF_PLUGINS_URL.$filter['plugin'].'/README.md', $filter['name']);        
+    }    
+    if(file_exists(OPF_PLUGINS_PATH.$filter['plugin'].'/README_'. LANGUAGE .'.md')){
+        $sRetVal = opf_md_link(OPF_PLUGINS_URL.$filter['plugin'].'/README_'. LANGUAGE .'.md', $filter['name']); 
+    }
 
-    $sTmpPath   = opf_fetch_entry_language(unserialize($arr['helppath']));
-    $sHelppath  = opf_replace_sysvar($sTmpPath, $arr['plugin']);
-    if($sHelppath != '')
-        $sFinalHelppath = "javascript: return opf_popup('$sHelppath');";
-    return $sFinalHelppath;
+    return $sRetVal;
+}
+
+function opf_md_link($sUrl, $sName){
+    $sTitle = urlencode('OpF Filter: ' . $sName.'  &mdash; '.basename($sUrl));
+    $sRead = WB_URL.'/include/MarkdownReader/reader.php?url='.urlencode($sUrl).'&amp;title='.$sTitle;
+    return ' href="javascript:void(0)" onclick="javascript: return opf_popup(\''.$sRead.'\');" ';
+    #return ' href="'.$sRead.'" target="_blank"';
 }
 
 // remove comments from the backend templates
-function opf_filter_Comments($content) {
+function opf_filter_comments($content) {
     $pattern = '/(?:<!--\/\*.*?\*\/-->)/si';
-    while(preg_match($pattern,$content,$matches)==1)
-    {
-    $toremove=$matches[0];
-    $content = str_replace($toremove, '', $content);
+    while(preg_match($pattern, $content, $matches)==1) {
+        $toremove = $matches[0];
+        $content = str_replace($toremove, '', $content);
     }
     return($content);
 }
 
 // replace quotes by their html representation
-
 function opf_quotes($var) {
   return str_replace(array('"', "'"), array('&quot;','&#039;'), $var);
 }
@@ -169,7 +213,7 @@ function opf_get_extrafields_array(int $iFilterId): array {
             `additional_values`,
             `additional_fields`,
             `additional_fields_languages`
-            FROM `{TP}mod_outputfilter_dashboard` WHERE `id`=". $iFilterId
+            FROM `{TP_OPFD}` WHERE `id`=". $iFilterId
         )[0]
     ){
         return $aExtraFields;
@@ -771,13 +815,26 @@ function opf_correct_umlauts($arg) {
 function opf_get_types() {
 global $LANG;
     $types = array(
-        OPF_TYPE_SECTION_FIRST => $LANG['MOD_OPF']['TXT_MODULE_FIRST'], // filters that must be applied before all other ones
-        OPF_TYPE_SECTION       => $LANG['MOD_OPF']['TXT_MODULE'], // default! "normal" filters applied to modules, aka. sections
-        OPF_TYPE_SECTION_LAST  => $LANG['MOD_OPF']['TXT_MODULE_LAST'], // filters which have to be applied last (e.g. highlighting)
-        OPF_TYPE_PAGE_FIRST    => $LANG['MOD_OPF']['TXT_PAGE_FIRST'], // filter applied to the whole page before all other page filters
-        OPF_TYPE_PAGE          => $LANG['MOD_OPF']['TXT_PAGE'], // filter applied to the whole page (head, content, menu, snippets, ...)
-        OPF_TYPE_PAGE_LAST     => $LANG['MOD_OPF']['TXT_PAGE_LAST'], // filter applied after all page-filters
-        OPF_TYPE_PAGE_FINAL    => $LANG['MOD_OPF']['TXT_PAGE_FINAL'], // filter applied at the very end
+        // filters that must be applied before all other ones
+        OPF_TYPE_SECTION_FIRST => $LANG['MOD_OPF']['TXT_MODULE_FIRST'], 
+        
+        // default! "normal" filters applied to modules, aka. sections
+        OPF_TYPE_SECTION       => $LANG['MOD_OPF']['TXT_MODULE'], 
+        
+        // filters which have to be applied last (e.g. highlighting)
+        OPF_TYPE_SECTION_LAST  => $LANG['MOD_OPF']['TXT_MODULE_LAST'], 
+        
+        // filter applied to the whole page before all other page filters
+        OPF_TYPE_PAGE_FIRST    => $LANG['MOD_OPF']['TXT_PAGE_FIRST'], 
+        
+        // filter applied to the whole page (head, content, menu, snippets, ...)
+        OPF_TYPE_PAGE          => $LANG['MOD_OPF']['TXT_PAGE'], 
+        
+        // filter applied after all page-filters
+        OPF_TYPE_PAGE_LAST     => $LANG['MOD_OPF']['TXT_PAGE_LAST'], 
+        
+        // filter applied at the very end
+        OPF_TYPE_PAGE_FINAL    => $LANG['MOD_OPF']['TXT_PAGE_FINAL'], 
     );
     return($types);
 }
@@ -803,7 +860,7 @@ function opf_type_uses_pages($type) {
 // fetches real $name if $name is id
 function opf_check_name($name) {
     if(is_numeric($name)) {
-        if(!$name = opf_db_query_vars( "SELECT `name` FROM `{TP}mod_outputfilter_dashboard` WHERE `id`=%d", $name))
+        if(!$name = opf_db_query_vars( "SELECT `name` FROM `{TP_OPFD}` WHERE `id`=%d", $name))
             return(FALSE);
     }
     return($name);
@@ -813,10 +870,9 @@ function opf_check_name($name) {
 function opf_select_filters($type='') {
     if($type=='') {
         $res = opf_db_query(
-            "SELECT * FROM `{TP}mod_outputfilter_dashboard`"
-            . " ORDER BY `type`,`position` ASC");
+            "SELECT * FROM `{TP_OPFD}` ORDER BY `type`,`position` ASC");
     } else {
-        $res = opf_db_query( "SELECT * FROM `{TP}mod_outputfilter_dashboard`"
+        $res = opf_db_query( "SELECT * FROM `{TP_OPFD}`"
          . " WHERE `type`='%s' ORDER BY `position` ASC", $type);
     }
     if(!$res)
@@ -825,8 +881,7 @@ function opf_select_filters($type='') {
 }
 
 function opf_get_data($id) {
-    $res = opf_db_query( "SELECT * FROM `{TP}mod_outputfilter_dashboard`"
-     . " WHERE `id`=%d", $id);
+    $res = opf_db_query( "SELECT * FROM `{TP_OPFD}` WHERE `id`=%d", $id);
     if($res) return($res[0]);
     else return($res);
 }
@@ -835,9 +890,7 @@ function opf_get_data($id) {
 function opf_get_position_max($type) {
     return(
        opf_db_query_vars(
-           "SELECT MAX(`position`) "
-           . " FROM `{TP}mod_outputfilter_dashboard`"
-           . " WHERE `type`='%s'", $type
+           "SELECT MAX(`position`) FROM `{TP_OPFD}` WHERE `type`='%s'", $type
         )
     );
 }
@@ -846,9 +899,7 @@ function opf_get_position_max($type) {
 function opf_get_position_min($type) {
     return(
         opf_db_query_vars(
-            "SELECT MIN(`position`)"
-            . " FROM `{TP}mod_outputfilter_dashboard`"
-            . " WHERE `type`='%s'", $type
+            "SELECT MIN(`position`) FROM `{TP_OPFD}` WHERE `type`='%s'", $type
         )
     );
 }
@@ -861,9 +912,7 @@ function opf_get_position($name, $verbose=OPF_VERBOSE) {
     if(opf_is_registered($name, $verbose)) {
         return(
            opf_db_query_vars(
-              "SELECT `position`"
-              . " FROM `{TP}mod_outputfilter_dashboard`"
-              . " WHERE `name`='%s'", $name
+              "SELECT `position` FROM `{TP_OPFD}` WHERE `name`='%s'", $name
            )
        );
     }
@@ -879,9 +928,7 @@ function opf_get_type($name,$verbose=OPF_VERBOSE) {
     if(opf_is_registered($name, $verbose)) {
         return(
            opf_db_query_vars(
-              "SELECT `type`"
-               . " FROM `{TP}mod_outputfilter_dashboard`"
-               . " WHERE `name`='%s'", $name
+              "SELECT `type` FROM `{TP_OPFD}` WHERE `name`='%s'", $name
            )
         );
     }
@@ -896,9 +943,7 @@ function opf_is_registered($name, $verbose=FALSE) {
     if(!$name) return(FALSE);
     if(
        opf_db_query_vars(
-          "SELECT TRUE FROM"
-             . " `{TP}mod_outputfilter_dashboard`"
-             . " WHERE `name`='%s'", $name
+          "SELECT TRUE FROM `{TP_OPFD}` WHERE `name`='%s'", $name
        )
     ) return(TRUE);
     if($verbose && OPF_VERBOSE)
@@ -913,9 +958,7 @@ function opf_is_active($name) {
     if(opf_is_registered($name, OPF_VERBOSE)) {
         if(
            opf_db_query_vars(
-              "SELECT `active`"
-              . " FROM `{TP}mod_outputfilter_dashboard`"
-              . " WHERE `name`='%s'", $name
+              "SELECT `active` FROM `{TP_OPFD}` WHERE `name`='%s'", $name
            )
         ) {
             if(class_exists('Settings') && defined('WBCE_VERSION')){
@@ -966,7 +1009,7 @@ function opf_set_active($name, $active=1) {
         }
         return(
            opf_db_run_query(
-               "UPDATE `{TP}mod_outputfilter_dashboard`"
+               "UPDATE `{TP_OPFD}`"
                . " SET `active`='%s'"
                . " WHERE `name`='%s'", $active, $name
            )
@@ -984,28 +1027,18 @@ function opf_switch_position($type, $pos1, $pos2) {
     if(abs($pos1-$pos2)!=1)
         return(FALSE);
     $name1 = opf_db_query_vars(
-       "SELECT `name`"
-       . " FROM `{TP}mod_outputfilter_dashboard`"
-       . " WHERE `type`='%s'"
-       . " AND `position`=%d", $type, $pos1
+       "SELECT `name` FROM `{TP_OPFD}` WHERE `type`='%s' AND `position`=%d", $type, $pos1
     );
     $name2 = opf_db_query_vars(
-        "SELECT `name`"
-        . " FROM `{TP}mod_outputfilter_dashboard`"
-        . " WHERE `type`='%s'"
-        . " AND `position`=%d", $type, $pos2
+        "SELECT `name` FROM `{TP_OPFD}` WHERE `type`='%s' AND `position`=%d", $type, $pos2
     );
     if($name1===FALSE || $name2===FALSE)
         return(FALSE);
     $res1 = opf_db_run_query(
-        "UPDATE `{TP}mod_outputfilter_dashboard`"
-        . " SET `position`=%d"
-        . " WHERE `name`='%s'", $pos2, $name1
+        "UPDATE `{TP_OPFD}` SET `position`=%d WHERE `name`='%s'", $pos2, $name1
     );
     $res2 = opf_db_run_query(
-        "UPDATE `{TP}mod_outputfilter_dashboard`"
-        . " SET `position`=%d"
-        . " WHERE `name`='%s'", $pos1, $name2
+        "UPDATE `{TP_OPFD}` SET `position`=%d WHERE `name`='%s'", $pos1, $name2
     );
     if($res1 && $res2) {
         return(TRUE);
@@ -1303,15 +1336,14 @@ function opf_replace_sysvar($filter, $plugin='')
     }
     $filter_as_string = json_encode($filter);
     if ($plugin!='') {
-        #$filter = str_replace('{OPF:PLUGIN_PATH}', OPF_PLUGINS_PATH.$plugin, $filter);
         $filter_as_string = str_replace('{OPF:PLUGIN_PATH}', str_replace(array('//','\\/','\\'),'/',OPF_PLUGINS_PATH.$plugin), $filter_as_string);
     }
-    #$filter = str_replace('{SYSVAR:WB_PATH}', WB_PATH, $filter);
-    $filter_as_string = str_replace('{SYSVAR:WB_PATH}', str_replace(array('//','\\/','\\'),'/',WB_PATH), $filter_as_string);
+    $filter_as_string = str_replace('{SYSVAR:ADMIN_PATH}', str_replace(array('//','\\/','\\'),'/', ADMIN_PATH), $filter_as_string);
+    $filter_as_string = str_replace('{SYSVAR:WB_PATH}', str_replace(array('//','\\/','\\'),'/', WB_PATH), $filter_as_string);
     if ($plugin!='') {
-        #$filter = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter);
         $filter_as_string = str_replace('{OPF:PLUGIN_URL}', OPF_PLUGINS_URL.$plugin, $filter_as_string);
     }
+    $filter_as_string = str_replace('{SYSVAR:ADMIN_URL}', ADMIN_URL, $filter_as_string);
     $filter_as_string = str_replace('{SYSVAR:WB_URL}', WB_URL, $filter_as_string);
     $filter = json_decode($filter_as_string,true);
     return $filter;
@@ -1329,11 +1361,13 @@ function opf_insert_sysvar($filter, $plugin='') {
         $filter_as_string = str_replace(OPF_PLUGINS_PATH.$plugin, '{OPF:PLUGIN_PATH}', $filter_as_string);
     }
     #$filter = str_replace(WB_PATH, '{SYSVAR:WB_PATH}', $filter);
+    $filter_as_string = str_replace(ADMIN_PATH, '{SYSVAR:ADMIN_PATH}', $filter_as_string);
     $filter_as_string = str_replace(WB_PATH, '{SYSVAR:WB_PATH}', $filter_as_string);
     if($plugin!='') {
         #$filter = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter);
         $filter_as_string = str_replace(OPF_PLUGINS_URL.$plugin, '{OPF:PLUGIN_URL}', $filter_as_string);
     }
+    $filter_as_string = str_replace(ADMIN_URL, '{SYSVAR:ADMIN_URL}', $filter_as_string);
     $filter_as_string = str_replace(WB_URL, '{SYSVAR:WB_URL}', $filter_as_string);
     $filter = json_decode($filter_as_string,true);
     return $filter;
@@ -1712,8 +1746,8 @@ function opf_css_save() {
         return NULL;
     }
 
-    $csspath = opf_db_query_vars( "SELECT `csspath` FROM {TP}mod_outputfilter_dashboard WHERE `id`=%d", $id);
-    $plugin  = opf_db_query_vars( "SELECT `plugin` FROM {TP}mod_outputfilter_dashboard WHERE `id`=%d", $id);
+    $csspath = opf_db_query_vars( "SELECT `csspath` FROM {TP_OPFD} WHERE `id`=%d", $id);
+    $plugin  = opf_db_query_vars( "SELECT `plugin` FROM {TP_OPFD} WHERE `id`=%d", $id);
     $csspath = opf_replace_sysvar($csspath,$plugin);
     if($csspath && file_exists($csspath) && is_writable($csspath)) {
         $fh = fopen($csspath, "wb");
@@ -1770,11 +1804,9 @@ function opf_save() {
     // add additional data
     $filter_old = array();
     if($id > 0 && opf_db_query_vars(
-        "SELECT TRUE FROM `{TP}mod_outputfilter_dashboard` WHERE `id`=%d", $id)) {
+        "SELECT TRUE FROM `{TP_OPFD}` WHERE `id`=%d", $id)) {
         // comes from edit, so fetch old data from DB
-        $filter_old = opf_db_query( "SELECT *"
-            . " FROM {TP}mod_outputfilter_dashboard"
-            . " WHERE `id`=%d", $id);
+        $filter_old = opf_db_query( "SELECT * FROM {TP_OPFD} WHERE `id`=%d", $id);
         if(!empty($filter_old)){
              $filter_old = $filter_old[0];
              $userfunc = $filter_old['userfunc'];
@@ -1889,7 +1921,7 @@ function opf_save() {
     
     if($res == TRUE) {
         if($id==0){
-            $newInlineFilterId = $database->get_one("SELECT MAX(`id`) FROM `{TP}mod_outputfilter_dashboard`");
+            $newInlineFilterId = $database->get_one("SELECT MAX(`id`) FROM `{TP_OPFD}`");
             return $newInlineFilterId;
         } else {
             return $id;
@@ -2046,4 +2078,3 @@ function opf_create_dirname($str){
     else
        return $s;
 }
-

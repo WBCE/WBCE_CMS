@@ -90,7 +90,8 @@
             </td>
             <td>
                 {% if f.helppath_onclick %}
-                    <a href="{{ TOOL_URI }}" onclick="{{ f.helppath_onclick }}" title="{{ L_('L:TXT_FILTER_HELP') }}">
+                    {#<a href="{{ TOOL_URI }}" onclick="{{ f.helppath_onclick }}" title="{{ L_('L:TXT_FILTER_HELP') }}">#}
+                    <a {{ f.helppath_onclick }} title="{{ L_('L:TXT_FILTER_HELP') }}">
                         <i class="fa fa-question-circle"></i>
                     </a>
                 {% endif %}
