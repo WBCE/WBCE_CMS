@@ -11,6 +11,6 @@
  */
 
 // Norwegian Moduledescription
-$module_description = 'Denne modulen lar deg redigere innholdet p&aring; websidene dine med et grafisk redigerings verkt&oslash;y';
+$module_description = 'Denne modulen lar deg redigere innholdet på websidene dine med et grafisk redigerings verktø';
 
 $MOD_WYSIWYG['WYSIWYG'] ="WYSIWYG";
