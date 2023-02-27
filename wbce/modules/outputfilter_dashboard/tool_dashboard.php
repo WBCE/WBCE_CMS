@@ -49,7 +49,7 @@ $admin->get_permission('admintools') or die(header('Location: ../../index.php'))
 // Include the ordering class
 require_once WB_PATH.'/framework/class.order.php';
 // Create new order object and reorder
-$order = new order('{TP_OPFD}', 'position', 'id', 'type');
+$order = new order('{TP}mod_outputfilter_dashboard', 'position', 'id', 'type');
 foreach(opf_get_types() as $type => $typename){
     $order->clean($type);
 }
@@ -74,12 +74,14 @@ foreach($filters as $filter) {
     $filter_id = $filter['id'];
     $sFilterUri = $ToolUrl.'&amp;id='.$filter_id.'&amp;';
     $filter['funcname']          = $filter['funcname'];
+    $filter['helppath']          = unserialize($filter['helppath']);
     $filter['desc']              = unserialize($filter['desc']);
     $filter['modules']           = unserialize($filter['modules']);
     $filter['pages']             = unserialize($filter['pages']);
     $filter['pages_parent']      = unserialize($filter['pages_parent']);
     $filter['additional_values'] = unserialize($filter['additional_values']);
     $filter                      = opf_replace_sysvar($filter);
+    $filter['helppath']          = opf_replace_sysvar($filter['helppath'], $filter['plugin']);
 
     // we need the next str_replace to allow \ ' " in the name for use with javascript
     $filter['name_js_quoted'] = str_replace(
@@ -89,6 +91,7 @@ foreach($filters as $filter) {
     );
     $sTmpDesc           =  opf_fetch_entry_language($filter['desc']);
     $filter['desc']     =  opf_correct_umlauts(htmlspecialchars($sTmpDesc));
+    $filter['helppath'] =  opf_fetch_entry_language($filter['helppath']);
 
     // mark last added filter
     $filter['last_touched'] = FALSE;
@@ -112,8 +115,22 @@ foreach($filters as $filter) {
     if ($filter['csspath']!='') {
         $filter['css_link'] = $sFilterUri.'csspath='.urlencode($filter['csspath']);
     }
-   
-    
+
+    // help path
+    $filter['helppath_onclick'] = '';
+    if ($filter['helppath']) {
+        $filter['helppath_onclick'] = $filter['helppath'];
+        if (!preg_match('/^(https?:\/\/|\/)/', $filter['helppath_onclick'])) {
+            if (!empty($filter['plugin'])){ // relative paths in plugin filters
+                $filter['helppath_onclick'] = OPF_PLUGINS_URL.$filter['plugin'].'/'.$filter['helppath_onclick'];
+            } else if (!empty($filter['file'])){ // the same for module filters
+                $filter['helppath_onclick'] = preg_replace('/[^\/]*$/','',$filter['file']).$filter['helppath_onclick'];
+                $filter['helppath_onclick'] = str_replace(WB_PATH, WB_URL, $filter['helppath_onclick']);
+            }
+        }
+        $filter['helppath_onclick'] = "javascript: return opf_popup('{$filter['helppath_onclick']}');";
+    }
+
     // ramaining dashboard links
     $filter['export_link'] = '';
     $filter['convert_link'] = '';
@@ -155,7 +172,6 @@ $aAllFilters = [];
 foreach($aFilters as $filter){
     $aSingleFilter = array(
         'filter_id'        => $filter['id'],
-        'helppath_onclick' => opf_get_helppath($filter['id']),
         'filter_name'      => opf_quotes($filter['name']),
         'filter_desc'      => opf_quotes($filter['desc']),
         'funcname'         => $filter['funcname'],
@@ -167,6 +183,7 @@ foreach($aFilters as $filter){
         'editlink'         => opf_quotes($filter['edit_link']),
         'additional_class' => ($filter['last_touched'])? ' last-modified' : '',
         'filter_active'    => ($filter['active'] ? '' : 'in').'active',
+        'helppath_onclick' => opf_quotes($filter['helppath_onclick']),
         'config_url'       => opf_quotes($filter['configurl']),
         'css_link'         => opf_quotes($filter['css_link']),
         'deletable'        => ($filter['userfunc'] || $filter['plugin']), // 1 : 0
@@ -192,9 +209,10 @@ foreach($aFilters as $filter){
             ),
 
 
-    );    
+    );
     $aAllFilters[] = $aSingleFilter;
 }
+
 $aToTwig['filters'] = $aAllFilters;
 $aToTwig['hilite']  = (isset($_GET['hilite'])) ? $_GET['hilite'] : '';
 

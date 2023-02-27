@@ -102,16 +102,15 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
 
     // install filter
     return opf_register_filter(array(
-        'name'      => 'Droplets Injector',
-        'type'      => OPF_TYPE_PAGE,
-        'file'      => '{SYSVAR:WB_PATH}/modules/droplets/opf_filter_droplets.php',
-        'funcname'  => 'opff_droplets',
-        'desc'      => [
-            'EN' => "This filter is working in conjunction with the Droplets AdminTool to inject Droplets PHP code at places where Droplet calls are located. (See HELP for more info).",
-            'DE' => "Dieser Filter arbeitet mit dem Droplets AdminTool zusammen, indem er den PHP-Code aus Droplets an Stellen einzufügt wo Droplet-Aufrufe platziert sind. (Siehe HILFE für mehr Infos)."
-	],
-        'helppath'  => '(link){SYSVAR:ADMIN_URL}/admintools/tool.php?tool=droplets&do=show_help',
-        'active'    => 1,
+        'name'     => 'Droplets',
+        'type'     => OPF_TYPE_PAGE,
+        'file'     => '{SYSVAR:WB_PATH}/modules/droplets/opf_filter_droplets.php',
+        'funcname' => 'opff_droplets',
+        'desc' => array(
+				'EN' => "This filter is needed for the replacement of droplet calls (terms in double brackets) in the backend by the code which should be executed in the frontend output.",
+				'DE' => "Dieser Filter wird benötigt, um Droplet-Aufrufe im Backend (Ausdrücke in doppelten eckigen Klammern) im Frontend durch den jeweiligen auszuführenden Code zu ersetzen."
+			),
+        'active'   => 1,
         'allowedit' => 0,
         'pages_parent' => 'all, backend, search'
     ))

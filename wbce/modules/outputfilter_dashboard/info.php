@@ -1,9 +1,14 @@
 <?php
+
+/*
+info.php
+*/
+
 /**
  *
  * @category        tool
  * @package         Outputfilter Dashboard
- * @version         1.6.5
+ * @version         1.6.4
  * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
  * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
@@ -35,7 +40,7 @@
 $module_directory   = 'outputfilter_dashboard';
 $module_name        = 'Output Filter Dashboard';
 $module_function    = 'tool';
-$module_version     = '1.6.5';
+$module_version     = '1.6.4';
 $module_platform    = 'WBCE 1.x';
 $module_author      = 'Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>';
 $module_license     = 'GNU General Public License, Version 3';

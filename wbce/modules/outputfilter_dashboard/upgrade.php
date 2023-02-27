@@ -161,27 +161,3 @@ opf_io_unlink(__DIR__.'/add_filter.php');        // new name: tool_add_filter.ph
 opf_io_unlink(__DIR__.'/edit_filter.php');       // new name: tool_edit_filter.php
 opf_io_unlink(__DIR__.'/css.php');               // new name: tool_edit_css.php
 opf_io_unlink(__DIR__.'/ajax/ajax_dragdrop.js'); // new name: ajax.js
-
-$aFilters = array(
-    // OLD name        // NEW name
-    'Droplets'      => 'Droplets Injector',
-    'jq ColorBox'   => 'Colorbox',
-    'Replace Stuff' => 'Replace Contents',
-    'Move Stuff'    => 'Move Contents',
-    'E-Mail'        => 'E-Mail Masking',
-    'wblink'        => 'Internal Link Replacer',
-    'Insert'        => 'Class Insert Helper',
-);
-
-$aFiltersDB = $database->get_array("SELECT `name` FROM `{TP_OPFD}`");
-
-foreach($aFilters as $old=>$new){
-    // old filter name still in the DB
-    if(in_array($aFiltersDB, $old)){
-        // new filter name already in the DB
-        if(in_array($aFiltersDB, $new)){
-            // delete the row with old filter name
-            $database->delRow('{TP_OPFD}', 'name', $old);   
-        }
-    }
-}
