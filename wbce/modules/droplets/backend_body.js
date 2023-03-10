@@ -16,8 +16,7 @@ if (typeof jQuery != 'undefined') {
             });
         }
         
-        // scroll to Last Modified Filter
-        // also: scroll to Type Section after deleting a plugin
+        // Scroll to latest edited doplet in droplets overview
         if ($(".hilite")[0]){
             $('html, body').animate({
                 scrollTop: $('.hilite').offset().top -250
