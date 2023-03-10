@@ -1397,3 +1397,11 @@ form.advanced-options {
     padding: .2em;
     border-radius: 50%;
 }
+
+
+.pagetree-no-edit {
+	color:#666; 
+	font-weight:400; 
+	cursor:not-allowed;
+	text-decoration:none !important;
+} 

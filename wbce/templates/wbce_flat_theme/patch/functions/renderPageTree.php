@@ -48,7 +48,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999)
         $canModifyPage = ($admin->get_permission('pages_modify') && $canModify);
         $canModifySettings = ($admin->get_permission('pages_settings') && $canModify);
         $canManageSections = (MANAGE_SECTIONS && $admin->get_permission('pages_modify') && $canModify);
-		$noPermStyle = ($canModifyPage === false) ? 'style="color:#666; font-weight:400; cursor:not-allowed"' : '';
+		$noPermStyle = ($canModifyPage === false) ? 'pagetree-no-edit' : '';
         if ($canManageSections) {
             $querySections = $database->query('SELECT `module` FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id` = ' . $page['page_id'] . ' AND `module` = "menu_link"');
             if ($querySections->numRows() > 0) {
@@ -78,7 +78,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999)
                             <a href="#" data-id="p{PAGE_ID}"><i class="fa fa-fw fa-folder-open"></i></a>
                         <?php } ?>
                     </td>
-                    <td class="visibility" <?=$noPermStyle?>>
+                    <td class="visibility <?=$noPermStyle?>">
                         <?php if ($page['visibility'] === 'public') { ?>
                             <i class="fa fa-eye"></i>
                         <?php } elseif ($page['visibility'] === 'private') { ?>
@@ -93,9 +93,9 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999)
                             <i class="fa fa-ban"></i>
                         <?php } ?>
                     </td>
-                    <td class="title" <?=$noPermStyle?>>
+                    <td class="title <?=$noPermStyle?>">
                         <a <?= ($canModifyPage ? 'href="{modifyPageURL}"' : 'href="#"') ?>
-                                title="<?= $HEADING['MODIFY_PAGE'] ?>" <?=$noPermStyle?>>{MENU_TITLE}</a>
+                                title="<?= $HEADING['MODIFY_PAGE'] ?>" class="<?=$noPermStyle?>">{MENU_TITLE}</a>
                         <br/>
                         <small>{PAGE_TITLE}</small>
                     </td>
