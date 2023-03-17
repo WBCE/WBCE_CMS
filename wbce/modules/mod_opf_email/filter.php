@@ -78,11 +78,27 @@ function doFilterEmail($content)
  * @brief  Obfuscate email address while keeping it in a human readable format.
  *         This solution is based on: http://www.wbwip.com/wbw/emailencoder.html
  * 
+ *         This function will be only applied when email address contains @ + .  
+ * 
  * @param  string  $str
  * @return string
  */
-function readable_obfuscation($str){
-    $arr = [
+function readable_obfuscation($str){    
+    $pattern = '/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i'; // find email 
+    $retVal  = preg_replace_callback($pattern, 'readable_obfuscation_callback', $str);    
+    
+    return $retVal;
+}
+
+/**
+ * Callback function for readable_obfuscation regEx replacement
+ * 
+ * 
+ * @param  array $matches
+ * @return string
+ */
+function readable_obfuscation_callback($matches) {
+    $arr = array(
         'a' => '&#97;',
         'b' => '&#98;',
         'c' => '&#99;',
@@ -109,14 +125,13 @@ function readable_obfuscation($str){
         'x' => '&#120;',
         'y' => '&#121;',
         'z' => '&#122;',
-        
+
         // further obfuscate `@` and `.` for email harvesting bots 
         '@' => '<span>&#64;</span>', 
         '.' => '<span>&#46;</span>',
-    ];
-    return strtr($str, $arr);
+    );
+    return strtr($matches[0], $arr);
 }
-
 /**
  * callback-function for function _doFilterEmail() to proceed search results
  * @param array results from preg_replace
