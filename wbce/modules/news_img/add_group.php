@@ -41,7 +41,7 @@ if($admin->get_post('title') == '')
 else
 {
 	$title = mod_nwi_escapeString($admin->get_post('title'));
-	$active = mod_nwi_escapeString($admin->get_post('active'));
+	//$active = mod_nwi_escapeString($admin->get_post('active'));
 	$title = strip_tags($title);
 }
 
