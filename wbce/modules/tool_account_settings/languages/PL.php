@@ -66,19 +66,17 @@ $TEXT['ACCOUNT_SIGNUP'] = 'Rejestracja';
 $TEXT['SIGNUP'] = 'Rejestracja';
 
 
-// Jeszcze nie przetłumaczone
+$TOOL_TXT['HEADING_ERROR']         = 'Błąd';
+$TOOL_TXT['GENERIC_ERROR_MESSAGE'] = 'Konto nie zostało jeszcze potwierdzone, jest już aktywowane lub przesłano nieprawidłowe dane.';
+$TOOL_TXT['CONTACT_ADMINISTRATOR'] = 'W razie potrzeby skontaktuj się z administratorem witryny w celu uzyskania dalszej pomocy.';
 
-$TOOL_TXT['HEADING_ERROR']         = 'Error';
-$TOOL_TXT['GENERIC_ERROR_MESSAGE'] = 'The account has not been confirmed yet, is already activated or invalid data was submitted.';
-$TOOL_TXT['CONTACT_ADMINISTRATOR'] = 'If necessary, please contact the website administrator for further assistance.';
+$MESSAGE['DISPLAY_NAME_EMPTY'] = 'Wpisz wartość "wyświetlana nazwa".';
+$MESSAGE['GDPR_AGREEMENT_MANDATORY'] = 'Musisz wyrazić zgodę na przechowywanie i przetwarzanie danych, aby zarejestrować się w naszych usługach.';
 
-$MESSAGE['DISPLAY_NAME_EMPTY'] = 'Please enter a value for "Display Name".';
-$MESSAGE['GDPR_AGREEMENT_MANDATORY'] = 'You need to agree upon storing and processing of data in order to sign up to our services.';
-
-$TEXT['REGISTER_THANKYOU'] = 'Thank you for registering on our website.';
-$TEXT['REGISTER_CHECK_MAIL_ACTIVATION_USER'] = 'Please check your emails now and click on the confirmation link in the email we just have sent to you.';
-$TEXT['REGISTER_GENEREC_EMAIL_NOT_RECIEVED'] =' If you did not recieve the email, please wait some minutes and/or look into your spam folder too.';
-$TEXT['REGISTER_LOGIN_SENT_TO_USER'] = 'Your login data was just sent to your email address.';
-$TEXT['REGISTER_USER_ACTIVATED'] = 'The account has been activated. The login data was sent to the corresponding email address.';
-$TEXT['REGISTER_ACTIVATION_PENDING'] = 'Please be patient. You will recieve an email with your login data when we have approved and activated your account.';
-$TEXT['REGISTER_GDPR_PHRASE'] = 'I confirm that I have read and that I accept the privacy policy. I agree upon storing and processing of the supplied personal data.';
+$TEXT['REGISTER_THANKYOU'] = 'Dziękujemy za rejestrację na naszej stronie internetowej.';
+$TEXT['REGISTER_CHECK_MAIL_ACTIVATION_USER'] = 'Sprawdź teraz swoje e-maile i kliknij link potwierdzający w wiadomości e-mail, którą właśnie do ciebie wysłaliśmy.';
+$TEXT['REGISTER_GENEREC_EMAIL_NOT_RECIEVED'] ='Jeśli nie otrzymałeś wiadomości e-mail, odczekaj kilka minut i/lub zajrzyj również do folderu ze spamem.';
+$TEXT['REGISTER_LOGIN_SENT_TO_USER'] = 'Twoje dane logowania zostały właśnie wysłane na Twój adres e-mail.';
+$TEXT['REGISTER_USER_ACTIVATED'] = 'Konto zostało aktywowane. Dane logowania zostały wysłane na odpowiedni adres e-mail.';
+$TEXT['REGISTER_ACTIVATION_PENDING'] = 'Prosimy o cierpliwość. Otrzymasz wiadomość e-mail z danymi logowania, gdy zatwierdzimy i aktywujemy Twoje konto.';
+$TEXT['REGISTER_GDPR_PHRASE'] = 'Potwierdzam, że przeczytałem i akceptuję Politykę prywatności. Wyrażam zgodę na przechowywanie i przetwarzanie podanych danych osobowych.';
