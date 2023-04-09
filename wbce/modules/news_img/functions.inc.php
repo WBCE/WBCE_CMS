@@ -566,8 +566,32 @@ function mod_nwi_post_activate($value)
         if($database->is_error()) {
             $errors++;
         }
-    }
-    return ( $errors>0 ? false : true );
+    
+		$postQuery = "SELECT * from `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id`=".$post_id;	
+		$query_post = $database->query($postQuery);
+		if ($query_post->numRows() > 0) {
+		$post      = $query_post->fetchRow();
+		}
+		
+		$pageQuery = "SELECT * from `".TABLE_PREFIX."sections` WHERE `section_id`=".$post['section_id'];	
+		$query_page = $database->query($pageQuery);
+		if ($query_page->numRows() > 0) {
+		$page      = $query_page->fetchRow();
+		}
+		
+		
+		if ($post['active'] == "0" ) {		
+			if(is_writable(WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION)) {
+					unlink(WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION);
+			}
+			
+		} else{
+			$filename = WB_PATH.PAGES_DIRECTORY.'/'.$post['link'].PAGE_EXTENSION;
+			mod_nwi_create_file($filename, '', $post_id, $post['section_id'], $page['page_id']);
+		}
+
+	}
+	return ( $errors>0 ? false : true );
 }
 
 function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
@@ -662,8 +686,10 @@ function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
         	    $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
         	} else {
         	    // Specify the filename
-        	    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-        	    mod_nwi_create_file($filename, $file_create_time, $post_id, $section_id, $page_id);
+				if ($active == "1") {
+					$filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
+					mod_nwi_create_file($filename, $file_create_time, $post_id, $section_id, $page_id);
+				}
         	}
 
             // create image dir and copy images
@@ -977,6 +1003,12 @@ function mod_nwi_post_show(int $post_id)
 
     // get post data
     $post = mod_nwi_post_get($post_id);
+	
+	$pageQuery = "SELECT * from `".TABLE_PREFIX."sections` WHERE `section_id`=".$post['section_id'];	
+	$query_page = $database->query($pageQuery);
+	if ($query_page->numRows() > 0) {
+	$page      = $query_page->fetchRow();
+	}
 
     // get group data
 	$gid = 0;
@@ -989,6 +1021,15 @@ function mod_nwi_post_show(int $post_id)
             return false;
         }
     }
+	if ($post['active'] ==0 ) {		
+		if(is_writable(WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION)) {
+        	    unlink(WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION);
+        }
+		return false;
+	} else{
+		$filename = WB_PATH.PAGES_DIRECTORY.'/'.$post['link'].PAGE_EXTENSION;
+        mod_nwi_create_file($filename, '', $post_id, $section_id, $page['page_id']);
+	}
 
     return $post;
 }   // end function mod_nwi_post_show()

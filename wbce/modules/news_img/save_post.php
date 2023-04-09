@@ -78,6 +78,11 @@ if ($admin->get_post('title') == '' and $admin->get_post('url') == '') {
     $tags = $admin->get_post('tags');
 }
 
+if ($link=='') {
+	$link = page_filename($title);
+}
+
+
 $group_id = 0;
 $old_section_id = $section_id;
 $old_page_id = $page_id;
@@ -191,6 +196,28 @@ if (!($database->is_error())) {
             $database->query("UPDATE `".TABLE_PREFIX."mod_news_img_img` SET `picdesc` = '$picdesc' WHERE id = '$row_id'");
         }
     }
+}
+
+
+$pageQuery = "SELECT * from `".TABLE_PREFIX."sections` WHERE `section_id`=".$section_id;	
+$query_page = $database->query($pageQuery);
+if ($query_page->numRows() > 0) {
+$page      = $query_page->fetchRow();
+}
+if (!isset($active) || $active != 1) { $active=0; }
+
+
+if ($publishedwhen != 0 && $publishedwhen > time()) {$active = 0;}
+if ($publisheduntil != 0 && $publisheduntil < time()) {$active = 0;}
+
+if ($active != 1 ) {		
+	if(is_writable(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION)) {
+			unlink(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION);
+	}
+	
+} else{	
+	$filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
+	mod_nwi_create_file($filename, '', $post_id, $section_id, $page['page_id']);
 }
 
 // if this went fine so far and we are moving posts across section borders we still have to reorder

@@ -249,6 +249,12 @@ require(WB_PATH."/index.php");
 		
 	}
 	
+	if (!$database->field_exists('{TP}mod_news_img_settings','show_settings_only_admins')) { 
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `show_settings_only_admins` CHAR(1) NOT NULL DEFAULT 'N' AFTER `use_second_block`",TABLE_PREFIX));
+			} catch(\Exception $e) {}
+	}
+	
 
     // 2019-07-05 Bianka Martinovic
     //            add database tables for tags

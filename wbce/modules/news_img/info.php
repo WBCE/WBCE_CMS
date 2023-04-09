@@ -16,13 +16,18 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.19';
+$module_version     = '5.0.20';
 $module_platform    = '1.4';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v5.0.20 - 2023/04/09
+ *		   - florian
+ *         ! fix update issue with new setting show_settings_only_admins
+ *         * better handling of post activation (remove / rebuild access file)
+ *
  * v5.0.19 - 2023/02/01
  *		   - florian
  *         ! missing changes on upgrade.php in single install package. no changes in WBCE core repo.
