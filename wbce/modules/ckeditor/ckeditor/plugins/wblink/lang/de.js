@@ -71,6 +71,7 @@ CKEDITOR.plugins.setLang('wblink', 'de', {
 	selectBakery: 'Bitte einen Bakery-Artikel wählen',
 	selectNewsWithImages: 'Bitte einen NWI-Beitrag wählen',
 	selectResponsiveFG: 'Bitte eine Galerie wählen',
+	selectProCalendar: 'Bitte einen Termin wählen',
 	noNews: 'Keine News Seite gewählt',
 	noRFG: 'Keine Galerie gewählt'
 });

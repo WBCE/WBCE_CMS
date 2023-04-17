@@ -137,5 +137,18 @@ while ($section = $bakerySections->fetchRow()) {
     }
 }
 
+$procalendarSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'procalendar'");
+while ($section = $procalendarSections->fetchRow()) {
+    $procalendar = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_procalendar_actions WHERE  section_id=".$section['section_id']);
+    $ModuleList .= "ModuleList[".$section['page_id']."] = 'ProCalendar';";
+    $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";	
+    while ($procalendar && $item = $procalendar->fetchRow()) {
+        $item['name'] = preg_replace($wblink_allowed_chars, "", $item['name']);
+		$dArr = explode("-",$item['date_start']);
+        $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['name']))."', '[wblink".$item['page_id']."]?".$item['name']."&month=".$dArr[1]."&year=".$dArr[0]."&day=".$dArr[2]."&page_id=".$item['page_id']."&id=".$item['id']."&detail=1');";
+    }
+}
+
+
 echo $NewsItemsSelectBox;
 echo $ModuleList;
