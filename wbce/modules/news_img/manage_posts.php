@@ -101,9 +101,11 @@ if(isset($_POST['exec']) && isset($_POST['manage_posts'])) {
                     $group = mod_nwi_get_group($group_id);
                 }
             }
-            if(!empty($group) && !empty($posts)) {
+						
+            if(!empty($posts)) {
                 foreach($posts as $post_id) {
                     // Update row
+					if (empty($group)) {$group_id = 0; }
                     $database->query(sprintf(
                         "UPDATE `%smod_news_img_posts` ".
                         "SET `group_id`=%d WHERE `post_id`=%d",
