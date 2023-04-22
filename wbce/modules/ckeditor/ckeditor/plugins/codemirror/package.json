@@ -1,0 +1,25 @@
+{
+  "name": "ckeditor-codemirror-plugin",
+  "version": "1.18.7",
+  "author": "w8tcha",
+  "description": "Syntax Highlighting for the CKEditor (Source View and Source Dialog) with the CodeMirror Plugin.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/w8tcha/CKEditor-CodeMirror-Plugin.git"
+  },
+  "keywords": [
+    "CKEditor",
+    "CodeMirror"
+  ],
+  "devDependencies": {
+    "codemirror": "^5.65.12",
+    "grunt": "~1.6.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-requirejs": "^1.0.0",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "~1.1.0",
+    "grunt-dev-update": "^2.3.0",
+    "js-beautify": "^1.14.5"
+  }
+}
