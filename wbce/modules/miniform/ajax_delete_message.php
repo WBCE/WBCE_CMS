@@ -2,67 +2,34 @@
 
 // initialize json_respond array  (will be sent back)
 $aJsonRespond = array();
-$aJsonRespond['message'] = 'ajax operation failed';
-$aJsonRespond['success'] = FALSE;
+$aJsonRespond['message'] = 'Nothing to do!';
+$aJsonRespond['success'] = false;
 
-    if(!isset($_POST['action']) )
-    {
-        $aJsonRespond['message'] = '"action" was not set';
-        exit(json_encode($aJsonRespond));
-    }
+// require config for initialisation.
+require '../../config.php';
 
+// test admin access for this
+require_once(WB_PATH.'/framework/class.admin.php');
+$admin = new admin('Modules', 'module_view', FALSE, FALSE);
 
-        // require config for Core Constants
-        require '../../config.php';
-        // retrieve Data from ajax data string
-        $sDbRecordTable = TABLE_PREFIX."mod_".addslashes($_POST['DB_RECORD_TABLE']);
-        $sDbColumn      = addslashes($_POST['DB_COLUMN']);
-        $iRecordID      = addslashes($_POST['iRecordID']);
-        $sModuleDIR     = addslashes($_POST['MODULE']);
+// check for the iRecordID parameter. Preventing warnings in the errorlogs
+if(!isset($_POST['iRecordID'])) die(json_encode($aJsonRespond));
 
-        require_once(WB_PATH.'/framework/class.admin.php');
-        $admin = new admin('Modules', 'module_view', FALSE, FALSE);
-        if(!is_numeric($iRecordID)) {
-            if(method_exists( $admin, 'checkIDKEY' ))
-               $iRecordID = $admin->checkIDKEY($iRecordID,-1,'key',true);
-               else $iRecordID = -1;
-        }
-
-
-
-    switch ($_POST['purpose'])
-    {
-        
-        case 'delete_record':
-            // Check the Parameters
-            if(isset($_POST['action']) && $_POST['action'] == 'delete')    {
-
-                $query = "DELETE FROM `".$sDbRecordTable."` WHERE `".$sDbColumn."` = ".$iRecordID." LIMIT 1";
-                $database->query($query);
-                if($database->is_error())
-                {
-                    $aJsonRespond['message'] = 'db query failed: '.$database->get_error();
-                    exit(json_encode($aJsonRespond));
-                } else {
-                    $aJsonRespond['message'] = 'Record deleted successfully!';
-                }
-				
-                // Clean up ordering after deletion
-               // require(WB_PATH.'/framework/class.order.php');
-              //  $order = new order($sDbRecordTable, 'position', $sDbColumn, 'section_id');
-               // $order->clean($_POST['iSectionID']);
-            }
-            else{
-                $aJsonRespond['message'] = "can't delete from list";
-                exit(json_encode($aJsonRespond));
-            }
-        break;
-    }
-
-
-
-// If the script is still running, set success to true
-$aJsonRespond['success'] = true;
-// and echo the json_respond to the ajax function
-exit(json_encode($aJsonRespond));
+// get record_id to delete
+$iRecordID      = intval($_POST['iRecordID']);
+if($iRecordID > 0) {
+	// build query
+	$query = "DELETE FROM `".TABLE_PREFIX."mod_miniform_data` WHERE `message_id` = '".$iRecordID."' LIMIT 1";
+	// excecute query
+	$database->query($query);
+	// test for errors
+	if($database->is_error()) {
+		$aJsonRespond['message'] = 'Deleting record failed!';
+	} else {
+		$aJsonRespond['message'] = 'Record deleted successfully!';
+		$aJsonRespond['success'] = true;
+	}
+}
+// return json data
+die(json_encode($aJsonRespond));
 
