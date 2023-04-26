@@ -46,20 +46,25 @@ $array = array();
     $sql .= 'WHERE `active`=1 ';
     $sql .= 'ORDER BY `name` ASC';
     if ($resRec = $database->query($sql)) {
-        while (!false == ($droplet = $resRec->fetchRow())) {
-            $title = cleanup($droplet['name']);
-            $desc = cleanup($droplet['description']);
-            $comments = cleanup($droplet['comments']);
-            
-            $DropletSelectBox .=  "new Array( '".$title."', '".$droplet['name']."'), ";
-            $description .=  "new Array( '".$title."', '".$desc."'), ";
-            $usage .=  "new Array( '".$title."', '".$comments."'), ";
-        }
-    }
+		if ($resRec->numRows() > 0) {
+			while (!false == ($droplet = $resRec->fetchRow())) {
+				$title = cleanup($droplet['name']);
+				$desc = cleanup($droplet['description']);
+				$comments = cleanup($droplet['comments']);
 
-$DropletSelectBox = substr($DropletSelectBox, 0, -2);
-$description = substr($description, 0, -2);
-$usage = substr($usage, 0, -2);
+				$DropletSelectBox .=  "new Array( '".$title."', '".$droplet['name']."'), ";
+				$description .=  "new Array( '".$title."', '".$desc."'), ";
+				$usage .=  "new Array( '".$title."', '".$comments."'), ";
+			}
+			$DropletSelectBox = substr($DropletSelectBox, 0, -2);
+			$description = substr($description, 0, -2);
+			$usage = substr($usage, 0, -2);
+		} else {
+			$DropletSelectBox .=  "new Array() ";
+			$description .=  "new Array() ";
+			$usage .=  "new Array() ";
+		}
+	}
 
 echo $DropletSelectBox .= " );\n";
 echo $description .= " );\n";
