@@ -10,8 +10,8 @@ require '../../config.php';
 
 // test admin access for this
 require_once(WB_PATH.'/framework/class.admin.php');
-$admin = new admin('Modules', 'module_view', FALSE, FALSE);
-
+$admin = new admin('Modules', 'modules_view', false, true); 
+ 
 // check for the iRecordID parameter. Preventing warnings in the errorlogs
 if(!isset($_POST['iRecordID'])) die(json_encode($aJsonRespond));
 
