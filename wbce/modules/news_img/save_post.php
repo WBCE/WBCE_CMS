@@ -210,6 +210,7 @@ if (!isset($active) || $active != 1) { $active=0; }
 if ($publishedwhen != 0 && $publishedwhen > time()) {$active = 0;}
 if ($publisheduntil != 0 && $publisheduntil < time()) {$active = 0;}
 
+
 if ($active != 1 ) {		
 	if(is_writable(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION)) {
 			unlink(WB_PATH.PAGES_DIRECTORY.$post_link.PAGE_EXTENSION);
