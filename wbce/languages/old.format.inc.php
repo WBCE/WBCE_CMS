@@ -11,7 +11,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 $MESSAGE['FRONTEND']['SORRY_NO_VIEWING_PERMISSIONS'] = $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'];
 $MESSAGE['FRONTEND']['SORRY_NO_ACTIVE_SECTIONS'] = $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'];

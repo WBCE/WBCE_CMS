@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'HU';
@@ -691,4 +695,3 @@ $OVERVIEW['START'] = 'Admin &#225;ttekint&#233;s';
 $OVERVIEW['TEMPLATES'] = 'A Honlap megjelen&#233;s&#233;nek v&#225;ltoztat&#225;sa Sablonokkal...';
 $OVERVIEW['USERS'] = 'Felhaszn&#225;l&#243;k bejelentkez&#233;si enged&#233;lyei...';
 $OVERVIEW['VIEW'] = 'A k&#233;sz Port&#225;l megtekint&#233;se &#250;j ablakban...';
-

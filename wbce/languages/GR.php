@@ -13,11 +13,15 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'GR';
-$language_name = 'Greek'; 
+$language_name = 'Greek';
 $language_version = '3.2';
 $language_platform = '1.3.0';
 $language_author = 'Yannis Spyrou';

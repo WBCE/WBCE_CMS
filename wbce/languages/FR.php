@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'FR';
@@ -691,4 +695,3 @@ $OVERVIEW['START'] = 'Pr&#233;sentation de l&apos;administration';
 $OVERVIEW['TEMPLATES'] = 'Gestion des th&#232;mes et modification de l&apos;apparence du site';
 $OVERVIEW['USERS'] = 'Gestion des acc&#232;s au site';
 $OVERVIEW['VIEW'] = 'Aper&#231;u du site dans une nouvelle fen&#234;tre';
-

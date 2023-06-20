@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'SK';
@@ -681,4 +685,3 @@ $OVERVIEW['START'] = 'Administrat&#237;vny prehlad';
 $OVERVIEW['TEMPLATES'] = 'Zmeni&#357; vzh&#318;ad a chovanie webu pomocou &#353;ablon...';
 $OVERVIEW['USERS'] = 'Spravova&#357; u&#382;ivatelov...';
 $OVERVIEW['VIEW'] = 'R&#253;chlo prezrie&#357; str&#225;nky v novom okne...';
-
