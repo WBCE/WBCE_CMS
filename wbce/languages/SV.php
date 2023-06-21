@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'SV';
@@ -681,4 +685,3 @@ $OVERVIEW['START'] = 'Administration &#246;versyn';
 $OVERVIEW['TEMPLATES'] = '&#196;ndra utseendet med mallar...';
 $OVERVIEW['USERS'] = 'Behandla anv&#228;ndare som kan logga in till WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Titta p&#229; dina sidor i ett nytt f&#246;nster...';
-

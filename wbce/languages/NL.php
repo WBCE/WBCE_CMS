@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'NL';
@@ -692,4 +696,3 @@ $OVERVIEW['START'] = 'Websitebeheer';
 $OVERVIEW['TEMPLATES'] = 'Beheren van de templates die u kunt toepassen.';
 $OVERVIEW['USERS'] = 'Beheren van de gebruikers van uw website.';
 $OVERVIEW['VIEW'] = 'Bekijk uw website zoals deze voor bezoekers te zien is (in een afzonderlijk venster).';
-

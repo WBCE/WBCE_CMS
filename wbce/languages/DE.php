@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'DE';
@@ -672,7 +676,7 @@ $MESSAGE['USERS_EMAIL_TAKEN'] = 'Die angegebene E-Mail-Adresse wird bereits verw
 $MESSAGE['USERS_INVALID_EMAIL'] = 'Die angegebene E-Mail-Adresse ist ungültig';
 $MESSAGE['USERS_NAME_INVALID_CHARS'] = 'Es wurden unzulässige Zeichen für den Benutzernamen verwendet';
 $MESSAGE['USERS_NO_GROUP'] = 'Es wurde keine Gruppe ausgewählt';
-$MESSAGE['USERS_PASSWORD_MISMATCH'] = 'Die eingegebenen Passworte stimmen nicht überein.'; 
+$MESSAGE['USERS_PASSWORD_MISMATCH'] = 'Die eingegebenen Passworte stimmen nicht überein.';
 $MESSAGE['USERS_PASSWORD_TOO_SHORT'] = 'Das eingegebene Passwort ist zu kurz';
 $MESSAGE['USERS_SAVED'] = 'Der Benutzer wurde erfolgreich gespeichert';
 $MESSAGE['USERS_USERNAME_TAKEN'] = 'Der angegebene Benutzername wird bereits verwendet';
@@ -693,4 +697,3 @@ $OVERVIEW['START'] = 'Backend-Einstiegsseite';
 $OVERVIEW['TEMPLATES'] = 'Templates verwalten...';
 $OVERVIEW['USERS'] = 'Verwaltung von Benutzern, die sich anmelden dürfen...';
 $OVERVIEW['VIEW'] = 'Ansicht Ihrer Website in einem neuen Fenster...';
-
