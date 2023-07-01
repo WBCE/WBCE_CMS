@@ -9,8 +9,11 @@ CKEDITOR.editorConfig = function( config ) {
      * This kind of prevention must be done in the server side, so just leave this line as is. */
     config.protectedSource.push(/<\?[\s\S]*?\?>/g); // PHP Code
 
-    //disable ckes Advanced Content Filter (ACF) to avoid wblinks to be filtered?
+    // Disable ckes Advanced Content Filter (ACF) to avoid wblinks to be filtered?
     config.allowedContent = true;
+
+    // Disable ckes broken versionCheck.
+    config.versionCheck = false;
 
     // Simplify the dialog windows.
     config.removeDialogTabs = 'image:Link';
