@@ -32,18 +32,7 @@ if (!defined('WB_PATH')) {
 $msgTxt = '';   //message content
 $msgCls = 'msg-box'; // message css class
 
-// if the filter as a whole has been switched on, but all settings are off, behave as if they were on (and simply switch them on
-if (Settings::Get('opf_email') && ! (Settings::Get('OPF_MAILTO_FILTER') || Settings::Get('OPF_JS_MAILTO') || Settings::Get('OPF_EMAIL_FILTER'))) {
-    Settings::Set('OPF_MAILTO_FILTER', 1);
-    Settings::Set('OPF_JS_MAILTO', 1);
-    Settings::Set('OPF_EMAIL_FILTER', 1);
-}
-// otherwise, if the filter is off, switch the settings all off
-if (! Settings::Get('opf_email')) {
-    Settings::Set('OPF_MAILTO_FILTER', 0);
-    Settings::Set('OPF_JS_MAILTO', 0);
-    Settings::Set('OPF_EMAIL_FILTER', 0);
-}
+
 
 // check whether outputfilter-module is installed
 if (file_exists(WB_PATH.'/modules/outputfilter_dashboard/functions.php')) {
@@ -103,11 +92,11 @@ if ($doSave) {
     // read settings from the database to show
 
     $data = array();
-    $data['email_filter']      = Settings::Get('opf_email_filter', 1);
-    $data['mailto_filter']     = Settings::Get('opf_mailto_filter', 1);
-    $data['js_mailto']         = Settings::Get('opf_js_mailto', 1);
-    $data['at_replacement']    = Settings::Get('opf_at_replacement', "(at)");
-    $data['dot_replacement']   = Settings::Get('opf_dot_replacement', "(dot)");
+    $data['email_filter']      = Settings::Get('opf_email_filter');
+    $data['mailto_filter']     = Settings::Get('opf_mailto_filter');
+    $data['js_mailto']         = Settings::Get('opf_js_mailto');
+    $data['at_replacement']    = Settings::Get('opf_at_replacement');
+    $data['dot_replacement']   = Settings::Get('opf_dot_replacement');
 }
 
 include($modulePath."templates/output_filter.tpl.php");

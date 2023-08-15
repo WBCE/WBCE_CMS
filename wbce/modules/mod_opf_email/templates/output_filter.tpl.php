@@ -28,6 +28,11 @@ if (!defined('WB_PATH')) {
     die('<head><title>Access denied</title></head><body><h2 style="color:red;margin:3em auto;text-align:center;">Cannot access this file directly</h2></body></html>');
 }
 /* -------------------------------------------------------- */
+//debug_dump($data);
+
+if ($data['email_filter'] != '1') { $data['email_filter'] = '0'; }
+if ($data['mailto_filter'] != '1') { $data['mailto_filter'] = '0'; }
+if ($data['js_mailto'] != '1') { $data['js_mailto'] = '0'; }
 
 if ($msgTxt != '') :?>
 <div class="<?php echo $msgCls?>"><?php echo $msgTxt?></div>
