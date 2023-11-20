@@ -23,6 +23,10 @@ $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v5.0.23 - 2023/11/20
+ *         - florian
+ *         ! fix sorting issue due to group assignment (undo changes from 5.0.13)
+ *
  * v5.0.22 - 2023/06/17
  *         - florian
  *         ! fixing issues with missing accessfiles due to post activation handling

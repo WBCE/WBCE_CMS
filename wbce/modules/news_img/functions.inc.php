@@ -1119,7 +1119,7 @@ function mod_nwi_posts_getall(int $section_id, bool $is_backend, string $query_e
         "  (SELECT `post_id` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` > `t1`.`$order_by` AND `section_id`='$section_id' $active ORDER BY `$order_by` $direction LIMIT 1 ) as `next`, ".
         "  (SELECT `post_id` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` < `t1`.`$order_by` AND `section_id`='$section_id' $active ORDER BY `$order_by` $prev_dir LIMIT 1 ) as `prev` " .
         "FROM `%smod_news_img_posts` AS `t1` WHERE `section_id`='$section_id' $filter ".
-        "$query_extra ORDER BY gposition ASC, `$order_by` $direction $limit",
+        "$query_extra ORDER BY `$order_by` $direction $limit",
         TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
     );
 
