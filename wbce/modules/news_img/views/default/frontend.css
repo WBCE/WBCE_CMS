@@ -14,18 +14,22 @@
   overflow: hidden;
 }
 
-.mod_nwi_default td.page-left,
-.mod_nwi_default td.page-center,
-.mod_nwi_default td.page-right {
+.mod_nwi_table {width:100%}
+
+.mod_nwi_default td.page-left, .mod_nwi_table_left,
+.mod_nwi_default td.page-center, .mod_nwi_table_center,
+.mod_nwi_default td.page-right, .mod_nwi_table_right {
   width: 33.33%;
 }
 
 .mod_nwi_default td.page-center,
-td.mod_nwi_table_center {
+td.mod_nwi_table_center, 
+.mod_nwi_table_center {
   text-align: center;
 }
 
 .mod_nwi_default td.page-right,
+.mod_nwi_table_right,
 .mod_nwi_table_right {
   text-align: right;
 }
