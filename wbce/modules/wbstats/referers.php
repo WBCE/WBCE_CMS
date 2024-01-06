@@ -7,12 +7,11 @@
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
- * @requirements    PHP 5.6 and higher
- * @version         0.2.5.3
- * @lastmodified    October17, 2022
+ * @requirements    PHP 7 and higher
+ * @version         0.2.5.5
+ * @lastmodified    December 16, 2023
  *
  */
-
 
  //todo: download and process https://github.com/matomo-org/referrer-spam-list
 

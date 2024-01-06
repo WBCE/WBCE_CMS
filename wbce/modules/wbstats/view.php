@@ -7,9 +7,9 @@
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
- * @requirements    PHP 5.6 and higher
- * @version         0.2.5.3
- * @lastmodified    October17, 2022
+ * @requirements    PHP 7 and higher
+ * @version         0.2.5.5
+ * @lastmodified    December 16, 2023
  *
  */
 
@@ -21,13 +21,14 @@
 if(defined('WB_PATH') == false) die("Cannot access this file directly");
 //include (dirname(__FILE__).'/login.php');
 
-global $table_day,$table_ips,$table_pages,$table_ref,$table_key,$table_lang, $code2lang,$WS;
+global $table_day,$table_ips,$table_pages,$table_ref,$table_key,$table_lang, $table_brwsr, $table_hist, $code2lang,$WS;
 $mpath = WB_PATH.'/modules/wbstats/';
 $lang = $mpath . '/languages/' . LANGUAGE . '.php';
 require_once(!file_exists($lang) ? $mpath . '/languages/EN.php' : $lang );
 require_once( $mpath .'/info.php');
 require_once($mpath . '/class.stats.php');
 $stats = new stats();
+
 
 $module_overview_link = '?overview';
 $module_visitors_link = '?visitors';
@@ -56,7 +57,7 @@ if (isset($_GET['overview'])) {
 } elseif (isset($_GET['live'])) {
 	require ($mpath."live.php");
 } elseif (isset($_GET['logbook'])) {
-	require ("logbook.php");
+	require ($mpath."logbook.php");
 } else {
 	require_once ($mpath."overview.php");
 }
