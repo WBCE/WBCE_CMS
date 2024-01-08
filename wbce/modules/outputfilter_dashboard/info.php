@@ -35,7 +35,7 @@
 $module_directory   = 'outputfilter_dashboard';
 $module_name        = 'Output Filter Dashboard';
 $module_function    = 'tool';
-$module_version     = '1.6.5';
+$module_version     = '1.6.6';
 $module_platform    = 'WBCE 1.x';
 $module_author      = 'Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>';
 $module_license     = 'GNU General Public License, Version 3';
