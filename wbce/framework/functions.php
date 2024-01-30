@@ -27,6 +27,23 @@ if ($database->field_exists('{TP}pages', 'visibility_backup') == false) {
     );
 }
 
+if (!function_exists('str_contains')) {
+    /**
+     * str_contains Checks if a string contains a given substring.
+     *
+     * This function is a fallback for PHP versions lower than 8.0.0, 
+     * which do not have the built-in `str_contains()` function.
+     *
+     * @param string $haystack The string to search within.
+     * @param string $needle The substring to search for.
+     * @return bool true if the substring is found, false otherwise.
+     */
+    function str_contains($haystack, $needle) {
+        return !empty($needle) && false !== strpos($haystack, $needle);
+    }
+}
+
+
 /**
  * @brief   recursively remove a non empty directory and all its contents
  *
