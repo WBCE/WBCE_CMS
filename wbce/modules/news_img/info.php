@@ -16,17 +16,21 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.24';
+$module_version     = '5.0.25';
 $module_platform    = '1.4';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
 $module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
 
 /**
+ * v5.0.25 - 2024/01/31
+ *         - florian
+ *         ! fix issue with droplet fetchNewsItems (aka getnewsitems, which caused unwanted overwriting of droplet from NIA with the same name)
+ *
  * v5.0.24 - 2023/11/20
  *         - mrbaseman
  *         ! fix post_id in access file for next/prev pages
- *
+ 
  * v5.0.23 - 2023/11/20
  *         - florian
  *         ! fix sorting issue due to group assignment (undo changes from 5.0.13)
