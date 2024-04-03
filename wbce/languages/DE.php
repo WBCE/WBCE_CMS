@@ -171,6 +171,7 @@ $TEXT['HOME_FOLDERS'] = 'Persönliche Ordner';
 $TEXT['HOST'] = 'Host';
 $TEXT['ICON'] = 'Symbol';
 $TEXT['IMAGE'] = 'Bild';
+$TEXT['INFO_INSTALL_LANGUAGE'] = 'Um eine Sprache zu installieren oder zu aktualisieren, Sprachdatei (z.B. DE.php) und Flaggenicon (z.B. DE.png) <strong>via FTP</strong> nach /languages kopieren. Dann auf den "Aktualisieren"-Button klicken.';
 $TEXT['INLINE'] = 'Integriert';
 $TEXT['INSTALL'] = 'Installieren';
 $TEXT['INSTALLATION'] = 'Installation';

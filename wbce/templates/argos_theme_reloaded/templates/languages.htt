@@ -9,17 +9,19 @@
 </h2>
 
 <!-- install ---------------------------------------------------------->
-<form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL} fg12 content-box">
+<form name="install"  action="install.php" method="post" class="{DISPLAY_INSTALL} fg12 content-box">
 	{FTAN}
-	<h3 class="fg12">{HEADING_INSTALL_LANGUAGE}</h3>
+	<h3 class="fg12">
+	{HEADING_INSTALL_LANGUAGE}	
+	</h3>
 	<div class="row">
 		<div class="fg9">
-			<input type="file" name="userfile">
+		{INFO_INSTALL_LANGUAGE}
 		</div>
 		<div class="fg3 right">
-			<button type="submit" name="submit">
-				<i class="fa fa-fw fa-check"></i>
-				{TEXT_INSTALL}
+			<button type="submit" name="submit" style="margin: -4px 0 0 20px;">
+				<i class="fa fa-fw fa-refresh"></i>
+				{TEXT_RELOAD}
 			</button>
 		</div>
 	</div>

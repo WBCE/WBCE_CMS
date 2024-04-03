@@ -171,6 +171,7 @@ $TEXT['HOME_FOLDERS'] = 'Personal Folders';
 $TEXT['HOST'] = 'Host';
 $TEXT['ICON'] = 'Icon';
 $TEXT['IMAGE'] = 'Image';
+$TEXT['INFO_INSTALL_LANGUAGE'] = 'To install or update a language, copy the language file (for example DE.png) and the flag png (for example DE.png) to the /languages folder <strong>via FTP</strong>. Then click on the reload button.';
 $TEXT['INLINE'] = 'In-line';
 $TEXT['INSTALL'] = 'Install';
 $TEXT['INSTALLATION'] = 'Installation';

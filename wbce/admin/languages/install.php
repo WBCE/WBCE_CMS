@@ -11,13 +11,11 @@
  */
 
 // do not display notices and warnings during installation
-error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+//error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
 // Include required files
 require '../../config.php';
-require_once WB_PATH . '/framework/addon.precheck.inc.php';
 require_once WB_PATH . '/framework/functions.php';
-require_once WB_PATH . '/include/pclzip/pclzip.lib.php';
 
 // Setup admin object, skip header for FTAN validation and check section permissions
 $admin = new admin('Addons', 'languages_install', false, true);
@@ -29,84 +27,32 @@ if (!$admin->checkFTAN()) {
 // Output admin backend header (this creates a new FTAN)
 $admin->print_header();
 
-// Check if user uploaded a file
-if (!(isset($_FILES['userfile']) && isset($_FILES['userfile']['name']))) {
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
-}
 
-// Check write permissions for languages folder
-if (!is_writable(WB_PATH . '/languages/')) {
-    $admin->print_error($MESSAGE['GENERIC_BAD_PERMISSIONS']);
-}
 
-// Create unique file within WBCE /temp folder
-$temp_dir = WB_PATH . '/temp/';
-$temp_file = tempnam($temp_dir, 'wb_');
+require_once WB_PATH . '/languages/' . LANGUAGE . '.php';
+$msg = array();
+$table = TABLE_PREFIX . 'addons';
+$js_back = ADMIN_URL . '/languages/index.php';
 
-// Move uploaded file into WBCE /temp folder
-if (!move_uploaded_file($_FILES['userfile']['tmp_name'], $temp_file)) {
-    if (file_exists($temp_file)) {
-        unlink($temp_file);
-    }
-    $admin->print_error($MESSAGE['GENERIC_CANNOT_UPLOAD']);
-}
+if ($handle = opendir(WB_PATH . '/languages/')) {
+	// delete languages from database
+	$sql = "DELETE FROM `$table` WHERE `type` = 'language'";
+	$database->query($sql);
 
-// Check if uploaded file is a valid language file (no binary file etc.)
-$content = file_get_contents($temp_file);
-if (strpos($content, '<?php') === false) {
-    $admin->print_error($MESSAGE['GENERIC_INVALID_LANGUAGE_FILE']);
-}
-
-// Remove any vars with name "language_code"
-unset($language_code);
-
-// Read the temp file and look for a language code
-require($temp_file);
-$new_language_version = $language_version;
-
-// Check if the file is valid
-if (!isset($language_code)) {
-    if (file_exists($temp_file)) {
-        unlink($temp_file);
-    } // Remove temp file
-    // Restore to correct language
-    require(WB_PATH . '/languages/' . LANGUAGE . '.php');
-    $admin->print_error($MESSAGE['GENERIC_INVALID_LANGUAGE_FILE']);
-}
-
-// Set destination for language file
-$language_file = WB_PATH . '/languages/' . $language_code . '.php';
-$action = "install";
-
-// Move to new location
-if (file_exists($language_file)) {
-    require($language_file);
-    if (versionCompare($language_version, $new_language_version, '>=')) {
-        // Restore to correct language
-        require(WB_PATH . '/languages/' . LANGUAGE . '.php');
-        $admin->print_error($MESSAGE['GENERIC_ALREADY_INSTALLED']);
-    }
-    $action = "upgrade";
-    unlink($language_file);
-}
-
-rename($temp_file, $language_file);
-
-// Chmod the file
-change_mode($language_file, 'file');
-
-// Load language info into DB
-load_language($language_file);
-
-// Restore to correct language
-require(WB_PATH . '/languages/' . LANGUAGE . '.php');
-
-// Print success message
-if ($action == "install") {
-    $admin->print_success($MESSAGE['GENERIC_INSTALLED']);
+	// loop over all languages
+	while (false !== ($file = readdir($handle))) {
+		if ($file != '' && substr($file, 0, 1) != '.' && $file != 'index.php') {
+			load_language(WB_PATH . '/languages/' . $file);
+		}
+	}
+	closedir($handle);
+	// add success message
+	$msg[] = $MESSAGE['ADDON_LANGUAGES_RELOADED'];
 } else {
-    $admin->print_success($MESSAGE['GENERIC_UPGRADED']);
+	// provide error message and stop
+	$admin->print_error($MESSAGE['ADDON_ERROR_RELOAD'], $js_back);
 }
 
 // Print admin footer
+$admin->print_success(implode('<br />', $msg), $js_back);
 $admin->print_footer();
