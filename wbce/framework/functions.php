@@ -1407,24 +1407,23 @@ function load_language($sFilePath)
 /**
  * @brief  Upgrade Module Data in DB
  *
- * @param string $sModDirname
+ * @param string $sModulePath
  * @param bool $bUpgrade
  * @return
  */
-function upgrade_module($sModDirname, $bUpgrade = false)
+function upgrade_module($sModulePath, $bUpgrade = false)
 {
-    global $database, $admin, $MESSAGE, $new_module_version;
-    $sModulePath = WB_PATH . '/modules/' . $sModDirname;
+    global $database, $admin, $MESSAGE;
     if (file_exists($sModulePath . '/info.php')) {
         require $sModulePath . '/info.php';
         if (isset($module_name)) {
             // Check that the module does already exist
-            $sCheckSql = "SELECT COUNT(*) FROM `{TP}addons` WHERE `directory`='" . $sModDirname . "'";
+            $sCheckSql = "SELECT COUNT(*) FROM `{TP}addons` WHERE `directory`='" . $module_directory . "'";
             if ($database->get_one($sCheckSql)) {
                 // Update in DB
                 $aUpdate = array(
                     'directory' => $module_directory,
-                    'version' => $new_module_version,
+                    'version' => $module_version,
                     'description' => addslashes($module_description),
                     'platform' => (!isset($module_platform) && isset($module_designed_for)) ? $module_designed_for : $module_platform,
                     'author' => addslashes($module_author),

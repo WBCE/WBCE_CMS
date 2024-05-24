@@ -65,7 +65,7 @@ switch ($action) {
         break;
 
     case 'upgrade':
-        upgrade_module(basename($mod_path), false);
+        upgrade_module($mod_path, false);
         $admin->print_success($msg, $js_back);
         break;
 

@@ -142,6 +142,11 @@ $list = $archive->extract(
 
 // Check if uploaded file is a valid Add-On zip file
 if (!($list && file_exists($temp_unzip . 'info.php'))) {
+    // Remove the temp unzip directory and the temp zip file
+    rm_full_dir($temp_unzip);
+    if (file_exists($temp_file)) {
+        unlink($temp_file);
+    }
     $admin->print_error($MESSAGE['GENERIC_INVALID_ADDON_FILE']);
 }
 
@@ -151,9 +156,6 @@ require($temp_unzip . 'info.php');
 
 // Perform Add-on requirement checks before proceeding
 preCheckAddon($temp_file);
-
-// Delete temporary unzip directory
-rm_full_dir($temp_unzip);
 
 // Check if the file is valid
 if (!isset($module_directory)) {
@@ -209,11 +211,6 @@ if (!$list) {
     $admin->print_error($MESSAGE['GENERIC_CANNOT_UNZIP']);
 }
 
-// Delete the temp zip file
-if (file_exists($temp_file)) {
-    unlink($temp_file);
-}
-
 // Chmod all the uploaded files
 $dir = dir($module_dir);
 while (false !== $entry = $dir->read()) {
@@ -229,14 +226,21 @@ if (file_exists($module_dir . '/' . $action . '.php')) {
     require($module_dir . '/' . $action . '.php');
 }
 
+// Load upgraded module info into DB, but no longer from $module_dir.
+// Instead from original unzipped dir, due to possible opcache issues otherwise! Especially when upgrading the module!
 // Print success message
 if ($action == "install") {
-    // Load module info into DB
-    load_module(WB_PATH . '/modules/' . $module_directory, false);
+    load_module($temp_unzip, false);
     $admin->print_success($MESSAGE['GENERIC_INSTALLED']);
 } elseif ($action == "upgrade") {
-    upgrade_module($module_directory, false);
+    upgrade_module($temp_unzip, false);
     $admin->print_success($MESSAGE['GENERIC_UPGRADED']);
+}
+
+// Remove the temp unzip directory and the temp zip file
+rm_full_dir($temp_unzip);
+if (file_exists($temp_file)) {
+    unlink($temp_file);
 }
 
 // Print admin footer
