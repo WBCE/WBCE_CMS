@@ -73,6 +73,7 @@ list($vars,$default_replacements) = mod_nwi_replacements();
 // switch: posting list or post details
 
 $page_keywords = array();
+$tagListArray  = array();
 
 // ----- read post ---------------------------------------------------------------
 if (defined('POST_ID') && is_numeric(POST_ID)) {
@@ -83,18 +84,16 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
 
     // for functions that use global $section_id
     $section_id = $post_section;
-
-    // tags
-    $tags = mod_nwi_get_tags_for_post(POST_ID);
-    foreach ($tags as $i => $tag) {
+    $tags = mod_nwi_get_tags_for_post(POST_ID);	
+    foreach ($tags as $i => $tag) {		
+		$tagListArray[$i] = $tag['tag'];
         $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".POST_ID."_".$i."\""
                   . (!empty($tag['tag_color']) ? " style=\"background-color:".$tag['tag_color']."\"" : "" ) .">"
                   . "<a href=\"".$wb->page_link(PAGE_ID)."?tags=".$tag['tag']."\">".$tag['tag']."</a></span>";
         if(!isset($page_keywords[$tag['tag']])) {
             $page_keywords[] = htmlspecialchars($tag['tag'], ENT_QUOTES | ENT_HTML401);
         }
-    }
-
+    }		
     $post = mod_nwi_post_show(intval(POST_ID));
 	if($post !== false) {
 	
@@ -114,7 +113,8 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
 				'MODI_DATE'       => $post['post_date'],
 				'MODI_TIME'       => $post['post_time'],
 				'PAGE_TITLE'      => (strlen((string)$page['page_title']) ? $page['page_title'] : $page['menu_title']),
-				'TAGS'            => implode(" ", $tags),
+				'TAGS'            => implode(" ", $tags),				
+				'TAGLIST'		  => implode(',',$tagListArray),				
 				'CONTENT'         => $post['content_short'].$post['content_long'],
 				'BACK'            => $page_link,
 				'PREVIOUS_PAGE_LINK'

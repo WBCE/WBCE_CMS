@@ -1205,6 +1205,8 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
     // filter by tags
     $tags_header = null;
     $tags_append = null;
+	$tagListArray  = array();
+	
     if(isset($_GET['tags']) && strlen($_GET['tags'])) {
         $requested_tags = mod_nwi_escape_tags($_GET['tags']);
         foreach ($requested_tags as $i => $tag) {
@@ -1269,8 +1271,9 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
 
     foreach($posts as $i => $post) {
         // tags
-        $tags = mod_nwi_get_tags_for_post($post['post_id']);
+        $tags = mod_nwi_get_tags_for_post($post['post_id']);		
         foreach ($tags as $i => $tag) {
+			$tagListArray[$i] = $tag['tag'];
             $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\""
                   . (strlen($tag['tag_color'])>0 ? " style=\"background-color:".$tag['tag_color']."\"" : "" ) .">"
                   . "<a href=\"".$wb->page_link($page_id)."?tags=".$tag['tag']."\">".$tag['tag']."</a></span>";
@@ -1308,6 +1311,7 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
                 'MODI_DATE'       => $post['post_date'],
                 'MODI_TIME'       => $post['post_time'],
                 'TAGS'            => implode(" ", $tags),
+				'TAGLIST'		  => implode(',',$tagListArray),
                 'SHOW_READ_MORE'  => (strlen($post['content_long'])<1 && ($anz_post_img<1))
                                      ? 'hidden' : 'visible',
                 'DISPLAY_PREVIOUS_NEXT_LINKS'
@@ -2070,7 +2074,8 @@ function mod_nwi_replacements()
         'PUBLISHED_TIME',               // published time
         'SHORT',                        // alias for CONTENT_SHORT
         'SHOW_READ_MORE',               // wether to show "read more" link
-        'TAGS',                         // tags
+        'TAGS',                         // tags		
+		'TAGLIST',						// tags without formatting
         'TEXT_AT',                      // text for "at" ("um")
         'TEXT_BACK',                    // text for "back" ("zurück")
         'TEXT_LAST_CHANGED',            // text for "last changed" ("zuletzt geändert")
@@ -2127,6 +2132,7 @@ function mod_nwi_display_news_items(
 			'lang_filter'        => $lang_filter,
             'skip'               => $skip,
             'tags'               => $tags,
+			'taglist'			 => $tagList,
             'groups_on_tags'     => $groups_on_tags,
             'view'               => $view,
             'aslist'             => $aslist,
@@ -2155,7 +2161,8 @@ function mod_nwi_get_news_items($options=array())
 		'lang_id' => 'AUTO',              // language file to load and lang_id used if $lang_filer = true (default:= auto, examples: AUTO, DE, EN)
 		'lang_filter' => false,	          // flag to enable language filter (default:= false, show only news from a news page, which language fits $lang_id)
         'skip' => null,                   // do not show posts with the given list of tags (default:=none)
-        'tags' => null,                   // show posts with only the given list of tags
+        'tags' => null,                   // show posts with only the given list of tags		
+		'taglist' => null,				  // show tags as simple list
         'groups_on_tags' => false,        // wether to use the group_id if $skip or $tags is set
         'view' => 'default',              // use css from subfolder ('default','faq',...)
         'aslist' => false                 // unordered list of titles
@@ -2355,12 +2362,15 @@ function mod_nwi_get_news_items($options=array())
 				$post['content_short'] = nia_truncate($post['content_short'], $max_news_length);
 			}
             // tags
-            $tags = mod_nwi_get_tags_for_post($post['post_id']);
+            $tags = mod_nwi_get_tags_for_post($post['post_id']);						
+			$tagListArray = array();
             foreach ($tags as $i => $tag) {
                 $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\""
                           . (strlen($tag['tag_color'])>0 ? " style=\"background-color:".$tag['tag_color']."\"" : "" ) .">"
-                          . "<a href=\"".$wb->page_link(PAGE_ID)."?tags=".$tag."\">".$tag."</a></span>";
-            }
+                          . "<a href=\"".$wb->page_link(PAGE_ID)."?tags=".$tag."\">".$tag."</a></span>";				
+				$taglistArray[$i] = $tag['tag'];		  
+            }	
+			$taglist = implode(',',$taglistArray);
             // gallery images - wichtig für link "weiterlesen"  SHOW_READ_MORE
             $images = mod_nwi_img_get_by_post($post['post_id'],false);
             $anz_post_img = count($images);
