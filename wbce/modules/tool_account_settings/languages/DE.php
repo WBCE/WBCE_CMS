@@ -86,5 +86,6 @@ $TEXT['REGISTER_GDPR_PHRASE']                = 'Die Datenschutzerklärung habe i
 /////////////////////////////////////////////////////////////////////////
 //    Override language strings found in [WB_URL]/languages/DE.php     //
 /////////////////////////////////////////////////////////////////////////
+$MENU['PREFERENCES']    = 'Meine Daten';
 $TEXT['ACCOUNT_SIGNUP'] = 'Registrierung';
 $TEXT['SIGNUP']         = 'Registrierung';
