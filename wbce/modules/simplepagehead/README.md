@@ -41,10 +41,10 @@ Optional Parameters:
 					 default: "/" for xhtml, "" for html4
   norobotstag...     default 1 = yes, 0 = no: 
 					 shows on some pages the noindex,nofollow tag (e.g.: search)
-  notoolbartag...    default 1 = yes, 0 = no: shows a tag to supress the IE-ImageToolbar
+  notoolbartag...    default 0 = no, 1 = yes: shows a tag to supress the IE-ImageToolbar
   favicon...         default 1 = yes, 0 = no: shows a link to the favicon and app icons
 					 See details at the bottom
-  generator...		 default 1 = yes, 0 = no:
+  generator...		 default 0 = no, 1 = yes:
 					 shows: meta name="generator" content="WBCE CMS; https://wbce.org"
  ````
 

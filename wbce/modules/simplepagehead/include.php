@@ -17,7 +17,7 @@ if (count(get_included_files()) ==1) {
 }
 
 if (!function_exists('simplepagehead')) {
-    function simplepagehead($endtag="/", $norobotstag=1, $notoolbartag=1, $favicon=1, $generator=1, $metaend=0)
+    function simplepagehead($endtag="/", $norobotstag=1, $notoolbartag=0, $favicon=1, $generator=0, $metaend=0)
     {
 
         // Define module vars
@@ -106,10 +106,11 @@ if (!function_exists('simplepagehead')) {
         if ($the_title=='') {
             $the_title = $wb->page_title;
         }
-        //if (strlen($the_title) < 15) {$the_title = WEBSITE_TITLE. " - " .$the_title; }
-        if (WEBSITE_TITLE != $the_title) {
-            $the_title = WEBSITE_TITLE. " - " .$the_title;
-        }
+       
+	    if (WEBSITE_TITLE != $the_title) {
+			$the_title = $the_title. " - " .WEBSITE_TITLE; 
+		}
+	          
 
         if ($the_description == '') {
             $the_description = $wb->page_description;
@@ -233,7 +234,7 @@ if (!function_exists('simplepagehead')) {
         }
 
         if ($generator == 1) {
-            echo '<meta name="generator" content="WBCE CMS; https://wbce.org"'."$endtag>\n";
+           echo '<meta name="generator" content="WBCE CMS; https://wbce.org"'."$endtag>\n";
         }
         // if ($notoolbartag == 1) {
         //    echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n";
