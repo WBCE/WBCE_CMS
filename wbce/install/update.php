@@ -620,7 +620,7 @@ echo "<br />Update errorlevel<br />";
 Settings::Set('er_level', 'E3');
 
 echo "<br />Update rename_files_on_upload<br />";
-Settings::Set('rename_files_on_upload', 'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk', false);
+Settings::Set('rename_files_on_upload', 'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk,inc', false);
 
 echo "<br />Add Settings for PHPmailer<br />";
 Settings::Set('wbmailer_smtp_secure', '', false);
