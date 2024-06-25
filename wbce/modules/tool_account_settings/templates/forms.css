@@ -115,8 +115,8 @@ div.formRow textarea,
 div.formRow select {
     margin: 0;
     padding: .48em 0 .48em .4em;
-    width: 98%;
-    max-width: 98%;
+    width: 100%;
+    max-width: 100%;
     font-size: 1em;
     outline: 0;
 }
