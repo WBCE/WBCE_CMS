@@ -35,7 +35,7 @@ require_once(WB_PATH . '/framework/functions.php');
 $admin->print_header();
 // Write new content
 $filename = WB_PATH . PAGES_DIRECTORY . '/intro' . PAGE_EXTENSION;
-if (file_put_contents($filename, utf8_encode($content)) === false) {
+if (file_put_contents($filename, $content) === false) {
     $admin->print_error($MESSAGE['PAGES_NOT_SAVED']);
 } else {
     change_mode($filename);
