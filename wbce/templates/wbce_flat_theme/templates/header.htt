@@ -6,6 +6,10 @@
 <!--(PH) META DESC+ --><meta name="description" content="{TEXT_ADMINISTRATION}" /><!--(PH) META DESC- -->
 <!--(PH) META KEY+ --><meta name="keywords" content="{TEXT_ADMINISTRATION}" /><!--(PH) META KEY- -->
 
+<!--(PH) FAVICON+ -->
+        <link rel="icon" type="image/x-icon" href="{WB_URL}/favicon.ico">
+<!--(PH) FAVICON- -->
+
 <!--(PH) META HEAD+ -->
 <meta charset="{CHARSET}">
 <meta http-equiv="Content-Encoding" content="gzip" />
