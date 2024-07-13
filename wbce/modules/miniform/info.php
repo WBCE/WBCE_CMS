@@ -9,8 +9,9 @@
  * @platform        WebsiteBaker 2.8.x / WBCE CMS 1.x
  * @requirements    PHP 5.6 and higher
  * @version         0.23.1
- * @lastmodified    April 26, 2023
+ * @lastmodified    July 13, 2024
  *
+ * v0.23.3 - Fix issue with AJAX message delete	(reported by Peter Reporter) (Florian)
  * v0.23.2 - Fix for the fix										  (Ruud)
  * v0.23.1 - Fix issue with AJAX message delete	(reported by young pope) (Ruud)
  * v0.23 - fix for missing captcha in linked forms					  (Ruud)
@@ -35,7 +36,7 @@
 $module_directory = 'miniform';
 $module_name = 'MiniForm WBCE CMS Edition';
 $module_function = 'page';
-$module_version = '0.23.2';
+$module_version = '0.23.3';
 $module_platform = '1.4.x';
 $module_author = 'Ruud / Dev4me';
 $module_license = 'GNU General Public License';

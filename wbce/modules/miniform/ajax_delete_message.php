@@ -17,6 +17,10 @@ if(!isset($_POST['iRecordID'])) die(json_encode($aJsonRespond));
 
 // get record_id to delete
 $iRecordID      = intval($_POST['iRecordID']);
+
+// extra validation
+if (is_array($_POST['iRecordID'])) { $iRecordID=0; }
+
 if($iRecordID > 0) {
 	// build query
 	$query = "DELETE FROM `".TABLE_PREFIX."mod_miniform_data` WHERE `message_id` = '".$iRecordID."' LIMIT 1";
