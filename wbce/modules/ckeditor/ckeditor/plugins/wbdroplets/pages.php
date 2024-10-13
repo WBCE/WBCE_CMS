@@ -1,4 +1,5 @@
 <?php
+
 header('Content-type: application/javascript');
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Cache-Control: post-check=0, pre-check=0, false');
@@ -42,24 +43,29 @@ $description = "var DropletInfoBox = new Array( ";
 $usage = "var DropletUsageBox = new Array( ";
 
 $array = array();
-    $sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_droplets` ';
-    $sql .= 'WHERE `active`=1 ';
-    $sql .= 'ORDER BY `name` ASC';
-    if ($resRec = $database->query($sql)) {
+$sql  = 'SELECT * FROM `'.TABLE_PREFIX.'mod_droplets` ';
+$sql .= 'WHERE `active`=1 ';
+$sql .= 'ORDER BY `name` ASC';
+if ($resRec = $database->query($sql)) {
+    if ($resRec->numRows() > 0) {
         while (!false == ($droplet = $resRec->fetchRow())) {
             $title = cleanup($droplet['name']);
             $desc = cleanup($droplet['description']);
             $comments = cleanup($droplet['comments']);
-            
+
             $DropletSelectBox .=  "new Array( '".$title."', '".$droplet['name']."'), ";
             $description .=  "new Array( '".$title."', '".$desc."'), ";
             $usage .=  "new Array( '".$title."', '".$comments."'), ";
         }
+        $DropletSelectBox = substr($DropletSelectBox, 0, -2);
+        $description = substr($description, 0, -2);
+        $usage = substr($usage, 0, -2);
+    } else {
+        $DropletSelectBox .=  "new Array() ";
+        $description .=  "new Array() ";
+        $usage .=  "new Array() ";
     }
-
-$DropletSelectBox = substr($DropletSelectBox, 0, -2);
-$description = substr($description, 0, -2);
-$usage = substr($usage, 0, -2);
+}
 
 echo $DropletSelectBox .= " );\n";
 echo $description .= " );\n";

@@ -1041,6 +1041,13 @@ a.tooltip {
     border-radius: 50%;
 }
 
+.pagetree-no-edit {
+	color:#666; 
+	font-weight:400; 
+	cursor:not-allowed;
+	text-decoration:none !important;
+} 
+
 /*** some mobile adaption *********************************************/
 /*** I don't like exessive media queries ;-) **************************/
 @media screen and (max-width: 36.5em) {

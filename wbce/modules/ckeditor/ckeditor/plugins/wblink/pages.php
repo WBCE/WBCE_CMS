@@ -1,4 +1,5 @@
 <?php
+
 header('Content-type: application/javascript');
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Cache-Control: post-check=0, pre-check=0, false');
@@ -46,7 +47,7 @@ function getPageTree($parent)
     global $admin, $database,$InternPagesSelectBox,$PagesTitleSelectBox;
     $sql  = 'SELECT * FROM `'.TABLE_PREFIX.'pages` ';
     $sql .= 'WHERE `parent`= '.(int)$parent.' ';
-    $sql .= ((PAGE_TRASH != 'inline') ?  'AND `visibility` != \'deleted\' ' : ' ');
+    $sql .= ((PAGE_TRASH != 'inline') ? 'AND `visibility` != \'deleted\' ' : ' ');
     $sql .= 'ORDER BY `position` ASC';
 
     if ($resPage = $database->query($sql)) {
@@ -136,6 +137,19 @@ while ($section = $bakerySections->fetchRow()) {
         $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['title']))."', '".WB_URL.PAGES_DIRECTORY.(addslashes($item['link'])).PAGE_EXTENSION."');";
     }
 }
+
+$procalendarSections = $database->query("SELECT * FROM ".TABLE_PREFIX."sections WHERE module = 'procalendar'");
+while ($section = $procalendarSections->fetchRow()) {
+    $procalendar = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_procalendar_actions WHERE  section_id=".$section['section_id']);
+    $ModuleList .= "ModuleList[".$section['page_id']."] = 'ProCalendar';";
+    $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."] = new Array();";
+    while ($procalendar && $item = $procalendar->fetchRow()) {
+        $item['name'] = preg_replace($wblink_allowed_chars, "", $item['name']);
+        $dArr = explode("-", $item['date_start']);
+        $NewsItemsSelectBox .= "NewsItemsSelectBox[".$section['page_id']."][NewsItemsSelectBox[".$section['page_id']."].length] = new Array('".(addslashes($item['name']))."', '[wblink".$item['page_id']."]?".addslashes($item['name'])."&month=".$dArr[1]."&year=".$dArr[0]."&day=".$dArr[2]."&page_id=".$item['page_id']."&id=".$item['id']."&detail=1');";
+    }
+}
+
 
 echo $NewsItemsSelectBox;
 echo $ModuleList;

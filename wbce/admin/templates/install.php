@@ -142,6 +142,11 @@ $list = $archive->extract(
 
 // Check if uploaded file is a valid Add-On zip file
 if (!($list && file_exists($temp_unzip . 'info.php'))) {
+    // Remove the temp unzip directory and the temp zip file
+    rm_full_dir($temp_unzip);
+    if (file_exists($temp_file)) {
+        unlink($temp_file);
+    }
     $admin->print_error($MESSAGE['GENERIC_INVALID_ADDON_FILE']);
 }
 
@@ -152,9 +157,6 @@ require($temp_unzip . 'info.php');
 
 // Perform Add-on requirement checks before proceeding
 preCheckAddon($temp_file);
-
-// Delete the temp unzip directory
-rm_full_dir($temp_unzip);
 
 // Check if the file is valid
 if (!isset($template_directory)) {
@@ -202,11 +204,6 @@ $list = $archive->extract(
     PCLZIP_OPT_REPLACE_NEWER
 );
 
-// Delete the temp zip file
-if (file_exists($temp_file)) {
-    unlink($temp_file);
-}
-
 // Chmod all the uploaded files
 $dir = dir($template_dir);
 while (false !== $entry = $dir->read()) {
@@ -217,11 +214,19 @@ while (false !== $entry = $dir->read()) {
     }
 }
 
-// Load template info into DB
-load_template($template_dir);
+// Load template info into DB, but no longer from $template_dir.
+// Instead from original unzipped dir, due to possible opcache issues otherwise!
+load_template($temp_unzip);
+
+// Remove the temp unzip directory and the temp zip file
+rm_full_dir($temp_unzip);
+if (file_exists($temp_file)) {
+    unlink($temp_file);
+}
 
 // Print success message
 $admin->print_success($success_message);
 
 // Print admin footer
 $admin->print_footer();
+

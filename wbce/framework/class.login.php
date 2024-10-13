@@ -432,11 +432,11 @@ class Login extends Admin
     {
 	$ipaddress = '';
 	// for security reasons first check remote_addr which is more difficult to fake:
-	if (isset($_SERVER['REMOTE_ADDR'])) {
-	    $ipaddress = $this->get_server('REMOTE_ADDR');
-	} elseif (getenv('REMOTE_ADDR')) {
-	    $ipaddress = getenv('REMOTE_ADDR');
-	} elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+	if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR']) {
+			$ipaddress = $this->get_server('REMOTE_ADDR');
+		} elseif (getenv('REMOTE_ADDR') && getenv('REMOTE_ADDR') != getenv('SERVER_ADDR')) {
+			$ipaddress = getenv('REMOTE_ADDR');
+		} elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
             $ipaddress = $this->get_server('HTTP_CLIENT_IP');
         } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ipaddress = $this->get_server('HTTP_X_FORWARDED_FOR');

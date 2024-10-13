@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'EN';
@@ -167,6 +171,7 @@ $TEXT['HOME_FOLDERS'] = 'Personal Folders';
 $TEXT['HOST'] = 'Host';
 $TEXT['ICON'] = 'Icon';
 $TEXT['IMAGE'] = 'Image';
+$TEXT['INFO_INSTALL_LANGUAGE'] = 'To install or update a language, copy the language file (for example DE.png) and the flag png (for example DE.png) to the /languages folder <strong>via FTP</strong>. Then click on the reload button.';
 $TEXT['INLINE'] = 'In-line';
 $TEXT['INSTALL'] = 'Install';
 $TEXT['INSTALLATION'] = 'Installation';
@@ -695,4 +700,3 @@ $OVERVIEW['START'] = 'Administration overview';
 $OVERVIEW['TEMPLATES'] = 'Change the look and feel of your website with templates...';
 $OVERVIEW['USERS'] = 'Manage users who can log-in to WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Quickly view and browse your website in a new window...';
-

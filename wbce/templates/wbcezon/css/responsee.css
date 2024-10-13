@@ -280,7 +280,7 @@ ul.chevron .aside-sub-submenu>a:after {
 	.top-nav li:hover>ul ul {
 		left: 100%;
 		margin: -2.5rem 0;
-		width: 100%;
+		min-width: 100%;
 	}
 }
 

@@ -1,7 +1,3 @@
-/*
-backend_body.js
-*/
-
 /**
  *
  * @category        tool
@@ -839,7 +835,7 @@ function modules_checktree_visibility() {
 
 
 
-/* activate EditArea */
+/* activate EditArea 
 if(typeof opf_use_css_editarea!='undefined') {
     editAreaLoader.init({ id : "css", syntax: "css", start_highlight: true });
 }
@@ -850,7 +846,7 @@ if(typeof opf_editarea!='undefined') {
         editAreaLoader.init({ id : "func", syntax: "php", start_highlight: true, is_editable: false });
 }
 if(typeof opf_editarea_list!='undefined') {for(var i in opf_editarea_list) {editAreaLoader.init({ id : opf_editarea_list[i], syntax: "php", start_highlight: true });}}
-
+*/
 
 /* activate GrowField */
 $("#desc").growfield();
@@ -861,10 +857,13 @@ if(typeof opf_growfield_list!='undefined') {
 }
 
 
-
 /* popup-window */
 function opf_popup(url) {
- w = window.open(url, "OutputFilter-Dashboard Documentation", "width=1024,height=768,resizable=yes,scrollbars=yes");
+ w = window.open(
+         url, 
+        "OutputFilter-Dashboard Documentation", 
+        "width=980,height=650,resizable=yes,scrollbars=yes,titlebar=no,toolbar=no,location=no,status=no,menubar=no"
+    );
  w.focus();
  return false;
 }

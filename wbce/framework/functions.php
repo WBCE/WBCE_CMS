@@ -27,6 +27,23 @@ if ($database->field_exists('{TP}pages', 'visibility_backup') == false) {
     );
 }
 
+if (!function_exists('str_contains')) {
+    /**
+     * str_contains Checks if a string contains a given substring.
+     *
+     * This function is a fallback for PHP versions lower than 8.0.0, 
+     * which do not have the built-in `str_contains()` function.
+     *
+     * @param string $haystack The string to search within.
+     * @param string $needle The substring to search for.
+     * @return bool true if the substring is found, false otherwise.
+     */
+    function str_contains($haystack, $needle) {
+        return !empty($needle) && false !== strpos($haystack, $needle);
+    }
+}
+
+
 /**
  * @brief   recursively remove a non empty directory and all its contents
  *
@@ -1030,10 +1047,10 @@ function make_thumb($source, $destination, $size)
         list($original_x, $original_y) = getimagesize($source);
         if ($original_x > $original_y) {
             $thumb_w = $size;
-            $thumb_h = $original_y * ($size / $original_x);
+            $thumb_h = abs($original_y * ($size / $original_x));
         }
         if ($original_x < $original_y) {
-            $thumb_w = $original_x * ($size / $original_y);
+            $thumb_w = abs($original_x * ($size / $original_y));
             $thumb_h = $size;
         }
         if ($original_x == $original_y) {
@@ -1390,24 +1407,23 @@ function load_language($sFilePath)
 /**
  * @brief  Upgrade Module Data in DB
  *
- * @param string $sModDirname
+ * @param string $sModulePath
  * @param bool $bUpgrade
  * @return
  */
-function upgrade_module($sModDirname, $bUpgrade = false)
+function upgrade_module($sModulePath, $bUpgrade = false)
 {
-    global $database, $admin, $MESSAGE, $new_module_version;
-    $sModulePath = WB_PATH . '/modules/' . $sModDirname;
+    global $database, $admin, $MESSAGE;
     if (file_exists($sModulePath . '/info.php')) {
         require $sModulePath . '/info.php';
         if (isset($module_name)) {
             // Check that the module does already exist
-            $sCheckSql = "SELECT COUNT(*) FROM `{TP}addons` WHERE `directory`='" . $sModDirname . "'";
+            $sCheckSql = "SELECT COUNT(*) FROM `{TP}addons` WHERE `directory`='" . $module_directory . "'";
             if ($database->get_one($sCheckSql)) {
                 // Update in DB
                 $aUpdate = array(
                     'directory' => $module_directory,
-                    'version' => $new_module_version,
+                    'version' => $module_version,
                     'description' => addslashes($module_description),
                     'platform' => (!isset($module_platform) && isset($module_designed_for)) ? $module_designed_for : $module_platform,
                     'author' => addslashes($module_author),

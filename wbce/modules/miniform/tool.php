@@ -105,6 +105,7 @@ if(is_array($aMiniforms)){
 			$(this).children(".msg").slideToggle();
 			console.log("click");
 		});
+	});
 	</script>
 
 	<?php 

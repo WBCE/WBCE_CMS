@@ -53,7 +53,7 @@ Die Verwaltung der Bilder erfolgt nur über den Beitrag, nicht über die WBCE-Me
 
 ### Gruppen
 
-Beiträge können Gruppen zugeordnet werden. Dies hat einerseits Einfluss auf die Reihenfolge (die Beiträge werden erst nach Gruppe und dann nach einem weiteren anzugebenden Kriterium sortiert), und ermöglicht andererseits, themenspezifische Übersichtsseiten zu generieren. Diese können dann über die URL der NWI-Seite mit dem Parameter g?=GROUP_ID, also z.B. news.php?g=2 angesteuert werden.
+Beiträge können Gruppen zugeordnet werden. Dies ermöglicht, themenspezifische Übersichtsseiten zu generieren. Diese können dann über die URL der NWI-Seite mit dem Parameter g?=GROUP_ID, also z.B. news.php?g=2 angesteuert werden.
 
 Ein Beitrag kann immer nur einer Gruppe zugeordnet sein.
 

@@ -7,15 +7,15 @@
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
- * @requirements    PHP 5.6 and higher
- * @version         0.2.5.3
- * @lastmodified    October17, 2022
+ * @requirements    PHP 7 and higher
+ * @version         0.2.5.5
+ * @lastmodified    December 16, 2023
  *
  */
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.3';
+$module_version = '0.2.5.5';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -29,6 +29,14 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.5
+ * - fix for testing emtpy referer generating php8 error (class.count.php)
+ * - set timeout for location lookups. 
+ *
+ * 0.2.5.4
+ * - fix for using the frontend wbstats-viewer
+ * - fix referer_host error in php8
  *
  * 0.2.5.3
  * - some more fixes in install.php and upgrade.php for the older MySQL 5.7

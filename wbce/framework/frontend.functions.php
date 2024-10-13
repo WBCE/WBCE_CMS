@@ -425,7 +425,10 @@ if (!function_exists('block_contents')) {
                 }
                 // highlights searchresults
                 if (isset($_GET['searchresult']) && is_numeric($_GET['searchresult']) && !isset($_GET['nohighlight']) && isset($_GET['sstring']) && !empty($_GET['sstring'])) {
-                    $arr_string = explode(" ", $_GET['sstring']);
+                    $sstringc = filter_input(INPUT_GET,"sstring",FILTER_SANITIZE_ENCODED);
+				    $sstringc = str_replace("%","",$sstringc);					
+					$arr_string = explode(" ", $sstringc);
+				   
                     if ($_GET['searchresult'] == 2) {
                         // exact match
                         $arr_string[0] = str_replace("_", " ", $arr_string[0]);

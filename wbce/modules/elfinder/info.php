@@ -13,7 +13,7 @@
 $module_directory = 'elfinder';
 $module_name = 'elFinder';
 $module_function = 'tool';
-$module_version = '1.1.5';
+$module_version = '1.1.9';
 $module_platform = '1.5.0';
 $module_author = 'WBCE';
 $module_license = 'Modul under GPL, elFinder under BSD';
@@ -24,7 +24,11 @@ $module_level = 'core';
 /**
  * Version history
  *
- * 1.1.5 - updated Material-Theme
+ * 1.1.9 - updated elFinder to 2.1.64
+ * 1.1.8 - updated Material-Theme to 2.1.15
+ * 1.1.7 - fix Firefox upload issue 
+ * 1.1.6 - updated elFinder to 2.1.62
+ * 1.1.5 - updated Material-Theme  to 2.1.14
  * 1.1.4 - updated elFinder to 2.1.61
  * 1.1.3 - uses Material-Theme Gray as default
  * 1.1.2 - elFinder uses window hight

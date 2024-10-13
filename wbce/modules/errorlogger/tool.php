@@ -182,7 +182,7 @@ if ($view == '0' or $view == '1') {
     </table>
     <?php
     } else {
-        echo 'Great news. No errors reported?';
+        echo 'Great news. No errors reported';
     }
 }
 ?>
@@ -202,7 +202,9 @@ function log_to_array($aLines)
         } else {
             continue;
         }
-        $aDateTime = explode('T', $arr2[0][0]);
+		
+        $aDateTime = explode('T', $arr2[0][0]);		
+		if (!array_key_exists(1,$aDateTime)) {$aDateTime[1]="00:00:00";}		
         $sColor = 'inherit';
         if ($sType == 'Visitor Request') {
             $sColor = '#355ff9';

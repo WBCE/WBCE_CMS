@@ -566,8 +566,32 @@ function mod_nwi_post_activate($value)
         if($database->is_error()) {
             $errors++;
         }
-    }
-    return ( $errors>0 ? false : true );
+    
+		$postQuery = "SELECT * from `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id`=".$post_id;	
+		$query_post = $database->query($postQuery);
+		if ($query_post->numRows() > 0) {
+		$post      = $query_post->fetchRow();
+		}
+		
+		$pageQuery = "SELECT * from `".TABLE_PREFIX."sections` WHERE `section_id`=".$post['section_id'];	
+		$query_page = $database->query($pageQuery);
+		if ($query_page->numRows() > 0) {
+		$page      = $query_page->fetchRow();
+		}
+		
+		
+		if ($post['active'] == "0" ) {		
+			if(is_writable(WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION)) {
+					unlink(WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION);
+			}
+			
+		} else{
+			$filename = WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION;
+			mod_nwi_create_file($filename, '', $post_id, $post['section_id'], $page['page_id']);
+		}
+
+	}
+	return ( $errors>0 ? false : true );
 }
 
 function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
@@ -662,8 +686,10 @@ function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
         	    $admin->print_error($MESSAGE['PAGES_CANNOT_CREATE_ACCESS_FILE']);
         	} else {
         	    // Specify the filename
-        	    $filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
-        	    mod_nwi_create_file($filename, $file_create_time, $post_id, $section_id, $page_id);
+				if ($active == "1") {
+					$filename = WB_PATH.PAGES_DIRECTORY.'/'.$post_link.PAGE_EXTENSION;
+					mod_nwi_create_file($filename, $file_create_time, $post_id, $section_id, $page_id);
+				}
         	}
 
             // create image dir and copy images
@@ -828,19 +854,36 @@ function mod_nwi_post_get($post_id)
 	} else {
 		$query_group = '';
 	}
-		
+	$t = time();	
     $prev_dir = ($direction=='DESC'?'ASC':'DESC');
     $sql = sprintf(
         "SELECT `t1`.*, " .
-        "  (SELECT `link` FROM `%smod_news_img_posts` AS `t2` WHERE `t2`.`$order_by` > `t1`.`$order_by` AND `section_id`=$section_id AND `active`=1 $query_group ORDER BY `$order_by` $prev_dir LIMIT 1 ) as `prev_link`, ".
-        "  (SELECT `link` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` < `t1`.`$order_by` AND `section_id`=$section_id AND `active`=1 $query_group ORDER BY `$order_by` $direction LIMIT 1 ) as `next_link` " .
+        "  (SELECT `link` FROM `%smod_news_img_posts` AS `t2` WHERE `t2`.`$order_by` > `t1`.`$order_by` AND `section_id`=$section_id AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = '0' OR `published_until` >= $t) AND `active`=1 $query_group ORDER BY `$order_by` $prev_dir LIMIT 1 ) as `prev_link`, ".
+        "  (SELECT `post_id` FROM `%smod_news_img_posts` AS `t2b` WHERE `t2b`.`$order_by` > `t1`.`$order_by` AND `section_id`=$section_id AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = '0' OR `published_until` >= $t) AND `active`=1 $query_group ORDER BY `$order_by` $prev_dir LIMIT 1 ) as `prev_id`, ".
+        "  (SELECT `link` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` < `t1`.`$order_by` AND `section_id`=$section_id AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = '0' OR `published_until` >= $t) AND `active`=1 $query_group ORDER BY `$order_by` $direction LIMIT 1 ) as `next_link`, " .
+        "  (SELECT `post_id` FROM `%smod_news_img_posts` AS `t3b` WHERE `t3b`.`$order_by` < `t1`.`$order_by` AND `section_id`=$section_id AND (`published_when` = '0' OR `published_when` <= $t) AND (`published_until` = '0' OR `published_until` >= $t) AND `active`=1 $query_group ORDER BY `$order_by` $direction LIMIT 1 ) as `next_id` " .
         "FROM `%smod_news_img_posts` AS `t1` " .
         "WHERE `post_id`=%d",
-        TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $post_id
+        TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $post_id
     );
     $query_content = $database->query($sql);
     if(!empty($query_content)) {
         $post = $query_content->fetchRow();
+				
+		// create accessfiles of prev/next items if missing
+		// we need the page_id for the access file
+		$sectionArray = mod_nwi_get_section_array($post['section_id']); 
+		$this_page_id = $sectionArray['page_id'];
+		
+		$filename_next = WB_PATH.PAGES_DIRECTORY.'/'.$post['next_link'].PAGE_EXTENSION;
+		if ($post['next_link']!=='' && !file_exists($filename_next)) {
+			mod_nwi_create_file($filename_next, '', $post['next_id'], $post['section_id'], $this_page_id);
+		}
+		$filename_prev = WB_PATH.PAGES_DIRECTORY.'/'.$post['prev_link'].PAGE_EXTENSION;
+		if ($post['prev_link']!=='' && !file_exists($filename_prev)) {
+			mod_nwi_create_file($filename_prev, '', $post['prev_id'], $post['section_id'], $this_page_id);
+		}
+		
         // get users
         $users = mod_nwi_users_get();
         // add "unknown" user
@@ -849,6 +892,8 @@ function mod_nwi_post_get($post_id)
             'display_name' => 'unknown',
             'email' => ''
         );
+
+
         return mod_nwi_post_process($post, $section_id, $users);
     }
     return array();
@@ -977,6 +1022,12 @@ function mod_nwi_post_show(int $post_id)
 
     // get post data
     $post = mod_nwi_post_get($post_id);
+	
+	$pageQuery = "SELECT * from `".TABLE_PREFIX."sections` WHERE `section_id`=".$post['section_id'];	
+	$query_page = $database->query($pageQuery);
+	if ($query_page->numRows() > 0) {
+	$page      = $query_page->fetchRow();
+	}
 
     // get group data
 	$gid = 0;
@@ -989,6 +1040,15 @@ function mod_nwi_post_show(int $post_id)
             return false;
         }
     }
+	if ($post['active'] ==0 ) {		
+		if(is_writable(WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION)) {
+        	    unlink(WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION);
+        }
+		return false;
+	} else{
+		$filename = WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION;
+        mod_nwi_create_file($filename, '', $post_id, $section_id, $page['page_id']);
+	}
 
     return $post;
 }   // end function mod_nwi_post_show()
@@ -1061,7 +1121,7 @@ function mod_nwi_posts_getall(int $section_id, bool $is_backend, string $query_e
         "  (SELECT `post_id` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` > `t1`.`$order_by` AND `section_id`='$section_id' $active ORDER BY `$order_by` $direction LIMIT 1 ) as `next`, ".
         "  (SELECT `post_id` FROM `%smod_news_img_posts` AS `t3` WHERE `t3`.`$order_by` < `t1`.`$order_by` AND `section_id`='$section_id' $active ORDER BY `$order_by` $prev_dir LIMIT 1 ) as `prev` " .
         "FROM `%smod_news_img_posts` AS `t1` WHERE `section_id`='$section_id' $filter ".
-        "$query_extra ORDER BY gposition ASC, `$order_by` $direction $limit",
+        "$query_extra ORDER BY `$order_by` $direction $limit",
         TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX
     );
 
@@ -1086,9 +1146,22 @@ function mod_nwi_posts_getall(int $section_id, bool $is_backend, string $query_e
                 $posts[] = mod_nwi_post_process($post, $section_id, $users);
         	} else {
             	$posts[] = $post;
-            }
+            }			
+			$sectionArray = mod_nwi_get_section_array($post['section_id']);
+			$filename = WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION;
+			
+			// check if accessfile should be created...
+			$createFile = true;																				// by default: yes.
+			if ($post['published_when'] != 0 && $post['published_when'] > time()) {$createFile = false;}    // no, because the post is not public yet.
+			if ($post['published_until'] != 0 && $post['published_until'] < time()) {$createFile = false;}  // no, because the post is no longer public.
+			if ($post['active'] != 1) {$createFile = false;}												// no, the post is created inactive.
+			if (!file_exists($filename) && $createFile == true) {
+				mod_nwi_create_file($filename, '', $post['post_id'], $post['section_id'], $sectionArray['page_id']);
+			}
         }
     }
+	
+
 
     return $posts;
 }   // end function mod_nwi_posts_getall()
@@ -1132,6 +1205,8 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
     // filter by tags
     $tags_header = null;
     $tags_append = null;
+	$tagListArray  = array();
+	
     if(isset($_GET['tags']) && strlen($_GET['tags'])) {
         $requested_tags = mod_nwi_escape_tags($_GET['tags']);
         foreach ($requested_tags as $i => $tag) {
@@ -1196,8 +1271,9 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
 
     foreach($posts as $i => $post) {
         // tags
-        $tags = mod_nwi_get_tags_for_post($post['post_id']);
+        $tags = mod_nwi_get_tags_for_post($post['post_id']);		
         foreach ($tags as $i => $tag) {
+			$tagListArray[$i] = $tag['tag'];
             $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\""
                   . (strlen($tag['tag_color'])>0 ? " style=\"background-color:".$tag['tag_color']."\"" : "" ) .">"
                   . "<a href=\"".$wb->page_link($page_id)."?tags=".$tag['tag']."\">".$tag['tag']."</a></span>";
@@ -1235,6 +1311,7 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
                 'MODI_DATE'       => $post['post_date'],
                 'MODI_TIME'       => $post['post_time'],
                 'TAGS'            => implode(" ", $tags),
+				'TAGLIST'		  => implode(',',$tagListArray),
                 'SHOW_READ_MORE'  => (strlen($post['content_long'])<1 && ($anz_post_img<1))
                                      ? 'hidden' : 'visible',
                 'DISPLAY_PREVIOUS_NEXT_LINKS'
@@ -1316,6 +1393,8 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
 function mod_nwi_post_process($post,$section_id,$users)
 {
     global $MOD_NEWS_IMG, $TEXT, $admin;
+	
+	$filename = WB_PATH.PAGES_DIRECTORY.$post['link'].PAGE_EXTENSION;
 
     // get groups
     $groups = mod_nwi_get_groups(intval($section_id));
@@ -1776,11 +1855,11 @@ function mod_nwi_create_file(string $filename, ?string $filetime=null, ?string $
 
     // We need to create a new file
     // First, delete old file if it exists
-    if (file_exists(WB_PATH.PAGES_DIRECTORY.$filename.PAGE_EXTENSION)) {
-        $filetime = isset($filetime) ? $filetime :  filemtime($filename);
-        unlink(WB_PATH.PAGES_DIRECTORY.$filename.PAGE_EXTENSION);
+    if (file_exists($filename)) {
+        $filetime = !empty($filetime) ? $filetime :  filemtime($filename);
+        unlink($filename);
     } else {
-        $filetime = isset($filetime) ? $filetime : time();
+        $filetime = !empty($filetime) ? $filetime : time();
     }
     // The depth of the page directory in the directory hierarchy
     // '/pages' is at depth 1
@@ -1995,7 +2074,8 @@ function mod_nwi_replacements()
         'PUBLISHED_TIME',               // published time
         'SHORT',                        // alias for CONTENT_SHORT
         'SHOW_READ_MORE',               // wether to show "read more" link
-        'TAGS',                         // tags
+        'TAGS',                         // tags		
+		'TAGLIST',						// tags without formatting
         'TEXT_AT',                      // text for "at" ("um")
         'TEXT_BACK',                    // text for "back" ("zurück")
         'TEXT_LAST_CHANGED',            // text for "last changed" ("zuletzt geändert")
@@ -2052,6 +2132,7 @@ function mod_nwi_display_news_items(
 			'lang_filter'        => $lang_filter,
             'skip'               => $skip,
             'tags'               => $tags,
+			'taglist'			 => $tagList,
             'groups_on_tags'     => $groups_on_tags,
             'view'               => $view,
             'aslist'             => $aslist,
@@ -2080,7 +2161,8 @@ function mod_nwi_get_news_items($options=array())
 		'lang_id' => 'AUTO',              // language file to load and lang_id used if $lang_filer = true (default:= auto, examples: AUTO, DE, EN)
 		'lang_filter' => false,	          // flag to enable language filter (default:= false, show only news from a news page, which language fits $lang_id)
         'skip' => null,                   // do not show posts with the given list of tags (default:=none)
-        'tags' => null,                   // show posts with only the given list of tags
+        'tags' => null,                   // show posts with only the given list of tags		
+		'taglist' => null,				  // show tags as simple list
         'groups_on_tags' => false,        // wether to use the group_id if $skip or $tags is set
         'view' => 'default',              // use css from subfolder ('default','faq',...)
         'aslist' => false                 // unordered list of titles
@@ -2280,12 +2362,15 @@ function mod_nwi_get_news_items($options=array())
 				$post['content_short'] = nia_truncate($post['content_short'], $max_news_length);
 			}
             // tags
-            $tags = mod_nwi_get_tags_for_post($post['post_id']);
+            $tags = mod_nwi_get_tags_for_post($post['post_id']);						
+			$tagListArray = array();
             foreach ($tags as $i => $tag) {
                 $tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$post['post_id']."_".$i."\""
                           . (strlen($tag['tag_color'])>0 ? " style=\"background-color:".$tag['tag_color']."\"" : "" ) .">"
-                          . "<a href=\"".$wb->page_link(PAGE_ID)."?tags=".$tag."\">".$tag."</a></span>";
-            }
+                          . "<a href=\"".$wb->page_link(PAGE_ID)."?tags=".$tag."\">".$tag."</a></span>";				
+				$taglistArray[$i] = $tag['tag'];		  
+            }	
+			$taglist = implode(',',$taglistArray);
             // gallery images - wichtig für link "weiterlesen"  SHOW_READ_MORE
             $images = mod_nwi_img_get_by_post($post['post_id'],false);
             $anz_post_img = count($images);
@@ -2422,4 +2507,26 @@ function mod_nwi_sanitize_input(&$input, $filter)
 
 	// revert user input back to array or single value
 	$input = is_array($input) ? $temp : $temp[0];
+}
+
+
+if (!function_exists('mod_nwi_get_section_array')) {
+    /**
+     * @brief  Get Array with all the details of a section by using the section_id.
+     *
+     * @param integer $iSectionID
+     * @return array
+     */
+    function mod_nwi_get_section_array($iSectionID)
+    {
+        $aSection = array();
+        if (isset($iSectionID) && $iSectionID > 0) {
+            global $database;
+            $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`=%d';
+            if ($rSections = $database->query(sprintf($sSql, (int)$iSectionID))) {
+                $aSection = $rSections->fetchRow(MYSQLI_ASSOC);
+            }
+        }
+        return $aSection;
+    }
 }

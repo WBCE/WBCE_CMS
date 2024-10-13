@@ -7,9 +7,9 @@
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
- * @requirements    PHP 5.6 and higher
- * @version         0.2.5.3
- * @lastmodified    October17, 2022
+ * @requirements    PHP 7 and higher
+ * @version         0.2.5.5
+ * @lastmodified    December 16, 2023
  *
  */
 
@@ -22,8 +22,7 @@ $table_pages = TABLE_PREFIX .'mod_wbstats_pages';
 $table_ref   = TABLE_PREFIX .'mod_wbstats_ref';
 $table_key   = TABLE_PREFIX .'mod_wbstats_keywords';
 $table_lang  = TABLE_PREFIX .'mod_wbstats_lang';
-$table_browser = TABLE_PREFIX .'mod_wbstats_browser';
-$table_hist = TABLE_PREFIX .'mod_wbstats_hist';
+$table_brwsr = TABLE_PREFIX .'mod_wbstats_browser';
 $table_hist = TABLE_PREFIX .'mod_wbstats_hist';
 $table_loc = TABLE_PREFIX .'mod_wbstats_loc';
 $table_utm = TABLE_PREFIX .'mod_wbstats_utm';
@@ -46,7 +45,7 @@ class stats {
 	private $reload;
 	private $online;
 	
-	function __construct() {
+	function __construct($do_clean = true) {
 		global $database;
 		$database->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
 		$time = time();
@@ -57,17 +56,17 @@ class stats {
 		$this->old_date = date("Ymd", mktime(0, 0, 0, date("n"), date("j") - 90, date("Y"))); // 90 days
 		$this->reload = 3 * 60 * 60 ;
 		$this->online = $time - 5 * 60;
-		$this->cleanup();
+		if($do_clean) $this->cleanup();
 	}
 
 	function cleanup() {
-		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $table_browser, $table_hist;
+		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $table_brwsr, $table_hist;
 		$database->query("DELETE FROM ".$table_ips." WHERE `session`!='ignore' AND `time` < '".$this->old_data."'");
 		$database->query("DELETE FROM ".$table_pages." WHERE `day` < '".$this->old_date."'");
 		$database->query("DELETE FROM ".$table_ref.  " WHERE `day` < '".$this->old_date."'");
 		$database->query("DELETE FROM ".$table_key.  " WHERE `day` < '".$this->old_date."'");
 		$database->query("DELETE FROM ".$table_lang. " WHERE `day` < '".$this->old_date."'");
-		$database->query("DELETE FROM ".$table_browser. " WHERE `day` < '".$this->old_date."'");
+		$database->query("DELETE FROM ".$table_brwsr. " WHERE `day` < '".$this->old_date."'");
 		$database->query("DELETE FROM ".$table_hist." WHERE `timestamp` < '".$this->old_data."'");
 		$id = $database->get_one("SELECT `id` FROM ".$table_day." WHERE `day` = '".$this->day."'");
 		if (!$id) $database->query("INSERT INTO ".$table_day." (day, user, view) values ('".$this->day."', '0', '0')");
@@ -173,7 +172,7 @@ class stats {
 	}
 	
 	function getVisitors($top = 10) {
-		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $table_browser, $code2lang;
+		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $table_brwsr, $code2lang;
 		$result = array();
 
 		$totals = $database->get_one("SELECT sum(view) FROM ".$table_ref);
@@ -311,8 +310,8 @@ class stats {
 			$nr++;
 		}	
 		// browsers
-		$totals = $database->get_one("SELECT count(*) FROM ".$table_browser);
-		$q = "SELECT *, COUNT(*) AS total FROM ".$table_browser." WHERE `browser` != '' GROUP BY os,browser,version ORDER BY total DESC LIMIT 0,$top";
+		$totals = $database->get_one("SELECT count(*) FROM ".$table_brwsr);
+		$q = "SELECT *, COUNT(*) AS total FROM ".$table_brwsr." WHERE `browser` != '' GROUP BY `os`,`browser`,`version` ORDER BY `total` DESC LIMIT 0,$top";
 		$nr = 1;
 		if($query = $database->query($q)) {
 		while($res = $query->fetchRow()) {
@@ -334,10 +333,13 @@ class stats {
 			$nr++;
 		}
 		}
+		//echo $q.'<br>';
+		//die("Error: ".$database->get_error());
+
 		// OS
-		$q = "SELECT `os`, COUNT(*) AS total FROM ".$table_browser." WHERE `os` != '' GROUP BY `os` ORDER BY total DESC LIMIT 0,$top";
+		$q = "SELECT `os`, COUNT(*) AS `total` FROM ".$table_brwsr." WHERE `os` != '' GROUP BY `os` ORDER BY `total` DESC LIMIT 0,$top";
 		$nr = 1;
-		$query = $database->query($q);
+		if($query = $database->query($q)) {
 		while($res = $query->fetchRow()) {
 			$views = $res['total'];
 			$os = htmlspecialchars($res['os']);
@@ -354,7 +356,7 @@ class stats {
 			$result['os'][$nr]['width'] = $bar_width;
 			$nr++;
 		}
-		
+		}
 		
 		
 
@@ -558,7 +560,7 @@ class stats {
 		global $database,$table_ips, $table_hist, $WS;
 		$start = ($page - 1) * 50;
 		$result = array();
-		if($query  = $database->query("SELECT *, max(online) as online from ".$table_ips." WHERE `session`!='ignore' GROUP BY `ip` ORDER BY `online` DESC  LIMIT $start, 50")) {
+		if($query  = $database->query("SELECT *, max(`online`) as online from ".$table_ips." WHERE `session`!='ignore' GROUP BY `ip` ORDER BY `online` DESC  LIMIT $start, 50")) {
 		while($res = $query->fetchRow()) {			
 				$tmp = array();
 				$tmp['vis'] = $res['online'] >= $this->online ? 'online':'old';
@@ -578,7 +580,7 @@ class stats {
 				$result[] = $tmp;
 			}
 		}
-		// echo "Error: ".$database->get_error();
+		//echo "Error: ".$database->get_error();
 		return $result;
 	}
 

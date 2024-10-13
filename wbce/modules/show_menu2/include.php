@@ -107,7 +107,7 @@ function show_menu2(
     // fix up the menu number to default to the menu number
     // of the current page if no menu has been supplied
     if ($aMenu == 0) {
-        $aMenu = isset($wb->page['menu']) ? $wb->page['menu'] : 1;
+        $aMenu = (isset($wb->page['menu']) && is_int($wb->page['menu'])) ? $wb->page['menu'] : 1;
     }
 
     // Set some of the $wb->page[] settings to defaults if not set
@@ -169,7 +169,7 @@ function show_menu2(
 
         // if the caller wants all menus gathered together (e.g. for a sitemap)
         // then we don't limit our SQL query
-        $menuLimitSql = ' AND `menu`='.$aMenu;
+        $menuLimitSql = ' AND `menu`='.intval($aMenu);
         if ($aMenu == SM2_ALLMENU) {
             $menuLimitSql = '';
         }

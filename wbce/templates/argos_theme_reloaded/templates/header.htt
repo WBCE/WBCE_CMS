@@ -13,6 +13,10 @@
     <meta http-equiv="Accept-Encoding" content="gzip, deflate">
 <!--(PH) META HEAD- -->
 
+<!--(PH) FAVICON+ -->
+        <link rel="icon" type="image/x-icon" href="{WB_URL}/favicon.ico">
+<!--(PH) FAVICON- -->
+
 <!--(PH) CSS HEAD TOP+ -->
 	<link href="{WB_URL}/include/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
     <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">

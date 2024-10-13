@@ -158,7 +158,7 @@ $(document).on("click", "#del", function() {
     
     var parentTbody = $("tr#"+ID).parent().attr('id');
     window.location.href = MODULE_URL + "&hilite="+ parentTbody;
-    /*
+    
     $.ajax({
         url: AJAX_PLUGINS + "/ajax_delete_row.php",
         type: "POST",
@@ -175,5 +175,5 @@ $(document).on("click", "#del", function() {
             }
         }
     });
-     * */
+    
 });

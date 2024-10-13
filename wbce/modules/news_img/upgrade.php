@@ -249,6 +249,12 @@ require(WB_PATH."/index.php");
 		
 	}
 	
+	if (!$database->field_exists('{TP}mod_news_img_settings','show_settings_only_admins')) { 
+		try {
+			$database->query(sprintf("ALTER TABLE `%smod_news_img_settings` ADD COLUMN `show_settings_only_admins` CHAR(1) NOT NULL DEFAULT 'N' AFTER `use_second_block`",TABLE_PREFIX));
+			} catch(\Exception $e) {}
+	}
+	
 
     // 2019-07-05 Bianka Martinovic
     //            add database tables for tags
@@ -317,12 +323,12 @@ require(WB_PATH."/index.php");
             if (isset($module_directory)) { $orig_module_dir = $module_directory; } 
             include WB_PATH.'/modules/droplets/functions.inc.php';
             make_dir(WB_PATH.'/temp/unzip');
-            wbce_unpack_and_import(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip', WB_PATH . '/temp/unzip/');
+            wbce_unpack_and_import(WB_PATH.'/modules/news_img/droplets/droplet_fetchNewsItems.zip', WB_PATH . '/temp/unzip/');
             rm_full_dir(WB_PATH.'/temp/unzip');
             if (isset($orig_module_dir)) { $module_directory = $orig_module_dir; }
         } catch ( \Exception $e ) {}
     } else {
-        CAT_Helper_Droplet::installDroplet(WB_PATH.'/modules/news_img/droplets/droplet_getNewsItems.zip');
+        CAT_Helper_Droplet::installDroplet(WB_PATH.'/modules/news_img/droplets/droplet_fetchNewsItems.zip');
     }
 
 }

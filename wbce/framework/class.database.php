@@ -452,7 +452,10 @@ class database
      */
     public function escapeString($unescaped_string)
     {
-        if(empty($unescaped_string)) {
+        // return empty values as '' but preserve strings that are '0'
+        if($unescaped_string == '0'){
+            return '0';
+        } elseif(empty($unescaped_string)) {
             return '';
         }
         return mysqli_real_escape_string($this->db_handle, $unescaped_string);

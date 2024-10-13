@@ -20,7 +20,7 @@ if (defined('WB_PATH') == false) {
 $module_directory   = 'errorlogger';
 $module_name        = 'Errorlog viewer';
 $module_function 	= 'snippet';
-$module_version     = '1.1.4.1';
+$module_version     = '1.1.4.2';
 $module_platform 	= '2.8';
 if(defined('WBCE_VERSION')) {
 	$module_function    = 'tool,preinit,initialize';
@@ -40,6 +40,9 @@ $module_icon        = 'fa fa-bug';
 
 /**
  * DEVELOPMENT HISTORY (Change Log):
+ *
+ * v.1.1.4.2 2023-11-28 florian
+ *		[!] Fix issue with incorrect/incomplete timestamp (reported by hpzaun)
  *
  * v.1.1.4.1 2022-07-30 ruud / dev4me
  *		[!] Fixed a deprecated notice on PHP8.1

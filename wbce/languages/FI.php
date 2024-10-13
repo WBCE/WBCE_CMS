@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'FI';
@@ -681,4 +685,3 @@ $OVERVIEW['START'] = 'P&#228;&#228;k&#228;ytt&#228;j&#228;tila';
 $OVERVIEW['TEMPLATES'] = 'Muuta sivupohjaa...';
 $OVERVIEW['USERS'] = 'K&#228;ytt&#228;j&#228;hallinta...';
 $OVERVIEW['VIEW'] = 'Tarkastele sivuja...';
-

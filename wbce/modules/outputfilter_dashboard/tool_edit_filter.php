@@ -46,7 +46,7 @@ defined('WB_PATH') or die(header('Location: ../index.php'));
 $admin->get_permission('admintools') or die(header('Location: ../../index.php'));
 
 if (!$filter = $database->get_array(
-        "SELECT * FROM `{TP}mod_outputfilter_dashboard` WHERE `id`=". $id
+        "SELECT * FROM `{TP_OPFD}` WHERE `id`=". $id
         )[0]
     ){
     return;

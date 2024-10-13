@@ -13,7 +13,11 @@
  */
 
 //no direct file access
-if(count(get_included_files()) ==1){$z="HTTP/1.0 404 Not Found";header($z);die($z);}
+if (count(get_included_files()) ==1) {
+    $z="HTTP/1.0 404 Not Found";
+    header($z);
+    die($z);
+}
 
 // Set the language information
 $language_code = 'PT';
@@ -691,4 +695,3 @@ $OVERVIEW['START'] = 'Vis&#227;o Geral da Administra&#807;&#227;o';
 $OVERVIEW['TEMPLATES'] = 'Altere a apar&#234;ncia do seu site com temas(templates)...';
 $OVERVIEW['USERS'] = 'Gerencie os usu&#225;rios que podem logar no WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Visualize e navegue em seu website atrav&#233;s de uma nova janela...';
-

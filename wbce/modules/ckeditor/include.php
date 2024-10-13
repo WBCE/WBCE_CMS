@@ -67,7 +67,7 @@ if (defined('WB_FRONTEND') && WB_FRONTEND == true) {
         require_once($ckeAbsPath.'CKEditorPlus.php');
         $ckeditor = new CKEditorPlus($ckeRelPath);
 
-        $ckeditor->config['ModulVersion'] = isset($module_version) ? $module_version :  'none';
+        $ckeditor->config['ModulVersion'] = isset($module_version) ? $module_version : 'none';
 
         $temp = '';
         if (isset($oApp->page_id)) {

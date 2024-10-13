@@ -49,7 +49,7 @@ Bij het uploaden van bestanden met dezelfde naam als bestaande afbeeldingen word
 Het beheer van de afbeeldingen vindt alleen plaats via de berichtpagina, niet via het WBCE-mediabeheer, aangezien NWI anders niet "weet" waar welke afbeeldingen horen / ontbreken enz.
 
 ### Groepen
-Posts kunnen aan groepen worden toegewezen. Dit heeft enerzijds invloed op de volgorde (de berichten worden gesorteerd op basis van de groep en vervolgens op basis van een nader te specificeren criterium), en aan de andere kant is het mogelijk om onderwerpspecifieke overzichtspagina's te genereren. Deze kunnen dan worden benaderd via de URL van de NWI-pagina met de parameter g? = GROUP_ID, b.v. news.php? G = 2.
+Posts kunnen aan groepen worden toegewezen. Dit is het mogelijk om onderwerpspecifieke overzichtspagina's te genereren. Deze kunnen dan worden benaderd via de URL van de NWI-pagina met de parameter g? = GROUP_ID, b.v. news.php? G = 2.
 
 Een bericht kan slechts aan één groep worden toegewezen.
 

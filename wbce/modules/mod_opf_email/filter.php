@@ -78,11 +78,27 @@ function doFilterEmail($content)
  * @brief  Obfuscate email address while keeping it in a human readable format.
  *         This solution is based on: http://www.wbwip.com/wbw/emailencoder.html
  * 
+ *         This function will be only applied when email address contains @ + .  
+ * 
  * @param  string  $str
  * @return string
  */
-function readable_obfuscation($str){
-    $arr = [
+function readable_obfuscation($str){    
+    $pattern = '/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i'; // find email 
+    $retVal  = preg_replace_callback($pattern, 'readable_obfuscation_callback', $str);    
+    
+    return $retVal;
+}
+
+/**
+ * Callback function for readable_obfuscation regEx replacement
+ * 
+ * 
+ * @param  array $matches
+ * @return string
+ */
+function readable_obfuscation_callback($matches) {
+    $arr = array(
         'a' => '&#97;',
         'b' => '&#98;',
         'c' => '&#99;',
@@ -109,14 +125,13 @@ function readable_obfuscation($str){
         'x' => '&#120;',
         'y' => '&#121;',
         'z' => '&#122;',
-        
+
         // further obfuscate `@` and `.` for email harvesting bots 
         '@' => '<span>&#64;</span>', 
         '.' => '<span>&#46;</span>',
-    ];
-    return strtr($str, $arr);
+    );
+    return strtr($matches[0], $arr);
 }
-
 /**
  * callback-function for function _doFilterEmail() to proceed search results
  * @param array results from preg_replace
@@ -125,7 +140,7 @@ function readable_obfuscation($str){
 function _cbDoExecuteFilter($match)
 {
     $search = array('@', '.');
-    $replace = array(Settings::Get('OPF_AT_REPLACEMENT') ,Settings::Get('OPF_DOT_REPLACEMENT'));
+    $replace = array(Settings::Get('opf_at_replacement') ,Settings::Get('opf_dot_replacement'));
 
     // check if the match contains the expected number of subpatterns (6|8)
     switch (count($match)) {
@@ -133,7 +148,7 @@ function _cbDoExecuteFilter($match)
         case 8:
         /** OUTPUT FILTER FOR EMAIL ADDRESSES EMBEDDED IN TEXT **/
         // 1.. text mails only, 3.. text mails + mailto (no JS), 7 text mails + mailto (JS)
-            if (!Settings::Get('OPF_EMAIL_FILTER')) {
+            if (!Settings::Get('opf_email_filter')) {
                 return $match[0];
             }
             // do not filter mail addresses included in input tags (<input ... value = "test@mail)
@@ -148,7 +163,7 @@ function _cbDoExecuteFilter($match)
         case 6:
         /** OUTPUT FILTER FOR EMAIL ADDRESSES EMBEDDED IN MAILTO LINKS **/
         // 2.. mailto only (no JS), 3.. text mails + mailto (no JS), 6.. mailto only (JS), 7.. all filters active
-            if (!Settings::Get('OPF_MAILTO_FILTER')) {
+            if (!Settings::Get('opf_mailto_filter')) {
                 return $match[0];
             }
             // check if last part of the a href link: >xxxx</a> contains a email address we need to filter
@@ -204,7 +219,7 @@ function _cbDoExecuteFilter($match)
                 // as minimum protection, replace @ in the mailto part by (at)
                 // dots are not transformed as this would transform my.name@domain.com into: my(dot)name(at)domain(dot)com
                 // rebuild the mailto link from the subpatterns (at the missing characters " and </a>")
-                return $match[1] .str_replace('@', Settings::Get('OPF_AT_REPLACEMENT'), $match[2]) .$match[3] .'"' .$match[4] .$match[5] .'</a>';
+                return $match[1] .str_replace('@', Settings::Get('opf_at_replacement'), $match[2]) .$match[3] .'"' .$match[4] .$match[5] .'</a>';
                 // if you want to protect both, @ and dots, comment out the line above and remove the comment from the line below
             // return $match[1] .str_replace($search, $replace, $match[2]) .$match[3] .'"' .$match[4] .$match[5] .'</a>';
             }
@@ -219,12 +234,7 @@ function _cbDoExecuteFilter($match)
 
 function opff_mod_opf_email(&$content, $page_id, $section_id, $module, $wb)
 {
-    if (Settings::Get('opf_email', true)) {
-        if (!(Settings::Get('OPF_MAILTO_FILTER') || Settings::Get('OPF_JS_MAILTO') || Settings::Get('OPF_EMAIL_FILTER'))) {
-            Settings::Set('OPF_MAILTO_FILTER', 1);
-            Settings::Set('OPF_JS_MAILTO', 1);
-            Settings::Set('OPF_EMAIL_FILTER', 1);
-        }
+    if (Settings::Get('opf_email', true)) {    
         $content = doFilterEmail($content);
     }
     return(true);

@@ -13,8 +13,8 @@
 $module_description = 'This tool allows for managing your local Droplets.';
 
 $DR_TEXT['SHOW_DATE'] = 'Show date';
-$DR_TEXT['ADD_DROPLET'] = $TEXT['ADD'].' Droplet';
-$DR_TEXT['MODIFY_DROPLET'] = $TEXT['MODIFY'].' Droplet';
+$DR_TEXT['ADD_DROPLET'] = 'Add Droplet';
+$DR_TEXT['MODIFY_DROPLET'] = 'Modify Droplet';
 $DR_TEXT['ADMIN_EDIT'] = 'Edit-Only';
 $DR_TEXT['ADMIN_VIEW'] = 'View-Only';
 $DR_TEXT['BACKUP'] = 'Backup Droplets (Zip)';
@@ -26,7 +26,7 @@ $DR_TEXT['DELETED'] = 'Droplet(s) deleted. Please note: A backup was created bef
 $DR_TEXT['DOWNLOAD'] = 'Download more Droplets';
 $DR_TEXT['DROPLETS'] = 'Droplets';
 $DR_TEXT['DUPLICATE'] = 'Duplicate droplet';
-$DR_TEXT['DROPLET_DELETE'] = $TEXT['DELETE'].' Droplet?';
+$DR_TEXT['DROPLET_DELETE'] = 'Delete Droplet?';
 $DR_TEXT['EXPORT'] = 'Export';
 $DR_TEXT['HELP'] = 'Help / Readme';
 $DR_TEXT['IMPORT_ERRORS'] = 'Import errors';

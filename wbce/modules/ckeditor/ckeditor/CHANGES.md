@@ -1,5 +1,83 @@
-CKEditor 4 Changelog
-====================
+⚠️️️ **CKEditor 4 (the open source edition) is no longer maintained.** ⚠️
+
+If you would like to keep access to future CKEditor 4 security patches, check the [Extended Support Model](https://ckeditor.com/ckeditor-4-support/), which guarantees **security updates and critical bug fixes until December 2026**. Alternatively, [upgrade to CKEditor 5](https://ckeditor.com/docs/ckeditor5/latest/updating/ckeditor4/migration-from-ckeditor-4.html).
+
+## CKEditor 4.22.0 / 4.22.1
+
+⚠️ This is the last open source release of CKEditor 4. As announced in 2018, CKEditor 4 has reached its End of Life in June 2023.
+
+
+New Features:
+
+* [#5316](https://github.com/ckeditor/ckeditor4/issues/5316): Added vertical margins support for list elements in the [Paste from Word](https://ckeditor.com/cke4/addon/pastefromword) plugin.
+* [#5410](https://github.com/ckeditor/ckeditor4/issues/5410): Added the ability to indicate the language of styles in the [Styles Combo](https://ckeditor.com/cke4/addon/stylescombo) plugin via the [`config.styleSet`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-stylesSet) configuration option.
+* [#5510](https://github.com/ckeditor/ckeditor4/issues/5510): Added notification system to the editor informing users that the editor version is up-to-date and secure. See [`config.versionCheck`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-versionCheck) configuration option to learn more.
+
+Fixed Issues:
+
+* [#5437](https://github.com/ckeditor/ckeditor4/issues/5437): Fixed: Incorrect indication of selected items in combo boxes. The selected item was unmarked upon each opening of the combo box.
+* [#5495](https://github.com/ckeditor/ckeditor4/issues/5495): Fixed: Insufficient color ratio for links inside [Notifications](https://ckeditor.com/cke4/addon/notification).
+
+Other Changes:
+
+* [#5412](https://github.com/ckeditor/ckeditor4/issues/5412): Prevent using `document.domain` in Firefox in the [Preview](https://ckeditor.com/cke4/addon/preview) plugin.
+
+Note: CKEditor 4.22.1 has been released immediately after 4.22.0 to fix the README issues on [npm](https://www.npmjs.com/) and contains no changes vs 4.22.0.
+
+## CKEditor 4.21.0
+
+**Security Updates:**
+
+A cross-site scripting vulnerability has been discovered affecting [Iframe Dialog](https://ckeditor.com/cke4/addon/iframe) and [Media Embed](https://ckeditor.com/cke4/addon/embed) plugins.
+
+This vulnerability might affect a small percentage of integrators that depend on dynamic editor initialization/destroy mechanism. See [GitHub advisory](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-vh5c-xwqv-cv9g) for more details.
+
+**Potential breaking changes**
+
+In some rare cases, a security release may introduce a breaking change to your application. We have provided configuration options that will help you mitigate any potential issues with the upgrade:
+
+- Starting from version 4.21, the [Iframe Dialog](https://ckeditor.com/cke4/addon/iframe) plugin applies the `sandbox` attribute by default, which restricts JavaScript code execution in the iframe element. To change this behavior, configure the [`config.iframe_attributes`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-iframe_attributes) option.
+- Starting from version 4.21, the [Media Embed](https://ckeditor.com/cke4/addon/embed) plugin regenerates the entire content of the embed widget by default. To change this behavior, configure the [`config.embed_keepOriginalContent`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-embed_keepOriginalContent) option.
+
+If you choose to change either of the above options, make sure to properly configure [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to avoid any potential security issues that may arise from embedding iframe elements on your web page.
+
+You can read more details in the relevant security advisory and [contact us](security@cksource.com) if you have more questions.
+
+**An upgrade is highly recommended!**
+
+New Features:
+
+* [#4400](https://github.com/ckeditor/ckeditor4/issues/4400): Added the [`config.uploadImage_supportedTypes`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-uploadImage_supportedTypes) configuration option allowing to change the image formats accepted by the [Upload Image](https://ckeditor.com/cke4/addon/uploadimage) plugin. Thanks to [SilverYoCha](https://github.com/SilverYoCha)!
+
+Fixed Issues:
+
+* [#5431](https://github.com/ckeditor/ckeditor4/issues/5431): Fixed: No notification is shown when pasting or dropping unsupported image types into the editor.
+
+## CKEditor 4.20.2
+
+Fixed Issues:
+
+* [#439](https://github.com/ckeditor/ckeditor4/issues/439): Fixed: Incorrect <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd> navigation for radio buttons inside the dialog.
+* [#4829](https://github.com/ckeditor/ckeditor4/issues/4829): Fixed: Undo reversed entire table content instead of a single cell. Thanks to that fix, multiple changes in a table can be undone one by one.
+* [#5396](https://github.com/ckeditor/ckeditor4/issues/5396): Fixed: Event listeners for `popstate` and `hashchange` events on the `window`, added by the [Maximize](https://ckeditor.com/cke4/addon/maximize) plugin, were not removed when destroying the editor instance.
+* [#5414](https://github.com/ckeditor/ckeditor4/issues/5414): Fixed: File and image uploaders based on the [Upload Widget plugin](https://ckeditor.com/cke4/addon/uploadwidget) and [Easy Image plugin ](https://ckeditor.com/cke4/addon/easyimage) didn't fire the [`change` event](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change) upon finishing upload, resulting in passing incorrect data in form controls for integration frameworks, like [Reactive forms in Angular](https://angular.io/guide/reactive-forms).
+* [#698](https://github.com/ckeditor/ckeditor4/issues/698): Fixed: An error was thrown after applying formatting to the widget with inline editable and switching to the source mode. Thanks to [Glen](https://github.com/glen-84)!
+
+API changes:
+
+* [#3540](https://github.com/ckeditor/ckeditor4/issues/3540): The [startup data](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_plugins_widget.html) passed to the widget's command is now used to also populate the widget's template.
+* [#5352](https://github.com/ckeditor/ckeditor4/issues/5352): Added the [`colorButton_contentsCss`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-colorButton_contentsCss) configuration option allowing to add custom CSS to the [Color Button](https://ckeditor.com/cke4/addon/colorbutton) menu content. Thanks to [mihilion](https://github.com/mihilion)!
+
+## CKEditor 4.20.1
+
+Fixed Issues:
+
+* [#5333](https://github.com/ckeditor/ckeditor4/issues/5333): Fixed: The original name of the uploaded image is not preserved by the [Upload Image](https://ckeditor.com/cke4/addon/uploadimage) plugin if the [Clipboard](https://ckeditor.com/cke4/addon/clipboard) plugin has enabled image handling.
+* [#2881](https://github.com/ckeditor/ckeditor4/issues/2881): Fixed: Changing table headers from "Both" to "First column" in the [Table](https://ckeditor.com/cke4/addon/table) dialog does not change the first column cell correctly.
+* [#2996](https://github.com/ckeditor/ckeditor4/issues/2996): Fixed: Table header "scope" attribute is incorrect for the "Headers: both" option in the [Table](https://ckeditor.com/cke4/addon/table) dialog.
+* [#4802](https://github.com/ckeditor/ckeditor4/issues/4802): Fixed: [Tableselection](https://ckeditor.com/cke4/addon/tableselection) caret moves to the previous cell after tabbing into the next cell and then removing its content.
+* [#5365](https://github.com/ckeditor/ckeditor4/issues/5365): Fixed: The value of the [`config.baseFloatZIndex`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-baseFloatZIndex) config variable is incorrectly applied to parent dialog when the child dialog is closed resulting in the dialog overlay covering up the dialog. Thanks to [JenoDK](https://github.com/JenoDK)!
+* [#5305](https://github.com/ckeditor/ckeditor4/issues/5305): Fixed: Anchor name can invalidly include spaces.
 
 ## CKEditor 4.20
 

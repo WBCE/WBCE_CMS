@@ -7,9 +7,9 @@
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
- * @requirements    PHP 5.6 and higher
- * @version         0.2.5.3
- * @lastmodified    October17, 2022
+ * @requirements    PHP 7 and higher
+ * @version         0.2.5.5
+ * @lastmodified    December 16, 2023
  *
  */
 
@@ -174,7 +174,8 @@ class counter {
 		if (substr($this->host,0,4) == "www.") $this->host=substr($this->host,4);
 		if($this->referer) {
 			$this->referer_host = parse_url($this->referer, PHP_URL_HOST); // Referrer Host
-			if ($this->referer_host && substr($this->referer_host,0,4) == "www.") $this->referer_host=substr($this->referer_host,4);
+			if(!$this->referer_host) $this->referer_host = '';
+			if (substr($this->referer_host,0,4) == "www.") $this->referer_host=substr($this->referer_host,4);
 		}
 		$this->referer = $this->escapeString($this->referer);
 		$this->page = $this->escapeString($this->page);
@@ -316,7 +317,8 @@ class counter {
 		global $database, $table_loc;
 		$ip = $this->getRealUserIp(); 
 		$ipkey = md5($ip);
-		if(!$city = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' LIMIT 1")) {
+		$t = time() - 60*60*24;
+		if(!$city = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' and `timestamp`>'$t' LIMIT 1")) {
 			if($ipdata = unserialize($this->getUrlContent('http://www.geoplugin.net/php.gp?ip='.$ip))) {
 				if(!$ipdata['geoplugin_city'])  $ipdata['geoplugin_city'] = '- unknown -';
 				if(!$ipdata['geoplugin_countryCode'])  $ipdata['geoplugin_countryCode'] = '';
@@ -328,7 +330,7 @@ class counter {
 				$database->query("INSERT INTO ".$table_loc." (`ip`,`location`,`timestamp`) VALUES ('".$ipkey."','".$city."','".time()."') ");
 			}
 		} else {
-			// $city .= ' *';
+			$city = $database->escapeString($city);
 		}
 		return $city;
 	}	
@@ -550,10 +552,9 @@ REGEX
 			$browser = 'MSIE';
 			$version = $rv_result;
 		} elseif( $browser == 'AppleWebKit' ) {
-			if ($platform==null) { $platform='';}
 			if( $platform == 'Android' ) {
 				$browser = 'Android Browser';
-			} elseif( strpos($platform, 'BB') === 0 ) {
+			} elseif($platform && strpos($platform, 'BB') === 0 ) {
 				$browser  = 'BlackBerry Browser';
 				$platform = 'BlackBerry';
 			} elseif( $platform == 'BlackBerry' || $platform == 'PlayBook' ) {

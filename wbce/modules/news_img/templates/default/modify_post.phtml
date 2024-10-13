@@ -1,7 +1,7 @@
 <link href="uploader/css/jquery.dm-uploader.css" rel="stylesheet">
 <link href="uploader/styles.css" rel="stylesheet">
 <div class="mod_news_img">
-    <script src="<?php echo WB_URL; ?>/modules/news_img/js/jquery.furl.js"></script>
+    <script src="<?php echo WB_URL; ?>/modules/news_img/js/jquery.slugit.js"></script>
 
     <h2><?php echo $TEXT['ADD'].'/'.$TEXT['MODIFY'].' '.$TEXT['POST']; ?></h2>
     <div class="jsadmin jcalendar hide"></div>
@@ -266,6 +266,6 @@
     </script>
 
     <script type="text/javascript">
-        $('#title<?php echo $page_id ?>').furl({id:'link<?php echo $page_id ?>', seperate: '<?php echo PAGE_SPACER ?>' });
+        $('#title<?php echo $page_id ?>').slugIt({output:'#link<?php echo $page_id ?>', seperate: '<?php echo PAGE_SPACER ?>' });
     </script>
 </div>

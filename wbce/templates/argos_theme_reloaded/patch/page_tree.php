@@ -104,17 +104,12 @@ function draw_pagetree($pages_list)
 
         // vars to check if we should show specific Options (and Icons) depending on User Permissions
         $canMoveUP = ($p['position'] != 1 && $p['visibility'] != 'deleted' && $admin->get_permission('pages_settings') == true && $can_modify == true) ? true : false;
-
         $canMoveDOWN = ($p['position'] != $siblings && $p['visibility'] != 'deleted' && $admin->get_permission('pages_settings') == true && $can_modify == true) ? true : false;
-
         $canDeleteAndModify = ($admin->get_permission('pages_delete') == true && $can_modify == true) ? true : false;
-
         $canAddChild = ($admin->get_permission('pages_add')) == (true && $can_modify == true) && ($p['visibility'] != 'deleted') ? true : false;
-
         $canModifyPage = ($admin->get_permission('pages_modify') == true && $can_modify == true) ? true : false;
-
         $canModifySettings = ($admin->get_permission('pages_settings') == true && $can_modify == true) ? true : false;
-
+		$noPermStyle = ($canModifyPage === false) ? 'pagetree-no-edit' : '';
         $menu_link = false;
 
         // manage SECTIONS and DATES Icons -->
@@ -181,20 +176,20 @@ function draw_pagetree($pages_list)
                         <?php endif; ?>
                     </td>
 
-                    <td class="page-menu-title">
+                    <td class="page-menu-title <?=$noPermStyle?>">
                         <i class="fa fa-lg {status_icon}" style="padding-left: 3px;"></i>
-                        <a <?php if ($canModifyPage) : ?> href="{modifyPageURL}" title="<?php echo $HEADING['MODIFY_PAGE']; ?>"<?php endif; ?>>
+                        <a class="<?=$noPermStyle?>" <?php if ($canModifyPage) : ?> href="{modifyPageURL}" title="<?php echo $HEADING['MODIFY_PAGE']; ?>"<?php endif; ?>>
                             {MENU_TITLE}
                         </a>
                     </td>
 
-                    <td class="page-page-title">
+                    <td class="page-page-title <?=$noPermStyle?>">
                         <?php if (!$menu_link): ?>
                             {PAGE_TITLE}
                         <?php endif; ?>
                     </td>
 
-                    <td class="page-page-id">
+                    <td class="page-page-id <?=$noPermStyle?>">
                         {PAGE_ID}
                     </td>
 
