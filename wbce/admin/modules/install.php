@@ -241,8 +241,8 @@ if (file_exists($temp_file)) {
 }
 
 // Run the modules install // upgrade script if there is one.
-// This needs to happen *after* $temp_unzip is removed just above.
-// Otherwise there might be unwanted interferences if the modules install/upgrade doesn't clean up $temp_unzip itself.
+// This needs to happen *after* DB actions and removal of $temp_unzip just above.
+// Otherwise there are unwanted interferences if the modules install/upgrade uses/cleans $temp_unzip itself.
 if (file_exists($module_dir . '/' . $action . '.php')) {
     require($module_dir . '/' . $action . '.php');
 }
