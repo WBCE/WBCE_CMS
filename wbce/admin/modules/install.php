@@ -159,6 +159,7 @@ preCheckAddon($temp_file);
 
 // Check if the file is valid
 if (!isset($module_directory)) {
+    rm_full_dir($temp_unzip);
     if (file_exists($temp_file)) {
         unlink($temp_file);
     } // Remove temp file
@@ -174,6 +175,7 @@ if (is_dir(WB_PATH . '/modules/' . $module_directory)) {
         require(WB_PATH . '/modules/' . $module_directory . '/info.php');
         // Version to be installed is older than currently installed version
         if (versionCompare($module_version, $new_module_version, '>=')) {
+	    rm_full_dir($temp_unzip);
             if (file_exists($temp_file)) {
                 unlink($temp_file);
             } // Remove temp file
@@ -221,11 +223,6 @@ while (false !== $entry = $dir->read()) {
     }
 }
 
-// Run the modules install // upgrade script if there is one
-if (file_exists($module_dir . '/' . $action . '.php')) {
-    require($module_dir . '/' . $action . '.php');
-}
-
 // Load upgraded module info into DB, but no longer from $module_dir.
 // Instead from original unzipped dir, due to possible opcache issues otherwise! Especially when upgrading the module!
 // Print success message
@@ -241,6 +238,13 @@ if ($action == "install") {
 rm_full_dir($temp_unzip);
 if (file_exists($temp_file)) {
     unlink($temp_file);
+}
+
+// Run the modules install // upgrade script if there is one.
+// This needs to happen *after* $temp_unzip is removed just above.
+// Otherwise there might be unwanted interferences if the modules install/upgrade doesn't clean up $temp_unzip itself.
+if (file_exists($module_dir . '/' . $action . '.php')) {
+    require($module_dir . '/' . $action . '.php');
 }
 
 // Print admin footer
