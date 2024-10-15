@@ -160,9 +160,11 @@ preCheckAddon($temp_file);
 
 // Check if the file is valid
 if (!isset($template_directory)) {
+    // Remove the temp unzip directory and the temp zip file
+    rm_full_dir($temp_unzip);
     if (file_exists($temp_file)) {
         unlink($temp_file);
-    } // Remove temp file
+    }
     $admin->print_error($MESSAGE['GENERIC_INVALID']);
 }
 
@@ -174,9 +176,11 @@ if (is_dir(WB_PATH . '/templates/' . $template_directory)) {
         require(WB_PATH . '/templates/' . $template_directory . '/info.php');
         // Version to be installed is older than currently installed version
         if (versionCompare($template_version, $new_template_version, '>=')) {
+	    // Remove the temp unzip directory and the temp zip file
+	    rm_full_dir($temp_unzip);
             if (file_exists($temp_file)) {
                 unlink($temp_file);
-            } // Remove temp file
+            }
             $admin->print_error($MESSAGE['GENERIC_ALREADY_INSTALLED']);
         }
     }
