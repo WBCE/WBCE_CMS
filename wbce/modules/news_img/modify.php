@@ -36,7 +36,8 @@ $lang_map = array(
     1 => $TEXT['PUBL_START_DATE'].', '.$MOD_NEWS_IMG['DESCENDING'],
     2 => $TEXT['PUBL_END_DATE'].', '.$MOD_NEWS_IMG['DESCENDING'],
     3 => $TEXT['SUBMITTED'].', '.$MOD_NEWS_IMG['DESCENDING'],
-    4 => $TEXT['SUBMISSION_ID'].', '.$MOD_NEWS_IMG['DESCENDING']
+    4 => $TEXT['SUBMISSION_ID'].', '.$MOD_NEWS_IMG['DESCENDING'],
+    5 => $TEXT['PUBL_END_DATE']
 );
 
 $FTAN = $admin->getFTAN();

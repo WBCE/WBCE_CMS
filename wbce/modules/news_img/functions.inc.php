@@ -594,6 +594,64 @@ function mod_nwi_post_activate($value)
 	return ( $errors>0 ? false : true );
 }
 
+
+function mod_nwi_post_clear($value)
+{
+    global $database;
+    $posts = array();
+    if(isset($_POST['manage_posts']) && is_array($_POST['manage_posts'])) {
+        $posts = $_POST['manage_posts'];
+    } else {
+        return false;
+    }
+
+    $errors = 0;
+    foreach($posts as $post_id) {
+        // Update row
+	if ((strcmp($value,'published_when')==0) or(strcmp($value,'published_until')==0)){
+        	$database->query(sprintf(
+        	    "UPDATE `%smod_news_img_posts`"
+        	    . " SET `$value` = '0' "
+        	    . " WHERE `post_id` = '$post_id'",
+        	    TABLE_PREFIX
+        	));
+        	if($database->is_error()) {
+        	    $errors++;
+        	}
+	}
+    
+	$postQuery = "SELECT * from `".TABLE_PREFIX."mod_news_img_posts` WHERE `post_id`=".$post_id;	
+	$query_post = $database->query($postQuery);
+	if ($query_post->numRows() > 0) {
+		$post      = $query_post->fetchRow();
+	}
+
+	$pageQuery = "SELECT * from `".TABLE_PREFIX."sections` WHERE `section_id`=".$post['section_id'];	
+	$query_page = $database->query($pageQuery);
+	if ($query_page->numRows() > 0) {
+		$page      = $query_page->fetchRow();
+	}
+
+	// check if accessfile should be created...
+	$createFile = true;										// by default: yes.
+	if ($post['published_when'] != 0 && $post['published_when'] > time()) {$createFile = false;}    // no, because the post is not public yet.
+	if ($post['published_until'] != 0 && $post['published_until'] < time()) {$createFile = false;}  // no, because the post is no longer public.
+	if ($post['active'] != 1) {$createFile = false;}						// no, the post is created inactive.
+	$filename = WB_PATH.PAGES_DIRECTORY.'/'.$post['link'].PAGE_EXTENSION;
+	if (!file_exists($filename) && $createFile == true) {
+		mod_nwi_create_file($filename, '', $post['post_id'], $post['section_id'], $page['page_id']);
+	}
+	// remove access file if it exists and it shouldn't - not sure if this can happen at all
+	if (file_exists($filename) && $createFile == false && is_writable($filename)) {
+		unlink($filename);
+	}
+
+
+    }
+    return ( $errors>0 ? false : true );
+}
+
+
 function mod_nwi_post_copy($section_id,$page_id,$with_tags=false)
 {
     global $mod_nwi_file_dir, $database, $admin;
@@ -1690,6 +1748,10 @@ function mod_nwi_get_order(int $section_id)
             $order_by = "post_id";
             $direction = 'DESC';
             break;
+        case 5:
+            $order_by = "published_until";
+            $direction = 'ASC';
+            break;
     }
     return array($order_by,$direction);
 }   // end function mod_nwi_get_order()
@@ -2103,7 +2165,7 @@ function mod_nwi_display_news_items(
 	$strip_tags = true,             // true:=remove tags from short and long text (default:=true); false:=don´t strip tags
 	$allowed_tags = '<p><a><img>',  // tags not striped off (default:='<p><a><img>')
 	$custom_placeholder = false,    // false:= none (default), array('MY_VAR_1' => '%TAG%#', ... 'MY_VAR_N' => '#regex_N#' ...)
-	$sort_by = 1,                   // 1:=position (default), 2:=posted_when, 3:=published_when, 4:=random order
+	$sort_by = 1,                   // 1:=position (default), 2:=posted_when, 3:=published_when, 4:=random order 5:=published_until
 	$sort_order = 1,                // 1:=descending (default), 2:=ascending
 	$not_older_than = 0,            // 0:=disabled (default), 0-999 (only show news `published_when` date <=x days; 12 hours:=0.5)
     $is_not_older_than = 0,         // alias for not_older_than
@@ -2127,15 +2189,15 @@ function mod_nwi_display_news_items(
 			'sort_by'            => $sort_by,
 			'sort_order'         => $sort_order,
 			'not_older_than'     => $not_older_than,
-            'is_not_older_than'  => $is_not_older_than,
+		        'is_not_older_than'  => $is_not_older_than,
 			'lang_id'            => $lang_id,
 			'lang_filter'        => $lang_filter,
-            'skip'               => $skip,
-            'tags'               => $tags,
-			'taglist'			 => $tagList,
-            'groups_on_tags'     => $groups_on_tags,
-            'view'               => $view,
-            'aslist'             => $aslist,
+		        'skip'               => $skip,
+			'tags'               => $tags,
+			'taglist'	     => $tagList,
+            		'groups_on_tags'     => $groups_on_tags,
+            		'view'               => $view,
+            		'aslist'             => $aslist,
 		)
 	);
 	echo $output;
@@ -2154,7 +2216,7 @@ function mod_nwi_get_news_items($options=array())
 		'max_news_length' => -1,          // maximum length of the short news text shown (default:=-1 => full news length)
 		'strip_tags' => true,             // true:=remove tags from short and long text (default:=true); false:=dont strip tags
 		'allowed_tags' => '<p><a><img>',  // tags not striped off (default:='<p><a><img>')
-		'sort_by' => 1,                   // 1:=position (default), 2:=posted_when, 3:=published_when, 4:=random order
+		'sort_by' => 1,                   // 1:=position (default), 2:=posted_when, 3:=published_when, 4:=random order 5:=published_until
 		'sort_order' => 1,                // 1:=descending (default), 2:=ascending
 		'not_older_than' => 0,            // 0:=disabled (default), 0-999 (only show news `published_when` date <=x days; 12 hours:=0.5)
         'is_not_older_than' => 0,
@@ -2300,7 +2362,7 @@ function mod_nwi_get_news_items($options=array())
     }
 
     // ---------- sort order ---------------------------------------------------
-    $order_by_options = array('t1.`position`', 't1.`posted_when`', 't1.`published_when`', 'RAND()');
+    $order_by_options = array('t1.`position`', 't1.`posted_when`', 't1.`published_when`', 'RAND()', 't1.`published_until`'); 
 	$sql_order_by = $order_by_options[$sort_by - 1];
 	$sql_sort_order = ($sort_order == 1) ? 'DESC' : 'ASC';
 

@@ -46,7 +46,8 @@ if (!$admin->checkFTAN()) {
 $action = '';
 $known_actions = array(
     'copy',     'copy_with_tags', 'move', 'move_with_tags', 'delete',
-    'activate', 'deactivate',     'tags', 'group'
+    'activate', 'deactivate',     'tags', 'group', 
+    'clear_published_when', 'clear_published_until'
 );
 if (in_array($_POST['action'], $known_actions)) {
     $action = $_POST['action'];
@@ -72,6 +73,12 @@ if(isset($_POST['exec']) && isset($_POST['manage_posts'])) {
         case "deactivate":
             $result = mod_nwi_post_activate(0);
             break;
+	case "clear_published_when":
+	    $result = mod_nwi_post_clear('published_when');
+	    break;
+	case "clear_published_until":
+	    $result = mod_nwi_post_clear('published_until');
+	    break;
         case "move":
             $result = mod_nwi_post_move($section_id, $page_id);
             break;
