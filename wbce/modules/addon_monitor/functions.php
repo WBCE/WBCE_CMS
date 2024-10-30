@@ -11,100 +11,105 @@
  */
 
 // prevent this file from being accessed directly:
-if (!defined('WB_PATH')) {
-    die("Cannot access this file directly");
-}
+defined('WB_PATH') or die("Cannot access this file directly");
 
 if (!function_exists('getModulesArray')) {
     function getModulesArray()
-    {
-        global $database;
-        $aAddons['addons'] = array();
-        $aAddons['count_tools'] = 0;
-        $aAddons['count_snippets'] = 0;
-        $aAddons['count_pagemodules'] = 0;
-        $aAddons['count_wysiwygeditors'] = 0;
-        $aAddons['default_wysiwyg'] = $database->get_one("SELECT `value` FROM `". TABLE_PREFIX ."settings` WHERE `name` = 'wysiwyg_editor'");
-        $sQueryAddons = (
-            "SELECT DISTINCT a . * ,
-            IF( s.module IS NOT NULL , 'Y', 'N' ) AS active
-            FROM ".TABLE_PREFIX."addons a
-                LEFT JOIN ".TABLE_PREFIX."sections s
-                ON a.directory = s.module
-            WHERE `function` LIKE '%page%' OR `function` LIKE '%snippet%' OR `function` LIKE '%tool%' OR `function` LIKE '%wysiwyg%'"
-        );
+{
+	$whiteListAddons = ['page', 'tool', 'snippet', 'wysiwyg'];
+    global $database;
+    $aAddons['addons'] = array();
+    $aAddons['count_tools'] = 0;
+    $aAddons['count_snippets'] = 0;
+    $aAddons['count_pagemodules'] = 0;
+    $aAddons['count_wysiwygeditors'] = 0;
+    $aAddons['default_wysiwyg'] = $database->get_one("SELECT `value` FROM `{TP}settings` WHERE `name` = 'wysiwyg_editor'");
+    
+    $sQueryAddons = (
+        "SELECT DISTINCT a.*,
+        IF(s.module IS NOT NULL, 'Y', 'N') AS active
+        FROM {TP}addons a
+        LEFT JOIN {TP}sections s ON a.directory = s.module
+        WHERE `type` = 'module'"
+    );
 
-        if ($oAddons = $database->query($sQueryAddons)) {
-            $sLanguageFileLocation = WB_PATH."/modules/%s/languages/".LANGUAGE.".php";
-            $mod_name = '';
-            $module_name = '';
-            // Loop through addons
-            while ($aRec = $oAddons->fetchRow(MYSQLI_ASSOC)) {
-                // grab for page_id's and section_id's if Addon is a PAGE TYPE MODULE
-                if ($aRec['function'] == 'page') {
-                    ++$aAddons['count_pagemodules'];
-                    if ($aRec['active'] == 'Y') {
-                        $sQueryActiveSections = ("SELECT `section_id`, `page_id` FROM `".TABLE_PREFIX."sections` WHERE `module` = '".$aRec['directory']."'");
-                        if ($oActiveSections = $database->query($sQueryActiveSections)) {
-                            while ($aSections = $oActiveSections->fetchRow(MYSQLI_ASSOC)) {
-                                $aRec['active_sections'][$aSections['section_id']] = $aSections['page_id'];
+    if ($oAddons = $database->query($sQueryAddons)) {
+        $sLanguageFileLocation = WB_PATH . "/modules/%s/languages/" . LANGUAGE . ".php";
+
+        // Loop through addons
+        while ($aRec = $oAddons->fetchRow(MYSQLI_ASSOC)) {
+            // Split the function string into an array
+            $functions = array_map('trim', explode(',', $aRec['function']));
+            foreach ($functions as $function) {
+				if (!in_array($function, $whiteListAddons)) continue;
+				$aRec['function'] = $function;
+				#debug_dump($function, $aRec['name']);
+                switch ($function) {
+                    case 'page':
+                        ++$aAddons['count_pagemodules'];
+                        if ($aRec['active'] == 'Y') {
+                            $sQueryActiveSections = ("SELECT `section_id`, `page_id` FROM `{TP}sections` WHERE `module` = '" . $aRec['directory'] . "'");
+                            if ($oActiveSections = $database->query($sQueryActiveSections)) {
+                                while ($aSections = $oActiveSections->fetchRow(MYSQLI_ASSOC)) {
+                                    $aRec['active_sections'][$aSections['section_id']] = $aSections['page_id'];
+                                }
                             }
                         }
-                    }
+                        break;
+
+                    case 'tool':
+                        $aAddons['count_tools']++;
+                        $sIconFile = WB_PATH . "/modules/" . $aRec['directory'] . "/tool_icon.png";
+                        $aRec['icon'] = is_readable($sIconFile) ? "../../modules/" . $aRec['directory'] . "/tool_icon.png" : "../../modules/" . basename(dirname(__FILE__)) . "/icons/tool.png";
+                        break;
+
+                    case 'snippet':
+                        ++$aAddons['count_snippets'];
+                        break;
+
+                    case 'wysiwyg':
+                        ++$aAddons['count_wysiwygeditors'];
+                        break;
                 }
-                if ($aRec['function'] == 'tool') {
-                    $aAddons['count_tools']++;
-                    $sIconFile = WB_PATH."/modules/".$aRec['directory']."/tool_icon.png";
-                    if (is_readable($sIconFile)) {
-                        $aRec['icon'] = "../../modules/".$aRec['directory']."/tool_icon.png";
-                    } else {
-                        $aRec['icon'] = "../../modules/".basename(dirname(__FILE__))."/icons/tool.png";
-                    }
+
+                // Handle icons for snippets and page modules
+                if ($function === 'snippet' || $function === 'page') {
+                    $sIconFile = "/modules/" . $aRec['directory'] . "/addon_icon.png";
+                    $aRec['icon'] = is_readable(WB_PATH . $sIconFile) ? "../.." . $sIconFile : "../../modules/" . basename(dirname(__FILE__)) . "/icons/" . ($function === 'snippet' ? 'snippet' : 'page_module') . ".png";
                 }
-                if ($aRec['function'] == 'snippet') {
-                    ++$aAddons['count_snippets'];
-                }
-                if ($aRec['function'] == 'wysiwyg') {
-                    ++$aAddons['count_wysiwygeditors'];
-                }
-                if ($aRec['function'] == 'snippet' || $aRec['function'] == 'page') {
-                    $sIconFile = "/modules/".$aRec['directory']."/addon_icon.png";
-                    if (is_readable(WB_PATH.$sIconFile)) {
-                        $aRec['icon'] = "../..".$sIconFile;
-                    } else {
-                        $sType = ($aRec['function'] == 'snippet') ? 'snippet' : 'page_module';
-                        $aRec['icon'] = "../../modules/".basename(dirname(__FILE__))."/icons/".$sType.".png";
-                    }
-                }
-                // replace description if description in the current LANGUAGE exists
-                $sLanguageFile = sprintf($sLanguageFileLocation, $aRec['directory']);
-                if (is_readable($sLanguageFile)) {
-                    require_once($sLanguageFile);
-                    if (isset($module_description) && $module_description != "") {
-                        $aRec['description'] = $module_description;
-                        unset($module_description);
-                    }
-                }
-                $aAddons['addons'][]  = $aRec;
+
+				// Replace description if description in the current LANGUAGE exists
+				$sLanguageFile = sprintf($sLanguageFileLocation, $aRec['directory']);
+				if (is_readable($sLanguageFile)) {
+					require_once($sLanguageFile);
+					if (isset($module_description) && $module_description != "") {
+						$aRec['description'] = $module_description;
+						unset($module_description);
+					}
+				}
+
+				$aAddons['addons'][] = $aRec;
             }
         }
-        return $aAddons;
     }
+    
+    return $aAddons;
+}
 }
 
 if (!function_exists('getTemplatesArray')) {
     function getTemplatesArray()
     {
         global $database;
-        $sDefaultAcp = $database->get_one("SELECT `value` FROM `". TABLE_PREFIX ."settings` WHERE `name` = 'default_theme'");
+        $sDefaultAcp = $database->get_one("SELECT `value` FROM `{TP}settings` WHERE `name` = 'default_theme'");
         $aAddons['addons'] = array();
         $aAddons['count_pagetemplates'] = 0;
         $aAddons['count_acpthemes'] = 0;
         $sQueryAddons = (
             "SELECT DISTINCT a . * ,
             IF( p.template IS NOT NULL , 'Y', 'N' ) AS active
-            FROM ".TABLE_PREFIX."addons a
-                LEFT JOIN ".TABLE_PREFIX."pages p
+            FROM {TP}addons a
+                LEFT JOIN {TP}pages p
                 ON a.directory = p.template
             WHERE `function` = 'theme' OR `function` = 'template'
             ORDER BY `function`, `name`"
@@ -118,7 +123,7 @@ if (!function_exists('getTemplatesArray')) {
                     ++$aAddons['count_pagetemplates'];
                     // grab for page_id's if Addon is used on different pages
                     if ($aRec['active'] == 'Y') {
-                        $sQueryActiveSections = ("SELECT `page_id` FROM `".TABLE_PREFIX."pages` WHERE `template` = '".$aRec['directory']."'");
+                        $sQueryActiveSections = ("SELECT `page_id` FROM `{TP}pages` WHERE `template` = '".$aRec['directory']."'");
                         if ($oActiveSections = $database->query($sQueryActiveSections)) {
                             while ($aSections = $oActiveSections->fetchRow(MYSQLI_ASSOC)) {
                                 $aRec['active_pages'][] = $aSections['page_id'];
@@ -150,8 +155,8 @@ if (!function_exists('getLanguagesArray')) {
         $sQueryAddons = (
             "SELECT DISTINCT a . * ,
             IF( p.language IS NOT NULL , 'Y', 'N' ) AS active
-            FROM ".TABLE_PREFIX."addons a
-                LEFT JOIN ".TABLE_PREFIX."pages p
+            FROM {TP}addons a
+                LEFT JOIN {TP}pages p
                 ON a.directory = p.language
             WHERE type = 'language'"
         );
@@ -161,7 +166,7 @@ if (!function_exists('getLanguagesArray')) {
             while ($aRec = $oAddons->fetchRow(MYSQLI_ASSOC)) {
                 // grab for page_id's if Addon is used on different pages
                 if ($aRec['active'] == 'Y') {
-                    $sQueryActiveSections = ("SELECT `page_id` FROM `".TABLE_PREFIX."pages` WHERE `language` = '".$aRec['directory']."'");
+                    $sQueryActiveSections = ("SELECT `page_id` FROM `{TP}pages` WHERE `language` = '".$aRec['directory']."'");
                     if ($oActiveSections = $database->query($sQueryActiveSections)) {
                         while ($aSections = $oActiveSections->fetchRow(MYSQLI_ASSOC)) {
                             $aRec['active_pages'][] = $aSections['page_id'];
