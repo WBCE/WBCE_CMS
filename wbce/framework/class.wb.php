@@ -591,7 +591,7 @@ _JsCode;
      */
     public function get_display_name()
     {
-        return $this->get_session('DISPLAY_NAME');
+        return remove_special_characters($this->get_session('DISPLAY_NAME'));
     }
 
     /**

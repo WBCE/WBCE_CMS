@@ -39,7 +39,7 @@ $usernameTmp = $admin->get_post_escaped('username_fieldname');
 $username = strtolower($admin->get_post_escaped($usernameTmp));
 $sNewPassword = $admin->get_post('password');
 $sRePassword = $admin->get_post('password2');
-$display_name = $admin->get_post_escaped('display_name');
+$display_name = remove_special_characters($admin->get_post_escaped('display_name'));
 $email = $admin->get_post_escaped('email');
 $home_folder = $admin->get_post_escaped('home_folder');
 

@@ -489,8 +489,8 @@ class Accounts extends Frontend
             $aCollection[$iID]['reg_method'] = $this->_getRegMethod($rec['signup_confirmcode']);
             $aCollection[$iID]['language'] = $rec['language'];
             $aCollection[$iID]['user_id'] = $rec['user_id'];
-            $aCollection[$iID]['username'] = $rec['display_name'] . ' <i>(' . $rec['username'] . ')</i>';
-            $aCollection[$iID]['usernameCsv'] = $rec['display_name'] . ' (' . $rec['username'] . ')';
+            $aCollection[$iID]['username'] = remove_special_characters($rec['display_name']) . ' <i>(' . $rec['username'] . ')</i>';
+            $aCollection[$iID]['usernameCsv'] = remove_special_characters($rec['display_name']) . ' (' . $rec['username'] . ')';
             $aCollection[$iID]['email'] = $rec['email'];
             $aCollection[$iID]['groups'] = $rec['user_groups'];
             $aCollection[$iID]['actions'] = sprintf($sPryFunc, $rec['display_name'], $iID, $iID) . ' ';
