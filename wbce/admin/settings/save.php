@@ -202,6 +202,9 @@ if ($res_settings = $database->query($sql)) {
 
         if (!in_array($setting_name, $allow_tags_in_fields)) {
             $value = strip_tags($value);
+			if ($setting_name != "website_title") {
+				$value = str_replace( array( '\'','"',';','<','>','%','$','\\' ), '', $value);
+			} 
         }
 
         if (!in_array($value, $disallow_in_fields) && (isset($_POST[$setting_name]) || $passed == true)) {
