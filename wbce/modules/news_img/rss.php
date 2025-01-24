@@ -78,7 +78,44 @@ if(isset($group_id)) {
 $result = $database->query($query);
 
 //Generating the news items
-while($item = $result->fetchRow()){ ?>
+while($item = $result->fetchRow()){ 
+
+$pattern = '/\[wblink([0-9]+)\]/isU';
+if (preg_match_all($pattern, $item["content_short"], $aMatches, PREG_SET_ORDER))
+{
+	$aSearchReplaceList = array();
+	foreach ($aMatches as $aMatch) {
+		 // collect matches formatted like '[wblink123]' => 123
+		$aSearchReplaceList[strtolower($aMatch[0])] = $aMatch[1];
+	}
+	// build list of PageIds for SQL query
+	$sPageIdList = implode(',', $aSearchReplaceList); // '123,124,125'
+	// replace all PageIds with '#' (stay on page death link)
+	array_walk($aSearchReplaceList, function(&$value, $index){ $value = '#'; });
+	$sql = 'SELECT `page_id`, `link` FROM `'.TABLE_PREFIX.'pages` '
+		 . 'WHERE `page_id` IN('.$sPageIdList.')';
+	if (($oPages = $database->query($sql))) {
+		while (($aPage = $oPages->fetchRow(MYSQLI_ASSOC))) {
+			$aPage['link'] = ($aPage['link']
+							 ? PAGES_DIRECTORY.$aPage['link'].PAGE_EXTENSION
+							 : '#');
+			// collect all search-replace pairs with valid links
+			if (is_readable(WB_PATH.$aPage['link'])) {
+				// replace death link with found and valide link
+				$aSearchReplaceList['[wblink'.$aPage['page_id'].']'] =
+					WB_URL.$aPage['link'];
+			}
+		}
+	}
+	// replace all found [wblink**] tags with their urls
+	$item["content_short"] = str_ireplace(
+		array_keys($aSearchReplaceList),
+		$aSearchReplaceList,
+		$item["content_short"]
+	);
+}
+
+?>
 		<item>
 			<title><![CDATA[<?php echo stripslashes($item["title"]); ?>]]></title>
 			<description><![CDATA[<?php echo stripslashes($item["content_short"]); ?>]]></description>
