@@ -32,7 +32,7 @@
  * http://stackoverflow.com/questions/34117651/php7-symfony-2-8-failed-to-write-session-data
  * https://github.com/snc/SncRedisBundle/blob/master/Session/Storage/Handler/RedisSessionHandler.php
  */
-class DbSession
+class DbSession implements SessionHandlerInterface
 {
     private $alive = true;
     private $database = null;
@@ -55,6 +55,7 @@ class DbSession
             $this->createDbTablesIfNotThere();
         } else {
             // Set session handler to overide PHP default
+            /*
             session_set_save_handler(
                 array(
                     &$this,
@@ -81,6 +82,8 @@ class DbSession
                     'gc'
                 ) // Garbage collection gc
             );
+            */
+            session_set_save_handler( $this );
             $this->gc(1);
         }
 
@@ -154,7 +157,7 @@ class DbSession
      *
      * Delete session and its entire data if lifetime has exeded.
      */
-    public function gc($expire)
+    public function gc($expire): int|false
     {
         $expire = ini_get("session.gc_maxlifetime");
 
@@ -207,7 +210,7 @@ class DbSession
      *
      * As DB is connected by the constructor we need to do nothing here.
      */
-    public function open()
+    public function open(string $path, string $name): bool
     {
         return true;
     }
@@ -217,7 +220,7 @@ class DbSession
      *
      * We do not need to disconnect DB here as we only use a DB handle from outside.
      */
-    public function close()
+    public function close(): bool
     {
         return true;
     }
@@ -227,7 +230,7 @@ class DbSession
      *
      * Read session data from DB
      */
-    public function read($sid)
+    public function read($sid): string|false
     {
         $sql = "SELECT `data` FROM `{TP}dbsessions` WHERE `id` = '" . $this->database->escapeString($sid) . "' LIMIT 1";
         $res = $this->database->query($sql);
@@ -252,7 +255,7 @@ class DbSession
      *
      * Write session data to DB
      */
-    public function write($sid, $data)
+    public function write($sid, $data): bool
     {
         $user = WSession::get('USER_ID');
         if (!is_numeric($user)) {
@@ -270,7 +273,7 @@ class DbSession
      *
      * Delete session and its entire data to DB
      */
-    public function destroy($sid)
+    public function destroy($sid): bool
     {
         $sql = "DELETE FROM `{TP}dbsessions` WHERE `id` = '" . $this->database->escapeString($sid) . "'";
         $this->database->query($sql);
