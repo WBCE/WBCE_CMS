@@ -75,7 +75,7 @@ class WBCE_Error
             case E_USER_ERROR:          $errseverity = "User Error";        break;
             case E_USER_WARNING:        $errseverity = "User Warning";      break;
             case E_USER_NOTICE:         $errseverity = "User Notice";       break;
-            case E_STRICT:              $errseverity = "Strict Standards";  break;
+            //case E_STRICT:              $errseverity = "Strict Standards";  break;
             case E_RECOVERABLE_ERROR:   $errseverity = "Recoverable Error"; break;
             case E_DEPRECATED:          $errseverity = "Deprecated";        break;
             case E_USER_DEPRECATED:     $errseverity = "User Deprecated";   break;
