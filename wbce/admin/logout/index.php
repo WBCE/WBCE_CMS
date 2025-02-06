@@ -44,4 +44,5 @@ if (isset($_COOKIE[session_name()])) {
 session_destroy();
 
 // redirect to admin login
-die(header('Location: ' . ADMIN_URL . '/login/index.php'));
+header('Location: ' . ADMIN_URL . '/login/index.php');
+die;
