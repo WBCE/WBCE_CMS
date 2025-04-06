@@ -1434,7 +1434,7 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
         $settings['footer']
     );
 
-	if (empty($list)) {$list[]='Nichts gefunden';}
+	if (empty($list)) {$list[]=$TEXT['NONE_FOUND'];}
     return array(
         'rendered_posts' => $list,
         'prev_next_footer' => $prev_next_footer,
@@ -2432,7 +2432,7 @@ function mod_nwi_get_news_items($options=array())
                           . "<a href=\"".$wb->page_link(PAGE_ID)."?tags=".$tag."\">".$tag."</a></span>";				
 				$taglistArray[$i] = $tag['tag'];		  
             }	
-			$taglist = implode(',',$taglistArray);
+			if (is_array($taglistArray)) { $taglist = implode(',',$taglistArray); } else { $taglist=''; }
             // gallery images - wichtig für link "weiterlesen"  SHOW_READ_MORE
             $images = mod_nwi_img_get_by_post($post['post_id'],false);
             $anz_post_img = count($images);
