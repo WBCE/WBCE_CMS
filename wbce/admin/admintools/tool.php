@@ -24,6 +24,13 @@ $doSave = (isset($_POST['save_settings']) || isset($_POST['save_default']) || (i
 // return url if something goes wrong , or back button is used
 $returnToTools = ADMIN_URL . '/admintools/index.php';
 
+// Check if the tool's directory is present on server
+if(is_dir(WB_PATH.'/modules/'.$toolDir) == false){
+    $admin = new Admin('admintools', 'admintools', true);
+    $admin->print_error("<tt>modules/<b>{$toolDir}</b>/</tt><br>".$MESSAGE['GENERIC_MODULE_VERSION_ERROR'], $returnToTools);
+    exit;
+}
+
 $toolError = false;
 $toolCheck = true;
 
