@@ -652,6 +652,7 @@ $MESSAGE['START_CURRENT_USER'] = 'You are currently logged in as:';
 $MESSAGE['START_INSTALL_DIR_EXISTS'] = 'Warning, Installation Directory Still Exists!';
 $MESSAGE['START_UPGRADE_SCRIPT_EXISTS'] = 'Please delete the file "upgrade-script.php" from your webspace.';
 $MESSAGE['START_WBCE_NOT_CLEAN'] = 'The integrity check failed, please contact the administrator or the WBCE forum';
+$MESSAGE['START_WB_URL_SLASH'] = 'Please remove the trailing slash from WB_URL in config.php file!';
 $MESSAGE['START_WELCOME_MESSAGE'] = 'Welcome to WBCE CMS Administration';
 $MESSAGE['TEMPLATES_CHANGE_TEMPLATE_NOTICE'] = 'Please note: to change the template you must go to the Settings section';
 $MESSAGE['TESTMAIL_SUCCESS'] = "The test email was sent to <code>%s</code>. Please check your inbox.";

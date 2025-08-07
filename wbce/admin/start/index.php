@@ -109,6 +109,9 @@ if ($admin->get_group_id() == 1) {
     } elseif (file_exists(WB_PATH . '/modules/SimpleCommandDispatcher.inc.php')|| file_exists(WB_PATH . '/framework/Login.php')) {
         $template->set_var('DISPLAY_WARNING', 'display:block;');
         $template->set_var('WARNING', $MESSAGE['START_WBCE_NOT_CLEAN']);
+	} elseif (substr(WB_URL,-1)=="/") {
+		$template->set_var('DISPLAY_WARNING', 'display:block;');
+        $template->set_var('WARNING', $MESSAGE['START_WB_URL_SLASH']);	
     } else {
         $template->set_var('DISPLAY_WARNING', 'display:none;');
     }
