@@ -158,7 +158,7 @@ if ($rSections = $database->query($sSql)) {
                         'SECTION_MODULE' => $admin->get_module_name($section['module']),
 						'SECTION_MODULE_CLASS' => $section['module'],
                         'SECTION_BLOCK' => $section['block'],
-                        'SECTION_NAME' => $section['namesection'],
+                        'SECTION_NAME' => htmlentities(strip_tags($section['namesection'])),
                     )
                 );
 

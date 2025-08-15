@@ -99,7 +99,7 @@ if ($query_sections->numRows() > 0) {
                 if ($sql != '') {
                     $sql .= ",";
                 }
-                $sql .= " namesection = '" . $database->escapeString($_POST['namesection' . $section_id]) . "'";
+                $sql .= " namesection = '" . $database->escapeString(htmlentities(strip_tags($_POST['namesection' . $section_id]))) . "'";
             }
             // update publ_start and publ_end, trying to make use of the strtotime()-features like "next week", "+1 month", ...
             if (isset($_POST['start_date' . $section_id]) && isset($_POST['end_date' . $section_id])) {

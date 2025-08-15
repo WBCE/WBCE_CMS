@@ -114,7 +114,8 @@ class WBCE_Error
     private function writeError($out)
     {
 		if($this->url) {
-			$preout = date('c').' '.'[Visitor Request] '.$this->url.PHP_EOL;
+			$urlOut = htmlentities(strip_tags($this->url));
+			$preout = date('c').' '.'[Visitor Request] '.$urlOut.PHP_EOL;
 			file_put_contents($this->errorLogFilename, $preout, FILE_APPEND);
 			$this->url = '';
 		}
