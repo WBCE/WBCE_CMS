@@ -17,7 +17,7 @@ INSERT INTO `{TABLE_PREFIX}search` (`search_id`, `name`, `value`, `extra`) VALUE
 (7, 'module_order', 'wysiwyg,news_img', ''),
 (8, 'max_excerpt', '15', ''),
 (9, 'time_limit', '0', ''),
-(10, 'cfg_enable_old_search', 'true', ''),
+(10, 'cfg_enable_old_search', 'false', ''),
 (11, 'cfg_search_keywords', 'true', ''),
 (12, 'cfg_search_description', 'true', ''),
 (13, 'cfg_show_description', 'true', ''),
