@@ -45,8 +45,9 @@ if (!function_exists('simplepagehead')) {
         $msTileColor = '#ffc40d';
         $pinnedTabColor = '#5bbad5';
         $themeColor = '#ffffff';
+		if (isset($_GET['cat_id'])) { $catID = (int)$_GET['cat_id']; }
 
-        if (!isset($section_id) and (isset($_GET['cat_id']))) {
+        if (!isset($section_id) and (isset($catID))) {
             $section_id = $database->get_one("SELECT `section_id` FROM `".TABLE_PREFIX."sections` WHERE `page_id`=".$page_id." AND `module`='responsiveFG'");
         }
 
