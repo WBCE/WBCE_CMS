@@ -714,8 +714,14 @@ if (version_compare(WB_VERSION, '2.8', '<')) {
     $sql = 'UPDATE `' . TABLE_PREFIX . 'search` ';
     $sql .= 'SET `value`=\'' . $search_no_results . '\' ';
     $sql .= 'WHERE `name`=\'no_results\'';
-    echo ($database->query($sql)) ? ' $OK<br />' : ' $FAIL<br />';
+    echo ($database->query($sql)) ? ' OK<br />' : ' FAIL<br />';
 }
+
+echo "<br />Updating database field `cfg_enable_old_search` of search table: ";    
+    $sql = 'UPDATE `' . TABLE_PREFIX . 'search` ';
+    $sql .= 'SET `value`=\'false\' ';
+    $sql .= 'WHERE `name`=\'cfg_enable_old_search\'';
+    echo ($database->query($sql)) ? ' OK<br />' : ' FAIL<br />';
 
 /**********************************************************
  * update media folder index protect files

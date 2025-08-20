@@ -147,6 +147,10 @@ if ($rSections = $database->query($sSql)) {
                 // We definitely need a section anchor in the Backend (no matter if it's set to empty for the Frontend)
                 // Therefore, if SEC_ANCHOR is empty, in the backend we will use 'sec_anchor_' instead.
                 $sSectionAnchor = (defined('SEC_ANCHOR') && SEC_ANCHOR ? SEC_ANCHOR : 'sec_anchor_') . $section['section_id'];
+				$aSectionName = "";
+				if (isset($section['namesection']) && $section['namesection']!="") {
+					$aSectionName = htmlentities(strip_tags($section['namesection']));
+				}
 
                 // Set template vars
                 $oTemplate->set_var(
@@ -158,7 +162,7 @@ if ($rSections = $database->query($sSql)) {
                         'SECTION_MODULE' => $admin->get_module_name($section['module']),
 						'SECTION_MODULE_CLASS' => $section['module'],
                         'SECTION_BLOCK' => $section['block'],
-                        'SECTION_NAME' => htmlentities(strip_tags($section['namesection'])),
+                        'SECTION_NAME' => $aSectionName,
                     )
                 );
 

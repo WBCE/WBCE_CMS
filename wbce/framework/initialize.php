@@ -195,7 +195,7 @@ switch (true) {
 
     case (ER_LEVEL == "E3"):
         // show only errors, nothing else
-        error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE & ~E_WARNING);
+        error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
         break;
 
     default:
