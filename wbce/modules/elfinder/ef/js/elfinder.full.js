@@ -1,9 +1,9 @@
 /*!
  * elFinder - file manager for web
- * Version 2.1.64 (2023-12-20)
+ * Version 2.1.66 (2025-08-28)
  * http://elfinder.org
  * 
- * Copyright 2009-2023, Studio 42
+ * Copyright 2009-2025, Studio 42
  * Licensed under a 3-clauses BSD license
  */
 (function(root, factory) {
@@ -2333,6 +2333,8 @@ var elFinder = function(elm, opts, bootCallback) {
 			isBinary = (opts.options || {}).dataType === 'binary',
 			// current cmd is "open"
 			isOpen   = (!opts.asNotOpen && cmd === 'open'),
+			// the tree option is enabled (for "open" command) 
+			isTree   = (data.tree === 1),
 			// call default fail callback (display error dialog) ?
 			deffail  = !(isBinary || opts.preventDefault || opts.preventFail),
 			// call default success callback ?
@@ -2554,7 +2556,7 @@ var elFinder = function(elm, opts, bootCallback) {
 					},
 					actionTarget;
 					
-					if (isOpen) {
+					if (isOpen && !isTree) {
 						pushLeafRoots('files');
 					} else if (cmd === 'tree') {
 						pushLeafRoots('tree');
@@ -3123,9 +3125,11 @@ var elFinder = function(elm, opts, bootCallback) {
 				return c;
 			},
 			comp  = compare(),
+			odataRoots,
 			dfrd  = $.Deferred().always(function() { !reqFail && self.trigger('sync'); }),
+			tree = (! onlydir && this.ui.tree) ? 1 : 0,
 			opts = [this.request({
-				data           : {cmd : 'open', reload : 1, target : cwd, tree : (! onlydir && this.ui.tree) ? 1 : 0, compare : comp},
+				data           : {cmd : 'open', reload : 1, target : cwd, tree : tree, compare : comp},
 				preventDefault : true
 			})],
 			exParents = function() {
@@ -3217,7 +3221,14 @@ var elFinder = function(elm, opts, bootCallback) {
 			if (!self.validResponse('tree', pdata)) {
 				return dfrd.reject((pdata.norError || 'errResponse'));
 			}
-			
+
+			// When tree = 1, the server will return all volumes in response to the open command.
+			// Remove volumes from the tree command that do not exist anymore.
+			if (tree && pdata && pdata.tree) {
+				odataRoots = $.map($.grep(odata.files, function(f) {return f.isroot;}), function(f) {return f.hash;});
+				pdata.tree = $.grep(pdata.tree, function(f) {return !f.isroot || odataRoots.indexOf(f.hash) >= 0;});
+			}
+
 			var diff = self.diff(odata.files.concat(pdata && pdata.tree ? pdata.tree : []), onlydir);
 
 			diff.added.push(odata.cwd);
@@ -4869,8 +4880,18 @@ var elFinder = function(elm, opts, bootCallback) {
 				obj, data;
 			if (res && (self.convAbsUrl(self.options.url).indexOf(res.origin) === 0 || self.convAbsUrl(self.uploadURL).indexOf(res.origin) === 0)) {
 				try {
-					obj = JSON.parse(res.data);
-					data = obj.data || null;
+					try {
+						if (typeof res.data !== 'string') {
+							return;
+						}
+						obj = JSON.parse(res.data);
+						if (obj.type !== "io.studio-42.github") {
+							return;
+						}
+						data = obj.data || null;
+					} catch (e2) {
+						return;
+					} 
 					if (data) {
 						if (data.error) {
 							if (obj.bind) {
@@ -6022,6 +6043,18 @@ elFinder.prototype = {
 			'image/vnd.adobe.photoshop'     : 'PSD',
 			'image/xbm'                     : 'XBITMAP',
 			'image/pxm'                     : 'PXM',
+			'image/webp'                    : 'WEBP',
+			'application/vnd.ms-fontobject' : 'EOT',
+			'font/sfnt'                     : 'SFNT',
+			'application/font-sfnt'         : 'SFNT',
+			'font/ttf'                      : 'TTF',
+			'font/opentype'                 : 'OTF',
+			'font/otf'                      : 'OTF',
+			'application/x-font-opentype'   : 'OTF',
+			'font/woff'                     : 'WOFF',
+			'application/font-woff'         : 'WOFF',
+			'font/woff2'                    : 'WOFF2',
+			'application/font-woff2'        : 'WOFF2',
 			'audio/mpeg'                    : 'AudioMPEG',
 			'audio/midi'                    : 'AudioMIDI',
 			'audio/ogg'                     : 'AudioOGG',
@@ -8143,7 +8176,7 @@ elFinder.prototype = {
 							}
 						}
 						
-						if (isRoot) {
+						if (isRoot && self.options.enableRootRename !== false) {
 							if (rootNames = self.storage('rootNames')) {
 								if (rootNames[file.hash]) {
 									file._name = file.name;
@@ -9012,6 +9045,8 @@ elFinder.prototype = {
 				kind = 'Video';
 			} else if (mime.indexOf('application') === 0) {
 				kind = 'App';
+			} else if (mime.indexOf('font') === 0) {
+				kind = 'Font';
 			} else {
 				kind = mime;
 			}
@@ -10266,6 +10301,9 @@ elFinder.prototype = {
 						if (themeObj.cssurls) {
 							themeObj.cssurls = absUrl(themeObj.cssurls, m[1]);
 						}
+						if (themeObj.image) {
+							themeObj.image = absUrl(themeObj.image, m[1]);
+						}
 						dfd.resolve(themeObj);
 					}).fail(function() {
 						dfd.reject();
@@ -10748,7 +10786,7 @@ if (!window.cancelAnimationFrame) {
  *
  * @type String
  **/
-elFinder.prototype.version = '2.1.64';
+elFinder.prototype.version = '2.1.66';
 
 
 
@@ -11233,29 +11271,29 @@ elFinder.prototype._options = {
 	 */
 	cdns : {
 		// for editor etc.
-		ace        : 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.22.0',
+		ace        : 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2',
 		codemirror : 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7',
-		ckeditor   : 'https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.21.0',
-		ckeditor5  : 'https://cdn.ckeditor.com/ckeditor5/38.0.1',
-		tinymce    : 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.4.2',
+		ckeditor   : 'https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.22.1', // last version of Open Source Project
+		ckeditor5  : 'https://cdn.ckeditor.com/ckeditor5/40.2.0',
+		tinymce    : 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2',
 		simplemde  : 'https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2',
 		fabric     : 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1',
 		fabric16   : 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7',
 		tui        : 'https://uicdn.toast.com',
 		// for quicklook etc.
-		hls        : 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.4/hls.min.js',
-		dash       : 'https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.7.0/dash.all.min.js',
+		hls        : 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.14/hls.min.js',
+		dash       : 'https://cdnjs.cloudflare.com/ajax/libs/dashjs/4.7.3/dash.all.min.js',
 		flv        : 'https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.6.2/flv.min.js',
-		videojs    : 'https://cdnjs.cloudflare.com/ajax/libs/video.js/8.3.0',
+		videojs    : 'https://cdnjs.cloudflare.com/ajax/libs/video.js/8.8.0',
 		prettify   : 'https://cdn.jsdelivr.net/gh/google/code-prettify@e006587b4a893f0281e9dc9a53001c7ed584d4e7/loader/run_prettify.js',
 		psd        : 'https://cdnjs.cloudflare.com/ajax/libs/psd.js/3.4.0/psd.min.js',
 		rar        : 'https://cdn.jsdelivr.net/gh/nao-pon/rar.js@6cef13ec66dd67992fc7f3ea22f132d770ebaf8b/rar.min.js',
 		zlibUnzip  : 'https://cdn.jsdelivr.net/gh/imaya/zlib.js@0.3.1/bin/unzip.min.js', // need check unzipFiles() in quicklook.plugins.js when update
 		zlibGunzip : 'https://cdn.jsdelivr.net/gh/imaya/zlib.js@0.3.1/bin/gunzip.min.js',
 		bzip2      : 'https://cdn.jsdelivr.net/gh/nao-pon/bzip2.js@0.8.0/bzip2.js',
-		marked     : 'https://cdnjs.cloudflare.com/ajax/libs/marked/5.0.4/marked.min.js',
+		marked     : 'https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.0/marked.min.js',
 		sparkmd5   : 'https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js',
-		jssha      : 'https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.3.0/sha.min.js',
+		jssha      : 'https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.3.1/sha.min.js',
 		amr        : 'https://cdn.jsdelivr.net/gh/yxl/opencore-amr-js@dcf3d2b5f384a1d9ded2a54e4c137a81747b222b/js/amrnb.js',
 		tiff       : 'https://cdn.jsdelivr.net/gh/seikichi/tiff.js@545ede3ee46b5a5bc5f06d65954e775aa2a64017/tiff.min.js'
 	},
@@ -12584,7 +12622,12 @@ elFinder.prototype._options = {
 	 *
 	 * @type Boolean|Object (toast options)
 	 */
-	toastBackendWarn : true
+	toastBackendWarn : true,
+
+	/**
+	 * Whether renaming root folders is enabled. If true, the alias for the root folder is stored as a preference for the user.
+	 */
+	enableRootRename : true,
 };
 
 
@@ -13864,6 +13907,7 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'btnCancel' : 'Cancel',
 			'btnNo'     : 'No',
 			'btnYes'    : 'Yes',
+			'btnDiscard': 'Discard changes',
 			'btnMount'  : 'Mount',  // added 18.04.2012
 			'btnApprove': 'Goto $1 & approve', // from v2.1 added 26.04.2012
 			'btnUnmount': 'Unmount', // from v2.1 added 30.04.2012
@@ -14212,6 +14256,12 @@ if (typeof elFinder === 'function' && elFinder.prototype.i18) {
 			'kindTTF'         : 'True Type font',
 			'kindOTF'         : 'Open Type font',
 			'kindRPM'         : 'RPM package',
+			// fonts
+			'kindFont'        : 'Font',
+			'kindSFNT'        : 'SFNT font',
+			'kindEOT'         : 'Embedded Open Type font',
+			'kindWOFF'        : 'Web Open Font Format',
+			'kindWOFF2'       : 'Web Open Font Format 2',
 			// texts
 			'kindText'        : 'Text document',
 			'kindTextPlain'   : 'Plain text',
@@ -18291,6 +18341,10 @@ $.fn.elfinderdialog = function(opts, fm) {
 						.on('mousedown touchstart', function(e) {
 							e.preventDefault();
 							e.stopPropagation();
+							if (typeof opts.headerBtnCloseAction === 'function') {
+								opts.headerBtnCloseAction(e);
+								return;
+							}
 							self.elfinderdialog('close');
 						})
 					);
@@ -18901,6 +18955,7 @@ $.fn.elfinderdialog.defaults = {
 	openMaximized : false,
 	headerBtnPos : 'auto',
 	headerBtnOrder : 'auto',
+	headerBtnCloseAction: null,
 	optimizeNumber : true,
 	propagationEvents : ['mousemove', 'mouseup']
 };
@@ -24200,7 +24255,68 @@ elFinder.prototype.commands.edit = function() {
 					});
 				},
 				cancel = function() {
-					ta.elfinderdialog('close');
+					if (!self.options.confirmUnsavedBeforeClose) {
+						ta.elfinderdialog('close');
+					} else {
+						var close = function() {
+								var conf;
+								dfrd.resolve();
+								if (ta.editor) {
+									ta.editor.close(ta[0], ta.editor.instance);
+									conf = ta.editor.confObj;
+									if (conf.info && conf.info.syncInterval) {
+										fileSync(file.hash);
+									}
+								}
+								ta.elfinderdialog('destroy');
+							},
+							onlySaveAs = (typeof saveAsFile.name !== 'undefined'),
+							accept = onlySaveAs? {
+								label    : 'btnSaveAs',
+								callback : function() {
+									requestAnimationFrame(saveAs);
+								}
+							} : {
+								label    : 'btnSaveClose',
+								callback : function() {
+									save().done(function() {
+										close();
+									});
+								}
+							};
+						changed().done(function(change) {
+							var msgs = ['confirmNotSave'];
+							var btnDiscard = {
+								label    : 'btnDiscard',
+								callback : function() {
+									close();
+								}
+							}
+							if (change) {
+								if (typeof change === 'string') {
+									msgs.unshift(change);
+								}
+								fm.confirm({
+									title  : self.title,
+									text   : msgs,
+									accept : accept,
+									cancel : {
+										label    : 'btnCancel',
+										callback : $.noop
+									},
+									buttons : onlySaveAs? [btnDiscard] : [{
+										label    : 'btnSaveAs',
+										callback : function() {
+											ta.elfinderdialog('destroy');
+											requestAnimationFrame(saveAs);
+										}
+									}, btnDiscard]
+								});
+							} else {
+								close();
+							}
+						});
+					}
 				},
 				savecl = function() {
 					if (!loaded()) { return; }
@@ -24347,7 +24463,13 @@ elFinder.prototype.commands.edit = function() {
 							}
 						}
 					},
+					headerBtnCloseAction : self.options.confirmUnsavedBeforeClose ? function() {
+						cancel();
+					} : undefined,
 					close   : function() {
+						if (self.options.confirmUnsavedBeforeClose) {
+							return;
+						}
 						var close = function() {
 								var conf;
 								dfrd.resolve();
@@ -25934,7 +26056,7 @@ elFinder.prototype.commands.fullscreen = function() {
 			
 			html.push(sep);
 			html.push('<div class="'+lic+'">Licence: 3-clauses BSD Licence</div>');
-			html.push('<div class="'+lic+'">Copyright © 2009-2022, Studio 42 / nao-pon</div>');
+			html.push('<div class="'+lic+'">Copyright © 2009-2024, Studio 42 / nao-pon</div>');
 			html.push('<div class="'+lic+'">„ …'+fm.i18n('dontforget')+' ”</div>');
 			html.push('</div>');
 		},
@@ -30590,12 +30712,16 @@ elFinder.prototype.commands.quicklook.plugins = [
 						}
 					},
 					err = 0, 
+					cssClass = '',
 					canPlay;
 				//reset();
 				pDash = null;
 				opts = opts || {};
+				if (opts.cssClass) {
+					cssClass = ' ' + opts.cssClass;
+				}
 				ql.hideinfo();
-				node = $('<video class="elfinder-quicklook-preview-video" controls' + controlsList + ' preload="auto" autobuffer playsinline>'
+				node = $('<video class="elfinder-quicklook-preview-video' + cssClass + '" controls' + controlsList + ' preload="auto" autobuffer playsinline>'
 						+'</video>')
 					.on('change', function(e) {
 						// Firefox fire change event on seek or volume change
@@ -30702,10 +30828,13 @@ elFinder.prototype.commands.quicklook.plugins = [
 				opDfd = fm.openUrl(file.hash, false, function(url) {
 					loading.remove();
 					if (url) {
-						render(file);
+						render(file, {
+							src: url,
+							cssClass: 'video-js'
+						});
 						node[0].src = url;
 						cVideojs(node[0], {
-							src: url
+							autoplay: true
 						});
 					}
 				}, { progressBar: prog });
@@ -31775,12 +31904,15 @@ elFinder.prototype.commands.rename = function() {
 	"use strict";
 
 	// set alwaysEnabled to allow root rename on client size
-	this.alwaysEnabled = true;
+	if (this.fm.options.enableRootRename !== false) {
+		this.alwaysEnabled = true;
+	}
 
 	this.syncTitleOnChange = true;
 
 	var self = this,
 		fm = self.fm,
+		enableRootRename = fm.options.enableRootRename !== false,
 		request = function(dfrd, targtes, file, name) {
 			var sel = targtes? [file.hash].concat(targtes) : [file.hash],
 				cnt = sel.length,
@@ -31788,7 +31920,7 @@ elFinder.prototype.commands.rename = function() {
 			
 			fm.lockfiles({files : sel});
 			
-			if (fm.isRoot(file) && !file.netkey) {
+			if (fm.isRoot(file) && !file.netkey && enableRootRename) {
 				if (!(rootNames = fm.storage('rootNames'))) {
 					rootNames = {};
 				}
@@ -32034,7 +32166,7 @@ elFinder.prototype.commands.rename = function() {
 			isRoot = fm.isRoot(sel[0]);
 		}
 
-		state = (cnt === 1 && ((fm.cookieEnabled && isRoot) || !sel[0].locked) || (fm.api > 2.1030 && cnt === $.grep(sel, function(f) {
+		state = (cnt === 1 && ((enableRootRename && fm.cookieEnabled && isRoot) || !sel[0].locked) || (fm.api > 2.1030 && cnt === $.grep(sel, function(f) {
 			if (!brk && !f.locked && f.phash === phash && !fm.isRoot(f) && (mime === f.mime || ext === fm.splitFileExtention(f.name)[1].toLowerCase())) {
 				return true;
 			} else {
@@ -32305,7 +32437,7 @@ elFinder.prototype.commands.rename = function() {
 			return dfrd.reject('errCmdParams', this.title);
 		}
 		
-		if (file.locked && !fm.isRoot(file)) {
+		if (file.locked && (!fm.isRoot(file) || !enableRootRename)) {
 			return dfrd.reject(['errLocked', file.name]);
 		}
 		
@@ -32562,35 +32694,6 @@ elFinder.prototype.commands.resize = function() {
 						'<input class="api2" type="radio" name="type" id="'+id+'-crop" value="crop" /><label class="api2" for="'+id+'-crop">'+fm.i18n('crop')+'</label>',
 						'<input class="api2" type="radio" name="type" id="'+id+'-rotate" value="rotate" /><label class="api2" for="'+id+'-rotate">'+fm.i18n('rotate')+'</label>'),
 					mode     = 'resize',
-					type     = uitype[ctrgrup]()[ctrgrup]('disable').find('input')
-						.on('change', function() {
-							mode = $(this).val();
-							
-							resetView();
-							resizable(true);
-							croppable(true);
-							rotateable(true);
-							
-							if (mode == 'resize') {
-								uiresize.show();
-								uirotate.hide();
-								uicrop.hide();
-								resizable();
-								isJpeg && grid8px.insertAfter(uiresize.find('.elfinder-resize-grid8'));
-							}
-							else if (mode == 'crop') {
-								uirotate.hide();
-								uiresize.hide();
-								uicrop.show();
-								croppable();
-								isJpeg && grid8px.insertAfter(uicrop.find('.elfinder-resize-grid8'));
-							} else if (mode == 'rotate') {
-								uiresize.hide();
-								uicrop.hide();
-								uirotate.show();
-								rotateable();
-							}
-						}),
 					width   = $(input)
 						.on('change', function() {
 							var w = round(parseInt(width.val())),
@@ -33839,7 +33942,37 @@ elFinder.prototype.commands.resize = function() {
 						}
 					}
 				}).attr('id', id).closest('.ui-dialog').addClass(clsediting);
-				
+
+				// Fix for https://github.com/Studio-42/elFinder/issues/3684
+				uitype[ctrgrup]()[ctrgrup]('disable').find('input').on('change', function() {
+					mode = $(this).val();
+
+					resetView();
+					resizable(true);
+					croppable(true);
+					rotateable(true);
+
+					if (mode == 'resize') {
+						uiresize.show();
+						uirotate.hide();
+						uicrop.hide();
+						resizable();
+						isJpeg && grid8px.insertAfter(uiresize.find('.elfinder-resize-grid8'));
+					}
+					else if (mode == 'crop') {
+						uirotate.hide();
+						uiresize.hide();
+						uicrop.show();
+						croppable();
+						isJpeg && grid8px.insertAfter(uicrop.find('.elfinder-resize-grid8'));
+					} else if (mode == 'rotate') {
+						uiresize.hide();
+						uicrop.hide();
+						uirotate.show();
+						rotateable();
+					}
+				});
+
 				// for IE < 9 dialog mising at open second+ time.
 				if (fm.UA.ltIE8) {
 					$('.elfinder-dialog').css('filter', '');
