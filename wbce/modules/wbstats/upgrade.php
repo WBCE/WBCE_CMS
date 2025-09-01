@@ -8,7 +8,7 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.6
+ * @version         0.2.5.7
  * @lastmodified    September 1, 2025
  *
  */
@@ -45,7 +45,10 @@ $database->index_add(TABLE_PREFIX."mod_wbstats_ips","time","time");
 $database->index_add(TABLE_PREFIX."mod_wbstats_ips","online","online");
 $database->index_add(TABLE_PREFIX."mod_wbstats_ips","ip","ip,online");
 
-$database->query("UPDATE `".TABLE_PREFIX."mod_wbstats_ips` SET `location`=`session` WHERE `session`!='ignore' and `session`!='' and `location`=''");
+//$database->query("UPDATE `".TABLE_PREFIX."mod_wbstats_ips` SET `location`=`session` WHERE `session`!='ignore' and `session`!='' and `location`=''");
+
+// clean bad data from previous upgrades.
+$database->query("UPDATE `".TABLE_PREFIX."mod_wbstats_ips` SET `location`='-' WHERE `session`=`location`");
 
 $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_wbstats_browser` (
 	`id` int(11) NOT NULL auto_increment,

@@ -8,7 +8,7 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.6
+ * @version         0.2.5.7
  * @lastmodified    September 1, 2025
  *
  */
@@ -16,7 +16,7 @@
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.6';
+$module_version = '0.2.5.7';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -30,6 +30,10 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.7
+ * fixed small issue after upgrading previous version
+ * prevent error in case of ip location service not responding.
  *
  * 0.2.5.6
  * - using new IP location service. geoplugin.net is no longer free to use
