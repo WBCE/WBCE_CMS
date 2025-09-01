@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.5
- * @lastmodified    December 16, 2023
+ * @version         0.2.5.6
+ * @lastmodified    September 1, 2025
  *
  */
 
@@ -36,9 +36,10 @@ _wbs_db_add_field("language", "mod_wbstats_ips", "varchar(32) NOT NULL default '
 _wbs_db_add_field("referer", "mod_wbstats_ips", "varchar(64) NOT NULL default '' AFTER `language`");
 _wbs_db_add_field("ua", "mod_wbstats_ips", "varchar(255) NOT NULL default '' AFTER `referer`");
 _wbs_db_add_field("last_status", "mod_wbstats_ips", "varchar(10) NOT NULL default '' AFTER `last_page`");
+_wbs_db_add_field("country", "mod_wbstats_ips", "varchar(64) NOT NULL default '' AFTER `location`");
 
 
-$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_ips` MODIFY `ip` VARCHAR(32)");
+$database->query("ALTER TABLE `".TABLE_PREFIX."mod_wbstats_ips` MODIFY `ip` VARCHAR(50)");
 
 $database->index_add(TABLE_PREFIX."mod_wbstats_ips","time","time");
 $database->index_add(TABLE_PREFIX."mod_wbstats_ips","online","online");
@@ -103,6 +104,12 @@ $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_wbstats_loc`  
 	INDEX `ip` (`ip`)
 	)"
 );
+
+_wbs_db_add_field("country", "mod_wbstats_loc", "varchar(128) NOT NULL default '' AFTER `location`");
+_wbs_db_add_field("country_code", "mod_wbstats_loc", "varchar(6) NOT NULL default '' AFTER `country`");
+_wbs_db_add_field("latitude", "mod_wbstats_loc", "varchar(12) NOT NULL default '' AFTER `country_code`");
+_wbs_db_add_field("longitude", "mod_wbstats_loc", "varchar(12) NOT NULL default '' AFTER `country_code`");
+
 
 $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_wbstats_utm`  (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,

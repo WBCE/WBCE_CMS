@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.5
- * @lastmodified    December 16, 2023
+ * @version         0.2.5.6
+ * @lastmodified    September 1, 2025
  *
  */
 
@@ -587,7 +587,7 @@ class stats {
 	function getLogSession($ip, $session = '') {
 		global $database,$table_ips, $table_hist, $WS;
 		$result = array();
-		if($query  = $database->query("SELECT * from ".$table_hist." WHERE `ip`='$ip' ORDER BY `timestamp` ASC")) {
+		if($query  = $database->query("SELECT * from ".$table_hist." WHERE `ip`='$ip' ORDER BY `timestamp` ASC LIMIT 2500")) {
 			while($res = $query->fetchRow()) {	
 				if(!isset($sess)) $sess = '-';
 				$tmp = array();

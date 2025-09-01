@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.5
- * @lastmodified    December 16, 2023
+ * @version         0.2.5.6
+ * @lastmodified    September 1, 2025
  *
  */
 
@@ -47,7 +47,7 @@ $database->query("CREATE TABLE `$table_day` (
 $database->query("DROP TABLE IF EXISTS `$table_ips`");
 $database->query("CREATE TABLE `$table_ips` (
 	`id` int(11) NOT NULL auto_increment,
-	`ip` varchar(32) NOT NULL default '',
+	`ip` varchar(50) NOT NULL default '',
 	`session` varchar(64) NOT NULL default '',
 	`time` int(20) NOT NULL default '0',
 	`online` int(20) NOT NULL default '0',
@@ -152,6 +152,8 @@ $database->query("CREATE TABLE `$table_loc` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`ip` VARCHAR(50) NOT NULL DEFAULT '',
 	`location` VARCHAR(128) NOT NULL DEFAULT '',
+	`country` VARCHAR(64) NOT NULL DEFAULT '',
+	`country_code` VARCHAR(64) NOT NULL DEFAULT '',
 	`timestamp` INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`),
 	INDEX `ip` (`ip`)

@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.5
- * @lastmodified    December 16, 2023
+ * @version         0.2.5.6
+ * @lastmodified    September 1, 2025
  *
  */
 
@@ -300,7 +300,7 @@ class counter {
 			$this->language = ''; //prevent pagecounting
 			return true;
 		} elseif(!$id = $database->get_one("SELECT `id` FROM ".$table_ips." WHERE `ip`='".$this->ip."' AND `session`='".$this->session."' AND `time` > '$timeout' ORDER BY `id` DESC LIMIT 1")) {
-			$city = $database->escapeString($this->getCountryCode());
+			$city = $this->getCountryCode();
 			$database->query("INSERT INTO ".$table_ips." (`ip`,`session`, `location`, `time`, `online`,`page`,`last_page`,`pages`,`language`,`os`,`browser`,`referer`,`ua`) VALUES 
 				('".$this->ip."', '".$this->session."', '".$city."', '".$this->time."', '".$this->time."', '".$this->page."', '".$this->page."','1','".$this->language."', '".$this->os."', '".$this->browser." (".$this->browser_version.")','".$this->referer_host."','".$this->agent."')");
 			$database->query("UPDATE ".$table_day." SET `user`=`user`+1, `view`=`view`+1 WHERE `day`='".$this->day."'");
@@ -317,8 +317,27 @@ class counter {
 		global $database, $table_loc;
 		$ip = $this->getRealUserIp(); 
 		$ipkey = md5($ip);
-		$t = time() - 60*60*24;
-		if(!$city = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' and `timestamp`>'$t' LIMIT 1")) {
+		if(!$city = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' LIMIT 1")) {
+			if($ipdata = json_decode($this->getUrlContent('http://ip-api.com/json/'.$ip),true)) {
+				if(!$ipdata['city'])  $ipdata['city'] = '- unknown -';
+				if(!$ipdata['countryCode'])  $ipdata['countryCode'] = '';
+
+				$country_code 	= $ipdata['countryCode'];
+				$city 			= $ipdata['city'];
+				if($country_code) $city = $city.' ('.$country_code.')';
+				$database->query("INSERT INTO ".$table_loc." (`ip`,`location`,`timestamp`) VALUES ('".$ipkey."','".$city."','".time()."') ");
+			}
+		} else {
+			// $city .= ' *';
+		}
+		return $city;
+	}	
+	
+	function noLongerFree_getCountryCode() {
+		global $database, $table_loc;
+		$ip = $this->getRealUserIp(); 
+		$ipkey = md5($ip);
+		if(!$city = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' LIMIT 1")) {
 			if($ipdata = unserialize($this->getUrlContent('http://www.geoplugin.net/php.gp?ip='.$ip))) {
 				if(!$ipdata['geoplugin_city'])  $ipdata['geoplugin_city'] = '- unknown -';
 				if(!$ipdata['geoplugin_countryCode'])  $ipdata['geoplugin_countryCode'] = '';
@@ -326,11 +345,10 @@ class counter {
 				$country_code 	= $ipdata['geoplugin_countryCode'];
 				$city 			= $ipdata['geoplugin_city'];
 				if($country_code) $city = $city.' ('.$country_code.')';
-				$city = $database->escapeString($city);
 				$database->query("INSERT INTO ".$table_loc." (`ip`,`location`,`timestamp`) VALUES ('".$ipkey."','".$city."','".time()."') ");
 			}
 		} else {
-			$city = $database->escapeString($city);
+			// $city .= ' *';
 		}
 		return $city;
 	}	

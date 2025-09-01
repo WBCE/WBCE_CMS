@@ -8,14 +8,15 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.5
- * @lastmodified    December 16, 2023
+ * @version         0.2.5.6
+ * @lastmodified    September 1, 2025
  *
  */
 
+
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.5';
+$module_version = '0.2.5.6';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -29,6 +30,10 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.6
+ * - using new IP location service. geoplugin.net is no longer free to use
+ * - small fix for ignoring IPv6 adresses
  *
  * 0.2.5.5
  * - fix for testing emtpy referer generating php8 error (class.count.php)
