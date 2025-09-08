@@ -46,10 +46,13 @@ if (!function_exists('simplepagehead')) {
         $pinnedTabColor = '#5bbad5';
         $themeColor = '#ffffff';
 		if (isset($_GET['cat_id'])) { $catID = (int)$_GET['cat_id']; }
+		if (!isset($page_id)) {$page_id = PAGE_ID;}
 
-        if (!isset($section_id) and (isset($catID))) {
-            $section_id = $database->get_one("SELECT `section_id` FROM `".TABLE_PREFIX."sections` WHERE `page_id`=".$page_id." AND `module`='responsiveFG'");
-        }
+		if (file_exists(WB_PATH.'/modules/responsiveFG/info.php')) {
+			if (!isset($section_id) and (isset($catID))) {
+				$section_id = $database->get_one("SELECT `section_id` FROM `".TABLE_PREFIX."sections` WHERE `page_id`=".$page_id." AND `module`='responsiveFG'");
+			}
+		}
 
         // Look for the module name of the current section
         if (isset($page_id) && isset($section_id)) {
