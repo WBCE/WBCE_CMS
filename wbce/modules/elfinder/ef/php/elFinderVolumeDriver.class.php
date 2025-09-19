@@ -3331,12 +3331,28 @@ abstract class elFinderVolumeDriver
             }
         }
         if (empty($file['url']) && $this->URL) {
-            $path = str_replace($this->separator, '/', substr($this->decode($hash), strlen(trim($this->root, '/' . $this->separator))));
+            $decoded = $this->decode($hash);
+
+            // safely strip root prefix if present
+            if (str_starts_with($decoded, $this->root)) {
+                $path = substr($decoded, strlen($this->root));
+            } else {
+                $path = $decoded;
+            }
+
+            // remove leading separator to avoid double slashes
+            $path = ltrim($path, '/');
+
+            // normalize separators
+            $path = str_replace($this->separator, '/', $path);
+
             if ($this->encoding) {
                 $path = $this->convEncIn($path, true);
             }
+
             $path = str_replace('%2F', '/', rawurlencode($path));
-            return $this->URL . $path;
+
+            return rtrim($this->URL, '/') . '/' . $path;
         } else {
             $ret = false;
             if (!empty($file['url']) && $file['url'] != 1) {
