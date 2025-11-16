@@ -25,6 +25,8 @@ switch ($action) {
         // Print header
         $admin = new admin('Access', 'users_modify');
         $user_id = $admin->checkIDKEY('user_id', 0, $_SERVER['REQUEST_METHOD']);
+		$activeUserGroupArray = explode(",", $_SESSION['GROUPS_ID']);
+
         // Check if user id is a valid number and doesn't equal 0
         if ($user_id == 0) {
             $admin->print_error($MESSAGE['GENERIC_FORGOT_OPTIONS']);
@@ -69,14 +71,19 @@ switch ($action) {
             $oTemplate->set_var('SELECTED', '');
             $oTemplate->parse('group_list', 'group_list_block', true);
             while ($group = $results->fetchRow()) {
-                $oTemplate->set_var('ID', $group['group_id']);
-                $oTemplate->set_var('NAME', $group['name']);
-                if (in_array($group['group_id'], explode(",", $user['groups_id']))) {
-                    $oTemplate->set_var('SELECTED', ' selected="selected"');
-                } else {
-                    $oTemplate->set_var('SELECTED', '');
-                }
-                $oTemplate->parse('group_list', 'group_list_block', true);
+				$allowGroup = false;
+				if ($_SESSION['GROUP_ID']==="1" 
+					|| in_array($group['group_id'],$activeUserGroupArray) 
+					|| $_SESSION['GROUP_ID']===$group['group_id']) {
+						$oTemplate->set_var('ID', $group['group_id']);
+						$oTemplate->set_var('NAME', $group['name']);
+						if (in_array($group['group_id'], explode(",", $user['groups_id']))) {
+							$oTemplate->set_var('SELECTED', ' selected="selected"');
+						} else {
+							$oTemplate->set_var('SELECTED', '');
+						}
+						$oTemplate->parse('group_list', 'group_list_block', true);
+					}
             }
         }
 

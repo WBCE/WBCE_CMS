@@ -32,6 +32,17 @@ if (!isset($_POST['user_id']) or !is_numeric($_POST['user_id']) or $_POST['user_
     $user_id = $_POST['user_id'];
 }
 
+
+$activeUserGroupArray = explode(",", $_SESSION['GROUPS_ID']);
+
+//only allow administrators to assign users to any group; usual users may assign themselves and other users only to groups where they already belong to
+if ((!in_array('1',$activeUserGroupArray) && in_array('1',$_POST['groups'])) 
+	|| (!in_array('1',$activeUserGroupArray) && array_diff($activeUserGroupArray,$_POST['groups']))) {
+    unset($_POST['group_id']);
+	$admin->print_header();
+	$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
+}
+
 // Gather details entered
 $groups_id = (isset($_POST['groups'])) ? implode(",", $admin->add_slashes($_POST['groups'])) : '';
 $active = $admin->add_slashes($_POST['active'][0]);
@@ -42,6 +53,9 @@ $sRePassword = $admin->get_post('password2');
 $display_name = remove_special_characters($admin->get_post_escaped('display_name'));
 $email = $admin->get_post_escaped('email');
 $home_folder = $admin->get_post_escaped('home_folder');
+
+
+
 
 
 $admin->print_header();

@@ -271,19 +271,28 @@ $aSelectedGroups = array();
 if (isset($aInsert['groups_id'])) {
     $aSelectedGroups = explode(",", $aInsert['groups_id']);
 }
+
+$activeUserGroupArray = explode(",", $_SESSION['GROUPS_ID']);
+
 if ($results->numRows() > 0) {
     $oTemplate->set_var('ID', '');
     $oTemplate->set_var('NAME', $TEXT['PLEASE_SELECT'] . '...');
     $oTemplate->set_var('SELECTED', ' selected="selected"');
     $oTemplate->parse('group_list', 'group_list_block', true);
     while ($group = $results->fetchRow()) {
-        $oTemplate->set_var('ID', $group['group_id']);
-        $oTemplate->set_var('NAME', $group['name']);
-        $oTemplate->set_var('SELECTED', '');
-        if (in_array($group['group_id'], $aSelectedGroups)) {
-            $oTemplate->set_var('SELECTED', ' selected="selected"');
-        }
-        $oTemplate->parse('group_list', 'group_list_block', true);
+		$allowGroup = false;
+		if ($_SESSION['GROUP_ID']==="1" 
+			|| in_array($group['group_id'],$activeUserGroupArray) 
+			|| $_SESSION['GROUP_ID']===$group['group_id']) {
+			$oTemplate->set_var('ID', $group['group_id']);
+			$oTemplate->set_var('NAME', $group['name']);
+			$oTemplate->set_var('SELECTED', '');
+			if (in_array($group['group_id'], $aSelectedGroups)) {
+				$oTemplate->set_var('SELECTED', ' selected="selected"');
+			}
+		$oTemplate->parse('group_list', 'group_list_block', true);
+		}
+        
     }
 }
 // Only allow the user to add a user to the Administrators group if they belong to it
