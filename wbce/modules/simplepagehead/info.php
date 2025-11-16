@@ -13,7 +13,7 @@
 $module_directory = 'simplepagehead';
 $module_name = 'SimplePageHead';
 $module_function = 'snippet';
-$module_version = '0.8.2';
+$module_version = '0.8.3';
 $module_platform = '1.4.0';
 $module_author = 'Chio, with a litte help from thorn. Extended for use with other modules by Christoph Marti. Updated by Florian Meerwinck for WBCE';
 $module_license = 'GNU General Public License';
@@ -22,6 +22,7 @@ $module_level = 'core';
 
 /**
  * Version history
+ * 0.8.3 - better parameter handling 
  *
  * 0.8.2 - more SEO friendly title (hopefully), remove default generator tag
  *
