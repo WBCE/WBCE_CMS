@@ -136,6 +136,7 @@ class Login extends Admin
             $this->increase_attempts();
         } else {
             // Check if the user exists (authenticate them)
+			sleep(1);
             if ($this->authenticate()) {
                 // Authentication successful
                 header("Location: " . $this->url);
