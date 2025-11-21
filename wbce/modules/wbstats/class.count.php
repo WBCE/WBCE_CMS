@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.7
- * @lastmodified    September 1, 2025
+ * @version         0.2.5.8
+ * @lastmodified    November 21, 2025
  *
  */
 
@@ -317,20 +317,35 @@ class counter {
 		global $database, $table_loc;
 		$ip = $this->getRealUserIp(); 
 		$ipkey = md5($ip);
-		if(!$city = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' LIMIT 1")) {
+		$timeout = time() - $this->reload;
+		
+		if(!$location = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' and `location` != '' and `timestamp` > '$timeout' ORDER BY `timestamp` DESC LIMIT 1")) {
 			if($ipdata = json_decode($this->getUrlContent('http://ip-api.com/json/'.$ip),true)) {
-				if(!$ipdata['city'])  $ipdata['city'] = '- unknown -';
-				if(!$ipdata['countryCode'])  $ipdata['countryCode'] = '';
+				
+				if(!isset($ipdata['city']) || !$ipdata['city'])  				$ipdata['city'] = '- unknown -';
+				if(!isset($ipdata['countryCode']) || !$ipdata['countryCode'])  	$ipdata['countryCode'] = '';
+				if(!isset($ipdata['country']) || !$ipdata['country'])  			$ipdata['country'] = '';
+				if(!isset($ipdata['lat']) || !$ipdata['lat'])  					$ipdata['lat'] = '';
+				if(!isset($ipdata['lon']) || !$ipdata['lon'])  					$ipdata['lon'] = '';
+				if(!isset($ipdata['timezone']) || !$ipdata['timezone'])  		$ipdata['timezone'] = '';
 
-				$country_code 	= $ipdata['countryCode'];
-				$city 			= $ipdata['city'];
-				if($country_code) $city = $city.' ('.$country_code.')';
-				$database->query("INSERT INTO ".$table_loc." (`ip`,`location`,`timestamp`) VALUES ('".$ipkey."','".$city."','".time()."') ");
+				$lat 			= $database->escapeString($ipdata['lat']);
+				$lon 			= $database->escapeString($ipdata['lon']);
+				$tz 			= $database->escapeString($ipdata['timezone']);
+				$country 		= $database->escapeString($ipdata['country']);
+				$country_code 	= $database->escapeString($ipdata['countryCode']);
+				$city 			= $database->escapeString($ipdata['city']);
+				
+				$location 		= $city;
+				if($country_code) $location = $city.' ('.$country_code.')';
+
+				$database->query("INSERT INTO ".$table_loc." (`ip`,`location`,`timestamp`,`city`,`country`,`country_code`,`latitude`,`longitude`,`timezone`) 
+					VALUES ('".$ipkey."','".$location."','".time()."','".$city."','".$country."','".$country_code."','".$lat."','".$lon."','".$tz."') ");
 			}
 		} else {
 			// $city .= ' *';
 		}
-		return $city;
+		return $location;
 	}	
 	
 	function noLongerFree_getCountryCode() {

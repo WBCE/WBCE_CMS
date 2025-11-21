@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.7
- * @lastmodified    September 1, 2025
+ * @version         0.2.5.8
+ * @lastmodified    November 21, 2025
  *
  */
 
@@ -109,9 +109,11 @@ $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_wbstats_loc`  
 );
 
 _wbs_db_add_field("country", "mod_wbstats_loc", "varchar(128) NOT NULL default '' AFTER `location`");
+_wbs_db_add_field("city", "mod_wbstats_loc", "varchar(128) NOT NULL default '' AFTER `location`");
 _wbs_db_add_field("country_code", "mod_wbstats_loc", "varchar(6) NOT NULL default '' AFTER `country`");
 _wbs_db_add_field("latitude", "mod_wbstats_loc", "varchar(12) NOT NULL default '' AFTER `country_code`");
 _wbs_db_add_field("longitude", "mod_wbstats_loc", "varchar(12) NOT NULL default '' AFTER `country_code`");
+_wbs_db_add_field("timezone", "mod_wbstats_loc", "varchar(64) NOT NULL default '' AFTER `country_code`");
 
 
 $database->query("CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."mod_wbstats_utm`  (

@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.7
- * @lastmodified    September 1, 2025
+ * @version         0.2.5.8
+ * @lastmodified    November 21, 2025
  *
  */
 
@@ -152,8 +152,12 @@ $database->query("CREATE TABLE `$table_loc` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`ip` VARCHAR(50) NOT NULL DEFAULT '',
 	`location` VARCHAR(128) NOT NULL DEFAULT '',
+	`city` VARCHAR(64) NOT NULL DEFAULT '',
 	`country` VARCHAR(64) NOT NULL DEFAULT '',
 	`country_code` VARCHAR(64) NOT NULL DEFAULT '',
+	`timezone` VARCHAR(64) NOT NULL DEFAULT '',
+	`latitude` VARCHAR(12) NOT NULL DEFAULT '',
+	`longitude` VARCHAR(12) NOT NULL DEFAULT '',
 	`timestamp` INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`),
 	INDEX `ip` (`ip`)
