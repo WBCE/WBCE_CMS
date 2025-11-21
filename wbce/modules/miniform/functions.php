@@ -106,15 +106,16 @@ class mform {
 
 	function safe_get_post($postfield) {
 		global $MF;
+		global $z;
 		$this->isArray = false;
 		$val = null;
 		$getfield = substr($postfield,0,5)=='mf_r_' ? substr($postfield,5) : substr($postfield,3);
 		if(isset($_FILES[$postfield]['name']) && $_FILES[$postfield]['name']) {
 			if ($this->check_whitelist($_FILES[$postfield]['name'])) {
 				if($_FILES[$postfield]['error'] == 0) {
-					if($_FILES[$postfield]['size'] > 0 && file_exists($_FILES[$postfield]['tmp_name'])) {
-						$this->attachements[$_FILES[$postfield]['name']] = $_FILES[$postfield]['tmp_name'];
-						$val = $_FILES[$postfield]['name'];
+					if($_FILES[$postfield]['size'] > 0 && file_exists($_FILES[$postfield]['tmp_name'])) {						
+						$this->attachements[$_FILES[$postfield]['tmp_name']] = $_FILES[$postfield]['name']; 
+						$val = strval($z).$_FILES[$postfield]['name'];
 					} else {
 						$this->error = $_FILES[$postfield]['name'].' - '.$MF['INVALID'];
 					}
@@ -325,7 +326,7 @@ class mform {
 			$textbody = str_replace("\r\n\r\n\r\n","\r\n\r\n",$textbody);
 		$myMail->AltBody = $textbody;			              	// CONTENT (TEXT)
 
-		foreach($this->attachements as $filename => $file) {
+		 foreach($this->attachements as $file => $filename) { 
 			$myMail->AddAttachment($file, $filename);
 		}
 
