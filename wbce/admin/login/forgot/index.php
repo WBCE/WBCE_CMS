@@ -77,8 +77,8 @@ if (isset($_POST['email']) && $_POST['email'] != "" ) {
                 $sNewPw = '';
                  $salt = "abcdefghjklmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!_-:#*+$@&";			   
 				$i = 0;
-				while ($i <= 10) {
-					$num = rand(0,70);
+				while ($i <= 12) {
+					$num = random_int(0,70);
                     $tmp = substr($salt, $num, 1);
                     $sNewPw = $sNewPw . $tmp;
                     $i++;

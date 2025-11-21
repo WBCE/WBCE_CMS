@@ -20,7 +20,7 @@ class Wb extends SecureForm
 
     public $page_sections = array();
     public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:\.';
-    public $iPassMinLength = 6;
+    public $iPassMinLength = 12;
 
     /**
      * @brief  General initialization function performed
