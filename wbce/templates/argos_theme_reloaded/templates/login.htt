@@ -37,6 +37,10 @@
 						<div class="fg7">
 							<input type="password" maxlength="{MAX_PASSWORD_LEN}" name="{PASSWORD_FIELDNAME}">
 						</div>
+						
+						<div class="fg12">
+						{CAPTCHA}
+						</div>
 
 						<div class="fg5">&nbsp;</div>
 						<div class="fg7">

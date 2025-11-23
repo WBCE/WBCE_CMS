@@ -18,6 +18,12 @@ if (!defined('WB_PATH')) {
 
 // Load class Admin
 require_once WB_PATH . "/framework/class.admin.php";
+require_once(WB_PATH.'/include/captcha/captcha.php');
+
+$oMsgBox = new MessageBox();
+$oMsgBox->closeBtn = '';
+
+
 
 class Login extends Admin
 {
@@ -50,6 +56,8 @@ class Login extends Admin
     public  $forgotten_details_app;
     public  $users_table;
     public  $groups_table;
+	public  $captcha;
+	public  $nocookie;
 
     public function __construct($aConfig)
     {
@@ -61,6 +69,23 @@ class Login extends Admin
         if (!defined('WB_FRONTEND')) {
             $this->_oMsgBox->closeBtn = '';
         }
+		
+		$nocookie = false;
+		if (defined('NO_SESSION_COOKIE')) {
+			$nocookie = NO_SESSION_COOKIE;
+		}
+		
+		$captchaFailure = false;
+		if ($nocookie == false) {			
+			if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
+				$ccheck = time(); $ccheck1 = time();
+				if(isset($_SESSION['captchalogin'])) $ccheck1 = $_SESSION['captchalogin'];
+				if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
+				if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
+					$captchaFailure = true;
+				}
+			} 
+		}
 
         // Get configuration values and turn them into properties
         foreach ($aConfig as $key => $value) {
@@ -85,13 +110,6 @@ class Login extends Admin
             $this->username = htmlspecialchars(strtolower($this->get_post($sUsername)), ENT_QUOTES);
             $this->password = $this->get_post($sPassword);
 
-            // Figure out if the "remember me" option has been checked
-            if ($this->get_post('remember') == 'true') {
-                $this->remember = $this->get_post('remember');
-            } else {
-                $this->remember = false;
-            }
-
             // Get the length of the supplied username and password
             if ($this->get_post($sUsername) != '') {
                 $this->username_len = strlen($this->username);
@@ -110,23 +128,11 @@ class Login extends Admin
             // User already logged-in, redirect to preset url
             header('Location: ' . $this->url);
             exit();
-        } elseif ($this->is_remembered() == true) {
-            // User has been "remembered" Get the users password
-            $sSql = "SELECT * FROM `{TP}users` 'WHERE `user_id`= %d";
-            $aUserData = $this->_oDb->get_array(sprintf($sSql, $this->get_safe_remember_key()));
-            $this->username = $aUserData['username'];
-            $this->password = $aUserData['password'];
-            // Check if the user exists (authenticate them)
-            if ($this->authenticate(true)) {
-                // Authentication successful
-                header("Location: " . $this->url);
-                exit(0);
-            } else {
-                $this->_oMsgBox->error($MESSAGE['LOGIN_AUTHENTICATION_FAILED']);
-                $this->increase_attempts();
-            }
+        } elseif ($captchaFailure == true) {			
+			$this->_oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
+			$this->increase_attempts();
         } elseif ($this->username == '' && $this->password == '') {
-            $this->_oMsgBox->info($MESSAGE['LOGIN_BOTH_BLANK'], 0, 1);
+            $this->_oMsgBox->info($MESSAGE['LOGIN_BOTH_BLANK'], 0, 1);			
             $this->display_login();
         } elseif ($this->username == '') {
             $this->_oMsgBox->error($MESSAGE['LOGIN_USERNAME_BLANK']);
@@ -136,7 +142,7 @@ class Login extends Admin
             $this->increase_attempts();
         } else {
             // Check if the user exists (authenticate them)
-			sleep(1);
+			//sleep(1);
             if ($this->authenticate()) {
                 // Authentication successful
                 header("Location: " . $this->url);
@@ -152,38 +158,7 @@ class Login extends Admin
     {
         return false;
 
-        // // add if get_safe_remember_key not empty
-        // if(isset($_COOKIE['REMEMBER_KEY']) && ($_COOKIE['REMEMBER_KEY'] != '') && ($this->get_safe_remember_key() <> '')){
-        //        // Check if the remember key is correct
-        //        // $this->_oDb = new database();
-        //        $sql = "SELECT `user_id` FROM `{TP}users` WHERE `remember_key` = '";
-        //        $sql .= $this->get_safe_remember_key() . "' LIMIT 1";
-        //        $check_query = $this->_oDb->query($sql);
-        //
-        //        if($check_query->numRows() > 0) {
-        //            $check_fetch = $check_query->fetchRow();
-        //            $iUserID = $check_fetch['user_id'];
-        //            // Check the remember key prefix
-        //            $remember_key_prefix = '';
-        //            $length = 11-strlen($iUserID);
-        //            if($length > 0) {
-        //                for($i = 1; $i <= $length; $i++) {
-        //                    $remember_key_prefix .= '0';
-        //                }
-        //        }
-        //        $remember_key_prefix .= $iUserID.'_';
-        //        $length = strlen($remember_key_prefix);
-        //        if(substr($_COOKIE['REMEMBER_KEY'], 0, $length) == $remember_key_prefix) {
-        //            return true;
-        //        } else {
-        //            return false;
-        //        }
-        //    } else {
-        //        return false;
-        //    }
-        // } else {
-        //    return false;
-        // }
+      
     }
 
     /**
@@ -327,43 +302,7 @@ class Login extends Admin
     {
         return true;
 
-        // $remember_key = '';
-        // // Generate user id to append to the remember key
-        // $length = 11-strlen($iUserID);
-        // if($length > 0) {
-        //    for($i = 1; $i <= $length; $i++) {
-        //        $remember_key .= '0';
-        //    }
-        // }
-        // // Generate remember key
-        // $remember_key .= $iUserID.'_';
-        // $salt = "abchefghjkmnpqrstuvwxyz0123456789";
-        // srand((double)microtime()*1000000);
-        // $i = 0;
-        // while ($i <= 10) {
-        //    $num = rand() % 33;
-        //    $tmp = substr($salt, $num, 1);
-        //    $remember_key = $remember_key . $tmp;
-        //    $i++;
-        // }
-        // $remember_key = $remember_key;
-        // // Update the remember key in the db
-        // // $this->_oDb = new database();
-        // $this->_oDb->query("UPDATE ".$this->users_table." SET remember_key = '$remember_key' WHERE user_id = '$iUserID' LIMIT 1");
-        // if($this->_oDb->is_error()) {
-        //    return false;
-        // } else {
-        //    // Workout options for the cookie
-        //    $cookie_name = 'REMEMBER_KEY';
-        //    $cookie_value = $remember_key;
-        //    $cookie_expire = time()+60*60*24*30;
-        //    // Set the cookie
-        //    if(setcookie($cookie_name, $cookie_value, $cookie_expire, '/')) {
-        //        return true;
-        //    } else {
-        //        return false;
-        //    }
-        // }
+        
     }
 
     /**
@@ -493,6 +432,21 @@ class Login extends Admin
     {
         // Get language vars
         global $MESSAGE, $MENU, $TEXT;
+		
+		$nocookie = false;
+		if (defined('NO_SESSION_COOKIE')) {
+			$nocookie = NO_SESSION_COOKIE;
+		}
+		
+		if ($nocookie == false) {			
+			ob_start();
+			call_captcha("all","",'login');
+			$captcha = ob_get_contents();
+			ob_end_clean();
+		} else {
+			$captcha = '';
+		}
+
 
         if (!isset($_SESSION['ATTEMPTS']) || ($this->get_session('ATTEMPTS') > $this->max_attempts)) {
             $this->increase_attempts($increment = 0);
@@ -540,7 +494,8 @@ class Login extends Admin
                 'LANGUAGE' => strtolower(LANGUAGE),
                 'FORGOTTEN_DETAILS_APP' => $this->forgotten_details_app,
                 'SECTION_LOGIN' => $MENU['LOGIN'],
-                'CHARSET' => (defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : 'utf-8')
+                'CHARSET' => (defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : 'utf-8'),
+				'CAPTCHA' => $captcha
             ));
 
             $oTemplate->parse('main', 'mainBlock', false);

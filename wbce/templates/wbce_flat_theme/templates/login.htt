@@ -32,6 +32,7 @@
             <br/>
             <span class="page_login_fieldelement"><input placeholder="{TEXT_PASSWORD}" type="password" name="{PASSWORD_FIELDNAME}" autocomplete="off" /></span>
             <br/>
+			{CAPTCHA}
             <p><input type="submit" name="submit" value="{TEXT_LOGIN}" /></p>
             <p><a class="page_login_link" href="{FORGOTTEN_DETAILS_APP}">{TEXT_FORGOTTEN_DETAILS}</a></p>
 			<p><a class="page_login_link" href="{WB_URL}/">{TEXT_HOME}</a></p>
