@@ -16,6 +16,61 @@ require_once WB_PATH . '/framework/class.admin.php';
 // suppress to print the header, so no new FTAN will be set
 $admin = new admin('Access', 'users_modify', false);
 
+/**
+ * Execute a prepared statement with an IN() list of integer IDs.
+ *
+ * @param mysqli $db
+ * @param string $sqlBase SQL with a single `%s` placeholder where the IN list should be inserted,
+ *                        e.g. "SELECT group_id FROM ".TABLE_PREFIX."groups WHERE group_id IN (%s)".
+ * @param array<int> $ids  List of integer IDs (already validated).
+ * @param string $types    Types string for the bound params (default: 'i' for each ID).
+ * @return mysqli_result|false
+ */
+function db_exec_in_clause_int(mysqli $db, $sqlBase, array $ids, $types = null)
+{
+    if (empty($ids)) {
+        return false;
+    }
+
+    // All IDs must be integers to avoid injection
+    $clean = [];
+    foreach ($ids as $id) {
+        if (!is_numeric($id)) {
+            return false;
+        }
+        $clean[] = (int)$id;
+    }
+
+    $placeholders = implode(',', array_fill(0, count($clean), '?'));
+    $sql = sprintf($sqlBase, $placeholders);
+
+    if ($types === null) {
+        $types = str_repeat('i', count($clean));
+    }
+
+    $stmt = $db->prepare($sql);
+    if ($stmt === false) {
+        return false;
+    }
+
+    // bind_param requires arguments by reference
+    $params = [];
+    $params[] = &$types;
+    foreach ($clean as $k => $v) {
+        $params[] = &$clean[$k];
+    }
+
+    call_user_func_array([$stmt, 'bind_param'], $params);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return false;
+    }
+
+    return $stmt->get_result();
+}
+
+
 // Create a javascript back link
 $js_back = ADMIN_URL . '/users/index.php';
 
@@ -44,7 +99,17 @@ if ((!in_array('1',$activeUserGroupArray) && in_array('1',$_POST['groups']))
 }
 
 // Gather details entered
-$groups_id = (isset($_POST['groups'])) ? implode(",", $admin->add_slashes($_POST['groups'])) : '';
+//$groups_id = (isset($_POST['groups'])) ? implode(",", $admin->add_slashes($_POST['groups'])) : '';
+
+$groups = isset($_POST['groups']) && is_array($_POST['groups']) ? $_POST['groups'] : [];
+$groups_id = [];
+foreach ($groups as $g) {
+    if (is_numeric($g)) {
+        $groups_id[] = (int)$g;
+    }
+}
+$groups_id = array_values(array_unique($groups_id));
+
 $active = $admin->add_slashes($_POST['active'][0]);
 $usernameTmp = $admin->get_post_escaped('username_fieldname');
 $username = strtolower($admin->get_post_escaped($usernameTmp));
@@ -69,7 +134,8 @@ if (!preg_match('/^[a-z]{1}[a-z0-9_-]{2,}$/i', $username)) {
 }
 
 // choose group_id from groups_id - workaround for still remaining calls to group_id (to be cleaned-up)
-$gid_tmp = explode(',', $groups_id);
+//$gid_tmp = explode(',', $groups_id);
+$gid_tmp = $groups_id;
 if (in_array('1', $gid_tmp)) {
     $group_id = '1';
 } // if user is in administrator-group, get this group
@@ -106,7 +172,7 @@ if ($sNewPassword != '') {
 
 $aUpdate = array(
     'user_id' => $user_id,
-    'groups_id' => $groups_id,
+    'groups_id' => implode(',',$groups_id),
     'group_id' => $group_id,
     'active' => $active,
     'display_name' => $display_name,
