@@ -76,8 +76,15 @@ class Login extends Admin
 		}
 		
 		$captchaFailure = false;
+		$captchaMissing = false;
+	
 		if ($nocookie == false) {			
-			if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
+			if (!isset($_POST['captcha'])  && ($_POST['username']!='' || $_POST['password']!='')) {
+				$captchaFailure = true;
+				$captchaMissing = true;
+			}
+			
+			if(isset($_POST['captcha'])){
 				$ccheck = time(); $ccheck1 = time();
 				if(isset($_SESSION['captchalogin'])) $ccheck1 = $_SESSION['captchalogin'];
 				if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
@@ -86,6 +93,7 @@ class Login extends Admin
 				}
 			} 
 		}
+		
 
         // Get configuration values and turn them into properties
         foreach ($aConfig as $key => $value) {
@@ -104,6 +112,8 @@ class Login extends Admin
             $sUsername = 'username';
             $sPassword = 'password';
         }
+		
+		
 
         // this makes only sense if a username is provided
         if(filter_input(INPUT_POST, $sUsername)) {
@@ -128,8 +138,11 @@ class Login extends Admin
             // User already logged-in, redirect to preset url
             header('Location: ' . $this->url);
             exit();
-        } elseif ($captchaFailure == true) {			
+        } elseif ($captchaFailure == true && $captchaMissing == false) {				
 			$this->_oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
+			$this->increase_attempts();			
+		} elseif ($captchaFailure == true && $captchaMissing == true) {
+			$this->_oMsgBox->error($MESSAGE['GENERIC_SECURITY_ACCESS']);			
 			$this->increase_attempts();
         } elseif ($this->username == '' && $this->password == '') {
             $this->_oMsgBox->info($MESSAGE['LOGIN_BOTH_BLANK'], 0, 1);			
