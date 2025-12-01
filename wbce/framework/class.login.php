@@ -77,9 +77,11 @@ class Login extends Admin
 		
 		$captchaFailure = false;
 		$captchaMissing = false;
+		if (isset($_POST['username'])) {$userGiven = true;} else {$userGiven = false;}
+		if (isset($_POST['password'])) {$passGiven = true;} else {$passGiven = false;}
 	
-		if ($nocookie == false) {			
-			if (!isset($_POST['captcha'])  && ($_POST['username']!='' || $_POST['password']!='')) {
+		if ($nocookie == false) {						
+			if (!isset($_POST['captcha'])  && ($userGiven==true || $passGiven==true)) {
 				$captchaFailure = true;
 				$captchaMissing = true;
 			}
