@@ -1266,12 +1266,12 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
 	$tagListArray  = array();
 	
     if(isset($_GET['tags']) && strlen($_GET['tags'])) {
-        $requested_tags = mod_nwi_escape_tags($_GET['tags']);
+        $requested_tags = mod_nwi_escape_tags(htmlspecialchars($_GET['tags']));
         foreach ($requested_tags as $i => $tag) {
             $requested_tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$i."\">".$tag."</span>";
         }
         $tags_header = implode("\n",$requested_tags);
-        $tags_append = $_GET['tags'];
+        $tags_append = htmlspecialchars($_GET['tags']);
     }
 
     // Create previous and next links
@@ -2269,7 +2269,7 @@ function mod_nwi_get_news_items($options=array())
 
     // the "tags" param may be passend by a page link
     if(!strlen($tags) && isset($_GET['tags']) ) {
-        $tags = $_GET['tags'];
+        $tags = htmlspecialchars($_GET['tags']);
         mod_nwi_sanitize_input($tags,'s{TRIM|STRIP|ENTITY}');
     }
 
