@@ -58,6 +58,7 @@ class Login extends Admin
     public  $groups_table;
 	public  $captcha;
 	public  $nocookie;
+	public  $nocaptcha;
 
     public function __construct($aConfig)
     {
@@ -71,8 +72,20 @@ class Login extends Admin
         }
 		
 		$nocookie = false;
+		$nocaptcha = false;		
+		
+		if (defined('NO_LOGIN_CAPTCHA')) {
+			$nocaptcha = NO_LOGIN_CAPTCHA;
+		} else {
+			define('NO_LOGIN_CAPTCHA',false);
+		}		
+		
 		if (defined('NO_SESSION_COOKIE')) {
 			$nocookie = NO_SESSION_COOKIE;
+		}
+		
+		if ($nocookie==true) {
+			$nocaptcha = true;
 		}
 		
 		$captchaFailure = false;
@@ -80,7 +93,7 @@ class Login extends Admin
 		if (isset($_POST['username'])) {$userGiven = true;} else {$userGiven = false;}
 		if (isset($_POST['password'])) {$passGiven = true;} else {$passGiven = false;}
 	
-		if ($nocookie == false) {						
+		if ($nocaptcha == false) {						
 			if (!isset($_POST['captcha'])  && ($userGiven==true || $passGiven==true)) {
 				$captchaFailure = true;
 				$captchaMissing = true;
@@ -449,11 +462,19 @@ class Login extends Admin
         global $MESSAGE, $MENU, $TEXT;
 		
 		$nocookie = false;
+		$nocaptcha = false;
+		
 		if (defined('NO_SESSION_COOKIE')) {
 			$nocookie = NO_SESSION_COOKIE;
 		}
 		
-		if ($nocookie == false) {			
+		if (defined('NO_LOGIN_CAPTCHA')) {
+			$nocaptcha = NO_LOGIN_CAPTCHA;
+		} else {
+			define('NO_LOGIN_CAPTCHA',false);
+		}
+		
+		if ($nocookie == false && $nocaptcha==false) {			
 			ob_start();
 			call_captcha("all","",'login');
 			$captcha = ob_get_contents();
