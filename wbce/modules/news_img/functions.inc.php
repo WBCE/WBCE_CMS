@@ -1266,12 +1266,12 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
 	$tagListArray  = array();
 	
     if(isset($_GET['tags']) && strlen($_GET['tags'])) {
-        $requested_tags = mod_nwi_escape_tags(htmlspecialchars($_GET['tags']));
+        $requested_tags = mod_nwi_escape_tags(mod_nwi_sanitize_input($_GET['tags'],'s{TRIM|STRIP|ENTITIES}'));
         foreach ($requested_tags as $i => $tag) {
             $requested_tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$i."\">".$tag."</span>";
         }
         $tags_header = implode("\n",$requested_tags);
-        $tags_append = htmlspecialchars($_GET['tags']);
+        $tags_append = mod_nwi_sanitize_input($_GET['tags'],'s{TRIM|STRIP|ENTITIES}');
     }
 
     // Create previous and next links
@@ -2256,10 +2256,10 @@ function mod_nwi_get_news_items($options=array())
     mod_nwi_sanitize_input($is_not_older_than, 'd{0;0;999}');
 	mod_nwi_sanitize_input($group_id_type, 'l{group_id;group_id;page_id;section_id;post_id}');
 	mod_nwi_sanitize_input($lang_filter, 'b');
-    mod_nwi_sanitize_input($skip,'s{TRIM|STRIP|ENTITY}');
-    mod_nwi_sanitize_input($tags,'s{TRIM|STRIP|ENTITY}');
+    mod_nwi_sanitize_input($skip,'s{TRIM|STRIP|ENTITIES}');
+    mod_nwi_sanitize_input($tags,'s{TRIM|STRIP|ENTITIES}');
     mod_nwi_sanitize_input($groups_on_tags,'b');
-    mod_nwi_sanitize_input($view,'s{TRIM|STRIP|ENTITY}');
+    mod_nwi_sanitize_input($view,'s{TRIM|STRIP|ENTITIES}');
 
     $sql_group_id = null;
     $sql_not_older_than = null;
@@ -2270,7 +2270,7 @@ function mod_nwi_get_news_items($options=array())
     // the "tags" param may be passend by a page link
     if(!strlen($tags) && isset($_GET['tags']) ) {
         $tags = htmlspecialchars($_GET['tags']);
-        mod_nwi_sanitize_input($tags,'s{TRIM|STRIP|ENTITY}');
+        mod_nwi_sanitize_input($tags,'s{TRIM|STRIP|ENTITIES}');
     }
 
     // ---------- group handling -----------------------------------------------
@@ -2498,7 +2498,7 @@ function mod_nwi_sanitize_input(&$input, $filter)
 	// $filter...       filter to apply for input variable
 	//	Numeric filter: b|i¦d{default;min;max}
 	//	List filter:    l{default;string1;string2;..;stringN}
-	//	String filter:  s{TRIM|STRIP|ENTITY}
+	//	String filter:  s{TRIM|STRIP|ENTITIES}
 
 	// check if a valid filter was supplied
 	if (!preg_match('#(b|i|d|s|l)#i', $filter, $match)) {
@@ -2548,7 +2548,7 @@ function mod_nwi_sanitize_input(&$input, $filter)
 			break;
 
 		case 's': // string filter
-			// check for correct string filter: s{TRIM|STRIP|ENTITY}
+			// check for correct string filter: s{TRIM|STRIP|ENTITIES}
 			if (!preg_match('#(s)\{(.+)\}#i', $filter, $match)) {
 				echo 'String filter: <b>' . htmlentities($filter) . '</b> invalid. Usage: <b>s{STRIP;TRIM;ENTITIES}</b>.';
 				die;
