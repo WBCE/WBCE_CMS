@@ -226,7 +226,7 @@ if (!isset($_POST['admin_repassword']) or $_POST['admin_repassword'] == '') {
             set_error(d('e19: ') . 'Invalid password chars used', 'admin_password');
             $IsError = true;
         } else {
-            $iMinPassLength = 6;
+            $iMinPassLength = 12;
             if (strlen($admin_password) < $iMinPassLength) {
                 set_error(d('e20: ') . 'The password you entered was too short', 'admin_password');
                 $IsError = true;
