@@ -16,18 +16,22 @@
 $module_directory   = 'news_img';
 $module_name        = 'News with Images';
 $module_function    = 'page';
-$module_version     = '5.0.29';
+$module_version     = '5.0.30';
 $module_platform    = '1.4';
 $module_author      = 'Ryan Djurovich, Rob Smith, Silvia Reins, Martin Hecht, Florian Meerwinck, Bianka Martinovic';
 $module_license     = 'GNU General Public License';
-$module_description = 'This page type is designed for making a news page with Images and Lightboxeffect.';
+$module_description = 'This page module is designed for making a news page with images and lightbox effect.';
 
 /**
+ * v5.0.30 - 2025/12/30
+ *         - webbird, florian
+ *         ! bugfix for deprecated issue caused by tag sanitzing
+ *
  * v5.0.29 - 2025/12/01
  *         - mrbaseman
  *         ! tag sanitizing 
  *
-  * v5.0.28 - 2024/09/26
+ * v5.0.28 - 2024/09/26
  *         - mrbaseman
  *         * add sorting order: expiration date ascending
  *         ! bug fix for v5.0.27 concerning access files 

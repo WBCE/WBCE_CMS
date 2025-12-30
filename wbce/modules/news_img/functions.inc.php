@@ -1266,7 +1266,7 @@ function mod_nwi_posts_render($section_id,$posts,$posts_per_page=0)
 	$tagListArray  = array();
 	
     if(isset($_GET['tags']) && strlen($_GET['tags'])) {
-        $requested_tags = mod_nwi_escape_tags(mod_nwi_sanitize_input($_GET['tags'],'s{TRIM|STRIP|ENTITIES}'));
+        $requested_tags = mod_nwi_escape_tags(mod_nwi_sanitize_input($_GET['tags'],'s{TRIM|STRIP|ENTITIES}'));		
         foreach ($requested_tags as $i => $tag) {
             $requested_tags[$i] = "<span class=\"mod_nwi_tag\" id=\"mod_nwi_tag_".$i."\">".$tag."</span>";
         }
@@ -1962,6 +1962,9 @@ require(WB_PATH."/index.php");
 function mod_nwi_escape_tags($tags)
 {
     global $database;
+    if(empty($tags)) {
+        return array();
+    }
     $tags = explode(",", $tags);
     foreach($tags as $i => $tag) {
         $tags[$i] = mod_nwi_escapeString($tag);
