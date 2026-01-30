@@ -5,7 +5,7 @@
 			<input name="miniform" type="hidden" value="{SECTION_ID}"/>
 			<input name="header" type="hidden" value="Email mij verzoek"/>
 			<input name="mf_verzonden" type="hidden" value="{DATE} {TIME}"/>
-			
+				{ASPFIELDS}
 			<div class="onethird">
 				<label for="naam"><span>Naam <span>*</span></span>
 					<input required="required" class="{NAAM_ERROR}" type="text" id="naam" name="mf_r_naam" value="{NAAM}" />

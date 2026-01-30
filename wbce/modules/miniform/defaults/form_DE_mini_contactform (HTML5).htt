@@ -5,7 +5,7 @@
 			<input name="miniform" type="hidden" value="{SECTION_ID}"/>
 			<input name="header" type="hidden" value="Direktkontakt"/>
 			<input name="mf_timestamp" type="hidden" value="{DATE} {TIME}"/>
-			
+				{ASPFIELDS}
 			<div class="onethird">
 				<label for="name"><span>Name <span>*</span></span>
 					<input required class="{NAME_ERROR}" type="text" id="name" name="mf_r_name" value="{NAME}" />
