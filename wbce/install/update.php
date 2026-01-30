@@ -35,14 +35,14 @@ function db_add_key_value($key, $value)
     global $OK;
     global $FAIL;
     $table = TABLE_PREFIX . 'settings';
-    $query = $database->query("SELECT value FROM $table WHERE name = '$key' LIMIT 1");
+    $query = $database->query("SELECT `value` FROM $table WHERE `name` = '$key' LIMIT 1");
     if ($query->numRows() > 0) {
         echo "$key: already exists. $OK.<br />";
         return true;
     } else {
-        $database->query("INSERT INTO $table (name,value) VALUES ('$key', '$value')");
+        $database->query("INSERT INTO $table (`name`,`value`) VALUES ('$key', '$value')");
         echo($database->is_error() ? $database->get_error() . '<br />' : '');
-        $query = $database->query("SELECT value FROM $table WHERE name = '$key' LIMIT 1");
+        $query = $database->query("SELECT `value` FROM $table WHERE `name` = '$key' LIMIT 1");
         if ($query->numRows() > 0) {
             echo "$key: $OK.<br />";
             return true;
@@ -543,7 +543,7 @@ if (file_exists($file_name)) {
         opf_io_rmdir(WB_PATH . "/modules/output_filter");
     }
     // Remove entry from DB
-    $database->query("DELETE FROM " . TABLE_PREFIX . "addons WHERE directory = 'output_filter' AND type = 'module'");
+    $database->query("DELETE FROM `" . TABLE_PREFIX . "addons` WHERE `directory` = 'output_filter' AND `type` = 'module'");
     // uninstall opf simple backend
     $opf_simple = WB_PATH . "/modules/opf_simple_backend/uninstall.php";
     if (file_exists($opf_simple)) {
@@ -552,7 +552,7 @@ if (file_exists($file_name)) {
         opf_io_rmdir(WB_PATH . "/modules/opf_simple_backend");
     }
     // Remove entry from DB
-    $database->query("DELETE FROM " . TABLE_PREFIX . "addons WHERE directory = 'opf_simple_backend' AND type = 'module'");
+    $database->query("DELETE FROM `" . TABLE_PREFIX . "addons` WHERE `directory` = 'opf_simple_backend' AND `type` = 'module'");
 }
 
 // Sitemap
