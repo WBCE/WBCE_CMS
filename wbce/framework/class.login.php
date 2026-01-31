@@ -232,11 +232,20 @@ class Login extends Admin
         $sLoginname = preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->username;
 
         // Get user information
-        $sSql = "SELECT * FROM `{TP}users` WHERE `username`='%s' AND `active` = 1";
-        if ($bRemembered) {
-            $sSql .= " AND `password` = '" . $this->password . "'";
-        }
-        $resUsers = $this->_oDb->query(sprintf($sSql, $sLoginname));
+		
+		if (defined('ALLOW_EMAIL_LOGIN') && ALLOW_EMAIL_LOGIN===true) {
+			$sSql = "SELECT * FROM `{TP}users`
+					WHERE (`username` = '%s' OR `email` = '%s')
+					AND `active` = 1";
+			$sSql = sprintf($sSql, $sLoginname, $sLoginname);	
+			$resUsers = $this->_oDb->query($sSql);			
+			
+		} else {		
+			$sSql = "SELECT * FROM `{TP}users` WHERE `username`='%s' AND `active` = 1";			
+			$resUsers = $this->_oDb->query(sprintf($sSql, $sLoginname));
+		}
+		
+		
         $aUserData = $resUsers->fetchRow(MYSQLI_ASSOC);
         $iNumRows = $resUsers->numRows();
 
