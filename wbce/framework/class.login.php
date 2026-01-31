@@ -88,6 +88,22 @@ class Login extends Admin
 			$nocaptcha = true;
 		}
 		
+		$now        = time();
+		$time_limit = $now - 5 * 60; // 5 minutes ago
+
+		// Sum attempts for all IPs whose last attempt is within the last 5 minutes
+		$sql = '
+			SELECT COALESCE(SUM(`attempts`), 0) AS failed_sum
+			FROM `{TP}blocking`
+			WHERE `timestamp` >= ' . (int)$time_limit . '
+		';
+		$failed_logins_last5 = (int)$this->_oDb->get_one($sql);
+		if ($failed_logins_last5 < 5) {
+			$nocaptcha = true;
+		}
+
+
+		
 		$captchaFailure = false;
 		$captchaMissing = false;
 		if (isset($_POST['username'])) {$userGiven = true;} else {$userGiven = false;}
@@ -472,6 +488,20 @@ class Login extends Admin
 			$nocaptcha = NO_LOGIN_CAPTCHA;
 		} else {
 			define('NO_LOGIN_CAPTCHA',false);
+		}
+		
+		$now        = time();
+		$time_limit = $now - 5 * 60; // 5 minutes ago
+
+		// Sum attempts for all IPs whose last attempt is within the last 5 minutes
+		$sql = '
+			SELECT COALESCE(SUM(`attempts`), 0) AS failed_sum
+			FROM `{TP}blocking`
+			WHERE `timestamp` >= ' . (int)$time_limit . '
+		';
+		$failed_logins_last5 = (int)$this->_oDb->get_one($sql);
+		if ($failed_logins_last5 < 5) {
+			$nocaptcha = true;
 		}
 		
 		if ($nocookie == false && $nocaptcha==false) {			
