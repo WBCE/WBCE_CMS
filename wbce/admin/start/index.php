@@ -129,7 +129,7 @@ if (function_exists('curl_version') && (!defined('SHOW_UPDATE_INFO') || SHOW_UPD
         $wbce_latest_release = $response['content']['tag_name'];
         if ($wbce_latest_release > NEW_WBCE_VERSION) {
             echo $TEXT['OLDWBCE'];
-            echo '<b style="color:red">' . NEW_WBCE_VERSION . '</b><br>';
+            echo '<b style="color:red">' . $wbce_latest_release . '</b><br>';
         }
     }
 }

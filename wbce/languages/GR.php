@@ -235,7 +235,7 @@ $TEXT['NOT_INSTALLED'] = 'μη εγκατεστημενο';
 $TEXT['NO_IMAGE_SELECTED'] = 'δεν έχει επιλεγεί εικόνα';
 $TEXT['NO_RESULTS'] = 'Χωρίς Αποτέλεσμα';
 $TEXT['OF'] = 'Του';
-$TEXT['OLDWBCE'] = '<b style="color:red">Your WBCE version is outdated! <a href="https://github.com/WBCE/WBCE_CMS/releases" target="_blank">WBCE Releases on GitHub <i class="fa fa-external-link" aria-hidden="true"></i></a> You are using: WBCE </b>';
+$TEXT['OLDWBCE'] = '<b style="color:red">Νέα έκδοση του WBCE CMS είναι διαθέσιμη, παρακαλούμε ενημερώστε το σε </b>';
 $TEXT['ON'] = 'Επάνω';
 $TEXT['OPEN'] = 'Ανοιχτό';
 $TEXT['OPTION'] = 'Επιλογή';
