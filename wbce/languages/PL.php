@@ -8,8 +8,6 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- *
- * Made whith help of Automated Language File tool Copyright heimsath.org
  */
 
 //no direct file access

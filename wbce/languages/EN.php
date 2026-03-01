@@ -8,8 +8,6 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- *
- * Made whith help of Automated Language File tool Copyright heimsath.org
  */
 
 //no direct file access
@@ -22,8 +20,8 @@ if (count(get_included_files()) ==1) {
 // Set the language information
 $language_code = 'EN';
 $language_name = 'English'; // English
-$language_version = '3.2';
-$language_platform = '1.3.0';
+$language_version = '3.4';
+$language_platform = '1.6.0';
 $language_author = 'Ryan Djurovich, Christian Sommer';
 $language_license = 'GNU General Public License';
 
@@ -309,7 +307,7 @@ $TEXT['SECTION_BLOCKS'] = 'Section Blocks';
 $TEXT['SEC_ANCHOR'] = 'Section-Anchor text';
 $TEXT['SELECT_BOX'] = 'Select Box';
 $TEXT['SEND_DETAILS'] = 'Send Details';
-$TEXT['SEND_TESTMAIL'] = 'To verify that the email settings are working properly, you can send a test email to the email adress above by clicking on the button. Please notice that you have to save the settings at first.';
+$TEXT['SEND_TESTMAIL'] = 'To verify that the email settings are working properly, you can send a test email to the email address above by clicking the button. Please note that you have to save the settings first.';
 $TEXT['SEPARATE'] = 'Separate';
 $TEXT['SEPERATOR'] = 'Separator';
 $TEXT['SERVER_EMAIL'] = 'Server Email';
@@ -484,7 +482,7 @@ $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'] = 'Sorry, you do not have perm
 $MESSAGE['GENERIC_ALREADY_INSTALLED'] = 'Already installed';
 $MESSAGE['GENERIC_BAD_PERMISSIONS'] = 'Unable to write to the target directory';
 $MESSAGE['GENERIC_BE_PATIENT'] = 'Please be patient.';
-$MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Unistalling this module failed or is not allowed.';
+$MESSAGE['GENERIC_CANNOT_UNINSTALL'] = 'Uninstalling this module failed or is not allowed.';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES'] = 'Cannot uninstall core modules!';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE'] = 'Cannot Uninstall: the selected file is in use';
 $MESSAGE['GENERIC_CANNOT_UNINSTALL_IN_USE_TMPL'] = '<br /><br />{{type}} <b>{{type_name}}</b> could not be uninstalled, because it is still in use on {{pages}}.<br /><br />';
@@ -525,7 +523,7 @@ $MESSAGE['GENERIC_WEBSITE_UNDER_CONSTRUCTION'] = 'Website Under Construction';
 $MESSAGE['GENERIC_WEBSITE_LOCKED'] = 'this site is temporarily down for maintenance';
 $MESSAGE['GROUP_HAS_MEMBERS'] = 'This group still has members.';
 $MESSAGE['GROUPS_ADDED'] = 'Group added successfully';
-$MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Are you sure you want to delete the selected group (Only groups whithout users assigned may be deleted)?';
+$MESSAGE['GROUPS_CONFIRM_DELETE'] = 'Are you sure you want to delete the selected group (Only groups without users assigned may be deleted)?';
 $MESSAGE['GROUPS_DELETED'] = 'Group deleted successfully';
 $MESSAGE['GROUPS_GROUP_NAME_BLANK'] = 'Group name is blank';
 $MESSAGE['GROUPS_GROUP_NAME_EXISTS'] = 'Group name already exists';
@@ -534,11 +532,11 @@ $MESSAGE['GROUPS_SAVED'] = 'Group saved successfully';
 $MESSAGE['LOGIN_AUTHENTICATION_FAILED'] = 'Loginname or password incorrect';
 $MESSAGE['LOGIN_BOTH_BLANK'] = 'Please enter your loginname and password below';
 $MESSAGE['LOGIN_PASSWORD_BLANK'] = 'Please enter a password';
-$MESSAGE['LOGIN_PASSWORD_TOO_LONG'] = 'Supplied password to long';
-$MESSAGE['LOGIN_PASSWORD_TOO_SHORT'] = 'Supplied password to short';
+$MESSAGE['LOGIN_PASSWORD_TOO_LONG'] = 'Supplied password too long';
+$MESSAGE['LOGIN_PASSWORD_TOO_SHORT'] = 'Supplied password too short';
 $MESSAGE['LOGIN_USERNAME_BLANK'] = 'Please enter a loginname';
-$MESSAGE['LOGIN_USERNAME_TOO_LONG'] = 'Supplied loginname to long';
-$MESSAGE['LOGIN_USERNAME_TOO_SHORT'] = 'Supplied loginname to short';
+$MESSAGE['LOGIN_USERNAME_TOO_LONG'] = 'Supplied loginname too long';
+$MESSAGE['LOGIN_USERNAME_TOO_SHORT'] = 'Supplied loginname too short';
 $MESSAGE['MEDIA_BLANK_EXTENSION'] = 'You did not enter a file extension';
 $MESSAGE['MEDIA_BLANK_NAME'] = 'You did not enter a new name';
 $MESSAGE['MEDIA_CANNOT_DELETE_DIR'] = 'Cannot delete the selected folder';
@@ -609,11 +607,11 @@ A new user was registered.
 Loginname: {LOGIN_NAME}
 UserId: {LOGIN_ID}
 E-Mail: {LOGIN_EMAIL}
-IP-Adress: {LOGIN_IP}
+IP-Address: {LOGIN_IP}
 Registration date: {SIGNUP_DATE}
 
 ----------------------------------------
-This message was automatic generated!';
+This message was automatically generated!';
 $MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
@@ -628,10 +626,10 @@ Your password has been reset to the one above.
 This means that your old password will no longer work anymore!
 If you\'ve got any questions or problems within the new login-data
 you should contact the website-team or the admin of {LOGIN_WEBSITE_TITLE}.
-Please remember to clean you browser-cache before using the new one to avoid unexpected fails.
+Please remember to clear your browser cache before using the new one to avoid unexpected failures.
 
 ------------------------------------
-This message was automatic generated';
+This message was automatically generated';
 $MESSAGE['SIGNUP2_BODY_LOGIN_INFO'] = '
 Hello {LOGIN_DISPLAY_NAME},
 
@@ -645,7 +643,7 @@ Please:
 if you have received this message by an error, please delete it immediately!
 
 -------------------------------------
-This message was automatic generated!';
+This message was automatically generated!';
 $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'] = 'Your login details...';
 $MESSAGE['SIGNUP_NO_EMAIL'] = 'You must enter an email address';
 $MESSAGE['START_CURRENT_USER'] = 'You are currently logged in as:';
@@ -662,7 +660,7 @@ $MESSAGE['THEME_ALREADY_EXISTS'] = 'This new theme descriptor already exists.';
 $MESSAGE['THEME_INVALID_SOURCE_DESTINATION'] = 'Invalid descriptor for the new theme given!';
 $MESSAGE['THEME_DESTINATION_READONLY'] = 'No rights to create new theme directory!';
 $MESSAGE['THEME_IMPORT_HTT'] = 'Import additional templates into the current active theme.<br />Use these templates to overwrite the corresponding default template.';
-$MESSAGE['UPLOAD_ERR_OK'] = 'File were successful uploaded';
+$MESSAGE['UPLOAD_ERR_OK'] = 'File was successfully uploaded';
 $MESSAGE['UPLOAD_ERR_INI_SIZE'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
 $MESSAGE['UPLOAD_ERR_FORM_SIZE'] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
 $MESSAGE['UPLOAD_ERR_PARTIAL'] = 'The uploaded file was only partially uploaded';
