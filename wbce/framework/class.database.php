@@ -300,6 +300,7 @@ class database
                 $sPrefixPH => $sValue
             );
             $this->_prefixes += $aNewSet;
+            return true;
         } else {
             return false;
         }
