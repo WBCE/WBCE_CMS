@@ -230,7 +230,7 @@ class SecureForm
 
         // client depending values
         $fingerprint .= (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '17';
-        $usedOctets = (defined('FINGERPRINT_WITH_IP_OCTETS')) ? intval(defined('FINGERPRINT_WITH_IP_OCTETS')) : 0;
+        $usedOctets = (defined('FINGERPRINT_WITH_IP_OCTETS')) ? intval(FINGERPRINT_WITH_IP_OCTETS) : 0;
         $clientIp = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
 
         if (($clientIp != '') && ($usedOctets > 0)) {
