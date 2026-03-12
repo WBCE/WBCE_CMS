@@ -322,7 +322,7 @@ class WSession
         if (empty($sVar)) {
             return $uDefault;
         }
-        if (!self::IsStarted) {
+        if (!self::IsStarted()) {
             return $uDefault;
         }
 
