@@ -390,7 +390,7 @@ class SecureForm
 
         if (count($parts) == 2) {
             list($token, $hash) = $parts;
-            if ($hash == sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')))) {
+            if (hash_equals(sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier'))), $hash)) {
                 $isok = true;
             }
         }

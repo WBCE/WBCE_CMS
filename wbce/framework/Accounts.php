@@ -424,7 +424,7 @@ class Accounts extends Frontend
         global $database;
         $bRetVal = false;
         $sDbCheckSum = $database->get_one("SELECT `signup_checksum` FROM `{TP}users` WHERE `user_id` = " . $iUserID);
-        if ($sDbCheckSum == $sCheckSum) {
+        if (hash_equals((string)$sDbCheckSum, (string)$sCheckSum)) {
             $bRetVal = true;
         }
         return $bRetVal;
