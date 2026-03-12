@@ -313,7 +313,7 @@ class database
     public function disconnect()
     {
         if ($this->connected == true) {
-            mysqli_close();
+            mysqli_close($this->db_handle);
             return true;
         } else {
             return false;
