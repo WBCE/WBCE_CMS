@@ -162,9 +162,6 @@ class Admin extends Wb
         }
         I::insertJsFile(WB_URL . '/include/SessionTimeout/SessionTimeout.js', "HEAD BTM+", 'SessionTimeout');
 
-        $sTempMMI = (string)Settings::Get("wb_maintainance_mode");
-        $sMaintModeIndict = ($sTempMMI) ? ' <span class="fa fa-wrench wbcemm"></span> ' : '';
-
         $maintModeIndicator = (string)Settings::Get("wb_maintainance_mode");
         if ($maintModeIndicator) {
             $maintModeIndicator = ' <span class="fa fa-wrench wbcemm"></span> ';
