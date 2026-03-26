@@ -355,22 +355,23 @@ class WSession
 
 
         if (!empty($aSession)) {
-            $sOut = "<h3>WBCE Session</h3>";
+            $sOut .= "<h3>WBCE Session</h3>";
             foreach ($aSession as $sKey => $uValue) {
-                $sOut = "$sKey: $uValue<br>\n";
+                $sOut .= "$sKey: $uValue<br>\n";
             }
         }
         if (!empty($aPerm)) {
-            $sOut = "<h3>WBCE Permanent Session</h3>";
+            $sOut .= "<h3>WBCE Permanent Session</h3>";
             foreach ($aPerm as $sKey => $uValue) {
-                $sOut = "$sKey: $uValue<br>\n";
+                $sOut .= "$sKey: $uValue<br>\n";
             }
         }
         if (!empty($aGlobal)) {
-            $sOut = "<h3>Global session vars</h3>";
+            $sOut .= "<h3>Global session vars</h3>";
             foreach ($aGlobal as $sKey => $uValue) {
-                $sOut = "$sKey: $uValue<br>\n";
+                $sOut .= "$sKey: $uValue<br>\n";
             }
         }
+        return $sOut;
     }
 }
