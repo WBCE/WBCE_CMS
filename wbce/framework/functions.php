@@ -39,7 +39,7 @@ if (!function_exists('str_contains')) {
      * @return bool true if the substring is found, false otherwise.
      */
     function str_contains($haystack, $needle) {
-        return !empty($needle) && false !== strpos($haystack, $needle);
+        return false !== strpos($haystack, $needle);
     }
 }
 
