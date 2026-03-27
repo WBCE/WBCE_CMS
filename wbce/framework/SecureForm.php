@@ -493,12 +493,6 @@ class SecureForm
         $this->_IDKEYs = array('0' => '0');
     }
 
-    //returns false on match and an error if no match
-
-    final protected function createFTAN()
-    {
-    }
-
     /*
     Just a function to get User ip even if hes behind a proxy
      */

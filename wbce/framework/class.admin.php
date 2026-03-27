@@ -132,8 +132,6 @@ class Admin extends Wb
         // Get vars from the language file
         global $MENU, $MESSAGE, $TEXT;
         // Connect to database and get website title
-        // $GLOBALS['FTAN'] = $this->getFTAN();
-        $this->createFTAN();
         $sql = 'SELECT `value` FROM `{TP}settings` WHERE `name`=\'website_title\'';
         $get_title = $this->_oDb->query($sql);
         $title = $get_title->fetchRow(MYSQLI_ASSOC);
