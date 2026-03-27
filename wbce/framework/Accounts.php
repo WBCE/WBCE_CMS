@@ -178,7 +178,7 @@ class Accounts extends Frontend
     {
         $retVal = false;
         if ($sUsername != '') {
-            $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `username` = '" . $sUsername . "'";
+            $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `username` = '" . $GLOBALS['database']->escapeString($sUsername) . "'";
             $retVal = $GLOBALS['database']->get_one($sSql);
         }
         return $retVal;
@@ -188,7 +188,7 @@ class Accounts extends Frontend
     {
         $retVal = false;
         if ($sEmail != '') {
-            $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `email` = '" . $sEmail . "'";
+            $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `email` = '" . $GLOBALS['database']->escapeString($sEmail) . "'";
             $retVal = $GLOBALS['database']->get_one($sSql);
         }
         return $retVal;
