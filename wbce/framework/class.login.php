@@ -229,7 +229,7 @@ class Login extends Admin
      */
     public function authenticate($bRemembered = false)
     {
-        $sLoginname = preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->username;
+        $sLoginname = preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->_oDb->escapeString($this->username);
 
         // Get user information
 		
