@@ -6,7 +6,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     0.9.16
+ * @version     1.0.1
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -110,11 +110,10 @@ try {
         throw new Exception('Nur ZIP-Dateien sind erlaubt. Hochgeladene Datei: ' . htmlspecialchars($uploaded_name));
     }
 
-    // Security: Validate MIME type using finfo
-    if (function_exists('finfo_open')) {
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime_type = finfo_file($finfo, $uploaded_file);
-        finfo_close($finfo);
+    // Security: Validate MIME type using finfo (OOP style, PHP 8.5 compatible)
+    if (class_exists('finfo')) {
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime_type = $finfo->file($uploaded_file);
 
         $allowed_mime_types = [
             'application/zip',

@@ -1,0 +1,24 @@
+# WBCE Updater - Git Ignore
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Cache files
+*.cache
+
+# System files
+.DS_Store
+Thumbs.db
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backup files
+*.bak
+*.backup
