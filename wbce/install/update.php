@@ -185,7 +185,7 @@ $stepID = 1;
 
 // removes old folders
 $dirRemove = array(
-    '[ROOT]/log/',
+    '[ROOT]/log/',	
     '[ACCOUNT]/email_templates/',
     '[ACCOUNT]/functions/',
     '[ACCOUNT]/languages/',
@@ -221,7 +221,7 @@ $dirRemove = array(
 // files removed
 $filesRemove['0'] = array(
     '[ROOT]/config.php.new',
-    '[ROOT]/htaccess.txt',
+    '[ROOT]/htaccess.txt',	
     '[ACCOUNT]/Accounts.cfg.php',
     '[ACCOUNT]/check_details.php',
     '[ACCOUNT]/check_email.php',
@@ -261,6 +261,11 @@ $filesRemove['0'] = array(
     '[FRAMEWORK]/class.wbmailer.php',
     '[FRAMEWORK]/PasswordHash.php',
     '[FRAMEWORK]/SecureForm.mtab.php',
+	'[FRAMEWORK]/DseTwo.php',
+	'[FRAMEWORK]/mimeconvert.php',
+	'[FRAMEWORK]/randomgen.php',
+	'[FRAMEWORK]/class.logfile.php',
+	'[FRAMEWORK]/class.msg_queue.php',
     '[INCLUDE]Sensio/Twig/TwigConnect.php',
     '[INCLUDE]/jquery/GPL-LICENSE.txt',
     '[INCLUDE]/jquery/images/ui-anim_basic_16x16.gif',
