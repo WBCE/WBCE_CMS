@@ -106,8 +106,7 @@ class WSession
             // Session identifier used by Secureform class , so we dont need to use session_id
             // and tokens stay valid if we just refresh session id
             if (WSession::Get('SessionTokenIdentifier') == false) {
-                $rnd = new RandomGen();
-                WSession::Set('SessionTokenIdentifier', $rnd->TextToken(32));
+                WSession::Set('SessionTokenIdentifier', bin2hex(random_bytes(16)));
             }
 
             // this is used by only by installer in index.php and save.php we will remove this later

@@ -534,7 +534,7 @@ class Login extends Admin
             require_once WB_PATH . '/include/phplib/template.inc';
             $oTemplate = new Template(dirname($this->correct_theme_source($this->template_file)));
             $oTemplate->set_file('page', $this->template_file);
-            $oTemplate->set_block('page', 'mainBlock', 'main');
+            $oTemplate->set_block('page', 'main_block', 'main');
             if ($this->remember_me_option != true) {
                 $oTemplate->set_var('DISPLAY_REMEMBER_ME', 'display: none;');
             } else {
@@ -573,7 +573,7 @@ class Login extends Admin
 				'CAPTCHA' => $captcha
             ));
 
-            $oTemplate->parse('main', 'mainBlock', false);
+            $oTemplate->parse('main', 'main_block', false);
             $oTemplate->pparse('output', 'page');
         }
     }
