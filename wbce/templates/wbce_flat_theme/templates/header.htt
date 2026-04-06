@@ -87,8 +87,17 @@
         <span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
         <span class="version">Tag: {WBCE_TAG}</span><br/>
         <span class="version">PHP Version: {PHP_VERSION}</span><br/>
-        <span class="version">Session timeout: <span id="countdown" class="timer"></span></span>
+        <span class="version">Session timeout: <span id="countdown" class="timer"></span></span><br/>
+        <span class="version">Viewport: <span id="viewport-size"></span></span>
     </div>
+<script>
+function updateViewportSize() {
+    var el = document.getElementById('viewport-size');
+    if (el) el.textContent = window.innerWidth + ' x ' + window.innerHeight + ' px';
+}
+updateViewportSize();
+window.addEventListener('resize', updateViewportSize);
+</script>
 </div>
 <div id="mainarea" class="stickySidebarElement">
 <div id="contentarea">

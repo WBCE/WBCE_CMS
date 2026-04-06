@@ -80,6 +80,17 @@ $(document).ready(function () {
         closeSidebarMobile();
     });
 
+    // Collapse sidebar automatically when resizing into mobile breakpoint
+    var wasNarrow = $(window).width() <= 768;
+    $(window).on('resize', function () {
+        var isNarrow = $(window).width() <= 768;
+        if (isNarrow && !wasNarrow) {
+            // Crossed into mobile: collapse sidebar and hide backdrop
+            closeSidebarMobile();
+        }
+        wasNarrow = isNarrow;
+    });
+
     // toggle-action for sidebar
     $('#sidebararea_togglebutton').click(function () {
         if ($(this).parent().hasClass('closedsidebar')) {

@@ -1485,23 +1485,78 @@ form.advanced-options {
 /* --- Smartphones (≤ 480px) --- */
 @media screen and (max-width: 480px) {
 
-    /* Sidebar fully hidden when collapsed */
-    #sidebararea.closedsidebar {
-        left: -350px;
+    /* Sidebar 15% kleiner auf Mobilgeräten */
+    #sidebararea {
+        width: 298px;
+        padding: 102px 14px 14px;
+        font-size: 85%;
     }
 
-    /* Sidebar slides in as overlay when opened */
+    #sidebararea #userbox {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 77px;
+        background-position: 17px 10px;
+        background-size: 38px auto;
+    }
+
+    #sidebararea #user-name {
+        padding-bottom: 10px;
+        font-size: 17px;
+    }
+
+    #sidebararea #user-button {
+        right: 14px;
+        bottom: 10px;
+    }
+
+    #sidebararea #mainmenu {
+        margin-right: -14px;
+        margin-top: 31px;
+        padding-left: 43px;
+        font-size: 14px;
+    }
+
+    #sidebararea #mainmenu ul li a {
+        margin-right: -13px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 68px;
+    }
+
+    #sidebararea #mainmenu ul li a:before {
+        width: 60px;
+        padding-top: 10px;
+        font-size: 22px;
+    }
+
+    #sidebararea #systeminfo {
+        margin-top: 31px;
+    }
+
+    /* Sidebar fully hidden when collapsed */
+    #sidebararea.closedsidebar {
+        left: -298px;
+    }
+
+    /* Sidebar slides in as full overlay when opened */
     #sidebararea:not(.closedsidebar) {
         left: 0;
         box-shadow: 6px 0 20px rgba(0, 0, 0, 0.4);
     }
 
-    #mainarea {
+    /* Content uses full width in both states (sidebar overlays when open).
+       High-specificity selectors needed to beat .container #mainarea.closedsidebar */
+    #mainarea,
+    .container #mainarea,
+    .container #mainarea.closedsidebar {
         padding-left: 2%;
         padding-right: 2%;
     }
 
-    #pagetopmenu {
+    /* Top menu: no left padding in either state */
+    #pagetopmenu,
+    #pagetopmenu.closedsidebar {
         padding-left: 0;
     }
 
