@@ -1485,9 +1485,15 @@ form.advanced-options {
 /* --- Smartphones (≤ 480px) --- */
 @media screen and (max-width: 480px) {
 
-    /* Sidebar fully hidden, content uses full width */
-    #sidebararea {
+    /* Sidebar fully hidden when collapsed */
+    #sidebararea.closedsidebar {
         left: -350px;
+    }
+
+    /* Sidebar slides in as overlay when opened */
+    #sidebararea:not(.closedsidebar) {
+        left: 0;
+        box-shadow: 6px 0 20px rgba(0, 0, 0, 0.4);
     }
 
     #mainarea {
