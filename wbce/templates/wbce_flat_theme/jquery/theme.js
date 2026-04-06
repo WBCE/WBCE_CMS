@@ -60,10 +60,30 @@ $(document).ready(function () {
         pageModus: 'domainWide'
     }); // ENDE make sidebar state sticky
 
+    // Mobile: always start with sidebar collapsed on small screens
+    // (overrides sticky state restored by plugin above)
+    var $sidebarElems = $('#pagetopmenu, #mainarea, #sidebararea, #mainmenu, #mainmenu ul, #userbox, #systeminfo');
+    if ($(window).width() <= 768) {
+        $sidebarElems.addClass('closedsidebar');
+    }
+
+    // Mobile backdrop element
+    $('<div id="sidebar-backdrop"></div>').appendTo('body');
+
+    function closeSidebarMobile() {
+        $sidebarElems.addClass('closedsidebar');
+        $('#sidebar-backdrop').removeClass('active');
+    }
+
+    // Close sidebar when backdrop is clicked
+    $('#sidebar-backdrop').on('click', function () {
+        closeSidebarMobile();
+    });
+
     // toggle-action for sidebar
     $('#sidebararea_togglebutton').click(function () {
         if ($(this).parent().hasClass('closedsidebar')) {
-            // close sidebar
+            // Sidebar is closed → open it
             $('#pagetopmenu').removeClass('closedsidebar', 1000);
             $('#mainarea').removeClass('closedsidebar', 1000);
             $('#sidebararea').removeClass('closedsidebar', 1000);
@@ -72,8 +92,12 @@ $(document).ready(function () {
                 $('#userbox').removeClass('closedsidebar', 800);
                 $('#systeminfo').removeClass('closedsidebar', 800);
             });
+            // Show backdrop on mobile
+            if ($(window).width() <= 768) {
+                $('#sidebar-backdrop').addClass('active');
+            }
         } else {
-            // sidebar is open --> close sidebar
+            // Sidebar is open → close it
             $('#userbox').addClass('closedsidebar', 800);
             $('#systeminfo').addClass('closedsidebar', 800);
             $('#sidebararea').addClass('closedsidebar', 1000);
@@ -81,6 +105,7 @@ $(document).ready(function () {
             $('#mainmenu').addClass('closedsidebar', 1000);
             $('#pagetopmenu').addClass('closedsidebar', 1000);
             $('#mainarea').addClass('closedsidebar', 1000);
+            $('#sidebar-backdrop').removeClass('active');
             sidebararea_close_switch = 0;
         }
     }); // ENDE script toggle action for sidebar

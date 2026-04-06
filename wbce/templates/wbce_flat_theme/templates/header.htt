@@ -12,6 +12,7 @@
 
 <!--(PH) META HEAD+ -->
 <meta charset="{CHARSET}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Encoding" content="gzip" />
 <meta http-equiv="Accept-Encoding" content="gzip, deflate" />
 <!--(PH) META HEAD- -->
