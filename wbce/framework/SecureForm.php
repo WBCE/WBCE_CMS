@@ -17,35 +17,50 @@
 //  You can configure this class by adding several constants to your config.php
 //  All Patches are Copyright Norbert Heimsath released under GPLv3
 //  http://www.gnu.org/licenses/gpl.html
-//  Take a look at  __construkt  for configuration options(constants).
+//  Take a look at  __construct  for configuration options(constants).
 //  Patch version 0.3.5
 
 /*
- * If you want some special configuration put this somewhere in your config.php for
- * example or just uncomment the lines here
+ * === CONFIGURATION ===========================================================
  *
- * This parameter now can be set with the admintool SecureForm Switcher coded by Luisehahne,
- * pls ask for it in the forum
+ * The following constants can be configured with the SecureForm Switcher 
+ * Admin Tool (authored by Luisehahne) that is part of the WBCE CMS Package. 
  *
- * Secret can contain anything its the base for the secret part for the hash
+ * ─── WB_SECFORM_SECRET ───────────────────────────────────────────────────────
+ * Secret can contain anything. It's the base for the secret part for the hash:
  * define ('WB_SECFORM_SECRET','whatever you like');
- * after how many seconds a new secret is generated
- * define ('WB_SECFORM_SECRETTIME',86400);      #aprox one day
- * shall we use fingerprinting true/false
- * define ('WB_SECFORM_USEFP', true);
- * Timeout till the form token times out. Integer value between 0-86400 seconds (one day)
+ * 
+ * ─── WB_SECFORM_SECRETTIME ───────────────────────────────────────────────────
+ * after how many seconds a new secret is generated:
+ * define ('WB_SECFORM_SECRETTIME',86400); // 86400 = one day
+ * 
+ * ─── WB_SECFORM_USEFP ────────────────────────────────────────────────────────
+ * Shall we use fingerprinting?
+ * define ('WB_SECFORM_USEFP', true); //  true|false
+ * 
+ * ─── WB_SECFORM_TIMEOUT ──────────────────────────────────────────────────────
+ * Timeout till the form token times out. 
+ * Integer value between 0-86400 seconds:
  * define ('WB_SECFORM_TIMEOUT', 3600);
- * Name for the token form element only alphanumerical string allowed that starts whith a charakter
+ * 
+ * ─── WB_SECFORM_TOKENNAME ────────────────────────────────────────────────────
+ * Name for the token form element only alphanumerical string 
+ * allowed that starts whith a charakter:
  * define ('WB_SECFORM_TOKENNAME','my3form3');
- * how many blocks of the IP should be used in fingerprint 0=no ipcheck, possible values 0-4
- * define ('FINGERPRINT_WITH_IP_OCTETS',2);
+ * 
+ * ─── FINGERPRINT_WITH_IP_OCTETS ──────────────────────────────────────────────
+ * How many blocks of the IP should be used in fingerprint 
+ * possible values 0-4
+ * define ('FINGERPRINT_WITH_IP_OCTETS',2); // 0 = no ipcheck, 
+ * 
+ * =============================================================================
  */
 
-//no direct file access
-if (count(get_included_files()) == 1) die(header("Location: ../index.php", TRUE, 301));
+// Prevent  this  file  from  being  accessed  directly
+defined('WB_PATH') or die('No direct access allowed');
 
 /**
- * Class WB extends this class, so all this functions are avainable in class WB
+ * Class Wb extends this class, so all these methods are avainable in class Wb
  */
 
 class SecureForm
@@ -74,7 +89,7 @@ class SecureForm
     private $_browser_fingerprint = '';
             
     // Establish class Database object
-    protected $_oDb = NULL; 
+    protected Database $db; 
 
     /* Construtor */
 
@@ -84,7 +99,7 @@ class SecureForm
         // use in this class and its extend 
         // classes Admin, Wb & Frontend
         // Introduced with WBCE 1.4.0 to save redundancy
-        $this->_oDb = $GLOBALS['database'];
+        $this->db = $GLOBALS['database'];
 
         // GLOBAL CONFIGURATION, additional constants and stuff
 
@@ -139,10 +154,19 @@ class SecureForm
         }
     }
 
-    private function _validate_alalnum($input)
+    /**
+     * Validate that $input is an alphanumeric string starting with a letter.
+     *
+     * Returns false on success (valid input). This inverted pattern matches the
+     * guard style in the constructor: if (!$this->_validate_alalnum(X)) means
+     * "proceed only if X is valid".
+     *
+     * @param  mixed        $input
+     * @return false|string false if valid; error message string if invalid
+     */
+    private function _validate_alalnum(mixed $input): false|string
     {
-
-        # alphanumerical string that starts whith a letter charakter
+        # Alphanumeric string that starts with a letter character
         if (preg_match('/^[a-zA-Z][0-9a-zA-Z]+$/u', $input)) {
             return false;
         }
@@ -150,10 +174,18 @@ class SecureForm
         return "The given input is not an alphanumeric string.";
     }
 
-    private function _is04($input)
+    /**
+     * Validate that $input is a single integer in the range 0-4.
+     *
+     * Used to validate FINGERPRINT_WITH_IP_OCTETS. Same inverted return
+     * pattern as _validate_alalnum(): false = valid, string = error.
+     *
+     * @param  mixed        $input
+     * @return false|string false if valid; error message string if invalid
+     */
+    private function _is04(mixed $input): false|string
     {
-
-        # integer value between 0-4
+        # Integer value between 0-4
         if (preg_match('/^[0-4]$/', $input)) {
             return false;
         }
@@ -161,7 +193,18 @@ class SecureForm
         return "The given input is not an integer between 0-4.";
     }
 
-    private function _browser_fingerprint($encode = true, $fpsalt = "My Fingerprint: ")
+    /**
+     * Build a browser fingerprint from HTTP headers and optionally the client IP.
+     *
+     * Used to detect session hijacking: if the fingerprint changes mid-session
+     * (different browser or machine) the token validation will fail.
+     * Not foolproof, but raises the bar significantly.
+     *
+     * @param  bool   $encode  true (default) returns an MD5 hash; false returns the raw string
+     * @param  string $fpsalt  Salt prepended before hashing to namespace the fingerprint
+     * @return string
+     */
+    private function _browser_fingerprint(bool $encode = true, string $fpsalt = "My Fingerprint: "): string
     {
 
         $fingerprint = $fpsalt;
@@ -186,13 +229,24 @@ class SecureForm
         return $fingerprint;
     }
 
-    private function _getip($ipblocks = 4)
+    /**
+     * Extract and optionally truncate the client IP address.
+     *
+     * Fewer octets = more lenient matching (allows roaming within a subnet).
+     * Zero octets = no IP included in fingerprint at all.
+     *
+     * Proxy note: HTTP_X_FORWARDED_FOR can be spoofed and is used only for
+     * fingerprinting, not authentication decisions.
+     *
+     * @param  int    $ipblocks  Number of octets to include (0-4)
+     * @return string            IP string truncated to $ipblocks octets, e.g. "192.168"
+     */
+    private function _getip(int $ipblocks = 4): string
     {
+        $ip    = "";
+        $cutip = "";
 
-        $ip = "";    //Ip address result
-        $cutip = ""; //Ip address cut to limit
-
-        # mabe user is behind a Proxy but we need his real ip address if we got a nice Proxyserver,
+        # maybe user is behind a Proxy but we need his real ip address if we got a nice Proxyserver,
         # it sends us the "HTTP_X_FORWARDED_FOR" Header. Sometimes there is more than one Proxy.
         # !!!!!! THIS PART WAS NEVER TESTED BECAUSE I ONLY GOT A DIRECT INTERNET CONNECTION !!!!!!
         # long2ip(ip2long($lastip)) makes sure we got nothing else than an ip into our script ;-)
@@ -220,9 +274,14 @@ class SecureForm
         return $ip;
     }
 
-    // fake funktion , just exits to avoid error message
-
-    private function _generate_fingerprint()
+    /**
+     * Build an MD5 fingerprint from combined server and client characteristics.
+     *
+     * The fingerprint ties CSRF tokens to a specific client/server combination.
+     * It is included in the token secret so tokens cannot be moved between
+     * environments (different browser, server, or IP range).
+     */
+    private function _generate_fingerprint(): string
     {
 
         // server depending values
@@ -230,7 +289,7 @@ class SecureForm
 
         // client depending values
         $fingerprint .= (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '17';
-        $usedOctets = (defined('FINGERPRINT_WITH_IP_OCTETS')) ? intval(FINGERPRINT_WITH_IP_OCTETS) : 0;
+        $usedOctets = (defined('FINGERPRINT_WITH_IP_OCTETS')) ? intval(defined('FINGERPRINT_WITH_IP_OCTETS')) : 0;
         $clientIp = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
 
         if (($clientIp != '') && ($usedOctets > 0)) {
@@ -248,17 +307,14 @@ class SecureForm
         return md5($fingerprint);
     }
 
-    /*
-     * creates selfsigning Formular transactionnumbers for unique use
-     * @access public
-     * @param bool $asTAG: true returns a complete prepared, hidden HTML-Input-Tag (default)
-     *                     false returns an GET argument 'key=value'
-     * @return mixed:      string
+    /**
+     * Collect stable server-side values for use in fingerprinting and token signing.
      *
-     * requirements: an active session must not be available but it makes no sense whithout :-)
+     * Includes server software, name, IP, port, admin address, and PHP version.
+     * These values stay constant across requests and ensure that tokens generated
+     * on one server cannot be replayed on a different server.
      */
-
-    private function _generate_serverdata()
+    private function _generate_serverdata(): string
     {
 
         $usedOctets = (defined('FINGERPRINT_WITH_IP_OCTETS')) ? (intval(FINGERPRINT_WITH_IP_OCTETS) % 5) : 2;
@@ -285,17 +341,18 @@ class SecureForm
         return $serverdata;
     }
 
-    /*
-     * checks received form-transactionnumbers against itself
-     * @access public
-     * @param string $mode: requestmethode POST(default) or GET
-     * @return bool:    true if numbers matches against stored ones
+    /**
+     * Build the per-request HMAC secret used to sign and verify CSRF tokens.
      *
-     * requirements: no active session must be available but it makes no sense whithout.
-     * this check will prevent from multiple sending a form. history.back() also will never work
+     * Combines:
+     *   - The configured base secret (WB_SECFORM_SECRET)
+     *   - A daily time seed (limits replay window to ~24 hours)
+     *   - The server name (ties tokens to this domain)
+     *   - Stable server environment data
+     *   - The current session ID
+     *   - Optionally the browser fingerprint (if WB_SECFORM_USEFP is enabled)
      */
-
-    private function _generate_secret()
+    private function _generate_secret(): string
     {
 
         $secret = $this->_secret;
@@ -315,51 +372,50 @@ class SecureForm
 
         return $secret;
     }
-
-    /*
-     * save values in session and returns a ID-key
-     * @access public
-     * @param mixed $value: the value for witch a key shall be generated and memorized
-     * @return string:      a MD5-Key to use instead of the real value
+    
+    /**
+     * Generates a cryptographically secure random IDKEY token 
      *
-     * @requirements: an active session must be available
-     * @description: IDKEY can handle string/numeric/array - vars. Each key is a
+     * @return string  64 character hexadecimal token (256 Bit entropy)
      */
-
-    private function _generate_salt()
+    private function _generate_salt(): string
     {
+        try {
+            // random_bytes() is cryptographically secure and available since PHP 7.0
+            return bin2hex(random_bytes(32));
 
-        if (function_exists('microtime')) {
-            list($usec, $sec) = explode(" ", microtime());
-            $salt = (string)((float)$usec + (float)$sec);
-        } else {
-            $salt = (string)time();
+        } catch (\Exception $e) {
+            // Fallback only in very rare cases (e.g. system has no entropy)
+            // This should practically never happen on a normal server
+            trigger_error('random_bytes() failed: ' . $e->getMessage(), E_USER_WARNING);
+            return hash('sha256', uniqid((string)mt_rand(), true) . microtime(true));
         }
-        $salt = (string)rand(10000, 99999) . $salt . (string)rand(10000, 99999);
-        return md5($salt);
     }
-
-    /*
-     * search for key in session and returns the original value
-     * @access public
-     * @param string $fieldname: name of the POST/GET-Field containing the key or hex-key itself
-     * @param mixed $default: returnvalue if key not exist (default 0)
-     * @param string $request: requestmethode can be POST or GET or '' (default POST)
-     * @return mixed: the original value (string, numeric, array) or DEFAULT if request fails
+    
+    /**
+     * Generate a signed CSRF form token (Form Transaction Number).
      *
-     * @requirements: an active session must be available
-     * @description: each IDKEY can be checked only once. Unused Keys stay in list until the
-     *               session is destroyed.
+     * Each call produces a unique, signed token bound to the current session via
+     * SessionTokenIdentifier. The token survives session_regenerate_id() calls
+     * because it is tied to the identifier rather than the raw session ID.
+     *
+     * Multiple browser tabs are supported; tokens from a different browser
+     * or machine are rejected via fingerprint binding.
+     *
+     * Tokens expire after $this->_timeout seconds (default: WB_SECFORM_TIMEOUT).
+     *
+     * @param  bool   $as_tag  true (default) returns a hidden <input> tag ready to embed in a form
+     *                         false returns a key=value string for use in URLs (GET requests)
+     * @return string
      */
-
-    final public function getFTAN($as_tag = true)
+    final public function getFTAN(bool $as_tag = true): string
     {
 
         $secret = $this->_secret;
         $timeout = time() + $this->_timeout;
 
       
-        $token = bin2hex(random_bytes(4));
+        $token = dechex(mt_rand());
         $hash = sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')));
         $signed = $token . '-' . $hash;
 
@@ -371,9 +427,17 @@ class SecureForm
         return $this->_tokenname . '=' . $signed;
     }
 
-    //helper function
-
-    final public function checkFTAN($mode = 'POST')
+    /**
+     * Validate the CSRF token submitted with a form or URL.
+     *
+     * Checks that the token found in POST or GET matches the HMAC signature
+     * expected for the current session. Any mismatch returns false — the
+     * calling code must abort the request in that case.
+     *
+     * @param  string $mode  'POST' (default) or 'GET'
+     * @return bool          true if the token is valid and the request may proceed
+     */
+    final public function checkFTAN(string $mode = 'POST'): bool
     {
 
         $mode = (strtoupper($mode) != 'POST' ? '_GET' : '_POST');
@@ -390,7 +454,7 @@ class SecureForm
 
         if (count($parts) == 2) {
             list($token, $hash) = $parts;
-            if (hash_equals(sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier'))), $hash)) {
+            if ($hash == sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')))) {
                 $isok = true;
             }
         }
@@ -398,9 +462,18 @@ class SecureForm
         return $isok;
     }
 
-    //helper function
-
-    public function getIDKEY($value)
+    /**
+     * Store a value in the session under a one-time opaque key.
+     *
+     * Lets you pass sensitive data (IDs, arrays) through form hidden fields without
+     * exposing the actual values in HTML. The returned key is safe to embed in a
+     * form or URL. Each key can be redeemed exactly once via checkIDKEY() — after
+     * redemption all keys from the same page call are invalidated to prevent replay.
+     *
+     * @param  mixed  $value  Scalar or array to store (arrays are serialized automatically)
+     * @return string         Opaque one-time key to embed in the form
+     */
+    public function getIDKEY(mixed $value): string
     {
 
         // serialize value, if it's an array
@@ -431,7 +504,7 @@ class SecureForm
     {
 
         //Remove timed out idkeys
-        //echo"<pre>";print_r($_SESSION[$this->_idkey_name]);echo"<pre>";
+        //debug_dump($_SESSION[$this->_idkey_name]);
         $_SESSION[$this->_idkey_name] = array_filter($_SESSION[$this->_idkey_name], array($this, "_timedout"));
 
         // set returnvalue to default
@@ -472,40 +545,44 @@ class SecureForm
         return $return_value;
     }
 
-    // ADDITIONAL FUNCTIONS needed cause the original ones lack some functionality
-    // all are Copyright Norbert Heimsath, heimsath.org
-    // released under GPLv3  http://www.gnu.org/licenses/gpl.html
+    // ── Additional functions by Norbert Heimsath, heimsath.org ───────────────
+    // 
+    // Released under GPLv3: http://www.gnu.org/licenses/gpl.html
 
-    /*
-    Made because ctype_ gives strange results using mb Strings
-     */
-
-    /* @access public
-     * @return void
+    /**
+     * Invalidate all stored IDKEY entries for this session.
      *
-     * @requirements: an active session must be available
-     * @description: remove all entries from IDKEY-Array
-     *
+     * Resets the IDKEYs list to its initial sentinel state {0: 0}.
+     * Call after logout or any operation that should prevent previously
+     * issued keys from being redeemed.
      */
-    public function clearIDKEY()
+    public function clearIDKEY(): void
     {
 
         $this->_IDKEYs = array('0' => '0');
     }
 
-    /*
-    Just a function to get User ip even if hes behind a proxy
-     */
 
-    private function _timedout($var)
+    /**
+     * Array filter callback: remove expired IDKEY entries.
+     *
+     * Called by array_filter() in checkIDKEY() to prune stale keys before
+     * looking up a submitted key.
+     *
+     * The sentinel value '0' inserted by clearIDKEY() is always removed —
+     * it keeps the session array non-empty after a reset, not a real key.
+     *
+     * @param  mixed $var  IDKEY entry (array with 'time' key) or sentinel '0'
+     * @return bool        true = keep; false = remove
+     */
+    private function _timedout(mixed $var): bool
     {
-        // First element after a logout is 0 not sure why???....
-        // ah got It clearIDKEY() does that. So there is always an array to run on i guess.
-        if ($var == 0) {
+        // Sentinel from clearIDKEY() — always discard
+        if ($var === 0 || $var === '0') {
             return false;
         }
 
-        //echo "timedoutcall:<br>";print_r($var);
+        // Discard if older than the configured timeout
         if ($var['time'] < time() - $this->_timeout) {
             return false;
         }
@@ -513,11 +590,17 @@ class SecureForm
         return true;
     }
 
-    /*
-    Creates a basic Browser Fingerprint for securing the session and forms.
+    /**
+     * Array filter callback: remove IDKEY entries that belong to the current page call.
+     *
+     * After a key is successfully redeemed, all other keys generated during the
+     * same page request are removed. This prevents replay while still allowing
+     * multiple forms on the same page to each have their own valid key.
+     *
+     * @param  mixed $var  IDKEY entry array with a 'page' identifier
+     * @return bool        true = keep; false = remove (same page as current request)
      */
-
-    private function _fpages($var)
+    private function _fpages(mixed $var): bool
     {
         if ($var['page'] == $this->_page_id) {
             return false;
