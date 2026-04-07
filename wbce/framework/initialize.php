@@ -9,242 +9,125 @@
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  *
- * The main initialization file for WBCE CMS.
+ * The main initialization and bootstraping file for WBCE CMS.
  * Takes care of the set up (initialization) of variables and constants,
- * the autoloader class, sessions and settings.
+ * the autoloader class, sessions, settings, internationalization and more.
  *
- * Usualy this is included by loading the config.php
- * in the main directory(webroot).
+ * Usualy this is included by loading the config.php in the main directory
+ * (webroot), however, this file is also being used during the installation.
  *
  */
 
-// no direct file access
+// prevent direct file access
 if (count(get_included_files()) == 1) {
     header("Location: ../index.php", true, 301);
 }
 
 // Stop execution if PHP version is too old
-$sReqPhpVersion = '7.4.14';
-if (version_compare(PHP_VERSION, $sReqPhpVersion, '<')) {
-    $sMsg = 'PHP ' . PHP_VERSION . ' running on this system, but at least PHP ' . $sReqPhpVersion . ' required!<br />';
-    $sMsg .= 'Please upgrade your PHP Version and try running WBCE CMS again.';
-    die($sMsg);
-}
+// Check minimum PHP version (new PDO Database class requires PHP 8.1+)
+wbce_check_php_version('8.1.0');
 
 // Starting Output buffering
 ob_start();
 
-// SOME EARLY CONSTANT HANDLING
-// The absolute minimum needed for autoloader and DB
-
-// WB_DEBUG can be overwritten via WBCE config.php (if enabled, max. PHP error output is shown)
-defined('WB_DEBUG') or define('WB_DEBUG', false);
-// define WB_PATH as it isn't yet defined, installer issue whith missing wbpath
+// Define constants that are the absolute minimum needed for autoloader and DB
+// 
+// During istallation WB_PATH is not defined yet, therefore we do it he for that case.
 defined("WB_PATH") or define("WB_PATH", dirname(__DIR__));
+
+// Load Constants from var/wbce_file_based_settings.php early
+// allows for setting constants via the backend rather than manually in the config.php
+define('WBCE_FILE_BASED_SETTINGS', WB_PATH . '/var/wbce_file_based_settings.php');
+wbce_load_file_based_settings();
+
+// WB_DEBUG can be overwritten via WBCE config.php or wbce_load_file_based_settings()
+// (if enabled, max. PHP error output is shown)
+defined('WB_DEBUG') or define('WB_DEBUG', false);
 
 // INITIALIZE AUTOLOADER
 require_once dirname(__FILE__) . "/class.autoload.php";
 
 // PREDB MODULES LOADED HERE
-//
-// load all predb.php files form module folders that start whith predb_
-// These are especially for registering classes that override classes from the main framework
-// For example a DB class that uses PDO instead of MYSQLI.
-// This one Loads modules even if they are not installed in the DB.
-//
-// load all predb.php files form folders that start whith predb_
-$aPreDb = array();
-$aPreDb = glob(dirname(__DIR__) . "/modules/predb_*");
-if ($aPreDb !== false && !empty($aPreDb)) {
-    foreach ($aPreDb as $sModule) {
-        if (file_exists($sModule . "/predb.php")) {
-            require_once($sModule . "/predb.php");
-        }
-    }
+foreach (wbce_get_init_files('predb') as $_predbFile) {
+    require_once $_predbFile;
 }
+unset($_predbFile);
 
 // INITIALIZE DATABASE CLASS
-$database = new database();
+$database = new Database();
 
 // SYSTEM CONSTANTS
-//
 // Now we start definig System constants if not already set
 // Lots of compatibility work here, please only use the WB_ constants in future stuff
 
 defined('ADMIN_DIRECTORY') or define('ADMIN_DIRECTORY', 'admin');
-defined('ADMIN_URL') or define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
-defined('ADMIN_PATH') or define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
+validate_admin_directory_constant(); // check for faulty constructions
+defined('ADMIN_URL')       or define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
+defined('ADMIN_PATH')      or define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 
-// first check if someone added crap in the config
-if (!preg_match('/xx[a-z0-9_][a-z0-9_\-\.]+/i', 'xx' . ADMIN_DIRECTORY)) {
-    die('Invalid admin-directory: ' . ADMIN_DIRECTORY);
+// Load Lang translation functions (L_(), Ln_()).
+// Must be loaded explicitly before WbAuto::AddDir('/framework/') 
+require_once WB_PATH . '/framework/LangLoader.php';
+
+// Load core functions before preinit files so we can use functions right away.
+require_once WB_PATH . '/framework/functions.php';
+
+
+// MODULES preinit.php
+foreach (wbce_get_init_files('preinit') as $_preinitFile) {
+    include $_preinitFile;
 }
+unset($_preinitFile);
 
-// Load framework functions before preinit files so we can use functions right away.
-require_once(WB_PATH . '/framework/functions.php');
-
-
-// PRE_INIT MODULES
-//
-// Pre init, modules may change everyting as almost nothing is already set here
-// Module may hook here to change page_id, Language or whatever. Even most System Constants.
-// As DB is already available here we rely on installed modules.
-//
-// @todo check if we need to make more modifications to the core to get this fully running
-// @todo check if we better use  MYSQL FIND_IN_SET (http://forum.wbce.org/viewtopic.php?id=84)
-
-// Query gives back false on failure
-if (($resSnippets = $database->query("SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE '%preinit%'"))) {
-    while ($rec = $resSnippets->fetchRow()) {
-        $sModFilePath = dirname(__DIR__) . '/modules/' . $rec['directory'] . '/preinit.php';
-        if (file_exists($sModFilePath)) {
-            include $sModFilePath;
-        }
-    }
-}
 
 // define DOMAIN_PROTOCOLL constant
-$protocoll = "http";
-// $_SERVER['HTTPS'] alone is not reliable ... :-(
-// https://github.com/dmikusa-pivotal/cf-php-apache-buildpack/issues/6
-if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-    $protocoll = "https";
-}
-if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == 443) {
-    $protocoll = "https";
-}
-if (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] and $_SERVER['HTTPS'] != "off") {
-    $protocoll = "https";
-}
-define("DOMAIN_PROTOCOLL", $protocoll);
+define("DOMAIN_PROTOCOLL", wbce_detect_protocol());
 
 // MORE AUTOLOADER REGISTRATION
-// Registering additional classes that are needed by the core
-
 // Registering class for idna conversion (needed for email-checks)
 WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
-WbAuto::AddFile("SecureForm", "/framework/SecureForm.php");
-
-// Auto Load the Insert and I Classes
-WbAuto::AddFile("Insert", "/framework/Insert.php");
-WbAuto::AddFile("I", "/framework/I.php");
-
-// Auto Load Mailer Class (subclass of PHPMailer)
-WbAuto::AddFile("Mailer", "/framework/Mailer.php");
-WbAuto::AddFile("wbmailer", "/framework/Mailer.php"); // fallback for older modules
-
-// Auto Accounts Class
-WbAuto::AddFile("Accounts", "/framework/Accounts.php"); // child class
-
-// Auto MessageBox Class
-WbAuto::AddFile("MessageBox", "/framework/MessageBox.php"); // child class
-
+// Register all of the framework classes at once
+WbAuto::AddDir("/framework/");
 // Auto Load phpLib (the ancient Templating Engine)
 WbAuto::AddFile("Template", "/include/phplib/template.inc");
-
 // Connect to Twig TE (the contemporary Templating Engine)
 require_once WB_PATH . '/include/Sensio/Twig/WBCETwigLoader.php';
 
 // SETUP SYSTEM CONSTANTS (GLOBAL SETTINGS)
 // We use Settings Class to fetch all Settings from DB
 // Then we process all data into the coresponding constants.
-Settings::Setup(); // Fetch all settings whith Settings class from framework
+Settings::setup(); 
 
-// RESULTING CONSTANTS
-// Some resulting constants need to be set manually
+// Configure ERROR REPORTING based on WB_DEBUG and ER_LEVEL
+wbce_setup_error_reporting();
 
-// Filemodes
-$string_file_mode = STRING_FILE_MODE;
-define('OCTAL_FILE_MODE', (int)octdec($string_file_mode));
-define('WB_OCTAL_FILE_MODE', (int)octdec($string_file_mode));
-// Dirmodes
-$string_dir_mode = STRING_DIR_MODE;
-define('OCTAL_DIR_MODE', (int)octdec($string_dir_mode));
-define('WB_OCTAL_DIR_MODE', (int)octdec($string_dir_mode));
+// File & Directory modes
+define('OCTAL_FILE_MODE',    (int)octdec(STRING_FILE_MODE));
+define('WB_OCTAL_FILE_MODE', (int)octdec(STRING_FILE_MODE));
+define('OCTAL_DIR_MODE',     (int)octdec(STRING_DIR_MODE));
+define('WB_OCTAL_DIR_MODE',  (int)octdec(STRING_DIR_MODE));
 
-switch (true) {
-    case (WB_DEBUG === true):
-        // Debugging activated
-        error_reporting(E_ALL);
-        break;
-
-    case (intval(ER_LEVEL) > 0):
-        //Historical compatibility stuff
-        error_reporting(E_ALL);
-        break;
-
-    case (ER_LEVEL == "-1"):
-        //Historical compatibility stuff
-        error_reporting(E_ALL);
-        break;
-
-    case (ER_LEVEL == "E0"):
-        // system default (php.ini)
-         error_reporting((int)ini_get('error_reporting'));
-        break;
-
-    case (ER_LEVEL == "E1"):
-        // hide all errors and notices
-        error_reporting(0);
-        break;
-
-    case (ER_LEVEL == "E2"):
-        // show all errors and notices
-        error_reporting(E_ALL);
-        break;
-
-    case (ER_LEVEL == "E3"):
-        // show only errors, nothing else
-        error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
-        break;
-
-    default:
-        // system default (php.ini)
-        error_reporting(ini_get('error_reporting'));
-}
-// Adapt display_error directive in php.ini to reflect error_reporting level
-ini_set('display_errors', (error_reporting() == 0) ? 0 : 1);
 
 // DEFAULT TIMEZONE
 // @todo this needs to be replaced by a real locale handling
-// same for the timeformatstuff somewhat below.
+// same for the timeformat stuff further down.
 date_default_timezone_set('UTC');
 
 
-//SESSION
-//Initialize Custom Session Handler
-//Stores Sessions to DB
-//As session table possibly not installed, it may not run whith installer and upgradescript
-//We then simply fallback to PHP default Session handling.
+// SESSION
+// Initialize Custom Session Handler that stores sessions to the database.
+$_dbSessionHandler = new DbSession();
 
-// Init custom session handler
-$hCustomSessionHandler = new DbSession();
-
-// Init  special Session handling and Start session.
+// Initialize special Session handling and Start session.
 WSession::Start();
 
-
-// MODULES INITIALIZE.PHP
-// For now we put modules initialize.php here
-// Yes! All modules are now allowed to have a initialize.php. function='initialize'
-// You can even change the $page_id, or maybe the Language .
-// You can log users in or out and do what you like
-// Initialize Modules normaly do not distinguish between FE and BE
-
-$sSql = "SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE '%initialize%'";
-if (($resSnippets = $database->query($sSql))) {
-    while ($rec = $resSnippets->fetchRow()) {
-        $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/initialize.php';
-        if (file_exists($sFile)) {
-            include $sFile;
-        }
-    }
+// MODULES initialize.php
+foreach (wbce_get_init_files('initialize') as $_initFile) {
+    include $_initFile;
 }
+unset($_initFile);
 
 // SANITIZE REFERER
-// sanitize $_SERVER['HTTP_REFERER']
-// @todo Needs to be repaced ASAP.
-// Currently it's the only way to have a halfway save refrerer string.
 SanitizeHttpReferer();
 
 // LANGUAGES
@@ -262,112 +145,353 @@ if (!defined("LANGUAGE")) {
         }
     }
 }
+// Load system Language files from WB_PATH.'/langauges/'
+Lang::setLocale(LANGUAGE);
+Lang::loadCore(LANGUAGE, WB_PATH . '/languages');
 
-
-// Needed in account and Account AdminTool
-if (FRONTEND_LOGIN) {
-    if (!defined('ACCOUNT_PATH')) {
-        // Set login menu constants
-        defined('ACCOUNT_URL') or define('ACCOUNT_URL', WB_URL . '/account');
-        define('ACCOUNT_PATH', str_replace(WB_URL, WB_PATH, ACCOUNT_URL));
-
-        define('LOGIN_URL', ACCOUNT_URL . '/login.php');
-        define('LOGOUT_URL', ACCOUNT_URL . '/logout.php');
-        define('FORGOT_URL', ACCOUNT_URL . '/forgot.php');
-        define('PREFERENCES_URL', ACCOUNT_URL . '/preferences.php');
-        define('SIGNUP_URL', ACCOUNT_URL . '/signup.php');
-    }
-}
-
-
-// Load default language file so even incomplete language files display at least the english text
-if (!file_exists(WB_PATH . '/languages/EN.php')) {
-    exit('Error loading default language file (EN), please check configuration and file');
-} else {
-    // we always load EN language file
-    require_once WB_PATH . '/languages/EN.php';
-}
-
-// Load LC language file if LANGUAGE != EN
-if (LANGUAGE != 'EN') {
-    $sLangFile = WB_PATH . '/languages/' . LANGUAGE . '.php';
-    if (file_exists($sLangFile)) {
-        require_once $sLangFile;
-    }
-}
-// include old languages format  only for compatibility only needed for some old modules
-if (file_exists(WB_PATH . '/languages/old.format.inc.php')) {
-    include WB_PATH . '/languages/old.format.inc.php';
+// maintain old.format.inc.php for Legacy Modules
+if (file_exists($file = WB_PATH . '/languages/old.format.inc.php')) {
+    include $file;
 }
 define("LANGUAGE_LOADED", true);
 
-// simple template switcher
-if (defined('TEMPLATE_SWITCHER') && TEMPLATE_SWITCHER == true) {
-    if (isset($_GET['reset_template'])) {
-        unset($_SESSION['wb_preview_tpl']);
-    }
-    if (isset($_SESSION['wb_preview_tpl']) && !file_exists(WB_PATH.'/templates/'.$_SESSION['wb_preview_tpl'].'/info.php')) {
-        unset($_SESSION['wb_preview_tpl']);		
-    }
-    if (isset($_GET['template'])) {
-        $core_preview_template = preg_replace("/(\.\.\/)/","", $_GET['template']);
-        if (isset($_GET['template']) && is_string($core_preview_template) && file_exists(WB_PATH.'/templates/'.$core_preview_template.'/info.php')) {
-            $_SESSION['wb_preview_tpl'] = $core_preview_template;
-            define('TEMPLATE', $_SESSION['wb_preview_tpl']);
-        }    
-    } elseif (isset($_SESSION['wb_preview_tpl'])) {
-        if (is_string($_SESSION['wb_preview_tpl']) && file_exists(WB_PATH.'/templates/'.$_SESSION['wb_preview_tpl'].'/info.php')) {            
-            define('TEMPLATE', $_SESSION['wb_preview_tpl']);
-        }    
-    }
+// Constants needed in Accounts and Accounts AdminTool
+if (FRONTEND_LOGIN) {
+    defined('ACCOUNT_DIR') or define('ACCOUNT_DIR', 'account'); // no leading/trailing slash
+    define('ACCOUNT_PATH', WB_PATH . DIRECTORY_SEPARATOR . ACCOUNT_DIR);
+    define('ACCOUNT_URL',  get_url_from_path(ACCOUNT_PATH));
+    define('LOGIN_URL',    ACCOUNT_URL . '/login.php');
+    define('LOGOUT_URL',   ACCOUNT_URL . '/logout.php');
+    define('FORGOT_URL',   ACCOUNT_URL . '/forgot.php');
+    define('SIGNUP_URL',   ACCOUNT_URL . '/signup.php');
+    define('PREFERENCES_URL', ACCOUNT_URL . '/preferences.php');
 }
 
 // define more system constants
-defined("THEME_URL") or define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
-defined("THEME_PATH") or define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
+defined("THEME_URL")        or define('THEME_URL', WB_URL . '/templates/' . DEFAULT_THEME);
+defined("THEME_PATH")       or define('THEME_PATH', WB_PATH . '/templates/' . DEFAULT_THEME);
 defined("EDIT_ONE_SECTION") or define('EDIT_ONE_SECTION', false);
-defined("EDITOR_WIDTH") or define('EDITOR_WIDTH', 0);
+defined("EDITOR_WIDTH")     or define('EDITOR_WIDTH', 0);
 
 // TIMEZONE and DATE/TIME FORMAT constants
-define('TIMEZONE', isset($_SESSION['TIMEZONE']) ? intval($_SESSION['TIMEZONE']) : intval(DEFAULT_TIMEZONE));
+define('TIMEZONE',    isset($_SESSION['TIMEZONE'])    ? intval($_SESSION['TIMEZONE']) : intval(DEFAULT_TIMEZONE));
 define('DATE_FORMAT', isset($_SESSION['DATE_FORMAT']) ? $_SESSION['DATE_FORMAT'] : DEFAULT_DATE_FORMAT);
 define('TIME_FORMAT', isset($_SESSION['TIME_FORMAT']) ? $_SESSION['TIME_FORMAT'] : DEFAULT_TIME_FORMAT);
 
-// FETCH WBCE VERSION
+// FETCH WBCE VERSION CONSTANTS
 // Version should be available not only in admin section(BE)
 require_once ADMIN_PATH . '/interface/version.php';
 
-// ////////////////////////////////////////////////////////////////////////////////
-//  HELPER FUNCTIONS
-//  Moved down here as they need to be removed/reworked sooner or later
-// ////////////////////////////////////////////////////////////////////////////////
+// TEMPLATE SWITCHER 
+// Simple template switcher for development and preview
+// Only available in Frontend if TEMPLATE_SWITCHER is set and true
+wbce_template_switcher();
 
+// CONSTANTS SNAPSHOT FOR DEVELOPERS
+// Placed here so all constants (ADMIN_URL, THEME_PATH, TIMEZONE etc.) are fully defined.
+Settings::exportSnapshot();
+
+
+// ───── HELPER FUNCTIONS ─────────────────────────────────────────────────────────────────
 /**
- * @brief  sanitize $_SERVER['HTTP_REFERER']
- * @todo   Change WBCE so it uses the save referrer and no longer touches the basic referrer
+ * Sanitize and validate the HTTP_REFERER to ensure it originates from our own site.
+ *
+ * This function maintains backward compatibility by overwriting $_SERVER['HTTP_REFERER']
+ * and also sets the safer $_SERVER['WBCE_HTTP_REFERER'].
+ *
+ * @return string The sanitized referer URL or empty string if invalid/untrusted.
  */
-function SanitizeHttpReferer()
+function SanitizeHttpReferer(): string
 {
-    $sTmpReferer = '';
-    if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != '') {
-        $aRefUrl = parse_url($_SERVER['HTTP_REFERER']);
-        if ($aRefUrl !== false) {
-            $aRefUrl['host'] = isset($aRefUrl['host']) ? $aRefUrl['host'] : '';
-            $aRefUrl['path'] = isset($aRefUrl['path']) ? $aRefUrl['path'] : '';
-            $aRefUrl['fragment'] = isset($aRefUrl['fragment']) ? '#' . $aRefUrl['fragment'] : '';
-            $aWbUrl = parse_url(WB_URL);
-            if ($aWbUrl !== false) {
-                $aWbUrl['host'] = isset($aWbUrl['host']) ? $aWbUrl['host'] : '';
-                $aWbUrl['path'] = isset($aWbUrl['path']) ? $aWbUrl['path'] : '';
-                if (strpos($aRefUrl['host'] . $aRefUrl['path'], $aWbUrl['host'] . $aWbUrl['path']) !== false) {
-                    $aRefUrl['path'] = preg_replace('#^' . $aWbUrl['path'] . '#i', '', $aRefUrl['path']);
-                    $sTmpReferer = WB_URL . $aRefUrl['path'] . $aRefUrl['fragment'];
-                }
-                unset($aWbUrl);
-            }
-            unset($aRefUrl);
+    $referer = $_SERVER['HTTP_REFERER'] ?? '';
+
+    // No referer → clear both and return early
+    if (empty($referer)) {
+        $_SERVER['HTTP_REFERER'] = '';
+        $_SERVER['WBCE_HTTP_REFERER'] = '';
+        return '';
+    }
+
+    $refUrl  = parse_url($referer);
+    $siteUrl = parse_url(WB_URL);
+
+    // Parsing failed → invalid referer
+    if ($refUrl === false || $siteUrl === false) {
+        $_SERVER['HTTP_REFERER'] = '';
+        $_SERVER['WBCE_HTTP_REFERER'] = '';
+        return '';
+    }
+
+    $refHost  = $refUrl['host']  ?? '';
+    $siteHost = $siteUrl['host'] ?? '';
+
+    // Referer must come from the same domain
+    if ($refHost !== $siteHost) {
+        $_SERVER['HTTP_REFERER'] = '';
+        $_SERVER['WBCE_HTTP_REFERER'] = '';
+        return '';
+    }
+
+    // Build clean path
+    $path     = $refUrl['path']     ?? '/';
+    $query    = isset($refUrl['query'])    ? '?' . $refUrl['query']    : '';
+    $fragment = isset($refUrl['fragment']) ? '#' . $refUrl['fragment'] : '';
+
+    // Remove base path if WBCE is installed in a subdirectory
+    $basePath = $siteUrl['path'] ?? '';
+    if ($basePath && str_starts_with($path, $basePath)) {
+        $path = substr($path, strlen($basePath));
+        if ($path === '') {
+            $path = '/';
         }
     }
-    $_SERVER['HTTP_REFERER'] = $sTmpReferer;
-    $_SERVER['WB_SECURE_HTTP_REFERER'] = $sTmpReferer;
+
+    $safeReferer = WB_URL . $path . $query . $fragment;
+
+    // Maintain original behavior for backward compatibility
+    $_SERVER['HTTP_REFERER']      = $safeReferer;
+    $_SERVER['WBCE_HTTP_REFERER'] = $safeReferer;
+
+    return $safeReferer;
+}
+
+
+/**
+ * Setup PHP error reporting according to WBCE configuration.
+ *
+ * Priority:
+ *   1. WB_DEBUG === true          → Maximum error reporting (development)
+ *   2. ER_LEVEL setting           → Specific configuration
+ *   3. php.ini default            → Fallback
+ */
+function wbce_setup_error_reporting(): void
+{
+    // Highest priority: Debug mode
+    if (defined('WB_DEBUG') && WB_DEBUG === true) {
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
+        return;
+    }
+
+    // Get ER_LEVEL with fallback
+    $level = defined('ER_LEVEL') ? (string)ER_LEVEL : 'E0';
+
+    // Map all the Error Levels
+    $mapping = [
+        '-1' => E_ALL,                                 // old compatibility
+        'E0' => (int)ini_get('error_reporting'),       // system default
+        'E1' => 0,                                     // hide all errors
+        'E2' => E_ALL,                                 // show everything
+        'E3' => E_ALL & ~E_NOTICE & ~E_WARNING,        // errors only
+    ];
+
+    $errorLevel = $mapping[$level] ?? (int)ini_get('error_reporting');
+
+    error_reporting($errorLevel);
+
+    // Control display_errors accordingly
+    if ($level === 'E1') {
+        ini_set('display_errors', '0');
+    } elseif (in_array($level, ['-1', 'E2', 'E3'], true)) {
+        ini_set('display_errors', '1');
+    }
+    // For E0 and unknown values we leave display_errors as configured in php.ini
+}
+
+/**
+ * Detect the current protocol (http or https) as reliably as possible.
+ * Takes into account reverse proxies, load balancers and various server configurations.
+ *
+ * @return string 'https' or 'http'
+ */
+function wbce_detect_protocol(): string
+{
+    // 1. Check for forwarded protocol (most common with proxies/load balancers)
+    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && 
+        strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https') {
+        return 'https';
+    }
+
+    // 2. Check for standard HTTPS indicators
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' && $_SERVER['HTTPS'] !== '') {
+        return 'https';
+    }
+
+    // 3. Check server port (443 is standard for HTTPS)
+    if (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443) {
+        return 'https';
+    }
+
+    // 4. Some proxies use HTTP_X_FORWARDED_SSL or HTTPS header
+    if (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on') {
+        return 'https';
+    }
+
+    return 'http';
+}
+
+/**
+ * Handle template preview / template switcher functionality.
+ *
+ * Allows switching the active template via ?template=xxx in the URL for development
+ * and testing purposes.
+ */
+function wbce_template_switcher(): void
+{
+    if (!defined('TEMPLATE_SWITCHER') || TEMPLATE_SWITCHER !== true) {
+        return;
+    }
+
+    // Reset template preview
+    if (isset($_GET['reset_template'])) {
+        unset($_SESSION['wb_preview_tpl']);
+    }
+
+    // Validate existing preview template (in case it was deleted)
+    if (isset($_SESSION['wb_preview_tpl'])) {
+        $previewTpl = (string)$_SESSION['wb_preview_tpl'];
+        if (!file_exists(WB_PATH . '/templates/' . $previewTpl . '/info.php')) {
+            unset($_SESSION['wb_preview_tpl']);
+        }
+    }
+
+    // Switch to new template via GET parameter
+    if (isset($_GET['template']) && is_string($_GET['template'])) {
+        $newTemplate = preg_replace('/(\.\.\/|\/)/', '', trim($_GET['template']));
+
+        if ($newTemplate !== '' && file_exists(WB_PATH . '/templates/' . $newTemplate . '/info.php')) {
+            $_SESSION['wb_preview_tpl'] = $newTemplate;
+        }
+    }
+
+    // Finally define the TEMPLATE constant if a preview is active
+    if (isset($_SESSION['wb_preview_tpl']) && is_string($_SESSION['wb_preview_tpl'])) {
+        define('TEMPLATE', $_SESSION['wb_preview_tpl']);
+    }
+}
+
+/**
+ * Check minimum PHP version requirement and exit with clear message if not met.
+ */
+function wbce_check_php_version(string $minimumVersion = '8.1.0'): void
+{
+    if (version_compare(PHP_VERSION, $minimumVersion, '<')) {
+        $message = sprintf(
+            "WBCE CMS requires PHP %s or higher.\n" .
+            "You are currently running PHP %s.\n\n" .
+            "Please upgrade your PHP version and try again.",
+            $minimumVersion,
+            PHP_VERSION
+        );
+
+        if (php_sapi_name() === 'cli') {
+            fwrite(STDERR, $message . PHP_EOL);
+        } else {
+            header('Content-Type: text/html; charset=utf-8');
+            echo '<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">';
+            echo '<title>PHP Version Error - WBCE CMS</title>';
+            echo '<style>body{font-family:system-ui,Arial,sans-serif;max-width:700px;margin:50px auto;padding:30px;border:2px solid #d32f2f;background:#fff8f8;}</style>';
+            echo '</head><body>';
+            echo '<h1>The PHP Version running is insufficient.</h1>';
+            echo nl2br(htmlspecialchars($message));
+            echo '</body></html>';
+        }
+        exit(1);
+    }
+}
+/**
+ * Validate ADMIN_DIRECTORY constant.
+ * Assumes that ADMIN_DIRECTORY has already been defined.
+ */
+function validate_admin_directory_constant(): void
+{
+    // Validate ADMIN_DIRECTORY
+    if (!preg_match('/^[a-zA-Z][a-zA-Z0-9_-]{1,30}$/', ADMIN_DIRECTORY)) {
+        die('Configuration Error: Invalid ADMIN_DIRECTORY.<br>' .
+            'Allowed characters: letters (a-z, A-Z), numbers (0-9), underscore (_) and hyphen (-).<br>' .
+            'Must start with a letter and be between 2 and 31 characters long.<br>' .
+            'Current value: "' . htmlspecialchars(ADMIN_DIRECTORY) . '"');
+    }
+}
+
+/**
+ * Returns paths of module init files for the given function type.
+ *
+ * Supports three types with different discovery mechanisms:
+ *   'predb'   — filesystem glob on modules/predb_* (no DB, runs before DB init)
+ *   'preinit' — DB query on addons.function LIKE '%preinit%'
+ *   'init'    — DB query on addons.function LIKE '%initialize%'
+ *
+ * The actual loading (require_once / include) happens in the caller's scope
+ * so that variables set by the files remain globally accessible.
+ *
+ * @param  string $functionType  One of: 'predb', 'preinit', 'initialize'
+ * @return array                 Absolute file paths, ready to load
+ */
+function wbce_get_init_files(string $functionType): array
+{
+    if (!in_array($functionType, ['predb', 'preinit', 'initialize'], true)) {
+        return [];
+    }
+
+    // predb: filesystem only — DB does not exist yet at this point
+    if ($functionType === 'predb') {
+        $pattern = dirname(__DIR__) . '/modules/predb_*/predb.php';
+        $found   = glob($pattern) ?: [];
+        return array_filter($found, 'is_readable');
+    }
+
+    // preinit / init: DB-registered modules
+    global $database;
+
+    // 'init' maps to initialize.php; 'preinit' maps to preinit.php
+    $filename  = $functionType.'.php';
+    $likeValue = '%'.$functionType.'%';
+
+    $modules = $database->fetchAll(
+        "SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE ?",
+        [$likeValue]
+    );
+
+    $files = [];
+    foreach ($modules as $module) {
+        $path = WB_PATH . '/modules/' . $module['directory'] . '/' . $filename;
+        if (file_exists($path)) {
+            $files[] = $path;
+        }
+    }
+
+    return $files;
+}
+
+/** 
+ * Load file-based settings and define them as constants.
+ * Called very early during initialization — before autoloader and DB
+ * to have a way to read/write certain settings before the Database is loaded. 
+ * Introduced to WBCE CMS in version 1.7.0 by:
+ *  
+ * @author    Christian M. Stefan (https://www.wbEasy.de)
+ * @copyright Christian M. Stefan (2026)
+ * @license   GNU/GPL 2
+ */
+function wbce_load_file_based_settings(): void
+{
+    // the constant WBCE_FILE_BASED_SETTINGS is defined at the top of the 
+    // initialize.php once, right after define WB_PATH
+    $file = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
+    if (!$file || !file_exists($file)) return;
+
+    $settings = include $file; // the file contains a simple, one dimensional array
+    if (!is_array($settings)) {
+        trigger_error("File-based Settings: invalid format in " . basename($file), E_USER_WARNING);
+        return;
+    }
+
+    foreach ($settings as $key => $value) {
+        if (!preg_match('/^[A-Z][A-Z0-9_]*$/', $key)) {
+            trigger_error("File-based Settings: invalid key '{$key}' skipped", E_USER_WARNING);
+            continue;
+        }
+        defined($key) || define($key, $value);
+    }
 }
