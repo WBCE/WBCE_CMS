@@ -10,13 +10,10 @@
  * @license GNU GPL2 (or any later version)
  */
 
-//no direct file access
-if (count(get_included_files()) == 1) {
-    die(header("Location: ../index.php", true, 301));
-}
+// Prevent  this  file  from  being  accessed  directly
+defined('WB_PATH') or die('No direct access allowed');
 
-
-// Get WB version
+// Get WBCE version
 require_once ADMIN_PATH . '/interface/version.php';
 
 class Admin extends Wb
@@ -51,8 +48,8 @@ class Admin extends Wb
             }
 
             // Check if the backend language is also the selected language. If not, send headers again.
-            $sql = 'SELECT `language` FROM `{TP}users` WHERE `user_id`=' . (int)$this->get_user_id();
-            $user_language = $this->_oDb->get_one($sql);
+            $sql = 'SELECT `language` FROM `{TP}users` WHERE `user_id` = ?';
+            $user_language = $this->db->fetchValue($sql, [$this->get_user_id()]);
             $admin_folder = str_replace(WB_PATH, '', ADMIN_PATH);
             if ((LANGUAGE != $user_language) && file_exists(WB_PATH . '/languages/' . $user_language . '.php')
                 && strpos($_SERVER['SCRIPT_NAME'], $admin_folder . '/') !== false) {
@@ -133,7 +130,7 @@ class Admin extends Wb
         global $MENU, $MESSAGE, $TEXT;
         // Connect to database and get website title
         $sql = 'SELECT `value` FROM `{TP}settings` WHERE `name`=\'website_title\'';
-        $get_title = $this->_oDb->query($sql);
+        $get_title = $this->db->query($sql);
         $title = $get_title->fetchRow(MYSQLI_ASSOC);
 
         // Setup template object, parse vars to it, then parse it
@@ -151,16 +148,19 @@ class Admin extends Wb
         $view_url = WB_URL;
         if (isset($_GET['page_id'])) {
             // extract page link from the database
-            $sql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id`=' . intval($_GET['page_id']);
-            $result = @$this->_oDb->query($sql);
-            $row = @$result->fetchRow(MYSQLI_ASSOC);
+            $sql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = ?';
+            $result = $this->db->query($sql, [(int)$_GET['page_id']]);
+            $row = $result->fetchRow(MYSQLI_ASSOC);
             if ($row) {
                 $view_url .= PAGES_DIRECTORY . $row['link'] . PAGE_EXTENSION;
             }
         }
         I::insertJsFile(WB_URL . '/include/SessionTimeout/SessionTimeout.js', "HEAD BTM+", 'SessionTimeout');
 
-        $maintModeIndicator = (string)Settings::Get("wb_maintainance_mode");
+        $sTempMMI = (string)Settings::get("wb_maintainance_mode");
+        $sMaintModeIndict = ($sTempMMI) ? ' <span class="fa fa-wrench wbcemm"></span> ' : '';
+
+        $maintModeIndicator = (string)Settings::get("wb_maintainance_mode");
         if ($maintModeIndicator) {
             $maintModeIndicator = ' <span class="fa fa-wrench wbcemm"></span> ';
         } else {
@@ -257,7 +257,7 @@ class Admin extends Wb
     public function register_backend_modfiles($sModfileType = "css")
     {
         return '<!--(PH) ' . strtoupper($sModfileType) . ' HEAD MODFILES -->' . PHP_EOL .
-            $this->register_modfiles($sModfileType, "backend");
+            $this->registerModfiles($sModfileType, "backend");
     }
 
     /**
@@ -333,8 +333,8 @@ class Admin extends Wb
 
             // OPF dashboard
             // is it installed ?
-            if (file_exists(WB_PATH . '/modules/outputfilter_dashboard/functions.php')) {
-                require_once(WB_PATH . '/modules/outputfilter_dashboard/functions.php');
+            if (file_exists($file = WB_PATH . '/modules/outputfilter_dashboard/functions.php')) {
+                require_once($file); unset($file);
             }
             if (function_exists('opf_controller')) {
                 // then apply backend filter
@@ -345,9 +345,8 @@ class Admin extends Wb
             // if not deactivated
             if (!defined("WB_SUPPRESS_OLD_OPF") or !WB_SUPPRESS_OLD_OPF) {
                 // Module is installed, filter file in place?
-                $file = WB_PATH . '/modules/output_filter/filter_routines.php';
-                if (file_exists($file)) {
-                    include_once($file);
+                if (file_exists($file = WB_PATH . '/modules/output_filter/filter_routines.php')) {
+                    include_once($file); unset($file);
                     // Correct module ? Check it .
                     if (function_exists('executeBackendOutputFilter')) {
                         // call the backend filter
@@ -356,11 +355,11 @@ class Admin extends Wb
                 }
             }
 
-            // Process direct Output if set. This ends the script here and regular output is not put out.
-            $this->DirectOutput();
-
-            // finally output everything as if nothing happened
-            echo $allOutput;
+            // Process Direct Output if set. 
+            // This clears buffered contents and ends the script here.
+            $this->sendDirectOutput();
+           
+            echo $allOutput; // echo all (if not previously intercepted by Direct Ouput).
         }
     }
 
@@ -377,8 +376,8 @@ class Admin extends Wb
             'display_name' => 'Unknown',
             'email' => ''
         );
-        $sSql = 'SELECT `username`,`display_name`,`email` FROM `{TP}users` WHERE `user_id`= %d';
-        if (($resUsers = $this->_oDb->query(sprintf($sSql, $user_id)))) {
+        $sSql = 'SELECT `username`,`display_name`,`email` FROM `{TP}users` WHERE `user_id` = ?';
+        if (($resUsers = $this->db->query($sSql, [(int)$user_id]))) {
             if (($recUser = $resUsers->fetchRow(MYSQLI_ASSOC))) {
                 $aRetVal = $recUser;
             }
@@ -397,15 +396,16 @@ class Admin extends Wb
     public function get_section_details($section_id, $backLink = 'index.php')
     {
         global $TEXT;
-        $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`= %d';
-        if (($resSection = $this->_oDb->query(sprintf($sSql, $section_id)))) {
+        $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id` = ?';
+        $resSection = $this->db->query($sSql, [(int)$section_id]);
+        if (!$this->db->hasError()) {
             if (!($recSection = $resSection->fetchRow(MYSQLI_ASSOC))) {
                 $this->print_header();
                 $this->print_error($TEXT['SECTION'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
             }
         } else {
             $this->print_header();
-            $this->print_error($this->_oDb->get_error(), $backLink, true);
+            $this->print_error($this->db->getError(), $backLink, true);
         }
         return $recSection;
     }
@@ -421,15 +421,16 @@ class Admin extends Wb
     public function get_page_details($page_id, $backLink = 'index.php')
     {
         global $TEXT;
-        $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id`= %d';
-        if (($resPages = $this->_oDb->query(sprintf($sSql, $page_id)))) {
+        $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = ?';
+        $resPages = $this->db->query($sSql, [(int)$page_id]);
+        if (!$this->db->hasError()) {
             if (!($recPage = $resPages->fetchRow(MYSQLI_ASSOC))) {
                 $this->print_header();
                 $this->print_error($TEXT['PAGE'] . ' ' . $TEXT['NOT_FOUND'], $backLink, true);
             }
         } else {
             $this->print_header();
-            $this->print_error($this->_oDb->get_error(), $backLink, true);
+            $this->print_error($this->db->getError(), $backLink, true);
         }
         return $recPage;
     }
@@ -456,8 +457,9 @@ class Admin extends Wb
             $iPageID = $page['page_id'];
         } else {
             $iPageID = $page;
-            $sSql = 'SELECT `%s`,`%s` FROM `{TP}pages` WHERE `page_id`= %d';
-            if (($res = $this->_oDb->query(sprintf($sSql, $action_groups, $action_users, $iPageID)))) {
+            $sSql = sprintf('SELECT `%s`,`%s` FROM `{TP}pages` WHERE `page_id` = ?',
+                $action_groups, $action_users);
+            if (($res = $this->db->query($sSql, [(int)$iPageID]))) {
                 if (($rec = $res->fetchRow(MYSQLI_ASSOC))) {
                     $groups = $rec[$action_groups];
                     $users = $rec[$action_users];

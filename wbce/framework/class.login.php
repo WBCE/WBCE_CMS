@@ -10,19 +10,14 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Prevent this file from being accessed directly
-if (!defined('WB_PATH')) {
-    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
-    throw new IllegalFileException();
-}
+// Prevent  this  file  from  being  accessed  directly
+defined('WB_PATH') or die('No direct access allowed');
 
-// Load class Admin
-require_once WB_PATH . "/framework/class.admin.php";
+// Load captcha
 require_once(WB_PATH.'/include/captcha/captcha.php');
 
 $oMsgBox = new MessageBox();
 $oMsgBox->closeBtn = '';
-
 
 
 class Login extends Admin
@@ -56,9 +51,9 @@ class Login extends Admin
     public  $forgotten_details_app;
     public  $users_table;
     public  $groups_table;
-	public  $captcha;
-	public  $nocookie;
-	public  $nocaptcha;
+    public  $captcha;
+    public  $nocookie;
+    public  $nocaptcha;
 
     public function __construct($aConfig)
     {
@@ -92,17 +87,13 @@ class Login extends Admin
 		$time_limit = $now - 5 * 60; // 5 minutes ago
 
 		// Sum attempts for all IPs whose last attempt is within the last 5 minutes
-		$sql = '
-			SELECT COALESCE(SUM(`attempts`), 0) AS failed_sum
-			FROM `{TP}blocking`
-			WHERE `timestamp` >= ' . (int)$time_limit . '
-		';
-		$failed_logins_last5 = (int)$this->_oDb->get_one($sql);
+		$sql = 'SELECT COALESCE(SUM(`attempts`), 0) AS failed_sum
+		        FROM `{TP}blocking`
+		        WHERE `timestamp` >= ?';
+		$failed_logins_last5 = (int)$this->db->fetchValue($sql, [$time_limit]);
 		if ($failed_logins_last5 < 5) {
 			$nocaptcha = true;
 		}
-
-
 		
 		$captchaFailure = false;
 		$captchaMissing = false;
@@ -143,8 +134,6 @@ class Login extends Admin
             $sUsername = 'username';
             $sPassword = 'password';
         }
-		
-		
 
         // this makes only sense if a username is provided
         if(filter_input(INPUT_POST, $sUsername)) {
@@ -201,8 +190,6 @@ class Login extends Admin
     public function is_remembered()
     {
         return false;
-
-      
     }
 
     /**
@@ -229,20 +216,18 @@ class Login extends Admin
      */
     public function authenticate($bRemembered = false)
     {
-        $sLoginname = preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->_oDb->escapeString($this->username);
+        $sLoginname = preg_match('/[\;\=\&\|\<\> ]/', $this->username) ? '' : $this->username;
 
         // Get user information
 		
 		if (defined('ALLOW_EMAIL_LOGIN') && ALLOW_EMAIL_LOGIN===true) {
 			$sSql = "SELECT * FROM `{TP}users`
-					WHERE (`username` = '%s' OR `email` = '%s')
+					WHERE (`username` = ? OR `email` = ?)
 					AND `active` = 1";
-			$sSql = sprintf($sSql, $sLoginname, $sLoginname);	
-			$resUsers = $this->_oDb->query($sSql);			
-			
-		} else {		
-			$sSql = "SELECT * FROM `{TP}users` WHERE `username`='%s' AND `active` = 1";			
-			$resUsers = $this->_oDb->query(sprintf($sSql, $sLoginname));
+			$resUsers = $this->db->query($sSql, [$sLoginname, $sLoginname]);
+		} else {
+			$sSql = "SELECT * FROM `{TP}users` WHERE `username` = ? AND `active` = 1";
+			$resUsers = $this->db->query($sSql, [$sLoginname]);
 		}
 		
 		
@@ -310,8 +295,8 @@ class Login extends Admin
 
             $bFirstGroup = true;
             foreach (explode(",", $this->get_session('GROUPS_ID')) as $iCurrGroupID) {
-                $sSql = "SELECT * FROM `{TP}groups` WHERE `group_id` = %d";
-                $resGroup = $this->_oDb->query(sprintf($sSql, $iCurrGroupID));
+                $sSql = "SELECT * FROM `{TP}groups` WHERE `group_id` = ?";
+                $resGroup = $this->db->query($sSql, [(int)$iCurrGroupID]);
                 $aGroup = $resGroup->fetchRow(MYSQLI_ASSOC);
                 $_SESSION['GROUP_NAME'][$iCurrGroupID] = $aGroup['name'];
                 // Set system permissions
@@ -343,7 +328,7 @@ class Login extends Admin
                 'login_when' => time(),
                 'login_ip' => $_SERVER['REMOTE_ADDR']
             );
-            $this->_oDb->updateRow('{TP}users', 'user_id', $aUpdateUser);
+            $this->db->upsertRow('{TP}users', 'user_id', $aUpdateUser);
         } else {
             $iNumRows = 0;
         }
@@ -370,20 +355,25 @@ class Login extends Admin
         $attempts = 0;
         $timestamp = 0;
 
-        $sql = "SELECT * FROM `" . TABLE_PREFIX . "blocking` WHERE `source_ip` = '" . $client_ip . "' LIMIT 1";
-        $check_query = $this->_oDb->query($sql);
+        $check_query = $this->db->query(
+            "SELECT * FROM `{TP}blocking` WHERE `source_ip` = ? LIMIT 1",
+            [$client_ip]
+        );
 
         $now = time();
 
-        if ($check_query != null && $check_query->numRows() > 0) {
+        if ($check_query->numRows() > 0) {
             $check_fetch = $check_query->fetchRow();
             $attempts = $check_fetch['attempts'] + $increment;
             $timestamp = $check_fetch['timestamp'];
         } else {
             $timestamp = $now;
             $attempts = $increment;
-            $sql = "INSERT INTO `" . TABLE_PREFIX . "blocking` SET `attempts` = '$attempts', `timestamp` = '$timestamp', `source_ip` = '$client_ip'";
-            $this->_oDb->query($sql);
+            $this->db->insertRow('{TP}blocking', [
+                'attempts'  => $attempts,
+                'timestamp' => $timestamp,
+                'source_ip' => $client_ip,
+            ]);
         }
 
         $interval = $now - $timestamp;
@@ -396,8 +386,10 @@ class Login extends Admin
         $timestamp = time();
 
         // update the database
-        $sql = "UPDATE `" . TABLE_PREFIX . "blocking` SET `attempts` = '$attempts', `timestamp` = '$timestamp' WHERE `source_ip` = '$client_ip'";
-        $this->_oDb->query($sql);
+        $this->db->query(
+            "UPDATE `{TP}blocking` SET `attempts` = ?, `timestamp` = ? WHERE `source_ip` = ?",
+            [$attempts, $timestamp, $client_ip]
+        );
 
         if ($interval > $this->timeframe + pow(2, ($attempts - $this->max_attempts)) * $this->login_delay && $attempts > $this->max_attempts) {
             // it's too long ago, reduce at least to allow one more attempt
@@ -406,8 +398,10 @@ class Login extends Admin
 
         // to clean up database from old entries, use the occasion and discard everything we have not seen for more than a week
         $timestamp = $now - 7 * 24 * 3600;
-        $sql = "DELETE FROM `" . TABLE_PREFIX . "blocking` WHERE `timestamp` < '$timestamp'";
-        $this->_oDb->query($sql);
+        $this->db->query(
+            "DELETE FROM `{TP}blocking` WHERE `timestamp` < ?",
+            [$timestamp]
+        );
 
         $_SESSION['ATTEMPTS'] = $attempts;
 
@@ -503,12 +497,10 @@ class Login extends Admin
 		$time_limit = $now - 5 * 60; // 5 minutes ago
 
 		// Sum attempts for all IPs whose last attempt is within the last 5 minutes
-		$sql = '
-			SELECT COALESCE(SUM(`attempts`), 0) AS failed_sum
-			FROM `{TP}blocking`
-			WHERE `timestamp` >= ' . (int)$time_limit . '
-		';
-		$failed_logins_last5 = (int)$this->_oDb->get_one($sql);
+		$sql = 'SELECT COALESCE(SUM(`attempts`), 0) AS failed_sum
+		        FROM `{TP}blocking`
+		        WHERE `timestamp` >= ?';
+		$failed_logins_last5 = (int)$this->db->fetchValue($sql, [$time_limit]);
 		if ($failed_logins_last5 < 5) {
 			$nocaptcha = true;
 		}
@@ -570,7 +562,7 @@ class Login extends Admin
                 'FORGOTTEN_DETAILS_APP' => $this->forgotten_details_app,
                 'SECTION_LOGIN' => $MENU['LOGIN'],
                 'CHARSET' => (defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : 'utf-8'),
-				'CAPTCHA' => $captcha
+                'CAPTCHA' => $captcha
             ));
 
             $oTemplate->parse('main', 'mainBlock', false);
