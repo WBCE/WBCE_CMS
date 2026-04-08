@@ -57,22 +57,24 @@ class WSession
         // so the installer can also get a sensible expiry.
         self::tryToSetValidExpirationForInstallOrUpgrade();
 
-        // ── Cookie security settings ──────────────────────────────────────
-        ini_set('session.use_cookies',    true);
-        ini_set('session.gc_maxlifetime', (int) self::$Expire);
-        ini_set('session.cookie_httponly', 1);
+        // ── Cookie security settings ──────────────────────────────────────        
+        if (!self::IsStarted()) {
+            ini_set('session.use_cookies',    true);
+            ini_set('session.gc_maxlifetime', (int) self::$Expire);
+            ini_set('session.cookie_httponly', 1);
 
-        // Secure flag — only when we know we are on HTTPS.
-        // The defined() guard prevents a fatal error during early bootstrap
-        // (e.g. install) where DOMAIN_PROTOCOLL may not yet be defined.
-        if (defined('DOMAIN_PROTOCOLL') && DOMAIN_PROTOCOLL === 'https') {
-            ini_set('session.cookie_secure', 1);
+            // Secure flag — only when we know we are on HTTPS.
+            // The defined() guard prevents a fatal error during early bootstrap
+            // (e.g. install) where DOMAIN_PROTOCOLL may not yet be defined.
+            if (defined('DOMAIN_PROTOCOLL') && DOMAIN_PROTOCOLL === 'https') {
+                ini_set('session.cookie_secure', 1);
+            }
+
+            session_name(APP_NAME . '-sid');
+            session_set_cookie_params(0);
         }
-
-        // session_name() MUST be set before session_set_cookie_params()
-        // and session_start() — order is significant in PHP.
-        session_name(APP_NAME . '-sid');
-        session_set_cookie_params(0);
+        
+        
 
         // ── Decide whether to actually start a session ────────────────────
         // Some public pages opt out of cookies (NO_SESSION_COOKIE = true).
