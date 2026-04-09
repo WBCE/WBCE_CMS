@@ -664,6 +664,11 @@ db_add_field('redirect_type', 'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER
 echo "<br />Add field namesection to sections table<br />";
 db_add_field('namesection', 'sections', "VARCHAR( 255 ) NULL");
 
+
+// Add field 'visibility_backup' to {TP}pages table
+echo "<br />Add field namesection to sections table<br />";
+db_add_field('visibility_backup', 'pages', "VARCHAR(255) NOT NULL DEFAULT '' AFTER `visibility`");
+
 /**********************************************************
  * Update users tables
  */

@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `{TABLE_PREFIX}pages` (
   `page_trail` text{TABLE_COLLATION} NOT NULL,
   `template` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `visibility` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
+  `visibility_backup` varchar(255){TABLE_COLLATION} NOT NULL DEFAULT '',
   `position` int(11) NOT NULL DEFAULT '0',
   `menu` int(11) NOT NULL DEFAULT '0',
   `language` varchar(5){TABLE_COLLATION} NOT NULL DEFAULT '',

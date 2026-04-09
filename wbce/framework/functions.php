@@ -20,14 +20,6 @@ require_once __DIR__ . '/functions.load_addons.php';
 // Define that this file has been loaded
 define('FUNCTIONS_FILE_LOADED', true);
 
-// needs to be moved to the INSTALL & UPGRADE SCRIPT
-// addField() checks existence internally and strips AFTER for SQLite automatically
-$database->addField(
-    '{TP}pages',
-    'visibility_backup',
-    "VARCHAR(30) NOT NULL DEFAULT '' AFTER `visibility`"
-);
-
 if (!function_exists('str_contains')) {
     /**
      * str_contains Checks if a string contains a given substring.
