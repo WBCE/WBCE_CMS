@@ -68,6 +68,7 @@ defined('ADMIN_PATH')      or define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTO
 // Load Lang translation functions (L_(), Ln_()).
 // Must be loaded explicitly before WbAuto::AddDir('/framework/') 
 require_once WB_PATH . '/framework/LangLoader.php';
+#require_once WB_PATH . '/framework/MessageBox.php'; // load before Wb, Admin
 
 // Load core functions before preinit files so we can use functions right away.
 require_once WB_PATH . '/framework/functions.php';
@@ -83,13 +84,9 @@ unset($_preinitFile);
 // define DOMAIN_PROTOCOLL constant
 define("DOMAIN_PROTOCOLL", wbce_detect_protocol());
 
-// MORE AUTOLOADER REGISTRATION
-// Registering class for idna conversion (needed for email-checks)
-WbAuto::AddFile("idna_convert", "/include/idna_convert/idna_convert.class.php");
-// Register all of the framework classes at once
-WbAuto::AddDir("/framework/");
-// Auto Load phpLib (the ancient Templating Engine)
-WbAuto::AddFile("Template", "/include/phplib/template.inc");
+// use bootInitialize to register all core relevant classes
+WbAuto::bootInitialize();
+
 // Connect to Twig TE (the contemporary Templating Engine)
 require_once WB_PATH . '/include/Sensio/Twig/WBCETwigLoader.php';
 

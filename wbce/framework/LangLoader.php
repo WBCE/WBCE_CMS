@@ -48,7 +48,10 @@
 defined('WB_PATH') or die('No direct access allowed');
 
 if (!function_exists('L_')) {
-
+    
+require_once __DIR__.'/Lang.php';        // Load class Lang independently of WbAuto
+require_once __DIR__.'/LangPlural.php';  // Load plural rules independently of WbAuto
+    
 function L_(string $str, mixed ...$args): string
 {
     $resolved = _wbe_resolve($str);
