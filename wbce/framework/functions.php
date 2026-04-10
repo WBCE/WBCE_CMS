@@ -247,27 +247,30 @@ function change_mode(string $name): bool
 }
 
 /**
- * @brief   Function to figure out if a parent of a specific page_id exists
+ * @brief   Checks if a page has a parent and returns the parent ID if it exists.
  *
- * @param int $page_id
- * @return  unspec  If parent isn't 0 its ID will be returned
+ * @param   int $page_id  The ID of the page to check
+ * @return  int|false     Returns the parent ID if the page has a parent (parent != 0),
+ *                         otherwise returns false.
  */
-function is_parent($page_id)
+function is_parent(int $page_id): int|false
 {
     $parent = $GLOBALS['database']->fetchValue(
         'SELECT `parent` FROM `{TP}pages` WHERE `page_id` = ?',
-        [(int)$page_id]
+        [(int) $page_id]
     );
-    return ($parent === '') ? false : $parent;
+
+    // If no row was found or parent is 0, return false
+    return ($parent === '' || $parent == 0) ? false : (int) $parent;
 }
 
 /**
  * @brief   Function to work out the level of a specific page
  *
- * @param int $page_id
- * @return  int   The level of the page
+ * @param   int  $page_id
+ * @return  int  The level of the page
  */
-function level_count($page_id)
+function level_count(int $page_id): int
 {
     global $database;
     // Get page parent
@@ -288,38 +291,41 @@ function level_count($page_id)
 }
 
 /**
- * @brief   Function to work out root parent
+ * @brief   Returns the root parent page ID for a given page.
  *
- * @param int $page_id
- * @return  unspec  int or array
+ * @param   int $page_id The page ID to find the root parent for
+ * @return  int The root parent page ID
  */
-function root_parent($page_id)
+function root_parent(int $page_id): int
 {
     global $database;
-    // Get page details
-    $rQueryPage = $database->query(
+
+    // Get page details with prepared statement / parameter binding
+    $query = $database->query(
         'SELECT `parent`, `level` FROM `{TP}pages` WHERE `page_id` = ?',
-        [(int)$page_id]
+        [(int) $page_id]   // flat array with one integer value
     );
-    $aPageData = $rQueryPage->fetchRow(MYSQLI_ASSOC);
-    if ($aPageData['level'] == 1) {
-        return $aPageData['parent'];
-    } elseif ($aPageData['parent'] == 0) {
+
+    $pageRow = $query->fetchRow(MYSQLI_ASSOC);
+
+    if ($pageRow['level'] == 1) {
+        return (int) $pageRow['parent'];
+    } elseif ($pageRow['parent'] == 0) {
         return $page_id;
     } else {
         // Figure out what the root parents id is
-        $aParentIDs = array_reverse(get_parent_ids($page_id));
-        return $aParentIDs[0];
+        $parentsArray = array_reverse(get_parent_ids($page_id));
+        return (int) $parentsArray[0]; // first from array
     }
 }
 
 /**
  * @brief   Function to get page title
  *
- * @param int $page_id
+ * @param   int $page_id
  * @return  string  The page title
  */
-function get_page_title($page_id)
+function get_page_title(int $page_id): string
 {
     return $GLOBALS['database']->fetchValue(
         'SELECT `page_title` FROM `{TP}pages` WHERE `page_id` = ?',
@@ -333,7 +339,7 @@ function get_page_title($page_id)
  * @param int $page_id
  * @return  string  The menu title
  */
-function get_menu_title($page_id)
+function get_menu_title(int $page_id): string
 {
     return $GLOBALS['database']->fetchValue(
         'SELECT `menu_title` FROM `{TP}pages` WHERE `page_id` = ?',
@@ -344,10 +350,10 @@ function get_menu_title($page_id)
 /**
  * @brief   Function to get all parent page titles
  *
- * @param int $iParentID
+ * @param   int $iParentID
  * @return  array
  */
-function get_parent_titles($iParentID)
+function get_parent_titles(int $iParentID): array
 {
     $aTitles[] = get_menu_title($iParentID);
     if (is_parent($iParentID) != false) {
@@ -360,10 +366,10 @@ function get_parent_titles($iParentID)
 /**
  * @brief   Function to get all parent page id's
  *
- * @param int $iParentID
+ * @param   int $iParentID
  * @return  array
  */
-function get_parent_ids($iParentID)
+function get_parent_ids(int $iParentID): array
 {
     $aIDs[] = $iParentID;
     if (is_parent($iParentID) != false) {
@@ -376,10 +382,10 @@ function get_parent_ids($iParentID)
 /**
  * @brief   Function to genereate page trail
  *
- * @param int $page_id
+ * @param   int $page_id
  * @return  array
  */
-function get_page_trail($page_id)
+function get_page_trail(int $page_id): array
 {
     return implode(',', array_reverse(get_parent_ids($page_id)));
 }
@@ -387,8 +393,8 @@ function get_page_trail($page_id)
 /**
  * @brief   Function to get all sub pages id's
  *
- * @param int   $iParentID
- * @param array $aSubs
+ * @param  int   $iParentID
+ * @param  array $aSubs
  * @return array
  */
 function get_subs(int $iParentID, array $aSubs = []): array
