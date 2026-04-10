@@ -383,9 +383,9 @@ function get_parent_ids(int $iParentID): array
  * @brief   Function to genereate page trail
  *
  * @param   int $page_id
- * @return  array
+ * @return  string
  */
-function get_page_trail(int $page_id): array
+function get_page_trail(int $page_id): string
 {
     return implode(',', array_reverse(get_parent_ids($page_id)));
 }
