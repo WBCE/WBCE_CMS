@@ -642,7 +642,7 @@ Settings::Set('mediasettings', '', false);
 
 echo "<br />Add Secureform Settings<br />";
 // Settings::Set ("wb_maintainance_mode", false, false);
-Settings::Set("wb_secform_secret", "5609bnefg93jmgi99igjefg", false);
+Settings::Set("wb_secform_secret", bin2hex(random_bytes(12)), false);
 Settings::Set("wb_secform_secrettime", '86400', false);
 Settings::Set("wb_secform_timeout", '7200', false);
 Settings::Set("wb_secform_tokenname", 'formtoken', false);
