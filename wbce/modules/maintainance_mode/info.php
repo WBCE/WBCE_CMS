@@ -10,7 +10,7 @@
 $module_directory = 'maintainance_mode';
 $module_name = 'Maintenance Mode Switcher';
 $module_function = 'tool';
-$module_version = '1.1.4';
+$module_version = '1.1.5';
 $module_platform = '1.4.0';
 $module_author = 'Norbert Heimsath(heimsath.org)';
 $module_license	= 'WTFPL';
@@ -21,6 +21,7 @@ $module_level = 'core';
 /**
  * Version history
  *
+ * 1.1.5  - (stefanek) minor cleanup
  * 1.1.4  - (florian) correct spelling (kept wrong directory name for compatibility reasons)
  *
  * 1.1.3
