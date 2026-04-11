@@ -140,6 +140,7 @@ if (!defined("LANGUAGE")) {
         if (isset($_SESSION['LANGUAGE']) && $_SESSION['LANGUAGE'] != '') {
             define('LANGUAGE', $_SESSION['LANGUAGE']);
         } else {
+            defined('DEFAULT_LANGUAGE') or define('DEFAULT_LANGUAGE', 'EN');
             define('LANGUAGE', DEFAULT_LANGUAGE);
         }
     }
@@ -173,6 +174,7 @@ defined("EDIT_ONE_SECTION") or define('EDIT_ONE_SECTION', false);
 defined("EDITOR_WIDTH")     or define('EDITOR_WIDTH', 0);
 
 // TIMEZONE and DATE/TIME FORMAT constants
+defined('DEFAULT_TIMEZONE') or define('DEFAULT_TIMEZONE', 'UTC');
 define('TIMEZONE',    isset($_SESSION['TIMEZONE'])    ? intval($_SESSION['TIMEZONE']) : intval(DEFAULT_TIMEZONE));
 define('DATE_FORMAT', isset($_SESSION['DATE_FORMAT']) ? $_SESSION['DATE_FORMAT'] : DEFAULT_DATE_FORMAT);
 define('TIME_FORMAT', isset($_SESSION['TIME_FORMAT']) ? $_SESSION['TIME_FORMAT'] : DEFAULT_TIME_FORMAT);

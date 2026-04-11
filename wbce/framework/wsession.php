@@ -69,7 +69,7 @@ class WSession
             if (defined('DOMAIN_PROTOCOLL') && DOMAIN_PROTOCOLL === 'https') {
                 ini_set('session.cookie_secure', 1);
             }
-
+            defined('APP_NAME') or define('APP_NAME', 'wbce');
             session_name(APP_NAME . '-sid');
             session_set_cookie_params(0);
         }
