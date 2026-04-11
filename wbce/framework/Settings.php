@@ -1,6 +1,6 @@
 <?php
 /**
- * @file  Settings.php
+ * @file class.settings.php
  * @brief Simple static class for handling global settings in Core and Modules
  *
  * The basic idea is to make handling of global settings a lot easier.
@@ -77,6 +77,9 @@ class Settings
     /** @var array Cached settings for fast access — stores raw DB values */
     private static array $cache = [];
 
+    /** @var array Public alias — backward compat. Stores deserialized values. */
+    public static array $settings = [];
+
     /** Snapshot TTL in seconds — regenerate if older than this */
     private const CACHE_TTL = 300;
 
@@ -131,14 +134,16 @@ class Settings
             }
 
             // Update existing setting
-           $database->upsertRow('{TP}settings', 'name', [
-                'name'  => $name,
-                'value' => $value
-            ]);
+            // Update — explicit UPDATE (no UNIQUE constraint on 'name')
+            $database->query(
+                "UPDATE `{TP}settings` SET `value` = ? WHERE `name` = ?",
+                [$value, $name]
+            );
         }
 
         // Update cache
         self::$cache[$name] = $value;
+        self::$settings[$name] = self::deserialize($value);
 
         return false;
     }
@@ -214,7 +219,7 @@ class Settings
             return "Setting does not exist";
         }
 
-        unset(self::$cache[$name]);
+        unset(self::$cache[$name], self::$settings[$name]);
         $database->deleteRow('{TP}settings', 'name', $name);
 
         return false;
@@ -283,6 +288,7 @@ class Settings
 
             // Store raw value — get() and showConstants() deserialize on demand
             self::$cache[strtolower($constName)] = $rawValue;
+            self::$settings[strtolower($constName)] = self::deserialize($rawValue);
         }
 
         return false;
@@ -307,12 +313,12 @@ class Settings
         }
 
         // Section 2: file-based settings (loaded early in bootstrap)
-        $fromDisc = [];
+        $fileBased = [];
         $fbFile    = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
         if ($fbFile && file_exists($fbFile)) {
             $loaded = include $fbFile;
             if (is_array($loaded)) {
-                $fromDisc = $loaded;
+                $fileBased = $loaded;
             }
         }
 
@@ -328,16 +334,16 @@ class Settings
         $fromCode = [];
         foreach ($userConstants as $name => $value) {
             if (isset($fromDb[$name])) continue;
-            if (isset($fromDisc[$name])) continue;
+            if (isset($fileBased[$name])) continue;
             if (in_array($name, $dynamic, true)) continue;
             $fromCode[$name] = $value;
         }
         ksort($fromCode);
 
         return [
-            'from_db'    => $fromDb,
-            'from_disc'  => $fromDisc,
-            'from_code'  => $fromCode,
+            'from_db'             => $fromDb,
+            'file_based_settings' => $fileBased,
+            'from_code'           => $fromCode,
         ];
     }
 
@@ -368,10 +374,10 @@ class Settings
             return true;
         }
 
-        $data      = self::showConstants();
-        $fromDb    = $data['from_db'];
-        $fromDisc  = $data['from_disc'];
-        $fromCode  = $data['from_code'];
+        $data       = self::showConstants();
+        $fromDb     = $data['from_db'];
+        $fileBased  = $data['file_based_settings'];
+        $fromCode   = $data['from_code'];
 
         $lines   = [];
         $lines[] = "<?php\r\n";
@@ -387,9 +393,9 @@ class Settings
         $lines[] = " * are available and as an IDE hint source.\r\n";
         $lines[] = " *\r\n";
         $lines[] = " * Sections:\r\n";
-        $lines[] = " *   from_db     — constants from the settings table\r\n";
-        $lines[] = " *   from_disc   — constants from /var/file_based_settings.php\r\n";
-        $lines[] = " *   from_code   — other user-defined constants (WB_PATH, ADMIN_URL, ...)\r\n";
+        $lines[] = " *   from_db            — constants from the settings table\r\n";
+        $lines[] = " *   file_based_settings — constants from /var/file_based_settings.php\r\n";
+        $lines[] = " *   from_code          — other user-defined constants (WB_PATH, ADMIN_URL, ...)\r\n";
         $lines[] = " *\r\n";
         $lines[] = " * Regenerated automatically every " . self::CACHE_TTL . " seconds\r\n";
         $lines[] = " * or on demand via Settings::refreshSnapshot().\r\n";
@@ -405,7 +411,7 @@ class Settings
         $lines[] = "\r\n";
         $lines[] = "    // ── File-based settings (/var/file_based_settings.php) " . str_repeat('─', 20) . "\r\n";
         $lines[] = "\r\n";
-        $lines[] = "    'from_disc' => " . str_replace("\n", "\n    ", var_export($fromDisc, true)) . ",\r\n";
+        $lines[] = "    'file_based_settings' => " . str_replace("\n", "\n    ", var_export($fileBased, true)) . ",\r\n";
         $lines[] = "\r\n";
         $lines[] = "    // ── From code (config.php / initialize.php) " . str_repeat('─', 32) . "\r\n";
         $lines[] = "\r\n";
@@ -441,8 +447,7 @@ class Settings
     }
 
     /**
-     * Debug method: Display all current settings (from DB and cache)
-     * as a simple associative array.
+     * Debug method: Display all current settings (from DB and cache).
      */
     public static function info(): string
     {
@@ -467,15 +472,15 @@ class Settings
     /**
      * Write or update a file-based setting.
      *
-     * File-based settings live in /var/file_based_settings.php and are loaded
-     * as constants very early in the initialize.php — before the DB and autoloader.
+     * File-based settings live in /var/file_based_settings.php by default and are 
+     * loaded as constants very early in the bootstrap — before the DB and autoloader.
      * Use for values that must be available before Settings::setup() runs.
      *
      * Keys must be UPPER_SNAKE_CASE (A-Z, 0-9, underscore, must start with a letter).
      * Only scalar values are supported (no arrays, objects, or resources).
      *
      * @param string $key    Constant name, e.g. 'WB_DEBUG'
-     * @param mixed  $value  Scalar value only (bool|string|integer|float)
+     * @param mixed  $value  Scalar value only
      * @return bool|string   false on success, error message on failure
      */
     public static function setFileBasedSetting(string $key, mixed $value): bool|string
@@ -484,13 +489,11 @@ class Settings
             return "Invalid key '{$key}' — use UPPER_SNAKE_CASE (e.g. WB_DEBUG)";
         }
         if (!is_scalar($value)) {
-            return "File-based settings only support scalar values (bool, string, int, float)";
+            return "File-based settings only support scalar values (string, int, float, bool)";
         }
 
-        $file = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
-        if (!$file){
-            return "WBCE_FILE_BASED_SETTINGS constant is not defined";
-        }
+        $file     = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
+        if (!$file) return "WBCE_FILE_BASED_SETTINGS constant is not defined";
 
         $settings = (file_exists($file) && is_array($loaded = include $file)) ? $loaded : [];
         $settings[$key] = $value;
@@ -524,21 +527,7 @@ class Settings
      */
     private static function _writeFileBasedSettings(string $file, array $settings): bool|string
     {
-        $lines   = [];
-        $lines[] = "<?php\r\n";
-        $lines[] = "/**\r\n";
-        $lines[] = " * WBCE CMS — File Based Settings \r\n";
-        $lines[] = " *\r\n";
-        $lines[] = " * Generated : " . date('Y-m-d H:i:s') . "\r\n";
-        $lines[] = " *\r\n";
-        $lines[] = " * The key=>value pairs contained in this file are converted into\r\n";
-        $lines[] = " * constants during the bootstrapping process /framework/initialize.php\r\n";
-        $lines[] = " *\r\n";
-        $lines[] = " */\r\n";
-        $lines[] = "\r\n";
-        $lines[] = "defined('WB_PATH') or die('No direct access');\r\n";
-        $lines[] = "\r\n";
-        $lines[] = "return [\n";        
+        $lines = ["<?php\n", "return [\n"];
         foreach ($settings as $key => $value) {
             $lines[] = "    '{$key}' => " . var_export($value, true) . ",\n";
         }
@@ -559,21 +548,21 @@ class Settings
      * Magic static call to maintain full backward 
      * compatibility with old method names.
      */
-    public static function __callStatic(string $name, array $args)
+    public static function __callStatic(string $name, array $arguments)
     {
         $mapping = [
-            'Set'          => 'set',
-            'Get'          => 'get',
-            'GetDb'        => 'getFromDb',
-            'GetPrefix'    => 'getByPrefix',
-            'Del'          => 'delete',
-            'DeSerialize'  => 'deserialize',
-            'Setup'        => 'setup',
-            'Info'         => 'info'
+            'Set'             => 'set',
+            'Get'             => 'get',
+            'GetDb'           => 'getFromDb',
+            'GetPrefix'       => 'getByPrefix',
+            'Del'             => 'delete',
+            'DeSerialize'     => 'deserialize',
+            'Setup'           => 'setup',
+            'Info'            => 'info'
         ];
 
         if (isset($mapping[$name])) {
-            return self::{$mapping[$name]}(...$args);
+            return self::{$mapping[$name]}(...$arguments);
         }
 
         trigger_error("Call to undefined static method Settings::$name()", E_USER_ERROR);
