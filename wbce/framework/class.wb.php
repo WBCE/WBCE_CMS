@@ -553,15 +553,30 @@ _JsCode;
     }
 
     /**
-     * @brief   Get POST data
+     * Get POST data safely with optional default value
      *
-     * @param string $field
-     * @return  string
+     * Retrieves a value from the $_POST superglobal. If the field does not exist,
+     * the specified default value is returned instead of triggering a notice.
+     *
+     * @brief   Get POST data safely
+     *
+     * @param string $field     The name of the POST field to retrieve
+     * @param mixed  $default   The default value to return if the field is not present.
+     *                          Default is null.
+     *
+     * @return mixed            The value from POST or the provided default value
+     *
+     * @example
+     * $title   = $wb->get_post('title', '');
+     * $active  = $wb->get_post('active', false);
+     * $pageId  = $wb->get_post('page_id', 0);
+     * $mode    = $wb->get_post('mode', 'view');
      */
-    public function get_post($field)
+    public function get_post(string $field, mixed $default = null): mixed
     {
-        return (isset($_POST[$field]) ? $_POST[$field] : null);
+        return $_POST[$field] ?? $default;
     }
+
 
     /**
      * @brief   Get GET data
@@ -964,7 +979,7 @@ _JsCode;
                 // JS files before </body>
                 if (!empty($toInsert['js_body']) && is_array($toInsert['js_body'])) {
                     foreach ($toInsert['js_body'] as $jsFile) {
-                  #      I::insertJsFile($jsFile, 'BODY BTM-');
+                        I::insertJsFile($jsFile, 'BODY BTM-');
                     }
                 }
                 break;
