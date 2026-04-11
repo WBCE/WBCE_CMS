@@ -344,6 +344,10 @@ class WbAuto
         $explicitFiles = [
             'MessageBox'   => '/framework/MessageBox.php',
             'SecureForm'   => '/framework/SecureForm.php',
+            'Accounts'     => '/framework/Accounts.php',
+            'Mailer'       => '/framework/Mailer.php',
+            'wbmailer'     => '/framework/Mailer.php', // fallback for some legacy modules
+            'SecureForm'   => '/framework/SecureForm.php',
             'I'            => '/framework/I.php',
             'Insert'       => '/framework/Insert.php',
             'idna_convert' => '/include/idna_convert/idna_convert.class.php', // Registering class for idna conversion (needed for email-checks)
