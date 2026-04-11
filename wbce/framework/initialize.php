@@ -99,6 +99,8 @@ Settings::setup();
 wbce_setup_error_reporting();
 
 // File & Directory modes
+defined('STRING_FILE_MODE') or define('STRING_FILE_MODE', '0644'); // not yet defined ...
+defined('STRING_DIR_MODE')  or define('STRING_DIR_MODE',  '0755'); // ... during install
 define('OCTAL_FILE_MODE',    (int)octdec(STRING_FILE_MODE));
 define('WB_OCTAL_FILE_MODE', (int)octdec(STRING_FILE_MODE));
 define('OCTAL_DIR_MODE',     (int)octdec(STRING_DIR_MODE));
