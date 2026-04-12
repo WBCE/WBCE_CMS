@@ -53,8 +53,11 @@ foreach (wbce_get_init_files('predb') as $_predbFile) {
 }
 unset($_predbFile);
 
-// INITIALIZE DATABASE CLASS
+// INITIALIZE DATABASE IF NOT ALREADY DONE (e.g. on install)
 $database = new Database();
+if (!isset($database) || !is_object($database)) {
+    $database = new Database();
+}
 
 // SYSTEM CONSTANTS
 // Now we start definig System constants if not already set
