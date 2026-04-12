@@ -118,7 +118,7 @@ function get_modul_version(...$args) {
  * @param bool $bInstall
  * @return
  */
-function load_module($sModulePath, $bInstall = false)
+function load_module($sModulePath, $bInstall = false, $init = false)
 {
     global $database, $admin, $MESSAGE;
     $retVal = array();
@@ -136,17 +136,17 @@ function load_module($sModulePath, $bInstall = false)
                 $module_function = $module_type;
             }
             $module_function = strtolower($module_function);
-            $aData = array(
-                'directory'   => $module_directory,
-                'name'        => $module_name,
-                'description' => $module_description,
+            $aData = [
+                'directory'   => $module_directory ?? '',
+                'name'        => $module_name ?? '',
+                'description' => $module_description ?? '',
                 'type'        => 'module',
-                'function'    => $module_function,
-                'version'     => $module_version,
-                'platform'    => $module_platform,
-                'author'      => $module_author,
-                'license'     => $module_license,
-            );
+                'function'    => $module_function ?? '',
+                'version'     => $module_version ?? '',
+                'platform'    => $module_platform ?? '',
+                'author'      => $module_author ?? '',
+                'license'     => $module_license ?? '',
+            ];
             // Check that it doesn't already exist
             if ($database->fetchValue(
                 "SELECT COUNT(*) FROM `{TP}addons` WHERE `type` = 'module' AND `directory` = ?",
@@ -157,8 +157,11 @@ function load_module($sModulePath, $bInstall = false)
                 $retVal[] = $database->insertRow('{TP}addons', $aData);
             }
             // Run installation script
-            if ($bInstall == true) {
+            if ($bInstall == true) {                
                 if (file_exists($sModulePath . '/install.php')) {
+                    if($init){
+                        require_once __DIR__ .'/Settings.php';
+                    }
                     require($sModulePath . '/install.php');
                     $retVal[] = isset($msg) ?: 'Info ' . $module_name;
                 }
