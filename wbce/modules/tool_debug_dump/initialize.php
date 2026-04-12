@@ -12,7 +12,7 @@
 // prevent this file from being accessed directly
 defined('WB_PATH') or die(header('Location: ../index.php'));
 
-if(hasSystemPermission('admintools') === true){
+if(defined('DEBUG_DUMP_CFG') && hasSystemPermission('admintools') === true){
 
     // ── 1) Get Config and set URL and PATH ───────────────────────────────────────────────
     $cfg = unserialize(DEBUG_DUMP_CFG);
