@@ -78,7 +78,7 @@ class Settings
     private static array $cache = [];
 
     /** @var array Public alias — backward compat. Stores deserialized values. */
-    public static array $settings = [];
+    public static array $aSettings = [];
 
     /** Snapshot TTL in seconds — regenerate if older than this */
     private const CACHE_TTL = 300;
@@ -141,9 +141,14 @@ class Settings
             );
         }
 
+        // Check for DB error after write
+        if ($database->hasError()) {
+            return 'DB error in Settings::set(): ' . $database->getError();
+        }
+
         // Update cache
         self::$cache[$name] = $value;
-        self::$settings[$name] = self::deserialize($value);
+        self::$aSettings[$name] = self::deserialize($value);
 
         return false;
     }
@@ -164,7 +169,7 @@ class Settings
         $raw = self::_getFromDbRaw($name);
         if ($raw !== null) {
             self::$cache[$name]     = $raw;
-            self::$settings[$name] = self::deserialize($raw);
+            self::$aSettings[$name] = self::deserialize($raw);
             return self::deserialize($raw);
         }
 
@@ -177,11 +182,19 @@ class Settings
     public static function exists(string $name): bool
     {
         $name = strtolower($name);
-                if (isset(self::$cache[$name])) return true;
+
+        // During installation, bypass the cache and always verify against the DB.
+        // Module install.php scripts run after Settings::setup() populated the cache,
+        // but those module settings don't exist in cache yet. Without this bypass,
+        // a stale cache could cause INSERT to be skipped.
+        if (!defined('WBCE_INSTALL_PROCESS') || !WBCE_INSTALL_PROCESS) {
+            if (isset(self::$cache[$name])) return true;
+        }
+
         $raw = self::_getFromDbRaw($name);
         if ($raw !== null) {
             self::$cache[$name]     = $raw;
-            self::$settings[$name] = self::deserialize($raw);
+            self::$aSettings[$name] = self::deserialize($raw);
             return true;
         }
         return false;
@@ -252,7 +265,7 @@ class Settings
             return "Setting does not exist";
         }
 
-        unset(self::$cache[$name], self::$settings[$name]);
+        unset(self::$cache[$name], self::$aSettings[$name]);
         $database->deleteRow('{TP}settings', 'name', $name);
 
         return false;
@@ -321,7 +334,7 @@ class Settings
 
             // Store raw value — get() and showConstants() deserialize on demand
             self::$cache[strtolower($constName)] = $rawValue;
-            self::$settings[strtolower($constName)] = self::deserialize($rawValue);
+            self::$aSettings[strtolower($constName)] = self::deserialize($rawValue);
         }
 
         return false;
