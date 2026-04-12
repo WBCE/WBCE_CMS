@@ -159,6 +159,15 @@ class Settings
             return self::deserialize(self::$cache[$name]);
         }
 
+
+        // Cache miss: query DB, populate cache, avoid silent failures.
+        $raw = self::_getFromDbRaw($name);
+        if ($raw !== null) {
+            self::$cache[$name]     = $raw;
+            self::$settings[$name] = self::deserialize($raw);
+            return self::deserialize($raw);
+        }
+
         return $default;
     }
 
@@ -168,8 +177,14 @@ class Settings
     public static function exists(string $name): bool
     {
         $name = strtolower($name);
-        return isset(self::$cache[$name]) || 
-               self::getFromDb($name, '#++#null#++') !== '#++#null#++';
+                if (isset(self::$cache[$name])) return true;
+        $raw = self::_getFromDbRaw($name);
+        if ($raw !== null) {
+            self::$cache[$name]     = $raw;
+            self::$settings[$name] = self::deserialize($raw);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -192,6 +207,24 @@ class Settings
     /**
      * Get all settings with a given prefix.
      */
+    /**
+     * Return raw DB value or null — no deserialize, no side effects.
+     * Guards against DB not ready (installer boot).
+     */
+    private static function _getFromDbRaw(string $name): ?string
+    {
+        global $database;
+        if (!isset($database) || !is_object($database)
+            || !method_exists($database, 'fetchValue')) {
+            return null;
+        }
+        $val = $database->fetchValue(
+            'SELECT `value` FROM `{TP}settings` WHERE `name` = ?',
+            [strtolower($name)]
+        );
+        return ($val !== null) ? (string)$val : null;
+    }
+
     public static function getByPrefix(string $prefix, $default = false): array|false
     {
         $prefix = strtolower(trim($prefix, '_')) . '_';
@@ -472,8 +505,8 @@ class Settings
     /**
      * Write or update a file-based setting.
      *
-     * File-based settings live in /var/file_based_settings.php by default and are 
-     * loaded as constants very early in the bootstrap — before the DB and autoloader.
+     * File-based settings live in /var/file_based_settings.php and are loaded
+     * as constants very early in the bootstrap — before the DB and autoloader.
      * Use for values that must be available before Settings::setup() runs.
      *
      * Keys must be UPPER_SNAKE_CASE (A-Z, 0-9, underscore, must start with a letter).
@@ -483,7 +516,7 @@ class Settings
      * @param mixed  $value  Scalar value only
      * @return bool|string   false on success, error message on failure
      */
-    public static function setFileBasedSetting(string $key, mixed $value): bool|string
+    public static function setFileBasedSetting(string $key, $value): bool|string
     {
         if (!preg_match('/^[A-Z][A-Z0-9_]*$/', $key)) {
             return "Invalid key '{$key}' — use UPPER_SNAKE_CASE (e.g. WB_DEBUG)";
