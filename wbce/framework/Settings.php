@@ -187,7 +187,7 @@ class Settings
         // Module install.php scripts run after Settings::setup() populated the cache,
         // but those module settings don't exist in cache yet. Without this bypass,
         // a stale cache could cause INSERT to be skipped.
-        if (!defined('WBCE_INSTALL_PROCESS') || !WBCE_INSTALL_PROCESS) {
+        if (!defined('WB_INSTALL_PROCESS') || !WB_INSTALL_PROCESS) {
             if (isset(self::$cache[$name])) return true;
         }
 
@@ -228,14 +228,28 @@ class Settings
     {
         global $database;
         if (!isset($database) || !is_object($database)
-            || !method_exists($database, 'fetchValue')) {
+            || !method_exists($database, 'query')) {
             return null;
         }
-        $val = $database->fetchValue(
+
+        // We use query() + fetchRow() instead of fetchValue() because
+        // fetchValue() returns '' for both "not found" and "found empty value".
+        // We need to distinguish: null = row missing, '' = row exists but empty.
+        $result = $database->query(
             'SELECT `value` FROM `{TP}settings` WHERE `name` = ?',
             [strtolower($name)]
         );
-        return ($val !== null) ? (string)$val : null;
+
+        if ($database->hasError() || !$result) {
+            return null;
+        }
+
+        $row = $result->fetchRow();
+        if ($row === false || $row === null) {
+            return null; // row does not exist
+        }
+
+        return (string)($row['value'] ?? $row[0] ?? '');
     }
 
     public static function getByPrefix(string $prefix, $default = false): array|false
