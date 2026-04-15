@@ -900,6 +900,35 @@ class Database
     }
 
     /**
+    * Returns the storage engine of a table (e.g. 'InnoDB', 'MyISAM').
+    *
+    * @param  string       $table  Table name including prefix
+    * @return string|false         Engine name on success, false on error
+    */
+    public function getTableEngine(string $table): string|false
+    {
+        if (defined('DB_TYPE') && DB_TYPE === 'sqlite') {
+            // SQLite has no storage engines — return a fixed sentinel value
+            // so callers that check for 'InnoDB' or 'MyISAM' get a defined result
+            return 'SQLite';
+        }
+
+        $result = $this->query(
+            'SELECT `ENGINE` FROM `information_schema`.`TABLES`
+             WHERE `TABLE_SCHEMA` = DATABASE()
+               AND `TABLE_NAME`   = ?',
+            [$table]
+        );
+
+        if (!$result || $this->hasError()) {
+            return false;
+        }
+
+        $row = $result->fetchRow();
+        return $row ? ($row['ENGINE'] ?? $row[0] ?? false) : false;
+    }
+    
+    /**
      * @deprecated Use PDO parameter binding instead
      */
     public function escapeString(string $value): string
