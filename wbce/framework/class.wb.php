@@ -553,29 +553,16 @@ _JsCode;
     }
 
     /**
-     * Get POST data safely with optional default value
+     * @brief   Get POST data
      *
-     * Retrieves a value from the $_POST superglobal. If the field does not exist,
-     * the specified default value is returned instead of triggering a notice.
-     *
-     * @brief   Get POST data safely
-     *
-     * @param string $field     The name of the POST field to retrieve
-     * @param mixed  $default   The default value to return if the field is not present.
-     *                          Default is null.
-     *
-     * @return mixed            The value from POST or the provided default value
-     *
-     * @example
-     * $title   = $wb->get_post('title', '');
-     * $active  = $wb->get_post('active', false);
-     * $pageId  = $wb->get_post('page_id', 0);
-     * $mode    = $wb->get_post('mode', 'view');
+     * @param string $field
+     * @return  string
      */
-    public function get_post(string $field, mixed $default = null): mixed
+    public function get_post($field)
     {
-        return $_POST[$field] ?? $default;
+        return (isset($_POST[$field]) ? $_POST[$field] : null);
     }
+
 
 
     /**
