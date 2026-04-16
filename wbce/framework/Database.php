@@ -947,12 +947,11 @@ class Database
             // so callers that check for 'InnoDB' or 'MyISAM' get a defined result
             return 'SQLite';
         }
-
         $result = $this->query(
             'SELECT `ENGINE` FROM `information_schema`.`TABLES`
              WHERE `TABLE_SCHEMA` = DATABASE()
                AND `TABLE_NAME`   = ?',
-            [$table]
+            [$this->prep($table)]
         );
 
         if (!$result || $this->hasError()) {
