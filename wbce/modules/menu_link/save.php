@@ -37,12 +37,13 @@ if (isset($_POST['menu_link'])) {
     // update {TP}mod_menu_link table 
     $aUpdateModTable = array(
         'page_id'        => $page_id,
+        'section_id'     => $section_id,
         'target_page_id' => ($_POST['linktype'] == 'ext') ? '-1' : intval($admin->get_post('menu_link')),
         'redirect_type'  => $admin->get_post('r_type'),
         'anchor'         => $admin->get_post('anchor'),
         'extern'         => isset($_POST['extern']) && $_POST['linktype'] == 'ext' ? $admin->get_post('extern') : '',
     );
-    $database->upsertRow('{TP}mod_menu_link', 'page_id', $aUpdateModTable);
+    $database->upsertRow('{TP}mod_menu_link', 'section_id', $aUpdateModTable);
 
     // Check if there is a database error, otherwise say successful
     if ($database->hasError()) {

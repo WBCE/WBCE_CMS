@@ -17,11 +17,17 @@ Lang::loadLanguage();
 
 include __DIR__ . '/functions.pageTree.php';
 
-// get target page_id
-$sql_result = $database->query("SELECT * FROM `{TP}mod_menu_link` WHERE `page_id` = ?", [$page_id]);
-$aData = $sql_result->fetchRow(MYSQLI_ASSOC);
+// get All the data of this MenuLink instance
+$aData = $database->fetchRow(
+    "SELECT 
+        mml.*,                                              # all of `{TP}mod_menu_link`
+        p.target                                            # target from `{TP}pages`
+     FROM `{TP}mod_menu_link` mml
+     INNER JOIN `{TP}pages` p ON p.page_id = mml.page_id
+     WHERE mml.section_id = ?",
+    [$section_id]
+);
 
-debug_dump($aData);
 // Get list of all visible pages and build a page-tree
 // get list of all page_ids and page_titles
 global $aMenulinkTitles;
@@ -128,45 +134,30 @@ foreach ($aLinks as $p) {
                 </select>
             </td>
         </tr>
-        <?php
-        // get target-window for actual page
-        $sTarget = $database->fetchValue(
-                "SELECT `target` 
-                        FROM `{TP}pages` 
-                        WHERE `page_id` = ?",
-                [$page_id]
-        );
-        ?>
         <tr>
-            <th><?= $TEXT['TARGET'] ?></th>
+            <th><?= $TEXT['TARGET'] ?></th>            
             <td>
-                <select class="menuLink" name="target" style="width:350px;" >
-                    <option value="_blank"<?php if ($sTarget == '_blank') {
-            echo ' selected="selected"';
-        } ?>><?= $TEXT['NEW_WINDOW'] ?> (_blank)</option>
-                    <option value="_self"<?php if ($sTarget == '_self') {
-            echo ' selected="selected"';
-        } ?>><?= $TEXT['SAME_WINDOW'] ?> (_self)</option>
-                    <option value="_top"<?php if ($sTarget == '_top') {
-            echo ' selected="selected"';
-        } ?>><?= $TEXT['TOP_FRAME'] ?> (_top)</option>
-                </select>
+                <?php 
+                $options = [
+                    '_blank' => ($TEXT['NEW_WINDOW'] ?? 'New Window') . ' (_blank)',
+                    '_self'  => ($TEXT['SAME_WINDOW'] ?? 'Same Window') . ' (_self)',
+                    '_top'   => ($TEXT['TOP_FRAME'] ?? 'Top Frame') . ' (_top)',
+                ];
+                renderSelect('target', $aData['target'] ?? '', $options);
+                ?>
             </td>
         </tr>
         <tr>
             <th><?= $MOD_MENU_LINK['R_TYPE'] ?></th>
             <td>
-                <select class="menuLink" name="r_type" style="width:350px;" >
-                    <option value="301"<?php if ($aData['redirect_type'] == '301') {
-            echo ' selected="selected"';
-        } ?>>301</option>
-                    <option value="302"<?php if ($aData['redirect_type'] == '302') {
-            echo ' selected="selected"';
-        } ?>>302</option>
-                    <option value="200"<?php if ($aData['redirect_type'] == '200') {
-            echo ' selected="selected"';
-        } ?>>200</option>
-                </select>
+                <?php
+                    $options = [
+                        '301' => '301 (Moved Permanently)',
+                        '302' => '302 (Found / Temporary Redirect)',
+                        '200' => '200 (OK - No Redirect)',
+                    ];
+                    renderSelect('r_type', $aData['redirect_type'] ?? '', $options);
+                ?>
             </td>
         </tr>
     </table>
@@ -185,6 +176,22 @@ foreach ($aLinks as $p) {
 </form>
 
 <?php
+function renderSelect($name, $currentValue, $options, $class = 'menuLink', $style = 'width:350px;')
+{
+    echo '<select class="' . htmlspecialchars($class) . '" name="' . htmlspecialchars($name) . '" style="' . htmlspecialchars($style) . '">';
+    
+    foreach ($options as $value => $label) {
+        $selected = ($currentValue ?? '') === (string)$value ? ' selected="selected"' : '';
+        echo '<option value="' . htmlspecialchars($value) . '"' . $selected . '>';
+        echo htmlspecialchars($label);
+        echo '</option>';
+    }
+    
+    echo '</select>';
+}
+
+
+
 $sModDirUrl = str_replace(WB_PATH, WB_URL, __DIR__);
 ?>
 <script src="<?= $sModDirUrl ?>/selectator/fm.selectator.jquery.min.js"></script>

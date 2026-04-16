@@ -13,17 +13,23 @@
 $module_directory = 'menu_link';
 $module_name = 'Menu Link';
 $module_function = 'page';
-$module_version = '2.9.8';
-$module_platform = '1.4.0';
+$module_version = '3.0.0';
+$module_platform = '1.7.0';
 $module_author = 'Ryan Djurovich, thorn, Christian M. Stefan';
 $module_license = 'GNU General Public License';
 $module_description = 'This module allows you to insert a link into the menu.';
 $module_icon = 'fa fa-sitemap';
+
 $module_level = 'core';
 
 /**
  * Version history
  * 
+ * 3.0.0 - Adjustments to db queries (PDO)
+ *         added PL language file
+ *         changed RU language file to UTF-8 cyrillic and added a missing key
+ *         (Christian M. Stefan)
+ *
  * 2.9.8 - cs fixed files
  *
  * 2.9.7 - add redirection type "200"
