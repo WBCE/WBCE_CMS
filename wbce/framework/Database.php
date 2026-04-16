@@ -67,8 +67,8 @@ if (!defined('DB_DSN')) {
 
 class Database
 {
+    public  string $driver   = 'mysql';
     private PDO    $pdo;
-    private string $driver   = 'sqlite';
     private string $error    = '';
     private array  $prefixes = [];
     
@@ -707,58 +707,93 @@ class Database
             $replacements['{TABLE_COLLATION}'] = '';
         }
 
-        // 6. Execute inside a transaction
-        $results = [];
-        $this->pdo->beginTransaction();
+        // 6. Execute statements
+        //
+        // MySQL/MariaDB: DDL statements (CREATE TABLE, DROP TABLE, ALTER TABLE)
+        // cause an IMPLICIT COMMIT and cannot be wrapped in a transaction.
+        // Using beginTransaction() around DDL leads to "There is no active
+        // transaction" errors when PDO tries to commit/rollback afterward.
+        //
+        // SQLite supports transactional DDL — we use a transaction there
+        // to get atomicity. For MySQL we execute each statement individually.
+        //
+        // Per-statement execution means: one failure does NOT abort the rest.
+        // Each statement is reported independently via the $progress callback.
 
-        try {
-            foreach ($statements as $index => $rawSql) {
-                $sql = strtr($rawSql, $replacements);
-                $sql = trim($sql);
+        $results      = [];
+        $useTxn       = ($this->driver === 'sqlite');
+        $hasFatalError = false;
 
-                if ($sql === '') continue;
+        if ($useTxn) {
+            $this->pdo->beginTransaction();
+        }
 
-                if ($preserveExisting && stripos($sql, 'DROP TABLE') === 0) {
-                    $r = ['statement' => 'DROP TABLE (skipped)', 'ok' => true, 'msg' => 'Skipped — preserve mode'];
-                    $results[] = $r;
-                    if ($progress) $progress($r, $index, $total);
-                    continue;
-                }
+        foreach ($statements as $index => $rawSql) {
+            $sql = strtr($rawSql, $replacements);
+            $sql = trim($sql);
 
-                preg_match(
-                    '/(?:CREATE\s+TABLE(?:\s+IF\s+NOT\s+EXISTS)?\s+["`]?(\w+)["`]?'
-                    . '|INSERT\s+(?:INTO\s+)?["`]?(\w+)["`]?'
-                    . '|ALTER\s+TABLE\s+["`]?(\w+)["`]?'
-                    . '|UPDATE\s+["`]?(\w+)["`]?'
-                    . '|DELETE\s+FROM\s+["`]?(\w+)["`]?)/i',
-                    $sql, $m
-                );
-                $label = $m[1] ?? $m[2] ?? $m[3] ?? $m[4] ?? $m[5] ?? substr($sql, 0, 60);
+            if ($sql === '') continue;
 
-                $affected = $this->pdo->exec($sql);
-
-                if ($affected === false) {
-                    $info = $this->pdo->errorInfo();
-                    $msg  = $info[2] ?? 'Execution failed (SQLSTATE ' . ($info[0] ?? '?') . ')';
-                    $r    = ['statement' => $label, 'ok' => false, 'msg' => $msg];
-                    $results[] = $r;
-                    if ($progress) $progress($r, $index, $total);
-                    throw new RuntimeException("importSql failed on '$label': $msg");
-                }
-
-                $r = ['statement' => $label, 'ok' => true, 'msg' => "OK (rows: $affected)"];
+            // Skip DROP TABLE in preserve mode
+            if ($preserveExisting && preg_match('/^DROP\s+TABLE/i', $sql)) {
+                $r = ['statement' => 'DROP TABLE (skipped)', 'ok' => true, 'msg' => 'Skipped — preserve mode'];
                 $results[] = $r;
                 if ($progress) $progress($r, $index, $total);
+                continue;
             }
 
-            $this->pdo->commit();
+            // Build a short human-readable label for the result entry
+            preg_match(
+                '/(?:CREATE\s+TABLE(?:\s+IF\s+NOT\s+EXISTS)?\s+["`]?(\w+)["`]?'
+                . '|INSERT\s+(?:INTO\s+)?["`]?(\w+)["`]?'
+                . '|ALTER\s+TABLE\s+["`]?(\w+)["`]?'
+                . '|UPDATE\s+["`]?(\w+)["`]?'
+                . '|DELETE\s+FROM\s+["`]?(\w+)["`]?'
+                . '|DROP\s+TABLE\s+["`]?(\w+)["`]?)/i',
+                $sql, $m
+            );
+            $label = $m[1] ?? $m[2] ?? $m[3] ?? $m[4] ?? $m[5] ?? $m[6] ?? substr($sql, 0, 60);
 
-        } catch (Throwable $e) {
-            if ($this->pdo->inTransaction()) $this->pdo->rollBack();
-            $this->error = $e->getMessage();
-            $r = ['statement' => 'Transaction rolled back', 'ok' => false, 'msg' => $e->getMessage()];
+            try {
+                $affected  = $this->pdo->exec($sql);
+                $execError = false;
+
+                if ($affected === false) {
+                    $info      = $this->pdo->errorInfo();
+                    $execError = $info[2] ?? 'Execution failed (SQLSTATE ' . ($info[0] ?? '?') . ')';
+                }
+            } catch (PDOException $e) {
+                $affected  = false;
+                $execError = $e->getMessage();
+            }
+
+            if ($execError !== false) {
+                $this->error    = $execError;
+                $hasFatalError  = true;
+                $r = ['statement' => $label, 'ok' => false, 'msg' => $execError];
+                $results[] = $r;
+                if ($progress) $progress($r, $index, $total);
+
+                // SQLite: abort the transaction on first error
+                if ($useTxn) {
+                    $this->pdo->rollBack();
+                    $r = ['statement' => 'Transaction rolled back', 'ok' => false, 'msg' => $execError];
+                    $results[] = $r;
+                    if ($progress) $progress($r, -1, $total);
+                    return $results;
+                }
+
+                // MySQL: continue with remaining statements (DDL can't be rolled back anyway)
+                continue;
+            }
+
+            $r = ['statement' => $label, 'ok' => true, 'msg' => "OK (rows: $affected)"];
             $results[] = $r;
-            if ($progress) $progress($r, -1, $total);
+            if ($progress) $progress($r, $index, $total);
+        }
+
+        if ($useTxn && $this->pdo->inTransaction()) {
+            $this->pdo->commit();
         }
 
         return $results;
