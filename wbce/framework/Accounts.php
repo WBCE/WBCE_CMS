@@ -499,27 +499,40 @@ class Accounts extends Frontend
         }
         return $aCollection;
     }
-
+    
     public function get_userbase_array($bExtendOnly = false)
     {
-        $aUsers = $this->db->fetchAll('SELECT * FROM `{TP}users`');
-        foreach ($aUsers as $i => &$aUsers[$i]) {
+        $aUsers = [];
+        if ($res = $GLOBALS['database']->query("SELECT * FROM `{TP}users`")) {
+            while ($row = $res->fetchRow(MYSQLI_ASSOC)) {                
+                $aUsers[] = $row; // Basic row data                
+                $i = count($aUsers) - 1; // Get the last inserted index (current user)
+                $groups_id = isset($row['groups_id']) ? (string) $row['groups_id'] : '';
+                
+                // Remove spaces and convert to array
+                $groups_id = str_replace(' ', '', $groups_id);
+                $aGroupIDs = (strpos($groups_id, ',') !== false)
+                    ? explode(',', trim($groups_id))
+                    : [$groups_id];
 
-                // make array of groups_id => group_name
-                $aUsers[$i]['groups_id'] = str_replace(' ', '', $aUsers[$i]['groups_id']);
-                $aGroupIDs = strpos($aUsers[$i]['groups_id'], ',') !== false
-                    ? explode(',', trim($aUsers[$i]['groups_id']))
-                    : $aUsers[$i]['groups_id'] = array($aUsers[$i]['groups_id']);
-                $aTmp = array();
-                foreach ($aGroupIDs as $key => $iGroupID) {
-                    $aTmp[$iGroupID] = $this->usergroup_names_by_id($iGroupID);
+                // Build array of group_id => group_name
+                $aTmp = [];
+                foreach ($aGroupIDs as $iGroupID) {
+                    if ($iGroupID !== '') {                 // skip empty values
+                        $aTmp[$iGroupID] = $this->usergroup_names_by_id($iGroupID);
+                    }
                 }
-                // make comma separated list of group names
-                $aUsers[$i]['user_groups'] = $aTmp;
+
+                // Store the results back
+                $aUsers[$i]['groups_id'] = $groups_id;         
+                $aUsers[$i]['user_groups'] = $aTmp;        // id => name mapping
+            }
         }
-        unset($aUsers[$i]);
         return $aUsers;
     }
+
+
+
 
     public function usergroup_names_by_id($iGroupID = 0)
     {
