@@ -19,9 +19,12 @@ class Frontend extends Wb
     public $default_link;
     public $default_page_id;
 
-    // when multiple blocks are used, show home page blocks on
-    // pages where no content is defined (search, login, ...)
-    public $default_block_content = true;
+    // when multiple blocks are used, PAGE_ID = 0 pages like
+    // (search, login, ...) cannot fill into these blocks.
+    // default 0 = don't use default block content feature
+    // use $wb->default_block_content = 7; (7 being the page
+    // from which block contens have to be used from.
+    public $default_block_content = 0; 
 
     // page details
     public $page;
@@ -64,7 +67,7 @@ class Frontend extends Wb
  
         // We have a Maintainance situation print under construction if not in group admin
         if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE === true and !$this->ami_group_member('1')) {
-            $this->print_under_construction();
+                $this->print_under_construction();
         }
  
         // We have no page id and are supposed to show the intro page
