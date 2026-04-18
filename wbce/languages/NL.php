@@ -458,6 +458,14 @@ $HEADING['WBMAILER_SETTINGS'] = 'Mailer-instellingen';
 $HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the mailer settings below are being overriden by settings in the file <code>[WB_PATH]/include/PHPMailer/config_mail.php</code>.<br />'
                                         . 'In order to use the mailer settings below you\'ll need to disable the array in named file.';
 
+/* NEW DIRECTORY REMOVAL STRINGS SINCE WBCE 1.7.0 */
+$MESSAGE['RM_DIR_OK']                 = 'De map `%s` en alle inhoud zijn succesvol verwijderd.';
+$MESSAGE['RM_FILE_OK']                = 'Het bestand `%s` is succesvol verwijderd.';
+$MESSAGE['RM_PATH_NOT_FOUND']         = 'Het pad `%s` bestaat niet.';
+$MESSAGE['RM_PATH_NOT_READABLE']      = 'De map `%s` bestaat maar is niet leesbaar.';
+$MESSAGE['RM_PATH_COULD_NOT_REMOVE']  = '`%s` kon niet worden verwijderd (toestemmingsprobleem, bestand vergrendeld of andere fout).';
+$MESSAGE['RM_PATH_PERMISSION_DENIED'] = 'Toegang geweigerd bij poging tot toegang tot `%s`.';
+/* END:NEW DIRECTORY REMOVAL STRINGS SINCE WBCE 1.7.0 */
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Fout tijdens het updaten van de add-onbestanden.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Taalbestanden succesvol herladen';

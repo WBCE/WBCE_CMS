@@ -460,6 +460,14 @@ $HEADING['WBMAILER_SETTINGS'] = 'Maileinstellungen';
 $HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>BITTE BEACHTEN:</b> die unten aufgeführten '.$HEADING['WBMAILER_SETTINGS'].' werden momentan mit den Einstellungen aus der Datei <code>[WB_PATH]/include/PHPMailer/config_mail.php</code> überschrieben.<br />'
                                         . 'Um die HIER DRUNTER aufgeführten '.$HEADING['WBMAILER_SETTINGS'].' zu verwenden müssen die Einstellungen in der genannten Datei entfernt werden.';
 
+/* NEW DIRECTORY REMOVAL STRINGS SINCE WBCE 1.7.0 */
+$MESSAGE['RM_DIR_OK']                 = 'Das Verzeichnis `%s` und alle seine Inhalte wurden erfolgreich entfernt.';
+$MESSAGE['RM_FILE_OK']                = 'Die Datei `%s` wurde erfolgreich entfernt.';
+$MESSAGE['RM_PATH_NOT_FOUND']         = 'Der Pfad `%s` existiert nicht.';
+$MESSAGE['RM_PATH_NOT_READABLE']      = 'Das Verzeichnis `%s` existiert, ist aber nicht lesbar.';
+$MESSAGE['RM_PATH_COULD_NOT_REMOVE']  = '`%s` konnte nicht entfernt werden (Berechtigungsproblem, Datei gesperrt oder anderer Fehler).';
+$MESSAGE['RM_PATH_PERMISSION_DENIED'] = 'Zugriff verweigert beim Versuch, auf `%s` zuzugreifen.';
+/* END:NEW DIRECTORY REMOVAL STRINGS SINCE WBCE 1.7.0 */
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Fehler beim Abgleich der Add-On-Informationen.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Sprachen erfolgreich geladen';

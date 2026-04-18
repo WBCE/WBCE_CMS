@@ -1197,6 +1197,88 @@ function wbceSafePath(
     return $realPath;
 }
 /**
+ * Recursively removes a file or a non-empty directory.
+ *
+ * Returns a machine-readable status signal only, but all the
+ * signals are within the system wide $MESSAGE array. 
+ * This means caller can translate the signal using
+ * sprintf($MESSAGE[$signal], $file);
+ * or the new L_() function, see code sample below: 
+ * <code>
+ * $signal = removePath($somePath, false);
+ * echo L_($MESSAGE[$signal], $somePath);
+ * </code>
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * @author    Christian M. Stefan  (https://www.wbEasy.de)
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @param string $path   Full path to the file or directory to remove
+ * @param bool   $empty  If true and $path is a directory, only empty the directory
+ *                       but do not delete the folder itself. Default: false (delete completely)
+ *
+ * @return string        One of the RM_* signals:
+ *                       RM_FILE_OK, RM_DIR_OK, RM_PATH_NOT_FOUND,
+ *                       RM_PATH_NOT_READABLE, RM_PATH_PERMISSION_DENIED,
+ *                       RM_PATH_COULD_NOT_REMOVE
+ */
+function removePath(string $path, bool $empty = false): string
+{
+    $path = rtrim($path, DIRECTORY_SEPARATOR);
+
+    if (!file_exists($path)) {
+        return 'RM_PATH_NOT_FOUND';
+    }
+
+    if (is_file($path)) {
+        return unlink($path) ? 'RM_FILE_OK' : 'RM_PATH_COULD_NOT_REMOVE';
+    }
+
+    if (!is_dir($path)) {
+        return 'RM_PATH_NOT_FOUND';
+    }
+
+    if (!is_readable($path)) {
+        return 'RM_PATH_NOT_READABLE';
+    }
+
+    $handle = opendir($path);
+    if ($handle === false) {
+        return 'RM_PATH_PERMISSION_DENIED';
+    }
+
+    while (false !== ($item = readdir($handle))) {
+        if ($item === '.' || $item === '..') {
+            continue;
+        }
+
+        $fullItemPath = $path . DIRECTORY_SEPARATOR . $item;
+
+        if (is_dir($fullItemPath)) {
+            $result = removePath($fullItemPath, false);
+            if ($result !== 'RM_DIR_OK' && $result !== 'RM_FILE_OK') {
+                closedir($handle);
+                return $result;
+            }
+        } else {
+            if (!unlink($fullItemPath)) {
+                closedir($handle);
+                return 'RM_DIR_COULD_NOT_REMOVE';
+            }
+        }
+    }
+
+    closedir($handle);
+
+    if (!$empty) {
+        if (!rmdir($path)) {
+            return 'RM_DIR_COULD_NOT_REMOVE';
+        }
+    }
+
+    return 'RM_DIR_OK';
+}
+
+/**
  * Converts a filesystem path to the corresponding URL.
  *
  * Example usage:

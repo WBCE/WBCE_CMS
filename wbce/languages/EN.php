@@ -460,6 +460,14 @@ $HEADING['WBMAILER_SETTINGS'] = 'Mailer Settings';
 $HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the mailer settings below are being overriden by settings in the file <code>[WB_PATH]/include/PHPMailer/config_mail.php</code>.<br />'
                                         . 'In order to use the mailer settings below you\'ll need to disable the array in named file.';
 
+/* NEW DIRECTORY REMOVAL STRINGS SINCE WBCE 1.7.0 */
+$MESSAGE['RM_DIR_OK']                 = 'Directory `%s` and all its contents were removed successfully.';
+$MESSAGE['RM_FILE_OK']                = 'File `%s` was removed successfully.';
+$MESSAGE['RM_PATH_NOT_FOUND']         = 'The path `%s` does not exist.';
+$MESSAGE['RM_PATH_NOT_READABLE']      = 'The directory `%s` exists but is not readable.';
+$MESSAGE['RM_PATH_COULD_NOT_REMOVE']  = 'Could not remove `%s` (permission issue, file locked, or other error).';
+$MESSAGE['RM_PATH_PERMISSION_DENIED'] = 'Permission denied while trying to access `%s`.';
+/* END:NEW DIRECTORY REMOVAL STRINGS SINCE WBCE 1.7.0 */
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Languages reloaded successfully';
