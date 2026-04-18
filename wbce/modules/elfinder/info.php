@@ -13,7 +13,7 @@
 $module_directory = 'elfinder';
 $module_name = 'elFinder';
 $module_function = 'tool';
-$module_version = '2.1.66';
+$module_version = '2.1.67';
 $module_platform = '1.6.0';
 $module_author = 'WBCE';
 $module_license = 'Modul under GPL, elFinder under BSD';
@@ -24,6 +24,7 @@ $module_level = 'core';
 /**
  * Version history
  *
+ * 2.1.67 - security update of elfinder
  * 2.1.66 - sync module version with eF version
  * 1.1.9 - updated elFinder to 2.1.64
  * 1.1.8 - updated Material-Theme to 2.1.15
