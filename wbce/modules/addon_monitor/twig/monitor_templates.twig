@@ -1,0 +1,110 @@
+{#
+/**
+ * @file       twig/monitor_templates.twig 
+ * @category   admintool
+ * @package    addon_monitor
+ * @author     Christian M. Stefan (https://www.wbeasy.de)
+ * @license    http://www.gnu.org/licenses/gpl.html
+ * @platform   WBCE CMS 1.7.0
+ */
+#}
+<div class="am-toolbar">
+
+  <div class="am-toggles">
+    <span>{{ L_('TEXT:SHOW') }}:</span>
+    <label><input class="am-type-toggle" type="checkbox" value="template" checked /> Page Templates <sup>({{ count_pagetemplates }})</sup></label>
+    <label><input class="am-type-toggle" type="checkbox" value="theme"    checked /> ACP Themes <sup>({{ count_acpthemes }})</sup></label>
+  </div>
+
+  <div class="am-filters">
+    {{ include('search.twig') }}
+  </div>
+
+</div>
+
+<table id="htmlgrid" class="amDashboard">
+  <thead>
+    <tr>
+      <th class="am-sort"><span>{{ L_('TEXT:TYPE') }}</span></th>
+      <th class="am-sort"><span>{{ L_('TEXT:TEMPLATE_NAME') }}</span></th>
+      <th>{{ L_('TEXT:VERSION') }}</th>
+      <th>{{ L_('TEXT:DESCRIPTION') }}</th>
+      <th>{{ L_('TEXT:AUTHOR') }}</th>
+      <th class="am-sort"><span>{{ L_('TEXT:ACTIVE') }}?</span></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for addon in addons %}
+    {% set isActive = (addon.active == 'Y' or addon.directory == constant('DEFAULT_TEMPLATE') or addon.directory == constant('DEFAULT_THEME')) %}
+    <tr id="addon_{{ addon.addon_id }}"
+        data-function="{{ addon.function }}"
+        data-active="{{ isActive ? '1' : '0' }}">
+
+      <td class="addon_type">
+        {% if addon.function == 'template' %}
+          <span class="am-badge am-badge-template">Frontend Template</span>
+        {% else %}
+          <span class="am-badge am-badge-theme">Backend Theme</span>
+        {% endif %}
+      </td>
+
+      <td class="addon_name">
+        {{ addon.name }}
+        <small>{{ addon.directory }}</small>
+      </td>
+
+      <td class="addon_version">{{ addon.version }}</td>
+
+      <td class="addon_description">
+        {% if addon.description %}
+          <div class="am-desc">{{ addon.description }}</div>
+        {% else %}
+          <i>~ no description ~</i>
+        {% endif %}
+      </td>
+
+      <td class="addon_author">
+        <ul class="authors">
+          {% for author in addon.author|split(', ') %}
+            <li>{{ author }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+
+      <td class="addon_active">
+        {% if addon.function == 'template' %}
+          {% if addon.directory == constant('DEFAULT_TEMPLATE') %}
+            <ul class="using_sections"><li>Default</li></ul>
+          {% elseif addon.active_pages|length > 0 %}
+            <ul class="using_sections">
+              <li title="Used on {{ addon.active_pages|length }} page(s)">{{ addon.active_pages|length }}×</li>
+              {% for pID in addon.active_pages %}
+                <li title="Page {{ pID }}">
+                  <a href="{{ constant('WB_URL') }}/{{ constant('ADMIN_DIRECTORY') }}/pages/settings.php?page_id={{ pID }}" target="_blank">p{{ pID }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <ul class="using_sections_null"><li>0×</li></ul>
+          {% endif %}
+        {% else %}
+          {% if addon.directory == constant('DEFAULT_THEME') %}
+            <ul class="using_sections"><li>Default</li></ul>
+          {% else %}
+            <ul class="using_sections_null"><li>Not in use</li></ul>
+          {% endif %}
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="6">
+        <b>{{ addons|length }} templates installed —</b>
+        <span class="am-badge am-badge-template">{{ count_pagetemplates }} Frontend Templates</span>
+        <span class="am-badge am-badge-theme">{{ count_acpthemes }} Backend Themes</span>
+      </td>
+    </tr>
+  </tfoot>
+</table>

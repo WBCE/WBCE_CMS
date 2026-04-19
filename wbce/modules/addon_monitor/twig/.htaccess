@@ -1,0 +1,13 @@
+# =============================================================
+#   SECURITY: Prevent direct browser access to Twig templates
+#   Location: /twig/.htaccess
+# =============================================================
+
+# Block direct access to all Twig files
+<Files "*.twig">
+    Require all denied
+</Files>
+
+# Additional rewrite protection
+RewriteEngine On
+RewriteRule \.twig$ - [F,L]
