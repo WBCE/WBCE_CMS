@@ -16,6 +16,7 @@ defined('WB_PATH') or die('No direct access allowed');
 class Frontend extends Wb
 {
     // defaults
+    public $isStartpage = false;
     public $default_link;
     public $default_page_id;
 
@@ -140,6 +141,7 @@ class Frontend extends Wb
                 $this->default_page_id = $fetch_default['page_id'];
             }
         }
+        $this->isStartpage = (int) $this->page_id === (int) $this->default_page_id;
         return true;
     }
 
