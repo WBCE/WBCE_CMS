@@ -14,7 +14,7 @@ require_once dirname(__DIR__) . '/config.php';
 
 if (!FRONTEND_LOGIN) {
     header('Location: ' . WB_URL . ((INTRO_PAGE) ? PAGES_DIRECTORY : '') . '/index.php');
-    exit(0);
+    exit;
 }
 
 $oAccounts = new Accounts();
