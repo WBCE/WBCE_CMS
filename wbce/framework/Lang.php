@@ -132,7 +132,7 @@ class Lang
      *        languages/{locale}.php  — active locale if different from EN
      *
      *   2. Single-file mode: if no /languages/ directory exists, looks for
-     *        language.php  — one file containing all locales as a nested array:
+     *        languages.php  — one file containing all locales as a nested array:
      *        return ['EN' => ['NS' => [...]], 'DE' => ['NS' => [...]]];
      *        EN keys are always merged first, then the active locale on top.
      *
@@ -176,10 +176,10 @@ class Lang
             return;
         }
 
-        // ── Mode 2: single language.php file ─────────────────────────────────
+        // ── Mode 2: single languages.php file ─────────────────────────────────
         // Format: return ['EN' => ['NS' => [...]], 'DE' => ['NS' => [...]]];
         // EN is always merged first as the base, then the active locale on top.
-        $singleFile = $dir . '/language.php';
+        $singleFile = $dir . '/languages.php';
         if (!is_file($singleFile)) return;
 
         $all = include $singleFile;
