@@ -42,9 +42,11 @@ if (!defined('DB_DSN')) {
         case 'sqlite':
             $sqlitePath = WB_PATH . '/var/database/wbce.sqlite';
             if (defined('SQLITE_DB_PATH') && SQLITE_DB_PATH !== '') {
-                $validated = wbceSafePath(SQLITE_DB_PATH);
-                if ($validated !== null) {
-                    $sqlitePath = $validated; 
+                if(function_exists('wbceSafePath')){
+                    $validated = wbceSafePath(SQLITE_DB_PATH);
+                    if ($validated !== null) {
+                        $sqlitePath = $validated; 
+                    }
                 }
             }
             define('DB_DSN', 'sqlite:' . $sqlitePath);
@@ -67,7 +69,7 @@ if (!defined('DB_DSN')) {
 
 class Database
 {
-    public  string $driver   = 'mysql';
+    private string $driver   = 'mysql';
     private PDO    $pdo;
     private string $error    = '';
     private array  $prefixes = [];
@@ -77,7 +79,7 @@ class Database
      * WBCE_LEGACY ALIASES
      *
      * This array defines which old method names are mapped to the new 
-     * canonical methods. When SQL_CANONICAL_DEBUG is enabled, a deprecation 
+     * canonical methods. When PDO_CANONICAL_DEBUG is enabled, a deprecation 
      * warning will be triggered for each legacy method call.
      *
      * Note regarding SqlImport():
@@ -89,6 +91,7 @@ class Database
     private const WBCE_LEGACY = [
         'get_one'         => 'fetchValue',
         'get_array'       => 'fetchAll',
+        'updateRow'       => 'upsertRow',
         'delRow'          => 'deleteRow',
         'field_exists'    => 'fieldExists',
         'field_add'       => 'addField',
@@ -99,14 +102,15 @@ class Database
         'set_error'       => 'setError',
         'getLastInsertId' => 'lastInsertId',
         'pdo'             => 'getPDO',
-        'updateRow'       => 'upsertRow' 
+        'index_remove'    => 'removeIndex',
+        'index_add'       => 'addIndex'
     ];
 
     public function __call(string $name, array $args): mixed
     {
         if (isset(self::WBCE_LEGACY[$name])) {
             $canonical = self::WBCE_LEGACY[$name];
-            if (defined('SQL_CANONICAL_DEBUG') && SQL_CANONICAL_DEBUG) {
+            if (defined('PDO_CANONICAL_DEBUG') && PDO_CANONICAL_DEBUG) {
                 trigger_error(
                     "Database::$name() is deprecated — use $canonical()",
                     E_USER_DEPRECATED
@@ -470,6 +474,21 @@ class Database
         return true;
     }
 
+    /**
+     * Delete one or more rows from a table by matching a single column.
+     *
+     * Deletes all rows where `$refKey` matches any value in `$values`.
+     * A single value can be passed as a scalar — it will be wrapped in an array.
+     *
+     * @param  string       $table   Table name (supports {TP} placeholder)
+     * @param  string       $refKey  Column name to match against
+     * @param  mixed        $values  Scalar or array of values — uses IN (?, ?, ...)
+     * @return bool|string           true on success, error message on failure
+     *
+     * @example
+     *   $database->deleteRow('{TP}sections', 'page_id', 42);
+     *   $database->deleteRow('{TP}sections', 'page_id', [10, 11, 12]);
+     */
     public function deleteRow(string $table, string $refKey, mixed $values): bool|string
     {
         $table  = $this->prep($table);
@@ -568,6 +587,81 @@ class Database
             }
             return false;
         }
+    }
+
+    /**
+     * Add an index to a table. Drops existing index with same name first.
+     *
+     * @param string $table      Table name (supports {TP} placeholder)
+     * @param string $indexName  Index name (ignored for PRIMARY KEY)
+     * @param string $fields     Comma-separated field list
+     * @param string $indexType  KEY | UNIQUE | PRIMARY
+     * @return bool
+     */
+    public function addIndex(string $table, string $indexName, string $fields, string $indexType = 'KEY'): bool
+    {
+       $table  = $this->prep($table);
+       $cols   = '`' . implode('`,`', array_map('trim', explode(',', $fields))) . '`';
+       $isPrimary = strtoupper($indexType) === 'PRIMARY';
+
+       // Drop existing index first (ignore error if absent)
+       $this->removeIndex($table, $indexName);
+
+       if ($this->driver === 'sqlite') {
+           // SQLite: PRIMARY KEY cannot be added after table creation
+           if ($isPrimary) {
+               $this->error = 'SQLite does not support adding PRIMARY KEY after table creation';
+               return false;
+           }
+           $unique = (strtoupper($indexType) === 'UNIQUE') ? 'UNIQUE ' : '';
+           $sql = "CREATE {$unique}INDEX IF NOT EXISTS `$indexName` ON `$table` ($cols)";
+       } else {
+           if ($isPrimary) {
+               $sql = "ALTER TABLE `$table` ADD PRIMARY KEY ($cols)";
+           } else {
+               $type = strtoupper($indexType) === 'UNIQUE' ? 'UNIQUE' : 'INDEX';
+               $sql = "ALTER TABLE `$table` ADD $type `$indexName` ($cols)";
+           }
+       }
+
+       try {
+           $this->pdo->exec($sql);
+           return true;
+       } catch (PDOException $e) {
+           $this->error = $e->getMessage();
+           return false;
+       }
+    }
+
+    /**
+     * Remove an index from a table. Returns true if removed or already absent.
+     *
+     * @param string $table      Table name (supports {TP} placeholder)
+     * @param string $indexName  Index name
+     * @return bool
+     */
+    public function removeIndex(string $table, string $indexName): bool
+    {
+       $table = $this->prep($table);
+
+       if ($this->driver === 'sqlite') {
+           $sql = "DROP INDEX IF EXISTS `$indexName`";
+       } else {
+           // Check existence first — DROP INDEX on missing index is an error in MySQL
+           $stmt = $this->pdo->prepare("SHOW INDEX FROM `$table` WHERE Key_name = ?");
+           $stmt->execute([$indexName]);
+           if ($stmt->rowCount() === 0) return true; // already absent — not an error
+
+           $sql = "ALTER TABLE `$table` DROP INDEX `$indexName`";
+       }
+
+       try {
+           $this->pdo->exec($sql);
+           return true;
+       } catch (PDOException $e) {
+           $this->error = $e->getMessage();
+           return false;
+       }
     }
 
     // ── Utility ───────────────────────────────────────────────────────────────────────────
@@ -832,10 +926,10 @@ class Database
 
         // FIX 2: Integer type aliases — use (?!\w) so the display-width (N) is consumed.
         // The old \b anchor left "INTEGER(11)" which SQLite rejects with AUTOINCREMENT.
-        $content = preg_replace('/\bMEDIUMINT\b/i',                               'INTEGER',  $content);
-        $content = preg_replace('/\bBIGINT(?:\s*\(\s*\d+\s*\))?(?!\w)/i',  'INTEGER',  $content);
-        $content = preg_replace('/\bTINYINT(?:\s*\(\s*\d+\s*\))?(?!\w)/i', 'SMALLINT', $content);
-        $content = preg_replace('/\bINT(?:EGER)?(?:\s*\(\s*\d+\s*\))?(?!\w)/i', 'INTEGER', $content);
+        $content = preg_replace('/\bMEDIUMINT\b/i',                             'INTEGER',  $content);
+        $content = preg_replace('/\bBIGINT(?:\s*\(\s*\d+\s*\))?(?!\w)/i',       'INTEGER',  $content);
+        $content = preg_replace('/\bTINYINT(?:\s*\(\s*\d+\s*\))?(?!\w)/i',      'SMALLINT', $content);
+        $content = preg_replace('/\bINT(?:EGER)?(?:\s*\(\s*\d+\s*\))?(?!\w)/i', 'INTEGER',  $content);
 
         // Inline AUTO_INCREMENT PRIMARY KEY (already combined on the column definition)
         $content = preg_replace(
@@ -900,7 +994,7 @@ class Database
      * Legacy method for backward compatibility.
      * Many old modules and install scripts still call $database->SqlImport().
      * This wrapper calls the new importSql() internally and returns a simple bool.
-    */
+     */
     public function SqlImport(
        $sSqlDump,
        $sTablePrefix = '',
@@ -908,7 +1002,7 @@ class Database
        $sTblEngine = 'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci',
        $sTblCollation = ' collate utf8_unicode_ci'
     ) {
-       if (defined('SQL_CANONICAL_DEBUG') && SQL_CANONICAL_DEBUG) {
+       if (defined('PDO_CANONICAL_DEBUG') && PDO_CANONICAL_DEBUG) {
            trigger_error(
                "Database::SqlImport() is deprecated — use importSql() instead. " .
                "The new method returns a detailed result array.",
@@ -935,11 +1029,11 @@ class Database
     }
 
     /**
-    * Returns the storage engine of a table (e.g. 'InnoDB', 'MyISAM').
-    *
-    * @param  string       $table  Table name including prefix
-    * @return string|false         Engine name on success, false on error
-    */
+     * Returns the storage engine of a table (e.g. 'InnoDB', 'MyISAM').
+     *
+     * @param  string       $table  Table name including prefix
+     * @return string|false         Engine name on success, false on error
+     */
     public function getTableEngine(string $table): string|false
     {
         if (defined('DB_TYPE') && DB_TYPE === 'sqlite') {
@@ -962,21 +1056,27 @@ class Database
         return $row ? ($row['ENGINE'] ?? $row[0] ?? false) : false;
     }
     
+    
     /**
      * @deprecated Use PDO parameter binding instead
      */
-    public function escapeString(string $value): string
+    public function escapeString(?string $value): string   
     {
-        if (defined('SQL_CANONICAL_DEBUG') && SQL_CANONICAL_DEBUG) {
+        if (defined('PDO_CANONICAL_DEBUG') && PDO_CANONICAL_DEBUG) {
             trigger_error(
                 'Database::escapeString() is deprecated — use PDO parameter binding.',
                 E_USER_DEPRECATED
             );
         }
+
+        $value = $value ?? ''; // Handle null gracefully
+
+
         if ($this->driver === 'sqlite') {
             return str_replace("'", "''", $value);
         }
-        return substr($this->pdo->quote($value), 1, -1);
+
+       return substr($this->pdo->quote($value), 1, -1);
     }
 }
 
