@@ -112,19 +112,12 @@
   function onDone() {
     if (buffer.trim()) enqueueHtml(buffer);
     buffer = '';
-    setProgress(100, 'Complete');
 
-    function waitForQueue() {
-      if (_queue.length > 0 || _draining) {
-        setTimeout(waitForQueue, ITEM_DELAY * 2);
-        return;
-      }
-      var html    = logEl.innerHTML.toLowerCase();
-      var success = html.includes('update complete') || html.includes('update finished');
-      var hasFail = html.includes('class="err"') || html.includes('class="log-err"');
-      showActions(success && !hasFail);
-    }
-    waitForQueue();
+    tickToFull('Complete', function (logHtml) {
+      var success = logHtml.includes('update complete') || logHtml.includes('update finished');
+      var hasFail = logHtml.includes('class="err"') || logHtml.includes('class="log-err"');
+      return success && !hasFail;
+    });
   }
 
   function showActions(success) {
@@ -147,8 +140,44 @@
   // ── Progress bar ──────────────────────────────────────────────────────────
   function setProgress(pct, label) {
     if (barFill)  barFill.style.width   = pct + '%';
-    if (barLabel) barLabel.textContent  = pct + '%';
+    if (barLabel) barLabel.textContent  = Math.round(pct) + '%';
     if (label && phaseLabel) phaseLabel.textContent = label;
+  }
+
+  /**
+   * Animate the bar from its current position to 100%, paced so it arrives
+   * roughly when the log queue finishes draining.
+   * showActions() is called only after the bar reaches 100% AND queue is empty.
+   */
+  function tickToFull(doneLabel, successFn) {
+    var current   = parseFloat(barFill ? barFill.style.width : '0') || 0;
+    var queueTime = _queue.length * ITEM_DELAY + 400;
+    var duration  = Math.max(queueTime, 600);
+    var TICK_MS   = 40;
+    var steps     = Math.ceil(duration / TICK_MS);
+    var increment = (100 - current) / steps;
+    var tick      = 0;
+
+    function step() {
+      tick++;
+      var pct = Math.min(current + increment * tick, 100);
+      if (barFill)  barFill.style.width  = pct.toFixed(1) + '%';
+      if (barLabel) barLabel.textContent = Math.round(pct) + '%';
+
+      if (pct < 100) { setTimeout(step, TICK_MS); return; }
+
+      if (phaseLabel) phaseLabel.textContent = doneLabel;
+
+      (function waitForQueue() {
+        if (_queue.length > 0 || _draining) {
+          setTimeout(waitForQueue, ITEM_DELAY * 2);
+          return;
+        }
+        showActions(successFn(logEl.innerHTML.toLowerCase()));
+      }());
+    }
+
+    step();
   }
 
   // ── Animated log queue ────────────────────────────────────────────────────

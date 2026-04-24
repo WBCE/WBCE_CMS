@@ -419,9 +419,9 @@ log_ok('Users table updated');
 
 // ── Core modules — install or upgrade ────────────────────────────────────────
 $coreModules = [
-    // CodeMirror_Config: only install if setting not yet present
-    'captcha_control'          => ['upgrade'],
-    'errorlogger'              => ['install'],
+    //$mod                     => $cfg[0] or $tableKey,          $install,  $upgrade
+    'captcha_control'          => ['upgrade'], 
+    'errorlogger'              => ['install'], 
     'droplets'                 => ['mod_droplets',               'install', 'upgrade'],
     'menu_link'                => ['mod_menu_link',              'install', 'upgrade'],
     'miniform'                 => ['mod_miniform',               'install', 'upgrade'],
@@ -437,7 +437,7 @@ foreach ($coreModules as $mod => $cfg) {
 
     // Determine install vs upgrade
     if (count($cfg) === 1) {
-        $script = $cfg[0]; // always 'install'
+        $script = $cfg[0]; // not a table col but an action (upgrade|install)
     } else {
         [$tableKey, $install, $upgrade] = $cfg;
         $script = in_array($tableKey, $all_tables) ? $upgrade : $install;
@@ -576,15 +576,15 @@ log_sep('Reloading add-ons');
 
 require_once WB_PATH . '/framework/AddonService.php';
 
-$database->query("TRUNCATE `{TP}addons`");
+$database->query("TRUNCATE `{TP}addons`"); // get rid of the entire table content
 
-$svc = new AddonService();
+$addonService = new AddonService();
 $modOk = $tplOk = $langOk = 0;
 
 // ── Modules ──────────────────────────────────────────────────────────────────
 foreach (glob(WB_PATH . '/modules/*/') ?: [] as $dir) {
     if (!file_exists($dir . 'info.php')) continue;
-    foreach ($svc->dbRegister($dir, 'module') as $r) {
+    foreach ($addonService->dbRegister($dir, 'module') as $r) {
         $msg = isset($SIGNAL[$r['signal']])
             ? sprintf($SIGNAL[$r['signal']], 'module', $r['label'])
             : $r['label'];
@@ -596,12 +596,12 @@ foreach (glob(WB_PATH . '/modules/*/') ?: [] as $dir) {
     }
     flush();
 }
-log_ok(($MENU['MODULES'] ?? 'Modules') . ": $modOk reloaded");
+log_ok($MENU['MODULES'] . ": $modOk reloaded");
 
 // ── Templates ─────────────────────────────────────────────────────────────────
 foreach (glob(WB_PATH . '/templates/*/') ?: [] as $dir) {
     if (!file_exists($dir . 'info.php')) continue;
-    foreach ($svc->dbRegister($dir, 'template') as $r) {
+    foreach ($addonService->dbRegister($dir, 'template') as $r) {
         $msg = isset($SIGNAL[$r['signal']])
             ? sprintf($SIGNAL[$r['signal']], 'template', $r['label'])
             : $r['label'];
@@ -613,11 +613,11 @@ foreach (glob(WB_PATH . '/templates/*/') ?: [] as $dir) {
     }
     flush();
 }
-log_ok(($MENU['TEMPLATES'] ?? 'Templates') . ": $tplOk reloaded");
+log_ok($MENU['TEMPLATES'] . ": $tplOk reloaded");
 
 // ── Languages ─────────────────────────────────────────────────────────────────
 foreach (glob(WB_PATH . '/languages/??.php') ?: [] as $file) {
-    foreach ($svc->dbRegister($file, 'language') as $r) {
+    foreach ($addonService->dbRegister($file, 'language') as $r) {
         $msg = isset($SIGNAL[$r['signal']])
             ? sprintf($SIGNAL[$r['signal']], 'language', $r['label'])
             : $r['label'];
@@ -629,7 +629,7 @@ foreach (glob(WB_PATH . '/languages/??.php') ?: [] as $file) {
     }
     flush();
 }
-log_ok(($MENU['LANGUAGES'] ?? 'Languages') . ": $langOk reloaded");
+log_ok($MENU['LANGUAGES'] . ": $langOk reloaded");
 
 // ── Set new version ───────────────────────────────────────────────────────────
 if (defined('NEW_WBCE_VERSION')) {
@@ -642,7 +642,7 @@ if (defined('NEW_WBCE_VERSION')) {
 }
 
 Settings::set('app_name', 'phpsessid-' . rand(1000, 9999));
-$database->query("TRUNCATE `{TP}dbsessions`");
+$database->query("TRUNCATE `{TP}dbsessions`"); // will be instantiated anew all by itself
 Settings::exportSnapshot(true);
 log_ok('Settings snapshot written');
 

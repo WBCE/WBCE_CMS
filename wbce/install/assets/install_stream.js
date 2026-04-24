@@ -8,6 +8,7 @@
  * @copyright  2026 WBCE CMS Project
  * @license    GNU/GPL 2  https://www.gnu.org/licenses/gpl-2.0.html
  */
+
 (function () {
   'use strict';
 
@@ -181,29 +182,65 @@
     if (buffer.trim()) appendRaw(buffer);
     buffer = '';
 
-    setProgress(100, I18N.phaseDone || 'Complete');
-
-    // Wait for the animation queue to finish before showing actions
-    function waitForQueue() {
-      if (_queue.length > 0 || _draining) {
-        setTimeout(waitForQueue, ITEM_DELAY * 2);
-        return;
-      }
-      // Check if install succeeded
-      var logHtml = logEl.innerHTML.toLowerCase();
+    // Tick bar smoothly to 100% over the remaining queue drain time,
+    // then show actions only after both bar and queue are finished.
+    tickToFull(I18N.phaseDone || 'Complete', function (logHtml) {
       var success  = logHtml.includes('installation complete') || logHtml.includes('━━━');
       var hasFatal = logHtml.includes('class="err"') || logHtml.includes('class="log-err"');
-      showActions(success && !hasFatal);
-    }
-    waitForQueue();
+      return success && !hasFatal;
+    });
   }
 
   // ── Progress bar ────────────────────────────────────────────────────────────
 
   function setProgress(pct, label) {
     barFill.style.width  = pct + '%';
-    barLabel.textContent = pct + '%';
+    barLabel.textContent = Math.round(pct) + '%';
     if (label) phaseLabel.textContent = label;
+  }
+
+  /**
+   * Animate the progress bar from its current position to 100%, paced to
+   * roughly match the remaining queue drain time.  Calls showActions() only
+   * after the bar reaches 100% AND the animation queue is empty.
+   *
+   * @param {string}   doneLabel  Label shown when bar hits 100%
+   * @param {function} successFn  fn(logHtml) → bool — determines success state
+   */
+  function tickToFull(doneLabel, successFn) {
+    var current   = parseFloat(barFill.style.width) || 0;
+    // Estimate how long the queue will take; add 400ms buffer for final items
+    var queueTime = _queue.length * ITEM_DELAY + 400;
+    var duration  = Math.max(queueTime, 600);  // at least 600ms tick
+    var TICK_MS   = 40;
+    var steps     = Math.ceil(duration / TICK_MS);
+    var increment = (100 - current) / steps;
+    var tick      = 0;
+
+    function step() {
+      tick++;
+      var pct = Math.min(current + increment * tick, 100);
+      barFill.style.width  = pct.toFixed(1) + '%';
+      barLabel.textContent = Math.round(pct) + '%';
+
+      if (pct < 100) {
+        setTimeout(step, TICK_MS);
+        return;
+      }
+
+      // Bar reached 100% — show label, then wait for queue
+      if (phaseLabel) phaseLabel.textContent = doneLabel;
+
+      (function waitForQueue() {
+        if (_queue.length > 0 || _draining) {
+          setTimeout(waitForQueue, ITEM_DELAY * 2);
+          return;
+        }
+        showActions(successFn(logEl.innerHTML.toLowerCase()));
+      }());
+    }
+
+    step();
   }
 
   // ── Success / failure actions ────────────────────────────────────────────────
