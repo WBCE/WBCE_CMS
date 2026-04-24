@@ -19,7 +19,8 @@
 /*
  *      CHANGELOG
  *
- *		1.0.8	2023-02-25		- update description (florian)
+ *      1.0.9   2026-04-24	- set $core var, remove deprecated $module_level var
+ *	1.0.8	2023-02-25	- update description (florian)
  *      1.0.7   2019-07-05      - by default enable filter on searchresults
  *      1.0.6   2019-04-22      - include opf functions in upgrade script
  *      1.0.5   2019-03-26      - update requirements
@@ -41,13 +42,12 @@ if(!defined('WB_PATH')) {
 }
 /* -------------------------------------------------------- */
 
-
+$core = true;
 $module_directory       = 'mod_opf_insert';
 $module_name            = 'OPF Insert';
 $module_function        = 'opffilter';
-$module_version         = '1.0.8';
+$module_version         = '1.0.9';
 $module_platform        = 'WBCE 1.4.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';
 $module_description     = 'fill out placeholders for Javascript, CSS, Metas and Title';
-$module_level           = 'core';

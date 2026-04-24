@@ -7,20 +7,21 @@
  * @license         WTFPL
  */
 
-$module_directory = 'SecureFormSwitcher';
-$module_name = 'More Security Settings';
-$module_function = 'tool';
-$module_version = '1.3.4';
-$module_platform = '1.1.0';
-$module_author = 'Complete rewrite of Secure Form Switcher by  Norbert Heimsath(heimsath.org)';
-$module_license = 'GPLv2 or any later';
+$core = true;
+$module_directory   = 'SecureFormSwitcher';
+$module_name        = 'More Security Settings';
+$module_function    = 'tool';
+$module_version     = '1.3.5';
+$module_platform    = '1.1.0';
+$module_author      = 'Complete rewrite of Secure Form Switcher by  Norbert Heimsath(heimsath.org)';
+$module_license     = 'GPLv2 or any later';
 $module_description = 'This tool provides some additional security settings';
-$module_icon = 'fa fa-lock';
-$module_level = 'core';
+$module_icon        = 'fa fa-lock';
 
 /**
  * Version history
- *
+ * 1.3.5 - set $core var, remove deprecated $module_level var
+ * 
  * 1.3.4 - use Settings::set("wb_secform_secret", bin2hex(random_bytes(12)));
  *             to avoid having a known secret token in use on live installations
  *         adopt new PSR-4 method names of class Settings
