@@ -1,13 +1,11 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 --
--- Daten für Tabelle `groups`
---
-INSERT INTO `{TABLE_PREFIX}groups` (`group_id`, `name`, `system_permissions`, `module_permissions`, `template_permissions`) VALUES
+-- `groups`
+INSERT INTO `{TP}groups` (`group_id`, `name`, `system_permissions`, `module_permissions`, `template_permissions`) VALUES
 (1, 'Administrators', 'pages,pages_view,pages_add,pages_add_l0,pages_settings,pages_modify,pages_intro,pages_delete,media,media_view,media_upload,media_rename,media_delete,media_create,addons,modules,modules_view,modules_install,modules_uninstall,templates,templates_view,templates_install,templates_uninstall,languages,languages_view,languages_install,languages_uninstall,settings,settings_basic,settings_advanced,access,users,users_view,users_add,users_modify,users_delete,groups,groups_view,groups_add,groups_modify,groups_delete,admintools', '', '');
 --
--- Daten für Tabelle `search`
---
-INSERT INTO `{TABLE_PREFIX}search` (`search_id`, `name`, `value`, `extra`) VALUES
+-- `search`
+INSERT INTO `{TP}search` (`search_id`, `name`, `value`, `extra`) VALUES
 (1, 'header', '<form name="search" action="[WB_URL]/search/index.php" method="get">\n<input type="hidden" name="referrer" value="[REFERRER_ID]" />\n<input type="hidden" name="search_path" value="[SEARCH_PATH]" />\n<input type="text" name="string" value="[SEARCH_STRING]" style="width: 200px;" />&nbsp;&nbsp;<input type="submit" value="[TEXT_SEARCH]" style="width: 100px;" /><br />\n<input type="radio" name="match" id="match_all" value="all"[ALL_CHECKED] /><label for="match_all">[TEXT_ALL_WORDS]</label>&nbsp;&nbsp;\n<input type="radio" name="match" id="match_any" value="any"[ANY_CHECKED] /><label for="match_any">[TEXT_ANY_WORDS]</label>&nbsp;&nbsp;\n<input type="radio" name="match" id="match_exact" value="exact"[EXACT_CHECKED] /><label for="match_exact">[TEXT_EXACT_MATCH]</label>\n\n</form>\n\n<hr />    ', ''),
 (2, 'footer', '', ''),
 (3, 'results_header', '[TEXT_RESULTS_FOR] ''<b>[SEARCH_STRING]</b>'':\n<dl>', ''),
@@ -24,9 +22,8 @@ INSERT INTO `{TABLE_PREFIX}search` (`search_id`, `name`, `value`, `extra`) VALUE
 (14, 'cfg_enable_flush', 'false', ''),
 (15, 'template', '', '');
 --
--- Daten für Tabelle `settings`
---
-INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
+-- `settings`
+INSERT INTO `{TP}settings` (`setting_id`, `name`, `value`) VALUES
 (1, 'website_description', ''),
 (2, 'website_keywords', ''),
 (3, 'website_header', ''),
@@ -70,6 +67,3 @@ INSERT INTO `{TABLE_PREFIX}settings` (`setting_id`, `name`, `value`) VALUES
 (41, 'wbmailer_smtp_port', ''),
 (42, 'fingerprint_with_ip_octets', '0'),
 (43, 'mediasettings', '');
-
-
-
