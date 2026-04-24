@@ -603,6 +603,29 @@ class Settings
         }
         return false;
     }
+    /**
+     * Check whether a constant originates from the file-based settings store.
+     *
+     * Returns true  — key exists in /var/wbce_file_based_settings.php.
+     * Returns false — key absent from file, or file unreadable, or
+     *                 constant was hardcoded elsewhere (e.g. config.php).
+     *
+     * Use this to distinguish "hardcoded" from "file-managed" before
+     * showing a toggle UI — a hardcoded constant should be locked/readonly.
+     *
+     * @param  string $key  Constant name, e.g. 'SQL_DEBUG'
+     * @return bool
+     */
+    public static function fileBasedSettingExists(string $key): bool
+    {
+       $file = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
+       if (!$file || !is_readable($file)) {
+           return false;
+       }
+
+       $settings = include $file;
+       return is_array($settings) && array_key_exists($key, $settings);
+    }
 
     /**
      * Magic static call to maintain full backward 

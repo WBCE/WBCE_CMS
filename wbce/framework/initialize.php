@@ -45,7 +45,7 @@ wbce_load_file_based_settings();
 defined('WB_DEBUG') or define('WB_DEBUG', false);
 
 // INITIALIZE AUTOLOADER
-require_once dirname(__FILE__) . "/class.autoload.php";
+require_once __DIR__ . "/class.autoload.php";
 
 // PREDB MODULES LOADED HERE
 foreach (wbce_get_init_files('predb') as $_predbFile) {
@@ -54,7 +54,6 @@ foreach (wbce_get_init_files('predb') as $_predbFile) {
 unset($_predbFile);
 
 // INITIALIZE DATABASE IF NOT ALREADY DONE (e.g. on install)
-$database = new Database();
 if (!isset($database) || !is_object($database)) {
     $database = new Database();
 }
@@ -69,13 +68,11 @@ defined('ADMIN_URL')       or define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY
 defined('ADMIN_PATH')      or define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 
 // Load Lang translation functions (L_(), Ln_()).
-// Must be loaded explicitly before WbAuto::AddDir('/framework/') 
+// Must be loaded explicitly before Autoloader
 require_once WB_PATH . '/framework/LangLoader.php';
-#require_once WB_PATH . '/framework/MessageBox.php'; // load before Wb, Admin
 
 // Load core functions before preinit files so we can use functions right away.
 require_once WB_PATH . '/framework/functions.php';
-
 
 // MODULES preinit.php
 foreach (wbce_get_init_files('preinit') as $_preinitFile) {
@@ -116,10 +113,10 @@ define('WB_OCTAL_DIR_MODE',  (int)octdec(STRING_DIR_MODE));
 date_default_timezone_set('UTC');
 
 
-// SESSION
-// Initialize Custom Session Handler that stores sessions to the database.
+// SESSION 
+// Initialize Custom Session Handler 
+// that stores sessions in the database.
 $_dbSessionHandler = new DbSession();
-
 // Initialize special Session handling and Start session.
 WSession::Start();
 
@@ -196,8 +193,12 @@ wbce_template_switcher();
 Settings::exportSnapshot();
 
 
-// ───── HELPER FUNCTIONS ─────────────────────────────────────────────────────────────────
+// ────────────────────────── END OF INITIALIZATION ────────────────────────────────
+
+
+// ───────────────────────────── HELPER FUNCTIONS ──────────────────────────────────
 /**
+ * SanitizeHttpReferer
  * Sanitize and validate the HTTP_REFERER to ensure it originates from our own site.
  *
  * This function maintains backward compatibility by overwriting $_SERVER['HTTP_REFERER']
@@ -261,6 +262,7 @@ function SanitizeHttpReferer(): string
 
 
 /**
+ * wbce_setup_error_reporting
  * Setup PHP error reporting according to WBCE configuration.
  *
  * Priority:
@@ -303,6 +305,7 @@ function wbce_setup_error_reporting(): void
 }
 
 /**
+ * wbce_detect_protocol
  * Detect the current protocol (http or https) as reliably as possible.
  * Takes into account reverse proxies, load balancers and various server configurations.
  *
@@ -335,6 +338,7 @@ function wbce_detect_protocol(): string
 }
 
 /**
+ * wbce_template_switcher
  * Handle template preview / template switcher functionality.
  *
  * Allows switching the active template via ?template=xxx in the URL for development
@@ -375,6 +379,7 @@ function wbce_template_switcher(): void
 }
 
 /**
+ * wbce_check_php_version
  * Check minimum PHP version requirement and exit with clear message if not met.
  */
 function wbce_check_php_version(string $minimumVersion = '8.1.0'): void
@@ -404,7 +409,7 @@ function wbce_check_php_version(string $minimumVersion = '8.1.0'): void
     }
 }
 /**
- * Validate ADMIN_DIRECTORY constant.
+ * validate_admin_directory_constant
  * Assumes that ADMIN_DIRECTORY has already been defined.
  */
 function validate_admin_directory_constant(): void
@@ -419,6 +424,7 @@ function validate_admin_directory_constant(): void
 }
 
 /**
+ * wbce_get_init_files
  * Returns paths of module init files for the given function type.
  *
  * Supports three types with different discovery mechanisms:
@@ -469,6 +475,7 @@ function wbce_get_init_files(string $functionType): array
 }
 
 /** 
+ * wbce_load_file_based_settings
  * Load file-based settings and define them as constants.
  * Called very early during initialization — before autoloader and DB
  * to have a way to read/write certain settings before the Database is loaded. 
