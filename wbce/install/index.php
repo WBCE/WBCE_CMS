@@ -48,9 +48,6 @@ if (!file_exists($enFile) || !is_file($enFile) || !is_readable($enFile)) {
     die('Critical Error: Base language file (EN) not found!');
 }
 include $enFile;
-// Save English versions as fallback
-$baseTXT = $TXT ?? [];
-$baseMSG = $MSG ?? [];
 // 2. Load requested language if different from default
 if (isset($_GET['lang']) && is_string($_GET['lang'])) {
     $langCode = strtoupper(trim($_GET['lang']));
@@ -63,10 +60,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
         }
     }
 }
-// 3. Merge arrays - fill missing keys from English
-$TXT = array_merge($baseTXT, $TXT ?? []);
-$MSG = array_merge($baseMSG, $MSG ?? []);
-// 4. Make variables available globally
+// 3. Make variables available globally
 $languages = getAvailableLanguages();
 
 /*****************************

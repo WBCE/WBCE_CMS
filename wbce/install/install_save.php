@@ -479,10 +479,12 @@ if (!isset($GLOBALS['admin'])) {
     };
 }
 
-$svc = new AddonService();
 $_currentType = $TXT['module'];
-$svc = new AddonService();
-$svc->setProgress(function (array $r) use (&$_fatal, &$_currentType): void {
+if (!class_exists('AddonService')) {
+    require_once __DIR__ . '/framework/AddonService.php';
+}
+$addonService = new AddonService();
+$addonService->setProgress(function (array $r) use (&$_fatal, &$_currentType): void {
     global $SIGNAL;
     $label = $r['label'];
     $msg   = isset($SIGNAL[$r['signal']])
@@ -524,8 +526,8 @@ $_currentType = $TXT['module'].':';
 foreach ($moduleDirs as $dir) {
     if (!file_exists($dir . 'info.php')) continue; // skip dirs without info.php
     $mod     = basename($dir);
-    $signals = $svc->installFromDisk($mod, 'module');
-    if ($svc->hasError()) { $modWarn++; }
+    $signals = $addonService->installFromDisk($mod, 'module');
+    if ($addonService->hasError()) { $modWarn++; }
     else                  { $modOk++;   }
 }
 log_info($MENU['MODULES'].':'. $modOk . ($modWarn ? ", $modWarn warning(s)" : ''));
@@ -537,8 +539,8 @@ $tplOk = 0;
 $_currentType = $TXT['template'].':';
 foreach (glob(WB_PATH . '/templates/*/') ?: [] as $dir) {
     if (!file_exists($dir . 'info.php')) continue; // skip non-installable dirs (systemplates, theme_fallbacks etc.)
-    $signals = $svc->installFromDisk(basename($dir), 'template');
-    if (!$svc->hasError()) $tplOk++;
+    $signals = $addonService->installFromDisk(basename($dir), 'template');
+    if (!$addonService->hasError()) $tplOk++;
 }
 log_info($MENU['TEMPLATES'].':'. $tplOk);
 
@@ -548,8 +550,8 @@ log_sep($MENU['LANGUAGES']);
 $langOk = 0;
 $_currentType = $TXT['language'].':';
 foreach (glob(WB_PATH . '/languages/??.php') ?: [] as $file) {
-    $signals = $svc->installFromDisk(basename($file, '.php'), 'language');
-    if (!$svc->hasError()) $langOk++;
+    $signals = $addonService->installFromDisk(basename($file, '.php'), 'language');
+    if (!$addonService->hasError()) $langOk++;
 }
 log_info($MENU['LANGUAGES'].':'. $langOk);
 // =============================================================================
