@@ -707,3 +707,68 @@ $OVERVIEW['START'] = 'Backend-Einstiegsseite';
 $OVERVIEW['TEMPLATES'] = 'Templates verwalten...';
 $OVERVIEW['USERS'] = 'Verwaltung von Benutzern, die sich anmelden dürfen...';
 $OVERVIEW['VIEW'] = 'Ansicht Ihrer Website in einem neuen Fenster...';
+
+// Die folgenden Zeichenketten wurden in WBCE 1.7.0 eingeführt, um
+// maschinenlesbare Signale in menschenlesbare Texte zu übersetzen
+//
+// class AddonManager Signal-Strings
+// ── Addon Lebenszyklus-Signale
+$SIGNAL['ADDON_DETECTED']        = '%s %s erkannt.';
+$SIGNAL['ADDON_STAGED']          = '%s %s wurde hochgeladen — bereit zur Installation.';
+$SIGNAL['ADDON_UNSTAGED']        = '%s %s wurde deinstalliert und in den Staging-Bereich verschoben.';
+$SIGNAL['ADDON_DELETED']         = '%s %s wurde dauerhaft gelöscht.';
+$SIGNAL['ADDON_DELETE_ERROR']    = '%s %s konnte nicht dauerhaft gelöscht werden — Berechtigungen prüfen.';
+$SIGNAL['ADDON_ACTIVATED']       = '%s %s wurde aktiviert.';
+$SIGNAL['ADDON_DEACTIVATED']     = '%s %s wurde deaktiviert.';
+// ── ZIP / Entpacken
+$SIGNAL['ADDON_EXTRACT_OK']      = 'Archiv für %s "%s" erfolgreich entpackt.';
+$SIGNAL['ADDON_EXTRACT_ERROR']   = 'Entpacken von %s "%s" fehlgeschlagen.';
+// ── Remote-Abruf
+$SIGNAL['ADDON_FETCH_OK']        = '%s "%s" wurde erfolgreich heruntergeladen.';
+$SIGNAL['ADDON_FETCH_ERROR']     = 'Download von %s "%s" fehlgeschlagen.';
+// ── Vorprüfung
+$SIGNAL['ADDON_PRECHECK_OK']     = '%s "%s": Voraussetzung erfüllt.';
+$SIGNAL['ADDON_PRECHECK_FAILED'] = '%s "%s": Voraussetzung nicht erfüllt — Installation abgebrochen.';
+// ── Datenbank
+$SIGNAL['ADDON_INSERTED_OK']     = '%s "%s" wurde erfolgreich installiert.';
+$SIGNAL['ADDON_UPDATED_OK']      = '%s "%s" wurde erfolgreich aktualisiert.';
+$SIGNAL['ADDON_DB_ERROR']        = '%s "%s": Datenbankfehler aufgetreten.';
+// ── Skripte
+$SIGNAL['ADDON_SCRIPT_OK']       = '%s "%s": Skript erfolgreich ausgeführt.';
+$SIGNAL['ADDON_SCRIPT_NOT_FOUND']= '%s "%s": kein Skript gefunden (übersprungen).';
+$SIGNAL['ADDON_SCRIPT_ERROR']    = '%s "%s": Skript meldete einen Fehler.';
+// ── Dateientfernung
+$SIGNAL['ADDON_REMOVED_OK']      = '%s "%s" wurde vom Datenträger entfernt.';
+$SIGNAL['ADDON_REMOVE_ERROR']    = '%s "%s" konnte nicht vom Datenträger entfernt werden — Berechtigungen prüfen.';
+// ── Neu laden
+$SIGNAL['ADDON_RELOAD_OK']       = '%s "%s": erfolgreich vom Datenträger neu geladen.';
+// ── Schutzprüfungen
+$SIGNAL['ADDON_IN_USE']          = '%s "%s" kann nicht deinstalliert werden — wird noch aktiv verwendet.';
+$SIGNAL['ADDON_IS_CORE']         = '%s "%s" kann nicht deinstalliert werden — ist eine Kernkomponente.';
+$SIGNAL['ADDON_IS_DEFAULT']      = '%s "%s" kann nicht deinstalliert werden — ist aktuell der Standard.';
+$SIGNAL['ADDON_NOT_WRITABLE']    = 'In %s "%s" kann nicht geschrieben werden — Ordnerberechtigungen prüfen.';
+// ── Versionsprüfung
+$SIGNAL['ADDON_ALREADY_CURRENT'] = '%s "%s" ist bereits auf dem aktuellen Stand.';
+$SIGNAL['ADDON_UPDATE_AVAILABLE']= 'Ein Update ist verfügbar für %s "%s".';
+$SIGNAL['ADDON_UP_TO_DATE']      = '%s "%s" ist auf dem neuesten Stand.';
+// ── Pfad / Info
+$SIGNAL['ADDON_PATH_NOT_FOUND']  = '%s "%s" wurde nicht gefunden.';
+$SIGNAL['ADDON_INFO_INVALID']    = '%s "%s": info.php fehlt oder ist ungültig.';
+// ── Upload-Fehler
+$SIGNAL['ADDON_UPLOAD_ERROR']    = 'Upload-Fehler für "%s": siehe Details unten.';
+$SIGNAL['UPLOAD_ERR_INI_SIZE']   = 'Upload-Fehler: "%s" überschreitet das Serverlimit.';
+$SIGNAL['UPLOAD_ERR_FORM_SIZE']  = 'Upload-Fehler: "%s" überschreitet das Formularlimit.';
+$SIGNAL['UPLOAD_ERR_PARTIAL']    = 'Upload-Fehler: "%s" wurde nur teilweise hochgeladen.';
+$SIGNAL['UPLOAD_ERR_NO_FILE']    = 'Upload-Fehler: keine Datei ausgewählt.';
+$SIGNAL['UPLOAD_ERR_NO_TMP_DIR'] = 'Upload-Fehler: temporärer Ordner fehlt auf dem Server.';
+$SIGNAL['UPLOAD_ERR_CANT_WRITE'] = 'Upload-Fehler: "%s" konnte nicht gespeichert werden.';
+$SIGNAL['UPLOAD_ERR_EXTENSION']  = 'Upload-Fehler: eine PHP-Erweiterung hat den Upload von "%s" gestoppt.';
+$SIGNAL['UPLOAD_ERR_UNKNOWN']    = 'Upload-Fehler: unbekannter Fehler bei "%s".';
+
+// pathRemove() Signal-Strings
+$SIGNAL['RM_DIR_OK']                 = 'Verzeichnis `%s` und alle Inhalte wurden erfolgreich entfernt.';
+$SIGNAL['RM_FILE_OK']                = 'Datei `%s` wurde erfolgreich entfernt.';
+$SIGNAL['RM_PATH_NOT_FOUND']         = 'Der Pfad `%s` existiert nicht.';
+$SIGNAL['RM_PATH_NOT_READABLE']      = 'Das Verzeichnis `%s` existiert, ist aber nicht lesbar.';
+$SIGNAL['RM_PATH_COULD_NOT_REMOVE']  = '`%s` konnte nicht entfernt werden (Berechtigung, gesperrt oder anderer Fehler).';
+$SIGNAL['RM_PATH_PERMISSION_DENIED'] = 'Zugriff auf `%s` verweigert.';

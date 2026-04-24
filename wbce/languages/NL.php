@@ -704,3 +704,68 @@ $OVERVIEW['START'] = 'Websitebeheer';
 $OVERVIEW['TEMPLATES'] = 'Beheren van de templates die u kunt toepassen.';
 $OVERVIEW['USERS'] = 'Beheren van de gebruikers van uw website.';
 $OVERVIEW['VIEW'] = 'Bekijk uw website zoals deze voor bezoekers te zien is (in een afzonderlijk venster).';
+
+// De onderstaande strings zijn geïntroduceerd in WBCE 1.7.0 om
+// machineleesbare signalen om te zetten naar leesbare meldingen
+//
+// class AddonManager signal strings
+// ── Levenscyclus
+$SIGNAL['ADDON_DETECTED']        = '%s "%s" gedetecteerd.';
+$SIGNAL['ADDON_STAGED']          = '%s "%s" is geüpload — klaar om te installeren.';
+$SIGNAL['ADDON_UNSTAGED']        = '%s "%s" is gedeïnstalleerd en naar de stagingmap verplaatst.';
+$SIGNAL['ADDON_DELETED']         = '%s "%s" is permanent verwijderd.';
+$SIGNAL['ADDON_DELETE_ERROR']    = '%s "%s" kon niet permanent worden verwijderd — controleer rechten.';
+$SIGNAL['ADDON_ACTIVATED']       = '%s "%s" is geactiveerd.';
+$SIGNAL['ADDON_DEACTIVATED']     = '%s "%s" is gedeactiveerd.';
+// ── ZIP / Uitpakken
+$SIGNAL['ADDON_EXTRACT_OK']      = 'Archief van %s "%s" succesvol uitgepakt.';
+$SIGNAL['ADDON_EXTRACT_ERROR']   = 'Uitpakken van %s "%s" mislukt.';
+// ── Download
+$SIGNAL['ADDON_FETCH_OK']        = '%s "%s" succesvol gedownload.';
+$SIGNAL['ADDON_FETCH_ERROR']     = 'Download van %s "%s" mislukt.';
+// ── Controle vooraf
+$SIGNAL['ADDON_PRECHECK_OK']     = '%s "%s": vereiste voldaan.';
+$SIGNAL['ADDON_PRECHECK_FAILED'] = '%s "%s": vereiste niet voldaan — installatie afgebroken.';
+// ── Database
+$SIGNAL['ADDON_INSERTED_OK']     = '%s "%s" succesvol geïnstalleerd.';
+$SIGNAL['ADDON_UPDATED_OK']      = '%s "%s" succesvol bijgewerkt.';
+$SIGNAL['ADDON_DB_ERROR']        = '%s "%s": databasefout opgetreden.';
+// ── Scripts
+$SIGNAL['ADDON_SCRIPT_OK']       = '%s "%s": script succesvol uitgevoerd.';
+$SIGNAL['ADDON_SCRIPT_NOT_FOUND']= '%s "%s": geen script gevonden (overgeslagen).';
+$SIGNAL['ADDON_SCRIPT_ERROR']    = '%s "%s": script gaf een foutmelding.';
+// ── Bestand verwijderen
+$SIGNAL['ADDON_REMOVED_OK']      = '%s "%s" van schijf verwijderd.';
+$SIGNAL['ADDON_REMOVE_ERROR']    = '%s "%s" kon niet van schijf worden verwijderd — controleer rechten.';
+// ── Herladen
+$SIGNAL['ADDON_RELOAD_OK']       = '%s "%s": succesvol opnieuw geladen vanaf schijf.';
+// ── Beveiliging
+$SIGNAL['ADDON_IN_USE']          = '%s "%s" kan niet worden gedeïnstalleerd — nog in gebruik.';
+$SIGNAL['ADDON_IS_CORE']         = '%s "%s" kan niet worden gedeïnstalleerd — kerncomponent.';
+$SIGNAL['ADDON_IS_DEFAULT']      = '%s "%s" kan niet worden gedeïnstalleerd — momenteel standaard.';
+$SIGNAL['ADDON_NOT_WRITABLE']    = 'Kan niet schrijven naar %s "%s" — controleer maprechten.';
+// ── Versiecontrole
+$SIGNAL['ADDON_ALREADY_CURRENT'] = '%s "%s" is al up-to-date.';
+$SIGNAL['ADDON_UPDATE_AVAILABLE']= 'Er is een update beschikbaar voor %s "%s".';
+$SIGNAL['ADDON_UP_TO_DATE']      = '%s "%s" is up-to-date.';
+// ── Pad / Info
+$SIGNAL['ADDON_PATH_NOT_FOUND']  = '%s "%s" niet gevonden.';
+$SIGNAL['ADDON_INFO_INVALID']    = '%s "%s": info.php ontbreekt of is ongeldig.';
+// ── Uploadfouten
+$SIGNAL['ADDON_UPLOAD_ERROR']    = 'Uploadfout voor "%s": zie details hieronder.';
+$SIGNAL['UPLOAD_ERR_INI_SIZE']   = 'Uploadfout: "%s" overschrijdt de serverlimiet.';
+$SIGNAL['UPLOAD_ERR_FORM_SIZE']  = 'Uploadfout: "%s" overschrijdt de formulierlimiet.';
+$SIGNAL['UPLOAD_ERR_PARTIAL']    = 'Uploadfout: "%s" is slechts gedeeltelijk geüpload.';
+$SIGNAL['UPLOAD_ERR_NO_FILE']    = 'Uploadfout: geen bestand geselecteerd.';
+$SIGNAL['UPLOAD_ERR_NO_TMP_DIR'] = 'Uploadfout: tijdelijke map ontbreekt op de server.';
+$SIGNAL['UPLOAD_ERR_CANT_WRITE'] = 'Uploadfout: "%s" kon niet naar schijf worden geschreven.';
+$SIGNAL['UPLOAD_ERR_EXTENSION']  = 'Uploadfout: een PHP-extensie heeft de upload van "%s" gestopt.';
+$SIGNAL['UPLOAD_ERR_UNKNOWN']    = 'Uploadfout: onbekende fout bij "%s".';
+
+// pathRemove() signal strings
+$SIGNAL['RM_DIR_OK']                 = 'Map `%s` en alle inhoud succesvol verwijderd.';
+$SIGNAL['RM_FILE_OK']                = 'Bestand `%s` succesvol verwijderd.';
+$SIGNAL['RM_PATH_NOT_FOUND']         = 'Pad `%s` bestaat niet.';
+$SIGNAL['RM_PATH_NOT_READABLE']      = 'Map `%s` bestaat maar is niet leesbaar.';
+$SIGNAL['RM_PATH_COULD_NOT_REMOVE']  = '`%s` kon niet worden verwijderd (rechten, vergrendeld of andere fout).';
+$SIGNAL['RM_PATH_PERMISSION_DENIED'] = 'Toegang geweigerd bij `%s`.';
