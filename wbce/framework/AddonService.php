@@ -816,6 +816,9 @@ class AddonService
         // Both `global $database` and direct `$database` usage supported
         $GLOBALS['database'] = $this->db;
         $database            = $this->db;
+        $admin               = $GLOBALS['admin'];
+        $TEXT                = $GLOBALS['TEXT'];
+        $MESSAGE             = $GLOBALS['MESSAGE'];
 
         $this->startCapture();
         ob_start();
