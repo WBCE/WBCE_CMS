@@ -49,25 +49,6 @@ if ($langCode !== 'EN') {
     if (is_readable($filePath)) include $filePath;
 }
 
-// ── Schema helpers ────────────────────────────────────────────────────────────
-
-function db_add_field(string $field, string $table, string $desc): void
-{
-    global $database, $TXT;
-    $fullTable = TABLE_PREFIX . $table;
-    $exists    = $database->fetchValue("SHOW COLUMNS FROM `$fullTable` LIKE ?", [$field]);
-    if ($exists) {
-        log_info(sprintf($TXT['db_field_already_in_table'] ?? '`%s`.`%s` already exists — skipped', $fullTable, $field));
-        return;
-    }
-    $database->query("ALTER TABLE `$fullTable` ADD `$field` $desc");
-    if ($database->hasError()) {
-        log_warn(sprintf($TXT['db_field_table_error'] ?? 'Field `%s` in `%s`: ', $field, $table) . $database->getError());
-    } else {
-        log_ok(sprintf($TXT['db_field_added_to_table'] ?? 'Field `%s` added to `%s`', $field, $table));
-    }
-}
-
 function check_wb_tables(): array
 {
     global $database, $table_list;
@@ -80,7 +61,6 @@ function check_wb_tables(): array
     }
     return $found;
 }
-
 // ── Decide which phase to show ────────────────────────────────────────────────
 
 $confirmed = isset($_POST['backup_confirmed']) && $_POST['backup_confirmed'] === 'confirmed';
@@ -395,14 +375,65 @@ Settings::delete('secure_form_module');
 log_ok('Settings updated');
 
 // DB field additions
-db_add_field('redirect_type',      'mod_menu_link', "INT NOT NULL DEFAULT '302' AFTER `target_page_id`");
-db_add_field('namesection',        'sections',      "VARCHAR(255) NULL");
-db_add_field('visibility_backup',  'pages',         "VARCHAR(255) NOT NULL DEFAULT '' AFTER `visibility`");
-db_add_field('signup_checksum',    'users',         "varchar(64) NOT NULL DEFAULT ''");
-db_add_field('signup_timestamp',   'users',         "int(11) NOT NULL DEFAULT '0'");
-db_add_field('signup_timeout',     'users',         "int(11) NOT NULL DEFAULT '0'");
-db_add_field('signup_confirmcode', 'users',         "varchar(64) NOT NULL DEFAULT ''");
-log_ok('DB fields checked / added');
+$newDbFields = [
+    // table                 field                  definition
+    ['{TP}pages',            'visibility_backup',   "VARCHAR(255) NOT NULL DEFAULT '' AFTER `visibility`"],
+    ['{TP}mod_menu_link',    'redirect_type',      "INT           NOT NULL DEFAULT '302' AFTER `target_page_id`"],
+    ['{TP}sections',         'namesection',         "VARCHAR(255) NULL"],
+    ['{TP}users',            'signup_checksum',     "varchar(64)  NOT NULL DEFAULT ''"],
+    ['{TP}users',            'signup_timestamp',    "int(11)      NOT NULL DEFAULT '0'"],
+    ['{TP}users',            'signup_timeout',      "int(11)      NOT NULL DEFAULT '0'"],
+    ['{TP}users',            'signup_confirmcode',  "varchar(64)  NOT NULL DEFAULT ''"],
+    // new cols since 1.7.0
+    ['{TP}addons',           'core',                "TINYINT(1)   NOT NULL DEFAULT 0"],
+    ['{TP}addons',           'updated_when',        "INT(11)      NOT NULL DEFAULT 0"],
+    ['{TP}addons',           'updated_by',          "INT(11)      NOT NULL DEFAULT 0"],
+];
+// DB field additions — uses Database::fieldExists() / addField()
+$fldNum = $fldAdd = $fldErr = 0;
+foreach ($newDbFields as [$table, $field, $def]) {
+    $fldNum++;
+    if ($database->fieldExists($table, $field)) {
+        log_info("`$table`.`$field` already exists — skipped");
+        continue;
+    }
+    $database->addField($table, $field, $def);
+    if ($database->hasError()) {
+        log_warn("`$field` in `$table`: " . $database->getError());
+        $fldErr++;
+    } else {
+        log_ok("`$field` added to `$table`");
+        $fldAdd++;
+    }
+}
+// `{TP}pages`.`slug` — separate from $newDbFields because it needs its own index
+if (!$database->fieldExists('{TP}pages', 'slug')) {
+    $database->addField('{TP}pages', 'slug', "VARCHAR(255) NOT NULL DEFAULT '' AFTER `link`");
+    // addField() strips AFTER automatically for SQLite
+    if ($database->hasError()) {
+        log_warn('`slug` in `{TP}pages`: ' . $database->getError());
+    } else {
+        log_ok('`slug` added to `{TP}pages`');
+        // Unique index — idempotent on MySQL 8+, MariaDB 10.1.4+, SQLite
+        $database->query("CREATE UNIQUE INDEX IF NOT EXISTS `uniq_slug` ON `{TP}pages` (`slug`)");
+        if ($database->hasError()) {
+            log_warn('Index `uniq_slug` on `{TP}pages`: ' . $database->getError());
+        } 
+    }
+} else {
+    log_info('`{TP}pages`.`slug` already exists — skipped');
+}
+
+
+
+$dbFieldsLog = "{$fldNum} DB fields checked";
+if($fldAdd > 0){
+    $dbFieldsLog .= ", {$fldAdd} fields added";    
+}
+if($fldErr > 0){
+    $dbFieldsLog .= ", {$fldErr} errors";    
+}
+log_ok($dbFieldsLog);
 
 // Users table fixes
 foreach ([

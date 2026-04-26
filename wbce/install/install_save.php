@@ -390,10 +390,10 @@ $settings = [
     'string_file_mode'      => $file_mode,
     'string_dir_mode'       => $dir_mode,
     'page_level_limit'      => 8,
-    'default_template'      => 'whiteboard',
+    'default_template'      => 'wbcezon',
     'page_trash'            => 'inline',
     'intro_page'            => false,
-    'redirect_timer'        => '1500',
+    'redirect_timer'        => '500',
     'sec_anchor'            => 'wb_',
     'wb_secform_secret'     => bin2hex(random_bytes(16)),
     'wb_secform_secrettime' => '86400',
@@ -550,9 +550,21 @@ log_sep($MENU['LANGUAGES']);
 $langOk = 0;
 $_currentType = $TXT['language'].':';
 foreach (glob(WB_PATH . '/languages/??.php') ?: [] as $file) {
-    $signals = $addonService->installFromDisk(basename($file, '.php'), 'language');
-    if (!$addonService->hasError()) $langOk++;
+    foreach ($addonService->dbRegister($file, 'language') as $r) {
+        $msg = isset($SIGNAL[$r['signal']])
+            ? sprintf($SIGNAL[$r['signal']], $_currentType, $r['label'])
+            : $r['label'];
+        if (in_array($r['signal'], ['ADDON_INSERTED_OK', 'ADDON_UPDATED_OK'], true)) {
+            log_ok($msg);
+            $langOk++;
+        } elseif ($r['signal'] !== 'ADDON_ALREADY_CURRENT') {
+            log_warn($msg);
+        }
+    }
+    flush();
 }
+
+
 log_info($MENU['LANGUAGES'].':'. $langOk);
 // =============================================================================
 // 8. FINALIZE
