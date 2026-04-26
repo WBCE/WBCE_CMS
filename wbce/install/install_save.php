@@ -502,7 +502,6 @@ $addonService->setProgress(function (array $r) use (&$_fatal, &$_currentType): v
 // 7A. MODULES
 log_sep($TXT['log_installing_modules']);
 
-// priority modules first
 $priorityModules = ['outputfilter_dashboard', 'droplets'];
 $moduleDirs      = glob(WB_PATH . '/modules/*/', GLOB_ONLYDIR) ?: [];
 
@@ -512,20 +511,18 @@ if ($missing) {
     goto install_failed;
 }
 
-usort($moduleDirs, function ($a, $b) use ($priorityModules) {
-    $pa = in_array(basename($a), $priorityModules, true);
-    $pb = in_array(basename($b), $priorityModules, true);
-    return $pa !== $pb ? ($pa ? -1 : 1) : strcasecmp(basename($a), basename($b));
-});
+$priorityDirs = array_map(fn($m) => WB_PATH . '/modules/' . $m . '/', $priorityModules);
+$otherDirs    = array_filter($moduleDirs, fn($d) => !in_array($d, $priorityDirs, true));
+$moduleDirs   = array_merge($priorityDirs, array_values($otherDirs));
 
 $modOk = $modWarn = 0;
 $_currentType = $TXT['module'].':';
 foreach ($moduleDirs as $dir) {
-    if (!file_exists($dir . 'info.php')) continue; // skip dirs without info.php
+    if (!file_exists($dir . 'info.php')) continue;
     $mod     = basename($dir);
     $signals = $addonService->installFromDisk($mod, 'module');
     if ($addonService->hasError()) { $modWarn++; }
-    else                  { $modOk++;   }
+    else                           { $modOk++;   }
 }
 log_info($MENU['MODULES'].':'. $modOk . ($modWarn ? ", $modWarn warning(s)" : ''));
 
