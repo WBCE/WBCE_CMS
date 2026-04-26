@@ -342,6 +342,8 @@ class WbAuto
         // 1. Priority explicit files — must be available before AddDir() sweep
         //    so that classname != filename cases resolve correctly.
         $explicitFiles = [
+            'Database'     => '/framework/Database.php',
+            'AddonService' => '/framework/AddonService.php',
             'MessageBox'   => '/framework/MessageBox.php',
             'SecureForm'   => '/framework/SecureForm.php',
             'Accounts'     => '/framework/Accounts.php',

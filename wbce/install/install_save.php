@@ -480,9 +480,6 @@ if (!isset($GLOBALS['admin'])) {
 }
 
 $_currentType = $TXT['module'];
-if (!class_exists('AddonService')) {
-    require_once __DIR__ . '/framework/AddonService.php';
-}
 $addonService = new AddonService();
 $addonService->setProgress(function (array $r) use (&$_fatal, &$_currentType): void {
     global $SIGNAL;
