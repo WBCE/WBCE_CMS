@@ -109,17 +109,18 @@
 # === DIRECTORIES TO REMOVE ===
 
 [ROOT]/log/
-[ACCOUNT]/email_templates/              // old email templates
+[ACCOUNT]/email_templates/                 // old email templates
 [ACCOUNT]/functions/
 [ACCOUNT]/languages/
 [ACCOUNT]/templates/
 [ADMIN]/images/
 [ADMIN]/pages/page_tree/icons/
 [ADMIN]/themes/
-[INCLUDE]/Doctrine/                     // no longer used
+[INCLUDE]/Doctrine/                        // no longer used
 [INCLUDE]/phpmailer/
 [INCLUDE]/Sensio/Twig/lib/
 [INCLUDE]/quickSkin_alpha/
+[INCLUDE]/idna_convert/                   // obsolete since 1.7.0 
 [MODULES]/ckeditor/ckeditor/filemanager/
 [MODULES]/ckeditor/ckeditor/plugins/wsc/
 [MODULES]/ckeditor/ckeditor/plugins/flash/
