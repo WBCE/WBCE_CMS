@@ -452,6 +452,7 @@ log_ok('Users table updated');
 $coreModules = [
     //$mod                     => $cfg[0] or $tableKey,          $install,  $upgrade
     'captcha_control'          => ['upgrade'], 
+    'wysiwyg'                  => ['upgrade'],                                         //add utf8mb4_unicode_ci support
     'errorlogger'              => ['install'], 
     'droplets'                 => ['mod_droplets',               'install', 'upgrade'],
     'menu_link'                => ['mod_menu_link',              'install', 'upgrade'],
