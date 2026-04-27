@@ -650,25 +650,43 @@ _JsCode;
     }
 
     /**
-     * @brief   Validate the supplied email address
+     * Validates the supplied email address.
      *
-     * @param string
-     * @return  string
+     * Handles internationalized domain names (IDN) by converting the domain
+     * part to its ASCII-compatible encoding (ACE/Punycode) before validation.
+     * Requires the intl extension for IDN support (idn_to_ascii).
+     * Falls back to raw domain validation if the extension is unavailable.
+     *
+     * @param  string $email The email address to validate.
+     * @return bool          Returns true if the email address is valid,
+     *                       false if empty or invalid.
+     *
+     * @see    https://www.php.net/manual/en/function.idn-to-ascii.php
+     * @see    https://www.php.net/manual/en/function.filter-var.php
      */
-    public function validate_email($email)
+    public function validate_email(string $email): bool
     {
-        if (function_exists('idn_to_ascii')) {
-            // use pear if available
-            $email = @idn_to_ascii($email);
-        } else {
-            require_once WB_PATH . '/include/idna_convert/idna_convert.class.php';
-            $IDN = new idna_convert();
-            $email = $IDN->encode($email);
-            unset($IDN);
-        }
-        // regex from NorHei 2011-01-11
-        $retval = preg_match("/^((([!#$%&'*+\\-\/\=?^_`{|}~\w])|([!#$%&'*+\\-\/\=?^_`{|}~\w][!#$%&'*+\\-\/\=?^_`{|}~\.\w]{0,}[!#$%&'*+\\-\/\=?^_`{|}~\w]))[@]\w+(([-.]|\-\-)\w+)*\.\w+(([-.]|\-\-)\w+)*)$/", $email);
-        return ($retval != false);
+       if (empty($email)) {
+           return false;
+       }
+
+       if (str_contains($email, '@')) {
+           [$local, $domain] = explode('@', $email, 2);
+
+           if (function_exists('idn_to_ascii')) {
+               $ascii = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+               // idn_to_ascii returns false on failure
+               if ($ascii !== false) {
+                   $domain = $ascii;
+               }
+           }
+           // If intl is unavailable, fall through with the raw domain.
+           // filter_var will still catch obviously malformed addresses.
+
+           $email = $local . '@' . $domain;
+       }
+
+       return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     /**
