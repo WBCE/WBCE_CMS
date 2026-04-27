@@ -408,7 +408,7 @@ foreach ($newDbFields as [$table, $field, $def]) {
 }
 // `{TP}pages`.`slug` — separate from $newDbFields because it needs its own index
 if (!$database->fieldExists('{TP}pages', 'slug')) {
-    $database->addField('{TP}pages', 'slug', "VARCHAR(255) NOT NULL DEFAULT '' AFTER `link`");
+    $database->addField('{TP}pages', 'slug', "VARCHAR(255) NULL DEFAULT NULL AFTER `link`");
     // addField() strips AFTER automatically for SQLite
     if ($database->hasError()) {
         log_warn('`slug` in `{TP}pages`: ' . $database->getError());

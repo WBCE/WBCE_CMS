@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `{TP}pages` (
   `root_parent`       INT(11)      NOT NULL DEFAULT '0',
   `level`             INT(11)      NOT NULL DEFAULT '0',
   `link`              TEXT         NOT NULL,
-  `slug`              VARCHAR(255) NOT NULL,
+  `slug`              VARCHAR(255)     NULL DEFAULT NULL,
   `target`            VARCHAR(7)   NOT NULL DEFAULT '',
   `page_title`        VARCHAR(255) NOT NULL DEFAULT '',
   `menu_title`        VARCHAR(255) NOT NULL DEFAULT '',
