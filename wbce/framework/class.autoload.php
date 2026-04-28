@@ -343,6 +343,7 @@ class WbAuto
         //    so that classname != filename cases resolve correctly.
         $explicitFiles = [
             'Database'     => '/framework/Database.php',
+            'Admin'        => '/framework/Admin.php',
             'AddonService' => '/framework/AddonService.php',
             'MessageBox'   => '/framework/MessageBox.php',
             'SecureForm'   => '/framework/SecureForm.php',
@@ -352,7 +353,6 @@ class WbAuto
             'SecureForm'   => '/framework/SecureForm.php',
             'I'            => '/framework/I.php',
             'Insert'       => '/framework/Insert.php',
-            'idna_convert' => '/include/idna_convert/idna_convert.class.php', // Registering class for idna conversion (needed for email-checks)
             'Template'     => '/include/phplib/template.inc', // legacy Template Engine used in WBCE BE Themes
         ];
 
