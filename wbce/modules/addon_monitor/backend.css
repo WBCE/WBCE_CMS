@@ -1,14 +1,339 @@
 /**
- * WebsiteBaker CMS AdminTool: addonMonitor
- *
- * This file imports necessary CSS files
- * 
- * 
- * @platform    CMS WebsiteBaker 2.8.x
- * @package     addonMonitor
- * @author      Christian M. Stefan (Stefek)
- * @copyright   Christian M. Stefan
- * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @file       backend.css
+ * @category   admintool
+ * @package    addon_monitor
+ * @author     Christian M. Stefan (https://www.wbeasy.de)
+ * @license    http://www.gnu.org/licenses/gpl.html
+ * @platform   WBCE CMS 1.7.0
  */
 
-@import url("css/am.css");
+/* ── Variables ────────────────────────────────────────────────────────────── */
+:root {
+  --am-radius:  6px;
+  --am-border:  #dde3ec;
+  --am-bg-head: #46505f;
+  --am-bright:  #f8fafc;
+  --am-text:    #374151;
+  --am-muted:   #6b7280;
+  --am-link:    #2563eb;
+
+  --badge-page:     #2585eb;
+  --badge-tool:     #a13838;
+  --badge-snippet:  #e69d49;
+  --badge-wysiwyg:  #d1d1d1;
+  --badge-template: #0d9488;
+  --badge-theme:    #4f46e5;
+  --badge-language: #16a34a;
+}
+
+/* ── Header: tabs + version ───────────────────────────────────────────────── */
+.am-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.am-tabs {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.am-tab {
+  display: inline-block;
+  padding: 6px 18px;
+  background: #dde3ec;
+  color: #46505f;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border-radius: var(--am-radius) var(--am-radius) 0 0;
+  border: 1px solid var(--am-border);
+  border-bottom: none;
+  transition: background .12s, color .12s;
+  line-height: 1.4;
+}
+.am-tab:hover {
+  background: #c8d1de;
+  color: #2d3748;
+  text-decoration: none;
+}
+.am-tab--active {
+  background: var(--am-bg-head);
+  color: #fff;
+  border-color: var(--am-bg-head);
+  /* sits flush against the toolbar below */
+  padding-bottom: 8px;
+  margin-bottom: -1px;
+}
+.am-tab.am-tab--active:hover{
+    cursor: default;    
+    color: #fff;
+    background: var(--am-bg-head);
+}
+    
+.am-version {
+  font-size: .72rem;
+  color: var(--am-muted);
+  white-space: nowrap;
+  padding-bottom: 4px;
+}
+
+/* Panel wraps the twig output — closes the active-tab border visually */
+.am-panel {
+  border-top: 1px solid var(--am-bg-head);
+  border-radius: 0 7px 0 0; 
+}
+
+/* ── Toolbar (filter + toggles) ───────────────────────────────────────────── */
+.am-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;         /* vertical centre for all children */
+  gap: 12px 16px;
+  padding: 10px 12px;
+  background: var(--am-bg-head);
+  border-radius: 0 7px 0 0;            /* sits below the tabs, no top radius */
+}
+
+/* Toggles stay left, filters are pushed to the far right */
+.am-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  align-items: center;
+  flex: 1;                     /* grow to fill space, pushes filters right */
+  min-width: 0;
+}
+.am-toggles > span {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--am-bright);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  width: 100%;
+}
+.am-toggles label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .83rem;
+  cursor: pointer;
+  user-select: none;
+  color: var(--am-bright);
+}
+.am-toggles input[type=checkbox] {
+  width: 14px; height: 14px;
+  accent-color: var(--am-link);
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Filters group: always on the right */
+.am-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: flex-end;       
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.am-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+.am-filter-group > span {
+  font-size: .55rem;
+  font-weight: 700;
+  color: #babfc6;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+/* Input + clear button: aligned on a shared baseline */
+.am-filter-row {
+  display: flex;
+  align-items: center;         /* vertically centre both children */
+  gap: 0;                      /* merged border look */
+}
+
+.am-filter {
+  padding: 5px 9px;
+  border: 1px solid var(--am-border);
+  border-right: none;          /* clear button provides right border */
+  border-radius: 5px 0 0 5px;
+  font-size: .84rem;
+  background: #fff;
+  color: var(--am-text);
+  width: 180px;
+  height: 30px;
+  box-sizing: border-box;
+  line-height: 1;
+  vertical-align: middle;      /* override browser default bottom-alignment */
+}
+.am-filter:focus {
+  outline: none;
+  border-color: var(--am-link);
+  box-shadow: 0 0 0 2px rgba(37,99,235,.15);
+  z-index: 1;
+}
+
+.am-clear {
+  border-radius: 0 5px 5px 0;
+  background: #8d97a6;
+  color: #f0d2e3;
+  cursor: pointer;
+  font-size: .8rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+.am-clear:hover { background: #7e8fa6; }
+
+/* ── Badges ────────────────────────────────────────────────────────────────── */
+.am-badge, .am-badge-sm {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: #fff;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.am-badge-sm{
+    font-size: .6rem;
+    background: whitesmoke !important;
+    font-style: italic;
+    color: #696969;
+    padding: 1px 5px;
+}
+.am-badge-page     { background: var(--badge-page); }
+.am-badge-tool     { background: var(--badge-tool); }
+.am-badge-snippet  { background: var(--badge-snippet); }
+.am-badge-wysiwyg  { background: var(--badge-wysiwyg); color: #333; }
+.am-badge-template { background: var(--badge-template); }
+.am-badge-theme    { background: var(--badge-theme); }
+.am-badge-language { background: var(--badge-language); }
+
+/* ── Table ─────────────────────────────────────────────────────────────────── */
+table.amDashboard {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: none;
+  font-size: .875rem;
+  color: var(--am-text);
+}
+table.amDashboard thead th {
+  background: #56647b;
+  color: var(--am-bright);
+  font-size: .60rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 2px solid var(--am-border);
+  white-space: nowrap;
+}
+
+th.am-sort { cursor: pointer; }
+th.am-sort span::after        { content: ' ⇅'; opacity: .35; font-size: .85em; }
+th.am-sort[data-sort=asc]  span::after { content: ' ↑'; opacity: .9; }
+th.am-sort[data-sort=desc] span::after { content: ' ↓'; opacity: .9; }
+th.am-sort:hover { background: #3a4352; }
+
+table.amDashboard tbody tr {
+  border-bottom: 1px solid var(--am-border);
+  transition: background .1s;
+  background-color: white;
+}
+table.amDashboard tbody tr:hover { background: #f5faee; }
+table.amDashboard td { padding: 8px 10px; vertical-align: top; }
+
+td.addon_type        { width: 96px; }
+td.addon_type span   { font-family: monospace; }
+td.addon_name        { width: 160px; font-weight: 600; }
+td.addon_version     { width: 70px; font-family: monospace; font-size: .8rem; color: var(--am-muted); }
+td.addon_description { color: #4b5563; font-size: .83rem; }
+td.addon_author      { width: 15%; font-size: .83rem; }
+td.addon_active      { 
+    width: 110px; 
+}
+td.addon_active span {     
+    background-color: #16a328 !important;
+    border-radius: 5px !important;
+}
+
+td.addon_name small  { font-weight: 400; color: #28609b; font-style: italic; display: block; }
+
+table.amDashboard tbody tr[data-active="0"]       { opacity: .58; }
+table.amDashboard tbody tr[data-active="0"]:hover { opacity: 1; }
+
+/* ── Using-sections lists ──────────────────────────────────────────────────── */
+ul.using_sections,
+ul.using_sections_null {
+  list-style: none;
+  margin: 0; padding: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid;
+  font-size: .78rem;
+  min-width: 58px;
+}
+ul.using_sections      { border-color: #16a328; background: var(--am-bright); }
+ul.using_sections_null { border-color: #fca5a5; }
+
+ul.using_sections li:first-child {
+  background: #16a328; color: #fff;
+  padding: 3px 8px; font-weight: 600;
+}
+ul.using_sections_null li:first-child {
+  background: #dc2626; color: #fff;
+  padding: 3px 8px; font-weight: 600;
+}
+ul.using_sections li,
+ul.using_sections_null li {
+  padding: 2px 8px;
+  border-top: 1px solid rgba(0,0,0,.06);
+}
+ul.using_sections a { color: #15803d; font-weight: 500; text-decoration: none; }
+ul.using_sections a:hover { text-decoration: underline; }
+
+li.show_all {
+  cursor: pointer; text-align: right;
+  padding: 2px 6px; color: var(--am-muted);
+  font-size: .74rem;
+  border-top: 1px dotted var(--am-border);
+}
+li.show_all:hover { color: var(--am-text); }
+
+/* ── Authors ───────────────────────────────────────────────────────────────── */
+ul.authors { list-style: none; margin: 0; padding: 0; }
+ul.authors li { padding: 1px 0; font-size: xx-small; line-height: 1.5; }
+
+/* ── Description toggle ────────────────────────────────────────────────────── */
+a.am-desc-toggle {
+  color: var(--am-link);
+  font-size: .78rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+a.am-desc-toggle:hover { text-decoration: underline; }
+
+/* ── Footer ────────────────────────────────────────────────────────────────── */
+table.amDashboard tfoot td {
+  background: var(--am-bright);
+  color: var(--am-muted);
+  font-size: .8rem;
+  padding: 8px 10px;
+  border-top: 2px solid var(--am-border);
+  line-height: 2;
+}

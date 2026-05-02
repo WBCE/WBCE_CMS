@@ -1,182 +1,199 @@
 <?php
 /**
  * @file dbsession.php
- * @brief This file contains a custom session save handler using the main database class.
+ * @brief Database session handler for WBCE CMS.
+ *
+ * Stores session data in the database instead of files.
+ * Compatible with both MySQL/MariaDB and SQLite via the new Database class.
+ *
+ * Schema design:
+ *   - last_accessed is stored as INTEGER (Unix timestamp) for portability.
+ *   - On MySQL a VIRTUAL generated column last_accessed_human provides a
+ *     human-readable TIMESTAMP view in phpMyAdmin/Adminer at no storage cost.
+ *     On SQLite this column is stripped by normalizeSql automatically.
+ *   - If the driver changes (MySQL<->SQLite) and the schema no longer matches
+ *     the active driver, the table is dropped and recreated automatically.
+ *     All active sessions are lost in that case, which is acceptable since
+ *     a driver switch implies a fresh deployment anyway.
  *
  * @author Richard Willars (www.richardwillars.com)
  * @author Stephen McIntyre (stevedecoded.com/)
  * @author Norbert Heimsath (heimsath.org)
+ * @author Christian M. Stefan (https://www.wbEasy.de)
  *
- * @copyright GPLv2 or any later
+ * @license GPLv2 or any later
  *
- * This Work is based on
- * Session class by Stephen McIntyre
- * http://stevedecoded.com/blog/custom-php-session-class
- *
- * Which is derived from an article by Richard Willars.
- * http://www.richardwillars.com/articles/php/storing-sessions-in-the-database/
- * (Link seems to be broken http://web.archive.org/web/20120108100137/http://www.richardwillars.com/articles/php/storing-sessions-in-the-database)
+ * Note: According to the PHP SessionHandlerInterface contract (especially since PHP 7),
+ * the write(), destroy() and gc() methods must return a boolean value.
  */
 
-/**
- * @brief File Based PHP sessions where encoutering several problems on some shared Hostings so we now have our own SessionHandler
- *
- * Filebased Default sessions encountered a Lot of Problems on different shared hostings.
- * Shared Temp directories caused GCs from other clients clearing our sessions to early.
- * Cron Scripts on some Debian derivates killing sessions after 24 Minutes ignoring all Settings.
- *
- * I am not too happy whith this 2 Classes Solution , but it will fix the problems for now.
- * The second  Class used is class WbSession. (wbsession.php)
- *
- * Setting the Return Values to true is a bad bad fix for PHP 7  but the only avaiable
- * http://stackoverflow.com/questions/34117651/php7-symfony-2-8-failed-to-write-session-data
- * https://github.com/snc/SncRedisBundle/blob/master/Session/Storage/Handler/RedisSessionHandler.php
- */
+// Prevent  this  file  from  being  accessed  directly
+defined('WB_PATH') or die('No direct access allowed');
+
 class DbSession implements SessionHandlerInterface
 {
-    private $alive = true;
-    private $database = null;
+    private bool $alive = true;
+    private ?Database $db = null;
 
-    /**
-     * @brief The constructor fetches the global DB session and sets the save handlers
-     *
-     * If we are in an install or upgrade process we fall back to basic session functionality.
-     * So the constructor stops after installing the DB table.
-     *
-     * In other use cases the session is started here too.
-     * Here we do not want the session to be initialized here.
-     */
     public function __construct()
     {
         $this->fetchGlobalDbInstanceOrDie();
+        $this->ensureSessionTableExists();
 
-        // We are installing somehow ?
-        if (defined("WB_UPGRADE_SCRIPT") or defined("WB_INSTALLER")) {
-            $this->createDbTablesIfNotThere();
-        } else {
-            // Set session handler to overide PHP default
-            /*
-            session_set_save_handler(
-                array(
-                    &$this,
-                    'open'
-                ),
-                array(
-                    &$this,
-                    'close'
-                ),
-                array(
-                    &$this,
-                    'read'
-                ),
-                array(
-                    &$this,
-                    'write'
-                ),
-                array(
-                    &$this,
-                    'destroy'
-                ),
-                array(
-                    &$this,
-                    'gc'
-                ) // Garbage collection gc
-            );
-            */
-            session_set_save_handler( $this );
-            $this->gc(1);
+        // During installation or upgrade we only ensure the table exists
+        if (defined('WB_UPGRADE_SCRIPT') || defined('WB_INSTALLER')) {
+            return;
         }
 
-        // Start the session // not starting it here at all
-        // session_start();
+        session_set_save_handler($this);
+
+        if (mt_rand(0, 100) <= 1) {
+            $this->gc(0);
+        }
     }
 
-    /**
-     * @brief Fetch the global DB instance, die if there is none.
-     */
-    protected function fetchGlobalDbInstanceOrDie()
+    protected function fetchGlobalDbInstanceOrDie(): void
     {
-        // fetch database instance
         global $database;
 
-        if (!is_object($database)) {
-            die('DBSession $database is no resource (DbConnection)');
+        if (!($database instanceof Database)) {
+            die('DbSession: No valid Database object found.');
         }
 
-        // Store to this class
-        $this->database = $database;
+        $this->db = $database;
     }
 
     /**
-     * @brief protected function to create DB tables if they do not exist.
+     * Ensure the session table exists and matches the active driver's expected schema.
+     *
+     * Detection logic:
+     *   MySQL schema has `last_accessed_human` (VIRTUAL generated column).
+     *   SQLite schema does not (stripped by normalizeSql during table creation).
+     *
+     *   If the detected schema does not match the active driver, the table is
+     *   dropped and recreated. This handles the case where the database driver
+     *   was switched (e.g. from MySQL to SQLite or vice versa).
      */
-    protected function createDbTablesIfNotThere()
+    protected function ensureSessionTableExists(): void
     {
+        $tableExists = $this->db->fieldExists('{TP}dbsessions', 'id');
 
-        // ALTER TABLE `wbce_dbsessions` CHANGE `id` `id` VARCHAR(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id';
+        if ($tableExists) {
+            $hasHumanCol    = $this->db->fieldExists('{TP}dbsessions', 'last_accessed_human');
+            $isMySQL        = $this->db->getDriver() === 'mysql';
+            $schemaMismatch = ($isMySQL && !$hasHumanCol) || (!$isMySQL && $hasHumanCol);
 
+            if ($schemaMismatch) {
+                // Driver was switched — drop and recreate, sessions are invalidated
+                $this->db->query('DROP TABLE IF EXISTS `{TP}dbsessions`');
+                $tableExists = false;
+            }
+        }
+
+        if (!$tableExists) {
+            $this->createSessionTable();
+        }
+    }
+
+    /**
+     * Create the session table.
+     *
+     * last_accessed is INTEGER (Unix timestamp) — portable across MySQL and SQLite.
+     * last_accessed_human is a MySQL VIRTUAL column for human-readable display
+     * in database admin tools. normalizeSql strips it for SQLite automatically.
+     * Inline INDEX declarations are also stripped for SQLite by normalizeSql.
+     */
+    private function createSessionTable(): void
+    {
         $sql = "
             CREATE TABLE IF NOT EXISTS `{TP}dbsessions` (
-                `id` varchar(148) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id',
-                `data` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Data',
-                `last_accessed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last timestamp',
-                `user` int(11) NOT NULL COMMENT 'User Id',
+                `id`                  VARCHAR(148) NOT NULL,
+                `data`                LONGTEXT     NOT NULL,
+                `last_accessed`       INTEGER      NOT NULL DEFAULT 0,
+                `last_accessed_human` TIMESTAMP    AS (FROM_UNIXTIME(`last_accessed`)) VIRTUAL,
+                `user`                INT(11)      NOT NULL DEFAULT 0,
                 PRIMARY KEY (`id`),
-                INDEX (`last_accessed`),
-                INDEX (`user`) 
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='WBCE Session Table';
+                INDEX `idx_last_accessed` (`last_accessed`),
+                INDEX `idx_user` (`user`)
+            ) {TABLE_ENGINE} {TABLE_COLLATION};
         ";
-        $this->database->query($sql);
 
-        // Doing this in multiple steps as i had problems whith the index
-        $sql = "
-            ALTER TABLE 
-                `{TP}dbsessions` 
-            DROP PRIMARY KEY;
-        ";
-        $this->database->query($sql);
+        $this->db->importSql($sql);
+    }
 
-        $sql = "
-            ALTER TABLE 
-                `{TP}dbsessions` 
-            CHANGE 
-                `id` `id` VARCHAR(148) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Session Id';
-        ";
-        $this->database->query($sql);
+    public function open(string $path, string $name): bool
+    {
+        return true;
+    }
 
-        $sql = "
-            ALTER TABLE 
-                `{TP}dbsessions` 
-            ADD PRIMARY KEY(`id`);
-        ";
-        $this->database->query($sql);
+    public function close(): bool
+    {
+        return true;
     }
 
     /**
-     * @brief Handler: Clean Session
-     *
-     * Delete session and its entire data if lifetime has exeded.
+     * Read session data from database.
      */
-    public function gc($expire): int|false
+    public function read(string $id): string|false
     {
-        $expire = ini_get("session.gc_maxlifetime");
+        return $this->db->fetchValue(
+            'SELECT `data` FROM `{TP}dbsessions` WHERE `id` = ? LIMIT 1',
+            [$id]
+        ) ?? '';
+    }
 
-        if (Settings::Get("wb_session_timeout") !== false) {
-            $expire = Settings::Get("wb_session_timeout");
-        } elseif (Settings::Get("wb_secform_timeout") !== false) {
-            $expire = Settings::Get("wb_secform_timeout");
-        }
-        $q = "DELETE FROM `{TP}dbsessions` WHERE DATE_ADD(`last_accessed`, INTERVAL " . (int)$expire . " SECOND) < NOW()";
-        $this->database->query($q);
+    /**
+     * Write session data to database.
+     *
+     * last_accessed written as PHP time() integer — no SQL time functions needed,
+     * works identically on MySQL and SQLite.
+     */
+    public function write(string $id, string $data): bool
+    {
+        $userId = (int)(WSession::Get('USER_ID') ?? 0);
+
+        $this->db->query(
+            'REPLACE INTO `{TP}dbsessions` (`id`, `data`, `user`, `last_accessed`)
+             VALUES (?, ?, ?, ?)',
+            [$id, $data, $userId, time()]
+        );
 
         return true;
     }
 
     /**
-     * @brief Destructor to handle script end
-     *
-     * Store the session if the script ends for some reason.
+     * Destroy a session.
      */
+    public function destroy(string $id): bool
+    {
+        $this->db->deleteRow('{TP}dbsessions', 'id', $id);
+        return true;
+    }
+
+    /**
+     * Garbage collection — remove expired sessions.
+     *
+     * Cutoff calculated in PHP as time() - $expire.
+     * Simple integer comparison, no SQL date functions needed.
+     */
+    public function gc(int $maxlifetime): int|false
+    {
+        $expire = (int)ini_get('session.gc_maxlifetime');
+
+        if (Settings::get("wb_session_timeout") !== false) {
+            $expire = (int)Settings::get("wb_session_timeout");
+        } elseif (Settings::get("wb_secform_timeout") !== false) {
+            $expire = (int)Settings::get("wb_secform_timeout");
+        }
+
+        $this->db->query(
+            'DELETE FROM `{TP}dbsessions` WHERE `last_accessed` < ?',
+            [time() - $expire]
+        );
+
+        return true;
+    }
+
     public function __destruct()
     {
         if ($this->alive) {
@@ -185,120 +202,22 @@ class DbSession implements SessionHandlerInterface
         }
     }
 
-    /**
-     * @brief Handler: Delete Session
-     *
-     * Delete session cookie and the destroy session
-     */
-    public function delete()
+    public function delete(): void
     {
-
-        // Inactivate/Delete Cookies if used
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
         }
 
-        // Triggers the destroy Method
         session_destroy();
-
         $this->alive = false;
-    }
-
-    /**
-     * @brief Handler: Open Session
-     *
-     * As DB is connected by the constructor we need to do nothing here.
-     */
-    public function open(string $path, string $name): bool
-    {
-        return true;
-    }
-
-    /**
-     * @brief Handler: Close Session
-     *
-     * We do not need to disconnect DB here as we only use a DB handle from outside.
-     */
-    public function close(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @brief Handler: Read Session
-     *
-     * Read session data from DB
-     */
-    public function read($sid): string|false
-    {
-        $sql = "SELECT `data` FROM `{TP}dbsessions` WHERE `id` = '" . $this->database->escapeString($sid) . "' LIMIT 1";
-        $res = $this->database->query($sql);
-        if ($this->database->is_error()) {
-            return '';
-        }
-        if ($res->numRows() == 1) {
-            $fields = $res->fetchRow();
-
-            return $fields['data'];
-        } else {
-            return '';
-        }
-    }
-
-    /*****************************
-     * Helper Functions
-     *****************************/
-
-    /**
-     * @brief Handler: Write Session
-     *
-     * Write session data to DB
-     */
-    public function write($sid, $data): bool
-    {
-        $user = WSession::get('USER_ID');
-        if (!is_numeric($user)) {
-            $user = '0';
-        }
-        $sql = "REPLACE INTO `{TP}dbsessions` (`id`, `data`, `user`) 
-        VALUES ('" . $this->database->escapeString($sid) . "', '" . $this->database->escapeString($data) . "', '$user')";
-        $this->database->query($sql);
-
-        return true;
-    }
-
-    /**
-     * @brief Handler: Destroy Session
-     *
-     * Delete session and its entire data to DB
-     */
-    public function destroy($sid): bool
-    {
-        $sql = "DELETE FROM `{TP}dbsessions` WHERE `id` = '" . $this->database->escapeString($sid) . "'";
-        $this->database->query($sql);
-
-        $_SESSION = array();
-
-
-        return true;
-    }
-
-    /**
-     * @brief protected function to check if DB tables are existing.
-     *
-     * @param string $sTableName Name of the table to look for
-     * @return boolean TRUE on Table exists FALSE otherwise
-     * @todo Move this thing to class Db
-     *
-     */
-    protected function checkDbTableExist($sTableName)
-    {
-        $sql = "SHOW TABLES LIKE '{$sTableName}'";
-        $result = $this->database->query($sql);
-        if ($result->num_rows == 1) {
-            return true;
-        }
-        return false;
     }
 }

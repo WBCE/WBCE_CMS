@@ -320,6 +320,54 @@ class WbAuto
 
         return false;
     }
+
+    /**
+     * @brief Registers all WBCE core classes in the correct initialization order.
+     *
+     * Replaces the scattered WbAuto::AddFile() / AddDir() calls that were
+     * previously spread across initialize.php. Call this once at framework boot
+     * time, before Settings::setup() and before any class that depends on
+     * the framework (Database, Lang, SecureForm, etc.).
+     *
+     * Order matters:
+     *   1. Framework directory — provides Database, Settings, Lang, etc.
+     *   2. idna_convert — needed for email validation (used by Admin, Login)
+     *   3. Template — phpLib legacy templating engine
+     *   4. Twig — loaded separately via WBCETwigLoader (require_once, not autoload)
+     *
+     * @return void  Errors are silently ignored (files may not exist on all installs).
+     */
+    public static function bootInitialize(): void
+    {
+        // 1. Priority explicit files — must be available before AddDir() sweep
+        //    so that classname != filename cases resolve correctly.
+        $explicitFiles = [
+            'Database'     => '/framework/Database.php',
+            'Admin'        => '/framework/Admin.php',
+            'AddonService' => '/framework/AddonService.php',
+            'MessageBox'   => '/framework/MessageBox.php',
+            'SecureForm'   => '/framework/SecureForm.php',
+            'Accounts'     => '/framework/Accounts.php',
+            'Mailer'       => '/framework/Mailer.php',
+            'wbmailer'     => '/framework/Mailer.php', // fallback for some legacy modules
+            'SecureForm'   => '/framework/SecureForm.php',
+            'I'            => '/framework/I.php',
+            'Insert'       => '/framework/Insert.php',
+            'Template'     => '/include/phplib/template.inc', // legacy Template Engine used in WBCE BE Themes
+        ];
+
+        foreach ($explicitFiles as $className => $relPath) {
+            self::AddFile($className, $relPath);
+            // AddFile returns an error string on failure — silently ignored here.
+            // The class simply won't be pre-registered; the dir scan below may
+            // still find it if it follows the naming convention.
+        }
+
+        // 2. Framework directory — scans for all class.*.php, *.php etc.
+        self::AddDir('/framework/');
+        self::AddDir('/framework/AccessManager/');
+    }
+
 }
 
 /// Finally register this autoloader

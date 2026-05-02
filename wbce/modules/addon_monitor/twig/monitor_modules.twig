@@ -1,0 +1,136 @@
+{#
+/**
+ * @file       twig/monitor_modules.twig 
+ * @category   admintool
+ * @package    addon_monitor
+ * @author     Christian M. Stefan (https://www.wbeasy.de)
+ * @license    http://www.gnu.org/licenses/gpl.html
+ * @platform   WBCE CMS 1.7.0
+ */
+#}
+{# ── Toolbar ────────────────────────────────────────────────────────────── #}
+<div class="am-toolbar">
+
+  <div class="am-toggles">
+    <span>{{ L_('TEXT:SHOW') }}:</span>
+    <label><input class="am-type-toggle" type="checkbox" value="page"    checked /> Page Modules <sup>({{ count_pagemodules }})</sup></label>
+    <label><input class="am-type-toggle" type="checkbox" value="snippet" checked /> Snippets <sup>({{ count_snippets }})</sup></label>
+    <label><input class="am-type-toggle" type="checkbox" value="tool"    checked /> Admin-Tools <sup>({{ count_tools }})</sup></label>
+    <label><input class="am-type-toggle" type="checkbox" value="wysiwyg" checked /> Editors <sup>({{ count_wysiwygeditors }})</sup></label>
+  </div>
+
+  <div class="am-filters">
+    {{ include('search.twig') }}
+  </div>
+
+</div>
+
+{# ── Table ──────────────────────────────────────────────────────────────── #}
+<table id="htmlgrid" class="amDashboard">
+  <thead>
+    <tr>
+      <th class="am-sort"><span>{{ L_('TEXT:TYPE') }}</span></th>
+      <th class="am-sort"><span>{{ L_('TXT:MODULE_NAME') }}</span></th>
+      <th>{{ L_('TEXT:VERSION') }}</th>
+      <th>{{ L_('TEXT:DESCRIPTION') }}</th>
+      <th>{{ L_('TEXT:AUTHOR') }}</th>
+      <th class="am-sort"><span>{{ L_('TEXT:ACTIVE') }}?</span></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for addon in addons %}
+    {% set isActive = (
+        addon.active == 'Y' or 
+        addon.function == 'snippet' or 
+        addon.directory == default_wysiwyg or 
+        addon.function == 'tool'
+    ) %}
+    <tr id="addon_{{ addon.addon_id }}"
+        data-function="{{ addon.function }}"
+        data-active="{{ isActive ? '1' : '0' }}">
+
+      {# Type badge #}
+      <td class="addon_type">
+        {% if addon.function == 'page' %}
+          <span class="am-badge am-badge-page">Page</span>
+        {% elseif addon.function == 'tool' %}
+          <span class="am-badge am-badge-tool">⚙ Tool</span>
+        {% elseif addon.function == 'snippet' %}
+          <span class="am-badge am-badge-snippet">Snippet</span>
+        {% elseif addon.function == 'wysiwyg' %}
+          <span class="am-badge am-badge-wysiwyg">Editor</span>
+        {% else %}
+          <span class="am-badge">{{ addon.function }}</span>
+        {% endif %}
+        <ul>
+            {% set filteredScopes = addon.scope|filter(scope => scope != addon.function) %}
+            {% for scope in filteredScopes %}
+                <li> <span class="am-badge-sm">+ {{ scope|capitalize }}</span></li>
+            {% endfor %}
+        </ul>
+      </td>
+
+      <td class="addon_name">
+        {{ addon.name }}
+        <small>{{ addon.directory }}</small>
+      </td>
+
+      <td class="addon_version">{{ addon.version }}</td>
+
+      <td class="addon_description">
+        <div class="am-desc">{{ addon.description }}</div>        
+      </td>
+
+      <td class="addon_author">
+        <ul class="authors">
+          {% for author in addon.author|split(', ') %}
+            <li>{{ author }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+
+      <td class="addon_active">
+        {% if addon.function == 'page' %}
+          {% if addon.active_sections|length > 0 %}
+            <ul class="using_sections">
+              <li title="Used in {{ addon.active_sections|length }} section(s)">{{ addon.active_sections|length }}×</li>
+              {% for sID, pID in addon.active_sections|sort %}
+                <li title="Page {{ pID }} / Section {{ sID }}">
+                  <a href="{{ constant('WB_URL') }}/{{ constant('ADMIN_DIRECTORY') }}/pages/sections.php?page_id={{ pID }}#sid{{ sID }}" target="_blank">
+                    p{{ pID }} <small>/s{{ sID }}</small>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <ul class="using_sections_null">
+              <li title="Not used in any section">0×</li>
+            </ul>
+          {% endif %}
+
+        {% elseif addon.function == 'wysiwyg' %}
+          {% if addon.directory == default_wysiwyg %}
+            <ul class="using_sections"><li>Default editor</li></ul>
+          {% else %}
+            <ul class="using_sections_null"><li>Not in use</li></ul>
+          {% endif %}
+
+        {% else %}
+          <span class="am-badge am-badge-{{ addon.function == 'tool' ? 'tool' : 'snippet' }}">Always on</span>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="6">
+        <b>{{ addons|length }} modules installed: &nbsp;</b>
+        <span class="am-badge am-badge-page">{{ count_pagemodules }} Pages</span>
+        <span class="am-badge am-badge-tool">{{ count_tools }} Tools</span>
+        <span class="am-badge am-badge-snippet">{{ count_snippets }} Snippets</span>
+        <span class="am-badge am-badge-wysiwyg">{{ count_wysiwygeditors }} WYSIWYG Editors</span>
+      </td>
+    </tr>
+  </tfoot>
+</table>

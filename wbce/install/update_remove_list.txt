@@ -1,0 +1,146 @@
+# ================================================================ #
+#       WBCE Upgrade Remove List - Files and Directories           #
+# ================================================================ #
+
+# === FILES TO REMOVE ===
+
+[ROOT]/config.php.new
+[ROOT]/htaccess.txt
+
+# Account
+[ACCOUNT]/Accounts.cfg.php
+[ACCOUNT]/check_details.php
+[ACCOUNT]/check_email.php
+[ACCOUNT]/check_password.php
+[ACCOUNT]/details.php
+[ACCOUNT]/email.php
+[ACCOUNT]/forgot_form.php
+[ACCOUNT]/frontend.css
+[ACCOUNT]/login_form.php
+[ACCOUNT]/password.php
+[ACCOUNT]/preferences_form.php
+[ACCOUNT]/signup_form.inc.php
+[ACCOUNT]/signup_form.php
+[ACCOUNT]/signup_switch.php
+[ACCOUNT]/signup2.php
+[ACCOUNT]/template.html
+[ACCOUNT]/template.php
+
+# Admin/media
+[ADMIN]/media/browse.php
+[ADMIN]/media/create.php
+[ADMIN]/media/delete.php
+[ADMIN]/media/dse.php
+[ADMIN]/media/MediaBlackList
+[ADMIN]/media/MediaWhiteList
+[ADMIN]/media/nopreview.jpg
+[ADMIN]/media/overlib.js           // old JavaScript library
+[ADMIN]/media/parameters.php
+[ADMIN]/media/rename.php
+[ADMIN]/media/rename2.php
+[ADMIN]/media/resize_img.php
+[ADMIN]/media/setparameter.php
+[ADMIN]/media/thumb.php
+[ADMIN]/media/upload.php
+[ADMIN]/preferences/details.php
+[ADMIN]/preferences/email.php
+[ADMIN]/preferences/password.php
+
+# Framework
+[FRAMEWORK]/class.database.doctrine.php
+[FRAMEWORK]/class.wbmailer.php
+[FRAMEWORK]/PasswordHash.php       // old password hashing class
+[FRAMEWORK]/SecureForm.mtab.php
+[FRAMEWORK]/DseTwo.php
+[FRAMEWORK]/mimeconvert.php
+[FRAMEWORK]/randomgen.php
+[FRAMEWORK]/class.logfile.php
+[FRAMEWORK]/class.msg_queue.php
+
+# Include / Sensio
+[INCLUDE]/Sensio/Twig/TwigConnect.php
+
+# Include / jQuery cleanup
+[INCLUDE]/jquery/GPL-LICENSE.txt
+[INCLUDE]/jquery/MIT-LICENSE.txt
+[INCLUDE]/jquery/version.txt
+[INCLUDE]/jquery/jquery-ui.css
+[INCLUDE]/jquery/jquery-pngFix.js
+[INCLUDE]/jquery/jquery-min.legacy.js     // very old version
+[INCLUDE]/jquery/jquery-min132.js
+[INCLUDE]/jquery/jquery-min161.js
+[INCLUDE]/jquery/jquery-min164.js
+[INCLUDE]/jquery/jquery-min170.js
+[INCLUDE]/jquery/images/ui-anim_basic_16x16.gif
+[INCLUDE]/jquery/images/ui-bg_flat_0_aaaaaa_40x100.png
+[INCLUDE]/jquery/images/ui-bg_flat_75_ffffff_40x100.png
+[INCLUDE]/jquery/images/ui-bg_glass_55_fbf9ee_1x400.png
+[INCLUDE]/jquery/images/ui-bg_glass_65_ffffff_1x400.png
+[INCLUDE]/jquery/images/ui-bg_glass_75_dadada_1x400.png
+[INCLUDE]/jquery/images/ui-bg_glass_75_e6e6e6_1x400.png
+[INCLUDE]/jquery/images/ui-bg_glass_95_fef1ec_1x400.png
+[INCLUDE]/jquery/images/ui-bg_highlight-soft_75_cccccc_1x100.png
+[INCLUDE]/jquery/images/ui-icons_222222_256x240.png
+[INCLUDE]/jquery/images/ui-icons_2e83ff_256x240.png
+[INCLUDE]/jquery/images/ui-icons_454545_256x240.png
+[INCLUDE]/jquery/images/ui-icons_888888_256x240.png
+[INCLUDE]/jquery/images/ui-icons_cd0a0a_256x240.png
+
+# Languages
+[LANGUAGES]/SE.php
+
+# Modules
+[MODULES]/captcha_control/FTAN_SUPPORTED
+[MODULES]/captcha_control/install_struct.sql
+[MODULES]/SecureFormSwitcher/files/SecureForm.mtab.php
+[MODULES]/SecureFormSwitcher/FTAN_SUPPORTED
+[MODULES]/SecureFormSwitcher/htt/help.png
+[MODULES]/SecureFormSwitcher/htt/switchform.htt
+[MODULES]/SecureFormSwitcher/language_load.php
+
+# Templates
+[TEMPLATE]/wbce_flat_theme/css/themeextended.css
+[TEMPLATE]/wbce_flat_theme/images/preloader_blue.gif
+[TEMPLATE]/wbce_flat_theme/images/preloader_red.gif
+[TEMPLATE]/wbce_flat_theme/images/wblogo.png
+[TEMPLATE]/wbce_flat_theme/images/wblogo_large.png
+
+
+# === DIRECTORIES TO REMOVE ===
+
+[ROOT]/log/
+[ACCOUNT]/email_templates/                 // old email templates
+[ACCOUNT]/functions/
+[ACCOUNT]/languages/
+[ACCOUNT]/templates/
+[ADMIN]/images/
+[ADMIN]/pages/page_tree/icons/
+[ADMIN]/themes/
+[INCLUDE]/Doctrine/                        // no longer used
+[INCLUDE]/phpmailer/
+[INCLUDE]/Sensio/Twig/lib/
+[INCLUDE]/quickSkin_alpha/
+[INCLUDE]/idna_convert/                   // obsolete since 1.7.0 
+[MODULES]/ckeditor/ckeditor/filemanager/
+[MODULES]/ckeditor/ckeditor/plugins/wsc/
+[MODULES]/ckeditor/ckeditor/plugins/flash/
+[MODULES]/ckeditor/ckeditor/plugins/oembed/
+[MODULES]/ckeditordev/ckeditor/filemanager/
+[MODULES]/ckeditordev/ckeditor/plugins/wsc/
+[MODULES]/ckeditordev/ckeditor/plugins/flash/
+[MODULES]/ckeditordev/ckeditor/plugins/oembed/
+[MODULES]/ckeditor_dev/
+[MODULES]/el_finder/
+[MODULES]/output_filter/
+[MODULES]/user_search/
+[MODULES]/addon_monitor/plugins
+[MODULES]/addon_monitor/icons
+[MODULES]/addon_monitor/css             // cleaned up in previous step
+[TEMPLATE]/advancedThemeWbFlat/
+[TEMPLATE]/argos_theme/
+[TEMPLATE]/argos_theme_classic/
+[TEMPLATE]/argos_theme_reloaded/images/flags/
+[TEMPLATE]/beesign_theme_ce/
+[TEMPLATE]/DefaultTheme/
+[TEMPLATE]/wb_theme/
+[TEMPLATE]/wbce_flat_theme/jquery/jqueryNiceFileInput/

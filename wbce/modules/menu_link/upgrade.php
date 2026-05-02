@@ -14,13 +14,15 @@
 defined('WB_PATH') or die('Cannot access this file directly');
 
 $msg = '';
-$sTable = '{TP}mod_menu_link';
-if (($sOldType = $database->getTableEngine($sTable))) {
-    if (('myisam' != strtolower($sOldType))) {
-        if (!$database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ')) {
-            $msg = $database->get_error();
+
+if ($database->getDriver() === 'mysql') {
+    if (($sOldType = $database->getTableEngine('{TP}mod_menu_link'))) {
+        if (('myisam' != strtolower($sOldType))) {
+            if (!$database->query("ALTER TABLE `{TP}mod_menu_link` Engine = 'MyISAM' ")) {
+                $msg = $database->hasError();
+            }
         }
+    } else {
+        $msg = $database->getError();
     }
-} else {
-    $msg = $database->get_error();
 }

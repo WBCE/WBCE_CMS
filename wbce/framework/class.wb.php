@@ -15,8 +15,11 @@ defined('WB_PATH') or die("Access Denied");
 
 class Wb extends SecureForm
 {
-    // store a direct output
-    public $sDirectOutput = '';
+    // DirectOutput: private state replaces the old public $sDirectOutput property.
+    // __set() below intercepts any legacy $wb->sDirectOutput = '...' assignments.
+    private string  $directOutput      = '';
+    private bool    $directPending     = false;
+    private ?string $directContentType = null;
 
     public $page_sections = array();
     public $password_chars = 'a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:\.';
@@ -89,36 +92,47 @@ class Wb extends SecureForm
      * @param int $iUserID
      * @param string $sPassword
      */
-    public function doCheckPassword($iUserID, $sPassword)
+        /**
+     * Checks if the supplied password is correct for the given user.
+     * If it is an old md5 hash, it will be automatically upgraded to a modern hash.
+     *
+     * @param int    $userId
+     * @param string $password
+     * @return bool
+     */
+    public function doCheckPassword(int $userId, string $password): bool
     {
-        global $database;
+        // Get the password hash from database
+        $sql = 'SELECT `password` FROM `{TP}users` 
+                WHERE `user_id` = ? AND `active` = 1';
 
-        // Get the password hash from Database
-        $sDbPasswordHash = $database->get_one('SELECT `password` FROM `{TP}users` WHERE `user_id` = ' . $iUserID . ' AND `active` = 1');
-        if ($sDbPasswordHash === null) {
-            // db lookup failed (wrong user id supplied?)
+        $dbPasswordHash = $this->db->fetchValue($sql, [$userId]);
+
+        if ($dbPasswordHash === '') {   // fetchValue returns '' on no result / error
             return false;
         }
-        if (strpos($sDbPasswordHash, '$') === false) {
-            // old md5 hash stored in db
-            if ($sDbPasswordHash === md5($sPassword)) {
-                // yes, it is the correct password, now update the db entry first
-                $sNewHash = $database->escapeString($this->doPasswordEncode($sPassword));
-                $database->query("UPDATE `{TP}users` SET `password` = '$sNewHash' WHERE `user_id` = " . $iUserID . ' AND `active` = 1');
-                // ignore any possible failure and continue with the authentication or whatever
+
+        // Check if it's still an old md5 hash
+        if (strpos($dbPasswordHash, '$') === false) {
+            // Old md5 hash → verify with md5
+            if ($dbPasswordHash === md5($password)) {
+                // Password correct → upgrade to modern hash
+                $newHash = $this->doPasswordEncode($password);
+
+                $updateSql = 'UPDATE `{TP}users` 
+                              SET `password` = ? 
+                              WHERE `user_id` = ? AND `active` = 1';
+
+                $this->db->query($updateSql, [$newHash, $userId]);
+
                 return true;
-            } else {
-                // wrong password
-                return false;
             }
-            // should never reach this (see below)
-            return false;
-        } else {
-            return password_verify($sPassword, $sDbPasswordHash);
+
+            return false; // wrong password (old md5)
         }
-        // should never reach this but it is good practice to return false
-        // in case anything goes wrong in future modifications of the code above...
-        return false;
+
+        // Modern password hash (recommended way)
+        return password_verify($password, $dbPasswordHash);
     }
 
     /**
@@ -163,42 +177,78 @@ _JsCode;
     }
 
     /**
-     * @brief  For easy output of JSON strings XML or Ajax......
-     *         If you want the whole page to be processed
-     *         (for internal functionality or whatever)
-     *         before output is done, just set the class variable manually
+     * Queue content for direct output, bypassing normal page rendering.
      *
-     * @code
-     *            $wb->sDirectOutput     = "My cool string.";
-     *            $admin->sDirectOutput  = "My cool string.";
-     * @endcode
+     * The full index.php pipeline (modules, template, OutputFilter) runs
+     * to completion first. At the very end, sendDirectOutput() flushes all
+     * output buffers, sends this content, and exits.
      *
-     *         DirectOutput is triggered once  before normal output is done.
+     * Calls are additive: multiple setDirectOutput() calls append content.
      *
-     * @param  $sContent The content to pipe out
-     * @return string echos out this string
+     * @param string      $content      The response body to send
+     * @param string|null $contentType  Optional Content-Type header value
      */
-    public function DirectOutput($sContent = false)
+    public function setDirectOutput(string $content, ?string $contentType = null): void
     {
+        $this->directOutput  .= $content;
+        $this->directPending  = true;
+        if ($contentType !== null) {
+            $this->directContentType = $contentType;
+        }
+    }
 
-        // Move to class
-        if (is_string($sContent)) {
-            $this->sDirectOutput .= $sContent;
+    /** Returns true if direct output has been queued. */
+    public function hasDirectOutput(): bool
+    {
+        return $this->directPending;
+    }
+
+    /**
+     * Send queued direct output and exit. No-op if nothing was queued.
+     * Called once at the end of index.php 
+     * and once in class Admin::print_footer()
+     * in place of the old DirectOutput().
+     */
+    public function sendDirectOutput(): void
+    {
+        if (!$this->directPending) return;
+
+        // Send Content-Type header if specified by the caller
+        if ($this->directContentType !== null) {
+            header('Content-Type: ' . $this->directContentType);
         }
 
-        // Return if Class var is still empty
-        if (empty($this->sDirectOutput)) {
+        // Discard all buffered page output
+        while (ob_get_level()) ob_end_clean();
+
+        echo $this->directOutput;
+        exit;
+    }
+
+    /**
+     * @deprecated Use setDirectOutput() to queue content, sendDirectOutput() to send.
+     * Kept for backward compatibility with older modules.
+     */
+    public function DirectOutput(string|false $content = false): void
+    {
+        if (is_string($content)) {
+            $this->setDirectOutput($content);
+        } else {
+            $this->sendDirectOutput();
+        }
+    }
+
+    /**
+     * Intercept legacy $wb->sDirectOutput = '...' assignments.
+     * Redirects them to setDirectOutput() so old modules keep working.
+     */
+    public function __set(string $name, mixed $value): void
+    {
+        if ($name === 'sDirectOutput' && is_string($value)) {
+            $this->setDirectOutput($value);
             return;
         }
-
-        // kill all output buffering
-        while (ob_get_level()) {
-            ob_end_clean();
-        }
-
-        // directly output everyting and exit
-        echo $this->sDirectOutput;
-        exit;
+        $this->$name = $value;
     }
 
     /**
@@ -391,8 +441,8 @@ _JsCode;
     {
         $has_active_sections = false;
         $now = time();
-        $sql = 'SELECT `publ_start`, `publ_end` FROM `{TP}sections` WHERE `page_id`=' . (int)$page['page_id'];
-        $query_sections = $this->_oDb->query($sql);
+        $sql = "SELECT `publ_start`, `publ_end` FROM `{TP}sections` WHERE `page_id`= ?";
+        $query_sections = $this->db->query($sql, [$page['page_id']]);
         if ($query_sections->numRows() != 0) {
             while ($section = $query_sections->fetchRow()) {
                 if ($now < $section['publ_end'] && ($now > $section['publ_start'] || (int)$section['publ_start'] == 0) || $now > $section['publ_start'] && (int)$section['publ_end'] == 0) {
@@ -428,18 +478,6 @@ _JsCode;
     }
 
     /**
-     * @brief   The purpose of $this->strip_slashes() _was_ in further time to undo the effects of magic_quotes_gpc==ON
-     * So actually, id did not change anything to $input if PHP >=5.4 - so this is just here for backward compatibility
-     *
-     * @param string $input
-     * @return  string
-     */
-    public function strip_slashes($input)
-    {
-        return $input;
-    }
-
-    /**
      * @brief   a dummy function left over from gpc
      *          we keep it just in case modules rely on it even if it does nothing anymore
      *
@@ -463,34 +501,44 @@ _JsCode;
     }
 
     /**
-     * @brief   Generate full page_link based on the
-     *          `link` content from the `{TP}pages` table
+     * Generate full page_link based on the `link` content from the `{TP}pages` table.
      *
-     * @param unspec $uLinkId
-     * @return  string
+     * @param int|string|null $linkId   Page ID or link string
+     * @return string                   Full URL to the page
      */
-    public function page_link($uLinkId = null)
+    public function page_link($linkId = null): string
     {
-        $sLinkUrl = '';
-        if ($uLinkId == null && defined('PAGE_ID')) {
-            $uLinkId = (int)PAGE_ID;
-        }
-        if ($uLinkId == null && isset($_GET['page_id'])) {
-            $uLinkId = (int)$_GET['page_id'];
-        }
-        if (is_numeric($uLinkId)) {
-            $sSql = "SELECT `link` FROM `{TP}pages` WHERE `page_id` = %d";
-            $sLink = $GLOBALS['database']->get_one(sprintf($sSql, $uLinkId));
-            $sLinkUrl = WB_URL . PAGES_DIRECTORY . $sLink . PAGE_EXTENSION;
-        } else {
-            // Check for :// in the link (used in URL's) as well as mailto:
-            if (strstr($uLinkId, '://') == '' and substr($uLinkId, 0, 7) != 'mailto:') {
-                $sLinkUrl = WB_URL . PAGES_DIRECTORY . $uLinkId . PAGE_EXTENSION;
-            } else {
-                $sLinkUrl = $uLinkId;
+        // If no linkId is given, try to determine current page
+        if ($linkId === null) {
+            if (defined('PAGE_ID')) {
+                $linkId = (int) PAGE_ID;
+            } elseif (isset($_GET['page_id']) && is_numeric($_GET['page_id'])) {
+                $linkId = (int) $_GET['page_id'];
             }
         }
-        return $sLinkUrl;
+
+        // If we have a numeric page ID → get link from database
+        if (is_numeric($linkId)) {
+            $sql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = ?';
+            $pageLink = $this->db->fetchValue($sql, [(int)$linkId]);
+
+            if ($pageLink === '') {
+                return ''; // page not found
+            }
+
+            return WB_URL . PAGES_DIRECTORY . $pageLink . PAGE_EXTENSION;
+        }
+
+        // Otherwise treat it as a manual link (e.g. external URL or mailto)
+        $linkId = (string)$linkId;
+
+        // Check for :// (external URL) or mailto:
+        if (str_contains($linkId, '://') || str_starts_with($linkId, 'mailto:')) {
+            return $linkId;
+        }
+
+        // Assume it's a relative page link
+        return WB_URL . PAGES_DIRECTORY . $linkId . PAGE_EXTENSION;
     }
 
     /**
@@ -501,8 +549,7 @@ _JsCode;
      */
     public function get_post_escaped($field)
     {
-        $result = $this->get_post($field);
-        return (is_null($result)) ? null : $this->add_slashes($result);
+        return $this->get_post($field);
     }
 
     /**
@@ -516,19 +563,7 @@ _JsCode;
         return (isset($_POST[$field]) ? $_POST[$field] : null);
     }
 
-    /**
-     * @brief   Modified addslashes function
-     *
-     * @param string $input
-     * @return  string
-     */
-    public function add_slashes($input)
-    {
-        if (!is_string($input)) {
-            return $input;
-        }
-        return addslashes($input);
-    }
+
 
     /**
      * @brief   Get GET data
@@ -615,25 +650,43 @@ _JsCode;
     }
 
     /**
-     * @brief   Validate the supplied email address
+     * Validates the supplied email address.
      *
-     * @param string
-     * @return  string
+     * Handles internationalized domain names (IDN) by converting the domain
+     * part to its ASCII-compatible encoding (ACE/Punycode) before validation.
+     * Requires the intl extension for IDN support (idn_to_ascii).
+     * Falls back to raw domain validation if the extension is unavailable.
+     *
+     * @param  string $email The email address to validate.
+     * @return bool          Returns true if the email address is valid,
+     *                       false if empty or invalid.
+     *
+     * @see    https://www.php.net/manual/en/function.idn-to-ascii.php
+     * @see    https://www.php.net/manual/en/function.filter-var.php
      */
-    public function validate_email($email)
+    public function validate_email(string $email): bool
     {
-        if (function_exists('idn_to_ascii')) {
-            // use pear if available
-            $email = @idn_to_ascii($email);
-        } else {
-            require_once WB_PATH . '/include/idna_convert/idna_convert.class.php';
-            $IDN = new idna_convert();
-            $email = $IDN->encode($email);
-            unset($IDN);
-        }
-        // regex from NorHei 2011-01-11
-        $retval = preg_match("/^((([!#$%&'*+\\-\/\=?^_`{|}~\w])|([!#$%&'*+\\-\/\=?^_`{|}~\w][!#$%&'*+\\-\/\=?^_`{|}~\.\w]{0,}[!#$%&'*+\\-\/\=?^_`{|}~\w]))[@]\w+(([-.]|\-\-)\w+)*\.\w+(([-.]|\-\-)\w+)*)$/", $email);
-        return ($retval != false);
+       if (empty($email)) {
+           return false;
+       }
+
+       if (str_contains($email, '@')) {
+           [$local, $domain] = explode('@', $email, 2);
+
+           if (function_exists('idn_to_ascii')) {
+               $ascii = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+               // idn_to_ascii returns false on failure
+               if ($ascii !== false) {
+                   $domain = $ascii;
+               }
+           }
+           // If intl is unavailable, fall through with the raw domain.
+           // filter_var will still catch obviously malformed addresses.
+
+           $email = $local . '@' . $domain;
+       }
+
+       return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     /**
@@ -855,211 +908,270 @@ _JsCode;
         }
     }
 
+   /**
+    * Registers module files (CSS, JS, jQuery, system variables) and inserts them into the DOM
+    * using the Insert class (I::) methods.
+    *
+    * @param string $modfileType  css|js|jquery|js_sysvars
+    * @param string $context      frontend|backend  (determines which modfiles are collected)
+    * @return void
+    */
     /**
-     * @brief   This method registers the files and writes them
-     *          to the DOM using the Insert Class methods
+     * Registers module files (CSS, JS, jQuery, system variables) and inserts them 
+     * into the DOM using the Insert class (I::) methods.
      *
-     * @param string $sModfileType css|js|jquery|js_vars
-     * @param string $sEndPosition frontend|backend
-     * @return  void    uses Insert Class methods
+     * This is the main public entry point for modules/themes to register their assets.
+     *
+     * @param string $modfileType  css|js|jquery|js_sysvars
+     * @param string $context      'frontend' or 'backend'
+     * @return void
      */
-    public function register_modfiles($sModfileType = "css", $sEndPosition = "frontend")
+    public function registerModfiles(string $modfileType = 'css', string $context = 'frontend'): void
     {
-        $aToInsert = $this->collect_modfiles($sEndPosition);
+        // Collect all relevant modfiles for the given context
+        $toInsert = $this->collectModfiles($context);
 
-        $sModfileType = strtolower($sModfileType);
-        switch ($sModfileType) {
+        $modfileType = strtolower(trim($modfileType));
+
+        switch ($modfileType) {
+
             case 'css':
-                if (isset($aToInsert['css']) && is_array($aToInsert['css'])) {
-                    foreach ($aToInsert['css'] as $sCssFile) {
-                        I::insertCssFile($sCssFile, 'HEAD MODFILES');
+                if (!empty($toInsert['css']) && is_array($toInsert['css'])) {
+                    foreach ($toInsert['css'] as $cssFile) {
+                        I::insertCssFile($cssFile, 'HEAD MODFILES');
+                    }
+                }
+                break;
+
+            case 'jquery':
+                $jqueryFiles = [
+                    WB_URL . '/include/jquery/jquery-min.js',
+                    WB_URL . '/include/jquery/jquery-insert.js',
+                    WB_URL . '/include/jquery/jquery-migrate-min.js',
+                ];
+
+                // Add jQuery UI theme (from module or fallback to include)
+                $themeFile = WB_URL . '/modules/jquery/jquery_theme.js';
+                if (file_exists(str_replace(WB_URL, WB_PATH, $themeFile))) {
+                    $jqueryFiles[] = $themeFile;
+                } else {
+                    $jqueryFiles[] = WB_URL . '/include/jquery/jquery_theme.js';
+                }
+
+                // Add template-specific jQuery frontend file if it exists
+                $templateJquery = TEMPLATE_DIR . '/jquery_frontend.js';
+                if (file_exists(str_replace(WB_URL, WB_PATH, $templateJquery))) {
+                    $jqueryFiles[] = $templateJquery;
+                }
+
+                foreach ($jqueryFiles as $jsFile) {
+                    I::insertJsFile($jsFile, 'HEAD MODFILES');
+                }
+                break;
+
+            case 'js':
+                // Insert system variables first (always at the top)
+                $jsSysvars = $this->buildJsSystemVariables();
+                I::insertJsCode($jsSysvars, 'HEAD TOP+', 'js_sysvars');
+
+                // JS files for <head>
+                if (!empty($toInsert['js_head']) && is_array($toInsert['js_head'])) {
+                    foreach ($toInsert['js_head'] as $jsFile) {
+                        I::insertJsFile($jsFile, 'HEAD MODFILES');
+                    }
+                }
+
+                // JS files before </body>
+                if (!empty($toInsert['js_body']) && is_array($toInsert['js_body'])) {
+                    foreach ($toInsert['js_body'] as $jsFile) {
+                        I::insertJsFile($jsFile, 'BODY BTM-');
                     }
                 }
                 break;
 
             case 'js_sysvars':
-            case 'jquery':
-                if ($sModfileType != 'js_sysvars') {
-                    $aJqueryFiles = array();
-                    if ($sModfileType == 'jquery') {
-                        $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-min.js';
-                        $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-insert.js';
-                        // $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-include.js';
-                        $aJqueryFiles[] = WB_URL . '/include/jquery/jquery-migrate-min.js';
-
-                        // workout to insert ui.css and theme
-                        $sFile = WB_URL . '/modules/jquery/jquery_theme.js';
-                        $aJqueryFiles[] = file_exists(str_replace(WB_URL, WB_PATH, $sFile)) ? $sFile : WB_URL . '/include/jquery/jquery_theme.js';
-                        // workout to insert plugins functions, set in templatedir
-                        $sFile = TEMPLATE_DIR . '/jquery_frontend.js';
-                        if (file_exists(str_replace(WB_URL, WB_PATH, $sFile))) {
-                            $aJqueryFiles[] = $sFile;
-                        }
-                    }
-                    foreach ($aJqueryFiles as $sJsFile) {
-                        I::insertJsFile($sJsFile, 'HEAD MODFILES');
-                    }
-                }
+                        // System variables are already handled in the 'js' case.
+                        // This case exists only for backward compatibility.
                 break;
-            case 'js':
-                // insert system vars to be ready for all JS code
-				if (defined("URL_VAR_COMPATIBILITY_MODE") && URL_VAR_COMPATIBILITY_MODE==true) {
-					$sJsSysvars = "\t\tvar URL = WB_URL = '" . WB_URL . "';";
-				} else {
-					$sJsSysvars = "\t\tvar WB_URL = '" . WB_URL . "';";
-				}
 
-                if (defined("LANGUAGE")) {
-                    $sJsSysvars .= "\n\t\tvar LANGUAGE     = '" . strtolower(LANGUAGE) . "';";
-                }
-                if (defined("PAGE_ID")) {
-                    $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . PAGE_ID . "';";
-                }
-                if (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
-                    $sJsSysvars .= "\n\t\tvar PAGE_ID      = '" . (int)$_REQUEST['page_id'] . "';";
-                }
-                if (isset($_REQUEST['section_id']) && is_numeric($_REQUEST['section_id'])) {
-                    $sJsSysvars .= "\n\t\tvar SECTION_ID   = '" . (int)$_REQUEST['section_id'] . "';";
-                }
-                if (defined("TEMPLATE_DIR")) {
-                    $sJsSysvars .= "\n\t\tvar TEMPLATE_DIR = '" . TEMPLATE_DIR . "';";
-                }
-                if (defined("THEME_URL") && !defined("WB_FRONTEND")) {
-                    $sJsSysvars .= "\n\t\tvar THEME_URL    = '" . THEME_URL . "';";
-                }
-                if (defined("ADMIN_URL") && !defined("WB_FRONTEND")) {
-                    $sJsSysvars .= "\n\t\tvar ADMIN_URL    = '" . ADMIN_URL . "';";
-                }
-
-                $sJsSysvars .= "\n\t\tvar SESSION_TIMEOUT = '" . $this->get_session_timeout() . "';";
-                $sJsSysvars .= "\n";
-                I::insertJsCode($sJsSysvars, "HEAD TOP+", 'js_sysvars');
-
-                // insert js files to head
-                if (isset($aToInsert['js_head']) && is_array($aToInsert['js_head'])) {
-                    foreach ($aToInsert['js_head'] as $sJsFile) {
-                        I::insertJsFile($sJsFile, 'HEAD MODFILES');
-                    }
-                }
-
-                // insert js files before the closing </body> tag
-                if (isset($aToInsert['js_body']) && is_array($aToInsert['js_body'])) {
-                    foreach ($aToInsert['js_body'] as $sJsFile) {
-                        I::insertJsFile($sJsFile, 'BODY BTM-');
-                    }
-                }
-                break;
             default:
+                        // Unknown modfile type → do nothing (silent)
                 break;
         }
     }
-
+    
     /**
-     * @brief   Query the database in order to determine which modfiles
-     *          to use (from snippets, page-type modules, tools etc.)
-     *          and create a assoc array of all the modfiles to be inserted.
+     * Builds the JavaScript system variables block that will be inserted into the <head>.
      *
-     * @param string $sEndPosition frontend|backend
-     * @return  array   modfiles collection as assoc array
+     * These variables are available globally for all JavaScript code on the page.
+     *
+     * @return string JavaScript code with variable declarations
      */
-    public function collect_modfiles($sEndPosition = 'frontend')
+    private function buildJsSystemVariables(): string
     {
-        $aToInsert = array();
+        $js = "\t\t"; // indentation for clean HTML output
 
-        $sSql = ''; // start collecting the SQL Query
-
-        // get snippet modfiles if in FRONTEND
-        if (defined('WB_FRONTEND')) {
-            $sSql .= "SELECT `directory` as 'module_dir' FROM `{TP}addons` WHERE `function` LIKE '%snippet%'";
+        // WB_URL (and optional URL alias for compatibility)
+        if (defined('URL_VAR_COMPATIBILITY_MODE') && URL_VAR_COMPATIBILITY_MODE === true) {
+            $js .= "var URL = WB_URL = '" . WB_URL . "';\n";
+        } else {
+            $js .= "var WB_URL = '" . WB_URL . "';\n";
         }
 
-        // check if we should use page-type module modfiles
-        $iPageTypePID = null;
+        // Language
+        if (defined('LANGUAGE')) {
+            $js .= "\t\tvar LANGUAGE     = '" . strtolower(LANGUAGE) . "';\n";
+        }
+
+        // Page ID
         if (defined('PAGE_ID')) {
-            $iPageTypePID = PAGE_ID;
-        }
-        if (!defined('PAGE_ID') && isset($_REQUEST['page_id']) && strposm($_SERVER['PHP_SELF'], array(
-                'pages/sections.php',
-                'pages/settings.php'
-            )) == false) {
-            $iPageTypePID = (int)$_REQUEST['page_id'];
-        }
-        if ($iPageTypePID != null && !defined('WB_FRONTEND')) {
-            // dev note: frontend modfiles for page type modules are being added
-            // with the get_section_content() function in the frontend.functions.php
-            if ($sSql != '') {
-                $sSql .= " UNION ALL ";
-            }
-            $sSql .= "SELECT `module` as 'module_dir' FROM `{TP}sections` WHERE `page_id` = " . $iPageTypePID;
+            $js .= "\t\tvar PAGE_ID      = " . (int) PAGE_ID . ";\n";
+        } elseif (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
+            $js .= "\t\tvar PAGE_ID      = " . (int) $_REQUEST['page_id'] . ";\n";
         }
 
-        // if it's a tool, get its modfiles
-        if (isset($_GET['tool'])) {
-            if ($sSql != '') {
-                $sSql .= " UNION ALL ";
-            }
-            $sSql .= "SELECT `directory` as 'module_dir' FROM `{TP}addons` WHERE `function` LIKE '%tool%' AND `directory`= '" . $this->_oDb->escapeString($_GET['tool']) . "'";
+        // Section ID
+        if (isset($_REQUEST['section_id']) && is_numeric($_REQUEST['section_id'])) {
+            $js .= "\t\tvar SECTION_ID   = " . (int) $_REQUEST['section_id'] . ";\n";
         }
 
-        if ($sSql != '') {
-            $aTmp = array();
-            if (($rAddons = $this->_oDb->query($sSql))) {
-                while ($rec = $rAddons->fetchRow(MYSQLI_ASSOC)) {
-                    $aTmp[$rec['module_dir']] = $this->retrieve_modfiles_from_dir($rec['module_dir'], $sEndPosition);
-                }
-                foreach ($aTmp as $sMod => $aType) {
-                    foreach ($aType as $j => $file) {
-                        $aToInsert[$j][] = ($file[0]);
-                    }
-                }
+        // Template directory
+        if (defined('TEMPLATE_DIR')) {
+            $js .= "\t\tvar TEMPLATE_DIR = '" . TEMPLATE_DIR . "';\n";
+        }
+
+        // Backend-only variables
+        if (!defined('WB_FRONTEND')) {
+            if (defined('THEME_URL')) {
+                $js .= "\t\tvar THEME_URL    = '" . THEME_URL . "';\n";
+            }
+            if (defined('ADMIN_URL')) {
+                $js .= "\t\tvar ADMIN_URL    = '" . ADMIN_URL . "';\n";
             }
         }
-        return $aToInsert;
+
+        // Session timeout
+        $sessionTimeout = $this->get_session_timeout();
+        $js .= "\t\tvar SESSION_TIMEOUT = '" . $sessionTimeout . "';\n";
+
+        return $js;
     }
 
     /**
-     * @brief   Look for modfiles in a specified module directory
-     *          and collect the modfiles in a array based on
-     *          modfile type (css|js_head|js_body)
+     * Collects module directories and their modfiles for registerModfiles().
      *
-     * @param string $sModuleDir
-     * @param string $sEndPosition (frontend|backend)
-     * @return  array
+     * @param string $context  'frontend' or 'backend'
+     * @return array
      */
-    public function retrieve_modfiles_from_dir($sModuleDir, $sEndPosition = "frontend")
+    private function collectModfiles(string $context = 'frontend'): array
     {
-        $aCollection = array();
-        $sModDir = '/modules/' . $sModuleDir . '/';
+        $toInsert = [];
+        $modules = [];
 
-
-        // retrieve frontend.css and/or frontend.override.css if exists
-        $sCssFile = $sModDir . $sEndPosition . '%s.css';
-
-        if (file_exists(sprintf(WB_PATH . $sCssFile, '.override'))) {
-            $aCollection['css'][] = sprintf(WB_URL . $sCssFile, '.override');
-        }
-        if (file_exists(sprintf(WB_PATH . $sCssFile, ''))) {
-            $aCollection['css'][] = sprintf(WB_URL . $sCssFile, '');
-        }
-
-        // retrieve frontend.js and/or frontend.override.js if exists
-        $sJsHeadFile = $sModDir . $sEndPosition . '%s.js';
-        if (file_exists(sprintf(WB_PATH . $sJsHeadFile, '.override'))) {
-            $aCollection['js_head'][] = sprintf(WB_URL . $sJsHeadFile, '.override');
-        }
-        if (file_exists(sprintf(WB_PATH . $sJsHeadFile, ''))) {
-            $aCollection['js_head'][] = sprintf(WB_URL . $sJsHeadFile, '');
+        // 1. Snippets – only in frontend
+        if (defined('WB_FRONTEND')) {
+            $modules = array_merge($modules, $this->db->fetchAll(
+                "SELECT `directory` AS `module_dir` 
+                 FROM `{TP}addons` 
+                 WHERE `function` LIKE '%snippet%'",
+                []
+            ));
         }
 
-        // retrieve frontend_body.js and/or frontend_body.override.js if exists
-        $sJsBodyFile = $sModDir . $sEndPosition . '_body%s.js';
-        if (file_exists(sprintf(WB_PATH . $sJsBodyFile, '.override'))) {
-            $aCollection['js_body'][] = sprintf(WB_URL . $sJsBodyFile, '.override');
+        // 2. Page-type modules (backend only)
+        $pageId = null;
+        if (defined('PAGE_ID')) {
+            $pageId = PAGE_ID;
+        } elseif (isset($_REQUEST['page_id']) &&
+                  strposm($_SERVER['PHP_SELF'], ['pages/sections.php', 'pages/settings.php']) === false) {
+            $pageId = (int) $_REQUEST['page_id'];
         }
-        if (file_exists(sprintf(WB_PATH . $sJsBodyFile, ''))) {
-            $aCollection['js_body'][] = sprintf(WB_URL . $sJsBodyFile, '');
+
+        if ($pageId !== null && !defined('WB_FRONTEND')) {
+            $modules = array_merge($modules, $this->db->fetchAll(
+                "SELECT `module` AS `module_dir` 
+                 FROM `{TP}sections` 
+                 WHERE `page_id` = ?",
+                [$pageId]
+            ));
         }
-        return $aCollection;
+
+        // 3. Tools (backend)
+        if (!empty($_GET['tool'])) {
+            $modules = array_merge($modules, $this->db->fetchAll(
+                "SELECT `directory` AS `module_dir` 
+                 FROM `{TP}addons` 
+                 WHERE `function` LIKE '%tool%' 
+                   AND `directory` = ?",
+                [$_GET['tool']]
+            ));
+        }
+
+        // Retrieve modfiles from each module
+        foreach ($modules as $row) {
+            $moduleDir = $row['module_dir'] ?? '';
+            if (empty($moduleDir)) {
+                continue;
+            }
+
+            $filesByType = $this->retrieveModfilesFromDir($moduleDir, $context);
+
+            foreach ($filesByType as $type => $wrappedFiles) {
+                foreach ($wrappedFiles as $wrapped) {
+                    $toInsert[$type][] = $wrapped[0];   // extract the actual URL (string)
+                }
+            }
+        }
+
+        return $toInsert;
+    }
+    
+    /**
+     * Retrieves modfiles (css, js_head, js_body) from a single module directory.
+     *
+     * Returns files in a backward-compatible format so that existing code
+     * like block_contents() and get_section_content() continues to work.
+     *
+     * Each file is wrapped in an array → $sFile[0] contains the actual URL.
+     *
+     * @param string $moduleDir Module directory name
+     * @param string $context   'frontend' or 'backend'
+     * @return array
+     */
+    public function retrieveModfilesFromDir(string $moduleDir, string $context = 'frontend'): array
+    {
+        $collection = [
+            'css'     => [],
+            'js_head' => [],
+            'js_body' => []
+        ];
+
+        $modPath = '/modules/' . $moduleDir . '/';
+
+        $addFile = function (string $relativePath, string $type) use (&$collection, $modPath): void {
+            $fullPath = WB_PATH . $modPath . $relativePath;
+            $fullUrl  = WB_URL  . $modPath . $relativePath;
+
+            if (file_exists(str_replace('%s', '.override', $fullPath))) {
+                $collection[$type][] = str_replace('%s', '.override', $fullUrl);
+            }
+
+            if (file_exists(str_replace('%s', '', $fullPath))) {
+                $collection[$type][] = str_replace('%s', '', $fullUrl);
+            }
+        };
+
+        $addFile($context . '%s.css',     'css');
+        $addFile($context . '%s.js',      'js_head');
+        $addFile($context . '_body%s.js', 'js_body');
+
+        // Backward compatible format: each file wrapped in array
+        $result = [];
+        foreach ($collection as $type => $files) {
+            $result[$type] = array_map(fn($url) => [$url], $files);
+        }
+
+        return $result;
     }
 
     /**
@@ -1100,8 +1212,8 @@ _JsCode;
 
         if ($iPageID > 0) {
             // Get all sections for this page
-            $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id`=%d ORDER BY `position`';
-            if ($resSections = $this->_oDb->query(sprintf($sSql, $iPageID))) {
+            $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id` = ? ORDER BY `position`';
+            if ($resSections = $this->db->query($sSql, [$iPageID])) {
                 while ($rec = $resSections->fetchRow(MYSQLI_ASSOC)) {
                     if ($bExcludeNonPublicised == true) {
                         // skip sections that are not publicised
@@ -1111,198 +1223,168 @@ _JsCode;
                         }
                     }
                     $aSections[$rec['section_id']] = $rec;
+                    $aSections[$rec['section_id']]['module_name'] = $this->get_module_name($rec['module']);
                 }
             }
         }
         return $aSections;
     }
+    
+    /**
+     * Resolve a string value (name or description) for a module.
+     * Improved handling to make use of the new 
+     * Lang class single languages.php file solution.
+     *
+     * Lookup order:
+     *   1. languages/LANGUAGE.php — variable extraction via get_variable_content()
+     *   2. language.php (single-file format) — array key lookup
+     *   3. info.php — variable extraction
+     *   4. DB`{TP}addons` table column fallback
+     *
+     * @param string   $modDir    Module directory name
+     * @param string[] $varNames  Variable names to try in order (first match wins)
+     * @param string   $dbColumn  Column to read from the addons table as last resort
+     * @return string
+     */
+    private function _resolveModuleString(string $modDir, array $varNames, string $dbColumn): string
+    {
+        $modBase = WB_PATH . '/modules/' . $modDir;
+        $value   = '';
+
+        // ── 1. languages/LANGUAGE.php ─────────────────────────────────────────
+        $langFile = $modBase . '/languages/' . LANGUAGE . '.php';
+        if (file_exists($langFile)) {
+            $data  = @file_get_contents($langFile);
+            foreach ($varNames as $var) {
+                $temp = get_variable_content($var, $data, true, false);
+                if ($temp !== false && $temp !== '') { $value = $temp; break; }
+            }
+        }
+
+        // ── 2. language.php (single-file format) ──────────────────────────────
+        // Format: ['EN' => ['module_name' => '...'], 'DE' => ['module_name' => '...']]
+        if ($value === '') {
+            $singleFile = $modBase . '/languages.php';
+            if (is_file($singleFile)) {
+                $all = include $singleFile;
+                if (is_array($all)) {
+                    // Active locale overrides EN
+                    $langData = array_merge($all['EN'] ?? [], $all[LANGUAGE] ?? []);
+                    foreach ($varNames as $var) {
+                        if (!empty($langData[$var])) { $value = (string)$langData[$var]; break; }
+                    }
+                }
+            }
+        }
+
+        // ── 3. info.php ───────────────────────────────────────────────────────
+        if ($value === '') {
+            $infoFile = $modBase . '/info.php';
+            if (file_exists($infoFile)) {
+                $data = @file_get_contents($infoFile);
+                foreach ($varNames as $var) {
+                    $temp = get_variable_content($var, $data, true, false);
+                    if ($temp !== false && $temp !== '') { $value = $temp; break; }
+                }
+            }
+        }
+
+        // ── 4. addons table ───────────────────────────────────────────────────
+        if ($value === '') {
+            $value = (string)($this->db->fetchValue(
+                "SELECT `$dbColumn` FROM `{TP}addons` WHERE `directory` = ?",
+                [$modDir]
+            ) ?? '');
+        }
+
+        return $value;
+    }
 
     /**
-     * introduced with WBCE 1.4.0
+     * Get the module name from language file, single language.php,
+     * info.php or the addons table as fallback.
      *
-     * @brief   Get the module name from modules language file.
-     *          This method will display the module name based on
-     *          the language file if the $module_name variable
-     *          is set in this file.
-     *          Optionally, the original module name can be put in
-     *          parentheses (or other delimiters defined in $sHem)
-     *          if the $bShowOriginal parameter is set to true.
-     *
-     * @param string $sModDir
-     * @param bool $bShowOriginal
-     * @param string $sHem
-     * @param string $sModType ('page', 'tool', 'snippet' ...))
-     * @return  string
+     * @param string $modDir        Module directory name
+     * @param bool   $showOriginal  Append the original DB name in parentheses
+     * @param string $hem           Format string for original name (default: ' (%s)')
+     * @param string $modType       'page', 'tool', 'snippet', ...
+     * @return string
      */
-    public function get_module_name($sModDir = '', $bShowOriginal = false, $sHem = '  (%s)', $sModType = 'page')
-    {
-        $sRetVal = '';
-        if (function_exists('get_variable_content')) {
-            $sLanguageFile = WB_PATH . '/modules/' . $sModDir . '/languages/' . LANGUAGE . '.php';
-            if (file_exists($sLanguageFile)) {
-                // read contents of the modules language file into string
-                $sData = @file_get_contents($sLanguageFile);
-                if ($this->section_name == 'admintools' || $sModType == 'tool') {
-                    $sModType = 'tool';
-                }
-                if ($sModName = get_variable_content('module_name', $sData, true, false)) {
-                    $sRetVal = $sModName;
-                }
-                if ($sModType != 'page' && $sModName = get_variable_content($sModType . '_name', $sData, true, false)) {
-                    $sRetVal = $sModName;
-                }
-                if ($sRetVal == '') {
-                    $sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
-                    $sData = @file_get_contents($sInfoFile);
-                    if ($sModName = get_variable_content('module_name', $sData, true, false)) {
-                        $sRetVal = $sModName;
-                    }
-                    if ($sModType != 'page' && $sModName = get_variable_content($sModType . '_name', $sData, true, false)) {
-                        $sRetVal = $sModName;
-                    }
-                }
-            }
+    public function get_module_name(
+        string $modDir = '',
+        bool   $showOriginal = false,
+        string $hem          = ' (%s)',
+        string $modType      = 'page'
+    ): string {
+        if (empty($modDir)) return '';
+
+        // Type-specific name takes priority over generic module_name
+        $varNames = $modType !== 'page'
+            ? [$modType . '_name', 'module_name']
+            : ['module_name'];
+
+        $moduleName = $this->_resolveModuleString($modDir, $varNames, 'name');
+
+        // Last resort: use directory name
+        if ($moduleName === '') $moduleName = $modDir;
+
+        if ($showOriginal) {
+            $original = (string)($this->db->fetchValue(
+                "SELECT `name` FROM `{TP}addons` WHERE `directory` = ?",
+                [$modDir]
+            ) ?? $modDir);
+            $moduleName .= sprintf($hem, $original);
         }
-        if ($sRetVal == '' || $bShowOriginal == true) {
-            // get original module name from the `{TP}addons` table
-            $sSql = "SELECT `name` FROM `{TP}addons` WHERE `directory` = '%s'";
-            $sOriginal = $this->_oDb->get_one(sprintf($sSql, $sModDir));
-            if ($sRetVal == '' && $bShowOriginal == true) {
-                $sRetVal = $sOriginal;
-            } elseif ($sRetVal != '' && $bShowOriginal == true) {
-                $sRetVal = $sRetVal . sprintf($sHem, $sOriginal);
-            } else {
-                $sRetVal = $sOriginal;
-            }
-        }
-        return $sRetVal;
+
+        return $moduleName;
     }
 
     /**
-     * introduced with WBCE 1.4.0
+     * Get the module description from language file, single language.php,
+     * info.php or the addons table as fallback.
      *
-     * @brief   Get the module description from modules language file.
-     *          This method will display the module description based on
-     *          the language file if the $module_description variable
-     *          is set in this file.
-     *          If no $module_description variable is set in the language
-     *          file, the `description` of the module will be retrieved
-     *          from the `{TP}addons` DB table.
-     *
-     * @param string $sModDir
-     * @param string $sModType ('page', 'tool', 'snippet' ...)
-     * @return  string
+     * @param string $modDir    Module directory name
+     * @param string $modType   'page', 'tool', 'snippet', ...
+     * @return string
      */
-    public function get_module_description($sModDir = '', $sModType = 'page')
+    public function get_module_description(string $modDir = '', string $modType = 'page'): string
     {
-        $sRetVal = '';
-        if (function_exists('get_variable_content')) {
-            $sLanguageFile = WB_PATH . '/modules/' . $sModDir . '/languages/' . LANGUAGE . '.php';
-            if (file_exists($sLanguageFile)) {
-                // read contents of the modules language file into string
-                $sData = @file_get_contents($sLanguageFile);
-                if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
-                    $sRetVal = $sModuleDescription;
-                }
-                if ($this->section_name == 'admintools' || $sModType == 'tool') {
-                    $sModType = 'tool';
-                }
-                if ($sModType != 'page' && $sToolDescription = get_variable_content($sModType . '_description', $sData, true, false)) {
-                    $sRetVal = $sToolDescription;
-                }
-                if ($sRetVal == '') {
-                    $sInfoFile = WB_PATH . '/modules/' . $sModDir . '/info.php';
-                    $sData = @file_get_contents($sInfoFile);
-                    if ($sModuleDescription = get_variable_content('module_description', $sData, true, false)) {
-                        $sRetVal = $sModuleDescription;
-                    }
-                    if ($sModType != 'page' && $sToolDescription = get_variable_content($sModType . '_description', $sData, true, false)) {
-                        $sRetVal = $sToolDescription;
-                    }
-                }
-            }
+        if (empty($modDir)) return '';
+
+        $varNames = ['module_description'];
+        if ($modType !== 'page') $varNames[] = $modType . '_description';
+
+        $description = $this->_resolveModuleString($modDir, $varNames, 'description');
+
+        return str_replace('{WB_URL}', WB_URL, $description);
+    }
+    
+    /**
+     * @brief   Legacy method, kept in place to maintain compatibility with older modules
+     *
+     * @param   string $input
+     * @return  string -> unchanged
+     */
+    public function add_slashes($input)
+    {       
+        if (defined('SQL_DEBUG') && SQL_DEBUG) {
+            trigger_error(
+                'add_slashes() was called but ignored because the new PDO database class is active. ' .
+                'PDO handles escaping automatically.', 
+                E_USER_NOTICE
+            );
         }
-        if ($sRetVal == '') {
-            // get original module description from the `{TP}addons` table
-            $sSql = "SELECT `description` FROM `{TP}addons` WHERE `directory` = '%s'";
-            if ($sOriginal = $this->_oDb->get_one(sprintf($sSql, $sModDir))) {
-                $sRetVal = $sOriginal;
-            }
-        }
-        $sRetVal = str_replace('{WB_URL}', WB_URL, $sRetVal);
-        return $sRetVal;
+        return $input; // return without escaping 
     }
-}
-
-/**
- * Return an array of all the sections of the page
- *
- * @param bool $bExcludeNonPublicised
- * @return array
- * @author Christian M. Stefan <stefek@designthings.de>
- *
- */
-function get_page_sections($iPageID = null, $bExcludeNonPublicised = false)
-{
-    global $database;
-    $aSections = array();
-
-    if ($iPageID == null) {
-        global $page_id;
-        $iPageID = defined('PAGE_ID') ? PAGE_ID : $page_id;
-    } else {
-        $iPageID = (int)$iPageID;
-    }
-
-    if ($iPageID > 0) {
-        // Get all sections for this page
-        $sSql = 'SELECT * FROM `%ssections` WHERE `page_id`=%d ORDER BY `position`';
-        if ($resSections = $database->query(sprintf($sSql, TABLE_PREFIX, $iPageID))) {
-            while ($rec = $resSections->fetchRow(MYSQLI_ASSOC)) {
-                if ($bExcludeNonPublicised == true) {
-                    // skip sections that are not publicised
-                    $iNowTime = time();
-                    if (!(($iNowTime <= $rec['publ_end'] || $rec['publ_end'] == 0) && ($iNowTime >= $rec['publ_start'] || $rec['publ_start'] == 0))) {
-                        continue;
-                    }
-                }
-                $aSections[$rec['section_id']] = $rec;
-            }
-        }
-    }
-    return $aSections;
-}
-
-/**
- * Check if a certain Module is on a certain page
- *
- * @param string $sModuleDir This MUST be the modules directory name
- * @param int $iPageID If left empty, the current page will be checked
- * @return boolean
- * @global type $page_id
- *
- * @author Christian M. Stefan <stefek@designthings.de>
- *
- */
-function is_module_on_page($sModuleDir = '', $iPageID = null)
-{
-    $bOnPage = false;
-    if ($sModuleDir == '') {
-        trigger_error('The 1st argument $sModuleDir must be specified in ' . __FUNCTION__ . '($sModuleDir = \'\', $iPageID = NULL)');
-        return $bOnPage;
-    }
-    if ($iPageID == null) {
-        global $page_id;
-        $iPageID = defined('PAGE_ID') ? PAGE_ID : $page_id;
-    } else {
-        $iPageID = (int)$iPageID;
-    }
-
-    $aSections = get_page_sections($iPageID);
-    foreach ($aSections as $iSectionID => $aData) {
-        if ($aData['module'] === strtolower($sModuleDir)) {
-            $bOnPage = true;
-        }
-    }
-    return $bOnPage;
+    
+    /**
+     * @brief   Legacy method, kept in place to maintain compatibility with older modules
+     *
+     * @param   string $input
+     * @return  string -> unchanged
+     */
+    public function strip_slashes($input)
+    {
+        return $input;
+    }    
 }

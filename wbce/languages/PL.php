@@ -457,6 +457,15 @@ $HEADING['WBMAILER_SETTINGS'] = 'Ustawienia rozsylania maili';
 $HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the mailer settings below are being overriden by settings in the file <code>[WB_PATH]/include/PHPMailer/config_mail.php</code>.<br />'
                                         . 'In order to use the mailer settings below you\'ll need to disable the array in named file.';
 
+/* NEW DIRECTORY REMOVAL STRINGS SINCE WBCE 1.7.0 */
+$MESSAGE['RM_DIR_OK']                 = 'Katalog `%s` oraz cała jego zawartość zostały pomyślnie usunięte.';
+$MESSAGE['RM_FILE_OK']                = 'Plik `%s` został pomyślnie usunięty.';
+$MESSAGE['RM_PATH_NOT_FOUND']         = 'Ścieżka `%s` nie istnieje.';
+$MESSAGE['RM_PATH_NOT_READABLE']      = 'Katalog `%s` istnieje, ale nie jest czytelny.';
+$MESSAGE['RM_PATH_COULD_NOT_REMOVE']  = 'Nie można usunąć `%s` (problem z uprawnieniami, plik zablokowany lub inny błąd).';
+$MESSAGE['RM_PATH_PERMISSION_DENIED'] = 'Odmowa dostępu podczas próby uzyskania dostępu do `%s`.';
+/* END:NEW DIRECTORY REMOVAL STRINGS SINCE WBCE 1.7.0 */
+
 
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Bląd podczas aktualizacji dodatku.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Pomyślnie zainstalowano ponownie pliki językowe';

@@ -12,4 +12,5 @@
 
 // Prevent this file from being access directly
 defined('WB_PATH') or die('Cannot access this file directly');
-$database->query("DROP TABLE `{TP}mod_menu_link`");
+
+// menu_link is a core level module and it can not be uninstalled by design.

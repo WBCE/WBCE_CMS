@@ -10,10 +10,9 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Insert an extra row into the database
-$sql = 'INSERT INTO `' . TABLE_PREFIX . 'mod_wysiwyg` '
-     . 'SET `page_id`=' . $page_id . ', '
-     . '`section_id`=' . $section_id . ', '
-     . '`content`=\'\', '
-     . '`text`=\'\'';
-$database->query($sql);
+$database->insertRow('{TP}mod_wysiwyg', [
+    'page_id'    => (int) $page_id,
+    'section_id' => (int) $section_id,
+    'content'    => '',
+    'text'       => '',
+]);

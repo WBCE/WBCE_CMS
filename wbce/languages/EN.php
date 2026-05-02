@@ -460,7 +460,6 @@ $HEADING['WBMAILER_SETTINGS'] = 'Mailer Settings';
 $HEADING['WBMAILER_CFG_OVERRIDE_HINT'] = '<b>PLEASE NOTE:</b> currently the mailer settings below are being overriden by settings in the file <code>[WB_PATH]/include/PHPMailer/config_mail.php</code>.<br />'
                                         . 'In order to use the mailer settings below you\'ll need to disable the array in named file.';
 
-
 $MESSAGE['ADDON_ERROR_RELOAD'] = 'Error while updating the Add-On information.';
 $MESSAGE['ADDON_LANGUAGES_RELOADED'] = 'Languages reloaded successfully';
 $MESSAGE['ADDON_MANUAL_FTP_LANGUAGE'] = '<strong>ATTENTION!</strong> For safety reasons uploading languages files in the folder/languages/ only by FTP and use the Upgrade function for registering or updating.';
@@ -701,3 +700,68 @@ $OVERVIEW['START'] = 'Administration overview';
 $OVERVIEW['TEMPLATES'] = 'Change the look and feel of your website with templates...';
 $OVERVIEW['USERS'] = 'Manage users who can log-in to WBCE CMS...';
 $OVERVIEW['VIEW'] = 'Quickly view and browse your website in a new window...';
+
+// The strings below were introduced in WBCE 1.7.0 to properly
+// translate Machine readable signals into human readable strings
+// 
+// class AddonManager signal strings
+// ── Lifecycle signals 
+$SIGNAL['ADDON_DETECTED']        = 'Detected %s "%s".';
+$SIGNAL['ADDON_STAGED']          = 'The %s "%s" was uploaded — ready to install.';
+$SIGNAL['ADDON_UNSTAGED']        = 'The %s "%s" was uninstalled and moved to the staging area.';
+$SIGNAL['ADDON_DELETED']         = 'The %s "%s" was permanently deleted.';
+$SIGNAL['ADDON_DELETE_ERROR']    = 'Could not permanently delete %s "%s" — check permissions.';
+$SIGNAL['ADDON_ACTIVATED']       = 'The %s "%s" was activated.';
+$SIGNAL['ADDON_DEACTIVATED']     = 'The %s "%s" was deactivated.';
+// ── ZIP / Extraction 
+$SIGNAL['ADDON_EXTRACT_OK']      = 'Archive for %s "%s" extracted successfully.';
+$SIGNAL['ADDON_EXTRACT_ERROR']   = 'Extraction failed for %s "%s".';
+// ── Remote fetch 
+$SIGNAL['ADDON_FETCH_OK']        = 'The %s "%s" was downloaded successfully.';
+$SIGNAL['ADDON_FETCH_ERROR']     = 'Download failed for %s "%s".';
+// ── Precheck 
+$SIGNAL['ADDON_PRECHECK_OK']     = '%s "%s": requirement met.';
+$SIGNAL['ADDON_PRECHECK_FAILED'] = '%s "%s": requirement not met — installation aborted.';
+// ── Database 
+$SIGNAL['ADDON_INSERTED_OK']     = 'The %s "%s" was installed successfully.';
+$SIGNAL['ADDON_UPDATED_OK']      = 'The %s "%s" was updated successfully.';
+$SIGNAL['ADDON_DB_ERROR']        = '%s "%s": a database error occurred.';
+// ── Scripts 
+$SIGNAL['ADDON_SCRIPT_OK']       = '%s "%s": script executed successfully.';
+$SIGNAL['ADDON_SCRIPT_NOT_FOUND']= '%s "%s": no script found (skipped).';
+$SIGNAL['ADDON_SCRIPT_ERROR']    = '%s "%s": script reported an error.';
+// ── File removal 
+$SIGNAL['ADDON_REMOVED_OK']      = 'The %s "%s" was removed from disk.';
+$SIGNAL['ADDON_REMOVE_ERROR']    = 'Could not remove %s "%s" from disk — check permissions.';
+// ── Reload 
+$SIGNAL['ADDON_RELOAD_OK']       = '%s "%s": reloaded from disk successfully.';
+// ── Guards 
+$SIGNAL['ADDON_IN_USE']          = 'Cannot uninstall %s "%s" — it is still in active use.';
+$SIGNAL['ADDON_IS_CORE']         = 'Cannot uninstall %s "%s" — this is a core component.';
+$SIGNAL['ADDON_IS_DEFAULT']      = 'Cannot uninstall %s "%s" — it is currently the active default.';
+$SIGNAL['ADDON_NOT_WRITABLE']    = 'Cannot write to %s "%s" — check folder permissions.';
+// ── Version checks 
+$SIGNAL['ADDON_ALREADY_CURRENT'] = 'The %s "%s" is already at the current version.';
+$SIGNAL['ADDON_UPDATE_AVAILABLE']= 'An update is available for %s "%s".';
+$SIGNAL['ADDON_UP_TO_DATE']      = 'The %s "%s" is up to date.';
+// ── Path / Info 
+$SIGNAL['ADDON_PATH_NOT_FOUND']  = 'The %s "%s" was not found.';
+$SIGNAL['ADDON_INFO_INVALID']    = '%s "%s": info.php is missing or invalid.';
+// ── Upload errors (one %s = filename) 
+$SIGNAL['ADDON_UPLOAD_ERROR']    = 'Upload error for "%s": see details below.';
+$SIGNAL['UPLOAD_ERR_INI_SIZE']   = 'Upload error: "%s" exceeds the server\'s upload size limit.';
+$SIGNAL['UPLOAD_ERR_FORM_SIZE']  = 'Upload error: "%s" exceeds the form\'s size limit.';
+$SIGNAL['UPLOAD_ERR_PARTIAL']    = 'Upload error: "%s" was only partially uploaded.';
+$SIGNAL['UPLOAD_ERR_NO_FILE']    = 'Upload error: no file was selected.';
+$SIGNAL['UPLOAD_ERR_NO_TMP_DIR'] = 'Upload error: the server\'s temporary folder is missing.';
+$SIGNAL['UPLOAD_ERR_CANT_WRITE'] = 'Upload error: could not write "%s" to disk.';
+$SIGNAL['UPLOAD_ERR_EXTENSION']  = 'Upload error: a PHP extension stopped the upload of "%s".';
+$SIGNAL['UPLOAD_ERR_UNKNOWN']    = 'Upload error: an unknown error occurred for "%s".';
+
+// pathRemove() Signal strings
+$SIGNAL['RM_DIR_OK']                 = 'Directory `%s` and all its contents were removed successfully.';
+$SIGNAL['RM_FILE_OK']                = 'File `%s` was removed successfully.';
+$SIGNAL['RM_PATH_NOT_FOUND']         = 'The path `%s` does not exist.';
+$SIGNAL['RM_PATH_NOT_READABLE']      = 'The directory `%s` exists but is not readable.';
+$SIGNAL['RM_PATH_COULD_NOT_REMOVE']  = 'Could not remove `%s` (permission issue, file locked, or other error).';
+$SIGNAL['RM_PATH_PERMISSION_DENIED'] = 'Permission denied while trying to access `%s`.';

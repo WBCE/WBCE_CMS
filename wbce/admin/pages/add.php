@@ -1,220 +1,187 @@
 <?php
 /**
- * WBCE CMS
- * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
- *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
- * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later version)
+ * WBCE CMS — admin/pages/add.php
+ * Inserts a new page and its first section, then redirects to modify.php.
  */
 
-// Create new admin object and print admin header
 require '../../config.php';
-require_once WB_PATH . '/framework/class.admin.php';
-// suppress to print the header, so no new FTAN will be set
-$admin = new admin('Pages', 'pages_add', false);
+
+$admin = new Admin('Pages', 'pages_add', false);
+
 if (!$admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
 }
 
-// Include the WB functions file
-require_once WB_PATH . '/framework/functions.php';
+// ── Sanitize POST input ───────────────────────────────────────────────────────
 
-// Get values
-$title = $admin->get_post_escaped('title');
-$title = htmlspecialchars($title);
-$module = preg_replace('/[^a-z0-9_-]/i', "", $admin->get_post('type')); // fix secunia 2010-93-4
-$parent = intval($admin->get_post('parent')); // fix secunia 2010-91-2
-$visibility = $admin->get_post('visibility');
-if (!in_array($visibility, array('public', 'private', 'registered', 'hidden', 'none'))) {
+$title          = htmlspecialchars($admin->get_post_escaped('title'));
+$module         = preg_replace('/[^a-z0-9_-]/i', '', $admin->get_post('type'));
+$parent         = (int) $admin->get_post('parent');
+$admin_groups   = $admin->get_post('admin_groups')   ?: [1];
+$viewing_groups = $admin->get_post('viewing_groups') ?: [1];
+$visibility     = $admin->get_post('visibility');
+
+if (!in_array($visibility, ['public', 'private', 'registered', 'hidden', 'none'], true)) {
     $visibility = 'public';
-} // fix secunia 2010-91-2
-$admin_groups = $admin->get_post('admin_groups');
-$viewing_groups = $admin->get_post('viewing_groups');
+}
 
-// Work-out if we should check for existing page_code
-$field_set = $database->field_exists('{TP}pages', 'page_code');
-
-// add Admin to admin and viewing-groups
-$admin_groups[] = 1;
-$viewing_groups[] = 1;
-
-// After check print the header
 $admin->print_header();
-// check parent page permissions:
-if ($parent != 0) {
+
+// ── Error collection ──────────────────────────────────────────────────────────
+// Nothing is written to DB or filesystem until $errors is empty.
+
+$errors = [];
+
+// Permission checks
+if ($parent !== 0) {
     if (!$admin->get_page_permission($parent, 'admin')) {
-        $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
+        $errors[] = $MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'];
     }
 } elseif (!$admin->get_permission('pages_add_l0', 'system')) {
-    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
+    $errors[] = $MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'];
 }
 
-// check module permissions:
 if (!$admin->get_permission($module, 'module')) {
-    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
+    $errors[] = $MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'];
 }
 
-// Validate data
-if ($title == '' || substr($title, 0, 1) == '.') {
-    $admin->print_error($MESSAGE['PAGES_BLANK_PAGE_TITLE']);
+if (!in_array(1, $admin->get_groups_id(), true)) {
+    $userGroups = $admin->get_groups_id();
+    if (empty(array_intersect((array) $admin_groups,   $userGroups))) $errors[] = $MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'];
+    if (empty(array_intersect((array) $viewing_groups, $userGroups))) $errors[] = $MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'];
 }
 
-// Check to see if page created has needed permissions
-if (!in_array(1, $admin->get_groups_id())) {
-    $admin_perm_ok = false;
-    foreach ($admin_groups as $adm_group) {
-        if (in_array($adm_group, $admin->get_groups_id())) {
-            $admin_perm_ok = true;
-        }
-    }
-    if ($admin_perm_ok == false) {
-        $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
-    }
-    $admin_perm_ok = false;
-    foreach ($viewing_groups as $view_group) {
-        if (in_array($view_group, $admin->get_groups_id())) {
-            $admin_perm_ok = true;
-        }
-    }
-    if ($admin_perm_ok == false) {
-        $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
-    }
+if ($title === '' || $title[0] === '.') {
+    $errors[] = $MESSAGE['PAGES_BLANK_PAGE_TITLE'];
 }
 
-$admin_groups = implode(',', $admin_groups);
-$viewing_groups = implode(',', $viewing_groups);
+// Bail early — no point building links if permissions/title already wrong
+if ($errors) {
+    $admin->print_error(implode('<br>', array_unique($errors)));
+}
 
-// Work-out what the link and page filename should be
-if ($parent == '0') {
+// ── Build link / filename ─────────────────────────────────────────────────────
+
+$link = $filename = '';
+
+if ($parent === 0) {
     $link = '/' . page_filename($title);
-    // rename menu titles: index && intro to prevent clashes with intro page feature and WB core file /pages/index.php
-    if ($link == '/index' || $link == '/intro') {
-        $link .= '_0';
-        $filename = WB_PATH . PAGES_DIRECTORY . '/' . page_filename($title) . '_0' . PAGE_EXTENSION;
-    } else {
-        $filename = WB_PATH . PAGES_DIRECTORY . '/' . page_filename($title) . PAGE_EXTENSION;
-    }
+    if ($link === '/index' || $link === '/intro') $link .= '_0';
+    $filename = WB_PATH . PAGES_DIRECTORY . $link . PAGE_EXTENSION;
 } else {
-    $parent_section = '';
-    $hSql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = ' . $parent;
-    $parent_section = $database->get_one($hSql);
-    $filename = WB_PATH . PAGES_DIRECTORY . $parent_section . '/' . page_filename($title) . PAGE_EXTENSION;
-    make_dir(WB_PATH . PAGES_DIRECTORY . $parent_section);
-    $link = $parent_section . '/' . page_filename($title);
+    $parentLink = $database->fetchValue(
+        'SELECT `link` FROM `{TP}pages` WHERE `page_id` = ?', [$parent]
+    );
+    if ($parentLink === null) {
+        $errors[] = $MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'];
+    } else {
+        make_dir(WB_PATH . PAGES_DIRECTORY . $parentLink);
+        $link     = $parentLink . '/' . page_filename($title);
+        $filename = WB_PATH . PAGES_DIRECTORY . $link . PAGE_EXTENSION;
+    }
 }
 
-// Check if a page with same page filename exists
-$sSql = "SELECT `page_id` FROM `{TP}pages` WHERE `link`='" . $link . "'";
-$get_same_page = $database->get_one($sSql);
-if (
-    $get_same_page or
-    file_exists(WB_PATH . PAGES_DIRECTORY . $link . PAGE_EXTENSION) or
-    file_exists(WB_PATH . PAGES_DIRECTORY . $link . '/')
-) {
-    $admin->print_error($MESSAGE['PAGES_PAGE_EXISTS']);
+// Check for duplicates
+if (empty($errors)) {
+    $linkExists = $database->fetchValue(
+        'SELECT `page_id` FROM `{TP}pages` WHERE `link` = ?', [$link]
+    );
+    if ($linkExists || file_exists(WB_PATH . PAGES_DIRECTORY . $link . PAGE_EXTENSION)
+                    || file_exists(WB_PATH . PAGES_DIRECTORY . $link . '/')) {
+        $errors[] = $MESSAGE['PAGES_PAGE_EXISTS'];
+    }
 }
 
-// Include the ordering class
-require WB_PATH . '/framework/class.order.php';
-$order = new order(TABLE_PREFIX . 'pages', 'position', 'page_id', 'parent');
-// First clean order
+if ($errors) {
+    $admin->print_error(implode('<br>', array_unique($errors)));
+}
+
+// ── All validation passed — write to DB ───────────────────────────────────────
+
+$order = new Order(TABLE_PREFIX . 'pages', 'position', 'page_id', 'parent');
 $order->clean($parent);
-// Get new order
 $position = $order->get_new($parent);
 
-// Work-out if the page parent (if selected) has a seperate template or language to the default
-$query_parent = $database->query("SELECT `template`, `language` FROM `{TP}pages` WHERE `page_id` = " . $parent);
-if ($query_parent->numRows() > 0) {
-    $fetch_parent = $query_parent->fetchRow();
-    $template = $fetch_parent['template'];
-    $language = $fetch_parent['language'];
-} else {
-    $template = '';
-    $language = DEFAULT_LANGUAGE;
-}
+$parentRow = $parent > 0
+    ? $database->fetchRow('SELECT `template`, `language` FROM `{TP}pages` WHERE `page_id` = ?', [$parent])
+    : null;
 
+$template = $parentRow['template'] ?? '';
+$language = $parentRow['language'] ?? DEFAULT_LANGUAGE;
 
-// Insert page into pages table
-$aInsert = array(
-    'parent' => $parent,
-    'link' => '',
-    'description' => '',
-    'keywords' => '',
-    'page_trail' => '',
-    'admin_users' => '',
-    'viewing_users' => '',
-    'target' => '_top',
-    'page_title' => $title,
-    'menu_title' => $title,
-    'template' => $template,
-    'visibility' => $visibility,
+// 1. Insert page (link + derived fields resolved in second pass)
+$database->insertRow('{TP}pages', [
+    'parent'            => $parent,
+    'slug'              => null,
+    'description'       => '',
+    'keywords'          => '',
+    'admin_users'       => '',
+    'viewing_users'     => '',
+    'target'            => '_top',
+    'page_title'        => $title,
+    'menu_title'        => $title,
+    'template'          => $template,
+    'visibility'        => $visibility,
     'visibility_backup' => '',
-    'position' => $position,
-    'menu' => 1,
-    'language' => $language,
-    'searching' => 1,
-    'modified_when' => time(),
-    'modified_by' => $admin->get_user_id(),
-    'admin_groups' => $admin_groups,
-    'viewing_groups' => $viewing_groups
-);
-if (!$database->insertRow('{TP}pages', $aInsert)) {
-    $admin->print_error($database->get_error());
+    'position'          => $position,
+    'menu'              => 1,
+    'language'          => $language,
+    'searching'         => 1,
+    'modified_when'     => time(),
+    'modified_by'       => $admin->get_user_id(),
+    'admin_groups'      => implode(',', (array) $admin_groups),
+    'viewing_groups'    => implode(',', (array) $viewing_groups),
+]);
+
+if ($database->hasError()) $errors[] = $database->getError();
+
+if ($errors) {
+    $admin->print_error(implode('<br>', $errors));
 }
-// Get the new page id
+
 $page_id = $database->getLastInsertId();
-// Work out level
-$level = level_count($page_id);
-// Work out root parent
-$root_parent = root_parent($page_id);
-// Work out page trail
-$page_trail = get_page_trail($page_id);
-// Update page with new level and link
-$aUpdate = array(
-    'page_id' => $page_id,
-    'root_parent' => $root_parent,
-    'level' => $level,
-    'link' => $link,
-    'page_trail' => $page_trail,
-);
-if ((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES)
-    && $field_set
-    && ($language == DEFAULT_LANGUAGE)
-    && (
-    file_exists(WB_PATH . '/modules/mod_multilingual/update_keys.php')
-    )) {
-    $aUpdate['page_code'] = (int)$page_id;
-}
-if (!$database->updateRow('{TP}pages', 'page_id', $aUpdate)) {
-    $admin->print_error($database->get_error());
-}
 
-// Create a new file in the /pages dir
-if ($visibility != 'none') {
-    create_access_file($filename, $page_id, $level);
-}
+// 2. Resolve derived fields now that page_id is known
+$database->upsertRow('{TP}pages', 'page_id', [
+    'page_id'     => $page_id,
+    'link'        => $link,
+    'root_parent' => root_parent($page_id),
+    'level'       => level_count($page_id),
+    'page_trail'  => get_page_trail($page_id),
+]);
 
-// Add new record into the sections table
-$aSection = array(
-    'page_id' => $page_id,
+if ($database->hasError()) $errors[] = $database->getError();
+
+// 3. Insert first section
+$database->insertRow('{TP}sections', [
+    'page_id'  => $page_id,
     'position' => 1,
-    'block' => 1,
-    'module' => $module,
-);
-if (!$database->insertRow('{TP}sections', $aSection)) {
-    $admin->print_error($database->get_error());
+    'block'    => 1,
+    'module'   => $module,
+]);
+
+if ($database->hasError()) $errors[] = $database->getError();
+
+$section_id = $database->getLastInsertId();
+if (!$section_id)  $errors[] = $database->getError();
+
+// ── Filesystem only if everything succeeded ───────────────────────────────────
+
+if ($errors) {
+    // Rollback: remove the orphaned page row
+    if ($page_id) $database->deleteRow('{TP}pages', 'page_id', $page_id);
+    $admin->print_error(implode('<br>', $errors));
 }
-// Get the section id
-if (!($section_id = $database->getLastInsertId())) {
-    $admin->print_error($database->get_error());
+
+if ($visibility !== 'none') {
+    create_access_file($filename, $page_id, level_count($page_id));
 }
-// Include the selected modules add file if it exists
-if (file_exists($sModuleAddFile = WB_PATH . '/modules/' . $module . '/add.php')) {
-    require $sModuleAddFile;
+
+// Run module add.php if present
+if (file_exists($moduleAddFile = WB_PATH . '/modules/' . $module . '/add.php')) {
+    require $moduleAddFile;
 }
+
 $admin->print_success($MESSAGE['PAGES_ADDED'], ADMIN_URL . '/pages/modify.php?page_id=' . $page_id);
-$admin->print_footer(); // Print admin footer
+$admin->print_footer();
