@@ -30,7 +30,8 @@ if (!$admin->get_permission('admintools')) {
 }
 
 $link = ADMIN_URL.'/admintools/tool.php?tool=errorlogger';
-$del = "javascript:confirm_link('Are you sure you want to delete the errorlog?','$link&delete=1');";
+$del = "javascript:confirm_link('Are you sure you want to delete the errorlog?','{$link}&delete=1');";
+
 
 
 // Use colored view, stored in cookie
@@ -73,6 +74,47 @@ if (isset($_GET['delete'])) {
         $warning .= '<div class="messagelevel">Message: Logfile renamed to '.$lname.'</div>';
     }
 }
+
+// ── File Based Settings ──────────────────────────────────────────────────────
+// Generate the PDO_CANONICAL_DEBUG constant 
+$arrHard = []; // collect array of preexisting, hardcoded Constants
+$fileBasedSettings = [
+    'PDO_CANONICAL_DEBUG', 
+    'SQL_DEBUG',
+    'WB_DEBUG'
+];
+foreach($fileBasedSettings as $cfg){
+    $isHardcoded = defined($cfg) && !Settings::fileBasedSettingExists($cfg);
+    if($isHardcoded){
+        $arrHard[] = $cfg;
+    }
+    if (isset($_GET[$cfg]) && in_array($_GET[$cfg], [0,1])) {
+       $state = (bool) $_GET[$cfg];
+       Settings::setFileBasedSetting($cfg, (bool) $state);
+       header("Location: ".$link);   
+    }
+}
+$constantsMsg = '';
+foreach($arrHard as $const){
+    $constantsMsg .= "<p>The constant <b>{$const}</b> already exists! Is it hardcoded in the <b>/config.php</b>?</p>";
+}
+
+// Generate the SQL_DEBUG constant
+if (isset($_GET['check_sql']) && in_array($_GET['check_sql'], [0,1])) {
+   $state = (bool) $_GET['check_sql'];
+   Settings::setFileBasedSetting('SQL_DEBUG', (bool) $state);
+   header("Location: ".$link);   
+}
+
+// Generate the SQL_DEBUG constant
+if (isset($_GET['wb_debug']) && in_array($_GET['wb_debug'], [0,1])) {
+   $state = (bool) $_GET['wb_debug'];
+   Settings::setFileBasedSetting('WB_DEBUG', (bool) $state);
+   header("Location: ".$link);   
+}
+
+// ── END: File Based Settings ─────────────────────────────────────────────────
+
 
 if (!isset($_SESSION['lastview'])) {
     $_SESSION['lastview'] = date('c');
@@ -185,8 +227,38 @@ if ($view == '0' or $view == '1') {
         echo 'Great news. No errors reported';
     }
 }
+
+function debugToggleLink(
+        string $url,    // the URL the parameters are sent with
+        string $param,  // the GET parameter that will be sent
+        string $label   // the label of the toggle button
+    ): string {
+    global $arrHard; // inform if constant is hardcoded
+    $isHardcoded = in_array($param, $arrHard);
+    $state   = defined($param) ? (int) constant($param) : 0;
+    $icon    = $state
+        ? '<span style="color:green"><i class="fa fa-check-circle"></i></span>'
+        : '<span style="color:red"><i class="fa fa-ban"></i></span>';
+    $next    = $state ? '0' : '1';
+    if($isHardcoded){        
+        return "<li><a class=\"disabled\" title=\"{$param} is hardcoded, no change possible\">{$icon} {$label}</a></li>";
+    }
+    return "<li><a href=\"{$url}&{$param}={$next}\">{$icon} {$label}</a></li>";
+}
 ?>
 </div>
+<?php if($constantsMsg != ''): ?>
+<div class="constants-info">
+    <p><b>Remove the following hardcoded constants and make them configurable via this tool:</b></p>
+    <?=$constantsMsg?>
+    <p></p>
+</div>
+<?php endif ?>
+<ul class="footer-links">
+    <?= debugToggleLink($link, 'WB_DEBUG',  'WBCE Debug') ?>
+    <?= debugToggleLink($link, 'SQL_DEBUG', 'SQL Debug') ?>
+    <?= debugToggleLink($link, 'PDO_CANONICAL_DEBUG', 'PDO Syntax Debug') ?>
+</ul>
 <?php
 function log_to_array($aLines)
 {

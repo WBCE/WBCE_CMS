@@ -139,26 +139,38 @@ div.tool-header h2 {
     clear: both;
 }
 
-ul.header-links {
+ul.header-links, ul.footer-links  {
     padding: 6px;
     list-style-type: none;
     display: inline;
     float: right;
 }
 
-ul.header-links li {
+ul.header-links li,
+ul.footer-links li {
     display: inline;
     font-size: 14px;
     margin: 3px 2px;
     line-height: 140%;
 }
-
-ul.header-links li a {
+ul.footer-links li {
+    font-size: 12px;    
+    line-height: 120%;
+    margin: 1px;
+}
+ul.header-links li a,
+ul.footer-links li a {
     text-decoration: none;
-    background: #fff;
     padding: 3px 7px;
 }
-
+ul.footer-links li a {
+    border-radius: 6px;
+    background: #fcfcfc;
+    border:thin solid threedface; 
+}
+ul.footer-links li a:hover {
+    background: #fff;
+}
 li.reload-link {
     color: #ff0000;
 }
@@ -180,13 +192,18 @@ ul.header-links li.viewlink a {
     color: grey;
 }
 
-ul.header-links li.active a,
-ul.header-links li.viewlink a:hover {
-    -webkit-box-shadow: inset 1px 1px 4px 0px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: inset 1px 1px 4px 0px rgba(0, 0, 0, 0.2);
-    box-shadow: inset 1px 1px 4px 0px rgba(0, 0, 0, 0.2);
-}
-
 ul.header-links li.active a {
     background-color: #f2ffd6;
+}
+
+.constants-info {
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #fff7e1;
+    border: 1px solid #f4e97d;
+    color: #9e7700;
+}
+a.disabled {
+    cursor: default;
+    opacity: .6;
 }
