@@ -8,34 +8,37 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- * 
  */
 
-/* ─────────────────────────────────────────────────────────────────────────────
+/*
  * A part of this file is based on 'utf8.php' from the DokuWiki-project.
  * (http://www.splitbrain.org/projects/dokuwiki):
- * ─────────────────────────────────────────────────────────────────────────────
+ **
  * UTF8 helper functions
  * @license    LGPL (http://www.gnu.org/copyleft/lesser.html)
  * @author     Andreas Gohr <andi@splitbrain.org>
- * @author     thorn - modified for use with Website Baker, Jan. 2008
+ **
+ * modified for use with Website Baker
+ * from thorn, Jan. 2008
  *
- * Most of the original functions appeared to be too slow with large strings, 
- * so I replaced them with my own ones. Thorn, Mar. 2008
- * 
- * ─────────────────────────────────────────────────────────────────────────────
- * Functions in use:
- *   entities_to_7bit()
- *   entities_to_umlauts2()
- *   umlauts_to_entities2()
- * ─────────────────────────────────────────────────────────────────────────────
+ * most of the original functions appeared to be to slow with large strings, so i replaced them with my own ones
+ * thorn, Mar. 2008
  */
 
-
-// Prevent  this  file  from  being  accessed  directly
-defined('WB_PATH') or die('No direct access allowed');
-
-/** check for mb_string support */
+// Functions we use in Website Baker:
+//   entities_to_7bit()
+//   entities_to_umlauts2()
+//   umlauts_to_entities2()
+/* -------------------------------------------------------- */
+// Must include code to stop this file being accessed directly
+if (!defined('WB_PATH')) {
+    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
+    throw new IllegalFileException();
+}
+/* -------------------------------------------------------- */
+/*
+ * check for mb_string support
+ */
 //define('UTF8_NOMBSTRING',1); // uncomment this to forbid use of mb_string-functions
 if (!defined('UTF8_MBSTRING')) {
     if (function_exists('mb_substr') && !defined('UTF8_NOMBSTRING')) {
@@ -51,7 +54,7 @@ if (UTF8_MBSTRING) {
 
 require_once WB_PATH . '/framework/charsets_table.php';
 
-/**
+/*
  * Checks if a string contains 7bit ASCII only
  *
  * @author thorn
@@ -65,7 +68,7 @@ function utf8_isASCII($str)
     }
 }
 
-/**
+/*
  * Tries to detect if a string is in Unicode encoding
  *
  * @author <bmorel@ssi.fr>
@@ -107,7 +110,7 @@ function utf8_check($Str)
     return true;
 }
 
-/**
+/*
  * Romanize a non-latin string
  *
  * @author Andreas Gohr <andi@splitbrain.org>
@@ -123,7 +126,7 @@ function utf8_romanize($string)
     return strtr($string, $UTF8_ROMANIZATION);
 }
 
-/**
+/*
  * Removes special characters (nonalphanumeric) from a UTF-8 string
  *
  * This function adds the controlchars 0x00 to 0x19 to the array of
@@ -150,7 +153,7 @@ function utf8_stripspecials($string, $repl = '', $additional = '')
  * added functions - thorn
  */
 
-/**
+/*
  * faster replacement for utf8_entities_to_umlauts()
  * not all features of utf8_entities_to_umlauts() --> utf8_unhtml() are supported!
  * @author thorn
@@ -167,8 +170,7 @@ function utf8_fast_entities_to_umlauts($str)
         global $named_entities;
         global $numbered_entities;
         $str = str_replace($named_entities, $numbered_entities, $str);
-        $str = preg_replace_callback("/&#([0-9]+);/", fn($m) => code_to_utf8($m[1]), $str);
-
+        $str = preg_replace("/&#([0-9]+);/e", "code_to_utf8($1)", $str);
     }	
     return ($str);
 }
@@ -188,7 +190,7 @@ function code_to_utf8($num)
     return "?";
 }
 
-/**
+/*
  * faster replacement for utf8_umlauts_to_entities()
  * not all features of utf8_umlauts_to_entities() --> utf8_tohtml() are supported!
  * @author thorn
@@ -235,7 +237,7 @@ function utf8_fast_umlauts_to_entities($string, $named_entities = true)
     return ($string);
 }
 
-/**
+/*
  * Converts from various charsets to UTF-8
  *
  * Will convert a string from various charsets to UTF-8.
@@ -355,7 +357,7 @@ function charset_to_utf8($str, $charset_in = DEFAULT_CHARSET, $decode_entities =
     return $str;
 }
 
-/**
+/*
  * Converts from UTF-8 to various charsets
  *
  * Will convert a string from UTF-8 to various charsets.
@@ -468,7 +470,7 @@ function utf8_to_charset($str, $charset_out = DEFAULT_CHARSET)
     return $str;
 }
 
-/**
+/*
  * convert Filenames to ASCII
  *
  * Convert all non-ASCII characters and all HTML-entities to their plain 7bit equivalents
@@ -495,9 +497,15 @@ function entities_to_7bit($str)
     // convert to HTML-entities, and replace entites by hex-numbers
     $str = utf8_fast_umlauts_to_entities($str, false);
     $str = str_replace('&#039;', '&apos;', $str);
-    $str = preg_replace_callback('/&#([0-9]+);/', function ($aMatches) {
-        return dechex($aMatches[1]);
-    }, $str);
+//    $str = preg_replace_callback('/&#([0-9]+);/', function($matches) {return "dechex($matches[1])";}, $str);
+    //    $str = preg_replace_callback('/&#38;#([0-9]+);/', function($matches) {return dechex($matches[1]);}, $str);
+    if (version_compare(PHP_VERSION, '5.3', '<')) {
+        $str = preg_replace('/&#([0-9]+);/e', "dechex('$1')", $str);
+    } else {
+        $str = preg_replace_callback('/&#([0-9]+);/', function ($aMatches) {
+            return dechex($aMatches[1]);
+        }, $str);
+    }
     // maybe there are some &gt; &lt; &apos; &quot; &amp; &nbsp; left, replace them too
     $str = str_replace(array('&gt;', '&lt;', '&apos;', '\'', '&quot;', '&amp;'), '', $str);
     $str = str_replace('&amp;', '', $str);
@@ -505,7 +513,7 @@ function entities_to_7bit($str)
     return ($str);
 }
 
-/**
+/*
  * Convert a string from mixed html-entities/umlauts to pure $charset_out-umlauts
  *
  * Will replace all numeric and named entities except
@@ -520,7 +528,7 @@ function entities_to_umlauts2($string, $charset_out = DEFAULT_CHARSET)
     return ($string);
 }
 
-/**
+/*
  * Convert a string from mixed html-entities/umlauts to pure ASCII with HTML-entities
  *
  * Will convert a string in $charset_in encoding to a pure ASCII string with HTML-entities.

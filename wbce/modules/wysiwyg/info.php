@@ -10,12 +10,12 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$module_directory   = 'wysiwyg';
-$module_name        = 'WYSIWYG';
-$module_function    = 'page';
-$module_version     = '3.0.0';
-$module_platform    = '1.7.0';
-$module_author      = 'Ryan Djurovich, Christian M. Stefan, many others';
-$module_license     = 'GNU General Public License';
-$module_description = 'Module for a basic WYSIWYG editor section';
-$module_home        = 'https://www.wbce.org';
+$module_directory = 'wysiwyg';
+$module_name = 'WYSIWYG';
+$module_function = 'page';
+$module_version = '2.10.0';
+$module_platform = '1.4.0';
+$module_author = 'Ryan Djurovich';
+$module_license = 'GNU General Public License';
+$module_description = 'This module allows you to edit the contents of a page using a graphical editor';
+$module_home = 'https://www.wbce.org';

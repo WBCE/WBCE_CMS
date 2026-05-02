@@ -10,25 +10,22 @@
  * @license GNU GPL2 (or any later version)
  */
 
-defined('WB_PATH') or die();
+$msg    = '';
+$sTable = TABLE_PREFIX . 'mod_wysiwyg';
+if (($sOldType = $database->getTableEngine($sTable))) {
+    if (('myisam' != strtolower($sOldType))) {
+        if (!$database->query('ALTER TABLE `' . $sTable . '` Engine = \'MyISAM\' ')) {
+            $msg = $database->get_error();
+        }
+    }
+} else {
+    $msg .= $database->get_error() . '<br />';
+}
 
-// 1. Upgrade table engine + collation to InnoDB / utf8mb4
-$database->query(
-    "ALTER TABLE `{TP}mod_wysiwyg`
-     CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
-);
-if ($database->hasError()) user_error('wysiwyg charset: ' . $database->getError());
-
-$database->query("ALTER TABLE `{TP}mod_wysiwyg` ENGINE = InnoDB");
-if ($database->hasError()) user_error('wysiwyg engine: ' . $database->getError());
-
-// 2. Convert stored absolute media URLs to portable placeholder
-$database->query(
-    "UPDATE `{TP}mod_wysiwyg`
-     SET `content` = REPLACE(`content`, ?, ?)
-     WHERE `content` LIKE ?",
-    ['"' . WB_URL . MEDIA_DIRECTORY, '"{SYSVAR:MEDIA_REL}', '%' . WB_URL . MEDIA_DIRECTORY . '%']
-);
-if ($database->hasError()) {
-    user_error('wysiwyg media replace: ' . $database->getError());
+// change internal absolute links into relative links
+$sTable = TABLE_PREFIX . 'mod_wysiwyg';
+$sql    = 'UPDATE `' . $sTable . '` ';
+$sql .= 'SET `content` = REPLACE(`content`, \'"' . WB_URL . MEDIA_DIRECTORY . '\', \'"{SYSVAR:MEDIA_REL}\')';
+if (!$database->query($sql)) {
+    $msg .= $database->get_error() . '<br />';
 }

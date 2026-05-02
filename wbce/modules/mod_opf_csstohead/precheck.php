@@ -44,8 +44,8 @@ $PRECHECK['WB_ADDONS'] = array(
 );
 
 $status = defined('WBCE_VERSION');
-$required = 'TEXT:INSTALLED';
-$actual = ($status) ? 'TEXT:INSTALLED' : 'TEXT:NOT_INSTALLED';
+$required = $TEXT['INSTALLED'];
+$actual = ($status) ? $TEXT['INSTALLED'] : $TEXT['NOT_INSTALLED'];
 
 $PRECHECK['CUSTOM_CHECKS'] = array(
     'WBCE' => array(

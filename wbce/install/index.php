@@ -10,8 +10,8 @@
  * @license GNU GPL2 (or any later version)
  */
 
-if (!defined("WBCE_INSTALLER")) {
-    define("WBCE_INSTALLER", true);
+if (!defined("WB_INSTALLER")) {
+    define("WB_INSTALLER", true);
 }
 
 // start Session if not already started
@@ -28,40 +28,14 @@ $mod_name = basename($mod_path);
 $wb_path = dirname(dirname(realpath(__FILE__)));
 $wb_root = str_replace(realpath($doc_root), '', $wb_path);
 
-
 // Require helper functions
 require_once("helper_functions.php");
-
-// remove [WB_PATH]/wbce_github.php if file exists
-remove_github_fetcher();
 
 // Require Version Info
 require_once("../admin/interface/version.php");
 
 // This is to decide if we display the Install Button on the end of the page
 $installFlag = true;
-
-// --------------- INCLUDE LANGUAGE FILE(S) ----------------------------------//
-$langDir = __DIR__ . '/languages/';
-$enFile = $langDir . 'EN.php';
-if (!file_exists($enFile) || !is_file($enFile) || !is_readable($enFile)) {
-    die('Critical Error: Base language file (EN) not found!');
-}
-include $enFile;
-// 2. Load requested language if different from default
-if (isset($_GET['lang']) && is_string($_GET['lang'])) {
-    $langCode = strtoupper(trim($_GET['lang']));
-
-    if ($langCode !== 'EN' && preg_match('/^[A-Z]{1,5}$/', $langCode)) {
-        $filePath = $langDir . $langCode . '.php';
-
-        if (file_exists($filePath) && is_file($filePath) && is_readable($filePath)) {
-            include $filePath;
-        }
-    }
-}
-// 3. Make variables available globally
-$languages = getAvailableLanguages();
 
 /*****************************
  * Session check
@@ -117,10 +91,7 @@ $e_adc = $e_adc . "";
  *****************************/
 
 // No install button if Version failes
-
-$currentVersion = PHP_VERSION;
-$requiredVersion = trim(@file_get_contents(__DIR__.'/PHP_VERSION_REQUIRED'));
-if (version_compare($currentVersion, $requiredVersion, '>=')) {
+if (version_compare(PHP_VERSION, '8.1.0', '>=')) {
     $sPhpVersion = "good";
 } else {
     $sPhpVersion = "bad";
@@ -162,7 +133,7 @@ if (!isset($_SESSION['config_rename'])) {
             // already installed? it's not empty
             if (filesize($wb_path . $configFile) > 128) {
                 $installFlag = false;
-                $config = '<span class="bad">'.$TXT['hint_not_empty'].' '.$TXT['wbce_already_installed'].'</span>';
+                $config = '<span class="bad">Not empty! WBCE already installed?</span>';
 
             // try to open and to write
             } elseif (!$handle = fopen($wb_path . $configFile, 'w')) {
@@ -427,6 +398,9 @@ if (isset($_SESSION['admin_repassword'])) {
     $sAdminRepassword = $_SESSION['admin_repassword'];
 }
 
+/*****************************
+ * Include  Template
+ *****************************/
 
-// include template file
-include "install_template.php";
+// Finally include the template
+include "install_form.tpl.php";

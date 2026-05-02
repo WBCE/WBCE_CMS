@@ -16,11 +16,11 @@ defined('WB_PATH') or die('Cannot access this file directly');
 // insert a new row into `{TP}mod_menu_link` DB table
 $database->insertRow(
     "{TP}mod_menu_link",
-    [
-        'page_id'        => $page_id,
-        'section_id'     => $section_id,
+    array(
+        'page_id' => $page_id,
+        'section_id' => $section_id,
         'target_page_id' => '0',
-        'anchor'         => '0',
-        'extern'         => ''
-    ]
+        'anchor' => '0',
+        'extern' => ''
+    )
 );

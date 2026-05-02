@@ -14,13 +14,15 @@
  *            This class is also being used with the tool_account_settings
  *            AdminTool introduced with WBCE 1.4.0
  *
- * @author  Christian M. Stefan  (https://www.wbEasy.de)
+ * @author    Christian M. Stefan <stefek@designthings.de>
  *
  * @copyright http://www.gnu.org/licenses/lgpl.html (GNU LGPLv2 or any later)
  */
 
-// Prevent  this  file  from  being  accessed  directly
-defined('WB_PATH') or die('No direct access allowed');
+//no direct file access
+if (count(get_included_files()) == 1) {
+    header("Location: ../index.php", true, 301);
+}
 
 defined('ACCOUNT_TOOL_PATH') or define('ACCOUNT_TOOL_PATH', WB_PATH . '/modules/tool_account_settings');
 
@@ -72,7 +74,7 @@ class Accounts extends Frontend
         $sAMEmail = ''; // init AccountsManager E-Mail
 
         // read SuperAdmin's E-Mail from the DB
-        $sSuperadminEmail = $this->db->fetchValue("SELECT `email` FROM `{TP}users` WHERE `user_id` = 1");
+        $sSuperadminEmail = $GLOBALS['database']->get_one("SELECT `email` FROM `{TP}users` WHERE `user_id` = 1");
 
         // validate E-Mail addresses and use Superadmin's E-Mail if empty or broken
         if (isset($aConfig['accounts_manager_email']) && $aConfig['accounts_manager_email'] != '') {
@@ -176,10 +178,8 @@ class Accounts extends Frontend
     {
         $retVal = false;
         if ($sUsername != '') {
-            $retVal = $this->db->fetchValue(
-                'SELECT `user_id` FROM `{TP}users` WHERE `username` = ?',
-                [$sUsername]
-            );
+            $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `username` = '" . $sUsername . "'";
+            $retVal = $GLOBALS['database']->get_one($sSql);
         }
         return $retVal;
     }
@@ -188,20 +188,23 @@ class Accounts extends Frontend
     {
         $retVal = false;
         if ($sEmail != '') {
-            $retVal = $this->db->fetchValue(
-                'SELECT `user_id` FROM `{TP}users` WHERE `email` = ?',
-                [$sEmail]
-            );
+            $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `email` = '" . $sEmail . "'";
+            $retVal = $GLOBALS['database']->get_one($sSql);
         }
         return $retVal;
     }
 
     public function getUserData($iUserID)
     {
-        return $this->db->fetchAll(
-            'SELECT * FROM `{TP}users` WHERE `user_id` = ?',
-            [(int)$iUserID]
-        )[0] ?? [];
+        global $database;
+        $aConfig = array();
+        $sSql = "SELECT * FROM `{TP}users` WHERE `user_id` = " . intval($iUserID);
+
+        if ($rQuery = $database->query($sSql)) {
+            $aConfig = $rQuery->fetchRow(MYSQLI_ASSOC);
+        }
+
+        return $aConfig;
     }
 
     public function useTwigTemplate($sTplName = '', $aToTwig = array())
@@ -403,12 +406,12 @@ class Accounts extends Frontend
      */
     public function userIdFromConfirmcode($sConfirmCode)
     {
+        global $database;
         $retVal = false;
         if (preg_match('/[0-9a-f]{32}/i', $sConfirmCode)) {
-            $retVal = $this->db->fetchValue(
-                'SELECT `user_id` FROM `{TP}users` WHERE `signup_confirmcode` = ?',
-                [$sConfirmCode]
-            );
+			$sConfirmCode = addslashes($sConfirmCode);
+            $sSql = "SELECT `user_id` FROM `{TP}users` WHERE `signup_confirmcode` = '" . $sConfirmCode . "'";
+            $retVal = $database->get_one($sSql);
         }
         return $retVal;
     }
@@ -418,11 +421,9 @@ class Accounts extends Frontend
      */
     public function checkConfirmSum($sCheckSum, $iUserID)
     {
+        global $database;
         $bRetVal = false;
-        $sDbCheckSum = $this->db->fetchValue(
-            'SELECT `signup_checksum` FROM `{TP}users` WHERE `user_id` = ?',
-            [(int)$iUserID]
-        );
+        $sDbCheckSum = $database->get_one("SELECT `signup_checksum` FROM `{TP}users` WHERE `user_id` = " . $iUserID);
         if ($sDbCheckSum == $sCheckSum) {
             $bRetVal = true;
         }
@@ -499,45 +500,38 @@ class Accounts extends Frontend
         }
         return $aCollection;
     }
-    
+
     public function get_userbase_array($bExtendOnly = false)
     {
-        $aUsers = [];
-        if ($res = $GLOBALS['database']->query("SELECT * FROM `{TP}users`")) {
-            while ($row = $res->fetchRow(MYSQLI_ASSOC)) {                
-                $aUsers[] = $row; // Basic row data                
-                $i = count($aUsers) - 1; // Get the last inserted index (current user)
-                $groups_id = isset($row['groups_id']) ? (string) $row['groups_id'] : '';
-                
-                // Remove spaces and convert to array
-                $groups_id = str_replace(' ', '', $groups_id);
-                $aGroupIDs = (strpos($groups_id, ',') !== false)
-                    ? explode(',', trim($groups_id))
-                    : [$groups_id];
+        $sQueryUsers = ("SELECT * FROM `{TP}users`");
+        $aUsers = array();
+        if ($res = $GLOBALS['database']->query($sQueryUsers)) {
+            for ($i = 0; $i < $res->numRows(); $i++) {
+                $aUsers[$i] = $res->fetchRow(MYSQLI_ASSOC);
 
-                // Build array of group_id => group_name
-                $aTmp = [];
-                foreach ($aGroupIDs as $iGroupID) {
-                    if ($iGroupID !== '') {                 // skip empty values
-                        $aTmp[$iGroupID] = $this->usergroup_names_by_id($iGroupID);
-                    }
+                // make array of groups_id => group_name
+                $aUsers[$i]['groups_id'] = str_replace(' ', '', $aUsers[$i]['groups_id']);
+                $aGroupIDs = strpos($aUsers[$i]['groups_id'], ',') !== false
+                    ? explode(',', trim($aUsers[$i]['groups_id']))
+                    : $aUsers[$i]['groups_id'] = array($aUsers[$i]['groups_id']);
+                $aTmp = array();
+                foreach ($aGroupIDs as $key => $iGroupID) {
+                    $aTmp[$iGroupID] = $this->usergroup_names_by_id($iGroupID);
                 }
-
-                // Store the results back
-                $aUsers[$i]['groups_id'] = $groups_id;         
-                $aUsers[$i]['user_groups'] = $aTmp;        // id => name mapping
+                // make comma separated list of group names
+                $aUsers[$i]['user_groups'] = $aTmp;
             }
         }
         return $aUsers;
     }
 
-
-
-
     public function usergroup_names_by_id($iGroupID = 0)
     {
-        $rows   = $this->db->fetchAll('SELECT `group_id`, `name` FROM `{TP}groups`');
-        $aGroups = array_column($rows, 'name', 'group_id');
+        $aGroups = array();
+        $res = $GLOBALS['database']->query("SELECT `group_id`, `name` FROM `{TP}groups`");
+        while ($rec = $res->fetchRow()) {
+            $aGroups[$rec['group_id']] = $rec['name'];
+        }
         if ($iGroupID > 0) {
             if (!isset($aGroups[$iGroupID])) {
                 return;
@@ -561,10 +555,7 @@ class Accounts extends Frontend
             }
         } elseif (strpos($sConfirmCode, 'signup') !== false) {
             $iGroupID = (int)explode(': ', $sConfirmCode)[1];
-            $sGroup = $this->db->fetchValue(
-                'SELECT `name` FROM `{TP}groups` WHERE `group_id` = ?',
-                [$iGroupID]
-            );
+            $sGroup = $this->_oDb->get_one("SELECT `name` FROM `{TP}groups`WHERE `group_id` = " . $iGroupID);
             $sRetVal = 'on Signup (' . $sGroup . ')';
         }
         return $sRetVal;
@@ -585,7 +576,7 @@ class Accounts extends Frontend
  *             'tool_overview' => array($TOOL_TXT['OVERVIEW'], 'user-circle'),
  *             'config'        => array($TOOL_TXT['CONFIG'], 'calendar'),
  *         );
- * 
+ *  *
  * @param array $aTabs
  * @return array
  */

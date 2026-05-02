@@ -10,13 +10,18 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Prevent  this  file  from  being  accessed  directly
-defined('WB_PATH') or die('No direct access allowed');
+//no direct file access
+if (count(get_included_files()) == 1) {
+    die(header("Location: ../index.php", true, 301));
+}
+
+// since we are in the FRONTEND set WB_FRONTEND constant
+defined('WB_FRONTEND') or define('WB_FRONTEND', true);
 
 // Compatibility mode for older versions.
 // (The News module still needs it for example.)
 if (isset($wb)) {
-    $admin = $wb; // note: this is not a real object of class Admin.
+    $admin = $wb;
 }
 if (isset($wb->default_link)) {
     $default_link = $wb->default_link;
@@ -36,11 +41,13 @@ if (isset($wb->link)) {
 
 
 // Load Snippet Type modules into the frontend
-$snippets = $database->fetchAll("SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE '%snippet%'");
-foreach ($snippets as $rec) {
-    $file = WB_PATH . '/modules/' . $rec['directory'] . '/include.php';
-    if (file_exists($file)) {
-        include $file;
+$sSql = 'SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE \'%snippet%\' ';
+if (($resSnippets = $database->query($sSql))) {
+    while ($rec = $resSnippets->fetchRow()) {
+        $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/include.php';
+        if (file_exists($sFile)) {
+            include $sFile;
+        }
     }
 }
 
@@ -70,10 +77,8 @@ if (!function_exists('get_page_link')) {
      */
     function get_page_link($page_id)
     {
-        return $GLOBALS['database']->fetchValue(
-            'SELECT `link` FROM `{TP}pages` WHERE `page_id` = ?',
-            [(int)$page_id]
-        );
+        $sSql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = %d';
+        return $GLOBALS['database']->get_one(sprintf($sSql, $page_id));
     }
 }
 
@@ -191,8 +196,8 @@ if (!function_exists('get_section_array')) {
         $aSection = array();
         if (isset($iSectionID) && $iSectionID > 0) {
             global $database;
-            $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id` = ?';
-            if ($rSections = $database->query($sSql, [(int)$iSectionID])) {
+            $sSql = 'SELECT * FROM `{TP}sections` WHERE `section_id`=%d';
+            if ($rSections = $database->query(sprintf($sSql, (int)$iSectionID))) {
                 $aSection = $rSections->fetchRow(MYSQLI_ASSOC);
             }
         }
@@ -200,255 +205,279 @@ if (!function_exists('get_section_array')) {
     }
 }
 
-/**
- * Registers CSS and JS modfiles for a given module (frontend).
- *
- * @param string $moduleDir
- * @return void
- */
-function register_module_modfiles(string $moduleDir): void
-{
-    if (empty($moduleDir)) {
-        return;
-    }
 
-    $toInsert = $GLOBALS['wb']->retrieveModfilesFromDir($moduleDir, 'frontend');
+if (!function_exists('get_section_content')) {
+    /**
+     * @brief  Get the actual content of a single section based on its ID.
+     *         It's possible to also add the SEC_ANCHOR (if set in settings),
+     *         and even to use a custom AnchorID if needed.
+     *
+     * @param integer $iSectionID
+     * @param bool $bUseSecAnchor
+     * @param string $sAnchorID
+     * @return array
+     * @global object $database
+     * @global object $wb
+     * @global array $globals several global vars
+     * @global array $TEXT
+     * @global array $MENU
+     * @global array $HEADING
+     * @global array $MESSAGE
+     *
+     */
+    function get_section_content($iSectionID, $bUseSecAnchor = false, $sAnchorID = "")
+    {
+        $sContent = '';
+        $aSection = get_section_array($iSectionID);
 
-    foreach ($toInsert as $assetType => $files) {
-        $assetType = strtolower($assetType);
+        // check if module exists
+        $sModuleViewFile = WB_PATH . '/modules/' . $aSection['module'] . '/view.php';
+        if (is_readable($sModuleViewFile)) {
+            ob_start();
+            $page_id = $iPageID = $aSection['page_id'];
+            $section_id = $iSectionID;
+            // we need those global vars to correctly operate the view.php
+            global $database, $wb, $globals, $TEXT, $MENU, $HEADING, $MESSAGE;
+            $admin = $wb;
+            if (isset($globals) and is_array($globals)) {
+                foreach ($globals as $sGlobalName) {
+                    global $$sGlobalName;
+                }
+            }
+            require $sModuleViewFile; // fetch content using the view.php
+            $sContent = ob_get_clean();
 
-        foreach ($files as $file) {
-            // $file[0] contains the actual file URL (backward compatible format)
-            $fileUrl = $file[0] ?? $file;   // Sicherheit: falls mal ein String kommt
-
-            match ($assetType) {
-                'css'      => I::insertCssFile($fileUrl, 'HEAD MODFILES'),
-                'js_head'  => I::insertJsFile($fileUrl, 'HEAD MODFILES'),
-                'js_body'  => I::insertJsFile($fileUrl, 'BODY MODFILES'),
-                default    => null,
-            };
-        }
-    }
-}
-
-/**
- * Renders the content of a specific section by including its module's view.php.
- *
- * Handles output buffering, OPF filters, section anchor and automatic modfile registration.
- *
- * @param int    $sectionId      Section ID to render
- * @param bool   $useSecAnchor   Whether to add the section anchor (if SEC_ANCHOR is defined)
- * @param string $anchorId       Custom anchor ID (overrides automatic anchor)
- * @return string                Rendered section content
- */
-function get_section_content(int $sectionId, bool $useSecAnchor = false, string $anchorId = ''): string
-{
-    $section = get_section_array($sectionId);
-    if (empty($section) || empty($section['module'])) {
-        return '';
-    }
-
-    $moduleViewFile = WB_PATH . '/modules/' . $section['module'] . '/view.php';
-
-    if (!is_readable($moduleViewFile)) {
-        return '';
-    }
-
-    // Setup environment for legacy module view.php
-    ob_start();
-
-    $page_id    = $pageId    = (int)$section['page_id'];
-    $section_id = $sectionId;
-
-    global $database, $wb, $globals, $TEXT, $MENU, $HEADING, $MESSAGE;
-    $admin = $wb;
-
-    if (isset($globals) && is_array($globals)) {
-        foreach ($globals as $globalName) {
-            global $$globalName;
-        }
-    }
-
-    require $moduleViewFile;
-    $content = ob_get_clean();
-
-    // Apply OPF section filter
-    if (function_exists('opf_apply_filters')) {
-        $content = opf_controller('section', $content, $section['module'], $pageId, $sectionId);
-    }
-
-    // Add section anchor
-    if ($useSecAnchor || $anchorId !== '') {
-        $secAnchorLayout = '<a class="section_anchor" id="%s"></a>';
-
-        if ($anchorId !== '') {
-            $sectionAnchor = sprintf($secAnchorLayout, $anchorId);
-        } elseif (defined('SEC_ANCHOR') && SEC_ANCHOR !== '') {
-            $sectionAnchor = sprintf($secAnchorLayout, SEC_ANCHOR . $section['section_id']);
-        } else {
-            $sectionAnchor = '';
-        }
-
-        if ($sectionAnchor !== '') {
-            $content = $sectionAnchor . $content;
-        }
-    }
-
-    // Register module modfiles (CSS/JS)
-    register_module_modfiles($section['module']);
-
-    return $content;
-}
-
-/**
- * Fetches all sections of a template layout block and returns them as an array.
- *
- * @param int|string $block  Block ID (numeric) or block name
- * @return array|null        Sections array, or null on permission/visibility failure.
- *                           Returns null (not []) so template checks like
- *                           if (!block_contents()) work correctly.
- */
-function block_contents($block = 1): ?array
-{
-    global $database, $wb, $TEXT, $MESSAGE, $HEADING, $MENU;
-    $admin = $wb;
-
-    $blockId = is_numeric($block) ? (int)$block : get_block_id($block);
-
-    $blockSections = [];
-
-    // Early exits for permission / visibility issues
-    if ($wb->page_access_denied ?? false) {
-        echo $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'] ?? 'No viewing permissions';
-        return null;
-    }
-
-    if ($wb->page_no_active_sections ?? false) {
-        echo $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'] ?? 'No active sections';
-        return null;
-    }
-
-    // Special case: full page content via PAGE_CONTENT constant
-    if (defined('PAGE_CONTENT')) {
-        ob_start();
-        require PAGE_CONTENT;
-        $blockSections[]['content'] = ob_get_clean();
-        return $blockSections;
-    }
-
-    // Return null if current page is not visible
-    if (($wb instanceof frontend) && !$wb->page_is_visible($wb->page ?? [])) {
-        return null;
-    }
-
-    // Get sections for this block
-    $sql = 'SELECT `section_id` FROM `{TP}sections`
-            WHERE `page_id` = ? AND `block` = ?
-            ORDER BY `position`';
-
-    $pageId = $page_id = $wb->page_id ?? 0;
-
-    $sectionsResult = $database->query($sql, [$pageId, $blockId]);
-
-    if (!$sectionsResult || $sectionsResult->numRows() === 0) {
-        // Try default block content
-        if (($wb->default_block_content) === intval(0)) {
-            return null;
-        }
-
-        $pageId = is_numeric($wb->default_block_content ?? null)
-            ? (int)$wb->default_block_content
-            : ($wb->default_page_id ?? 0);
-
-        $sectionsResult = $database->query($sql, [$pageId, $blockId]);
-
-        if (!$sectionsResult || $sectionsResult->numRows() === 0) {
-            return null;
-        }
-    }
-
-    // Process each section
-    while ($row = $sectionsResult->fetchRow(MYSQLI_ASSOC)) {
-        $sectionId = (int)$row['section_id'];
-        $section   = get_section_array($sectionId);
-
-        if (empty($section)) continue;
-
-        // Skip section if outside publication period
-        $currentTime = time();
-        if (!(
-            ($currentTime <= ($section['publ_end']   ?? 0) || ($section['publ_end']   ?? 0) == 0) &&
-            ($currentTime >= ($section['publ_start'] ?? 0) || ($section['publ_start'] ?? 0) == 0)
-        )) {
-            continue;
-        }
-
-        // Render section content via get_section_content()
-        // (handles view.php, OPF 'section' filter, globals, modfile registration)
-        $content = get_section_content($sectionId);
-
-        if ($content === '') continue;
-
-        // Search result highlighting — mutually exclusive with OPF 'special' filter
-        if (isset($_GET['searchresult']) && is_numeric($_GET['searchresult'])
-            && !isset($_GET['nohighlight']) && !empty($_GET['sstring'])) {
-
-            $searchString = filter_input(INPUT_GET, 'sstring', FILTER_SANITIZE_ENCODED);
-            $searchString = str_replace('%', '', $searchString);
-            $searchTerms  = explode(' ', $searchString);
-
-            if ($_GET['searchresult'] == 2) {
-                $searchTerms[0] = str_replace('_', ' ', $searchTerms[0] ?? '');
+            // use OPF hook
+            if (function_exists('opf_apply_filters')) {
+                $sContent = opf_controller('section', $sContent, $aSection['module'], $iPageID, $iSectionID);
+            }
+            if ($bUseSecAnchor == true || $sAnchorID != '') {
+                $sAnchorTPL = '<a class="section_anchor" id="%s"></a>';
+                if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
+                    $sSecAnchor = sprintf($sAnchorTPL, SEC_ANCHOR . $aSection['section_id']);
+                }
+                if ($sAnchorID != '') {
+                    $sSecAnchor = sprintf($sAnchorTPL, $sAnchorID);
+                }
+                $sContent = $sSecAnchor . $sContent;
             }
 
-            $blockSections[]['content'] = search_highlight($content, $searchTerms);
-            continue;
+            $aToInsert = $GLOBALS['wb']->retrieve_modfiles_from_dir($aSection['module'], "frontend");
+            foreach ($aToInsert as $sModfileType => $sFile) {
+                $sModfileType = strtolower($sModfileType);
+                switch ($sModfileType) {
+                    case 'css':
+                        I::insertCssFile($sFile[0], 'HEAD MODFILES');
+                        break;
+                    case 'js_head':
+                        I::insertJsFile($sFile[0], 'HEAD MODFILES');
+                        break;
+                    case 'js_body':
+                        I::insertJsFile($sFile[0], 'BODY MODFILES');
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-
-        // Apply OPF 'special' filter — only outside search-highlight path
-        if (function_exists('opf_apply_filters')) {
-            $content = opf_controller('special', $content);
-        }
-
-        // Build section anchor
-        $sectionAnchor = '';
-        if (defined('SEC_ANCHOR') && SEC_ANCHOR !== '') {
-            $sectionAnchor = '<a class="section_anchor" id="' . SEC_ANCHOR . $section['section_id'] . '"></a>';
-        }
-
-        $blockSections[$sectionId] = [
-            'position'     => $section['position']   ?? 0,
-            'section_id'   => $section['section_id'] ?? $sectionId,
-            'module'       => $section['module']      ?? '',
-            'section_name' => $section['namesection'] ?? '',
-            'evenodd'      => (($section['position'] ?? 0) % 2 === 1) ? 'even' : 'odd',
-            'content'      => $sectionAnchor !== ''
-                ? PHP_EOL . $sectionAnchor . PHP_EOL . $content
-                : $content,
-        ];
+        return $sContent;
     }
+}
 
-    return $blockSections;
+
+if (!function_exists('block_contents')) {
+    /**
+     * @brief   This functions fetches the sections of a templates layout block
+     *           and retuns it as an array for further processing.
+     *
+     * @param unspec $uBlock Template layout block-name or block-id
+     * @return  array   whole array of sections contained in a block
+     * @global  array $MESSAGE
+     *
+     * @global  object $database
+     * @global  object $wb
+     */
+    function block_contents($uBlock = 1)
+    {
+        global $database, $wb, $TEXT, $MESSAGE, $HEADING, $MENU;
+        $admin = $wb;
+        $iBlockID = is_numeric($uBlock) ? $uBlock : get_block_id($uBlock);
+
+        $aBlockSections = array();
+        if ($wb->page_access_denied == true) {
+            echo $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'];
+            return;
+        }
+        if ($wb->page_no_active_sections == true) {
+            echo $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'];
+            return;
+        }
+
+        // Include page content
+        if (!defined('PAGE_CONTENT')) {
+
+            // return if page is not visible
+            if (($wb instanceof frontend) && !$wb->page_is_visible($wb->page)) {
+                return;
+            }
+
+            // First get all sections for this page
+            $sSql = 'SELECT `section_id` FROM `{TP}sections` 
+                        WHERE `page_id`=%d AND `block`=%d
+                        ORDER BY `position`';
+
+            $iPageID = $page_id = $wb->page_id;
+            if (!($rSections = $database->query(sprintf($sSql, $iPageID, $iBlockID)))) {
+                return; // return if no results
+            }
+
+            // If no sections were found, check if default content is supposed to be shown
+            if ($rSections->numRows() == 0) {
+                if ($wb->default_block_content == 'none') {
+                    return;
+                }
+                $iPageID = $wb->default_page_id;
+                if (is_numeric($wb->default_block_content)) {
+                    $iPageID = $wb->default_block_content;
+                }
+
+                if (!($rSections = $database->query(sprintf($sSql, $iPageID, $iBlockID)))) {
+                    return;
+                }
+                // Still no cotent found? Give it up, there's just nothing to show!
+                if ($rSections->numRows() == 0) {
+                    return;
+                }
+            }
+
+            // Loop through sections
+            while ($row = $rSections->fetchRow(MYSQLI_ASSOC)) {
+                $iSectionID = $row['section_id'];
+                $aSection = get_section_array($iSectionID);
+
+                // skip this section if it is out of publication date
+                $now = time();
+                if (!(
+                    ($now <= $aSection['publ_end'] || (int)$aSection['publ_end'] == 0)
+                    &&
+                    ($now >= $aSection['publ_start'] || (int)$aSection['publ_start'] == 0)
+                )) {
+                    continue;
+                }
+
+                /**
+                 * here again the same as get_section_content() but we should
+                 * include the code here explicitly so that variables used by
+                 * the sections stay available for the next iteration of the loop
+                 */
+
+                $sContent = '';
+                $aSection = get_section_array($iSectionID);
+
+                // check if module exists
+                $sModuleViewFile = WB_PATH . '/modules/' . $aSection['module'] . '/view.php';
+                if (is_readable($sModuleViewFile)) {
+                    ob_start();
+                    $page_id = $iPageID = $aSection['page_id'];
+                    $section_id = $iSectionID;
+                    // we need those global vars to correctly operate the view.php
+                    global $database, $wb, $globals, $TEXT, $MENU, $HEADING, $MESSAGE;
+                    $admin = $wb;
+                    if (isset($globals) and is_array($globals)) {
+                        foreach ($globals as $sGlobalName) {
+                            global $$sGlobalName;
+                        }
+                    }
+                    require $sModuleViewFile; // fetch content using the view.php
+                    $sContent = ob_get_clean();
+
+                    // use OPF hook
+                    if (function_exists('opf_apply_filters')) {
+                        $sContent = opf_controller('section', $sContent, $aSection['module'], $iPageID, $iSectionID);
+                    }
+
+                    $aToInsert = $GLOBALS['wb']->retrieve_modfiles_from_dir($aSection['module'], "frontend");
+                    foreach ($aToInsert as $sModfileType => $sFile) {
+                        $sModfileType = strtolower($sModfileType);
+                        switch ($sModfileType) {
+                            case 'css':
+                                I::insertCssFile($sFile[0], 'HEAD MODFILES');
+                                break;
+                            case 'js_head':
+                                I::insertJsFile($sFile[0], 'HEAD MODFILES');
+                                break;
+                            case 'js_body':
+                                I::insertJsFile($sFile[0], 'BODY MODFILES');
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                if ($sContent == '') {
+                    continue;
+                }
+
+                $sec_anchor = '';
+                if (defined('SEC_ANCHOR') && SEC_ANCHOR != '') {
+                    $sec_anchor = '<a class="section_anchor" id="' . SEC_ANCHOR . $aSection['section_id'] . '" ></a>';
+                }
+                // highlights searchresults
+                if (isset($_GET['searchresult']) && is_numeric($_GET['searchresult']) && !isset($_GET['nohighlight']) && isset($_GET['sstring']) && !empty($_GET['sstring'])) {
+                    $sstringc = filter_input(INPUT_GET,"sstring",FILTER_SANITIZE_ENCODED);
+				    $sstringc = str_replace("%","",$sstringc);					
+					$arr_string = explode(" ", $sstringc);
+				   
+                    if ($_GET['searchresult'] == 2) {
+                        // exact match
+                        $arr_string[0] = str_replace("_", " ", $arr_string[0]);
+                    }
+                    $aBlockSections[]['content'] = search_highlight($sContent, $arr_string);
+                } else {
+                    // OPF Hook, Apply Filters
+                    if (function_exists('opf_apply_filters')) {
+                        $sContent = opf_controller('special', $sContent);
+                    }
+                    $aBlockSections[$iSectionID]['position'] = $aSection['position'];
+                    $aBlockSections[$iSectionID]['section_id'] = $aSection['section_id'];
+                    $aBlockSections[$iSectionID]['module'] = $aSection['module'];
+                    $aBlockSections[$iSectionID]['section_name'] = $aSection['namesection'];
+                    $aBlockSections[$iSectionID]['evenodd'] = ($aSection['position'] % 2 == 1) ? 'even' : 'odd';
+                    if ($sec_anchor != '') {
+                        $aBlockSections[$iSectionID]['content'] = PHP_EOL . $sec_anchor . PHP_EOL . $sContent;
+                    } else {
+                        $aBlockSections[$iSectionID]['content'] = $sContent;
+                    }
+                }
+            }
+        } else {
+            ob_start();
+            require PAGE_CONTENT;
+            $aBlockSections[]['content'] = ob_get_clean();
+        }
+        return $aBlockSections;
+    }
 }
 
 if (!function_exists('page_content')) {
     /**
      * @brief   print or return (e.g. into a variable for later use)
      *          all the sections of one block into the template
-     *          It now alllows to enter block names as well as block numbers.
-     *          The second parameter lets the function return the result instead of printing it immediately.
+     *            It now alllows to enter block names as well as block numbers.
+     *            The second parameter lets the function return the result instead of printing it immediately.
      *
      * @param unspec $uBlock Block ID or Block name
      * @param bool $bPrint echo the contents
-     *                      or set to 0 if you want to fetch the contents into a variable
+     *                              or set to 0 if you want to fetch the contents into a variable
      * @return string
-     * @global  object $wb       |   The global variables are
+     * @global  object $wb |   The global variables are
      * @global  object $database |   optional and will be used
-     * @global  array $globals   |   only in case PAGE_CONTENT
-     * @global  array $TEXT      |   (this are the special pages
-     * @global  array $MESSAGE   |   like search, account etc.)
-     * @global  array $HEADING   |   is defined.
-     * @global  array $MENU      |
+     * @global  array $globals |   only in case PAGE_CONTENT
+     * @global  array $TEXT |   (this are the special pages
+     * @global  array $MESSAGE |   like search, account etc.)
+     * @global  array $HEADING |   is defined.
+     * @global  array $MENU |
      *
      */
     function page_content($uBlock = 1, $bPrint = 1)
@@ -551,7 +580,7 @@ if (!function_exists('register_frontend_modfiles')) {
         if ($sModfileType != 'jquery') {
             echo '<!--(PH) ' . strtoupper($sModfileType) . ' HEAD MODFILES -->' . PHP_EOL;
         }
-        return $GLOBALS['wb']->registerModfiles($sModfileType, "frontend");
+        return $GLOBALS['wb']->register_modfiles($sModfileType, "frontend");
     }
 }
 

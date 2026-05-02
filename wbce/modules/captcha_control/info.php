@@ -10,21 +10,19 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$core = true;
-$module_directory   = 'captcha_control';
-$module_name        = 'Captcha and Advanced-Spam-Protection (ASP) Control';
-$module_function    = 'tool';
-$module_version     = '2.0.6';
-$module_platform    = '1.4.0';
-$module_author      = 'Thorn, Luise Hahne, Norbert Heimsath';
-$module_license     = 'WTFPL';
+$module_directory = 'captcha_control';
+$module_name = 'Captcha and Advanced-Spam-Protection (ASP) Control';
+$module_function = 'tool';
+$module_version = '2.0.5';
+$module_platform = '1.4.0';
+$module_author = 'Thorn, Luise Hahne, Norbert Heimsath';
+$module_license = 'WTFPL';
 $module_description = 'Admin-Tool to control CAPTCHA and ASP';
-$module_icon        = 'fa fa-keyboard-o';
+$module_icon = 'fa fa-keyboard-o';
+$module_level = 'core';
 
 /**
  * Version history
- * 
- * 2.0.6 - set $core var, remove deprecated $module_level var
  * 
  * 2.0.5 - php 8.1 fixes
  * 

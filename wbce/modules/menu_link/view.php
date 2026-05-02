@@ -14,8 +14,8 @@
 defined('WB_PATH') or die("Cannot access this file directly");
 
 // get target_page_id
-$sSql  = 'SELECT * FROM `{TP}mod_menu_link` WHERE `page_id` = ?';
-$rQueryPageData = $database->query($sSql, [(int) PAGE_ID]);
+$sSql  = 'SELECT * FROM `{TP}mod_menu_link` WHERE `page_id` = '.(int)PAGE_ID;
+$rQueryPageData = $database->query($sSql);
 
 if ($rQueryPageData->numRows() == 1) {
     $aPageData = $rQueryPageData->fetchRow(MYSQLI_ASSOC); // generate assoc array from query

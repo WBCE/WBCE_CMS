@@ -19,8 +19,7 @@
 /*
  *      CHANGELOG
  *
- *      1.1.8   2026-04-24	- set $core var, remove deprecated $module_level var
- *	1.1.7	2023-02-25	- update description (florian)
+ *		1.1.7	2023-02-25		- update description (florian)
  *      1.1.6   2020-05-06      - only remove empty lines resulting from replace
  *      1.1.5   2019-07-05      - by default enable filter on searchresults
  *      1.1.4   2019-04-22      - include opf functions in upgrade script
@@ -43,12 +42,13 @@ if(!defined('WB_PATH')) {
 }
 /* -------------------------------------------------------- */
 
-$core = true;
-$module_directory   = 'mod_opf_remove_system_ph';
-$module_name        = 'OPF Remove System PH';
-$module_function    = 'opffilter';
-$module_version     = '1.1.8';
-$module_platform    = 'WBCE 1.3.x ';
-$module_author      = 'Martin Hecht (mrbaseman)';
-$module_license     = 'GNU GPL2 (or any later version)';
-$module_description = 'remove system placeholder markers ';
+
+$module_directory       = 'mod_opf_remove_system_ph';
+$module_name            = 'OPF Remove System PH';
+$module_function        = 'opffilter';
+$module_version         = '1.1.7';
+$module_platform        = 'WBCE 1.3.x ';
+$module_author          = 'Martin Hecht (mrbaseman)';
+$module_license         = 'GNU GPL2 (or any later version)';
+$module_description     = 'remove system placeholder markers ';
+$module_level           = 'core';

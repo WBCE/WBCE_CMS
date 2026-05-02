@@ -19,8 +19,7 @@
 /*
  *      CHANGELOG
  *
- *      1.0.9   2026-04-24	- set $core var, remove deprecated $module_level var
- *	1.0.8	2023-02-25	- rename, update description (florian)
+ *		1.0.8	2023-02-25		- rename, update description (florian)
  *      1.0.7   2019-07-05      - by default enable filter on searchresults
  *      1.0.6   2019-04-22      - include opf functions in upgrade script
  *      1.0.5   2019-04-22      - move up before sys rel and short url filter
@@ -42,12 +41,13 @@ if(!defined('WB_PATH')) {
 }
 /* -------------------------------------------------------- */
 
-$core = true;
-$module_directory    = 'mod_opf_replace_stuff';
-$module_name         = 'OPF Replace Contents';
-$module_function     = 'opffilter';
-$module_version      = '1.0.9';
-$module_platform     = 'WBCE 1.3.x ';
-$module_author       = 'Martin Hecht (mrbaseman)';
-$module_license      = 'GNU GPL2 (or any later version)';
-$module_description  = 'replaces the areas marked by placeholders by the corresponding parts enclosed by replacement markers';
+
+$module_directory       = 'mod_opf_replace_stuff';
+$module_name            = 'OPF Replace Contents';
+$module_function        = 'opffilter';
+$module_version         = '1.0.8';
+$module_platform        = 'WBCE 1.3.x ';
+$module_author          = 'Martin Hecht (mrbaseman)';
+$module_license         = 'GNU GPL2 (or any later version)';
+$module_description     = 'replaces the areas marked by placeholders by the corresponding parts enclosed by replacement markers';
+$module_level           = 'core';

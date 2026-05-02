@@ -1,9 +1,0 @@
-@file       PDO 
-@category   admintool
-@package    addon_monitor
-@author     Christian M. Stefan (https://www.wbeasy.de)
-@license    http://www.gnu.org/licenses/gpl.html
-@platform   WBCE CMS 1.7.0
-
-Addon Monitor is fully supporting the new WBCE PDO Database class.
-This tool is not backwards compatible with versions prior to WBCE CMS v.1.7.0

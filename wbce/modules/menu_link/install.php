@@ -13,16 +13,18 @@
 // Prevent this file from being access directly
 defined('WB_PATH') or die('Cannot access this file directly');
 
-$database->query("DROP TABLE IF EXISTS {TP}mod_menu_link");
-$table = "
-    CREATE TABLE IF NOT EXISTS {TP}mod_menu_link (
-        `section_id`      INT(11)        NOT NULL   DEFAULT '0',
-        `page_id`         INT(11)        NOT NULL   DEFAULT '0',
-        `target_page_id`  INT(11)        NOT NULL   DEFAULT '0',
-        `redirect_type`   INT(3)         NOT NULL   DEFAULT '301',
-        `anchor`          VARCHAR(255)   NOT NULL   DEFAULT '0' ,
-        `extern`          VARCHAR(255)   NOT NULL   DEFAULT '' ,
-        PRIMARY KEY (`section_id`)
-    ) {TABLE_ENGINE}  {TABLE_COLLATION};
+$sTableName = "{TP}mod_menu_link";
+$database->query("DROP TABLE IF EXISTS `$sTableName`");
+
+$sSqlTable = "
+	CREATE TABLE IF NOT EXISTS `$sTableName` (
+		`section_id`     INT(11) NOT NULL       DEFAULT '0',
+		`page_id`        INT(11) NOT NULL       DEFAULT '0',
+		`target_page_id` INT(11) NOT            NULL DEFAULT '0',
+		`redirect_type`  INT(3)  NOT NULL       DEFAULT '301',
+		`anchor`         VARCHAR(255) NOT NULL  DEFAULT '0' ,
+		`extern`         VARCHAR(255) NOT NULL  DEFAULT '' ,
+		PRIMARY KEY (`section_id`)
+	) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 ";
-$database->importSql($table);
+$database->query($sSqlTable);

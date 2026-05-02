@@ -4,7 +4,7 @@
  * @package         Security Settings
  * @author          WBCE Project
  * @copyright       Norbert Heimsath
- * @license         WTFPL
+ * @license			WTFPL
  */
 
 /*
@@ -60,45 +60,45 @@ if ($saveSettings) {
 
     // Use fingerprinting
     if ($admin->get_post("useFP")) {
-        $setError = Settings::set("wb_secform_usefp", true);
+        $setError=Settings::Set("wb_secform_usefp", true);
     } else {
-        $setError = Settings::set("wb_secform_usefp", false);
+        $setError=Settings::Set("wb_secform_usefp", false);
     }
 
     $ipOctets=$admin->get_post("ipOctets");
     if (preg_match("/^[0-4]$/u", $ipOctets)) {
-        $setError.=Settings::set("fingerprint_with_ip_octets", $ipOctets);
+        $setError.=Settings::Set("fingerprint_with_ip_octets", $ipOctets);
     } else {
         $setError.=$SFS['USEIP_ERR'];
     }
 
     $tokenName=$admin->get_post("tokenName");
     if (preg_match("/^[a-zA-Z]{5,20}$/u", $tokenName)) {
-        $setError.=Settings::set("wb_secform_tokenname", $tokenName);
+        $setError.=Settings::Set("wb_secform_tokenname", $tokenName);
     } else {
         $setError.=$SFS['TOKENNAME_ERR'];
     }
 
     $timeout=$admin->get_post("timeout");
     if (preg_match("/^[0-9]{1,5}$/u", $timeout)) {
-        $setError.=Settings::set("wb_secform_timeout", $timeout);
-        $setError.=Settings::set("wb_session_timeout", $timeout);
+        $setError.=Settings::Set("wb_secform_timeout", $timeout);
+        $setError.=Settings::Set("wb_session_timeout", $timeout);
     } else {
         $setError.=$SFS['TIMEOUT_ERR'];
     }
 
     $secret=$admin->get_post("secret");
     if (preg_match("/^[a-zA-Z0-9]{20,60}$/u", $secret)) {
-        $setError.=Settings::set("wb_secform_secret", $secret);
+        $setError.=Settings::Set("wb_secform_secret", $secret);
     } else {
         $setError.=$SFS['SECRET_ERR'];
     }
 
     $secretTime=$admin->get_post("secretTime");
     if (preg_match("/^[0-9]{1,5}$/u", $secretTime)) {
-        $setError .= Settings::set("wb_secform_secrettime", $secretTime);
+        $setError.=Settings::Set("wb_secform_secrettime", $secretTime);
     } else {
-        $setError .= $SFS['SECRETTIME_ERR'];
+        $setError.=$SFS['SECRETTIME_ERR'];
     }
 
 
@@ -109,13 +109,13 @@ if ($saveSettings) {
 } elseif ($saveDefault) {
 
     // setting defaults
-    $setError = Settings::set("wb_secform_secret", bin2hex(random_bytes(12)));
-    $setError = Settings::set("wb_secform_secrettime", '86400');
-    $setError = Settings::set("wb_secform_timeout", '7200');
-    $setError = Settings::set("wb_session_timeout", '7200');
-    $setError = Settings::set("wb_secform_tokenname", 'formtoken');
-    $setError = Settings::set("wb_secform_usefp", false);
-    $setError = Settings::set("fingerprint_with_ip_octets", "2");
+    $setError=Settings::Set("wb_secform_secret", "5609bnefg93jmgi99igjefg");
+    $setError=Settings::Set("wb_secform_secrettime", '86400');
+    $setError=Settings::Set("wb_secform_timeout", '7200');
+    $setError=Settings::Set("wb_session_timeout", '7200');
+    $setError=Settings::Set("wb_secform_tokenname", 'formtoken');
+    $setError=Settings::Set("wb_secform_usefp", false);
+    $setError=Settings::Set("fingerprint_with_ip_octets", "2");
 
     // report success or failure
     toolMsg($setError, $returnUrl);
@@ -126,18 +126,18 @@ if ($saveSettings) {
     $checked  = ' checked="checked" ';
 
     // get settings from DB , as constant may not be set yet.
-    $useFP = Settings::get("wb_secform_usefp");
+    $useFP = Settings::Get("wb_secform_usefp");
     if ($useFP == true) {
         $useFP = $checked;
     } else {
         $useFP = '';
     }
     
-    $ipOctets   = (string) Settings::get("fingerprint_with_ip_octets");
-    $tokenName  = Settings::get("wb_secform_tokenname");
-    $timeout    = Settings::get("wb_secform_timeout");
-    $secret     = Settings::get("wb_secform_secret");
-    $secretTime = Settings::get("wb_secform_secrettime");
+    $ipOctets   = (string)Settings::Get("fingerprint_with_ip_octets");
+    $tokenName  = Settings::Get("wb_secform_tokenname");
+    $timeout    = Settings::Get("wb_secform_timeout");
+    $secret     = Settings::Get("wb_secform_secret");
+    $secretTime = Settings::Get("wb_secform_secrettime");
 
     // Display form
     include($modulePath."templates/sfs.tpl.php");

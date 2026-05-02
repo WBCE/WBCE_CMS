@@ -8827,7 +8827,7 @@ elFinder.prototype = {
 			options.create = function() {
 				var base = $('<div class="elfinder-dialog-confirm-applyall"></div>');
 				checkbox = $('<input type="checkbox" />');
-				$(this).next().find('.ui-dialog-controlgroup')
+				$(this).next().find('.ui-dialog-buttonset')
 					.prepend(base.append($('<label>'+apply+'</label>').prepend(checkbox)));
 			};
 		}
@@ -18275,9 +18275,9 @@ $.fn.elfinderdialog = function(opts, fm) {
 			clmodal    = 'elfinder-dialog-modal',
 			id         = parseInt(Math.random()*1000000),
 			titlebar   = $('<div class="ui-dialog-titlebar ui-widget-header ui-corner-top ui-helper-clearfix"><span class="elfinder-dialog-title">'+opts.title+'</span></div>'),
-			controlgroup  = $('<div class="ui-dialog-controlgroup"></div>'),
+			buttonset  = $('<div class="ui-dialog-buttonset"></div>'),
 			buttonpane = $('<div class=" ui-helper-clearfix ui-dialog-buttonpane ui-widget-content"></div>')
-				.append(controlgroup),
+				.append(buttonset),
 			btnWidth   = 0,
 			btnCnt     = 0,
 			tabstops   = $(),
@@ -18295,7 +18295,7 @@ $.fn.elfinderdialog = function(opts, fm) {
 				if (tabstops.length) {
 					tabstops.attr('tabindex', '-1');
 					if (! tabstops.filter('.'+cl1stfocus).length) {
-						controlgroup.children('.'+cltabstop+':'+(platformWin? 'first' : 'last')).addClass(cl1stfocus);
+						buttonset.children('.'+cltabstop+':'+(platformWin? 'first' : 'last')).addClass(cl1stfocus);
 					}
 				}
 			},
@@ -18834,13 +18834,13 @@ $.fn.elfinderdialog = function(opts, fm) {
 				button.addClass(cb._cssClass);
 			}
 			if (platformWin) {
-				controlgroup.append(button);
+				buttonset.append(button);
 			} else {
-				controlgroup.prepend(button);
+				buttonset.prepend(button);
 			}
 		});
 		
-		if (controlgroup.children().length) {
+		if (buttonset.children().length) {
 			dialog.append(buttonpane);
 			
 			dialog.show();
@@ -20458,13 +20458,13 @@ $.fn.elfindersearchbutton = function(cmd) {
 			.one('open', function() {
 				opts = (fm.api < 2.1)? null : $('<div class="ui-front ui-widget ui-widget-content elfinder-button-menu elfinder-button-search-menu ui-corner-all"></div>')
 					.append(
-						$('<div class="controlgroup"></div>')
+						$('<div class="buttonset"></div>')
 							.append(
 								$('<input id="'+id('SearchFromCwd')+'" name="serchfrom" type="radio" checked="checked"/><label for="'+id('SearchFromCwd')+'">'+fm.i18n('btnCwd')+'</label>'),
 								$('<input id="'+id('SearchFromVol')+'" name="serchfrom" type="radio"/><label for="'+id('SearchFromVol')+'">'+fm.i18n('btnVolume')+'</label>'),
 								$('<input id="'+id('SearchFromAll')+'" name="serchfrom" type="radio"/><label for="'+id('SearchFromAll')+'">'+fm.i18n('btnAll')+'</label>')
 							),
-						$('<div class="controlgroup elfinder-search-type"></div>')
+						$('<div class="buttonset elfinder-search-type"></div>')
 							.append(
 								$('<input id="'+id('SearchName')+'" name="serchcol" type="radio" checked="checked" value="SearchName"/><label for="'+id('SearchName')+'">'+fm.i18n('btnFileName')+'</label>')
 							)
@@ -20478,7 +20478,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 							typeSet.append($('<input id="'+id(i)+'" name="serchcol" type="radio" value="'+fm.escape(i)+'"/><label for="'+id(i)+'">'+fm.i18n(v.name)+'</label>'));
 						});
 					}
-					opts.find('div.controlgroup').controlgroup();
+					opts.find('div.buttonset').buttonset();
 					$('#'+id('SearchFromAll')).next('label').attr('title', fm.i18n('searchTarget', fm.i18n('btnAll')));
 					if (sTypes) {
 						$.each(sTypes, function(i, v) {
@@ -20487,7 +20487,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 							}
 						});
 					}
-					opts.on('mousedown', 'div.controlgroup', function(e){
+					opts.on('mousedown', 'div.buttonset', function(e){
 							e.stopPropagation();
 							opts.data('infocus', true);
 						})
@@ -20946,7 +20946,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 				l = panels.length;
 				while (l--) {
 					if (panels[l]) {
-						panel = $('<div class="ui-widget-content ui-corner-all elfinder-controlgroup"></div>');
+						panel = $('<div class="ui-widget-content ui-corner-all elfinder-buttonset"></div>');
 						i = panels[l].length;
 						while (i--) {
 							name = panels[l][i];
@@ -20972,7 +20972,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 					//cmdPref.state = !self.children().length? 0 : -1;
 					if (options.showPreferenceButton === 'always' || (!self.children().length && options.showPreferenceButton === 'auto')) {
 						//cmdPref.state = 0;
-						panel = $('<div class="ui-widget-content ui-corner-all elfinder-controlgroup"></div>');
+						panel = $('<div class="ui-widget-content ui-corner-all elfinder-buttonset"></div>');
 						name = 'preference';
 						button = 'elfinder'+cmd.options.ui;
 						buttons[name] = $('<div></div>')[button](cmdPref);
@@ -24713,7 +24713,7 @@ elFinder.prototype.commands.edit = function() {
 					});
 					setSelW();
 				}).on('mouseover', stateChange);
-				ta.parent().next().prepend($('<div class="ui-dialog-controlgroup elfinder-edit-extras"></div>').append(selEncoding));
+				ta.parent().next().prepend($('<div class="ui-dialog-buttonset elfinder-edit-extras"></div>').append(selEncoding));
 				setSelW(true);
 			};
 
@@ -24770,7 +24770,7 @@ elFinder.prototype.commands.edit = function() {
 					if (data.extention && data.mime) {
 						var ext = data.extention,
 							mime = data.mime,
-							btnSet = $(this).children('.ui-dialog-buttonpane').children('.ui-dialog-controlgroup');
+							btnSet = $(this).children('.ui-dialog-buttonpane').children('.ui-dialog-buttonset');
 						btnSet.children('.elfinder-btncnt-0,.elfinder-btncnt-1').hide();
 						saveAsFile.name = fm.splitFileExtention(file.name)[0] + '.' + data.extention;
 						saveAsFile.mime = data.mime;
@@ -24879,7 +24879,7 @@ elFinder.prototype.commands.edit = function() {
 										head.caption = '-';
 									}
 									selEncoding = getEncSelect([head]);
-									$(this).next().find('.ui-dialog-controlgroup')
+									$(this).next().find('.ui-dialog-buttonset')
 										.prepend(base.append($('<label>'+fm.i18n('encoding')+' </label>').append(selEncoding)));
 								};
 							}
@@ -32127,7 +32127,7 @@ elFinder.prototype.commands.rename = function() {
 					}
 				});
 			} else {
-				checks.controlgroup({
+				checks.buttonset({
 					create: function(e, ui) {
 						num.prop('checked', true).change();
 					}
@@ -32585,7 +32585,7 @@ elFinder.prototype.commands.resize = function() {
 			options = this.options,
 			dialogWidth = 650,
 			fmnode = fm.getUI(),
-			ctrgrup = $().controlgroup? 'controlgroup' : 'controlgroup',
+			ctrgrup = $().controlgroup? 'controlgroup' : 'buttonset',
 			grid8Def = typeof options.grid8px === 'undefined' || options.grid8px !== 'disable'? true : false,
 			presetSize = Array.isArray(options.presetSize)? options.presetSize : [],
 			clactive = 'elfinder-dialog-active',

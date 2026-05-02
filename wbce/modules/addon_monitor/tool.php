@@ -1,72 +1,89 @@
 <?php
 /**
- * @file       tool.php
- * @category   admintool
- * @package    addon_monitor
- * @author     Christian M. Stefan (https://www.wbeasy.de)
- * @license    http://www.gnu.org/licenses/gpl.html
- * @platform   WBCE CMS 1.7.0
+ * AdminTool: addonMonitor
+ *
+ * This file provides some functions for the addonMonitor Tool.
+ *
+ * @package     addonMonitor
+ * @author      Christian M. Stefan (Stefek)
+ * @copyright   Christian M. Stefan
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
  */
-
+ 
+// Direct access prevention
 defined('WB_PATH') or die(header('Location: ../index.php'));
 
-// no access to this tool if use has no access to addons
-if (!$admin->get_permission('addons')) {
+
+if (!class_exists('admin', false)) {
+    $admin_header = false;
+    include(WB_PATH.'/framework/class.admin.php');
+    $admin = new admin('admintools', 'admintools');
+}
+// check for permission
+if (!$admin->get_permission('admintools')) {
     die(header('Location: ../../index.php'));
 }
 
-// Load Language
-Lang::loadLanguage();
-// set ur of this Tool
-$toolUrl  = ADMIN_URL . '/admintools/tool.php?tool=' . basename(__DIR__);
-    
-// what tabs does this tool have?
-$tabs = [
-    'modules',
-    'templates',
-    'languages',
-];
+require_once((dirname(__FILE__)) . '/info.php');
+// get functions file for this AdminTool
+require_once((dirname(__FILE__)) . '/functions.php');
 
-// what tab do we have to show?
-$showTab = isset($_GET['addons']) ? (string) $_GET['addons'] : 'modules';
+$sAddonDir = $module_directory;
 
-// Whitelist to prevent arbitrary template loading
-if (!in_array($showTab, $tabs)) {
-    $showTab = 'modules'; // `modules` is default if something 
-                          // strange was put as get parameter
-}
+// Create Twig template object and configure it
+$oTwigLoader = new \Twig\Loader\FilesystemLoader(dirname(__FILE__) . '/skel'); // tell Twig where the template will come from
+$oTwig = new \Twig\Environment($oTwigLoader, array(
+    'autoescape'       => false,
+    'cache'            => false,
+    'strict_variables' => false,
+    'debug'            => true
+));
+$oTwig->addExtension(new \Twig\Extension\DebugExtension());	// load extension
+// SET SOME GLOBALS FOR USE ALONG WITH TWIG-TEMPLATES
+$oTwig->addGlobal('WB_URL', WB_URL);
+$oTwig->addGlobal('ICONS_DIR', '../../modules/'.$sAddonDir.'/icons');
 
-// load functions
-require_once(__DIR__ . '/functions.php');
-switch ($showTab) {
-    case 'templates': $aOuptut = getTemplatesArray(); break;
-    case 'languages': $aOuptut = getLanguagesArray(); break;
-    default:          $aOuptut = getModulesArray();   break;
-}
+$aOuptut = array();
+$sMonitorCase = isset($_GET['addons']) ? (string) $_GET['addons'] : 'modules';
+$sActiveModules = '';
+$sActiveTemplates = '';
+$sActiveLanguages = '';
+    switch ($sMonitorCase) {
+        case 'templates':
+            // frontend templates AND admin control panel (acp) themes
+            $sActiveTemplates = 'current_tab';
+            $aOuptut = getTemplatesArray();
+        break;
+        case 'languages':
+            // languages
+            $sActiveLanguages = 'current_tab';
+            $aOuptut = getLanguagesArray();
+        break;
+        case 'modules':
+            // page-type modules, admin-tools AND snippets
+        default:
+            $aOuptut = getModulesArray();
+            $sActiveModules = 'current_tab';
+        break;
+    }
+$oTemplate = $oTwig->load('monitor_' . $sMonitorCase . '.twig'); // load the template by name
+
+$sToolUrl = ADMIN_URL.'/admintools/tool.php?tool='.$sAddonDir;
 ?>
-<div class="am-header">
-    <nav class="am-tabs" role="tablist">
-        <?php foreach ($tabs as $tab): 
-            
-            // only show tab if user has permission to access (modules, templates, languages).
-            if($admin->get_permission($tab) == false) continue;
-        ?>
-        <a class="am-tab<?= ($showTab === $tab) ? ' am-tab--active' : '' ?>"
-           href="<?= $toolUrl ?>&addons=<?= $tab ?>"
-           role="tab"
-           aria-selected="<?= ($showTab === $tab) ? 'true' : 'false' ?>">
-            <?= $MENU[strtoupper($tab)] ?>
-        </a>
-        <?php endforeach ?>
-    </nav>
-    <span class="am-version">Addon Monitor <?= $module_version ?></span>
+<div id="tool">
+    <h4 style="font-size: 12px;"><b>Addon Monitor</b> <i><?php echo $module_version;?></i></h4>
 </div>
-<div class="am-panel">
-    <?php 
-    // load the template of the current tab
-    $oTwig = getTwig(__DIR__ . '/twig/');
-    $oTemplate = $oTwig->load('monitor_' . $showTab . '.twig');
-    $oTemplate->display($aOuptut); 
-    ?>
+<div class="tabs" id="sometabs">
+    <ul class="tabs-list">
+        <li class="<?php echo $sActiveModules;?>"><a href="<?php echo $sToolUrl;?>&addons=modules">MODULES</a></li>
+        <li class="<?php echo $sActiveTemplates;?>"><a href="<?php echo $sToolUrl;?>&addons=templates">TEMPLATES</a></li>
+        <li class="<?php echo $sActiveLanguages;?>"><a href="<?php echo $sToolUrl;?>&addons=languages">LANGUAGES</a></li>
+    </ul><div style="clear:both;"></div>
+    <div class="">
+        <?php $oTemplate->display($aOuptut); ?>
+    </div>
 </div>
-<noscript><p style="padding:8px;color:#900;">Please enable JavaScript for full functionality.</p></noscript>
+<noscript>You should turn on JavaScript in your browser for full benefit of this Admin Tool</noscript>
+<script type="text/javascript" language="javascript">
+    var TOOL_URL = WB_URL + "/modules/<?php echo $sAddonDir ?>";
+</script>

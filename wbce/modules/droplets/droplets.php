@@ -70,9 +70,7 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
                     $argv = preg_split( '/&(?!amp;)/', $request_string );
                     foreach ($argv as $argument){
                         // split argument in pair of varname, value
-                        $parts = explode('=', $argument, 2);
-                        $variable = $parts[0] ?? '';
-                        $value    = $parts[1] ?? '';
+                        list( $variable, $value ) = explode('=', $argument,2);
                         if( !empty($value) ){
                             // re-encode the value and push the var into varlist
                             $varlist[$variable] = htmlentities($value, ENT_COMPAT,DEFAULT_CHARSET);

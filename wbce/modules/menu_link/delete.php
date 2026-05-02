@@ -12,8 +12,4 @@
 
 // Prevent this file from being access directly
 defined('WB_PATH') or die('Cannot access this file directly');
-$database->query(
-    "DELETE FROM `{TP}mod_menu_link` 
-        WHERE `section_id` = ?",
-    [$section_id]
-);
+$database->query("DELETE FROM `{TP}mod_menu_link` WHERE `section_id` = ".$section_id);

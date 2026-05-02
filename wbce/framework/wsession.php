@@ -1,382 +1,376 @@
 <?php
 /**
- * WBCE CMS
- * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * @file
+ * @brief Improvised Class to allow override of session functions by Modules
  *
- * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later version)
- *
- * Session management class for WBCE CMS.
- *
- * Central class to handle session start, regeneration, permanent data
- * and CSRF-like tokens. Uses its own namespace inside $_SESSION to avoid
- * collisions with other software running in the same PHP environment.
- *
- * Design goals (originally noted as @todo in the dev branch):
- *   - Subarray namespacing so WBCE vars do not collide with other scripts
- *   - Permanent storage that survives logout (e.g. language preference)
- *   - Replaceable by a module via the autoloader (drop-in override)
- *   - Modern PHP 8.x with type hints and return types throughout
- *
- * @note  SESSION_STARTED constant is still defined after session_start()
- *        for installer and legacy module compatibility. New code should
- *        use WSession::IsStarted() instead of checking the constant.
- *  
+ * This is just an improvised pseudo class that is made to be easyly replaced by Replacement modules.
  */
 
-// Prevent  this  file  from  being  accessed  directly
-defined('WB_PATH') or die('No direct access allowed');
 
+/**
+ * @brief Improvised Class to allow override of session functions by Modules
+ *
+ * This is just an improvised pseudo class that is made to be easyly replaced by Replacement modules.
+ * I decided to use a static class as all this functionality should be available everywhere in the code
+ * whithout any implementation stuff.
+ *
+ * Why a new Session class ?
+ *
+ * - If you use get/set methods , the vars are stored in a subarray that does not collide whith other implemented software products
+ * - Modules can override the default behavior by registering an override class whith a single file direct registration in the autoloader.
+ * - Extra functionality like permanent arrays that stay even after Logout .
+ *
+ * @todo A lot of refinements to this session class as this is only an improvised rudimentary class!
+ */
 class WSession
 {
-    // ── Namespace keys inside $_SESSION ──────────────────────────────────────
 
-    /** Sub-array key for normal session data (cleared on logout) */
-    public static string $Store     = 'WBCE';
+    // Define the name for a Sub array to store all information ,
+    // so we do not interferre whith other implemented scripts in the $_SESSION var.
+    public static $Store = "WBCE";
+    public static $StorePerm = "WBCE_Perm";
+    public static $Expire = 7200; // PHP default value
 
-    /** Sub-array key for permanent data (survives logout, e.g. language) */
-    public static string $StorePerm = 'WBCE_Perm';
-
-    /** Session lifetime in seconds — overridden by DB settings on Start() */
-    public static int $Expire = 7200;
-
-    // ── Core lifecycle ────────────────────────────────────────────────────────
-
-    /**
-     * Start or resume the session.
-     *
-     * Called once from initialize.php after the DB connection is ready.
-     * Safe to call during install/upgrade — falls back gracefully when
-     * Settings or constants are not yet available.
-     */
-    public static function Start(): void
+    public static function ReStart($bKill = false)
     {
-        // Determine session lifetime from DB settings if available.
-        // This runs before constants like WB_SECFORM_TIMEOUT are defined,
-        // so the installer can also get a sensible expiry.
+
+        // delete all session variables
+        $_SESSION = array();
+        session_unset();
+
+        // Kill the cookie // now done by session handler
+        // if (isset($_COOKIE[session_name()])) {setcookie(session_name(), '', 0, '/');}
+
+        #destroy the session
+        session_destroy();
+
+        #if kill is set, end script here.
+        if ($bKill) {
+            die('Scrip and session ended by function Session::ReStart($Kill=true) ');
+        }
+
+        # restarting
+        self::Start(true);
+        self::RegenerateId(true);
+    }
+
+    public static function Start()
+    {
+
+        // What it says :-)
         self::tryToSetValidExpirationForInstallOrUpgrade();
 
-        // ── Cookie security settings ──────────────────────────────────────        
-        if (!self::IsStarted()) {
-            ini_set('session.use_cookies',    true);
-            ini_set('session.gc_maxlifetime', (int) self::$Expire);
-            ini_set('session.cookie_httponly', 1);
+        // WBCE always uses Cookies
+        ini_set('session.use_cookies', true);  # use session cookies
 
-            // Secure flag — only when we know we are on HTTPS.
-            // The defined() guard prevents a fatal error during early bootstrap
-            // (e.g. install) where DOMAIN_PROTOCOLL may not yet be defined.
-            if (defined('DOMAIN_PROTOCOLL') && DOMAIN_PROTOCOLL === 'https') {
-                ini_set('session.cookie_secure', 1);
-            }
-            defined('APP_NAME') or define('APP_NAME', 'wbce');
+
+        // WB_SECFORM_TIMEOUT we use this for now later we get seperate settings
+        // Later we should get a nice session class instead of this improvised stuff.
+        ini_set('session.gc_maxlifetime', intval(self::$Expire));
+        // ini_set('session.gc_probability', 1);
+        // ini_set('session.gc_divisor', 1);
+
+        // This was removed cause the cookie livetime is not refreshed by php
+        // So session was not refreshed by user interaction.
+        // ini_set('session.cookie_lifetime', intval(WB_SECFORM_TIMEOUT));
+
+        // No javascript access to sessioncookie
+        ini_set('session.cookie_httponly', 1);
+
+        // Secure Cookies if we use https
+        if (DOMAIN_PROTOCOLL == "https") {
+            ini_set('session.cookie_secure', 1);
+        }
+
+        // Start a session if needed
+        $no_session_cookie = false;
+        if (defined('NO_SESSION_COOKIE')) {
+            $no_session_cookie = NO_SESSION_COOKIE;
+        }
+
+        if ($no_session_cookie == true) {
+            $strCookiepagepattern = "@(modules\/|\/" . ADMIN_DIRECTORY . "\/)@";
+            $nrCookiepage = preg_match($strCookiepagepattern, $_SERVER['REQUEST_URI']);
+        } else {
+            $nrCookiepage = 1;
+        }
+
+        if ($nrCookiepage == 1 && !self::IsStarted()) {
+            // if (!self::IsStarted()) {
+            // Session parameter
             session_name(APP_NAME . '-sid');
             session_set_cookie_params(0);
-        }
-        
-        
 
-        // ── Decide whether to actually start a session ────────────────────
-        // Some public pages opt out of cookies (NO_SESSION_COOKIE = true).
-        // Even then, module pages and the admin area always get a session.
-        $noSessionCookie = defined('NO_SESSION_COOKIE') && NO_SESSION_COOKIE === true;
-        $needsSession    = !$noSessionCookie
-            || preg_match('@(modules/|/' . ADMIN_DIRECTORY . '/)@', $_SERVER['REQUEST_URI'] ?? '');
-
-        if ($needsSession && !self::IsStarted()) {
             session_start();
 
-            // SESSION_STARTED constant: kept for installer compatibility and
-            // older modules that check it directly. New code: use IsStarted().
-            if (!defined('SESSION_STARTED')) {
-                define('SESSION_STARTED', true);
+            // Session identifier used by Secureform class , so we dont need to use session_id
+            // and tokens stay valid if we just refresh session id
+            if (WSession::Get('SessionTokenIdentifier') == false) {
+                $rnd = new RandomGen();
+                WSession::Set('SessionTokenIdentifier', $rnd->TextToken(32));
             }
 
-            // SessionTokenIdentifier is used by SecureForm so CSRF tokens
-            // remain valid across session_regenerate_id() calls.
-            if (!self::Get('SessionTokenIdentifier')) {
-                self::Set('SessionTokenIdentifier', self::generateSecureToken(32));
-            }
+            // this is used by only by installer in index.php and save.php we will remove this later
+            define('SESSION_STARTED', true);
         }
 
-        // ── Enforce session lifetime ──────────────────────────────────────
-        // PHP's gc_maxlifetime is not reliable for per-session expiry,
-        // so we track it ourselves with a discard_after timestamp.
+        // make sure session never exeeds lifetime
+
         $now = time();
+        // echo "Now: $now <br>";
+        // echo "discard_after:".$_SESSION['WB']['discard_after']."<br>";
+        // echo "Secform timeout:".WB_SECFORM_TIMEOUT."<br>";
         if (self::Get('discard_after') && $now > self::Get('discard_after')) {
+            // this session has worn out its welcome; kill it and start a brand new one
             self::ReInit();
+            // echo "Session Time Run out , killing session";
         }
+        self::Set('discard_after', $now + WB_SECFORM_TIMEOUT);
+        // echo "discard_after2:".$_SESSION['WB']['discard_after']."<br>";
 
-        if (defined('WB_SECFORM_TIMEOUT')) {
-            self::Set('discard_after', $now + WB_SECFORM_TIMEOUT);
-        }
-
-        // Legacy compatibility: some older modules check $_SESSION['session_started']
+        // ASP Still expects old placement of Session Var
+        // @todo Change ASP to use WSession::Get() then change setting session startet in Session class too.
         if (!isset($_SESSION['session_started'])) {
-            $_SESSION['session_started'] = $now;
+            $_SESSION['session_started'] = time();
+        }
+
+        return false;
+    }
+
+    /**
+     * @brief Installer has no timeout constants set.
+     *
+     * So we go and set our own expiration time from what we possibly can get
+     * In Installer and Upgrade Script this is nor relieable as it suffers from the normal issues of
+     * filebased sessions.
+     */
+    public static function tryToSetValidExpirationForInstallOrUpgrade()
+    {
+
+        // All This to get a good , compatible installler
+        self::$Expire = ini_get("session.gc_maxlifetime");
+
+        if (Settings::Get("wb_session_timeout") !== false) {
+            self::$Expire = Settings::Get("wb_session_timeout");
+        } elseif (Settings::Get("wb_secform_timeout") !== false) {
+            self::$Expire = Settings::Get("wb_secform_timeout");
+        }
+        if (Settings::GetDB("wb_session_timeout") !== false) {
+            self::$Expire = Settings::GetDb("wb_session_timeout");
+        } elseif (Settings::GetDB("wb_secform_timeout") !== false) {
+            self::$Expire = Settings::GetDb("wb_secform_timeout");
         }
     }
 
     /**
-     * Determine a reasonable session expiry from DB settings.
+     * @brief Simple method to test if a session is started, or not.
      *
-     * Called before constants are fully defined (installer, early bootstrap),
-     * so we try multiple methods in order of reliability.
+     * As we want to store our Session stuff in an area where we do not collide whith other Software,
+     * this is much shorter and more easy to read than the direct call for the Variable.
      *
-     * The dev branch had a typo: Settings::GetDB() vs Settings::GetDb() —
-     * both appeared in the same method. Unified to Settings::getFromDb()
-     * which is the correct new API name.
+     * @code
+     * if (self::IsStarted){}
+     *
+     * if ($_SESSION['WBCE']['SessionStarted']=true){}
+     * @endcode
+     *
+     * @return string/boolean  Session Start time of false.
      */
-    private static function tryToSetValidExpirationForInstallOrUpgrade(): void
+    public static function IsStarted()
     {
-        // Start from the current php.ini value as baseline
-        self::$Expire = (int) ini_get('session.gc_maxlifetime');
-
-        // Prefer cached Settings (fast, already in memory)
-        if (Settings::get('wb_session_timeout') !== false) {
-            self::$Expire = (int) Settings::get('wb_session_timeout');
-            return;
-        }
-        if (Settings::get('wb_secform_timeout') !== false) {
-            self::$Expire = (int) Settings::get('wb_secform_timeout');
-            return;
-        }
-
-        // Fall back to direct DB read (slower, but works before cache is warm)
-        if (Settings::getFromDb('wb_session_timeout') !== false) {
-            self::$Expire = (int) Settings::getFromDb('wb_session_timeout');
-            return;
-        }
-        if (Settings::getFromDb('wb_secform_timeout') !== false) {
-            self::$Expire = (int) Settings::getFromDb('wb_secform_timeout');
-        }
-    }
-
-    // ── State checks ──────────────────────────────────────────────────────────
-
-    /**
-     * Check whether a PHP session is currently active.
-     *
-     * The dev branch only checked defined('SESSION_STARTED'), which failed
-     * in no-cookie contexts where session_start() was never called and the
-     * constant was therefore never defined. session_status() is the reliable
-     * PHP 5.4+ way to check session state.
-     *
-     * SESSION_STARTED is still checked first for installer compatibility —
-     * the installer defines it manually before WSession is available.
-     */
-    public static function IsStarted(): bool
-    {
+        // @todo somehow everything exept if (defined('SESSION_STARTED')) was causing trouble ..
+        // i actually have no idea how and why , but this resulted in an empty SessionStarted
+        // so for now this stays as simple as it is .
+        // minimum PHP 5.4 we can do this
+        // if (function_exists ( "session_status" ) AND session_status() == PHP_SESSION_NONE )
+        //    return true;
+        //
+        // if (
+        //    isset ($_SESSION) AND
+        //    isset ($_SESSION[self::$Store]['SessionStarted']) AND
+        //    is_int($_SESSION[self::$Store]['SessionStarted'])
+        // )
+        //    return true;
+        //
+        // This one is for old Installer
         if (defined('SESSION_STARTED')) {
             return true;
         }
 
-        return session_status() === PHP_SESSION_ACTIVE;
+        return false;
     }
 
-    // ── Normal session storage ─────────────────────────────────────────────────
-
     /**
-     * Get a value from the WBCE session namespace.
-     *
-     * Falls back to the bare $_SESSION[$var] key for backward compatibility
-     * with older modules and code that wrote directly to $_SESSION
-     * (e.g. $_SESSION['LANGUAGE'] = 'DE' instead of WSession::Set()).
-     *
-     * @param string $var     Key name
-     * @param mixed  $default Return value when key is not found
-     * @return mixed
+     * @brief Gets a value in the normal Session save space.
      */
-    public static function Get(string $var = '', mixed $default = false): mixed
+    public static function Get($sVar = "", $uDefault = false)
     {
-        if (empty($var)) {
-            return $default;
+        if (empty($sVar)) {
+            return $uDefault;
+        }
+        if (!self::IsStarted()) {
+            return $uDefault;
         }
 
-        // Primary: namespaced WBCE storage
-        if (isset($_SESSION[self::$Store][$var])) {
-            return $_SESSION[self::$Store][$var];
+        if (isset($_SESSION[self::$Store][$sVar])) {
+            return $_SESSION[self::$Store][$sVar];
+        }
+        // Fallback for old Vars
+        if (isset($_SESSION[$sVar])) {
+            return $_SESSION[$sVar];
         }
 
-        // Fallback: bare $_SESSION key — for old modules and direct assignments
-        if (isset($_SESSION[$var])) {
-            return $_SESSION[$var];
-        }
-
-        return $default;
+        return $uDefault;
     }
 
     /**
-     * Set a value in the WBCE session namespace.
+     * @brief Sets a value in the normal Session save space.
      */
-    public static function Set(string $var, mixed $value): void
+    public static function Set($sVar = "", $Value = "")
     {
-        if (!empty($var)) {
-            $_SESSION[self::$Store][$var] = $value;
+        if (empty($sVar)) {
+            return "No variable name set..!";
         }
-    }
-
-    // ── Permanent session storage ──────────────────────────────────────────────
-
-    /**
-     * Get a value from permanent session storage.
-     *
-     * Permanent data survives ReInit() / logout — useful for language, theme,
-     * or other preferences that should persist across login sessions.
-     */
-    public static function GetPerm(string $var = '', mixed $default = false): mixed
-    {
-        if (empty($var)) {
-            return $default;
+        if (!self::IsStarted()) {
+            return "no session running!";
         }
 
-        return $_SESSION[self::$StorePerm][$var] ?? $default;
+        $_SESSION[self::$Store][$sVar] = $Value;
     }
 
     /**
-     * Set a value in permanent session storage.
-     */
-    public static function SetPerm(string $var, mixed $value): void
-    {
-        if (!empty($var)) {
-            $_SESSION[self::$StorePerm][$var] = $value;
-        }
-    }
-
-    // ── Session lifecycle ─────────────────────────────────────────────────────
-
-    /**
-     * Soft logout — clears normal session data but keeps permanent data.
+     * @brief Logs the recent user out, but keeps permanent data.
      *
-     * Used on logout and session timeout. The permanent namespace (language,
-     * preferences) is saved, the session ID is regenerated, and permanent
-     * data is restored. A new SessionStarted timestamp is written.
-     *
-     * Guard: if no session is running (no-cookie context) this is a no-op
-     * to avoid PHP warnings from session_unset() on an inactive session.
-     * The dev branch called session_unset() without this guard.
+     * As all login stuff is only session based, this is the place to logout.
+     * This saves the permanent array before deleting session data, and restores
+     * it after session is restarted.
      */
-    public static function ReInit(): void
+
+    public static function ReInit()
     {
         if (!self::IsStarted()) {
-            return;
+            return "no session running!";
         }
 
-        // Save permanent data before clearing everything
-        $savePerm = $_SESSION[self::$StorePerm] ?? [];
-
-        session_unset();
-        self::RegenerateId(true);
-
-        self::Set('SessionStarted', time());
-        $_SESSION[self::$StorePerm] = $savePerm;
-    }
-
-    /**
-     * Hard reset — destroys the session completely and starts a new one.
-     *
-     * Use only when you need a completely clean slate (e.g. security incident,
-     * forced role switch). Permanent data is also lost.
-     *
-     * @param bool $kill  If true, terminate the script after destroying the session.
-     */
-    public static function ReStart(bool $kill = false): void
-    {
-        $_SESSION = [];
-        session_unset();
-        session_destroy();
-
-        if ($kill) {
-            die('Session and script terminated by WSession::ReStart(true)');
+        // save permanent Data
+        $SavePerm = array();
+        if (isset($_SESSION[self::$StorePerm])) {
+            $SavePerm = $_SESSION[self::$StorePerm];
         }
 
-        self::Start();
+        // delete all session variables
+        session_unset();
+
+        # the true parameter let the function delete the old session file
         self::RegenerateId(true);
+
+        // reset Session Started
+        self::Set("SessionStarted", time());
+
+        // regenerate permanent storage
+        $_SESSION[self::$StorePerm] = $SavePerm;
+
+        return false;
     }
 
     /**
-     * Regenerate the session ID.
+     * @brief does the same as session_regenerate_id ()
      *
-     * Should be called after privilege changes (login, logout, role change)
-     * to prevent session fixation attacks.
-     *
-     * @param bool $deleteOldSession  Delete the old session file/record.
+     * For now this is only for completeness
      */
-    public static function RegenerateId(bool $deleteOldSession = false): void
+    public static function RegenerateId($bDeleteOldSession = false)
     {
-        session_regenerate_id($deleteOldSession);
+        session_regenerate_id($bDeleteOldSession);
     }
 
     /**
-     * Logout — alias for ReInit().
-     * Kept as a named alias so call sites read clearly.
+     * @brief Logs the recent user out, but keeps permanent data.
+     *
+     * As all login stuff is only session based, this is the place to logout.
+     * This saves the permanent array before deleting session data, and restores
+     * it after session is restarted.
+     *
+     * this is only a placeholder for ReInit()
      */
-    public static function Logout(): void
+    public static function Logout()
     {
         self::ReInit();
     }
 
-    // ── Token generation ──────────────────────────────────────────────────────
-
     /**
-     * Generate a cryptographically secure random token.
+     * @brief Sets a value in the permanent Session save space.
      *
-     * Replaces the old RandomGen->TextToken() dependency from the dev branch.
-     * random_bytes() is the PHP 7.0+ standard for secure random data and does
-     * not require any external class.
-     *
-     * @param  int    $length  Byte length of random data (hex output is 2× this)
-     * @return string          Hex-encoded token, e.g. 64 chars for $length = 32
+     * e.g. Username can be stored here
      */
-    private static function generateSecureToken(int $length = 32): string
+    public static function SetPerm($sVar = "", $Value = "")
     {
-        try {
-            return bin2hex(random_bytes($length));
-        } catch (\Exception $e) {
-            // Should never happen on a properly configured server,
-            // but log and fall back rather than crashing.
-            trigger_error('WSession: random_bytes() failed: ' . $e->getMessage(), E_USER_WARNING);
-            return hash('sha256', uniqid((string) mt_rand(), true));
+        if (empty($sVar)) {
+            return "No variable name set..!";
         }
+        if (!self::IsStarted()) {
+            return "no session running!";
+        }
+
+        $_SESSION[self::$StorePerm][$sVar] = $Value;
     }
 
-    // ── Debug ─────────────────────────────────────────────────────────────────
+    /**
+     * @brief Gets a value in the permanent Session save space.
+     */
+    public static function GetPerm($sVar = "", $uDefault = false)
+    {
+        if (empty($sVar)) {
+            return $uDefault;
+        }
+        if (!self::IsStarted) {
+            return $uDefault;
+        }
+
+        if (isset($_SESSION[self::$StorePerm][$sVar])) {
+            return $_SESSION[self::$StorePerm][$sVar];
+        }
+
+        return $uDefault;
+    }
 
     /**
-     * Dump all session data split into three buckets:
-     *   1. Normal WBCE namespace (cleared on logout)
-     *   2. Permanent WBCE namespace (survives logout)
-     *   3. Bare $_SESSION keys set by third-party code or old modules
+     * @brief Simple debug helper to show all session vars in an overview.
      *
-     * Uses debug_dump() when available (WB_DEBUG = true, WBCE native),
-     * otherwise falls back to var_dump inside a <pre> block.
+     * Just call it self::Debug() and it will return an overview
      *
-     * The dev branch version had a copy-paste bug: $sOut was assigned with =
-     * inside every loop instead of concatenated with .=, so only the last
-     * item was ever visible in the output. Fixed here.
+     * @return string Returns an html Overview of all Session Vars
      */
-    public static function Debug(): void
+    public static function Debug()
     {
-        $normal = $_SESSION[self::$Store]     ?? [];
-        $perm   = $_SESSION[self::$StorePerm] ?? [];
+        $aSession = array();
+        $aPerm = array();
+        $aGlobal = array();
+        $sOut = "";
 
-        // Everything outside the two WBCE namespaces
-        $global = $_SESSION;
-        unset($global[self::$Store], $global[self::$StorePerm]);
+        $aSession = $_SESSION[self::$Store];
+        $aPerm = $_SESSION[self::$StorePerm];
+        $aGlobal = $_SESSION;
+        unset($aGlobal[self::$Store]);
+        unset($aGlobal[self::$StorePerm]);
 
-        $debugData = [
-            'WBCE Session (normal)'    => $normal,
-            'WBCE Session (permanent)' => $perm,
-            'Other $_SESSION keys'     => $global,
-        ];
 
-        if (function_exists('dump')) {
-            dump($debugData, 'WSession::Debug()');
-        } else {
-            echo '<pre style="background:#fffeed;border:1px solid #ccc;padding:1em">';
-            echo '<strong>WSession::Debug()</strong>' . PHP_EOL;
-            var_dump($debugData);
-            echo '</pre>';
+        if (!empty($aSession)) {
+            $sOut = "<h3>WBCE Session</h3>";
+            foreach ($aSession as $sKey => $uValue) {
+                $sOut = "$sKey: $uValue<br>\n";
+            }
+        }
+        if (!empty($aPerm)) {
+            $sOut = "<h3>WBCE Permanent Session</h3>";
+            foreach ($aPerm as $sKey => $uValue) {
+                $sOut = "$sKey: $uValue<br>\n";
+            }
+        }
+        if (!empty($aGlobal)) {
+            $sOut = "<h3>Global session vars</h3>";
+            foreach ($aGlobal as $sKey => $uValue) {
+                $sOut = "$sKey: $uValue<br>\n";
+            }
         }
     }
 }

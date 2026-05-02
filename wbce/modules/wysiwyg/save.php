@@ -10,59 +10,56 @@
  * @license GNU GPL2 (or any later version)
  */
 
-require '../../config.php';
+require('../../config.php');
 
+// suppress to print the header, so no new FTAN will be set
 $admin_header = false;
+
+// Tells script to update when this page was last updated
 $update_when_modified = true;
 
-require WB_PATH . '/modules/admin.php';
+// Include WB admin wrapper script
+require(WB_PATH . '/modules/admin.php');
 
 if (!$admin->checkFTAN()) {
     $admin->print_header();
-    $admin->print_error(
-        $MESSAGE['GENERIC_SECURITY_ACCESS'],
-        ADMIN_URL . '/pages/modify.php?page_id=' . $page_id
-    );
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL . '/pages/modify.php?page_id=' . $page_id);
 }
 
+// After check print the header
 $admin->print_header();
+
+// Include the WB functions file
+require_once(WB_PATH . '/framework/functions.php');
 
 $sMediaUrl = WB_URL . MEDIA_DIRECTORY;
 $bBackLink = isset($_POST['pagetree']);
 
+// Update the mod_wysiwygs table with the contents
 if (isset($_POST['content' . $section_id])) {
-    $content = $_POST['content' . $section_id];
-
-    // Replace absolute media URLs with portable placeholder
-    $content = preg_replace(
-        '@(<[^>]*=\s*")(' . preg_quote($sMediaUrl, '@') . ')([^">]*".*>)@siU',
-        '$1{SYSVAR:MEDIA_REL}$3',
-        $content
-    );
-
-    $database->upsertRow('{TP}mod_wysiwyg', 'section_id', [
-        'section_id' => (int) $section_id,
-        'page_id'    => (int) $page_id,
-        'content'    => $content,
-        'text'       => strip_tags($content),
-    ]);
+    $content   = $_POST['content' . $section_id];
+    $searchfor = '@(<[^>]*=\s*")(' . preg_quote($sMediaUrl) . ')([^">]*".*>)@siU';
+    $content   = preg_replace($searchfor, '$1{SYSVAR:MEDIA_REL}$3', $content);
+    $text      = strip_tags($content);
+    $sql       = 'UPDATE `' . TABLE_PREFIX . 'mod_wysiwyg` ' . 'SET `content`=\'' . $database->escapeString($content) . '\', ' . '`text`=\'' . $database->escapeString($text) . '\' ' . 'WHERE `section_id`=' . (int) $section_id;
+    $database->query($sql);
 }
 
-$sec_anchor = defined('SEC_ANCHOR') && SEC_ANCHOR !== ''
-    ? '#' . SEC_ANCHOR . $section_id
-    : '';
-
+$sec_anchor = (defined('SEC_ANCHOR') && (SEC_ANCHOR != '') ? '#' . SEC_ANCHOR . $section['section_id'] : '');
 if (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION) {
-    $redirect = ADMIN_URL . '/pages/modify.php?page_id=' . $page_id . '&wysiwyg=' . $section_id;
+    $edit_page = ADMIN_URL . '/pages/modify.php?page_id=' . $page_id . '&wysiwyg=' . $section_id;
 } elseif ($bBackLink) {
-    $redirect = ADMIN_URL . '/pages/index.php';
+    $edit_page = ADMIN_URL . '/pages/index.php';
 } else {
-    $redirect = ADMIN_URL . '/pages/modify.php?page_id=' . $page_id . $sec_anchor;
+    $edit_page = ADMIN_URL . '/pages/modify.php?page_id=' . $page_id . $sec_anchor;
 }
 
-if ($database->hasError()) {
-    $admin->print_error($database->getError(), $redirect);
+// Check if there is a database error, otherwise say successful
+if ($database->is_error()) {
+    $admin->print_error($database->get_error(), $js_back);
+} else {
+    $admin->print_success($MESSAGE['PAGES_SAVED'], $edit_page);
 }
 
-$admin->print_success($MESSAGE['PAGES_SAVED'], $redirect);
+// Print admin footer
 $admin->print_footer();

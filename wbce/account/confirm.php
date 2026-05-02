@@ -22,7 +22,7 @@ $sConfirmCode = md5(md5($sUsername . $sConfirmTimeout) . $sConfirmTimeout);
 
 if (isset($_GET['mng']) && $_GET['mng'] > intval(1)) {
     header("Location: " . ACCOUNT_URL . "/signup_continue_page.php?lc=" . $sLC . "&switch=wrong_inputs&excessive_manager_use");
-    exit;
+    exit(0);
 }
 
 $sConfirmationID = (isset($_GET['id']) ? $_GET['id'] : '');
@@ -44,7 +44,7 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
     if (isset($_GET['mng']) && $_GET['mng'] == intval(1)) {
         if ($oAccounts->checkConfirmSum($_GET['sum'], $iUserID) == false) {
             header("Location: " . ACCOUNT_URL . "/signup_continue_page.php?lc=" . $sLC . "&switch=wrong_inputs&check_sum");
-            exit;
+            exit(0);
         }
 
         // //////////////////////////////////////////////

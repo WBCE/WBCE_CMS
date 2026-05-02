@@ -40,7 +40,7 @@ The default button uses a simple Javascript return confirm()for a simple "Are yo
                 <tr>
                     <td>
                         <div class="forSelect" >
-                        <select name="ipOctets" style="width:100%">   
+                        <select name="ipOctets" >   
                             <option value="0"<?php if ($ipOctets=="0") echo $selected ?>>0</option>
                             <option value="1"<?php if ($ipOctets=="1") echo $selected ?>>1</option>
                             <option value="2"<?php if ($ipOctets=="2") echo $selected ?>>2</option>

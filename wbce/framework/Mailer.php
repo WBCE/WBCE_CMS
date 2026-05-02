@@ -11,8 +11,8 @@
  */
 
 if (!defined('WB_PATH')) {
-    // Prevent this file from being accessed directly
-    header('HTTP/1.1 403 Forbidden');  exit('No direct access allowed');
+    require_once dirname(__FILE__) . '/globalExceptionHandler.php';
+    throw new IllegalFileException();
 }
 
 date_default_timezone_set('UTC');
@@ -158,11 +158,11 @@ class Mailer extends PHPMailer
             //   'wbmailer_smtp_port',
             //   'wbmailer_smtp_secure',
             // *******************************************************
-            $rows = $GLOBALS['database']->fetchAll(
-                "SELECT * FROM `{TP}settings` WHERE `name` LIKE 'wbmailer_%' OR `name` = 'server_email'"
-            );
+            $sSql = "SELECT * FROM `{TP}settings` "
+                . "WHERE `name` LIKE ('wbmailer_%') OR `name` = 'server_email'";
+            $rData = $GLOBALS['database']->query($sSql);
 
-            foreach ($rows as $rec) {
+            while ($rec = $rData->fetchRow(MYSQLI_ASSOC)) {
                 $sKey = str_replace('wbmailer_', '', $rec['name']);
                 $aCfg[$sKey] = $rec['value'];
 

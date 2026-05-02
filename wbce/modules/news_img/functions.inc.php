@@ -2522,9 +2522,9 @@ function mod_nwi_sanitize_input(&$input, $filter)
 			// loop over input values
 			foreach($temp as $key => $value) {
 				// force type casting to either integer or double
-				if ($filter_type == 'b') $temp[$key] = (bool) $temp[$key];
+				if ($filter_type == 'b') $temp[$key] = (boolean) $temp[$key];
 				if ($filter_type == 'i') $temp[$key] = (int) $temp[$key];
-				if ($filter_type == 'd') $temp[$key] = (float) $temp[$key];
+				if ($filter_type == 'd') $temp[$key] = (double) $temp[$key];
 
 				// check if value is within min/max range, if not use default value
 				if ($advanced_filter) {
