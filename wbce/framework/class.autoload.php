@@ -365,6 +365,7 @@ class WbAuto
 
         // 2. Framework directory — scans for all class.*.php, *.php etc.
         self::AddDir('/framework/');
+        self::AddDir('/framework/AccessManager/');
     }
 
 }

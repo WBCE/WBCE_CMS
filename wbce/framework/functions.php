@@ -300,22 +300,20 @@ function root_parent(int $page_id): int
 {
     global $database;
 
-    // Get page details with prepared statement / parameter binding
-    $query = $database->query(
+    $pageRow = $database->fetchRow(
         'SELECT `parent`, `level` FROM `{TP}pages` WHERE `page_id` = ?',
-        [(int) $page_id]   // flat array with one integer value
+        [(int) $page_id]
     );
 
-    $pageRow = $query->fetchRow(MYSQLI_ASSOC);
+    if (!$pageRow) return 0; // guard: page has no parent
 
     if ($pageRow['level'] == 1) {
         return (int) $pageRow['parent'];
     } elseif ($pageRow['parent'] == 0) {
         return $page_id;
     } else {
-        // Figure out what the root parents id is
         $parentsArray = array_reverse(get_parent_ids($page_id));
-        return (int) $parentsArray[0]; // first from array
+        return (int) $parentsArray[0];
     }
 }
 
@@ -1019,24 +1017,42 @@ function getFilePart($sFilePath, $size = 0)
     return false;
 }
 
+
 /**
- * @brief  replace Placeholder-Tokens with values in a string
+ * HTML-escape a value for safe output in templates.
+ * Converts special characters to HTML entities (ENT_QUOTES).
  *
- * @param string $sString string with Placeholder-Tokens
- * @param array $aReplace values to replace vars placeholder
- * @param string $sHem The delimiters on both sides that are being used
- *                            in PH-Tokens: '[%s]' or '{%s}'. Default is: '{{%s}}'
- * @return string  The string with replaced Placeholder Tokens
+ *   <?= h($user_input) ?>
  */
-function replace_vars($sString = '', &$aReplace = array(), $sHem = '{{%s}}')
+function h(mixed $value): string
 {
-    if (!empty($aReplace) && $sString!=null) {
-        foreach ($aReplace as $sKey => $sValue) {
-            $sString = str_replace(sprintf($sHem, $sKey), $sValue, $sString);
-        }
-    }
-    return $sString;
+    return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
+
+
+/**
+ * Replaces placeholders in a string using the given key-value pairs.
+ *
+ * @param string               $template    The string containing placeholders
+ * @param array<string, mixed> $replacements Key → value map
+ * @param string               $wrapper     Placeholder format, e.g. '{{%s}}' or '{{ %s }}'
+ * @return string
+ */
+function replace_vars(string $template, array $replacements, string $wrapper = '{{%s}}'): string
+{
+    if ($replacements === []) {
+        return $template;
+    }
+
+    $map = [];
+    foreach ($replacements as $key => $value) {
+        // Convert value to string safely (handles int/float/bool/null/object->string)
+        $map[sprintf($wrapper, $key)] = (string) $value;
+    }
+
+    return strtr($template, $map);
+}
+
 
 /**
  * @brief   Filter directory traversal more thoroughly, thanks to hal 9000

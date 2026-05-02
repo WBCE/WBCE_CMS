@@ -118,7 +118,7 @@ function get_modul_version(...$args) {
  * @param bool $bInstall
  * @return
  */
-function load_module($sModulePath, $bInstall = false, $init = false)
+function load_module($sModulePath, $bInstall = false)
 {
     global $database, $admin, $MESSAGE;
     $retVal = array();
@@ -137,15 +137,15 @@ function load_module($sModulePath, $bInstall = false, $init = false)
             }
             $module_function = strtolower($module_function);
             $aData = [
-                'directory'   => $module_directory ?? '',
-                'name'        => $module_name ?? '',
-                'description' => $module_description ?? '',
                 'type'        => 'module',
-                'function'    => $module_function ?? '',
-                'version'     => $module_version ?? '',
-                'platform'    => $module_platform ?? '',
-                'author'      => $module_author ?? '',
-                'license'     => $module_license ?? '',
+                'name'        => $module_name        ?? '',
+                'directory'   => $module_directory   ?? '',
+                'description' => $module_description ?? '',
+                'function'    => $module_function    ?? '',
+                'version'     => $module_version     ?? '',
+                'platform'    => $module_platform    ?? '',
+                'author'      => $module_author      ?? '',
+                'license'     => $module_license     ?? '',
             ];
             // Check that it doesn't already exist
             if ($database->fetchValue(
@@ -159,9 +159,6 @@ function load_module($sModulePath, $bInstall = false, $init = false)
             // Run installation script
             if ($bInstall == true) {                
                 if (file_exists($sModulePath . '/install.php')) {
-                    if($init){
-                        require_once __DIR__ .'/Settings.php';
-                    }
                     require($sModulePath . '/install.php');
                     $retVal[] = isset($msg) ?: 'Info ' . $module_name;
                 }
@@ -198,15 +195,15 @@ function load_template($sTemplatePath)
                 $template_description = 'no description available';
             }
             $aData = array(
-                'directory'   => $template_directory,
-                'name'        => $template_name,
-                'description' => $template_description,
                 'type'        => 'template',
-                'function'    => $template_function,
-                'version'     => $template_version,
-                'platform'    => $template_platform,
-                'author'      => $template_author,
-                'license'     => $template_license,
+                'name'        => $template_name        ?? '',
+                'directory'   => $template_directory   ?? '',
+                'description' => $template_description ?? '',
+                'function'    => $template_function    ?? '',
+                'version'     => $template_version     ?? '',
+                'platform'    => $template_platform    ?? '',
+                'author'      => $template_author      ?? '',
+                'license'     => $template_license     ?? '',
             );
             // Check if it doesn't already exist
             if ($database->fetchValue(
@@ -238,11 +235,11 @@ function load_language($sFilePath)
         // read contents of the template language file into string
         $data = @file_get_contents(WB_PATH . '/languages/' . str_replace('.php', '', basename($sFilePath)) . '.php');
         // use regular expressions to fetch the content of the variable from the string
-        $language_name = get_variable_content('language_name', $data, false, false);
-        $language_code = preg_replace('/^.*([a-zA-Z]{2})\.php$/si', '\1', $sFilePath);
-        $language_author = get_variable_content('language_author', $data, false, false);
-        $language_version = get_variable_content('language_version', $data, false, false);
-        $language_platform = get_variable_content('language_platform', $data, false, false);
+        $language_code        = preg_replace('/^.*([a-zA-Z]{2})\.php$/si', '\1', $sFilePath);
+        $language_name        = get_variable_content('language_name',     $data, false, false);
+        $language_author      = get_variable_content('language_author',   $data, false, false);
+        $language_version     = get_variable_content('language_version',  $data, false, false);
+        $language_platform    = get_variable_content('language_platform', $data, false, false);
         $language_description = get_variable_content('language_platform', $data, false, false);
         if (isset($language_name)) {
             if (!isset($language_license)) {
@@ -253,14 +250,14 @@ function load_language($sFilePath)
             }
 
             $aData = array(
-                'directory'   => $language_code,
-                'name'        => $language_name,
                 'type'        => 'language',
-                'version'     => $language_version,
-                'platform'    => $language_platform,
-                'author'      => $language_author,
                 'description' => '',
-                'license'     => $language_license,
+                'directory'   => $language_code     ?? '',
+                'name'        => $language_name     ?? '',
+                'version'     => $language_version  ?? '',
+                'platform'    => $language_platform ?? '',
+                'author'      => $language_author   ?? '',
+                'license'     => $language_license  ?? '',
             );
             // Check that it doesn't already exist
             if ($database->fetchValue(
@@ -296,12 +293,12 @@ function upgrade_module($sModulePath, $bUpgrade = false)
             )) {
                 // Update in DB
                 $aUpdate = array(
-                    'directory'   => $module_directory,
-                    'version'     => $module_version,
-                    'description' => $module_description,
-                    'platform'    => (!isset($module_platform) && isset($module_designed_for)) ? $module_designed_for : $module_platform,
-                    'author'      => $module_author,
+                    'directory'   => $module_directory   ?? '',
+                    'version'     => $module_version     ?? '',
+                    'description' => $module_description ?? '',
+                    'author'      => $module_author      ?? '',
                     'license'     => (!isset($module_license)) ? 'GNU General Public License' : $module_license,
+                    'platform'    => (!isset($module_platform) && isset($module_designed_for)) ? $module_designed_for : $module_platform,
                     'function'    => strtolower((!isset($module_function) && isset($module_type)) ? $module_type : $module_function),
                 );
                 $database->upsertRow('{TP}addons', 'directory', $aUpdate);

@@ -304,9 +304,11 @@ function get_section_content(int $sectionId, bool $useSecAnchor = false, string 
  * Fetches all sections of a template layout block and returns them as an array.
  *
  * @param int|string $block  Block ID (numeric) or block name
- * @return array             Array of sections with their content and metadata
+ * @return array|null        Sections array, or null on permission/visibility failure.
+ *                           Returns null (not []) so template checks like
+ *                           if (!block_contents()) work correctly.
  */
-function block_contents($block = 1): array
+function block_contents($block = 1): ?array
 {
     global $database, $wb, $TEXT, $MESSAGE, $HEADING, $MENU;
     $admin = $wb;
@@ -318,12 +320,12 @@ function block_contents($block = 1): array
     // Early exits for permission / visibility issues
     if ($wb->page_access_denied ?? false) {
         echo $MESSAGE['FRONTEND_SORRY_NO_VIEWING_PERMISSIONS'] ?? 'No viewing permissions';
-        return [];
+        return null;
     }
 
     if ($wb->page_no_active_sections ?? false) {
         echo $MESSAGE['FRONTEND_SORRY_NO_ACTIVE_SECTIONS'] ?? 'No active sections';
-        return [];
+        return null;
     }
 
     // Special case: full page content via PAGE_CONTENT constant
@@ -334,14 +336,14 @@ function block_contents($block = 1): array
         return $blockSections;
     }
 
-    // Return early if current page is not visible
+    // Return null if current page is not visible
     if (($wb instanceof frontend) && !$wb->page_is_visible($wb->page ?? [])) {
-        return [];
+        return null;
     }
 
     // Get sections for this block
-    $sql = 'SELECT `section_id` FROM `{TP}sections` 
-            WHERE `page_id` = ? AND `block` = ? 
+    $sql = 'SELECT `section_id` FROM `{TP}sections`
+            WHERE `page_id` = ? AND `block` = ?
             ORDER BY `position`';
 
     $pageId = $page_id = $wb->page_id ?? 0;
@@ -350,8 +352,8 @@ function block_contents($block = 1): array
 
     if (!$sectionsResult || $sectionsResult->numRows() === 0) {
         // Try default block content
-        if (($wb->default_block_content ?? '') === 'none') {
-            return [];
+        if (($wb->default_block_content) === intval(0)) {
+            return null;
         }
 
         $pageId = is_numeric($wb->default_block_content ?? null)
@@ -361,7 +363,7 @@ function block_contents($block = 1): array
         $sectionsResult = $database->query($sql, [$pageId, $blockId]);
 
         if (!$sectionsResult || $sectionsResult->numRows() === 0) {
-            return [];
+            return null;
         }
     }
 
@@ -370,28 +372,27 @@ function block_contents($block = 1): array
         $sectionId = (int)$row['section_id'];
         $section   = get_section_array($sectionId);
 
-        if (empty($section)) {
-            continue;
-        }
+        if (empty($section)) continue;
 
         // Skip section if outside publication period
         $currentTime = time();
         if (!(
-            ($currentTime <= ($section['publ_end'] ?? 0) || ($section['publ_end'] ?? 0) == 0) &&
+            ($currentTime <= ($section['publ_end']   ?? 0) || ($section['publ_end']   ?? 0) == 0) &&
             ($currentTime >= ($section['publ_start'] ?? 0) || ($section['publ_start'] ?? 0) == 0)
         )) {
             continue;
         }
 
-        // Render section content
+        // Render section content via get_section_content()
+        // (handles view.php, OPF 'section' filter, globals, modfile registration)
         $content = get_section_content($sectionId);
 
-        if ($content === '') {
-            continue;
-        }
+        if ($content === '') continue;
 
-        // Search result highlighting
-        if (isset($_GET['searchresult']) && is_numeric($_GET['searchresult']) && !isset($_GET['nohighlight']) && !empty($_GET['sstring'])) {
+        // Search result highlighting — mutually exclusive with OPF 'special' filter
+        if (isset($_GET['searchresult']) && is_numeric($_GET['searchresult'])
+            && !isset($_GET['nohighlight']) && !empty($_GET['sstring'])) {
+
             $searchString = filter_input(INPUT_GET, 'sstring', FILTER_SANITIZE_ENCODED);
             $searchString = str_replace('%', '', $searchString);
             $searchTerms  = explode(' ', $searchString);
@@ -404,7 +405,7 @@ function block_contents($block = 1): array
             continue;
         }
 
-        // Apply special OPF filter
+        // Apply OPF 'special' filter — only outside search-highlight path
         if (function_exists('opf_apply_filters')) {
             $content = opf_controller('special', $content);
         }
@@ -415,16 +416,15 @@ function block_contents($block = 1): array
             $sectionAnchor = '<a class="section_anchor" id="' . SEC_ANCHOR . $section['section_id'] . '"></a>';
         }
 
-        // Add section to result array
         $blockSections[$sectionId] = [
-            'position'     => $section['position'] ?? 0,
+            'position'     => $section['position']   ?? 0,
             'section_id'   => $section['section_id'] ?? $sectionId,
-            'module'       => $section['module'] ?? '',
+            'module'       => $section['module']      ?? '',
             'section_name' => $section['namesection'] ?? '',
             'evenodd'      => (($section['position'] ?? 0) % 2 === 1) ? 'even' : 'odd',
-            'content'      => $sectionAnchor !== '' 
-                ? PHP_EOL . $sectionAnchor . PHP_EOL . $content 
-                : $content
+            'content'      => $sectionAnchor !== ''
+                ? PHP_EOL . $sectionAnchor . PHP_EOL . $content
+                : $content,
         ];
     }
 

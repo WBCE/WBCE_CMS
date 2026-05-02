@@ -10,11 +10,12 @@
  * form is selected automatically at runtime without any conditional logic
  * in application code.
  *
- * @author  Christian M. Stefan  (https://www.wbEasy.de)
- * @copyright Copyright (c) 2025-2026 Christian M. Stefan
- * @copyright Copyright (c) 2026 WBCE CMS Project
- * @license   GNU General Public License version 2 or later (GPL-2.0-or-later)
- *            https://www.gnu.org/licenses/gpl-2.0.html
+ * @file      framework/i18n/LangPlural.php
+ * @package   Framework i18n
+ * @author    Christian M. Stefan  (https://www.wbEasy.de)
+ * @copyright 2025-2026 Christian M. Stefan
+ * @copyright 2026 WBCE CMS Project
+ * @license   GNU/GPL v2 https://www.gnu.org/licenses/gpl-2.0.html
  *
  * @note      Rules are based on the Unicode CLDR plural specifications.
  *            See: https://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html

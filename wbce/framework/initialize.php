@@ -67,9 +67,9 @@ validate_admin_directory_constant(); // check for faulty constructions
 defined('ADMIN_URL')       or define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
 defined('ADMIN_PATH')      or define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
 
-// Load Lang translation functions (L_(), Ln_()).
+// Load Lang internationalization functions (L_(), Ln_()).
 // Must be loaded explicitly before Autoloader
-require_once WB_PATH . '/framework/LangLoader.php';
+require_once WB_PATH . '/framework/i18n/init.php';
 
 // Load core functions before preinit files so we can use functions right away.
 require_once WB_PATH . '/framework/functions.php';
@@ -88,7 +88,7 @@ define("DOMAIN_PROTOCOLL", wbce_detect_protocol());
 WbAuto::bootInitialize();
 
 // Connect to Twig TE (the contemporary Templating Engine)
-require_once WB_PATH . '/include/Sensio/Twig/WBCETwigLoader.php';
+require_once WB_PATH . '/include/Sensio/Twig/WbceCustom/TwigLoader.php';
 
 // SETUP SYSTEM CONSTANTS (GLOBAL SETTINGS)
 // We use Settings Class to fetch all Settings from DB

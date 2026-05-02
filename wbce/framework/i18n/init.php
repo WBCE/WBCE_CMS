@@ -1,22 +1,22 @@
 <?php
 /**
- * Internationalization — LangLoader
- *
- * Global translation functions adopted for use in WBCE CMS.
- * Provides L_() for string translation and Ln_() for plural-aware
- * translation, along with internal helpers for token parsing and
- * language file inclusion. 
- *
- * @author  Christian M. Stefan  (https://www.wbEasy.de)
+ * Internationalization — Lang
+ * 
+ * @file      framework/i18n/init.php
+ * @package   Framework i18n
+ * @author    Christian M. Stefan  (https://www.wbEasy.de)
  * @copyright Copyright (c) 2025-2026 Christian M. Stefan
  * @copyright Copyright (c) 2026 WBCE CMS Project
- * @license   GNU General Public License version 2 or later (GPL-2.0-or-later)
- *            https://www.gnu.org/licenses/gpl-2.0.html
+ * @license   GNU/GPL v2 https://www.gnu.org/licenses/gpl-2.0.html
  *
  * @note      _wbe_lang_include() must remain a standalone function (not a
  *            class method) so that get_defined_vars() correctly captures
  *            all variables assigned by included language files.
  *
+ * Global translation functions adopted for use in WBCE CMS.
+ * Provides L_() for string translation and Ln_() for plural-aware
+ * translation, along with internal helpers for token parsing and
+ * language file inclusion. 
  *  -----------------------------------------------------------------------------
  *
  * ── SYNTAX ───────────────────────────────────────────────────────────────────
