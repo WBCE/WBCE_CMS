@@ -1,2 +1,5 @@
 *.db
 changelog_creator.sh
+.idea/
+package-lock.json
+node_modules/

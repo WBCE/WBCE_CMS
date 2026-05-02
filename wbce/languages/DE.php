@@ -8,8 +8,6 @@
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
- *
- * Made whith help of Automated Language File tool Copyright heimsath.org
  */
 
 //no direct file access
@@ -22,8 +20,8 @@ if (count(get_included_files()) ==1) {
 // Set the language information
 $language_code = 'DE';
 $language_name = 'German'; // Deutsch
-$language_version = '3.3';
-$language_platform = '1.4.0';
+$language_version = '3.4';
+$language_platform = '1.6.0';
 $language_author = 'Stefan Braunewell, Matthias Gallas, Florian Meerwinck';
 $language_license = 'GNU General Public License';
 
@@ -222,7 +220,7 @@ $TEXT['MOVE_UP'] = 'Aufwärts verschieben';
 $TEXT['MULTIPLE_MENUS'] = 'Mehrere Menüs';
 $TEXT['MULTISELECT'] = 'Mehrfachauswahl';
 $TEXT['NAME'] = 'Name';
-$TEXT['NEED_CURRENT_PASSWORD'] = 'Bitte vor dem Absenden des Formulars die Änderungen mit dem aktuellem Passwort bestätigen';
+$TEXT['NEED_CURRENT_PASSWORD'] = 'Bitte vor dem Absenden des Formulars die Änderungen mit dem aktuellen Passwort bestätigen';
 $TEXT['NEED_TO_LOGIN'] = 'Wollen Sie sich anmelden?';
 $TEXT['NEW_PASSWORD'] = 'Neues Passwort';
 $TEXT['NEW_WINDOW'] = 'Neues Fenster';
@@ -282,7 +280,7 @@ $TEXT['REGISTERED'] = 'Registriert';
 $TEXT['REGISTERED_VIEWERS'] = 'Darf Seiten sehen (Frontend)';
 $TEXT['RELOAD'] = 'Neu laden';
 $TEXT['REMAINING'] = 'verbleiben';
-$TEXT['REMEMBER_ME'] = '';
+$TEXT['REMEMBER_ME'] = 'Angemeldet bleiben';
 $TEXT['RENAME'] = 'Umbenennen';
 $TEXT['RENAME_FILES_ON_UPLOAD'] = 'Diese Dateitypen nicht hochladen';
 $TEXT['REQUIRED'] = 'Erforderlich';
@@ -612,7 +610,7 @@ $MESSAGE['SETTINGS_UNABLE_OPEN_CONFIG'] = 'Konfigurationsdatei konnte nicht geö
 $MESSAGE['SETTINGS_UNABLE_WRITE_CONFIG'] = 'Die Konfigurationsdatei konnte nicht geschrieben werden';
 $MESSAGE['SETTINGS_WORLD_WRITEABLE_WARNING'] = 'Bitte beachten Sie: Dies wird nur zu Testzwecken empfohlen';
 $MESSAGE['SIGNUP2_ADMIN_INFO'] = '
-Es wurde ein neuer User regisriert.
+Es wurde ein neuer User registriert.
 
 Loginname: {LOGIN_NAME}
 UserId: {LOGIN_ID}

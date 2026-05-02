@@ -666,28 +666,27 @@ _JsCode;
      */
     public function validate_email(string $email): bool
     {
-       if (empty($email)) {
-           return false;
-       }
+        if (empty($email)) {
+            return false;
+        }
 
-       if (str_contains($email, '@')) {
-           [$local, $domain] = explode('@', $email, 2);
+        if (str_contains($email, '@')) {
+            [$local, $domain] = explode('@', $email, 2);
 
-           if (function_exists('idn_to_ascii')) {
-               $ascii = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
-               // idn_to_ascii returns false on failure
-               if ($ascii !== false) {
-                   $domain = $ascii;
-               }
-           }
-           // If intl is unavailable, fall through with the raw domain.
-           // filter_var will still catch obviously malformed addresses.
+            if (function_exists('idn_to_ascii')) {
+                $ascii = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+                // idn_to_ascii returns false on failure
+                if ($ascii !== false) {
+                    $domain = $ascii;
+                }
+            }
+            // If intl is unavailable, fall through with the raw domain.
+            // filter_var will still catch obviously malformed addresses.
 
-           $email = $local . '@' . $domain;
-       }
+            $email = $local . '@' . $domain;
+        }
 
-       return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
-    }
+     
 
     /**
      * @brief   set one or more bit in a integer value
