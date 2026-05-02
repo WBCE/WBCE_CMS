@@ -10,26 +10,29 @@
  * @license GNU GPL2 (or any later version)
  */
 
-
-$module_directory = 'droplets';
-$module_name      = 'Droplets';
-$module_function  = 'tool';
-$module_version   = '2.4.0';
-$module_platform  = '1.6.0';
-$module_author    = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan (Stefek)';
-$module_license   = 'GNU General Public License';
+$core = true;
+$module_directory   = 'droplets';
+$module_name        = 'Droplets';
+$module_function    = 'tool';
+$module_version     = '2.4.2';
+$module_platform    = '1.6.0';
+$module_author      = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan';
+$module_license     = 'GNU General Public License';
 $module_description = 'This tool allows you to manage your local Droplets.';
-$module_icon  = 'fa fa-tint';
-$module_home  = 'https://addons.wbce.org/pages/addons.php?do=item&item=54';
-$module_guid  = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
-$module_level = 'core';
+$module_icon        = 'fa fa-tint';
+$module_home        = 'https://addons.wbce.org/pages/addons.php?do=item&item=54';
+$module_guid        = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
 
 /**
  * Version history
  * ===============
  *
  * 
- * v2.4.0 Stefek 06.02 2023
+ * v2.4.2 Stefek 24.04 2026
+ *        - set $core var, 
+ *        - remove deprecated $module_level var
+ * 
+ * v2.4.0 Stefek 06.02 2023 
  *        - move OpF Filter file to `/modules/droplets/` directory 
              and remove `/modules/mod_opf_droplets/` directory
  *

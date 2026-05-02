@@ -10,20 +10,22 @@
  * @license GNU GPL2 (or any later version)
  */
 
-//no direct file access
-if (count(get_included_files()) == 1) {
-    header("Location: ../index.php", true, 301);
-}
+// Prevent  this  file  from  being  accessed  directly
+defined('WB_PATH') or die('No direct access allowed');
 
 class Frontend extends Wb
 {
     // defaults
+    public $isStartpage = false;
     public $default_link;
     public $default_page_id;
 
-    // when multiple blocks are used, show home page blocks on
-    // pages where no content is defined (search, login, ...)
-    public $default_block_content = true;
+    // when multiple blocks are used, PAGE_ID = 0 pages like
+    // (search, login, ...) cannot fill into these blocks.
+    // default 0 = don't use default block content feature
+    // use $wb->default_block_content = 7; (7 being the page
+    // from which block contens have to be used from.
+    public $default_block_content = 0; 
 
     // page details
     public $page;
@@ -63,12 +65,12 @@ class Frontend extends Wb
     public function page_select()
     {
         global $page_id, $no_intro;
-
+ 
         // We have a Maintainance situation print under construction if not in group admin
         if (defined("WB_MAINTAINANCE_MODE") and WB_MAINTAINANCE_MODE === true and !$this->ami_group_member('1')) {
-            $this->print_under_construction();
+                $this->print_under_construction();
         }
-
+ 
         // We have no page id and are supposed to show the intro page
         if ((INTRO_PAGE and !isset($no_intro)) and (!isset($page_id) or !is_numeric($page_id))) {
             // Since we have no page id check if we should go to intro page or default page
@@ -86,35 +88,38 @@ class Frontend extends Wb
         }
         // Check if we should add page language sql code
         if (PAGE_LANGUAGES) {
-            $this->sql_where_language = ' AND `language`=\'' . LANGUAGE . '\'';
+            $this->sql_where_language = " AND `language`='" . LANGUAGE . "'";
         }
+ 
         // Get default page
-        // Check for a page id
-        $now = time();
-        $sSql = 'SELECT `p`.`page_id`, `link` ';
-        $sSql .= 'FROM `{TP}pages` AS `p` INNER JOIN `{TP}sections` USING(`page_id`) ';
-        $sSql .= 'WHERE `parent`=0 AND `visibility`=\'public\' ';
-        $sSql .= 'AND ((' . $now . '>=`publ_start` OR `publ_start`=0 OR `publ_start`=\'\') ';
-        $sSql .= 'AND (' . $now . '<=`publ_end` OR `publ_end`=0 OR `publ_end`=\'\')) ';
+        $now  = time();
+        $sSql = "SELECT `p`.`page_id`, `link`
+                 FROM `{TP}pages` AS `p`
+                 INNER JOIN `{TP}sections` USING(`page_id`)
+                 WHERE `parent`=0
+                   AND `visibility`='public'
+                   AND (($now >= `publ_start` OR `publ_start`=0 OR `publ_start`='')
+                   AND  ($now <= `publ_end`   OR `publ_end`=0   OR `publ_end`=''))";
+ 
         if (trim($this->sql_where_language) != '') {
-            $sSql .= trim($this->sql_where_language) . ' ';
+            $sSql .= ' ' . trim($this->sql_where_language);
         }
-        $sSql .= 'ORDER BY `p`.`position` ASC';
-        $get_default = $this->_oDb->query($sSql);
+        $sSql .= " ORDER BY `p`.`position` ASC";
+ 
+        $get_default      = $this->db->query($sSql);
         $default_num_rows = $get_default->numRows();
+ 
         if (!isset($page_id) or !is_numeric($page_id)) {
             // Go to or show default page
             if ($default_num_rows > 0) {
                 $fetch_default = $get_default->fetchRow(MYSQLI_ASSOC);
-                $this->default_link = $fetch_default['link'];
+                $this->default_link    = $fetch_default['link'];
                 $this->default_page_id = $fetch_default['page_id'];
                 // Check if we should redirect or include page inline
                 if (HOMEPAGE_REDIRECTION) {
-                    // Redirect to page
                     header("Location: " . $this->page_link($this->default_link));
                     exit();
                 } else {
-                    // Include page inline
                     $this->page_id = $this->default_page_id;
                 }
             } else {
@@ -125,12 +130,18 @@ class Frontend extends Wb
         } else {
             $this->page_id = $page_id;
         }
-        // Get default page link
+ 
+        // Get default page link (needed even when a specific $page_id was requested)
         if (!isset($fetch_default)) {
             $fetch_default = $get_default->fetchRow(MYSQLI_ASSOC);
-            $this->default_link = $fetch_default['link'];
-            $this->default_page_id = $fetch_default['page_id'];
+            // Guard: fetchRow() returns false when the result set is empty
+            // (can happen when $page_id is set but no public pages exist)
+            if (is_array($fetch_default)) {
+                $this->default_link    = $fetch_default['link'];
+                $this->default_page_id = $fetch_default['page_id'];
+            }
         }
+        $this->isStartpage = (int) $this->page_id === (int) $this->default_page_id;
         return true;
     }
 
@@ -168,7 +179,7 @@ class Frontend extends Wb
         if ($this->page_id != 0) {
             // Query page details
             $sSql = 'SELECT * FROM `{TP}pages` WHERE `page_id` = ' . (int)$this->page_id;
-            $resPage = $this->_oDb->query($sSql);
+            $resPage = $this->db->query($sSql);
 
             // Make sure page was found in database otherwise print "Page not found" message
             if ($resPage->numRows() == 0) {

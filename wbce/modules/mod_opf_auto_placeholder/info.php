@@ -19,7 +19,8 @@
 /*
  *      CHANGELOG
  *
- *      1.3.4   2023-02-25		- Update description
+ *      1.3.5   2026-04-24	- set $core var, remove deprecated $module_level var
+ *      1.3.4   2023-02-25	- Update description
  *      1.3.3   2019-07-05      - by default enable filter on searchresults
  *      1.3.2   2019-04-22      - include opf functions in upgrade script
  *      1.3.1   2019-03-26      - update requirements and remove older fallback
@@ -48,13 +49,12 @@ if(!defined('WB_PATH')) {
 }
 /* -------------------------------------------------------- */
 
-
+$core = true;
 $module_directory       = 'mod_opf_auto_placeholder';
 $module_name            = 'OPF Auto Placeholder';
 $module_function        = 'opffilter';
-$module_version         = '1.3.4';
+$module_version         = '1.3.5';
 $module_platform        = 'WBCE 1.4.x ';
 $module_author          = 'Martin Hecht (mrbaseman)';
 $module_license         = 'GNU GPL2 (or any later version)';
 $module_description     = 'Auto Add Placeholders for Javascript, CSS, Metas and Title';
-$module_level           = 'core';

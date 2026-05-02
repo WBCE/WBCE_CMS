@@ -11,10 +11,7 @@
  */
 
 // Must include code to stop this file being accessed directly
-if (!defined('WB_PATH')) {
-    require_once(dirname(dirname(dirname(__FILE__))).'/framework/globalExceptionHandler.php');
-    throw new IllegalFileException();
-}
+defined('WB_PATH') or die('No direct access!');
 
 // global $admin;
 
@@ -57,7 +54,7 @@ while ($file = readdir($folder)) {
 closedir($folder);
 
 foreach ($names as $dropfile) {
-    $droplet = addslashes(getDropletCodeFromFile($dropfile));
+    $droplet = getDropletCodeFromFile($dropfile);
     if ($droplet != "") {
         $description = "Example Droplet";
         $comments = "Example Droplet";

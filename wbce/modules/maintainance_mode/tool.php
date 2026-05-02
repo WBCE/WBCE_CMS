@@ -4,11 +4,11 @@
  * @package         maintainance_mode
  * @author          WBCE Project
  * @copyright       Norbert Heimsath
- * @license			WTFPL
+ * @license         WTFPL
  */
 
 /*
-Info for module(tool) builders.
+Info for module / admin-tool developers.
 Already included here :
 config.php
 framework/initialize.php
@@ -47,44 +47,24 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 if($doSave) {
     if (!$admin->checkFTAN()) {
         //3rd param = false =>no auto footer, no exit.
-	    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$returnUrl, false); 
+        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $returnUrl, false); 
     }
 }
 
-// Form send , ok lets see what to do
 if($saveSettings) {
+    // Form send, ok lets see what to do
 
-//     var_dump($saveSettings);
-//     var_dump($admin->get_post("maintMode"));
-    
-    // ONLY HERE THE ACTUAL ACTION IS GOING ON!!    
-
-    // We set the setting
-    if ($admin->get_post("maintMode")=="true") {$setError=Settings::Set ("wb_maintainance_mode", true);}
-    else                                      { $setError=Settings::Set ("wb_maintainance_mode", false);}
-
-    // END ACTION!! 
-
-    // report success or failure
-    toolMsg ($setError, $returnUrl );
+    $isActive = isset($_POST['enabled']);
+    $setError = Settings::set("wb_maintainance_mode", $isActive, true); 
+    toolMsg ($setError, $returnUrl ); // report success or failure
 
 } else if ($saveDefault) {
-
-    // setting defaults
-    $setError=Settings::Set ("wb_maintainance_mode", false);
-
-    // report success or failure
-    toolMsg ($setError, $returnUrl );
+    // Form send to reload default values (default is always false for this tool):
+    
+    $setError = Settings::set("wb_maintainance_mode", false);
+    toolMsg ($setError, $returnUrl ); // report success or failure
 
 } else { 
-
-    // Display form
-    // get setting from DB , as constant may not be set yet.
-	$maintMode=(string)Settings::Get ("wb_maintainance_mode");
-    if ($maintMode) $maintMode=' checked="checked" ';
-    else                $maintMode='';  
-
-    include($modulePath."templates/maintainance.tpl.php");
-    
+    // Nothing sent: Display form
+    include($modulePath."templates/maintainance.tpl.php");    
 }
- 

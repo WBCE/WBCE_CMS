@@ -10,15 +10,6 @@
  * @license GNU GPL2 (or any later version)
  */
 
-if (defined('WB_URL')) {
-    // Create table
-    // $database->query("DROP TABLE IF EXISTS `".TABLE_PREFIX."mod_wysiwyg`");
-    $mod_wysiwyg = 'CREATE TABLE IF NOT EXISTS `' . TABLE_PREFIX . 'mod_wysiwyg` ( '
-		. ' `section_id` INT NOT NULL DEFAULT \'0\','
-		. ' `page_id` INT NOT NULL DEFAULT \'0\','
-		. ' `content` LONGTEXT NOT NULL ,'
-		. ' `text` LONGTEXT NOT NULL ,'
-		. ' PRIMARY KEY ( `section_id` ) '
-		. ' ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
-    $database->query($mod_wysiwyg);
-}
+defined ('WB_URL') or die();
+
+$database->importSql(__DIR__ . '/install_struct.sql');

@@ -91,8 +91,6 @@ class GitHubApiClient
                 'content' => json_decode($content, true)
             ];
 
-            curl_close($ch);
-
             $this->setCache($url, $response);
 
             return $response;
