@@ -3,17 +3,18 @@
  * Standalone LayoutParser
  * ────────────────────────────────────────────────────────────────────────────
  * 
- *
  * A lightweight template parser for HTML layout strings stored in the
  * database or loaded from simple text based files (.htt).
  * 
  * Makes use of class Lang and LangPlural for easy translations.
- *
+ * 
+ * @file       framework/LayoutParser.php
+ * @package    Framework
  * @version    2.1.0 (adapted for use with WBCE CMS)
  * @author     Christian M. Stefan  (https://www.wbEasy.de)
- * @copyright Copyright (c) 2025-2026 Christian M. Stefan
- * @copyright Copyright (c) 2026 WBCE CMS Project
- * @license    GNU GPL2
+ * @copyright  2025-2026 Christian M. Stefan
+ * @copyright  2026 WBCE CMS Project
+ * @license    GNU/GPL v2 https://www.gnu.org/licenses/gpl-2.0.html
  *
  * Zero dependencies. PHP 8.1+.
  *

@@ -1,14 +1,20 @@
 <?php
 /**
+ * WBCE CMS
+ * Way Better Content Editing.
+ * Visit https://wbce.org to learn more and to join the community.
+ *
+ * @copyright Ryan Djurovich (2004-2009)
+ * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * @copyright WBCE Project (2015-)
+ * @author    Norbert Heimsath (heimsath.org)
+ * @author    Christian M. Stefan  (for WBCE 1.7.0)
+ * @license   GNU/GPL v2 https://www.gnu.org/licenses/gpl-2.0.html
+ * 
  * @file class.settings.php
  * @brief Simple static class for handling global settings in Core and Modules
  *
  * The basic idea is to make handling of global settings a lot easier.
- *
- * @author  Norbert Heimsath (heimsath.org)
- * @author  Christian M. Stefan  (for WBCE 1.7.0)
- * 
- * @license GPLv2 or any later
  *
  * For detailed information take a look at the actual documentation of class Settings.
  * 
@@ -61,16 +67,14 @@
  * @code
  * $aNeededArray = Settings::deserialize(WB_MY_ARRAY_SETTING);
  * @endcode
- *
- *
+ * 
  * @todo Extend this class to handle different tables. Maybe by making this a class whith instances and a static facade.
- *
- * IMPORTANT NOTICE:
- * The method names in this class have been modernized to follow PSR naming 
- * conventions (camelCase). Old method names are still fully supported through 
- * automatic mapping for backward compatibility.
- *
  */
+
+//  IMPORTANT NOTICE:
+//  The method names in this class have been modernized to follow PSR naming 
+//  conventions (camelCase). Old method names are still fully supported through 
+//  automatic mapping for backward compatibility.
 
 class Settings
 {
