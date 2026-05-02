@@ -685,7 +685,7 @@ _JsCode;
 
             $email = $local . '@' . $domain;
         }
-
+    }
      
 
     /**
