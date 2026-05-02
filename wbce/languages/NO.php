@@ -2,16 +2,18 @@
 /**
  * WBCE CMS
  * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * Besøk http://wbce.org for mer innformasjon eller for å bli en dele av teamet.
  *
  * @copyright Ryan Djurovich (2004-2009)
  * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later version)
+ * @license GNU GPL2 (eller nyere vesjoner)
+ *
+ * Made whith help of Automated Language File tool Copyright heimsath.org
  */
 
 //no direct file access
-if (count(get_included_files()) ==1) {
+if(count(get_included_files()) ==1) {
     $z="HTTP/1.0 404 Not Found";
     header($z);
     die($z);
