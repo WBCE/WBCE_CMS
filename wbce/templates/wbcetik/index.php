@@ -202,7 +202,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 							<form class="wbcesuche" name="search" action="<?php echo WB_URL; ?>/search/index.php" method="get">
 								<input type="hidden" name="referrer" value="<?php echo defined('REFERRER_ID') ? REFERRER_ID : PAGE_ID; ?>" />
 								<input type="text" name="string" class="search" placeholder="<?php echo $TEXT['SEARCH']; ?>" />
-								<input type="submit" name="wb_search" value="&#xe090;" />
+								<input type="submit" name="search" value="&#xe090;" />
 							</form>
 					   
 					   <?php } ?>
