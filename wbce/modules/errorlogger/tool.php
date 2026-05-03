@@ -32,7 +32,7 @@ if (!$admin->get_permission('admintools')) {
 $link = ADMIN_URL.'/admintools/tool.php?tool=errorlogger';
 $del = "javascript:confirm_link('Are you sure you want to delete the errorlog?','{$link}&delete=1');";
 
-
+Lang::loadLanguage(__DIR__);
 
 // Use colored view, stored in cookie
 $cookie = 'errorlog_colors';
@@ -57,7 +57,7 @@ if (isset($_COOKIE[$cookie])) {
     $colorclass = " color";
 }
 
-$res = array("Great news. No errors reported");
+$res = array($TXT['NO_ERROR_REPORT']);
 
 $lines = 250;
 $warning = '';
@@ -94,10 +94,11 @@ foreach($fileBasedSettings as $cfg){
        header("Location: ".$link);   
     }
 }
-$constantsMsg = '';
+$constantsMsg = '<ul>';
 foreach($arrHard as $const){
-    $constantsMsg .= "<p>The constant <b>{$const}</b> already exists! Is it hardcoded in the <b>/config.php</b>?</p>";
+    $constantsMsg .= "<li>&bull; ".L_('MSG:IS_HARDCODED_PARAM', $const) ."</li>";
 }
+$constantsMsg .= '</ul>';
 
 // Generate the SQL_DEBUG constant
 if (isset($_GET['check_sql']) && in_array($_GET['check_sql'], [0,1])) {
@@ -126,7 +127,7 @@ if (file_exists($logfile)) {
     $res = array_slice($res, -$lines);
 }
 if (count($res) == 0) {
-    $res = array("Great news. No errors reported");
+    $res = array($TXT['NO_ERROR_REPORT']);
 }
 $row = "even";
 $last = strtotime($_SESSION['lastview']);
@@ -135,14 +136,14 @@ $tmpErrorLevel = error_reporting(-1);
 $warning .= $tmpErrorLevel != E_ALL ? '<div class="errorlevel">Note: Do not forget to set your error reporting to the maximum level! Currently this is not the case.</div>':'';
 ?>
 
+    <h2><?=$module_name?></h2>
 <div class="tool-header">
-    <h2>Errorlog viewer</h2>
     <ul class="header-links">
-        <li class="reload-link"><a href="<?=$link ?>"><i class="fa fa-refresh"></i> Reload</a></li>
-        <li class="delete-link"><a href="<?=$del ?>"><i class="fa fa-trash"></i> Delete logfile</a></li>
-        <li class="viewlink<?=$view == '0' ? ' active':''?>"><a href="<?=$link.'&color=0'?>">Plain View</a></li> 
-        <li class="viewlink<?=$view == '1' ? ' active':''?>"><a href="<?=$link.'&color=1'?>">Color View</a></li> 
-        <li class="viewlink<?=$view == '2' ? ' active':''?>"><a href="<?=$link.'&color=2'?>">Table View</a></li>
+        <li class="reload-link"><a href="<?=$link ?>"><i class="fa fa-refresh"></i> <?=$TXT['RELOAD']?></a></li>
+        <li class="delete-link"><a href="<?=$del ?>"><i class="fa fa-trash"></i> <?=$TXT['DELETE_LOGFILE']?></a></li>
+        <li class="viewlink<?=$view == '0' ? ' active':''?>"><a href="<?=$link.'&color=0'?>"><?=$TXT['PLAIN_VIEW']?></a></li> 
+        <li class="viewlink<?=$view == '1' ? ' active':''?>"><a href="<?=$link.'&color=1'?>"><?=$TXT['COLOR_VIEW']?></a></li> 
+        <li class="viewlink<?=$view == '2' ? ' active':''?>"><a href="<?=$link.'&color=2'?>"><?=$TXT['TABLE_VIEW']?></a></li>
     </ul>
 </div>
 <?=$warning ?>
@@ -224,7 +225,7 @@ if ($view == '0' or $view == '1') {
     </table>
     <?php
     } else {
-        echo 'Great news. No errors reported';
+        echo $TXT['NO_ERROR_REPORT'];
     }
 }
 
@@ -240,23 +241,25 @@ function debugToggleLink(
         ? '<span style="color:green"><i class="fa fa-check-circle"></i></span>'
         : '<span style="color:red"><i class="fa fa-ban"></i></span>';
     $next    = $state ? '0' : '1';
-    if($isHardcoded){        
-        return "<li><a class=\"disabled\" title=\"{$param} is hardcoded, no change possible\">{$icon} {$label}</a></li>";
+    if($isHardcoded){
+        $str = L_('MSG:HARDCODED_PARAM_DETECTED', $param);
+        return "<li><a class='disabled' title='{$str}'>{$icon} {$label}</a></li>";
     }
     return "<li><a href=\"{$url}&{$param}={$next}\">{$icon} {$label}</a></li>";
 }
 ?>
 </div>
-<?php if($constantsMsg != ''): ?>
+<?php 
+if(count($arrHard) > 0): ?>
+<br>
 <div class="constants-info">
-    <p><b>Remove the following hardcoded constants and make them configurable via this tool:</b></p>
+    <p><b><?=$MSG['HARDCODED_PARAM_REMOVE']?></b></p>
     <?=$constantsMsg?>
-    <p></p>
 </div>
 <?php endif ?>
 <ul class="footer-links">
-    <?= debugToggleLink($link, 'WB_DEBUG',  'WBCE Debug') ?>
-    <?= debugToggleLink($link, 'SQL_DEBUG', 'SQL Debug') ?>
+    <?= debugToggleLink($link, 'WB_DEBUG',            'WB Debug') ?>
+    <?= debugToggleLink($link, 'SQL_DEBUG',           'SQL Debug') ?>
     <?= debugToggleLink($link, 'PDO_CANONICAL_DEBUG', 'PDO Syntax Debug') ?>
 </ul>
 <?php

@@ -81,13 +81,14 @@ if ($toolCheck) {
     } else {
         $admin = new admin('admintools', 'admintools');
     }
-
+    $module_name = $admin->get_module_name($toolDir);               // get translated $module_name ...
+    $module_description = $admin->get_module_description($toolDir); // and $module_description
     // show title if not function 'save' is requested
     if (!$doSave and !$noPage and !preg_match("/backend/", $module_function)) {
         $sTPL = '<h4><a href="{{URL}}" title="{{HEADING_TOOLS}}">{{HEADING_TOOLS}}</a>&nbsp;&raquo;&nbsp;{{MODULE_NAME}}</h4>';
         $aReplacements = array(
             'URL' => ADMIN_URL . '/admintools/index.php',
-            'MODULE_NAME' => $admin->get_module_name($toolDir),
+            'MODULE_NAME' => $module_name,
             'HEADING_TOOLS' => $HEADING['ADMINISTRATION_TOOLS']
         );
         echo replace_vars($sTPL, $aReplacements);

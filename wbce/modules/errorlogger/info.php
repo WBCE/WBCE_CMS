@@ -20,7 +20,7 @@ if (defined('WB_PATH') == false) {
 $module_directory   = 'errorlogger';
 $module_name        = 'Errorlog viewer';
 $module_function    = 'snippet';
-$module_version     = '1.1.5';
+$module_version     = '1.1.6';
 $module_platform 	= '2.8';
 if(defined('WBCE_VERSION')) {
 	$module_function    = 'tool, preinit, initialize';
@@ -41,7 +41,10 @@ $module_icon        = 'fa fa-bug';
 /**
  * DEVELOPMENT HISTORY (Change Log):
  *
- * v.1.1.0 2026-04-26 Christian M. Stefan
+ * v.1.1.6 2026-05-03 Christian M. Stefan
+ *         [c] fully translate the Errorlog viewer into several languages
+ * 
+ * v.1.1.5 2026-04-26 Christian M. Stefan
  *         ALL CHANGES CONCERNED WITH WBCE 1.7.0
  *         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *         [+] Implementation of Settings to activate 
