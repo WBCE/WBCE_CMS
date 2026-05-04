@@ -81,7 +81,7 @@ if ($info->numRows() > 0) {
 
 // check if we got a core module as you may not uninstall this
 include_once(WB_PATH . '/modules/' . $file . '/info.php');
-if (isset($module_level) and $module_level == "core") {
+if (isset($core) && $core == true) {
     $admin->print_error($MESSAGE['GENERIC_CANNOT_UNINSTALL_CORE_MODULES']);
 }
 
