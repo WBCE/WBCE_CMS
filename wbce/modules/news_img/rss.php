@@ -13,115 +13,146 @@
  *
  */
 
+/**
+ * CHANGELOG
+ *
+ * Version 2026-05-03 (Christian M. Stefan)
+ * - PDO cleanup: canonical Database methods, parameter binding, AND instead of &&
+ *
+ */
+
 // Check that GET values have been supplied
-if(isset($_GET['section_id']) && is_numeric($_GET['section_id'])) {
-	$section_id = intval($_GET['section_id']);
+if (isset($_GET['section_id']) && is_numeric($_GET['section_id'])) {
+    $section_id = intval($_GET['section_id']);
 } else {
-	die('section_id missing');
+    die('section_id missing');
 }
 
-if(isset($_GET['page_id']) && is_numeric($_GET['page_id'])) {
-	$page_id = intval($_GET['page_id']);
+if (isset($_GET['page_id']) && is_numeric($_GET['page_id'])) {
+    $page_id = intval($_GET['page_id']);
 } else {
-	die('page_id missing');
+    die('page_id missing');
 }
 
-if(isset($_GET['group_id']) && is_numeric($_GET['group_id'])) {
-	$group_id = intval($_GET['group_id']);
-	define('GROUP_ID', $group_id);
+if (isset($_GET['group_id']) && is_numeric($_GET['group_id'])) {
+    $group_id = intval($_GET['group_id']);
+    define('GROUP_ID', $group_id);
 }
 
-// Include WB files
+// Boot WBCE
 require_once '../../config.php';
-require_once WB_PATH.'/framework/class.frontend.php';
-$database = new database();
-$wb = new frontend();
+$database = new Database();
+$wb = new Frontend();
 $wb->page_id = $page_id;
 $wb->get_page_details();
 $wb->get_website_settings();
 
-//checkout if a charset is defined otherwise use UTF-8
-if(defined('DEFAULT_CHARSET')) {
-	$charset=DEFAULT_CHARSET;
-} else {
-	$charset='utf-8';
-}
+$charset = defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : 'utf-8';
 
-// Sending XML header
-header("Content-type: text/xml; charset=$charset" );
+header("Content-type: text/xml; charset=$charset");
 
-// Header info
-// Required by CSS 2.0
-$t = TIME();
-echo '<?xml version="1.0" encoding="'.$charset.'"?>';
-?> 
+$t = time();
+
+echo '<?xml version="1.0" encoding="' . $charset . '"?>';
+?>
 <rss version="2.0">
-	<channel>
-		<title><?php echo PAGE_TITLE; ?></title>
-		<link><?php echo WB_URL; ?></link>
-		<description> <?php echo PAGE_DESCRIPTION; ?></description>
+    <channel>
+        <title><?= PAGE_TITLE ?></title>
+        <link><?= WB_URL; ?></link>
+        <description><?= PAGE_DESCRIPTION ?></description>
+        <language><?= strtolower(DEFAULT_LANGUAGE) ?></language>
+        <copyright><?php
+            $thedate      = date('Y');
+            $websitetitle = WEBSITE_TITLE;
+            echo "Copyright {$thedate}, {$websitetitle}";
+        ?></copyright>
+        <category><?= WEBSITE_TITLE; ?></category>
 <?php
-// Optional header info 
-?>
-		<language><?php echo strtolower(DEFAULT_LANGUAGE); ?></language>
-		<copyright><?php $thedate = date('Y'); $websitetitle = WEBSITE_TITLE; echo "Copyright {$thedate}, {$websitetitle}"; ?></copyright>
-		<category><?php echo WEBSITE_TITLE; ?></category>		
-<?php
-$time_check_str= "(`published_when` = '0' OR `published_when` <= ".$t.") && (`published_until` = 0 OR `published_until` >= ".$t.")";
-//Query
-if(isset($group_id)) {
-	$query = "SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `group_id`=".$group_id." && `section_id` = ".$section_id." && `active`=1 && ".$time_check_str." ORDER BY `posted_when` DESC";
+
+// ── Main news query ───────────────────────────────────────────────────────────
+// $t, $section_id and (optionally) $group_id are bound as parameters.
+// && operators (non-standard MySQL alias) replaced with AND.
+
+if (isset($group_id)) {
+    $posts = $database->fetchAll(
+        "SELECT * FROM `{TP}mod_news_img_posts`
+         WHERE `group_id`   = ?
+           AND `section_id` = ?
+           AND `active`     = 1
+           AND (`published_when`  = 0 OR `published_when`  <= ?)
+           AND (`published_until` = 0 OR `published_until` >= ?)
+         ORDER BY `posted_when` DESC",
+        [$group_id, $section_id, $t, $t]
+    );
 } else {
-	$query = "SELECT * FROM `".TABLE_PREFIX."mod_news_img_posts` WHERE `section_id`=".$section_id." && `active`=1 && ".$time_check_str." ORDER BY `posted_when` DESC";
+    $posts = $database->fetchAll(
+        "SELECT * FROM `{TP}mod_news_img_posts`
+         WHERE `section_id` = ?
+           AND `active`     = 1
+           AND (`published_when`  = 0 OR `published_when`  <= ?)
+           AND (`published_until` = 0 OR `published_until` >= ?)
+         ORDER BY `posted_when` DESC",
+        [$section_id, $t, $t]
+    );
 }
 
-$result = $database->query($query);
+// ── Generate RSS items ────────────────────────────────────────────────────────
 
-//Generating the news items
-while($item = $result->fetchRow()){ 
+foreach ($posts as $item) {
 
-$pattern = '/\[wblink([0-9]+)\]/isU';
-if (preg_match_all($pattern, $item["content_short"], $aMatches, PREG_SET_ORDER))
-{
-	$aSearchReplaceList = array();
-	foreach ($aMatches as $aMatch) {
-		 // collect matches formatted like '[wblink123]' => 123
-		$aSearchReplaceList[strtolower($aMatch[0])] = $aMatch[1];
-	}
-	// build list of PageIds for SQL query
-	$sPageIdList = implode(',', $aSearchReplaceList); // '123,124,125'
-	// replace all PageIds with '#' (stay on page death link)
-	array_walk($aSearchReplaceList, function(&$value, $index){ $value = '#'; });
-	$sql = 'SELECT `page_id`, `link` FROM `'.TABLE_PREFIX.'pages` '
-		 . 'WHERE `page_id` IN('.$sPageIdList.')';
-	if (($oPages = $database->query($sql))) {
-		while (($aPage = $oPages->fetchRow(MYSQLI_ASSOC))) {
-			$aPage['link'] = ($aPage['link']
-							 ? PAGES_DIRECTORY.$aPage['link'].PAGE_EXTENSION
-							 : '#');
-			// collect all search-replace pairs with valid links
-			if (is_readable(WB_PATH.$aPage['link'])) {
-				// replace death link with found and valide link
-				$aSearchReplaceList['[wblink'.$aPage['page_id'].']'] =
-					WB_URL.$aPage['link'];
-			}
-		}
-	}
-	// replace all found [wblink**] tags with their urls
-	$item["content_short"] = str_ireplace(
-		array_keys($aSearchReplaceList),
-		$aSearchReplaceList,
-		$item["content_short"]
-	);
-}
+    // ── Resolve [wblink123] shortcodes in content_short ───────────────────────
+    $pattern = '/\[wblink([0-9]+)\]/isU';
+    if (preg_match_all($pattern, $item['content_short'], $aMatches, PREG_SET_ORDER)) {
+
+        // Build search-replace map: '[wblink123]' => '#' (dead-link fallback)
+        $aSearchReplaceList = [];
+        foreach ($aMatches as $aMatch) {
+            $aSearchReplaceList[strtolower($aMatch[0])] = '#';
+        }
+
+        // Collect the numeric page IDs — already validated as [0-9]+ by the regex
+        $pageIds = array_map(
+            static fn(array $m): int => (int)$m[1],
+            $aMatches
+        );
+
+        // Fetch matching pages using ? placeholders for each ID.
+        // fetchAll() is the right method here: we need all rows, not a stream.
+        if (!empty($pageIds)) {
+            $ph    = implode(', ', array_fill(0, count($pageIds), '?'));
+            $pages = $database->fetchAll(
+                "SELECT `page_id`, `link` FROM `{TP}pages` WHERE `page_id` IN($ph)",
+                $pageIds
+            );
+
+            foreach ($pages as $aPage) {
+                $relLink = $aPage['link']
+                    ? PAGES_DIRECTORY . $aPage['link'] . PAGE_EXTENSION
+                    : '#';
+                // Only replace the dead-link fallback when the file actually exists
+                if (is_readable(WB_PATH . $relLink)) {
+                    $aSearchReplaceList['[wblink' . $aPage['page_id'] . ']'] = WB_URL . $relLink;
+                }
+            }
+        }
+
+        $item['content_short'] = str_ireplace(
+            array_keys($aSearchReplaceList),
+            $aSearchReplaceList,
+            $item['content_short']
+        );
+    }
+    $itemLink = WB_URL . PAGES_DIRECTORY . $item['link'] . PAGE_EXTENSION;
 
 ?>
-		<item>
-			<title><![CDATA[<?php echo stripslashes($item["title"]); ?>]]></title>
-			<description><![CDATA[<?php echo stripslashes($item["content_short"]); ?>]]></description>
-			<guid><?php echo WB_URL.PAGES_DIRECTORY.$item["link"].PAGE_EXTENSION; ?></guid>
-			<link><?php echo WB_URL.PAGES_DIRECTORY.$item["link"].PAGE_EXTENSION; ?></link>
-		</item>
-<?php } ?>
-	</channel>
+        <item>
+            <title><![CDATA[<?= stripslashes($item['title']) ?>]]></title>
+            <description><![CDATA[<?= stripslashes($item['content_short']) ?>]]></description>
+            <guid><?= $itemLink ?></guid>
+            <link><?= $itemLink ?></link>
+        </item>
+<?php
+} // end foreach $posts
+?>
+    </channel>
 </rss>

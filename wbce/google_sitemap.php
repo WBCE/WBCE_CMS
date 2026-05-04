@@ -5,6 +5,9 @@
  * @author Karelkin Vladislav
  * @copyright 2007/2013 GPL
  *
+ * Version 1.9.0 2026-05-04 (Christian M. Stefan)
+ * - PDO cleanup: canonical Database methods, parameter binding throughout
+ *
  * Version 1.8.11 20201107 (Colinax)
  * - cs fixed
  *
@@ -90,10 +93,7 @@
 // CONFIGURATION
 // -------------------------------------------------------------------------
 
-
-// Set configuration values
-
-$sitemap_version = '1.8.11';
+$sitemap_version = '1.9.0';
 
 // Debug information on / off
 $debug = false;
@@ -102,134 +102,98 @@ if (isset($_GET['debug'])) {
 }
 
 // If shorturl is used, no pages and .php
-// For use with shorturl V3: http://www.dev4me.nl/modules-snippets/opensource/shortlinks/
 $shorturl = false;
 
 // Ban urls with unwanted words
-$exclude = array();        // Array of unwanted words in the url
-// eg. array("privat", "do-not-enter", "keep-away")
+$exclude = array();
 // Show hidden pages
 $show_hidden = false;
 
+// Priorities
+$page_priority      = "0.5";
+$page_home_priority = "1.0";
+$page_root_priority = "0.6";
+$page_frequency     = "weekly";
 
-// Priorities in sitemap should be 0.5 if not set. Google is happy when different priorities are set.
+$news_priority      = "0.7";
+$news_old_priority  = "0.5";
+$news_frequency     = "weekly";
 
-// Normal Pages
-$page_priority = "0.5"; // Default priority for normal pages
-$page_home_priority = "1.0"; // Homepage priority
-$page_root_priority = "0.6"; // Toplevel menu pages priority
-$page_frequency = "weekly"; // Update frequency of your pages.
-// Allowed: always, hourly, daily, weekly, monthly, yearly, never
+$nwi_priority       = "0.7";
+$nwi_old_priority   = "0.5";
+$nwi_frequency      = "weekly";
 
-// News Module
-$news_priority = "0.7"; // News posts of the last 4 weeks
-$news_old_priority = "0.5"; // News posts older than 4 weeks
-$news_frequency = "weekly"; // News posts update frequency
+$bakery_priority    = "0.5";
+$bakery_frequency   = "weekly";
 
-// NWI Module
-$nwi_priority = "0.7";
-$nwi_old_priority = "0.5";
-$nwi_frequency = "weekly";
-
-// Bakery Module
-$bakery_priority = "0.5";
-$bakery_frequency = "weekly";
-
-// Catalog Module
-$catalogs_priority = "0.5";
+$catalogs_priority  = "0.5";
 $catalogs_frequency = "weekly";
 
-// Portfolio Module
 $portfolio_priority = "0.5";
 $portfolio_frequency = "weekly";
 
-// Topics Module
-$topics_mod_name = "topics";
-$topics_priority = "0.5";
-$topics_frequency = "weekly";
+$topics_mod_name    = "topics";
+$topics_priority    = "0.5";
+$topics_frequency   = "weekly";
 
-// Showcase Module
-$showcase_priority = "0.5";
+$showcase_priority  = "0.5";
 $showcase_frequency = "weekly";
 
-// OneForAll Module
 $oneforall_mod_names = "oneforall";
-//$oneforall_mod_names	= "oneforall,projects,portfolio"; // Names of the oneforall modules. Seperated by a comma.
-$oneforall_priority = "0.5";
+$oneforall_priority  = "0.5";
 $oneforall_frequency = "weekly";
-
 
 // -------------------------------------------------------------------------
 // END OF CONFIGURATION
 // -------------------------------------------------------------------------
 
+require_once __DIR__ . '/config.php';
 
-// Include config file
-require_once(dirname(__FILE__) . "/config.php");
+defined("WB_PATH") or die("Website not configured");
 
-// Check if the config file has been set-up
-if (!defined("WB_PATH")) {
-    die("Website not configured");
-}
-
-// Include class frontend
-require_once(WB_PATH . "/framework/class.frontend.php");
-// Create new frontend object
-$wb = new frontend();
-// Collect general website settings
+$wb = new Frontend();
 $wb->get_website_settings();
 
-
-// Vars
-$counter = 0;
-$ts = time();
-$public = array();
-$modules = array();
-$debug_info = array();
+$counter    = 0;
+$ts         = time();
+$public     = [];
+$modules    = [];
+$debug_info = [];
 
 
-// Functions
-// *********
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
-// Function check_link
 function check_link($link, $exclude)
 {
     static $listed = array();
 
-    // Check for unwanted words in the url
     foreach ($exclude as $value) {
         if (strpos($link, $value)) {
-            $unwanted = "&quot;$link&quot; contains &quot;$value&quot; and will not show up in the google sitemap\n";
-            return $unwanted;
+            return "&quot;$link&quot; contains &quot;$value&quot; and will not show up in the google sitemap\n";
         }
     }
 
-    // External links should not belong to the google sitemap
     if (strpos($link, '://')) {
-        $unwanted = "$link is an external link and will not show up in the google sitemap\n";
-        return $unwanted;
+        return "$link is an external link and will not show up in the google sitemap\n";
     }
     if (in_array($link, $listed)) {
-        $unwanted = "$link is already listed\n";
-        return $unwanted;
+        return "$link is already listed\n";
     }
     if (trim($link) === '') {
-        $unwanted = "Skipped empty link\n";
-        return $unwanted;
+        return "Skipped empty link\n";
     }
 
     $listed[] = $link;
     return true;
 }
 
-// Function output_xml
 function output_xml($link, $lastmod, $freq, $pri)
 {
     global $shorturl;
     if ($shorturl) {
         $linkstart = strlen(WB_URL . PAGES_DIRECTORY);
-        $linkend = strlen(PAGE_EXTENSION);
-        $link = WB_URL . substr($link, $linkstart);
+        $linkend   = strlen(PAGE_EXTENSION);
+        $link      = WB_URL . substr($link, $linkstart);
         if (substr($link, 0, -$linkend) == PAGE_EXTENSION) {
             $link = substr($link, 0, -$linkend) . '/';
         } else {
@@ -246,8 +210,7 @@ function output_xml($link, $lastmod, $freq, $pri)
 }
 
 
-// Start with xml header output
-// ****************************
+// ── XML header ────────────────────────────────────────────────────────────────
 
 if ($debug) {
     ?>
@@ -255,14 +218,8 @@ if ($debug) {
     <head>
         <meta charset="utf-8"/>
         <style>
-            url {
-                display: block;
-            }
-
-            loc {
-                font-weight: bold;
-                line-height: 25px;
-            }
+            url { display: block; }
+            loc { font-weight: bold; line-height: 25px; }
         </style>
     </head>
     <?php
@@ -276,42 +233,86 @@ if ($debug) {
 }
 
 
-// Get public WB pages
-// *******************
-$visibility = $show_hidden ? "OR p.`visibility` = 'hidden'" : "";
-// Get all pages from db except of the module menu_link
-$sql = "SELECT p.`link`, p.`modified_when`, p.`parent`, p.`position`, s.`section_id`, s.`module`
-		FROM `" . TABLE_PREFIX . "pages` p
-		JOIN `" . TABLE_PREFIX . "sections` s
-		ON p.`page_id` = s.`page_id`
-		WHERE (p.`visibility` = 'public' $visibility)
-			AND s.`module` != 'menu_link'
-			AND (s.`publ_start` = '0' OR s.`publ_start` <= $ts)
-			AND (s.`publ_end` = '0' OR s.`publ_end` >= $ts)
-		ORDER BY p.`parent`, p.`position` ASC";
-$result = $database->query($sql);
+// ── Public WB pages ───────────────────────────────────────────────────────────
 
-// Loop through the pages
-if ($result && $result->numRows() > 0) {
-    while ($page = $result->fetchRow()) {
-        $checked = check_link($page['link'], $exclude);
-        $public[] = $page['section_id'];
-        $modules[] = $page['module'];
+$visibilityClause = $show_hidden
+    ? "AND (p.`visibility` = 'public' OR p.`visibility` = 'hidden')"
+    : "AND p.`visibility` = 'public'";
 
-        if ($checked === true) {
-            $link = htmlspecialchars($wb->page_link($page['link']));
-            $lastmod = date("Y-m-d", $page['modified_when'] + TIMEZONE);
-            $freq = $page_frequency;
-            $pri = $page_priority;
-            if ($page['parent'] == 0) {
-                if ($page['position'] == 1) {
-                    $pri = $page_home_priority;   // Should be the homepage
-                    $link = WB_URL . '/';
-                } else {
-                    $pri = $page_root_priority;    // Root level pages
-                }
+// $ts is compared against stored integers — passed as a bound parameter.
+// The visibility clause is structural SQL (no user input), so it is safe
+// to interpolate as a string fragment.
+$pages = $database->fetchAll(
+    "SELECT p.`link`, p.`modified_when`, p.`parent`, p.`position`,
+            s.`section_id`, s.`module`
+     FROM `{TP}pages` p
+     JOIN `{TP}sections` s ON p.`page_id` = s.`page_id`
+     WHERE s.`module` != 'menu_link'
+       $visibilityClause
+       AND (s.`publ_start` = '0' OR s.`publ_start` <= ?)
+       AND (s.`publ_end`   = '0' OR s.`publ_end`   >= ?)
+     ORDER BY p.`parent`, p.`position` ASC",
+    [$ts, $ts]
+);
+
+foreach ($pages as $page) {
+    $checked   = check_link($page['link'], $exclude);
+    $public[]  = $page['section_id'];
+    $modules[] = $page['module'];
+
+    if ($checked === true) {
+        $link    = htmlspecialchars($wb->page_link($page['link']));
+        $lastmod = date("Y-m-d", $page['modified_when'] + TIMEZONE);
+        $freq    = $page_frequency;
+        $pri     = $page_priority;
+
+        if ($page['parent'] == 0) {
+            if ($page['position'] == 1) {
+                $pri  = $page_home_priority;
+                $link = WB_URL . '/';
+            } else {
+                $pri = $page_root_priority;
             }
-            output_xml($link, $lastmod, $freq, $pri);
+        }
+        output_xml($link, $lastmod, $freq, $pri);
+        $counter++;
+    } else {
+        $debug_info[] = $checked;
+    }
+}
+
+$modules     = array_unique($modules);
+$page_counter = $counter;
+
+
+// ── News ──────────────────────────────────────────────────────────────────────
+
+if (in_array('news', $modules)) {
+    $news_posts = $database->fetchAll(
+        "SELECT `section_id`, `link`, `posted_when`, `published_when`
+         FROM `{TP}mod_news_posts`
+         WHERE `active` = '1'
+           AND (`published_when`  = '0' OR `published_when`  <= ?)
+           AND (`published_until` = '0' OR `published_until` >= ?)",
+        [$ts, $ts]
+    );
+
+    $lastweek = $ts - (4 * 7 * 24 * 60 * 60);
+
+    foreach ($news_posts as $news) {
+        if (!in_array($news['section_id'], $public)) continue;
+
+        $checked = check_link($news['link'], $exclude);
+        if ($checked === true) {
+            $link = htmlspecialchars($wb->page_link($news['link']));
+            $pri  = ($news['posted_when'] < $lastweek) ? $news_old_priority : $news_priority;
+
+            if ((version_compare(WB_VERSION, '2.7.0') <= 0) && $news['published_when'] > 0) {
+                $lastmod = date("Y-m-d", $news['published_when'] + TIMEZONE);
+            } else {
+                $lastmod = date("Y-m-d", $news['posted_when'] + TIMEZONE);
+            }
+            output_xml($link, $lastmod, $news_frequency, $pri);
             $counter++;
         } else {
             $debug_info[] = $checked;
@@ -319,284 +320,272 @@ if ($result && $result->numRows() > 0) {
     }
 }
 
-// All by WB sections currently used modules
-$modules = array_unique($modules);
 
-// Count pages excluding module pages
-$page_counter = $counter;
+// ── News with images (NWI) ────────────────────────────────────────────────────
 
-
-// Get module pages of previously set modules
-// ******************************************
-
-// News
-if (in_array('news', $modules)) {
-    $sql = "SELECT `section_id`, `link`, `posted_when`, `published_when`
-			FROM `" . TABLE_PREFIX . "mod_news_posts`
-			WHERE `active` = '1'
-				AND (`published_when` = '0' OR `published_when` <= $ts)
-				AND (`published_until` = '0' OR `published_until` >= $ts)";
-    $rs_news = $database->query($sql);
-    if ($rs_news->numRows() > 0) {
-        while ($news = $rs_news->fetchRow()) {
-            if (!in_array($news['section_id'], $public)) {
-                continue;
-            }
-            $checked = check_link($news['link'], $exclude);
-            if ($checked === true) {
-                $link = htmlspecialchars($wb->page_link($news['link']));
-                $lastweek = time() - (4 * 7 * 24 * 60 * 60);
-                if ($news['posted_when'] < $lastweek) {
-                    $news_priority = $news_old_priority;
-                }
-                if ((version_compare(WB_VERSION, '2.7.0') <= 0) && $news['published_when'] > 0) {
-                    $lastmod = date("Y-m-d", $news['published_when'] + TIMEZONE);
-                } else {
-                    $lastmod = date("Y-m-d", $news['posted_when'] + TIMEZONE);
-                }
-                output_xml($link, $lastmod, $news_frequency, $news_priority);
-                $counter++;
-            } else {
-                $debug_info[] = $checked;
-            }
-        }
-    }
-}
-
-// News with images (NWI)
 if (in_array('news_img', $modules)) {
-    $sql = "SELECT `section_id`, `link`, `posted_when`, `published_when`
-			FROM `" . TABLE_PREFIX . "mod_news_img_posts`
-			WHERE `active` = '1'
-				AND (`published_when` = '0' OR `published_when` <= $ts)
-				AND (`published_until` = '0' OR `published_until` >= $ts)";
-    $rs_nwi = $database->query($sql);
-    if ($rs_nwi->numRows() > 0) {
-        while ($nwi = $rs_nwi->fetchRow()) {
-            if (!in_array($nwi['section_id'], $public)) {
-                continue;
-            }
-            $checked = check_link($nwi['link'], $exclude);
-            if ($checked === true) {
-                $link = htmlspecialchars($wb->page_link($nwi['link']));
-                $lastweek = time() - (4 * 7 * 24 * 60 * 60);
-                if ($nwi['posted_when'] < $lastweek) {
-                    $nwi_priority = $nwi_old_priority;
-                }
-                if ((version_compare(WB_VERSION, '2.7.0') <= 0) && $nwi['published_when'] > 0) {
-                    $lastmod = date("Y-m-d", $nwi['published_when'] + TIMEZONE);
-                } else {
-                    $lastmod = date("Y-m-d", $nwi['posted_when'] + TIMEZONE);
-                }
-                output_xml($link, $lastmod, $nwi_frequency, $nwi_priority);
-                $counter++;
+    $nwi_posts = $database->fetchAll(
+        "SELECT `section_id`, `link`, `posted_when`, `published_when`
+         FROM `{TP}mod_news_img_posts`
+         WHERE `active` = '1'
+           AND (`published_when`  = '0' OR `published_when`  <= ?)
+           AND (`published_until` = '0' OR `published_until` >= ?)",
+        [$ts, $ts]
+    );
+
+    $lastweek = $ts - (4 * 7 * 24 * 60 * 60);
+
+    foreach ($nwi_posts as $nwi) {
+        if (!in_array($nwi['section_id'], $public)) continue;
+
+        $checked = check_link($nwi['link'], $exclude);
+        if ($checked === true) {
+            $link = htmlspecialchars($wb->page_link($nwi['link']));
+            $pri  = ($nwi['posted_when'] < $lastweek) ? $nwi_old_priority : $nwi_priority;
+
+            if ((version_compare(WB_VERSION, '2.7.0') <= 0) && $nwi['published_when'] > 0) {
+                $lastmod = date("Y-m-d", $nwi['published_when'] + TIMEZONE);
             } else {
-                $debug_info[] = $checked;
+                $lastmod = date("Y-m-d", $nwi['posted_when'] + TIMEZONE);
             }
+            output_xml($link, $lastmod, $nwi_frequency, $pri);
+            $counter++;
+        } else {
+            $debug_info[] = $checked;
         }
     }
 }
 
-// Bakery
+
+// ── Bakery ────────────────────────────────────────────────────────────────────
+
 if (in_array('bakery', $modules)) {
-    $sql = "SELECT `section_id`, `link`, `modified_when`
-			FROM `" . TABLE_PREFIX . "mod_bakery_items`
-			WHERE `active` = '1'";
-    $rs_bakery = $database->query($sql);
-    if ($rs_bakery->numRows() > 0) {
-        while ($bakery = $rs_bakery->fetchRow()) {
-            if (!in_array($bakery['section_id'], $public)) {
-                continue;
-            }
-            $checked = check_link($bakery['link'], $exclude);
-            if ($checked === true) {
-                $link = htmlspecialchars($wb->page_link($bakery['link']));
-                $lastmod = date("Y-m-d", $bakery['modified_when'] + TIMEZONE);
-                output_xml($link, $lastmod, $bakery_frequency, $bakery_priority);
-                $counter++;
-            } else {
-                $debug_info[] = $checked;
-            }
+    $bakery_items = $database->fetchAll(
+        "SELECT `section_id`, `link`, `modified_when`
+         FROM `{TP}mod_bakery_items`
+         WHERE `active` = '1'"
+    );
+
+    foreach ($bakery_items as $bakery) {
+        if (!in_array($bakery['section_id'], $public)) continue;
+
+        $checked = check_link($bakery['link'], $exclude);
+        if ($checked === true) {
+            $link    = htmlspecialchars($wb->page_link($bakery['link']));
+            $lastmod = date("Y-m-d", $bakery['modified_when'] + TIMEZONE);
+            output_xml($link, $lastmod, $bakery_frequency, $bakery_priority);
+            $counter++;
+        } else {
+            $debug_info[] = $checked;
         }
     }
 }
 
-// Catalog
+
+// ── Catalog ───────────────────────────────────────────────────────────────────
+
 if (in_array('catalogs', $modules)) {
-    $sql = "SELECT `section_id`, `link`, `modified_when`
-			FROM `" . TABLE_PREFIX . "mod_catalogs_list`
-			WHERE `active` = '1'";
-    $rs_catalogs = $database->query($sql);
-    if ($rs_catalogs->numRows() > 0) {
-        while ($catalogs = $rs_catalogs->fetchRow()) {
-            if (!in_array($catalogs['section_id'], $public)) {
-                continue;
-            }
-            $checked = check_link($catalogs['link'], $exclude);
-            if ($checked === true) {
-                $link = htmlspecialchars($wb->page_link($catalogs['link']));
-                $lastmod = date("Y-m-d", $catalogs['modified_when'] + TIMEZONE);
-                output_xml($link, $lastmod, $catalogs_frequency, $catalogs_priority);
-                $counter++;
-            } else {
-                $debug_info[] = $checked;
-            }
+    $catalog_items = $database->fetchAll(
+        "SELECT `section_id`, `link`, `modified_when`
+         FROM `{TP}mod_catalogs_list`
+         WHERE `active` = '1'"
+    );
+
+    foreach ($catalog_items as $catalog) {
+        if (!in_array($catalog['section_id'], $public)) continue;
+
+        $checked = check_link($catalog['link'], $exclude);
+        if ($checked === true) {
+            $link    = htmlspecialchars($wb->page_link($catalog['link']));
+            $lastmod = date("Y-m-d", $catalog['modified_when'] + TIMEZONE);
+            output_xml($link, $lastmod, $catalogs_frequency, $catalogs_priority);
+            $counter++;
+        } else {
+            $debug_info[] = $checked;
         }
     }
 }
 
-// Portfolio
+
+// ── Portfolio ─────────────────────────────────────────────────────────────────
+
 if (in_array('portfolio', $modules)) {
-    $sql = "SELECT p.`link`, p.`position`, p.`modified_when`, s.`section_id`
-			FROM `" . TABLE_PREFIX . "sections` s
-			JOIN `" . TABLE_PREFIX . "pages` p
-			ON s.`page_id` = p.`page_id`
-			WHERE s.`module` = 'portfolio_detail'
-			AND p.`position` > '1'
-			ORDER BY p.`parent`, p.`position` ASC;";
+    $portfolio_items = $database->fetchAll(
+        "SELECT p.`link`, p.`position`, p.`modified_when`, s.`section_id`
+         FROM `{TP}sections` s
+         JOIN `{TP}pages` p ON s.`page_id` = p.`page_id`
+         WHERE s.`module` = 'portfolio_detail'
+           AND p.`position` > 1
+         ORDER BY p.`parent`, p.`position` ASC"
+    );
 
-    $rs_portfolio = $database->query($sql);
-    if ($rs_portfolio->numRows() > 0) {
-        while ($portfolio = $rs_portfolio->fetchRow()) {
-            $checked = check_link($portfolio['link'], $exclude);
-            if ($checked === true) {
-                $length = strrpos($portfolio['link'], '/');
-                $link = substr($portfolio['link'], 0, $length);
-                $link = htmlspecialchars($wb->page_link($link)) . '?item=' . $portfolio['position'];
-                $lastmod = date("Y-m-d", $portfolio['modified_when'] + TIMEZONE);
-                output_xml($link, $lastmod, $portfolio_frequency, $portfolio_priority);
-                $counter++;
-            } else {
-                $debug_info[] = $checked;
-            }
+    foreach ($portfolio_items as $portfolio) {
+        $checked = check_link($portfolio['link'], $exclude);
+        if ($checked === true) {
+            $length  = strrpos($portfolio['link'], '/');
+            $link    = substr($portfolio['link'], 0, $length);
+            $link    = htmlspecialchars($wb->page_link($link)) . '?item=' . $portfolio['position'];
+            $lastmod = date("Y-m-d", $portfolio['modified_when'] + TIMEZONE);
+            output_xml($link, $lastmod, $portfolio_frequency, $portfolio_priority);
+            $counter++;
+        } else {
+            $debug_info[] = $checked;
         }
     }
 }
 
-// Topics
+
+// ── Topics ────────────────────────────────────────────────────────────────────
+
 if (in_array($topics_mod_name, $modules)) {
     require(WB_PATH . '/modules/' . $topics_mod_name . '/module_settings.php');
-    $t = mktime((int)date("H"), (int)date("i"), (int)date("s"), (int)date("n"), (int)date("j"), (int)date("Y")) + DEFAULT_TIMEZONE;
-    $sql = "SELECT `section_id`, `link`, `posted_modified`
-			FROM `" . TABLE_PREFIX . "mod_" . $topics_mod_name . "`
-			WHERE (`active` > '3' OR `active` = '1')
-				AND (`published_when` = '0' OR `published_when` < " . $t . ")
-				AND (`published_until` = '0' OR `published_until` > " . $t . ")
-			ORDER BY `position` DESC";
-    $rs_topics = $database->query($sql);
-    if ($rs_topics->numRows() > 0) {
-        while ($topics = $rs_topics->fetchRow()) {
-            if (!in_array($topics['section_id'], $public)) {
-                continue;
-            }
-            $checked = check_link($topics['link'], $exclude);
-            if ($checked === true) {
-                $link = htmlspecialchars(WB_URL . $topics_directory . $topics['link'] . PAGE_EXTENSION);
-                $lastmod = date("Y-m-d", $topics['posted_modified'] + TIMEZONE);
-                output_xml($link, $lastmod, $topics_frequency, $topics_priority);
-                $counter++;
-            } else {
-                $debug_info[] = $checked;
-            }
+
+    $t = mktime(
+        (int)date("H"), (int)date("i"), (int)date("s"),
+        (int)date("n"), (int)date("j"), (int)date("Y")
+    ) + DEFAULT_TIMEZONE;
+
+    // Table name contains the dynamic module name — cannot be a bound parameter.
+    // $topics_mod_name is set by the configuration block above (not user input).
+    // The comparison values $t are bound parameters.
+    $topics_posts = $database->fetchAll(
+        "SELECT `section_id`, `link`, `posted_modified`
+         FROM `{TP}mod_" . $topics_mod_name . "`
+         WHERE (`active` > '3' OR `active` = '1')
+           AND (`published_when`  = '0' OR `published_when`  < ?)
+           AND (`published_until` = '0' OR `published_until` > ?)
+         ORDER BY `position` DESC",
+        [$t, $t]
+    );
+
+    foreach ($topics_posts as $topics) {
+        if (!in_array($topics['section_id'], $public)) continue;
+
+        $checked = check_link($topics['link'], $exclude);
+        if ($checked === true) {
+            $link    = htmlspecialchars(WB_URL . $topics_directory . $topics['link'] . PAGE_EXTENSION);
+            $lastmod = date("Y-m-d", $topics['posted_modified'] + TIMEZONE);
+            output_xml($link, $lastmod, $topics_frequency, $topics_priority);
+            $counter++;
+        } else {
+            $debug_info[] = $checked;
         }
     }
 }
 
-// Showcase
+
+// ── Showcase ──────────────────────────────────────────────────────────────────
+
 if (in_array('showcase', $modules)) {
-    $sql = "SELECT `section_id`, `link`, `modified_when`
-			FROM `" . TABLE_PREFIX . "mod_showcase_items`
-			WHERE `active` = '1'";
-    $rs_showcase = $database->query($sql);
-    if ($rs_showcase->numRows() > 0) {
-        while ($showcase = $rs_showcase->fetchRow()) {
-            if (!in_array($showcase['section_id'], $public)) {
-                continue;
+    $showcase_items = $database->fetchAll(
+        "SELECT `section_id`, `link`, `modified_when`
+         FROM `{TP}mod_showcase_items`
+         WHERE `active` = '1'"
+    );
+
+    foreach ($showcase_items as $showcase) {
+        if (!in_array($showcase['section_id'], $public)) continue;
+
+        $checked = check_link($showcase['link'], $exclude);
+        if ($checked === true) {
+            if (!empty($showcase['link'])) {
+                // fetchValue() replaces the old get_one() with parameter binding.
+                $path = $database->fetchValue(
+                    "SELECT p.`link`
+                     FROM `{TP}pages` p
+                     JOIN `{TP}mod_showcase_items` i ON p.`page_id` = i.`page_id`
+                     WHERE i.`link` = ?
+                     LIMIT 1",
+                    [$showcase['link']]
+                );
+                $showcase['link'] = ($path !== '') ? $path . $showcase['link'] : $showcase['link'];
             }
-            $checked = check_link($showcase['link'], $exclude);
-            if ($checked === true) {
-                if (!empty($showcase['link'])) {
-                    $path = $database->get_one("SELECT `link` FROM `" . TABLE_PREFIX . "pages` WHERE `page_id` = (SELECT `page_id` FROM `" . TABLE_PREFIX . "mod_showcase_items` WHERE `link` = '" . $showcase['link'] . "' LIMIT 1);");
-                    $showcase['link'] = $path . $showcase['link'];
-                }
-                $link = htmlspecialchars($wb->page_link($showcase['link']));
-                $lastmod = date("Y-m-d", $showcase['modified_when'] + TIMEZONE);
-                output_xml($link, $lastmod, $showcase_frequency, $showcase_priority);
-                $counter++;
-            } else {
-                $debug_info[] = $checked;
-            }
+            $link    = htmlspecialchars($wb->page_link($showcase['link']));
+            $lastmod = date("Y-m-d", $showcase['modified_when'] + TIMEZONE);
+            output_xml($link, $lastmod, $showcase_frequency, $showcase_priority);
+            $counter++;
+        } else {
+            $debug_info[] = $checked;
         }
     }
 }
+
+
+// ── OneForAll (and variants) ──────────────────────────────────────────────────
 
 $oneforall_mods = explode(',', $oneforall_mod_names);
+
 foreach ($oneforall_mods as $oneforall_mod_name) {
     $oneforall_mod_name = trim($oneforall_mod_name);
-    if (in_array($oneforall_mod_name, $modules)) {
-        $sql = "SELECT `section_id`,  `page_id`, `link`, `modified_when`
-				FROM `" . TABLE_PREFIX . "mod_" . $oneforall_mod_name . "_items`
-				WHERE `active` = '1'";
-        $rs_oneforall = $database->query($sql);
-        if ($rs_oneforall->numRows() > 0) {
-            while ($oneforall = $rs_oneforall->fetchRow()) {
-                if (!in_array($oneforall['section_id'], $public)) {
-                    continue;
-                }
-                $page = $database->get_one("SELECT `link` FROM `" . TABLE_PREFIX . "pages` WHERE `page_id`='" . $oneforall['page_id'] . "'");
-                $checked = check_link($page . $oneforall['link'], $exclude);
-                if ($checked === true) {
-                    $link = htmlspecialchars($wb->page_link($page . $oneforall['link']));
-                    $lastmod = date("Y-m-d", $oneforall['modified_when'] + TIMEZONE);
-                    output_xml($link, $lastmod, $oneforall_frequency, $oneforall_priority);
-                    $counter++;
-                } else {
-                    $debug_info[] = $checked;
-                }
-            }
+    if (!in_array($oneforall_mod_name, $modules)) continue;
+
+    // Table name contains the dynamic module name — cannot be a bound parameter.
+    // $oneforall_mod_name is set by the configuration block above (not user input).
+    $oneforall_items = $database->fetchAll(
+        "SELECT `section_id`, `page_id`, `link`, `modified_when`
+         FROM `{TP}mod_" . $oneforall_mod_name . "_items`
+         WHERE `active` = '1'"
+    );
+
+    foreach ($oneforall_items as $oneforall) {
+        if (!in_array($oneforall['section_id'], $public)) continue;
+
+        // fetchValue() replaces the old get_one() with parameter binding.
+        $page = $database->fetchValue(
+            "SELECT `link` FROM `{TP}pages` WHERE `page_id` = ?",
+            [(int)$oneforall['page_id']]
+        );
+
+        $checked = check_link($page . $oneforall['link'], $exclude);
+        if ($checked === true) {
+            $link    = htmlspecialchars($wb->page_link($page . $oneforall['link']));
+            $lastmod = date("Y-m-d", $oneforall['modified_when'] + TIMEZONE);
+            output_xml($link, $lastmod, $oneforall_frequency, $oneforall_priority);
+            $counter++;
+        } else {
+            $debug_info[] = $checked;
         }
     }
 }
+
 
 // Add another module here...
 // Example code
 /*
 if (in_array('xxxxxx', $modules)) {
-    $sql = "SELECT `section_id`, `link`, `modified_when`
-            FROM `".TABLE_PREFIX."mod_xxxxxx_items`
-            WHERE `active` = '1'";
-    $rs_xxxxxx = $database->query($sql);
-    if($rs_xxxxxx->numRows() > 0) {
-        while(xxxxxx = $rs_xxxxxx->fetchRow()) {
-            if (!in_array($xxxxxx['section_id'], $public)) continue;
-            $checked = check_link(xxxxxx['link'], $exclude);
-            if ($checked === true) {
-                $link    = htmlspecialchars($wb->page_link($xxxxxx['link']));
-                $lastmod = date("Y-m-d", $xxxxxx['modified_when']+TIMEZONE);
-                output_xml($link, $lastmod, $xxxxxx_frequency, $xxxxxx_priority);
-                $counter++;
-            }
-            else {
-                $debug_info[] = $checked;
-            }
+    $items = $database->fetchAll(
+        "SELECT `section_id`, `link`, `modified_when`
+         FROM `{TP}mod_xxxxxx_items`
+         WHERE `active` = '1'"
+    );
+    foreach ($items as $item) {
+        if (!in_array($item['section_id'], $public)) continue;
+        $checked = check_link($item['link'], $exclude);
+        if ($checked === true) {
+            $link    = htmlspecialchars($wb->page_link($item['link']));
+            $lastmod = date("Y-m-d", $item['modified_when'] + TIMEZONE);
+            output_xml($link, $lastmod, $xxxxxx_frequency, $xxxxxx_priority);
+            $counter++;
+        } else {
+            $debug_info[] = $checked;
         }
     }
 }
 */
 
 
-// Debug
+// ── Debug output ──────────────────────────────────────────────────────────────
+
 if ($debug) {
-    echo '<div style="display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 1em 1em; margin: 1em; line-height: 18px; background-color: #fdd; color: black">';
+    echo '<div style="display:block;white-space:pre;border:2px solid #c77;padding:0 1em 1em 1em;margin:1em;line-height:18px;background-color:#fdd;color:black">';
     echo '<h3>DEBUG</h3>';
     echo '<h3>Number of Pages</h3>';
     echo '<div style="font-family:monospace;font-size:12px">Number of Pages excluding module pages: ' . $page_counter . '<br>';
     echo 'Number of all Pages including module pages: ' . $counter . '</div>';
-    if (count($debug_info > 0)) {
+    if (count($debug_info) > 0) {
         echo '<h3>Banned Pages</h3><div style="font-family:monospace;font-size:12px">' . implode('', $debug_info) . '</div>';
     }
     echo '</div>';
 } else {
-    // End xml output
     echo "\n" . '</urlset>';
 }
