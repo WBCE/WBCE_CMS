@@ -5,7 +5,7 @@
 
 ## Minimum requirements
   - about 25 MB webspace
-  - PHP 8.1 - PHP 8.4.x (PHP >= 8.4.x requires WBCE 1.6.4)
+  - PHP 8.2 - PHP 8.4.x (8.1 might still work too)
   - mySQL or MariaDB database
   - GD Library / Exif / Imagemagick (if you use any module with image processing)
   - mod_rewrite (if you use ShortURL)
