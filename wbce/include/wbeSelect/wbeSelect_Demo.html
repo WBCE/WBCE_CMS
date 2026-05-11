@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wbeSelect — jQuery Select Plugin Demo</title>
+  <link rel="stylesheet" href="wbeSelect.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --d-bg:           #080a12;
+      --d-surface:      #0f1220;
+      --d-surface2:     #171c30;
+      --d-border:       #252a45;
+      --d-text:         #d0def7;
+      --d-muted:        #6b7a9f;
+      --d-accent:       #6288b8;
+      --d-bright:       #91c3f5;
+      --d-green:        #10b981;
+      --d-font:         'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --d-mono:         'Fira Code', Consolas, monospace;
+      --d-radius:       8px;
+      --d-sw:           228px;
+      --d-hh:           56px;
+    }
+
+    [data-theme="light"] {
+      --d-bg:       #f1f4fb;
+      --d-surface:  #ffffff;
+      --d-surface2: #edf0f9;
+      --d-border:   #ccd3e6;
+      --d-text:     #18213e;
+      --d-muted:    #5a6a8a;
+      --d-accent:   #3e6fab;
+      --d-bright:   #1e5fa8;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--d-font);
+      font-size: 15px;
+      color: var(--d-text);
+      background: var(--d-bg);
+      transition: background .2s, color .2s;
+    }
+
+    /* ── Top bar ────────────────────────────────────── */
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--d-hh);
+      background: var(--d-surface);
+      border-bottom: 1px solid var(--d-border);
+      display: flex; align-items: center;
+      padding: 0 28px; gap: 12px;
+      z-index: 300;
+    }
+    .top-bar .wordmark {
+      font-size: 17px; font-weight: 800;
+      letter-spacing: -0.4px; color: var(--d-text);
+    }
+    .top-bar .wordmark em { color: var(--d-bright); font-style: normal; }
+    .top-bar .chip {
+      font-family: var(--d-mono); font-size: 10px;
+      background: var(--d-surface2); border: 1px solid var(--d-border);
+      border-radius: 4px; padding: 2px 7px; color: var(--d-muted);
+    }
+    .top-bar .gap { flex: 1; }
+    .toggle-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 6px 14px; font-size: 12px;
+      background: var(--d-surface2); border: 1px solid var(--d-border);
+      border-radius: 20px; color: var(--d-muted); cursor: pointer;
+      font-family: var(--d-font);
+      transition: border-color .15s, color .15s;
+    }
+    .toggle-btn:hover { border-color: var(--d-accent); color: var(--d-text); }
+
+    /* ── Layout ─────────────────────────────────────── */
+    .shell { display: flex; padding-top: var(--d-hh); min-height: 100vh; }
+
+    /* ── Sidebar ─────────────────────────────────────── */
+    .sidebar {
+      width: var(--d-sw); min-width: var(--d-sw);
+      position: sticky; top: var(--d-hh);
+      height: calc(100vh - var(--d-hh));
+      overflow-y: auto;
+      border-right: 1px solid var(--d-border);
+      background: var(--d-surface);
+      padding: 32px 0;
+    }
+    .sb-group { margin-bottom: 28px; }
+    .sb-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--d-muted); padding: 0 22px 8px;
+    }
+    .sidebar a {
+      display: block; padding: 7px 22px;
+      color: var(--d-muted); text-decoration: none;
+      font-size: 13px; border-left: 2px solid transparent;
+      transition: color .1s, border-color .1s, background .1s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      color: var(--d-text);
+      border-left-color: var(--d-accent);
+      background: rgba(98,136,184,.07);
+    }
+
+    /* ── Main ───────────────────────────────────────── */
+    main { flex: 1; padding: 52px 60px 100px; max-width: 980px; }
+
+    /* ── Hero ───────────────────────────────────────── */
+    #overview { margin-bottom: 60px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 36px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 880px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+    .hero-main { min-width: 0; }
+    .license-card {
+      border: 1px solid var(--d-border);
+      border-radius: var(--d-radius);
+      background: var(--d-surface);
+      padding: 20px 22px;
+      font-size: 13px;
+      color: var(--d-text);
+      line-height: 1.6;
+    }
+    .license-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: var(--d-muted);
+      margin-bottom: 14px;
+    }
+    .license-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .license-badge {
+      display: inline-block;
+      background: #10b981;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .license-ver {
+      font-family: var(--d-mono);
+      font-size: 12px;
+      color: var(--d-muted);
+    }
+    .license-desc {
+      font-size: 13px;
+      color: var(--d-text);
+      margin-bottom: 12px;
+    }
+    .license-desc strong { color: var(--d-bright); font-weight: 600; }
+    .license-desc a { color: var(--d-bright); text-decoration: none; border-bottom: 1px dotted var(--d-muted); }
+    .license-desc a:hover { border-bottom-color: var(--d-bright); }
+    .license-copy {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--d-border);
+      font-family: var(--d-mono);
+      font-size: 11px;
+      color: var(--d-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .hero-title {
+      font-size: 38px; font-weight: 800;
+      letter-spacing: -.6px; line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .hero-title em { color: var(--d-bright); font-style: normal; }
+    .hero-sub {
+      font-size: 15px; color: var(--d-muted);
+      line-height: 1.75; max-width: 520px; margin-bottom: 24px;
+    }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+    .pill {
+      font-size: 11px; border-radius: 20px;
+      padding: 4px 12px; border: 1px solid var(--d-border);
+      color: var(--d-muted); background: var(--d-surface);
+    }
+    .pill.g { border-color: rgba(16,185,129,.5); color: var(--d-green); }
+    .pill.b { border-color: rgba(98,136,184,.5); color: var(--d-bright); }
+
+    /* Feature grid */
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+    }
+    .feat-card {
+      background: var(--d-surface); border: 1px solid var(--d-border);
+      border-radius: var(--d-radius); padding: 18px 16px;
+    }
+    .feat-icon { font-size: 20px; margin-bottom: 8px; }
+    .feat-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .feat-desc { font-size: 12px; color: var(--d-muted); line-height: 1.55; }
+
+    /* ── Section ────────────────────────────────────── */
+    .sec {
+      margin-bottom: 72px;
+      scroll-margin-top: calc(var(--d-hh) + 24px);
+    }
+    .eyebrow {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--d-accent); margin-bottom: 6px;
+    }
+    .sec h2 {
+      font-size: 22px; font-weight: 800;
+      letter-spacing: -.3px; margin-bottom: 8px;
+    }
+    .sec > p {
+      font-size: 14px; color: var(--d-muted);
+      line-height: 1.75; max-width: 600px; margin-bottom: 24px;
+    }
+    .sec > p code, p code, li code {
+      font-family: var(--d-mono); font-size: 11.5px;
+      color: var(--d-bright);
+      background: rgba(145,195,245,.08);
+      padding: 1px 5px; border-radius: 3px;
+    }
+
+    /* ── Card ───────────────────────────────────────── */
+    .card {
+      border: 1px solid var(--d-border);
+      border-radius: var(--d-radius);
+      background: var(--d-surface);
+      overflow: visible; /* allow dropdown to bleed */
+    }
+    .card.table-card { overflow: hidden; }
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Preview pane ───────────────────────────────── */
+    .preview {
+      padding: 30px 26px; border-right: 1px solid var(--d-border);
+    }
+    .preview-lbl {
+      font-size: 10px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--d-muted); margin-bottom: 22px;
+    }
+    .field { margin-bottom: 20px; }
+    .field-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--d-muted); margin-bottom: 7px; letter-spacing: .02em;
+    }
+    /* spacer so dropdown isn't clipped */
+    .field.drop-room { padding-bottom: 230px; }
+    .field.drop-sm   { padding-bottom: 160px; }
+
+    /* ── Code pane ──────────────────────────────────── */
+    .code-pane { background: #070910; border-radius: 0 var(--d-radius) var(--d-radius) 0; }
+    .code-tabs { display: flex; border-bottom: 1px solid var(--d-border); }
+    .code-tab {
+      padding: 9px 16px; font-size: 10.5px; font-family: var(--d-mono);
+      color: var(--d-muted); cursor: pointer;
+      border-right: 1px solid var(--d-border);
+      border-bottom: 2px solid transparent;
+    }
+    .code-tab.on { color: var(--d-bright); border-bottom-color: var(--d-bright); background: rgba(145,195,245,.04); }
+    pre {
+      margin: 0; padding: 20px;
+      font-family: var(--d-mono); font-size: 11.5px;
+      line-height: 1.7; overflow-x: auto; color: #c4d0e8;
+    }
+    pre + pre { border-top: 1px solid var(--d-border); }
+
+    /* Syntax tokens */
+    .tt { color: #7ee787; }   /* tag */
+    .ta { color: #79c0ff; }   /* attr */
+    .tv { color: #a5d6ff; }   /* value */
+    .ts { color: #ffa657; }   /* string */
+    .tc { color: #6e7f9c; font-style:italic; }  /* comment */
+    .tf { color: #d2a8ff; }   /* function */
+    .tk { color: #ff7b72; }   /* keyword */
+    .tn { color: #79c0ff; }   /* number */
+
+    /* ── Divider ────────────────────────────────────── */
+    .divider { border: 0; border-top: 1px solid var(--d-border); margin: 56px 0; }
+
+    /* ── Install block ──────────────────────────────── */
+    .install {
+      background: #070910; border: 1px solid var(--d-border);
+      border-radius: var(--d-radius); margin-bottom: 12px; overflow: hidden;
+    }
+    .install pre { padding: 18px 20px; }
+
+    /* ── Options table ──────────────────────────────── */
+    table.ref { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.ref th {
+      text-align: left; padding: 10px 14px;
+      background: var(--d-surface2); color: var(--d-muted);
+      font-size: 10px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; border-bottom: 1px solid var(--d-border);
+    }
+    table.ref td {
+      padding: 10px 14px; border-bottom: 1px solid var(--d-border);
+      vertical-align: top; line-height: 1.55;
+    }
+    table.ref tr:last-child td { border-bottom: 0; }
+    table.ref tr:hover td { background: var(--d-surface2); }
+    table.ref td code {
+      font-family: var(--d-mono); font-size: 11px;
+      color: var(--d-bright); background: rgba(145,195,245,.08);
+      padding: 1px 5px; border-radius: 3px;
+    }
+    .tbadge {
+      font-family: var(--d-mono); font-size: 10px;
+      padding: 1px 5px; border-radius: 3px;
+      background: rgba(210,168,255,.12); color: #d2a8ff;
+    }
+    .dbadge {
+      font-family: var(--d-mono); font-size: 10px;
+      padding: 1px 5px; border-radius: 3px;
+      background: rgba(255,166,87,.1); color: #ffa657;
+    }
+
+    /* ── API methods ────────────────────────────────── */
+    .api-item {
+      border: 1px solid var(--d-border); border-radius: var(--d-radius);
+      overflow: hidden; margin-bottom: 10px;
+    }
+    .api-head {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; background: var(--d-surface2);
+      border-bottom: 1px solid var(--d-border);
+    }
+    .api-head code {
+      font-family: var(--d-mono); font-size: 12.5px; color: var(--d-bright);
+    }
+    .api-body {
+      padding: 12px 16px; font-size: 13px;
+      color: var(--d-muted); line-height: 1.65;
+    }
+
+    /* ── Scrollbar ──────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--d-border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ══════════════════════════════════════════════════════════════ -->
+<header class="top-bar">
+  <span class="wordmark">wbe<em>Select</em></span>
+  <span class="chip">v1.0.0</span>
+  <span class="chip">jQuery</span>
+  <span class="chip">MIT</span>
+  <span class="gap"></span>
+  <button class="toggle-btn" id="themeBtn" onclick="toggleTheme()">☀ Light mode</button>
+</header>
+
+<!-- ══ LAYOUT ═══════════════════════════════════════════════════════════════ -->
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sb-group">
+      <div class="sb-label">Start</div>
+      <a href="#overview">Overview</a>
+      <a href="#install">Installation</a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-label">Examples</div>
+      <a href="#ex-before">00 · Before / After</a>
+      <a href="#ex-vis">01 · Visibility</a>
+      <a href="#ex-multi">02 · Multiselect</a>
+      <a href="#ex-tree">03 · Tree View</a>
+      <a href="#ex-lang">04 · Language Selector</a>
+      <a href="#ex-group">05 · Optgroups</a>
+      <a href="#ex-search">06 · Search Tags</a>
+      <a href="#ex-light">07 · Light Theme</a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-label">Reference</div>
+      <a href="#ref-opts">Options</a>
+      <a href="#ref-data">Data Attrs</a>
+      <a href="#ref-api">Public API</a>
+      <a href="#ref-css">CSS Classes</a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main>
+
+    <!-- ══ HERO ════════════════════════════════════════════════════════════ -->
+    <section class="sec" id="overview">
+      <div class="hero-grid">
+       <div class="hero-main">
+        <h1 class="hero-title">A smarter <em>select</em><br>for WBCE CMS</h1>
+        <p class="hero-sub">wbeSelect transforms native <code>&lt;select&gt;</code> elements into rich, searchable, icon-aware dropdowns — with tree views, multiselect tags, and a dark/light theme built in. No other dependencies.</p>
+       </div>
+       <aside class="license-card">
+         <div class="license-eyebrow">License &amp; Authors</div>
+         <div class="license-row">
+           <span class="license-badge">MIT</span>
+           <span class="license-ver">v1.0.4</span>
+         </div>
+         <p class="license-desc">
+           <strong>wbeSelect</strong> was specifically designed by
+           <strong>Christian M. Stefan</strong> to meet the needs of CMS systems like
+           <strong>WebsiteBaker</strong>, <strong>WBCE CMS</strong> and similar
+           PageTree → PageSection oriented systems.
+         </p>
+         <p class="license-desc">
+           Derived from <a href="https://github.com/QODIO/selectator" target="_blank" rel="noopener"><strong>Selectator</strong> by QODIO</a>.
+         </p>
+         <div class="license-copy">
+           <div>© 2025-2026 Christian M. Stefan</div>
+           <div>© 2013 QODIO</div>
+         </div>
+       </aside>
+      </div>
+      <div class="hero-pills">
+        <span class="pill g">✓ No extra dependencies</span>
+        <span class="pill b">Single &amp; Multiple</span>
+        <span class="pill">Icons + Badges</span>
+        <span class="pill">Tree View</span>
+        <span class="pill">Search</span>
+        <span class="pill">Optgroups</span>
+        <span class="pill">Keyboard nav</span>
+        <span class="pill">Dark + Light</span>
+      </div>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-icon">◈</div>
+          <div class="feat-title">Icons &amp; Badges</div>
+          <div class="feat-desc">Left image and right badge per option via simple <code>data-*</code> attributes.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">⌖</div>
+          <div class="feat-title">Tree View</div>
+          <div class="feat-desc">Hierarchical page trees with depth-dot indicators and monospace prefixes.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">⌨</div>
+          <div class="feat-title">Keyboard First</div>
+          <div class="feat-desc">Arrow keys navigate, Enter selects, Escape closes, Backspace removes last tag.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">✦</div>
+          <div class="feat-title">Multiselect Tags</div>
+          <div class="feat-desc">Tag-style multiple select with removable chips and auto-growing search input.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">⬡</div>
+          <div class="feat-title">CSS Theming</div>
+          <div class="feat-desc">Custom properties for dark/light modes with <code>prefers-color-scheme</code> detection.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">⚙</div>
+          <div class="feat-title">Custom Selectors</div>
+          <div class="feat-desc">Scoped CSS variants per instance via the <code>customSelector</code> option.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ══ INSTALL ═════════════════════════════════════════════════════════ -->
+    <section class="sec" id="install">
+      <div class="eyebrow">Getting Started</div>
+      <h2>Installation</h2>
+      <p>Three includes — stylesheet, jQuery, plugin script. Then call <code>.wbeSelect()</code>, or add <code>class="wbeSelect"</code> for auto-init.</p>
+
+      <div class="install">
+        <pre><span class="tc">&lt;!-- 1. Stylesheet --&gt;</span>
+<span class="tt">&lt;link</span> <span class="ta">rel</span>=<span class="tv">"stylesheet"</span> <span class="ta">href</span>=<span class="tv">"wbeSelect.css"</span><span class="tt">&gt;</span>
+
+<span class="tc">&lt;!-- 2. jQuery (3.x or 4.x) --&gt;</span>
+<span class="tt">&lt;script</span> <span class="ta">src</span>=<span class="tv">"jquery.min.js"</span><span class="tt">&gt;&lt;/script&gt;</span>
+
+<span class="tc">&lt;!-- 3. Plugin --&gt;</span>
+<span class="tt">&lt;script</span> <span class="ta">src</span>=<span class="tv">"wbeSelect.jquery.js"</span><span class="tt">&gt;&lt;/script&gt;</span></pre>
+      </div>
+
+      <div class="install">
+        <pre><span class="tc">// Auto-init: add class="wbeSelect" to your &lt;select&gt;</span>
+<span class="tt">&lt;select</span> <span class="ta">class</span>=<span class="tv">"wbeSelect"</span><span class="tt">&gt;</span>…<span class="tt">&lt;/select&gt;</span>
+
+<span class="tc">// Manual init with options:</span>
+<span class="tf">$</span>(<span class="ts">'#mySelect'</span>).<span class="tf">wbeSelect</span>({
+  <span class="ta">customSelector</span>: <span class="ts">'cfg-visibility'</span>,
+  <span class="ta">useSearch</span>:      <span class="tk">true</span>,
+  <span class="ta">treeView</span>:       <span class="tk">false</span>
+});</pre>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ══ EX 00 · BEFORE / AFTER ══════════════════════════════════════════ -->
+    <section class="sec" id="ex-before">
+      <div class="eyebrow">Example 00</div>
+      <h2>Before &amp; After</h2>
+      <p>The plugin hides the native <code>&lt;select&gt;</code> and injects a styled widget next to it. The underlying element stays in the DOM and submits normally with your form — wbeSelect is purely a visual enhancement.</p>
+
+      <div class="card">
+        <div class="split">
+
+          <!-- Before -->
+          <div class="preview" style="border-right:1px solid var(--d-border);">
+            <div class="preview-lbl">Before — native browser select</div>
+            <div class="field" style="margin-bottom:28px;">
+              <div class="field-label">Page Visibility</div>
+              <!-- intentionally NOT initialized — shows raw browser widget -->
+              <select id="native_vis" style="width:260px; padding:5px 8px; border-radius:5px; border:1px solid var(--d-border); background:var(--d-surface2); color:var(--d-text); font-size:14px; font-family:inherit;">
+                <option value="public" selected>Public</option>
+                <option value="hidden">Hidden</option>
+                <option value="private">Private</option>
+                <option value="registered">Registered</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label">User Groups</div>
+              <select multiple style="width:260px; height:120px; padding:4px; border-radius:5px; border:1px solid var(--d-border); background:var(--d-surface2); color:var(--d-text); font-size:14px; font-family:inherit;">
+                <option selected>Editors</option>
+                <option selected>SEO-Team</option>
+                <option>Administrators</option>
+                <option>Readers</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- After -->
+          <div class="preview">
+            <div class="preview-lbl">After — wbeSelect enhanced</div>
+            <div class="field drop-room" style="padding-bottom:220px;">
+              <div class="field-label">Page Visibility</div>
+              <select id="before_vis" style="width:260px;">
+                <option value="public"     data-left="icons/public.svg"     data-subtitle="Visible to all visitors"         selected>Public</option>
+                <option value="hidden"     data-left="icons/hidden.svg"     data-subtitle="Hidden from menus"               >Hidden</option>
+                <option value="private"    data-left="icons/private.svg"    data-subtitle="Private page of a user"         >Private</option>
+                <option value="registered" data-left="icons/registered.svg" data-subtitle="Registered users only"          >Registered</option>
+                <option value="none"       data-left="icons/none.svg"       data-subtitle="Not accessible"                 >None</option>
+              </select>
+            </div>
+            <div class="field" style="margin-top:8px;">
+              <div class="field-label">User Groups</div>
+              <select id="before_groups" multiple data-placeholder="Select groups…" style="width:260px;">
+                <option value="2" data-right="2" selected>Editors</option>
+                <option value="3" data-right="3" selected>SEO-Team</option>
+                <option value="1" data-right="1">Administrators</option>
+                <option value="5" data-right="5">Readers</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EX 01 · VISIBILITY ═══════════════════════════════════════════════ -->
+    <section class="sec" id="ex-vis">
+      <div class="eyebrow">Example 01</div>
+      <h2>Visibility Selector</h2>
+      <p>A single select with a left SVG icon and a <code>data-subtitle</code> per option. <code>customSelector: 'cfg-visibility'</code> applies scoped CSS for icon sizing. Search is auto-disabled because the option count (5) is below the default threshold of 7.</p>
+
+      <div class="card">
+        <div class="split">
+          <div class="preview">
+            <div class="preview-lbl">Live Demo — click to open</div>
+            <div class="field drop-room">
+              <div class="field-label">Page Visibility</div>
+              <select id="demo_vis" style="width:280px;">
+                <option value="public"     data-left="icons/public.svg"     data-subtitle="Visible to all visitors"           selected>Public</option>
+                <option value="hidden"     data-left="icons/hidden.svg"     data-subtitle="Hidden from all menus"             >Hidden</option>
+                <option value="private"    data-left="icons/private.svg"    data-subtitle="Private page of a user"           >Private</option>
+                <option value="registered" data-left="icons/registered.svg" data-subtitle="Accessible to registered users"   >Registered</option>
+                <option value="none"       data-left="icons/none.svg"       data-subtitle="Not visible and not accessible"   >None</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="code-tabs">
+              <div class="code-tab on">HTML</div>
+              <div class="code-tab">JS</div>
+            </div>
+<pre><span class="tt">&lt;select</span> <span class="ta">id</span>=<span class="tv">"ap_visibility"</span>
+        <span class="ta">style</span>=<span class="tv">"width:280px"</span><span class="tt">&gt;</span>
+
+  <span class="tt">&lt;option</span>
+    <span class="ta">value</span>=<span class="tv">"public"</span>
+    <span class="ta">data-left</span>=<span class="tv">"icons/public.svg"</span>
+    <span class="ta">data-subtitle</span>=<span class="tv">"Visible to all"</span>
+    <span class="ta">selected</span><span class="tt">&gt;</span>Public<span class="tt">&lt;/option&gt;</span>
+
+  <span class="tt">&lt;option</span>
+    <span class="ta">value</span>=<span class="tv">"hidden"</span>
+    <span class="ta">data-left</span>=<span class="tv">"icons/hidden.svg"</span>
+    <span class="ta">data-subtitle</span>=<span class="tv">"Hidden from menus"</span>
+    <span class="tt">&gt;</span>Hidden<span class="tt">&lt;/option&gt;</span>
+
+  <span class="tc">&lt;!-- …more options --&gt;</span>
+<span class="tt">&lt;/select&gt;</span></pre>
+<pre><span class="tf">$</span>(<span class="ts">'#ap_visibility'</span>)
+  .<span class="tf">wbeSelect</span>({
+    <span class="ta">customSelector</span>:
+      <span class="ts">'cfg-visibility'</span>
+  });</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EX 02 · MULTISELECT ══════════════════════════════════════════════ -->
+    <section class="sec" id="ex-multi">
+      <div class="eyebrow">Example 02</div>
+      <h2>Multiselect with Badges</h2>
+      <p>Add <code>multiple</code> to your <code>&lt;select&gt;</code> for tag-style multiselect. The <code>data-right</code> attribute renders a coloured badge — useful for IDs, counts, or codes. A placeholder is set via <code>data-placeholder</code>. Press <kbd>Backspace</kbd> to remove the last tag.</p>
+
+      <div class="card">
+        <div class="split">
+          <div class="preview">
+            <div class="preview-lbl">Live Demo — click to open</div>
+            <div class="field drop-room">
+              <div class="field-label">User Groups</div>
+              <select id="demo_groups" name="groups[]" multiple
+                      data-placeholder="Select groups…"
+                      style="width:280px;">
+                <option value="1" data-right="1">Administrators</option>
+                <option value="2" data-right="2" selected>Editors</option>
+                <option value="3" data-right="3" selected>SEO-Team</option>
+                <option value="4" data-right="4">Sign-Up</option>
+                <option value="5" data-right="5">Readers</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="code-tabs"><div class="code-tab on">HTML</div></div>
+<pre><span class="tt">&lt;select</span>
+  <span class="ta">name</span>=<span class="tv">"groups[]"</span>
+  <span class="ta">multiple</span>
+  <span class="ta">data-placeholder</span>=<span class="tv">"Select groups…"</span>
+  <span class="ta">class</span>=<span class="tv">"wbeSelect"</span><span class="tt">&gt;</span>
+
+  <span class="tt">&lt;option</span>
+    <span class="ta">value</span>=<span class="tv">"1"</span>
+    <span class="ta">data-right</span>=<span class="tv">"1"</span><span class="tt">&gt;</span>
+    Administrators
+  <span class="tt">&lt;/option&gt;</span>
+
+  <span class="tt">&lt;option</span>
+    <span class="ta">value</span>=<span class="tv">"2"</span>
+    <span class="ta">data-right</span>=<span class="tv">"2"</span>
+    <span class="ta">selected</span><span class="tt">&gt;</span>
+    Editors
+  <span class="tt">&lt;/option&gt;</span>
+
+  <span class="tc">&lt;!-- …more options --&gt;</span>
+<span class="tt">&lt;/select&gt;</span>
+
+<span class="tc">&lt;!-- auto-init via class --&gt;</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EX 03 · TREE VIEW ════════════════════════════════════════════════ -->
+    <section class="sec" id="ex-tree">
+      <div class="eyebrow">Example 03</div>
+      <h2>Tree View with Search</h2>
+      <p>Set <code>treeView: true</code> to wrap monospace prefixes in a styled <code>&lt;span&gt;</code> and show depth-dot notation in the selected state. <code>searchFields: 'text right'</code> lets you search by both page title and page-ID badge. Disabled options act as non-selectable parent headings.</p>
+
+      <div class="card">
+        <div class="split">
+          <div class="preview">
+            <div class="preview-lbl">Live Demo — type to search by title or ID</div>
+            <div class="field" style="padding-bottom: 360px;">
+              <div class="field-label">Parent Page</div>
+              <!-- Single-space prefixes: HTMLOptionElement.text collapses multi-spaces,
+                   so data-prefix and text content must use the same single-space spacing -->
+              <select id="demo_tree"
+                      data-search-label="Search… title or page ID"
+                      style="width:300px;">
+                <option value="0" style="font-style:italic">(none / root)</option>
+                <option data-id="6"  value="6"  data-prefix="" data-level="0" data-right="6"  data-class="type-public mid-1"     disabled>Willkommen</option>
+                <option data-id="10" value="10" data-prefix="│ ├─ " data-level="1" data-right="10" data-class="type-public mid-1"  >│ ├─ Unterseite A</option>
+                <option data-id="50" value="50" data-prefix="│ │ ├─ " data-level="2" data-right="50" data-class="type-public mid-1">│ │ ├─ Tief — Seite X</option>
+                <option data-id="51" value="51" data-prefix="│ │ └─ " data-level="2" data-right="51" data-class="type-private mid-1">│ │ └─ Tief — Seite Y</option>
+                <option data-id="11" value="11" data-prefix="│ └─ " data-level="1" data-right="11" data-class="type-registered mid-1">│ └─ Unterseite B</option>
+                <option data-id="7"  value="7"  data-prefix="" data-level="0" data-right="7"  data-class="type-public mid-1"     disabled>Form Test</option>
+                <option data-id="20" value="20" data-prefix="│ ├─ " data-level="1" data-right="20" data-class="type-public mid-1"  >│ ├─ New Page</option>
+                <option data-id="21" value="21" data-prefix="│ ├─ " data-level="1" data-right="21" data-class="type-public mid-1"  >│ ├─ Another Subpage</option>
+                <option data-id="60" value="60" data-prefix="│ │ └─ " data-level="2" data-right="60" data-class="type-registered mid-1">│ │ └─ Members Area</option>
+                <option data-id="22" value="22" data-prefix="│ └─ " data-level="1" data-right="22" data-class="type-hidden mid-1"   >│ └─ Draft</option>
+                <option data-id="19" value="19" data-prefix="" data-level="0" data-right="19" data-class="type-public mid-1"     disabled>New Home</option>
+                <option data-id="30" value="30" data-prefix="│ ├─ " data-level="1" data-right="30" data-class="type-registered mid-1">│ ├─ Blog</option>
+                <option data-id="31" value="31" data-prefix="│ └─ " data-level="1" data-right="31" data-class="type-hidden mid-1"   >│ └─ Hidden Child</option>
+              </select>
+            </div>
+
+            <!-- Type color legend -->
+            <div style="margin-top:8px;">
+              <div class="field-label" style="margin-bottom:10px;">Badge colour key — <code>data-class="type-*"</code></div>
+              <div style="display:flex; flex-direction:column; gap:7px; font-size:12px; color:var(--d-muted);">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="display:inline-block; background:#5db327; color:#fff; font-size:11px; font-weight:600; padding:2px 9px; border-radius:5px; min-width:32px; text-align:center;">ID</span>
+                  <code style="color:var(--d-bright);">type-public</code> — visible to everyone
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="display:inline-block; background:#069ee3; color:#fff; font-size:11px; font-weight:600; padding:2px 9px; border-radius:5px; min-width:32px; text-align:center;">ID</span>
+                  <code style="color:var(--d-bright);">type-private</code> — specific user only
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="display:inline-block; background:#e3a223; color:#fff; font-size:11px; font-weight:600; padding:2px 9px; border-radius:5px; min-width:32px; text-align:center;">ID</span>
+                  <code style="color:var(--d-bright);">type-registered</code> — logged-in users
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="display:inline-block; background:#a1a0a0; color:#fff; font-size:11px; font-weight:600; padding:2px 9px; border-radius:5px; min-width:32px; text-align:center;">ID</span>
+                  <code style="color:var(--d-bright);">type-hidden</code> / <code style="color:var(--d-bright);">type-none</code> — not accessible
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="code-tabs"><div class="code-tab on">JS</div></div>
+<pre><span class="tf">$</span>(<span class="ts">'#ap_parent'</span>)
+  .<span class="tf">wbeSelect</span>({
+    <span class="ta">customSelector</span>: <span class="ts">'flag-right'</span>,
+    <span class="ta">useSearch</span>:      <span class="tk">true</span>,
+    <span class="ta">treeView</span>:       <span class="tk">true</span>,
+    <span class="ta">searchFields</span>:   <span class="ts">'text right'</span>
+  });</pre>
+<pre><span class="tc">&lt;!-- Single-space prefixes are key!
+     HTMLOptionElement.text normalizes
+     multi-spaces → single space.
+     data-prefix must match exactly. --&gt;</span>
+
+<span class="tt">&lt;option</span>
+  <span class="ta">value</span>=<span class="tv">"50"</span>
+  <span class="ta">data-prefix</span>=<span class="tv">"│ │ ├─ "</span>
+  <span class="ta">data-level</span>=<span class="tv">"2"</span>
+  <span class="ta">data-right</span>=<span class="tv">"50"</span>
+  <span class="ta">data-class</span>=<span class="tv">"type-public"</span>
+<span class="tt">&gt;</span>│ │ ├─ Tief — Seite X<span class="tt">&lt;/option&gt;</span>
+
+<span class="tc">&lt;!-- Disabled = non-selectable
+     root / parent heading --&gt;</span>
+<span class="tt">&lt;option</span>
+  <span class="ta">value</span>=<span class="tv">"6"</span>
+  <span class="ta">data-level</span>=<span class="tv">"0"</span>
+  <span class="ta">data-class</span>=<span class="tv">"type-public"</span>
+  <span class="ta">disabled</span>
+<span class="tt">&gt;</span>Willkommen<span class="tt">&lt;/option&gt;</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EX 04 · LANGUAGE SELECTOR ══════════════════════════════════════ -->
+    <section class="sec" id="ex-lang">
+      <div class="eyebrow">Example 04</div>
+      <h2>Language Selector</h2>
+      <p>Flag on the right via the <code>cfg-lang</code> custom selector, language code as a <code>data-right</code> badge, and the language name written in its own language. The <code>cfg-lang</code> CSS variant overrides the default transparent badge background on the selected item so the code chip stays styled consistently.</p>
+
+      <div class="card">
+        <div class="split">
+          <div class="preview">
+            <div class="preview-lbl">Live Demo — click to open</div>
+            <div class="field drop-room">
+              <div class="field-label">Interface Language</div>
+              <select id="demo_lang" style="width:260px;">
+                <option value="de" data-left="languages/DE.svg" data-right="DE" selected>Deutsch</option>
+                <option value="en" data-left="languages/EN.svg" data-right="EN">English</option>
+                <option value="fr" data-left="languages/FR.svg" data-right="FR">Français</option>
+                <option value="ru" data-left="languages/RU.svg" data-right="RU">Русский</option>
+                <option value="gr" data-left="languages/GR.svg" data-right="GR">Ελληνικά</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="code-tabs"><div class="code-tab on">HTML</div><div class="code-tab">JS</div></div>
+<pre><span class="tt">&lt;select</span> <span class="ta">id</span>=<span class="tv">"lang_select"</span>
+        <span class="ta">style</span>=<span class="tv">"width:260px"</span><span class="tt">&gt;</span>
+
+  <span class="tt">&lt;option</span>
+    <span class="ta">value</span>=<span class="tv">"de"</span>
+    <span class="ta">data-left</span>=<span class="tv">"languages/DE.svg"</span>
+    <span class="ta">data-right</span>=<span class="tv">"DE"</span>
+    <span class="ta">selected</span><span class="tt">&gt;</span>Deutsch<span class="tt">&lt;/option&gt;</span>
+
+  <span class="tt">&lt;option</span>
+    <span class="ta">value</span>=<span class="tv">"en"</span>
+    <span class="ta">data-left</span>=<span class="tv">"languages/EN.svg"</span>
+    <span class="ta">data-right</span>=<span class="tv">"EN"</span>
+    <span class="tt">&gt;</span>English<span class="tt">&lt;/option&gt;</span>
+
+  <span class="tc">&lt;!-- …more options --&gt;</span>
+<span class="tt">&lt;/select&gt;</span></pre>
+<pre><span class="tf">$</span>(<span class="ts">'#lang_select'</span>)
+  .<span class="tf">wbeSelect</span>({
+    <span class="ta">customSelector</span>:
+      <span class="ts">'cfg-lang'</span>
+  });</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EX 05 · OPTGROUP ═════════════════════════════════════════════════ -->
+    <section class="sec" id="ex-group">
+      <div class="eyebrow">Example 05</div>
+      <h2>Grouped Options</h2>
+      <p>Native <code>&lt;optgroup&gt;</code> elements become non-selectable section headers. When search filters reduce a group to zero visible options, the group header hides automatically.</p>
+
+      <div class="card">
+        <div class="split">
+          <div class="preview">
+            <div class="preview-lbl">Live Demo — type to filter groups</div>
+            <div class="field" style="padding-bottom:300px;">
+              <div class="field-label">Content Module</div>
+              <select id="demo_module" style="width:280px;">
+                <option value="">— Select a module —</option>
+                <optgroup label="Basic">
+                  <option value="wysiwyg">WYSIWYG Editor</option>
+                  <option value="text">Plain Text</option>
+                  <option value="placeholder">Placeholder</option>
+                </optgroup>
+                <optgroup label="Media">
+                  <option value="gallery">Image Gallery</option>
+                  <option value="video">Video Embed</option>
+                  <option value="audio">Audio Player</option>
+                </optgroup>
+                <optgroup label="Interactive">
+                  <option value="form">Contact Form</option>
+                  <option value="quiz">Quiz Module</option>
+                  <option value="map">Map Embed</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="code-tabs"><div class="code-tab on">HTML</div></div>
+<pre><span class="tt">&lt;select</span> <span class="ta">class</span>=<span class="tv">"wbeSelect"</span><span class="tt">&gt;</span>
+
+  <span class="tt">&lt;option</span> <span class="ta">value</span>=<span class="tv">""</span><span class="tt">&gt;</span>
+    — Select a module —
+  <span class="tt">&lt;/option&gt;</span>
+
+  <span class="tt">&lt;optgroup</span> <span class="ta">label</span>=<span class="tv">"Basic"</span><span class="tt">&gt;</span>
+    <span class="tt">&lt;option</span> <span class="ta">value</span>=<span class="tv">"wysiwyg"</span><span class="tt">&gt;</span>
+      WYSIWYG Editor
+    <span class="tt">&lt;/option&gt;</span>
+    <span class="tt">&lt;option</span> <span class="ta">value</span>=<span class="tv">"text"</span><span class="tt">&gt;</span>
+      Plain Text
+    <span class="tt">&lt;/option&gt;</span>
+  <span class="tt">&lt;/optgroup&gt;</span>
+
+  <span class="tt">&lt;optgroup</span> <span class="ta">label</span>=<span class="tv">"Media"</span><span class="tt">&gt;</span>
+    <span class="tc">&lt;!-- … --&gt;</span>
+  <span class="tt">&lt;/optgroup&gt;</span>
+
+  <span class="tt">&lt;optgroup</span> <span class="ta">label</span>=<span class="tv">"Interactive"</span><span class="tt">&gt;</span>
+    <span class="tc">&lt;!-- … --&gt;</span>
+  <span class="tt">&lt;/optgroup&gt;</span>
+
+<span class="tt">&lt;/select&gt;</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EX 06 · SEARCH TAGS ══════════════════════════════════════════════ -->
+    <section class="sec" id="ex-search">
+      <div class="eyebrow">Example 06</div>
+      <h2>Searchable Tag Select</h2>
+      <p>When the option count exceeds <code>disable_search_threshold</code> (default: 7), search activates automatically. Selected tags are hidden from the dropdown list, and the search input auto-sizes to fit its content.</p>
+
+      <div class="card">
+        <div class="split">
+          <div class="preview">
+            <div class="preview-lbl">Live Demo — type to filter, Backspace removes</div>
+            <div class="field" style="padding-bottom:270px;">
+              <div class="field-label">Article Tags</div>
+              <select id="demo_tags" name="tags[]" multiple
+                      data-placeholder="Add tags…"
+                      style="width:280px;">
+                <optgroup label="Format">
+                  <option value="news" selected>News</option>
+                  <option value="blog">Blog</option>
+                  <option value="tutorial">Tutorial</option>
+                  <option value="review">Review</option>
+                </optgroup>
+                <optgroup label="Topic">
+                  <option value="design">Design</option>
+                  <option value="dev" selected>Development</option>
+                  <option value="ux">UX</option>
+                  <option value="marketing">Marketing</option>
+                  <option value="seo">SEO</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="code-tabs"><div class="code-tab on">HTML + JS</div></div>
+<pre><span class="tt">&lt;select</span>
+  <span class="ta">name</span>=<span class="tv">"tags[]"</span>
+  <span class="ta">multiple</span>
+  <span class="ta">data-placeholder</span>=<span class="tv">"Add tags…"</span>
+  <span class="ta">class</span>=<span class="tv">"wbeSelect"</span><span class="tt">&gt;</span>
+
+  <span class="tt">&lt;optgroup</span> <span class="ta">label</span>=<span class="tv">"Format"</span><span class="tt">&gt;</span>
+    <span class="tt">&lt;option</span> <span class="ta">value</span>=<span class="tv">"news"</span><span class="tt">&gt;</span>
+      News
+    <span class="tt">&lt;/option&gt;</span>
+    <span class="tc">&lt;!-- … --&gt;</span>
+  <span class="tt">&lt;/optgroup&gt;</span>
+
+  <span class="tt">&lt;optgroup</span> <span class="ta">label</span>=<span class="tv">"Topic"</span><span class="tt">&gt;</span>
+    <span class="tc">&lt;!-- … --&gt;</span>
+  <span class="tt">&lt;/optgroup&gt;</span>
+
+<span class="tt">&lt;/select&gt;</span>
+
+<span class="tc">// search auto-enables when
+// options > threshold (default 7)</span>
+<span class="tc">// Override threshold:</span>
+<span class="tf">$</span>(<span class="ts">'…'</span>).<span class="tf">wbeSelect</span>({
+  <span class="ta">disable_search_threshold</span>: <span class="tn">0</span>
+});</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EX 07 · LIGHT THEME ══════════════════════════════════════════════ -->
+    <section class="sec" id="ex-light">
+      <div class="eyebrow">Example 07</div>
+      <h2>Light Theme</h2>
+      <p>Add <code>data-theme="light"</code> to any ancestor to activate the light palette via CSS custom properties. All plugin elements cascade automatically — no per-instance changes needed. Use the header toggle to switch the whole page.</p>
+
+      <div class="card" style="overflow:visible; border:none; background:transparent;">
+        <div data-theme="light" style="border:1px solid #ccd3e6; border-radius:var(--d-radius); background:#f1f4fb; overflow:visible;">
+          <div class="preview" style="background:#f9fafb; border-right:none; border-radius:var(--d-radius); padding-bottom:240px;">
+            <div class="preview-lbl" style="color:#6b7280;">Live Demo — Light Mode</div>
+            <div style="display:flex; gap:32px; flex-wrap:wrap;">
+              <div class="field drop-room" style="padding-bottom:200px;">
+                <div class="field-label" style="color:#6b7280;">Page Visibility</div>
+                <select id="demo_vis_light" style="width:250px;">
+                  <option value="public"     data-left="icons/public.svg"     data-subtitle="Visible to all visitors"         selected>Public</option>
+                  <option value="hidden"     data-left="icons/hidden.svg"     data-subtitle="Hidden from menus"               >Hidden</option>
+                  <option value="private"    data-left="icons/private.svg"    data-subtitle="Private page of a user"         >Private</option>
+                  <option value="registered" data-left="icons/registered.svg" data-subtitle="Registered users only"          >Registered</option>
+                  <option value="none"       data-left="icons/none.svg"       data-subtitle="Not accessible"                 >None</option>
+                </select>
+              </div>
+              <div class="field drop-sm" style="padding-bottom:180px;">
+                <div class="field-label" style="color:#6b7280;">Groups</div>
+                <select id="demo_groups_light" multiple data-placeholder="Select groups…" style="width:220px;">
+                  <option value="1" data-right="1" selected>Administrators</option>
+                  <option value="2" data-right="2">Editors</option>
+                  <option value="3" data-right="3">Readers</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="install" style="margin-top:18px;">
+        <pre><span class="tc">&lt;!-- Wrap in data-theme="light" for light palette --&gt;</span>
+<span class="tt">&lt;div</span> <span class="ta">data-theme</span>=<span class="tv">"light"</span><span class="tt">&gt;</span>
+  <span class="tt">&lt;select</span> <span class="ta">class</span>=<span class="tv">"wbeSelect"</span><span class="tt">&gt;</span>…<span class="tt">&lt;/select&gt;</span>
+<span class="tt">&lt;/div&gt;</span>
+
+<span class="tc">&lt;!-- Or apply to the &lt;html&gt; element for the whole page --&gt;</span>
+<span class="tt">&lt;html</span> <span class="ta">data-theme</span>=<span class="tv">"light"</span><span class="tt">&gt;</span></pre>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ══ OPTIONS REFERENCE ════════════════════════════════════════════════ -->
+    <section class="sec" id="ref-opts">
+      <div class="eyebrow">Reference</div>
+      <h2>Options</h2>
+      <p>Pass to <code>.wbeSelect({…})</code> or via <code>data-wbe-select-*</code> attributes on the element.</p>
+      <div class="card table-card">
+        <table class="ref">
+          <thead>
+            <tr>
+              <th style="width:200px">Option</th>
+              <th style="width:90px">Type</th>
+              <th style="width:100px">Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>customSelector</code></td><td><span class="tbadge">string</span></td><td><span class="dbadge">''</span></td><td>Extra CSS class on the container for scoped styling: <code>'cfg-visibility'</code>, <code>'flag-right'</code>, <code>'icon_left'</code>, <code>'title_only'</code>.</td></tr>
+            <tr><td><code>useSearch</code></td><td><span class="tbadge">boolean</span></td><td><span class="dbadge">true</span></td><td>Show a search input. Auto-disabled when option count ≤ <code>disable_search_threshold</code>.</td></tr>
+            <tr><td><code>disable_search_threshold</code></td><td><span class="tbadge">number</span></td><td><span class="dbadge">7</span></td><td>Hide search when total option count is at or below this value. Set to <code>0</code> to always show search.</td></tr>
+            <tr><td><code>treeView</code></td><td><span class="tbadge">boolean</span></td><td><span class="dbadge">false</span></td><td>Enhances options with <code>data-prefix</code>/<code>data-level</code> into a visual hierarchy.</td></tr>
+            <tr><td><code>searchFields</code></td><td><span class="tbadge">array|string</span></td><td><span class="dbadge">['value','text']</span></td><td>Which data fields to search. Pass array or space-separated string: <code>'text right'</code>.</td></tr>
+            <tr><td><code>placeholder</code></td><td><span class="tbadge">string</span></td><td><span class="dbadge">''</span></td><td>Empty-state text. Also reads from <code>data-placeholder</code> on the element.</td></tr>
+            <tr><td><code>showAllOptionsOnFocus</code></td><td><span class="tbadge">boolean</span></td><td><span class="dbadge">false</span></td><td>Open dropdown on focus before typing (useful in multiple mode).</td></tr>
+            <tr><td><code>selectFirstOptionOnSearch</code></td><td><span class="tbadge">boolean</span></td><td><span class="dbadge">true</span></td><td>Auto-highlight first match when typing in multiple mode.</td></tr>
+            <tr><td><code>height</code></td><td><span class="tbadge">string</span></td><td><span class="dbadge">'auto'</span></td><td>Set to <code>'element'</code> to lock container to the original element's height.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ DATA ATTRS REFERENCE ═════════════════════════════════════════════ -->
+    <section class="sec" id="ref-data">
+      <div class="eyebrow">Reference</div>
+      <h2>Option Data Attributes</h2>
+      <p>Enrich individual <code>&lt;option&gt;</code> elements (or the <code>&lt;select&gt;</code> itself) with these attributes:</p>
+      <div class="card table-card">
+        <table class="ref">
+          <thead><tr><th style="width:240px">Attribute</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>data-left="path.svg"</code></td><td>Renders an image on the left of both the option row and the selected tag.</td></tr>
+            <tr><td><code>data-right="label"</code></td><td>Renders a coloured badge. Position depends on <code>customSelector</code> — right side when using <code>flag-right</code>.</td></tr>
+            <tr><td><code>data-subtitle="…"</code></td><td>Secondary text line shown in the dropdown below the title. Hidden in the selected state.</td></tr>
+            <tr><td><code>data-class="type-public mid-1"</code></td><td>Extra classes copied to both the dropdown <code>&lt;li&gt;</code> and selected tag — used for badge colours and left-border accents.</td></tr>
+            <tr><td><code>data-prefix="│  ├─ "</code></td><td>Tree prefix string. When <code>treeView: true</code>, wrapped in a monospace <code>&lt;span class="tree-prefix"&gt;</code>.</td></tr>
+            <tr><td><code>data-level="1"</code></td><td>Numeric depth. Selected tag shows dot-notation (●●) for level &gt; 0.</td></tr>
+            <tr><td><code>data-search-label="…"</code></td><td>On the <code>&lt;select&gt;</code>: custom placeholder text inside the search input.</td></tr>
+            <tr><td><code>data-placeholder="…"</code></td><td>On the <code>&lt;select&gt;</code>: empty-state placeholder text.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ PUBLIC API ════════════════════════════════════════════════════════ -->
+    <section class="sec" id="ref-api">
+      <div class="eyebrow">Reference</div>
+      <h2>Public API</h2>
+      <p>Access the plugin instance via <code>$el.data('wbeSelect')</code> and call these methods:</p>
+
+      <div class="api-item">
+        <div class="api-head"><code>.refresh()</code></div>
+        <div class="api-body">Re-renders selected item tags after programmatic changes to <code>&lt;option selected&gt;</code> attributes without a full re-init.</div>
+      </div>
+      <div class="api-item">
+        <div class="api-head"><code>.hideDropdown()</code></div>
+        <div class="api-body">Closes the dropdown programmatically — useful on form submit or when navigating away.</div>
+      </div>
+      <div class="api-item">
+        <div class="api-head"><code>.removeSelection( $tagEl? )</code></div>
+        <div class="api-body">Deselects a specific tag (pass the <code>.ws-tag</code> jQuery element), or removes the first selected item when called with no argument.</div>
+      </div>
+      <div class="api-item">
+        <div class="api-head"><code>.destroy()</code></div>
+        <div class="api-body">Removes the widget and restores the original hidden <code>&lt;select&gt;</code> to its visible state.</div>
+      </div>
+
+      <div class="install" style="margin-top:16px;">
+        <pre><span class="tc">// Programmatic value change + refresh</span>
+<span class="tk">var</span> $sel = <span class="tf">$</span>(<span class="ts">'#ap_visibility'</span>);
+$sel.<span class="tf">val</span>(<span class="ts">'private'</span>);
+$sel.<span class="tf">data</span>(<span class="ts">'wbeSelect'</span>).<span class="tf">refresh</span>();
+
+<span class="tc">// Destroy and re-init with new options</span>
+$sel.<span class="tf">data</span>(<span class="ts">'wbeSelect'</span>).<span class="tf">destroy</span>();
+$sel.<span class="tf">wbeSelect</span>({
+  <span class="ta">customSelector</span>: <span class="ts">'cfg-visibility'</span>
+});</pre>
+      </div>
+    </section>
+
+    <!-- ══ CSS CLASSES REFERENCE ════════════════════════════════════════════ -->
+    <section class="sec" id="ref-css">
+      <div class="eyebrow">Reference</div>
+      <h2>CSS Classes &amp; Custom Selectors</h2>
+      <p>Built-in <code>customSelector</code> values that ship with <code>wbeSelect.css</code>:</p>
+      <div class="card table-card" style="margin-bottom:16px;">
+        <table class="ref">
+          <thead><tr><th style="width:200px">Selector</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>cfg-visibility</code></td><td>Sizes left icons to 28px with adjusted top margin — designed for page-visibility icon sets.</td></tr>
+            <tr><td><code>flag-right</code></td><td>Floats the right badge to the actual right side of each row — designed for page-tree page-ID numerics.</td></tr>
+            <tr><td><code>icon_left</code></td><td>Compact icon layout: 22px left image with adjusted title margin.</td></tr>
+            <tr><td><code>title_only</code></td><td>Removes left-icon margin — for text-only dropdowns with no images.</td></tr>
+            <tr><td><code>pageTreeCombobox</code></td><td>Full-width tree combobox with a static inline search input (no absolute positioning).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-bottom:12px;">State classes applied automatically by the plugin:</p>
+      <div class="card table-card">
+        <table class="ref">
+          <thead><tr><th style="width:160px">Class</th><th style="width:140px">Applied to</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>ws--open</code></td><td>Container</td><td>Dropdown is currently visible</td></tr>
+            <tr><td><code>ws--hidden</code></td><td>Container</td><td>Dropdown is closed</td></tr>
+            <tr><td><code>ws--focused</code></td><td>Container</td><td>Search input has focus (focus ring)</td></tr>
+            <tr><td><code>ws--multiple</code></td><td>Container</td><td>Multiple-select mode</td></tr>
+            <tr><td><code>ws--single</code></td><td>Container</td><td>Single-select mode</td></tr>
+            <tr><td><code>ws--no-search</code></td><td>Container</td><td>Search input is hidden</td></tr>
+            <tr><td><code>ws--active</code></td><td>Option <code>&lt;li&gt;</code></td><td>Currently highlighted via hover or keyboard</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══ SCRIPTS ══════════════════════════════════════════════════════════════ -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="wbeSelect.jquery.js"></script>
+<script>
+jQuery(document).ready(function ($) {
+
+  // Ex 00 — Before/After
+  $('#before_vis').wbeSelect({ customSelector: 'cfg-visibility' });
+  $('#before_groups').wbeSelect();
+
+  // Ex 01 — Visibility: single with left icons + subtitles
+  $('#demo_vis').wbeSelect({ customSelector: 'cfg-visibility' });
+
+  // Ex 02 — Multiselect with right badges
+  $('#demo_groups').wbeSelect();
+
+  // Ex 03 — Tree view: flag-right, search always on, treeView
+  $('#demo_tree').wbeSelect({
+    customSelector:            'flag-right',
+    useSearch:                 true,
+    disable_search_threshold:  0,
+    treeView:                  true,
+    searchFields:              'text right'
+  });
+
+  // Ex 04 — Optgroups (search auto-enables at >7 options)
+  $('#demo_module').wbeSelect();
+
+  // Ex 05 — Searchable multiselect tag select (9 options → search auto-on)
+  $('#demo_tags').wbeSelect();
+
+  // Ex 07 — Language selector: flag right, code badge left
+  $('#demo_lang').wbeSelect({ customSelector: 'cfg-lang' });
+
+  // Ex 06 — Light theme demos
+  $('#demo_vis_light').wbeSelect({ customSelector: 'cfg-visibility' });
+  $('#demo_groups_light').wbeSelect();
+
+});
+
+// Theme toggle
+function toggleTheme() {
+  var html  = document.documentElement;
+  var light = html.getAttribute('data-theme') === 'light';
+  html.setAttribute('data-theme', light ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = light ? '☀ Light mode' : '☾ Dark mode';
+}
+
+// Active nav link highlighting on scroll
+(function () {
+  var links    = document.querySelectorAll('.sidebar a');
+  var sections = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) sections.push({ el: el, a: a });
+  });
+  function update() {
+    var y = window.scrollY + 90;
+    var cur = sections[0];
+    sections.forEach(function (s) { if (s.el.offsetTop <= y) cur = s; });
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (cur) cur.a.classList.add('active');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>
