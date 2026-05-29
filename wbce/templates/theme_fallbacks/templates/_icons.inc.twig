@@ -1,0 +1,21 @@
+{# 
+    These Icons are used in conjunction with FontAwesome throughout the Theme.
+    On the left side of the array we have the Backend Areas of the CMS and on the right side the representing FA Icon.
+#}
+{% macro icon(name) %}{% set ico = {
+    'start':       'home',
+    'pages':       'sitemap',
+    'addons':      'plug',
+    'modules':     'puzzle-piece',
+    'media':       'image',
+    'languages':   'language',
+    'templates':   'paint-brush',
+    'language':    'paint-brush',
+    'preferences': 'id-card',
+    'settings':    'cogs',
+    'admintools':  'wrench',
+    'access' :     'users', 
+    'users':       'user',
+    'groups':      'users',
+    } %}{{ ico[name] }}{% endmacro %}
+

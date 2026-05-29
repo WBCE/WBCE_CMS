@@ -759,13 +759,13 @@ _JsCode;
         $iRedirectTime = ($iRedirectTime > 10000) ? 10000 : $iRedirectTime;
 
         $aToTwig = array(
-            'MESSAGE_TYPE' => $sType,
-            'MESSAGES' => $uMsg,
-            'REDIRECT_URL' => $sRedirectUri,
+            'MESSAGE_TYPE'  => $sType,
+            'MESSAGES'      => $uMsg,
+            'REDIRECT_URL'  => $sRedirectUri,
             'REDIRECT_TIME' => $iRedirectTime,
-            'USE_REDIRECT' => $bUseRedirect
+            'USE_REDIRECT'  => $bUseRedirect
         );
-        $this->getThemeFile('message_box.twig', $aToTwig);
+        $this->getThemeFile('_alerts.inc.twig', $aToTwig);
         if ($bAutoFooter == true) {
             if (method_exists($this, "print_footer")) {
                 $this->print_footer();
@@ -786,7 +786,7 @@ _JsCode;
                 $aTemplateLocs[] = $dir;
             }
         }
-        $oTwig = getTwig($aTemplateLocs);
+        $oTwig     = getTwig($aTemplateLocs);
         $oTemplate = $oTwig->load($sTplName);
         $oTemplate->display($aToTwig);
     }
@@ -800,7 +800,8 @@ _JsCode;
      */
     public function print_error($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = true)
     {
-        $this->messageBox($uMsg, 'error', $sRedirectUri, $bAutoFooter);
+        // Errors are sticky — never auto-redirect, only show a back-button if a URL is given.
+        $this->messageBox($uMsg, 'error', $sRedirectUri, $bAutoFooter, false);
     }
 
     /**
@@ -851,13 +852,17 @@ _JsCode;
     }
 
     /**
-     * @brief   Checks if there is an override Backend Theme template file
+     * Determines the absolute path of a theme file using a fallback mechanism.
+     * Checks if the requested file exists in the DEFAULT_THEME directory and if 
+     * not,it falls back to the system default theme folder: /templates/theme_fallbacks/
+     * 
+     * If the file is missing in both locations, the execution is terminated.
      *
-     * @param string $sThemeFile set the template file name including the file extension
-     * @return  string the relative theme path
-     *
+     * @param string $sThemeFile The filename including extension (e.g., 'layout.twig' or '../css/style.css').
+     * @throws \RuntimeException (Implicitly via die) if the file is not found in any location.
+     * @return string The absolute server path to the resolved file.
      */
-    public function correct_theme_source($sThemeFile = 'start.htt')
+    public function correct_theme_source(string $sThemeFile = 'start.htt') : string
     {
         $sSysThemeFile = WB_PATH . '/templates/theme_fallbacks/templates/' . $sThemeFile;
         $sOverrideFile = THEME_PATH . '/templates/' . $sThemeFile;

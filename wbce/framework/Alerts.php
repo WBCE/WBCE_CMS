@@ -424,8 +424,8 @@ HTML;
             'UNICODE_ICON' => self::ICON_MAP[$type] ?? '',
         ];
         ob_start();
-        $GLOBALS['admin']->getThemeFile('_message_box.inc.twig', $toTwig);
-        return str_replace('alertbox_' . $type, 'alertbox_' . $type . ' dismissable', ob_get_clean());
+        $GLOBALS['admin']->getThemeFile('_alerts.inc.twig', $toTwig);
+        return ob_get_clean();
     }
 
     protected function renderHtml(array $messages, string $type): string
