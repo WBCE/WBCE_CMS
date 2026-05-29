@@ -15,8 +15,9 @@ defined('WB_PATH') or die('No direct access');
 
 class Admin extends Wb
 {
-    public string $section_name       = '';
-    public string $section_permission = '';
+    public  string $section_name       = '';
+    public  string $section_permission = '';
+    private string $_viewUrl           = '';
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
@@ -303,7 +304,8 @@ class Admin extends Wb
 
         $this->sendDirectOutput();
         echo $output;
-    }
+    }    
+    
 
     // ── Output filter pipeline ────────────────────────────────────────────────
 
@@ -414,11 +416,16 @@ class Admin extends Wb
      *
      * When a page_id GET parameter is present, resolves to that page's URL.
      * Falls back to the site root when no page_id is given or the lookup fails.
+     * If _viewUrl is set, return early with the URL it contains.
      *
      * @return string  Absolute frontend URL
      */
-    private function getViewUrl(): string
+    public function getViewUrl(): string
     {
+        if (!empty($this->_viewUrl)) {
+            return $this->_viewUrl; // set via Admin::setViewUrl()
+        }
+        
         if (!isset($_GET['page_id'])) return WB_URL;
 
         $link = $this->db->fetchValue(
@@ -432,6 +439,19 @@ class Admin extends Wb
     }
 
     /**
+     * Set a custom URL for the "view in frontend" link.
+     * This method can be used from modules that themselves generate pages, 
+     * e.g. a detail pae of a News module or a Shop.
+     * 
+     * @param  string $url
+     * @return void
+     */
+    public function setViewUrl(string $url): void
+    {
+        $this->_viewUrl = $url;
+    }
+
+    /**
      * Generate the placeholder comment for backend module CSS or JS files.
      *
      * The placeholder is replaced by the actual file tags during output filter
@@ -442,6 +462,18 @@ class Admin extends Wb
      */
     public function register_backend_modfiles(string $sModfileType = 'css'): string
     {
+        // CP chrome CSS must load AFTER the theme's own CSS (theme.css sits inside the
+        // HEAD TOP+ block as a hardcoded <link>).  Using HEAD BTM+ guarantees our rules
+        // win without needing !important.  Only injected on the CSS pass — the JS pass
+        // calls this method too and must not insert CSS a second time.
+        if ($sModfileType === 'css') {
+            $cssFiles = [
+                get_url_from_path($this->correct_theme_source('../css/cp_chrome.css')),
+                get_url_from_path($this->correct_theme_source('../css/cp_alerts.css')),
+                get_url_from_path($this->correct_theme_source('../css/cp_theme.css')),
+            ];
+            I::insertCssFile($cssFiles, 'HEAD BTM+');
+        }
         return '<!--(PH) ' . strtoupper($sModfileType) . ' HEAD MODFILES -->' . PHP_EOL
              . $this->registerModfiles($sModfileType, 'backend');
     }

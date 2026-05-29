@@ -339,18 +339,21 @@ class WbAuto
      */
     public static function bootInitialize(): void
     {
-        // 1. Priority explicit files — must be available before AddDir() sweep
+        
+        // 1. Backward compatibility
+        class_alias('Alerts', 'MessageBox'); // Alerts replaces and expands MessageBox
+        class_alias('Mailer', 'wbmailer');   // fallback for some legacy modules
+        
+        // 2. Priority explicit files — must be available before AddDir() sweep
         //    so that classname != filename cases resolve correctly.
         $explicitFiles = [
             'Database'     => '/framework/Database.php',
             'Admin'        => '/framework/Admin.php',
+            'Alerts'       => '/framework/Alerts.php',
             'AddonService' => '/framework/AddonService.php',
-            'MessageBox'   => '/framework/MessageBox.php',
             'SecureForm'   => '/framework/SecureForm.php',
             'Accounts'     => '/framework/Accounts.php',
             'Mailer'       => '/framework/Mailer.php',
-            'wbmailer'     => '/framework/Mailer.php', // fallback for some legacy modules
-            'SecureForm'   => '/framework/SecureForm.php',
             'I'            => '/framework/I.php',
             'Insert'       => '/framework/Insert.php',
             'Template'     => '/include/phplib/template.inc', // legacy Template Engine used in WBCE BE Themes

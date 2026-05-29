@@ -143,7 +143,6 @@ if (!function_exists('getTwig')) {
         return $oTwig;
     }
 
-
     /**
      * @short  This  function  retrieves  all  relevant  Vars of a sections
      *         and  returns  them  as  an  array (incl.: PAGE_ID, PAGE_URL)

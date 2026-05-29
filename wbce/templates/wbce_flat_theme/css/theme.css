@@ -8,7 +8,8 @@
 
 html {
     box-sizing: border-box;
-    line-height: 24px;
+    line-height: 24px;    
+    scroll-padding-top: 125px;   /* all jumps on the page */
 }
 
 body {
@@ -74,6 +75,12 @@ div.calendar {
 
 .container #mainarea.closedsidebar {
     padding-left: 72px;
+}
+/* Anti-FOUC: initiale Sidebar-Position vor jQuery-Ready */
+#sidebararea,
+#mainarea,
+#pagetopmenu {
+    transition: left 0.25s ease, padding-left 0.25s ease;
 }
 
 /* headerarea */
@@ -547,7 +554,7 @@ h2.page_titel {
     overflow: hidden;
     white-space: nowrap;
     color: #f3f3f3;
-    background-color: #28609B;
+    background-color: #456c96;
 }
 
 h2.page_titel a {
@@ -815,7 +822,9 @@ label {
     vertical-align: middle;
     margin-right: 10px;
 }
-
+.cp-setting-name label{
+    margin-right: 0;
+}
 /* overall form elements */
 input[type="text"],
 input[type="password"],
@@ -1410,11 +1419,12 @@ form.advanced-options {
    RESPONSIVE / MOBILE
    ============================================================ */
 
-/* Smooth transitions for sidebar open/close */
+
+/* prevent transition on each page reload */
 #sidebararea,
 #mainarea,
 #pagetopmenu {
-    transition: left 0.25s ease, padding-left 0.25s ease;
+    transition: none !important;
 }
 
 /* Mobile backdrop overlay (hidden by default) */
@@ -1604,3 +1614,93 @@ form.advanced-options {
         padding-bottom: 16px;
     }
 }
+
+/*
+ link-cards-grid
+ Introduced in 1.7.0
+*/
+
+/* Theme variables */
+:root {
+    --bg: #f4f4f4;
+    --text: #505b6d;
+    --card-bg: #505B6D;
+    --card-bg-hover: #3c4150;
+    --card-text: #ffffff;
+    --muted: #e5e9ef;
+    --accent: #5c8dc0;
+    --accent-h: #5683b2;
+    --font-mono: 'JetBrains', 'DejaVue', "Liberation Mono", monospace;
+}
+
+/* Grid */
+.link-cards-grid {
+    gap: 10px;
+}
+
+/* Card */
+.link-card {
+    background: var(--card-bg);
+    color: var(--card-text);
+    border-radius: 3px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: .5s;
+}
+
+.link-card:hover {
+    transform: translateY(.025em);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    background-color: var(--card-bg-hover);
+}
+.link-card:active {
+    transform: translateY(.1rem);
+}
+
+/* Icon column */
+.link-card__icon {
+    width: 54px;
+    min-width: 54px;
+    font-size: 2.5rem;
+    margin: 0 7px 0 0;
+    color: var(--card-text);
+    opacity: .9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.link-card__content {
+    padding: 0 18px;
+    border-left: 1px solid #babfc86b;
+}
+
+/* Title */
+.link-card__title {
+    color: var(--card-text);
+    margin: 3px 0 0 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Meta (dir) */
+.link-card__meta {
+    font-size: .65rem;
+    margin: 0 0 6px;
+    font-style: italic;
+    color: #98caff;
+    font-family: var(--font-mono);
+}
+
+/* Description */
+.link-card__desc {
+    margin: 0;
+    font-size: .75rem;
+    color: var(--muted);
+}
+
+
+/* =================================================================
+   Alertbox — inline messages (MessageBox)
+   overrides only
+   ================================================================= */

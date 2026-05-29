@@ -1,0 +1,504 @@
+/* ================================================================
+   cp_theme.css  —  easyTheme  (default theme)
+   All color, typography, shadow and visual tokens live here.
+   The chrome (cp_chrome.css) references only var() — never colors.
+   ================================================================ */
+
+
+/* ── Design tokens ─────────────────────────────────────────────── */
+
+:root {
+    /* Brand */
+    --blue-5:   #3a5f8a;   /* darkest  */
+    --blue-4:   #4a72a0;
+    --blue-3:   #5B7CA3;   /* primary  */
+    --blue-2:   #7a9cbf;
+    --blue-1:   #b3c8de;   /* lightest */
+
+    /* Accent (interactive) */
+    --accent:   #447fbc;
+    --accent-h: #3168a0;              /* hover     */
+    --accent-s: rgba(68,127,188,.18); /* focus ring */
+
+    /* Surfaces — light-mode stack */
+    --surface:  #ffffff;
+    --surface2: #fefefe;
+    --surface3: #eceff4;
+
+    /* Text */
+    --text:       #1e2530;
+    --text-dim:   #6b7585;
+    --text-muted: #929faf;
+
+    /* Borders */
+    --border:   #dde1e8;
+
+    /* Radius */
+    --r: 4px;
+
+    /* Typography */
+    --font-ui:   system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: 'Proggy', 'JetBrains', 'DejaVue', "Liberation Mono", monospace;
+
+    /* Status */
+    --success:    #3a7d44;
+    --success-bg: #d6f0db;
+    --warning:    #c07a10;
+    --warning-bg: #fef3cd;
+    --danger:     #b02a37;
+    --danger-bg:  #f8d7da;
+    --info:       #0c5fa5;
+    --info-bg:    #cfe2ff;
+}
+
+
+/* ── Base ──────────────────────────────────────────────────────── */
+
+section.cp-main {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 14px rgba(0,0,0,.04);
+    color: var(--text);
+    font-family: var(--font-ui);
+}
+
+
+/* ── Page info bar ─────────────────────────────────────────────── */
+
+.cp-pageinfo {
+    background: var(--surface2);
+    color: var(--text-dim);
+}
+
+
+/* ── Tab bar ───────────────────────────────────────────────────── */
+
+nav.cp-tabs {
+    background: linear-gradient(180deg, #677D96 0%, #556C87 100%);
+}
+nav.cp-tabs a {
+    color: rgba(255,255,255,.82);
+}
+nav.cp-tabs a:hover {
+    color: #fff;
+    background: rgba(255,255,255,.2);
+}
+nav.cp-tabs li.area-title span {
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+nav.cp-tabs a.sel,
+nav.cp-tabs a.tab-active {
+    color: var(--text);
+    background: var(--surface2);
+    border-color: var(--border);
+    font-weight: 600;
+}
+
+
+/* ── Content inlay ─────────────────────────────────────────────── */
+
+.cp-pane-inlay {
+    background: var(--surface2);
+}
+
+
+/* ── Link cards ────────────────────────────────────────────────── */
+
+.link-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    color: var(--text);
+}
+.link-card:hover {
+/*    box-shadow: 0 3px 10px rgba(0,0,0,.10);
+    border-color: var(--blue-2);*/
+}
+.link-card__icon {
+    color: var(--blue-3);
+}
+.link-card__title {
+    color: var(--text);
+}
+.link-card__desc {
+    color: var(--text-dim);
+}
+
+
+/* ── Settings card ─────────────────────────────────────────────── */
+
+.cp-toggle-section,
+.cp-card {
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+.formHeading,
+.cp-card-head {
+    background: var(--surface3);
+    color: var(--text-dim);
+    font-size: .72rem;
+}
+.formHeading label,
+.cp-card-head label {
+    color: var(--text-dim);
+}
+.pull-right,
+.cp-card-close {
+    color: var(--text-muted);
+}
+.pull-right:hover,
+.cp-card-close:hover {
+    color: var(--danger);
+    text-decoration: none;
+}
+
+
+/* ── Setting row ───────────────────────────────────────────────── */
+
+.cp-setting-row {
+    background: var(--surface);
+}
+.cp-setting-row:nth-child(even) {
+    background: var(--surface2);
+}
+.cp-setting-name {
+    color: var(--text);
+}
+
+label.cp-required::after,
+.cp-setting-name.cp-required::after {
+    color: var(--danger);
+}
+
+.cp-setting-hint {
+    color: var(--text-muted);
+}
+
+.validation-feedback {
+    color: var(--danger);
+}
+.validation-feedback.ok {
+    color: var(--success);
+}
+
+
+/* ── Aside column ──────────────────────────────────────────────── */
+
+.cp-card-aside {
+    background: var(--surface2);
+}
+.aside-label {
+    color: var(--text-dim);
+}
+
+
+/* ── Buttons row ───────────────────────────────────────────────── */
+
+.cp-buttons-row,
+.cp-card-foot {
+    background: #f9f9f9;
+}
+
+
+/* ── Form controls ─────────────────────────────────────────────── */
+
+.cp-toggle-section input[type="text"],
+.cp-toggle-section input[type="email"],
+.cp-toggle-section input[type="number"],
+.cp-toggle-section input[type="password"],
+.cp-toggle-section input[type="search"],
+.cp-toggle-section select,
+.cp-toggle-section textarea,
+.cp-card input[type="text"],
+.cp-card input[type="email"],
+.cp-card input[type="number"],
+.cp-card input[type="password"],
+.cp-card input[type="search"],
+.cp-card select,
+.cp-card textarea {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+.cp-toggle-section input::placeholder,
+.cp-card input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Native checkbox / radio accent */
+.cp-toggle-section input[type="checkbox"],
+.cp-toggle-section input[type="radio"],
+.cp-card input[type="checkbox"],
+.cp-card input[type="radio"] {
+    accent-color: var(--accent);
+}
+
+
+/* ── Toggle switch ─────────────────────────────────────────────── */
+
+.slider {
+    background: var(--border);
+}
+.switch input:checked + .slider {
+    background: var(--accent);
+}
+.slider-red input:checked + .slider {
+    background: var(--danger);
+}
+
+
+/* ── Filter input ──────────────────────────────────────────────── */
+
+.cp-table-filter {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+.cp-table-filter::placeholder {
+    color: var(--text-muted);
+}
+
+/* ── Toolbar ───────────────────────────────────────────────────── */
+
+.cp-toolbar {
+    border-color: var(--border);
+}
+
+/* ── Search clear button ───────────────────────────────────────── */
+
+.cp-search-clear {
+    color: var(--text-muted);
+}
+.cp-search-clear:hover {
+    color: var(--danger);
+}
+
+/* ── Table ─────────────────────────────────────────────────────── */
+
+table.cp-table {
+    background: var(--surface);
+    border-color: var(--border);
+}
+table.cp-table th,
+table.cp-table td {
+    border-color: var(--border);
+}
+.cp-table thead th,
+.cp-table tfoot th{
+    background: var(--surface3);
+    color: var(--text-dim);
+}
+
+table.cp-table.table-hover tbody tr:not(.on-delete):not(.on-deactivate):hover td {
+    background: rgba(91,124,163,.06);
+}
+table.cp-table tfoot {
+    background: var(--surface2);
+    border-color: var(--border);
+}
+.cp-table td:last-child i.fa {
+font-size: .9rem;
+    padding-left: .2rem;
+    color: #68849d;
+}
+.cp-table td:last-child a {
+    text-decoration: none;
+}
+.cp-table td:last-child i.fa-trash {
+    color: #c82d2d;
+}
+/* Inline confirm rows */
+tr.on-delete     { background: var(--danger-bg)  !important; }
+tr.on-deactivate { background: var(--warning-bg) !important; }
+
+tr.on-delete td b {
+    text-decoration: line-through;
+}
+tr.on-deactivate td b {
+    text-decoration: line-through;
+    
+}
+
+/* ── Usergroup tag / cp-label ──────────────────────────────────── */
+
+span.usergroup,
+span.cp-label {
+    background: var(--surface2);
+    border-color: var(--border);
+    color: var(--text-dim);
+    border-radius: var(--r);    
+    white-space:nowrap;
+}
+
+
+/* ── Edit-link name column ─────────────────────────────────────── */
+
+.edit-link-name a {
+    color: var(--accent);
+}
+.edit-link-name a:hover {
+    color: var(--accent-h);
+}
+
+
+/* ── Buttons ───────────────────────────────────────────────────── */
+
+/* Primary */
+.button.ico-save,
+.button.ico-add,
+.btn.btn-primary {
+    background: var(--accent);
+    color: #fff;
+}
+.button.ico-save{
+   background:  #4db34e
+}
+.button.ico-save:hover,
+.button.ico-add:hover,
+.btn.btn-primary:hover {
+    background: var(--accent-h);
+    color: #fff;
+}
+.button.ico-save:hover{
+  background:   #409640
+}
+
+/* Ghost / secondary */
+.button.ico-cancel,
+.button.toggler,
+.btn.btn-ghost {
+    background: var(--surface3);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 7px 15px;
+}
+.button.toggler{
+    text-transform: uppercase;
+}
+.button.ico-cancel:hover,
+.button.toggler:hover,
+.btn.btn-ghost:hover {
+    background: var(--surface2);
+    color: var(--text);
+}
+a.button:hover{
+    text-decoration: none;
+}
+
+/* Settings trigger button */
+.button.ico-settings {
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+}
+.button.ico-settings:hover {
+    background: var(--surface3);
+    color: var(--text);
+}
+
+/* Inline confirm buttons */
+.btn-inline.green {
+    background: var(--success);
+    color: #fff!important;
+}
+.btn-inline.green:hover {
+    filter: brightness(.9);
+}
+.btn-inline.red {
+    background: var(--danger);
+    color: #fff!important;
+}
+.btn-inline.red:hover {
+    filter: brightness(.95);
+}
+.btn-inline.orange {
+    background: var(--warning);
+    color: #fff;
+}
+.btn-inline.orange:hover {
+    filter: brightness(.95);
+}
+
+
+/* ── Code / mono ───────────────────────────────────────────────── */
+
+code, tt, var, kbd {
+    background: var(--surface3);
+    color: #a63f23;
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+}
+
+
+/* ── Permissions matrix ────────────────────────────────────────── */
+
+.permission-area-section {
+    border-color: var(--border);
+    background: rgba(91,124,163,.035);
+}
+.permission-area-section.active {
+    background: rgba(91,124,163,.0);
+}
+
+.area-name label {
+    color: var(--text);
+}
+.area-name p {
+    color: var(--text-muted);
+}
+
+ul.check_selection li:first-child {
+    color: var(--text-dim);
+}
+ul.check_selection li label,
+ul.permissions li label {
+    color: var(--text);
+}
+.check_selection li span {
+    text-transform: none;
+    font-weight: 500;
+}
+ul.check_selection li label span { 
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-mono);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 90%;
+    color: cornflowerblue;
+}
+
+/* ── Group badges ──────────────────────────────────────────────── */
+
+.signup-group {
+    background: rgba(91,155,213,.12);
+    color: #3a6fa8;
+}
+.admin-group {
+    background: rgba(212,160,23,.12);
+    color: #8a6000;
+}
+
+
+/* ── Group description ─────────────────────────────────────────── */
+
+.group-description {
+    color: var(--text-muted);
+}
+
+
+/* ── Message / status boxes ────────────────────────────────────── */
+
+.alert-success { background: var(--success-bg); color: var(--success); border: 1px solid #b8dbbf; }
+.alert-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid #f5d78e; }
+.alert-danger  { background: var(--danger-bg);  color: var(--danger);  border: 1px solid #f1b5bb; }
+.alert-info    { background: var(--info-bg);    color: var(--info);    border: 1px solid #b6d4fe; }
+.alert-success, .alert-warning, .alert-danger, .alert-info {
+    border-radius: var(--r);
+    padding: .55rem 1rem;
+    font-size: .82rem;
+    margin-bottom: .7rem;
+}
+

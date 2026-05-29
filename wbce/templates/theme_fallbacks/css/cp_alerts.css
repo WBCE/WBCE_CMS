@@ -1,0 +1,133 @@
+/* =================================================================
+   Alerts — This CSS corresponds to framework/Alerts.php
+   ================================================================= */
+
+
+.alertbox_success,
+.alertbox_error,
+.alertbox_warning,
+.alertbox_info {
+    position: relative;
+    padding: 14px 42px 14px 48px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    border-left: 4px solid transparent;
+    font-size: 0.925em;
+    line-height: 1.5;
+}
+
+/* --- Unicode icon ------------------------------------------------ */
+
+.alertbox_success .signal-icon,
+.alertbox_error .signal-icon,
+.alertbox_warning .signal-icon,
+.alertbox_info .signal-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.35em;
+    line-height: 1;
+    opacity: .7;
+}
+
+/* --- Close button ------------------------------------------------ */
+
+.alertbox_error  > button.msg-close,
+.alertbox_warning > button.msg-close,
+.alertbox_success > button.msg-close,
+.alertbox_info > button.msg-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.3em;
+    font-weight: 400;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    color: inherit;
+    opacity: .45;
+    transition: opacity .15s;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
+    outline: none;
+    margin: 0;
+    min-width: 0;
+    min-height: 0;
+    border-radius: 0;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.alertbox_error  > button.msg-close:hover,
+.alertbox_warning > button.msg-close:hover,
+.alertbox_success > button.msg-close:hover,
+.alertbox_info > button.msg-close:hover {
+    opacity: 1;
+}
+
+/* --- Paragraphs inside alertboxes -------------------------------- */
+
+.alertbox_success p,
+.alertbox_error p,
+.alertbox_warning p,
+.alertbox_info p {
+    margin: 0;
+    padding: 0;
+}
+.alertbox_success p + p,
+.alertbox_error p + p,
+.alertbox_warning p + p,
+.alertbox_info p + p {
+    margin-top: 4px;
+}
+
+/* --- Type colors ------------------------------------------------- */
+
+.alertbox_success {
+    background: #d4edda;
+    border-left-color: #28a745;
+    color: #155724;
+}
+
+.alertbox_error {
+    background: #f8d7da;
+    border-left-color: #dc3545;
+    color: #721c24;
+}
+
+.alertbox_warning {
+    background: #fff3cd;
+    border-left-color: #ffc107;
+    color: #856404;
+}
+.alertbox_info {
+    background: #d4e7ff;
+    border-left-color: #2b6db3;
+    color: #224a75;
+}
+
+/* --- Auto-dismiss (non-sticky, non-error) ------------------------ */
+
+.alertbox_success.dismissable:not(.sticky),
+.alertbox_warning.dismissable:not(.sticky),
+.alertbox_info.dismissable:not(.sticky) {
+    animation: alertbox-fade 6s ease-out forwards;
+}
+
+@keyframes alertbox-fade {
+    0%, 75%  { opacity: 1; }
+    100%     { opacity: 0; pointer-events: none; }
+}
+
+
+.status-icon {
+    display: inline-block;
+    width: 1.2em;
+    font-weight: bold;
+    /* Optional: Ensure they use a font that renders symbols well */
+    font-family: "Segoe UI Symbol", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+}
