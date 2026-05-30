@@ -414,7 +414,7 @@ HTML;
 
     protected function renderMessages(array $messages, string $type, bool $sticky = false): string
     {
-        if (!defined('WB_FRONTEND') && isset($GLOBALS['admin'])) {
+        if (defined('BACKEND_CONTEXT') && isset($GLOBALS['admin'])) {
             return $this->renderTwig($messages, $type, $sticky);
         }
         return $this->renderHtml($messages, $type, $sticky);

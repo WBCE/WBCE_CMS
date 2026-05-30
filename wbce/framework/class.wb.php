@@ -1046,7 +1046,7 @@ _JsCode;
         }
 
         // Backend-only variables
-        if (!defined('WB_FRONTEND')) {
+        if (defined('BACKEND_CONTEXT')) {
             if (defined('THEME_URL')) {
                 $js .= "\t\tvar THEME_URL    = '" . THEME_URL . "';\n";
             }
@@ -1074,7 +1074,7 @@ _JsCode;
         $modules = [];
 
         // 1. Snippets – only in frontend
-        if (defined('WB_FRONTEND')) {
+        if (defined('FRONTEND_CONTEXT')) {
             $modules = array_merge($modules, $this->db->fetchAll(
                 "SELECT `directory` AS `module_dir` 
                  FROM `{TP}addons` 
@@ -1092,7 +1092,7 @@ _JsCode;
             $pageId = (int) $_REQUEST['page_id'];
         }
 
-        if ($pageId !== null && !defined('WB_FRONTEND')) {
+        if ($pageId !== null && defined('BACKEND_CONTEXT')) {
             $modules = array_merge($modules, $this->db->fetchAll(
                 "SELECT `module` AS `module_dir` 
                  FROM `{TP}sections` 

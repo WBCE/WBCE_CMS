@@ -62,8 +62,12 @@ if (!isset($database) || !is_object($database)) {
 
 defined('ADMIN_DIRECTORY') or define('ADMIN_DIRECTORY', 'admin');
 validate_admin_directory_constant(); // check for faulty constructions
-defined('ADMIN_URL')       or define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
-defined('ADMIN_PATH')      or define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
+defined('ADMIN_URL')     or define('ADMIN_URL',    WB_URL . '/' . ADMIN_DIRECTORY);
+defined('ADMIN_PATH')    or define('ADMIN_PATH',   WB_PATH . '/' . ADMIN_DIRECTORY);
+
+// set INCLUDE_URL and INCLUDE_PATH
+defined('INCLUDE_URL')   or define('INCLUDE_URL',  WB_URL . '/include');
+defined('INCLUDE_PATH')  or define('INCLUDE_PATH', WB_PATH . '/include');
 
 // Load Lang internationalization functions (L_(), Ln_()).
 // Must be loaded explicitly before Autoloader
@@ -118,7 +122,14 @@ $_dbSessionHandler = new DbSession();
 // Initialize special Session handling and Start session.
 WSession::Start();
 
-// MODULES initialize.php
+// CONTEXT DETECTION
+// FRONTEND_CONTEXT is defined by ROOT/index.php before config.php is loaded.
+// Everything that is not frontend is treated as backend (admin, CLI, installer).
+defined('FRONTEND_CONTEXT') || define('BACKEND_CONTEXT', true);
+// WB_FRONTEND — @deprecated since WBCE 1.7.0, use FRONTEND_CONTEXT instead.
+defined('WB_FRONTEND') || (defined('FRONTEND_CONTEXT') && define('WB_FRONTEND', true));
+
+// MODULES initialize.php  (and initialize_fe.php / initialize_be.php)
 foreach (wbce_get_init_files('initialize') as $_initFile) {
     include $_initFile;
 }
@@ -461,11 +472,27 @@ function wbce_get_init_files(string $functionType): array
         [$likeValue]
     );
 
+    // For 'initialize': also append initialize_fe.php or initialize_be.php if present.
+    // Context constants are defined before wbce_get_init_files('initialize') is called.
+    $contextSuffix = ($functionType === 'initialize')
+        ? (defined('FRONTEND_CONTEXT') ? '_fe' : '_be')
+        : null;
+
     $files = [];
     foreach ($modules as $module) {
-        $path = WB_PATH . '/modules/' . $module['directory'] . '/' . $filename;
-        if (file_exists($path)) {
-            $files[] = $path;
+        $base = WB_PATH . '/modules/' . $module['directory'] . '/';
+
+        // 1. Load initialize.php (or preinit.php) as before
+        if (file_exists($base . $filename)) {
+            $files[] = $base . $filename;
+        }
+
+        // 2. Append context-specific file right after (initialize_fe.php / initialize_be.php)
+        if ($contextSuffix !== null) {
+            $ctxFile = $base . 'initialize' . $contextSuffix . '.php';
+            if (file_exists($ctxFile)) {
+                $files[] = $ctxFile;
+            }
         }
     }
 

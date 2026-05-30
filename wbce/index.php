@@ -13,7 +13,7 @@
 $starttime = array_sum(explode(" ", microtime())); 
 // use $starttime for any type of benchmark testing you need
 
-defined('WB_FRONTEND') or define('WB_FRONTEND', true);
+defined('FRONTEND_CONTEXT') or define('FRONTEND_CONTEXT', true);
 
 // Include config file if already created on installation
 if (file_exists($file = __DIR__ . '/config.php')) {
