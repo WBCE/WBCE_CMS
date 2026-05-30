@@ -1,0 +1,17 @@
+<section class="cp-main">
+    <div class="cp-pageinfo"></div>
+    <nav class="cp-tabs tabs-right">
+        {% include 'tabs.twig' %}	
+    </nav>  
+    <div id="message-area">{{ MESSAGE_BOX|raw }}</div>
+    <div class="cp-pane-inlay">   
+        <noscript>JavaScript disabled.</noscript>
+        <div style="clear:both;"></div>
+    {% block content %}
+    {% endblock %}
+    </div>
+</section>
+{{  insertJsFile(INCLUDE_URL ~ '/htmx/htmx.min.js')}}
+{{ insertCssFile(INCLUDE_URL ~ '/wbeSelect/wbeSelect.css')}}
+{{  insertJsFile(INCLUDE_URL ~ '/wbeSelect/wbeSelect.jquery.js')}}
+{% include '_toast.inc.twig' %}

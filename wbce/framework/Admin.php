@@ -469,10 +469,10 @@ class Admin extends Wb
         if ($sModfileType === 'css') {
             $cssFiles = [
                 get_url_from_path($this->correct_theme_source('../css/cp_chrome.css')),
-                get_url_from_path($this->correct_theme_source('../css/cp_alerts.css')),
                 get_url_from_path($this->correct_theme_source('../css/cp_theme.css')),
             ];
-            I::insertCssFile($cssFiles, 'HEAD BTM+');
+            I::insertCssFile($cssFiles, 'HEAD TOP+');
+            I::insertCssFile(get_url_from_path($this->correct_theme_source('../css/cp_alerts.css')), 'HEAD BTM-');
         }
         return '<!--(PH) ' . strtoupper($sModfileType) . ' HEAD MODFILES -->' . PHP_EOL
              . $this->registerModfiles($sModfileType, 'backend');

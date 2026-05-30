@@ -1,0 +1,84 @@
+{# 
+    access_groups_tablerow.twig — Single group table row
+    
+    Used by:
+      - action.php (getrow endpoint) for htmx row injection/replacement
+      - access_groups.twig could {% include %} this in the loop (optional)
+    
+    Expected variables:
+      rec         — group record (group_id, name, description)
+      IDKEY       — encrypted group ID
+      states      — tri-state permission map from getAreaStates()
+      usercount   — number of users in this group
+      extra_class — optional CSS class ('empha-new', 'hilite', '')
+      signup_group_id — the FRONTEND_SIGNUP group id (0 if none)
+#}
+
+{% import '_icons.inc.twig' as ico %}
+{% set is_admin_group = (rec.group_id == 1) %}
+{% set perm_areas = ['pages','media','modules','templates','languages','settings','admintools','groups','users','preferences'] %}
+
+{# Wir nutzen jetzt die WBCE-Funktion getIDKEY direkt #}
+{% set IDKEY = getIDKEY(rec.group_id) %}
+
+<tr id="group-row-{{ rec.group_id }}" data-idkey="{{ IDKEY }}" {% if extra_class %}class="{{ extra_class }}"{% endif %}> 
+    <td class="sm-hide"><span>{{ rec.group_id }}</span></td>
+    <td class="edit-link-name">     
+        {% if is_admin_group %}<span title="Admin-Group">Ⓐ</span>{% endif %}
+        {% if signup_group_id == rec.group_id %}<span title="Signup group">Ⓢ</span>{% endif %}
+    
+        {% if not is_admin_group and has_permission('groups_modify') %}
+            <a href="{{ ADMIN_URL }}/groups/index.php?group_id={{ IDKEY }}&modify=1"
+               hx-get="{{ ADMIN_URL }}/groups/form.php?group_id={{ IDKEY }}"
+               hx-target="#group-form-panel" hx-swap="innerHTML"
+               title="{{ L_('HEADING:MODIFY_GROUP') }}">{{ rec.name }}</a>
+        {% else %} 
+            <b>{{ rec.name }}</b>
+        {% endif %}  
+    </td>
+
+    <td>
+        <ul class="perms-overview">
+            {% for area in perm_areas %}
+                <li title="{{ L_('MENU:' ~ area) }}: {{ states[area]|default('none') }}" class="perm-{{ states[area]|default('none') }}">
+                    <i class="fa fa-lg fa-{{ ico.icon(area) }}"></i>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if not is_admin_group %}<span class="group-description">{{ rec.description }}</span>{% endif %}
+    </td>
+
+    <td>{% if usercount %}{{ usercount }}{% else %}<i>{{ L_('TEXT:NONE') }}</i>{% endif %}</td>
+
+    <td>
+        {% if not is_admin_group %}
+            {% if has_permission('groups_modify') %}
+                <a hx-get="{{ ADMIN_URL }}/groups/form.php?group_id={{ IDKEY }}"
+                   hx-target="#group-form-panel" hx-swap="innerHTML"
+                   href="{{ ADMIN_URL }}/groups/index.php?group_id={{ IDKEY }}&modify=1"
+                   title="{{ L_('HEADING:MODIFY_GROUP') }}"><i class="fa fa-pencil"></i></a>
+            {% endif %}
+            {% if has_permission('groups_add') %}
+                <a href="{{ ADMIN_URL }}/groups/index.php?group_id={{ IDKEY }}&duplicate=1"
+                   title="{{ L_('TEXT:DUPLICATE') }}"><i class="fa fa-copy"></i></a>
+            {% endif %}
+            {% if has_permission('groups_delete') %}
+                {% if usercount > 0 or signup_group_id == rec.group_id %}
+                    {% if usercount > 0 %}
+                        {% set title = 'Only empty Groups can be deleted' %}
+                    {% endif %}
+                    {% if signup_group_id == rec.group_id %}
+                        {% set title = 'Can not delete signup group' %}
+                    {% endif %}
+                    
+                    <i title="{{ title }}" class="fa fa-trash delete-record inactive"></i>
+                {% else %}
+                    <a href="javascript:void(0)" class="delete-item" title="{{ L_('TEXT:DELETE') }}"
+                       data-question="{{ L_('MESSAGE:GROUPS_CONFIRM_DELETE') }}"
+                       data-delete="{{ L_('TEXT:DELETE') }}" data-cancel="{{ L_('TEXT:CANCEL') }}"
+                       data-delete-url="{{ ADMIN_URL }}/groups/action.php?group_id={{ IDKEY }}"><i class="fa fa-trash"></i></a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </td>
+</tr>

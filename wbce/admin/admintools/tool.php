@@ -1,6 +1,6 @@
 <?php
 /**
- * WBCE CMS
+ * WBCE CMS — AdminTool Runner
  * Way Better Content Editing.
  * Visit https://wbce.org to learn more and to join the community.
  *
@@ -12,12 +12,11 @@
 
 require '../../config.php';
 
-
 //Fetch toolname
 $toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['tool']) : '');
 
-// figure out if the form of the tool was send
-// the form needs to have exactly the right field names for this to function.
+// figure out if the form of the tool was sent
+// the form needs to have exactly the correct field names for this to work.
 // 'save_settings' set or 'action'set and == 'save'
 $doSave = (isset($_POST['save_settings']) || isset($_POST['save_default']) || (isset($_POST['action']) && strtolower($_POST['action']) == 'save'));
 
@@ -39,7 +38,7 @@ if (!preg_match('/^[a-z][a-z_\-0-9]{2,}$/i', $toolDir)) {
     $toolCheck = false;
 }
 
-// User has absolutely no permissions , possibly even not logged in :-)?
+// User has absolutely no permissions
 if (!isset($_SESSION['MODULE_PERMISSIONS'])) {
     $toolCheck = false;
 }
@@ -55,7 +54,6 @@ if ($toolCheck) {
     // Defining some path for use in the actual admin tool
     defined('ADMIN_TOOL_DIR') or define('ADMIN_TOOL_DIR', $toolDir);
     $modulePath = WB_PATH . "/modules/$toolDir/"; // we need this one later on too
-    $languagePath = $modulePath . 'languages/';
     $returnUrl = ADMIN_URL . "/admintools/tool.php?tool=$toolDir";
     //include info,php for additional infos
     include $modulePath . "/info.php";
@@ -75,45 +73,46 @@ if ($toolCheck) {
     }
 
     // create admin-object but suppress headers if no page is set
-    // for example this offers opportunety to give back  files for download
-    if ($noPage) {
-        $admin = new admin('admintools', 'admintools', false);
-    } else {
-        $admin = new admin('admintools', 'admintools');
-    }
+    // for example this offers opportunity to give back  files for download
+    $doWrapper = ($noPage ? false : true);
+    $admin = new Admin('admintools', 'admintools', $doWrapper);
+    
+    // check if user has access to this specific AdminTool
+    if($admin->isAdmin() == false){  
+        if(!in_array($toolDir.'_tool', $admin->get_session('MODULE_PERMISSIONS'))){
+            $admin->print_error($MESSAGE['ADMIN_INSUFFICIENT_PRIVELLIGES'].'!', $doWrapper);
+            exit();
+        }
+    } 
+    
     $module_name = $admin->get_module_name($toolDir);               // get translated $module_name ...
     $module_description = $admin->get_module_description($toolDir); // and $module_description
-    // show title if not function 'save' is requested
-    if (!$doSave and !$noPage and !preg_match("/backend/", $module_function)) {
-        $sTPL = '<h4><a href="{{URL}}" title="{{HEADING_TOOLS}}">{{HEADING_TOOLS}}</a>&nbsp;&raquo;&nbsp;{{MODULE_NAME}}</h4>';
-        $aReplacements = array(
-            'URL' => ADMIN_URL . '/admintools/index.php',
-            'MODULE_NAME' => $module_name,
-            'HEADING_TOOLS' => $HEADING['ADMINISTRATION_TOOLS']
-        );
-        echo replace_vars($sTPL, $aReplacements);
-    }
+    // Load language files
+    Lang::loadLanguage($modulePath);
 
-    // Loading language files we start whith default EN
-    if (is_file($languagePath . 'EN.php')) {
-        require_once $languagePath . 'EN.php';
-    }
-    // Get actual language if exists
-    if (is_file($languagePath . LANGUAGE . '.php')) {
-        require_once $languagePath . LANGUAGE . '.php';
-    }
-
-    //Load actual tool
-    echo '<div class="adminModuleWrapper ' . $toolDir . '">';
+    // Capture tool output in its own buffer so it can be passed to the Twig wrapper
+    ob_start();
     require WB_PATH . '/modules/' . $toolDir . '/tool.php';
-    echo '</div>';
+    $toolContent = ob_get_clean();
+
+    // Render via Twig wrapper (breadcrumb + div) or plain fallback for save/backend/no_page
+    if (!$doSave && !$noPage && !preg_match('/backend/', $module_function)) {
+        $admin->getThemeFile('admintool_wrapper.twig', [
+            'TOOL_DIR'    => $toolDir,
+            'MODULE_NAME' => $module_name,
+            'BACK_URL'    => ADMIN_URL . '/admintools/index.php',
+            'BACK_LABEL'  => $HEADING['ADMINISTRATION_TOOLS'],
+            'CONTENT'     => $toolContent,
+        ]);
+    } else {
+        echo '<div class="adminModuleWrapper ' . $toolDir . '">' . $toolContent . '</div>';
+    }
 
     // Fetch the Buffer for later filtering
     $toolOutput = ob_get_clean();
 
-    // FILTER for OPF DASHBOARD just for this module(tool)
-    $file = WB_PATH . '/modules/outputfilter_dashboard/functions.php';
-    if (file_exists($file)) {
+    // FILTER for OPF DASHBOARD just for this module(tool)    
+    if (file_exists($file = WB_PATH . '/modules/outputfilter_dashboard/functions.php')) {
         include_once $file;
     }
     if (function_exists('opf_controller')) {

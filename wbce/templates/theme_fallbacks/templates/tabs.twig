@@ -1,0 +1,7 @@
+<ul>
+    {% for tab in TABS %}
+        <li {{ tab.li_class }}>
+            <a class="tabHelp tab{{ tab.a_class }}" href="{{ ADMIN_URL }}/{{ tab.pos }}"><i class="fa fa-{{ tab.icon }}"></i> {{ tab.link_name }}</a>
+        </li>
+    {% endfor %}
+</ul>	

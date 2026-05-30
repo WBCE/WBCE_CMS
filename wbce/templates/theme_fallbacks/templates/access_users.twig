@@ -1,0 +1,191 @@
+{% extends "access_wrapper.twig" %}
+{% block content %}    
+
+{# 
+ ===================================================================== 
+  USER FORM PANEL — htmx loads form fragments here                     
+ ===================================================================== 
+#}
+<div id="user-form-panel">
+    {% if do_modify_user %}
+        {% include 'access_users_form.twig' %}
+    {% endif %}
+</div>
+
+{# 
+ ===================================================================== 
+              ADD USER BUTTON + USER LIST — always visible                        
+ ===================================================================== 
+#}
+<div id="user-list-section">
+
+    {% if has_permission('users_add') %}
+    <button class="button ico-add toggler" id="btn-add-user"
+            {% if do_modify_user %}style="display:none"{% endif %}
+            hx-get="{{ ADMIN_URL }}/users/form.php?action=add"
+            hx-target="#user-form-panel"
+            hx-swap="innerHTML">
+        <i class="fa fa-user-plus"></i> {{ L_('{TEXT:HEADING_ADD_USER}') }}
+    </button>
+    {% endif %}
+
+    <h4>{{ L_('OVERVIEW:USERS') }}</h4>
+    {% if USERLIST|length > 2 %}
+    <input type="text" id="filterTable" class="cp-table-filter" data-filter-table="usersOverview" placeholder="{{ L_("TEXT:SEARCH") }} &hellip;">
+    {% endif %}
+    <table id="usersOverview" class="cp-table table-bordered table-hover">
+        <thead>
+            <tr>          
+                {% block headings %}    
+                 
+                <th class="sm-hide sort filter"><small title="{{ L_('TEXT:USER') }}-ID">ID</small></th>			
+                <th class="sort filter">{{ L_('TEXT:USER') }}</th>
+                <th class="md-hide sort filter"></th>
+                <th class="md-hide sort filter">{{ L_('TEXT:EMAIL') }}</th>
+                <th class="sm-hide sort filter">{{ L_('MENU:GROUPS') }}</th>
+                <th class="md-hide sort filter">{{ L_('TEXT:REGISTERATION_DATE') }}</th>
+                <th class="md-hide sort filter">{{ L_('TEXT:LATEST_LOGIN') }}</th>
+                <th class="sort filter" style="width:60px;">{{ L_('TEXT:ACTIVE') }}</th>
+                {% endblock %}
+            </tr>
+        </thead>
+        <tbody id="users-table-body">
+            {% for user in USERLIST %}
+                {% include 'access_users_tablerow.twig' with {
+                    'rec': user,
+                    'extra_class': ''
+                } %}
+            {% endfor %}    	
+        </tbody>        
+        {% if groups|length > 12 %}
+            <tfoot>
+                <tr>{{ block('headings') }}</tr>
+            </tfoot>
+        {% endif %}	        
+    </table>    
+</div>
+<script>    
+$(document).ready(function() { 
+    var $addBtn  = $('#btn-add-user');
+    var adminUrl = '{{ ADMIN_URL }}';
+
+    // -----------------------------------------------------------------
+    //  Add button visibility: hide when form is open, show when closed
+    // -----------------------------------------------------------------
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        if (evt.detail.target.id === 'user-form-panel') {
+            var hasContent = evt.detail.target.innerHTML.trim() !== '';
+            $addBtn.toggle(!hasContent);
+            if (hasContent) {
+                evt.detail.target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+
+    // MutationObserver: detect when panel is emptied (close/cancel via innerHTML='')
+    var panel = document.getElementById('user-form-panel');
+    if (panel) {
+        new MutationObserver(function() {
+            if (panel.innerHTML.trim() === '') {
+                $addBtn.show();
+            }
+        }).observe(panel, { childList: true });
+    }
+
+    // -----------------------------------------------------------------
+    //  wbeSelect: init on page load + re-init after htmx form swap
+    // -----------------------------------------------------------------
+    function initFormSelects(container) {
+        if (!$.fn.wbeSelect) return;
+        var $el = $(container);
+        var $groups  = $el.find('select#select_groups');
+        var $lang    = $el.find('select#language');
+        var $tz      = $el.find('select#timezone');
+   //     var $hf      = $el.find('select#home_folder');
+        var $homeFld = $el.find('select#home_folder');
+
+        if ($groups.length)  $groups.wbeSelect({ keepOpen: true });
+        if ($lang.length)    $lang.wbeSelect({ customSelector: 'cfg-lang' });
+        if ($tz.length)      $tz.wbeSelect({ customSelector: 'title_only' });
+    //    if ($hf.length)      $hf.wbeSelect();
+        if ($homeFld.length) $homeFld.wbeSelect({
+                customSelector: 'flag-right',
+                useSearch:      true,
+                treeView:       true,
+                searchFields:   'text right'
+              });
+    }  
+  
+    document.body.addEventListener('htmx:afterSettle', function(evt) {
+        if (evt.detail.target.id === 'user-form-panel') {
+            initFormSelects(evt.detail.target);
+        }
+    });
+
+    // Init selects already on the page (non-htmx initial load)
+    initFormSelects('#user-form-panel');
+
+    // -----------------------------------------------------------------
+    //  userAdded event: fetch new row and append to table
+    // -----------------------------------------------------------------
+    document.body.addEventListener('userAdded', function(evt) {
+        htmx.ajax('GET', 
+            adminUrl + '/users/action.php?do=getrow&user_id=' + encodeURIComponent(evt.detail.idkey), 
+            { target: '#users-table-body', swap: 'beforeend' }
+        );
+    });
+
+    // -----------------------------------------------------------------
+    //  Inline delete confirmation (two-stage for users)
+    //  Stage 1: active user → deactivate (amber row, returns updated row)
+    //  Stage 2: inactive user → delete (red row, row disappears)
+    // -----------------------------------------------------------------
+    $('#users-table-body').on('click', '.delete-item', function(e) {
+        e.preventDefault();
+        var $row      = $(this).closest('tr');
+        var rowId     = $row.attr('id');
+        var userName  = $row.find('.edit-link-name').text().trim();
+        var msg       = $(this).data('question');
+        var btnDelete = $(this).data('delete');
+        var btnCancel = $(this).data('cancel');
+        var deleteUrl = $(this).data('delete-url');
+        var isActive  = $(this).data('is-active') === '1' || $(this).data('is-active') === 1;
+        var height    = $row.outerHeight();
+
+        var originalHtml = $row[0].outerHTML;
+        var rowClass = isActive ? 'on-deactivate' : 'on-delete';
+        var btnClass = isActive ? 'orange' : 'green';
+
+        var confirmRow = '<tr class="' + rowClass + '" id="' + rowId + '">' +
+            '<td colspan="2"><b>' + userName + '</b></td>' +
+            '<td colspan="4">' + msg + '</td>' +
+            '<td colspan="2" style="height:' + height + 'px; white-space:nowrap;">' +
+                '<a href="javascript:void(0)" class="btn-inline ' + btnClass + ' confirm-delete" ' +
+                   'data-url="' + deleteUrl + '" data-row-id="' + rowId + '">' + btnDelete + '</a> ' +
+                '<a href="javascript:void(0)" class="btn-inline red cancel-delete" ' +
+                   'data-original=\'' + encodeURIComponent(originalHtml) + '\'>' + btnCancel + '</a>' +
+            '</td>' +
+        '</tr>';
+
+        $row.replaceWith(confirmRow);
+    });
+
+    // Confirm delete → htmx GET (two-stage delete)
+    $('#users-table-body').on('click', '.confirm-delete', function(e) {
+        e.preventDefault();
+        var url   = $(this).data('url');
+        var rowId = $(this).data('row-id');
+
+        htmx.ajax('GET', url, { target: '#' + rowId, swap: 'outerHTML' });
+    });
+
+    // Cancel → restore original row
+    $('#users-table-body').on('click', '.cancel-delete', function(e) {
+        e.preventDefault();
+        var originalHtml = decodeURIComponent($(this).data('original'));
+        $(this).closest('tr').replaceWith(originalHtml);
+    });
+});
+</script>
+
+{% endblock %}

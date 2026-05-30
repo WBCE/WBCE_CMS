@@ -1,0 +1,174 @@
+<section class="cp-main">
+    <div class="cp-pageinfo"></div>
+    <div id="message-area">{{ MESSAGE_BOX|raw }}</div>
+    <nav class="cp-tabs tabs-right">
+        <ul>
+            <li class="area-title">
+                 {{ L_('MENU:ADMINTOOLS') }}
+            </li>
+        </ul>
+    </nav>
+    <div class="cp-pane-inlay">
+        <noscript>JavaScript disabled.</noscript>
+        <div style="clear:both;"></div>
+
+{% if admin_tools %}
+
+<div class="cp-toolbar">
+    <div class="cp-search"{% if not cfg.show_search %} style="visibility:hidden"{% endif %} id="search-wrapper">
+        <input class="cp-table-filter" id="AdminToolsFilter" type="text" placeholder="{{ L_('TEXT:SEARCH') }} …">
+        <button class="cp-search-clear" type="button"
+                onclick="this.previousElementSibling.value='';
+                         this.previousElementSibling.dispatchEvent(new Event('input'));
+                         this.previousElementSibling.focus();"
+                title="{{ L_('TEXT:CLEAR') }}">✕</button>
+    </div>
+    <button class="button ico-settings pull-right" id="btn-settings" type="button">
+        <i class="fa fa-sliders"></i> {{ L_('TEXT:CHANGE_SETTINGS') }}
+    </button>
+</div>
+
+{# ===================================================================== #}
+{#  Settings panel — hidden until button click                            #}
+{# ===================================================================== #}
+<div id="admintools-settings-panel" style="display:none">
+    <form method="post"
+          hx-post="{{ ADMIN_URL }}/admintools/index.php"
+          hx-target="#message-area"
+          hx-swap="innerHTML"
+          hx-indicator="#at-save-indicator">
+        {{ FTAN }}
+
+        <div class="cp-settings">
+            <div class="cp-toggle-section">
+                <div class="cp-card-head">
+                    <label><i class="fa fa-sliders"></i> {{ L_('TEXT:CHANGE_SETTINGS') }}</label>
+                    <a href="#" id="btn-close-settings" class="pull-right" title="{{ L_('TEXT:CLOSE') }}"><i class="fa fa-times"></i></a>
+                </div>
+                <section>
+                    <div class="cp-setting-row">
+                        <label class="cp-setting-name">Most used first</label>
+                        <div class="cp-setting-value">
+                            <input type="checkbox" switch="bool" name="most_used_first" id="most_used_first"
+                                   value="1"{% if cfg.most_used_first %} checked{% endif %}>
+                            <label for="most_used_first" class="labeled"
+                                   data-on-label="{{ L_('TEXT:ENABLED') }}"
+                                   data-off-label="{{ L_('TEXT:DISABLED') }}"></label>
+                            <div class="cp-setting-hint">Sort tools by usage frequency — most clicked tools appear first.</div>
+                        </div>
+                    </div>
+
+                    <div class="cp-setting-row">
+                        <label class="cp-setting-name">Columns</label>
+                        <div class="cp-setting-value">
+                            <label><input type="radio" name="columns" value="1"{% if cfg.columns == 1 %} checked{% endif %}> 1</label>
+                            <label><input type="radio" name="columns" value="2"{% if cfg.columns == 2 %} checked{% endif %}> 2</label>
+                            <div class="cp-setting-hint">Show 1 or 2 link-card columns.</div>
+                        </div>
+                    </div>
+
+                    <div class="cp-setting-row">
+                        <label class="cp-setting-name">Search</label>
+                        <div class="cp-setting-value">
+                            <input type="checkbox" switch="bool" name="show_search" id="show_search"
+                                   value="1"{% if cfg.show_search %} checked{% endif %}>
+                            <label for="show_search" class="labeled"
+                                   data-on-label="{{ L_('TEXT:ENABLED') }}"
+                                   data-off-label="{{ L_('TEXT:DISABLED') }}"></label>
+                        </div>
+                    </div>
+
+                    <div class="cp-buttons-row">
+                        <button type="button" class="button ico-cancel" id="btn-cancel-settings">{{ L_('TEXT:CANCEL') }}</button>
+                        <span id="at-save-indicator" class="htmx-indicator"><i class="fa fa-spinner fa-spin"></i></span>
+                        <button type="submit" name="save_admintools_settings" value="1" class="button ico-save pos-right">{{ L_('TEXT:SAVE') }}</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </form>
+</div>
+
+{# ===================================================================== #}
+{#  Tools grid                                                            #}
+{# ===================================================================== #}
+<div id="link_cards" class="link-cards-grid{% if cfg.columns == 2 %} two-cols{% endif %}">
+{% for key, tool in admin_tools %}
+    {% set tool_url = ADMIN_URL ~ '/admintools/tool.php?tool=' ~ tool.dir %}
+    <a
+        href="{{ tool_url }}"
+        id="{{ tool.dir }}"
+        class="link-card"
+        data-tool="{{ tool.dir }}"
+        >
+        <div class="link-card__icon">
+            <i class="{{ tool.icon }}"></i>
+        </div>
+        <div class="link-card__content">
+            <p class="link-card__title">{{ tool.name }}</p>
+            <p class="link-card__meta">{{ tool.dir }}</p>
+            <p class="link-card__desc">{{ tool.descr }}</p>
+        </div>
+    </a>
+{% endfor %}
+</div>
+
+{% else %}
+{{ L_('TEXT:NONE_FOUND') }}
+{% endif %}
+
+    </div>
+</section>
+
+{{  insertJsFile(INCLUDE_URL ~ '/htmx/htmx.min.js')}}
+{{  insertJsFile(WB_URL ~ '/templates/theme_fallbacks/js/rearangeByLocalStorage.js')}}
+{{  insertJsFile(WB_URL ~ '/templates/theme_fallbacks/js/cpFilterDivs.js')}}
+{% include '_toast.inc.twig' %}
+<script>
+$(document).ready(function() {
+
+    // -----------------------------------------------------------------
+    //  Settings panel toggle
+    // -----------------------------------------------------------------
+    var $panel   = $('#admintools-settings-panel');
+    var $btnOpen = $('#btn-settings');
+
+    $btnOpen.on('click', function() {
+        $panel.slideToggle(200);
+        $btnOpen.hide();
+    });
+
+    $('#btn-close-settings, #btn-cancel-settings').on('click', function(e) {
+        e.preventDefault();
+        $panel.slideUp(200, function() {
+            $btnOpen.show();
+        });
+    });
+
+    // After settings saved: reload to apply new layout/search/sort
+    document.body.addEventListener('settingsSaved', function() {
+        setTimeout(function() { window.location.reload(); }, 800);
+    });
+
+    // -----------------------------------------------------------------
+    //  Drag & drop reorder
+    // -----------------------------------------------------------------
+    $('#link_cards .link-card').rearangeByLocalStorage({
+        storageKey: 'AdminTools',
+        parentClass: 'link-cards-grid'
+    });
+
+    // -----------------------------------------------------------------
+    //  Search filter
+    // -----------------------------------------------------------------
+    {% if cfg.show_search is defined and cfg.show_search %}
+    $('#AdminToolsFilter').cpFilterDivs({
+        inputField:     "#AdminToolsFilter",
+        container:      "#link_cards",
+        filterSelector: ".link-card",
+        textSelector:   ".link-card__title, .link-card__meta",
+        txtNoResults:   "{{ L_('TEXT:NO_RESULTS') }}"
+    }).focus();
+    {% endif %}
+});
+</script>

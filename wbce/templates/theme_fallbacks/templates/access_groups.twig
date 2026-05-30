@@ -1,0 +1,184 @@
+{% extends "access_wrapper.twig" %}
+{% block content %}    
+{% import '_icons.inc.twig' as fa %}
+{% set signup_group_id = constant('FRONTEND_SIGNUP') | default(0) %}
+
+<div id="group-form-panel">
+    {% if GROUP_ID > 0 %}
+        {% include 'access_groups_form.twig' %}
+    {% endif %}
+</div>
+
+<div id="group-list-section">
+    {% if has_permission('groups_add') %}
+    <button class="button ico-add toggler" id="btn-add-group"
+            {% if GROUP_ID > 0 %}style="display:none"{% endif %}
+            hx-get="{{ ADMIN_URL }}/groups/form.php?action=add"
+            hx-target="#group-form-panel"
+            hx-swap="innerHTML">
+        <i class="fa fa-plus"></i> {{ L_('HEADING:ADD_GROUP') }}
+    </button>
+    {% endif %}
+
+    <h4>{{ L_('OVERVIEW:GROUPS') }}</h4>
+    
+    {% if groups|length > 15 %}
+    <input type="text" id="filterTable" class="cp-table-filter" data-filter-table="groupsOverview" placeholder="{{ L_('TEXT:SEARCH') }} &hellip;">
+    {% endif %}  
+    <div>
+        <table id="groupsOverview" class="cp-table table-bordered table-hover">
+            <thead>
+                <tr>
+                    {% block headings %}
+                    <th class="sm-hide sort filter">ID</th>
+                    <th class="sort filter">{{ L_('TEXT:NAME') }}</th>
+                    <th>
+                        <span class="md-hide">{{ L_('TEXT:SYSTEM_PERMISSIONS') }}</span>
+                        <span class="md-show"><i class="fa fa-universal-access" aria-hidden="true"></i></span>
+                    </th>
+                    <th class="sort">
+                        <span class="md-hide">{{ L_('MENU:USERS') }}</span>
+                        <span class="md-show"><i class="fa fa-hashtag" aria-hidden="true"></i></span>
+                    </th>
+                    <th></th>
+                    {% endblock %}
+                </tr>
+            </thead>
+            <tbody id="groups-table-body">
+                {% for rec in groups %} 
+                    {% set IDKEY = rec.IDKEY %}
+                    {% set is_admin_group = (rec.group_id == 1) %}
+                    {% if is_admin_group %}
+                        {% set states = { pages:'full', media:'full', modules:'full', templates:'full', languages:'full', settings:'full', admintools:'full', groups:'full', users:'full', preferences:'full' } %}
+                    {% else %}
+                        {% set states = get_area_states(rec.group_id) %}
+                    {% endif %}
+
+                    {# include single tablerow #}
+                    {% include 'access_groups_tablerow.twig' with {
+                        'rec':             rec,
+                        'states':          states,
+                        'usercount':       rec.usercount,
+                        'signup_group_id': signup_group_id
+                    } %}
+                {% endfor %} 
+            </tbody>
+            {% if groups|length > 12 %}
+                <tfoot>
+                    <tr>{{ block('headings') }}</tr>
+                </tfoot>
+            {% endif %}
+        </table>
+    </div>
+</div>
+
+<script>    
+$(document).ready(function () {
+    var $addBtn  = $('#btn-add-group');
+    var adminUrl = '{{ ADMIN_URL }}';
+
+    // -----------------------------------------------------------------
+    //  Add button visibility
+    // -----------------------------------------------------------------
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        if (evt.detail.target.id === 'group-form-panel') {
+            var hasContent = evt.detail.target.innerHTML.trim() !== '';
+            $addBtn.toggle(!hasContent);
+            if (hasContent) {
+                evt.detail.target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+
+    var panel = document.getElementById('group-form-panel');
+    if (panel) {
+        new MutationObserver(function() {
+            if (panel.innerHTML.trim() === '') $addBtn.show();
+        }).observe(panel, { childList: true });
+    }
+
+    // -----------------------------------------------------------------
+    //  Inline delete confirmation
+    // -----------------------------------------------------------------
+    $('#groups-table-body').on('click', '.delete-item', function(e) {
+        e.preventDefault();
+        var $row      = $(this).closest('tr');
+        var rowId     = $row.attr('id');
+        var groupName = $row.find('.edit-link-name').text().trim();
+        var msg       = $(this).data('question');
+        var btnDelete = $(this).data('delete');
+        var btnCancel = $(this).data('cancel');
+        var deleteUrl = $(this).data('delete-url');
+        var height    = $row.outerHeight();
+
+        // Store original row for cancel
+        var originalHtml = $row[0].outerHTML;
+
+        var confirmRow = '<tr class="on-delete" id="' + rowId + '">' +
+            '<td class="low-opac">' + $row.find('.group_id').html() + '</td>' +
+            '<td><b>' + groupName + '</b></td>' +
+            '<td>' + msg + '</td>' +
+            '<td colspan="2" style="height:' + height + 'px; white-space:nowrap;">' +
+                '<a href="javascript:void(0)" class="btn-inline green confirm-delete" ' +
+                   'data-url="' + deleteUrl + '" data-row-id="' + rowId + '">' + btnDelete + '</a> ' +
+                '<a href="javascript:void(0)" class="btn-inline red cancel-delete" ' +
+                   'data-original=\'' + encodeURIComponent(originalHtml) + '\'>' + btnCancel + '</a>' +
+            '</td>' +
+        '</tr>';
+
+        $row.replaceWith(confirmRow);
+    });
+
+    // Confirm delete → htmx DELETE
+    $('#groups-table-body').on('click', '.confirm-delete', function(e) {
+        e.preventDefault();
+        var url   = $(this).data('url');
+        var rowId = $(this).data('row-id');
+
+        htmx.ajax('DELETE', url, { target: '#' + rowId, swap: 'outerHTML' });
+    });
+
+    // Cancel → restore original row
+    $('#groups-table-body').on('click', '.cancel-delete', function(e) {
+        e.preventDefault();
+        var originalHtml = decodeURIComponent($(this).data('original'));
+        var $confirmRow  = $(this).closest('tr');
+        $confirmRow.replaceWith(originalHtml);
+    });
+
+    // -----------------------------------------------------------------
+    //  groupAdded / groupSaved events
+    // -----------------------------------------------------------------
+    document.body.addEventListener('groupAdded', function(evt) {
+        htmx.ajax('GET', 
+            adminUrl + '/groups/action.php?do=getrow&new=1&group_id=' + encodeURIComponent(evt.detail.idkey), 
+            { target: '#groups-table-body', swap: 'beforeend' }
+        );
+    });
+
+    document.body.addEventListener('groupSaved', function(evt) {
+        var rowId = 'group-row-' + evt.detail.groupId;
+        if (document.getElementById(rowId)) {
+            htmx.ajax('GET', 
+                adminUrl + '/groups/action.php?do=getrow&group_id=' + encodeURIComponent(evt.detail.idkey), 
+                { target: '#' + rowId, swap: 'outerHTML' }
+            );
+        }
+    });
+
+    // -----------------------------------------------------------------
+    //  Duplicated group: show toast + highlight row
+    // -----------------------------------------------------------------
+    {% if duplicated is defined and duplicated %}
+    (function() {
+        showToast('{{ L_("TEXT:DUPLICATED") }}', 'success');
+        var row = document.getElementById('group-row-{{ duplicated }}');
+        if (row) {
+            row.classList.add('empha-new');
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    })();
+    {% endif %}
+});
+</script>
+{% endblock %}

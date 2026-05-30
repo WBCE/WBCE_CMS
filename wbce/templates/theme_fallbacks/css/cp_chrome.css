@@ -740,7 +740,7 @@ input[switch] + label.labeled {
   align-items: center;
   gap: var(--switch-radio-gap);
   padding: var(--switch-labeled-padding);
-  width: auto;
+  width: fit-content !important;  
   height: auto;
   text-align: left;
 }
