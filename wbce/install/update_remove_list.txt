@@ -56,6 +56,7 @@
 [FRAMEWORK]/randomgen.php
 [FRAMEWORK]/class.logfile.php
 [FRAMEWORK]/class.msg_queue.php
+[FRAMEWORK]/class.frontend.php
 
 # Include / Sensio
 [INCLUDE]/Sensio/Twig/TwigConnect.php
@@ -91,14 +92,43 @@
 
 # Modules
 [MODULES]/captcha_control/FTAN_SUPPORTED
-[MODULES]/captcha_control/install_struct.sql
+# captcha_control 2.x → 3.0.0: image captcha replaced by ALTCHA
+[MODULES]/captcha_control/templates/captcha_control.tpl.php    // replaced by twig/tool.twig
 [MODULES]/SecureFormSwitcher/files/SecureForm.mtab.php
 [MODULES]/SecureFormSwitcher/FTAN_SUPPORTED
 [MODULES]/SecureFormSwitcher/htt/help.png
 [MODULES]/SecureFormSwitcher/htt/switchform.htt
 [MODULES]/SecureFormSwitcher/language_load.php
+[MODULES]/CodeMirror_Config/initialize.php                  // changed to initialize_be.php
 
 # Templates
+[TEMPLATE]/argos_theme_reloaded/templates/admintools.htt    // replaced by Twig
+[TEMPLATE]/argos_theme_reloaded/templates/login.htt
+[TEMPLATE]/argos_theme_reloaded/templates/login_forgot.htt
+[TEMPLATE]/argos_theme_reloaded/templates/success.html
+[TEMPLATE]/argos_theme_reloaded/templates/error.html
+[TEMPLATE]/argos_theme_reloaded/templates/warning.html
+# not yet, but soon
+# [TEMPLATE]/argos_theme_reloaded/templates/access.htt
+# [TEMPLATE]/argos_theme_reloaded/templates/groups.htt
+# [TEMPLATE]/argos_theme_reloaded/templates/groups_form.htt
+# [TEMPLATE]/argos_theme_reloaded/templates/users.htt
+# [TEMPLATE]/argos_theme_reloaded/templates/users_form.htt
+
+[TEMPLATE]/wbce_flat_theme/templates/admintools.htt         // replaced by Twig
+[TEMPLATE]/wbce_flat_theme/templates/login.htt
+[TEMPLATE]/wbce_flat_theme/templates/login_forgot.htt
+[TEMPLATE]/wbce_flat_theme/templates/success.htt
+[TEMPLATE]/wbce_flat_theme/templates/error.htt
+[TEMPLATE]/wbce_flat_theme/templates/warning.html
+
+# not yet, but soon
+# [TEMPLATE]/wbce_flat_theme/templates/access.htt
+# [TEMPLATE]/wbce_flat_theme/templates/groups.htt
+# [TEMPLATE]/wbce_flat_theme/templates/groups_form.htt
+# [TEMPLATE]/wbce_flat_theme/templates/users.htt
+# [TEMPLATE]/wbce_flat_theme/templates/users_form.htt
+
 [TEMPLATE]/wbce_flat_theme/css/themeextended.css
 [TEMPLATE]/wbce_flat_theme/images/preloader_blue.gif
 [TEMPLATE]/wbce_flat_theme/images/preloader_red.gif
@@ -121,6 +151,7 @@
 [INCLUDE]/Sensio/Twig/lib/
 [INCLUDE]/quickSkin_alpha/
 [INCLUDE]/idna_convert/                   // obsolete since 1.7.0 
+[INCLUDE]/FlashMessages/                  // obsolete since 1.7.0. MessageBox is a standalone class now 
 [MODULES]/ckeditor/ckeditor/filemanager/
 [MODULES]/ckeditor/ckeditor/plugins/wsc/
 [MODULES]/ckeditor/ckeditor/plugins/flash/
@@ -136,6 +167,7 @@
 [MODULES]/addon_monitor/plugins
 [MODULES]/addon_monitor/icons
 [MODULES]/addon_monitor/css             // cleaned up in previous step
+[MODULES]/captcha_control/templates/   // replaced by twig/
 [TEMPLATE]/advancedThemeWbFlat/
 [TEMPLATE]/argos_theme/
 [TEMPLATE]/argos_theme_classic/
