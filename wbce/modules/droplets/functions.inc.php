@@ -192,7 +192,7 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
 
 /**
  * Check if Droplet code syntax is valid by exploiting eval() function.
- * If WB_DEBUG const is true and system runs PHP7 or higher, Droplet syntax errors are displayed
+ * If WBCE_DEBUG const is true and system runs PHP7 or higher, Droplet syntax errors are displayed
  *
  * @param  string  $code PHP code to check.
  * @return boolean (PHP5), boolean|array(err_msge, line) with errors in case of PHP7.
@@ -208,7 +208,7 @@ function check_droplet_syntax($iDropletID)
     $sCode = "if(0){{$sCode}\n}";
     try {
         // till PHP 5 eval returns false and proceeds code execution in case of errors
-        if (defined('WB_DEBUG') && WB_DEBUG) {
+        if (defined('WBCE_DEBUG') && WBCE_DEBUG) {
             return (eval($sCode) !== false);
         } else {
             return (@eval($sCode) !== false);
@@ -216,7 +216,7 @@ function check_droplet_syntax($iDropletID)
     } catch (ParseError $e) {
         // PHP 7+ throws a ParseError exception if error occur inside eval
         // show error message caused by missformed Droplet code so we know whats to be fixed
-        if (defined('WB_DEBUG') && WB_DEBUG) {
+        if (defined('WBCE_DEBUG') && WBCE_DEBUG) {
             echo '<strong>Droplet error: </strong>' . $e->getMessage() . '<br />';
         }
         return false;

@@ -543,14 +543,14 @@ class Settings
      * Keys must be UPPER_SNAKE_CASE (A-Z, 0-9, underscore, must start with a letter).
      * Only scalar values are supported (no arrays, objects, or resources).
      *
-     * @param string $key    Constant name, e.g. 'WB_DEBUG'
+     * @param string $key    Constant name, e.g. 'WBCE_DEBUG'
      * @param mixed  $value  Scalar value only
      * @return bool|string   false on success, error message on failure
      */
     public static function setFileBasedSetting(string $key, $value): bool|string
     {
         if (!preg_match('/^[A-Z][A-Z0-9_]*$/', $key)) {
-            return "Invalid key '{$key}' — use UPPER_SNAKE_CASE (e.g. WB_DEBUG)";
+            return "Invalid key '{$key}' — use UPPER_SNAKE_CASE (e.g. WBCE_DEBUG)";
         }
         if (!is_scalar($value)) {
             return "File-based settings only support scalar values (string, int, float, bool)";

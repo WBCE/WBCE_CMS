@@ -16,7 +16,7 @@ if (count(get_included_files()) == 1) {
 }
 
 // set PHP error reporting to the user defined level
-// Note: define('WB_DEBUG', true); in WBCE config.php forces error_reporting(E_ALL|E_STRICT)
+// Note: WBCE_DEBUG can be configured in AdminTool Errorlogger (overrides ER_LEVEL with E_ALL)
 $ER_LEVELS = array(
     'E0' => $TEXT['ERR_USE_SYSTEM_DEFAULT'],        // system default (php.ini)
     'E1' => $TEXT['ERR_HIDE_ERRORS_NOTICES'],       // error_reporting(0)

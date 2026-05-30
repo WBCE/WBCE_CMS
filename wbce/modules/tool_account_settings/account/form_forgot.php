@@ -94,7 +94,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                             } else {
                                 // Error updating database
                                 $oMsgBox->error($MESSAGE['RECORD_MODIFIED_FAILED']);
-                                if(WB_DEBUG) {
+                                if(WBCE_DEBUG) {
                                     $oMsgBox->error($database->get_error().'<br />'.$sSql);
                                 }
                             }
@@ -115,7 +115,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                 }
             } else {
                 // Query failed
-                if(WB_DEBUG) {
+                if(WBCE_DEBUG) {
                     $oMsgBox->error('SystemError:: Database query failed!');
                     $oMsgBox->error($database->get_error().'<br />'.$sSql);
                 }

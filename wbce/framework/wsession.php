@@ -348,7 +348,7 @@ class WSession
      *   2. Permanent WBCE namespace (survives logout)
      *   3. Bare $_SESSION keys set by third-party code or old modules
      *
-     * Uses debug_dump() when available (WB_DEBUG = true, WBCE native),
+     * Uses debug_dump() when available (WBCE_DEBUG = true, WBCE native),
      * otherwise falls back to var_dump inside a <pre> block.
      *
      * The dev branch version had a copy-paste bug: $sOut was assigned with =

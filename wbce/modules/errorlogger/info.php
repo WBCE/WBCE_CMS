@@ -48,7 +48,7 @@ $module_icon        = 'fa fa-bug';
  *         ALL CHANGES CONCERNED WITH WBCE 1.7.0
  *         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *         [+] Implementation of Settings to activate 
- *                        WB_DEBUG: Used in core and some modules 
+ *                      WBCE_DEBUG: Used in core and some modules
  *                       SQL_DEBUG: Show SQL related issues  
  *             PDO_CANONICAL_DEBUG: Check Syntax that's not canonical with the new
  *                                  PDO Database class. This is for devs who review

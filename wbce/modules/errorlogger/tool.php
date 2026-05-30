@@ -79,9 +79,9 @@ if (isset($_GET['delete'])) {
 // Generate the PDO_CANONICAL_DEBUG constant 
 $arrHard = []; // collect array of preexisting, hardcoded Constants
 $fileBasedSettings = [
-    'PDO_CANONICAL_DEBUG', 
+    'PDO_CANONICAL_DEBUG',
     'SQL_DEBUG',
-    'WB_DEBUG'
+    'WBCE_DEBUG'
 ];
 foreach($fileBasedSettings as $cfg){
     $isHardcoded = defined($cfg) && !Settings::fileBasedSettingExists($cfg);
@@ -107,11 +107,11 @@ if (isset($_GET['check_sql']) && in_array($_GET['check_sql'], [0,1])) {
    header("Location: ".$link);   
 }
 
-// Generate the SQL_DEBUG constant
-if (isset($_GET['wb_debug']) && in_array($_GET['wb_debug'], [0,1])) {
-   $state = (bool) $_GET['wb_debug'];
-   Settings::setFileBasedSetting('WB_DEBUG', (bool) $state);
-   header("Location: ".$link);   
+// Toggle WBCE_DEBUG via GET parameter
+if (isset($_GET['wbce_debug']) && in_array($_GET['wbce_debug'], [0,1])) {
+   $state = (bool) $_GET['wbce_debug'];
+   Settings::setFileBasedSetting('WBCE_DEBUG', (bool) $state);
+   header("Location: ".$link);
 }
 
 // ── END: File Based Settings ─────────────────────────────────────────────────
@@ -258,7 +258,7 @@ if(count($arrHard) > 0): ?>
 </div>
 <?php endif ?>
 <ul class="footer-links">
-    <?= debugToggleLink($link, 'WB_DEBUG',            'WB Debug') ?>
+    <?= debugToggleLink($link, 'WBCE_DEBUG',           'WBCE Debug') ?>
     <?= debugToggleLink($link, 'SQL_DEBUG',           'SQL Debug') ?>
     <?= debugToggleLink($link, 'PDO_CANONICAL_DEBUG', 'PDO Syntax Debug') ?>
 </ul>
