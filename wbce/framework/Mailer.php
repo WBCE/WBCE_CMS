@@ -226,5 +226,4 @@ class Mailer extends PHPMailer
     }
 }
 
-// set alias for compatibility with older modules
-class_alias('Mailer', 'wbmailer');
+// Alias wbmailer → Mailer is registered centrally in class.autoload.php::bootInitialize().
