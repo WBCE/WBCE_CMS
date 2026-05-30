@@ -1,0 +1,57 @@
+{#
+    login_wrapper.twig — Backend login pages outer chrome (fallback)
+
+    Provides the full HTML shell. Individual themes may override this file
+    with their own branding/layout. login.twig, login_forgot.twig and
+    login_warning.twig all extend this wrapper.
+
+    Blocks:
+      title        — <title> text (defaults to TEXT:LOGIN)
+      head_extra   — additional <head> content
+      body_attrs   — extra attributes on <body> (e.g. onload="...")
+      page_heading — <h1> text inside the page header
+      login_content — main content inside .content-box
+#}
+<!doctype html>
+<html lang="{{ LANGUAGE }}">
+<head>
+    <title>{% block title %}{{ L_('TEXT:LOGIN') }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html; charset={{ CHARSET }}" />
+    <meta http-equiv="content-language" content="{{ LANGUAGE }}" />
+    <link rel="icon" type="image/x-icon" href="{{ WB_URL }}/favicon.ico">
+
+    <link href="{{ THEME_URL }}/css/normalize.css" rel="stylesheet">
+    <link href="{{ THEME_URL }}/css/fitgrid.css" rel="stylesheet">
+    <link href="{{ WB_URL }}/templates/theme_fallbacks/css/cp_chrome.css" rel="stylesheet">
+    <link href="{{ theme_file('../css/cp_chrome.css') }}" rel="stylesheet">
+    <link href="{{ theme_file('../css/cp_theme.css') }}" rel="stylesheet">
+    <link href="{{ theme_file('../css/cp_alerts.css') }}" rel="stylesheet">
+    <link href="{{ THEME_URL }}/css/login.css" rel="stylesheet">
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body class="page_login"{% block body_attrs %}{% endblock %}>
+
+<div id="container">
+    <header class="fg-center">
+        <div class="fg-row">
+            <h1 class="fg12 center">{% block page_heading %}{{ L_('TEXT:LOGIN') }}{% endblock %}</h1>
+        </div>
+    </header>
+
+    <section class="fg-center">
+        <div class="fg-row">
+            <div class="fg12 content-box">
+                {% block login_content %}{% endblock %}
+            </div>
+        </div>
+    <p class="fg-center login_license">
+        {# Please note: the below reference to the GNU GPL should not be removed, as it provides a link for users to read about warranty, etc. #}
+        <a href="http://www.wbce.org/" title="Visit wbce.org">WBCE</a> is released under the <a href="http://www.gnu.org/licenses/gpl.html" title="GNU General Public License">GNU General Public License</a>
+    </p>
+    </section>
+</div>
+
+</body>
+</html>

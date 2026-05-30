@@ -1,0 +1,62 @@
+{#
+    login.twig — Backend login form
+    Extends login_wrapper.twig for the outer HTML chrome.
+
+    Variables: WB_URL, THEME_URL, ACTION_URL, USERNAME, USERNAME_FIELDNAME,
+              PASSWORD_FIELDNAME, MAX_USERNAME_LEN, MAX_PASSWORD_LEN,
+              FORGOTTEN_DETAILS_APP, CAPTCHA, MESSAGE, CHARSET, LANGUAGE
+#}
+{% extends 'login_wrapper.twig' %}
+
+{% block title %}{{ L_('TEXT:LOGIN') }}{% endblock %}
+
+{% block body_attrs %} onload="document.login.{{ USERNAME_FIELDNAME }}.focus();"{% endblock %}
+
+{% block page_heading %}{{ L_('TEXT:LOGIN') }}{% endblock %}
+
+{% block login_content %}
+    {% if MESSAGE %}
+    <div class="login-message">
+        {{ MESSAGE|raw }}
+    </div>
+    {% endif %}
+
+    <form name="login" class="login" action="{{ ACTION_URL }}" method="post" autocomplete="off">
+        <input type="hidden" name="url" value="">
+        <input type="hidden" name="username_fieldname" value="{{ USERNAME_FIELDNAME }}">
+        <input type="hidden" name="password_fieldname" value="{{ PASSWORD_FIELDNAME }}" autocomplete="off">
+        <div class="cp-card">
+            <div class="cp-setting-row">
+                <div class="cp-setting-name">{{ L_('TEXT:USERNAME') }}</div>
+                <div class="cp-setting-value">
+                    <input type="text" maxlength="{{ MAX_USERNAME_LEN }}" name="{{ USERNAME_FIELDNAME }}" value="{{ USERNAME }}">
+                </div>
+            </div>
+
+            <div class="cp-setting-row">
+                <div class="cp-setting-name">{{ L_('TEXT:PASSWORD') }}</div>
+                <div class="cp-setting-value">
+                    <input type="password" maxlength="{{ MAX_PASSWORD_LEN }}" name="{{ PASSWORD_FIELDNAME }}">
+                </div>
+            </div>
+
+            {% if CAPTCHA %}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TEXT:CAPTCHA') }}:</div>
+                    <div class="cp-setting-value">
+                        {{ CAPTCHA|raw }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="cp-buttons-row">
+                <button type="submit" class="pos-right">{{ L_('TEXT:LOGIN') }}</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="links center">
+        <p><a href="{{ FORGOTTEN_DETAILS_APP }}">{{ L_('TEXT:FORGOTTEN_DETAILS') }}</a></p>
+        <p><a href="{{ WB_URL }}/">{{ L_('TEXT:HOME') }}</a></p>
+    </div>
+{% endblock %}

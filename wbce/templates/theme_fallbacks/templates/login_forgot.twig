@@ -1,0 +1,52 @@
+{#
+    login_forgot.twig — Password recovery form
+    Extends login_wrapper.twig for the outer HTML chrome.
+
+    Variables: WB_URL, THEME_URL, ACTION_URL, EMAIL, FTAN, CAPTCHA,
+              SHOW_FORM, MESSAGE, LOGIN_URL, CHARSET, LANGUAGE
+#}
+{% extends 'login_wrapper.twig' %}
+
+{% block title %}{{ L_('MENU:FORGOT') }}{% endblock %}
+
+{% block page_heading %}{{ L_('MENU:FORGOT') }}{% endblock %}
+
+{% block login_content %}
+    {% if MESSAGE %}
+    <div class="login-message" style="margin: 15px 0">
+        {{ MESSAGE|raw }}
+    </div>
+    {% endif %}
+
+    {% if SHOW_FORM %}
+    <form name="forgot" action="{{ ACTION_URL }}" method="post" autocomplete="off" style="margin-top:20px;">
+        {{ FTAN }}
+        <div class="cp-card">
+            <div class="cp-setting-row">
+                <div class="cp-setting-name">{{ L_('TEXT:EMAIL') }}:</div>
+                <div class="cp-setting-value">
+                    <input type="email" name="email" maxlength="255" value="{{ EMAIL }}" required
+                           placeholder="{{ L_('TEXT:EMAIL') }}">
+                </div>
+            </div>
+            {% if CAPTCHA %}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TEXT:CAPTCHA') }}:</div>
+                    <div class="cp-setting-value">
+                        {{ CAPTCHA|raw }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="cp-buttons-row">
+                <button type="submit" class="pos-right">{{ L_('TEXT:SEND_DETAILS') }}</button>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+
+    <div class="links center">
+        <p><a href="{{ LOGIN_URL }}">{{ L_('TEXT:NEED_TO_LOGIN') }}</a></p>
+        <p><a href="{{ WB_URL }}/">{{ L_('TEXT:HOME') }}</a></p>
+    </div>
+{% endblock %}

@@ -103,7 +103,7 @@ class Alerts
         $type = strtolower($type[0] ?? 'i');
         if (!isset(self::TYPE_MAP[$type])) $type = self::INFO;
 
-        if ($type === self::ERROR) $sticky = true;
+        if (in_array($type, [self::ERROR, self::INFO], true)) $sticky = true;
 
         $msgData = ['message' => $message, 'sticky' => $sticky];
 
@@ -144,12 +144,14 @@ class Alerts
             }
         }
 
-        $grouped = [];
+        $grouped  = [];
+        $stickyBy = [];
         foreach ($this->directMessages as $msg) {
-            $grouped[$msg['type']][] = $this->processTranslation($msg['message']);
+            $grouped[$msg['type']][]  = $this->processTranslation($msg['message']);
+            if ($msg['sticky']) $stickyBy[$msg['type']] = true;
         }
         foreach ($grouped as $typeName => $messages) {
-            $output .= $this->renderMessages($messages, $typeName);
+            $output .= $this->renderMessages($messages, $typeName, $stickyBy[$typeName] ?? false);
         }
 
         $this->directMessages = [];
@@ -158,13 +160,15 @@ class Alerts
 
     public function renderFragment(): string
     {
-        $output = '';
-        $grouped = [];
+        $output   = '';
+        $grouped  = [];
+        $stickyBy = [];
         foreach ($this->directMessages as $msg) {
-            $grouped[$msg['type']][] = $this->processTranslation($msg['message']);
+            $grouped[$msg['type']][]  = $this->processTranslation($msg['message']);
+            if ($msg['sticky']) $stickyBy[$msg['type']] = true;
         }
         foreach ($grouped as $typeName => $messages) {
-            $output .= $this->renderMessages($messages, $typeName);
+            $output .= $this->renderMessages($messages, $typeName, $stickyBy[$typeName] ?? false);
         }
         $this->directMessages = [];
         return $output;
@@ -408,32 +412,32 @@ HTML;
     //  Rendering Internals
     // =====================================================================
 
-    protected function renderMessages(array $messages, string $type): string
+    protected function renderMessages(array $messages, string $type, bool $sticky = false): string
     {
         if (!defined('WB_FRONTEND') && isset($GLOBALS['admin'])) {
-            return $this->renderTwig($messages, $type);
+            return $this->renderTwig($messages, $type, $sticky);
         }
-        return $this->renderHtml($messages, $type);
+        return $this->renderHtml($messages, $type, $sticky);
     }
 
-    protected function renderTwig(array $messages, string $type): string
+    protected function renderTwig(array $messages, string $type, bool $sticky = false): string
     {
         $toTwig = [
             'MESSAGES'     => $messages,
             'MESSAGE_TYPE' => $type,
             'UNICODE_ICON' => self::ICON_MAP[$type] ?? '',
+            'STICKY'       => $sticky,
         ];
         ob_start();
         $GLOBALS['admin']->getThemeFile('_alerts.inc.twig', $toTwig);
         return ob_get_clean();
     }
 
-    protected function renderHtml(array $messages, string $type): string
+    protected function renderHtml(array $messages, string $type, bool $sticky = false): string
     {
-        $icon   = self::ICON_MAP[$type] ?? '';
-        $sticky = ($type === 'error');
-        $class  = 'alertbox_' . $type . ' dismissable' . ($sticky ? ' sticky' : '');
-        $close  = $sticky ? '<button class="msg-close" onclick="this.parentElement.remove()">×</button>' : '';
+        $icon  = self::ICON_MAP[$type] ?? '';
+        $class = 'alertbox_' . $type . ' dismissable' . ($sticky ? ' sticky' : '');
+        $close = $sticky ? '<button class="msg-close" onclick="this.parentElement.remove()">×</button>' : '';
 
         $body = '';
         foreach ($messages as $msg) { $body .= '<p>' . $msg . '</p>'; }
