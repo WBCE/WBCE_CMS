@@ -1,0 +1,96 @@
+{#
+    captcha_control/twig/tool.twig
+
+    Variables:
+      FTAN              — FTAN hidden input (raw HTML)
+      RETURN_URL        — form action URL
+      RETURN_TO_TOOLS   — back-button URL (tools list)
+      MOD               — $MOD_CAPTCHA_CONTROL language array
+      USEABLE_CAPTCHAS  — { key: label } map of available captcha types
+      CAPTCHA_TYPE      — currently active type key
+      ENABLED_CAPTCHA   — '1' or '0'
+      ENABLED_ASP       — '1' or '0'
+#}
+
+<form name="store_settings" action="{{ RETURN_URL }}" method="post">
+    {{ FTAN|raw }}
+
+    <div class="cp-settings">
+        <div class="cp-toggle-section">
+            <div class="cp-card-head">
+                <label><i class="fa fa-shield"></i> {{ TXT.HEADING }}</label>
+            </div>
+
+            <section id="settings">
+                <blockquote>
+                    <p>{{ TXT.HOWTO }}</p>
+                    <p><b>{{ TXT.CAPTCHA_EXP }}</b></p>
+                </blockquote>
+
+                {# ── CAPTCHA Type ──────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ TXT.CAPTCHA_TYPE }}</div>
+                    <div class="cp-setting-value">
+                        {% for key, text in USEABLE_CAPTCHAS %}
+                            <div class="captcha-option cb">
+                                <label>
+                                    <input type="radio" name="captcha_type" value="{{ key }}"
+                                        {{ (key == CAPTCHA_TYPE) ? 'checked="checked"' : '' }}>
+                                    {{ text }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# ── Enable Captcha ────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ TXT.USE_SIGNUP_CAPTCHA }}</div>
+                    <div class="cp-setting-value">
+                        <div class="cb">
+                            <label>
+                                <input type="radio" name="enabled_captcha" value="1"
+                                    {{ (ENABLED_CAPTCHA == '1') ? 'checked="checked"' : '' }}>
+                                {{ TXT.ENABLED }}
+                            </label>
+                            <label style="margin-left:20px;">
+                                <input type="radio" name="enabled_captcha" value="0"
+                                    {{ (ENABLED_CAPTCHA == '0') ? 'checked="checked"' : '' }}>
+                                {{ TXT.DISABLED }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                {# ── Advanced Spam Protection (Honeypot) ───────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('CAPTCHA:ASP_LABEL') }}</div>
+                    <div class="cp-setting-value">
+                        <div class="cb">
+                            <label>
+                                <input type="radio" name="enabled_asp" value="1"
+                                    {{ (ENABLED_ASP == '1') ? 'checked="checked"' : '' }}>
+                                {{ TXT.ENABLED }}
+                            </label>
+                            <label style="margin-left:20px;">
+                                <input type="radio" name="enabled_asp" value="0"
+                                    {{ (ENABLED_ASP == '0') ? 'checked="checked"' : '' }}>
+                                {{ TXT.DISABLED }}
+                            </label>
+                        </div>
+                        <div class="cp-setting-hint">{{ L_('CAPTCHA:ASP_DESCRIPTION') }}</div>
+                    </div>
+                </div>
+
+                {# ── Buttons ───────────────────────────────────────────────── #}
+                <div class="cp-buttons-row">
+                    <a href="{{ RETURN_TO_TOOLS }}" class="button">&laquo; {{ L_('TEXT:BACK') }}</a>
+                    <button type="submit" name="save_settings" class="button ico-save pos-right">
+                        {{ L_('TEXT:SAVE') }}
+                    </button>
+                </div>
+
+            </section>
+        </div>
+    </div>
+</form>

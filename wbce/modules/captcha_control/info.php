@@ -14,12 +14,12 @@ $core = true;
 $module_directory   = 'captcha_control';
 $module_name        = 'Captcha and Advanced-Spam-Protection (ASP) Control';
 $module_function    = 'tool';
-$module_version     = '2.0.6';
-$module_platform    = '1.4.0';
-$module_author      = 'Thorn, Luise Hahne, Norbert Heimsath';
-$module_license     = 'WTFPL';
-$module_description = 'Admin-Tool to control CAPTCHA and ASP';
-$module_icon        = 'fa fa-keyboard-o';
+$module_version     = '3.0.0';
+$module_platform    = '1.7.0';
+$module_author      = 'Thorn, Luise Hahne, Norbert Heimsath, WBCE Project';
+$module_license     = 'GNU GPL2';
+$module_description = 'Admin-Tool to configure ALTCHA (proof-of-work captcha) and Honeypot spam protection';
+$module_icon        = 'fa fa-shield';
 
 /**
  * Version history

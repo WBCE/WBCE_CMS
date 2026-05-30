@@ -1,70 +1,59 @@
 <?php
 /**
- * WBCE CMS
- * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * captcha_control — tool.php
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
+ * Admin-Tool entry point. Handles save and renders the Twig form.
+ *
  * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later version)
+ * @license   GNU GPL2 (or any later version)
  */
 
-// no direct file access
-if (count(get_included_files())==1) {
-    header("Location: ../index.php", true, 301);
-}
+defined('WB_PATH') or exit('No direct access allowed');
+$admin->get_permission('admintools') or die(header('Location: ../../index.php'));
 
-// check if data was submitted
+$returnUrl = ADMIN_URL . '/admintools/tool.php?tool=captcha_control';
+
+// ── Save ──────────────────────────────────────────────────────────────────────
 if (isset($_POST['save_settings'])) {
     if (!$admin->checkFTAN()) {
-        // 3rd param = false =>no auto footer, no exit.
         $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $returnUrl, false);
-    }
-    
-    // get configuration settings
-    $enabled_captcha = ($_POST['enabled_captcha'] == '1') ? 'true' : 'false';
-    $enabled_asp = ($_POST['enabled_asp'] == '1') ? 'true' : 'false';
-    $captcha_type = $admin->add_slashes($_POST['captcha_type']);
-    
-    // update settings
-    Settings::Set("enabled_captcha", $enabled_captcha);
-    Settings::Set("enabled_asp", $enabled_asp);
-    Settings::Set("captcha_type", $captcha_type);
-
-    // save text-captchas if they are set , so we dont forget em
-    if (isset($_POST['text_qa'])) {
-        // text question/answer
-        $text_qa=$admin->add_slashes($_POST['text_qa']);
-        // check for valid phrases
-        if (!preg_match('/### .*? ###/', $text_qa)) {
-            // set value
-            Settings::Set("ct_text", $text_qa);
-        }
-    }
-    
-    // check if there is a database error, otherwise say successful
-    if ($database->is_error()) {
-        $admin->print_error($database->get_error(), $returnUrl, false);
-    } else {
-        $admin->print_success($MESSAGE['PAGES_SAVED'], $returnUrl);
-    }
-} else {
-    
-    // include captcha-file from here we get the "$useable_captchas" var
-    require_once(WB_PATH .'/include/captcha/captcha.php');
-
-    // load text-captchas
-    $text_qa=CT_TEXT;
-    if ($text_qa == '') {
-        $text_qa = $MOD_CAPTCHA_CONTROL['CAPTCHA_TEXT_DESC'];
+        return;
     }
 
-    // fetch captcha settings for template
-    $enabled_captcha = ENABLED_CAPTCHA;
-    $enabled_asp = ENABLED_ASP;
-    $captcha_type = CAPTCHA_TYPE;
-    
-    // Display form
-    include($modulePath."templates/captcha_control.tpl.php");
+    Settings::Set('enabled_captcha', ($_POST['enabled_captcha'] ?? '0') === '1' ? 'true' : 'false');
+    Settings::Set('enabled_asp',     ($_POST['enabled_asp']     ?? '0') === '1' ? 'true' : 'false');
+
+    // Generate HMAC key on first save if missing (e.g. fresh install, key lost)
+    if (!defined('CAPTCHA_ALTCHA_HMAC_KEY') || empty(CAPTCHA_ALTCHA_HMAC_KEY)) {
+        require_once WB_PATH . '/modules/captcha_control/altcha/AltchaLib.php';
+        Settings::Set('captcha_altcha_hmac_key', AltchaLib::generateHmacKey());
+    }
+
+    header('Location: ' . $returnUrl);
+    exit;
 }
+
+// ── Language ──────────────────────────────────────────────────────────────────
+Lang::loadLanguage(WB_PATH . '/modules/captcha_control');
+
+// ── Render ────────────────────────────────────────────────────────────────────
+$oTwig   = getTwig(WB_PATH . '/modules/captcha_control/twig/');
+$aToTwig = [
+    'RETURN_URL'       => $returnUrl,
+    'RETURN_TO_TOOLS'  => ADMIN_URL . '/admintools/index.php',
+    'TXT'              => [
+        'HEADING'            => L_('MOD_CAPTCHA_CONTROL:HEADING'),
+        'HOWTO'              => L_('MOD_CAPTCHA_CONTROL:HOWTO'),
+        'CAPTCHA_EXP'        => L_('MOD_CAPTCHA_CONTROL:CAPTCHA_EXP'),
+        'CAPTCHA_TYPE'       => L_('MOD_CAPTCHA_CONTROL:CAPTCHA_TYPE'),
+        'USE_SIGNUP_CAPTCHA' => L_('MOD_CAPTCHA_CONTROL:USE_SIGNUP_CAPTCHA'),
+        'ENABLED'            => L_('MOD_CAPTCHA_CONTROL:ENABLED'),
+        'DISABLED'           => L_('MOD_CAPTCHA_CONTROL:DISABLED'),
+    ],
+    'USEABLE_CAPTCHAS' => ['altcha' => 'ALTCHA (Proof-of-Work, self-hosted)'],
+    'CAPTCHA_TYPE'     => defined('CAPTCHA_TYPE') ? CAPTCHA_TYPE : 'altcha',
+    'ENABLED_CAPTCHA'  => ENABLED_CAPTCHA ? '1' : '0',
+    'ENABLED_ASP'      => ENABLED_ASP     ? '1' : '0',
+];
+
+$oTwig->load('tool.twig')->display($aToTwig);
