@@ -67,6 +67,9 @@ $aToTwig = array(
     'filter_file_loc'   => '',
     'filter_config_url' => '',
     'readOnly'          => false,
+    // No AJAX save for new filters — the DB row doesn't exist yet
+    'idKey'             => '',
+    'ajax_url'          => '',
     'extra_fields'      => [],
     'module_tree'       => opf_make_modules_checktree([], $type='tree', TRUE),
     'page_tree'         => opf_make_pages_parent_checktree([], ['all'], $type='tree'),

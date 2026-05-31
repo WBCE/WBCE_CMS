@@ -253,3 +253,7 @@ $LANG['MOD_OPF']['TXT_ERR_UPLOAD_TYPE'] = 'Uploaded file does not match type %s'
 $LANG['MOD_OPF']['TXT_ERR_SECURITY_BREACH'] = 'Terminated: %s Security breach!';
 
 $LANG['MOD_OPF']['TXT_ERR_UPLOAD_FAILED'] = 'Failed to save uploaded file';
+
+$LANG['MOD_OPF']['TXT_INVALIDCODE'] = 'Invalid PHP code';
+
+$LANG['MOD_OPF']['TXT_EDITOR_AFTER_SAVE'] = 'The code editor will appear after the filter has been saved for the first time.';

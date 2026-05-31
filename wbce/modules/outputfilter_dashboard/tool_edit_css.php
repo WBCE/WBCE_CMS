@@ -55,7 +55,8 @@ $aToTwig = array(
     'tpl_csspath'        => opf_quotes($csspath),
     'tpl_cancel_onclick' => opf_quotes("javascript: window.location = '$ToolUrl'"),
     'tpl_save_url'       => opf_quotes("$ToolUrl&amp;id=$id&amp;css_save=1"),
-
+    'idKey'              => $admin->getIDKEY($id),
+    'ajax_url'           => WB_URL . '/modules/outputfilter_dashboard/ajax_save_css.php',
 );
 
 $oTemplate = $oTwig->load('tool_edit_css.twig');

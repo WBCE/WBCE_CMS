@@ -87,7 +87,9 @@ $aToTwig['page_tree'] = $aPageTree;
 $sTmpReadOnly = str_replace(['/', WB_PATH, '\\'], ['\\', '[WB_PATH]', '/'], $filter['file']);
 $aToTwig['file_loc_readonly'] = str_replace('[WB_PATH]/modules/outputfilter_dashboard/plugins','[OPF_PLUGINS]', $sTmpReadOnly);
 
-$userfunc = $filter['userfunc'] == 1 ? 1 : 0;
+$userfunc   = $filter['userfunc']   == 1 ? 1 : 0;
+$isEditable = ($userfunc || $allowedit);
+
 $aToTwig += [
     'edit_filter'  => true, // tell template we come from tool.edit_filter.php
     'filter_id'    => $id,
@@ -100,11 +102,15 @@ $aToTwig += [
     'helppath'     => opf_get_helppath($id),
 
     // only inline-filters and filters with 'allowedit' are editable
-    'disabled_readonly' => ($userfunc||$allowedit)? '' :' readonly="readonly"',
+    'disabled_readonly' => $isEditable ? '' : ' readonly="readonly"',
     'active_checked'    => (opf_is_active($filter['name'])) ? ' checked' : '',
     'filter_file_loc'   => opf_insert_sysvar($filter['file'], $filter['plugin']),
     'filter_config_url' => opf_quotes($filter['configurl']),
-    'readOnly'          => ($userfunc ? false : true),
+    'readOnly'          => !$isEditable,
+
+    // AJAX save — only for editable filters with an existing DB record
+    'idKey'    => $isEditable ? $admin->getIDKEY($id) : '',
+    'ajax_url' => $isEditable ? WB_URL . '/modules/outputfilter_dashboard/ajax_save_filter.php' : '',
 ];
 
 $aToTwig['extra_fields'] = opf_get_extrafields_array($id);
