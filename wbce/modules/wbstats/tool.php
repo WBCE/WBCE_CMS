@@ -17,7 +17,7 @@
 defined('WB_PATH') OR die(header('Location: ../index.php'));
 
 $lang = (dirname(__FILE__)) . '/languages/' . LANGUAGE . '.php';
-require_once(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang );
+require(!file_exists($lang) ? (dirname(__FILE__)) . '/languages/EN.php' : $lang );
 require_once('info.php');
 require_once('class.stats.php');
 

@@ -16,12 +16,12 @@
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.8';
+$module_version = '0.2.5.9';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
 	$module_function = 'tool,initialize,page';
-	$module_platform = '1.3.0';
+	$module_platform = '1.7.0';
 }
 $module_author = 'Dev4me - Ruud Eisinga - www.dev4me.nl, Norbert Heimsath(heimsath.org)';
 $module_license = 'GNU General Public License';
@@ -30,6 +30,10 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.9 - Christian M. Stefan
+ * - Language Arrays have been changed to UPPER_CASE.
+ *   (Following the naming convention for Language Arrays since WBCE 1.7.0)
  *
  * 0.2.5.8
  * - bugfix for storing citynames with apostrophes (like 's-Gravenhage)

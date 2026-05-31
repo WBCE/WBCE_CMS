@@ -263,7 +263,7 @@ $r = $stats->getVisitors(100);
 				foreach ($tmp as $key => $data) { 
 					$fontsize = round((log($data) / log($maxval)) * ($maxfont - $minfont) + $minfont);
 					if($data) {
-						echo '<span title="'.$data.' '.$WS['VISITORS'].'" style="font-size:'.$fontsize.'px" class="expand wordcloud">'.$pages_cloud[$key].'</span> ';
+						echo '<span title="'.$data.' '.$WS['VISITORS'].'" style="font-size:'.$fontsize.'px" class="expand wordcloud">'.$PAGES_CLOUD[$key].'</span> ';
 					}
 				} 
 			}
@@ -283,7 +283,7 @@ $r = $stats->getVisitors(100);
 				foreach ($tmp as $key => $data) { 
 					$fontsize = round((log($data) / log($maxval)) * ($maxfont - $minfont) + $minfont);
 					if($data) {
-						echo '<span title="'.$data.' '.$WS['VISITORS'].'" style="font-size:'.$fontsize.'px" class="expand wordcloud">'.$second_cloud[$key].'</span> ';
+						echo '<span title="'.$data.' '.$WS['VISITORS'].'" style="font-size:'.$fontsize.'px" class="expand wordcloud">'.$SECOND_CLOUD[$key].'</span> ';
 					}
 				}
 			} 

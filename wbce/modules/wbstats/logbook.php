@@ -35,7 +35,7 @@ echo "<div class='full'>";
 echo '<table class="res" width="100%" border="0" cellpadding="5" cellspacing="0">';
 foreach($r as $v) {
 		$language=$v['language'];
-		if (array_key_exists($language,$code2lang)) $language=$code2lang[$language];
+		if (array_key_exists($language,$CODE2LANG)) $language=$CODE2LANG[$language];
 		echo '<tr>';
 		echo '<td style="width:200px;white-space:nowrap;">';
 		echo '<b>'.$WS['LIVE_DATE'].'</b>: '.$v['date'].' '.$v['time'].'<br>';
