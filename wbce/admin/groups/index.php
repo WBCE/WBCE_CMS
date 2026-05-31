@@ -67,7 +67,6 @@ $allGroups = $groups->getAllGroups();
 // --- Render ---
 $toTwig = [
     'MESSAGE_BOX'      => $alerts->render(),
-    'PENDING_TOASTS'   => $alerts->renderPendingToasts(),
     'TABS'             => renderAddonsTabs($sPos),
     'groups'           => $allGroups,
     'GROUP_ID'         => (isset($_GET['group_id']) && isset($_GET['modify'])) ? intval($admin->checkIDKEY('group_id', 0, 'GET', true)) : 0,

@@ -82,7 +82,6 @@ $users->autoCleanup();
 // --- Render ---
 $toTwig = [
     'MESSAGE_BOX'        => $alerts->render(),
-    'PENDING_TOASTS'     => $alerts->renderPendingToasts(),
     'TABS'               => renderAddonsTabs($sPos),
     'do_modify_user'     => $isModifyView,
     'ACTION_URL'         => ADMIN_URL . '/users/form.php',
