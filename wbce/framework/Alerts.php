@@ -187,6 +187,33 @@ class Alerts
     //  Toast (floating notification via HX-Trigger)
     // =====================================================================
 
+    /**
+     * Ensure _toast.inc.twig is injected into the current page exactly once.
+     *
+     * Call this from any PHP that expects AJAX responses using toast() —
+     * it guarantees window.showToast() is available in the browser.
+     *
+     * Usage in a module's modify.php or tool.php:
+     *   Alerts::ensureToastAssets();
+     *   I::insertJsFile(WB_URL . '/modules/my_module/js/ajax_save.js', 'BODY BTM-');
+     *
+     * No-op on second call (static guard) and outside backend context.
+     */
+    public static function ensureToastAssets(): void
+    {
+        static $done = false;
+        if ($done || !class_exists('I') || empty($GLOBALS['admin'])) return;
+        $done = true;
+
+        ob_start();
+        $GLOBALS['admin']->getThemeFile('_toast.inc.twig', []);
+        $html = ob_get_clean();
+
+        if ($html) {
+            I::insertHtmlCode($html, 'BODY BTM-', 'wbce-toast-assets');
+        }
+    }
+
     public function toast(string $message, string $type = 'success', int $duration = 4000): void
     {
         if ($type === 'error') $duration = 0;

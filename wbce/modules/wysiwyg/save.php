@@ -13,7 +13,6 @@
 require '../../config.php';
 
 $admin_header = false;
-$update_when_modified = true;
 
 require WB_PATH . '/modules/admin.php';
 
@@ -64,5 +63,7 @@ if ($database->hasError()) {
     $admin->print_error($database->getError(), $redirect);
 }
 
-$admin->print_success($MESSAGE['PAGES_SAVED'], $redirect);
-$admin->print_footer();
+// write modified_when und modified_by into `{TP}sections` and `{TP}pages`
+$admin->touchSection((int) $section_id); 
+
+$admin->print_success($MESSAGE['PAGES_SAVED'], $redirect, true); // use autofooter

@@ -13,7 +13,7 @@
 $module_directory   = 'wysiwyg';
 $module_name        = 'WYSIWYG';
 $module_function    = 'page';
-$module_version     = '3.0.0';
+$module_version     = '3.1.0';
 $module_platform    = '1.7.0';
 $module_author      = 'Ryan Djurovich, Christian M. Stefan, many others';
 $module_license     = 'GNU General Public License';

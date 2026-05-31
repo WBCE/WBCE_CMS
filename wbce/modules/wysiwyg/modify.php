@@ -35,7 +35,7 @@ if (!isset($wysiwyg_editor_loaded)) {
 
     } else {
         $id_list = $database->fetchAll(
-            "SELECT `section_id` 
+            "SELECT `section_id`
                 FROM `{TP}sections`
              WHERE `page_id` = ? AND `module` = 'wysiwyg'",
             [(int) $page_id]
@@ -45,19 +45,34 @@ if (!isset($wysiwyg_editor_loaded)) {
         require WB_PATH . '/modules/' . WYSIWYG_EDITOR . '/include.php';
     }
 }
+
+// Ensure window.showToast() is available for AJAX toast feedback
+Alerts::ensureToastAssets();
+// Load AjaxSave JS once (I:: deduplicates across multiple sections on the same page)
+I::insertJsFile(WB_URL . '/modules/wysiwyg/ajax_save.js', 'BODY BTM-');
 ?>
 <form name="wysiwyg<?= $section_id ?>"
+      id="wysiwyg_form_<?= $section_id ?>"
       action="<?= WB_URL ?>/modules/wysiwyg/save.php"
-      method="post">
+      method="post"
+      data-ajax-url="<?= WB_URL ?>/modules/wysiwyg/ajax_save.php">
     <input type="hidden" name="page_id"    value="<?= $page_id ?>">
     <input type="hidden" name="section_id" value="<?= $section_id ?>">
     <?= $admin->getFTAN() ?>
+    <input type="hidden" name="idKey" value="<?= $admin->getIDKEY($section_id) ?>">
     <?php show_wysiwyg_editor('content' . $section_id, 'content' . $section_id, $content, '100%', '350') ?>
     <table style="padding-bottom:10px;width:100%">
         <tr>
             <td style="text-align:left;margin-left:1em">
                 <input name="modify"   type="submit" value="<?= $TEXT['SAVE'] ?>" style="min-width:100px;margin-top:5px">
-                <input name="pagetree" type="submit" value="<?= $TEXT['SAVE'] . ' &amp; ' . $TEXT['BACK'] ?>" style="min-width:100px;margin-top:5px">
+                <input name="pagetree" type="submit" id="wysiwyg_saveback_<?= $section_id ?>"
+                       value="<?= $TEXT['SAVE'] . ' &amp; ' . $TEXT['BACK'] ?>" style="min-width:100px;margin-top:5px">
+                <label id="wysiwyg_ajaxlabel_<?= $section_id ?>"
+                       style="margin-left:1.2em;cursor:pointer;user-select:none"
+                       title="Save without page reload (Ctrl+S)">
+                    <input type="checkbox" id="wysiwyg_ajaxsave_<?= $section_id ?>"
+                           style="vertical-align:middle;margin-right:3px">AjaxSave
+                </label>
             </td>
             <td style="text-align:right;margin-right:1em">
                 <input name="cancel" type="button" value="<?= $TEXT['CANCEL'] ?>"
