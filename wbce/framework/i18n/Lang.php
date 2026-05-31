@@ -219,6 +219,28 @@ class Lang
     }
 
     /**
+     * Register an arbitrary array directly into a named namespace.
+     *
+     * Use this to bridge legacy module language arrays that are loaded via a
+     * custom key (e.g. $LANG['MOD_OPF']) into a short namespace so that the
+     * Twig L_() helper can resolve them:
+     *
+     *   // outputfilter_dashboard/tool.php — after Lang::loadLanguage() ran:
+     *   $L = $LANG['MOD_OPF'];
+     *   Lang::register('L', $L);   // → L_('L:TXT_HELP') now works
+     *
+     * The call is idempotent and additive — repeated calls for the same namespace
+     * merge (later call wins on duplicate keys), consistent with loadLanguage().
+     *
+     * @param string $namespace  Short registry key, e.g. 'L', 'MOD_OPF'
+     * @param array  $data       Flat key→value translation array
+     */
+    public static function register(string $namespace, array $data): void
+    {
+        self::merge($namespace, $data);
+    }
+
+    /**
      * Load a single language file into the registry.
      *
      * Supports both file formats:

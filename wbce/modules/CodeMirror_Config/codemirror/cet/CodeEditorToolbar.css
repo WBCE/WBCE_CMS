@@ -4,18 +4,24 @@
 }
 
 /* ── Fullscreen ─────────────────────────────────────────────────────────── */
-.fullscreen {
+/*
+ * The ce-container is moved directly under <body> via JS (DOM portal)
+ * before the fullscreen class is applied.  This escapes any CSS containment
+ * (transform, will-change, overflow:hidden) that the admin theme applies to
+ * its layout containers, which would otherwise break position:fixed.
+ * CM height is set by JS to (viewport - toolbar - footer - padding).
+ */
+.ce-container.fullscreen {
     position: fixed;
-    top: 0;
-    left: 0;
-    padding: 7px 5px;
-    width: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
     height: 100vh !important;
-    z-index: 9999;
-    background: black;
-}
-.fullscreen .CodeMirror {
-    height: 80vh !important;
+    z-index: 99999;
+    background: #0d0d0d;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 /* ── CodeMirror core overrides ──────────────────────────────────────────── */

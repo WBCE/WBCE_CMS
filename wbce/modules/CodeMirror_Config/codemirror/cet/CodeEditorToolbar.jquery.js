@@ -185,31 +185,38 @@ function getCMMode(ext) {
     }
 
     function toggleFullscreen(editor, settings, instanceId, applySize) {
-        var wrapper = (settings.single !== false)
-            ? $('#' + instanceId).closest('form')
-            : (function () {
-                var wid = instanceId + '_wrapper';
-                var w   = $('#' + wid);
-                if (!w.length) {
-                    w = $('<div>', {id: wid, 'class': 'editor-wrapper'}).insertBefore('#' + instanceId);
-                    $('#' + instanceId).appendTo(w);
-                }
-                return w;
-            })();
+        var container     = $('#' + instanceId);
+        var placeholderId = instanceId + '--fs-ph';
 
-        wrapper.toggleClass('fullscreen');
-
-        if (wrapper.hasClass('fullscreen')) {
-            // Fullscreen: expand to full viewport width
-            editor.setSize(window.innerWidth, null);
-            $('i.ico-fullscreen').addClass('exit');
-            if (settings.showFullscreenHint) showFullscreenHint();
-        } else {
-            // Restore: go back to initially measured width
+        if (container.hasClass('fullscreen')) {
+            // ── Exit fullscreen ───────────────────────────────────────────
+            // Detach from body and restore to original DOM position via placeholder.
+            container.removeClass('fullscreen');
+            var $ph = $('#' + placeholderId);
+            if ($ph.length) $ph.replaceWith(container.detach());
             if (typeof applySize === 'function') applySize();
             $('i.ico-fullscreen').removeClass('exit');
+        } else {
+            // ── Enter fullscreen ──────────────────────────────────────────
+            // 1. Drop a lightweight placeholder at the original position.
+            $('<div>').attr('id', placeholderId).insertAfter(container);
+            // 2. Move container directly under <body> — escapes any CSS containment
+            //    (transform, will-change, overflow:hidden) that the admin theme applies.
+            $('body').append(container.detach());
+            container.addClass('fullscreen');
+            // 3. Fit CM to available viewport height after layout settles.
+            setTimeout(function () {
+                var totalH = window.innerHeight;
+                var headH  = container.find('.aceWrapperHead').outerHeight(true) || 0;
+                var footH  = container.find('.ace-footer').outerHeight(true) || 0;
+                editor.setSize('100%', Math.max(200, totalH - headH - footH - 12));
+                editor.refresh();
+            }, 10);
+            $('i.ico-fullscreen').addClass('exit');
+            if (settings.showFullscreenHint) showFullscreenHint();
         }
         editor.refresh();
+        editor.focus();
     }
 
     function updateToolbarVisibility(editor, settings, isVisible, instanceId, toolbarHtml) {
@@ -406,15 +413,24 @@ function getCMMode(ext) {
             _applySize();
             // Re-apply on window resize (e.g. sidebar toggle, responsive)
             $(window).on('resize.cet-' + instanceId, function() {
-                // On resize, measure fresh — layout is settled at this point
-                var el = container[0].parentElement;
-                var rw = _measuredWidth;
-                while (el && el !== document.body) {
-                    var r = el.getBoundingClientRect();
-                    if (r.width > 20) { rw = Math.floor(r.width); break; }
-                    el = el.parentElement;
+                if (container.hasClass('fullscreen')) {
+                    // Fullscreen: re-fit CM to new viewport size.
+                    var totalH = window.innerHeight;
+                    var headH  = container.find('.aceWrapperHead').outerHeight(true) || 0;
+                    var footH  = container.find('.ace-footer').outerHeight(true) || 0;
+                    editor.setSize('100%', Math.max(200, totalH - headH - footH - 12));
+                    editor.refresh();
+                } else {
+                    // Normal mode: re-measure the nearest fixed-width ancestor.
+                    var el = container[0].parentElement;
+                    var rw = _measuredWidth;
+                    while (el && el !== document.body) {
+                        var r = el.getBoundingClientRect();
+                        if (r.width > 20) { rw = Math.floor(r.width); break; }
+                        el = el.parentElement;
+                    }
+                    _applySize(rw);
                 }
-                _applySize(rw);
             });
 
             editor.getWrapperElement().style.fontSize = initialFontSize + 'px';
@@ -455,11 +471,24 @@ function getCMMode(ext) {
             }
             $(editor.getWrapperElement()).after(footHtml);
 
-            // Persist AjaxSave checkbox state in localStorage (keyed by instanceId)
+            // Persist AjaxSave checkbox state + toggle "Save & Back"-type buttons.
+            // Any button in the same form marked data-hide-on-ajax-save is hidden
+            // while AJAX save is active (it would trigger a form submit that is
+            // intercepted anyway — showing it would confuse the user).
             if (settings.ajaxSaveCheckbox) {
+                var $form = textarea.closest('form');
+
+                var applyAjaxSaveUi = function(checked) {
+                    $form.find('[data-hide-on-ajax-save]').toggle(!checked);
+                };
+
                 $(document).on('change', '#' + instanceId + ' [data-ace="ajax-save"]', function() {
                     updateCEditorCfg(lsKey, this.checked);
+                    applyAjaxSaveUi(this.checked);
                 });
+
+                // Apply initial state (based on persisted localStorage value)
+                applyAjaxSaveUi(initialAjaxSave);
             }
 
             // ── Form submit: sync CM → textarea, or intercept for AJAX save ───────
