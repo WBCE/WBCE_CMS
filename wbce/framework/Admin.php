@@ -301,6 +301,7 @@ class Admin extends Wb
 
         $output = ob_get_clean();
         $output = $this->applyOutputFilters((string) $output);
+        $output .= (new Alerts())->renderPendingToasts();
 
         $this->sendDirectOutput();
         echo $output;

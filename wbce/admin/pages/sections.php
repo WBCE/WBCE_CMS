@@ -261,6 +261,18 @@ switch ($action) {
         $rSections = $database->query($sSql);
 
         $iSectionsCount = $rSections->numRows();
+
+        // When jsadmin section D&D is active, keep move links in DOM (dragdrop.js needs them
+        // for row detection) but hide them visually. When D&D is off, render links normally.
+        $sectionMoveStyle = '';
+        $_jsadminPhp = WB_PATH . '/modules/jsadmin/jsadmin.php';
+        if (file_exists($_jsadminPhp)) {
+            require_once $_jsadminPhp;
+            if (get_setting('mod_jsadmin_ajax_order_sections', '1')) {
+                $sectionMoveStyle = ' style="display:none"';
+            }
+        }
+
         if ($iSectionsCount > 0) {
             while ($section = $rSections->fetchRow(MYSQLI_ASSOC)) {
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
@@ -361,11 +373,13 @@ switch ($action) {
                     } else {
                         $oTemplate->set_var('VALUE_PUBL_END', date($jscal_format, (int)$section['publ_end'] + (int)TIMEZONE));
                     }
-                    // Insert icons up and down
+                    // Insert icons up and down.
+                    // When D&D is active: links stay in DOM (dragdrop.js detects rows via href)
+                    // but are hidden via inline style. When D&D is off: links are fully visible.
                     if ($section['position'] != 1) {
                         $oTemplate->set_var(
                             'VAR_MOVE_UP_URL',
-                            '<a href="' . ADMIN_URL . '/pages/move_up.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '">
+                            '<a href="' . ADMIN_URL . '/pages/move_up.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '"' . $sectionMoveStyle . '>
                             <img src="' . THEME_URL . '/images/up_16.png" alt="{TEXT_MOVE_UP}" />
                             </a>'
                         );
@@ -375,7 +389,7 @@ switch ($action) {
                     if ($section['position'] != $iSectionsCount) {
                         $oTemplate->set_var(
                             'VAR_MOVE_DOWN_URL',
-                            '<a href="' . ADMIN_URL . '/pages/move_down.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '">
+                            '<a href="' . ADMIN_URL . '/pages/move_down.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '"' . $sectionMoveStyle . '>
                             <img src="' . THEME_URL . '/images/down_16.png" alt="{TEXT_MOVE_DOWN}" />
                             </a>'
                         );

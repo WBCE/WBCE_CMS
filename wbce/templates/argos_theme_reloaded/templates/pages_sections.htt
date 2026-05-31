@@ -39,8 +39,8 @@
 					<td class="header_list_namesection">{TEXT_NAMESECTION}</td>
 					<td class="header_list_pubdate_start">{TEXT_PUBL_START_DATE}</td>
 					<td class="header_list_pubdate_end">{TEXT_PUBL_END_DATE}</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
+					<td class="not-when-dd">&nbsp;</td>
+					<td class="not-when-dd">&nbsp;</td>
 					<td class="header_list_sections_actions">
 						<i class="fa fa-lg fa-trash"></i>
 					</td>
@@ -83,8 +83,8 @@
                         <i id="trigger_start{VAR_SECTION_ID}" class="fa fa-lg fa-calendar-times-o red" title="{TEXT_CALENDAR}" onclick="$('#end_date{VAR_SECTION_ID}').val('')"></i>
                     </td>
 
-					<td>{VAR_MOVE_UP_URL}</td>
-                    <td>{VAR_MOVE_DOWN_URL}</td>
+                    <td class="not-when-dd">{VAR_MOVE_UP_URL}</td>
+                    <td class="not-when-dd">{VAR_MOVE_DOWN_URL}</td>
 
                     <td style="text-align:center;">
                         <a href="#" onclick="confirm_link('{TEXT_ARE_YOU_SURE}', '{ADMIN_URL}/pages/sections.php?page_id={PAGE_IDKEY}&amp;section_id={VAR_SECTION_IDKEY}');">

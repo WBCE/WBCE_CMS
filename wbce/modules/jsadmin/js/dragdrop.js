@@ -76,6 +76,11 @@ JsAdmin.init_drag_drop = function() {
 
 	} else if(document.URL.indexOf(JsAdmin.ADMIN_URL + "/pages/sections.php") > -1) {
 		page_type = 'sections';
+		// Hide arrow cells while D&D is active (TDs carry class="not-when-dd" in template)
+		var notDD = document.getElementsByClassName('not-when-dd');
+		for (var i = notDD.length - 1; i >= 0; i--) {
+			notDD[i].style.display = 'none';
+		}
 	} else if(document.URL.indexOf(JsAdmin.ADMIN_URL + "/pages/modify.php") > -1) {
 		page_type = 'modules';
 		is_tree = true;
