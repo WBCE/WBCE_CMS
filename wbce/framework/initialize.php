@@ -135,7 +135,26 @@ defined('FRONTEND_CONTEXT') || define('BACKEND_CONTEXT', true);
 // WB_FRONTEND — @deprecated since WBCE 1.7.0, use FRONTEND_CONTEXT instead.
 defined('WB_FRONTEND') || (defined('FRONTEND_CONTEXT') && define('WB_FRONTEND', true));
 
+// LOCALE — set early so module initialize files can call Lang::loadLanguage()
+// and get the user's actual language instead of the EN default.
+// Session is open (WSession::Start() above), DEFAULT_LANGUAGE is defined
+// (Settings::setup() above) — all dependencies met.
+if (!defined("LANGUAGE")) {
+    if (isset($_GET['lang']) && preg_match('/^[A-Z]{2}$/', $_GET['lang'])) {
+        define('LANGUAGE', $_GET['lang']);
+        $_SESSION['LANGUAGE'] = LANGUAGE;
+    } elseif (isset($_SESSION['LANGUAGE']) && $_SESSION['LANGUAGE'] != '') {
+        define('LANGUAGE', $_SESSION['LANGUAGE']);
+    } else {
+        defined('DEFAULT_LANGUAGE') or define('DEFAULT_LANGUAGE', 'EN');
+        define('LANGUAGE', DEFAULT_LANGUAGE);
+    }
+}
+Lang::setLocale(LANGUAGE);
+
 // MODULES initialize.php  (and initialize_fe.php / initialize_be.php)
+// Locale is already set above — Lang::loadLanguage() calls in module init
+// files will use the correct user language.
 foreach (wbce_get_init_files('initialize') as $_initFile) {
     include $_initFile;
 }
@@ -144,24 +163,7 @@ unset($_initFile);
 // SANITIZE REFERER
 SanitizeHttpReferer();
 
-// LANGUAGES
-// Only if no module already did this
-if (!defined("LANGUAGE")) {
-    // Get users language
-    if (isset($_GET['lang']) && preg_match('/^[A-Z]{2}$/', $_GET['lang'])) {
-        define('LANGUAGE', $_GET['lang']);
-        $_SESSION['LANGUAGE'] = LANGUAGE;
-    } else {
-        if (isset($_SESSION['LANGUAGE']) && $_SESSION['LANGUAGE'] != '') {
-            define('LANGUAGE', $_SESSION['LANGUAGE']);
-        } else {
-            defined('DEFAULT_LANGUAGE') or define('DEFAULT_LANGUAGE', 'EN');
-            define('LANGUAGE', DEFAULT_LANGUAGE);
-        }
-    }
-}
-// Load system Language files from WB_PATH.'/langauges/'
-Lang::setLocale(LANGUAGE);
+// Load system Language files from WB_PATH.'/languages/'
 Lang::loadCore(LANGUAGE, WB_PATH . '/languages');
 
 // maintain old.format.inc.php for Legacy Modules

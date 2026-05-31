@@ -57,6 +57,6 @@ if ($database->hasError()) {
 // ── Touch timestamps ──────────────────────────────────────────────────────────
 $admin->touchSection($section_id);
 // ── Toast via HX-Trigger header (read by ajax_save.js, works without HTMX) ───
-(new Alerts(false))->toast('MESSAGE:PAGES_SAVED', 'success');
+(new Alerts(false))->toast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
 
 exit(json_encode(['ok' => true]));

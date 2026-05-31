@@ -47,6 +47,18 @@ function L_(key) {
 }
 
 // ── CodeMirror mode mapping ───────────────────────────────────────────────
+// ── Toast: reads HX-Trigger header set by Alerts::toast() in PHP ─────────────
+// window.showToast() is guaranteed by Alerts::ensureToastAssets() (called from CodeEditor::init)
+function fireToast(xhr) {
+    var raw = xhr && xhr.getResponseHeader('HX-Trigger');
+    if (!raw) return;
+    var ev;
+    try { ev = JSON.parse(raw); } catch (e) { return; }
+    var t = ev.showToast;
+    if (!t || typeof window.showToast !== 'function') return;
+    window.showToast(t.message, t.type, t.duration, t.icon || '');
+}
+
 function getCMMode(ext) {
     var map = {
         php:        'application/x-httpd-php',
@@ -430,18 +442,16 @@ function getCMMode(ext) {
                     editor.save();
                     var postData = $.extend({}, settings.ajaxData || {},
                         { code_area_text: textarea.val() });
-                    var $hint = $('<div class="fullscreen-hint">&#8987;</div>').appendTo('body');
                     $.post(settings.ajaxUrl, postData)
-                        .done(function(r) {
-                            $hint.addClass('success').text('\u2713 Saved').delay(1500).fadeOut(function(){ $(this).remove(); });
+                        .done(function(r, status, xhr) {
+                            fireToast(xhr);
                             if (typeof settings.onSave === 'string' && window[settings.onSave]) window[settings.onSave](r);
                             else if (typeof settings.onSave === 'function') settings.onSave(r);
                         })
-                        .fail(function() {
-                            $hint.addClass('error').text('\u2717 Save failed').delay(2000).fadeOut(function(){ $(this).remove(); });
+                        .fail(function(xhr) {
+                            fireToast(xhr);
                         });
                 };
-
             }
             $(editor.getWrapperElement()).after(footHtml);
 

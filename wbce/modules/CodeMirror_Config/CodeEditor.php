@@ -304,6 +304,11 @@ class CodeEditor
         opts.ajaxUrl  = <?= json_encode($opt['ajax_url']) ?>;
         opts.ajaxData = <?= $ajaxDataJs ?>;
         opts.onSave   = <?= $onSaveJs ?>;
+        <?php
+            // Inject _toast.inc.twig so window.showToast() is available when the
+            // AJAX response arrives. Idempotent — safe for multiple editors per page.
+            if (class_exists('Alerts')) { Alerts::ensureToastAssets(); }
+        ?>
         <?php endif; ?>
 
         $ta.codeEditorToolbar(opts);

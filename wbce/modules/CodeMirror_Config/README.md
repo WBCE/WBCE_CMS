@@ -55,9 +55,9 @@ CodeEditor::init(string $textareaId, string $syntax, array $options = []);
 | `toolbar`   | bool   | `false`           | Show the CodeEditorToolbar (font size, theme toggle, line wrap, fullscreen, search) |
 | `line_wrap` | bool   | `false`           | Enable line wrapping                                                                |
 | `readonly`  | bool   | `false`           | Read-only mode — user can select and copy but not edit                              |
-| `ajax_save` | bool   | `false`           | Show an AJAX Save button in the toolbar footer                                      |
+| `ajax_save` | bool   | `false`           | Show an AjaxSave checkbox in the toolbar footer; also injects toast assets automatically (see below) |
 | `ajax_url`  | string | `''`              | POST endpoint that receives the editor content                                      |
-| `ajax_data` | array  | `[]`              | Additional POST fields sent with every AJAX save (FTAN, section_id, …)              |
+| `ajax_data` | array  | `[]`              | Additional POST fields sent with every AJAX save (IDKEY, section_id, …)             |
 | `on_save`   | string | `''`              | Name of a global JS function called after a successful AJAX save                    |
 | `theme`     | string | *(from settings)* | Override the user's theme — `'wbce-day'` or `'wbce-night'`                          |
 
@@ -132,21 +132,35 @@ The editor starts at 80px and grows line by line as the user types.
 
 This is the recommended pattern for `modify.php` in a page module or admin tool.
 
-### How AJAX Save Security Works
+### Toast Feedback — Automatic
 
-WBCE provides two security mechanisms. For AJAX save, only `IDKEY` is used — not FTAN.
+When `ajax_save: true` is set, `CodeEditor::init()` calls `Alerts::ensureToastAssets()`
+automatically. This injects `_toast.inc.twig` into the page, which defines
+`window.showToast()`.
 
-**Why not FTAN?**  
-FTAN is designed for standard form submissions. `checkFTAN()` reads `$_POST['ftan']`
-from the form. While the token itself is cryptographic and technically reusable,
-IDKEY is the correct tool for AJAX — it was designed explicitly for this purpose
-and the `$ajax = true` flag keeps it alive across multiple requests in the same session.
+The toolbar JS reads the `HX-Trigger` response header set by `Alerts::toast()` in your
+endpoint and calls `window.showToast()` — no extra setup needed on the JS side.
 
-**The pattern:**
-1. `modify.php` generates an IDKEY wrapping the `section_id` — a signed, session-stored token
-2. The key is embedded in the form as a hidden field (via Twig `getIDKEY()`)
-3. Each AJAX save sends the key value
-4. `ajax_save.php` validates it with `checkIDKEY('idKey', 0, 'POST', true)` — `$ajax = true` means the key is **not consumed**, so repeated saves work
+**All you need to do:** call `(new Alerts(false))->toast(...)` in your AJAX endpoint.
+
+Preferred message keys for AJAX save feedback:
+
+| Situation | Key                             | EN text                                  |
+| --------- | ------------------------------- | ---------------------------------------- |
+| Success   | `MESSAGE:CHANGES_SAVE_SUCCESS`  | "Changes have been saved successfully."  |
+| Error     | `MESSAGE:CHANGES_SAVE_FAILED`   | "Saving changes failed."                 |
+
+> These keys are provided by `CodeMirror_Config/languages.php` and are available on every
+> backend request after boot — no extra `Lang::loadLanguage()` call needed in your endpoint.
+
+### Security — IDKEY, not FTAN
+
+FTAN is consumed on first use (designed for one-shot form submissions). For AJAX save,
+use IDKEY with `$ajax = true` — the key stays alive for repeated saves in the same session.
+
+1. `modify.php` embeds `$admin->getIDKEY($section_id)` as a hidden field or via `ajax_data`
+2. Each AJAX save POSTs the key value
+3. Endpoint validates with `checkIDKEY('idKey', false, 'POST', true)` — non-consuming
 
 ### `modify.php`
 
@@ -155,69 +169,29 @@ and the `$ajax = true` flag keeps it alive across multiple requests in the same 
 require '../../config.php';
 $admin = new Admin('Pages', 'pages_modify');
 
-// Load current content
-$row = $database->fetchRow(
+$row      = $database->fetchRow(
     'SELECT * FROM `{TP}mod_mymodule` WHERE `section_id` = ?',
     [$section_id]
 );
-
 $editorId = 'mod_mymodule_content';
 
-// Register editor — no ajax_data needed here,
-// the IDKEY is embedded in the form template (see below)
-CodeEditor::init($editorId, 'twig', [
-    'height'    => 550,
-    'toolbar'   => true,
-    'ajax_save' => true,
-    'ajax_url'  => WB_URL . '/modules/mod_mymodule/ajax_save.php',
-    'on_save'   => 'mymodule_onSaveSuccess',
-]);
-
-$admin->print_header();
-?>
-
-<form id="mod_mymodule_form" method="post">
-    <?= $admin->getFTAN() ?>
-    <input type="hidden" name="idKey" value="<?= $admin->getIDKEY($section_id) ?>">
-    <textarea id="<?= $editorId ?>"><?= htmlspecialchars($row['content'] ?? '') ?></textarea>
-</form>
-
-<script>
-// CET reads ajax_url from plugin options and POSTs code_area_text.
-// We add the idKey by extending the ajaxData at runtime:
-$(document).ready(function() {
-    $('input[data-ace="ajax-save"]').on('change', function() {
-        // Attach idKey to every AJAX save request
-        $.ajaxPrefilter(function(options) {
-            if (options.url && options.url.includes('ajax_save.php')) {
-                var data = options.data || '';
-                data += '&idKey=' + encodeURIComponent($('[name="idKey"]').val());
-                options.data = data;
-            }
-        });
-    });
-});
-
-function mymodule_onSaveSuccess(response) {
-    console.log('Saved:', response);
-}
-</script>
-
-<?php $admin->print_footer(); ?>
-```
-
-> **Simpler alternative:** Pass `ajax_data` with the IDKEY value directly from PHP.
-> The key is session-backed and safe to embed in the page source.
-
-```php
+// ajax_data passes the IDKEY to every AJAX save request.
+// ensureToastAssets() is called automatically — window.showToast() is guaranteed.
 CodeEditor::init($editorId, 'twig', [
     'height'    => 550,
     'toolbar'   => true,
     'ajax_save' => true,
     'ajax_url'  => WB_URL . '/modules/mod_mymodule/ajax_save.php',
     'ajax_data' => ['idKey' => $admin->getIDKEY($section_id)],
-    'on_save'   => 'mymodule_onSaveSuccess',
 ]);
+
+$admin->print_header();
+?>
+<form id="mod_mymodule_form" method="post">
+    <?= $admin->getFTAN() ?>
+    <textarea id="<?= $editorId ?>"><?= htmlspecialchars($row['content'] ?? '') ?></textarea>
+</form>
+<?php $admin->print_footer(); ?>
 ```
 
 ### `ajax_save.php`
@@ -226,19 +200,14 @@ CodeEditor::init($editorId, 'twig', [
 <?php
 require '../../config.php';
 $admin = new Admin('Pages', 'pages_modify', false);
+header('Content-Type: application/json; charset=utf-8');
 
-// Check user has permission
-if ($admin->get_permission('pages_modify') == false) {
+// Validate IDKEY — $ajax = true keeps the key alive for repeated saves
+$section_id = $admin->checkIDKEY('idKey', false, 'POST', true);
+if ($section_id === false) {
     http_response_code(403);
-    exit(json_encode(['ok' => false, 'error' => 'Permission denied']));
-}
-
-// Validate IDKEY — $ajax = true: key survives for repeated saves in same session
-$section_id = $admin->checkIDKEY('idKey', 0, 'POST', true);
-
-if (!$section_id) {
-    http_response_code(400);
-    exit(json_encode(['ok' => false, 'error' => 'Invalid key']));
+    (new Alerts(false))->toast('MESSAGE:GENERIC_SECURITY_ACCESS', 'error');
+    exit(json_encode(['ok' => false]));
 }
 
 $content = $_POST['code_area_text'] ?? '';
@@ -248,8 +217,15 @@ $database->upsertRow('{TP}mod_mymodule', 'section_id', [
     'content'    => $content,
 ]);
 
-header('Content-Type: application/json');
-exit(json_encode(['ok' => !$database->hasError()]));
+if ($database->hasError()) {
+    http_response_code(500);
+    (new Alerts(false))->toast('MESSAGE:CHANGES_SAVE_FAILED', 'error');
+    exit(json_encode(['ok' => false]));
+}
+
+// HX-Trigger header → window.showToast() in the toolbar JS
+(new Alerts(false))->toast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
+exit(json_encode(['ok' => true]));
 ```
 
 ---

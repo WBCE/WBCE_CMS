@@ -10,10 +10,12 @@
  *
  */
 
-define('CODEMIRROR', true);
-
 // Register CodeEditor class — available globally after initialize phase
 WbAuto::AddFile('CodeEditor', WB_PATH . '/modules/' . basename(__DIR__) . '/CodeEditor.php');
+
+// Load module language keys into the Lang registry.
+// initialize_be.php runs on every backend request (including AJAX endpoints).
+Lang::loadLanguage(__DIR__);
 
 $CodeMirror_dir = WB_URL.'/modules/'.basename(__DIR__).'/codemirror/';
 
