@@ -339,36 +339,42 @@ class WbAuto
      */
     public static function bootInitialize(): void
     {
-        
-        // 1. Backward compatibility
-        class_alias('Alerts', 'MessageBox'); // Alerts replaces and expands MessageBox
-        class_alias('Mailer', 'wbmailer');   // fallback for some legacy modules
-        
-        // 2. Priority explicit files — must be available before AddDir() sweep
-        //    so that classname != filename cases resolve correctly.
+        // 1. Priority explicit files — must come BEFORE class_alias calls.
+        //
+        //    The autoloader does strtolower() on filenames during directory scans,
+        //    so capitalized files (Login.php, Frontend.php, Alerts.php …) are NOT
+        //    found on case-sensitive Linux filesystems via AddDir() alone.
+        //    Explicit AddFile() entries bypass the dir scan entirely.
         $explicitFiles = [
-            'Database'     => '/framework/Database.php',
-            'Admin'        => '/framework/Admin.php',
-            'Alerts'       => '/framework/Alerts.php',
-            'AddonService' => '/framework/AddonService.php',
-            'SecureForm'   => '/framework/SecureForm.php',
-            'Accounts'     => '/framework/Accounts.php',
-            'Mailer'       => '/framework/Mailer.php',
-            'I'            => '/framework/I.php',
-            'Insert'       => '/framework/Insert.php',
-            'Template'     => '/include/phplib/template.inc', // legacy Template Engine used in WBCE BE Themes
+            'Database'      => '/framework/Database.php',
+            'Admin'         => '/framework/Admin.php',
+            'Alerts'        => '/framework/Alerts.php',
+            'AddonService'  => '/framework/AddonService.php',
+            'SecureForm'    => '/framework/SecureForm.php',
+            'Accounts'      => '/framework/Accounts.php',
+            'Mailer'        => '/framework/Mailer.php',
+            'I'             => '/framework/I.php',
+            'Insert'        => '/framework/Insert.php',
+            'Login'         => '/framework/Login.php',
+            'Frontend'      => '/framework/Frontend.php',
+            'Settings'      => '/framework/Settings.php',
+            'LayoutParser'  => '/framework/LayoutParser.php',
+            'Order'         => '/framework/Order.php',
+            'Template'      => '/include/phplib/template.inc',
         ];
 
         foreach ($explicitFiles as $className => $relPath) {
             self::AddFile($className, $relPath);
-            // AddFile returns an error string on failure — silently ignored here.
-            // The class simply won't be pre-registered; the dir scan below may
-            // still find it if it follows the naming convention.
         }
 
-        // 2. Framework directory — scans for all class.*.php, *.php etc.
+        // 2. Framework directories — catches everything not listed above.
         self::AddDir('/framework/');
         self::AddDir('/framework/AccessManager/');
+
+        // 3. Backward-compat aliases — AFTER AddFile so the autoloader can
+        //    resolve the source class before the alias is created.
+        class_alias('Alerts', 'MessageBox'); // Alerts replaces and expands MessageBox
+        class_alias('Mailer', 'wbmailer');   // fallback for some legacy modules
     }
 
 }
