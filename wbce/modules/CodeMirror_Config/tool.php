@@ -42,7 +42,12 @@ if ($saveSettings) {
 
 // Get the Config from DB
 $aCfg = unserialize(Settings::Get("cmc_cfg", ""));
+// Normalize theme — fall back to wbce-night if stored value is no longer valid
+if (!in_array($aCfg['theme'] ?? '', ['wbce-day', 'wbce-night'])) {
+    $aCfg['theme'] = 'wbce-night';
+}
 registerCodeMirror('code', 'x-php');
+CodeEditor::init('code_toolbar', 'x-php', ['height' => 350, 'toolbar' => true]);
 
 // form data fill
 $aThemeFiles = list_files_from_dir($sThemeLoc, 'css');
@@ -61,25 +66,29 @@ $oTemplate->display($aToTwig);
 ob_start() ?>
 <script>
 var input = document.getElementById("select");
+
+function applyThemeToAll(theme) {
+    document.querySelectorAll('.CodeMirror').forEach(function(el) {
+        if (el.CodeMirror) el.CodeMirror.setOption('theme', theme);
+    });
+}
 function selectTheme() {
     var theme = input.options[input.selectedIndex].textContent;
-    code.setOption("theme", theme);
+    applyThemeToAll(theme);
     location.hash = "#" + theme;
 }
-code.setOption("theme", '<?= $aCfg['theme'] ?>');    
+applyThemeToAll('<?= $aCfg['theme'] ?>');
 CodeMirror.on(window, "hashchange", function() {
     var theme = location.hash.slice(1);
     if (theme) { input.value = theme; selectTheme(); }
 });
 
-// select font
-function selectFontFamily(element) { 
-    const selected = element.options[element.selectedIndex].value;  
+function selectFontFamily(element) {
+    const selected = element.options[element.selectedIndex].value;
     $(".CodeMirror").css("fontFamily", selected);
 }
-
-function selectFontSize(element) {   
-   const selected = element.options[element.selectedIndex].value;  
+function selectFontSize(element) {
+    const selected = element.options[element.selectedIndex].value;
     $(".CodeMirror").css("fontSize", selected + 'px');
 }
 </script>

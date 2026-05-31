@@ -3,9 +3,9 @@
  *
  * @category        admintool / initialize 
  * @package         CodeMirror_Config
- * @author          Christian M. Stefan
+ * @author          Christian M. Stefan 
  * @license         http://www.gnu.org/licenses/gpl.html
- * @platform        WBCE 1.5.5
+ * @platform        WBCE 1.7.0
  *
  */
 
@@ -15,9 +15,9 @@ defined('WB_PATH') or die("This file can't be accessed directly!");
 $module_directory   = 'CodeMirror_Config';
 $module_name        = 'CodeMirror Configurator';
 $module_function    = 'tool, initialize';
-$module_version     = '0.1.0';
-$module_platform    = '1.5.5'; // will not work with older versions!
-$module_author      = 'Christian M. Stefan (Stefek)';
+$module_version     = '1.0.0';
+$module_platform    = '1.7.0'; // will not work with older versions!
+$module_author      = 'Christian M. Stefan';
                       // Some of the CodeMirror implementation mechanism have  
                       // been inspired by Martin Hecht's (mrbaseman) work
                       // in the Code2 module. Thank you.

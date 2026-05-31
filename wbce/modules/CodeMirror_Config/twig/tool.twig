@@ -18,20 +18,26 @@
             </div>
         </div>
                 
-        <div class="formRow fullValue">        
-            <div class="settingName">
-                <label for="trans" >Code</label></div>
-            <div class="settingValue">                
+        <div class="formRow fullValue">
+            <div class="settingName"><label>Code</label></div>
+            <div class="settingValue">
                 <textarea id="code" name="code">{{ cmc_code_sample }}</textarea>
+            </div>
+        </div>
+
+        <div class="formRow fullValue">
+            <div class="settingName"><label>Code (Toolbar)</label></div>
+            <div class="settingValue">
+                <textarea id="code_toolbar" name="code_toolbar">{{ cmc_code_sample }}</textarea>
                 <div class="formHint pos-right" style="color: gray">
                     {% if LANGUAGE == 'DE' %}
                     <b>Hinweis:</b> Drücken Sie [F11] um in den Vollbildmodus zu kommen.
                     {% else %}
-                    <b>Hint:</b> Please press [F11] to enter full-screen mode. 
+                    <b>Hint:</b> Press [F11] for fullscreen.
                     {% endif %}
                 </div>
             </div>
-        </div> 
+        </div>
         
         <div class="formRow">
             <div class="settingName">
