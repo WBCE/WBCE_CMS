@@ -12,8 +12,6 @@
 
 require realpath('../../../config.php');
 
-// Captcha class and call_captcha() are registered via
-// modules/captcha_control/initialize.php which runs before this file is included.
 
 $admin  = new Admin('Start', 'start', false, false);
 $alerts = new Alerts(useSession: false);
@@ -101,7 +99,7 @@ if (!$alerts->hasErrors() && $showForm) {
 $captchaHtml = '';
 if (!$nocookie) {
     ob_start();
-    call_captcha('widget', '', '', 'altcha');
+    Captcha::render('widget');
     $captchaHtml = ob_get_clean();
 }
 

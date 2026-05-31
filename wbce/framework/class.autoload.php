@@ -120,9 +120,17 @@ class WbAuto
         //Search dirs for matching class files
         foreach (WbAuto::$Dirs as $sDirVal) {
             foreach (WbAuto::$Types as $sTypeVal) {
-                $sTestFile = $sDirVal . $ClassPath . strtolower(sprintf($sTypeVal, basename($ClassName)));
+                // 1. Original case — required for capitalized files (GroupManager.php,
+                //    Alerts.php, …) on case-sensitive Linux filesystems.
+                $sTestFile = $sDirVal . $ClassPath . sprintf($sTypeVal, basename($ClassName));
                 if (is_file($sTestFile)) {
                     include($sTestFile);
+                    return false;
+                }
+                // 2. Lowercase fallback — legacy files like class.wb.php, class.frontend.php.
+                $sLower = $sDirVal . $ClassPath . strtolower(sprintf($sTypeVal, basename($ClassName)));
+                if ($sLower !== $sTestFile && is_file($sLower)) {
+                    include($sLower);
                     return false;
                 }
             }

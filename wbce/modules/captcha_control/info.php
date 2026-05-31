@@ -13,7 +13,7 @@
 $core = true;
 $module_directory   = 'captcha_control';
 $module_name        = 'Captcha and Advanced-Spam-Protection (ASP) Control';
-$module_function    = 'tool';
+$module_function    = 'tool,initialize';
 $module_version     = '3.0.0';
 $module_platform    = '1.7.0';
 $module_author      = 'Thorn, Luise Hahne, Norbert Heimsath, WBCE Project';
