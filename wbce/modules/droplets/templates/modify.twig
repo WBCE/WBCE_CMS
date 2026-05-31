@@ -76,9 +76,16 @@
         <button class="button ico-cancel" type="button" data-redirect-location="{{ TOOL_URI }}&hilite={{ data.name }}">{{ L_('TEXT:CANCEL') }}</button>
         {% if data.modified_by == 1 or data.admin_edit == 0 %}
             <button  class="button ico-save pos-right" name="save" type="submit">{{ L_('TEXT:SAVE') }}</button>
-            <button  class="button ico-save-back pos-right" name="save_back" type="submit">{{ L_('TEXT:SAVE') }} & {{ L_('TEXT:BACK') }}</button>
+            <button  class="button ico-save-back pos-right" name="save_back" type="submit" data-hide-on-ajax-save>{{ L_('TEXT:SAVE') }} & {{ L_('TEXT:BACK') }}</button>
         {% endif %}
     </div>
 </form>
 </div>
-    {{ CodeMirror('contentedit', 'x-php', {'lineWrapping':true, 'height':'550px'}) }}
+    {{ CodeEditor('contentedit', 'x-php', {
+        'height':    550,
+        'toolbar':   true,
+        'line_wrap': true,
+        'ajax_save': true,
+        'ajax_url':  ajax_url,
+        'ajax_data': {'idKey': idKey}
+    }) }}

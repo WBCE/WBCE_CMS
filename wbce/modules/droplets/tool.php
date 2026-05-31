@@ -163,7 +163,11 @@ if(isset($_GET['do']))
             ))[0];
 
             $aToTwig['content'] = wbce_twig_display(
-                array('data'=>$data),
+                [
+                    'data'     => $data,
+                    'idKey'    => $admin->getIDKEY($droplet_id),
+                    'ajax_url' => WB_URL . '/modules/droplets/ajax_save_droplet.php',
+                ],
                 'modify',
                 true
             );
