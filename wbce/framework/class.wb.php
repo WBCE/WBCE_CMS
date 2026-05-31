@@ -432,6 +432,48 @@ _JsCode;
     }
 
     /**
+     * Update modified_when / modified_by on a page.
+     * Use for page-level changes (settings, visibility, etc.).
+     * For section content changes use touchSection() — it calls this automatically.
+     *
+     * @param  int  $page_id
+     * @return bool
+     */
+    public function touchPage(int $page_id): bool
+    {
+        global $database;
+        return (bool) $database->query(
+            "UPDATE `{TP}pages` SET `modified_when` = ?, `modified_by` = ? WHERE `page_id` = ?",
+            [time(), $this->get_user_id(), $page_id]
+        );
+    }
+
+    /**
+     * Update modified_when / modified_by on a section and its parent page.
+     * page_id is resolved automatically — no need to pass it.
+     * A section change always implies a page change, not the other way around.
+     *
+     * @param  int  $section_id
+     * @return bool
+     */
+    public function touchSection(int $section_id): bool
+    {
+        global $database;
+        $page_id = (int) $database->fetchValue(
+            "SELECT `page_id` FROM `{TP}sections` WHERE `section_id` = ?",
+            [$section_id]
+        );
+        $ok = (bool) $database->query(
+            "UPDATE `{TP}sections` SET `modified_when` = ?, `modified_by` = ? WHERE `section_id` = ?",
+            [time(), $this->get_user_id(), $section_id]
+        );
+        if ($page_id > 0) {
+            $this->touchPage($page_id);
+        }
+        return $ok;
+    }
+
+    /**
      * @brief   Check if there is at least one active section on this page.
      *
      * @param array $page

@@ -378,16 +378,19 @@ log_ok('Settings updated');
 $newDbFields = [
     // table                 field                  definition
     ['{TP}pages',            'visibility_backup',   "VARCHAR(255) NOT NULL DEFAULT '' AFTER `visibility`"],
-    ['{TP}mod_menu_link',    'redirect_type',      "INT           NOT NULL DEFAULT '302' AFTER `target_page_id`"],
+    ['{TP}mod_menu_link',    'redirect_type',       "INT          NOT NULL DEFAULT '302' AFTER `target_page_id`"],
     ['{TP}sections',         'namesection',         "VARCHAR(255) NULL"],
     ['{TP}users',            'signup_checksum',     "varchar(64)  NOT NULL DEFAULT ''"],
-    ['{TP}users',            'signup_timestamp',    "int(11)      NOT NULL DEFAULT '0'"],
-    ['{TP}users',            'signup_timeout',      "int(11)      NOT NULL DEFAULT '0'"],
+    ['{TP}users',            'signup_timestamp',    "INT          NOT NULL DEFAULT 0"],
+    ['{TP}users',            'signup_timeout',      "INT          NOT NULL DEFAULT 0"],
     ['{TP}users',            'signup_confirmcode',  "varchar(64)  NOT NULL DEFAULT ''"],
     // new cols since 1.7.0
     ['{TP}addons',           'core',                "TINYINT(1)   NOT NULL DEFAULT 0"],
-    ['{TP}addons',           'updated_when',        "INT(11)      NOT NULL DEFAULT 0"],
-    ['{TP}addons',           'updated_by',          "INT(11)      NOT NULL DEFAULT 0"],
+    ['{TP}addons',           'updated_when',        "INT          NOT NULL DEFAULT 0"],
+    ['{TP}addons',           'updated_by',          "INT          NOT NULL DEFAULT 0"],
+    ['{TP}groups',           'description',         "VARCHAR(255) NOT NULL DEFAULT '' AFTER `name`"],
+    ['{TP}sections',         'modified_when',       "INT          NOT NULL DEFAULT 0 AFTER `namesection`"],
+    ['{TP}sections',         'modified_by',         "INT          NOT NULL DEFAULT 0 AFTER `modified_when`"],
 ];
 // DB field additions — uses Database::fieldExists() / addField()
 $fldNum = $fldAdd = $fldErr = 0;
@@ -434,6 +437,23 @@ if($fldErr > 0){
     $dbFieldsLog .= ", {$fldErr} errors";    
 }
 log_ok($dbFieldsLog);
+
+// Column type migrations — {TP}sections.publ_start / publ_end: VARCHAR → INT
+// Safe: stored values are numeric strings ('0' or Unix timestamps); MODIFY COLUMN is idempotent.
+log_sep('Column type migrations');
+foreach (['publ_start', 'publ_end'] as $col) {
+    $database->modifyField('{TP}sections', $col, "INT NOT NULL DEFAULT 0");
+    if ($database->hasError()) {
+        $err = $database->getError();
+        if (str_contains($err, 'SQLite')) {
+            log_info("`{TP}sections`.`$col` — SQLite: MODIFY COLUMN skipped (dynamic typing)");
+        } else {
+            log_warn("`{TP}sections`.`$col`: $err");
+        }
+    } else {
+        log_ok("`{TP}sections`.`$col` → INT NOT NULL DEFAULT 0");
+    }
+}
 
 // Users table fixes
 foreach ([
