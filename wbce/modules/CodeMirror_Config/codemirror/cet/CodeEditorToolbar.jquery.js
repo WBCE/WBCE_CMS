@@ -309,22 +309,18 @@ function getCMMode(ext) {
             var initialWrap     = cfg.lineWrapping  || false;
             var initialHeight   = settings.initialHeight;
 
+            // ── AJAX save state (declared here so extraKeys closures capture them) ──
+            var doAjaxSave = null;
+            var lsKey = 'ajaxSave_' + instanceId;
+            var initialAjaxSave = cfg[lsKey] === true;
+            var isAjaxSaveEnabled = function() {
+                var $cb = $('#' + instanceId + ' [data-ace="ajax-save"]');
+                return $cb.length && $cb.is(':checked');
+            };
+
             // ── Measure available width BEFORE any DOM changes ──────────────
             // Must happen before wrap() and before CM init — both can expand
             // the container and corrupt any measurement taken afterwards.
-            var _measuredWidth = (function() {
-                var el = textarea[0].parentElement;
-                while (el && el !== document.body) {
-                    var r = el.getBoundingClientRect();
-                    if (r.width > 20) return Math.floor(r.width);
-                    el = el.parentElement;
-                }
-                return Math.floor(window.innerWidth * 0.85);
-            })();
-
-            // ── Measure available width BEFORE any DOM changes ───────────────
-            // Must happen before wrap() and before CM init — both can expand the
-            // container and corrupt any measurement taken afterwards.
             var _measuredWidth = (function() {
                 var el = textarea[0].parentElement;
                 while (el && el !== document.body) {
@@ -357,12 +353,15 @@ function getCMMode(ext) {
                 styleActiveLine: true,
                 extraKeys: {
                     'Ctrl-S': function (cm) {
-                        cm.save();
-                        textarea.closest('form').trigger('submit');
+                        if (isAjaxSaveEnabled() && doAjaxSave) {
+                            doAjaxSave();
+                        }
+                        // When AjaxSave checkbox is unchecked: Ctrl-S does nothing.
                     },
                     'Cmd-S': function (cm) {
-                        cm.save();
-                        textarea.closest('form').trigger('submit');
+                        if (isAjaxSaveEnabled() && doAjaxSave) {
+                            doAjaxSave();
+                        }
                     },
                     'Ctrl-F': function (cm) {
                         if (typeof CETSearch !== 'undefined') CETSearch.open(cm);
@@ -417,17 +416,17 @@ function getCMMode(ext) {
             // ── Footer ────────────────────────────────────────────────────
             var footHtml = wrapperFootTpl;
             if (settings.ajaxSaveCheckbox && settings.single) {
+                var checkedAttr = initialAjaxSave ? ' checked' : '';
                 var ajaxBtn = '<label title="' + L_('Enable/Disable Ajax Save') +
-                    '"><input type="checkbox" data-ace="ajax-save">AjaxSave</label>';
+                    '"><input type="checkbox" data-ace="ajax-save"' + checkedAttr + '>AjaxSave</label>';
                 footHtml = footHtml.replace('[AjaxSaveBtn]', ajaxBtn);
             } else {
                 footHtml = footHtml.replace('[AjaxSaveBtn]', '');
             }
-            // Wire AJAX save when URL is provided
+            // Wire AJAX save when URL is provided.
+            // doAjaxSave is assigned here; extraKeys closures above capture it by reference.
             if (settings.ajaxUrl) {
-                $(document).on('change', '#' + instanceId + ' [data-ace="ajax-save"]', function() {
-                    var $cb = $(this);
-                    if (!$cb.is(':checked')) return;
+                doAjaxSave = function() {
                     editor.save();
                     var postData = $.extend({}, settings.ajaxData || {},
                         { code_area_text: textarea.val() });
@@ -441,14 +440,26 @@ function getCMMode(ext) {
                         .fail(function() {
                             $hint.addClass('error').text('\u2717 Save failed').delay(2000).fadeOut(function(){ $(this).remove(); });
                         });
-                    $cb.prop('checked', false);
-                });
+                };
+
             }
             $(editor.getWrapperElement()).after(footHtml);
 
-            // ── Sync CM → textarea on form submit ─────────────────────────
-            textarea.closest('form').on('submit', function () {
-                editor.save(); // copies CM value back to the hidden textarea
+            // Persist AjaxSave checkbox state in localStorage (keyed by instanceId)
+            if (settings.ajaxSaveCheckbox) {
+                $(document).on('change', '#' + instanceId + ' [data-ace="ajax-save"]', function() {
+                    updateCEditorCfg(lsKey, this.checked);
+                });
+            }
+
+            // ── Form submit: sync CM → textarea, or intercept for AJAX save ───────
+            // When AjaxSave checkbox is checked, prevent default and run AJAX save instead.
+            textarea.closest('form').on('submit', function (e) {
+                editor.save(); // always sync CM → textarea first
+                if (settings.ajaxUrl && isAjaxSaveEnabled() && doAjaxSave) {
+                    e.preventDefault();
+                    doAjaxSave();
+                }
             });
 
             // ── Toolbar visibility ────────────────────────────────────────
