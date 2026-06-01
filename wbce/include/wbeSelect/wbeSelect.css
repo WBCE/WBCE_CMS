@@ -593,6 +593,11 @@
 }
 
 /* Selected tag — centre everything vertically */
+.cfg-lang.ws--single .ws-tags {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
 .cfg-lang.ws--single .ws-tags .ws-tag {
     display: flex;
     align-items: center;
@@ -600,6 +605,7 @@
     padding-top: 0;
     padding-bottom: 0;
     height: 100%;
+    width: 100%;
 }
 
 .cfg-lang.ws--single .ws-tags .ws-tag .ws-tag-l {
