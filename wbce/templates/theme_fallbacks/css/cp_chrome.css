@@ -546,6 +546,12 @@ label.cp-required::after,
     box-sizing: border-box;
     transition: border-color .12s, box-shadow .12s;
 }
+
+.cp-card select,
+.cp-toggle-section select {    
+    padding: 2px 15px 2px 3px;
+}
+
 .cp-toggle-section textarea,
 .cp-card textarea {
     resize: vertical;

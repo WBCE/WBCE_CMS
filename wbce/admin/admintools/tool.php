@@ -21,7 +21,7 @@ $toolDir = (isset($_GET['tool']) && (trim($_GET['tool']) != '') ? trim($_GET['to
 $doSave = (isset($_POST['save_settings']) || isset($_POST['save_default']) || (isset($_POST['action']) && strtolower($_POST['action']) == 'save'));
 
 // return url if something goes wrong , or back button is used
-$returnToTools = ADMIN_URL . '/admintools/index.php';
+$returnToTools = ADMIN_URL . '/admintools';
 
 // Check if the tool's directory is present on server
 if(is_dir(WB_PATH.'/modules/'.$toolDir) == false){

@@ -183,7 +183,7 @@ a[data-ace-action], .AceBar label { user-select: none; }
     transition: padding 0.3s ease-in-out, color 0.5s linear;
     border: 1px solid #D7D7D7;
     border-bottom: none;
-    background: linear-gradient(0deg, rgb(228,228,228) 0%, rgba(255,255,255,1) 22%, rgb(242,242,242) 100%);
+    background: linear-gradient(0deg, rgb(238 238 238) 0%, rgba(255, 255, 255, 1) 15%, rgb(242, 242, 242) 100%);
     border-radius: 5px 5px 0 0;
 }
 .AceBar.active { padding: 0.25em; }
@@ -225,10 +225,11 @@ a[data-ace-action], .AceBar label { user-select: none; }
 #ascrail2000 { display: none !important; }
 
 /* ── CodeMirror dark mode scrollbar ─────────────────────────────────────── */
-.cm-s-wbce-night ::-webkit-scrollbar       { width: 16px; }
-.cm-s-wbce-night ::-webkit-scrollbar-thumb { background: #abb2b8; }
+.cm-s-wbce-night ::-webkit-scrollbar       { width: 10px; height: 10px }
+.cm-s-wbce-night ::-webkit-scrollbar-thumb { background: #abb2b8; border-radius: 5px; width: 8px; height: 8px}
 .cm-s-wbce-night ::-webkit-scrollbar-thumb:hover { background: #909ca5; }
-.cm-s-wbce-night ::-webkit-scrollbar-track { background: #555; }
+.cm-s-wbce-night ::-webkit-scrollbar-track { background: #555;border-radius: 5px; }
+.cm-s-wbce-night ::-webkit-scrollbar-corner {  background: black; }
 
 /* ── Search & Replace Panel ─────────────────────────────────────────────── */
 .cet-search-panel {

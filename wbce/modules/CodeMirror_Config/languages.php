@@ -18,7 +18,11 @@ return [
     'EN' => [ 
         'module_name'        => 'CodeMirror',
         'module_description' => 'Change Settings of the default code editor.',
-       
+       'TXT' => [
+           'CODEEDITOR_WITH_TOOLBAR' => '<b>Example:</b> CodeEditor with Toolbar',
+           'COT_QUOTE' => 'CodeMirror complete with toolbar, fullscreen mode, night&day mode.<br>'
+           . 'Find implementation instruction in the README.md inside the module directory.',
+       ],
         'MESSAGE' => [
             'CHANGES_SAVE_SUCCESS' => 'Changes have been saved successfully.',
             'CHANGES_SAVE_FAILED'  => 'Saving changes failed.',
@@ -29,6 +33,11 @@ return [
     'DE' => [
         'module_name'        => 'CodeMirror',
         'module_description' => 'Einstellungen für den Code-Editor.',
+        'TXT' => [
+            'CODEEDITOR_WITH_TOOLBAR' => '<b>Beispiel:</b> Code-Editor mit Toolbar',
+            'COT_QUOTE'               => 'CodeMirror komplett mit Toolbar, Vollbildmodus, Tag- und Nachtmodus.<br>'
+                                         . 'Anweisungen zur Implementierung findest du in der README.md im Modulverzeichnis.',
+        ],
         'MESSAGE' => [
             'CHANGES_SAVE_SUCCESS' => 'Die Änderungen wurden erfolgreich gespeichert.',
             'CHANGES_SAVE_FAILED'  => 'Das Speichern der Änderungen ist fehlgeschlagen.',

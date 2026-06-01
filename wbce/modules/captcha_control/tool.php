@@ -16,19 +16,26 @@ $returnUrl = ADMIN_URL . '/admintools/tool.php?tool=captcha_control';
 // ── Save ──────────────────────────────────────────────────────────────────────
 if (isset($_POST['save_settings'])) {
     if (!$admin->checkFTAN()) {
-        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $returnUrl, false);
-        return;
+        (new Alerts())->sessionToast($MESSAGE['GENERIC_SECURITY_ACCESS'], 'error');
+        header('Location: ' . $returnUrl);
+        exit;
     }
 
-    Settings::Set('enabled_captcha', ($_POST['enabled_captcha'] ?? '0') === '1' ? 'true' : 'false');
-    Settings::Set('enabled_asp',     ($_POST['enabled_asp']     ?? '0') === '1' ? 'true' : 'false');
+    $e1 = Settings::Set('enabled_captcha', ($_POST['enabled_captcha'] ?? '0') === '1' ? 'true' : 'false');
+    $e2 = Settings::Set('enabled_asp',     ($_POST['enabled_asp']     ?? '0') === '1' ? 'true' : 'false');
+    $e3 = false;
 
     // Generate HMAC key on first save if missing (e.g. fresh install, key lost)
     if (!defined('CAPTCHA_ALTCHA_HMAC_KEY') || empty(CAPTCHA_ALTCHA_HMAC_KEY)) {
         require_once WB_PATH . '/modules/captcha_control/altcha/AltchaLib.php';
-        Settings::Set('captcha_altcha_hmac_key', AltchaLib::generateHmacKey());
+        $e3 = Settings::Set('captcha_altcha_hmac_key', AltchaLib::generateHmacKey());
     }
 
+    if ($e1 || $e2 || $e3) {
+        (new Alerts())->sessionToast($e1 ?: $e2 ?: $e3, 'error');
+    } else {
+        (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
+    }
     header('Location: ' . $returnUrl);
     exit;
 }

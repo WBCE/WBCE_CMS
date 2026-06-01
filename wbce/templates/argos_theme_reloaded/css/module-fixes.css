@@ -74,6 +74,11 @@ input#admin_tools {
     margin-top: 12px;
     margin-bottom: 6px;
 }
+/* CET (CodeEditor Toolbar): AceBars sit directly above/below — no extra margins */
+.ce-container .CodeMirror {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 /* ! some more styling is done in /jquery/module-fixes.js ! */
 
@@ -124,4 +129,11 @@ input#admin_tools {
 .link-card__content {
     flex: 1;
     padding-right: 20px;
+}
+.cp-settings button, 
+.cp-settings input[type="submit"], 
+.cp-settings input[type="reset"], 
+.cp-settings input[type="button"] {
+    margin-bottom: 0;
+    min-width: auto;
 }
