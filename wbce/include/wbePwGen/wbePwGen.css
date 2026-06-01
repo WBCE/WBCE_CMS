@@ -1,0 +1,138 @@
+/**
+ * wbe_pw_gen — Password Strength Widget
+ * Vanilla CSS, no dependencies.
+ * Attach via WbePwGen.attach() in wbe_pw_gen.js
+ */
+
+/* ── Wrapper ───────────────────────────────────────────────── */
+.wpg-wrap {
+    display: none;           /* hidden until first keystroke */
+    margin-top: 6px;
+}
+.wpg-wrap.wpg-visible {
+    display: block;
+    animation: wpgFadeIn .2s ease both;
+}
+@keyframes wpgFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Strength bar ──────────────────────────────────────────── */
+.wpg-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+}
+.wpg-segments {
+    display: flex;
+    gap: 3px;
+    flex: 1;
+}
+.wpg-segments span {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--wpg-empty, #e2e8f0);
+    transition: background .25s ease;
+}
+
+/* Filled segment colours per score level */
+.wpg-segments span.wpg-on.wpg-s1 { background: #ef4444; }
+.wpg-segments span.wpg-on.wpg-s2 { background: #f97316; }
+.wpg-segments span.wpg-on.wpg-s3 { background: #eab308; }
+.wpg-segments span.wpg-on.wpg-s4 { background: #84cc16; }
+.wpg-segments span.wpg-on.wpg-s5 { background: #22c55e; }
+
+.wpg-label {
+    font-size: .73rem;
+    font-weight: 700;
+    min-width: 72px;
+    text-align: right;
+    letter-spacing: .01em;
+    transition: color .25s;
+}
+.wpg-label.wpg-s1 { color: #ef4444; }
+.wpg-label.wpg-s2 { color: #f97316; }
+.wpg-label.wpg-s3 { color: #ca8a04; }
+.wpg-label.wpg-s4 { color: #65a30d; }
+.wpg-label.wpg-s5 { color: #16a34a; }
+
+/* ── Hints checklist ───────────────────────────────────────── */
+.wpg-hints {
+    list-style: none;
+    margin: 0 0 6px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 20px;
+}
+.wpg-hints li {
+    font-size: .73rem;
+    color: var(--wpg-hint-idle, #94a3b8);
+    padding-left: 15px;
+    position: relative;
+    transition: color .2s;
+}
+.wpg-hints li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: #cbd5e1;
+    transition: color .2s;
+}
+.wpg-hints li.wpg-ok {
+    color: #16a34a;
+}
+.wpg-hints li.wpg-ok::before {
+    content: '✔';
+    color: #16a34a;
+}
+.wpg-hints li.wpg-bad {
+    color: #dc2626;
+}
+.wpg-hints li.wpg-bad::before {
+    content: '✖';
+    color: #dc2626;
+}
+
+/* ── Invalid-char warning ──────────────────────────────────── */
+.wpg-warn {
+    display: none;
+    font-size: .73rem;
+    background: #fff5f5;
+    border: 1px solid #fca5a5;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #dc2626;
+    line-height: 1.55;
+    margin-top: 4px;
+}
+.wpg-warn.wpg-warn-visible {
+    display: block;
+}
+.wpg-warn-top {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+.wpg-warn-chars {
+    font-family: monospace;
+    font-size: .8rem;
+    font-weight: 700;
+    background: rgba(220,38,38,.1);
+    padding: 0 4px;
+    border-radius: 3px;
+}
+.wpg-allowed {
+    margin-top: 3px;
+    color: #64748b;
+    font-size: .7rem;
+}
+.wpg-allowed code {
+    color: #334155;
+    font-family: monospace;
+    letter-spacing: .04em;
+}
