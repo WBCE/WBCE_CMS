@@ -38,8 +38,6 @@ if (!$admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL . '/pages/sections.php?page_id=' . $page_id);
 }
-// After check print the header
-$admin->print_header();
 /*
 if( (!($page_id = $admin->checkIDKEY('page_id', 0, $_SERVER['REQUEST_METHOD']))) )
 {
@@ -135,12 +133,14 @@ if ($target == 'saveandback') {
     $target_url = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id;
 }
 
-// Check for error or print success message
+// Check for error or redirect with toast
 if ($database->is_error()) {
+    $admin->print_header();
     $admin->print_error($database->get_error(), $target_url);
+    $admin->print_footer();
 } else {
-    $admin->print_success($MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'], $target_url);
+    $alerts = new Alerts();
+    $alerts->sessionToast($MESSAGE['PAGES_SECTIONS_PROPERTIES_SAVED'], 'success');
+    header('Location: ' . $target_url);
+    exit;
 }
-
-// Print admin footer
-$admin->print_footer();

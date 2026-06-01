@@ -117,6 +117,10 @@ switch ($action) {
             if (file_exists($sAddFile)) {
                 require $sAddFile;
             }
+            $alerts = new Alerts();
+            $alerts->sessionToast($TEXT['SUCCESS'], 'success');
+            header('Location: ' . ADMIN_URL . '/pages/sections.php?page_id=' . $page_id);
+            exit;
         } elseif ($database->is_error()) {
             if ($admin_header) {
                 $admin->print_header();
@@ -186,9 +190,9 @@ switch ($action) {
         }
 
         // Load css files with jquery
-        // Include jscalendar-setup
-        $jscal_use_time = true; // tell to use a clock, too
-        require_once WB_PATH . "/include/jscalendar/wb-setup.php";
+        // Include Flatpickr setup
+        $fp_use_time = true; // enable timepicker
+        require_once WB_PATH . '/include/date_time_picker/wbce_setup.php';
 
         // Get display name of person who last modified the page
         $user = $admin->get_user_details($aPage['modified_by']);
@@ -365,13 +369,13 @@ switch ($action) {
                     if ((int)$section['publ_start'] == 0) {
                         $oTemplate->set_var('VALUE_PUBL_START', '');
                     } else {
-                        $oTemplate->set_var('VALUE_PUBL_START', date($jscal_format, (int)$section['publ_start'] + (int)TIMEZONE));
+                        $oTemplate->set_var('VALUE_PUBL_START', date($fp_php_format, (int)$section['publ_start'] + (int)TIMEZONE));
                     }
-                    // set calendar start values
+                    // set calendar end values
                     if ((int)$section['publ_end'] == 0) {
                         $oTemplate->set_var('VALUE_PUBL_END', '');
                     } else {
-                        $oTemplate->set_var('VALUE_PUBL_END', date($jscal_format, (int)$section['publ_end'] + (int)TIMEZONE));
+                        $oTemplate->set_var('VALUE_PUBL_END', date($fp_php_format, (int)$section['publ_end'] + (int)TIMEZONE));
                     }
                     // Insert icons up and down.
                     // When D&D is active: links stay in DOM (dragdrop.js detects rows via href)
@@ -444,15 +448,13 @@ switch ($action) {
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
                     $oTemplate->set_var(
                         array(
-                            'jscal_ifformat' => $jscal_ifformat,
-                            'jscal_firstday' => $jscal_firstday,
-                            'jscal_today' => $jscal_today,
-                            'start_date' => 'start_date' . $section['section_id'],
-                            'end_date' => 'end_date' . $section['section_id'],
-                            'trigger_start' => 'trigger_start' . $section['section_id'],
-                            'trigger_end' => 'trigger_stop' . $section['section_id'],
-                            'showsTime' => (isset($jscal_use_time) && $jscal_use_time == true) ? "true" : "false",
-                            'timeFormat' => "24",
+                            'fp_locale_key'   => $fp_locale_key,
+                            'fp_dateFormat'   => $fp_dateFormat,
+                            'fp_use_time'     => $fp_use_time ? 'true' : 'false',
+                            'start_date'      => 'start_date' . $section['section_id'],
+                            'end_date'        => 'end_date' . $section['section_id'],
+                            'trigger_start'   => 'trigger_start' . $section['section_id'],
+                            'trigger_end'     => 'trigger_stop' . $section['section_id'],
                         )
                     );
                 }
