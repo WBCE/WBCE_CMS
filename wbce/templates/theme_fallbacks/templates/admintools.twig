@@ -151,12 +151,16 @@ $(document).ready(function() {
     });
 
     // -----------------------------------------------------------------
-    //  Drag & drop reorder
+    //  Most-used-first reorder
+    //  localStorage data is always preserved so the history survives
+    //  toggling the setting off and back on.
     // -----------------------------------------------------------------
+    {% if cfg.most_used_first %}
     $('#link_cards .link-card').rearangeByLocalStorage({
         storageKey: 'AdminTools',
         parentClass: 'link-cards-grid'
     });
+    {% endif %}
 
     // -----------------------------------------------------------------
     //  Search filter
