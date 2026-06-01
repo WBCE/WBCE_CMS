@@ -42,11 +42,15 @@ defined("WB_PATH") or define("WB_PATH", dirname(__DIR__));
 define('WBCE_FILE_BASED_SETTINGS', WB_PATH . '/var/wbce_file_based_settings.php');
 wbce_load_file_based_settings();
 
-// WBCE_DEBUG / WB_DEBUG — alias bridge
-// Either constant may be set in config.php or var/wbce_file_based_settings.php.
+// WBCE_DEBUG / WB_DEBUG — backward-compatibility bridge
 // `WB_DEBUG` is @deprecated since WBCE 1.7.0; use WBCE_DEBUG instead.
-if (defined('WB_DEBUG')   && !defined('WBCE_DEBUG')) define('WBCE_DEBUG', WB_DEBUG);
-if (defined('WBCE_DEBUG') && !defined('WB_DEBUG'))   define('WB_DEBUG',   WBCE_DEBUG); 
+if (defined('WB_DEBUG') && !defined('WBCE_DEBUG')) {
+    define('WBCE_DEBUG', WB_DEBUG); define('DEPRECATED_WB_DEBUG', true);
+}
+// equalize WB_DEBUG value if WBCE_DEBUG is defined (some modules may need it)
+if (defined('WBCE_DEBUG') && !defined('WB_DEBUG')) {
+    define('WB_DEBUG', WBCE_DEBUG);
+}
 
 // INITIALIZE AUTOLOADER
 require_once __DIR__ . "/class.autoload.php";
@@ -283,7 +287,7 @@ function SanitizeHttpReferer(): string
  * Setup PHP error reporting according to WBCE configuration.
  *
  * Priority:
- *   1. WBCE_DEBUG === true         → Maximum error reporting (development)
+ *   1. WBCE_DEBUG === true        → Maximum error reporting (development)
  *   2. ER_LEVEL setting           → Specific configuration
  *   3. php.ini default            → Fallback
  */

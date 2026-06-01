@@ -14,12 +14,10 @@ return [
             'PLAIN_VIEW'      => 'Plain View',
             'COLOR_VIEW'      => 'Color View',
             'TABLE_VIEW'      => 'Table View',
-                 
+
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'the constant <code>%s</code> already exists! Is it hardcoded in the <code>/config.php</code>?',
-            'HARDCODED_PARAM_REMOVE'   => 'IMPORTANT: Remove the following hardcoded constant to make it configurable via this tool:',
-            'HARDCODED_PARAM_DETECTED' => 'The constant %s is hardcoded, no change possible.',
+            'WB_DEBUG_DEPRECATED'      => '<b>Notice:</b> <code>WB_DEBUG</code> appears to be set in <code>config.php</code>. This constant is deprecated since WBCE 1.7.0 — please remove it from <code>config.php</code>. Use <code>WBCE_DEBUG</code> instead (see button below). Once <code>WB_DEBUG</code> has been removed, <code>WBCE_DEBUG</code> can be toggled here.',
         ]
     ],
     
@@ -36,9 +34,7 @@ return [
                  
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'die Konstant <code>%s</code> existiert bereits! Ist sie in der <code>/config.php</code> hartkodiert?',
-            'HARDCODED_PARAM_REMOVE'   => 'WICHTIG: Die folgende Konstante darf nicht hartkodiert sein, wenn sie über dieses Tool einstellbar sein soll:',
-            'HARDCODED_PARAM_DETECTED' => 'Die Konstante %s ist hartkodiert, Umschalten nicht möglich.',
+            'WB_DEBUG_DEPRECATED'      => '<b>Hinweis:</b> <code>WB_DEBUG</code> scheint in der <code>config.php</code> gesetzt zu sein. Diese Konstante ist seit WBCE 1.7.0 veraltet (deprecated) — bitte aus der <code>config.php</code> entfernen. Stattdessen bitte <code>WBCE_DEBUG</code> (siehe Button unten) verwenden. Sobald die <code>WB_DEBUG</code>-Konstante gelöscht wurde, kann <code>WBCE_DEBUG</code> hier ein-/ausgeschaltet werden.',
         ]
     ],
    
@@ -54,9 +50,7 @@ return [
             'TABLE_VIEW'      => 'Tabelweergave',
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'de constante <code>%s</code> bestaat al! Is hij hardcoded in het <code>/config.php</code>-bestand?',
-            'HARDCODED_PARAM_REMOVE'   => 'BELANGRIJK: Verwijder de volgende hardcoded constante om hem configureerbaar te maken via dit hulpmiddel:',
-            'HARDCODED_PARAM_DETECTED' => 'De constante %s is hardcoded, wijzigen is niet mogelijk.',
+            'WB_DEBUG_DEPRECATED'      => '<b>Opmerking:</b> <code>WB_DEBUG</code> lijkt ingesteld te zijn in <code>config.php</code>. Deze constante is verouderd (deprecated) sinds WBCE 1.7.0 — verwijder hem uit <code>config.php</code>. Gebruik in plaats daarvan <code>WBCE_DEBUG</code> (zie knop hieronder). Zodra <code>WB_DEBUG</code> is verwijderd, kan <code>WBCE_DEBUG</code> hier worden in-/uitgeschakeld.',
         ]
     ],
 
@@ -72,9 +66,7 @@ return [
             'TABLE_VIEW'      => 'Widok tabelaryczny',
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'stała <code>%s</code> już istnieje! Czy jest zakodowana na stałe w pliku <code>/config.php</code>?',
-            'HARDCODED_PARAM_REMOVE'   => 'WAŻNE: Usuń następującą zakodowaną na stałe stałą, aby była konfigurowalna za pomocą tego narzędzia:',
-            'HARDCODED_PARAM_DETECTED' => 'Stała %s jest zakodowana na stałe, zmiana nie jest możliwa.',
+            'WB_DEBUG_DEPRECATED'      => '<b>Uwaga:</b> <code>WB_DEBUG</code> wydaje się być ustawiona w <code>config.php</code>. Ta stała jest przestarzała (deprecated) od WBCE 1.7.0 — usuń ją z <code>config.php</code>. Zamiast niej użyj <code>WBCE_DEBUG</code> (patrz przycisk poniżej). Po usunięciu <code>WB_DEBUG</code> przełącznik <code>WBCE_DEBUG</code> będzie dostępny tutaj.',
         ]
     ],
 
@@ -90,9 +82,7 @@ return [
             'TABLE_VIEW'      => 'Tabellvisning',
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'konstanten <code>%s</code> finnes allerede! Er den hardkodet i <code>/config.php</code>?',
-            'HARDCODED_PARAM_REMOVE'   => 'VIKTIG: Fjern følgende hardkodede konstant for å gjøre den konfigurerbar via dette verktøyet:',
-            'HARDCODED_PARAM_DETECTED' => 'Konstanten %s er hardkodet, endring er ikke mulig.',
+            'WB_DEBUG_DEPRECATED'      => '<b>Merknad:</b> <code>WB_DEBUG</code> ser ut til å være satt i <code>config.php</code>. Denne konstanten er utdatert (deprecated) siden WBCE 1.7.0 — fjern den fra <code>config.php</code>. Bruk <code>WBCE_DEBUG</code> i stedet (se knappen nedenfor). Når <code>WB_DEBUG</code> er fjernet, kan <code>WBCE_DEBUG</code> slås av/på her.',
         ]
     ],
 
@@ -108,9 +98,7 @@ return [
             'TABLE_VIEW'      => 'Vue tableau',
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'la constante <code>%s</code> existe déjà ! Est-elle codée en dur dans le fichier <code>/config.php</code> ?',
-            'HARDCODED_PARAM_REMOVE'   => 'IMPORTANT : Supprimez la constante codée en dur suivante pour la rendre configurable via cet outil :',
-            'HARDCODED_PARAM_DETECTED' => 'La constante %s est codée en dur, modification impossible.',
+           'WB_DEBUG_DEPRECATED'      => '<b>Remarque :</b> <code>WB_DEBUG</code> semble être définie dans <code>config.php</code>. Cette constante est obsolète (deprecated) depuis WBCE 1.7.0 — veuillez la supprimer de <code>config.php</code>. Utilisez plutôt <code>WBCE_DEBUG</code> (voir le bouton ci-dessous). Une fois <code>WB_DEBUG</code> supprimée, <code>WBCE_DEBUG</code> pourra être activée/désactivée ici.',
         ]
     ],
 
@@ -126,9 +114,7 @@ return [
             'TABLE_VIEW'      => 'Vista a tabella',
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'la costante <code>%s</code> esiste già! È hardcoded nel file <code>/config.php</code>?',
-            'HARDCODED_PARAM_REMOVE'   => 'IMPORTANTE: Rimuovi la seguente costante hardcoded per renderla configurabile tramite questo strumento:',
-            'HARDCODED_PARAM_DETECTED' => 'La costante %s è hardcoded, modifica non possibile.',
+             'WB_DEBUG_DEPRECATED'      => '<b>Nota:</b> <code>WB_DEBUG</code> sembra essere impostata in <code>config.php</code>. Questa costante è deprecata da WBCE 1.7.0 — rimuoverla da <code>config.php</code>. Utilizzare invece <code>WBCE_DEBUG</code> (vedi il pulsante in basso). Una volta rimossa <code>WB_DEBUG</code>, sarà possibile attivare/disattivare <code>WBCE_DEBUG</code> qui.',
         ]
     ],
 
@@ -144,9 +130,7 @@ return [
             'TABLE_VIEW'      => 'Vista en tabla',
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'la constante <code>%s</code> ya existe! ¿Está hardcodeada en el archivo <code>/config.php</code>?',
-            'HARDCODED_PARAM_REMOVE'   => 'IMPORTANTE: Elimina la siguiente constante hardcodeada para hacerla configurable mediante esta herramienta:',
-            'HARDCODED_PARAM_DETECTED' => 'La constante %s está hardcodeada, no es posible cambiarla.',
+            'WB_DEBUG_DEPRECATED'      => '<b>Aviso:</b> <code>WB_DEBUG</code> parece estar definida en <code>config.php</code>. Esta constante está obsoleta (deprecated) desde WBCE 1.7.0 — elimínala de <code>config.php</code>. Usa <code>WBCE_DEBUG</code> en su lugar (ver botón abajo). Una vez eliminada <code>WB_DEBUG</code>, podrás activar/desactivar <code>WBCE_DEBUG</code> aquí.',
         ]
     ],
 
@@ -162,9 +146,7 @@ return [
             'TABLE_VIEW'      => 'Табличный вид',
         ],
         'MSG' => [
-            'IS_HARDCODED_PARAM'       => 'константа <code>%s</code> уже существует! Она жестко закодирована в <code>/config.php</code>?',
-            'HARDCODED_PARAM_REMOVE'   => 'ВАЖНО: Удалите следующую жестко закодированную константу, чтобы сделать её настраиваемой через этот инструмент:',
-            'HARDCODED_PARAM_DETECTED' => 'Константа %s жестко закодирована, изменение невозможно.',
+            'WB_DEBUG_DEPRECATED'      => '<b>Примечание:</b> <code>WB_DEBUG</code>, по всей видимости, установлена в <code>config.php</code>. Эта константа устарела (deprecated) начиная с WBCE 1.7.0 — удалите её из <code>config.php</code>. Используйте вместо неё <code>WBCE_DEBUG</code> (см. кнопку ниже). После удаления <code>WB_DEBUG</code> переключатель <code>WBCE_DEBUG</code> станет доступен здесь.',
         ]
     ],
 ];

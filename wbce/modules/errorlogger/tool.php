@@ -32,7 +32,6 @@ if (!$admin->get_permission('admintools')) {
 $link = ADMIN_URL.'/admintools/tool.php?tool=errorlogger';
 $del = "javascript:confirm_link('Are you sure you want to delete the errorlog?','{$link}&delete=1');";
 
-Lang::loadLanguage(__DIR__);
 
 // Use colored view, stored in cookie
 $cookie = 'errorlog_colors';
@@ -75,45 +74,14 @@ if (isset($_GET['delete'])) {
     }
 }
 
-// ── File Based Settings ──────────────────────────────────────────────────────
-// Generate the PDO_CANONICAL_DEBUG constant 
-$arrHard = []; // collect array of preexisting, hardcoded Constants
-$fileBasedSettings = [
-    'PDO_CANONICAL_DEBUG',
-    'SQL_DEBUG',
-    'WBCE_DEBUG'
-];
-foreach($fileBasedSettings as $cfg){
-    $isHardcoded = defined($cfg) && !Settings::fileBasedSettingExists($cfg);
-    if($isHardcoded){
-        $arrHard[] = $cfg;
-    }
-    if (isset($_GET[$cfg]) && in_array($_GET[$cfg], [0,1])) {
-       $state = (bool) $_GET[$cfg];
-       Settings::setFileBasedSetting($cfg, (bool) $state);
-       header("Location: ".$link);   
+// ── File Based Settings — toggle handlers ────────────────────────────────────
+foreach (['PDO_CANONICAL_DEBUG', 'SQL_DEBUG', 'WBCE_DEBUG'] as $cfg) {
+    if (isset($_GET[$cfg]) && in_array($_GET[$cfg], ['0', '1'], true)) {
+        Settings::setFileBasedSetting($cfg, (bool) $_GET[$cfg]);
+        header("Location: " . $link);
+        exit;
     }
 }
-$constantsMsg = '<ul>';
-foreach($arrHard as $const){
-    $constantsMsg .= "<li>&bull; ".L_('MSG:IS_HARDCODED_PARAM', $const) ."</li>";
-}
-$constantsMsg .= '</ul>';
-
-// Generate the SQL_DEBUG constant
-if (isset($_GET['check_sql']) && in_array($_GET['check_sql'], [0,1])) {
-   $state = (bool) $_GET['check_sql'];
-   Settings::setFileBasedSetting('SQL_DEBUG', (bool) $state);
-   header("Location: ".$link);   
-}
-
-// Toggle WBCE_DEBUG via GET parameter
-if (isset($_GET['wbce_debug']) && in_array($_GET['wbce_debug'], [0,1])) {
-   $state = (bool) $_GET['wbce_debug'];
-   Settings::setFileBasedSetting('WBCE_DEBUG', (bool) $state);
-   header("Location: ".$link);
-}
-
 // ── END: File Based Settings ─────────────────────────────────────────────────
 
 
@@ -229,32 +197,26 @@ if ($view == '0' or $view == '1') {
     }
 }
 
-function debugToggleLink(
-        string $url,    // the URL the parameters are sent with
-        string $param,  // the GET parameter that will be sent
-        string $label   // the label of the toggle button
-    ): string {
-    global $arrHard; // inform if constant is hardcoded
-    $isHardcoded = in_array($param, $arrHard);
-    $state   = defined($param) ? (int) constant($param) : 0;
-    $icon    = $state
+function debugToggleLink(string $url, string $param, string $label): string {
+    $state = defined($param) ? (int) constant($param) : 0;
+    $icon  = $state
         ? '<span style="color:green"><i class="fa fa-check-circle"></i></span>'
         : '<span style="color:red"><i class="fa fa-ban"></i></span>';
-    $next    = $state ? '0' : '1';
-    if($isHardcoded){
-        $str = L_('MSG:HARDCODED_PARAM_DETECTED', $param);
+    $next  = $state ? '0' : '1';
+    // WBCE_DEBUG is locked while WB_DEBUG is still hardcoded in config.php —
+    // DEPRECATED_WB_DEBUG is set by initialize.php in exactly that case.
+    if ($param === 'WBCE_DEBUG' && defined('DEPRECATED_WB_DEBUG')) {
+        $str = L_('MSG:HARDCODED_PARAM_DETECTED', 'WB_DEBUG');
         return "<li><a class='disabled' title='{$str}'>{$icon} {$label}</a></li>";
     }
     return "<li><a href=\"{$url}&{$param}={$next}\">{$icon} {$label}</a></li>";
 }
 ?>
 </div>
-<?php 
-if(count($arrHard) > 0): ?>
+<?php if (defined('DEPRECATED_WB_DEBUG')): ?>
 <br>
 <div class="constants-info">
-    <p><b><?=$MSG['HARDCODED_PARAM_REMOVE']?></b></p>
-    <?=$constantsMsg?>
+    <p><?= $MSG['WB_DEBUG_DEPRECATED'] ?></p>
 </div>
 <?php endif ?>
 <ul class="footer-links">
