@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Accés denegat. Comprova el nom d\'usuari i la 
 $MSG['db_unknown_db']         = 'La base de dades no existeix. Crea-la primer o comprova el nom.';
 $MSG['db_connection_refused'] = 'No s\'ha pogut connectar amb el host. Comprova el nom del host i el port.';
 $MSG['db_connection_failed']  = 'La connexió ha fallat: %s';
+
+$TXT['upgrade_warning']       = "L'script d'actualització modifica la base de dades i l'estructura de fitxers existents. Es <strong>recomana encaridament</strong> crear una còpia de seguretat completa dels fitxers i de tota la base de dades abans de continuar.";

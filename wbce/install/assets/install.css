@@ -60,6 +60,8 @@ body::before {
   text-align: center;
   margin-bottom: 20px;
   animation: fadeDown .5s ease both;
+  position: relative;
+  z-index: 10;
 }
 .logo-wrap_ {
   display: inline-flex;
@@ -398,9 +400,14 @@ input.error:focus, select.error:focus {
 .page-footer {
   text-align: center;
   margin-top: 28px;
-  font-size: .78rem;
+  font-size: .7rem;
   color: var(--text-muted);
   animation: fadeUp .4s .45s ease both;
+}
+.page-footer a {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-decoration: none;
 }
 span.version-badge, span.lang-badge {
   display: inline-flex;
@@ -511,7 +518,7 @@ span.lang-badge.curr-lang{
 }
 .pw-gen-wrap input { flex: 1; }
 
-#btn-gen-pw {
+.btn-pw-action {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -528,14 +535,14 @@ span.lang-badge.curr-lang{
   transition: background .15s;
   flex-shrink: 0;
 }
-#btn-gen-pw:hover { background: var(--blue-muted, #C5D8F5); }
+.btn-pw-action:hover { background: var(--blue-muted, #C5D8F5); }
 
 .pw-generated-hint {
   grid-column: 2;
   font-size: .75rem;
   color: var(--text-muted, #94a3b8);
-  min-height: 1.2em;
 }
+.pw-generated-hint:empty { display: none; }
 .pw-generated-hint.visible { color: var(--green, #16a34a); }
 
 /* ── Validation: wrong fields (from field_error()) ───────── */

@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Ligipääs keelatud. Kontrolli kasutajanime ja 
 $MSG['db_unknown_db']         = 'Andmebaasi ei eksisteeri. Loo see esmalt või kontrolli nime.';
 $MSG['db_connection_refused'] = 'Ei õnnestunud hostiga ühendust luua. Kontrolli hosti nime ja porti.';
 $MSG['db_connection_failed']  = 'Ühendus ebaõnnestus: %s';
+
+$TXT['upgrade_warning']         = 'Uuenduse skript muudab olemasolevat andmebaasi ja failide struktuuri. <strong>Tungivalt soovitatav</strong> on enne jätkamist luua täielik varukoopia failidest ja kogu andmebaasist.';

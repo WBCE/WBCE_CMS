@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Přístup odepřen. Zkontroluj uživatelské jm
 $MSG['db_unknown_db']         = 'Databáze neexistuje. Nejprve ji vytvoř nebo zkontroluj název.';
 $MSG['db_connection_refused'] = 'Nepodařilo se připojit k hostovi. Zkontroluj název hosta a port.';
 $MSG['db_connection_failed']  = 'Připojení selhalo: %s';
+
+$TXT['upgrade_warning']         = 'Aktualizační skript upravuje stávající databázi a strukturu souborů. <strong>Důrazně se doporučuje</strong> vytvořit úplnou zálohu souborů a celé databáze před pokračováním.';

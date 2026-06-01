@@ -34,6 +34,8 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?= $TXT['page_title'] ?></title>
         <link href="./assets/install.css" rel="stylesheet" type="text/css">
+        <link href="../include/wbeSelect/wbeSelect.css" rel="stylesheet" type="text/css">
+        <link href="../include/wbePwGen/wbePwGen.css" rel="stylesheet" type="text/css">
         <link href="./favicon.png" rel="icon" type="image/png">
     </head>
     <body>
@@ -53,14 +55,16 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
 
                 <?php if (!empty($languages)): ?>
                     <div class="language-switcher">
-                        <?php foreach ($languages as $lang):
-                            $cls = $lang['current'] ? ' curr-lang' : '';
-                            ?>
-                            <span class="lang-badge<?= $cls ?>">
-                                <img src="../languages/<?= $lang['code'] ?>.png" alt="">
-                                <a href="<?= htmlspecialchars($lang['url']) ?>"><?= htmlspecialchars($lang['name']) ?></a>
-                            </span>
-                        <?php endforeach ?>
+                        <select id="installer-lang-select" style="width:220px">
+                            <?php foreach ($languages as $lang): ?>
+                            <option value="<?= htmlspecialchars($lang['url']) ?>"
+                                    data-left="../languages/<?= $lang['code'] ?>.svg"
+                                    data-right="<?= htmlspecialchars($lang['code']) ?>"
+                                    <?= $lang['current'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($lang['name']) ?>
+                            </option>
+                            <?php endforeach ?>
+                        </select>
                     </div>
                 <?php endif ?>
 
@@ -146,12 +150,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                             <div class="req-item"><span class="req-label">📁 modules/</span><?= $sDirModules ?></div>
                             <div class="req-item"><span class="req-label">📁 var/</span><?= $sDirVar ?></div>
                             <div class="req-item"><span class="req-label">📁 temp/</span><?= $sDirTemp ?></div>
-                        </div>
-                        <?php if ($installFlag == false): ?>
-                            <div class="warning-box">
-                                <?= $TXT['btn_check_settings'] ?>        
-                            </div>   
-                        <?php endif ?>		
+                        </div>	
                     </div>
                 </div>
                 <?php if ($installFlag == false): ?>
@@ -281,25 +280,25 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                             </div>
 
                             <div class="field-row">
-                                <label for="table_prefix"><?= $TXT['lbl_db_prefix'] ?></label>
-                                <input <?= field_error('table_prefix') ?> type="text" id="table_prefix"
-                                                                         tabindex="9" name="table_prefix"
-                                                                         pattern="[a-z0-9_]+" value="<?= $sTablePrefix ?>" required>
-                                <span class="field-hint">[a-z0-9_]</span>
-                            </div>
-
-                            <div class="field-row">
                                 <label for="database_username"><?= $TXT['lbl_db_user'] ?></label>
                                 <input <?= field_error('database_username') ?> type="text" id="database_username"
-                                                                              tabindex="10" name="database_username"
+                                                                              tabindex="9" name="database_username"
                                                                               value="<?= $sDatabaseUsername ?>" required>
                             </div>
 
                             <div class="field-row">
                                 <label for="database_password"><?= $TXT['lbl_db_pass'] ?></label>
                                 <input type="password" id="database_password"
-                                       tabindex="11" name="database_password"
+                                       tabindex="10" name="database_password"
                                        value="<?= $sDatabasePassword ?>">
+                            </div>
+
+                            <div class="field-row">
+                                <label for="table_prefix"><?= $TXT['lbl_db_prefix'] ?></label>
+                                <input <?= field_error('table_prefix') ?> type="text" id="table_prefix"
+                                                                         tabindex="11" name="table_prefix"
+                                                                         pattern="[a-z0-9_]+" value="<?= $sTablePrefix ?>" required>
+                                <span class="field-hint">[a-z0-9_]</span>
                             </div>
 
                             <!-- AJAX test row -->
@@ -319,7 +318,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                     </div>
 
                     <!-- ── Step 4 — Admin Account ─────────────────────── -->
-                    <div class="card">
+                    <div class="card" id="step4-card" style="display:none">
                         <div class="card-header">
                             <div class="step-badge">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -352,11 +351,19 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                                                                                tabindex="14" name="admin_password"
                                                                                minlength="12" value="<?= $sAdminPassword ?>" required
                                                                                autocomplete="new-password">
-                                    <button type="button" id="btn-gen-pw" title="<?= $TXT['btn_gen_password'] ?>">
-    <?= $TXT['btn_gen_password'] ?>
+                                    <button type="button" id="btn-gen-pw" class="btn-pw-action" title="<?= $TXT['btn_gen_password'] ?>">
+                                        <?= $TXT['btn_gen_password'] ?>
+                                    </button>
+                                    <button type="button" id="btn-copy-pw" class="btn-pw-action" style="display:none" title="<?= $TXT['btn_copy_password'] ?? 'Copy' ?>">
+                                        &#x1F4CB;&#xFE0E;
                                     </button>
                                 </div>
                                 <span class="pw-generated-hint" id="pw-hint" aria-live="polite"></span>
+                            </div>
+
+                            <div class="field-row">
+                                <label></label>
+                                <div id="pw-strength-wrap" class="wpg-wrap"></div>
                             </div>
 
                             <div class="field-row">
@@ -373,7 +380,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
 
                     <!-- ── Step 5 — Install ───────────────────────────── -->
 
-                    <div class="card">
+                    <div class="card" id="step5-card" style="display:none">
                         <div class="card-header">
                             <div class="step-badge">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -432,7 +439,11 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                 </div>
             </div>
 
-            <div class="page-footer"></div>
+            <div class="page-footer">
+                <a href="https://www.wbce.org/" title="Visit wbce.org">WBCE CMS</a>
+                is released under the
+                <a href="https://www.gnu.org/licenses/gpl.html" title="GNU General Public License">GNU General Public License</a>
+            </div>
 
         </div><!-- /page-wrapper -->
 
@@ -450,6 +461,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                 dbRetest: <?= json_encode($TXT['db_retest']) ?>,
                 btnTest: <?= json_encode($TXT['btn_test_db']) ?>,
                 pwCopyHint: <?= json_encode($TXT['pw_copy_hint']) ?>,
+                pwCopied:   <?= json_encode($TXT['pw_copied'] ?? '✔ Copied') ?>,
                 installing: <?= json_encode($TXT['progress_btn_installing'] ?? 'Installing…') ?>,
                 phaseStarting: <?= json_encode($TXT['progress_starting'] ?? 'Starting…') ?>,
                 phaseDone: <?= json_encode($TXT['progress_done'] ?? 'Complete') ?>,
@@ -476,5 +488,17 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
         </script>
         <script src="./assets/install.js" type="text/javascript"></script>
         <script src="./assets/install_stream.js" type="text/javascript"></script>
+        <script src="../include/wbePwGen/wbePwGen.js"></script>
+        <script src="../include/jquery/jquery-min.js"></script>
+        <script src="../include/wbeSelect/wbeSelect.jquery.js"></script>
+        <script>
+        jQuery(function ($) {
+            var $sel = $('#installer-lang-select');
+            $sel.wbeSelect({ customSelector: 'cfg-lang' });
+            $sel.on('change', function () { window.location = this.value; });
+        });
+
+        WbePwGen.attach('admin_password', 'pw-strength-wrap', <?= json_encode($wpg_labels) ?>);
+        </script>
     </body>
 </html>

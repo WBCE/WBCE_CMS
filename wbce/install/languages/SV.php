@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Åtkomst nekad. Kontrollera användarnamn och l
 $MSG['db_unknown_db']         = 'Databasen finns inte. Skapa den först eller kontrollera namnet.';
 $MSG['db_connection_refused'] = 'Kunde inte ansluta till värden. Kontrollera värdnamn och port.';
 $MSG['db_connection_failed']  = 'Anslutning misslyckades: %s';
+
+$TXT['upgrade_warning']         = 'Uppdateringsskriptet ändrar den befintliga databasen och filstrukturen. Det <strong>rekommenderas starkt</strong> att skapa en fullständig säkerhetskopia av filer och hela databasen innan du fortsätter.';

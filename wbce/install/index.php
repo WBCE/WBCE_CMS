@@ -38,7 +38,7 @@ remove_github_fetcher();
 // Require Version Info
 require_once("../admin/interface/version.php");
 
-// This is to decide if we display the Install Button on the end of the page
+// This is to decide if we display the Install Button at the end of the page
 $installFlag = true;
 
 // --------------- INCLUDE LANGUAGE FILE(S) ----------------------------------//
@@ -146,7 +146,6 @@ if (
 /*****************************
  * Check config.php
  *****************************/
-
 $config = '<span class="good">Writeable</span>';
 $config_content = "<?php\n";
 $configFile = '/config.php';
@@ -154,8 +153,7 @@ if (!isset($_SESSION['config_rename'])) {
     if ((file_exists($wb_path . '/config.php.new') == true) && !(file_exists($wb_path . $configFile) == true)) {
         rename($wb_path . '/config.php.new', $wb_path . $configFile);
     }
-    if ((file_exists($wb_path . $configFile) == true)) {
-
+    if ((file_exists($wb_path . $configFile) === true)) {
         // next operation only if file is writeable
         if (is_writeable($wb_path . $configFile)) {
 
@@ -185,11 +183,11 @@ if (!isset($_SESSION['config_rename'])) {
             $config = '<span class="bad">Not Writeable</span>';
         }
     } else {
+        echo 'existiert';
         $installFlag = false;
         $config = '<span class="bad">Missing!!?</span>';
     }
 }
-
 /*****************************
  * Check directories
  *****************************/
@@ -427,6 +425,9 @@ if (isset($_SESSION['admin_repassword'])) {
     $sAdminRepassword = $_SESSION['admin_repassword'];
 }
 
+
+// Password strength widget labels (language-aware)
+require_once $wb_path . '/include/wbePwGen/i18n.php';
 
 // include template file
 include "install_template.php";

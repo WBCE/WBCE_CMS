@@ -136,7 +136,7 @@ $TXT['upgrade_heading']         = 'Database- & add-onmigratie';
 $TXT['upgrade_subheading']      = 'Dit script wijzigt de database en vervangt bestanden.';
 $TXT['current_version']         = 'Huidige versie';
 $TXT['target_version']          = 'Doelversie';
-$TXT['upgrade_warning']         = 'Het updatescript wijzigt de bestaande database en bestandsstructuur. Het is <strong>sterk aanbevolen</strong> om een handmatige back-up te maken van de map <tt>%s</tt> en de gehele database voordat u doorgaat.';
+$TXT['upgrade_warning']         = 'Het updatescript wijzigt de bestaande database en bestandsstructuur. Het wordt <strong>sterk aanbevolen</strong> om een volledige back-up te maken van de bestanden en de gehele database voordat u doorgaat.';
 $TXT['upgrade_confirm']         = 'Ik bevestig dat ik een handmatige back-up heb gemaakt van de map <tt>%s</tt> en de database.';
 $TXT['proceed_upgrade']         = 'Doorgaan met de upgrade';
 

@@ -30,6 +30,12 @@
     status.style.display = 'none';
     status.className = '';
 
+    // Hide steps 4 + 5 until DB test succeeds again
+    ['step4-card', 'step5-card'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+
     // Reset button to initial "Test Connection" state
     btn.disabled = false;
     btn.classList.remove('loading');
@@ -95,6 +101,21 @@
       showStatus(data.ok, data.message);
       testedFld.value = data.ok ? '1' : '0';
 
+      // Reveal steps 4 + 5 only on success
+      if (data.ok) {
+        ['step4-card', 'step5-card'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) {
+            el.style.display = 'block';
+            el.style.animation = 'fadeUp .7s ease both';
+          }
+        });
+        // Scroll just a little way down so the user notices the new cards
+        setTimeout(function () {
+          window.scrollBy({ top: 180, behavior: 'smooth' });
+        }, 200);
+      }
+
     } catch (err) {
       showStatus(false, 'Request failed — ' + (err.message || 'Unknown error'));
       testedFld.value = '0';
@@ -121,11 +142,12 @@
         guarantee minimum char from each group, then fill randomly.
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
-  const btn    = document.getElementById('btn-gen-pw');
-  const pwIn   = document.getElementById('admin_password');
-  const pw2In  = document.getElementById('admin_repassword');
-  const hint   = document.getElementById('pw-hint');
-  
+  const btn     = document.getElementById('btn-gen-pw');
+  const copyBtn = document.getElementById('btn-copy-pw');
+  const pwIn    = document.getElementById('admin_password');
+  const pw2In   = document.getElementById('admin_repassword');
+  const hint    = document.getElementById('pw-hint');
+
   if (!btn || !pwIn || !pw2In || !hint) return;
 
   const GROUPS = [
@@ -136,9 +158,6 @@
   ];
   const ALL = GROUPS.join('');
   const LEN = 16;
-  const PREVIEW_TIMEOUT = 5000;     // 5 seconds
-
-  let hideTimeout = null;           // Store the current timeout ID
 
   function randomChar(str) {
     return str[crypto.getRandomValues(new Uint32Array(1))[0] % str.length];
@@ -147,7 +166,7 @@
   function generate() {
     // Guarantee at least one char from each group
     const chars = GROUPS.map(g => randomChar(g));
-    
+
     // Fill remaining positions
     while (chars.length < LEN) {
       chars.push(randomChar(ALL));
@@ -165,36 +184,26 @@
   }
 
   function showPassword(pw) {
-    // Clear any existing timeout
-    if (hideTimeout) {
-      clearTimeout(hideTimeout);
-    }
-
-    // Show password in both fields
-    pwIn.type  = 'text';
-    pw2In.type = 'text';
+    // Show password as plain text — stays visible, no auto-hide
+    pwIn.type   = 'text';
+    pw2In.type  = 'text';
     pwIn.value  = pw;
     pw2In.value = pw;
 
-    // Show hint
-    hint.textContent = I18N.pwCopyHint || 'Password copied to clipboard';
-    hint.className = 'pw-generated-hint visible';
+    // Reveal the Copy button
+    if (copyBtn) copyBtn.style.display = '';
 
-    // Copy to clipboard (silent fail if not permitted)
-    navigator.clipboard?.writeText(pw).catch(() => {});
-
-    // Set new timeout to hide password
-    hideTimeout = setTimeout(() => {
-      hidePassword();
-    }, PREVIEW_TIMEOUT);
+    hint.textContent = '';
+    hint.className   = 'pw-generated-hint';
   }
 
-  function hidePassword() {
-    pwIn.type  = 'password';
-    pw2In.type = 'password';
-    hint.textContent = '';
-    hint.className = 'pw-generated-hint';
-    hideTimeout = null;
+  // Copy button: copies current password value, shows brief feedback
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      navigator.clipboard?.writeText(pwIn.value).catch(() => {});
+      copyBtn.innerHTML = '✔';
+      setTimeout(function () { copyBtn.innerHTML = '&#x1F4CB;&#xFE0E;'; }, 1500);
+    });
   }
 
   btn.addEventListener('click', () => {

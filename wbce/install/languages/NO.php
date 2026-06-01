@@ -136,7 +136,7 @@ $TXT['upgrade_heading']         = 'Database- og tilleggsmigrering';
 $TXT['upgrade_subheading']      = 'Dette skriptet endrer databasen og erstatter filer.';
 $TXT['current_version']         = 'Gjeldende versjon';
 $TXT['target_version']          = 'Målversjon';
-$TXT['upgrade_warning']         = 'Oppdateringsskriptet endrer den eksisterende databasen og filstrukturen. Det er <strong>sterkt anbefalt</strong> å opprette en manuell sikkerhetskopi av mappen <tt>%s</tt> og hele databasen før du fortsetter.';
+$TXT['upgrade_warning']         = 'Oppdateringsskriptet endrer den eksisterende databasen og filstrukturen. Det <strong>anbefales på det sterkeste</strong> å lage en fullstendig sikkerhetskopi av filer og hele databasen før du fortsetter.';
 $TXT['upgrade_confirm']         = 'Jeg bekrefter at jeg har opprettet en manuell sikkerhetskopi av mappen <tt>%s</tt> og databasen.';
 $TXT['proceed_upgrade']         = 'Fortsett med oppgraderingen';
 

@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Erişim reddedildi. Kullanıcı adı ve şifrey
 $MSG['db_unknown_db']         = 'Veritabanı mevcut değil. Önce oluştur veya adını kontrol et.';
 $MSG['db_connection_refused'] = 'Sunucuya bağlanılamadı. Sunucu adını ve portu kontrol et.';
 $MSG['db_connection_failed']  = 'Bağlantı başarısız: %s';
+
+$TXT['upgrade_warning']         = 'Güncelleme betiği mevcut veritabanını ve dosya yapısını değiştirir. Devam etmeden önce dosyaların ve tüm veritabanının tam bir yedeğini oluşturmanız <strong>kesinlikle önerilir</strong>.';

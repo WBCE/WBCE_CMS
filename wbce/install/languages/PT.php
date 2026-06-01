@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Acesso negado. Verifica o nome de utilizador e 
 $MSG['db_unknown_db']         = 'A base de dados não existe. Cria-a primeiro ou verifica o nome.';
 $MSG['db_connection_refused'] = 'Não foi possível ligar ao host. Verifica o nome do host e a porta.';
 $MSG['db_connection_failed']  = 'Falha na ligação: %s';
+
+$TXT['upgrade_warning']         = 'O script de atualização modifica a base de dados e a estrutura de ficheiros existentes. É <strong>fortemente recomendado</strong> criar uma cópia de segurança completa dos ficheiros e de toda a base de dados antes de prosseguir.';
