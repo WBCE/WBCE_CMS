@@ -63,22 +63,22 @@
             	</td>
             </tr>
             <tr>
-            	<td class="setting_name"><?php echo $TEXT['PUBL_START_DATE']; ?>:</td>
+            	<td class="setting_name"></td>
             	<td class="setting_value">
-            	    <input type="text" id="publishdate" name="publishdate" data-field="datetime" value="<?php echo $post_data['publishing_date']; ?>" style="width:33%;" />
-                    <img src="<?php echo THEME_URL ?>/images/clock_16.png" id="publishdate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
-                	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.publishdate.value=''" />
-                    <div id="dtBox_<?php echo $section_id ?>_1"></div>
-            	</td>
+                    <span>
+                         <label><?php echo $TEXT['PUBL_START_DATE']; ?>: </label>
+                        <input type="text" id="publishdate" name="publishdate" value="<?php echo $post_data['publishing_date']; ?>" class="wdt120">
+                        <i id="publishdate_trigger" class="fa fa-lg fa-calendar-plus-o" title="<?php echo $TEXT['CALENDAR']; ?>"></i>
+                        <i class="fa fa-lg fa-calendar-times-o red" title="<?php echo $TEXT['DELETE_DATE']; ?>" onclick="var _e=document.getElementById('publishdate');_e&&_e._flatpickr?_e._flatpickr.clear():$(_e).val('')"></i>
+                    </span>
+                    <span style="margin-left: 25px;">
+                        <label><?php echo $TEXT['PUBL_END_DATE']; ?>: </label>
+                        <input type="text" id="enddate" name="enddate" value="<?php echo $post_data['publishing_end_date']; ?>" class="wdt120">
+                        <i id="enddate_trigger" class="fa fa-lg fa-calendar-plus-o" title="<?php echo $TEXT['CALENDAR']; ?>"></i>
+                        <i class="fa fa-lg fa-calendar-times-o red" title="<?php echo $TEXT['DELETE_DATE']; ?>" onclick="var _e=document.getElementById('enddate');_e&&_e._flatpickr?_e._flatpickr.clear():$(_e).val('')"></i>
+                    </span>                
+                </td>
             </tr>
-            <tr>
-            	<td class="setting_name"><?php echo $TEXT['PUBL_END_DATE']; ?>:</td>
-            	<td class="setting_value">
-            	    <input type="text" id="enddate" name="enddate" data-field="datetime" value="<?php echo $post_data['publishing_end_date'] ; ?>" style="width:33%;" />
-                	<img src="<?php echo THEME_URL ?>/images/clock_16.png" id="enddate_trigger" style="cursor: pointer;" title="<?php echo $TEXT['CALENDAR']; ?>" alt="<?php echo $TEXT['CALENDAR']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" />
-                	<img src="<?php echo THEME_URL ?>/images/clock_del_16.png" style="cursor: pointer;" title="<?php echo $TEXT['DELETE_DATE']; ?>" alt="<?php echo $TEXT['DELETE_DATE']; ?>" onmouseover="this.style.background='lightgrey';" onmouseout="this.style.background=''" onclick="document.modify.enddate.value=''" />
-                    <div id="dtBox_<?php echo $section_id ?>_2"></div>
-            	</td>
 <?php if($settings['mode']=='advanced' && isset($tags) && is_array($tags) && count($tags)>0): ?>
             <tr>
             	<td class="setting_name"><?php echo $MOD_NEWS_IMG['TAGS']; ?>:</td>
@@ -268,4 +268,44 @@
     <script type="text/javascript">
         $('#title<?php echo $page_id ?>').slugIt({output:'#link<?php echo $page_id ?>', seperate: '<?php echo PAGE_SPACER ?>' });
     </script>
+<script>
+(function () {
+    var inputStart = document.getElementById('publishdate');
+    var inputEnd   = document.getElementById('enddate');
+    if (!inputStart || !inputEnd) { return; }
+
+    var locale = (window.flatpickr && window.flatpickr.l10ns && window.flatpickr.l10ns['<?php echo $fp_locale_key; ?>']) || {};
+
+    var opts = {
+        locale:        locale,
+        dateFormat:    '<?php echo $fp_dateFormat; ?>',
+        allowInput:    true,
+        disableMobile: true,
+        plugins:       [new wbeRangePlugin({ input: inputEnd })]
+    };
+
+    <?php if ($fp_use_time): ?>
+    opts.enableTime = true;
+    opts.time_24hr  = true;
+    <?php endif; ?>
+
+    flatpickr(inputStart, opts);
+
+    var btnStart = document.getElementById('publishdate_trigger');
+    var btnEnd   = document.getElementById('enddate_trigger');
+
+    if (btnStart) {
+        btnStart.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (inputStart._flatpickr) inputStart._flatpickr.open();
+        });
+    }
+    if (btnEnd) {
+        btnEnd.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (inputEnd._flatpickr) inputEnd._flatpickr.open();
+        });
+    }
+}());
+</script>
 </div>
