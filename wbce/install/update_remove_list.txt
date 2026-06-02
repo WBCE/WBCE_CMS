@@ -57,6 +57,8 @@
 [FRAMEWORK]/class.logfile.php
 [FRAMEWORK]/class.msg_queue.php
 [FRAMEWORK]/class.frontend.php
+[FRAMEWORK]/wsession.php         // replaced by WbceSession
+[FRAMEWORK]/dbsession.php        // replaced by [FRAMEWORK]/WbceDbSession
 
 # Include / Sensio
 [INCLUDE]/Sensio/Twig/TwigConnect.php

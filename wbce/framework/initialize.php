@@ -128,7 +128,7 @@ date_default_timezone_set('UTC');
 // SESSION 
 // Initialize Custom Session Handler 
 // that stores sessions in the database.
-$_dbSessionHandler = new DbSession();
+$_dbSessionHandler = new WbceDbSession();
 // Initialize special Session handling and Start session.
 WbceSession::start();
 

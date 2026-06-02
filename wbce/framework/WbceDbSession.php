@@ -30,7 +30,7 @@
 // Prevent  this  file  from  being  accessed  directly
 defined('WB_PATH') or die('No direct access allowed');
 
-class DbSession implements SessionHandlerInterface
+class WbceDbSession implements SessionHandlerInterface
 {
     private bool $alive = true;
     private ?Database $db = null;
@@ -57,7 +57,7 @@ class DbSession implements SessionHandlerInterface
         global $database;
 
         if (!($database instanceof Database)) {
-            die('DbSession: No valid Database object found.');
+            die('WbceDbSession: No valid Database object found.');
         }
 
         $this->db = $database;
