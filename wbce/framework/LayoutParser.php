@@ -443,7 +443,7 @@ class LayoutParser
                 return $this->parse($this->partials[$name], $scope);
             },
             $html
-        );
+        ) ?? $html;
 
         if ($this->partialsPath !== '') {
             $html = preg_replace_callback(
@@ -458,7 +458,7 @@ class LayoutParser
                     return $this->parse(file_get_contents($fullPath), $scope);
                 },
                 $html
-            );
+            ) ?? $html;
         }
 
         return $html;
@@ -513,7 +513,7 @@ class LayoutParser
                 return $output;
             },
             $html
-        );
+        ) ?? $html;
     }
 
     // ── Private pipeline — Step 3: Conditionals ──────────────────────────────
@@ -554,7 +554,7 @@ class LayoutParser
                     return $elseBlock;
                 },
                 $html
-            );
+            ) ?? $html;
 
             $html = preg_replace_callback(
                 '~\{ifnot\s+([A-Z_][A-Z0-9_.]*)\s*\}(' . $inner . ')\{/ifnot\}~x',
@@ -562,7 +562,7 @@ class LayoutParser
                     return empty($this->_resolveDotKey($m[1], $data)) ? $m[2] : '';
                 },
                 $html
-            );
+            ) ?? $html;
         }
 
         return $html;
@@ -647,7 +647,7 @@ class LayoutParser
                 return !empty($value) ? (string) $value : $fallback;
             },
             $html
-        );
+        ) ?? $html;
     }
 
     // ── Private pipeline — Step 5: Placeholders & filters ────────────────────
@@ -712,7 +712,7 @@ class LayoutParser
                 return $this->_applyFilters($value, $filterChain, $key, $data);
             },
             $html
-        );
+        ) ?? $html;
     }
 
     // ── Private helpers ───────────────────────────────────────────────────────
