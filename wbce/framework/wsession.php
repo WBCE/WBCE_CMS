@@ -62,6 +62,7 @@ class WSession
             ini_set('session.use_cookies',    true);
             ini_set('session.gc_maxlifetime', (int) self::$Expire);
             ini_set('session.cookie_httponly', 1);
+            ini_set('session.cookie_samesite', 'Lax');
 
             // Secure flag — only when we know we are on HTTPS.
             // The defined() guard prevents a fatal error during early bootstrap
