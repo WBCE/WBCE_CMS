@@ -150,7 +150,7 @@ class DbSession implements SessionHandlerInterface
      */
     public function write(string $id, string $data): bool
     {
-        $userId = (int)(WSession::Get('USER_ID') ?? 0);
+        $userId = (int)(WbceSession::get('USER_ID') ?? 0);
 
         $this->db->query(
             'REPLACE INTO `{TP}dbsessions` (`id`, `data`, `user`, `last_accessed`)

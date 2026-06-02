@@ -416,7 +416,7 @@ class SecureForm
 
       
         $token = dechex(mt_rand());
-        $hash = sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')));
+        $hash = sha1($secret . '-' . $token . '-' . md5(WbceSession::get('SessionTokenIdentifier')));
         $signed = $token . '-' . $hash;
 
         if ($as_tag == true) {
@@ -454,7 +454,7 @@ class SecureForm
 
         if (count($parts) == 2) {
             list($token, $hash) = $parts;
-            if ($hash == sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')))) {
+            if ($hash == sha1($secret . '-' . $token . '-' . md5(WbceSession::get('SessionTokenIdentifier')))) {
                 $isok = true;
             }
         }

@@ -130,7 +130,7 @@ date_default_timezone_set('UTC');
 // that stores sessions in the database.
 $_dbSessionHandler = new DbSession();
 // Initialize special Session handling and Start session.
-WSession::Start();
+WbceSession::start();
 
 // CONTEXT DETECTION
 // FRONTEND_CONTEXT is defined by ROOT/index.php before config.php is loaded.
@@ -141,7 +141,7 @@ defined('WB_FRONTEND') || (defined('FRONTEND_CONTEXT') && define('WB_FRONTEND', 
 
 // LOCALE — set early so module initialize files can call Lang::loadLanguage()
 // and get the user's actual language instead of the EN default.
-// Session is open (WSession::Start() above), DEFAULT_LANGUAGE is defined
+// Session is open (WbceSession::start() above), DEFAULT_LANGUAGE is defined
 // (Settings::setup() above) — all dependencies met.
 if (!defined("LANGUAGE")) {
     if (isset($_GET['lang']) && preg_match('/^[A-Z]{2}$/', $_GET['lang'])) {
