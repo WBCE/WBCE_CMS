@@ -186,7 +186,6 @@ if(!defined('CAT_PATH')) {
 }
 
 $fp_use_time = true;
-require_once INCLUDE_PATH . '/date_time_picker/wbce_setup.php';
 include __DIR__.'/templates/default/modify_post.phtml';
 
 // Print admin footer

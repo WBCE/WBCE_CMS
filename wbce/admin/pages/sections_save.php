@@ -11,7 +11,7 @@
  */
 
 // Include config file
-require('../../config.php');
+require '../../config.php';
 
 // Make sure people are allowed to access this page
 if (MANAGE_SECTIONS != 'enabled') {
@@ -19,14 +19,10 @@ if (MANAGE_SECTIONS != 'enabled') {
     exit(0);
 }
 
-require_once(WB_PATH . "/include/jscalendar/jscalendar-functions.php");
-/**/
 // Create new admin object
-require_once(WB_PATH . '/framework/class.admin.php');
-// suppress to print the header, so no new FTAN will be set
-$admin = new admin('Pages', 'pages_modify', false);
+$admin = new Admin('Pages', 'pages_modify', false);
 
-// Get page id
+// Get page_id
 if (!isset($_GET['page_id']) || !is_numeric($_GET['page_id'])) {
     header("Location: index.php");
     exit(0);
@@ -38,16 +34,10 @@ if (!$admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], ADMIN_URL . '/pages/sections.php?page_id=' . $page_id);
 }
-/*
-if( (!($page_id = $admin->checkIDKEY('page_id', 0, $_SERVER['REQUEST_METHOD']))) )
-{
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
-    exit();
-}
-*/
+
 // Get perms
 // $database = new database();
-$results = $database->query("SELECT admin_groups,admin_users FROM " . TABLE_PREFIX . "pages WHERE page_id = '$page_id'");
+$results = $database->query("SELECT admin_groups,admin_users FROM {TP}pages WHERE page_id = '$page_id'");
 $results_array = $results->fetchRow();
 $old_admin_groups = explode(',', $results_array['admin_groups']);
 $old_admin_users = explode(',', $results_array['admin_users']);
@@ -63,7 +53,7 @@ if ((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_adm
 
 // Get page details
 // $database = new database();
-$query = "SELECT * FROM " . TABLE_PREFIX . "pages WHERE page_id = '$page_id'";
+$query = "SELECT * FROM {TP}pages WHERE page_id = '$page_id'";
 $results = $database->query($query);
 if ($database->is_error()) {
     $admin->print_header();
@@ -79,7 +69,7 @@ $results_array = $results->fetchRow();
 $module_permissions = $_SESSION['MODULE_PERMISSIONS'];
 
 // Loop through sections
-$query_sections = $database->query("SELECT section_id,module,position FROM " . TABLE_PREFIX . "sections WHERE page_id = '$page_id' ORDER BY position ASC");
+$query_sections = $database->query("SELECT section_id,module,position FROM {TP}sections WHERE page_id = '$page_id' ORDER BY position ASC");
 if ($query_sections->numRows() > 0) {
     $num_sections = $query_sections->numRows();
     while ($section = $query_sections->fetchRow()) {
@@ -101,6 +91,7 @@ if ($query_sections->numRows() > 0) {
             }
             // update publ_start and publ_end, trying to make use of the strtotime()-features like "next week", "+1 month", ...
             if (isset($_POST['start_date' . $section_id]) && isset($_POST['end_date' . $section_id])) {
+                require_once INCLUDE_PATH. '/date_time_picker/wbce_setup.php';
                 if (trim($_POST['start_date' . $section_id]) == '0' || trim($_POST['start_date' . $section_id]) == '') {
                     $publ_start = 0;
                 } else {
@@ -117,7 +108,7 @@ if ($query_sections->numRows() > 0) {
                 $sql .= " publ_start = '" . intval($publ_start) . "'";
                 $sql .= ", publ_end = '" . intval($publ_end) . "'";
             }
-            $query = "UPDATE " . TABLE_PREFIX . "sections SET $sql WHERE section_id = '$section_id' LIMIT 1";
+            $query = "UPDATE {TP}sections SET $sql WHERE section_id = '$section_id' LIMIT 1";
             if ($sql != '') {
                 $database->query($query);
             }

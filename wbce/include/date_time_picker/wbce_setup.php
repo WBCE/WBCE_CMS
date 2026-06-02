@@ -24,11 +24,11 @@ if (!defined('WB_URL')) {
 // Maps WBCE LANGUAGE codes to keys in flatpickr.l10ns.
 // Catalan = 'cat' (not 'ca'); English = 'default' (built-in, no extra file).
 $_fp_locale_map = [
-    'BG' => 'bg',      'CA' => 'cat',  'CS' => 'cs',  'DA' => 'da',
-    'DE' => 'de',      'EN' => 'default', 'ES' => 'es', 'ET' => 'et',
-    'FI' => 'fi',      'FR' => 'fr',   'GR' => 'gr',  'HU' => 'hu',
-    'IT' => 'it',      'LV' => 'lv',   'NL' => 'nl',  'NO' => 'no',
-    'PL' => 'pl',      'PT' => 'pt',   'RU' => 'ru',  'SK' => 'sk',
+    'BG' => 'bg',      'CA' => 'cat',     'CS' => 'cs',  'DA' => 'da',
+    'DE' => 'de',      'EN' => 'default', 'ES' => 'es',  'ET' => 'et',
+    'FI' => 'fi',      'FR' => 'fr',      'GR' => 'gr',  'HU' => 'hu',
+    'IT' => 'it',      'LV' => 'lv',      'NL' => 'nl',  'NO' => 'no',
+    'PL' => 'pl',      'PT' => 'pt',      'RU' => 'ru',  'SK' => 'sk',
     'SV' => 'sv',      'TR' => 'tr',
 ];
 

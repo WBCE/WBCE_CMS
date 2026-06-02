@@ -192,7 +192,9 @@ switch ($action) {
         // Load css files with jquery
         // Include Flatpickr setup
         $fp_use_time = true; // enable timepicker
-        require_once WB_PATH . '/include/date_time_picker/wbce_setup.php';
+        if(file_exists($f = INCLUDE_PATH . '/date_time_picker/wbce_setup.php')){
+            require_once $f;
+        }
 
         // Get display name of person who last modified the page
         $user = $admin->get_user_details($aPage['modified_by']);
