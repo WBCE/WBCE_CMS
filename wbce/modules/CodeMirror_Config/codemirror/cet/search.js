@@ -91,12 +91,17 @@ var CETSearch = (function () {
         _countTimer = setTimeout(function () {
             if (!panel) return;
             var count = 0;
+            var prevFrom = null;
             var cur = cm.getSearchCursor(q, CodeMirror.Pos(0, 0), !caseF && typeof q === "string");
             while (cur.findNext()) {
+                var from = cur.from();
+                // searchcursor.js wraps around after the last match — detect and stop.
+                if (prevFrom !== null && CodeMirror.cmpPos(from, prevFrom) <= 0) break;
+                prevFrom = {line: from.line, ch: from.ch};
                 count++;
                 if (count > MAX_COUNT) { counter.textContent = ">" + MAX_COUNT; counter.className = "cet-match-count"; return; }
             }
-            counter.textContent = count > 0 ? count + (count === 1 ? " match" : " matches") : "no matches";
+            counter.textContent = count > 0 ? count + "×" : "—";
             counter.className = "cet-match-count" + (count === 0 ? " cet-no-match" : "");
         }, 80);
     }
