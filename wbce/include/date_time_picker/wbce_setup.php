@@ -79,3 +79,60 @@ I::insertJsFile([
     $_fp_base . 'flatpickr.wbeRange.js',
 ], 'BODY TOP+');
 unset($_fp_base);
+
+
+if(!function_exists('jscalendar_to_timestamp')){
+/**
+ * Converts a date string (supporting multiple input formats) into a Unix timestamp.
+ *
+ * This function was originally created for jscalendar / Flatpickr integration
+ * and maintains the exact original behavior for backward compatibility.
+ *
+ * Supported input formats:
+ * - dd.mm.yyyy or dd.mm.yy     (e.g. 31.12.2025 or 31.12.25)
+ * - mm/dd/yyyy or mm/dd/yy     (e.g. 12/31/2025 or 12/31/25)
+ * - Any format supported by PHP's strtotime() (including yyyy-mm-dd, relative dates, etc.)
+ *
+ * @param string $str       The date string to parse.
+ * @param string $offset    Optional base timestamp (used for relative dates like "+1 day", "-3 weeks", etc.).
+ *                          If set to '0', it will be treated as empty.
+ * @param string $timeshift If this parameter is not empty, the global TIMEZONE constant
+ *                          will be subtracted from the resulting timestamp (legacy behavior).
+ *
+ * @return string|int       Returns the Unix timestamp as integer.
+ *                          Returns string '0' if the input is empty or exactly '0'.
+ */
+    function jscalendar_to_timestamp(string $str, string $offset = '', string $timeshift = ''): string|int
+    {
+        $str = trim($str);
+
+        if ($str === '' || $str === '0') {
+            return '0';
+        }
+
+        if ($offset === '0') {
+            $offset = '';
+        }
+
+        // Convert dd.mm.yyyy → yyyy-mm-dd
+        if (preg_match('/^(\d{1,2})\.(\d{1,2})\.(\d{2}(?:\d{2})?)$/', $str, $m)) {
+            $str = sprintf('%04d-%02d-%02d', $m[3], $m[2], $m[1]);
+        }
+        // Convert mm/dd/yyyy → yyyy-mm-dd
+        elseif (preg_match('#^(\d{1,2})/(\d{1,2})/(\d{2}(?:\d{2})?)$#', $str, $m)) {
+            $str = sprintf('%04d-%02d-%02d', $m[3], $m[1], $m[2]);
+        }
+
+        // Use strtotime() with optional base timestamp
+        $timestamp = $offset !== ''
+            ? strtotime($str, (int)$offset)
+            : strtotime($str);
+
+        // Legacy timezone handling
+        if ($timeshift !== '') {
+            $timestamp -= TIMEZONE;
+        }
+
+        return $timestamp;
+    }
+}
