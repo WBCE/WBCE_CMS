@@ -133,11 +133,16 @@
                 revert:               150,
                 start: function (e, ui) {
                     ui.placeholder.height(ui.item.outerHeight());
+                    $(this).find('td.btnup a, td.btndown a').css({
+                        transition: 'opacity 80ms linear',
+                        opacity:    0.15
+                    });
                 },
                 stop: function (e, ui) {
-                    // Only flash the direct table cells of the moved row,
-                    // not nested child pages.
                     flashItems(ui.item.children('table').find('td'));
+                    var $arrows = $(this).find('td.btnup a, td.btndown a');
+                    $arrows.css({ transition: 'opacity 1250ms linear', opacity: '' });
+                    setTimeout(function () { $arrows.css('transition', ''); }, 300);
                 },
                 update: function () {
                     var $ul     = $(this);
@@ -278,11 +283,9 @@ function initSectionsSortable() {
         if (_initialized) return;
         _initialized = true;
 
-        var path = window.location.pathname;
-
-        if (path.indexOf('/pages/index.php') > -1) {
+        if ($('#p0').length) {
             initPagesSortable();
-        } else if (path.indexOf('/pages/sections.php') > -1) {
+        } else if ($('.sections-dnd').length) {
             initSectionsSortable();
         }
     }

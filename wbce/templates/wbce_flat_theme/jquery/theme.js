@@ -42,11 +42,6 @@ function getUrlVars() {
 
 $(document).ready(function () {
 
-    /*** include jscalendar css, if needed ****************************/
-    if ($(".jcalendar").length) {
-        $.insert(WB_URL + "/include/jscalendar/calendar-system.css");
-    }
-
     /*** include jsadmin css, if needed *******************************/
     if ($(".jsadmin").length) {
         $.insert(WB_URL + "/modules/jsadmin/backend.css");

@@ -11,13 +11,8 @@
  */
 
 require '../../config.php';
-require_once WB_PATH . '/framework/class.admin.php';
-$admin = new admin('Pages', 'pages');
-
+$admin = new Admin('Pages', 'pages');
 $admin->clearIDKEY();
-
-// Include the WB functions file
-require_once(WB_PATH . '/framework/functions.php');
 
 // Include page tree and define output
 ob_start();
@@ -44,8 +39,7 @@ $template->set_var('PAGE_TREE', $pageTreeOutput);
 // Insert values into the add page form
 
 // Group list 1
-$query = "SELECT * FROM `" . TABLE_PREFIX . "groups`";
-$get_groups = $database->query($query);
+$get_groups = $database->query("SELECT * FROM `{TP}groups`");
 $template->set_block('main_block', 'group_list_block', 'group_list');
 
 // Insert admin group and current group first
@@ -160,7 +154,7 @@ $module_permissions = $_SESSION['MODULE_PERMISSIONS'];
 
 // Modules list
 $template->set_block('main_block', 'module_list_block', 'module_list');
-$result = $database->query("SELECT * FROM " . TABLE_PREFIX . "addons WHERE type = 'module' AND `function` LIKE '%page%' order by name");
+$result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' AND `function` LIKE '%page%' ORDER BY name");
 if ($result->numRows() > 0) {
     while ($module = $result->fetchRow()) {
 
@@ -243,8 +237,10 @@ $admin->print_footer();
 function parent_list($parent)
 {
     global $admin, $database, $template, $field_set;
-    $query = "SELECT * FROM " . TABLE_PREFIX . "pages WHERE parent = '$parent' AND visibility!='deleted' ORDER BY position ASC";
-    $get_pages = $database->query($query);
+    $get_pages = $database->query(
+        "SELECT * FROM `{TP}pages` WHERE parent = ? AND visibility != 'deleted' ORDER BY position ASC",
+        [$parent]
+    );
     while ($page = $get_pages->fetchRow()) {
         if ($admin->page_is_visible($page) == false) {
             continue;

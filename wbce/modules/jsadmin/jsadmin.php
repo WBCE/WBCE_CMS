@@ -28,10 +28,9 @@ function get_setting($name, $default = '') {
 
 function save_setting($name, $value) {
     global $database;
-    $database->upsertRow(
-        '{TP}mod_jsadmin',
-        ['name'  => $name],
-        ['name'  => $name, 'value' => $value]
+    $database->query(
+        "UPDATE `{TP}mod_jsadmin` SET `value` = ? WHERE `name` = ?",
+        [$value, $name]
     );
 }
 

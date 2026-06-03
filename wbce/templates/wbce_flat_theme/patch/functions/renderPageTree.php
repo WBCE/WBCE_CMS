@@ -70,7 +70,7 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999)
         );
 
         ob_start(); ?>
-        <li class="p<?= $page['parent'] ?> <?= ($hasChildren ? 'has-children' : '') ?>">
+        <li class="p<?= $page['parent'] ?> <?= ($hasChildren ? 'has-children' : '') ?>" id="pageID_<?= $page['page_id'] ?>" data-page-id="<?= $page['page_id'] ?>">
             <table class="table">
                 <tr>
                     <td class="toggle">

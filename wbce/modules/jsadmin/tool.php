@@ -13,65 +13,91 @@
 // no direct file access
 if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
-
-
 require_once WB_PATH.'/modules/jsadmin/jsadmin.php';
 
-// Check if user selected what add-ons to reload
-if(isset($_POST['save_settings']))  {
+$returnUrl = ADMIN_URL . '/admintools/tool.php?tool=jsadmin';
 
-    if (!$admin->checkFTAN())
-    {
-        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$_SERVER['REQUEST_URI']);
+if (isset($_POST['save_settings'])) {
+
+    if (!$admin->checkFTAN()) {
+        (new Alerts())->sessionToast($MESSAGE['GENERIC_SECURITY_ACCESS'], 'error');
+        header('Location: ' . $returnUrl);
+        exit;
     }
 
-    // Include functions file
-    require_once(WB_PATH.'/framework/functions.php');
-    save_setting('mod_jsadmin_persist_order', (isset($_POST['persist_order'])) ? 1 : 0);
-    save_setting('mod_jsadmin_ajax_order_pages', (isset($_POST['ajax_order_pages'])) ? 1 : 0);
-    save_setting('mod_jsadmin_ajax_order_sections', (isset($_POST['ajax_order_sections'])) ? 1 : 0);
-    // check if there is a database error, otherwise say successful
-
-    if($database->is_error()) {
-        $admin->print_error($database->get_error(), $js_back);
-    } else {
-        $admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/admintools/tool.php?tool=jsadmin');
+    $settings = [
+        'mod_jsadmin_persist_order'       => isset($_POST['persist_order'])       ? 1 : 0,
+        'mod_jsadmin_ajax_order_pages'    => isset($_POST['ajax_order_pages'])    ? 1 : 0,
+        'mod_jsadmin_ajax_order_sections' => isset($_POST['ajax_order_sections']) ? 1 : 0,
+    ];
+    foreach ($settings as $name => $value) {
+        save_setting($name, $value);
+        if ($database->hasError()) {
+            (new Alerts())->sessionToast($database->getError(), 'error');
+            header('Location: ' . $returnToTools);
+            exit;
+        }
     }
+    (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
+    header('Location: ' . $returnUrl);
+    exit;
 
 } else {
 
 
     // Display form
-        $persist_order = get_setting('mod_jsadmin_persist_order', true) ? 'checked="checked"' : '';
-        $ajax_order_pages = get_setting('mod_jsadmin_ajax_order_pages', true) ? 'checked="checked"' : '';
-        $ajax_order_sections = get_setting('mod_jsadmin_ajax_order_sections', true) ? 'checked="checked"' : '';
+        $persist_order       = (bool) get_setting('mod_jsadmin_persist_order',       true);
+        $ajax_order_pages    = (bool) get_setting('mod_jsadmin_ajax_order_pages',    true);
+        $ajax_order_sections = (bool) get_setting('mod_jsadmin_ajax_order_sections', true);
     ?>
 
-    <form id="jsadmin_form" name="store_settings" style="margin-top: 1em; display: true;" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-        <?php echo $admin->getFTAN(); ?>
-        <table cellpadding="4" cellspacing="0" border="0">
-            <tr>
-                <td colspan="2"><?php echo $MOD_JSADMIN['TXT_HEADING_B']; ?>:</td>
-            </tr>
-            <tr>
-                <td width="20"><input type="checkbox" name="persist_order" id="persist_order" value="true" <?php echo $persist_order; ?>/></td>
-                <td><label for="persist_order"><?php echo $MOD_JSADMIN['TXT_PERSIST_ORDER_B']; ?></label></td>
-            </tr>
-            <tr>
-                <td width="20"><input type="checkbox" name="ajax_order_pages" id="ajax_order_pages" value="true" <?php echo $ajax_order_pages; ?>/></td>
-                <td><label for="ajax_order_pages"><?php echo $MOD_JSADMIN['TXT_AJAX_ORDER_PAGES_B']; ?></label></td>
-            </tr>
-            <tr>
-                <td width="20"><input type="checkbox" name="ajax_order_sections" id="ajax_order_sections" value="true" <?php echo $ajax_order_sections; ?>/></td>
-                <td><label for="ajax_order_sections"><?php echo $MOD_JSADMIN['TXT_AJAX_ORDER_SECTIONS_B']; ?></label></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                      <input type="submit" name="save_settings" value="<?php echo $TEXT['SAVE']; ?>" />
-                </td>
-            </tr>
-        </table>
+    <form id="jsadmin_form" name="store_settings" style="margin-top: 1em; display: true;" action="<?=$_SERVER['REQUEST_URI']; ?>" method="post">
+        <?=$admin->getFTAN(); ?>
+
+        <div class="cp-settings">
+        <div class="cp-toggle-section">
+            <div class="cp-card-head">
+                <label><i class="fa fa-code"></i> <?=$module_name?></label>
+            </div>
+            <blockquote><b><?=$TXT['HEADING']; ?>:</b></blockquote>
+            <section id="settings">
+
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
+                <input type="checkbox" switch="bool" name="ajax_order_pages" id="ajax_order_pages" value="1" <?= $ajax_order_pages ? 'checked' : '' ?>>
+                <label for="ajax_order_pages" class="labeled" data-on-label="<?=$TEXT['ENABLED']?>" data-off-label="<?=$TEXT['DISABLED']?>"></label>
+            </div>
+            <div class="cp-setting-value">
+                <?=$TXT['DND']. ' ' . $TXT['PAGES'] ; ?>
+            </div>
+        </div>
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
+                <input type="checkbox" switch="bool" name="ajax_order_sections" id="ajax_order_sections" value="1" <?= $ajax_order_sections ? 'checked' : '' ?>>
+                <label for="ajax_order_sections" class="labeled" data-on-label="<?=$TEXT['ENABLED']?>" data-off-label="<?=$TEXT['DISABLED']?>"></label>
+            </div>
+            <div class="cp-setting-value">
+                <?=$TXT['DND']. ' ' . $TXT['SECTIONS'] ; ?>
+            </div>
+        </div>
+        <div class="cp-setting-row">
+            <div class="cp-setting-name">
+                <input type="checkbox" switch="bool" name="persist_order" id="persist_order" value="1" <?= $persist_order ? 'checked' : '' ?>>
+                <label for="persist_order" class="labeled" data-on-label="<?=$TEXT['ENABLED']?>" data-off-label="<?=$TEXT['DISABLED']?>"></label>
+            </div>
+            <div class="cp-setting-value">
+                <?=$TXT['REMEMBER_EXPAND'] ?>
+            </div>
+        </div>
+                <div class="cp-buttons-row">
+                    <a href="<?=$returnToTools?>" class="button">« Zurück</a>
+                    <button type="submit" name="save_settings" class="button ico-save pos-right">
+                        <?=$TEXT['SAVE']; ?>
+                    </button>
+                </div>
+            </section>
+        </div>
+        </div>
     </form>
     <?php
 }

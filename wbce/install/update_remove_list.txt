@@ -103,6 +103,7 @@
 [MODULES]/SecureFormSwitcher/language_load.php
 [MODULES]/CodeMirror_Config/initialize.php                     // changed to initialize_be.php
 
+
 # Templates (Themes)
 [TEMPLATE]/argos_theme_reloaded/templates/admintools.htt       // replaced by Twig
 [TEMPLATE]/argos_theme_reloaded/templates/login.htt
@@ -169,6 +170,8 @@
 [MODULES]/addon_monitor/icons
 [MODULES]/addon_monitor/css             // cleaned up in previous step
 [MODULES]/captcha_control/templates/    // replaced by twig/
+[MODULES]/jsadmin/images/
+[MODULES]/jsadmin/languages/
 [TEMPLATE]/advancedThemeWbFlat/
 [TEMPLATE]/argos_theme/
 [TEMPLATE]/argos_theme_classic/
