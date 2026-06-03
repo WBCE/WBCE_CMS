@@ -1,6 +1,5 @@
 // Copyright 2006 Stepan Riha
 // www.nonplus.net
-// $Id: jsadmin.js 2 2006-04-18 03:04:39Z stepan $
 
 // Initialize JsAdmin when page loads
 JsAdmin.loadHandler = function(ev, self) {
@@ -9,7 +8,7 @@ JsAdmin.loadHandler = function(ev, self) {
 	}
 	if(self.restore_toggled) {
 		self.restore_toggled();
-		YAHOO.util.Event.addListener(window, 'unload', JsAdmin.unloadHandler, self, false);
+		jQuery(window).on('unload', function() { JsAdmin.unloadHandler(null, self); });
 	}
 	if(self.init_drag_drop) {
 		self.init_drag_drop();
@@ -22,14 +21,14 @@ JsAdmin.unloadHandler = function(ev, self) {
 };
 
 JsAdmin.rowMouseOverHandler = function(ev, tr) {
-	YAHOO.util.Dom.setStyle(tr, 'background' ,'#fea');
+	jQuery(tr).css('background', '#fea');
 };
 
 JsAdmin.rowMouseOutHandler = function(ev, tr) {
-	YAHOO.util.Dom.setStyle(tr, 'background' ,'');
+	jQuery(tr).css('background', '');
 };
 
-YAHOO.util.Event.addListener(window, 'load', JsAdmin.loadHandler, JsAdmin, false);
+jQuery(function () { JsAdmin.loadHandler(null, JsAdmin); });
 
 JsAdmin.util = {
 	createCookie : function(name,value,days)
@@ -67,10 +66,10 @@ JsAdmin.util = {
 		var id;
 		do {
 			id = 'jsadmin_id_' + this.next_id++;
-		} while(YAHOO.util.Dom.get(id));
+		} while(document.getElementById(id));
 		return id;
 	},
-	
+
 	isNodeType : function(elt, type) {
 		if(elt) {
 			return elt.nodeName.toUpperCase() == type.toUpperCase();
@@ -88,7 +87,7 @@ JsAdmin.util = {
 		}
 		return index;
 	},
-	
+
 	getAncestorNode : function(elt, type) {
 		if(elt) {
 			if(type) {
@@ -103,7 +102,7 @@ JsAdmin.util = {
 		}
 		return elt;
 	},
-	
+
 	getNextSiblingNode : function (elt, type) {
 		if(elt) {
 			if(type) {

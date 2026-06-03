@@ -15,36 +15,36 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 
 
 
-require_once(WB_PATH.'/modules/jsadmin/jsadmin.php');
+require_once WB_PATH.'/modules/jsadmin/jsadmin.php';
 
 // Check if user selected what add-ons to reload
 if(isset($_POST['save_settings']))  {
 
-	if (!$admin->checkFTAN())
-	{
-		$admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$_SERVER['REQUEST_URI']);
-	}
+    if (!$admin->checkFTAN())
+    {
+        $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'],$_SERVER['REQUEST_URI']);
+    }
 
-	// Include functions file
-	require_once(WB_PATH.'/framework/functions.php');
-	save_setting('mod_jsadmin_persist_order', (isset($_POST['persist_order'])) ? 1 : 0);
-	save_setting('mod_jsadmin_ajax_order_pages', (isset($_POST['ajax_order_pages'])) ? 1 : 0);
-	save_setting('mod_jsadmin_ajax_order_sections', (isset($_POST['ajax_order_sections'])) ? 1 : 0);
-	// check if there is a database error, otherwise say successful
+    // Include functions file
+    require_once(WB_PATH.'/framework/functions.php');
+    save_setting('mod_jsadmin_persist_order', (isset($_POST['persist_order'])) ? 1 : 0);
+    save_setting('mod_jsadmin_ajax_order_pages', (isset($_POST['ajax_order_pages'])) ? 1 : 0);
+    save_setting('mod_jsadmin_ajax_order_sections', (isset($_POST['ajax_order_sections'])) ? 1 : 0);
+    // check if there is a database error, otherwise say successful
 
-	if($database->is_error()) {
-		$admin->print_error($database->get_error(), $js_back);
-	} else {
-		$admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/admintools/tool.php?tool=jsadmin');
-	}
+    if($database->is_error()) {
+        $admin->print_error($database->get_error(), $js_back);
+    } else {
+        $admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL.'/admintools/tool.php?tool=jsadmin');
+    }
 
 } else {
 
 
     // Display form
-            $persist_order = get_setting('mod_jsadmin_persist_order', true) ? 'checked="checked"' : '';
-            $ajax_order_pages = get_setting('mod_jsadmin_ajax_order_pages', true) ? 'checked="checked"' : '';
-            $ajax_order_sections = get_setting('mod_jsadmin_ajax_order_sections', true) ? 'checked="checked"' : '';
+        $persist_order = get_setting('mod_jsadmin_persist_order', true) ? 'checked="checked"' : '';
+        $ajax_order_pages = get_setting('mod_jsadmin_ajax_order_pages', true) ? 'checked="checked"' : '';
+        $ajax_order_sections = get_setting('mod_jsadmin_ajax_order_sections', true) ? 'checked="checked"' : '';
     ?>
 
     <form id="jsadmin_form" name="store_settings" style="margin-top: 1em; display: true;" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">

@@ -155,7 +155,7 @@ function draw_pagetree($pages_list)
          *    set "Template"
          */
         ob_start(); ?>
-        <li class="p{PARENT}">
+        <li class="p{PARENT}" id="pageID_{PAGE_ID}" data-page-id="{PAGE_ID}">
             <table class="pages_view" cellspacing="0" cellpadding="0" border="0">
                 <tr>
                     <td style="width:26px; {padding_left}">
