@@ -19,7 +19,7 @@ if (!defined('WB_PATH')) die(header('Location: ../../index.php'));
  * do the DB query to grab for all pages first
  */
 
-$pages = $database->query("SELECT * FROM `" . TABLE_PREFIX . "pages` ORDER BY position ASC");
+$pages = $database->query("SELECT * FROM `{TP}pages` ORDER BY `position` ASC");
 $number_all_pages = $pages->numRows();
 
 $refs = array();
@@ -117,7 +117,11 @@ function draw_pagetree($pages_list)
 
         // query publ_start / publ_end
         if ($canManageSections == true) :
-            if ($query_sections = $database->query('SELECT `publ_start`, `publ_end`,`module` FROM `' . TABLE_PREFIX . 'sections` WHERE `page_id` = ' . $p['page_id'])) :
+            $query_sections = $database->query(
+                'SELECT `publ_start`, `publ_end`, `module` FROM `{TP}sections` WHERE `page_id` = ?',
+                [$p['page_id']]
+            );
+            if (!$database->hasError()) :
                 $sectionICON = "fa-bars";
                 $sectionsURL = '../pages/sections.php?page_id=' . $p['page_id'];
                 $menu_link = false;
@@ -161,7 +165,7 @@ function draw_pagetree($pages_list)
 
         ob_start();
         ?>
-        <li class="p{PARENT}">
+        <li class="p{PARENT}" id="pageID_{PAGE_ID}" data-page-id="{PAGE_ID}">
             <table class="pages-view" cellspacing="0" cellpadding="0" border="0">
                 <tr>
                     <td class="page-status" style="{padding_left}">
@@ -200,7 +204,11 @@ function draw_pagetree($pages_list)
                         <td width="20"><?php
                             if ($canModifyPage) :
                                 // check if we should show the wysiwyg_copy-icon
-                                if ($len = $database->get_one("SELECT MAX(LENGTH(working_content)) FROM `" . TABLE_PREFIX . "mod_wysiwyg` WHERE `page_id` = '{$p['page_id']}' ")):
+                                $len = $database->fetchValue(
+                                    "SELECT MAX(LENGTH(`working_content`)) FROM `{TP}mod_wysiwyg` WHERE `page_id` = ?",
+                                    [$p['page_id']]
+                                );
+                if ($len):
                                     if ($len != NULL && $len != 0): ?>
                                         <a href="../pages/modify.php?page_id={PAGE_ID}&status=workingcopy"
                                            title="<?php echo "Working-Copy"; ?>">
@@ -399,8 +407,9 @@ function draw_pagetree($pages_list)
 
         <?php
         if (isset($use_dragdrop_switch) && $use_dragdrop_switch == TRUE) {
-            $query_order_pages = "SELECT `value` FROM `" . TABLE_PREFIX . "mod_jsadmin` WHERE `name` = 'mod_jsadmin_ajax_order_pages'";
-            $set_dd = $database->get_one($query_order_pages);
+            $set_dd = $database->fetchValue(
+                "SELECT `value` FROM `{TP}mod_jsadmin` WHERE `name` = 'mod_jsadmin_ajax_order_pages'"
+            );
             if ($set_dd == 0) {
                 $set_dd = 1;
                 $TXT_ENABLE = $TEXT['DISABLED'];

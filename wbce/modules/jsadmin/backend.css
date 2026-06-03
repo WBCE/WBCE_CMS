@@ -3,18 +3,6 @@
 	margin-bottom: -2px;
 }
 
-body.jsadmin_busy td.content {
-	background: url(images/busy.gif) 4px 4px no-repeat;
-}
-
-body.jsadmin_success td.content {
-	background: url(images/success.gif) 4px 4px no-repeat;
-}
-
-body.jsadmin_failure td.content {
-	background: url(images/failure.gif) 4px 4px no-repeat;
-}
-
 .jsadmin_drag {
 	cursor: move;
 }
@@ -28,3 +16,81 @@ body.jsadmin_failure td.content {
 ul.jsadmin_drag_area {
 	border: solid 1px #99f;
 }
+
+/* Sections drag helper row */
+.sections-drag-helper {
+    display:    table-row;
+    margin:     0;
+    padding:    0;
+    background: #f0f4ff;
+    border:     1px solid #4a90e2;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Drag & Drop handle */
+.jsadmin-drag-handle {
+    cursor: move;
+    color: #aaa;
+    padding: 0 4px;
+    display: inline-block;
+    user-select: none;
+}
+.jsadmin-drag-handle:hover {
+    color: #555;
+}
+
+
+/* Page-tree rows are fully draggable — show move-cursor on hover */
+ul[id^="p"].ui-sortable > li[id^="pageID_"] {
+    cursor: move;
+}
+ul[id^="p"].ui-sortable > li[id^="pageID_"] a,
+ul[id^="p"].ui-sortable > li[id^="pageID_"] input,
+ul[id^="p"].ui-sortable > li[id^="pageID_"] button,
+ul[id^="p"].ui-sortable > li[id^="pageID_"] select {
+    cursor: pointer;
+}
+
+/* Sortable placeholder */
+.jsadmin-sort-placeholder {
+    background: #e8f4fd;
+    border: 1px dashed #90c4e8;
+    visibility: visible !important;
+}
+
+/* ── Sections table ──────────────────────────────────────────────────────── */
+.sections-dnd {
+    width: 100%;
+    table-layout: auto;
+}
+.sections-dnd tr td:last-child {
+    text-align: center;
+    min-width: 30px;
+}
+#page-sections td.list-type,
+.sections-dnd .ui-sortable-helper td.list-type{
+    font-weight: 600;
+    padding-left: 10px !important;
+}
+.sections-dnd thead td {
+    background-color: #ccc;
+    font-weight: 400;
+    white-space: nowrap;
+}
+.sections-dnd .ui-sortable-helper td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Drop-Indikator: visibility:hidden des Placeholder-<tr> überschreiben */
+.sections-dnd .ui-sortable-placeholder {
+    visibility: visible !important;
+}
+.sections-dnd .ui-sortable-placeholder td {
+    height:           35px  !important;
+    padding:          0     !important;
+    background-color: #E8F4FD !important;
+    border:           1px dashed #90C4E8 !important;
+}
+
