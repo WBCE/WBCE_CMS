@@ -80,19 +80,10 @@ $results_array = $results->fetchRow();
 $old_parent = $results_array['parent'];
 $old_link = $results_array['link'];
 $old_position = $results_array['position'];
-$old_admin_groups = explode(',', str_replace('_', '', $results_array['admin_groups']));
-$old_admin_users = explode(',', str_replace('_', '', $results_array['admin_users']));
-
 // Work-out if we should check for existing page_code
 $field_set = $database->field_exists(TABLE_PREFIX . 'pages', 'page_code');
 
-$in_old_group = false;
-foreach ($admin->get_groups_id() as $cur_gid) {
-    if (in_array($cur_gid, $old_admin_groups)) {
-        $in_old_group = true;
-    }
-}
-if ((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users))) {
+if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_users'])) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 

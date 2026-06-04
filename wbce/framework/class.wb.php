@@ -287,6 +287,32 @@ class Wb extends SecureForm
     }
 
     /**
+     * Check if the current user has admin rights for a page based on
+     * the raw admin_groups / admin_users values from {TP}pages.
+     *
+     * Available in both backend (Admin) and frontend (Frontend) contexts,
+     * e.g. for inline-edit or frontend-edit modules.
+     *
+     * Handles both the old _N_N_ underscore format and the modern N,N CSV.
+     * The superadmin (primary group 1) always passes — same bypass as
+     * ami_group_member().
+     *
+     * @param  string $adminGroups  admin_groups value from {TP}pages
+     * @param  string $adminUsers   admin_users  value from {TP}pages
+     * @return bool
+     */
+    public function isPageAdmin(string $adminGroups, string $adminUsers = ''): bool
+    {
+        if ($this->get_group_id() == 1) {
+            return true;                        // Superadmin has access to all pages
+        }
+        $groups = explode(',', str_replace('_', '', $adminGroups));
+        $users  = explode(',', str_replace('_', '', $adminUsers));
+        return $this->is_group_match($groups, $this->get_groups_id())
+            || in_array((string) $this->get_user_id(), $users, true);
+    }
+
+    /**
      * @brief   Get the current users main GROUP_ID.
      *         NOTE: a user may be member in differend user groups.
      *

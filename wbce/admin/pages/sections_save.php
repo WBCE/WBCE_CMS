@@ -39,15 +39,7 @@ if (!$admin->checkFTAN()) {
 // $database = new database();
 $results = $database->query("SELECT admin_groups,admin_users FROM {TP}pages WHERE page_id = '$page_id'");
 $results_array = $results->fetchRow();
-$old_admin_groups = explode(',', $results_array['admin_groups']);
-$old_admin_users = explode(',', $results_array['admin_users']);
-$in_old_group = false;
-foreach ($admin->get_groups_id() as $cur_gid) {
-    if (in_array($cur_gid, $old_admin_groups)) {
-        $in_old_group = true;
-    }
-}
-if ((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users))) {
+if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_users'])) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 

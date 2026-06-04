@@ -256,20 +256,7 @@ function parent_list($parent)
         if ($page['level'] + 1 < PAGE_LEVEL_LIMIT) {
 
             // Get user perms
-            $admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
-            $admin_users = explode(',', str_replace('_', '', $page['admin_users']));
-
-            $in_group = false;
-            foreach ($admin->get_groups_id() as $cur_gid) {
-                if (in_array($cur_gid, $admin_groups)) {
-                    $in_group = true;
-                }
-            }
-            if (($in_group) or is_numeric(array_search($admin->get_user_id(), $admin_users))) {
-                $can_modify = true;
-            } else {
-                $can_modify = false;
-            }
+            $can_modify = $admin->isPageAdmin($page['admin_groups'], $page['admin_users']);
 
             // Title -'s prefix
             $title_prefix = '';
