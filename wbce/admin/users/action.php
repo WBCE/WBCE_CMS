@@ -30,7 +30,7 @@ if ($userId < 2) {
 
 // --- Get row ---
 if ($action === 'getrow') {
-    renderUserRow($userId, $admin, $users, 'empha-new');
+    renderUserRow($userId, $admin, $users, 'empha-last-edit');
     exit;
 }
 

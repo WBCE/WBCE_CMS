@@ -178,12 +178,15 @@ if ($wasAdded && $userId > 0 && empty($errorMsgs)) {
     $newIDKEY = $admin->getIDKEY($userId);
     header('HX-Trigger: {"userAdded": {"idkey": "' . $newIDKEY . '", "userId": ' . $userId . '}}');
 } elseif ($saveData !== null && empty($errorMsgs) && !$wasAdded) {
-    header('HX-Trigger: {"userSaved": {"userId": ' . $userId . '}}');
+    $savedIDKEY = $admin->getIDKEY($userId);
+    header('HX-Trigger: {"userSaved": {"idkey": "' . $savedIDKEY . '", "userId": ' . $userId . '}}');
 }
 
 // Messages
 if (!empty($errorMsgs)) {
-    $alerts->error(implode('<br>', array_map('h', $errorMsgs)));
+    foreach ($errorMsgs as $msg) {
+        $alerts->toast(h($msg), 'error');
+    }
 } elseif ($saveData !== null) {
     // Success → toast (merges into existing HX-Trigger)
     $label = $wasAdded ? '{MESSAGE:USERS_ADDED}' : '{MESSAGE:USERS_SAVED}';
@@ -219,7 +222,7 @@ $toTwig = [
     'groups'             => $groupsForForm,
     'home_folders'       => $homeFolders,
     'change_pswd'        => $changePswd,
-    'INPUT_NEW_PASSWORD' => $admin->passwordField('password'),
+    'INPUT_NEW_PASSWORD' => $admin->passwordField('password', '', 0, ($saveData !== null && !empty($errorMsgs)) ? ($_POST['password'] ?? '') : ''),
     'is_htmx_fragment'   => true,
 ];
 

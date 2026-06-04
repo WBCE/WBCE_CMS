@@ -228,12 +228,24 @@ class Alerts
             }
         }
 
-        $existing['showToast'] = [
+        $toastData = [
             'message'  => $translated,
             'type'     => $type,
             'duration' => $duration,
             'icon'     => self::ICON_MAP[$type] ?? '',
         ];
+
+        /* Always use {"showToast": {"queue": [...]}} — a plain object so htmx
+         * spreads it directly into evt.detail instead of wrapping it in {value:…}.
+         * The JS listener reads evt.detail.queue and loops through the items.     */
+        if (!isset($existing['showToast'])) {
+            $existing['showToast'] = ['queue' => [$toastData]];
+        } elseif (isset($existing['showToast']['queue'])) {
+            $existing['showToast']['queue'][] = $toastData;
+        } else {
+            // Legacy single-object format — convert to queue
+            $existing['showToast'] = ['queue' => [$existing['showToast'], $toastData]];
+        }
 
         header('HX-Trigger: ' . json_encode($existing));
     }

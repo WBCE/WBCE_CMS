@@ -52,7 +52,7 @@
             height: 'auto',
             useSearch: true,
             disable_search_threshold: 7,
-            showAllOptionsOnFocus: false,
+            showAllOptionsOnFocus: true,
             selectFirstOptionOnSearch: true,
             valueField: 'value',
             textField: 'text',
@@ -208,6 +208,10 @@
             self.$container_element.on('mousedown', function (_e) {
                 _e.preventDefault();
                 if (self.$container_element.hasClass('ws--open')) {
+                    /* stopPropagation() on .ws-opt mousedown does NOT prevent
+                     * this handler from firing (same element, different handler).
+                     * Only close the dropdown when clicking OUTSIDE the options list. */
+                    if ($(_e.target).closest('.ws-opts').length) return;
                     _e.stopPropagation();
                     hideDropdown();
                 } else {

@@ -29,6 +29,7 @@
     </button>
     {% endif %}
 
+
     <h4>{{ L_('OVERVIEW:USERS') }}</h4>
     {% if USERLIST|length > 2 %}
     <input type="text" id="filterTable" class="cp-table-filter" data-filter-table="usersOverview" placeholder="{{ L_("TEXT:SEARCH") }} &hellip;">
@@ -64,8 +65,18 @@
         {% endif %}	        
     </table>    
 </div>
-<script>    
-$(document).ready(function() { 
+<style>
+@keyframes empha-pulse {
+    0%,  60% { background-color: rgba(40, 167, 69, 0.15); }
+    100%     { background-color: transparent; }
+}
+tr.empha-last-edit {
+    animation: empha-pulse 2.5s ease-out;
+}
+</style>
+
+<script>
+$(document).ready(function() {
     var $addBtn  = $('#btn-add-user');
     var adminUrl = '{{ ADMIN_URL }}';
 
@@ -126,12 +137,46 @@ $(document).ready(function() {
     initFormSelects('#user-form-panel');
 
     // -----------------------------------------------------------------
-    //  userAdded event: fetch new row and append to table
+    //  Row highlight + scroll helper
+    // -----------------------------------------------------------------
+    var _pendingScrollUserId = null;
+
+    function scrollToRow(userId) {
+        var row = document.getElementById('uid_' + userId);
+        if (row) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // After htmx swaps a row (beforeend or outerHTML), scroll to it.
+    // The row already carries empha-last-edit from the server response.
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        if (_pendingScrollUserId === null) return;
+        var t = evt.detail && evt.detail.target;
+        if (!t) return;
+        if (t.id === 'users-table-body' || t.id === 'uid_' + _pendingScrollUserId) {
+            scrollToRow(_pendingScrollUserId);
+            _pendingScrollUserId = null;
+        }
+    });
+
+    // -----------------------------------------------------------------
+    //  userAdded: fetch new row, append to table, then scroll + highlight
     // -----------------------------------------------------------------
     document.body.addEventListener('userAdded', function(evt) {
-        htmx.ajax('GET', 
-            adminUrl + '/users/action.php?do=getrow&user_id=' + encodeURIComponent(evt.detail.idkey), 
+        _pendingScrollUserId = evt.detail.userId;
+        htmx.ajax('GET',
+            adminUrl + '/users/action.php?do=getrow&user_id=' + encodeURIComponent(evt.detail.idkey),
             { target: '#users-table-body', swap: 'beforeend' }
+        );
+    });
+
+    // -----------------------------------------------------------------
+    //  userSaved: refresh existing row in-place, then scroll + highlight
+    // -----------------------------------------------------------------
+    document.body.addEventListener('userSaved', function(evt) {
+        _pendingScrollUserId = evt.detail.userId;
+        htmx.ajax('GET',
+            adminUrl + '/users/action.php?do=getrow&user_id=' + encodeURIComponent(evt.detail.idkey),
+            { target: '#uid_' + evt.detail.userId, swap: 'outerHTML' }
         );
     });
 

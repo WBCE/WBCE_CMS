@@ -14,7 +14,7 @@
 
 {% set IDKEY = getIDKEY(rec.user_id) %}
 
-<tr id="uid_{{ rec.user_id }}"{% if rec.user_id == hilite %} class="hilite"{% endif %}>
+<tr id="uid_{{ rec.user_id }}"{% if extra_class|default('') %} class="{{ extra_class }}"{% elseif rec.user_id == hilite %} class="hilite"{% endif %}>
 
     {# ID — hidden on tablet and below #}
     <td class="sm-hide"><span>{{ rec.user_id }}</span></td>

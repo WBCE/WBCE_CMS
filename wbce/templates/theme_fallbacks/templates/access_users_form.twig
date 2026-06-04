@@ -109,7 +109,7 @@
                             <div class="cp-setting-row">
                                 <label class="cp-setting-name{% if not do_modify_user %} cp-required{% endif %}">{{ L_('TEXT:RETYPE_PASSWORD') }}</label>
                                 <div class="cp-setting-value">
-                                    <input type="password" name="password2" maxlength="50" class="wdt250">
+                                    <input type="password" id="password2" name="password2" autocomplete="new-password">
                                     {% if do_modify_user %}
                                         <div class="cp-setting-hint">{{ L_('MESSAGE:USERS_CHANGING_PASSWORD') }}</div>
                                     {% endif %}
@@ -248,6 +248,14 @@
 <script>
 // Runs immediately when htmx injects this fragment
 (function() {
+    // Clear all existing toasts before a new submit
+    document.getElementById('modify_user').addEventListener('htmx:beforeRequest', function() {
+        document.querySelectorAll('#toast-container .toast').forEach(function(t) {
+            t.classList.add('toast-out');
+            setTimeout(function() { t.remove(); }, 300);
+        });
+    });
+
     // Password toggle
     var $toggle = $('#change_pswd');
     if ($toggle.length) {
@@ -256,32 +264,6 @@
         });
     }
 
-    // Groups validation — only on form submit, NOT on field validation pings
-    var form = document.getElementById('modify_user');
-    if (form) {
-        form.addEventListener('htmx:beforeRequest', function(e) {
-            var trigger = e.detail.elt;
-            if (trigger.tagName !== 'FORM') {
-                return; // let field validation requests pass through
-            }
-
-            var groups = document.getElementById('select_groups');
-            if (groups && groups.selectedOptions.length === 0) {
-                e.preventDefault();
-                var row = groups.closest('.cp-setting-row');
-                if (!row.querySelector('.groups-error')) {
-                    var msg = document.createElement('div');
-                    msg.className = 'groups-error';
-                    msg.style.cssText = 'color:#c0392b; margin-top:4px;';
-                    msg.innerHTML = '<i class="fa fa-warning"></i> {{ L_("MESSAGE:USERS_NO_GROUP")|e("js") }}';
-                    row.appendChild(msg);
-                }
-                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-            var err = form.querySelector('.groups-error');
-            if (err) err.remove();
-        });
-    }
+    // Groups validation is handled server-side — PHP fires an error toast.
 })();
 </script>

@@ -179,14 +179,19 @@
     }
 
     // Listen for htmx events from Alerts::toast()
+    // Payload shape: {queue: [{message, type, duration, icon}, ...]}
+    // Legacy single-object {message, type, ...} is also handled (queue absent).
     document.body.addEventListener('showToast', function(evt) {
-        var d = evt.detail;
-        showToast(
-            d.message || d.value || '',
-            d.type || 'success',
-            d.duration || 4000,
-            d.icon || ''
-        );
+        var d      = evt.detail;
+        var toasts = Array.isArray(d.queue) ? d.queue : [d];
+        toasts.forEach(function(t) {
+            showToast(
+                t.message || t.value || '',
+                t.type    || 'success',
+                typeof t.duration !== 'undefined' ? t.duration : 4000,  /* 0 = sticky */
+                t.icon    || ''
+            );
+        });
     });
 
     // Inline message dismiss (click close on .dismissable)
