@@ -56,7 +56,16 @@ function fireToast(xhr) {
     try { ev = JSON.parse(raw); } catch (e) { return; }
     var t = ev.showToast;
     if (!t || typeof window.showToast !== 'function') return;
-    window.showToast(t.message, t.type, t.duration, t.icon || '');
+    // Handle queue format {queue: [...]} or legacy single-object {message, type, ...}
+    var toasts = Array.isArray(t.queue) ? t.queue : [t];
+    toasts.forEach(function(item) {
+        window.showToast(
+            item.message  || '',
+            item.type     || 'success',
+            typeof item.duration !== 'undefined' ? item.duration : 4000,
+            item.icon     || ''
+        );
+    });
 }
 
 function getCMMode(ext) {
