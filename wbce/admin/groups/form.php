@@ -10,6 +10,7 @@
 
 require '../../config.php';
 require ADMIN_PATH . '/access/functions.php';
+Lang::loadLanguage(__DIR__);
 
 // Non-htmx fallback
 if (!MessageBox::isHtmx()) {
@@ -63,8 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$hasError) {
         $data = [
-            'name'        => $name,
-            'description' => strip_tags($admin->get_post('description') ?? ''),
+            'name'           => $name,
+            'description'    => strip_tags($admin->get_post('description') ?? ''),
+            'default_module' => trim($admin->get_post('default_module') ?? ''),
             ...$perms->parseFromPost($admin),
         ];
 
@@ -128,8 +130,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $toTwig = [
     'MESSAGE_BOX'  => $alerts->renderFragment(),
     'group_id'     => $groupId,
-    'GROUP_NAME'   => ($groupId > 0) ? $groups->getGroupName($groupId)        : '',
-    'GROUP_DESC'   => ($groupId > 0) ? $groups->getGroupDescription($groupId) : '',
+    'GROUP_NAME'     => ($groupId > 0) ? $groups->getGroupName($groupId)                             : '',
+    'GROUP_DESC'     => ($groupId > 0) ? $groups->getGroupDescription($groupId)                      : '',
+    'default_module' => ($groupId > 0) ? ($groups->getGroup($groupId)['default_module'] ?? '')       : '',
     'access_perms' => $perms->getStructure($groupId),
     'addon_list'   => [
         'page'     => $perms->getAddonList('page',     $groupId),

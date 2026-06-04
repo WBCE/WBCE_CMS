@@ -389,6 +389,7 @@ $newDbFields = [
     ['{TP}addons',           'updated_when',        "INT          NOT NULL DEFAULT 0"],
     ['{TP}addons',           'updated_by',          "INT          NOT NULL DEFAULT 0"],
     ['{TP}groups',           'description',         "VARCHAR(255) NOT NULL DEFAULT '' AFTER `name`"],
+    ['{TP}groups',           'default_module',      "VARCHAR(64)  NOT NULL DEFAULT '' AFTER `template_permissions`"],
     ['{TP}sections',         'modified_when',       "INT          NOT NULL DEFAULT 0 AFTER `namesection`"],
     ['{TP}sections',         'modified_by',         "INT          NOT NULL DEFAULT 0 AFTER `modified_when`"],
 ];

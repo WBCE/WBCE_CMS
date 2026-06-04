@@ -478,7 +478,8 @@ switch ($action) {
                     if (!is_numeric(array_search($module['directory'], $module_permissions))) {
                         $oTemplate->set_var('VALUE', $module['directory']);
                         $oTemplate->set_var('NAME', $admin->get_module_name($module['directory']));
-                        if ($module['directory'] == 'wysiwyg') {
+                        $defaultModule = !empty($_SESSION['DEFAULT_MODULE']) ? $_SESSION['DEFAULT_MODULE'] : 'wysiwyg';
+                        if ($module['directory'] == $defaultModule) {
                             $oTemplate->set_var('SELECTED', ' selected="selected"');
                         } else {
                             $oTemplate->set_var('SELECTED', '');

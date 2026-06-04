@@ -113,11 +113,23 @@
                                                 {% for addon in addon_list.page %}
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" name="module_permissions[]" id="t_{{ addon.directory }}" class="child_module_permissions" value="{{ addon.directory }}"{% if addon.checked %} checked{% endif %} />
+                                                        <input type="checkbox" name="module_permissions[]" id="t_{{ addon.directory }}" class="child_module_permissions" value="{{ addon.directory }}"{% if addon.checked %} checked{% endif %} data-label="{{ addon.name|e }}" />
                                                         {{ addon.name }} <span>/{{ addon.directory }}</span>
                                                     </label>
                                                 </li>
                                                 {% endfor %}
+                                                <li class="default-module-row" style="margin-top:8px; padding-top:8px; border-top:1px solid rgba(128,128,128,.2);">
+                                                    <label style="display:block; font-size:.95em; opacity:.8; margin-bottom:4px;">{{ L_('TEXT:PRESELECTED_MODULE') }}</label>
+                                                    <select id="default_module_select" name="default_module" style="width:240px;">
+                                                        <option value="">{{ L_('TEXT:PLEASE_SELECT') }}…</option>
+                                                        {% for addon in addon_list.page %}
+                                                            {% if addon.checked %}
+                                                                <option value="{{ addon.directory }}"{% if default_module == addon.directory %} selected{% endif %}>{{ addon.name }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                    <small id="default_module_hint" data-tpl="{{ L_('TEXT:DEFAULT_MODULE_HINT') }}" style="display:none; opacity:.75; font-size:.9em; margin-top:4px;"></small>
+                                                </li>
                                             </ul>
                                         {% endif %}
                                         {% if key == "templates" %} 
@@ -343,7 +355,10 @@
     }
 
     // Initialize all
-    area_checkboxes.forEach(function (i) { area(i); }); 
+    area_checkboxes.forEach(function (i) { area(i); });
     advanced_checkboxes.forEach(function (k) { advanced_area(k); });
 })();
+
+// wbeSelect for #default_module_select is owned by access_groups.twig
+// via initGroupFormWidgets() + htmx:afterSettle — no inline init here.
 </script>

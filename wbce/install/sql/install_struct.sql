@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `{TP}groups` (
   `system_permissions`   TEXT         NOT NULL,
   `module_permissions`   TEXT         NOT NULL,
   `template_permissions` TEXT         NOT NULL,
+  `default_module`       VARCHAR(64)  NOT NULL DEFAULT '',
   PRIMARY KEY (`group_id`)
 ){TABLE_ENGINE};
 --

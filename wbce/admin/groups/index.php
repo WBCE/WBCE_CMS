@@ -11,6 +11,10 @@
 
 require '../../config.php';
 require ADMIN_PATH . '/access/functions.php';
+Lang::loadLanguage(__DIR__);
+
+I::insertCssFile(WB_URL . '/include/wbeSelect/wbeSelect.css',         'HEAD BTM-');
+I::insertJsFile(WB_URL  . '/include/wbeSelect/wbeSelect.jquery.js',   'BODY BTM-');
 
 $alerts = new Alerts();
 $groups = new GroupManager();

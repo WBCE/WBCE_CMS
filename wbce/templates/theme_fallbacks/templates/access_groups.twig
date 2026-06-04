@@ -213,6 +213,58 @@ $(document).ready(function () {
         }
     })();
     {% endif %}
+
+    // -----------------------------------------------------------------
+    //  wbeSelect: default_module — init + re-init after htmx swap
+    // -----------------------------------------------------------------
+    function initGroupFormWidgets(container) {
+        if (!$.fn.wbeSelect) return;
+        var $el   = $(container);
+        var $sel  = $el.find('#default_module_select');
+        var $hint = $el.find('#default_module_hint');
+        if (!$sel.length) return;
+
+        function getFallback() {
+            var $ws = $el.find('input.child_module_permissions[value="wysiwyg"]:checked');
+            if ($ws.length) return { dir: 'wysiwyg', label: $ws.data('label') || 'WYSIWYG' };
+            var $first = $el.find('input.child_module_permissions:checked').first();
+            if ($first.length) return { dir: $first.val(), label: $first.data('label') || $first.val() };
+            return null;
+        }
+
+        function updateHint() {
+            if ($sel.val() !== '') { $hint.hide(); return; }
+            var fb = getFallback();
+            if (fb) {
+                var tpl    = $hint.data('tpl') || 'If none selected, %s will be used as preselected.';
+                var safeLabel = $('<span>').text(fb.label).html(); // HTML-escape the label
+                $hint.html(tpl.replace('%s', '<strong>' + safeLabel + '</strong>'))
+                     .css('display', 'block');
+            }
+            else    $hint.hide();
+        }
+
+        // Wrap server-rendered options with wbeSelect — no option manipulation.
+        $sel.wbeSelect({ customSelector: 'title_only', disable_search_threshold: 7 });
+
+        // Hint reacts to: select change + checkbox changes
+        $sel.off('change.defaultModule').on('change.defaultModule', updateHint);
+        $el.find('input.child_module_permissions').off('change.defaultModule')
+           .on('change.defaultModule', updateHint);
+
+        updateHint();
+    }
+
+    // Re-init after every htmx swap into the form panel
+    document.body.addEventListener('htmx:afterSettle', function(evt) {
+        if (evt.detail.target.id === 'group-form-panel') {
+            initGroupFormWidgets(evt.detail.target);
+        }
+    });
+
+    // Init on initial page load (when form is already present)
+    initGroupFormWidgets('#group-form-panel');
+
 });
 </script>
 {% endblock %}

@@ -162,7 +162,8 @@ if ($result->numRows() > 0) {
         if (!is_numeric(array_search($module['directory'], $module_permissions))) {
             $template->set_var('VALUE', $module['directory']);
             $template->set_var('NAME', $admin->get_module_name($module['directory']));
-            if ($module['directory'] == 'wysiwyg') {
+            $defaultModule = !empty($_SESSION['DEFAULT_MODULE']) ? $_SESSION['DEFAULT_MODULE'] : 'wysiwyg';
+            if ($module['directory'] == $defaultModule) {
                 $template->set_var('SELECTED', ' selected="selected"');
             } else {
                 $template->set_var('SELECTED', '');
