@@ -346,19 +346,10 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
 
                             <div class="field-row">
                                 <label for="admin_password"><?= $TXT['lbl_admin_pass'] ?></label>
-                                <div class="pw-gen-wrap">
-                                    <input <?= field_error('admin_password') ?> type="password" id="admin_password"
-                                                                               tabindex="14" name="admin_password"
-                                                                               minlength="12" value="<?= $sAdminPassword ?>" required
-                                                                               autocomplete="new-password">
-                                    <button type="button" id="btn-gen-pw" class="btn-pw-action" title="<?= $TXT['btn_gen_password'] ?>">
-                                        <?= $TXT['btn_gen_password'] ?>
-                                    </button>
-                                    <button type="button" id="btn-copy-pw" class="btn-pw-action" style="display:none" title="<?= $TXT['btn_copy_password'] ?? 'Copy' ?>">
-                                        &#x1F4CB;&#xFE0E;
-                                    </button>
-                                </div>
-                                <span class="pw-generated-hint" id="pw-hint" aria-live="polite"></span>
+                                <input <?= field_error('admin_password') ?> type="password" id="admin_password"
+                                                                           tabindex="14" name="admin_password"
+                                                                           minlength="12" value="<?= $sAdminPassword ?>" required
+                                                                           autocomplete="new-password">
                             </div>
 
                             <div class="field-row">
@@ -460,8 +451,6 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                 dbTesting: <?= json_encode($TXT['db_testing']) ?>,
                 dbRetest: <?= json_encode($TXT['db_retest']) ?>,
                 btnTest: <?= json_encode($TXT['btn_test_db']) ?>,
-                pwCopyHint: <?= json_encode($TXT['pw_copy_hint']) ?>,
-                pwCopied:   <?= json_encode($TXT['pw_copied'] ?? '✔ Copied') ?>,
                 installing: <?= json_encode($TXT['progress_btn_installing'] ?? 'Installing…') ?>,
                 phaseStarting: <?= json_encode($TXT['progress_starting'] ?? 'Starting…') ?>,
                 phaseDone: <?= json_encode($TXT['progress_done'] ?? 'Complete') ?>,
@@ -498,7 +487,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
             $sel.on('change', function () { window.location = this.value; });
         });
 
-        WbePwGen.attach('admin_password', 'pw-strength-wrap', <?= json_encode($wpg_labels) ?>);
+        WbePwGen.attach('admin_password', 'pw-strength-wrap', <?= json_encode(array_merge($wpg_labels, ['confirmId' => 'admin_repassword'])) ?>);
         </script>
     </body>
 </html>

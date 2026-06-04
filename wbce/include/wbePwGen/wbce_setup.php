@@ -1,27 +1,31 @@
 <?php
 /**
- * wbe_pw_gen — WBCE backend integration setup
+ * wbePwGen — WBCE backend setup helper
  *
- * Include this file in your module's backend PHP to enqueue the
- * password-strength widget assets and get the localised labels.
+ * Enqueues the widget assets via WBCE's I:: asset manager and exposes
+ * $wpg_labels (localised strings ready for json_encode).
  *
- * After including this file the following are available:
- *   $wpg_labels  — array, pass to WbePwGen.attach() via json_encode()
+ * Usage in any WBCE module backend file:
  *
- * Assets are loaded exactly once per page via the WBCE asset pipeline.
+ *   require_once INCLUDE_PATH . '/wbePwGen/wbce_setup.php';
  *
- * @copyright WBCE Project (2015-)
- * @license   GNU GPL2 (or any later version)
+ *   // Then in your template / HTML output:
+ *   // <input type="password" id="my_pw" name="my_pw" minlength="12">
+ *   // <div id="my-pw-wrap" class="wpg-wrap"></div>
+ *   // <script>
+ *   //   WbePwGen.attach('my_pw', 'my-pw-wrap', <?php echo json_encode($wpg_labels); ?>);
+ *   // </script>
  */
 
-if (!defined('WB_URL')) {
-    header('Location: ../../index.php');
-    exit(0);
-}
+if (!defined('WB_PATH')) { http_response_code(403); exit; }
 
-require_once __DIR__ . '/i18n.php'; // defines $wpg_labels
+/* Load localised labels */
+require_once __DIR__ . '/i18n.php';   // defines $wpg_labels
 
+/* Enqueue assets once */
 $_wpg_base = WB_URL . '/include/wbePwGen/';
-I::insertCssFile($_wpg_base . 'wbePwGen.css',  'HEAD TOP+');
-I::insertJsFile( $_wpg_base . 'wbePwGen.js',   'BODY BTM-');
+
+I::insertCssFile($_wpg_base . 'wbePwGen.css');
+I::insertJsFile($_wpg_base  . 'wbePwGen.js', 'BODY BTM-');
+
 unset($_wpg_base);

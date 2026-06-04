@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * WBCE CMS
  * Way Better Content Editing.
@@ -136,44 +136,57 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief  returns a password input field and prepares the insert queue
-     *         for the password strength meter
+     * Returns a password input with the wbePwGen strength meter and generator.
      *
-     * @param string $sNameAttr
+     * Enqueues wbePwGen CSS/JS (idempotent via I:: key) and emits an inline
+     * WbePwGen.attach() call so the widget initialises in both full-page and
+     * HTMX-fragment contexts.
+     *
+     * @param string $sNameAttr  The input name/id attribute.
+     * @param string $confirmId  ID of the confirm field. Auto-derived when empty:
+     *                           foo_1 → foo_2, foo → foo2.
+     * @param int    $maxWidth   Explicit row max-width in px. 0 = auto-detect from theme
+     *                           CSS (works when theme uses max-width on inputs, e.g. 300px).
+     *                           Pass the value explicitly for themes that use width instead
+     *                           of max-width (e.g. flat_theme uses .wdt250 = 250px).
      */
-    public function passwordField($sNameAttr = '')
+    public function passwordField(string $sNameAttr = '', string $confirmId = '', int $maxWidth = 0): string
     {
-        $sRetVal = '';
-        if ($sNameAttr != '') {
-            $sRetVal = '<input type="password" id="' . $sNameAttr . '" name="' . $sNameAttr . '" value="" class="wdt250" autocomplete="new-password" />';
-            I::insertCssFile(WB_URL . '/include/password-strength-meter/password.min.css', 'HEAD BTM-', 'PwStrenght');
-            I::insertJsFile(WB_URL . '/include/password-strength-meter/password.min.js', 'HEAD BTM-', 'PwStrenght');
-
-            // Get String Translations
-            $sLanguagesDir = WB_PATH . '/include/password-strength-meter/languages/';
-            $sLanguageFile = $sLanguagesDir . strtolower(LANGUAGE) . '.js';
-            if (file_exists($sLanguageFile)) {
-                $sLangFile = get_url_from_path($sLanguageFile);
-            } else {
-                $sLangFile = get_url_from_path($sLanguagesDir . '/en.js');
-            }
-            I::insertJsFile($sLangFile, 'HEAD BTM-', 'PwStrenghtLang');
-            $sToJs = <<<_JsCode
-           jQuery(document).ready(function($) {
-                $('#$sNameAttr').password({
-                    minimumLength: $this->iPassMinLength,
-                    enterPass:  PwStrenghtLang.enterPass,
-                    shortPass:  PwStrenghtLang.shortPass,
-                    badPass:    PwStrenghtLang.badPass,
-                    goodPass:   PwStrenghtLang.goodPass,
-                    strongPass: PwStrenghtLang.strongPass
-                });
-            });
-            
-_JsCode;
-            I::insertJsCode($sToJs, 'HEAD BTM-', 'PwStrenght');
+        if ($sNameAttr === '') {
+            return '';
         }
-        return $sRetVal;
+
+        if ($confirmId === '') {
+            $confirmId = preg_match('/_1$/', $sNameAttr)
+                ? preg_replace('/_1$/', '_2', $sNameAttr)
+                : $sNameAttr . '2';
+        }
+
+        // Enqueue assets — idempotent via key
+        $base = WB_URL . '/include/wbePwGen/';
+        I::insertCssFile($base . 'wbePwGen.css', 'HEAD BTM-', 'wbePwGen');
+        I::insertJsFile($base . 'wbePwGen.js',  'HEAD BTM-', 'wbePwGen');
+
+        // Load localised labels into local scope (plain include so it re-runs here)
+        include WB_PATH . '/include/wbePwGen/i18n.php';
+
+        $extra = ['minLength' => $this->iPassMinLength, 'confirmId' => $confirmId];
+        if ($maxWidth > 0) $extra['maxWidth'] = $maxWidth;
+
+        $opts = json_encode(array_merge($wpg_labels, $extra));
+
+        // Inline <script> covers both full-page render and HTMX-fragment swap
+        return '<input type="password"'
+             . ' id="'        . $sNameAttr . '"'
+             . ' name="'      . $sNameAttr . '"'
+             . ' minlength="' . $this->iPassMinLength . '"'
+             . ' value="" autocomplete="new-password" />' . "\n"
+             . '<div id="' . $sNameAttr . '-wrap" class="wpg-wrap"></div>' . "\n"
+             . '<script>WbePwGen.attach('
+             .     json_encode($sNameAttr) . ','
+             .     json_encode($sNameAttr . '-wrap') . ','
+             .     $opts
+             . ');</script>';
     }
 
     /**

@@ -74,6 +74,10 @@ if (isset($_GET['user_id']) && isset($_GET['modify'])) {
     }
 }
 
+// wbePwGen assets always on page — Add User loads the form via HTMX
+I::insertCssFile(WB_URL . '/include/wbePwGen/wbePwGen.css', 'HEAD BTM-', 'wbePwGen');
+I::insertJsFile(WB_URL  . '/include/wbePwGen/wbePwGen.js',  'HEAD BTM-', 'wbePwGen');
+
 $admin->print_header();
 
 // Auto-cleanup unconfirmed signups

@@ -1,3 +1,1 @@
-<?php
-header('Location: ../../index.php');
-exit(0);
+<?php if (!defined('WB_PATH')) { http_response_code(403); exit; }

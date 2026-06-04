@@ -1,248 +1,285 @@
 <?php
 /**
- * wbe_pw_gen — Localised label array
+ * wbePwGen — Localised label array
  *
- * Returns $wpg_labels, ready to pass to WbePwGen.attach() as the options object.
- * Language is resolved from (in order): WBCE's LANGUAGE constant → $_GET['lang'] →
+ * Defines $wpg_labels, ready to pass to WbePwGen.attach() as the options object.
+ * Language resolved from: WBCE LANGUAGE constant → $_GET['lang'] →
  * $_SESSION['default_language'] → EN fallback.
- * This makes the file work both inside WBCE (LANGUAGE is defined) and in the
- * standalone installer (which uses $_GET / $_SESSION instead).
  *
- * Usage (installer or any module):
- *
- *   require_once WB_PATH . '/include/wbePwGen/wbe_pw_gen_labels.php';
- *   // $wpg_labels is now defined
- *
- *   // In a <script> block:
- *   // WbePwGen.attach('my_input', 'my_container', <?php echo json_encode($wpg_labels); ?>);
+ * Usage:
+ * require_once WB_PATH . '/include/wbePwGen/i18n.php';
+ * WbePwGen.attach('my_pw', 'my_wrap', <?php echo json_encode($wpg_labels); ?>);
  */
 
 $_wpg_strings = [
-    'EN' => [
-        'levels'       => ['Very Weak',    'Weak',    'Fair',   'Good',   'Strong'],
-        'hint_length'  => 'At least {n} characters',
-        'hint_case'    => 'Upper + lowercase letters',
-        'hint_number'  => 'Contains a number',
-        'hint_special' => 'Special char (_-!#*+@$&:)',
-        'warn_invalid' => 'Invalid characters:',
-        'warn_allowed' => 'Allowed:',
-    ],
-    'DE' => [
-        'levels'       => ['Sehr schwach', 'Schwach', 'Mittel', 'Gut',    'Stark'],
-        'hint_length'  => 'Mindestens {n} Zeichen',
-        'hint_case'    => 'Groß- und Kleinbuchstaben',
-        'hint_number'  => 'Enthält eine Zahl',
-        'hint_special' => 'Sonderzeichen (_-!#*+@$&:)',
-        'warn_invalid' => 'Ungültige Zeichen:',
-        'warn_allowed' => 'Erlaubt:',
-    ],
-    'NL' => [
-        'levels'       => ['Zeer zwak',    'Zwak',    'Matig',  'Goed',   'Sterk'],
-        'hint_length'  => 'Minimaal {n} tekens',
-        'hint_case'    => 'Hoofd- en kleine letters',
-        'hint_number'  => 'Bevat een cijfer',
-        'hint_special' => 'Speciaal teken (_-!#*+@$&:)',
-        'warn_invalid' => 'Ongeldige tekens:',
-        'warn_allowed' => 'Toegestaan:',
-    ],
-    'BG' => [
-        'levels'       => ['Много слаба',  'Слаба',   'Средна', 'Добра',  'Силна'],
-        'hint_length'  => 'Поне {n} символа',
-        'hint_case'    => 'Главни + малки букви',
-        'hint_number'  => 'Съдържа цифра',
-        'hint_special' => 'Специален знак (_-!#*+@$&:)',
-        'warn_invalid' => 'Невалидни символи:',
-        'warn_allowed' => 'Разрешени:',
-    ],
-    'CA' => [
-        'levels'       => ['Molto feble',  'Feble',   'Regular','Bo',     'Fort'],
-        'hint_length'  => 'Almenys {n} caràcters',
-        'hint_case'    => 'Majúscules + minúscules',
-        'hint_number'  => 'Conté un número',
-        'hint_special' => 'Caràcter especial (_-!#*+@$&:)',
-        'warn_invalid' => 'Caràcters no vàlids:',
-        'warn_allowed' => 'Permesos:',
-    ],
-    'CS' => [
-        'levels'       => ['Velmi slabé',  'Slabé',   'Průměrné','Dobré',  'Silné'],
-        'hint_length'  => 'Nejméně {n} znaků',
-        'hint_case'    => 'Velká + malá písmena',
-        'hint_number'  => 'Obsahuje číslo',
-        'hint_special' => 'Speciální znak (_-!#*+@$&:)',
-        'warn_invalid' => 'Neplatné znaky:',
-        'warn_allowed' => 'Povolené:',
-    ],
-    'DA' => [
-        'levels'       => ['Meget svag',   'Svag',    'Middel', 'God',    'Stærk'],
-        'hint_length'  => 'Mindst {n} tegn',
-        'hint_case'    => 'Store + små bogstaver',
-        'hint_number'  => 'Indeholder et tal',
-        'hint_special' => 'Specialtegn (_-!#*+@$&:)',
-        'warn_invalid' => 'Ugyldige tegn:',
-        'warn_allowed' => 'Tilladte:',
-    ],
-    'ES' => [
-        'levels'       => ['Muy débil',    'Débil',   'Regular','Bueno',  'Fuerte'],
-        'hint_length'  => 'Al menos {n} caracteres',
-        'hint_case'    => 'Mayúsculas + minúsculas',
-        'hint_number'  => 'Contiene un número',
-        'hint_special' => 'Carácter especial (_-!#*+@$&:)',
-        'warn_invalid' => 'Caracteres no válidos:',
-        'warn_allowed' => 'Permitidos:',
-    ],
-    'ET' => [
-        'levels'       => ['Väga nõrk',    'Nõrk',    'Keskmine','Hea',   'Tugev'],
-        'hint_length'  => 'Vähemalt {n} sümbolit',
-        'hint_case'    => 'Suured + väikesed tähed',
-        'hint_number'  => 'Sisaldab numbrit',
-        'hint_special' => 'Erimärk (_-!#*+@$&:)',
-        'warn_invalid' => 'Vigased sümbolid:',
-        'warn_allowed' => 'Lubatud:',
-    ],
-    'FI' => [
-        'levels'       => ['Erittäin heikko','Heikko', 'Kohtalainen','Hyvä','Vahva'],
-        'hint_length'  => 'Vähintään {n} merkkiä',
-        'hint_case'    => 'Suuret + pienet kirjaimet',
-        'hint_number'  => 'Sisältää numeron',
-        'hint_special' => 'Erikoismerkki (_-!#*+@$&:)',
-        'warn_invalid' => 'Virheelliset merkit:',
-        'warn_allowed' => 'Sallitut:',
-    ],
-    'FR' => [
-        'levels'       => ['Très faible',  'Faible',  'Moyen',  'Bon',    'Fort'],
-        'hint_length'  => 'Au moins {n} caractères',
-        'hint_case'    => 'Majuscules + minuscules',
-        'hint_number'  => 'Contient un chiffre',
-        'hint_special' => 'Caractère spécial (_-!#*+@$&:)',
-        'warn_invalid' => 'Caractères invalides :',
-        'warn_allowed' => 'Autorisés :',
-    ],
-    'GR' => [
-        'levels'       => ['Πολύ ασθενές', 'Ασθενές', 'Μέτριο', 'Καλό',   'Ισχυρό'],
-        'hint_length'  => 'Τουλάχιστον {n} χαρακτήρες',
-        'hint_case'    => 'Κεφαλαία + πεζά γράμματα',
-        'hint_number'  => 'Περιέχει αριθμό',
-        'hint_special' => 'Ειδικός χαρακτήρας (_-!#*+@$&:)',
-        'warn_invalid' => 'Μη έγκυροι χαρακτήρες:',
-        'warn_allowed' => 'Επιτρεπόμενοι:',
-    ],
-    'HU' => [
-        'levels'       => ['Nagyon gyenge', 'Gyenge',  'Közepes','Jó',    'Erős'],
-        'hint_length'  => 'Legalább {n} karakter',
-        'hint_case'    => 'Kis- és nagybetűk',
-        'hint_number'  => 'Tartalmaz számot',
-        'hint_special' => 'Speciális karakter (_-!#*+@$&:)',
-        'warn_invalid' => 'Érvénytelen karakterek:',
-        'warn_allowed' => 'Engedélyezett:',
-    ],
-    'IT' => [
-        'levels'       => ['Molto debole', 'Debole',  'Medio',  'Buono',  'Forte'],
-        'hint_length'  => 'Almeno {n} caratteri',
-        'hint_case'    => 'Maiuscole + minuscole',
-        'hint_number'  => 'Contiene un numero',
-        'hint_special' => 'Carattere speciale (_-!#*+@$&:)',
-        'warn_invalid' => 'Caratteri non validi:',
-        'warn_allowed' => 'Consentiti:',
-    ],
-    'LV' => [
-        'levels'       => ['Ļoti vājš',    'Vājš',    'Vidējs', 'Labs',   'Stiprs'],
-        'hint_length'  => 'Vismaz {n} zīmes',
-        'hint_case'    => 'Lielie + mazie burti',
-        'hint_number'  => 'Satur skaitli',
-        'hint_special' => 'Speciālā zīme (_-!#*+@$&:)',
-        'warn_invalid' => 'Nederīgas zīmes:',
-        'warn_allowed' => 'Atļautās:',
-    ],
-    'NO' => [
-        'levels'       => ['Meget svak',   'Svak',    'Middels','God',    'Sterk'],
-        'hint_length'  => 'Minst {n} tegn',
-        'hint_case'    => 'Store + små bokstaver',
-        'hint_number'  => 'Inneholder et tall',
-        'hint_special' => 'Spesialtegn (_-!#*+@$&:)',
-        'warn_invalid' => 'Ugyldige tegn:',
-        'warn_allowed' => 'Tillatte:',
-    ],
-    'PL' => [
-        'levels'       => ['Bardzo słabe', 'Słabe',   'Średnie','Dobre',  'Silne'],
-        'hint_length'  => 'Co najmniej {n} znaków',
-        'hint_case'    => 'Wielkie + małe litery',
-        'hint_number'  => 'Zawiera cyfrę',
-        'hint_special' => 'Znak specjalny (_-!#*+@$&:)',
-        'warn_invalid' => 'Nieprawidłowe znaki:',
-        'warn_allowed' => 'Dozwolone:',
-    ],
-    'PT' => [
-        'levels'       => ['Muito fraca',  'Fraca',   'Regular','Boa',    'Forte'],
-        'hint_length'  => 'Pelo menos {n} caracteres',
-        'hint_case'    => 'Maiúsculas + minúsculas',
-        'hint_number'  => 'Contém um número',
-        'hint_special' => 'Carácter especial (_-!#*+@$&:)',
-        'warn_invalid' => 'Caracteres inválidos:',
-        'warn_allowed' => 'Permitidos:',
-    ],
-    'RU' => [
-        'levels'       => ['Очень слабый', 'Слабый',  'Средний','Хороший','Сильный'],
-        'hint_length'  => 'Не менее {n} символов',
-        'hint_case'    => 'Заглавные + строчные буквы',
-        'hint_number'  => 'Содержит цифру',
-        'hint_special' => 'Спецсимвол (_-!#*+@$&:)',
-        'warn_invalid' => 'Недопустимые символы:',
-        'warn_allowed' => 'Допустимые:',
-    ],
-    'SK' => [
-        'levels'       => ['Veľmi slabé',  'Slabé',   'Priemerné','Dobré', 'Silné'],
-        'hint_length'  => 'Najmenej {n} znakov',
-        'hint_case'    => 'Veľké + malé písmená',
-        'hint_number'  => 'Obsahuje číslo',
-        'hint_special' => 'Špeciálny znak (_-!#*+@$&:)',
-        'warn_invalid' => 'Neplatné znaky:',
-        'warn_allowed' => 'Povolené:',
-    ],
-    'SV' => [
-        'levels'       => ['Mycket svagt', 'Svagt',   'Godtagbart','Bra',  'Starkt'],
-        'hint_length'  => 'Minst {n} tecken',
-        'hint_case'    => 'Stora + små bokstäver',
-        'hint_number'  => 'Innehåller en siffra',
-        'hint_special' => 'Specialtecken (_-!#*+@$&:)',
-        'warn_invalid' => 'Ogiltiga tecken:',
-        'warn_allowed' => 'Tillåtna:',
-    ],
-    'TR' => [
-        'levels'       => ['Çok zayıf',    'Zayıf',   'Orta',   'İyi',    'Güçlü'],
-        'hint_length'  => 'En az {n} karakter',
-        'hint_case'    => 'Büyük + küçük harfler',
-        'hint_number'  => 'Rakam içerir',
-        'hint_special' => 'Özel karakter (_-!#*+@$&:)',
-        'warn_invalid' => 'Geçersiz karakterler:',
-        'warn_allowed' => 'İzin verilen:',
-    ],
+    'DE_AT' => 'DE', // alias
+    'DE_CH' => 'DE', // alias
 ];
+
+/* ── Raw Language Data Matrix ───────────────────────────────────────────── */
+$langStrings = [
+    'EN' => ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong',
+             'Enter at least %d characters', 'Keep going — try mixing letters & numbers',
+             'Almost there — add special characters', 'Just a bit more…',
+             'Contains invalid characters: %s', 'Weak — mix letters, numbers and special characters',
+             'Add an uppercase letter to strengthen', 'Add a lowercase letter to strengthen', 'Add a number to strengthen',
+             'Add a special character',
+             'Good password', 'Strong password ✓',
+             'Passwords match ✓', 'Passwords do not match', '↺', 'Generate password'],
+
+    'DE' => ['Sehr schwach', 'Schwach', 'Mittel', 'Gut', 'Stark',
+             'Mindestens %d Zeichen eingeben', 'Weiter so — Buchstaben und Zahlen mischen',
+             'Fast geschafft — Sonderzeichen hinzufügen', 'Noch ein bisschen…',
+             'Ungültige Zeichen: %s', 'Schwach — Buchstaben, Zahlen und Sonderzeichen mischen',
+             'Großbuchstaben hinzufügen', 'Kleinbuchstaben hinzufügen', 'Eine Zahl hinzufügen',
+             'Sonderzeichen hinzufügen',
+             'Gutes Passwort', 'Starkes Passwort ✓',
+             'Passwörter stimmen überein ✓', 'Passwörter stimmen nicht überein', '↺', 'Passwort generieren'],
+
+    'NL' => ['Zeer zwak', 'Zwak', 'Matig', 'Goed', 'Sterk',
+             'Voer minimaal %d tekens in', 'Ga door — combineer letters en cijfers',
+             'Bijna — voeg speciale tekens toe', 'Nog even…',
+             'Ongeldige tekens: %s', 'Zwak — combineer letters, cijfers en speciale tekens',
+             'Voeg een hoofdletter toe', 'Voeg een kleine letter toe', 'Voeg een cijfer toe',
+             'Voeg een speciaal teken toe',
+             'Goed wachtwoord', 'Sterk wachtwoord ✓',
+             'Wachtwoorden komen overeen ✓', 'Wachtwoorden komen niet overeen', '↺', 'Wachtwoord genereren'],
+
+    'BG' => ['Много слаба', 'Слаба', 'Средна', 'Добра', 'Силна',
+             'Въведете поне %d символа', 'Продължете — смесете букви и цифри',
+             'Почти — добавете специални знаци', 'Още малко…',
+             'Невалидни символи: %s', 'Слаба — смесете букви, цифри и специални знаци',
+             'Добавете главна буква', 'Добавете малка буква', 'Добавете цифра',
+             'Добавете специален знак',
+             'Добра парола', 'Силна парола ✓',
+             'Паролите съвпадат ✓', 'Паролите не съвпадат', '↺', 'Генериране на парола'],
+
+    'CS' => ['Velmi slabé', 'Slabé', 'Průměrné', 'Dobré', 'Silné',
+             'Zadejte alespoň %d znaků', 'Pokračujte — kombinujte písmena a číslice',
+             'Skoro — přidejte speciální znaky', 'Ještě trochu…',
+             'Neplatné znaky: %s', 'Slabé — kombinujte písmena, číslice a speciální znaky',
+             'Přidejte velké písmeno', 'Přidejte malé písmeno', 'Přidejte číslici',
+             'Přidejte speciální znak',
+             'Dobré heslo', 'Silné heslo ✓',
+             'Hesla se shodují ✓', 'Hesla se neshodují', '↺', 'Generovat heslo'],
+
+    'DA' => ['Meget svag', 'Svag', 'Middel', 'God', 'Stærk',
+             'Indtast mindst %d tegn', 'Fortsæt — kombiner bogstaver og tal',
+             'Næsten — tilføj specialtegn', 'Lidt endnu…',
+             'Ugyldige tegn: %s', 'Svag — bland bogstaver, tal og specialtegn',
+             'Tilføj et stort bogstav', 'Tilføj et lille bogstav', 'Tilføj et tal',
+             'Tilføj et specialtegn',
+             'God adgangskode', 'Stærk adgangskode ✓',
+             'Adgangskoderne stemmer overens ✓', 'Adgangskoderne stemmer ikke overens', '↺', 'Generer adgangskode'],
+
+    'ES' => ['Muy débil', 'Débil', 'Regular', 'Bueno', 'Fuerte',
+             'Introduce al menos %d caracteres', 'Sigue — combina letras y números',
+             'Casi — añade caracteres especiais', 'Un poco más…',
+             'Caracteres no válidos: %s', 'Débil — combina letras, números y caracteres especiales',
+             'Añade una letra mayúscula', 'Añade una letra minúscula', 'Añade un número',
+             'Añade un carácter especial',
+             'Buena contraseña', 'Contraseña fuerte ✓',
+             'Las contraseñas coinciden ✓', 'Las contraseñas no coinciden', '↺', 'Generar contraseña'],
+
+    'ET' => ['Väga nõrk', 'Nõrk', 'Keskmine', 'Hea', 'Tugev',
+             'Sisestage vähemalt %d sümbolit', 'Jätkake — segage tähti ja numbreid',
+             'Peaaegu — lisage erimärke', 'Veel natuke…',
+             'Vigased sümbolid: %s', 'Nõrk — segage tähti, numbreid ja erimärke',
+             'Lisage suurtäht', 'Lisage väiketäht', 'Lisage number',
+             'Lisage erimärk',
+             'Hea parool', 'Tugev parool ✓',
+             'Paroolid kattuvad ✓', 'Paroolid ei kattu', '↺', 'Genereeri parool'],
+
+    'FI' => ['Erittäin heikko', 'Heikko', 'Kohtalainen', 'Hyvä', 'Vahva',
+             'Anna vähintään %d merkkiä', 'Jatka — sekoita kirjaimia ja numeroita',
+             'Melkein — lisää erikoismerkkejä', 'Vielä hieman…',
+             'Virheelliset merkit: %s', 'Heikko — sekoita kirjaimia, numeroita ja erikoismerkkejä',
+             'Lisää iso kirjain', 'Lisää pieni kirjain', 'Lisää numero',
+             'Lisää erikoismerkki',
+             'Hyvä salasana', 'Vahva salasana ✓',
+             'Salasanat täsmäävät ✓', 'Salasanat eivät täsmää', '↺', 'Luo salasana'],
+
+    'FR' => ['Très faible', 'Faible', 'Moyen', 'Bon', 'Fort',
+             'Saisissez au moins %d caractères', 'Continuez — mélangez lettres et chiffres',
+             'Presque — ajoutez des caractères spéciaux', 'Encore un peu…',
+             'Caractères invalides : %s', 'Faible — mélangez lettres, chiffres et caractères spéciaux',
+             'Ajoutez une lettre majuscule', 'Ajoutez une lettre minuscule', 'Ajoutez un chiffre',
+             'Ajoutez un caractère spécial',
+             'Bon mot de passe', 'Mot de passe fort ✓',
+             'Les mots de passe correspondent ✓', 'Les mots de passe ne correspondent pas', '↺', 'Générer un mot de passe'],
+
+    'GR' => ['Πολύ ασθενές', 'Ασθενές', 'Μέτριο', 'Καλό', 'Ισχυρό',
+             'Εισάγετε τουλάχιστον %d χαρακτήρες', 'Συνεχίστε — συνδυάστε γράμματα και αριθμούς',
+             'Σχεδόν — προσθέστε ειδικούς χαρακτήρες', 'Λίγο ακόμα…',
+             'Μη έγκυροι χαρακτήρες: %s', 'Ασθενές — συνδυάστε γράμματα, αριθμούς και ειδικούς χαρακτήρες',
+             'Προσθέστε κεφαλαίο γράμμα', 'Προσθέστε πεζό γράμμα', 'Προσθέστε αριθμό',
+             'Προσθέστε ειδικό χαρακτήρα',
+             'Καλός κωδικός', 'Ισχυρός κωδικός ✓',
+             'Οι κωδικοί ταιριάζουν ✓', 'Οι κωδικοί δεν ταιριάζουν', '↺', 'Δημιουργία κωδικού'],
+
+    'HU' => ['Nagyon gyenge', 'Gyenge', 'Közepes', 'Jó', 'Erős',
+             'Adjon meg legalább %d karaktert', 'Folytassa — keverjen betűket és számokat',
+             'Majdnem — adjon hozzá speciális karaktereket', 'Még egy kicsit…',
+             'Érvénytelen karakterek: %s', 'Gyenge — keverjen betűket, számokat und speciális karaktereket',
+             'Adjon hozzá egy nagybetűt', 'Adjon hozzá egy kisbetűt', 'Adjon hozzá egy számot',
+             'Adjon hozzá speciális karaktert',
+             'Jó jelszó', 'Erős jelszó ✓',
+             'A jelszavak egyeznek ✓', 'A jelszavak nem egyeznek', '↺', 'Jelszó generálása'],
+
+    'IT' => ['Molto debole', 'Debole', 'Medio', 'Buono', 'Forte',
+             'Inserisci almeno %d caratteri', 'Continua — combina lettere e numeri',
+             'Quasi — aggiungi caratteri speciali', 'Ancora un po\'…',
+             'Caratteri non validi: %s', 'Debole — combina lettere, numeri e caratteri speciali',
+             'Aggiungi una lettera maiuscola', 'Aggiungi una lettera minuscule', 'Aggiungi un numero',
+             'Aggiungi un carattere speciale',
+             'Buona password', 'Password forte ✓',
+             'Le password coincidono ✓', 'Le password non coincidono', '↺', 'Genera password'],
+
+    'LV' => ['Ļoti vājš', 'Vājš', 'Vidējs', 'Labs', 'Stiprs',
+             'Ievadiet vismaz %d zīmes', 'Turpiniet — jauciet burtus un ciparus',
+             'Gandrīz — pievienojiet speciālās zīmes', 'Vēl mazliet…',
+             'Nederīgas zīmes: %s', 'Vāja — jauciet burtus, ciparus un speciālās zīmes',
+             'Pievienojiet lielo burtu', 'Pievienojiet mazo burtu', 'Pievienojiet ciparu',
+             'Pievienojiet speciālo zīmi',
+             'Laba parole', 'Stipra parole ✓',
+             'Paroles sakrīt ✓', 'Paroles nesakrīt', '↺', 'Generēt paroli'],
+
+    'NO' => ['Meget svak', 'Svak', 'Middels', 'God', 'Sterk',
+             'Skriv inn minst %d tegn', 'Fortsett — kombiner bokstaver og tal',
+             'Neste — legg til spesialtegn', 'Litt til…',
+             'Ugyldige tegn: %s', 'Svag — bland bogstaver, tal og specialtegn',
+             'Legg til en stor bokstav', 'Legg til en liten bokstav', 'Legg til et tel',
+             'Legg til et spesialtegn',
+             'Godt passord', 'Sterkt passord ✓',
+             'Passordene stemmer overens ✓', 'Passordene stemmer ikke overens', '↺', 'Generer passord'],
+
+    'PL' => ['Bardzo słabe', 'Słabe', 'Średnie', 'Dobre', 'Silne',
+             'Wprowadź co najmniej %d znaków', 'Dalej — mieszaj litery i cyfry',
+             'Prawie — dodaj znaki specjalne', 'Jeszcze trochę…',
+             'Niedozwolone znaki: %s', 'Słabe — mieszaj litery, cyfry i znaki specjalne',
+             'Dodaj wielką literę', 'Dodaj małą literę', 'Dodaj cyfrę',
+             'Dodaj znak specjalny',
+             'Dobre hasło', 'Silne hasło ✓',
+             'Hasła są zgodne ✓', 'Hasła nie są zgodne', '↺', 'Generuj hasło'],
+
+    'PT' => ['Muito fraca', 'Fraca', 'Regular', 'Boa', 'Forte',
+             'Digite pelo menos %d caracteres', 'Continue — misture letras e números',
+             'Quase lá — adicione caracteres especiais', 'Só mais um pouco…',
+             'Caracteres inválidos: %s', 'Fraca — misture letras, números e caracteres especiais',
+             'Adicione uma letra maiúscula', 'Adicione uma letra minúscula', 'Adicione um número',
+             'Adicione um caractere especial',
+             'Boa senha', 'Senha forte ✓',
+             'As senhas coincidem ✓', 'As senhas não coincidem', '↺', 'Gerar senha'],
+
+    'RU' => ['Очень слабый', 'Слабый', 'Средний', 'Хороший', 'Сильный',
+             'Введите не менее %d символов', 'Продолжайте — сочетайте буквы и цифры',
+             'Почти готово — добавьте спецсимволы', 'Ещё чуть-чуть…',
+             'Недопустимые символы: %s', 'Слабый — используйте буквы, цифры и спецсимволы',
+             'Добавьте заглавную букву', 'Добавьте строчную букву', 'Добавьте цифру',
+             'Добавьте спецсимвол',
+             'Хороший пароль', 'Сильный пароль ✓',
+             'Пароли совпадают ✓', 'Пароли не совпадают', '↺', 'Сгенерировать пароль'],
+
+    'SK' => ['Veľmi slabé', 'Slabé', 'Priemerné', 'Dobré', 'Silné',
+             'Zadajte aspoň %d znakov', 'Pokračujte — kombinujte písmená a číslice',
+             'Takmer — pridajte špeciálne znaky', 'Ešte trochu…',
+             'Neplatné znaky: %s', 'Slabé — kombinujte písmená, číslice a špeciálne znaky',
+             'Pridajte veľké písmeno', 'Pridajte malé písmeno', 'Pridajte číslicu',
+             'Pridajte špeciálny znak',
+             'Dobré heslo', 'Silné heslo ✓',
+             'Heslá sa zhodujú ✓', 'Heslá sa nezhodujú', '↺', 'Generovať heslo'],
+
+    'CA' => ['Molt feble', 'Feble', 'Regular', 'Bo', 'Fort',
+             'Introdueix almenys %d caràcters', 'Continua — combina lletres i números',
+             'Gairebé — afegeix caràcters especials', 'Una mica més…',
+             'Caràcters no vàlids: %s', 'Feble — combina lletres, números i caràcters especials',
+             'Afegeix una lletra majúscula', 'Afegeix una lletra minúscula', 'Afegeix un número',
+             'Afegeix un caràcter especial',
+             'Bona contrasenya', 'Contrasenya forta ✓',
+             'Les contrasenyes coincideixen ✓', 'Les contrasenyes no coincideixen', '↺', 'Generar contrasenya']
+];
+
+/* ── Hydrate $_wpg_strings associative arrays ───────────────────────────── */
+foreach ($langStrings as $_lc => $_v) {
+    $_wpg_strings[$_lc] = [
+        'levels'         => array_slice($_v, 0, 5),
+        'nudge_0'        => $_v[5],
+        'nudge_1'        => $_v[6],
+        'nudge_2'        => $_v[7],
+        'nudge_3'        => $_v[8],
+        'msg_invalid'    => $_v[9],
+        'msg_same'       => $_v[10],
+        'msg_no_upper'   => $_v[11],
+        'msg_no_lower'   => $_v[12],
+        'msg_no_number'  => $_v[13],
+        'msg_no_special' => $_v[14],
+        'msg_good'       => $_v[15],
+        'msg_strong'     => $_v[16],
+        'cfm_match'      => $_v[17],
+        'cfm_nomatch'    => $_v[18],
+        'gen_label'      => $_v[19],
+        'gen_hint'       => $_v[20],
+        'empty_hint'     => ($_lc === 'DE' ? 'Passwort eingeben oder {generate}' : ($_lc === 'NL' ? 'Wachtwoord genereren' : 'Type your password or {generate}')),
+        'invalid_msg'    => ($_lc === 'DE' ? 'Ungültiges Zeichen: %s' : 'Invalid character: %s'),
+        'invalid_plural' => ($_lc === 'DE' ? 'Ungültige Zeichen: %s' : 'Invalid characters: %s'),
+        'invalid_space'  => ($_lc === 'DE' ? 'Leerzeichen' : 'space'),
+    ];
+}
+
+unset($langStrings); // Free up raw list pointer memory
+
+// Resolve DE_AT / DE_CH aliases after structural array hydration
+foreach ($_wpg_strings as $_lc => $_v) {
+    if (is_string($_v)) $_wpg_strings[$_lc] = $_wpg_strings[$_v];
+}
+
+/* ── Language resolution ────────────────────────────────────────────────── */
 
 if (defined('LANGUAGE')) {
     $_wpg_lang = strtoupper(LANGUAGE);
-} elseif (isset($_GET['lang']) && preg_match('/^[A-Z]{2}$/i', $_GET['lang'])) {
+} elseif (isset($_GET['lang']) && preg_match('/^[A-Z]{2}(_[A-Z]{2})?$/i', $_GET['lang'])) {
     $_wpg_lang = strtoupper($_GET['lang']);
 } elseif (isset($_SESSION['default_language']) && preg_match('/^[A-Z]{2}$/i', $_SESSION['default_language'])) {
     $_wpg_lang = strtoupper($_SESSION['default_language']);
 } else {
     $_wpg_lang = 'EN';
 }
-$_wpg      = $_wpg_strings[$_wpg_lang] ?? $_wpg_strings['EN'];
+
+$_wpg = $_wpg_strings[$_wpg_lang] ?? $_wpg_strings['EN'];
+
+/* ── Output array (matches WbePwGen JS options shape) ───────────────────── */
 
 $wpg_labels = [
-    'minLength'     => 12,
-    'levels'        => $_wpg['levels'],
-    'hints'         => [
-        'length'    => $_wpg['hint_length'],
-        'case'      => $_wpg['hint_case'],
-        'number'    => $_wpg['hint_number'],
-        'special'   => $_wpg['hint_special'],
+    'minLength'          => 12,
+    'genLength'          => 12,
+    'levels'             => $_wpg['levels'],
+    'nudges'             => [
+        $_wpg['nudge_0'],
+        $_wpg['nudge_1'],
+        $_wpg['nudge_2'],
+        $_wpg['nudge_3'],
     ],
-    'warn'          => [
-        'invalid'   => $_wpg['warn_invalid'],
-        'allowed'   => $_wpg['warn_allowed'],
+    'messages'           => [
+        'allSameClass' => $_wpg['msg_same'],
+        'noUpper'      => $_wpg['msg_no_upper'],
+        'noLower'      => $_wpg['msg_no_lower'],
+        'noNumber'     => $_wpg['msg_no_number'],
+        'noSpecial'    => $_wpg['msg_no_special'],
+        'good'         => $_wpg['msg_good'],
+        'strong'       => $_wpg['msg_strong'],
     ],
-    'allowedDisplay' => 'a–z   A–Z   0–9   _ - ! # * + @ $ & :',
+    /* Empty-state hint: {generate} is replaced with the clickable link */
+    'emptyHint'          => $_wpg['empty_hint'],
+    /* Label for the inline generate link */
+    'generateLabel'      => $_wpg['gen_label'],
+    /* Title / aria-label for the generate button */
+    'generateTitle'      => $_wpg['gen_hint'],
+    /* Invalid character messages */
+    'invalidMsg'         => $_wpg['invalid_msg'],
+    'invalidMsgPlural'   => $_wpg['invalid_plural'],
+    'invalidSpace'       => $_wpg['invalid_space'],
+    'confirmMatch'       => $_wpg['cfm_match'],
+    'confirmNoMatch'     => $_wpg['cfm_nomatch'],
 ];
 
-unset($_wpg_strings, $_wpg_lang, $_wpg);
+unset($_wpg_strings, $_wpg_lang, $_wpg, $_lc, $_v);
