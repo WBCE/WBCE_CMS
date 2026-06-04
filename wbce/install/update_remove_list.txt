@@ -45,6 +45,8 @@
 [ADMIN]/preferences/details.php
 [ADMIN]/preferences/email.php
 [ADMIN]/preferences/password.php
+[ADMIN]/users/users.php           // 1.7.0 refactor
+[ADMIN]/users/save.php            // 1.7.0 refactor
 
 # Framework
 [FRAMEWORK]/class.database.doctrine.php
