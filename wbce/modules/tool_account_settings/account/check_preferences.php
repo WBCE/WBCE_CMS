@@ -21,7 +21,7 @@ if (!$oAccounts->checkFTAN()) {
     $oAccounts->print_error('MESSAGE:GENERIC_SECURITY_ACCESS', WB_URL);
 }
 
-$oMsgBox = new MessageBox();
+$oMsgBox = new Alerts(useSession: true); // stores messages in session via ->redirect()
 $aMsg    = array();
 
 $sCurrPassword = $oAccounts->get_post('current_password');

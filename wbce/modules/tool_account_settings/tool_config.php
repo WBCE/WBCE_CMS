@@ -45,7 +45,7 @@ $TRANS_TEXT = $oIniEditor->getTransArray();
 // END: Set up of the iniConfigEditor
 // =============================|=============================|=============================|
 
-$oMsgBox = new MessageBox();
+$oMsgBox = new Alerts(useSession: false);
 $aToTwig = array(
     'MESSAGE_BOX'  => $oMsgBox->fetchDisplay(),
     'TABS'         => $aTabs,

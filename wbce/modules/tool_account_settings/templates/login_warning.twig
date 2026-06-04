@@ -1,0 +1,30 @@
+{#
+    login_warning.twig — Frontend: login blocked warning
+    Rendered within the site template via index.php → page_content().
+    Variables: WB_URL
+#}
+
+<style>
+.login-warning-box {
+    border-left: 4px solid #dc3545;
+    background: #fff5f5;
+    padding: 1.2em 1.5em;
+    border-radius: 4px;
+    margin: 1.5em 0;
+    color: #721c24;
+}
+.login-warning-home {
+    margin-top: 1.5em;
+    text-align: center;
+}
+</style>
+
+<h2>{{ L_('MESSAGE:LOGIN_BLOCKED_TITLE||Too Many Login Attempts') }}</h2>
+
+<div class="login-warning-box">
+    <p>{{ L_('MESSAGE:LOGIN_BLOCKED||You have been temporarily blocked due to too many failed login attempts. Please try again later.') }}</p>
+</div>
+
+<div class="login-warning-home">
+    <a href="{{ WB_URL }}">{{ L_('TEXT:HOME') }}</a>
+</div>

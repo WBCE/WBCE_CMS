@@ -69,7 +69,7 @@ class Alerts
         self::INFO    => 'info',
     ];
 
-    public function __construct(bool $useSession = true)
+    public function __construct(bool $useSession = false)
     {
         $this->useSession = $useSession;
         if ($useSession && session_status() === PHP_SESSION_ACTIVE) {

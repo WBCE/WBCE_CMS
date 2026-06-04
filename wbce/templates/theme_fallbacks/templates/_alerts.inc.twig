@@ -19,7 +19,7 @@
       • .msg-close              — close button; rendered only for errors (sticky alerts)
       • animationend listener   — removes faded-out elements from DOM (registered once via flag)
 #}
-
+{{ insertCssFile(WB_URL ~ '/templates/theme_fallbacks/css/cp_alerts.css') }}
 {% set isSticky = STICKY is defined ? STICKY : (MESSAGE_TYPE == 'error') %}
 <div class="top alertbox_{{ MESSAGE_TYPE }} fg12 dismissable{% if isSticky %} sticky{% endif %}">
 

@@ -14,7 +14,7 @@ defined('WB_PATH') or die("Cannot access this file directly");
 require_once(WB_PATH.'/include/captcha/captcha.php');
 
 $oAccounts = new Accounts();
-$oMsgBox   = new MessageBox();
+$oMsgBox   = new Alerts(useSession: false);
 
 $sLC       = defined('LANGUAGE') ? LANGUAGE : (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN');
 $sEmail    = '';

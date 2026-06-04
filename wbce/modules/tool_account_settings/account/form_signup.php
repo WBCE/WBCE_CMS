@@ -32,7 +32,7 @@ $display_name_error = false;
 $email_error        = false; 
 $gdpr_error         = false; 
 
-$oMsgBox = new MessageBox();
+$oMsgBox = new Alerts(useSession: false);
 
 // Load Captcha if enabled
 if(ENABLED_CAPTCHA) {
