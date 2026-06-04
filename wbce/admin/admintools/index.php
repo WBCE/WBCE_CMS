@@ -10,6 +10,7 @@
  */
 
 require '../../config.php';
+Lang::loadLanguage(__DIR__);
 $admin  = new Admin('admintools', 'admintools', false);
 $alerts = new Alerts(useSession: false);
 
