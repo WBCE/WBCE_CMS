@@ -71,7 +71,7 @@
     100%     { background-color: transparent; }
 }
 tr.empha-last-edit {
-    animation: empha-pulse 2.5s ease-out;
+    animation: empha-pulse 4s ease-out;
 }
 </style>
 
@@ -87,7 +87,8 @@ $(document).ready(function() {
         if (evt.detail.target.id === 'user-form-panel') {
             var hasContent = evt.detail.target.innerHTML.trim() !== '';
             $addBtn.toggle(!hasContent);
-            if (hasContent) {
+            // Skip form-panel scroll when we're about to scroll to a saved/added row
+            if (hasContent && _pendingScrollUserId === null) {
                 evt.detail.target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }

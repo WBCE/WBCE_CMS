@@ -30,11 +30,9 @@ if ($groupId < 2) {
 
 // --- Get row (for new or updated group) ---
 if ($action === 'getrow') {
-    $extraClass = isset($_GET['new']) ? 'empha-new' : 'hilite';
-    renderGroupRow($groupId, $admin, $groups, $perms, $extraClass);
+    renderGroupRow($groupId, $admin, $groups, $perms, 'empha-last-edit');
     exit;
 }
-
 
 // --- Delete ---
 if ($groups->hasMembers($groupId)) {

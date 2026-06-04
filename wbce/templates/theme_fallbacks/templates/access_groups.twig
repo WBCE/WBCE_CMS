@@ -72,7 +72,17 @@
     </div>
 </div>
 
-<script>    
+<style>
+@keyframes empha-pulse {
+    0%,  60% { background-color: rgba(40, 167, 69, 0.15); }
+    100%     { background-color: transparent; }
+}
+tr.empha-last-edit {
+    animation: empha-pulse 4s ease-out;
+}
+</style>
+
+<script>
 $(document).ready(function () {
     var $addBtn  = $('#btn-add-group');
     var adminUrl = '{{ ADMIN_URL }}';
@@ -84,7 +94,8 @@ $(document).ready(function () {
         if (evt.detail.target.id === 'group-form-panel') {
             var hasContent = evt.detail.target.innerHTML.trim() !== '';
             $addBtn.toggle(!hasContent);
-            if (hasContent) {
+            // Skip form-panel scroll when we're about to scroll to a saved/added row
+            if (hasContent && _pendingScrollGroupId === null) {
                 evt.detail.target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
@@ -147,34 +158,57 @@ $(document).ready(function () {
     });
 
     // -----------------------------------------------------------------
-    //  groupAdded / groupSaved events
+    //  Row highlight + scroll helper
     // -----------------------------------------------------------------
-    document.body.addEventListener('groupAdded', function(evt) {
-        htmx.ajax('GET', 
-            adminUrl + '/groups/action.php?do=getrow&new=1&group_id=' + encodeURIComponent(evt.detail.idkey), 
-            { target: '#groups-table-body', swap: 'beforeend' }
-        );
-    });
+    var _pendingScrollGroupId = null;
 
-    document.body.addEventListener('groupSaved', function(evt) {
-        var rowId = 'group-row-' + evt.detail.groupId;
-        if (document.getElementById(rowId)) {
-            htmx.ajax('GET', 
-                adminUrl + '/groups/action.php?do=getrow&group_id=' + encodeURIComponent(evt.detail.idkey), 
-                { target: '#' + rowId, swap: 'outerHTML' }
-            );
+    function scrollToGroupRow(groupId) {
+        var row = document.getElementById('group-row-' + groupId);
+        if (row) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // After htmx swaps a row (beforeend or outerHTML), scroll to it.
+    // The row already carries empha-last-edit from the server response.
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        if (_pendingScrollGroupId === null) return;
+        var t = evt.detail && evt.detail.target;
+        if (!t) return;
+        if (t.id === 'groups-table-body' || t.id === 'group-row-' + _pendingScrollGroupId) {
+            scrollToGroupRow(_pendingScrollGroupId);
+            _pendingScrollGroupId = null;
         }
     });
 
     // -----------------------------------------------------------------
-    //  Duplicated group: show toast + highlight row
+    //  groupAdded: fetch new row, append to table, then scroll + highlight
+    // -----------------------------------------------------------------
+    document.body.addEventListener('groupAdded', function(evt) {
+        _pendingScrollGroupId = evt.detail.groupId;
+        htmx.ajax('GET',
+            adminUrl + '/groups/action.php?do=getrow&group_id=' + encodeURIComponent(evt.detail.idkey),
+            { target: '#groups-table-body', swap: 'beforeend' }
+        );
+    });
+
+    // -----------------------------------------------------------------
+    //  groupSaved: refresh existing row in-place, then scroll + highlight
+    // -----------------------------------------------------------------
+    document.body.addEventListener('groupSaved', function(evt) {
+        _pendingScrollGroupId = evt.detail.groupId;
+        htmx.ajax('GET',
+            adminUrl + '/groups/action.php?do=getrow&group_id=' + encodeURIComponent(evt.detail.idkey),
+            { target: '#group-row-' + evt.detail.groupId, swap: 'outerHTML' }
+        );
+    });
+
+    // -----------------------------------------------------------------
+    //  Duplicated group: highlight + scroll
     // -----------------------------------------------------------------
     {% if duplicated is defined and duplicated %}
     (function() {
-        showToast('{{ L_("TEXT:DUPLICATED") }}', 'success');
         var row = document.getElementById('group-row-{{ duplicated }}');
         if (row) {
-            row.classList.add('empha-new');
+            row.classList.add('empha-last-edit');
             row.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     })();
