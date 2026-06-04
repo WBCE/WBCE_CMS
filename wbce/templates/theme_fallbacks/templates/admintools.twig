@@ -47,28 +47,28 @@
                 </div>
                 <section>
                     <div class="cp-setting-row">
-                        <label class="cp-setting-name">Most used first</label>
+                        <label class="cp-setting-name">{{ L_('TEXT:MOST_USED_FIRST') }}</label>
                         <div class="cp-setting-value">
                             <input type="checkbox" switch="bool" name="most_used_first" id="most_used_first"
                                    value="1"{% if cfg.most_used_first %} checked{% endif %}>
                             <label for="most_used_first" class="labeled"
                                    data-on-label="{{ L_('TEXT:ENABLED') }}"
                                    data-off-label="{{ L_('TEXT:DISABLED') }}"></label>
-                            <div class="cp-setting-hint">Sort tools by usage frequency — most clicked tools appear first.</div>
+                            <div class="cp-setting-hint">{{ L_('HINT:MOST_USED_FIRST') }}</div>
                         </div>
                     </div>
 
                     <div class="cp-setting-row">
-                        <label class="cp-setting-name">Columns</label>
+                        <label class="cp-setting-name">{{ L_('TEXT:COLUMNS') }}</label>
                         <div class="cp-setting-value">
                             <label><input type="radio" name="columns" value="1"{% if cfg.columns == 1 %} checked{% endif %}> 1</label>
                             <label><input type="radio" name="columns" value="2"{% if cfg.columns == 2 %} checked{% endif %}> 2</label>
-                            <div class="cp-setting-hint">Show 1 or 2 link-card columns.</div>
+                            <div class="cp-setting-hint">{{ L_('HINT:COLUMNS') }}</div>
                         </div>
                     </div>
 
                     <div class="cp-setting-row">
-                        <label class="cp-setting-name">Search</label>
+                        <label class="cp-setting-name">{{ L_('TEXT:SEARCH') }}</label>
                         <div class="cp-setting-value">
                             <input type="checkbox" switch="bool" name="show_search" id="show_search"
                                    value="1"{% if cfg.show_search %} checked{% endif %}>
