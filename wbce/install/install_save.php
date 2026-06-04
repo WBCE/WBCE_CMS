@@ -159,7 +159,8 @@ if (!isset($_POST['admin_repassword']) || $_POST['admin_repassword'] === '') {
     set_error(d('e18: ') . 'The two passwords do not match', 'admin_repassword');
     $_isError = true;
 } else {
-    if (preg_match('/[^a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:]/', $admin_password)) {
+    if (preg_match('/[^\x20-\x7E]/', $admin_password)) {
+        // Allow all 95 printable ASCII characters — matches class.wb.php password_chars
         set_error(d('e19: ') . 'Invalid password characters', 'admin_password');
         $_isError = true;
     } elseif (strlen($admin_password) < 8) {
