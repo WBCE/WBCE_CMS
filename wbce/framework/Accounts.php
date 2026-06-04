@@ -378,6 +378,7 @@ class Accounts extends Frontend
                 $sRetVal = file_get_contents($sFileToRead, true);
             }
         }
+        $sRetVal = $sRetVal ?? ''; // ensure string — file may not exist or be unreadable
         if ($sTag != 'body') {
             $sTag = trim($sTag);
             $sRetVal = get_string_between_tags($sRetVal, $sTag);
