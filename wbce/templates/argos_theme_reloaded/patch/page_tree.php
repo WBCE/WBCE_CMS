@@ -70,15 +70,8 @@ function draw_pagetree($pages_list)
 
     foreach ($pages_list as $key => $p) :
 
-        // Get user perms
-        $admin_groups = explode(',', str_replace('_', '', $p['admin_groups']));
-        $admin_users = explode(',', str_replace('_', '', $p['admin_users']));
-        $in_group = false;
-
-        foreach ($admin->get_groups_id() as $cur_gid)
-            if (in_array($cur_gid, $admin_groups)) $in_group = true;
-
-        if (($in_group) || is_numeric(array_search($admin->get_user_id(), $admin_users))) {
+        // Get user perms (superadmin bypass included via isPageAdmin)
+        if ($admin->isPageAdmin($p['admin_groups'], $p['admin_users'])) {
             if ($p['visibility'] == 'deleted') {
                 if (PAGE_TRASH == 'inline')
                     $can_modify = true;

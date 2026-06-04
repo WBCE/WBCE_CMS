@@ -16,20 +16,8 @@ function renderPageTree($pages, $level = 1, $levelLimit = 999)
 
     foreach ($pages as $page) {
 
-        // Get user permessions
-        $adminGroupIds = explode(',', str_replace('_', '', $page['admin_groups']));
-        $adminUserIds = explode(',', str_replace('_', '', $page['admin_users']));
-
-        $userHasPermission = false;
-        if (is_numeric(array_search($admin->get_user_id(), $adminUserIds))) {
-            $userHasPermission = true;
-        }
-        foreach ($admin->get_groups_id() as $groupId) {
-            if (in_array($groupId, $adminGroupIds)) {
-                $userHasPermission = true;
-                break;
-            }
-        }
+        // Get user permissions (superadmin bypass included via isPageAdmin)
+        $userHasPermission = $admin->isPageAdmin($page['admin_groups'], $page['admin_users']); 
 
         $menu_link = false;
         $canModify = false;
