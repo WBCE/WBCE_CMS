@@ -421,7 +421,8 @@ class PermissionManager
                 $identifier .= '_tool';
             }
 
-            $rec['checked'] = in_array($identifier, $assignedAddons, true);
+            // checked = allowed = NOT in deny list
+            $rec['checked'] = !in_array($identifier, $assignedAddons, true);
             $result[$rec['addon_id']] = $rec;
         }
 
@@ -495,27 +496,64 @@ class PermissionManager
     private function parseAddonPermissionsFromPost(Admin $admin, string $type): string
     {
         $fieldName = $type . '_permissions';
-        $posted = (array) $admin->get_post($fieldName);
+        $posted    = array_map('trim', (array) $admin->get_post($fieldName));
 
+        // Validate posted (checked = allowed) identifiers against the filesystem
         $dirPrefix = WB_PATH . '/' . $type . 's/';
-        $validated = [];
+        $allowed   = [];
 
         foreach ($posted as $addonDir) {
-            $addonDir = trim($addonDir);
-            if ($addonDir === '') {
-                continue;
-            }
+            if ($addonDir === '') continue;
 
             // For tools: the POST value has '_tool' suffix, the actual directory doesn't
             $fsDir = str_replace('_tool', '', $addonDir);
 
             if (is_readable($dirPrefix . $addonDir . '/info.php')
-                || is_readable($dirPrefix . $fsDir . '/info.php')
+                || is_readable($dirPrefix . $fsDir   . '/info.php')
             ) {
-                $validated[] = $addonDir;
+                $allowed[] = $addonDir;
             }
         }
 
-        return implode(',', $validated);
+        // Deny list = all known addons minus the allowed (checked) ones.
+        // This matches the historical storage format where module_permissions
+        // holds blocked entries, and Admin::get_permission() returns !$found.
+        $all    = $this->getAllAddonIdentifiers($type);
+        $denied = array_values(array_diff($all, $allowed));
+
+        return implode(',', $denied);
+    }
+
+    /**
+     * Return all addon identifiers of the given type stored in {TP}addons.
+     * Tools receive a '_tool' suffix to match the deny-list storage format.
+     *
+     * @param  string $type  'module' | 'template'
+     * @return string[]
+     */
+    private function getAllAddonIdentifiers(string $type): array
+    {
+        $rows = $this->db->fetchAll(
+            "SELECT `directory`, `function` FROM `{TP}addons` WHERE `type` = ?",
+            [$type]
+        );
+
+        $identifiers = [];
+        foreach ($rows as $row) {
+            $dir = $row['directory'];
+            $fn  = $row['function'];
+
+            // Modules with 'tool' in their function are stored with '_tool' suffix
+            if (str_contains($fn, 'tool')) {
+                $identifiers[] = $dir . '_tool';
+            }
+            // Modules with 'page' or no special function use the plain directory name.
+            // A module can have both (e.g. function='page,tool') → add both identifiers.
+            if (!str_contains($fn, 'tool') || str_contains($fn, 'page')) {
+                $identifiers[] = $dir;
+            }
+        }
+
+        return array_unique($identifiers);
     }
 }
