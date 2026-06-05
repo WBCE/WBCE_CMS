@@ -320,16 +320,16 @@ class UserManager
     /**
      * Validate an email address.
      *
-     * Uses Wb::validate_email() for format checking, which handles
+     * Uses Wbce::validate_email() for format checking, which handles
      * internationalized domain names (IDN/Punycode) correctly.
      * Also checks uniqueness against the database.
      *
-     * @param  Wb      $wb         Wb or Admin instance (for validate_email())
+     * @param  Wbce    $wb         Wbce or Admin instance (for validate_email())
      * @param  string  $email
      * @param  int     $excludeId  User to exclude from uniqueness check
      * @return array   Empty array = valid. Non-empty = list of error message keys.
      */
-    public function validateEmail(Wb $wb, string $email, int $excludeId = 0): array
+    public function validateEmail(Wbce $wb, string $email, int $excludeId = 0): array
     {
         $errors = [];
 

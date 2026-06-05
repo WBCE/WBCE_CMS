@@ -13,7 +13,7 @@
 // Prevent  this  file  from  being  accessed  directly
 defined('WB_PATH') or die('No direct access');
 
-class Admin extends Wb
+class Admin extends Wbce
 {
     public  string $section_name       = '';
     public  string $section_permission = '';
@@ -189,7 +189,7 @@ class Admin extends Wb
             $users  = $row[$action . '_users']  ?? '0';
         }
 
-        return $this->ami_group_member($groups)
+        return $this->isInGroup($groups)
             || $this->is_group_match($this->get_user_id(), $users);
     }
 

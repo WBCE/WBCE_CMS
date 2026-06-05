@@ -12,8 +12,8 @@ Info for module / admin-tool developers.
 Already included here :
 config.php
 framework/initialize.php
-framework/class.wb.php
-framework/class.admin.php
+framework/Wbce.php
+framework/Admin.php
 framework/functions.php
 
 Admin class is initialized($admin) and header printed.

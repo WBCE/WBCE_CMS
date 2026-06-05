@@ -127,7 +127,7 @@ class WbAuto
                     include($sTestFile);
                     return false;
                 }
-                // 2. Lowercase fallback — legacy files like class.wb.php, class.frontend.php.
+                // 2. Lowercase fallback — for files whose name differs in case from the class name.
                 $sLower = $sDirVal . $ClassPath . strtolower(sprintf($sTypeVal, basename($ClassName)));
                 if ($sLower !== $sTestFile && is_file($sLower)) {
                     include($sLower);
@@ -355,6 +355,8 @@ class WbAuto
         //    Explicit AddFile() entries bypass the dir scan entirely.
         $explicitFiles = [
             'Database'      => '/framework/Database.php',
+            'Wbce'          => '/framework/Wbce.php',
+            'Wb'            => '/framework/Wbce.php',   // backward-compat alias target
             'Admin'         => '/framework/Admin.php',
             'Alerts'        => '/framework/Alerts.php',
             'AddonService'  => '/framework/AddonService.php',
@@ -381,6 +383,7 @@ class WbAuto
 
         // 3. Backward-compat aliases — AFTER AddFile so the autoloader can
         //    resolve the source class before the alias is created.
+        class_alias('Wbce',   'Wb');         // Wb renamed to Wbce — keep old name working
         class_alias('Alerts', 'MessageBox'); // Alerts replaces and expands MessageBox
         class_alias('Mailer', 'wbmailer');   // fallback for some legacy modules
     }

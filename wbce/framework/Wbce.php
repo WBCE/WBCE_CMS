@@ -1,4 +1,5 @@
-﻿<?php
+<?php
+declare(strict_types=1);
 /**
  * WBCE CMS
  * Way Better Content Editing.
@@ -10,10 +11,9 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Prevent this file from being accessed directly
 defined('WB_PATH') or die("Access Denied");
 
-class Wb extends SecureForm
+class Wbce extends SecureForm
 {
     // DirectOutput: private state replaces the old public $sDirectOutput property.
     // __set() below intercepts any legacy $wb->sDirectOutput = '...' assignments.
@@ -31,27 +31,21 @@ class Wb extends SecureForm
     public $password_chars = '\x20-\x7E';
     public $iPassMinLength = 12;
 
-    /**
-     * @brief  General initialization function performed
-     *          when frontend or backend is loaded.
-     */
-    public function __construct($mode = SecureForm::FRONTEND)
+    public function __construct(int $mode = SecureForm::FRONTEND)
     {
         parent::__construct($mode);
     }
 
     /**
-     * @brief  Check if the Password matches the needed pattern and length
-     *         and encode it correctly if true.
-     *         This method will return an error message if false.
+     * Check if the Password matches the required pattern and length,
+     * and encode it correctly if valid. Returns an error message array on failure.
      *
-     * @param string $sPassword
-     * @param string $sNewPasswordRetyped
-     * @return mixed   may be array if error message
-     *                 or string with the correctly encoded password
+     * @param string      $sPassword
+     * @param string|null $sNewPasswordRetyped
+     * @return array|string  Array of error messages, or encoded password string on success.
      * @global array $MESSAGE
      */
-    public function checkPasswordPattern($sPassword, $sNewPasswordRetyped = null)
+    public function checkPasswordPattern(string $sPassword, ?string $sNewPasswordRetyped = null): array|string
     {
         global $MESSAGE;
         $iMinPassLength = 6;
@@ -66,12 +60,10 @@ class Wb extends SecureForm
             }
             if ($sNewPasswordRetyped != null) {
                 if ($sPassword != $sNewPasswordRetyped) {
-                    // $bPasswordOk = false;
                     $aErrMsg[] = $MESSAGE['USERS_PASSWORD_MISMATCH'] . '[2]';
                 }
             }
             if (strlen($sPassword) < $iMinPassLength) {
-                // $bPasswordOk = false;
                 $aErrMsg[] = $MESSAGE['USERS_PASSWORD_TOO_SHORT'] . '[3]';
             }
         }
@@ -80,25 +72,20 @@ class Wb extends SecureForm
     }
 
     /**
-     * @param string $sPassword
+     * Hash a password using PHP's password_hash (PASSWORD_DEFAULT).
+     *
+     * @param  string $sPassword
+     * @return string
      */
-    public function doPasswordEncode($sPassword)
+    public function doPasswordEncode(string $sPassword): string
     {
         if (function_exists('password_hash')) {
             return password_hash($sPassword, PASSWORD_DEFAULT);
-        } else { // fallback to old behavior, hopefully never needed
-            md5($sPassword);
         }
+        return md5($sPassword); // fallback — should never be reached on PHP 8
     }
 
     /**
-     * @brief  Check if the Password is the correct one for a given user.
-     *         This method will true if it matches, otherwise false false.
-     *
-     * @param int $iUserID
-     * @param string $sPassword
-     */
-        /**
      * Checks if the supplied password is correct for the given user.
      * If it is an old md5 hash, it will be automatically upgraded to a modern hash.
      *
@@ -108,8 +95,7 @@ class Wb extends SecureForm
      */
     public function doCheckPassword(int $userId, string $password): bool
     {
-        // Get the password hash from database
-        $sql = 'SELECT `password` FROM `{TP}users` 
+        $sql = 'SELECT `password` FROM `{TP}users`
                 WHERE `user_id` = ? AND `active` = 1';
 
         $dbPasswordHash = $this->db->fetchValue($sql, [$userId]);
@@ -125,8 +111,8 @@ class Wb extends SecureForm
                 // Password correct → upgrade to modern hash
                 $newHash = $this->doPasswordEncode($password);
 
-                $updateSql = 'UPDATE `{TP}users` 
-                              SET `password` = ? 
+                $updateSql = 'UPDATE `{TP}users`
+                              SET `password` = ?
                               WHERE `user_id` = ? AND `active` = 1';
 
                 $this->db->query($updateSql, [$newHash, $userId]);
@@ -137,7 +123,7 @@ class Wb extends SecureForm
             return false; // wrong password (old md5)
         }
 
-        // Modern password hash (recommended way)
+        // Modern password hash
         return password_verify($password, $dbPasswordHash);
     }
 
@@ -224,20 +210,17 @@ class Wb extends SecureForm
 
     /**
      * Send queued direct output and exit. No-op if nothing was queued.
-     * Called once at the end of index.php 
-     * and once in class Admin::print_footer()
-     * in place of the old DirectOutput().
+     * Called once at the end of index.php
+     * and once in class Admin::print_footer() in place of the old DirectOutput().
      */
     public function sendDirectOutput(): void
     {
         if (!$this->directPending) return;
 
-        // Send Content-Type header if specified by the caller
         if ($this->directContentType !== null) {
             header('Content-Type: ' . $this->directContentType);
         }
 
-        // Discard all buffered page output
         while (ob_get_level()) ob_end_clean();
 
         echo $this->directOutput;
@@ -246,7 +229,7 @@ class Wb extends SecureForm
 
     /**
      * @deprecated Use setDirectOutput() to queue content, sendDirectOutput() to send.
-     * Kept for backward compatibility with older modules.
+     *             Kept for backward compatibility with older modules.
      */
     public function DirectOutput(string|false $content = false): void
     {
@@ -277,7 +260,7 @@ class Wb extends SecureForm
      * @param  array|string $mGroups  Array or comma-separated list of group IDs
      * @return bool
      */
-    public function isInGroup($mGroups = ''): bool
+    public function isInGroup(array|string $mGroups = ''): bool
     {
         if ($this->get_group_id() == 1) {
             return true;
@@ -289,7 +272,7 @@ class Wb extends SecureForm
      * @deprecated Use isInGroup() instead.
      *             Kept for backward compatibility with droplets and third-party modules.
      */
-    public function ami_group_member($mGroups = ''): bool
+    public function ami_group_member(array|string $mGroups = ''): bool
     {
         return $this->isInGroup($mGroups);
     }
@@ -302,8 +285,7 @@ class Wb extends SecureForm
      * e.g. for inline-edit or frontend-edit modules.
      *
      * Handles both the old _N_N_ underscore format and the modern N,N CSV.
-     * The superadmin (primary group 1) always passes — same bypass as
-     * ami_group_member().
+     * The superadmin (primary group 1) always passes — same bypass as isInGroup().
      *
      * @param  string $adminGroups  admin_groups value from {TP}pages
      * @param  string $adminUsers   admin_users  value from {TP}pages
@@ -312,7 +294,7 @@ class Wb extends SecureForm
     public function isPageAdmin(string $adminGroups, string $adminUsers = ''): bool
     {
         if ($this->get_group_id() == 1) {
-            return true;                        // Superadmin has access to all pages
+            return true;
         }
         $groups = explode(',', str_replace('_', '', $adminGroups));
         $users  = explode(',', str_replace('_', '', $adminUsers));
@@ -321,46 +303,43 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   Get the current users main GROUP_ID.
-     *         NOTE: a user may be member in differend user groups.
+     * Get the current user's primary GROUP_ID.
      *
-     * @return  int
+     * @return int|null
      */
-    public function get_group_id()
+    public function get_group_id(): mixed
     {
         return $this->get_session('GROUP_ID');
     }
 
     /**
-     * @brief   Get SESSION data
+     * Get a value from the session by key.
      *
-     * @param string $field
-     * @return  string
+     * @param  string $field
+     * @return mixed
      */
-    public function get_session($field)
+    public function get_session(string $field): mixed
     {
-        return (isset($_SESSION[$field]) ? $_SESSION[$field] : null);
+        return $_SESSION[$field] ?? null;
     }
 
     /**
-     * @brief   Check if one or more group_ids are in both group lists
+     * Check if one or more group IDs appear in both group lists.
      *
-     * @param unspec $mGroups_1 : an array or a coma seperated list of group-ids
-     * @param unspec $mGroups_2 : an array or a coma seperated list of group-ids
-     * @param array  &$matches : an array-var whitch will return possible matches
-     * @return  bool   true there is a match, otherwise false
+     * @param  array|string $mGroups_1  Array or CSV of group IDs
+     * @param  array|string $mGroups_2  Array or CSV of group IDs
+     * @param  array|null   &$matches   Receives the matched group IDs
+     * @return bool
      */
-    public function is_group_match($mGroups_1 = '', $mGroups_2 = '', &$matches = null)
+    public function is_group_match(array|string $mGroups_1 = '', array|string $mGroups_2 = '', ?array &$matches = null): bool
     {
         if ($mGroups_1 == '' || $mGroups_2 == '') {
             return false;
         }
         if (!is_array($mGroups_1)) {
-            // it's either a single value or a CSV
             $mGroups_1 = explode(',', $mGroups_1);
         }
         if (!is_array($mGroups_2)) {
-            // it's either a single value or a CSV
             $mGroups_2 = explode(',', $mGroups_2);
         }
         $matches = array_intersect($mGroups_1, $mGroups_2);
@@ -368,10 +347,9 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   Get the current users GROUPS_IDs.
-     *          NOTE: a user may be member in differend user groups.
+     * Get all group IDs the current user belongs to.
      *
-     * @return  array
+     * @return array
      */
     public function get_groups_id() : array
     {
@@ -385,101 +363,82 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   Check whether we should show a page or not (for front-end)
+     * Check whether a page should be shown in the frontend
+     * (visible and has at least one active section).
      *
-     * @param array $page
-     * @return  bool
+     * @param  array $page
+     * @return bool
      */
-    public function show_page($page)
+    public function show_page(array $page): bool
     {
-        $retval = ($this->page_is_visible($page) && $this->page_is_active($page));
-        return $retval;
+        return $this->page_is_visible($page) && $this->page_is_active($page);
     }
 
     /**
-     * @brief   Check whether a page is visible or not.
-     *          This will check page-visibility and user- and group-rights.
+     * Check whether a page is visible to the current user.
      *
-     * @param array $page
-     * @return  bool   false: If page-visibility is 'none' or 'deleted', or page-vis. is 'registered'
-     *                        or 'private' and user isn't allowed to see the page.
-     *                 true:  If page-visibility is 'public' or 'hidden', or page-vis. is 'registered'
-     *                        or 'private' and user _is_ allowed to see the page.
+     * Returns false for visibility 'none' or 'deleted', and for 'private' /
+     * 'registered' pages when the user is not authenticated or lacks permission.
+     *
+     * @param  array $page
+     * @return bool
      */
-    public function page_is_visible($page)
+    public function page_is_visible(array $page): bool
     {
-        $show_it = false; // shall we show the page_link?
-        $page_id = $page['page_id'];
-        $visibility = $page['visibility'];
+        $show_it = false;
+        $visibility     = $page['visibility'];
         $viewing_groups = $page['viewing_groups'];
-        $viewing_users = $page['viewing_users'];
+        $viewing_users  = $page['viewing_users'];
 
-        // First check if visibility is 'none', 'deleted'
-        if ($visibility == 'none') {
-            return (false);
-        } elseif ($visibility == 'deleted') {
-            return (false);
+        if ($visibility == 'none' || $visibility == 'deleted') {
+            return false;
         }
 
-        // Now check if visibility is 'hidden', 'private' or 'registered'
         if ($visibility == 'hidden') {
-            // hidden: hide the menu-link, but show the page
             $show_it = true;
         } elseif ($visibility == 'private' || $visibility == 'registered') {
-            // Check if the user is logged in
             if ($this->is_authenticated() == true) {
-                // Now check if the user has perms to view the page
                 $in_group = false;
                 foreach ($this->get_groups_id() as $cur_gid) {
                     if (in_array($cur_gid, explode(',', $viewing_groups))) {
                         $in_group = true;
                     }
                 }
-                if ($in_group || in_array($this->get_user_id(), explode(',', $viewing_users))) {
-                    $show_it = true;
-                } else {
-                    $show_it = false;
-                }
-            } else {
-                $show_it = false;
+                $show_it = $in_group || in_array($this->get_user_id(), explode(',', $viewing_users));
             }
         } elseif ($visibility == 'public') {
             $show_it = true;
-        } else {
-            $show_it = false;
         }
+
         return ($show_it);
     }
 
     /**
-     * @brief   Check if user is already authenticated (logged in)
-     *          since vers. 1.4 it should be prefered to use
-     *          the method isLoggedIn() instead.
-     *
-     * @return  bool
+     * @deprecated Use isLoggedIn() instead.
+     * @return bool
      */
-    public function is_authenticated()
+    public function is_authenticated(): bool
     {
         return $this->isLoggedIn();
     }
 
     /**
-     * @brief   Check if the user is logged in
+     * Check if the user is logged in.
      *
-     * @return  bool
+     * @return bool
      */
-    public function isLoggedIn()
+    public function isLoggedIn(): bool
     {
         $iSessionUserID = $this->get_session('USER_ID');
         return ($iSessionUserID != null && $iSessionUserID != "" && is_numeric($iSessionUserID));
     }
 
     /**
-     * @brief   Get the current users USER_ID
+     * Get the current user's USER_ID.
      *
-     * @return  int
+     * @return mixed
      */
-    public function get_user_id()
+    public function get_user_id(): mixed
     {
         return $this->get_session('USER_ID');
     }
@@ -527,12 +486,12 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   Check if there is at least one active section on this page.
+     * Check if there is at least one active section on this page.
      *
-     * @param array $page
-     * @return  bool
+     * @param  array $page
+     * @return bool
      */
-    public function page_is_active($page)
+    public function page_is_active(array $page): bool
     {
         $has_active_sections = false;
         $now = time();
@@ -550,21 +509,21 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   Check if the user is SuperAdmin(UserID = 1)
+     * Check if the current user is the SuperAdmin (user_id = 1).
      *
-     * @return  bool
+     * @return bool
      */
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
     {
         return ($this->get_session('USER_ID') == 1);
     }
 
     /**
-     * @brief   Check if the user is Admin (GroupID = 1)
+     * Check if the current user is an Administrator (group_id = 1).
      *
-     * @return  bool
+     * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         if ($this->get_session('GROUP_ID') == 1) {
             return true;
@@ -573,37 +532,35 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   a dummy function left over from gpc
-     *          we keep it just in case modules rely on it even if it does nothing anymore
+     * @deprecated No-op — kept for backward compatibility with modules that relied on magic_quotes.
      *
-     * @param string $input
-     * @return  string
+     * @param  string $input
+     * @return string  unchanged
      */
-    public function strip_magic($input)
+    public function strip_magic(mixed $input): mixed
     {
         return $input;
     }
 
     /**
-     * @brief   Escape backslashes for use with mySQL LIKE strings
+     * Escape backslashes for use in MySQL LIKE strings.
      *
-     * @param string $input
-     * @return  string
+     * @param  string $input
+     * @return string
      */
-    public function escape_backslashes($input)
+    public function escape_backslashes(string $input): string
     {
         return str_replace("\\", "\\\\", $input);
     }
 
     /**
-     * Generate full page_link based on the `link` content from the `{TP}pages` table.
+     * Generate a full page URL from a page ID or link string stored in {TP}pages.
      *
-     * @param int|string|null $linkId   Page ID or link string
+     * @param  int|string|null $linkId  Page ID or link string
      * @return string                   Full URL to the page
      */
     public function page_link($linkId = null): string
     {
-        // If no linkId is given, try to determine current page
         if ($linkId === null) {
             if (defined('PAGE_ID')) {
                 $linkId = (int) PAGE_ID;
@@ -612,7 +569,6 @@ class Wb extends SecureForm
             }
         }
 
-        // If we have a numeric page ID → get link from database
         if (is_numeric($linkId)) {
             $sql = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = ?';
             $pageLink = $this->db->fetchValue($sql, [(int)$linkId]);
@@ -624,140 +580,132 @@ class Wb extends SecureForm
             return WB_URL . PAGES_DIRECTORY . $pageLink . PAGE_EXTENSION;
         }
 
-        // Otherwise treat it as a manual link (e.g. external URL or mailto)
         $linkId = (string)$linkId;
 
-        // Check for :// (external URL) or mailto:
         if (str_contains($linkId, '://') || str_starts_with($linkId, 'mailto:')) {
             return $linkId;
         }
 
-        // Assume it's a relative page link
         return WB_URL . PAGES_DIRECTORY . $linkId . PAGE_EXTENSION;
     }
 
     /**
-     * @brief   Get POST data and escape it
+     * Get a POST value (HTML-escaped).
      *
-     * @param string $field
-     * @return  string
+     * @param  string $field
+     * @return string|null
      */
-    public function get_post_escaped($field)
+    public function get_post_escaped(string $field): mixed
     {
         return $this->get_post($field);
     }
 
     /**
-     * @brief   Get POST data
+     * Get a POST value.
      *
-     * @param string $field
-     * @return  string
+     * @param  string $field
+     * @return mixed
      */
-    public function get_post($field)
+    public function get_post(string $field): mixed
     {
-        return (isset($_POST[$field]) ? $_POST[$field] : null);
-    }
-
-
-
-    /**
-     * @brief   Get GET data
-     *
-     * @param string $field
-     * @return  string
-     */
-    public function get_get($field)
-    {
-        return (isset($_GET[$field]) ? $_GET[$field] : null);
+        return $_POST[$field] ?? null;
     }
 
     /**
-     * @brief   Get SERVER data
+     * Get a GET value.
      *
-     * @param string $field
-     * @return  string
+     * @param  string $field
+     * @return mixed
      */
-    public function get_server($field)
+    public function get_get(string $field): mixed
     {
-        return (isset($_SERVER[$field]) ? $_SERVER[$field] : null);
+        return $_GET[$field] ?? null;
     }
 
     /**
-     * @brief   Get the current users GROUP_NAMEs as CSV string.
-     *          NOTE: a user may be member in differend user groups.
+     * Get a SERVER value.
      *
-     * @return  string
+     * @param  string $field
+     * @return mixed
      */
-    public function get_group_name()
+    public function get_server(string $field): mixed
     {
-        return implode(",", $this->get_session('GROUP_NAME'));
+        return $_SERVER[$field] ?? null;
     }
 
     /**
-     * @brief   Get the current users GROUP_NAMEs as array.
-     *          NOTE: a user may be member in differend user groups.
+     * Get the current user's group names as a CSV string.
      *
-     * @return  array
+     * @return string
      */
-    public function get_groups_name()
+    public function get_group_name(): string
+    {
+        return implode(",", (array) $this->get_session('GROUP_NAME'));
+    }
+
+    /**
+     * Get the current user's group names as an array.
+     *
+     * @return array|null
+     */
+    public function get_groups_name(): ?array
     {
         return $this->get_session('GROUP_NAME');
     }
 
     /**
-     * @brief   Get the current users USERNAME
+     * Get the current user's USERNAME.
      *
-     * @return  string
+     * @return string|null
      */
-    public function get_username()
+    public function get_username(): ?string
     {
         return $this->get_session('USERNAME');
     }
 
     /**
-     * @brief   Get the current users DISPLAY_NAME
+     * Get the current user's DISPLAY_NAME (special characters stripped).
      *
-     * @return  string
+     * @return string
      */
-    public function get_display_name()
+    public function get_display_name(): string
     {
-        return remove_special_characters($this->get_session('DISPLAY_NAME'));
+        return remove_special_characters((string) $this->get_session('DISPLAY_NAME'));
     }
 
     /**
-     * @brief   Get the current users EMAIL address
+     * Get the current user's email address.
      *
-     * @return  string
+     * @return string|null
      */
-    public function get_email()
+    public function get_email(): ?string
     {
         return $this->get_session('EMAIL');
     }
 
     /**
-     * @brief   Get the current users HOME_FOLDER
+     * Get the current user's home folder.
      *
-     * @return  string
+     * @return string|null
      */
-    public function get_home_folder()
+    public function get_home_folder(): ?string
     {
         return $this->get_session('HOME_FOLDER');
     }
 
     /**
-     * Validates the supplied email address.
+     * Validate an email address.
      *
      * Handles internationalized domain names (IDN) by converting the domain
      * part to its ASCII-compatible encoding (ACE/Punycode) before validation.
      * Requires the intl extension for IDN support (idn_to_ascii).
      * Falls back to raw domain validation if the extension is unavailable.
      *
-     * @param  string $email The email address to validate.
-     * @return bool          Returns true if the email address is valid,
-     *                       false if empty or invalid.
+     * @param  string $email
+     * @return bool
      *
-     * @see    https://www.php.net/manual/en/function.idn-to-ascii.php
-     * @see    https://www.php.net/manual/en/function.filter-var.php
+     * @see https://www.php.net/manual/en/function.idn-to-ascii.php
+     * @see https://www.php.net/manual/en/function.filter-var.php
      */
     public function validate_email(string $email): bool
     {
@@ -770,13 +718,10 @@ class Wb extends SecureForm
 
            if (function_exists('idn_to_ascii')) {
                $ascii = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
-               // idn_to_ascii returns false on failure
                if ($ascii !== false) {
                    $domain = $ascii;
                }
            }
-           // If intl is unavailable, fall through with the raw domain.
-           // filter_var will still catch obviously malformed addresses.
 
            $email = $local . '@' . $domain;
        }
@@ -785,71 +730,66 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   set one or more bit in a integer value
+     * Set one or more bits in an integer value.
      *
-     * @param int $value Reference to the integer, containing the value
-     * @param int $bits2set The bitmask which should be added to the value
-     * @return  void
+     * @param int $value     Reference to the integer
+     * @param int $bits2set  Bitmask to add
      */
-    public function bit_set(&$value, $bits2set)
+    public function bit_set(int &$value, int $bits2set): void
     {
         $value |= $bits2set;
     }
 
     /**
-     * @brief   reset one or more bit from a integer value
+     * Clear one or more bits from an integer value.
      *
-     * @param int $value Reference to the integer, containing the value
-     * @param int $bits2reset The bitmask which should be removed from value
-     * @return  void
+     * @param int $value      Reference to the integer
+     * @param int $bits2reset Bitmask to remove
      */
-    public function bit_reset(&$value, $bits2reset)
+    public function bit_reset(int &$value, int $bits2reset): void
     {
         $value &= ~$bits2reset;
     }
 
     /**
-     * @brief   check if one or more bit in a integer value is set
+     * Test whether one or more bits are set in an integer value.
      *
-     * @param int $value Reference to the integer, containing the value
-     * @param int $bits2set The bitmask which should be added to value
-     * @return  void
+     * @param  int  $value
+     * @param  int  $bits2test  Bitmask to test
+     * @return bool
      */
-    public function bit_isset($value, $bits2test)
+    public function bit_isset(int $value, int $bits2test): bool
     {
         return (($value & $bits2test) == $bits2test);
     }
 
     /**
-     * @brief   Print a success message which then automatically redirects
-     *          the user to a specified page
+     * Print a success message that automatically redirects to a specified page.
      *
-     * @param mixed $uMsg may be a single string or an array
-     * @param string $sRedirectUri URI to the redirect page
-     * @return  string
+     * @param mixed  $uMsg          Single string or array of messages
+     * @param string $sRedirectUri  Redirect target
+     * @param bool   $bAutoFooter
      */
-    public function print_success($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = false)
+    public function print_success(array|string $uMsg, string $sRedirectUri = 'index.php', bool $bAutoFooter = false): void
     {
         $this->messageBox($uMsg, 'success', $sRedirectUri, $bAutoFooter);
     }
 
     /**
-     * since vers. 1.4.0
-     * @brief   Print a modal box
+     * Print a modal message box (success, error, info, etc.).
      *
-     * @param mixed $uMsg may be a single string or an array
-     * @param string $sRedirectUri URI for the redirect
-     * @return  string
+     * @param mixed  $uMsg          Single string or array of messages
+     * @param string $sType         'success' | 'error' | 'info'
+     * @param string $sRedirectUri  URL for redirect or back-button
+     * @param bool   $bAutoFooter   Call print_footer() and exit automatically
+     * @param bool   $bUseRedirect
      */
-    public function messageBox($uMsg, $sType = 'info', $sRedirectUri = 'index.php', $bAutoFooter = false, $bUseRedirect = true)
+    public function messageBox(array|string $uMsg, string $sType = 'info', string $sRedirectUri = 'index.php', bool $bAutoFooter = false, bool $bUseRedirect = true): void
     {
         if (!is_array($uMsg)) {
-            $uMsg = array(
-                $uMsg
-            );
+            $uMsg = array($uMsg);
         }
 
-        // get correct redirect time
         $iRedirectTime = (defined('REDIRECT_TIMER')) ? REDIRECT_TIMER : 0;
         $iRedirectTime = ($iRedirectTime > 10000) ? 10000 : $iRedirectTime;
 
@@ -869,7 +809,7 @@ class Wb extends SecureForm
         }
     }
 
-    public function getThemeFile($sTplName = '', $aToTwig = array())
+    public function getThemeFile(string $sTplName = '', array $aToTwig = []): void
     {
         $aTemplateLocs = array();
         $aCheckDirs = array(
@@ -887,75 +827,61 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   Print an error message with a "back" link/button to a specified page
+     * Print an error message with a "back" button to a specified page.
      *
-     * @param mixed $uMsg may be a single string or an array
-     * @param string $sRedirectUri URI for the "back" link
-     * @return  string
+     * @param mixed  $uMsg          Single string or array of messages
+     * @param string $sRedirectUri  URL for the back button
+     * @param bool   $bAutoFooter
      */
-    public function print_error($uMsg, $sRedirectUri = 'index.php', $bAutoFooter = true)
+    public function print_error(array|string $uMsg, string $sRedirectUri = 'index.php', bool $bAutoFooter = true): void
     {
         // Errors are sticky — never auto-redirect, only show a back-button if a URL is given.
         $this->messageBox($uMsg, 'error', $sRedirectUri, $bAutoFooter, false);
     }
 
     /**
-     * @brief Validate and send a mail
+     * Validate and send an email via PHPMailer/Mailer.
      *
-     * @param string $fromaddress // FROM:
-     * @param string $toaddress // TO:
-     * @param string $subject // SUBJECT
-     * @param string $message // The Message to be send
-     * @param string $fromname // From Name
-     * @return boolean
+     * @param string $fromaddress
+     * @param string $toaddress
+     * @param string $subject
+     * @param string $message
+     * @param string $fromname
+     * @return bool
      */
-    public function mail($fromaddress, $toaddress, $subject, $message, $fromname = '')
+    public function mail(string $fromaddress, string $toaddress, string $subject, string $message, string $fromname = ''): bool
     {
-        // INTEGRATED OPEN SOURCE PHPMAILER CLASS FOR SMTP SUPPORT AND MORE.
-        // SOME SERVICE PROVIDERS DO NOT SUPPORT SENDING MAIL VIA PHP AS IT DOES NOT PROVIDE SMTP AUTHENTICATION.
-        // NEW WBMAILER CLASS IS ABLE TO SEND OUT MESSAGES USING SMTP WHICH RESOLVE THESE ISSUE. (C. Sommer)
-
         $fromaddress = preg_replace('/[\r\n]/', '', $fromaddress);
-        $toaddress = preg_replace('/[\r\n]/', '', $toaddress);
-        $subject = preg_replace('/[\r\n]/', '', $subject);
+        $toaddress   = preg_replace('/[\r\n]/', '', $toaddress);
+        $subject     = preg_replace('/[\r\n]/', '', $subject);
 
-        // create PHPMailer object and define default settings
         $myMail = new Mailer();
 
-        // set user defined FROM address
         if ($fromaddress != '') {
             if ($fromname != '') {
                 $myMail->FromName = $fromname;
             }
-
-            $myMail->From = $fromaddress; // FROM:
-            $myMail->AddReplyTo($fromaddress); // REPLY TO:
+            $myMail->From = $fromaddress;
+            $myMail->AddReplyTo($fromaddress);
         }
 
-        // define recepient and information to send out
-        $myMail->AddAddress($toaddress); // TO:
-        $myMail->Subject = $subject; // SUBJECT
-        $myMail->Body = nl2br($message); // CONTENT (HTML)
-        $myMail->AltBody = strip_tags($message); // CONTENT (TEXT)
+        $myMail->AddAddress($toaddress);
+        $myMail->Subject  = $subject;
+        $myMail->Body     = nl2br($message);
+        $myMail->AltBody  = strip_tags($message);
 
-        // check if there are any send mail errors and return accordingly
-        if (!$myMail->Send()) {
-            return false;
-        } else {
-            return true;
-        }
+        return $myMail->Send() ? true : false;
     }
 
     /**
-     * Determines the absolute path of a theme file using a fallback mechanism.
-     * Checks if the requested file exists in the DEFAULT_THEME directory and if 
-     * not,it falls back to the system default theme folder: /templates/theme_fallbacks/
-     * 
-     * If the file is missing in both locations, the execution is terminated.
+     * Resolve the absolute path of a theme file using a fallback mechanism.
      *
-     * @param string $sThemeFile The filename including extension (e.g., 'layout.twig' or '../css/style.css').
-     * @throws \RuntimeException (Implicitly via die) if the file is not found in any location.
-     * @return string The absolute server path to the resolved file.
+     * Checks the active theme directory first, then falls back to
+     * /templates/theme_fallbacks/. Terminates with die() if the file
+     * is missing in both locations.
+     *
+     * @param  string $sThemeFile  Filename including extension (e.g. 'layout.twig')
+     * @return string              Absolute server path to the resolved file
      */
     public function correct_theme_source(string $sThemeFile = 'start.htt') : string
     {
@@ -971,32 +897,29 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   Check if a foldername doesn't have invalid characters
+     * Check if a folder name contains no invalid characters.
      *
-     * @param string $str to check
-     * @return  bool
+     * @param  string $str
+     * @return bool
      */
-    public function checkFolderName($str)
+    public function checkFolderName(string $str): bool
     {
         return !(preg_match('#\^|\\\|\/|\.|\?|\*|"|\'|\<|\>|\:|\|#i', $str) ? true : false);
     }
 
     /**
-     * @brief   Check the given path to make sure current path
-     *          is within given basedir normally document root
+     * Verify that the given path is within the base directory (document root).
      *
-     * @param string $sCurrentPath
-     * @param string $sBaseDir
-     * @return string $sCurrentPath or bool FALSE
+     * @param  string $sCurrentPath
+     * @param  string $sBaseDir
+     * @return string|false  Resolved path, or false if outside base dir
      */
-    public function checkpath($sCurrentPath, $sBaseDir = WB_PATH)
+    public function checkpath(string $sCurrentPath, string $sBaseDir = WB_PATH): string|false
     {
-        // Clean the cuurent path
         $sCurrentPath = rawurldecode($sCurrentPath);
         $sCurrentPath = realpath($sCurrentPath);
-        $sBaseDir = realpath($sBaseDir);
+        $sBaseDir     = realpath($sBaseDir);
 
-        // $sBaseDir needs to exist in the $sCurrentPath
         $pos = stripos($sCurrentPath, $sBaseDir);
 
         if ($pos === false) {
@@ -1008,16 +931,8 @@ class Wb extends SecureForm
         }
     }
 
-   /**
-    * Registers module files (CSS, JS, jQuery, system variables) and inserts them into the DOM
-    * using the Insert class (I::) methods.
-    *
-    * @param string $modfileType  css|js|jquery|js_sysvars
-    * @param string $context      frontend|backend  (determines which modfiles are collected)
-    * @return void
-    */
     /**
-     * Registers module files (CSS, JS, jQuery, system variables) and inserts them 
+     * Registers module files (CSS, JS, jQuery, system variables) and inserts them
      * into the DOM using the Insert class (I::) methods.
      *
      * This is the main public entry point for modules/themes to register their assets.
@@ -1028,7 +943,6 @@ class Wb extends SecureForm
      */
     public function registerModfiles(string $modfileType = 'css', string $context = 'frontend'): void
     {
-        // Collect all relevant modfiles for the given context
         $toInsert = $this->collectModfiles($context);
 
         $modfileType = strtolower(trim($modfileType));
@@ -1050,7 +964,6 @@ class Wb extends SecureForm
                     WB_URL . '/include/jquery/jquery-migrate-min.js',
                 ];
 
-                // Add jQuery UI theme (from module or fallback to include)
                 $themeFile = WB_URL . '/modules/jquery/jquery_theme.js';
                 if (file_exists(str_replace(WB_URL, WB_PATH, $themeFile))) {
                     $jqueryFiles[] = $themeFile;
@@ -1058,7 +971,6 @@ class Wb extends SecureForm
                     $jqueryFiles[] = WB_URL . '/include/jquery/jquery_theme.js';
                 }
 
-                // Add template-specific jQuery frontend file if it exists
                 $templateJquery = TEMPLATE_DIR . '/jquery_frontend.js';
                 if (file_exists(str_replace(WB_URL, WB_PATH, $templateJquery))) {
                     $jqueryFiles[] = $templateJquery;
@@ -1070,18 +982,15 @@ class Wb extends SecureForm
                 break;
 
             case 'js':
-                // Insert system variables first (always at the top)
                 $jsSysvars = $this->buildJsSystemVariables();
                 I::insertJsCode($jsSysvars, 'HEAD TOP+', 'js_sysvars');
 
-                // JS files for <head>
                 if (!empty($toInsert['js_head']) && is_array($toInsert['js_head'])) {
                     foreach ($toInsert['js_head'] as $jsFile) {
                         I::insertJsFile($jsFile, 'HEAD MODFILES');
                     }
                 }
 
-                // JS files before </body>
                 if (!empty($toInsert['js_body']) && is_array($toInsert['js_body'])) {
                     foreach ($toInsert['js_body'] as $jsFile) {
                         I::insertJsFile($jsFile, 'BODY BTM-');
@@ -1090,57 +999,49 @@ class Wb extends SecureForm
                 break;
 
             case 'js_sysvars':
-                        // System variables are already handled in the 'js' case.
-                        // This case exists only for backward compatibility.
+                // System variables are already handled in the 'js' case.
+                // This case exists only for backward compatibility.
                 break;
 
             default:
-                        // Unknown modfile type → do nothing (silent)
+                // Unknown modfile type → do nothing (silent)
                 break;
         }
     }
-    
+
     /**
-     * Builds the JavaScript system variables block that will be inserted into the <head>.
+     * Build the JavaScript system variables block inserted into <head>.
      *
-     * These variables are available globally for all JavaScript code on the page.
-     *
-     * @return string JavaScript code with variable declarations
+     * @return string  JavaScript code with variable declarations
      */
     private function buildJsSystemVariables(): string
     {
-        $js = "\t\t"; // indentation for clean HTML output
+        $js = "\t\t";
 
-        // WB_URL (and optional URL alias for compatibility)
         if (defined('URL_VAR_COMPATIBILITY_MODE') && URL_VAR_COMPATIBILITY_MODE === true) {
             $js .= "var URL = WB_URL = '" . WB_URL . "';\n";
         } else {
             $js .= "var WB_URL = '" . WB_URL . "';\n";
         }
 
-        // Language
         if (defined('LANGUAGE')) {
             $js .= "\t\tvar LANGUAGE     = '" . strtolower(LANGUAGE) . "';\n";
         }
 
-        // Page ID
         if (defined('PAGE_ID')) {
             $js .= "\t\tvar PAGE_ID      = " . (int) PAGE_ID . ";\n";
         } elseif (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
             $js .= "\t\tvar PAGE_ID      = " . (int) $_REQUEST['page_id'] . ";\n";
         }
 
-        // Section ID
         if (isset($_REQUEST['section_id']) && is_numeric($_REQUEST['section_id'])) {
             $js .= "\t\tvar SECTION_ID   = " . (int) $_REQUEST['section_id'] . ";\n";
         }
 
-        // Template directory
         if (defined('TEMPLATE_DIR')) {
             $js .= "\t\tvar TEMPLATE_DIR = '" . TEMPLATE_DIR . "';\n";
         }
 
-        // Backend-only variables
         if (defined('BACKEND_CONTEXT')) {
             if (defined('THEME_URL')) {
                 $js .= "\t\tvar THEME_URL    = '" . THEME_URL . "';\n";
@@ -1150,7 +1051,6 @@ class Wb extends SecureForm
             }
         }
 
-        // Session timeout
         $sessionTimeout = $this->get_session_timeout();
         $js .= "\t\tvar SESSION_TIMEOUT = '" . $sessionTimeout . "';\n";
 
@@ -1158,21 +1058,21 @@ class Wb extends SecureForm
     }
 
     /**
-     * Collects module directories and their modfiles for registerModfiles().
+     * Collect module directories and their modfiles for registerModfiles().
      *
-     * @param string $context  'frontend' or 'backend'
+     * @param  string $context  'frontend' or 'backend'
      * @return array
      */
     private function collectModfiles(string $context = 'frontend'): array
     {
         $toInsert = [];
-        $modules = [];
+        $modules  = [];
 
-        // 1. Snippets – only in frontend
+        // 1. Snippets — frontend only
         if (defined('FRONTEND_CONTEXT')) {
             $modules = array_merge($modules, $this->db->fetchAll(
-                "SELECT `directory` AS `module_dir` 
-                 FROM `{TP}addons` 
+                "SELECT `directory` AS `module_dir`
+                 FROM `{TP}addons`
                  WHERE `function` LIKE '%snippet%'",
                 []
             ));
@@ -1189,8 +1089,8 @@ class Wb extends SecureForm
 
         if ($pageId !== null && defined('BACKEND_CONTEXT')) {
             $modules = array_merge($modules, $this->db->fetchAll(
-                "SELECT `module` AS `module_dir` 
-                 FROM `{TP}sections` 
+                "SELECT `module` AS `module_dir`
+                 FROM `{TP}sections`
                  WHERE `page_id` = ?",
                 [$pageId]
             ));
@@ -1199,15 +1099,14 @@ class Wb extends SecureForm
         // 3. Tools (backend)
         if (!empty($_GET['tool'])) {
             $modules = array_merge($modules, $this->db->fetchAll(
-                "SELECT `directory` AS `module_dir` 
-                 FROM `{TP}addons` 
-                 WHERE `function` LIKE '%tool%' 
+                "SELECT `directory` AS `module_dir`
+                 FROM `{TP}addons`
+                 WHERE `function` LIKE '%tool%'
                    AND `directory` = ?",
                 [$_GET['tool']]
             ));
         }
 
-        // Retrieve modfiles from each module
         foreach ($modules as $row) {
             $moduleDir = $row['module_dir'] ?? '';
             if (empty($moduleDir)) {
@@ -1218,24 +1117,23 @@ class Wb extends SecureForm
 
             foreach ($filesByType as $type => $wrappedFiles) {
                 foreach ($wrappedFiles as $wrapped) {
-                    $toInsert[$type][] = $wrapped[0];   // extract the actual URL (string)
+                    $toInsert[$type][] = $wrapped[0];
                 }
             }
         }
 
         return $toInsert;
     }
-    
+
     /**
-     * Retrieves modfiles (css, js_head, js_body) from a single module directory.
+     * Retrieve modfiles (css, js_head, js_body) from a single module directory.
      *
      * Returns files in a backward-compatible format so that existing code
      * like block_contents() and get_section_content() continues to work.
+     * Each file is wrapped in an array — $sFile[0] contains the actual URL.
      *
-     * Each file is wrapped in an array → $sFile[0] contains the actual URL.
-     *
-     * @param string $moduleDir Module directory name
-     * @param string $context   'frontend' or 'backend'
+     * @param  string $moduleDir  Module directory name
+     * @param  string $context    'frontend' or 'backend'
      * @return array
      */
     public function retrieveModfilesFromDir(string $moduleDir, string $context = 'frontend'): array
@@ -1265,7 +1163,6 @@ class Wb extends SecureForm
         $addFile($context . '%s.js',      'js_head');
         $addFile($context . '_body%s.js', 'js_body');
 
-        // Backward compatible format: each file wrapped in array
         $result = [];
         foreach ($collection as $type => $files) {
             $result[$type] = array_map(fn($url) => [$url], $files);
@@ -1275,11 +1172,11 @@ class Wb extends SecureForm
     }
 
     /**
-     * @brief   get the correct session timeout value
+     * Get the configured session timeout value in seconds.
      *
-     * @return  string
+     * @return string
      */
-    public function get_session_timeout()
+    public function get_session_timeout(): string
     {
         if ($sSessionTimeout = Settings::get("wb_session_timeout")) {
         } elseif ($sSessionTimeout = Settings::get("wb_secform_timeout")) {
@@ -1290,16 +1187,13 @@ class Wb extends SecureForm
     }
 
     /**
-     * introduced with WBCE 1.4.0
-     * (Will reduce a lot of redundand code, in FE and BE alike.)
+     * Return an array of all sections for a given page.
      *
-     * @brief  Return an array of all the sections of the page
-     *
-     * @param bool $bExcludeNonPublicised
+     * @param  int|null $iPageID
+     * @param  bool     $bExcludeNonPublicised  Skip sections outside their publication window
      * @return array
-     * @global int $page_id
      */
-    public function get_page_sections($iPageID = null, $bExcludeNonPublicised = false)
+    public function get_page_sections(?int $iPageID = null, bool $bExcludeNonPublicised = false): array
     {
         $aSections = array();
 
@@ -1311,12 +1205,10 @@ class Wb extends SecureForm
         }
 
         if ($iPageID > 0) {
-            // Get all sections for this page
             $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id` = ? ORDER BY `position`';
             if ($resSections = $this->db->query($sSql, [$iPageID])) {
                 while ($rec = $resSections->fetchRow(MYSQLI_ASSOC)) {
                     if ($bExcludeNonPublicised == true) {
-                        // skip sections that are not publicised
                         $iNowTime = time();
                         if (!(($iNowTime <= $rec['publ_end'] || $rec['publ_end'] == 0) && ($iNowTime >= $rec['publ_start'] || $rec['publ_start'] == 0))) {
                             continue;
@@ -1329,21 +1221,19 @@ class Wb extends SecureForm
         }
         return $aSections;
     }
-    
+
     /**
      * Resolve a string value (name or description) for a module.
-     * Improved handling to make use of the new 
-     * Lang class single languages.php file solution.
      *
      * Lookup order:
      *   1. languages/LANGUAGE.php — variable extraction via get_variable_content()
-     *   2. language.php (single-file format) — array key lookup
+     *   2. languages.php (single-file format) — array key lookup
      *   3. info.php — variable extraction
-     *   4. DB`{TP}addons` table column fallback
+     *   4. {TP}addons table column fallback
      *
-     * @param string   $modDir    Module directory name
-     * @param string[] $varNames  Variable names to try in order (first match wins)
-     * @param string   $dbColumn  Column to read from the addons table as last resort
+     * @param  string   $modDir    Module directory name
+     * @param  string[] $varNames  Variable names to try in order (first match wins)
+     * @param  string   $dbColumn  Column to read from the addons table as last resort
      * @return string
      */
     private function _resolveModuleString(string $modDir, array $varNames, string $dbColumn): string
@@ -1351,7 +1241,7 @@ class Wb extends SecureForm
         $modBase = WB_PATH . '/modules/' . $modDir;
         $value   = '';
 
-        // ── 1. languages/LANGUAGE.php ─────────────────────────────────────────
+        // 1. languages/LANGUAGE.php
         $langFile = $modBase . '/languages/' . LANGUAGE . '.php';
         if (file_exists($langFile)) {
             $data  = @file_get_contents($langFile);
@@ -1361,14 +1251,12 @@ class Wb extends SecureForm
             }
         }
 
-        // ── 2. language.php (single-file format) ──────────────────────────────
-        // Format: ['EN' => ['module_name' => '...'], 'DE' => ['module_name' => '...']]
+        // 2. languages.php (single-file format)
         if ($value === '') {
             $singleFile = $modBase . '/languages.php';
             if (is_file($singleFile)) {
                 $all = include $singleFile;
                 if (is_array($all)) {
-                    // Active locale overrides EN
                     $langData = array_merge($all['EN'] ?? [], $all[LANGUAGE] ?? []);
                     foreach ($varNames as $var) {
                         if (!empty($langData[$var])) { $value = (string)$langData[$var]; break; }
@@ -1377,7 +1265,7 @@ class Wb extends SecureForm
             }
         }
 
-        // ── 3. info.php ───────────────────────────────────────────────────────
+        // 3. info.php
         if ($value === '') {
             $infoFile = $modBase . '/info.php';
             if (file_exists($infoFile)) {
@@ -1389,7 +1277,7 @@ class Wb extends SecureForm
             }
         }
 
-        // ── 4. addons table ───────────────────────────────────────────────────
+        // 4. addons table
         if ($value === '') {
             $value = (string)($this->db->fetchValue(
                 "SELECT `$dbColumn` FROM `{TP}addons` WHERE `directory` = ?",
@@ -1401,13 +1289,12 @@ class Wb extends SecureForm
     }
 
     /**
-     * Get the module name from language file, single language.php,
-     * info.php or the addons table as fallback.
+     * Get the display name of a module, resolved from language files or the addons table.
      *
-     * @param string $modDir        Module directory name
-     * @param bool   $showOriginal  Append the original DB name in parentheses
-     * @param string $hem           Format string for original name (default: ' (%s)')
-     * @param string $modType       'page', 'tool', 'snippet', ...
+     * @param  string $modDir        Module directory name
+     * @param  bool   $showOriginal  Append the original DB name in parentheses
+     * @param  string $hem           Format string for original name (default: ' (%s)')
+     * @param  string $modType       'page', 'tool', 'snippet', ...
      * @return string
      */
     public function get_module_name(
@@ -1418,14 +1305,12 @@ class Wb extends SecureForm
     ): string {
         if (empty($modDir)) return '';
 
-        // Type-specific name takes priority over generic module_name
         $varNames = $modType !== 'page'
             ? [$modType . '_name', 'module_name']
             : ['module_name'];
 
         $moduleName = $this->_resolveModuleString($modDir, $varNames, 'name');
 
-        // Last resort: use directory name
         if ($moduleName === '') $moduleName = $modDir;
 
         if ($showOriginal) {
@@ -1440,11 +1325,10 @@ class Wb extends SecureForm
     }
 
     /**
-     * Get the module description from language file, single language.php,
-     * info.php or the addons table as fallback.
+     * Get the description of a module, resolved from language files or the addons table.
      *
-     * @param string $modDir    Module directory name
-     * @param string $modType   'page', 'tool', 'snippet', ...
+     * @param  string $modDir   Module directory name
+     * @param  string $modType  'page', 'tool', 'snippet', ...
      * @return string
      */
     public function get_module_description(string $modDir = '', string $modType = 'page'): string
@@ -1458,33 +1342,34 @@ class Wb extends SecureForm
 
         return str_replace('{WB_URL}', WB_URL, $description);
     }
-    
+
     /**
-     * @brief   Legacy method, kept in place to maintain compatibility with older modules
+     * @deprecated No-op — PDO handles escaping automatically.
+     *             Kept for backward compatibility with older modules.
      *
-     * @param   string $input
-     * @return  string -> unchanged
+     * @param  string $input
+     * @return string  unchanged
      */
-    public function add_slashes($input)
-    {       
+    public function add_slashes(mixed $input): mixed
+    {
         if (defined('SQL_DEBUG') && SQL_DEBUG) {
             trigger_error(
-                'add_slashes() was called but ignored because the new PDO database class is active. ' .
-                'PDO handles escaping automatically.', 
+                'add_slashes() was called but ignored because the PDO database class is active. ' .
+                'PDO handles escaping automatically.',
                 E_USER_NOTICE
             );
         }
-        return $input; // return without escaping 
+        return $input;
     }
-    
+
     /**
-     * @brief   Legacy method, kept in place to maintain compatibility with older modules
+     * @deprecated No-op — kept for backward compatibility with older modules.
      *
-     * @param   string $input
-     * @return  string -> unchanged
+     * @param  mixed $input
+     * @return mixed  unchanged
      */
-    public function strip_slashes($input)
+    public function strip_slashes(mixed $input): mixed
     {
         return $input;
-    }    
+    }
 }

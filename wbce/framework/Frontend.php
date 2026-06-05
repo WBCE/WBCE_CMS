@@ -13,7 +13,7 @@
 // Prevent  this  file  from  being  accessed  directly
 defined('WB_PATH') or die('No direct access allowed');
 
-class Frontend extends Wb
+class Frontend extends Wbce
 {
     // defaults
     public $isStartpage = false;
