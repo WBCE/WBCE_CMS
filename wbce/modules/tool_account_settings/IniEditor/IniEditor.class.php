@@ -201,7 +201,7 @@ class IniEditor {
                 $sPhpPrefix.$sToFile
             );
             
-            $oMsgBox = new MessageBox();            
+            $oMsgBox = new Alerts(useSession: false);
             if ($bHasSaved) {
                 $oMsgBox->success('MESSAGE:SETTINGS_SAVED');                
             } else {
