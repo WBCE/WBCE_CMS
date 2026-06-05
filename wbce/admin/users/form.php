@@ -162,7 +162,7 @@ if ($wasAdded && $userId > 0) {
         'display_name' => '',
         'email'        => '',
         'active'       => 1,
-        'timezone'     => 0,
+        'timezone'     => (int)DEFAULT_TIMEZONE,
         'language'     => DEFAULT_LANGUAGE,
         'home_folder'  => '',
     ];
