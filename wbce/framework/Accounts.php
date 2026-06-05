@@ -9,27 +9,25 @@
  * @copyright WBCE Project (2015-)
  * @license GNU GPL2 (or any later version)
  *
- * @brief     This file contains class Account which is used
- *            for handling frontend signup, login and user accounts.
- *            This class is also being used with the tool_account_settings
- *            AdminTool introduced with WBCE 1.4.0
+ * @brief     Frontend signup, login and user-account management.
+ *            Also used by the tool_account_settings AdminTool (since 1.4.0).
  *
- * @author  Christian M. Stefan  (https://www.wbEasy.de)
- *
+ * @author  Christian M. Stefan (https://www.wbEasy.de)
  * @copyright http://www.gnu.org/licenses/lgpl.html (GNU LGPLv2 or any later)
  */
+declare(strict_types=1);
 
-// Prevent  this  file  from  being  accessed  directly
 defined('WB_PATH') or die('No direct access allowed');
 
 defined('ACCOUNT_TOOL_PATH') or define('ACCOUNT_TOOL_PATH', WB_PATH . '/modules/tool_account_settings');
 
 class Accounts extends Frontend
 {
-    public $sAccountAdminPath = '';
-    public $cfg = array();
-    public $sCfgFile = '';
+    public string $accountAdminPath = '';
+    public array  $cfg              = [];
+    public string $cfgFile          = '';
 
+    /** Boot: locate config INI and populate $this->cfg. */
     public function __construct()
     {
         parent::__construct(SecureForm::FRONTEND);
@@ -37,572 +35,501 @@ class Accounts extends Frontend
         $this->cfg = $this->getConfig();
     }
 
-    public function prepareConfigIniFile()
+    /** Ensure the config INI file exists, copying the .NEW template on first run. */
+    public function prepareConfigIniFile(): void
     {
-        $this->sCfgFile = ACCOUNT_TOOL_PATH . '/account/Accounts.cfg.php';
-        if (!file_exists($this->sCfgFile)) {
+        $this->cfgFile = ACCOUNT_TOOL_PATH . '/account/Accounts.cfg.php';
+        if (!file_exists($this->cfgFile)) {
             rename(
                 ACCOUNT_TOOL_PATH . '/account/Accounts.cfg.NEW.php',
-                $this->sCfgFile
+                $this->cfgFile
             );
-        }
-    }
-
-    public function getConfig()
-    {
-        $aConfig = parse_ini_file($this->sCfgFile, true)['Signup_Account_Settings'];
-
-        // work out if preferences.php and other areas should use own FE Template
-        // ======================================================================
-        $aTemplates = array('preferences_template', 'login_template', 'signup_template');
-
-        foreach ($aTemplates as $str) {
-            if (isset($aConfig[$str]) && $aConfig[$str] != '') {
-                if (file_exists(WB_PATH . '/templates/' . $aConfig[$str] . '/index.php')) {
-                    $aConfig[$str] = $aConfig[$str];
-                }
-            }
-            if ($aConfig[$str] == '') {
-                $aConfig[$str] = DEFAULT_TEMPLATE;
-            }
-        }
-
-        // work out the E-Mail Adress(es) of AccountsManager(s)
-        // ====================================================
-        $sAMEmail = ''; // init AccountsManager E-Mail
-
-        // read SuperAdmin's E-Mail from the DB
-        $sSuperadminEmail = $this->db->fetchValue("SELECT `email` FROM `{TP}users` WHERE `user_id` = 1");
-
-        // validate E-Mail addresses and use Superadmin's E-Mail if empty or broken
-        if (isset($aConfig['accounts_manager_email']) && $aConfig['accounts_manager_email'] != '') {
-            $sAMEmail = $aConfig['accounts_manager_email'];
-            $aAMEmails = $this->validate_emails_from_csv($sAMEmail, true);
-            if (empty($aAMEmails)) {
-                $sAMEmail = array($sSuperadminEmail);
-            }
-        }
-
-        $mEmailFinal = !empty($aAMEmails) ? $aAMEmails : array($sAMEmail);
-        if (isset($aConfig['accounts_manager_superadmin']) && $aConfig['accounts_manager_superadmin'] == true) {
-            if (is_array($mEmailFinal)) {
-                array_unshift($mEmailFinal, $sSuperadminEmail); // put SuperAdmin E-Mail on top of array
-            } else {
-                $mEmailFinal = array($sSuperadminEmail);
-            }
-        }
-        $aConfig['accounts_manager_email'] = array_unique($mEmailFinal);
-
-        // work out the Support E-Mail
-        // ====================================================
-        $sSupportEmail = ''; // init Support E-Mail
-        if (isset($aConfig['support_email']) && $aConfig['support_email'] != '') {
-            $sSupportEmail = $this->validate_emails_from_csv($aConfig['support_email']);
-        }
-        if ($sSupportEmail == '') {
-            $sSupportEmail = $aConfig['accounts_manager_email'][0];
-        }
-        $aConfig['support_email'] = $sSupportEmail;
-
-        return $aConfig;
-    }
-
-    /**
-     * $sCSV          the CSV string of emails or a single email address
-     * $bMakeArray    if set to true will return an array rather than a CSV string
-     */
-    public function validate_emails_from_csv($sCSV, $bMakeArray = false)
-    {
-        $aRetVal = array(); // collect validated email addresses
-        // check if is a CSV array of emails
-        if (strpos($sCSV, ',') !== false) {
-            $sCSV = str_replace(' ', '', $sCSV);
-            $aTmp = explode(',', $sCSV);
-        } else {
-            // put single setting into array
-            $aTmp = array($sCSV);
-        }
-
-        // validate the array
-        foreach ($aTmp as $sMailAddr) {
-            if (filter_var($sMailAddr, FILTER_VALIDATE_EMAIL)) {
-                $aRetVal[] = $sMailAddr;
-            }
-        }
-        if ($bMakeArray) {
-            return $aRetVal;
-        } else {
-            return implode(',', $aRetVal);
         }
     }
 
     /**
-     * Returns an array of all possible language files, including overrides
+     * Parse Accounts.cfg.php and resolve template paths, manager e-mail(s)
+     * and support e-mail into a ready-to-use config array.
      */
-    public function getLanguageFiles()
+    public function getConfig(): array
     {
-        $sLangDir = ACCOUNT_TOOL_PATH . '/languages';
-        $aFiles = array();
-        // we need EN array in all cases because other languages may have missing keys
-        $aFiles[] = $sLangDir . '/EN.php';
-        // TOOL LANGUAGE FILES
-        if (LANGUAGE != 'EN') {
-            // override with default language if default language is not EN
-            $sLangFile = $sLangDir . '/' . LANGUAGE . '.php';
-            if (is_readable($sLangFile)) {
-                $aFiles[] = $sLangFile;
+        $config = parse_ini_file($this->cfgFile, true)['Signup_Account_Settings'];
+
+        // Resolve frontend template keys; fall back to DEFAULT_TEMPLATE when unset.
+        foreach (['preferences_template', 'login_template', 'signup_template'] as $key) {
+            if (empty($config[$key])) {
+                $config[$key] = DEFAULT_TEMPLATE;
             }
         }
 
-        // DEFAULT_TEMPLATE LANGUAGE FILES
-        if (LANGUAGE == 'EN') {
-            // override with file from DEFAULT_TEMPLATE only if language is EN
-            $sFile = WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/overrides/account/languages/EN.php';
-            if (is_readable($sFile)) {
-                $aFiles[] = $sFile;
+        // Resolve AccountsManager e-mail address(es).
+        $superadminEmail = $this->db->fetchValue("SELECT `email` FROM `{TP}users` WHERE `user_id` = 1");
+        $managerEmails   = [];
+        $managerEmail    = '';
+
+        if (!empty($config['accounts_manager_email'])) {
+            $managerEmail  = $config['accounts_manager_email'];
+            $managerEmails = $this->validateEmailsFromCsv($managerEmail, true);
+            if (empty($managerEmails)) {
+                $managerEmails = [$superadminEmail];
             }
         }
-        if (LANGUAGE != 'EN') {
-            // override with LANGUAGE file from DEFAULT_TEMPLATE
-            $sFile = WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/overrides/account/languages/' . LANGUAGE . '.php';
-            if (is_readable($sFile)) {
-                $aFiles[] = $sFile;
+
+        $finalEmails = !empty($managerEmails) ? $managerEmails : [$managerEmail];
+        if (!empty($config['accounts_manager_superadmin'])) {
+            array_unshift($finalEmails, $superadminEmail);
+        }
+        $config['accounts_manager_email'] = array_unique($finalEmails);
+
+        // Resolve support e-mail, falling back to the first manager address.
+        $supportEmail = '';
+        if (!empty($config['support_email'])) {
+            $supportEmail = $this->validateEmailsFromCsv($config['support_email']);
+        }
+        if ($supportEmail === '') {
+            $supportEmail = $config['accounts_manager_email'][0];
+        }
+        $config['support_email'] = $supportEmail;
+
+        return $config;
+    }
+
+    /**
+     * Validate a single e-mail address or comma-separated list.
+     * Returns an array when $asArray is true, otherwise a CSV string.
+     *
+     * @return array|string
+     */
+    public function validateEmailsFromCsv(string $csv, bool $asArray = false): array|string
+    {
+        $result = [];
+        $parts  = str_contains($csv, ',')
+            ? explode(',', str_replace(' ', '', $csv))
+            : [$csv];
+
+        foreach ($parts as $address) {
+            if (filter_var($address, FILTER_VALIDATE_EMAIL)) {
+                $result[] = $address;
             }
         }
-        return $aFiles;
+
+        return $asArray ? $result : implode(',', $result);
     }
 
-    public function usernameAlreadyTaken($sUsername)
+    /**
+     * Return an ordered list of language file paths for the accounts module:
+     * EN first, then the active locale, with theme-level overrides appended last.
+     */
+    public function getLanguageFiles(): array
     {
-        $retVal = false;
-        if ($sUsername != '') {
-            $retVal = $this->db->fetchValue(
-                'SELECT `user_id` FROM `{TP}users` WHERE `username` = ?',
-                [$sUsername]
-            );
+        $langDir = ACCOUNT_TOOL_PATH . '/languages';
+        $files   = [$langDir . '/EN.php'];
+
+        if (LANGUAGE !== 'EN') {
+            $langFile = $langDir . '/' . LANGUAGE . '.php';
+            if (is_readable($langFile)) {
+                $files[] = $langFile;
+            }
         }
-        return $retVal;
+
+        // Theme-level override: EN when active language is EN, active language otherwise.
+        $overrideBase = WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/overrides/account/languages/';
+        $file = $overrideBase . (LANGUAGE === 'EN' ? 'EN' : LANGUAGE) . '.php';
+        if (is_readable($file)) {
+            $files[] = $file;
+        }
+
+        return $files;
     }
 
-    public function emailAlreadyTaken($sEmail)
+    /**
+     * Return the user_id if $username is already registered, false/null otherwise.
+     */
+    public function usernameAlreadyTaken(string $username): mixed
     {
-        $retVal = false;
-        if ($sEmail != '') {
-            $retVal = $this->db->fetchValue(
-                'SELECT `user_id` FROM `{TP}users` WHERE `email` = ?',
-                [$sEmail]
-            );
+        if ($username === '') {
+            return false;
         }
-        return $retVal;
+        return $this->db->fetchValue(
+            'SELECT `user_id` FROM `{TP}users` WHERE `username` = ?',
+            [$username]
+        );
     }
 
-    public function getUserData($iUserID)
+    /**
+     * Return the user_id if $email is already registered, false/null otherwise.
+     */
+    public function emailAlreadyTaken(string $email): mixed
+    {
+        if ($email === '') {
+            return false;
+        }
+        return $this->db->fetchValue(
+            'SELECT `user_id` FROM `{TP}users` WHERE `email` = ?',
+            [$email]
+        );
+    }
+
+    /** Return all columns for a single user row, or [] if not found. */
+    public function getUserData(int $userId): array
     {
         return $this->db->fetchAll(
             'SELECT * FROM `{TP}users` WHERE `user_id` = ?',
-            [(int)$iUserID]
+            [$userId]
         )[0] ?? [];
     }
 
-    public function useTwigTemplate($sTplName = '', $aToTwig = array())
+    /**
+     * Render an accounts Twig template, resolving theme-level overrides
+     * over the core template directory.
+     */
+    public function useTwigTemplate(string $tplName = '', array $toTwig = []): void
     {
-        $aTemplateLocs = array();
-        $aCheckDirs = array(
+        $templateLocs = [];
+        $checkDirs    = [
             WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/overrides/account/templates/',
             ACCOUNT_TOOL_PATH . '/templates/',
-        );
-        foreach ($aCheckDirs as $dir) {
+        ];
+        foreach ($checkDirs as $dir) {
             if (is_dir($dir)) {
-                $aTemplateLocs[] = $dir;
+                $templateLocs[] = $dir;
             }
         }
-        $oTwig = getTwig($aTemplateLocs);
-        $oTwig->addGlobal('CURRENT_DIR', get_url_from_path(dirname($this->getTemplate($sTplName))));
-        $oTemplate = $oTwig->load($sTplName);
-        $oTemplate->display($aToTwig);
+        $oTwig = getTwig($templateLocs);
+        $oTwig->addGlobal('CURRENT_DIR', get_url_from_path(dirname($this->getTemplate($tplName))));
+        $oTemplate = $oTwig->load($tplName);
+        $oTemplate->display($toTwig);
     }
 
-    public function getTemplate($sTplName = '')
+    /**
+     * Resolve the file-system path of an accounts template,
+     * preferring a theme-level override over the core template.
+     */
+    public function getTemplate(string $tplName = ''): string
     {
-        $sRetVal = '<' . $sTplName . '> Template File not found!';
-        if ($sTplName != '') {
-            $sFileName = $sTplName;
-            $sFileCore = ACCOUNT_TOOL_PATH . '/templates/' . $sFileName;
-            $sFileTemplate = WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/overrides/account/templates/' . $sFileName;
-            // core
-            if (file_exists($sFileCore)) {
-                $sRetVal = $sFileCore;
-            }
-            // override from template
-            if (file_exists($sFileTemplate)) {
-                $sRetVal = $sFileTemplate;
-            }
+        if ($tplName === '') {
+            return '';
         }
+        $fileCore     = ACCOUNT_TOOL_PATH . '/templates/' . $tplName;
+        $fileOverride = WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/overrides/account/templates/' . $tplName;
 
-        return $sRetVal;
+        $result = file_exists($fileCore)     ? $fileCore : '<' . $tplName . '> Template File not found!';
+        $result = file_exists($fileOverride) ? $fileOverride : $result;
+
+        return $result;
     }
 
-    public function sendChangeNotificationEmail($aTokenReplace, $sEmailSubject = '')
+    /**
+     * Send a user-change notification to the AccountsManager,
+     * if the notify_on_user_changes setting is enabled.
+     */
+    public function sendChangeNotificationEmail(array $tokenReplace, string $emailSubject = ''): mixed
     {
-        if ($this->cfg['notify_on_user_changes'] == true) {
-            $mMailTo = $this->cfg['accounts_manager_email'];
-            $sEmailTemplateName = 'notify_on_changes';
-            $sFromName = 'AccountsManagement';
-            if ($sEmailSubject == '') {
-                $sEmailSubject = 'User changes on ' . WB_URL;
-            }
-            return $this->sendEmail($mMailTo, $aTokenReplace, $sEmailTemplateName, $sEmailSubject, $sFromName);
-        } else {
-            return;
+        if (!$this->cfg['notify_on_user_changes']) {
+            return null;
         }
+        if ($emailSubject === '') {
+            $emailSubject = 'User changes on ' . WB_URL;
+        }
+        return $this->sendEmail(
+            $this->cfg['accounts_manager_email'],
+            $tokenReplace,
+            'notify_on_changes',
+            $emailSubject,
+            'AccountsManagement'
+        );
     }
 
-    public function sendEmail($mMailTo, $aTokenReplace, $sEmailTemplateName, $sEmailSubject = '', $sFromName = '', $sReplyTo = '')
-    {
-        global $MESSAGE;
+    /**
+     * Compose and dispatch a plain-text (and optionally HTML) e-mail.
+     * Returns true on success, or the mailer error string on failure.
+     */
+    public function sendEmail(
+        mixed  $mailTo,
+        array  $tokenReplace,
+        string $templateName,
+        string $emailSubject = '',
+        string $fromName     = '',
+        string $replyTo      = ''
+    ): bool|string {
+        $txtTemplate = $this->getCorrectEmailTplPath($templateName);
+        $plainBody   = $this->getEmailTemplate($txtTemplate, 'body',      $tokenReplace);
+        $subject     = ($emailSubject !== '') ? $emailSubject : 'E-Mail from "' . WEBSITE_TITLE . '"';
 
-        // get PLAIN TEXT-MAIL template
-        $sPlainBody = '';
-        $sMailTxtTemplate = $this->getCorrectEmailTplPath($sEmailTemplateName);
-        // E-Mail body
-        if ($sTmp = $this->getEmailTemplate($sMailTxtTemplate, 'body', $aTokenReplace)) {
-            $sPlainBody = $sTmp;
-        }
-        // E-Mail subject
-        $sSubject = ($sEmailSubject != '') ? $sEmailSubject : 'E-Mail from "' . WEBSITE_TITLE . '"';
-        if ($sTmp = $this->getEmailTemplate($sMailTxtTemplate, 'subject', $aTokenReplace)) {
-            // The content between [subject] and [/subject] in the template takes preference!
-            $sSubject = $sTmp;
-        }
+        if ($tmp = $this->getEmailTemplate($txtTemplate, 'subject',   $tokenReplace)) { $subject  = $tmp; }
+        if ($tmp = $this->getEmailTemplate($txtTemplate, 'from_name', $tokenReplace)) { $fromName = $tmp; }
 
-        // $sFromName (overwrite if set in template)
-        if ($sTmp = $this->getEmailTemplate($sMailTxtTemplate, 'from_name', $aTokenReplace)) {
-            // The content between [from_name] and [/from_name] in the template takes preference!
-            $sFromName = $sTmp;
-        }
-
-        // get HTML-MAIL template
-        $sHtmlBody = '';
-        $aCfg = $this->cfg;
-        if (isset($aCfg['use_html_email_templates']) && $aCfg['use_html_email_templates'] == true) {
-            $sMailHTMLTemplate = $this->getCorrectEmailTplPath($sEmailTemplateName, true);
-            if ($sTmp = $this->getEmailTemplate($sMailHTMLTemplate, 'body', $aTokenReplace)) {
-                $sHtmlBody = $sTmp;
-            }
+        $htmlBody = '';
+        if (!empty($this->cfg['use_html_email_templates'])) {
+            $htmlTemplate = $this->getCorrectEmailTplPath($templateName, true);
+            $htmlBody     = $this->getEmailTemplate($htmlTemplate, 'body', $tokenReplace);
         }
 
-        // make array of MailTo Adress(es)
-        $aMailsTo = is_array($mMailTo) ? $mMailTo : array($mMailTo);
+        $mailRecipients = is_array($mailTo) ? $mailTo : [$mailTo];
 
-        // ************************************************ //
-        //         PREPARE THE E-MAIL TO BE SENT            //
-        // ************************************************ //
-        $oMailer = new Mailer();
-        if ($sFromName != '') {
-            $oMailer->FromName = $sFromName;                // FROM-NAME:
-        } else {
-            $oMailer->FromName = WEBSITE_TITLE;
+        $oMailer           = new Mailer();
+        $oMailer->FromName = ($fromName !== '') ? $fromName : WEBSITE_TITLE;
+        $oMailer->From     = SERVER_EMAIL;
+
+        foreach ($mailRecipients as $address) {
+            $oMailer->AddAddress($address);
         }
 
-        $oMailer->From = SERVER_EMAIL;                      // FROM:
+        $oMailer->Subject = $subject;
+        $oMailer->Body    = ($htmlBody !== '') ? $htmlBody : nl2br($plainBody);
+        $oMailer->AltBody = strip_tags($plainBody, '<a>');
 
-        foreach ($aMailsTo as $sToAddr) {
-            $oMailer->AddAddress($sToAddr);                 // TO:
-        }
-
-        $oMailer->Subject = $sSubject;                      // SUBJECT:
-
-        if ($sHtmlBody != '') {
-            $oMailer->Body = $sHtmlBody;                    // BODY: (HTML-MAIL)
-        } else {
-            // no HTML template, use TEXT-MAIL
-            $oMailer->Body = nl2br($sPlainBody);
-        }
-
-        $oMailer->AltBody = strip_tags($sPlainBody, '<a>'); // ALT-BODY: (PLAIN TEXT-MAIL)
-
-        // tell phpmailer not to autouse TLS if not configured
         $oMailer->SMTPAutoTLS = false;
-        $oMailer->SMTPOptions = array(
-            // allow self_signed ssl
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            )
-        );
+        $oMailer->SMTPOptions = [
+            'ssl' => [
+                'verify_peer'       => false,
+                'verify_peer_name'  => false,
+                'allow_self_signed' => true,
+            ],
+        ];
 
-        // ************************************************** //
-        //   Check  if  there  are  any  send  mail  errors,  //
-        //   otherwise  SEND  the email(s) and  return  true  //
-        // ************************************************** //
-        return ($oMailer->Send()) ? true : $oMailer->ErrorInfo;
+        return $oMailer->Send() ? true : $oMailer->ErrorInfo;
     }
 
-    public function getCorrectEmailTplPath($sEmailTemplateName, $bHtml = false)
+    /**
+     * Resolve the correct e-mail template file path for the active language,
+     * falling back to EN; theme-level overrides take precedence over core templates.
+     *
+     * @return string|false  Absolute path, or false if no core file exists.
+     */
+    public function getCorrectEmailTplPath(string $templateName, bool $isHtml = false): string|false
     {
-        // get the correct template for this mail
-        $sLC = defined('LANGUAGE') ? LANGUAGE : (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN');
-        $sDirPathCore = ACCOUNT_TOOL_PATH . '/email_templates/';
-        $sDirPathTemplate = WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/overrides/account/email_templates/';
-        $sExtension = ($bHtml == true) ? '.tpl' : '.txt';
-        $sMailTemplate = '/' . $sEmailTemplateName . $sExtension . '.php';
+        $langCode     = defined('LANGUAGE') ? LANGUAGE : (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN');
+        $coreDir      = ACCOUNT_TOOL_PATH . '/email_templates/';
+        $templateDir  = WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/overrides/account/email_templates/';
+        $ext          = $isHtml ? '.tpl' : '.txt';
+        $mailTemplate = '/' . $templateName . $ext . '.php';
 
-        $mRetVal = false;
-        // core
-        if (file_exists($sDirPathCore . $sLC . $sMailTemplate)) {
-            $mRetVal = $sDirPathCore . $sLC . $sMailTemplate;
-        } else {
-            $mRetVal = $sDirPathCore . 'EN' . $sMailTemplate;
+        // Core: active language with EN fallback.
+        $path = file_exists($coreDir . $langCode . $mailTemplate)
+            ? $coreDir . $langCode . $mailTemplate
+            : $coreDir . 'EN' . $mailTemplate;
+
+        // Theme override.
+        if (file_exists($templateDir . $langCode . $mailTemplate)) {
+            $path = $templateDir . $langCode . $mailTemplate;
+        } elseif (file_exists($templateDir . 'EN' . $mailTemplate)) {
+            $path = $templateDir . 'EN' . $mailTemplate;
         }
 
-        // override from template
-        if (file_exists($sDirPathTemplate . $sLC . $sMailTemplate)) {
-            $mRetVal = $sDirPathTemplate . $sLC . $sMailTemplate;
-        } elseif (file_exists($sDirPathTemplate . 'EN' . $sMailTemplate)) {
-            $mRetVal = $sDirPathTemplate . 'EN' . $sMailTemplate;
-        }
-
-        return $mRetVal;
+        return $path;
     }
 
-    public function getEmailTemplate($sFileLoc = "", $sTag = "body", $aTokens = array())
+    /**
+     * Read an e-mail template file, extract the named tag section,
+     * substitute token placeholders, and return the processed string.
+     */
+    public function getEmailTemplate(string $filePath = '', string $tag = 'body', array $tokens = []): string
     {
-        $sRetVal = null;
-        if ($sFileLoc != "") {
-            $sLocParts = pathinfo($sFileLoc);
-            //is there a custom version of this file??
-            $sCustomFile = str_replace($sLocParts['filename'], $sLocParts['filename'] . '.custom', $sFileLoc);
-            $sFileToRead = is_readable($sCustomFile) ? $sCustomFile : (is_readable($sFileLoc) ? $sFileLoc : '');
-            if ($sFileToRead != '') {
-                $sRetVal = file_get_contents($sFileToRead, true);
+        $result = '';
+        if ($filePath !== '') {
+            $pathInfo   = pathinfo($filePath);
+            $customFile = str_replace($pathInfo['filename'], $pathInfo['filename'] . '.custom', $filePath);
+            $fileToRead = is_readable($customFile)
+                ? $customFile
+                : (is_readable($filePath) ? $filePath : '');
+            if ($fileToRead !== '') {
+                $result = file_get_contents($fileToRead, true) ?: '';
             }
         }
-        $sRetVal = $sRetVal ?? ''; // ensure string — file may not exist or be unreadable
-        if ($sTag != 'body') {
-            $sTag = trim($sTag);
-            $sRetVal = get_string_between_tags($sRetVal, $sTag);
+        if ($tag !== 'body') {
+            $result = get_string_between_tags($result, trim($tag)) ?? '';
         } else {
-            $sRetVal = preg_replace('/<!--(.|\s)*?-->/', '', $sRetVal); // remove comments
+            $result = preg_replace('/<!--(.|\s)*?-->/', '', $result) ?? '';
         }
-        if (!empty($aTokens)) {
-            $aTokens['WB_URL'] = WB_URL;
-            $aTokens['MEDIA_URL'] = WB_URL . MEDIA_DIRECTORY;
-            $aTokens['TEMPLATE_URL'] = WB_URL . '/templates/' . DEFAULT_TEMPLATE;
-            $sRetVal = replace_vars($sRetVal, $aTokens);
+        if (!empty($tokens)) {
+            $tokens['WB_URL']       = WB_URL;
+            $tokens['MEDIA_URL']    = WB_URL . MEDIA_DIRECTORY;
+            $tokens['TEMPLATE_URL'] = WB_URL . '/templates/' . DEFAULT_TEMPLATE;
+            $result = replace_vars($result, $tokens);
         }
-        return $sRetVal;
+        return $result;
     }
 
-    public function genEmailLinkFromUri($sUri)
+    /** Wrap a URL in an HTML anchor tag. */
+    public function genEmailLinkFromUrl(string $url): string
     {
-        return '<a href="' . $sUri . '">' . $sUri . '</a>';
-    }
-
-    /**
-     * retrieve user_id from signup_confirmcode $_GET parameter provided via the confirmation link
-     */
-    public function userIdFromConfirmcode($sConfirmCode)
-    {
-        $retVal = false;
-        if (preg_match('/[0-9a-f]{32}/i', $sConfirmCode)) {
-            $retVal = $this->db->fetchValue(
-                'SELECT `user_id` FROM `{TP}users` WHERE `signup_confirmcode` = ?',
-                [$sConfirmCode]
-            );
-        }
-        return $retVal;
+        return '<a href="' . $url . '">' . $url . '</a>';
     }
 
     /**
-     * verify and validate the check_sum $_GET parameter provided via the confirmation link
+     * Look up the user_id matching the given confirmation code.
+     * Returns the user_id on success, or false if the code is invalid.
      */
-    public function checkConfirmSum($sCheckSum, $iUserID)
+    public function userIdFromConfirmcode(string $confirmCode): mixed
     {
-        $bRetVal = false;
-        $sDbCheckSum = $this->db->fetchValue(
-            'SELECT `signup_checksum` FROM `{TP}users` WHERE `user_id` = ?',
-            [(int)$iUserID]
+        if (!preg_match('/[0-9a-f]{32}/i', $confirmCode)) {
+            return false;
+        }
+        return $this->db->fetchValue(
+            'SELECT `user_id` FROM `{TP}users` WHERE `signup_confirmcode` = ?',
+            [$confirmCode]
         );
-        if ($sDbCheckSum == $sCheckSum) {
-            $bRetVal = true;
-        }
-        return $bRetVal;
     }
 
-    // get an associative array of group_id => group_name pairs
+    /** Verify that the supplied checksum matches the one stored for this user. */
+    public function checkConfirmSum(string $checksum, int $userId): bool
+    {
+        $dbChecksum = $this->db->fetchValue(
+            'SELECT `signup_checksum` FROM `{TP}users` WHERE `user_id` = ?',
+            [$userId]
+        );
+        return $dbChecksum == $checksum;
+    }
+
+    /** Generate a random 13-character password from a safe character set. */
+    public function GenerateRandomPassword(): string
+    {
+        $charset  = 'abcdefghjklmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!_-:#*+$@&';
+        $password = '';
+        for ($i = 0; $i <= 12; $i++) {
+            $password .= $charset[random_int(0, 70)];
+        }
+        return $password;
+    }
 
     /**
-     * Generate a random password and hash it
+     * Build the users-overview collection for the AccountsTool data table.
+     * Returns an array keyed by user_id with display-ready fields.
      */
-    public function GenerateRandomPassword()
-    {
-        $sPassword = '';
-        $salt = "abcdefghjklmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!_-:#*+$@&";
-        $i = 0;
-        while ($i <= 12) {
-            $num = random_int(0,70);
-            $tmp = substr($salt, $num, 1);
-            $sPassword = $sPassword . $tmp;
-            $i++;			
-        }
-        return $sPassword;
-    }
-
-    public function get_users_overview($bExtendOnly = false)
+    public function getUsersOverview(bool $extendOnly = false): array
     {
         global $TEXT, $TOOL_TXT;
-        $sJavaScriptArray = '';
-        $aCollection = array();
-        $aUsers = $this->get_userbase_array($bExtendOnly);
-        $sToolUri = ADMIN_URL . '/admintools/tool.php?tool=' . ADMIN_TOOL_DIR;
+
+        $collection = [];
+        $users      = $this->getUserbaseArray($extendOnly);
+        $toolUrl    = ADMIN_URL . '/admintools/tool.php?tool=' . ADMIN_TOOL_DIR;
+
         ob_start(); ?>
-        <a class="iconlink" href="<?= $sToolUri ?>&amp;pos=detail&amp;id=%d&amp;action=delete">
+        <a class="iconlink" href="<?= $toolUrl ?>&amp;pos=detail&amp;id=%d&amp;action=delete">
             <img src="/delete_16.png" alt="<?= $TOOL_TXT['DELETE'] ?>">
         </a>
-        <?php
-        $sLinkDelete = ob_get_clean();
-
+        <?php $linkDelete = ob_get_clean();
 
         ob_start(); ?>
-        <a class="iconlink" href="<?= $sToolUri ?>&amp;pos=detail&amp;id=%d&amp;action=edit">
+        <a class="iconlink" href="<?= $toolUrl ?>&amp;pos=detail&amp;id=%d&amp;action=edit">
             <img src="/modify.png" alt="<?= $TEXT['MODIFY'] ?>"/>
         </a>
-        <?php
-        $sLinkEdit = ob_get_clean();
+        <?php $linkEdit = ob_get_clean();
 
-        $sPryFunc = '';
+        $pryFunc = '';
         if (defined('UB_MOD_URL')) {
             ob_start(); ?>
             <a class="pry" title='<?= $TEXT['VIEW']; ?> User "%s"'
-               href="<?= $sToolUri ?>&amp;pos=detail&amp;id=%d&amp;action=edit"
+               href="<?= $toolUrl ?>&amp;pos=detail&amp;id=%d&amp;action=edit"
                rel="<?= UB_MOD_URL ?>/pry_profile.php?id=%d&action=edit">
                 <i class="fa fa-1x fa-address-card"></i>
             </a>
-            <?php
-            $sPryFunc = ob_get_clean();
+            <?php $pryFunc = ob_get_clean();
         }
 
-        foreach ($aUsers as $rec) {
-            $iID = $rec['user_id'];
-            $aCollection[$iID]['active'] = $rec['active'];
-            $aCollection[$iID]['reg_method'] = $this->_getRegMethod($rec['signup_confirmcode']);
-            $aCollection[$iID]['language'] = $rec['language'];
-            $aCollection[$iID]['user_id'] = $rec['user_id'];
-            $aCollection[$iID]['username'] = remove_special_characters($rec['display_name']) . ' <i>(' . $rec['username'] . ')</i>';
-            $aCollection[$iID]['usernameCsv'] = remove_special_characters($rec['display_name']) . ' (' . $rec['username'] . ')';
-            $aCollection[$iID]['email'] = $rec['email'];
-            $aCollection[$iID]['groups'] = $rec['user_groups'];
-            $aCollection[$iID]['actions'] = sprintf($sPryFunc, $rec['display_name'], $iID, $iID) . ' ';
-            $aCollection[$iID]['login_when'] = ($rec['login_when'] != 0) ? $rec['login_when'] + TIMEZONE : '';
-            $aCollection[$iID]['profile_url'] = sprintf($sToolUri . '&amp;pos=detail&amp;id=%d&amp;action=edit', $iID);
-            $aCollection[$iID]['signup_timestamp'] = ($rec['signup_timestamp'] != 0) ? $rec['signup_timestamp'] + TIMEZONE : '';
+        foreach ($users as $row) {
+            $id = $row['user_id'];
+            $collection[$id] = [
+                'active'           => $row['active'],
+                'reg_method'       => $this->_getRegMethod($row['signup_confirmcode']),
+                'language'         => $row['language'],
+                'user_id'          => $row['user_id'],
+                'username'         => remove_special_characters($row['display_name']) . ' <i>(' . $row['username'] . ')</i>',
+                'usernameCsv'      => remove_special_characters($row['display_name']) . ' (' . $row['username'] . ')',
+                'email'            => $row['email'],
+                'groups'           => $row['user_groups'],
+                'actions'          => sprintf($pryFunc, $row['display_name'], $id, $id) . ' ',
+                'login_when'       => ($row['login_when'] != 0) ? $row['login_when'] + TIMEZONE : '',
+                'profile_url'      => sprintf($toolUrl . '&amp;pos=detail&amp;id=%d&amp;action=edit', $id),
+                'signup_timestamp' => ($row['signup_timestamp'] != 0) ? $row['signup_timestamp'] + TIMEZONE : '',
+            ];
         }
-        return $aCollection;
+        return $collection;
     }
-    
-    public function get_userbase_array($bExtendOnly = false)
+
+    /**
+     * Fetch all users and enrich each row with a group_id => group_name
+     * map stored under the 'user_groups' key.
+     */
+    public function getUserbaseArray(bool $extendOnly = false): array
     {
-        $aUsers = [];
-        if ($res = $GLOBALS['database']->query("SELECT * FROM `{TP}users`")) {
-            while ($row = $res->fetchRow(MYSQLI_ASSOC)) {                
-                $aUsers[] = $row; // Basic row data                
-                $i = count($aUsers) - 1; // Get the last inserted index (current user)
-                $groups_id = isset($row['groups_id']) ? (string) $row['groups_id'] : '';
-                
-                // Remove spaces and convert to array
-                $groups_id = str_replace(' ', '', $groups_id);
-                $aGroupIDs = (strpos($groups_id, ',') !== false)
-                    ? explode(',', trim($groups_id))
-                    : [$groups_id];
+        $users = $this->db->fetchAll("SELECT * FROM `{TP}users`");
+        foreach ($users as &$row) {
+            $groupsId = str_replace(' ', '', (string)($row['groups_id'] ?? ''));
+            $groupIds = ($groupsId !== '' && str_contains($groupsId, ','))
+                ? explode(',', $groupsId)
+                : [$groupsId];
 
-                // Build array of group_id => group_name
-                $aTmp = [];
-                foreach ($aGroupIDs as $iGroupID) {
-                    if ($iGroupID !== '') {                 // skip empty values
-                        $aTmp[$iGroupID] = $this->usergroup_names_by_id($iGroupID);
-                    }
+            $groupMap = [];
+            foreach ($groupIds as $groupId) {
+                if ($groupId !== '') {
+                    $groupMap[$groupId] = $this->usergroupNameFromId((int)$groupId);
                 }
-
-                // Store the results back
-                $aUsers[$i]['groups_id'] = $groups_id;         
-                $aUsers[$i]['user_groups'] = $aTmp;        // id => name mapping
             }
+            $row['groups_id']   = $groupsId;
+            $row['user_groups'] = $groupMap;
         }
-        return $aUsers;
+        unset($row);
+        return $users;
     }
 
-
-
-
-    public function usergroup_names_by_id($iGroupID = 0)
+    /**
+     * Return a group name by ID, or an associative group_id => name map
+     * for all groups when $groupId is 0.
+     */
+    public function usergroupNameFromId(int $groupId = 0): array|string|null
     {
         $rows   = $this->db->fetchAll('SELECT `group_id`, `name` FROM `{TP}groups`');
-        $aGroups = array_column($rows, 'name', 'group_id');
-        if ($iGroupID > 0) {
-            if (!isset($aGroups[$iGroupID])) {
-                return;
-            }
-            return $aGroups[$iGroupID];
+        $groups = array_column($rows, 'name', 'group_id');
+        if ($groupId > 0) {
+            return $groups[$groupId] ?? null;
         }
-        return $aGroups;
+        return $groups;
     }
 
-    private function _getRegMethod($sConfirmCode)
+    /** Derive a human-readable registration method label from the confirmcode field. */
+    private function _getRegMethod(string $confirmCode): string
     {
-        $sRetVal = 'N/A';
-        if ($sConfirmCode == 'install-script') {
-            $sRetVal = 'on System Setup';
-        } elseif (strpos($sConfirmCode, 'by') !== false) {
-            $iAdminID = (int)explode(': ', $sConfirmCode)[1];
-            if ($iAdminID == 1) {
-                $sRetVal = 'by SuperAdmin';
-            } else {
-                $sRetVal = 'by Admin (uID: ' . $iAdminID . ')';
-            }
-        } elseif (strpos($sConfirmCode, 'signup') !== false) {
-            $iGroupID = (int)explode(': ', $sConfirmCode)[1];
-            $sGroup = $this->db->fetchValue(
-                'SELECT `name` FROM `{TP}groups` WHERE `group_id` = ?',
-                [$iGroupID]
-            );
-            $sRetVal = 'on Signup (' . $sGroup . ')';
+        if ($confirmCode === 'install-script') {
+            return 'on System Setup';
         }
-        return $sRetVal;
+        if (str_contains($confirmCode, 'by')) {
+            $adminId = (int) explode(': ', $confirmCode)[1];
+            return ($adminId === 1) ? 'by SuperAdmin' : 'by Admin (uID: ' . $adminId . ')';
+        }
+        if (str_contains($confirmCode, 'signup')) {
+            $groupId   = (int) explode(': ', $confirmCode)[1];
+            $groupName = $this->db->fetchValue(
+                'SELECT `name` FROM `{TP}groups` WHERE `group_id` = ?',
+                [$groupId]
+            );
+            return 'on Signup (' . $groupName . ')';
+        }
+        return 'N/A';
     }
 }
 
 /**
- * @brief  Build the Tab Navigation used in AdminTools
- *         and other parts of the Backend
+ * Build the tab-navigation array for AdminTools and backend tool pages.
  *
- *         The provided array should consist of
- *         pos_parameter => array(LinkName, IconCode)
- *         for each tab element
- *
- *         example:
- *         ====================================================================
- *         array(
- *             'tool_overview' => array($TOOL_TXT['OVERVIEW'], 'user-circle'),
- *             'config'        => array($TOOL_TXT['CONFIG'], 'calendar'),
- *         );
- * 
- * @param array $aTabs
- * @return array
+ * @param array $tabs  Associative: pos_key => [LinkName, IconCode]
+ * @return array       Ready-to-render tab descriptors.
  */
-function renderToolTabs(array $aTabs)
+function renderToolTabs(array $tabs): array
 {
-    $sPos = isset($_GET["pos"]) ? $_GET["pos"] : key($aTabs);
-    $aTabs = array_reverse($aTabs);
-    $aRetVal = array();
-    $i = 0;
-    foreach ($aTabs as $sKey => $aValues) {
-        $aRetVal[$i]['pos'] = $sKey;
-        $aRetVal[$i]['a_class'] = ($sPos == $sKey) ? ' sel' : '';
-        $aRetVal[$i]['li_class'] = ($sPos == $sKey) ? ' class="actionSel"' : '';
-        $aRetVal[$i]['link_name'] = $aValues[0];
-        $aRetVal[$i]['icon'] = $aValues[1];
-        $i++;
+    $pos    = $_GET['pos'] ?? key($tabs);
+    $tabs   = array_reverse($tabs);
+    $result = [];
+    $i      = 0;
+    foreach ($tabs as $key => $values) {
+        $result[$i++] = [
+            'pos'       => $key,
+            'a_class'   => ($pos === $key) ? ' sel' : '',
+            'li_class'  => ($pos === $key) ? ' class="actionSel"' : '',
+            'link_name' => $values[0],
+            'icon'      => $values[1],
+        ];
     }
-    return $aRetVal;
+    return $result;
 }

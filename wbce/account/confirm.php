@@ -101,8 +101,8 @@ if ($iUserID = $oAccounts->userIdFromConfirmcode($sConfirmationID)) {
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout),
             'LOGIN_URL' => ACCOUNT_URL . '/login.php',
             'SUPPORT_EMAIL' => $oAccounts->cfg['support_email'],
-            'APPROVAL_LINK' => $oAccounts->genEmailLinkFromUri($sConfirmationUrl . '&mng=1&sum=' . $sCheckSum),
-            'CONFIRMATION_LINK' => $oAccounts->genEmailLinkFromUri($sConfirmationUrl . '&mng=0&sum=' . substr(md5($sCheckSum), 0, 10)),
+            'APPROVAL_LINK' => $oAccounts->genEmailLinkFromUrl($sConfirmationUrl . '&mng=1&sum=' . $sCheckSum),
+            'CONFIRMATION_LINK' => $oAccounts->genEmailLinkFromUrl($sConfirmationUrl . '&mng=0&sum=' . substr(md5($sCheckSum), 0, 10)),
         );
 
         if ($oAccounts->cfg['user_activated_on_signup'] == 1) {

@@ -175,8 +175,8 @@ if(isset($_POST['signup_form_sent'])){
             'SIGNUP_DATE'          => date("Y-m-d H:i:s", time()),
             'LOGIN_EMAIL'          => $email,
             'SUPPORT_EMAIL'        => $oAccounts->cfg['support_email'],
-            'APPROVAL_LINK'        => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=1&sum='.$sCheckSum),
-            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUri($sConfirmationUrl.'&mng=0&sum='.$sCheckSum),
+            'APPROVAL_LINK'        => $oAccounts->genEmailLinkFromUrl($sConfirmationUrl.'&mng=1&sum='.$sCheckSum),
+            'CONFIRMATION_LINK'    => $oAccounts->genEmailLinkFromUrl($sConfirmationUrl.'&mng=0&sum='.$sCheckSum),
             'CONFIRMATION_TIMEOUT' => date("Y-m-d H:i:s", $sConfirmTimeout), 
             'LOGIN_URL'            => ACCOUNT_URL . '/login.php'
         );	
