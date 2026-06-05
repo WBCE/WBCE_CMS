@@ -271,19 +271,27 @@ class Wb extends SecureForm
     }
 
     /**
-     * Am I Group Member (of the following groups)?
-     * @brief   Check if current user is member of at least one of given groups
-     *          NOTE: SuperAdmin (user_id = 1) is always member of ALL groups
+     * Check if the current user is a member of at least one of the given groups.
+     * SuperAdmin (primary group 1) is always considered a member of all groups.
      *
-     * @param unspec $groups_list An array or a comma seperated list of group-ids
-     * @return  bool   true: if current user is member of one of this groups, otherwise false
+     * @param  array|string $mGroups  Array or comma-separated list of group IDs
+     * @return bool
      */
-    public function ami_group_member($mGroups = '')
+    public function isInGroup($mGroups = ''): bool
     {
         if ($this->get_group_id() == 1) {
             return true;
         }
         return $this->is_group_match($mGroups, $this->get_groups_id());
+    }
+
+    /**
+     * @deprecated Use isInGroup() instead.
+     *             Kept for backward compatibility with droplets and third-party modules.
+     */
+    public function ami_group_member($mGroups = ''): bool
+    {
+        return $this->isInGroup($mGroups);
     }
 
     /**

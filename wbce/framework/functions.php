@@ -166,7 +166,7 @@ function media_dirs_rw(&$wb)
     $full_list = directory_list(WB_PATH . MEDIA_DIRECTORY);
     $array = array();
     $allow_list = array();
-    if (($wb->ami_group_member('1')) && !HOME_FOLDERS) {
+    if (($wb->isInGroup('1')) && !HOME_FOLDERS) {
         return $full_list;
     }
     // add own home_folder to allow-list

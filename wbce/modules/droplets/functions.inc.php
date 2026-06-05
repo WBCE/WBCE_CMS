@@ -409,11 +409,11 @@ function wbce_list_droplets($bShowDate = false)
     global $admin, $database, $DR_TEXT, $TEXT;
 
     // Get userid for showing admin only droplets or not
-    $loggedin_user  = ($admin->ami_group_member('1') ? 1 : $admin->get_user_id());
+    $loggedin_user  = ($admin->isInGroup('1') ? 1 : $admin->get_user_id());
     $loggedin_group = $admin->get_groups_id();
     $admin_user = $loggedin_user;
     if ( version_compare(WB_VERSION, '2.8.2', '>=') && WB_VERSION<> "2.8.x" ) {
-          $admin_user = ( ($admin->get_home_folder() == '') && ($admin->ami_group_member('1') ) || ($loggedin_user == '1'));
+          $admin_user = ( ($admin->get_home_folder() == '') && ($admin->isInGroup('1') ) || ($loggedin_user == '1'));
     } 
 
     $sSql = "SELECT * FROM `{TP}mod_droplets` ";

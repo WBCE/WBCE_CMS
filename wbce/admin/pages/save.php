@@ -48,7 +48,7 @@ $sql = 'SELECT `admin_groups`,`admin_users` '
     . 'WHERE `page_id` = ' . $page_id;
 $results = $database->query($sql);
 $results_array = $results->fetchRow();
-if (!$admin->ami_group_member($results_array['admin_users']) &&
+if (!$admin->isInGroup($results_array['admin_users']) &&
     !$admin->is_group_match($admin->get_groups_id(), $results_array['admin_groups'])) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }

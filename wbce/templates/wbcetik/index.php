@@ -54,7 +54,7 @@ if(count(get_included_files())==1) header("Location: ../index.php",TRUE,301);
 			  $loginlink = '';
 		  }
 		  
-		  if ($wb->ami_group_member('1')) {
+		  if ($wb->isInGroup('1')) {
 			  $loginlink .= '<a href="'.ADMIN_URL.'/pages/modify.php?page_id='.PAGE_ID.'" target="_blank"><i class="icon-sli-note" aria-hidden="true"></i></a>';
 		  }
 		  

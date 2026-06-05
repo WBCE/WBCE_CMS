@@ -105,7 +105,7 @@
         $return_value .= '<ul class="logout-advance">'."\n";
         $return_value .= '<li class="preference"><a href="'.PREFERENCES_URL.'" title="'.$MENU['PREFERENCES'].'">'.$MENU['PREFERENCES'].'</a></li>'."\n";
 
-        if ($wb->ami_group_member('1')) {  //change ot the group that should get special links
+        if ($wb->isInGroup('1')) {  //change ot the group that should get special links
             $return_admin .= '<li class="admin"><a target="_blank" href="'.ADMIN_URL.'/index.php" title="'.$TEXT['ADMINISTRATION'].'" class="blank_target">'.$TEXT["ADMINISTRATION"].'</a></li>'."\n";
             //you can add more links for your users like userpage, lastchangedpages or something
             $return_value .= $return_admin;
