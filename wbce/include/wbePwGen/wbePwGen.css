@@ -1,6 +1,11 @@
 /**
  * wbePwGen — Password Strength Widget & Generator
  * Vanilla CSS, no dependencies.
+ *
+ * @author    Christian M. Stefan (https://www.wbEasy.de)
+ * @copyright Christian M. Stefan
+ * @license   GNU General Public License v2 (GPL-2.0)
+ *            https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 /* ── Input row: [input-wrap] + [generate] ───────────────────── */
@@ -88,7 +93,15 @@
 .wpg-btn-active    { color: #1e293b; }
 
 /* Generate button: slightly more prominent */
-.wpg-gen  { font-size: 1.1rem; font-weight: 600; }
+.wpg-gen  { font-size: .93rem; font-weight: 600; max-width: 28px; }
+
+/* Copy button — hidden by default, revealed when password is visible */
+.wpg-copy { font-size: .72rem; max-width: 28px;}
+.wpg-copy.wpg-copied {
+    color: #16a34a;
+    border-color: #86efac;
+    background: #f0fdf4;
+}
 
 /* ── Widget container — always visible ─────────────────────── */
 .wpg-wrap { margin-top: 7px; }
@@ -138,7 +151,7 @@
 
 /* ── Hint line ─────────────────────────────────────────────── */
 .wpg-hint {
-    font-size: .78rem;
+    font-size: .85rem;
     min-height: 1.3em;
     margin-bottom: 2px;
     transition: color .2s;

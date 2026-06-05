@@ -2,6 +2,11 @@
  * wbePwGen — Password Strength Meter, Generator & Confirm Field
  * Vanilla JS, no dependencies.
  *
+ * @author    Christian M. Stefan (https://www.wbEasy.de)
+ * @copyright Christian M. Stefan
+ * @license   GNU General Public License v2 (GPL-2.0)
+ *            https://www.gnu.org/licenses/gpl-2.0.html
+ *
  * Usage:
  *   WbePwGen.attach('input-id', 'container-id', options);
  */
@@ -57,7 +62,11 @@
         confirmNoMatch:   'Passwords do not match',
         showToggle:       true,
         toggleShowLabel:  '\uD83D\uDC41',
-        toggleHideLabel:  '\uD83D\uDC41'
+        toggleHideLabel:  '\uD83D\uDC41',
+        showCopy:         true,
+        copyLabel:        '\uD83D\uDCCB\uFE0E',  /* 📋︎ */
+        copiedLabel:      '\u2713',         /* ✓  */
+        copyTitle:        'Copy to clipboard'
     };
 
     /* ── Score ────────────────────────────────────────────────────────────── */
@@ -209,8 +218,26 @@
                 input.type      = self._revealed ? 'text' : 'password';
                 eye.textContent = self._revealed ? c.toggleHideLabel : c.toggleShowLabel;
                 eye.classList.toggle('wpg-btn-active', self._revealed);
+                if (self._copy) {
+                    self._copy.style.display = self._revealed ? '' : 'none';
+                }
             });
             this._eye = eye;
+
+            /* Copy button — flex sibling, hidden until password is revealed */
+            if (c.showCopy) {
+                var copy = document.createElement('button');
+                copy.type        = 'button';
+                copy.className   = 'wpg-btn wpg-copy';
+                copy.tabIndex    = -1;
+                copy.setAttribute('aria-label', c.copyTitle);
+                copy.setAttribute('title',      c.copyTitle);
+                copy.textContent = c.copyLabel;
+                copy.style.display = 'none';
+                row.appendChild(copy);
+                copy.addEventListener('click', function() { self._copyPassword(); });
+                this._copy = copy;
+            }
         }
 
         /* Generate button — flex sibling of the input wrap */
@@ -266,11 +293,42 @@
             this.input.type = 'text';
             this._eye.textContent = this.cfg.toggleHideLabel;
             this._eye.classList.add('wpg-btn-active');
+            if (this._copy) { this._copy.style.display = ''; }
         }
         if (this.confirm) this.confirm.value = pw;
         this.input.dispatchEvent(new Event('input'));
         this.input.focus();
         this.input.select();
+    };
+
+    Instance.prototype._copyPassword = function() {
+        var self = this, val = this.input.value;
+        if (!val) return;
+        var btn = this._copy;
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(val)
+                .then(function()  { self._flashCopied(btn); })
+                .catch(function() { self._legacyCopy(btn);  });
+        } else {
+            this._legacyCopy(btn);
+        }
+    };
+
+    Instance.prototype._legacyCopy = function(btn) {
+        var input = this.input;
+        input.select();
+        try { document.execCommand('copy'); this._flashCopied(btn); } catch(e) { /* silent */ }
+        input.setSelectionRange(0, 0);
+    };
+
+    Instance.prototype._flashCopied = function(btn) {
+        var self = this;
+        btn.textContent = this.cfg.copiedLabel;
+        btn.classList.add('wpg-copied');
+        setTimeout(function() {
+            btn.textContent = self.cfg.copyLabel;
+            btn.classList.remove('wpg-copied');
+        }, 1500);
     };
 
     Instance.prototype._listen = function() {

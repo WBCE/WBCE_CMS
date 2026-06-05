@@ -25,7 +25,7 @@ $langStrings = [
              'Add an uppercase letter to strengthen', 'Add a lowercase letter to strengthen', 'Add a number to strengthen',
              'Add a special character',
              'Good password', 'Strong password ✓',
-             'Passwords match ✓', 'Passwords do not match', '↺', 'Generate password'],
+             'Passwords match ✓', 'Passwords do not match', '↺', 'Generate password', 'Copy'],
 
     'DE' => ['Sehr schwach', 'Schwach', 'Mittel', 'Gut', 'Stark',
              'Mindestens %d Zeichen eingeben', 'Weiter so — Buchstaben und Zahlen mischen',
@@ -34,7 +34,7 @@ $langStrings = [
              'Großbuchstaben hinzufügen', 'Kleinbuchstaben hinzufügen', 'Eine Zahl hinzufügen',
              'Sonderzeichen hinzufügen',
              'Gutes Passwort', 'Starkes Passwort ✓',
-             'Passwörter stimmen überein ✓', 'Passwörter stimmen nicht überein', '↺', 'Passwort generieren'],
+             'Passwörter stimmen überein ✓', 'Passwörter stimmen nicht überein', '↺', 'Passwort generieren', 'Kopieren'],
 
     'NL' => ['Zeer zwak', 'Zwak', 'Matig', 'Goed', 'Sterk',
              'Voer minimaal %d tekens in', 'Ga door — combineer letters en cijfers',
@@ -43,7 +43,7 @@ $langStrings = [
              'Voeg een hoofdletter toe', 'Voeg een kleine letter toe', 'Voeg een cijfer toe',
              'Voeg een speciaal teken toe',
              'Goed wachtwoord', 'Sterk wachtwoord ✓',
-             'Wachtwoorden komen overeen ✓', 'Wachtwoorden komen niet overeen', '↺', 'Wachtwoord genereren'],
+             'Wachtwoorden komen overeen ✓', 'Wachtwoorden komen niet overeen', '↺', 'Wachtwoord genereren', 'Kopiëren'],
 
     'BG' => ['Много слаба', 'Слаба', 'Средна', 'Добра', 'Силна',
              'Въведете поне %d символа', 'Продължете — смесете букви и цифри',
@@ -52,7 +52,7 @@ $langStrings = [
              'Добавете главна буква', 'Добавете малка буква', 'Добавете цифра',
              'Добавете специален знак',
              'Добра парола', 'Силна парола ✓',
-             'Паролите съвпадат ✓', 'Паролите не съвпадат', '↺', 'Генериране на парола'],
+             'Паролите съвпадат ✓', 'Паролите не съвпадат', '↺', 'Генериране на парола', 'Копиране'],
 
     'CS' => ['Velmi slabé', 'Slabé', 'Průměrné', 'Dobré', 'Silné',
              'Zadejte alespoň %d znaků', 'Pokračujte — kombinujte písmena a číslice',
@@ -61,7 +61,7 @@ $langStrings = [
              'Přidejte velké písmeno', 'Přidejte malé písmeno', 'Přidejte číslici',
              'Přidejte speciální znak',
              'Dobré heslo', 'Silné heslo ✓',
-             'Hesla se shodují ✓', 'Hesla se neshodují', '↺', 'Generovat heslo'],
+             'Hesla se shodují ✓', 'Hesla se neshodují', '↺', 'Generovat heslo', 'Kopírovat'],
 
     'DA' => ['Meget svag', 'Svag', 'Middel', 'God', 'Stærk',
              'Indtast mindst %d tegn', 'Fortsæt — kombiner bogstaver og tal',
@@ -70,7 +70,7 @@ $langStrings = [
              'Tilføj et stort bogstav', 'Tilføj et lille bogstav', 'Tilføj et tal',
              'Tilføj et specialtegn',
              'God adgangskode', 'Stærk adgangskode ✓',
-             'Adgangskoderne stemmer overens ✓', 'Adgangskoderne stemmer ikke overens', '↺', 'Generer adgangskode'],
+             'Adgangskoderne stemmer overens ✓', 'Adgangskoderne stemmer ikke overens', '↺', 'Generer adgangskode', 'Kopiér'],
 
     'ES' => ['Muy débil', 'Débil', 'Regular', 'Bueno', 'Fuerte',
              'Introduce al menos %d caracteres', 'Sigue — combina letras y números',
@@ -79,7 +79,7 @@ $langStrings = [
              'Añade una letra mayúscula', 'Añade una letra minúscula', 'Añade un número',
              'Añade un carácter especial',
              'Buena contraseña', 'Contraseña fuerte ✓',
-             'Las contraseñas coinciden ✓', 'Las contraseñas no coinciden', '↺', 'Generar contraseña'],
+             'Las contraseñas coinciden ✓', 'Las contraseñas no coinciden', '↺', 'Generar contraseña', 'Copiar'],
 
     'ET' => ['Väga nõrk', 'Nõrk', 'Keskmine', 'Hea', 'Tugev',
              'Sisestage vähemalt %d sümbolit', 'Jätkake — segage tähti ja numbreid',
@@ -88,7 +88,7 @@ $langStrings = [
              'Lisage suurtäht', 'Lisage väiketäht', 'Lisage number',
              'Lisage erimärk',
              'Hea parool', 'Tugev parool ✓',
-             'Paroolid kattuvad ✓', 'Paroolid ei kattu', '↺', 'Genereeri parool'],
+             'Paroolid kattuvad ✓', 'Paroolid ei kattu', '↺', 'Genereeri parool', 'Kopeeri'],
 
     'FI' => ['Erittäin heikko', 'Heikko', 'Kohtalainen', 'Hyvä', 'Vahva',
              'Anna vähintään %d merkkiä', 'Jatka — sekoita kirjaimia ja numeroita',
@@ -97,7 +97,7 @@ $langStrings = [
              'Lisää iso kirjain', 'Lisää pieni kirjain', 'Lisää numero',
              'Lisää erikoismerkki',
              'Hyvä salasana', 'Vahva salasana ✓',
-             'Salasanat täsmäävät ✓', 'Salasanat eivät täsmää', '↺', 'Luo salasana'],
+             'Salasanat täsmäävät ✓', 'Salasanat eivät täsmää', '↺', 'Luo salasana', 'Kopioi'],
 
     'FR' => ['Très faible', 'Faible', 'Moyen', 'Bon', 'Fort',
              'Saisissez au moins %d caractères', 'Continuez — mélangez lettres et chiffres',
@@ -106,7 +106,7 @@ $langStrings = [
              'Ajoutez une lettre majuscule', 'Ajoutez une lettre minuscule', 'Ajoutez un chiffre',
              'Ajoutez un caractère spécial',
              'Bon mot de passe', 'Mot de passe fort ✓',
-             'Les mots de passe correspondent ✓', 'Les mots de passe ne correspondent pas', '↺', 'Générer un mot de passe'],
+             'Les mots de passe correspondent ✓', 'Les mots de passe ne correspondent pas', '↺', 'Générer un mot de passe', 'Copier'],
 
     'GR' => ['Πολύ ασθενές', 'Ασθενές', 'Μέτριο', 'Καλό', 'Ισχυρό',
              'Εισάγετε τουλάχιστον %d χαρακτήρες', 'Συνεχίστε — συνδυάστε γράμματα και αριθμούς',
@@ -115,7 +115,7 @@ $langStrings = [
              'Προσθέστε κεφαλαίο γράμμα', 'Προσθέστε πεζό γράμμα', 'Προσθέστε αριθμό',
              'Προσθέστε ειδικό χαρακτήρα',
              'Καλός κωδικός', 'Ισχυρός κωδικός ✓',
-             'Οι κωδικοί ταιριάζουν ✓', 'Οι κωδικοί δεν ταιριάζουν', '↺', 'Δημιουργία κωδικού'],
+             'Οι κωδικοί ταιριάζουν ✓', 'Οι κωδικοί δεν ταιριάζουν', '↺', 'Δημιουργία κωδικού', 'Αντιγραφή'],
 
     'HU' => ['Nagyon gyenge', 'Gyenge', 'Közepes', 'Jó', 'Erős',
              'Adjon meg legalább %d karaktert', 'Folytassa — keverjen betűket és számokat',
@@ -124,7 +124,7 @@ $langStrings = [
              'Adjon hozzá egy nagybetűt', 'Adjon hozzá egy kisbetűt', 'Adjon hozzá egy számot',
              'Adjon hozzá speciális karaktert',
              'Jó jelszó', 'Erős jelszó ✓',
-             'A jelszavak egyeznek ✓', 'A jelszavak nem egyeznek', '↺', 'Jelszó generálása'],
+             'A jelszavak egyeznek ✓', 'A jelszavak nem egyeznek', '↺', 'Jelszó generálása', 'Másolás'],
 
     'IT' => ['Molto debole', 'Debole', 'Medio', 'Buono', 'Forte',
              'Inserisci almeno %d caratteri', 'Continua — combina lettere e numeri',
@@ -133,7 +133,7 @@ $langStrings = [
              'Aggiungi una lettera maiuscola', 'Aggiungi una lettera minuscule', 'Aggiungi un numero',
              'Aggiungi un carattere speciale',
              'Buona password', 'Password forte ✓',
-             'Le password coincidono ✓', 'Le password non coincidono', '↺', 'Genera password'],
+             'Le password coincidono ✓', 'Le password non coincidono', '↺', 'Genera password', 'Copia'],
 
     'LV' => ['Ļoti vājš', 'Vājš', 'Vidējs', 'Labs', 'Stiprs',
              'Ievadiet vismaz %d zīmes', 'Turpiniet — jauciet burtus un ciparus',
@@ -142,7 +142,7 @@ $langStrings = [
              'Pievienojiet lielo burtu', 'Pievienojiet mazo burtu', 'Pievienojiet ciparu',
              'Pievienojiet speciālo zīmi',
              'Laba parole', 'Stipra parole ✓',
-             'Paroles sakrīt ✓', 'Paroles nesakrīt', '↺', 'Generēt paroli'],
+             'Paroles sakrīt ✓', 'Paroles nesakrīt', '↺', 'Generēt paroli', 'Kopēt'],
 
     'NO' => ['Meget svak', 'Svak', 'Middels', 'God', 'Sterk',
              'Skriv inn minst %d tegn', 'Fortsett — kombiner bokstaver og tal',
@@ -151,7 +151,7 @@ $langStrings = [
              'Legg til en stor bokstav', 'Legg til en liten bokstav', 'Legg til et tel',
              'Legg til et spesialtegn',
              'Godt passord', 'Sterkt passord ✓',
-             'Passordene stemmer overens ✓', 'Passordene stemmer ikke overens', '↺', 'Generer passord'],
+             'Passordene stemmer overens ✓', 'Passordene stemmer ikke overens', '↺', 'Generer passord', 'Kopier'],
 
     'PL' => ['Bardzo słabe', 'Słabe', 'Średnie', 'Dobre', 'Silne',
              'Wprowadź co najmniej %d znaków', 'Dalej — mieszaj litery i cyfry',
@@ -160,7 +160,7 @@ $langStrings = [
              'Dodaj wielką literę', 'Dodaj małą literę', 'Dodaj cyfrę',
              'Dodaj znak specjalny',
              'Dobre hasło', 'Silne hasło ✓',
-             'Hasła są zgodne ✓', 'Hasła nie są zgodne', '↺', 'Generuj hasło'],
+             'Hasła są zgodne ✓', 'Hasła nie są zgodne', '↺', 'Generuj hasło', 'Skopiuj'],
 
     'PT' => ['Muito fraca', 'Fraca', 'Regular', 'Boa', 'Forte',
              'Digite pelo menos %d caracteres', 'Continue — misture letras e números',
@@ -169,7 +169,7 @@ $langStrings = [
              'Adicione uma letra maiúscula', 'Adicione uma letra minúscula', 'Adicione um número',
              'Adicione um caractere especial',
              'Boa senha', 'Senha forte ✓',
-             'As senhas coincidem ✓', 'As senhas não coincidem', '↺', 'Gerar senha'],
+             'As senhas coincidem ✓', 'As senhas não coincidem', '↺', 'Gerar senha', 'Copiar'],
 
     'RU' => ['Очень слабый', 'Слабый', 'Средний', 'Хороший', 'Сильный',
              'Введите не менее %d символов', 'Продолжайте — сочетайте буквы и цифры',
@@ -178,7 +178,7 @@ $langStrings = [
              'Добавьте заглавную букву', 'Добавьте строчную букву', 'Добавьте цифру',
              'Добавьте спецсимвол',
              'Хороший пароль', 'Сильный пароль ✓',
-             'Пароли совпадают ✓', 'Пароли не совпадают', '↺', 'Сгенерировать пароль'],
+             'Пароли совпадают ✓', 'Пароли не совпадают', '↺', 'Сгенерировать пароль', 'Копировать'],
 
     'SK' => ['Veľmi slabé', 'Slabé', 'Priemerné', 'Dobré', 'Silné',
              'Zadajte aspoň %d znakov', 'Pokračujte — kombinujte písmená a číslice',
@@ -187,7 +187,7 @@ $langStrings = [
              'Pridajte veľké písmeno', 'Pridajte malé písmeno', 'Pridajte číslicu',
              'Pridajte špeciálny znak',
              'Dobré heslo', 'Silné heslo ✓',
-             'Heslá sa zhodujú ✓', 'Heslá sa nezhodujú', '↺', 'Generovať heslo'],
+             'Heslá sa zhodujú ✓', 'Heslá sa nezhodujú', '↺', 'Generovať heslo', 'Kopírovať'],
 
     'CA' => ['Molt feble', 'Feble', 'Regular', 'Bo', 'Fort',
              'Introdueix almenys %d caràcters', 'Continua — combina lletres i números',
@@ -196,7 +196,7 @@ $langStrings = [
              'Afegeix una lletra majúscula', 'Afegeix una lletra minúscula', 'Afegeix un número',
              'Afegeix un caràcter especial',
              'Bona contrasenya', 'Contrasenya forta ✓',
-             'Les contrasenyes coincideixen ✓', 'Les contrasenyes no coincideixen', '↺', 'Generar contrasenya']
+             'Les contrasenyes coincideixen ✓', 'Les contrasenyes no coincideixen', '↺', 'Generar contrasenya', 'Copia']
 ];
 
 /* ── Hydrate $_wpg_strings associative arrays ───────────────────────────── */
@@ -219,6 +219,7 @@ foreach ($langStrings as $_lc => $_v) {
         'cfm_nomatch'    => $_v[18],
         'gen_label'      => $_v[19],
         'gen_hint'       => $_v[20],
+        'copy_title'     => $_v[21],
         'empty_hint'     => ($_lc === 'DE' ? 'Passwort eingeben oder {generate}' : ($_lc === 'NL' ? 'Wachtwoord genereren' : 'Type your password or {generate}')),
         'invalid_msg'    => ($_lc === 'DE' ? 'Ungültiges Zeichen: %s' : 'Invalid character: %s'),
         'invalid_plural' => ($_lc === 'DE' ? 'Ungültige Zeichen: %s' : 'Invalid characters: %s'),
@@ -274,6 +275,8 @@ $wpg_labels = [
     'generateLabel'      => $_wpg['gen_label'],
     /* Title / aria-label for the generate button */
     'generateTitle'      => $_wpg['gen_hint'],
+    /* Copy-to-clipboard button */
+    'copyTitle'          => $_wpg['copy_title'],
     /* Invalid character messages */
     'invalidMsg'         => $_wpg['invalid_msg'],
     'invalidMsgPlural'   => $_wpg['invalid_plural'],

@@ -1,135 +1,192 @@
-# wbePwGen — Password Strength Widget
+# wbePwGen
 
-A lightweight, dependency-free password strength and validation widget for
-**WBCE CMS**. Displays a 5-level strength bar, a per-criterion hint checklist,
-and a warning when invalid characters are typed.
+Password strength meter, generator and confirm-field feedback.  
+Vanilla JS — no dependencies.
+
+Designed by **Christian M. Stefan** to meet the requirements of CMS environments
+such as WebsiteBaker and WBCE CMS, where password inputs appear throughout the system
+and a consistent, lightweight solution is needed across every context.
+
+**License:** [GNU General Public License v2](https://www.gnu.org/licenses/gpl-2.0.html)  
+**Author:** Christian M. Stefan (https://www.wbEasy.de)
 
 ---
 
 ## Files
 
-| File             | Purpose                                                 |
-|------------------|---------------------------------------------------------|
-| `wbePwGen.js`    | Plugin — exposes `WbePwGen.attach()`                    |
-| `wbePwGen.css`   | Styles — strength bar, hints, warning box               |
-| `i18n.php`       | Localised label array → `$wpg_labels`                   |
-| `wbce_setup.php` | WBCE backend helper — enqueues assets + provides labels |
-| `index.php`      | Direct-access guard                                     |
+| File             | Purpose                                              |
+| ---------------- | ---------------------------------------------------- |
+| `wbePwGen.js`    | Main script                                          |
+| `wbePwGen.css`   | Styles                                               |
+| `i18n.php`       | Localised strings (22 languages) — WBCE/PHP projects |
+| `wbce_setup.php` | Enqueues assets via WBCE's `I::` asset manager       |
 
 ---
 
-## Strength Scoring (1 – 5)
-
-| Score | Label      | Criteria met                                     |
-|-------|------------|--------------------------------------------------|
-| 1     | Very Weak  | Invalid characters present, or only 1 criterion |
-| 2     | Weak       | 2 criteria                                       |
-| 3     | Fair       | 3 criteria                                       |
-| 4     | Good       | 4 criteria                                       |
-| 5     | Strong     | All 5 criteria                                   |
-
-**Criteria** (each worth +1 point):
-
-| Criterion      | Rule                                    |
-|----------------|-----------------------------------------|
-| Minimum length | ≥ 12 characters                         |
-| Long password  | ≥ 16 characters                         |
-| Mixed case     | Contains upper- AND lowercase letter    |
-| Number         | Contains at least one digit             |
-| Special char   | Contains one of: `_ - ! # * + @ $ & :` |
-
-If any character outside the allowed set is typed, the score is forced to **1**
-and a warning lists the invalid characters.
-
----
-
-## Usage — WBCE Module (backend)
-
-```php
-// In your module's backend PHP file:
-require_once INCLUDE_PATH . '/wbePwGen/wbce_setup.php';
-// Assets are enqueued once via I:: — $wpg_labels is now available.
-```
+## Basic HTML setup
 
 ```html
-<!-- In your module's template: -->
-<input type="password" id="my_password" name="my_password" minlength="12">
-<div id="my-pw-strength"></div>
+<link rel="stylesheet" href="wbePwGen.css" />
 
+<!-- Password field -->
+<label for="pw">Password</label>
+<input id="pw" type="password" autocomplete="new-password" />
+<div id="pw-wrap" class="wpg-wrap"></div>
+
+<!-- Confirm field (optional) -->
+<label for="pw2">Confirm password</label>
+<input id="pw2" type="password" autocomplete="new-password" />
+
+<script src="wbePwGen.js"></script>
 <script>
-WbePwGen.attach('my_password', 'my-pw-strength', <?php echo json_encode($wpg_labels); ?>);
+  WbePwGen.attach('pw', 'pw-wrap', {
+    confirmId: 'pw2'
+  });
 </script>
 ```
 
-The widget listens to the native `input` event. If you set the field value
-programmatically, fire the event manually so the meter updates:
-
-```javascript
-document.getElementById('my_password').dispatchEvent(new Event('input'));
-```
+**Rules:**
+- The `<div class="wpg-wrap">` must come directly after the password input.
+- The confirm input can be anywhere — it is referenced by ID only.
+- The confirm feedback line is injected automatically after the confirm input; no placeholder div needed.
 
 ---
 
-## Usage — Installer (or any non-WBCE page)
+## WBCE / PHP setup
 
 ```php
-// In index.php (before the template include):
-require_once $wb_path . '/include/wbePwGen/i18n.php';
-// $wpg_labels is now available.
+// Enqueue assets + get localised labels
+require_once WB_PATH . '/include/wbePwGen/wbce_setup.php';
+// $wpg_labels is now available
 ```
 
 ```html
-<!-- In <head>: -->
-<link rel="stylesheet" href="../include/wbePwGen/wbePwGen.css">
+<input id="pw" type="password" name="pw" />
+<div id="pw-wrap" class="wpg-wrap"></div>
+<input id="pw2" type="password" name="pw2" />
 
-<!-- Before </body>: -->
-<script src="../include/wbePwGen/wbePwGen.js"></script>
 <script>
-WbePwGen.attach('admin_password', 'pw-strength-wrap', <?php echo json_encode($wpg_labels); ?>);
+  WbePwGen.attach('pw', 'pw-wrap', <?= json_encode(
+      array_merge($wpg_labels, ['confirmId' => 'pw2'])
+  ) ?>);
 </script>
 ```
 
+`i18n.php` resolves the language automatically from WBCE's `LANGUAGE` constant, falling back to `$_GET['lang']`, `$_SESSION['default_language']`, then English.
+
 ---
 
-## JavaScript API
+## Options
 
-```javascript
-// Attach widget to an input and return the instance
-var instance = WbePwGen.attach(inputId, containerId, options);
+All options are optional.
 
-// Manually trigger a re-evaluation (e.g. after programmatic value change)
-instance.update();
+```js
+WbePwGen.attach('input-id', 'container-id', {
+
+  // Lengths
+  minLength: 12,          // minimum required password length
+  genLength: 12,          // length of generated passwords
+
+  // Generator button
+  showGenerate:   true,
+  generateLabel:  '↺',                // button face
+  generateTitle:  'Generate password', // tooltip / aria-label
+
+  // Eye toggle
+  showToggle:      true,
+  toggleShowLabel: '👁',
+  toggleHideLabel: '👁',
+
+  // Copy-to-clipboard button (visible only when password is revealed)
+  showCopy:     true,
+  copyLabel:    '📋',   // button face
+  copiedLabel:  '✓',    // shown for 1.5 s after a successful copy
+  copyTitle:    'Copy to clipboard', // tooltip / aria-label
+
+  // Strength level labels (5 entries, weakest → strongest)
+  levels: ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'],
+
+  // Nudges shown while length < minLength
+  // {n} is replaced with minLength
+  // Four entries cover 0–25 %, 25–50 %, 50–75 %, 75–100 % of minLength
+  nudges: [
+    'Enter at least {n} characters',
+    'Keep going — try mixing letters & numbers',
+    'Almost there — add special characters',
+    'Just a bit more…'
+  ],
+
+  // Quality hints shown once minLength is reached
+  messages: {
+    allSameClass: 'Weak — mix letters, numbers and special characters',
+    noUpper:      'Add an uppercase letter to strengthen',
+    noLower:      'Add a lowercase letter to strengthen',
+    noNumber:     'Add a number to strengthen',
+    noSpecial:    'Add a special character',
+    good:         'Good password',
+    strong:       'Strong password ✓'
+  },
+
+  // Invalid character messages
+  // {chars} is replaced with the offending characters
+  invalidMsg:       'Invalid character: {chars}',
+  invalidMsgPlural: 'Invalid characters: {chars}',
+
+  // Human-readable names for specific control characters
+  charNames: {
+    '\t': 'tab',
+    '\n': 'newline'
+  },
+
+  // Confirm field
+  confirmId:      'pw2',           // ID of the confirm input
+  confirmMatch:   'Passwords match ✓',
+  confirmNoMatch: 'Passwords do not match'
+
+});
 ```
 
-### Options
+---
 
-| Option           | Type       | Default                      | Description                            |
-|------------------|------------|------------------------------|----------------------------------------|
-| `minLength`      | `number`   | `12`                         | Minimum length threshold for +1 point  |
-| `levels`         | `string[]` | EN labels                    | Five strength label strings (1–5)      |
-| `hints.length`   | `string`   | `'At least {n} characters'`  | `{n}` is replaced with `minLength`     |
-| `hints.case`     | `string`   | `'Upper + lowercase …'`      | Mixed-case hint text                   |
-| `hints.number`   | `string`   | `'Contains a number'`        | Number hint text                       |
-| `hints.special`  | `string`   | `'Special char (…)'`         | Special-character hint text            |
-| `warn.invalid`   | `string`   | `'Invalid characters:'`      | Label before the invalid-char list     |
-| `warn.allowed`   | `string`   | `'Allowed:'`                 | Label before the allowed-chars display |
-| `allowedDisplay` | `string`   | `'a–z A–Z 0–9 _ - …'`       | Human-readable allowed character set   |
+## Allowed characters
+
+All printable ASCII characters are accepted (space `0x20` through tilde `0x7E`), including spaces.  
+Only control characters (codes 0–31 and 127) trigger an error message.
+
+Spaces count silently toward length and score but are never generated automatically — they can be typed manually.
 
 ---
 
-## i18n
+## Strength bar
 
-`i18n.php` ships with built-in translations for:
-**EN · DE · NL · FR · ES · IT · PL · RU**
+A single continuous bar fills left to right and changes colour smoothly:
 
-The language is resolved automatically from WBCE's `LANGUAGE` constant.
-English is used as fallback for any unsupported language.
-
-To add a language, extend the `$_wpg_strings` array in `i18n.php`.
+| Fill  | Colour      | Level label |
+| ----- | ----------- | ----------- |
+| 20 %  | Red         | Very Weak   |
+| 40 %  | Orange      | Weak        |
+| 60 %  | Yellow      | Fair        |
+| 80 %  | Light green | Good        |
+| 100 % | Green       | Strong      |
 
 ---
 
-## License
+## CSS customisation
 
-Released under the **GNU General Public License v2** (or any later version),
-consistent with the WBCE CMS licence.
+All widget elements use the `wpg-` prefix. Key selectors:
+
+```css
+.wpg-wrap          /* widget container */
+.wpg-track         /* grey bar background */
+.wpg-fill          /* coloured bar fill */
+.wpg-label         /* level label (right of bar) */
+.wpg-hint          /* flowing hint / nudge line */
+.wpg-warn          /* invalid character warning */
+.wpg-confirm       /* confirm match / no-match line */
+.wpg-input-row     /* flex row wrapping input + buttons */
+.wpg-btn           /* shared style for eye + generate + copy */
+.wpg-eye           /* eye toggle button */
+.wpg-gen           /* generate button */
+.wpg-copy          /* copy-to-clipboard button */
+.wpg-copy.wpg-copied  /* flash state after successful copy */
+```

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>wbePwGen — Demo</title>
+<link rel="stylesheet" href="wbePwGen.css" />
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f5f6fa;
+  color: #1e293b;
+  margin: 0;
+  padding: 40px 20px;
+  font-size: 15px;
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+.demo-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+}
+.demo-card h2 {
+  font-size: 1rem;
+  margin: 0 0 4px;
+  color: #1e293b;
+}
+.demo-card .subtitle {
+  font-size: .95rem;
+  color: #94a3b8;
+  margin: 0 0 20px;
+}
+.demo-card label {
+  display: block;
+  font-size: .82rem;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 5px;
+  margin-top: 18px;
+}
+.demo-card label:first-of-type { margin-top: 0; }
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: .95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  color: #1e293b;
+}
+input:focus {
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 3px rgba(148,163,184,.2);
+}
+.badge {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+.badge-new { background: #dbeafe; color: #1d4ed8; }
+.badge-opt { background: #f1f5f9; color: #64748b; }
+.hint-row {
+  margin-top: 10px;
+  font-size: .85rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+.wpg-hint {
+    font-size: .9rem;
+}
+button {border: 1px solid #cbd5e1; width: 28px; margin: 3px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header style="max-width:880px; margin:0 auto 36px;">
+  <h1 style="font-size:1.6rem; margin:0 0 10px; color:#1e293b;">wbePwGen</h1>
+  <p style="margin:0 0 6px; color:#475569; line-height:1.6; max-width:640px;">
+    A password strength meter, generator and confirm-field widget — vanilla JS, no dependencies.
+    Designed by <strong>Christian M. Stefan</strong> to meet the requirements of CMS environments
+    such as WebsiteBaker and WBCE CMS, where password inputs appear throughout the system
+    and a consistent, lightweight solution is needed across every context.
+  </p>
+  <p style="margin:15px 0; font-size:.9rem; color:#386097;">
+    Licensed under the
+    <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank" rel="noopener"
+       style="color:#64748b;">GNU General Public License v2</a>
+    &nbsp;·&nbsp;
+    &copy; <span id="yr"></span> Christian M. Stefan, <a href="https://www.wbeasy.de/" style="color:#386097;">www.wbEasy.de</a>
+    &nbsp;·&nbsp;
+    <a href="README.md" style="color:#64748b;">README</a>
+  </p>
+</header>
+
+<div class="demo-grid">
+
+  <div class="demo-card">
+    <h2>Full-featured <span class="badge badge-new">copy NEW</span></h2>
+    <p class="subtitle">Toggle eye → copy button appears · Generate → auto-reveals + copy</p>
+    <label for="pw1">Password</label>
+    <input id="pw1" type="password" autocomplete="new-password" />
+    <div id="pw1-wrap" class="wpg-wrap"></div>
+    <label for="pw1c">Confirm password</label>
+    <input id="pw1c" type="password" autocomplete="new-password" />
+    <div class="hint-row">
+        <button>👁</button> reveals password &amp; shows &#128203;&#65038;<!-- 📋 -->  <br>
+       <button>↺</button> generates and auto-reveals password &amp; shows &#128203;&#65038;<!-- 📋 --> <br>      
+       <button>&#128203;&#65038;</button><!-- 📋 --> copies, flashes ✓
+    </div>
+  </div>
+
+  <div class="demo-card">
+    <h2>No copy button <span class="badge badge-opt">showCopy: false</span></h2>
+    <p class="subtitle">Eye + Generate only</p>
+    <label for="pw2">Password</label>
+    <input id="pw2" type="password" autocomplete="new-password" />
+    <div id="pw2-wrap" class="wpg-wrap"></div>
+    <label for="pw2c">Confirm password</label>
+    <input id="pw2c" type="password" autocomplete="new-password" />
+  </div>
+
+  <div class="demo-card">
+    <h2>No generate <span class="badge badge-opt">showGenerate: false</span></h2>
+    <p class="subtitle">Strength meter + eye + copy only</p>
+    <label for="pw3">Password</label>
+    <input id="pw3" type="password" autocomplete="new-password" />
+    <div id="pw3-wrap" class="wpg-wrap"></div>
+  </div>
+
+  <div class="demo-card">
+    <h2>Minimal <span class="badge badge-opt">no toggle · no gen · no copy</span></h2>
+    <p class="subtitle">Strength bar + hint only</p>
+    <label for="pw4">Password</label>
+    <input id="pw4" type="password" autocomplete="new-password" />
+    <div id="pw4-wrap" class="wpg-wrap"></div>
+  </div>
+
+</div>
+
+<script src="wbePwGen.js"></script>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+WbePwGen.attach('pw1', 'pw1-wrap', { confirmId: 'pw1c' });
+WbePwGen.attach('pw2', 'pw2-wrap', { confirmId: 'pw2c', showCopy: false });
+WbePwGen.attach('pw3', 'pw3-wrap', { showGenerate: false });
+WbePwGen.attach('pw4', 'pw4-wrap', { showToggle: false, showGenerate: false, showCopy: false });
+</script>
+</body>
+</html>
