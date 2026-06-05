@@ -421,8 +421,9 @@ class PermissionManager
                 $identifier .= '_tool';
             }
 
-            // checked = allowed = NOT in deny list
-            $rec['checked'] = !in_array($identifier, $assignedAddons, true);
+            // New group ($groupId === 0): nothing pre-selected — start clean.
+            // Existing group: checked = allowed = NOT in deny list.
+            $rec['checked'] = ($groupId > 0) && !in_array($identifier, $assignedAddons, true);
             $result[$rec['addon_id']] = $rec;
         }
 

@@ -682,6 +682,14 @@ class AddonService
             return [['signal' => 'ADDON_DB_ERROR', 'label' => $this->db->getError()]];
         }
 
+        // New addon: block it for all non-admin groups (group_id > 1).
+        // Admins (group 1) always retain full access.
+        // This prevents newly installed modules/templates from being silently
+        // accessible to all groups — access must be explicitly granted per group.
+        if (!$exists && in_array($type, ['module', 'template'], true)) {
+            $this->denyAddonForNonAdminGroups($dir, $type, $info['function'] ?? '');
+        }
+
         return [['signal' => $exists ? 'ADDON_UPDATED_OK' : 'ADDON_INSERTED_OK',
                  'label'  => $info['name'] ?? $dir]];
     }
@@ -963,6 +971,62 @@ class AddonService
         }
 
         return $result;
+    }
+
+    /**
+     * Add a newly installed addon to the deny list of all non-admin groups.
+     *
+     * Called only on first install (not on upgrade). Mirrors the identifier
+     * logic of PermissionManager::getAllAddonIdentifiers():
+     *   - tools          → directory_tool
+     *   - page modules   → directory
+     *   - page+tool      → both identifiers
+     *   - templates/themes → directory
+     *
+     * @param string $dir       Addon directory name
+     * @param string $type      'module' | 'template'
+     * @param string $function  Value of the function field (e.g. 'page', 'tool', 'page,tool')
+     */
+    private function denyAddonForNonAdminGroups(string $dir, string $type, string $function): void
+    {
+        $column = $type . '_permissions';
+
+        // Build identifiers — same logic as PermissionManager::getAllAddonIdentifiers()
+        $identifiers = [];
+        if (str_contains($function, 'tool')) {
+            $identifiers[] = $dir . '_tool';
+        }
+        if (!str_contains($function, 'tool') || str_contains($function, 'page')) {
+            $identifiers[] = $dir;
+        }
+        if (empty($identifiers)) {
+            $identifiers[] = $dir; // fallback for unknown function types
+        }
+
+        // Fetch all non-admin groups (group_id > 1)
+        $groups = $this->db->fetchAll(
+            "SELECT `group_id`, `{$column}` FROM `{TP}groups` WHERE `group_id` > 1"
+        );
+
+        foreach ($groups as $group) {
+            $raw      = trim((string)($group[$column] ?? ''));
+            $existing = ($raw !== '') ? array_map('trim', explode(',', $raw)) : [];
+
+            $changed = false;
+            foreach ($identifiers as $id) {
+                if (!in_array($id, $existing, true)) {
+                    $existing[] = $id;
+                    $changed    = true;
+                }
+            }
+
+            if ($changed) {
+                $this->db->query(
+                    "UPDATE `{TP}groups` SET `{$column}` = ? WHERE `group_id` = ?",
+                    [implode(',', $existing), (int)$group['group_id']]
+                );
+            }
+        }
     }
 
     private function findAddonRootInZip(ZipArchive $zip): string
