@@ -341,6 +341,7 @@ class Login extends Admin
         $_SESSION['MODULE_PERMISSIONS']   = [];
         $_SESSION['TEMPLATE_PERMISSIONS'] = [];
         $_SESSION['GROUP_NAME']           = [];
+        $_SESSION['DEFAULT_MODULE']       = '';
 
         $firstGroup = true;
 
@@ -353,6 +354,11 @@ class Login extends Admin
             if (!$group) continue;
 
             $_SESSION['GROUP_NAME'][$groupId] = $group['name'];
+
+            // Default page module — taken from the primary group only
+            if ($firstGroup) {
+                $_SESSION['DEFAULT_MODULE'] = $group['default_module'] ?? '';
+            }
 
             // System permissions — union of all groups
             if (!empty($group['system_permissions'])) {
@@ -501,6 +507,14 @@ class Login extends Admin
     {
         header('Location: ' . $this->warning_url);
         exit;
+    }
+
+    /**
+     * Return the resolved redirect URL.
+     */
+    public function getRedirectUrl(): string
+    {
+        return $this->url;
     }
 
     /**
