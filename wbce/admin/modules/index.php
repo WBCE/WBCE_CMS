@@ -79,19 +79,20 @@ foreach ($module_files as $index => $path) {
     }
 }
 
-// Insert permissions values
+// Insert permissions values — use inline style so cards are truly hidden
+// regardless of which theme is active (CSS class 'hide' is not guaranteed).
 if ($admin->get_permission('modules_install') != true) {
-    $oTemplate->set_var('DISPLAY_INSTALL', 'hide');
+    $oTemplate->set_var('DISPLAY_INSTALL', 'display:none'); 
 }
 if ($admin->get_permission('modules_uninstall') != true) {
-    $oTemplate->set_var('DISPLAY_UNINSTALL', 'hide');
+    $oTemplate->set_var('DISPLAY_UNINSTALL', 'display:none');
 }
 if ($admin->get_permission('modules_view') != true) {
-    $oTemplate->set_var('DISPLAY_LIST', 'hide');
+    $oTemplate->set_var('DISPLAY_LIST', 'display:none');
 }
 // only show block if there is something to show
 if (!$show_block || count($module_files) == 0 || !isset($_GET['advanced']) || $admin->get_permission('admintools') != true) {
-    $oTemplate->set_var('DISPLAY_MANUAL_INSTALL', 'hide');
+    $oTemplate->set_var('DISPLAY_MANUAL_INSTALL', 'display:none');
 }
 
 // Insert language headings, urls and text messages

@@ -34,13 +34,13 @@ if ($result->numRows() > 0) {
 
 // Insert permissions values
 if ($admin->get_permission('languages_install') != true) {
-    $template->set_var('DISPLAY_INSTALL', 'hide');
+    $template->set_var('DISPLAY_INSTALL', 'display:none');
 }
 if ($admin->get_permission('languages_uninstall') != true) {
-    $template->set_var('DISPLAY_UNINSTALL', 'hide');
+    $template->set_var('DISPLAY_UNINSTALL', 'display:none');
 }
 if ($admin->get_permission('languages_view') != true) {
-    $template->set_var('DISPLAY_LIST', 'hide');
+    $template->set_var('DISPLAY_LIST', 'display:none');
 }
 
 // Insert language headings
