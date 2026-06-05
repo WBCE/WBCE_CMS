@@ -108,7 +108,7 @@ class Accounts extends Frontend
             : [$csv];
 
         foreach ($parts as $address) {
-            if (filter_var($address, FILTER_VALIDATE_EMAIL)) {
+            if ($this->validate_email($address)) {
                 $result[] = $address;
             }
         }
