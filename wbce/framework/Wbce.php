@@ -1016,45 +1016,49 @@ class Wbce extends SecureForm
      */
     private function buildJsSystemVariables(): string
     {
-        $js = "\t\t";
+        // JSON_UNESCAPED_SLASHES  — URLs bleiben lesbar (kein \/)
+        // JSON_UNESCAPED_UNICODE  — Nicht-ASCII-Zeichen bleiben erhalten
+        // JSON_HEX_TAG            — < und > werden escaped → kein </script>-Injection-Risiko
+        $enc = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG;
+
+        $vars = [];
 
         if (defined('URL_VAR_COMPATIBILITY_MODE') && URL_VAR_COMPATIBILITY_MODE === true) {
-            $js .= "var URL = WB_URL = '" . WB_URL . "';\n";
+            $vars[] = 'var URL = WB_URL = ' . json_encode(WB_URL, $enc);
         } else {
-            $js .= "var WB_URL = '" . WB_URL . "';\n";
+            $vars[] = 'var WB_URL = ' . json_encode(WB_URL, $enc);
         }
 
         if (defined('LANGUAGE')) {
-            $js .= "\t\tvar LANGUAGE     = '" . strtolower(LANGUAGE) . "';\n";
+            $vars[] = 'var LANGUAGE     = ' . json_encode(strtolower(LANGUAGE), $enc);
         }
 
         if (defined('PAGE_ID')) {
-            $js .= "\t\tvar PAGE_ID      = " . (int) PAGE_ID . ";\n";
+            $vars[] = 'var PAGE_ID      = ' . json_encode((int) PAGE_ID, $enc);
         } elseif (isset($_REQUEST['page_id']) && is_numeric($_REQUEST['page_id'])) {
-            $js .= "\t\tvar PAGE_ID      = " . (int) $_REQUEST['page_id'] . ";\n";
+            $vars[] = 'var PAGE_ID      = ' . json_encode((int) $_REQUEST['page_id'], $enc);
         }
 
         if (isset($_REQUEST['section_id']) && is_numeric($_REQUEST['section_id'])) {
-            $js .= "\t\tvar SECTION_ID   = " . (int) $_REQUEST['section_id'] . ";\n";
+            $vars[] = 'var SECTION_ID   = ' . json_encode((int) $_REQUEST['section_id'], $enc);
         }
 
         if (defined('TEMPLATE_DIR')) {
-            $js .= "\t\tvar TEMPLATE_DIR = '" . TEMPLATE_DIR . "';\n";
+            $vars[] = 'var TEMPLATE_DIR = ' . json_encode(TEMPLATE_DIR, $enc);
         }
 
         if (defined('BACKEND_CONTEXT')) {
             if (defined('THEME_URL')) {
-                $js .= "\t\tvar THEME_URL    = '" . THEME_URL . "';\n";
+                $vars[] = 'var THEME_URL    = ' . json_encode(THEME_URL, $enc);
             }
             if (defined('ADMIN_URL')) {
-                $js .= "\t\tvar ADMIN_URL    = '" . ADMIN_URL . "';\n";
+                $vars[] = 'var ADMIN_URL    = ' . json_encode(ADMIN_URL, $enc);
             }
         }
 
-        $sessionTimeout = $this->get_session_timeout();
-        $js .= "\t\tvar SESSION_TIMEOUT = '" . $sessionTimeout . "';\n";
+        $vars[] = 'var SESSION_TIMEOUT = ' . json_encode((int) $this->get_session_timeout(), $enc);
 
-        return $js;
+        return implode(";\n", $vars) . ";\n";
     }
 
     /**
@@ -1128,23 +1132,35 @@ class Wbce extends SecureForm
     /**
      * Retrieve modfiles (css, js_head, js_body) from a single module directory.
      *
-     * Checks two locations per file type — the module root (legacy) and the
-     * new assets/ subdirectory — in a defined priority order so that existing
-     * modules continue to work unchanged while new modules can use the cleaner
-     * assets/ layout.
+     * For each asset type two passes are made:
      *
-     * Priority per file (first found wins; override replaces base):
-     *   1. assets/frontend.override.css  — override in assets/ dir
-     *   2. frontend.override.css         — override in module root  (legacy)
-     *   3. assets/frontend.css           — base in assets/ dir      (preferred)
-     *   4. frontend.css                  — base in module root       (legacy)
+     *   Pass 1 — Base/Custom (exactly one file, replacement semantics):
+     *     Highest-priority file found in this order is loaded; the rest are skipped.
+     *     1. assets/frontend_custom.css   — custom in assets/  (preferred new location)
+     *     2. frontend_custom.css          — custom in root
+     *     3. assets/frontend.override.css — legacy custom in assets/  (@deprecated)
+     *     4. frontend.override.css        — legacy custom in root      (@deprecated)
+     *     5. assets/frontend.css          — base in assets/
+     *     6. frontend.css                 — base in root               (classic location)
+     *
+     *   Pass 2 — Override/Addition (optional, additive on top of Pass 1):
+     *     Loaded after the base/custom file if it exists.
+     *     1. assets/frontend_override.css — override in assets/
+     *     2. frontend_override.css        — override in root
+     *
+     * The _custom suffix completely replaces the base file.
+     * The _override suffix adds to the base or custom file (e.g. site-specific extras).
+     * The legacy dot-notation (frontend.override.css) is an alias for _custom (@deprecated).
+     *
+     * Both root and assets/ are checked so existing modules continue to work
+     * unchanged while new modules can use the cleaner assets/ layout.
      *
      * Returns files wrapped in single-element arrays for backward compatibility
      * with callers that expect $file[0] to contain the URL.
      *
      * @param  string $moduleDir  Module directory name (e.g. 'news_img')
      * @param  string $context    'frontend' or 'backend'
-     * @return array{css: array, js_head: array, js_body: array}
+     * @return array{css: list<array>, js_head: list<array>, js_body: list<array>}
      */
     public function retrieveModfilesFromDir(string $moduleDir, string $context = 'frontend'): array
     {
@@ -1157,9 +1173,16 @@ class Wbce extends SecureForm
         $result = ['css' => [], 'js_head' => [], 'js_body' => []];
 
         foreach ($map as $type => $filename) {
-            $url = $this->resolveModfile($moduleDir, $filename);
-            if ($url !== null) {
-                $result[$type][] = [$url];
+            // Pass 1: base or custom — exactly one (replacement)
+            $base = $this->resolveModfileBase($moduleDir, $filename);
+            if ($base !== null) {
+                $result[$type][] = [$base];
+            }
+
+            // Pass 2: override — additive on top, independent of Pass 1
+            $addition = $this->resolveModfileAddition($moduleDir, $filename);
+            if ($addition !== null) {
+                $result[$type][] = [$addition];
             }
         }
 
@@ -1167,60 +1190,76 @@ class Wbce extends SecureForm
     }
 
     /**
-     * Resolve a module asset filename to its public URL.
+     * Resolve the base or custom file for a module asset (Pass 1 — replacement).
      *
-     * Walks the candidate list in priority order and returns the URL of the
-     * first file that physically exists on disk.  Override files take
-     * precedence over base files — if an override is found the base is
-     * skipped entirely (not additive).
+     * Returns the URL of the first candidate that exists on disk.
+     * _custom files take priority and completely replace the base file.
+     * Legacy dot-notation (.override.) is treated as _custom (@deprecated).
      *
      * @param  string $moduleDir  Module directory name
-     * @param  string $filename   e.g. 'frontend.css', 'backend_body.js'
-     * @return string|null        Public URL, or null if no candidate exists
+     * @param  string $filename   Base filename, e.g. 'frontend.css'
+     * @return string|null        Public URL, or null if no file exists
      */
-    private function resolveModfile(string $moduleDir, string $filename): ?string
+    private function resolveModfileBase(string $moduleDir, string $filename): ?string
     {
-        foreach ($this->modfileCandidates($moduleDir, $filename) as $absPath => $url) {
-            if (file_exists($absPath)) {
-                return $url;
-            }
+        $root      = WB_PATH . '/modules/' . $moduleDir . '/';
+        $rootUrl   = WB_URL  . '/modules/' . $moduleDir . '/';
+        $assets    = $root    . 'assets/';
+        $assetsUrl = $rootUrl . 'assets/';
+
+        $ext       = pathinfo($filename, PATHINFO_EXTENSION);
+        $stem      = substr($filename, 0, -(strlen($ext) + 1));
+        $custom    = $stem . '_custom.'   . $ext;   // preferred replacement
+        $legacyDot = $stem . '.override.' . $ext;   // @deprecated alias for _custom
+
+        $candidates = [
+            $assets . $custom    => $assetsUrl . $custom,     // 1. assets/ custom
+            $root   . $custom    => $rootUrl   . $custom,     // 2. root    custom
+            $assets . $legacyDot => $assetsUrl . $legacyDot,  // 3. assets/ legacy (@deprecated)
+            $root   . $legacyDot => $rootUrl   . $legacyDot,  // 4. root    legacy (@deprecated)
+            $assets . $filename  => $assetsUrl . $filename,   // 5. assets/ base
+            $root   . $filename  => $rootUrl   . $filename,   // 6. root    base
+        ];
+
+        foreach ($candidates as $absPath => $url) {
+            if (file_exists($absPath)) return $url;
         }
         return null;
     }
 
     /**
-     * Build the ordered candidate list for a module asset file.
+     * Resolve the additive override file for a module asset (Pass 2 — addition).
      *
-     * Returns an array keyed by absolute filesystem path, valued by the
-     * corresponding public URL.  Callers iterate this array in order and
-     * stop at the first existing file.
+     * The override file is loaded AFTER the base/custom file and is intended
+     * for site-specific additions or JS behaviour extensions.  It is independent
+     * of whether a base or custom file was found in Pass 1.
      *
-     * Filename convention (example: frontend.css):
-     *   Override = frontend.override.css
-     *   Base     = frontend.css
+     * Naming:  frontend_override.css  /  frontend_body_override.js  etc.
      *
      * @param  string $moduleDir  Module directory name
      * @param  string $filename   Base filename, e.g. 'frontend.css'
-     * @return array<string, string>  [ absPath => publicUrl ]
+     * @return string|null        Public URL, or null if no override file exists
      */
-    private function modfileCandidates(string $moduleDir, string $filename): array
+    private function resolveModfileAddition(string $moduleDir, string $filename): ?string
     {
-        $root    = WB_PATH . '/modules/' . $moduleDir . '/';
-        $rootUrl = WB_URL  . '/modules/' . $moduleDir . '/';
+        $root      = WB_PATH . '/modules/' . $moduleDir . '/';
+        $rootUrl   = WB_URL  . '/modules/' . $moduleDir . '/';
         $assets    = $root    . 'assets/';
         $assetsUrl = $rootUrl . 'assets/';
 
-        // Derive override filename:  frontend.css → frontend.override.css
         $ext      = pathinfo($filename, PATHINFO_EXTENSION);
         $stem     = substr($filename, 0, -(strlen($ext) + 1));
-        $override = $stem . '.override.' . $ext;
+        $override = $stem . '_override.' . $ext;   // e.g. frontend_override.css
 
-        return [
+        $candidates = [
             $assets . $override => $assetsUrl . $override,  // 1. assets/ override
-            $root   . $override => $rootUrl   . $override,  // 2. root   override  (legacy)
-            $assets . $filename => $assetsUrl . $filename,  // 3. assets/ base
-            $root   . $filename => $rootUrl   . $filename,  // 4. root   base       (legacy)
+            $root   . $override => $rootUrl   . $override,  // 2. root    override
         ];
+
+        foreach ($candidates as $absPath => $url) {
+            if (file_exists($absPath)) return $url;
+        }
+        return null;
     }
 
     /**
