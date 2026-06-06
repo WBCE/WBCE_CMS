@@ -1128,47 +1128,99 @@ class Wbce extends SecureForm
     /**
      * Retrieve modfiles (css, js_head, js_body) from a single module directory.
      *
-     * Returns files in a backward-compatible format so that existing code
-     * like block_contents() and get_section_content() continues to work.
-     * Each file is wrapped in an array — $sFile[0] contains the actual URL.
+     * Checks two locations per file type — the module root (legacy) and the
+     * new assets/ subdirectory — in a defined priority order so that existing
+     * modules continue to work unchanged while new modules can use the cleaner
+     * assets/ layout.
      *
-     * @param  string $moduleDir  Module directory name
+     * Priority per file (first found wins; override replaces base):
+     *   1. assets/frontend.override.css  — override in assets/ dir
+     *   2. frontend.override.css         — override in module root  (legacy)
+     *   3. assets/frontend.css           — base in assets/ dir      (preferred)
+     *   4. frontend.css                  — base in module root       (legacy)
+     *
+     * Returns files wrapped in single-element arrays for backward compatibility
+     * with callers that expect $file[0] to contain the URL.
+     *
+     * @param  string $moduleDir  Module directory name (e.g. 'news_img')
      * @param  string $context    'frontend' or 'backend'
-     * @return array
+     * @return array{css: array, js_head: array, js_body: array}
      */
     public function retrieveModfilesFromDir(string $moduleDir, string $context = 'frontend'): array
     {
-        $collection = [
-            'css'     => [],
-            'js_head' => [],
-            'js_body' => []
+        $map = [
+            'css'     => $context . '.css',
+            'js_head' => $context . '.js',
+            'js_body' => $context . '_body.js',
         ];
 
-        $modPath = '/modules/' . $moduleDir . '/';
+        $result = ['css' => [], 'js_head' => [], 'js_body' => []];
 
-        $addFile = function (string $relativePath, string $type) use (&$collection, $modPath): void {
-            $fullPath = WB_PATH . $modPath . $relativePath;
-            $fullUrl  = WB_URL  . $modPath . $relativePath;
-
-            if (file_exists(str_replace('%s', '.override', $fullPath))) {
-                $collection[$type][] = str_replace('%s', '.override', $fullUrl);
+        foreach ($map as $type => $filename) {
+            $url = $this->resolveModfile($moduleDir, $filename);
+            if ($url !== null) {
+                $result[$type][] = [$url];
             }
-
-            if (file_exists(str_replace('%s', '', $fullPath))) {
-                $collection[$type][] = str_replace('%s', '', $fullUrl);
-            }
-        };
-
-        $addFile($context . '%s.css',     'css');
-        $addFile($context . '%s.js',      'js_head');
-        $addFile($context . '_body%s.js', 'js_body');
-
-        $result = [];
-        foreach ($collection as $type => $files) {
-            $result[$type] = array_map(fn($url) => [$url], $files);
         }
 
         return $result;
+    }
+
+    /**
+     * Resolve a module asset filename to its public URL.
+     *
+     * Walks the candidate list in priority order and returns the URL of the
+     * first file that physically exists on disk.  Override files take
+     * precedence over base files — if an override is found the base is
+     * skipped entirely (not additive).
+     *
+     * @param  string $moduleDir  Module directory name
+     * @param  string $filename   e.g. 'frontend.css', 'backend_body.js'
+     * @return string|null        Public URL, or null if no candidate exists
+     */
+    private function resolveModfile(string $moduleDir, string $filename): ?string
+    {
+        foreach ($this->modfileCandidates($moduleDir, $filename) as $absPath => $url) {
+            if (file_exists($absPath)) {
+                return $url;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Build the ordered candidate list for a module asset file.
+     *
+     * Returns an array keyed by absolute filesystem path, valued by the
+     * corresponding public URL.  Callers iterate this array in order and
+     * stop at the first existing file.
+     *
+     * Filename convention (example: frontend.css):
+     *   Override = frontend.override.css
+     *   Base     = frontend.css
+     *
+     * @param  string $moduleDir  Module directory name
+     * @param  string $filename   Base filename, e.g. 'frontend.css'
+     * @return array<string, string>  [ absPath => publicUrl ]
+     */
+    private function modfileCandidates(string $moduleDir, string $filename): array
+    {
+        $root    = WB_PATH . '/modules/' . $moduleDir . '/';
+        $rootUrl = WB_URL  . '/modules/' . $moduleDir . '/';
+        $assets    = $root    . 'assets/';
+        $assetsUrl = $rootUrl . 'assets/';
+
+        // Derive override filename:  frontend.css → frontend.override.css
+        $ext      = pathinfo($filename, PATHINFO_EXTENSION);
+        $stem     = substr($filename, 0, -(strlen($ext) + 1));
+        $override = $stem . '.override.' . $ext;
+
+        return [
+            $assets . $override => $assetsUrl . $override,  // 1. assets/ override
+            $root   . $override => $rootUrl   . $override,  // 2. root   override  (legacy)
+            $assets . $filename => $assetsUrl . $filename,  // 3. assets/ base
+            $root   . $filename => $rootUrl   . $filename,  // 4. root   base       (legacy)
+        ];
     }
 
     /**
