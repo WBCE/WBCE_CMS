@@ -69,6 +69,12 @@ class WbAuto
     public static $Files = array();
 
     /**
+     * @brief PSR-4 prefix → base directory map.
+     * @var array $psr4  [ 'Vendor\\Package' => '/abs/path/to/src/' ]
+     */
+    public static $psr4 = [];
+
+    /**
      * @brief Stores search templates to search for in the search dirs.
      * @var array $Types
      */
@@ -92,6 +98,22 @@ class WbAuto
         //already loaded, never mind
         if (class_exists($ClassName, false)) {
             return false;
+        }
+
+        // PSR-4 prefix lookup — checked before anything else so third-party
+        // libraries with namespaces are resolved without touching $Files or $Dirs.
+        foreach (self::$psr4 as $prefix => $baseDir) {
+            $prefixLen = strlen($prefix);
+            if (strncmp($ClassName, $prefix, $prefixLen) === 0
+                && (strlen($ClassName) === $prefixLen || $ClassName[$prefixLen] === '\\')
+            ) {
+                $relative = substr($ClassName, $prefixLen + 1); // strip prefix + leading \
+                $file     = $baseDir . str_replace('\\', DIRECTORY_SEPARATOR, $relative) . '.php';
+                if (is_file($file)) {
+                    require $file;
+                    return false;
+                }
+            }
         }
 
         // Filebased loading first
@@ -300,6 +322,28 @@ class WbAuto
     }
 
     /**
+     * @brief Register a PSR-4 namespace prefix mapped to a source directory.
+     *
+     * Allows third-party libraries (e.g. PHPMailer, matthiasmullie/minify) to be
+     * autoloaded without manual require statements, using standard PSR-4 rules:
+     * namespace separators map to directory separators, class name maps to filename.
+     *
+     * @code
+     * WbAuto::AddPsr4('PHPMailer\\PHPMailer',   INCLUDE_PATH . '/PHPMailer/src');
+     * WbAuto::AddPsr4('MatthiasMullie\\Minify', INCLUDE_PATH . '/matthiasmullie-minify/src');
+     * @endcode
+     *
+     * @param string $prefix   Namespace prefix (without trailing backslash).
+     * @param string $baseDir  Absolute path to the directory containing the class files.
+     */
+    public static function AddPsr4(string $prefix, string $baseDir): void
+    {
+        $prefix  = rtrim($prefix,  '\\');
+        $baseDir = rtrim($baseDir, '/\\') . DIRECTORY_SEPARATOR;
+        self::$psr4[$prefix] = $baseDir;
+    }
+
+    /**
      * @brief Adds a new search template to the list of search templates.
      *
      * Templates are used to look for matching files in the directory search.
@@ -380,6 +424,11 @@ class WbAuto
         // 2. Framework directories — catches everything not listed above.
         self::AddDir('/framework/');
         self::AddDir('/framework/AccessManager/');
+
+        // PSR-4 third-party libraries are registered in the file that uses them:
+        //   Twig       → include/Sensio/Twig/WbceCustom/TwigLoader.php
+        //   PHPMailer  → framework/Mailer.php
+        //   Mullie     → framework/I.php
 
         // 3. Backward-compat aliases — AFTER AddFile so the autoloader can
         //    resolve the source class before the alias is created.
