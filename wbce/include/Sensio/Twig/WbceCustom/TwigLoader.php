@@ -1,32 +1,8 @@
 <?php
-spl_autoload_register(function ($class) {
-
-    // project-specific namespace prefix
-    $prefix = 'Twig';
-
-    // base directory for the namespace prefix
-    $base_dir = dirname(__DIR__);
-
-    // does the class use the namespace prefix?
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        // no, move to the next registered autoloader
-        return;
-    }
-
-    // get the relative class name
-    $relative_class = substr($class, $len);
-
-    // replace the namespace prefix with the base directory, replace namespace
-    // separators with directory separators in the relative class name, append
-    // with .php
-    $file = $base_dir . str_replace(array('_','\\'), '/', $relative_class) . '.php';
-
-    // if the file exists, require it
-    if (file_exists($file)) {
-        require $file;
-    }
-});
+// Register the Twig namespace via WbAuto PSR-4 — replaces the hand-rolled
+// spl_autoload_register that was previously here. WbAuto is already available
+// at this point (bootInitialize() runs before this file is required).
+WbAuto::AddPsr4('Twig', dirname(__DIR__));
 
 if (!function_exists('getTwig')) {
 
@@ -72,7 +48,7 @@ if (!function_exists('getTwig')) {
         $oTwig->addGlobal('FTAN',         $oEngine->getFTAN());
         $oTwig->addGlobal('WB_URL',       WB_URL);
         $oTwig->addGlobal('ADMIN_URL',    ADMIN_URL);
-        $oTwig->addGlobal('INCLUDE_URL',  WB_URL.'/include');
+        $oTwig->addGlobal('INCLUDE_URL',  INCLUDE_URL);
         $oTwig->addGlobal('MODULES_URL',  WB_URL.'/modules');
         $oTwig->addGlobal('THEME_URL',    THEME_URL);
         $oTwig->addGlobal('SEC_ANCHOR',   SEC_ANCHOR);
@@ -127,7 +103,7 @@ if (!function_exists('getTwig')) {
 
         // Load external Twig_SimpleFunction files from modules which have the 'twig_extend' marker set
         $sSql = 'SELECT `directory` FROM `{TP}addons` WHERE `function` LIKE \'%twig_extend%\' ';
-        if (($aExtends = $GLOBALS['database']->get_array($sSql))) {
+        if (($aExtends = $GLOBALS['database']->fetchAll($sSql))) {
             foreach ($aExtends as $rec) {
                 $sFile = WB_PATH . '/modules/' . $rec['directory'] . '/TwigFunctions.php';
                 if (file_exists($sFile)) include $sFile;
@@ -186,12 +162,12 @@ if (!function_exists('getTwig')) {
 
     function _debugStatus(){
         $oEngine = isset($GLOBALS['wb']) ? $GLOBALS['wb'] : $GLOBALS['admin'];
-        $bDebug = (isset($_GET['twig_debug']) && $_GET['twig_debug'] == true) ? true : false;
-        $bDebug = (defined('WB_TWIG_DEBUG') && WB_TWIG_DEBUG == true) ? true : false;
-        if($oEngine->isAdmin() == true){
-            $bDebug = true;
-        }
-            $bDebug = true;
+        // URL parameter ?twig_debug=1 enables debug for any visitor (dev convenience)
+        $bDebug = isset($_GET['twig_debug']) && $_GET['twig_debug'];
+        // WBCE_TWIG_DEBUG constant forces debug on for all requests
+        if (defined('WBCE_TWIG_DEBUG') && WBCE_TWIG_DEBUG) $bDebug = true;
+        // Admins always get Twig debug output
+        if ($oEngine->isAdmin()) $bDebug = true;
         return $bDebug;
     }
 

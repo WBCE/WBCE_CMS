@@ -17,16 +17,9 @@ if (!defined('WB_PATH')) {
 
 date_default_timezone_set('UTC');
 
-// Include PHPMailer class
-$sPath = WB_PATH . "/include/PHPMailer/src";
-require $sPath . '/DSNConfigurator.php';
-require $sPath . '/Exception.php';
-require $sPath . '/OAuthTokenProvider.php';
-require $sPath . '/OAuth.php';
-require $sPath . '/PHPMailer.php';
-require $sPath . '/SMTP.php';
-require $sPath . '/POP3.php';
-
+// Register PHPMailer namespace here, close to where it is used.
+// Must run before the class definition below resolves "extends PHPMailer".
+WbAuto::AddPsr4('PHPMailer\\PHPMailer', INCLUDE_PATH . '/PHPMailer/src');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
