@@ -674,9 +674,38 @@ class AddonService
         $row['updated_by']   = (int)($GLOBALS['admin']?->get_user_id() ?? 0);
         unset($row['_type'], $row['_directory'], $row['_version']);
 
-        $exists
-            ? $this->db->upsertRow('{TP}addons', 'directory', $row)
-            : $this->db->insertRow('{TP}addons', $row);
+        if ($exists) {
+            // Clean up duplicate rows that older versions could create via the
+            // upsertRow bug (ON DUPLICATE KEY needs a UNIQUE constraint that the
+            // addons table lacks — so upsertRow silently INSERTed new rows).
+            // Keep the row with the lowest addon_id; delete the rest.
+            $minId = (int)$this->db->fetchValue(
+                "SELECT MIN(`addon_id`) FROM `{TP}addons` WHERE `directory` = ?", [$dir]
+            );
+            $this->db->query(
+                "DELETE FROM `{TP}addons` WHERE `directory` = ? AND `addon_id` != ?",
+                [$dir, $minId]
+            );
+
+            // Explicit UPDATE — upsertRow relies on ON DUPLICATE KEY which requires
+            // a UNIQUE constraint on `directory`. The addons table only has PRIMARY KEY
+            // (addon_id), so upsertRow would silently INSERT a duplicate row instead.
+            $this->db->query(
+                "UPDATE `{TP}addons`
+                 SET `type`=?, `name`=?, `description`=?, `function`=?, `version`=?,
+                     `platform`=?, `author`=?, `license`=?, `core`=?,
+                     `updated_when`=?, `updated_by`=?
+                 WHERE `directory`=?",
+                [
+                    $row['type'], $row['name'], $row['description'], $row['function'],
+                    $row['version'], $row['platform'], $row['author'], $row['license'],
+                    $row['core'], $row['updated_when'], $row['updated_by'],
+                    $dir,
+                ]
+            );
+        } else {
+            $this->db->insertRow('{TP}addons', $row);
+        }
 
         if ($this->db->hasError()) {
             return [['signal' => 'ADDON_DB_ERROR', 'label' => $this->db->getError()]];
