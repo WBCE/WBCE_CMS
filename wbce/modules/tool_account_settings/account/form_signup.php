@@ -23,7 +23,7 @@ $display_name = '';
 $email        = ''; 
 $groups_id    = ''; 
 $gdpr_check   = ''; 
-$sASPFields   = (ENABLED_ASP) ? $oAccounts->renderAspHoneypots() : '';
+// ASP honeypot is rendered via Captcha::renderHoneypot() below (passed as ASP_HONEYPOTS to Twig)
 $sHttpReferer = isset($_SESSION['HTTP_REFERER']) ? $_SESSION['HTTP_REFERER'] : $_SERVER['SCRIPT_NAME'];
 // Error related vars
 $errors             = array(); 
@@ -33,12 +33,6 @@ $email_error        = false;
 $gdpr_error         = false; 
 
 $oMsgBox = new Alerts(useSession: false);
-
-// Load Captcha if enabled
-if(ENABLED_CAPTCHA) {
-    require_once WB_PATH.'/include/captcha/captcha.php';
-}
-
 
 // ************************************************************************* //
 //   SIGNUP FORM SENT? Process the form data, update the DB and send mails   //
@@ -99,18 +93,11 @@ if(isset($_POST['signup_form_sent'])){
         $errors['GDPR_AGREEMENT_MISSING'] = $MESSAGE['GDPR_AGREEMENT_MANDATORY'];
     }
 
-    if (ENABLED_CAPTCHA) {
-        $sIncorrectCaptcha = strtr($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'], ['{SERVER_EMAIL}' => SERVER_EMAIL]);	
-        if (isset($_POST['captcha']) AND $_POST['captcha'] != ''){
-            if (!isset($_POST['captcha']) OR !isset($_SESSION['captcha']) OR $_POST['captcha'] != $_SESSION['captcha']) {
-                $errors['IncorrectCaptcha'] = $sIncorrectCaptcha;
-            }
-        } else {
-            $errors['IncorrectCaptcha'] = $sIncorrectCaptcha;
+    if (Captcha::isEnabled()) {
+        // Captcha::verify() handles ALTCHA PoW + sync-token fallback + ASP honeypot check
+        if (!Captcha::verify($_POST['captcha'] ?? '')) {
+            $errors['IncorrectCaptcha'] = strtr($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA'], ['{SERVER_EMAIL}' => SERVER_EMAIL]);
         }
-        // unset captcha if set
-        if (isset($_SESSION['captcha'])) 
-            unset($_SESSION['captcha']);
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -238,7 +225,7 @@ if(isset($_POST['signup_form_sent'])){
 }
 
 $show_captcha = '';
-if(ENABLED_CAPTCHA) {
+if (Captcha::isEnabled()) {
     ob_start(); call_captcha(); $show_captcha = ob_get_clean();
 }
 $aToTwig = array(
@@ -247,7 +234,7 @@ $aToTwig = array(
     'EMAIL'            => $email, 
     'GDPR_VALUE'       => $gdpr_check, 
     'SHOW_CAPTCHA'     => $show_captcha, 
-    'ASP_HONEYPOTS'    => $oAccounts->renderAspHoneypots(), 
+    'ASP_HONEYPOTS'    => Captcha::isAspEnabled() ? Captcha::renderHoneypot() : '',
     'MESSAGE_BOX'      => $oMsgBox->fetchDisplay(), 
     
     'USER_NAME_ERR'    => $username_error, 

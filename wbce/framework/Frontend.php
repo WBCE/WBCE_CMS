@@ -334,95 +334,15 @@ class Frontend extends Wbce
         defined('SHOW_MENU') or define('SHOW_MENU', true);
     }
 
-    /**
-     * @brief  This method is used together with the AdminTool
-     *         Captcha and Advanced-Spam-Protection (ASP) Control
-     *
-     * @return string
-     */
-    public function renderAspHoneypots()
-    {
-        $sASPFields = '';
-        if (ENABLED_ASP) {
-            $sTimeStamp = time();
-            $_SESSION['submitted_when'] = $sTimeStamp;
-            // add some honeypot-fields
-            ob_start(); ?>
-            <div style="display:none;">
-                <input type="hidden" name="submitted_when" value="<?= $sTimeStamp ?>"/>
-                <p class="nixhier">
-                    <label for="email-address" title="Leave this field email-address blank">Email address:</label>
-                    <input id="email-address" name="email-address" size="60" value=""/>
-                </p>
-                <p class="nixhier">
-                    <label for="name" title="Leave this field name blank">Username (id):</label>
-                    <input id="name" name="name" size="60" value=""/></p>
-                <p class="nixhier">
-                    <label for="full_name" title="Leave this field full_name blank">Full Name:</label>
-                    <input id="full_name" name="full_name" size="60" value=""/>
-                </p>
-            </div>
-            <?php
-            $sASPFields = ob_get_clean();
-        } //end:ENABLED_ASP
-        return $sASPFields;
-    }
-
-    // Obsolete since the introduction of OpF Dashboard into the core
 
     /**
-     * // public function preprocess(&$content)
-     * // this method is obsolete since [wblinkXXX] replacement is done
-     * // standardly in the OpF Dashboard since 1.4.0
+     * // public function preprocess()
+     * // this method is obsolete since since 1.4.0
      */
     public function preprocess($content = null)
-    {
-        // Return a note that this method is obsolete
-        if ($this->is_authenticated()) {
-            if ($this->isInGroup('1') && defined('WBCE_DEBUG') && WBCE_DEBUG === true) {
-                // if Admin and WBCE_DEBUG on: display Notice to inform the developer
-                $caller = debug_backtrace()[0];
-                $sNotice = "<br />The <i><b>" . __FUNCTION__ . "</b> method</i> of <i>class <b>" . __CLASS__ . "</b></i> is obsolete.";
-                $sNotice .= "<br /> There's no need to use it any longer.";
-                $sNotice .= "<br />Used in file <b>" . $caller['file'] . "</b> on line <b>" . $caller['line'] . "</b>";
-                trigger_error($sNotice);
-            }
-        }
+    {        
         return;
     }
-
-    // No longer supported since WBCE 1.4.0
-    public function menu()
-    {
-        // Return a note that this method is no longer supported
-        if ($this->is_authenticated()) {
-            if ($this->isInGroup('1') && defined('WBCE_DEBUG') && WBCE_DEBUG === true) {
-                // if Admin and WBCE_DEBUG on: display Notice to inform the developer
-                $caller = debug_backtrace()[0];
-                $sNotice = "<br />The <i><b>" . __FUNCTION__ . "</b> method</i> of <i>class <b>" . __CLASS__ . "</b></i> is obsolete.";
-                $sNotice .= "<br /> Please consider using the <b>show_menu2</b> function.";
-                $sNotice .= "<br />Used in file <b>" . $caller['file'] . "</b> on line <b>" . $caller['line'] . "</b>";
-                trigger_error($sNotice);
-            }
-        }
-        return;
-    }
-
-    // No longer supported since WBCE 1.4.0
-    public function show_menu()
-    {
-        // Return a note that this method is no longer supported
-        if ($this->is_authenticated()) {
-            if ($this->isInGroup('1') && defined('WBCE_DEBUG') && WBCE_DEBUG === true) {
-                // if Admin and WBCE_DEBUG on: display Notice to inform the developer
-                $caller = debug_backtrace()[0];
-                $sNotice = "<br />The <i><b>" . __FUNCTION__ . "</b> method</i> of <i>class <b>" . __CLASS__ . "</b></i> is obsolete.";
-                $sNotice .= "<br /> Please consider using the <b>show_menu2</b> function.";
-                $sNotice .= "<br />Used in file <b>" . $caller['file'] . "</b> on line <b>" . $caller['line'] . "</b>";
-                trigger_error($sNotice);
-            }
-        }
-        return;
-    }
+    
 
 }

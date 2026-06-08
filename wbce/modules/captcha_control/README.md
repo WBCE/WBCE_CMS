@@ -27,13 +27,17 @@ Both are available everywhere without any `require_once`.
 ```php
 // Outputs the ALTCHA widget (+ honeypot if ASP is enabled in settings).
 // Place it inside your <form> element, before the submit button.
-call_captcha();
+if (Captcha::isEnabled()) {
+    call_captcha();
+}
 ```
 
 ```html
 <form method="post">
     <!-- your fields -->
-    <?php call_captcha(); ?>
+    <?php if (Captcha::isEnabled()): ?>
+        <?php call_captcha(); ?>
+    <?php endif; ?>
     <button type="submit">Send</button>
 </form>
 ```
@@ -42,7 +46,7 @@ call_captcha();
 
 ```php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!Captcha::verify($_POST['captcha'] ?? '')) {
+    if (Captcha::isEnabled() && !Captcha::verify($_POST['captcha'] ?? '')) {
         // Captcha failed — show error, do not process form
     }
     // … process form
@@ -54,29 +58,37 @@ and the honeypot check (if ASP is enabled) in one call.
 
 ---
 
-## Respecting the `ENABLED_CAPTCHA` Setting
+## Helper Methods — `isEnabled()` / `isAspEnabled()`
 
-Users can disable the captcha in the CMS backend under  
-**Tools → Captcha Control**. Always check the setting before rendering:
+Use these instead of reading constants directly. They support an optional  
+module-level override that takes precedence over the global setting.
 
 ```php
-$captchaEnabled = defined('ENABLED_CAPTCHA') && ENABLED_CAPTCHA
-               && !(defined('NO_SESSION_COOKIE') && NO_SESSION_COOKIE);
+Captcha::isEnabled()        // global ENABLED_CAPTCHA
+Captcha::isAspEnabled()     // global ENABLED_ASP
+```
 
-if ($captchaEnabled) {
+### Module-level override
+
+A module with its own captcha setting can pass it as override.  
+`null` means "fall back to the global setting":
+
+```php
+// Three-state DB column: NULL = use global, 0 = force off, 1 = force on
+$local = $settings['use_captcha'];   // int|null from module DB
+
+if (Captcha::isEnabled($local !== null ? (bool)$local : null)) {
     call_captcha();
 }
 ```
 
-And on verification:
+| `$override` value | Behaviour                        |
+|-------------------|----------------------------------|
+| `null`            | Use global `ENABLED_CAPTCHA`     |
+| `true`            | Force on — ignores global        |
+| `false`           | Force off — ignores global       |
 
-```php
-if ($captchaEnabled) {
-    if (!Captcha::verify($_POST['captcha'] ?? '')) {
-        // error
-    }
-}
-```
+Same pattern applies to `Captcha::isAspEnabled(?bool $override)`.
 
 ---
 
@@ -89,13 +101,10 @@ if ($captchaEnabled) {
 $error   = '';
 $success = false;
 
-$captchaEnabled = defined('ENABLED_CAPTCHA') && ENABLED_CAPTCHA
-               && !(defined('NO_SESSION_COOKIE') && NO_SESSION_COOKIE);
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 1. Captcha check first
-    if ($captchaEnabled && !Captcha::verify($_POST['captcha'] ?? '')) {
+    if (Captcha::isEnabled() && !Captcha::verify($_POST['captcha'] ?? '')) {
         $error = L_('MESSAGE:MOD_FORM_INCORRECT_CAPTCHA');
     }
 
@@ -119,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if ($error): ?><p class="error"><?= h($error) ?></p><?php endif; ?>
     <form method="post">
         <textarea name="message"></textarea>
-        <?php if ($captchaEnabled): ?>
+        <?php if (Captcha::isEnabled()): ?>
             <?php call_captcha(); ?>
         <?php endif; ?>
         <button type="submit">Send</button>
@@ -174,11 +183,31 @@ call_captcha(
 
 ## Honeypot (Advanced Spam Protection)
 
-When **ASP (Advanced Spam Protection)** is enabled in settings, `call_captcha()`  
-automatically renders an invisible honeypot field alongside the ALTCHA widget.  
-`Captcha::verify()` checks it automatically — no extra code needed.
+When **ASP** is enabled, `call_captcha()` automatically renders an invisible  
+honeypot field alongside the ALTCHA widget. `Captcha::verify()` checks it  
+automatically — no extra code needed.
 
-The honeypot traps bots that fill in every field; real users never see it.
+### Separate honeypot placement
+
+If your form layout requires the honeypot at a different position than the  
+ALTCHA widget (e.g. at the very top of the form), render them independently:
+
+```php
+// Top of form — honeypot, hidden
+echo Captcha::isAspEnabled() ? Captcha::renderHoneypot() : '';
+
+// … visible fields …
+
+// Near submit button — ALTCHA widget only (ASP already rendered above)
+// Use action 'input' to suppress the automatic honeypot inside call_captcha()
+if (Captcha::isEnabled()) {
+    ob_start(); call_captcha('all'); $widget = ob_get_clean();
+    echo $widget;
+}
+```
+
+`Captcha::renderHoneypot(string $sec_id = '')` returns the honeypot HTML as  
+a string and sets the session timestamp used by the timing check in `verify()`.
 
 ---
 

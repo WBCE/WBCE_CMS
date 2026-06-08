@@ -152,7 +152,6 @@ class mform {
 	}
 
 	function captcha($section_id = 0) {
-		require_once(WB_PATH.'/include/captcha/captcha.php');
 		ob_start();
 		call_captcha("all","",$section_id);
 		$captcha = ob_get_contents();

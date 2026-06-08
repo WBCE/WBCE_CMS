@@ -23,6 +23,7 @@ if (isset($_POST['save_settings'])) {
 
     $e1 = Settings::Set('enabled_captcha', ($_POST['enabled_captcha'] ?? '0') === '1' ? 'true' : 'false');
     $e2 = Settings::Set('enabled_asp',     ($_POST['enabled_asp']     ?? '0') === '1' ? 'true' : 'false');
+    $e4 = Settings::Set('captcha_type',    in_array($_POST['captcha_type'] ?? '', ['altcha']) ? $_POST['captcha_type'] : 'altcha');
     $e3 = false;
 
     // Generate HMAC key on first save if missing (e.g. fresh install, key lost)
@@ -31,8 +32,8 @@ if (isset($_POST['save_settings'])) {
         $e3 = Settings::Set('captcha_altcha_hmac_key', AltchaLib::generateHmacKey());
     }
 
-    if ($e1 || $e2 || $e3) {
-        (new Alerts())->sessionToast($e1 ?: $e2 ?: $e3, 'error');
+    if ($e1 || $e2 || $e3 || $e4) {
+        (new Alerts())->sessionToast($e1 ?: $e2 ?: $e3 ?: $e4, 'error');
     } else {
         (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
     }

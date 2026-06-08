@@ -32,6 +32,35 @@ class Captcha
     // ── Public API ────────────────────────────────────────────────────────────
 
     /**
+     * Resolve whether captcha is enabled — local module setting takes precedence
+     * over the global ENABLED_CAPTCHA constant.
+     *
+     * Usage:
+     *   Captcha::isEnabled()               // use global setting
+     *   Captcha::isEnabled(true)           // force on  (module override)
+     *   Captcha::isEnabled(false)          // force off (module override)
+     *   Captcha::isEnabled($local ?? null) // three-state: null = fall back to global
+     *
+     * @param  bool|null $override  Module-level override; null = use global constant.
+     * @return bool
+     */
+    public static function isEnabled(?bool $override = null): bool
+    {
+        return $override ?? (defined('ENABLED_CAPTCHA') && ENABLED_CAPTCHA);
+    }
+
+    /**
+     * Resolve whether ASP (honeypot) is enabled — same override pattern as isEnabled().
+     *
+     * @param  bool|null $override  Module-level override; null = use global constant.
+     * @return bool
+     */
+    public static function isAspEnabled(?bool $override = null): bool
+    {
+        return $override ?? (defined('ENABLED_ASP') && ENABLED_ASP);
+    }
+
+    /**
      * Render the captcha widget (+ honeypot if ENABLED_ASP is true).
      *
      * @param string      $action   'all'|'widget'|'image'|'image_iframe'|'input'|'text'
@@ -54,7 +83,7 @@ class Captcha
         }
 
         // Honeypot is always rendered alongside ALTCHA when ASP is enabled.
-        $aspEnabled = defined('ENABLED_ASP') && ENABLED_ASP;
+        $aspEnabled = self::isAspEnabled();
 
         switch ($action) {
             case 'text':
@@ -65,7 +94,7 @@ class Captcha
                 // Only the hidden sync input + listener — no widget chrome.
                 self::renderSyncInput($sec_id);
                 if ($aspEnabled) {
-                    self::renderHoneypot($sec_id);
+                    echo self::renderHoneypot($sec_id);
                 }
                 break;
 
@@ -73,7 +102,7 @@ class Captcha
                 // 'all', 'widget', 'image', 'image_iframe' — render the full widget.
                 self::renderAltchaWidget($sec_id);
                 if ($aspEnabled) {
-                    self::renderHoneypot($sec_id);
+                    echo self::renderHoneypot($sec_id);
                 }
                 break;
         }
@@ -235,21 +264,27 @@ class Captcha
     // ══ Honeypot (ASP extra layer) ════════════════════════════════════════════
 
     /**
-     * Render the honeypot field.
+     * Render the honeypot field and return it as an HTML string.
+     *
+     * Public so modules can place the honeypot independently from the ALTCHA
+     * widget (e.g. at the top of a form while the widget is near the submit button).
      *
      * Visually hidden via absolute positioning (not display:none — bots skip those).
      * Real users never see or fill it. Bots auto-fill all inputs and get blocked.
      * Also stores a timestamp for a minimum-time check (blocks instant submissions).
+     *
+     * @param  string $sec_id  Same sec_id used when calling verify().
+     * @return string          HTML to output.
      */
-    private static function renderHoneypot(string $sec_id): void
+    public static function renderHoneypot(string $sec_id = ''): string
     {
         $field = 'hp_' . $sec_id;
         $_SESSION['captcha_hp_time_' . $sec_id] = time();
 
-        echo '<div style="position:absolute;left:-9999px;height:1px;width:1px;overflow:hidden" aria-hidden="true">';
-        echo '<label for="' . h($field) . '">Leave this field empty</label>';
-        echo '<input type="text" id="' . h($field) . '" name="' . h($field) . '" value="" tabindex="-1" autocomplete="off" />';
-        echo '</div>' . "\n";
+        return '<div style="position:absolute;left:-9999px;height:1px;width:1px;overflow:hidden" aria-hidden="true">' . "\n"
+             . '    <label for="' . h($field) . '">Leave this field empty</label>' . "\n"
+             . '    <input type="text" id="' . h($field) . '" name="' . h($field) . '" value="" tabindex="-1" autocomplete="off" />' . "\n"
+             . '</div>' . "\n";
     }
 
     /**
