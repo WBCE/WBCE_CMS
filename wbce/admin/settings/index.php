@@ -302,7 +302,7 @@ foreach ($ER_LEVELS as $value => $title) {
 
 // Insert permissions values
 if ($admin->get_permission('settings_advanced') != true) {
-    $template->set_var('DISPLAY_ADVANCED_BUTTON', 'hide');
+    $template->set_var('DISPLAY_ADVANCED_BUTTON', 'style="display:none;"');
 }
 
 // Insert page level limits

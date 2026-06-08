@@ -195,7 +195,18 @@ class PermissionManager
                 }
             }
 
-            // Determine tri-state from children
+            // For addon-linked areas, also count addon permissions in the state
+            // (same logic as getAreaStates — tools live in module_permissions, not children).
+            if (isset(self::ADDON_LINKED_AREAS[$area]) && $groupId > 0) {
+                foreach (self::ADDON_LINKED_AREAS[$area]['functions'] as $function) {
+                    foreach ($this->getAddonList($function, $groupId) as $addon) {
+                        $totalCount++;
+                        if ($addon['checked']) $checkedCount++;
+                    }
+                }
+            }
+
+            // Determine tri-state from children (+ addons for linked areas)
             if ($checkedCount === 0) {
                 $state = 'none';
             } elseif ($checkedCount === $totalCount) {
@@ -343,6 +354,18 @@ class PermissionManager
             }
         }
 
+        // --- admintools: activate the area if tools are in the allow-list,
+        //     even when admintools_settings is not checked.
+        //     admintools_settings only controls saving layout preferences —
+        //     it must not gate access to the section itself.
+        if (!in_array('admintools', $active, true)) {
+            $postedMods = (array) $admin->get_post('module_permissions');
+            $hasTools   = !empty(array_filter($postedMods, fn($v) => str_ends_with(trim($v), '_tool')));
+            if ($hasTools) {
+                $active[] = 'admintools';
+            }
+        }
+
         // --- Meta-parents: auto-enable when constituent areas are active ---
         foreach (self::META_PARENTS as $meta => $areas) {
             foreach ($areas as $area) {
@@ -423,8 +446,13 @@ class PermissionManager
             }
 
             // New group ($groupId === 0): nothing pre-selected — start clean.
-            // Existing group: checked = allowed = NOT in deny list.
-            $rec['checked'] = ($groupId > 0) && !in_array($identifier, $assignedAddons, true);
+            // Tools use an allow-list (present = permitted).
+            // All other addon types use a deny-list (present = blocked).
+            if ($function === 'tool') {
+                $rec['checked'] = ($groupId > 0) && in_array($identifier, $assignedAddons, true);
+            } else {
+                $rec['checked'] = ($groupId > 0) && !in_array($identifier, $assignedAddons, true);
+            }
             $result[$rec['addon_id']] = $rec;
         }
 
@@ -500,30 +528,35 @@ class PermissionManager
         $fieldName = $type . '_permissions';
         $posted    = array_map('trim', (array) $admin->get_post($fieldName));
 
-        // Validate posted (checked = allowed) identifiers against the filesystem
-        $dirPrefix = WB_PATH . '/' . $type . 's/';
-        $allowed   = [];
+        $dirPrefix      = WB_PATH . '/' . $type . 's/';
+        $allowedNonTools = [];   // page modules / templates — deny-list (store what is blocked)
+        $allowedTools    = [];   // admin tools              — allow-list (store what is permitted)
 
         foreach ($posted as $addonDir) {
             if ($addonDir === '') continue;
 
-            // For tools: the POST value has '_tool' suffix, the actual directory doesn't
-            $fsDir = str_replace('_tool', '', $addonDir);
+            // Tools carry a '_tool' suffix; the actual directory does not.
+            $isTool = str_ends_with($addonDir, '_tool');
+            $fsDir  = $isTool ? substr($addonDir, 0, -5) : $addonDir;
 
-            if (is_readable($dirPrefix . $addonDir . '/info.php')
-                || is_readable($dirPrefix . $fsDir   . '/info.php')
-            ) {
-                $allowed[] = $addonDir;
+            if (!is_readable($dirPrefix . $fsDir . '/info.php')) continue;
+
+            if ($isTool) {
+                $allowedTools[]    = $addonDir; // allow-list: store exactly what was checked
+            } else {
+                $allowedNonTools[] = $addonDir; // will be inverted into a deny-list below
             }
         }
 
-        // Deny list = all known addons minus the allowed (checked) ones.
-        // This matches the historical storage format where module_permissions
-        // holds blocked entries, and Admin::get_permission() returns !$found.
-        $all    = $this->getAllAddonIdentifiers($type);
-        $denied = array_values(array_diff($all, $allowed));
+        // Page modules / templates: deny-list — store everything that was NOT checked.
+        $allIds         = $this->getAllAddonIdentifiers($type);
+        $allNonToolIds  = array_values(array_filter($allIds, fn($id) => !str_ends_with($id, '_tool')));
+        $denied         = array_values(array_diff($allNonToolIds, $allowedNonTools));
 
-        return implode(',', $denied);
+        // Tools: allow-list — store exactly what was checked (already in $allowedTools).
+        // For 'template' type $allowedTools is always empty — no change in behaviour.
+
+        return implode(',', array_merge($denied, $allowedTools));
     }
 
     /**

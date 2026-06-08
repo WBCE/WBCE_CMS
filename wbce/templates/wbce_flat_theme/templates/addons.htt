@@ -1,7 +1,7 @@
 <!-- BEGIN main_block -->
 
 <h2 class="page_titel"> {ADDONS_OVERVIEW}
-    <div class="headline-link"> <i class="fa fa-expand" id="addons_reload"> {URL_ADVANCED}</i> </div>
+    <div class="headline-link" {DISPLAY_ADVANCED_ICON}> <i class="fa fa-expand" id="addons_reload"> {URL_ADVANCED}</i> </div>
 </h2>
 
 <div id="page_addons"> 
@@ -59,12 +59,12 @@
             <form action="{RELOAD_URL}" method="post">
                 {FTAN}
                 {MESSAGE_RELOAD_ADDONS} <br/>
-                <input {DISPLAY_MODULES} type="checkbox" name="reload_modules" id="reload_modules" value="true" />
-                <label {DISPLAY_MODULES} for="reload_modules">{MODULES}</label>
-                <input {DISPLAY_TEMPLATES} type="checkbox" name="reload_templates" id="reload_templates" value="true" />
-                <label {DISPLAY_TEMPLATES} for="reload_templates">{TEMPLATES}</label>
-                <input {DISPLAY_LANGUAGES} type="checkbox" name="reload_languages" id="reload_languages" value="true" />
-                <label {DISPLAY_LANGUAGES} for="reload_languages">{LANGUAGES}</label>
+                <input {DISPLAY_RELOAD_MODULES} type="checkbox" name="reload_modules" id="reload_modules" value="true" />
+                <label {DISPLAY_RELOAD_MODULES} for="reload_modules">{MODULES}</label>
+                <input {DISPLAY_RELOAD_TEMPLATES} type="checkbox" name="reload_templates" id="reload_templates" value="true" />
+                <label {DISPLAY_RELOAD_TEMPLATES} for="reload_templates">{TEMPLATES}</label>
+                <input {DISPLAY_RELOAD_LANGUAGES} type="checkbox" name="reload_languages" id="reload_languages" value="true" />
+                <label {DISPLAY_RELOAD_LANGUAGES} for="reload_languages">{LANGUAGES}</label>
                 <input type="submit" name="submit" value="{TEXT_RELOAD}" />
             </form>
         </div>

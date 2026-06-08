@@ -97,8 +97,9 @@ foreach ($resTools as $arr) {
 }
 
 $toTwig = [
-    'admin_tools' => $tools,
-    'cfg'         => $cfg,
+    'admin_tools'          => $tools,
+    'cfg'                  => $cfg,
+    'can_change_settings'  => $admin->isAdmin() || $admin->get_permission('admintools_settings'),
 ];
 
 $admin->getThemeFile('admintools.twig', $toTwig);

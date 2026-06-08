@@ -23,14 +23,17 @@
                          this.previousElementSibling.focus();"
                 title="{{ L_('TEXT:CLEAR') }}">✕</button>
     </div>
+    {% if can_change_settings %}
     <button class="button ico-settings pull-right" id="btn-settings" type="button">
         <i class="fa fa-sliders"></i> {{ L_('TEXT:CHANGE_SETTINGS') }}
     </button>
+    {% endif %}
 </div>
 
 {# ===================================================================== #}
 {#  Settings panel — hidden until button click                            #}
 {# ===================================================================== #}
+{% if can_change_settings %}
 <div id="admintools-settings-panel" style="display:none">
     <form method="post"
           hx-post="{{ ADMIN_URL }}/admintools/index.php"
@@ -88,6 +91,7 @@
         </div>
     </form>
 </div>
+{% endif %}
 
 {# ===================================================================== #}
 {#  Tools grid                                                            #}
