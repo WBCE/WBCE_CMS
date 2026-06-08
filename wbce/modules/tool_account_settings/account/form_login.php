@@ -35,7 +35,7 @@ $oMsgBox   = new Alerts(useSession: false);
 $aToTwig = array(
     'USERNAME_FIELD' => $sUsernameField,
     'PASSWORD_FIELD' => $sPasswordField,
-    'REDIRECT_URL'   => $oLogin->getRedirectUrl(),
+    'REDIRECT_URL'   => h($oLogin->getRedirectUrl()),
     'MESSAGE_BOX'    => $oMsgBox->fetchDisplay(), 
 );
 $oAccounts->useTwigTemplate('form_login.twig', $aToTwig);
