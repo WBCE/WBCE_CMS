@@ -236,21 +236,48 @@ $(document).ready(function () {
             if ($sel.val() !== '') { $hint.hide(); return; }
             var fb = getFallback();
             if (fb) {
-                var tpl    = $hint.data('tpl') || 'If none selected, %s will be used as preselected.';
-                var safeLabel = $('<span>').text(fb.label).html(); // HTML-escape the label
+                var tpl       = $hint.data('tpl') || 'If none selected, %s will be used as preselected.';
+                var safeLabel = $('<span>').text(fb.label).html();
                 $hint.html(tpl.replace('%s', '<strong>' + safeLabel + '</strong>'))
                      .css('display', 'block');
+            } else {
+                $hint.hide();
             }
-            else    $hint.hide();
         }
 
-        // Wrap server-rendered options with wbeSelect — no option manipulation.
+        function syncModuleSelect() {
+            var prevVal = $sel.val();
+
+            // Rebuild native <option> list from currently checked module checkboxes
+            $sel.find('option:not([value=""])').remove();
+            $el.find('input.child_module_permissions:checked').each(function () {
+                var dir   = $(this).val();
+                var label = $(this).data('label') || dir;
+                $sel.append($('<option>').val(dir).text(label));
+            });
+
+            // Restore previous selection only if that module is still checked
+            if (prevVal) {
+                $sel.val(prevVal);
+                if ($sel.val() !== prevVal) { $sel.val(''); } // module was unchecked — clear
+            }
+
+            // Let wbeSelect pick up the new option list
+            $sel.wbeSelect('rebuildOptions');
+
+            updateHint();
+        }
+
+        // Init: wrap the server-rendered options with wbeSelect
         $sel.wbeSelect({ customSelector: 'title_only', disable_search_threshold: 7 });
 
-        // Hint reacts to: select change + checkbox changes
+        // Select change → update hint
         $sel.off('change.defaultModule').on('change.defaultModule', updateHint);
-        $el.find('input.child_module_permissions').off('change.defaultModule')
-           .on('change.defaultModule', updateHint);
+
+        // Module checkbox changes → rebuild the select option list live
+        $el.find('input.child_module_permissions')
+           .off('change.defaultModule')
+           .on('change.defaultModule', syncModuleSelect);
 
         updateHint();
     }

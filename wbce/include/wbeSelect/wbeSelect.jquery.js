@@ -801,6 +801,13 @@
             renderSelectedItems();
         };
 
+        /** Re-render both the dropdown option list and the selected item tags
+         *  after programmatic <option> changes on the native <select>. */
+        self.rebuildOptions = function () {
+            renderOptions();
+            renderSelectedItems();
+        };
+
         /** Close the dropdown programmatically */
         self.hideDropdown = function () {
             hideDropdown();

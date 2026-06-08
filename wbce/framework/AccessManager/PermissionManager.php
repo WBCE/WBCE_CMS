@@ -141,9 +141,10 @@ class PermissionManager
      * Used by getAreaStates() to determine tri-state (none/partial/full).
      */
     private const ADDON_LINKED_AREAS = [
-        'admintools' => ['functions' => ['tool'],               'column' => 'module_permissions'],
-        'modules'    => ['functions' => ['page'],               'column' => 'module_permissions'],
-        'templates'  => ['functions' => ['template', 'theme'],  'column' => 'template_permissions'],
+        'admintools' => ['functions' => ['tool'],             'column' => 'module_permissions'],
+        // PageType modules and frontend templates are now configured under 'pages',
+        // not under 'modules' or 'templates' (which are admin-only areas).
+        'pages'      => ['functions' => ['page', 'template'], 'column' => 'module_permissions, template_permissions'],
     ];
 
     public function __construct()
