@@ -291,7 +291,8 @@ class AddonService
             $installedVersion = $existingRow['version'] ?? '0';
             $newVersion       = $info['_version'] ?? '';
             if ($newVersion !== '' && $this->versionCompare($installedVersion, $newVersion, '>=')) {
-                return $this->addSignal('ADDON_ALREADY_CURRENT', $dir);
+                $label = ($info['name'] ?? $dir) . ($newVersion !== '' ? ' [v. ' . $newVersion . ']' : '');
+                return $this->addSignal('ADDON_ALREADY_CURRENT', $label);
             }
             $action = 'upgrade';
         }
@@ -625,6 +626,15 @@ class AddonService
                                       'label'  => "Addon: $addon" . ($ver ? " $op $ver" : '')];
                     }
                     break;
+                case 'PHP_SETTINGS':
+                    foreach ((array)$value as $setting => $expected) {
+                        $actual = ini_get($setting);
+                        $ok     = ($actual !== false) && ((string)$actual === (string)$expected);
+                        $results[] = ['signal' => $ok ? 'ADDON_PRECHECK_OK' : 'ADDON_PRECHECK_FAILED',
+                                      'label'  => "php.ini: {$setting} = {$expected} (have: "
+                                                  . ($actual !== false ? $actual : 'unset') . ')'];
+                    }
+                    break;
                 case 'CUSTOM_CHECKS':
                     foreach ((array)$value as $lbl => $spec) {
                         $ok = (bool)($spec['STATUS'] ?? false);
@@ -811,7 +821,9 @@ class AddonService
         $action    = $this->detectAction($type, $dir, $targetDir, $info['_version'] ?? '');
 
         if ($action === 'skip') {
-            return $this->addSignal('ADDON_ALREADY_CURRENT', $dir);
+            $ver   = $info['_version'] ?? '';
+            $label = ($info['name'] ?? $dir) . ($ver !== '' ? ' [v. ' . $ver . ']' : '');
+            return $this->addSignal('ADDON_ALREADY_CURRENT', $label);
         }
         if ($type !== 'language' && !$this->ensureWritable($targetDir)) {
             return $this->addSignal('ADDON_NOT_WRITABLE', $targetDir);
@@ -874,9 +886,10 @@ class AddonService
 
         if (!empty($captured)) return $captured;
 
-        $suffix = trim($raw) !== '' ? ' [' . mb_substr(strip_tags($raw), 0, 100) . ']' : '';
+        // Preserve raw echo output so callers can render it alongside signals.
         return [['signal' => 'ADDON_SCRIPT_OK',
-                 'label'  => $label . ' — ' . basename($scriptPath) . $suffix]];
+                 'label'  => $label . ' — ' . basename($scriptPath),
+                 'raw'    => trim($raw)]];
     }
 
     protected function readInfo(string $path, string $typeHint = ''): ?array
