@@ -183,7 +183,6 @@ if (!isset($_SESSION['config_rename'])) {
             $config = '<span class="bad">Not Writeable</span>';
         }
     } else {
-        echo 'existiert';
         $installFlag = false;
         $config = '<span class="bad">Missing!!?</span>';
     }

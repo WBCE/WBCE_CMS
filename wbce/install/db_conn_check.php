@@ -14,6 +14,11 @@
  * @license    GNU/GPL 2  https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+// Buffer all output so PHP notices/warnings (e.g. from display_errors=On in dev
+// environments) cannot corrupt the JSON response body. json_out() discards the
+// buffer before echoing, guaranteeing a clean JSON-only response.
+ob_start();
+ini_set('display_errors', '0');
 
 if (!defined('WBCE_INSTALLER')) {
     // Allow direct AJAX calls only (no browser navigation)
@@ -52,6 +57,7 @@ if ($langCode !== 'EN' && preg_match('/^[A-Z]{1,5}$/', $langCode)) {
 
 function json_out(bool $ok, string $msg): void
 {
+    ob_end_clean(); // discard any PHP notices/warnings captured in the buffer
     echo json_encode(['ok' => $ok, 'message' => $msg], JSON_UNESCAPED_UNICODE);
     exit;
 }

@@ -275,7 +275,7 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
                                 <label for="database_name"><?= $TXT['lbl_db_name'] ?></label>
                                 <input <?= field_error('database_name') ?> type="text" id="database_name"
                                                                           tabindex="8" name="database_name"
-                                                                          pattern="[a-zA-Z0-9_-]+" value="<?= $sDatabaseName ?>" required>
+                                                                          pattern="[-a-zA-Z0-9_]+" value="<?= $sDatabaseName ?>" required>
                                 <span class="field-hint">[a-zA-Z0-9_-]</span>
                             </div>
 
