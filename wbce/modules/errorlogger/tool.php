@@ -75,9 +75,15 @@ if (isset($_GET['delete'])) {
 }
 
 // ── File Based Settings — toggle handlers ────────────────────────────────────
+// Active (1) → set constant to true.
+// Inactive (0) → delete the entry entirely to keep the global scope clean.
 foreach (['PDO_CANONICAL_DEBUG', 'SQL_DEBUG', 'WBCE_DEBUG'] as $cfg) {
     if (isset($_GET[$cfg]) && in_array($_GET[$cfg], ['0', '1'], true)) {
-        Settings::setFileBasedSetting($cfg, (bool) $_GET[$cfg]);
+        if ($_GET[$cfg] === '1') {
+            Settings::setFileBasedSetting($cfg, true);
+        } else {
+            Settings::deleteFileBasedSetting($cfg);
+        }
         header("Location: " . $link);
         exit;
     }
