@@ -43,9 +43,8 @@ if ($stageOk) {
 
 // ── Collect feedback ─────────────────────────────────────────────────────────
 
-// Signals worth showing to the user — verbose OK signals (PRECHECK_OK, SCRIPT_OK,
-// SCRIPT_NOT_FOUND, STAGED) are intentionally omitted for a clean result view.
-$keySignals = ['ADDON_INSERTED_OK', 'ADDON_UPDATED_OK', 'ADDON_ALREADY_CURRENT',
+$keySignals = ['ADDON_PRECHECK_OK',
+               'ADDON_INSERTED_OK', 'ADDON_UPDATED_OK', 'ADDON_ALREADY_CURRENT',
                'ADDON_PRECHECK_FAILED', 'ADDON_SCRIPT_ERROR', 'ADDON_DB_ERROR',
                'ADDON_NOT_WRITABLE', 'ADDON_PATH_NOT_FOUND', 'ADDON_INFO_INVALID'];
 
@@ -93,8 +92,11 @@ if ($hasErr) {
     $admin->print_error($msgs ?: [$MESSAGE['GENERIC_ERROR'] ?? 'Error'], 'index.php');
 } elseif ($alreadyCurrent) {
     $admin->messageBox($msgs, 'info', 'index.php', false, false);
+} elseif ($rawOutput !== '') {
+    // Script produced output — stay on page so the user can read it
+    $admin->messageBox($msgs, 'success', 'index.php', false, false);
 } else {
-    $admin->print_success($msgs, 'index.php');
+    $admin->messageBox($msgs, 'success', 'index.php', false, true);
 }
 
 $admin->print_footer();
