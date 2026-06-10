@@ -1,0 +1,95 @@
+/**
+ * wbeColoris.admin.css
+ *
+ * Fixes for WbeColoris (and Coloris) in the WBCE admin backend.
+ *
+ * Problem: WBCE admin themes (argos_theme_reloaded and others) apply global
+ * button rules that break the Coloris swatch button:
+ *
+ *   button { min-width:150px; background-color:#647086; margin:10px 0; ... }
+ *
+ * Additionally, when .clr-field sits inside a table-cell or flex container it
+ * expands to fill the full column width.  The swatch button is then positioned
+ * with right:0 relative to that full-width wrapper, so it appears at the far
+ * right of the column instead of flush with the input.
+ *
+ * Include this file AFTER wbeColoris.css on any admin page that uses WbeColoris.
+ *
+ * Usage in Twig / PHP:
+ *   <link rel="stylesheet" href="{{ WB_URL }}/include/wbeColoris/wbeColoris.css">
+ *   <link rel="stylesheet" href="{{ WB_URL }}/include/wbeColoris/wbeColoris.admin.css">
+ */
+
+/* ── Wrapper: shrink-wrap to content width so right:0 lands on the input edge ── */
+.clr-field {
+    display: inline-block !important;
+    position: relative  !important;
+    /* fit-content collapses the wrapper to the input's own width regardless of
+       whether the parent is a block, table-cell, or flex container.           */
+    width: -moz-fit-content  !important;
+    width: fit-content       !important;
+    float: none !important;
+}
+
+/* ── Swatch button: undo every destructive admin-theme rule ─────────────────── */
+.clr-field > button {
+    /* positioning — must be absolute inside the wrapper */
+    position:  absolute !important;
+    right:     0        !important;
+    top:       50%      !important;
+    transform: translateY(-50%) !important;
+
+    /* size — theme sets min-width:150px which explodes the button */
+    width:     30px !important;
+    min-width: 0    !important;
+    height:    calc(100% - 2px) !important;
+    min-height: 0   !important;
+
+    /* colour — theme sets background-color:#647086; we need currentColor
+       so the ::after pseudo-element can paint the swatch colour          */
+    background-color: currentColor !important;
+    color: inherit !important;
+
+    /* reset every other theme property that could interfere */
+    border:         0    !important;
+    border-radius:  0 3px 3px 0 !important;
+    margin:         0    !important;
+    margin-bottom:  0    !important;
+    padding:        0    !important;
+    text-transform: none !important;
+    float:          none !important;
+    display:        block !important;
+    text-indent:    -9999px !important;
+    overflow:       hidden  !important;
+    pointer-events: none    !important;
+    cursor:         default !important;
+}
+
+.clr-field > button::after {
+    border-radius: inherit !important;
+}
+
+/* ── Swatch buttons: admin theme sets min-height:28px → circles become ovals ─── */
+/* Target specifically inside #clr-picker to avoid any other button on the page  */
+#clr-picker .clr-swatches button {
+    min-height:  0    !important;
+    height:      20px !important;
+    width:       20px !important;
+    min-width:   0    !important;
+    margin:      0 4px 6px 4px !important;
+    padding:     0    !important;
+    text-transform: none !important;
+}
+
+/* ── Admin-theme also overrides #wbe-ok and #wbe-reset buttons ──────────────── */
+/* Those are picker UI buttons inside #clr-picker — undo global button styles.  */
+/* width/flex must not be overridden so the side-by-side layout is preserved.   */
+#wbe-ok,
+#wbe-reset {
+    min-width:      0    !important;
+    min-height:     0    !important;
+    width:          auto !important;  /* let flex: control the width */
+    margin-bottom:  10px !important;  /* wbeColoris.css value, not 0 from admin theme */
+    float:          none !important;
+    text-transform: none !important;
+}
