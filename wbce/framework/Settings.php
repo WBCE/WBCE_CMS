@@ -36,7 +36,7 @@
  * So "wb_maintainance_mode" is available as WB_MAINTAINANCE_MODE allover in WBCE.
  * 
  * Since WBCE 1.7.0 all constants generated during setup can be easily looked up
- * in ROOT/var/sys_constants.php or using `debug(Settings:showConstants);`
+ * in ROOT/var/sys_constants_snapshot.php or using `debug(Settings:showConstants);`
  *
  *
  * Some examples:
@@ -93,7 +93,7 @@ class Settings
      */
     private static function cacheFile(): string
     {
-        return WB_PATH . '/var/sys_constants.php';
+        return WB_PATH . '/var/sys_constants_snapshot.php';
     }
     
     /**
@@ -322,6 +322,50 @@ class Settings
     }
 
     /**
+     * Create the file-based settings file from the bundled template if it does
+     * not yet exist. Called once during Settings::setup() — covers both fresh
+     * installs and upgrades where the file is still missing.
+     *
+     * No-op when the file already exists, so existing user entries are safe.
+     */
+    public static function initFileBasedSettings(): void
+    {
+        $file = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
+        if (!$file || file_exists($file)) return;
+
+        if (!defined('WB_PATH')) return;
+
+        // Resolve installation language.
+        // DEFAULT_LANGUAGE is not yet a constant at this point in setup() —
+        // the DB loop that defines it runs after this call. Query directly.
+        $lang = 'EN';
+        if (defined('DEFAULT_LANGUAGE')) {
+            $lang = strtoupper(DEFAULT_LANGUAGE);
+        } else {
+            global $database;
+            if (isset($database) && is_object($database)) {
+                $raw = $database->fetchValue(
+                    "SELECT `value` FROM `{TP}settings` WHERE `name` = 'default_language'"
+                );
+                if ($raw) $lang = strtoupper((string)$raw);
+            }
+        }
+
+        // Template lookup: requested language → EN fallback
+        $tplDir  = WB_PATH . '/admin/interface/config_constants';
+        $tpl     = $tplDir . '/' . $lang . '.ini.php';
+        if (!file_exists($tpl)) {
+            $tpl = $tplDir . '/EN.ini.php';
+        }
+        if (!file_exists($tpl)) return;
+
+        $targetDir = dirname($file);
+        if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
+
+        copy($tpl, $file);
+    }
+
+    /**
      * Setup all settings as constants and fill the internal cache.
      * This method is called during system initialization.
      *
@@ -336,6 +380,8 @@ class Settings
      */
     public static function setup(): bool
     {
+        self::initFileBasedSettings(); // Create var/config_constants.ini.php from template if missing
+
         global $database;
 
         self::$cache = [];
@@ -380,7 +426,7 @@ class Settings
         $fileBased = [];
         $fbFile    = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
         if ($fbFile && file_exists($fbFile)) {
-            $loaded = include $fbFile;
+            $loaded = parse_ini_file($fbFile, false, INI_SCANNER_TYPED);
             if (is_array($loaded)) {
                 $fileBased = $loaded;
             }
@@ -473,7 +519,7 @@ class Settings
         $lines[] = "\r\n";
         $lines[] = "    'from_db' => " . str_replace("\n", "\n    ", var_export($fromDb, true)) . ",\r\n";
         $lines[] = "\r\n";
-        $lines[] = "    // ── File-based settings (/var/file_based_settings.php) " . str_repeat('─', 20) . "\r\n";
+        $lines[] = "    // ── File-based settings (/var/config_constants.ini.php) " . str_repeat('─', 20) . "\r\n";
         $lines[] = "\r\n";
         $lines[] = "    'file_based_settings' => " . str_replace("\n", "\n    ", var_export($fileBased, true)) . ",\r\n";
         $lines[] = "\r\n";
@@ -559,7 +605,7 @@ class Settings
         $file     = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
         if (!$file) return "WBCE_FILE_BASED_SETTINGS constant is not defined";
 
-        $settings = (file_exists($file) && is_array($loaded = include $file)) ? $loaded : [];
+        $settings = (file_exists($file) && is_array($loaded = parse_ini_file($file, false, INI_SCANNER_TYPED))) ? $loaded : [];
         $settings[$key] = $value;
 
         return self::_writeFileBasedSettings($file, $settings);
@@ -578,7 +624,7 @@ class Settings
 
         if (!file_exists($file)) return false;
 
-        $settings = include $file;
+        $settings = parse_ini_file($file, false, INI_SCANNER_TYPED);
         if (!is_array($settings) || !array_key_exists($key, $settings)) return false;
 
         unset($settings[$key]);
@@ -586,19 +632,75 @@ class Settings
     }
 
     /**
-     * Atomically write the file-based settings array to disk.
+     * Atomically write the file-based settings to disk in INI format.
+     *
+     * Comment-preserving strategy:
+     *   - Reads the existing file line by line.
+     *   - Lines that match an active KEY = value pattern are updated in place
+     *     or removed (if the key was deleted from $settings).
+     *   - All other lines (comments, blank lines) are kept untouched.
+     *   - Keys that are new (not yet in the file) are appended at the end.
+     *   - If the file does not exist yet, the bundled template is used as the
+     *     starting point so the user always gets the documented header.
+     *
      * Uses a temp file + rename() to prevent partial writes on crash.
      */
     private static function _writeFileBasedSettings(string $file, array $settings): bool|string
     {
-        $lines = ["<?php\n", "return [\n"];
-        foreach ($settings as $key => $value) {
-            $lines[] = "    '{$key}' => " . var_export($value, true) . ",\n";
-        }
-        $lines[] = "];\n";
+        // Load existing lines, or fall back to the bundled template
+        $lines = file_exists($file) ? (file($file) ?: []) : [];
 
-        $tmp = $file . '.tmp';
-        if (file_put_contents($tmp, implode('', $lines), LOCK_EX) === false) {
+        if (empty($lines)) {
+            $tpl = defined('WB_PATH')
+                ? WB_PATH . '/admin/interface/config_constants.template.ini.php'
+                : null;
+            $lines = ($tpl && file_exists($tpl)) ? (file($tpl) ?: []) : [];
+            if (empty($lines)) {
+                $lines = [";<?php die(); ?>\n", "\n"];
+            }
+        }
+
+        // Walk existing lines: update in-place or drop deleted keys
+        $handled  = [];
+        $newLines = [];
+
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+
+            // Active setting line: KEY = value (not a comment, not blank)
+            if ($trimmed !== ''
+                && !str_starts_with($trimmed, ';')
+                && !str_starts_with($trimmed, '#')
+                && preg_match('/^([A-Z][A-Z0-9_]*)\s*=/', $trimmed, $m)
+            ) {
+                $key = $m[1];
+                if (array_key_exists($key, $settings)) {
+                    $newLines[]    = $key . ' = ' . self::_iniExportValue($settings[$key]) . "\n";
+                    $handled[$key] = true;
+                }
+                // Key absent from $settings → was deleted → skip line
+                continue;
+            }
+
+            $newLines[] = $line; // comment, blank line — always keep
+        }
+
+        // Append keys that are new (not yet present in the file)
+        $newKeys = array_diff_key($settings, $handled);
+        if (!empty($newKeys)) {
+            $last = end($newLines);
+            if ($last !== false && trim((string)$last) !== '') {
+                $newLines[] = "\n";
+            }
+            foreach ($newKeys as $key => $value) {
+                $newLines[] = $key . ' = ' . self::_iniExportValue($value) . "\n";
+            }
+        }
+
+        // Atomic write
+        $content = implode('', $newLines);
+        $tmp     = $file . '.tmp';
+        if (file_put_contents($tmp, $content, LOCK_EX) === false) {
             return "File-based Settings: could not write to '{$tmp}'";
         }
         if (!rename($tmp, $file)) {
@@ -607,10 +709,35 @@ class Settings
         }
         return false;
     }
+
+    /**
+     * Format a scalar value for writing into an INI file.
+     *
+     * Strings containing INI special characters (;  #  =  newlines  quotes
+     * or curly braces used in JSON) are wrapped in double quotes with internal
+     * quotes and backslashes escaped. This makes json_encode() output safe to
+     * round-trip through parse_ini_file(INI_SCANNER_TYPED).
+     */
+    private static function _iniExportValue(mixed $value): string
+    {
+        if (is_bool($value))  return $value ? 'true' : 'false';
+        if (is_int($value))   return (string)$value;
+        if (is_float($value)) return (string)$value;
+
+        $str = (string)$value;
+        // Quote strings that contain INI special characters, whitespace padding,
+        // double quotes (e.g. JSON), or curly braces
+        if ($str !== ltrim($str) || $str !== rtrim($str)
+            || preg_match('/[;#=\n\r"{}]/', $str)
+        ) {
+            return '"' . str_replace(['\\', '"'], ['\\\\', '\\"'], $str) . '"';
+        }
+        return $str;
+    }
     /**
      * Check whether a constant originates from the file-based settings store.
      *
-     * Returns true  — key exists in /var/wbce_file_based_settings.php.
+     * Returns true  — key exists in /var/config_constants.php.
      * Returns false — key absent from file, or file unreadable, or
      *                 constant was hardcoded elsewhere (e.g. config.php).
      *
@@ -627,7 +754,7 @@ class Settings
            return false;
        }
 
-       $settings = include $file;
+       $settings = parse_ini_file($file, false, INI_SCANNER_TYPED);
        return is_array($settings) && array_key_exists($key, $settings);
     }
 

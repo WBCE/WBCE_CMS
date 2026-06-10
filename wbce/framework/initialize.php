@@ -35,11 +35,11 @@ ob_start();
 // During istallation WB_PATH is not defined yet, therefore we do it he for that case.
 defined("WB_PATH") or define("WB_PATH", dirname(__DIR__));
 
-// Load Constants from var/wbce_file_based_settings.php early
+// Load Constants from var/config_constants.php early
 // allows for setting constants via the backend rather than manually in the config.php.
 // Up till WBCE 1.7.0 many constants (e.g. WB_DEBUG) have been set in the config.php file
 // which can be done more conveniently with file based settings now.
-define('WBCE_FILE_BASED_SETTINGS', WB_PATH . '/var/wbce_file_based_settings.php');
+define('WBCE_FILE_BASED_SETTINGS', WB_PATH . '/var/config_constants.ini.php');
 wbce_load_file_based_settings();
 
 // WBCE_DEBUG / WB_DEBUG — backward-compatibility bridge
@@ -524,14 +524,15 @@ function wbce_get_init_files(string $functionType): array
  */
 function wbce_load_file_based_settings(): void
 {
-    // the constant WBCE_FILE_BASED_SETTINGS is defined at the top of the 
-    // initialize.php once, right after define WB_PATH
+    // WBCE_FILE_BASED_SETTINGS is defined at the top of initialize.php,
+    // right after WB_PATH. The file uses INI format (.ini.php) so it is
+    // protected against direct browser access via the leading ;<?php die(); 
     $file = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
     if (!$file || !file_exists($file)) return;
 
-    $settings = include $file; // the file contains a simple, one dimensional array
-    if (!is_array($settings)) {
-        trigger_error("File-based Settings: invalid format in " . basename($file), E_USER_WARNING);
+    $settings = parse_ini_file($file, false, INI_SCANNER_TYPED);
+    if ($settings === false) {
+        trigger_error("File-based Settings: could not parse " . basename($file), E_USER_WARNING);
         return;
     }
 
