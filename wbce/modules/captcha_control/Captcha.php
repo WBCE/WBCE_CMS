@@ -15,12 +15,12 @@
  *
  * Settings table
  * ──────────────
- *   captcha_type              → 'altcha' (only valid value now)
- *   enabled_captcha           → true
- *   enabled_asp               → true/false  (honeypot extra layer)
- *   captcha_altcha_hmac_key   → 64-char hex (generate with AltchaLib::generateHmacKey())
- *   captcha_altcha_max        → integer, default 50000
- *   captcha_altcha_ttl        → seconds,  default 600
+ *   enabled_captcha  → true/false  (flat row → constant ENABLED_CAPTCHA)
+ *   enabled_asp      → true/false  (flat row → constant ENABLED_ASP)
+ *   captcha_type     → 'altcha'    (flat row → constant CAPTCHA_TYPE)
+ *   captcha_altcha   → JSON: { hmac_key, max, ttl,
+ *                              auto, delay, hidefooter, hidelogo,
+ *                              color_brand, color_base, color_text, border_radius }
  *
  * @author      Ryan Djurovich, WebsiteBaker Project, WBCE contributors
  * @author      Christian M. Stefan (refactored)
@@ -29,6 +29,55 @@
 
 class Captcha
 {
+    // ── Config ────────────────────────────────────────────────────────────────
+
+    /** @var array|null Cached ALTCHA provider settings — null until first getAltchaCfg() call */
+    private static ?array $altchaCfg = null;
+
+    /** ALTCHA provider defaults */
+    private static array $altchaCfgDefaults = [
+        'hmac_key'      => '',
+        'max'           => 50000,
+        'ttl'           => 600,
+        // Widget customization (empty = use ALTCHA's own defaults)
+        'auto'          => 'off',   // 'off' | 'onload' | 'onsubmit'
+        'delay'         => 0,       // ms pause before PoW starts (0–3000)
+        'hidefooter'    => false,   // hide "Powered by ALTCHA" footer
+        'hidelogo'      => false,   // hide ALTCHA shield logo in footer
+        'color_brand'   => '',      // --altcha-color-brand   (hex or '')
+        'color_base'    => '',      // --altcha-color-base    (hex or '')
+        'color_text'    => '',      // --altcha-color-text    (hex or '')
+        'border_radius' => '',      // --altcha-border-radius (''|'0px'|'4px'|'12px')
+    ];
+
+    /**
+     * Load and cache the ALTCHA provider settings from the 'captcha_altcha' JSON key.
+     * Falls back to $altchaCfgDefaults for any missing key.
+     *
+     * Note: enabled_captcha / enabled_asp / captcha_type are stored as flat
+     * Settings rows and are available as PHP constants (ENABLED_CAPTCHA etc.)
+     * so all modules — including older ones — can read them without changes.
+     */
+    public static function getAltchaCfg(): array
+    {
+        if (self::$altchaCfg === null) {
+            self::$altchaCfg = array_merge(
+                self::$altchaCfgDefaults,
+                json_decode(Settings::get('captcha_altcha', '{}'), true) ?? []
+            );
+        }
+        return self::$altchaCfg;
+    }
+
+    /**
+     * Invalidate the ALTCHA config cache.
+     * Must be called after Settings::set('captcha_altcha', ...).
+     */
+    public static function resetAltchaCfg(): void
+    {
+        self::$altchaCfg = null;
+    }
+
     // ── Public API ────────────────────────────────────────────────────────────
 
     /**
@@ -191,22 +240,100 @@ class Captcha
         // Sync token — lets legacy modules' own $_POST['captcha'] check pass.
         self::renderSyncInput($sec_id);
 
-        // Widget
-        echo '<altcha-widget'
-            . ' id="' . h($widgetId) . '"'
-            . ' challenge="' . h($challengeUrl) . '"'
-            . ' name="' . h($inputName) . '"'
-            . ' auto="off"'
-            . ' language="' . h($i18nCode) . '"'
-            . '></altcha-widget>' . "\n";
+        // Widget — apply saved customization settings
+        $cfg      = self::getAltchaCfg();
+        $autoAttr = in_array($cfg['auto'] ?? '', ['onload', 'onsubmit']) ? $cfg['auto'] : 'off';
+
+        $attrStr = ' id="' . h($widgetId) . '"'
+                 . ' challenge="' . h($challengeUrl) . '"'
+                 . ' name="' . h($inputName) . '"'
+                 . ' auto="' . $autoAttr . '"'
+                 . ' language="' . h($i18nCode) . '"';
+
+        // Widget CSS customization.
+        //
+        // ALTCHA's .altcha* { all: revert-layer } breaks CSS custom-property inheritance for
+        // nested children. We therefore target the ACTUAL CSS PROPERTIES directly using
+        // high-specificity child selectors emitted as an inline <style> immediately before
+        // the widget. This sidesteps all cascade/variable-inheritance issues.
+        //
+        // Additionally, CSS variables on the host element are still set (style="") for
+        // .altcha-main (background/text/radius), because that element is a direct child and
+        // is NOT matched by `.altcha *`.
+        $wid = $widgetId;   // short alias for selectors below
+
+        // ── Build inline style for the host element (direct child .altcha-main) ──
+        $hostStyle = '';
+        if (!empty($cfg['color_base'])) {
+            $hostStyle .= '--altcha-color-base:' . h($cfg['color_base']) . ';';
+        }
+        // Text color: explicit or auto-contrast to keep logo/text visible on custom dark bg
+        $textColor = '';
+        if (!empty($cfg['color_text'])) {
+            $textColor = h($cfg['color_text']);
+        } elseif (!empty($cfg['color_base'])) {
+            $hex  = ltrim($cfg['color_base'], '#');
+            $r    = hexdec(substr($hex, 0, 2)) / 255;
+            $g    = hexdec(substr($hex, 2, 2)) / 255;
+            $b    = hexdec(substr($hex, 4, 2)) / 255;
+            $lum  = 0.299 * $r + 0.587 * $g + 0.114 * $b;
+            $textColor = $lum < 0.5 ? '#f9fafb' : '#111827';
+        }
+        if ($textColor !== '')             { $hostStyle .= '--altcha-color-base-content:' . $textColor . ';'; }
+        if (!empty($cfg['border_radius'])) { $hostStyle .= '--altcha-border-radius:'      . h($cfg['border_radius']) . ';'; }
+        if ($hostStyle !== '') { $attrStr .= ' style="' . $hostStyle . '"'; }
+
+        // ── Build direct child-element rules (bypass CSS-var inheritance) ──────────
+        // We collect checkbox-input rules separately so brand + base can both
+        // contribute to a single selector (avoids duplicate rule overhead).
+        $cbRules    = '';
+        $styleBlock = '';
+
+        if (!empty($cfg['color_brand'])) {
+            $brand    = h($cfg['color_brand']);
+            // Checkbox: accent border, 2 px thick to match the preview mock
+            $cbRules .= 'border-color:' . $brand . '!important;'
+                      . 'border-width:2px!important;'
+                      . 'border-style:solid!important;';
+            // Spinner ring (top + left sides; bottom+right stay transparent)
+            $styleBlock .= '#' . $wid . ' .altcha-spinner{'
+                         . 'border-top-color:'  . $brand . '!important;'
+                         . 'border-left-color:' . $brand . '!important;}';
+            // Primary button (resend / popover, if ever visible)
+            $styleBlock .= '#' . $wid . ' .altcha-button{'
+                         . 'background:' . $brand . '!important;'
+                         . 'border-color:' . $brand . '!important;}';
+        }
+        // Checkbox background must match the widget background; the native <input>
+        // defaults to white, which looks wrong on dark themes.
+        if (!empty($cfg['color_base'])) {
+            $cbRules .= 'background-color:' . h($cfg['color_base']) . '!important;';
+        }
+        if ($cbRules !== '') {
+            $styleBlock = '#' . $wid . ' .altcha-checkbox input{' . $cbRules . '}' . $styleBlock;
+        }
+        if ($styleBlock !== '') {
+            // I::insertCssCode() avoids WBCE's {placeholder} processor eating CSS braces.
+            I::insertCssCode($styleBlock, 'HEAD BTM-');
+        }
+
+        // hideFooter / hideLogo are NOT observed as direct HTML attributes in this ALTCHA version.
+        // They must be passed via the `configuration` JSON attribute (calls configure() internally).
+        $widgetCfg = [];
+        if (!empty($cfg['hidefooter'])) { $widgetCfg['hideFooter'] = true; }
+        if (!empty($cfg['hidelogo']))   { $widgetCfg['hideLogo']   = true; }
+        if (!empty($widgetCfg))         { $attrStr .= ' configuration="' . h(json_encode($widgetCfg)) . '"'; }
+
+        echo '<altcha-widget' . $attrStr . '></altcha-widget>' . "\n";
 
         // statechange listener — fills the sync input when widget verifies.
+        // Uses I::insertJsCode() instead of echo '<script>' to avoid WBCE's
+        // {placeholder} template processor mangling the JS curly braces.
         $syncInputId = 'captcha_sync_' . ($sec_id !== '' ? $sec_id : 'default');
         $jsWidget    = json_encode($widgetId);
         $jsSync      = json_encode($syncInputId);
         $jsToken     = json_encode($_SESSION['captcha' . $sec_id] ?? '');
-        echo '<script>'
-            . '(function(){'
+        $jsCode = '(function(){'
             .   'var w=document.getElementById(' . $jsWidget . ');'
             .   'if(!w)return;'
             .   'w.addEventListener("statechange",function(e){'
@@ -215,8 +342,8 @@ class Captcha
             .       'if(f)f.value=' . $jsToken . ';'
             .     '}'
             .   '});'
-            . '})();'
-            . '</script>' . "\n";
+            . '})();';
+        I::insertJsCode($jsCode, 'HEAD BTM-');
     }
 
     /**
@@ -242,9 +369,9 @@ class Captcha
             return false;
         }
 
-        $hmacKey = defined('CAPTCHA_ALTCHA_HMAC_KEY') ? CAPTCHA_ALTCHA_HMAC_KEY : '';
+        $hmacKey = self::getAltchaCfg()['hmac_key'] ?? '';
         if (empty($hmacKey)) {
-            trigger_error('ALTCHA: CAPTCHA_ALTCHA_HMAC_KEY is not set.', E_USER_WARNING);
+            trigger_error('ALTCHA: hmac_key is not configured in captcha_altcha settings.', E_USER_WARNING);
             return false;
         }
 

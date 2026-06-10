@@ -1,0 +1,21 @@
+/* ── Widget customization styles ─────────────────────────────────────────── */
+.altcha-cust-section   { margin-top:10px; padding-top:14px; }
+.altcha-cust-section h4{ margin:0 0 14px; font-size:14px; font-weight:600; color:#374151; }
+.altcha-h-radios       { display:flex; flex-wrap:wrap; gap:6px 20px; align-items:center; }
+.altcha-h-radios label { display:flex; align-items:center; gap:5px; cursor:pointer; white-space:nowrap; font-weight:normal; }
+.altcha-swatch         { display:inline-block; width:16px; height:16px; border-radius:3px;
+                         border:1px solid rgba(0,0,0,.2); flex-shrink:0; vertical-align:middle; }
+
+/* ── Live preview mock ────────────────────────────────────────────────────── */
+.altcha-mock           { max-width:320px; border:1px solid #d1d5db; border-radius:4px;
+                         background:#fff; font-family:inherit; font-size:14px; overflow:hidden;
+                         transition:background .15s, border-radius .15s; }
+.altcha-mock-body      { display:flex; align-items:center; gap:12px; padding:14px 16px; }
+.altcha-mock-cb        { width:22px; height:22px; border:2px solid #6d28d9; border-radius:3px;
+                         flex-shrink:0; transition:border-color .15s; }
+.altcha-mock-text      { flex:1; color:#111827; transition:color .15s; }
+.altcha-mock-logo      { display:inline-flex; align-items:center; flex-shrink:0;
+                         margin-left:auto; opacity:0.7; transition:color .15s; }
+.altcha-mock-footer    { display:flex; justify-content:flex-end; align-items:center;
+                         padding:4px 16px 8px; font-size:11px; opacity:0.7;
+                         transition:color .15s; }

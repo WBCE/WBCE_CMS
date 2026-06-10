@@ -15,15 +15,25 @@ if (count(get_included_files()) == 1) {
     exit;
 }
 
-// Core settings
-Settings::Set('enabled_captcha', 'true');
-Settings::Set('enabled_asp',     'true');
-Settings::Set('captcha_type',    'altcha');
+// Flat settings — each becomes a PHP constant via Settings::setup(),
+// making them readable by all modules without any code changes.
+Settings::set('enabled_captcha', 'true',   false);
+Settings::set('enabled_asp',     'true',   false);
+Settings::set('captcha_type',    'altcha', false);
 
-// ALTCHA tuning
-Settings::Set('captcha_altcha_max', '50000');
-Settings::Set('captcha_altcha_ttl', '600');
-
-// Generate a random HMAC key (64-char hex) — stored once, never regenerated
+// ALTCHA provider internals — stored as JSON, not needed as constants
 require_once WB_PATH . '/modules/captcha_control/altcha/AltchaLib.php';
-Settings::Set('captcha_altcha_hmac_key', AltchaLib::generateHmacKey());
+Settings::set('captcha_altcha', json_encode([
+    'hmac_key'      => AltchaLib::generateHmacKey(), // generated once, never regenerated
+    'max'           => 50000,
+    'ttl'           => 600,
+    // Widget customization defaults (empty = ALTCHA built-in defaults)
+    'auto'          => 'off',
+    'delay'         => 0,
+    'hidefooter'    => false,
+    'hidelogo'      => false,
+    'color_brand'   => '',
+    'color_base'    => '',
+    'color_text'    => '',
+    'border_radius' => '',
+]), false);

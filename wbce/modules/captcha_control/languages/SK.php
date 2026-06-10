@@ -20,8 +20,6 @@ $MOD_CAPTCHA_CONTROL['CAPTCHA_CONF'] = 'CAPTCHA Konfigur&aacute;cia';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_TYPE'] = 'Typ CAPTCHA';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_EXP'] = 'CAPTCHA settings for modules are located in the respective module settings';
 $MOD_CAPTCHA_CONTROL['USE_SIGNUP_CAPTCHA'] = 'Aktivova&#357; CAPTCHA pre prihl&aacute;senie';
-$MOD_CAPTCHA_CONTROL['ENABLED'] = 'Povoli&#357;';
-$MOD_CAPTCHA_CONTROL['DISABLED'] = 'Zak&aacute;za&#357;';
 $MOD_CAPTCHA_CONTROL['ASP_CONF'] = 'Advanced Spam Protection Konfigur&aacute;cia';
 $MOD_CAPTCHA_CONTROL['ASP_TEXT'] = 'Aktivova&#357; ASP (ak je dostupn&eacute;)';
 $MOD_CAPTCHA_CONTROL['ASP_EXP'] = 'ASP sa sna&#382;&iacute; zisti&#357;, &#269;i forma vstupu poch&aacute;dza od &#269;loveka alebo spam-bota.';
@@ -42,3 +40,6 @@ $MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'Vlo&#382;te v&yacute;sledok';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Vlo&#382;te text';
 $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Odpoveï na ot&aacute;zku';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Overenie zlyhalo';
+
+// ── CAPTCHA namespace ─────────────────────────────────────────────────────────
+$CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>D&Ocirc;LE&#381;IT&Eacute;:</b> Jednotliv&eacute; moduly ako <i>MiniForm</i>, <i>Guestbook</i> at&#271;. maj&uacute; vlastn&eacute; nastavenia pre pou&#382;itie Captcha vo formul&aacute;ri modulu. <br><b>Skontrolujte nastavenia pr&iacute;slu&scaron;n&yacute;ch modulov</b>.';

@@ -19,8 +19,6 @@ $MOD_CAPTCHA_CONTROL['CAPTCHA_CONF'] = 'Configuração CAPTCHA';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_TYPE'] = 'Tipo de CAPTCHA';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_EXP'] = 'As configurações do CAPTCHA para módulos estão localizadas nas respectivas configurações do módulo';
 $MOD_CAPTCHA_CONTROL['USE_SIGNUP_CAPTCHA'] = 'Ativar CAPTCHA para inscrição';
-$MOD_CAPTCHA_CONTROL['ENABLED'] = 'ativado';
-$MOD_CAPTCHA_CONTROL['DISABLED'] = 'Desativado';
 $MOD_CAPTCHA_CONTROL['ASP_CONF'] = 'Configuração avançada de proteção contra spam';
 $MOD_CAPTCHA_CONTROL['ASP_TEXT'] = 'Ativar ASP (se disponível)';
 $MOD_CAPTCHA_CONTROL['ASP_EXP'] = 'O ASP tenta determinar se uma entrada de formulário foi originada de um humano ou de um bot de spam.';
@@ -40,3 +38,6 @@ $MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'Preencha o resultado';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Preencha o texto';
 $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Responda à pergunta';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Falha na verificação';
+
+// ── CAPTCHA namespace ─────────────────────────────────────────────────────────
+$CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>IMPORTANTE:</b> M&oacute;dulos individuais como <i>MiniForm</i>, <i>Guestbook</i>, etc. t&ecirc;m suas pr&oacute;prias configura&ccedil;&otilde;es para o uso do Captcha no formul&aacute;rio do m&oacute;dulo. <br><b>Verifique as configura&ccedil;&otilde;es dos respectivos m&oacute;dulos</b>.';

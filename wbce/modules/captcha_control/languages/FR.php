@@ -22,8 +22,6 @@ $MOD_CAPTCHA_CONTROL['CAPTCHA_CONF'] = 'Configuration du CAPTCHA';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_TYPE'] = 'Type de CAPTCHA';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_EXP'] = 'les r&eacute;glagles des CAPTCHA pour les modules sont d&eacute;finis dans leurs pr&eacute;f&eacute;rences respectives';
 $MOD_CAPTCHA_CONTROL['USE_SIGNUP_CAPTCHA'] = 'CAPTCHA avant validation';
-$MOD_CAPTCHA_CONTROL['ENABLED'] = 'Activ&eacute;';
-$MOD_CAPTCHA_CONTROL['DISABLED'] = 'D&eacute;sactiv&eacute;';
 $MOD_CAPTCHA_CONTROL['ASP_CONF'] = 'Configuration de l&apos;ASP (Advanced Spam Protection)';
 $MOD_CAPTCHA_CONTROL['ASP_TEXT'] = 'Activer ASP (si disponible)';
 $MOD_CAPTCHA_CONTROL['ASP_EXP'] = 'ASP tente de d&eacute;terminer si un formulaire &agrave; &eacute;t&eacute; post&eacute; par un humain ou un spam-bot.';
@@ -44,3 +42,6 @@ $MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'Indiquez le r&eacute;sultat';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Remplissez le texte';
 $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'R&eacute;pondez &agrave; la question';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Erreur de v&eacute;rification';
+
+// ── CAPTCHA namespace ─────────────────────────────────────────────────────────
+$CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>IMPORTANT&nbsp;:</b> Les modules individuels tels que <i>MiniForm</i>, <i>Guestbook</i>, etc. poss&egrave;dent leurs propres param&egrave;tres concernant l&apos;utilisation du Captcha dans le formulaire du module. <br><b>Veuillez v&eacute;rifier les param&egrave;tres des modules concern&eacute;s</b>.';

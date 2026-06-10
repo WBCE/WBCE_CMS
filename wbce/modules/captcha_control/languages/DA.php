@@ -41,3 +41,6 @@ $MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'Inds&Atilde;&brvbar;t resultat';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Inds&Atilde;&brvbar;t tekst';
 $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Besvar sp&Atilde;¸rgsm&Atilde;&yen;l';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Verificering mislykkedes';
+
+// ── CAPTCHA namespace ─────────────────────────────────────────────────────────
+$CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>VIGTIGT:</b> Individuelle moduler som <i>MiniForm</i>, <i>Guestbook</i> m.fl. har deres egne indstillinger for, om Captcha skal bruges i modulets formular. <br><b>Kontroller venligst indstillingerne for de respektive moduler</b>.';

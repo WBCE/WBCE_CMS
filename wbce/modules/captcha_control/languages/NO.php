@@ -19,8 +19,6 @@ $MOD_CAPTCHA_CONTROL['CAPTCHA_CONF'] = 'CAPTCHA Konfigurasjon';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_TYPE'] = 'Type CAPTCHA';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_EXP'] = 'CAPTCHA instillinger for modulene, finner du under innstillinger i de respektive modulene.';
 $MOD_CAPTCHA_CONTROL['USE_SIGNUP_CAPTCHA'] = 'Aktiver CAPTCHA for brukerregistreringen';
-$MOD_CAPTCHA_CONTROL['ENABLED'] = 'Aktivert';
-$MOD_CAPTCHA_CONTROL['DISABLED'] = 'Deaktivert';
 $MOD_CAPTCHA_CONTROL['ASP_CONF'] = 'Konfigrering av Avansert Spam Beskyttelse';
 $MOD_CAPTCHA_CONTROL['ASP_TEXT'] = 'Aktiver ASP (om tilgjengelig)';
 $MOD_CAPTCHA_CONTROL['ASP_EXP'] = 'ASP vil pr&oslash;ve &aring; fastsl&aring; hvor hvidt innfyllingen i et skjema ble gjort av et meneske eller en spam-robot.';
@@ -41,3 +39,6 @@ $MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'Skriv inn ressultatet';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Skriv inn teksten';
 $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Svar p&aring; sp&oslash;rsm&aring;let';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Feil ved verifiseringen';
+
+// ── CAPTCHA namespace ─────────────────────────────────────────────────────────
+$CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>VIKTIG:</b> Individuelle moduler som <i>MiniForm</i>, <i>Guestbook</i> osv. har egne innstillinger for om Captcha skal brukes i modulens skjema. <br><b>Kontroller innstillingene for de respektive modulene</b>.';

@@ -44,56 +44,43 @@ if (!file_exists($_lib)) {
 }
 require_once $_lib;
 
-// ── 5. Resolve HMAC key ───────────────────────────────────────────────────────
+// ── 5. Load ALTCHA provider settings ─────────────────────────────────────────
 //
-// WBCE defines settings-table rows as constants only for rows it explicitly
-// loads (typically in config.php via a loop over wb_settings). If you added
-// captcha_altcha_hmac_key to the settings table but WBCE hasn't picked it up
-// as a constant yet, we fall back to a direct DB read here.
+// Settings::setup() defines CAPTCHA_ALTCHA as a JSON string constant.
+// Fall back to a direct DB read if the constant is not yet available.
 //
-$hmacKey = '';
+$altchaCfg = [];
 
-if (defined('CAPTCHA_ALTCHA_HMAC_KEY') && CAPTCHA_ALTCHA_HMAC_KEY !== '') {
-    // Happy path: already defined as a constant by WBCE bootstrap.
-    $hmacKey = CAPTCHA_ALTCHA_HMAC_KEY;
+if (defined('CAPTCHA_ALTCHA') && CAPTCHA_ALTCHA !== '') {
+    // Happy path: constant defined by Settings::setup() during WBCE bootstrap.
+    $altchaCfg = json_decode(CAPTCHA_ALTCHA, true) ?? [];
 
 } elseif (isset($database)) {
     // Fallback: read directly from the settings table.
-    // $database is the WBCE global DB object (available after config.php).
-    $row = $database->get_one(
-        "SELECT `value` FROM `" . TABLE_PREFIX . "settings` WHERE `name` = 'captcha_altcha_hmac_key' LIMIT 1"
+    $raw = $database->fetchValue(
+        "SELECT `value` FROM `{TP}settings` WHERE `name` = 'captcha_altcha'"
     );
-    if (!empty($row)) {
-        $hmacKey = $row;
-        // Define for the rest of this request so other code can use it.
-        define('CAPTCHA_ALTCHA_HMAC_KEY', $hmacKey);
+    if (!empty($raw)) {
+        $altchaCfg = json_decode($raw, true) ?? [];
     }
+}
+
+$hmacKey   = $altchaCfg['hmac_key'] ?? '';
+$maxNumber = (int)($altchaCfg['max'] ?? 50000) ?: 50000;
+$ttl       = (int)($altchaCfg['ttl'] ?? 600)   ?: 600;
+
+// Backward-compat: installations mid-upgrade may still have the old flat key
+if (empty($hmacKey) && isset($database)) {
+    $hmacKey = (string)($database->fetchValue(
+        "SELECT `value` FROM `{TP}settings` WHERE `name` = 'captcha_altcha_hmac_key'"
+    ) ?? '');
 }
 
 if (empty($hmacKey)) {
     altcha_json_error(500,
-        'ALTCHA HMAC key not found. ' .
-        'Add a row (name=captcha_altcha_hmac_key, value=<64-char hex>) to ' .
-        TABLE_PREFIX . 'settings, or define CAPTCHA_ALTCHA_HMAC_KEY in config.php.'
+        'ALTCHA HMAC key not configured. ' .
+        'Open Admin Tools → captcha_control and save the settings once to generate a key.'
     );
-}
-
-// ── 6. Resolve optional tuning settings (same fallback pattern) ───────────────
-$maxNumber = 50000;
-$ttl       = 600;
-
-if (defined('CAPTCHA_ALTCHA_MAX') && (int)CAPTCHA_ALTCHA_MAX > 0) {
-    $maxNumber = (int)CAPTCHA_ALTCHA_MAX;
-} elseif (isset($database)) {
-    $row = $database->get_one("SELECT `value` FROM `" . TABLE_PREFIX . "settings` WHERE `name` = 'captcha_altcha_max' LIMIT 1");
-    if (!empty($row)) $maxNumber = (int)$row;
-}
-
-if (defined('CAPTCHA_ALTCHA_TTL') && (int)CAPTCHA_ALTCHA_TTL > 0) {
-    $ttl = (int)CAPTCHA_ALTCHA_TTL;
-} elseif (isset($database)) {
-    $row = $database->get_one("SELECT `value` FROM `" . TABLE_PREFIX . "settings` WHERE `name` = 'captcha_altcha_ttl' LIMIT 1");
-    if (!empty($row)) $ttl = (int)$row;
 }
 
 // ── 7. Light rate limiting (session-based, per minute) ────────────────────────

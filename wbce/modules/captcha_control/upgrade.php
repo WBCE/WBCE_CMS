@@ -17,27 +17,48 @@ if (count(get_included_files()) == 1) {
     exit;
 }
 
-// Force captcha_type to altcha — old image types are gone
-Settings::Set('captcha_type', 'altcha');
+// ── 1. Ensure flat control settings exist ────────────────────────────────────
+//
+// These become PHP constants (ENABLED_CAPTCHA etc.) via Settings::setup(),
+// so any module can read them. Force captcha_type to 'altcha' — old types gone.
 
-// ALTCHA tuning — only set if not already configured
-if (!Settings::Get('captcha_altcha_max')) {
-    Settings::Set('captcha_altcha_max', '50000');
-}
-if (!Settings::Get('captcha_altcha_ttl')) {
-    Settings::Set('captcha_altcha_ttl', '600');
-}
+Settings::set('captcha_type', 'altcha');
+if (!Settings::exists('enabled_captcha')) Settings::set('enabled_captcha', 'true',  false);
+if (!Settings::exists('enabled_asp'))     Settings::set('enabled_asp',     'true',  false);
 
-// Generate HMAC key only if not already set
-if (!Settings::Get('captcha_altcha_hmac_key')) {
+// ── 2. Migrate ALTCHA provider settings → JSON (runs only once) ──────────────
+//
+// Collects the three ALTCHA-internal values into one 'captcha_altcha' JSON row.
+// Preserves the existing HMAC key — must never be regenerated silently.
+// Also handles installations that went through the short-lived 'captcha_cfg'
+// all-in-one JSON phase.
+
+if (!Settings::exists('captcha_altcha')) {
     require_once WB_PATH . '/modules/captcha_control/altcha/AltchaLib.php';
-    Settings::Set('captcha_altcha_hmac_key', AltchaLib::generateHmacKey());
+
+    // Try flat key first, then captcha_cfg JSON (previous migration attempt)
+    $hmac = Settings::get('captcha_altcha_hmac_key', '');
+    if (empty($hmac)) {
+        $prev = json_decode(Settings::get('captcha_cfg', '{}'), true) ?? [];
+        $hmac = $prev['altcha_hmac_key'] ?? '';
+    }
+    if (empty($hmac)) {
+        $hmac = AltchaLib::generateHmacKey();
+    }
+
+    Settings::set('captcha_altcha', json_encode([
+        'hmac_key' => $hmac,
+        'max'      => (int)(Settings::get('captcha_altcha_max', 50000) ?: 50000),
+        'ttl'      => (int)(Settings::get('captcha_altcha_ttl', 600)   ?: 600),
+    ]));
+
+    // Clean up superseded keys
+    foreach (['captcha_altcha_hmac_key', 'captcha_altcha_max', 'captcha_altcha_ttl', 'captcha_cfg'] as $key) {
+        if (Settings::exists($key)) Settings::delete($key);
+    }
 }
 
-// Remove obsolete settings from previous versions
+// ── 3. Remove legacy keys from pre-3.x versions ──────────────────────────────
 foreach (['asp_session_min_age', 'asp_view_min_age', 'asp_input_min_age', 'ct_text'] as $key) {
-    // Settings::Delete() if available, otherwise leave — harmless extra rows
-    if (method_exists('Settings', 'Delete')) {
-        Settings::Delete($key);
-    }
+    if (Settings::exists($key)) Settings::delete($key);
 }

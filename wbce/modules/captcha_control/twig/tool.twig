@@ -5,28 +5,30 @@
       FTAN              — FTAN hidden input (raw HTML)
       RETURN_URL        — form action URL
       RETURN_TO_TOOLS   — back-button URL (tools list)
-      MOD               — $MOD_CAPTCHA_CONTROL language array
+      TXT               — language strings array
       USEABLE_CAPTCHAS  — { key: label } map of available captcha types
       CAPTCHA_TYPE      — currently active type key
       ENABLED_CAPTCHA   — '1' or '0'
       ENABLED_ASP       — '1' or '0'
+      ALTCHA            — { auto, delay, hidefooter, hidelogo,
+                            color_brand, color_base, color_text, border_radius }
 #}
 
 <form name="store_settings" action="{{ RETURN_URL }}" method="post">
     {{ FTAN|raw }}
-
+    <input type="hidden" name="captcha_type" value="altcha">
     <div class="cp-settings">
         <div class="cp-toggle-section">
             <div class="cp-card-head">
                 <label><i class="fa fa-shield"></i> {{ TXT.HEADING }}</label>
             </div>
-
+{{ debug_dump() }}
             <section id="settings">
                 <blockquote>
-                    <p>{{ TXT.HOWTO }}</p>
                     <p><b>{{ TXT.CAPTCHA_EXP }}</b></p>
+                    <p>{{ TXT.HOWTO }}</p>
                 </blockquote>
-
+                {% if USEABLE_CAPTCHAS|length > 1 %}asdf
                 {# ── CAPTCHA Type ──────────────────────────────────────────── #}
                 <div class="cp-setting-row">
                     <div class="cp-setting-name">{{ TXT.CAPTCHA_TYPE }}</div>
@@ -42,7 +44,7 @@
                         {% endfor %}
                     </div>
                 </div>
-
+                {% endif %}
                 {# ── Enable Captcha ────────────────────────────────────────── #}
                 <div class="cp-setting-row">
                     <div class="cp-setting-name">{{ TXT.USE_SIGNUP_CAPTCHA }}</div>
@@ -51,12 +53,12 @@
                             <label>
                                 <input type="radio" name="enabled_captcha" value="1"
                                     {{ (ENABLED_CAPTCHA == '1') ? 'checked="checked"' : '' }}>
-                                {{ TXT.ENABLED }}
+                                {{ L_('TXEXT:ENABLED') }}
                             </label>
                             <label style="margin-left:20px;">
                                 <input type="radio" name="enabled_captcha" value="0"
                                     {{ (ENABLED_CAPTCHA == '0') ? 'checked="checked"' : '' }}>
-                                {{ TXT.DISABLED }}
+                                {{ L_('TXEXT:DISABLED') }}
                             </label>
                         </div>
                     </div>
@@ -70,15 +72,213 @@
                             <label>
                                 <input type="radio" name="enabled_asp" value="1"
                                     {{ (ENABLED_ASP == '1') ? 'checked="checked"' : '' }}>
-                                {{ TXT.ENABLED }}
+                                {{ L_('TXEXT:ENABLED') }}
                             </label>
                             <label style="margin-left:20px;">
                                 <input type="radio" name="enabled_asp" value="0"
                                     {{ (ENABLED_ASP == '0') ? 'checked="checked"' : '' }}>
-                                {{ TXT.DISABLED }}
+                                {{ L_('TXEXT:DISABLED') }}
                             </label>
                         </div>
                         <div class="cp-setting-hint">{{ L_('CAPTCHA:ASP_DESCRIPTION') }}</div>
+                    </div>
+                </div>
+                <blockquote class="info">&nbsp;{{ L_("CAPTCHA:MODULES_SETTINGS_INFO") }}</blockquote>
+                {# ══ ALTCHA Widget-Anpassung ════════════════════════════════ #}
+                <section class="altcha-cust-section"> 
+                <div class="cp-card-head">
+                <label><i class="fa fa-wrench"></i> {{ TXT.WIDGET_HEADING }}</label>
+                </div>
+
+                    {# ── Start-Modus ────────────────────────────────────────── #}
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name">{{ TXT.AUTO_LABEL }}</div>
+                        <div class="cp-setting-value">
+                            <div class="altcha-h-radios">
+                                <label><input type="radio" name="altcha_auto" value="off"
+                                    {{ ALTCHA.auto == 'off'      ? 'checked' : '' }}
+                                    onchange="altchaUpdatePreview()"> {{ TXT.AUTO_OFF }}</label>
+                                <label><input type="radio" name="altcha_auto" value="onload"
+                                    {{ ALTCHA.auto == 'onload'   ? 'checked' : '' }}
+                                    onchange="altchaUpdatePreview()"> {{ TXT.AUTO_ONLOAD }}</label>
+                                <label><input type="radio" name="altcha_auto" value="onsubmit"
+                                    {{ ALTCHA.auto == 'onsubmit' ? 'checked' : '' }}
+                                    onchange="altchaUpdatePreview()"> {{ TXT.AUTO_ONSUBMIT }}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Akzentfarbe ────────────────────────────────────────── #}
+                    {% set brand_presets = ['', '#2563eb', '#16a34a', '#ea580c'] %}
+                    {% set brand_custom  = ALTCHA.color_brand not in brand_presets %}
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name">
+                            {{ TXT.COLOR_BRAND }}<br>
+                            <small style="font-weight:normal;">{{ TXT.COLOR_BRAND_HINT|raw }}</small>
+                        </div>
+                        <div class="cp-setting-value">
+                            <div class="altcha-h-radios">
+                                <label><input type="radio" name="altcha_brand_p" value=""
+                                    {{ (not brand_custom and ALTCHA.color_brand == '') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('brand','')">
+                                    <span class="altcha-swatch" style="background:#6d28d9"></span>
+                                    {{ TXT.COLOR_DEFAULT }}</label>
+                                <label><input type="radio" name="altcha_brand_p" value="#2563eb"
+                                    {{ (not brand_custom and ALTCHA.color_brand == '#2563eb') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('brand','#2563eb')">
+                                    <span class="altcha-swatch" style="background:#2563eb"></span> Blau</label>
+                                <label><input type="radio" name="altcha_brand_p" value="#16a34a"
+                                    {{ (not brand_custom and ALTCHA.color_brand == '#16a34a') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('brand','#16a34a')">
+                                    <span class="altcha-swatch" style="background:#16a34a"></span> Grün</label>
+                                <label><input type="radio" name="altcha_brand_p" value="#ea580c"
+                                    {{ (not brand_custom and ALTCHA.color_brand == '#ea580c') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('brand','#ea580c')">
+                                    <span class="altcha-swatch" style="background:#ea580c"></span> Orange</label>
+                                <label>
+                                    <input type="radio" name="altcha_brand_p" value="custom"
+                                           id="altcha_brand_p_custom" {{ brand_custom ? 'checked' : '' }}
+                                           onchange="altchaSetColor('brand', document.getElementById('altcha_brand_picker').value)">
+                                    <input type="color" id="altcha_brand_picker"
+                                           value="{{ brand_custom ? ALTCHA.color_brand : '#6d28d9' }}"
+                                           oninput="document.getElementById('altcha_brand_p_custom').checked=true;altchaSetColor('brand',this.value)">
+                                    {{ TXT.COLOR_CUSTOM }}
+                                </label>
+                            </div>
+                            <input type="hidden" name="altcha_color_brand" id="altcha_color_brand"
+                                   value="{{ ALTCHA.color_brand }}">
+                        </div>
+                    </div>
+
+                    {# ── Hintergrundfarbe ───────────────────────────────────── #}
+                    {% set base_presets = ['', '#f9fafb', '#e5e7eb', '#1f2937'] %}
+                    {% set base_custom  = ALTCHA.color_base not in base_presets %}
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name">{{ TXT.COLOR_BASE }}</div>
+                        <div class="cp-setting-value">
+                            <div class="altcha-h-radios">
+                                <label><input type="radio" name="altcha_base_p" value=""
+                                    {{ (not base_custom and ALTCHA.color_base == '') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('base','')">
+                                    <span class="altcha-swatch" style="background:#fff;border-color:#bbb"></span>
+                                    {{ TXT.COLOR_DEFAULT }}</label>
+                                <label><input type="radio" name="altcha_base_p" value="#f9fafb"
+                                    {{ (not base_custom and ALTCHA.color_base == '#f9fafb') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('base','#f9fafb')">
+                                    <span class="altcha-swatch" style="background:#f9fafb;border-color:#bbb"></span> Hell</label>
+                                <label><input type="radio" name="altcha_base_p" value="#e5e7eb"
+                                    {{ (not base_custom and ALTCHA.color_base == '#e5e7eb') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('base','#e5e7eb')">
+                                    <span class="altcha-swatch" style="background:#e5e7eb"></span> Grau</label>
+                                <label><input type="radio" name="altcha_base_p" value="#1f2937"
+                                    {{ (not base_custom and ALTCHA.color_base == '#1f2937') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('base','#1f2937')">
+                                    <span class="altcha-swatch" style="background:#1f2937"></span> Dunkel</label>
+                                <label>
+                                    <input type="radio" name="altcha_base_p" value="custom"
+                                           id="altcha_base_p_custom" {{ base_custom ? 'checked' : '' }}
+                                           onchange="altchaSetColor('base', document.getElementById('altcha_base_picker').value)">
+                                    <input type="color" id="altcha_base_picker"
+                                           value="{{ base_custom ? ALTCHA.color_base : '#ffffff' }}"
+                                           oninput="document.getElementById('altcha_base_p_custom').checked=true;altchaSetColor('base',this.value)">
+                                    {{ TXT.COLOR_CUSTOM }}
+                                </label>
+                            </div>
+                            <input type="hidden" name="altcha_color_base" id="altcha_color_base"
+                                   value="{{ ALTCHA.color_base }}">
+                        </div>
+                    </div>
+
+                    {# ── Textfarbe ──────────────────────────────────────────── #}
+                    {% set text_presets = ['', '#f9fafb'] %}
+                    {% set text_custom  = ALTCHA.color_text not in text_presets %}
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name">{{ TXT.COLOR_TEXT }}</div>
+                        <div class="cp-setting-value">
+                            <div class="altcha-h-radios">
+                                <label><input type="radio" name="altcha_text_p" value=""
+                                    {{ (not text_custom and ALTCHA.color_text == '') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('text','')">
+                                    <span class="altcha-swatch" style="background:#111827"></span>
+                                    {{ TXT.COLOR_DEFAULT }}</label>
+                                <label><input type="radio" name="altcha_text_p" value="#f9fafb"
+                                    {{ (not text_custom and ALTCHA.color_text == '#f9fafb') ? 'checked' : '' }}
+                                    onchange="altchaSetColor('text','#f9fafb')">
+                                    <span class="altcha-swatch" style="background:#f9fafb;border-color:#bbb"></span> Hell</label>
+                                <label>
+                                    <input type="radio" name="altcha_text_p" value="custom"
+                                           id="altcha_text_p_custom" {{ text_custom ? 'checked' : '' }}
+                                           onchange="altchaSetColor('text', document.getElementById('altcha_text_picker').value)">
+                                    <input type="color" id="altcha_text_picker"
+                                           value="{{ text_custom ? ALTCHA.color_text : '#111827' }}"
+                                           oninput="document.getElementById('altcha_text_p_custom').checked=true;altchaSetColor('text',this.value)">
+                                    {{ TXT.COLOR_CUSTOM }}
+                                </label>
+                            </div>
+                            <input type="hidden" name="altcha_color_text" id="altcha_color_text"
+                                   value="{{ ALTCHA.color_text }}">
+                        </div>
+                    </div>
+
+                    {# ── Eckenrundung ───────────────────────────────────────── #}
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name">{{ TXT.BORDER_RADIUS }}</div>
+                        <div class="cp-setting-value">
+                            <div class="altcha-h-radios">
+                                <label><input type="radio" name="altcha_border_radius" value=""
+                                    {{ ALTCHA.border_radius == ''    ? 'checked' : '' }}
+                                    onchange="altchaUpdatePreview()"> {{ TXT.COLOR_DEFAULT }}</label>
+                                <label><input type="radio" name="altcha_border_radius" value="0px"
+                                    {{ ALTCHA.border_radius == '0px' ? 'checked' : '' }}
+                                    onchange="altchaUpdatePreview()">
+                                    {{ TXT.CORNER_SQUARE }} <small>(0px)</small></label>
+                                <label><input type="radio" name="altcha_border_radius" value="4px"
+                                    {{ ALTCHA.border_radius == '4px' ? 'checked' : '' }}
+                                    onchange="altchaUpdatePreview()">
+                                    {{ TXT.CORNER_LIGHT }} <small>(4px)</small></label>
+                                <label><input type="radio" name="altcha_border_radius" value="12px"
+                                    {{ ALTCHA.border_radius == '12px' ? 'checked' : '' }}
+                                    onchange="altchaUpdatePreview()">
+                                    {{ TXT.CORNER_ROUND }} <small>(12px)</small></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>{# /altcha-cust-section #}
+
+                {# ── Live-Vorschau ──────────────────────────────────────────── #}
+                <div class="cp-setting-row" style="margin-top:16px;">
+                    <div class="cp-setting-name" style="padding-top:12px;"><b>{{ TXT.PREVIEW }}</b></div>
+                    <div class="cp-setting-value">
+                        <div class="altcha-mock" id="altcha-mock">
+                            <div class="altcha-mock-body">
+                                <div class="altcha-mock-cb" id="altcha-mock-cb"></div>
+                                <div class="altcha-mock-text" id="altcha-mock-text">Ich bin kein Roboter</div>
+                                {# ALTCHA logo — right side of main row, same position as real widget #}
+                                <span id="altcha-mock-logo" class="altcha-mock-logo" title="ALTCHA">
+                                    <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.33955 16.4279C5.88954 20.6586 12.1971 21.2105 16.4279 17.6604C18.4699 15.947 19.6548 13.5911 19.9352 11.1365L17.9886 10.4279C17.8738 12.5624 16.909 14.6459 15.1423 16.1284C11.7577 18.9684 6.71167 18.5269 3.87164 15.1423C1.03163 11.7577 1.4731 6.71166 4.8577 3.87164C8.24231 1.03162 13.2883 1.4731 16.1284 4.8577C16.9767 5.86872 17.5322 7.02798 17.804 8.2324L19.9522 9.01429C19.7622 7.07737 19.0059 5.17558 17.6604 3.57212C14.1104 -0.658624 7.80283 -1.21043 3.57212 2.33956C-0.658625 5.88958 -1.21046 12.1971 2.33955 16.4279Z" fill="currentColor"/><path d="M3.57212 2.33956C1.65755 3.94607 0.496389 6.11731 0.12782 8.40523L2.04639 9.13961C2.26047 7.15832 3.21057 5.25375 4.8577 3.87164C8.24231 1.03162 13.2883 1.4731 16.1284 4.8577L13.8302 6.78606L19.9633 9.13364C19.7922 7.15555 19.0335 5.20847 17.6604 3.57212C14.1104 -0.658624 7.80283 -1.21043 3.57212 2.33956Z" fill="currentColor"/><path d="M7 10H5C5 12.7614 7.23858 15 10 15C12.7614 15 15 12.7614 15 10H13C13 11.6569 11.6569 13 10 13C8.3431 13 7 11.6569 7 10Z" fill="currentColor"/></svg>
+                                </span>
+                            </div>
+                            <div class="altcha-mock-footer" id="altcha-mock-footer">
+                                <span id="altcha-mock-footer-text">{{ TXT.WIDGET_FOOTER_TEXT }}</span>
+                            </div>
+                        </div>
+
+                        {# ── Footer / Logo — direkt unter der Preview ─────── #}
+                        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px 24px;">
+                            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-weight:normal;">
+                                <input type="checkbox" id="altcha_hidefooter_cb" name="altcha_hidefooter" value="1"
+                                       {{ ALTCHA.hidefooter ? 'checked' : '' }}
+                                       onchange="altchaUpdatePreview()">
+                                {{ TXT.HIDEFOOTER }}
+                            </label>
+                            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-weight:normal;">
+                                <input type="checkbox" id="altcha_hidelogo_cb" name="altcha_hidelogo" value="1"
+                                       {{ ALTCHA.hidelogo ? 'checked' : '' }}
+                                       onchange="altchaUpdatePreview()">
+                                {{ TXT.HIDELOGO }}
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -94,3 +294,70 @@
         </div>
     </div>
 </form>
+
+<script>
+(function () {
+    'use strict';
+
+    function el(id) { return document.getElementById(id); }
+
+    function altchaUpdatePreview() {
+        var mock    = el('altcha-mock');
+        var footer  = el('altcha-mock-footer');
+        var logo    = el('altcha-mock-logo');       // 🔒 icon only
+        var cb      = el('altcha-mock-cb');
+        var text    = el('altcha-mock-text');
+        if (!mock) return;
+
+        var brand    = el('altcha_color_brand').value || '#6d28d9';
+        var base     = el('altcha_color_base').value  || '#ffffff';
+        var colorRaw = el('altcha_color_text').value;
+
+        // Auto-contrast: keine Textfarbe gesetzt → berechne wie PHP (lum < 0.5 → hell)
+        var color;
+        if (colorRaw) {
+            color = colorRaw;
+        } else {
+            var hx = (base && base.length === 7) ? base : '#ffffff';
+            var rr = parseInt(hx.slice(1,3),16)/255,
+                gg = parseInt(hx.slice(3,5),16)/255,
+                bb = parseInt(hx.slice(5,7),16)/255;
+            color = (0.299*rr + 0.587*gg + 0.114*bb) < 0.5 ? '#f9fafb' : '#111827';
+        }
+
+        var radRadius = document.querySelector('[name="altcha_border_radius"]:checked');
+        var radius = radRadius ? (radRadius.value || '6px') : '6px';
+
+        var hidefooter = el('altcha_hidefooter_cb') && el('altcha_hidefooter_cb').checked;
+        var hidelogo   = el('altcha_hidelogo_cb')   && el('altcha_hidelogo_cb').checked;
+
+        mock.style.background   = base;
+        mock.style.borderRadius = radius;
+        mock.style.borderColor  = (base === '#ffffff' || base === '') ? '#d1d5db' : base;
+        if (text)   text.style.color     = color;
+        if (cb)     cb.style.borderColor = brand;
+        if (footer) { footer.style.display = hidefooter ? 'none' : ''; footer.style.color = color; }
+        if (logo)   { logo.style.display = hidelogo ? 'none' : ''; logo.style.color = color; }
+    }
+
+    function altchaSetColor(field, val) {
+        el('altcha_color_' + field).value = val;
+        altchaUpdatePreview();
+    }
+
+    function altchaDelaySync(val) {
+        val = Math.max(0, Math.min(3000, parseInt(val, 10) || 0));
+        el('altcha_delay_range').value = val;
+        el('altcha_delay_num').value   = val;
+        el('altcha_delay').value       = val;
+    }
+
+    // Expose for inline handlers
+    window.altchaUpdatePreview = altchaUpdatePreview;
+    window.altchaSetColor      = altchaSetColor;
+    window.altchaDelaySync     = altchaDelaySync;
+
+    // Initial render
+    altchaUpdatePreview();
+}());
+</script>

@@ -19,8 +19,6 @@ $MOD_CAPTCHA_CONTROL['CAPTCHA_CONF'] = 'CAPTCHA-configuratie';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_TYPE'] = 'Type CAPTCHA';
 $MOD_CAPTCHA_CONTROL['CAPTCHA_EXP'] = 'Let op: CAPTCHA-instellingen voor modules bevinden zich in de desbetreffende module-instellingen.';
 $MOD_CAPTCHA_CONTROL['USE_SIGNUP_CAPTCHA'] = 'Activeer CAPTCHA voor aanmeldingen';
-$MOD_CAPTCHA_CONTROL['ENABLED'] = 'Inschakelen';
-$MOD_CAPTCHA_CONTROL['DISABLED'] = 'Uitschakelen';
 $MOD_CAPTCHA_CONTROL['ASP_CONF'] = 'Advanced Spam Protection';
 $MOD_CAPTCHA_CONTROL['ASP_TEXT'] = 'Activeer ASP (indien beschikbaar)';
 $MOD_CAPTCHA_CONTROL['ASP_EXP'] = 'ASP probeert te detecteren of het formulier ingevuld werd door een persoon of een spam-bot.';
@@ -41,3 +39,6 @@ $MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'Voer het resultaat in a.u.b.';
 $MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Voer de tekst in a.u.b.';
 $MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Beantwoord de vraag a.u.b.';
 $MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Verificatie mislukt';
+
+// ── CAPTCHA namespace ─────────────────────────────────────────────────────────
+$CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>BELANGRIJK:</b> Afzonderlijke modules zoals <i>MiniForm</i>, <i>Guestbook</i>, enz. hebben hun eigen instellingen voor het gebruik van Captcha in het formulier van de module. <br><b>Controleer de instellingen van de betreffende modules</b>.';
