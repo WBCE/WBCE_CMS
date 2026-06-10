@@ -31,30 +31,27 @@ if(defined('DEBUG_DUMP_CFG') && hasSystemPermission('admintools') === true){
     }
 
     // ── 3 Load assets ──────────────────────────────────────────────────────────────────────
-    if(isset($cfg['run']) && $cfg['run'] == true){ // check for privileges too
-         // return nothing
+    if(isset($cfg['run']) && $cfg['run'] == true){
         if(!function_exists('debug_dump')){
             require_once __DIR__.'/function.debug_dump.php';
         }
-        $cssFile = get_url_from_path(__DIR__) . '/css/debug_dump_'.$cfg['theme'].'.css';
-        I::insertCssFile($cssFile, 'HEAD BTM-', 'debug_dump');
-        $jsFile = get_url_from_path(__DIR__) . '/js/debug_dump.js';
-        I::insertJsFile($jsFile, 'BODY BTM-', 'debug_dump');
-
-        $toCSS = "
+        // Assets werden NICHT sofort injiziert — debug_dump() übernimmt das
+        // beim ersten echten Aufruf (lazy injection via static guard).
+        $GLOBALS['_debug_dump_assets'] = [
+            'css'      => get_url_from_path(__DIR__) . '/css/debug_dump_' . $cfg['theme'] . '.css',
+            'js'       => get_url_from_path(__DIR__) . '/js/debug_dump.js',
+            'font_css' => "
         @font-face {
-            font-family: ".$cfg['font'].";
-            src: url(".$fontsUrl."/".$currentFontFile.");
-        }";
-
-        $toCSS .= " 
-            .dd-pre {
-                font-family: ".$cfg['font']." !important;
-                font-size: ".$cfg['font_size']."px !important;
-                max-height: ".$cfg['height']."px;
-            }";     
-        I::insertCssCode($toCSS, 'HEAD BTM', 'CodeMirror_loadFontCss');
-    } 
+            font-family: " . $cfg['font'] . ";
+            src: url(" . $fontsUrl . "/" . $currentFontFile . ");
+        }
+        .dd-pre {
+            font-family: " . $cfg['font'] . " !important;
+            font-size: " . $cfg['font_size'] . "px !important;
+            max-height: " . $cfg['height'] . "px;
+        }",
+        ];
+    }
 }
 
 // fallback function if debug_dump is disabled and for visitors w/o admin rights
