@@ -38,7 +38,6 @@ if (isset($_POST['save_settings'])) {
     // Sanitize widget customization fields from POST
     $allowedAuto   = ['off', 'onload', 'onsubmit'];
     $allowedRadius = ['', '0px', '4px', '12px'];
-    $colorRegex    = '/^#[0-9a-fA-F]{6}$/';
 
     $postAuto   = in_array($_POST['altcha_auto']          ?? '', $allowedAuto,   true) ? $_POST['altcha_auto']   : 'off';
     $postDelay  = max(0, min(3000, (int)($_POST['altcha_delay']   ?? 0)));
@@ -46,9 +45,11 @@ if (isset($_POST['save_settings'])) {
     $postHLogo  = ($_POST['altcha_hidelogo']   ?? '0') === '1';
     $postRadius = in_array($_POST['altcha_border_radius'] ?? '', $allowedRadius, true) ? $_POST['altcha_border_radius'] : '';
 
-    $postBrand  = preg_match($colorRegex, $_POST['altcha_color_brand'] ?? '') ? $_POST['altcha_color_brand'] : '';
-    $postBase   = preg_match($colorRegex, $_POST['altcha_color_base']  ?? '') ? $_POST['altcha_color_base']  : '';
-    $postText   = preg_match($colorRegex, $_POST['altcha_color_text']  ?? '') ? $_POST['altcha_color_text']  : '';
+    $postBrand   = sanitizeCssColor($_POST['altcha_color_brand']    ?? '');
+    $postSuccess = sanitizeCssColor($_POST['altcha_color_success']  ?? '');
+    $postBase    = sanitizeCssColor($_POST['altcha_color_base']     ?? '');
+    $postCb      = sanitizeCssColor($_POST['altcha_color_checkbox'] ?? '');
+    $postText    = sanitizeCssColor($_POST['altcha_color_text']     ?? '');
 
     $e4 = Settings::set('captcha_altcha', json_encode([
         'hmac_key'      => $hmacKey,
@@ -59,7 +60,9 @@ if (isset($_POST['save_settings'])) {
         'hidefooter'    => $postHFoot,
         'hidelogo'      => $postHLogo,
         'color_brand'   => $postBrand,
+        'color_success' => $postSuccess,
         'color_base'    => $postBase,
+        'color_checkbox'=> $postCb,
         'color_text'    => $postText,
         'border_radius' => $postRadius,
     ]));
@@ -70,51 +73,22 @@ if (isset($_POST['save_settings'])) {
     } else {
         (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
     }
-    header('Location: ' . $returnUrl);
+    header('Location: ' . $returnUrl.'#config');
     exit;
 }
 
-// ── Language ──────────────────────────────────────────────────────────────────
-Lang::loadLanguage(WB_PATH . '/modules/captcha_control');
 
 // ── Render ────────────────────────────────────────────────────────────────────
-$oTwig    = getTwig(WB_PATH . '/modules/captcha_control/twig/');
+I::insertCssFile(INCLUDE_URL . '/wbeColoris/wbeColoris.css', 'HEAD BTM+');
+I::insertCssFile(INCLUDE_URL . '/wbeColoris/wbeColoris.admin.css', 'HEAD BTM+');
+I::insertJsFile(INCLUDE_URL . '/wbeColoris/wbeColoris.js', 'HEAD BTM-');
+I::insertJsFile(INCLUDE_URL . '/wbeColoris/wbeColoris.i18n.js', 'HEAD BTM-');
+$oTwig    = getTwig(__DIR__ . '/twig/');
 $altchaCfg = Captcha::getAltchaCfg();
 
 $aToTwig = [
     'RETURN_URL'       => $returnUrl,
     'RETURN_TO_TOOLS'  => ADMIN_URL . '/admintools/index.php',
-    'TXT'              => [
-        'HEADING'            => L_('MOD_CAPTCHA_CONTROL:HEADING'),
-        'HOWTO'              => L_('MOD_CAPTCHA_CONTROL:HOWTO'),
-        'CAPTCHA_EXP'        => L_('MOD_CAPTCHA_CONTROL:CAPTCHA_EXP'),
-        'CAPTCHA_TYPE'       => L_('MOD_CAPTCHA_CONTROL:CAPTCHA_TYPE'),
-        'USE_SIGNUP_CAPTCHA' => L_('MOD_CAPTCHA_CONTROL:USE_SIGNUP_CAPTCHA'),
-        'ENABLED'            => L_('MOD_CAPTCHA_CONTROL:ENABLED'),
-        'DISABLED'           => L_('MOD_CAPTCHA_CONTROL:DISABLED'),
-        // Widget customization strings
-        'WIDGET_HEADING'     => L_('CAPTCHA:WIDGET_HEADING'),
-        'AUTO_LABEL'         => L_('CAPTCHA:AUTO_LABEL'),
-        'AUTO_OFF'           => L_('CAPTCHA:AUTO_OFF'),
-        'AUTO_ONLOAD'        => L_('CAPTCHA:AUTO_ONLOAD'),
-        'AUTO_ONSUBMIT'      => L_('CAPTCHA:AUTO_ONSUBMIT'),
-        'DELAY_LABEL'        => L_('CAPTCHA:DELAY_LABEL'),
-        'DELAY_HINT'         => L_('CAPTCHA:DELAY_HINT'),
-        'HIDEFOOTER'         => L_('CAPTCHA:HIDEFOOTER'),
-        'HIDELOGO'           => L_('CAPTCHA:HIDELOGO'),
-        'COLOR_BRAND'        => L_('CAPTCHA:COLOR_BRAND'),
-        'COLOR_BRAND_HINT'   => L_('CAPTCHA:COLOR_BRAND_HINT'),
-        'COLOR_BASE'         => L_('CAPTCHA:COLOR_BASE'),
-        'COLOR_TEXT'         => L_('CAPTCHA:COLOR_TEXT'),
-        'BORDER_RADIUS'      => L_('CAPTCHA:BORDER_RADIUS'),
-        'COLOR_DEFAULT'      => L_('CAPTCHA:COLOR_DEFAULT'),
-        'COLOR_CUSTOM'       => L_('CAPTCHA:COLOR_CUSTOM'),
-        'CORNER_SQUARE'      => L_('CAPTCHA:CORNER_SQUARE'),
-        'CORNER_LIGHT'       => L_('CAPTCHA:CORNER_LIGHT'),
-        'CORNER_ROUND'       => L_('CAPTCHA:CORNER_ROUND'),
-        'PREVIEW'            => L_('CAPTCHA:PREVIEW'),
-        'WIDGET_FOOTER_TEXT' => L_('CAPTCHA:WIDGET_FOOTER_TEXT'),
-    ],
     'USEABLE_CAPTCHAS' => ['altcha' => 'ALTCHA (Proof-of-Work, self-hosted)'],
     'CAPTCHA_TYPE'     => defined('CAPTCHA_TYPE')    ? CAPTCHA_TYPE    : 'altcha',
     'ENABLED_CAPTCHA'  => defined('ENABLED_CAPTCHA') ? (ENABLED_CAPTCHA ? '1' : '0') : '1',
@@ -124,8 +98,10 @@ $aToTwig = [
         'delay'         => (int)($altchaCfg['delay']   ?? 0),
         'hidefooter'    => !empty($altchaCfg['hidefooter']),
         'hidelogo'      => !empty($altchaCfg['hidelogo']),
-        'color_brand'   => $altchaCfg['color_brand']   ?? '',
+        'color_brand'   => $altchaCfg['color_brand']    ?? '',
+        'color_success' => $altchaCfg['color_success'] ?? '',
         'color_base'    => $altchaCfg['color_base']    ?? '',
+        'color_checkbox'=> $altchaCfg['color_checkbox']?? '',
         'color_text'    => $altchaCfg['color_text']    ?? '',
         'border_radius' => $altchaCfg['border_radius'] ?? '',
     ],

@@ -1,44 +1,46 @@
 <?php
 /**
- * WBCE CMS
- * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * captcha_control — PL.php
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later version)
+ * @license   GNU GPL2 (or any later version)
  */
 
-// Headings and text outputs
-$MOD_CAPTCHA_CONTROL['HEADING'] = 'Captcha i Kontrola ASP';
-$MOD_CAPTCHA_CONTROL['HOWTO'] = 'Tutaj możesz zmieć tryb wyświetlania "CAPTCHA" i ustawić zaawansowaną ochronę przed spamem (ASP).';
+$module_name        = 'Captcha &amp; Ochrona przed spamem';
+$module_description = 'Narzędzie administracyjne do konfiguracji captchy ALTCHA';
 
-// Text and captions of form elements
-$MOD_CAPTCHA_CONTROL['CAPTCHA_CONF'] = 'Konfiguracja CAPTCHA';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_TYPE'] = 'Rodzaj CAPTCHA';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_EXP'] = 'Ustawienia CAPTCHA dla modułów znajdują się w opcjach modułu';
-$MOD_CAPTCHA_CONTROL['USE_SIGNUP_CAPTCHA'] = 'Aktywacja CAPTCHA przy rejestracji';
-$MOD_CAPTCHA_CONTROL['ASP_CONF'] = 'Ustawienia - zaawansowana ochrona przed spamem';
-$MOD_CAPTCHA_CONTROL['ASP_TEXT'] = 'Aktywuj ASP (jeśli dostępne)';
-$MOD_CAPTCHA_CONTROL['ASP_EXP'] = 'ASP będzie weryfikować czy dodana treść pochodzi od człowieka czy spam-bota.';
-$MOD_CAPTCHA_CONTROL['CALC_TEXT'] = 'Weryfikacja tekstu';
-$MOD_CAPTCHA_CONTROL['CALC_IMAGE'] = 'Weryfikacja obrazu';
-$MOD_CAPTCHA_CONTROL['CALC_TTF_IMAGE'] = 'Weryfikacja obrazu z różnymi czcionkami i tłem';
-$MOD_CAPTCHA_CONTROL['TTF_IMAGE'] = 'Obraz z różnych czcionek i tła';
-$MOD_CAPTCHA_CONTROL['OLD_IMAGE'] = 'Stary styl (nie polecane)';
-$MOD_CAPTCHA_CONTROL['TEXT'] = 'Treść-CAPTCHA';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_ENTER_TEXT'] = 'Pytania i odpowiedzi';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_TEXT_DESC'] = 'Usuń wszystko aby dodać własną treść.'."\n".'W przeciwnym razie twoje zmiany nie zostaną zapisane!'."\n".'### przykład ###'."\n".'Wpisuj tylko pytania i odpowiedzi.'."\n".'Ułóż treści w następujący sposób:'."\n".'?Jak Adam Małysz ma na imię?'."\n".'!Adam'."\n".'?Pytanie 2'."\n".'!Odpowiedź 2'."\n".''."\n".'Jeśli język treści jest nieistotny.'."\n".' ... '."\n".'bądź jest ułóż treść w pastępujący sposób:'."\n".'?PL:Jak Adam Małysz ma na imię?'."\n".'!Adam'."\n".'?PL:Pytanie 2'."\n".'!Odpowiedź 2'."\n".'?DE:Wie ist der Vorname von Claudia Schiffer?'."\n".'!Claudia'."\n".' ... '."\n".'### przykład ###'."\n".'';
+// ── General ──────────────────────────────────────────────────────────────────
+$CAPTCHA['HEADING']            = 'Captcha &amp; Ochrona przed spamem';
+$CAPTCHA['HOWTO']              = 'Skonfiguruj captchę ALTCHA proof-of-work oraz filtr antyspamowy Honeypot. Oba mechanizmy chronią formularze w całej witrynie bez żadnych niedogodności dla użytkowników.';
+$CAPTCHA['CAPTCHA_TYPE']       = 'Typ captchy';
+$CAPTCHA['CAPTCHA_EXP']        = 'ALTCHA to samodzielnie hostowana, przyjazna prywatności captcha proof-of-work. Nie wymaga zewnętrznych usług.';
+$CAPTCHA['USE_SIGNUP_CAPTCHA'] = 'Włącz captchę dla rejestracji';
 
-$MOD_CAPTCHA['VERIFICATION'] = 'Weryfikacja';
-$MOD_CAPTCHA['ADDITION'] = 'plus';
-$MOD_CAPTCHA['SUBTRAKTION'] = 'minus';
-$MOD_CAPTCHA['MULTIPLIKATION'] = 'razy';
-$MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'wpisz wynik';
-$MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'wpisz tekst';
-$MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'odpowiedz na pytanie';
-$MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'weryfikacja nie powiodła się';
-
-// ── CAPTCHA namespace ─────────────────────────────────────────────────────────
+// ── Advanced Spam Protection ──────────────────────────────────────────────────
+$CAPTCHA['ASP_LABEL']             = 'Zaawansowana ochrona przed spamem (Honeypot)';
+$CAPTCHA['ASP_DESCRIPTION']       = 'Ukryte pole wykrywa boty automatycznie wypełniające wszystkie pola formularza. Nie wymaga żadnej akcji ze strony użytkownika. Działa niezależnie od captchy powyżej.';
 $CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>WAŻNE:</b> Poszczególne moduły, takie jak <i>MiniForm</i>, <i>Guestbook</i> itp., mają własne ustawienia dotyczące użycia Captcha w formularzu modułu. <br><b>Sprawdź ustawienia poszczególnych modułów</b>.';
+
+// ── Widget customization ──────────────────────────────────────────────────────
+$CAPTCHA['WIDGET_HEADING']     = 'Dostosowanie widżetu';
+$CAPTCHA['AUTO_LABEL']         = 'Tryb uruchamiania';
+$CAPTCHA['AUTO_OFF']           = 'Ręczny (kliknięcie)';
+$CAPTCHA['AUTO_ONLOAD']        = 'Automatyczny';
+$CAPTCHA['AUTO_ONSUBMIT']      = 'Przy wysyłaniu formularza';
+$CAPTCHA['DELAY_LABEL']        = 'Opóźnienie';
+$CAPTCHA['DELAY_HINT']         = 'ms przerwy przed uruchomieniem PoW — utrudnia zautomatyzowane ataki';
+$CAPTCHA['HIDEFOOTER']         = 'Ukryj stopkę "Powered by ALTCHA"';
+$CAPTCHA['HIDELOGO']           = 'Ukryj logo ALTCHA';
+$CAPTCHA['COLOR_BRAND']        = 'Kolor akcentu';
+$CAPTCHA['COLOR_BRAND_HINT']   = 'Spinner &amp; obramowanie';
+$CAPTCHA['COLOR_SUCCESS']      = 'Kolor zatwierdzenia';
+$CAPTCHA['COLOR_BASE']         = 'Tło widżetu';
+$CAPTCHA['COLOR_CHECKBOX']     = 'Tło pola wyboru';
+$CAPTCHA['COLOR_TEXT']         = 'Kolor tekstu';
+$CAPTCHA['BORDER_RADIUS']      = 'Zaokrąglenie narożników';
+$CAPTCHA['COLOR_DEFAULT']      = 'Domyślny';
+$CAPTCHA['CORNER_SQUARE']      = 'Kwadratowy';
+$CAPTCHA['CORNER_LIGHT']       = 'Lekki';
+$CAPTCHA['CORNER_ROUND']       = 'Okrągły';
+$CAPTCHA['PREVIEW']            = 'Podgląd';
+$CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Chronione przez ALTCHA';

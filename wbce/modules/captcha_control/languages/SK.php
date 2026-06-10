@@ -1,45 +1,46 @@
 <?php
 /**
- * WBCE CMS
- * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * captcha_control — SK.php
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later version)
+ * @license   GNU GPL2 (or any later version)
  */
 
-// Headings and text outputs
-$MOD_CAPTCHA_CONTROL['HEADING'] = 'Captcha a ASP kontrola';
-$MOD_CAPTCHA_CONTROL['HOWTO'] = 'Tu m&ocirc;&#382;ete ovplyvni&#357; spr&aacute;vanie "CAPTCHA" a "Advanced Spam Protection" (ASP).
-						Ak chcete pou&#382;&iacute;va&#357; ASP pr&aacute;cu s dan&yacute;m modulom, tento &#353;peci&aacute;lny modul, mus&iacute; by&#357; upraven&yacute; pre vyu&#382;itie ASP.';
+$module_name        = 'Captcha &amp; Ochrana pred spamom';
+$module_description = 'Administr&aacute;torsk&yacute; n&aacute;stroj na konfigur&aacute;ciu ALTCHA captcha';
 
-// Text and captions of form elements
-$MOD_CAPTCHA_CONTROL['CAPTCHA_CONF'] = 'CAPTCHA Konfigur&aacute;cia';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_TYPE'] = 'Typ CAPTCHA';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_EXP'] = 'CAPTCHA settings for modules are located in the respective module settings';
-$MOD_CAPTCHA_CONTROL['USE_SIGNUP_CAPTCHA'] = 'Aktivova&#357; CAPTCHA pre prihl&aacute;senie';
-$MOD_CAPTCHA_CONTROL['ASP_CONF'] = 'Advanced Spam Protection Konfigur&aacute;cia';
-$MOD_CAPTCHA_CONTROL['ASP_TEXT'] = 'Aktivova&#357; ASP (ak je dostupn&eacute;)';
-$MOD_CAPTCHA_CONTROL['ASP_EXP'] = 'ASP sa sna&#382;&iacute; zisti&#357;, &#269;i forma vstupu poch&aacute;dza od &#269;loveka alebo spam-bota.';
-$MOD_CAPTCHA_CONTROL['CALC_TEXT'] = 'V&yacute;po&#269;et ako text';
-$MOD_CAPTCHA_CONTROL['CALC_IMAGE'] = 'V&yacute;po&#269;et ako obr&aacute;zok';
-$MOD_CAPTCHA_CONTROL['CALC_TTF_IMAGE'] = 'V&yacute;po&#269;et ako obr&aacute;zok s r&ocirc;znymi fontmy a pozad&iacute;m';
-$MOD_CAPTCHA_CONTROL['TTF_IMAGE'] = 'Obr&aacute;zok s r&ocirc;znymi fontmy a pozad&iacute;m';
-$MOD_CAPTCHA_CONTROL['OLD_IMAGE'] = 'Star&yacute; sp&ocirc;sob (neodpor&uacute;&#269;a sa)';
-$MOD_CAPTCHA_CONTROL['TEXT'] = 'Text-CAPTCHA';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_ENTER_TEXT'] = 'Ot&aacute;zky a odpovede';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_TEXT_DESC'] = 'Delete this all to add your own entries'."\n".'or your changes won\'t be saved!'."\n".'### example ###'."\n".'Here you can enter Questions and Answers.'."\n".'Use:'."\n".'?What\'s <b>Claudia</b> Schiffer\'s <b>first name</b>?'."\n".'!Claudia'."\n".'?Question 2'."\n".'!Answer 2'."\n".''."\n".'if language doesn\'t matter.'."\n".' ... '."\n".'Or, if language do matter, use:'."\n".'?EN:What\'s <b>Claudia</b> Schiffer\'s <b>first name</b>?'."\n".'!Claudia'."\n".'?EN:Question 2'."\n".'!Answer 2'."\n".'?DE:Wie ist der <b>Vorname</b> von <b>Claudia</b> Schiffer?'."\n".'!Claudia'."\n".' ... '."\n".'### example ###'."\n".'';
+// ── General ──────────────────────────────────────────────────────────────────
+$CAPTCHA['HEADING']            = 'Captcha &amp; Ochrana pred spamom';
+$CAPTCHA['HOWTO']              = 'Nakonfigurujte ALTCHA proof-of-work captcha a Honeypot filter spamu. Obe chr&aacute;nia formul&aacute;re na celej str&aacute;nke bez ak&eacute;jko&ľvek z&aacute;ťaže pre použ&iacute;vate&ľov.';
+$CAPTCHA['CAPTCHA_TYPE']       = 'Typ captcha';
+$CAPTCHA['CAPTCHA_EXP']        = 'ALTCHA je vlastne hostovan&aacute;, ochranu s&uacute;kromia re&scaron;pektuj&uacute;ca proof-of-work captcha. Nevyžaduje žiadne extern&eacute; služby.';
+$CAPTCHA['USE_SIGNUP_CAPTCHA'] = 'Aktivova&#357; captcha pre registr&aacute;cie';
 
-$MOD_CAPTCHA['VERIFICATION'] = 'Overenie';
-$MOD_CAPTCHA['ADDITION'] = 'plus';
-$MOD_CAPTCHA['SUBTRAKTION'] = 'm&iacute;nus';
-$MOD_CAPTCHA['MULTIPLIKATION'] = 'n&aacute;sobi&#357;';
-$MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'Vlo&#382;te v&yacute;sledok';
-$MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Vlo&#382;te text';
-$MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Odpoveï na ot&aacute;zku';
-$MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Overenie zlyhalo';
-
-// ── CAPTCHA namespace ─────────────────────────────────────────────────────────
+// ── Advanced Spam Protection ──────────────────────────────────────────────────
+$CAPTCHA['ASP_LABEL']             = 'Pokro&#269;il&aacute; ochrana pred spamom (Honeypot)';
+$CAPTCHA['ASP_DESCRIPTION']       = 'Skryt&eacute; pole odhal&iacute; botov, ktor&iacute; automaticky vyp&#314;&nacute;aj&uacute; v&scaron;etky vstupn&eacute; polia. Nevyžaduje žiadnu akciu od použ&iacute;vate&ľa. Funguje nez&aacute;visle od captcha vyš&scaron;ie.';
 $CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>D&Ocirc;LE&#381;IT&Eacute;:</b> Jednotliv&eacute; moduly ako <i>MiniForm</i>, <i>Guestbook</i> at&#271;. maj&uacute; vlastn&eacute; nastavenia pre pou&#382;itie Captcha vo formul&aacute;ri modulu. <br><b>Skontrolujte nastavenia pr&iacute;slu&scaron;n&yacute;ch modulov</b>.';
+
+// ── Widget customization ──────────────────────────────────────────────────────
+$CAPTCHA['WIDGET_HEADING']     = 'Prispôsobenie widgetu';
+$CAPTCHA['AUTO_LABEL']         = 'Režim spustenia';
+$CAPTCHA['AUTO_OFF']           = 'Ru&#269;ne (klik)';
+$CAPTCHA['AUTO_ONLOAD']        = 'Automaticky';
+$CAPTCHA['AUTO_ONSUBMIT']      = 'Pri odoslan&iacute; formul&aacute;ra';
+$CAPTCHA['DELAY_LABEL']        = 'Oneskorenie';
+$CAPTCHA['DELAY_HINT']         = 'ms pauzy pred spusten&iacute;m PoW — s&#357;ažuje automatizovan&eacute; &uacute;toky';
+$CAPTCHA['HIDEFOOTER']         = 'Skry&#357; p&auml;tu "Powered by ALTCHA"';
+$CAPTCHA['HIDELOGO']           = 'Skry&#357; logo ALTCHA';
+$CAPTCHA['COLOR_BRAND']        = 'Farba zvýraznenia';
+$CAPTCHA['COLOR_BRAND_HINT']   = 'Spinner &amp; r&aacute;me&#269;ek';
+$CAPTCHA['COLOR_SUCCESS']      = 'Farba za&scaron;krtnutia';
+$CAPTCHA['COLOR_BASE']         = 'Pozadie widgetu';
+$CAPTCHA['COLOR_CHECKBOX']     = 'Pozadie za&scaron;krt&aacute;vacieho pol&iacute;&#269;ka';
+$CAPTCHA['COLOR_TEXT']         = 'Farba textu';
+$CAPTCHA['BORDER_RADIUS']      = 'Zaoblenie rohov';
+$CAPTCHA['COLOR_DEFAULT']      = 'Predvolen&eacute;';
+$CAPTCHA['CORNER_SQUARE']      = 'Hrnat&yacute;';
+$CAPTCHA['CORNER_LIGHT']       = 'Mierne';
+$CAPTCHA['CORNER_ROUND']       = 'Okr&uacute;hly';
+$CAPTCHA['PREVIEW']            = 'N&aacute;h&ľad';
+$CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Chr&aacute;nen&eacute; ALTCHA';

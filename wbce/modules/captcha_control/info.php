@@ -11,18 +11,26 @@
  */
 
 $core = true;
+
 $module_directory   = 'captcha_control';
 $module_name        = 'Captcha and Advanced-Spam-Protection (ASP) Control';
 $module_function    = 'tool,initialize';
-$module_version     = '3.0.0';
+$module_version     = '3.0.1';
 $module_platform    = '1.7.0';
-$module_author      = 'Thorn, Luise Hahne, Norbert Heimsath, WBCE Project';
+$module_author      = 'Thorn, Luise Hahne, Norbert Heimsath, Christian M. Stefan';
 $module_license     = 'GNU GPL2';
-$module_description = 'Admin-Tool to configure ALTCHA (proof-of-work captcha) and Honeypot spam protection';
+$module_description = 'Configuration and customization of the ALTCHA-Captcha';
 $module_icon        = 'fa fa-shield';
 
 /**
  * Version history
+ * 
+ * 3.0.1 - Implementation of customization means for the ALTCHA-Captcha skin
+ *         (Christian M. Stefan)
+ * 
+ * 3.0.0 - Introduction of ALTCHA-Captcha as the only captcha mode available
+ *         Intoduction of class Captcha, globally available via the initialize.php
+ *         (Christian M. Stefan)
  * 
  * 2.0.6 - set $core var, remove deprecated $module_level var
  * 

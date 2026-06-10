@@ -44,10 +44,12 @@ class Captcha
         'delay'         => 0,       // ms pause before PoW starts (0–3000)
         'hidefooter'    => false,   // hide "Powered by ALTCHA" footer
         'hidelogo'      => false,   // hide ALTCHA shield logo in footer
-        'color_brand'   => '',      // --altcha-color-brand   (hex or '')
-        'color_base'    => '',      // --altcha-color-base    (hex or '')
-        'color_text'    => '',      // --altcha-color-text    (hex or '')
-        'border_radius' => '',      // --altcha-border-radius (''|'0px'|'4px'|'12px')
+        'color_brand'   => '',      // accent: spinner/button/border (hex or '')
+        'color_success' => '',      // checked fill + auto-contrast tick (hex or '')
+        'color_base'    => '',      // widget background (hex or '')
+        'color_checkbox'=> '',      // checkbox background, overrides color_base (hex or '')
+        'color_text'    => '',      // widget text (hex or '')
+        'border_radius' => '',      // ''|'0px'|'4px'|'12px'
     ];
 
     /**
@@ -228,27 +230,52 @@ class Captcha
         $i18nCode = strtolower($i18nMap[$wbceLang] ?? $wbceLang);
 
         // Scripts — emitted once per page, synchronous (no async/defer) so
-        // altcha.min.js runs first, i18n second, widget tag parsed last.
+        // altcha.min.js runs first, i18n second, widget_setup last.
+        //
+        // widget_setup.js is a static external file rather than an inline <script>
+        // because two code paths both fail for inline JS with {…}:
+        //   • frontend pages: WBCE template processor eats any {...} in module output
+        //   • admin/login:    Captcha::render() runs inside ob_start()/ob_get_clean()
+        //                     so I::insertJsCode() items are never output
+        // A plain <script src="…"> survives both paths unharmed.
+        $setupJs = $moduleUrl . '/altcha/widget_setup.js';
         if (!defined('_CAPTCHA_ALTCHA_SCRIPT_LOADED')) {
             define('_CAPTCHA_ALTCHA_SCRIPT_LOADED', true);
             echo '<script src="' . h($widgetJs) . '"></script>' . "\n";
             if ($wbceLang !== 'EN') {
                 echo '<script src="' . h($i18nJs) . '"></script>' . "\n";
             }
+            echo '<script src="' . h($setupJs) . '"></script>' . "\n";
         }
 
         // Sync token — lets legacy modules' own $_POST['captcha'] check pass.
+        // The session key is initialised here (not in renderSyncInput) so we can
+        // also embed it as a data-token attribute on the widget element below.
+        $syncKey = 'captcha' . $sec_id;
+        if (!isset($_SESSION[$syncKey])) {
+            $_SESSION[$syncKey] = bin2hex(random_bytes(16));
+        }
         self::renderSyncInput($sec_id);
 
         // Widget — apply saved customization settings
         $cfg      = self::getAltchaCfg();
         $autoAttr = in_array($cfg['auto'] ?? '', ['onload', 'onsubmit']) ? $cfg['auto'] : 'off';
 
+        // data-syncid / data-token: read by widget_setup.js to fill the hidden
+        //   sync input when the challenge is solved (no inline JS required).
+        // data-hidefooter / data-hidelogo: plain "1"/"" attributes, no {…} chars,
+        //   so they survive the WBCE template processor and ob_start() capture alike.
+        $syncInputId = 'captcha_sync_' . ($sec_id !== '' ? $sec_id : 'default');
+
         $attrStr = ' id="' . h($widgetId) . '"'
                  . ' challenge="' . h($challengeUrl) . '"'
                  . ' name="' . h($inputName) . '"'
                  . ' auto="' . $autoAttr . '"'
-                 . ' language="' . h($i18nCode) . '"';
+                 . ' language="' . h($i18nCode) . '"'
+                 . ' data-syncid="' . h($syncInputId) . '"'
+                 . ' data-token="'  . h($_SESSION[$syncKey]) . '"'
+                 . (!empty($cfg['hidefooter']) ? ' data-hidefooter="1"' : '')
+                 . (!empty($cfg['hidelogo'])   ? ' data-hidelogo="1"'   : '');
 
         // Widget CSS customization.
         //
@@ -304,46 +331,61 @@ class Captcha
                          . 'background:' . $brand . '!important;'
                          . 'border-color:' . $brand . '!important;}';
         }
-        // Checkbox background must match the widget background; the native <input>
-        // defaults to white, which looks wrong on dark themes.
-        if (!empty($cfg['color_base'])) {
-            $cbRules .= 'background-color:' . h($cfg['color_base']) . '!important;';
+
+        // Checked state: custom success / verified colour.
+        // - checkbox fill + border when :checked  → color_success
+        // - tick SVG stroke                       → auto-contrast of color_success
+        //
+        // SVG CENTERING FIX: ALTCHA's tick SVG is positioned via CSS variables
+        // (--altcha-radio-svg-offset = --altcha-checkbox-size * 0.25). These
+        // variables fail to inherit through ALTCHA's own `.altcha{all:revert-layer}`
+        // rule, so left/top default to 0 and the checkmark appears in the top-left
+        // corner. We replace the variable-based values with equivalent percentages
+        // (25% / 50%) which are immune to inheritance issues and work for any
+        // checkbox size. This rule is always emitted when color_success is set.
+        if (!empty($cfg['color_success'])) {
+            $success = h($cfg['color_success']);
+            $hex     = ltrim($cfg['color_success'], '#');
+            $r       = hexdec(substr($hex, 0, 2)) / 255;
+            $g       = hexdec(substr($hex, 2, 2)) / 255;
+            $b       = hexdec(substr($hex, 4, 2)) / 255;
+            $tickCol = (0.299 * $r + 0.587 * $g + 0.114 * $b) < 0.5 ? '#f9fafb' : '#111827';
+            $styleBlock .= '#' . $wid . ' .altcha-checkbox input:checked{'
+                         . 'background-color:' . $success . '!important;'
+                         . 'border-color:'     . $success . '!important;}';
+            $styleBlock .= '#' . $wid . ' .altcha-checkbox input:checked+svg{'
+                         . 'color:' . $tickCol . '!important;}';
+            // Fix SVG position — percentage values bypass the CSS-variable
+            // inheritance failure described above (25% = offset, 50% = size).
+            $styleBlock .= '#' . $wid . ' .altcha-checkbox svg{'
+                         . 'left:25%!important;'
+                         . 'top:25%!important;'
+                         . 'width:50%!important;'
+                         . 'height:50%!important;}';
+        }
+
+        // Checkbox background: color_checkbox takes priority; color_base as fallback so the
+        // native white input doesn't clash with a custom dark widget background.
+        $checkboxBg = !empty($cfg['color_checkbox']) ? h($cfg['color_checkbox'])
+                    : (!empty($cfg['color_base'])    ? h($cfg['color_base'])     : '');
+        if ($checkboxBg !== '') {
+            $cbRules .= 'background-color:' . $checkboxBg . '!important;';
         }
         if ($cbRules !== '') {
             $styleBlock = '#' . $wid . ' .altcha-checkbox input{' . $cbRules . '}' . $styleBlock;
         }
         if ($styleBlock !== '') {
-            // I::insertCssCode() avoids WBCE's {placeholder} processor eating CSS braces.
+            // I::insertCssCode() queues the rules for HEAD BTM- injection (frontend).
+            // Additionally we echo an inline <style> so the rules also apply on
+            // admin/login pages where the captcha is captured via ob_start()/ob_get_clean()
+            // and the I:: queue may not reach the page's <head>.
             I::insertCssCode($styleBlock, 'HEAD BTM-');
+            echo '<style>' . $styleBlock . '</style>' . "\n";
         }
 
-        // hideFooter / hideLogo are NOT observed as direct HTML attributes in this ALTCHA version.
-        // They must be passed via the `configuration` JSON attribute (calls configure() internally).
-        $widgetCfg = [];
-        if (!empty($cfg['hidefooter'])) { $widgetCfg['hideFooter'] = true; }
-        if (!empty($cfg['hidelogo']))   { $widgetCfg['hideLogo']   = true; }
-        if (!empty($widgetCfg))         { $attrStr .= ' configuration="' . h(json_encode($widgetCfg)) . '"'; }
-
         echo '<altcha-widget' . $attrStr . '></altcha-widget>' . "\n";
-
-        // statechange listener — fills the sync input when widget verifies.
-        // Uses I::insertJsCode() instead of echo '<script>' to avoid WBCE's
-        // {placeholder} template processor mangling the JS curly braces.
-        $syncInputId = 'captcha_sync_' . ($sec_id !== '' ? $sec_id : 'default');
-        $jsWidget    = json_encode($widgetId);
-        $jsSync      = json_encode($syncInputId);
-        $jsToken     = json_encode($_SESSION['captcha' . $sec_id] ?? '');
-        $jsCode = '(function(){'
-            .   'var w=document.getElementById(' . $jsWidget . ');'
-            .   'if(!w)return;'
-            .   'w.addEventListener("statechange",function(e){'
-            .     'if(e.detail&&e.detail.state==="verified"){'
-            .       'var f=document.getElementById(' . $jsSync . ');'
-            .       'if(f)f.value=' . $jsToken . ';'
-            .     '}'
-            .   '});'
-            . '})();';
-        I::insertJsCode($jsCode, 'HEAD BTM-');
+        // widget_setup.js (loaded above) reads the data-* attributes and handles
+        // statechange + configure() — no inline JS or I:: call needed here.
     }
 
     /**
