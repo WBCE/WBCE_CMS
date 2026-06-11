@@ -42,21 +42,35 @@ $template->set_block('main_block', "reload_block", "reload");
  *    Insert permission values into the template object
  *    Obsolete as we are using blocks ... see "parsing the blocks" section
  */
-$display_none = "style=\"display: none;\"";
-if ($admin->get_permission('modules') != true) {
+$display_none = 'style="display: none;"';
+
+// Main addon-card visibility: requires any sub-permission for that type
+if (!$admin->get_permission('modules')) {
     $template->set_var('DISPLAY_MODULES', $display_none);
 }
-if ($admin->get_permission('templates') != true) {
+if (!$admin->get_permission('templates')) {
     $template->set_var('DISPLAY_TEMPLATES', $display_none);
 }
-if ($admin->get_permission('languages') != true) {
+if (!$admin->get_permission('languages')) {
     $template->set_var('DISPLAY_LANGUAGES', $display_none);
 }
-if ($admin->get_permission('admintools') != true) {
-    $template->set_var('DISPLAY_ADVANCED', $display_none);
-}
 
-if (!isset($_GET['advanced']) || $admin->get_permission('admintools') != true) {
+// Advanced / Reload section: requires install permission for at least one addon type
+$can_reload_modules   = $admin->get_permission('modules_install');
+$can_reload_templates = $admin->get_permission('templates_install');
+$can_reload_languages = $admin->get_permission('languages_install');
+$has_install = $can_reload_modules || $can_reload_templates || $can_reload_languages;
+
+// Per-type visibility inside the reload block (install permission required)
+$template->set_var('DISPLAY_RELOAD_MODULES',   $can_reload_modules   ? '' : $display_none);
+$template->set_var('DISPLAY_RELOAD_TEMPLATES', $can_reload_templates ? '' : $display_none);
+$template->set_var('DISPLAY_RELOAD_LANGUAGES', $can_reload_languages ? '' : $display_none);
+
+// Hide the Advanced icon/link wrapper and reload block when no install permissions exist
+if (!$has_install) {
+    $template->set_var('DISPLAY_ADVANCED_ICON', $display_none);
+}
+if (!isset($_GET['advanced']) || !$has_install) {
     $template->set_var('DISPLAY_RELOAD', $display_none);
 }
 
@@ -76,9 +90,10 @@ $template->set_var(
         'MESSAGE_RELOAD_ADDONS' => $MESSAGE['ADDON_RELOAD'],
         'TEXT_RELOAD' => $TEXT['RELOAD'],
         'RELOAD_URL' => ADMIN_URL . '/addons/reload.php',
-        'URL_ADVANCED' => $admin->get_permission('admintools') ?
-            '<a href="' . ADMIN_URL . '/addons/index.php?advanced">' . $TEXT['ADVANCED'] . '</a>' : '',
-        'ADVANCED_URL' => $admin->get_permission('admintools') ? ADMIN_URL . '/addons/index.php' : '',
+        'URL_ADVANCED' => $has_install
+            ? '<a href="' . ADMIN_URL . '/addons/index.php?advanced">' . $TEXT['ADVANCED'] . '</a>'
+            : '',
+        'ADVANCED_URL' => $has_install ? ADMIN_URL . '/addons/index.php' : '',
         'TEXT_ADVANCED' => $TEXT['ADVANCED'],
         'FTAN' => $admin->getFTAN()
     )

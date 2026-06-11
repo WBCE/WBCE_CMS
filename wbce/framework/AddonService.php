@@ -291,7 +291,8 @@ class AddonService
             $installedVersion = $existingRow['version'] ?? '0';
             $newVersion       = $info['_version'] ?? '';
             if ($newVersion !== '' && $this->versionCompare($installedVersion, $newVersion, '>=')) {
-                return $this->addSignal('ADDON_ALREADY_CURRENT', $dir);
+                $label = ($info['name'] ?? $dir) . ($newVersion !== '' ? ' [v. ' . $newVersion . ']' : '');
+                return $this->addSignal('ADDON_ALREADY_CURRENT', $label);
             }
             $action = 'upgrade';
         }
@@ -625,6 +626,15 @@ class AddonService
                                       'label'  => "Addon: $addon" . ($ver ? " $op $ver" : '')];
                     }
                     break;
+                case 'PHP_SETTINGS':
+                    foreach ((array)$value as $setting => $expected) {
+                        $actual = ini_get($setting);
+                        $ok     = ($actual !== false) && ((string)$actual === (string)$expected);
+                        $results[] = ['signal' => $ok ? 'ADDON_PRECHECK_OK' : 'ADDON_PRECHECK_FAILED',
+                                      'label'  => "php.ini: {$setting} = {$expected} (have: "
+                                                  . ($actual !== false ? $actual : 'unset') . ')'];
+                    }
+                    break;
                 case 'CUSTOM_CHECKS':
                     foreach ((array)$value as $lbl => $spec) {
                         $ok = (bool)($spec['STATUS'] ?? false);
@@ -674,12 +684,49 @@ class AddonService
         $row['updated_by']   = (int)($GLOBALS['admin']?->get_user_id() ?? 0);
         unset($row['_type'], $row['_directory'], $row['_version']);
 
-        $exists
-            ? $this->db->upsertRow('{TP}addons', 'directory', $row)
-            : $this->db->insertRow('{TP}addons', $row);
+        if ($exists) {
+            // Clean up duplicate rows that older versions could create via the
+            // upsertRow bug (ON DUPLICATE KEY needs a UNIQUE constraint that the
+            // addons table lacks — so upsertRow silently INSERTed new rows).
+            // Keep the row with the lowest addon_id; delete the rest.
+            $minId = (int)$this->db->fetchValue(
+                "SELECT MIN(`addon_id`) FROM `{TP}addons` WHERE `directory` = ?", [$dir]
+            );
+            $this->db->query(
+                "DELETE FROM `{TP}addons` WHERE `directory` = ? AND `addon_id` != ?",
+                [$dir, $minId]
+            );
+
+            // Explicit UPDATE — upsertRow relies on ON DUPLICATE KEY which requires
+            // a UNIQUE constraint on `directory`. The addons table only has PRIMARY KEY
+            // (addon_id), so upsertRow would silently INSERT a duplicate row instead.
+            $this->db->query(
+                "UPDATE `{TP}addons`
+                 SET `type`=?, `name`=?, `description`=?, `function`=?, `version`=?,
+                     `platform`=?, `author`=?, `license`=?, `core`=?,
+                     `updated_when`=?, `updated_by`=?
+                 WHERE `directory`=?",
+                [
+                    $row['type'], $row['name'], $row['description'], $row['function'],
+                    $row['version'], $row['platform'], $row['author'], $row['license'],
+                    $row['core'], $row['updated_when'], $row['updated_by'],
+                    $dir,
+                ]
+            );
+        } else {
+            $this->db->insertRow('{TP}addons', $row);
+        }
 
         if ($this->db->hasError()) {
             return [['signal' => 'ADDON_DB_ERROR', 'label' => $this->db->getError()]];
+        }
+
+        // New addon: block it for all non-admin groups (group_id > 1).
+        // Admins (group 1) always retain full access.
+        // This prevents newly installed modules/templates from being silently
+        // accessible to all groups — access must be explicitly granted per group.
+        if (!$exists && in_array($type, ['module', 'template'], true)) {
+            $this->denyAddonForNonAdminGroups($dir, $type, $info['function'] ?? '');
         }
 
         return [['signal' => $exists ? 'ADDON_UPDATED_OK' : 'ADDON_INSERTED_OK',
@@ -774,7 +821,9 @@ class AddonService
         $action    = $this->detectAction($type, $dir, $targetDir, $info['_version'] ?? '');
 
         if ($action === 'skip') {
-            return $this->addSignal('ADDON_ALREADY_CURRENT', $dir);
+            $ver   = $info['_version'] ?? '';
+            $label = ($info['name'] ?? $dir) . ($ver !== '' ? ' [v. ' . $ver . ']' : '');
+            return $this->addSignal('ADDON_ALREADY_CURRENT', $label);
         }
         if ($type !== 'language' && !$this->ensureWritable($targetDir)) {
             return $this->addSignal('ADDON_NOT_WRITABLE', $targetDir);
@@ -837,9 +886,10 @@ class AddonService
 
         if (!empty($captured)) return $captured;
 
-        $suffix = trim($raw) !== '' ? ' [' . mb_substr(strip_tags($raw), 0, 100) . ']' : '';
+        // Preserve raw echo output so callers can render it alongside signals.
         return [['signal' => 'ADDON_SCRIPT_OK',
-                 'label'  => $label . ' — ' . basename($scriptPath) . $suffix]];
+                 'label'  => $label . ' — ' . basename($scriptPath),
+                 'raw'    => trim($raw)]];
     }
 
     protected function readInfo(string $path, string $typeHint = ''): ?array
@@ -963,6 +1013,62 @@ class AddonService
         }
 
         return $result;
+    }
+
+    /**
+     * Add a newly installed addon to the deny list of all non-admin groups.
+     *
+     * Called only on first install (not on upgrade). Mirrors the identifier
+     * logic of PermissionManager::getAllAddonIdentifiers():
+     *   - tools          → directory_tool
+     *   - page modules   → directory
+     *   - page+tool      → both identifiers
+     *   - templates/themes → directory
+     *
+     * @param string $dir       Addon directory name
+     * @param string $type      'module' | 'template'
+     * @param string $function  Value of the function field (e.g. 'page', 'tool', 'page,tool')
+     */
+    private function denyAddonForNonAdminGroups(string $dir, string $type, string $function): void
+    {
+        $column = $type . '_permissions';
+
+        // Build identifiers — same logic as PermissionManager::getAllAddonIdentifiers()
+        $identifiers = [];
+        if (str_contains($function, 'tool')) {
+            $identifiers[] = $dir . '_tool';
+        }
+        if (!str_contains($function, 'tool') || str_contains($function, 'page')) {
+            $identifiers[] = $dir;
+        }
+        if (empty($identifiers)) {
+            $identifiers[] = $dir; // fallback for unknown function types
+        }
+
+        // Fetch all non-admin groups (group_id > 1)
+        $groups = $this->db->fetchAll(
+            "SELECT `group_id`, `{$column}` FROM `{TP}groups` WHERE `group_id` > 1"
+        );
+
+        foreach ($groups as $group) {
+            $raw      = trim((string)($group[$column] ?? ''));
+            $existing = ($raw !== '') ? array_map('trim', explode(',', $raw)) : [];
+
+            $changed = false;
+            foreach ($identifiers as $id) {
+                if (!in_array($id, $existing, true)) {
+                    $existing[] = $id;
+                    $changed    = true;
+                }
+            }
+
+            if ($changed) {
+                $this->db->query(
+                    "UPDATE `{TP}groups` SET `{$column}` = ? WHERE `group_id` = ?",
+                    [implode(',', $existing), (int)$group['group_id']]
+                );
+            }
+        }
     }
 
     private function findAddonRootInZip(ZipArchive $zip): string

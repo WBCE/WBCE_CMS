@@ -1,383 +1,299 @@
-// Copyright 2006 Stepan Riha
-// www.nonplus.net
-// $Id: dragdrop.js 2 2006-04-18 03:04:39Z stepan $
 /**
-* -----------------------------------------------------------------------------------------
-*  MODIFICATON FOR THE JSADMIN MODULE
-* -----------------------------------------------------------------------------------------
-*	MODIFICATION HISTORY:
-*   Swen Uth; 01/24/2008
-*   +INCLUDE VARIABLE buttonCell FOR ADAPTATION TO LATER LAYOUTS
-*
-**/
-JsAdmin.DD = {};
-JsAdmin.movable_rows = {};
+ * JsAdmin — Drag & Drop (jQuery UI Sortable)
+ *
+ * Replaces the YUI 2.x drag-drop implementation (2006).
+ * Requires: jQuery + jQuery UI (sortable widget).
+ *
+ * Handles:
+ *   admin/pages/index.php  — nested page tree, each level independently sortable
+ *   admin/pages/sections.php — flat section list, single sortable table
+ */
+(function ($) {
+    'use strict';
 
-JsAdmin.init_drag_drop = function() {
+    // ── Drop-flash ────────────────────────────────────────────────────────────
+    // Inline-style approach: no CSS animation, no fill-mode, no class state.
+    // Sets background via inline style, transitions to transparent, then removes
+    // all inline styles — element is guaranteed clean afterwards.
+    function flashItems($tds) {
+        $tds.css({ transition: 'none', 'background-color': '#E8FFD9' });
+        // Two rAF frames ensure the green is painted before the transition starts.
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                $tds.css({ transition: 'background-color 2s linear', 'background-color': 'rgba(232,255,217,0)' });
+                var cleaned = false;
+                function cleanup() {
+                    if (cleaned) return;
+                    cleaned = true;
+                    $tds.css({ 'background-color': '', transition: '' });
+                }
+                $tds.first().one('transitionend webkitTransitionEnd', cleanup);
+                setTimeout(cleanup, 2300); // safety net
+            });
+        });
+    }
 
-	// There seems to be many different ways the ordering is set up
-	//		pages/index.php has UL/LI containing tables with single row
-	//		pages/sections.php has a TABLE with many rows
-	//		pages/modify.php for manuals is completely weird...
-	// So we only want to deal with pages & sections...
+    // ── Status indicator (reuses existing jsadmin body classes) ──────────────
+    function setStatus(state) {
+        $('body')
+            .removeClass('jsadmin_busy jsadmin_success jsadmin_failure')
+            .addClass('jsadmin_' + state);
+    }
 
-	var page_type = '';
-	var is_tree = false;
+    // ── Pages ─────────────────────────────────────────────────────────────────
 
-	if(document.URL.indexOf(JsAdmin.ADMIN_URL + "/pages/index.php") > -1) {
-		page_type = 'pages';
-		is_tree = true;
+    /**
+     * After a drag-drop reorder, fix up/down arrow visibility for all siblings
+     * in the affected <ul>.  Titles are read from existing DOM links so they
+     * stay localised without hardcoding strings here.
+     */
+    function updateSiblingArrows($ul) {
+        var $items    = $ul.children('li[id^="pageID_"]');
+        var count     = $items.length;
 
-		// This page uses duplicate IDs and incorrectly nested lists:
-		// <ul id="p1">
-		//		<li id="p1"><table /></li>
-		//		<ul>... sub items ...</ul>
-		// </ul>
-		//
-		// We need to fix that to the following:
-		// <ul id="p1">
-		//		<li id="uniqueID"><table />
-		//		<ul>... sub items ...</ul>
-		//		</li>
-		// </ul>
+        // Read title text + icon class from the first existing arrow anywhere on
+        // the page — works for any theme without hardcoding strings or class names.
+        var SEL_UP   = 'td.btnup, td.page-move-up';
+        var SEL_DOWN = 'td.btndown, td.page-move-down';
+        var $anyUp   = $(SEL_UP   + ' a').first();
+        var $anyDown = $(SEL_DOWN + ' a').first();
+        var titleUp   = $anyUp.attr('title')              || '';
+        var titleDown = $anyDown.attr('title')            || '';
+        var iconUp    = $anyUp.find('i').attr('class')    || 'fa fa-chevron-circle-up';
+        var iconDown  = $anyDown.find('i').attr('class')  || 'fa fa-chevron-circle-down';
 
-		// Stash all UL ids
-		var ids = {};
-		var lists = document.getElementsByTagName('ul');
-		for(var i = 0; i < lists.length; i++) {
-			if(lists[i].id) {
-				ids[lists[i].id] = true;
-			}
-		}
+        $items.each(function (i) {
+            var pageId  = $(this).data('page-id');
+            var $tdUp   = $(this).find('> table').find(SEL_UP);
+            var $tdDown = $(this).find('> table').find(SEL_DOWN);
 
-		// Now fix all LIs
-		var items = document.getElementsByTagName('li');
- 		for(var i = 0; i < items.length; i++) {
-			var item = items[i];
+            // ── Up arrow ──────────────────────────────────────────────────────
+            if (i === 0) {
+                $tdUp.empty();
+            } else if (!$tdUp.find('a').length) {
+                $tdUp.html(
+                    '<a href="' + JsAdmin.ADMIN_URL + '/pages/move_up.php?page_id=' + pageId + '"' +
+                    (titleUp ? ' title="' + titleUp + '"' : '') + '>' +
+                    '<i class="' + iconUp + '" aria-hidden="true"></i></a>'
+                );
+            }
 
-			// Fix duplicate ID
-			if(ids[item.id]) {
-				item.id =  JsAdmin.util.getUniqueId();
-			}
+            // ── Down arrow ────────────────────────────────────────────────────
+            if (i === count - 1) {
+                $tdDown.empty();
+            } else if (!$tdDown.find('a').length) {
+                $tdDown.html(
+                    '<a href="' + JsAdmin.ADMIN_URL + '/pages/move_down.php?page_id=' + pageId + '"' +
+                    (titleDown ? ' title="' + titleDown + '"' : '') + '>' +
+                    '<i class="' + iconDown + '" aria-hidden="true"></i></a>'
+                );
+            }
+        });
+    }
 
-			// Fix UL parented by UL
-			var ul = JsAdmin.util.getNextSiblingNode(item, 'ul');
-			if(ul) {
-				var lis = ul.getElementsByTagName('li');
- 				if(!lis || lis.length == 0) {
-					// Remove list without items
-					ul.parentNode.removeChild(ul);
-				} else {
-					// Make list child of list item
-					item.appendChild(ul);
-				}
-			}
-		}
 
-	} else if(document.URL.indexOf(JsAdmin.ADMIN_URL + "/pages/sections.php") > -1) {
-		page_type = 'sections';
-	} else if(document.URL.indexOf(JsAdmin.ADMIN_URL + "/pages/modify.php") > -1) {
-		page_type = 'modules';
-		is_tree = true;
-		// Stash all UL ids
-		var ids = {};
-		var lists = document.getElementsByTagName('ul');
-		for(var i = 0; i < lists.length; i++) {
-			if(lists[i].id) {
-				ids[lists[i].id] = true;
-			}
-		}
+    /**
+     * The PHP renderer places child <ul id="pN"> as siblings of <li>, not
+     * children.  Move each such list into its preceding <li> so jQuery UI
+     * sortable can reason about the tree correctly.
+     *
+     * Before:  <li>…</li>  <ul id="p2">…</ul>
+     * After:   <li>…  <ul id="p2">…</ul>  </li>
+     */
+    function fixTreeStructure() {
+        // Work bottom-up: deepest lists first so parents are moved intact.
+        var $lists = $('ul[id^="p"]').get().reverse();
+        $($lists).each(function () {
+            var $ul   = $(this);
+            var $prev = $ul.prev('li');
+            if ($prev.length) {
+                $ul.appendTo($prev);
+            }
+        });
+    }
 
-		// Now fix all LIs
-		var items = document.getElementsByTagName('li');
- 		for(var i = 0; i < items.length; i++) {
-			var item = items[i];
+    function initPagesSortable() {
+        // Argos theme renders child <ul> as siblings of <li> — move them inside.
+        // Flat theme already nests correctly, so this is a no-op there.
+        fixTreeStructure();
 
-			// Fix duplicate ID
-			if(ids[item.id]) {
-				item.id =  JsAdmin.util.getUniqueId();
-			}
+        $('ul[id^="p"]').each(function () {
+            var $ul = $(this);
 
-			// Fix UL parented by UL
-			var ul = JsAdmin.util.getNextSiblingNode(item, 'ul');
-			if(ul) {
-				var lis = ul.getElementsByTagName('li');
- 				if(!lis || lis.length == 0) {
-					// Remove list without items
-					ul.parentNode.removeChild(ul);
-				} else {
-					// Make list child of list item
-					item.appendChild(ul);
-				}
-			}
-		}
+            // Only enable when there are at least two addressable items.
+            if ($ul.children('li[id^="pageID_"]').length < 2) return;
 
-	} else {
-		// We don't do any other pages
-		return;
-		// page_type = 'modules';
-	}
+            $ul.sortable({
+                items:                '> li[id^="pageID_"]',
+                opacity:              0.75,
+                cursor:               'move',
+                placeholder:          'jsadmin-sort-placeholder',
+                forcePlaceholderSize: true,
+                tolerance:            'pointer',
+                revert:               150,
+                start: function (e, ui) {
+                    ui.placeholder.height(ui.item.outerHeight());
+                    $(this).find('td.btnup a, td.btndown a').css({
+                        transition: 'opacity 80ms linear',
+                        opacity:    0.15
+                    });
+                },
+                stop: function (e, ui) {
+                    flashItems(ui.item.children('table').find('td'));
+                    var $arrows = $(this).find('td.btnup a, td.btndown a');
+                    $arrows.css({ transition: 'opacity 1250ms linear', opacity: '' });
+                    setTimeout(function () { $arrows.css('transition', ''); }, 300);
+                },
+                update: function () {
+                    var $ul     = $(this);
+                    var pageIDs = [];
+                    $ul.children('li[id^="pageID_"]').each(function () {
+                        pageIDs.push(this.id.replace('pageID_', ''));
+                    });
+                    updateSiblingArrows($ul);
+                    postPageOrder(pageIDs);
+                }
+            });
+        });
+    }
 
-	var links = document.getElementsByTagName('a');
-	var reImg = /(.*)move_(down|up)\.php(.*)/;
+    function postPageOrder(pageIDs) {
+        setStatus('busy');
+        $.ajax({
+            type:     'POST',
+            url:      JsAdmin.WB_URL + '/admin/pages/ajax/ajax_dragdrop.php',
+            data:     { action: 'updateArray', pageID: pageIDs },
+            dataType: 'json',
+            success:  function (res) { setStatus(res.success ? 'success' : 'failure'); },
+            error:    function ()    { setStatus('failure'); }
+        });
+    }
 
-	for(var i = 0; i < links.length; i++) {
-		var link = links[i];
-		var href = link.href || '';
-		var match = href.match(reImg);
-		if(!match) {
-			continue;
-		}
-		var url = match[1];
-		var op = match[2];
-		var params = match[3];
-		var tr = JsAdmin.util.getAncestorNode(link, 'tr');
-		var item = is_tree ? JsAdmin.util.getAncestorNode(tr, 'li') : tr;
-		if(!item) {
-			continue;
-		}
+    // ── Sections ──────────────────────────────────────────────────────────────
 
-		// Make sure we have a unique id
-		if(!item.id || YAHOO.util.Dom.get(item.id) != item) {
-			item.id = JsAdmin.util.getUniqueId();
-		}
+function initSectionsSortable() {
+    $('.not-when-dd').hide();
 
-		if(is_tree) {
-			var parent = JsAdmin.util.getAncestorNode(item, 'ul');
-			new JsAdmin.DD.liDDSwap(item.id, (parent && parent.id) ? parent.id : 'top');
-		} else {
-			new JsAdmin.DD.trDDSwap(item.id);
-		}
-		item.className += " jsadmin_drag";
+    var $table = $('.sections-dnd').first();
+    if (!$table.length) return;
 
-		this.movable_rows[item.id] = { item: item, tr : tr, url : url, params : params };
-	}
-};
+    var $tbody = $table.find('tbody');
+    if ($tbody.find('tr.sectionrow').length < 2) return;
 
-//==========================================================================
-// Drag-drop utils
-//==========================================================================
+    var pageId = $tbody.find('tr.sectionrow input[name="page_id"]').first().val();
+    if (!pageId) return;
 
-JsAdmin.DD.dragee = null;
+    var colWidths = [];
 
-JsAdmin.DD.addMoveButton = function(tr, cell, op) {
-	if(op == 'down') {
-		cell++;
-	}
-	var item = JsAdmin.movable_rows[tr.id];
-	if(!JsAdmin.util.isNodeType(tr, 'tr')) {
-		var rows = tr.getElementsByTagName('tr');
-		tr = rows[0];
-	}
+    function cacheColumnWidths() {
+        colWidths = [];
+        $tbody.find('tr.sectionrow:first td').each(function () {
+            colWidths.push($(this).outerWidth());
+        });
+    }
+    cacheColumnWidths();
 
-	var html = '<a href="' + item.url + 'move_' + op + '.php' + item.params
-				+ '"><img src="' + JsAdminTheme.THEME_URL + '/images/' + op
-				+ '_16.png" border="0" alt="' + op + '" /></a>';
-	tr.cells[cell].innerHTML = html;
-};
+    // Drag Handle
+    $tbody.find('tr.sectionrow td:last-child').append(
+        '<span class="jsadmin-drag-handle" style="cursor:move;color:#aaa;padding:0 6px;font-size:1.2em;">⋮⋮</span>'
+    );
 
-JsAdmin.DD.deleteMoveButton = function(tr, cell, op) {
-	if(op == 'down') {
-		cell++;
-	}
-	if(!JsAdmin.util.isNodeType(tr, 'tr')) {
-		var rows = tr.getElementsByTagName('tr');
-		tr = rows[0];
-	}
-	
-	tr.cells[cell].innerHTML = "";
-};
+    $tbody.sortable({
+        items:                'tr.sectionrow',
+        handle:               '.jsadmin-drag-handle',
+        appendTo:             'body',
+        forcePlaceholderSize: false,
+        opacity:              0.9,
+        revert:               120,
+        tolerance:            'pointer',
 
-//==========================================================================
-// Drag-drop handling for table rows
-//==========================================================================
+        helper: function (e, tr) {
+            var $helper = tr.clone();
 
-JsAdmin.DD.trDDSwap = function(id, sGroup) {
-    this.init(id, sGroup);
-	this.addInvalidHandleType('a');
-	this.addInvalidHandleType('input');
-	this.addInvalidHandleType('select');
-    this.initFrame();
-	this.buttonCell = buttonCell;//, by Swen Uth
-	
-	// For Connection
-	this.scope = this;
-};
+            $helper.children('td').each(function (i) {
+                $(this).width(colWidths[i]);
+            });
 
-JsAdmin.DD.trDDSwap.prototype = new YAHOO.util.DDProxy();
+            $helper.addClass('sections-drag-helper');
 
-JsAdmin.DD.trDDSwap.prototype.startDrag = function(x, y) {
-	if (JsAdmin.DD.dragee != this) {
-		this.rowIndex = this.getEl().rowIndex;
-		this.numRows = this.getEl().parentNode.rows.length;
-		this.opacity = YAHOO.util.Dom.getStyle(this.getEl(), "opacity");
-		this.background = YAHOO.util.Dom.getStyle(this.getEl(), "background");
-		YAHOO.util.Dom.setStyle(this.getEl(), "opacity", 0.5);
-		YAHOO.util.Dom.setStyle(this.getEl(), "background", "transparent");
-	}
-	JsAdmin.DD.dragee = this;
-};
+            return $helper;
+        },
 
-JsAdmin.DD.trDDSwap.prototype.onDragEnter = function(e, id) {
-  var elt = id ? YAHOO.util.Dom.get(id) : null;
-	var item = JsAdmin.movable_rows[this.getEl().id];
-	var rows = item.tr.parentNode.rows;
-	var wasFirst = item.tr.rowIndex == 1;
-	var wasLast = item.tr.rowIndex == this.numRows - 2;
-	if(elt.rowIndex < item.tr.rowIndex) {
-		elt.parentNode.insertBefore(item.tr, elt);
-	} else {
-		elt.parentNode.insertBefore(elt, item.tr);
-	}
-	// Fixup buttons
-	var isFirst = item.tr.rowIndex == 1;
-	var isLast = item.tr.rowIndex == this.numRows - 2;
+        // Allow ±50 px of horizontal wiggle room around the table's left edge.
+        sort: function (e, ui) {
+            var tableLeft = $table.offset().left;
+            var left      = ui.helper.offset().left;
+            var clamped   = Math.max(tableLeft - 50, Math.min(tableLeft + 50, left));
+            ui.helper.css('left', clamped + 'px');
+        },
 
-	if(wasFirst != isFirst) {
-		if(isFirst) {
-			JsAdmin.DD.deleteMoveButton(item.tr, this.buttonCell, 'up');
-			JsAdmin.DD.addMoveButton(JsAdmin.util.getNextSiblingNode(item.tr), this.buttonCell, 'up');
-		} else {
-			JsAdmin.DD.addMoveButton(item.tr, this.buttonCell, 'up');
-			JsAdmin.DD.deleteMoveButton(rows[1], this.buttonCell, 'up');
-		}
-	}
-	if(wasLast != isLast) {
-		if(isLast) {
-			JsAdmin.DD.deleteMoveButton(item.tr, this.buttonCell, 'down');
-			JsAdmin.DD.addMoveButton(JsAdmin.util.getPreviousSiblingNode(item.tr), this.buttonCell, 'down');
-		} else {
-			JsAdmin.DD.addMoveButton(item.tr, this.buttonCell, 'down');
-			JsAdmin.DD.deleteMoveButton(rows[rows.length-2], this.buttonCell, 'down');
-		}
-	}
+        start: function (e, ui) {
+            // Inject a spanning <td> so the placeholder <tr> actually
+            // renders its background colour (browsers ignore background
+            // on a bare <tr> in a table).
+            var colspan = ui.item.children('td').length;
+            ui.placeholder.html('<td colspan="' + colspan + '"></td>');
+            ui.placeholder.height(8);
 
-	this.DDM.refreshCache(this.groups);
-};
+            $table.css({
+                'table-layout': 'fixed',
+                'width': $table.outerWidth() + 'px'
+            });
 
-JsAdmin.DD.trDDSwap.prototype.endDrag = function(e) {
-	YAHOO.util.Dom.setStyle(this.getEl(), "opacity", this.opacity);
-	YAHOO.util.Dom.setStyle(this.getEl(), "background", "#f0f0f0");
-	
-	JsAdmin.DD.dragee = null;
+            $table.find('thead tr, tbody tr').each(function () {
+                $(this).children('td').each(function (i) {
+                    if (colWidths[i] !== undefined) {
+                        $(this).css({
+                            'width': colWidths[i] + 'px',
+                            'max-width': colWidths[i] + 'px',
+                            'box-sizing': 'border-box'
+                        });
+                    }
+                });
+            });
+        },
 
-	var newIndex = this.getEl().rowIndex;
-	if(newIndex != this.rowIndex) {
-		var url = JsAdmin.WB_URL + "/modules/jsadmin/move_to.php";
-		url += JsAdmin.movable_rows[this.getEl().id].params + "&position=" + newIndex;
-		document.body.className = String(document.body.className).replace(/(\s*)jsadmin_([a-z]+)/g, "$1") + " jsadmin_busy";
-		YAHOO.util.Connect.asyncRequest('GET', url, this, null);
-	}
-};
+        stop: function (e, ui) {
+            $table.css({ 'table-layout': '', 'width': '' });
+            $table.find('td').css({ 'width': '', 'max-width': '' });
 
-JsAdmin.DD.trDDSwap.prototype.success = function(o) {
-	document.body.className = String(document.body.className).replace(/(\s*)jsadmin_([a-z]+)/g, "$1") + " jsadmin_success";
-};
+            // Flash only the direct cells of the dropped row.
+            flashItems(ui.item.children('td'));
+        },
 
-JsAdmin.DD.trDDSwap.prototype.failure = function(o) {
-	document.body.className = String(document.body.className).replace(/(\s*)jsadmin_([a-z]+)/, "$1") + " jsadmin_failure";
-};
+        update: function () {
+            setStatus('busy');
+            $.ajax({
+                type:     'POST',
+                url:      JsAdmin.WB_URL + '/admin/pages/ajax/ajax_dragdrop_sections.php',
+                data:     $tbody.sortable('serialize') + '&action=updateArray&page_id=' + pageId,
+                dataType: 'json',
+                success:  function (res) { setStatus(res.success ? 'success' : 'failure'); },
+                error:    function ()    { setStatus('failure'); }
+            });
+        }
+    });
+}
 
-//==========================================================================
-// Drag-drop handling for list items
-//==========================================================================
+    // ── Public entry point ────────────────────────────────────────────────────
 
-JsAdmin.DD.liDDSwap = function(id, sGroup) {
-    this.init(id, sGroup);
-	this.addInvalidHandleType('a');
-	this.addInvalidHandleType('input');
-	this.addInvalidHandleType('select');
-    this.initFrame();
- this.buttonCell = buttonCell;//, by Swen Uth
-	this.counter = 0;
-};
+    var _initialized = false;
 
-JsAdmin.DD.liDDSwap.prototype = new YAHOO.util.DDProxy();
+    function init() {
+        if (_initialized) return;
+        _initialized = true;
 
-JsAdmin.DD.liDDSwap.prototype.startDrag = function(x, y) {
-	// On IE, startDrag is sometimes called twice
-	if(JsAdmin.DD.dragee && JsAdmin.DD.dragee != this) {
-		JsAdmin.DD.dragee.endDrag(null);
-	}
-	if(JsAdmin.DD.dragee != this) {
-		this.rowIndex = JsAdmin.util.getItemIndex(this.getEl());
-		this.opacity = YAHOO.util.Dom.getStyle(this.getEl(), "opacity");
-		this.background = YAHOO.util.Dom.getStyle(this.getEl(), "background");
-		YAHOO.util.Dom.setStyle(this.getEl(), "opacity", 0.5);
+        if ($('#p0').length) {
+            initPagesSortable();
+        } else if ($('.sections-dnd').length) {
+            initSectionsSortable();
+        }
+    }
 
-		this.list = JsAdmin.util.getAncestorNode(this.getEl(), "ul");
-		this.list.className += " jsadmin_drag_area";
-	}
-	JsAdmin.DD.dragee = this;
-};
+    // Called by JsAdmin.loadHandler if available.
+    JsAdmin.init_drag_drop = init;
 
-JsAdmin.DD.liDDSwap.prototype.onDragEnter = function(e, id) {
-	// Swap with other element
-	var elt = id ? YAHOO.util.Dom.get(id) : null;
-	var item = JsAdmin.movable_rows[this.getEl().id];
-	var eltRowIndex = JsAdmin.util.getItemIndex(elt);
-	var rowIndex = JsAdmin.util.getItemIndex(this.getEl());
-	var wasFirst = !JsAdmin.util.getPreviousSiblingNode(this.getEl());
-	var wasLast = !JsAdmin.util.getNextSiblingNode(this.getEl());
+    // Self-contained fallback: initialize on DOM-ready regardless of loadHandler.
+    jQuery(function () { init(); });
 
-	if(eltRowIndex < rowIndex) {
-		elt.parentNode.insertBefore(this.getEl(), elt);
-	} else {
-		elt.parentNode.insertBefore(elt, this.getEl());
-	}
-	// Fixup buttons
-	var isFirst = !JsAdmin.util.getPreviousSiblingNode(this.getEl());
-	var isLast = !JsAdmin.util.getNextSiblingNode(this.getEl());
-
-	if(wasFirst != isFirst) {
-		if(isFirst) {
-			JsAdmin.DD.deleteMoveButton(item.tr, this.buttonCell, 'up');
-			JsAdmin.DD.addMoveButton(JsAdmin.util.getNextSiblingNode(item.item), this.buttonCell, 'up');
-		} else {
-			JsAdmin.DD.addMoveButton(item.item, this.buttonCell, 'up');
-			var first, prev = JsAdmin.util.getPreviousSiblingNode(item.item);
-			while(prev) {
-				first = prev;
-				prev = JsAdmin.util.getPreviousSiblingNode(prev);
-			}
-			JsAdmin.DD.deleteMoveButton(JsAdmin.movable_rows[first.id].tr, this.buttonCell, 'up');
-		}
-	}
-	if(wasLast != isLast) {
-		if(isLast) {
-			JsAdmin.DD.deleteMoveButton(item.tr, this.buttonCell, 'down');
-			JsAdmin.DD.addMoveButton(JsAdmin.util.getPreviousSiblingNode(item.item), this.buttonCell, 'down');
-		} else {
-			JsAdmin.DD.addMoveButton(item.item, this.buttonCell, 'down');
-			var last, next = JsAdmin.util.getNextSiblingNode(item.item);
-			while(next) {
-				last = next;
-				next = JsAdmin.util.getNextSiblingNode(next);
-			}
-			JsAdmin.DD.deleteMoveButton(JsAdmin.movable_rows[last.id].tr, this.buttonCell, 'down');
-		}
-	}
-
-	this.DDM.refreshCache(this.groups);
-};
-
-JsAdmin.DD.liDDSwap.prototype.endDrag = function(e) {
-	YAHOO.util.Dom.setStyle(this.getEl(), "opacity", this.opacity);
-	this.list.className = String(this.list.className).replace(/(\s*)jsadmin_([a-z]+)/g, "$1");
-	JsAdmin.DD.dragee = null;
-	var newIndex = JsAdmin.util.getItemIndex(this.getEl());
-	if(newIndex != this.rowIndex) {
-		var url = JsAdmin.WB_URL + "/modules/jsadmin/move_to.php";
-		url += JsAdmin.movable_rows[this.getEl().id].params + "&position=" + (newIndex+1);
-		document.body.className = String(document.body.className).replace(/(\s*)jsadmin_([a-z]+)/g, "$1") + " jsadmin_busy";
-		YAHOO.util.Connect.asyncRequest('GET', url, this, null);
-	}
-};
-
-JsAdmin.DD.liDDSwap.prototype.success = function(o) {
-	document.body.className = String(document.body.className).replace(/(\s*)jsadmin_([a-z]+)/g, "$1") + " jsadmin_success";
-};
-
-JsAdmin.DD.liDDSwap.prototype.failure = function(o) {
-	document.body.className = String(document.body.className).replace(/(\s*)jsadmin_([a-z]+)/, "$1") + " jsadmin_failure";
-};
+}(jQuery));

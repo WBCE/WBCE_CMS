@@ -30,12 +30,12 @@ if(defined('SMART_LOGIN') AND SMART_LOGIN == 'enabled') {
 }
 
 $oAccounts = new Accounts();
-$oMsgBox   = new MessageBox();
+$oMsgBox   = new Alerts(useSession: false);
 // Get the template file for login
 $aToTwig = array(
     'USERNAME_FIELD' => $sUsernameField,
     'PASSWORD_FIELD' => $sPasswordField,
-    'REDIRECT_URL'   => $oLogin->redirect_url,
+    'REDIRECT_URL'   => h($oLogin->getRedirectUrl()),
     'MESSAGE_BOX'    => $oMsgBox->fetchDisplay(), 
 );
 $oAccounts->useTwigTemplate('form_login.twig', $aToTwig);

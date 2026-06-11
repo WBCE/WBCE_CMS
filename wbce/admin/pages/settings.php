@@ -36,19 +36,10 @@ $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $page_id
 $results = $database->query($sql);
 $results_array = $results->fetchRow();
 
-$old_admin_groups = explode(',', $results_array['admin_groups']);
-$old_admin_users = explode(',', $results_array['admin_users']);
-
 // Work-out if we should check for existing page_code
 $field_set = $database->field_exists(TABLE_PREFIX . 'pages', 'page_code');
 
-$in_old_group = false;
-foreach ($admin->get_groups_id() as $cur_gid) {
-    if (in_array($cur_gid, $old_admin_groups)) {
-        $in_old_group = true;
-    }
-}
-if ((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users))) {
+if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_users'])) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
@@ -298,22 +289,7 @@ if ((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES) && $field_set && file_exists(W
             $list_next_level = true;
             // Stop users from adding pages with a level of more than the set page level limit
             if ($page['level'] + 1 <= PAGE_LEVEL_LIMIT) {
-                // Get user perms
-                $admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
-                $admin_users = explode(',', str_replace('_', '', $page['admin_users']));
-
-                $in_group = false;
-                foreach ($admin->get_groups_id() as $cur_gid) {
-                    if (in_array($cur_gid, $admin_groups)) {
-                        $in_group = true;
-                    }
-                }
-
-                if (($in_group) or is_numeric(array_search($admin->get_user_id(), $admin_users))) {
-                    $can_modify = true;
-                } else {
-                    $can_modify = false;
-                }
+                $can_modify = $admin->isPageAdmin($page['admin_groups'], $page['admin_users']);
 
                 $title_prefix = '';
                 for ($i = 1; $i <= $page['level']; $i++) {
@@ -389,20 +365,7 @@ function parent_list($parent)
         $list_next_level = true;
         // Stop users from adding pages with a level of more than the set page level limit
         if ($page['level'] + 1 < PAGE_LEVEL_LIMIT) {
-            // Get user perms
-            $admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
-            $admin_users = explode(',', str_replace('_', '', $page['admin_users']));
-            $in_group = false;
-            foreach ($admin->get_groups_id() as $cur_gid) {
-                if (in_array($cur_gid, $admin_groups)) {
-                    $in_group = true;
-                }
-            }
-            if (($in_group) or is_numeric(array_search($admin->get_user_id(), $admin_users))) {
-                $can_modify = true;
-            } else {
-                $can_modify = false;
-            }
+            $can_modify = $admin->isPageAdmin($page['admin_groups'], $page['admin_users']);
             // Title -'s prefix
             $title_prefix = '';
             for ($i = 1; $i <= $page['level']; $i++) {

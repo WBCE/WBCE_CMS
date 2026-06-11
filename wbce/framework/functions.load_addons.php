@@ -152,7 +152,19 @@ function load_module($sModulePath, $bInstall = false)
                 "SELECT COUNT(*) FROM `{TP}addons` WHERE `type` = 'module' AND `directory` = ?",
                 [$module_directory]
             )) {
-                $retVal[] = $database->upsertRow('{TP}addons', 'directory', $aData);
+                // Explicit UPDATE — upsertRow's ON DUPLICATE KEY needs a UNIQUE constraint
+                // on `directory` which the addons table lacks; it would INSERT instead.
+                $retVal[] = $database->query(
+                    "UPDATE `{TP}addons`
+                     SET `type`=?, `name`=?, `description`=?, `function`=?,
+                         `version`=?, `platform`=?, `author`=?, `license`=?
+                     WHERE `directory`=?",
+                    [
+                        $aData['type'], $aData['name'], $aData['description'], $aData['function'],
+                        $aData['version'], $aData['platform'], $aData['author'], $aData['license'],
+                        $aData['directory'],
+                    ]
+                );
             } else {
                 $retVal[] = $database->insertRow('{TP}addons', $aData);
             }
@@ -210,7 +222,19 @@ function load_template($sTemplatePath)
                 "SELECT COUNT(*) FROM `{TP}addons` WHERE `type` = 'template' AND `directory` = ?",
                 [$template_directory]
             )) {
-                $retVal = $database->upsertRow('{TP}addons', 'directory', $aData);
+                // Explicit UPDATE — upsertRow's ON DUPLICATE KEY needs a UNIQUE constraint
+                // on `directory` which the addons table lacks; it would INSERT instead.
+                $retVal = $database->query(
+                    "UPDATE `{TP}addons`
+                     SET `type`=?, `name`=?, `description`=?, `function`=?,
+                         `version`=?, `platform`=?, `author`=?, `license`=?
+                     WHERE `directory`=?",
+                    [
+                        $aData['type'], $aData['name'], $aData['description'], $aData['function'],
+                        $aData['version'], $aData['platform'], $aData['author'], $aData['license'],
+                        $aData['directory'],
+                    ]
+                );
             } else {
                 $retVal = $database->insertRow('{TP}addons', $aData);
             }
@@ -264,7 +288,19 @@ function load_language($sFilePath)
                 "SELECT COUNT(*) FROM `{TP}addons` WHERE `type` = 'language' AND `directory` = ?",
                 [$language_code]
             )) {
-                $retVal = $database->upsertRow('{TP}addons', 'directory', $aData);
+                // Explicit UPDATE — upsertRow's ON DUPLICATE KEY needs a UNIQUE constraint
+                // on `directory` which the addons table lacks; it would INSERT instead.
+                $retVal = $database->query(
+                    "UPDATE `{TP}addons`
+                     SET `type`=?, `name`=?, `description`=?, `version`=?,
+                         `platform`=?, `author`=?, `license`=?
+                     WHERE `directory`=?",
+                    [
+                        $aData['type'], $aData['name'], $aData['description'],
+                        $aData['version'], $aData['platform'], $aData['author'], $aData['license'],
+                        $aData['directory'],
+                    ]
+                );
             } else {
                 $retVal = $database->insertRow('{TP}addons', $aData);
             }
@@ -291,7 +327,20 @@ function upgrade_module($sModulePath, $bUpgrade = false)
                 "SELECT COUNT(*) FROM `{TP}addons` WHERE `directory` = ?",
                 [$module_directory]
             )) {
-                // Update in DB
+                // Clean up duplicate rows caused by the upsertRow bug in earlier versions
+                // (ON DUPLICATE KEY requires a UNIQUE constraint that addons table lacks).
+                // Keep the row with the lowest addon_id, delete any extras.
+                $minId = (int)$database->fetchValue(
+                    "SELECT MIN(`addon_id`) FROM `{TP}addons` WHERE `directory` = ?",
+                    [$module_directory]
+                );
+                $database->query(
+                    "DELETE FROM `{TP}addons` WHERE `directory` = ? AND `addon_id` != ?",
+                    [$module_directory, $minId]
+                );
+
+                // Explicit UPDATE — upsertRow's ON DUPLICATE KEY needs a UNIQUE constraint
+                // on `directory` which the addons table lacks; it would INSERT instead.
                 $aUpdate = array(
                     'directory'   => $module_directory   ?? '',
                     'version'     => $module_version     ?? '',
@@ -301,7 +350,17 @@ function upgrade_module($sModulePath, $bUpgrade = false)
                     'platform'    => (!isset($module_platform) && isset($module_designed_for)) ? $module_designed_for : $module_platform,
                     'function'    => strtolower((!isset($module_function) && isset($module_type)) ? $module_type : $module_function),
                 );
-                $database->upsertRow('{TP}addons', 'directory', $aUpdate);
+                $database->query(
+                    "UPDATE `{TP}addons`
+                     SET `version`=?, `description`=?, `author`=?, `license`=?,
+                         `platform`=?, `function`=?
+                     WHERE `directory`=?",
+                    [
+                        $aUpdate['version'], $aUpdate['description'], $aUpdate['author'],
+                        $aUpdate['license'], $aUpdate['platform'], $aUpdate['function'],
+                        $aUpdate['directory'],
+                    ]
+                );
                 if ($database->hasError()) {
                     $admin->print_error($database->getError());
                 }

@@ -10,176 +10,171 @@
  * @license GNU GPL2 (or any later version)
  */
 
-// Include the configuration file
 require realpath('../../../config.php');
-// Include the language file
-require WB_PATH . '/languages/' . DEFAULT_LANGUAGE . '.php';
-// Include the database class file and initiate an object
-require WB_PATH . '/framework/class.admin.php';
-$admin = new admin('Start', 'start', false, false);
-require_once(WB_PATH.'/include/captcha/captcha.php');
-
-$oMsgBox = new MessageBox();
-$oMsgBox->closeBtn = '';
-
-$nocookie = false;
-if (defined('NO_SESSION_COOKIE')) {
-	$nocookie = NO_SESSION_COOKIE;
-}
 
 
-// Check if the user has already submitted the form, otherwise show it
-if (isset($_POST['email']) && $_POST['email'] != "" ) {
-    $email = strip_tags($wb->get_post('email'));
-	if ($nocookie == false) {			
-		if(isset($_POST['captcha']) AND $_POST['captcha'] != ''){
-			$ccheck = time(); $ccheck1 = time();
-			if(isset($_SESSION['captchaloginforgot'])) $ccheck1 = $_SESSION['captchaloginforgot'];
-			if(isset($_SESSION['captcha'])) $ccheck = $_SESSION['captcha'];
-			if($_POST['captcha'] != $ccheck && $_POST['captcha'] != $ccheck1) {
-				$oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
-				$email = '';
-			}
-		} else {
-			$oMsgBox->error($MESSAGE['MOD_FORM_INCORRECT_CAPTCHA']);
-			$email = '';
-		}
-	}
-   
-    
-    if ($email != '') {
-         
-            if ($admin->validate_email($email) == false) {
-                $oMsgBox->error($MESSAGE['USERS_INVALID_EMAIL']);
-            }
-        
-        // Check if the email exists in the database
-        $sSql = "SELECT * FROM `{TP}users` WHERE `email`='".$database->escapeString($email)."'";
-        $rRow = $database->query($sSql);
-        if ($rRow->numRows() > 0) {
+$admin  = new Admin('Start', 'start', false, false);
+$alerts = new Alerts(useSession: false);
 
-            // Get the id, username, email, and last_reset from the above db query
-            $aUser = $rRow->fetchRow();
-            if (strlen($aUser['signup_confirmcode']) > 25) {
-                header("Location: " . WB_URL . "/account/signup_continue_page.php?switch=wrong_inputs");
-                exit(0); // break up the script here
-            }
+$nocookie = defined('NO_SESSION_COOKIE') && NO_SESSION_COOKIE;
+$email    = '';
+$showForm = true;
 
+// === Handle POST =============================================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email'])) {
 
-            // Check if the password has been reset in the last 2 hours
-            if ((time() - intval($aUser['last_reset'])) < (2 * 3600)) {
-                // Tell the user that their password cannot be reset more than once per hour
-                $oMsgBox->error($MESSAGE['FORGOT_PASS_ALREADY_RESET']);
-            } else {
-                $sCurrentPw = $aUser['password'];
+    $email = strip_tags(trim($admin->get_post('email') ?? ''));
 
-                // Generate a random password then update the database with it
-                $sNewPw = '';
-                 $salt = "abcdefghjklmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!_-:#*+$@&";			   
-				$i = 0;
-				while ($i <= 12) {
-					$num = random_int(0,70);
-                    $tmp = substr($salt, $num, 1);
-                    $sNewPw = $sNewPw . $tmp;
-                    $i++;
-                }
+    // --- FTAN check ---
+    if (!$admin->checkFTAN()) {
+        $alerts->error('MESSAGE:GENERIC_SECURITY_ACCESS');
+        $email = '';
+    }
 
-                // update the new password in the database
-                $aUpdateUser = array(
-                    'user_id' => $aUser['user_id'],
-                    'password' => $wb->doPasswordEncode($sNewPw),
-                    'last_reset' => time(),
-                );
-                $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
+    // --- Captcha validation (FIXED: no timestamp fallback) ---
+    if ($email !== '' && !$nocookie) {
+        $captchaInput = $_POST['captcha'] ?? '';
 
-                if ($database->is_error()) {
-                    // Error updating database
-                    $oMsgBox->error($database->get_error());
-                } else {
-                    // Setup email to send
-                    $mail_to = $email;
-                    $mail_subject = $MESSAGE['SIGNUP2_SUBJECT_LOGIN_INFO'];
-
-                    // Replace placeholders from language variable with values
-                    $search = array('{LOGIN_DISPLAY_NAME}', '{LOGIN_WEBSITE_TITLE}', '{LOGIN_NAME}', '{LOGIN_PASSWORD}');
-                    $replace = array($aUser['display_name'], WEBSITE_TITLE, $aUser['username'], $sNewPw);
-
-                    $aTokenReplace = array(
-                        '{LOGIN_DISPLAY_NAME}' => $aUser['display_name'],
-                        '{LOGIN_NAME}' => $aUser['username'],
-                        '{LOGIN_WEBSITE_TITLE}' => WEBSITE_TITLE,
-                        '{LOGIN_PASSWORD}' => $sNewPw
-                    );
-
-
-                    $mail_message = strtr($MESSAGE['SIGNUP2_BODY_LOGIN_FORGOT'], $aTokenReplace);
-
-                    // Try sending the email
-                    if ($admin->mail(SERVER_EMAIL, $mail_to, $mail_subject, $mail_message)) {
-                        $oMsgBox->error($MESSAGE['FORGOT_PASS_PASSWORD_RESET']);
-                        $display_form = false;
-                    } else {
-                        $aUpdateUser = array(
-                            'user_id' => $aUser['user_id'],
-                            'password' => $sCurrentPw
-                        );
-                        $database->updateRow('{TP}users', 'user_id', $aUpdateUser);
-                        $oMsgBox->error($MESSAGE['FORGOT_PASS_CANNOT_EMAIL']);
-                    }
-                }
-            }
-        } else {
-            // Email doesn't exist, so tell the user
-            $oMsgBox->error($MESSAGE['FORGOT_PASS_EMAIL_NOT_FOUND']);
-            // and delete the wrong Email
+        if ($captchaInput === '') {
+            $alerts->error('MESSAGE:MOD_FORM_INCORRECT_CAPTCHA');
             $email = '';
+        } else {
+            // Only compare against actual session captcha values.
+            // NEVER fall back to time() — that's the vulnerability.
+            $validCaptcha1 = $_SESSION['captcha']            ?? null;
+            $validCaptcha2 = $_SESSION['captchaloginforgot'] ?? null;
+
+            if ($validCaptcha1 === null && $validCaptcha2 === null) {
+                // No captcha in session = session expired or tampered
+                $alerts->error('MESSAGE:MOD_FORM_INCORRECT_CAPTCHA');
+                $email = '';
+            } elseif ($captchaInput != $validCaptcha1 && $captchaInput != $validCaptcha2) {
+                $alerts->error('MESSAGE:MOD_FORM_INCORRECT_CAPTCHA');
+                $email = '';
+            }
         }
     }
-} else {
-    $email = '';
+
+    // --- Validate email format ---
+    if ($email !== '' && !$admin->validate_email($email)) {
+        $alerts->error('MESSAGE:USERS_INVALID_EMAIL');
+        $email = '';
+    }
+
+    // --- Look up user ---
+    if ($email !== '') {
+        $user = $database->fetchRow(
+            "SELECT * FROM `{TP}users` WHERE `email` = ?",
+            [$email]
+        );
+
+        if (!$user) {
+            // Deliberately vague — don't reveal whether email exists
+            $alerts->error('MESSAGE:FORGOT_PASS_EMAIL_NOT_FOUND');
+            $email = '';
+        } elseif (strlen($user['signup_confirmcode'] ?? '') > 25) {
+            // Unconfirmed signup — redirect
+            header('Location: ' . WB_URL . '/account/signup_continue_page.php?switch=wrong_inputs');
+            exit;
+        } elseif ((time() - intval($user['last_reset'])) < 7200) {
+            // Rate limit: max one reset per 2 hours
+            $alerts->error('MESSAGE:FORGOT_PASS_ALREADY_RESET');
+        } else {
+            // --- Generate new password and send email ---
+            $result = resetAndEmailPassword($user, $admin, $database, $alerts);
+            if ($result) {
+                $showForm = false;
+            }
+        }
+    }
 }
 
-if ($oMsgBox->hasErrors() == false) {
-    $oMsgBox->info($MESSAGE['FORGOT_PASS_NO_DATA'], 0, 1);
-}
-
-// Create new phpLib Template object
-$template = new Template(dirname($admin->correct_theme_source('login_forgot.htt')));
-$template->set_file('page', 'login_forgot.htt');
-$template->set_block('page', 'main_block', 'main');
-
-if ($nocookie == false) {			
-	ob_start();
-	call_captcha("all","",'loginforgot');
-	$captcha = ob_get_contents();
-	ob_end_clean();
-} else {
-	$captcha = '';
+// Default info message when no errors shown
+if (!$alerts->hasErrors() && $showForm) {
+    $alerts->info('MESSAGE:FORGOT_PASS_NO_DATA');
 }
 
 
-$aTemplateVars = array(
-    'SECTION_FORGOT' => $MENU['FORGOT'],
-    'MESSAGE_COLOR' => '', //$message_color,
-    'MESSAGE' => $oMsgBox->fetchDisplay(),
-    'WB_URL' => WB_URL,
-    'ADMIN_URL' => ADMIN_URL,
-    'THEME_URL' => THEME_URL,
-    'LANGUAGE' => strtolower(LANGUAGE),
-    'TEXT_EMAIL' => $TEXT['EMAIL'],
-    'TEXT_SEND_DETAILS' => $TEXT['SEND_DETAILS'],
-    'TEXT_HOME' => $TEXT['HOME'],
-    'TEXT_NEED_TO_LOGIN' => $TEXT['NEED_TO_LOGIN'],
-    'EMAIL' => $email,
-    'DISPLAY_FORM' => isset($display_form) ? 'display:none;' : '',
-    'ACTION_URL' => defined('FRONTEND') ? 'forgot.php' : 'index.php',
-    'LOGIN_URL' => defined('FRONTEND') ? WB_URL . '/account/login.php' : ADMIN_URL,
-    'INTERFACE_URL' => ADMIN_URL . '/interface',
-    'DEFAULT_CHARSET' => defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : 'utf-8',
-    'CHARSET' => isset($charset) ? $charset : 'utf-8',
-    'CAPTCHA' => $captcha
-);
-$template->set_var($aTemplateVars);
+// Captcha HTML
+$captchaHtml = '';
+if (!$nocookie) {
+    ob_start();
+    Captcha::render('widget');
+    $captchaHtml = ob_get_clean();
+}
 
-$template->parse('main', 'main_block', false);
-$template->pparse('output', 'page');
+// === Render ==================================================================
+$toTwig = [
+    'MESSAGE'      => $alerts->render(),
+    'WB_URL'       => WB_URL,
+    'ADMIN_URL'    => ADMIN_URL,
+    'THEME_URL'    => THEME_URL,
+    'LANGUAGE'     => strtolower(LANGUAGE),
+    'EMAIL'        => h($email),
+    'SHOW_FORM'    => $showForm,
+    'ACTION_URL'   => defined('FRONTEND') ? 'forgot.php' : 'index.php',
+    'LOGIN_URL'    => defined('FRONTEND') ? WB_URL . '/account/login.php' : ADMIN_URL,
+    'CAPTCHA'      => $captchaHtml,
+    'CHARSET'      => defined('DEFAULT_CHARSET') ? DEFAULT_CHARSET : 'utf-8',
+];
+
+$admin->getThemeFile('login_forgot.twig', $toTwig);
+
+
+/**
+ * Generate a new random password, update DB, and send email.
+ * @return bool  true on success
+ */
+function resetAndEmailPassword(
+        array    $user, 
+        Admin    $admin, 
+        Database $database, 
+        Alerts   $alerts
+    ): bool
+{
+
+    $previousPassword = $user['password'];
+
+    // Generate secure random password (13 chars)
+    $chars  = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!_-:#*+$@&';
+    $newPw  = '';
+    $maxIdx = strlen($chars) - 1;
+    for ($i = 0; $i < 13; $i++) {
+        $newPw .= $chars[random_int(0, $maxIdx)];
+    }
+
+    // Update password in DB
+    $database->query(
+        "UPDATE `{TP}users` SET `password` = ?, `last_reset` = ? WHERE `user_id` = ?",
+        [$admin->doPasswordEncode($newPw), time(), $user['user_id']]
+    );
+
+    if ($database->hasError()) {
+        $alerts->error($database->getError());
+        return false;
+    }
+
+    // Send email
+    $mailSubject = L_('MESSAGE:SIGNUP2_SUBJECT_LOGIN_INFO');
+    $mailBodyStr = L_('MESSAGE:SIGNUP2_BODY_LOGIN_FORGOT');
+    $mailBody    = strtr($mailBodyStr, [
+        '{LOGIN_DISPLAY_NAME}'  => $user['display_name'],
+        '{LOGIN_NAME}'          => $user['username'],
+        '{LOGIN_WEBSITE_TITLE}' => WEBSITE_TITLE,
+        '{LOGIN_PASSWORD}'      => $newPw,
+    ]);
+
+    if ($admin->mail(SERVER_EMAIL, $user['email'], $mailSubject, $mailBody)) {
+        $alerts->success('MESSAGE:FORGOT_PASS_PASSWORD_RESET');
+        return true;
+    }
+
+    // Email failed — revert password
+    $database->query(
+        "UPDATE `{TP}users` SET `password` = ? WHERE `user_id` = ?",
+        [$previousPassword, $user['user_id']]
+    );
+
+    $alerts->error('MESSAGE:FORGOT_PASS_CANNOT_EMAIL');
+    return false;
+}

@@ -12,11 +12,11 @@
  */
 
 defined('WBCE_INSTALL_PROCESS') or define('WBCE_INSTALL_PROCESS', true);
-defined('WB_DEBUG')             or define('WB_DEBUG',     true);
+defined('WBCE_DEBUG')             or define('WBCE_DEBUG',     true);
 defined('WB_INSTALLER')         or define('WB_INSTALLER', true);
 defined('WB_SECFORM_TIMEOUT')   or define('WB_SECFORM_TIMEOUT', '7200');
 
-if (WB_DEBUG) {
+if (WBCE_DEBUG) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
@@ -159,7 +159,8 @@ if (!isset($_POST['admin_repassword']) || $_POST['admin_repassword'] === '') {
     set_error(d('e18: ') . 'The two passwords do not match', 'admin_repassword');
     $_isError = true;
 } else {
-    if (preg_match('/[^a-zA-Z0-9\_\-\!\#\*\+\@\$\&\:]/', $admin_password)) {
+    if (preg_match('/[^\x20-\x7E]/', $admin_password)) {
+        // Allow all 95 printable ASCII characters — matches class.wb.php password_chars
         set_error(d('e19: ') . 'Invalid password characters', 'admin_password');
         $_isError = true;
     } elseif (strlen($admin_password) < 8) {
@@ -394,7 +395,7 @@ $settings = [
     'page_trash'            => 'inline',
     'intro_page'            => false,
     'redirect_timer'        => '500',
-    'sec_anchor'            => 'wb_',
+    'sec_anchor'            => 'wbce_',
     'wb_secform_secret'     => bin2hex(random_bytes(16)),
     'wb_secform_secrettime' => '86400',
     'wb_secform_timeout'    => '7200',

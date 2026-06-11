@@ -166,7 +166,7 @@ function media_dirs_rw(&$wb)
     $full_list = directory_list(WB_PATH . MEDIA_DIRECTORY);
     $array = array();
     $allow_list = array();
-    if (($wb->ami_group_member('1')) && !HOME_FOLDERS) {
+    if (($wb->isInGroup('1')) && !HOME_FOLDERS) {
         return $full_list;
     }
     // add own home_folder to allow-list
@@ -1374,4 +1374,270 @@ function remove_special_characters($str) {
 
   // Returning the result
   return $res;
+}
+
+/**
+ * Sanitize a CSS color value.
+ *
+ * Returns the sanitized color if the input matches a known-safe CSS color
+ * pattern, or an empty string otherwise.
+ * Hex values and keyword colors are normalized to lowercase.
+ *
+ * Accepted patterns:
+ *   Hex        #rgb  #rgba  #rrggbb  #rrggbbaa
+ *   Functions  rgb()  rgba()  hsl()  hsla()  hwb()
+ *              lab()  lch()  oklab()  oklch()  color()
+ *              Legacy comma syntax and modern space syntax (CSS Color L4).
+ *              Alpha via "/ value" and angle units (deg, turn, rad, grad)
+ *              are supported.
+ *   Keywords   Any 3–32 pure-alpha string — covers all CSS named colors
+ *              (red, transparent, rebeccapurple …) plus currentColor / inherit.
+ *
+ * @param  string|null $color  Raw input, e.g. from $_POST
+ * @return string              Safe CSS color string, or ''
+ */
+function sanitizeCssColor(?string $color): string
+{
+    if ($color === null || ($color = trim($color)) === '') {
+        return '';
+    }
+
+    // ── Hex ──────────────────────────────────────────────────────────────────
+    // #rgb | #rgba | #rrggbb | #rrggbbaa
+    if (preg_match('/^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $color)) {
+        return strtolower($color);
+    }
+
+    // ── Functional color notation ─────────────────────────────────────────────
+    // Function name is restricted to the known CSS color functions — this
+    // explicitly blocks expression(), url() and any other non-color function.
+    // Character allowlist inside the parentheses covers:
+    //   digits, dot, +/-, %, comma, whitespace, slash (alpha separator),
+    //   letters (angle units: deg/turn/rad/grad, keyword: none,
+    //           color-space names: srgb, display-p3, a98-rgb …)
+    if (preg_match(
+        '/^(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\([\d\s.,+\-\/%a-zA-Z]+\)$/',
+        $color
+    )) {
+        return $color;
+    }
+
+    // ── CSS keyword colors ────────────────────────────────────────────────────
+    // Pure alpha, 3–32 chars. No injection risk (no specials possible).
+    if (preg_match('/^[a-zA-Z]{3,32}$/', $color)) {
+        return strtolower($color);
+    }
+
+    return '';
+}
+
+/**
+ * Return a sorted, flat list of all subdirectory paths beneath $dir,
+ * relative to $dir (e.g. ['/ordner1', '/ordner4', '/ordner4/sub1']).
+ *
+ * Uses RecursiveDirectoryIterator; hidden directories (dot-prefixed) are
+ * skipped by default.
+ *
+ * @param  string $dir            Absolute base path to scan.
+ * @param  bool   $showHidden     Include dot-directories when TRUE.
+ * @return array  <int, string>  Sorted relative paths, re-indexed from 0.
+ *
+ * @throws \InvalidArgumentException  If $dir is not a readable directory.
+ */
+function directoriesList(string $dir, bool $showHidden = false): array
+{
+    $dir = rtrim($dir, '/\\');
+
+    if (!is_dir($dir) || !is_readable($dir)) {
+        throw new \InvalidArgumentException(
+            sprintf('directoriesList(): "%s" is not a readable directory.', $dir)
+        );
+    }
+
+    $flags = RecursiveDirectoryIterator::SKIP_DOTS
+           | RecursiveDirectoryIterator::UNIX_PATHS;
+
+    $dirIterator = new RecursiveDirectoryIterator($dir, $flags);
+
+    // The callback returning false skips the node AND prevents descent into it.
+    $filter = new RecursiveCallbackFilterIterator(
+        $dirIterator,
+        static function (\SplFileInfo $entry) use ($showHidden): bool {
+            return $entry->isDir()
+                && ($showHidden || $entry->getBasename()[0] !== '.');
+        }
+    );
+
+    $iterator = new RecursiveIteratorIterator(
+        $filter,
+        RecursiveIteratorIterator::SELF_FIRST
+    );
+
+    $result = [];
+
+    foreach ($iterator as $entry) {
+        $result[] = substr($entry->getPathname(), strlen($dir));
+    }
+
+    natcasesort($result);
+
+    return array_values($result);
+}
+
+/**
+ * Build a nested directory tree from a flat, sorted path list.
+ *
+ * Each node in the returned tree has the shape:
+ *
+ *   [
+ *     'path'     => '/dir4/sub1',     // full relative path from root
+ *     'name'     => 'sub1',           // directory name only
+ *     'children' => [ ... ],          // nested child nodes (same shape)
+ *   ]
+ *
+ * The flat list is typically produced by directoriesList().
+ * Paths must use a leading forward slash and forward-slash separators.
+ *
+ * @param  array<int, string> $flatDirs  Flat list of relative paths (e.g. '/a/b/c').
+ * @return array<int, array>             Top-level nodes, each with nested children.
+ */
+function directoriesTree(array $flatDirs): array
+{
+    $root = [];
+
+    foreach ($flatDirs as $path) {
+        // Split '/dir4/sub1' → ['dir4', 'sub1']
+        $segments = array_filter(explode('/', $path));
+        $cursor   = &$root;
+        $built    = '';
+
+        foreach ($segments as $segment) {
+            $built .= '/' . $segment;
+
+            // Find existing node or create it
+            $found = false;
+            foreach ($cursor as &$node) {
+                if ($node['name'] === $segment) {
+                    $cursor = &$node['children'];
+                    $found  = true;
+                    break;
+                }
+            }
+            unset($node);
+
+            if (!$found) {
+                $cursor[] = [
+                    'path'     => $built,
+                    'name'     => $segment,
+                    'children' => [],
+                ];
+                $cursor = &$cursor[array_key_last($cursor)]['children'];
+            }
+        }
+        unset($cursor);
+    }
+
+    return $root;
+}
+
+/**
+ * Flatten a nested tree structure into a linear array while preserving
+ * visual hierarchy information (tree connectors and indentation).
+ *
+ * This function is generic and can be used for:
+ * - page trees
+ * - folder trees
+ * - category trees
+ * - menu trees
+ * - permission trees
+ *
+ * The tree structure must use a `children` key containing nested nodes.
+ *
+ * Example node structure:
+ *
+ * [
+ *     'name'     => 'Folder',
+ *     'path'     => '/folder',
+ *     'children' => [],
+ * ]
+ *
+ * The callable mapper receives:
+ *   1. The current node
+ *   2. Tree metadata:
+ *      - level
+ *      - is_last
+ *      - prefix
+ *      - connector
+ *
+ * Example:
+ *
+ * flattenTree($tree, function ($node, $meta) {
+ *     return [
+ *         'label' => $meta['prefix'] . $node['name'],
+ *         'path'  => $node['path'],
+ *     ];
+ * });
+ * 
+ * @author    Christian M. Stefan  (https://www.wbEasy.de)
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html
+ * 
+ * @param  array    $tree               Nested tree structure. 
+ * @param  callable $mapper             Callback that transforms a node into the final output format.
+ *                                      Signature:
+ *                                      function (array $node, array $meta): mixed
+ *
+ * @param  int      $level              Current recursion depth. 
+ * @param  array    $continuing         Internal stack tracking vertical connector continuation. 
+ * @param  array    $result             Internal accumulator passed by reference. 
+ * @param  bool     $connectorsFromRoot  
+ * @return array                        Flattened tree array.
+ */
+function flattenTree(
+    array    $tree,
+    callable $mapper,
+    int      $level              = 0,
+    array    $continuing         = [],
+    array    &$result            = [],
+    bool     $connectorsFromRoot = false  // <-- neu
+): array {
+
+    $items = array_values($tree);
+    $count = count($items);
+
+    foreach ($items as $index => $node) {
+
+        $isLast = ($index === $count - 1);
+        $prefix = '';
+
+        foreach ($continuing as $cont) {
+            $prefix .= $cont ? '│'.str_repeat(mb_chr(160), 2) : str_repeat(mb_chr(160), 3);
+        }
+
+        if ($level > 0 || $connectorsFromRoot) {   
+            $prefix .= $isLast ? '└─'.mb_chr(160) : '├─'.mb_chr(160);
+        }
+
+        $result[] = $mapper($node, [
+            'level'     => $level,
+            'is_last'   => $isLast,
+            'prefix'    => $prefix,
+            'connector' => $isLast ? '└─'.mb_chr(160) : '├─'.mb_chr(160),
+        ]);
+
+        if (!empty($node['children'])) {
+            $nextContinuing   = $continuing;
+            $nextContinuing[] = !$isLast;
+
+            flattenTree(
+                $node['children'],
+                $mapper,
+                $level + 1,
+                $nextContinuing,
+                $result,
+                $connectorsFromRoot  
+            );
+        }
+    }
+
+    return $result;
 }

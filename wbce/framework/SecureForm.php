@@ -60,7 +60,7 @@
 defined('WB_PATH') or die('No direct access allowed');
 
 /**
- * Class Wb extends this class, so all these methods are avainable in class Wb
+ * Class Wbce extends this class, providing these methods to Admin and Frontend as well.
  */
 
 class SecureForm
@@ -95,10 +95,9 @@ class SecureForm
 
     protected function __construct($mode = self::FRONTEND)
     {
-        // Establish class Database object for 
-        // use in this class and its extend 
-        // classes Admin, Wb & Frontend
-        // Introduced with WBCE 1.4.0 to save redundancy
+        // Establish class Database object for
+        // use in this class and its subclasses Admin, Wbce & Frontend.
+        // Introduced with WBCE 1.4.0 to save redundancy.
         $this->db = $GLOBALS['database'];
 
         // GLOBAL CONFIGURATION, additional constants and stuff
@@ -416,7 +415,7 @@ class SecureForm
 
       
         $token = dechex(mt_rand());
-        $hash = sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')));
+        $hash = sha1($secret . '-' . $token . '-' . md5(WbceSession::get('SessionTokenIdentifier')));
         $signed = $token . '-' . $hash;
 
         if ($as_tag == true) {
@@ -454,7 +453,7 @@ class SecureForm
 
         if (count($parts) == 2) {
             list($token, $hash) = $parts;
-            if ($hash == sha1($secret . '-' . $token . '-' . md5(WSession::Get('SessionTokenIdentifier')))) {
+            if ($hash == sha1($secret . '-' . $token . '-' . md5(WbceSession::get('SessionTokenIdentifier')))) {
                 $isok = true;
             }
         }

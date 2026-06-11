@@ -35,14 +35,22 @@ ob_start();
 // During istallation WB_PATH is not defined yet, therefore we do it he for that case.
 defined("WB_PATH") or define("WB_PATH", dirname(__DIR__));
 
-// Load Constants from var/wbce_file_based_settings.php early
-// allows for setting constants via the backend rather than manually in the config.php
-define('WBCE_FILE_BASED_SETTINGS', WB_PATH . '/var/wbce_file_based_settings.php');
+// Load Constants from var/config_constants.php early
+// allows for setting constants via the backend rather than manually in the config.php.
+// Up till WBCE 1.7.0 many constants (e.g. WB_DEBUG) have been set in the config.php file
+// which can be done more conveniently with file based settings now.
+define('WBCE_FILE_BASED_SETTINGS', WB_PATH . '/var/config_constants.ini.php');
 wbce_load_file_based_settings();
 
-// WB_DEBUG can be overwritten via WBCE config.php or wbce_load_file_based_settings()
-// (if enabled, max. PHP error output is shown)
-defined('WB_DEBUG') or define('WB_DEBUG', false);
+// WBCE_DEBUG / WB_DEBUG — backward-compatibility bridge
+// `WB_DEBUG` is @deprecated since WBCE 1.7.0; use WBCE_DEBUG instead.
+if (defined('WB_DEBUG') && !defined('WBCE_DEBUG')) {
+    define('WBCE_DEBUG', WB_DEBUG); define('DEPRECATED_WB_DEBUG', true);
+}
+// equalize WB_DEBUG value if WBCE_DEBUG is defined (some modules may need it)
+if (defined('WBCE_DEBUG') && !defined('WB_DEBUG')) {
+    define('WB_DEBUG', WBCE_DEBUG);
+}
 
 // INITIALIZE AUTOLOADER
 require_once __DIR__ . "/class.autoload.php";
@@ -64,8 +72,12 @@ if (!isset($database) || !is_object($database)) {
 
 defined('ADMIN_DIRECTORY') or define('ADMIN_DIRECTORY', 'admin');
 validate_admin_directory_constant(); // check for faulty constructions
-defined('ADMIN_URL')       or define('ADMIN_URL', WB_URL . '/' . ADMIN_DIRECTORY);
-defined('ADMIN_PATH')      or define('ADMIN_PATH', WB_PATH . '/' . ADMIN_DIRECTORY);
+defined('ADMIN_URL')     or define('ADMIN_URL',    WB_URL . '/' . ADMIN_DIRECTORY);
+defined('ADMIN_PATH')    or define('ADMIN_PATH',   WB_PATH . '/' . ADMIN_DIRECTORY);
+
+// set INCLUDE_URL and INCLUDE_PATH
+defined('INCLUDE_URL')   or define('INCLUDE_URL',  WB_URL . '/include');
+defined('INCLUDE_PATH')  or define('INCLUDE_PATH', WB_PATH . '/include');
 
 // Load Lang internationalization functions (L_(), Ln_()).
 // Must be loaded explicitly before Autoloader
@@ -95,7 +107,7 @@ require_once WB_PATH . '/include/Sensio/Twig/WbceCustom/TwigLoader.php';
 // Then we process all data into the coresponding constants.
 Settings::setup(); 
 
-// Configure ERROR REPORTING based on WB_DEBUG and ER_LEVEL
+// Configure ERROR REPORTING based on WBCE_DEBUG and ER_LEVEL
 wbce_setup_error_reporting();
 
 // File & Directory modes
@@ -116,11 +128,37 @@ date_default_timezone_set('UTC');
 // SESSION 
 // Initialize Custom Session Handler 
 // that stores sessions in the database.
-$_dbSessionHandler = new DbSession();
+$_dbSessionHandler = new WbceDbSession();
 // Initialize special Session handling and Start session.
-WSession::Start();
+WbceSession::start();
 
-// MODULES initialize.php
+// CONTEXT DETECTION
+// FRONTEND_CONTEXT is defined by ROOT/index.php before config.php is loaded.
+// Everything that is not frontend is treated as backend (admin, CLI, installer).
+defined('FRONTEND_CONTEXT') || define('BACKEND_CONTEXT', true);
+// WB_FRONTEND — @deprecated since WBCE 1.7.0, use FRONTEND_CONTEXT instead.
+defined('WB_FRONTEND') || (defined('FRONTEND_CONTEXT') && define('WB_FRONTEND', true));
+
+// LOCALE — set early so module initialize files can call Lang::loadLanguage()
+// and get the user's actual language instead of the EN default.
+// Session is open (WbceSession::start() above), DEFAULT_LANGUAGE is defined
+// (Settings::setup() above) — all dependencies met.
+if (!defined("LANGUAGE")) {
+    if (isset($_GET['lang']) && preg_match('/^[A-Z]{2}$/', $_GET['lang'])) {
+        define('LANGUAGE', $_GET['lang']);
+        $_SESSION['LANGUAGE'] = LANGUAGE;
+    } elseif (isset($_SESSION['LANGUAGE']) && $_SESSION['LANGUAGE'] != '') {
+        define('LANGUAGE', $_SESSION['LANGUAGE']);
+    } else {
+        defined('DEFAULT_LANGUAGE') or define('DEFAULT_LANGUAGE', 'EN');
+        define('LANGUAGE', DEFAULT_LANGUAGE);
+    }
+}
+Lang::setLocale(LANGUAGE);
+
+// MODULES initialize.php  (and initialize_fe.php / initialize_be.php)
+// Locale is already set above — Lang::loadLanguage() calls in module init
+// files will use the correct user language.
 foreach (wbce_get_init_files('initialize') as $_initFile) {
     include $_initFile;
 }
@@ -129,24 +167,7 @@ unset($_initFile);
 // SANITIZE REFERER
 SanitizeHttpReferer();
 
-// LANGUAGES
-// Only if no module already did this
-if (!defined("LANGUAGE")) {
-    // Get users language
-    if (isset($_GET['lang']) && preg_match('/^[A-Z]{2}$/', $_GET['lang'])) {
-        define('LANGUAGE', $_GET['lang']);
-        $_SESSION['LANGUAGE'] = LANGUAGE;
-    } else {
-        if (isset($_SESSION['LANGUAGE']) && $_SESSION['LANGUAGE'] != '') {
-            define('LANGUAGE', $_SESSION['LANGUAGE']);
-        } else {
-            defined('DEFAULT_LANGUAGE') or define('DEFAULT_LANGUAGE', 'EN');
-            define('LANGUAGE', DEFAULT_LANGUAGE);
-        }
-    }
-}
-// Load system Language files from WB_PATH.'/langauges/'
-Lang::setLocale(LANGUAGE);
+// Load system Language files from WB_PATH.'/languages/'
 Lang::loadCore(LANGUAGE, WB_PATH . '/languages');
 
 // maintain old.format.inc.php for Legacy Modules
@@ -266,14 +287,14 @@ function SanitizeHttpReferer(): string
  * Setup PHP error reporting according to WBCE configuration.
  *
  * Priority:
- *   1. WB_DEBUG === true          → Maximum error reporting (development)
+ *   1. WBCE_DEBUG === true        → Maximum error reporting (development)
  *   2. ER_LEVEL setting           → Specific configuration
  *   3. php.ini default            → Fallback
  */
 function wbce_setup_error_reporting(): void
 {
     // Highest priority: Debug mode
-    if (defined('WB_DEBUG') && WB_DEBUG === true) {
+    if (defined('WBCE_DEBUG') && WBCE_DEBUG === true) {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
         return;
@@ -463,11 +484,27 @@ function wbce_get_init_files(string $functionType): array
         [$likeValue]
     );
 
+    // For 'initialize': also append initialize_fe.php or initialize_be.php if present.
+    // Context constants are defined before wbce_get_init_files('initialize') is called.
+    $contextSuffix = ($functionType === 'initialize')
+        ? (defined('FRONTEND_CONTEXT') ? '_fe' : '_be')
+        : null;
+
     $files = [];
     foreach ($modules as $module) {
-        $path = WB_PATH . '/modules/' . $module['directory'] . '/' . $filename;
-        if (file_exists($path)) {
-            $files[] = $path;
+        $base = WB_PATH . '/modules/' . $module['directory'] . '/';
+
+        // 1. Load initialize.php (or preinit.php) as before
+        if (file_exists($base . $filename)) {
+            $files[] = $base . $filename;
+        }
+
+        // 2. Append context-specific file right after (initialize_fe.php / initialize_be.php)
+        if ($contextSuffix !== null) {
+            $ctxFile = $base . 'initialize' . $contextSuffix . '.php';
+            if (file_exists($ctxFile)) {
+                $files[] = $ctxFile;
+            }
         }
     }
 
@@ -487,14 +524,15 @@ function wbce_get_init_files(string $functionType): array
  */
 function wbce_load_file_based_settings(): void
 {
-    // the constant WBCE_FILE_BASED_SETTINGS is defined at the top of the 
-    // initialize.php once, right after define WB_PATH
+    // WBCE_FILE_BASED_SETTINGS is defined at the top of initialize.php,
+    // right after WB_PATH. The file uses INI format (.ini.php) so it is
+    // protected against direct browser access via the leading ;<?php die(); 
     $file = defined('WBCE_FILE_BASED_SETTINGS') ? WBCE_FILE_BASED_SETTINGS : null;
     if (!$file || !file_exists($file)) return;
 
-    $settings = include $file; // the file contains a simple, one dimensional array
-    if (!is_array($settings)) {
-        trigger_error("File-based Settings: invalid format in " . basename($file), E_USER_WARNING);
+    $settings = parse_ini_file($file, false, INI_SCANNER_TYPED);
+    if ($settings === false) {
+        trigger_error("File-based Settings: could not parse " . basename($file), E_USER_WARNING);
         return;
     }
 

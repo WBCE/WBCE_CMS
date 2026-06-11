@@ -117,6 +117,10 @@ switch ($action) {
             if (file_exists($sAddFile)) {
                 require $sAddFile;
             }
+            $alerts = new Alerts();
+            $alerts->sessionToast($TEXT['SUCCESS'], 'success');
+            header('Location: ' . ADMIN_URL . '/pages/sections.php?page_id=' . $page_id);
+            exit;
         } elseif ($database->is_error()) {
             if ($admin_header) {
                 $admin->print_header();
@@ -139,15 +143,7 @@ switch ($action) {
         $results = $database->query($sSql);
 
         $results_array = $results->fetchRow(MYSQLI_ASSOC);
-        $old_admin_groups = explode(',', $results_array['admin_groups']);
-        $old_admin_users = explode(',', $results_array['admin_users']);
-        $in_old_group = false;
-        foreach ($admin->get_groups_id() as $cur_gid) {
-            if (in_array($cur_gid, $old_admin_groups)) {
-                $in_old_group = true;
-            }
-        }
-        if ((!$in_old_group) && !is_numeric(array_search($admin->get_user_id(), $old_admin_users))) {
+        if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_users'])) {
             $admin->print_header();
             $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
         }
@@ -186,9 +182,11 @@ switch ($action) {
         }
 
         // Load css files with jquery
-        // Include jscalendar-setup
-        $jscal_use_time = true; // tell to use a clock, too
-        require_once WB_PATH . "/include/jscalendar/wb-setup.php";
+        // Include Flatpickr setup
+        $fp_use_time = true; // enable timepicker
+        if(file_exists($f = INCLUDE_PATH . '/date_time_picker/wbce_setup.php')){
+            require_once $f;
+        }
 
         // Get display name of person who last modified the page
         $user = $admin->get_user_details($aPage['modified_by']);
@@ -261,6 +259,18 @@ switch ($action) {
         $rSections = $database->query($sSql);
 
         $iSectionsCount = $rSections->numRows();
+
+        // When jsadmin section D&D is active, keep move links in DOM (dragdrop.js needs them
+        // for row detection) but hide them visually. When D&D is off, render links normally.
+        $sectionMoveStyle = '';
+        $_jsadminPhp = WB_PATH . '/modules/jsadmin/jsadmin.php';
+        if (file_exists($_jsadminPhp)) {
+            require_once $_jsadminPhp;
+            if (get_setting('mod_jsadmin_ajax_order_sections', '1')) {
+                $sectionMoveStyle = ' style="display:none"';
+            }
+        }
+
         if ($iSectionsCount > 0) {
             while ($section = $rSections->fetchRow(MYSQLI_ASSOC)) {
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
@@ -353,19 +363,21 @@ switch ($action) {
                     if ((int)$section['publ_start'] == 0) {
                         $oTemplate->set_var('VALUE_PUBL_START', '');
                     } else {
-                        $oTemplate->set_var('VALUE_PUBL_START', date($jscal_format, (int)$section['publ_start'] + (int)TIMEZONE));
+                        $oTemplate->set_var('VALUE_PUBL_START', date($fp_php_format, (int)$section['publ_start'] + (int)TIMEZONE));
                     }
-                    // set calendar start values
+                    // set calendar end values
                     if ((int)$section['publ_end'] == 0) {
                         $oTemplate->set_var('VALUE_PUBL_END', '');
                     } else {
-                        $oTemplate->set_var('VALUE_PUBL_END', date($jscal_format, (int)$section['publ_end'] + (int)TIMEZONE));
+                        $oTemplate->set_var('VALUE_PUBL_END', date($fp_php_format, (int)$section['publ_end'] + (int)TIMEZONE));
                     }
-                    // Insert icons up and down
+                    // Insert icons up and down.
+                    // When D&D is active: links stay in DOM (dragdrop.js detects rows via href)
+                    // but are hidden via inline style. When D&D is off: links are fully visible.
                     if ($section['position'] != 1) {
                         $oTemplate->set_var(
                             'VAR_MOVE_UP_URL',
-                            '<a href="' . ADMIN_URL . '/pages/move_up.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '">
+                            '<a href="' . ADMIN_URL . '/pages/move_up.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '"' . $sectionMoveStyle . '>
                             <img src="' . THEME_URL . '/images/up_16.png" alt="{TEXT_MOVE_UP}" />
                             </a>'
                         );
@@ -375,7 +387,7 @@ switch ($action) {
                     if ($section['position'] != $iSectionsCount) {
                         $oTemplate->set_var(
                             'VAR_MOVE_DOWN_URL',
-                            '<a href="' . ADMIN_URL . '/pages/move_down.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '">
+                            '<a href="' . ADMIN_URL . '/pages/move_down.php?page_id=' . $page_id . '&amp;section_id=' . $section['section_id'] . '"' . $sectionMoveStyle . '>
                             <img src="' . THEME_URL . '/images/down_16.png" alt="{TEXT_MOVE_DOWN}" />
                             </a>'
                         );
@@ -430,15 +442,13 @@ switch ($action) {
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
                     $oTemplate->set_var(
                         array(
-                            'jscal_ifformat' => $jscal_ifformat,
-                            'jscal_firstday' => $jscal_firstday,
-                            'jscal_today' => $jscal_today,
-                            'start_date' => 'start_date' . $section['section_id'],
-                            'end_date' => 'end_date' . $section['section_id'],
-                            'trigger_start' => 'trigger_start' . $section['section_id'],
-                            'trigger_end' => 'trigger_stop' . $section['section_id'],
-                            'showsTime' => (isset($jscal_use_time) && $jscal_use_time == true) ? "true" : "false",
-                            'timeFormat' => "24",
+                            'fp_locale_key'   => $fp_locale_key,
+                            'fp_dateFormat'   => $fp_dateFormat,
+                            'fp_use_time'     => $fp_use_time ? 'true' : 'false',
+                            'start_date'      => 'start_date' . $section['section_id'],
+                            'end_date'        => 'end_date' . $section['section_id'],
+                            'trigger_start'   => 'trigger_start' . $section['section_id'],
+                            'trigger_end'     => 'trigger_stop' . $section['section_id'],
                         )
                     );
                 }
@@ -468,7 +478,8 @@ switch ($action) {
                     if (!is_numeric(array_search($module['directory'], $module_permissions))) {
                         $oTemplate->set_var('VALUE', $module['directory']);
                         $oTemplate->set_var('NAME', $admin->get_module_name($module['directory']));
-                        if ($module['directory'] == 'wysiwyg') {
+                        $defaultModule = !empty($_SESSION['DEFAULT_MODULE']) ? $_SESSION['DEFAULT_MODULE'] : 'wysiwyg';
+                        if ($module['directory'] == $defaultModule) {
                             $oTemplate->set_var('SELECTED', ' selected="selected"');
                         } else {
                             $oTemplate->set_var('SELECTED', '');

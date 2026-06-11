@@ -64,17 +64,8 @@ function draw_pagetree($pages_list)
     $html = "<ul id=\"p%d\" %s>\n";
     foreach ($pages_list as $key => $p) {
 
-        // Get user perms
-        $admin_groups = explode(',', str_replace('_', '', $p['admin_groups']));
-        $admin_users = explode(',', str_replace('_', '', $p['admin_users']));
-        $in_group = false;
-        foreach ($admin->get_groups_id() as $cur_gid) {
-            if (in_array($cur_gid, $admin_groups)) {
-                $in_group = true;
-            }
-        }
-
-        if (($in_group) || is_numeric(array_search($admin->get_user_id(), $admin_users))) {
+        // Get user perms (superadmin bypass included via isPageAdmin)
+        if ($admin->isPageAdmin($p['admin_groups'], $p['admin_users'])) {
             if ($p['visibility'] == 'deleted') {
                 if (PAGE_TRASH == 'inline') {
                     $can_modify = true;
@@ -155,7 +146,7 @@ function draw_pagetree($pages_list)
          *    set "Template"
          */
         ob_start(); ?>
-        <li class="p{PARENT}">
+        <li class="p{PARENT}" id="pageID_{PAGE_ID}" data-page-id="{PAGE_ID}">
             <table class="pages_view" cellspacing="0" cellpadding="0" border="0">
                 <tr>
                     <td style="width:26px; {padding_left}">

@@ -1,11 +1,16 @@
 <?php
-
 /**
- * Get a Config from {TP}settings DB table using setting name
+ * Twig function: getSetting(name, default)
+ *
+ * Read a CMS setting via Settings::get().
+ *
+ * Usage:
+ *   {{ getSetting('website_title') }}
+ *   {{ getSetting('my_module_flag', 'fallback') }}
+ *   {% if getSetting('frontend_login') == 'true' %} ... {% endif %}
  */
-$oTwig->addFunction(new \Twig\TwigFunction("getSetting", 
-    function ($sConfigName = '') {        
-        return Settings::Get($sConfigName);
-   }
+$oTwig->addFunction(new \Twig\TwigFunction('getSetting',
+    function (string $name, mixed $default = null): mixed {
+        return Settings::get($name) ?? $default;
+    }
 ));
-

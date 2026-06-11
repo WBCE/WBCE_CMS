@@ -1,0 +1,209 @@
+{#
+    _toast.inc.twig — Floating toast notifications
+    
+    Include this once in a layout framer (or in the admin footer).
+    Listens for htmx 'showToast' events triggered by Alerts::toast().
+    
+    Usage (server-side):
+        $alerts = new Alerts(useSession: false);
+        $alerts->toast('Saved!', 'success');
+    
+    Usage (client-side JS):
+        showToast('Done!', 'success', 3000);
+#}
+
+{# Container — fixed position, top right #}
+<div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<style>
+/* ------------------------------------------------------------------ */
+/*  Toast notifications                                                */
+/* ------------------------------------------------------------------ */
+#toast-container {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+    max-width: 420px;
+    width: 100%;
+}
+.toast {
+    pointer-events: auto;
+    min-width: 280px;
+    padding: 14px 42px 14px 18px;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .18);
+    font-size: 0.925em;
+    line-height: 1.4;
+    position: relative;
+    animation: toast-slide-in .35s ease-out;
+    transition: opacity .3s ease, transform .3s ease;
+}
+.toast.toast-out {
+    opacity: 0;
+    transform: translateX(30px);
+}
+.toast-success {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+.toast-error {
+    background: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+.toast-warning {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    color: #856404;
+}
+.toast-info {
+    background: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    color: #0c5460;
+}
+.toast .toast-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+.toast-close {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.3em;
+    cursor: pointer;
+    opacity: .5;
+    padding: 4px 6px;
+    line-height: 1;
+    color: inherit;
+}
+.toast-close:hover {
+    opacity: 1;
+}
+@keyframes toast-slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Inline message auto-dismiss (non-sticky success/info/warning)      */
+/* ------------------------------------------------------------------ */
+.dismissable:not(.sticky) {
+    animation: msg-auto-fade 6s ease-out forwards;
+}
+@keyframes msg-auto-fade {
+    0%, 75%  { opacity: 1; }
+    100%     { opacity: 0; pointer-events: none; }
+}
+.msg-close {
+    float: right;
+    background: none;
+    border: none;
+    font-size: 1.4em;
+    cursor: pointer;
+    opacity: .6;
+    padding: 0 6px;
+    line-height: 1;
+    color: inherit;
+}
+.msg-close:hover {
+    opacity: 1;
+}
+</style>
+
+<script>
+(function() {
+
+    // Unicode fallback icons (used when server doesn't send icon in payload)
+    var defaultIcons = {
+        success: "\u2714\uFE0E",
+        error:   "\u2718\uFE0E",
+        warning: "\u26A0\uFE0E",
+        info:    "\u2139\uFE0E"
+    };
+
+    /**
+     * Show a toast notification.
+     * @param {string} message
+     * @param {string} type     'success'|'error'|'warning'|'info'
+     * @param {number} duration  ms until auto-dismiss (0 = sticky)
+     * @param {string} icon      Unicode icon character (optional)
+     */
+    function showToast(message, type, duration, icon) {
+        type     = type || 'success';
+        duration = (typeof duration !== 'undefined') ? duration : 4000;
+        icon     = icon || defaultIcons[type] || '';
+
+        var container = document.getElementById('toast-container');
+        if (!container) return;
+
+        var toast = document.createElement('div');
+        toast.className = 'toast toast-' + type;
+
+        toast.innerHTML = '<span class="toast-icon">' + icon + '</span>'
+            + '<span>' + message + '</span>'
+            + '<button class="toast-close" aria-label="Close">\u00D7</button>';
+
+        toast.querySelector('.toast-close').addEventListener('click', function() {
+            dismissToast(toast);
+        });
+
+        container.prepend(toast);
+
+        if (duration > 0) {
+            setTimeout(function() {
+                dismissToast(toast);
+            }, duration);
+        }
+    }
+
+    function dismissToast(el) {
+        el.classList.add('toast-out');
+        setTimeout(function() {
+            el.remove();
+        }, 300);
+    }
+
+    // Listen for htmx events from Alerts::toast()
+    // Payload shape: {queue: [{message, type, duration, icon}, ...]}
+    // Legacy single-object {message, type, ...} is also handled (queue absent).
+    document.body.addEventListener('showToast', function(evt) {
+        var d      = evt.detail;
+        var toasts = Array.isArray(d.queue) ? d.queue : [d];
+        toasts.forEach(function(t) {
+            showToast(
+                t.message || t.value || '',
+                t.type    || 'success',
+                typeof t.duration !== 'undefined' ? t.duration : 4000,  /* 0 = sticky */
+                t.icon    || ''
+            );
+        });
+    });
+
+    // Inline message dismiss (click close on .dismissable)
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('msg-close') || e.target.closest('.msg-close')) {
+            var box = e.target.closest('.dismissable');
+            if (box) box.remove();
+        }
+    });
+
+    // Expose globally
+    window.showToast = showToast;
+
+})();
+</script>

@@ -1,5 +1,15 @@
 /*** fixes for 3rd-party modules **************************************/
-
+:root {
+    --text-dim: #6b7280;
+    --warning:  #f3b54c;
+    --success:  #6cbe69;
+    --border:   #d2e1e6;
+    --r:        0px;
+    --muted:    #f5faff;
+    --accent:   #7488a5;
+    --accent-s: #1e4f80;
+    --font-mono: 'Proggy', 'JetBrains', 'DejaVue', "Liberation Mono", monospace;
+}
 /* give forms some horizontal padding */
 form {
     padding: 0 2%;
@@ -64,5 +74,66 @@ input#admin_tools {
     margin-top: 12px;
     margin-bottom: 6px;
 }
+/* CET (CodeEditor Toolbar): AceBars sit directly above/below — no extra margins */
+.ce-container .CodeMirror {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 /* ! some more styling is done in /jquery/module-fixes.js ! */
+
+
+/*
+ link-cards-grid
+ Introduced in 1.7.0
+*/
+.link-cards-grid {
+    gap: 10px;
+    font-size: .8rem;
+}
+.link-card {
+    background: #5b6678;
+    color: #fff;
+    padding: 0px;
+    transition: 0.1s;    
+    background: #fefefe;
+    color: #222;
+    border: 1px solid #666;  
+    gap: .2rem;
+}
+.link-card:hover .link-card__icon {    
+    color: var(--blue-5);
+}
+.link-card__title {
+    color: rgb(40, 96, 155);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 12px 0px 0px;
+}
+.link-card__meta {
+    font-size: 12px;
+    font-style: italic;
+    color: rgb(133, 154, 178);
+    margin: 2px 0px 10px;
+}
+.link-card__desc {
+    margin: 10px 0;
+    color: rgb(102, 102, 102);
+}
+.link-card__icon {
+    width: 85px;
+    min-width: 85px;
+    font-size: 2.5em;
+    color: rgb(102, 102, 102);
+}
+.link-card__content {
+    flex: 1;
+    padding-right: 20px;
+}
+.cp-settings button, 
+.cp-settings input[type="submit"], 
+.cp-settings input[type="reset"], 
+.cp-settings input[type="button"] {
+    margin-bottom: 0;
+    min-width: auto;
+}

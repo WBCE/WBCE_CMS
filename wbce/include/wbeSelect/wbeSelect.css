@@ -1,0 +1,709 @@
+/* ── Root variables ────────────────────────────────────────────────────────── */
+@font-face {
+    font-family: Proggy;
+    src: url(../../modules/CodeMirror_Config/codemirror/fonts/Proggy.woff);
+} 
+
+:root {
+    /* Dark theme (default) */
+    --ws-bg:               #0d0f18;
+    --ws-surface:          #1c2040;
+    --ws-surface-hover:    #1c2040;
+    --ws-border:           #2a2d4a;
+    --ws-text:             #d0def7;
+    --ws-text-muted:       #9ca3af;
+    --ws-text-dim:         #88a8e770;
+    --ws-accent:           #6288b8;
+    --ws-accent-hover:     #81caf84f;
+    --ws-accent-subtle:    rgba(99, 102, 241, 0.12);
+    --ws-success:          #10b981;
+    --ws-danger:           #ef4444;
+    --ws-warning:          #f59e0b;
+    --ws-radius:           6px;
+    --ws-cancel:           #af725d;
+    --ws-font:             'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --ws-font-size:        14px;
+    --ws-font-mono:        'Proggy','DejaVue','JetBrains', Consolas, monospace;
+}
+
+/* Light theme override */
+[data-theme="light"] {
+    --ws-bg:               #ffffff;
+    --ws-surface:          #f9fafb;
+    --ws-surface-hover:    #f1f3f8;
+    --ws-border:           #d1d5db;
+    --ws-text:             #1f2937;
+    --ws-text-muted:       #6b7280;
+    --ws-text-dim:         #9ca3af;
+    --ws-accent-hover:     #5f96b9;
+    --ws-cancel:           #af725d;
+    --ws-accent-subtle:    #5f96b91f;
+}
+
+/* Automatic system preference fallback */
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+        --ws-bg:               #ffffff;
+        --ws-surface:          #f9fafb;
+        --ws-surface-hover:    #f1f3f8;
+        --ws-border:           #d1d5db;
+        --ws-text:             #1f2937;
+        --ws-text-muted:       #6b7280;
+        --ws-accent-hover:     #5f96b9;
+        --ws-cancel:           #af725d;
+        --ws-accent-subtle:    #5f96b91f;
+    }
+}
+
+/* ── Main element ─────────────────────────────────────────────────────────── */
+
+.ws-el {
+    border: 1px solid var(--ws-border);
+    box-sizing: border-box;
+    background-color: var(--ws-surface);
+    display: inline-block;
+    text-decoration: none;
+    vertical-align: middle;
+    border-radius: var(--ws-radius);
+    color: var(--ws-text);
+    font-family: var(--ws-font);
+    font-size: var(--ws-font-size);
+    /* single-select: fixed height; multiple overrides below */
+    height: 36px !important;
+}
+
+.ws-el * {
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.ws-el img {
+    display: block;
+}
+
+.ws-el.ws--multiple {
+    padding-right: 20px !important;
+    padding-bottom: 5px !important;
+    width: 99% !important;
+    height: auto !important;
+    min-height: 36px !important;
+}
+
+.ws-el.ws--single {
+    height: 30px;
+    padding: 5px 0px 2px 2px !important;
+}
+
+.ws-el.ws--focused {
+    box-shadow: 0 0 0 2px var(--ws-accent-hover);
+    outline: none;
+}
+
+.ws-el:after {
+    position: absolute;
+    cursor: pointer;
+    content: '\25BC';
+    font-size: 96%;
+    transform: scaleY(0.60);
+    right: 7px;
+    color: var(--ws-text-dim);
+    top: 50%;
+    line-height: 0;
+}
+
+/* ── Selected items ───────────────────────────────────────────────────────── */
+
+.ws-tags .ws-ph {
+    font-size: 80%;
+    color: var(--ws-text-dim);
+}
+
+.ws--single .ws-tags {
+    display: block;
+}
+
+.ws--multiple .ws-tags {
+    display: inline;
+}
+
+.ws-tags .ws-tag {
+    color: var(--ws-text);
+    position: relative;
+    vertical-align: top;
+}
+
+.ws--single .ws-tags .ws-tag {
+    background-color: transparent;
+    display: block;
+    margin: 0;
+    padding: 4px 0 0 0;
+    font-size: inherit;
+    text-decoration: none;
+}
+
+.ws--multiple .ws-tags .ws-tag {
+    background-color: transparent;
+    display: inline-block;
+    margin-left: 4px;
+    padding: 3px 22px 2px 5px;
+    font-size: 85%;
+    border-radius: var(--ws-radius);
+    border: 1px solid var(--ws-border);
+}
+
+/* Left image */
+.ws-tags .ws-tag .ws-tag-l {
+    float: left;
+}
+
+.ws--single .ws-tags .ws-tag .ws-tag-l {
+    width: 30px;
+    margin-top: -2px;
+}
+
+.ws--single .ws-tags .ws-tag .ws-tag-l img {
+    height: 18px;
+    border-radius: var(--ws-radius);
+}
+
+.ws--multiple .ws-tags .ws-tag .ws-tag-l {
+    width: 18px;
+    margin-top: -1px;
+    margin-left: -2px;
+}
+
+.ws--multiple .ws-tags .ws-tag .ws-tag-l img {
+    height: 18px;
+    border-radius: var(--ws-radius);
+}
+
+/* flag-right variant */
+.flag-right .ws-tags .ws-tag .ws-tag-l,
+.flag-right .ws-opts li .ws-opt-l {
+    float: right;
+}
+
+.flag-right .ws-tags .ws-tag .ws-tag-l {
+    margin-right: 25px;
+}
+
+.flag-right .ws-opts .ws-opt-l img,
+.flag-right .ws-tags .ws-tag .ws-tag-l img {
+    max-width: 28px;
+    max-height: 18px;
+}
+
+/* Title */
+.ws--single .ws-tags .ws-tag .ws-tag-ttl {
+    height: auto;
+    line-height: 1.3;
+    font-weight: 500;
+}
+
+.ws--multiple .ws-tags .ws-tag .ws-tag-ttl {
+    float: left;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+/* Subtitle (hidden in selected state) */
+.ws-tags .ws-tag .ws-tag-sub {
+    display: none;
+}
+
+/* Right badge */
+.ws--single .ws-tags .ws-tag .ws-tag-r {
+    float: left;
+    background-color: transparent;
+    color: white;
+    font-weight: 500;
+    font-size: 80%;
+    text-align: center;
+    line-height: 16px;
+    border-radius: 9px;
+    padding: 2px 8px;
+    margin-right: 16px;
+}
+
+.ws--multiple .ws-tags .ws-tag .ws-tag-r {
+    display: none;
+}
+
+/* Remove button */
+.ws--single .ws-tags .ws-tag .ws-tag-rm {
+    display: block;
+    position: absolute;
+    right: 22px;
+    cursor: pointer;
+    font-size: 90%;
+    font-weight: bold;
+    color: var(--ws-text-dim);
+    padding: 1px;
+    line-height: 0;
+    top: 50%;
+}
+.ws--single .ws-tags .ws-tag .ws-tag-rm:hover {
+    color: var(--ws-cancel);
+}
+
+.ws--multiple .ws-tags .ws-tag .ws-tag-rm {
+    display: inline-block;
+    font-weight: bold;
+    color: var(--ws-text-dim);
+    margin: 0 0 0 5px;
+    cursor: pointer;
+    font-size: 85%;
+    line-height: 17px;
+    vertical-align: top;
+    border-radius: 0 var(--ws-radius) var(--ws-radius) 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 7px 5px 4px 5px;
+}
+
+.ws--multiple .ws-tags .ws-tag .ws-tag-rm:hover {
+    color: var(--ws-cancel);
+    background-color: rgb(227 186 186 / 10%);
+}
+
+/* ── Search input ─────────────────────────────────────────────────────────── */
+
+.ws-inp,
+.ws-txl {
+    border: 0;
+    display: inline-block;
+    margin: 0;
+    background-color: transparent;
+    font-family: var(--ws-font);
+    font-size: var(--ws-font-size);
+    outline: none;
+    color: var(--ws-text);
+}
+
+.ws--multiple .ws-inp,
+.ws--multiple .ws-txl {
+    padding: 3px 0 0 0;
+    margin: 7px 0 2px 5px;
+}
+
+.ws--single .ws-inp {
+    border: 1px solid var(--ws-border);
+    position: absolute;
+    bottom: -33px;
+    left: -1px;
+    z-index: 101;
+    padding: 8px 10px;
+    width: 100%;
+    width: calc(100% + 2px);
+    border-bottom: 0;
+    background-color: var(--ws-surface);
+    color: var(--ws-text);
+    font-family: var(--ws-font);
+    font-size: var(--ws-font-size);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.ws--single.ws--hidden .ws-inp {
+    opacity: 0;
+    position: absolute;
+    left: -10000px;
+}
+
+.ws--single.ws--open .ws-inp {
+    opacity: 1;
+}
+
+.ws--no-search .ws-inp {
+    opacity: 0;
+    padding: 0 1px 1px 0 !important;
+}
+
+/* ── Options list ─────────────────────────────────────────────────────────── */
+
+.ws-opts {
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--ws-border);
+    border-radius: 0 0 var(--ws-radius) var(--ws-radius);
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 101;
+    background-color: var(--ws-surface);
+    overflow-x: hidden;
+    max-height: 250px;
+    list-style: none;
+    left: -1px;
+    right: -1px;
+    box-shadow: 0 4px 6px rgb(0 0 0 / 20%);
+    color: var(--ws-text);
+    font-family: var(--ws-font);
+    font-size: var(--ws-font-size);
+}
+
+.ws--no-search .ws-opts {
+    border-top: 1px solid var(--ws-border);
+}
+
+.ws--single.ws--no-search .ws-opts {
+    top: 32px !important;
+    padding-top: 0;
+}
+
+.ws--hidden .ws-opts {
+    display: none;
+}
+
+/* Group header */
+.ws-opts .ws-grp {
+    padding: 5px;
+    font-weight: bold;
+    color: var(--ws-text-muted);
+}
+
+/* Option row */
+.ws-opts .ws-opt {
+    border-bottom: 1px solid transparent;
+    padding: 0px 3px;
+    cursor: pointer;
+    color: var(--ws-text);
+    min-height: 18px;
+    margin: 0;
+}
+
+.ws-opts .ws-opt.ws-grp-opt {
+    padding-left: 20px;
+}
+
+/* Clearfix */
+.ws-opts .ws-opt:before,
+.ws-opts .ws-opt:after {
+    content: "";
+    display: table;
+}
+
+.ws-opts .ws-opt:after {
+    clear: both;
+}
+
+/* Left image in option */
+.ws-opts .ws-opt .ws-opt-l {
+    float: left;
+}
+
+.ws-opts .ws-opt .ws-opt-l img {
+    height: 30px;
+}
+
+/* ws--opt-disabled */
+.ws-opts .ws-opt.ws--opt-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+/* icon_left variant */
+.icon_left .ws-opts .ws-opt {
+    padding: 2px;
+}
+
+.icon_left .ws-opts .ws-opt .ws-opt-l img {
+    height: 18px;
+    margin-top: 3px;
+}
+
+.icon_left .ws-opts .ws-opt .ws-opt-ttl {
+    margin-left: 31px;
+}
+
+/* Title */
+.ws-opts .ws-opt .ws-opt-ttl {
+    margin-top: 3px;
+    margin-left: 45px;
+    font-size: var(--ws-font-size);
+}
+
+.flag-right .ws-opts .ws-opt .ws-opt-ttl {
+    margin-top: 0px;
+    margin-left: 40px;
+}
+.ws-opt-ttl:has(.tree-prefix) {
+    
+    margin-top: -4px;
+    font-family: var(--ws-font-mono);
+}
+.ws-opt-ttl:has(.tree-prefix) {
+}
+.flag-right .ws-opts .ws-opt {
+    padding: 0;
+    border-bottom: 0;
+}
+
+.flag-right .ws-opts .ws-opt .ws-opt-r {
+    font-size: 90%;
+    line-height: 10px;
+    margin-top: 2px;
+}
+
+.title_only .ws-opts .ws-opt .ws-opt-ttl {
+    margin-left: 2px;
+}
+
+
+/* Tree prefix styling */
+.tpfx,
+.tree-prefix {
+    color: var(--ws-text-dim) !important;
+    font-variant: normal;
+    font-size: 0.9rem;
+    font-family: var(--ws-font-mono) !important;
+    opacity: 0.7;
+}
+.tree-level-dots {
+    color: #777;              /* subtle gray — adjust for your dark theme */
+    opacity: 0.75;
+    font-family: Consolas, monospace;
+    font-size: 1.05em;        /* slightly larger for visibility */
+    letter-spacing: 0.15em;
+    margin-right: 0.5em;
+    display: inline-block;
+    user-select: none;
+}
+
+/* Optional: faint decrease in intensity for deeper levels */
+.ws-opt[data-level="1"] .tree-level-dots { opacity: 0.8; }
+.ws-opt[data-level="2"] .tree-level-dots { opacity: 0.75; }
+.ws-opt[data-level="3"] .tree-level-dots { opacity: 0.7; }
+.ws-opt[data-level="4"] .tree-level-dots { opacity: 0.65; }
+
+
+/* Subtitle */
+.ws-opts .ws-opt .ws-opt-sub {
+    font-size: 90%;
+    color: var(--ws-text-dim);
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 46px;
+    line-height: normal;
+}
+
+/* Right badge in option */
+.ws-opts .ws-opt .ws-opt-r {
+    float: left;
+    background-color: var(--ws-accent);
+    color: white;
+    font-weight: 400;
+    font-size: 80%;
+    text-align: center;
+    line-height: 14px;
+    border-radius: 5px;
+    padding: 3px 7px;
+    margin-top: 4px;
+}
+
+/* Right badge in selected item */
+.ws-tag .ws-tag-r {
+    margin-left: 3px;
+    padding-left: 3px;
+    background-color: var(--ws-accent);
+}
+
+/* Coloured left border — shared */
+.ws-tag,
+.ws-opts .ws-opt {
+    padding-left: 6px !important;
+}
+
+/* Example mid-* colors – keep or adjust */
+.ws-tag.mid-2,
+.ws-opts .ws-opt.mid-2 { border-left-color: salmon; }
+.ws-tag.mid-3,
+.ws-opts .ws-opt.mid-3 { border-left-color: orchid; }
+.ws-tag.mid-4,
+.ws-opts .ws-opt.mid-4 { border-left-color: #94c48d; }
+.ws-tag.mid-5,
+.ws-opts .ws-opt.mid-5 { border-left-color: goldenrod; }
+.ws-tag.mid-99,
+.ws-opts .ws-opt.mid-99 { border-left-color: crimson; }
+
+/* Type-based badge colours */
+.ws--single .ws-tags .ws-tag.type-public .ws-tag-r,
+.ws-opts .ws-opt.type-public .ws-opt-r     { background-color: #5db327; }
+
+.ws--single .ws-tags .ws-tag.type-private .ws-tag-r,
+.ws-opts .ws-opt.type-private .ws-opt-r    { background-color: #069ee3; }
+
+.ws--single .ws-tags .ws-tag.type-registered .ws-tag-r,
+.ws-opts .ws-opt.type-registered .ws-opt-r { background-color: #e3a223; }
+
+.ws--single .ws-tags .ws-tag.type-hidden .ws-tag-r,
+.ws-opts .ws-opt.type-hidden .ws-opt-r,
+.ws-opts .ws-opt.type-none .ws-opt-r       { background-color: #a1a0a0; }
+
+/* Hover / active highlight */
+.ws-opts .ws-opt.ws--active {
+    background-color: var(--ws-accent-subtle);
+    color: var(--ws-text);
+}
+.cfg-visibility .ws-opts .ws-opt .ws-opt-l img{
+    height: 28px;
+    margin-top: 6px;
+}
+.cfg-visibility .ws-opts .ws-opt .ws-opt-ttl, 
+.cfg-target .ws-opts .ws-opt .ws-opt-ttl, 
+.cfg-visibility .ws-opts .ws-opt .ws-opt-sub {
+    margin-left: 38px;
+}
+.cfg-target .ws-opts .ws-opt .ws-opt-ttl {
+    margin-left: 58px;
+} 
+.cfg-target .ws-opts .ws-opt{    
+    padding: 3px 3px;
+}
+
+
+/* ── Dark/light toggle helpers ─────────────────────────────────────────────── */
+
+/* Optional: add this if you want to force dark mode in some cases */
+[data-theme="dark"] .ws-el,
+[data-theme="dark"] .ws-opts,
+[data-theme="dark"] .ws-tags .ws-tag {
+    background-color: var(--ws-surface);
+    border-color: var(--ws-border);
+    color: var(--ws-text);
+}
+/* ── Language selector variant ─────────────────────────────────────────────── */
+
+/* Flag floats to the right of the row — leave room for the caret */
+.cfg-lang .ws-tags .ws-tag .ws-tag-l,
+.cfg-lang .ws-opts li.ws-opt .ws-opt-l {
+    float: right;
+    margin-left: 8px;
+    margin-right: 18px; /* clear the ▼ caret */
+}
+
+/* Flag image sizing */
+.cfg-lang .ws-tags .ws-tag .ws-tag-l img,
+.cfg-lang .ws-opts li.ws-opt .ws-opt-l img {
+    height: 18px;
+    width: auto;
+    border-radius: 2px;
+    margin-top: 0;
+    vertical-align: middle;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+}
+
+/* Selected tag — centre everything vertically */
+.cfg-lang.ws--single .ws-tags {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.cfg-lang.ws--single .ws-tags .ws-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.cfg-lang.ws--single .ws-tags .ws-tag .ws-tag-l {
+    float: none;
+    margin: 0 26px 0 0; /* right margin clears caret */
+    width: auto;
+    flex-shrink: 0;
+    order: 3; /* flag last = visually rightmost before caret */
+}
+
+.cfg-lang.ws--single .ws-tags .ws-tag .ws-tag-l img {
+    height: 18px;
+    margin-top: 0;
+    display: block;
+}
+
+.cfg-lang.ws--single .ws-tags .ws-tag .ws-tag-r {
+    order: 1;
+    flex-shrink: 0;
+}
+
+.cfg-lang.ws--single .ws-tags .ws-tag .ws-tag-ttl {
+    order: 2;
+    flex: 1;
+    padding-top: 0;
+    line-height: 1;
+}
+
+.cfg-lang.ws--single .ws-tags .ws-tag .ws-tag-rm {
+    display: none; /* single with no empty option — no remove btn */
+}
+
+/* Language code badge on the left */
+.cfg-lang .ws-opts .ws-opt .ws-opt-r {
+    float: none;
+    flex-shrink: 0;
+    font-family: var(--ws-font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background-color: var(--ws-accent);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-top: 0;
+    margin-right: 10px;
+    min-width: 30px;
+    text-align: center;
+    line-height: 18px;
+}
+
+/* Selected tag code badge — must override the default transparent bg.
+   cfg-lang and ws--single are on the SAME container element, so use
+   a compound selector (no space) rather than a descendant combinator. */
+.cfg-lang.ws--single .ws-tags .ws-tag .ws-tag-r {
+    font-family: var(--ws-font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background-color: var(--ws-accent) !important;
+    color: #fff !important;
+    padding: 3px 0 !important;
+    border-radius: 4px !important;
+    margin-top: 0px;
+    min-width: 30px;
+    text-align: center;
+    float: left;
+    margin-right: 4px;
+    line-height: 18px;
+}
+
+/* Title indent — flex handles spacing, reset margins */
+.cfg-lang .ws-opts .ws-opt .ws-opt-ttl {
+    margin-left: 0;
+    margin-top: 0;
+    line-height: 1.2;
+}
+
+/* Option row padding — more breathing room, flex layout */
+.cfg-lang .ws-opts .ws-opt {
+    padding: 7px 10px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+/* DOM order: ws-opt-l (flag), ws-opt-r (badge), ws-opt-ttl (title)
+   Desired visual order: badge | title | flag */
+.cfg-lang .ws-opts .ws-opt .ws-opt-l { order: 3; margin-left: 8px; margin-right: 4px; float: none; }
+.cfg-lang .ws-opts .ws-opt .ws-opt-r { order: 1; }
+.cfg-lang .ws-opts .ws-opt .ws-opt-ttl { order: 2; flex: 1; }
+
+.pageTreeCombobox{
+    width: 100% !important;
+}
+.pageTreeCombobox > .ws-inp{
+    position: static;
+    padding: 8px 8px;
+    margin-top: 11px;
+    width: calc(100% - 17px);
+}

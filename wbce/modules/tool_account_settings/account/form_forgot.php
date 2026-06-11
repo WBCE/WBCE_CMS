@@ -11,10 +11,9 @@
  */
 
 defined('WB_PATH') or die("Cannot access this file directly");
-require_once(WB_PATH.'/include/captcha/captcha.php');
 
 $oAccounts = new Accounts();
-$oMsgBox   = new MessageBox();
+$oMsgBox   = new Alerts(useSession: false);
 
 $sLC       = defined('LANGUAGE') ? LANGUAGE : (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'EN');
 $sEmail    = '';
@@ -94,7 +93,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                             } else {
                                 // Error updating database
                                 $oMsgBox->error($MESSAGE['RECORD_MODIFIED_FAILED']);
-                                if(WB_DEBUG) {
+                                if(WBCE_DEBUG) {
                                     $oMsgBox->error($database->get_error().'<br />'.$sSql);
                                 }
                             }
@@ -115,7 +114,7 @@ if(isset($_POST['email']) && $_POST['email'] != "" ) {
                 }
             } else {
                 // Query failed
-                if(WB_DEBUG) {
+                if(WBCE_DEBUG) {
                     $oMsgBox->error('SystemError:: Database query failed!');
                     $oMsgBox->error($database->get_error().'<br />'.$sSql);
                 }

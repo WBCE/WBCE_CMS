@@ -41,8 +41,11 @@ $ModDir  = basename(__DIR__);
 $ModUrl  = WB_URL."/modules/".$ModDir;
 $ToolUrl = $returnUrl;
 
-$L = $LANG['MOD_OPF']; // rename long hand array name to $L for easy access in templates
-
+// Bridge the legacy $LANG['MOD_OPF'] array into the Lang registry so that
+// Twig templates can resolve L_('L:KEY') for all translation keys.
+if (class_exists('Lang')) {
+    Lang::register('L', $LANG['MOD_OPF']);
+}
 // load outputfilter-functions
 require_once __DIR__ . "/functions.php";
 

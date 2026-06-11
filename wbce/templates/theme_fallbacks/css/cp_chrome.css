@@ -1,0 +1,1411 @@
+/* ================================================================
+   cp_chrome.css  —  Access module structural layout
+   Zero hardcoded colors. All visual values via var() from cp_theme.
+   ================================================================ */
+
+/* ── Outer shell ───────────────────────────────────────────────── */
+
+section.cp-main {
+    position: relative;
+    margin: 14px 0;
+    padding: 0;
+    border-radius: var(--r);
+    box-sizing: border-box;
+    word-wrap: break-word;
+}
+
+.cp-main h2{
+    font-size: 1.3em;
+    color: var(--blue-2);
+    font-weight: 600;
+    background-color: transparent;
+    
+}
+/* ── Page info bar ─────────────────────────────────────────────── */
+
+.cp-pageinfo {
+    padding: .45rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: .82rem;
+}
+
+
+/* ── Tab bar ───────────────────────────────────────────────────── */
+
+nav.cp-tabs ul {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    list-style: none;
+    padding: 0 .5rem 0 .8rem;
+    margin: 0;
+    min-height: 2.25rem;
+    overflow: hidden;
+}
+
+/* Area title — vertically centred, no side-push by default */
+nav.cp-tabs li.area-title {
+    padding: 0 .6rem 0 0;
+    display: flex;
+    align-items: center;
+    align-self: center;
+    font-size: 1.25em;
+    color: var(--surface3);
+    font-weight: 600;
+    
+}
+nav.cp-tabs li.area-title span {
+    font-weight: 700;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* Tab items sit flush at the bottom of the bar */
+nav.cp-tabs li:not(.area-title) {
+    margin-bottom: 0px;
+}
+
+/*
+ * .tabs-right — push all tabs to the right edge.
+ *
+ * Two cases, both CSS-only:
+ *   With li.area-title    → margin-right:auto on it eats the spare space
+ *   Without li.area-title → ul::before pseudo acts as a flex-1 spacer
+ *
+ * :has() supported in all evergreen browsers (Chrome 105+, FF 121+, Safari 15.4+).
+ */
+nav.cp-tabs.tabs-right li.area-title {
+    margin-right: auto;
+}
+nav.cp-tabs.tabs-right ul:not(:has(.area-title))::before {
+    content: '';
+    flex: 1;
+}
+/* ── Toolbar ───────────────────────────────────────────────────── */
+
+.cp-toolbar {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .4rem 0 .6rem;
+    margin-bottom: .6rem;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    min-height: 2.4rem;
+}
+.cp-toolbar .pull-right { margin-left: auto; }
+.cp-toolbar .pull-right ~ .pull-right { margin-left: 0; }
+
+
+/* ── Search input with ✕ clear button ─────────────────────────── */
+
+.cp-search {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+.cp-search .cp-table-filter {
+    margin-bottom: 0;
+    padding-right: 2.2rem;
+    height: 34px;
+    max-width: 280px;
+    width: 100%;
+}
+.cp-search-clear {
+    position: absolute;
+    right: .2rem;
+    display: none;
+    background: none;
+    border: none;
+    padding: .1rem .2rem;
+    font-size: .8rem;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: color .1s;
+}
+.cp-search-clear:hover{
+    background: none;
+}
+.cp-search .cp-table-filter:not(:placeholder-shown) ~ .cp-search-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+}
+.no-filter-results {
+    padding: 20px;
+    background: var(--info-bg);
+    color: var(--info);
+    border-radius:  var(--r);
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 500;
+}
+/* ── Aside column — stacked form rows
+   .cp-setting-row inside .cp-card-aside switches to
+   label-above-value because 38.2% is too narrow for 22/78. */
+
+.cp-card-aside .cp-setting-row {
+    grid-template-columns: 1fr;
+    gap: .2rem;
+    padding: .55rem .1rem;
+    border: none;
+}
+.cp-card-aside .cp-setting-name {
+    text-align: left;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding-top: 0;
+}
+.cp-card-aside .cp-setting-value input[type="text"],
+.cp-card-aside .cp-setting-value input[type="email"],
+.cp-card-aside .cp-setting-value input[type="number"],
+.cp-card-aside .cp-setting-value input[type="password"],
+.cp-card-aside .cp-setting-value select {
+    max-width: 100%;
+    width: 100%;
+}
+
+nav.cp-tabs a {
+    display: flex;
+    align-items: center;
+    gap: .4em;
+    padding: .5em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: var(--r) var(--r) 0 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color .12s, background .12s;
+}
+
+
+/* ── Content inlay ─────────────────────────────────────────────── */
+
+.cp-pane-inlay {
+    padding: 1rem 1.1rem 1.6rem;
+}
+
+/* ── Link card grid  (access landing page) ─────────────────────── */
+
+.link-cards-grid {
+    display: grid;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+.link-cards-grid.two-cols {
+    grid-template-columns: repeat(2, 1fr);
+}
+/* Revert to single column on small screens */
+@media (max-width: 860px) {
+    .link-cards-grid.two-cols {
+        grid-template-columns: 1fr;
+    }
+}
+.link-card {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: 1rem 1.2rem;
+    border-radius: var(--r);
+    text-decoration: none;
+    transition: transform .12s, box-shadow .12s;
+}
+.link-card:hover {
+    text-decoration: none;
+}
+
+.link-card__icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    width: 2.2rem;
+    text-align: center;
+}
+.link-card__content { min-width: 0; }
+.link-card__title {
+    font-weight: 600;
+    font-size: .9em;
+    margin: 0 0 .15em;
+}
+.link-card__desc {
+    font-size: .78em;
+    margin: 0;
+    line-height: 1.4;
+}
+
+
+/* ── Settings card ────────────────────────────────────────────── */
+/*    Current HTML: .cp-settings > .cp-toggle-section              */
+/*    Future:       .cp-card                                       */
+
+.cp-settings {
+    margin-top: .8rem;
+}
+
+.cp-toggle-section,
+.cp-card {
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+    /* overflow: visible — intentionally NOT hidden so absolutely-positioned
+       children (custom dropdowns, datepickers, tooltips) can overflow freely.
+       Corner clipping is handled by border-radius on heading and footer. */
+    overflow: visible;
+    margin-bottom: 1rem;
+}
+
+/* Card heading */
+.cp-card-head {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .55rem 1rem;
+    font-size: .76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-bottom: 1px solid var(--border);
+    /* Round top corners so heading background doesn't bleed */
+    border-radius: var(--r) var(--r) 0 0;
+}
+.cp-card-head label {
+    margin: 0;
+    font-weight: 700;
+    cursor: default;
+    font-size: inherit;
+    flex: 1;
+}
+.cp-card-head label span {
+    font-weight: 600;
+    text-transform: none; font-size:125%;
+}
+.cp-card-head span.cp-label {
+    text-transform:  none;
+    font-weight: normal;
+    font-size: .9em;    
+    padding: 4px 6px;
+}
+.cp-card-head span.cp-label:hover {
+    color: inherit;    
+}
+
+/* Close / pull-right link in heading */
+.pull-right,
+.cp-card-close {
+    margin-left: auto;
+    line-height: 1;
+    text-decoration: none;
+    font-size: 1rem;
+}
+/* In the card heading, a second pull-right/cp-card-close sits flush
+   beside the first one rather than getting its own auto margin.
+   Mirrors the .cp-buttons-row .pos-right ~ .pos-right rule.        */
+.cp-card-head .pull-right ~ .pull-right,
+.cp-card-head .pull-right ~ .cp-card-close {
+    margin-left: 0;
+}
+
+/* Card body — single column by default */
+.cp-toggle-section > section,
+.cp-card-body {
+    padding: .1rem 0;
+}
+
+/*
+   Two-column body layout (golden ratio ≈ 61.8 / 38.2).
+   Opt-in: add class "has-aside" to the section or .cp-card-body.
+
+   Usage (current twig):   <section class="has-aside">
+   Usage (future .cp-card): <div class="cp-card-body has-aside">
+*/
+.cp-toggle-section > section.has-aside,
+.cp-card-body.has-aside {
+    display: grid;
+    grid-template-columns: 61.8% 38.2%;
+    align-items: start;
+}
+
+.cp-card-main  { min-width: 0; }
+.cp-card-aside {
+    border-left: 1px solid var(--border);
+    padding: .8rem 1rem;
+    font-size: .82rem;
+}
+.aside-section { margin-bottom: 1rem; }
+.aside-section:last-child { margin-bottom: 0; }
+.aside-label {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: .35rem;
+}
+.aside-div {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: .8rem 0;
+}
+
+
+/* ── Setting row  (22% label / 78% value) ─────────────────────── */
+
+.cp-setting-row {
+    display: grid;
+    grid-template-columns: 33% 1fr;
+    gap: .6rem;
+    align-items: baseline;
+    padding: .55rem 1rem;
+    box-sizing: border-box;
+}
+.cp-setting-row:last-of-type {
+    border-bottom: none;
+}
+
+.cp-setting-name {
+    font-size: .78rem;
+    font-weight: 600;
+    text-align: right;
+    padding-top: .15rem;
+    line-height: 1.4;
+}
+.cp-setting-value {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    min-width: 0;
+    /* overflow: visible so custom dropdowns inside can escape the row bounds */
+    overflow: visible;
+}
+
+/* Full-width row — collapses the name/value grid,
+   value takes the entire row. Label (if present) sits above. */
+.cp-setting-row.wide {
+    grid-template-columns: 1fr;
+    gap: .2rem;
+}
+.cp-setting-row.wide .cp-setting-name {
+    text-align: left;
+    font-size: .72rem;
+    color: var(--text-muted);
+}
+
+/* Fieldset — reset + container */
+fieldset.cp-fieldset {
+  border: none;
+  margin: 0 2vh 16px;
+  padding: 0;
+  border: 0.5px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+/* Legend als Header-Bar */
+fieldset.cp-fieldset > legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: .05em;
+  background: var(--surface3);
+  border-bottom: 0.5px solid var(--border);
+  box-sizing: border-box;
+}
+
+/* Rows erben das bestehende cp-setting-row Layout */
+fieldset.cp-fieldset .cp-setting-row {
+  border-bottom: 0.5px solid var(--border);
+}
+fieldset.cp-fieldset .cp-setting-row:last-child {
+  border-bottom: none;
+}
+
+/* Required field marker */
+label.cp-required::after,
+.cp-setting-name.cp-required::after {
+    content: ' *';
+    font-weight: 700;
+}
+
+/* Hints */
+.cp-setting-hint {
+    font-size: .72rem;
+    line-height: 1.5;
+}
+
+/* Validation feedback (htmx inline) */
+.validation-feedback {
+    font-size: .72rem;
+    min-height: 1em;
+    line-height: 1.4;
+}
+
+
+/* ── Buttons row ───────────────────────────────────────────────── */
+
+.cp-buttons-row,
+.cp-card-foot {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .55rem 1rem;
+    border-top: 1px solid var(--border);
+    /* Round bottom corners to match the card container */
+    border-radius: 0 0 var(--r) var(--r);
+}
+.pos-right {
+    margin-left: auto;
+}
+/* First .pos-right pushes itself right (existing rule).
+   Any further .pos-right siblings sit flush beside it.   */
+.cp-buttons-row .pos-right ~ .pos-right,
+.cp-card-foot   .pos-right ~ .pos-right {
+    margin-left: 0;
+}
+
+/* HTMX loading indicator
+   Sits inline in .cp-buttons-row or .cp-card-foot next to buttons.
+   Shown automatically when .htmx-request is on the parent form.      */
+.htmx-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: .35em;
+    font-size: .78rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .15s ease, visibility .15s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.htmx-request .htmx-indicator,
+.htmx-indicator.htmx-request {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Section-level overlay — wrap a card-body or pane in .htmx-zone
+   to dim the whole area while a request is in flight.               */
+.htmx-zone {
+    position: relative;
+    transition: opacity .15s;
+}
+.htmx-zone.htmx-request {
+    opacity: .45;
+    pointer-events: none;
+}
+
+/* Validation feedback loading state (keyup htmx ping) */
+.validation-feedback.loading {
+    opacity: .6;
+}
+/* spinner used inside .htmx-indicator */
+@keyframes cp-spin { to { transform: rotate(360deg); } }
+.cp-spinner {
+    display: inline-block;
+    width: .85em; height: .85em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: cp-spin .6s linear infinite;
+    opacity: .65;
+    flex-shrink: 0;
+}
+
+/* ── Form controls ─────────────────────────────────────────────── */
+
+.cp-toggle-section input[type="text"],
+.cp-toggle-section input[type="email"],
+.cp-toggle-section input[type="number"],
+.cp-toggle-section input[type="password"],
+.cp-toggle-section input[type="search"],
+.cp-toggle-section select,
+.cp-toggle-section textarea,
+.cp-card input[type="text"],
+.cp-card input[type="email"],
+.cp-card input[type="number"],
+.cp-card input[type="password"],
+.cp-card input[type="search"],
+.cp-card select,
+.cp-card textarea {
+    padding: .32rem .6rem;
+    font-size: .78rem;
+    font-family: inherit;
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    transition: border-color .12s, box-shadow .12s;
+}
+
+.cp-card select,
+.cp-toggle-section select {    
+    padding: 2px 15px 2px 3px;
+}
+
+.cp-toggle-section textarea,
+.cp-card textarea {
+    resize: vertical;
+    max-width: 100%;
+}
+.cp-toggle-section input:focus,
+.cp-toggle-section select:focus,
+.cp-toggle-section textarea:focus,
+.cp-card input:focus,
+.cp-card select:focus,
+.cp-card textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-s);
+}
+
+/* Width helper */
+.wdt250 { max-width: 250px !important; }
+
+/* Inline label + control */
+.cb {
+    display: inline-flex;
+    align-items: center;
+    gap: .32rem;
+    font-size: .78rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+
+/* ============================================
+   Switch Variables
+   ============================================ */
+:root {
+  --switch-width:               2.8rem;
+  --switch-height:              1.4rem;
+  --switch-padding:             0.19rem;
+  --switch-border-radius:       1rem;
+
+  --switch-bg-off:              #cfc9ca;
+  --switch-bg-on:               #77b628;
+  --switch-shadow-inset-off:    1px 1px 10px rgba(0, 0, 0, 0.5);
+  --switch-shadow-inset-on:     1px 1px 5px rgba(0, 0, 0, 0.2);
+
+  --switch-label-color-off:     #fff;
+  --switch-label-color-on:      #fff;
+  --switch-label-font-size:     0.65rem;
+
+  --switch-knob-size:           1.005rem;
+  --switch-knob-bg:             #f7f7f7;
+  --switch-knob-shadow:         1px 1px 10px 0 rgba(0, 0, 0, 0.3);
+  --switch-knob-pos-off:        0.25rem;
+  --switch-knob-pos-on:         1.6rem;
+
+  --switch-labeled-width:       7rem;
+  --switch-labeled-knob-pos-on: 5.68rem;
+
+  --switch-transition:          all 0.25s ease-in-out;
+
+  /* Radio-specific */
+  --switch-radio-font-size:     0.65rem;
+  --switch-radio-gap:           0.45rem;
+  --switch-radio-on:            #6087b2;
+  --switch-radio-padding:       0.22rem 0.7rem 0.22rem 0.3rem;
+  --switch-radio-knob-size:     1rem;
+  --switch-radio-group-gap:     0.4rem;
+}
+
+
+/* ============================================
+   Switch Variables
+   ============================================ */
+:root {
+  --switch-width:                   2.8rem;
+  --switch-height:                  1.4rem;
+  --switch-padding:                 0.19rem;
+  --switch-border-radius:           2rem;
+
+  --switch-bg-off:                  #cfc9ca;
+  --switch-bg-on:                   #a9d249;
+  --switch-radio-on:                #6087b2;
+
+  --switch-shadow-inset-on:         1px 1px 5px rgba(0, 0, 0, 0.2);
+
+  --switch-label-color-off:         #fff;
+  --switch-label-color-on:          #fff;
+  --switch-label-font-size:         0.7rem;
+
+  --switch-knob-size:               1.005rem;
+  --switch-knob-bg:                 #f7f7f7;
+  --switch-knob-shadow:             1px 1px 10px 0 rgba(0, 0, 0, 0.3);
+  --switch-knob-pos-off:            0.25rem;
+  --switch-knob-pos-on:             1.6rem;
+
+  --switch-labeled-padding:         0.22rem 0.7rem 0.22rem 0.3rem;
+
+  --switch-transition:              all 0.25s ease-in-out;
+
+}
+
+
+/* ============================================
+   Checkbox Switches
+   ============================================ */
+input[switch] {
+  display: none;
+}
+
+input[switch] + label {
+  margin-left: 3px;
+  font-size: 1em;
+  line-height: 1;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  background-color: #ddd;
+  border-radius: var(--switch-border-radius);
+  padding: var(--switch-padding);
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  font-family: inherit;
+  transition: var(--switch-transition);
+}
+
+input[switch] + label:before {
+  text-transform: uppercase;
+  color: #b7b7b7;
+  content: attr(data-off-label);
+  display: block;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: var(--switch-label-font-size);
+  line-height: 1rem;
+  position: absolute;
+  right: 0.38rem;
+  margin: 0.217rem;
+  top: 0;
+  text-align: center;
+  min-width: var(--switch-knob-size);
+  overflow: hidden;
+  transition: var(--switch-transition);
+}
+
+input[switch] + label:after {
+  content: "";
+  position: absolute;
+  left: var(--switch-knob-pos-off);
+  background-color: var(--switch-knob-bg);
+  border-radius: var(--switch-border-radius);
+  height: var(--switch-knob-size);
+  width: var(--switch-knob-size);
+  transition: var(--switch-transition);
+}
+
+input[switch]:checked + label {
+  background-color: lightblue;
+}
+
+input[switch]:checked + label:before {
+  color: #fff;
+  content: attr(data-on-label);
+  right: auto;
+  left: 0.20rem;
+}
+
+input[switch]:checked + label:after {
+  left: var(--switch-knob-pos-on);
+  background-color: var(--switch-knob-bg);
+}
+
+/* bool variant */
+input[switch=bool] + label {
+  background-color: var(--switch-bg-off);
+}
+
+input[switch=bool] + label:before {
+  color: var(--switch-label-color-off) !important;
+}
+
+input[switch=bool]:checked + label {
+  background-color: var(--switch-bg-on);
+}
+
+input[switch=bool]:checked + label:before {
+  color: var(--switch-label-color-on) !important;
+}
+
+/* ---- labeled variant: flex, auto-width ---- */
+input[switch] + label.labeled {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--switch-radio-gap);
+  padding: var(--switch-labeled-padding);
+  width: fit-content !important;  
+  height: auto;
+  text-align: left;
+}
+
+/* ::before → Knob */
+input[switch] + label.labeled:before {
+  content: "" !important;
+  position: static;
+  right: auto;
+  left: auto;
+  top: auto;
+  margin: 0;
+  min-width: var(--switch-radio-knob-size);
+  width: var(--switch-radio-knob-size);
+  height: var(--switch-radio-knob-size);
+  border-radius: 50%;
+  background-color: var(--switch-knob-bg);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+  overflow: visible;
+  font-size: 0;
+  line-height: 1;
+}
+
+/* ::after → Text */
+input[switch] + label.labeled:after {
+  content: attr(data-off-label);
+  position: static;
+  left: auto;
+  width: auto;
+  height: auto;
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  text-transform: uppercase;
+  font-size: var(--switch-radio-font-size);
+  font-weight: 500;
+  color: var(--switch-label-color-off);
+  line-height: 1;
+  transition: var(--switch-transition);
+}
+
+/* checked: Knob */
+input[switch]:checked + label.labeled:before {
+  left: auto;
+  box-shadow: var(--switch-knob-shadow);
+}
+
+/* checked: Text */
+input[switch]:checked + label.labeled:after {
+  content: attr(data-on-label);
+  color: var(--switch-label-color-on);
+}
+
+input[switch=bool] + label.labeled {
+  background-color: var(--switch-bg-off);
+}
+
+input[switch=bool]:checked + label.labeled {
+  background-color: var(--switch-bg-on);
+}
+
+
+/* ============================================
+   Radio Switches
+   ============================================ */
+input[type="radio"].switch-radio {
+  display: none;
+}
+
+input[type="radio"].switch-radio + label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--switch-radio-gap);
+  padding: var(--switch-radio-padding);
+  border-radius: var(--switch-border-radius);
+  cursor: pointer;
+  font-size: var(--switch-radio-font-size);
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1;
+  background-color: var(--switch-bg-off);
+  color: var(--switch-label-color-off);
+  transition: var(--switch-transition);
+  user-select: none;
+  white-space: nowrap;
+}
+
+input[type="radio"].switch-radio + label::before {
+  content: "";
+  display: inline-block;
+  width: var(--switch-radio-knob-size);
+  height: var(--switch-radio-knob-size);
+  border-radius: 50%;
+  background-color: var(--switch-knob-bg);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+  transition: var(--switch-transition);
+}
+
+input[type="radio"].switch-radio:checked + label {
+  background-color: var(--switch-radio-on);
+  box-shadow: var(--switch-shadow-inset-on);
+}
+
+input[type="radio"].switch-radio:checked + label::before {
+  box-shadow: var(--switch-knob-shadow);
+}
+
+.radio-switch-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--switch-radio-group-gap);
+  align-items: center;
+}
+
+
+
+/* ── Buttons ───────────────────────────────────────────────────── */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: .35em;
+    padding: .38rem .85rem;
+    font-size: .78rem;
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--r);
+    cursor: pointer;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: background .12s, box-shadow .12s, filter .12s;
+}
+.button:active {
+    transform: translateY(1px);
+}
+.cp-main .button{
+    min-width: auto;
+}
+/* Inline confirm buttons (delete rows in tables) */
+.btn-inline {
+    display: inline-block;
+    padding: .22em .55em;
+    font-size: .75em;
+    font-weight: 600;
+    border-radius: 3px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    line-height: 1.5;
+    color: whitesmoke;
+}
+.btn-inline:hover {
+    text-decoration: none;
+}
+
+
+/* ── Filter input + table ──────────────────────────────────────── */
+
+.cp-table-filter {
+    display: block;
+    width: 100%;
+    max-width: 380px;
+    padding: .38rem .7rem;
+    font-size: .82rem;
+    font-family: inherit;
+    border-radius: var(--r);
+    border: 1px solid var(--border);
+    margin-bottom: .55rem;
+    box-sizing: border-box;
+    transition: border-color .12s, box-shadow .12s;
+}
+.cp-table-filter:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent-s);
+}
+
+table.cp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .82rem;
+    border: 1px solid var(--border);
+}
+table.cp-table th,
+table.cp-table td {
+    padding: .42rem .65rem;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+.cp-table thead th,
+.cp-table tfoot th {
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .01em;
+    border-bottom-width: 2px;
+}
+table.cp-table tbody tr:last-child td {
+    border-bottom: none;
+}
+table.cp-table tbody tr td:last-child {
+    text-align: right;
+    white-space: nowrap;
+}
+table.cp-table tbody tr td:first-child {
+    font-family: var(--font-mono);
+    text-align: right;
+    white-space: nowrap;
+    width: 10px;
+    font-size: 90%;
+}
+table.cp-table tbody tr td:first-child span{
+    font-size: .75rem;
+    background: #ebf3fa;
+    color: #696969;
+    padding: 1px 5px;
+    border-radius: 30%;
+}
+table.cp-table tfoot {
+    border-top: 2px solid var(--border);
+}
+table.cp-table td.center {
+    text-align: center;
+    white-space: nowrap;
+}
+
+th.sort {
+    cursor: pointer;
+    user-select: none;
+}
+th.sort::after {
+    content: ' ⇅';
+    font-size: .65em;
+    opacity: .35;
+}
+
+/* Row state animations */
+tr.empha-new { animation: cp-empha-fade 3s ease-out; }
+tr.hilite    { animation: cp-hilite-fade 2s ease-out; }
+@keyframes cp-empha-fade  { from { background-color: var(--success-bg); } to { background-color: transparent; } }
+@keyframes cp-hilite-fade { from { background-color: var(--warning-bg); } to { background-color: transparent; } }
+.search-hilite{
+  background-color: #ff7f50ab; /*  coral;*/
+}
+
+tr.row-on-delete td,
+tr.row-on-deactivate td {
+    vertical-align: middle;
+}
+.low-opac { opacity: .45; }
+
+
+/* ── Usergroup tag / cp-label ──────────────────────────────────── */
+
+span.usergroup,
+span.cp-label {
+    display: inline-block;
+    margin: 1px 2px 0 0;
+    padding: .1em .42em;
+    border-radius: 3px;
+    font-size: .75em;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    cursor: default;
+}
+
+
+/* ── Edit-link name column ─────────────────────────────────────── */
+
+.edit-link-name a {
+    font-weight: 600;
+    text-decoration: none;
+}
+.edit-link-name a:hover {
+    text-decoration: underline;
+}
+
+/* Disabled action icon */
+.delete-record.inactive {
+    opacity: .3;
+    cursor: not-allowed;
+}
+
+
+/* ── Permissions matrix ────────────────────────────────────────── */
+
+.permission-area-section {
+    border-bottom: 1px solid var(--border);
+    padding: .65rem 0;
+    transition: background .1s;
+}
+.permission-area-section:last-child {
+    border-bottom: none;
+}
+
+.permission-area {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: start;
+    gap: 1.1rem;
+    padding: .15rem 1rem;
+}
+
+.area-icon {
+
+}
+
+.area-name label {
+
+}
+
+/* Für die einzelnen großen Area-Icons */
+.area-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;           /* Passe die Größe nach Bedarf an */
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.area-icon label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 16%;
+    margin: 0;
+    cursor: pointer;
+    background-image: linear-gradient(#a3bacaad, #859ab2ab);
+}
+
+.area-icon i {
+    color: whitesmoke;
+    font-size: 1.7rem;
+}
+
+.area-name p {
+    font-size: .8rem;
+    margin: .2rem 0 0;
+    line-height: 1.4;
+}
+.area-name label {
+    font-size: 1.4em;
+    font-weight: 600;   
+}
+
+/* Permission checkboxes */
+ul.permissions {
+    list-style: none;
+    padding: 0;
+    margin: .3rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem .8rem;
+}
+ul.permissions li label {
+    font-size: .78rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+}
+
+/* Addon/module/template selection lists */
+ul.check_selection {
+    list-style: none;
+    padding: .35rem 0;
+    margin: 0 0 .6rem;
+/*    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem .75rem;*/
+    align-items: baseline;
+}
+ul.check_selection li:first-child {
+    width: 100%;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: .1rem;
+}
+ul.check_selection li label {
+    font-size: .78rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+}
+
+
+/* ── Perms overview (group list table) ─────────────────────────── */
+
+ul.perms-overview {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 .2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    font-size: 1rem;
+}
+
+/* Perm state colors — also used in area icons */
+.perm-none    { color: var(--text-dim); }
+.perm-partial { color: var(--warning);  }
+.perm-full    { color: var(--success);  }
+ul.perms-overview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .15rem;
+    align-items: center;
+}
+
+ul.perms-overview li {
+    display: inline-flex; 
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+ul.perms-overview li i {
+    font-size: .85rem;
+    color: whitesmoke;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20%;
+    flex-shrink: 0;
+}
+/* ── Perms overview (states) ───────────────────────────────────────── */
+ul.perms-overview li.perm-none i, 
+.area-icon label:has(i.perm-none){ 
+    background-image: linear-gradient(#a3baca50, #859AB260);
+}
+ul.perms-overview li.perm-partial,
+.area-icon label:has(i.perm-partial){ 
+    background-image: linear-gradient(#f0bf30, #f0a030);
+    border-radius: 20%;
+}
+ul.perms-overview li.perm-full i,
+.area-icon label:has(i.perm-full){ 
+    background-image: linear-gradient(#4bad1f, #538d37);
+}
+
+/* =================================================================
+   Alertbox — inline messages (MessageBox)
+   Used by _message_box.inc.twig
+   ================================================================= */
+
+.alertbox_success,
+.alertbox_error,
+.alertbox_warning,
+.alertbox_info {
+    position: relative;
+    padding: 14px 20px 14px 52px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    border-left: 4px solid transparent;
+    font-size: 0.925em;
+    line-height: 1.5;
+}
+
+/* Icon positioning */
+.alertbox_success .signal,
+.alertbox_error .signal,
+.alertbox_warning .signal,
+.alertbox_info .signal {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .7;
+}
+
+/* Paragraphs inside alertboxes */
+.alertbox_success p,
+.alertbox_error p,
+.alertbox_warning p,
+.alertbox_info p {
+    margin: 0;
+    padding: 0;
+}
+.alertbox_success p + p,
+.alertbox_error p + p,
+.alertbox_warning p + p,
+.alertbox_info p + p {
+    margin-top: 4px;
+}
+
+/* --- Type colors (same palette as toasts) --- */
+
+.alertbox_success {
+    background: #d4edda;
+    border-left-color: #28a745;
+    color: #155724;
+}
+
+.alertbox_error {
+    background: #f8d7da;
+    border-left-color: #dc3545;
+    color: #721c24;
+}
+
+.alertbox_warning {
+    background: #fff3cd;
+    border-left-color: #ffc107;
+    color: #856404;
+}
+
+.alertbox_info {
+    background: #d1ecf1;
+    border-left-color: #17a2b8;
+    color: #0c5460;
+}
+/* =================================================================
+    Toast Messages (MessageBox) 
+   ================================================================= */
+#toast-container {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.toast {
+    min-width: 280px;
+    padding: 12px 40px 12px 16px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    animation: toast-in .3s ease-out;
+    position: relative;
+}
+.toast-success { background: #d4edda; border-left: 4px solid #28a745; }
+.toast-error   { background: #f8d7da; border-left: 4px solid #dc3545; }
+.toast-warning { background: #fff3cd; border-left: 4px solid #ffc107; }
+.toast-info    { background: #d1ecf1; border-left: 4px solid #17a2b8; }
+.toast-close   { position: absolute; right: 8px; top: 8px; /* ... */ }
+@keyframes toast-in { from { transform: translateX(100%); opacity:0; } to { transform:none; opacity:1; } }
+
+
+/* ── Group badges ──────────────────────────────────────────────── */
+
+.signup-group,
+.admin-group {
+    display: inline-block;
+    font-size: .68rem;
+    padding: .1em .35em;
+    border-radius: 3px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+/* ── Group description ─────────────────────────────────────────── */
+
+.group-description {
+    font-size: .74rem;
+    line-height: 1.4;
+    display: block;
+    margin-top: .15rem;
+}
+
+
+/* ── Inline code ───────────────────────────────────────────────── */
+
+code, tt, var, kbd {
+    font-family: var(--font-mono);
+    font-size: .88em;
+    padding: .1em .35em;
+    border-radius: 3px;
+}
+
+.dismissable button.close {
+    color: red;
+    background-color: transparent !important;
+    margin-bottom: 20px;
+}
+/* ── Responsive ────────────────────────────────────────────────── */
+
+@media (max-width: 680px) {
+    .cp-setting-row {
+        grid-template-columns: 1fr;
+        gap: .2rem;
+    }
+    .cp-setting-name {
+        text-align: left;
+    }
+    .cp-toggle-section > section.has-aside,
+    .cp-card-body.has-aside {
+        grid-template-columns: 1fr;
+    }
+    .cp-card-aside {
+        border-left: none;
+        border-top: 1px solid var(--border);
+    }
+    .link-cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+    table.cp-table {
+        font-size: .75rem;
+    }
+    ul.perms-overview li i {
+        font-size: .65rem;
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+}
+
+/* ── Responsive utility classes — apply to th, td, or any element ── */
+
+@media (max-width: 680px) {
+    .sm-hide        { display: none !important; }
+    .sm-show        { display: inline !important; }
+    .sm-show-block  { display: block !important; }
+}
+
+@media (min-width: 681px) {
+    .sm-show        { display: none; }
+    .sm-show-block  { display: none; }
+}
+
+@media (max-width: 960px) {
+    .md-hide        { display: none !important; }
+    .md-show        { display: inline !important; }
+    .md-show-block  { display: block !important; }
+}
+
+@media (min-width: 961px) {
+    .md-show        { display: none; }
+    .md-show-block  { display: none; }
+}
+
+/* ── Two-column form: stack main column labels sooner ──────────────
+   In a has-aside layout the main column is only 61.8% wide.
+   The 22/78 label/value grid breaks around 960px — switch to
+   stacked (label above value) before labels start wrapping.
+   The two columns themselves collapse at 680px (below).           */
+
+@media (max-width: 960px) {
+    .cp-toggle-section > section.has-aside .cp-card-main .cp-setting-row,
+    .cp-card-body.has-aside .cp-card-main .cp-setting-row {
+        grid-template-columns: 1fr;
+        gap: .2rem;
+    }
+    .cp-toggle-section > section.has-aside .cp-card-main .cp-setting-name,
+    .cp-card-body.has-aside .cp-card-main .cp-setting-name {
+        text-align: left;
+        font-size: .7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        padding-top: 0;
+    }
+}

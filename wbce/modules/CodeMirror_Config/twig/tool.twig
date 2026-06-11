@@ -1,72 +1,110 @@
-{% extends "_framer.twig" %}
-{% block content %}  
+{#
+    CodeMirror_Config/twig/tool.twig
 
-<div class="cpForm">
-    <form name="cmc_settings" action="{{ returnUrl }}" method="post">
-        {{ FTAN }}
-        <div class="formRow">
-            <div class="settingName">Theme</div>
-            <div class="settingValue">
-                <select id="select" name="theme" onchange="selectTheme()">			
-                    <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
-                    {% for p in aThemeFiles|reverse %}
-                        {% set name = p|split('.')[0] %}
-                        {% set sel = (name == cfg.theme) ? " selected" : "" %}
-                        <option style="font-size:15px" value="{{ name }}" {{ sel }}>{{ name }}</option>
-                    {% endfor %}
-                </select>
+    Variables (injected by tool.php + admintools framework):
+      FTAN              — FTAN hidden input (raw HTML)
+      returnUrl         — form action URL
+      RETURN_TO_TOOLS   — back-button URL (tools list)
+      cfg               — { theme, font, font_size }
+      aThemeFiles       — array of .css filenames from /codemirror/theme/
+      aFontFiles        — array of .woff2/.woff filenames from /codemirror/fonts/
+      aFontSizes        — array of integer sizes [12..18]
+      cmc_code_sample   — PHP code string used to preview the editor
+#}
+
+<form name="cmc_settings" action="{{ returnUrl }}" method="post">
+    {{ FTAN }}
+
+    <div class="cp-settings">
+        <div class="cp-toggle-section">
+            <div class="cp-card-head">
+                <label><i class="fa fa-code"></i> CodeMirror</label>
             </div>
-        </div>
-                
-        <div class="formRow fullValue">        
-            <div class="settingName">
-                <label for="trans" >Code</label></div>
-            <div class="settingValue">                
-                <textarea id="code" name="code">{{ cmc_code_sample }}</textarea>
-                <div class="formHint pos-right" style="color: gray">
-                    {% if LANGUAGE == 'DE' %}
-                    <b>Hinweis:</b> Drücken Sie [F11] um in den Vollbildmodus zu kommen.
-                    {% else %}
-                    <b>Hint:</b> Please press [F11] to enter full-screen mode. 
-                    {% endif %}
+
+            <section id="settings">
+
+                {# ── Theme ────────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">Theme</div>
+                    <div class="cp-setting-value">
+                        <select id="select" name="theme" onchange="selectTheme()">
+                            <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
+                            {% for p in aThemeFiles|reverse %}
+                                {% set name = p|split('.')[0] %}
+                                {% set sel = (name == cfg.theme) ? ' selected' : '' %}
+                                <option style="font-size:15px" value="{{ name }}"{{ sel }}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-            </div>
-        </div> 
-        
-        <div class="formRow">
-            <div class="settingName">
-                <label>Font {{ L_('TEXT:NAME') }}</label>
-            </div>            
-            <div class="settingValue">
-                <select id="font_sel" name="font" onchange="selectFontFamily(this)">			
-                    <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
-                    {% for p in aFontFiles %}
-                        {% set name = p|split('.')[0] %}
-                        {% set sel = (name == cfg.font) ? " selected" : "" %}
-                        <option value="{{ name }}"{{ sel }}>{{ name }}</option>
-                    {% endfor %}
-                </select>                
-            </div>
-        </div>	
-        <div class="formRow">
-            <div class="settingName">
-                <label>Font {{ L_('TEXT:SIZE') }}</label>
-            </div>            
-            <div class="settingValue">
-                <select id="font_size" name="font_size" onchange="selectFontSize(this)">			
-                    <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
-                    {% for p in aFontSizes %}
-                        {% set sel = (p == cfg.font_size) ? " selected" : "" %}
-                        <option value="{{ p }}"{{ sel }}>{{ p }}px</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>	
-        
-        <div class="buttonsRow">
-            <button type="submit" name="save_settings" class="button ico-save pos-right">{{ L_('TEXT:SAVE') }}</button>
+
+                {# ── Code preview ──────────────────────────────────────────── #}
+                <div class="cp-setting-row wide">
+                    <div class="cp-setting-name"><label>Code</label></div>
+                    <div class="cp-setting-value">
+                        <textarea id="code" name="code">{{ cmc_code_sample }}</textarea>
+                    </div>
+                </div>
+
+                {# ── Code preview (Toolbar) ────────────────────────────────── #}
+               
+
+                {# ── Font Name ─────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">
+                        <label>Font {{ L_('TEXT:NAME') }}</label>
+                    </div>
+                    <div class="cp-setting-value">
+                        <select id="font_sel" name="font" onchange="selectFontFamily(this)">
+                            <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
+                            {% for p in aFontFiles %}
+                                {% set name = p|split('.')[0] %}
+                                {% set sel = (name == cfg.font) ? ' selected' : '' %}
+                                <option value="{{ name }}"{{ sel }}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                {# ── Font Size ─────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">
+                        <label>Font {{ L_('TEXT:SIZE') }}</label>
+                    </div>
+                    <div class="cp-setting-value">
+                        <select id="font_size" name="font_size" onchange="selectFontSize(this)">
+                            <option value="0" disabled>{{ L_('TEXT:PLEASE_SELECT') }} &hellip;</option>
+                            {% for p in aFontSizes %}
+                                {% set sel = (p == cfg.font_size) ? ' selected' : '' %}
+                                <option value="{{ p }}"{{ sel }}>{{ p }}px</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                {# ── Buttons ───────────────────────────────────────────────── #}
+                <div class="cp-buttons-row">
+                    <a href="{{ RETURN_TO_TOOLS }}" class="button">&laquo; {{ L_('TEXT:BACK') }}</a>
+                    <button type="submit" name="save_settings" class="button ico-save pos-right">
+                        {{ L_('TEXT:SAVE') }}
+                    </button>
+                </div>
+
+            </section>
         </div>
-    </form>
-</div>
+    </div>
+
+</form>
     
-{% endblock %}
+<div class="cp-settings">
+    <div class="cp-toggle-section">
+        <div class="cp-card-head">
+            <label style="text-transform:none"><i class="fa fa-code"></i> {{ L_('TXT:CODEEDITOR_WITH_TOOLBAR') }}</label>
+        </div>
+        <blockquote>
+            <p>{{ L_('TXT:COT_QUOTE') }}</p>
+        </blockquote>
+
+                <textarea id="code_toolbar" name="code_toolbar">{{ cmc_code_sample }}</textarea>
+    </div>
+</div>

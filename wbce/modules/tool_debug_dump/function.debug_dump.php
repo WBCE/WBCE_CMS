@@ -36,6 +36,16 @@
  */
 function debug_dump($mVar = '', $sHeading = '', $bUse_var_dump = false, $mTwig = false): void
 {
+    // ── 0. Lazy asset injection — einmalig beim ersten echten Aufruf ──────────
+    static $assetsInjected = false;
+    if (!$assetsInjected && isset($GLOBALS['_debug_dump_assets'])) {
+        $a = $GLOBALS['_debug_dump_assets'];
+        I::insertCssFile($a['css'],      'HEAD BTM-', 'debug_dump');
+        I::insertJsFile($a['js'],        'BODY BTM-', 'debug_dump');
+        I::insertCssCode($a['font_css'], 'HEAD BTM',  'CodeMirror_loadFontCss');
+        $assetsInjected = true;
+    }
+
     // ── 1. Type label ─────────────────────────────────────────────────────────
     $type = match (true) {
         is_object($mVar) => 'object',

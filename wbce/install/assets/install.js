@@ -30,6 +30,12 @@
     status.style.display = 'none';
     status.className = '';
 
+    // Hide steps 4 + 5 until DB test succeeds again
+    ['step4-card', 'step5-card'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+
     // Reset button to initial "Test Connection" state
     btn.disabled = false;
     btn.classList.remove('loading');
@@ -95,6 +101,21 @@
       showStatus(data.ok, data.message);
       testedFld.value = data.ok ? '1' : '0';
 
+      // Reveal steps 4 + 5 only on success
+      if (data.ok) {
+        ['step4-card', 'step5-card'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) {
+            el.style.display = 'block';
+            el.style.animation = 'fadeUp .7s ease both';
+          }
+        });
+        // Scroll just a little way down so the user notices the new cards
+        setTimeout(function () {
+          window.scrollBy({ top: 180, behavior: 'smooth' });
+        }, 200);
+      }
+
     } catch (err) {
       showStatus(false, 'Request failed — ' + (err.message || 'Unknown error'));
       testedFld.value = '0';
@@ -110,101 +131,6 @@
 
   // Initial reset
   resetTest();
-})();
-
-
-/* ══════════════════════════════════════════════════════════════════════════
-   RANDOM PASSWORD GENERATOR
-   Allowed chars mirror install_save.php: a-zA-Z0-9_-!#*+@$&:
-   Minimum length: 12  (enforced by install_save.php)
-   Strategy:
-        guarantee minimum char from each group, then fill randomly.
-   ══════════════════════════════════════════════════════════════════════════ */
-(function () {
-  const btn    = document.getElementById('btn-gen-pw');
-  const pwIn   = document.getElementById('admin_password');
-  const pw2In  = document.getElementById('admin_repassword');
-  const hint   = document.getElementById('pw-hint');
-  
-  if (!btn || !pwIn || !pw2In || !hint) return;
-
-  const GROUPS = [
-    'abcdefghijklmnopqrstuvwxyz',
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    '0123456789',
-    '_-!#*+@$&:'                    // special chars allowed by install_save.php
-  ];
-  const ALL = GROUPS.join('');
-  const LEN = 16;
-  const PREVIEW_TIMEOUT = 5000;     // 5 seconds
-
-  let hideTimeout = null;           // Store the current timeout ID
-
-  function randomChar(str) {
-    return str[crypto.getRandomValues(new Uint32Array(1))[0] % str.length];
-  }
-
-  function generate() {
-    // Guarantee at least one char from each group
-    const chars = GROUPS.map(g => randomChar(g));
-    
-    // Fill remaining positions
-    while (chars.length < LEN) {
-      chars.push(randomChar(ALL));
-    }
-
-    // Fisher-Yates shuffle (crypto-safe)
-    const arr = new Uint32Array(chars.length);
-    crypto.getRandomValues(arr);
-    for (let i = chars.length - 1; i > 0; i--) {
-      const j = arr[i] % (i + 1);
-      [chars[i], chars[j]] = [chars[j], chars[i]];
-    }
-
-    return chars.join('');
-  }
-
-  function showPassword(pw) {
-    // Clear any existing timeout
-    if (hideTimeout) {
-      clearTimeout(hideTimeout);
-    }
-
-    // Show password in both fields
-    pwIn.type  = 'text';
-    pw2In.type = 'text';
-    pwIn.value  = pw;
-    pw2In.value = pw;
-
-    // Show hint
-    hint.textContent = I18N.pwCopyHint || 'Password copied to clipboard';
-    hint.className = 'pw-generated-hint visible';
-
-    // Copy to clipboard (silent fail if not permitted)
-    navigator.clipboard?.writeText(pw).catch(() => {});
-
-    // Set new timeout to hide password
-    hideTimeout = setTimeout(() => {
-      hidePassword();
-    }, PREVIEW_TIMEOUT);
-  }
-
-  function hidePassword() {
-    pwIn.type  = 'password';
-    pw2In.type = 'password';
-    hint.textContent = '';
-    hint.className = 'pw-generated-hint';
-    hideTimeout = null;
-  }
-
-  btn.addEventListener('click', () => {
-    const pw = generate();
-    showPassword(pw);
-
-    // Trigger native validation reset
-    pwIn.dispatchEvent(new Event('input'));
-    pw2In.dispatchEvent(new Event('input'));
-  });
 })();
 
 

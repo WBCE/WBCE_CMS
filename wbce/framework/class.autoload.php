@@ -69,6 +69,12 @@ class WbAuto
     public static $Files = array();
 
     /**
+     * @brief PSR-4 prefix → base directory map.
+     * @var array $psr4  [ 'Vendor\\Package' => '/abs/path/to/src/' ]
+     */
+    public static $psr4 = [];
+
+    /**
      * @brief Stores search templates to search for in the search dirs.
      * @var array $Types
      */
@@ -92,6 +98,22 @@ class WbAuto
         //already loaded, never mind
         if (class_exists($ClassName, false)) {
             return false;
+        }
+
+        // PSR-4 prefix lookup — checked before anything else so third-party
+        // libraries with namespaces are resolved without touching $Files or $Dirs.
+        foreach (self::$psr4 as $prefix => $baseDir) {
+            $prefixLen = strlen($prefix);
+            if (strncmp($ClassName, $prefix, $prefixLen) === 0
+                && (strlen($ClassName) === $prefixLen || $ClassName[$prefixLen] === '\\')
+            ) {
+                $relative = substr($ClassName, $prefixLen + 1); // strip prefix + leading \
+                $file     = $baseDir . str_replace('\\', DIRECTORY_SEPARATOR, $relative) . '.php';
+                if (is_file($file)) {
+                    require $file;
+                    return false;
+                }
+            }
         }
 
         // Filebased loading first
@@ -120,9 +142,17 @@ class WbAuto
         //Search dirs for matching class files
         foreach (WbAuto::$Dirs as $sDirVal) {
             foreach (WbAuto::$Types as $sTypeVal) {
-                $sTestFile = $sDirVal . $ClassPath . strtolower(sprintf($sTypeVal, basename($ClassName)));
+                // 1. Original case — required for capitalized files (GroupManager.php,
+                //    Alerts.php, …) on case-sensitive Linux filesystems.
+                $sTestFile = $sDirVal . $ClassPath . sprintf($sTypeVal, basename($ClassName));
                 if (is_file($sTestFile)) {
                     include($sTestFile);
+                    return false;
+                }
+                // 2. Lowercase fallback — for files whose name differs in case from the class name.
+                $sLower = $sDirVal . $ClassPath . strtolower(sprintf($sTypeVal, basename($ClassName)));
+                if ($sLower !== $sTestFile && is_file($sLower)) {
+                    include($sLower);
                     return false;
                 }
             }
@@ -292,6 +322,28 @@ class WbAuto
     }
 
     /**
+     * @brief Register a PSR-4 namespace prefix mapped to a source directory.
+     *
+     * Allows third-party libraries (e.g. PHPMailer, matthiasmullie/minify) to be
+     * autoloaded without manual require statements, using standard PSR-4 rules:
+     * namespace separators map to directory separators, class name maps to filename.
+     *
+     * @code
+     * WbAuto::AddPsr4('PHPMailer\\PHPMailer',   INCLUDE_PATH . '/PHPMailer/src');
+     * WbAuto::AddPsr4('MatthiasMullie\\Minify', INCLUDE_PATH . '/matthiasmullie-minify/src');
+     * @endcode
+     *
+     * @param string $prefix   Namespace prefix (without trailing backslash).
+     * @param string $baseDir  Absolute path to the directory containing the class files.
+     */
+    public static function AddPsr4(string $prefix, string $baseDir): void
+    {
+        $prefix  = rtrim($prefix,  '\\');
+        $baseDir = rtrim($baseDir, '/\\') . DIRECTORY_SEPARATOR;
+        self::$psr4[$prefix] = $baseDir;
+    }
+
+    /**
      * @brief Adds a new search template to the list of search templates.
      *
      * Templates are used to look for matching files in the directory search.
@@ -339,33 +391,50 @@ class WbAuto
      */
     public static function bootInitialize(): void
     {
-        // 1. Priority explicit files — must be available before AddDir() sweep
-        //    so that classname != filename cases resolve correctly.
+        // 1. Priority explicit files — must come BEFORE class_alias calls.
+        //
+        //    The autoloader does strtolower() on filenames during directory scans,
+        //    so capitalized files (Login.php, Frontend.php, Alerts.php …) are NOT
+        //    found on case-sensitive Linux filesystems via AddDir() alone.
+        //    Explicit AddFile() entries bypass the dir scan entirely.
         $explicitFiles = [
-            'Database'     => '/framework/Database.php',
-            'Admin'        => '/framework/Admin.php',
-            'AddonService' => '/framework/AddonService.php',
-            'MessageBox'   => '/framework/MessageBox.php',
-            'SecureForm'   => '/framework/SecureForm.php',
-            'Accounts'     => '/framework/Accounts.php',
-            'Mailer'       => '/framework/Mailer.php',
-            'wbmailer'     => '/framework/Mailer.php', // fallback for some legacy modules
-            'SecureForm'   => '/framework/SecureForm.php',
-            'I'            => '/framework/I.php',
-            'Insert'       => '/framework/Insert.php',
-            'Template'     => '/include/phplib/template.inc', // legacy Template Engine used in WBCE BE Themes
+            'Database'      => '/framework/Database.php',
+            'Wbce'          => '/framework/Wbce.php',
+            'Wb'            => '/framework/Wbce.php',   // backward-compat alias target
+            'Admin'         => '/framework/Admin.php',
+            'Alerts'        => '/framework/Alerts.php',
+            'AddonService'  => '/framework/AddonService.php',
+            'SecureForm'    => '/framework/SecureForm.php',
+            'Accounts'      => '/framework/Accounts.php',
+            'Mailer'        => '/framework/Mailer.php',
+            'I'             => '/framework/I.php',
+            'Insert'        => '/framework/Insert.php',
+            'Login'         => '/framework/Login.php',
+            'Frontend'      => '/framework/Frontend.php',
+            'Settings'      => '/framework/Settings.php',
+            'LayoutParser'  => '/framework/LayoutParser.php',
+            'Order'         => '/framework/Order.php',
+            'Template'      => '/include/phplib/template.inc',
         ];
 
         foreach ($explicitFiles as $className => $relPath) {
             self::AddFile($className, $relPath);
-            // AddFile returns an error string on failure — silently ignored here.
-            // The class simply won't be pre-registered; the dir scan below may
-            // still find it if it follows the naming convention.
         }
 
-        // 2. Framework directory — scans for all class.*.php, *.php etc.
+        // 2. Framework directories — catches everything not listed above.
         self::AddDir('/framework/');
         self::AddDir('/framework/AccessManager/');
+
+        // PSR-4 third-party libraries are registered in the file that uses them:
+        //   Twig       → include/Sensio/Twig/WbceCustom/TwigLoader.php
+        //   PHPMailer  → framework/Mailer.php
+        //   Mullie     → framework/I.php
+
+        // 3. Backward-compat aliases — AFTER AddFile so the autoloader can
+        //    resolve the source class before the alias is created.
+        class_alias('Wbce',   'Wb');         // Wb renamed to Wbce — keep old name working
+        class_alias('Alerts', 'MessageBox'); // Alerts replaces and expands MessageBox
+        class_alias('Mailer', 'wbmailer');   // fallback for some legacy modules
     }
 
 }

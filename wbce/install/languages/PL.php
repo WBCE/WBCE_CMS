@@ -136,7 +136,7 @@ $TXT['upgrade_heading']         = 'Migracja bazy danych i dodatków';
 $TXT['upgrade_subheading']      = 'Ten skrypt modyfikuje bazę danych i zastępuje pliki.';
 $TXT['current_version']         = 'Bieżąca wersja';
 $TXT['target_version']          = 'Docelowa wersja';
-$TXT['upgrade_warning']         = 'Skrypt aktualizacji modyfikuje istniejącą bazę danych i strukturę plików. <strong>Zdecydowanie zalecane</strong> jest utworzenie ręcznej kopii zapasowej folderu <tt>%s</tt> oraz całej bazy danych przed kontynuacją.';
+$TXT['upgrade_warning']         = 'Skrypt aktualizacji modyfikuje istniejącą bazę danych i strukturę plików. <strong>Zdecydowanie zalecane</strong> jest utworzenie pełnej kopii zapasowej plików i całej bazy danych przed kontynuacją.';
 $TXT['upgrade_confirm']         = 'Potwierdzam, że utworzyłem ręczną kopię zapasową folderu <tt>%s</tt> oraz bazy danych.';
 $TXT['proceed_upgrade']         = 'Kontynuuj aktualizację';
 

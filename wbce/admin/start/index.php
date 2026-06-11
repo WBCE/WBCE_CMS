@@ -11,12 +11,10 @@
  */
 
 require('../../config.php');
-require_once(WB_PATH . '/framework/class.admin.php');
-$admin = new admin('Start', 'start');
+$admin = new Admin('Start', 'start');
 // ---------------------------------------
 
 if (defined('FINALIZE_SETUP')) {
-    require_once(WB_PATH . '/framework/functions.php');
     $dirs = array('modules' => WB_PATH . '/modules/',
         'templates' => WB_PATH . '/templates/',
         'languages' => WB_PATH . '/languages/'
@@ -43,9 +41,7 @@ if (defined('FINALIZE_SETUP')) {
             closedir($handle);
         }
     }
-    $sql = 'DELETE FROM `' . TABLE_PREFIX . 'settings` WHERE `name`=\'FINALIZE_SETUP\'';
-    if ($database->query($sql)) {
-    }
+    $database->query('DELETE FROM `{TP}settings` WHERE `name`=\'FINALIZE_SETUP\'');
 }
 // ---------------------------------------
 $msg = '<br />';
@@ -89,24 +85,25 @@ if ($admin->get_permission('admintools') != true) {
     $template->set_var('DISPLAY_ADMINTOOLS', 'display:none;');
 }
 
-// Check if installation directory still exists and delete the files
-if (file_exists(WB_PATH . '/install/') || file_exists(WB_PATH . '/upgrade-script.php')) {
-    if (!function_exists('rm_full_dir')) {
-        @require_once(WB_PATH . '/framework/functions.php');
+// Check if installation directory still exists and delete it — unless KEEP_INSTALL_DIR is set.
+if (!defined('KEEP_INSTALL_DIR') || !KEEP_INSTALL_DIR) {
+    if (file_exists($unlikFile = WB_PATH . '/upgrade-script.php')) {
+        unlink($unlikFile);
     }
-    if (file_exists(WB_PATH . '/upgrade-script.php')) {
-        unlink(WB_PATH . '/upgrade-script.php');
-    }
-    if (file_exists(WB_PATH . '/install/')) {
-        rm_full_dir(WB_PATH . '/install/');
+    if (file_exists($unlikDir = WB_PATH . '/install/')) {
+        rm_full_dir($unlikDir);
     }
 }
 
 if ($admin->get_group_id() == 1) {
     if (file_exists(WB_PATH . '/install/')) {
-        $template->set_var('DISPLAY_WARNING', 'display:block;');
-        $template->set_var('WARNING', $MESSAGE['START_INSTALL_DIR_EXISTS']);
-    } elseif (file_exists(WB_PATH . '/modules/SimpleCommandDispatcher.inc.php')|| file_exists(WB_PATH . '/framework/Login.php')) {
+        $template->set_var('DISPLAY_WARNING', 'display:block');
+        $msg = $MESSAGE['START_INSTALL_DIR_EXISTS'];
+        if(defined('KEEP_INSTALL_DIR') && KEEP_INSTALL_DIR){
+            $msg = 'Constant KEEP_INSTALL_DIR is set to guard /install directory.';            
+        }
+        $template->set_var('WARNING', $msg);
+    } elseif (file_exists(WB_PATH . '/modules/SimpleCommandDispatcher.inc.php')) {
         $template->set_var('DISPLAY_WARNING', 'display:block;');
         $template->set_var('WARNING', $MESSAGE['START_WBCE_NOT_CLEAN']);
 	} elseif (substr(WB_URL,-1)=="/") {

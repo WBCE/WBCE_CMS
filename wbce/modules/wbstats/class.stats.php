@@ -172,7 +172,7 @@ class stats {
 	}
 	
 	function getVisitors($top = 10) {
-		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $table_brwsr, $code2lang;
+		global $database, $table_day, $table_ips, $table_pages, $table_ref, $table_key, $table_lang, $table_brwsr, $CODE2LANG;
 		$result = array();
 
 		$totals = $database->get_one("SELECT sum(view) FROM ".$table_ref);
@@ -237,7 +237,7 @@ class stats {
 		$query = $database->query("SELECT language, SUM(view) AS views from ".$table_lang." GROUP BY language ORDER BY views DESC LIMIT 0, $top");
 		while($res = $query->fetchRow()) {
 			$language=htmlspecialchars($res['language']);
-			if (array_key_exists($language,$code2lang)) $language=$code2lang[$language];
+			if (array_key_exists($language,$CODE2LANG)) $language=$CODE2LANG[$language];
 			$short = (strlen($language) > 55) ? substr($language,0,50)."...": $language;
 			$views = $res['views'];
 			$percent = (100 / $totals) * $views;

@@ -77,7 +77,7 @@ class Insert
         if (defined('WB_RENDER')) {
             $this->sRenderType = WB_RENDER;
         }
-        if (defined('WB_FRONTEND') && WB_FRONTEND == true) {
+        if (defined('FRONTEND_CONTEXT')) {
             $this->bUseCacheControl = $this->checkCacheControl();
             $this->bShowFileIdInDOM = $this->showFileIdInDOM();
         }

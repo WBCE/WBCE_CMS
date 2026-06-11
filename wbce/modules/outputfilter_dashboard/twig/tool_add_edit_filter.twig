@@ -195,14 +195,26 @@
 {% endfor %}
 
 
-{% if func %}    
+{% if func %}
 
-    <div class="formRow fullValue">   
-        <p class="notification">{{ L_('L:TXT_FILTER_FUNC') }}</p>
-        <div class="settingValue">
-            <textarea id="func" name="func"  cols="65" rows="6" style="width: 100%; height: 400px;">{{ func }}</textarea>
+    {% if edit_filter is defined and edit_filter %}
+        {# Edit mode: show the code area so CodeEditor can attach to it #}
+        <div class="formRow fullValue">
+            <p class="notification">{{ L_('L:TXT_FILTER_FUNC') }}</p>
+            <div class="settingValue">
+                <textarea id="func" name="func" cols="65" rows="6" style="width: 100%; height: 400px;">{{ func }}</textarea>
+            </div>
         </div>
-    </div>
+    {% else %}
+        {# Add mode: carry default boilerplate silently; show info instead of editor #}
+        <input type="hidden" name="func" value="{{ func }}" />
+        <div class="formRow">
+            <div class="settingName"></div>
+            <div class="settingValue">
+                <p class="notification"><i class="fa fa-info-circle"></i> {{ L_('L:TXT_EDITOR_AFTER_SAVE') }}</p>
+            </div>
+        </div>
+    {% endif %}
 
 {% elseif file %}
     <div class="formRow">
@@ -218,15 +230,23 @@
 
         <div class="buttonsRow">
             <button type="submit" name="submit_return" class="button ico-save">{{ L_('TEXT:SAVE') }}</button>
-            <button type="submit" name="submit_exit" class="button ico-save-back">{{ L_('L:TXT_SAVE_AND_CLOSE') }}</button>
+            <button type="submit" name="submit_exit" class="button ico-save-back" data-hide-on-ajax-save>{{ L_('L:TXT_SAVE_AND_CLOSE') }}</button>
             <button class="button ico-back pos-right" type="button" data-redirect-location="{{ TOOL_URI }}&amp;last={{ filter_id }}#{{ filter_id }}">{{ L_('L:TXT_EXIT') }}</button>
         </div>
 
     </form>
 </div>
 <script type="text/javascript">var opf_use_checktrees = true;</script>
-{% if func %}
-{{ CodeMirror('func', 'php', {'readOnly': readOnly, 'height': '550px'}) }}
+{% if func and edit_filter is defined and edit_filter %}
+{{ CodeEditor('func', 'x-php', {
+    'height':    550,
+    'toolbar':   true,
+    'line_wrap': true,
+    'readOnly':  readOnly,
+    'ajax_save': ajax_url is not empty,
+    'ajax_url':  ajax_url,
+    'ajax_data': {'idKey': idKey}
+}) }}
 {% endif %}
 
 

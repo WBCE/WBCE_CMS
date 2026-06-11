@@ -1,0 +1,30 @@
+/* ── Widget customization styles ─────────────────────────────────────────── */
+.altcha-cust-section   { margin-top:10px; padding-top:14px; }
+.altcha-cust-section h4{ margin:0 0 14px; font-size:14px; font-weight:600; color:#374151; }
+.altcha-h-radios       { display:flex; flex-wrap:wrap; gap:6px 20px; align-items:center; }
+.altcha-h-radios label { display:flex; align-items:center; gap:5px; cursor:pointer; white-space:nowrap; font-weight:normal; }
+
+/* Coloris color inputs */
+.altcha-coloris        { width:140px; padding:4px 36px 4px 8px; border:1px solid #d1d5db;
+                         border-radius:4px; font-size:13px; cursor:pointer; box-sizing:border-box; }
+.altcha-coloris:focus  { outline:2px solid #6d28d9; outline-offset:1px; }
+
+/* Coloris admin-theme fixes → include/coloris/coloris_wbce.css (loaded in tool.twig) */
+
+/* ── Live preview mock ────────────────────────────────────────────────────── */
+.altcha-mock           { max-width:320px; border:1px solid #d1d5db; border-radius:4px;
+                         background:#fff; font-family:inherit; font-size:14px; overflow:hidden;
+                         transition:background .15s, border-radius .15s; }
+.altcha-mock-body      { display:flex; align-items:center; gap:12px; padding:14px 16px; }
+.altcha-mock-cb-pair   { display:flex; gap:5px; flex-shrink:0; align-items:center; }
+.altcha-mock-cb        { width:22px; height:22px; border:2px solid #6d28d9; border-radius:3px;
+                         flex-shrink:0; transition:background .15s, border-color .15s;
+                         display:flex; align-items:center; justify-content:center; }
+.altcha-mock-check     { width:12px; height:10px; display:block; flex-shrink:0;
+                         color:#fff; transition:color .15s; }
+.altcha-mock-text      { flex:1; color:#111827; transition:color .15s; }
+.altcha-mock-logo      { display:inline-flex; align-items:center; flex-shrink:0;
+                         margin-left:auto; opacity:0.7; transition:color .15s; }
+.altcha-mock-footer    { display:flex; justify-content:flex-end; align-items:center;
+                         padding:4px 16px 8px; font-size:11px; opacity:0.7;
+                         transition:color .15s; }

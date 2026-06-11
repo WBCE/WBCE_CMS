@@ -1,0 +1,178 @@
+/**
+ * wbePwGen — Password Strength Widget & Generator
+ * Vanilla CSS, no dependencies.
+ *
+ * @author    Christian M. Stefan (https://www.wbEasy.de)
+ * @copyright Christian M. Stefan
+ * @license   GNU General Public License v2 (GPL-2.0)
+ *            https://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+/* ── Input row: [input-wrap] + [generate] ───────────────────── */
+.wpg-input-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Relative container so the eye button can overlay the input */
+.wpg-input-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+.wpg-input-wrap input {
+    width: 100%        !important;   /* override high-specificity theme rules */
+    max-width: none    !important;   /* override theme: max-width: 300px      */
+    padding-right: 34px !important;  /* override theme: padding shorthand      */
+    box-sizing: border-box !important;
+}
+
+/* Suppress browser's own password-reveal button */
+.wpg-input-wrap input::-ms-reveal,
+.wpg-input-wrap input::-ms-clear,
+.wpg-input-wrap input::-webkit-credentials-auto-fill-button {
+    display: none !important;
+    width: 0;
+    height: 0;
+}
+
+/* ── Eye: overlaid inside the input ─────────────────────────── */
+.wpg-eye {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    min-width: 0;          /* neutralise theme: button { min-width: 150px } */
+    margin: 0;             /* neutralise theme: button { margin: 10px 0 } — top-margin shifts absolute pos */
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: .95rem;
+    color: #94a3b8;
+    line-height: 1;
+    text-transform: none;  /* neutralise theme: button { text-transform: uppercase } */
+    transition: color .15s, background .15s;
+    user-select: none;
+}
+.wpg-eye:hover          { background: rgba(0,0,0,.06); color: #475569; }
+.wpg-eye:active         { background: rgba(0,0,0,.10); }
+.wpg-eye.wpg-btn-active { color: #1e293b; }
+
+/* ── Generate button (flex sibling of input-wrap) ──────────── */
+.wpg-btn {
+    flex-shrink: 0;
+    align-self: stretch;   /* matches the input height */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;          /* neutralise theme: button { min-width: 150px } */
+    margin: 0;             /* neutralise theme: button { margin: 10px 0 } */
+    padding: 0 9px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    color: #64748b;
+    text-transform: none;  /* neutralise theme: button { text-transform: uppercase } */
+    transition: background .15s, border-color .15s, color .15s;
+    user-select: none;
+    white-space: nowrap;
+}
+.wpg-btn:hover     { background: #f1f5f9; border-color: #94a3b8; color: #1e293b; }
+.wpg-btn:active    { background: #e2e8f0; }
+.wpg-btn-active    { color: #1e293b; }
+
+/* Generate button: slightly more prominent */
+.wpg-gen  { font-size: .93rem; font-weight: 600; max-width: 28px; }
+
+/* Copy button — hidden by default, revealed when password is visible */
+.wpg-copy { font-size: .72rem; max-width: 28px;}
+.wpg-copy.wpg-copied {
+    color: #16a34a;
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+/* ── Widget container — always visible ─────────────────────── */
+.wpg-wrap { margin-top: 7px; }
+
+/* ── Strength bar ──────────────────────────────────────────── */
+.wpg-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+/* Gray track */
+.wpg-track {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: #e2e8f0;
+    overflow: hidden;
+}
+/* Colored fill — width driven by JS inline style */
+.wpg-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    background: #e2e8f0;
+    transition: width .35s ease, background .35s ease;
+}
+.wpg-fill.wpg-s1 { background: #ef4444; }
+.wpg-fill.wpg-s2 { background: #f97316; }
+.wpg-fill.wpg-s3 { background: #eab308; }
+.wpg-fill.wpg-s4 { background: #84cc16; }
+.wpg-fill.wpg-s5 { background: #22c55e; }
+
+.wpg-label {
+    font-size: .72rem;
+    font-weight: 700;
+    min-width: 68px;
+    text-align: right;
+    transition: color .25s;
+    color: transparent;
+}
+.wpg-label.wpg-s1 { color: #ef4444; }
+.wpg-label.wpg-s2 { color: #f97316; }
+.wpg-label.wpg-s3 { color: #ca8a04; }
+.wpg-label.wpg-s4 { color: #65a30d; }
+.wpg-label.wpg-s5 { color: #16a34a; }
+
+/* ── Hint line ─────────────────────────────────────────────── */
+.wpg-hint {
+    font-size: .85rem;
+    min-height: 1.3em;
+    margin-bottom: 2px;
+    transition: color .2s;
+}
+.wpg-hint-idle    { color: #94a3b8; }
+.wpg-hint.wpg-s1  { color: #ef4444; }
+.wpg-hint.wpg-s2  { color: #f97316; }
+.wpg-hint.wpg-s3  { color: #ca8a04; }
+.wpg-hint.wpg-s4  { color: #65a30d; }
+.wpg-hint.wpg-s5  { color: #16a34a; }
+
+/* ── Invalid character warning ─────────────────────────────── */
+.wpg-warn {
+    font-size: .75rem;
+    min-height: 1em;
+    margin-bottom: 2px;
+    color: #dc2626;
+}
+.wpg-warn.wpg-warn-visible { display: block; }
+
+/* ── Confirm feedback ──────────────────────────────────────── */
+.wpg-confirm { font-size: .78rem; min-height: 1.3em; margin-top: 4px; }
+.wpg-confirm.wpg-cfm-match   { color: #16a34a; }
+.wpg-confirm.wpg-cfm-nomatch { color: #dc2626; }

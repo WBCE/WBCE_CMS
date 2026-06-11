@@ -12,47 +12,47 @@
 
 require('../../config.php');
 
-// Get id
+// Determine what is being moved (page or section)
 if (isset($_GET['page_id']) and is_numeric($_GET['page_id'])) {
     if (isset($_GET['section_id']) and is_numeric($_GET['section_id'])) {
-        $page_id = $_GET['page_id'];
-        $id = $_GET['section_id'];
-        $id_field = 'section_id';
+        $page_id      = $_GET['page_id'];
+        $id           = $_GET['section_id'];
+        $id_field     = 'section_id';
         $common_field = 'page_id';
-        $table = TABLE_PREFIX . 'sections';
+        $table        = TABLE_PREFIX . 'sections';
     } else {
-        $id = $_GET['page_id'];
-        $id_field = 'page_id';
+        $id           = $_GET['page_id'];
+        $id_field     = 'page_id';
         $common_field = 'parent';
-        $table = TABLE_PREFIX . 'pages';
+        $table        = TABLE_PREFIX . 'pages';
     }
 } else {
     header("Location: index.php");
     exit(0);
 }
 
-// Create new admin object and print admin header
-require_once(WB_PATH . '/framework/class.admin.php');
-$admin = new admin('Pages', 'pages_settings');
+$admin  = new Admin('Pages', 'pages_settings', false);
+$alerts = new Alerts();
+$order  = new Order($table, 'position', $id_field, $common_field);
 
-// Include the ordering class
-require(WB_PATH . '/framework/class.order.php');
-
-// Create new order object an reorder
-$order = new order($table, 'position', $id_field, $common_field);
 if ($id_field == 'page_id') {
+    $backUrl = ADMIN_URL . '/pages/index.php';
     if ($order->move_down($id)) {
-        $admin->print_success($MESSAGE['PAGES_REORDERED']);
+        $alerts->sessionToast($MESSAGE['PAGES_REORDERED'], 'success');
+        header('Location: ' . $backUrl);
+        exit;
     } else {
-        $admin->print_error($MESSAGE['PAGES_CANNOT_REORDER']);
+        $admin->print_header();
+        $admin->print_error($MESSAGE['PAGES_CANNOT_REORDER'], $backUrl);
     }
 } else {
+    $backUrl = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id;
     if ($order->move_down($id)) {
-        $admin->print_success($TEXT['SUCCESS'], ADMIN_URL . '/pages/sections.php?page_id=' . $page_id);
+        $alerts->sessionToast($TEXT['SUCCESS'], 'success');
+        header('Location: ' . $backUrl);
+        exit;
     } else {
-        $admin->print_error($TEXT['ERROR'], ADMIN_URL . '/pages/sections.php?page_id=' . $page_id);
+        $admin->print_header();
+        $admin->print_error($TEXT['ERROR'], $backUrl);
     }
 }
-
-// Print admin footer
-$admin->print_footer();

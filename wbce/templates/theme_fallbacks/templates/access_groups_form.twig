@@ -1,0 +1,423 @@
+{# 
+    access_groups_form.twig — Group form (add or edit) with permissions matrix
+    
+    Loaded as htmx fragment into #group-form-panel.
+    Submits back to form.php via htmx.
+#}
+{% import '_icons.inc.twig' as ico %}
+
+<div id="group-form-content">
+
+    <form name="group" method="post"
+          hx-post="{{ ADMIN_URL }}/groups/form.php"
+          hx-target="#group-form-panel"
+          hx-swap="innerHTML"
+          hx-indicator="#save-indicator">
+        {{ FTAN }}
+        <input type="hidden" name="group_id" value="{{ group_id|default(0) }}">
+
+        <div class="cp-settings">
+            <div class="cp-toggle-section">
+                <div class="cp-card-head">
+                    <label>
+                        <i class="fa fa-{% if group_id > 0 %}pencil{% else %}plus{% endif %}"></i>
+                        {% if group_id > 0 %}
+                            {{ L_('HEADING:MODIFY_GROUP') }}
+                            {% if GROUP_NAME %}: <span>{{ GROUP_NAME }}</span>{% endif %}
+                        {% else %}
+                            {{ L_('HEADING:ADD_GROUP') }}
+                        {% endif %}
+                    </label>
+                    {% if group_id > 0 %}<span class="cp-label pull-right">{{ L_('TEXT:GROUP') }}-ID: <b>{{ group_id }}</b></span>{% endif %}
+                    <a href="#" onclick="document.getElementById('group-form-panel').innerHTML=''; return false;" 
+                       class="pull-right" title="{{ L_('TEXT:CLOSE') }}"><i class="fa fa-times"></i></a>
+                </div>
+
+                <section id="add_group">
+                    <div class="cp-setting-row">
+                        <label class="cp-setting-name cp-required" for="group_name">{{ L_('TEXT:NAME') }}</label>
+                        <div class="cp-setting-value">
+                            <input type="text" name="group_name" id="group_name" maxlength="255" required value="{{ GROUP_NAME }}">
+                        </div>
+                    </div>              
+                    <div class="cp-setting-row">
+                        <label class="cp-setting-name" for="description">{{ L_('TEXT:DESCRIPTION') }}</label>
+                        <div class="cp-setting-value">
+                            <textarea name="description" id="description">{{ GROUP_DESC }}</textarea>
+                        </div>
+                    </div>       
+
+                    {# ============================================================= #}
+                    {#  PERMISSIONS MATRIX                                           #}
+                    {# ============================================================= #}
+                    <div class="">
+                        {% for key, area in access_perms %}
+                        <div class="permission-area-section{% if area.state != 'none' %} active{% endif %}">    
+                            <div class="permission-area">
+                                <div class="area-icon">
+                                    <label for="cb_{{ key }}"><i class="fa fa-{{ ico.icon(key) }} perm-{{ area.state }}"></i></label>
+                                </div>
+                                <div class="area-name">
+                                    <label for="cb_{{ key }}">
+                                        <input name="{{ key }}" id="cb_{{ key }}" type="checkbox" value="1"{% if area.checked %} checked{% endif %}>
+                                        {{ L_(area.title) }}</label>
+                                    <p>{{ L_('OVERVIEW:'~ key|upper|trim) }}</p>
+                                </div>
+                            </div>
+                            <article id="section_{{ key }}"{% if area.state == 'none' %} style="display:none"{% endif %}>
+                                <div class="permission-area">
+                                    <div></div>
+                                    <div>
+                                        <ul class="permissions">
+                                            {% for perm, child in area.children %}
+                                                <li>
+                                                    <label>
+                                                        <input name="{{ perm }}" class="child_{{ key }}" type="checkbox" value="1"{% if child.checked %} checked{% endif %} />
+                                                        {{ L_(child.title) }}{% if perm == 'pages_add_l0' %} (in {{ L_('TEXT:LEVEL') }} 0){%endif%}
+                                                    </label>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div> 
+                                </div> 
+                                <div class="permission-area">
+                                    <div></div>
+                                    <div>
+                                        {% if key == "admintools" %}
+                                            <ul class="check_selection">
+                                                <li>{{ L_('TEXT:ACCESSIBLE_ADMINTOOLS') }}:</li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" id="cb_admintools_tools" />
+                                                        <i data-select="{{ L_('TEXT:SELECT_ALL') }}" data-deselect="{{ L_('TEXT:DESELECT_ALL') }}">{{ L_('TEXT:SELECT_ALL') }}</i>
+                                                    </label>
+                                                </li>
+                                                {% for addon in addon_list.tool %}
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" name="module_permissions[]" id="t_{{ addon.directory }}" value="{{ addon.directory }}_tool"{% if addon.checked %} checked{% endif %} class="child_admintools_tools" />
+                                                            {{ addon.name }} <span>/{{ addon.directory }}</span>
+                                                        </label>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                        {% if key == "pages" %}
+                                            {# --- Accessible page modules (PageType) --- #}
+                                            <ul class="check_selection">
+                                                <li>{{ L_('TEXT:ACCESSIBLE_PAGE_MODULES') }}:</li>
+                                                <li><label>
+                                                        <input type="checkbox" id="cb_module_permissions" />
+                                                        <i data-select="{{ L_('TEXT:SELECT_ALL') }}" data-deselect="{{ L_('TEXT:DESELECT_ALL') }}">{{ L_('TEXT:SELECT_ALL') }}</i>
+                                                    </label>
+                                                </li>
+                                                {% for addon in addon_list.page %}
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="module_permissions[]" id="t_{{ addon.directory }}" class="child_module_permissions" value="{{ addon.directory }}"{% if addon.checked %} checked{% endif %} data-label="{{ addon.name|e }}" />
+                                                        {{ addon.name }} <span>/{{ addon.directory }}</span>
+                                                    </label>
+                                                </li>
+                                                {% endfor %}
+                                                <li class="default-module-row" style="margin-top:8px; padding-top:8px; border-top:1px solid rgba(128,128,128,.2);">
+                                                    <label style="display:block; font-size:.95em; opacity:.8; margin-bottom:4px;">{{ L_('TEXT:PRESELECTED_MODULE') }}</label>
+                                                    <select id="default_module_select" name="default_module" style="width:240px;">
+                                                        <option value="">{{ L_('TEXT:PLEASE_SELECT') }}…</option>
+                                                        {% for addon in addon_list.page %}
+                                                            {% if addon.checked %}
+                                                                <option value="{{ addon.directory }}"{% if default_module == addon.directory %} selected{% endif %}>{{ addon.name }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                    <small id="default_module_hint" data-tpl="{{ L_('TEXT:DEFAULT_MODULE_HINT') }}" style="display:none; opacity:.75; font-size:.9em; margin-top:4px;"></small>
+                                                </li>
+                                            </ul>
+                                            {# --- Accessible frontend templates for pages --- #}
+                                            <ul class="check_selection">
+                                                <li>{{ L_('TEXT:ACCESSIBLE_TEMPLATES') }}:</li>
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" id="cb_template_permissions" />
+                                                        <i data-select="{{ L_('TEXT:SELECT_ALL') }}" data-deselect="{{ L_('TEXT:DESELECT_ALL') }}">{{ L_('TEXT:SELECT_ALL') }}</i>
+                                                    </label>
+                                                </li>
+                                                {% for addon in addon_list.template %}
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox" name="template_permissions[]" id="tp_{{ addon.directory }}" value="{{ addon.directory }}"{% if addon.checked %} checked{% endif %} class="child_template_permissions" />
+                                                        {{ addon.name }}
+                                                    </label>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        {% endfor %}
+
+                        {# Backend themes are not group-configurable — always fully accessible.
+                           Submitted as hidden inputs so they are never added to the deny list. #}
+                        {% for addon in addon_list.theme %}
+                            <input type="hidden" name="template_permissions[]" value="{{ addon.directory }}">
+                        {% endfor %}
+                    </div>
+
+                    <div class="cp-buttons-row">
+                        <button type="button" onclick="document.getElementById('group-form-panel').innerHTML='';" 
+                                class="button ico-cancel">{{ L_('TEXT:CANCEL') }}</button>
+                        <span id="save-indicator" class="htmx-indicator pos-right"><i class="fa fa-spinner fa-spin"></i></span>
+                        {% if group_id > 0 %}
+                            <button type="submit" class="button ico-save pos-right" name="save">{{ L_('TEXT:SAVE') }}</button>
+                        {% else %}
+                            <button type="submit" class="button ico-save pos-right" name="save">{{ L_('HEADING:ADD_GROUP') }}</button>
+                        {% endif %}
+                    </div>  
+                </section>
+            </div>  
+        </div>
+    </form>
+</div>
+
+<script>
+// Permission checkbox tri-state logic — runs after htmx swap
+(function() {
+    var area_checkboxes = [
+        'pages','addons','modules','media','languages','templates',
+        'admintools','admintools_tools','preferences','settings','users','groups',
+        'setting_permissions'
+    ];
+    var advanced_checkboxes = [
+        'module_permissions','template_permissions','admintools_tools'
+    ];
+
+    // Areas that also depend on addon checkboxes for their state.
+    // Note: module_permissions and template_permissions now live under 'pages'.
+    var addon_linked = {
+        'admintools': ['admintools_tools'],
+        'pages':      ['module_permissions', 'template_permissions'],
+    };
+
+    /**
+     * Set the icon color class for an area.
+     */
+    function setIconState(area, state) {
+        var $section = $('#section_' + area).closest('.permission-area-section');
+        var $icon = $section.find('.area-icon i');
+        $icon.removeClass('perm-none perm-partial perm-full');
+        $icon.addClass('perm-' + state);
+    }
+
+    /**
+     * Central function: compute and apply tri-state for an area.
+     * Considers both the system permission children AND any linked addon checkboxes.
+     */
+    function updateAreaState(area) {
+        var $parent   = $('#cb_' + area);
+        var $children = $('input.child_' + area);
+
+        var total   = $children.length;
+        var checked = $children.filter(':checked').length;
+
+        // For addon-linked areas, also count addon checkboxes
+        if (addon_linked[area]) {
+            addon_linked[area].forEach(function(addonGroup) {
+                var $addonChildren = $('input.child_' + addonGroup);
+                total   += $addonChildren.length;
+                checked += $addonChildren.filter(':checked').length;
+            });
+        }
+
+        // Reset indeterminate
+        $parent.prop('indeterminate', false);
+
+        if (checked === 0) {
+            $parent.prop('checked', false);
+            setIconState(area, 'none');
+        } else if (checked === total) {
+            $parent.prop('checked', true);
+            setIconState(area, 'full');
+        } else {
+            $parent.prop('checked', false);
+            $parent.prop('indeterminate', true);
+            setIconState(area, 'partial');
+        }
+    }
+
+    /**
+     * Toggle section visibility based on active state.
+     */
+    function toggleSection(area, show) {
+        var $section = $('article#section_' + area);
+        var $container = $section.closest('.permission-area-section');
+        $section.toggle(show);
+        if (show) {
+            $container.addClass('active');
+        } else {
+            $container.removeClass('active');
+        }
+    }
+
+    /**
+     * Initialize tri-state behavior for an area's parent checkbox.
+     *
+     * Click cycle:
+     *   0 (none, closed)  → 1 (indeterminate, section opens, nothing auto-checked)
+     *   1 (indeterminate) → 2 (all checked)
+     *   2 (all checked)   → 0 (all unchecked, section closes)
+     *
+     * The state is derived from actual checked counts, so manual child changes
+     * are always reflected correctly.
+     */
+    function area(a) {
+        var $children = $('input.child_' + a);
+
+        /** Collect system children + any linked addon children */
+        function getAllChildren() {
+            var $all = $children;
+            if (addon_linked[a]) {
+                addon_linked[a].forEach(function(ag) {
+                    $all = $all.add($('input.child_' + ag));
+                });
+            }
+            return $all;
+        }
+
+        /** 0 = none, 1 = partial, 2 = full — based on actual checked counts */
+        function currentState() {
+            var $all = getAllChildren();
+            var n = $all.filter(':checked').length;
+            if (n === 0)             return 0;
+            if (n === $all.length)   return 2;
+            return 1;
+        }
+
+        /** Set the visual state of the area checkbox (overrides browser default) */
+        function setAreaCb(state) {
+            $('#cb_' + a)
+                .prop('indeterminate', state === 1)
+                .prop('checked',       state === 2);
+        }
+
+        // Track visual state independently of actual checked counts.
+        // currentState() is only used for initialisation and child-change resync.
+        // The click cycle advances `state` regardless of child checkbox values,
+        // so the second click always fires even when no children are yet checked.
+        var state = currentState();
+
+        // Initial setup
+        toggleSection(a, state > 0);
+        updateAreaState(a);
+        setAreaCb(state);
+
+        // Tri-state cycle: 0 → 1 → 2 → 0
+        $('#cb_' + a).on('change', function() {
+            state = (state === 2) ? 0 : state + 1;
+
+            if (state === 0) {
+                // deselect all, close section
+                getAllChildren().prop('checked', false);
+                if (addon_linked[a]) {
+                    addon_linked[a].forEach(function(ag) {
+                        $('#cb_' + ag).prop('checked', false).prop('indeterminate', false);
+                    });
+                }
+                toggleSection(a, false);
+
+            } else if (state === 1) {
+                // open section, indeterminate, no auto-check
+                toggleSection(a, true);
+
+            } else {
+                // select all (system + addon)
+                getAllChildren().prop('checked', true);
+                if (addon_linked[a]) {
+                    addon_linked[a].forEach(function(ag) {
+                        $('#cb_' + ag).prop('checked', true).prop('indeterminate', false);
+                    });
+                }
+                toggleSection(a, true);
+            }
+
+            updateAreaState(a);
+            setAreaCb(state);
+        });
+
+        // Child change: resync state variable + visibility
+        $children.on('change', function () {
+            state = currentState();
+            toggleSection(a, state > 0);
+            updateAreaState(a);
+            setAreaCb(state);
+        });
+    }
+
+    /**
+     * Select-all for addon groups (module_permissions, template_permissions, etc.)
+     * Also triggers parent area state update and toggles the label between
+     * "Select all" / "Deselect all" depending on checked state.
+     */
+    function advanced_area(addonGroup) {
+        var $master   = $('#cb_' + addonGroup);
+        var $children = $('input.child_' + addonGroup);
+        var $label    = $master.siblings('i');
+
+        function updateMaster() {
+            var numChecked = $children.filter(':checked').length;
+            $master.prop('checked', numChecked === $children.length);
+            $master.prop('indeterminate', numChecked > 0 && numChecked < $children.length);
+        }
+
+        function updateLabel() {
+            var allChecked = ($children.length > 0 && $children.filter(':checked').length === $children.length);
+            $label.text(allChecked ? $label.data('deselect') : $label.data('select'));
+        }
+
+        $master.on('change', function () {
+            $children.prop('checked', this.checked);
+            updateMaster();
+            updateLabel();
+            updateParentArea(addonGroup);
+        });
+
+        $children.on('change', function () {
+            updateMaster();
+            updateLabel();
+            updateParentArea(addonGroup);
+        });
+
+        updateMaster();
+        updateLabel();
+    }
+
+    /**
+     * Find which parent area owns this addon group and update its state and visibility.
+     */
+    function updateParentArea(addonGroup) {
+        for (var parentArea in addon_linked) {
+            if (addon_linked[parentArea].indexOf(addonGroup) !== -1) {
+                updateAreaState(parentArea);
+
+                // Also recalculate section visibility:
+                // keep open if system children OR any linked addon group has checked items
+                var anyChecked = $('input.child_' + parentArea).filter(':checked').length > 0;
+                if (!anyChecked) {
+                    addon_linked[parentArea].forEach(function(ag) {
+                        if ($('input.child_' + ag).filter(':checked').length > 0) anyChecked = true;
+                    });
+                }
+                toggleSection(parentArea, anyChecked);
+                break;
+            }
+        }
+    }
+
+    // Initialize all
+    area_checkboxes.forEach(function (i) { area(i); });
+    advanced_checkboxes.forEach(function (k) { advanced_area(k); });
+})();
+
+// wbeSelect for #default_module_select is owned by access_groups.twig
+// via initGroupFormWidgets() + htmx:afterSettle — no inline init here.
+</script>

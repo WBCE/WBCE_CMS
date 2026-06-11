@@ -1,0 +1,116 @@
+{# 
+    access_users_tablerow.twig — Single user table row 
+    Used by:
+      - action.php (getrow endpoint) for htmx row injection/replacement
+      - access_users.twig does {% include %} this in the loop 
+
+    Expected: rec, extra_class 
+
+    Responsive column visibility (add matching classes to <thead> too):
+      always visible : name, actions
+      sm-hide        : flag, email, groups          (hidden < 640px)
+      md-hide        : id, reg. date, last login    (hidden < 960px)
+#}
+
+{% set IDKEY = getIDKEY(rec.user_id) %}
+
+<tr id="uid_{{ rec.user_id }}"{% if extra_class|default('') %} class="{{ extra_class }}"{% elseif rec.user_id == hilite %} class="hilite"{% endif %}>
+
+    {# ID — hidden on tablet and below #}
+    <td class="sm-hide"><span>{{ rec.user_id }}</span></td>
+
+    {# Name + username — always visible.
+       On mobile: email appears below the name (sm-show-block),
+       flag appears inline before the name (sm-show-inline).        #}
+    <td class="edit-link-name">
+        {# Flag — inlined into name cell on mobile only #}
+        <span class="md-show" style="margin-right:.3em">
+            <img title="{{ rec.language }}"
+                 src="{{ WB_URL }}/languages/{{ rec.language }}.svg"
+                 style="width:16px; vertical-align:middle"/>
+        </span>
+        {% if has_permission('users_modify') and rec.user_id > 1 %}
+            <a href="{{ ADMIN_URL }}/users/index.php?user_id={{ IDKEY }}&modify=1"
+               hx-get="{{ ADMIN_URL }}/users/form.php?user_id={{ IDKEY }}"
+               hx-target="#user-form-panel"
+               hx-swap="innerHTML"
+               hx-push-url="{{ ADMIN_URL }}/users/index.php?user_id={{ IDKEY }}&modify=1"
+               title="{{ L_('TEXT:MODIFY') }} {{ L_('TEXT:USER') }}">{{ rec.display_name }}</a>
+        {% else %}
+            <b>{{ rec.display_name }}</b>
+        {% endif %}
+        <i> ({{ rec.username }})</i>
+        {% if rec.gdpr_check %}
+            <small style="color:#73b53d;" title="GDPR check"><i class="fa fa-check-square"></i></small>
+        {% endif %}
+        {# Email below name — mobile only #}
+        <span class="md-show-block" style="color:var(--text-muted);font-size:.75em;margin-top:.15em">
+            {{ rec.email }}
+        </span>
+    </td>
+
+    {# Flag — standalone column, hidden on mobile (shown in name cell instead) #}
+    <td class="md-hide" data-sort="{{ rec.language }}">
+        <img title="{{ rec.language }}"
+             src="{{ WB_URL }}/languages/{{ rec.language }}.svg"
+             style="width:16px; vertical-align:middle"/>
+    </td>
+
+    {# Email — hidden on mobile (shown below name instead) #}
+    <td class="md-hide">
+        <nobr><small>{{ rec.email }}</small></nobr>
+    </td>
+
+    {# Groups — hidden on mobile #}
+    <td class="sm-hide">
+        {% for key, group_name in rec.groups %}
+            <nobr><span class="usergroup" title="{{ L_('TEXT:GROUP')}}-ID: {{ key }}">
+                    <b>{{ key }}</b> | {{ group_name }}
+            </span></nobr>
+        {% endfor %}
+    </td>
+
+    {# Registration date — hidden on tablet and below #}
+    <td class="md-hide" data-sort="{{ rec.signup_timestamp }}">        
+        <small>{% if rec.signup_timestamp %}{{ rec.signup_timestamp|date(DATE_FORMAT) }}{% else %}N/A{% endif %}</small><br>
+        <small style="color:darkgrey"><nobr>{{ rec.reg_method }}</nobr></small>
+    </td>
+
+    {# Last login — hidden on tablet and below #}
+    <td class="md-hide" data-sort="{% if rec.login_when == 0 %}1{% else %}{{ rec.login_when }}{% endif %}">
+            <small>{% if rec.login_when == 0 %}N/A{% else %}{{ rec.login_when|date(DATE_FORMAT ~'  H:i') }}{% endif %}</small>
+    </td>
+
+    {# Actions — always visible #}
+    <td>
+        {% if rec.user_id > 1 %}
+            <a href="{{ ADMIN_URL }}/users/index.php?user_id={{ IDKEY }}&activation={% if rec.active %}0{% else %}1{% endif %}"
+               hx-get="{{ ADMIN_URL }}/users/action.php?do=toggle&user_id={{ IDKEY }}"
+               hx-target="#uid_{{ rec.user_id }}"
+               hx-swap="outerHTML"
+               title="{% if rec.active %}{{ L_('TEXT:ACTIVE') }}{% else %}{{ L_('TEXT:DISABLED') }}{% endif %}">
+                <i class="fa fa-1x fa-user-circle{% if rec.active %}-o{% endif %}"
+                   style="color:{% if rec.active %}#48BF40{% else %}#EDABAB{% endif %}"></i>
+            </a>
+            <a href="{{ ADMIN_URL }}/users/index.php?user_id={{ IDKEY }}&modify=1"
+               hx-get="{{ ADMIN_URL }}/users/form.php?user_id={{ IDKEY }}"
+               hx-target="#user-form-panel"
+               hx-swap="innerHTML"
+               title="{{ L_('TEXT:HEADING_MODIFY_USER') }}">
+                <i class="fa fa-pencil"></i>
+            </a>
+            {% set ACTION %}{% if rec.active %}DEACTIVATE_RECORD{% else %}DELETE_RECORD{% endif %}{% endset %}
+            <a href="javascript:void(0)" class="delete-item" title="{{ L_('TEXT:DELETE') }}"
+               data-question="{{ L_('{TEXT:'~ACTION ~'}. {TEXT:ARE_YOU_SURE}', 'TEXT:USER') }}"
+               data-delete="{% if rec.active %}{{ L_('TEXT:DISABLE') }}{% else %}{{ L_('TEXT:DELETE') }}{% endif %}"
+               data-cancel="{{ L_('TEXT:CANCEL') }}"
+               data-delete-url="{{ ADMIN_URL }}/users/action.php?do=delete&user_id={{ IDKEY }}"
+               data-is-active="{{ rec.active ? '1' : '0' }}">
+                <i class="fa fa-trash"></i>
+            </a>
+        {% else %}
+            &nbsp;
+        {% endif %}
+    </td>
+
+</tr>

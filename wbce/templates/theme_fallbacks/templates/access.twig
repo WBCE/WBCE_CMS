@@ -1,0 +1,144 @@
+{% extends "access_wrapper.twig" %}
+{% block content %}  
+<div id="link_cards" class="link-cards-grid">
+
+    {% if has_permission('users') %}
+    <a href="{{ ADMIN_URL }}/users/" class="link-card" data-tool="users">
+        <div class="link-card__icon">
+            <i class="fa fa-user"></i>
+        </div>
+
+        <div class="link-card__content">
+            <p class="link-card__title">{{ L_('MENU:USERS') }}</p>
+            <p class="link-card__desc">{{ L_('OVERVIEW:USERS') }}</p>
+        </div>
+    </a>
+    {% endif %}
+
+    {% if has_permission('groups') %}
+    <a href="{{ ADMIN_URL }}/groups/" class="link-card" data-tool="groups">
+        <div class="link-card__icon">
+            <i class="fa fa-users"></i>
+        </div>
+
+        <div class="link-card__content">
+            <p class="link-card__title">{{ L_('MENU:GROUPS') }}</p>
+            <p class="link-card__desc">{{ L_('OVERVIEW:GROUPS') }}</p>
+        </div>
+    </a>
+    {% endif %}
+
+</div>
+
+{% if has_permission('settings_advanced') %}  
+
+<button class="button ico-settings toggler" id="btn-toggle-settings" type="button">
+    <i class="fa fa-sliders"></i> {{ L_('TEXT:CHANGE_SETTINGS') }}
+</button>
+
+<div id="settings-panel" style="{% if not show_settings %}display:none{% endif %}">
+    <form name="access_settings" method="post"
+          hx-post="{{ ADMIN_URL }}/access/index.php"
+          hx-target="#message-area"
+          hx-swap="innerHTML"
+          hx-indicator="#settings-save-indicator">
+        {{ FTAN }}
+        <div class="cp-settings">
+            <div class="cp-toggle-section">
+                <div class="cp-card-head">
+                    <label><i class="fa fa-sliders"></i> {{ L_('TEXT:CHANGE_SETTINGS') }}</label>
+                    <a href="#" id="btn-close-settings" class="pull-right" title="{{ L_('TEXT:CLOSE') }}"><i class="fa fa-times"></i></a>
+                </div>
+                <section id="settings">
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name">{{ L_('TEXT:HOME_FOLDERS') }}</div>
+                        <div class="cp-setting-value">
+                            <input type="checkbox" switch="bool" name="home_folders" id="home_folders"
+                                   value="true"{% if cfg.home_folders == 'true' or cfg.home_folders == '1' %} checked{% endif %}>
+                            <label for="home_folders" class="labeled"
+                                   data-on-label="{{ L_('TEXT:ENABLED') }}"
+                                   data-off-label="{{ L_('TEXT:DISABLED') }}"></label>
+                            <div class="cp-setting-hint">{{ L_('HINT:HOME_FOLDERS') }}</div>
+                        </div>
+                    </div>
+                    <div class="cp-setting-row">
+                        <div class="cp-setting-name">{{ L_('TEXT:LOGIN') }}</div>
+                        <div class="cp-setting-value">
+                            <input type="checkbox" switch="bool" name="frontend_login" id="frontend_login"
+                                   value="true"{% if cfg.frontend_login == 'true' or cfg.frontend_login == '1' %} checked{% endif %}>
+                            <label for="frontend_login" class="labeled"
+                                   data-on-label="{{ L_('TEXT:ENABLED') }}"
+                                   data-off-label="{{ L_('TEXT:DISABLED') }}"></label>
+                            <div class="cp-setting-hint">{{ L_('HINT:LOGIN') }}</div>
+                        </div>
+                    </div> 
+                    <div class="cp-setting-row" id="signup-row"{% if cfg.frontend_login != 'true' and cfg.frontend_login != '1' %} style="display:none"{% endif %}>
+                        <div class="cp-setting-name">{{ L_('TEXT:SIGNUP') }}</div>
+                        <div class="cp-setting-value">
+                            <select name="frontend_signup" id="frontend_signup" data-search-label="{{ L_('TEXT:SEARCH') }} ... [{{ L_('TEXT:GROUP') }}-ID, {{ L_('TEXT:NAME') }}]">
+                                <option value="false"{% if 'false' == cfg.frontend_signup %} selected{% endif %}>{{ L_('TEXT:DISABLED') }}</option>
+                                {% for group in SIGNUP_GROUPS %}
+                                    <option value="{{ group.id }}" data-right="{{ group.id }}"{% if group.id == cfg.frontend_signup %} selected{% endif %}>{{ group.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="cp-setting-hint">{{ L_('HINT:SIGNUP') }}</div>
+                        </div>
+                    </div>
+                        
+                    <div class="cp-buttons-row">
+                        <button type="button" onclick="$('#settings-panel').hide(); $('#btn-toggle-settings').show();" class="button ico-cancel">{{ L_('TEXT:CANCEL') }}</button>
+                        <span id="settings-save-indicator" class="htmx-indicator pos-right"><i class="fa fa-spinner fa-spin"></i></span>
+                        <button type="submit" class="button ico-save pos-right" name="save_settings">{{ L_('TEXT:SAVE') }}</button> 
+                    </div>  
+                </section>  
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>    
+$(document).ready(function() { 
+    // Toggle settings panel
+    $('#btn-toggle-settings').on('click', function() {
+        $(this).hide();
+        $('#settings-panel').show();
+        $('#settings-panel')[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Close button
+    $('#btn-close-settings').on('click', function(e) {
+        e.preventDefault();
+        $('#settings-panel').hide();
+        $('#btn-toggle-settings').show();
+    });
+
+    // Show/hide signup row based on frontend_login switch
+    $('#frontend_login').on('change', function() {
+        if (this.checked) {
+            $('#signup-row').slideDown(200);
+        } else {
+            $('#signup-row').slideUp(200);
+            $('#frontend_signup').val('false').trigger('change');
+        }
+    });
+
+    // Selectee init
+    $("select#frontend_signup").wbeSelect({   
+        customSelector: 'cfg-lang'
+    });
+
+    // Hide the button if panel is already visible (after save)
+    if ($('#settings-panel').is(':visible')) {
+        $('#btn-toggle-settings').hide();
+    }
+});
+</script>
+<script>
+const container = document.getElementById('link_cards');
+/* Load saved layout */
+if (localStorage.getItem('layout') === 'two') {
+    container.classList.add('two-cols');
+}
+</script>
+{% endif %}    
+{% endblock %}

@@ -410,6 +410,8 @@ $TEXT['WRITE'] = 'Schreiben';
 $TEXT['WYSIWYG_EDITOR'] = 'WYSIWYG-Editor';
 $TEXT['WYSIWYG_STYLE'] = 'WYSIWYG-Stil';
 $TEXT['YES'] = 'Ja';
+$TEXT['SELECT_ALL'] = 'alle auswählen';
+$TEXT['DESELECT_ALL'] = 'alle abwählen';
 
 
 $HEADING['ADDON_PRECHECK_FAILED'] = 'Add-On Voraussetzungen nicht erfüllt';

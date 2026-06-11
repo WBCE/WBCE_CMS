@@ -20,7 +20,7 @@
                 <tr>
                     <td align="left">
                         <button type="submit" name="submit_return""><img src="{{ IMAGE_URL }}/save.gif"> {{ L_('L:TXT_SAVE') }}</button>
-                        <button type="submit" name="submit_exit""><img src="{{ IMAGE_URL }}/ok.gif"> {{ L_('L:TXT_SAVE_AND_CLOSE') }}</button>
+                        <button type="submit" name="submit_exit" data-hide-on-ajax-save><img src="{{ IMAGE_URL }}/ok.gif"> {{ L_('L:TXT_SAVE_AND_CLOSE') }}</button>
                     </td>
                     <td align="right">
                         <button type="button" onclick="{{ tpl_cancel_onclick }}""><img src="{{ IMAGE_URL }}/exit.png"> {{ L_('L:TXT_EXIT') }}</button>
@@ -30,6 +30,12 @@
         </table>
     </div>
 </form>
-{{ CodeMirror('css', 'css', {'readOnly': false, 'height': 650 }) }}
+{{ CodeEditor('css', 'css', {
+    'height':    650,
+    'toolbar':   true,
+    'ajax_save': true,
+    'ajax_url':  ajax_url,
+    'ajax_data': {'idKey': idKey}
+}) }}
 
 {% endblock %}

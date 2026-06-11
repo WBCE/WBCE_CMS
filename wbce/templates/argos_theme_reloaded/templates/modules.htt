@@ -11,7 +11,7 @@
 </h2>
 
 <!-- install ---------------------------------------------------------->
-<form name="install" enctype="multipart/form-data" action="install.php" method="post" class="{DISPLAY_INSTALL} fg12 content-box">
+<form name="install" enctype="multipart/form-data" action="install.php" method="post" class="fg12 content-box" style="{DISPLAY_INSTALL}">
 	{FTAN}
 	<h3 class="fg12">{HEADING_INSTALL_MODULE}</h3>
 	<div class="row">
@@ -32,7 +32,7 @@
 </form>
 
 <!-- uninstall -------------------------------------------------------->
-<form name="uninstall" action="uninstall.php" method="post" class="{DISPLAY_UNINSTALL} fg12 content-box">
+<form name="uninstall" action="uninstall.php" method="post" class="fg12 content-box" style="{DISPLAY_UNINSTALL}">
 	{FTAN}
 	<h3 class="fg12">{HEADING_UNINSTALL_MODULE}</h3>
 	<div class="row">
@@ -54,7 +54,7 @@
 </form>
 
 <!-- details ---------------------------------------------------------->
-<form name="details" action="details.php" method="post" class="{DISPLAY_LIST} fg12 content-box">
+<form name="details" action="details.php" method="post" class="fg12 content-box" style="{DISPLAY_LIST}">
 	{FTAN}
 	<h3 class="fg12">{HEADING_MODULE_DETAILS}</h3>
 	<div class="row">
@@ -73,7 +73,7 @@
 </form>
 
 <!-- advanced block --------------------------------------------------->
-<div id="advanced-block" class="{DISPLAY_MANUAL_INSTALL} fg12 content-box">
+<div id="advanced-block" class="fg12 content-box" style="{DISPLAY_MANUAL_INSTALL}">
 	<h3 class="fg12">{HEADING_INVOKE_MODULE_FILES}</h3>
 	<div class="fg9">{TEXT_MANUAL_INSTALLATION}</div>
 	<div class="clearfix"></div>

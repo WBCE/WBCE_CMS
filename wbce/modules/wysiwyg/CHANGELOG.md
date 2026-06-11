@@ -1,7 +1,38 @@
 
 ## wysiwyg — Changelog
 
-### 3.x.x — 2026-04-27
+### 3.1.0 — 2026-05-31
+> This update implements AjaxSave, Saving of WYSIWYG sections without page reload.
+
+#### modify.php
+- Added `Alerts::ensureToastAssets()` to inject `_toast.inc.twig` into the page, guaranteeing `window.showToast()` is available when AJAX responses arrive
+- Added `I::insertJsFile(…/ajax_save.js, 'BODY BTM-')` — loads AjaxSave JS once, deduplicated across multiple sections on the same page
+- Form extended with `data-ajax-url` attribute and a hidden `idKey` field (`$admin->getIDKEY($section_id)`) for AJAX security
+- Added AjaxSave checkbox per section; "Save & Back" button is hidden while AjaxSave is active
+- Removed `$update_when_modified = true` — timestamp is now set explicitly in save.php after the upsert
+
+#### save.php
+- Added explicit `$admin->touchSection((int) $section_id)` after the upsert  
+  (previously `$update_when_modified = true` caused the touch to run before the DB write)
+
+#### ajax_save.php _(new)_
+- AJAX endpoint for in-place saves without page reload
+- IDKEY validation (`$admin->checkIDKEY(…, $ajax: true)`) — non-consuming, allowing repeated saves in the same session
+- Content processing identical to `save.php` (absolute media URL → `{SYSVAR:MEDIA_REL}` replacement)
+- `$database->upsertRow()` + `$admin->touchSection()` after successful write
+- `(new Alerts(false))->toast()` sets `HX-Trigger` header for success and error feedback
+
+#### ajax_save.js _(new)_
+- Editor-agnostic AjaxSave script, loaded once via `I::insertJsFile`
+- Checkbox state persisted to `localStorage` per section (`wysiwyg_ajaxSave_{sid}`)
+- Form submit intercepted when checkbox is checked — fires AJAX save instead of full POST
+- Ctrl+S on the outer document triggers AJAX save when checkbox is active
+- Ctrl+S inside a **CKEditor** iframe wired via `editor.addCommand()` / `editor.setKeystroke()`
+- Ctrl+S inside a **TinyMCE** iframe wired via `editor.addShortcut()`
+- Content sync before serialise: CKEditor → `updateElement()`, TinyMCE → `ed.save()`
+- Toast feedback via `fireToast()`: reads `HX-Trigger` response header set by `Alerts::toast()` and calls `window.showToast()`
+
+### 3.0.0 — 2026-04-27
 
 > This update was done to implement all new features that came with WBCE CMS 1.7.0
 > Most notable of which is the new PDO Database class and the Lang class

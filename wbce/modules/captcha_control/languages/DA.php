@@ -1,43 +1,46 @@
 <?php
 /**
- * WBCE CMS
- * Way Better Content Editing.
- * Visit https://wbce.org to learn more and to join the community.
+ * captcha_control — DA.php
  *
- * @copyright Ryan Djurovich (2004-2009)
- * @copyright WebsiteBaker Org. e.V. (2009-2015)
  * @copyright WBCE Project (2015-)
- * @license GNU GPL2 (or any later version)
+ * @license   GNU GPL2 (or any later version)
  */
 
-// Headings and text outputs
-$MOD_CAPTCHA_CONTROL['HEADING'] = 'Captcha og ASP styring';
-$MOD_CAPTCHA_CONTROL['HOWTO'] = 'Her kan du styre anvendelsen af  of "CAPTCHA" og "Avanceres spambeskyttelse" (ASB). For at f&Atilde;&yen; ASB til at fungere sammen med et givet modul, skal det p&Atilde;&yen;g&Atilde;&brvbar;ldende modul  tilrettes til at anvende ASB';
+$module_name        = 'Captcha &amp; Spam-beskyttelse';
+$module_description = 'Administrationsværktøj til konfiguration af ALTCHA captcha';
 
-// Text and captions of form elements
-$MOD_CAPTCHA_CONTROL['CAPTCHA_CONF'] = 'CAPTCHA konfigurering';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_TYPE'] = 'Type af CAPTCHA';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_EXP'] = 'CAPTCHA indstillinger for moduler findes i modulindstillingerne for de respektive moduler';
-$MOD_CAPTCHA_CONTROL['USE_SIGNUP_CAPTCHA'] = 'Brug af CAPTCHA ved tilmelding';
-$MOD_CAPTCHA_CONTROL['ENABLED'] = 'Sl&Atilde;&yen; til';
-$MOD_CAPTCHA_CONTROL['DISABLED'] = 'Sl&Atilde;&yen; fra';
-$MOD_CAPTCHA_CONTROL['ASP_CONF'] = 'Indstillnger for avanceret spam beskyttelse';
-$MOD_CAPTCHA_CONTROL['ASP_TEXT'] = 'Aktiver ASB (hvis muligt)';
-$MOD_CAPTCHA_CONTROL['ASP_EXP'] = 'ASB fors&Atilde;¸ger at afg&Atilde;¸re om en formular er udfyldt af en menneske eller spam-robot';
-$MOD_CAPTCHA_CONTROL['CALC_TEXT'] = 'Beregning som tekst';
-$MOD_CAPTCHA_CONTROL['CALC_IMAGE'] = 'Beregning som billede';
-$MOD_CAPTCHA_CONTROL['CALC_TTF_IMAGE'] = 'Beregning som billede med forskellige fonte og baggrunde';
-$MOD_CAPTCHA_CONTROL['TTF_IMAGE'] = 'Billede med forskellige fonte og baggrunde';
-$MOD_CAPTCHA_CONTROL['OLD_IMAGE'] = 'Traditionel m&Atilde;&yen;de (anbefales ikke)';
-$MOD_CAPTCHA_CONTROL['TEXT'] = 'Tekst-CAPTCHA';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_ENTER_TEXT'] = 'Sp&Atilde;¸rgsm&Atilde;&yen;l og svar';
-$MOD_CAPTCHA_CONTROL['CAPTCHA_TEXT_DESC'] = 'Slet alt her for at lave dine egne valg."n".eller dine &Atilde;&brvbar;ndringer bliver ikke gemt!."n".### eksempel ###."n".Her kan du indtaste sp&Atilde;¸rgsm&Atilde;&yen;l og svar."n".Brug:."n".?Hvad er  <b>Anne</b> Linnets <b>fornavn</b>?."n".!Anne."n".?Sp&Atilde;¸rgsm&Atilde;&yen;l 2."n".!Svar 2."n".."n".hvis sproget er uden betydning.."n". ... ."n".Eller, hvis sproget har betydning, brug:."n".?EN:Whats <b>Anne</b> Linnets <b>first name</b>?."n".!Anne."n".?EN:Question 2."n".!Answer 2."n".?DE:Wie ist der <b>Vorname</b> von <b>Anne</b> Linnet?."n".!Anne."n". ... ."n".### eksempel ###."n".';
+// ── General ──────────────────────────────────────────────────────────────────
+$CAPTCHA['HEADING']            = 'Captcha &amp; Spam-beskyttelse';
+$CAPTCHA['HOWTO']              = 'Konfigurer ALTCHA proof-of-work captcha og Honeypot-spamfilteret. Begge beskytter formularer på hele webstedet uden brugerfriktioner.';
+$CAPTCHA['CAPTCHA_TYPE']       = 'Captcha-type';
+$CAPTCHA['CAPTCHA_EXP']        = 'ALTCHA er en selvhostet, privatlivsvenlig proof-of-work captcha. Ingen tredjepartstjeneste kræves.';
+$CAPTCHA['USE_SIGNUP_CAPTCHA'] = 'Aktiver captcha for registreringer &amp; formularer';
 
-$MOD_CAPTCHA['VERIFICATION'] = 'Verificering';
-$MOD_CAPTCHA['ADDITION'] = 'adder';
-$MOD_CAPTCHA['SUBTRAKTION'] = 'tr&Atilde;&brvbar;k fra';
-$MOD_CAPTCHA['MULTIPLIKATION'] = 'gang';
-$MOD_CAPTCHA['VERIFICATION_INFO_RES'] = 'Inds&Atilde;&brvbar;t resultat';
-$MOD_CAPTCHA['VERIFICATION_INFO_TEXT'] = 'Inds&Atilde;&brvbar;t tekst';
-$MOD_CAPTCHA['VERIFICATION_INFO_QUEST'] = 'Besvar sp&Atilde;¸rgsm&Atilde;&yen;l';
-$MOD_CAPTCHA['INCORRECT_VERIFICATION'] = 'Verificering mislykkedes';
+// ── Advanced Spam Protection ──────────────────────────────────────────────────
+$CAPTCHA['ASP_LABEL']             = 'Avanceret spambeskyttelse (Honeypot)';
+$CAPTCHA['ASP_DESCRIPTION']       = 'Et skjult felt fanger bots, der automatisk udfylder alle inputfelter. Kræver ingen brugerhandling. Fungerer uafhængigt af captchaen ovenfor.';
+$CAPTCHA['MODULES_SETTINGS_INFO'] = '<b>VIGTIGT:</b> Individuelle moduler som <i>MiniForm</i>, <i>Guestbook</i> m.fl. har deres egne indstillinger for, om Captcha skal bruges i modulets formular. <br><b>Kontroller venligst indstillingerne for de respektive moduler</b>.';
+
+// ── Widget customization ──────────────────────────────────────────────────────
+$CAPTCHA['WIDGET_HEADING']     = 'Widget-tilpasning';
+$CAPTCHA['AUTO_LABEL']         = 'Starttilstand';
+$CAPTCHA['AUTO_OFF']           = 'Manuel (klik)';
+$CAPTCHA['AUTO_ONLOAD']        = 'Automatisk';
+$CAPTCHA['AUTO_ONSUBMIT']      = 'Ved formularindsendelse';
+$CAPTCHA['DELAY_LABEL']        = 'Forsinkelse';
+$CAPTCHA['DELAY_HINT']         = 'ms pause før PoW starter — gør automatiserede angreb sværere';
+$CAPTCHA['HIDEFOOTER']         = 'Skjul "Powered by ALTCHA"-footer';
+$CAPTCHA['HIDELOGO']           = 'Skjul ALTCHA-logo';
+$CAPTCHA['COLOR_BRAND']        = 'Accentfarve';
+$CAPTCHA['COLOR_BRAND_HINT']   = 'Spinner &amp; ramme';
+$CAPTCHA['COLOR_SUCCESS']      = 'Flueben-farve';
+$CAPTCHA['COLOR_BASE']         = 'Widget-baggrund';
+$CAPTCHA['COLOR_CHECKBOX']     = 'Afkrydsningsfelt-baggrund';
+$CAPTCHA['COLOR_TEXT']         = 'Tekstfarve';
+$CAPTCHA['BORDER_RADIUS']      = 'Hjørneradius';
+$CAPTCHA['COLOR_DEFAULT']      = 'Standard';
+$CAPTCHA['CORNER_SQUARE']      = 'Firkantet';
+$CAPTCHA['CORNER_LIGHT']       = 'Let';
+$CAPTCHA['CORNER_ROUND']       = 'Rund';
+$CAPTCHA['PREVIEW']            = 'Forhåndsvisning';
+$CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Beskyttet af ALTCHA';

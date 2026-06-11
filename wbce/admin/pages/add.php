@@ -18,8 +18,8 @@ if (!$admin->checkFTAN()) {
 $title          = htmlspecialchars($admin->get_post_escaped('title'));
 $module         = preg_replace('/[^a-z0-9_-]/i', '', $admin->get_post('type'));
 $parent         = (int) $admin->get_post('parent');
-$admin_groups   = $admin->get_post('admin_groups')   ?: [1];
-$viewing_groups = $admin->get_post('viewing_groups') ?: [1];
+$admin_groups   = array_unique(array_merge([1], (array) ($admin->get_post('admin_groups')   ?: [])));
+$viewing_groups = array_unique(array_merge([1], (array) ($admin->get_post('viewing_groups') ?: [])));
 $visibility     = $admin->get_post('visibility');
 
 if (!in_array($visibility, ['public', 'private', 'registered', 'hidden', 'none'], true)) {

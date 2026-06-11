@@ -1,0 +1,57 @@
+{#
+    _alerts.inc.twig — Inline alert messages (success, error, warning, info)
+
+    Variables:
+      MESSAGE_TYPE   — 'success', 'error', 'warning', 'info'
+      MESSAGES       — array of message strings (already translated)
+      UNICODE_ICON   — Unicode icon character from Alerts::ICON_MAP
+      USE_REDIRECT   — (optional) bool: enable auto-redirect + back-button behaviour
+      REDIRECT_URL   — (optional) string: target URL
+      REDIRECT_TIME  — (optional) int ms | '-1' for back-button-only (no auto-redirect)
+
+    Rendering paths:
+      • Alerts::renderTwig()       — passes MESSAGE_TYPE / MESSAGES / UNICODE_ICON only
+      • class.wb.php::messageBox() — additionally passes USE_REDIRECT / REDIRECT_URL / REDIRECT_TIME
+
+    CSS contract (cp_alerts.css):
+      • .dismissable            — present on every alert
+      • .sticky                 — added for errors; suppresses the CSS fade animation
+      • .msg-close              — close button; rendered only for errors (sticky alerts)
+      • animationend listener   — removes faded-out elements from DOM (registered once via flag)
+#}
+{{ insertCssFile(WB_URL ~ '/templates/theme_fallbacks/css/cp_alerts.css') }}
+{% set isSticky = STICKY is defined ? STICKY : (MESSAGE_TYPE == 'error' or (USE_REDIRECT is defined and not USE_REDIRECT)) %}
+<div class="top alertbox_{{ MESSAGE_TYPE }} fg12 dismissable{% if isSticky %} sticky{% endif %}">
+
+    {% if isSticky %}
+        <button class="msg-close" onclick="this.parentElement.remove()" aria-label="Close">×</button>
+    {% endif %}
+
+    <span class="signal-icon">{{ UNICODE_ICON }}</span>
+
+    {% for msg in MESSAGES %}
+        <p>{{ msg|raw }}</p>
+    {% endfor %}
+
+    {% if not isError and USE_REDIRECT is defined and USE_REDIRECT %}
+        {% if REDIRECT_TIME != '-1' %}
+            <script>setTimeout(function(){ location.href='{{ REDIRECT_URL }}'; }, {{ REDIRECT_TIME }});</script>
+        {% endif %}
+        {% if REDIRECT_TIME > 1500 or REDIRECT_TIME == '-1' %}
+            <p><a href="{{ REDIRECT_URL }}" class="button">{{ L_('TEXT:BACK') }}</a></p>
+        {% endif %}
+    {% elseif REDIRECT_URL is defined and REDIRECT_URL %}
+        <p><a href="{{ REDIRECT_URL }}" class="button">{{ L_('TEXT:BACK') }}</a></p>
+    {% endif %}
+
+</div>
+<script>
+if (!window._wbceDismissSetup) {
+    window._wbceDismissSetup = true;
+    document.addEventListener('animationend', function(e) {
+        if (e.target.classList.contains('dismissable') && !e.target.classList.contains('sticky')) {
+            e.target.remove();
+        }
+    });
+}
+</script>

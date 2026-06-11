@@ -25,24 +25,31 @@ define('PAGE_TITLE', $TEXT['SEARCH']);
 define('MENU_TITLE', $TEXT['SEARCH']);
 define('MODULE', '');
 define('VISIBILITY', 'public');
-define('PAGE_CONTENT', 'search.php');
+
+// wbce_search Admin Tool
+// Use the Search Admin Tool if present and enabled
+$useSearchTool = (bool) Settings::get('use_search_tool');
+$searchToolPath = WB_PATH . '/modules/wbce_search';
+if (file_exists($searchToolPath . '/search_admin_tool.php') && $useSearchTool) {
+    define('PAGE_CONTENT', $searchToolPath . '/search_output.php');
+    include $searchToolPath . '/search_admin_tool.php';
+} else {
+    define('PAGE_CONTENT', __DIR__ . '/search.php');
+}
 
 // Find out what the search template is
-// $database = new database();
-$query_template = $database->query("SELECT value FROM " . TABLE_PREFIX . "search WHERE name = 'template' LIMIT 1");
-$fetch_template = $query_template->fetchRow();
-$template = $fetch_template['value'];
+$template = Settings::get('template');
 if ($template != '') {
     define('TEMPLATE', $template);
 }
 unset($template);
 
 // Get the referrer page ID if it exists
+$referrer = 0;
 if (isset($_REQUEST['referrer']) && is_numeric($_REQUEST['referrer']) && intval($_REQUEST['referrer']) > 0) {
-    define('REFERRER_ID', intval($_REQUEST['referrer']));
-} else {
-    define('REFERRER_ID', 0);
-}
+    $referrer = intval($_REQUEST['referrer']);
+} 
+define('REFERRER_ID', $referrer);
 
 // Include index (wrapper) file
 require WB_PATH . '/index.php';

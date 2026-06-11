@@ -253,3 +253,7 @@ $LANG['MOD_OPF']['TXT_ERR_UPLOAD_TYPE'] = 'Hochgeladene Datei hat falschen Typ %
 $LANG['MOD_OPF']['TXT_ERR_SECURITY_BREACH'] = 'Abgebrochen: %s Sicherheitsausnahme!';
 
 $LANG['MOD_OPF']['TXT_ERR_UPLOAD_FAILED'] = 'Hochgeladene Datei konnte nicht gespeichert werden';
+
+$LANG['MOD_OPF']['TXT_INVALIDCODE'] = 'Ung&uuml;ltiger PHP-Code';
+
+$LANG['MOD_OPF']['TXT_EDITOR_AFTER_SAVE'] = 'Der Code-Editor erscheint, nachdem der Filter zum ersten Mal gespeichert wurde.';

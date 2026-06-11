@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Piekļuve liegta. Pārbaudi lietotājvārdu un 
 $MSG['db_unknown_db']         = 'Datubāze neeksistē. Vispirms to izveido vai pārbaudi nosaukumu.';
 $MSG['db_connection_refused'] = 'Neizdevās savienoties ar hostu. Pārbaudi hosta nosaukumu un portu.';
 $MSG['db_connection_failed']  = 'Savienojums neizdevās: %s';
+
+$TXT['upgrade_warning']         = 'Atjaunināšanas skripts modificē esošo datu bāzi un failu struktūru. <strong>Ļoti ieteicams</strong> izveidot pilnu failu un visas datu bāzes rezerves kopiju pirms turpināšanas.';

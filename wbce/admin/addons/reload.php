@@ -14,20 +14,26 @@
 require '../../config.php';
 require_once WB_PATH . '/framework/functions.php';
 
-// limit advanced Addon settings to users with access to admintools
-$admin = new admin('Admintools', 'admintools', false, false);
-if ($admin->get_permission('admintools') == false) {
+// Limit reload to users with install permission for at least one addon type
+$admin = new admin('Addons', 'addons', false, false);
+$can_reload_modules   = $admin->get_permission('modules_install');
+$can_reload_templates = $admin->get_permission('templates_install');
+$can_reload_languages = $admin->get_permission('languages_install');
+if (!($can_reload_modules || $can_reload_templates || $can_reload_languages)) {
     die(header('Location: index.php'));
 }
 
-// reload Addon overview page if not at least on advanced Addon setting was selected
-$post_check = array('reload_modules', 'reload_templates', 'reload_languages');
-foreach ($post_check as $index => $key) {
-    if (!isset($_POST[$key])) {
-        unset($post_check[$index]);
-    }
-}
-if (count($post_check) == 0) {
+// Build list of what was posted, filtered to only what the user may reload
+$allowed = [];
+if ($can_reload_modules)   $allowed[] = 'reload_modules';
+if ($can_reload_templates) $allowed[] = 'reload_templates';
+if ($can_reload_languages) $allowed[] = 'reload_languages';
+
+$post_check = array_values(array_filter(
+    ['reload_modules', 'reload_templates', 'reload_languages'],
+    fn($k) => isset($_POST[$k]) && in_array($k, $allowed, true)
+));
+if (count($post_check) === 0) {
     die(header('Location: index.php?advanced'));
 }
 

@@ -1,13 +1,17 @@
 <?php
 
 $oTwig->addFunction(new \Twig\TwigFunction("CodeMirror", 
-    function ($id_attr="code", $syntax = 'js', $options = []) {         
-        if(function_exists('registerCodeMirror')){
-            return registerCodeMirror($id_attr, $syntax, $options);
-            // see /modules/CodeMirror_Config/initialize.php
-            // to access all possible options
-        } else {
-            return;
+    function ($id_attr = "code", $syntax = 'js', $options = []) {         
+        if (class_exists('CodeEditor')) {
+            CodeEditor::init($id_attr, $syntax, $options);
+        }
+    }
+));
+
+$oTwig->addFunction(new \Twig\TwigFunction("CodeEditor",
+    function (string $id_attr = 'code', string $syntax = 'php', array $options = []) {
+        if (class_exists('CodeEditor')) {
+            CodeEditor::init($id_attr, $syntax, $options);
         }
     }
 ));

@@ -19,11 +19,11 @@ if (defined('WB_PATH') == false) {
 
 $module_directory   = 'errorlogger';
 $module_name        = 'Errorlog viewer';
-$module_function 	= 'snippet';
-$module_version     = '1.1.4.2';
+$module_function    = 'snippet';
+$module_version     = '1.1.6';
 $module_platform 	= '2.8';
 if(defined('WBCE_VERSION')) {
-	$module_function    = 'tool,preinit,initialize';
+	$module_function    = 'tool, preinit, initialize';
 	$module_platform = '1.3.0';
 }
 $module_author      = 'Ruud Eisinga - Dev4me';
@@ -41,31 +41,49 @@ $module_icon        = 'fa fa-bug';
 /**
  * DEVELOPMENT HISTORY (Change Log):
  *
+ * v.1.1.6 2026-05-03 Christian M. Stefan
+ *         [c] fully translate the Errorlog viewer into several languages
+ * 
+ * v.1.1.5 2026-04-26 Christian M. Stefan
+ *         ALL CHANGES CONCERNED WITH WBCE 1.7.0
+ *         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *         [+] Implementation of Settings to activate 
+ *                      WBCE_DEBUG: Used in core and some modules
+ *                       SQL_DEBUG: Show SQL related issues  
+ *             PDO_CANONICAL_DEBUG: Check Syntax that's not canonical with the new
+ *                                  PDO Database class. This is for devs who review
+ *                                  the core and modules and are actively looking
+ *                                  for old syntax.
+ *    
+ *         [+] Added languages.php  adds tranlation strings in Admin-Tools overview 
+ *    
+ *         [c] small changes to the CSS file (links for the above settings)
+ * 
  * v.1.1.4.2 2023-11-28 florian
- *		[!] Fix issue with incorrect/incomplete timestamp (reported by hpzaun)
+ *         [!] Fix issue with incorrect/incomplete timestamp (reported by hpzaun)
  *
  * v.1.1.4.1 2022-07-30 ruud / dev4me
- *		[!] Fixed a deprecated notice on PHP8.1
+ *         [!] Fixed a deprecated notice on PHP8.1
  *
  * v.1.1.4 2022-07-27 ruud / dev4me
- *		[+] added the called url when an error is detected. Helps in locating and fixing the error.
- *		[+] The module can now also be installed as snippet in WB. Note that errors in other snippets might not add the extra info.
- *		[!] Fixed some more errors in the table view
+ *         [+] added the called url when an error is detected. Helps in locating and fixing the error.
+ *         [+] The module can now also be installed as snippet in WB. Note that errors in other snippets might not add the extra info.
+ *         [!] Fixed some more errors in the table view
  *
  * v.1.1.3 2022-01-04 ruud / dev4me
- *		[!] fix for notices that should be suppressed by @ in php8+
- *		[!] fix for tableview generating errors on some loglines
- *		[!] fix for deleted /var/logs/ directory
+ *         [!] fix for notices that should be suppressed by @ in php8+
+ *         [!] fix for tableview generating errors on some loglines
+ *         [!] fix for deleted /var/logs/ directory
  *
  * v.1.1.2 2021-09-05 stefanek
- *      [!] fix for issue 508 (empty log creates issues itself)
+ *         [!] fix for issue 508 (empty log creates issues itself)
  *
  * v.1.1.1 2021-05-29 Colinax
- *      [+] add upgrade.php
- *      [c] cs fixed files
+ *         [+] add upgrade.php
+ *         [c] cs fixed files
  *
  * v.1.1.0 2020-07-23 Christian M. Stefan (Stefanek)
- *      [+] Implementation of Table View
- *      [c] changes to CSS file adding styles for the Table View
+           [+] Implementation of Table View
+           [c] changes to CSS file adding styles for the Table View
  *
  */

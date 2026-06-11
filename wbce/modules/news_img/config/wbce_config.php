@@ -1,7 +1,6 @@
 <?php
-
 if(!defined('CAT_PATH')) {
-    require_once WB_PATH."/include/jscalendar/jscalendar-functions.php";
+    require_once INCLUDE_PATH. '/date_time_picker/wbce_setup.php';
 }
 
 // calendar

@@ -10,20 +10,25 @@
  * @license GNU GPL2 (or any later version)
  */
 
-$module_directory = 'jsadmin';
-$module_name = 'Javascript Admin';
-$module_function = 'tool';
-$module_version = '1.4.4';
-$module_platform = '1.4.0';
-$module_author = 'Stepan Riha, Swen Uth';
-$module_license = 'BSD License';
-$module_description = 'Settings for the page tree and section management behaviour.';
-$module_icon = 'fa fa-sitemap';
-$module_level = 'core';
+$module_directory   = 'jsadmin';
+$module_name        = 'Javascript Admin';
+$module_function    = 'tool';
+$module_version     = '2.0.0';
+$module_platform    = '1.7.0';
+$module_author      = 'Stepan Riha, Swen Uth, BerndJM, Christian M. Stefan';
+$module_license     = 'BSD License';
+$module_description = 'Settings for the PageTaree and section management behaviour.';
+$module_icon        = 'fa fa-sitemap';
+$module_level       = 'core';
 
 /**
  * Version history
  *
+ * 2.0.0 - complete rework. 
+ *         [c] from YahooUI to jQuery Sortable
+ *          This version saves approximately 1 MB of the WBCE package.
+ * 
+ * 
  * 1.4.4 - fixes for MySQL-Strict (Bernd)
  *
  * 1.4.3

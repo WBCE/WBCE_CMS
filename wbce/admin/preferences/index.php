@@ -99,7 +99,7 @@ function build_page(&$admin, &$database)
             'ACTION_URL' => ADMIN_URL . '/preferences/save.php',
             'FTAN' => $admin->getFTAN(),
             'FORM_NAME' => 'preferences_save',
-            'INPUT_NEW_PASSWORD' => $admin->passwordField('new_password_1'),
+            'INPUT_NEW_PASSWORD' => $admin->passwordField('new_password_1', '', 250),
 
             // assign language vars
             'HEADING_MY_SETTINGS' => $HEADING['MY_SETTINGS'],

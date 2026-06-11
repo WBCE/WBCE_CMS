@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Hozzáférés megtagadva. Ellenőrizd a felhasz
 $MSG['db_unknown_db']         = 'Az adatbázis nem létezik. Először hozd létre, vagy ellenőrizd a nevét.';
 $MSG['db_connection_refused'] = 'Nem sikerült csatlakozni a kiszolgálóhoz. Ellenőrizd a kiszolgáló nevét és a portot.';
 $MSG['db_connection_failed']  = 'Kapcsolat sikertelen: %s';
+
+$TXT['upgrade_warning']         = 'A frissítési szkript módosítja a meglévő adatbázist és fájlszerkezetet. <strong>Erősen ajánlott</strong> teljes biztonsági mentést készíteni a fájlokról és a teljes adatbázisról a folytatás előtt.';

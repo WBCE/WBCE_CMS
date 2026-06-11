@@ -1,0 +1,24 @@
+{#
+    login_warning.twig — Login blocked warning page
+    Shown when the maximum number of failed login attempts has been exceeded.
+    Replaces the static warning.html files in individual themes.
+
+    Variables: WB_URL, THEME_URL, CHARSET, LANGUAGE, LOGIN_URL
+#}
+{% extends 'login_wrapper.twig' %}
+
+{% block title %}{{ L_('MESSAGE:LOGIN_BLOCKED_TITLE||Too Many Login Attempts') }}{% endblock %}
+
+{% block page_heading %}{{ L_('MESSAGE:LOGIN_BLOCKED_TITLE||Too Many Login Attempts') }}{% endblock %}
+
+{% block login_content %}
+    <div class="alertbox_error" style="margin: 15px 0;">
+        <p>{{ L_('MESSAGE:LOGIN_BLOCKED||You have been temporarily blocked due to too many failed login attempts. Please try again later.') }}</p>
+    </div>
+
+
+    <div class="fg12 center">
+        <p><a href="{{ LOGIN_URL }}">{{ L_('TEXT:NEED_TO_LOGIN') }}</a></p>
+        <p><a href="{{ WB_URL }}/">{{ L_('TEXT:HOME') }}</a></p>
+    </div>
+{% endblock %}

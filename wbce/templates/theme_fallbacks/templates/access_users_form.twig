@@ -1,0 +1,269 @@
+{# 
+    access_users_form.twig — User form (add or edit)
+    
+    Loaded as htmx fragment into #user-form-panel.
+    
+    wbeSelect initialization is handled by access_users.twig via 
+    htmx:afterSettle — do NOT init wbeSelect here to avoid double rendering.
+
+    Layout: two-column (golden ratio 61.8/38.2)
+      Main (left)  — required fields: username, display_name, email, password, groups
+      Aside (right) — optional fields: language, timezone, home_folder, active, gdpr
+#}
+
+<div id="user-form-content">
+
+    <form name="user" id="modify_user" method="post"
+          hx-post="{{ ACTION_URL }}"
+          hx-target="#user-form-panel"
+          hx-swap="innerHTML"
+          hx-indicator="#form-save-indicator">
+        {{ FTAN }}
+        <input type="hidden" name="user_id" value="{{ user.user_id|default(0) }}" />
+        <div class="cp-settings">
+            <div class="cp-toggle-section">
+
+                {# ── Heading ──────────────────────────────────────────────── #}
+                <div class="cp-card-head">
+                    <label>
+                        <i class="fa fa-{% if do_modify_user %}pencil{% else %}user-plus{% endif %}"></i>
+                        {% if do_modify_user %}
+                            {{ L_('{TEXT:HEADING_MODIFY_USER}') }}
+                            {% if user.display_name is defined and user.display_name %}: 
+                                <span>{{ user.display_name }}</span>
+                                
+                            {% endif %}
+                        {% else %}
+                            {{ L_('{TEXT:HEADING_ADD_USER}') }}
+                        {% endif %}
+                    </label>
+                        {% if do_modify_user %}<span class="cp-label pull-right">{{ L_('TEXT:USER') }}-ID: <b>{{ user.user_id }}</b></span>{% endif %}
+                    <a href="#" onclick="document.getElementById('user-form-panel').innerHTML='';" 
+                       class="pull-right" title="{{ L_('TEXT:CLOSE') }}">✖</a>                       
+                </div>
+
+                {# ── Two-column body ──────────────────────────────────────── #}
+                <section class="has-aside">
+
+                    {# ═══════ MAIN COLUMN — required fields  ═════════════════════ #}
+                    <div class="cp-card-main">
+
+                        {# Username #}
+                        <div class="cp-setting-row">
+                            <label class="cp-setting-name cp-required" for="username">{{ L_('TEXT:USERNAME') }}</label>
+                            <div class="cp-setting-value">
+                                <input type="text" name="username" id="username" maxlength="30" required 
+                                       value="{{ user.username }}"
+                                       hx-post="{{ ADMIN_URL }}/users/validate.php?field=username"
+                                       hx-trigger="keyup changed delay:500ms"
+                                       hx-target="#username-feedback"
+                                       hx-swap="innerHTML"
+                                       hx-include="[name='user_id']">
+                                <span id="username-feedback" class="validation-feedback"></span>
+                            </div>
+                        </div>
+
+                        {# Display name — moved here, right after username #}
+                        <div class="cp-setting-row">
+                            <label class="cp-setting-name cp-required" for="display_name">{{ L_('TEXT:DISPLAY_NAME') }}</label>
+                            <div class="cp-setting-value">
+                                <input type="text" name="display_name" id="display_name" required maxlength="255" value="{{ user.display_name }}">
+                            </div>
+                        </div>
+
+                        {# Email #}
+                        <div class="cp-setting-row">
+                            <label class="cp-setting-name cp-required" for="email">{{ L_('TEXT:EMAIL') }}</label>
+                            <div class="cp-setting-value">
+                                <input type="text" name="email" id="email" maxlength="255" required 
+                                       value="{{ user.email }}"
+                                       hx-post="{{ ADMIN_URL }}/users/validate.php?field=email"
+                                       hx-trigger="keyup changed delay:500ms"
+                                       hx-target="#email-feedback"
+                                       hx-swap="innerHTML"
+                                       hx-include="[name='user_id']">
+                                <span id="email-feedback" class="validation-feedback"></span>
+                            </div>
+                        </div>
+
+                        {# Password block #}
+                        {% if do_modify_user %}
+                            <div class="cp-setting-row">
+                                <div class="cp-setting-name"></div>
+                                <div class="cp-setting-value">
+                                    <label class="cb" for="change_pswd">
+                                        <input type="checkbox" id="change_pswd" name="change_pswd" value="1" class="toggle"{% if change_pswd %} checked{% endif %}>
+                                       {{ L_('TEXT:NEW_PASSWORD') }}?
+                                    </label>
+                                </div>
+                            </div>
+                            <section id="renew_password"{% if not change_pswd %} style="display:none"{% endif %}>
+                        {% endif %}
+
+                            <div class="cp-setting-row">
+                                <label class="cp-setting-name{% if not do_modify_user %} cp-required{% endif %}" for="password">{{ L_('TEXT:PASSWORD') }}</label>
+                                <div class="cp-setting-value">
+                                    {{ INPUT_NEW_PASSWORD }}
+                                </div>
+                            </div>
+                            <div class="cp-setting-row">
+                                <label class="cp-setting-name{% if not do_modify_user %} cp-required{% endif %}">{{ L_('TEXT:RETYPE_PASSWORD') }}</label>
+                                <div class="cp-setting-value">
+                                    <input type="password" id="password2" name="password2" autocomplete="new-password">
+                                    {% if do_modify_user %}
+                                        <div class="cp-setting-hint">{{ L_('MESSAGE:USERS_CHANGING_PASSWORD') }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        {% if do_modify_user %}
+                        </section>
+                        {% endif %}
+
+                        {# Groups — required #}
+                        <div class="cp-setting-row">
+                            <div class="cp-setting-name cp-required"><label>{{ L_('TEXT:GROUP') }}</label></div>
+                            <div class="cp-setting-value">
+                                <select data-placeholder="{{ L_('TEXT:PLEASE_SELECT') }}&mldr;" id="select_groups" name="groups[]" multiple>
+                                    {% for group in groups %}
+                                        <option value="{{ group.id }}" data-right="{{ group.id }}"{% if group.active %} selected{% endif %}>{{ group.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>{# /cp-card-main #}
+
+
+                    {# ASIDE COLUMN — optional fields #}
+                    <div class="cp-card-aside">
+
+                        {# Language #}
+                        <div class="cp-setting-row">
+                            <label class="cp-setting-name" for="language">{{ L_('TEXT:LANGUAGE') }}</label>
+                            <div class="cp-setting-value">
+                                <select name="language" id="language" data-search-label="{{ L_('TEXT:SEARCH') }} ... ">
+                                    <option value="" disabled>{{ L_('TEXT:PLEASE_SELECT') }}&mldr;</option>
+                                    {% for lang in LANGUAGES %}
+                                        <option value="{{ lang.CODE }}"
+                                            data-right="{{ lang.CODE }}" 
+                                            data-left="{{ WB_URL ~ '/languages/'~ lang.CODE ~'.svg' }}"
+                                            {% if do_modify_user %}
+                                                {% if lang.CODE == user.language %} selected{% endif %}
+                                            {% else %}
+                                                {% if lang.CODE == LANGUAGE %} selected{% endif %}
+                                            {% endif %}
+                                        >{{ lang.NAME }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        {# Timezone #}
+                        <div class="cp-setting-row">
+                            <label class="cp-setting-name" for="timezone">{{ L_('TEXT:TIMEZONE') }}</label>
+                            <div class="cp-setting-value">
+                                <select name="timezone" id="timezone">
+                                    <option value="-20" disabled>{{ L_('TEXT:PLEASE_SELECT') }}&mldr;</option>
+                                    {% for rec in TIME_ZONES %}
+                                        <option value="{{ rec.VALUE }}"{% if rec.VALUE == (user.timezone|default(0)) / 60 / 60 %} selected{% endif %}{% if rec.SELECTED == true %} selected{% endif %}>{{ rec.NAME }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        {# Home folder (conditional) #}
+                        {% if use_home_folders %}
+                        {#{ debug_dump(home_folders_tree) }#}
+                        <div class="cp-setting-row">
+                            <label class="cp-setting-name">{{ L_('TEXT:HOME_FOLDER') }}</label>
+                            <div class="cp-setting-value">
+                                <select name="home_folder" id="home_folder">
+                                    <option value="">{{ L_('TEXT:NONE') }}</option>
+                                    <option value="" disabled data-prefix="/">{{ constant('MEDIA_DIRECTORY') }}{% if home_folders is empty %} (The 📁 /media directory is empty){% endif %}</option>
+                                   {% for folder in home_folders %}
+                                        <option value="{{ folder.dir }}"
+                                            data-level="{{ folder.level }}"
+                                            data-prefix="{{ folder.prefix|raw }}"
+                                            title="{{ folder.dir }}"
+                                            {% if folder.selected %} selected{% endif %}>{{ folder.prefix|raw }}{{ folder.name }}</option>
+                                   {% endfor %}
+                                </select>
+                            </div>
+                        </div>                                
+                        {% endif %}
+
+                        {# Account status #}
+                        <div class="cp-setting-row">
+                            <label class="cp-setting-name">Account</label>
+                            <div class="cp-setting-value">
+                                {% if not do_modify_user %}
+                                    {% set active = true %}
+                                {% else %}
+                                    {% set active = user.active %}
+                                {% endif %}
+                                <input type="checkbox" switch="bool" name="active" id="active"
+                                       value="1"{% if active %} checked{% endif %}>
+                                <label for="active" class="labeled"
+                                       data-on-label="{{ L_('TEXT:ACTIVE') }}"
+                                       data-off-label="{{ L_('TEXT:DISABLED') }}"></label>
+                            </div>
+                        </div>
+
+                        {# GDPR check (edit only, when set) #}
+                        {% if do_modify_user and user.gdpr_check is defined %}
+                        <div class="cp-setting-row">
+                            <label class="cp-setting-name">GDPR Check</label>
+                            <div class="cp-setting-value">
+                                <label class="cb">
+                                    <input type="checkbox" disabled {% if user.gdpr_check %}checked{% endif %} />
+                                    {% if user.gdpr_check %}{{ L_('TEXT:ACTIVE') }}{% else %}{{ L_('TEXT:DISABLED') }}{% endif %}
+                                </label>
+                                <div class="cp-setting-hint">Nur vom User selbst bei der FE Registrierung zu bestätigen.</div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    </div>{# /cp-card-aside #}
+
+                </section>{# /has-aside #}
+
+                {# ── Buttons — full width, outside the grid ───────────────── #}
+                <div class="cp-buttons-row">
+                    <button type="button" onclick="document.getElementById('user-form-panel').innerHTML='';" 
+                            class="button ico-cancel">{{ L_('TEXT:CANCEL') }}</button>
+                    <span id="form-save-indicator" class="htmx-indicator pos-right"><i class="fa fa-spinner fa-spin"></i></span>
+                    {% if do_modify_user %}
+                        <button type="submit" class="button ico-save pos-right" name="save_user_changes">{{ L_('TEXT:SAVE') }}</button>
+                    {% else %}
+                        <button type="submit" class="button ico-add pos-right" name="save_user_add">{{ L_('HEADING:ADD_USER') }}</button>
+                    {% endif %}
+                </div>
+
+            </div>{# /cp-toggle-section #}
+        </div>{# /cp-settings #}
+    </form>
+</div>
+
+<script>
+// Runs immediately when htmx injects this fragment
+(function() {
+    // Clear all existing toasts before a new submit
+    document.getElementById('modify_user').addEventListener('htmx:beforeRequest', function() {
+        document.querySelectorAll('#toast-container .toast').forEach(function(t) {
+            t.classList.add('toast-out');
+            setTimeout(function() { t.remove(); }, 300);
+        });
+    });
+
+    // Password toggle
+    var $toggle = $('#change_pswd');
+    if ($toggle.length) {
+        $toggle.on('change', function() {
+            $('#renew_password').toggle(this.checked);
+        });
+    }
+
+    // Groups validation is handled server-side — PHP fires an error toast.
+})();
+</script>

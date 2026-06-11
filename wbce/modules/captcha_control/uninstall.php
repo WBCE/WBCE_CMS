@@ -15,11 +15,19 @@ if (count(get_included_files())==1) {
     header("Location: ../index.php", true, 301);
 }
 
-// Default settings
-Settings::Del("enabled_captcha");
-Settings::Del("enabled_asp");
-Settings::Del("captcha_type");
-Settings::Del("asp_session_min_age");
-Settings::Del("asp_view_min_age");
-Settings::Del("asp_input_min_age");
-Settings::Del("ct_text");
+// Current format
+Settings::delete('enabled_captcha');
+Settings::delete('enabled_asp');
+Settings::delete('captcha_type');
+Settings::delete('captcha_altcha');
+
+// Legacy keys — left over from older versions or incomplete migrations
+foreach ([
+    'captcha_altcha_hmac_key', 'captcha_altcha_max', 'captcha_altcha_ttl',
+    'captcha_cfg',
+    'asp_session_min_age', 'asp_view_min_age', 'asp_input_min_age', 'ct_text',
+] as $key) {
+    if (Settings::exists($key)) {
+        Settings::delete($key);
+    }
+}

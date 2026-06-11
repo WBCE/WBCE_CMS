@@ -26,6 +26,11 @@ foreach ($oAccounts->getLanguageFiles() as $sLangFile) {
 $requestMethod = '_' . strtoupper($_SERVER['REQUEST_METHOD']);
 $sRedirect = strip_tags(isset(${$requestMethod}['redirect']) ? ${$requestMethod}['redirect'] : '');
 $sRedirect = ((isset($_SERVER['HTTP_REFERER']) && empty($sRedirect)) ? $_SERVER['HTTP_REFERER'] : $sRedirect);
+// Reject any redirect that does not start with WB_URL — prevents both XSS injection and Open Redirect.
+// HTTP_REFERER is also covered here since it goes through the same variable.
+if (!empty($sRedirect) && strpos($sRedirect, WB_URL) !== 0) {
+    $sRedirect = '';
+}
 $sRedirect = ($sRedirect != '') ? $sRedirect : WB_URL . ((INTRO_PAGE) ? PAGES_DIRECTORY : '') . '/index.php';
 $_SESSION['HTTP_REFERER'] = str_replace(WB_URL, '', $sRedirect);
 
@@ -40,7 +45,18 @@ $oLogin = new Login(
         "MAX_ATTEMPTS" => "3",
         "TIMEFRAME" => "600",
         "LOGIN_DELAY" => "60",
-        "WARNING_URL" => get_url_from_path($oAccounts->correct_theme_source('warning.html')),
+        // Claude: the warning URL should be in ACCOUNT_URL.'/login_warning.php'
+        // not long ago there was a refactor of this behaviour in the BACKEND_CONTEXT
+        // now we want it for the FRONTEND_CONTEXT aswell: instead of a static, single language warning.html
+        // we want a ACCOUNT_URL.'/login_warning.php' that delivers the warning in the template and i18n aware
+        // for BACKEND_CONTEXT see:
+        // wbce\admin\login\login_warning.php
+        // wbce\templates\theme_fallbacks\templates\login_warning.twig
+        
+        // we can use login_warning.twig almost the same, but we need it in FRONTEND_CONTEXT
+        // the templates for FE Login are here:
+        // wbce\modules\tool_account_settings\templates
+        "WARNING_URL" => ACCOUNT_URL . '/login_warning.php',
         "USERNAME_FIELDNAME" => 'username',
         "PASSWORD_FIELDNAME" => 'password',
         "REMEMBER_ME_OPTION" => SMART_LOGIN,
@@ -50,8 +66,6 @@ $oLogin = new Login(
         "MAX_PASSWORD_LEN" => "30",
         "LOGIN_URL" => LOGIN_URL . (!empty($sRedirect) ? '?redirect=' . $_SESSION['HTTP_REFERER'] : ''),
         "DEFAULT_URL" => WB_URL . PAGES_DIRECTORY . "/index.php",
-        "TEMPLATE_DIR" => realpath(WB_PATH . $oAccounts->correct_theme_source('login.htt')),
-        "TEMPLATE_FILE" => "login.htt",
         "FRONTEND" => true,
         "FORGOTTEN_DETAILS_APP" => FORGOT_URL,
         "REDIRECT_URL" => $sRedirect,

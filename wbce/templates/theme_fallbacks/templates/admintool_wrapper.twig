@@ -1,0 +1,12 @@
+{#
+    admintool_wrapper.twig — Chrome for individual AdminTools
+    Variables: BACK_URL, BACK_LABEL, MODULE_NAME, TOOL_DIR, CONTENT
+#}
+<h4>
+    <a href="{{ BACK_URL }}" title="{{ BACK_LABEL }}">{{ BACK_LABEL }}</a>
+    &nbsp;&raquo;&nbsp;
+    {{ MODULE_NAME }}
+</h4>
+<div class="adminModuleWrapper {{ TOOL_DIR }}">
+    {{ CONTENT|raw }}
+</div>

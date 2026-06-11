@@ -23,63 +23,78 @@ $aToolUri = ADMIN_URL.'/admintools/tool.php?tool='. basename(__DIR__);
 $sCodeMirrorPath = __DIR__ . '/codemirror';
 $sThemeLoc = $sCodeMirrorPath.'/theme/';
 
-// are we saving the form or just showing the form and needing config from DB?
-if ($doSave && !$admin->checkFTAN()) 
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $returnUrl, false);
-
-if ($saveSettings) {
-    // We set the setting
-    if (isset($_POST["save_settings"])) {       
-        $aCfg = array(
-            'theme'      => $admin->get_post("theme"),
-            'font'       => $admin->get_post("font"),
-            'font_size'  => $admin->get_post("font_size"),
-        );
-        $setError = Settings::Set("cmc_cfg", serialize( $aCfg ));
-        toolMsg($setError, $returnUrl);
-    } 
+// ── Save ─────────────────────────────────────────────────────────────────
+if ($saveSettings && isset($_POST['save_settings'])) {
+    if (!$admin->checkFTAN()) {
+        (new Alerts())->sessionToast($MESSAGE['GENERIC_SECURITY_ACCESS'], 'error');
+        header('Location: ' . $returnUrl);
+        exit;
+    }
+    $aCfg = [
+        'theme'     => $admin->get_post('theme'),
+        'font'      => $admin->get_post('font'),
+        'font_size' => $admin->get_post('font_size'),
+    ];
+    $setError = Settings::Set('cmc_cfg', serialize($aCfg));
+    if ($setError) {
+        (new Alerts())->sessionToast($setError, 'error');
+    } else {
+        (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
+    }
+    header('Location: ' . $returnUrl);
+    exit;
 }
 
 // Get the Config from DB
 $aCfg = unserialize(Settings::Get("cmc_cfg", ""));
+// Normalize theme — fall back to wbce-night if stored value is no longer valid
+if (!in_array($aCfg['theme'] ?? '', ['wbce-day', 'wbce-night'])) {
+    $aCfg['theme'] = 'wbce-night';
+}
 registerCodeMirror('code', 'x-php');
+CodeEditor::init('code_toolbar', 'x-php', ['height' => 350, 'toolbar' => true]);
 
 // form data fill
 $aThemeFiles = list_files_from_dir($sThemeLoc, 'css');
 $aFontFiles = list_files_from_dir($sCodeMirrorPath.'/fonts', ['woff2', 'woff']);
 $aFontSizes = [12, 13, 14, 15, 16, 17, 18];
 $oTwig = getTwig(__DIR__ . '/twig/');
-$aToTwig = [];
-$aToTwig['cfg']             = $aCfg;
-$aToTwig['cmc_code_sample'] = cmc_code_sample();
-$aToTwig['aThemeFiles']     = $aThemeFiles;
-$aToTwig['aFontFiles']      = $aFontFiles;
-$aToTwig['aFontSizes']      = $aFontSizes;
+$toTwig = [];
+$toTwig['cfg']             = $aCfg;
+$toTwig['cmc_code_sample'] = cmc_code_sample();
+$toTwig['aThemeFiles']     = $aThemeFiles;
+$toTwig['aFontFiles']      = $aFontFiles;
+$toTwig['aFontSizes']      = $aFontSizes;
+$toTwig['RETURN_TO_TOOLS'] = $returnToTools;
 $oTemplate = $oTwig->load('tool.twig');
-$oTemplate->display($aToTwig);
+$oTemplate->display($toTwig);
 
 ob_start() ?>
 <script>
 var input = document.getElementById("select");
+
+function applyThemeToAll(theme) {
+    document.querySelectorAll('.CodeMirror').forEach(function(el) {
+        if (el.CodeMirror) el.CodeMirror.setOption('theme', theme);
+    });
+}
 function selectTheme() {
     var theme = input.options[input.selectedIndex].textContent;
-    code.setOption("theme", theme);
+    applyThemeToAll(theme);
     location.hash = "#" + theme;
 }
-code.setOption("theme", '<?= $aCfg['theme'] ?>');    
+applyThemeToAll('<?= $aCfg['theme'] ?>');
 CodeMirror.on(window, "hashchange", function() {
     var theme = location.hash.slice(1);
     if (theme) { input.value = theme; selectTheme(); }
 });
 
-// select font
-function selectFontFamily(element) { 
-    const selected = element.options[element.selectedIndex].value;  
+function selectFontFamily(element) {
+    const selected = element.options[element.selectedIndex].value;
     $(".CodeMirror").css("fontFamily", selected);
 }
-
-function selectFontSize(element) {   
-   const selected = element.options[element.selectedIndex].value;  
+function selectFontSize(element) {
+    const selected = element.options[element.selectedIndex].value;
     $(".CodeMirror").css("fontSize", selected + 'px');
 }
 </script>
@@ -108,11 +123,6 @@ $aCssFiles = [
     $CodeMirror_dir . 'theme/wbce-day.css',          
     $CodeMirror_dir . 'addon/display/fullscreen.css',    
     
-    // make use of theme_fallbacks CSS files 
-    // if the THEME does not deliver them yet
-    get_url_from_path($admin->correct_theme_source('../css/ACPI_backend.css')),
-    get_url_from_path($admin->correct_theme_source('../css/ACPI_content.css')),
-    get_url_from_path($admin->correct_theme_source('../css/ACPI_buttons.css'))
 ];
 I::insertCssFile($aCssFiles, 'HEAD TOP+');
 // Load all the CodeMirror Theme CSS Files

@@ -11,13 +11,8 @@
  */
 
 require '../../config.php';
-require_once WB_PATH . '/framework/class.admin.php';
-$admin = new admin('Pages', 'pages');
-
+$admin = new Admin('Pages', 'pages');
 $admin->clearIDKEY();
-
-// Include the WB functions file
-require_once(WB_PATH . '/framework/functions.php');
 
 // Include page tree and define output
 ob_start();
@@ -44,8 +39,7 @@ $template->set_var('PAGE_TREE', $pageTreeOutput);
 // Insert values into the add page form
 
 // Group list 1
-$query = "SELECT * FROM `" . TABLE_PREFIX . "groups`";
-$get_groups = $database->query($query);
+$get_groups = $database->query("SELECT * FROM `{TP}groups`");
 $template->set_block('main_block', 'group_list_block', 'group_list');
 
 // Insert admin group and current group first
@@ -160,7 +154,7 @@ $module_permissions = $_SESSION['MODULE_PERMISSIONS'];
 
 // Modules list
 $template->set_block('main_block', 'module_list_block', 'module_list');
-$result = $database->query("SELECT * FROM " . TABLE_PREFIX . "addons WHERE type = 'module' AND `function` LIKE '%page%' order by name");
+$result = $database->query("SELECT * FROM `{TP}addons` WHERE type = 'module' AND `function` LIKE '%page%' ORDER BY name");
 if ($result->numRows() > 0) {
     while ($module = $result->fetchRow()) {
 
@@ -168,7 +162,8 @@ if ($result->numRows() > 0) {
         if (!is_numeric(array_search($module['directory'], $module_permissions))) {
             $template->set_var('VALUE', $module['directory']);
             $template->set_var('NAME', $admin->get_module_name($module['directory']));
-            if ($module['directory'] == 'wysiwyg') {
+            $defaultModule = !empty($_SESSION['DEFAULT_MODULE']) ? $_SESSION['DEFAULT_MODULE'] : 'wysiwyg';
+            if ($module['directory'] == $defaultModule) {
                 $template->set_var('SELECTED', ' selected="selected"');
             } else {
                 $template->set_var('SELECTED', '');
@@ -243,8 +238,10 @@ $admin->print_footer();
 function parent_list($parent)
 {
     global $admin, $database, $template, $field_set;
-    $query = "SELECT * FROM " . TABLE_PREFIX . "pages WHERE parent = '$parent' AND visibility!='deleted' ORDER BY position ASC";
-    $get_pages = $database->query($query);
+    $get_pages = $database->query(
+        "SELECT * FROM `{TP}pages` WHERE parent = ? AND visibility != 'deleted' ORDER BY position ASC",
+        [$parent]
+    );
     while ($page = $get_pages->fetchRow()) {
         if ($admin->page_is_visible($page) == false) {
             continue;
@@ -260,20 +257,7 @@ function parent_list($parent)
         if ($page['level'] + 1 < PAGE_LEVEL_LIMIT) {
 
             // Get user perms
-            $admin_groups = explode(',', str_replace('_', '', $page['admin_groups']));
-            $admin_users = explode(',', str_replace('_', '', $page['admin_users']));
-
-            $in_group = false;
-            foreach ($admin->get_groups_id() as $cur_gid) {
-                if (in_array($cur_gid, $admin_groups)) {
-                    $in_group = true;
-                }
-            }
-            if (($in_group) or is_numeric(array_search($admin->get_user_id(), $admin_users))) {
-                $can_modify = true;
-            } else {
-                $can_modify = false;
-            }
+            $can_modify = $admin->isPageAdmin($page['admin_groups'], $page['admin_users']);
 
             // Title -'s prefix
             $title_prefix = '';

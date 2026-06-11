@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Acceso denegado. Verifica el nombre de usuario 
 $MSG['db_unknown_db']         = 'La base de datos no existe. Créala primero o verifica el nombre.';
 $MSG['db_connection_refused'] = 'No se pudo conectar al host. Verifica el nombre del host y el puerto.';
 $MSG['db_connection_failed']  = 'Error de conexión: %s';
+
+$TXT['upgrade_warning']         = 'El script de actualización modifica la base de datos y la estructura de archivos existentes. Se <strong>recomienda encarecidamente</strong> crear una copia de seguridad completa de los archivos y de toda la base de datos antes de continuar.';

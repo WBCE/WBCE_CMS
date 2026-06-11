@@ -18,7 +18,7 @@ function do_eval($_x_codedata, $_x_varlist, &$wb_page_data)
     extract($_x_varlist, EXTR_SKIP);
     try {
         // till PHP 5 eval returns false and proceeds code execution in case of errors
-        if (defined('WB_DEBUG') && WB_DEBUG) {
+        if (defined('WBCE_DEBUG') && WBCE_DEBUG) {
             return(eval($_x_codedata));
         } else {
             return(@eval($_x_codedata));
@@ -26,7 +26,7 @@ function do_eval($_x_codedata, $_x_varlist, &$wb_page_data)
     } catch (ParseError $e) {
         // PHP 7+ throws a ParseError exception if error occur inside eval
         // show error message caused by missformed Droplet code so we know what to be fixed
-        if (defined('WB_DEBUG') && WB_DEBUG) {
+        if (defined('WBCE_DEBUG') && WBCE_DEBUG) {
             return '<strong>Droplet error: </strong>' . $e->getMessage() . '<br />';
         }
     }
@@ -92,7 +92,7 @@ function processDroplets( &$wb_page_data, $position = 'frontend' ) {
 // check returnvalue (must be a string of 1 char at least or (bool)true
                     if ($newvalue == '' && $newvalue !== true) {
                         // do debug output on debug mode
-                        if(defined ('WB_DEBUG') and WB_DEBUG === true){
+                        if(defined ('WBCE_DEBUG') and WBCE_DEBUG === true){
                             $newvalue = '<span class="mod_droplets_err">Error in: '.$droplet.', no valid returnvalue.</span>';
                         } else {
                             $newvalue = true;

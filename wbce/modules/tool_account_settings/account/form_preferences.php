@@ -52,7 +52,7 @@ require_once ADMIN_PATH . '/interface/time_formats.php';
 require_once ADMIN_PATH . '/interface/date_formats.php';
 
 // Get the template file for preferences
-$oMsgBox = new MessageBox();
+$oMsgBox = new Alerts(useSession: true); // reads session messages written by check_preferences.php via ->redirect()
 $aToTwig = array(
     'EMAIL'         => $sEmail,
     'DISPLAY_NAME'  => $sDisplayName,

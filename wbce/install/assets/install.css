@@ -60,6 +60,8 @@ body::before {
   text-align: center;
   margin-bottom: 20px;
   animation: fadeDown .5s ease both;
+  position: relative;
+  z-index: 10;
 }
 .logo-wrap_ {
   display: inline-flex;
@@ -398,9 +400,14 @@ input.error:focus, select.error:focus {
 .page-footer {
   text-align: center;
   margin-top: 28px;
-  font-size: .78rem;
+  font-size: .7rem;
   color: var(--text-muted);
   animation: fadeUp .4s .45s ease both;
+}
+.page-footer a {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-decoration: none;
 }
 span.version-badge, span.lang-badge {
   display: inline-flex;
@@ -503,40 +510,20 @@ span.lang-badge.curr-lang{
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Password generator ──────────────────────────────────── */
-.pw-gen-wrap {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+/* ── wbePwGen: match installer blue palette ──────────────── */
+.wpg-btn {
+    background: var(--blue-pale, #EBF1FB);
+    border-color: var(--blue-muted, #C5D8F5);
+    color: var(--blue-brand, #1F54A4);
 }
-.pw-gen-wrap input { flex: 1; }
+.wpg-btn:hover {
+    background: var(--blue-muted, #C5D8F5);
+    border-color: var(--blue-muted, #C5D8F5);
+    color: var(--blue-brand, #1F54A4);
+}
 
-#btn-gen-pw {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 13px;
-  background: var(--blue-pale, #EBF1FB);
-  border: 1.5px solid var(--blue-muted, #C5D8F5);
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: .82rem;
-  font-weight: 600;
-  color: var(--blue-brand, #1F54A4);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background .15s;
-  flex-shrink: 0;
-}
-#btn-gen-pw:hover { background: var(--blue-muted, #C5D8F5); }
-
-.pw-generated-hint {
-  grid-column: 2;
-  font-size: .75rem;
-  color: var(--text-muted, #94a3b8);
-  min-height: 1.2em;
-}
-.pw-generated-hint.visible { color: var(--green, #16a34a); }
+/* Confirm feedback sits in column 2 of the field-row grid */
+.field-row .wpg-confirm { grid-column: 2; }
 
 /* ── Validation: wrong fields (from field_error()) ───────── */
 input.wrong, select.wrong {

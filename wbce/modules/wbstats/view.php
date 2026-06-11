@@ -20,10 +20,10 @@
 if(defined('WB_PATH') == false) die("Cannot access this file directly");
 //include (dirname(__FILE__).'/login.php');
 
-global $table_day,$table_ips,$table_pages,$table_ref,$table_key,$table_lang, $table_brwsr, $table_hist, $code2lang,$WS;
+global $table_day,$table_ips,$table_pages,$table_ref,$table_key,$table_lang, $table_brwsr, $table_hist, $CODE2LANG,$WS;
 $mpath = WB_PATH.'/modules/wbstats/';
 $lang = $mpath . '/languages/' . LANGUAGE . '.php';
-require_once(!file_exists($lang) ? $mpath . '/languages/EN.php' : $lang );
+require(!file_exists($lang) ? $mpath . '/languages/EN.php' : $lang );
 require_once( $mpath .'/info.php');
 require_once($mpath . '/class.stats.php');
 $stats = new stats();

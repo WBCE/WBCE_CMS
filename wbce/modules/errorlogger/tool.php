@@ -30,7 +30,7 @@ if (!$admin->get_permission('admintools')) {
 }
 
 $link = ADMIN_URL.'/admintools/tool.php?tool=errorlogger';
-$del = "javascript:confirm_link('Are you sure you want to delete the errorlog?','$link&delete=1');";
+$del = "javascript:confirm_link('Are you sure you want to delete the errorlog?','{$link}&delete=1');";
 
 
 // Use colored view, stored in cookie
@@ -56,7 +56,7 @@ if (isset($_COOKIE[$cookie])) {
     $colorclass = " color";
 }
 
-$res = array("Great news. No errors reported");
+$res = array($TXT['NO_ERROR_REPORT']);
 
 $lines = 250;
 $warning = '';
@@ -74,6 +74,23 @@ if (isset($_GET['delete'])) {
     }
 }
 
+// ── File Based Settings — toggle handlers ────────────────────────────────────
+// Active (1) → set constant to true.
+// Inactive (0) → delete the entry entirely to keep the global scope clean.
+foreach (['PDO_CANONICAL_DEBUG', 'SQL_DEBUG', 'WBCE_DEBUG'] as $cfg) {
+    if (isset($_GET[$cfg]) && in_array($_GET[$cfg], ['0', '1'], true)) {
+        if ($_GET[$cfg] === '1') {
+            Settings::setFileBasedSetting($cfg, true);
+        } else {
+            Settings::deleteFileBasedSetting($cfg);
+        }
+        header("Location: " . $link);
+        exit;
+    }
+}
+// ── END: File Based Settings ─────────────────────────────────────────────────
+
+
 if (!isset($_SESSION['lastview'])) {
     $_SESSION['lastview'] = date('c');
 }
@@ -84,7 +101,7 @@ if (file_exists($logfile)) {
     $res = array_slice($res, -$lines);
 }
 if (count($res) == 0) {
-    $res = array("Great news. No errors reported");
+    $res = array($TXT['NO_ERROR_REPORT']);
 }
 $row = "even";
 $last = strtotime($_SESSION['lastview']);
@@ -93,14 +110,14 @@ $tmpErrorLevel = error_reporting(-1);
 $warning .= $tmpErrorLevel != E_ALL ? '<div class="errorlevel">Note: Do not forget to set your error reporting to the maximum level! Currently this is not the case.</div>':'';
 ?>
 
+    <h2><?=$module_name?></h2>
 <div class="tool-header">
-    <h2>Errorlog viewer</h2>
     <ul class="header-links">
-        <li class="reload-link"><a href="<?=$link ?>"><i class="fa fa-refresh"></i> Reload</a></li>
-        <li class="delete-link"><a href="<?=$del ?>"><i class="fa fa-trash"></i> Delete logfile</a></li>
-        <li class="viewlink<?=$view == '0' ? ' active':''?>"><a href="<?=$link.'&color=0'?>">Plain View</a></li> 
-        <li class="viewlink<?=$view == '1' ? ' active':''?>"><a href="<?=$link.'&color=1'?>">Color View</a></li> 
-        <li class="viewlink<?=$view == '2' ? ' active':''?>"><a href="<?=$link.'&color=2'?>">Table View</a></li>
+        <li class="reload-link"><a href="<?=$link ?>"><i class="fa fa-refresh"></i> <?=$TXT['RELOAD']?></a></li>
+        <li class="delete-link"><a href="<?=$del ?>"><i class="fa fa-trash"></i> <?=$TXT['DELETE_LOGFILE']?></a></li>
+        <li class="viewlink<?=$view == '0' ? ' active':''?>"><a href="<?=$link.'&color=0'?>"><?=$TXT['PLAIN_VIEW']?></a></li> 
+        <li class="viewlink<?=$view == '1' ? ' active':''?>"><a href="<?=$link.'&color=1'?>"><?=$TXT['COLOR_VIEW']?></a></li> 
+        <li class="viewlink<?=$view == '2' ? ' active':''?>"><a href="<?=$link.'&color=2'?>"><?=$TXT['TABLE_VIEW']?></a></li>
     </ul>
 </div>
 <?=$warning ?>
@@ -182,11 +199,37 @@ if ($view == '0' or $view == '1') {
     </table>
     <?php
     } else {
-        echo 'Great news. No errors reported';
+        echo $TXT['NO_ERROR_REPORT'];
     }
+}
+
+function debugToggleLink(string $url, string $param, string $label): string {
+    $state = defined($param) ? (int) constant($param) : 0;
+    $icon  = $state
+        ? '<span style="color:green"><i class="fa fa-check-circle"></i></span>'
+        : '<span style="color:red"><i class="fa fa-ban"></i></span>';
+    $next  = $state ? '0' : '1';
+    // WBCE_DEBUG is locked while WB_DEBUG is still hardcoded in config.php —
+    // DEPRECATED_WB_DEBUG is set by initialize.php in exactly that case.
+    if ($param === 'WBCE_DEBUG' && defined('DEPRECATED_WB_DEBUG')) {
+        $str = L_('MSG:HARDCODED_PARAM_DETECTED', 'WB_DEBUG');
+        return "<li><a class='disabled' title='{$str}'>{$icon} {$label}</a></li>";
+    }
+    return "<li><a href=\"{$url}&{$param}={$next}\">{$icon} {$label}</a></li>";
 }
 ?>
 </div>
+<?php if (defined('DEPRECATED_WB_DEBUG')): ?>
+<br>
+<div class="constants-info">
+    <p><?= $MSG['WB_DEBUG_DEPRECATED'] ?></p>
+</div>
+<?php endif ?>
+<ul class="footer-links">
+    <?= debugToggleLink($link, 'WBCE_DEBUG',           'WBCE Debug') ?>
+    <?= debugToggleLink($link, 'SQL_DEBUG',           'SQL Debug') ?>
+    <?= debugToggleLink($link, 'PDO_CANONICAL_DEBUG', 'PDO Syntax Debug') ?>
+</ul>
 <?php
 function log_to_array($aLines)
 {

@@ -74,6 +74,14 @@
 
     form.querySelector('.warningbox') && (form.querySelector('.warningbox').style.display = 'none');
 
+    // Hide language switcher — no longer useful once install is running
+    var langSwitcher = document.querySelector('.language-switcher');
+    if (langSwitcher) {
+      langSwitcher.style.transition = 'opacity .3s';
+      langSwitcher.style.opacity = '0';
+      setTimeout(function () { langSwitcher.style.display = 'none'; }, 320);
+    }
+
     // Progress-Card sicher anzeigen
     setTimeout(() => {
       progressCard.style.display = 'block';

@@ -98,3 +98,5 @@ $MSG['db_access_denied']      = 'Käyttöoikeus evätty. Tarkista käyttäjätun
 $MSG['db_unknown_db']         = 'Tietokantaa ei ole olemassa. Luo se ensin tai tarkista nimi.';
 $MSG['db_connection_refused'] = 'Yhteyttä palvelimeen ei saatu. Tarkista palvelimen nimi ja portti.';
 $MSG['db_connection_failed']  = 'Yhteys epäonnistui: %s';
+
+$TXT['upgrade_warning']         = 'Päivitysskripti muokkaa olemassa olevaa tietokantaa ja tiedostorakennetta. On <strong>erittäin suositeltavaa</strong> luoda täydellinen varmuuskopio tiedostoista ja koko tietokannasta ennen jatkamista.';
