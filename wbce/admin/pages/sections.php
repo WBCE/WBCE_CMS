@@ -57,19 +57,19 @@ $backlink = ADMIN_URL . '/pages/sections.php?page_id=' . $page_id;
 switch ($action) {
     case 'delete':
         $action = 'show';
-        $sSql = 'SELECT `module` FROM `{TP}sections` WHERE `section_id` = ' . $section_id;
-        if (($sModDir = $database->get_one($sSql)) && ($section_id > 0)) {
+        $sModDir = $database->fetchValue('SELECT `module` FROM `{TP}sections` WHERE `section_id` = ?', [$section_id]);
+        if ($sModDir && ($section_id > 0)) {
             // Include the modules delete file if it exists
             $sDeleteFile = WB_PATH . '/modules/' . $sModDir . '/delete.php';
             if (file_exists($sDeleteFile)) {
                 require $sDeleteFile;
             }
-            $sSql = 'DELETE FROM `{TP}sections` WHERE `section_id` = ' . $section_id . ' LIMIT 1';
-            if (!$database->query($sSql)) {
+            $database->query('DELETE FROM `{TP}sections` WHERE `section_id` = ? LIMIT 1', [$section_id]);
+            if ($database->hasError()) {
                 if ($admin_header) {
                     $admin->print_header();
                 }
-                $admin->print_error($database->get_error(), $backlink);
+                $admin->print_error($database->getError(), $backlink);
             } else {
                 require_once WB_PATH . '/framework/class.order.php';
                 $order = new order('{TP}sections', 'position', 'section_id', 'page_id');
@@ -111,7 +111,7 @@ switch ($action) {
         );
         if ($database->insertRow('{TP}sections', $aInsert)) {
             // Get the section id
-            $section_id = $database->get_one("SELECT LAST_INSERT_ID()");
+            $section_id = $database->getLastInsertId();
             // Include the selected modules add file if it exists
             $sAddFile = WB_PATH . '/modules/' . $module . '/add.php';
             if (file_exists($sAddFile)) {
@@ -121,11 +121,11 @@ switch ($action) {
             $alerts->sessionToast($TEXT['SUCCESS'], 'success');
             header('Location: ' . ADMIN_URL . '/pages/sections.php?page_id=' . $page_id);
             exit;
-        } elseif ($database->is_error()) {
+        } elseif ($database->hasError()) {
             if ($admin_header) {
                 $admin->print_header();
             }
-            $admin->print_error($database->get_error());
+            $admin->print_error($database->getError());
         }
         break;
 
@@ -139,8 +139,10 @@ switch ($action) {
             $admin->print_header();
         }
         // Get perms
-        $sSql = 'SELECT `admin_groups`,`admin_users` FROM `{TP}pages` WHERE `page_id` = ' . $page_id;
-        $results = $database->query($sSql);
+        $results = $database->query(
+            'SELECT `admin_groups`, `admin_users` FROM `{TP}pages` WHERE `page_id` = ?',
+            [$page_id]
+        );
 
         $results_array = $results->fetchRow(MYSQLI_ASSOC);
         if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_users'])) {
@@ -149,11 +151,11 @@ switch ($action) {
         }
 
         // Get page details
-        $rPageDetails = $database->query('SELECT * FROM `{TP}pages` WHERE `page_id` = ' . $page_id);
+        $rPageDetails = $database->query('SELECT * FROM `{TP}pages` WHERE `page_id` = ?', [$page_id]);
 
-        if ($database->is_error()) {
+        if ($database->hasError()) {
             // $admin->print_header();
-            $admin->print_error($database->get_error());
+            $admin->print_error($database->getError());
         }
         if ($rPageDetails->numRows() == 0) {
             // $admin->print_header();
@@ -255,8 +257,10 @@ switch ($action) {
             )
         );
 
-        $sSql = 'SELECT * FROM `{TP}sections` WHERE `page_id` = ' . $page_id . ' ORDER BY `position` ASC';
-        $rSections = $database->query($sSql);
+        $rSections = $database->query(
+            'SELECT * FROM `{TP}sections` WHERE `page_id` = ? ORDER BY `position` ASC',
+            [$page_id]
+        );
 
         $iSectionsCount = $rSections->numRows();
 
@@ -276,8 +280,7 @@ switch ($action) {
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
                     // Get the modules real name
                     $sLinkEditSection = '';
-                    $sSql = 'SELECT `name` FROM `{TP}addons` WHERE `directory` = "' . $section['module'] . '"';
-                    if (!$database->get_one($sSql) || !file_exists(WB_PATH . '/modules/' . $section['module'])) {
+                    if (!$database->fetchValue('SELECT `name` FROM `{TP}addons` WHERE `directory` = ?', [$section['module']]) || !file_exists(WB_PATH . '/modules/' . $section['module'])) {
                         $sLinkEditSection = '<span class="module_disabled">' . $section['module'] . '</span>';
                     }
 
@@ -429,15 +432,16 @@ switch ($action) {
 
         // Now add the calendars -- remember to set the range to [1970, 2037] if the date is used as timestamp!
         // The loop is simply a copy from above.
-        $sSql = 'SELECT `section_id`,`module` FROM `{TP}sections` WHERE page_id = ' . $page_id . ' ORDER BY `position` ASC';
-        $rSections = $database->query($sSql);
+        $rSections = $database->query(
+            'SELECT `section_id`, `module` FROM `{TP}sections` WHERE `page_id` = ? ORDER BY `position` ASC',
+            [$page_id]
+        );
 
         $iSectionsCount = $rSections->numRows();
         if ($iSectionsCount > 0) {
             while ($section = $rSections->fetchRow(MYSQLI_ASSOC)) {
                 // Get the modules real name
-                $sSql = 'SELECT `name` FROM `{TP}addons` WHERE `directory` = "' . $section['module'] . '"';
-                $module_name = $database->get_one($sSql);
+                $module_name = $database->fetchValue('SELECT `name` FROM `{TP}addons` WHERE `directory` = ?', [$section['module']]);
 
                 if (!is_numeric(array_search($section['module'], $module_permissions))) {
                     $oTemplate->set_var(
@@ -458,8 +462,10 @@ switch ($action) {
 
         // Work-out if we should show the "Add Section" form
 
-        $sSql = "SELECT `section_id` FROM `{TP}sections` WHERE `page_id` = " . $page_id . " AND `module` = 'menu_link'";
-        $rSections = $database->query($sSql);
+        $rSections = $database->query(
+            "SELECT `section_id` FROM `{TP}sections` WHERE `page_id` = ? AND `module` = 'menu_link'",
+            [$page_id]
+        );
         if ($rSections->numRows() == 0) {
             // Query for all the Modules which should appear in the dropdown menu
             $sWhereAnd = " AND `directory` != 'menu_link' ";

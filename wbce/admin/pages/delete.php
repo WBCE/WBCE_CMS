@@ -12,26 +12,32 @@
 
 // Create new admin object and print admin header
 require '../../config.php';
-$admin = new admin('Pages', 'pages_delete');
+$admin   = new Admin('Pages', 'pages_delete', false);
+$alerts  = new Alerts();
+$backUrl = ADMIN_URL . '/pages/index.php';
 
 if ((!($page_id = $admin->checkIDKEY('page_id', 0, $_SERVER['REQUEST_METHOD'])))) {
-    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS']);
+    $admin->print_header();
+    $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], true);
     exit();
 }
 
 // Get perms
 if (!$admin->get_page_permission($page_id, 'admin')) {
-    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
+    $admin->print_header();
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], true);
 }
 
 
 // Find out more about the page
-$resPage = $database->query("SELECT * FROM {TP}pages WHERE page_id = '$page_id'");
-if ($database->is_error()) {
-    $admin->print_error($database->get_error());
+$resPage = $database->query("SELECT * FROM `{TP}pages` WHERE `page_id` = ?", [$page_id]);
+if ($database->hasError()) {
+    $admin->print_header();
+    $admin->print_error($database->getError(), true);
 }
 if ($resPage->numRows() == 0) {
-    $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
+    $admin->print_header();
+    $admin->print_error($MESSAGE['PAGES_NOT_FOUND'], true);
 }
 
 $aPage = $resPage->fetchRow(MYSQLI_ASSOC);
@@ -47,14 +53,11 @@ if (file_exists($sFilePath)) {
 if (PAGE_TRASH != 'disabled' and $visibility != 'deleted') {
     // Page trash is enabled and page has not yet been deleted
     // Update the page visibility to 'deleted'
-    $database->query("UPDATE `{TP}pages` SET `visibility` = 'deleted' WHERE `page_id` = '$page_id.' LIMIT 1");
-
-    // Update the page visibility to 'deleted'
-    $database->updateRow('{TP}pages', 'page_id', array(
-        'page_id' => $page_id,
-        'visibility' => 'deleted',
-        'visibility_backup' => $aPage['visibility']
-    ));
+    $database->upsertRow('{TP}pages', 'page_id', [
+        'page_id'           => $page_id,
+        'visibility'        => 'deleted',
+        'visibility_backup' => $aPage['visibility'],
+    ]);
 
     trash_subs($page_id); // Run trash subs for this page
 } else {
@@ -73,14 +76,14 @@ if (PAGE_TRASH != 'disabled' and $visibility != 'deleted') {
 }
 
 // Check if there is a db error, otherwise say successful
-if ($database->is_error()) {
-    $admin->print_error($database->get_error());
+if ($database->hasError()) {
+    $admin->print_header();
+    $admin->print_error($database->getError(), true);
 } else {
-    $admin->print_success($MESSAGE['PAGES_DELETED']);
+    $alerts->sessionToast($TEXT['SUCCESS'], 'success');
+    header('Location: ' . $backUrl);
+    exit;
 }
-
-// Print admin footer
-$admin->print_footer();
 
 // Function to change all child pages visibility to deleted
 function trash_subs($iParentID = 0)
@@ -88,20 +91,19 @@ function trash_subs($iParentID = 0)
     global $database;
     // Query pages
     $rChildPages = $database->query(
-        "SELECT `page_id`, `visibility` FROM `{TP}pages` 
-            WHERE `parent` = '$iParentID' 
-            ORDER BY `position` ASC"
+        "SELECT `page_id`, `visibility` FROM `{TP}pages` WHERE `parent` = ? ORDER BY `position` ASC",
+        [$iParentID]
     );
     // Check if there are any pages to show
     if ($rChildPages->numRows() > 0) {
         // Loop through pages
         while ($row = $rChildPages->fetchRow()) {
             // Update the page visibility to 'deleted'
-            $database->updateRow('{TP}pages', 'page_id', array(
-                'page_id' => $row['page_id'],
-                'visibility' => 'deleted',
-                'visibility_backup' => $row['visibility']
-            ));
+            $database->upsertRow('{TP}pages', 'page_id', [
+                'page_id'           => $row['page_id'],
+                'visibility'        => 'deleted',
+                'visibility_backup' => $row['visibility'],
+            ]);
             // Run this function again for all sub-pages
             trash_subs($row['page_id']);
         }

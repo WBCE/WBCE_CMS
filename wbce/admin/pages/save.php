@@ -43,38 +43,37 @@ if (!$admin->checkFTAN()) {
 $admin->print_header();
 
 // Get perms
-$sql = 'SELECT `admin_groups`,`admin_users` '
-    . 'FROM `' . TABLE_PREFIX . 'pages` '
-    . 'WHERE `page_id` = ' . $page_id;
-$results = $database->query($sql);
+$results = $database->query(
+    'SELECT `admin_groups`, `admin_users` FROM `{TP}pages` WHERE `page_id` = ?',
+    [$page_id]
+);
 $results_array = $results->fetchRow();
 if (!$admin->isInGroup($results_array['admin_users']) &&
     !$admin->is_group_match($admin->get_groups_id(), $results_array['admin_groups'])) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 // Get page module
-$sql = 'SELECT `module` FROM `' . TABLE_PREFIX . 'sections` '
-    . 'WHERE `page_id`=' . $page_id . ' AND `section_id`=' . $section_id;
-$module = $database->get_one($sql);
+$module = $database->fetchValue(
+    'SELECT `module` FROM `{TP}sections` WHERE `page_id` = ? AND `section_id` = ?',
+    [$page_id, $section_id]
+);
 if (!$module) {
-    $admin->print_error($database->is_error() ? $database->get_error() : $MESSAGE['PAGES_NOT_FOUND']);
+    $admin->print_error($database->hasError() ? $database->getError() : $MESSAGE['PAGES_NOT_FOUND']);
 }
 
 // Update the pages table
-$now = time();
-$sql = 'UPDATE `' . TABLE_PREFIX . 'pages` '
-    . 'SET `modified_when`=' . $now . ', '
-    . '`modified_by`=' . $admin->get_user_id() . ' '
-    . 'WHERE `page_id`=' . $page_id;
-$database->query($sql);
+$database->query(
+    'UPDATE `{TP}pages` SET `modified_when` = ?, `modified_by` = ? WHERE `page_id` = ?',
+    [time(), $admin->get_user_id(), $page_id]
+);
 
 // Include the modules saving script if it exists
 if (file_exists(WB_PATH . '/modules/' . $module . '/save.php')) {
     include_once(WB_PATH . '/modules/' . $module . '/save.php');
 }
 // Check if there is a db error, otherwise say successful
-if ($database->is_error()) {
-    $admin->print_error($database->get_error(), ADMIN_URL . '/pages/modify.php?page_id=' . $page_id);
+if ($database->hasError()) {
+    $admin->print_error($database->getError(), ADMIN_URL . '/pages/modify.php?page_id=' . $page_id);
 } else {
     $admin->print_success($MESSAGE['PAGES_SAVED'], ADMIN_URL . '/pages/modify.php?page_id=' . $page_id);
 }

@@ -20,20 +20,25 @@ if (!isset($_GET['page_id']) or !is_numeric($_GET['page_id'])) {
 
 // Create new admin object and print admin header
 require '../../config.php';
-$admin = new admin('Pages', 'pages_delete');
+$admin   = new Admin('Pages', 'pages_delete', false);
+$alerts  = new Alerts();
+$backUrl = ADMIN_URL . '/pages/index.php';
 
 
 // Get Page Data from Database
-$resPage = $database->query("SELECT * FROM `{TP}pages` WHERE `page_id` = " . $page_id);
-if ($database->is_error()) {
-    $admin->print_error($database->get_error());
+$resPage = $database->query("SELECT * FROM `{TP}pages` WHERE `page_id` = ?", [$page_id]);
+if ($database->hasError()) {
+    $admin->print_header();
+    $admin->print_error($database->getError(), true);
 }
 if ($resPage->numRows() == 0) {
-    $admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
+    $admin->print_header();
+    $admin->print_error($MESSAGE['PAGES_NOT_FOUND'], true);
 }
 $aPage = $resPage->fetchRow(MYSQLI_ASSOC);
 if (!$admin->isPageAdmin($aPage['admin_groups'], $aPage['admin_users'])) {
-    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
+    $admin->print_header();
+    $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS'], true);
 }
 
 $visibility = $aPage['visibility'];
@@ -42,14 +47,10 @@ if (PAGE_TRASH) {
     if ($visibility == 'deleted') {
         // Reset the visibility to its previous status
         $sNewVisibility = $aPage['visibility_backup'] != '' ? $aPage['visibility_backup'] : 'public';
-        $database->updateRow(
-            '{TP}pages',
-            'page_id',
-            array(
-                'visibility' => $sNewVisibility,
-                'page_id' => $page_id
-            )
-        );
+        $database->upsertRow('{TP}pages', 'page_id', [
+            'page_id'    => $page_id,
+            'visibility' => $sNewVisibility,
+        ]);
 
         // Run trash subs for this page
         restore_subs($page_id);
@@ -62,14 +63,14 @@ if (!file_exists($sFilePath)) {
 }
 
 // Check if there is a db error, otherwise say successful
-if ($database->is_error()) {
-    $admin->print_error($database->get_error());
+if ($database->hasError()) {
+    $admin->print_header();
+    $admin->print_error($database->getError(), true);
 } else {
-    $admin->print_success($MESSAGE['PAGES_RESTORED']);
+    $alerts->sessionToast($TEXT['SUCCESS'], 'success');
+    header('Location: ' . $backUrl);
+    exit;
 }
-
-// Print admin footer
-$admin->print_footer();
 
 // Function to change all child pages visibility to deleted
 function restore_subs($parent = 0)
@@ -77,9 +78,8 @@ function restore_subs($parent = 0)
     global $database;
     // Query pages
     $query_menu = $database->query(
-        "SELECT `page_id`, `visibility_backup` 
-            FROM `{TP}pages` WHERE `parent` = '" . $parent . "' 
-            ORDER BY `position` ASC"
+        "SELECT `page_id`, `visibility_backup` FROM `{TP}pages` WHERE `parent` = ? ORDER BY `position` ASC",
+        [$parent]
     );
     // Check if there are any pages to show
     if ($query_menu->numRows() > 0) {
@@ -87,14 +87,10 @@ function restore_subs($parent = 0)
         while ($row = $query_menu->fetchRow()) {
             // Reset the visibility to its previous status
             $sNewVisibility = $row['visibility_backup'] != '' ? $row['visibility_backup'] : 'public';
-            $database->updateRow(
-                '{TP}pages',
-                'page_id',
-                array(
-                    'visibility' => $sNewVisibility,
-                    'page_id' => $row['page_id']
-                )
-            );
+            $database->upsertRow('{TP}pages', 'page_id', [
+                'page_id'    => $row['page_id'],
+                'visibility' => $sNewVisibility,
+            ]);
 
             // Run this function again for all sub-pages
             restore_subs($row['page_id']);

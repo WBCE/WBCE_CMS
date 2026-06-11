@@ -42,8 +42,8 @@ $admin->print_header();
 $page_title = remove_droplet_brackets($admin->get_post_escaped('page_title'));
 $menu_title = remove_droplet_brackets($admin->get_post_escaped('menu_title'));
 $the_link = remove_droplet_brackets($admin->get_post_escaped('link'));
-$description = remove_droplet_brackets($admin->add_slashes($admin->get_post('description')));
-$keywords = remove_droplet_brackets($admin->add_slashes($admin->get_post('keywords')));
+$description = remove_droplet_brackets($admin->get_post('description'));
+$keywords = remove_droplet_brackets($admin->get_post('keywords'));
 $page_code = intval($admin->get_post('page_code'));
 $parent = intval($admin->get_post('parent')); // fix secunia 2010-91-3
 $template = preg_replace('/[^a-z0-9_-]/i', "", $admin->get_post('template')); // fix secunia 2010-93-3
@@ -73,15 +73,14 @@ if ($the_link == '' || substr($the_link, 0, 1) == '.') {
 
 // Get existing perms
 // $database = new database();
-$sSql = 'SELECT `parent`,`link`,`position`,`admin_groups`,`admin_users` FROM `{TP}pages` WHERE `page_id`=' . $page_id;
-$results = $database->query($sSql);
+$results = $database->query('SELECT `parent`,`link`,`position`,`admin_groups`,`admin_users` FROM `{TP}pages` WHERE `page_id` = ?', [$page_id]);
 
 $results_array = $results->fetchRow();
 $old_parent = $results_array['parent'];
 $old_link = $results_array['link'];
 $old_position = $results_array['position'];
 // Work-out if we should check for existing page_code
-$field_set = $database->field_exists(TABLE_PREFIX . 'pages', 'page_code');
+$field_set = $database->fieldExists('{TP}pages', 'page_code');
 
 if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_users'])) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
@@ -126,7 +125,7 @@ if ($parent == '0') {
         $filename = WB_PATH . PAGES_DIRECTORY . '/' . page_filename($the_link) . PAGE_EXTENSION;
     }
 } else {
-    $sParentLink = $database->get_one('SELECT `link` FROM `{TP}pages` WHERE `page_id` = ' . $parent);
+    $sParentLink = $database->fetchValue('SELECT `link` FROM `{TP}pages` WHERE `page_id` = ?', [$parent]);
     $filename = WB_PATH . PAGES_DIRECTORY . $sParentLink . '/' . page_filename($the_link) . PAGE_EXTENSION;
     make_dir(WB_PATH . PAGES_DIRECTORY . $sParentLink);
     $link = $sParentLink . '/' . page_filename($the_link);
@@ -134,17 +133,12 @@ if ($parent == '0') {
 
 
 // Check if a page with same page filename exists
-// $database = new database();
-$sSql = 'SELECT `page_id`,`page_title` FROM `{TP}pages` WHERE `link` = "' . $link . '" AND `page_id` != ' . $page_id;
-$get_same_page = $database->query($sSql);
+$get_same_page = $database->query('SELECT `page_id`,`page_title` FROM `{TP}pages` WHERE `link` = ? AND `page_id` != ?', [$link, $page_id]);
 if ($get_same_page->numRows() > 0) {
     $admin->print_error($MESSAGE['PAGES_PAGE_EXISTS']);
 }
 // Update page with new order
-// Update page with new order
-$sSql = 'UPDATE `{TP}pages` SET `parent`=' . $parent . ', `position`=' . $position . ' WHERE `page_id`=' . $page_id . '';
-// $database = new database();
-$database->query($sSql);
+$database->query('UPDATE `{TP}pages` SET `parent` = ?, `position` = ? WHERE `page_id` = ?', [$parent, $position, $page_id]);
 
 
 $aUpdate = array(
@@ -172,7 +166,7 @@ $bFieldSet = $field_set && (file_exists(WB_PATH . '/modules/mod_multilingual/upd
 if ((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES) && $bFieldSet) {
     $aUpdate['page_code'] = (int)$page_code;
 }
-$database->updateRow('{TP}pages', 'page_id', $aUpdate);
+$database->upsertRow('{TP}pages', 'page_id', $aUpdate);
 
 
 $target_url = ADMIN_URL . '/pages/settings.php?page_id=' . $page_id;
@@ -180,8 +174,8 @@ if ($buttontarget == 'saveandback') {
     $target_url = ADMIN_URL . '/pages/index.php';
 }
 
-if ($database->is_error()) {
-    $admin->print_error($database->get_error(), $target_url);
+if ($database->hasError()) {
+    $admin->print_error($database->getError(), $target_url);
 }
 // Clean old order if needed
 if ($parent != $old_parent) {
@@ -213,10 +207,8 @@ if (!is_writable(WB_PATH . PAGES_DIRECTORY . '/')) {
         $old_link_len = strlen($old_link);
         $sql = '';
         $query_subs = $database->query(
-            "SELECT page_id, link, level 
-                FROM `{TP}pages`
-                WHERE `link` LIKE '%$old_link/%' 
-                ORDER BY LEVEL ASC"
+            'SELECT `page_id`, `link`, `level` FROM `{TP}pages` WHERE `link` LIKE ? ORDER BY `level` ASC',
+            ['%' . $old_link . '/%']
         );
         if ($query_subs->numRows() > 0) {
             while ($sub = $query_subs->fetchRow()) {
@@ -229,7 +221,7 @@ if (!is_writable(WB_PATH . PAGES_DIRECTORY . '/')) {
                     // Work out level
                     $new_sub_level = level_count($sub['page_id']);
                     // Update level and link
-                    $database->query("UPDATE {TP}pages SET link = '$new_sub_link', level = '$new_sub_level' WHERE page_id = '" . $sub['page_id'] . "' LIMIT 1");
+                    $database->query('UPDATE `{TP}pages` SET `link` = ?, `level` = ? WHERE `page_id` = ? LIMIT 1', [$new_sub_link, $new_sub_level, $sub['page_id']]);
                     // Re-write the access file for this page
                     $old_subpage_file = WB_PATH . PAGES_DIRECTORY . $new_sub_link . PAGE_EXTENSION;
                     if (file_exists($old_subpage_file)) {
@@ -252,8 +244,8 @@ if ($visibility == 'none') {
 }
 
 // Check if there is a db error, otherwise say successful
-if ($database->is_error()) {
-    $admin->print_error($database->get_error(), $target_url);
+if ($database->hasError()) {
+    $admin->print_error($database->getError(), $target_url);
 } else {
     $admin->print_success($MESSAGE['PAGES_SAVED_SETTINGS'], $target_url);
 }
@@ -267,14 +259,19 @@ function fix_page_trail($parent, $root_parent)
     // Get objects and vars from outside this function
     global $admin, $template, $database, $TEXT, $MESSAGE;
     // Get page list from database
-    // $database = new database();
-    $query = "SELECT page_id FROM {TP}pages WHERE parent = '$parent'";
-    $get_pages = $database->query($query);
+    $get_pages = $database->query('SELECT `page_id` FROM `{TP}pages` WHERE `parent` = ?', [$parent]);
     // Insert values into main page list
     if ($get_pages->numRows() > 0) {
         while ($page = $get_pages->fetchRow()) {
             // Fix page trail
-            $database->query("UPDATE {TP}pages SET " . ($root_parent != 0 ? "root_parent = '$root_parent', " : "") . " page_trail = '" . get_page_trail($page['page_id']) . "' WHERE page_id = '" . $page['page_id'] . "'");
+            $trailParts  = ['`page_trail` = ?'];
+            $trailParams = [get_page_trail($page['page_id'])];
+            if ($root_parent != 0) {
+                array_unshift($trailParts, '`root_parent` = ?');
+                array_unshift($trailParams, $root_parent);
+            }
+            $trailParams[] = $page['page_id'];
+            $database->query('UPDATE `{TP}pages` SET ' . implode(', ', $trailParts) . ' WHERE `page_id` = ?', $trailParams);
             // Run this query on subs
             fix_page_trail($page['page_id'], $root_parent);
         }

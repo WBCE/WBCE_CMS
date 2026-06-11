@@ -37,7 +37,7 @@ if (!$admin->checkFTAN()) {
 
 // Get perms
 // $database = new database();
-$results = $database->query("SELECT admin_groups,admin_users FROM {TP}pages WHERE page_id = '$page_id'");
+$results = $database->query("SELECT `admin_groups`, `admin_users` FROM `{TP}pages` WHERE `page_id` = ?", [$page_id]);
 $results_array = $results->fetchRow();
 if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_users'])) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
@@ -45,11 +45,10 @@ if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_u
 
 // Get page details
 // $database = new database();
-$query = "SELECT * FROM {TP}pages WHERE page_id = '$page_id'";
-$results = $database->query($query);
-if ($database->is_error()) {
+$results = $database->query("SELECT * FROM `{TP}pages` WHERE `page_id` = ?", [$page_id]);
+if ($database->hasError()) {
     $admin->print_header();
-    $admin->print_error($database->get_error());
+    $admin->print_error($database->getError());
 }
 if ($results->numRows() == 0) {
     $admin->print_header();
@@ -61,29 +60,29 @@ $results_array = $results->fetchRow();
 $module_permissions = $_SESSION['MODULE_PERMISSIONS'];
 
 // Loop through sections
-$query_sections = $database->query("SELECT section_id,module,position FROM {TP}sections WHERE page_id = '$page_id' ORDER BY position ASC");
+$query_sections = $database->query("SELECT `section_id`, `module`, `position` FROM `{TP}sections` WHERE `page_id` = ? ORDER BY `position` ASC", [$page_id]);
 if ($query_sections->numRows() > 0) {
     $num_sections = $query_sections->numRows();
     while ($section = $query_sections->fetchRow()) {
         if (!is_numeric(array_search($section['module'], $module_permissions))) {
             // Update the section record with properties
             $section_id = $section['section_id'];
-            $sql = '';
+            $parts      = [];
+            $params     = [];
             $publ_start = 0;
-            $publ_end = 0;
+            $publ_end   = 0;
             if (isset($_POST['block' . $section_id]) && $_POST['block' . $section_id] != '') {
-                $sql = "block = '" . intval($_POST['block' . $section_id]) . "'";
+                $parts[]  = '`block` = ?';
+                $params[] = intval($_POST['block' . $section_id]);
             }
             // named sections patch
             if (isset($_POST['namesection' . $section_id])) {
-                if ($sql != '') {
-                    $sql .= ",";
-                }
-                $sql .= " namesection = '" . $database->escapeString(htmlentities(strip_tags($_POST['namesection' . $section_id]))) . "'";
+                $parts[]  = '`namesection` = ?';
+                $params[] = htmlentities(strip_tags($_POST['namesection' . $section_id]));
             }
             // update publ_start and publ_end, trying to make use of the strtotime()-features like "next week", "+1 month", ...
             if (isset($_POST['start_date' . $section_id]) && isset($_POST['end_date' . $section_id])) {
-                require_once INCLUDE_PATH. '/date_time_picker/wbce_setup.php';
+                require_once INCLUDE_PATH . '/date_time_picker/wbce_setup.php';
                 if (trim($_POST['start_date' . $section_id]) == '0' || trim($_POST['start_date' . $section_id]) == '') {
                     $publ_start = 0;
                 } else {
@@ -94,15 +93,17 @@ if ($query_sections->numRows() > 0) {
                 } else {
                     $publ_end = jscalendar_to_timestamp($_POST['end_date' . $section_id], $publ_start, 'true');
                 }
-                if ($sql != '') {
-                    $sql .= ",";
-                }
-                $sql .= " publ_start = '" . intval($publ_start) . "'";
-                $sql .= ", publ_end = '" . intval($publ_end) . "'";
+                $parts[]  = '`publ_start` = ?';
+                $parts[]  = '`publ_end` = ?';
+                $params[] = intval($publ_start);
+                $params[] = intval($publ_end);
             }
-            $query = "UPDATE {TP}sections SET $sql WHERE section_id = '$section_id' LIMIT 1";
-            if ($sql != '') {
-                $database->query($query);
+            if (!empty($parts)) {
+                $params[] = $section_id;
+                $database->query(
+                    'UPDATE `{TP}sections` SET ' . implode(', ', $parts) . ' WHERE `section_id` = ? LIMIT 1',
+                    $params
+                );
             }
         }
     }
@@ -117,9 +118,9 @@ if ($target == 'saveandback') {
 }
 
 // Check for error or redirect with toast
-if ($database->is_error()) {
+if ($database->hasError()) {
     $admin->print_header();
-    $admin->print_error($database->get_error(), $target_url);
+    $admin->print_error($database->getError(), $target_url);
     $admin->print_footer();
 } else {
     $alerts = new Alerts();
