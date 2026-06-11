@@ -1400,8 +1400,207 @@ form.advanced-options {
 
 
 .pagetree-no-edit {
-	color:#666; 
-	font-weight:400; 
-	cursor:not-allowed;
-	text-decoration:none !important;
-} 
+    color: #666;
+    font-weight: 400;
+    cursor: not-allowed;
+    text-decoration: none !important;
+}
+
+/* ============================================================
+   RESPONSIVE / MOBILE
+   ============================================================ */
+
+/* Smooth transitions for sidebar open/close */
+#sidebararea,
+#mainarea,
+#pagetopmenu {
+    transition: left 0.25s ease, padding-left 0.25s ease;
+}
+
+/* Mobile backdrop overlay (hidden by default) */
+#sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+    cursor: pointer;
+}
+
+#sidebar-backdrop.active {
+    display: block;
+}
+
+/* --- Small desktops / large tablets (≤ 900px) --- */
+@media screen and (max-width: 900px) {
+    .wdt500, .wdt550, .wdt600 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* --- Tablets (≤ 768px) --- */
+@media screen and (max-width: 768px) {
+
+    /* Content uses icon-strip width (sidebar starts collapsed) */
+    #mainarea {
+        padding-left: 72px;
+    }
+
+    #pagetopmenu {
+        padding-left: 72px;
+    }
+
+    /* Sidebar overlays content when opened on mobile */
+    #sidebararea:not(.closedsidebar) {
+        box-shadow: 6px 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Responsive utility width classes */
+    .wdt300, .wdt350, .wdt400 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Tables: enable horizontal scroll */
+    .content-box {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    div.pages_list {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #page-sections {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* --- Smartphones (≤ 480px) --- */
+@media screen and (max-width: 480px) {
+
+    /* Sidebar 15% kleiner auf Mobilgeräten */
+    #sidebararea {
+        width: 298px;
+        padding: 102px 14px 14px;
+        font-size: 85%;
+    }
+
+    #sidebararea #userbox {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 77px;
+        background-position: 17px 10px;
+        background-size: 38px auto;
+    }
+
+    #sidebararea #user-name {
+        padding-bottom: 10px;
+        font-size: 17px;
+    }
+
+    #sidebararea #user-button {
+        right: 14px;
+        bottom: 10px;
+    }
+
+    #sidebararea #mainmenu {
+        margin-right: -14px;
+        margin-top: 31px;
+        padding-left: 43px;
+        font-size: 14px;
+    }
+
+    #sidebararea #mainmenu ul li a {
+        margin-right: -13px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 68px;
+    }
+
+    #sidebararea #mainmenu ul li a:before {
+        width: 60px;
+        padding-top: 10px;
+        font-size: 22px;
+    }
+
+    #sidebararea #systeminfo {
+        margin-top: 31px;
+    }
+
+    /* Sidebar fully hidden when collapsed */
+    #sidebararea.closedsidebar {
+        left: -298px;
+    }
+
+    /* Sidebar slides in as full overlay when opened */
+    #sidebararea:not(.closedsidebar) {
+        left: 0;
+        box-shadow: 6px 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Content uses full width in both states (sidebar overlays when open).
+       High-specificity selectors needed to beat .container #mainarea.closedsidebar */
+    #mainarea,
+    .container #mainarea,
+    .container #mainarea.closedsidebar {
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
+    /* Top menu: no left padding in either state */
+    #pagetopmenu,
+    #pagetopmenu.closedsidebar {
+        padding-left: 0;
+    }
+
+    /* Compact top menu buttons */
+    #pagetopmenu ul li a,
+    #pagetopmenu a#sidebararea_togglebutton {
+        width: 46px;
+        padding: 6px 10px;
+        font-size: 22px;
+    }
+
+    /* Medium utility classes also fluid */
+    .wdt150, .wdt200, .wdt250 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Inputs don't overflow viewport */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    textarea {
+        max-width: 100%;
+    }
+
+    /* Compact themeboxes */
+    .themebox .tb_header {
+        width: 70px;
+    }
+
+    .themebox .tb_content {
+        margin-left: 70px;
+        padding: 12px 12px 24px 8px;
+    }
+
+    .themebox .tb_header a::before,
+    .themebox .tb_header span.tb_icon {
+        font-size: 40px;
+        line-height: 44px;
+    }
+
+    /* Contentarea: less padding */
+    #contentarea {
+        padding-bottom: 16px;
+    }
+}

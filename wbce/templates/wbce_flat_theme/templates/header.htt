@@ -12,6 +12,7 @@
 
 <!--(PH) META HEAD+ -->
 <meta charset="{CHARSET}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Encoding" content="gzip" />
 <meta http-equiv="Accept-Encoding" content="gzip, deflate" />
 <!--(PH) META HEAD- -->
@@ -20,7 +21,7 @@
 <link href="{WB_URL}/include/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/normalize.css" rel="stylesheet" type="text/css">
 <link href="{THEME_URL}/css/fitrgrid.css" rel="stylesheet" type="text/css">
-<link href="{THEME_URL}/css/theme.css" rel="stylesheet" type="text/css">
+<link href="{THEME_URL}/css/theme.css?v=1714" rel="stylesheet" type="text/css">
 <!--(PH) CSS HEAD TOP- -->
 
 <!--(PH) JS HEAD TOP+ -->
@@ -86,8 +87,17 @@
         <span class="version">WBCE Version: {WBCE_VERSION}</span><br/>
         <span class="version">Tag: {WBCE_TAG}</span><br/>
         <span class="version">PHP Version: {PHP_VERSION}</span><br/>
-        <span class="version">Session timeout: <span id="countdown" class="timer"></span></span>
+        <span class="version">Session timeout: <span id="countdown" class="timer"></span></span><br/>
+        <span class="version">Viewport: <span id="viewport-size"></span></span>
     </div>
+<script>
+function updateViewportSize() {
+    var el = document.getElementById('viewport-size');
+    if (el) el.textContent = window.innerWidth + ' x ' + window.innerHeight + ' px';
+}
+updateViewportSize();
+window.addEventListener('resize', updateViewportSize);
+</script>
 </div>
 <div id="mainarea" class="stickySidebarElement">
 <div id="contentarea">
