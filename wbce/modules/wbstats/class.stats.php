@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.8
- * @lastmodified    November 21, 2025
+ * @version         0.2.5.9
+ * @lastmodified    May 29, 2026
  *
  */
 
@@ -307,6 +307,26 @@ class stats {
 			$result['location'][$nr]['views'] = $views;
 			$result['location'][$nr]['percent'] = $percent;
 			$result['location'][$nr]['width'] = $bar_width;
+			$nr++;
+		}		
+		// Countries
+		$totals = $database->get_one("SELECT count(*) FROM ".$table_ips." WHERE `country`!='' AND `session`!='ignore'");
+		//$q = "SELECT session as location, COUNT(*) AS total FROM ".$table_ips." WHERE session != '' AND `session`!='ignore' GROUP BY session ORDER BY total DESC LIMIT 0,$top";
+		$q = "SELECT country, COUNT(*) AS total FROM ".$table_ips." WHERE country != '' AND `session`!='ignore' GROUP BY country ORDER BY total DESC LIMIT 0,$top";
+		$nr = 1;
+		$query = $database->query($q);
+		while($res = $query->fetchRow()) {
+			$views = $res['total'];
+			$country = htmlspecialchars($res['country']);
+			$percent = (100 / $totals) * $views;
+			$percent = ($percent < 0.1 ) ? $this->safeRound($percent,2) : $this->safeRound($percent,1);
+			$short = (strlen($country) > 55) ? substr($country,0,50)."...": $country;
+			$bar_width = $this->safeRound((100/$totals)*$views);
+			$result['country'][$nr]['short'] = $short;
+			$result['country'][$nr]['name'] = $country;
+			$result['country'][$nr]['views'] = $views;
+			$result['country'][$nr]['percent'] = $percent;
+			$result['country'][$nr]['width'] = $bar_width;
 			$nr++;
 		}	
 		// browsers

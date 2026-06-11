@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.8
- * @lastmodified    November 21, 2025
+ * @version         0.2.5.9
+ * @lastmodified    May 29, 2026
  *
  */
 
@@ -46,26 +46,27 @@ $database->query("CREATE TABLE `$table_day` (
 
 $database->query("DROP TABLE IF EXISTS `$table_ips`");
 $database->query("CREATE TABLE `$table_ips` (
-	`id` int(11) NOT NULL auto_increment,
-	`ip` varchar(50) NOT NULL default '',
-	`session` varchar(64) NOT NULL default '',
-	`time` int(20) NOT NULL default '0',
-	`online` int(20) NOT NULL default '0',
-	`page` varchar(512) NOT NULL default '',
-	`last_page` varchar(512) NOT NULL default '',
-	`last_status` varchar(10) NOT NULL default '',
-	`pages` int(11) NOT NULL default '0',
-	`loggedin` int(1) NOT NULL default '0',
-	`location` varchar(64) NOT NULL default '',
-	`os` varchar(32) NOT NULL default '',
-	`browser` varchar(32) NOT NULL default '',
-	`language` varchar(32) NOT NULL default '',
-	`referer` varchar(64) NOT NULL default '',
-	`ua` varchar(255) NOT NULL default '',
-	PRIMARY KEY  (`id`),
-	INDEX `time` (`time`),
-	INDEX `ip` (`ip`, `online`),
-	INDEX `online` (`online`)
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`ip` VARCHAR(50) NULL DEFAULT NULL ,
+	`session` VARCHAR(64) NOT NULL DEFAULT '' ,
+	`time` INT(20) NOT NULL DEFAULT '0',
+	`online` INT(20) NOT NULL DEFAULT '0',
+	`page` VARCHAR(255) NOT NULL DEFAULT '' ,
+	`last_page` VARCHAR(512) NOT NULL DEFAULT '' ,
+	`last_status` VARCHAR(10) NOT NULL DEFAULT '' ,
+	`pages` INT(11) NOT NULL DEFAULT '0',
+	`loggedin` INT(1) NOT NULL DEFAULT '0',
+	`location` VARCHAR(64) NOT NULL DEFAULT '' ,
+	`country` VARCHAR(64) NOT NULL DEFAULT '' ,
+	`browser` VARCHAR(32) NOT NULL DEFAULT '' ,
+	`os` VARCHAR(32) NOT NULL DEFAULT '' ,
+	`language` VARCHAR(32) NOT NULL DEFAULT '' ,
+	`referer` VARCHAR(64) NOT NULL DEFAULT '' ,
+	`ua` VARCHAR(255) NOT NULL DEFAULT '' ,
+	PRIMARY KEY (`id`),
+	INDEX `time` (`time`) ,
+	INDEX `online` (`online`) ,
+	INDEX `ip` (`ip`, `online`)
 	)"
 );
 
@@ -167,18 +168,18 @@ $database->query("CREATE TABLE `$table_loc` (
 $database->query("DROP TABLE IF EXISTS `$table_utm`");
 $database->query("CREATE TABLE IF NOT EXISTS `$table_utm`  (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`ip` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
+	`ip` VARCHAR(50) NOT NULL DEFAULT '' ,
 	`session` varchar(64) NOT NULL default '',
-	`page` VARCHAR(255) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
-	`source` VARCHAR(128) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
-	`medium` VARCHAR(128) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
-	`campaign` VARCHAR(128) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
-	`term` VARCHAR(128) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
-	`content` VARCHAR(128) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
-	`referer` VARCHAR(255) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
+	`page` VARCHAR(255) NOT NULL DEFAULT '' ,
+	`source` VARCHAR(128) NOT NULL DEFAULT '' ,
+	`medium` VARCHAR(128) NOT NULL DEFAULT '' ,
+	`campaign` VARCHAR(128) NOT NULL DEFAULT '' ,
+	`term` VARCHAR(128) NOT NULL DEFAULT '' ,
+	`content` VARCHAR(128) NOT NULL DEFAULT '' ,
+	`referer` VARCHAR(255) NOT NULL DEFAULT '' ,
 	`timestamp` INT(11) NOT NULL DEFAULT '0',
 	`pagecount` INT(11) NOT NULL DEFAULT '0',
-	`day` VARCHAR(8) NOT NULL DEFAULT '' COLLATE 'latin1_swedish_ci',
+	`day` VARCHAR(8) NOT NULL DEFAULT '' ,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `campaign` (`campaign`) USING BTREE,
 	INDEX `day` (`day`) USING BTREE

@@ -8,15 +8,15 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.8
- * @lastmodified    November 21, 2025
+ * @version         0.2.5.9
+ * @lastmodified    May 29, 2026
  *
  */
 
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.8';
+$module_version = '0.2.5.9';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -30,6 +30,11 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.9
+ * - fixed E_DEPRECATED warning on PHP8.5
+ * - added countries counter in visitors page
+ * - small css changes
  *
  * 0.2.5.8
  * - bugfix for storing citynames with apostrophes (like 's-Gravenhage)
