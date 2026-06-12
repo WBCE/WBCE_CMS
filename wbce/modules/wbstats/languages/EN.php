@@ -1,15 +1,15 @@
 <?php
 /**
  *
- * @category        admintools
+ * @category        admintool
  * @package         wbstats
- * @author          Ruud Eisinga - Dev4me
+ * @author          Ruud Eisinga - dev4me.com
  * @link			https://dev4me.com/
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
- * @requirements    PHP 5.6 and higher
- * @version         0.2.4
- * @lastmodified    Februari 11, 2021
+ * @requirements    PHP 7 and higher
+ * @version         0.2.5.9
+ * @lastmodified    May 29, 2026
  *
  */
  
@@ -55,7 +55,8 @@ $WS = array (
 	"LANGTOP" 		=> "Languages",
 	"ENTRYTOP" 		=> "Entry pages",
 	"EXITTOP" 		=> "Exit pages",
-	"LOCTOP" 			=> "Locations",
+	"LOCTOP" 			=> "Cities",
+	"COUNTRYTOP" 		=> "Countries",
 	"BROWSERTOP" 		=> "Browsers",
 	"OSTOP" 			=> "OS",
 	"NUMBER" 			=> "Number",
@@ -64,7 +65,8 @@ $WS = array (
 	"PAGE" 				=> "Page",
 	"KEYWORDS" 			=> "Keywords",
 	"LANGUAGES" 		=> "Language",
-	"LOCATIONS" 		=> "Locations",
+	"LOCATIONS" 		=> "Cities",
+	"COUNTRIES" 		=> "Countries",
 	"HISTORY" 			=> "History",
 	"TOTALSINCE"		=> "Total since",
 	"SELECTED"			=> "Selected date",

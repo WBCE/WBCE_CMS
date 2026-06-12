@@ -168,7 +168,7 @@ if (defined('POST_ID') && is_numeric(POST_ID)) {
 		$output=str_replace('{SYSVAR:MEDIA_REL}',WB_URL.MEDIA_DIRECTORY,$output);
 		
 		// include gallery template
-		if (strlen($settings['gallery'])) {
+		if (strlen($settings['gallery']) && preg_match('/^[a-zA-Z0-9_-]+$/', $settings['gallery'])) {
 			include __DIR__.'/js/galleries/'.$settings['gallery'].'/include.tpl';
 		}
 	} 

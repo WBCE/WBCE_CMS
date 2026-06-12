@@ -67,7 +67,8 @@ $post_header = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_he
 $post_content = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_content']));
 $post_footer = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['post_footer']));
 $posts_per_page = mod_nwi_escapeString($_POST['posts_per_page']);
-$gallery = mod_nwi_escapeString($_POST['gallery']);
+// Security: strip any character that is not a plain dir-name char (prevents path traversal)
+$gallery = preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($_POST['gallery'] ?? ''));
 $use_second_block = ( (isset($_POST['use_second_block']) && $_POST['use_second_block']=='Y') ? 'Y' : 'N');
 $show_settings_only_admins = ( (isset($_POST['show_settings_only_admins']) && $_POST['show_settings_only_admins']=='Y') ? 'Y' : 'N');
 
@@ -77,7 +78,8 @@ if(isset($settings['mode']) && $settings['mode']=='advanced') {
     $gal_img_resize_width = mod_nwi_escapeString($_POST['gal_img_resize_width']);
     $gal_img_resize_height = mod_nwi_escapeString($_POST['gal_img_resize_height']);
     $gal_img_max_size = intval($_POST['gal_img_max_size'])*1024;
-    $view = mod_nwi_escapeString($_POST['view']);
+    // Security: strip any character that is not a plain dir-name char (prevents path traversal)
+    $view = preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($_POST['view'] ?? ''));
     $block2 = mod_nwi_escapeString(str_replace($friendly, $raw, $_POST['block2']));
     $thumbwidth = mod_nwi_escapeString($_POST['thumb_width']);
     $thumbheight = mod_nwi_escapeString($_POST['thumb_height']);

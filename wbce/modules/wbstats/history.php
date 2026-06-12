@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.8
- * @lastmodified    November 21, 2025
+ * @version         0.2.5.9
+ * @lastmodified    May 29, 2026
  *
  */
 
@@ -64,7 +64,7 @@ $r = $stats->getHistory($show_month,$show_year);
 	$next_month=date("n",mktime(0, 0, 0, $show_month, 1, $show_year+1));
 	$next_year=date("Y",mktime(0, 0, 0, $show_month, 1, $show_year+1));
 	
-	echo "<span><a href=\"$module_history_link&m=$back_month&y=$back_year\"><</a>&nbsp;<a href=\"$module_history_link&m=$next_month&y=$next_year\">></a></span>";
+	echo "<span><a class=\"pn\" href=\"$module_history_link&m=$back_month&y=$back_year\"><</a>&nbsp;<a class=\"pn\" href=\"$module_history_link&m=$next_month&y=$next_year\">></a></span>";
 	?>
 	</h3>
 	<table class="graph" height="200" width="100%" cellpadding="0" cellspacing="0" align="right">
@@ -99,7 +99,7 @@ $r = $stats->getHistory($show_month,$show_year);
 	$back_year=date("Y",mktime(0, 0, 0, $show_month-1, 1, $show_year));
 	$next_month=date("n",mktime(0, 0, 0, $show_month+1, 1, $show_year));
 	$next_year=date("Y",mktime(0, 0, 0, $show_month+1, 1, $show_year));
-	echo "<span><a href=\"$module_history_link&m=$back_month&y=$back_year\"><</a>&nbsp;<a href=\"$module_history_link&m=$next_month&y=$next_year\">></a></span>";
+	echo "<span><a class=\"pn\" href=\"$module_history_link&m=$back_month&y=$back_year\"><</a>&nbsp;<a class=\"pn\" href=\"$module_history_link&m=$next_month&y=$next_year\">></a></span>";
 	?>
 	</h3>
 	<table class="graph" height="230" width="100%" cellpadding="0" cellspacing="0" align="right">

@@ -15,6 +15,7 @@
 .sysmenu a {
 	border-color: none;
 	background-color: #303641;
+	background-color: #335566;
 	padding: 10px !important; 
 	color: #fff;
 	text-decoration: none;
@@ -71,7 +72,7 @@
 #container h3,
 #container h4 {
 	font-family: arial, sans-serif;
-	background-color:#303641;
+	background-color:#335566;
 	color:#fff;
 	padding:5px 10px;
 	margin:0px;
@@ -87,16 +88,25 @@
 	position:absolute;
 	right:20px;
 }
+
 #container h3 span a{
-	text-decoration:none;
-	color:#FFFFFF;
-	font-size:1em;
+    display: inline-block;
+    text-decoration: none;
+    color: #FFFFFF;
+    line-height: 1;
+}
+#container h3 span a.pn {
+    padding: 0;
+    margin: -6px 0px 0 15px;
+    position: relative;
+    font-size: 27px;
+    font-weight: 600;
 }
 
 #container td h3,
 #container td h4 {
 	font-family: arial, sans-serif;
-	background-color:#303641;
+	background-color:#335566;
 	color:#fff;
 	padding:5px 10px;
 	margin: 0px;
@@ -174,6 +184,18 @@
 	font-size:0.8em;
 	overflow:hidden;
 	cursor: pointer;
+}
+.bar {
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 5px;
+    z-index: 1;
+    background-color: #335566;
+    font-size: 0.8em;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+    position: relative;
 }
 .vbar {
 	background-color:#CBCFD8;
@@ -282,7 +304,8 @@ font-size: 12px;
 }
 #live .res tr:first-child td {
 	font-weight: 900;
-	background: #303641 !important;
+	/* background: #303641 !important; */
+	background: #335566 !important;
 	color: #fff;
 }
 #live .res tr.old {

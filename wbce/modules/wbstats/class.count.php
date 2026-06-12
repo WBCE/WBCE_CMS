@@ -8,8 +8,8 @@
  * @license         http://www.gnu.org/licenses/gpl.html
  * @platform        WebsiteBaker 2.8.x / WBCE 1.4
  * @requirements    PHP 7 and higher
- * @version         0.2.5.8
- * @lastmodified    November 21, 2025
+ * @version         0.2.5.9
+ * @lastmodified    May 29, 2026
  *
  */
 
@@ -301,8 +301,9 @@ class counter {
 			return true;
 		} elseif(!$id = $database->get_one("SELECT `id` FROM ".$table_ips." WHERE `ip`='".$this->ip."' AND `session`='".$this->session."' AND `time` > '$timeout' ORDER BY `id` DESC LIMIT 1")) {
 			$city = $this->getCountryCode();
-			$database->query("INSERT INTO ".$table_ips." (`ip`,`session`, `location`, `time`, `online`,`page`,`last_page`,`pages`,`language`,`os`,`browser`,`referer`,`ua`) VALUES 
-				('".$this->ip."', '".$this->session."', '".$city."', '".$this->time."', '".$this->time."', '".$this->page."', '".$this->page."','1','".$this->language."', '".$this->os."', '".$this->browser." (".$this->browser_version.")','".$this->referer_host."','".$this->agent."')");
+			$country = $this->getCountryCode(true);
+			$database->query("INSERT INTO ".$table_ips." (`ip`,`session`, `location`, `country`, `time`, `online`,`page`,`last_page`,`pages`,`language`,`os`,`browser`,`referer`,`ua`) VALUES 
+				('".$this->ip."', '".$this->session."', '".$city."','".$country."', '".$this->time."', '".$this->time."', '".$this->page."', '".$this->page."','1','".$this->language."', '".$this->os."', '".$this->browser." (".$this->browser_version.")','".$this->referer_host."','".$this->agent."')");
 			$database->query("UPDATE ".$table_day." SET `user`=`user`+1, `view`=`view`+1 WHERE `day`='".$this->day."'");
 			return true;
 		} else {
@@ -313,13 +314,14 @@ class counter {
 	}
 	
 
-	function getCountryCode() {
+	function getCountryCode($countryOnly = false) {
 		global $database, $table_loc;
 		$ip = $this->getRealUserIp(); 
 		$ipkey = md5($ip);
 		$timeout = time() - $this->reload;
+		$field = $countryOnly ? 'country':'location';
 		
-		if(!$location = $database->get_one("SELECT `location` FROM ".$table_loc." WHERE `ip`='".$ipkey."' and `location` != '' and `timestamp` > '$timeout' ORDER BY `timestamp` DESC LIMIT 1")) {
+		if(!$location = $database->get_one("SELECT `$field` FROM ".$table_loc." WHERE `ip`='".$ipkey."' and `location` != '' and `timestamp` > '$timeout' ORDER BY `timestamp` DESC LIMIT 1")) {
 			if($ipdata = json_decode($this->getUrlContent('http://ip-api.com/json/'.$ip),true)) {
 				
 				if(!isset($ipdata['city']) || !$ipdata['city'])  				$ipdata['city'] = '- unknown -';
@@ -333,6 +335,7 @@ class counter {
 				$lon 			= $database->escapeString($ipdata['lon']);
 				$tz 			= $database->escapeString($ipdata['timezone']);
 				$country 		= $database->escapeString($ipdata['country']);
+				$country 		= str_ireplace("The ","",$country);  // "Netherlands" is sometimes "The Netherlands"
 				$country_code 	= $database->escapeString($ipdata['countryCode']);
 				$city 			= $database->escapeString($ipdata['city']);
 				
@@ -341,6 +344,7 @@ class counter {
 
 				$database->query("INSERT INTO ".$table_loc." (`ip`,`location`,`timestamp`,`city`,`country`,`country_code`,`latitude`,`longitude`,`timezone`) 
 					VALUES ('".$ipkey."','".$location."','".time()."','".$city."','".$country."','".$country_code."','".$lat."','".$lon."','".$tz."') ");
+				if($countryOnly) $location = $country;
 			}
 		} else {
 			// $city .= ' *';
@@ -377,7 +381,7 @@ class counter {
 		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 		$data = curl_exec($ch);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		curl_close($ch);
+		//curl_close($ch);
 		return ($httpcode>=200 && $httpcode<300) ? $data : false;
 	}	
 	
