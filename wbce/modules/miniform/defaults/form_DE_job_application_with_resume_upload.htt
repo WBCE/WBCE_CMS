@@ -103,7 +103,7 @@ function checkFile(fieldObj) {
 			</div>
 			<div style="margin-top: 20px; padding: 20px; border: 1px solid #aaa; border-radius: 5px;">
 				<div class="{CAPTCHA_CLASS} full">
-					<label for="captcha"><span>Bitte Pr&uuml;fziffer eingeben</span>
+					<label for="captcha"><span>Spam-Schutz</span>
 						<div class="grouping {CAPTCHA_ERROR}">
 							{CAPTCHA}
 						</div>

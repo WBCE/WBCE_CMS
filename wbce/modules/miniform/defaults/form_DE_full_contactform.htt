@@ -116,7 +116,7 @@
 			</div>
 
 			<div class="{CAPTCHA_CLASS} full">
-				<label for="captcha"><span>Bitte Pr&uuml;fziffer eingeben</span>
+				<label for="captcha"><span>Spam-Schutz</span>
 					<div class="grouping {CAPTCHA_ERROR}">
 						{CAPTCHA}
 					</div>
