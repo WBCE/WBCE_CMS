@@ -33,6 +33,5 @@
 </head>
 <body>
     <div id="elfinder"></div>
-    <link rel="stylesheet" type="text/css" media="screen" href="themes/material/css/theme-gray.min.css">
 </body>
 </html>
