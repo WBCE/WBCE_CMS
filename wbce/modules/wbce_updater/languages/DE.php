@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 /**
  * WBCE Update-Assistent - German Language File
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -36,6 +36,8 @@ $LANG = [
     'LOADING' => 'Lade Updates',
     'LOADING_DOWNLOAD' => 'Update wird heruntergeladen',
     'DOWNLOAD_PLEASE_WAIT' => 'Bitte warten Sie, dies kann einige Minuten dauern.',
+    'LOADING_UPLOAD' => 'Datei wird hochgeladen & verarbeitet',
+    'UPLOAD_PLEASE_WAIT' => 'Bitte warten Sie, dies kann einige Sekunden dauern.',
     'NO_UPDATES_AVAILABLE' => 'Keine Updates verfügbar',
     'UP_TO_DATE' => 'Ihre WBCE-Installation ist auf dem neuesten Stand.',
     'SHOW_ADDITIONAL_UPDATES' => 'Weitere Versionen anzeigen',
@@ -90,6 +92,7 @@ $LANG = [
 
     // Confirmations
     'CONFIRM_DOWNLOAD' => 'Möchten Sie das Update-Paket jetzt herunterladen und vorbereiten?',
+    'CONFIRM_UPLOAD'   => 'Möchten Sie die ZIP-Datei jetzt hochladen und vorbereiten?',
     'CONFIRM_MINOR_UPDATE' => 'ACHTUNG: Dies ist ein Minor-Update! Es können Änderungen erforderlich sein. Haben Sie ein aktuelles Backup und möchten fortfahren?',
     'CONFIRM_MAJOR_UPDATE' => 'WARNUNG: Dies ist ein grosses Update (Major-Version oder mehrere Minor-Stufen)! Es können erhebliche Änderungen und Inkompatibilitäten auftreten. Bitte lesen Sie die Release-Notes sorgfältig und stellen Sie sicher, dass Sie ein vollständiges Backup haben. Fortfahren?',
 
@@ -137,6 +140,23 @@ Das Update kann zu Fehlern führen. Bitte aktualisieren Sie zuerst PHP.
 
 Trotzdem fortfahren?',
 
+    // Backup Detection
+    'BACKUP_FOUND_HINT' => 'Backup gefunden im /backups-Verzeichnis:',
+    'BACKUP_FOUND_MULTIPLE' => 'Backups gefunden im /backups-Verzeichnis (neuestes:',
+    'BACKUP_FOUND_TODAY' => 'heute',
+    'BACKUP_FOUND_DAYS_AGO' => 'vor %d Tag(en)',
+
+    // Custom Source
+    'CUSTOM_SOURCE_TITLE' => 'Eigene Update-Quelle',
+    'CUSTOM_SOURCE_CONFIGURED' => 'Eine eigene Update-Quelle ist konfiguriert:',
+    'CUSTOM_SOURCE_BUTTON' => 'Update von eigener Quelle laden',
+    'CUSTOM_SOURCE_WARNING' => "ACHTUNG: Sie verwenden eine NICHT offizielle Update-Quelle!\n\nQuelle: %s\n\nDas Paket wurde NICHT von der WBCE Community geprüft. Sie sind selbst für die Sicherheit und Korrektheit des Update-Pakets verantwortlich.\n\nFortfahren?",
+    'CUSTOM_SOURCE_CONFIRM' => 'Möchten Sie das Update-Paket jetzt von der eigenen Quelle herunterladen und vorbereiten?',
+
+    // Tool Disabled
+    'TOOL_DISABLED' => 'Das Update-Tool ist deaktiviert.',
+    'TOOL_DISABLED_INFO' => 'Setzen Sie in user_config.php die Variable $wbce_updater_disabled auf false, um das Tool wieder zu aktivieren.',
+
     // Checksums
     'CHECKSUM_VALIDATED' => 'Download erfolgreich validiert',
     'ERROR_CHECKSUM_MISMATCH' => 'Checksumme stimmt nicht überein! Download möglicherweise beschädigt oder manipuliert.',
@@ -145,4 +165,53 @@ Trotzdem fortfahren?',
     'WARNING_CHECKSUM_DISABLED_MANUAL' => 'HINWEIS: Automatische Checksum-Verifizierung ist deaktiviert. Bitte prüfen Sie die Checksum manuell!',
     'CHECKSUM_INFO' => 'SHA256 Checksumme',
     'CHECKSUM_VERIFY_INFO' => 'Vergleichen Sie diese Checksumme mit der offiziellen Release-Checksumme, bevor Sie fortfahren.',
+
+    // Upload Validation
+    'ERROR_ZIP_ONLY'          => 'Nur ZIP-Dateien erlaubt. Hochgeladene Datei: %s',
+    'ERROR_INVALID_MIME_TYPE' => 'Ungültiger Dateityp. Nur ZIP-Dateien erlaubt. Erkannter Typ: %s',
+    'ERROR_FILE_TOO_LARGE_MB' => 'Datei zu groß. Maximal erlaubt: %s MB',
+
+    // Execute Update – Schrittbezeichnungen
+    'EXEC_TITLE'              => 'Update-Durchführung',
+    'EXEC_STEP1'              => 'Schritt 1: PHP-Kompatibilität prüfen...',
+    'EXEC_STEP2'              => 'Schritt 2: Update-Paket prüfen...',
+    'EXEC_STEP3'              => 'Schritt 3: Update-Paket entpacken...',
+    'EXEC_STEP4'              => 'Schritt 4: WBCE Update-Script prüfen...',
+    'EXEC_STEP5'              => 'Schritt 5: Cleanup...',
+
+    // Execute Update – PHP-Kompatibilität
+    'EXEC_PHP_SKIPPED'        => 'Keine Zielversion angegeben, PHP-Check übersprungen',
+    'EXEC_PHP_CANNOT_CHECK'   => 'PHP-Kompatibilität kann nicht geprüft werden: %s – Update wird fortgesetzt.',
+    'EXEC_PHP_INCOMPAT'       => 'WARNUNG: PHP-Inkompatibilität erkannt!',
+    'EXEC_PHP_CURRENT'        => 'Aktuelle PHP-Version:',
+    'EXEC_PHP_REQUIRED_FOR'   => 'Benötigt für WBCE %s:',
+    'EXEC_PHP_RECOMMENDED'    => 'Empfohlen:',
+    'EXEC_PHP_CONTINUE_HINT'  => 'Hinweis: Update wird trotzdem durchgeführt. Bitte ändern Sie die PHP-Version nach dem Update!',
+    'EXEC_PHP_COMPATIBLE_MSG' => 'PHP %s ist kompatibel mit WBCE %s',
+    'EXEC_PHP_COMPAT_WARN'    => 'PHP %s ist nicht kompatibel mit WBCE %s (benötigt: %s – %s). Bitte PHP-Version nach dem Update ändern!',
+
+    // Execute Update – Paket & Script
+    'EXEC_ZIP_FOUND'          => 'wbceup.zip gefunden (%s MB)',
+    'EXEC_ZIP_MISSING'        => 'Update-Paket (wbceup.zip) nicht gefunden!',
+    'EXEC_SCRIPT_FOUND'       => 'install/update.php gefunden',
+    'EXEC_SCRIPT_MISSING'     => 'WBCE Update-Script (install/update.php) nicht gefunden!',
+    'EXEC_ZIP_DELETED'        => 'wbceup.zip gelöscht',
+    'EXEC_ZIP_DELETE_FAILED'  => 'wbceup.zip konnte nicht gelöscht werden (nicht kritisch)',
+    'EXEC_FILES_EXTRACTED'    => '%d Dateien sicher nach %s entpackt',
+    'EXEC_EXTRACT_FAILED'     => 'Entpacken fehlgeschlagen: %s',
+    'EXEC_ZIP_OPEN_FAILED'    => 'ZIP-Archiv konnte nicht geöffnet werden. Bitte überprüfen Sie die Datei.',
+    'EXEC_DIR_RESOLVE_ERROR'  => 'Zielverzeichnis konnte nicht aufgelöst werden',
+    'EXEC_SEC_BAD_PATH'       => 'Sicherheitswarnung: Ungültiger Dateipfad im ZIP erkannt: %s',
+    'EXEC_SEC_ABS_PATH'       => 'Sicherheitswarnung: Absoluter Pfad im ZIP erkannt: %s',
+    'EXEC_SEC_TRAVERSAL'      => 'Sicherheitswarnung: Pfad-Traversal außerhalb des Zielverzeichnisses erkannt',
+
+    // Execute Update – Ergebnisseite
+    'EXEC_SUCCESS_TITLE'       => 'Update-Paket erfolgreich entpackt!',
+    'EXEC_WARNINGS_TITLE'      => 'Wichtige Warnungen:',
+    'EXEC_NEXT_STEP_TITLE'     => 'Nächster Schritt:',
+    'EXEC_NEXT_STEP_INFO'      => 'Das WBCE Update-Script ist bereit. Klicken Sie auf den Button unten, um den Update-Prozess zu starten.',
+    'EXEC_WINDOW_HINT'         => 'Wichtig: Der Update-Prozess kann einige Minuten dauern. Schließen Sie das Fenster nicht!',
+    'EXEC_PHP_CHANGE_REMINDER' => 'Nach dem Update: Ändern Sie die PHP-Version auf Ihrem Server!',
+    'EXEC_START_UPDATE_BTN'    => 'WBCE Update jetzt starten',
+    'EXEC_ERROR_TITLE'         => 'Fehler beim Update!',
 ];

@@ -6,7 +6,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -38,15 +38,8 @@ require_once __DIR__ . '/compatibility_checker.php';
 // Security check: Admin only (without header output for AJAX)
 $admin = new admin('Admintools', 'admintools', false, false);
 
-// CSRF protection: Check FTAN token (with fallback for older WBCE versions)
-// Token can be sent via POST parameter or custom header
-$ftan = $_POST['ftan'] ?? $_SERVER['HTTP_X_FTAN'] ?? '';
-
-// Try FTAN check first (modern WBCE versions)
-$ftan_valid = false;
-if (!empty($ftan) && method_exists($admin, 'checkFTAN')) {
-    $ftan_valid = $admin->checkFTAN($ftan);
-}
+// CSRF protection: Check FTAN token
+$ftan_valid = method_exists($admin, 'checkFTAN') && $admin->checkFTAN();
 
 // Fallback for WBCE 1.4.x: Check session-based authentication
 $session_valid = isset($_SESSION['USER_ID']) && $_SESSION['USER_ID'] &&
@@ -57,6 +50,13 @@ if (!$ftan_valid && !$session_valid) {
     http_response_code(403);
     header('Content-Type: application/json');
     exit(json_encode(['error' => 'Invalid or missing CSRF token']));
+}
+
+if (!empty($wbce_updater_disabled)) {
+    ob_end_clean();
+    http_response_code(403);
+    header('Content-Type: application/json');
+    exit(json_encode(['error' => 'Update tool is disabled']));
 }
 
 // Clear any output that might have been generated
