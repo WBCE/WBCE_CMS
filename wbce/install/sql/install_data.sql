@@ -36,7 +36,7 @@ INSERT INTO `{TP}settings` (`setting_id`, `name`, `value`) VALUES
 (10, 'redirect_timer', '500'),
 (11, 'home_folders', 'true'),
 (12, 'warn_page_leave', '1'),
-(13, 'default_template', 'wbcezon'),
+(13, 'default_template', 'whiteboard'),
 (14, 'default_theme', 'wbce_flat_theme'),
 (15, 'default_charset', 'utf-8'),
 (16, 'multiple_menus', 'true'),
