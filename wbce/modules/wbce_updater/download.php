@@ -6,7 +6,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -31,9 +31,14 @@ require $lang;
 // Security check: Admin only
 $admin = new admin('Admintools', 'admintools', false, false);
 
+if (!empty($wbce_updater_disabled)) {
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
+    exit;
+}
+
 // FTAN Check
 if (!$admin->checkFTAN()) {
-    $admin->print_error($LANG['ERROR_FTAN']);
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
@@ -52,44 +57,50 @@ $enable_maintenance = isset($_POST['enable_maintenance']) && $_POST['enable_main
 
 // Validate inputs
 if (empty($download_url)) {
-    $admin->print_error($LANG['ERROR_NO_URL']);
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
 // Security: Validate download URL to prevent SSRF attacks
 $parsed_url = parse_url($download_url);
 if (!$parsed_url) {
-    $admin->print_error('Ungültige URL-Format');
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
 // Only allow HTTPS protocol
 if (!isset($parsed_url['scheme']) || $parsed_url['scheme'] !== 'https') {
-    $admin->print_error('Nur HTTPS URLs sind erlaubt. HTTP und andere Protokolle sind aus Sicherheitsgründen nicht zulässig.');
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
-// Only allow GitHub domains (api.github.com or github.com)
-if (!isset($parsed_url['host']) ||
-    !preg_match('/^(api\.)?github\.com$/i', $parsed_url['host'])) {
-    $admin->print_error('Nur Downloads von github.com sind erlaubt. Angegebener Host: ' . htmlspecialchars($parsed_url['host']));
-    exit;
+// Custom source: allow only if URL matches the exact configured value (server-side whitelist)
+$is_custom_source = !empty($wbce_updater_custom_source_url)
+    && hash_equals($wbce_updater_custom_source_url, $download_url);
+
+// Standard path: only allow GitHub domains
+if (!$is_custom_source) {
+    if (!isset($parsed_url['host']) ||
+        !preg_match('/^(api\.)?github\.com$/i', $parsed_url['host'])) {
+        header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
+        exit;
+    }
 }
 
 // Security: Validate version format
 if (!empty($target_version) && !preg_match('/^v?\d+\.\d+(\.\d+)?$/i', $target_version)) {
-    $admin->print_error('Ungültiges Versionsformat: ' . htmlspecialchars($target_version));
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
 if (!$backup_confirmed) {
-    $admin->print_error($LANG['ERROR_BACKUP_NOT_CONFIRMED']);
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
 // Check write permissions
 if (!is_writable(WB_PATH)) {
-    $admin->print_error($LANG['ERROR_NO_WRITE_PERMISSION']);
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
@@ -103,22 +114,33 @@ try {
         'http' => [
             'method' => 'GET',
             'header' => 'User-Agent: WBCE-Updater/1.0',
-            'timeout' => WBCE_UPDATER_HTTP_TIMEOUT * 2, // Double timeout for large downloads
-            'follow_location' => 1
+            'timeout' => WBCE_UPDATER_HTTP_TIMEOUT * 2,
+            'follow_location' => 1,
+            'ignore_errors' => true
+        ],
+        'ssl' => [
+            'verify_peer' => true,
+            'verify_peer_name' => true
         ]
     ]);
 
     $zip_content = @file_get_contents($download_url, false, $context);
 
-    if ($zip_content === false) {
-        throw new Exception($LANG['ERROR_DOWNLOAD_FAILED']);
+    if ($zip_content === false || $zip_content === '') {
+        throw new Exception($LANG['ERROR_DOWNLOAD_FAILED'] . ': Leere oder fehlgeschlagene Antwort vom Server');
+    }
+
+    // ZIP-Signatur prüfen bevor die Datei geschrieben wird
+    if (strlen($zip_content) < 4 || substr($zip_content, 0, 2) !== 'PK') {
+        throw new Exception($LANG['ERROR_DOWNLOAD_FAILED'] . ': Keine gültige ZIP-Datei empfangen. ' .
+            'Serverantwort beginnt mit: ' . htmlspecialchars(substr($zip_content, 0, 200)));
     }
 
     // Temporäres ZIP speichern
     $temp_zip_path = WB_PATH . '/temp_download.zip';
     $bytes_written = file_put_contents($temp_zip_path, $zip_content);
 
-    if ($bytes_written === false) {
+    if ($bytes_written === false || $bytes_written === 0) {
         throw new Exception($LANG['ERROR_SAVE_FAILED']);
     }
 
@@ -163,61 +185,14 @@ try {
 // Using integrated execute_update.php from this module instead
 
 // Step 3: Enable maintenance mode (optional)
-$maintenance_activated = false;
+$maintenance_activated      = false;
 $maintenance_already_active = false;
 
 if ($success && $enable_maintenance) {
-    try {
-        // Use WBCE Settings Class (same method as Maintenance Mode Switcher module)
-        require_once WB_PATH . '/framework/class.settings.php';
-
-        // Check if maintenance mode is already active BEFORE trying to set it
-        // Use same method as maintainance_mode module: cast to string, check if not empty
-        $currentStatus = (string)Settings::Get('wb_maintainance_mode');
-
-        if ($currentStatus) {
-            // Already active - no action needed
-            $maintenance_already_active = true;
-            $maintenance_activated = true;
-        } else {
-            // Check if maintenance template exists (warning only, don't block)
-            $maintenance_template_exists = false;
-            $template_paths = [
-                WB_PATH . '/templates/systemplates/maintainance.tpl.php',
-                WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/systemplates/maintainance.tpl.php'
-            ];
-
-            foreach ($template_paths as $tpl_path) {
-                if (file_exists($tpl_path)) {
-                    $maintenance_template_exists = true;
-                    break;
-                }
-            }
-
-            if (!$maintenance_template_exists) {
-                // Just a warning, still try to set maintenance mode
-                $errors[] = $LANG['WARNING_NO_MAINTENANCE_TEMPLATE'];
-            }
-
-            // Set maintenance mode via Settings class - use "1" as string like the original module
-            Settings::Set("wb_maintainance_mode", "1");
-
-            // Verify that maintenance mode was actually activated
-            // Re-read from database to confirm the setting was saved
-            $verifiedStatus = (string)Settings::Get('wb_maintainance_mode');
-
-            if ($verifiedStatus) {
-                $maintenance_activated = true;
-            } else {
-                // Setting failed - throw exception to trigger warning
-                throw new Exception("Maintenance mode setting could not be verified");
-            }
-        }
-
-    } catch (Exception $e) {
-        // Non-fatal error
-        $errors[] = $LANG['WARNING_MAINTENANCE_FAILED'] . ': ' . $e->getMessage();
-    }
+    require_once __DIR__ . '/maintenance_helper.php';
+    $maint = wbce_updater_enable_maintenance($errors, $LANG);
+    $maintenance_activated      = $maint['activated'];
+    $maintenance_already_active = $maint['already_active'];
 }
 
 // Generate output
@@ -303,6 +278,39 @@ $update_url = WB_URL . '/modules/wbce_updater/execute_update.php?version=' . url
         .file-list li {
             margin: 5px 0;
         }
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .loading-overlay.active {
+            display: flex;
+        }
+        .spinner {
+            width: 52px;
+            height: 52px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay .loading-text {
+            margin-top: 18px;
+            color: #fff;
+            font-size: 17px;
+            font-weight: bold;
+        }
+        .loading-overlay .loading-subtext {
+            margin-top: 8px;
+            color: rgba(255,255,255,0.75);
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
@@ -351,7 +359,7 @@ $update_url = WB_URL . '/modules/wbce_updater/execute_update.php?version=' . url
             <p><strong><?php echo $LANG['READY_TO_UPDATE']; ?></strong></p>
             <p><?php echo $LANG['CLICK_BUTTON_TO_START']; ?></p>
 
-            <a href="<?php echo $update_url; ?>" class="button">
+            <a href="<?php echo $update_url; ?>" class="button" id="start-update-btn" onclick="startUpdate(this)">
                 🚀 <?php echo $LANG['START_UPDATE_NOW']; ?>
             </a>
 
@@ -384,5 +392,20 @@ $update_url = WB_URL . '/modules/wbce_updater/execute_update.php?version=' . url
             </p>
         <?php endif; ?>
     </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">⏳ <?php echo $LANG['LOADING_DOWNLOAD']; ?>...</div>
+        <div class="loading-subtext"><?php echo $LANG['DOWNLOAD_PLEASE_WAIT']; ?></div>
+    </div>
+
+    <script>
+    function startUpdate(link) {
+        document.getElementById('loading-overlay').classList.add('active');
+        link.style.pointerEvents = 'none';
+        link.style.opacity = '0.6';
+    }
+    </script>
 </body>
 </html>

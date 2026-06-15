@@ -6,29 +6,29 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
  */
-
-// Start output buffering to catch any unwanted output
-ob_start();
 
 // Error handling - don't display errors, capture them
 $originalErrorReporting = error_reporting();
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
-// Include WBCE framework
+// Include WBCE framework - session_start() is called inside config.php
 $configFile = dirname(dirname(dirname(__FILE__))) . '/config.php';
 if (!file_exists($configFile)) {
-    ob_end_clean();
     header('Content-Type: application/json');
     exit(json_encode(['error' => 'Configuration file not found']));
 }
 require $configFile;
 require_once WB_PATH . '/framework/class.admin.php';
+
+// Output buffering starts AFTER session_start() to avoid session/cookie interference
+// on hosting environments with custom PHP-FPM pool configurations (e.g. all-inkl.com)
+ob_start();
 
 // Load central configuration
 require_once __DIR__ . '/config_defaults.php';
@@ -36,25 +36,18 @@ require_once __DIR__ . '/config_defaults.php';
 // Security check: Admin only (without header output for AJAX)
 $admin = new admin('Admintools', 'admintools', false, false);
 
-// CSRF protection: Check FTAN token (with fallback for older WBCE versions)
-// Token can be sent via POST parameter or custom header
-$ftan = $_POST['ftan'] ?? $_SERVER['HTTP_X_FTAN'] ?? '';
-
-// Try FTAN check first (modern WBCE versions)
-$ftan_valid = false;
-if (!empty($ftan) && method_exists($admin, 'checkFTAN')) {
-    $ftan_valid = $admin->checkFTAN($ftan);
-}
-
-// Fallback for WBCE 1.4.x: Check session-based authentication
-$session_valid = isset($_SESSION['USER_ID']) && $_SESSION['USER_ID'] &&
-                 isset($_SESSION['GROUP_ID']) && $_SESSION['GROUP_ID'] == 1;
-
-if (!$ftan_valid && !$session_valid) {
+if (!$admin->is_authenticated() || !$admin->isAdmin()) {
     ob_end_clean();
     http_response_code(403);
     header('Content-Type: application/json');
-    exit(json_encode(['error' => 'Invalid or missing CSRF token']));
+    exit(json_encode(['error' => 'Unauthorized']));
+}
+
+if (!empty($wbce_updater_disabled)) {
+    ob_end_clean();
+    http_response_code(403);
+    header('Content-Type: application/json');
+    exit(json_encode(['error' => 'Update tool is disabled']));
 }
 
 // Clear any output that might have been generated
@@ -94,7 +87,7 @@ try {
         $context = stream_context_create([
             'http' => [
                 'method' => 'GET',
-                'header' => "User-Agent: WBCE-Updater/1.0\r\nAccept: application/vnd.github.v3+json",
+                'header' => "User-Agent: WBCE-Updater/1.0\r\nAccept: application/vnd.github.v3+json\r\nAccept-Encoding: gzip",
                 'timeout' => WBCE_UPDATER_HTTP_TIMEOUT,
                 'ignore_errors' => true
             ],
@@ -113,7 +106,19 @@ try {
             $response = @file_get_contents($github_api, false, $context);
 
             if ($response !== false && !empty($response)) {
-                // Success - save to cache
+                // Decompress if GitHub sent gzip-encoded response
+                if (isset($http_response_header) && function_exists('gzdecode')) {
+                    foreach ($http_response_header as $hdr) {
+                        if (stripos($hdr, 'Content-Encoding:') !== false && stripos($hdr, 'gzip') !== false) {
+                            $decoded = gzdecode($response);
+                            if ($decoded !== false) {
+                                $response = $decoded;
+                            }
+                            break;
+                        }
+                    }
+                }
+                // Save decompressed JSON to cache
                 @file_put_contents($cache_file, $response);
                 break;
             }
@@ -133,19 +138,14 @@ try {
                             throw new Exception("GitHub API returned error $status_code");
                         }
 
-                        // 5xx errors: retry after delay
+                        // 5xx errors: retry
                         if ($status_code >= 500 && $attempt < $max_retries) {
-                            sleep(2); // Wait 2 seconds before retry
                             continue;
                         }
                     }
                 }
             }
 
-            // Wait before retry
-            if ($attempt < $max_retries) {
-                sleep(2);
-            }
         }
 
         if ($response === false || empty($response)) {
