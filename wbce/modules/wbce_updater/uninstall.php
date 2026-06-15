@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * WBCE Update-Assistent - Uninstall Script
  *
@@ -7,7 +7,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -38,8 +38,15 @@ foreach ($temp_files as $temp_file) {
     }
 }
 
-// Note: We don't delete files that might have been prepared for an update
-// (wbceup.zip, wbce_update_unzip.php) as the user might still want to use them
+// Clean up var/logs directory if it was created by this module and is now empty
+$logs_dir = WB_PATH . '/var/logs';
+if (is_dir($logs_dir) && count(array_diff(scandir($logs_dir), ['.', '..'])) === 0) {
+    @rmdir($logs_dir);
+    $var_dir = WB_PATH . '/var';
+    if (is_dir($var_dir) && count(array_diff(scandir($var_dir), ['.', '..'])) === 0) {
+        @rmdir($var_dir);
+    }
+}
 
 // Return success status to WBCE
 return true;
