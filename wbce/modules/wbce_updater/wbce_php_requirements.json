@@ -1,33 +1,33 @@
 {
   "metadata": {
-    "version": "1.0.0",
-    "last_updated": "2026-01-19",
+    "version": "1.0.1",
+    "last_updated": "2026-05-06",
     "description": "PHP version requirements for WBCE CMS versions - using version ranges",
     "source": "WBCE Community / GitHub Documentation",
     "maintainer": "WBCE Community",
     "note": "Entries are checked from top to bottom, first match wins"
   },
   "php_requirements": [
-  {
-      "wbce_version_min": "1.6.5",
+    {
+      "wbce_version_min": "1.6.6",
       "wbce_version_max": null,
-      "php_min": "8.1.0",
+      "php_min": "8.2.0",
       "php_max": "8.4.999",
-      "php_recommended": "8.2.0",
-      "release_date": "2025-12",
+      "php_recommended": "8.3.0",
+      "release_date": "2026-05",
       "status": "current",
-      "notes": "none",
+      "notes": "PHP 8.2+ required starting from WBCE 1.6.6.",
       "verified": true
     },
     {
       "wbce_version_min": "1.6.4",
-      "wbce_version_max": "1.6.4",
+      "wbce_version_max": "1.6.5.999",
       "php_min": "8.1.0",
       "php_max": "8.4.999",
       "php_recommended": "8.2.0",
       "release_date": "2024-09",
       "status": "outdated",
-      "notes": "PHP 8.4 support added in WBCE 1.6.4",
+      "notes": "PHP 8.4 support added in WBCE 1.6.4. Covers 1.6.4 through 1.6.5.",
       "verified": true
     },
     {

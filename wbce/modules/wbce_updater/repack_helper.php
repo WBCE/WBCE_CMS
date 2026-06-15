@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * WBCE Update-Assistent - ZIP Repack Helper
  *
@@ -6,7 +6,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -26,13 +26,16 @@ function findWbceFolder($zip) {
         $stat = $zip->statIndex($i);
         $path = $stat['name'];
 
-        // Suche nach typischen WBCE-Dateien im Root
-        // Diese Dateien sollten direkt im wbce/ Ordner liegen
+        // Suche nach typischen WBCE-Dateien im Root.
+        // Diese Pfade existieren garantiert im wbce/-Wurzelverzeichnis und
+        // sind spezifisch genug, um nicht versehentlich in Modulen zu treffen.
+        // Hinweis: 'config.php' NICHT verwenden – existiert nicht im Release-ZIP
+        // (nur config.php.new), aber in Modulen wie ckeditor/filemanager.
         $wbceMarkers = [
-            'index.php',
-            'config.php',
+            'framework/class.admin.php',
+            'framework/class.wb.php',
+            'admin/admintools/tool.php',
             'install/index.php',
-            'framework/class.admin.php'
         ];
 
         foreach ($wbceMarkers as $marker) {

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * WBCE Updater - Configuration Defaults
  *
@@ -6,7 +6,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -93,4 +93,19 @@ if (!defined('WBCE_UPDATER_VERIFY_CHECKSUMS')) {
 // Enable detailed error messages (should be false in production)
 if (!defined('WBCE_UPDATER_DEBUG')) {
     define('WBCE_UPDATER_DEBUG', false);
+}
+
+// ============================================================================
+// USER CONFIG OVERRIDES  (user_config.php)
+// ============================================================================
+// user_config.php wird NICHT in Release-ZIPs mitgeliefert und überlebt Updates.
+// Sie muss manuell aus user_config.default.php kopiert werden.
+//
+// Konstanten oder Variablen aus dieser Datei, die dauerhaft über Updates hinweg
+// angepasst bleiben sollen, müssen in die user_config.php verschoben werden –
+// denn diese Datei (config_defaults.php) wird bei jedem Update überschrieben.
+$wbce_updater_custom_source_url = '';
+$wbce_updater_disabled = false;
+if (file_exists(__DIR__ . '/user_config.php')) {
+    require_once __DIR__ . '/user_config.php';
 }
