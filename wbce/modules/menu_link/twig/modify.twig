@@ -1,0 +1,186 @@
+{#
+    menu_link/twig/modify.twig
+
+    Variables:
+      page_id, section_id  — IDs
+      FTAN                 — raw FTAN hidden input HTML
+      WB_URL               — base URL
+      aData                — row from mod_menu_link + pages
+      aLinks               — flat page-tree array from PageTree::pageTreeCombobox()
+      sAnchor              — pre-computed initial anchor label
+      anchorValue          — raw anchor value stored in DB
+      currentAnchorJson    — json_encode of aData.anchor (for JS)
+      aAnchorsJson         — json_encode of anchor map (for JS)
+      MOD_MENU_LINK        — module language strings
+      targetOptions        — { value: label } map for target select
+      rTypeOptions         — { value: label } map for r_type select
+#}
+<form name="menulink" action="{{ WB_URL }}/modules/menu_link/save.php" method="post">
+    <input type="hidden" name="page_id"    value="{{ page_id }}" />
+    <input type="hidden" name="section_id" value="{{ section_id }}" />
+    {{ FTAN | raw }}
+
+    <div class="cp-settings">
+        <div class="cp-toggle-section">
+            <div class="cp-card-head">
+                <label><i class="fa fa-link"></i> Menu-Link</label>
+            </div>
+            <section>
+
+                {# ── Link type ────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TEXT:LINK') }}-{{ L_('TEXT:TYPE') }}</div>
+                    <div class="cp-setting-value">
+                        <div class="cb">
+                            <input type="radio" class="switch-radio" name="linktype" value="ext"
+                                   id="external_link" {{ aData.target_page_id == '-1' ? 'checked' : '' }}>
+                            <label for="external_link">{{ L_('MOD_MENU_LINK:EXTERNAL_LINK') }}</label>
+                            <input type="radio" class="switch-radio" name="linktype" value="int"
+                                   id="internal_link" {{ aData.target_page_id != '-1' ? 'checked' : '' }}>
+                            <label for="internal_link">{{ L_('MOD_MENU_LINK:INTERNAL_LINK') }}</label>
+                        </div>
+                    </div>
+                </div>
+
+                {# ── Page select (internal) ───────────────────────────────── #}
+                <div class="cp-setting-row" id="page_link_selection">
+                    <div class="cp-setting-name">{{ L_('TEXT:PAGE') }}</div>
+                    <div class="cp-setting-value">
+                        <select class="menuLink" name="menu_link" id="menu_link"
+                                data-search-label="{{ L_('TEXT:SEARCH') }} … [{{ L_('TEXT:PAGE') }}-ID, {{ L_('TEXT:MENU_TITLE') }}]">
+                            <option value="0" {{ aData.target_page_id == '0' ? 'selected' : '' }}>
+                                {{ L_('TEXT:PLEASE_SELECT') }} &hellip;
+                            </option>
+                            {% for p in aLinks %}
+                                <option
+                                    value="{{ p.page_id }}"
+                                    data-prefix="{{ p.prefix }}"
+                                    data-level="{{ p.level }}"
+                                    data-right="{{ p.page_id }}"
+                                    data-class="type-{{ p.visibility }}"
+                                    title="{{ p.page_title | e }}"
+                                    {{ p.selected ? 'selected' : '' }}
+                                    {{ p.page_id == page_id ? 'disabled' : '' }}>
+                                    {{ p.prefix | raw }}{{ p.menu_title | e }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                {# ── External URL ─────────────────────────────────────────── #}
+                <div class="cp-setting-row" id="external">
+                    <div class="cp-setting-name">URL:</div>
+                    <div class="cp-setting-value">
+                        <input type="text" name="extern" id="extern"
+                               value="{{ aData.extern | e }}"
+                               {{ aData.target_page_id != '-1' ? 'disabled="disabled"' : '' }} />
+                    </div>
+                </div>
+
+                {# ── Anchor ───────────────────────────────────────────────── #}
+                <div class="cp-setting-row" id="sec_anchor">
+                    <div class="cp-setting-name">{{ TEXT.ANCHOR }}</div>
+                    <div class="cp-setting-value">
+                        <input type="hidden" name="anchor" value="0">
+                        <select class="menuLink" name="anchor" id="page_target">
+                            <option value="{{ anchorValue | e }}" selected="selected">
+                                {{ sAnchor | e }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                {# ── Target ───────────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('TEXT:TARGET') }}</div>
+                    <div class="cp-setting-value">
+                        <select id="sel_target" name="target">
+                            {% for value, label in targetOptions %}
+                                <option value="{{ value }}" data-right="{{ value }}"
+                                        {{ aData.target == value ? 'selected' : '' }}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                {# ── Redirect type ────────────────────────────────────────── #}
+                <div class="cp-setting-row">
+                    <div class="cp-setting-name">{{ L_('MOD_MENU_LINK:R_TYPE') }}</div>
+                    <div class="cp-setting-value">
+                        <select id="sel_r_type" name="r_type">
+                            {% for value, label in rTypeOptions %}
+                                <option value="{{ value }}" data-right="{{ value }}"
+                                        {{ aData.redirect_type == value ? 'selected' : '' }}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                {# ── Buttons ──────────────────────────────────────────────── #}
+                <div class="cp-buttons-row">
+                    <a href="{{ ADMIN_URL }}/pages" class="button">« {{ L_('TEXT:BACK') }}</a>
+                    <button type="submit" name="save_and_back" class="button  pos-right">
+                        {{ L_('TEXT:SAVE') }} &amp; {{ L_('TEXT:BACK') }}
+                    </button>
+                    <button type="submit" name="save_settings" class="button ico-save pos-right">
+                        {{ L_('TEXT:SAVE') }}
+                    </button>
+                </div>
+
+            </section>
+        </div>
+    </div>
+</form>
+
+<script>
+$(function () {
+
+    $('#menu_link').wbeSelect({
+        customSelector:           'flag-right',
+        useSearch:                true,
+        disable_search_threshold: 0,
+        treeView:                 true,
+        searchFields:             'text right'
+    });
+
+    $('#sel_target').wbeSelect({ customSelector: 'flag-right' });
+    $('#sel_r_type').wbeSelect({ customSelector: 'flag-right' });
+    $('#page_target').wbeSelect({ disable_search_threshold: 7 });
+
+    var anchors      = {{ aAnchorsJson | raw }};
+    var $anchorSelect = $('#page_target');
+
+    $('#menu_link').on('change', function () {
+        var pid          = $(this).val();
+        var locs         = anchors[pid] || {};
+        var currentAnchor = {{ currentAnchorJson | raw }};
+        var html = $.map(locs, function (id, name) {
+            return '<option value="' + id + '"' + (id === currentAnchor ? ' selected' : '') + '>' + name + '</option>';
+        }).join('');
+        $anchorSelect.html(html);
+        $anchorSelect.wbeSelect('rebuildOptions');
+    });
+
+    $('#menu_link').trigger('change');
+
+    $('#page_link_selection').hide();
+    $('#sec_anchor').hide();
+    $('#external').hide();
+
+    $('input[name="linktype"]').on('change', function () {
+        if ($(this).val() === 'int') {
+            $('#page_link_selection').show();
+            $('#sec_anchor').show();
+            $('#external').hide();
+            $('#extern').prop('disabled', false);
+        } else {
+            $('#page_link_selection').hide();
+            $('#sec_anchor').hide();
+            $('#external').show();
+            $('#extern').prop('disabled', false);
+        }
+    }).trigger('change');
+
+});
+</script>

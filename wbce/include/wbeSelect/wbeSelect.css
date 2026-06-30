@@ -24,6 +24,11 @@
     --ws-font:             'Helvetica Neue', Helvetica, Arial, sans-serif;
     --ws-font-size:        14px;
     --ws-font-mono:        'Proggy','DejaVue','JetBrains', Consolas, monospace;
+
+    /* Tree connector SVG */
+    --ws-tree-indent:      14px;
+    --ws-tree-color:       #C5DDF0;
+    --ws-tree-stroke:      1.1px;
 }
 
 /* Light theme override */
@@ -191,6 +196,36 @@
 .flag-right .ws-tags .ws-tag .ws-tag-l img {
     max-width: 28px;
     max-height: 18px;
+}
+
+/* flag-right: flex layout for pixel-perfect badge + text alignment */
+.flag-right.ws--single .ws-tags .ws-tag,
+.flag-right .ws-opts .ws-opt {
+    display: flex;
+    align-items: center;
+}
+
+.flag-right.ws--single .ws-tags .ws-tag .ws-tag-r,
+.flag-right .ws-opts .ws-opt .ws-opt-r {
+    float: none;
+    flex-shrink: 0;
+    margin-left: 0;
+}
+
+.flag-right.ws--single .ws-tags .ws-tag .ws-tag-ttl,
+.flag-right .ws-opts .ws-opt .ws-opt-ttl {
+    flex: 1;
+}
+
+/* flag-right: selected badge matches option badge exactly */
+.flag-right.ws--single .ws-tags .ws-tag .ws-tag-r {
+    background-color: var(--ws-accent);
+    font-size: 90%;
+    font-weight: 400;
+    line-height: 10px;
+    border-radius: 5px;
+    padding: 3px 7px;
+    margin-right: 6px;
 }
 
 /* Title */
@@ -424,14 +459,7 @@
 
 .flag-right .ws-opts .ws-opt .ws-opt-ttl {
     margin-top: 0px;
-    margin-left: 40px;
-}
-.ws-opt-ttl:has(.tree-prefix) {
-    
-    margin-top: -4px;
-    font-family: var(--ws-font-mono);
-}
-.ws-opt-ttl:has(.tree-prefix) {
+    margin-left: 3px;
 }
 .flag-right .ws-opts .ws-opt {
     padding: 0;
@@ -442,6 +470,8 @@
     font-size: 90%;
     line-height: 10px;
     margin-top: 2px;
+    margin-right: 6px;
+    text-align: center;
 }
 
 .title_only .ws-opts .ws-opt .ws-opt-ttl {
@@ -449,31 +479,27 @@
 }
 
 
-/* Tree prefix styling */
-.tpfx,
-.tree-prefix {
-    color: var(--ws-text-dim) !important;
-    font-variant: normal;
-    font-size: 0.9rem;
-    font-family: var(--ws-font-mono) !important;
-    opacity: 0.7;
+/* Tree connector SVG */
+.ws-tree-svg {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: visible;
+    flex-shrink: 0;
+    color: var(--ws-tree-color);
+    margin-right: 4px;
+    user-select: none;
 }
+/* Depth dots in the closed/selected state */
 .tree-level-dots {
-    color: #777;              /* subtle gray — adjust for your dark theme */
+    color: var(--ws-tree-color);
     opacity: 0.75;
     font-family: Consolas, monospace;
-    font-size: 1.05em;        /* slightly larger for visibility */
+    font-size: 1.05em;
     letter-spacing: 0.15em;
     margin-right: 0.5em;
     display: inline-block;
     user-select: none;
 }
-
-/* Optional: faint decrease in intensity for deeper levels */
-.ws-opt[data-level="1"] .tree-level-dots { opacity: 0.8; }
-.ws-opt[data-level="2"] .tree-level-dots { opacity: 0.75; }
-.ws-opt[data-level="3"] .tree-level-dots { opacity: 0.7; }
-.ws-opt[data-level="4"] .tree-level-dots { opacity: 0.65; }
 
 
 /* Subtitle */

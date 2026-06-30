@@ -18,7 +18,7 @@ $sSql  = 'SELECT * FROM `{TP}mod_menu_link` WHERE `page_id` = ?';
 $rQueryPageData = $database->query($sSql, [(int) PAGE_ID]);
 
 if ($rQueryPageData->numRows() == 1) {
-    $aPageData = $rQueryPageData->fetchRow(MYSQLI_ASSOC); // generate assoc array from query
+    $aPageData = $rQueryPageData->fetchRow();
 
     if ($aPageData['redirect_type'] == 301) {
         @header('HTTP/1.1 301 Moved Permanently');	// 301 redirect
@@ -62,8 +62,11 @@ if ($rQueryPageData->numRows() == 1) {
             }
 
             // get link of target-page
-            $sSql  = 'SELECT `link` FROM `{TP}pages` WHERE `page_id` = '.$aPageData['target_page_id'];
-            if ($sTargetPageLink = $database->get_one($sSql)) {
+            $sTargetPageLink = $database->fetchValue(
+                'SELECT `link` FROM `{TP}pages` WHERE `page_id` = ?',
+                [(int) $aPageData['target_page_id']]
+            );
+            if ($sTargetPageLink) {
                 $sTargetUrl = WB_URL.PAGES_DIRECTORY.$sTargetPageLink.PAGE_EXTENSION.$sAnchor;
                 header('Location: '.$sTargetUrl);
                 exit;

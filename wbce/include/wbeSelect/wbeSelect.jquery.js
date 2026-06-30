@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * wbeSelect — jQuery Select Plugin
  * Version 1.0.4
  *
@@ -402,53 +402,117 @@
 
         // ── TREE VIEW ────────────────────────────────────────────────────────────
 
+        function readTreeVars() {
+            var s = getComputedStyle(document.documentElement);
+            return {
+                W:      parseFloat(s.getPropertyValue('--ws-tree-indent').trim()) || 14,
+                stroke: parseFloat(s.getPropertyValue('--ws-tree-stroke').trim()) || 1.5
+            };
+        }
+
+        // Build SVG tree connector from a prefix string (│, ├─, └─ + NBSP sequences).
+        function buildDropdownTreeSvg(prefixRaw) {
+            var prefix   = (prefixRaw || '').replace(/&nbsp;/gi, ' ');
+            var segments = [];
+            var i = 0;
+            while (i < prefix.length) {
+                var c = prefix.charCodeAt(i);
+                if      (c === 0x2502) { segments.push('vert');   i += 3; }         // │ + 2×NBSP
+                else if (c === 0x251C) { segments.push('branch'); i += 3; break; }  // ├─ + NBSP
+                else if (c === 0x2514) { segments.push('last');   i += 3; break; }  // └─ + NBSP
+                else if (c === 0x00A0) { segments.push('empty');  i += 3; }         // 3×NBSP
+                else                   { i++; }
+            }
+            if (segments.length === 0) return '';
+
+            var tv = readTreeVars(), W = tv.W, sw = tv.stroke;
+            var totW = segments.length * W, H = 20, midY = H / 2;
+            var lines = [];
+            segments.forEach(function (type, idx) {
+                var cx = idx * W + W / 2;
+                if (type === 'vert') {
+                    lines.push('<line x1="'+ cx +'" y1="-4" x2="'+ cx +'" y2="'+ (H + 4) +'"/>');
+                } else if (type === 'branch') {
+                    lines.push('<line x1="'+ cx +'" y1="-4" x2="'+ cx +'" y2="'+ (H + 4) +'"/>');
+                    lines.push('<line x1="'+ cx +'" y1="'+ midY +'" x2="'+ totW +'" y2="'+ midY +'"/>');
+                } else if (type === 'last') {
+                    lines.push('<line x1="'+ cx +'" y1="-4" x2="'+ cx +'" y2="'+ midY +'"/>');
+                    lines.push('<line x1="'+ cx +'" y1="'+ midY +'" x2="'+ totW +'" y2="'+ midY +'"/>');
+                }
+            });
+            return '<svg class="ws-tree-svg" width="'+ totW +'" height="'+ H
+                + '" viewBox="0 0 '+ totW +' '+ H
+                + '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+                + '<g stroke="currentColor" stroke-width="'+ sw
+                + '" stroke-linecap="round" fill="none">'
+                + lines.join('') + '</g></svg>';
+        }
+
+        // Simple depth-indicator SVG for the closed/selected state.
+        function buildDepthSvg(level) {
+            if (level <= 0) return '';
+            var tv = readTreeVars(), W = tv.W, sw = tv.stroke;
+            var totW = level * W, H = 16, midY = H / 2;
+            var lines = [];
+            for (var i = 0; i < level; i++) {
+                var cx = i * W + W / 2;
+                if (i < level - 1) {
+                    lines.push('<line x1="'+ cx +'" y1="0" x2="'+ cx +'" y2="'+ H +'"/>');
+                } else {
+                    lines.push('<line x1="'+ cx +'" y1="0" x2="'+ cx +'" y2="'+ midY +'"/>');
+                    lines.push('<line x1="'+ cx +'" y1="'+ midY +'" x2="'+ totW +'" y2="'+ midY +'"/>');
+                }
+            }
+            return '<svg class="ws-tree-svg" width="'+ totW +'" height="'+ H
+                + '" viewBox="0 0 '+ totW +' '+ H
+                + '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+                + '<g stroke="currentColor" stroke-width="'+ sw
+                + '" stroke-linecap="round" fill="none">'
+                + lines.join('') + '</g></svg>';
+        }
+
         function enhanceTreePrefixes() {
             if (!self.options.treeView) return;
 
             function normalize(str) {
-                return (str || '').replace(/&nbsp;/gi, '\u00A0').replace(/\s+/g, '\u00A0').trim();
+                return (str || '').replace(/&nbsp;/gi, ' ').replace(/ +/g, ' ').trim();
             }
-
-            var DOT = '●';
 
             function cleanOldPrefix(text) {
                 return (text || '')
-                    .replace(/^[│├└ \u00A0·•◦●\-\—─\|]+/, '')
+                    .replace(/^[│├└  ·•◦●\-—─\|]+/, '')
                     .trimStart();
             }
 
-            // Dropdown options: wrap full line-based prefix in a span
-            self.$options_element.find('.ws-opt-ttl').each(function (i) {
+            // Dropdown options: replace prefix text with SVG connectors
+            self.$options_element.find('.ws-opt-ttl').each(function () {
                 var $ttl = $(this);
-
-                if ($ttl.find('.tree-prefix').length > 0) return;
+                if ($ttl.find('.ws-tree-svg').length > 0) return;
 
                 var $opt         = $ttl.closest('.ws-opt');
                 var prefixEntity = $opt.attr('data-prefix') || '';
                 var prefix       = normalize(prefixEntity);
+                if (!prefix) return;
 
-                if (!prefix.trim()) return;
-
-                var currentText   = $ttl.text();
-                var currentHtml   = $ttl.html() || '';
-                var matchLiteral  = currentText.indexOf(prefix) === 0;
-                var escapedPrefix = prefixEntity.replace(/\u00A0/g, '&nbsp;');
-                var matchEscaped  = currentHtml.indexOf(escapedPrefix) === 0;
+                var currentText  = $ttl.text();
+                var currentHtml  = $ttl.html() || '';
+                var matchLiteral = currentText.indexOf(prefix) === 0;
+                var escapedPfx   = prefixEntity.replace(/ /g, '&nbsp;');
+                var matchEscaped = currentHtml.indexOf(escapedPfx) === 0;
 
                 if (matchLiteral || matchEscaped) {
-                    var sliceFrom = matchEscaped ? escapedPrefix.length : prefix.length;
+                    var sliceFrom = matchEscaped ? escapedPfx.length : prefix.length;
                     var titlePart = currentHtml.substring(sliceFrom);
-                    $ttl.html('<span class="tree-prefix">' + escape(prefixEntity) + '</span>' + titlePart);
+                    $ttl.html(buildDropdownTreeSvg(prefixEntity) + titlePart);
                 }
             });
 
-            // Selected item: show depth dots based on data-level
+            // Selected item: depth dots (●●) based on nesting level
             if (is_single) {
                 self.$selecteditems_element.find('.ws-tag-ttl').each(function () {
-                    var $ttl     = $(this);
-                    var $tag     = $ttl.closest('.ws-tag');
-                    var levelStr = $tag.attr('data-level');
-                    var level    = levelStr ? parseInt(levelStr, 10) : 0;
+                    var $ttl      = $(this);
+                    var $tag      = $ttl.closest('.ws-tag');
+                    var level     = parseInt($tag.attr('data-level') || '0', 10);
                     var cleanText = cleanOldPrefix($ttl.text() || '');
 
                     if (level <= 0) {
@@ -456,9 +520,25 @@
                         return;
                     }
 
-                    var dots = DOT.repeat(level);
+                    var dots = '●'.repeat(level);
                     $ttl.html('<span class="tree-level-dots">' + escape(dots) + '</span>' + cleanText);
                 });
+            }
+        }
+        // ── EQUALIZE BADGE WIDTHS ────────────────────────────────────────────────
+
+        var _badgeMinWidth = 0;
+
+        function equalizeBadgeWidths() {
+            var $badges = self.$options_element.find('.ws-opt-r');
+            if ($badges.length < 2) return;
+            $badges.css('min-width', '');
+            var maxW = 0;
+            $badges.each(function () { maxW = Math.max(maxW, $(this).outerWidth()); });
+            if (maxW > 0) {
+                _badgeMinWidth = maxW;
+                $badges.css('min-width', maxW + 'px');
+                self.$selecteditems_element.find('.ws-tag-r').css('min-width', maxW + 'px');
             }
         }
 
@@ -522,6 +602,10 @@
 
                 $item.append(self.options.render.selected_item(data, escape));
 
+                if (_badgeMinWidth > 0) {
+                    $item.find('.ws-tag-r').css('min-width', _badgeMinWidth + 'px');
+                }
+
                 // Single: hide remove button when there is no empty-value fallback
                 if (is_single && (
                     data[self.options.valueField] === '' ||
@@ -582,6 +666,9 @@
                         }
                     } else {
                         data[name] = this.value;
+                        if (name === 'title') {
+                            $option.attr('title', this.value);
+                        }
                     }
                 }
             });
@@ -743,6 +830,7 @@
                         (self.$container_element.outerHeight() +
                          (is_multiple ? 0 : self.$input_element.outerHeight()) - 1) + 'px'
                     );
+                    equalizeBadgeWidths();
                 }, 1);
             } else {
                 hideDropdown();
