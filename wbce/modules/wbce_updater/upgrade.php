@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * WBCE Update-Assistent - Upgrade Script
  *
@@ -7,7 +7,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License

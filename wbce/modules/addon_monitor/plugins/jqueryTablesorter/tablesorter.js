@@ -749,7 +749,7 @@
 			};
 			
 			this.clearTableBody = function(table) {
-				if($.browser.msie) {
+				if(1==2) {
 					function empty() {
 						while ( this.firstChild ) this.removeChild( this.firstChild );
 					}
