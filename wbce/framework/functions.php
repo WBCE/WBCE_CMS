@@ -1895,13 +1895,20 @@ function strposm($sHaystack, $uNeedle)
     return false;
 }
 
-
-function remove_special_characters($str) {
- 
-  // Using str_replace() function
-  // to replace the word
-  $res = str_replace( array( '\'','"',',',';','<','>','%','&','$','\\','/' ), '', $str);
-
-  // Returning the result
-  return $res;
-  }
+/**
+ * Remove some special chars from a given string.
+ *
+ * @param string|array|null $str  The given string/array. Null becomes an emtpy string!
+ *
+ * @return mixed  String or array. (Empty string if null is given!)
+ */
+function remove_special_characters(string|array|null $str="") {
+    if (is_null($str))
+    {
+        return "";
+    }
+    // Using str_replace() function to replace some chars
+    $res = str_replace(['\'', '"', ',', ';', '<', '>', '%', '&', '$', '\\', '/'], '', $str);
+    // Returning the result
+    return $res;
+}
