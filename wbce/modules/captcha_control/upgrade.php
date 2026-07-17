@@ -15,11 +15,11 @@ if (count(get_included_files())==1) {
     header("Location: ../index.php", true, 301);
 }
 
-// Default settings
-Settings::Set("enabled_captcha", true);
-Settings::Set("enabled_asp", true);
-Settings::Set("captcha_type", "calc_text");
-Settings::Set("asp_session_min_age", "20");
-Settings::Set("asp_view_min_age", "10");
-Settings::Set("asp_input_min_age", "5");
-Settings::Set("ct_text", "");
+// Default settings if no corresponding values ​​exist in the database.
+Settings::Set("enabled_captcha", true, false);
+Settings::Set("enabled_asp", true, false);
+Settings::Set("captcha_type", "calc_text", false);
+Settings::Set("asp_session_min_age", "20", false);
+Settings::Set("asp_view_min_age", "10", false);
+Settings::Set("asp_input_min_age", "5", false);
+Settings::Set("ct_text", "", false);
