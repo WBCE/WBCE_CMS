@@ -90,7 +90,7 @@ class Settings
 
 
         // Make sure we only  got 'a-zA-Z0-9_'
-        if (!preg_match("/[a-zA-Z0-9\-]+/u", $name)) {
+        if (empty($name) || !preg_match('/^[a-zA-Z0-9_]+$/', $name)) {
             return "Name only may contain 'a-zA-Z0-9_'";
         }
         $name = strtolower($name);
