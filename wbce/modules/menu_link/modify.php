@@ -78,8 +78,7 @@ foreach ($aLinks as $p) {
     }
 }
 
-insertCssFile(INCLUDE_URL . '/wbeSelect/wbeSelect.css');
-insertJsFile(INCLUDE_URL . '/wbeSelect/wbeSelect.jquery.js', 'BODY TOP');
+loadPlugin('include/wbeSelect');
 
 $toTwig = [
     'page_id'            => $page_id,

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wbeSelect — jQuery Select Plugin Demo</title>
+  <title>wbeSelect — Vanilla JS Select Widget Demo</title>
   <link rel="stylesheet" href="wbeSelect.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -363,8 +363,8 @@
 <!-- ══ TOP BAR ══════════════════════════════════════════════════════════════ -->
 <header class="top-bar">
   <span class="wordmark">wbe<em>Select</em></span>
-  <span class="chip">v1.0.0</span>
-  <span class="chip">jQuery</span>
+  <span class="chip">v2.0.0</span>
+  <span class="chip">Vanilla JS</span>
   <span class="chip">MIT</span>
   <span class="gap"></span>
   <button class="toggle-btn" id="themeBtn" onclick="toggleTheme()">☀ Light mode</button>
@@ -390,6 +390,7 @@
       <a href="#ex-group">05 · Optgroups</a>
       <a href="#ex-search">06 · Search Tags</a>
       <a href="#ex-light">07 · Light Theme</a>
+      <a href="#ex-svg">08 · Colors &amp; Custom SVG</a>
     </div>
     <div class="sb-group">
       <div class="sb-label">Reference</div>
@@ -481,17 +482,14 @@
     <section class="sec" id="install">
       <div class="eyebrow">Getting Started</div>
       <h2>Installation</h2>
-      <p>Three includes — stylesheet, jQuery, plugin script. Then call <code>.wbeSelect()</code>, or add <code>class="wbeSelect"</code> for auto-init.</p>
+      <p>Two includes — stylesheet, plugin script. No jQuery required. Then call <code>WbeSelect.init()</code>, or add <code>class="wbeSelect"</code> for auto-init.</p>
 
       <div class="install">
         <pre><span class="tc">&lt;!-- 1. Stylesheet --&gt;</span>
 <span class="tt">&lt;link</span> <span class="ta">rel</span>=<span class="tv">"stylesheet"</span> <span class="ta">href</span>=<span class="tv">"wbeSelect.css"</span><span class="tt">&gt;</span>
 
-<span class="tc">&lt;!-- 2. jQuery (3.x or 4.x) --&gt;</span>
-<span class="tt">&lt;script</span> <span class="ta">src</span>=<span class="tv">"jquery.min.js"</span><span class="tt">&gt;&lt;/script&gt;</span>
-
-<span class="tc">&lt;!-- 3. Plugin --&gt;</span>
-<span class="tt">&lt;script</span> <span class="ta">src</span>=<span class="tv">"wbeSelect.jquery.js"</span><span class="tt">&gt;&lt;/script&gt;</span></pre>
+<span class="tc">&lt;!-- 2. Plugin (zero dependencies) --&gt;</span>
+<span class="tt">&lt;script</span> <span class="ta">src</span>=<span class="tv">"wbeSelect.js"</span><span class="tt">&gt;&lt;/script&gt;</span></pre>
       </div>
 
       <div class="install">
@@ -499,11 +497,19 @@
 <span class="tt">&lt;select</span> <span class="ta">class</span>=<span class="tv">"wbeSelect"</span><span class="tt">&gt;</span>…<span class="tt">&lt;/select&gt;</span>
 
 <span class="tc">// Manual init with options:</span>
-<span class="tf">$</span>(<span class="ts">'#mySelect'</span>).<span class="tf">wbeSelect</span>({
+<span class="tf">WbeSelect</span>.<span class="tf">init</span>(<span class="tf">document</span>.<span class="tf">getElementById</span>(<span class="ts">'mySelect'</span>), {
   <span class="ta">customSelector</span>: <span class="ts">'cfg-visibility'</span>,
   <span class="ta">useSearch</span>:      <span class="tk">true</span>,
   <span class="ta">treeView</span>:       <span class="tk">false</span>
 });</pre>
+      </div>
+
+      <div class="install">
+        <pre><span class="tc">// Still using jQuery elsewhere on the page? A compatibility bridge
+// attaches itself automatically when window.jQuery exists — the
+// old calling convention keeps working, unchanged:</span>
+<span class="tf">$</span>(<span class="ts">'#mySelect'</span>).<span class="tf">wbeSelect</span>({ <span class="ta">customSelector</span>: <span class="ts">'cfg-visibility'</span> });
+<span class="tf">$</span>(<span class="ts">'#mySelect'</span>).<span class="tf">wbeSelect</span>(<span class="ts">'refresh'</span>);</pre>
       </div>
     </section>
 
@@ -614,11 +620,10 @@
 
   <span class="tc">&lt;!-- …more options --&gt;</span>
 <span class="tt">&lt;/select&gt;</span></pre>
-<pre><span class="tf">$</span>(<span class="ts">'#ap_visibility'</span>)
-  .<span class="tf">wbeSelect</span>({
-    <span class="ta">customSelector</span>:
-      <span class="ts">'cfg-visibility'</span>
-  });</pre>
+<pre><span class="tf">WbeSelect</span>.<span class="tf">init</span>(<span class="tf">document</span>.<span class="tf">getElementById</span>(<span class="ts">'ap_visibility'</span>), {
+  <span class="ta">customSelector</span>:
+    <span class="ts">'cfg-visibility'</span>
+});</pre>
           </div>
         </div>
       </div>
@@ -738,13 +743,12 @@
 
           <div class="code-pane">
             <div class="code-tabs"><div class="code-tab on">JS</div></div>
-<pre><span class="tf">$</span>(<span class="ts">'#ap_parent'</span>)
-  .<span class="tf">wbeSelect</span>({
-    <span class="ta">customSelector</span>: <span class="ts">'flag-right'</span>,
-    <span class="ta">useSearch</span>:      <span class="tk">true</span>,
-    <span class="ta">treeView</span>:       <span class="tk">true</span>,
-    <span class="ta">searchFields</span>:   <span class="ts">'text right'</span>
-  });</pre>
+<pre><span class="tf">WbeSelect</span>.<span class="tf">init</span>(<span class="tf">document</span>.<span class="tf">getElementById</span>(<span class="ts">'ap_parent'</span>), {
+  <span class="ta">customSelector</span>: <span class="ts">'flag-right'</span>,
+  <span class="ta">useSearch</span>:      <span class="tk">true</span>,
+  <span class="ta">treeView</span>:       <span class="tk">true</span>,
+  <span class="ta">searchFields</span>:   [<span class="ts">'text'</span>, <span class="ts">'right'</span>]
+});</pre>
 <pre><span class="tc">&lt;!-- Single-space prefixes are key!
      HTMLOptionElement.text normalizes
      multi-spaces → single space.
@@ -812,11 +816,10 @@
 
   <span class="tc">&lt;!-- …more options --&gt;</span>
 <span class="tt">&lt;/select&gt;</span></pre>
-<pre><span class="tf">$</span>(<span class="ts">'#lang_select'</span>)
-  .<span class="tf">wbeSelect</span>({
-    <span class="ta">customSelector</span>:
-      <span class="ts">'cfg-lang'</span>
-  });</pre>
+<pre><span class="tf">WbeSelect</span>.<span class="tf">init</span>(<span class="tf">document</span>.<span class="tf">getElementById</span>(<span class="ts">'lang_select'</span>), {
+  <span class="ta">customSelector</span>:
+    <span class="ts">'cfg-lang'</span>
+});</pre>
           </div>
         </div>
       </div>
@@ -942,7 +945,7 @@
 <span class="tc">// search auto-enables when
 // options > threshold (default 7)</span>
 <span class="tc">// Override threshold:</span>
-<span class="tf">$</span>(<span class="ts">'…'</span>).<span class="tf">wbeSelect</span>({
+<span class="tf">WbeSelect</span>.<span class="tf">init</span>(<span class="tf">selectEl</span>, {
   <span class="ta">disable_search_threshold</span>: <span class="tn">0</span>
 });</pre>
           </div>
@@ -997,11 +1000,90 @@
 
     <hr class="divider">
 
+    <!-- ══ EX 08 · COLORS & CUSTOM SVG ══════════════════════════════════════ -->
+    <section class="sec" id="ex-svg">
+      <div class="eyebrow">Example 08</div>
+      <h2>Colors &amp; Custom SVG</h2>
+      <p>Two new per-option visuals. A plain <code>data-color</code> renders a small colour dot to the left of the text. A custom SVG icon can come from a <code>svgIcons</code> registry passed to <code>WbeSelect.init()</code> and referenced via <code>data-svgref</code> — or be written straight onto the option as <code>data-svg</code>, no registry needed. Either way, an accompanying <code>data-color</code> tints the icon (the SVG must use <code>fill="currentColor"</code> / <code>stroke="currentColor"</code>).</p>
+
+      <div class="card">
+        <div class="split">
+          <div class="preview">
+            <div class="preview-lbl">Live Demo — click to open</div>
+
+            <div class="field drop-room">
+              <div class="field-label">Priority — data-color only</div>
+              <select id="demo_priority" style="width:220px;">
+                <option value="low"      data-color="#10b981">Low</option>
+                <option value="medium"   data-color="#f59e0b" selected>Medium</option>
+                <option value="high"     data-color="#ef4444">High</option>
+                <option value="critical" data-color="#7c3aed">Critical</option>
+              </select>
+            </div>
+
+            <div class="field drop-room">
+              <div class="field-label">Share Action — svgIcons registry + inline data-svg</div>
+              <select id="demo_svg" style="width:280px;">
+                <option value="link"   data-svgref="share">Share via Link</option>
+                <option value="world"  data-svgref="world" selected>Publish Publicly</option>
+                <option value="idea"   data-color="#f59e0b" data-svg='&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;path stroke=&quot;none&quot; d=&quot;M0 0h24v24H0z&quot; fill=&quot;none&quot;/&gt;&lt;path d=&quot;M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7&quot;/&gt;&lt;path d=&quot;M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3&quot;/&gt;&lt;path d=&quot;M9.7 17l4.6 0&quot;/&gt;&lt;/svg&gt;'>Mark as Idea</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="code-pane">
+            <div class="code-tabs">
+              <div class="code-tab on">HTML</div>
+              <div class="code-tab">JS</div>
+            </div>
+<pre><span class="tc">&lt;!-- Plain colour dot: just data-color, no icon --&gt;</span>
+<span class="tt">&lt;select</span> <span class="ta">id</span>=<span class="tv">"priority"</span><span class="tt">&gt;</span>
+  <span class="tt">&lt;option</span> <span class="ta">value</span>=<span class="tv">"low"</span>
+    <span class="ta">data-color</span>=<span class="tv">"#10b981"</span><span class="tt">&gt;</span>Low<span class="tt">&lt;/option&gt;</span>
+  <span class="tt">&lt;option</span> <span class="ta">value</span>=<span class="tv">"high"</span>
+    <span class="ta">data-color</span>=<span class="tv">"#ef4444"</span><span class="tt">&gt;</span>High<span class="tt">&lt;/option&gt;</span>
+<span class="tt">&lt;/select&gt;</span>
+
+<span class="tc">&lt;!-- SVG via registry ref (icon defined once in JS) --&gt;</span>
+<span class="tt">&lt;option</span> <span class="ta">value</span>=<span class="tv">"link"</span>
+  <span class="ta">data-svgref</span>=<span class="tv">"share"</span><span class="tt">&gt;</span>Share via Link<span class="tt">&lt;/option&gt;</span>
+
+<span class="tc">&lt;!-- SVG written straight on the option, no registry needed.
+     A tinting data-color is optional. --&gt;</span>
+<span class="tt">&lt;option</span> <span class="ta">value</span>=<span class="tv">"idea"</span>
+  <span class="ta">data-color</span>=<span class="tv">"#f59e0b"</span>
+  <span class="ta">data-svg</span>=<span class="tv">'&lt;svg fill="none" stroke="currentColor"&gt;…&lt;/svg&gt;'</span><span class="tt">&gt;</span>
+  Mark as Idea<span class="tt">&lt;/option&gt;</span></pre>
+<pre><span class="tc">// The registry is passed once per widget; data-svgref looks entries up by name.</span>
+<span class="tf">WbeSelect</span>.<span class="tf">init</span>(<span class="tf">document</span>.<span class="tf">getElementById</span>(<span class="ts">'share_action'</span>), {
+  <span class="ta">svgIcons</span>: [
+    {
+      <span class="ta">ref</span>:   <span class="ts">'share'</span>,
+      <span class="ta">color</span>: <span class="ts">'#2076c8'</span>,
+      <span class="ta">svg</span>:   <span class="ts">'&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"&gt;…&lt;/svg&gt;'</span>
+    },
+    {
+      <span class="ta">ref</span>:   <span class="ts">'world'</span>,
+      <span class="ta">color</span>: <span class="ts">'#10b981'</span>,
+      <span class="ta">svg</span>:   <span class="ts">'&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"&gt;…&lt;/svg&gt;'</span>
+    }
+  ]
+});
+
+<span class="tc">// data-color alone (no svg / data-svgref) → just the dot, no lookup needed</span>
+<span class="tf">WbeSelect</span>.<span class="tf">init</span>(<span class="tf">document</span>.<span class="tf">getElementById</span>(<span class="ts">'priority'</span>));</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
     <!-- ══ OPTIONS REFERENCE ════════════════════════════════════════════════ -->
     <section class="sec" id="ref-opts">
       <div class="eyebrow">Reference</div>
       <h2>Options</h2>
-      <p>Pass to <code>.wbeSelect({…})</code> or via <code>data-wbe-select-*</code> attributes on the element.</p>
+      <p>Pass to <code>WbeSelect.init(el, {…})</code> or via <code>data-wbe-select-*</code> attributes on the element.</p>
       <div class="card table-card">
         <table class="ref">
           <thead>
@@ -1022,6 +1104,7 @@
             <tr><td><code>showAllOptionsOnFocus</code></td><td><span class="tbadge">boolean</span></td><td><span class="dbadge">false</span></td><td>Open dropdown on focus before typing (useful in multiple mode).</td></tr>
             <tr><td><code>selectFirstOptionOnSearch</code></td><td><span class="tbadge">boolean</span></td><td><span class="dbadge">true</span></td><td>Auto-highlight first match when typing in multiple mode.</td></tr>
             <tr><td><code>height</code></td><td><span class="tbadge">string</span></td><td><span class="dbadge">'auto'</span></td><td>Set to <code>'element'</code> to lock container to the original element's height.</td></tr>
+            <tr><td><code>svgIcons</code></td><td><span class="tbadge">array</span></td><td><span class="dbadge">[]</span></td><td>Registry of <code>{ ref, svg, color }</code> entries. Options reference one via <code>data-svgref="ref"</code>; resolved to <code>data-svg</code>/<code>data-color</code> automatically.</td></tr>
           </tbody>
         </table>
       </div>
@@ -1038,6 +1121,9 @@
           <tbody>
             <tr><td><code>data-left="path.svg"</code></td><td>Renders an image on the left of both the option row and the selected tag.</td></tr>
             <tr><td><code>data-right="label"</code></td><td>Renders a coloured badge. Position depends on <code>customSelector</code> — right side when using <code>flag-right</code>.</td></tr>
+            <tr><td><code>data-color="#hex"</code></td><td>Renders a small colour dot on the left. Combined with <code>data-svg</code>/<code>data-svgref</code>, tints the icon instead (requires <code>fill="currentColor"</code> in the SVG).</td></tr>
+            <tr><td><code>data-svg="&lt;svg&gt;…&lt;/svg&gt;"</code></td><td>Inline SVG markup rendered directly on the option — no <code>svgIcons</code> registry entry needed.</td></tr>
+            <tr><td><code>data-svgref="name"</code></td><td>Looks up <code>svg</code> (and, unless overridden by its own <code>data-color</code>, <code>color</code>) from the <code>svgIcons</code> registry passed to <code>WbeSelect.init()</code>.</td></tr>
             <tr><td><code>data-subtitle="…"</code></td><td>Secondary text line shown in the dropdown below the title. Hidden in the selected state.</td></tr>
             <tr><td><code>data-class="type-public mid-1"</code></td><td>Extra classes copied to both the dropdown <code>&lt;li&gt;</code> and selected tag — used for badge colours and left-border accents.</td></tr>
             <tr><td><code>data-prefix="│  ├─ "</code></td><td>Tree prefix string. When <code>treeView: true</code>, wrapped in a monospace <code>&lt;span class="tree-prefix"&gt;</code>.</td></tr>
@@ -1053,7 +1139,7 @@
     <section class="sec" id="ref-api">
       <div class="eyebrow">Reference</div>
       <h2>Public API</h2>
-      <p>Access the plugin instance via <code>$el.data('wbeSelect')</code> and call these methods:</p>
+      <p>Access the widget instance via <code>WbeSelect.get(el)</code> and call these methods (with the jQuery bridge active, <code>$el.data('wbeSelect')</code> still works too):</p>
 
       <div class="api-item">
         <div class="api-head"><code>.refresh()</code></div>
@@ -1064,8 +1150,8 @@
         <div class="api-body">Closes the dropdown programmatically — useful on form submit or when navigating away.</div>
       </div>
       <div class="api-item">
-        <div class="api-head"><code>.removeSelection( $tagEl? )</code></div>
-        <div class="api-body">Deselects a specific tag (pass the <code>.ws-tag</code> jQuery element), or removes the first selected item when called with no argument.</div>
+        <div class="api-head"><code>.removeSelection( tagEl? )</code></div>
+        <div class="api-body">Deselects a specific tag (pass the <code>.ws-tag</code> DOM element), or removes the first selected item when called with no argument.</div>
       </div>
       <div class="api-item">
         <div class="api-head"><code>.destroy()</code></div>
@@ -1074,13 +1160,13 @@
 
       <div class="install" style="margin-top:16px;">
         <pre><span class="tc">// Programmatic value change + refresh</span>
-<span class="tk">var</span> $sel = <span class="tf">$</span>(<span class="ts">'#ap_visibility'</span>);
-$sel.<span class="tf">val</span>(<span class="ts">'private'</span>);
-$sel.<span class="tf">data</span>(<span class="ts">'wbeSelect'</span>).<span class="tf">refresh</span>();
+<span class="tk">const</span> sel = <span class="tf">document</span>.<span class="tf">getElementById</span>(<span class="ts">'ap_visibility'</span>);
+sel.<span class="ta">value</span> = <span class="ts">'private'</span>;
+<span class="tf">WbeSelect</span>.<span class="tf">get</span>(sel).<span class="tf">refresh</span>();
 
 <span class="tc">// Destroy and re-init with new options</span>
-$sel.<span class="tf">data</span>(<span class="ts">'wbeSelect'</span>).<span class="tf">destroy</span>();
-$sel.<span class="tf">wbeSelect</span>({
+<span class="tf">WbeSelect</span>.<span class="tf">get</span>(sel).<span class="tf">destroy</span>();
+<span class="tf">WbeSelect</span>.<span class="tf">init</span>(sel, {
   <span class="ta">customSelector</span>: <span class="ts">'cfg-visibility'</span>
 });</pre>
       </div>
@@ -1116,6 +1202,8 @@ $sel.<span class="tf">wbeSelect</span>({
             <tr><td><code>ws--single</code></td><td>Container</td><td>Single-select mode</td></tr>
             <tr><td><code>ws--no-search</code></td><td>Container</td><td>Search input is hidden</td></tr>
             <tr><td><code>ws--active</code></td><td>Option <code>&lt;li&gt;</code></td><td>Currently highlighted via hover or keyboard</td></tr>
+            <tr><td><code>ws-opt-color</code> / <code>ws-tag-color</code></td><td>Option row / tag</td><td>Colour dot rendered from <code>data-color</code> (added by Example 08)</td></tr>
+            <tr><td><code>ws-opt-svg</code> / <code>ws-tag-svg</code></td><td>Option row / tag</td><td>Custom SVG icon rendered from <code>data-svg</code>/<code>data-svgref</code> (added by Example 08)</td></tr>
           </tbody>
         </table>
       </div>
@@ -1125,42 +1213,63 @@ $sel.<span class="tf">wbeSelect</span>({
 </div>
 
 <!-- ══ SCRIPTS ══════════════════════════════════════════════════════════════ -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="wbeSelect.jquery.js"></script>
+<script src="wbeSelect.js"></script>
 <script>
-jQuery(document).ready(function ($) {
+document.addEventListener('DOMContentLoaded', function () {
 
   // Ex 00 — Before/After
-  $('#before_vis').wbeSelect({ customSelector: 'cfg-visibility' });
-  $('#before_groups').wbeSelect();
+  WbeSelect.init(document.getElementById('before_vis'), { customSelector: 'cfg-visibility' });
+  WbeSelect.init(document.getElementById('before_groups'));
 
   // Ex 01 — Visibility: single with left icons + subtitles
-  $('#demo_vis').wbeSelect({ customSelector: 'cfg-visibility' });
+  WbeSelect.init(document.getElementById('demo_vis'), { customSelector: 'cfg-visibility' });
 
   // Ex 02 — Multiselect with right badges
-  $('#demo_groups').wbeSelect();
+  WbeSelect.init(document.getElementById('demo_groups'));
 
   // Ex 03 — Tree view: flag-right, search always on, treeView
-  $('#demo_tree').wbeSelect({
+  WbeSelect.init(document.getElementById('demo_tree'), {
     customSelector:            'flag-right',
     useSearch:                 true,
     disable_search_threshold:  0,
     treeView:                  true,
-    searchFields:              'text right'
+    searchFields:              ['text', 'right']
   });
 
   // Ex 04 — Optgroups (search auto-enables at >7 options)
-  $('#demo_module').wbeSelect();
+  WbeSelect.init(document.getElementById('demo_module'));
 
   // Ex 05 — Searchable multiselect tag select (9 options → search auto-on)
-  $('#demo_tags').wbeSelect();
+  WbeSelect.init(document.getElementById('demo_tags'));
 
   // Ex 07 — Language selector: flag right, code badge left
-  $('#demo_lang').wbeSelect({ customSelector: 'cfg-lang' });
+  WbeSelect.init(document.getElementById('demo_lang'), { customSelector: 'cfg-lang' });
 
   // Ex 06 — Light theme demos
-  $('#demo_vis_light').wbeSelect({ customSelector: 'cfg-visibility' });
-  $('#demo_groups_light').wbeSelect();
+  WbeSelect.init(document.getElementById('demo_vis_light'), { customSelector: 'cfg-visibility' });
+  WbeSelect.init(document.getElementById('demo_groups_light'));
+
+  // Ex 08 — Colors & Custom SVG
+  // "Priority": data-color alone → just the left dot, no icon needed.
+  WbeSelect.init(document.getElementById('demo_priority'));
+
+  // "Share Action": svgIcons registry (data-svgref="share"/"world" resolve
+  // against this list); the third option ("idea") skips the registry and
+  // carries its SVG code directly via data-svg on the <option> instead.
+  WbeSelect.init(document.getElementById('demo_svg'), {
+    svgIcons: [
+      {
+        ref:   'share',
+        color: '#2076c8',
+        svg:   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-database-share"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3"/><path d="M4 6v6c0 1.657 3.582 3 8 3c.361 0 .716 -.009 1.065 -.026"/><path d="M20 13v-7"/><path d="M4 12v6c0 1.657 3.582 3 8 3"/><path d="M16 22l5 -5"/><path d="M21 21.5v-4.5h-4.5"/></svg>'
+      },
+      {
+        ref:   'world',
+        color: '#10b981',
+        svg:   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-world-share"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20.94 13.045a9 9 0 1 0 -8.953 7.955"/><path d="M3.6 9h16.8"/><path d="M3.6 15h9.4"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a16.991 16.991 0 0 1 2.529 10.294"/><path d="M16 22l5 -5"/><path d="M21 21.5v-4.5h-4.5"/></svg>'
+      }
+    ]
+  });
 
 });
 

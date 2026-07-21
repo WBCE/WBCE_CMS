@@ -478,14 +478,14 @@ if (isset($_GET['lang']) && is_string($_GET['lang'])) {
         <script src="./assets/install.js" type="text/javascript"></script>
         <script src="./assets/install_stream.js" type="text/javascript"></script>
         <script src="../include/wbePwGen/wbePwGen.js"></script>
-        <script src="../include/jquery/jquery-min.js"></script>
-        <script src="../include/wbeSelect/wbeSelect.jquery.js"></script>
+        <script src="../include/wbeSelect/wbeSelect.js"></script>
         <script>
-        jQuery(function ($) {
-            var $sel = $('#installer-lang-select');
-            $sel.wbeSelect({ customSelector: 'cfg-lang' });
-            $sel.on('change', function () { window.location = this.value; });
-        });
+        (function () {
+            var sel = document.getElementById('installer-lang-select');
+            if (!sel) { return; }
+            WbeSelect.init(sel, { customSelector: 'cfg-lang' });
+            sel.addEventListener('change', function () { window.location = sel.value; });
+        })();
 
         WbePwGen.attach('admin_password', 'pw-strength-wrap', <?= json_encode(array_merge($wpg_labels, ['confirmId' => 'admin_repassword'])) ?>);
         </script>
