@@ -404,11 +404,10 @@ class WbAuto
             'Admin'         => '/framework/Admin.php',
             'Alerts'        => '/framework/Alerts.php',
             'AddonService'  => '/framework/AddonService.php',
+            'I'             => '/framework/Assets/I.php',
             'SecureForm'    => '/framework/SecureForm.php',
             'Accounts'      => '/framework/Accounts.php',
             'Mailer'        => '/framework/Mailer.php',
-            'I'             => '/framework/I.php',
-            'Insert'        => '/framework/Insert.php',
             'Login'         => '/framework/Login.php',
             'Frontend'      => '/framework/Frontend.php',
             'Settings'      => '/framework/Settings.php',
@@ -423,6 +422,7 @@ class WbAuto
 
         // 2. Framework directories — catches everything not listed above.
         self::AddDir('/framework/');
+        self::AddDir('/framework/Assets/');
         self::AddDir('/framework/AccessManager/');
 
         // PSR-4 third-party libraries are registered in the file that uses them:

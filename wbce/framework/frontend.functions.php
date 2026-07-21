@@ -297,6 +297,14 @@ function get_section_content(int $sectionId, bool $useSecAnchor = false, string 
     // Register module modfiles (CSS/JS)
     register_module_modfiles($section['module']);
 
+    // FEE (FrontEnd Edit) hook — the optional `fee` module wraps the section so a
+    // logged-in editor gets an inline edit affordance (see modules/fee/). It is a
+    // pure pass-through when fee is absent or the viewer may not edit this page, so
+    // visitors always receive unwrapped, clean HTML. Mirrors the opf_* hook style.
+    if (function_exists('fee_wrap_section')) {
+        $content = fee_wrap_section($content, $sectionId, $section['module'], (int) $section['page_id']);
+    }
+
     return $content;
 }
 
@@ -478,6 +486,12 @@ if (!function_exists('page_content')) {
                 $sRetVal .= ob_get_clean();
             }
         }
+        // FEE (FrontEnd Edit) hook — lets the fee module wrap the whole block for
+        // editors (e.g. an "add section here" affordance). Pass-through otherwise.
+        if (function_exists('fee_wrap_block')) {
+            $sRetVal = fee_wrap_block($sRetVal, $iBlockID);
+        }
+
         // echo or return
         if ($bPrint == 1) {
             echo $sRetVal;
