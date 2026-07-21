@@ -1,0 +1,315 @@
+/**************************\
+  Theme-Ready Modal Styles
+\**************************/
+
+#modal-1 {
+  display: none;
+}
+
+.modal.is-open,
+#modal-1.is-open, 
+#modal-1.open 
+{
+  display: block;
+}
+
+.modal {
+  font-family: var(--ws-font); /* Using your root font */
+}
+
+.modal__overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Using a semi-transparent version of bg or a fixed dark overlay */
+  background: rgba(0, 0, 0, 0.6); 
+}
+
+.modal__container {
+  background-color: var(--ws-bg); /* Controlled by theme */
+  color: var(--ws-text);          /* Controlled by theme */
+ 
+  padding-top: 2px;
+  width: 100%;
+  height: auto;
+  max-width: 650px;
+  max-height: 100vh;
+  border-radius: var(--ws-radius);
+  border: 1px solid var(--ws-border);
+  overflow-y: auto;
+  box-sizing: border-box;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.selectee_element {
+    min-width: 100% !important;
+    border-radius: var(--ws-radius);
+    min-height: 36px;
+    border: 1px solid var(--ws-border);
+    background-color: var(--ws-surface);
+    color: var(--ws-text);
+}
+
+.modal__label{
+    color: var(--ws-text-muted) !important;
+    display: block;
+    font-size: 13px!important;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.3;
+    padding: 8px 0 1px 0 !important;
+}
+
+.modal__title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 600;
+  font-size: .85rem;
+  line-height: .5;
+  box-sizing: border-box;
+  color: var(--ws-text);
+}
+
+.dialog__title{
+    font-family: var(--ws-font);
+    font-size: 20px;
+    color: var(--ws-text);
+    margin: 0;
+}
+
+/* Not defined elsewhere — the admin theme's global reset otherwise stacks title
+   and close button with no layout at all. Border-bottom matches TinyMCE's own
+   dialog chrome (a hairline separating the title bar from the body). */
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ws-border);
+    background: var(--ws-surface);
+    padding: 6px 16px;
+}
+
+.modal__close {
+  background: transparent;
+  border: 0;
+  color: var(--ws-text-dim);
+  font-weight: 600;
+  cursor: pointer;
+  /* The admin theme's global `button{...}` rule (min-height:28px; padding:5px;
+     margin:10px 0;) bleeds straight through because this rule never set those
+     properties itself — a higher-specificity selector only wins per property it
+     actually declares. Reset them explicitly for a small, centered icon button. */
+  padding: 0;
+  margin: 0;
+  min-height: auto;
+  width: 24px;
+  height: 24px;
+  font-size: 22px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modal__close:hover {
+  color: var(--ws-danger);
+    background: transparent;
+}
+
+.modal__content {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  color: var(--ws-text);
+    padding: 0 15px;
+}
+/* Theme-driven so a scoped [data-theme] on the modal flips them too.
+   !important fights the admin theme's global input rules; wbeSelect's own
+   inputs (.ws-inp) are excluded — the plugin themes them itself. */
+.modal__content select,
+.modal__content input:not(.ws-inp)
+{
+    background-color: var(--ws-bg) !important;
+    border: 1px solid var(--ws-border) !important;
+    color: var(--ws-text) !important;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+    min-height: 34px;
+}
+.modal__content input:not(.ws-inp):focus {
+    border-color: var(--ws-accent) !important;
+    box-shadow: 0 0 0 2px var(--ws-accent-subtle) !important;
+}
+/* Not defined elsewhere — spacing between label+field pairs. */
+.tox-form__group {
+  margin-bottom: 12px;
+}
+
+/* Not defined elsewhere — puts two (or more) .tox-form__group side by side for
+   fields that don't need full width (e.g. Class / Rel). The row itself carries
+   the spacing so its children don't double up with their own margin-bottom. */
+.tox-form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.tox-form-row .tox-form__group {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+/* Not defined elsewhere — without this, Insert/Cancel just stack with whatever
+   spacing the admin theme's global button rule happens to leave them.
+   Border-top matches TinyMCE's own dialog chrome (a hairline separating the
+   body from the button bar). */
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 1rem;
+  padding-top: 12px;
+  border-top: 1px solid var(--ws-border);
+    background: var(--ws-surface);
+    padding: 8px 16px;
+}
+
+.modal__btn {
+  font-size: .75rem;
+  padding: .4rem .8rem;
+  background-color: var(--ws-border); /* Neutral button */
+  color: var(--ws-text);
+  border-radius: var(--ws-radius);
+  border: none;
+  cursor: pointer;
+  transition: transform .25s ease-out, background-color 0.2s;
+  /* Same admin-theme bleed-through as .modal__close above (min-height/margin
+     are never set by this rule, so they leak through untouched otherwise). */
+  margin: 0;
+  min-height: auto;
+}
+
+.modal__btn-primary {
+  background-color: var(--ws-accent);
+  color: #ffffff; /* Usually keep white for contrast on accent */
+}
+
+#linkHtmlString {
+    width: 100%;
+    margin-top: 9px;
+    padding: 8px;
+    border: 2px dashed var(--ws-border);
+    background-color: var(--ws-surface);
+    color: var(--ws-text-muted);
+    font-family: var(--ws-font-mono);
+}
+
+/* Fix for TinyMCE/Tox-style elements inside the modal.
+   Deliberately NOT scoped under `.tox` — TinyMCE's own oxide skin ships a very
+   broad `.tox :not(svg):not(rect) { background:0 0; position:static; margin:0;
+   padding:0; ... }` reset for its own dialog chrome, loaded globally on every
+   admin page. It has HIGHER specificity (0,1,2, via the two :not() type
+   arguments) than plain single-class rules like `.ws-opts { background-color }`
+   (0,1,0) — so wrapping this modal's content in a `<div class="tox">` (purely to
+   match these selectors) accidentally opted the whole modal, including the
+   wbeSelect-enhanced page picker, into that reset: transparent backgrounds,
+   position:static overriding position:absolute/relative, stripped margins.
+   These classes (tox-textfield, tox-textarea, radio-tab, radio-tabs-wrapper) are
+   specific enough on their own — no `.tox` ancestor needed, and the modal's own
+   markup no longer uses that wrapper. */
+.tox-textfield, .tox-textarea {
+    /* Not defined elsewhere — a bare <input>/<select>/<textarea> defaults to its
+       own intrinsic size (e.g. ~20 characters for text inputs), not the width of
+       its .tox-form__group container, which is why fields looked narrow/inline
+       instead of spanning the dialog like TinyMCE's own fields do. */
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--ws-surface) !important;
+    border-color: var(--ws-border) !important;
+    color: var(--ws-text) !important;
+}
+
+/* Placeholder text — deliberately light so it reads as a faint hint, not as
+   content. Tune the opacity below (lower = lighter). Covers the link/image
+   dialogs and any other input/textarea inside a .modal. */
+.modal input::placeholder,
+.modal textarea::placeholder {
+    color: var(--ws-text-muted);
+    opacity: 0.4;
+}
+
+/* ── Radio Tabs (Themed) ─────────────────────────────────────────────────── */
+
+.radio-tabs-wrapper {
+  clear: both;
+  display: inline-block;
+  width: 98%;
+  /* Using your border color variable */
+  border-bottom: 1px solid var(--ws-border);
+  padding: 0 10px;
+  position: relative;
+  margin-top: 10px;
+}
+
+input.radio-tab {
+  position: absolute !important;
+  left: -99999em !important;
+  top: -99999em !important;
+}
+
+input.radio-tab + label {
+  cursor: pointer;
+  float: left;
+  border: 1px solid var(--ws-border);
+  border-bottom: 0;
+  background-color: var(--ws-surface); /* Adapts to mode */
+  color: var(--ws-text-muted);
+  margin-right: -1px;
+  padding: 0.30em 1.5em;
+  position: relative;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+input.radio-tab + label:hover {
+  background-color: var(--ws-surface-hover);
+  color: var(--ws-text);
+}
+
+input.radio-tab:checked + label {
+  /* This creates the highlight effect seen in your screenshot */
+  background-color: var(--ws-bg);
+  color: var(--ws-text);
+  border-color: var(--ws-border);
+  z-index: 1;
+  /* Thick top border for the "Active" look */
+  box-shadow: inset 0 5px 0 -1px #556C87;
+}
+
+/* Specific adjustment for dark mode to keep the active tab clear */
+[data-theme="dark"] input.radio-tab:checked + label {
+  box-shadow: inset 0 5px 0 -1px var(--ws-accent);
+  background-color: var(--ws-surface);
+}
+
+/* Visual fix for the overlap at the bottom of the active tab */
+input.radio-tab:checked + label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 3px;
+  background-color: var(--ws-bg);
+  z-index: 2;
+}
