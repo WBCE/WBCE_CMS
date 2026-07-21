@@ -1127,6 +1127,11 @@ final class AssetQueue
 
                 if ($ref === '') return $m[0];
 
+                // Regex backtracking can leave the opening quote in $ref instead of $quote
+                // when the lookahead inside group 2 rejected the first attempt (e.g. data: URIs
+                // matched as unquoted). Bail out for any data: URI regardless of quoting.
+                if (preg_match('/^[\'"]?data:/i', $ref)) return $m[0];
+
                 // Split query string / fragment from path component
                 $queryFrag = '';
                 if (preg_match('/^([^?#]*)([?#].*)$/s', $ref, $pf)) {
