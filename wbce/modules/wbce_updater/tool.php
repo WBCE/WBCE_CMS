@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * WBCE Update-Assistent - Main Interface
  *
@@ -6,7 +6,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -18,11 +18,7 @@
  * - config.php, framework-Klassen, Sprachdateien
  */
 
-// Prevent direct file access - must be included by the framework
-if (count(get_included_files()) == 1) {
-    header("Location: ../index.php", true, 301);
-    exit;
-}
+defined('WB_PATH') or die("This file can't be accessed directly!");
 
 // Load module language file (framework loads core languages, but not module-specific)
 $langFile = (file_exists(__DIR__ . '/languages/' . LANGUAGE . '.php'))
@@ -56,6 +52,49 @@ $addon_dir = $database->escapeString('backup_plus');
 $addon_type = $database->escapeString('module');
 $result = $database->query("SELECT * FROM " . $safe_table_prefix . "addons WHERE directory='" . $addon_dir . "' AND type='" . $addon_type . "'");
 $backup_plus_installed = ($result && $result->numRows() > 0);
+
+// Load local module config (custom source URL, tool disable flag)
+$wbce_updater_custom_source_url = '';
+$wbce_updater_disabled = false;
+if (file_exists(__DIR__ . '/user_config.php')) {
+    require_once __DIR__ . '/user_config.php';
+}
+
+// Tool disabled check
+if ($wbce_updater_disabled) {
+    echo '<div class="alert-warning" style="padding:20px;">';
+    echo '<strong>' . htmlspecialchars($LANG['TOOL_DISABLED']) . '</strong><br>';
+    echo htmlspecialchars($LANG['TOOL_DISABLED_INFO']);
+    echo '</div>';
+    return;
+}
+
+// Backup detection: scan WB_PATH/backups for recent ZIP files
+$backup_found = false;
+$backup_found_text = '';
+$backups_dir = WB_PATH . '/backups';
+if (is_dir($backups_dir)) {
+    $zip_files = glob($backups_dir . '/*.zip');
+    if (!empty($zip_files)) {
+        // Only consider files >= 100 KB (real backups, not stubs)
+        $zip_files = array_filter($zip_files, function($f) { return filesize($f) >= 102400; });
+        if (!empty($zip_files)) {
+            usort($zip_files, function($a, $b) { return filemtime($b) - filemtime($a); });
+            $latest = $zip_files[0];
+            $age_days = (int) round((time() - filemtime($latest)) / 86400);
+            $size_mb  = round(filesize($latest) / 1024 / 1024, 1);
+            $age_str  = ($age_days === 0)
+                ? $LANG['BACKUP_FOUND_TODAY']
+                : sprintf($LANG['BACKUP_FOUND_DAYS_AGO'], $age_days);
+            $count    = count($zip_files);
+            $prefix   = ($count > 1) ? $LANG['BACKUP_FOUND_MULTIPLE'] : $LANG['BACKUP_FOUND_HINT'];
+            $backup_found = true;
+            $backup_found_text = $prefix . ' <em>' . htmlspecialchars(basename($latest))
+                . ' (' . $size_mb . ' MB, ' . $age_str . ')'
+                . ($count > 1 ? ', +' . ($count - 1) . ' weitere)' : '') . '</em>';
+        }
+    }
+}
 
 // Add custom CSS
 ?>
@@ -95,6 +134,12 @@ if (typeof ADMIN_URL === 'undefined') {
                         <input type="checkbox" id="backup_confirmed" onchange="enableUpdateButton()">
                         <span><?php echo $LANG['BACKUP_CONFIRMED']; ?></span>
                     </label>
+
+                    <?php if ($backup_found): ?>
+                    <div class="backup-found-hint" style="margin: 4px 0 8px 26px; font-size: 13px; color: #28a745;">
+                        ✅ <?php echo $backup_found_text; ?>
+                    </div>
+                    <?php endif; ?>
 
                     <label class="checkbox-label">
                         <input type="checkbox" id="enable_maintenance">
@@ -152,8 +197,20 @@ if (typeof ADMIN_URL === 'undefined') {
                     </button>
                 </div>
 
+                <div style="margin-top: 10px;">
+                    <label for="upload_target_version" style="font-size: 13px; color: #555;">
+                        <?php echo $LANG['TARGET_VERSION'] ?? 'Zielversion'; ?> <span style="color: #999;">(optional, z.B. 1.6.6)</span>
+                    </label><br>
+                    <input type="text"
+                           id="upload_target_version"
+                           placeholder="z.B. 1.6.6"
+                           pattern="v?\d+\.\d+(\.\d+)?"
+                           style="margin-top: 4px; padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; width: 180px;">
+                </div>
+
                 <input type="hidden" name="backup_confirmed_upload" id="form_backup_confirmed_upload">
                 <input type="hidden" name="enable_maintenance_upload" id="form_enable_maintenance_upload">
+                <input type="hidden" name="target_version_upload" id="form_target_version_upload">
 
                 <div class="info-box" style="margin-top: 15px; font-size: 13px;">
                     <p style="margin: 0 0 8px 0;">
@@ -165,14 +222,15 @@ if (typeof ADMIN_URL === 'undefined') {
                     $post_max = ini_get('post_max_size');
                     $max_size = min($upload_max, $post_max);
 
-                    // Convert to bytes for comparison
-                    function parse_size($size) {
-                        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
-                        $size = preg_replace('/[^0-9\.]/', '', $size);
-                        if ($unit) {
-                            return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+                    if (!function_exists('parse_size')) {
+                        function parse_size($size) {
+                            $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
+                            $size = preg_replace('/[^0-9\.]/', '', $size);
+                            if ($unit) {
+                                return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+                            }
+                            return round($size);
                         }
-                        return round($size);
                     }
 
                     $max_bytes = parse_size($max_size);
@@ -204,6 +262,23 @@ if (typeof ADMIN_URL === 'undefined') {
             </form>
         </div>
 
+        <?php if (!empty($wbce_updater_custom_source_url)): ?>
+        <!-- Custom Source Section -->
+        <div class="updates-section" style="margin-top: 30px; border-left: 4px solid #f39c12;">
+            <h3 class="section-title-gray">⚠️ <?php echo htmlspecialchars($LANG['CUSTOM_SOURCE_TITLE']); ?></h3>
+            <div style="background:#fff3cd; border:1px solid #ffc107; border-radius:4px; padding:12px 15px; margin-bottom:15px; font-size:13px;">
+                <strong><?php echo htmlspecialchars($LANG['CUSTOM_SOURCE_CONFIGURED']); ?></strong><br>
+                <code style="word-break:break-all;"><?php echo htmlspecialchars($wbce_updater_custom_source_url); ?></code>
+            </div>
+            <button type="button"
+                    class="btn-download download-button"
+                    onclick="prepareCustomSourceUpdate()"
+                    disabled>
+                📥 <?php echo htmlspecialchars($LANG['CUSTOM_SOURCE_BUTTON']); ?>
+            </button>
+        </div>
+        <?php endif; ?>
+
         <!-- Update Form (hidden) -->
         <form id="update-form" method="post" action="<?php echo WB_URL; ?>/modules/wbce_updater/download.php" style="display:none;">
             <?php echo $admin->getFTAN(); ?>
@@ -218,9 +293,6 @@ if (typeof ADMIN_URL === 'undefined') {
         // Current version for comparison
         const currentVersion = '<?php echo $current_version; ?>';
 
-        // CSRF Token for AJAX requests (empty for WBCE 1.4.x, session-based auth used)
-        const ftanToken = '';
-
         /**
          * Opens Backup Plus in new window
          */
@@ -231,15 +303,6 @@ if (typeof ADMIN_URL === 'undefined') {
                 'width=1000,height=800'
             );
 
-            if (backupWindow) {
-                // Optional: Ask after some time if backup is complete
-                setTimeout(function() {
-                    if (confirm('<?php echo $LANG['BACKUP_COMPLETE_QUESTION']; ?>')) {
-                        document.getElementById('backup_confirmed').checked = true;
-                        enableUpdateButton();
-                    }
-                }, 5000);
-            }
         }
 
         /**
@@ -271,10 +334,8 @@ if (typeof ADMIN_URL === 'undefined') {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                credentials: 'same-origin', // Include session cookies
-                body: 'ftan=' + encodeURIComponent(ftanToken)
+                credentials: 'same-origin'
             })
             .then(response => {
                 // First check if response is ok
@@ -698,6 +759,31 @@ if (typeof ADMIN_URL === 'undefined') {
             document.getElementById('update-form').submit();
         }
 
+        <?php if (!empty($wbce_updater_custom_source_url)): ?>
+        /**
+         * Download from custom (non-official) update source
+         */
+        function prepareCustomSourceUpdate() {
+            const customUrl = <?php echo json_encode($wbce_updater_custom_source_url); ?>;
+            const warningMsg = <?php echo json_encode(sprintf($LANG['CUSTOM_SOURCE_WARNING'], $wbce_updater_custom_source_url)); ?>;
+            const confirmMsg = <?php echo json_encode($LANG['CUSTOM_SOURCE_CONFIRM']); ?>;
+
+            if (!confirm(warningMsg)) return;
+            if (!confirm(confirmMsg)) return;
+
+            document.getElementById('form_download_url').value = customUrl;
+            document.getElementById('form_target_version').value = '';
+            document.getElementById('form_checksum').value = '';
+            document.getElementById('form_backup_confirmed').value =
+                document.getElementById('backup_confirmed').checked ? '1' : '0';
+            document.getElementById('form_enable_maintenance').value =
+                document.getElementById('enable_maintenance').checked ? '1' : '0';
+
+            showLoadingSpinner();
+            document.getElementById('update-form').submit();
+        }
+        <?php endif; ?>
+
         /**
          * Format date string
          */
@@ -781,24 +867,33 @@ if (typeof ADMIN_URL === 'undefined') {
                 return false;
             }
 
-            // Set hidden form fields from checkboxes
+            // Set hidden form fields from checkboxes and inputs
             document.getElementById('form_backup_confirmed_upload').value =
                 backupCheckbox.checked ? '1' : '0';
             document.getElementById('form_enable_maintenance_upload').value =
                 document.getElementById('enable_maintenance').checked ? '1' : '0';
+            const versionInput = document.getElementById('upload_target_version');
+            document.getElementById('form_target_version_upload').value =
+                versionInput ? versionInput.value.trim() : '';
 
             // Confirm and submit
-            if (!confirm('<?php echo $LANG['CONFIRM_DOWNLOAD']; ?>')) {
+            if (!confirm('<?php echo $LANG['CONFIRM_UPLOAD']; ?>')) {
                 event.preventDefault();
                 return false;
             }
+
+            // Update spinner overlay text for upload context
+            const overlayText = document.querySelector('#loading-overlay .loading-text');
+            const overlaySubtext = document.querySelector('#loading-overlay .loading-subtext');
+            if (overlayText)    overlayText.textContent = '⏳ <?php echo $LANG['LOADING_UPLOAD']; ?>...';
+            if (overlaySubtext) overlaySubtext.textContent = '<?php echo $LANG['UPLOAD_PLEASE_WAIT']; ?>';
 
             // Show loading spinner
             showLoadingSpinner();
 
             // Also disable button as visual feedback
             document.getElementById('upload-button').disabled = true;
-            document.getElementById('upload-button').textContent = '⏳ <?php echo $LANG['LOADING']; ?>...';
+            document.getElementById('upload-button').textContent = '⏳ <?php echo $LANG['LOADING_UPLOAD']; ?>...';
 
             return true;
         }
