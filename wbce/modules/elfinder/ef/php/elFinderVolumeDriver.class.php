@@ -273,7 +273,7 @@ abstract class elFinderVolumeDriver
         // mime.types file path (for mimeDetect==internal)
         'mimefile' => '',
         // Static extension/MIME of general server side scripts to security issues
-        'staticMimeMap' => array(
+        'staticMineMap' => array(
             'php:*' => 'text/x-php',
             'pht:*' => 'text/x-php',
             'php3:*' => 'text/x-php',
@@ -317,9 +317,8 @@ abstract class elFinderVolumeDriver
             'oga:application/ogg' => 'audio/ogg',
             'ogv:application/ogg' => 'video/ogg',
             'zip:application/x-zip' => 'application/zip',
-            'm3u8:text/plain' => 'application/x-mpegurl',
+            'm3u8:text/plain' => 'application/x-mpegURL',
             'mpd:text/plain' => 'application/dash+xml',
-            'mpd:text/xml' => 'application/dash+xml',
             'mpd:application/xml' => 'application/dash+xml',
             '*:application/x-dosexec' => 'application/x-executable',
             'doc:application/vnd.ms-office' => 'application/msword',
@@ -612,7 +611,6 @@ abstract class elFinderVolumeDriver
         // applications
         'exe' => 'application/x-executable',
         'jar' => 'application/x-jar',
-        'rpm' => 'application/x-rpm',
         // archives
         'gz' => 'application/x-gzip',
         'tgz' => 'application/x-gzip',
@@ -630,7 +628,7 @@ abstract class elFinderVolumeDriver
         'c' => 'text/x-csrc',
         'h' => 'text/x-chdr',
         'cpp' => 'text/x-c++src',
-        'hpp' => 'text/x-c++hdr',
+        'hh' => 'text/x-c++hdr',
         'md' => 'text/x-markdown',
         'markdown' => 'text/x-markdown',
         'yml' => 'text/x-yaml',
@@ -645,10 +643,10 @@ abstract class elFinderVolumeDriver
         'dv' => 'video/x-dv',
         'wm' => 'video/x-ms-wmv',
         'ogm' => 'video/ogg',
-        'm2ts' => 'video/mp2t',
-        'mts' => 'video/mp2t',
-        'ts' => 'video/mp2t',
-        'm3u8' => 'application/x-mpegurl',
+        'm2ts' => 'video/MP2T',
+        'mts' => 'video/MP2T',
+        'ts' => 'video/MP2T',
+        'm3u8' => 'application/x-mpegURL',
         'mpd' => 'application/dash+xml'
     );
 
@@ -949,11 +947,8 @@ abstract class elFinderVolumeDriver
         if (!is_array($this->options['mimeMap'])) {
             $this->options['mimeMap'] = array();
         }
-        if (empty($this->options['staticMimeMap']) && is_array($this->options['staticMineMap']) && $this->options['staticMineMap']) {
-            $this->options['staticMimeMap'] = $this->options['staticMineMap'];
-        }
-        if (is_array($this->options['staticMimeMap']) && $this->options['staticMimeMap']) {
-            $this->options['mimeMap'] = array_merge($this->options['mimeMap'], $this->options['staticMimeMap']);
+        if (is_array($this->options['staticMineMap']) && $this->options['staticMineMap']) {
+            $this->options['mimeMap'] = array_merge($this->options['mimeMap'], $this->options['staticMineMap']);
         }
         if (is_array($this->options['additionalMimeMap']) && $this->options['additionalMimeMap']) {
             $this->options['mimeMap'] = array_merge($this->options['mimeMap'], $this->options['additionalMimeMap']);
@@ -3336,12 +3331,28 @@ abstract class elFinderVolumeDriver
             }
         }
         if (empty($file['url']) && $this->URL) {
-            $path = str_replace($this->separator, '/', substr($this->decode($hash), strlen($this->root) + 1));
+            $decoded = $this->decode($hash);
+
+            // safely strip root prefix if present
+            if (str_starts_with($decoded, $this->root)) {
+                $path = substr($decoded, strlen($this->root));
+            } else {
+                $path = $decoded;
+            }
+
+            // remove leading separator to avoid double slashes
+            $path = ltrim($path, '/');
+
+            // normalize separators
+            $path = str_replace($this->separator, '/', $path);
+
             if ($this->encoding) {
                 $path = $this->convEncIn($path, true);
             }
+
             $path = str_replace('%2F', '/', rawurlencode($path));
-            return $this->URL . $path;
+
+            return rtrim($this->URL, '/') . '/' . $path;
         } else {
             $ret = false;
             if (!empty($file['url']) && $file['url'] != 1) {
@@ -6175,22 +6186,7 @@ abstract class elFinderVolumeDriver
                 if ($bgcolor === 'transparent') {
                     $bgcolor = 'rgba(255, 255, 255, 0.0)';
                 }
-                $bgArg = escapeshellarg('xc:' . $bgcolor);
-                $cmd = sprintf(
-                    '%s -size %dx%d %s png:- | convert%s%s%s png:- %s -geometry +%d+%d -compose over -composite%s %s',
-                    ELFINDER_CONVERT_PATH,
-                    $width,
-                    $height,
-                    $bgArg,
-                    $coalesce,
-                    $jpgQuality,
-                    $interlace,
-                    $quotedPath,
-                    $x,
-                    $y,
-                    $deconstruct,
-                    $quotedDstPath
-                );
+                $cmd = sprintf('%s -size %dx%d "xc:%s" png:- | convert%s%s%s png:-  %s -geometry +%d+%d -compose over -composite%s %s', ELFINDER_CONVERT_PATH, $width, $height, $bgcolor, $coalesce, $jpgQuality, $interlace, $quotedPath, $x, $y, $deconstruct, $quotedDstPath);
 
                 $result = false;
                 if ($this->procExec($cmd) === 0) {
@@ -6330,19 +6326,7 @@ abstract class elFinderVolumeDriver
                 if ($s[2] === IMAGETYPE_GIF || $s[2] === IMAGETYPE_PNG) {
                     $bgcolor = 'rgba(255, 255, 255, 0.0)';
                 }
-                $bgArg = escapeshellarg($bgcolor);
-                $cmd = sprintf(
-                    '%s%s%s%s -background %s -rotate %d%s -- %s %s',
-                    ELFINDER_CONVERT_PATH,
-                    $coalesce,
-                    $jpgQuality,
-                    $interlace,
-                    $bgArg,
-                    $degree,
-                    $deconstruct,
-                    $quotedPath,
-                    $quotedDstPath
-                );
+                $cmd = sprintf('%s%s%s%s -background "%s" -rotate %d%s -- %s %s', ELFINDER_CONVERT_PATH, $coalesce, $jpgQuality, $interlace, $bgcolor, $degree, $deconstruct, $quotedPath, $quotedDstPath);
 
                 $result = false;
                 if ($this->procExec($cmd) === 0) {

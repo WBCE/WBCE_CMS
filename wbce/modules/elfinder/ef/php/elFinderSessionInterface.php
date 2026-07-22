@@ -30,11 +30,10 @@ interface elFinderSessionInterface
      *
      * @param   string $key   Target key
      * @param   mixed  $empty Return value of if session target key does not exist
-     *                 and explicit $empty can be used as a type hint
      *
      * @return  mixed
      **/
-    public function get($key, $empty = null);
+    public function get($key, $empty = '');
 
     /**
      * Set session data
