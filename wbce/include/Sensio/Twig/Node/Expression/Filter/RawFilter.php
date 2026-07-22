@@ -11,31 +11,26 @@
 
 namespace Twig\Node\Expression\Filter;
 
-use Twig\Attribute\FirstClassTwigCallableReady;
 use Twig\Compiler;
-use Twig\Node\EmptyNode;
-use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Node;
-use Twig\TwigFilter;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class RawFilter extends FilterExpression
 {
-    /**
-     * @param AbstractExpression $node
-     */
-    #[FirstClassTwigCallableReady]
-    public function __construct(Node $node, TwigFilter|ConstantExpression|null $filter = null, ?Node $arguments = null, int $lineno = 0)
+    public function __construct(Node $node, ?ConstantExpression $filterName = null, ?Node $arguments = null, int $lineno = 0, ?string $tag = null)
     {
-        if (!$node instanceof AbstractExpression) {
-            trigger_deprecation('twig/twig', '3.15', 'Not passing a "%s" instance to the "node" argument of "%s" is deprecated ("%s" given).', AbstractExpression::class, static::class, $node::class);
+        if (null === $filterName) {
+            $filterName = new ConstantExpression('raw', $node->getTemplateLine());
+        }
+        if (null === $arguments) {
+            $arguments = new Node();
         }
 
-        parent::__construct($node, $filter ?: new TwigFilter('raw', null, ['is_safe' => ['all']]), $arguments ?: new EmptyNode(), $lineno ?: $node->getTemplateLine());
+        parent::__construct($node, $filterName, $arguments, $lineno ?: $node->getTemplateLine(), $tag ?: $node->getNodeTag());
     }
 
     public function compile(Compiler $compiler): void

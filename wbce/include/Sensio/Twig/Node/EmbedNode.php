@@ -25,30 +25,26 @@ use Twig\Node\Expression\ConstantExpression;
 class EmbedNode extends IncludeNode
 {
     // we don't inject the module to avoid node visitors to traverse it twice (as it will be already visited in the main module)
-    public function __construct(string $name, int $index, ?AbstractExpression $variables, bool $only, bool $ignoreMissing, int $lineno)
+    public function __construct(string $name, int $index, ?AbstractExpression $variables, bool $only, bool $ignoreMissing, int $lineno, ?string $tag = null)
     {
-        parent::__construct(new ConstantExpression('not_used', $lineno), $variables, $only, $ignoreMissing, $lineno);
+        parent::__construct(new ConstantExpression('not_used', $lineno), $variables, $only, $ignoreMissing, $lineno, $tag);
 
         $this->setAttribute('name', $name);
         $this->setAttribute('index', $index);
     }
 
-    protected function addGetTemplate(Compiler $compiler, string $template = ''): void
+    protected function addGetTemplate(Compiler $compiler): void
     {
         $compiler
-            ->raw('$this->load(')
+            ->write('$this->loadTemplate(')
             ->string($this->getAttribute('name'))
+            ->raw(', ')
+            ->repr($this->getTemplateName())
             ->raw(', ')
             ->repr($this->getTemplateLine())
             ->raw(', ')
-            ->repr($this->getAttribute('index'))
+            ->string($this->getAttribute('index'))
             ->raw(')')
         ;
-        if ($this->getAttribute('ignore_missing')) {
-            $compiler
-                ->raw(";\n")
-                ->write(\sprintf("\$%s->getParent(\$context);\n", $template))
-            ;
-        }
     }
 }

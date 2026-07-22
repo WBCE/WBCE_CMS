@@ -20,48 +20,87 @@ use Twig\Node\Expression\TestExpression;
  *
  * @see https://twig.symfony.com/doc/templates.html#test-operator
  */
-final class TwigTest extends AbstractTwigCallable
+final class TwigTest
 {
+    private $name;
+    private $callable;
+    private $options;
+    private $arguments = [];
+
     /**
      * @param callable|array{class-string, string}|null $callable A callable implementing the test. If null, you need to overwrite the "node_class" option to customize compilation.
      */
     public function __construct(string $name, $callable = null, array $options = [])
     {
-        parent::__construct($name, $callable, $options);
-
+        $this->name = $name;
+        $this->callable = $callable;
         $this->options = array_merge([
+            'is_variadic' => false,
             'node_class' => TestExpression::class,
+            'deprecated' => false,
+            'deprecating_package' => '',
+            'alternative' => null,
             'one_mandatory_argument' => false,
-        ], $this->options);
+        ], $options);
     }
 
-    public function getType(): string
+    public function getName(): string
     {
-        return 'test';
+        return $this->name;
     }
 
-    public function needsCharset(): bool
+    /**
+     * Returns the callable to execute for this test.
+     *
+     * @return callable|array{class-string, string}|null
+     */
+    public function getCallable()
     {
-        return false;
+        return $this->callable;
     }
 
-    public function needsEnvironment(): bool
+    public function getNodeClass(): string
     {
-        return false;
+        return $this->options['node_class'];
     }
 
-    public function needsContext(): bool
+    public function setArguments(array $arguments): void
     {
-        return false;
+        $this->arguments = $arguments;
+    }
+
+    public function getArguments(): array
+    {
+        return $this->arguments;
+    }
+
+    public function isVariadic(): bool
+    {
+        return (bool) $this->options['is_variadic'];
+    }
+
+    public function isDeprecated(): bool
+    {
+        return (bool) $this->options['deprecated'];
+    }
+
+    public function getDeprecatingPackage(): string
+    {
+        return $this->options['deprecating_package'];
+    }
+
+    public function getDeprecatedVersion(): string
+    {
+        return \is_bool($this->options['deprecated']) ? '' : $this->options['deprecated'];
+    }
+
+    public function getAlternative(): ?string
+    {
+        return $this->options['alternative'];
     }
 
     public function hasOneMandatoryArgument(): bool
     {
         return (bool) $this->options['one_mandatory_argument'];
-    }
-
-    public function getMinimalNumberOfRequiredArguments(): int
-    {
-        return parent::getMinimalNumberOfRequiredArguments() + 1;
     }
 }

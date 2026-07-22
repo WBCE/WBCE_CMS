@@ -22,9 +22,9 @@ use Twig\Compiler;
 #[YieldReady]
 class CaptureNode extends Node
 {
-    public function __construct(Node $body, int $lineno)
+    public function __construct(Node $body, int $lineno, ?string $tag = null)
     {
-        parent::__construct(['body' => $body], ['raw' => false], $lineno);
+        parent::__construct(['body' => $body], ['raw' => false], $lineno, $tag);
     }
 
     public function compile(Compiler $compiler): void
@@ -39,7 +39,7 @@ class CaptureNode extends Node
             ->raw("(function () use (&\$context, \$macros, \$blocks) {\n")
             ->indent()
             ->subcompile($this->getNode('body'))
-            ->write("yield from [];\n")
+            ->write("return; yield '';\n")
             ->outdent()
             ->write('})()')
         ;

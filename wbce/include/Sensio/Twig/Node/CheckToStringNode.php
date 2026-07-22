@@ -28,17 +28,16 @@ use Twig\Node\Expression\AbstractExpression;
 #[YieldReady]
 class CheckToStringNode extends AbstractExpression
 {
-    public function __construct(AbstractExpression $expr, bool $spread = false)
+    public function __construct(AbstractExpression $expr)
     {
-        parent::__construct(['expr' => $expr], ['spread' => $spread], $expr->getTemplateLine());
+        parent::__construct(['expr' => $expr], [], $expr->getTemplateLine(), $expr->getNodeTag());
     }
 
     public function compile(Compiler $compiler): void
     {
         $expr = $this->getNode('expr');
-        $method = $this->getAttribute('spread') ? 'ensureSpreadAllowed' : 'ensureToStringAllowed';
         $compiler
-            ->raw('$this->sandbox->'.$method.'(')
+            ->raw('$this->sandbox->ensureToStringAllowed(')
             ->subcompile($expr)
             ->raw(', ')
             ->repr($expr->getTemplateLine())

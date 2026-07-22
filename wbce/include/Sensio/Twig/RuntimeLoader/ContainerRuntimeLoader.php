@@ -23,9 +23,11 @@ use Psr\Container\ContainerInterface;
  */
 class ContainerRuntimeLoader implements RuntimeLoaderInterface
 {
-    public function __construct(
-        private ContainerInterface $container,
-    ) {
+    private $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
     }
 
     public function load(string $class)

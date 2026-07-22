@@ -22,16 +22,16 @@ use Twig\Node\Expression\AbstractExpression;
  * @author Fabien Potencier <fabien@symfony.com>
  */
 #[YieldReady]
-class IncludeNode extends Node implements NodeOutputInterface, CoercesChildrenToStringInterface
+class IncludeNode extends Node implements NodeOutputInterface
 {
-    public function __construct(AbstractExpression $expr, ?AbstractExpression $variables, bool $only, bool $ignoreMissing, int $lineno)
+    public function __construct(AbstractExpression $expr, ?AbstractExpression $variables, bool $only, bool $ignoreMissing, int $lineno, ?string $tag = null)
     {
         $nodes = ['expr' => $expr];
         if (null !== $variables) {
             $nodes['variables'] = $variables;
         }
 
-        parent::__construct($nodes, ['only' => $only, 'ignore_missing' => $ignoreMissing], $lineno);
+        parent::__construct($nodes, ['only' => $only, 'ignore_missing' => $ignoreMissing], $lineno, $tag);
     }
 
     public function compile(Compiler $compiler): void
@@ -42,12 +42,13 @@ class IncludeNode extends Node implements NodeOutputInterface, CoercesChildrenTo
             $template = $compiler->getVarName();
 
             $compiler
+                ->write(\sprintf("$%s = null;\n", $template))
                 ->write("try {\n")
                 ->indent()
                 ->write(\sprintf('$%s = ', $template))
             ;
 
-            $this->addGetTemplate($compiler, $template);
+            $this->addGetTemplate($compiler);
 
             $compiler
                 ->raw(";\n")
@@ -55,14 +56,12 @@ class IncludeNode extends Node implements NodeOutputInterface, CoercesChildrenTo
                 ->write("} catch (LoaderError \$e) {\n")
                 ->indent()
                 ->write("// ignore missing template\n")
-                ->write(\sprintf("\$$template = null;\n", $template))
                 ->outdent()
                 ->write("}\n")
                 ->write(\sprintf("if ($%s) {\n", $template))
                 ->indent()
+                ->write(\sprintf('yield from $%s->unwrap()->yield(', $template))
             ;
-
-            $compiler->write(\sprintf('yield from $%s->unwrap()->yield(', $template));
 
             $this->addTemplateArguments($compiler);
             $compiler
@@ -79,23 +78,19 @@ class IncludeNode extends Node implements NodeOutputInterface, CoercesChildrenTo
         }
     }
 
-    /**
-     * @return void
-     */
-    protected function addGetTemplate(Compiler $compiler/* , string $template = '' */)
+    protected function addGetTemplate(Compiler $compiler)
     {
         $compiler
-            ->raw('$this->load(')
+            ->write('$this->loadTemplate(')
             ->subcompile($this->getNode('expr'))
+            ->raw(', ')
+            ->repr($this->getTemplateName())
             ->raw(', ')
             ->repr($this->getTemplateLine())
             ->raw(')')
         ;
     }
 
-    /**
-     * @return void
-     */
     protected function addTemplateArguments(Compiler $compiler)
     {
         if (!$this->hasNode('variables')) {
@@ -111,11 +106,5 @@ class IncludeNode extends Node implements NodeOutputInterface, CoercesChildrenTo
             $compiler->subcompile($this->getNode('variables'));
             $compiler->raw(')');
         }
-    }
-
-    public function getStringCoercedChildNames(): array
-    {
-        // the loader resolves the template-name expression by coercing it to a string
-        return ['expr'];
     }
 }

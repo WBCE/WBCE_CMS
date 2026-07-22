@@ -15,9 +15,7 @@ namespace Twig\TokenParser;
 use Twig\Error\SyntaxError;
 use Twig\Node\BlockNode;
 use Twig\Node\BlockReferenceNode;
-use Twig\Node\EmptyNode;
 use Twig\Node\Node;
-use Twig\Node\Nodes;
 use Twig\Node\PrintNode;
 use Twig\Token;
 
@@ -37,14 +35,17 @@ final class BlockTokenParser extends AbstractTokenParser
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
-        $name = $stream->expect(Token::NAME_TYPE)->getValue();
-        $this->parser->setBlock($name, $block = new BlockNode($name, new EmptyNode(), $lineno));
+        $name = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
+        if ($this->parser->hasBlock($name)) {
+            throw new SyntaxError(\sprintf("The block '%s' has already been defined line %d.", $name, $this->parser->getBlock($name)->getTemplateLine()), $stream->getCurrent()->getLine(), $stream->getSourceContext());
+        }
+        $this->parser->setBlock($name, $block = new BlockNode($name, new Node([]), $lineno));
         $this->parser->pushLocalScope();
         $this->parser->pushBlockStack($name);
 
-        if ($stream->nextIf(Token::BLOCK_END_TYPE)) {
+        if ($stream->nextIf(/* Token::BLOCK_END_TYPE */ 3)) {
             $body = $this->parser->subparse([$this, 'decideBlockEnd'], true);
-            if ($token = $stream->nextIf(Token::NAME_TYPE)) {
+            if ($token = $stream->nextIf(/* Token::NAME_TYPE */ 5)) {
                 $value = $token->getValue();
 
                 if ($value != $name) {
@@ -52,17 +53,17 @@ final class BlockTokenParser extends AbstractTokenParser
                 }
             }
         } else {
-            $body = new Nodes([
-                new PrintNode($this->parser->parseExpression(), $lineno),
+            $body = new Node([
+                new PrintNode($this->parser->getExpressionParser()->parseExpression(), $lineno),
             ]);
         }
-        $stream->expect(Token::BLOCK_END_TYPE);
+        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
 
         $block->setNode('body', $body);
         $this->parser->popBlockStack();
         $this->parser->popLocalScope();
 
-        return new BlockReferenceNode($name, $lineno);
+        return new BlockReferenceNode($name, $lineno, $this->getTag());
     }
 
     public function decideBlockEnd(Token $token): bool

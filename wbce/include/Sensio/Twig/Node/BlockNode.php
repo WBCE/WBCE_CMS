@@ -23,26 +23,23 @@ use Twig\Compiler;
 #[YieldReady]
 class BlockNode extends Node
 {
-    public function __construct(string $name, Node $body, int $lineno)
+    public function __construct(string $name, Node $body, int $lineno, ?string $tag = null)
     {
-        parent::__construct(['body' => $body], ['name' => $name], $lineno);
+        parent::__construct(['body' => $body], ['name' => $name], $lineno, $tag);
     }
 
     public function compile(Compiler $compiler): void
     {
         $compiler
             ->addDebugInfo($this)
-            ->write("/**\n")
-            ->write(" * @return iterable<null|scalar|\Stringable>\n")
-            ->write(" */\n")
-            ->write(\sprintf("public function block_%s(array \$context, array \$blocks = []): iterable\n", $this->getAttribute('name')), "{\n")
+            ->write(\sprintf("public function block_%s(\$context, array \$blocks = [])\n", $this->getAttribute('name')), "{\n")
             ->indent()
             ->write("\$macros = \$this->macros;\n")
         ;
 
         $compiler
             ->subcompile($this->getNode('body'))
-            ->write("yield from [];\n")
+            ->write("return; yield '';\n") // needed when body doesn't yield anything
             ->outdent()
             ->write("}\n\n")
         ;

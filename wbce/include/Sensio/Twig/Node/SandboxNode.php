@@ -22,9 +22,9 @@ use Twig\Compiler;
 #[YieldReady]
 class SandboxNode extends Node
 {
-    public function __construct(Node $body, int $lineno)
+    public function __construct(Node $body, int $lineno, ?string $tag = null)
     {
-        parent::__construct(['body' => $body], [], $lineno);
+        parent::__construct(['body' => $body], [], $lineno, $tag);
     }
 
     public function compile(Compiler $compiler): void

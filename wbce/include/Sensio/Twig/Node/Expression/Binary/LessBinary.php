@@ -12,10 +12,8 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
-use Twig\Node\CoercesChildrenToStringInterface;
-use Twig\Node\Expression\ReturnBoolInterface;
 
-class LessBinary extends AbstractBinary implements ReturnBoolInterface, CoercesChildrenToStringInterface
+class LessBinary extends AbstractBinary
 {
     public function compile(Compiler $compiler): void
     {
@@ -37,10 +35,5 @@ class LessBinary extends AbstractBinary implements ReturnBoolInterface, CoercesC
     public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('<');
-    }
-
-    public function getStringCoercedChildNames(): array
-    {
-        return ['left', 'right'];
     }
 }

@@ -12,10 +12,8 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
-use Twig\Node\CoercesChildrenToStringInterface;
-use Twig\Node\Expression\ReturnBoolInterface;
 
-class NotEqualBinary extends AbstractBinary implements ReturnBoolInterface, CoercesChildrenToStringInterface
+class NotEqualBinary extends AbstractBinary
 {
     public function compile(Compiler $compiler): void
     {
@@ -37,10 +35,5 @@ class NotEqualBinary extends AbstractBinary implements ReturnBoolInterface, Coer
     public function operator(Compiler $compiler): Compiler
     {
         return $compiler->raw('!=');
-    }
-
-    public function getStringCoercedChildNames(): array
-    {
-        return ['left', 'right'];
     }
 }

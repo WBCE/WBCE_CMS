@@ -18,32 +18,19 @@ namespace Twig;
  */
 final class TemplateWrapper
 {
+    private $env;
+    private $template;
+
     /**
      * This method is for internal use only and should never be called
      * directly (use Twig\Environment::load() instead).
      *
      * @internal
      */
-    public function __construct(
-        private Environment $env,
-        private Template $template,
-    ) {
-    }
-
-    /**
-     * @return iterable<scalar|\Stringable|null>
-     */
-    public function stream(array $context = []): iterable
+    public function __construct(Environment $env, Template $template)
     {
-        yield from $this->template->yield($context);
-    }
-
-    /**
-     * @return iterable<scalar|\Stringable|null>
-     */
-    public function streamBlock(string $name, array $context = []): iterable
-    {
-        yield from $this->template->yieldBlock($name, $context);
+        $this->env = $env;
+        $this->template = $template;
     }
 
     public function render(array $context = []): string
@@ -51,9 +38,6 @@ final class TemplateWrapper
         return $this->template->render($context);
     }
 
-    /**
-     * @return void
-     */
     public function display(array $context = [])
     {
         // using func_get_args() allows to not expose the blocks argument
@@ -76,15 +60,12 @@ final class TemplateWrapper
 
     public function renderBlock(string $name, array $context = []): string
     {
-        return $this->template->renderBlock($name, $context + $this->env->getGlobals());
+        return $this->template->renderBlock($name, $this->env->mergeGlobals($context));
     }
 
-    /**
-     * @return void
-     */
     public function displayBlock(string $name, array $context = [])
     {
-        $context += $this->env->getGlobals();
+        $context = $this->env->mergeGlobals($context);
         foreach ($this->template->yieldBlock($name, $context) as $data) {
             echo $data;
         }

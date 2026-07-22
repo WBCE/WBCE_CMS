@@ -33,10 +33,4 @@ class DivisiblebyTest extends TestExpression
             ->raw(')')
         ;
     }
-
-    public function getStringCoercedChildNames(): array
-    {
-        // PHP `%` rejects Stringable with a TypeError, no coercion
-        return [];
-    }
 }

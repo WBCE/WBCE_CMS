@@ -33,8 +33,9 @@ final class DeprecatedTokenParser extends AbstractTokenParser
     public function parse(Token $token): Node
     {
         $stream = $this->parser->getStream();
-        $expr = $this->parser->parseExpression();
-        $node = new DeprecatedNode($expr, $token->getLine());
+        $expressionParser = $this->parser->getExpressionParser();
+        $expr = $expressionParser->parseExpression();
+        $node = new DeprecatedNode($expr, $token->getLine(), $this->getTag());
 
         while ($stream->test(Token::NAME_TYPE)) {
             $k = $stream->getCurrent()->getValue();
@@ -43,10 +44,10 @@ final class DeprecatedTokenParser extends AbstractTokenParser
 
             switch ($k) {
                 case 'package':
-                    $node->setNode('package', $this->parser->parseExpression());
+                    $node->setNode('package', $expressionParser->parseExpression());
                     break;
                 case 'version':
-                    $node->setNode('version', $this->parser->parseExpression());
+                    $node->setNode('version', $expressionParser->parseExpression());
                     break;
                 default:
                     throw new SyntaxError(\sprintf('Unknown "%s" option.', $k), $stream->getCurrent()->getLine(), $stream->getSourceContext());
