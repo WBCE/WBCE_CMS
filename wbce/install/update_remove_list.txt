@@ -104,6 +104,8 @@
 [MODULES]/SecureFormSwitcher/htt/switchform.htt
 [MODULES]/SecureFormSwitcher/language_load.php
 [MODULES]/CodeMirror_Config/initialize.php                     // changed to initialize_be.php
+[MODULES]/menu_link/upgrade.php
+[MODULES]/menu_link/functions.pageTree.php
 
 
 # Templates (Themes)
@@ -172,6 +174,7 @@
 [MODULES]/addon_monitor/icons
 [MODULES]/addon_monitor/css             // cleaned up in previous step
 [MODULES]/captcha_control/templates/    // replaced by twig/
+[MODULES]/menu_link/selectator/
 [MODULES]/jsadmin/images/
 [MODULES]/jsadmin/languages/
 [TEMPLATE]/advancedThemeWbFlat/

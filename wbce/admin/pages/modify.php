@@ -86,8 +86,10 @@ if ($modified_ts == 'Unknown') {
 }
 
 // Work-out if we should show the "manage sections" link
-$sSql = "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = " . $page_id . " AND `module` = 'menu_link'";
-$bShowMenuLink = $database->get_one($sSql);
+$bShowMenuLink = $database->fetchValue(
+    "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = ? AND `module` = 'menu_link'",
+    [$page_id]
+);
 if (defined("MENU_LINK_TRANSFORMER") && MENU_LINK_TRANSFORMER == true) {
     $bShowMenuLink = false;
 }
@@ -105,8 +107,7 @@ if ($bShowMenuLink) {
 $oTemplate->set_block('main_block', 'section_module_block', 'section_module');
 // get template used for the displayed page (for displaying block details)
 if (SECTION_BLOCKS) {
-    $sSql = 'SELECT `template` FROM `{TP}pages` WHERE `page_id`= ' . $page_id;
-    if (($sTemplate = $database->get_one($sSql)) !== null) {
+    if (($sTemplate = $database->fetchValue('SELECT `template` FROM `{TP}pages` WHERE `page_id` = ?', [$page_id])) !== null) {
         $sPageTemplate = ($sTemplate == '') ? DEFAULT_TEMPLATE : $sTemplate;
         // include template info.php file if exists
         $sFile = WB_PATH . '/templates/' . $sPageTemplate . '/info.php';
@@ -118,11 +119,12 @@ if (SECTION_BLOCKS) {
 
 // Get sections for this page
 // workout for EDIT_ONE_SECTION for faster pageloading
-$sWhereClause = (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION && is_numeric($sectionId))
-    ? 'WHERE `section_id` = ' . (int)$sectionId
-    : 'WHERE `page_id` = ' . (int)$page_id;
-$sSql = 'SELECT * FROM `{TP}sections` ' . $sWhereClause . ' ORDER BY position ASC';
-if ($rSections = $database->query($sSql)) {
+if (defined('EDIT_ONE_SECTION') && EDIT_ONE_SECTION && is_numeric($sectionId)) {
+    $rSections = $database->query('SELECT * FROM `{TP}sections` WHERE `section_id` = ? ORDER BY `position` ASC', [(int)$sectionId]);
+} else {
+    $rSections = $database->query('SELECT * FROM `{TP}sections` WHERE `page_id` = ? ORDER BY `position` ASC', [(int)$page_id]);
+}
+if ($rSections) {
     while ($section = $rSections->fetchRow(MYSQLI_ASSOC)) {
         $section_id = $section['section_id'];
         $module = $section['module'];

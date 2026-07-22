@@ -4,6 +4,7 @@
  *
  * Available Twig functions:
  *
+ *   loadPlugin($path, $cssPos, $jsPos)    Load a plugin folder (reads plugin.json, queues assets)
  *   insertFile($url, $pos, $type)        Single CSS or JS file (type detected by extension)
  *   insertCssFile($url, $pos, $id)       Enqueue a CSS file
  *   insertJsFile($url, $pos, $id)        Enqueue a JS file
@@ -21,6 +22,17 @@
  *   addUrlToken — Infrastructure setup that belongs at boot time, not during rendering.
  *     Has no meaningful use from within a Twig template.
  */
+
+/**
+ * loadPlugin — load a plugin by directory path (relative to WB_PATH).
+ * Reads plugin.json and queues all declared CSS and JS files.
+ * Dependencies (require) are resolved automatically.
+ */
+$oTwig->addFunction(new \Twig\TwigFunction("loadPlugin",
+    function (string $path, string $cssPos = 'head_late', string $jsPos = 'body_late'): mixed {
+        return I::loadPlugin($path, $cssPos, $jsPos);
+    }
+));
 
 /**
  * insertFile

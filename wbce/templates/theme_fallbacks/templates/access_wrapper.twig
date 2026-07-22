@@ -12,6 +12,5 @@
     </div>
 </section>
 {{  insertJsFile(INCLUDE_URL ~ '/htmx/htmx.min.js')}}
-{{ insertCssFile(INCLUDE_URL ~ '/wbeSelect/wbeSelect.css')}}
-{{  insertJsFile(INCLUDE_URL ~ '/wbeSelect/wbeSelect.jquery.js')}}
+{{ loadPlugin('include/wbeSelect') }}
 {% include '_toast.inc.twig' %}

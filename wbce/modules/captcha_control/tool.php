@@ -79,10 +79,7 @@ if (isset($_POST['save_settings'])) {
 
 
 // ── Render ────────────────────────────────────────────────────────────────────
-I::insertCssFile(INCLUDE_URL . '/wbeColoris/wbeColoris.css', 'HEAD BTM+');
-I::insertCssFile(INCLUDE_URL . '/wbeColoris/wbeColoris.admin.css', 'HEAD BTM+');
-I::insertJsFile(INCLUDE_URL . '/wbeColoris/wbeColoris.js', 'HEAD BTM-');
-I::insertJsFile(INCLUDE_URL . '/wbeColoris/wbeColoris.i18n.js', 'HEAD BTM-');
+loadPlugin('include/wbeColoris');
 $oTwig    = getTwig(__DIR__ . '/twig/');
 $altchaCfg = Captcha::getAltchaCfg();
 

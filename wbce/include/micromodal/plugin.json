@@ -1,0 +1,4 @@
+{
+    "css": ["modal.css"],
+    "js":  ["modal.min.js"]
+}

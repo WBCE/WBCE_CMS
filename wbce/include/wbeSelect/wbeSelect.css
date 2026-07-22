@@ -1,21 +1,17 @@
 /* ── Root variables ────────────────────────────────────────────────────────── */
-@font-face {
-    font-family: Proggy;
-    src: url(../../modules/CodeMirror_Config/codemirror/fonts/Proggy.woff);
-} 
 
 :root {
-    /* Dark theme (default) */
-    --ws-bg:               #0d0f18;
-    --ws-surface:          #1c2040;
-    --ws-surface-hover:    #1c2040;
-    --ws-border:           #2a2d4a;
-    --ws-text:             #d0def7;
-    --ws-text-muted:       #9ca3af;
-    --ws-text-dim:         #88a8e770;
-    --ws-accent:           #6288b8;
-    --ws-accent-hover:     #81caf84f;
-    --ws-accent-subtle:    rgba(99, 102, 241, 0.12);
+    /* Dark theme (default) — aligned with TinyMCE's oxide-dark dialog palette */
+    --ws-bg:               #222f3e;
+    --ws-surface:          #1a2734;
+    --ws-surface-hover:    #2f4257;
+    --ws-border:           #4f5b66;
+    --ws-text:             #eef2f6;
+    --ws-text-muted:       #9aa8b5;
+    --ws-text-dim:         #7c8b99b0;
+    --ws-accent:           #2076c8;
+    --ws-accent-hover:     #2f87d8;
+    --ws-accent-subtle:    rgba(32, 118, 200, 0.18);
     --ws-success:          #10b981;
     --ws-danger:           #ef4444;
     --ws-warning:          #f59e0b;
@@ -23,7 +19,12 @@
     --ws-cancel:           #af725d;
     --ws-font:             'Helvetica Neue', Helvetica, Arial, sans-serif;
     --ws-font-size:        14px;
-    --ws-font-mono:        'Proggy','DejaVue','JetBrains', Consolas, monospace;
+    --ws-font-mono:        'DejaVue','JetBrains', Consolas, monospace;
+
+    /* Tree connector SVG */
+    --ws-tree-indent:      14px;
+    --ws-tree-color:       #C5DDF0;
+    --ws-tree-stroke:      1.1px;
 }
 
 /* Light theme override */
@@ -38,6 +39,22 @@
     --ws-accent-hover:     #5f96b9;
     --ws-cancel:           #af725d;
     --ws-accent-subtle:    #5f96b91f;
+}
+
+/* Scoped dark override — lets a subtree (e.g. a modal) force the dark palette
+   even when the page resolved to light via the system-preference fallback. */
+[data-theme="dark"] {
+    --ws-bg:               #222f3e;
+    --ws-surface:          #1a2734;
+    --ws-surface-hover:    #2f4257;
+    --ws-border:           #4f5b66;
+    --ws-text:             #eef2f6;
+    --ws-text-muted:       #9aa8b5;
+    --ws-text-dim:         #7c8b99b0;
+    --ws-accent:           #2076c8;
+    --ws-accent-hover:     #2f87d8;
+    --ws-cancel:           #af725d;
+    --ws-accent-subtle:    rgba(32, 118, 200, 0.18);
 }
 
 /* Automatic system preference fallback */
@@ -156,6 +173,32 @@
     float: left;
 }
 
+/* Plain color dot (data-color, no icon/svg) — same contract as .ws-opt-color */
+.ws-tags .ws-tag .ws-tag-color {
+    float: left;
+    width: 18px;
+    height: 18px;
+    margin: 0px 6px 0 0;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+/* Custom SVG icon on the selected tag — same contract as .ws-opt-svg */
+.ws-tags .ws-tag .ws-tag-svg {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin: 1px 6px 0 0;
+    flex-shrink: 0;
+}
+
+.ws-tags .ws-tag .ws-tag-svg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 .ws--single .ws-tags .ws-tag .ws-tag-l {
     width: 30px;
     margin-top: -2px;
@@ -191,6 +234,36 @@
 .flag-right .ws-tags .ws-tag .ws-tag-l img {
     max-width: 28px;
     max-height: 18px;
+}
+
+/* flag-right: flex layout for pixel-perfect badge + text alignment */
+.flag-right.ws--single .ws-tags .ws-tag,
+.flag-right .ws-opts .ws-opt {
+    display: flex;
+    align-items: center;
+}
+
+.flag-right.ws--single .ws-tags .ws-tag .ws-tag-r,
+.flag-right .ws-opts .ws-opt .ws-opt-r {
+    float: none;
+    flex-shrink: 0;
+    margin-left: 0;
+}
+
+.flag-right.ws--single .ws-tags .ws-tag .ws-tag-ttl,
+.flag-right .ws-opts .ws-opt .ws-opt-ttl {
+    flex: 1;
+}
+
+/* flag-right: selected badge matches option badge exactly */
+.flag-right.ws--single .ws-tags .ws-tag .ws-tag-r {
+    background-color: var(--ws-accent);
+    font-size: 90%;
+    font-weight: 400;
+    line-height: 10px;
+    border-radius: 5px;
+    padding: 3px 7px;
+    margin-right: 6px;
 }
 
 /* Title */
@@ -332,6 +405,12 @@
     z-index: 101;
     background-color: var(--ws-surface);
     overflow-x: hidden;
+    /* max-height alone doesn't clip/scroll overflowing content (default
+       overflow-y is `visible`) — a long list simply renders past this box's own
+       painted background, showing whatever sits behind/below it on the page.
+       Usually invisible if nothing sits there; very visible in a form where real
+       fields follow right after the picker (see modules/tinymce_wbce link plugin). */
+    overflow-y: auto;
     max-height: 250px;
     list-style: none;
     left: -1px;
@@ -340,6 +419,29 @@
     color: var(--ws-text);
     font-family: var(--ws-font);
     font-size: var(--ws-font-size);
+}
+
+/* Themed scrollbar — the OS default (light track in a dark list) sticks out;
+   both the Firefox properties and the WebKit pseudo-elements follow the
+   --ws-* palette, so light/dark and scoped [data-theme] all just work. */
+.ws-opts {
+    scrollbar-width: thin;                                   /* Firefox */
+    scrollbar-color: var(--ws-border) var(--ws-surface);
+}
+.ws-opts::-webkit-scrollbar {                                /* Chromium/WebKit */
+    width: 10px;
+}
+.ws-opts::-webkit-scrollbar-track {
+    background: var(--ws-surface);
+    border-radius: 0 0 var(--ws-radius) 0;
+}
+.ws-opts::-webkit-scrollbar-thumb {
+    background: var(--ws-border);
+    border-radius: 5px;
+    border: 2px solid var(--ws-surface); /* inset look */
+}
+.ws-opts::-webkit-scrollbar-thumb:hover {
+    background: var(--ws-text-muted);
 }
 
 .ws--no-search .ws-opts {
@@ -351,7 +453,12 @@
     padding-top: 0;
 }
 
-.ws--hidden .ws-opts {
+/* Extra specificity (.ws-el = 3 classes → 0,3,0) so this beats host CSS that
+   targets the bare element, e.g. TinyMCE's dialog skin forcing
+   `.tox .tox-dialog__body-content ul { display: block }` (0,2,1) onto the
+   options list — which is a <ul>. Without this the tree stays visible even when
+   the widget's state is "hidden". */
+.ws-el.ws--hidden .ws-opts {
     display: none;
 }
 
@@ -396,6 +503,102 @@
     height: 30px;
 }
 
+/* Plain color dot (data-color, no icon/svg) */
+.ws-opts .ws-opt .ws-opt-color {
+    float: left;
+    width: 18px;
+    height: 18px;
+    margin: 1px 10px 4px 3px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+/* Custom SVG icon (data-svg / data-svgref, resolved to registry).
+   Sized like the left image; color is tinted via the wrapper's `color`
+   so SVGs authored with fill="currentColor" pick it up automatically. */
+.ws-opts .ws-opt .ws-opt-svg {
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 4px 8px 0 2px;
+    flex-shrink: 0;
+}
+
+.ws-opts .ws-opt .ws-opt-svg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Right-aligned language badge (data-lang), e.g. page language on
+   multilingual sites — subtle, so it reads as meta info, not content. */
+.ws-opts .ws-opt .ws-opt-lang {
+    float: right;
+    margin: 2px 6px 0 8px;
+    padding: 1px 6px;
+    font-size: 80%;
+    line-height: 1.4;
+    color: var(--ws-text-muted);
+    border: 1px solid var(--ws-border);
+    border-radius: var(--ws-radius);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Flag image variant (data-langflag): plain 14px flag, no badge chrome. */
+.ws-opts .ws-opt .ws-opt-lang img {
+    width: 14px;
+    height: auto;
+    display: block;
+}
+.ws-opts .ws-opt .ws-opt-lang:has(img) {
+    border: none;
+    padding: 0;
+    margin-top: 4px;
+}
+
+/* Flex layout variant (.flag-right) — order the badge to the far right. */
+.flag-right .ws-opts .ws-opt .ws-opt-lang {
+    float: none;
+    flex-shrink: 0;
+    order: 99;
+    margin-left: auto;
+}
+
+/* Language badge/flag on the SELECTED tag — same contract as .ws-opt-lang.
+   Single select: anchored left of the remove ✖ (absolute at right:22px). */
+.ws-tags .ws-tag .ws-tag-lang {
+    padding: 1px 6px;
+    font-size: 80%;
+    line-height: 1.4;
+    color: var(--ws-text-muted);
+    border: 1px solid var(--ws-border);
+    border-radius: var(--ws-radius);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.ws--single .ws-tags .ws-tag .ws-tag-lang {
+    position: absolute;
+    right: 42px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.ws--multiple .ws-tags .ws-tag .ws-tag-lang {
+    display: inline-block;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+.ws-tags .ws-tag .ws-tag-lang img {
+    width: 14px;
+    height: auto;
+    display: block;
+}
+.ws-tags .ws-tag .ws-tag-lang:has(img) {
+    border: none;
+    padding: 0;
+}
+
 /* ws--opt-disabled */
 .ws-opts .ws-opt.ws--opt-disabled {
     opacity: 0.6;
@@ -424,14 +627,7 @@
 
 .flag-right .ws-opts .ws-opt .ws-opt-ttl {
     margin-top: 0px;
-    margin-left: 40px;
-}
-.ws-opt-ttl:has(.tree-prefix) {
-    
-    margin-top: -4px;
-    font-family: var(--ws-font-mono);
-}
-.ws-opt-ttl:has(.tree-prefix) {
+    margin-left: 3px;
 }
 .flag-right .ws-opts .ws-opt {
     padding: 0;
@@ -442,6 +638,8 @@
     font-size: 90%;
     line-height: 10px;
     margin-top: 2px;
+    margin-right: 6px;
+    text-align: center;
 }
 
 .title_only .ws-opts .ws-opt .ws-opt-ttl {
@@ -449,31 +647,28 @@
 }
 
 
-/* Tree prefix styling */
-.tpfx,
-.tree-prefix {
-    color: var(--ws-text-dim) !important;
-    font-variant: normal;
-    font-size: 0.9rem;
-    font-family: var(--ws-font-mono) !important;
-    opacity: 0.7;
+/* Tree connector SVG */
+.ws-tree-svg {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: visible;
+    flex-shrink: 0;
+    color: var(--ws-tree-color);
+    margin-right: 4px;
+    margin-left: -4px;
+    user-select: none;
 }
+/* Depth dots in the closed/selected state */
 .tree-level-dots {
-    color: #777;              /* subtle gray — adjust for your dark theme */
+    color: var(--ws-tree-color);
     opacity: 0.75;
     font-family: Consolas, monospace;
-    font-size: 1.05em;        /* slightly larger for visibility */
+    font-size: 1.05em;
     letter-spacing: 0.15em;
     margin-right: 0.5em;
     display: inline-block;
     user-select: none;
 }
-
-/* Optional: faint decrease in intensity for deeper levels */
-.ws-opt[data-level="1"] .tree-level-dots { opacity: 0.8; }
-.ws-opt[data-level="2"] .tree-level-dots { opacity: 0.75; }
-.ws-opt[data-level="3"] .tree-level-dots { opacity: 0.7; }
-.ws-opt[data-level="4"] .tree-level-dots { opacity: 0.65; }
 
 
 /* Subtitle */
@@ -489,6 +684,12 @@
 /* Right badge in option */
 .ws-opts .ws-opt .ws-opt-r {
     float: left;
+    box-sizing: border-box;
+    /* Fixed floor so 1-, 2- and 3-digit IDs share one width → the tree
+       connectors + titles that follow stay vertically aligned regardless of the
+       number of digits. The JS equalizeBadgeWidths() may raise this further for
+       wider content; both keep every badge the same width. */
+    min-width: 30px;
     background-color: var(--ws-accent);
     color: white;
     font-weight: 400;

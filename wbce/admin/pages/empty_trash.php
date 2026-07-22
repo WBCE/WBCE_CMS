@@ -19,8 +19,7 @@ require_once(WB_PATH . '/framework/functions.php');
 
 // Get page list from database
 // $database = new database();
-$query = "SELECT * FROM " . TABLE_PREFIX . "pages WHERE visibility = 'deleted' ORDER BY level DESC";
-$get_pages = $database->query($query);
+$get_pages = $database->query("SELECT * FROM `{TP}pages` WHERE `visibility` = 'deleted' ORDER BY `level` DESC");
 
 // Insert values into main page list
 if ($get_pages->numRows() > 0) {
@@ -36,8 +35,8 @@ if ($get_pages->numRows() > 0) {
 }
 
 // Check if there is a db error, otherwise say successful
-if ($database->is_error()) {
-    $admin->print_error($database->get_error());
+if ($database->hasError()) {
+    $admin->print_error($database->getError());
 } else {
     $admin->print_success($TEXT['TRASH_EMPTIED']);
 }

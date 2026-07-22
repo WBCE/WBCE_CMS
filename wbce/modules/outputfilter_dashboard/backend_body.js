@@ -560,7 +560,7 @@ growfield.prototype = {
                     overflow: o.css('overflow'),
                     cssResize: o.css('resize')
                 };
-                if ($.browser.safari) o.css('resize', 'none');
+                if ($.browser && $.browser.safari) o.css('resize', 'none');
                 this.initial = initial;
                 o.css({overflow: 'hidden'});
 
@@ -584,7 +584,7 @@ growfield.prototype = {
                 this.dummy = false;
             }
             o.unbind('.growfield').css('overflow', this.initial.overflow);
-            if ($.browser.safari) o.css('resize', this.initial.cssResize);
+            if ($.browser && $.browser.safari) o.css('resize', this.initial.cssResize);
             this.enabled = false;
         }
         return this;
@@ -679,7 +679,7 @@ growfield.prototype = {
         // But that't not the point :)
         // Another question is how much pixels to keep at the bottom of textarea.
         // We'll kill many rabbits at the same time by adding two new lines at the end
-        if ($.browser.safari) val = val.substring(0, val.length-1); // safari has an additional new line ;(
+        if ($.browser && $.browser.safari) val = val.substring(0, val.length-1); // safari has an additional new line ;(
 
         if (!sr.lh || !sr.fs) val += add;
 
@@ -687,13 +687,13 @@ growfield.prototype = {
 
         // IE requires to change height value in order to recalculate scrollHeight.
         // otherwise it stops recalculating scrollHeight after some magical number of pixels
-        if ($.browser.msie) this.dummy[0].style.height = this.dummy[0].scrollHeight+'px';
+        if ($.browser && $.browser.msie) this.dummy[0].style.height = this.dummy[0].scrollHeight+'px';
 
         h = this.dummy[0].scrollHeight;
         if (sr.lh && sr.fs) h += sr.lh > sr.fs ? sr.lh+sr.fs :  sr.fs * 2;
 
         // now we have to minimize dummy back, or we'll get wrong scrollHeight next time
-        if ($.browser.msie) this.dummy[0].style.height = '20px'; // random number
+        if ($.browser && $.browser.msie) this.dummy[0].style.height = '20px'; // random number
 
         return h;
     },

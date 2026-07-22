@@ -15,14 +15,14 @@ require_once '../../config.php';
 $admin_header         = false; // don't print header immediately
 $update_when_modified = true;  // Tell script to update when this page was last updated
 require WB_PATH.'/modules/admin.php'; // Include WB admin wrapper script
-$js_back = ADMIN_URL.'/pages/modify.php?page_id='.$page_id;
+$js_back     = ADMIN_URL.'/pages/modify.php?page_id='.$page_id;
+$js_back_all = ADMIN_URL.'/pages';
 
 if (!$admin->checkFTAN()) {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_SECURITY_ACCESS'], $js_back);
 }
 
-$admin->print_header();
 
 if (isset($_POST['menu_link'])) {
     
@@ -47,11 +47,16 @@ if (isset($_POST['menu_link'])) {
 
     // Check if there is a database error, otherwise say successful
     if ($database->hasError()) {
-        $admin->print_error($database->getError(), $js_back);
+        
+        $admin->print_header();
+        $admin->print_error($database->getError(), $js_back, true);
     } else {
-        $admin->print_success($MESSAGE['PAGES_SAVED'], $js_back);
+        (new Alerts())->sessionToast('MESSAGE:CHANGES_SAVE_SUCCESS', 'success');
+        $redirect = isset($_POST['save_and_back']) ? $js_back_all : $js_back;
+        header('Location: ' . $redirect);
+        exit;
     }
-} else {
-    $admin->print_error('No Data was set', $js_back);
+} else {    
+    $admin->print_header();
+    $admin->print_error('No Data was set', $js_back, true);
 }
-$admin->print_footer();

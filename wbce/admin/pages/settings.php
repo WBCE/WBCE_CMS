@@ -22,7 +22,7 @@ if (!isset($_GET['page_id']) || !is_numeric($_GET['page_id'])) {
     header("Location: index.php");
     exit(0);
 } else {
-    $page_id = $_GET['page_id'];
+    $page_id = (int)$_GET['page_id'];
 }
 
 /*
@@ -32,24 +32,21 @@ if( (!($page_id = $admin->checkIDKEY('page_id', 0, $_SERVER['REQUEST_METHOD'])))
 }
 */
 
-$sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id` = ' . $page_id;
-$results = $database->query($sql);
+$results = $database->query('SELECT * FROM `{TP}pages` WHERE `page_id` = ?', [$page_id]);
 $results_array = $results->fetchRow();
 
 // Work-out if we should check for existing page_code
-$field_set = $database->field_exists(TABLE_PREFIX . 'pages', 'page_code');
+$field_set = $database->fieldExists('{TP}pages', 'page_code');
 
 if (!$admin->isPageAdmin($results_array['admin_groups'], $results_array['admin_users'])) {
     $admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 }
 
 // Get page details
-/* $database = new database();  */
-$sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `page_id`=' . $page_id;
-$results = $database->query($sql);
-if ($database->is_error()) {
+$results = $database->query('SELECT * FROM `{TP}pages` WHERE `page_id` = ?', [$page_id]);
+if ($database->hasError()) {
     $admin->print_header();
-    $admin->print_error($database->get_error());
+    $admin->print_error($database->getError());
 }
 if ($results->numRows() == 0) {
     $admin->print_header();
@@ -103,8 +100,7 @@ $template->set_var(
 );
 
 // Work-out if we should show the "manage sections" link
-$sSql = "SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = " . $page_id . " AND `module` = 'menu_link'";
-$bShowMenuLink = $database->get_one($sSql);
+$bShowMenuLink = $database->fetchValue("SELECT COUNT(*) FROM `{TP}sections` WHERE `page_id` = ? AND `module` = 'menu_link'", [$page_id]);
 if (defined("MENU_LINK_TRANSFORMER") && MENU_LINK_TRANSFORMER == true) {
     $bShowMenuLink = false;
 }
@@ -131,7 +127,7 @@ if ($results_array['visibility'] == 'public') {
 // Group list 1 (admin_groups)
 $admin_groups = explode(',', str_replace('_', '', $results_array['admin_groups']));
 
-$sql = 'SELECT * FROM `' . TABLE_PREFIX . 'groups`';
+$sql = 'SELECT * FROM `{TP}groups`';
 $get_groups = $database->query($sql);
 
 $template->set_block('main_block', 'group_list_block', 'group_list');
@@ -190,7 +186,7 @@ while ($group = $get_groups->fetchRow()) {
 // Group list 2 (viewing_groups)
 $viewing_groups = explode(',', str_replace('_', '', $results_array['viewing_groups']));
 
-$sql = 'SELECT * FROM `' . TABLE_PREFIX . 'groups`';
+$sql = 'SELECT * FROM `{TP}groups`';
 $get_groups = $database->query($sql);
 
 $template->set_block('main_block', 'group_list_block2', 'group_list2');
@@ -272,8 +268,7 @@ if ((defined('PAGE_LANGUAGES') && PAGE_LANGUAGES) && $field_set && file_exists(W
         global $admin, $database, $template, $results_array, $pageCode;
         $default_language = DEFAULT_LANGUAGE;
 
-        $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `parent` = ' . $parent . ' AND `language` = "' . $default_language . '" ORDER BY `position` ASC';
-        $get_pages = $database->query($sql);
+        $get_pages = $database->query('SELECT * FROM `{TP}pages` WHERE `parent` = ? AND `language` = ? ORDER BY `position` ASC', [$parent, $default_language]);
 
         while ($page = $get_pages->fetchRow()) {
             if (($admin->page_is_visible($page) == false) && ($page['visibility'] <> 'none')) {
@@ -347,8 +342,7 @@ function parent_list($parent)
 {
     global $admin, $database, $template, $results_array, $field_set;
 
-    $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'pages` WHERE `parent` = ' . $parent . ' ORDER BY `position` ASC';
-    $get_pages = $database->query($sql);
+    $get_pages = $database->query('SELECT * FROM `{TP}pages` WHERE `parent` = ? ORDER BY `position` ASC', [$parent]);
 
     while ($page = $get_pages->fetchRow()) {
         /*if($admin->page_is_visible($page)==false)
@@ -422,7 +416,7 @@ if ($modified_ts == 'Unknown') {
 // Templates list
 $template->set_block('main_block', 'template_list_block', 'template_list');
 
-$sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` WHERE `type` = "template" AND `function` = "template" order by `name`';
+$sql = 'SELECT * FROM `{TP}addons` WHERE `type` = "template" AND `function` = "template" order by `name`';
 if (($res_templates = $database->query($sql))) {
     while ($rec_template = $res_templates->fetchRow()) {
         // Check if the user has perms to use this template
@@ -473,7 +467,7 @@ foreach ($menu as $number => $name) {
 // Insert language values
 $template->set_block('main_block', 'language_list_block', 'language_list');
 
-$sql = 'SELECT * FROM `' . TABLE_PREFIX . 'addons` WHERE `type` = "language" ORDER BY `name`';
+$sql = 'SELECT * FROM `{TP}addons` WHERE `type` = "language" ORDER BY `name`';
 if (($res_languages = $database->query($sql))) {
     while ($rec_language = $res_languages->fetchRow()) {
         $l_codes[$rec_language['name']] = $rec_language['directory'];
