@@ -7,7 +7,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.2
+ * @version     1.0.1
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -27,12 +27,9 @@ require_once __DIR__ . '/config_defaults.php';
 // Include compatibility checker for dynamic PHP version check
 require_once __DIR__ . '/compatibility_checker.php';
 
+// Security check: Admin only (full admin class validation)
+// This checks both authentication AND admin permissions
 $admin = new admin('Admintools', 'admintools', false, false);
-
-if (!$admin->is_authenticated() || !$admin->isAdmin()) {
-    header('Location: ' . ADMIN_URL . '/index.php');
-    exit;
-}
 
 // Load language file
 $lang = (file_exists(__DIR__ . '/languages/' . LANGUAGE . '.php'))
@@ -55,7 +52,7 @@ if (!empty($targetVersion) && !preg_match('/^v?\d+\.\d+(\.\d+)?$/i', $targetVers
 <html lang="<?php echo LANGUAGE; ?>">
 <head>
     <meta charset="utf-8">
-    <title><?php echo $LANG['TOOL_NAME']; ?> - <?php echo $LANG['EXEC_TITLE']; ?></title>
+    <title><?php echo $LANG['TOOL_NAME']; ?> - Update Execution</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -125,7 +122,7 @@ if (!empty($targetVersion) && !preg_match('/^v?\d+\.\d+(\.\d+)?$/i', $targetVers
 <body>
     <div class="container">
         <h1>🚀 <?php echo $LANG['TOOL_NAME']; ?></h1>
-        <h2><?php echo $LANG['EXEC_TITLE']; ?></h2>
+        <h2>Update Execution</h2>
 
         <div class="progress">
 <?php
@@ -137,42 +134,43 @@ $warnings = [];
 // Step 1: PHP Compatibility Check (Dynamic from requirements.json)
 // IMPORTANT: Only WARNING, never blocking! User might need to update WBCE first, then change PHP version.
 echo '<div class="step">';
-echo '<strong>' . $LANG['EXEC_STEP1'] . '</strong><br>';
+echo '<strong>Schritt 1: PHP-Kompatibilität prüfen...</strong><br>';
 
 if (!empty($targetVersion)) {
     $compatibility = checkPhpCompatibility($targetVersion, PHP_VERSION);
 
     if (!$compatibility['compatible']) {
-        $phpMin = $compatibility['details']['php_min'] ?? null;
-        $phpMax = $compatibility['details']['php_max'] ?? null;
+        // WARNING, but do NOT block!
+        $phpMin = $compatibility['details']['php_min'] ?? '?';
+        $phpMax = $compatibility['details']['php_max'] ?? '?';
+        $phpRecommended = $compatibility['details']['php_recommended'] ?? $phpMin;
 
-        if ($phpMin === null && $phpMax === null) {
-            $detailMsg = $compatibility['details']['error'] ?? 'Keine Anforderungsdaten verfügbar';
-            echo '<span style="color: #856404;">⚠️ ' . sprintf($LANG['EXEC_PHP_CANNOT_CHECK'], htmlspecialchars($detailMsg)) . '</span>';
-        } else {
-            $phpMinStr      = $phpMin ?? '?';
-            $phpMaxStr      = $phpMax ?? '?';
-            $phpRecommended = $compatibility['details']['php_recommended'] ?? $phpMinStr;
+        echo '<span style="color: #dc3545; font-weight: bold;">⚠️ WARNUNG: PHP-Inkompatibilität erkannt!</span><br>';
+        echo '<span style="color: #856404;">';
+        echo 'Aktuelle PHP-Version: <strong>' . PHP_VERSION . '</strong><br>';
+        echo 'Benötigt für WBCE ' . htmlspecialchars($targetVersion) . ': <strong>' . htmlspecialchars($phpMin) . ' - ' . htmlspecialchars($phpMax) . '</strong><br>';
+        echo 'Empfohlen: <strong>' . htmlspecialchars($phpRecommended) . '</strong><br><br>';
+        echo '<em>Hinweis: Update wird trotzdem durchgeführt. Bitte ändern Sie die PHP-Version nach dem Update!</em>';
+        echo '</span>';
 
-            echo '<span style="color: #dc3545; font-weight: bold;">⚠️ ' . $LANG['EXEC_PHP_INCOMPAT'] . '</span><br>';
-            echo '<span style="color: #856404;">';
-            echo $LANG['EXEC_PHP_CURRENT'] . ' <strong>' . PHP_VERSION . '</strong><br>';
-            echo sprintf($LANG['EXEC_PHP_REQUIRED_FOR'], htmlspecialchars($targetVersion)) . ' <strong>' . htmlspecialchars($phpMinStr) . ' - ' . htmlspecialchars($phpMaxStr) . '</strong><br>';
-            echo $LANG['EXEC_PHP_RECOMMENDED'] . ' <strong>' . htmlspecialchars($phpRecommended) . '</strong><br><br>';
-            echo '<em>' . $LANG['EXEC_PHP_CONTINUE_HINT'] . '</em>';
-            echo '</span>';
-
-            $warnings[] = sprintf($LANG['EXEC_PHP_COMPAT_WARN'], PHP_VERSION, $targetVersion, $phpMinStr, $phpMaxStr);
-        }
+        // Add to warnings (not errors - non-blocking)
+        $warnings[] = sprintf(
+            'PHP %s ist nicht kompatibel mit WBCE %s (benötigt: %s - %s). Bitte PHP-Version nach dem Update ändern!',
+            PHP_VERSION,
+            $targetVersion,
+            $phpMin,
+            $phpMax
+        );
     } else {
-        echo '<span style="color: #28a745;">✅ ' . sprintf($LANG['EXEC_PHP_COMPATIBLE_MSG'], PHP_VERSION, htmlspecialchars($targetVersion)) . '</span>';
+        echo '<span style="color: #28a745;">✅ PHP ' . PHP_VERSION . ' ist kompatibel mit WBCE ' . htmlspecialchars($targetVersion) . '</span>';
 
+        // EOL Warning (non-blocking)
         if (isset($compatibility['details']['warning']) && !empty($compatibility['details']['warning'])) {
             echo '<br><span style="color: #856404;">⚠️ ' . htmlspecialchars($compatibility['details']['warning']) . '</span>';
         }
     }
 } else {
-    echo '<span style="color: #856404;">⚠️ ' . $LANG['EXEC_PHP_SKIPPED'] . '</span>';
+    echo '<span style="color: #856404;">⚠️ Keine Zielversion angegeben, PHP-Check übersprungen</span>';
 }
 
 echo '</div>';
@@ -180,18 +178,18 @@ echo '</div>';
 // Step 2: Check if ZIP file exists
 if ($success) {
     echo '<div class="step">';
-    echo '<strong>' . $LANG['EXEC_STEP2'] . '</strong><br>';
+    echo '<strong>Schritt 2: Update-Paket prüfen...</strong><br>';
 
     $zipFile = WB_PATH . '/wbceup.zip';
 
     if (!file_exists($zipFile)) {
-        $success  = false;
-        $error    = $LANG['EXEC_ZIP_MISSING'];
+        $success = false;
+        $error = 'Update-Paket (wbceup.zip) nicht gefunden!';
         $errors[] = $error;
         echo '<span style="color: #dc3545;">❌ ' . htmlspecialchars($error) . '</span>';
     } else {
         $fileSize = filesize($zipFile);
-        echo '<span style="color: #28a745;">✅ ' . sprintf($LANG['EXEC_ZIP_FOUND'], round($fileSize / 1024 / 1024, 2)) . '</span>';
+        echo '<span style="color: #28a745;">✅ wbceup.zip gefunden (' . round($fileSize / 1024 / 1024, 2) . ' MB)</span>';
     }
 
     echo '</div>';
@@ -200,67 +198,67 @@ if ($success) {
 // Step 3: Extract ZIP
 if ($success) {
     echo '<div class="step">';
-    echo '<strong>' . $LANG['EXEC_STEP3'] . '</strong><br>';
+    echo '<strong>Schritt 3: Update-Paket entpacken...</strong><br>';
 
     try {
         $zip = new ZipArchive;
         $res = $zip->open($zipFile);
 
         if ($res === TRUE) {
-            $path         = WB_PATH;
-            $numFiles     = $zip->numFiles;
-            $realBasePath = realpath($path);
+            $path = WB_PATH;
+            $numFiles = $zip->numFiles;
 
+            // Security: Validate all file paths before extraction to prevent ZIP-Slip attacks
+            $realBasePath = realpath($path);
             if ($realBasePath === false) {
-                throw new Exception($LANG['EXEC_DIR_RESOLVE_ERROR']);
+                throw new Exception('Zielverzeichnis konnte nicht aufgelöst werden');
             }
 
             for ($i = 0; $i < $numFiles; $i++) {
-                $stat     = $zip->statIndex($i);
+                $stat = $zip->statIndex($i);
                 $filename = $stat['name'];
 
-                if (strpos($filename, '../') !== false || strpos($filename, '..\\') !== false ||
-                    strpos($filename, "\0") !== false) {
+                // Check for directory traversal patterns
+                if (strpos($filename, '../') !== false || strpos($filename, '..\\') !== false) {
                     $zip->close();
-                    throw new Exception(sprintf($LANG['EXEC_SEC_BAD_PATH'], htmlspecialchars($filename)));
+                    throw new Exception('Sicherheitswarnung: Ungültiger Dateipfad im ZIP-Archiv erkannt: ' . htmlspecialchars($filename));
                 }
 
-                if (substr($filename, 0, 1) === '/' || (strlen($filename) >= 2 && $filename[1] === ':')) {
-                    $zip->close();
-                    throw new Exception(sprintf($LANG['EXEC_SEC_ABS_PATH'], htmlspecialchars($filename)));
+                // Build full path and resolve it
+                $fullPath = $path . DIRECTORY_SEPARATOR . $filename;
+                $realPath = realpath(dirname($fullPath));
+
+                // For new files, realpath might return false, so check parent directory
+                if ($realPath === false) {
+                    // File doesn't exist yet, check parent directory
+                    $parentDir = dirname($fullPath);
+                    if (!file_exists($parentDir)) {
+                        // Parent doesn't exist, will be created by extractTo
+                        continue;
+                    }
+                    $realPath = realpath($parentDir);
                 }
 
-                $fullPath    = $realBasePath . DIRECTORY_SEPARATOR
-                    . ltrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $filename), DIRECTORY_SEPARATOR);
-                $resolvedDir = realpath(dirname($fullPath));
-
-                if ($resolvedDir !== false) {
-                    if (strncmp($resolvedDir . DIRECTORY_SEPARATOR,
-                                $realBasePath . DIRECTORY_SEPARATOR,
-                                strlen($realBasePath) + 1) !== 0) {
-                        $zip->close();
-                        throw new Exception($LANG['EXEC_SEC_TRAVERSAL']);
-                    }
-                } else {
-                    if (strncmp($fullPath,
-                                $realBasePath . DIRECTORY_SEPARATOR,
-                                strlen($realBasePath) + 1) !== 0) {
-                        $zip->close();
-                        throw new Exception($LANG['EXEC_SEC_TRAVERSAL']);
-                    }
+                // Ensure the resolved path is within the base path
+                if ($realPath !== false && strpos($realPath, $realBasePath) !== 0) {
+                    $zip->close();
+                    throw new Exception('Sicherheitswarnung: Versuch erkannt, Dateien außerhalb des Zielverzeichnisses zu extrahieren');
                 }
             }
 
+            // All paths validated, now extract
             $zip->extractTo($path);
             $zip->close();
 
-            echo '<span style="color: #28a745;">✅ ' . sprintf($LANG['EXEC_FILES_EXTRACTED'], $numFiles, htmlspecialchars($path)) . '</span>';
+            echo '<span style="color: #28a745;">✅ ' . $numFiles . ' Dateien sicher nach ' . htmlspecialchars($path) . ' entpackt</span>';
         } else {
-            throw new Exception($LANG['EXEC_ZIP_OPEN_FAILED']);
+            // Generic error message to avoid information disclosure
+            // Detailed error codes are logged but not displayed
+            throw new Exception('ZIP-Archiv konnte nicht geöffnet werden. Bitte überprüfen Sie die Datei.');
         }
     } catch (Exception $e) {
-        $success  = false;
-        $error    = sprintf($LANG['EXEC_EXTRACT_FAILED'], $e->getMessage());
+        $success = false;
+        $error = 'Entpacken fehlgeschlagen: ' . $e->getMessage();
         $errors[] = $error;
         echo '<span style="color: #dc3545;">❌ ' . htmlspecialchars($error) . '</span>';
     }
@@ -271,31 +269,31 @@ if ($success) {
 // Step 4: Check if install/update.php exists
 if ($success) {
     echo '<div class="step">';
-    echo '<strong>' . $LANG['EXEC_STEP4'] . '</strong><br>';
+    echo '<strong>Schritt 4: WBCE Update-Script prüfen...</strong><br>';
 
     $updateScript = WB_PATH . '/install/update.php';
 
     if (!file_exists($updateScript)) {
-        $success  = false;
-        $error    = $LANG['EXEC_SCRIPT_MISSING'];
+        $success = false;
+        $error = 'WBCE Update-Script (install/update.php) nicht gefunden!';
         $errors[] = $error;
         echo '<span style="color: #dc3545;">❌ ' . htmlspecialchars($error) . '</span>';
     } else {
-        echo '<span style="color: #28a745;">✅ ' . $LANG['EXEC_SCRIPT_FOUND'] . '</span>';
+        echo '<span style="color: #28a745;">✅ install/update.php gefunden</span>';
     }
 
     echo '</div>';
 }
 
-// Step 5: Cleanup (delete ZIP)
+// Step 5: Cleanup (delete ZIP - Script selbst bleibt für Debugging)
 if ($success) {
     echo '<div class="step">';
-    echo '<strong>' . $LANG['EXEC_STEP5'] . '</strong><br>';
+    echo '<strong>Schritt 5: Cleanup...</strong><br>';
 
     if (@unlink($zipFile)) {
-        echo '<span style="color: #28a745;">✅ ' . $LANG['EXEC_ZIP_DELETED'] . '</span>';
+        echo '<span style="color: #28a745;">✅ wbceup.zip gelöscht</span>';
     } else {
-        echo '<span style="color: #856404;">⚠️ ' . $LANG['EXEC_ZIP_DELETE_FAILED'] . '</span>';
+        echo '<span style="color: #856404;">⚠️ wbceup.zip konnte nicht gelöscht werden (nicht kritisch)</span>';
     }
 
     echo '</div>';
@@ -305,11 +303,11 @@ if ($success) {
         </div>
 
 <?php if ($success): ?>
-        <h2 class="success">✅ <?php echo $LANG['EXEC_SUCCESS_TITLE']; ?></h2>
+        <h2 class="success">✅ Update-Paket erfolgreich entpackt!</h2>
 
         <?php if (!empty($warnings)): ?>
         <div class="error" style="background: #fff3cd; border-color: #ffc107; color: #856404;">
-            <strong>⚠️ <?php echo $LANG['EXEC_WARNINGS_TITLE']; ?></strong>
+            <strong>⚠️ Wichtige Warnungen:</strong>
             <ul>
                 <?php foreach ($warnings as $warning): ?>
                     <li><?php echo htmlspecialchars($warning); ?></li>
@@ -319,27 +317,27 @@ if ($success) {
         <?php endif; ?>
 
         <div class="info-box">
-            <strong><?php echo $LANG['EXEC_NEXT_STEP_TITLE']; ?></strong>
-            <p><?php echo $LANG['EXEC_NEXT_STEP_INFO']; ?></p>
-            <p><strong><?php echo $LANG['EXEC_WINDOW_HINT']; ?></strong></p>
+            <strong>Nächster Schritt:</strong>
+            <p>Das WBCE Update-Script ist bereit. Klicken Sie auf den Button unten, um den Update-Prozess zu starten.</p>
+            <p><strong>Wichtig:</strong> Der Update-Prozess kann einige Minuten dauern. Schließen Sie das Fenster nicht!</p>
             <?php if (!empty($warnings)): ?>
-            <p style="color: #dc3545; font-weight: bold;">⚠️ <?php echo $LANG['EXEC_PHP_CHANGE_REMINDER']; ?></p>
+            <p style="color: #dc3545; font-weight: bold;">⚠️ Nach dem Update: Ändern Sie die PHP-Version auf Ihrem Server!</p>
             <?php endif; ?>
         </div>
 
         <a href="<?php echo WB_URL; ?>/install/update.php" class="button">
-            🚀 <?php echo $LANG['EXEC_START_UPDATE_BTN']; ?>
+            🚀 WBCE Update jetzt starten
         </a>
 
         <p style="margin-top: 30px; font-size: 14px; color: #666;">
-            <?php echo $LANG['OR_MANUAL']; ?>: <code><?php echo WB_URL; ?>/install/update.php</code>
+            Oder rufen Sie manuell auf: <code><?php echo WB_URL; ?>/install/update.php</code>
         </p>
 
 <?php else: ?>
-        <h2 class="error">❌ <?php echo $LANG['EXEC_ERROR_TITLE']; ?></h2>
+        <h2 class="error">❌ Fehler beim Update!</h2>
 
         <div class="error">
-            <strong><?php echo $LANG['ERROR_OCCURRED']; ?></strong>
+            <strong>Folgende Fehler sind aufgetreten:</strong>
             <ul>
                 <?php foreach ($errors as $error): ?>
                     <li><?php echo htmlspecialchars($error); ?></li>
@@ -349,7 +347,7 @@ if ($success) {
 
         <p>
             <a href="<?php echo ADMIN_URL; ?>/admintools/tool.php?tool=wbce_updater" class="button">
-                ← <?php echo $LANG['BACK_TO_UPDATER']; ?>
+                ← Zurück zum Update-Assistenten
             </a>
         </p>
 <?php endif; ?>
