@@ -1510,12 +1510,19 @@ final class AssetQueue
         // Runs on full content so groups in template partials outside <body> are caught.
         $this->processAssetGroups($content);
 
-        // Split at end of opening <body> tag so we only scan the body
+        // Split at end of opening <body> tag so we only scan the body.
+        // Require </head> as well: if it's absent we cannot inject relocated CSS
+        // into the head, and removing the <link> tags without reinserting them
+        // would silently discard the stylesheets.  When the page has no proper
+        // head/body structure (partial HTML, AJAX snippet, admin tool fragment)
+        // we leave all tags exactly where they are.
         $bodyOpen = stripos($content, '<body');
         if ($bodyOpen === false) return;
 
         $bodyTagClose = strpos($content, '>', $bodyOpen);
         if ($bodyTagClose === false) return;
+
+        if (stripos($content, '</head>') === false) return;
 
         $head = substr($content, 0, $bodyTagClose + 1);
         $body = substr($content, $bodyTagClose + 1);
@@ -1920,10 +1927,21 @@ final class AssetQueue
         // Insert in reverse DOM order so byte offsets remain valid.
         // Positions sharing the same anchor offset (e.g. head_middle / head_late / head_last
         // all sit at </head>) are inserted last-first so the final order is correct.
+        //
+        // Fallback: head positions whose anchor is null (no </head> found) are redirected
+        // to body_top so CSS/JS queued from body-scanner extraction is never silently lost.
+        $bodyTopFallback = $anchors['body_top'] ?? null;
         foreach (array_reverse($allPositions) as $pos) {
             if (empty($insertions[$pos])) continue;
             $anchor = $anchors[$pos] ?? null;
-            if ($anchor === null) continue;
+            if ($anchor === null) {
+                // Only fall back head positions — body positions without anchors are dropped.
+                if (str_starts_with($pos, 'head_') && $bodyTopFallback !== null) {
+                    $anchor = $bodyTopFallback;
+                } else {
+                    continue;
+                }
+            }
             $content = substr_replace($content, $insertions[$pos], $anchor, 0);
         }
     }
