@@ -59,9 +59,13 @@ if ($syntaxError !== null) {
 }
 
 // ── Save to database ──────────────────────────────────────────────────────────
+// Store with a leading <?php tag: opf_apply_filters() runs inline funcs via
+// eval('?>'.$func), which starts in HTML mode and needs the body to re-open a
+// PHP context — otherwise the function source is echoed as plain text.
+$stored = "<?php\n" . trim($code) . "\n";
 $database->query(
     "UPDATE `{TP_OPFD}` SET `func` = ? WHERE `id` = ?",
-    [$code, $filter_id]
+    [$stored, $filter_id]
 );
 
 if ($database->hasError()) {

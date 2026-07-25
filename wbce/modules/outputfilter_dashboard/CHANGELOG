@@ -1,7 +1,13 @@
 
 Header: Version-History
 
-1.6:
+1.6.7   %(Stefek, 25 July 2026)%
+    - ensure inline filter funcs re-open PHP context before eval
+        ajax_save_filter.php now stores inline code with a leading <?php tag.
+        functions.php adds a defensive guard for existing DB entries that lack
+        it — both needed because eval('?>'.$func) starts in HTML mode and will
+        echo the function source as plain text if no <?php tag is present.
+
 1.6.5  %(Stefek, 27 Febr 2023)%
         - make use of the newly introduced MarkdownReader:
             ~ create a mechanism that will automatically initialize 

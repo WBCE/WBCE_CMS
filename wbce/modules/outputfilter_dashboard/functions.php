@@ -1479,7 +1479,15 @@ function opf_apply_filters(&$content, $type, $module, $page_id, $section_id, $wb
                     if($filter['file'] && file_exists($filter['file'])) {
                         require_once($filter['file']);
                     } else {
-                        eval('?>'.$filter['func']);
+                        // Inline funcs may be stored with or without a leading <?php
+                        // tag (the AJAX editor used to strip it). eval() starts in HTML
+                        // mode below, so ensure the body re-opens a PHP context —
+                        // otherwise the source is echoed as text instead of defined.
+                        $func = $filter['func'];
+                        if(!preg_match('~^\s*<\?~', $func)) {
+                            $func = "<?php\n".$func;
+                        }
+                        eval('?>'.$func);
                     }
                 }
                 if(function_exists($filter['funcname'])) {
