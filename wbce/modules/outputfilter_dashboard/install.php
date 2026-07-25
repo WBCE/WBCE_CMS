@@ -108,20 +108,14 @@ if(!defined('WB_INSTALLER')){
 }
 
 //frontend
-Settings::Set('opf_droplets',1, false);
-Settings::Set('opf_auto_placeholder',1, false);
-Settings::Set('opf_move_stuff',1, false);
-Settings::Set('opf_replace_stuff',1, false);
-Settings::Set('opf_css_to_head',1, false);
-Settings::Set('opf_wblink',1, false);
-Settings::Set('opf_short_url',0, false);
-Settings::Set('opf_sys_rel',0, false);
-Settings::Set("opf_remove_system_ph", 1, false)  ;
+Settings::set('opf_droplets',1, false);
+Settings::set('opf_replace_stuff',1, false);
+Settings::set('opf_wblink',1, false);
+Settings::set('opf_short_url',0, false);
+Settings::set('opf_sys_rel',0, false);
+Settings::set('opf_remove_system_ph', 1, false);
 
 //backend
-Settings::Set('opf_droplets_be',1, false);
-Settings::Set('opf_auto_placeholder_be',1, false);
-Settings::Set('opf_move_stuff_be',1, false);
-Settings::Set('opf_replace_stuff_be',1, false);
-Settings::Set('opf_css_to_head_be',0);
-Settings::Set("opf_remove_system_ph_be", 1, false);
+Settings::set('opf_droplets_be',1, false);
+Settings::set('opf_replace_stuff_be',1, false);
+Settings::set('opf_remove_system_ph_be', 1, false);

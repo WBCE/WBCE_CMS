@@ -49,6 +49,8 @@
 [ADMIN]/users/save.php            // 1.7.0 refactor
 
 # Framework
+[FRAMEWORK]/I.php                        // replaced by framework/Assets/I.php (AssetQueue shim)
+[FRAMEWORK]/Insert.php                   // replaced by framework/Assets/AssetQueue.php
 [FRAMEWORK]/class.database.doctrine.php
 [FRAMEWORK]/class.wbmailer.php
 [FRAMEWORK]/PasswordHash.php       // old password hashing class
@@ -105,6 +107,7 @@
 [MODULES]/SecureFormSwitcher/language_load.php
 [MODULES]/CodeMirror_Config/initialize.php                     // changed to initialize_be.php
 [MODULES]/menu_link/upgrade.php
+[MODULES]/menu_link/backend.css          // 1.7.0 cleanup
 [MODULES]/menu_link/functions.pageTree.php
 
 

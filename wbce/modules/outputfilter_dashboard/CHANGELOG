@@ -1,6 +1,22 @@
 
 Header: Version-History
 
+1.6.8   %(Stefek, 25 July 2026)%
+    - Consolidate standalone mod_opf_* modules into core_outputfilters plugin
+
+        Seven standalone opffilter modules (mod_opf_auto_placeholder, mod_opf_csstohead,
+        mod_opf_insert, mod_opf_move_stuff, mod_opf_remove_system_ph, mod_opf_replace_stuff,
+        mod_opf_wblink) are replaced by a single internal OPF Dashboard plugin bundled at
+        outputfilter_dashboard/plugins/core_outputfilters/.
+
+        Three filters are dropped entirely — their functionality is now handled natively by
+        AssetQueue: auto_placeholder (process() finds anchors directly), csstohead (scan()
+        moves all stylesheet links), move_stuff (processMoveBlocks() handles MOVE syntax).
+
+        upgrade.php removes the three obsolete filter rows from the DB, then deletes all seven
+        old module directories and their addons-table entries. install.php is cleaned up.
+
+
 1.6.7   %(Stefek, 25 July 2026)%
     - ensure inline filter funcs re-open PHP context before eval
         ajax_save_filter.php now stores inline code with a leading <?php tag.

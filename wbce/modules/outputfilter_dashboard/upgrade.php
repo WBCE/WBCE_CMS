@@ -180,12 +180,42 @@ for ($i=0; $i<sizeof($aFiltersDB); $i++) {
 	$aFilterNames[] = $aFiltersDB[$i]['name'];
 }
 foreach($aFilters as $old=>$new){
-    // old filter name still in the DB	
-    if(in_array($old,$aFilterNames)){		
+    // old filter name still in the DB
+    if(in_array($old,$aFilterNames)){
         // new filter name already in the DB
-        if(in_array($new,$aFilterNames)){			
+        if(in_array($new,$aFilterNames)){
             // delete the row with old filter name
-            $database->delRow('{TP_OPFD}', 'name', $old);   
-        } 
-    } 
+            $database->delRow('{TP_OPFD}', 'name', $old);
+        }
+    }
+}
+
+// ── WBCE 1.7.0: remove filters made obsolete by AssetQueue ──────────────────
+// auto_placeholder, csstohead, and move_stuff are fully absorbed into
+// AssetQueue::process() (scan + processMoveBlocks). Their DB rows must be
+// deleted before plugin_install.php runs so opf_register_filter() does not
+// find stale entries and leave them active.
+$obsoleteFuncs = [
+    'opff_mod_opf_auto_placeholder',
+    'opff_mod_opf_csstohead',
+    'opff_mod_opf_move_stuff',
+];
+foreach ($obsoleteFuncs as $func) {
+    $database->query("DELETE FROM `{TP}mod_outputfilter_dashboard` WHERE `func` = ?", [$func]);
+}
+
+// ── Remove old standalone mod_opf_* module entries and directories ───────────
+// These filters now live in outputfilter_dashboard/plugins/core_outputfilters/.
+// Remove their addons-table entries so they are not re-registered on the next
+// addon reload, then delete the module directories from disk.
+$removeOpfMods = [
+    'mod_opf_auto_placeholder', 'mod_opf_csstohead', 'mod_opf_insert',
+    'mod_opf_move_stuff', 'mod_opf_remove_system_ph', 'mod_opf_replace_stuff', 'mod_opf_wblink',
+];
+foreach ($removeOpfMods as $mod) {
+    $database->query("DELETE FROM `{TP}addons` WHERE `directory` = ?", [$mod]);
+    $modPath = WB_PATH . '/modules/' . $mod;
+    if (is_dir($modPath)) {
+        opf_io_rmdir($modPath);
+    }
 }
