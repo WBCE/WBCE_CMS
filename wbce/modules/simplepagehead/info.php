@@ -29,8 +29,8 @@ $core = true;
 $module_directory   = 'simplepagehead';
 $module_name        = 'SimplePageHead';
 $module_function    = 'snippet';
-$module_version     = '0.8.4';
-$module_platform    = '1.4.0';
+$module_version     = '0.9.0';
+$module_platform    = '1.7.0';
 $module_author      = '';
 $module_author      = 'Chio, thorn, Christoph Marti, Florian Meerwinck';
 $module_license     = 'GNU General Public License';
@@ -39,6 +39,17 @@ $module_description = 'Snippet to generate better and simpler head tags (title, 
 /**
  * Version history
  * 
+ * 
+ * 0.9.0 
+ * 
+ *         Remove OPF placeholder system, use I::insertMeta()
+ *
+ *          AssetQueue no longer uses <!--(PH)--> markers — it finds </head> and <body>
+ *          anchors directly. Strip all OPF_AUTO_PLACEHOLDER guards and their echo blocks.
+ *          
+ *          Remove the empty <meta name="description"> and <meta name="keywords"> stubs
+ *          that existed only as placeholder targets. Replace the legacy insertMetaTag()
+ *          array calls with the new I::insertMeta($name, $content) shorthand.
  * 
  * 0.8.4 
  *        - set $core var, 

@@ -130,9 +130,6 @@ if (!function_exists('simplepagehead')) {
             $the_keywords = WEBSITE_KEYWORDS;
         }
 
-        if (OPF_AUTO_PLACEHOLDER) {
-            echo "<!--(PH) META HEAD+ -->";
-        }
         echo "\n";
         echo '<meta http-equiv="Content-Type" content="text/html; charset=';
         if (defined('DEFAULT_CHARSET')) {
@@ -145,50 +142,13 @@ if (!function_exists('simplepagehead')) {
         $the_language = strtolower(LANGUAGE);
         echo "<meta name=\"language\" content=\"$the_language\"$endtag>\n";
 
-        if (OPF_AUTO_PLACEHOLDER) {
-            echo "<!--(PH) TITLE+ -->";
-        }
-        echo "<title>$the_title</title>";
-        if (OPF_AUTO_PLACEHOLDER) {
-            echo "<!--(PH) TITLE- -->";
-        }
-        echo "\n";
-        
-        if (OPF_AUTO_PLACEHOLDER) {
-            echo '<!--(PH) META DESC+ -->';
-        }
-        echo '<meta name="description" content=""'."$endtag>";
-        if (OPF_AUTO_PLACEHOLDER) {
-            echo "<!--(PH) META DESC- -->";
-        }
-        echo "\n";
-        if (OPF_AUTO_PLACEHOLDER) {
-            echo '<!--(PH) META KEY+ -->';
-        }
-        echo '<meta name="keywords" content=""'. "$endtag>";
-        if (OPF_AUTO_PLACEHOLDER) {
-            echo "<!--(PH) META KEY- -->";
-        }
-        echo "\n";
+        echo "<title>$the_title</title>\n";
 
-        I::insertMetaTag(array(
-           "setname" => "description",
-           "name"    => "description",
-           "content" => "$the_description"
-        ));
-
-        I::insertMetaTag(array(
-           "setname" => "keywords",
-           "name"    => "keywords",
-           "content" => "$the_keywords"
-        ));
+        I::insertMeta('description', $the_description);
+        I::insertMeta('keywords',    $the_keywords);
 
         if ($favicon == 1) {
             $tp = WB_PATH.'/templates/'.TEMPLATE;
-            $iconInRoot = false;
-            if (OPF_AUTO_PLACEHOLDER) {
-                echo "<!--(PH) FAVICON+ -->";
-            }
             if (file_exists($tp.'/favicon.ico')) {
                 echo '<link rel="shortcut icon" href="'.TEMPLATE_DIR.'/favicon.ico" type="image/x-icon'."\"$endtag>\n";
             } else {
@@ -196,13 +156,7 @@ if (!function_exists('simplepagehead')) {
                     echo '<link rel="shortcut icon" href="'.WB_URL.'/favicon.ico'."\"$endtag>\n";
                 }
             }
-            if (OPF_AUTO_PLACEHOLDER) {
-                echo "<!--(PH) FAVICON- -->";
-            }
 
-            if (OPF_AUTO_PLACEHOLDER) {
-                echo "<!--(PH) APPLE TOUCH+ -->";
-            }
             if (file_exists($tp."/apple-touch-icon.png")) {
                 echo "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"".TEMPLATE_DIR."/apple-touch-icon.png\"$endtag>\n";
             }
@@ -223,9 +177,6 @@ if (!function_exists('simplepagehead')) {
                 echo "	<meta name=\"msapplication-config\" content=\"".TEMPLATE_DIR."/browserconfig.xml\"$endtag>\n";
             }
             echo "	<meta name=\"theme-color\" content=\"".$themeColor."\"$endtag>\n";
-            if (OPF_AUTO_PLACEHOLDER) {
-                echo "<!--(PH) APPLE TOUCH- -->";
-            }
         }
 
         if ($norobotstag == 1) {
@@ -244,15 +195,5 @@ if (!function_exists('simplepagehead')) {
         //    echo '<meta http-equiv="imagetoolbar" content="no"'."$endtag>\n";
         // }
 
-        if ($metaend and OPF_AUTO_PLACEHOLDER) {
-            echo "<!--(PH) META HEAD- -->\n";
-        }
-
-        if (OPF_AUTO_PLACEHOLDER) {
-            echo "<!--(PH) CSS HEAD TOP+ -->\n";
-            echo "<!--(PH) CSS HEAD TOP- -->\n";
-            echo "<!--(PH) JS HEAD TOP+ -->\n";
-            echo "<!--(PH) JS HEAD TOP- -->\n";
-        }
     }
 }
