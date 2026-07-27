@@ -1036,10 +1036,10 @@ if (!function_exists('mime_content_type')) {
  *
  * @param string $source
  * @param string $destination
- * @param int $size
+ * @param int    $size
  * @return  bool
  */
-function make_thumb($source, $destination, $size)
+function make_thumb(string $source, string $destination, int $size): bool
 {
     // Check if GD is installed
     if (extension_loaded('gd') && function_exists('imageCreateFromJpeg')) {
@@ -1047,10 +1047,10 @@ function make_thumb($source, $destination, $size)
         list($original_x, $original_y) = getimagesize($source);
         if ($original_x > $original_y) {
             $thumb_w = $size;
-            $thumb_h = abs($original_y * ($size / $original_x));
+            $thumb_h = intval($original_y * ($size / $original_x));
         }
         if ($original_x < $original_y) {
-            $thumb_w = abs($original_x * ($size / $original_y));
+            $thumb_w = intval($original_x * ($size / $original_y));
             $thumb_h = $size;
         }
         if ($original_x == $original_y) {
@@ -1060,7 +1060,7 @@ function make_thumb($source, $destination, $size)
         // Now make the thumbnail
         $source = imageCreateFromJpeg($source);
         $dst_img = ImageCreateTrueColor(abs($thumb_w), abs($thumb_h));
-        imagecopyresampled($dst_img, $source, 0, 0, 0, 0, abs($thumb_w), abs($thumb_h), abs($original_x), abs($original_y));
+        imagecopyresampled($dst_img, $source, 0, 0, 0, 0, $thumb_w, $thumb_h, $original_x, $original_y);
         imagejpeg($dst_img, $destination);
         
         // Return true
