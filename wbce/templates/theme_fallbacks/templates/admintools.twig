@@ -106,7 +106,11 @@
         data-tool="{{ tool.dir }}"
         >
         <div class="link-card__icon">
-            <i class="{{ tool.icon }}"></i>
+            {% if tool.icon_svg %}
+                {{ tool.icon|raw }}
+            {% else %}
+                <i class="{{ tool.icon }}"></i>
+            {% endif %}
         </div>
         <div class="link-card__content">
             <p class="link-card__title">{{ tool.name }}</p>

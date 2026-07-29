@@ -118,6 +118,9 @@ nav.cp-tabs a.tab-active {
 .link-card__icon {
     color: var(--blue-3);
 }
+.link-card__icon svg {
+    fill: currentColor;
+}
 .link-card__title {
     color: var(--text);
 }

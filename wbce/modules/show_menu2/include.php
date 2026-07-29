@@ -29,6 +29,8 @@ define('SM2_CURRTREE', 0x0400); // bit 10
 define('SM2_SHOWHIDDEN', 0x0800); // bit 11
 define('SM2_XHTML_STRICT', 0x1000); // bit 12
 define('SM2_NO_TITLE', 0x2000); // bit 13
+define('SM2_EXTERNAL_MENULINKS', 0x4000); // bit 14 - resolve external menu_link targets directly (skip the redirect hop)
+define('SM2_USE_ARIA', 0x8000); // bit 15 - populate the [aria] placeholder with aria-current/aria-haspopup/aria-expanded
 define('_SM2_GROUP_1', 0x000F); // exactly one flag from group 1 is required
 // Include default formatter
 include_once("classes/sm2_formatter.php");
@@ -187,15 +189,9 @@ function show_menu2(
             $fields = '*';
         }
 
-        // beforehand fetch the menu-link page ids
-        $qML = "SELECT page_id FROM `{TP}mod_menu_link`";
-        $oML = $database->query($qML);
-        $aML = [];
-        if (is_object($oML) && $oML->numRows() > 0) {
-            while ($ml =$oML->fetchRow(MYSQLI_ASSOC)) {
-                $aML[] = $ml['page_id'];
-            }
-        }
+        // resolve menu_link target URLs once per request (see sm2_formatter.php);
+        // memoized, so repeated show_menu2()/sitemap() calls cost nothing extra
+        $menuLinkData = sm2_get_menulink_data();
 
         // we request all matching rows from the database for the menu that we
         // are about to create it is cheaper for us to get everything we need
@@ -227,7 +223,7 @@ function show_menu2(
                     continue;
                 }
 
-                if (in_array($page['page_id'], $aML)) {
+                if (array_key_exists($page['page_id'], $menuLinkData['ids'])) {
                     $page['sm2_is_menulink'] = true;
                 } else {
                     $page['sm2_is_menulink'] = false;
@@ -506,6 +502,22 @@ function sm2_recurse(
                 $url = WB_URL;
             } else {
                 $url = $wb->page_link($page['link']);
+
+                // menu_link pages: point straight at the resolved target instead
+                // of the accessfile stub, so no redirect hop is needed
+                if (!empty($page['sm2_is_menulink'])) {
+                    $menuLinkData = sm2_get_menulink_data();
+                    if (isset($menuLinkData['none'][$page['page_id']])) {
+                        // structure-only node: not a real link, just groups its children
+                        $url = '#';
+                    } elseif (isset($menuLinkData['internal'][$page['page_id']])) {
+                        $url = $menuLinkData['internal'][$page['page_id']];
+                    } elseif (($aFlags & SM2_EXTERNAL_MENULINKS)
+                        && isset($menuLinkData['external'][$page['page_id']])
+                    ) {
+                        $url = $menuLinkData['external'][$page['page_id']];
+                    }
+                }
             }
 
             // we open the list only when we absolutely need to

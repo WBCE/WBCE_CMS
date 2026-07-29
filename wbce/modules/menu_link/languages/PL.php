@@ -17,4 +17,6 @@ $module_description = 'Ten moduł umożliwia dodanie linku do menu nawigacyjnego
 $MOD_MENU_LINK['TEXT']          = 'Przejdź do strony głównej';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'Link zewnętrzny';
 $MOD_MENU_LINK['INTERNAL_LINK'] = 'Link wewnętrzny';
+$MOD_MENU_LINK['NO_LINK']       = 'Tylko struktura (bez linku)';
+$MOD_MENU_LINK['NO_LINK_HINT']  = 'Tytuł menu jest wyświetlany jako zwykły tekst i nie można go kliknąć. Użyj tego dla pozycji nadrzędnej, która ma jedynie grupować swoje elementy podrzędne.';
 $MOD_MENU_LINK['R_TYPE']        = 'Typ przekierowania';

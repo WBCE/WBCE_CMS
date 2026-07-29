@@ -1510,12 +1510,19 @@ final class AssetQueue
         // Runs on full content so groups in template partials outside <body> are caught.
         $this->processAssetGroups($content);
 
-        // Split at end of opening <body> tag so we only scan the body
+        // Split at end of opening <body> tag so we only scan the body.
+        // Require </head> as well: if it's absent we cannot inject relocated CSS
+        // into the head, and removing the <link> tags without reinserting them
+        // would silently discard the stylesheets.  When the page has no proper
+        // head/body structure (partial HTML, AJAX snippet, admin tool fragment)
+        // we leave all tags exactly where they are.
         $bodyOpen = stripos($content, '<body');
         if ($bodyOpen === false) return;
 
         $bodyTagClose = strpos($content, '>', $bodyOpen);
         if ($bodyTagClose === false) return;
+
+        if (stripos($content, '</head>') === false) return;
 
         $head = substr($content, 0, $bodyTagClose + 1);
         $body = substr($content, $bodyTagClose + 1);
@@ -1911,7 +1918,7 @@ final class AssetQueue
         $insertions = [];
         foreach ($allPositions as $pos) {
             if (empty($this->queue[$pos])) continue;
-            $html = $this->buildHtml($this->queue[$pos]);
+            $html = $this->buildHtml($this->queue[$pos], $pos);
             if ($html !== '') $insertions[$pos] = $html;
         }
 
@@ -1920,10 +1927,21 @@ final class AssetQueue
         // Insert in reverse DOM order so byte offsets remain valid.
         // Positions sharing the same anchor offset (e.g. head_middle / head_late / head_last
         // all sit at </head>) are inserted last-first so the final order is correct.
+        //
+        // Fallback: head positions whose anchor is null (no </head> found) are redirected
+        // to body_top so CSS/JS queued from body-scanner extraction is never silently lost.
+        $bodyTopFallback = $anchors['body_top'] ?? null;
         foreach (array_reverse($allPositions) as $pos) {
             if (empty($insertions[$pos])) continue;
             $anchor = $anchors[$pos] ?? null;
-            if ($anchor === null) continue;
+            if ($anchor === null) {
+                // Only fall back head positions — body positions without anchors are dropped.
+                if (str_starts_with($pos, 'head_') && $bodyTopFallback !== null) {
+                    $anchor = $bodyTopFallback;
+                } else {
+                    continue;
+                }
+            }
             $content = substr_replace($content, $insertions[$pos], $anchor, 0);
         }
     }
@@ -2067,14 +2085,23 @@ final class AssetQueue
      *   2. title tags
      *   3. CSS files (<link>) and inline CSS (<style>) — grouped, always before scripts
      *   4. JS entries in insertion order — <script src> and inline <script> interleaved
-     *   5. raw HTML
+     *   5. raw HTML — before or after the JS group depending on $pos, see below
      *
      * CSS and meta/title are always emitted before scripts (head-semantic correctness).
      * Within the JS group, file references and inline blocks honour the exact order
      * in which they were registered via insertJsFile() / insertJsCode(), so that
      * bootstrapping code can safely precede or follow any file it depends on.
+     *
+     * HTML-vs-JS order is position-dependent, matching the legacy Insert/I class
+     * placeholder scheme modules were built against (framework/Insert.php,
+     * pre-AssetQueue): at "top"/"early"/"middle" positions JS came before HTML,
+     * but at "late"/"last" (BODY BTM-style) positions HTML came before JS — e.g.
+     * a module rendering `<script>var cfg = {...}</script>` via insertHtmlCode()
+     * plus a library via insertJsFile() at 'body_late' relies on its inline config
+     * running before the library, which reads that global synchronously on load.
+     * Reversing this at late positions silently breaks such modules.
      */
-    private function buildHtml(array $entries): string
+    private function buildHtml(array $entries, string $pos = ''): string
     {
         $meta  = '';
         $title = '';
@@ -2138,8 +2165,17 @@ final class AssetQueue
         $out .= $title;
         $out .= $css;
         $out .= $icss !== '' ? "<style>\n{$icss}</style>\n" : '';
-        $out .= $js;
-        $out .= $html;
+
+        // 'late' / 'last' positions (BODY BTM-style): HTML before JS.
+        // All other positions (top/early/middle): JS before HTML.
+        $htmlBeforeJs = str_ends_with($pos, '_late') || str_ends_with($pos, '_last');
+        if ($htmlBeforeJs) {
+            $out .= $html;
+            $out .= $js;
+        } else {
+            $out .= $js;
+            $out .= $html;
+        }
         return $out !== '' ? "\n" . $out : '';
     }
 

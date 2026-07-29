@@ -408,6 +408,35 @@ $aOptions
 					bei [a] oder [ac] formatierten links. Im XHTML-Strikt Modus
                     wird 'title' mit einen &nbsp; ausgegeben.
 
+    SM2_EXTERNAL_MENULINKS
+                    Löst bei einem "menu_link"-Menüpunkt (siehe Modul menu_link)
+                    auch dann direkt die externe Ziel-URL auf, wenn dort "Extern"
+                    als Link-Art gewählt wurde. Ohne dieses Flag führt ein Klick
+                    zunächst über die Accessfile-Seite des Menüpunktes, die dann
+                    per Redirect (301/302) zur externen Adresse weiterleitet - mit
+                    dem Flag steht die externe URL direkt im Menü, ganz ohne
+                    Redirect-Umweg.
+                    Interne "menu_link"-Ziele werden dagegen IMMER automatisch
+                    aufgelöst, unabhängig von diesem Flag - hierfür ist keine
+                    Konstante/Flag mehr nötig.
+                    Ein "menu_link"-Eintrag kann außerdem als reiner
+                    Struktur-Knoten angelegt werden ("Nur Menü-Struktur, kein
+                    Link"): der Menüpunkt erhält dann href="#", ist also nicht
+                    anklickbar, zeigt aber seine Unterpunkte ganz normal an -
+                    nützlich für einen übergeordneten Menüpunkt, der nur zum
+                    Gruppieren seiner Kinder dient.
+
+    SM2_USE_ARIA    Befüllt den [aria]-Platzhalter (und, bei den eingebauten
+                    [a]/[ac] Tags, automatisch mit) mit ARIA-Attributen für
+                    Screenreader und andere assistive Technologien:
+                        aria-current="page"          beim aktuellen Menüpunkt
+                        aria-haspopup="true"          bei Menüpunkten mit Kindern
+                        aria-expanded="true"/"false"  ob die Unterpunkte im
+                                                      aktuellen Aufruf tatsächlich
+                                                      mit ausgegeben werden
+                    Ohne dieses Flag bleibt [aria] leer - keine
+                    Verhaltensänderung gegenüber bisher.
+
     Für diesen Parameter gibt es auch einen erweiterten Modus, bei dem die Optionen
     als assoziatives Array übergeben werden. Näheres dazu im Abschnitt ERWEITERTE
     OPTIONEN. Für die meisten Anwendungsfälle wird dies jedoch NICHT benötigt.
@@ -505,6 +534,13 @@ verwendet werden und sollen durch den entsprechenden Text ersetzt werden.
                 dies ist die gleiche Zahl die im "menu-N" CSS tag verwendet wird.
 [sib]           Anzahl der Geschwister des aktuellen Menüpunktes.
 [sibCount]      Anzahl aller Geschwister in diesem Menü.
+[aria]          ARIA-Attribute für Screenreader, z.B. aria-current="page".
+                Nur befüllt, wenn das SM2_USE_ARIA Flag gesetzt ist (siehe
+                Abschnitt PARAMETER), sonst leer.
+                Bei [a]/[ac] wird es automatisch mit eingefügt; in eigenen,
+                selbst geschriebenen <a>-Tags muss [aria] manuell an der
+                gewünschten Stelle im Tag platziert werden, z.B.:
+                    '<li><a href="[url]" [aria]>[menu_title]</a></li>'
 [if]            Bedingung (Details hierzu im Abschnitt "Bedingte Formatierung')
 
 Folgende tags sind NUR verfügbar, wenn das SM2_ALLINFO Flag gesetzt ist.

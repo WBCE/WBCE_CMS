@@ -47,14 +47,6 @@
 ;
 ; ─────────────────────────────────────────────────────────────────────────────
 ;
-; SM2_CORRECT_MENU_LINKS
-; Makes the navigation and the sitemap (Sitemap module) display the actual
-; target URL for menu-link entries instead of the accessfile link.
-;
-; SM2_CORRECT_MENU_LINKS = true
-;
-; ─────────────────────────────────────────────────────────────────────────────
-;
 ; MENU_LINK_TRANSFORMER
 ; Allows converting normal pages into menu links (and back) via the
 ; "Manage Sections" view in the backend.

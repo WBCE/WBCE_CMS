@@ -47,14 +47,6 @@
 ;
 ; ─────────────────────────────────────────────────────────────────────────────
 ;
-; SM2_CORRECT_MENU_LINKS
-; Zeigt in der Navigation und der Sitemap (Sitemap-Modul) für Menülink-Einträge
-; die tatsächliche Ziel-URL statt des Accessfile-Links an.
-;
-; SM2_CORRECT_MENU_LINKS = true
-;
-; ─────────────────────────────────────────────────────────────────────────────
-;
 ; MENU_LINK_TRANSFORMER
 ; Erlaubt die Umwandlung von normalen Seiten in Menülinks (und zurück) über
 ; die Ansicht "Abschnitte verwalten" im Backend.

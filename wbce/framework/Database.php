@@ -21,12 +21,18 @@
  * 
  * ─────────────────────────────────────────────────────────────────────────────
  * CANONICAL METHOD NAMES (prefere using these in all new code):
- *  
+ *
  *   query()            fetchValue()     fetchAll()
  *   insertRow()        upsertRow()      deleteRow()
  *   fieldExists()      addField()       modifyField()     removeField()
  *   lastInsertId()     hasError()       getError()        setError()
  *   getDriver()        getPDO()         importSql()
+ *
+ * JSON column helpers (driver-transparent MySQL/MariaDB + SQLite so every module 
+ * gets them on the shared $database instance without a second PDO connection):
+ *
+ *   jsonGet()          jsonSet()        jsonArrayContains()  jsonMerge()
+ *   jsonSave()         jsonRead()       castForJson()
  */
 
 defined('TABLE_PREFIX') or die(header('Location: ../index.php', true, 301));
@@ -264,12 +270,37 @@ class Database
 
     // ── Core queries ─────────────────────────────────────────────────────────────────────
 
+    /**
+     * Bind params with type-aware PDO::PARAM_* constants instead of relying on
+     * PDOStatement::execute($params), which binds every value as PARAM_STR under
+     * emulated prepares (PDO_MySQL's default — ATTR_EMULATE_PREPARES is not
+     * disabled in the constructor). MySQL's LIMIT/OFFSET clause rejects quoted
+     * string literals ("LIMIT '5'" is a syntax error, "LIMIT 5" isn't), so any
+     * query binding a LIMIT/OFFSET value as "?" fails unless it's bound as an
+     * actual integer. array_values() guards against non-sequential array keys.
+     */
+    private function bindParams(PDOStatement $stmt, array $params): void
+    {
+        $i = 0;
+        foreach (array_values($params) as $value) {
+            $i++;
+            $type = match (true) {
+                is_int($value)  => PDO::PARAM_INT,
+                is_bool($value) => PDO::PARAM_BOOL,
+                is_null($value) => PDO::PARAM_NULL,
+                default          => PDO::PARAM_STR,
+            };
+            $stmt->bindValue($i, $value, $type);
+        }
+    }
+
     public function query(string $sql, array $params = []): DatabaseResult
     {
         $sql = $this->prep($sql);
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($params);
+            $this->bindParams($stmt, $params);
+            $stmt->execute();
             $this->error = '';
             return new DatabaseResult($stmt);
         } catch (PDOException $e) {
@@ -287,9 +318,10 @@ class Database
         $sql = $this->prep($sql);
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($params);
+            $this->bindParams($stmt, $params);
+            $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_NUM);
-            
+
             // Legacy-Verhalten: null → '' (wie die alte Klasse oft gemacht hat)
             return ($row !== false) ? $row[0] : '';
         } catch (PDOException $e) {
@@ -305,7 +337,8 @@ class Database
         $sql = $this->prep($sql);
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($params);
+            $this->bindParams($stmt, $params);
+            $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             $this->error = $e->getMessage();
@@ -315,13 +348,14 @@ class Database
             return [];
         }
     }
- 
+
     public function fetchRow(string $sql, array $params = []): ?array
     {
         $sql = $this->prep($sql);
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($params);
+            $this->bindParams($stmt, $params);
+            $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             return ($row !== false) ? $row : null;   // hier null ist meistens ok
         } catch (PDOException $e) {
@@ -1077,6 +1111,240 @@ class Database
         }
 
        return substr($this->pdo->quote($value), 1, -1);
+    }
+
+    // ── JSON column helpers ──────────────────────────────────────────────────────────────
+    //
+    // Driver-transparent JSON helpers (MySQL/MariaDB + SQLite). Originally
+    // developed as modules/DynamicFields/DatabaseJson.php (a Database
+    // subclass); merged directly into Database itself so every caller of
+    // the shared $database instance gets them for free — no second PDO
+    // connection, no separately-registered {TP_xxx} prefixes to keep in
+    // sync with a second instance. modules/DynamicFields/DatabaseJson.php
+    // is now a trivial empty subclass kept only for backward compatibility.
+    //
+    // The fragment builders (jsonGet/jsonSet/jsonArrayContains/jsonMerge)
+    // return SQL text to embed in a query — they never execute anything
+    // themselves. jsonSave()/jsonRead() are the high-level, single-row
+    // read/merge-write helpers built on top of them.
+
+    /**
+     * Return a SQL fragment that extracts a scalar value from a JSON column.
+     *
+     * The result is unquoted — suitable for numeric comparisons and ORDER BY.
+     *
+     *   MySQL:  JSON_UNQUOTE(JSON_EXTRACT(`col`, 'path'))
+     *   SQLite: json_extract(col, 'path')
+     *
+     * Example:
+     *   "... WHERE " . $database->jsonGet('xfields', '$.php_min') . " >= ?"
+     *
+     * @param string $column  Column name (will be backtick-quoted)
+     * @param string $path    JSONPath expression, e.g. '$.php_min'
+     * @return string         SQL fragment
+     */
+    public function jsonGet(string $column, string $path): string
+    {
+        $col = "`$column`";
+
+        return match($this->driver) {
+            'sqlite' => "json_extract($col, '$path')",
+            default  => "JSON_UNQUOTE(JSON_EXTRACT($col, '$path'))",
+        };
+    }
+
+    /**
+     * Return a SQL fragment that sets a single path inside a JSON column.
+     *
+     * Use in UPDATE ... SET col = jsonSet(...) for targeted path updates.
+     * For saving all fields at once use jsonSave() instead.
+     *
+     *   MySQL:  JSON_SET(`col`, 'path', CAST(? AS JSON))
+     *   SQLite: json_set(col, 'path', ?)
+     *
+     * The caller must bind the value as a query parameter (?).
+     *
+     * @param string $column  Column name
+     * @param string $path    JSONPath expression, e.g. '$.php_min'
+     * @return string         SQL fragment (contains one ? placeholder for the value)
+     */
+    public function jsonSet(string $column, string $path): string
+    {
+        $col = "`$column`";
+
+        return match($this->driver) {
+            'sqlite' => "json_set($col, '$path', ?)",
+            default  => "JSON_SET($col, '$path', CAST(? AS JSON))",
+        };
+    }
+
+    /**
+     * Return a SQL fragment that tests whether a JSON array contains a value.
+     *
+     * The value is embedded as a JSON-encoded literal — not as a bound parameter,
+     * because JSON_CONTAINS / json_each require a literal for the search value.
+     * The value is therefore sanitized via json_encode().
+     *
+     *   MySQL:  JSON_CONTAINS(`col`->'path', '"value"')
+     *   SQLite: EXISTS(SELECT 1 FROM json_each(json_extract(col,'path'))
+     *                  WHERE value = 'value')
+     *
+     * @param string $column  Column name
+     * @param string $path    JSONPath to the array, e.g. '$.types'
+     * @param string $value   Scalar value to search for
+     * @return string         SQL fragment (no additional ? placeholder)
+     */
+    public function jsonArrayContains(string $column, string $path, string $value): string
+    {
+        $col     = "`$column`";
+        $safeVal = json_encode($value);   // adds surrounding quotes, escapes chars
+
+        return match($this->driver) {
+            'sqlite' =>
+                "EXISTS(SELECT 1 FROM json_each(json_extract($col, '$path'))" .
+                " WHERE value = " . json_encode($value, JSON_UNESCAPED_UNICODE) . ")",
+            default  =>
+                "JSON_CONTAINS($col->'$path', $safeVal)",
+        };
+    }
+
+    /**
+     * Return a SQL fragment that merges a JSON object into a JSON column.
+     *
+     * JSON_MERGE_PATCH / json_patch replaces top-level keys from the new object
+     * while preserving any keys that are not mentioned.
+     *
+     * The caller must bind the JSON string as a ? parameter.
+     *
+     *   MySQL:  JSON_MERGE_PATCH(`col`, ?)
+     *   SQLite: json_patch(col, ?)
+     *
+     * Prefer jsonSave() for the common save-all-fields use case.
+     *
+     * @param string $column  Column name
+     * @return string         SQL fragment (one ? placeholder for the JSON string)
+     */
+    public function jsonMerge(string $column): string
+    {
+        $col = "`$column`";
+
+        return match($this->driver) {
+            'sqlite' => "json_patch($col, ?)",
+            default  => "JSON_MERGE_PATCH($col, ?)",
+        };
+    }
+
+    /**
+     * Save a set of field values into the JSON column of a single row.
+     *
+     * Merges $fields into the existing JSON object — keys present in $fields
+     * are updated or added; keys not mentioned are left untouched.
+     * Pass null for a key's value to remove it from the JSON object.
+     *
+     * Automatically casts values using castForJson() so the JSON column stores
+     * proper typed values (numbers as numbers, booleans as booleans).
+     *
+     * Example:
+     *   $database->jsonSave('{TP_FORUM}extensions', 'config', 'id', $extId, [
+     *       'max_reactions_per_post' => 5,
+     *       'allowed_emoji'          => ['+1', 'heart'],
+     *   ]);
+     *
+     * @param string     $table    Table name (supports {TP}/custom prefixes)
+     * @param string     $column   JSON column name
+     * @param string     $pkCol    Primary key column name
+     * @param int|string $pkValue  Primary key value
+     * @param array      $fields   Associative array of field name → value
+     * @param array      $schema   Optional field schema for type casting
+     *                             ['fieldName' => ['type' => 'number', ...], ...]
+     * @return bool                true on success
+     */
+    public function jsonSave(
+        string     $table,
+        string     $column,
+        string     $pkCol,
+        int|string $pkValue,
+        array      $fields,
+        array      $schema = []
+    ): bool {
+        if (empty($fields)) return true;
+
+        // Cast each value according to its field type
+        $casted = [];
+        foreach ($fields as $key => $value) {
+            $type         = $schema[$key]['type'] ?? null;
+            $casted[$key] = $this->castForJson($value, $type);
+        }
+
+        $sql = "UPDATE `" . $this->prep($table) . "`
+                SET `$column` = " . $this->jsonMerge($column) . "
+                WHERE `$pkCol` = ?";
+
+        $this->query($sql, [json_encode($casted, JSON_UNESCAPED_UNICODE), $pkValue]);
+
+        return !$this->hasError();
+    }
+
+    /**
+     * Read all field values from the JSON column of a single row.
+     *
+     * Returns the decoded JSON object as an associative array, or an empty
+     * array if the row does not exist or the column is NULL.
+     *
+     * Example:
+     *   $fields = $database->jsonRead('{TP_FORUM}extensions', 'config', 'id', $extId);
+     *
+     * @param string     $table   Table name
+     * @param string     $column  JSON column name
+     * @param string     $pkCol   Primary key column
+     * @param int|string $pkValue Primary key value
+     * @return array              Decoded field values (empty array if not found)
+     */
+    public function jsonRead(
+        string     $table,
+        string     $column,
+        string     $pkCol,
+        int|string $pkValue
+    ): array {
+        $raw = $this->fetchValue(
+            "SELECT `$column` FROM `" . $this->prep($table) . "` WHERE `$pkCol` = ?",
+            [$pkValue]
+        );
+
+        if (empty($raw)) return [];
+
+        $decoded = json_decode($raw, true);
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    /**
+     * Cast a value to the appropriate PHP type for JSON storage.
+     *
+     * Without schema info the value is returned as-is (json_encode handles it).
+     * With a field type the value is cast so the JSON column stores proper types:
+     *   number     → float
+     *   int        → int
+     *   bool/check → bool
+     *   array      → array (json_decode if string)
+     *   everything else → string (trimmed)
+     *
+     * @param mixed       $value      Raw value (typically from $_POST)
+     * @param string|null $fieldType  Field type string from schema, or null
+     * @return mixed                  Cast value ready for json_encode()
+     */
+    public function castForJson(mixed $value, ?string $fieldType): mixed
+    {
+        if ($value === null || $value === '') return null;
+
+        return match($fieldType) {
+            'number', 'price'       => (float) $value,
+            'int'                   => (int)   $value,
+            'checkbox', 'bool'      => (bool)  $value,
+            'multiselect', 'array'  => is_array($value)
+                                        ? $value
+                                        : (json_decode($value, true) ?? []),
+            default                 => is_string($value) ? trim($value) : $value,
+        };
     }
 }
 

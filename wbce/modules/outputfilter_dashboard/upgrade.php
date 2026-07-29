@@ -9,8 +9,8 @@ upgrade.php
  * @category        tool
  * @package         Outputfilter Dashboard
  * @version         1.6.3
- * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (https://www.wbEasy.de), Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (https://www.wbEasy.de), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -180,12 +180,42 @@ for ($i=0; $i<sizeof($aFiltersDB); $i++) {
 	$aFilterNames[] = $aFiltersDB[$i]['name'];
 }
 foreach($aFilters as $old=>$new){
-    // old filter name still in the DB	
-    if(in_array($old,$aFilterNames)){		
+    // old filter name still in the DB
+    if(in_array($old,$aFilterNames)){
         // new filter name already in the DB
-        if(in_array($new,$aFilterNames)){			
+        if(in_array($new,$aFilterNames)){
             // delete the row with old filter name
-            $database->delRow('{TP_OPFD}', 'name', $old);   
-        } 
-    } 
+            $database->delRow('{TP_OPFD}', 'name', $old);
+        }
+    }
+}
+
+// ── WBCE 1.7.0: remove filters made obsolete by AssetQueue ──────────────────
+// auto_placeholder, csstohead, and move_stuff are fully absorbed into
+// AssetQueue::process() (scan + processMoveBlocks). Their DB rows must be
+// deleted before plugin_install.php runs so opf_register_filter() does not
+// find stale entries and leave them active.
+$obsoleteFuncs = [
+    'opff_mod_opf_auto_placeholder',
+    'opff_mod_opf_csstohead',
+    'opff_mod_opf_move_stuff',
+];
+foreach ($obsoleteFuncs as $func) {
+    $database->query("DELETE FROM `{TP}mod_outputfilter_dashboard` WHERE `funcname` = ?", [$func]);
+}
+
+// ── Remove old standalone mod_opf_* module entries and directories ───────────
+// These filters now live in outputfilter_dashboard/plugins/core_outputfilters/.
+// Remove their addons-table entries so they are not re-registered on the next
+// addon reload, then delete the module directories from disk.
+$removeOpfMods = [
+    'mod_opf_auto_placeholder', 'mod_opf_csstohead', 'mod_opf_insert',
+    'mod_opf_move_stuff', 'mod_opf_remove_system_ph', 'mod_opf_replace_stuff', 'mod_opf_wblink',
+];
+foreach ($removeOpfMods as $mod) {
+    $database->query("DELETE FROM `{TP}addons` WHERE `directory` = ?", [$mod]);
+    $modPath = WB_PATH . '/modules/' . $mod;
+    if (is_dir($modPath)) {
+        opf_io_rmdir($modPath);
+    }
 }

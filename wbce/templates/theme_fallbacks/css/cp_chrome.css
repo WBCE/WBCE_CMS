@@ -227,6 +227,11 @@ nav.cp-tabs a {
     width: 2.2rem;
     text-align: center;
 }
+.link-card__icon svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
 .link-card__content { min-width: 0; }
 .link-card__title {
     font-weight: 600;

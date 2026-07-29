@@ -1670,6 +1670,11 @@ form.advanced-options {
     align-items: center;
     justify-content: center;
 }
+.link-card__icon svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
 .link-card__content {
     padding: 0 18px;
     border-left: 1px solid #babfc86b;

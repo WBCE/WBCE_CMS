@@ -48,14 +48,6 @@
 ;
 ; ─────────────────────────────────────────────────────────────────────────────
 ;
-; SM2_CORRECT_MENU_LINKS
-; Toont in de navigatie en sitemap (Sitemap-module) voor menu-linkvermeldingen
-; de werkelijke doel-URL in plaats van de accessfile-link.
-;
-; SM2_CORRECT_MENU_LINKS = true
-;
-; ─────────────────────────────────────────────────────────────────────────────
-;
 ; MENU_LINK_TRANSFORMER
 ; Maakt het mogelijk gewone pagina's om te zetten naar menulinks (en terug)
 ; via de weergave "Secties beheren" in de beheerdersomgeving.
