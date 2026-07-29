@@ -410,7 +410,10 @@ foreach ($newDbFields as [$table, $field, $def]) {
         $fldAdd++;
     }
 }
-// `{TP}pages`.`slug` — separate from $newDbFields because it needs its own index
+// `{TP}pages`.`slug` — not in use yet (planned for future slug-based routing).
+// No unique index for now: existing dumps from before this column existed
+// commonly have `slug` back-filled as '' rather than NULL, which a UNIQUE
+// constraint rejects on reimport for any second such row.
 if (!$database->fieldExists('{TP}pages', 'slug')) {
     $database->addField('{TP}pages', 'slug', "VARCHAR(255) NULL DEFAULT NULL AFTER `link`");
     // addField() strips AFTER automatically for SQLite
@@ -418,11 +421,6 @@ if (!$database->fieldExists('{TP}pages', 'slug')) {
         log_warn('`slug` in `{TP}pages`: ' . $database->getError());
     } else {
         log_ok('`slug` added to `{TP}pages`');
-        // Unique index — idempotent on MySQL 8+, MariaDB 10.1.4+, SQLite
-        $database->query("CREATE UNIQUE INDEX IF NOT EXISTS `uniq_slug` ON `{TP}pages` (`slug`)");
-        if ($database->hasError()) {
-            log_warn('Index `uniq_slug` on `{TP}pages`: ' . $database->getError());
-        } 
     }
 } else {
     log_info('`{TP}pages`.`slug` already exists — skipped');
