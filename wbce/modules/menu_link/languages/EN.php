@@ -17,4 +17,6 @@ $module_description = 'This module allows you to insert a link into the menu.';
 $MOD_MENU_LINK['TEXT'] = 'Click HERE to go to the main page';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'External Link';
 $MOD_MENU_LINK['INTERNAL_LINK'] = 'Internal Link';
+$MOD_MENU_LINK['NO_LINK'] = 'Structure Only (no link)';
+$MOD_MENU_LINK['NO_LINK_HINT'] = 'The menu title is shown as plain text and cannot be clicked. Use this for a parent item that only exists to group its children in the menu.';
 $MOD_MENU_LINK['R_TYPE'] = 'Redirect-Type';

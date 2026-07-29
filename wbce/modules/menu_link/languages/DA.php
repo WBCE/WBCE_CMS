@@ -16,4 +16,6 @@ $module_description = 'This module allows you to insert a link into the menu.';
 // Headings and text outputs
 $MOD_MENU_LINK['TEXT'] = 'Klik HER for at f&Atilde;&yen; til hovedsiden';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'Eksternt link';
+$MOD_MENU_LINK['NO_LINK'] = 'Kun struktur (intet link)';
+$MOD_MENU_LINK['NO_LINK_HINT'] = 'Menutitlen vises som almindelig tekst og kan ikke klikkes. Bruges til et overordnet punkt, der kun findes for at gruppere sine underpunkter.';
 $MOD_MENU_LINK['R_TYPE'] = 'Redirect-type';

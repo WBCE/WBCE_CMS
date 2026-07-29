@@ -33,13 +33,11 @@ class SM2_Formatter
     public $sibCount;
     public $currClass;
     public $prettyLevel;
+    public $ariaAttr = '';
 
     // output the data
     public function output($aString)
     {
-        if (defined('SM2_CORRECT_MENU_LINKS') && SM2_CORRECT_MENU_LINKS == true && stristr($aString, 'sm2-is-menulink')) {
-            $aString = sm2_correct_menu_links($aString);
-        }
         if ($this->flags & SM2_BUFFER) {
             $this->output .= $aString;
         } else {
@@ -150,6 +148,11 @@ class SM2_Formatter
             $this->topItemOpen = false;
         }
 
+        // build the [aria] attribute string fresh for this render - never write
+        // it onto $aPage itself, which is a reference into the cached menu tree
+        // shared across repeated show_menu2() calls in the same request
+        $this->ariaAttr = ($this->flags & SM2_USE_ARIA) ? sm2_build_aria_attr($aPage) : '';
+
         // replace all keywords in the output
         if ($this->flags & SM2_PRETTY) {
             $this->output("\n".str_repeat(' ', $this->prettyLevel));
@@ -218,6 +221,7 @@ class SM2_Formatter
                 $retval .= ' target="'.$this->page['target'].'"';
                 $retval .= ($this->flags & SM2_NO_TITLE) ? '' : ' title="'.$this->page['tooltip'].'"';
             }
+            $retval .= ($this->ariaAttr !== '') ? ' '.$this->ariaAttr : '';
             $retval .= '>';
             break;
         case '/a':
@@ -238,6 +242,8 @@ class SM2_Formatter
             $retval = $this->sibCount; break;
         case 'class':
             $retval = $this->currClass; break;
+        case 'aria':
+            $retval = $this->ariaAttr; break;
         default:
             // Simply look if there is a matching element in the array
             if (array_key_exists($aMatch, $this->page)) {
@@ -405,54 +411,124 @@ class SM2_Formatter
 }
 
 /**
- * sm2_correct_menu_links()
+ * sm2_build_aria_attr()
  * ======================================================================
+ * Builds the ARIA attribute string for a single menu item, for use with
+ * the [aria] placeholder (SM2_USE_ARIA flag). Only called per-render from
+ * SM2_Formatter::startItem() - never written onto $aPage itself, since
+ * that array is a reference into the cached, request-wide menu tree.
  *
- * @author  Christian M. Stefan <stefek@designthings.de>
- * @license GNU/GPL v.2 or any later
+ * @param  array  $aPage  the page data array (as built by show_menu2())
+ * @return string         space-separated aria-* attributes, or '' if none apply
  * ----------------------------------------------------------------------
- *
- * @param  string  $sMenu  the prepopulated menu string
- * @return string          the menu string with correctly replaced URLs
- * ----------------------------------------------------------------------
- *
  */
-function sm2_correct_menu_links($sMenu)
+function sm2_build_aria_attr(array $aPage)
 {
-    if (defined('SM2_CORRECT_MENU_LINKS') && true) {
-        global $database;
+    $attrs = [];
 
-        $aMenuLinks = array();
-        $rMenuLinks = $database->query("SELECT * FROM `{TP}mod_menu_link`");
-        $i = 0;
-        if ($rMenuLinks->numRows() > 0) {
-            while ($row = $rMenuLinks->fetchRow(MYSQLI_ASSOC)) {
-                //$aMenuLinks[$i] = $row;
-                if (!empty($row['target_page_id'])) {
-                    $aMenuLinks[$i]['replace_url'] = get_page_link($row['target_page_id']).''.PAGE_EXTENSION;
-                    if (!empty($row['anchor'])) {
-                        $aMenuLinks[$i]['replace_url'] .= '#'.str_replace('#', '', $row['anchor']);
-                    }
-                    $aMenuLinks[$i]['replace_url'] = WB_URL.PAGES_DIRECTORY.$aMenuLinks[$i]['replace_url'];
-                }
-                if (!empty($row['extern'])) {
-                    $sTargetUrl = str_replace('[WB_URL]', WB_URL, $row['extern']);
-                    $aMenuLinks[$i]['replace_url'] = $sTargetUrl;
-                }
-                if (isset($aMenuLinks[$i]['replace_url'])) {
-                    $aMenuLinks[$i]['pagetree_url'] = $database->get_one("SELECT `link` FROM `{TP}pages` WHERE `page_id` = ".$row['page_id']);
-                    $aMenuLinks[$i]['pagetree_url'] = WB_URL.PAGES_DIRECTORY.$aMenuLinks[$i]['pagetree_url'].PAGE_EXTENSION;
-                }
-                $i++;
-            }
-        }
-        if (!empty($aMenuLinks)) {
-            $aReplacements = array();
-            foreach ($aMenuLinks as $k => $link) {
-                $aReplacements[$link['pagetree_url']] = $link['replace_url'];
-            }
-            $sMenu = strtr($sMenu, $aReplacements);
+    if (array_key_exists('sm2_is_curr', $aPage)) {
+        $attrs[] = 'aria-current="page"';
+    }
+
+    if (array_key_exists('sm2_has_child', $aPage)) {
+        $attrs[] = 'aria-haspopup="true"';
+        $attrs[] = 'aria-expanded="'.(array_key_exists('sm2_on_curr_path', $aPage) ? 'true' : 'false').'"';
+    }
+
+    return implode(' ', $attrs);
+}
+
+/**
+ * sm2_get_menulink_data()
+ * ======================================================================
+ * Resolves every {TP}mod_menu_link row to its final target URL, once per
+ * request (memoized). Used by show_menu2() and the sitemap module so
+ * menu_link entries can link straight to their target instead of the
+ * accessfile stub that would otherwise redirect there.
+ *
+ * Rows with redirect_type=200 are intentionally left unresolved: that mode
+ * serves the target page's content AT the menu_link page's own URL, so the
+ * stub's own link must stay intact.
+ *
+ * @return array{ids: array<int,true>, internal: array<int,string>, external: array<int,string>}
+ *         ids      - every page_id that is a menu_link entry (for the sm2-is-menulink CSS class)
+ *         none     - page_id => true, for "structure only" entries (target_page_id = -2):
+ *                     no page, no redirect, just a menu_title acting as a parent for its children
+ *         internal - page_id => resolved URL, for entries pointing at an internal page
+ *         external - page_id => resolved URL, for entries pointing at an external URL
+ * ----------------------------------------------------------------------
+ */
+function sm2_get_menulink_data()
+{
+    static $data = null;
+    if ($data !== null) {
+        return $data;
+    }
+
+    global $database, $wb;
+
+    $data = ['ids' => [], 'none' => [], 'internal' => [], 'external' => []];
+
+    $rows = $database->fetchAll(
+        'SELECT `page_id`, `target_page_id`, `redirect_type`, `anchor`, `extern` FROM `{TP}mod_menu_link`'
+    );
+    if (!$rows) {
+        return $data;
+    }
+
+    // gather every internal target page id so it can be resolved in ONE query
+    $targetIds = [];
+    foreach ($rows as $row) {
+        $data['ids'][(int)$row['page_id']] = true;
+        if ((int)$row['target_page_id'] > 0) {
+            $targetIds[(int)$row['target_page_id']] = true;
         }
     }
-    return $sMenu;
+
+    $targetLinks = [];
+    if ($targetIds) {
+        $ids = array_keys($targetIds);
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $targetRows = $database->fetchAll(
+            "SELECT `page_id`, `link` FROM `{TP}pages` WHERE `page_id` IN ($placeholders)",
+            $ids
+        );
+        $targetLinks = array_column($targetRows, 'link', 'page_id');
+    }
+
+    foreach ($rows as $row) {
+        $pageId       = (int)$row['page_id'];
+        $targetPageId = (int)$row['target_page_id'];
+
+        if ($targetPageId === -2) {
+            // structure-only node: no link, no redirect, children still show
+            $data['none'][$pageId] = true;
+            continue;
+        }
+
+        if ((int)$row['redirect_type'] === 200) {
+            continue; // served in-place, keep the menu_link page's own URL
+        }
+
+        if ($targetPageId === -1) {
+            // external target
+            if ($row['extern'] === '') {
+                continue;
+            }
+            $url = str_replace('[WB_URL]', WB_URL, $row['extern']);
+            // convert [wblinkXX] (optionally followed by #anchor) into a proper page URL
+            if (preg_match('/\[wblink(\d+)\](#\S*)?/', $url, $m)) {
+                $url = $wb->page_link((int)$m[1]).($m[2] ?? '');
+            }
+            $data['external'][$pageId] = $url;
+        } elseif ($targetPageId > 0 && isset($targetLinks[$targetPageId])) {
+            $url = $wb->page_link($targetLinks[$targetPageId]);
+            if (!empty($row['anchor']) && $row['anchor'] !== '0') {
+                $url .= '#'.str_replace('#', '', $row['anchor']);
+            }
+            $data['internal'][$pageId] = $url;
+        }
+    }
+
+    return $data;
 }

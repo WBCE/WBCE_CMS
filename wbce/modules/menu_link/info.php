@@ -14,7 +14,7 @@ $core = true;
 $module_directory   = 'menu_link';
 $module_name        = 'Menu Link';
 $module_function    = 'page';
-$module_version     = '3.0.1';
+$module_version     = '3.0.2';
 $module_platform    = '1.7.0';
 $module_author      = 'Ryan Djurovich, thorn, Christian M. Stefan';
 $module_license     = 'GNU General Public License';
@@ -23,6 +23,20 @@ $module_icon        = 'fa fa-sitemap';
 
 /**
  * Version history
+ * 
+ * 3.0.2  
+ *        - new third link type "Structure Only (no link)" (target_page_id=-2):
+ *          renders href="#", not clickable, children still shown - for parent
+ *          items that exist only to group their children in the menu
+ *        - add.php: newly created menu_link pages now default to this
+ *          structure-only state instead of an unconfigured, dead-clicking
+ *          accessfile stub
+ *        - fix modify.twig link-type toggle: .trigger('change') was firing the
+ *          handler for every radio in the group (not just the checked one),
+ *          so the UI always ended up reflecting whichever option was last in
+ *          the DOM instead of the actual selection
+ *        - new NO_LINK / NO_LINK_HINT language strings (DE/EN carefully
+ *          translated, DA/FR/NL/NO/PL/RU best-effort)
  * 
  * 3.0.1  
  *        - set $core var, 

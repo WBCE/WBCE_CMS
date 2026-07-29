@@ -365,7 +365,37 @@ $aOptions
 	SM2_NO_TITLE	Supress the value of the 'title'-attributes on links which
 					are created by [a] or [ac] formatted links.
 
-    This parameter also has an extended mode where an associative array of 
+    SM2_EXTERNAL_MENULINKS
+                    For a "menu_link" menu item (see the menu_link module),
+                    resolve the external target URL directly, when that item
+                    was configured with "External" as its link type. Without
+                    this flag, clicking the item first goes through the
+                    menu_link page's accessfile stub, which then redirects
+                    (301/302) to the external address - with the flag, the
+                    external URL is placed directly in the menu, no redirect
+                    hop needed.
+                    Internal "menu_link" targets are ALWAYS resolved
+                    automatically regardless of this flag - no constant/flag
+                    is needed for that case.
+                    A "menu_link" entry can also be configured as a pure
+                    structure node ("Structure Only, no link"): the item then
+                    gets href="#", so it isn't clickable, but its children are
+                    still shown normally - useful for a parent item that only
+                    exists to group its children.
+
+    SM2_USE_ARIA    Populates the [aria] placeholder (and, for the built-in
+                    [a]/[ac] tags, automatically inserts it) with ARIA
+                    attributes for screen readers and other assistive
+                    technology:
+                        aria-current="page"          on the current menu item
+                        aria-haspopup="true"         on items that have children
+                        aria-expanded="true"/"false" whether the children are
+                                                      actually rendered in this
+                                                      particular call
+                    Without this flag, [aria] stays empty - no behaviour
+                    change from before.
+
+    This parameter also has an extended mode where an associative array of
     options is supplied. See the EXTENDED OPTIONS section for details. 
     Most users will NOT need to use this.
 
@@ -453,6 +483,12 @@ $aMenuOpen and will be replaced with the appropriate text.
 [level]         Page level, the same number as is used for the "menu-N" CSS tag.
 [sib]           Current menu sibling number
 [sibCount]      Total number of siblings in this menu
+[aria]          ARIA attributes for screen readers, e.g. aria-current="page".
+                Only populated when the SM2_USE_ARIA flag is used (see the
+                PARAMETERS section), otherwise empty.
+                Automatically inserted for [a]/[ac]; in your own hand-written
+                <a> tags, place [aria] manually wherever it should go, e.g.:
+                    '<li><a href="[url]" [aria]>[menu_title]</a></li>'
 [if]            Conditional test (see section CONDITIONAL FORMATTING)
 
 The following tags are only available when the SM2_ALLINFO flag is used.

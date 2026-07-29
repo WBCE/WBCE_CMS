@@ -18,4 +18,6 @@ $module_description = 'Dieses Modul erm&ouml;glicht die Anzeige eines Links im S
 $MOD_MENU_LINK['TEXT'] = 'Klicken Sie HIER um zur Startseite zu gelangen';
 $MOD_MENU_LINK['EXTERNAL_LINK'] = 'Entfernte Adresse';
 $MOD_MENU_LINK['INTERNAL_LINK'] = 'Interner Link';
+$MOD_MENU_LINK['NO_LINK'] = 'Nur Menü-Struktur (kein Link)';
+$MOD_MENU_LINK['NO_LINK_HINT'] = 'Der Menü-Titel wird als reiner Text angezeigt und ist nicht klickbar. Nutze das für einen übergeordneten Menüpunkt, der nur seine Kinder gruppieren soll.';
 $MOD_MENU_LINK['R_TYPE'] = 'Redirect-Typ';

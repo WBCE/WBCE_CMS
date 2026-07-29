@@ -34,13 +34,22 @@ if (isset($_POST['menu_link'])) {
     );
     $database->upsertRow('{TP}pages', 'page_id', $aUpdatePageTable);
     
-    // update {TP}mod_menu_link table 
+    // determine the target: '-1' external, '-2' structure-only (no link), else an internal page id
+    if ($_POST['linktype'] == 'ext') {
+        $targetPageId = -1;
+    } elseif ($_POST['linktype'] == 'none') {
+        $targetPageId = -2;
+    } else {
+        $targetPageId = intval($admin->get_post('menu_link'));
+    }
+
+    // update {TP}mod_menu_link table
     $aUpdateModTable = array(
         'page_id'        => $page_id,
         'section_id'     => $section_id,
-        'target_page_id' => ($_POST['linktype'] == 'ext') ? '-1' : intval($admin->get_post('menu_link')),
+        'target_page_id' => $targetPageId,
         'redirect_type'  => $admin->get_post('r_type'),
-        'anchor'         => $admin->get_post('anchor'),
+        'anchor'         => $_POST['linktype'] == 'int' ? $admin->get_post('anchor') : '0',
         'extern'         => isset($_POST['extern']) && $_POST['linktype'] == 'ext' ? $admin->get_post('extern') : '',
     );
     $database->upsertRow('{TP}mod_menu_link', 'section_id', $aUpdateModTable);

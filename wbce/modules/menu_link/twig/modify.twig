@@ -36,9 +36,13 @@
                                    id="external_link" {{ aData.target_page_id == '-1' ? 'checked' : '' }}>
                             <label for="external_link">{{ L_('MOD_MENU_LINK:EXTERNAL_LINK') }}</label>
                             <input type="radio" class="switch-radio" name="linktype" value="int"
-                                   id="internal_link" {{ aData.target_page_id != '-1' ? 'checked' : '' }}>
+                                   id="internal_link" {{ aData.target_page_id != '-1' and aData.target_page_id != '-2' ? 'checked' : '' }}>
                             <label for="internal_link">{{ L_('MOD_MENU_LINK:INTERNAL_LINK') }}</label>
+                            <input type="radio" class="switch-radio" name="linktype" value="none"
+                                   id="no_link" {{ aData.target_page_id == '-2' ? 'checked' : '' }}>
+                            <label for="no_link">{{ L_('MOD_MENU_LINK:NO_LINK') }}</label>
                         </div>
+                        <p class="cp-hint" id="no_link_hint">{{ L_('MOD_MENU_LINK:NO_LINK_HINT') }}</p>
                     </div>
                 </div>
 
@@ -92,7 +96,7 @@
                 </div>
 
                 {# ── Target ───────────────────────────────────────────────── #}
-                <div class="cp-setting-row">
+                <div class="cp-setting-row" id="target_row">
                     <div class="cp-setting-name">{{ L_('TEXT:TARGET') }}</div>
                     <div class="cp-setting-value">
                         <select id="sel_target" name="target">
@@ -105,7 +109,7 @@
                 </div>
 
                 {# ── Redirect type ────────────────────────────────────────── #}
-                <div class="cp-setting-row">
+                <div class="cp-setting-row" id="r_type_row">
                     <div class="cp-setting-name">{{ L_('MOD_MENU_LINK:R_TYPE') }}</div>
                     <div class="cp-setting-value">
                         <select id="sel_r_type" name="r_type">
@@ -164,23 +168,42 @@ $(function () {
 
     $('#menu_link').trigger('change');
 
-    $('#page_link_selection').hide();
-    $('#sec_anchor').hide();
-    $('#external').hide();
-
-    $('input[name="linktype"]').on('change', function () {
-        if ($(this).val() === 'int') {
+    function applyLinktype(val) {
+        if (val === 'int') {
             $('#page_link_selection').show();
             $('#sec_anchor').show();
             $('#external').hide();
+            $('#no_link_hint').hide();
+            $('#target_row').show();
+            $('#r_type_row').show();
             $('#extern').prop('disabled', false);
-        } else {
+        } else if (val === 'ext') {
             $('#page_link_selection').hide();
             $('#sec_anchor').hide();
             $('#external').show();
+            $('#no_link_hint').hide();
+            $('#target_row').show();
+            $('#r_type_row').show();
             $('#extern').prop('disabled', false);
+        } else {
+            // 'none' - structure only, no target of any kind: nothing else applies
+            $('#page_link_selection').hide();
+            $('#sec_anchor').hide();
+            $('#external').hide();
+            $('#no_link_hint').show();
+            $('#target_row').hide();
+            $('#r_type_row').hide();
+            $('#extern').prop('disabled', true);
         }
-    }).trigger('change');
+    }
+
+    $('input[name="linktype"]').on('change', function () {
+        applyLinktype($(this).val());
+    });
+    // apply once on load, based on whichever radio is actually checked
+    // (NOT .trigger('change') on the whole collection - that would fire
+    // the handler for every radio in DOM order, not just the checked one)
+    applyLinktype($('input[name="linktype"]:checked').val());
 
 });
 </script>
