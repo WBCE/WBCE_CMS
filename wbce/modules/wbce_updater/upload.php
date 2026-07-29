@@ -6,7 +6,7 @@
  *
  * @category    module
  * @package     wbce_updater
- * @version     1.0.1
+ * @version     1.0.2
  * @author      WBCE Community
  * @copyright   2026 WBCE Community
  * @license     MIT License
@@ -34,9 +34,14 @@ require $lang;
 // Security check: Admin only
 $admin = new admin('Admintools', 'admintools', false, false);
 
+if (!empty($wbce_updater_disabled)) {
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
+    exit;
+}
+
 // FTAN Check
 if (!$admin->checkFTAN()) {
-    $admin->print_error($LANG['ERROR_FTAN']);
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
@@ -49,16 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Get POST parameters
 $backup_confirmed = isset($_POST['backup_confirmed_upload']) && $_POST['backup_confirmed_upload'] === '1';
 $enable_maintenance = isset($_POST['enable_maintenance_upload']) && $_POST['enable_maintenance_upload'] === '1';
+$target_version = trim($_POST['target_version_upload'] ?? '');
+if (!empty($target_version) && !preg_match('/^v?\d+\.\d+(\.\d+)?$/i', $target_version)) {
+    $target_version = ''; // Ungültiges Format ignorieren
+}
 
 // Validate backup confirmation
 if (!$backup_confirmed) {
-    $admin->print_error($LANG['ERROR_BACKUP_NOT_CONFIRMED']);
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
 // Check write permissions
 if (!is_writable(WB_PATH)) {
-    $admin->print_error($LANG['ERROR_NO_WRITE_PERMISSION']);
+    header('Location: ' . ADMIN_URL . '/admintools/tool.php?tool=wbce_updater');
     exit;
 }
 
@@ -107,7 +116,7 @@ try {
     // Security: Validate file extension
     $file_extension = strtolower(pathinfo($uploaded_name, PATHINFO_EXTENSION));
     if ($file_extension !== 'zip') {
-        throw new Exception('Nur ZIP-Dateien sind erlaubt. Hochgeladene Datei: ' . htmlspecialchars($uploaded_name));
+        throw new Exception(sprintf($LANG['ERROR_ZIP_ONLY'], htmlspecialchars($uploaded_name)));
     }
 
     // Security: Validate MIME type using finfo (OOP style, PHP 8.5 compatible)
@@ -123,13 +132,13 @@ try {
         ];
 
         if (!in_array($mime_type, $allowed_mime_types)) {
-            throw new Exception('Ungültiger Dateityp. Nur ZIP-Dateien sind erlaubt. Erkannter Typ: ' . htmlspecialchars($mime_type));
+            throw new Exception(sprintf($LANG['ERROR_INVALID_MIME_TYPE'], htmlspecialchars($mime_type)));
         }
     }
 
     // Security: Check file size (configurable max size)
     if ($_FILES['zip_file']['size'] > WBCE_UPDATER_MAX_UPLOAD_SIZE) {
-        throw new Exception('Datei zu groß. Maximal erlaubt: ' . round(WBCE_UPDATER_MAX_UPLOAD_SIZE / 1024 / 1024) . ' MB');
+        throw new Exception(sprintf($LANG['ERROR_FILE_TOO_LARGE_MB'], round(WBCE_UPDATER_MAX_UPLOAD_SIZE / 1024 / 1024)));
     }
 
 
@@ -179,6 +188,30 @@ try {
     }
     $zip_test->close();
 
+    // Auto-detect target version from CHANGELOG.md if not provided by user
+    if (empty($target_version)) {
+        $zip_ver = new ZipArchive();
+        if ($zip_ver->open($temp_zip_path) === true) {
+            $changelog_content = false;
+            for ($i = 0; $i < min(50, $zip_ver->numFiles); $i++) {
+                $stat = $zip_ver->statIndex($i);
+                $entry_name = $stat['name'];
+                $depth = substr_count(rtrim($entry_name, '/'), '/');
+                if ($depth <= 1 && basename($entry_name) === 'CHANGELOG.md') {
+                    $changelog_content = $zip_ver->getFromIndex($i);
+                    if ($changelog_content !== false) {
+                        break;
+                    }
+                }
+            }
+            $zip_ver->close();
+
+            if ($changelog_content !== false &&
+                preg_match('/^#{1,3}\s+\[?(\d+\.\d+\.\d+)/m', $changelog_content, $ver_match)) {
+                $target_version = $ver_match[1];
+            }
+        }
+    }
 
     $final_zip_path = WB_PATH . '/wbceup.zip';
 
@@ -222,66 +255,19 @@ try {
 // Using integrated execute_update.php from this module instead
 
 // Step 3: Enable maintenance mode (optional)
-$maintenance_activated = false;
+$maintenance_activated    = false;
 $maintenance_already_active = false;
 
 if ($success && $enable_maintenance) {
-    try {
-        // Use WBCE Settings Class (same method as Maintenance Mode Switcher module)
-        require_once WB_PATH . '/framework/class.settings.php';
-
-        // Check if maintenance mode is already active BEFORE trying to set it
-        // Use same method as maintainance_mode module: cast to string, check if not empty
-        $currentStatus = (string)Settings::Get('wb_maintainance_mode');
-
-        if ($currentStatus) {
-            // Already active - no action needed
-            $maintenance_already_active = true;
-            $maintenance_activated = true;
-        } else {
-            // Check if maintenance template exists (warning only, don't block)
-            $maintenance_template_exists = false;
-            $template_paths = [
-                WB_PATH . '/templates/systemplates/maintainance.tpl.php',
-                WB_PATH . '/templates/' . DEFAULT_TEMPLATE . '/systemplates/maintainance.tpl.php'
-            ];
-
-            foreach ($template_paths as $tpl_path) {
-                if (file_exists($tpl_path)) {
-                    $maintenance_template_exists = true;
-                    break;
-                }
-            }
-
-            if (!$maintenance_template_exists) {
-                // Just a warning, still try to set maintenance mode
-                $errors[] = $LANG['WARNING_NO_MAINTENANCE_TEMPLATE'];
-            }
-
-            // Set maintenance mode via Settings class - use "1" as string like the original module
-            Settings::Set("wb_maintainance_mode", "1");
-
-            // Verify that maintenance mode was actually activated
-            // Re-read from database to confirm the setting was saved
-            $verifiedStatus = (string)Settings::Get('wb_maintainance_mode');
-
-            if ($verifiedStatus) {
-                $maintenance_activated = true;
-            } else {
-                // Setting failed - throw exception to trigger warning
-                throw new Exception("Maintenance mode setting could not be verified");
-            }
-        }
-
-    } catch (Exception $e) {
-        // Non-fatal error
-        $errors[] = $LANG['WARNING_MAINTENANCE_FAILED'] . ': ' . $e->getMessage();
-    }
+    require_once __DIR__ . '/maintenance_helper.php';
+    $maint = wbce_updater_enable_maintenance($errors, $LANG);
+    $maintenance_activated      = $maint['activated'];
+    $maintenance_already_active = $maint['already_active'];
 }
 
 // Generate output
-// No target version for manual upload, execute_update.php will skip version check
-$update_url = WB_URL . '/modules/wbce_updater/execute_update.php';
+$update_url = WB_URL . '/modules/wbce_updater/execute_update.php'
+    . (!empty($target_version) ? '?version=' . urlencode($target_version) : '');
 
 ?>
 <!DOCTYPE html>
