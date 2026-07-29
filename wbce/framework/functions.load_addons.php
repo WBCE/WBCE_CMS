@@ -21,6 +21,7 @@
  * - Understands real PHP syntax (ignores comments, does not get confused by
  *   semicolons or quotes inside strings).
  * - Safer and more reliable when scanning module config files or upgrade scripts.
+ * - Last assignment of the same variable wins.
  *
  * @param  string  $search               Name of the variable (without the $ sign)
  * @param  string  $data                 The PHP code as a string
@@ -35,18 +36,19 @@ function get_variable_content($search, $data, $striptags = true, $convert_to_ent
 
     $i = 0;
     $count = count($tokens);
+    $found = false;
 
     while ($i < $count) {
         // Look for the variable $search
-        if (is_array($tokens[$i]) 
-            && $tokens[$i][0] === T_VARIABLE 
-            && $tokens[$i][1] === '$' . $search) 
+        if (is_array($tokens[$i])
+            && $tokens[$i][0] === T_VARIABLE
+            && $tokens[$i][1] === '$' . $search)
         {
             // Skip whitespace and the equals sign
             $i++;
-            while ($i < $count 
-                && ((is_array($tokens[$i]) && $tokens[$i][0] === T_WHITESPACE) 
-                || $tokens[$i] === '=')) 
+            while ($i < $count
+                && ((is_array($tokens[$i]) && $tokens[$i][0] === T_WHITESPACE)
+                || $tokens[$i] === '='))
             {
                 $i++;
             }
@@ -66,14 +68,16 @@ function get_variable_content($search, $data, $striptags = true, $convert_to_ent
                     $value = htmlentities($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 }
 
-                return $value;
+                // Keep scanning: a later re-assignment of the same variable
+                // must win, exactly like real PHP execution would resolve it.
+                $found = $value;
             }
         }
         $i++;
     }
 
     // Variable not found or value is not a simple string
-    return false;
+    return $found;
 }
 
 /**
