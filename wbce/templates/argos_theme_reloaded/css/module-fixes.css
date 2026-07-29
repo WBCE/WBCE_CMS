@@ -126,6 +126,11 @@ input#admin_tools {
     font-size: 2.5em;
     color: rgb(102, 102, 102);
 }
+.link-card__icon svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
 .link-card__content {
     flex: 1;
     padding-right: 20px;
