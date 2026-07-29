@@ -9,8 +9,8 @@ upgrade.php
  * @category        tool
  * @package         Outputfilter Dashboard
  * @version         1.6.3
- * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (Stefek) <stefek@designthings.de>, Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
- * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (Stefek), 2016-2023 Martin Hecht (mrbaseman)
+ * @authors         Thomas "thorn" Hornik <thorn@nettest.thekk.de>, Christian M. Stefan (https://www.wbEasy.de), Martin Hecht (mrbaseman) <mrbaseman@gmx.de>
+ * @copyright       (c) 2009,2010 Thomas "thorn" Hornik, 2010-2023 Christian M. Stefan (https://www.wbEasy.de), 2016-2023 Martin Hecht (mrbaseman)
  * @link            https://github.com/mrbaseman/outputfilter_dashboard
  * @link            https://addons.wbce.org/pages/addons.php?do=item&item=53
  * @link            https://forum.wbce.org/viewtopic.php?id=176
@@ -201,7 +201,7 @@ $obsoleteFuncs = [
     'opff_mod_opf_move_stuff',
 ];
 foreach ($obsoleteFuncs as $func) {
-    $database->query("DELETE FROM `{TP}mod_outputfilter_dashboard` WHERE `func` = ?", [$func]);
+    $database->query("DELETE FROM `{TP}mod_outputfilter_dashboard` WHERE `funcname` = ?", [$func]);
 }
 
 // ── Remove old standalone mod_opf_* module entries and directories ───────────
