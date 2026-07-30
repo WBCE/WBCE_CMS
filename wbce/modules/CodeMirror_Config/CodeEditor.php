@@ -42,6 +42,8 @@ class CodeEditor
     private const SYNTAX_MAP = [
         // extension → [mime-string, mode-files[]]
         'php'        => ['"application/x-httpd-php"',  ['xml','css','javascript','clike','htmlmixed','php']],
+        // Raw PHP without surrounding opening/closing tags (e.g. eval()-style code fields)
+        'php-open'   => ['{name:"php",startOpen:true}', ['xml','css','javascript','clike','htmlmixed','php']],
         'phtml'      => ['"application/x-httpd-php"',  ['xml','css','javascript','clike','htmlmixed','php']],
         'tpl'        => ['"application/x-httpd-php"',  ['xml','css','javascript','clike','htmlmixed','php']],
         'x-php'      => ['"text/x-php"',               ['clike','php']],
@@ -60,6 +62,7 @@ class CodeEditor
         'ini'        => ['"text/x-properties"',        ['properties']],
         'properties' => ['"text/x-properties"',        ['properties']],
         'md'         => ['"text/x-markdown"',          []],
+        'markdown'   => ['"text/x-markdown"',          []],
         'txt'        => ['"text/plain"',               []],
     ];
 
@@ -304,6 +307,13 @@ class CodeEditor
         opts.ajaxUrl  = <?= json_encode($opt['ajax_url']) ?>;
         opts.ajaxData = <?= $ajaxDataJs ?>;
         opts.onSave   = <?= $onSaveJs ?>;
+
+        // Expose the live ajaxData object keyed by textarea id. CET reads
+        // settings.ajaxData fresh on every Ctrl-S/submit (not just at init),
+        // so other code can keep extra fields (e.g. a type/mode select) in
+        // sync by mutating properties on this object — no re-init needed.
+        window.CodeEditorAjaxData = window.CodeEditorAjaxData || {};
+        window.CodeEditorAjaxData[<?= json_encode($id) ?>] = opts.ajaxData;
         <?php
             // Inject _toast.inc.twig so window.showToast() is available when the
             // AJAX response arrives. Idempotent — safe for multiple editors per page.

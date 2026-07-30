@@ -153,6 +153,33 @@ Preferred message keys for AJAX save feedback:
 > These keys are provided by `CodeMirror_Config/languages.php` and are available on every
 > backend request after boot — no extra `Lang::loadLanguage()` call needed in your endpoint.
 
+### Keeping `ajax_data` Live After Init
+
+`ajax_data` is rendered once, at page-load time, as a plain JS object literal — it does
+**not** automatically track later changes to other form fields (a type select, a mode
+select, …). CodeEditorToolbar re-reads `settings.ajaxData` fresh on every Ctrl-S/Cmd-S
+and on every form submit though, so you can keep it in sync yourself:
+
+```php
+CodeEditor::init($id, 'php-open', [
+    'toolbar'   => true,
+    'ajax_save' => true,
+    'ajax_url'  => WB_URL . '/modules/my_module/ajax_save.php',
+    'ajax_data' => ['idKey' => $admin->getIDKEY($sid), 'whatis' => $whatis],
+]);
+```
+
+```js
+// Whenever the extra field changes, mutate the SAME object CET will read next save —
+// window.CodeEditorAjaxData[textareaId] is exposed automatically when ajax_save is on.
+document.getElementById('my_select').addEventListener('change', function () {
+    var store = window.CodeEditorAjaxData && window.CodeEditorAjaxData[myTextareaId];
+    if (store) store.whatis = this.value;
+});
+```
+
+No re-init, no extra request — the next AJAX save simply picks up the current value.
+
 ### Security — IDKEY, not FTAN
 
 FTAN is consumed on first use (designed for one-shot form submissions). For AJAX save,
