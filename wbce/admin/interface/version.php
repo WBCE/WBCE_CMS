@@ -14,8 +14,8 @@
 //   set WBCE version and release tag
 /////////////////////////////////////////
 
-define('NEW_WBCE_VERSION', '1.7.0'); // NEW_WBCE_VERSION
-define('NEW_WBCE_TAG', '1.7.0'); // NEW_WBCE_TAG
+defined('NEW_WBCE_VERSION') or define('NEW_WBCE_VERSION', '1.7.0'); // NEW_WBCE_VERSION
+defined('NEW_WBCE_TAG') or define('NEW_WBCE_TAG', '1.7.0'); // NEW_WBCE_TAG
 
 defined('WBCE_VERSION') or define('WBCE_VERSION', NEW_WBCE_VERSION); // WBCE_VERSION
 defined('WBCE_TAG') or define('WBCE_TAG', NEW_WBCE_TAG);     // WBCE_TAG

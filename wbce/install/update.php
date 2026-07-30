@@ -76,7 +76,7 @@ if (!$confirmed) {
     $oldWbceTag     = defined('WBCE_TAG')     ? (string)WBCE_TAG     : '';
 
     $vFile = ADMIN_PATH . '/interface/version.php';
-    if (is_readable($vFile)) include $vFile;
+    if (is_readable($vFile)) include_once $vFile;
 
     $oldVersion = $oldWbceVersion ? "WBCE v{$oldWbceVersion}" : 'Unknown / WB Classic';
     $oldTag     = $oldWbceTag;
