@@ -41,3 +41,9 @@ $CAPTCHA['CORNER_LIGHT']       = 'Slight';
 $CAPTCHA['CORNER_ROUND']       = 'Round';
 $CAPTCHA['PREVIEW']            = 'Preview';
 $CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Protected by ALTCHA';
+
+// ── No HTTPS fallback ────────────────────────────────────────────────────────
+$CAPTCHA['NO_HTTPS_HEADING']       = 'No settings available — HTTPS required';
+$CAPTCHA['NO_HTTPS_INFO']          = 'ALTCHA relies on a browser feature (Web Crypto) that only works on HTTPS sites. This site is currently reachable over plain HTTP, so the widget could never complete its check — there is nothing to configure here until an SSL certificate is installed and the site is switched to HTTPS.';
+$CAPTCHA['NO_HTTPS_FALLBACK']      = 'In the meantime, a simple math captcha (e.g. "3 + 5 = ?") is used automatically instead, so forms stay protected.';
+$CAPTCHA['VERIFICATION_INFO_RES']  = 'Please solve the calculation to verify you are human.';

@@ -44,3 +44,9 @@ $CAPTCHA['CORNER_LIGHT']       = 'Leve';
 $CAPTCHA['CORNER_ROUND']       = 'Redondo';
 $CAPTCHA['PREVIEW']            = 'Pr&eacute;-visualiza&ccedil;&atilde;o';
 $CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Protegido por ALTCHA';
+
+// ── No HTTPS fallback ────────────────────────────────────────────────────────
+$CAPTCHA['NO_HTTPS_HEADING']       = 'Nenhuma configura&ccedil;&atilde;o dispon&iacute;vel — HTTPS necess&aacute;rio';
+$CAPTCHA['NO_HTTPS_INFO']          = 'O ALTCHA depende de um recurso do navegador (Web Crypto) que s&oacute; funciona em sites HTTPS. Este site est&aacute; atualmente acess&iacute;vel apenas por HTTP simples, o que impediria o widget de concluir a sua verifica&ccedil;&atilde;o — por isso n&atilde;o h&aacute; nada a configurar aqui at&eacute; que um certificado SSL seja instalado e o site seja alterado para HTTPS.';
+$CAPTCHA['NO_HTTPS_FALLBACK']      = 'Enquanto isso, um simples captcha de c&aacute;lculo (por ex. "3 + 5 = ?") &eacute; usado automaticamente, para que os formul&aacute;rios permane&ccedil;am protegidos.';
+$CAPTCHA['VERIFICATION_INFO_RES']  = 'Por favor, resolva o c&aacute;lculo para confirmar que voc&ecirc; n&atilde;o &eacute; um rob&ocirc;.';

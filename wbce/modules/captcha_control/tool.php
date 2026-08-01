@@ -86,6 +86,7 @@ $altchaCfg = Captcha::getAltchaCfg();
 $aToTwig = [
     'RETURN_URL'       => $returnUrl,
     'RETURN_TO_TOOLS'  => ADMIN_URL . '/admintools/index.php',
+    'IS_HTTPS'         => Captcha::isHttps(),
     'USEABLE_CAPTCHAS' => ['altcha' => 'ALTCHA (Proof-of-Work, self-hosted)'],
     'CAPTCHA_TYPE'     => defined('CAPTCHA_TYPE')    ? CAPTCHA_TYPE    : 'altcha',
     'ENABLED_CAPTCHA'  => defined('ENABLED_CAPTCHA') ? (ENABLED_CAPTCHA ? '1' : '0') : '1',

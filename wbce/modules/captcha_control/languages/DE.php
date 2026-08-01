@@ -44,3 +44,9 @@ $CAPTCHA['CORNER_LIGHT']       = 'Leicht';
 $CAPTCHA['CORNER_ROUND']       = 'Rund';
 $CAPTCHA['PREVIEW']            = 'Vorschau';
 $CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Geschützt durch ALTCHA';
+
+// ── Kein HTTPS — Fallback ──────────────────────────────────────────────────────
+$CAPTCHA['NO_HTTPS_HEADING']       = 'Keine Einstellungen verfügbar — HTTPS erforderlich';
+$CAPTCHA['NO_HTTPS_INFO']          = 'ALTCHA benötigt eine Browser-Funktion (Web Crypto), die ausschließlich über HTTPS zur Verfügung steht. Diese Seite ist derzeit nur über einfaches HTTP erreichbar, wodurch das Widget seine Prüfung nie abschließen könnte — hier gibt es daher nichts einzustellen, bis ein SSL-Zertifikat installiert und die Seite auf HTTPS umgestellt wurde.';
+$CAPTCHA['NO_HTTPS_FALLBACK']      = 'In der Zwischenzeit wird automatisch ein einfaches Rechen-Captcha (z.B. „3 + 5 = ?") verwendet, damit Formulare weiterhin geschützt bleiben.';
+$CAPTCHA['VERIFICATION_INFO_RES']  = 'Bitte lösen Sie die Rechenaufgabe, um zu bestätigen, dass Sie kein Roboter sind.';

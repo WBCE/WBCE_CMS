@@ -44,3 +44,9 @@ $CAPTCHA['CORNER_LIGHT']       = 'Mierne';
 $CAPTCHA['CORNER_ROUND']       = 'Okr&uacute;hly';
 $CAPTCHA['PREVIEW']            = 'N&aacute;h&ľad';
 $CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Chr&aacute;nen&eacute; ALTCHA';
+
+// ── No HTTPS fallback ────────────────────────────────────────────────────────
+$CAPTCHA['NO_HTTPS_HEADING']       = 'Žiadne nastavenia k dispozícii — vyžaduje sa HTTPS';
+$CAPTCHA['NO_HTTPS_INFO']          = 'ALTCHA využíva funkciu prehliadača (Web Crypto), ktorá funguje iba na stránkach s HTTPS. Táto stránka je momentálne dostupná iba cez bežné HTTP, preto by widget nikdy nedokázal dokončiť overenie — nie je tu teda čo nastavovať, kým nebude nainštalovaný SSL certifikát a stránka nebude prepnutá na HTTPS.';
+$CAPTCHA['NO_HTTPS_FALLBACK']      = 'Medzitým sa automaticky používa jednoduchá matematická captcha (napr. „3 + 5 = ?"), aby formuláre zostali chránené.';
+$CAPTCHA['VERIFICATION_INFO_RES']  = 'Vyriešte prosím výpočet na potvrdenie, že nie ste robot.';

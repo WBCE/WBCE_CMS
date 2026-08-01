@@ -44,3 +44,9 @@ $CAPTCHA['CORNER_LIGHT']       = 'Licht';
 $CAPTCHA['CORNER_ROUND']       = 'Rond';
 $CAPTCHA['PREVIEW']            = 'Voorbeeld';
 $CAPTCHA['WIDGET_FOOTER_TEXT'] = 'Beveiligd door ALTCHA';
+
+// ── No HTTPS fallback ────────────────────────────────────────────────────────
+$CAPTCHA['NO_HTTPS_HEADING']       = 'Geen instellingen beschikbaar — HTTPS vereist';
+$CAPTCHA['NO_HTTPS_INFO']          = 'ALTCHA is afhankelijk van een browserfunctie (Web Crypto) die alleen op HTTPS-sites werkt. Deze site is momenteel alleen bereikbaar via gewoon HTTP, waardoor de widget zijn controle nooit zou kunnen voltooien — er valt hier dus niets in te stellen totdat er een SSL-certificaat is geïnstalleerd en de site is overgezet naar HTTPS.';
+$CAPTCHA['NO_HTTPS_FALLBACK']      = 'Ondertussen wordt automatisch een eenvoudige rekencaptcha (bijv. "3 + 5 = ?") gebruikt, zodat formulieren beschermd blijven.';
+$CAPTCHA['VERIFICATION_INFO_RES']  = 'Los de berekening op om te bevestigen dat u geen robot bent.';
