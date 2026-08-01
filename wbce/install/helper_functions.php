@@ -304,15 +304,15 @@ function is_fatal(): bool
 }
 
 /**
- * Logs the result of removePath() using the multilingual $MESSAGE array.
+ * Logs the result of removePath() using the multilingual $SIGNAL array.
  *
  * @param string $signal  RM_* signal returned by removePath()
  * @param string $path    The path that was processed
  */
 function log_path_removal(string $signal, string $path): void
 {
-    global $MESSAGE;
-    $msg = sprintf($MESSAGE[$signal], $path);
+    global $SIGNAL;
+    $msg = sprintf($SIGNAL[$signal] ?? $signal . ': %s', $path);
 
     switch ($signal) {
         case 'RM_FILE_OK':

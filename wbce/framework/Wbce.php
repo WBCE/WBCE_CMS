@@ -716,7 +716,7 @@ class Wbce extends SecureForm
        if (str_contains($email, '@')) {
            [$local, $domain] = explode('@', $email, 2);
 
-           if (function_exists('idn_to_ascii')) {
+           if ($domain !== '' && function_exists('idn_to_ascii')) {
                $ascii = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
                if ($ascii !== false) {
                    $domain = $ascii;

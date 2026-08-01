@@ -33,7 +33,16 @@ defined('ADMIN_URL')  or
 
 
 // ── Language ──────────────────────────────────────────────────────────────────
+// Main app languages/*.php is always present on disk (install & update run against
+// a real WBCE file tree) and carries $SIGNAL entries — e.g. RM_* removal signals —
+// that install/languages/*.php does not duplicate. Load it first as the base, then
+// let the install-specific file provide/override its own TXT/MSG/SIGNAL strings.
+$mainLangDir = WB_PATH . '/languages/';
 $langDir = __DIR__ . '/languages/';
+
+$mainEnFile = $mainLangDir . 'EN.php';
+if (is_readable($mainEnFile)) include $mainEnFile;
+
 $enFile = $langDir . 'EN.php';
 if (is_readable($enFile)) include $enFile;
 
@@ -45,6 +54,9 @@ elseif (defined('DEFAULT_LANGUAGE') && DEFAULT_LANGUAGE !== '')  $langCode = str
 if (!preg_match('/^[A-Z]{1,5}$/', $langCode))                    $langCode = 'EN';
 
 if ($langCode !== 'EN') {
+    $mainFilePath = $mainLangDir . $langCode . '.php';
+    if (is_readable($mainFilePath)) include $mainFilePath;
+
     $filePath = $langDir . $langCode . '.php';
     if (is_readable($filePath)) include $filePath;
 }
@@ -76,7 +88,7 @@ if (!$confirmed) {
     $oldWbceTag     = defined('WBCE_TAG')     ? (string)WBCE_TAG     : '';
 
     $vFile = ADMIN_PATH . '/interface/version.php';
-    if (is_readable($vFile)) include $vFile;
+    if (is_readable($vFile)) include_once $vFile;
 
     $oldVersion = $oldWbceVersion ? "WBCE v{$oldWbceVersion}" : 'Unknown / WB Classic';
     $oldTag     = $oldWbceTag;
@@ -410,7 +422,10 @@ foreach ($newDbFields as [$table, $field, $def]) {
         $fldAdd++;
     }
 }
-// `{TP}pages`.`slug` — separate from $newDbFields because it needs its own index
+// `{TP}pages`.`slug` — not in use yet (planned for future slug-based routing).
+// No unique index for now: existing dumps from before this column existed
+// commonly have `slug` back-filled as '' rather than NULL, which a UNIQUE
+// constraint rejects on reimport for any second such row.
 if (!$database->fieldExists('{TP}pages', 'slug')) {
     $database->addField('{TP}pages', 'slug', "VARCHAR(255) NULL DEFAULT NULL AFTER `link`");
     // addField() strips AFTER automatically for SQLite
@@ -418,11 +433,6 @@ if (!$database->fieldExists('{TP}pages', 'slug')) {
         log_warn('`slug` in `{TP}pages`: ' . $database->getError());
     } else {
         log_ok('`slug` added to `{TP}pages`');
-        // Unique index — idempotent on MySQL 8+, MariaDB 10.1.4+, SQLite
-        $database->query("CREATE UNIQUE INDEX IF NOT EXISTS `uniq_slug` ON `{TP}pages` (`slug`)");
-        if ($database->hasError()) {
-            log_warn('Index `uniq_slug` on `{TP}pages`: ' . $database->getError());
-        } 
     }
 } else {
     log_info('`{TP}pages`.`slug` already exists — skipped');

@@ -298,7 +298,6 @@ final class FontCache
         ]);
         $result = curl_exec($ch);
         $status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
         return ($status === 200 && is_string($result) && $result !== '') ? $result : null;
     }
 }

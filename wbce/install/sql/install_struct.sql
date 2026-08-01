@@ -60,9 +60,7 @@ CREATE TABLE IF NOT EXISTS `{TP}pages` (
   `viewing_users`     TEXT         NOT NULL,
   `modified_when`     INT          NOT NULL DEFAULT 0,
   `modified_by`       INT          NOT NULL DEFAULT 0,
-  PRIMARY KEY (`page_id`),
--- use CONSTRAINT to be idempotent for other SQL dialects
-  CONSTRAINT `uniq_slug` UNIQUE (`slug`)
+  PRIMARY KEY (`page_id`)
 ){TABLE_ENGINE};
 --
 -- `search`
