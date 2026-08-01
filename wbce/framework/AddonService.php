@@ -754,7 +754,21 @@ class AddonService
                 continue;
             }
             if ($name === '' || str_ends_with($name, '/')) continue;
-            $safe = ltrim(str_replace(['../', '..\\', "\0"], '', $name), '/');
+
+            // Zip-slip guard: reject any entry containing a literal ".." path
+            // segment. A single-pass str_replace('../', '') is bypassable via
+            // overlapping sequences (e.g. "....//" -> "../"), so segments are
+            // checked individually instead of stripped.
+            $safe = null;
+            $parts = [];
+            foreach (explode('/', str_replace(['\\', "\0"], ['/', ''], $name)) as $segment) {
+                if ($segment === '' || $segment === '.') continue;
+                if ($segment === '..') { $parts = null; break; }
+                $parts[] = $segment;
+            }
+            if ($parts) $safe = implode('/', $parts);
+            if ($safe === null) continue;
+
             $dest = $target . '/' . $safe;
             @mkdir(dirname($dest), 0755, true);
             file_put_contents($dest, $zip->getFromIndex($i));
