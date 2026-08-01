@@ -449,11 +449,10 @@ class LayoutParser
             $html = preg_replace_callback(
                 '~\{include\s+"([^"]+)"(?:\s+with\s+(.*?))?\s*\}~s',
                 function ($m) use ($data) {
-                    $safeName = str_replace(['../', '..\\', "\0"], '', $m[1]);
-                    $fullPath = $this->partialsPath . DIRECTORY_SEPARATOR . ltrim($safeName, '/\\');
+                    $fullPath = wbceSafeRelativePath($this->partialsPath, $m[1]);
                     $scope    = $this->_parseWith($m[2] ?? '', $data);
-                    if (!is_file($fullPath)) {
-                        return "<!-- include '{$safeName}' not found -->";
+                    if ($fullPath === null || !is_file($fullPath)) {
+                        return "<!-- include '" . h($m[1]) . "' not found -->";
                     }
                     return $this->parse(file_get_contents($fullPath), $scope);
                 },

@@ -1212,6 +1212,68 @@ function wbceSafePath(
 
     return $realPath;
 }
+
+/**
+ * wbceSafeRelativePath
+ * @brief Resolves a user-supplied relative path against a trusted base
+ *        directory, rejecting directory traversal.
+ *
+ * Unlike naive `str_replace(['../', '..\\'], '', $x)` stripping — which is
+ * bypassable via overlapping sequences such as "....//" collapsing back into
+ * "../" after a single pass — every "/"-separated segment of $relative is
+ * checked individually and the whole path is rejected outright if any
+ * segment equals "..". The resolved path is additionally verified to still
+ * be inside $baseDir using a separator-terminated prefix comparison, which
+ * avoids the classic sibling-directory bug (e.g. "/media" matching
+ * "/media-private").
+ *
+ * Use this whenever a relative path/filename comes from a request, a stored
+ * DB value, or an archive entry name, and is about to be joined onto a
+ * trusted base directory (uploads, template includes, ZIP extraction, ...).
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * @author    Christian M. Stefan  (https://www.wbEasy.de)
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @param string $baseDir    Trusted base directory; must already exist
+ * @param string $relative   User-supplied relative path/filename
+ * @param bool   $mustExist  true  = the resolved path must already exist (reads)
+ *                           false = only the containing directory must exist (writes)
+ *
+ * @return string|null       Canonical absolute path, or null if unsafe/invalid
+ */
+function wbceSafeRelativePath(string $baseDir, string $relative, bool $mustExist = true): ?string
+{
+    $relative = str_replace("\0", '', $relative);
+
+    $parts = [];
+    foreach (explode('/', str_replace('\\', '/', $relative)) as $segment) {
+        if ($segment === '' || $segment === '.') continue;
+        if ($segment === '..') return null;
+        $parts[] = $segment;
+    }
+    if (!$parts) return null;
+
+    $base = realpath($baseDir);
+    if ($base === false) return null;
+
+    $candidate = $base . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $parts);
+
+    if ($mustExist) {
+        $full = realpath($candidate);
+        if ($full === false) return null;
+    } else {
+        $dir = realpath(dirname($candidate));
+        if ($dir === false) return null;
+        $full = $dir . DIRECTORY_SEPARATOR . basename($candidate);
+    }
+
+    if (strncmp($full . DIRECTORY_SEPARATOR, $base . DIRECTORY_SEPARATOR, strlen($base) + 1) !== 0) {
+        return null;
+    }
+
+    return $full;
+}
+
 /**
  * Recursively removes a file or a non-empty directory.
  *
