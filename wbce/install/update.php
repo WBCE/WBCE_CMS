@@ -33,7 +33,16 @@ defined('ADMIN_URL')  or
 
 
 // ── Language ──────────────────────────────────────────────────────────────────
+// Main app languages/*.php is always present on disk (install & update run against
+// a real WBCE file tree) and carries $SIGNAL entries — e.g. RM_* removal signals —
+// that install/languages/*.php does not duplicate. Load it first as the base, then
+// let the install-specific file provide/override its own TXT/MSG/SIGNAL strings.
+$mainLangDir = WB_PATH . '/languages/';
 $langDir = __DIR__ . '/languages/';
+
+$mainEnFile = $mainLangDir . 'EN.php';
+if (is_readable($mainEnFile)) include $mainEnFile;
+
 $enFile = $langDir . 'EN.php';
 if (is_readable($enFile)) include $enFile;
 
@@ -45,6 +54,9 @@ elseif (defined('DEFAULT_LANGUAGE') && DEFAULT_LANGUAGE !== '')  $langCode = str
 if (!preg_match('/^[A-Z]{1,5}$/', $langCode))                    $langCode = 'EN';
 
 if ($langCode !== 'EN') {
+    $mainFilePath = $mainLangDir . $langCode . '.php';
+    if (is_readable($mainFilePath)) include $mainFilePath;
+
     $filePath = $langDir . $langCode . '.php';
     if (is_readable($filePath)) include $filePath;
 }
