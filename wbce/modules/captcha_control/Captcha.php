@@ -267,10 +267,18 @@ class Captcha
      * Render a minimal arithmetic captcha — no GD/images required, works on
      * any transport. Used automatically instead of ALTCHA when the site is
      * not served over HTTPS (see isHttps()).
+     *
+     * Uses the SAME session key as the ALTCHA sync token ('captcha' . $sec_id)
+     * rather than a dedicated key, because several callers (mpform, miniform,
+     * admin/login/forgot) never call Captcha::verify() at all — they compare
+     * $_POST['captcha'] against $_SESSION['captcha' . $sec_id] themselves,
+     * a legacy pattern ALTCHA's sync-token input was built to satisfy. Using
+     * a different key here would mean those callers compare against a value
+     * that was never set, so the answer could never validate.
      */
     private static function renderMathCaptcha(string $action, string $sec_id): void
     {
-        $key = 'captcha_math' . $sec_id;
+        $key = 'captcha' . $sec_id;
 
         if ($action === 'text') {
             echo L_('CAPTCHA:VERIFICATION_INFO_RES||Please solve the calculation to verify you are human.');
@@ -302,10 +310,11 @@ class Captcha
     /**
      * Verify the math captcha answer against the session-stored result.
      * Single-use — the session value is cleared regardless of outcome.
+     * Same session key as renderMathCaptcha() — see its docblock.
      */
     private static function verifyMathCaptcha($input, string $sec_id): bool
     {
-        $key = 'captcha_math' . $sec_id;
+        $key = 'captcha' . $sec_id;
         if (!isset($_SESSION[$key])) {
             return false;
         }
