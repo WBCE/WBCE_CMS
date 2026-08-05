@@ -10,28 +10,43 @@
  * @license GNU GPL2 (or any later version)
  */
 
-define('SM2_ROOT', -1000);
-define('SM2_CURR', -2000);
-define('SM2_ALLMENU', -1);
-define('SM2_START', 1000);
-define('SM2_MAX', 2000);
-define('SM2_ALL', 0x0001); // bit 0 (group 1) (Note: also used for max level!)
-define('SM2_TRIM', 0x0002); // bit 1 (group 1)
-define('SM2_CRUMB', 0x0004); // bit 2 (group 1)
-define('SM2_SIBLING', 0x0008); // bit 3 (group 1)
-define('SM2_NUMCLASS', 0x0010); // bit 4
-define('SM2_ALLINFO', 0x0020); // bit 5
-define('SM2_NOCACHE', 0x0040); // bit 6
-define('SM2_PRETTY', 0x0080); // bit 7
-define('SM2_ESCAPE', 0x0100); // bit 8
-define('SM2_BUFFER', 0x0200); // bit 9
-define('SM2_CURRTREE', 0x0400); // bit 10
-define('SM2_SHOWHIDDEN', 0x0800); // bit 11
-define('SM2_XHTML_STRICT', 0x1000); // bit 12
-define('SM2_NO_TITLE', 0x2000); // bit 13
-define('SM2_EXTERNAL_MENULINKS', 0x4000); // bit 14 - resolve external menu_link targets directly (skip the redirect hop)
-define('SM2_USE_ARIA', 0x8000); // bit 15 - populate the [aria] placeholder with aria-current/aria-haspopup/aria-expanded
+// Single source of truth for every menu flag/option constant. Defines both
+// the SM2_* and the shorter SM_* name for each entry - both prefixes are
+// fully interchangeable, e.g. SM_TRIM|SM_USE_ARIA == SM2_TRIM|SM2_USE_ARIA.
+// A future new flag only needs to be added here once to get both names.
+$menuConstants = [
+    'ROOT'               => -1000,
+    'CURR'               => -2000,
+    'ALLMENU'            => -1,
+    'START'              => 1000,
+    'MAX'                => 2000,
+    'ALL'                => 0x0001, // bit 0 (group 1) (Note: also used for max level!)
+    'TRIM'               => 0x0002, // bit 1 (group 1)
+    'CRUMB'              => 0x0004, // bit 2 (group 1)
+    'SIBLING'            => 0x0008, // bit 3 (group 1)
+    'NUMCLASS'           => 0x0010, // bit 4
+    'ALLINFO'            => 0x0020, // bit 5
+    'NOCACHE'            => 0x0040, // bit 6
+    'PRETTY'             => 0x0080, // bit 7
+    'ESCAPE'             => 0x0100, // bit 8
+    'BUFFER'             => 0x0200, // bit 9
+    'CURRTREE'           => 0x0400, // bit 10
+    'SHOWHIDDEN'         => 0x0800, // bit 11
+    'XHTML_STRICT'       => 0x1000, // bit 12
+    'NO_TITLE'           => 0x2000, // bit 13
+    'EXTERNAL_MENULINKS' => 0x4000, // bit 14 - resolve external menu_link targets directly (skip the redirect hop)
+    'USE_ARIA'           => 0x8000, // bit 15 - populate the [aria] placeholder with aria-current/aria-haspopup/aria-expanded
+];
+foreach ($menuConstants as $menuConstSuffix => $menuConstValue) {
+    define('SM2_' . $menuConstSuffix, $menuConstValue);
+    define('SM_' . $menuConstSuffix, $menuConstValue);
+}
+unset($menuConstants, $menuConstSuffix, $menuConstValue);
+
+// internal-only mask, not a public flag - leading underscore marks it as
+// such, and it intentionally has no SM_* twin
 define('_SM2_GROUP_1', 0x000F); // exactly one flag from group 1 is required
+
 // Include default formatter
 include_once("classes/sm2_formatter.php");
 
@@ -401,6 +416,22 @@ function show_breadcrumbs(
     $aItemClose = '</span>',
     $aMenuOpen = '',
     $aMenuClose = '',
+    $aTopItemOpen = false,
+    $aTopMenuOpen = false
+) {
+    return show_menu2($aMenu, $aStart, $aMaxLevel, $aOptions, $aItemOpen, $aItemClose, $aMenuOpen, $aMenuClose, $aTopItemOpen, $aTopMenuOpen);
+}
+
+// plain alias - identical to show_menu2(), just a shorter name
+function show_menu(
+    $aMenu        = 0,
+    $aStart       = SM2_ROOT,
+    $aMaxLevel    = -1999, // SM2_CURR+1
+    $aOptions     = SM2_TRIM,
+    $aItemOpen    = false,
+    $aItemClose   = false,
+    $aMenuOpen    = false,
+    $aMenuClose   = false,
     $aTopItemOpen = false,
     $aTopMenuOpen = false
 ) {
