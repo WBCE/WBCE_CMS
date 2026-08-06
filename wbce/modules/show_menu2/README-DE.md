@@ -1,28 +1,25 @@
 # show_menu2, Version 4.16.0
 ## Einführung des `show_menu()` Funktions-Aliases
-
-Ein Code-Snippet für das WBCE CMS. Alle Menüdaten werden mit einer einzigen Datenbankabfrage abgerufen, und alle Arten von Menüstilen (Listen, Breadcrumbs, Sitemaps) können mit umfassender Anpassung des resultierenden HTMLs generiert werden.
-
 ---
-
-## Installation
-
-Es ist keine Installation erforderlich, da es sich bei dem Modul um ein integriertes Core-Modul handelt.
-
----
-
-## Verwendung von `show_menu()` (und `show_menu2()`)
-
-
-
-Die PHP-Dateien des Templates müssen so angepasst werden, dass `show_menu()` dort aufgerufen wird, wo das Menü angezeigt werden soll. 
-
-
 > **Hinweis:** Seit der Version 4.16.0 kann wieder der Aufruf `show_menu()` verwendet werden – Es gab schon früher eine show_menu() Funktion, aber diese ist nun jedoch ein direkter Alias für `show_menu2()` mit identischer Signatur. Beide Namen können austauschbar verwendet werden; `show_menu()` ist lediglich die kürzere Schreibweise.
 
 Passend dazu hat jede `SM_*`-Konstante (`SM_ROOT`, `SM_TRIM` usw.) automatisch eine äquivalente `SM2_*`-Variante – beide Präfixe sind austauschbar, z. B. `SM_TRIM|SM_USE_ARIA == SM2_TRIM|SM2_USE_ARIA`.
 
 > In diesem README Dokument werden wir durchgehend die neu eingeführte `show_menu()` Schreibweise verwenden.
+---
+## Über show_menu()
+
+Es ist eine Template-Funktion für das WBCE CMS mit der sich viele verschiedene Stile des Menüs darstellen lassen.
+Alle Menüdaten werden mit einer einzigen Datenbankabfrage abgerufen, und alle Arten von Menüstilen (Listen, Breadcrumbs, Sitemaps) können mit umfassender Anpassung des resultierenden HTMLs generiert werden.
+
+---
+
+
+## Verwendung
+
+Die index.php Datei des Templates muss so angepasst werden, dass `show_menu()` dort aufgerufen wird, wo das Menü angezeigt werden soll. 
+
+
 
 ## Styling
 In manchen Fällen ist das von `show_menu()` generierte Standardmenü bereits alles, was Sie benötigen. Dieses Menü zeigt die aktuelle Seite und die untergeordneten Seiten der aktuellen Seite an. Es wird durch einen einfachen Aufruf von `show_menu()` ohne Parameter generiert:
