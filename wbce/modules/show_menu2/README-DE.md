@@ -1,4 +1,5 @@
 # show_menu2, Version 4.16.0
+## Einführung des `show_menu()` Funktions-Aliases
 
 Ein Code-Snippet für das WBCE CMS. Alle Menüdaten werden mit einer einzigen Datenbankabfrage abgerufen, und alle Arten von Menüstilen (Listen, Breadcrumbs, Sitemaps) können mit umfassender Anpassung des resultierenden HTMLs generiert werden.
 

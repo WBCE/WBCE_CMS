@@ -1,4 +1,5 @@
-# show_menu, version 4.16.0
+# show_menu2, version 4.16.0
+## introducing `show_menu()` function alias.
 
 A code snippet for WBCE CMS. All menu data is retrieved using a single database query, and all types of menu styles (lists, breadcrumbs, sitemaps) can be generated with extensive customization of the resulting HTML.
 
