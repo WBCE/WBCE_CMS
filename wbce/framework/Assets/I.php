@@ -68,6 +68,13 @@ if (!function_exists('loadPlugin')) {
     }
 }
 
+if (!function_exists('loadTemplateAssets')) {
+    function loadTemplateAssets(string $dir, ?array $only = null): void
+    {
+        I::loadTemplateAssets($dir, $only);
+    }
+}
+
 if (!function_exists('insertWebFont')) {
     function insertWebFont(string $url, string $alias = '', string $format = 'woff2'): void
     {

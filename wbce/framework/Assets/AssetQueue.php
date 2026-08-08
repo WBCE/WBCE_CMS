@@ -557,6 +557,64 @@ final class AssetQueue
     }
 
     /**
+     * Load a TEMPLATE's own asset manifest — templates/<tpl>/assets.php,
+     * returning one array — instead of a template hand-writing a dozen
+     * I::insert*()/register_frontend_modfiles() calls in its own <head>.
+     *
+     * $only restricts WHICH asset types get queued. Every entry in the
+     * manifest — plain css/js files, bundles, webfonts, the 'jquery' flag,
+     * AND the active modules' own frontend CSS/JS modfiles this method
+     * also queues (see below) — is exactly one of three types: 'css',
+     * 'js', 'fonts'. Pass null (default) to load everything, the way a
+     * template's own index.php normally would; pass e.g. ['css', 'fonts']
+     * to load only those — the Style Guide Manager preview uses this to
+     * skip a template's JS (and jQuery, and modules' own frontend JS)
+     * entirely, since a static widget preview never needs to be
+     * interactive in the first place.
+     *
+     *   assets.php (templates/<tpl>/assets.php) — plain `return [...]`, no
+     *   side effects, so it stays introspectable/filterable instead of
+     *   being an opaque script (contrast with plugin.php, which is code):
+     *
+     *   return [
+     *       // Same array-OR-position-keyed-object shape as plugin.json's
+     *       // own 'css'/'js' — a flat list uses the 2nd arg below as
+     *       // position, an object picks per group.
+     *       'css' => ['head_late' => ['site.css']],
+     *       'js'  => ['body_late' => ['site.js']],
+     *       // Combined into ONE <link>/<script> via insertCssBundle()/
+     *       // insertJsBundle() — most templates want their CSS bundled.
+     *       'bundles' => [
+     *           ['type' => 'css', 'id' => 'vendor', 'position' => 'head_late', 'files' => ['vendor/a.css', 'vendor/b.css']],
+     *       ],
+     *       // Passed straight through to insertWebFont($url, $alias, $format).
+     *       'fonts' => [
+     *           ['url' => 'https://fonts.googleapis.com/css2?family=Spectral:...'],
+     *           ['url' => 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:...', 'alias' => 'MainSans'],
+     *       ],
+     *       // Opt-in ONLY — register_frontend_modfiles('jquery') is never
+     *       // implied by loading CSS/JS at all, unlike modules' own
+     *       // frontend modfiles below (those always come along).
+     *       'jquery' => true,
+     *   ];
+     *
+     *   // Template's own index.php — replaces its old manual <head> calls:
+     *   I::loadTemplateAssets(__DIR__);
+     *
+     *   // A partial consumer (e.g. the VES Style Guide Manager):
+     *   I::loadTemplateAssets(WB_PATH . '/templates/' . $tpl, ['css', 'fonts']);
+     *
+     * @param string     $dir  Template directory (absolute — e.g. __DIR__
+     *                         from the template's own index.php).
+     * @param array|null $only Asset types to include ('css'/'js'/'fonts');
+     *                         null = all (the template's own normal case).
+     */
+    public static function loadTemplateAssets(string $dir, ?array $only = null): void
+    {
+        self::getInstance()->enqueueTemplateAssets(rtrim($dir, '/\\'), $only);
+    }
+
+    /**
      * Wipe the entire font cache directory.
      * The next call to insertWebFont() triggers a fresh download.
      */
@@ -1434,6 +1492,113 @@ final class AssetQueue
         $this->enqueuePluginAssets('js',  $config['js']  ?? [], $baseUrl, $jsPos);
 
         return null;
+    }
+
+    /**
+     * Implementation behind loadTemplateAssets() — see that method's own
+     * doc comment for the assets.php format and the $only filter contract.
+     */
+    private function enqueueTemplateAssets(string $dir, ?array $only): void
+    {
+        $wantTypes = $only !== null ? array_flip($only) : null;
+        $want = static fn (string $type): bool => $wantTypes === null || isset($wantTypes[$type]);
+
+        $manifestFile = $dir . DIRECTORY_SEPARATOR . 'assets.php';
+        $config = is_file($manifestFile) ? $this->includePlugin($manifestFile) : null;
+        if (!is_array($config)) {
+            $config = [];
+        }
+
+        // Same "derive the URL root from the given path" approach
+        // enqueuePlugin() uses for plugins — no {TEMPLATE}-token dependency,
+        // since $dir isn't necessarily the ACTIVE template (the Style Guide
+        // Manager passes an arbitrary $tpl's directory, which may differ
+        // from the TEMPLATE constant of the request it's running under).
+        $wbPath  = rtrim(defined('WB_PATH') ? WB_PATH : '', '/\\');
+        $wbUrl   = rtrim(defined('WB_URL')  ? WB_URL  : '', '/');
+        $relDir  = str_starts_with($dir, $wbPath) ? substr($dir, strlen($wbPath)) : '';
+        $baseUrl = $wbUrl . '/' . ltrim(str_replace('\\', '/', $relDir), '/');
+
+        // Plain css/js files — reuses the EXACT same helper (and therefore
+        // the exact same array-or-position-object manifest shape) plugin.json
+        // already uses for its own 'css'/'js' keys.
+        if ($want('css')) {
+            $this->enqueuePluginAssets('css', $config['css'] ?? [], $baseUrl, 'head_late');
+        }
+        if ($want('js')) {
+            $this->enqueuePluginAssets('js', $config['js'] ?? [], $baseUrl, 'body_late');
+        }
+
+        // Bundles — each declares its OWN type, filtered the same way as
+        // everything else; a CSS bundle is not excluded just because 'js'
+        // is absent from $only, and vice versa.
+        foreach ((array) ($config['bundles'] ?? []) as $bundle) {
+            if (!is_array($bundle)) {
+                continue;
+            }
+            $type = strtolower((string) ($bundle['type'] ?? 'css'));
+            if ($type !== 'css' && $type !== 'js') {
+                continue;
+            }
+            if (!$want($type)) {
+                continue;
+            }
+            $files = [];
+            foreach ((array) ($bundle['files'] ?? []) as $file) {
+                $file = trim((string) $file);
+                if ($file !== '') {
+                    $files[] = $baseUrl . '/' . ltrim($file, '/');
+                }
+            }
+            if ($files === []) {
+                continue;
+            }
+            $id  = (string) ($bundle['id'] ?? md5($baseUrl . '|' . implode(',', $files)));
+            $pos = (string) ($bundle['position'] ?? ($type === 'js' ? 'body_late' : 'head_late'));
+            if ($type === 'js') {
+                self::insertJsBundle($files, $id, $pos);
+            } else {
+                self::insertCssBundle($files, $id, $pos);
+            }
+        }
+
+        // Webfonts — passed straight through to insertWebFont(), including
+        // the optional alias/format (same rename mechanism insertWebFont()
+        // itself already offers; see that method's own doc comment).
+        if ($want('fonts')) {
+            foreach ((array) ($config['fonts'] ?? []) as $font) {
+                if (!is_array($font) || empty($font['url'])) {
+                    continue;
+                }
+                self::insertWebFont(
+                    (string) $font['url'],
+                    (string) ($font['alias']  ?? ''),
+                    (string) ($font['format'] ?? 'woff2')
+                );
+            }
+        }
+
+        // Active modules' own frontend CSS/JS — what every template's
+        // <head> already calls via register_frontend_modfiles('css'/'js')
+        // today, folded in here so a template needs one call instead of
+        // three. Same $only gate. jQuery core is the one thing that is
+        // NEVER implied just by loading JS — a template opts in explicitly
+        // via the manifest's 'jquery' flag, and even then only fires when
+        // 'js' itself is actually being loaded (a caller like the Style
+        // Guide Manager, which asks for ['css','fonts'] only, must never
+        // get jQuery even if the template's own manifest requests it).
+        $wb = $GLOBALS['wb'] ?? null;
+        if (is_object($wb) && method_exists($wb, 'registerModfiles')) {
+            if ($want('css')) {
+                $wb->registerModfiles('css', 'frontend');
+            }
+            if ($want('js')) {
+                $wb->registerModfiles('js', 'frontend');
+                if (!empty($config['jquery'])) {
+                    $wb->registerModfiles('jquery', 'frontend');
+                }
+            }
+        }
     }
 
     /**
@@ -2351,6 +2516,8 @@ final class AssetQueue
      */
     private function markCombinedSources(string $type, array $sources): void
     {
+        $bundlePaths = [];
+
         foreach ($sources as $src) {
             $src = trim((string)$src);
             if ($src === '') continue;
@@ -2360,7 +2527,27 @@ final class AssetQueue
             $absPath = $this->resolveLocalPath($src);
             if ($absPath !== null) {
                 $this->seenPaths[$type . '|' . $absPath] = true;
+                $bundlePaths[] = $absPath;
             }
+        }
+
+        // Evict individual entries already in the queue that are now subsumed by
+        // this bundle. Handles the case where a module's include.php ran before the
+        // template's insertCssBundle/insertJsBundle call and enqueued the same file
+        // individually (e.g. klaro_consent calling I::insertCssFile() from include.php
+        // before the template bundles the same CSS file).
+        if (!empty($bundlePaths)) {
+            foreach ($this->queue as &$entries) {
+                $entries = array_values(array_filter(
+                    $entries,
+                    function (array $e) use ($type, $bundlePaths): bool {
+                        if ($e['type'] !== $type) return true;
+                        $path = $this->resolveLocalPath($e['item']);
+                        return $path === null || !in_array($path, $bundlePaths, true);
+                    }
+                ));
+            }
+            unset($entries);
         }
     }
 
