@@ -1,52 +1,68 @@
 <?php
 /**
- * WebsiteBaker CMS AdminTool: wbSeoTool
+ * WBCE CMS AdminTool: wbSeoTool
  *
  * ajax/save.php
- * This file gets $_POST Data sent by ajax and executes DB updates on fields
- * 
- * 
- * @platform    CMS WebsiteBaker 2.8.x
+ * HTMX endpoint: saves a single inline-edited SEO field for one page.
+ *
+ * Security model: the page_id is never trusted from the request body.
+ * It comes only from redeeming the one-time `idkey` that PageTree::load()
+ * issued for this exact node — meaning it was only handed to the browser
+ * for pages the current admin already had canModifyPage = true on when the
+ * tree was rendered. checkIDKEY(..., $ajax = true) does not invalidate
+ * sibling keys, so every other editable cell on the page stays usable.
+ *
  * @package     wbSeoTool
- * @author      Christian M. Stefan (Stefek)
- * @copyright   Christian M. Stefan
+ * @author      Christian M. Stefan (https://www.wbEasy.de/)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-require('../../../config.php');
-require_once(WB_PATH.'/framework/class.admin.php');
+declare(strict_types=1);
 
-$bAdminHeader = FALSE; // suppress to print the header, so no new FTAN will be set
-$admin = new admin('Pages', 'pages_settings', $bAdminHeader);
-// check if user can change things to avoid any submission from a logged in not admin user
-if($admin->get_permission('pages_modify') == false ) { 
-	exit; 
+require '../../../config.php';
+
+/** @var Database $database */
+
+$admin = new Admin('Pages', 'pages_modify', false);
+
+$pageId = (int) $admin->checkIDKEY('idkey', 0, 'POST', true);
+if ($pageId <= 0) {
+    http_response_code(403);
+    exit('invalid or expired token');
 }
 
-// Create the Fields from Submission
-$aFromString = explode ( "-",$_POST['id']);
-$sDbField    = $aFromString[0];
-$iPageId     = intval($aFromString[1]);
-//sanitize new value to update
-$sNewValue = str_replace(array("[[", "]]", "\n", "\t"), '', htmlspecialchars($admin->add_slashes($admin->get_post('value'))));
-$aCheckPagesFields = array('page_title', 'description', 'keywords');
+$field = (string) ($_POST['field'] ?? '');
 
-//	GET TOOL SETTINGS FROM DB (Json Array)
-$jsonSettings = $database->get_one("SELECT `settings_json` FROM `".TABLE_PREFIX."mod_page_seo_tool`");
-$aSettings = json_decode($jsonSettings, TRUE);
+$allowedFields = ['page_title', 'description', 'keywords'];
 
-if(!defined('REWRITE_URL') && $aSettings['rewriteUrl']['use'] == TRUE ){
-	define('REWRITE_URL', $aSettings['rewriteUrl']['dbString']);
-	array_push($aCheckPagesFields, REWRITE_URL);
+$aSettings = json_decode((string) Settings::get('seo_cfg', '{}'), true) ?: [];
+
+if (!empty($aSettings['menuTitleConfig']['use'])) {
+    $allowedFields[] = 'menu_title';
 }
 
-// UPDATE the DB Field
- if(isset($_POST['value']) && in_array($sDbField, $aCheckPagesFields)){
-	// Update page settings in the pages table
-	$sUpdateQuery  = 'UPDATE `'.TABLE_PREFIX.'pages` SET `'.$sDbField.'` = "'.$sNewValue.'" WHERE `page_id` = '.$iPageId;
-	$database->query($sUpdateQuery);
+if (!empty($aSettings['rewriteUrl']['use']) && !empty($aSettings['rewriteUrl']['dbString'])) {
+    $candidate = (string) $aSettings['rewriteUrl']['dbString'];
+    if (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $candidate) && $database->fieldExists('{TP}pages', $candidate)) {
+        $allowedFields[] = $candidate;
+    }
 }
-if($database->is_error() == FALSE) {
-	echo $sNewValue;
+
+if (!in_array($field, $allowedFields, true)) {
+    http_response_code(400);
+    exit('unknown field');
 }
-exit;
+
+$value = trim(str_replace("\r", '', (string) ($_POST['value'] ?? '')));
+
+$database->query(
+    "UPDATE `{TP}pages` SET `{$field}` = ? WHERE `page_id` = ?",
+    [$value, $pageId]
+);
+
+if ($database->hasError()) {
+    http_response_code(500);
+    exit('save failed');
+}
+
+echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8');

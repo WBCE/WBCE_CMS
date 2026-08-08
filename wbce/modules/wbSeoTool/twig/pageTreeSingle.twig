@@ -1,0 +1,144 @@
+{#
+/**
+ * WBCE CMS AdminTool: wbSeoTool
+ *
+ * pageTreeSingle.twig — one <li> per page, recursively included for children.
+ * Consumes the field names produced by PageTree::build()/applyPermissions().
+ *
+ * Rendered via getTwig() — autoescape is OFF (WBCE convention), so every
+ * user-editable page field (page_title, description, keywords, menu_title,
+ * the optional rewrite-url column) is escaped explicitly via |e. Language
+ * strings come from L_('TXT:KEY') (module) / L_('TEXT:KEY') / L_('HEADING:KEY')
+ * (core) — resolved from the Lang registry, nothing passed in from PHP.
+ */
+#}
+{% for page in pages %}
+    {% set modifyUrl   = '../pages/modify.php?page_id=' ~ page.page_id %}
+    {% set sectionsUrl = '../pages/sections.php?page_id=' ~ page.page_id %}
+    {% set settingsUrl = '../pages/settings.php?page_id=' ~ page.page_id %}
+    {% set restoreUrl  = '../pages/restore.php?page_id=' ~ page.page_id %}
+    <li id="pID_{{ page.page_id }}" class="wbseotool-node visibility-{{ page.visibility }}{% if page.visibility == 'deleted' %} is-deleted{% endif %}">
+        <details open data-node="{{ page.page_id }}">
+            <summary>
+                {% if USE_FLAGS %}
+                    <img class="wbseotool-flag" src="{{ WB_URL }}/languages/{{ page.language|upper }}.svg" alt="[{{ page.language }}]">
+                {% endif %}
+                {% if page.visibility == 'deleted' %}
+                    <span class="wbseotool-icon" title="{{ L_('TEXT:VISIBILITY') }} = {{ L_('TEXT:' ~ page.visibility|upper) }}">{{ inline_svg(ICONS_PATH ~ '/trash.svg') }}</span>
+                {% else %}
+                    <img class="wbseotool-icon" src="{{ INCLUDE_URL }}/wbeSelect/icons/{{ page.visibility }}.svg" alt="" title="{{ L_('TEXT:VISIBILITY') }} = {{ L_('TEXT:' ~ page.visibility|upper) }}">
+                {% endif %}
+
+                {% if page.canModifyPage and USE_MENU_TITLE %}
+                    <span class="wbseotool-title wbseotool-menutitle-val" data-idkey="{{ page.pageIDKEY }}" title="{{ L_('TXT:DOUBLE_CLICK_TO_EDIT') }}">{{ page.menu_title|e }}</span>
+                {% elseif page.canModifyPage %}
+                    <a class="wbseotool-title" href="{{ modifyUrl }}">{{ page.menu_title|e }}</a>
+                {% else %}
+                    <span class="wbseotool-title">{{ page.menu_title|e }}</span>
+                {% endif %}
+
+                <span class="wbseotool-status">
+                    <span class="wbseotool-dot" data-dot-for="title"></span>
+                    <span class="wbseotool-dot" data-dot-for="description"></span>
+                </span>
+
+                <span class="wbseotool-actions">
+                    <span class="wbseotool-pid" title="{{ L_('TEXT:PAGE') }}-ID: {{ page.page_id }}">{{ page.page_id }}</span>
+                    {% if page.canModifyPage %}
+                        <a href="{{ modifyUrl }}" title="{{ L_('HEADING:MODIFY_PAGE') }}" class="wbseotool-icon">{{ inline_svg(ICONS_PATH ~ '/file-pencil.svg') }}</a>
+                    {% endif %}
+
+                    {% if page.canManageSections %}
+                        {% if page.sectionCase == 'menu_link' %}
+                            <span class="wbseotool-icon" title="{{ L_('HEADING:MANAGE_SECTIONS') }}">{{ inline_svg(ICONS_PATH ~ '/list-details.svg') }}</span>
+                        {% else %}
+                            <a href="{{ sectionsUrl }}" title="{{ L_('HEADING:MANAGE_SECTIONS') }}" class="wbseotool-icon">{{ inline_svg(ICONS_PATH ~ '/list-details.svg') }}</a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if page.canModifySettings %}
+                        {% if page.visibility == 'deleted' %}
+                            <a href="{{ restoreUrl }}" title="{{ L_('TEXT:RESTORE') }}" class="wbseotool-icon">{{ inline_svg(ICONS_PATH ~ '/arrow-back-up.svg') }}</a>
+                        {% else %}
+                            <a href="{{ settingsUrl }}" title="{{ L_('TEXT:MODIFY_SETTINGS') }}" class="wbseotool-icon">{{ inline_svg(ICONS_PATH ~ '/cog.svg') }}</a>
+                        {% endif %}
+                    {% endif %}
+
+                    <a href="{{ WB_URL }}{{ page.frontend_link }}" class="external wbseotool-icon" target="_blank" title="{{ L_('TEXT:FRONTEND') }}">{{ inline_svg(ICONS_PATH ~ '/search.svg') }}</a>
+                </span>
+            </summary>
+
+            <table class="wbseotool-fields">
+                <tr class="wbseotool-col-title">
+                    <th>&lt;meta:title&gt;</th>
+                    <td colspan="2">
+                        {% if page.canModifyPage %}
+                            <textarea class="wbseotool-edit" name="value" rows="1" data-counter-type="title"
+                                      hx-post="{{ AJAX_URL }}" hx-trigger="blur changed"
+                                      hx-vals='{"field":"page_title","idkey":"{{ page.pageIDKEY }}"}'
+                                      hx-swap="none">{{ page.page_title|e }}</textarea>
+                        {% else %}
+                            {{ page.page_title|e }}
+                        {% endif %}
+                    </td>
+                    <td class="wbseotool-counter"></td>
+                </tr>
+
+                {% if REWRITE_URL %}
+                    <tr class="wbseotool-col-url">
+                        <th>&lt;{{ REWRITE_URL|e }}&gt;</th>
+                        <td colspan="2">
+                            {% if page.canModifyPage %}
+                                <textarea class="wbseotool-edit" name="value" rows="1"
+                                          hx-post="{{ AJAX_URL }}" hx-trigger="blur changed"
+                                          hx-vals='{"field":"{{ REWRITE_URL }}","idkey":"{{ page.pageIDKEY }}"}'
+                                          hx-swap="none">{{ page[REWRITE_URL]|e }}</textarea>
+                            {% else %}
+                                {{ page[REWRITE_URL]|e }}
+                            {% endif %}
+                        </td>
+                        <td class="wbseotool-counter"></td>
+                    </tr>
+                {% endif %}
+
+                <tr class="wbseotool-col-description">
+                    <th>&lt;description&gt;</th>
+                    <td colspan="2">
+                        {% if page.canModifyPage %}
+                            <textarea class="wbseotool-edit" name="value" rows="1" data-counter-type="description"
+                                      hx-post="{{ AJAX_URL }}" hx-trigger="blur changed"
+                                      hx-vals='{"field":"description","idkey":"{{ page.pageIDKEY }}"}'
+                                      hx-swap="none">{{ page.description|e }}</textarea>
+                        {% else %}
+                            {{ page.description|e }}
+                        {% endif %}
+                    </td>
+                    <td class="wbseotool-counter"></td>
+                </tr>
+
+                {% if KEYWORDS_CONFIG %}
+                    <tr class="wbseotool-col-keywords">
+                        <th>&lt;{{ KEYWORDS_CONFIG|e }}&gt;</th>
+                        <td colspan="2">
+                            {% if page.canModifyPage %}
+                                <textarea class="wbseotool-edit" name="value" rows="1"
+                                          hx-post="{{ AJAX_URL }}" hx-trigger="blur changed"
+                                          hx-vals='{"field":"keywords","idkey":"{{ page.pageIDKEY }}"}'
+                                          hx-swap="none">{{ page.keywords|e }}</textarea>
+                            {% else %}
+                                {{ page.keywords|e }}
+                            {% endif %}
+                        </td>
+                        <td class="wbseotool-counter"></td>
+                    </tr>
+                {% endif %}
+            </table>
+
+            {% if page.children %}
+                <ol>
+                    {% include 'pageTreeSingle.twig' with {'pages': page.children} %}
+                </ol>
+            {% endif %}
+        </details>
+    </li>
+{% endfor %}

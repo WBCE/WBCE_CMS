@@ -1,0 +1,283 @@
+/**
+ * WBCE CMS AdminTool: wbSeoTool
+ * pageTree.css — rewritten for the HTMX/<details> based tree, no sprite PNGs.
+ */
+
+#wbseotool {
+	font-family: arial, verdana, sans-serif;
+	font-size: 1em;
+}
+
+#wbseotool-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 14px;
+	background-color: #E1E9F5;
+	border: 1px solid #C5D6E2;
+	border-radius: 6px;
+	padding: 8px 10px;
+	margin: 10px;
+}
+
+#wbseotool-toolbar label {
+	font-weight: bold;
+	color: #53748D;
+	cursor: pointer;
+	font-size: .9em;
+}
+
+.wbseotool-toolbar-right {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+ol.wbseotool-tree,
+.wbseotool-tree ol {
+	list-style: none;
+	margin: 0;
+	padding-left: 40px;
+}
+
+ol.wbseotool-tree {
+	padding-left: 0;
+}
+
+.wbseotool-node {
+	margin: 4px 0;
+}
+
+.wbseotool-node > details {
+	border: 1px solid #C5D6E2;
+	border-radius: 9px;
+	background-color: #FAFAFB;
+}
+
+.wbseotool-node.is-deleted > details {
+	background-color: #EDE8E8;
+	opacity: .6;
+}
+
+.wbseotool-node > details > summary {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 8px;
+	cursor: pointer;
+	font-weight: bold;
+	list-style: none;
+}
+
+.wbseotool-node > details > summary::-webkit-details-marker {
+	display: none;
+}
+
+.wbseotool-node > details > summary::before {
+	content: '▶';
+	display: inline-block;
+	font-size: .7em;
+	color: #626F8B;
+	transition: transform .1s ease;
+}
+
+.wbseotool-node > details[open] > summary::before {
+	transform: rotate(90deg);
+}
+
+.wbseotool-title {
+	color: inherit;
+	text-decoration: none;
+}
+
+.wbseotool-title:hover {
+	text-decoration: underline;
+}
+
+.wbseotool-pid {
+	font-family: courier, monospace;
+	font-weight: bold;
+	color: #626F8B;
+	background-color: #E1E9F5;
+	border: 1px dashed #CDD9EA;
+	border-radius: 6px 3px 3px 6px;
+	padding: 0 5px;
+}
+
+.wbseotool-status {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin-left: 6px;
+}
+
+.wbseotool-dot {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #C9D2DD;
+	cursor: help;
+	position: relative;
+}
+
+.wbseotool-dot.status-off      { background-color: #DCE2EA; }
+.wbseotool-dot.status-empty    { background-color: #9AA5B4; }
+.wbseotool-dot.status-short    { background-color: #E0A030; }
+.wbseotool-dot.status-optimal  { background-color: #4CA35C; }
+.wbseotool-dot.status-long     { background-color: #C4453C; }
+
+.wbseotool-dot.has-duplicate::after {
+	content: '';
+	position: absolute;
+	top: -3px;
+	left: -3px;
+	right: -3px;
+	bottom: -3px;
+	border-radius: 50%;
+	border: 1.5px solid #C4453C;
+}
+
+.wbseotool-actions {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.wbseotool-actions img {
+	vertical-align: middle;
+}
+
+.wbseotool-icon {
+	display: inline-flex;
+	align-items: center;
+	vertical-align: middle;
+	color: #626F8B;
+}
+
+.wbseotool-icon svg {
+	width: 16px;
+	height: 16px;
+	display: block;
+}
+
+img.wbseotool-icon {
+	width: 16px;
+	height: 16px;
+}
+
+a.wbseotool-icon:hover {
+	color: #3a5f8a;
+}
+
+table.wbseotool-fields {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: #FAFAFB;
+	box-shadow: inset 0 0 4px #A8BCCB;
+	font-family: courier, monospace;
+	margin: 0 0 6px;
+}
+
+table.wbseotool-fields th,
+table.wbseotool-fields td {
+	border-top: 1px solid #BECADB;
+	padding: 4px;
+	font-size: .9em;
+	vertical-align: top;
+}
+
+table.wbseotool-fields th {
+	color: #C71585;
+	text-align: right;
+	width: 110px;
+}
+
+.wbseotool-edit {
+	width: 99%;
+	height: 1.4em;
+	min-height: 10px;
+	overflow: hidden;
+	resize: none;
+	font-family: courier, monospace;
+	font-size: 1em;
+	border: 1px solid #9FC3DD;
+	padding: 2px;
+	transition: box-shadow .2s ease, border-color .2s ease;
+}
+
+.wbseotool-edit.wbseotool-save-ok {
+	border-color: #6FA35C;
+	box-shadow: 0 0 4px rgba(111, 163, 92, .6);
+}
+
+.wbseotool-edit.status-empty   { border-color: #9AA5B4; }
+.wbseotool-edit.status-short   { border-color: #E0A030; }
+.wbseotool-edit.status-long    { border-color: #C4453C; }
+
+.wbseotool-edit.wbseotool-duplicate {
+	outline: 1.5px dashed #C4453C;
+	outline-offset: 1px;
+}
+
+.wbseotool-edit.wbseotool-save-error {
+	border-color: #C43C3C;
+	box-shadow: 0 0 4px rgba(196, 60, 60, .6);
+}
+
+.wbseotool-counter {
+	color: red;
+	text-align: right;
+	width: 140px;
+	white-space: nowrap;
+}
+
+.cssOptimum { color: green !important; }
+.cssExceeded { color: #C43C3C !important; }
+
+.wbseotool-flag {
+	width: 18px;
+	height: 12px;
+	object-fit: cover;
+	vertical-align: middle;
+	border: 1px solid #CDD9EA;
+}
+
+/* Menu title — double-click-to-edit (catalogue_hub "epslug" pattern),
+   used directly on the .wbseotool-title element in the summary row. */
+.wbseotool-menutitle-val {
+	color: #447fbc;
+	font-weight: bold;
+	cursor: text;
+	border-bottom: 1px dashed transparent;
+	transition: border-color .15s, background-color .2s, box-shadow .2s;
+}
+
+.wbseotool-menutitle-val:hover {
+	border-bottom-color: #447fbc;
+}
+
+.wbseotool-menutitle-val.wbseotool-save-ok {
+	background-color: rgba(111, 163, 92, .15);
+	box-shadow: 0 0 0 2px rgba(111, 163, 92, .4);
+}
+
+.wbseotool-menutitle-val.wbseotool-save-error {
+	background-color: rgba(196, 60, 60, .15);
+	box-shadow: 0 0 0 2px rgba(196, 60, 60, .4);
+}
+
+.wbseotool-menutitle-inp {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: bold;
+	color: #447fbc;
+	background: #F0F5FA;
+	border: none;
+	border-bottom: 1.5px solid #447fbc;
+	outline: none;
+	padding: 0 .1em;
+	min-width: 4ch;
+}

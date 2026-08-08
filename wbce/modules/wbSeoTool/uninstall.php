@@ -1,23 +1,23 @@
 <?php
 /**
- * WebsiteBaker CMS AdminTool: wbSeoTool
+ * WBCE CMS AdminTool: wbSeoTool
  *
  * uninstall.php
- * This file executes a DROP TABLE query while the module is being uninstalled
- * 
- * 
- * @platform    CMS WebsiteBaker 2.8.x
+ * Removes the module's setting from the shared {TP}settings table.
+ *
  * @package     wbSeoTool
- * @author      Christian M. Stefan (Stefek)
- * @copyright   Christian M. Stefan
+ * @author      Christian M. Stefan (https://www.wbEasy.de/)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 // prevent this file from being accessed directly
-if(!defined('WB_PATH')) exit("Cannot access this file directly ".__FILE__);
+if (!defined('WB_PATH')) exit("Cannot access this file directly " . __FILE__);
 
-$sTable = TABLE_PREFIX . 'mod_page_seo_tool';
-// remove $sTable from WB database
-if($database->query("DROP TABLE IF EXISTS `".$sTable."`")){
-	echo "<code>".$sTable." was dropped successfully!</code>";
-}
+Settings::delete('seo_cfg');
+
+// Defensive cleanup: only relevant if a pre-1.1.0 install is uninstalled
+// without ever having gone through upgrade.php (e.g. staged but never re-loaded).
+/** @var Database $database */
+$database->query('DROP TABLE IF EXISTS `{TP}mod_page_seo_tool`');
+
+echo '<code>wbSeoTool settings removed.</code>';
