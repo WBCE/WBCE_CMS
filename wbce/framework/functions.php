@@ -1470,6 +1470,18 @@ function sanitizeCssColor(?string $color): string
         return strtolower($color);
     }
 
+    // ── CSS custom property reference ──────────────────────────────────────
+    // var(--name) or var(--name, fallback) — WBCE VES's whole design-token
+    // system is built on custom properties (e.g. var(--c-accent)); admin-
+    // authored CSS (base.css, VES's per-preset Custom-CSS field) legitimately
+    // references them directly, not just through a resolved hex/keyword.
+    // Fallback content is restricted to a paren-free character set — blocks
+    // a nested function call from smuggling something this allowlist
+    // wouldn't otherwise pass.
+    if (preg_match('/^var\(--[a-zA-Z][a-zA-Z0-9-]*(?:\s*,\s*[^()]*)?\)$/', $color)) {
+        return $color;
+    }
+
     // ── Functional color notation ─────────────────────────────────────────────
     // Function name is restricted to the known CSS color functions — this
     // explicitly blocks expression(), url() and any other non-color function.
