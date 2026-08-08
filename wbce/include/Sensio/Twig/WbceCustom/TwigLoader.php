@@ -71,6 +71,7 @@ if (!function_exists('getTwig')) {
             $oTwig->addGlobal('TOOL_NAME', $oEngine->get_module_name(ADMIN_TOOL_DIR));
             $oTwig->addGlobal('TOOL_URI', ADMIN_URL.'/admintools/tool.php?tool='.ADMIN_TOOL_DIR);
             $oTwig->addGlobal('ADDON_URL', WB_URL.'/modules/'.ADMIN_TOOL_DIR);
+            $oTwig->addGlobal('TOOL_ICON', $oEngine->render_module_icon(ADMIN_TOOL_DIR));
         }
         // VARS present in Twig Templates for *Section/Page Type modules*
         if ($iSectionID != null) {

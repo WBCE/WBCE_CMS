@@ -85,19 +85,14 @@ foreach ($resTools as $arr) {
         }
     }
 
-    $info      = @file_get_contents(WB_PATH . '/modules/' . $toolDir . '/info.php');
-    // $striptags = false: module_icon may hold raw <svg>…</svg> markup instead of
-    // an "fa fa-*" class string — stripping tags would blank it out.
-    $tool_icon = get_variable_content('module_icon', $info, false, false);
-    $tool_icon = $tool_icon === false ? $tool_default_icon : trim($tool_icon);
-    $icon_is_svg = stripos($tool_icon, '<svg') === 0;
+    $iconData = $admin->get_module_icon($toolDir, $tool_default_icon);
 
     $tools[$id] = [
         'dir'      => $toolDir,
         'name'     => $admin->get_module_name($toolDir),
         'descr'    => $admin->get_module_description($toolDir),
-        'icon'     => $tool_icon,
-        'icon_svg' => $icon_is_svg,
+        'icon'     => $iconData['icon'],
+        'icon_svg' => $iconData['is_svg'],
     ];
 }
 

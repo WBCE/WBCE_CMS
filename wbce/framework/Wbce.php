@@ -1435,6 +1435,60 @@ class Wbce extends SecureForm
     }
 
     /**
+     * Get a module's icon, resolved from its info.php ($module_icon).
+     *
+     * Unlike get_module_name()/get_module_description() this does NOT check
+     * language files (icons aren't translatable) or the {TP}addons table
+     * (it has no icon column) — info.php is the only source, with a hard
+     * fallback if it's missing or empty.
+     *
+     * $module_icon may hold either a Font Awesome class string (e.g.
+     * "fa fa-tasks") or raw inline <svg>…</svg> markup — both are returned
+     * as-is; use render_module_icon() if you just want ready-to-print HTML.
+     *
+     * @param  string $modDir       Module directory name
+     * @param  string $defaultIcon  Fallback FA class if info.php has none
+     * @return array{icon: string, is_svg: bool}
+     */
+    public function get_module_icon(string $modDir, string $defaultIcon = 'fa fa-hat'): array
+    {
+        static $cache = [];
+        if (isset($cache[$modDir])) return $cache[$modDir];
+
+        $icon = $defaultIcon;
+        $infoFile = WB_PATH . '/modules/' . $modDir . '/info.php';
+        if (file_exists($infoFile)) {
+            // striptags=false, convert_to_entities=false: module_icon may be
+            // raw SVG markup, not just a plain class string.
+            $temp = get_variable_content('module_icon', @file_get_contents($infoFile), false, false);
+            if ($temp !== false && trim($temp) !== '') {
+                $icon = trim($temp);
+            }
+        }
+
+        return $cache[$modDir] = [
+            'icon'   => $icon,
+            'is_svg' => stripos($icon, '<svg') === 0,
+        ];
+    }
+
+    /**
+     * Get a module's icon as ready-to-print HTML — either a Font Awesome
+     * <i> tag or the raw <svg> markup from info.php.
+     *
+     * @param  string $modDir       Module directory name
+     * @param  string $defaultIcon  Fallback FA class if info.php has none
+     * @return string
+     */
+    public function render_module_icon(string $modDir, string $defaultIcon = 'fa fa-hat'): string
+    {
+        $data = $this->get_module_icon($modDir, $defaultIcon);
+        return $data['is_svg']
+            ? $data['icon']
+            : '<i class="' . htmlspecialchars($data['icon'], ENT_QUOTES) . '"></i>';
+    }
+
+    /**
      * @deprecated No-op — PDO handles escaping automatically.
      *             Kept for backward compatibility with older modules.
      *
