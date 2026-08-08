@@ -177,7 +177,11 @@ final class FontCache
                         $fontUrl  = $m[2];
                         $quote    = $m[1];
                         $ext      = strtolower(pathinfo((string)strtok($fontUrl, '?'), PATHINFO_EXTENSION)) ?: 'woff2';
-                        $filename = $prefix . md5($fontUrl) . '.' . $ext;
+                        // Stable name: Family_Weight.ext — predictable for editor.css references.
+                        // Falls back to a URL hash only when family couldn't be parsed.
+                        $filename = $prefix !== ''
+                            ? rtrim($prefix, '_') . '.' . $ext
+                            : md5($fontUrl) . '.' . $ext;
                         $path     = $this->cacheDir . $filename;
 
                         if (!is_file($path)) {
