@@ -1371,7 +1371,7 @@ final class AssetQueue
             && isset($_SERVER['HTTP_CACHE_CONTROL'])
             && strtolower(trim((string)$_SERVER['HTTP_CACHE_CONTROL'])) === 'no-cache'
         ) {
-            $cache->forceRefresh($url, $format);
+            $cache->forceRefresh($url, $format, $alias);
         }
 
         $result = $cache->resolve($url, $format, $alias);

@@ -78,9 +78,9 @@ final class FontCache
      */
     public function resolve(string $url, string $format, string $alias): array
     {
-        $key     = $this->key($url, $format);
-        $cssFile = $this->cacheDir . $key . '.css';
-        $cssUrl  = $this->toUrl($key . '.css');
+        $cssName = $alias !== '' ? $this->sanitizeAlias($alias) . '.css' : $this->key($url, $format) . '.css';
+        $cssFile = $this->cacheDir . $cssName;
+        $cssUrl  = $this->toUrl($cssName);
 
         if (!is_file($cssFile)) {
             if (!extension_loaded('curl')) {
@@ -89,6 +89,7 @@ final class FontCache
                 }
                 return ['cssUrl' => $url, 'aliasCss' => ''];
             }
+            $key = $this->key($url, $format);
             if (!$this->download($url, $format, $cssFile, $key)) {
                 if ($this->debug) {
                     error_log('FontCache: download failed — using external URL: ' . $url);
@@ -106,11 +107,18 @@ final class FontCache
      * Delete all cached files for a specific URL + format combination.
      * Called by AssetQueue on admin force-refresh (CTRL+F5).
      */
-    public function forceRefresh(string $url, string $format): void
+    public function forceRefresh(string $url, string $format, string $alias = ''): void
     {
-        $key = $this->key($url, $format);
-        foreach (glob($this->cacheDir . $key . '*') ?: [] as $file) {
+        $cssName = $alias !== '' ? $this->sanitizeAlias($alias) . '.css' : $this->key($url, $format) . '.css';
+        foreach (glob($this->cacheDir . $cssName . '*') ?: [] as $file) {
             @unlink($file);
+        }
+        // For hash-based names also clean up any sidecar files (e.g. old-style .hash files)
+        if ($alias === '') {
+            $key = $this->key($url, $format);
+            foreach (glob($this->cacheDir . $key . '*') ?: [] as $file) {
+                @unlink($file);
+            }
         }
     }
 
@@ -260,6 +268,19 @@ final class FontCache
     private function key(string $url, string $format): string
     {
         return md5($url . '|' . $format);
+    }
+
+    /**
+     * Sanitize an alias string to a safe, predictable filename stem.
+     * "Template Script" → "template_script"
+     * Rules: lowercase, any run of non-alphanumeric chars → single underscore,
+     *        leading/trailing underscores stripped.
+     */
+    private function sanitizeAlias(string $alias): string
+    {
+        $s = strtolower($alias);
+        $s = preg_replace('/[^a-z0-9]+/', '_', $s);
+        return trim($s, '_') ?: 'font';
     }
 
     /**
