@@ -72,7 +72,7 @@ if($iId == 0){
 if(!opf_unregister_filter($iId)) {
     // we use opf_unregister_filter because it removes the filter
     //   and all its files too, when necessary
-    $aRspnd ['message'] = 'db query failed: '.$database->get_error();
+    $aRspnd ['message'] = 'db query failed: '.$database->getError();
     exit(json_encode($aRspnd));
 
 } else {

@@ -132,21 +132,22 @@ if(is_array($filters)) {
         $filter['additional_values'] = serialize($filter['additional_values']);
         $filter['additional_fields'] = serialize($filter['additional_fields']);
         $filter['additional_fields_languages'] = serialize($filter['additional_fields_languages']);
-        $sSql = "UPDATE `{TP}mod_outputfilter_dashboard` SET "
-              . "`userfunc`='".addslashes($filter['userfunc'])."', "
-              . "`plugin`='".addslashes($filter['plugin'])."', "
-              . "`file`='".addslashes($filter['file'])."', "
-              . "`func`='".addslashes($filter['func'])."', "
-              . "`desc`='".addslashes($filter['desc'])."', "
-              . "`configurl`='".addslashes($filter['configurl'])."', "
-              . "`csspath`='".addslashes($filter['csspath'])."', "
-              . "`helppath`='".addslashes($filter['helppath'])."', "
-              . "`additional_values`='".addslashes($filter['additional_values'])."', "
-              . "`additional_fields`='".addslashes($filter['additional_fields'])."', "
-              . "`additional_fields_languages`='".addslashes($filter['additional_fields_languages'])."'"
-              . "WHERE `id`=".$filter['id'];
-        if(!opf_db_run_query($sSql))
-         echo "SQL statement failed: $sSql";
+        $database->upsertRow('{TP}mod_outputfilter_dashboard', 'id', [
+            'id'                          => $filter['id'],
+            'userfunc'                    => $filter['userfunc'],
+            'plugin'                      => $filter['plugin'],
+            'file'                        => $filter['file'],
+            'func'                        => $filter['func'],
+            'desc'                        => $filter['desc'],
+            'configurl'                   => $filter['configurl'],
+            'csspath'                     => $filter['csspath'],
+            'helppath'                    => $filter['helppath'],
+            'additional_values'           => $filter['additional_values'],
+            'additional_fields'           => $filter['additional_fields'],
+            'additional_fields_languages' => $filter['additional_fields_languages'],
+        ]);
+        if($database->hasError())
+         echo "SQL statement failed: " . $database->getError();
     }
 }
 
@@ -174,11 +175,8 @@ $aFilters = array(
     'Insert'        => 'Class Insert Helper',
 );
 
-$aFiltersDB = $database->get_array("SELECT `name` FROM `{TP_OPFD}`");
-$aFilterNames = array();
-for ($i=0; $i<sizeof($aFiltersDB); $i++) {
-	$aFilterNames[] = $aFiltersDB[$i]['name'];
-}
+$aFiltersDB = $database->fetchAll("SELECT `name` FROM `{TP_OPFD}`");
+$aFilterNames = array_column($aFiltersDB, 'name');
 foreach($aFilters as $old=>$new){
     // old filter name still in the DB
     if(in_array($old,$aFilterNames)){
@@ -200,9 +198,7 @@ $obsoleteFuncs = [
     'opff_mod_opf_csstohead',
     'opff_mod_opf_move_stuff',
 ];
-foreach ($obsoleteFuncs as $func) {
-    $database->query("DELETE FROM `{TP}mod_outputfilter_dashboard` WHERE `funcname` = ?", [$func]);
-}
+$database->deleteRow('{TP}mod_outputfilter_dashboard', 'funcname', $obsoleteFuncs);
 
 // ── Remove old standalone mod_opf_* module entries and directories ───────────
 // These filters now live in outputfilter_dashboard/plugins/core_outputfilters/.
@@ -213,7 +209,7 @@ $removeOpfMods = [
     'mod_opf_move_stuff', 'mod_opf_remove_system_ph', 'mod_opf_replace_stuff', 'mod_opf_wblink',
 ];
 foreach ($removeOpfMods as $mod) {
-    $database->query("DELETE FROM `{TP}addons` WHERE `directory` = ?", [$mod]);
+    $database->deleteRow('{TP}addons', 'directory', $mod);
     $modPath = WB_PATH . '/modules/' . $mod;
     if (is_dir($modPath)) {
         opf_io_rmdir($modPath);

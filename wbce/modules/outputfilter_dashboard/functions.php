@@ -132,8 +132,9 @@ function opf_get_helppath(int $iFilterId) {
     if($iFilterId == 0) return '';
     
     $sRetVal = '';
-    $sQry = "SELECT `name`, `helppath`, `plugin`, `file` FROM `{TP_OPFD}` WHERE `id` = ".$iFilterId;
-    $filter  = $GLOBALS['database']->get_array($sQry)[0];
+    $filter = $GLOBALS['database']->fetchRow(
+        "SELECT `name`, `helppath`, `plugin`, `file` FROM `{TP_OPFD}` WHERE `id` = ?", [$iFilterId]
+    ) ?? [];
     
     // is there a helppath at all?
     if (empty($filter) || $filter['helppath'] == 'a:0:{}'){        
@@ -208,14 +209,15 @@ function opf_quotes($var) {
 function opf_get_extrafields_array(int $iFilterId): array {
     $aExtraFields = [];
     global $database;
-    if (!$filter = $database->get_array(
+    $filter = $database->fetchRow(
         "SELECT
             `additional_values`,
             `additional_fields`,
             `additional_fields_languages`
-            FROM `{TP_OPFD}` WHERE `id`=". $iFilterId
-        )[0]
-    ){
+            FROM `{TP_OPFD}` WHERE `id` = ?",
+        [$iFilterId]
+    );
+    if (!$filter) {
         return $aExtraFields;
     }
 
@@ -1929,7 +1931,7 @@ function opf_save() {
     
     if($res == TRUE) {
         if($id==0){
-            $newInlineFilterId = $database->get_one("SELECT MAX(`id`) FROM `{TP_OPFD}`");
+            $newInlineFilterId = $database->fetchValue("SELECT MAX(`id`) FROM `{TP_OPFD}`");
             return $newInlineFilterId;
         } else {
             return $id;

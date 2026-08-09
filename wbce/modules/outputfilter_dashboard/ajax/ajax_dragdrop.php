@@ -67,8 +67,7 @@ if(!isset($_POST['action']) || !isset($_POST['id']) )
         exit(json_encode($aJsonRespond));
     }
 
-    // Sanitize variables
-    $action = $admin->add_slashes($_POST['action']);
+    $action = $_POST['action'];
     if ($action == "updatePosition")
     {
         $i = array();
@@ -82,13 +81,14 @@ if(!isset($_POST['action']) || !isset($_POST['id']) )
             $id = $admin->checkIDKEY($recID,0,'key',true);
             $filter = opf_get_data($id);
             $type = $filter['type'];
-            // now we sanitize array
-            $qstring ="UPDATE `".TABLE_PREFIX."mod_outputfilter_dashboard`"
-               . " SET `position` = '".$i[$type]."'"
-               . " WHERE `id` = ".intval($id)." ";
-            if(!opf_db_run_query($qstring)) {
+            global $database;
+            $database->upsertRow('{TP}mod_outputfilter_dashboard', 'id', [
+                'id'       => (int) $id,
+                'position' => $i[$type],
+            ]);
+            if($database->hasError()) {
                 $aJsonRespond['success'] = false;
-                $aJsonRespond['message'] = 'db query failed: '.opf_db_get_error();
+                $aJsonRespond['message'] = 'db query failed: '.$database->getError();
                 exit(json_encode($aJsonRespond));
             }
             $i[$type]++;

@@ -45,10 +45,8 @@ defined('WB_PATH') or die(header('Location: ../index.php'));
 // Authorization: check if user is allowed to use Admin-Tools
 $admin->get_permission('admintools') or die(header('Location: ../../index.php'));
 
-if (!$filter = $database->get_array(
-        "SELECT * FROM `{TP_OPFD}` WHERE `id`=". $id
-        )[0]
-    ){
+$filter = $database->fetchRow("SELECT * FROM `{TP_OPFD}` WHERE `id` = ?", [$id]);
+if (!$filter) {
     return;
 }
 

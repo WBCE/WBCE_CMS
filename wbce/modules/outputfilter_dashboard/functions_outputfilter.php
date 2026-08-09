@@ -592,12 +592,14 @@ function opf_register_filter($filter, $serialized=FALSE) {
     else
         $update = opf_is_registered($name);
     if($update) { // update, fetch some old values from db
+        global $database;
         $sql_action = 'UPDATE';
-        if($id>0) $sql_where = "WHERE `id`=".(int)$id;
-        else $sql_where = "WHERE `name`='".addslashes($name)."'"; // keep this addslashes()-call!
-        $old = opf_db_query( "SELECT * FROM `{TP_OPFD}` $sql_where");
-        if($old===FALSE)return(FALSE);
-        $old = $old[0];
+        if($id>0) {
+            $old = $database->fetchRow("SELECT * FROM `{TP_OPFD}` WHERE `id` = ?", [(int)$id]);
+        } else {
+            $old = $database->fetchRow("SELECT * FROM `{TP_OPFD}` WHERE `name` = ?", [$name]);
+        }
+        if($old===null)return(FALSE);
         $old_type = $old['type'];
         $old_pos = $old['position'];
         if($type==$old_type) { // type unchanged, so keep position
