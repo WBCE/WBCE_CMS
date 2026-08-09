@@ -21,7 +21,7 @@ if(isset($_POST['action']) && $oAccounts->get_post('action') == 'profile'){
 }
 
 // Get user's data array
-$aUser = $database->get_array("SELECT * FROM `{TP}users` WHERE `user_id` = ".$oAccounts->get_user_id())[0];
+$aUser = $database->fetchRow("SELECT * FROM `{TP}users` WHERE `user_id` = ?", [$oAccounts->get_user_id()]);
 $sDisplayName = $aUser['display_name'];
 $sEmail       = $aUser['email'];
 
