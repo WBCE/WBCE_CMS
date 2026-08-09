@@ -16,25 +16,26 @@ if(!empty($_POST["message_id"])){
     }
 
        // Get records from the database
-	$section_id  = $_POST['section_id'];
-	$msg_id      = $_POST['message_id'];
-    $number_load = $_POST['load'];
+	$section_id  = (int) $_POST['section_id'];
+	$msg_id      = (int) $_POST['message_id'];
+    $number_load = (int) $_POST['load'];
 
 
 
-   	$query = $database->query(
-		"SELECT * FROM `".TABLE_PREFIX."mod_miniform_data`
-			WHERE `section_id` = ".$section_id." AND `message_id` < ".$msg_id."
+   	$rows = $database->fetchAll(
+		"SELECT * FROM `{TP}mod_miniform_data`
+			WHERE `section_id` = ? AND `message_id` < ?
 			ORDER BY `message_id` DESC
-			LIMIT ".$number_load
+			LIMIT ?",
+		[$section_id, $msg_id, $number_load]
 	);
-	$number_loaded = $query->numRows();
+	$number_loaded = count($rows);
 
 	$aToJson['data'] = array();
     if($number_loaded > 0){
 
 		$aToJson['success'] = true;
-        while($msg = $query->fetchRow(MYSQLI_ASSOC)){
+        foreach($rows as $msg){
 			$msg_id = $msg['message_id'];
 			$aToJson['message'] = $msg_id ;
 			$aToJson['data'][$msg_id]['message_id'] = $msg_id;
@@ -43,12 +44,13 @@ if(!empty($_POST["message_id"])){
 		}
 		rsort($aToJson['data']);
 		// Count all records except already displayed
-		$totalRowCount = $database->query(
+		$totalRowCount = count($database->fetchAll(
 			"SELECT `message_id`
-				FROM `".TABLE_PREFIX."mod_miniform_data`
-				WHERE `section_id` = ".$section_id." AND `message_id` < ".$msg_id."
-				ORDER BY message_id DESC"
-		)->numRows();
+				FROM `{TP}mod_miniform_data`
+				WHERE `section_id` = ? AND `message_id` < ?
+				ORDER BY message_id DESC",
+			[$section_id, $msg_id]
+		));
 
 		if($totalRowCount > 0){
 			$next_amount = $totalRowCount > $number_load ? $number_load : $totalRowCount;

@@ -32,7 +32,7 @@ $number_load = 5; // how many messages should be loaded?
 
 
 
-$aMiniforms = $database->get_array("SELECT * FROM `{TP}mod_miniform`");
+$aMiniforms = $database->fetchAll("SELECT * FROM `{TP}mod_miniform`");
 #debug_dump($aMiniforms);
 
 	
@@ -95,8 +95,8 @@ function timeago($iTimestamp) {
 if(is_array($aMiniforms)){
 	foreach($aMiniforms as $miniform){
 		$section_id = $miniform['section_id'];
-		$page_id = $database->get_one("SELECT `page_id` FROM `{TP}sections` WHERE `section_id` = ".$section_id);	
-		$heighestTimestamp = $database->get_one("SELECT max(`submitted_when`) FROM `{TP}mod_miniform_data` WHERE `section_id` = ".$section_id);
+		$page_id = $database->fetchValue("SELECT `page_id` FROM `{TP}sections` WHERE `section_id` = ?", [$section_id]);
+		$heighestTimestamp = $database->fetchValue("SELECT max(`submitted_when`) FROM `{TP}mod_miniform_data` WHERE `section_id` = ?", [$section_id]);
 	?>
 	<script>
 	$(function() {
@@ -135,7 +135,7 @@ if(is_array($aMiniforms)){
 		$sLinkToSection = sprintf($sLinkToSection, $page_id, $section_id, 1, $section_id);
 		$sLatestMessage = timeago($heighestTimestamp);
 		$sLatestMessage = $sLatestMessage == '' ? $TEXT['NONE_FOUND'] : $sLatestMessage;
-		$aPage = $database->get_array("SELECT * FROM `{TP}pages` WHERE `page_id` = ".$page_id)[0];
+		$aPage = $database->fetchRow("SELECT * FROM `{TP}pages` WHERE `page_id` = ?", [$page_id]);
 	?>
 	<div class="content-box">
 	<div  style="padding:0px 7px;">

@@ -18,7 +18,7 @@ if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 require_once (WB_PATH.'/framework/functions.php');
 
 // Delete page from mod_wrapper
-$database->query("DELETE FROM ".TABLE_PREFIX."mod_miniform WHERE section_id = '$section_id'");
-$database->query("DELETE FROM ".TABLE_PREFIX."mod_miniform_data WHERE section_id = '$section_id'");
+$database->query("DELETE FROM {TP}mod_miniform WHERE section_id = ?", [$section_id]);
+$database->query("DELETE FROM {TP}mod_miniform_data WHERE section_id = ?", [$section_id]);
 
 ?>

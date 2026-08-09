@@ -1,0 +1,132 @@
+<div class="miniform">
+	<div class="{MESSAGE_CLASS}">{STATUSMESSAGE}</div>
+	<div class="{FORM_CLASS}">
+		<h2>Please fill our contactform</h2>
+		<small>Items marked with <span><span>*</span></span> are required</small>
+		<form name="form_{SECTION_ID}" id="form_{SECTION_ID}" method="post" action="{URL}">
+			<input name="miniform" type="hidden" value="{SECTION_ID}"/>
+			<input name="header" type="hidden" value="Full contact form"/>
+			<input name="mf_timestamp" type="hidden" value="{DATE} {TIME}"/>
+			{ASPFIELDS}
+
+			<div class="full">
+				<label for="department"><span>Contact department <span>*</span></span>
+					<select autofocus required="required" class="{DEPARTMENT_ERROR}" id="department" name="mf_r_department">
+						<option value="">-- Please select --</option>
+						<option {DEPARTMENT_SELECTED_CUSTOMER_SERVICE} value="Customer service">Customer service</option>
+						<option {DEPARTMENT_SELECTED_SALES_TEAM} value="Sales team">Sales team</option>
+						<option {DEPARTMENT_SELECTED_SUBSCRIPTIONS} value="Subscriptions">Subscriber service</option>
+					</select>
+				</label>
+			</div>
+				
+			<div class="full">
+				<label for="company"><span>Company</span>
+					<input class="{COMPANYNAME_ERROR}" type="text" id="company" name="mf_r_companyname" value="{COMPANYNAME}"  />
+				</label>
+			</div>
+			
+			<div class="full">
+				<label for="title"><span>Title</span>
+					<div class="grouping {TITLE_ERROR}">
+						<input type="hidden" id="title" name="mf_r_title" value=""/> 
+						<input required="required" type="radio" {TITLE_MR} id="title-1" name="mf_r_title" value="Mr"><label for="title-1">Mr.</label>
+						<input required="required" type="radio" {TITLE_MRS} id="title-2" name="mf_r_title" value="Mrs"><label for="title-2">Mrs.</label>
+					</div>
+				</label>
+			</div>
+			
+			<div class="onethird">
+				<label for="firstname"><span>Firstname <span>*</span></span>
+					<input required="required" class="{FIRSTNAME_ERROR}" type="text" id="firstname" name="mf_r_firstname" value="{FIRSTNAME}" />
+				</label>
+			</div>
+			<div class="twothird pullright">
+				<label for="lastname"><span>Lastname <span>*</span></span>
+					<input required="required" class="{LASTNAME_ERROR}" type="text" id="lastname" name="mf_r_lastname" value="{LASTNAME}" />
+				</label>
+			</div>
+
+			<div class="twothird">
+				<label for="address"><span>Street <span>*</span></span>
+					<input required="required" class=" {STREET_ERROR}" type="text" id="address" name="mf_r_street" value="{STREET}" />
+				</label>
+			</div>
+			
+			<div class="onethird pullright">
+				<label for="number"><span>Number <span>*</span></span>
+					<input required="required" class="{NUMBER_ERROR}" type="text" id="number" name="mf_r_number" value="{NUMBER}" />
+				</label>
+			</div>
+			
+			<div class="onethird">
+				<label for="zipcode"><span>Zipcode <span>*</span></span>
+					<input required="required" class="{ZIPCODE_ERROR}" type="text" id="zipcode" name="mf_r_zipcode" value="{ZIPCODE}" />
+				</label>
+			</div>
+
+			<div class="twothird pullright ">
+				<label for="city"><span>City <span>*</span></span>
+					<input required="required" class="{CITY_ERROR}" type="text" id="city" name="mf_r_city" value="{CITY}" />
+				</label>
+			</div>
+			
+			<div class="full">
+				<label for="country"><span>Country</span>
+					<input type="text" class="{COUNTRY_ERROR}" id="country" name="mf_country" value="{COUNTRY}" />
+				</label>
+			</div>
+
+			<div class="half">
+				<label for="phone"><span>Phone <span>*</span></span>
+					<input required="required" type="tel" class="{PHONE_ERROR}" id="phone" name="mf_r_phone" value="{PHONE}" />
+				</label>
+			</div>
+
+			<div class="half pullright">
+				<label for="mobile"><span>Mobile</span>
+				<input type="tel" class="{MOBILE_ERROR}" id="mobile" name="mf_mobile" value="{MOBILE}" />
+				</label>
+			</div>
+			
+			
+			<div class="full">
+				<label for="email"><span>E-mail <span>*</span></span>
+					<input required="required" class="{EMAIL_ERROR}" type="email" id="email" name="mf_r_email" value="{EMAIL}" />
+				</label>
+			</div>
+
+			<div class="full">
+				<label style="width:100%" for="message"><span>Your Message <span>*</span></span>
+					<textarea required="required" class="{MESSAGE_ERROR}" cols="80" rows="10" id="message" name="mf_r_message">{MESSAGE}</textarea>
+				</label>
+			</div>
+			
+				
+			<div class="full">
+				<label for=""><span>What newsletters do you want to receive</span>
+					<div class="grouping {NEWSLETTER_ERROR}">
+						<input type="hidden" name="mf_newsletter_news" value="No" />
+						<input type="checkbox" id="news-1" {NEWSLETTER_NEWS_YES} name="mf_newsletter_news" value="Yes" /><label for="news-1">Daily news</label>
+						<input type="hidden" name="mf_newsletter_deals" value="No" />
+						<input type="checkbox" id="news-2" {NEWSLETTER_DEALS_YES} name="mf_newsletter_deals" value="Yes" /><label for="news-2">Hot deals</label>
+						<input type="hidden" name="mf_newsletter_fun" value="No" />
+						<input type="checkbox" id="news-3" {NEWSLETTER_FUN_YES} name="mf_newsletter_fun" value="Yes" /><label for="news-3">Fun moments</label>
+					</div>
+				</label>
+			</div>
+
+			<div class="{CAPTCHA_CLASS} full">
+				<label for="captcha"><span>Please show us you are human</span>
+					<div class="grouping {CAPTCHA_ERROR}">
+						{CAPTCHA}
+					</div>
+				</label>
+			</div>
+
+			<div class="full">
+				<button class="submit" name="Submit" type="submit">Send</button>
+			</div> 
+		</form>
+	</div>
+</div>

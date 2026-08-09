@@ -100,7 +100,7 @@ class mform {
 
 	function page($pid = 0) {
 		global $database, $wb;
-		$link = $database->get_one("SELECT link FROM ".TABLE_PREFIX."pages WHERE `page_id` = '".$pid."'");
+		$link = $database->fetchValue("SELECT link FROM {TP}pages WHERE `page_id` = ?", [$pid]);
 		return $wb->page_link($link);
 	}
 
@@ -184,86 +184,58 @@ class mform {
 	// Insert or Update table with posted fields in array
 	function update_record ( $table, $id_field, $data ) {
 		global $database;
-		$set = '';
-		$val = '';
 		if ($data[$id_field] <= 0) {
-			foreach ( $data as $key => $value ) {
-				$value = $this->escapeString($value);
-				if ($key != $id_field) {
-					$set .= $set ? ',`'.$key.'`':'`'.$key.'`';
-					$val .= $val ? ",'$value'" : "'$value'";
-				}
-			}
-			$query = "INSERT INTO ".TABLE_PREFIX.$table." ($set) VALUES ($val)";
-			$database->query($query);
-			return $database->get_one("SELECT LAST_INSERT_ID()");
+			unset($data[$id_field]);
+			$database->insertRow('{TP}'.$table, $data);
+			return $database->lastInsertId();
 		} else {
 			$id = $data[$id_field];
-			foreach ( $data as $key => $value ) {
-				$value = $this->escapeString($value);
-				if ($key != $id_field) {
-					$set .= $set ? ',':'';
-					$set .= "`$key`='$value'";
-				}
-			}
-			$query = "UPDATE ".TABLE_PREFIX.$table." SET $set where `$id_field` = '$id'";
-			$database->query($query);
+			unset($data[$id_field]);
+			$setSql = implode(', ', array_map(fn($key) => "`$key` = ?", array_keys($data)));
+			$database->query(
+				"UPDATE {TP}$table SET $setSql WHERE `$id_field` = ?",
+				[...array_values($data), $id]
+			);
 			return $id;
 		}
 	}
 
 	function get_record ( $table, $id_field, $id) {
 		global $database;
-		$result = array();
-		$res = $database->query("SELECT * FROM ".TABLE_PREFIX.$table." WHERE `$id_field` = '$id'");
-		if($res) {
-			while ($row = $res->fetchRow(MYSQLI_ASSOC)) {
-				$result[] = $row;
-			}
-		}
-		return $result;
+		return $database->fetchAll("SELECT * FROM {TP}$table WHERE `$id_field` = ?", [$id]);
 	}
 
 	function delete_record ( $id) {
 		global $database;
-		$result = array();
-		$res = $database->query("DELETE FROM ".TABLE_PREFIX."mod_miniform_data WHERE `message_id` = '$id'");
-		return;
+		$database->query("DELETE FROM {TP}mod_miniform_data WHERE `message_id` = ?", [$id]);
 	}
 
 	function get_history ( $id, $max = 20) {
 		global $database;
-		$result = array();
-		$res = $database->query("SELECT * FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id` = '$id' order by message_id desc limit 0,$max ");
-		if($res) {
-			while ($row = $res->fetchRow(MYSQLI_ASSOC)) {
-				$result[] = $row;
-			}
-		}
-		return $result;
+		return $database->fetchAll(
+			"SELECT * FROM {TP}mod_miniform_data WHERE `section_id` = ? ORDER BY message_id DESC LIMIT 0, ?",
+			[$id, (int) $max]
+		);
 	}
 
 	function count_messages($section_id) {
 		global $database;
-		$res = $database->query("SELECT message_id FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id` = '$section_id'");
-		return ($res) ? $res->numRows() : 0;
+		return (int) $database->fetchValue("SELECT COUNT(*) FROM {TP}mod_miniform_data WHERE `section_id` = ?", [$section_id]);
 	}
 
 	function build_pagelist($parent, $this_page) {
 		global $database, $links;
 		$iterated_parents = array(); // keep count of already iterated parents to prevent duplicates
 
-		$table_pages = TABLE_PREFIX."pages";
-		if ( $query = $database->query("SELECT link, menu_title, page_title, page_id, level
-			FROM ".$table_pages."
-			WHERE parent = ".$parent."
-			ORDER BY level, position ASC")) {
-			while($res = $query->fetchRow()) {
-				$links[$res['page_id']] = $res['page_id'].'|'.str_repeat("  -  ",$res['level']).$res['menu_title'].' ('.$res['page_title'].')';
-				if (!in_array($res['page_id'], $iterated_parents)) {
-					$this->build_pagelist($res['page_id'], $this_page);
-					$iterated_parents[] = $res['page_id'];
-				}
+		$rows = $database->fetchAll(
+			"SELECT link, menu_title, page_title, page_id, level FROM {TP}pages WHERE parent = ? ORDER BY level, position ASC",
+			[$parent]
+		);
+		foreach ($rows as $res) {
+			$links[$res['page_id']] = $res['page_id'].'|'.str_repeat("  -  ",$res['level']).$res['menu_title'].' ('.$res['page_title'].')';
+			if (!in_array($res['page_id'], $iterated_parents)) {
+				$this->build_pagelist($res['page_id'], $this_page);
+				$iterated_parents[] = $res['page_id'];
 			}
 		}
 	}
@@ -369,9 +341,18 @@ class mform {
 	function load_history($section_id, $user_id = 0, $guid = '') {
 		global $database;
 		if(!$user_id && !$guid) return;
-		if($user_id) $query = "SELECT `session_data` FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id`='$section_id' AND `user_id`='$user_id' ORDER BY `message_id` DESC LIMIT 1";
-		if($guid) $query = "SELECT `session_data` FROM ".TABLE_PREFIX."mod_miniform_data WHERE `section_id`='$section_id' AND `guid`='$guid' LIMIT 1";
-		$res = $database->get_one($query);
+		if($user_id) {
+			$res = $database->fetchValue(
+				"SELECT `session_data` FROM {TP}mod_miniform_data WHERE `section_id` = ? AND `user_id` = ? ORDER BY `message_id` DESC LIMIT 1",
+				[$section_id, $user_id]
+			);
+		}
+		if($guid) {
+			$res = $database->fetchValue(
+				"SELECT `session_data` FROM {TP}mod_miniform_data WHERE `section_id` = ? AND `guid` = ? LIMIT 1",
+				[$section_id, $guid]
+			);
+		}
 		if($res) $_SESSION['form'] = $this->unserialize($res);
 		return;
 

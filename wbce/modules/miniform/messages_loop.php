@@ -48,12 +48,13 @@ foreach ($sub as $msg) {
 }
 
 // Count all records except already displayed
-$totalRowCount = $database->query(
-	"SELECT `message_id` 
-		FROM `".TABLE_PREFIX."mod_miniform_data` 
-		WHERE `section_id` = ".$section_id." AND `message_id` < ".$msg_id." 
-		ORDER BY message_id DESC"
-)->numRows();
+$totalRowCount = count($database->fetchAll(
+	"SELECT `message_id`
+		FROM `{TP}mod_miniform_data`
+		WHERE `section_id` = ? AND `message_id` < ?
+		ORDER BY message_id DESC",
+	[$section_id, $msg_id]
+));
 
 if($totalRowCount > 0){			
 	$next_amount = $totalRowCount > $number_load ? $number_load : $totalRowCount;

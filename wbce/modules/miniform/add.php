@@ -18,6 +18,6 @@ if(defined('WB_PATH') == false) { exit("Cannot access this file directly"); }
 require_once (WB_PATH.'/framework/functions.php');
 
 // Insert an extra row into the database
-$database->query("INSERT INTO ".TABLE_PREFIX."mod_miniform (`section_id`) VALUES ('$section_id')");
+$database->query("INSERT INTO {TP}mod_miniform (`section_id`) VALUES (?)", [$section_id]);
 
 ?>
