@@ -27,11 +27,12 @@ $msg = '';
 $sTable = TABLE_PREFIX.'mod_wrapper';
 if(($sOldType = $database->getTableEngine($sTable))) {
 	if(('myisam' != strtolower($sOldType))) {
-		if(!$database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ')) {
-			$msg = $database->get_error();
+		$database->query('ALTER TABLE `'.$sTable.'` Engine = \'MyISAM\' ');
+		if ($database->hasError()) {
+			$msg = $database->getError();
 		}
 	}
 } else {
-	$msg = $database->get_error();
+	$msg = $database->getError();
 }
 // ------------------------------------

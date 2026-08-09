@@ -42,16 +42,18 @@ $sql = 'CREATE TABLE IF NOT EXISTS `'.TABLE_PREFIX.'mod_jsadmin` ('
 	. ' PRIMARY KEY ( `id` )'
 	. ' ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
 
-if($database->query($sql) ) {
+$database->query($sql);
+if (!$database->hasError()) {
 
 	for($x=0;$x<sizeof($jsadminDefault); $x++) {
 		$sql  = 'INSERT INTO '.$table.' SET ';
 		$sql .= '`id`=\''.$jsadminDefault[$x]['id'].'\', ';
 		$sql .= '`name`=\''.$jsadminDefault[$x]['name'].'\', ';
 		$sql .= '`value`=\''.$jsadminDefault[$x]['value'].'\' ';
-		if(!$database->query($sql) ) { $msg[] = $database->get_error();}
+		$database->query($sql);
+		if ($database->hasError()) { $msg[] = $database->getError();}
 	}
 } else {
-	$msg[] = $database->get_error();
+	$msg[] = $database->getError();
 }
 

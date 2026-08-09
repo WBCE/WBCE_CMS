@@ -211,8 +211,9 @@ if ($res_settings = $database->query($sql)) {
             $value = trim($value);
             $sSql = "UPDATE `{TP}settings` SET `value`='" . $database->escapeString($value) . "' "
                 . "WHERE `name` != 'wb_version' AND `name`= '" . $setting_name . "'";
-            if (!$database->query($sSql)) {
-                $admin->print_error($database->get_error, $js_back);
+            $database->query($sSql);
+            if ($database->hasError()) {
+                $admin->print_error($database->getError(), $js_back);
                 break;
             }
         }
