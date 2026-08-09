@@ -23,28 +23,28 @@ if ($admin->checkFTAN() == false) {
 // Update the mod_sitemap table with the contents
 //
 if(isset($_POST['header'])) {
-	$header       = addslashes($_POST['header']);
-	$sitemaploop  = addslashes($_POST['sitemaploop']);
-	$footer       = addslashes($_POST['footer']);
-	$level_header = addslashes($_POST['level_header']);
-	$level_footer = addslashes($_POST['level_footer']);
-	
+	$header       = $_POST['header'];
+	$sitemaploop  = $_POST['sitemaploop'];
+	$footer       = $_POST['footer'];
+	$level_header = $_POST['level_header'];
+	$level_footer = $_POST['level_footer'];
+
 	$static = 0;
 	if(isset($_POST['static']) AND $_POST['static'] == 'true') {
 		$static = 1;
-	} 
-	$startatroot = addslashes($_POST['startatroot']);
-	$show_hidden = (isset($_POST['show_hidden'])? addslashes($_POST['show_hidden']) : '0');
+	}
+	$startatroot = $_POST['startatroot'];
+	$show_hidden = (isset($_POST['show_hidden'])? $_POST['show_hidden'] : '0');
 
 	//
-	// check the depth value	
+	// check the depth value
 	//
-	$postdepth = trim(addslashes($_POST['depth']));
+	$postdepth = trim($_POST['depth']);
 	$depth = $postdepth;
 	if( ($postdepth == "") || ($postdepth <= 0) ) {
 		$depth = 0;
-	} 
-	
+	}
+
 	//
 	// Work out what menus to use
 	//
@@ -59,28 +59,28 @@ if(isset($_POST['header'])) {
 	if(isset($_POST['all_menus']) && $_POST['all_menus'] == 0){
 		$menus = "0";
 	}
-	
-	$query = "UPDATE ".TABLE_PREFIX."mod_sitemap "
-					. " SET header = '$header',"
-					. " sitemaploop = '$sitemaploop',"
-					. " footer = '$footer',"
-					. " static = '$static',"
-					. " level_header = '$level_header',"
-					. " level_footer = '$level_footer',"
-					. " startatroot = '$startatroot',"
-					. " depth = '$depth',"
-					. " menus = '$menus',"
-					. " show_hidden = '$show_hidden'";
-	$query .=  " WHERE section_id = '$section_id'";
-	$database->query($query);
+
+	$database->upsertRow('{TP}mod_sitemap', 'section_id', [
+		'section_id'   => $section_id,
+		'header'       => $header,
+		'sitemaploop'  => $sitemaploop,
+		'footer'       => $footer,
+		'static'       => $static,
+		'level_header' => $level_header,
+		'level_footer' => $level_footer,
+		'startatroot'  => $startatroot,
+		'depth'        => $depth,
+		'menus'        => $menus,
+		'show_hidden'  => $show_hidden,
+	]);
 }
 
 //
 // Check if there is a database error, otherwise say successful
 //
 $goto = ADMIN_URL.'/pages/modify.php?page_id='.$page_id;
-if($database->is_error()) {
-	$admin->print_error($database->get_error(), $js_back);
+if($database->hasError()) {
+	$admin->print_error($database->getError(), $js_back);
 } else {
 	$admin->print_success($MESSAGE['PAGES_SAVED'], $goto);
 }

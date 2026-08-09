@@ -24,16 +24,16 @@ if(LANGUAGE_LOADED) {
 	}
 }
 
-$db_table = TABLE_PREFIX."mod_sitemap";
-
 //
 //	Toggle Settings View
 //
 if(isset($_GET['show_settings']) && in_array($_GET['show_settings'], array(1,0))){
 	if(isset($_GET['page_id']) && $_GET['page_id'] == $page_id){
 		if(isset($_GET['section_id']) && $_GET['section_id'] == $section_id){
-			$sQuery = "UPDATE `%s` SET `show_settings` = '%s' WHERE `section_id` = %d";
-			$database->query(sprintf($sQuery, $db_table, $_GET['show_settings'], $section_id));
+			$database->upsertRow('{TP}mod_sitemap', 'section_id', [
+				'section_id'    => $section_id,
+				'show_settings' => (int) $_GET['show_settings'],
+			]);
 		}
 	}
 }
@@ -44,9 +44,7 @@ if(!is_file($sAcpiCheckfile)){
 	echo '<!--(END)-->';
 }
 // Get page content
-$query = "SELECT * FROM ".$db_table." WHERE section_id = '".$section_id."'";
-$get_settings = $database->query($query);
-$settings = $get_settings->fetchRow();
+$settings = $database->fetchRow("SELECT * FROM {TP}mod_sitemap WHERE section_id = ?", [$section_id]);
 
 $startatroot  = $settings['startatroot'];
 $show_hidden  = $settings['show_hidden'];
