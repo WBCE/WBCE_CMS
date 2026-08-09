@@ -23,7 +23,7 @@ if (is_array($_POST['iRecordID'])) { $iRecordID=0; }
 
 if($iRecordID > 0) {
 	// excecute query
-	$database->query("DELETE FROM `{TP}mod_miniform_data` WHERE `message_id` = ? LIMIT 1", [$iRecordID]);
+	$database->deleteRow('{TP}mod_miniform_data', 'message_id', $iRecordID);
 	// test for errors
 	if($database->hasError()) {
 		$aJsonRespond['message'] = 'Deleting record failed!';

@@ -207,7 +207,7 @@ class mform {
 
 	function delete_record ( $id) {
 		global $database;
-		$database->query("DELETE FROM {TP}mod_miniform_data WHERE `message_id` = ?", [$id]);
+		$database->deleteRow('{TP}mod_miniform_data', 'message_id', $id);
 	}
 
 	function get_history ( $id, $max = 20) {
