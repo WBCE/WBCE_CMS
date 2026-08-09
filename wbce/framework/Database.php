@@ -366,6 +366,31 @@ class Database
             return null;
         }
     }
+    /**
+     * Runs $fn inside a transaction. Commits on success, rolls back and
+     * rethrows on any Throwable. Also rolls back if $fn leaves an error on
+     * the last query without throwing (query()/upsertRow()/etc. swallow
+     * PDOException internally and only set $this->error — this closes that
+     * gap so callers don't have to check hasError() after every statement).
+     */
+    public function transaction(callable $fn): mixed
+    {
+        $this->pdo->beginTransaction();
+        try {
+            $result = $fn($this);
+            if ($this->hasError()) {
+                throw new \RuntimeException($this->getError());
+            }
+            $this->pdo->commit();
+            return $result;
+        } catch (\Throwable $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
     // ── CRUD helpers ─────────────────────────────────────────────────────────────────────
 
     public function insertRow(string $table, array $data): bool|string
