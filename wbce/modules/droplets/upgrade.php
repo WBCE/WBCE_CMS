@@ -19,9 +19,9 @@ if (!defined('WB_PATH')) {
 $table_name = TABLE_PREFIX .'mod_droplets';
 $description = 'INT NOT NULL default 0 ';
 
-$database->field_add($table_name, 'show_wysiwyg', $description.'AFTER `active`', false);
-$database->field_add($table_name, 'admin_view',   $description.'AFTER `active`', false);
-$database->field_add($table_name, 'admin_edit',   $description.'AFTER `active`', false);
+$database->addField($table_name, 'show_wysiwyg', $description.'AFTER `active`', false);
+$database->addField($table_name, 'admin_view',   $description.'AFTER `active`', false);
+$database->addField($table_name, 'admin_edit',   $description.'AFTER `active`', false);
 
 // since WBCE 1.6.0 (OpF Filter was moved to modules/droplets/opff_droplets.php
 // install OpF Filter 
@@ -48,6 +48,20 @@ if(file_exists($sOpfFile = WB_PATH.'/modules/outputfilter_dashboard/functions.ph
     ))
     && opf_move_up_before('Droplets');  // move up to the top
         
-    Settings::Set('opf_droplets', 1, false);
-    Settings::Set('opf_droplets_be', 1, false);
+    Settings::set('opf_droplets', 1, false);
+    Settings::set('opf_droplets_be', 1, false);
  }
+ 
+ // remove files and directories that are not needed any longer
+$obsoleteFilesAndDirs = [
+    '/js',           // obsolete jquery plugin (tablesorter) and mdcr.js (moved to OpF long ago)
+    '/img',          // obsolete, since we use font-awesome for a long time now
+    '/backend.css',  
+    '/backend.js',  
+    '/backend_body.js',  
+];
+foreach ($obsoleteFilesAndDirs as $rec) {
+    $path = __DIR__ . $rec;
+    $signal = removePath($path, 0, 0);
+    echo(sprintf($SIGNAL[$signal], $rec)) . '<br>';
+}

@@ -36,10 +36,10 @@ $oTwig->addFunction(new \Twig\TwigFunction("check_droplet_syntax",
    }
 ));
 
-$oTwig->addFunction(new \Twig\TwigFunction("get_user_name", 
-    function ($iUserID) {       
-        return $GLOBALS['database']->get_one(
-                "SELECT `display_name` FROM `{TP}users` WHERE `user_id` = ". intval($iUserID)
+$oTwig->addFunction(new \Twig\TwigFunction("get_user_name",
+    function ($iUserID) {
+        return $GLOBALS['database']->fetchValue(
+                "SELECT `display_name` FROM `{TP}users` WHERE `user_id` = ?", [(int) $iUserID]
         );
    }
 ));
@@ -57,46 +57,47 @@ $oTwig->addGlobal('module_version', $module_version);
 function wbce_copy_droplet($droplet_id)
 {
     global $database, $admin;
-    $tags = array('<'.'?'.'php', '?'.'>' , '<?');
+    $tags = ['<?php', '?>', '<?'];
 
     // get droplet code
-    $query_content = $database->query(sprintf(
-        "SELECT * FROM `{TP}mod_droplets` WHERE `id` = '%s'", $droplet_id
-    ));
+    $fetch_content = $database->fetchRow(
+        "SELECT * FROM `{TP}mod_droplets` WHERE `id` = ?", [(int) $droplet_id]
+    );
+    if ($fetch_content === null) {
+        return null;
+    }
 
-    $fetch_content = $query_content->fetchRow(MYSQLI_ASSOC);
-    $code          = addslashes(str_replace($tags, '', $fetch_content['code']));
-    $new_name      = $fetch_content['name'] . "_copy";
-    $name          = $new_name;
-    $i             = 1;
+    $code     = str_replace($tags, '', $fetch_content['code']);
+    $new_name = $fetch_content['name'] . '_copy';
+    $name     = $new_name;
+    $i        = 1;
 
     // look for doubles
-    $found = $database->query(sprintf(
-        "SELECT * FROM `{TP}mod_droplets` WHERE `name`='%s'", $new_name
-    ));
-    while( $found->numRows() > 0 )
-    {
-        $new_name = $name . "_" . $i;
-        $found = $database->query(sprintf(
-            "SELECT * FROM `{TP}mod_droplets` WHERE `name`='%s'", $new_name
-        ));
+    while ($database->fetchValue(
+        "SELECT COUNT(*) FROM `{TP}mod_droplets` WHERE `name` = ?", [$new_name]
+    ) > 0) {
+        $new_name = $name . '_' . $i;
         $i++;
     }
 
     // add new droplet
-    $result = $database->query(sprintf(
-        "INSERT INTO `{TP}mod_droplets` VALUES ( NULL, '%s', '%s', '%s', '%s', '%s', 1, 0, 0, 0, '%s' )",
-        $new_name, $code, $fetch_content['description'], time(),
-        $admin->get_user_id(),  $fetch_content['comments']
-    ));
+    $database->insertRow('{TP}mod_droplets', [
+        'name'          => $new_name,
+        'code'          => $code,
+        'description'   => $fetch_content['description'],
+        'modified_when' => time(),
+        'modified_by'   => (int) $admin->get_user_id(),
+        'active'        => 1,
+        'admin_edit'    => 0,
+        'admin_view'    => 0,
+        'show_wysiwyg'  => 0,
+        'comments'      => $fetch_content['comments'],
+    ]);
 
-    if( ! $database->is_error() )
-    {
-        return $database->get_one("SELECT LAST_INSERT_ID()");
+    if (!$database->hasError()) {
+        return $database->lastInsertId();
     }
-    else {
-        echo "ERROR: ", $database->get_error();
-    }
+    echo 'ERROR: ', $database->getError();
 }   // end function wbce_copy_droplet()
 
 /**
@@ -200,8 +201,8 @@ function wbce_backup_droplets($list,$filename='backup-droplets',$return_details=
 function check_droplet_syntax($iDropletID)
 {
     global $database;
-    $sCode = $database->get_one(
-        "SELECT `code` FROM `{TP}mod_droplets` WHERE `id` = ". (int) $iDropletID
+    $sCode = $database->fetchValue(
+        "SELECT `code` FROM `{TP}mod_droplets` WHERE `id` = ?", [(int) $iDropletID]
     );
     // TODO: get rid of eval in a later version
     // Wrap into dummy function in case $sCode is empty or contains a syntax error at the start
@@ -233,10 +234,10 @@ function check_droplet_syntax($iDropletID)
 function wbce_check_unique($name)
 {
 	global $database;
-	$query_droplets = $database->query(sprintf(
-        "SELECT `name`  FROM `{TP}mod_droplets` WHERE `name` = '%s'", $name
-    ));
-	return ($query_droplets->numRows() == 1);
+	$count = $database->fetchValue(
+        "SELECT COUNT(*) FROM `{TP}mod_droplets` WHERE `name` = ?", [$name]
+    );
+	return ((int) $count === 1);
 }   // end function wbce_check_unique()
 
 /**
@@ -256,11 +257,9 @@ function wbce_delete_droplets()
     // get the droplet(s) data
     $droplets = array();
     foreach ( $list as $id ) {
-        $result = $database->query(sprintf(
-            "SELECT * FROM `{TP}mod_droplets` WHERE id='%d'", $id
-        ));
-        if ( $result->numRows() > 0 ) {
-            $droplets[] = $result->fetchRow();
+        $row = $database->fetchRow("SELECT * FROM `{TP}mod_droplets` WHERE `id` = ?", [(int) $id]);
+        if ($row !== null) {
+            $droplets[] = $row;
         }
     }
 
@@ -270,9 +269,7 @@ function wbce_delete_droplets()
     // delete
     foreach(array_values($list) as $id)
     {
-        $database->query(sprintf(
-            "DELETE FROM `{TP}mod_droplets` WHERE id = '%d' LIMIT 1", $id
-        ));
+        $database->deleteRow('{TP}mod_droplets', 'id', (int) $id);
     }
 }   // end function wbce_delete_droplets()
 
@@ -305,11 +302,9 @@ function wbce_export_droplets($list,$filename='drop_export',$export_id=0,$return
     // get the droplet(s) data
     $droplets = array();
     foreach ( $list as $id ) {
-        $result = $database->query(sprintf(
-            "SELECT * FROM `{TP}mod_droplets` WHERE id='%d'", $id
-        ));
-        if ( $result->numRows() > 0 ) {
-            $droplets[] = $result->fetchRow();
+        $row = $database->fetchRow("SELECT * FROM `{TP}mod_droplets` WHERE `id` = ?", [(int) $id]);
+        if ($row !== null) {
+            $droplets[] = $row;
         }
     }
 
@@ -423,22 +418,22 @@ function wbce_list_droplets($bShowDate = false)
     if($bShowDate){
         $sSql .=" ORDER BY `modified_when` DESC";
     } else {
-        $sSql .=" ORDER BY `name` ASC";        
+        $sSql .=" ORDER BY `name` ASC";
     }
-    $query_droplets = $database->query($sSql);
+    $aDroplets = $database->fetchAll($sSql);
 
-    if($query_droplets->numRows() > 0)
+    if(count($aDroplets) > 0)
     {
         $list = array();
-        while ($droplet = $query_droplets->fetchRow(MYSQLI_ASSOC))
+        foreach ($aDroplets as $droplet)
         {
             if(is_array($droplet) && isset($droplet['name']))
             {
-                $get_modified_user = $database->query(sprintf(
-                    "SELECT `display_name`, `username`, `user_id` FROM `{TP}users` WHERE `user_id` = '%d' LIMIT 1", $droplet['modified_by']
-                ));
-                if($get_modified_user->numRows() > 0) {
-                    $fetch_modified_user = $get_modified_user->fetchRow();
+                $fetch_modified_user = $database->fetchRow(
+                    "SELECT `display_name`, `username`, `user_id` FROM `{TP}users` WHERE `user_id` = ? LIMIT 1",
+                    [(int) $droplet['modified_by']]
+                );
+                if ($fetch_modified_user !== null) {
                     $modified_user   = $fetch_modified_user['username'];
                     $modified_userid = $fetch_modified_user['user_id'];
                 } else {
@@ -550,32 +545,37 @@ function wbce_unpack_and_import( $temp_file, $temp_unzip )
                     // Second line: Usage instructions
                     $usage = "";
                     if ( preg_match( '#^//\:(.*)$#', $lines[1], $match ) ) {
-                        $usage       = addslashes( $match[1] );
+                        $usage       = $match[1];
                     }
                     // Remaining: Droplet code
                     $code = implode( '', array_slice( $lines, 2 ) );
                     // replace 'evil' chars in code
                     $tags = array('<?php', '?'.'>' , '<?');
-                    $code = addslashes(str_replace($tags, '', $code));
+                    $code = str_replace($tags, '', $code);
                     // Already in the DB?
-                    $stmt  = 'INSERT';
-                    $id    = NULL;
-                    $found = $database->get_one(sprintf("SELECT * FROM `{TP}mod_droplets` WHERE name='%s'",$name));
-                    if ( $found && $found > 0 ) {
-                        $stmt = 'REPLACE';
-                        $id   = $found;
+                    $aUpdate = [
+                        'name'          => $name,
+                        'code'          => $code,
+                        'description'   => $description,
+                        'modified_when' => time(),
+                        'modified_by'   => (int) $admin->get_user_id(),
+                        'active'        => 1,
+                        'admin_edit'    => 0,
+                        'admin_view'    => 0,
+                        'show_wysiwyg'  => 0,
+                        'comments'      => $usage,
+                    ];
+                    $foundId = $database->fetchValue("SELECT `id` FROM `{TP}mod_droplets` WHERE `name` = ?", [$name]);
+                    if ($foundId !== '') {
+                        $aUpdate['id'] = (int) $foundId;
                     }
-                    // execute
-                    $result = $database->query(sprintf(
-                        "%s INTO `{TP}mod_droplets` VALUES(" . ($id ? "'$id'" : 'NULL') . ",'%s','%s','%s','%s','%d',1,0,0,0,'%s')",
-                        $stmt, $name, $code, $description, time(), $admin->get_user_id(), $usage
-                    ));
-                    if( ! $database->is_error() ) {
+                    $database->upsertRow('{TP}mod_droplets', 'id', $aUpdate);
+                    if( ! $database->hasError() ) {
                         $count++;
                         $imports[$name] = 1;
                     }
                     else {
-                        $errors[$name] = $database->get_error();
+                        $errors[$name] = $database->getError();
                     }
                 }
             }
@@ -732,8 +732,7 @@ function importDropletFromFile($sFilename = '', $sDirPath = '')
                 "<br/>",
                 "<br>"
             );
-            $match[1] = str_ireplace($aBreaks, "\r\n", $match[1]);
-            $usage    = addslashes($match[1]);
+            $usage    = str_ireplace($aBreaks, "\r\n", $match[1]);
         }
         // Remaining: Droplet code
         $code  = implode('', array_slice($aLines, 2));
@@ -743,22 +742,28 @@ function importDropletFromFile($sFilename = '', $sDirPath = '')
             '?>',
             '<?'
         );
-        $code  = addslashes(str_replace($tags, '', $code));
+        $code  = str_replace($tags, '', $code);
         // Already in the DB?
-        $stmt  = 'INSERT';
-        $id    = NULL;
-        $found = $database->get_one("SELECT * FROM `{TP}mod_droplets` WHERE name='$name'");
-        if ($found && $found > 0) {
-            $stmt = 'REPLACE';
-            $id   = $found;
+        $aUpdate = [
+            'name'          => $name,
+            'code'          => $code,
+            'description'   => $description,
+            'modified_when' => time(),
+            'modified_by'   => (int) $admin->get_user_id(),
+            'active'        => 1,
+            'admin_edit'    => 0,
+            'admin_view'    => 0,
+            'show_wysiwyg'  => 0,
+            'comments'      => $usage,
+        ];
+        $foundId = $database->fetchValue("SELECT `id` FROM `{TP}mod_droplets` WHERE `name` = ?", [$name]);
+        if ($foundId !== '') {
+            $aUpdate['id'] = (int) $foundId;
         }
-        // execute
-        $result = $database->query("$stmt INTO `{TP}mod_droplets` VALUES(
-            '$id', '$name', '$code', '$description', '" . time() . "', '" . $admin->get_user_id() . "', 1, 0, 0, 0, '$usage'
-        )");
+        $database->upsertRow('{TP}mod_droplets', 'id', $aUpdate);
         $aReturn['imported'] = $name;
-        if ($database->is_error()) {
-            $aReturn['error'] = $database->get_error();
+        if ($database->hasError()) {
+            $aReturn['error'] = $database->getError();
         }
     }
     return $aReturn;
@@ -773,7 +778,8 @@ function importDropletFromFile($sFilename = '', $sDirPath = '')
  */
 function isDroplet($sDropletName)
 {
-        $tmp = $GLOBALS['database']->get_one("SELECT `id` FROM `{TP}mod_droplets` 
-                        WHERE `name` = '" . $sDropletName . "'");
+        $tmp = $GLOBALS['database']->fetchValue(
+            "SELECT `id` FROM `{TP}mod_droplets` WHERE `name` = ?", [$sDropletName]
+        );
         return (is_numeric($tmp)) ? intval($tmp) : false;
 }

@@ -35,7 +35,7 @@ if ( $admin->get_permission('admintools') == true ){
 
 $sBackURL = ADMIN_URL.'/admintools/tool.php?tool=droplets&do=modify&droplet_id='.$droplet_id;
 // Validate all fields
-$sName = $admin->add_slashes($admin->get_post('title'));
+$sName = $admin->get_post('title');
 if($sName == '') {
     $admin->print_header();
     $admin->print_error($MESSAGE['GENERIC_FILL_IN_ALL'], $sBackURL);
@@ -49,18 +49,17 @@ if($sName == '') {
         'admin_view'    => (int) $admin->get_post('admin_view'),
         'admin_edit'    => (int) $admin->get_post('admin_edit'),
         'show_wysiwyg'  => (int) $admin->get_post('show_wysiwyg'),
-        'description'   => $admin->add_slashes($admin->get_post('description')),
-        'code'          => $admin->add_slashes(str_replace($tags, '', $_POST['savecontent'])),
-        'comments'      => $admin->add_slashes($admin->get_post('comments')),
+        'description'   => $admin->get_post('description'),
+        'code'          => str_replace($tags, '', $_POST['savecontent']),
+        'comments'      => $admin->get_post('comments'),
         'modified_when' => time(),
         'modified_by'   => (int) $admin->get_user_id(),
     );
-    
-    $database->updateRow('{TP}mod_droplets', 'id', $aUpdate);
-    
-    
-    if($database->is_error()) {
-        $oMsgBox->error($database->get_error());
+
+    $database->upsertRow('{TP}mod_droplets', 'id', $aUpdate);
+
+    if($database->hasError()) {
+        $oMsgBox->error($database->getError());
     } else {
         #$oMsgBox->success($MESSAGE['RECORD_MODIFIED_SAVED']);
     }

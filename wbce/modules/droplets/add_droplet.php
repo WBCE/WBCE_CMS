@@ -12,7 +12,7 @@
 
 require_once '../../config.php';
 
-$admin = new admin( 'admintools', 'admintools');
+$admin = new Admin( 'admintools', 'admintools');
 if ( $admin->get_permission( 'admintools' ) == true )
 {
     $admintool_link   = ADMIN_URL . '/admintools/index.php';
@@ -20,16 +20,23 @@ if ( $admin->get_permission( 'admintools' ) == true )
     $modified_when    = time();
     $modified_by      = intval( $admin->get_user_id() );
 
-    $query = 'INSERT INTO `%smod_droplets` SET `name`="", `code`="", `description`="", `comments`="", `active`=1, `modified_when`="%s", `modified_by`="%s"';
-    $database->query(sprintf($query,TABLE_PREFIX,$modified_when,$modified_by));
+    $database->insertRow('{TP}mod_droplets', [
+        'name'          => '',
+        'code'          => '',
+        'description'   => '',
+        'comments'      => '',
+        'active'        => 1,
+        'modified_when' => $modified_when,
+        'modified_by'   => $modified_by,
+    ]);
 
-    if($database->is_error())
+    if($database->hasError())
     {
-        $admin->print_error( $database->get_error(), $module_edit_link );
+        $admin->print_error( $database->getError(), $module_edit_link );
     }
     else
     {
-        $droplet_id = intval( $database->get_one( "SELECT LAST_INSERT_ID()" ) );
+        $droplet_id = intval( $database->lastInsertId() );
         $admin->print_success( $TEXT['SUCCESS'], ADMIN_URL.'/admintools/tool.php?tool=droplets&do=modify&droplet_id=' . $droplet_id );
     }
 }

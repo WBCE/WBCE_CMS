@@ -17,8 +17,9 @@ defined('WB_PATH') or die('No direct access!');
 
 $msg = [];
 $sql  = 'DROP TABLE IF EXISTS `{TP}mod_droplets`';
-if (!$database->query($sql)) {
-    $msg[] = $database->get_error();
+$database->query($sql);
+if ($database->hasError()) {
+    $msg[] = $database->getError();
 }
 
 $sql  = "CREATE TABLE IF NOT EXISTS `{TP}mod_droplets` ( 
@@ -36,8 +37,9 @@ $sql  = "CREATE TABLE IF NOT EXISTS `{TP}mod_droplets` (
     PRIMARY KEY ( `id` ) 
     ) 
     ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-if (!$database->query($sql)) {
-    $msg[] = $database->get_error();
+$database->query($sql);
+if ($database->hasError()) {
+    $msg[] = $database->getError();
 }
 
 // add all droplets from the droplet subdirectory
@@ -78,8 +80,9 @@ foreach ($names as $dropfile) {
             'modified_by' => (method_exists($admin, 'get_user_id') && ($admin->get_user_id()!=null) ? $admin->get_user_id() : 1),
         ];
         
-        if (!$database->insertRow('{TP}mod_droplets', $aDroplet)) {
-            $msg[] = $database->get_error();
+        $database->insertRow('{TP}mod_droplets', $aDroplet);
+        if ($database->hasError()) {
+            $msg[] = $database->getError();
         }
         // do not output anything if this script is called during fresh installation
         // if (method_exists($admin, 'get_user_id')) echo "Droplet import: $name<br/>";

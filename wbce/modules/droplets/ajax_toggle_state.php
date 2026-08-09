@@ -23,15 +23,14 @@ if(is_readable($sConfigFile = '../../config.php')) {
 
 // check if user has permissions to access the outputfilter_dashboard module
 require_once(WB_PATH.'/framework/class.admin.php');
-$admin = new admin('admintools', 'admintools', false, false);
+$admin = new Admin('admintools', 'admintools', false, false);
 if (!($admin->is_authenticated() && $admin->get_permission('droplets', 'module'))) {
     $aRspnd['message'] = 'insuficcient rights';
     exit(json_encode($aRspnd));
 }
 
-// Sanitize variables
-$purpose = $admin->add_slashes($_POST['purpose']);
-if ($purpose == "toggle_status") {    
+$purpose = $_POST['purpose'];
+if ($purpose == "toggle_status") {
     $iId = $admin->checkIDKEY($iFilterID, 0, 'POST', true);
     if($iId == 0){
         $aRspnd['message'] = 'ID '.$iId.' can\'t work';
@@ -39,13 +38,14 @@ if ($purpose == "toggle_status") {
         exit(json_encode($aRspnd));
     }
     $iActive = (int) $_POST['action'];
-    
-    if(!$database->updateRow('{TP}mod_droplets', 'id', [
+
+    $database->upsertRow('{TP}mod_droplets', 'id', [
         'id' => $iId,
         'active' => $iActive,
-    ])) {
+    ]);
+    if($database->hasError()) {
         $aRspnd['success'] = false;
-        $aRspnd['message'] = 'db query failed: '.$database->get_error();
+        $aRspnd['message'] = 'db query failed: '.$database->getError();
         $aRspnd['message'] = 'id: '.$iId.' active: '.$iActive;
         $aRspnd['icon'] = 'cancel.gif';
         exit(json_encode($aRspnd));
@@ -55,7 +55,7 @@ if ($purpose == "toggle_status") {
         $aRspnd['success'] = true;
         exit(json_encode($aRspnd));
     }
-    
+
 
 }else{
     $aRspnd['message'] = 'wrong arguments "$action"';

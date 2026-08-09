@@ -1,8 +1,6 @@
 
 $( document ).ready(function() {
-    
-    $.insert(WB_URL+"/modules/droplets/js/jquery.tablesorter.js");
-    
+
     $(".show-droplet-code").on("click", function(event){
         event.preventDefault();
         $(this).next('.droplet-info').toggle();
@@ -107,7 +105,7 @@ $(document).ready(function() {
         var height = $(sRowID).height() + 'px !important';
         var colspan = DROPLETS_SHOW_DATE ? 6 : 5;
         var new_row = `
-            <tr class="row-on-delete" id="`+ ID +`">
+            <tr class="on-delete" id="`+ ID +`">
                 <td colspan="`+ colspan +`" style="height: `+ height +`;">
                 <table class="delete-table" width="100%">
                     <tr>
@@ -131,7 +129,7 @@ $(document).ready(function() {
 
     $(document).on("click", "#reset", function() {
        // reset row to original
-       $(this).parentsUntil( $( "tr.row-on-delete" )).parent().replaceWith(oReplacement);  
+       $(this).parentsUntil( $( "tr.on-delete" )).parent().replaceWith(oReplacement);
        return false;
     });
 

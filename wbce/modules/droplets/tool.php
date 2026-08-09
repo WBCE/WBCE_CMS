@@ -158,9 +158,9 @@ if(isset($_GET['do']))
             $droplet_id        = intval($_GET['droplet_id']);
 
             // Get header and footer
-            $data = $database->get_array(sprintf(
-                "SELECT * FROM `{TP}mod_droplets` WHERE `id` = '%d'", $droplet_id
-            ))[0];
+            $data = $database->fetchRow(
+                "SELECT * FROM `{TP}mod_droplets` WHERE `id` = ?", [$droplet_id]
+            );
 
             $aToTwig['content'] = wbce_twig_display(
                 [
@@ -175,7 +175,7 @@ if(isset($_GET['do']))
 
         // ----- create full backup -----
         case 'backup_droplets':
-            $list = $database->get_array("SELECT * FROM `{TP}mod_droplets`");
+            $list = $database->fetchAll("SELECT * FROM `{TP}mod_droplets`");
             // backup
             $aToTwig['content'] = wbce_backup_droplets($list);
             $aToTwig['more_header_links'] = $DR_TEXT['BACKUP'];
