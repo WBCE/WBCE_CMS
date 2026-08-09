@@ -14,10 +14,10 @@ $core = true;
 $module_directory   = 'droplets';
 $module_name        = 'Droplets';
 $module_function    = 'tool';
-$module_version     = '2.4.3';
+$module_version     = '2.4.4';
 $module_platform    = '1.6.0';
 $module_author      = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan';
-$module_license     = 'GNU General Public License';
+$module_license     = 'GNU/GPL v2';
 $module_description = 'This tool allows you to manage your local Droplets.';
 $module_icon        = 'fa fa-tint';
 $module_home        = 'https://addons.wbce.org/pages/addons.php?do=item&item=54';
@@ -27,6 +27,17 @@ $module_guid        = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
  * Version History
  * =============================================================================
  *
+ *
+ * v2.4.4 Christian M. Stefan 09.08 2026
+ *        - wire the new framework/CodeVet.php into every save path
+ *          (ajax_save_droplet.php, save_droplet.php,
+ *          functions.inc.php::check_droplet_syntax()): saved Droplet code
+ *          is now scanned for eval()-in-code, dynamic/variable function
+ *          calls, backticks, system/obfuscation functions and superglobal
+ *          access, not just checked for valid PHP syntax
+ *        - check_droplet_syntax() intentionally keeps CodeVet::scan() out
+ *          of its own path (it re-runs on every admin overview load, not
+ *          just on save) — the security scan is enforced once, at save time
  *
  * v2.4.3 Christian M. Stefan 09.08 2026
  *        - fix SQL injection in the per-request Droplet lookup (droplets.php);

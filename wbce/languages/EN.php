@@ -718,6 +718,7 @@ $SIGNAL['ADDON_DEACTIVATED']     = 'The %s "%s" was deactivated.';
 // ── ZIP / Extraction 
 $SIGNAL['ADDON_EXTRACT_OK']      = 'Archive for %s "%s" extracted successfully.';
 $SIGNAL['ADDON_EXTRACT_ERROR']   = 'Extraction failed for %s "%s".';
+$SIGNAL['ADDON_SECURITY_BLOCKED'] = 'Blocked by CodeVet: %s "%s" contains disallowed code and was not staged.';
 // ── Remote fetch 
 $SIGNAL['ADDON_FETCH_OK']        = 'The %s "%s" was downloaded successfully.';
 $SIGNAL['ADDON_FETCH_ERROR']     = 'Download failed for %s "%s".';

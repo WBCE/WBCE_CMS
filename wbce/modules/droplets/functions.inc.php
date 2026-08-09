@@ -204,25 +204,20 @@ function check_droplet_syntax($iDropletID)
     $sCode = $database->fetchValue(
         "SELECT `code` FROM `{TP}mod_droplets` WHERE `id` = ?", [(int) $iDropletID]
     );
-    // TODO: get rid of eval in a later version
-    // Wrap into dummy function in case $sCode is empty or contains a syntax error at the start
-    $sCode = "if(0){{$sCode}\n}";
-    try {
-        // till PHP 5 eval returns false and proceeds code execution in case of errors
+
+    // Syntax only here (no CodeVet::scan()) — this runs once per Droplet on
+    // every admin overview load, not just on save. The security scan itself
+    // is cheap, but there's no reason to pay it repeatedly for code that
+    // hasn't changed since the last save, where it's already enforced
+    // (ajax_save_droplet.php / save_droplet.php).
+    $sError = CodeVet::checkSyntax($sCode);
+    if ($sError !== null) {
         if (defined('WBCE_DEBUG') && WBCE_DEBUG) {
-            return (eval($sCode) !== false);
-        } else {
-            return (@eval($sCode) !== false);
-        }
-    } catch (ParseError $e) {
-        // PHP 7+ throws a ParseError exception if error occur inside eval
-        // show error message caused by missformed Droplet code so we know whats to be fixed
-        if (defined('WBCE_DEBUG') && WBCE_DEBUG) {
-            echo '<strong>Droplet error: </strong>' . $e->getMessage() . '<br />';
+            echo '<strong>Droplet error: </strong>' . $sError . '<br />';
         }
         return false;
     }
-    return false;
+    return true;
 }   // end function check_droplet_syntax()
 
 /**

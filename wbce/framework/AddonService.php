@@ -205,6 +205,18 @@ class AddonService
                 return $this->addSignal('ADDON_INFO_INVALID', basename($zipPath));
             }
 
+            // Scan every extracted .php file (and reject dangerous double
+            // extensions such as .phtml) before anything from this ZIP is
+            // copied into var/addons/ — staging still lets an admin review
+            // it, so a blocked ZIP must never even reach that stage.
+            $findings = CodeVet::scanDirectory($tempUnzip, CodeVetProfile::Addon);
+            if ($findings !== []) {
+                CodeVet::logEvent('addon_zip_blocked', CodeVetProfile::Addon, $findings, ['zip' => basename($zipPath)]);
+                $first = $findings[0];
+                $where = $first->file !== '' ? "{$first->file}: " : '';
+                return $this->addSignal('ADDON_SECURITY_BLOCKED', $where . $first->message);
+            }
+
             $type     = $info['_type'];
             $dir      = $info['_directory'];
             $stageDir = $this->getStagedDir($type, $dir);

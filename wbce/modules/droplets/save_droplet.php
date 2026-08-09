@@ -42,6 +42,24 @@ if($sName == '') {
     $admin->print_footer();
 } else {
     $tags = array('<?php', '?'.'>' , '<?');
+    $sCode = str_replace($tags, '', $_POST['savecontent']);
+
+    // ── PHP syntax + security check — block save if broken or unsafe ──────────
+    $syntaxError = CodeVet::checkSyntax($sCode);
+    $findings    = $syntaxError === null ? CodeVet::scan($sCode, CodeVetProfile::Droplet) : [];
+
+    if ($syntaxError !== null || $findings !== []) {
+        if ($findings !== []) {
+            CodeVet::logEvent('droplet_save_blocked', CodeVetProfile::Droplet, $findings, ['droplet_id' => $droplet_id]);
+        }
+        $sMessage = (function_exists('L_') ? L_('DR_TEXT:INVALIDCODE') : 'Invalid PHP code')
+                  . ': ' . ($syntaxError ?? $findings[0]->message);
+        $admin->print_header();
+        $admin->print_error($sMessage, $sBackURL);
+        $admin->print_footer();
+        exit();
+    }
+
     $aUpdate = array(
         'id'            => $droplet_id,
         'name'          => $sName,
@@ -50,7 +68,7 @@ if($sName == '') {
         'admin_edit'    => (int) $admin->get_post('admin_edit'),
         'show_wysiwyg'  => (int) $admin->get_post('show_wysiwyg'),
         'description'   => $admin->get_post('description'),
-        'code'          => str_replace($tags, '', $_POST['savecontent']),
+        'code'          => $sCode,
         'comments'      => $admin->get_post('comments'),
         'modified_when' => time(),
         'modified_by'   => (int) $admin->get_user_id(),

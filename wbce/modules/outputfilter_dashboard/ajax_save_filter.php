@@ -40,22 +40,24 @@ $rawCode = $_POST['code_area_text'] ?? '';
 // Strip PHP open/close tags — filter functions are stored as pure PHP body.
 $code = str_replace(['<?php', '?>', '<?'], '', $rawCode);
 
-// ── PHP syntax check — block save if broken ───────────────────────────────────
-$syntaxError = null;
-$wrapped = "if(0){{$code}\n}";
-try {
-    @eval($wrapped);
-} catch (\ParseError $e) {
-    $syntaxError = $e->getMessage();
-}
+// ── PHP syntax + security check — block save if broken or unsafe ──────────────
+$label = (class_exists('Lang') && Lang::has('L', 'TXT_INVALIDCODE'))
+    ? Lang::get('L', 'TXT_INVALIDCODE')
+    : 'Invalid PHP code';
 
+$syntaxError = CodeVet::checkSyntax($code);
 if ($syntaxError !== null) {
     http_response_code(422);
-    $label = (class_exists('Lang') && Lang::has('L', 'TXT_INVALIDCODE'))
-        ? Lang::get('L', 'TXT_INVALIDCODE')
-        : 'Invalid PHP code';
     (new Alerts(false))->toast($label . ': ' . $syntaxError, 'error');
     exit(json_encode(['ok' => false, 'syntax_error' => $syntaxError]));
+}
+
+$findings = CodeVet::scan($code, CodeVetProfile::Outputfilter);
+if ($findings !== []) {
+    CodeVet::logEvent('outputfilter_save_blocked', CodeVetProfile::Outputfilter, $findings, ['filter_id' => $filter_id]);
+    http_response_code(422);
+    (new Alerts(false))->toast($label . ': ' . $findings[0]->message, 'error');
+    exit(json_encode(['ok' => false, 'syntax_error' => $findings[0]->message]));
 }
 
 // ── Save to database ──────────────────────────────────────────────────────────
