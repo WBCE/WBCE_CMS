@@ -96,11 +96,18 @@ final class FontCache
                 }
                 return ['cssUrl' => $url, 'aliasCss' => ''];
             }
+            // When an alias is given, rewrite font-family directly in the CSS file.
+            // This avoids a separate inline <style> block — the <link> to alias.css
+            // already carries the renamed font-family declarations.
+            if ($alias !== '') {
+                $aliased = $this->buildAliasCss($cssFile, $alias);
+                if ($aliased !== '') {
+                    file_put_contents($cssFile, $aliased);
+                }
+            }
         }
 
-        $aliasCss = ($alias !== '') ? $this->buildAliasCss($cssFile, $alias) : '';
-
-        return ['cssUrl' => $cssUrl, 'aliasCss' => $aliasCss];
+        return ['cssUrl' => $cssUrl, 'aliasCss' => ''];
     }
 
     /**
@@ -152,30 +159,39 @@ final class FontCache
 
         $base = $this->toUrl(''); // base URL for font files: .../cache/fonts/
 
-        // Process @font-face blocks individually so filenames can carry a
-        // human-readable prefix derived from font-family + font-weight.
-        // Example: Inter_400_<md5>.woff2, Inter_100_900_<md5>.woff2 (variable font)
+        // Process @font-face blocks individually so filenames carry a
+        // human-readable prefix derived from font-family + font-weight [+ font-style].
+        // Examples: Inter_400.woff2, Inter_400_italic.woff2, Inter_100_900.woff2
         $css = (string)preg_replace_callback(
             '/@font-face\s*\{([^}]+)\}/is',
             function (array $blockMatch) use ($base, $ua): string {
                 $inner = $blockMatch[1];
 
-                // Extract font-family and font-weight to build filename prefix
+                // Extract font-family, font-weight, font-style to build filename prefix
                 $family = '';
                 $weight = '';
+                $style  = '';
                 if (preg_match('/font-family\s*:\s*["\']?([^"\';\r\n]+)["\']?\s*;/i', $inner, $fm)) {
                     $family = trim($fm[1]);
                 }
                 if (preg_match('/font-weight\s*:\s*([^;\r\n]+)\s*;/i', $inner, $wm)) {
                     $weight = trim($wm[1]);
                 }
+                if (preg_match('/font-style\s*:\s*([^;\r\n]+)\s*;/i', $inner, $sm)) {
+                    $style = strtolower(trim($sm[1]));
+                }
 
-                // Sanitize: alphanumeric only, spaces/hyphens → underscore
+                // Sanitize: alphanumeric only, spaces/hyphens → underscore.
+                // font-style suffix only when non-normal (italic, oblique) to avoid
+                // collision between e.g. Poppins 400 normal and Poppins 400 italic.
                 $prefix = '';
                 if ($family !== '') {
-                    $fam    = preg_replace('/[^a-zA-Z0-9]+/', '_', $family);
-                    $wgt    = preg_replace('/[^a-zA-Z0-9]+/', '_', $weight);
-                    $prefix = rtrim($fam . '_' . $wgt, '_') . '_';
+                    $fam   = preg_replace('/[^a-zA-Z0-9]+/', '_', $family);
+                    $wgt   = preg_replace('/[^a-zA-Z0-9]+/', '_', $weight);
+                    $sty   = ($style !== '' && $style !== 'normal')
+                           ? '_' . preg_replace('/[^a-zA-Z0-9]+/', '_', $style)
+                           : '';
+                    $prefix = rtrim($fam . '_' . $wgt, '_') . $sty . '_';
                 }
 
                 // Download each font file url() within this block
