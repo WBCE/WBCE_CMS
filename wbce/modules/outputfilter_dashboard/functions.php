@@ -362,7 +362,10 @@ function opf_db_query($q_str) {
     $q_str = vsprintf($q_str, $args);
   }
   $result = $database->query($q_str);
-  if($result === NULL) { // SQL-query failed -- return FALSE
+  // NOTE: Database::query() always returns a DatabaseResult object (PDO-era
+  // contract) -- it never returns null/false the way the old mysqli wrapper
+  // did. hasError() is the only reliable way to detect failure now.
+  if($database->hasError()) { // SQL-query failed -- return FALSE
     if(OPF_VERBOSE)
         trigger_error('db error '.opf_db_get_error(), E_USER_WARNING);
     return(FALSE);
@@ -395,7 +398,7 @@ function opf_db_query_vars($q_str) {
     $q_str = vsprintf($q_str, $args);
   }
   $result = $database->query($q_str);
-  if($result === NULL) { // SQL-query failed -- return FALSE
+  if($database->hasError()) { // SQL-query failed -- return FALSE
     if(OPF_VERBOSE)
         trigger_error('db error '.opf_db_get_error(), E_USER_WARNING);
     return(FALSE);
@@ -429,7 +432,7 @@ function opf_db_run_query($q_str) {
     $q_str = vsprintf($q_str, $args);
   }
   $result = $database->query($q_str);
-  if($result === NULL) { // SQL-query failed -- return FALSE
+  if($database->hasError()) { // SQL-query failed -- return FALSE
     if(OPF_VERBOSE)
         trigger_error('db error '.opf_db_get_error(), E_USER_WARNING);
     return(FALSE);
