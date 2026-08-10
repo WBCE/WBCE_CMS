@@ -63,6 +63,59 @@ function json_out(bool $ok, string $msg): void
 }
 
 // ── Input validation ─────────────────────────────────────────────────────────
+$dbType = trim($_POST['db_type'] ?? 'mysql');
+
+// SQLite is a hidden, staged feature — never trust the client. Even if the
+// browser posts db_type=sqlite (tampered form or stale page), fall back to
+// mysql unless the server-side flag file says otherwise.
+if ($dbType === 'sqlite' && !allow_sqlite()) {
+    $dbType = 'mysql';
+}
+
+if ($dbType === 'sqlite') {
+    // ── SQLite check: no server/credentials — just verify the driver and
+    //    that the target directory exists (or can be created) and is writable.
+    if (!class_exists('PDO') || !in_array('sqlite', PDO::getAvailableDrivers(), true)) {
+        json_out(false, $MSG['db_sqlite_pdo_missing']);
+    }
+
+    $relPath = trim($_POST['db_path'] ?? '');
+    if ($relPath === '') {
+        $relPath = 'var/database/wbce.sqlite';
+    }
+
+    // wbceSafePath() (framework/functions.php) requires the target to already
+    // exist and isn't loaded this early in the install flow anyway — the
+    // sqlite file doesn't exist yet at this point, so we validate the
+    // *directory* ourselves instead (same "must resolve inside WB_PATH" rule).
+    $wbPath   = dirname(__DIR__);
+    $fullPath = $wbPath . '/' . ltrim(str_replace('\\', '/', $relPath), '/');
+
+    // Reject path traversal outside the WBCE root
+    $realWbPath = realpath($wbPath);
+    $dir        = dirname($fullPath);
+    if (!is_dir($dir) && !@mkdir($dir, 0755, true)) {
+        json_out(false, sprintf($MSG['db_sqlite_dir_missing'], $dir));
+    }
+    $realDir = realpath($dir);
+    if ($realWbPath === false || $realDir === false || !str_starts_with($realDir, $realWbPath)) {
+        json_out(false, $MSG['db_sqlite_path_unsafe']);
+    }
+    if (!is_writable($realDir)) {
+        json_out(false, sprintf($MSG['db_sqlite_not_writable'], $realDir));
+    }
+
+    try {
+        $pdo = new PDO('sqlite:' . $fullPath, null, null, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        ]);
+        $pdo->query('SELECT 1');
+        json_out(true, sprintf($MSG['db_sqlite_success'], $fullPath));
+    } catch (PDOException $e) {
+        json_out(false, sprintf($MSG['db_sqlite_failed'], $e->getMessage()));
+    }
+}
+
 $host = trim($_POST['db_host'] ?? '');
 $name = trim($_POST['db_name'] ?? '');
 $user = trim($_POST['db_user'] ?? '');

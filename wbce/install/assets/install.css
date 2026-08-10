@@ -301,6 +301,22 @@ label {
   margin-top: -4px;
 }
 
+.db-type-toggle {
+  display: flex;
+  gap: 20px;
+}
+.db-type-toggle label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 400;
+  cursor: pointer;
+}
+.db-type-toggle input[type="radio"] {
+  width: auto;
+  cursor: pointer;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="url"],

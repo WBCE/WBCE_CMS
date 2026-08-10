@@ -17,7 +17,7 @@ $TXT['step1_desc']           = 'Verifying your server meets all prerequisites';
 $TXT['step2_heading']        = 'Step 2 — Website Settings';
 $TXT['step2_desc']           = 'Configure basic site parameters and locale';
 $TXT['step3_heading']        = 'Step 3 — Database';
-$TXT['step3_desc']           = 'Enter your MySQL / MariaDB connection details';
+$TXT['step3_desc']           = 'Enter your database connection details';
 $TXT['step4_heading']        = 'Step 4 — Administrator Account';
 $TXT['step4_desc']           = 'Create your backend login credentials';
 $TXT['step5_heading']        = 'Step 5 — Install WBCE CMS';
@@ -41,11 +41,16 @@ $TXT['lbl_linux']            = 'Linux / Unix based';
 $TXT['lbl_windows']          = 'Windows';
 $TXT['lbl_world_writeable']  = 'World-writeable file permissions (777)';
 
+$TXT['lbl_db_type']          = 'Database Type';
+$TXT['lbl_db_type_mysql']    = 'MySQL / MariaDB';
+$TXT['lbl_db_type_sqlite']   = 'SQLite';
 $TXT['lbl_db_host']          = 'Host Name';
 $TXT['lbl_db_name']          = 'Database Name';
 $TXT['lbl_db_prefix']        = 'Table Prefix';
 $TXT['lbl_db_user']          = 'Username';
 $TXT['lbl_db_pass']          = 'Password';
+$TXT['lbl_db_path']          = 'Database File Path';
+$TXT['db_path_hint']         = 'Relative to the WBCE root — leave the default unless you need a custom location.';
 $TXT['btn_test_db']          = 'Test Connection';
 $TXT['db_testing']           = 'Connecting…';
 $TXT['db_retest']            = 'Test again';
@@ -99,6 +104,15 @@ $MSG['db_access_denied']      = 'Access denied. Please check username and passwo
 $MSG['db_unknown_db']         = 'Database does not exist. Please create it first or check the name.';
 $MSG['db_connection_refused'] = 'Could not connect to host. Please check hostname and port.';
 $MSG['db_connection_failed']  = 'Connection failed: %s';
+
+// ─── SQLite Connection Test Messages (only shown when SQLite is allowed) ────
+$MSG['db_sqlite_disallowed']  = 'SQLite is not enabled on this installer.';
+$MSG['db_sqlite_pdo_missing'] = 'The pdo_sqlite PHP extension is not available on this server.';
+$MSG['db_sqlite_path_unsafe'] = 'The database file path is invalid or points outside the allowed directory.';
+$MSG['db_sqlite_dir_missing'] = 'The target directory could not be created: %s';
+$MSG['db_sqlite_not_writable']= 'The target directory is not writable: %s';
+$MSG['db_sqlite_success']     = 'SQLite ready: %s';
+$MSG['db_sqlite_failed']      = 'SQLite check failed: %s';
 
 // ─── Streaming Progress Log (reduced & multilingual) ─────────────────────────
 $TXT['log_writing_config']      = 'Writing config.php';

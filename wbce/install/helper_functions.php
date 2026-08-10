@@ -19,6 +19,27 @@ function remove_github_fetcher(): void
     if (is_file($file)) @unlink($file);
 }
 
+/**
+ * Whether SQLite may be offered as an install-time DB driver.
+ *
+ * Gated by a flag file (sql/ALLOW_SQLITE) rather than a code constant so the
+ * feature can be toggled without a release — SQLite support is being staged
+ * quietly and is not yet meant for general public attention.
+ *
+ * @return bool
+ */
+function allow_sqlite(): bool
+{
+    static $allowed = null;
+    if ($allowed !== null) {
+        return $allowed;
+    }
+
+    $flagFile = __DIR__ . '/sql/ALLOW_SQLITE';
+    return is_file($flagFile);
+
+}
+
 // Function to set error
 // Stores errors to Session
 // Returns to Installer form if  there are invalid Values
@@ -54,10 +75,12 @@ function save_user_data()
         $_SESSION['wb_url'] = $_POST['wb_url'];
         $_SESSION['default_timezone']  = $_POST['default_timezone'];
         $_SESSION['default_language']  = $_POST['default_language'];
-        $_SESSION['database_host']     = $_POST['database_host'];
-        $_SESSION['database_username'] = $_POST['database_username'];
-        $_SESSION['database_password'] = $_POST['database_password'];
-        $_SESSION['database_name']     = $_POST['database_name'];
+        $_SESSION['database_type']     = (($_POST['database_type'] ?? 'mysql') === 'sqlite' && allow_sqlite()) ? 'sqlite' : 'mysql';
+        $_SESSION['database_host']     = $_POST['database_host'] ?? '';
+        $_SESSION['database_username'] = $_POST['database_username'] ?? '';
+        $_SESSION['database_password'] = $_POST['database_password'] ?? '';
+        $_SESSION['database_name']     = $_POST['database_name'] ?? '';
+        $_SESSION['database_path']     = $_POST['database_path'] ?? '';
         $_SESSION['table_prefix']      = $_POST['table_prefix'];
         $_SESSION['website_title']     = $_POST['website_title'];
         $_SESSION['admin_username']    = $_POST['admin_username'];
