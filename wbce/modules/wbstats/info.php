@@ -16,7 +16,7 @@
 
 $module_directory = 'wbstats';
 $module_name = 'Visitor statistics - WBstats - by Dev4me';
-$module_version = '0.2.5.9';
+$module_version = '0.2.5.10';
 $module_function = 'tool';
 $module_platform = '2.8';
 if(defined('WBCE_VERSION')) {
@@ -30,6 +30,10 @@ $module_icon = 'fa fa-bar-chart';
 
 /**
  * Version history
+ *
+ * 0.2.5.10 - Christian M. Stefan
+ * - multi-driver SQL corrections (MySQL/SQLite) as preparation for
+ *   experimental SQLite readiness
  *
  * 0.2.5.9 - Christian M. Stefan
  * - Language Arrays have been changed to UPPER_CASE.
