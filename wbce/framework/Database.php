@@ -297,6 +297,9 @@ class Database
     public function query(string $sql, array $params = []): DatabaseResult
     {
         $sql = $this->prep($sql);
+        if ($this->driver === 'sqlite') {
+            $sql = $this->translateInsertSet($sql);
+        }
         try {
             $stmt = $this->pdo->prepare($sql);
             $this->bindParams($stmt, $params);
@@ -313,8 +316,99 @@ class Database
         }
     }
 
+    /**
+     * Rewrites MySQL's `INSERT INTO t SET col=val, col2=val2` into standard
+     * `INSERT INTO t (col, col2) VALUES (val, val2)` for SQLite, which has
+     * no SET form for INSERT ("near SET: syntax error").
+     *
+     * Applied transparently inside query() (SQLite only) so modules that
+     * still write this pattern at *runtime* — not just at install time —
+     * keep working without a code change. This isn't hypothetical: both
+     * opf_register_filter() and jsadmin's original default-row seeding did
+     * exactly this, and both broke the same way on SQLite before being
+     * fixed by hand. This safety net catches the same pattern in modules
+     * nobody has audited yet.
+     *
+     * Deliberately conservative: bails out (returns $sql unchanged) on
+     * anything it isn't confident about — ON DUPLICATE KEY UPDATE, no
+     * parseable assignments, unbalanced quotes — so an unsupported
+     * variant fails loudly with its own SQLite syntax error rather than
+     * being silently mistranslated into something that runs but is wrong.
+     */
+    private function translateInsertSet(string $sql): string
+    {
+        if (!preg_match(
+            '/^\s*INSERT\s+(?:IGNORE\s+)?INTO\s+(`?[\w{}]+`?)\s+SET\s+(.+?)\s*;?\s*$/is',
+            $sql,
+            $m
+        )) {
+            return $sql;
+        }
+        [, $table, $assignments] = $m;
+
+        if (stripos($assignments, 'ON DUPLICATE KEY UPDATE') !== false) {
+            return $sql;
+        }
+
+        $pairs = $this->splitAssignments($assignments);
+        if ($pairs === null) {
+            return $sql;
+        }
+
+        $cols = [];
+        $vals = [];
+        foreach ($pairs as $pair) {
+            $eq = strpos($pair, '=');
+            if ($eq === false) {
+                return $sql;
+            }
+            $cols[] = trim(substr($pair, 0, $eq));
+            $vals[] = trim(substr($pair, $eq + 1));
+        }
+
+        return "INSERT INTO $table (" . implode(', ', $cols) . ') VALUES (' . implode(', ', $vals) . ')';
+    }
+
+    /**
+     * Splits a `col=val, col2=val2` assignment list on commas, respecting
+     * single-quoted string values so a literal comma inside a quoted value
+     * isn't mistaken for an assignment separator. Returns null if the
+     * string has unbalanced quotes (parsing not safe).
+     */
+    private function splitAssignments(string $s): ?array
+    {
+        $parts   = [];
+        $current = '';
+        $inQuote = false;
+        $len     = strlen($s);
+
+        for ($i = 0; $i < $len; $i++) {
+            $ch = $s[$i];
+            if ($ch === "'" && ($i === 0 || $s[$i - 1] !== '\\')) {
+                $inQuote = !$inQuote;
+                $current .= $ch;
+                continue;
+            }
+            if ($ch === ',' && !$inQuote) {
+                $parts[] = $current;
+                $current = '';
+                continue;
+            }
+            $current .= $ch;
+        }
+
+        if ($inQuote) {
+            return null;
+        }
+        if (trim($current) !== '') {
+            $parts[] = $current;
+        }
+        return $parts;
+    }
+
     public function fetchValue(string $sql, array $params = []): mixed
     {
+        $this->error = '';
         $sql = $this->prep($sql);
         try {
             $stmt = $this->pdo->prepare($sql);
@@ -334,6 +428,7 @@ class Database
     }
     public function fetchAll(string $sql, array $params = []): array
     {
+        $this->error = '';
         $sql = $this->prep($sql);
         try {
             $stmt = $this->pdo->prepare($sql);
@@ -351,6 +446,7 @@ class Database
 
     public function fetchRow(string $sql, array $params = []): ?array
     {
+        $this->error = '';
         $sql = $this->prep($sql);
         try {
             $stmt = $this->pdo->prepare($sql);
@@ -395,6 +491,7 @@ class Database
 
     public function insertRow(string $table, array $data): bool|string
     {
+        $this->error = '';
         $table = $this->prep($table);
         $cols  = array_keys($data);
         $colStr = '`' . implode('`, `', $cols) . '`';
@@ -415,6 +512,7 @@ class Database
 
     public function upsertRow(string $table, string|array $refKey, array $data): bool|string
     {
+        $this->error = '';
         $table = $this->prep($table);
 
         if (is_string($refKey) && str_contains($refKey, ',')) {
@@ -429,7 +527,21 @@ class Database
         try {
             return match ($this->driver) {
                 'mysql'  => $this->upsertMySQL($table, $keys, $data),
-                'sqlite' => $this->upsertSQLite($table, $keys, $data),
+                // SQLite's native `INSERT ... ON CONFLICT DO UPDATE` still
+                // validates the INSERT clause against every NOT NULL column
+                // in the table, even when the conflict branch will only ever
+                // run an UPDATE — so a partial-column upsertRow() call (the
+                // common WBCE pattern: insertRow() the full row first, then
+                // upsertRow() to patch a few derived columns on that same,
+                // already-existing row) fails with a NOT NULL constraint
+                // error on every column the caller didn't list. MySQL's
+                // ON DUPLICATE KEY UPDATE doesn't have this problem because
+                // it only validates NOT NULL when it actually inserts.
+                // upsertFallback()'s check-then-UPDATE-or-INSERT approach
+                // sidesteps this: its UPDATE branch only touches the listed
+                // columns, so it never triggers this validation for rows
+                // that already exist.
+                'sqlite' => $this->upsertFallback($table, $keys, $data),
                 default  => $this->upsertFallback($table, $keys, $data),
             };
         } catch (PDOException $e) {
@@ -478,34 +590,6 @@ class Database
     }
     
 
-    private function upsertSQLite(string $table, array $keys, array $data): bool
-    {
-        $cols = array_keys($data);
-        $vals = array_values($data);
-
-        $colList  = '`' . implode('`, `', $cols) . '`';
-        $ph       = implode(', ', array_fill(0, count($cols), '?'));
-        $conflict = implode(', ', array_map(fn($k) => "`$k`", $keys));
-
-        $updateCols = array_filter($cols, fn($c) => !in_array($c, $keys, true));
-
-        if (empty($updateCols)) {
-            $this->pdo->prepare(
-                "INSERT OR IGNORE INTO `$table` ($colList) VALUES ($ph)"
-            )->execute($vals);
-            return true;
-        }
-
-        $updateClause = implode(', ', array_map(fn($c) => "`$c` = excluded.`$c`", $updateCols));
-
-        $this->pdo->prepare(
-            "INSERT INTO `$table` ($colList) VALUES ($ph)
-             ON CONFLICT($conflict) DO UPDATE SET $updateClause"
-        )->execute($vals);
-
-        return true;
-    }
-
     private function upsertFallback(string $table, array $keys, array $data): bool
     {
         $cols      = array_keys($data);
@@ -550,6 +634,7 @@ class Database
      */
     public function deleteRow(string $table, string $refKey, mixed $values): bool|string
     {
+        $this->error = '';
         $table  = $this->prep($table);
         $values = (array)$values;
         $ph     = implode(', ', array_fill(0, count($values), '?'));
@@ -592,6 +677,7 @@ class Database
 
     public function addField(string $table, string $field, string $definition, bool $setError = true): bool
     {
+        $this->error = '';
         $table = $this->prep($table);
 
         // Field already exists — desired state achieved, nothing to do
@@ -616,6 +702,7 @@ class Database
 
     public function modifyField(string $table, string $field, string $definition): bool
     {
+        $this->error = '';
         $table = $this->prep($table);
         if ($this->driver === 'sqlite') {
             $this->error = 'SQLite does not support MODIFY COLUMN';
@@ -635,6 +722,7 @@ class Database
 
     public function removeField(string $table, string $field): bool
     {
+        $this->error = '';
         $table = $this->prep($table);
         try {
             $this->pdo->exec("ALTER TABLE `$table` DROP COLUMN `$field`");
@@ -659,6 +747,7 @@ class Database
      */
     public function addIndex(string $table, string $indexName, string $fields, string $indexType = 'KEY'): bool
     {
+       $this->error = '';
        $table  = $this->prep($table);
        $cols   = '`' . implode('`,`', array_map('trim', explode(',', $fields))) . '`';
        $isPrimary = strtoupper($indexType) === 'PRIMARY';
@@ -701,6 +790,7 @@ class Database
      */
     public function removeIndex(string $table, string $indexName): bool
     {
+       $this->error = '';
        $table = $this->prep($table);
 
        if ($this->driver === 'sqlite') {
@@ -968,13 +1058,31 @@ class Database
         // SQLite does not understand these and would abort the transaction.
         $content = preg_replace('/\bSET\s+\w+\s*=\s*[^;]+/i', '', $content);
 
-        // Remove MySQL-only table and column options
-        $content = preg_replace('/\s*ENGINE\s*=\s*\S+/i',                  '', $content);
-        $content = preg_replace('/\s*(DEFAULT\s+)?CHARSET\s*=\s*\S+/i',    '', $content);
-        $content = preg_replace('/\s*COLLATE\s*=\s*\S+/i',                 '', $content);
+        // Remove MySQL-only table and column options.
+        // [^\s;]+ (not \S+) so a directly-attached statement terminator like
+        // `ENGINE=MyISAM;` keeps its `;` — \S+ greedily swallowed it too,
+        // silently merging that CREATE TABLE with whatever statement came
+        // next in a multi-statement file (only visible once a file actually
+        // had more than one statement after the stripped clause).
+        $content = preg_replace('/\s*ENGINE\s*=\s*[^\s;]+/i',                  '', $content);
+        $content = preg_replace('/\s*(DEFAULT\s+)?CHARSET\s*=\s*[^\s;]+/i',    '', $content);
+        $content = preg_replace('/\s*COLLATE\s*=\s*[^\s;]+/i',                 '', $content);
+        // Column-level "CHARACTER SET x [COLLATE y]" (no "=" — distinct from the
+        // table-level CHARSET=/COLLATE= above). Common in older per-column DDL,
+        // e.g. `name` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci.
+        // The collation name is sometimes quoted (COLLATE 'latin1_swedish_ci'),
+        // sometimes bare (COLLATE utf8_unicode_ci) — '?\w+'? handles both.
+        $content = preg_replace('/\s*CHARACTER\s+SET\s+\w+/i',             '', $content);
+        $content = preg_replace("/\\s*COLLATE\\s+'?\\w+'?/i",              '', $content);
         $content = preg_replace('/\s*AUTO_INCREMENT\s*=\s*\d+/i',          '', $content);
         $content = preg_replace('/\s+UNSIGNED\b/i',                        '', $content);
         $content = preg_replace('/\s+ZEROFILL\b/i',                        '', $content);
+        // Index-algorithm hint on PRIMARY KEY/INDEX/KEY clauses, e.g.
+        // `PRIMARY KEY (\`id\`) USING BTREE` — must run before the PRIMARY
+        // KEY / INDEX stripping below, which don't expect trailing text
+        // after the closing paren and would otherwise leave "USING BTREE"
+        // dangling in the output (a syntax error on SQLite).
+        $content = preg_replace('/\s+USING\s+(?:BTREE|HASH)\b/i',          '', $content);
         $content = preg_replace('/\s+ON\s+UPDATE\s+CURRENT_TIMESTAMP\b/i', '', $content);
 
         // ENUM -> TEXT (before integer replacements)
@@ -1005,10 +1113,26 @@ class Database
             '$1 INTEGER PRIMARY KEY AUTOINCREMENT',
             $content
         );
-        // Step B: drop the now-redundant single-column table-level PRIMARY KEY clause
-        $content = preg_replace(
-            '/,\s*\n?\s*PRIMARY\s+KEY\s*\(\s*`\w+`\s*\)/i',
-            '',
+        // Step B: drop the table-level PRIMARY KEY clause ONLY when it is now
+        // redundant — i.e. Step A actually inlined that same column as
+        // `col` INTEGER PRIMARY KEY AUTOINCREMENT. Previously this stripped
+        // ANY single-column PRIMARY KEY clause unconditionally, which silently
+        // deleted the primary key entirely for non-integer/non-autoincrement
+        // keys (e.g. a VARCHAR `id` PRIMARY KEY) that Step A never touched —
+        // leaving the table with no uniqueness constraint at all.
+        // Backticks around the column name are optional here — MySQL allows
+        // both `PRIMARY KEY (col)` and `PRIMARY KEY (\`col\`)`; requiring
+        // backticks meant the unquoted form was left in place alongside the
+        // now-inlined PK, producing "table has more than one primary key".
+        $content = preg_replace_callback(
+            '/,\s*\n?\s*PRIMARY\s+KEY\s*\(\s*`?(\w+)`?\s*\)/i',
+            function (array $m) use ($content): string {
+                $inlined = preg_match(
+                    '/`' . preg_quote($m[1], '/') . '`\s+INTEGER\s+PRIMARY\s+KEY\s+AUTOINCREMENT\b/i',
+                    $content
+                );
+                return $inlined ? '' : $m[0];
+            },
             $content
         );
 
@@ -1025,16 +1149,30 @@ class Database
         $content = preg_replace('/(?<!`)DATE(?!`)/i',      'TEXT', $content);
         $content = preg_replace('/(?<!`)TIME(?!`)/i',      'TEXT', $content);
 
-        // Strip inline INDEX/KEY declarations (not supported in SQLite CREATE TABLE)
+        // Strip inline INDEX/KEY declarations (not supported in SQLite CREATE TABLE).
+        // The index name is optional — MySQL allows the unnamed short form
+        // `INDEX (col)` in addition to `INDEX name (col)`. The name pattern
+        // uses [^`\s(]+ rather than \w+ because constraint/index names often
+        // embed the {TP}/{TABLE_PREFIX} placeholder (e.g. `FK_{TP}posts_img_
+        // {TP}img`) — normalizeSql() runs BEFORE importSql() substitutes that
+        // placeholder, and \w+ can't span the literal "{"/"}" characters, so
+        // the whole alternation failed to match and left the KEY clause (and
+        // everything after it, including real FOREIGN KEY constraints) in
+        // the output verbatim — a syntax error on SQLite.
         $content = preg_replace(
-            '/,\s*(?:UNIQUE\s+)?(?:INDEX|KEY)\s+`?\w+`?\s*\([^)]+\)/i',
+            '/,\s*(?:UNIQUE\s+)?(?:INDEX|KEY)\s*(?:`?[^`\s(]+`?\s*)?\([^)]+\)/i',
             '',
             $content
         );
 
-        // Strip MySQL GENERATED/VIRTUAL columns (SQLite does not support them)
+        // Strip MySQL GENERATED/VIRTUAL columns (SQLite does not support them).
+        // The expression `\([^()]*(?:\([^()]*\)[^()]*)*\)` allows one level of
+        // nesting (e.g. `AS (FROM_UNIXTIME(\`col\`)) VIRTUAL`) — the previous
+        // `\([^)]+\)` stopped at the first inner `)`, leaving a dangling
+        // ` VIRTUAL`/`STORED` keyword that SQLite rejected as an unknown
+        // table option.
         $content = preg_replace(
-            '/,\s*`\w+`[^,]+(?:GENERATED\s+ALWAYS\s+AS|AS)\s*\([^)]+\)\s*(?:STORED|VIRTUAL)?/i',
+            '/,\s*`\w+`[^,]+(?:GENERATED\s+ALWAYS\s+AS|AS)\s*\([^()]*(?:\([^()]*\)[^()]*)*\)\s*(?:STORED|VIRTUAL)?/i',
             '',
             $content
         );
