@@ -14,7 +14,7 @@ $core = true;
 $module_directory   = 'droplets';
 $module_name        = 'Droplets';
 $module_function    = 'tool';
-$module_version     = '2.4.4';
+$module_version     = '2.4.5';
 $module_platform    = '1.6.0';
 $module_author      = 'Ruud, pcwacht, WebBird, cwsoft, Norhei, Colinax, Christian M. Stefan';
 $module_license     = 'GNU/GPL v2';
@@ -27,6 +27,10 @@ $module_guid        = '9F2AC2DF-C3E1-4E15-BA4C-2A86E37FE6E5';
  * Version History
  * =============================================================================
  *
+ *
+ * v2.4.5 Christian M. Stefan 10.08 2026
+ *        - multi-driver SQL corrections (MySQL/SQLite) as preparation for
+ *          experimental SQLite readiness
  *
  * v2.4.4 Christian M. Stefan 09.08 2026
  *        - wire the new framework/CodeVet.php into every save path

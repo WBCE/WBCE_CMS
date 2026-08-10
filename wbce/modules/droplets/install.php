@@ -13,33 +13,12 @@
 // Must include code to stop this file being accessed directly
 defined('WB_PATH') or die('No direct access!');
 
-// global $admin;
-
+// DDL lives in install_struct.sql and goes through importSql() 
 $msg = [];
-$sql  = 'DROP TABLE IF EXISTS `{TP}mod_droplets`';
-$database->query($sql);
-if ($database->hasError()) {
-    $msg[] = $database->getError();
-}
-
-$sql  = "CREATE TABLE IF NOT EXISTS `{TP}mod_droplets` ( 
-    `id`            INT NOT NULL auto_increment, 
-    `name`          VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, 
-    `code`          LONGTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL , 
-    `description`   TEXT  CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, 
-    `modified_when` INT NOT NULL default '0', 
-    `modified_by`   INT NOT NULL default '0', 
-    `active`        INT NOT NULL default '0', 
-    `admin_edit`    INT NOT NULL default '0', 
-    `admin_view`    INT NOT NULL default '0', 
-    `show_wysiwyg`  INT NOT NULL default '0', 
-    `comments`      TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL, 
-    PRIMARY KEY ( `id` ) 
-    ) 
-    ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-$database->query($sql);
-if ($database->hasError()) {
-    $msg[] = $database->getError();
+foreach ($database->importSql(__DIR__ . '/install_struct.sql', null, false) as $r) {
+    if (!$r['ok']) {
+        $msg[] = $r['msg'];
+    }
 }
 
 // add all droplets from the droplet subdirectory
