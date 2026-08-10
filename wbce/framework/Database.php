@@ -202,7 +202,7 @@ class Database
         // FIND_IN_SET(needle, haystack) — returns 1-based position, 0 if not found.
         // MySQL: FIND_IN_SET('b', 'a,b,c') → 2
         // Used in WBCE for comma-separated group/permission lists.
-        $this->pdo->sqliteCreateFunction(
+        $this->sqliteCreateFunction(
             'FIND_IN_SET',
             function (?string $needle, ?string $haystack): int {
                 if ($needle === null || $haystack === null || $haystack === '') {
@@ -216,14 +216,14 @@ class Database
         );
 
         // RAND() — returns a random float between 0 and 1, like MySQL's RAND().
-        $this->pdo->sqliteCreateFunction(
+        $this->sqliteCreateFunction(
             'RAND',
             fn(): float => (float)(mt_rand() / mt_getrandmax()),
             0
         );
 
         // NOW() — returns current datetime as 'Y-m-d H:i:s' string.
-        $this->pdo->sqliteCreateFunction(
+        $this->sqliteCreateFunction(
             'NOW',
             fn(): string => date('Y-m-d H:i:s'),
             0
@@ -232,7 +232,7 @@ class Database
         // UNIX_TIMESTAMP([datetime]) — returns current or parsed Unix timestamp.
         // With no argument: equivalent to time().
         // With a datetime string: parses it and returns the Unix timestamp.
-        $this->pdo->sqliteCreateFunction(
+        $this->sqliteCreateFunction(
             'UNIX_TIMESTAMP',
             function (?string $datetime = null): int {
                 return $datetime !== null ? (int)strtotime($datetime) : time();
@@ -242,7 +242,7 @@ class Database
 
         // IFNULL(expr, alt) — returns expr if not null, otherwise alt.
         // SQLite has this natively as IFNULL(), but some older SQL uses the MySQL alias.
-        $this->pdo->sqliteCreateFunction(
+        $this->sqliteCreateFunction(
             'IFNULL',
             fn(mixed $expr, mixed $alt): mixed => $expr !== null ? $expr : $alt,
             2
@@ -250,11 +250,26 @@ class Database
 
         // CONCAT(s1, s2, ...) — string concatenation.
         // SQLite uses || for concatenation; MySQL uses CONCAT().
-        $this->pdo->sqliteCreateFunction(
+        $this->sqliteCreateFunction(
             'CONCAT',
             fn(string ...$parts): string => implode('', $parts),
             -1
         );
+    }
+
+    /**
+     * PDO::sqliteCreateFunction() is deprecated since PHP 8.5 in favor of
+     * Pdo\Sqlite::createFunction() (the driver-specific subclass introduced
+     * in PHP 8.4). Prefer the new method when available, fall back to the
+     * old one on PHP < 8.4.
+     */
+    private function sqliteCreateFunction(string $name, callable $fn, int $argCount): void
+    {
+        if (method_exists($this->pdo, 'createFunction')) {
+            $this->pdo->createFunction($name, $fn, $argCount);
+        } else {
+            $this->pdo->sqliteCreateFunction($name, $fn, $argCount);
+        }
     }
 
     // ── Prefix handling ─────────────────────────────────────────────────────────────────
