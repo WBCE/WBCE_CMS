@@ -59,8 +59,34 @@
  * show_wysiwyg_editor name), different editors can even be used for different
  * fields on the SAME page without colliding.
  *
- * If nothing usable is found, render() falls back to a plain <textarea> — so a
- * caller never has to guard with function_exists() the way old code did.
+ * BACK-COMPAT BRIDGE FOR NOT-YET-MIGRATED EDITORS
+ * -------------------------------------------------
+ * Some editor modules (e.g. the bundled CKEditor 4) predate this dispatcher and
+ * only ever defined the old GLOBAL show_wysiwyg_editor() — never a
+ * "<dir>_wysiwyg_render()" of their own. Without help, such a module would be
+ * silently skipped by render() (its candidate slot just fails and the chain
+ * moves on), which is how migrating wysiwyg/modify.php away from the legacy
+ * call site quietly broke CKEditor-only installs: no crash, just a plain
+ * <textarea> (or the wrong editor, if another one happened to be installed too).
+ *
+ * So when a candidate has no "<dir>_wysiwyg_render()", the dispatcher also tries
+ * its legacy show_wysiwyg_editor() before giving up on that candidate — no
+ * per-editor wrapper function required, this module never has to change.
+ *
+ * The catch: show_wysiwyg_editor() is a single GLOBAL name, so only ONE editor
+ * module can ever hold it in a given request. If a DIFFERENT legacy editor's
+ * include.php already defined it earlier in the same request, blindly calling
+ * it here would silently render the WRONG editor. The bridge guards against
+ * that with a cheap ReflectionFunction check: it only trusts the currently
+ * defined show_wysiwyg_editor() when that function's own source file actually
+ * lives inside THIS candidate's module directory — i.e. it PROVES the
+ * definition is this module's, not a leftover from an earlier candidate.
+ * (Two not-yet-migrated legacy editors can still never coexist in one request —
+ * that was already true before this dispatcher existed — but a single legacy
+ * editor now degrades gracefully instead of vanishing.)
+ *
+ * If nothing usable is found at all, render() falls back to a plain <textarea>
+ * — so a caller never has to guard with function_exists() the way old code did.
  *
  * CLIENT-SIDE FLUSH CONVENTION  (editor-agnostic AJAX save / Ctrl+S)
  * -----------------------------------------------------------------
@@ -119,15 +145,14 @@ class WysiwygEditor
         // e.g. "tiptap_editor>tinymce_wbce" uses TinyMCE while TipTap hasn't yet
         // exposed its <dir>_wysiwyg_render() convention function.
         foreach (self::editorCandidates((string) ($opts['editor'] ?? '')) as $dir) {
-            $fn = $dir . '_wysiwyg_render';
-            if (!function_exists($fn)) {
-                $inc = WB_PATH . '/modules/' . $dir . '/include.php';
-                if (is_file($inc)) { include_once $inc; }
-            }
-            if (function_exists($fn)) {
-                $html = $fn($id, $content, $opts);
-                if (is_string($html) && $html !== '') { return $html; }
-            }
+            $html = self::renderViaProvider($dir, $id, $content, $opts);
+            if ($html !== null) { return $html; }
+
+            // The convention function is missing — try the legacy global bridge
+            // before giving up on this candidate (see class doc "BACK-COMPAT
+            // BRIDGE" above).
+            $html = self::renderViaLegacyShim($dir, $id, $content, $opts);
+            if ($html !== null) { return $html; }
         }
         return self::textarea($id, $content, $opts);
     }
@@ -198,6 +223,75 @@ class WysiwygEditor
         foreach ($installed as $dir) { $add($dir); }
 
         return $out;
+    }
+
+    /**
+     * Try the modern convention entry point "<dir>_wysiwyg_render()" for a
+     * candidate. Returns the rendered HTML, or null if this candidate has no
+     * such function (or it returned nothing usable) — meaning the caller should
+     * keep looking (legacy shim, then the next candidate).
+     */
+    private static function renderViaProvider(string $dir, string $id, string $content, array $opts): ?string
+    {
+        $fn = $dir . '_wysiwyg_render';
+        if (!function_exists($fn)) {
+            self::includeModule($dir);
+        }
+        if (function_exists($fn)) {
+            $html = $fn($id, $content, $opts);
+            if (is_string($html) && $html !== '') { return $html; }
+        }
+        return null;
+    }
+
+    /**
+     * Back-compat bridge to the legacy global show_wysiwyg_editor() for editor
+     * modules that never adopted "<dir>_wysiwyg_render()". Returns null (never
+     * calls the function) unless a ReflectionFunction check PROVES the currently
+     * defined show_wysiwyg_editor() actually lives inside this candidate's own
+     * module directory — see the class doc "BACK-COMPAT BRIDGE" for why that
+     * check exists (the function name is global; a different, earlier-loaded
+     * legacy editor may already hold it).
+     *
+     * The legacy signature only understands name/id/content/width/height — the
+     * 6th "$toolbar" parameter is editor-specific and NOT the same thing as our
+     * config chain, so it is deliberately left at that editor's own default
+     * rather than guessed at.
+     */
+    private static function renderViaLegacyShim(string $dir, string $id, string $content, array $opts): ?string
+    {
+        if (!function_exists('show_wysiwyg_editor')) {
+            self::includeModule($dir);
+        }
+        if (!function_exists('show_wysiwyg_editor')) { return null; }
+
+        $modDir = realpath(WB_PATH . '/modules/' . $dir);
+        if ($modDir === false) { return null; }
+
+        try {
+            $definedIn = (new \ReflectionFunction('show_wysiwyg_editor'))->getFileName();
+        } catch (\ReflectionException $e) {
+            return null;
+        }
+        if ($definedIn === false || strpos($definedIn, $modDir . DIRECTORY_SEPARATOR) !== 0) {
+            return null; // belongs to a different, already-loaded legacy editor
+        }
+
+        $name   = (string) ($opts['name']  ?? $id);
+        $width  = (string) ($opts['width'] ?? '100%');
+        $height = trim((string) ($opts['height'] ?? ''));
+
+        ob_start();
+        show_wysiwyg_editor($name, $id, $content, $width, $height !== '' ? $height : '350px');
+        $html = (string) ob_get_clean();
+        return $html !== '' ? $html : null;
+    }
+
+    /** Include a candidate module's include.php once, if it exists. */
+    private static function includeModule(string $dir): void
+    {
+        $inc = WB_PATH . '/modules/' . $dir . '/include.php';
+        if (is_file($inc)) { include_once $inc; }
     }
 
     /** Keep a directory token safe to use in a path / function name. */
