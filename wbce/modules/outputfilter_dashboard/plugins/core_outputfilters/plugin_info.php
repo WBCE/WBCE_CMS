@@ -22,7 +22,7 @@
  *
  * The remaining four filters are bundled here as a single internal plugin:
  *
- *   • Internal Link Replacer  — replaces [wblinkXX] shortcodes with page URLs.
+ *   • Internal Link Replacer  — resolves [pagelink:NN], [wblinkNN] and module item tokens via LinkResolver.
  *   • Replace Contents        — handles <!--(REPLACE)…--> in old templates.
  *   • Class Insert Helper     — triggers AssetQueue injection (I::doFilter).
  *   • Remove System PH        — strips any <!--(PH)…--> markers that may still

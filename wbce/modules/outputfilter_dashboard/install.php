@@ -84,7 +84,7 @@ if(!defined('WB_INSTALLER')){
 //frontend
 Settings::set('opf_droplets',1, false);
 Settings::set('opf_replace_stuff',1, false);
-Settings::set('opf_wblink',1, false);
+Settings::set('opf_pagelink',1, false);
 Settings::set('opf_short_url',0, false);
 Settings::set('opf_sys_rel',0, false);
 Settings::set('opf_remove_system_ph', 1, false);

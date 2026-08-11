@@ -215,3 +215,15 @@ foreach ($removeOpfMods as $mod) {
         opf_io_rmdir($modPath);
     }
 }
+
+// ── WBCE 1.7.0: migrate opf_wblink setting key → opf_pagelink ───────────────
+// The filter was renamed from opff_mod_opf_wblink to opff_mod_opf_pagelink and
+// its file from opf_wblink.php to opf_pagelink.php. The DB row is updated
+// automatically by opf_register_filter() (matched by name). Preserve the
+// user's active/inactive choice by copying the old setting key.
+if (class_exists('Settings')) {
+    $oldVal = Settings::Get('opf_wblink', null);
+    if ($oldVal !== null) {
+        Settings::set('opf_pagelink', (int)$oldVal);
+    }
+}

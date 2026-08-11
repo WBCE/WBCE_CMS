@@ -35,10 +35,11 @@ if(!defined('WB_PATH')) {
  * "[<module>:NN]" tokens with real links — see framework/LinkResolver.php
  */
 
-function opff_mod_opf_wblink (&$content, $page_id, $section_id, $module, $wb) {
-    if(!class_exists('Settings') || Settings::Get('opf_wblink', true)){
+function opff_mod_opf_pagelink(&$content, $page_id, $section_id, $module, $wb)
+{
+    if (!class_exists('Settings') || Settings::Get('opf_pagelink', true)) {
         $content = LinkResolver::resolveContent($content);
     }
-    return(TRUE);
+    return true;
 }
 

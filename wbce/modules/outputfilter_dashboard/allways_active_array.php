@@ -38,7 +38,7 @@ defined('WB_PATH') or die(header('Location: ../index.php'));
 // this list prevents them from being deactivated in the dashboard
 return [
     'opff_mod_opf_insert',
-    'opff_mod_opf_wblink',
+    'opff_mod_opf_pagelink',
     'opff_mod_opf_email',
     'opff_droplets'
 ];
