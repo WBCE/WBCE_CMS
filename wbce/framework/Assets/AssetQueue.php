@@ -107,9 +107,9 @@
  *  |                     |               |               | Uses `matthiasmullie/minify` if present in `include/`;   |
  *  |                     |               |               | otherwise uses the built-in regex minifier.              |
  *  |---------------------|---------------|---------------|----------------------------------------------------------|
- *  | ASSET_MINIFY_DEBUG  | true          | false (off)   | **Admin only.** Disables both minification and bundling  |
+ *  | MINIFY_ASSETS_DEBUG | true          | false (off)   | **Admin only.** Disables both minification and bundling  |
  *  |                     |               |               | so browser DevTools show the original source files.      |
- *  |                     |               |               | Other visitors still receive the normal optimized output.|   
+ *  |                     |               |               | Other visitors still receive the normal optimized output.|
  *  |---------------------|---------------|---------------|----------------------------------------------------------|
  *  | MINIFY_USE_SUFFIX   | false         | true          | When `false`, cached files omit the `.min` suffix .      |  
  *  |---------------------|---------------|---------------|----------------------------------------------------------|

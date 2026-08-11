@@ -601,7 +601,6 @@ class Wbce extends SecureForm
     {
         return $this->pageLink($linkId);
     }
-
     /**
      * Get a POST value (HTML-escaped).
      *
