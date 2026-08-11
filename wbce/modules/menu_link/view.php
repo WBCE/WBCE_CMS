@@ -31,17 +31,7 @@ if ($rQueryPageData->numRows() == 1) {
                 $sTargetUrl = str_replace('[WB_URL]', WB_URL, $sTargetUrl);
             }
 
-            // convert [wblinkXX] into proper URLs
-            if (strpos($sTargetUrl, '[wblink') !== false) {
-                $iTargetPageID = sitemap_getBetween($sTargetUrl, '[wblink', ']');
-                $sAnchor = '';
-
-                // allow for manual anchors like: [wblink777]#myManualAnchor
-                if (strpos($sTargetUrl, '#') !== false) {
-                    $sAnchor = substr($sTargetUrl, strpos($sTargetUrl, "#"));
-                }
-                $sTargetUrl = $wb->page_link($iTargetPageID).$sAnchor;
-            }
+            $sTargetUrl = LinkResolver::resolveContent($sTargetUrl);
             header('Location: '.$sTargetUrl);
             exit;
         }
@@ -73,14 +63,4 @@ if ($rQueryPageData->numRows() == 1) {
             }
         }
     }
-}
-
-function sitemap_getBetween($sContent, $sStart, $sEnd)
-{
-    $arr = explode($sStart, $sContent);
-    if (isset($arr[1])) {
-        $arr = explode($sEnd, $arr[1]);
-        return $arr[0];
-    }
-    return '';
 }
