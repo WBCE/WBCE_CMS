@@ -590,15 +590,29 @@ function media_filename($sStr)
 }
 
 /**
- * @brief   Function to work out a page link
+ * @brief   Global page_link() — works in any context (backend, frontend,
+ *          FEE) by trying whichever context object is actually set, instead
+ *          of assuming $admin (backend-only — broke on the frontend/FEE,
+ *          where only $wb or $fee exist). All three ($wb, $admin, $fee)
+ *          inherit Wbce::pageLink(), so whichever is present just works.
+ *          This is now the ONLY page_link() definition in core — the old
+ *          duplicate in frontend.functions.php (which also had a real bug:
+ *          it referenced an undefined $link instead of its own parameter)
+ *          has been removed.
  *
- * @param string $sStr
- * @return  string
+ * @param  int|string|null $linkId  Page ID or link string
+ * @return string                   Full URL to the page, or '' if no
+ *                                  context object is available at all.
  */
 if (!function_exists('page_link')) {
-    function page_link($sLink)
+    function page_link($linkId = null): string
     {
-        return $GLOBALS['admin']->page_link($sLink);
+        foreach (['wb', 'admin', 'fee'] as $g) {
+            if (isset($GLOBALS[$g]) && method_exists($GLOBALS[$g], 'pageLink')) {
+                return $GLOBALS[$g]->pageLink($linkId);
+            }
+        }
+        return '';
     }
 }
 

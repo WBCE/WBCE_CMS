@@ -44,21 +44,12 @@ foreach ($snippets as $rec) {
     }
 }
 
-// Frontend functions
-if (!function_exists('page_link')) {
-
-    /**
-     * @brief   Generate full page_link based on the
-     *          `link` content from the `{TP}pages` table
-     *
-     * @param unspec $uLinkId
-     * @return  string
-     */
-    function page_link($uLinkId = null)
-    {
-        return $GLOBALS['wb']->page_link($link);
-    }
-}
+// page_link() lived here too, but was buggy (referenced an undefined $link
+// instead of its own $uLinkId parameter) and never actually ran anyway —
+// framework/functions.php's own page_link() always loads first (via
+// framework/initialize.php, before this file), so its function_exists()
+// guard always skipped this one. Removed; framework/functions.php is now
+// the single definition, robust across backend/frontend/FEE contexts.
 
 if (!function_exists('get_page_link')) {
     /**

@@ -559,7 +559,7 @@ class Wbce extends SecureForm
      * @param  int|string|null $linkId  Page ID or link string
      * @return string                   Full URL to the page
      */
-    public function page_link($linkId = null): string
+    public function pageLink($linkId = null): string
     {
         if ($linkId === null) {
             if (defined('PAGE_ID')) {
@@ -587,6 +587,19 @@ class Wbce extends SecureForm
         }
 
         return WB_URL . PAGES_DIRECTORY . $linkId . PAGE_EXTENSION;
+    }
+
+    /**
+     * @deprecated Use pageLink() instead. Kept as a thin alias — several
+     * call sites (and the global page_link() wrapper in
+     * framework/functions.php) still use the old snake_case name.
+     *
+     * @param  int|string|null $linkId  Page ID or link string
+     * @return string                   Full URL to the page
+     */
+    public function page_link($linkId = null): string
+    {
+        return $this->pageLink($linkId);
     }
 
     /**
