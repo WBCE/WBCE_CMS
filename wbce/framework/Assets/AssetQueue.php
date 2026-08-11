@@ -1377,15 +1377,11 @@ final class AssetQueue
         $result = $cache->resolve($url, $format, $alias);
         $id     = 'wfont-' . md5($url . '|' . $format);
 
-        if ($alias === '') {
-            // No alias: serve the original cached CSS with the provider's font-family names
-            $this->enqueue('css', $result['cssUrl'], 'head_early', [], $id);
-        } else {
-            // Alias set: only emit the alias @font-face blocks — original name suppressed
-            if ($result['aliasCss'] !== '') {
-                $this->enqueue('inline_css', $result['aliasCss'], 'head_early', [], $id);
-            }
-        }
+        // Always enqueue the cached CSS file as a <link>.
+        // Without alias: hash-named file, original font-family names.
+        // With alias:    alias-named file (e.g. poppins.css), font-family already
+        //                substituted in the file itself — no separate <style> block needed.
+        $this->enqueue('css', $result['cssUrl'], 'head_early', [], $id);
     }
 
     private function enqueueFont(string|array $sources, array $options): void
@@ -2483,6 +2479,7 @@ final class AssetQueue
             '{DEFAULT_TEMPLATE}' => $tplUrl,
             '{TEMPLATE}'         => $tplUrl,
             '{THEME_URL}'        => defined('THEME_URL')      ? THEME_URL      : $tplUrl,
+            '{CACHE}'            => $wbUrl . '/cache',
         ];
 
         if (defined('MEDIA_DIRECTORY')) {
